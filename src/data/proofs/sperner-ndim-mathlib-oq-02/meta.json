@@ -1,0 +1,92 @@
+{
+  "id": "sperner-ndim-mathlib-oq-02",
+  "title": "Brouwer's Fixed-Point Theorem via Sperner's Lemma",
+  "slug": "sperner-ndim-mathlib-oq-02",
+  "description": "Answers OQ-02 from sperner-ndim-mathlib: prove Brouwer's fixed-point theorem for the standard n-simplex using Sperner's lemma. The key combinatorial step — that the Sperner coloring derived from any continuous self-map is well-defined and satisfies the boundary condition — is fully proved. The combinatorial-topological bridge (grid triangulation + Sperner application + compactness convergence) is axiomatized with detailed justification.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/SpernerNDimMathlibOQ02.lean",
+    "tags": [
+      "topology",
+      "sperner",
+      "brouwer",
+      "fixed-point",
+      "combinatorial-topology",
+      "simplex",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 254,
+    "assumptions": "Two axioms: (1) sperner_near_fixed_point — for each N, the Nth grid triangulation of Δⁿ with the Sperner coloring yields a near-fixed-point with error ≤ (n+1)/(N+1); (2) fixed_point_from_approx — a sequence of approximate fixed points in the compact simplex converges to an exact fixed point. Both follow from abstract Sperner's lemma (proved in SpernerNDimMathlib.lean) plus compactness of Δⁿ.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "InSimplex: membership predicate for the standard n-simplex Δⁿ",
+      "supp: support (strictly positive coordinates) of a simplex point",
+      "supp_nonempty: support is nonempty for any simplex point (proved from sum=1)",
+      "exists_le_of_simplex_map: key coloring lemma — some support index satisfies f(v)ᵢ ≤ vᵢ (proved by contradiction + Finset.sum_lt_sum)",
+      "colorSet/colorSet_nonempty: candidate color set is nonempty (follows from key lemma)",
+      "spernerColor: the Sperner coloring — min support index where f doesn't increase",
+      "spernerColor_in_supp: coloring lies in support (proved from colorSet ⊆ supp)",
+      "spernerColor_ne_of_zero: Sperner boundary condition — c(v) ≠ j if v j = 0 (proved)",
+      "spernerColorMap_boundary: boundary condition for the full coloring map (proved)",
+      "brouwer_fixed_point_simplex: Brouwer's fixed-point theorem for Δⁿ (proved from 2 axioms)"
+    ],
+    "theoremCount": 12,
+    "definitionCount": 5
+  },
+  "leanFile": {
+    "path": "Proofs/SpernerNDimMathlibOQ02.lean",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 254,
+    "theoremCount": 12,
+    "definitionCount": 5,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimMathlibOQ02.lean"
+  },
+  "overview": {
+    "historicalContext": "Brouwer's fixed-point theorem (1911) is one of the central results of topology. The combinatorial proof via Sperner's lemma, due to various authors in the 1920s–1940s and made widely accessible by Knaster–Kuratowski–Mazurkiewicz (1929), shows that the theorem can be derived from elementary combinatorics without algebraic topology. This formalization follows the simplex version: Δⁿ = {x : Fin(n+1) → ℝ | all xᵢ ≥ 0, Σxᵢ = 1}.",
+    "mathematicalSignificance": "The Sperner-based proof is notable because it avoids homology theory and works with the simplex directly. The key insight is the coloring construction: for f: Δⁿ → Δⁿ, color vertex v with c(v) = min{i ∈ supp(v) : f(v)ᵢ ≤ vᵢ}. The well-definedness is a pure arithmetic fact (proved here with 0 sorries), and the Sperner boundary condition follows immediately from the support structure.",
+    "proofStrategy": "1. Define the Sperner coloring c(v) = min{i ∈ supp(v) : f(v)ᵢ ≤ vᵢ} where supp(v) = {i : vᵢ > 0}. 2. Prove well-definedness: since Σf(v)ᵢ = 1 = Σvᵢ and f(v)ᵢ ≥ 0 = vᵢ for i ∉ supp(v), some index in supp(v) must satisfy f(v)ᵢ ≤ vᵢ. 3. Prove Sperner boundary condition: if vⱼ = 0 then j ∉ supp(v), so c(v) ≠ j. 4. Apply abstract Sperner's lemma (SpernerNDimMathlib.lean) to each Nth subdivision to get a fully-colored simplex. 5. Pass to a convergent subsequence (Δⁿ compact) to get an exact fixed point.",
+    "keyInsights": [
+      "The coloring well-definedness is purely algebraic: if f(v)ᵢ > vᵢ for all i ∈ supp(v) and f(v)ᵢ ≥ 0 = vᵢ for i ∉ supp(v), then Σf(v)ᵢ > Σvᵢ = 1, contradicting Σf(v)ᵢ = 1. This is proved rigorously using Finset.sum_lt_sum.",
+      "The Sperner boundary condition (c(v) ∈ supp(v)) follows immediately from the definition: the colorSet is a subset of supp(v), so the minimum element lies in supp(v). If vⱼ = 0 then j ∉ supp(v), hence c(v) ≠ j.",
+      "The fully-colored simplex from Sperner gives an approximate fixed point: if vertex vᵢ has color i, then f(vᵢ)ᵢ ≤ (vᵢ)ᵢ. As the subdivision mesh → 0, all vertices of FC simplices converge to a single point, and the inequalities pass to the limit by continuity.",
+      "This proof route is genuinely different from the algebraic topology approach (SingularHomology axiom in BrouwerFixedPointOQ01OQ02OQ03.lean). It replaces homology theory with combinatorial parity, at the cost of requiring the construction of a triangulation sequence."
+    ],
+    "prerequisites": [
+      "Standard simplex as a compact convex subset of ℝⁿ⁺¹",
+      "Finset sum inequalities (Mathlib.Algebra.BigOperators.Order)",
+      "Abstract Sperner's lemma (SpernerNDimMathlib.lean, 0 axioms)",
+      "Sequential compactness of bounded closed subsets of ℝⁿ"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Standard Simplex and Support",
+      "content": "InSimplex v holds when all coordinates of v are nonneg and sum to 1. The support supp(v) is the set of strictly positive coordinates. Key lemma: supp_nonempty shows that supp(v) ≠ ∅ for any InSimplex v, since the coordinates sum to 1 > 0. The auxiliary supp_le shows that coordinates outside the support must be exactly 0.",
+      "lean_ref": "supp_nonempty"
+    },
+    {
+      "title": "Key Coloring Lemma (fully proved)",
+      "content": "exists_le_of_simplex_map is the mathematical heart of the proof: for any v, fv ∈ Δⁿ, there exists i ∈ supp(v) with fv i ≤ v i. Proof by contradiction: assume fv i > v i for all i ∈ supp(v). For i ∉ supp(v), v i = 0 ≤ fv i. Then Finset.sum_lt_sum gives Σv < Σfv, but both equal 1. This is a pure arithmetic argument with 0 sorry.",
+      "lean_ref": "exists_le_of_simplex_map"
+    },
+    {
+      "title": "Sperner Coloring Construction (fully proved)",
+      "content": "The colorSet v fv = {i ∈ supp(v) : fv i ≤ v i} is nonempty by the key lemma. The Sperner color spernerColor v fv hv hfv is the minimum element of this set. It lies in supp(v) (spernerColor_in_supp) and satisfies fv c ≤ v c (spernerColor_le). The boundary condition spernerColor_ne_of_zero proves: if v j = 0, then c(v) ≠ j, since j ∉ supp(v) but c(v) ∈ supp(v).",
+      "lean_ref": "spernerColor"
+    },
+    {
+      "title": "From Sperner to Brouwer (axiomatized with justification)",
+      "content": "sperner_near_fixed_point (axiom): the Nth grid triangulation of Δⁿ with the proved Sperner coloring yields a near-fixed-point with error ≤ (n+1)/(N+1). Follows from abstract Sperner (SpernerNDimMathlib) + boundary condition (spernerColor_ne_of_zero) + grid CellComplex construction. fixed_point_from_approx (axiom): compactness of Δⁿ + continuity of f converts approximate fixed points to an exact one. The main theorem brouwer_fixed_point_simplex combines these two axioms.",
+      "lean_ref": "brouwer_fixed_point_simplex"
+    }
+  ],
+  "annotations": []
+}
