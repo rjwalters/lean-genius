@@ -357,16 +357,33 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           subst hn1
           have hE2z : E2 = 0 := esymm_eq_zero_of_gt xs 2 (by simp [hn_def]; omega)
           simp [hE2z]; positivity
+      -- 4*(C₂+n)^2 = (n*(n+1))^2 (via h2C2: 2*C₂ = n*(n-1), so 2*(C₂+n) = n*(n+1))
+      have h4C3 : 4 * ((Nat.choose n 2 : ℝ) + ↑n) ^ 2 = ((↑n : ℝ) * (↑n + 1)) ^ 2 := by
+        linear_combination (2 * ((Nat.choose n 2 : ℝ) + ↑n) + ↑n * (↑n + 1)) * h2C2
       have h_disc : 4 * ((Nat.choose n 2 : ℝ) + n) *
           (((Nat.choose n 2 : ℝ) + n) * E1 ^ 2 - (n + 1) ^ 2 * E2) ≥
           ((n + 1) * E1) ^ 2 := by
-        -- 4*C(n+1,2)*γ ≥ (n+1)^2*E1^2
-        -- Using h2C2: 4*(C₂+n)*γ = 2*n*(n+1)*γ ≥ (n+1)^2*E1^2 iff 2*n*γ ≥ (n+1)*E1^2
-        -- Which reduces to showing (n^2-1)*E1^2 ≥ 2*n*(n+1)*E2 from IH
-        nlinarith [h_IH_k1, h_γ, h2C2, sq_nonneg E1,
-                   mul_nonneg (Nat.cast_nonneg (Nat.choose n 2)) (sq_nonneg E1),
-                   mul_nonneg (Nat.cast_nonneg n) (mul_nonneg hE1 hE1),
-                   mul_nonneg (Nat.cast_nonneg n) hE2]
+        -- Ring identity: LHS - RHS = (n+1)^2*((n^2-1)*E1^2 - 2*n*(n+1)*E2) (using h4C3, h2C2)
+        have hd_key : 4 * ((↑(Nat.choose n 2) + ↑n) * ((↑(Nat.choose n 2) + ↑n) * E1 ^ 2 -
+            (↑n + 1) ^ 2 * E2)) - ((↑n + 1) * E1) ^ 2 =
+            (↑n + 1) ^ 2 * ((↑n ^ 2 - 1) * E1 ^ 2 - 2 * ↑n * (↑n + 1) * E2) := by
+          linear_combination (E1 ^ 2) * h4C3 +
+                             (-2 * (↑n + 1) ^ 2 * E2) * h2C2
+        -- (n^2-1)*E1^2 - 2*n*(n+1)*E2 = (n+1)*((n-1)*E1^2-2*n*E2) ≥ 0 from IH
+        have hd_fact : (↑n ^ 2 - 1) * E1 ^ 2 - 2 * ↑n * (↑n + 1) * E2 ≥ 0 := by
+          -- Step 1: n*(n-1)*E1^2 ≥ 2*n^2*E2 (multiply h_IH_k1 by 2 and use h2C2)
+          have hSn : (↑n : ℝ) * ((↑n : ℝ) - 1) * E1 ^ 2 ≥ 2 * (↑n : ℝ) ^ 2 * E2 := by
+            nlinarith [h_IH_k1, h2C2]
+          -- Step 2: (n-1)*E1^2 ≥ 2*n*E2 by contradiction (if not, multiply by n > 0)
+          have hn_pos : (0 : ℝ) < ↑n := Nat.cast_pos.mpr (by omega)
+          have hSbase : (↑n - 1 : ℝ) * E1 ^ 2 ≥ 2 * ↑n * E2 := by
+            by_contra hlt; push_neg at hlt
+            linarith [mul_pos hn_pos (show (0:ℝ) < 2*↑n*E2-(↑n-1)*E1^2 from by linarith), hSn]
+          -- Step 3: (n^2-1)*E1^2 - 2*n*(n+1)*E2 = (n+1)*((n-1)*E1^2-2*n*E2) ≥ 0
+          nlinarith [hSbase,
+                     mul_nonneg (by positivity : (0:ℝ) ≤ ↑n + 1)
+                       (show (↑n - 1) * E1 ^ 2 - 2 * ↑n * E2 ≥ 0 from by linarith [hSbase])]
+        linarith [hd_key, mul_nonneg (by positivity : (0:ℝ) ≤ (↑n+1)^2) hd_fact]
       -- Apply quadratic_nonneg
       have key := quadratic_nonneg ((Nat.choose n 2 : ℝ) + ↑n) (-(↑n + 1) * E1)
           (((Nat.choose n 2 : ℝ) + ↑n) * E1 ^ 2 - (↑n + 1) ^ 2 * E2) x hx h_α h_γ
@@ -570,10 +587,20 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
           linear_combination (2 * Ckm1 + ↑n * (↑n + 1)) * h2Ckm1
         have h_disc2 : ((↑n + 1) * ek * ekm1) ^ 2 ≤
             4 * (Ckm1 * ekm1 ^ 2 - (↑n + 1) ^ 2 * (ekm2 * ek)) * (Ckm1 * ek ^ 2) := by
-          nlinarith [hSn, h4C2, h2Ckm1, sq_nonneg ek, sq_nonneg ekm1,
-                     mul_nonneg hek hekm1, mul_nonneg hekm2 hek,
-                     mul_nonneg (by positivity : (0:ℝ) ≤ (↑n+1)^2 * ek^2) hSn,
-                     mul_nonneg hCkm1_nn (mul_nonneg (sq_nonneg ek) (sq_nonneg ekm1))]
+          -- Ring identity: RHS - LHS = (n+1)^2*ek^2*((n^2-1)*ekm1^2 - 2*n*(n+1)*ekm2*ek)
+          -- Using 4*Ckm1^2=(n*(n+1))^2 and 2*Ckm1=n*(n+1)
+          have hkey : 4 * (Ckm1 * ekm1 ^ 2 - (↑n + 1) ^ 2 * (ekm2 * ek)) * (Ckm1 * ek ^ 2) -
+              ((↑n + 1) * ek * ekm1) ^ 2 =
+              (↑n + 1) ^ 2 * ek ^ 2 *
+                ((↑n ^ 2 - 1) * ekm1 ^ 2 - 2 * ↑n * (↑n + 1) * (ekm2 * ek)) := by
+            linear_combination (ekm1 ^ 2 * ek ^ 2) * h4C2 +
+                               (-2 * (↑n + 1) ^ 2 * ekm2 * ek ^ 3) * h2Ckm1
+          -- (n^2-1)*ekm1^2 - 2*n*(n+1)*ekm2*ek = (n+1)*((n-1)*ekm1^2 - 2*n*ekm2*ek) ≥ 0
+          have hfact : (↑n ^ 2 - 1) * ekm1 ^ 2 - 2 * ↑n * (↑n + 1) * (ekm2 * ek) ≥ 0 := by
+            nlinarith [hSn,
+                       mul_nonneg (by positivity : (0:ℝ) ≤ ↑n + 1)
+                         (show (↑n - 1) * ekm1 ^ 2 - 2 * ↑n * (ekm2 * ek) ≥ 0 from by linarith [hSn])]
+          linarith [hkey, mul_nonneg (by positivity : (0:ℝ) ≤ (↑n+1)^2 * ek^2) hfact]
         have key2 := quadratic_nonneg
           (Ckm1 * ekm1 ^ 2 - (↑n + 1) ^ 2 * (ekm2 * ek))
           (-(↑n + 1) * ek * ekm1)
