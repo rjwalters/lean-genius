@@ -1,0 +1,59 @@
+{
+  "proofId": "circumference-via-differentiation-oq-01",
+  "annotations": [
+    {
+      "id": "annotation-power-rule",
+      "lineStart": 57,
+      "lineEnd": 68,
+      "type": "insight",
+      "content": "The entire geometric content is encoded in one line: `(hasDerivAt_pow n r).const_mul (unitBallVolume n)`. The power rule `hasDerivAt_pow` gives d/dr(rⁿ) = n·r^(n-1), and `const_mul` scales by ω_n. The rest is ring arithmetic.",
+      "mathContext": "HasDerivAt.const_mul: if f has derivative f' at x, then c·f has derivative c·f' at x.",
+      "significance": "high"
+    },
+    {
+      "id": "annotation-gamma-recursion",
+      "lineStart": 82,
+      "lineEnd": 103,
+      "type": "technique",
+      "content": "The Gamma recursion Γ(x+1) = x·Γ(x) is the key bridge between the volume formula (using Γ(n/2+1)) and the surface area formula (using Γ(n/2)). Without this recursion, the two formulas would appear unrelated.",
+      "mathContext": "Gamma_add_one hn2ne: Γ(x+1) = x·Γ(x) for x ≠ 0. Applied at x = n/2 to get Γ(n/2+1) = (n/2)·Γ(n/2).",
+      "significance": "high"
+    },
+    {
+      "id": "annotation-field-simp-ring",
+      "lineStart": 97,
+      "lineEnd": 101,
+      "type": "technique",
+      "content": "The proof uses `field_simp [hGne, hn_cast.ne']` to clear the Gamma denominators (knowing Γ(n/2) ≠ 0 and n ≠ 0), then `ring` for the algebraic identity n/(n/2) = 2.",
+      "mathContext": "Gamma_pos_of_pos ensures Γ(n/2) > 0 hence ≠ 0. The field_simp then transforms the division identity to a polynomial identity provable by ring.",
+      "significance": "medium"
+    },
+    {
+      "id": "annotation-uniform-framework",
+      "lineStart": 36,
+      "lineEnd": 47,
+      "type": "insight",
+      "content": "The three definitions nBallVolumeFn, nSphereSurfaceConst, nSphereSurfaceFn form a uniform framework: V_n(r) = ω_n·rⁿ, C_n = n·ω_n, S_{n-1}(r) = C_n·r^(n-1). This separates the constant part (depending only on n) from the radius-dependent part.",
+      "mathContext": "Natural number subtraction in r^(n-1): for n=0, gives r^0=1 (trivially); for n=2, gives r^1=r (circumference); for n=3, gives r^2 (sphere surface).",
+      "significance": "medium"
+    },
+    {
+      "id": "annotation-parent-connection",
+      "lineStart": 147,
+      "lineEnd": 165,
+      "type": "insight",
+      "content": "The parent theorem `CircumferenceViaDifferentiation.area_hasDerivAt` is literally a special case of `nBallVolumeFn_hasDerivAt` for n=2. This is formalized by `disk_area_matches_parent`, which recovers the parent result from the general one.",
+      "mathContext": "nBallVolumeFn 2 r = unitBallVolume 2 * r^2 = π * r^2 = areaFn r. The derivative at r is nSphereSurfaceFn 2 r = 2π * r = circumferenceFn r.",
+      "significance": "high"
+    },
+    {
+      "id": "annotation-n3-sphere",
+      "lineStart": 130,
+      "lineEnd": 143,
+      "type": "result",
+      "content": "For n=3: the sphere surface area formula 4πr² emerges as the derivative of the ball volume (4π/3)r³. This confirms the classical result d/dr(4πr³/3) = 4πr² and shows the general framework handles the 3D case automatically.",
+      "mathContext": "nSphereSurfaceConst 3 = 3 * unitBallVolume 3 = 3 * (4π/3) = 4π. Then nSphereSurfaceFn 3 r = 4π * r^2.",
+      "significance": "high"
+    }
+  ]
+}
