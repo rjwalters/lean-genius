@@ -1,0 +1,142 @@
+{
+  "id": "law-of-cosines-oq-01-oq-02",
+  "title": "Spherical Law of Sines: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C)",
+  "slug": "law-of-cosines-oq-01-oq-02",
+  "description": "Formalizes the spherical law of sines for triangles on the unit sphere. For a spherical triangle with arc-length sides a, b, c and dihedral angles A, B, C, proves sin(a)·sin(B) = sin(b)·sin(A) (multiplicative form) and sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) (ratio form). The proof uses the Gram determinant G = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c) as the key intermediate quantity, connecting to the spherical law of cosines machinery.",
+  "meta": {
+    "author": "researcher-8",
+    "date": "2026-05-06",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ02.lean",
+    "tags": [
+      "spherical-geometry",
+      "trigonometry",
+      "law-of-sines",
+      "inner-product",
+      "gram-determinant",
+      "cauchy-schwarz",
+      "research",
+      "open-question"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 389,
+    "theoremCount": 16,
+    "definitionCount": 3,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "historicalContext": "The spherical law of sines is one of the fundamental results of spherical trigonometry, tracing back to medieval Islamic mathematicians (Abu-Mahmud al-Khujandi, c. 1000 CE). It extends the planar law of sines to spherical geometry and is essential for navigation, astronomy, and geodesy. The proof given here derives it from the Gram determinant identity via the spherical law of cosines.",
+    "proofStrategy": "Key: Gram determinant G = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c) = sin²b·sin²c-(cos(a)-cos(b)cos(c))² (by ring). Combined with cos(A) = (cos(a)-cos(b)cos(c))/(sin(b)sin(c)) from the spherical law of cosines: sin²(A)·sin²(b)·sin²(c) = G. By symmetry: sin²(B)·sin²(a)·sin²(c) = G. Cancelling sin²c: sin²(A)·sin²(b) = sin²(B)·sin²(a). Non-negativity of all sines (angles in [0,π]) gives the product equality, from which the ratio form follows."
+  },
+  "overview": {
+    "problemStatement": "For a spherical triangle on the unit sphere with arc-length sides a, b, c and dihedral angles A, B, C at the opposite vertices, prove the spherical law of sines: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C).",
+    "historicalContext": "The spherical law of sines was first proved by medieval Islamic mathematicians and later systematized by European geometers. It is analogous to the planar law of sines c/sin(C) = 2R (circumradius formula) but adapted to spherical geometry where arcs replace lengths. The formula is essential for solving spherical triangles (given two angles and a side, find the remaining sides).",
+    "keyInsights": [
+      "The Gram determinant G = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c) is the key symmetric quantity: it equals sin²(b)sin²(c) - (cos(a)-cos(b)cos(c))², sin²(a)sin²(c) - (cos(b)-cos(a)cos(c))², etc. — all by ring.",
+      "G ≥ 0 by Cauchy-Schwarz on the projection vectors: G = ‖projB_A‖²·‖projC_A‖² - ⟨projB_A,projC_A⟩² ≥ 0.",
+      "The spherical law of cosines (from SphericalLawOfCosines.lean) gives the inner product of projections as cos(a)-cos(b)cos(c), connecting the geometric angle to the algebraic formula.",
+      "The multiplicative form sin(a)·sin(B) = sin(b)·sin(A) is equivalent to the ratio form but avoids division — it is proved first from the squared identity, then non-negativity gives the sign."
+    ],
+    "proofStrategy": "Step 1: Prove the Gram identity G = sin²b·sin²c-(cos(a)-cos(b)cos(c))² by ring. Step 2: G ≥ 0 by Cauchy-Schwarz on projection vectors (from SphericalLawOfCosines infrastructure). Step 3: Define dihedral angles A, B via perpendicular projections (as in SphericalLawOfCosines). Step 4: cos(A) = ⟨projB_A, projC_A⟩/(‖projB_A‖·‖projC_A‖) = (cos(a)-cos(b)cos(c))/(sin(b)sin(c)). Step 5: sin²A·sin²b·sin²c = G (substitution + ring). Step 6: By symmetry sin²B·sin²a·sin²c = G. Step 7: Cancel sin²c → sin²A·sin²b = sin²B·sin²a. Step 8: Non-negativity (angles in [0,π]) → sin(A)·sin(b) = sin(B)·sin(a).",
+    "prerequisites": [
+      "SphericalLawOfCosines: Vec3, arcLength, projectPerp, norm_projectPerp_eq_sin, spherical_law_of_cosines_algebraic",
+      "Cauchy-Schwarz: abs_real_inner_le_norm",
+      "Real.sin_nonneg_of_nonneg_of_le_pi: sin non-negative on [0,π]",
+      "Real.cos_arccos: cos(arccos(x)) = x for x in [-1,1]"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SphericalLawOfCosines"
+    ],
+    "namespace": "LawOfCosinesOQ01OQ02",
+    "lineCount": 389,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 3,
+    "path": "Proofs/LawOfCosinesOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "sections": [
+    {
+      "id": "sec-inner-products",
+      "title": "Inner Products of Projections",
+      "startLine": 35,
+      "endLine": 90,
+      "summary": "Establishes key lemmas: proj_inner_eq gives ⟨projB_A, projC_A⟩ = cos(a)-cos(b)cos(c) via inner decomposition; norm_proj_BA/CA gives ‖projB_A‖ = sin(c), ‖projC_A‖ = sin(b).",
+      "mathContext": "The inner decomposition from SphericalLawOfCosines: ⟨B,C⟩ = ⟨B,A⟩⟨C,A⟩ + ⟨projB_A, projC_A⟩. Rewriting with cos(a)=⟨B,C⟩, cos(b)=⟨A,C⟩, cos(c)=⟨A,B⟩ gives the inner product formula."
+    },
+    {
+      "id": "sec-gram",
+      "title": "Gram Determinant",
+      "startLine": 91,
+      "endLine": 140,
+      "summary": "gramDet = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c). gramDet_expand: G = sin²b·sin²c-(cos(a)-cos(b)cos(c))² (by ring). gramDet_nonneg: G ≥ 0 via Cauchy-Schwarz on projections.",
+      "mathContext": "The Gram determinant of the 3×3 Gram matrix [[1,cos(c),cos(b)],[cos(c),1,cos(a)],[cos(b),cos(a),1]]. G ≥ 0 because G = ‖projB‖²·‖projC‖² - ⟨projB,projC⟩² by Cauchy-Schwarz."
+    },
+    {
+      "id": "sec-angles",
+      "title": "Dihedral Angles and Cosine Formulas",
+      "startLine": 141,
+      "endLine": 270,
+      "summary": "Defines angleA, angleB via perpendicular projections. Proves cos(A) = (cos(a)-cos(b)cos(c))/(sin(b)sin(c)) and cos(B) = (cos(b)-cos(a)cos(c))/(sin(a)sin(c)) using Cauchy-Schwarz for the arccos bounds.",
+      "mathContext": "The dihedral angle at vertex A: Real.arccos(⟨projB_A, projC_A⟩ / (‖projB_A‖·‖projC_A‖)). The argument lies in [-1,1] by Cauchy-Schwarz, so arccos is well-defined. The cosine formula follows by substituting the projection norms and inner product."
+    },
+    {
+      "id": "sec-sinsin-gram",
+      "title": "sin²·sin²·sin² = gramDet",
+      "startLine": 271,
+      "endLine": 320,
+      "summary": "sinA_sq_times_bc: sin²(A)·sin²(b)·sin²(c) = G. sinB_sq_times_ac: sin²(B)·sin²(a)·sin²(c) = G. Both by substituting the angle formula and simplifying via field_simp + ring.",
+      "mathContext": "The key symmetric identity: all three quantities sin²(X)·(product of other two sides)² equal the same Gram determinant G. This is the algebraic heart of the proof."
+    },
+    {
+      "id": "sec-sines-theorem",
+      "title": "The Spherical Law of Sines",
+      "startLine": 321,
+      "endLine": 389,
+      "summary": "spherical_law_of_sines_mul: sin(a)·sin(B) = sin(b)·sin(A) via cancelling sin²c and nlinarith. spherical_law_of_sines: ratio form sin(a)/sin(A) = sin(b)/sin(B). spherical_law_of_sines_all: all three ratios equal. equilateral_angles_equal: a=b → sin(A)=sin(B).",
+      "mathContext": "From sin²A·sin²b = sin²B·sin²a (after cancellation) and non-negativity (sin(A),sin(b),sin(B),sin(a)≥0): the squared equality implies the linear equality sin(A)·sin(b) = sin(B)·sin(a). The ratio form follows by division when sin(A),sin(B)>0."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "spherical-law-of-cosines",
+      "relationship": "extends",
+      "description": "Builds directly on the spherical law of cosines infrastructure (Vec3, projectPerp, arcLength, norm_projectPerp_eq_sin, spherical_law_of_cosines_algebraic)."
+    },
+    {
+      "proofId": "law-of-cosines-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ: the dual spherical law of cosines for angles. Both are fundamental results of spherical trigonometry."
+    },
+    {
+      "proofId": "law-of-cosines-oq-01",
+      "relationship": "related",
+      "description": "Parent OQ: spherical geometry open questions. This entry answers the open question about the spherical law of sines."
+    }
+  ],
+  "conclusion": {
+    "summary": "The spherical law of sines is proved in full generality for unit-sphere triangles. The multiplicative form sin(a)·sin(B) = sin(b)·sin(A) requires no assumptions beyond non-degeneracy of sides (sin(a), sin(b), sin(c) > 0). The ratio form additionally requires the angles to be non-degenerate (sin(A), sin(B) > 0), which is guaranteed when G > 0. The proof uses only inner product geometry and the ring identity for the Gram determinant.",
+    "implications": "This completes the basic spherical trigonometry toolkit in Lean: law of cosines (from SphericalLawOfCosines.lean) + law of sines (this file). Together they enable the solution of any spherical triangle from minimal data. The Gram determinant identity G = sin²b·sin²c - (cos(a)-cos(b)cos(c))² is a useful reusable lemma.",
+    "openQuestions": [
+      "Can the four-part equality sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) = 2R be proved, where R is the circumradius of the spherical triangle?",
+      "What is the spherical analogue of the law of tangents? Can it be derived from the law of sines in this Lean framework?"
+    ]
+  },
+  "references": [
+    {
+      "title": "Todhunter, Spherical Trigonometry (1886)",
+      "url": "",
+      "description": "Classical reference for spherical law of sines §17-18"
+    },
+    {
+      "title": "Mathlib abs_real_inner_le_norm",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/InnerProductSpace/Basic.html",
+      "description": "Cauchy-Schwarz used for Gram determinant non-negativity"
+    }
+  ]
+}
