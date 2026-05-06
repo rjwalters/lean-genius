@@ -116,7 +116,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 6 sorries (Hierholzer infrastructure helpers deferred), 848 lines.",
+    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 4 sorries (Hierholzer infrastructure helpers deferred), 958 lines.",
     "implications": "The directed Eulerian theorem underpins de Bruijn sequence construction (a de Bruijn graph is Eulerian), DNA fragment assembly algorithms, and Eulerian circuit algorithms in network flow. The degree-balance characterization is also the basis for Hierholzer's O(|E|) directed Eulerian circuit algorithm.",
     "openQuestions": [
       "Formalize Hierholzer's algorithm for constructing directed Eulerian circuits (eliminate directed_eulerian_iff axiom)",
