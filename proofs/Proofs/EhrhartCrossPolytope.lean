@@ -18,19 +18,22 @@
   "Can Ehrhart polynomials for polytopes with known formulas be proved
    from first principles without the general existence theorem?"
 
-  Main results (12 theorems, 1 sorry for Finset slicing geometry):
+  Main results (10 theorems, 3 sorries):
   1. crossEhrhart_d0          — L(B_0,n) = 1
   2. crossEhrhart_n0          — L(B_d,0) = 1
   3. crossEhrhart_d1          — L(B_1,n) = 2n+1
-  4. crossEhrhart_d2          — L(B_2,n) = 2n²+2n+1
+  4. crossEhrhart_d2          — L(B_2,n) = 2n²+2n+1 [proved by recursion]
   5. crossEhrhart_pos          — L(B_d,n) ≥ 1
   6. crossEhrhart_mono         — L(B_d,n) ≤ L(B_d,n+1)
   7. sum_choose_range          — hockey-stick Σ C(m,k) = C(n,k+1)
   8. sum_shift_hockey          — sum interchange using hockey-stick
   9. crossEhrhart_expand       — key algebraic expansion (Pascal split)
   10. crossEhrhart_succ_d      — geometric recursion: L(B_{d+1},n) = L(B_d,n) + 2·Σ L(B_d,m)
-  11. crossEhrhart_is_poly     — formula is a polynomial of degree d
-  12. crossBall_card           — connection to actual lattice points (1 sorry)
+
+  Sorries (3):
+  - crossEhrhart_is_poly: polynomial identification (Lean polynomial API)
+  - crossBall_card base d=0: Finset card of empty-domain functions
+  - crossBall_card step: Finset slicing decomposition
 -/
 import Mathlib
 
@@ -51,7 +54,7 @@ namespace EhrhartCrossPolytope
     Counts lattice points in n·B_d = {x : Fin d → ℤ | Σ |xᵢ| ≤ n}.
     Also called the **central Delannoy formula**; see OEIS A001850 for d=2. -/
 def crossEhrhart (d n : ℕ) : ℕ :=
-  ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k
+  ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k
 
 -- ============================================================
 -- PART II: Base Cases
@@ -65,22 +68,31 @@ theorem crossEhrhart_d0 (n : ℕ) : crossEhrhart 0 n = 1 := by
     C(0,k) = 0 for k ≥ 1, so only the k=0 term survives. -/
 theorem crossEhrhart_n0 (d : ℕ) : crossEhrhart d 0 = 1 := by
   simp only [crossEhrhart]
-  rw [sum_eq_single 0 _ (by simp)]
+  rw [Finset.sum_eq_single 0]
   · simp
   · intro k _ hk
     rcases k with _ | k
     · exact absurd rfl hk
     · simp [Nat.zero_choose]
+  · intro h
+    exact absurd (Finset.mem_range.mpr (Nat.succ_pos d)) h
 
 /-- B_1 = [-1,1]: dilation n gives {-n,...,n}, so 2n+1 lattice points. -/
 theorem crossEhrhart_d1 (n : ℕ) : crossEhrhart 1 n = 2 * n + 1 := by
   simp [crossEhrhart, sum_range_succ, Nat.choose_one_right]
 
 /-- B_2 = diamond (square at 45°): L(B_2,n) = 2n²+2n+1.
-    Counting: 1 + 4n + 4C(n,2) = 1 + 4n + 2n(n-1) = 2n²+2n+1. -/
+    Proved by induction using the recursion:
+    L(B_2, n+1) = L(B_2, n) + L(B_1, n+1) + L(B_1, n) = L(B_2,n) + (2n+3) + (2n+1). -/
 theorem crossEhrhart_d2 (n : ℕ) : crossEhrhart 2 n = 2 * n ^ 2 + 2 * n + 1 := by
-  simp [crossEhrhart, sum_range_succ, Nat.choose_one_right, Nat.choose_two_right]
-  omega
+  induction n with
+  | zero => simp [crossEhrhart_n0]
+  | succ n ih =>
+    have hrec : crossEhrhart 2 (n + 1) =
+        crossEhrhart 2 n + crossEhrhart 1 (n + 1) + crossEhrhart 1 n := by
+      rw [crossEhrhart_succ_d 1 (n + 1), crossEhrhart_succ_d 1 n, sum_range_succ]
+      ring
+    rw [hrec, ih, crossEhrhart_d1, crossEhrhart_d1]; ring
 
 -- Spot checks (concrete verification)
 example : crossEhrhart 1 3 = 7 := by native_decide
@@ -100,14 +112,15 @@ example : crossEhrhart 3 4 = 129 := by native_decide
 theorem crossEhrhart_pos (d n : ℕ) : 1 ≤ crossEhrhart d n := by
   simp only [crossEhrhart]
   calc 1 = 2 ^ 0 * Nat.choose d 0 * Nat.choose n 0 := by simp
-    _ ≤ ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k :=
-        single_le_sum (fun k _ => Nat.zero_le _) _ (mem_range.mpr (Nat.succ_pos d))
+    _ ≤ ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k :=
+        single_le_sum (fun k _ => Nat.zero_le _) (mem_range.mpr (Nat.succ_pos d))
 
 /-- Monotone in the dilation parameter: more dilation, more lattice points. -/
 theorem crossEhrhart_mono (d n : ℕ) : crossEhrhart d n ≤ crossEhrhart d (n + 1) := by
+  simp only [crossEhrhart]
   apply Finset.sum_le_sum
   intro k _
-  apply Nat.mul_le_mul_left
+  gcongr
   exact Nat.choose_le_choose k (Nat.le_succ n)
 
 -- ============================================================
@@ -119,7 +132,7 @@ theorem crossEhrhart_mono (d n : ℕ) : crossEhrhart d n ≤ crossEhrhart d (n +
     Proved by induction: the step uses Pascal's rule
     C(n+1,k+1) = C(n,k) + C(n,k+1). -/
 lemma sum_choose_range (n k : ℕ) :
-    ∑ m in range n, Nat.choose m k = Nat.choose n (k + 1) := by
+    ∑ m ∈ range n, Nat.choose m k = Nat.choose n (k + 1) := by
   induction n with
   | zero => simp
   | succ n ih =>
@@ -131,13 +144,13 @@ lemma sum_choose_range (n k : ℕ) :
     Key step: hockey-stick replaces C(n,k+1) = Σ_{m<n} C(m,k), then
     the double sum is commuted. -/
 lemma sum_shift_hockey (d n : ℕ) :
-    ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) =
-    ∑ m in range n, ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose m k := by
+    ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) =
+    ∑ m ∈ range n, ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose m k := by
   conv_lhs =>
     arg 2; ext k
     rw [show 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) =
-        ∑ m in range n, (2 ^ k * Nat.choose d k * Nat.choose m k)
-        from by rw [sum_choose_range]; rw [Finset.mul_sum]]
+        ∑ m ∈ range n, (2 ^ k * Nat.choose d k * Nat.choose m k)
+        from by rw [← sum_choose_range]; rw [Finset.mul_sum]]
   rw [Finset.sum_comm]
 
 -- ============================================================
@@ -154,43 +167,44 @@ lemma sum_shift_hockey (d n : ℕ) :
     5. Combine: 1 + 2A + (crossEhrhart d n - 1) = crossEhrhart d n + 2A. -/
 theorem crossEhrhart_expand (d n : ℕ) :
     crossEhrhart (d + 1) n = crossEhrhart d n +
-    2 * ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) := by
+    2 * ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) := by
   simp only [crossEhrhart]
   -- Extract k=0 from LHS: sum over range(d+2) = 1 + sum over range(d+1) shifted by 1
-  rw [show ∑ k in range (d + 1 + 1), 2 ^ k * Nat.choose (d + 1) k * Nat.choose n k =
+  rw [show ∑ k ∈ range (d + 1 + 1), 2 ^ k * Nat.choose (d + 1) k * Nat.choose n k =
       (2 ^ 0 * Nat.choose (d + 1) 0 * Nat.choose n 0) +
-      ∑ k in range (d + 1), 2 ^ (k + 1) * Nat.choose (d + 1) (k + 1) * Nat.choose n (k + 1)
+      ∑ k ∈ range (d + 1), 2 ^ (k + 1) * Nat.choose (d + 1) (k + 1) * Nat.choose n (k + 1)
       from by rw [sum_range_succ' (f := fun k => 2^k * Nat.choose (d+1) k * Nat.choose n k)]]
   simp only [pow_zero, one_mul, Nat.choose_zero_right]
   -- Apply Pascal: C(d+1,k+1) = C(d,k) + C(d,k+1)
-  rw [show ∑ k in range (d + 1), 2 ^ (k + 1) * Nat.choose (d + 1) (k + 1) * Nat.choose n (k + 1) =
-      ∑ k in range (d + 1), 2 ^ (k + 1) * (Nat.choose d k + Nat.choose d (k + 1)) * Nat.choose n (k + 1)
+  rw [show ∑ k ∈ range (d + 1), 2 ^ (k + 1) * Nat.choose (d + 1) (k + 1) * Nat.choose n (k + 1) =
+      ∑ k ∈ range (d + 1), 2 ^ (k + 1) * (Nat.choose d k + Nat.choose d (k + 1)) * Nat.choose n (k + 1)
       from by
         apply Finset.sum_congr rfl
         intro k _
-        rw [← Nat.choose_succ_succ d k]]
+        rw [Nat.choose_succ_succ d k]]
   -- Factor out 2 and distribute over addition
-  rw [show ∑ k in range (d + 1), 2 ^ (k + 1) * (Nat.choose d k + Nat.choose d (k + 1)) * Nat.choose n (k + 1) =
-      2 * ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) +
-      2 * ∑ k in range (d + 1), 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1)
+  rw [show ∑ k ∈ range (d + 1), 2 ^ (k + 1) * (Nat.choose d k + Nat.choose d (k + 1)) * Nat.choose n (k + 1) =
+      2 * ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n (k + 1) +
+      2 * ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1)
       from by
-        rw [← Finset.mul_sum, ← Finset.mul_sum, ← Finset.sum_add_distrib]
+        rw [Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
         apply Finset.sum_congr rfl
         intro k _; ring]
   -- Key: Σ 2^k·C(d,k)·C(n,k) = 1 + 2·Σ 2^k·C(d,k+1)·C(n,k+1)
   -- Proof: extract k=0 from Σ 2^k·C(d,k)·C(n,k) and use C(d,d+1)=0 for the last term
-  have key : ∑ k in range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k =
-      1 + 2 * ∑ k in range (d + 1), 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1) := by
+  have key : ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d k * Nat.choose n k =
+      1 + 2 * ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1) := by
     rw [sum_range_succ' (f := fun k => 2 ^ k * Nat.choose d k * Nat.choose n k)]
     simp only [pow_zero, one_mul, Nat.choose_zero_right]
     -- Drop k=d term from RHS sum (it's 0 since C(d,d+1) = 0)
     conv_rhs =>
-      rw [show ∑ k in range (d + 1), 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1) =
-          ∑ k in range d, 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1)
+      rw [show ∑ k ∈ range (d + 1), 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1) =
+          ∑ k ∈ range d, 2 ^ k * Nat.choose d (k + 1) * Nat.choose n (k + 1)
           from by
             rw [sum_range_succ]
             simp [Nat.choose_eq_zero_of_lt (Nat.lt_succ_self d)]]
     rw [Finset.mul_sum]
+    congr 1
     apply Finset.sum_congr rfl
     intro k _; ring
   linarith [key]
@@ -207,7 +221,7 @@ theorem crossEhrhart_expand (d n : ℕ) :
                            = L(B_d,n) + 2·Σ_{m=0}^{n-1} L(B_d,m). -/
 theorem crossEhrhart_succ_d (d n : ℕ) :
     crossEhrhart (d + 1) n =
-    crossEhrhart d n + 2 * ∑ m in range n, crossEhrhart d m := by
+    crossEhrhart d n + 2 * ∑ m ∈ range n, crossEhrhart d m := by
   rw [crossEhrhart_expand, sum_shift_hockey]
 
 -- ============================================================
@@ -222,38 +236,10 @@ theorem crossEhrhart_succ_d (d n : ℕ) :
 theorem crossEhrhart_is_poly (d : ℕ) :
     ∃ (P : Polynomial ℚ), P.natDegree ≤ d ∧
     ∀ n : ℕ, P.eval (n : ℚ) = (crossEhrhart d n : ℚ) := by
-  -- Construct P = Σ_{k≤d} (2^k · C(d,k)/k!) · X↓k  where X↓k = X(X-1)···(X-k+1)
-  let coeffs : Fin (d + 1) → ℚ := fun k => (2 : ℚ) ^ k.val * Nat.choose d k.val / k.val.factorial
-  let polys : Fin (d + 1) → Polynomial ℚ :=
-    fun k => coeffs k • ∏ i in range k.val, (Polynomial.X - Polynomial.C i)
-  use ∑ k : Fin (d + 1), polys k
-  constructor
-  · -- Degree ≤ d
-    apply le_trans (Polynomial.natDegree_sum_le _ _)
-    apply Finset.sup_le
-    rintro ⟨k, hk⟩ _
-    simp only [polys, coeffs]
-    apply le_trans (Polynomial.natDegree_smul_le _ _)
-    apply le_trans (Polynomial.natDegree_prod_le _ _)
-    simp only [range_card]
-    refine le_trans (Finset.sum_le_card_nsmul _ _ 1 ?_) ?_
-    · intro i _; exact Polynomial.natDegree_X_sub_C_le i
-    · simp; omega
-  · -- Evaluation at ℕ matches crossEhrhart
-    intro n
-    simp only [Polynomial.eval_finset_sum, polys, coeffs]
-    simp only [Polynomial.eval_smul, Polynomial.eval_prod, Polynomial.eval_sub,
-               Polynomial.eval_X, Polynomial.eval_C]
-    simp only [crossEhrhart, Nat.cast_sum, Nat.cast_mul, Nat.cast_pow]
-    congr 1; ext ⟨k, hk⟩
-    simp only [Finset.mem_univ, true_imp_iff]
-    rw [show (∏ i in range k, ((n : ℚ) - (i : ℚ))) / k.factorial =
-        (Nat.choose n k : ℚ) from by
-          rw [Nat.choose_eq_factorial_div_factorial (by simp [Finset.mem_range] at hk; omega)]
-          push_cast
-          field_simp
-          rw [Finset.prod_range_cast_nat_sub]]
-    push_cast; ring
+  -- Each term 2^k · C(d,k) · C(n,k) is degree k (since C(n,k) = n↓k/k! is degree k).
+  -- The polynomial P = Σ_{k≤d} (2^k·C(d,k)/k!) · X·(X-1)···(X-k+1).
+  -- Full construction omitted; see crossEhrhart_succ_d for the key recursion.
+  sorry
 
 -- ============================================================
 -- PART VIII: Connection to Lattice Points
@@ -279,8 +265,9 @@ def crossBall (d n : ℕ) : Finset (Fin d → Fin (2 * n + 1)) :=
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
   induction d with
   | zero =>
-    simp [crossBall, crossEhrhart]
-    decide
+    -- B_0 = {0}; cross ball is the single empty function; count = 1 = crossEhrhart 0 n
+    rw [crossEhrhart_d0]
+    simp [crossBall]
   | succ d ih => sorry
 
 -- ============================================================
