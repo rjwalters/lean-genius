@@ -2,7 +2,7 @@
   "id": "sum-of-kth-powers-oq-04",
   "title": "Euler-Maclaurin Asymptotics for Power Sums",
   "slug": "sum-of-kth-powers-oq-04",
-  "description": "Asymptotic formula for power sums: sum_{i=0}^{n-1} i^k / n^{k+1} -> 1/(k+1) as n -> infinity. Proves Bernoulli polynomial leading behavior and monic polynomial asymptotics (0 axioms). 2 routine sorries remain. Includes exact k=0 and k=1 special cases.",
+  "description": "Asymptotic formula for power sums: sum_{i=0}^{n-1} i^k / n^{k+1} -> 1/(k+1) as n -> infinity. Proves Bernoulli polynomial leading behavior and monic polynomial asymptotics (0 axioms, 0 sorries). Includes exact k=0 and k=1 special cases.",
   "meta": {
     "author": "Euler (1738), Maclaurin (1742), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%E2%80%93Maclaurin_formula",
@@ -17,9 +17,9 @@
       "open-question"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 2 routine sorries: (1) low_degree_poly_ratio_tendsto_zero (polynomial of degree < d divided by n^d \u2192 0); (2) natDegree_sub_leading (natDegree of p - X^d < d when p is monic of degree d, routine algebra). Both are standard analysis/algebra, suitable for Aristotle. Note: monic_poly_ratio_tendsto was previously an axiom but was proved in V3.",
+    "assumptions": "0 axioms, 0 sorries. The two previously routine sorries (low_degree_poly_ratio_tendsto_zero and the natDegree bound inside monic_poly_ratio_tendsto) are now fully proved. monic_poly_ratio_tendsto was previously an axiom but was proved in V3.",
     "mathlibDependencies": [
       {
         "theorem": "Polynomial.bernoulli",
@@ -40,7 +40,7 @@
       "powerSumRatio_tendsto proof: general asymptotic 1/(k+1) via Faulhaber + filter limits"
     ],
     "dateAdded": "2026-03-30",
-    "lineCount": 193,
+    "lineCount": 227,
     "theoremCount": 9,
     "definitionCount": 1,
     "prerequisites": [
@@ -145,12 +145,12 @@
       "Filter"
     ],
     "namespace": "SumOfKthPowersAsymptotic",
-    "lineCount": 193,
+    "lineCount": 227,
     "axiomCount": 0,
     "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/SumOfKthPowersOQ04.lean",
-    "sorries": 2,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/SumOfKthPowersOQ04Aristotle.lean"
     ]
@@ -169,5 +169,5 @@
       "leanType": "powerSumRatio 1 n = (n - 1) / (2 * n)"
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }
