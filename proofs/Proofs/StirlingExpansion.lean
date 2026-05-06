@@ -264,12 +264,16 @@ private lemma stirling_step_formula (k : ℕ) (hk : 1 ≤ k) :
       ((k : ℝ) + 1) * (Real.log ((k : ℝ) + 1) - 1) := by
     rw [show stirlingSeq (k + 1) = ((k + 1).factorial : ℝ) /
           (Real.sqrt (2 * ↑(k + 1)) * (↑(k + 1) / Real.exp 1) ^ (k + 1)) from rfl]
+    -- Normalize ↑(k+1) to (k:ℝ)+1 so it matches hsqrt_k1/hpow_k1
+    -- (↑(k+1) = Nat.cast(k+1) is not definitionally = (k:ℝ)+1 in Lean 4)
+    have h_cast : (↑(k + 1) : ℝ) = (k : ℝ) + 1 := by push_cast; ring
+    rw [h_cast]
     rw [Real.log_div (Nat.cast_pos.mpr (Nat.factorial_pos (k + 1))).ne'
                      (mul_pos hsqrt_k1 hpow_k1).ne']
     rw [Real.log_mul hsqrt_k1.ne' hpow_k1.ne']
-    rw [Real.log_sqrt (by positivity : (0 : ℝ) ≤ 2 * ↑(k + 1))]
+    rw [Real.log_sqrt (by positivity : (0 : ℝ) ≤ 2 * ((k : ℝ) + 1))]
     rw [Real.log_pow]
-    rw [Real.log_div (Nat.cast_pos.mpr (by omega : 0 < k + 1)).ne' (Real.exp_pos 1).ne']
+    rw [Real.log_div hk1_ne (Real.exp_pos 1).ne']
     rw [Real.log_exp]
     push_cast; ring
   -- log((k+1)!) = log(k!) + log(k+1)
