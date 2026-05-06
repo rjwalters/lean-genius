@@ -1,0 +1,137 @@
+{
+  "id": "erdos-895-oq-01",
+  "title": "Hajnal's Independent Hindman Set Conjecture",
+  "slug": "erdos-895-oq-01",
+  "description": "Hajnal's open generalization of Erdős #895: every large triangle-free graph on {1,...,n} contains an independent Hindman set — a base B with all finite sub-sums forming a mutually non-adjacent set.",
+  "meta": {
+    "author": "Erdős-Hajnal (conjectured)",
+    "sourceUrl": "https://erdosproblems.com/895",
+    "date": "1995",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos895OQ01Problem.lean",
+    "tags": [
+      "erdos",
+      "open-problem",
+      "graph-theory",
+      "additive-combinatorics",
+      "hindman-theory",
+      "triangle-free",
+      "ramsey-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "axiomCount": 1,
+    "erdosNumber": 895,
+    "erdosUrl": "https://erdosproblems.com/895",
+    "erdosProblemStatus": "open",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "Simple graph structure",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Finset",
+        "description": "Finite sets and sums",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.sqrt",
+        "description": "Integer square root for independence bound",
+        "module": "Mathlib.Data.Nat.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Formal definition of hindmanSet as all finite nonempty sub-sums of a base",
+      "Monotonicity and structural lemmas for hindmanSet (sorry-free)",
+      "Axiomatization of Hajnal's conjecture as an open problem",
+      "Proof that Hajnal k=2 base {a,b} with a+b < n yields an independent additive triple",
+      "Proved Case 1 of α(G) ≥ √n bound: high-degree vertex N(v) is independent",
+      "Proof structure for α(G) ≥ √n via case split (1 HARD sorry for greedy algorithm)"
+    ],
+    "assumptions": "1 axiom: hajnal_conjecture (Hajnal's open conjecture, unsolved as of 2026). 1 sorry: greedy independent set construction (HARD, to be proved by induction).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "lineCount": 198
+  },
+  "overview": {
+    "historicalContext": "**Hajnal's Generalization of Erdős Problem #895**\n\nThe parent problem, Erdős #895, was solved by Ben Barber (2015) using SAT verification: every triangle-free graph on $\\{1,\\ldots,n\\}$ for $n \\geq 18$ contains three mutually non-adjacent vertices $a$, $b$, $a+b$. This is the $k=2$ base case of a more ambitious conjecture by András Hajnal.\n\nHajnal asks: does every sufficiently large triangle-free graph contain an **independent Hindman set** — a base $B = \\{a_1, \\ldots, a_k\\}$ with $k \\geq 2$ such that ALL finite nonempty sub-sums of $B$ form a mutually non-adjacent set in the graph?\n\nThe $k=2$ case gives FS($\\{a,b\\}$) = $\\{a, b, a+b\\}$, which is exactly Barber's result. The challenge for $k \\geq 3$ is that sums can grow (possibly exceeding $n$) while graph independence must be maintained for all sub-sums simultaneously.\n\n**Connection to Hindman's Theorem (1974):** Hindman proved that for any finite coloring of $\\mathbb{N}$, there exists an infinite Hindman set that is monochromatic. Hajnal's conjecture replaces 'monochromatic' with 'graph-independent' and works in the finite setting — a fundamentally different kind of constraint.",
+    "problemStatement": "Let $G$ be a triangle-free graph with vertex set $\\{1, 2, \\ldots, n\\}$.\n\n**Conjecture (Hajnal):** For sufficiently large $n$, there exists a base $B \\subseteq \\{1,\\ldots,n\\}$ with $|B| \\geq 2$ such that the finite sums set FS$(B) = \\{\\sum_{i \\in T} a_i \\mid T \\subseteq B, T \\neq \\emptyset\\}$ forms an independent set in $G$.\n\n**Special case $k=2$:** FS($\\{a,b\\}$) = $\\{a, b, a+b\\}$ — proved by Barber for $n \\geq 18$.\n\n**Status:** OPEN for base size $k \\geq 3$. No counterexample or proof is known.",
+    "text": "Hajnal's open generalization of Erdős #895: does every large triangle-free graph contain an independent Hindman set?",
+    "proofStrategy": "This file:\n1. Defines `hindmanSet base` as all finite nonempty sub-sums of `base`\n2. Proves structural properties of hindmanSet (monotonicity, pair lemmas)\n3. States `hajnalConjecture` and axiomatizes it (OPEN)\n4. Proves `hajnal_k2_gives_additive_triple`: k=2 Hajnal base → independent additive triple\n5. Proves `triangleFree_independence_bound` (α ≥ √n) with one HARD sorry for the greedy case",
+    "keyInsights": [
+      "**Hierarchy of Hindman strength:** Hajnal's conjecture strictly generalizes Erdős #895 — the k=2 base case IS the Barber theorem. Each additional base element adds exponentially more sum-independence requirements.",
+      "**hindmanSet monotonicity:** Larger bases produce larger sum sets. This allows reducing from a full Hajnal base to a 2-element sub-base to recover the Erdős-Barber structure.",
+      "**Independence number bound:** Triangle-free graphs satisfy α(G) ≥ √n. Case 1 (high-degree vertex) is proved here via N(v) being independent; Case 2 (greedy algorithm) reduces to a bounded-degree independence number bound.",
+      "**k=2 reduction:** If the Hajnal base {a,b} has a+b < n (in-range sum), then a, b, a+b are all in FS({a,b}) and are mutually non-adjacent — giving exactly the Erdős-Barber structure. This is `hajnal_k2_gives_additive_triple`.",
+      "**Open territory:** The gap between k=2 (computationally verified by Barber's SAT proof) and k≥3 (unknown) mirrors the gap between Schur's theorem (1916) and Hindman's theorem (1974) in pure additive combinatorics."
+    ],
+    "prerequisites": [
+      "Graph theory: triangle-free graphs, independent sets, neighborhood sets",
+      "Additive combinatorics: sumsets, Schur triples, Hindman sets",
+      "Ramsey theory: R(3,3)=6, triangle-free graph structure",
+      "Parent result: Erdős #895 (Barber 2015)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "hindman-structure",
+      "title": "Hindman Set Structure",
+      "summary": "Monotonicity, pair membership, and singleton characterization of hindmanSet",
+      "startLine": 58,
+      "endLine": 100,
+      "mathContext": "Pure combinatorial lemmas about finite sums of base sets"
+    },
+    {
+      "id": "hajnal-conjecture",
+      "title": "Hajnal's Conjecture",
+      "summary": "Formal statement and axiomatization of the open conjecture",
+      "startLine": 103,
+      "endLine": 125,
+      "mathContext": "Open problem: axiom hajnal_conjecture states the conjecture"
+    },
+    {
+      "id": "k2-reduction",
+      "title": "The k=2 Reduction",
+      "summary": "Hajnal k=2 base {a,b} with a+b < n gives an independent additive triple",
+      "startLine": 128,
+      "endLine": 172,
+      "mathContext": "Key theorem connecting Hajnal to Erdős-Barber; uses hindmanSet_pair_sum"
+    },
+    {
+      "id": "independence-bound",
+      "title": "Independence Number Bound",
+      "summary": "Every triangle-free graph has α(G) ≥ √n",
+      "startLine": 175,
+      "endLine": 198,
+      "mathContext": "Case 1 (proved): high-degree vertex N(v) independent; Case 2 (1 HARD sorry): greedy algorithm"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "hajnal-k3",
+      "title": "Hajnal conjecture for k=3",
+      "question": "Does every triangle-free graph on {1,...,n} for large n contain an independent FS({a,b,c}) = {a,b,c,a+b,a+c,b+c,a+b+c}?",
+      "difficulty": "open",
+      "notes": "The k=2 case follows from Barber. For k=3, the 7 elements of FS({a,b,c}) must all fit in {1,...,n} and be mutually non-adjacent."
+    },
+    {
+      "id": "greedy-independence",
+      "title": "Greedy independence number bound",
+      "question": "Can the HARD sorry in indep_from_bounded_deg be closed? Prove α(G) ≥ n/(Δ+1) for max-degree-Δ graphs by induction on vertex count.",
+      "difficulty": "hard",
+      "notes": "Standard textbook result; requires well-founded induction on the vertex removal greedy algorithm."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/Erdos895OQ01Problem.lean",
+    "lineCount": 198,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "axiomCount": 1,
+    "sorries": 1,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895OQ01Problem.lean"
+  }
+}
