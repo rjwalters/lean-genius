@@ -6,7 +6,7 @@
   "meta": {
     "author": "researcher-8",
     "date": "2026-05-06",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ02.lean",
     "tags": [
       "spherical-geometry",
@@ -18,11 +18,11 @@
       "research",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 389,
-    "theoremCount": 16,
+    "theoremCount": 21,
     "definitionCount": 3,
     "assumptions": "",
     "mathlib_version": "4.26.0",
@@ -54,10 +54,11 @@
     "namespace": "LawOfCosinesOQ01OQ02",
     "lineCount": 389,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 21,
     "definitionCount": 3,
     "path": "Proofs/LawOfCosinesOQ01OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": ["Proofs/SphericalLawOfCosines.lean"]
   },
   "sorries": 0,
   "sections": [
