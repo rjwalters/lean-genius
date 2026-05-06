@@ -519,11 +519,21 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
       · -- hi: image lands in Finset.univ (trivially)
         intro j _; exact Finset.mem_univ _
       · -- injectivity: j₁.val - (n-m) = j₂.val - (n-m) → j₁ = j₂ (using filter bounds)
-        intro j₁ hj₁ _ j₂ hj₂ _ h
+        intro j₁ hj₁ j₂ hj₂ h
         apply Fin.ext; simp only [Fin.mk.injEq] at h
         simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj₁ hj₂
-        have := hm
-        split_ifs at hj₁ hj₂ with h1 h2 <;> omega
+        -- Extract lower bound on j₁.val and j₂.val from filter membership.
+        have hle₁ : n - m ≤ j₁.val := by
+          have := hm
+          by_cases hc : j₁.val ≤ n
+          · simp only [if_pos hc] at hj₁; omega
+          · simp only [if_neg hc] at hj₁; omega
+        have hle₂ : n - m ≤ j₂.val := by
+          have := hm
+          by_cases hc : j₂.val ≤ n
+          · simp only [if_pos hc] at hj₂; omega
+          · simp only [if_neg hc] at hj₂; omega
+        omega
       · -- surjectivity: preimage of k is ⟨k.val+(n-m),_⟩ ∈ filter
         intro k _
         refine ⟨⟨k.val + (n - m), by have := k.isLt; have := hm; omega⟩, ?_, ?_⟩
