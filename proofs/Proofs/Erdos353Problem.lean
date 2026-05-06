@@ -34,7 +34,7 @@ import Mathlib.Geometry.Euclidean.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 
-open MeasureTheory Set
+open MeasureTheory Set Pointwise
 
 namespace Erdos353
 
@@ -83,9 +83,9 @@ def IsIsoscelesTriangle (p q r : EuclideanSpace ℝ (Fin 2)) : Prop :=
 A triangle with one 90-degree angle.
 -/
 def IsRightTriangle (p q r : EuclideanSpace ℝ (Fin 2)) : Prop :=
-  inner (q - p) (r - p) = 0 ∨
-  inner (p - q) (r - q) = 0 ∨
-  inner (p - r) (q - r) = 0
+  inner (𝕜 := ℝ) (q - p) (r - p) = 0 ∨
+  inner (𝕜 := ℝ) (p - q) (r - q) = 0 ∨
+  inner (𝕜 := ℝ) (p - r) (q - r) = 0
 
 /--
 **Isosceles Trapezoid:**
@@ -219,12 +219,12 @@ axiom koizumi_right_triangle (A : Set (EuclideanSpace ℝ (Fin 2)))
 ## Part V: Kovač Results (2023-2024)
 -/
 
-/--
+/-
 **Kovač's Trapezoid Theorem (2023):**
 Every measurable set with infinite measure contains the vertices of a
 (not necessarily isosceles) trapezoid of area 1.
 -/
-/--
+/-
 **Kovač's Parallelogram Counterexample (2023):**
 There exists a set with infinite measure that does NOT contain the vertices
 of a parallelogram with area 1.
@@ -244,7 +244,7 @@ axiom kovac_predojevic_cyclic (A : Set (EuclideanSpace ℝ (Fin 2)))
 ## Part VI: Congruent Sides Result
 -/
 
-/--
+/-
 **Kovač-Predojević Congruent Sides Counterexample (2024):**
 There exists a set with infinite measure such that every convex polygon
 with congruent sides and all vertices in the set has area < 1.
@@ -253,7 +253,7 @@ with congruent sides and all vertices in the set has area < 1.
 ## Part VII: Why Infinite Measure Matters
 -/
 
-/--
+/-
 **Finite Measure Fails:**
 Sets with finite measure may not contain any triangle of area 1.
 Example: A line segment has infinite length but zero 2D measure.
@@ -317,9 +317,9 @@ private lemma triangleArea_smul_eq (c : ℝ) (hc : c > 0)
     triangleArea (c • p) (c • q) (c • r) = c ^ 2 * triangleArea p q r := by
   unfold triangleArea
   dsimp only
-  simp only [smul_sub, Pi.smul_apply, smul_eq_mul]
-  rw [show c * (q - p) 0 * (c * (r - p) 1) - c * (q - p) 1 * (c * (r - p) 0) =
-      c ^ 2 * ((q - p) 0 * (r - p) 1 - (q - p) 1 * (r - p) 0) from by ring]
+  simp only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]
+  rw [show (c * q 0 - c * p 0) * (c * r 1 - c * p 1) - (c * q 1 - c * p 1) * (c * r 0 - c * p 0) =
+      c ^ 2 * ((q 0 - p 0) * (r 1 - p 1) - (q 1 - p 1) * (r 0 - p 0)) from by ring]
   rw [abs_mul, abs_of_pos (pow_pos hc 2)]
   ring
 
