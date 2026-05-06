@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-001",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 57, "endLine": 67 },
+    "type": "definition",
+    "title": "IsCyclicVector and IsNonderogatory — Facade Definitions",
+    "content": "Both definitions are abbrev aliases to GeneralCyclicVector from WIP04. IsCyclicVector M v asserts that no nonzero polynomial of degree < n annihilates both M and v — equivalently, {v, Mv, M²v, ..., M^(n-1)v} is a basis for Kⁿ. IsNonderogatory M asserts that the minimal polynomial of M equals its characteristic polynomial. Using abbrev (not def) makes the type-checker unfold these automatically without extra steps.",
+    "mathContext": "A vector $v \\in K^n$ is cyclic for $M \\in M_n(K)$ if the Krylov sequence $\\{v, Mv, M^2v, \\ldots, M^{n-1}v\\}$ spans $K^n$, equivalently: $\\forall p \\in K[X], p \\neq 0, \\deg p < n \\Rightarrow p(M)v \\neq 0$. A matrix $M$ is nonderogatory (also called non-derogatory or having a cyclic module) if its minimal polynomial $\\mu_M$ equals its characteristic polynomial $\\chi_M$. Since $\\deg \\chi_M = n$ always, this forces $\\deg \\mu_M = n$ — the maximum possible.",
+    "significance": "context",
+    "relatedConcepts": ["cyclic vector", "minimal polynomial", "characteristic polynomial", "nonderogatory matrix"],
+    "prerequisites": ["linear algebra", "polynomial evaluation on matrices", "Cayley-Hamilton theorem"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 73, "endLine": 98 },
+    "type": "technique",
+    "title": "UFD Multiset Factorization — From UniqueFactorizationMonoid",
+    "content": "monic_irreducible_multiset_factorization converts the abstract UFD factorization into a concrete multiset of monic irreducibles whose product is μ. The key step: UniqueFactorizationMonoid.exists_prime_factors gives a multiset of primes (not necessarily monic), then normalization by C(leadingCoeff)⁻¹ makes each factor monic. The proof uses simp +decide with Polynomial.Monic.def and irreducible_mul_iff to handle edge cases.",
+    "mathContext": "In a UFD, every nonzero element factors into irreducibles: $\\mu = u \\cdot \\prod_{i} p_i$ where $u$ is a unit and $p_i$ are irreducible. For $K[X]$ (a Euclidean domain, hence UFD), units are nonzero constants $C(c)$ with $c \\in K^*$. Monic normalization: replace each irreducible $p$ by $C(\\mathrm{lc}(p))^{-1} \\cdot p$ (which is monic and associate to $p$). The product of the normalized factors equals $\\mu$ because $\\mathrm{lc}(\\mu) = 1$ (monic) forces the product of leading coefficients to be 1.",
+    "significance": "key",
+    "relatedConcepts": ["unique factorization domain", "monic polynomial", "irreducible polynomial", "Multiset in Lean"],
+    "prerequisites": ["polynomial rings", "UFD structure", "Mathlib UniqueFactorizationMonoid API"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 100, "endLine": 115 },
+    "type": "technique",
+    "title": "Coprimality of Distinct Monic Irreducibles",
+    "content": "coprime_of_distinct_monic_irreducible proves IsCoprime p q for distinct monic irreducibles. Uses hp.coprime_iff_not_dvd: two irreducibles are coprime iff neither divides the other. If p | q, then since q is irreducible, either p is a unit (impossible, p is monic of positive degree) or p and q are associates. But associates + monic forces p = q (leading coefficients match), contradicting hne.",
+    "mathContext": "In a UFD, two irreducibles $p, q$ are coprime iff they are not associates (i.e., $p \\neq uq$ for any unit $u$). For monic polynomials over a field: $p$ and $q$ are associates iff $p = q$ (since the only monic associate of a monic polynomial is itself — any unit multiple $c \\cdot p$ has leading coefficient $c \\cdot \\mathrm{lc}(p) = c$, which equals 1 iff $c = 1$). Hence distinct monic irreducibles are coprime. Coprimality of powers follows from `IsCoprime.pow`.",
+    "significance": "supporting",
+    "relatedConcepts": ["coprime polynomials", "irreducible polynomials", "monic associates", "Bezout's identity"],
+    "prerequisites": ["polynomial rings over fields", "coprimality in UFDs", "Mathlib IsCoprime API"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 117, "endLine": 151 },
+    "type": "technique",
+    "title": "Finset-Indexed Grouping — Recursive Multiset Induction",
+    "content": "finset_factorization_from_multiset converts a multiset of monic irreducibles into a Fin k-indexed family (p : Fin k → K[X], e : Fin k → ℕ) where the p_i are distinct, the e_i are positive, and the product equals the original multiset product. The key inductive step: when processing a new element p from the multiset, check if p matches an existing p_i (by_cases h : ∃ i, p' i = p). If yes, increment e_i; if no, append (k → k+1) with exponent 1 using Fin.cons.",
+    "mathContext": "The conversion from multiset to distinct-element form is a 'grouping by equality' operation: given $\\{p_1, p_1, p_2, p_3, p_1, p_2, \\ldots\\}$, produce $(q_1 = p_1, e_1 = 3), (q_2 = p_2, e_2 = 2), (q_3 = p_3, e_3 = 1)$. In Lean, this uses decidable equality on $K[X]$ (available since $K$ is a field) to check $p' i = p$ in the by_cases. The Fin k-indexed family is built by induction: base (empty) gives a contradiction (f ≠ 0); singleton gives k=1; general case uses Fin.cons to prepend or update. The product identity $\\text{multiset.prod}(f) = \\prod_i p_i^{e_i}$ is maintained throughout.",
+    "significance": "key",
+    "relatedConcepts": ["multiset induction", "Fin-indexed families", "decidable equality", "polynomial grouping"],
+    "prerequisites": ["Lean 4 Multiset API", "Fin type", "Finset.prod", "induction on multisets"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 153, "endLine": 170 },
+    "type": "insight",
+    "title": "monic_factored_form — The Factorization Bridge",
+    "content": "monic_factored_form is the main bridge theorem: any monic polynomial μ of positive degree over a field factors as μ = ∏_i p_i^{e_i} where the p_i are distinct monic irreducibles, the e_i are positive, and the factors p_i^{e_i} are pairwise coprime. The proof composes: (1) monic_irreducible_multiset_factorization → multiset of monic irreducibles; (2) finset_factorization_from_multiset → Fin k-indexed distinct irreducibles; (3) coprime_pow_of_coprime_irreducible via coprime_of_distinct_monic_irreducible for all pairs i ≠ j.",
+    "mathContext": "The factorization $\\mu = \\prod_{i=1}^k p_i^{e_i}$ with $p_i$ distinct monic irreducibles and $\\gcd(p_i^{e_i}, p_j^{e_j}) = 1$ for $i \\neq j$ is the standard primary decomposition form of $\\mu$ over $K[X]$. This is essentially unique (by UFD). The coprimality $\\gcd(p_i^{e_i}, p_j^{e_j}) = 1$ follows from $\\gcd(p_i, p_j) = 1$ (distinct monic irreducibles) via $\\mathrm{IsCoprime}(p,q) \\Rightarrow \\mathrm{IsCoprime}(p^m, q^n)$ for all $m,n \\geq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["primary decomposition", "coprime factorization", "monic polynomials", "UFD", "polynomial factorization"],
+    "prerequisites": ["unique factorization", "coprimality over fields", "primary decomposition theorem"]
+  },
+  {
+    "id": "ann-006",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 189, "endLine": 205 },
+    "type": "insight",
+    "title": "Main Theorem — Cyclic Vector via Primary Decomposition",
+    "content": "nonderogatory_has_cyclic_vector proves that every nonderogatory matrix M over ANY field K has a cyclic vector. The n=0 case is trivial (Fin 0 is empty). For n>0: (1) factor minpoly K M via monic_factored_form; (2) apply GeneralCyclicVector.nonderogatory_general_has_cyclic_vector from WIP04 (the primary decomposition theorem). The finite field case is not special — the proof never uses |K| > n.",
+    "mathContext": "The primary decomposition proof: given $\\mu_M = \\prod_i p_i^{e_i}$ (coprime factors), by CRT the primary subspaces $V_i = \\ker(p_i^{e_i}(M))$ satisfy $K^n = V_1 \\oplus \\cdots \\oplus V_k$. Since $M|_{V_i}$ is nonderogatory with minimal polynomial $p_i^{e_i}$ (a prime power), there exists a primary cyclic vector $v_i \\in V_i$ not annihilated by $p_i^{e_i-1}(M)$. The CRT combination $v = \\sum v_i$ is cyclic: if $r(M)v = 0$ then the Bezout projections give $p_i^{e_i} \\mid r$ for each $i$, hence $\\mu_M \\mid r$ by pairwise coprimality, so $\\deg r \\geq n$ — contradiction. This proof is valid over any field, including finite fields with $|K| \\leq n$.",
+    "significance": "key",
+    "relatedConcepts": ["primary decomposition", "Chinese Remainder Theorem", "Bezout's identity", "cyclic vector", "nonderogatory matrix"],
+    "prerequisites": ["linear algebra", "primary decomposition for modules", "CRT for polynomials", "Bezout's identity"]
+  },
+  {
+    "id": "ann-007",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "range": { "startLine": 211, "endLine": 231 },
+    "type": "context",
+    "title": "Corollaries — Finite Field Case and Characterization",
+    "content": "Two corollaries follow immediately. nonderogatory_has_cyclic_vector_finite (finite field case) is literally the same as the main theorem — the proof works identically over finite fields because it never invokes |K| > n. cyclic_iff_not_killed_below_degree gives an equivalent characterization: v is cyclic iff no nonzero polynomial of degree < n annihilates it via M. This unwraps the IsCyclicVector definition, showing the bidirectional iff.",
+    "mathContext": "The classical infinite-field proof: given a basis $\\{e_1, \\ldots, e_n\\}$, for each $1 \\leq j \\leq n$ the set $H_j = \\{v : e_j^*(v), e_j^*(Mv), \\ldots, e_j^*(M^{n-1}v)$ are linearly dependent$\\}$ is a proper algebraic subvariety. Over an infinite field, $K^n \\setminus \\bigcup_j H_j \\neq \\emptyset$. Over a finite field with $q \\leq n$, some $H_j$ may equal $K^n$, so union avoidance fails. The primary decomposition proof bypasses this entirely.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite fields", "union avoidance", "algebraic varieties", "cyclic characterization"],
+    "prerequisites": ["finite field theory", "algebraic geometry (basic)", "linear algebra over finite fields"]
+  }
+]
