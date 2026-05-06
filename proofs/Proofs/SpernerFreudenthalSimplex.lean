@@ -146,10 +146,14 @@ private lemma perm_preimage_lt_card {n : ℕ} (σ : Perm (Fin (n+1))) (k : Fin (
     exact ne_of_apply_ne σ.symm (fun h => by simp [h] at hi)
   rw [hfilt, hbij]
   rw [Finset.card_image_of_injective _ σ.injective]
-  simp [Finset.card_filter]
-  simp [Finset.card_lt_iff_eq_range]
-  -- {j : Fin(n+1) | j.val < k.val} has cardinality k.val
-  sorry -- standard finset cardinality
+  have heq : Finset.univ.filter (fun j : Fin (n+1) => j.val < k.val) =
+      (Finset.univ (α := Fin k.val)).image (Fin.castLE k.isLt) := by
+    ext j; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
+    constructor
+    · intro hj; exact ⟨⟨j.val, hj⟩, Finset.mem_univ _, rfl⟩
+    · rintro ⟨i, -, rfl⟩; exact i.isLt
+  rw [heq, Finset.card_image_of_injective _ fun a b h => Fin.ext (congrArg Fin.val h)]
+  exact Fintype.card_fin k.val
 
 /-- The sum of all vertex coordinates equals N. -/
 lemma FreudCell.vertCoord_sum {n N : ℕ} (s : FreudCell n N) (k : Fin (n + 1)) :

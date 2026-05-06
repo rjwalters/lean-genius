@@ -29,33 +29,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: axiomCount 2→1; fixed_point_from_approx proved; sperner_near_fixed_point (grid triangulation) remains; boundary_doors_odd is fundamentally broken in SpernerGrid.lean",
+    "progressSummary": "PROGRESS: axiomCount 2\u21921; FreudCell approach broken for n\u22653 (constant-miss gives wrong adjacency); 1 companion sorry fixed; general sperner_panchromatic remains as axiom",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
       "exists_le_of_simplex_map: key coloring well-definedness lemma (proved, 0 sorry)",
       "spernerColor/colorSet: the Sperner coloring construction (proved, 0 sorry)",
-      "spernerColor_in_supp: color lies in support — the Sperner boundary condition (proved)",
+      "spernerColor_in_supp: color lies in support \u2014 the Sperner boundary condition (proved)",
       "spernerColor_ne_of_zero: coloring avoids faces (proved, the key Sperner condition)",
-      "brouwer_fixed_point_simplex: Brouwer for Δⁿ from 2 axioms (proved, 0 sorry)",
-      "fixed_point_from_approx: proved compactness convergence theorem (IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique) in SpernerNDimMathlibOQ02.lean:204-293"
+      "brouwer_fixed_point_simplex: Brouwer for \u0394\u207f from 2 axioms (proved, 0 sorry)",
+      "fixed_point_from_approx: proved compactness convergence theorem (IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique) in SpernerNDimMathlibOQ02.lean:204-293",
+      "Fixed perm_preimage_lt_card sorry: proved |{j<k}|=k.val via Fin.castLE bijection + Fintype.card_fin"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
-      "Sperner boundary condition follows immediately from supp structure: c(v) = min colorSet ⊆ supp(v), so c(v) ≠ j if v_j = 0 (then j ∉ supp(v)).",
-      "Two axioms suffice: (1) grid triangulation + Sperner → near-fixed-point, (2) compactness → convergence to exact fixed point.",
-      "The proof route is fundamentally different from the algebraic topology approach (singular homology) in BrouwerFixedPointOQ01OQ02OQ03.lean — pure combinatorics replaces homology theory.",
+      "Sperner boundary condition follows immediately from supp structure: c(v) = min colorSet \u2286 supp(v), so c(v) \u2260 j if v_j = 0 (then j \u2209 supp(v)).",
+      "Two axioms suffice: (1) grid triangulation + Sperner \u2192 near-fixed-point, (2) compactness \u2192 convergence to exact fixed point.",
+      "The proof route is fundamentally different from the algebraic topology approach (singular homology) in BrouwerFixedPointOQ01OQ02OQ03.lean \u2014 pure combinatorics replaces homology theory.",
       "Lean API: use hf_cont.tendsto x not hf_cont.continuousAt.comp for Filter.Tendsto.comp with continuous function",
       "Lean API: Finset.single_le_sum takes (fun j _ => h j) (Finset.mem_univ i) with no extra _ argument",
-      "Lean API: congr step needs simp [Function.comp, Pi.add_apply, Pi.sub_apply] to unfold function composition before ring"
+      "Lean API: congr step needs simp [Function.comp, Pi.add_apply, Pi.sub_apply] to unfold function composition before ring",
+      "FreudCell constant-miss triangulation is NOT a pseudomanifold for n>=3: face-0 of (base=(0,0,0,4),id,n=3) is geometrically interior but claimed as boundary by the formula",
+      "Cell count formula: C(N,n)*(n+1)! cells total per FreudCell; for n=2,N=3 this is 18 (correct), but face-0 adjacency requires variable-miss steps for n>=3",
+      "n=1 case of sperner_panchromatic directly provable via discrete IVT (~60 lines): c(0)=1, c(N)=0, find last transition"
     ],
     "mathlibGaps": [
-      "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
+      "Grid triangulation of \u0394\u207f as a CellComplex (needed for sperner_near_fixed_point axiom \u2014 significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
       "Prove swapAdj_nodup, swapAdj_prefixSet_eq, swapAdj_ne_self to eliminate OQ-01 axioms (Aristotle candidates)",
-      "Build the grid CellComplex for Δⁿ to eliminate sperner_near_fixed_point axiom",
+      "Build the grid CellComplex for \u0394\u207f to eliminate sperner_near_fixed_point axiom",
       "Use Mathlib compactness infrastructure (IsCompact.tendsto_subseq) to prove fixed_point_from_approx"
     ]
   },

@@ -359,3 +359,60 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
 **Alternative next step**: Submit boundary_doors_odd to Aristotle with the current (wrong) adj setup for async exploration while fixing adj manually.
 
 **Note on SpernerGrid.lean**: boundary_doors_odd there is also sorry'd and marked FALSE for d=1 due to double-counting. FreudCell avoids double-counting (18 cells = N²·n! for n=2,N=3 ✓) but has wrong adj formulas. The fix is purely in the adjacency, not the cell count.
+
+## Session 2026-05-06 (Session 8) — Fundamental n≥3 failure diagnosed; perm_preimage_lt_card fixed
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: 1 sorry eliminated; fundamental blocker for n≥3 identified and rigorously proven
+
+### What I Did
+
+- Fixed `perm_preimage_lt_card` sorry in companion file (1 of 11 sorries eliminated)
+- Rigorously verified the FreudCell constant-miss triangulation is fundamentally broken for n≥3
+- Analyzed the cell count: FreudCell gives C(N,n)×(n+1)! simplices total (correct for n=2, wrong for n=3)
+- Computed concrete counter-example showing face-0 adj=none for geometrically-interior face in n=3
+
+### Key Mathematical Findings
+
+**FUNDAMENTAL FAILURE FOR n≥3**: The constant-miss FreudCell triangulation is not a valid
+pseudomanifold for n≥3. Concretely:
+- Cell (base=(0,0,0,4), σ=id, n=3, N=4): face-0 = {v_1,v_2,v_3} = {(1,0,0,3),(1,1,0,2),(1,1,1,1)}
+- The face is geometrically INTERIOR (v_3=(1,1,1,1) has all positive coordinates)
+- But no other constant-miss FreudCell can share this face (only valid ordering of {v_1,v_2,v_3}
+  with constant miss direction leads back to the same cell with b=v_0)
+- Session 7 formula also gives adj=none here (base[σ(2)=2]=0 < n-2=1)
+- Therefore FreudCell claims an interior face is a boundary face: the Sperner parity argument FAILS
+
+**Why it works for n=2**: For n=2, face-0 adjacent cell has same miss direction (proved by session 7
+concrete verification). The n=2 case is well-defined. But face-0 adjacency for n≥3 requires
+variable-miss adjacent cells, which constant-miss FreudCell cannot represent.
+
+**Cell count analysis** (using formula Σ_{k=n}^{N} C(k+n-1,n-1)):
+- Per permutation: C(N,n) cells. Total: C(N,n)×(n+1)!
+- n=2, N=3: C(3,2)×6=18 ✓ (Euler's formula verified: 6 vertices, 12 edges, 6 triangles for N=2)
+- n=3, N=4: C(4,3)×24=96. But valid Freudenthal triangulation needs more (face-0 adjacencies missing)
+
+**perm_preimage_lt_card fix**: 
+Proved `|{j<k}|=k.val` via:
+```lean
+have heq : ... filter = univ.image (Fin.castLE k.isLt) := ...
+rw [heq, card_image_of_injective _ (fun a b h => Fin.ext (congrArg Fin.val h))]
+exact Fintype.card_fin k.val
+```
+
+**n=1 case is directly provable**: sperner_panchromatic for n=1 follows from discrete IVT (~60 lines):
+- c(0) = 1 (supp={(1)}, f(v)_1 ≤ 1 always), c(N) = 0 (supp={(0)}, f(v)_0 ≤ 1 always)
+- Last k with c(k)=1: c(k+1)=0, giving adjacent pair with all colors, diameter 1/N ≤ 1/N ✓
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (perm_preimage_lt_card sorry fixed)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (updated with n≥3 failure analysis)
+
+### Next Steps
+
+1. **Accept current axiom status**: main file has 1 axiom (sperner_panchromatic), gallery published
+2. **For axiom elimination**: redesign with variable-miss chains (complex, ~400 lines) OR
+3. **Prove n=1 case only** as demonstration (~60 lines, doesn't eliminate general axiom)
+4. Consider whether the overall architecture should be changed (OQ-02 answered modulo Sperner)
+
