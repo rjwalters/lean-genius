@@ -1,0 +1,159 @@
+{
+  "slug": "laws-of-large-numbers-oq-01-oq-02",
+  "title": "What is the LLN rate of convergence for heavy-tailed distributions",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: What is the LLN rate of convergence for heavy-tailed distributions.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-05T02:57:44.817Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Gallery entry created with 0 sorries, 3 axioms. Proves M-Z rate hierarchy for Pareto distributions.",
+    "builtItems": [
+      "LawsOfLargeNumbersOQ01OQ02.lean: 10 theorems, 3 axioms — IsLr hierarchy, M-Z rate theorem, Pareto example, stable CLT axiom"
+    ],
+    "insights": [
+      "Marcinkiewicz-Zygmund SLLN gives rate n^{1/r} for E[|X|^r]<∞ with r∈(1,2) — interpolating between Kolmogorov (r=1) and CLT (r=2)",
+      "For Pareto(α) with α∈(1,2): rate is n^{1/r} for r<α, optimal rate n^{1/α} from stable CLT",
+      "Key Lean insight: Memℒp.mono_exponent provides L^q ⊆ L^p for p≤q in probability spaces"
+    ],
+    "mathlibGaps": [
+      "marcinkiewicz_zygmund_slln: truncation argument using Kolmogorov 3-series not yet in Mathlib 4.26",
+      "pareto_in_lr_iff: improper integral E[X^r] for Pareto(α) not automated in Mathlib 4.26",
+      "stable_clt_attraction: characteristic function approach requires Lévy continuity theorem not formalized"
+    ],
+    "nextSteps": [
+      "Aristotle-submit marcinkiewicz_zygmund_slln (Kolmogorov 3-series + Kronecker lemma approach)"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "laws-of-large-numbers-oq-01",
+    "laws-of-large-numbers-oq-01-oq-01",
+    "laws-of-large-numbers-oq-03",
+    "laws-of-large-numbers-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.816Z",
+  "lastUpdate": "2026-05-05T02:57:44.816Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawsOfLargeNumbers.lean",
+      "filename": "LawsOfLargeNumbers.lean",
+      "lineCount": 397,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbers.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01.lean",
+      "lineCount": 404,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
+      "lineCount": 724,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
+      "filename": "LawsOfLargeNumbersOQ02.lean",
+      "lineCount": 339,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ02.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
+      "filename": "LawsOfLargeNumbersOQ03.lean",
+      "lineCount": 405,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ03Aristotle.lean",
+      "lineCount": 72,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
+      "filename": "LawsOfLargeNumbersOQ04.lean",
+      "lineCount": 209,
+      "theoremCount": 11,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04.lean"
+    }
+  ]
+}

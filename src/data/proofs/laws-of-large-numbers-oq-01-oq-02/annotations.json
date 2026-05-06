@@ -1,0 +1,69 @@
+{
+  "source": "manual",
+  "annotations": [
+    {
+      "id": "intro-rate-question",
+      "type": "insight",
+      "lineStart": 1,
+      "lineEnd": 45,
+      "title": "Why Ask About Rates?",
+      "body": "Kolmogorov's SLLN says the sample mean converges, but says nothing about how fast. For finite-variance distributions, the CLT gives rate 1/√n with a Gaussian limit. For heavy-tailed distributions where E[X²] = ∞ — Pareto(α) with α∈(1,2), Lévy stable laws — the CLT fails. The question 'what IS the rate?' requires a completely different theorem: the Marcinkiewicz-Zygmund SLLN."
+    },
+    {
+      "id": "lr-hierarchy",
+      "type": "definition",
+      "lineStart": 57,
+      "lineEnd": 90,
+      "title": "The Lᵣ Moment Hierarchy",
+      "body": "IsLr X r μ means E[|X|^r] < ∞, captured by Mathlib's Memℒp with ENNReal exponent. The hierarchy L² ⊋ Lʳ (r∈(1,2)) ⊋ L¹ describes a spectrum: L² has 'enough' variance for Gaussian CLT, L¹ has just enough for Kolmogorov, and L^r for r∈(1,2) is the intermediate regime where variance is infinite but the r-th moment provides a convergence rate."
+    },
+    {
+      "id": "mz-rate-exponent",
+      "type": "insight",
+      "lineStart": 98,
+      "lineEnd": 108,
+      "title": "Why 1/r Lives in (1/2, 1)",
+      "body": "For r ∈ (1,2), the rate exponent 1/r lies strictly between 1/2 and 1. This means n^{1/r} lies between n^{1/2} (CLT rate) and n (Kolmogorov scale). The bound n^{-1/r}(Sₙ-nμ) → 0 says deviations grow strictly slower than n but possibly faster than √n. As r→2, the rate approaches √n; as r→1, it approaches n. The M-Z theorem interpolates between CLT and SLLN."
+    },
+    {
+      "id": "mz-axiom-proof-sketch",
+      "type": "proof-strategy",
+      "lineStart": 113,
+      "lineEnd": 150,
+      "title": "Why M-Z Isn't in Mathlib Yet",
+      "body": "The Marcinkiewicz-Zygmund proof uses a truncation argument: split Xₖ into a truncated part |Xₖ| ≤ n^{1/r} and a tail part |Xₖ| > n^{1/r}. The truncated part is handled by Kolmogorov's 3-series theorem (which IS in Mathlib via Probability.StrongLaw). The tail part vanishes because E[|X|^r] < ∞ implies Σₙ P(|X| > n^{1/r}) < ∞ (a series bound). The full argument requires careful API navigation through Mathlib's probability infrastructure."
+    },
+    {
+      "id": "mz-implies-kolmogorov",
+      "type": "insight",
+      "lineStart": 163,
+      "lineEnd": 180,
+      "title": "M-Z Strictly Implies Kolmogorov",
+      "body": "Since r > 1 implies E[|X|^r] < ∞ → E[|X|] < ∞ (by lr_implies_integrable), any distribution satisfying M-Z conditions also satisfies Kolmogorov's SLLN. The proof here directly invokes the parent theorem slln_under_finite_mean_only rather than deriving SLLN from M-Z — the two routes are equivalent but the direct route is simpler."
+    },
+    {
+      "id": "pareto-definition",
+      "type": "definition",
+      "lineStart": 218,
+      "lineEnd": 240,
+      "title": "Pareto Distribution as Survival Function",
+      "body": "The Pareto(α) distribution with scale x_m=1 is characterized by its survival function P(X > x) = x^{-α} for x ≥ 1. This is the simplest way to define a distribution in Lean 4 measure theory: rather than defining a density or CDF, we specify μ{ω | X ω > s} = paretoSurvival α s. This tail characterization is also the most direct for computing moments via the layer-cake formula E[X^r] = r·∫_0^∞ P(X>x^{1/r}) dx."
+    },
+    {
+      "id": "pareto-moment-condition",
+      "type": "proof-strategy",
+      "lineStart": 242,
+      "lineEnd": 265,
+      "title": "Why Pareto(α)^r Integrates iff r < α",
+      "body": "For Pareto(α) with x_m=1: E[X^r] = ∫_1^∞ α·x^{r-α-1} dx = [α·x^{r-α}/(r-α)]_1^∞. When r < α: x^{r-α} → 0 as x → ∞, so the integral converges to α/(α-r). When r ≥ α: x^{r-α} → ∞ or is constant (r=α), so the integral diverges. This is a standard improper integral calculation that requires the Fundamental Theorem of Calculus for improper integrals — routine analysis but not automated in Mathlib 4.26."
+    },
+    {
+      "id": "rate-hierarchy-summary",
+      "type": "insight",
+      "lineStart": 305,
+      "lineEnd": 344,
+      "title": "The Complete Picture for Pareto(α), α∈(1,2)",
+      "body": "The pareto_complete_rate_hierarchy theorem crystallizes the full answer: (1) finite mean — SLLN applies; (2) infinite variance — Gaussian CLT fails; (3) Kolmogorov convergence; (4) M-Z rates n^{1/r} for r < α approaching the sharp rate n^{1/α} from the stable CLT. This is the canonical example of a distribution where the heavy tail fundamentally changes the convergence behavior: slower rate, non-Gaussian limit, but still convergent. The threshold is exactly α = 2 (finite/infinite variance boundary)."
+    }
+  ]
+}

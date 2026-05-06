@@ -1,0 +1,106 @@
+{
+  "id": "laws-of-large-numbers-oq-01-oq-02",
+  "title": "SLLN Rate of Convergence for Heavy-Tailed Distributions",
+  "slug": "laws-of-large-numbers-oq-01-oq-02",
+  "description": "What is the rate of convergence of the sample mean for heavy-tailed distributions where E[X²] = ∞? The Marcinkiewicz-Zygmund SLLN (1937) answers this: for i.i.d. X with E[|X|^r] < ∞ (r ∈ (1,2)), the centered partial sums normalized by n^{1/r} converge to 0 a.s. For Pareto(α) with α ∈ (1,2): the optimal rate is n^{1/α} — slower than the Gaussian CLT rate n^{1/2}, but characterizing the α-stable heavy-tail regime.",
+  "meta": {
+    "author": "Marcinkiewicz & Zygmund (1937)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Law_of_large_numbers#Marcinkiewicz%E2%80%93Zygmund_strong_law_of_large_numbers",
+    "date": "1937",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ01OQ02.lean",
+    "tags": [
+      "probability",
+      "statistics",
+      "law-of-large-numbers",
+      "heavy-tails",
+      "convergence-rates",
+      "stable-distributions",
+      "pareto-distribution",
+      "measure-theory",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "theoremCount": 10,
+    "lineCount": 344,
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.strong_law_ae",
+        "description": "Kolmogorov's SLLN: for i.i.d. integrable X_i, sample mean converges a.s.",
+        "module": "Mathlib.Probability.StrongLaw"
+      },
+      {
+        "theorem": "MeasureTheory.Memℒp.mono_exponent",
+        "description": "In a probability space: L^q ⊆ L^p when p ≤ q",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "MeasureTheory.Memℒp.integrable",
+        "description": "L^p membership with p ≥ 1 implies L^1 integrability",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "Real.rpow_lt_rpow_of_exponent_lt",
+        "description": "For base x > 1: x^y < x^z iff y < z (monotonicity of rpow)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Axiom marcinkiewicz_zygmund_slln: M-Z SLLN for r∈(1,2): n^{-1/r}·(Sₙ−nμ) → 0 a.s. — quantitative rate theorem not in Mathlib 4.26",
+      "Axiom pareto_in_lr_iff: E[Pareto(α)^r] < ∞ ↔ r < α — standard improper integral computation",
+      "Axiom stable_clt_attraction: Pareto(α) sums at rate n^{1/α} — stable CLT, requires characteristic function theory",
+      "Theorem mz_exponent_bounds: the M-Z rate 1/r lies strictly in (1/2, 1) for r∈(1,2)",
+      "Theorem mz_implies_slln: M-Z conditions (L^r, r>1) imply Kolmogorov conditions (L^1)",
+      "Theorem higher_moment_tighter_rate: L^{r₂} ⊆ L^{r₁} for r₁ ≤ r₂ (probability space)",
+      "Theorem rate_normalization_ordering: n^{1/r₂} < n^{1/r₁} for r₁ < r₂ and n > 1",
+      "Theorem pareto_finite_mean: Pareto(α) integrable for α > 1",
+      "Theorem pareto_not_l2: Pareto(α) not in L² for α ≤ 2 (infinite variance)",
+      "Theorem pareto_complete_rate_hierarchy: 4-part theorem giving finite mean, infinite variance, SLLN, and M-Z rates for Pareto(α) with α∈(1,2)"
+    ],
+    "dateAdded": "2026-05-06",
+    "assumptions": "3 axioms: marcinkiewicz_zygmund_slln (truncation argument, Feller Vol.II Thm IX.4.1), pareto_in_lr_iff (improper integral computation), stable_clt_attraction (characteristic function/stable law theory). All other results proved from Mathlib + these axioms.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "abstract": "Formalizes the Marcinkiewicz-Zygmund (1937) rate theorem for the strong law of large numbers under finite r-th moment conditions (r ∈ (1,2)). Establishes the rate hierarchy: L²-distributions converge at the CLT rate n^{1/2} (Gaussian limit), L^r-distributions with r∈(1,2) converge at rate n^{1/r} (α-stable limit), and L¹-distributions converge at Kolmogorov rate n^1 (point mass limit). Applied to Pareto(α) with α∈(1,2) to give the complete convergence picture.",
+    "mathematicalContent": "The Marcinkiewicz-Zygmund theorem quantifies the convergence rate of sample means for heavy-tailed distributions. The key insight is that finite r-th moment (1 < r < 2) forces the centered partial sums to be o(n^{1/r}), a strictly tighter bound than Kolmogorov's o(n) but weaker than CLT's O(√n). For Pareto(α) distributions, the optimal exponent is exactly α, realized by the stable CLT.",
+    "sections": [
+      {
+        "title": "Section I: Lᵣ Moment Conditions",
+        "description": "Defines IsLr using Memℒp, proves L² ⊆ Lʳ for r ≤ 2 and Lʳ ⊆ L¹ for r ≥ 1 in probability spaces."
+      },
+      {
+        "title": "Section II: Marcinkiewicz-Zygmund SLLN",
+        "description": "States the M-Z rate theorem as an axiom: n^{-1/r}·(Sₙ−nμ) → 0 a.s. for i.i.d. X with E[|X|^r] < ∞, r∈(1,2)."
+      },
+      {
+        "title": "Section III: Rate Consequences",
+        "description": "Proves M-Z implies Kolmogorov SLLN; proves higher moments give tighter normalization bounds; proves ordering n^{1/r₂} < n^{1/r₁} for r₁ < r₂."
+      },
+      {
+        "title": "Section IV: Pareto Example",
+        "description": "Defines paretoSurvival, states pareto_in_lr_iff axiom, proves finite mean, infinite variance, and M-Z applicability for Pareto(α) with α∈(1,2)."
+      },
+      {
+        "title": "Section V: Stable CLT Connection",
+        "description": "States the α-stable CLT for Pareto(α) as an axiom: the exact rate is n^{1/α} and the limit is an α-stable distribution."
+      },
+      {
+        "title": "Section VI: Complete Rate Hierarchy",
+        "description": "Consolidates all results as pareto_complete_rate_hierarchy: finite mean, infinite variance, SLLN, and M-Z rates for Pareto(α) with α∈(1,2)."
+      }
+    ],
+    "openQuestions": [
+      {
+        "title": "Prove marcinkiewicz_zygmund_slln in Lean",
+        "description": "The truncation argument requires Kolmogorov's 3-series theorem and Kronecker's lemma — both potentially in Mathlib but requiring careful API navigation"
+      },
+      {
+        "title": "Distributional limit for stable CLT",
+        "description": "State and prove convergence in distribution to an α-stable law, requiring formalization of characteristic functions and Lévy's continuity theorem"
+      }
+    ]
+  }
+}
