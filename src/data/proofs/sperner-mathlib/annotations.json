@@ -1,92 +1,170 @@
 [
   {
     "id": "ann-fpf-invol",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "even_card_fpf_invol",
     "title": "Fixed-Point-Free Involution Has Even Cardinality",
-    "body": "A fixed-point-free involution f on a finset S has even cardinality. The proof proceeds by strong induction: pick any x ∈ S, let y = f(x) ≠ x, remove both to get S' ⊂ S, apply the inductive hypothesis to S', and recover S.card = S'.card + 2.",
-    "location": { "line": 59 },
-    "tags": ["combinatorics", "involution", "parity", "induction"]
+    "content": "A fixed-point-free involution f on a finset S has even cardinality. The proof proceeds by strong induction on S: pick any x ∈ S, let y = f(x) ≠ x, remove both to obtain S' ⊂ S, apply the inductive hypothesis to S' (inheriting the involution axioms), and recover S.card = S'.card + 2.",
+    "range": { "startLine": 59, "endLine": 103 },
+    "mathContext": "If $f : S \\to S$ satisfies $f(f(x)) = x$ and $f(x) \\neq x$ for all $x \\in S$, then $|S| \\in 2\\mathbb{Z}$. The proof exhibits the pairing $\\{x, f(x)\\}$ by strong induction, removing one matched pair at each step: $|S| = |S \\setminus \\{x, f(x)\\}| + 2$.",
+    "significance": "key",
+    "relatedConcepts": ["involution", "parity argument", "Tucker's lemma", "Borsuk-Ulam theorem"],
+    "prerequisites": ["Finset.strongInduction", "Finset.card_erase_of_mem"]
   },
   {
     "id": "ann-sum-one",
+    "proofId": "sperner-mathlib",
     "type": "lemma",
-    "label": "exists_of_sum_eq_one",
     "title": "Sum-to-One Has a Unique Unit Element",
-    "body": "If nonneg naturals indexed by a finset sum to 1, exactly one element equals 1 and all others are 0. Used in the pigeonhole argument for surjective colorings.",
-    "location": { "line": 127 },
-    "tags": ["combinatorics", "pigeonhole"]
+    "content": "If nonneg naturals indexed by a finset sum to 1, exactly one element equals 1 and all others are 0. Used in the pigeonhole argument for surjective colorings: the excess-over-1 sum equals 1, so exactly one fiber has one extra element.",
+    "range": { "startLine": 127, "endLine": 143 },
+    "mathContext": "If $f : \\iota \\to \\mathbb{N}$ satisfies $\\sum_{i \\in S} f(i) = 1$, then $\\exists! a \\in S$ with $f(a) = 1$ and $f(b) = 0$ for all $b \\neq a$. This is the discrete analogue of: a nonneg measure on a finite set with total mass 1 that takes only values 0 and 1 concentrates at a unique atom.",
+    "significance": "supporting",
+    "relatedConcepts": ["pigeonhole principle", "fiber cardinality", "Finset.single_le_sum"],
+    "prerequisites": ["Finset.sum_eq_zero", "Nat.eq_zero_of_le_zero", "Finset.add_sum_erase"]
   },
   {
     "id": "ann-door-parity",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "door_count_parity",
     "title": "Door Count Parity Equals Surjectivity",
-    "body": "For a coloring f : Fin(d+1) → Fin(d+1), the number of 'door positions' k such that removing k still covers all other colors has the same parity as the surjectivity indicator (1 if f is surjective, 0 otherwise). The proof considers three cases: f not surjective (0 doors), f surjective with an identity-like structure (1 door = odd), and f surjective in general (pigeonhole gives exactly 2 preimage points for one color, yielding even door count).",
-    "location": { "line": 0 },
-    "tags": ["combinatorics", "door", "surjection", "parity"]
+    "content": "For a coloring f : Fin(d+1) → Fin(d+1), the number of 'door positions' k such that removing k still covers all lower colors has parity equal to the surjectivity indicator (1 if surjective, 0 otherwise). Three cases: (1) f non-surjective → 0 doors; (2) f a bijection → 1 door (preimage of color d); (3) f surjective onto Fin(d) → exactly 2 doors (the doubled fiber). This section contains both the supporting private lemmas and the main public theorem.",
+    "range": { "startLine": 113, "endLine": 331 },
+    "mathContext": "Define $D(f) = \\{k \\in \\mathrm{Fin}(d+1) : \\forall j < d,\\ \\exists i \\neq k,\\ f(i) = j\\}$. Then $|D(f)| \\equiv \\mathbf{1}[f \\text{ surjective}] \\pmod{2}$. When $f : \\mathrm{Fin}(d+1) \\to \\mathrm{Fin}(d+1)$ is bijective, $D(f) = \\{f^{-1}(d)\\}$. When $f$ maps onto $\\mathrm{Fin}(d)$ with a doubled fiber $c_0$, $D(f) = \\{k_1, k_2\\}$ where $f(k_1) = f(k_2) = c_0$. Otherwise $|D(f)| = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["surjection", "fiber cardinality", "pigeonhole principle", "Finset.card_eq_two"],
+    "prerequisites": ["Finite.injective_iff_surjective", "surjection_unique_dup_fiber", "door_filter_empty_of_missing_color"]
+  },
+  {
+    "id": "ann-key-defs",
+    "proofId": "sperner-mathlib",
+    "type": "definition",
+    "title": "Core Definitions: Panchromatic Cells and Doors",
+    "content": "IsPanchromatic captures cells whose vertex coloring uses all d+1 colors (surjectivity of c ∘ vertex s). IsDoor captures facets (s, k) where the d remaining vertices (excluding face k) cover all lower d colors. Both admit Decidable instances via inferInstance, enabling Finset.filter to compute these sets for any concrete cell complex.",
+    "range": { "startLine": 342, "endLine": 366 },
+    "mathContext": "A cell $s$ is *panchromatic* if $c \\circ \\mathrm{vertex}_s : \\mathrm{Fin}(d+1) \\to \\mathrm{Fin}(d+1)$ is surjective. A facet $(s,k)$ is a *door* if $\\forall j : \\mathrm{Fin}(d),\\ \\exists i \\neq k,\\ c(\\mathrm{vertex}_s(i)) = j.\\mathrm{castSucc}$. The door condition is: removing face $k$ from $s$ leaves the remaining $d$ vertices carrying all colors $\\{0,\\ldots,d-1\\}$ (the lower half of the color set).",
+    "significance": "key",
+    "relatedConcepts": ["panchromatic simplex", "rainbow coloring", "Sperner face", "Fin.castSucc"],
+    "prerequisites": ["Function.Surjective", "Fin type", "Decidable typeclass"]
   },
   {
     "id": "ann-isdoor-adj",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "isDoor_iff_of_adj",
     "title": "Door Symmetry via Adjacency",
-    "body": "If cells s and s' are adjacent through faces k and k' respectively, sharing all vertices except the k-th of s and k'-th of s', then (s, k) is a door if and only if (s', k') is a door. This is the key symmetry that pairs interior doors.",
-    "location": { "line": 0 },
-    "tags": ["adjacency", "door", "symmetry"]
+    "content": "isDoor_of_shared_face shows the door property transfers across any shared-face relationship: if the non-k vertices of s and the non-k' vertices of s' have the same image under the coloring, then (s,k) is a door iff (s',k') is. isDoor_iff_of_adj specializes this to the adjacency axiom hadj_vertex, giving the iff version used to verify the pairing involution.",
+    "range": { "startLine": 379, "endLine": 408 },
+    "mathContext": "If $(\\mathrm{univ} \\setminus \\{k\\}).\\mathrm{image}(\\mathrm{vertex}_s) = (\\mathrm{univ} \\setminus \\{k'\\}).\\mathrm{image}(\\mathrm{vertex}_{s'})$, then $\\mathrm{IsDoor}(s,k) \\iff \\mathrm{IsDoor}(s',k')$. The proof is elementary: a witness $i \\neq k$ with $c(\\mathrm{vertex}_s(i)) = j$ maps to a witness $i' \\neq k'$ with $c(\\mathrm{vertex}_{s'}(i')) = j$ via the shared image hypothesis.",
+    "significance": "key",
+    "relatedConcepts": ["shared face", "adjacency involution", "Finset.image", "Finset.erase"],
+    "prerequisites": ["hadj_vertex axiom", "Finset.mem_image", "Finset.mem_erase"]
   },
   {
     "id": "ann-interior-even",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "even_card_interior_doors",
     "title": "Interior Doors Come in Pairs",
-    "body": "The total count of interior doors (where the adjacent face exists) is even. The proof applies even_card_fpf_invol to the pairing map (s, k) ↦ adj(s, k) on interior doors, using isDoor_iff_of_adj to show the image is always a door and the involution has no fixed points.",
-    "location": { "line": 0 },
-    "tags": ["parity", "interior", "door", "involution"]
+    "content": "The set of interior doors IntDoors = {(s,k) : IsDoor(s,k) ∧ adj(s,k) ≠ none} has even cardinality. The proof applies even_card_fpf_invol to the pairing map (s,k) ↦ adj(s,k): isDoor_iff_of_adj shows the image is always a door, the adjacency symmetry axiom provides the involution property, and no-self-adjacency gives the fixed-point-free condition.",
+    "range": { "startLine": 423, "endLine": 465 },
+    "mathContext": "The map $(s,k) \\mapsto (s',k') = \\mathrm{adj}(s,k)$ is a fixed-point-free involution on $\\mathrm{IntDoors}$: it satisfies $\\mathrm{adj}(s',k') = (s,k)$ (symmetry axiom) and $s \\neq s'$ (no-self-adjacency), hence $(s',k') \\neq (s,k)$. By `even_card_fpf_invol`, $|\\mathrm{IntDoors}|$ is even.",
+    "significance": "key",
+    "relatedConcepts": ["even_card_fpf_invol", "adjMap", "adjacency symmetry", "fixed-point-free"],
+    "prerequisites": ["even_card_fpf_invol", "adjMap definition", "isDoor_iff_of_adj", "adjacency axioms"]
+  },
+  {
+    "id": "ann-per-cell",
+    "proofId": "sperner-mathlib",
+    "type": "lemma",
+    "title": "Per-Cell Parity and Modular Sum",
+    "content": "per_cell_door_parity reduces each cell's door count parity to its panchromaticity indicator by applying door_count_parity to the composed coloring c ∘ vertex s. sum_mod_congr provides the algebraic glue: if two sequences agree mod 2 pointwise over a finset, their sums agree mod 2. Together these two lemmas enable the key summation step in sperner_parity.",
+    "range": { "startLine": 467, "endLine": 500 },
+    "mathContext": "For each cell $s$: $|\\{k : \\mathrm{IsDoor}(s,k)\\}| \\equiv \\mathbf{1}[\\mathrm{IsPanchromatic}(s)] \\pmod{2}$ (from `door_count_parity` applied to $c \\circ \\mathrm{vertex}_s$). Then by `sum_mod_congr`: $\\sum_s |\\{k : \\mathrm{IsDoor}(s,k)\\}| \\equiv \\sum_s \\mathbf{1}[\\mathrm{IsPanchromatic}(s)] = |\\{\\text{panchromatic cells}\\}| \\pmod{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["door_count_parity", "modular arithmetic", "Finset.sum", "function composition"],
+    "prerequisites": ["door_count_parity", "IsPanchromatic", "Nat.even_iff"]
+  },
+  {
+    "id": "ann-partition",
+    "proofId": "sperner-mathlib",
+    "type": "lemma",
+    "title": "Door Partitioning: Interior and Boundary",
+    "content": "card_doors_eq_sum rewrites the global door count as a Fubini-style sum over cells (from product-type indicator sums). doors_partition then splits total doors into interior (adj ≠ none) and boundary (adj = none) parts via a disjoint union. These two bookkeeping lemmas enable the final calc chain in sperner_parity.",
+    "range": { "startLine": 502, "endLine": 553 },
+    "mathContext": "$|\\{(s,k) : \\mathrm{IsDoor}(s,k)\\}| = \\sum_s |\\{k : \\mathrm{IsDoor}(s,k)\\}|$ (from `Fintype.sum_prod_type'`). Then $|\\mathrm{AllDoors}| = |\\mathrm{IntDoors}| + |\\mathrm{BdryDoors}|$ since $\\mathrm{adj}(s,k) = \\mathtt{none}$ or $\\neq \\mathtt{none}$ partitions all door pairs.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fubini for finite sums", "disjoint union", "Finset.card_union_of_disjoint", "Fintype.sum_prod_type'"],
+    "prerequisites": ["Fintype.sum_prod_type'", "Finset.card_union_of_disjoint", "Finset.disjoint_left"]
   },
   {
     "id": "ann-sperner-parity",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "sperner_parity",
     "title": "Sperner Parity: Panchromatic Count ≡ Boundary Door Count (mod 2)",
-    "body": "The number of panchromatic cells is congruent to the number of boundary doors modulo 2. The proof sums door counts across all cells: interior doors cancel in pairs, and each panchromatic cell contributes an odd number of doors (via door_count_parity), while non-panchromatic cells contribute an even number.",
-    "location": { "line": 0 },
-    "tags": ["sperner", "parity", "panchromatic", "door-counting"]
+    "content": "The number of panchromatic cells is congruent to the number of boundary doors modulo 2. The proof is a calc chain: panchromatic count → sum of indicators → sum of per-cell door counts (via per_cell_door_parity + sum_mod_congr) → total door count (via card_doors_eq_sum) → interior + boundary (via doors_partition) → boundary alone (since interior count 2m is even).",
+    "range": { "startLine": 556, "endLine": 608 },
+    "mathContext": "$|\\{s : \\mathrm{IsPanchromatic}(s)\\}| \\equiv |\\{(s,k) : \\mathrm{IsDoor}(s,k) \\wedge \\mathrm{adj}(s,k)=\\mathtt{none}\\}| \\pmod{2}$. The key step: the interior door count is $2m$ for some $m$ (by `even_card_interior_doors`), so $(2m + |\\mathrm{BdryDoors}|) \\equiv |\\mathrm{BdryDoors}| \\pmod 2$.",
+    "significance": "critical",
+    "relatedConcepts": ["double counting", "Euler characteristic parity", "door partitioning", "even_card_interior_doors"],
+    "prerequisites": ["per_cell_door_parity", "sum_mod_congr", "card_doors_eq_sum", "doors_partition", "even_card_interior_doors"]
   },
   {
     "id": "ann-exists-panchromatic",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "exists_panchromatic",
     "title": "Odd Boundary Doors Imply a Panchromatic Cell",
-    "body": "If the number of boundary doors is odd, then at least one panchromatic cell exists. This is the main existential form of Sperner's lemma, following immediately from sperner_parity: if boundary doors are odd and panchromatic count ≡ boundary doors (mod 2), then panchromatic count is odd, hence positive.",
-    "location": { "line": 0 },
-    "tags": ["sperner", "existence", "panchromatic"]
+    "content": "If the number of boundary doors is odd, then at least one panchromatic cell exists. This is the main existential form of Sperner's lemma: sperner_parity gives panchromatic count ≡ boundary doors (mod 2); since boundary doors are odd, panchromatic count is odd; odd natural numbers are positive; positive Finset.card implies nonempty.",
+    "range": { "startLine": 611, "endLine": 634 },
+    "mathContext": "$\\text{Odd}\\,|\\mathrm{BdryDoors}|$ $\\xRightarrow{\\text{sperner\\_parity}}$ $\\text{Odd}\\,|\\{s : \\text{IsPanchromatic}(s)\\}|$ $\\Rightarrow$ $|\\{s : \\text{IsPanchromatic}(s)\\}| > 0$ $\\Rightarrow$ $\\exists s,\\, \\text{IsPanchromatic}(s)$. This deduction chain completes the combinatorial proof of Sperner's lemma.",
+    "significance": "critical",
+    "relatedConcepts": ["Sperner's lemma", "Brouwer's fixed-point theorem", "KKM theorem", "existence from odd count"],
+    "prerequisites": ["sperner_parity", "Nat.odd_iff", "Finset.card_pos", "Finset.nonempty"]
+  },
+  {
+    "id": "ann-sperner-def",
+    "proofId": "sperner-mathlib",
+    "type": "definition",
+    "title": "Sperner Coloring: Abstract Boundary Condition",
+    "content": "IsSpernerColoring abstracts the classical condition that a boundary vertex on face k cannot receive color k. The face predicate onFace : V → Fin(n+1) → Prop is left abstract, with the hBoundaryOnFace hypothesis connecting combinatorial boundary (adj = none) to face membership. This decouples the Sperner boundary condition from any specific geometric realization, making the result applicable to any cell complex satisfying the axioms.",
+    "range": { "startLine": 644, "endLine": 666 },
+    "mathContext": "A coloring $c : V \\to \\mathrm{Fin}(n+1)$ is a *Sperner coloring* relative to $\\mathrm{onFace} : V \\times \\mathrm{Fin}(n+1) \\to \\mathrm{Prop}$ if: $\\forall v, k,\\; \\mathrm{onFace}(v, k) \\implies c(v) \\neq k$. In the classical simplex, $\\mathrm{onFace}(v, k) \\equiv v$ lies on face $k$ (the face opposite vertex $k$), so boundary vertices avoid the color of their containing face.",
+    "significance": "supporting",
+    "relatedConcepts": ["Sperner's original coloring", "simplex boundary", "forbidden coloring", "face predicate"],
+    "prerequisites": ["abstract cell complex axioms", "hBoundaryOnFace hypothesis"]
   },
   {
     "id": "ann-sperner-coloring",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "boundary_doors_on_last_face",
     "title": "Sperner Coloring: Boundary Doors on the Last Face",
-    "body": "With a Sperner coloring—where each boundary vertex is labeled by a color not equal to the face it's missing—every boundary door occurs at the last face position. This geometric constraint is what makes the boundary door count checkable from the simplex boundary alone.",
-    "location": { "line": 0 },
-    "tags": ["sperner-coloring", "boundary", "geometric"]
+    "content": "With a Sperner coloring, every boundary door (s,k) must have k = n (the last face index). The proof by contradiction: if k = faceIdx < n is a lower face, the door condition requires some vertex with color faceIdx, but the Sperner condition forbids vertices of face faceIdx from having that color—a contradiction. Only faceIdx = n avoids this clash.",
+    "range": { "startLine": 667, "endLine": 696 },
+    "mathContext": "Suppose $(s,k)$ is a boundary door with $\\mathrm{adj}(s,k) = \\mathtt{none}$. The `hBoundaryOnFace` hypothesis gives some $\\mathrm{faceIdx}$ such that all non-$k$ vertices of $s$ lie on face $\\mathrm{faceIdx}$. If $\\mathrm{faceIdx} < n$: the door condition gives $i \\neq k$ with $c(\\mathrm{vertex}_s(i)) = \\mathrm{faceIdx}$, but $\\mathrm{onFace}(\\mathrm{vertex}_s(i), \\mathrm{faceIdx})$ and the Sperner condition give $c(\\mathrm{vertex}_s(i)) \\neq \\mathrm{faceIdx}$—contradiction. So $\\mathrm{faceIdx} = n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["last face", "Sperner condition", "boundary reduction", "face index"],
+    "prerequisites": ["IsSpernerColoring", "IsDoor", "hBoundaryOnFace", "Fin.castSucc"]
   },
   {
     "id": "ann-boundary-odd",
+    "proofId": "sperner-mathlib",
     "type": "theorem",
-    "label": "boundary_doors_odd_of_last_face",
     "title": "Sperner Coloring Gives Odd Boundary Door Count",
-    "body": "Under a Sperner coloring, the count of boundary doors is odd. Combined with boundary_doors_on_last_face and exists_panchromatic, this completes the proof that every Sperner-colored triangulation contains a panchromatic cell.",
-    "location": { "line": 0 },
-    "tags": ["sperner-coloring", "boundary", "odd"]
+    "content": "boundary_doors_odd_of_last_face shows the full boundary door count is odd given that the last-face boundary doors are odd. The proof is purely set-theoretic: since all boundary doors lie on the last face (by boundary_doors_on_last_face), the filter conditions coincide and the two filtered sets are equal. The 1-dimensional example in IntervalExample provides a concrete instance where the boundary consists of exactly one door.",
+    "range": { "startLine": 703, "endLine": 739 },
+    "mathContext": "$|\\{(s,k) : \\mathrm{IsDoor}(s,k) \\wedge \\mathrm{adj}(s,k)=\\mathtt{none}\\}| = |\\{(s,k) : \\mathrm{IsDoor}(s,k) \\wedge \\mathrm{adj}(s,k)=\\mathtt{none} \\wedge \\forall j \\neq k,\\, \\mathrm{onFace}(\\mathrm{vertex}_s(j), n)\\}|$ because the extra condition is always satisfied by `boundary_doors_on_last_face`. So the `hLastFace` oddness hypothesis transfers directly.",
+    "significance": "supporting",
+    "relatedConcepts": ["boundary_doors_on_last_face", "exists_panchromatic", "Sperner's theorem"],
+    "prerequisites": ["boundary_doors_on_last_face", "IsSpernerColoring", "Nat.Odd"]
   },
   {
     "id": "ann-interval-example",
-    "type": "note",
-    "label": "IntervalExample",
+    "proofId": "sperner-mathlib",
+    "type": "concept",
     "title": "Concrete 1-Dimensional Verification",
-    "body": "The IntervalExample section instantiates the abstract cell complex with intervals [i, i+1] for i < m, faces indexed by Fin 2 (endpoints), and adjacency connecting consecutive segments. An example theorem shows exists_panchromatic applies when boundary colorings differ—concretely illustrating that the abstract axioms are satisfiable and the theorem is nontrivial.",
-    "location": { "line": 883 },
-    "tags": ["example", "interval", "1-dimensional"]
+    "content": "The IntervalExample section instantiates the abstract cell complex with intervals [i, i+1] for i < m, faces indexed by Fin 2 (endpoints), and adjacency connecting consecutive segments. Supporting lemmas iadj_symm, iadj_ne, and iadj_vertex verify the three axioms. The final example theorem confirms exists_panchromatic applies when boundary colorings differ—concretely illustrating that the abstract axioms are satisfiable and the theorem is nontrivial.",
+    "range": { "startLine": 751, "endLine": 897 },
+    "mathContext": "Cells: $\\mathrm{Fin}(m)$ (segment $i$ represents $[i, i+1]$). Vertices: $\\mathbb{N}$ with $\\mathrm{ivtx}(i,0)=i$ and $\\mathrm{ivtx}(i,1)=i+1$. Adjacency: $\\mathrm{iadj}(i,0)=(i+1,1)$ if $i+1<m$, $\\mathrm{iadj}(i,1)=(i-1,0)$ if $i>0$, else $\\mathtt{none}$. A coloring $c:\\mathbb{N}\\to\\mathrm{Fin}(2)$ with $c(0)\\neq c(m)$ has at least one panchromatic segment, recovering the discrete intermediate value theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["interval subdivision", "discrete IVT", "intermediate value theorem", "1-dimensional Sperner"],
+    "prerequisites": ["ivtx definition", "iadj definition", "exists_panchromatic"]
   }
 ]
