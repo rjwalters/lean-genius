@@ -570,6 +570,7 @@ import Proofs.ETranscendentalOQ03
 import Proofs.EhrhartCubeProven
 import Proofs.EhrhartPolynomialOQ03
 import Proofs.EhrhartPolynomials
+import Proofs.EhrhartSimplexProven
 import Proofs.ElementaryQuadraticReciprocity
 import Proofs.ElementaryQuadraticReciprocityOQ01
 import Proofs.ElementaryQuadraticReciprocityOQ01OQ01
