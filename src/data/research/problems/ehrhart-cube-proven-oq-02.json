@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-05-06): algebraic proof framework complete. crossEhrhart_expand (Pascal) + crossEhrhart_succ_d (geometric recursion) + sum_choose_range (hockey-stick) all proved. PR #16339 pending build.",
+    "progressSummary": "PROGRESS (2026-05-07): crossEhrhart_is_poly proved. 1 sorry remains (crossBall_card succ \u2014 Finset slicing). 11 algebraic/combinatorial theorems + 5 private lemmas.",
     "builtItems": [
       "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:131",
       "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:143",
@@ -38,7 +38,12 @@
       "crossEhrhart_d0/d1/n0: base cases at EhrhartCrossPolytope.lean:64-83",
       "crossEhrhart_pos/mono: structural properties",
       "crossEhrhart_d2: proved via induction using recursion (after succ_d)",
-      "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:257"
+      "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:257",
+      "fallBinomPoly k: private polynomial evaluating to C(n,k) [EhrhartCrossPolytope.lean:245]",
+      "prod_range_sub_eq_descFact: prod_{i<k}(n-i:Q) = descFactorial n k for k<=n [line:249]",
+      "fallBinomPoly_eval: (fallBinomPoly k).eval n = C(n,k) for all n:N [line:261]",
+      "fallBinomPoly_natDegree_le: natDegree(fallBinomPoly k) <= k [line:276]",
+      "crossEhrhart_is_poly: PROVED \u2014 explicit polynomial Sigma_{k<=d} C(2^k*C(d,k)) * fallBinomPoly k"
     ],
     "insights": [
       "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*\u03a3 C(d,k+1)C(n,k+1) = \u03a3 C(d,k)C(n,k)",
@@ -48,16 +53,19 @@
       "Key identity in proof: \u03a3 2^k C(d,k) C(n,k) = 1 + 2*\u03a3 2^k C(d,k+1) C(n,k+1) \u2014 proved by extracting k=0 via sum_range_succ then dropping d+1 term (C(d,d+1)=0)",
       "Lean 4.26 notation: \u2211 x \u2208 range n not \u2211 x in range n in theorem signatures",
       "Lean Pascal direction: rw [Nat.choose_succ_succ] not \u2190 to go C(d+1,k+1) \u2192 C(d,k)+C(d,k+1)",
-      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)"
+      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)",
+      "crossEhrhart_is_poly proved via explicit falling binomial polynomial construction",
+      "fallBinomPoly k = (1/k!) * prod_{i<k} (X - C i) evaluates to C(n,k) at all n : N",
+      "Case split: n>=k uses Nat.descFactorial_eq_prod_range + descFactorial_eq_factorial_mul_choose; n<k uses factor (n-n)=0",
+      "sum_le_sum + simp[sum_const, card_range] closes degree bound; k * 1 = k via nsmul_one"
     ],
     "mathlibGaps": [
       "No lemma for eval of falling factorial at \u2115 values (needed for crossEhrhart_is_poly)"
     ],
     "nextSteps": [
-      "If Docker build fails: debug crossEhrhart_expand proof (sum distribute step)",
-      "Prove crossEhrhart_is_poly without sorry using Nat.descFactorial or falling factorial",
-      "Prove crossBall_card d=0 using Fintype.card (Fin 0 \u2192 \u03b2) = 1",
-      "Prove crossBall_card inductive step via Finset.card_biUnion slicing"
+      "Attempt crossBall_card succ via Finset.card_biUnion fiber decomposition",
+      "Submit PR research/ehrhart-cross-polytope-oq-02 to gallery",
+      "Consider Aristotle submission for crossBall_card geometric sorry"
     ]
   },
   "tags": [
