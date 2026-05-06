@@ -18,16 +18,19 @@ Yes. The proof follows three steps:
 
 ## Axiom Budget
 
-2 axioms:
-1. The even/odd tsum splitting: ∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}
-2. Identification of the real-valued even/odd subseries with cos and sin
+0 axioms. All three formerly-axiomatized lemmas are proved from Mathlib
+(tsum_even_add_odd, cos_eq_tsum, sin_eq_tsum). See §§3-4.
 
 Source: Extension of the Euler Identity formalization (OQ-01)
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Series
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
+import Mathlib.Topology.Algebra.InfiniteSum.NatInt
+import Mathlib.Topology.Algebra.InfiniteSum.Ring
 import Mathlib.Tactic
 
 open Complex Real
@@ -104,46 +107,39 @@ theorem expTerm_odd (x : ℝ) (k : ℕ) :
   ring
 
 -- ============================================================================
--- § 3. TSUM SPLITTING (Axiomatized)
+-- § 3. TSUM SPLITTING
 -- ============================================================================
 
-/-- **Axiom 1: Even/odd splitting of absolutely convergent series.**
-
-    For any absolutely convergent series ∑_n a_n over ℂ:
-      ∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}
-
-    This is a standard result from the theory of rearrangements:
-    every absolutely convergent series can be split into even- and
-    odd-indexed subseries, and the sums add up.
-
-    Not yet a one-liner in Mathlib: requires `HasSum.even_add_odd` or
-    manual construction via `Equiv.sumCompl` on even/odd naturals. -/
-axiom tsum_even_add_odd {a : ℕ → ℂ} (ha : Summable a) :
-    ∑' n, a n = (∑' k, a (2 * k)) + (∑' k, a (2 * k + 1))
+/-- Even/odd splitting of a summable series over ℂ:
+    ∑_n a_n = ∑_k a_{2k} + ∑_k a_{2k+1}.
+    Proved via Mathlib's `tsum_even_add_odd` using `Summable.comp_injective`. -/
+theorem tsum_even_add_odd {a : ℕ → ℂ} (ha : Summable a) :
+    ∑' n, a n = (∑' k, a (2 * k)) + (∑' k, a (2 * k + 1)) := by
+  have he : Summable (fun k => a (2 * k)) :=
+    ha.comp_injective (fun i j h => by omega)
+  have ho : Summable (fun k => a (2 * k + 1)) :=
+    ha.comp_injective (fun i j h => by omega)
+  exact (_root_.tsum_even_add_odd he ho).symm
 
 -- ============================================================================
--- § 4. IDENTIFICATION WITH COS AND SIN (Axiomatized)
+-- § 4. IDENTIFICATION WITH COS AND SIN
 -- ============================================================================
 
-/-- **Axiom 2: The cosine Taylor series.**
+/-- The cosine Taylor series: cos(x) = ∑_k (-1)^k x^{2k} / (2k)!
+    Proved via Mathlib's `Complex.cos_eq_tsum` and `ofReal_cos`. -/
+theorem cos_eq_tsum (x : ℝ) :
+    (↑(cos x) : ℂ) = ∑' k, evenTerm x k := by
+  rw [ofReal_cos, Complex.cos_eq_tsum]
+  apply tsum_congr; intro k
+  simp only [evenTerm]
 
-    cos(x) = ∑_k (-1)^k x^{2k} / (2k)!
-
-    This is the standard power series definition of cos. In Mathlib,
-    Complex.cos is defined as (exp(iz) + exp(-iz))/2, so proving this
-    from the power series requires work. An independent proof via the
-    ODE y'' = -y can also be used. -/
-axiom cos_eq_tsum (x : ℝ) :
-    (↑(cos x) : ℂ) = ∑' k, evenTerm x k
-
-/-- **Axiom 2b: The sine Taylor series.**
-
-    sin(x) = ∑_k (-1)^k x^{2k+1} / (2k+1)!
-
-    Same situation as cos: Mathlib defines sin from exp, so the
-    power series identity requires derivation. -/
-axiom sin_eq_tsum (x : ℝ) :
-    (↑(sin x) : ℂ) * I = ∑' k, oddTerm x k
+/-- The sine Taylor series: sin(x) * I = ∑_k i·(-1)^k x^{2k+1} / (2k+1)!
+    Proved via Mathlib's `Complex.sin_eq_tsum`, `ofReal_sin`, `tsum_mul_right`. -/
+theorem sin_eq_tsum (x : ℝ) :
+    (↑(sin x) : ℂ) * I = ∑' k, oddTerm x k := by
+  rw [ofReal_sin, Complex.sin_eq_tsum, ← tsum_mul_right]
+  apply tsum_congr; intro k
+  simp only [oddTerm]; ring
 
 -- ============================================================================
 -- § 5. THE MAIN THEOREM
@@ -189,45 +185,26 @@ theorem euler_formula_taylor (x : ℝ) :
     e^{iπ} + 1 = 0. -/
 theorem euler_identity_taylor : exp (↑π * I) + 1 = 0 := by
   have h := euler_formula_taylor π
-  simp [cos_pi, sin_pi] at h
+  simp [Real.cos_pi, Real.sin_pi] at h
   linarith
 
 -- ============================================================================
--- § 6. WHAT REMAINS TO FORMALIZE
+-- § 6. NOTES
 -- ============================================================================
 
 /-
-## Axiom Elimination Roadmap
+## Axiom Status
 
-### Axiom 1 (tsum_even_add_odd):
-- **Need:** Split ∑ a_n = ∑ a_{2k} + ∑ a_{2k+1} for summable series
-- **Approach:** Use the bijection ℕ ≃ ℕ ⊕ ℕ sending n to (n/2, n%2),
-  then apply `tsum_sum_compl` or `Equiv.tsum_eq`
-- **Mathlib has:** `HasSum.sigma`, `Equiv.summable_iff`, `tsum_equiv`
-- **Difficulty:** LOW (≈50 lines, mostly API wrangling)
-
-### Axioms 2/2b (cos_eq_tsum, sin_eq_tsum):
-- **Need:** Show cos(x) equals the even subseries, sin(x) the odd
-- **Approach A:** From Mathlib's definition cos = (exp(iz)+exp(-iz))/2,
-  expand both exponentials as power series and collect terms
-- **Approach B:** From the ODE characterization y'' = -y, show the
-  power series solution equals cos/sin
-- **Approach C:** Use TaylorSinCosConvergence.lean's results about
-  sin/cos partial sums converging
-- **Difficulty:** MODERATE (≈150-200 lines)
-
-### Total estimate: ≈200-250 lines to eliminate all axioms
+All three formerly-axiomatized lemmas have been proved:
+- `tsum_even_add_odd`: via `Summable.comp_injective` + Mathlib's `tsum_even_add_odd`
+- `cos_eq_tsum`: via `Complex.cos_eq_tsum` + `ofReal_cos`
+- `sin_eq_tsum`: via `Complex.sin_eq_tsum` + `ofReal_sin` + `tsum_mul_right`
 
 ## Note on Independence
 
 This proof is logically independent of `Complex.exp_mul_I` — it derives
-Euler's formula from the power series. However, in Mathlib, cos and sin
-are DEFINED from exp, so a truly independent proof would need to either:
-(a) define cos/sin via their Taylor series (as we do here), or
-(b) define them via the ODE y'' = -y
-
-Option (a) is implemented in this file via the cos_eq_tsum/sin_eq_tsum
-axioms, which could be proved from TaylorSinCosConvergence.lean's results.
+Euler's formula from the Taylor series splitting. In Mathlib, cos and sin
+are DEFINED from exp, so `Complex.cos_eq_tsum` bridges the two definitions.
 -/
 
 end EulerIdentityOQ01
