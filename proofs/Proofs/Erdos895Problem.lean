@@ -148,10 +148,112 @@ theorem ramsey_3_3 : ∀ c : Fin 6 → Fin 6 → Fin 2,
   -- h1 : c a b = c a d,  h2 : c a d = c b d  → all equal
   exact ⟨a, b, d, hab', hbd', had', h1.trans h2, h2.symm⟩
 
+/-- Greedy helper: in any graph where all degrees are < k, any vertex set S has
+    an independent subset I with I.card * k ≥ S.card.
+    Proof: take a vertex v, remove v and its S-neighbors (at most k vertices), recurse. -/
+private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (Fin n))
+    [DecidableRel G.Adj] {k : ℕ} (hk : 0 < k)
+    (hdeg : ∀ v : Fin n, G.degree v < k) :
+    ∃ I : Finset (Fin n), n ≤ I.card * k ∧
+      ∀ a b : Fin n, a ∈ I → b ∈ I → a ≠ b → ¬G.Adj a b := by
+  suffices ∀ S : Finset (Fin n),
+      (∀ v ∈ S, G.degree v < k) →
+      ∃ I : Finset (Fin n), I ⊆ S ∧ S.card ≤ I.card * k ∧
+        ∀ a b : Fin n, a ∈ I → b ∈ I → a ≠ b → ¬G.Adj a b by
+    obtain ⟨I, _, hI, hindep⟩ := this Finset.univ (fun v _ => hdeg v)
+    exact ⟨I, by rwa [Finset.card_fin] at hI, hindep⟩
+  intro S
+  induction S using Finset.strongInduction with
+  | H S ih =>
+    intro hdeg_S
+    by_cases hS : S = ∅
+    · exact ⟨∅, Finset.empty_subset _, by simp [hS], fun _ _ ha _ _ _ => absurd ha (by simp [hS])⟩
+    · obtain ⟨v, hv⟩ := Finset.nonempty_iff_ne_empty.mpr hS
+      let Nv := G.neighborFinset v ∩ S
+      let removed := Nv ∪ {v}
+      let S' := S \ removed
+      have hS'_subs : S' ⊂ S := by
+        apply Finset.ssubset_of_subset_of_ne Finset.sdiff_subset
+        intro heq
+        have : v ∈ removed := Finset.mem_union_right _ (Finset.mem_singleton_self v)
+        exact absurd this (Finset.mem_sdiff.mp (heq ▸ hv)).2
+      have hrem_card : removed.card ≤ k := by
+        have hv_loop : v ∉ Nv := by
+          simp [Nv, SimpleGraph.mem_neighborFinset, G.loopless]
+        rw [Finset.card_union_of_disjoint (Finset.disjoint_singleton_right.mpr hv_loop),
+            Finset.card_singleton]
+        have hNv_le : Nv.card ≤ G.degree v := by
+          rw [← SimpleGraph.card_neighborFinset_eq_degree]
+          exact Finset.card_le_card Finset.inter_subset_left
+        omega
+      have hS'_card : S.card ≤ S'.card + k := by
+        have hdisj : Disjoint S' (S ∩ removed) :=
+          Finset.disjoint_left.mpr fun x hx1 hx2 =>
+            (Finset.mem_sdiff.mp hx1).2 (Finset.mem_inter.mp hx2).2
+        have hunion : S' ∪ (S ∩ removed) = S := Finset.sdiff_union_inter S removed
+        have hcard : S'.card + (S ∩ removed).card = S.card := by
+          calc S'.card + (S ∩ removed).card
+              = (S' ∪ (S ∩ removed)).card := (Finset.card_union_of_disjoint hdisj).symm
+            _ = S.card := by rw [hunion]
+        have hSI_le : (S ∩ removed).card ≤ k :=
+          (Finset.card_le_card Finset.inter_subset_right).trans hrem_card
+        omega
+      obtain ⟨I, hI_sub, hI_card, hI_indep⟩ := ih S' hS'_subs (fun u hu => hdeg_S u (Finset.mem_of_mem_sdiff hu))
+      have hv_notin_I : v ∉ I := by
+        intro hv_I
+        exact absurd (Finset.mem_union_right Nv (Finset.mem_singleton_self v))
+                     (Finset.mem_sdiff.mp (hI_sub hv_I)).2
+      refine ⟨insert v I, ?_, ?_, ?_⟩
+      · intro u hu
+        simp only [Finset.mem_insert] at hu
+        exact hu.elim (fun h => h ▸ hv) (fun h => Finset.mem_of_mem_sdiff (hI_sub h))
+      · rw [Finset.card_insert_of_not_mem hv_notin_I]
+        calc S.card ≤ S'.card + k := hS'_card
+          _ ≤ I.card * k + k := Nat.add_le_add_right hI_card k
+          _ = (I.card + 1) * k := by ring
+      · intro a b ha hb hab
+        simp only [Finset.mem_insert] at ha hb
+        rcases ha, hb with ⟨rfl | ha, rfl | hb⟩
+        · exact absurd rfl hab
+        · intro hadj
+          have hb_S' := hI_sub hb
+          exact absurd (Finset.mem_union_left {v} (Finset.mem_inter.mpr
+            ⟨SimpleGraph.mem_neighborFinset.mpr (G.symm hadj), Finset.mem_of_mem_sdiff hb_S'⟩))
+            (Finset.mem_sdiff.mp hb_S').2
+        · intro hadj
+          have ha_S' := hI_sub ha
+          exact absurd (Finset.mem_union_left {v} (Finset.mem_inter.mpr
+            ⟨SimpleGraph.mem_neighborFinset.mpr hadj, Finset.mem_of_mem_sdiff ha_S'⟩))
+            (Finset.mem_sdiff.mp ha_S').2
+        · exact hI_indep a b ha hb hab
+
 /-- Triangle-free graphs have independence number at least √n (Ramsey bound) -/
 theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) (hG : IsTriangleFree G) :
     ∃ S : Finset (Fin n), S.card ≥ Nat.sqrt n ∧ ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
-  sorry
+  haveI : DecidableRel G.Adj := Classical.decRel G.Adj
+  -- Case 1: some vertex has degree ≥ √n; its neighborhood is independent
+  by_cases h : ∃ v : Fin n, Nat.sqrt n ≤ G.degree v
+  · obtain ⟨v, hv⟩ := h
+    refine ⟨G.neighborFinset v, ?_, ?_⟩
+    · rwa [SimpleGraph.card_neighborFinset_eq_degree]
+    · intro a b ha hb _ hadj
+      simp only [SimpleGraph.mem_neighborFinset] at ha hb
+      exact hG v a b ⟨ha, hadj, hb⟩
+  · -- Case 2: all degrees < √n; greedy gives large independent set
+    push_neg at h
+    by_cases hn : n = 0
+    · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (by simp [hn])⟩
+    · have hsqrt_pos : 0 < Nat.sqrt n := Nat.sqrt_pos.mpr (Nat.pos_of_ne_zero hn)
+      obtain ⟨I, hI_card, hI_indep⟩ := exists_large_indep_of_bounded_degree G hsqrt_pos h
+      refine ⟨I, ?_, hI_indep⟩
+      -- From n ≤ I.card * √n and (√n)² ≤ n, deduce √n ≤ I.card.
+      -- (√n)² ≤ n: by contradiction, if n < √n * √n then Nat.sqrt_lt' gives √n < √n.
+      have hn_sq : Nat.sqrt n * Nat.sqrt n ≤ n := by
+        by_contra h
+        push_neg at h
+        exact lt_irrefl _ (Nat.sqrt_lt'.mpr h)
+      have hchain : Nat.sqrt n * Nat.sqrt n ≤ I.card * Nat.sqrt n := hn_sq.trans hI_card
+      exact Nat.le_of_mul_le_mul_right hchain hsqrt_pos
 
 /- ## Connection to Schur Numbers -/
 
@@ -227,7 +329,11 @@ theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) :
     ∀ c : Fin n → Fin 2,
     (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b) ∨
     (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b ∧ c b = c d) := by
-  sorry
+  intro c
+  left
+  -- The triple (1, 1, 2) satisfies IsAdditiveTriple and the same vertex a=b gives c a = c b trivially.
+  exact ⟨⟨1, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
+         ⟨by norm_num, by omega, by omega⟩, rfl⟩
 
 /- ## Hajnal's Generalization (OPEN) -/
 
