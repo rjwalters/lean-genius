@@ -30,15 +30,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved dd_eq_zero_2D (Clairaut/Schwarz theorem d\u00b2=0) using ContDiffAt.isSymmSndFDerivAt. Reduces sorry count in FTC-Stokes gallery from 1 to 0 (pending build verification).",
+    "progressSummary": "IN-PROGRESS: dd_eq_zero_2D proof written. Build 1 failed (norm_num metavar in fderiv_right). Build 2 submitted with explicit \u2115\u221e annotations. PR #16107.",
     "builtItems": [
       "ac_implies_bv: BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b (line 154)",
       "eVariationOn_le_of_forall: upper-bound criterion for eVariationOn via iSup_le (line 38)",
       "fin_telescoping: \u2211 k : Fin n, (u(k+1) - u(k)) = u(n) - u(0) (line 47)",
       "eVariationOn_le_one_of_short: short interval variation \u2264 1 from AC condition (line 58)",
-      "eVariationOn_le_n: inductive splitting via Icc_add_Icc (line 101)",
-      "FundamentalTheoremCalculusStokesAristotle.lean: dd_eq_zero_2D proved (was sorry)",
-      "FundamentalTheoremCalculusStokes.lean: dd_eq_zero_2D proved (was sorry)"
+      "eVariationOn_le_n: inductive splitting via Icc_add_Icc (line 101)"
     ],
     "insights": [
       "eVariationOn is a supremum over monotone partitions; bounding it reduces to bounding each partition sum (iSup_le)",
@@ -46,17 +44,13 @@
       "eVariationOn.Icc_add_Icc provides inductive splitting: n pieces each \u2264 1 gives total \u2264 n < top",
       "Converting real-valued AC bound to ENNReal uses ofReal_sum_of_nonneg + ofReal_le_ofReal",
       "No additional Mathlib infrastructure needed beyond Mathlib.Analysis.BoundedVariation",
-      "dd_eq_zero_2D (d\u00b2=0) proved via HasFDerivAt.comp_hasDerivAt + ContDiffAt.isSymmSndFDerivAt",
-      "Connection: deriv (fun y => f(x,y)) p.2 = fderiv \u211d f (x,p.2) (0,1) via composition with embedding",
-      "Second mixed partial equals fderiv \u211d (fderiv \u211d f) p (1,0) (0,1) via HasDerivAt.clm_apply",
-      "ContDiffAt.isSymmSndFDerivAt provides the Clairaut symmetry: v,w arguments commute"
+      "ContDiff.fderiv_right has implicit {m : \u2115\u221e} \u2014 must annotate as ContDiff \u211d 1 (fderiv \u211d f) to fix metavar in norm_num side conditions",
+      "HasDerivAt.clm_apply takes two HasDerivAt args (CLM-valued func + vector func) \u2014 product rule derivative c(u x)\u00b71 + c(x)\u00b70; simp [map_zero, add_zero] clears the extra term"
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Jordan decomposition: BV \u2192 difference of monotone functions (next axiom in parent)",
-      "Check if Mathlib has BoundedVariationOn.jordanDecomposition or similar",
-      "Prove stokes_2d_rectangle via Green theorem from GreensTheoremOQ01.lean",
-      "Fix FundamentalTheoremCalculusLebesgue.lean Cantor function sorry (blocked: needs significant infrastructure)"
+      "Check if Mathlib has BoundedVariationOn.jordanDecomposition or similar"
     ]
   },
   "tags": [
