@@ -1,0 +1,103 @@
+{
+  "slug": "erdos-895-oq-01",
+  "title": "Prove Hajnal's generalization: do large triangle-free graphs always contain a...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Prove Hajnal's generalization: do large triangle-free graphs always contain a....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-04T17:47:35.844Z",
+    "iteration": 1,
+    "focus": "Supporting lemmas proved; Hajnal conjecture is open",
+    "blockers": [],
+    "nextAction": "Investigate triangleFree_independence_bound or Hajnal conjecture approaches",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: Proved 3 Aristotle lemmas (triangleFree_neighbor_disjoint, triangleFree_degree_sum_bound, mantel_theorem). Aristotle file now 0 sorries. Main file barber_theorem blocked (SAT-based).",
+    "builtItems": [
+      "Erdos895ProblemAristotle.lean:67 triangleFree_neighbor_disjoint \u2014 0 sorries",
+      "Erdos895ProblemAristotle.lean:80 triangleFree_degree_sum_bound \u2014 0 sorries",
+      "Erdos895ProblemAristotle.lean:100 mantel_theorem \u2014 0 sorries"
+    ],
+    "insights": [
+      "triangleFree_neighbor_disjoint proved: adjacent vertices in triangle-free graph have disjoint neighborhoods, via Finset.disjoint_left + G.symm",
+      "triangleFree_degree_sum_bound proved: deg(u)+deg(v) \u2264 n for adjacent u,v, via card_union_of_disjoint + Finset.subset_univ + card_fin",
+      "mantel_theorem proved in Aristotle file: IsTriangleFree \u2192 CliqueFree 3 \u2192 CliqueFree.card_edgeFinset_le gives n\u00b2/4 edge bound; mirrors proof pattern in Erdos895Problem.lean"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Main barber_theorem and counterexample_17 require SAT-based proof \u2014 blocked without external tool",
+      "triangleFree_independence_bound (\u221an independent set) could be proved via Ramsey/greedy but requires significant Mathlib API work",
+      "Hajnal conjecture (Hindman sets in triangle-free graphs) remains open \u2014 no known Lean formalization path"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "erdos-8",
+    "erdos-89",
+    "erdos-895"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T17:47:35.844Z",
+  "lastUpdate": "2026-05-04T17:47:35.844Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos895Aristotle.lean",
+      "filename": "Erdos895Aristotle.lean",
+      "lineCount": 171,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos895Problem.lean",
+      "filename": "Erdos895Problem.lean",
+      "lineCount": 261,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos895ProblemAristotle.lean",
+      "filename": "Erdos895ProblemAristotle.lean",
+      "lineCount": 118,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895ProblemAristotle.lean"
+    }
+  ]
+}
