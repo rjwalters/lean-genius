@@ -72,7 +72,24 @@ noncomputable def powerSumRatio (k n : ℕ) : ℚ :=
 private lemma low_degree_poly_ratio_tendsto_zero (q : Polynomial ℚ) (d : ℕ)
     (hd : 0 < d) (hdeg : q.natDegree < d) :
     Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d) atTop (nhds 0) := by
-  sorry -- Routine: decompose eval into coeff sum, each c_i/n^{d-i} → 0
+  -- Rewrite q(n)/n^d as a finite sum ∑ c_i/n^(d-i) → 0
+  -- Step 1: The sum ∑ c_i/n^(d-i) → 0 (each term → 0)
+  have h_sum : Tendsto (fun n : ℕ => ∑ i ∈ Finset.range d,
+        (q.coeff i : ℚ) / (↑n : ℚ) ^ (d - i)) atTop (nhds 0) := by
+    rw [show (0 : ℚ) = ∑ _i ∈ Finset.range d, (0 : ℚ) from Finset.sum_const_zero.symm]
+    exact tendsto_finset_sum fun i hi => const_div_pow_tendsto_zero (q.coeff i) (d - i)
+        (Nat.sub_pos_of_lt (Finset.mem_range.mp hi))
+  -- Step 2: q(n)/n^d equals the sum for large n
+  apply h_sum.congr'
+  filter_upwards [Filter.eventually_gt_atTop 0] with n hn
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hnd : (↑n : ℚ) ^ d ≠ 0 := pow_ne_zero _ hn'
+  rw [Polynomial.eval_eq_sum_range hdeg, Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro i hi
+  simp only [Finset.mem_range] at hi
+  rw [div_eq_div_iff hnd (pow_ne_zero _ hn'), mul_assoc, ← pow_add,
+      Nat.add_sub_cancel' (Nat.le_of_lt hi)]
 
 /-- For any monic polynomial p of degree d, p(n)/n^d → 1 as n → ∞ over ℚ.
     PROVED (was axiom): p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d → 1+0.
@@ -84,7 +101,24 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
   -- q = p - X^d has degree < d (leading terms cancel: coeff d = 1-1 = 0)
   set q := p - Polynomial.X ^ d with hq_def
   have hq_deg : q.natDegree < d := by
-    sorry -- Routine: natDegree_sub_le gives ≤ d; coeff d = hlc - 1 = 0 gives strict <
+    rw [hq_def]
+    -- coeff p d = 1 (since leadingCoeff p = 1 and natDegree p = d)
+    have hpd : p.coeff d = 1 := by
+      have : p.coeff d = p.leadingCoeff := by
+        simp only [Polynomial.leadingCoeff]; rw [hd_deg]
+      exact this.trans hlc
+    -- (p - X^d) has natDegree ≤ d
+    have hle : (p - Polynomial.X ^ d).natDegree ≤ d :=
+      (Polynomial.natDegree_sub_le p _).trans
+        (by simp [hd_deg, Polynomial.natDegree_X_pow])
+    -- The coeff at degree d is 0 (leading terms cancel: 1 - 1 = 0)
+    have hcoeff : (p - Polynomial.X ^ d).coeff d = 0 := by
+      rw [Polynomial.coeff_sub, Polynomial.coeff_X_pow, if_pos rfl, hpd, sub_self]
+    -- natDegree < d since natDegree ≤ d and coeff d = 0
+    rcases eq_or_ne (p - Polynomial.X ^ d) 0 with h | h
+    · simp [h, hd]
+    · exact Nat.lt_of_le_of_ne hle (fun heq =>
+        absurd hcoeff (heq ▸ Polynomial.leadingCoeff_ne_zero.mpr h))
   -- Reduce to: Tendsto (fun n => q(n)/n^d + 1) atTop (nhds 1)
   suffices h : Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d + 1)
       atTop (nhds 1) by
