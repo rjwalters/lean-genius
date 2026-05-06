@@ -92,16 +92,25 @@
   },
   "sections": [
     {
-      "title": "Integrability Infrastructure",
-      "content": "Lemmas proving that continuous functions on compact 3D boxes are integrable on product measures, enabling the parameterized integral argument."
+      "id": "integrability",
+      "title": "3D Integrability Infrastructure",
+      "startLine": 48,
+      "endLine": 111,
+      "summary": "Two private lemmas prove that continuous functions G((z,x),y) = f(x,y,z) and G((x,y),z) = f(x,y,z) are integrable on the triple Ioc product measure. Both use the pattern: continuity → compactness → IntegrableOn Icc box → restrict_prod_eq_prod_restrict → mono_measure Ioc ⊆ Icc."
     },
     {
+      "id": "triple-fubini",
       "title": "Triple Fubini Theorem",
-      "content": "For continuous f : ℝ → ℝ → ℝ → ℝ, all orderings of the triple integral are equal: ∫z∫y∫x f = ∫x∫y∫z f (the reverse ordering) and other permutations."
+      "startLine": 113,
+      "endLine": 202,
+      "summary": "Three theorems: triple_fubini_of_continuous (∫z∫y∫x f = ∫x∫y∫z f via 3-step swap), triple_fubini_yxz_eq_xyz ((y,x,z) = (x,y,z) via integral_integral_swap), and triple_fubini_all_equal (collects all 3 key orderings). All proved with 0 sorries using integral_integral_swap + Integrable.integral_prod_right."
     },
     {
+      "id": "n-dimensional",
       "title": "N-Dimensional Iterated Integral",
-      "content": "Definition of iteratedIntervalIntegral for Fin n → ℝ, with concrete n=1 and n=2 cases, and the general order independence axiom."
+      "startLine": 204,
+      "endLine": 255,
+      "summary": "Defines iteratedIntervalIntegral by Fin-n recursion: base f(∅), inductive ∫_{a₀}^{b₀} iteratedIntervalIntegral(tail). Proves n=0,1,2 cases explicitly. Axiomatizes the general order independence for permutations σ ∈ Sₙ — the 2D and 3D cases establish the inductive pattern."
     }
   ],
   "conclusion": {
@@ -125,8 +134,20 @@
     }
   ],
   "crossReferences": [
-    "greens-theorem-oq-01-oq-01",
-    "greens-theorem-oq-01-oq-01-oq-03",
-    "greens-theorem-oq-01"
+    {
+      "id": "greens-theorem-oq-01-oq-01",
+      "title": "Green's Theorem — 2D Fubini Bridge",
+      "relationship": "Parent: proves the 2D Fubini bridge (∫y∫x f = ∫x∫y f for continuous f). This entry generalizes that result to 3D and n dimensions, importing GreensTheoremOQ01OQ01.fubini_of_continuous as a key subroutine."
+    },
+    {
+      "id": "greens-theorem-oq-01-oq-01-oq-03",
+      "title": "Green's Theorem — Fubini via Marginals",
+      "relationship": "Sibling: an alternative approach to n-dimensional Fubini using Mathlib's lmarginal_union. This entry uses the integral_integral_swap approach instead, which is more direct for the 3D case."
+    },
+    {
+      "id": "greens-theorem-oq-01",
+      "title": "Green's Theorem — Open Questions",
+      "relationship": "Grandparent: the Green's theorem open question tree. The Fubini bridge results (this entry and its parent) are foundational infrastructure for Green's theorem in higher dimensions."
+    }
   ]
 }
