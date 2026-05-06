@@ -1,6 +1,6 @@
 {
   "slug": "erdos-761",
-  "title": "Erdős #761",
+  "title": "Erd\u0151s #761",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -16,14 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
+    "phase": "ACT",
     "since": "2026-03-28T14:15:00Z",
     "iteration": 6,
-    "focus": "BLOCKED on upstream Mathlib drift; do not attempt research repairs until file builds.",
-    "blockers": [
-      "Mathlib API drift (2026-04-27): file does not build because local `Orientation` structure conflicts with `Mathlib.LinearAlgebra.Orientation` (now transitively imported via Mathlib.Tactic). Fix requires renaming local `Orientation` (~20 mechanical replacements). Mechanic agent task."
-    ],
-    "nextAction": "Mechanic: rename local `Orientation` to e.g. `GraphOrientation` or scope under namespace. After unblocked, can add dichrom_le_of_colorable / cochrom_le_of_colorable (~30 lines each).",
+    "focus": "Renamed local Orientation to GraphOrientation to fix Mathlib API conflict; file should now build.",
+    "blockers": [],
+    "nextAction": "Verify file builds with Docker. After build: consider adding dichrom_le_of_colorable / cochrom_le_of_colorable theorems.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,18 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2A+0S (was 2A+1S). Proved dichrom_mono: subgraph monotonicity of dichromatic number via orientation extension + TransGen.mono. All 6 formerly-axiom properties now proved. Only the 2 open conjectures remain as axioms.",
+    "progressSummary": "PROGRESS: Unblocked! Renamed Orientation\u2192GraphOrientation fixing Mathlib.LinearAlgebra.Orientation conflict. File should now build. 2A, 0S, 6 public+1 private theorems, 7 defs.",
     "builtItems": [
-      "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom→theorem)",
-      "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom→theorem)",
-      "odd_cycle_dichrom: proved trivial True placeholder (axiom→theorem)",
+      "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom\u2192theorem)",
+      "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom\u2192theorem)",
+      "odd_cycle_dichrom: proved trivial True placeholder (axiom\u2192theorem)",
       "Assessment: remaining 5A all appropriate",
       "Fixed duplicate axiom/theorem declaration for dichrom_mono (compilation error)",
-      "Updated stale leanFile metadata (axiomCount 8→3, theoremCount 1→6)",
+      "Updated stale leanFile metadata (axiomCount 8\u21923, theoremCount 1\u21926)",
       "colorClassEdge: directed edge relation within a color class (new definition)",
       "IsAcyclicColoring: fixed to use Relation.TransGen cycle-free condition",
       "transGen_mono: private helper for TransGen monotonicity",
-      "isAcyclicColoring_of_no_mono_edge: bridge lemma (strong condition ⟹ cycle-free condition)",
+      "isAcyclicColoring_of_no_mono_edge: bridge lemma (strong condition \u27f9 cycle-free condition)",
       "dichrom_le_chrom: re-proved with correct definition via bridge lemma",
       "bipartite_dichrom_le_two: re-proved with correct definition via bridge lemma",
       "dichrom_mono: re-proved with correct definition via transGen_mono",
@@ -50,41 +48,44 @@
       "Rebuilt proofs/Proofs/Erdos761Problem.lean with corrected definition",
       "colorClassEdge: directed edge within color class (new definition)",
       "IsAcyclicColoring: corrected to TransGen cycle-free condition",
-      "isAcyclicColoring_of_no_mono_edge: bridge lemma (strong→weak condition)",
+      "isAcyclicColoring_of_no_mono_edge: bridge lemma (strong\u2192weak condition)",
       "dichrom_le_chrom: proved via bridge + Fintype.equivFin injective coloring",
       "cochrom_le_chrom: proved via singleton color classes from injective coloring",
       "bipartite_dichrom_le_two: proved (was sorry) via bridge + proper 2-coloring",
       "acyclic_orientation_exists: proved via total-order orientation + bridge",
-      "Removed complete_dichrom (wrong formula) and odd_cycle_dichrom (True placeholder)"
+      "Removed complete_dichrom (wrong formula) and odd_cycle_dichrom (True placeholder)",
+      "Renamed Orientation\u2192GraphOrientation in Erdos761Problem.lean (10 occurrences, unblocking Mathlib drift build failure)"
     ],
     "insights": [
       "dichrom_le_chrom proved: injective coloring via Fintype.equivFin gives |V| colors, injectivity + ne_of_adj yields acyclicity",
       "cochrom_le_chrom proved: same injective coloring, singleton color classes vacuously satisfy cochromatic condition",
-      "odd_cycle_dichrom was placeholder True — trivially proved",
+      "odd_cycle_dichrom was placeholder True \u2014 trivially proved",
       "dichrom_mono unprovable without sInf monotonicity infrastructure (needs Nat.sInf_le_sInf or manual proof)",
       "acyclic_orientation_exists needs graph induction infrastructure beyond current Mathlib",
       "complete_dichrom is deep result (Neumann-Lara 1982), appropriate as axiom",
       "Both open conjectures (question1, question2) appropriate as axioms",
       "File has good definitions: Orientation, IsAcyclicColoring, dichromNumber, cochromNumber all constructive",
-      "bipartite_dichrom_le_two already proved — demonstrates Nat.sInf_le pattern well",
-      "File had duplicate declaration: axiom dichrom_mono AND theorem dichrom_mono — Lean 4 rejects this",
+      "bipartite_dichrom_le_two already proved \u2014 demonstrates Nat.sInf_le pattern well",
+      "File had duplicate declaration: axiom dichrom_mono AND theorem dichrom_mono \u2014 Lean 4 rejects this",
       "Prior researcher proved dichrom_mono but forgot to remove the axiom declaration",
-      "File is in Stubs/ — may not have been build-verified",
-      "IsAcyclicColoring was WRONG: used \"no monochromatic directed edge\" instead of correct \"no monochromatic directed cycle\". These are NOT equivalent — for K₃ directed 3-cycle: 2 colors avoid cycles but not all monochromatic edges",
+      "File is in Stubs/ \u2014 may not have been build-verified",
+      "IsAcyclicColoring was WRONG: used \"no monochromatic directed edge\" instead of correct \"no monochromatic directed cycle\". These are NOT equivalent \u2014 for K\u2083 directed 3-cycle: 2 colors avoid cycles but not all monochromatic edges",
       "Relation.TransGen provides clean cycle-free formalization: TransGen (colorClassEdge O c i) v v = directed cycle through v in color class i",
-      "complete_dichrom axiom had incorrect formula (n+1)/2+1 — wrong under BOTH definitions. Eliminated as axiom",
-      "Bridge lemma isAcyclicColoring_of_no_mono_edge: proper coloring ⟹ no mono edges ⟹ no mono cycles. All existing proofs go through this bridge",
-      "Bridge lemma is the key: proper coloring ⟹ no mono edges ⟹ no mono cycles. All old proofs work through this bridge",
+      "complete_dichrom axiom had incorrect formula (n+1)/2+1 \u2014 wrong under BOTH definitions. Eliminated as axiom",
+      "Bridge lemma isAcyclicColoring_of_no_mono_edge: proper coloring \u27f9 no mono edges \u27f9 no mono cycles. All existing proofs go through this bridge",
+      "Bridge lemma is the key: proper coloring \u27f9 no mono edges \u27f9 no mono cycles. All old proofs work through this bridge",
       "TransGen cycle detection: TransGen (colorClassEdge O c i) v v = directed cycle through v in color i",
       "The bridge lemma proof uses pattern matching on TransGen: single case hits loopless, tail case hits color contradiction",
-      "Session 2026-04-27 (researcher-3): file blocked by Mathlib drift — local `Orientation` structure name now collides with `Mathlib.LinearAlgebra.Orientation`. Build error at line 43 cascades to ~12 downstream errors. Drafted dichrom_le_of_colorable / cochrom_le_of_colorable as ~10-line generalizations of bipartite_dichrom_le_two but reverted code per drift policy. Documented suggested fix and post-fix research targets in knowledge.md."
+      "Session 2026-04-27 (researcher-3): file blocked by Mathlib drift \u2014 local `Orientation` structure name now collides with `Mathlib.LinearAlgebra.Orientation`. Build error at line 43 cascades to ~12 downstream errors. Drafted dichrom_le_of_colorable / cochrom_le_of_colorable as ~10-line generalizations of bipartite_dichrom_le_two but reverted code per drift policy. Documented suggested fix and post-fix research targets in knowledge.md.",
+      "Mathlib API conflict fixed: renamed local  structure to  to avoid conflict with Mathlib.LinearAlgebra.Orientation (imported transitively via Mathlib.Tactic). Simple 10-occurrence mechanical rename.",
+      "sorryCount was 2 in research JSON but file has 0 actual sorry calls \u2014 the 2 occurrences are in comments (\"Original had 1 sorry\", \"[Formerly sorry]\"). Fixed to 0."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove dichrom_mono: needs orientation extension from H to G + TransGen monotonicity",
       "Consider adding Orientation exclusivity (exactly one direction per edge, not at-least-one)"
     ],
-    "markdown": "# Erdős #761 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no monochromatic oriented cycles.\n\nMust a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a graph with large dichromatic number?\n\n\n\nThe first question is due to Erd\\H{o}s and Neumann-Lara. The second question is due to Erd\\H{o}s and Gimbel. A positive answer to the second question implies a positive answer to the first via the bound mentioned in [760].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #760\n- Problem #762\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGi93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #761 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe cochromatic number of $G$, denoted by $\\zeta(G)$, is the minimum number of colours needed to colour the vertices of $G$ such that each colour class induces either a complete graph or empty graph. The dichromatic number of $G$, denoted by $\\delta(G)$, is the minimum number $k$ of colours required such that, in any orientation of the edges of $G$, there is a $k$-colouring of the vertices of $G$ such that there are no monochromatic oriented cycles.\n\nMust a graph with large chromatic number have large dichromatic number? Must a graph with large cochromatic number contain a graph with large dichromatic number?\n\n\n\nThe first question is due to Erd\\H{o}s and Neumann-Lara. The second question is due to Erd\\H{o}s and Gimbel. A positive answer to the second question implies a positive answer to the first via the bound mentioned in [760].\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #760\n- Problem #762\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGi93\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -107,11 +108,11 @@
     {
       "path": "Proofs/Erdos761Problem.lean",
       "filename": "Erdos761Problem.lean",
-      "lineCount": 259,
-      "theoremCount": 6,
+      "lineCount": 258,
+      "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 6,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos761Problem.lean"
     }

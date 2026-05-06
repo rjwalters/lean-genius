@@ -40,7 +40,7 @@ open SimpleGraph
 
 /-- An orientation of an undirected graph assigns a direction to each edge.
     For each edge {u,v}, at least one of dir u v or dir v u holds. -/
-structure Orientation {V : Type*} (G : SimpleGraph V) where
+structure GraphOrientation {V : Type*} (G : SimpleGraph V) where
   dir : V → V → Prop
   covers : ∀ u v, G.Adj u v → dir u v ∨ dir v u
   consistent : ∀ u v, dir u v → G.Adj u v
@@ -48,7 +48,7 @@ structure Orientation {V : Type*} (G : SimpleGraph V) where
 /-- Directed edge within a color class: both u and v have color i,
     and there is a directed edge from u to v. -/
 def colorClassEdge {V : Type*} {G : SimpleGraph V} {k : ℕ}
-    (O : Orientation G) (c : V → Fin k) (i : Fin k) (u v : V) : Prop :=
+    (O : GraphOrientation G) (c : V → Fin k) (i : Fin k) (u v : V) : Prop :=
   c u = i ∧ c v = i ∧ O.dir u v
 
 /-- A coloring is acyclic if no color class contains a directed cycle.
@@ -60,19 +60,19 @@ def colorClassEdge {V : Type*} {G : SimpleGraph V} {k : ℕ}
     e.g., a directed 3-cycle K₃ can be 2-colored with no monochromatic
     cycles but necessarily has monochromatic edges. -/
 def IsAcyclicColoring {V : Type*} {G : SimpleGraph V} {k : ℕ}
-    (O : Orientation G) (c : V → Fin k) : Prop :=
+    (O : GraphOrientation G) (c : V → Fin k) : Prop :=
   ∀ (i : Fin k) (v : V), ¬Relation.TransGen (colorClassEdge O c i) v v
 
 /-- An orientation admits an acyclic k-coloring. -/
 def HasAcyclicColoring {V : Type*} {G : SimpleGraph V}
-    (O : Orientation G) (k : ℕ) : Prop :=
+    (O : GraphOrientation G) (k : ℕ) : Prop :=
   ∃ c : V → Fin k, IsAcyclicColoring O c
 
 /-- The dichromatic number δ(G): the minimum k such that every orientation
     of G admits an acyclic k-coloring. -/
 noncomputable def SimpleGraph.dichromNumber {V : Type*}
     (G : SimpleGraph V) : ℕ :=
-  sInf {k : ℕ | ∀ O : Orientation G, HasAcyclicColoring O k}
+  sInf {k : ℕ | ∀ O : GraphOrientation G, HasAcyclicColoring O k}
 
 /-- A cochromatic coloring: each color class induces either a clique
     (all pairs adjacent) or an independent set (no pairs adjacent). -/
@@ -97,7 +97,7 @@ noncomputable def SimpleGraph.cochromNumber {V : Type*}
     All proofs that establish the strong "no monochromatic edge" condition
     automatically satisfy the correct "no monochromatic cycle" condition. -/
 theorem isAcyclicColoring_of_no_mono_edge {V : Type*} {G : SimpleGraph V} {k : ℕ}
-    (O : Orientation G) (c : V → Fin k)
+    (O : GraphOrientation G) (c : V → Fin k)
     (h : ∀ u v, O.dir u v → c u ≠ c v) :
     IsAcyclicColoring O c := by
   intro i v hcycle
@@ -127,7 +127,7 @@ theorem dichrom_le_chrom [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
     G.dichromNumber ≤ Fintype.card V := by
   apply csInf_le (nat_bddBelow _)
-  show ∀ O : Orientation G, HasAcyclicColoring O (Fintype.card V)
+  show ∀ O : GraphOrientation G, HasAcyclicColoring O (Fintype.card V)
   intro O
   let e := Fintype.equivFin V
   refine ⟨e, isAcyclicColoring_of_no_mono_edge O e ?_⟩
@@ -154,7 +154,7 @@ theorem bipartite_dichrom_le_two (G : SimpleGraph V)
     (hBip : G.Colorable 2) :
     G.dichromNumber ≤ 2 := by
   apply csInf_le (nat_bddBelow _)
-  show ∀ O : Orientation G, HasAcyclicColoring O 2
+  show ∀ O : GraphOrientation G, HasAcyclicColoring O 2
   intro O
   obtain ⟨c⟩ := hBip
   exact ⟨c, isAcyclicColoring_of_no_mono_edge O c (fun u v hdir => c.valid (O.consistent u v hdir))⟩
@@ -164,7 +164,7 @@ theorem bipartite_dichrom_le_two (G : SimpleGraph V)
     then the bridge lemma gives acyclicity of any proper coloring. -/
 theorem acyclic_orientation_exists [Fintype V] [DecidableEq V]
     (G : SimpleGraph V) [DecidableRel G.Adj] :
-    ∃ O : Orientation G, ∀ (c : V → Fin (Fintype.card V)),
+    ∃ O : GraphOrientation G, ∀ (c : V → Fin (Fintype.card V)),
       (∀ u v, G.Adj u v → c u ≠ c v) → IsAcyclicColoring O c := by
   -- Any orientation suffices, since the bridge lemma applies to proper colorings.
   -- We construct one using the total order from Fintype.equivFin.
@@ -204,7 +204,7 @@ theorem dichrom_mono [Fintype V] [DecidableEq V]
     classical
     -- Extend O_H to a G-orientation: keep H-directions, orient non-H edges by index
     let ι := Fintype.equivFin V
-    let O_G : Orientation G :=
+    let O_G : GraphOrientation G :=
       { dir := fun u v =>
           (H.Adj u v ∧ O_H.dir u v) ∨
           (G.Adj u v ∧ ¬H.Adj u v ∧ (ι u).val < (ι v).val)
