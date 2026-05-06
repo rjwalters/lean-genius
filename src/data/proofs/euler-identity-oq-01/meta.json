@@ -18,7 +18,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 233,
+    "lineCount": 210,
     "mathlibDependencies": [
       {
         "theorem": "NormedSpace.exp_eq_tsum",
@@ -50,7 +50,7 @@
         "relationship": "Alternative proof: uses Taylor series splitting vs Mathlib's Complex.exp_mul_I"
       }
     ],
-    "theoremCount": 11,
+    "theoremCount": 14,
     "definitionCount": 3
   },
   "overview": {
@@ -155,9 +155,9 @@
       "Real"
     ],
     "namespace": "EulerIdentityOQ01",
-    "lineCount": 233,
+    "lineCount": 210,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 14,
     "mainTheorems": [
       {
         "name": "euler_formula_taylor",
