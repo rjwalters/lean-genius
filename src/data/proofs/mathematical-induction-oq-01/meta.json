@@ -33,7 +33,8 @@
     "axiomCount": 0,
     "theoremCount": 8,
     "path": "Proofs/MathematicalInductionOQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Georg Cantor introduced ordinal numbers in 1883 as a systematic framework for transfinite mathematics. His key insight was that infinite collections can be arranged in a well-ordering — where every non-empty subset has a least element — and that this well-ordering principle is equivalent to the axiom of choice (proved by Zermelo in 1904). Transfinite induction over ordinals generalizes ordinary mathematical induction: instead of 0 and successor, ordinals have three types — zero (0), successors (α+1), and limit ordinals (ω, ω², ...) which have no immediate predecessor. In type theory and proof assistants, Martin-Löf (1982) showed that well-founded recursion provides a uniform foundation for all forms of induction. Lean 4 implements this as `WellFounded.fix`: any type with a well-founded relation supports recursion. This file demonstrates that Lean's general `WellFounded` infrastructure directly yields classical transfinite induction on ordinals, and that standard mathematical induction is the special case for natural numbers.",
