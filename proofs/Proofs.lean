@@ -370,6 +370,7 @@ import Proofs.CauchySchwarzOQ04OQ01
 import Proofs.CayleyHamilton
 import Proofs.CayleyHamiltonCyclicVectorAllFields
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle
+import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01
 import Proofs.CayleyHamiltonMinpolyOQ01
 import Proofs.CayleyHamiltonMinpolyOQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01
@@ -2267,6 +2268,7 @@ import Proofs.Hilbert14InvariantsOQ01
 import Proofs.Hilbert14NonReductive
 import Proofs.Hilbert15OQ01
 import Proofs.Hilbert15OQ02
+import Proofs.Hilbert15OQ02OQ03
 import Proofs.Hilbert15SchubertCalculus
 import Proofs.Hilbert15SchubertCalculusOQ01
 import Proofs.Hilbert16
