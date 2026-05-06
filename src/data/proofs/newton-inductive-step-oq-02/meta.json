@@ -42,10 +42,8 @@
       "Quadratic-nonneg reduction: both k=1 and k=n cases via linear_combination ring identity"
     ],
     "proofStrategy": "Induction on list length. Two boundary cases: k=1 (quadratic in new element x with discriminant from 2·C(n,2)=n·(n-1)) and k=n (quadratic via 2·C(n+1,n-1)=n·(n+1)). Interior cases: esymm_cross_condition plus newton_cleared_denom_inductive_step from AmgmInequalityOQ02OQ02.",
-    "axiomCount": 1,
-    "assumptions": [
-      "newton_cleared_denom_inductive_step: degree-6 polynomial nonnegativity in 9 variables (interior inductive step)"
-    ]
+    "axiomCount": 0,
+    "assumptions": []
   },
   "leanFile": {
     "imports": [
@@ -55,7 +53,7 @@
     "opens": ["List", "Nat"],
     "namespace": "NewtonInductiveStepOQ02",
     "lineCount": 584,
-    "axiomCount": 1,
+    "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
     "path": "Proofs/NewtonInductiveStepOQ02.lean",
