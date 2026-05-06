@@ -599,10 +599,10 @@ lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
     (hc : AvoidsMonochromaticTriangles c) :
     AvoidsMonochromaticTriangles (doubleColoring c) := by
   intro ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩
-  rcases Nat.lt_or_ge i.val n with hi | hi <;>
-  rcases Nat.lt_or_ge j.val n with hj | hj <;>
-  rcases Nat.lt_or_ge l.val n with hl | hl <;>
-  simp only [doubleColoring, dif_pos, *, Nat.not_lt.mpr] at hcij hcjl hcil
+  by_cases hi : i.val < n <;>
+  by_cases hj : j.val < n <;>
+  by_cases hl : l.val < n <;>
+  simp only [doubleColoring, dif_pos, dif_neg, *] at hcij hcjl hcil
   -- (T,T,T): all first half — triangle in c
   · apply hc; exact ⟨c (⟨i.val,hi⟩, ⟨j.val,hj⟩), ⟨i.val,hi⟩, ⟨j.val,hj⟩, ⟨l.val,hl⟩,
       fun h => hij (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
