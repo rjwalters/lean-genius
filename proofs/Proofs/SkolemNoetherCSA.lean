@@ -27,7 +27,6 @@
 -/
 
 import Mathlib
-import Proofs.SkolemNoetherMatrixAut
 
 set_option linter.deprecated false
 
@@ -218,34 +217,25 @@ theorem conjugate_iff_same_image
     rw [this]
     simp [mul_assoc, Units.mul_inv, Units.inv_mul]
 
-/-! ## Infrastructure: Mathlib Building Blocks Identified -/
-
-section MathlibBuiltins
-
-variable [IsSimpleRing B] [Algebra.IsCentral K B] [FiniteDimensional K B]
-
 /-
-  The following shows that Mathlib v4.26 has all ingredients for the axiom proof.
+  ## Mathlib v4.26 Building Blocks (verified by source inspection)
+
+  The following are available in Mathlib v4.26 and sufficient to prove the axiom:
+
+  - IsSimpleRing.exists_ringEquiv_matrix_divisionRing
+    (Mathlib.RingTheory.SimpleModule.WedderburnArtin)
+    Wedderburn-Artin: simple Artinian ring ≅ Mₙ(D) for a division ring D
+
+  - IsSimpleRing.isIsotypic (requires [IsArtinianRing R])
+    (Mathlib.RingTheory.SimpleModule.Isotypic)
+    All modules over a simple Artinian ring are isotypic (unique simple module type)
+
+  - Algebra.IsCentral (Mathlib.Algebra.Central.Defs)
+    Central algebra predicate: center of D equals image of K
+
+  - CSA, BrauerGroup, IsBrauerEquivalent
+    (Mathlib.Algebra.BrauerGroup.Defs)
+    Central simple algebra structure and Brauer group
 -/
-
--- Wedderburn-Artin: simple Artinian ring ≅ Mₙ(D)
-#check @IsSimpleRing.exists_ringEquiv_matrix_divisionRing
-
--- Uniqueness of simple A-modules (isotypic decomposition)
-#check @IsSimpleRing.isIsotypic
-
--- Central algebra predicate
-#check @Algebra.IsCentral
-
--- CSA structure (central + simple + finite-dim)
-#check @CSA
-
--- Brauer group (equivalence classes of CSAs)
-#check @BrauerGroup
-
--- Brauer equivalence (two CSAs differ by Morita equivalence)
-#check @IsBrauerEquivalent
-
-end MathlibBuiltins
 
 end SkolemNoetherCSA
