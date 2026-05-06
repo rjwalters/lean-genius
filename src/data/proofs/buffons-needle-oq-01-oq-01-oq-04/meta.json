@@ -17,12 +17,12 @@
       "gamma-function"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
     "assumptions": "2 structure-encoded assumptions in AngularAverageData: angularAvg_eq (the angular average on RP^{n-1} is proportional to norm with constant sigma_{n-2}/(n-1)), angularAvg_nonneg (non-negativity). These encode integration on the unit sphere which Mathlib lacks.",
-    "lineCount": 437,
-    "theoremCount": 27,
+    "lineCount": 568,
+    "theoremCount": 30,
     "definitionCount": 4,
     "originalContributions": [
       "sphereArea: sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) with n=0,1,2 computed",
@@ -41,7 +41,10 @@
       "sphereArea_five: sigma_5 = pi^3 (proved via Gamma(3) = 2)",
       "cauchyCrofton_five: c_5 = 3/8 (5D crossing constant)",
       "cauchyCrofton_six: c_6 = 16/(15*pi) (6D crossing constant)",
-      "cauchyCroftonConst_tendsto_zero: c_n -> 0 as n -> infinity (sorry: for Aristotle)"
+      "cauchyCrofton_recurrence: c_{n+2} = c_n * (n/(n+1)) for n >= 2",
+      "cauchyCrofton_even_sq_bound: c_{2(k+1)}^2 <= (2/pi)^2/(k+1) by induction",
+      "cauchyCrofton_odd_sq_bound: c_{2k+3}^2 <= (1/4)*2/(k+2) by induction",
+      "cauchyCroftonConst_tendsto_zero: c_n -> 0 as n -> infinity (proved via even/odd subsequence squeeze)"
     ]
   },
   "overview": {
@@ -53,7 +56,7 @@
       "**Sphere surface areas via Gamma**: The formula sigma_n = 2*pi^{(n+1)/2}/Gamma((n+1)/2) unifies diverse geometric constants: sigma_0 = 2 (two points), sigma_1 = 2*pi (circle), sigma_2 = 4*pi (sphere). The Gamma function recurrence gives sigma_n = 2*pi/(n-1) * sigma_{n-2}.",
       "**The angular average is the bridge**: The integral geometry formula reduces to a single analytic identity: the average of |<v, omega>| over the projective sphere. In 2D this is the integral from the parent proof: integral_0^pi |sin(theta + c)| dtheta = 2. In n dimensions, the constant 2 generalizes to sigma_{n-2}/(n-1).",
       "**Unit circle sanity check**: A unit circle (perimeter 2*pi) crossing a line grid with unit spacing should cross 4 times on average (2 entries + 2 exits). The formula gives c_2 * 2*pi / 1 = (2/pi) * 2*pi = 4.",
-      "**Sphere area recurrence proves the dimension ladder**: `sphereArea_recurrence` proves sigma_n = 2*pi/(n-1) * sigma_{n-2} using the Gamma function identity Gamma((n+1)/2) = ((n-1)/2) * Gamma((n-1)/2). The proof chains `Gamma_add_one`, `rpow_add`, `push_cast`, and `omega` — a non-trivial mix of analytic and algebraic reasoning. This recurrence is the key to computing c_n for all n: c_4 = 4/(3*pi), c_5 = 3/8, c_6 = 16/(15*pi), and in general c_n → 0 as n → ∞ (the `cauchyCroftonConst_tendsto_zero` sorry)."
+      "**Sphere area recurrence proves the dimension ladder**: `sphereArea_recurrence` proves sigma_n = 2*pi/(n-1) * sigma_{n-2} using the Gamma function identity Gamma((n+1)/2) = ((n-1)/2) * Gamma((n-1)/2). The proof chains `Gamma_add_one`, `rpow_add`, `push_cast`, and `omega` — a non-trivial mix of analytic and algebraic reasoning. This recurrence is the key to computing c_n for all n: c_4 = 4/(3*pi), c_5 = 3/8, c_6 = 16/(15*pi), and the limit c_n → 0 as n → ∞ is proved via even/odd subsequence squeeze bounds using the recurrence c_{n+2} = c_n * n/(n+1)."
     ]
   },
   "sections": [
@@ -94,27 +97,26 @@
       "title": "Part V-VI: Sphere Recurrence and Consistency Checks",
       "startLine": 267,
       "endLine": 394,
-      "summary": "sphereArea_recurrence proves sigma_n = 2*pi/(n-1) * sigma_{n-2}. Higher-dimensional crossing constants computed: c_5 = 3/8 (via sphereArea_three, sphereArea_four), c_6 = 16/(15*pi) (via sphereArea_four, sphereArea_five). Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3). cauchyCroftonConst_tendsto_zero (sorry) states c_n -> 0 as n -> infinity.",
-      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n-1} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_5 = 3/8$, $c_6 = 16/(15\\pi)$, $c_2 \\leq 1$. Limit: $c_n \\to 0$ as $n \\to \\infty$ (sorry)."
+      "summary": "sphereArea_recurrence proves sigma_n = 2*pi/(n-1) * sigma_{n-2}. Higher-dimensional crossing constants computed: c_5 = 3/8 (via sphereArea_three, sphereArea_four), c_6 = 16/(15*pi) (via sphereArea_four, sphereArea_five). Consistency: angular_constant_dim2 verifies sigma_0/1 = 2. unit_circle_crossings verifies a unit circle crosses 4 times. cauchyCrofton_le_one_dim2 proves c_2 <= 1 (using pi > 3). cauchyCroftonConst_tendsto_zero proves c_n -> 0 as n -> infinity via even/odd subsequence bounds.",
+      "mathContext": "$\\sigma_n = \\frac{2\\pi}{n-1} \\sigma_{n-2}$ (proved via $\\Gamma((n+1)/2) = \\frac{n-1}{2}\\Gamma((n-1)/2)$). Corollaries: $c_4 = 4/(3\\pi)$, $c_5 = 3/8$, $c_6 = 16/(15\\pi)$, $c_2 \\leq 1$. Limit: $c_n \\to 0$ as $n \\to \\infty$ (proved via recurrence $c_{n+2} = c_n \\cdot n/(n+1)$ and subsequence squeeze)."
     }
   ],
   "conclusion": {
-    "summary": "The Cauchy-Crofton formula is axiomatized for n dimensions, generalizing the 2D Buffon-Barbier result. The key innovation is expressing the expected crossings via the Cauchy-Crofton constant c_n, which depends on ratios of sphere surface areas. The 2D case c_2 = 2/pi is verified to recover the parent proof's result, and the 3D case c_3 = 1/2 is computed.",
-    "implications": "This formalization provides the dimensional framework for integral geometry in Lean. The angular averaging identity, once proved from sphere integration theory, would make the formalization complete. The sphere surface area computations are independently useful for geometric measure theory applications.",
+    "summary": "The Cauchy-Crofton formula is axiomatized for n dimensions, generalizing the 2D Buffon-Barbier result. All sorries are eliminated: cauchyCroftonConst_tendsto_zero is proved via even/odd subsequence squeeze bounds using the recurrence c_{n+2} = c_n * n/(n+1). The remaining 2 axioms encode the angular averaging identity on RP^{n-1}.",
+    "implications": "This formalization provides the dimensional framework for integral geometry in Lean. The angular averaging identity, once proved from sphere integration theory (Haar measure on S^{n-1}), would reduce the axiom count to 0. The sphere surface area computations are independently useful for geometric measure theory applications.",
     "openQuestions": [
       "Prove the angular averaging identity from sphere measure theory (requires Haar measure on S^{n-1})",
-      "Discharge the cauchyCroftonConst_tendsto_zero sorry: prove c_n -> 0 as n -> infinity (c_4 = 4/(3*pi), c_5 = 3/8, c_6 = 16/(15*pi) are now proved; the limit proof uses c_n^2 <= c_{n-1}*c_n = 2/((n-1)*pi))",
       "Formalize the Cauchy-Crofton formula for surfaces in R^n (codimension > 1 intersections)"
     ]
   },
   "leanFile": {
     "namespace": "CauchyCrofton",
-    "lineCount": 437,
+    "lineCount": 568,
     "axiomCount": 0,
-    "theoremCount": 27,
+    "theoremCount": 30,
     "definitionCount": 4,
     "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -133,5 +135,5 @@
       "description": "N-ball volumes use the same Gamma function framework as sphere surface areas"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
