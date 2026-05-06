@@ -143,9 +143,8 @@ theorem natDeg_notDvd_gal_of_insep {F : Type*} [Field F] {p : ℕ} [CharP F p]
     [hp : Fact p.Prime] {f : F[X]} (hf_irr : Irreducible f) (hf_insep : ¬f.Separable)
     (hf_deg : 1 < f.natDegree) :
     ¬(f.natDegree ∣ Nat.card f.Gal) := by
-  rw [insep_gal_trivial hf_irr hf_insep]
-  intro hdvd
-  exact absurd (Nat.le_of_dvd (by norm_num) hdvd) (by omega)
+  rw [insep_gal_trivial hf_irr hf_insep, Nat.dvd_one]
+  omega
 
 /-!
 ## Summary
