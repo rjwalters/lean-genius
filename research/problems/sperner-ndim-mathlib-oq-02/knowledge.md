@@ -411,8 +411,53 @@ exact Fintype.card_fin k.val
 
 ### Next Steps
 
-1. **Accept current axiom status**: main file has 1 axiom (sperner_panchromatic), gallery published
-2. **For axiom elimination**: redesign with variable-miss chains (complex, ~400 lines) OR
-3. **Prove n=1 case only** as demonstration (~60 lines, doesn't eliminate general axiom)
-4. Consider whether the overall architecture should be changed (OQ-02 answered modulo Sperner)
+→ Session 9 implemented n=0 and n=1 concrete proofs (see below).
+
+
+## Session 2026-05-06 (Session 9) — FreudCell annulus failure; n=0,1 proved
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: Major structural insight; n=0 and n=1 cases proved (companion file rewritten)
+
+### What I Did
+
+- Proved definitively that FreudCell triangulates an ANNULUS (not Δ²) for n=2, N=2
+- Rewrote companion file SpernerFreudenthalSimplex.lean with:
+  - `sperner_panchromatic_zero` (n=0): trivial, 0 sorries
+  - `sperner_panchromatic_one` (n=1): discrete IVT, 0 sorries
+- Removed all broken FreudCell code
+
+### Key Mathematical Findings
+
+**DEFINITIVE FAILURE**: For n=2, N=2, the 6 FreudCell cells triangulate an ANNULUS:
+- All 6 cells have pattern {corner, midpoint, midpoint}: ADF, AEF, BDE, BFE, CED, CFD
+- Centroid (2/3,2/3,2/3) lies in BOTH triangle ADF AND triangle BDE (overlapping)
+- Center triangle DEF = {(1,1,0),(1,0,1),(0,1,1)} is entirely MISSING
+- Euler characteristic: V(6)-E(12)+F(6) = 0 = annulus ≠ 1 = disk
+- Session 8's "18 cells for n=2, N=3" count was WRONG (overcounting by 2×)
+
+**n=0 proved**: Δ⁰ is a single point; trivial. 0 sorries.
+
+**n=1 proved via discrete IVT**: 
+- Grid: g(k) = (k/N, (N-k)/N) for k=0,...,N
+- c(0) = 1 (g(0)₀ = 0, spernerColor ≠ 0)
+- c(N) = 0 (g(N)₁ = 0, spernerColor ≠ 1)
+- K = max{k : c(k)=1} exists, K < N
+- c(K) = 1 → f(g(K))₁ ≤ g(K)₁
+- c(K+1) = 0 → f(g(K+1))₀ ≤ g(K+1)₀
+- Diameter: |g(K+1) l - g(K) l| = 1/N for l=0,1 ✓
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (complete rewrite: n=0,1 proved)
+
+### Next Steps
+
+1. **For n≥2**: Use `AbstractSimplicialData` from `SpernerSimplicialInstance.lean` (0 sorries)
+   - Define `topSimplices` as the correct standard Sperner triangulation (NOT FreudCell)
+   - Prove `pseudomanifold` condition (~100 lines)
+   - `toTriangulation` gives full CellComplex automatically
+   - Prove `boundary_doors_odd` by induction (boundary = (n-1)-dim case)
+2. **Gallery status**: main file stays at 1 axiom (correct); n=0,1 proved independently
+3. **Estimated remaining**: 300-400 lines for n≥2 general case
 
