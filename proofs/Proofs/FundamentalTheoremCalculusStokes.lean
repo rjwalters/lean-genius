@@ -208,38 +208,34 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
   rw [sub_eq_zero]
   -- Differentiability: f is C¹, fderiv ℝ f is C¹ (since f is C²)
   have hDiff : Differentiable ℝ f :=
-    hf.differentiable (show (1 : ℕ∞) ≤ 2 by norm_num)
+    hf.differentiable (by norm_num : (1 : ℕ∞) ≤ 2)
   have hFDiff : Differentiable ℝ (fderiv ℝ f) := by
     have h : ContDiff ℝ 1 (fderiv ℝ f) :=
-      hf.fderiv_right (show (1 : ℕ∞) + 1 ≤ 2 by norm_num)
+      hf.fderiv_right (by norm_num : (1 : ℕ∞) + 1 ≤ 2)
     exact h.differentiable le_rfl
-  -- Express y-partial as fderiv evaluation
+  -- y-partial via HasFDerivAt.prod + .hasDerivAt (HasDerivAt.prod unavailable)
   have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>
     ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt p.2
-      ((hasDerivAt_const p.2 x).prod (hasDerivAt_id p.2)) rfl).deriv
-  -- Express x-partial as fderiv evaluation
+      ((hasFDerivAt_const p.2 x).prod (hasFDerivAt_id ℝ p.2)).hasDerivAt rfl).deriv
   have hDX : ∀ y, deriv (fun x => f (x, y)) p.1 = fderiv ℝ f (p.1, y) (1, 0) := fun y =>
     ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt p.1
-      ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 y)) rfl).deriv
+      ((hasFDerivAt_id ℝ p.1).prod (hasFDerivAt_const p.1 y)).hasDerivAt rfl).deriv
   simp_rw [hDY, hDX]
-  -- Second partial: d/dx[fderiv ℝ f (x, p.2)] via the embedding x ↦ (x, p.2)
   have hStep1 : HasDerivAt (fun x => fderiv ℝ f (x, p.2))
       (fderiv ℝ (fderiv ℝ f) p (1, 0)) p.1 :=
     (hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
-      ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 p.2)) rfl
+      ((hasFDerivAt_id ℝ p.1).prod (hasFDerivAt_const p.1 p.2)).hasDerivAt rfl
   have hStep2 : HasDerivAt (fun y => fderiv ℝ f (p.1, y))
       (fderiv ℝ (fderiv ℝ f) p (0, 1)) p.2 :=
     (hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
-      ((hasDerivAt_const p.2 p.1).prod (hasDerivAt_id p.2)) rfl
-  -- Apply evaluation at (0, 1) and (1, 0) respectively
-  -- HasDerivAt.clm_apply: if c has deriv c' and u has deriv u', then (fun x => c x (u x)) has deriv c'(u x) + c(x)(u')
+      ((hasFDerivAt_const p.2 p.1).prod (hasFDerivAt_id ℝ p.2)).hasDerivAt rfl
   have hDer2XY : HasDerivAt (fun x => fderiv ℝ f (x, p.2) (0, 1))
       (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 := by
-    have h := hStep1.clm_apply (hasDerivAt_const p.1 (0, 1 : ℝ × ℝ))
+    have h := hStep1.clm_apply (hasDerivAt_const p.1 ((0, 1) : ℝ × ℝ))
     simp only [map_zero, add_zero] at h; exact h
   have hDer2YX : HasDerivAt (fun y => fderiv ℝ f (p.1, y) (1, 0))
       (fderiv ℝ (fderiv ℝ f) p (0, 1) (1, 0)) p.2 := by
-    have h := hStep2.clm_apply (hasDerivAt_const p.2 (1, 0 : ℝ × ℝ))
+    have h := hStep2.clm_apply (hasDerivAt_const p.2 ((1, 0) : ℝ × ℝ))
     simp only [map_zero, add_zero] at h; exact h
   rw [hDer2XY.deriv, hDer2YX.deriv]
   -- Symmetry: IsSymmSndFDerivAt = ∀ v w, fderiv(fderiv f)(p)(v)(w) = fderiv(fderiv f)(p)(w)(v)
