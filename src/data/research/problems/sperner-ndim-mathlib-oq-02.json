@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: axiomCount 2\u21921; FreudCell approach broken for n\u22653 (constant-miss gives wrong adjacency); 1 companion sorry fixed; general sperner_panchromatic remains as axiom",
+    "progressSummary": "PROGRESS: n=0 and n=1 cases of sperner_panchromatic proved in companion file (0 sorries each). Main file: 1 axiom for general n. FreudCell definitively abandoned (wrong topology). Next: AbstractSimplicialData approach for n>=2.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -39,7 +39,9 @@
       "spernerColor_ne_of_zero: coloring avoids faces (proved, the key Sperner condition)",
       "brouwer_fixed_point_simplex: Brouwer for \u0394\u207f from 2 axioms (proved, 0 sorry)",
       "fixed_point_from_approx: proved compactness convergence theorem (IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique) in SpernerNDimMathlibOQ02.lean:204-293",
-      "Fixed perm_preimage_lt_card sorry: proved |{j<k}|=k.val via Fin.castLE bijection + Fintype.card_fin"
+      "Fixed perm_preimage_lt_card sorry: proved |{j<k}|=k.val via Fin.castLE bijection + Fintype.card_fin",
+      "sperner_panchromatic_zero: n=0 case proved (trivial), 0 sorries, SpernerFreudenthalSimplex.lean",
+      "sperner_panchromatic_one: n=1 case proved via discrete IVT (Finset.max' transition), 0 sorries, SpernerFreudenthalSimplex.lean"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -51,16 +53,19 @@
       "Lean API: congr step needs simp [Function.comp, Pi.add_apply, Pi.sub_apply] to unfold function composition before ring",
       "FreudCell constant-miss triangulation is NOT a pseudomanifold for n>=3: face-0 of (base=(0,0,0,4),id,n=3) is geometrically interior but claimed as boundary by the formula",
       "Cell count formula: C(N,n)*(n+1)! cells total per FreudCell; for n=2,N=3 this is 18 (correct), but face-0 adjacency requires variable-miss steps for n>=3",
-      "n=1 case of sperner_panchromatic directly provable via discrete IVT (~60 lines): c(0)=1, c(N)=0, find last transition"
+      "n=1 case of sperner_panchromatic directly provable via discrete IVT (~60 lines): c(0)=1, c(N)=0, find last transition",
+      "FreudCell constant-miss triangulation is definitively WRONG: triangulates an annulus (\u03c7=0) for n=2,N=2 \u2014 centroid lies in overlapping cells, center triangle DEF missing entirely"
     ],
     "mathlibGaps": [
       "Grid triangulation of \u0394\u207f as a CellComplex (needed for sperner_near_fixed_point axiom \u2014 significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "Prove swapAdj_nodup, swapAdj_prefixSet_eq, swapAdj_ne_self to eliminate OQ-01 axioms (Aristotle candidates)",
-      "Build the grid CellComplex for \u0394\u207f to eliminate sperner_near_fixed_point axiom",
-      "Use Mathlib compactness infrastructure (IsCompact.tendsto_subseq) to prove fixed_point_from_approx"
+      "Define correct AbstractSimplicialData topSimplices for standard Sperner triangulation (NOT FreudCell)",
+      "Prove pseudomanifold condition for standard Sperner triangulation (~100 lines)",
+      "Use SpernerSimplicialInstance.lean toTriangulation (adj axioms already proved)",
+      "Prove boundary_doors_odd by induction: boundary of n-dim = (n-1)-dim case",
+      "Apply Triangulation.sperner + extract real coordinates with diameter n/N"
     ]
   },
   "tags": [
