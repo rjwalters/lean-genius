@@ -29,17 +29,17 @@ For vector field F = (Q, -P), the divergence theorem gives:
 where the last equality uses the outward normal relation (dy, -dx) for a positively-oriented
 boundary. This IS Green's theorem.
 
-## Status: 0 sorries, 2 axioms (general TypeI and Stokes framework connection)
+## Status: 0 sorries, 1 axiom (Mathlib gap: curved-boundary Stokes)
 
 Theorems proved:
 - `greens_theorem_rect_via_stokes`: Green's theorem for rectangles via Mathlib's divergence theorem
-- `rect_greens_consistent_with_typeI`: Consistency with GreensTheoremOQ03's TypeI approach
 - `boundary_integral_decomposition`: Boundary integral = P-boundary + Q-boundary
-- `stokes_implies_green_scalar`: Abstract form: divergence theorem implies Green's theorem
+- `boundary_eq_line_integral_parts`: Line integral parts consolidate
+- `rect_greens_consistent_with_typeI`: Consistency with GreensTheoremOQ03's TypeI approach
+- `greens_theorem_typeI_via_stokes`: TypeI via OQ-03 axiom (delegates)
 
 Axioms:
-- `greens_theorem_typeI_via_stokes`: General TypeI via Stokes (needs curved-boundary Stokes in Mathlib)
-- `stokes_framework_equivalence`: Formal equivalence of Stokes and Green's theorem formalisms
+- `stokes_for_curved_domains_not_in_mathlib_4_26`: Documents Mathlib gap — general Stokes for piecewise-smooth curved 2D boundaries not yet in Mathlib v4.26.0
 
 Tags: green, stokes, divergence-theorem, typeI, rectangle
 -/
