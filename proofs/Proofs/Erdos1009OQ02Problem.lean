@@ -265,3 +265,56 @@ lemma Clique4.edges_subset_edgeFinset {G : SimpleGraph V} [DecidableRel G.Adj]
 lemma Clique4.edges_nonempty {G : SimpleGraph V} (K : Clique4 G) :
     K.edges.Nonempty :=
   ⟨s(K.a, K.b), by simp [Clique4.edges]⟩
+
+/-- The K₄ edge set has exactly 6 elements: one for each pair from {a,b,c,d}. -/
+lemma Clique4.edges_card {G : SimpleGraph V} (K : Clique4 G) : K.edges.card = 6 := by
+  obtain ⟨hab, hac, had, hbc, hbd, hcd⟩ := K.distinct
+  -- Prove the 15 pairwise distinctness conditions for the 6 edges
+  have ne12 : s(K.a, K.b) ≠ s(K.a, K.c) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨_, h2⟩ | ⟨h1, _⟩; exact hbc h2; exact hac h1
+  have ne13 : s(K.a, K.b) ≠ s(K.a, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨_, h2⟩ | ⟨h1, _⟩; exact hbd h2; exact had h1
+  have ne14 : s(K.a, K.b) ≠ s(K.b, K.c) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hab h1; exact hac h1
+  have ne15 : s(K.a, K.b) ≠ s(K.b, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hab h1; exact had h1
+  have ne16 : s(K.a, K.b) ≠ s(K.c, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hac h1; exact had h1
+  have ne23 : s(K.a, K.c) ≠ s(K.a, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨_, h2⟩ | ⟨h1, _⟩; exact hcd h2; exact had h1
+  have ne24 : s(K.a, K.c) ≠ s(K.b, K.c) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hab h1; exact hac h1
+  have ne25 : s(K.a, K.c) ≠ s(K.b, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hab h1; exact had h1
+  have ne26 : s(K.a, K.c) ≠ s(K.c, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hac h1; exact had h1
+  have ne34 : s(K.a, K.d) ≠ s(K.b, K.c) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hab h1; exact hac h1
+  have ne35 : s(K.a, K.d) ≠ s(K.b, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hab h1; exact had h1
+  have ne36 : s(K.a, K.d) ≠ s(K.c, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hac h1; exact had h1
+  have ne45 : s(K.b, K.c) ≠ s(K.b, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨_, h2⟩ | ⟨h1, _⟩; exact hcd h2; exact hbd h1
+  have ne46 : s(K.b, K.c) ≠ s(K.c, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hbc h1; exact hbd h1
+  have ne56 : s(K.b, K.d) ≠ s(K.c, K.d) := by
+    intro h; rcases Sym2.eq_iff.mp h with ⟨h1, _⟩ | ⟨h1, _⟩; exact hbc h1; exact hbd h1
+  -- Build not-mem witnesses bottom-up
+  have nm5 : s(K.b, K.d) ∉ ({s(K.c, K.d)} : Finset (Sym2 V)) := by
+    simp [Finset.mem_singleton, ne56]
+  have nm4 : s(K.b, K.c) ∉ insert s(K.b, K.d) {s(K.c, K.d)} := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne45, ne46⟩
+  have nm3 : s(K.a, K.d) ∉ insert s(K.b, K.c) (insert s(K.b, K.d) {s(K.c, K.d)}) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne34, ne35, ne36⟩
+  have nm2 : s(K.a, K.c) ∉ insert s(K.a, K.d) (insert s(K.b, K.c)
+      (insert s(K.b, K.d) {s(K.c, K.d)})) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨ne23, ne24, ne25, ne26⟩
+  have nm1 : s(K.a, K.b) ∉ insert s(K.a, K.c) (insert s(K.a, K.d) (insert s(K.b, K.c)
+      (insert s(K.b, K.d) {s(K.c, K.d)}))) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+    exact ⟨ne12, ne13, ne14, ne15, ne16⟩
+  simp only [Clique4.edges,
+    Finset.card_insert_of_notMem nm1, Finset.card_insert_of_notMem nm2,
+    Finset.card_insert_of_notMem nm3, Finset.card_insert_of_notMem nm4,
+    Finset.card_insert_of_notMem nm5, Finset.card_singleton]
