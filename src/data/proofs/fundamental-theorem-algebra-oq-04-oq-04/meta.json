@@ -20,7 +20,7 @@
     "sorries": 0,
     "axiomCount": 2,
     "assumptions": "Two axioms: (1) Xn_sub_p_irred_Qp — X^n - p is irreducible over ℚ_p (Newton polygon: single segment slope -1/n, gcd(1,n)=1; equivalently Eisenstein at the maximal ideal of ℤ_p). (2) padic_alg_closure_infinite_dim — the algebraic closure of ℚ_p is not finite-dimensional over ℚ_p (follows from unbounded extension degrees, but connecting to Module.Finite on AlgebraicClosure requires additional infrastructure).",
-    "lineCount": 215,
+    "lineCount": 214,
     "theoremCount": 14,
     "definitionCount": 0,
     "originalContributions": [
@@ -142,10 +142,33 @@
       "mathContext": "The real/p-adic dichotomy in one theorem: real algebraic closure is degree 2; p-adic algebraic closure is infinite-dimensional."
     }
   ],
-  "openQuestions": [
-    "Can the Newton polygon argument (Xn_sub_p_irred_Qp axiom) be formally proved using Mathlib's PadicInt as a DVR and the DVR Gauss lemma?",
-    "Formalize Krasner's lemma: if α is separable algebraic over ℚ_p and |α - β|_p is small enough, then ℚ_p(α) = ℚ_p(β) — giving the completion ℂ_p = (ℚ̄_p)^∧ is algebraically closed",
-    "Compare with the function-field case: for F_q((t)), the algebraic closure also has infinite degree, and the Puiseux series give extensions X^n - t"
+  "conclusion": {
+    "summary": "The formalization proves the p-adic contrast to the Fundamental Theorem of Algebra. The machine-checked core result is [AdjoinRoot(X^n - p):ℚ_p] = n for all n ≥ 1, established via the AdjoinRoot power basis construction. This gives ℚ_p field extensions of every degree, which axiomatically implies [ℚ̄_p:ℚ_p] = ∞. The stark contrast with [ℂ:ℝ] = 2 — captured in degree_contrast_summary — reflects the deep structural difference between real-closed fields (Artin-Schreier) and p-adic fields.",
+    "implications": "This result sits at the confluence of local field theory, algebraic closure theory, and Lean formalization. The irreducibility of X^n - p over ℚ_p (Newton polygon argument) is a fundamental tool for constructing totally ramified extensions of p-adic fields, appearing throughout local class field theory and the theory of formal groups. The contrast between real and p-adic algebraic closures underlies the distinction between archimedean and non-archimedean completions of ℚ, a foundational dichotomy in number theory. In the context of Lean formalization, this entry demonstrates that AdjoinRoot.powerBasis can verify finite extension degrees without requiring irreducibility — a useful separation of concerns.",
+    "openQuestions": [
+      "Can the Newton polygon argument (Xn_sub_p_irred_Qp axiom) be formally proved using Mathlib's PadicInt as a DVR and the DVR Gauss lemma?",
+      "Formalize Krasner's lemma: if α is separable algebraic over ℚ_p and |α - β|_p is small enough, then ℚ_p(α) = ℚ_p(β) — giving the completion ℂ_p = (ℚ̄_p)^∧ is algebraically closed",
+      "Compare with the function-field case: for F_q((t)), the algebraic closure also has infinite degree, and the Puiseux series give extensions X^n - t",
+      "What is the structure of Gal(ℚ̄_p/ℚ_p)? The absolute Galois group of ℚ_p is much better understood than that of ℚ — can this be partially formalized?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "fundamental-theorem-algebra-oq-04",
+      "relationship": "parent entry: proves [ℂ:ℝ] = 2 and C is the unique algebraic closure of ℝ — this entry proves the p-adic analogue has infinite degree"
+    },
+    {
+      "id": "fundamental-theorem-algebra",
+      "relationship": "grandparent: the fundamental theorem itself, proving ℂ is algebraically closed (used via Complex.isAlgClosed in the parent)"
+    },
+    {
+      "id": "nth-root-irrational-oq-01",
+      "relationship": "sibling: provides eisenstein_X_pow_sub_prime used to prove Xn_sub_p_irred_Q"
+    },
+    {
+      "id": "triangle-inequality-oq-02",
+      "relationship": "related: formalizes the p-adic ultrametric inequality, demonstrating ℚ_[p] infrastructure in Lean"
+    }
   ],
   "leanFile": {
     "filePath": "Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean",
@@ -157,7 +180,7 @@
       "Polynomial"
     ],
     "namespace": "PadicAlgClosureContrast",
-    "lineCount": 215,
+    "lineCount": 214,
     "axiomCount": 2,
     "sorryCount": 0,
     "theoremCount": 14,
