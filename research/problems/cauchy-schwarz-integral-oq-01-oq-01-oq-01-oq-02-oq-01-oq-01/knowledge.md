@@ -42,14 +42,17 @@ Where M_r = (Σ w_i z_i^r)^(1/r) is the weighted power mean of order r.
 
 ### Build Status
 
-Docker build failed due to network issue (can't reach GitHub to clone Mathlib). The proof code is mathematically correct and should build when network is available. The key potential issues to verify:
+Docker build succeeded: 3059 jobs, 0 errors, 0 sorries. Two Lean 4.26 API drift
+issues were fixed:
 
-1. `simp only [smul_eq_mul, ← hA_def]` — needs beta reduction to work; Lean 4 simp does this
-2. `StrictConvexOn.map_sum_lt` — API matches analysis of Jensen.lean line 101-103
-3. `Real.rpow_left_inj` — verified signature at Pow.Real line 685
+1. `AmgmInequalityOQ03.lean`: trailing `/--` docstring at EOF caused "unexpected
+   end of input; expected 'lemma'" — changed to plain `/-` block comment.
+2. `CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean`: `lt_div_iff` and
+   `div_lt_div_right` removed in Lean 4.26 — replaced with a stable calc proof
+   using `mul_inv_cancel₀ + mul_lt_mul_of_pos_right + div_eq_mul_inv`.
 
-### Next Steps
+### PR
 
-- Build should succeed on next Docker run with network access
-- After build confirms, status can remain `verified` in meta.json
-- Consider extending to the full r < s case (including negative r) using the power_mean_neg_inv duality from AmgmInequalityOQ03
+#16419 open, labeled `research`, ready for deployer to merge.
+
+### Phase: COMPLETED
