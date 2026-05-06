@@ -75,22 +75,161 @@ def IsInertPrime (z : GaussianInt) : Prop :=
 def IsSplitPrime (z : GaussianInt) : Prop :=
   ∃ p : ℕ, p.Prime ∧ p % 4 = 1 ∧ z.norm = p
 
-/-- The complete classification of Gaussian primes.
-    This is a deep theorem combining Fermat's two-square theorem with
-    the structure of the UFD ℤ[i]. We axiomatize it here.
+-- Helper: no sum of two squares is ≡ 3 mod 4, so no Gaussian integer has norm ≡ 3 mod 4
+private lemma norm_natAbs_ne_three_mod_four {z : GaussianInt} {p : ℕ}
+    (hmod : p % 4 = 3) (h : z.norm.natAbs = p) : False := by
+  have heq : z.re.natAbs ^ 2 + z.im.natAbs ^ 2 = p := by
+    have h1 := GaussianInt.natAbs_norm_eq z
+    simp only [sq] at *; linarith
+  have key : ∀ a b : ZMod 4, a ^ 2 + b ^ 2 ≠ (p : ZMod 4) := by
+    erw [← ZMod.natCast_mod p 4, hmod]; decide
+  apply key (z.re.natAbs : ZMod 4) (z.im.natAbs : ZMod 4)
+  calc (z.re.natAbs : ZMod 4) ^ 2 + (z.im.natAbs : ZMod 4) ^ 2
+      = ((z.re.natAbs ^ 2 + z.im.natAbs ^ 2 : ℕ) : ZMod 4) := by push_cast; ring
+    _ = (p : ZMod 4) := by exact_mod_cast congr_arg (Nat.cast : ℕ → ZMod 4) heq
 
-    Tractable from Mathlib (~50-100 line proof). Relevant API:
-    - `Mathlib.NumberTheory.Zsqrtd.QuadraticReciprocity`:
-      `GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime` covers the
-      inert case (p ≡ 3 mod 4).
-    - `Mathlib.NumberTheory.SumTwoSquares`:
-      `Nat.Prime.sq_add_sq` (Fermat 2-square, p ≡ 1 mod 4) and
-      `GaussianInt.sq_add_sq_of_nat_prime_of_not_irreducible`.
-    - `Zsqrtd.norm_mul`, `Zsqrtd.norm_eq_mul_conj` for the multiplicative
-      structure of the norm.
-    - `GaussianInt.natAbs_norm_eq`: norm(z) = re² + im². -/
-axiom gaussian_prime_classification (z : GaussianInt) :
-    IsGaussianPrime z ↔ IsNorm2Prime z ∨ IsInertPrime z ∨ IsSplitPrime z
+-- Helper: if z is prime and z | ↑n, then z | ↑p for some rational prime p | n
+private lemma prime_dvd_rat_prime {z : GaussianInt} (hz : Prime z) (n : ℕ)
+    (hn0 : n ≠ 0) (hn1 : n ≠ 1) (hdvd : z ∣ (n : GaussianInt)) :
+    ∃ p : ℕ, p.Prime ∧ z ∣ (p : GaussianInt) := by
+  have h_prod : ((n.primeFactorsList).map (Nat.cast : ℕ → GaussianInt)).prod = (n : GaussianInt) := by
+    rw [← Nat.cast_list_prod, Nat.prod_primeFactorsList hn0]
+  rw [← h_prod] at hdvd
+  have key : ∀ (l : List ℕ), z ∣ (l.map (Nat.cast : ℕ → GaussianInt)).prod →
+      ∃ q ∈ l, z ∣ (q : GaussianInt) := by
+    intro l
+    induction l with
+    | nil => simp; intro h; exact absurd (isUnit_of_dvd_one h) hz.not_unit
+    | cons a l' ih =>
+      intro hdvd'
+      simp only [List.map_cons, List.prod_cons] at hdvd'
+      rcases hz.dvd_or_dvd hdvd' with ha | hl
+      · exact ⟨a, List.mem_cons_self _ _, ha⟩
+      · obtain ⟨q, hq_mem, hq_dvd⟩ := ih hl
+        exact ⟨q, List.mem_cons_of_mem _ hq_mem, hq_dvd⟩
+  obtain ⟨p, hp_mem, hp_dvd⟩ := key n.primeFactorsList hdvd
+  exact ⟨p, (Nat.mem_primeFactorsList hn0 |>.mp hp_mem).1, hp_dvd⟩
+
+-- Helper: Gaussian integer with norm = rational prime p is itself a Gaussian prime
+private lemma gauss_prime_of_prime_norm {z : GaussianInt} {p : ℕ}
+    (hp : p.Prime) (hn : z.norm = (p : ℤ)) : Prime z := by
+  rw [← irreducible_iff_prime]
+  refine ⟨?_, fun a b hab => ?_⟩
+  · rw [← Zsqrtd.norm_eq_one_iff' (by norm_num : (-1 : ℤ) ≤ 0), hn]
+    exact_mod_cast hp.one_lt.ne'
+  · have hnorm_eq : a.norm * b.norm = (p : ℤ) := by
+      have h1 := Zsqrtd.norm_mul a b; rw [← hab] at h1; exact h1.symm.trans hn
+    have hna := GaussianInt.norm_nonneg a
+    have hnb := GaussianInt.norm_nonneg b
+    have hnat : a.norm.natAbs * b.norm.natAbs = p := by
+      rw [← Int.natAbs_mul, hnorm_eq]; simp
+    rcases hp.eq_one_or_self_of_dvd a.norm.natAbs ⟨b.norm.natAbs, hnat.symm⟩ with h1 | h2
+    · left; rwa [Zsqrtd.norm_eq_one_iff]
+    · right
+      have hb1 : b.norm.natAbs = 1 := by
+        have h_eq : p * b.norm.natAbs = p := by rw [← h2, hnat]
+        omega
+      rwa [Zsqrtd.norm_eq_one_iff]
+
+-- Helper: Gaussian integer with norm = p² (p prime, p ≡ 3 mod 4) is a Gaussian prime
+private lemma gauss_prime_of_inert {z : GaussianInt} {p : ℕ}
+    (hp : p.Prime) (hmod : p % 4 = 3) (hn : z.norm = (p : ℤ) ^ 2) : Prime z := by
+  rw [← irreducible_iff_prime]
+  refine ⟨?_, fun a b hab => ?_⟩
+  · rw [← Zsqrtd.norm_eq_one_iff' (by norm_num : (-1 : ℤ) ≤ 0), hn]
+    have : 1 < (p : ℤ) ^ 2 := by have := hp.one_lt; nlinarith
+    exact_mod_cast this.ne'
+  · have hnorm_eq : a.norm * b.norm = (p : ℤ) ^ 2 := by
+      have h1 := Zsqrtd.norm_mul a b; rw [← hab] at h1; exact h1.symm.trans hn
+    have hna := GaussianInt.norm_nonneg a
+    have hnb := GaussianInt.norm_nonneg b
+    have hnat : a.norm.natAbs * b.norm.natAbs = p ^ 2 := by
+      rw [← Int.natAbs_mul, hnorm_eq]; simp [Int.natAbs_pow]
+    have ha_dvd : a.norm.natAbs ∣ p ^ 2 := ⟨b.norm.natAbs, hnat.symm⟩
+    rw [Nat.dvd_prime_pow hp] at ha_dvd
+    obtain ⟨k, hk2, hk⟩ := ha_dvd
+    interval_cases k
+    · simp only [pow_zero] at hk; left; rwa [Zsqrtd.norm_eq_one_iff]
+    · simp only [pow_one] at hk; exact (norm_natAbs_ne_three_mod_four hmod hk).elim
+    · right
+      have hb1 : b.norm.natAbs = 1 := by
+        have : p ^ 2 * b.norm.natAbs = p ^ 2 := by rw [← hk, hnat]
+        have h_pos : 0 < p ^ 2 := Nat.pos_pow_of_pos 2 hp.pos
+        omega
+      rwa [Zsqrtd.norm_eq_one_iff]
+
+/-- The complete classification of Gaussian primes:
+    π ∈ ℤ[i] is prime iff its norm is 2, or p² (p ≡ 3 mod 4 rational prime),
+    or p (p ≡ 1 mod 4 rational prime). Proved from Mathlib's Fermat two-square
+    theorem and the characterization of inert rational primes. -/
+theorem gaussian_prime_classification (z : GaussianInt) :
+    IsGaussianPrime z ↔ IsNorm2Prime z ∨ IsInertPrime z ∨ IsSplitPrime z := by
+  unfold IsGaussianPrime IsNorm2Prime IsInertPrime IsSplitPrime
+  constructor
+  · intro hz
+    -- z | ↑(z.norm.natAbs) via z * star z = norm z
+    have hn0 : z.norm.natAbs ≠ 0 := by
+      simp [Int.natAbs_eq_zero, GaussianInt.norm_eq_zero, hz.ne_zero]
+    have hn1 : z.norm.natAbs ≠ 1 := by
+      rw [Ne, Zsqrtd.norm_eq_one_iff]; exact hz.not_unit
+    have hdvd_norm : z ∣ (z.norm.natAbs : GaussianInt) := by
+      rw [GaussianInt.natCast_natAbs_norm]
+      exact ⟨star z, (Zsqrtd.norm_eq_mul_conj z).symm⟩
+    -- Find rational prime p with z | ↑p
+    obtain ⟨p, hp, hdvd_p⟩ := prime_dvd_rat_prime hz z.norm.natAbs hn0 hn1 hdvd_norm
+    haveI : Fact p.Prime := ⟨hp⟩
+    by_cases hp3 : p % 4 = 3
+    · -- p ≡ 3 mod 4: ↑p is Gaussian prime, z ~ ↑p, norm z = p²
+      have hp_gauss : Prime (p : GaussianInt) :=
+        GaussianInt.prime_iff_mod_four_eq_three_of_nat_prime p |>.mpr hp3
+      have h_assoc := hz.associated_of_dvd hp_gauss hdvd_p
+      right; left
+      exact ⟨p, hp, hp3, by
+        rw [Zsqrtd.norm_eq_of_associated (by norm_num : (-1 : ℤ) ≤ 0) h_assoc,
+            Zsqrtd.norm_natCast]; ring⟩
+    · -- p % 4 ≠ 3: use Fermat to factor ↑p = ⟨a,b⟩ * ⟨a,-b⟩
+      obtain ⟨a, b, hab⟩ := Nat.Prime.sq_add_sq hp hp3
+      -- norm of ⟨a,b⟩ equals p
+      have h_ab_norm : (⟨(a : ℤ), (b : ℤ)⟩ : GaussianInt).norm = (p : ℤ) := by
+        have h1 : (⟨(a : ℤ), (b : ℤ)⟩ : GaussianInt).norm.natAbs = p := by
+          rw [GaussianInt.natAbs_norm_eq]; simp only [Int.natAbs_ofNat, sq] at *; linarith
+        rw [← GaussianInt.abs_natCast_norm]; exact_mod_cast h1
+      have h_ab_prime := gauss_prime_of_prime_norm hp h_ab_norm
+      -- ↑p = ⟨a,b⟩ * ⟨a,-b⟩
+      have hab_int : (a : ℤ) ^ 2 + (b : ℤ) ^ 2 = (p : ℤ) := by exact_mod_cast hab
+      have h_factor : (p : GaussianInt) = ⟨(a : ℤ), (b : ℤ)⟩ * ⟨(a : ℤ), -(b : ℤ)⟩ := by
+        ext
+        · simp only [Zsqrtd.mul_re]; push_cast; nlinarith
+        · simp only [Zsqrtd.mul_im]; push_cast; ring
+      rw [h_factor] at hdvd_p
+      have h_neg_norm : (⟨(a : ℤ), -(b : ℤ)⟩ : GaussianInt).norm = (p : ℤ) := by
+        have h1 : (⟨(a : ℤ), -(b : ℤ)⟩ : GaussianInt).norm.natAbs = p := by
+          rw [GaussianInt.natAbs_norm_eq]; simp only [Int.natAbs_ofNat, Int.natAbs_neg, sq] at *
+          linarith
+        rw [← GaussianInt.abs_natCast_norm]; exact_mod_cast h1
+      have h_neg_prime := gauss_prime_of_prime_norm hp h_neg_norm
+      -- In either case, norm z = p
+      have h_norm_z : z.norm = (p : ℤ) := by
+        rcases hz.dvd_or_dvd hdvd_p with h1 | h2
+        · exact (Zsqrtd.norm_eq_of_associated (by norm_num : (-1 : ℤ) ≤ 0)
+              (hz.associated_of_dvd h_ab_prime h1)).trans h_ab_norm
+        · exact (Zsqrtd.norm_eq_of_associated (by norm_num : (-1 : ℤ) ≤ 0)
+              (hz.associated_of_dvd h_neg_prime h2)).trans h_neg_norm
+      by_cases hp2 : p = 2
+      · left; simp [h_norm_z, hp2]
+      · right; right
+        have hp1 : p % 4 = 1 := by
+          have hodd : p % 2 = 1 := Nat.odd_iff.mp (hp.odd_of_ne_two hp2)
+          have h4 : (p % 4) % 2 = 1 := by
+            rw [Nat.mod_mod_of_dvd p (by norm_num : 2 ∣ 4)]; exact hodd
+          omega
+        exact ⟨p, hp, hp1, h_norm_z⟩
+  · -- Backward: norm classification → Prime z
+    intro h
+    rcases h with hn2 | ⟨p, hp, hmod3, hnp2⟩ | ⟨p, hp, _, hnp⟩
+    · exact gauss_prime_of_prime_norm (by norm_num) hn2
+    · exact gauss_prime_of_inert hp hmod3 hnp2
+    · exact gauss_prime_of_prime_norm hp hnp
 
 /-
 # Part 3: Concrete Examples of Gaussian Primes
@@ -335,9 +474,11 @@ def HigherDimensionalMoat (n : ℕ) : Prop :=
 - Steps with norm ≤ 26 (Tsuchimura, 2005): NO  [strongest known]
 - Gethner et al.: norm ≤ 16 (step size 4): NO
 
-**Axioms (2):**
-- gaussian_prime_classification: the full characterization of Gaussian primes
-- tsuchimura: computational verification (no walk ≤ √26)
+**Axioms (1):**
+- tsuchimura: computational verification (no walk ≤ √26) [appropriate to axiomatize]
+
+**Theorems proved this session:**
+- gaussian_prime_classification: proved from Mathlib (Fermat 2-square + inert prime characterization)
 
 **Proved from axioms:**
 - jordan_rabung: derives from tsuchimura (strictly stronger)
