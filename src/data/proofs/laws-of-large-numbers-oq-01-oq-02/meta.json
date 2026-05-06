@@ -64,43 +64,86 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "abstract": "Formalizes the Marcinkiewicz-Zygmund (1937) rate theorem for the strong law of large numbers under finite r-th moment conditions (r ∈ (1,2)). Establishes the rate hierarchy: L²-distributions converge at the CLT rate n^{1/2} (Gaussian limit), L^r-distributions with r∈(1,2) converge at rate n^{1/r} (α-stable limit), and L¹-distributions converge at Kolmogorov rate n^1 (point mass limit). Applied to Pareto(α) with α∈(1,2) to give the complete convergence picture.",
-    "mathematicalContent": "The Marcinkiewicz-Zygmund theorem quantifies the convergence rate of sample means for heavy-tailed distributions. The key insight is that finite r-th moment (1 < r < 2) forces the centered partial sums to be o(n^{1/r}), a strictly tighter bound than Kolmogorov's o(n) but weaker than CLT's O(√n). For Pareto(α) distributions, the optimal exponent is exactly α, realized by the stable CLT.",
-    "sections": [
-      {
-        "title": "Section I: Lᵣ Moment Conditions",
-        "description": "Defines IsLr using Memℒp, proves L² ⊆ Lʳ for r ≤ 2 and Lʳ ⊆ L¹ for r ≥ 1 in probability spaces."
-      },
-      {
-        "title": "Section II: Marcinkiewicz-Zygmund SLLN",
-        "description": "States the M-Z rate theorem as an axiom: n^{-1/r}·(Sₙ−nμ) → 0 a.s. for i.i.d. X with E[|X|^r] < ∞, r∈(1,2)."
-      },
-      {
-        "title": "Section III: Rate Consequences",
-        "description": "Proves M-Z implies Kolmogorov SLLN; proves higher moments give tighter normalization bounds; proves ordering n^{1/r₂} < n^{1/r₁} for r₁ < r₂."
-      },
-      {
-        "title": "Section IV: Pareto Example",
-        "description": "Defines paretoSurvival, states pareto_in_lr_iff axiom, proves finite mean, infinite variance, and M-Z applicability for Pareto(α) with α∈(1,2)."
-      },
-      {
-        "title": "Section V: Stable CLT Connection",
-        "description": "States the α-stable CLT for Pareto(α) as an axiom: the exact rate is n^{1/α} and the limit is an α-stable distribution."
-      },
-      {
-        "title": "Section VI: Complete Rate Hierarchy",
-        "description": "Consolidates all results as pareto_complete_rate_hierarchy: finite mean, infinite variance, SLLN, and M-Z rates for Pareto(α) with α∈(1,2)."
-      }
-    ],
-    "openQuestions": [
-      {
-        "title": "Prove marcinkiewicz_zygmund_slln in Lean",
-        "description": "The truncation argument requires Kolmogorov's 3-series theorem and Kronecker's lemma — both potentially in Mathlib but requiring careful API navigation"
-      },
-      {
-        "title": "Distributional limit for stable CLT",
-        "description": "State and prove convergence in distribution to an α-stable law, requiring formalization of characteristic functions and Lévy's continuity theorem"
-      }
+    "historicalContext": "The question of how fast sample means converge has been central to probability theory for over a century. Kolmogorov's 1933 Strong Law of Large Numbers guarantees almost sure convergence for integrable random variables, but gives no rate. For finite-variance distributions, the Berry-Esseen theorem (1941–1942) quantifies the Gaussian CLT rate as O(1/√n). The gap for heavy-tailed distributions — where variance is infinite — was filled by Józef Marcinkiewicz and Antoni Zygmund in their 1937 paper 'Sur les fonctions indépendantes' (On Independent Functions): if E[|X|^r] < ∞ for r ∈ (1,2), then deviations scale as o(n^{1/r}). The corresponding limiting distributions — α-stable laws — were characterized by Paul Lévy in the 1920s–1930s, and the full generalized CLT (domain of attraction theory) was developed by Gnedenko and Kolmogorov in their 1954 monograph 'Limit Distributions for Sums of Independent Random Variables'. The Pareto distribution, introduced by Vilfredo Pareto in 1897 to model income inequality, became the canonical example of the heavy-tail regime: its tail index α ∈ (1,2) places it exactly in the M-Z zone, with finite mean but infinite variance.",
+    "problemStatement": "For i.i.d. random variables $X_0, X_1, \\ldots$ with $\\mathbb{E}[|X|^r] < \\infty$ for some $r \\in (1,2)$ but $\\mathbb{E}[X^2] = \\infty$, what is the rate of convergence of the sample mean? The Marcinkiewicz-Zygmund theorem answers: $n^{-1/r}(S_n - n\\mu) \\to 0$ almost surely, where $S_n = \\sum_{k=0}^{n-1} X_k$ and $\\mu = \\mathbb{E}[X]$. The exponent $1/r \\in (1/2, 1)$ interpolates between the CLT rate $n^{1/2}$ and the Kolmogorov scale $n^1$. For Pareto($\\alpha$) with $\\alpha \\in (1,2)$, the optimal rate is exactly $n^{1/\\alpha}$, confirmed by the generalized CLT with an $\\alpha$-stable limit distribution.",
+    "proofStrategy": "The proof is organized in six sections. Section I defines $L^r$ membership via Mathlib's `Memℒp` and establishes the inclusion hierarchy $L^2 \\supseteq L^r \\supseteq L^1$ for $r \\in [1,2]$ in probability spaces, using `Memℒp.mono_exponent`. Section II introduces the Marcinkiewicz-Zygmund SLLN as an axiom — the full truncation proof (Kolmogorov 3-series theorem + Kronecker's lemma) is not yet automated in Mathlib 4.26. Section III derives structural consequences: M-Z implies Kolmogorov via `lr_implies_integrable`; higher moments yield strictly tighter rates via `higher_moment_tighter_rate`; and `rate_normalization_ordering` makes the exponent monotonicity precise using `rpow_lt_rpow_of_exponent_lt`. Section IV develops the Pareto($\\alpha$) example: its survival function, the axiomatized moment condition, finite mean ($\\alpha > 1$), and infinite variance ($\\alpha \\leq 2$). Section V introduces the $\\alpha$-stable CLT axiom confirming $n^{1/\\alpha}$ as the exact scale. Section VI consolidates the four-part `pareto_complete_rate_hierarchy` theorem.",
+    "keyInsights": [
+      "The M-Z exponent $1/r \\in (1/2, 1)$ for $r \\in (1,2)$ interpolates between the SLLN scale $n^1$ (as $r \\to 1^+$) and the CLT scale $n^{1/2}$ (as $r \\to 2^-$). Each additional moment condition buys a strictly better convergence rate, creating a continuum of regimes between 'just integrable' and 'finite variance'.",
+      "M-Z conditions are strictly stronger than Kolmogorov's: the proof of `mz_implies_slln` shows $L^r$ for $r > 1$ guarantees not merely convergence but a quantitative deviation bound $o(n^{1/r})$ — tighter than Kolmogorov's $o(n)$ by a factor $n^{1 - 1/r}$ that grows without bound.",
+      "For Pareto($\\alpha$) with $\\alpha \\in (1,2)$, the moment condition $\\mathbb{E}[|X|^r] < \\infty \\iff r < \\alpha$ means M-Z applies at all rates $n^{1/r}$ for $r \\in (1,\\alpha)$, approaching but never reaching $n^{1/\\alpha}$ from M-Z alone. The $\\alpha$-stable CLT confirms $n^{1/\\alpha}$ is achievable — the sharp rate is not provable from moment bounds alone.",
+      "The M-Z axiom encodes a truncation argument: split $X_k = X_k \\mathbf{1}_{|X_k| \\leq n^{1/r}} + X_k \\mathbf{1}_{|X_k| > n^{1/r}}$. The truncated part is handled by Kolmogorov's 3-series theorem; the tail part vanishes because $\\mathbb{E}[|X|^r] < \\infty$ implies $\\sum_n \\mathbb{P}(|X| > n^{1/r}) < \\infty$ by Markov's inequality.",
+      "The $L^r$ inclusion hierarchy $L^2 \\supseteq L^r \\supseteq L^1$ in a probability space — proved via `Memℒp.mono_exponent` — is the structural backbone linking the CLT, M-Z, and Kolmogorov regimes. The key probabilistic input is that probability measures are finite, making higher $L^p$ membership strictly more demanding than in $\\sigma$-finite settings."
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "lr-moment-conditions",
+      "title": "Lᵣ Moment Conditions",
+      "startLine": 54,
+      "endLine": 101,
+      "summary": "Defines IsLr using Memℒp and proves the moment inclusion hierarchy: L² ⊆ Lʳ for r ≤ 2 (via mono_exponent), and Lʳ ⊆ L¹ for r ≥ 1 (via Memℒp.integrable). Also proves the rate exponent 1/r ∈ (1/2,1) for r ∈ (1,2) using div_lt_div_iff."
+    },
+    {
+      "id": "mz-slln-axiom",
+      "title": "Marcinkiewicz-Zygmund SLLN (Main Axiom)",
+      "startLine": 102,
+      "endLine": 141,
+      "summary": "States the M-Z SLLN as an axiom: n^{-1/r}·(Sₙ−nμ) → 0 a.s. for i.i.d. X with E[|X|^r] < ∞, r∈(1,2). Includes a detailed proof sketch via truncation into bounded and tail parts, citing Feller (1971) Vol. II Theorem IX.4.1."
+    },
+    {
+      "id": "mz-consequences",
+      "title": "Consequences of the M-Z Rate",
+      "startLine": 142,
+      "endLine": 186,
+      "summary": "Derives three consequences: M-Z implies Kolmogorov SLLN (via lr_implies_integrable); higher L^r membership yields tighter normalization bounds (higher_moment_tighter_rate); and the normalization exponents are strictly ordered (rate_normalization_ordering via rpow_lt_rpow_of_exponent_lt)."
+    },
+    {
+      "id": "pareto-example",
+      "title": "Pareto Distribution Example",
+      "startLine": 187,
+      "endLine": 255,
+      "summary": "Introduces the Pareto(α) distribution via its survival function P(X>x) = x^{-α}, axiomatizes the moment condition (r-th moment finite iff r < α), and proves finite mean (α>1) and infinite variance (α≤2). Shows M-Z applies for any r ∈ (1,α)."
+    },
+    {
+      "id": "stable-clt",
+      "title": "α-Stable CLT Connection",
+      "startLine": 256,
+      "endLine": 295,
+      "summary": "States the Gnedenko-Kolmogorov stable CLT as an axiom: Pareto(α) sums normalized by n^{1/α} converge to 0 a.s., confirming n^{1/α} as the exact convergence rate. Explains why this rate cannot be reached from M-Z moment bounds alone."
+    },
+    {
+      "id": "rate-hierarchy",
+      "title": "Complete Rate Hierarchy",
+      "startLine": 296,
+      "endLine": 344,
+      "summary": "Consolidates all results in pareto_complete_rate_hierarchy: finite mean, infinite variance, Kolmogorov SLLN, and M-Z rates n^{1/r} for all r ∈ (1,α). Proved by assembling the four branches via refine."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Marcinkiewicz-Zygmund SLLN provides the definitive answer to the convergence rate question for heavy-tailed distributions in the L^r regime (r ∈ (1,2)): sample mean deviations scale as o(n^{1/r}), strictly between the Kolmogorov rate o(n) and the CLT rate O(n^{1/2}). For Pareto(α) with α ∈ (1,2), the exact rate n^{1/α} is confirmed by the α-stable CLT. The Lean 4 formalization axiomatizes the three results not yet in Mathlib and proves all structural consequences from first principles.",
+    "implications": "This result matters wherever heavy-tailed data arises: financial returns, internet traffic volumes, seismic event magnitudes, and income distributions all exhibit Pareto-like power-law tails with α ∈ (1,2). Classical statistical procedures based on the Gaussian CLT give systematically wrong confidence intervals and sample size requirements for such data — the M-Z framework identifies the true convergence scale. The formal proof infrastructure (L^r inclusions, moment conditions, survival function characterizations) is reusable for other heavy-tail analyses. The three remaining axioms represent concrete Mathlib contribution targets: the M-Z truncation proof, the Pareto power-law integral, and the α-stable CLT via Lévy's continuity theorem.",
+    "openQuestions": [
+      "Prove marcinkiewicz_zygmund_slln in Lean 4: the truncation argument requires Kolmogorov's 3-series theorem (Mathlib's Probability.StrongLaw) and Kronecker's lemma — both accessible but requiring careful API navigation through Mathlib's probability infrastructure.",
+      "Formalize distributional convergence to an α-stable law, requiring Lévy's continuity theorem and characteristic function theory for stable distributions in Mathlib.",
+      "Determine whether the Lorentz space L^{r,∞} (weak-Lʳ) gives a weaker sufficient condition for M-Z-type rate bounds, as is known in classical Fourier analysis.",
+      "Extend the Pareto analysis to the boundary case α = 2 (Cauchy distribution / infinite variance with L^{2-ε} for all ε > 0), where a logarithmic correction appears in the convergence rate."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "laws-of-large-numbers-oq-01",
+      "title": "LLN for Heavy-Tailed Distributions",
+      "relationship": "Parent open question: proves SLLN for integrable heavy-tailed distributions using Kolmogorov's theorem. This entry quantifies the convergence rate via M-Z."
+    },
+    {
+      "id": "laws-of-large-numbers",
+      "title": "Laws of Large Numbers",
+      "relationship": "Foundation: establishes WLLN and SLLN for finite-variance distributions. The M-Z theorem extends SLLN to the infinite-variance regime with quantitative rates."
+    },
+    {
+      "id": "central-limit-theorem",
+      "title": "Central Limit Theorem",
+      "relationship": "Complement: the CLT gives rate n^{1/2} and Gaussian limit for L² distributions. M-Z applies when L² fails, giving slower rate n^{1/r} with α-stable (non-Gaussian) limit."
+    }
+  ]
 }
