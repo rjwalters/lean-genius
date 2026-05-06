@@ -108,20 +108,30 @@
       "mathContext": "Case 1: \u2203v with deg(v) \u2265 \u221an \u2192 N(v) is independent with |N(v)| \u2265 \u221an. Case 2: all degrees < \u221an \u2192 greedy_indep_of_bounded_deg (proved by induction on candidate set) gives |S|\u00b7\u221an \u2265 n \u2192 |S| \u2265 \u221an."
     }
   ],
-  "openQuestions": [
+  "conclusion": {
+    "summary": "This formalization axiomatizes Hajnal's open generalization of Erd\u0151s #895 and proves all available structural components: hindmanSet properties (4 lemmas, sorry-free), the k=2 reduction (Hajnal base of size 2 implies Erd\u0151s-Barber structure), and the independence number bound \u03b1(G) \u2265 \u221an for triangle-free graphs via a complete two-case greedy argument (0 sorries, 1 axiom for the conjecture itself).",
+    "implications": "The independence bound \u03b1(G) \u2265 \u221an for triangle-free graphs is tight \u2014 Paley graphs and polarity graphs show the bound cannot be improved to \u03c9(\u221an) in general. Hajnal's conjecture, if true, would give a structural reason for the additive richness of large independent sets in triangle-free graphs: not only do large independent sets exist (by the \u221an bound), they contain sets that are closed under addition (FS-sets). This would bridge graph Ramsey theory and additive Ramsey theory (Hindman's theorem). The greedy bound \u03b1 \u2265 n/(\u0394+1) proved here is also useful beyond the \u221an application: for triangle-free graphs with bounded maximum degree \u0394 \u226a \u221an, it gives the tighter bound \u03b1 \u2265 n/\u0394.",
+    "openQuestions": [
+      "Hajnal's conjecture for k=3: does every large triangle-free graph on {1,...,n} contain an independent FS({a,b,c}) = {a,b,c,a+b,a+c,b+c,a+b+c}? The 7 elements must all be in {1,...,n} and mutually non-adjacent \u2014 a substantially harder combinatorial constraint than the k=2 case.",
+      "Can the independence bound \u03b1(G) \u2265 \u221an be proved using the Bonferroni/Lov\u00e1sz Local Lemma approach (probabilistic method) rather than the greedy algorithm? A probabilistic proof might give tighter constants or extend to hypergraphs.",
+      "The parent result (Erd\u0151s #895, Barber 2015) was proved by SAT verification. Can the Lean 4 formalization be extended to verify Barber's argument \u2014 that n \u2265 18 is sufficient for the k=2 case \u2014 without using the axiom?"
+    ]
+  },
+  "crossReferences": [
     {
-      "id": "hajnal-k3",
-      "title": "Hajnal conjecture for k=3",
-      "question": "Does every triangle-free graph on {1,...,n} for large n contain an independent FS({a,b,c}) = {a,b,c,a+b,a+c,b+c,a+b+c}?",
-      "difficulty": "open",
-      "notes": "The k=2 case follows from Barber. For k=3, the 7 elements of FS({a,b,c}) must all fit in {1,...,n} and be mutually non-adjacent."
+      "id": "erdos-895",
+      "title": "Erd\u0151s Problem #895 \u2014 Independent Additive Triples",
+      "relationship": "Parent: proves the k=2 case of Hajnal's conjecture (Barber 2015: every triangle-free graph on {1,...,n} for n \u2265 18 contains independent a, b, a+b). This entry extends the question to larger Hindman bases."
     },
     {
-      "id": "greedy-independence",
-      "title": "Sharper greedy independence bound",
-      "question": "Can the independence bound \u03b1(G) \u2265 \u221an be sharpened to \u03b1(G) \u2265 n/\u0394 when the maximum degree \u0394 is much smaller than \u221an?",
-      "difficulty": "medium",
-      "notes": "The greedy argument gives \u03b1 \u2265 n/(\u0394+1) for any bounded-degree graph (already proved). For triangle-free G with max degree \u0394 << \u221an, this beats \u221an."
+      "id": "ramseys-theorem",
+      "title": "Ramsey's Theorem",
+      "relationship": "Thematic sibling: Ramsey theory studies structure in large combinatorial objects. Hajnal's conjecture is a hybrid of graph Ramsey theory (triangle-free = K\u2083-free) and additive Ramsey theory (Hindman sets)."
+    },
+    {
+      "id": "ramsey-r4k",
+      "title": "Ramsey R(4,k) Bounds",
+      "relationship": "Related combinatorial result in the Ramsey family. The independence bound \u03b1(G) \u2265 \u221an proved here is related to Ramsey-multiplicity and diagonal Ramsey bounds."
     }
   ],
   "leanFile": {
