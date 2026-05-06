@@ -10400,9 +10400,10 @@
     },
     "erdos-895": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-04T00:16:39Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-05-06T09:46:05Z",
+      "result": "clean",
+      "notes": "Verified vs origin/main: 260 lines, 7 sorries — matches meta.json. Working-tree mismatch is unmerged researcher WIP."
     },
     "erdos-896": {
       "agentId": "auditor-cycle-20-batch",

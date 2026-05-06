@@ -161,7 +161,8 @@ entry['result'] = '$result'
 tracker['entries']['$id'] = entry
 
 with open(tracker_file, 'w') as f:
-    json.dump(tracker, f, indent=2)
+    json.dump(tracker, f, indent=2, ensure_ascii=False)
+    f.write('\n')
 "
 
     # Remove claim
