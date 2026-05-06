@@ -1,0 +1,103 @@
+{
+  "id": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+  "title": "Cyclic Vector Theorem: Full Biconditional",
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+  "description": "Proves the converse direction of the cyclic vector theorem: if M has a cyclic vector then M is nonderogatory (minpoly = charpoly). Combined with the parent theorem (nonderogatory → cyclic vector), this gives the full biconditional: IsNonderogatory M ↔ ∃ v, IsCyclicVector M v. Fully machine-verified: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean",
+    "additionalFiles": [
+      "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+      "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean"
+    ],
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "cyclic-vector",
+      "cayley-hamilton",
+      "minimal-polynomial",
+      "nonderogatory",
+      "biconditional",
+      "research",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 136,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "No axioms or sorries. Uses only Mathlib's Polynomial and Matrix APIs.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "cyclic_implies_nonderogatory: proves the converse direction — if M has a cyclic vector v then minpoly K M = M.charpoly",
+      "nonderogatory_iff_has_cyclic_vector: full biconditional combining parent and converse directions",
+      "derogatory_has_no_cyclic_vector: contrapositive — a derogatory matrix has no cyclic vector",
+      "minpoly_natDegree_of_cyclic: degree characterization — a matrix with a cyclic vector has deg(minpoly) = n"
+    ],
+    "historicalContext": "The cyclic vector theorem is a cornerstone of rational canonical form theory. The forward direction (nonderogatory → cyclic vector) was proved in the parent entry using primary decomposition over arbitrary fields. The converse direction settled here completes the characterization: a matrix is nonderogatory if and only if it has a cyclic vector. This biconditional is the key step in showing that every nonderogatory matrix is similar to its companion matrix.",
+    "proofStrategy": "Given a cyclic vector v for M, we show deg(minpoly K M) = n by a degree squeeze: (1) minpoly | charpoly via Cayley-Hamilton, giving deg ≤ n; (2) if deg < n, the cyclic condition forces minpoly = 0, contradicting ne_zero, giving deg ≥ n. Then both minpoly and charpoly are monic of the same degree with minpoly | charpoly, forcing equality."
+  },
+  "overview": {
+    "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields**: Is the cyclic vector theorem an equivalence? The parent theorem shows every nonderogatory matrix has a cyclic vector. Does the converse hold — if M has a cyclic vector, must M be nonderogatory?\n\nMore precisely: does\n$$\\text{IsNonderogatory}(M) \\iff \\exists v,\\, \\text{IsCyclicVector}(M, v)$$\nhold over any field?",
+    "historicalContext": "A matrix M is nonderogatory if its minimal polynomial equals its characteristic polynomial. The cyclic vector theorem states that every nonderogatory matrix has a cyclic vector — a vector v such that {v, Mv, ..., M^(n-1)v} is a basis. The converse is also classical: if v is cyclic for M, then the map p(M)v gives a module isomorphism K[X]/(minpoly) ≅ K^n, forcing minpoly = charpoly. This formalization completes the biconditional by providing the Lean proof of the converse.",
+    "keyInsights": [
+      "A cyclic vector forces deg(minpoly) ≥ n: if deg < n, the cyclic condition (IsCyclicVector M v) requires minpoly(M)·v ≠ 0 for any nonzero p with deg(p) < n — but minpoly(M) = 0 as a matrix, giving a contradiction.",
+      "Both minpoly and charpoly are monic of degree n with minpoly | charpoly. Extracting the quotient r = charpoly / minpoly and using degree arithmetic shows deg(r) = 0, forcing r = 1.",
+      "The final step uses Polynomial.Monic.of_mul_monic_left to deduce that r is monic, then eq_C_of_natDegree_eq_zero to write r = C(r.coeff 0) = C(1) = 1.",
+      "The biconditional nonderogatory_iff_has_cyclic_vector trivially combines cyclic_implies_nonderogatory with nonderogatory_has_cyclic_vector from the parent entry."
+    ],
+    "proofStrategy": "**Step 1 (deg ≤ n)**: minpoly K M divides M.charpoly by Cayley-Hamilton (minpoly.dvd), so natDegree(minpoly) ≤ natDegree(charpoly) = n.\n\n**Step 2 (deg ≥ n)**: Suppose natDegree(minpoly) < n. Then aeval M (minpoly K M) = 0 (as a matrix), so (aeval M (minpoly K M)).mulVec v = 0. But IsCyclicVector M v requires this to be nonzero for any nonzero annihilator with degree < n — contradiction since minpoly ≠ 0.\n\n**Step 3 (equality)**: natDegree(minpoly) = n. Write charpoly = minpoly · r. Both sides monic of degree n: deg(r) = 0, r monic, so r = 1 and charpoly = minpoly.",
+    "prerequisites": [
+      "minpoly.dvd: the minimal polynomial divides any annihilating polynomial (applied to Cayley-Hamilton)",
+      "minpoly.aeval: aeval M (minpoly K M) = 0 as a matrix",
+      "Matrix.charpoly_natDegree_eq_dim: natDegree(charpoly M) = n",
+      "Polynomial.Monic.of_mul_monic_left: if p·q is monic and p is monic, then q is monic",
+      "Polynomial.eq_C_of_natDegree_eq_zero: a polynomial of degree 0 equals C(coeff 0)",
+      "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector: forward direction (primary decomposition)"
+    ],
+    "openQuestions": [
+      "Does the biconditional extend to matrices over commutative rings (not just fields)? The proof crucially uses that K[X] is a PID to extract the quotient r.",
+      "Can the converse be used to give a shorter proof of the rational canonical form theorem? The biconditional shows nonderogatory matrices are 'as good as' companion matrices."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04",
+      "Proofs.CayleyHamiltonCyclicVectorAllFields"
+    ],
+    "namespace": "CyclicVectorBiconditional",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "title": "Main Converse: Cyclic Vector Implies Nonderogatory",
+      "content": "If M has a cyclic vector v, then M is nonderogatory (minpoly K M = M.charpoly). The proof squeezes the degree of the minimal polynomial from both sides: divisibility by charpoly gives deg ≤ n, and the cyclic condition forces deg ≥ n. With both polynomials monic of degree n and one dividing the other, they must be equal."
+    },
+    {
+      "title": "Full Biconditional",
+      "content": "Combining the converse proved here with the forward direction from the parent entry (CayleyHamiltonCyclicVectorAllFields), we obtain the full biconditional: a matrix over any field is nonderogatory if and only if it has a cyclic vector."
+    },
+    {
+      "title": "Corollaries",
+      "content": "The contrapositive gives that derogatory matrices have no cyclic vector. The degree characterization shows any matrix with a cyclic vector has natDegree(minpoly) = n."
+    }
+  ],
+  "conclusion": {
+    "summary": "The full biconditional IsNonderogatory M ↔ ∃ v, IsCyclicVector M v is now machine-verified over arbitrary fields in Lean 4. The converse direction proves that a cyclic vector forces the minimal polynomial to have degree n, completing the characterization of nonderogatory matrices.",
+    "significance": "This completes the cyclic vector characterization of nonderogatory matrices in Mathlib-compatible Lean 4. The biconditional is the key step connecting nonderogatory matrices to companion matrices in rational canonical form theory.",
+    "openProblems": [
+      "Extend to modules over commutative Noetherian rings (not just fields)",
+      "Use the biconditional to give a shorter RCF existence proof"
+    ]
+  }
+}
