@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: natDegree theorem PROVED (sorry-free). Gal card theorem has 1 documented sorry. Gallery entry created. Docker build in progress.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. cos_pi_splitting_finrank proved via IsGalois(maxRealSubfield) + Normal.splits + IsSplittingField.lift. PR #16052.",
     "builtItems": [
       "cos_pi_minpoly_natDegree: natDegree(minpoly ℚ (cos(π/n))) = φ(2n)/2 — SORRY-FREE",
       "cos_pi_extension_degree: ∃ K ⊆ ℝ with cos(π/n) ∈ K, [K:ℚ] = φ(2n)/2 — SORRY-FREE",
