@@ -2,7 +2,7 @@
   "slug": "bezout-identity-oq-04-oq-01-oq-01",
   "title": "Smith Normal Form gcd characterization for PIDs via Mathlib",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-30T13:07:48.618Z",
     "iteration": 1,
     "focus": "Proof strategy documented, ready for implementation",
@@ -29,29 +29,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved snf_1x2_invariant_factor — the 1×2 SNF invariant factor is associated to gcd(a,b). File now has 0 sorries, 2 axioms.",
+    "progressSummary": "COMPLETED: snf_1x2_invariant_factor_pid proved for any GCDMonoid. New gallery entry created. 2 axioms (snf_pid_exists, snf_pid_solvability). 0 sorries.",
     "builtItems": [
-      "Proved snf_1x2_invariant_factor (BezoutIdentityOQ04OQ01.lean)"
+      "Proved snf_1x2_invariant_factor (BezoutIdentityOQ04OQ01.lean)",
+      "Created BezoutIdentityOQ04OQ01OQ01.lean: PID generalization of BezoutIdentityOQ04OQ01",
+      "Proved snf_1x2_invariant_factor_pid for any CommRing/IsDomain/GCDMonoid",
+      "Created src/data/proofs/bezout-identity-oq-04-oq-01-oq-01/ gallery entry"
     ],
     "insights": [
       "Mathlib has Basis.SmithNormalForm and Submodule.smithNormalForm in LinearAlgebra.FreeModule.PID",
       "Parent proof uses custom axioms for SNF existence and solvability. These could potentially be replaced by Mathlib SNF.",
-      "Generalization to PIDs: replace ℤ with R [IsPrincipalIdealRing R] and use GCDMonoid/EuclideanDomain API",
+      "Generalization to PIDs: replace \u2124 with R [IsPrincipalIdealRing R] and use GCDMonoid/EuclideanDomain API",
       "snf_1x2_invariant_factor: d|gcd(a,b) because a=u*d*V[0,0] and b=u*d*V[0,1] from A=U*D*V decomposition",
-      "gcd(a,b)|d because det(V)=±1 implies a*V[1,1]-b*V[1,0]=±u*d, so d is a linear combination of a,b",
+      "gcd(a,b)|d because det(V)=\u00b11 implies a*V[1,1]-b*V[1,0]=\u00b1u*d, so d is a linear combination of a,b",
       "Main Lean challenge: extracting (U*D*V)[0,j] entries for Fin 1/Fin 2 matrices via Matrix.mul_apply + Fin.sum_univ",
       "SNF 1x2 proof: A 0 j = u * d * V 0 j where u = U 0 0 (+-1) and d = D 0 0",
       "Part 1 (d|gcd): d|a and d|b since a = d*(u*V00), b = d*(u*V01), then Int.dvd_gcd",
       "Part 2 (gcd|d): det(V)=+-1 gives a*V11 - b*V10 = u*d*det(V) = +-d, then gcd|a and gcd|b gives gcd|d",
       "Key Lean tactics: congr_fun (congr_fun hsnf 0) j for entry extraction, Matrix.mul_apply + Fin.sum for expansion",
-      "Proof uses entry extraction from A=UDV via congr_fun, det_fin_one/two, and Fin.sum_univ simplification"
+      "Proof uses entry extraction from A=UDV via congr_fun, det_fin_one/two, and Fin.sum_univ simplification",
+      "Key new technique: unit.inv_val replaces \u00b11 case split for backward direction gcd|d",
+      "Theorem holds in any GCDMonoid (not just IsPrincipalIdealRing)",
+      "Associated d (uval*d) via witness uval; dvd_iff gives gcd|d from gcd|uval*d",
+      "linear_combination h works for CommRing (vs linarith in parent which is \u2124-specific)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Implement the matrix entry extraction: congr_fun (congr_fun hsnf 0) j for j=0,1",
-      "Use snf.hD_diag 0 1 (by omega) for D 0 1 = 0",
-      "Use Matrix.det_fin_two for det(V) = V 0 0 * V 1 1 - V 0 1 * V 1 0",
-      "dvd_gcd for Part 1, dvd_sub + dvd_mul for Part 2"
+      "OQ-01: Use Mathlib FreeModule.PID to prove snf_pid_exists (axiom elimination)",
+      "OQ-02: Derive structure theorem for finitely generated modules over PIDs"
     ]
   },
   "tags": [

@@ -1,0 +1,127 @@
+{
+  "id": "bezout-identity-oq-04-oq-01-oq-01",
+  "title": "Smith Normal Form over PIDs: GCD Characterization via Mathlib",
+  "slug": "bezout-identity-oq-04-oq-01-oq-01",
+  "description": "Generalizes the Smith Normal Form theory from ℤ to arbitrary Principal Ideal Domains. The 1×2 invariant factor equals gcd(a,b) up to associates in any GCDMonoid. Unimodularity becomes IsUnit det. The key technique replaces the ±1 case split with a unit.inv_val cancellation argument.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Smith_normal_form",
+    "date": "1861 (Smith Normal Form), formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "number-theory",
+      "linear-algebra",
+      "smith-normal-form",
+      "pid",
+      "gcd-monoid",
+      "generalization"
+    ],
+    "proofRepoPath": "Proofs/BezoutIdentityOQ04OQ01OQ01.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 165,
+    "theoremCount": 8,
+    "assumptions": "Two axioms: snf_pid_exists (every matrix over a PID has a Smith Normal Form) and snf_pid_solvability (solvability criterion via invariant factors). These generalize the same axioms from BezoutIdentityOQ04OQ01 to arbitrary PIDs.",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsUnit / Units.inv_val",
+        "description": "Unit elements and their inverses; val * inv = 1 field",
+        "module": "Mathlib.Algebra.Group.Units.Basic"
+      },
+      {
+        "theorem": "GCDMonoid.gcd / dvd_gcd / gcd_dvd_left / gcd_dvd_right",
+        "description": "GCD in an abstract GCDMonoid",
+        "module": "Mathlib.Algebra.GCDMonoid.Basic"
+      },
+      {
+        "theorem": "IsPrincipalIdealRing",
+        "description": "Typeclass for PIDs",
+        "module": "Mathlib.RingTheory.PrincipalIdealDomain"
+      },
+      {
+        "theorem": "Matrix.det_fin_one / det_fin_two",
+        "description": "Determinants of 1×1 and 2×2 matrices",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant"
+      }
+    ],
+    "originalContributions": [
+      "SmithNormalFormPID structure: generalizes SmithNormalForm from BezoutIdentityOQ04OQ01 to work over any CommRing R, not just ℤ",
+      "IsUnimodularPID: generalizes det = ±1 to IsUnit det, with closure under product and equivalence to ±1 over ℤ",
+      "snf_1x2_invariant_factor_pid: main theorem — 1×2 invariant factor ~ gcd(a,b) in any GCDMonoid, using unit.inv_val instead of ±1 case split",
+      "bezout_pid_forward: ax+by=c → gcd|c holds in any GCDMonoid (not just ℤ)",
+      "bezout_int_backward: classical backward direction for ℤ via Int.gcdA/gcdB",
+      "IsPrincipalIdealRing instance for k[X] via Mathlib inference"
+    ],
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Smith Normal Form was introduced by Henry J.S. Smith in 1861 for integer matrices. The theory extends naturally to any Principal Ideal Domain — the key property needed is that every ideal is principal, which guarantees the existence of gcd and allows the row/column reduction algorithm to terminate.\n\nThe connection between Smith Normal Form over PIDs and the structure theorem for finitely generated modules over PIDs is fundamental: every finitely generated module M over a PID R decomposes as R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rʳ with d₁|d₂|...|dₖ — exactly the invariant factor structure from SNF of a presentation matrix.\n\nKey PID instances:\n- ℤ (integers): the classical case\n- k[X] (polynomials over a field): gives rational canonical form for linear maps\n- ℤ[i] (Gaussian integers): useful in algebraic number theory\n- Any Euclidean domain: provides an algorithm",
+    "problemStatement": "**Open Question (bezout-identity-oq-04-oq-01-oq-01)**: Can the Smith Normal Form theory from BezoutIdentityOQ04OQ01 (which works over ℤ) be generalized to arbitrary Principal Ideal Domains using Mathlib's IsPrincipalIdealRing and GCDMonoid infrastructure?\n\n**Answer: YES.** The key changes are:\n1. IsUnimodular (det = ±1) → IsUnimodularPID (IsUnit det)\n2. Int.gcd → GCDMonoid.gcd\n3. ±1 case split in backward direction → unit.inv_val cancellation",
+    "text": "Generalizes Smith Normal Form theory from ℤ to arbitrary PIDs. The invariant factor characterization — d ~ gcd(a,b) for 1×2 matrices — holds in any GCDMonoid via an abstract unit-cancellation argument replacing the integer-specific ±1 case split.",
+    "proofStrategy": "**Stage 1 (Structures)**: Define IsUnimodularPID (IsUnit det) and SmithNormalFormPID R m n, parametrized by a CommRing R. Both generalize the ℤ-specific definitions from BezoutIdentityOQ04OQ01.\n\n**Stage 2 (Key Theorem)**: Prove snf_1x2_invariant_factor_pid. Forward direction (d | gcd): identical to ℤ case, d | a and d | b so d | gcd. Backward direction (gcd | d): use that a*v₁₁ - b*v₁₀ = u*d*det(V), and gcd | LHS, so gcd | u*d*det(V) = (u*det(V))*d. Extract unit uval with ↑uval = u*det(V), then use unit.inv_val: uval.inv * ↑uval = 1 to cancel and get gcd | d.\n\n**Stage 3 (Applications)**: Bezout forward direction in any GCDMonoid; backward direction for ℤ via Int.gcdA/gcdB.",
+    "keyInsights": [
+      "**The unit abstraction**: Over ℤ, units are ±1 and the proof splits into 4 cases. Over a general PID, IsUnit gives an abstract inverse element uval.inv satisfying uval.inv * uval = 1 (the `inv_val` field). This single fact replaces all 4 cases.",
+      "**GCDMonoid is the right abstraction**: The theorem only needs GCDMonoid (gcd, dvd_gcd, gcd_dvd_left/right), not IsPrincipalIdealRing. This is a strict generalization.",
+      "**Associated elements**: d and (↑uval)*d are associated (differ by unit uval). The divisibility claim gcd|d follows from gcd|(↑uval)*d by cancelling the unit.",
+      "**k[X] instance**: By Mathlib inference, polynomial rings over fields are PIDs, giving the entire SNF theory for k[X] — which yields rational canonical forms and Frobenius normal forms for linear maps."
+    ],
+    "prerequisites": [
+      "Principal Ideal Domains and their properties",
+      "GCD in abstract GCDMonoid vs. concrete Int.gcd",
+      "Unit elements of a ring (IsUnit, Units typeclass)",
+      "BezoutIdentityOQ04OQ01: the ℤ-specific SNF theory being generalized"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unimodular",
+      "title": "Unimodular Matrices over a PID",
+      "startLine": 36,
+      "endLine": 58,
+      "summary": "Defines IsUnimodularPID (IsUnit det), proves it holds for the identity, is closed under multiplication, and specializes to det = ±1 over ℤ.",
+      "mathContext": "Over a PID R, the group of invertible matrices GL_n(R) consists exactly of matrices with IsUnit det. This is because invertibility over R requires a matrix inverse with entries in R, and Cramer's rule gives M⁻¹ = det(M)⁻¹ · adj(M) — requiring det(M) to be a unit."
+    },
+    {
+      "id": "snf-structure",
+      "title": "Smith Normal Form Structure",
+      "startLine": 61,
+      "endLine": 80,
+      "summary": "Defines SmithNormalFormPID R m n with unimodular U, V over R, diagonal D with divisibility chain. Identical structure to ℤ case but parameterized by ring R.",
+      "mathContext": "The SNF decomposition A = UDV over a PID R has the same structure as over ℤ. The invariant factors d₁|d₂|...|dₖ are elements of R determined up to units, giving an invariant of the R-module structure."
+    },
+    {
+      "id": "gcd-char",
+      "title": "GCD Characterization: 1×2 Case",
+      "startLine": 83,
+      "endLine": 140,
+      "summary": "Main theorem: the 1×2 invariant factor is associated to gcd(a,b) in any GCDMonoid. New vs. parent: uses unit.inv_val cancellation instead of ±1 case split.",
+      "mathContext": "For [a, b] = U·D·V with U 1×1 unimodular and V 2×2 unimodular, extracting entries gives a = u·d·v₀₀ and b = u·d·v₀₁ where u = U[0,0] is a unit. Then d|a and d|b so d|gcd. For the reverse: a·v₁₁ - b·v₁₀ = u·d·det(V), and u·det(V) is a unit, so cancellation gives gcd|d."
+    },
+    {
+      "id": "bezout",
+      "title": "Bezout in GCDMonoid",
+      "startLine": 148,
+      "endLine": 165,
+      "summary": "Forward direction ax+by=c → gcd|c in any GCDMonoid. Backward direction for ℤ via Bezout coefficients.",
+      "mathContext": "The forward direction is purely algebraic and holds in any GCDMonoid. The backward direction requires Bezout coefficients (the existence of which is equivalent to the Bezout domain property, holding in any PID). Over ℤ, Int.gcdA and Int.gcdB provide these coefficients explicitly."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "title": "Prove snf_pid_exists from Mathlib's FreeModule.PID",
+      "description": "Mathlib has Submodule.smithNormalForm in LinearAlgebra.FreeModule.PID. Can this be used to prove snf_pid_exists, eliminating the axiom? The challenge is translating between the module-theoretic Mathlib formulation and the matrix-theoretic formulation here.",
+      "difficulty": "hard",
+      "tags": ["axiom-elimination", "mathlib-integration"]
+    },
+    {
+      "id": "oq-02",
+      "title": "Structure theorem for finitely generated modules over PIDs",
+      "description": "snf_pid_solvability implies that the cokernel ℤⁿ/Aℤᵐ decomposes as R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rˡ. Can this structure theorem be derived formally from snf_pid_exists + snf_pid_solvability?",
+      "difficulty": "hard",
+      "tags": ["module-theory", "structure-theorem", "finitely-generated-modules"]
+    }
+  ]
+}
