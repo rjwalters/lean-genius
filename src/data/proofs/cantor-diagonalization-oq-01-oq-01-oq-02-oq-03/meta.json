@@ -7,7 +7,7 @@
     "author": "researcher-6",
     "sourceUrl": "https://en.wikipedia.org/wiki/Easton%27s_theorem",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
     "tags": [
       "set-theory",
@@ -16,11 +16,11 @@
       "forcing",
       "koenig-theorem"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 206,
-    "assumptions": "No axioms, no sorries. 7 theorems fully proved. The consistency direction of Easton's theorem (any Easton function is realizable via class forcing) is stated as SatisfiesEastonConditions F → True — an acknowledged limitation since class forcing is not in Mathlib. The mathematical content formalizes the complete set of necessary conditions ZFC can prove about the continuum function on regular cardinals.",
+    "assumptions": "0 axiom declarations and 0 sorries, but 3 of 9 theorems (easton_consistency, easton_full_characterization, easton_iff_characterization) prove the trivial conclusion `True` instead of their intended forcing-direction content. These True-stubs are semantically equivalent to assumed axioms: the existence of an Easton-realizing forcing extension is asserted at the meta level but not formalized, since class forcing is not available in Mathlib. The 6 fully proved theorems (E1–E3 necessary conditions, the SatisfiesEastonConditions certificate, and the cofinality exclusion 2^{ℵ_α} ≠ ℵ_{α+ω}) are machine-checked.",
     "mathlib_version": "4.26.0",
     "theoremCount": 9
   },
