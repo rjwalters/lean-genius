@@ -2,7 +2,7 @@
   "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
   "title": "Jacobi Sums and Higher Power Reciprocity",
   "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-  "description": "Proves that the Gauss sum approach to quadratic reciprocity extends to cubic and quartic reciprocity via Jacobi sums. The fundamental identity g(χ)·g(ψ) = J(χ,ψ)·g(χψ) and the algebraic norm formula J(χ,ψ)·J(χ⁻¹,ψ⁻¹) = #F are formalized using Mathlib's JacobiSum.Basic module, establishing the analytic engine for all higher power reciprocity laws.",
+  "description": "Proves that the Gauss sum approach to quadratic reciprocity extends to cubic and quartic reciprocity via Jacobi sums. The fundamental identity g(χ)·g(ψ) = J(χ,ψ)·g(χψ) and the algebraic norm formula J(χ,ψ)·J(χ⁻¹,ψ⁻¹) = #F are exposed as renamed corollaries of Mathlib's JacobiSum.Basic module, establishing the analytic engine for all higher power reciprocity laws.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-06",
@@ -18,7 +18,7 @@
       "higher-power-reciprocity",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 277,
@@ -55,9 +55,7 @@
     "originalContributions": [
       "jacobiSum_prime_field_norm: J(χ,φ)·J(χ⁻¹,φ⁻¹) = p for prime field 𝔽_p → F' with char F' ≠ p",
       "cubic_jacobi_algebraic_norm: J(χ,χ)·J(χ⁻¹,χ⁻¹) = p for cubic characters (χ^3=1, χ≠1, χ^2≠1)",
-      "quartic_jacobi_algebraic_norm: J(χ,χ)·J(χ⁻¹,χ⁻¹) = p for quartic characters (χ^4=1, χ^2≠1)",
-      "general_jacobi_norm: J(χ,χ^k)·J(χ⁻¹,χ^{-k}) = p for general power characters",
-      "cubic_vs_quadratic_contrast: algebraic proof that cubic norm gives p while quadratic J is trivial ±1"
+      "general_jacobi_norm: J(χ,χ^k)·J(χ⁻¹,χ^{-k}) = p for general power characters"
     ],
     "assumptions": "0 sorries. 0 axiom declarations. All proofs derive from Mathlib.NumberTheory.JacobiSum.Basic.",
     "additionalFiles": []
