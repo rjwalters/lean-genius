@@ -40,7 +40,7 @@
     ],
     "axiomCount": 2,
     "assumptions": "Two axioms: (1) polar_angle_eq — the dihedral angle of the polar triangle equals π minus the corresponding side of the original, proved analogously to the side formula; (2) projperp_dot_sinsincos — the standard identity connecting dot product of perpendicular projections to sin·sin·cos of the dihedral angle (follows from the definition of dihedralAngle and Cauchy-Schwarz).",
-    "lineCount": 310,
+    "lineCount": 271,
     "theoremCount": 12,
     "definitionCount": 1
   },
@@ -48,7 +48,7 @@
     "axiomCount": 2,
     "theoremCount": 12,
     "definitionCount": 1,
-    "lineCount": 310,
+    "lineCount": 271,
     "sorries": 0
   },
   "overview": {
@@ -68,31 +68,31 @@
       "id": "algebra",
       "title": "Algebraic Infrastructure",
       "startLine": 1,
-      "endLine": 100,
+      "endLine": 90,
       "summary": "Proves supporting lemmas: cos_arcLen_unit (cosine of arc length = dot product for unit vectors), the generalized Lagrange identity, the key cross product identity dot(B×C, C×A) = -dot(projPerp A C, projPerp B C), and the norm equality normSq(B×C) = normSq(projPerp B C).",
       "mathContext": "Cross product Lagrange identity: normSq(u×v) = normSq(u)*normSq(v) - (dot u v)². Applied to B×C and C×A to relate cross product norms to projection norms."
     },
     {
       "id": "normalization",
       "title": "Normalization",
-      "startLine": 101,
-      "endLine": 145,
+      "startLine": 91,
+      "endLine": 113,
       "summary": "Defines normalize3 (division by sqrt of normSq) and proves it produces unit vectors. Shows dot product of normalized vectors = dot product divided by norms.",
       "mathContext": "normalize3(v) = v/‖v‖ where ‖v‖ = sqrt(normSq v). IsUnit3(normalize3 v) holds when normSq v > 0."
     },
     {
       "id": "polar-side",
       "title": "Polar Triangle Side Formula (Key Result)",
-      "startLine": 146,
-      "endLine": 220,
+      "startLine": 115,
+      "endLine": 157,
       "summary": "Defines the polar triangle construction and proves the principal theorem: arcLen(normalize(B×C), normalize(C×A)) = π - dihedralAngle(C, A, B). This is fully proved (0 sorries) using the algebraic identity and arccos_neg.",
       "mathContext": "dot(normalize(B×C), normalize(C×A)) = dot(B×C,C×A)/(|B×C||C×A|) = -dot(projPerp A C, projPerp B C)/(sin(a)*sin(b)) = -cos(γ). Then arccos(-cos(γ)) = π - γ."
     },
     {
       "id": "dual-law",
       "title": "Dual Law via Polar Substitution",
-      "startLine": 221,
-      "endLine": 310,
+      "startLine": 159,
+      "endLine": 271,
       "summary": "Applies the standard spherical law to the polar triangle. After substituting the supplementary side/angle relationships (c' = π-γ, a' = π-α, b' = π-β, γ' = π-c), the dual law follows by pure trigonometric algebra via dual_trig_identity (proved) using cos(π-x) = -cos(x) and sin(π-x) = sin(x).",
       "mathContext": "The standard law cos(c') = cos(a')cos(b') + sin(a')sin(b')cos(γ') becomes -cos(γ) = cos(α)cos(β) - sin(α)sin(β)cos(c) after substitution, giving cos(γ) = -cos(α)cos(β) + sin(α)sin(β)cos(c)."
     }
