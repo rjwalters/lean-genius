@@ -3,6 +3,7 @@
 **Pool ID**: sperner-ndim-mathlib-oq-02  
 **Status**: in-progress  
 **Phase**: ACT
+**Progress**: axiomCount 2→1 (fixed_point_from_approx proved, sperner_near_fixed_point remains)
 
 ## Summary
 
@@ -47,8 +48,37 @@ The existence of a fixed point then follows from Sperner's lemma + compactness.
    - Simplices: ordered chains with constant "miss" direction
    - Must fix boundary_doors_odd (broken in SpernerGrid.lean due to double-representation)
    - Estimated: ~200 lines
-2. Eliminate `fixed_point_from_approx` axiom: use Mathlib's `IsCompact.tendsto_subseq`
-   - Δⁿ is compact in Lean via `Matrix.stdSimplex` infrastructure
-   - Need `tendsto_nhds_unique` + `ContinuousOn` machinery
-   - Estimated: ~100 lines
-3. Submit OQ-01 axioms (swapAdj_nodup, swapAdj_prefixSet_eq, swapAdj_ne_self) to Aristotle
+2. ~~Eliminate `fixed_point_from_approx` axiom~~ — **DONE in Session 2**
+
+## Session 2026-05-06 (Session 2) — Prove compactness convergence step
+
+**Mode**: REVISIT (continuing Session 1 work)  
+**Outcome**: progress — axiomCount 2→1 (fixed_point_from_approx proved)
+
+### What I Did
+
+- Replaced `axiom fixed_point_from_approx` with a proved `theorem`
+- Key API pattern from `SpernerNDimOQ03.lean`: `isCompact_univ_pi (fun _ => isCompact_Icc)`
+- Key API pattern from `Erdos1201Problem.lean`: `tendsto_const_nhds.div_atTop`
+- Build confirmed: `✔ Built Proofs.SpernerNDimMathlibOQ02 (12s)`
+- PR #16235 updated
+
+### Key Findings
+
+- **Simplex compactness API**: `isCompact_univ_pi (fun _ => isCompact_Icc)` + `IsCompact.of_isClosed_subset` + `isClosed_iInter` + `isClosed_eq` — exact pattern from SpernerNDimOQ03.lean
+- **Tendsto composition fix**: use `hf_cont.tendsto x` not `hf_cont.continuousAt.comp` for `Filter.Tendsto.comp`
+- **Finset.single_le_sum API**: `(fun j _ => h j) (Finset.mem_univ i)` — no extra `_` argument between hf and ha
+- **div_atTop**: `tendsto_const_nhds.div_atTop h_phi_atTop` proved the bound → 0 step cleanly
+- **congr' step**: needs `simp only [Function.comp, Pi.add_apply, Pi.sub_apply]; ring` to unfold `u ∘ φ`
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimMathlibOQ02.lean` (254→299 lines, axioms 2→1)
+- `src/data/proofs/sperner-ndim-mathlib-oq-02/meta.json` (axiomCount, lineCount, sections updated)
+
+### Next Steps
+
+1. Eliminate `sperner_near_fixed_point` (the 1 remaining axiom)
+   - Fix `boundary_doors_odd` in SpernerGrid.lean (known false for d=1, needs redesign)
+   - Build a correct grid CellComplex and plug into SpernerAbstract.sperner
+   - Very hard: requires fundamental redesign of GridSimplex/gridAdj

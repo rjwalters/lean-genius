@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Lean file created (254 lines, 0 sorries, 2 axioms). Key combinatorial lemmas fully proved. Gallery entry created. PR pending.",
+    "progressSummary": "PROGRESS: axiomCount 2→1; fixed_point_from_approx proved; sperner_near_fixed_point (grid triangulation) remains; boundary_doors_odd is fundamentally broken in SpernerGrid.lean",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -37,13 +37,17 @@
       "spernerColor/colorSet: the Sperner coloring construction (proved, 0 sorry)",
       "spernerColor_in_supp: color lies in support — the Sperner boundary condition (proved)",
       "spernerColor_ne_of_zero: coloring avoids faces (proved, the key Sperner condition)",
-      "brouwer_fixed_point_simplex: Brouwer for Δⁿ from 2 axioms (proved, 0 sorry)"
+      "brouwer_fixed_point_simplex: Brouwer for Δⁿ from 2 axioms (proved, 0 sorry)",
+      "fixed_point_from_approx: proved compactness convergence theorem (IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique) in SpernerNDimMathlibOQ02.lean:204-293"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
       "Sperner boundary condition follows immediately from supp structure: c(v) = min colorSet ⊆ supp(v), so c(v) ≠ j if v_j = 0 (then j ∉ supp(v)).",
       "Two axioms suffice: (1) grid triangulation + Sperner → near-fixed-point, (2) compactness → convergence to exact fixed point.",
-      "The proof route is fundamentally different from the algebraic topology approach (singular homology) in BrouwerFixedPointOQ01OQ02OQ03.lean — pure combinatorics replaces homology theory."
+      "The proof route is fundamentally different from the algebraic topology approach (singular homology) in BrouwerFixedPointOQ01OQ02OQ03.lean — pure combinatorics replaces homology theory.",
+      "Lean API: use hf_cont.tendsto x not hf_cont.continuousAt.comp for Filter.Tendsto.comp with continuous function",
+      "Lean API: Finset.single_le_sum takes (fun j _ => h j) (Finset.mem_univ i) with no extra _ argument",
+      "Lean API: congr step needs simp [Function.comp, Pi.add_apply, Pi.sub_apply] to unfold function composition before ring"
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
@@ -63,7 +67,8 @@
   ],
   "relatedProofs": [
     "sperner-ndim",
-    "sperner-ndim-mathlib"
+    "sperner-ndim-mathlib",
+    "sperner-ndim-mathlib-oq-02"
   ],
   "references": {
     "papers": [],
