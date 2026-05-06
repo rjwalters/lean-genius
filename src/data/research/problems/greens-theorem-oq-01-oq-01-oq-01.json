@@ -1,0 +1,165 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01-oq-01",
+  "title": "Can this bridge be generalized to n-dimensional iterated integrals over hyper...",
+  "phase": "NEW",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Can this bridge be generalized to n-dimensional iterated integrals over hyper....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-05T02:57:44.806Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: 3D Fubini bridge proved (0 sorries, 1 axiom for n-D general case). triple_fubini_of_continuous and triple_fubini_yxz_eq_xyz proved using integral_integral_swap + Integrable.integral_prod_right.",
+    "builtItems": [
+      "integrable_3d_zx_y: Integrable G((z,x),y)=f(x,y,z) on Ioc\u00b3 product",
+      "integrable_3d_xy_z: Integrable G((x,y),z)=f(x,y,z) on Ioc\u00b3 product",
+      "triple_fubini_of_continuous: \u222bz\u222by\u222bx f = \u222bx\u222by\u222bz f for continuous f",
+      "triple_fubini_yxz_eq_xyz: (y,x,z) = (x,y,z) ordering",
+      "triple_fubini_all_equal: 3 key orderings all equal",
+      "iteratedIntervalIntegral: n-fold iterated integral definition over Fin n"
+    ],
+    "insights": [
+      "Integrable.integral_prod_right derives parameterized integral integrability from 3D compactness without separate measurability lemmas",
+      "Two applications of restrict_prod_eq_prod_restrict needed for 3D (vs one for 2D)",
+      "Ioc measures from integral_of_le rewrite - use mono_measure Ioc\u2286Icc to transfer integrability",
+      "general n-D case reduces to adjacent transpositions (generating set of Sn) - axiomatized",
+      "Step-1 and Step-3 use 2D fubini_of_continuous for fixed outer variable"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Prove iteratedIntervalIntegral_order_independent for all n by Fin-n induction"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-03",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-03-oq-04",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.805Z",
+  "lastUpdate": "2026-05-05T02:57:44.805Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03OQ04.lean",
+      "filename": "GreensTheoremOQ03OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}
