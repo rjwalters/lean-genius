@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-null-boundary",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 46,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Boundary Has Lebesgue Measure Zero",
+    "content": "The key insight is that for Lebesgue measure, finite boundary sets are invisible: a singleton {a} has measure zero (it is countable), and the closed-open difference Icc a b \\ Ioo a b ⊆ {a, b} also has measure zero. This null boundary is the mathematical reason why Icc and Ioo integrability are equivalent for Lebesgue integration.",
+    "mathContext": "Lebesgue measure $\\lambda$ is atomless: $\\lambda(\\{a\\}) = 0$ for all $a \\in \\mathbb{R}$. The boundary $[a,b] \\setminus (a,b) = \\{a, b\\}$ satisfies $\\lambda(\\{a,b\\}) = 0$. More generally, any countable set has Lebesgue measure zero.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue measure",
+      "null sets",
+      "countable sets",
+      "atomless measure"
+    ],
+    "prerequisites": [
+      "Set.Countable.measure_zero",
+      "measure_mono_null"
+    ]
+  },
+  {
+    "id": "ann-restriction-equality",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "vol.restrict Icc = vol.restrict Ioo",
+    "content": "The restriction of Lebesgue measure to [a,b] equals the restriction to (a,b). This is the central lemma answering the open question: the integrability hypothesis does not depend on whether we use closed or open intervals. The proof uses measure extensionality: for any measurable set s, vol(s ∩ Icc) = vol(s ∩ Ioo) because the difference Icc \\ Ioo has measure zero.",
+    "mathContext": "For any measurable $s$: $\\lambda|_{[a,b]}(s) = \\lambda(s \\cap [a,b]) \\leq \\lambda(s \\cap (a,b)) + \\lambda([a,b] \\setminus (a,b)) = \\lambda(s \\cap (a,b))$. The reverse inequality uses $\\lambda(s \\cap (a,b)) \\leq \\lambda(s \\cap [a,b])$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "measure restriction",
+      "measure extensionality",
+      "Lebesgue measure"
+    ],
+    "prerequisites": [
+      "Measure.restrict_apply",
+      "measure_union_le",
+      "Set.Ioo_subset_Icc_self"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 139,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Fubini with Open Rectangle Integrability",
+    "content": "The main result: if f is integrable on the open rectangle (a,b) × (c,d) with Lebesgue measure, then the iterated interval integrals can be swapped. The proof converts the Ioo integrability to Icc integrability (they are equivalent), then applies the existing Icc-based Fubini theorem. This directly answers OQ-03: YES, the open rectangle suffices.",
+    "mathContext": "Given $f$ integrable on $(a,b) \\times (c,d)$ with $\\lambda|_{(a,b)} \\otimes \\lambda|_{(c,d)}$: \\[\\int_c^d \\int_a^b f(x,y)\\,dx\\,dy = \\int_a^b \\int_c^d f(x,y)\\,dy\\,dx\\] The proof: $\\lambda|_{(a,b)} = \\lambda|_{[a,b]}$, so Ioo integrability implies Icc integrability, and Fubini applies.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fubini's theorem",
+      "iterated integrals",
+      "Ioo integrability",
+      "product measure"
+    ],
+    "prerequisites": [
+      "volume_restrict_Icc_eq_Ioo",
+      "fubini_core",
+      "MeasureTheory.integral_integral_swap"
+    ]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Icc ↔ Ioo Integrability Equivalence",
+    "content": "An explicit biconditional: f is integrable on the closed rectangle [a,b]×[c,d] if and only if it is integrable on the open rectangle (a,b)×(c,d), where both use the respective restricted Lebesgue measures. This makes the equivalence machine-verifiable and reusable.",
+    "mathContext": "The equivalence $f \\in L^1([a,b] \\times [c,d]) \\iff f \\in L^1((a,b) \\times (c,d))$ (with restricted Lebesgue measures) follows from the product measure equality $\\lambda|_{[a,b]} \\otimes \\lambda|_{[c,d]} = \\lambda|_{(a,b)} \\otimes \\lambda|_{(c,d)}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Lebesgue integrability",
+      "product measure",
+      "measure equivalence"
+    ],
+    "prerequisites": [
+      "volume_prod_restrict_Icc_eq_Ioo",
+      "Integrable"
+    ]
+  }
+]

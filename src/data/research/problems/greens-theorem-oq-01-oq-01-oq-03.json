@@ -1,0 +1,167 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01-oq-03",
+  "title": "The integrability hypothesis uses the product of Icc-restricted measures",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: The integrability hypothesis uses the product of Icc-restricted measures.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-05T02:57:44.810Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE 2026-05-06: Gallery entry created. 6 theorems, 0 sorries, 0 axioms. Key result: vol.restrict(Icc) = vol.restrict(Ioo) for Lebesgue. PR pending.",
+    "builtItems": [
+      "volume_Icc_sdiff_Ioo: Icc\\\\Ioo has measure zero (GreensTheoremOQ01OQ01OQ03.lean:52)",
+      "volume_restrict_Icc_eq_Ioo: restriction equality theorem (line 71)",
+      "volume_prod_restrict_Icc_eq_Ioo: product measure equality (line 97)",
+      "intervalIntegral_swap_of_Ioo_integrable: main Fubini with Ioo hypothesis (line 139)",
+      "integrable_Icc_iff_Ioo: explicit equivalence iff (line 154)",
+      "greens_fubini_open_rectangle: application to Green (line 166)"
+    ],
+    "insights": [
+      "Icc and Ioo intervals agree for Lebesgue measure: boundary {a,b} has measure zero",
+      "vol.restrict (Icc a b) = vol.restrict (Ioo a b) proved via measure extensionality and null boundary argument",
+      "This equivalence is NOT in Mathlib as a standalone lemma; Mathlib prefers Ioc for measure theory",
+      "Any countable set has Lebesgue measure zero; singletons are trivially countable"
+    ],
+    "mathlibGaps": [
+      "volume_restrict_Icc_eq_Ioo not in Mathlib (Mathlib uses Ioc as canonical); contribution candidate for MeasureTheory.Measure.Lebesgue.Basic"
+    ],
+    "nextSteps": [
+      "Generalize to any atomless Borel measure (not just Lebesgue)",
+      "Consider contributing volume_restrict_Icc_eq_Ioo to Mathlib"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-03",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-03-oq-04",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-05T02:57:44.809Z",
+  "lastUpdate": "2026-05-05T02:57:44.809Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03OQ04.lean",
+      "filename": "GreensTheoremOQ03OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}
