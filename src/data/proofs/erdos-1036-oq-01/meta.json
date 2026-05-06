@@ -60,7 +60,8 @@
       "**Two ISC notions**: labeled (all 2^n subsets) vs. unlabeled (isomorphism classes ≤ 2^n). The parent uses labeled (trivial). The correct question uses unlabeled.",
       "**Upper bound is tight**: The random graph G(n,1/2) achieves numISCTrue ≈ 2^n, showing c' = 1 is the best possible upper bound.",
       "**Shelah vs. optimal**: Shelah gives SOME c' > 0 (possibly small). The OQ asks whether the optimal c' = 1 (largest possible).",
-      "**Quotient complexity**: Formalizing numISCTrue requires `Quotient` with a `Setoid` on induced subgraph pairs, plus a `Fintype` instance on the quotient — about 200 lines to eliminate axioms 1-3."
+      "**Quotient complexity**: Formalizing numISCTrue requires `Quotient` with a `Setoid` on induced subgraph pairs, plus a `Fintype` instance on the quotient — about 200 lines to eliminate axioms 1-3.",
+      "**Connection to Erdős-Hajnal**: The Erdős-Hajnal conjecture says graphs with forbidden induced subgraph H have polynomial clique/independent sets. Non-Ramsey(c) graphs lack such structure — c'(c)=1 would say they are 'maximally pseudorandom' despite their Ramsey constraints."
     ],
     "prerequisites": [
       "Shelah's theorem (Erdos1036Problem.lean, axiom shelah_1998)",
@@ -95,20 +96,19 @@
       "mathContext": "This asserts that non-Ramsey graphs are 'pseudorandom' enough to maximize ISC diversity. Random graphs G(n,1/2) are the witness: they are non-Ramsey and achieve 2^n ISC classes a.s."
     }
   ],
-  "openQuestions": [
+  "conclusion": {
+    "summary": "Proves c'(c) ∈ (0,1] for the optimal constant in Shelah's theorem. The machine-checked bounds use 5 axioms for the ISC interface and Shelah's theorem; the conjecture c'(c)=1 is the 6th axiom — the genuine open problem.",
+    "implications": "The conjecture c'(c)=1 would establish that non-Ramsey graphs are 'maximally diverse' in induced subgraph structure, matching random graphs. This connects Ramsey theory to extremal combinatorics. Eliminating the three interface axioms with a Quotient construction would demonstrate a reusable Lean 4 technique for counting isomorphism classes.",
+    "openQuestions": [
+      "Eliminate numISCTrue axioms via Quotient construction: Setoid on induced subgraph pairs, Fintype instance on quotient, cardinality ≤ 2^n",
+      "Prove G(n,1/2) is non-Ramsey and achieves numISCTrue=2^n a.s., eliminating the conjecture axiom",
+      "Is c'(c) monotone in c? Does the conjecture hold for all c>0 or only for specific ranges?"
+    ]
+  },
+  "crossReferences": [
     {
-      "id": "oq-01",
-      "title": "Eliminate numISCTrue axioms via Quotient construction",
-      "description": "Replace axioms 1-3 (numISCTrue interface) with a proper Lean 4 quotient construction. Requires: (1) a Setoid on induced subgraph pairs, (2) Fintype instance on the quotient, (3) proof that Fintype.card of quotient ≤ 2^n.",
-      "difficulty": "medium",
-      "tags": ["axiom-elimination", "quotient-type", "fintype"]
-    },
-    {
-      "id": "oq-02",
-      "title": "Prove random graphs are non-Ramsey and achieve optimal ISC count",
-      "description": "Formalize: (1) G(n,1/2) is non-Ramsey(c) for c < 2/log2 w.h.p., and (2) G(n,1/2) has numISCTrue = 2^n a.s. This would prove optimalConstantTrue_eq_one as a theorem, eliminating axiom 6.",
-      "difficulty": "very-hard",
-      "tags": ["probabilistic-method", "random-graphs", "axiom-elimination"]
+      "id": "erdos-1036",
+      "relationship": "parent: Shelah's theorem (1998) with placeholder ISC count — this entry refines with true ISC and asks for the optimal constant"
     }
   ]
 }

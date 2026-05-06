@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "The ISC Distinction: Labeled vs Unlabeled Induced Subgraphs",
+    "content": "The header establishes why this file is needed: the parent `Erdos1036Problem.lean` uses a placeholder `numInducedSubgraphClasses G = 2^n` (counting ALL vertex subsets, not isomorphism classes). This makes the optimal constant c' = 1 trivially for any graph.\n\nThe correct question counts **isomorphism classes**: S ~ T iff G.induce(S) ≅g G.induce(T). The true count numISCTrue G satisfies 1 ≤ numISCTrue G ≤ 2^n. The imports set up all prerequisites: `SimpleGraph.Basic`, `Clique` (for cliqueFree), and real analysis for logarithmic bounds.",
+    "mathContext": "Labeled: $\\#\\{S \\subseteq V\\} = 2^n$. Unlabeled (ISC): $|\\{S \\subseteq V\\}| / {\\cong}|$ where $S \\sim T \\Leftrightarrow G[S] \\cong G[T]$.",
+    "significance": "key",
+    "relatedConcepts": ["graph isomorphism quotient", "labeled vs unlabeled counting", "Shelah's theorem 1998"],
+    "prerequisites": ["graph isomorphism", "induced subgraphs", "Ramsey theory"]
+  },
+  {
+    "id": "ann-isc-interface",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 42, "endLine": 62 },
+    "type": "technique",
+    "title": "Axiomatizing numISCTrue: Three Properties Without Full Quotient",
+    "content": "Rather than constructing the Quotient type (~200 lines), three axioms capture what's needed:\n\n**numISCTrue**: The function exists (maps SimpleGraph V → ℕ). Full construction: Fintype.card(Quotient ≈) where S ≈ T ↔ G.induce S ≅g G.induce T.\n\n**numISCTrue_le_pow**: numISCTrue G ≤ 2^n (ISC classes ≤ vertex subsets).\n\n**numISCTrue_pos**: numISCTrue G > 0 (∅ gives one ISC class).\n\nThese are 'trivially true' axioms (not genuine assumptions) that could be eliminated with a Fintype quotient construction.",
+    "mathContext": "$\\mathrm{numISCTrue}(G) = |\\{S \\subseteq V\\}/\\sim|$, where $\\sim$ is graph isomorphism equivalence. Requires Setoid + Fintype on quotient.",
+    "significance": "supporting",
+    "relatedConcepts": ["Quotient type in Lean 4", "Fintype on quotient", "axiom interface pattern"],
+    "prerequisites": ["quotient types", "Fintype instances", "graph isomorphism (≅g)"]
+  },
+  {
+    "id": "ann-non-ramsey",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 63, "endLine": 90 },
+    "type": "concept",
+    "title": "Non-Ramsey Graphs and Shelah's Theorem",
+    "content": "**IsNonRamsey**: Both G and G^c are clique-free of size ⌈c·log n⌉. Non-Ramsey(c) graphs have no clique or independent set of size c·log n.\n\n**nonRamseyExistsTrue**: Axiom — non-Ramsey(c) graphs exist on all large vertex sets. Witness: G(n,1/2) for c < 2/log 2 (both ω(G) and α(G) are ~ 2log₂n a.s.).\n\n**shelah_isc**: Axiom — for c > 0, ∃ c' > 0 such that every non-Ramsey(c) graph has ≥ 2^{c'n} ISC classes. This is Shelah's 1998 theorem — the mathematical content.",
+    "mathContext": "Non-Ramsey$(c)$: $\\omega(G), \\alpha(G) \\leq c\\log n$ (no large clique or independent set). Random graph $G(n,1/2)$ satisfies this for $c < 2/\\log 2 \\approx 2.885$.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey numbers R(k,k)", "clique and independence numbers", "Shelah 1998", "random graph G(n,1/2)"],
+    "prerequisites": ["Ramsey theory", "clique-free graphs", "SimpleGraph complement"]
+  },
+  {
+    "id": "ann-optimal-def",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 91, "endLine": 120 },
+    "type": "technique",
+    "title": "Optimal Constant as Supremum + Auxiliary Setup",
+    "content": "**optimalConstantTrue c = sSup { c' | ∀ G non-Ramsey(c): numISCTrue G ≥ 2^{c'n} }** — the optimal exponent as a conditionally complete lattice supremum.\n\n**optimalSet_nonempty**: c' = 0 ∈ S since 2^0 = 1 ≤ numISCTrue (by numISCTrue_pos).\n\n**optimalSet_le_one**: Every c' ∈ S satisfies c' ≤ 1. Proof by contradiction: if c' > 1, get G with n≥1 vertices and numISCTrue G ≥ 2^{c'n} > 2^n ≥ numISCTrue G — contradiction via `Real.rpow_lt_rpow_of_exponent_lt`.",
+    "mathContext": "$\\mathrm{optimalConstantTrue}(c) = \\sup\\{c' \\mid \\forall G$ non-Ramsey$(c)$: $\\mathrm{numISCTrue}(G) \\geq 2^{c'n}\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["sSup / csSup", "Real.rpow_lt_rpow_of_exponent_lt", "proof by contradiction"],
+    "prerequisites": ["conditionally complete lattice", "real power function"]
+  },
+  {
+    "id": "ann-bounds",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 121, "endLine": 142 },
+    "type": "insight",
+    "title": "c'(c) ∈ (0,1]: Two-Sided Bound via csSup API",
+    "content": "Three theorems:\n\n**optimalConstantTrue_le_one**: `csSup_le ⟨0, nonempty⟩ bound_fn` — sSup ≤ 1.\n\n**optimalConstantTrue_pos**: From shelah_isc get c'' > 0. Show c'' ∈ S. Use `le_csSup ⟨1,bound⟩ hmem` to get c'' ≤ sSup. Chain: 0 < c'' ≤ optimalConstantTrue.\n\n**optimalConstantTrue_bounds**: Conjunction ⟨pos, le_one⟩.",
+    "mathContext": "csSup API: $s \\in S \\Rightarrow s \\leq \\mathrm{sSup}\\, S$ (le_csSup), $\\mathrm{sSup}\\, S \\leq b$ when all elements $\\leq b$ (csSup_le). Conclusion: $c'(c) \\in (0, 1]$.",
+    "significance": "key",
+    "relatedConcepts": ["csSup_le", "le_csSup", "optimalConstantTrue_pos via Shelah"],
+    "prerequisites": ["conditional supremum theory", "csSup/csInf Mathlib API"]
+  },
+  {
+    "id": "ann-conjecture",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 143, "endLine": 175 },
+    "type": "insight",
+    "title": "The Open Conjecture c'(c) = 1 and the Random Graph Witness",
+    "content": "**optimalConstantTrue_eq_one**: Axiom — ∀ c > 0, optimalConstantTrue c = 1. This is the genuine open conjecture.\n\n**Mathematical witness**: G(n,1/2) is non-Ramsey(c) for c < 2/log 2, AND has numISCTrue G = 2^n a.s. (almost all vertex subsets give non-isomorphic induced subgraphs — related to graph reconstruction). This would put c' = 1 in the set and prove the conjecture.\n\n**optimalConstantTrue_random**: Corollary at c = 2/log 2.\n\nThe summary comment accounts for all 6 axioms: 3 'trivially true' (ISC interface), 2 from parent (Shelah), 1 genuine conjecture.",
+    "mathContext": "Conjecture: $c'(c) = 1$, i.e., non-Ramsey graphs achieve maximal ISC diversity $\\sim 2^n$. Witness: $G(n,1/2)$ has $\\mathrm{numISCTrue}(G(n,1/2)) = 2^n$ a.s.",
+    "significance": "key",
+    "relatedConcepts": ["random graph G(n,1/2)", "graph reconstruction conjecture", "optimal constants in extremal graph theory"],
+    "prerequisites": ["random graph theory", "probabilistic method", "ISC count for random graphs"]
+  }
+]
