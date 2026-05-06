@@ -185,7 +185,7 @@ theorem euler_formula_taylor (x : ℝ) :
     e^{iπ} + 1 = 0. -/
 theorem euler_identity_taylor : exp (↑π * I) + 1 = 0 := by
   have h := euler_formula_taylor π
-  simp [cos_pi, sin_pi] at h
+  simp [Real.cos_pi, Real.sin_pi] at h
   linarith
 
 -- ============================================================================
