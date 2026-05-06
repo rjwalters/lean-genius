@@ -25,7 +25,7 @@
     "dateAdded": "2026-05-06",
     "axiomCount": 1,
     "assumptions": "galois_compositum_product: For two Galois extensions K₁/ℚ and K₂/ℚ with coprime Galois group orders (supported on disjoint primes), their compositum has Galois group K₁ × K₂. Provable from conductor/discriminant theory of cyclotomic fields (~500 Lean lines); identifies the exact Mathlib gap for the abelian case of Shafarevich.",
-    "lineCount": 199,
+    "lineCount": 201,
     "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
@@ -90,7 +90,7 @@
   "leanFile": {
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
     "axiomCount": 1,
-    "lineCount": 199,
+    "lineCount": 201,
     "theoremCount": 8,
     "definitionCount": 0,
     "sorries": 0
