@@ -471,3 +471,57 @@ Concurrent Docker build cache contention was causing builds #2-#4 failures.
 - `sperner_panchromatic_zero` (n=0): ✓ compiled
 - `sperner_panchromatic_one` (n=1): ✓ compiled
 
+
+## Session 2026-05-07 (Session 10) — Pseudomanifold analysis; chain triangulation barrier confirmed
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: no code progress — confirmed two-tier barrier and documented pseudomanifold proof strategy
+
+### What I Did
+
+- Deep analysis of SpernerFreudenthal.lean chain triangulation pseudomanifold (1 sorry)
+- Confirmed the chain triangulation triangulates the n-CUBE [0,1]ⁿ, NOT the n-simplex Δⁿ
+- Analyzed why chain triangulation cannot give the n/N diameter bound for sperner_panchromatic
+- Reviewed SpernerSimplicialInstance.lean: AbstractSimplicialData.toTriangulation has adj axioms FULLY PROVED
+- Analyzed the correct N-scaled triangulation of Δ²: Type 1 (Σ=N-1) + Type 2 (Σ=N-2) triangles = N² total
+- Verified the 4-triangle triangulation of Δ² for N=2: ADE, BDF, CEF, DEF covers Δ² correctly (χ=1)
+- Confirmed the 6-triangle "constant-miss" triangulation covers an ANNULUS (χ=0), not Δ²
+
+### Key Findings
+
+- **Chain triangulation barrier**: SpernerFreudenthal.lean's chain triangulation has O(1) diameter, not O(1/N). Cannot use for sperner_panchromatic which needs diameter ≤ n/N for arbitrary N.
+
+- **Pseudomanifold proof strategy (chain triangulation)**: Inject filter into sandwich set {T: A⊆T⊆B, |T|=k} where A,B are consecutive chain elements in face and |B\A|=2. Proof needs ~150 Lean lines using `Finset.card_le_card_of_injOn`.
+
+- **Correct N-scaled Δ² triangulation**:
+  - Type 1 simplex: {a+e₀, a+e₁, a+e₂} for base a with Σaᵢ=N-1 (corner triangles)
+  - Type 2 simplex: {a+e₀+e₁, a+e₀+e₂, a+e₁+e₂} for base a with Σaᵢ=N-2 (central triangles)
+  - Count: C(N+1,2) + C(N,2) = N² total ✓ (pseudomanifold verifiable by inspection)
+  - For N=2: 3 corner + 1 central = 4 triangles, Euler characteristic = 1 (disk) ✓
+
+- **SpernerSimplicialInstance.lean** has AbstractSimplicialData.toTriangulation with ALL adj axioms proved (adj_symm, adj_vertex, adj_ne). Just needs the pseudomanifold for a concrete triangulation.
+
+- **Two-tier barrier**:
+  1. Chain triangulation: pseudomanifold provable (~150 lines) but gives O(1) diameter — can't use for sperner_panchromatic
+  2. N-scaled Δⁿ triangulation: needs new AbstractSimplicialData instance with Type-1,...,Type-n simplices (~300-500 lines)
+
+### Files Modified
+
+- `src/data/research/problems/sperner-ndim-mathlib-oq-02.json` (knowledge updated)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+
+### Next Steps
+
+1. **Prove pseudomanifold for chain triangulation** (SpernerFreudenthal.lean, ~150 lines):
+   - Inject s ↦ (s \ face).min' into sandwich set {T: A⊆T⊆B, |T|=k} using `Finset.card_le_card_of_injOn`
+   - Bound sandwich set by |B\A|=2 → card ≤ 2
+   - This gives Sperner's lemma for the n-CUBE (not Δⁿ, but still useful)
+
+2. **Prove sperner_panchromatic for n=2** (new AbstractSimplicialData instance, ~250 lines):
+   - Define V = {(a₀,a₁,a₂) : ℕ³ | a₀+a₁+a₂=N} with lexicographic order
+   - topSimplices = Type1 ∪ Type2 (4N² triangles for n=2)
+   - Prove pseudomanifold via edge-in-≤2-triangles argument
+   - Extract panchromatic tuple with real coordinates and diameter bound ≤ 2/N
+
+3. **General n**: Use variable-miss Freudenthal triangulation (~300-500 lines, multi-session effort)
+
