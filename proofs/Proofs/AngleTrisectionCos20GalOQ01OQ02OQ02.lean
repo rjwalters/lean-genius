@@ -18,8 +18,7 @@
   **Main results:**
   1. `cos_pi_minpoly_natDegree`: natDegree(minpoly ℚ (cos(π/n))) = φ(2n)/2 — PROVED
   2. `cos_pi_extension_degree`: ∃ K ⊆ ℝ with cos(π/n) ∈ K, [K:ℚ] = φ(2n)/2 — PROVED
-  3. `cos_pi_gal_card`: |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2 — proved modulo
-     normality of ℚ(cos(π/n))/ℚ (documented sorry)
+  3. `cos_pi_gal_card`: |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2 — PROVED
 
   **Gallery consistency checks** (n=5,7,9 verified against φ(2n)/2 formula):
     n=5: φ(10)/2 = 2  ✓   n=7: φ(14)/2 = 3  ✓   n=9: φ(18)/2 = 3  ✓
@@ -93,37 +92,112 @@ theorem cos_pi_extension_degree (n : ℕ) (hn : 3 ≤ n) :
   rwa [cos_pi_eq_cos_2pi_div_2n n (by omega)]
 
 -- ============================================================================
--- § 4. Splitting Field Degree (with sorry — normality step)
+-- § 4. Splitting Field Degree
 -- ============================================================================
 
 /-- The splitting field of minpoly ℚ (cos(π/n)) has degree φ(2n)/2 over ℚ.
 
-    **Proof sketch**:
+    **Proof**:
     Let p = minpoly ℚ (cos(π/n)), with natDegree p = φ(2n)/2 (proved above).
+    Let F = maxRealSubfield(2n) = fixed field of ⟨conjAut(2n)⟩ in CyclotomicField(2n,ℚ).
+    Let α = alphaCos(2n) ∈ F with minpoly ℚ α = p.
 
-    Lower bound: p.SplittingField ⊇ ℚ(root) for any root, so
-    finrank ℚ SplittingField ≥ natDegree p = φ(2n)/2.
+    **Upper bound**: finrank SplittingField ≤ φ(2n)/2
+    1. conjSubgroup(2n) is normal in Gal(CyclotomicField(2n,ℚ)/ℚ) (abelian group → every
+       subgroup is normal, via autEquivPow isomorphism to (ℤ/2nℤ)×)
+    2. Therefore F = fixedField(conjSubgroup) is Galois over ℚ (inferInstance)
+    3. Since IsGalois ℚ ↥F and α_F ∈ F, by Normal.splits:
+       p = minpoly ℚ α_F splits over F
+    4. IsSplittingField.lift: p.SplittingField →ₐ[ℚ] F (injective algebra map)
+    5. finrank SplittingField ≤ finrank F = φ(2n)/2
 
-    Upper bound: ℚ(cos(π/n)) is Galois over ℚ (it is the fixed field of complex
-    conjugation in CyclotomicField(2n,ℚ), and conjSubgroup is normal in the
-    abelian Galois group (ℤ/2nℤ)×). By normality, p splits completely over
-    ℚ(cos(π/n)). By Polynomial.SplittingField.lift, p.SplittingField → ℚ(cos(π/n)),
-    giving finrank ℚ SplittingField ≤ φ(2n)/2.
-
-    Both bounds yield finrank ℚ SplittingField = φ(2n)/2.
-
-    **Remaining work**: Formalize that conjSubgroup(2n) is a normal subgroup of
-    the Galois group of CyclotomicField(2n,ℚ), and derive IsGalois ℚ K for K =
-    maxRealSubfield(2n). Estimated: ~80 lines using Mathlib's abelian group theory. -/
+    **Lower bound**: natDegree p ≤ finrank SplittingField
+    6. p splits over SplittingField (by definition), with natDegree p = φ(2n)/2 ≥ 1
+       roots counted with multiplicity (separable)
+    7. Obtain root r ∈ p.rootSet(SplittingField) via card_rootSet = natDegree p > 0
+    8. AdjoinRoot.liftHom: AdjoinRoot p →ₐ[ℚ] p.SplittingField (injective, r is a root)
+    9. finrank(AdjoinRoot p) = natDegree p ≤ finrank SplittingField -/
 private theorem cos_pi_splitting_finrank (n : ℕ) (hn : 3 ≤ n) :
     Module.finrank ℚ (minpoly ℚ (Real.cos (Real.pi / ↑n))).SplittingField =
     Nat.totient (2 * n) / 2 := by
-  -- Lower bound: SplittingField ⊇ ℚ(root), natDegree(minpoly) ≤ finrank SplittingField
-  -- Upper bound: minpoly splits in the degree-φ(2n)/2 field ℚ(cos(π/n)) ⊆ ℝ
-  -- Both bounds = φ(2n)/2 from cos_pi_minpoly_natDegree
-  -- TODO: Formalize normality of conjSubgroup → IsGalois ℚ (maxRealSubfield (2*n))
-  --       → minpoly splits in ℚ(cos(π/n)) → finrank SplittingField ≤ φ(2n)/2
-  sorry
+  haveI hne2n : NeZero (2 * n) := ⟨by omega⟩
+  have hn' : 3 ≤ 2 * n := by omega
+  set c := Real.cos (Real.pi / ↑n) with hc_def
+  set p := minpoly ℚ c with hp_def
+  set α := AngleTrisectionOQ02OQ03OQ01.alphaCos (2 * n) with hα_def
+  set F := AngleTrisectionOQ02OQ03OQ01.maxRealSubfield (2 * n) with hF_def
+  -- (A) Integrality of c
+  have h_int_c : IsIntegral ℚ c := by
+    rw [hc_def, cos_pi_eq_cos_2pi_div_2n n (by omega)]
+    exact (AngleTrisectionOQ02OQ03OQ01.cos_algebraic_from_cyclotomic
+      (2 * n) hn').isIntegral
+  -- (B) p = minpoly ℚ α (same polynomial, via minpoly_alphaCos_eq_minpoly_cos)
+  have h_p_eq : p = minpoly ℚ α := by
+    rw [hp_def, hc_def, cos_pi_eq_cos_2pi_div_2n n (by omega)]
+    rw [← AngleTrisectionOQ02OQ03OQ01.minpoly_alphaCos_eq_minpoly_cos (2 * n) hn']
+  -- (C) α ∈ F: alphaCos = alpha/2 and alpha ∈ F
+  have h_alpha_mem : AngleTrisectionOQ02OQ03OQ01.alpha (2 * n) ∈ F :=
+    AngleTrisectionOQ02OQ03OQ01.alpha_in_fixedField (2 * n) hn'
+  have h_α_mem : α ∈ F := by
+    simp only [hα_def, AngleTrisectionOQ02OQ03OQ01.alphaCos, hF_def]
+    exact IntermediateField.div_mem h_alpha_mem (IntermediateField.algebraMap_mem _ 2)
+  -- (D) conjSubgroup(2n) is Normal (Galois group is abelian)
+  haveI hNorm : (AngleTrisectionOQ02OQ03OQ01.conjSubgroup (2 * n)).Normal := by
+    have hirr := Polynomial.cyclotomic.irreducible_rat (NeZero.pos (2 * n))
+    set aep := IsCyclotomicExtension.autEquivPow (CyclotomicField (2 * n) ℚ) hirr
+    refine ⟨fun x hx g => ?_⟩
+    suffices h : g * x * g⁻¹ = x by rw [h]; exact hx
+    have hab : g * x = x * g :=
+      aep.injective (by rw [map_mul, map_mul, mul_comm])
+    rw [hab]; group
+  -- (E) F is Galois over ℚ (fixed field of Normal subgroup of Galois extension)
+  haveI h_galois : IsGalois ℚ ↥F := inferInstance
+  -- (F) Lift α to an element of ↥F
+  let α_F : ↥F := ⟨α, h_α_mem⟩
+  -- (G) minpoly ℚ α_F = p
+  have h_minpoly_F : minpoly ℚ α_F = p := by
+    conv_rhs => rw [h_p_eq]
+    exact (minpoly.algHom_eq (IntermediateField.val F)
+      (IntermediateField.val F).injective α_F).symm
+  -- (H) p splits over F (Normal extension, α_F ∈ F, minpoly splits)
+  have h_splits_F : p.Splits (algebraMap ℚ ↥F) := by
+    rw [← h_minpoly_F]; exact Normal.splits α_F
+  -- (I) SplittingField embeds into F via IsSplittingField.lift
+  have h_lift : p.SplittingField →ₐ[ℚ] ↥F :=
+    IsSplittingField.lift p.SplittingField p h_splits_F
+  -- (J) finrank F = φ(2n)/2
+  have h_finrank_F : Module.finrank ℚ ↥F = Nat.totient (2 * n) / 2 :=
+    AngleTrisectionOQ02OQ03OQ01.maximal_real_subfield_degree (2 * n) hn'
+  -- (K) Upper bound: finrank SplittingField ≤ finrank F = φ(2n)/2
+  have h_ub : Module.finrank ℚ p.SplittingField ≤ Nat.totient (2 * n) / 2 :=
+    (LinearMap.finrank_le_finrank_of_injective h_lift.toLinearMap
+      h_lift.injective).trans h_finrank_F.le
+  -- (L) natDegree p = φ(2n)/2
+  have h_deg : p.natDegree = Nat.totient (2 * n) / 2 := cos_pi_minpoly_natDegree n hn
+  -- (M) p is irreducible and nontrivial
+  have h_irred : Irreducible p := minpoly.irreducible h_int_c
+  have h_ne : p ≠ 0 := h_irred.ne_zero
+  -- (N) Lower bound: natDegree p ≤ finrank SplittingField via AdjoinRoot
+  -- Get a root of p in SplittingField using rootSet (separable poly, splits)
+  have h_card_roots : 0 < Fintype.card (p.rootSet p.SplittingField) := by
+    rw [Polynomial.card_rootSet_eq_natDegree h_irred.separable
+      (Polynomial.SplittingField.splits p), h_deg]
+    exact Nat.div_pos (Nat.totient_pos.mpr (by omega)) (by omega)
+  obtain ⟨⟨root, hroot_mem⟩⟩ := Fintype.card_pos_iff.mp h_card_roots
+  have h_aeval_root : Polynomial.aeval root p = 0 :=
+    (Polynomial.mem_rootSet.mp hroot_mem).2
+  -- Construct injective AlgHom: AdjoinRoot p →ₐ[ℚ] p.SplittingField
+  haveI : Fact (Irreducible p) := ⟨h_irred⟩
+  set ψ := AdjoinRoot.liftHom p root h_aeval_root
+  -- finrank(AdjoinRoot p) = natDegree p (from PowerBasis)
+  have h_adj_finrank : Module.finrank ℚ (AdjoinRoot p) = p.natDegree := by
+    rw [(AdjoinRoot.powerBasis h_ne).finrank, AdjoinRoot.powerBasis_dim]
+  -- finrank SplittingField ≥ finrank AdjoinRoot p = natDegree p = φ(2n)/2
+  have h_lb : Nat.totient (2 * n) / 2 ≤ Module.finrank ℚ p.SplittingField := by
+    rw [← h_deg, ← h_adj_finrank]
+    exact LinearMap.finrank_le_finrank_of_injective ψ.toLinearMap
+      (RingHom.injective ψ.toRingHom)
+  omega
 
 -- ============================================================================
 -- § 5. The Galois Group Order Theorem
@@ -219,8 +293,11 @@ theorem cos_pi9_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 9))).natDegre
 3. **Galois order**: |Gal(minpoly)| = φ(2n)/2.
    Reduces to: finrank ℚ (SplittingField p) = φ(2n)/2.
    This follows from: ℚ(cos(π/n)) = maxRealSubfield(2n) is Galois over ℚ
-   (conjSubgroup abelian → normal), hence minpoly splits over it, hence
-   SplittingField ≅ ℚ(cos(π/n)). One sorry remains on the normality step.
+   (conjSubgroup abelian → normal via autEquivPow), hence minpoly splits over it
+   (Normal.splits), hence SplittingField embeds into F (IsSplittingField.lift).
+   Lower bound via AdjoinRoot: get root r ∈ rootSet, AdjoinRoot p →ₐ[ℚ] SplittingField
+   gives finrank SplittingField ≥ finrank AdjoinRoot = natDegree p = φ(2n)/2.
+   Zero sorries remaining.
 
 ## Techniques Used
 - **IsCyclotomicExtension**: via AngleTrisectionOQ02OQ03OQ01's `alphaCos`, `maxRealSubfield`
