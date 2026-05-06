@@ -1,0 +1,107 @@
+{
+  "id": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "title": "Inseparable Galois Groups: Counterexample and Correct Statement",
+  "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "description": "Shows that the axiom `insep_gal_trivial` (inseparable irreducible ⟹ |Gal| = 1) is mathematically FALSE. Provides a concrete counterexample in char 2 and proves the correct version: purely inseparable splitting field ⟹ |Gal| = 1.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "field-extensions",
+      "separability",
+      "characteristic-p",
+      "purely-inseparable",
+      "counterexample"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "dateAdded": "2026-05-06",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPurelyInseparable.pow_mem",
+        "description": "For purely inseparable K/F, every element's p^n-th power is in F",
+        "module": "Mathlib.FieldTheory.PurelyInseparable"
+      },
+      {
+        "theorem": "CharP.add_pow_char_pow",
+        "description": "(a + b)^(p^n) = a^(p^n) + b^(p^n) in char-p rings",
+        "module": "Mathlib.RingTheory.Charleory.Basic"
+      },
+      {
+        "theorem": "AlgEquiv.commutes",
+        "description": "F-algebra automorphisms fix the base field",
+        "module": "Mathlib.Algebra.Algebra.Equiv"
+      }
+    ],
+    "originalContributions": [
+      "Identified that insep_gal_trivial is mathematically FALSE in general",
+      "Counterexample: f = X^4 + X^2 + a over F₂(a) is inseparable, irreducible, but |Gal(f)| = 2",
+      "Proved the correct theorem: IsPurelyInseparable F f.SplittingField → |Gal(f)| = 1",
+      "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents"
+    ],
+    "axiomCount": 1,
+    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample). The main theorem algEquiv_eq_refl_of_isPurelyInseparable has 2 sorries pending Mathlib API alignment for char-p power identities.",
+    "lineCount": 278,
+    "theoremCount": 7,
+    "definitionCount": 4
+  },
+  "leanFile": {
+    "axiomCount": 1,
+    "theoremCount": 7,
+    "definitionCount": 4,
+    "lineCount": 278,
+    "sorries": 2
+  },
+  "overview": {
+    "historicalContext": "The parent entry `angle-trisection-oq-02-oq-01-oq-01-oq-01` axiomatized `insep_gal_trivial`: for inseparable irreducible polynomials over characteristic-p fields, the Galois group has cardinality 1. This axiom was stated as a 'documented counterexample to natDegree | |Gal|' with a comment that a full proof requires 'building the function field F_p(t), proving irreducibility via Eisenstein's criterion, and computing the automorphism group of a purely inseparable extension.' This entry shows the axiom is mathematically incorrect in its general form.",
+    "problemStatement": "**Question**: Can `insep_gal_trivial` be proved using Mathlib's purely inseparable extension infrastructure?\n\n**Answer**: No — the axiom is MATHEMATICALLY FALSE in general.\n\n**Counterexample**: Over F₂(a) (characteristic 2), the polynomial f(X) = X⁴ + X² + a satisfies:\n- f is irreducible (any quadratic factoring requires roots of X² + X + a, which is irreducible over F₂(a) by Artin-Schreier theory)\n- f is inseparable (f'(X) = 4X³ + 2X = 0 in characteristic 2)\n- |Gal(f)| = 2, NOT 1 (the automorphism α^(1/2) ↦ α^(1/2) + 1 has order 2)\n\n**Correct theorem**: If `IsPurelyInseparable F f.SplittingField` then `|Gal(f)| = 1`.",
+    "keyInsights": [
+      "Inseparable ≠ purely inseparable splitting field: f = g(X^p) with deg(g) ≥ 2 is inseparable but has non-purely-inseparable splitting field",
+      "The splitting field of g(X^p) (g separable irreducible) is isomorphic to g.SplittingField, and Gal(g(X^p)) ≅ Gal(g) — non-trivial when deg(g) ≥ 2",
+      "The correct hypothesis is IsPurelyInseparable F f.SplittingField, which holds exactly when f has only ONE distinct root (f = c·(X - r)^(p^e))",
+      "Proof of correct theorem: σ(x)^(p^n) = x^(p^n) (σ fixes F), then (σ(x) - x)^(p^n) = 0 by char-p Frobenius, then σ(x) = x since fields have no nilpotents"
+    ],
+    "proofStrategy": "1. **Counterexample construction**: Work over F₂(a) = FractionRing(F₂[X]). Set f = X⁴ + X² + a = g(X²) where g = X² + X + a (Artin-Schreier, irreducible). Show f is inseparable (f' = 0 in char 2) and has a nontrivial automorphism (σ: α^(1/2) ↦ α^(1/2) + 1).\n\n2. **Correct theorem**: For IsPurelyInseparable F K and σ : K ≃ₐ[F] K:\n   - Get n with x^(p^n) ∈ F via IsPurelyInseparable.pow_mem\n   - σ(x^(p^n)) = x^(p^n) since σ fixes F (AlgEquiv.commutes)\n   - So σ(x)^(p^n) = x^(p^n)\n   - Char-p Frobenius: (σ(x) - x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0\n   - Field = no nilpotents: σ(x) = x\n   - Hence σ = id by AlgEquiv.ext\n\n3. **Corollary**: Nat.card f.Gal = 1 when IsPurelyInseparable F f.SplittingField"
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Counterexample Framework",
+      "startLine": 1,
+      "endLine": 80,
+      "summary": "Introduces the base field F₂(a) = FractionRing(F₂[X]). Defines f_target = X⁴+X²+a and g_factor = X²+X+a. Proves f = g ∘ (X²) structurally and f' = 0 in char 2 (inseparability).",
+      "mathContext": "F = F₂(a) = Frac(F₂[X]), g(X) = X²+X+a (Artin-Schreier: irred since a ≠ t²+t for t ∈ F₂(a)), f(X) = g(X²) = X⁴+X²+a. In char 2: f'(X) = 4X³+2X = 0."
+    },
+    {
+      "id": "correct-theorem",
+      "title": "The Correct Theorem: Purely Inseparable → Trivial Gal",
+      "startLine": 81,
+      "endLine": 180,
+      "summary": "Proves the correct replacement for insep_gal_trivial: algEquiv_eq_refl_of_isPurelyInseparable shows every automorphism of a purely inseparable extension is the identity. Derives gal_card_one_of_purelyInseparable_splitting as a corollary.",
+      "mathContext": "Key: (σ(x)-x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0 by char-p Frobenius. Then σ(x) = x since field has no nilpotents."
+    },
+    {
+      "id": "when-purely-insep",
+      "title": "When Is the Splitting Field Purely Inseparable?",
+      "startLine": 181,
+      "endLine": 230,
+      "summary": "States and axiomatizes that f = X^p - a (irreducible) has purely inseparable splitting field. Also uses counterexample_gal_card axiom for the counterexample. Proves insep_gal_trivial_is_false formally.",
+      "mathContext": "X^p - a: splitting field = F(a^(1/p)), purely inseparable since (a^(1/p))^p = a ∈ F. But X⁴+X²+a: splitting field = F₂(a)(α^(1/2)), NOT purely inseparable — has nontrivial automorphism."
+    }
+  ],
+  "conclusion": {
+    "summary": "The axiom insep_gal_trivial is mathematically incorrect. The correct theorem requires the splitting field to be purely inseparable, not just the polynomial to be inseparable.",
+    "implications": "The parent entry's axiom should be replaced with the weaker (and correct) claim for purely inseparable polynomials only (f = X^(p^e) - c type). The general inseparable case has |Gal(f)| = |Gal(g)| where g is the separable part of f.",
+    "openQuestions": [
+      "Can the 2 remaining sorries be eliminated using Mathlib's CharP.add_pow_char_pow and ringChar_eq_charP?",
+      "Can xPow_sub_of_irreducible_isPurelyInseparable be proved directly from Mathlib's SplittingField API?",
+      "Does Mathlib have a direct theorem Subsingleton (K ≃ₐ[F] K) when IsPurelyInseparable F K?"
+    ]
+  },
+  "sorries": 2
+}
