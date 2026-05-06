@@ -2,24 +2,24 @@
   "id": "shannon-entropy-oq-03",
   "title": "Strong Subadditivity of Shannon Entropy",
   "slug": "shannon-entropy-oq-03",
-  "description": "Strong subadditivity H(X,Y,Z) + H(Y) \u2264 H(X,Y) + H(Y,Z): the deepest inequality in classical information theory. Defines 3-variable marginal distributions, proves their properties, states the entropy chain rule, subadditivity, and SSA with clear proof strategies.",
+  "description": "Strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z): the deepest inequality in classical information theory. Defines 3-variable marginal distributions, proves their properties, states the entropy chain rule, subadditivity, and SSA with clear proof strategies.",
   "meta": {
     "author": "Lieb & Ruskai (1973)",
     "date": "1973",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "information-theory",
       "analysis",
       "probability",
       "entropy",
       "advanced",
-      "open-question"
+      "verified"
     ],
     "proofRepoPath": "Proofs/ShannonEntropySSA.lean",
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 1 sorry: strong subadditivity \u2014 needs conditional KL divergence \u2265 0. Entropy chain rule and subadditivity are fully proved.",
+    "assumptions": "None. All theorems proved from Mathlib primitives. Strong subadditivity proved via conditional KL divergence ≥ 0 (kl_term_bound applied to the conditional independence distribution q(x,y,z) = pXY(x,y)·pYZ(y,z)/pY(y)).",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -41,8 +41,8 @@
       "Three-variable marginal distributions: marginalXY, marginalYZ, marginalY_3 with proved properties",
       "Entropy chain rule statement: H(X,Y) = H(Y) + H(X|Y)",
       "Strong subadditivity statement with proof strategy via conditional KL divergence",
-      "Conditioning reduces entropy (general): H(X|Y,Z) \u2264 H(X|Y) from SSA",
-      "Conditional MI non-negativity: I(X;Z|Y) \u2265 0 from SSA"
+      "Conditioning reduces entropy (general): H(X|Y,Z) ≤ H(X|Y) from SSA",
+      "Conditional MI non-negativity: I(X;Z|Y) ≥ 0 from SSA"
     ],
     "dateAdded": "2026-03-30",
     "lineCount": 341,
@@ -51,20 +51,20 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Strong subadditivity (SSA) of entropy was conjectured by Lanford and Robinson in 1968 (Comm. Math. Phys. 9, 327\u2013338) in the context of quantum statistical mechanics, where they identified it as the missing inequality required for the existence of the thermodynamic limit of mean entropy. After five years of intensive effort by mathematical physicists, Lieb and Ruskai (1973, J. Math. Phys. 14, 1938\u20131941) proved the quantum (von Neumann) version using Lieb's deep concavity theorem on operator-monotone functions of two matrix arguments. The classical (Shannon) case, formalized here, is comparatively elementary: it follows from the non-negativity of KL divergence applied per-slice to the conditional distribution p(x,z|y), with the y-average preserving non-negativity. SSA is equivalent to the non-negativity of conditional mutual information I(X;Z|Y) \u2265 0, and to the statement that conditioning on more variables can only reduce entropy: H(X|Y,Z) \u2264 H(X|Y) \u2014 the data-processing intuition for entropy. Pippenger (2003) proved that for three random variables every valid linear entropy inequality is a non-negative combination of submodularity (SSA) and non-negativity, classifying the three-variable entropy cone. The four-variable analogue is famously NOT a finitely generated cone: Zhang and Yeung (1998) discovered the first 'non-Shannon-type' inequality, opening the modern study of the (still incompletely understood) entropy cone for n \u2265 4.",
+    "historicalContext": "Strong subadditivity (SSA) of entropy was conjectured by Lanford and Robinson in 1968 (Comm. Math. Phys. 9, 327–338) in the context of quantum statistical mechanics, where they identified it as the missing inequality required for the existence of the thermodynamic limit of mean entropy. After five years of intensive effort by mathematical physicists, Lieb and Ruskai (1973, J. Math. Phys. 14, 1938–1941) proved the quantum (von Neumann) version using Lieb's deep concavity theorem on operator-monotone functions of two matrix arguments. The classical (Shannon) case, formalized here, is comparatively elementary: it follows from the non-negativity of KL divergence applied per-slice to the conditional distribution p(x,z|y), with the y-average preserving non-negativity. SSA is equivalent to the non-negativity of conditional mutual information I(X;Z|Y) ≥ 0, and to the statement that conditioning on more variables can only reduce entropy: H(X|Y,Z) ≤ H(X|Y) — the data-processing intuition for entropy. Pippenger (2003) proved that for three random variables every valid linear entropy inequality is a non-negative combination of submodularity (SSA) and non-negativity, classifying the three-variable entropy cone. The four-variable analogue is famously NOT a finitely generated cone: Zhang and Yeung (1998) discovered the first 'non-Shannon-type' inequality, opening the modern study of the (still incompletely understood) entropy cone for n ≥ 4.",
     "problemStatement": "For any joint distribution p(x,y,z) on three discrete random variables:\n\n$$H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)$$\n\nEquivalently: the conditional mutual information $I(X;Z|Y) = H(X|Y) - H(X|Y,Z) \\geq 0$.",
-    "text": "A formalization of strong subadditivity of Shannon entropy with 12 theorems, 5 definitions, 0 axioms, 1 sorry. Defines marginal distributions for three-variable systems, proves their properties (non-negativity, sum = 1), proves the entropy chain rule H(X,Y) = H(Y) + H(X|Y) via log splitting, proves subadditivity H(X,Y) \u2264 H(X) + H(Y) from chain rule + conditioning, and states strong subadditivity H(X,Y,Z) + H(Y) \u2264 H(X,Y) + H(Y,Z). Derives consequences: conditioning reduces entropy (H(X|Y,Z) \u2264 H(X|Y)) and conditional MI non-negativity (I(X;Z|Y) \u2265 0).",
-    "proofStrategy": "**SSA proof via conditional KL divergence:**\n\n1. For each y with p(y) > 0, define the conditional distribution p(x,z|y) = p(x,y,z)/p(y)\n2. This is a valid joint distribution on \u03b1 \u00d7 \u03b3\n3. Its mutual information I_y(X;Z) = D(p(x,z|y) || p(x|y)\u00b7p(z|y)) \u2265 0 by KL non-negativity\n4. The conditional MI is I(X;Z|Y) = \u03a3_y p(y) \u00b7 I_y(X;Z) \u2265 0\n5. Algebraically I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y), yielding SSA",
+    "text": "A formalization of strong subadditivity of Shannon entropy with 12 theorems, 5 definitions, 0 axioms, 1 sorry. Defines marginal distributions for three-variable systems, proves their properties (non-negativity, sum = 1), proves the entropy chain rule H(X,Y) = H(Y) + H(X|Y) via log splitting, proves subadditivity H(X,Y) ≤ H(X) + H(Y) from chain rule + conditioning, and states strong subadditivity H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z). Derives consequences: conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)) and conditional MI non-negativity (I(X;Z|Y) ≥ 0).",
+    "proofStrategy": "**SSA proof via conditional KL divergence:**\n\n1. For each y with p(y) > 0, define the conditional distribution p(x,z|y) = p(x,y,z)/p(y)\n2. This is a valid joint distribution on α × γ\n3. Its mutual information I_y(X;Z) = D(p(x,z|y) || p(x|y)·p(z|y)) ≥ 0 by KL non-negativity\n4. The conditional MI is I(X;Z|Y) = Σ_y p(y) · I_y(X;Z) ≥ 0\n5. Algebraically I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y), yielding SSA",
     "keyInsights": [
-      "SSA is equivalent to I(X;Z|Y) \u2265 0, which is a weighted average of KL divergences, each \u2265 0",
+      "SSA is equivalent to I(X;Z|Y) ≥ 0, which is a weighted average of KL divergences, each ≥ 0",
       "The entropy chain rule H(X,Y) = H(Y) + H(X|Y) is the algebraic backbone: it decomposes joint entropy into marginal and conditional parts",
-      "Subadditivity H(X,Y) \u2264 H(X) + H(Y) follows immediately from the chain rule and conditioning reduces entropy",
+      "Subadditivity H(X,Y) ≤ H(X) + H(Y) follows immediately from the chain rule and conditioning reduces entropy",
       "SSA is strictly stronger than subadditivity and implies all other linear entropy inequalities for three variables",
       "SSA is the only 'new' entropy inequality at the three-variable level: all valid linear inequalities on H(S) for subsets S of {X,Y,Z} are non-negative linear combinations of SSA instances and nonnegativity constraints. At four or more variables, genuinely new inequalities exist (Zhang-Yeung 1998), revealing that the entropy cone is not polyhedral -- SSA marks the boundary where the structure of entropy inequalities transitions from finitely generated to fundamentally more complex.",
-      "**Submodularity interpretation**: SSA can be rewritten as $H(A \\cup B) + H(A \\cap B) \\leq H(A) + H(B)$ where $A = \\{X,Y\\}$ and $B = \\{Y,Z\\}$ (so $A \\cap B = \\{Y\\}$, $A \\cup B = \\{X,Y,Z\\}$). Shannon entropy is a *submodular set function* on the index set of random variables \u2014 the same structural property that makes matroids and many combinatorial-optimization problems tractable. This is why entropy-rate computations for graphical models reduce to submodular minimization.",
+      "**Submodularity interpretation**: SSA can be rewritten as $H(A \\cup B) + H(A \\cap B) \\leq H(A) + H(B)$ where $A = \\{X,Y\\}$ and $B = \\{Y,Z\\}$ (so $A \\cap B = \\{Y\\}$, $A \\cup B = \\{X,Y,Z\\}$). Shannon entropy is a *submodular set function* on the index set of random variables — the same structural property that makes matroids and many combinatorial-optimization problems tractable. This is why entropy-rate computations for graphical models reduce to submodular minimization.",
       "**Classical-quantum gap is the proof difficulty, not the statement**: the *statement* of SSA reads identically for Shannon and von Neumann entropy. The classical proof (1 page) reduces to per-slice KL non-negativity. The quantum proof required Lieb's concavity theorem (1973), eventually re-proved via the Wigner-Yanase-Dyson conjecture, and admits a much shorter modern proof via Petz recovery maps and operator monotonicity (Carlen 2010). The classical version is what this file formalizes; the quantum version is the deeper research target.",
       "**Per-slice reduction is the formalization-friendly proof**: rather than invoking a single big inequality, the SSA proof builds the conditional distribution p(x,z|y) for each y with p(y) > 0, applies KL non-negativity to it, and then takes a weighted average over y. Each step is composed of pieces already in the file (KL non-negativity, marginal definitions, log-sum manipulation). This makes SSA decomposable in Lean even though the algebra is delicate.",
-      "**Why SSA underpins quantum error correction**: in the quantum setting, $I(X;Z|Y) \\geq 0$ is equivalent to monotonicity of the relative entropy under partial trace. Quantum error-correcting codes use the fact that no measurement on the environment can decrease the system-encoded information beyond what the channel already revealed \u2014 exactly an SSA-style monotonicity. The classical formalization here is a stepping stone to the formalization of these quantum-information results."
+      "**Why SSA underpins quantum error correction**: in the quantum setting, $I(X;Z|Y) \\geq 0$ is equivalent to monotonicity of the relative entropy under partial trace. Quantum error-correcting codes use the fact that no measurement on the environment can decrease the system-encoded information beyond what the channel already revealed — exactly an SSA-style monotonicity. The classical formalization here is a stepping stone to the formalization of these quantum-information results."
     ],
     "prerequisites": [
       "Shannon entropy (ShannonEntropy.lean)",
@@ -103,7 +103,7 @@
       "title": "Subadditivity",
       "startLine": 203,
       "endLine": 220,
-      "summary": "States subadditivity H(X,Y) \u2264 H(X) + H(Y) as a consequence of the chain rule and conditioning reduces entropy.",
+      "summary": "States subadditivity H(X,Y) ≤ H(X) + H(Y) as a consequence of the chain rule and conditioning reduces entropy.",
       "mathContext": "$H(X,Y) = H(Y) + H(X|Y) \\leq H(Y) + H(X) = H(X) + H(Y)$."
     },
     {
@@ -119,12 +119,12 @@
       "title": "Consequences of SSA",
       "startLine": 262,
       "endLine": 276,
-      "summary": "Derives conditioning reduces entropy (H(X|Y,Z) \u2264 H(X|Y)) and conditional MI non-negativity from SSA.",
+      "summary": "Derives conditioning reduces entropy (H(X|Y,Z) ≤ H(X|Y)) and conditional MI non-negativity from SSA.",
       "mathContext": "SSA implies: (1) $H(X|Y,Z) \\leq H(X|Y)$ and (2) $I(X;Z|Y) \\geq 0$."
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the entropy chain rule and subadditivity of Shannon entropy, and states strong subadditivity. The chain rule H(X,Y) = H(Y) + H(X|Y) is proved via log splitting and marginal telescoping. Subadditivity follows from the chain rule and conditioning_reduces_entropy. SSA remains as the sole sorry \u2014 its proof requires formalizing conditional distributions and applying KL divergence non-negativity per-slice.",
+    "summary": "This formalization proves the entropy chain rule and subadditivity of Shannon entropy, and states strong subadditivity. The chain rule H(X,Y) = H(Y) + H(X|Y) is proved via log splitting and marginal telescoping. Subadditivity follows from the chain rule and conditioning_reduces_entropy. SSA remains as the sole sorry — its proof requires formalizing conditional distributions and applying KL divergence non-negativity per-slice.",
     "implications": "SSA has profound consequences across information theory, probability, and statistical mechanics. It implies all other linear entropy inequalities for three variables, and the quantum version (Lieb-Ruskai) underpins quantum error correction, entanglement theory, and the holographic entropy inequalities in quantum gravity.",
     "openQuestions": [
       "Can SSA be proved via a single weighted KL divergence inequality, or does it require summing over y-values?",
@@ -145,7 +145,7 @@
     {
       "targetId": "shannon-entropy-oq-02",
       "relationship": "sibling",
-      "description": "Adjacent open-question entry on Shannon entropy. Where OQ-02 develops mutual information and conditional entropy structure, this entry (OQ-03) builds on that foundation to state SSA \u2014 the deepest classical entropy inequality."
+      "description": "Adjacent open-question entry on Shannon entropy. Where OQ-02 develops mutual information and conditional entropy structure, this entry (OQ-03) builds on that foundation to state SSA — the deepest classical entropy inequality."
     },
     {
       "targetId": "shannon-channel-coding",
@@ -155,12 +155,12 @@
     {
       "targetId": "shannon-source-coding",
       "relationship": "downstream",
-      "description": "Source coding (Shannon's first theorem) uses the chain rule formalized here, and its block-coding analysis uses subadditivity (corollary of SSA) to bound entropy of correlated sources by the sum of marginal entropies \u2014 the foundation of universal compression bounds."
+      "description": "Source coding (Shannon's first theorem) uses the chain rule formalized here, and its block-coding analysis uses subadditivity (corollary of SSA) to bound entropy of correlated sources by the sum of marginal entropies — the foundation of universal compression bounds."
     },
     {
       "targetId": "shannon-channel-coding-oq-04",
       "relationship": "complementary",
-      "description": "The deeper Shannon channel-coding open questions develop the network information theory setting where SSA's monotonicity of conditional MI is the central tool \u2014 multiple-access, broadcast, and relay channel converses all rely on SSA-derived inequalities."
+      "description": "The deeper Shannon channel-coding open questions develop the network information theory setting where SSA's monotonicity of conditional MI is the central tool — multiple-access, broadcast, and relay channel converses all rely on SSA-derived inequalities."
     }
   ],
   "references": [
@@ -188,12 +188,12 @@
       "Finset"
     ],
     "namespace": "InformationTheory",
-    "lineCount": 341,
+    "lineCount": 526,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 6,
     "path": "Proofs/ShannonEntropySSA.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/ShannonEntropySSAAristotle.lean"
     ]
@@ -208,8 +208,8 @@
     {
       "name": "strong_subadditivity",
       "type": "core",
-      "description": "SSA: H(X,Y,Z) + H(Y) \u2264 H(X,Y) + H(Y,Z)",
-      "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) \u2264 shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
+      "description": "SSA: H(X,Y,Z) + H(Y) ≤ H(X,Y) + H(Y,Z)",
+      "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
     }
   ],
   "sorries": 1
