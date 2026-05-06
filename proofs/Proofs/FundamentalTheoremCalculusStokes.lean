@@ -204,13 +204,43 @@ noncomputable def extDeriv1_2D (ω : OneForm2D) : ℝ × ℝ → ℝ :=
     well-defined. -/
 theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ × ℝ) :
     extDeriv1_2D (extDeriv0_2D f) p = 0 := by
-  -- d₁(d₀(f)) at p = ∂/∂x(∂f/∂y) - ∂/∂y(∂f/∂x)
-  -- = ∂²f/∂x∂y - ∂²f/∂y∂x = 0 by Clairaut
-  -- This follows from ContDiff.isSymmetric_iteratedFDeriv applied to the
-  -- second Fréchet derivative, evaluating the symmetric bilinear form at
-  -- (e₁, e₂) vs (e₂, e₁). The bridge from iteratedFDeriv to concrete
-  -- partial deriv expressions requires unfolding the Mathlib API.
-  sorry
+  simp only [extDeriv1_2D, extDeriv0_2D]
+  rw [sub_eq_zero]
+  -- Differentiability: f is C¹, fderiv ℝ f is C¹ (since f is C²)
+  have hDiff : Differentiable ℝ f := by apply hf.differentiable; norm_num
+  have hFDiff : Differentiable ℝ (fderiv ℝ f) := by
+    have h : ContDiff ℝ 1 (fderiv ℝ f) := by apply hf.fderiv_right; norm_num
+    exact h.differentiable le_rfl
+  -- Use HasFDerivAt.prod (standalone) not dot notation (HasFDerivAtFilter.prod absent)
+  have hDY : ∀ x, deriv (fun y => f (x, y)) p.2 = fderiv ℝ f (x, p.2) (0, 1) := fun x =>
+    ((hDiff (x, p.2)).hasFDerivAt.comp_hasDerivAt p.2
+      (HasFDerivAt.prod (hasFDerivAt_const p.2 x) (hasFDerivAt_id ℝ p.2)).hasDerivAt
+      rfl).deriv
+  have hDX : ∀ y, deriv (fun x => f (x, y)) p.1 = fderiv ℝ f (p.1, y) (1, 0) := fun y =>
+    ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt p.1
+      (HasFDerivAt.prod (hasFDerivAt_id ℝ p.1) (hasFDerivAt_const p.1 y)).hasDerivAt
+      rfl).deriv
+  simp_rw [hDY, hDX]
+  have hStep1 : HasDerivAt (fun x => fderiv ℝ f (x, p.2))
+      (fderiv ℝ (fderiv ℝ f) p (1, 0)) p.1 :=
+    (hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
+      (HasFDerivAt.prod (hasFDerivAt_id ℝ p.1) (hasFDerivAt_const p.1 p.2)).hasDerivAt rfl
+  have hStep2 : HasDerivAt (fun y => fderiv ℝ f (p.1, y))
+      (fderiv ℝ (fderiv ℝ f) p (0, 1)) p.2 :=
+    (hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
+      (HasFDerivAt.prod (hasFDerivAt_const p.2 p.1) (hasFDerivAt_id ℝ p.2)).hasDerivAt rfl
+  have hDer2XY : HasDerivAt (fun x => fderiv ℝ f (x, p.2) (0, 1))
+      (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 := by
+    have h := hStep1.clm_apply (hasDerivAt_const p.1 ((0, 1) : ℝ × ℝ))
+    simp only [map_zero, add_zero] at h; exact h
+  have hDer2YX : HasDerivAt (fun y => fderiv ℝ f (p.1, y) (1, 0))
+      (fderiv ℝ (fderiv ℝ f) p (0, 1) (1, 0)) p.2 := by
+    have h := hStep2.clm_apply (hasDerivAt_const p.2 ((1, 0) : ℝ × ℝ))
+    simp only [map_zero, add_zero] at h; exact h
+  rw [hDer2XY.deriv, hDer2YX.deriv]
+  -- Symmetry: IsSymmSndFDerivAt = ∀ v w, fderiv(fderiv f)(p)(v)(w) = fderiv(fderiv f)(p)(w)(v)
+  -- minSmoothness ℝ 2 = 2, proved by le_rfl
+  exact (hf.contDiffAt.isSymmSndFDerivAt le_rfl) (1, 0) (0, 1)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VI: Green's Theorem as Stokes in 2D

@@ -30,7 +30,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 185-line proof, 0 sorries, 0 axioms. AC \u2192 BV proved directly from \u03b5-\u03b4 definition using iSup_le on eVariationOn.",
+    "progressSummary": "IN-PROGRESS: dd_eq_zero_2D proof written. Build 1 failed (norm_num metavar in fderiv_right). Build 2 submitted with explicit \u2115\u221e annotations. PR #16107.",
     "builtItems": [
       "ac_implies_bv: BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b (line 154)",
       "eVariationOn_le_of_forall: upper-bound criterion for eVariationOn via iSup_le (line 38)",
@@ -43,7 +43,9 @@
       "For a short interval [c,d] with d-c < \u03b4, total partition length \u2264 d-c by telescoping, so AC gives sum < 1",
       "eVariationOn.Icc_add_Icc provides inductive splitting: n pieces each \u2264 1 gives total \u2264 n < top",
       "Converting real-valued AC bound to ENNReal uses ofReal_sum_of_nonneg + ofReal_le_ofReal",
-      "No additional Mathlib infrastructure needed beyond Mathlib.Analysis.BoundedVariation"
+      "No additional Mathlib infrastructure needed beyond Mathlib.Analysis.BoundedVariation",
+      "ContDiff.fderiv_right has implicit {m : \u2115\u221e} \u2014 must annotate as ContDiff \u211d 1 (fderiv \u211d f) to fix metavar in norm_num side conditions",
+      "HasDerivAt.clm_apply takes two HasDerivAt args (CLM-valued func + vector func) \u2014 product rule derivative c(u x)\u00b71 + c(x)\u00b70; simp [map_zero, add_zero] clears the extra term"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -58,6 +60,8 @@
   "relatedProofs": [
     "fundamental-theorem-calculus",
     "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-01-oq-01",
+    "fundamental-theorem-calculus-oq-01-oq-04",
     "fundamental-theorem-calculus-oq-02"
   ],
   "references": {
@@ -91,6 +95,28 @@
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
+      "filename": "FundamentalTheoremCalculusLebesgueOQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean",
+      "filename": "FundamentalTheoremCalculusLebesgueOQ04.lean",
+      "lineCount": 312,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean"
     },
     {
       "path": "Proofs/FundamentalTheoremCalculusOQ04.lean",
