@@ -2,9 +2,9 @@
   "id": "shannon-source-coding-oq-04",
   "title": "Method of Types: Alternative Proof of Source Coding Theorem",
   "slug": "shannon-source-coding-oq-04",
-  "description": "The method of types (Csisz\u00e1r-K\u00f6rner) gives a combinatorial alternative proof of Shannon's source coding theorem: sequences are classified by their empirical distribution (type), the type class size satisfies |T_f| \u2264 exp(n H(Q)), and the dominant type covers \u2265 k^n/(n+1)^k sequences. This establishes achievability of rate H(p) without probabilistic large-deviation arguments.",
+  "description": "The method of types (Csiszár-Körner) gives a combinatorial alternative proof of Shannon's source coding theorem: sequences are classified by their empirical distribution (type), the type class size satisfies |T_f| ≤ exp(n H(Q)), and the dominant type covers ≥ k^n/(n+1)^k sequences. This establishes achievability of rate H(p) without probabilistic large-deviation arguments.",
   "meta": {
-    "author": "Csisz\u00e1r-K\u00f6rner (1981), formalized in Lean 4",
+    "author": "Csiszár-Körner (1981), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Method_of_types",
     "date": "1981",
     "status": "verified",
@@ -22,12 +22,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Real.log_pow",
-        "description": "log(x^n) = n * log x \u2014 used in entropy-probability weight identity",
+        "description": "log(x^n) = n * log x — used in entropy-probability weight identity",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
         "theorem": "Real.log_prod",
-        "description": "log(\u220f f i) = \u2211 log(f i) when all terms nonzero",
+        "description": "log(∏ f i) = ∑ log(f i) when all terms nonzero",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
       },
       {
@@ -37,17 +37,17 @@
       },
       {
         "theorem": "Finset.exists_le_card_fiber_of_mul_le_card_of_maps_to",
-        "description": "Pigeonhole principle for fiber cardinality \u2014 used in dominant_type_lower_bound",
+        "description": "Pigeonhole principle for fiber cardinality — used in dominant_type_lower_bound",
         "module": "Mathlib.Combinatorics.Pigeonhole"
       },
       {
         "theorem": "Finset.prod_univ_sum",
-        "description": "Product of sums equals sum of products over pi-type \u2014 used in type_class_size_le_entropy_pow",
+        "description": "Product of sums equals sum of products over pi-type — used in type_class_size_le_entropy_pow",
         "module": "Mathlib.Algebra.BigOperators.Pi"
       },
       {
         "theorem": "Finset.prod_fiberwise'",
-        "description": "Regroups product by fiber value \u2014 used to show constant probability over type class",
+        "description": "Regroups product by fiber value — used to show constant probability over type class",
         "module": "Mathlib.Algebra.BigOperators.Group.Finset"
       }
     ],
@@ -58,9 +58,9 @@
       "total_sequences_eq: k^n total sequences over Fin k alphabet (proved)",
       "empEntropy_eq_shannonEntropy: empirical entropy matches Shannon entropy of normalized type (proved)",
       "log_typeProb_eq: log-probability of type class weight equals -n * H(Q) (proved)",
-      "type_class_size_le_entropy_pow: |T_f| \u2264 exp(n H(Q)) via probability argument (proved)",
-      "dominant_type_lower_bound: dominant type class \u2265 k^n/(n+1)^k via pigeonhole (proved)",
-      "type_class_size_eq_multinomial: |T_f| = n!/\u220f(f_i)! proved via induction on n (proved by Aristotle, integrated session 3)"
+      "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) via probability argument (proved)",
+      "dominant_type_lower_bound: dominant type class ≥ k^n/(n+1)^k via pigeonhole (proved)",
+      "type_class_size_eq_multinomial: |T_f| = n!/∏(f_i)! proved via induction on n (proved by Aristotle, integrated session 3)"
     ],
     "assumptions": [],
     "dateAdded": "2026-04-21",
@@ -69,7 +69,7 @@
     "prerequisites": [
       "Shannon entropy H(X) = -sum p(x) log p(x)",
       "Empirical distribution (type) of a sequence",
-      "Multinomial coefficient n!/\u220f(f_i)! counts arrangements",
+      "Multinomial coefficient n!/∏(f_i)! counts arrangements",
       "Pigeonhole principle"
     ],
     "mathlib_version": "4.26.0",
@@ -77,16 +77,16 @@
     "definitionCount": 5
   },
   "overview": {
-    "historicalContext": "The method of types was developed by Csisz\u00e1r and K\u00f6rner in their 1981 book 'Information Theory: Coding Theorems for Discrete Memoryless Systems'. While Shannon's original 1948 proof of the source coding theorem used probabilistic arguments (the law of large numbers / AEP), the method of types provides a purely combinatorial alternative that gives sharper finite-blocklength bounds and extends naturally to channel coding and large deviations. The key insight is the type class cardinality bound |T_f| \u2264 exp(n\u00b7H(f/n)), tight by Stirling's approximation: log C(n; f\u2081,...,f_k)/n \u2192 H(p). This underpins large deviation theory in statistics (Sanov's theorem) and is now standard in information-theoretic security proofs (channel resolvability, secrecy capacity).",
-    "problemStatement": "Given a discrete memoryless source with distribution p over alphabet Fin k, can the source coding theorem (achievability at rate H(p) bits per symbol) be proved via combinatorial counting arguments rather than probabilistic limit theorems?\n\nThe method of types answers yes:\n1. Classify sequences by empirical distribution: T_f = {x : x has type f}\n2. Show |T_f| \u2264 exp(n H(f/n)) \u2014 the entropy upper bound on type class size\n3. The total k^n sequences split into \u2264 (n+1)^k type classes\n4. The dominant type (closest to true p) has \u2265 k^n/(n+1)^k sequences\n5. Therefore encoding the dominant type class requires \u2264 n H(p) + k log(n+1) bits",
+    "historicalContext": "The method of types was developed by Csiszár and Körner in their 1981 book 'Information Theory: Coding Theorems for Discrete Memoryless Systems'. While Shannon's original 1948 proof of the source coding theorem used probabilistic arguments (the law of large numbers / AEP), the method of types provides a purely combinatorial alternative that gives sharper finite-blocklength bounds and extends naturally to channel coding and large deviations. The key insight is the type class cardinality bound |T_f| ≤ exp(n·H(f/n)), tight by Stirling's approximation: log C(n; f₁,...,f_k)/n → H(p). This underpins large deviation theory in statistics (Sanov's theorem) and is now standard in information-theoretic security proofs (channel resolvability, secrecy capacity).",
+    "problemStatement": "Given a discrete memoryless source with distribution p over alphabet Fin k, can the source coding theorem (achievability at rate H(p) bits per symbol) be proved via combinatorial counting arguments rather than probabilistic limit theorems?\n\nThe method of types answers yes:\n1. Classify sequences by empirical distribution: T_f = {x : x has type f}\n2. Show |T_f| ≤ exp(n H(f/n)) — the entropy upper bound on type class size\n3. The total k^n sequences split into ≤ (n+1)^k type classes\n4. The dominant type (closest to true p) has ≥ k^n/(n+1)^k sequences\n5. Therefore encoding the dominant type class requires ≤ n H(p) + k log(n+1) bits",
     "text": "The method of types gives a combinatorial proof of Shannon's source coding theorem via empirical distribution classification and the entropy bound on type class sizes.",
-    "proofStrategy": "The key identity is that for any sequence x \u2208 T_f, the probability under Q = f/n is \u220f_i Q_i^{f_i} = exp(-n H(Q)). Since \u2211_{all x} P_Q(x) = 1, the type class satisfies |T_f| \u2264 exp(n H(Q)). Combined with the polynomial bound (n+1)^k on the number of types, the dominant type class captures exponentially many sequences at rate H(p).",
+    "proofStrategy": "The key identity is that for any sequence x ∈ T_f, the probability under Q = f/n is ∏_i Q_i^{f_i} = exp(-n H(Q)). Since ∑_{all x} P_Q(x) = 1, the type class satisfies |T_f| ≤ exp(n H(Q)). Combined with the polynomial bound (n+1)^k on the number of types, the dominant type class captures exponentially many sequences at rate H(p).",
     "keyInsights": [
-      "Each sequence x \u2208 T_f has the same probability under Q = f/n: namely exp(-n H(Q)). This is because Q^n(x) = \u220f_j Q_{x_j} = \u220f_i Q_i^{f_i} depends only on the type, not the specific sequence.",
-      "The entropy upper bound |T_f| \u2264 exp(n H(Q)) follows from summing probabilities: |T_f| \u00d7 exp(-n H(Q)) \u2264 \u2211_x Q^n(x) = 1. This is the key inequality: it replaces Shannon's probabilistic AEP with a counting argument.",
-      "The polynomial bound (n+1)^k on the number of types is tight: types are functions Fin k \u2192 {0,...,n} summing to n, and there are exactly (n+1)^k functions Fin k \u2192 Fin(n+1). This polynomial overhead vanishes exponentially compared to the 2^{nH(p)} type class size.",
+      "Each sequence x ∈ T_f has the same probability under Q = f/n: namely exp(-n H(Q)). This is because Q^n(x) = ∏_j Q_{x_j} = ∏_i Q_i^{f_i} depends only on the type, not the specific sequence.",
+      "The entropy upper bound |T_f| ≤ exp(n H(Q)) follows from summing probabilities: |T_f| × exp(-n H(Q)) ≤ ∑_x Q^n(x) = 1. This is the key inequality: it replaces Shannon's probabilistic AEP with a counting argument.",
+      "The polynomial bound (n+1)^k on the number of types is tight: types are functions Fin k → {0,...,n} summing to n, and there are exactly (n+1)^k functions Fin k → Fin(n+1). This polynomial overhead vanishes exponentially compared to the 2^{nH(p)} type class size.",
       "The dominant type (with empirical distribution closest to true source p) has size exponentially close to 2^{n H(p)}, giving the coding rate. The log-probability identity log Q^n(x) = -n H(Q) (proved in Lean) is the algebraic core of this.",
-      "Csisz\u00e1r-K\u00f6rner's method of types extends beyond source coding: the same type-counting machinery proves channel coding error exponents, the Sanov theorem in large deviations, and Ziv-Lempel universal compression. Shannon's probabilistic proof via the AEP does not generalize as cleanly."
+      "Csiszár-Körner's method of types extends beyond source coding: the same type-counting machinery proves channel coding error exponents, the Sanov theorem in large deviations, and Ziv-Lempel universal compression. Shannon's probabilistic proof via the AEP does not generalize as cleanly."
     ],
     "prerequisites": [
       "Shannon entropy",
@@ -116,7 +116,7 @@
       "title": "Type Class Size Upper Bound (proved)",
       "startLine": 159,
       "endLine": 230,
-      "summary": "type_class_size_le_entropy_pow: |T_f| \u2264 exp(n H(Q)) proved via prob_fiberwise' + prod_univ_sum. dominant_type_lower_bound: proved via Finset pigeonhole. type_class_partition: proved.",
+      "summary": "type_class_size_le_entropy_pow: |T_f| ≤ exp(n H(Q)) proved via prob_fiberwise' + prod_univ_sum. dominant_type_lower_bound: proved via Finset pigeonhole. type_class_partition: proved.",
       "mathContext": "$|T_f| \\cdot e^{-nH(Q)} \\leq \\sum_{x \\in T_f} Q^n(x) \\leq 1$ since probabilities sum to 1."
     },
     {
@@ -124,7 +124,7 @@
       "title": "Combinatorial Bounds (all proved)",
       "startLine": 196,
       "endLine": 215,
-      "summary": "count_types_le: at most (n+1)^k types (proved via Fintype.card_pi). total_sequences_eq: k^n total sequences (proved). dominant_type_lower_bound (sorry): pigeonhole gives dominant type size \u2265 k^n/(n+1)^k.",
+      "summary": "count_types_le: at most (n+1)^k types (proved via Fintype.card_pi). total_sequences_eq: k^n total sequences (proved). dominant_type_lower_bound (sorry): pigeonhole gives dominant type size ≥ k^n/(n+1)^k.",
       "mathContext": "$\\#\\{\\text{types}\\} \\leq (n+1)^k$ (polynomial); dominant type has $\\geq k^n/(n+1)^k$ sequences by pigeonhole."
     },
     {
@@ -132,8 +132,8 @@
       "title": "Source Coding Achievability (proved)",
       "startLine": 216,
       "endLine": 250,
-      "summary": "source_coding_achievability_mot: proved via degenerate type (constant-zero sequence) with code_length = 0. Note: the formal statement is weaker than the true source coding theorem \u2014 \u03b4 parameter is unused, and the proof uses the trivial type class rather than the typical set.",
-      "mathContext": "The formal statement asks for existence of some type class with bounded code length. The degenerate type (all mass on one symbol) has |T_f| = 1 \u2264 2^0, and 0 \u2264 n(H(p) + \u03b5) since Shannon entropy is nonneg."
+      "summary": "source_coding_achievability_mot: proved via degenerate type (constant-zero sequence) with code_length = 0. Note: the formal statement is weaker than the true source coding theorem — δ parameter is unused, and the proof uses the trivial type class rather than the typical set.",
+      "mathContext": "The formal statement asks for existence of some type class with bounded code length. The degenerate type (all mass on one symbol) has |T_f| = 1 ≤ 2^0, and 0 ≤ n(H(p) + ε) since Shannon entropy is nonneg."
     }
   ],
   "crossReferences": [
@@ -145,7 +145,7 @@
     {
       "targetId": "shannon-entropy",
       "relationship": "depends-on",
-      "description": "Uses Shannon entropy H(p) = -\u2211 p_i log p_i"
+      "description": "Uses Shannon entropy H(p) = -∑ p_i log p_i"
     },
     {
       "targetId": "shannon-source-coding-oq-02",
@@ -189,7 +189,7 @@
   },
   "references": [
     {
-      "authors": "Csisz\u00e1r, I., K\u00f6rner, J.",
+      "authors": "Csiszár, I., Körner, J.",
       "title": "Information Theory: Coding Theorems for Discrete Memoryless Systems",
       "year": "1981",
       "venue": "Academic Press; 2nd ed. Cambridge University Press, 2011",

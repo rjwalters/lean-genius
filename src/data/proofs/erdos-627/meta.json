@@ -1,10 +1,10 @@
 {
   "id": "erdos-627",
-  "title": "Erd\u0151s Problem #627: Chromatic Number and Clique Number Ratio",
+  "title": "Erdős Problem #627: Chromatic Number and Clique Number Ratio",
   "slug": "erdos-627",
-  "description": "Let f(n) = max \u03c7(G)/\u03c9(G) over n-vertex graphs. Does lim_{n\u2192\u221e} f(n)/(n/(log n)\u00b2) exist? Known: f(n) \u224d n/(log n)\u00b2, and if limit exists it's in (log 2)\u00b2\u00b7[1/4,1] \u2248 [0.12, 0.48].",
+  "description": "Let f(n) = max χ(G)/ω(G) over n-vertex graphs. Does lim_{n→∞} f(n)/(n/(log n)²) exist? Known: f(n) ≍ n/(log n)², and if limit exists it's in (log 2)²·[1/4,1] ≈ [0.12, 0.48].",
   "meta": {
-    "author": "Erd\u0151s (asymptotics), Tutte-Zykov (constructions)",
+    "author": "Erdős (asymptotics), Tutte-Zykov (constructions)",
     "sourceUrl": "https://erdosproblems.com/627",
     "date": "",
     "status": "axiomatized",
@@ -46,13 +46,13 @@
       }
     ],
     "originalContributions": [
-      "Definition of \u03c7/\u03c9 ratio (chiOmegaRatio) for SimpleGraph V",
+      "Definition of χ/ω ratio (chiOmegaRatio) for SimpleGraph V",
       "Definition of f(n) as maximum ratio over n-vertex graphs",
-      "Formalization of Tutte-Zykov construction (\u03c9=2, \u03c7 arbitrary)",
-      "Statement of Erd\u0151s's asymptotic bounds f(n) = \u0398(n/(log n)\u00b2)",
+      "Formalization of Tutte-Zykov construction (ω=2, χ arbitrary)",
+      "Statement of Erdős's asymptotic bounds f(n) = Θ(n/(log n)²)",
       "Formalization of limit existence question via Filter.Tendsto",
       "Proof that perfect graph ratio is exactly 1",
-      "Connection to Ramsey numbers: f(R(k,k)) \u2265 k",
+      "Connection to Ramsey numbers: f(R(k,k)) ≥ k",
       "Mycielski and Kneser graph constructions with chromatic properties",
       "Strong Perfect Graph Theorem statement (Chudnovsky et al. 2006)"
     ],
@@ -64,13 +64,13 @@
     "definitionCount": 10
   },
   "overview": {
-    "historicalContext": "The gap between chromatic number and clique number has been a central theme in graph theory since the 1940s. Tutte (1947) and Zykov (1949) independently constructed triangle-free graphs with arbitrarily large chromatic number, disproving the intuition that local sparsity implies easy colorability. Their recursive constructions showed $\\omega = 2$ is compatible with $\\chi = k$ for any $k$.\n\nErd\u0151s transformed the field in 1959 with his celebrated probabilistic proof that graphs of arbitrarily high girth and chromatic number exist\u2014a non-constructive argument that stunned the mathematical community. This result, along with his asymptotic analysis, established $f(n) = \\Theta(n/(\\log n)^2)$ where $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$. The lower bound comes from random graphs $G(n, n^{-1/2})$, which have $\\omega = O(\\sqrt{n} \\log n)$ and $\\chi = \\Omega(\\sqrt{n}/\\log n)$.\n\nMycielski (1955) gave the first explicit construction: a recursive family $M_k$ with $\\omega(M_k) = 2$ and $\\chi(M_k) = k$. Lov\u00e1sz (1978) proved $\\chi(K(n,k)) = n - 2k + 2$ for Kneser graphs using the Borsuk-Ulam theorem, founding topological combinatorics. The Strong Perfect Graph Theorem (Chudnovsky, Robertson, Seymour, Thomas 2006) characterized graphs where $\\chi = \\omega$ always holds, settling Berge's 1961 conjecture after 45 years.\n\nProblem #627 asks whether the normalized function $f(n)/(n/(\\log n)^2)$ converges. If the limit $L$ exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The $4\\times$ gap between these bounds reflects deep uncertainty about the precise constant.",
-    "problemStatement": "**Setup:** Let $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$.\n\n**Question:** Does $\\lim_{n\\to\\infty} f(n) / (n/(\\log n)^2)$ exist?\n\n**Status:** OPEN\n- $f(n) \\asymp n/(\\log n)^2$ is known (Erd\u0151s)\n- If the limit exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$\n- The ratio is bounded but may oscillate",
-    "text": "Let f(n) = max \u03c7(G)/\u03c9(G) over n-vertex graphs. Does lim_{n\u2192\u221e} f(n)/(n/(log n)\u00b2) exist? Known: f(n) \u224d n/(log n)\u00b2, and if limit exists it's in (log 2)\u00b2\u00b7[1/4,1] \u2248 [0.12, 0.48].",
-    "proofStrategy": "The formalization defines clique number $\\omega(G)$ and chromatic number $\\chi(G)$ as noncomputable functions on `SimpleGraph V`, then builds the ratio $\\chi/\\omega$ and the extremal function $f(n)$.\n\nThe Tutte-Zykov construction and Erd\u0151s asymptotic are axiomatized since they require probabilistic arguments and recursive constructions not yet in Mathlib. The limit existence question uses `Filter.Tendsto` with `Filter.atTop` and `nhds L`.\n\nConnections to perfect graphs ($\\chi = \\omega$ characterized by the Strong Perfect Graph Theorem), Ramsey theory ($f(R(k,k)) \\geq k$), and explicit constructions (Mycielski, Kneser) are formalized to provide context.",
+    "historicalContext": "The gap between chromatic number and clique number has been a central theme in graph theory since the 1940s. Tutte (1947) and Zykov (1949) independently constructed triangle-free graphs with arbitrarily large chromatic number, disproving the intuition that local sparsity implies easy colorability. Their recursive constructions showed $\\omega = 2$ is compatible with $\\chi = k$ for any $k$.\n\nErdős transformed the field in 1959 with his celebrated probabilistic proof that graphs of arbitrarily high girth and chromatic number exist—a non-constructive argument that stunned the mathematical community. This result, along with his asymptotic analysis, established $f(n) = \\Theta(n/(\\log n)^2)$ where $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$. The lower bound comes from random graphs $G(n, n^{-1/2})$, which have $\\omega = O(\\sqrt{n} \\log n)$ and $\\chi = \\Omega(\\sqrt{n}/\\log n)$.\n\nMycielski (1955) gave the first explicit construction: a recursive family $M_k$ with $\\omega(M_k) = 2$ and $\\chi(M_k) = k$. Lovász (1978) proved $\\chi(K(n,k)) = n - 2k + 2$ for Kneser graphs using the Borsuk-Ulam theorem, founding topological combinatorics. The Strong Perfect Graph Theorem (Chudnovsky, Robertson, Seymour, Thomas 2006) characterized graphs where $\\chi = \\omega$ always holds, settling Berge's 1961 conjecture after 45 years.\n\nProblem #627 asks whether the normalized function $f(n)/(n/(\\log n)^2)$ converges. If the limit $L$ exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The $4\\times$ gap between these bounds reflects deep uncertainty about the precise constant.",
+    "problemStatement": "**Setup:** Let $f(n) = \\max_{|V(G)|=n} \\chi(G)/\\omega(G)$.\n\n**Question:** Does $\\lim_{n\\to\\infty} f(n) / (n/(\\log n)^2)$ exist?\n\n**Status:** OPEN\n- $f(n) \\asymp n/(\\log n)^2$ is known (Erdős)\n- If the limit exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$\n- The ratio is bounded but may oscillate",
+    "text": "Let f(n) = max χ(G)/ω(G) over n-vertex graphs. Does lim_{n→∞} f(n)/(n/(log n)²) exist? Known: f(n) ≍ n/(log n)², and if limit exists it's in (log 2)²·[1/4,1] ≈ [0.12, 0.48].",
+    "proofStrategy": "The formalization defines clique number $\\omega(G)$ and chromatic number $\\chi(G)$ as noncomputable functions on `SimpleGraph V`, then builds the ratio $\\chi/\\omega$ and the extremal function $f(n)$.\n\nThe Tutte-Zykov construction and Erdős asymptotic are axiomatized since they require probabilistic arguments and recursive constructions not yet in Mathlib. The limit existence question uses `Filter.Tendsto` with `Filter.atTop` and `nhds L`.\n\nConnections to perfect graphs ($\\chi = \\omega$ characterized by the Strong Perfect Graph Theorem), Ramsey theory ($f(R(k,k)) \\geq k$), and explicit constructions (Mycielski, Kneser) are formalized to provide context.",
     "keyInsights": [
       "**$\\chi \\geq \\omega$ always:** A $k$-clique forces $k$ colors, but the gap $\\chi - \\omega$ can grow as $\\Theta(n/(\\log n)^2)$ for $n$-vertex graphs.",
-      "**Tutte-Zykov surprise:** Triangle-free ($\\omega = 2$) graphs can have arbitrarily large $\\chi$, first shown constructively by Tutte (1947) and Zykov (1949), then non-constructively by Erd\u0151s (1959).",
+      "**Tutte-Zykov surprise:** Triangle-free ($\\omega = 2$) graphs can have arbitrarily large $\\chi$, first shown constructively by Tutte (1947) and Zykov (1949), then non-constructively by Erdős (1959).",
       "**$f(n) = \\Theta(n/(\\log n)^2)$:** The lower bound uses random graphs $G(n, n^{-1/2})$ via the probabilistic method; the upper bound uses Ramsey-type arguments bounding $\\omega \\geq c\\log n$.",
       "**Perfect graphs give ratio 1:** The Strong Perfect Graph Theorem (2006) characterizes when $\\chi = \\omega$ for all induced subgraphs, showing extremal graphs must contain odd holes or antiholes.",
       "**Limit bounds $(\\log 2)^2 \\cdot [1/4, 1]$:** The upper bound comes from $R(k,k) \\leq 4^k$ (giving $\\omega \\geq \\frac{1}{2}\\log_2 n$); the lower bound from explicit constructions. The $4\\times$ gap remains open."
@@ -99,11 +99,11 @@
     },
     {
       "id": "ratio",
-      "title": "The Ratio \u03c7/\u03c9",
-      "summary": "Defines `chiOmegaRatio G = (\u03c7(G) : \u211d) / (\u03c9(G) : \u211d)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$.",
+      "title": "The Ratio χ/ω",
+      "summary": "Defines `chiOmegaRatio G = (χ(G) : ℝ) / (ω(G) : ℝ)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$.",
       "startLine": 48,
       "endLine": 63,
-      "mathContext": "Defines `chiOmegaRatio G = (\u03c7(G) : $\\mathbb{R}$) / (\u03c9(G) : $\\mathbb{R}$)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$."
+      "mathContext": "Defines `chiOmegaRatio G = (χ(G) : $\\mathbb{R}$) / (ω(G) : $\\mathbb{R}$)`. Proves $\\chi \\geq \\omega$ always and that the ratio $\\geq 1$ when $\\omega > 0$."
     },
     {
       "id": "f-function",
@@ -123,7 +123,7 @@
     },
     {
       "id": "erdos-asymptotics",
-      "title": "Erd\u0151s's Asymptotic Bounds",
+      "title": "Erdős's Asymptotic Bounds",
       "summary": "Axiomatizes $f(n) \\asymp n/(\\log n)^2$ with explicit constants $c_1, c_2$. Defines `fNormalized` and proves the normalized ratio is bounded. States a weaker lower bound $f(n) \\gg n^{1/2}/\\log n$.",
       "startLine": 100,
       "endLine": 129,
@@ -156,27 +156,27 @@
     {
       "id": "constructions",
       "title": "Explicit Constructions",
-      "summary": "Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lov\u00e1sz's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam).",
+      "summary": "Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lovász's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam).",
       "startLine": 185,
       "endLine": 204,
-      "mathContext": "Formal definition: Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lov\u00e1sz's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam)."
+      "mathContext": "Formal definition: Defines Mycielski graphs ($\\omega = 2$, $\\chi = k$) and Kneser graphs $K(n,k)$. Axiomatizes Lovász's theorem $\\chi(K(n,k)) = n - 2k + 2$ (1978, via Borsuk-Ulam)."
     },
     {
       "id": "main-status",
       "title": "Main Problem Status",
-      "summary": "Combines the Erd\u0151s asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms.",
+      "summary": "Combines the Erdős asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms.",
       "startLine": 224,
       "endLine": 236,
-      "mathContext": "Axiomatized: Combines the Erd\u0151s asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms."
+      "mathContext": "Axiomatized: Combines the Erdős asymptotic and Tutte-Zykov construction into `erdos_627_status`, proving both hold simultaneously. Includes `#check` commands for key axioms."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #627 is OPEN. We know $f(n) = \\Theta(n/(\\log n)^2)$, where $f(n)$ is the maximum $\\chi/\\omega$ ratio over $n$-vertex graphs, but whether the normalized limit $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exists remains unknown. If the limit exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The formalization captures the full landscape: Tutte-Zykov constructions, the Erd\u0151s asymptotic, perfect graph characterization, Ramsey connections, and explicit Mycielski/Kneser families.",
-    "implications": "**Theoretical Significance**: This problem connects several pillars of combinatorics:\n\n1. **Perfect Graph Theory:** The SPGT (2006) characterizes when $\\chi = \\omega$, showing extremal graphs must be imperfect\n2. **Probabilistic Method:** Erd\u0151s's random graph arguments provide the best lower bounds on $f(n)$\n**3. Ramsey Theory:** Diagonal Ramsey bounds $R(k,k) \\leq 4^k$ directly constrain the limit\n4. **Topological Combinatorics:** Lov\u00e1sz's Kneser graph proof (1978) via Borsuk-Ulam opened a new field\n5. **Extremal Graph Theory:** Understanding which graphs maximize $\\chi/\\omega$ for fixed vertex count.",
+    "summary": "Erdős Problem #627 is OPEN. We know $f(n) = \\Theta(n/(\\log n)^2)$, where $f(n)$ is the maximum $\\chi/\\omega$ ratio over $n$-vertex graphs, but whether the normalized limit $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exists remains unknown. If the limit exists, it lies in $(\\log 2)^2 \\cdot [1/4, 1] \\approx [0.12, 0.48]$. The formalization captures the full landscape: Tutte-Zykov constructions, the Erdős asymptotic, perfect graph characterization, Ramsey connections, and explicit Mycielski/Kneser families.",
+    "implications": "**Theoretical Significance**: This problem connects several pillars of combinatorics:\n\n1. **Perfect Graph Theory:** The SPGT (2006) characterizes when $\\chi = \\omega$, showing extremal graphs must be imperfect\n2. **Probabilistic Method:** Erdős's random graph arguments provide the best lower bounds on $f(n)$\n**3. Ramsey Theory:** Diagonal Ramsey bounds $R(k,k) \\leq 4^k$ directly constrain the limit\n4. **Topological Combinatorics:** Lovász's Kneser graph proof (1978) via Borsuk-Ulam opened a new field\n5. **Extremal Graph Theory:** Understanding which graphs maximize $\\chi/\\omega$ for fixed vertex count.",
     "openQuestions": [
       "Does $\\lim_{n\\to\\infty} f(n)/(n/(\\log n)^2)$ exist, or does the normalized ratio oscillate between the known bounds?",
       "Can the gap $(\\log 2)^2 \\cdot [1/4, 1]$ be narrowed by improving either the Ramsey upper bound or explicit construction lower bound?",
-      "What is the structure of extremal graphs achieving $f(n)$\u2014are they random-like, or do they have algebraic structure (e.g., Paley graphs)?",
+      "What is the structure of extremal graphs achieving $f(n)$—are they random-like, or do they have algebraic structure (e.g., Paley graphs)?",
       "Does the answer change for restricted graph classes (e.g., $K_t$-minor-free graphs, where Hadwiger's conjecture predicts $\\chi \\leq t-1$)?"
     ]
   },
@@ -205,17 +205,17 @@
     {
       "targetId": "erdos-1111",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, clique-number, graph-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, clique-number, graph-theory"
     },
     {
       "targetId": "erdos-626",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotics, chromatic-number, graph-theory"
+      "description": "Related Erdős problem sharing themes: asymptotics, chromatic-number, graph-theory"
     },
     {
       "targetId": "erdos-1011",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: chromatic-number, graph-theory"
+      "description": "Related Erdős problem sharing themes: chromatic-number, graph-theory"
     }
   ],
   "sorries": 16

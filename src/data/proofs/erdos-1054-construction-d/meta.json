@@ -100,7 +100,10 @@
       "Mathlib.Data.List.Sort",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat", "Finset"],
+    "opens": [
+      "Nat",
+      "Finset"
+    ],
     "namespace": "Erdos1054ConstructionD",
     "lineCount": 250,
     "axiomCount": 0,

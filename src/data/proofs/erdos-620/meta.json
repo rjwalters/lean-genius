@@ -1,10 +1,10 @@
 {
   "id": "erdos-620",
-  "title": "Erd\u0151s Problem #620: The Erd\u0151s-Rogers Problem",
+  "title": "Erdős Problem #620: The Erdős-Rogers Problem",
   "slug": "erdos-620",
-  "description": "In any K\u2084-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: \u221an\u00b7\u221a(log n)/log log n \u226a f(n) \u226a \u221an\u00b7log n. The gap represents fundamental uncertainty about extremal K\u2084-free graph structure.",
+  "description": "In any K₄-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: √n·√(log n)/log log n ≪ f(n) ≪ √n·log n. The gap represents fundamental uncertainty about extremal K₄-free graph structure.",
   "meta": {
-    "author": "Erd\u0151s-Rogers (1962), bounds: Bollob\u00e1s-Hind, Krivelevich, Mubayi-Verstraete",
+    "author": "Erdős-Rogers (1962), bounds: Bollobás-Hind, Krivelevich, Mubayi-Verstraete",
     "sourceUrl": "https://erdosproblems.com/620",
     "date": "1962",
     "status": "axiomatized",
@@ -40,7 +40,7 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of the Erd\u0151s-Rogers function f(n) via minimax",
+      "Formal definition of the Erdős-Rogers function f(n) via minimax",
       "Alternative characterization via ErdosRogersProperty",
       "Axiomatization of all historical bounds from 1991 to 2024",
       "Complete proof of triangleFree_implies_K4Free",
@@ -61,20 +61,20 @@
     "definitionCount": 15
   },
   "overview": {
-    "historicalContext": "The Erd\u0151s-Rogers problem was posed by Paul Erd\u0151s and Claude Ambrose Rogers in their 1962 paper in *Mathematika*. It asks a fundamental question at the intersection of Ramsey theory and extremal graph theory: in $K_4$-free graphs, how does the avoidance of triangles in induced subgraphs trade off against size?\n\n**Timeline of Upper Bounds:**\n- **1962**: Erd\u0151s and Rogers pose the problem. The trivial lower bound $f(n) \\ge c\\sqrt{n}$ from independent sets in $K_4$-free graphs was known from the start.\n- **1991**: B\u00e9la Bollob\u00e1s and Hugh Hind prove $f(n) \\ll n^{7/10+o(1)}$, the first non-trivial upper bound, using probabilistic and algebraic constructions of dense $K_4$-free graphs with pervasive triangles.\n- **1994**: Michael Krivelevich improves to $f(n) \\ll n^{2/3}(\\log n)^{1/3}$, reducing the exponent from $0.7$ to $\\approx 0.667$.\n- **2013**: Wolfovitz achieves $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{120}$, the first bound with optimal base exponent $1/2$, though the logarithmic tower $(\\log n)^{120}$ from iterated regularity applications was far from tight.\n- **2024**: Dhruv Mubayi and Jacques Verstra\u00ebte prove $f(n) \\ll \\sqrt{n} \\cdot \\log n$ using a novel graph blowup technique that avoids the Szemer\u00e9di regularity lemma, dramatically reducing the logarithmic factor.\n\n**Lower Bounds:** The best lower bound $f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$ uses Shearer's entropy method and dependent random choice. The gap between bounds is now merely $(\\log n)^{1/2} \\cdot \\log\\log n$ \u2014 a slowly growing function \u2014 down from $n^{1/5}$ in 1991.\n\n**Connection to Kim's Theorem:** The problem is closely related to $R(3,k) = \\Theta(k^2/\\log k)$, proved by Jeong Han Kim in 1995 using the triangle-free process. Finding large triangle-free induced subgraphs in $K_4$-free graphs generalizes finding large independent sets.",
-    "problemStatement": "**Problem Statement**\n\nLet $f(n)$ be the minimum, over all $K_4$-free graphs $G$ on $n$ vertices, of the maximum size of a triangle-free induced subgraph of $G$.\n\n**Equivalently**: What is the largest $k$ such that EVERY $K_4$-free graph on $n$ vertices contains a triangle-free induced subgraph on at least $k$ vertices?\n\n**Current Bounds**:\n- Lower: $f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n} / \\log\\log n$ (Shearer)\n- Upper: $f(n) \\ll \\sqrt{n} \\cdot \\log n$ (Mubayi-Verstra\u00ebte 2024)\n\n**Status**: OPEN \u2014 the exact growth rate is unknown.",
-    "text": "In any K\u2084-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: \u221an\u00b7\u221a(log n)/log log n \u226a f(n) \u226a \u221an\u00b7log n. The gap represents fundamental uncertainty about extremal K\u2084-free graph structure.",
-    "proofStrategy": "The formalization proceeds in 11 parts, building from basic graph theory to the full problem statement and known bounds:\n\n**Foundation (Parts I-III):** Defines triangles, $K_4$, bipartiteness, induced subgraphs, and the core function $f(n)$ as `erdosRogers n`. Includes a complete proof that triangle-free implies $K_4$-free.\n\n**Problem Statement (Part IV):** Formalizes `Erdos620Statement` as the existence of a tight minimax function.\n\n**Known Bounds (Part V):** Axiomatizes all historical bounds \u2014 trivial lower ($c\\sqrt{n}$), Shearer lower ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), and four progressively tighter upper bounds from Bollob\u00e1s-Hind through Mubayi-Verstra\u00ebte.\n\n**Analysis (Parts VI-IX):** Complete proof of `gap_analysis` combining bounds. Special cases for sparse graphs and Tur\u00e1n graphs. Connection to $R(3,k)$ via `ramsey_3k_bound`. Probabilistic methods for both directions.\n\n**Generalization (Part X):** Defines $f_{s,t}(n)$ using Mathlib's `CliqueFree` and shows the original problem is $f_{4,3}(n)$.\n\n**Key Technique:** The lower bound uses dependent random choice (Alon-Fox-Zhao); the upper bound uses graph blowup constructions avoiding the regularity lemma.",
+    "historicalContext": "The Erdős-Rogers problem was posed by Paul Erdős and Claude Ambrose Rogers in their 1962 paper in *Mathematika*. It asks a fundamental question at the intersection of Ramsey theory and extremal graph theory: in $K_4$-free graphs, how does the avoidance of triangles in induced subgraphs trade off against size?\n\n**Timeline of Upper Bounds:**\n- **1962**: Erdős and Rogers pose the problem. The trivial lower bound $f(n) \\ge c\\sqrt{n}$ from independent sets in $K_4$-free graphs was known from the start.\n- **1991**: Béla Bollobás and Hugh Hind prove $f(n) \\ll n^{7/10+o(1)}$, the first non-trivial upper bound, using probabilistic and algebraic constructions of dense $K_4$-free graphs with pervasive triangles.\n- **1994**: Michael Krivelevich improves to $f(n) \\ll n^{2/3}(\\log n)^{1/3}$, reducing the exponent from $0.7$ to $\\approx 0.667$.\n- **2013**: Wolfovitz achieves $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{120}$, the first bound with optimal base exponent $1/2$, though the logarithmic tower $(\\log n)^{120}$ from iterated regularity applications was far from tight.\n- **2024**: Dhruv Mubayi and Jacques Verstraëte prove $f(n) \\ll \\sqrt{n} \\cdot \\log n$ using a novel graph blowup technique that avoids the Szemerédi regularity lemma, dramatically reducing the logarithmic factor.\n\n**Lower Bounds:** The best lower bound $f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$ uses Shearer's entropy method and dependent random choice. The gap between bounds is now merely $(\\log n)^{1/2} \\cdot \\log\\log n$ — a slowly growing function — down from $n^{1/5}$ in 1991.\n\n**Connection to Kim's Theorem:** The problem is closely related to $R(3,k) = \\Theta(k^2/\\log k)$, proved by Jeong Han Kim in 1995 using the triangle-free process. Finding large triangle-free induced subgraphs in $K_4$-free graphs generalizes finding large independent sets.",
+    "problemStatement": "**Problem Statement**\n\nLet $f(n)$ be the minimum, over all $K_4$-free graphs $G$ on $n$ vertices, of the maximum size of a triangle-free induced subgraph of $G$.\n\n**Equivalently**: What is the largest $k$ such that EVERY $K_4$-free graph on $n$ vertices contains a triangle-free induced subgraph on at least $k$ vertices?\n\n**Current Bounds**:\n- Lower: $f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n} / \\log\\log n$ (Shearer)\n- Upper: $f(n) \\ll \\sqrt{n} \\cdot \\log n$ (Mubayi-Verstraëte 2024)\n\n**Status**: OPEN — the exact growth rate is unknown.",
+    "text": "In any K₄-free graph on n vertices, how large a triangle-free induced subgraph must exist? Current bounds: √n·√(log n)/log log n ≪ f(n) ≪ √n·log n. The gap represents fundamental uncertainty about extremal K₄-free graph structure.",
+    "proofStrategy": "The formalization proceeds in 11 parts, building from basic graph theory to the full problem statement and known bounds:\n\n**Foundation (Parts I-III):** Defines triangles, $K_4$, bipartiteness, induced subgraphs, and the core function $f(n)$ as `erdosRogers n`. Includes a complete proof that triangle-free implies $K_4$-free.\n\n**Problem Statement (Part IV):** Formalizes `Erdos620Statement` as the existence of a tight minimax function.\n\n**Known Bounds (Part V):** Axiomatizes all historical bounds — trivial lower ($c\\sqrt{n}$), Shearer lower ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), and four progressively tighter upper bounds from Bollobás-Hind through Mubayi-Verstraëte.\n\n**Analysis (Parts VI-IX):** Complete proof of `gap_analysis` combining bounds. Special cases for sparse graphs and Turán graphs. Connection to $R(3,k)$ via `ramsey_3k_bound`. Probabilistic methods for both directions.\n\n**Generalization (Part X):** Defines $f_{s,t}(n)$ using Mathlib's `CliqueFree` and shows the original problem is $f_{4,3}(n)$.\n\n**Key Technique:** The lower bound uses dependent random choice (Alon-Fox-Zhao); the upper bound uses graph blowup constructions avoiding the regularity lemma.",
     "keyInsights": [
       "**Clique hierarchy monotonicity:** Triangle-free $\\Rightarrow$ $K_4$-free is proved in Lean, establishing that the problem asks how much of a $K_4$-free graph can drop one level in the clique hierarchy.",
       "**Three decades of upper bound progress:** The exponent journey $7/10 \\to 2/3 \\to 1/2$ (with improving logarithmic factors) shows how probabilistic and algebraic techniques gradually identified $\\sqrt{n}$ as the correct base growth rate.",
       "**Logarithmic correction is the real question:** Since both bounds have base $\\sqrt{n}$, the problem reduces to determining the logarithmic correction: is it $\\log n$ (upper) or $\\sqrt{\\log n}/\\log\\log n$ (lower)?",
       "**Kim's $R(3,k) = \\Theta(k^2/\\log k)$ connection:** The Ramsey number for triangles vs independent sets directly controls the lower bound, since independent sets in triangle-free induced subgraphs provide witnesses.",
-      "**Mubayi-Verstra\u00ebte breakthrough:** Avoiding the Szemer\u00e9di regularity lemma (which introduces tower-type losses) was key to reducing $(\\log n)^{120}$ to $\\log n$. Their graph blowup technique may have further applications."
+      "**Mubayi-Verstraëte breakthrough:** Avoiding the Szemerédi regularity lemma (which introduces tower-type losses) was key to reducing $(\\log n)^{120}$ to $\\log n$. Their graph blowup technique may have further applications."
     ],
     "prerequisites": [
-      "Extremal graph theory: Tur\u00e1n-type problems, Ramsey theory, clique-free graphs",
-      "Probabilistic combinatorics: the Lov\u00e1sz Local Lemma, random graph arguments",
+      "Extremal graph theory: Turán-type problems, Ramsey theory, clique-free graphs",
+      "Probabilistic combinatorics: the Lovász Local Lemma, random graph arguments",
       "Independent sets and chromatic number: connections to triangle-free subgraphs",
       "Algebraic graph constructions: Cayley graphs, quadratic residue graphs (for lower bounds)"
     ]
@@ -85,7 +85,7 @@
       "title": "Module Header",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Problem statement: for $K_4$-free graphs on $n$ vertices, how large must the largest triangle-free induced subgraph be? Defines $f(n)$ as the minimum over all $K_4$-free $G$ of the maximum triangle-free induced subgraph size. Lists historical bounds from Bollob\u00e1s-Hind (1991) through Mubayi-Verstraete (2024).",
+      "summary": "Problem statement: for $K_4$-free graphs on $n$ vertices, how large must the largest triangle-free induced subgraph be? Defines $f(n)$ as the minimum over all $K_4$-free $G$ of the maximum triangle-free induced subgraph size. Lists historical bounds from Bollobás-Hind (1991) through Mubayi-Verstraete (2024).",
       "mathContext": "$f(n) = \\min_{G \\in \\text{Free}(K_4)} \\max\\{|S| : G[S] \\text{ triangle-free}\\}$. Known: $n^{1/2}(\\log n)^{1/2}/(\\log\\log n) \\ll f(n) \\ll n^{1/2} \\log n$. The gap between $\\sqrt{n \\log n}$ and $\\sqrt{n} \\log n$ is the central open question."
     },
     {
@@ -101,8 +101,8 @@
       "title": "Cliques and Forbidden Subgraphs",
       "startLine": 45,
       "endLine": 68,
-      "summary": "Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction \u2014 one of the file's fully verified results.",
-      "mathContext": "Formal definition: Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction \u2014 one of the file's fully verified results."
+      "summary": "Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction — one of the file's fully verified results.",
+      "mathContext": "Formal definition: Defines `HasTriangle`, `TriangleFree`, `HasK4`, and `K4Free`. Includes a complete Lean proof of `triangleFree_implies_K4Free` via existential destruction — one of the file's fully verified results."
     },
     {
       "id": "induced-subgraphs",
@@ -114,7 +114,7 @@
     },
     {
       "id": "erdos-rogers-function",
-      "title": "The Erd\u0151s-Rogers Function",
+      "title": "The Erdős-Rogers Function",
       "startLine": 88,
       "endLine": 104,
       "summary": "Defines the core function `erdosRogers n` $= \\inf\\{k : \\forall G \\text{ on Fin}(n),\\, K_4\\text{-free} \\Rightarrow \\text{maxTF}(G) \\ge k\\}$ and the alternative `ErdosRogersProperty n k` as an explicit universal statement.",
@@ -133,15 +133,15 @@
       "title": "Known Bounds (1991-2024)",
       "startLine": 117,
       "endLine": 168,
-      "summary": "Axiomatizes six bounds: trivial lower ($c\\sqrt{n}$), Shearer ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), Bollob\u00e1s-Hind ($n^{7/10+o(1)}$), Krivelevich ($n^{2/3}(\\log n)^{1/3}$), Wolfovitz ($\\sqrt{n}(\\log n)^{120}$), and Mubayi-Verstra\u00ebte ($\\sqrt{n}\\log n$).",
-      "mathContext": "Axiomatizes six bounds: trivial lower ($c\\sqrt{n}$), Shearer ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), Bollob\u00e1s-Hind ($n^{7/10+o(1)}$), Krivelevich ($n^{2/3}(\\log n)^{1/3}$), Wolfovitz ($\\sqrt{n}(\\log n)^{120}$), and Mubayi-Verstra\u00ebte ($\\sqrt{n}\\log n$)."
+      "summary": "Axiomatizes six bounds: trivial lower ($c\\sqrt{n}$), Shearer ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), Bollobás-Hind ($n^{7/10+o(1)}$), Krivelevich ($n^{2/3}(\\log n)^{1/3}$), Wolfovitz ($\\sqrt{n}(\\log n)^{120}$), and Mubayi-Verstraëte ($\\sqrt{n}\\log n$).",
+      "mathContext": "Axiomatizes six bounds: trivial lower ($c\\sqrt{n}$), Shearer ($\\sqrt{n}\\sqrt{\\log n}/\\log\\log n$), Bollobás-Hind ($n^{7/10+o(1)}$), Krivelevich ($n^{2/3}(\\log n)^{1/3}$), Wolfovitz ($\\sqrt{n}(\\log n)^{120}$), and Mubayi-Verstraëte ($\\sqrt{n}\\log n$)."
     },
     {
       "id": "current-state",
       "title": "Current State of Knowledge",
       "startLine": 169,
       "endLine": 188,
-      "summary": "Complete proof of `current_bounds` combining Shearer and Mubayi-Verstra\u00ebte. Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$.",
+      "summary": "Complete proof of `current_bounds` combining Shearer and Mubayi-Verstraëte. Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$.",
       "mathContext": "Complete proof of `gap_analysis` extracting constants $c, C > 0$ with the full sandwich inequality for $n \\ge 16$."
     },
     {
@@ -149,16 +149,16 @@
       "title": "Special Cases",
       "startLine": 189,
       "endLine": 205,
-      "summary": "Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Tur\u00e1n graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness.",
-      "mathContext": "Formal definition: Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Tur\u00e1n graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness."
+      "summary": "Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Turán graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness.",
+      "mathContext": "Formal definition: Sparse graph case: $|E| \\le n$ implies triangle-free induced subgraph of size $\\ge n/3$. Defines the Turán graph $T(n,3)$ via $i \\bmod 3 \\ne j \\bmod 3$ adjacency and states $K_4$-freeness."
     },
     {
       "id": "ramsey-connection",
       "title": "Ramsey Connection",
       "startLine": 206,
       "endLine": 225,
-      "summary": "Defines `ramsey3k k` and axiomatizes Kim's theorem $R(3,k) = \\Theta(k^2/\\log k)$. States the Erd\u0151s-Rogers to Ramsey connection: if $n \\ge R(3,k)$, then $f(n) \\ge k$ or every $K_4$-free graph has a triangle.",
-      "mathContext": "Defines `ramsey3k k` and axiomatizes Kim's theorem $R(3,k) = \\Theta(k^2/\\log k)$. States the Erd\u0151s-Rogers to Ramsey connection: if $n \\ge R(3,k)$, then $f(n) \\ge k$ or every $K_4$-free graph has a triangle."
+      "summary": "Defines `ramsey3k k` and axiomatizes Kim's theorem $R(3,k) = \\Theta(k^2/\\log k)$. States the Erdős-Rogers to Ramsey connection: if $n \\ge R(3,k)$, then $f(n) \\ge k$ or every $K_4$-free graph has a triangle.",
+      "mathContext": "Defines `ramsey3k k` and axiomatizes Kim's theorem $R(3,k) = \\Theta(k^2/\\log k)$. States the Erdős-Rogers to Ramsey connection: if $n \\ge R(3,k)$, then $f(n) \\ge k$ or every $K_4$-free graph has a triangle."
     },
     {
       "id": "probabilistic",
@@ -186,26 +186,26 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #620 \u2014 the Erd\u0151s-Rogers problem \u2014 asks for the minimum guaranteed triangle-free induced subgraph size $f(n)$ in $K_4$-free graphs on $n$ vertices. Over six decades, the gap between upper and lower bounds has narrowed dramatically: from $n^{1/5}$ (between $\\sqrt{n}$ and $n^{7/10}$ in 1991) to merely $(\\log n)^{1/2} \\cdot \\log\\log n$ (between $\\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$ and $\\sqrt{n} \\cdot \\log n$ in 2024). The formalization captures this full trajectory and connects to Ramsey theory via Kim's theorem.",
-    "implications": "**1. Ramsey theory:** The function $f(n)$ generalizes the independence number problem in $K_s$-free graphs, connecting to $R(3,k) = \\Theta(k^2/\\log k)$ and the triangle-free process.\n\n**2. Extremal graph theory:** Understanding which $K_4$-free graphs minimize triangle-free induced subgraph size reveals deep structural properties \u2014 the extremal graphs appear to be dense, triangle-rich pseudorandom constructions.\n\n**3. Probabilistic combinatorics:** The Mubayi-Verstra\u00ebte breakthrough (2024) showed that regularity-free techniques can achieve bounds previously thought to require the Szemer\u00e9di regularity lemma, opening new methodological paths.\n\n**4. Generalized Erd\u0151s-Rogers hierarchy:** The function $f_{s,t}(n)$ for general clique sizes forms a rich landscape of open problems, with $f_{4,3}(n)$ being the first non-trivial case beyond independent sets.\n\n**5. Formal mathematics:** The axiomatization of six historical bounds in Lean provides a template for formalizing the progression of results on a single open problem.",
+    "summary": "Erdős Problem #620 — the Erdős-Rogers problem — asks for the minimum guaranteed triangle-free induced subgraph size $f(n)$ in $K_4$-free graphs on $n$ vertices. Over six decades, the gap between upper and lower bounds has narrowed dramatically: from $n^{1/5}$ (between $\\sqrt{n}$ and $n^{7/10}$ in 1991) to merely $(\\log n)^{1/2} \\cdot \\log\\log n$ (between $\\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$ and $\\sqrt{n} \\cdot \\log n$ in 2024). The formalization captures this full trajectory and connects to Ramsey theory via Kim's theorem.",
+    "implications": "**1. Ramsey theory:** The function $f(n)$ generalizes the independence number problem in $K_s$-free graphs, connecting to $R(3,k) = \\Theta(k^2/\\log k)$ and the triangle-free process.\n\n**2. Extremal graph theory:** Understanding which $K_4$-free graphs minimize triangle-free induced subgraph size reveals deep structural properties — the extremal graphs appear to be dense, triangle-rich pseudorandom constructions.\n\n**3. Probabilistic combinatorics:** The Mubayi-Verstraëte breakthrough (2024) showed that regularity-free techniques can achieve bounds previously thought to require the Szemerédi regularity lemma, opening new methodological paths.\n\n**4. Generalized Erdős-Rogers hierarchy:** The function $f_{s,t}(n)$ for general clique sizes forms a rich landscape of open problems, with $f_{4,3}(n)$ being the first non-trivial case beyond independent sets.\n\n**5. Formal mathematics:** The axiomatization of six historical bounds in Lean provides a template for formalizing the progression of results on a single open problem.",
     "openQuestions": [
-      "Is $f(n)$ asymptotic to $\\sqrt{n} \\cdot \\log n$ (matching the Mubayi-Verstra\u00ebte upper bound) or closer to $\\sqrt{n} \\cdot \\sqrt{\\log n}$ (closer to the lower bound)?",
+      "Is $f(n)$ asymptotic to $\\sqrt{n} \\cdot \\log n$ (matching the Mubayi-Verstraëte upper bound) or closer to $\\sqrt{n} \\cdot \\sqrt{\\log n}$ (closer to the lower bound)?",
       "What is the structure of extremal $K_4$-free graphs that minimize $f(n)$? Are they related to algebraic constructions (e.g., Cayley graphs of finite fields)?",
-      "Can the Mubayi-Verstra\u00ebte graph blowup technique be refined to achieve $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{1-\\varepsilon}$ for some $\\varepsilon > 0$?",
+      "Can the Mubayi-Verstraëte graph blowup technique be refined to achieve $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{1-\\varepsilon}$ for some $\\varepsilon > 0$?",
       "Can Shearer's lower bound be improved using techniques from the recent breakthroughs on diagonal Ramsey numbers (Campos et al. 2023)?",
-      "What is $f_{5,4}(n)$, the next case in the Erd\u0151s-Rogers hierarchy? Is the qualitative behavior similar to $f_{4,3}(n)$?"
+      "What is $f_{5,4}(n)$, the next case in the Erdős-Rogers hierarchy? Is the qualitative behavior similar to $f_{4,3}(n)$?"
     ]
   },
   "crossReferences": [
     {
       "targetId": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "The Erd\u0151s-Rogers function $f(n)$ is deeply connected to Ramsey numbers $R(3,k) = \\Theta(k^2/\\log k)$ (Kim 1995). Finding large triangle-free induced subgraphs in $K_4$-free graphs generalizes finding large independent sets \u2014 the key Ramsey-theoretic operation"
+      "description": "The Erdős-Rogers function $f(n)$ is deeply connected to Ramsey numbers $R(3,k) = \\Theta(k^2/\\log k)$ (Kim 1995). Finding large triangle-free induced subgraphs in $K_4$-free graphs generalizes finding large independent sets — the key Ramsey-theoretic operation"
     },
     {
       "targetId": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The regularity lemma was the main tool for upper bounds until Mubayi-Verstra\u00ebte (2024) found a regularity-free approach. Wolfovitz's 2013 bound $f(n) \\ll \\sqrt{n}(\\log n)^{120}$ used iterated regularity, and the large exponent reflected the lemma's quantitative losses"
+      "description": "The regularity lemma was the main tool for upper bounds until Mubayi-Verstraëte (2024) found a regularity-free approach. Wolfovitz's 2013 bound $f(n) \\ll \\sqrt{n}(\\log n)^{120}$ used iterated regularity, and the large exponent reflected the lemma's quantitative losses"
     },
     {
       "targetId": "erdos-1104",
@@ -215,7 +215,7 @@
     {
       "targetId": "erdos-1010",
       "relationship": "related",
-      "description": "Triangle supersaturation counts triangles in dense graphs. The Erd\u0151s-Rogers problem asks the dual: in graphs that avoid $K_4$ (a supersaturation constraint), how much triangle structure must persist in induced subgraphs?"
+      "description": "Triangle supersaturation counts triangles in dense graphs. The Erdős-Rogers problem asks the dual: in graphs that avoid $K_4$ (a supersaturation constraint), how much triangle structure must persist in induced subgraphs?"
     },
     {
       "targetId": "erdos-1155",

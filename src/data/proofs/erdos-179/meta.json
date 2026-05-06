@@ -1,10 +1,10 @@
 {
   "id": "erdos-179",
-  "title": "Erd\u0151s Problem #179: Arithmetic Progression Supersaturation",
+  "title": "Erdős Problem #179: Arithmetic Progression Supersaturation",
   "slug": "erdos-179",
-  "description": "For integers 1 \u2264 k < \u2113, define F_k(N, \u2113) as the minimum number such that every set A \u2286 \u2115 of size N containing at least F_k(N, \u2113) many k-term APs must contain an \u2113-term AP. Questions: Is F\u2083(N, 4) = o(N\u00b2)? Is lim log F\u2083(N, \u2113) / log N = 2 for all \u2113 > 3? Answer: YES to both.",
+  "description": "For integers 1 ≤ k < ℓ, define F_k(N, ℓ) as the minimum number such that every set A ⊆ ℕ of size N containing at least F_k(N, ℓ) many k-term APs must contain an ℓ-term AP. Questions: Is F₃(N, 4) = o(N²)? Is lim log F₃(N, ℓ) / log N = 2 for all ℓ > 3? Answer: YES to both.",
   "meta": {
-    "author": "Erd\u0151s",
+    "author": "Erdős",
     "sourceUrl": "https://erdosproblems.com/179",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos179Problem.lean",
@@ -29,16 +29,16 @@
     "definitionCount": 9
   },
   "overview": {
-    "historicalContext": "Erd\u0151s posed this problem about arithmetic progression supersaturation: if a set of N integers has 'too many' k-term arithmetic progressions, must it contain a longer \u2113-term AP? The function F_k(N, \u2113), the minimum threshold for this forcing, captures a quantitative supersaturation phenomenon. This is a refinement of Szemer\u00e9di's theorem (1975), which says dense sets must contain long APs \u2014 supersaturation asks how many short APs are needed, rather than just density.\n\nFox and Pohoata resolved both of Erd\u0151s's questions in their 2020 paper. They proved F_k(N, \u2113) \u2264 N\u00b2/(log log N)^{C_\u2113} for constants C_\u2113 > 0 depending on \u2113. This shows F_k(N, \u2113) = N^{2-o(1)}, confirming that F\u2083(N, 4) = o(N\u00b2) (Question 1) and that the limiting exponent lim log F\u2083(N, \u2113)/log N = 2 (Question 2). Their approach connects the AP count in a set to its additive structure, using the inverse theorem for the Gowers norms.\n\nLeng, Sah, and Sawhney (2024) significantly improved the bound to F_k(N, \u2113) \u2264 N\u00b2/exp((log log N)^{c_\u2113}), using their breakthrough improvements to Szemer\u00e9di's theorem. The exp factor grows much faster than any polynomial of log log N, substantially tightening the gap between the N^{1.99} lower bound (from Behrend-type constructions) and the N^{2-o(1)} upper bound. The exact growth rate of F_k(N, \u2113) remains an active area of research.",
-    "problemStatement": "Let 1 \u2264 k < \u2113 be integers. Define F_k(N, \u2113) as the minimum number such that every set A \u2286 \u2115 of size N containing at least F_k(N, \u2113) many k-term APs must contain an \u2113-term AP. Is F\u2083(N, 4) = o(N\u00b2)? For every \u2113 > 3, is lim log F\u2083(N, \u2113) / log N = 2?",
-    "text": "For integers 1 \u2264 k < \u2113, define F_k(N, \u2113) as the minimum number such that every set A \u2286 \u2115 of size N containing at least F_k(N, \u2113) many k-term APs must contain an \u2113-term AP. Questions: Is F\u2083(N, 4) = o(N\u00b2)? Is lim log F\u2083(N, \u2113) / log N = 2 for all \u2113 > 3? Answer: YES to both.",
-    "proofStrategy": "We define arithmeticProgression, ContainsAP, countAPs, and the supersaturation function F via Nat.find. Erd\u0151s's two questions (Question1, Question2) use Filter.atTop and nhds for asymptotic statements. Fox-Pohoata and Leng-Sah-Sawhney bounds are axiomatized. Question 1 is partially proved (question1_solved with one sorry). Connections to Szemer\u00e9di, Roth, and Behrend are axiomatized. 10 sorries remain.",
+    "historicalContext": "Erdős posed this problem about arithmetic progression supersaturation: if a set of N integers has 'too many' k-term arithmetic progressions, must it contain a longer ℓ-term AP? The function F_k(N, ℓ), the minimum threshold for this forcing, captures a quantitative supersaturation phenomenon. This is a refinement of Szemerédi's theorem (1975), which says dense sets must contain long APs — supersaturation asks how many short APs are needed, rather than just density.\n\nFox and Pohoata resolved both of Erdős's questions in their 2020 paper. They proved F_k(N, ℓ) ≤ N²/(log log N)^{C_ℓ} for constants C_ℓ > 0 depending on ℓ. This shows F_k(N, ℓ) = N^{2-o(1)}, confirming that F₃(N, 4) = o(N²) (Question 1) and that the limiting exponent lim log F₃(N, ℓ)/log N = 2 (Question 2). Their approach connects the AP count in a set to its additive structure, using the inverse theorem for the Gowers norms.\n\nLeng, Sah, and Sawhney (2024) significantly improved the bound to F_k(N, ℓ) ≤ N²/exp((log log N)^{c_ℓ}), using their breakthrough improvements to Szemerédi's theorem. The exp factor grows much faster than any polynomial of log log N, substantially tightening the gap between the N^{1.99} lower bound (from Behrend-type constructions) and the N^{2-o(1)} upper bound. The exact growth rate of F_k(N, ℓ) remains an active area of research.",
+    "problemStatement": "Let 1 ≤ k < ℓ be integers. Define F_k(N, ℓ) as the minimum number such that every set A ⊆ ℕ of size N containing at least F_k(N, ℓ) many k-term APs must contain an ℓ-term AP. Is F₃(N, 4) = o(N²)? For every ℓ > 3, is lim log F₃(N, ℓ) / log N = 2?",
+    "text": "For integers 1 ≤ k < ℓ, define F_k(N, ℓ) as the minimum number such that every set A ⊆ ℕ of size N containing at least F_k(N, ℓ) many k-term APs must contain an ℓ-term AP. Questions: Is F₃(N, 4) = o(N²)? Is lim log F₃(N, ℓ) / log N = 2 for all ℓ > 3? Answer: YES to both.",
+    "proofStrategy": "We define arithmeticProgression, ContainsAP, countAPs, and the supersaturation function F via Nat.find. Erdős's two questions (Question1, Question2) use Filter.atTop and nhds for asymptotic statements. Fox-Pohoata and Leng-Sah-Sawhney bounds are axiomatized. Question 1 is partially proved (question1_solved with one sorry). Connections to Szemerédi, Roth, and Behrend are axiomatized. 10 sorries remain.",
     "keyInsights": [
-      "F_k(N, \u2113) captures supersaturation: many short APs force long APs",
-      "F_k(N, \u2113) = N^{2-o(1)} \u2014 the exponent is exactly 2 with subpolynomial correction",
-      "Fox-Pohoata: N\u00b2/(log log N)^C; Leng-Sah-Sawhney: N\u00b2/exp((log log N)^c)",
+      "F_k(N, ℓ) captures supersaturation: many short APs force long APs",
+      "F_k(N, ℓ) = N^{2-o(1)} — the exponent is exactly 2 with subpolynomial correction",
+      "Fox-Pohoata: N²/(log log N)^C; Leng-Sah-Sawhney: N²/exp((log log N)^c)",
       "Lower bound N^{1.99} from Behrend-type 3-AP-free constructions",
-      "Directly connects to Szemer\u00e9di's theorem and bounds on r_\u2113(N)"
+      "Directly connects to Szemerédi's theorem and bounds on r_ℓ(N)"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -60,52 +60,52 @@
       "title": "Arithmetic Progressions",
       "startLine": 39,
       "endLine": 55,
-      "summary": "arithmeticProgression (Finset.image), ContainsAP (\u2203 AP \u2286 A), countAPs (powerset filter).",
-      "mathContext": "Mathematical content: arithmeticProgression (Finset.image), ContainsAP (\u2203 AP \u2286 A), countAPs (powerset filter)."
+      "summary": "arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter).",
+      "mathContext": "Mathematical content: arithmeticProgression (Finset.image), ContainsAP (∃ AP ⊆ A), countAPs (powerset filter)."
     },
     {
       "id": "supersaturation-function",
       "title": "The Supersaturation Function",
       "startLine": 57,
       "endLine": 76,
-      "summary": "F_k(N, \u2113) via Nat.find (sorry for existence), SupersaturationProperty.",
-      "mathContext": "Mathematical content: F_k(N, \u2113) via Nat.find (sorry for existence), SupersaturationProperty."
+      "summary": "F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty.",
+      "mathContext": "Mathematical content: F_k(N, ℓ) via Nat.find (sorry for existence), SupersaturationProperty."
     },
     {
       "id": "trivial-bounds",
       "title": "Trivial Bounds",
       "startLine": 78,
       "endLine": 92,
-      "summary": "F_lower_bound \u2265 N^{1.99} (axiom, Behrend-type), F_upper_trivial \u2264 N\u00b2 (sorry).",
-      "mathContext": "F_lower_bound $\\geq$ N^{1.99} (axiom), F_upper_trivial $\\leq$ N\u00b2 (sorry)."
+      "summary": "F_lower_bound ≥ N^{1.99} (axiom, Behrend-type), F_upper_trivial ≤ N² (sorry).",
+      "mathContext": "F_lower_bound $\\geq$ N^{1.99} (axiom), F_upper_trivial $\\leq$ N² (sorry)."
     },
     {
       "id": "erdos-questions",
-      "title": "Erd\u0151s's Questions",
+      "title": "Erdős's Questions",
       "startLine": 94,
       "endLine": 111,
-      "summary": "Question1: F\u2083(N,4) = o(N\u00b2). Question2: lim log F\u2083(N,\u2113)/log N = 2.",
-      "mathContext": "Mathematical content: Question1: F\u2083(N,4) = o(N\u00b2). Question2: lim log F\u2083(N,\u2113)/log N = 2."
+      "summary": "Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2.",
+      "mathContext": "Mathematical content: Question1: F₃(N,4) = o(N²). Question2: lim log F₃(N,ℓ)/log N = 2."
     },
     {
       "id": "fox-pohoata",
       "title": "Fox-Pohoata Theorem (2020)",
       "startLine": 112,
       "endLine": 145,
-      "summary": "fox_pohoata_theorem: F \u2264 N\u00b2/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry).",
-      "mathContext": "fox_pohoata_theorem: F $\\leq$ N\u00b2/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
+      "summary": "fox_pohoata_theorem: F ≤ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry).",
+      "mathContext": "fox_pohoata_theorem: F $\\leq$ N²/(log log N)^C. question1_solved (1 sorry). question2_solved (sorry)."
     },
     {
       "id": "leng-sah-sawhney",
       "title": "Leng-Sah-Sawhney Improvement (2024)",
       "startLine": 147,
       "endLine": 168,
-      "summary": "leng_sah_sawhney: F \u2264 N\u00b2/exp((log log N)^c). improvement_significant (sorry).",
-      "mathContext": "leng_sah_sawhney: F $\\leq$ N\u00b2/exp((log log N)^c). improvement_significant (sorry)."
+      "summary": "leng_sah_sawhney: F ≤ N²/exp((log log N)^c). improvement_significant (sorry).",
+      "mathContext": "leng_sah_sawhney: F $\\leq$ N²/exp((log log N)^c). improvement_significant (sorry)."
     },
     {
       "id": "szemeredi-connection",
-      "title": "Connection to Szemer\u00e9di and Roth",
+      "title": "Connection to Szemerédi and Roth",
       "startLine": 170,
       "endLine": 211,
       "summary": "szemeredi_theorem, roth_theorem, behrend_construction (axioms). SzemerediImplication, AP_free_has_2APs.",
@@ -124,16 +124,16 @@
       "title": "Main Results",
       "startLine": 229,
       "endLine": 253,
-      "summary": "erdos_179: Question1 \u2227 Question2. erdos_179_answer (String def). #check statements.",
-      "mathContext": "Mathematical content: erdos_179: Question1 \u2227 Question2. erdos_179_answer (String def). #check statements."
+      "summary": "erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements.",
+      "mathContext": "Mathematical content: erdos_179: Question1 ∧ Question2. erdos_179_answer (String def). #check statements."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #179 is solved: both questions have affirmative answers. F\u2083(N, 4) = o(N\u00b2) and lim log F\u2083(N, \u2113)/log N = 2. Fox-Pohoata (2020) proved F_k(N, \u2113) = N^{2-o(1)}, improved by Leng-Sah-Sawhney (2024). 10 sorries remain in the formalization.",
+    "summary": "Erdős Problem #179 is solved: both questions have affirmative answers. F₃(N, 4) = o(N²) and lim log F₃(N, ℓ)/log N = 2. Fox-Pohoata (2020) proved F_k(N, ℓ) = N^{2-o(1)}, improved by Leng-Sah-Sawhney (2024). 10 sorries remain in the formalization.",
     "implications": "The supersaturation phenomenon connects AP counting to density, showing that the threshold for forcing long APs from short ones has exponent exactly 2. This advances quantitative Ramsey theory and connects to the broader program of understanding AP structure in combinatorics.",
     "openQuestions": [
-      "What are the optimal constants C_\u2113 and c_\u2113 in the bounds?",
-      "Tight bounds for specific small values of k and \u2113?",
+      "What are the optimal constants C_ℓ and c_ℓ in the bounds?",
+      "Tight bounds for specific small values of k and ℓ?",
       "Can the lower bound be improved beyond N^{1.99}?",
       "Generalizations to other combinatorial patterns beyond APs?"
     ]
@@ -143,10 +143,10 @@
   ],
   "originalContributions": [
     "arithmeticProgression and countAPs definitions via Finset.image and powerset filter",
-    "F_k(N, \u2113) via Nat.find with SupersaturationProperty",
+    "F_k(N, ℓ) via Nat.find with SupersaturationProperty",
     "Question1 and Question2 using Filter.atTop and nhds for asymptotics",
     "Partial proof of question1_solved from fox_pohoata_theorem using filter_upwards",
-    "Axiomatized Fox-Pohoata, Leng-Sah-Sawhney, Szemer\u00e9di, Roth, and Behrend"
+    "Axiomatized Fox-Pohoata, Leng-Sah-Sawhney, Szemerédi, Roth, and Behrend"
   ],
   "leanFile": {
     "imports": [
@@ -168,27 +168,27 @@
   },
   "references": [
     "Fox & Pohoata (2020): Sets without k-term progressions can have many shorter progressions, arXiv:1908.09905",
-    "Leng, Sah & Sawhney (2024): Improved bounds for Szemer\u00e9di's theorem, arXiv:2402.17995",
-    "Szemer\u00e9di (1975): On sets of integers containing no k elements in arithmetic progression, Acta Arithmetica 27, 199\u2013245",
-    "Roth (1953): On certain sets of integers, J. London Math. Soc. 28, 104\u2013109",
-    "Behrend (1946): On sets of integers which contain no three terms in AP, Proc. Nat. Acad. Sci. 32, 331\u2013332",
+    "Leng, Sah & Sawhney (2024): Improved bounds for Szemerédi's theorem, arXiv:2402.17995",
+    "Szemerédi (1975): On sets of integers containing no k elements in arithmetic progression, Acta Arithmetica 27, 199–245",
+    "Roth (1953): On certain sets of integers, J. London Math. Soc. 28, 104–109",
+    "Behrend (1946): On sets of integers which contain no three terms in AP, Proc. Nat. Acad. Sci. 32, 331–332",
     "https://erdosproblems.com/179"
   ],
   "crossReferences": [
     {
       "targetId": "erdos-721",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, solved"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory, solved"
     },
     {
       "targetId": "erdos-186",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, solved"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, solved"
     },
     {
       "targetId": "erdos-187",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: additive-combinatorics, arithmetic-progressions, ramsey-theory"
     }
   ],
   "sorries": 8

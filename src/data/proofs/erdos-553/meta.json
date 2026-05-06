@@ -1,10 +1,10 @@
 {
   "id": "erdos-553",
-  "title": "Erd\u0151s Problem #553: Multi-Color Ramsey Asymptotics",
+  "title": "Erdős Problem #553: Multi-Color Ramsey Asymptotics",
   "slug": "erdos-553",
-  "description": "Show R(3,3,n)/R(3,n) \u2192 \u221e. The third color dramatically increases the off-diagonal threshold. Solved by Alon-R\u00f6dl (2005): R(3,3,n) \u224d n\u00b3(log n)^O(1) vs R(3,n) \u226a n\u00b2/log n.",
+  "description": "Show R(3,3,n)/R(3,n) → ∞. The third color dramatically increases the off-diagonal threshold. Solved by Alon-Rödl (2005): R(3,3,n) ≍ n³(log n)^O(1) vs R(3,n) ≪ n²/log n.",
   "meta": {
-    "author": "Erd\u0151s-S\u00f3s, solved by Alon-R\u00f6dl",
+    "author": "Erdős-Sós, solved by Alon-Rödl",
     "sourceUrl": "https://erdosproblems.com/553",
     "date": "2005",
     "status": "formalized",
@@ -40,10 +40,10 @@
     ],
     "originalContributions": [
       "Formal definition of multi-color Ramsey numbers R(3,n) and R(3,3,n)",
-      "Statement of Alon-R\u00f6dl bounds for R(3,3,n)",
+      "Statement of Alon-Rödl bounds for R(3,3,n)",
       "Statement of Shearer's bound for R(3,n)",
       "Formalization of the divergence result",
-      "Tur\u00e1n-style intuition for why the third color helps"
+      "Turán-style intuition for why the third color helps"
     ],
     "axiomCount": 0,
     "lineCount": 210,
@@ -53,17 +53,17 @@
     "definitionCount": 14
   },
   "overview": {
-    "historicalContext": "This problem was posed by Erd\u0151s and S\u00f3s, motivated by the observation that additional colors in Ramsey problems can qualitatively change the asymptotics.  The 2-color off-diagonal Ramsey number R(3,n) \u2014 the minimum m such that any 2-coloring of K_m contains a red triangle or blue K_n \u2014 was bounded by Shearer (1983) as R(3,n) \u2264 Cn\u00b2/log n using his celebrated entropy method, and by Kim (1995) as R(3,n) \u2265 cn\u00b2/log n using the semi-random 'triangle-free process', establishing R(3,n) = \u0398(n\u00b2/log n).  The 3-color variant R(3,3,n) was far less understood until Alon and R\u00f6dl (2005) proved R(3,3,n) \u224d n\u00b3(log n)^{O(1)}, confirming the Erd\u0151s\u2013S\u00f3s conjecture that the ratio diverges.  Their proof combines dependent random choice (for the upper bound) with algebraic constructions based on norm graphs over finite fields (for the lower bound).  The result reveals that each additional triangle color adds a power of n to the Ramsey threshold \u2014 a striking structural phenomenon whose full generalization to r triangle colors remains open.",
-    "problemStatement": "**Definitions:**\n- R(3,n) = min m : any 2-coloring of K_m has a red triangle or blue K_n\n- R(3,3,n) = min m : any 3-coloring of K_m has a red triangle, blue triangle, or green K_n\n\n**Question:** Show that R(3,3,n) / R(3,n) \u2192 \u221e as n \u2192 \u221e.\n\n**Solution (Alon-R\u00f6dl 2005):**\n- R(3,3,n) \u224d n\u00b3 \u00b7 (log n)^O(1)\n- R(3,n) \u226a n\u00b2 / log n (Shearer 1983)\n- Ratio grows like n \u00b7 (log factors) \u2192 \u221e",
-    "text": "Show R(3,3,n)/R(3,n) \u2192 \u221e. The third color dramatically increases the off-diagonal threshold. Solved by Alon-R\u00f6dl (2005): R(3,3,n) \u224d n\u00b3(log n)^O(1) vs R(3,n) \u226a n\u00b2/log n.",
-    "proofStrategy": "The formalization builds up from edge colorings of complete graphs to Ramsey number definitions via Nat.find.  The core argument requires four ingredients: (1) Shearer's upper bound R(3,n) \u2264 Cn\u00b2/log n, (2) a matching lower bound R(3,n) \u2265 cn\u00b2/(log n)\u00b2, (3) Alon\u2013R\u00f6dl's two-sided bound R(3,3,n) \u224d n\u00b3(log n)^{O(1)}, and (4) the ratio computation showing n\u00b7(polylog) \u2192 \u221e.  All four are axiomatized since the proofs involve probabilistic and algebraic methods beyond current Lean automation.  The formalization also provides Tur\u00e1n-style intuition via triangle-free edge counts.",
+    "historicalContext": "This problem was posed by Erdős and Sós, motivated by the observation that additional colors in Ramsey problems can qualitatively change the asymptotics.  The 2-color off-diagonal Ramsey number R(3,n) — the minimum m such that any 2-coloring of K_m contains a red triangle or blue K_n — was bounded by Shearer (1983) as R(3,n) ≤ Cn²/log n using his celebrated entropy method, and by Kim (1995) as R(3,n) ≥ cn²/log n using the semi-random 'triangle-free process', establishing R(3,n) = Θ(n²/log n).  The 3-color variant R(3,3,n) was far less understood until Alon and Rödl (2005) proved R(3,3,n) ≍ n³(log n)^{O(1)}, confirming the Erdős–Sós conjecture that the ratio diverges.  Their proof combines dependent random choice (for the upper bound) with algebraic constructions based on norm graphs over finite fields (for the lower bound).  The result reveals that each additional triangle color adds a power of n to the Ramsey threshold — a striking structural phenomenon whose full generalization to r triangle colors remains open.",
+    "problemStatement": "**Definitions:**\n- R(3,n) = min m : any 2-coloring of K_m has a red triangle or blue K_n\n- R(3,3,n) = min m : any 3-coloring of K_m has a red triangle, blue triangle, or green K_n\n\n**Question:** Show that R(3,3,n) / R(3,n) → ∞ as n → ∞.\n\n**Solution (Alon-Rödl 2005):**\n- R(3,3,n) ≍ n³ · (log n)^O(1)\n- R(3,n) ≪ n² / log n (Shearer 1983)\n- Ratio grows like n · (log factors) → ∞",
+    "text": "Show R(3,3,n)/R(3,n) → ∞. The third color dramatically increases the off-diagonal threshold. Solved by Alon-Rödl (2005): R(3,3,n) ≍ n³(log n)^O(1) vs R(3,n) ≪ n²/log n.",
+    "proofStrategy": "The formalization builds up from edge colorings of complete graphs to Ramsey number definitions via Nat.find.  The core argument requires four ingredients: (1) Shearer's upper bound R(3,n) ≤ Cn²/log n, (2) a matching lower bound R(3,n) ≥ cn²/(log n)², (3) Alon–Rödl's two-sided bound R(3,3,n) ≍ n³(log n)^{O(1)}, and (4) the ratio computation showing n·(polylog) → ∞.  All four are axiomatized since the proofs involve probabilistic and algebraic methods beyond current Lean automation.  The formalization also provides Turán-style intuition via triangle-free edge counts.",
     "keyInsights": [
-      "Each triangle-free color class contributes at most n\u00b2/4 edges (Tur\u00e1n), so r triangle-free colors cover \u2264 rn\u00b2/4 edges \u2014 the 'room' for the clique color shrinks, requiring m \u2248 n^{r+1} before K_n is forced",
-      "Shearer's entropy method gives the sharp R(3,n) upper bound: in any triangle-free graph with independence number < n, entropy of neighborhood sizes forces edge count \u2264 Cn\u00b2/log n",
-      "Alon\u2013R\u00f6dl's lower bound for R(3,3,n) uses norm graphs over F_q: connect (a,b) to (c,d) if ac + bd = 1, giving a triangle-free graph with \u0398(q^{3/2}) edges on q\u00b2 vertices",
-      "The ratio R(3,3,n)/R(3,n) \u2265 (c/C)\u00b7n\u00b7(log n)^{1-k} diverges because polynomial growth dominates any fixed power of logarithm",
-      "The general Erd\u0151s\u2013S\u00f3s conjecture predicts R(3,...,3,n) with r threes grows like n^{r+1}(polylog) \u2014 Problem 553 is the first nontrivial case",
-      "Kim's triangle-free process (1995) gave the matching R(3,n) \u2265 cn\u00b2/log n, making R(3,n) = \u0398(n\u00b2/log n) one of the most precisely understood off-diagonal Ramsey numbers"
+      "Each triangle-free color class contributes at most n²/4 edges (Turán), so r triangle-free colors cover ≤ rn²/4 edges — the 'room' for the clique color shrinks, requiring m ≈ n^{r+1} before K_n is forced",
+      "Shearer's entropy method gives the sharp R(3,n) upper bound: in any triangle-free graph with independence number < n, entropy of neighborhood sizes forces edge count ≤ Cn²/log n",
+      "Alon–Rödl's lower bound for R(3,3,n) uses norm graphs over F_q: connect (a,b) to (c,d) if ac + bd = 1, giving a triangle-free graph with Θ(q^{3/2}) edges on q² vertices",
+      "The ratio R(3,3,n)/R(3,n) ≥ (c/C)·n·(log n)^{1-k} diverges because polynomial growth dominates any fixed power of logarithm",
+      "The general Erdős–Sós conjecture predicts R(3,...,3,n) with r threes grows like n^{r+1}(polylog) — Problem 553 is the first nontrivial case",
+      "Kim's triangle-free process (1995) gave the matching R(3,n) ≥ cn²/log n, making R(3,n) = Θ(n²/log n) one of the most precisely understood off-diagonal Ramsey numbers"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -74,7 +74,7 @@
     {
       "id": "coloring-basics",
       "title": "Graph Coloring Basics",
-      "summary": "Defines EdgeColoring as Fin n \u00d7 Fin n \u2192 Fin k with symmetry predicate, monochromatic cliques (sets with all edges one color), and monochromatic triangles (three distinct vertices with matching edges).",
+      "summary": "Defines EdgeColoring as Fin n × Fin n → Fin k with symmetry predicate, monochromatic cliques (sets with all edges one color), and monochromatic triangles (three distinct vertices with matching edges).",
       "startLine": 32,
       "endLine": 54,
       "mathContext": "Edge colorings $c : \\binom{[m]}{2} \\to [k]$ are the fundamental objects of Ramsey theory.  The formalization uses ordered pairs with a symmetry predicate rather than unordered pairs for simplicity.  A monochromatic $K_s$ in color $i$ is a set $S$ of $s$ vertices with $c(u,v) = i$ for all $u \\neq v \\in S$."
@@ -85,39 +85,39 @@
       "summary": "Defines R_3_n via Nat.find as the least m with the 2-color Ramsey property for (3,n). Includes propositional alternative IsR3n with minimality condition.",
       "startLine": 55,
       "endLine": 72,
-      "mathContext": "$R(3,n)$ is the smallest $m$ such that every 2-coloring of $K_m$ yields a red $K_3$ or a blue $K_n$.  Known: $R(3,n) = \\Theta(n^2/\\log n)$ \u2014 the quadratic growth with logarithmic correction is a hallmark of the off-diagonal regime where one parameter is fixed."
+      "mathContext": "$R(3,n)$ is the smallest $m$ such that every 2-coloring of $K_m$ yields a red $K_3$ or a blue $K_n$.  Known: $R(3,n) = \\Theta(n^2/\\log n)$ — the quadratic growth with logarithmic correction is a hallmark of the off-diagonal regime where one parameter is fixed."
     },
     {
       "id": "r-3-3-n",
       "title": "Three-Color Ramsey R(3,3,n)",
-      "summary": "Defines R_3_3_n via Nat.find for the 3-color Ramsey property: red-K\u2083 or blue-K\u2083 or green-K\u2099. Includes propositional alternative IsR33n.",
+      "summary": "Defines R_3_3_n via Nat.find for the 3-color Ramsey property: red-K₃ or blue-K₃ or green-Kₙ. Includes propositional alternative IsR33n.",
       "startLine": 73,
       "endLine": 93,
       "mathContext": "$R(3,3,n)$ allows *two* triangle colors and one clique color.  The two triangle-free color classes can together cover up to $m^2/2$ edges (double what one can), so the clique color is much sparser, requiring $m \\approx n^3$ before $K_n$ is forced."
     },
     {
       "id": "bounds",
-      "title": "Shearer and Alon\u2013R\u00f6dl Bounds",
-      "summary": "States four axiomatized bounds: Shearer's R(3,n) \u2264 Cn\u00b2/log n, the R(3,n) \u2265 cn\u00b2/(log n)\u00b2 lower bound, and Alon\u2013R\u00f6dl's two-sided R(3,3,n) \u224d n\u00b3(log n)^{O(1)}.",
+      "title": "Shearer and Alon–Rödl Bounds",
+      "summary": "States four axiomatized bounds: Shearer's R(3,n) ≤ Cn²/log n, the R(3,n) ≥ cn²/(log n)² lower bound, and Alon–Rödl's two-sided R(3,3,n) ≍ n³(log n)^{O(1)}.",
       "startLine": 94,
       "endLine": 114,
-      "mathContext": "Shearer's bound: if $G$ is triangle-free with $\\alpha(G) < n$, the entropy of the degree sequence yields $|V(G)| \\leq C n^2/\\log n$.  Alon\u2013R\u00f6dl upper: dependent random choice gives a large 'common neighborhood' structure that forces triangles or large cliques.  Alon\u2013R\u00f6dl lower: norm graphs over $\\mathbb{F}_q$ provide explicit triangle-free graphs with $\\Theta(q^{3/2})$ edges, two copies of which cover enough edges to delay $K_n$."
+      "mathContext": "Shearer's bound: if $G$ is triangle-free with $\\alpha(G) < n$, the entropy of the degree sequence yields $|V(G)| \\leq C n^2/\\log n$.  Alon–Rödl upper: dependent random choice gives a large 'common neighborhood' structure that forces triangles or large cliques.  Alon–Rödl lower: norm graphs over $\\mathbb{F}_q$ provide explicit triangle-free graphs with $\\Theta(q^{3/2})$ edges, two copies of which cover enough edges to delay $K_n$."
     },
     {
       "id": "main-result",
       "title": "Main Divergence Result",
-      "summary": "Defines RatioTendsToInfinity as \u2200 M > 0, \u2203 N, \u2200 n \u2265 N: R(3,3,n)/R(3,n) > M. Proves erdos_553_main from the bounds.",
+      "summary": "Defines RatioTendsToInfinity as ∀ M > 0, ∃ N, ∀ n ≥ N: R(3,3,n)/R(3,n) > M. Proves erdos_553_main from the bounds.",
       "startLine": 115,
       "endLine": 129,
-      "mathContext": "The ratio $R(3,3,n)/R(3,n) \\geq (c/C) \\cdot n \\cdot (\\log n)^{1-k} \\to \\infty$ as $n \\to \\infty$, since $n$ dominates any power of $\\log n$.  This is the core result solving Erd\u0151s Problem 553."
+      "mathContext": "The ratio $R(3,3,n)/R(3,n) \\geq (c/C) \\cdot n \\cdot (\\log n)^{1-k} \\to \\infty$ as $n \\to \\infty$, since $n$ dominates any power of $\\log n$.  This is the core result solving Erdős Problem 553."
     },
     {
       "id": "intuition",
-      "title": "Tur\u00e1n-Style Intuition",
-      "summary": "Proves (modulo sorry) the Tur\u00e1n bound for triangle-free graphs (\u2264 n\u00b2/4 edges) and that two triangle-free graphs together have \u2264 n\u00b2/2 edges, explaining why the third color helps.",
+      "title": "Turán-Style Intuition",
+      "summary": "Proves (modulo sorry) the Turán bound for triangle-free graphs (≤ n²/4 edges) and that two triangle-free graphs together have ≤ n²/2 edges, explaining why the third color helps.",
       "startLine": 130,
       "endLine": 146,
-      "mathContext": "Mantel (1907) / Tur\u00e1n (1941): $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$.  Two triangle-free graphs on $n$ vertices cover at most $n^2/2$ edges.  In a 3-coloring of $K_m$, the clique color gets at least $\\binom{m}{2} - m^2/2 \\approx 0$ edges when $m$ is small, requiring much larger $m$ before $K_n$ can form."
+      "mathContext": "Mantel (1907) / Turán (1941): $\\text{ex}(n, K_3) = \\lfloor n^2/4 \\rfloor$.  Two triangle-free graphs on $n$ vertices cover at most $n^2/2$ edges.  In a 3-coloring of $K_m$, the clique color gets at least $\\binom{m}{2} - m^2/2 \\approx 0$ edges when $m$ is small, requiring much larger $m$ before $K_n$ can form."
     },
     {
       "id": "off-diagonal",
@@ -130,19 +130,19 @@
     {
       "id": "asymptotics",
       "title": "Asymptotic Notation and Generalizations",
-      "summary": "Defines AsymptoticEquiv (\u224d notation), restates Alon\u2013R\u00f6dl and Shearer in asymptotic form, defines MultiColorRamsey for general parameters, and states the Erd\u0151s\u2013S\u00f3s generalization conjecture.",
+      "summary": "Defines AsymptoticEquiv (≍ notation), restates Alon–Rödl and Shearer in asymptotic form, defines MultiColorRamsey for general parameters, and states the Erdős–Sós generalization conjecture.",
       "startLine": 165,
       "endLine": 210,
-      "mathContext": "The Erd\u0151s\u2013S\u00f3s generalization predicts $R(\\underbrace{3,\\ldots,3}_{s}, n) / R(\\underbrace{3,\\ldots,3}_{r}, n) \\to \\infty$ for $r < s$.  The heuristic $R(\\underbrace{3,\\ldots,3}_{r}, n) \\asymp n^{r+1}$ follows from $r$ triangle-free color classes covering $r \\cdot m^2/4$ edges."
+      "mathContext": "The Erdős–Sós generalization predicts $R(\\underbrace{3,\\ldots,3}_{s}, n) / R(\\underbrace{3,\\ldots,3}_{r}, n) \\to \\infty$ for $r < s$.  The heuristic $R(\\underbrace{3,\\ldots,3}_{r}, n) \\asymp n^{r+1}$ follows from $r$ triangle-free color classes covering $r \\cdot m^2/4$ edges."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erd\u0151s Problem #553: the divergence of R(3,3,n)/R(3,n).  The resolution by Alon and R\u00f6dl (2005) established the cubic-vs-quadratic growth gap R(3,3,n) \u224d n\u00b3(polylog) vs R(3,n) = \u0398(n\u00b2/log n).  The formalization includes the definitions, bounds, Tur\u00e1n-based intuition, and the Erd\u0151s\u2013S\u00f3s generalization to r triangle colors.",
-    "implications": "The result reveals a structural hierarchy in multi-color Ramsey theory: each additional 'small clique' color raises the off-diagonal threshold by a power of n.  The techniques \u2014 Shearer's entropy, Kim's triangle-free process, Alon\u2013R\u00f6dl's dependent random choice and norm graphs \u2014 represent major methodological advances in probabilistic combinatorics.",
+    "summary": "This formalization captures Erdős Problem #553: the divergence of R(3,3,n)/R(3,n).  The resolution by Alon and Rödl (2005) established the cubic-vs-quadratic growth gap R(3,3,n) ≍ n³(polylog) vs R(3,n) = Θ(n²/log n).  The formalization includes the definitions, bounds, Turán-based intuition, and the Erdős–Sós generalization to r triangle colors.",
+    "implications": "The result reveals a structural hierarchy in multi-color Ramsey theory: each additional 'small clique' color raises the off-diagonal threshold by a power of n.  The techniques — Shearer's entropy, Kim's triangle-free process, Alon–Rödl's dependent random choice and norm graphs — represent major methodological advances in probabilistic combinatorics.",
     "openQuestions": [
-      "What is the exact polylogarithmic exponent in R(3,3,n) \u224d n\u00b3(log n)^k? The precise value of k is unknown.",
-      "Does R(3,3,3,n)/R(3,3,n) \u2192 \u221e? (The next case of the Erd\u0151s\u2013S\u00f3s generalization for r=2, s=3.)",
-      "What is the leading constant in R(3,n) ~ cn\u00b2/log n? Conjectured to be c = 1/4 (matching Tur\u00e1n density).",
+      "What is the exact polylogarithmic exponent in R(3,3,n) ≍ n³(log n)^k? The precise value of k is unknown.",
+      "Does R(3,3,3,n)/R(3,3,n) → ∞? (The next case of the Erdős–Sós generalization for r=2, s=3.)",
+      "What is the leading constant in R(3,n) ~ cn²/log n? Conjectured to be c = 1/4 (matching Turán density).",
       "Can algebraic constructions (norm graphs) be replaced by explicit combinatorial ones for the R(3,3,n) lower bound?"
     ]
   },
@@ -170,17 +170,17 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotics, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: asymptotics, ramsey-theory"
     },
     {
       "targetId": "erdos-136",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-coloring, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory"
     },
     {
       "targetId": "erdos-191",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-coloring, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-coloring, ramsey-theory"
     }
   ],
   "sorries": 15

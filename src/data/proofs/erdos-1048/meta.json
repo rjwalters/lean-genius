@@ -1,10 +1,10 @@
 {
   "id": "erdos-1048",
-  "title": "Erd\u0151s Problem #1048: Polynomial Lemniscate Diameter",
+  "title": "Erdős Problem #1048: Polynomial Lemniscate Diameter",
   "slug": "erdos-1048",
-  "description": "For a monic polynomial f \u2208 \u2102[x] with roots in |z| \u2264 r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
+  "description": "For a monic polynomial f ∈ ℂ[x] with roots in |z| ≤ r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
   "meta": {
-    "author": "Erd\u0151s-Herzog-Piranian (1958), Pommerenke (1961)",
+    "author": "Erdős-Herzog-Piranian (1958), Pommerenke (1961)",
     "sourceUrl": "https://erdosproblems.com/1048",
     "date": "1961",
     "status": "axiomatized",
@@ -26,12 +26,12 @@
     "mathlibDependencies": [
       {
         "theorem": "Complex",
-        "description": "Complex number type \u2102",
+        "description": "Complex number type ℂ",
         "module": "Mathlib.Data.Complex.Basic"
       },
       {
         "theorem": "Polynomial",
-        "description": "Polynomial ring \u2102[X]",
+        "description": "Polynomial ring ℂ[X]",
         "module": "Mathlib.Algebra.Polynomial.Basic"
       },
       {
@@ -49,9 +49,9 @@
       "Formal definition of polynomial lemniscate L(f, c)",
       "Structure for bounded monic polynomials",
       "Definition of connected component diameter",
-      "Formalization of Erd\u0151s-Herzog-Piranian conjecture",
+      "Formalization of Erdős-Herzog-Piranian conjecture",
       "Pommerenke's counterexample z^n - r^n",
-      "Positive results for r \u2264 1 in three regimes",
+      "Positive results for r ≤ 1 in three regimes",
       "Connection to logarithmic capacity",
       "Optimal examples showing tightness of bounds"
     ],
@@ -72,16 +72,16 @@
     "definitionCount": 13
   },
   "overview": {
-    "historicalContext": "**Polynomial Lemniscates and the EHP Conjecture**\n\nThe study of polynomial lemniscates \u2014 level curves {z : |f(z)| = c} and their interiors \u2014 traces to Jacob Bernoulli's investigation of the lemniscate of Bernoulli (the curve |z\u00b2 - 1| = 1) in 1694, which motivated early work in elliptic integrals. The modern theory begins with the observation that for a degree-n monic polynomial f, the set L(f, c) = {z : |f(z)| < c} is a bounded open set whose topology (number of connected components, their shapes) encodes deep information about the root distribution.\n\n**Erd\u0151s, Herzog, and Piranian (1958)** initiated a systematic study of metric properties of polynomial lemniscates in their landmark paper in the Journal d'Analyse Math\u00e9matique. They conjectured that if f is monic with all roots in the closed disc |z| \u2264 r for r < 2, then L(f, 1) must contain a connected component with diameter exceeding 2 \u2212 r. The threshold 2 \u2212 r is natural: when r = 0 (all roots at the origin), f(z) = z\u207f has L(f, 1) = {|z| < 1}, a single disc of diameter 2 = 2 \u2212 0. As r increases, one expects the lemniscate to fragment, but the conjecture asserted that at least one component remains large.\n\n**Pommerenke (1961)** decisively disproved this for r > 1 using the elegant family f(z) = z\u207f \u2212 r\u207f. The roots are r\u00b7\u03c9\u2096 (kth roots of unity scaled by r), so all lie on |z| = r. By symmetry, L(f, 1) decomposes into n congruent components, each a small neighborhood of a root. As n \u2192 \u221e the components shrink: their diameters tend to 0 while 2 \u2212 r remains bounded away from 0. This is a topological fragmentation phenomenon: increasing degree distributes the lemniscate's 'mass' (logarithmic capacity c^{1/n}) among more components.\n\nHowever, Pommerenke also established positive results for r \u2264 1, partitioned at two critical thresholds: r = 1/2 and r = \u03c6 \u2212 1 \u2248 0.618 (where \u03c6 = (1+\u221a5)/2 is the golden ratio). The golden ratio appears because the equation r\u00b2 + r = 1 governs a transition in the geometry of lemniscate components near roots at distance r from the origin. These positive results connect to potential theory through the capacity-diameter inequality diam(K) \u2265 4\u00b7cap(K), which links logarithmic capacity to geometric size.",
-    "problemStatement": "**Problem Statement**\n\nFor a monic polynomial f \u2208 \u2102[x] with all roots satisfying |z| \u2264 r where r < 2, must the set L(f,1) = {z : |f(z)| < 1} contain a connected component with diameter greater than 2-r?\n\n**Status**: DISPROVED by Pommerenke (1961) for r > 1.\n\n**Counterexample**: f(z) = z^n - r^n for large n.",
-    "text": "For a monic polynomial f \u2208 \u2102[x] with roots in |z| \u2264 r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
-    "proofStrategy": "The formalization builds a layered architecture from polynomial algebra through complex topology to potential theory. **Layer 1 (Algebraic Setup)**: Defines `IsMonic`, `roots`, `RootsBoundedBy`, and the `BoundedMonicPoly` structure bundling a polynomial with its monicity, root bound, and nontriviality \u2014 this provides the type-theoretic foundation for all statements. **Layer 2 (Lemniscate Topology)**: Defines `lemniscate f c` as the sublevel set {z : |f(z)| < c}, proves openness via continuity of polynomial evaluation (Mathlib's `Polynomial.eval` composed with `Complex.abs`), and proves boundedness for monic polynomials (since |f(z)| \u2192 \u221e as |z| \u2192 \u221e). **Layer 3 (Component Geometry)**: Defines `ConnectedComponent` via the union of all connected subsets containing a point, and `diameter` as the supremum of pairwise distances \u2014 these are the geometric quantities the conjecture concerns. **Layer 4 (Counterexample)**: Constructs `pommerenkeCounterexample r n = X^n - C(r^n)`, verifies monicity and root structure (roots are r times nth roots of unity), and axiomatizes the diameter-vanishing result for r > 1. The key proof `EHP_false_for_r_gt_1` extracts a specific counterexample from the vanishing sequence. **Layer 5 (Positive Results)**: Axiomatizes Pommerenke's three-regime classification for r \u2264 1 with the golden ratio \u03c6 \u2212 1 as a critical transition point, and provides optimal examples showing tightness. **Layer 6 (Potential Theory)**: Introduces logarithmic capacity axiomatically and states the capacity-diameter inequality, connecting geometric bounds to potential-theoretic invariants.",
+    "historicalContext": "**Polynomial Lemniscates and the EHP Conjecture**\n\nThe study of polynomial lemniscates — level curves {z : |f(z)| = c} and their interiors — traces to Jacob Bernoulli's investigation of the lemniscate of Bernoulli (the curve |z² - 1| = 1) in 1694, which motivated early work in elliptic integrals. The modern theory begins with the observation that for a degree-n monic polynomial f, the set L(f, c) = {z : |f(z)| < c} is a bounded open set whose topology (number of connected components, their shapes) encodes deep information about the root distribution.\n\n**Erdős, Herzog, and Piranian (1958)** initiated a systematic study of metric properties of polynomial lemniscates in their landmark paper in the Journal d'Analyse Mathématique. They conjectured that if f is monic with all roots in the closed disc |z| ≤ r for r < 2, then L(f, 1) must contain a connected component with diameter exceeding 2 − r. The threshold 2 − r is natural: when r = 0 (all roots at the origin), f(z) = zⁿ has L(f, 1) = {|z| < 1}, a single disc of diameter 2 = 2 − 0. As r increases, one expects the lemniscate to fragment, but the conjecture asserted that at least one component remains large.\n\n**Pommerenke (1961)** decisively disproved this for r > 1 using the elegant family f(z) = zⁿ − rⁿ. The roots are r·ωₖ (kth roots of unity scaled by r), so all lie on |z| = r. By symmetry, L(f, 1) decomposes into n congruent components, each a small neighborhood of a root. As n → ∞ the components shrink: their diameters tend to 0 while 2 − r remains bounded away from 0. This is a topological fragmentation phenomenon: increasing degree distributes the lemniscate's 'mass' (logarithmic capacity c^{1/n}) among more components.\n\nHowever, Pommerenke also established positive results for r ≤ 1, partitioned at two critical thresholds: r = 1/2 and r = φ − 1 ≈ 0.618 (where φ = (1+√5)/2 is the golden ratio). The golden ratio appears because the equation r² + r = 1 governs a transition in the geometry of lemniscate components near roots at distance r from the origin. These positive results connect to potential theory through the capacity-diameter inequality diam(K) ≥ 4·cap(K), which links logarithmic capacity to geometric size.",
+    "problemStatement": "**Problem Statement**\n\nFor a monic polynomial f ∈ ℂ[x] with all roots satisfying |z| ≤ r where r < 2, must the set L(f,1) = {z : |f(z)| < 1} contain a connected component with diameter greater than 2-r?\n\n**Status**: DISPROVED by Pommerenke (1961) for r > 1.\n\n**Counterexample**: f(z) = z^n - r^n for large n.",
+    "text": "For a monic polynomial f ∈ ℂ[x] with roots in |z| ≤ r where r < 2, must L(f,1) = {z : |f(z)| < 1} have a component with diameter > 2-r? DISPROVED by Pommerenke (1961) for r > 1.",
+    "proofStrategy": "The formalization builds a layered architecture from polynomial algebra through complex topology to potential theory. **Layer 1 (Algebraic Setup)**: Defines `IsMonic`, `roots`, `RootsBoundedBy`, and the `BoundedMonicPoly` structure bundling a polynomial with its monicity, root bound, and nontriviality — this provides the type-theoretic foundation for all statements. **Layer 2 (Lemniscate Topology)**: Defines `lemniscate f c` as the sublevel set {z : |f(z)| < c}, proves openness via continuity of polynomial evaluation (Mathlib's `Polynomial.eval` composed with `Complex.abs`), and proves boundedness for monic polynomials (since |f(z)| → ∞ as |z| → ∞). **Layer 3 (Component Geometry)**: Defines `ConnectedComponent` via the union of all connected subsets containing a point, and `diameter` as the supremum of pairwise distances — these are the geometric quantities the conjecture concerns. **Layer 4 (Counterexample)**: Constructs `pommerenkeCounterexample r n = X^n - C(r^n)`, verifies monicity and root structure (roots are r times nth roots of unity), and axiomatizes the diameter-vanishing result for r > 1. The key proof `EHP_false_for_r_gt_1` extracts a specific counterexample from the vanishing sequence. **Layer 5 (Positive Results)**: Axiomatizes Pommerenke's three-regime classification for r ≤ 1 with the golden ratio φ − 1 as a critical transition point, and provides optimal examples showing tightness. **Layer 6 (Potential Theory)**: Introduces logarithmic capacity axiomatically and states the capacity-diameter inequality, connecting geometric bounds to potential-theoretic invariants.",
     "keyInsights": [
-      "**Topological Fragmentation vs Capacity Conservation:** The counterexample z\u207f \u2212 r\u207f illustrates a fundamental tension: logarithmic capacity cap(L(f,1)) = 1 is preserved regardless of degree, but distributing this capacity among n components (each with capacity \u2248 1/n^{1/n} \u2192 0) forces each component's diameter to vanish. The capacity-diameter inequality diam \u2265 4\u00b7cap shows that capacity fragmentation drives geometric shrinking.",
-      "**Golden Ratio as Phase Transition:** The appearance of \u03c6 \u2212 1 = (\u221a5\u22121)/2 \u2248 0.618 is not coincidental \u2014 it satisfies (\u03c6\u22121)\u00b2 + (\u03c6\u22121) = 1, which governs the transition where the lemniscate component containing the origin changes from 'disc-like' (diam > 1/r) to 'squeezed' (diam > 2 \u2212 r\u00b2). This is the unique positive root of r\u00b2 + r = 1, marking where the competing effects of root attraction and polynomial growth balance.",
-      "**Asymptotic Symmetry Breaking:** The counterexample's power lies in its dihedral symmetry: z\u207f \u2212 r\u207f has D\u2099 symmetry (n-fold rotational plus reflections), forcing all n components to be congruent. This transforms the diameter question into a single-component calculation: each component is an approximate disc of radius \u2248 (1/r)^{1/n} \u00b7 (1/n) centered at a root r\u00b7e^{2\u03c0ik/n}.",
+      "**Topological Fragmentation vs Capacity Conservation:** The counterexample zⁿ − rⁿ illustrates a fundamental tension: logarithmic capacity cap(L(f,1)) = 1 is preserved regardless of degree, but distributing this capacity among n components (each with capacity ≈ 1/n^{1/n} → 0) forces each component's diameter to vanish. The capacity-diameter inequality diam ≥ 4·cap shows that capacity fragmentation drives geometric shrinking.",
+      "**Golden Ratio as Phase Transition:** The appearance of φ − 1 = (√5−1)/2 ≈ 0.618 is not coincidental — it satisfies (φ−1)² + (φ−1) = 1, which governs the transition where the lemniscate component containing the origin changes from 'disc-like' (diam > 1/r) to 'squeezed' (diam > 2 − r²). This is the unique positive root of r² + r = 1, marking where the competing effects of root attraction and polynomial growth balance.",
+      "**Asymptotic Symmetry Breaking:** The counterexample's power lies in its dihedral symmetry: zⁿ − rⁿ has Dₙ symmetry (n-fold rotational plus reflections), forcing all n components to be congruent. This transforms the diameter question into a single-component calculation: each component is an approximate disc of radius ≈ (1/r)^{1/n} · (1/n) centered at a root r·e^{2πik/n}.",
       "**Monicity as Essential Hypothesis:** The restriction to monic polynomials is critical for the capacity formula cap(L(f,c)) = c^{1/n}. Without monicity, one can trivially create lemniscates of arbitrary diameter by scaling the leading coefficient, making the problem vacuous.",
-      "**Three-Regime Structure Reflects Polynomial Competition:** The partition [0,1/2] \u222a (1/2, \u03c6\u22121] \u222a [\u03c6\u22121, 1] corresponds to three qualitatively different regimes: (i) roots are close enough that the origin component dominates the entire lemniscate, (ii) roots begin to attract the boundary but the origin component remains large, (iii) root neighborhoods compete with the origin component, reducing its diameter to 2 \u2212 r\u00b2."
+      "**Three-Regime Structure Reflects Polynomial Competition:** The partition [0,1/2] ∪ (1/2, φ−1] ∪ [φ−1, 1] corresponds to three qualitatively different regimes: (i) roots are close enough that the origin component dominates the entire lemniscate, (ii) roots begin to attract the boundary but the origin component remains large, (iii) root neighborhoods compete with the origin component, reducing its diameter to 2 − r²."
     ],
     "prerequisites": [
       "Complex analysis (polynomial evaluation, sublevel sets)",
@@ -96,13 +96,13 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 27,
-      "summary": "Module docstring describing Erd\u0151s Problem #1048 on polynomial lemniscate diameter. Records the disproof status (Pommerenke 1961): for monic f with roots in |z| \u2264 r where r > 1, the set {z : |f(z)| < 1} can have all components with diameter < 2 \u2212 r. Summarizes Pommerenke's positive results for r \u2264 1 in three regimes separated at r = 1/2 and r = (\u221a5\u22121)/2. Imports the full Mathlib library, declares the Erdos1048 namespace, and opens Complex, Polynomial, Set, and Metric.",
-      "mathContext": "The polynomial lemniscate L(f,c) = {z \u2208 \u2102 : |f(z)| < c} for a monic polynomial f is a bounded open set whose topology depends on the root distribution. The Erd\u0151s-Herzog-Piranian (1958) conjecture that L(f,1) must have a component with diameter > 2 \u2212 r was disproved by Pommerenke using f(z) = z\u207f \u2212 r\u207f. The opened namespaces Complex, Polynomial, Set, and Metric provide the algebraic and topological infrastructure for defining lemniscates, connected components, and diameter."
+      "summary": "Module docstring describing Erdős Problem #1048 on polynomial lemniscate diameter. Records the disproof status (Pommerenke 1961): for monic f with roots in |z| ≤ r where r > 1, the set {z : |f(z)| < 1} can have all components with diameter < 2 − r. Summarizes Pommerenke's positive results for r ≤ 1 in three regimes separated at r = 1/2 and r = (√5−1)/2. Imports the full Mathlib library, declares the Erdos1048 namespace, and opens Complex, Polynomial, Set, and Metric.",
+      "mathContext": "The polynomial lemniscate L(f,c) = {z ∈ ℂ : |f(z)| < c} for a monic polynomial f is a bounded open set whose topology depends on the root distribution. The Erdős-Herzog-Piranian (1958) conjecture that L(f,1) must have a component with diameter > 2 − r was disproved by Pommerenke using f(z) = zⁿ − rⁿ. The opened namespaces Complex, Polynomial, Set, and Metric provide the algebraic and topological infrastructure for defining lemniscates, connected components, and diameter."
     },
     {
       "id": "polynomials",
       "title": "Polynomials and Roots",
-      "summary": "Defines IsMonic (leading coefficient = 1), roots (zero set of polynomial evaluation), RootsBoundedBy (all roots in |z| \u2264 r), and the BoundedMonicPoly structure bundling polynomial, monicity, root bound, and nontriviality (degree \u2265 1)",
+      "summary": "Defines IsMonic (leading coefficient = 1), roots (zero set of polynomial evaluation), RootsBoundedBy (all roots in |z| ≤ r), and the BoundedMonicPoly structure bundling polynomial, monicity, root bound, and nontriviality (degree ≥ 1)",
       "startLine": 28,
       "endLine": 51,
       "mathContext": "$\\text{IsMonic}(f) :\\equiv f.\\text{leadingCoeff} = 1$; $\\text{roots}(f) = \\{z \\in \\mathbb{C} : f(z) = 0\\}$; $\\text{RootsBoundedBy}(f, r) :\\equiv \\forall z \\in \\text{roots}(f),\\, |z| \\leq r$. The `BoundedMonicPoly` structure bundles $(f, \\text{monic}, \\text{bounded}, \\deg f \\geq 1)$."
@@ -110,7 +110,7 @@
     {
       "id": "lemniscates",
       "title": "Lemniscates",
-      "summary": "Defines lemniscate f c as the open sublevel set {z : |f(z)| < c}, introduces notation L(f,c), defines unitLemniscate for c = 1, and proves lemniscate_isOpen (via continuity of |f(\u00b7)|) and lemniscate_bounded (monic polynomials grow at infinity)",
+      "summary": "Defines lemniscate f c as the open sublevel set {z : |f(z)| < c}, introduces notation L(f,c), defines unitLemniscate for c = 1, and proves lemniscate_isOpen (via continuity of |f(·)|) and lemniscate_bounded (monic polynomials grow at infinity)",
       "startLine": 52,
       "endLine": 77,
       "mathContext": "$L(f, c) = \\{z \\in \\mathbb{C} : |f(z)| < c\\}$. `lemniscate_isOpen`: $L(f, c)$ is open (preimage of $(-\\infty, c)$ under $|f(\\cdot)|$). `lemniscate_bounded`: $L(f, c)$ is bounded when $f$ is monic ($|f(z)| \\sim |z|^n \\to \\infty$)."
@@ -126,7 +126,7 @@
     {
       "id": "conjecture",
       "title": "The Conjecture",
-      "summary": "States EHPConjecture: for all r < 2 and all BoundedMonicPoly r, the maxComponentDiameter exceeds 2 \u2212 r. This is the precise formalization of the 1958 question from the Journal d'Analyse Math\u00e9matique",
+      "summary": "States EHPConjecture: for all r < 2 and all BoundedMonicPoly r, the maxComponentDiameter exceeds 2 − r. This is the precise formalization of the 1958 question from the Journal d'Analyse Mathématique",
       "startLine": 96,
       "endLine": 108,
       "mathContext": "$\\text{EHPConjecture} :\\equiv \\forall r < 2,\\, \\forall f \\in \\text{BoundedMonicPoly}(r),\\, \\text{maxComponentDiam}(f, 1) > 2 - r$."
@@ -134,7 +134,7 @@
     {
       "id": "counterexample",
       "title": "Pommerenke's Counterexample",
-      "summary": "Constructs pommerenkeCounterexample r n = X^n \u2212 C(r^n), proves counterexample_monic and counterexample_bounded, describes roots as r times nth roots of unity, axiomatizes n-component decomposition and diameter vanishing (pommerenke_diameter_vanishes), and derives EHP_false_for_r_gt_1 : \u00ac EHPConjecture",
+      "summary": "Constructs pommerenkeCounterexample r n = X^n − C(r^n), proves counterexample_monic and counterexample_bounded, describes roots as r times nth roots of unity, axiomatizes n-component decomposition and diameter vanishing (pommerenke_diameter_vanishes), and derives EHP_false_for_r_gt_1 : ¬ EHPConjecture",
       "startLine": 109,
       "endLine": 148,
       "mathContext": "$f(z) = z^n - r^n$ with roots $r \\cdot e^{2\\pi i k/n}$ ($k = 0,\\ldots,n-1$), all on $|z| = r$. For $r > 1$: $\\text{maxComponentDiam}(f, 1) \\to 0$ as $n \\to \\infty$, disproving EHPConjecture."
@@ -142,7 +142,7 @@
     {
       "id": "positive",
       "title": "Positive Results",
-      "summary": "Defines \u03c6_minus_1 = (\u221a5 \u2212 1)/2 with numerical bounds, then axiomatizes three diameter guarantees for the component containing the origin: pommerenke_case_small_r (r \u2264 1/2 \u21d2 diam \u2265 2), pommerenke_case_medium_r (1/2 < r \u2264 \u03c6\u22121 \u21d2 diam > 1/r), pommerenke_case_large_r (\u03c6\u22121 \u2264 r \u2264 1 \u21d2 diam > 2 \u2212 r\u00b2)",
+      "summary": "Defines φ_minus_1 = (√5 − 1)/2 with numerical bounds, then axiomatizes three diameter guarantees for the component containing the origin: pommerenke_case_small_r (r ≤ 1/2 ⇒ diam ≥ 2), pommerenke_case_medium_r (1/2 < r ≤ φ−1 ⇒ diam > 1/r), pommerenke_case_large_r (φ−1 ≤ r ≤ 1 ⇒ diam > 2 − r²)",
       "startLine": 149,
       "endLine": 176,
       "mathContext": "$\\varphi - 1 = (\\sqrt{5}-1)/2 \\approx 0.618$. Three regimes: (i) $r \\leq 1/2 \\Rightarrow \\text{diam} \\geq 2$; (ii) $1/2 < r \\leq \\varphi-1 \\Rightarrow \\text{diam} > 1/r$; (iii) $\\varphi-1 \\leq r \\leq 1 \\Rightarrow \\text{diam} > 2 - r^2$."
@@ -150,7 +150,7 @@
     {
       "id": "optimal",
       "title": "Optimal Examples",
-      "summary": "Proves zn_diameter (z^n has unit lemniscate diameter exactly 2) and diameter_2_sharp (for r = 0 the bound diam \u2265 2 is tight), axiomatizes diameter_near_1_for_r_eq_1 (for r = 1 one can achieve max diameter < 1 + \u03b5), demonstrating optimality of the positive results",
+      "summary": "Proves zn_diameter (z^n has unit lemniscate diameter exactly 2) and diameter_2_sharp (for r = 0 the bound diam ≥ 2 is tight), axiomatizes diameter_near_1_for_r_eq_1 (for r = 1 one can achieve max diameter < 1 + ε), demonstrating optimality of the positive results",
       "startLine": 177,
       "endLine": 197,
       "mathContext": "$\\text{diam}(L(z^n, 1)) = 2$ (the unit disc). For $r = 0$: $\\inf_f \\text{maxComponentDiam}(f, 1) = 2$. For $r = 1$: $\\inf_f \\text{maxComponentDiam}(f, 1) < 1 + \\varepsilon$ for any $\\varepsilon > 0$."
@@ -158,7 +158,7 @@
     {
       "id": "degree",
       "title": "Degree and Components",
-      "summary": "Axiomatizes component_count_bound (degree-n polynomial lemniscate has at most n connected components) and proves exterior_unbounded (the complement {|f(z)| \u2265 c} is unbounded for c above the leading coefficient, since monic polynomials grow without bound)",
+      "summary": "Axiomatizes component_count_bound (degree-n polynomial lemniscate has at most n connected components) and proves exterior_unbounded (the complement {|f(z)| ≥ c} is unbounded for c above the leading coefficient, since monic polynomials grow without bound)",
       "startLine": 198,
       "endLine": 213,
       "mathContext": "A degree-$n$ monic polynomial lemniscate has $\\leq n$ connected components. The complement $\\{z : |f(z)| \\geq c\\}$ is unbounded since $|f(z)| \\to \\infty$ as $|z| \\to \\infty$."
@@ -166,7 +166,7 @@
     {
       "id": "capacity",
       "title": "Potential Theory",
-      "summary": "Axiomatizes logCapacity (logarithmic capacity of a compact set), the fundamental formula lemniscate_capacity (cap(L(f,c)) = c^{1/n} for degree-n monic f), and capacity_diameter_inequality (diam(S) \u2265 4\u00b7cap(S) for connected S), linking the geometric diameter bounds to potential-theoretic invariants",
+      "summary": "Axiomatizes logCapacity (logarithmic capacity of a compact set), the fundamental formula lemniscate_capacity (cap(L(f,c)) = c^{1/n} for degree-n monic f), and capacity_diameter_inequality (diam(S) ≥ 4·cap(S) for connected S), linking the geometric diameter bounds to potential-theoretic invariants",
       "startLine": 214,
       "endLine": 231,
       "mathContext": "$\\text{cap}(L(f, c)) = c^{1/n}$ for degree-$n$ monic $f$. Capacity-diameter inequality: $\\text{diam}(S) \\geq 4 \\cdot \\text{cap}(S)$ for connected compact $S \\subset \\mathbb{C}$."
@@ -174,62 +174,62 @@
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Unifies the disproof via erdos_1048 : \u00ac EHPConjecture (reducing to EHP_false_for_r_gt_1), defines erdos_1048_answer and erdos_1048_status strings, and proves pommerenke_insight: for any r > 1 and any \u03b4 > 0, there exists a monic polynomial with all roots on |z| = r whose lemniscate components all have diameter < \u03b4",
+      "summary": "Unifies the disproof via erdos_1048 : ¬ EHPConjecture (reducing to EHP_false_for_r_gt_1), defines erdos_1048_answer and erdos_1048_status strings, and proves pommerenke_insight: for any r > 1 and any δ > 0, there exists a monic polynomial with all roots on |z| = r whose lemniscate components all have diameter < δ",
       "startLine": 233,
       "endLine": 234,
       "mathContext": "$\\neg\\,\\text{EHPConjecture}$ via `EHP_false_for_r_gt_1`. Pommerenke's insight: $\\forall r > 1,\\, \\forall \\delta > 0,\\, \\exists f$ monic with roots on $|z| = r$ such that all component diameters $< \\delta$."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #1048 was DISPROVED by Pommerenke (1961). The Erd\u0151s-Herzog-Piranian conjecture (1958) asserted that for monic f with roots in |z| \u2264 r < 2, the unit lemniscate L(f,1) must contain a connected component with diameter > 2 \u2212 r. Pommerenke's counterexample f(z) = z\u207f \u2212 r\u207f (for r > 1, large n) produces n congruent components whose diameters tend to 0, decisively disproving the conjecture. However, for r \u2264 1, Pommerenke established positive diameter guarantees in three regimes separated by r = 1/2 and r = \u03c6 \u2212 1 (the golden ratio conjugate), with the formalization providing optimal examples demonstrating tightness of each bound. The potential-theoretic connection via logarithmic capacity (cap(L(f,1)) = 1 for monic f, diam \u2265 4\u00b7cap for connected sets) gives a unified explanation for why diameter bounds hold.",
-    "implications": "**Theoretical Significance**: This result reveals a fundamental dichotomy in polynomial lemniscate geometry: below r = 1, root proximity to the origin forces large components (with the golden ratio marking a phase transition between regimes), while above r = 1, increasing degree can fragment the lemniscate into arbitrarily many arbitrarily small components.\n\nThe counterexample's simplicity \u2014 a binomial z\u207f \u2212 r\u207f with maximal symmetry \u2014 shows that the conjecture fails not through pathological examples but through a basic mechanism of topological fragmentation. The connection to potential theory (logarithmic capacity, transfinite diameter) places this problem within the broader framework of Problems #1038\u2013#1047 on polynomial sublevel set geometry, and the capacity-diameter inequality provides the key tool for positive results.",
+    "summary": "Erdős Problem #1048 was DISPROVED by Pommerenke (1961). The Erdős-Herzog-Piranian conjecture (1958) asserted that for monic f with roots in |z| ≤ r < 2, the unit lemniscate L(f,1) must contain a connected component with diameter > 2 − r. Pommerenke's counterexample f(z) = zⁿ − rⁿ (for r > 1, large n) produces n congruent components whose diameters tend to 0, decisively disproving the conjecture. However, for r ≤ 1, Pommerenke established positive diameter guarantees in three regimes separated by r = 1/2 and r = φ − 1 (the golden ratio conjugate), with the formalization providing optimal examples demonstrating tightness of each bound. The potential-theoretic connection via logarithmic capacity (cap(L(f,1)) = 1 for monic f, diam ≥ 4·cap for connected sets) gives a unified explanation for why diameter bounds hold.",
+    "implications": "**Theoretical Significance**: This result reveals a fundamental dichotomy in polynomial lemniscate geometry: below r = 1, root proximity to the origin forces large components (with the golden ratio marking a phase transition between regimes), while above r = 1, increasing degree can fragment the lemniscate into arbitrarily many arbitrarily small components.\n\nThe counterexample's simplicity — a binomial zⁿ − rⁿ with maximal symmetry — shows that the conjecture fails not through pathological examples but through a basic mechanism of topological fragmentation. The connection to potential theory (logarithmic capacity, transfinite diameter) places this problem within the broader framework of Problems #1038–#1047 on polynomial sublevel set geometry, and the capacity-diameter inequality provides the key tool for positive results.",
     "openQuestions": [
-      "Are the positive diameter bounds for r \u2208 (1/2, \u03c6\u22121] and r \u2208 [\u03c6\u22121, 1] exactly sharp, or can they be improved? Optimal examples are not known for all r in these ranges.",
-      "Can the three-regime positive results be unified into a single continuous function D(r) giving the exact infimum of maxComponentDiameter over all monic polynomials with roots in |z| \u2264 r?",
-      "What is the correct higher-dimensional analogue? For polynomials in several complex variables, sublevel sets {z \u2208 \u2102\u207f : |f(z)| < c} have richer topology \u2014 does a diameter bound hold in any form?",
-      "For fixed degree n and root bound r, what is the exact minimum of maxComponentDiameter over all degree-n monic polynomials with roots in |z| \u2264 r? The Pommerenke counterexample gives an upper bound but may not be optimal for fixed n.",
-      "How does the answer change for non-monic polynomials or for generalized lemniscates {z : |f(z)\u00b7g(z)| < c} involving products of polynomials?"
+      "Are the positive diameter bounds for r ∈ (1/2, φ−1] and r ∈ [φ−1, 1] exactly sharp, or can they be improved? Optimal examples are not known for all r in these ranges.",
+      "Can the three-regime positive results be unified into a single continuous function D(r) giving the exact infimum of maxComponentDiameter over all monic polynomials with roots in |z| ≤ r?",
+      "What is the correct higher-dimensional analogue? For polynomials in several complex variables, sublevel sets {z ∈ ℂⁿ : |f(z)| < c} have richer topology — does a diameter bound hold in any form?",
+      "For fixed degree n and root bound r, what is the exact minimum of maxComponentDiameter over all degree-n monic polynomials with roots in |z| ≤ r? The Pommerenke counterexample gives an upper bound but may not be optimal for fixed n.",
+      "How does the answer change for non-monic polynomials or for generalized lemniscates {z : |f(z)·g(z)| < c} involving products of polynomials?"
     ]
   },
   "crossReferences": [
     {
       "relationship": "sibling",
-      "description": "Erd\u0151s #1047 asks whether lemniscate components must be convex for small c \u2014 another geometric property of polynomial sublevel sets disproved by Pommerenke (1961) and Goodman (1966). Both problems show that polynomial lemniscate geometry is more complex than initially conjectured.",
+      "description": "Erdős #1047 asks whether lemniscate components must be convex for small c — another geometric property of polynomial sublevel sets disproved by Pommerenke (1961) and Goodman (1966). Both problems show that polynomial lemniscate geometry is more complex than initially conjectured.",
       "targetId": "erdos-1047"
     },
     {
       "relationship": "sibling",
-      "description": "Erd\u0151s #1046 asks whether a connected lemniscate L(f,1) is contained in a disc of radius 2, answered YES by Pommerenke (1959). Where #1048 studies diameter of components from below, #1046 studies containment from above \u2014 complementary geometric bounds on the same objects.",
+      "description": "Erdős #1046 asks whether a connected lemniscate L(f,1) is contained in a disc of radius 2, answered YES by Pommerenke (1959). Where #1048 studies diameter of components from below, #1046 studies containment from above — complementary geometric bounds on the same objects.",
       "targetId": "erdos-1046"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1042 studies how many connected components L(f,1) can have depending on root set geometry, solved by Ghosh-Ramachandran (2024). The component count question is the combinatorial counterpart to #1048's metric question about component diameters.",
+      "description": "Erdős #1042 studies how many connected components L(f,1) can have depending on root set geometry, solved by Ghosh-Ramachandran (2024). The component count question is the combinatorial counterpart to #1048's metric question about component diameters.",
       "targetId": "erdos-1042"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1039 asks for the radius of the largest inscribed disc in L(f,1) for polynomials with roots in the unit disc \u2014 a finer geometric invariant than the diameter studied in #1048. Both use potential-theoretic techniques (logarithmic capacity bounds).",
+      "description": "Erdős #1039 asks for the radius of the largest inscribed disc in L(f,1) for polynomials with roots in the unit disc — a finer geometric invariant than the diameter studied in #1048. Both use potential-theoretic techniques (logarithmic capacity bounds).",
       "targetId": "erdos-1039"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1041 studies path lengths within lemniscate components connecting roots, complementing #1048's diameter analysis with metric connectivity questions about the same sublevel sets.",
+      "description": "Erdős #1041 studies path lengths within lemniscate components connecting roots, complementing #1048's diameter analysis with metric connectivity questions about the same sublevel sets.",
       "targetId": "erdos-1041"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1038 studies the Lebesgue measure of polynomial sublevel sets {x : |f(x)| < 1} on the real line (solved: supremum = 2\u221a2 by Tao 2025). Where #1048 studies diameter in \u2102, #1038 studies measure on \u211d \u2014 different geometric invariants of polynomial sublevel sets.",
+      "description": "Erdős #1038 studies the Lebesgue measure of polynomial sublevel sets {x : |f(x)| < 1} on the real line (solved: supremum = 2√2 by Tao 2025). Where #1048 studies diameter in ℂ, #1038 studies measure on ℝ — different geometric invariants of polynomial sublevel sets.",
       "targetId": "erdos-1038"
     },
     {
       "relationship": "related",
-      "description": "Erd\u0151s #1040 asks whether the measure of L(f,1) is determined by the transfinite diameter of the root set \u2014 connecting to the same potential-theoretic framework (logarithmic capacity, transfinite diameter) that underlies #1048's diameter bounds.",
+      "description": "Erdős #1040 asks whether the measure of L(f,1) is determined by the transfinite diameter of the root set — connecting to the same potential-theoretic framework (logarithmic capacity, transfinite diameter) that underlies #1048's diameter bounds.",
       "targetId": "erdos-1040"
     },
     {
       "relationship": "foundational",
-      "description": "The Fundamental Theorem of Algebra guarantees that a degree-n monic polynomial has exactly n roots in \u2102 (with multiplicity). This underpins the entire lemniscate theory: the root count determines the maximum number of connected components, and the root distribution controls the lemniscate geometry.",
+      "description": "The Fundamental Theorem of Algebra guarantees that a degree-n monic polynomial has exactly n roots in ℂ (with multiplicity). This underpins the entire lemniscate theory: the root count determines the maximum number of connected components, and the root distribution controls the lemniscate geometry.",
       "targetId": "fundamental-theorem-algebra"
     }
   ],
@@ -254,22 +254,22 @@
       {
         "name": "EHP_false_for_r_gt_1",
         "type": "original",
-        "description": "Disproves the Erd\u0151s\u2013Herzog\u2013Piranian conjecture: \u00ac EHPConjecture, using Pommerenke's counterexample z^n \u2212 r^n whose lemniscate component diameters vanish for r > 1"
+        "description": "Disproves the Erdős–Herzog–Piranian conjecture: ¬ EHPConjecture, using Pommerenke's counterexample z^n − r^n whose lemniscate component diameters vanish for r > 1"
       },
       {
         "name": "erdos_1048",
         "type": "synthesis",
-        "description": "Main result: \u00ac EHPConjecture, resolving Problem #1048 negatively (direct alias for EHP_false_for_r_gt_1)"
+        "description": "Main result: ¬ EHPConjecture, resolving Problem #1048 negatively (direct alias for EHP_false_for_r_gt_1)"
       },
       {
         "name": "zn_diameter",
         "type": "original",
-        "description": "The unit lemniscate of z^n is the open unit disk: diameter(unitLemniscate(X^n)) = 2, showing the bound diam \u2265 2 is sharp for r = 0"
+        "description": "The unit lemniscate of z^n is the open unit disk: diameter(unitLemniscate(X^n)) = 2, showing the bound diam ≥ 2 is sharp for r = 0"
       },
       {
         "name": "pommerenke_insight",
         "type": "original",
-        "description": "Pommerenke's key observation: for any r > 1 and any \u03b4 > 0, there exists a BoundedMonicPoly with maxComponentDiameter < \u03b4"
+        "description": "Pommerenke's key observation: for any r > 1 and any δ > 0, there exists a BoundedMonicPoly with maxComponentDiameter < δ"
       }
     ],
     "path": "Proofs/Erdos1048Problem.lean",
@@ -281,7 +281,7 @@
   "references": [
     {
       "key": "EHP58",
-      "citation": "Erd\u0151s, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. Journal d'Analyse Math\u00e9matique, p. 142.",
+      "citation": "Erdős, P., Herzog, F., and Piranian, G. (1958). Metric properties of polynomials. Journal d'Analyse Mathématique, p. 142.",
       "type": "paper"
     },
     {

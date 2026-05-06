@@ -1,10 +1,10 @@
 {
   "id": "erdos-611",
-  "title": "Erd\u0151s Problem #611: Clique Transversal with Large Cliques",
+  "title": "Erdős Problem #611: Clique Transversal with Large Cliques",
   "slug": "erdos-611",
-  "description": "If all maximal cliques have size \u2265 cn, is \u03c4(G) = o(n)? Estimate k_c(n) such that cliques of size \u2265 k_c(n) force \u03c4 < (1-c)n. Bollob\u00e1s-Erd\u0151s: cliques \u2265 n+3-2\u221an give \u03c4 = 1.",
+  "description": "If all maximal cliques have size ≥ cn, is τ(G) = o(n)? Estimate k_c(n) such that cliques of size ≥ k_c(n) force τ < (1-c)n. Bollobás-Erdős: cliques ≥ n+3-2√n give τ = 1.",
   "meta": {
-    "author": "Erd\u0151s-Gallai-Tuza, Bollob\u00e1s-Erd\u0151s",
+    "author": "Erdős-Gallai-Tuza, Bollobás-Erdős",
     "sourceUrl": "https://erdosproblems.com/611",
     "date": "1992",
     "status": "axiomatized",
@@ -46,11 +46,11 @@
     ],
     "originalContributions": [
       "Formal definition of AllCliquesLarge and AllCliquesLinear",
-      "Statement of Question 1 (linear clique size \u2192 sublinear \u03c4)",
+      "Statement of Question 1 (linear clique size → sublinear τ)",
       "Definition of threshold function k_c(n)",
-      "Formalization of Erd\u0151s-Gallai-Tuza bound \u03c4 \u2264 n - \u221a(kn)",
-      "Statement of Bollob\u00e1s-Erd\u0151s threshold n + 3 - 2\u221an",
-      "Lower bound k_c(n) \u2265 n^{c'/log log n}"
+      "Formalization of Erdős-Gallai-Tuza bound τ ≤ n - √(kn)",
+      "Statement of Bollobás-Erdős threshold n + 3 - 2√n",
+      "Lower bound k_c(n) ≥ n^{c'/log log n}"
     ],
     "axiomCount": 5,
     "lineCount": 245,
@@ -60,16 +60,16 @@
     "definitionCount": 14
   },
   "overview": {
-    "historicalContext": "Erd\u0151s Problem #611 refines Problem #610 by asking how large clique sizes constrain the clique transversal number \u03c4(G). Erd\u0151s, Gallai, and Tuza (1992) proved the key inequality: if every maximal clique has \u2265 k vertices, then \u03c4 \u2264 n - \u221a(kn). For linear clique size k = cn, this gives \u03c4 \u2264 (1-\u221ac)n, answering Question 1 affirmatively. The deeper Question 2 asks for the threshold function k_c(n) \u2014 the minimum clique size forcing \u03c4 < (1-c)n. The lower bound k_c(n) \u2265 n^{c'/log log n} comes from probabilistic constructions (random graphs with controlled clique sizes). Bollob\u00e1s and Erd\u0151s found the exact threshold for the extreme case \u03c4 = 1: if all cliques have \u2265 n + 3 - 2\u221an vertices, a single vertex hits every clique. This threshold is optimal \u2014 the constant 3 is exact, with extremal graphs showing \u03c4 = 2 just below the threshold. The problem connects clique structure to hypergraph transversal theory and the probabilistic method.",
+    "historicalContext": "Erdős Problem #611 refines Problem #610 by asking how large clique sizes constrain the clique transversal number τ(G). Erdős, Gallai, and Tuza (1992) proved the key inequality: if every maximal clique has ≥ k vertices, then τ ≤ n - √(kn). For linear clique size k = cn, this gives τ ≤ (1-√c)n, answering Question 1 affirmatively. The deeper Question 2 asks for the threshold function k_c(n) — the minimum clique size forcing τ < (1-c)n. The lower bound k_c(n) ≥ n^{c'/log log n} comes from probabilistic constructions (random graphs with controlled clique sizes). Bollobás and Erdős found the exact threshold for the extreme case τ = 1: if all cliques have ≥ n + 3 - 2√n vertices, a single vertex hits every clique. This threshold is optimal — the constant 3 is exact, with extremal graphs showing τ = 2 just below the threshold. The problem connects clique structure to hypergraph transversal theory and the probabilistic method.",
     "problemStatement": "**Question 1:** If all maximal cliques have size $\\geq cn$, is $\\tau(G) = o_c(n)$?\n\n**Question 2:** For $c > 0$, estimate $k_c(n)$ such that cliques of size $\\geq k_c(n)$ force $\\tau < (1-c)n$.",
-    "text": "If all maximal cliques have size \u2265 cn, is \u03c4(G) = o(n)? Estimate k_c(n) such that cliques of size \u2265 k_c(n) force \u03c4 < (1-c)n. Bollob\u00e1s-Erd\u0151s: cliques \u2265 n+3-2\u221an give \u03c4 = 1.",
-    "proofStrategy": "The formalization defines IsClique, IsMaximalClique, IsCliqueTransversal, and cliqueTransversalNumber \u03c4(G) (sorry for minimum definition). AllCliquesLarge G k and AllCliquesLinear G c capture clique size constraints. Question1_LinearCliques and Question2_ThresholdEstimate state the two problems formally. The EGT bound erdos_gallai_tuza_large_cliques is axiomatized; linear_cliques_sublinear derives the (1-\u221ac)n consequence (sorry). The Bollob\u00e1s-Erd\u0151s threshold n + 3 - 2\u221an is defined as bollobas_erdos_threshold with bollobas_erdos_tau_one and bollobas_erdos_optimal (axioms). Special cases (complete, bipartite, Tur\u00e1n), probabilistic lower bounds, and the relationship to #610 round out the formalization. erdos_611_status combines the two main results.",
+    "text": "If all maximal cliques have size ≥ cn, is τ(G) = o(n)? Estimate k_c(n) such that cliques of size ≥ k_c(n) force τ < (1-c)n. Bollobás-Erdős: cliques ≥ n+3-2√n give τ = 1.",
+    "proofStrategy": "The formalization defines IsClique, IsMaximalClique, IsCliqueTransversal, and cliqueTransversalNumber τ(G) (sorry for minimum definition). AllCliquesLarge G k and AllCliquesLinear G c capture clique size constraints. Question1_LinearCliques and Question2_ThresholdEstimate state the two problems formally. The EGT bound erdos_gallai_tuza_large_cliques is axiomatized; linear_cliques_sublinear derives the (1-√c)n consequence (sorry). The Bollobás-Erdős threshold n + 3 - 2√n is defined as bollobas_erdos_threshold with bollobas_erdos_tau_one and bollobas_erdos_optimal (axioms). Special cases (complete, bipartite, Turán), probabilistic lower bounds, and the relationship to #610 round out the formalization. erdos_611_status combines the two main results.",
     "keyInsights": [
-      "The EGT bound \u03c4 \u2264 n - \u221a(kn) is proved by a pigeonhole/counting argument: large cliques force heavy overlap with any transversal, and the \u221a(kn) term captures this geometric mean relationship between clique size k and graph order n",
-      "The threshold function k_c(n) \u2265 n^{c'/log log n} grows in a remarkable intermediate regime \u2014 faster than any constant, slower than any polynomial n^\u03b5 \u2014 reflecting the double-logarithmic relationship between clique size and independence in random graphs",
-      "The Bollob\u00e1s-Erd\u0151s threshold n + 3 - 2\u221an for \u03c4 = 1 is an exact result where the additive constant 3 is sharp: extremal constructions with two nearly-disjoint cliques of size n + 2 - 2\u221an achieve \u03c4 = 2",
-      "Question 1 is answered (\u03c4 \u2264 (1-\u221ac)n), but the answer is \u0398(n) not o(n) \u2014 the bound is sublinear only in the ratio \u03c4/n < 1, not in absolute terms",
-      "The relationship to #610: setting k = 2 (trivial clique size) recovers the general \u03c4 bound, while larger k progressively improves it"
+      "The EGT bound τ ≤ n - √(kn) is proved by a pigeonhole/counting argument: large cliques force heavy overlap with any transversal, and the √(kn) term captures this geometric mean relationship between clique size k and graph order n",
+      "The threshold function k_c(n) ≥ n^{c'/log log n} grows in a remarkable intermediate regime — faster than any constant, slower than any polynomial n^ε — reflecting the double-logarithmic relationship between clique size and independence in random graphs",
+      "The Bollobás-Erdős threshold n + 3 - 2√n for τ = 1 is an exact result where the additive constant 3 is sharp: extremal constructions with two nearly-disjoint cliques of size n + 2 - 2√n achieve τ = 2",
+      "Question 1 is answered (τ ≤ (1-√c)n), but the answer is Θ(n) not o(n) — the bound is sublinear only in the ratio τ/n < 1, not in absolute terms",
+      "The relationship to #610: setting k = 2 (trivial clique size) recovers the general τ bound, while larger k progressively improves it"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -80,66 +80,66 @@
     {
       "id": "header",
       "title": "Header and Problem Statement",
-      "summary": "OPEN (partially resolved). Two questions on clique size vs transversal number. Known results: EGT bound, Bollob\u00e1s-Erd\u0151s threshold. Related to #610. Imports Mathlib via bulk import",
+      "summary": "OPEN (partially resolved). Two questions on clique size vs transversal number. Known results: EGT bound, Bollobás-Erdős threshold. Related to #610. Imports Mathlib via bulk import",
       "startLine": 1,
       "endLine": 31,
-      "mathContext": "Bound: OPEN (partially resolved). Two questions on clique size vs transversal number. Known results: EGT bound, Bollob\u00e1s-Erd\u0151s threshold. Related to #610. Imports Mathlib via bulk import"
+      "mathContext": "Bound: OPEN (partially resolved). Two questions on clique size vs transversal number. Known results: EGT bound, Bollobás-Erdős threshold. Related to #610. Imports Mathlib via bulk import"
     },
     {
       "id": "cliques-transversals",
       "title": "Core Definitions: Cliques, Transversals, Clique Size Predicates",
-      "summary": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T \u2229 C nonempty. \u03c4(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c \u2264 1",
+      "summary": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T ∩ C nonempty. τ(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c ≤ 1",
       "startLine": 32,
       "endLine": 72,
-      "mathContext": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T \u2229 C nonempty. \u03c4(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c $\\leq$ 1"
+      "mathContext": "IsClique, IsMaximalClique, maximalCliques (filter univ). IsCliqueTransversal: T ∩ C nonempty. τ(G) (sorry). minMaximalCliqueSize (sorry). AllCliquesLarge G k, AllCliquesLinear G c with 0 < c $\\leq$ 1"
     },
     {
       "id": "question1",
-      "title": "Question 1: Linear Clique Size Forces Sublinear \u03c4",
-      "summary": "Question1_LinearCliques: \u2200\u03b5>0, \u2203N, |V|\u2265N \u2192 \u03c4 < \u03b5n. Question1_Alternative: \u03c4/n \u2192 0 via Filter.Tendsto. Both formalize 'is \u03c4 = o(n)?'",
+      "title": "Question 1: Linear Clique Size Forces Sublinear τ",
+      "summary": "Question1_LinearCliques: ∀ε>0, ∃N, |V|≥N → τ < εn. Question1_Alternative: τ/n → 0 via Filter.Tendsto. Both formalize 'is τ = o(n)?'",
       "startLine": 73,
       "endLine": 92,
-      "mathContext": "Question1_LinearCliques: \u2200\u03b5>0, \u2203N, |V|$\\geq$N $\\to$ \u03c4 < \u03b5n. Question1_Alternative: \u03c4/n $\\to$ 0 via Filter.Tendsto. Both formalize 'is \u03c4 = o(n)?'"
+      "mathContext": "Question1_LinearCliques: ∀ε>0, ∃N, |V|$\\geq$N $\\to$ τ < εn. Question1_Alternative: τ/n $\\to$ 0 via Filter.Tendsto. Both formalize 'is τ = o(n)?'"
     },
     {
       "id": "question2",
       "title": "Question 2: Threshold Function k_c(n)",
-      "summary": "k_threshold c n (sorry). ThresholdProperty: cliques \u2265 k \u2192 \u03c4 < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem",
+      "summary": "k_threshold c n (sorry). ThresholdProperty: cliques ≥ k → τ < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem",
       "startLine": 93,
       "endLine": 113,
-      "mathContext": "k_threshold c n (sorry). ThresholdProperty: cliques $\\geq$ k $\\to$ \u03c4 < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem"
+      "mathContext": "k_threshold c n (sorry). ThresholdProperty: cliques $\\geq$ k $\\to$ τ < (1-c)n. Question2_ThresholdEstimate: find bounds on k_c(n). The deeper open problem"
     },
     {
       "id": "known-results",
-      "title": "Erd\u0151s-Gallai-Tuza Bound and Its Consequence",
-      "summary": "erdos_gallai_tuza_large_cliques (axiom): \u03c4 \u2264 n - \u221a(kn). linear_cliques_sublinear: k=cn \u2192 \u03c4 \u2264 (1-\u221ac)n (sorry). question1_positive: \u03c4 < n (sorry). Answers Q1",
+      "title": "Erdős-Gallai-Tuza Bound and Its Consequence",
+      "summary": "erdos_gallai_tuza_large_cliques (axiom): τ ≤ n - √(kn). linear_cliques_sublinear: k=cn → τ ≤ (1-√c)n (sorry). question1_positive: τ < n (sorry). Answers Q1",
       "startLine": 114,
       "endLine": 136,
-      "mathContext": "erdos_gallai_tuza_large_cliques (axiom): \u03c4 $\\leq$ n - \u221a(kn). linear_cliques_sublinear: k=cn $\\to$ \u03c4 $\\leq$ (1-\u221ac)n (sorry). question1_positive: \u03c4 < n (sorry). Answers Q1"
+      "mathContext": "erdos_gallai_tuza_large_cliques (axiom): τ $\\leq$ n - √(kn). linear_cliques_sublinear: k=cn $\\to$ τ $\\leq$ (1-√c)n (sorry). question1_positive: τ < n (sorry). Answers Q1"
     },
     {
       "id": "lower-bound",
       "title": "Lower Bound on k_c(n): n^{c'/log log n}",
-      "summary": "threshold_lower_bound (axiom): k_c(n) \u2265 n^{c'/log log n}. threshold_grows_slowly: k_c(n) \u2264 n^\u03b5 eventually (sorry). Intermediate growth rate from random graphs",
+      "summary": "threshold_lower_bound (axiom): k_c(n) ≥ n^{c'/log log n}. threshold_grows_slowly: k_c(n) ≤ n^ε eventually (sorry). Intermediate growth rate from random graphs",
       "startLine": 137,
       "endLine": 153,
-      "mathContext": "threshold_lower_bound (axiom): k_c(n) $\\geq$ n^{c'/log $\\log n$}. threshold_grows_slowly: k_c(n) $\\leq$ n^\u03b5 eventually (sorry). Intermediate growth rate from random graphs"
+      "mathContext": "threshold_lower_bound (axiom): k_c(n) $\\geq$ n^{c'/log $\\log n$}. threshold_grows_slowly: k_c(n) $\\leq$ n^ε eventually (sorry). Intermediate growth rate from random graphs"
     },
     {
       "id": "bollobas-erdos",
-      "title": "Bollob\u00e1s-Erd\u0151s Threshold: \u03c4 = 1 at n + 3 - 2\u221an",
-      "summary": "bollobas_erdos_threshold = n + 3 - 2\u221an. bollobas_erdos_tau_one (axiom): above threshold \u2192 \u03c4 = 1. bollobas_erdos_optimal (axiom): below threshold \u2192 \u03c4 \u2265 2 possible. Exact result",
+      "title": "Bollobás-Erdős Threshold: τ = 1 at n + 3 - 2√n",
+      "summary": "bollobas_erdos_threshold = n + 3 - 2√n. bollobas_erdos_tau_one (axiom): above threshold → τ = 1. bollobas_erdos_optimal (axiom): below threshold → τ ≥ 2 possible. Exact result",
       "startLine": 154,
       "endLine": 175,
-      "mathContext": "bollobas_erdos_threshold = n + 3 - 2$\\sqrt{n}$. bollobas_erdos_tau_one (axiom): above threshold $\\to$ \u03c4 = 1. bollobas_erdos_optimal (axiom): below threshold $\\to$ \u03c4 $\\geq$ 2 possible. Exact result"
+      "mathContext": "bollobas_erdos_threshold = n + 3 - 2$\\sqrt{n}$. bollobas_erdos_tau_one (axiom): above threshold $\\to$ τ = 1. bollobas_erdos_optimal (axiom): below threshold $\\to$ τ $\\geq$ 2 possible. Exact result"
     },
     {
       "id": "special-cases",
-      "title": "Special Cases: Complete, Bipartite, Tur\u00e1n Graphs",
-      "summary": "complete_graph_tau: \u03c4(K\u2099) = 1 (sorry). complete_bipartite_tau: \u03c4(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum",
+      "title": "Special Cases: Complete, Bipartite, Turán Graphs",
+      "summary": "complete_graph_tau: τ(Kₙ) = 1 (sorry). complete_bipartite_tau: τ(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum",
       "startLine": 176,
       "endLine": 192,
-      "mathContext": "Mathematical content: complete_graph_tau: \u03c4(K\u2099) = 1 (sorry). complete_bipartite_tau: \u03c4(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum"
+      "mathContext": "Mathematical content: complete_graph_tau: τ(Kₙ) = 1 (sorry). complete_bipartite_tau: τ(K_{n/2,n/2}) = n/2 (sorry). turan_graph_tau (sorry). Extreme cases illustrating the spectrum"
     },
     {
       "id": "probabilistic",
@@ -152,20 +152,20 @@
     {
       "id": "main-status",
       "title": "Problem Status Summary",
-      "summary": "erdos_611_status: Q1 answered (\u03c4 \u2264 (1-\u221ac)n) \u2227 Q2 lower bound (k_c(n) \u2265 n^{c'/log log n}). Combines EGT and threshold results. #check statements verify types",
+      "summary": "erdos_611_status: Q1 answered (τ ≤ (1-√c)n) ∧ Q2 lower bound (k_c(n) ≥ n^{c'/log log n}). Combines EGT and threshold results. #check statements verify types",
       "startLine": 215,
       "endLine": 245,
-      "mathContext": "erdos_611_status: Q1 answered (\u03c4 $\\leq$ (1-\u221ac)n) \u2227 Q2 lower bound (k_c(n) $\\geq$ n^{c'/log $\\log n$}). Combines EGT and threshold results. #check statements verify types"
+      "mathContext": "erdos_611_status: Q1 answered (τ $\\leq$ (1-√c)n) ∧ Q2 lower bound (k_c(n) $\\geq$ n^{c'/log $\\log n$}). Combines EGT and threshold results. #check statements verify types"
     }
   ],
   "conclusion": {
-    "summary": "This 246-line formalization captures Erd\u0151s Problem #611 on the relationship between large clique sizes and small transversal numbers. Question 1 is answered: linear clique size cn gives \u03c4 \u2264 (1-\u221ac)n via the EGT bound. Question 2 remains partially open: the lower bound k_c(n) \u2265 n^{c'/log log n} is known but tight upper bounds are elusive. The Bollob\u00e1s-Erd\u0151s threshold n + 3 - 2\u221an for \u03c4 = 1 is an exact optimal result.",
+    "summary": "This 246-line formalization captures Erdős Problem #611 on the relationship between large clique sizes and small transversal numbers. Question 1 is answered: linear clique size cn gives τ ≤ (1-√c)n via the EGT bound. Question 2 remains partially open: the lower bound k_c(n) ≥ n^{c'/log log n} is known but tight upper bounds are elusive. The Bollobás-Erdős threshold n + 3 - 2√n for τ = 1 is an exact optimal result.",
     "implications": "The problem illustrates a fundamental principle in combinatorics: structural constraints (large cliques) propagate through the hypergraph to force global properties (small transversals). The double-logarithmic growth rate of k_c(n) reveals the delicate balance between clique size and transversal structure in random and extremal graphs.",
     "openQuestions": [
       "What is the exact growth rate of k_c(n)? Is n^{c'/log log n} tight up to the constant c'?",
-      "Can the Bollob\u00e1s-Erd\u0151s threshold be generalized: what is the threshold for \u03c4 = k for general k?",
-      "What is the structure of extremal graphs achieving \u03c4 = (1-\u221ac)n with all cliques \u2265 cn?",
-      "How does k_c(n) depend on c \u2014 is there a phase transition in c?",
+      "Can the Bollobás-Erdős threshold be generalized: what is the threshold for τ = k for general k?",
+      "What is the structure of extremal graphs achieving τ = (1-√c)n with all cliques ≥ cn?",
+      "How does k_c(n) depend on c — is there a phase transition in c?",
       "Are there efficient algorithms for finding transversals when cliques are guaranteed large?"
     ]
   },
@@ -193,27 +193,27 @@
     {
       "targetId": "erdos-610",
       "relationship": "companion",
-      "description": "Adjacent Erd\u0151s problem on clique transversals; shares the graph-theoretic framework of bounding transversal numbers under clique size constraints"
+      "description": "Adjacent Erdős problem on clique transversals; shares the graph-theoretic framework of bounding transversal numbers under clique size constraints"
     },
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing the theme of extremal graph theory and clique/independent set interaction"
+      "description": "Related Erdős problem sharing the theme of extremal graph theory and clique/independent set interaction"
     },
     {
       "targetId": "erdos-1066",
       "relationship": "related",
-      "description": "Related Erd\u0151s graph theory problem involving extremal bounds on graph parameters under structural constraints"
+      "description": "Related Erdős graph theory problem involving extremal bounds on graph parameters under structural constraints"
     },
     {
       "targetId": "erdos-612",
       "relationship": "companion",
-      "description": "Next problem in the Erd\u0151s sequence; part of the same cluster of clique transversal and graph covering questions"
+      "description": "Next problem in the Erdős sequence; part of the same cluster of clique transversal and graph covering questions"
     },
     {
       "targetId": "erdos-613",
       "relationship": "companion",
-      "description": "Nearby Erd\u0151s problem in the graph theory series; shares techniques from extremal graph theory and hypergraph covering"
+      "description": "Nearby Erdős problem in the graph theory series; shares techniques from extremal graph theory and hypergraph covering"
     },
     {
       "targetId": "ramseys-theorem",
@@ -223,53 +223,53 @@
     {
       "targetId": "szemeredi-regularity",
       "relationship": "related",
-      "description": "The regularity lemma is a key tool for extremal graph problems; the Erd\u0151s-Gallai-Tuza bound on $\\tau$ uses similar structural decomposition ideas"
+      "description": "The regularity lemma is a key tool for extremal graph problems; the Erdős-Gallai-Tuza bound on $\\tau$ uses similar structural decomposition ideas"
     },
     {
       "targetId": "erdos-569",
       "relationship": "related",
-      "description": "Erd\u0151s extremal graph theory problem; shares the framework of bounding graph parameters under forbidden subgraph or size constraints"
+      "description": "Erdős extremal graph theory problem; shares the framework of bounding graph parameters under forbidden subgraph or size constraints"
     },
     {
       "targetId": "erdos-667",
       "relationship": "related",
-      "description": "Erd\u0151s problem involving Ramsey-type bounds for graph parameters; shares techniques from probabilistic and algebraic graph theory"
+      "description": "Erdős problem involving Ramsey-type bounds for graph parameters; shares techniques from probabilistic and algebraic graph theory"
     },
     {
       "targetId": "erdos-ko-rado",
       "relationship": "related",
-      "description": "The Erd\u0151s-Ko-Rado theorem on intersecting families is a foundational result in extremal set theory; clique transversal problems are hypergraph analogues of intersecting family bounds"
+      "description": "The Erdős-Ko-Rado theorem on intersecting families is a foundational result in extremal set theory; clique transversal problems are hypergraph analogues of intersecting family bounds"
     }
   ],
   "references": [
     {
-      "authors": "Erd\u0151s, Paul; Gallai, Tibor; Tuza, Zsolt",
+      "authors": "Erdős, Paul; Gallai, Tibor; Tuza, Zsolt",
       "title": "Covering the cliques of a graph with vertices",
       "year": "1992",
-      "venue": "Discrete Mathematics, vol. 108, pp. 279\u2013289",
-      "note": "Proved \u03c4(G) \u2264 n - \u221a(kn) when all maximal cliques have size \u2265 k \u2014 the key upper bound formalized in this entry"
+      "venue": "Discrete Mathematics, vol. 108, pp. 279–289",
+      "note": "Proved τ(G) ≤ n - √(kn) when all maximal cliques have size ≥ k — the key upper bound formalized in this entry"
     },
     {
-      "authors": "Bollob\u00e1s, B\u00e9la; Erd\u0151s, Paul",
+      "authors": "Bollobás, Béla; Erdős, Paul",
       "title": "Clique transversals and the clique cover number",
       "year": "1993",
       "venue": "Journal of Graph Theory",
-      "note": "Established the exact threshold n + 3 - 2\u221an for \u03c4(G) = 1 and proved optimality via explicit constructions"
+      "note": "Established the exact threshold n + 3 - 2√n for τ(G) = 1 and proved optimality via explicit constructions"
     },
     {
       "authors": "Tuza, Zsolt",
       "title": "Covering all cliques of a graph",
       "year": "1994",
-      "venue": "Discrete Mathematics, vol. 86, pp. 117\u2013126",
+      "venue": "Discrete Mathematics, vol. 86, pp. 117–126",
       "note": "Survey of clique transversal results including connections to clique cover numbers, fractional transversals, and probabilistic bounds"
     },
     {
-      "citation": "Bacs\u00f3, G. and Tuza, Zs. (2010). Clique-transversal sets and weak 2-colorings in graphs of small maximum clique size. Discrete Mathematics and Theoretical Computer Science, 12(2), 1-14.",
-      "note": "Extends the clique transversal framework to small cliques; provides algorithmic and structural results complementary to the large-clique setting of Erd\u0151s #611."
+      "citation": "Bacsó, G. and Tuza, Zs. (2010). Clique-transversal sets and weak 2-colorings in graphs of small maximum clique size. Discrete Mathematics and Theoretical Computer Science, 12(2), 1-14.",
+      "note": "Extends the clique transversal framework to small cliques; provides algorithmic and structural results complementary to the large-clique setting of Erdős #611."
     },
     {
       "citation": "Lee, C. and Sudakov, B. (2012). Dirac's theorem for random graphs. Random Structures and Algorithms, 41(3), 293-305.",
-      "note": "Uses probabilistic techniques for graph structure under clique constraints; the Bollob\u00e1s-Erd\u0151s threshold result in #611 employs similar random graph methodology."
+      "note": "Uses probabilistic techniques for graph structure under clique constraints; the Bollobás-Erdős threshold result in #611 employs similar random graph methodology."
     }
   ],
   "sorries": 13

@@ -1,10 +1,10 @@
 {
   "id": "erdos-636",
-  "title": "Erd\u0151s Problem #636: Distinct Induced Subgraphs in Ramsey Graphs",
+  "title": "Erdős Problem #636: Distinct Induced Subgraphs in Ramsey Graphs",
   "slug": "erdos-636",
-  "description": "Must a Ramsey graph (no large clique or independent set) on n vertices have \u0398(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures? SOLVED by Kwan-Sudakov (2021).",
+  "description": "Must a Ramsey graph (no large clique or independent set) on n vertices have Θ(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures? SOLVED by Kwan-Sudakov (2021).",
   "meta": {
-    "author": "Erd\u0151s-Faudree-S\u00f3s (problem), Kwan-Sudakov (2021 solution)",
+    "author": "Erdős-Faudree-Sós (problem), Kwan-Sudakov (2021 solution)",
     "sourceUrl": "https://erdosproblems.com/636",
     "date": "2021",
     "status": "axiomatized",
@@ -47,9 +47,9 @@
     "originalContributions": [
       "Formal definition of induced subgraph signatures as (vertex count, edge count) pairs",
       "Definition of Ramsey graph condition via bounded clique and independence number",
-      "Documents the Erd\u0151s-Faudree-S\u00f3s n^(3/2) lower bound via def efs_exponent = 3/2; no Lean axiom for the EFS bound",
+      "Documents the Erdős-Faudree-Sós n^(3/2) lower bound via def efs_exponent = 3/2; no Lean axiom for the EFS bound",
       "Axiomatization of the Kwan-Sudakov n^(5/2) optimal lower bound (kwan_sudakov axiom)",
-      "Matching upper bound O(n^(5/2)) establishing tight \u0398(n^(5/2)) result (signature_upper_bound axiom)",
+      "Matching upper bound O(n^(5/2)) establishing tight Θ(n^(5/2)) result (signature_upper_bound axiom)",
       "Formal proof of theta_bound combining both bounds with existential witnesses",
       "Stub theorems for extreme cases: clique_few_signatures and empty_few_signatures (both sorry'd)",
       "def ErdosHajnalConjecture placeholder (True stub); connection described in commentary only"
@@ -57,11 +57,11 @@
     "relatedProblems": [
       {
         "id": "ramseys-theorem",
-        "relationship": "Ramsey's theorem provides the existential foundation: random graphs G(n,1/2) satisfy the Ramsey condition \u03c9,\u03b1 \u2264 O(log n), guaranteeing the graphs studied in Problem #636 exist in abundance"
+        "relationship": "Ramsey's theorem provides the existential foundation: random graphs G(n,1/2) satisfy the Ramsey condition ω,α ≤ O(log n), guaranteeing the graphs studied in Problem #636 exist in abundance"
       },
       {
         "id": "erdos-637",
-        "relationship": "Companion problem on distinct degree sequences (rather than signatures) in induced subgraphs of Ramsey graphs \u2014 both study the structural complexity forced by the Ramsey condition"
+        "relationship": "Companion problem on distinct degree sequences (rather than signatures) in induced subgraphs of Ramsey graphs — both study the structural complexity forced by the Ramsey condition"
       }
     ],
     "axiomCount": 2,
@@ -71,16 +71,16 @@
     "definitionCount": 18
   },
   "overview": {
-    "historicalContext": "**Induced Subgraph Signatures in Ramsey Graphs: From n^(3/2) to n^(5/2)**\n\nThe study of induced subgraph diversity in Ramsey-type graphs connects two fundamental areas: Ramsey theory (how large must a homogeneous subset be?) and graph enumeration (how many structurally distinct induced subgraphs exist?).\n\nA graph is called a 'Ramsey graph' if it has no large clique or independent set \u2014 both bounded by $O(\\log n)$. Such graphs exist by Erd\u0151s's 1947 probabilistic argument (which launched the probabilistic method in combinatorics): a random graph $G(n, 1/2)$ has $\\omega(G), \\alpha(G) \\le (2 + o(1))\\log_2 n$ with high probability.\n\n**The Signature Concept**: An induced subgraph $G[S]$ has a 'signature' $(|S|, |E(G[S])|)$ \u2014 its vertex count and edge count. The question is: how many distinct signatures must exist? For a complete graph $K_n$, there are only $n + 1$ signatures (edge count is determined by vertex count). But Ramsey graphs, lacking such structure, must have many more.\n\n**Erd\u0151s-Faudree-S\u00f3s**: Proved $|\\text{Sig}(G)| \\ge cn^{3/2}$ for Ramsey graphs. Their argument: for each vertex count $v$, there are $\\Omega(v^{1/2})$ achievable edge counts, and summing gives $\\Omega(n^{3/2})$. They conjectured the optimal bound is $\\Theta(n^{5/2})$.\n\n**Kwan-Sudakov (2021)**: Proved the conjecture. The key insight: for each vertex count $v$, Ramsey graphs actually yield $\\Omega(v^{3/2})$ distinct edge counts (not just $v^{1/2}$), and summing $\\sum_{v=1}^{n} v^{3/2} = \\Theta(n^{5/2})$. The matching upper bound completes the picture.",
-    "problemStatement": "**Problem Statement**\n\nSuppose $G$ is a graph on $n$ vertices with $\\omega(G), \\alpha(G) \\le C\\log n$ (a Ramsey graph). Must $G$ contain $\\gg n^{5/2}$ induced subgraphs with pairwise different (vertex count, edge count) signatures?\n\n**Answer**: YES (SOLVED)\n\nKwan-Sudakov (2021) proved the optimal bound: $|\\text{Sig}(G)| = \\Theta(n^{5/2})$, improving the Erd\u0151s-Faudree-S\u00f3s bound of $\\Omega(n^{3/2})$.",
-    "text": "Must a Ramsey graph (no large clique or independent set) on n vertices have \u0398(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures? SOLVED by Kwan-Sudakov (2021).",
-    "proofStrategy": "**The Formalization Strategy**\n\nThe Lean formalization follows a structured approach:\n\n1. **Basic Definitions** (Parts I\u2013II): Clique number $\\omega(G)$, independence number $\\alpha(G)$ (as $\\omega(\\overline{G})$), induced subgraphs via Mathlib's SimpleGraph.induce, edge counting\n2. **Signatures** (Part III): Define Signature = $\\mathbb{N} \\times \\mathbb{N}$, getSignature, allSignatures (image of all subsets), and distinctSignatureCount\n3. **Ramsey Condition** (Part IV): IsRamseyGraph with $\\omega, \\alpha \\le \\lceil C\\log n \\rceil$, plus Ramsey number bounds\n4. **Lower Bounds** (Parts V\u2013VI): Document EFS bound via def efs_exponent = 3/2; axiomatize Kwan-Sudakov ($cn^{5/2}$) only; prove 5/2 > 3/2\n5. **Upper Bound & Tightness** (Part VII): Axiomatize $O(n^{5/2})$ upper bound, prove theta_bound by combining both\n6. **Techniques & Connections** (Parts VIII\u2013X): Proof ideas, extreme cases (cliques/empty), Erd\u0151s-Hajnal conjecture\n7. **Main Result** (Part XI): erdos_636 directly invokes kwan_sudakov",
+    "historicalContext": "**Induced Subgraph Signatures in Ramsey Graphs: From n^(3/2) to n^(5/2)**\n\nThe study of induced subgraph diversity in Ramsey-type graphs connects two fundamental areas: Ramsey theory (how large must a homogeneous subset be?) and graph enumeration (how many structurally distinct induced subgraphs exist?).\n\nA graph is called a 'Ramsey graph' if it has no large clique or independent set — both bounded by $O(\\log n)$. Such graphs exist by Erdős's 1947 probabilistic argument (which launched the probabilistic method in combinatorics): a random graph $G(n, 1/2)$ has $\\omega(G), \\alpha(G) \\le (2 + o(1))\\log_2 n$ with high probability.\n\n**The Signature Concept**: An induced subgraph $G[S]$ has a 'signature' $(|S|, |E(G[S])|)$ — its vertex count and edge count. The question is: how many distinct signatures must exist? For a complete graph $K_n$, there are only $n + 1$ signatures (edge count is determined by vertex count). But Ramsey graphs, lacking such structure, must have many more.\n\n**Erdős-Faudree-Sós**: Proved $|\\text{Sig}(G)| \\ge cn^{3/2}$ for Ramsey graphs. Their argument: for each vertex count $v$, there are $\\Omega(v^{1/2})$ achievable edge counts, and summing gives $\\Omega(n^{3/2})$. They conjectured the optimal bound is $\\Theta(n^{5/2})$.\n\n**Kwan-Sudakov (2021)**: Proved the conjecture. The key insight: for each vertex count $v$, Ramsey graphs actually yield $\\Omega(v^{3/2})$ distinct edge counts (not just $v^{1/2}$), and summing $\\sum_{v=1}^{n} v^{3/2} = \\Theta(n^{5/2})$. The matching upper bound completes the picture.",
+    "problemStatement": "**Problem Statement**\n\nSuppose $G$ is a graph on $n$ vertices with $\\omega(G), \\alpha(G) \\le C\\log n$ (a Ramsey graph). Must $G$ contain $\\gg n^{5/2}$ induced subgraphs with pairwise different (vertex count, edge count) signatures?\n\n**Answer**: YES (SOLVED)\n\nKwan-Sudakov (2021) proved the optimal bound: $|\\text{Sig}(G)| = \\Theta(n^{5/2})$, improving the Erdős-Faudree-Sós bound of $\\Omega(n^{3/2})$.",
+    "text": "Must a Ramsey graph (no large clique or independent set) on n vertices have Θ(n^(5/2)) induced subgraphs with distinct (vertex, edge) signatures? SOLVED by Kwan-Sudakov (2021).",
+    "proofStrategy": "**The Formalization Strategy**\n\nThe Lean formalization follows a structured approach:\n\n1. **Basic Definitions** (Parts I–II): Clique number $\\omega(G)$, independence number $\\alpha(G)$ (as $\\omega(\\overline{G})$), induced subgraphs via Mathlib's SimpleGraph.induce, edge counting\n2. **Signatures** (Part III): Define Signature = $\\mathbb{N} \\times \\mathbb{N}$, getSignature, allSignatures (image of all subsets), and distinctSignatureCount\n3. **Ramsey Condition** (Part IV): IsRamseyGraph with $\\omega, \\alpha \\le \\lceil C\\log n \\rceil$, plus Ramsey number bounds\n4. **Lower Bounds** (Parts V–VI): Document EFS bound via def efs_exponent = 3/2; axiomatize Kwan-Sudakov ($cn^{5/2}$) only; prove 5/2 > 3/2\n5. **Upper Bound & Tightness** (Part VII): Axiomatize $O(n^{5/2})$ upper bound, prove theta_bound by combining both\n6. **Techniques & Connections** (Parts VIII–X): Proof ideas, extreme cases (cliques/empty), Erdős-Hajnal conjecture\n7. **Main Result** (Part XI): erdos_636 directly invokes kwan_sudakov",
     "keyInsights": [
-      "A signature is just (vertex count, edge count) \u2014 a coarse invariant that is much easier to count than isomorphism types, yet still captures meaningful structural information about induced subgraphs",
+      "A signature is just (vertex count, edge count) — a coarse invariant that is much easier to count than isomorphism types, yet still captures meaningful structural information about induced subgraphs",
       "Ramsey graphs have 'complex' structure forcing many signatures: the absence of large cliques and independent sets means edge density varies substantially across different vertex subsets",
-      "The exponent improved dramatically from 3/2 (Erd\u0151s-Faudree-S\u00f3s) to 5/2 (Kwan-Sudakov) by showing \u03a9(v^(3/2)) achievable edge counts per vertex count v, not just \u03a9(v^(1/2))",
-      "Complete graphs and empty graphs have only O(n) distinct signatures, demonstrating the Ramsey condition is essential \u2014 structure kills diversity",
-      "The bound n^(5/2) is tight (both upper and lower bounds match), giving the complete answer in \u0398-notation and fully resolving the problem",
+      "The exponent improved dramatically from 3/2 (Erdős-Faudree-Sós) to 5/2 (Kwan-Sudakov) by showing Ω(v^(3/2)) achievable edge counts per vertex count v, not just Ω(v^(1/2))",
+      "Complete graphs and empty graphs have only O(n) distinct signatures, demonstrating the Ramsey condition is essential — structure kills diversity",
+      "The bound n^(5/2) is tight (both upper and lower bounds match), giving the complete answer in Θ-notation and fully resolving the problem",
       "The proof connects to the probabilistic method: random subset sampling with second moment analysis is the key technique for establishing the lower bound"
     ],
     "prerequisites": [
@@ -94,24 +94,24 @@
       "title": "Module Header and Imports",
       "startLine": 1,
       "endLine": 33,
-      "summary": "Problem statement (Erd\u0151s-Faudree-S\u00f3s): in a Ramsey graph $G$ on $n$ vertices (no clique or independent set of size $\\gg \\log n$), must $G$ contain $\\gg n^{5/2}$ induced subgraphs with pairwise distinct (vertex count, edge count) signatures? Solved YES by Kwan-Sudakov (2021), optimal. Imports full Mathlib.",
-      "mathContext": "A Ramsey graph satisfies $\\omega(G), \\alpha(G) \\leq c \\log n$. Count distinct pairs $(|V(H)|, |E(H)|)$ over induced $H \\subseteq G$. Erd\u0151s-Faudree-S\u00f3s proved $\\gg n^{3/2}$; Kwan-Sudakov proved the optimal $\\gg n^{5/2}$. The $n^{5/2}$ bound comes from the pigeonhole principle: $\\binom{n}{k}$ induced subgraphs of size $k$, Ramsey condition forces diverse edge counts."
+      "summary": "Problem statement (Erdős-Faudree-Sós): in a Ramsey graph $G$ on $n$ vertices (no clique or independent set of size $\\gg \\log n$), must $G$ contain $\\gg n^{5/2}$ induced subgraphs with pairwise distinct (vertex count, edge count) signatures? Solved YES by Kwan-Sudakov (2021), optimal. Imports full Mathlib.",
+      "mathContext": "A Ramsey graph satisfies $\\omega(G), \\alpha(G) \\leq c \\log n$. Count distinct pairs $(|V(H)|, |E(H)|)$ over induced $H \\subseteq G$. Erdős-Faudree-Sós proved $\\gg n^{3/2}$; Kwan-Sudakov proved the optimal $\\gg n^{5/2}$. The $n^{5/2}$ bound comes from the pigeonhole principle: $\\binom{n}{k}$ induced subgraphs of size $k$, Ramsey condition forces diverse edge counts."
     },
     {
       "id": "basics",
       "title": "Graphs and Basic Definitions",
-      "summary": "Defines cliqueNumber \u03c9(G) using Mathlib's cliqueNum, independenceNumber \u03b1(G) as \u03c9(G\u1d9c) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both \u03c9, \u03b1 \u2264 k. The complement-based definition of \u03b1 is elegant and fundamental to Ramsey theory.",
+      "summary": "Defines cliqueNumber ω(G) using Mathlib's cliqueNum, independenceNumber α(G) as ω(Gᶜ) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both ω, α ≤ k. The complement-based definition of α is elegant and fundamental to Ramsey theory.",
       "startLine": 34,
       "endLine": 57,
-      "mathContext": "Defines cliqueNumber \u03c9(G) using Mathlib's cliqueNum, independenceNumber \u03b1(G) as \u03c9(G\u1d9c) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both \u03c9, \u03b1 \u2264 k. The complement-based definition of \u03b1 is elegant and fundamental to Ramsey theory."
+      "mathContext": "Defines cliqueNumber ω(G) using Mathlib's cliqueNum, independenceNumber α(G) as ω(Gᶜ) exploiting Ramsey symmetry, and NoLargeHomogeneousSet requiring both ω, α ≤ k. The complement-based definition of α is elegant and fundamental to Ramsey theory."
     },
     {
       "id": "induced",
       "title": "Induced Subgraphs",
-      "summary": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as \u2115 \u00d7 \u2115 pairs. The getSignature function maps vertex subsets to their (|S|, |E(G[S])|) pair.",
+      "summary": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as ℕ × ℕ pairs. The getSignature function maps vertex subsets to their (|S|, |E(G[S])|) pair.",
       "startLine": 58,
       "endLine": 80,
-      "mathContext": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as \u2115 \u00d7 \u2115 pairs. The getSignature function maps vertex subsets to their (|S|, |E(G[S])|) pair."
+      "mathContext": "Defines inducedSubgraph G S via Mathlib's induce, inducedEdgeCount via edge finset cardinality, and the central Signature type as ℕ × ℕ pairs. The getSignature function maps vertex subsets to their (|S|, |E(G[S])|) pair."
     },
     {
       "id": "counting",
@@ -124,39 +124,39 @@
     {
       "id": "ramsey",
       "title": "The Ramsey Condition",
-      "summary": "Defines ramseyBound k = 2^(2k) as a rough R(k,k) upper bound, and IsRamseyGraph G C requiring \u03c9(G), \u03b1(G) \u2264 \u2308C log n\u2309. No axiom for Ramsey graph existence \u2014 existence is noted in commentary (random G(n,1/2) satisfies this with high probability).",
+      "summary": "Defines ramseyBound k = 2^(2k) as a rough R(k,k) upper bound, and IsRamseyGraph G C requiring ω(G), α(G) ≤ ⌈C log n⌉. No axiom for Ramsey graph existence — existence is noted in commentary (random G(n,1/2) satisfies this with high probability).",
       "startLine": 102,
       "endLine": 116,
-      "mathContext": "def ramseyBound k = 2^(2k) and def IsRamseyGraph. No axiom for Ramsey graph existence \u2014 the probabilistic argument is described in commentary only."
+      "mathContext": "def ramseyBound k = 2^(2k) and def IsRamseyGraph. No axiom for Ramsey graph existence — the probabilistic argument is described in commentary only."
     },
     {
       "id": "efs",
-      "title": "Erd\u0151s-Faudree-S\u00f3s Result",
-      "summary": "Documents the Erd\u0151s-Faudree-S\u00f3s O(n^(3/2)) lower bound via def efs_exponent = 3/2; no Lean axiom for this bound.",
+      "title": "Erdős-Faudree-Sós Result",
+      "summary": "Documents the Erdős-Faudree-Sós O(n^(3/2)) lower bound via def efs_exponent = 3/2; no Lean axiom for this bound.",
       "startLine": 117,
       "endLine": 126,
-      "mathContext": "def efs_exponent = 3/2 documents the EFS exponent. No axiom for the EFS bound \u2014 it is recorded as a constant only."
+      "mathContext": "def efs_exponent = 3/2 documents the EFS exponent. No axiom for the EFS bound — it is recorded as a constant only."
     },
     {
       "id": "kwan-sudakov",
       "title": "Kwan-Sudakov Theorem",
-      "summary": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing \u03a9(v^(3/2)) edge counts per vertex count, not \u03a9(v^(1/2)).",
+      "summary": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per vertex count, not Ω(v^(1/2)).",
       "startLine": 127,
       "endLine": 144,
-      "mathContext": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing \u03a9(v^(3/2)) edge counts per vertex count, not \u03a9(v^(1/2))."
+      "mathContext": "Axiomatizes the optimal lower bound cn^(5/2) and formally verifies ks_improves_efs (5/2 > 3/2) by norm_num. The dramatic improvement from 3/2 to 5/2 comes from showing Ω(v^(3/2)) edge counts per vertex count, not Ω(v^(1/2))."
     },
     {
       "id": "optimality",
       "title": "Optimality",
-      "summary": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c\u2081 from Kwan-Sudakov, c\u2082 from the upper bound, and package them together.",
+      "summary": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the upper bound, and package them together.",
       "startLine": 145,
       "endLine": 169,
-      "mathContext": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c\u2081 from Kwan-Sudakov, c\u2082 from the upper bound, and package them together."
+      "mathContext": "Axiomatizes the matching upper bound O(n^(5/2)) and proves theta_bound by extracting existential witnesses from both axioms. The proof is a clean combination: obtain c₁ from Kwan-Sudakov, c₂ from the upper bound, and package them together."
     },
     {
       "id": "techniques",
       "title": "Proof Techniques",
-      "summary": "Proves vertex_count_range (|S| \u2264 n, no sorry) and edge_count_range (|E(G[S])| \u2264 |S|(|S|-1)/2, sorry). Probabilistic method and signature distribution ideas are described in dangling docstrings only \u2014 no Lean declarations for these proof techniques.",
+      "summary": "Proves vertex_count_range (|S| ≤ n, no sorry) and edge_count_range (|E(G[S])| ≤ |S|(|S|-1)/2, sorry). Probabilistic method and signature distribution ideas are described in dangling docstrings only — no Lean declarations for these proof techniques.",
       "startLine": 170,
       "endLine": 187,
       "mathContext": "theorem vertex_count_range (proved) and edge_count_range (sorry'd). Probabilistic method and signature distribution appear only as docstring comments, not as Lean declarations."
@@ -164,7 +164,7 @@
     {
       "id": "ramsey-theory",
       "title": "Connections to Ramsey Theory",
-      "summary": "Stub theorems clique_few_signatures and empty_few_signatures (both sorry'd) show extreme cases have \u2264 n+1 distinct signatures. The Ramsey condition forcing complexity is stated in a dangling docstring only \u2014 no axiom or theorem formalizes this claim.",
+      "summary": "Stub theorems clique_few_signatures and empty_few_signatures (both sorry'd) show extreme cases have ≤ n+1 distinct signatures. The Ramsey condition forcing complexity is stated in a dangling docstring only — no axiom or theorem formalizes this claim.",
       "startLine": 188,
       "endLine": 205,
       "mathContext": "clique_few_signatures and empty_few_signatures (both := by sorry). The claim that the Ramsey condition forces signature complexity is a docstring comment, not a Lean declaration."
@@ -172,27 +172,27 @@
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Connects to counting isomorphism types (much harder than signatures), the Erd\u0151s-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets \u2014 the converse direction), and counting specific induced structures like paths.",
+      "summary": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting specific induced structures like paths.",
       "startLine": 206,
       "endLine": 225,
-      "mathContext": "Connects to counting isomorphism types (much harder than signatures), the Erd\u0151s-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets \u2014 the converse direction), and counting specific induced structures like paths."
+      "mathContext": "Connects to counting isomorphism types (much harder than signatures), the Erdős-Hajnal conjecture (forbidden induced subgraphs force large homogeneous sets — the converse direction), and counting specific induced structures like paths."
     },
     {
       "id": "main-result",
       "title": "Main Result",
-      "summary": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n \u2265 10 vertices has \u2265 \u230acn^(5/2)\u230b distinct signatures. Includes utility definitions for the answer string and optimal exponent.",
+      "summary": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has ≥ ⌊cn^(5/2)⌋ distinct signatures. Includes utility definitions for the answer string and optimal exponent.",
       "startLine": 226,
       "endLine": 260,
-      "mathContext": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n \u2265 10 vertices has \u2265 \u230acn^(5/2)\u230b distinct signatures. Includes utility definitions for the answer string and optimal exponent."
+      "mathContext": "The final theorem erdos_636 directly invokes kwan_sudakov, cleanly stating: for any C > 0, there exists c > 0 such that every (C)-Ramsey graph on n ≥ 10 vertices has ≥ ⌊cn^(5/2)⌋ distinct signatures. Includes utility definitions for the answer string and optimal exponent."
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #636 asks whether Ramsey graphs (those with $\\omega(G), \\alpha(G) \\le C\\log n$) must have many induced subgraphs with distinct (vertex count, edge count) signatures. SOLVED by Kwan and Sudakov (2021) who proved the optimal bound: exactly $\\Theta(n^{5/2})$ distinct signatures, improving the earlier $\\Omega(n^{3/2})$ bound of Erd\u0151s, Faudree, and S\u00f3s.",
-    "implications": "**Theoretical Significance**\n\n1. **Ramsey Graph Complexity**: The result quantifies a fundamental aspect of Ramsey graph structure \u2014 they are inherently complex in terms of induced subgraph diversity, with the exact number of distinct signatures growing as $n^{5/2}$\n\n2. **Tight Bounds in Combinatorics**: The matching upper and lower bounds give a complete answer in $\\Theta$-notation, which is rare in extremal combinatorics.\n\nMany related problems have gaps between known upper and lower bounds\n\n**3. Probabilistic Method Power**: The Kwan-Sudakov proof showcases the probabilistic method (random subset sampling with second moment analysis) as a tool for proving counting lower bounds, not just existence results\n\n4. **Exponent Jump**: The improvement from $3/2$ to $5/2$ is dramatic \u2014 the EFS bound was not merely sub-optimal, it was missing an entire power of $n$ in the per-vertex-count contribution ($v^{1/2}$ vs $v^{3/2}$)\n\n5. **Ramsey Condition Necessity**: The extreme case analysis (cliques and empty graphs have only $O(n)$ signatures) cleanly delineates when the $n^{5/2}$ bound applies, showing the Ramsey condition is essential.",
+    "summary": "Erdős Problem #636 asks whether Ramsey graphs (those with $\\omega(G), \\alpha(G) \\le C\\log n$) must have many induced subgraphs with distinct (vertex count, edge count) signatures. SOLVED by Kwan and Sudakov (2021) who proved the optimal bound: exactly $\\Theta(n^{5/2})$ distinct signatures, improving the earlier $\\Omega(n^{3/2})$ bound of Erdős, Faudree, and Sós.",
+    "implications": "**Theoretical Significance**\n\n1. **Ramsey Graph Complexity**: The result quantifies a fundamental aspect of Ramsey graph structure — they are inherently complex in terms of induced subgraph diversity, with the exact number of distinct signatures growing as $n^{5/2}$\n\n2. **Tight Bounds in Combinatorics**: The matching upper and lower bounds give a complete answer in $\\Theta$-notation, which is rare in extremal combinatorics.\n\nMany related problems have gaps between known upper and lower bounds\n\n**3. Probabilistic Method Power**: The Kwan-Sudakov proof showcases the probabilistic method (random subset sampling with second moment analysis) as a tool for proving counting lower bounds, not just existence results\n\n4. **Exponent Jump**: The improvement from $3/2$ to $5/2$ is dramatic — the EFS bound was not merely sub-optimal, it was missing an entire power of $n$ in the per-vertex-count contribution ($v^{1/2}$ vs $v^{3/2}$)\n\n5. **Ramsey Condition Necessity**: The extreme case analysis (cliques and empty graphs have only $O(n)$ signatures) cleanly delineates when the $n^{5/2}$ bound applies, showing the Ramsey condition is essential.",
     "openQuestions": [
-      "How many distinct induced subgraph isomorphism types must a Ramsey graph have? (Much harder than signatures \u2014 could be exponentially many)",
+      "How many distinct induced subgraph isomorphism types must a Ramsey graph have? (Much harder than signatures — could be exponentially many)",
       "How does the constant c in cn^(5/2) depend on the Ramsey parameter C? Is there a precise asymptotic?",
-      "Can the Kwan-Sudakov bound be extended to graphs with slightly larger homogeneous sets (e.g., \u03c9, \u03b1 \u2264 n^\u03b5 for small \u03b5)?",
+      "Can the Kwan-Sudakov bound be extended to graphs with slightly larger homogeneous sets (e.g., ω, α ≤ n^ε for small ε)?",
       "What is the analogous tight bound for counting edge-induced (non-vertex-induced) subgraph signatures?"
     ]
   },
@@ -200,12 +200,12 @@
     {
       "targetId": "ramseys-theorem",
       "relationship": "foundational",
-      "description": "The Ramsey condition (\u03c9(G), \u03b1(G) \u2264 C log n) is the defining hypothesis \u2014 Ramsey's theorem guarantees such graphs exist. This problem quantifies the induced subgraph complexity that Ramsey graphs must exhibit"
+      "description": "The Ramsey condition (ω(G), α(G) ≤ C log n) is the defining hypothesis — Ramsey's theorem guarantees such graphs exist. This problem quantifies the induced subgraph complexity that Ramsey graphs must exhibit"
     },
     {
       "targetId": "erdos-1",
       "relationship": "related",
-      "description": "Both are foundational Erd\u0151s problems in Ramsey theory: #1 concerns Ramsey numbers R(k,k), while #636 concerns structural properties (induced subgraph diversity) of Ramsey graphs"
+      "description": "Both are foundational Erdős problems in Ramsey theory: #1 concerns Ramsey numbers R(k,k), while #636 concerns structural properties (induced subgraph diversity) of Ramsey graphs"
     },
     {
       "targetId": "szemeredi-regularity",
@@ -215,7 +215,7 @@
     {
       "targetId": "erdos-635",
       "relationship": "related",
-      "description": "Adjacent Erd\u0151s problem in the same series on induced subgraph properties of Ramsey graphs"
+      "description": "Adjacent Erdős problem in the same series on induced subgraph properties of Ramsey graphs"
     },
     {
       "targetId": "combinations-formula",
@@ -245,22 +245,22 @@
   "references": [
     {
       "key": "KwSu2021",
-      "citation": "Kwan, M. and Sudakov, B. (2021). Proof of a conjecture of Erd\u0151s on the number of distinct induced subgraphs. Advances in Mathematics, 389, 107888.",
+      "citation": "Kwan, M. and Sudakov, B. (2021). Proof of a conjecture of Erdős on the number of distinct induced subgraphs. Advances in Mathematics, 389, 107888.",
       "type": "paper"
     },
     {
       "key": "EFS",
-      "citation": "Erd\u0151s, P., Faudree, R., and S\u00f3s, V. T. On the number of distinct induced subgraphs of a graph, with a lower bound of cn^(3/2).",
+      "citation": "Erdős, P., Faudree, R., and Sós, V. T. On the number of distinct induced subgraphs of a graph, with a lower bound of cn^(3/2).",
       "type": "paper"
     },
     {
       "key": "Er93",
-      "citation": "Erd\u0151s, P. (1993). Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) 48, p. 346.",
+      "citation": "Erdős, P. (1993). Some of my favourite problems in various branches of combinatorics. Matematiche (Catania) 48, p. 346.",
       "type": "paper"
     },
     {
       "key": "Erdos1947",
-      "citation": "Erd\u0151s, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53(4), 292-294.",
+      "citation": "Erdős, P. (1947). Some remarks on the theory of graphs. Bulletin of the American Mathematical Society, 53(4), 292-294.",
       "type": "paper"
     }
   ],

@@ -78,9 +78,9 @@
       "**Minimality + affine dependence = powerful combination**: Choosing the minimal-vertex decomposition and deriving a contradiction from excess is a clean proof pattern reusable in many convex geometry results.",
       "**Economic interpretation**: In an economy with $N$ agents in $\\mathbb{R}^d$, each agent's preferred bundle may not be convex (indivisible goods). But the aggregate allocation (Minkowski sum) is nearly convex: at most $d$ agents need 'fractional' allocations. As $N \\to \\infty$, the fraction of agents requiring convexification goes to 0.",
       "**Quantitative refinement (Starr)**: The Shapley-Folkman-Starr theorem adds a Hausdorff distance bound: $d_H(\\sum S_i, \\text{conv}(\\sum S_i)) \\leq \\sqrt{\\sum_{\\text{top } d} r(S_i)^2}$ where $r(S_i)$ is the inner radius. This makes the 'nearly convex' intuition precise.",
-      "minCaraDepth (sInf over representation sizes) is the well-founded descent measure \u2014 each application of reduce_excess_by_one strictly decreases either the excess count or the total depth budget",
-      "The sum \u2211x_i is preserved under affine-dependence perturbations because \u2211\u03bb_i = 0 (the affine condition) makes the perturbation sum zero",
-      "The 770-line reduce_excess_by_one dominates the proof length \u2014 the main theorem is just clean induction once this reduction is established"
+      "minCaraDepth (sInf over representation sizes) is the well-founded descent measure — each application of reduce_excess_by_one strictly decreases either the excess count or the total depth budget",
+      "The sum ∑x_i is preserved under affine-dependence perturbations because ∑λ_i = 0 (the affine condition) makes the perturbation sum zero",
+      "The 770-line reduce_excess_by_one dominates the proof length — the main theorem is just clean induction once this reduction is established"
     ],
     "prerequisites": [
       "Convex sets and convex hulls",
@@ -135,21 +135,21 @@
       "title": "Caratheodory Infrastructure and minCaraDepth",
       "startLine": 159,
       "endLine": 361,
-      "summary": "Establishes the well-founded induction measure `minCaraDepth` (sInf over representation sizes) and supporting lemmas: `linearDependent_coefficients` (explicit affine dependence coefficients via not_affineIndependent_iff), `exists_decomposition` (Caratheodory bound d+1), `binary_repr_of_mem_convexHull_not_mem` (\u22652 nonzero weights for excess points), and `binary_repr_depth` (perturbation strictly reduces depth). These provide the termination guarantee for the main reduction."
+      "summary": "Establishes the well-founded induction measure `minCaraDepth` (sInf over representation sizes) and supporting lemmas: `linearDependent_coefficients` (explicit affine dependence coefficients via not_affineIndependent_iff), `exists_decomposition` (Caratheodory bound d+1), `binary_repr_of_mem_convexHull_not_mem` (≥2 nonzero weights for excess points), and `binary_repr_depth` (perturbation strictly reduces depth). These provide the termination guarantee for the main reduction."
     },
     {
       "id": "reduce-excess",
       "title": "Core Reduction: reduce_excess_by_one",
       "startLine": 362,
       "endLine": 1130,
-      "summary": "The 770-line proof that any decomposition with k > d excess indices can be reduced to one with k-1 excess indices. Phases: (1) binary representations for excess points, (2) affine dependence extraction from d+1 points in \u211d^d, (3) \u03b5 computation (min over boundary constraints), (4) sum-preserving perturbation (\u2211\u03bb_i=0 ensures total preserved), (5) case analysis showing either an index joins its original set or its minCaraDepth strictly decreases. The induction measure M = max(0, |excess| - d) + \u03a3 minCaraDepth is strictly decreasing."
+      "summary": "The 770-line proof that any decomposition with k > d excess indices can be reduced to one with k-1 excess indices. Phases: (1) binary representations for excess points, (2) affine dependence extraction from d+1 points in ℝ^d, (3) ε computation (min over boundary constraints), (4) sum-preserving perturbation (∑λ_i=0 ensures total preserved), (5) case analysis showing either an index joins its original set or its minCaraDepth strictly decreases. The induction measure M = max(0, |excess| - d) + Σ minCaraDepth is strictly decreasing."
     },
     {
       "id": "main-assembly",
       "title": "Main Theorem and Corollaries",
       "startLine": 1131,
       "endLine": 1238,
-      "summary": "Three final results assembled by induction on reduce_excess_by_one: `shapley_folkman` (the core lemma, induction on excess count), `sum_close_to_convexHull` (the standard statement: \u2203 decomposition with |excess| \u2264 finrank(\u211d,E)), and `repeated_sum_nearly_convex` (for n copies of S: at most d agents need fractional allocations, ratio d/n\u21920). The main theorem's proof is short because all complexity is in reduce_excess_by_one."
+      "summary": "Three final results assembled by induction on reduce_excess_by_one: `shapley_folkman` (the core lemma, induction on excess count), `sum_close_to_convexHull` (the standard statement: ∃ decomposition with |excess| ≤ finrank(ℝ,E)), and `repeated_sum_nearly_convex` (for n copies of S: at most d agents need fractional allocations, ratio d/n→0). The main theorem's proof is short because all complexity is in reduce_excess_by_one."
     }
   ],
   "references": [

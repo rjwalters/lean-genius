@@ -103,7 +103,10 @@
     ]
   },
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.NthRootIrrationalOQ01"],
+    "imports": [
+      "Mathlib",
+      "Proofs.NthRootIrrationalOQ01"
+    ],
     "opens": [],
     "namespace": "InverseGaloisF20",
     "lineCount": 529,

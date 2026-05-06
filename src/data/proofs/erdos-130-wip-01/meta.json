@@ -1,10 +1,10 @@
 {
   "id": "erdos-130-wip-01",
-  "title": "Anning\u2013Erd\u0151s Finiteness Bound for Integer Distance Sets",
+  "title": "Anning–Erdős Finiteness Bound for Integer Distance Sets",
   "slug": "erdos-130-wip-01",
-  "description": "Proves the algebraic core of the Anning\u2013Erd\u0151s theorem (1945): for any non-collinear triple P,Q,R with integer pairwise distances D,E, any point X at integer distances to all three satisfies a quadratic equation parameterized by signed differences (s,t). This gives an explicit finiteness bound of 4(2D+1)(2E+1) on the size of any integer-distance point set in general position containing P,Q,R.",
+  "description": "Proves the algebraic core of the Anning–Erdős theorem (1945): for any non-collinear triple P,Q,R with integer pairwise distances D,E, any point X at integer distances to all three satisfies a quadratic equation parameterized by signed differences (s,t). This gives an explicit finiteness bound of 4(2D+1)(2E+1) on the size of any integer-distance point set in general position containing P,Q,R.",
   "meta": {
-    "author": "Anning & Erd\u0151s (1945), formalized 2026",
+    "author": "Anning & Erdős (1945), formalized 2026",
     "sourceUrl": "https://erdosproblems.com/130",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos130WIP01.lean",
@@ -23,7 +23,7 @@
     "erdosProblemStatus": "open",
     "mathlib_version": "4.26.0",
     "axiomCount": 0,
-    "assumptions": "No axioms. All theorems proved from Mathlib using ring identities, linarith, nlinarith, and linear_combination. The main result is a formalization of the elementary algebraic argument underlying the Anning-Erd\u0151s theorem. Open conjecture; supporting lemmas fully verified.",
+    "assumptions": "No axioms. All theorems proved from Mathlib using ring identities, linarith, nlinarith, and linear_combination. The main result is a formalization of the elementary algebraic argument underlying the Anning-Erdős theorem. Open conjecture; supporting lemmas fully verified.",
     "lineCount": 201,
     "relatedProblems": [
       {
@@ -41,16 +41,16 @@
     "definitionCount": 0
   },
   "overview": {
-    "text": "Formalizes the key algebraic identity behind the Anning\u2013Erd\u0151s theorem: for fixed non-collinear P=(0,0), Q=(D,0), R=(r_x,r_y) with integer pairwise distances, any additional point X with integer distances satisfies 2D\u00b7x = 2as\u2212s\u00b2+D\u00b2 (x-coordinate formula) and [4a(tD\u2212r_x\u00b7s)+K]\u00b2 = 4r_y\u00b2[(2Da)\u00b2\u2212(2as\u2212s\u00b2+D\u00b2)\u00b2] (the Anning-Erd\u0151s quadratic constraint). The explicit count 4(2D+1)(2E+1) bounds the number of such points.",
-    "historicalContext": "Norman Anning proved in 1945 that any set of three non-collinear points at integer pairwise distances can have only finitely many additional points at integer distances from all three. Paul Erd\u0151s strengthened this to show any infinite set of points in the plane with pairwise integer distances must be collinear. The proof rests on an elegant algebraic argument: placing two points P,Q on the x-axis, the x-coordinate of any integer-distance point X is rational with denominator dividing 2D; a third non-collinear point R further restricts the y-coordinate via a linear constraint, giving a quadratic polynomial in the distance a = d(X,P). Since there are only (2D+1)(2E+1) possible signed-difference pairs (s,t) and each gives at most 2 values of a and 2 positions for X, the total count is bounded by 4(2D+1)(2E+1).",
-    "problemStatement": "Given a non-collinear triple P, Q, R with integer pairwise distances D = d(P,Q) and E = d(P,R), how many additional points X can have integer distances to all three? The Anning\u2013Erd\u0151s bound answers: at most 4(2D+1)(2E+1).",
-    "proofStrategy": "The proof proceeds in four algebraic steps:\n(1) **X-coordinate formula**: Place P=(0,0), Q=(D,0). From the distance equations x\u00b2+y\u00b2=a\u00b2 and (x\u2212D)\u00b2+y\u00b2=(a\u2212s)\u00b2, derive 2D\u00b7x = 2as\u2212s\u00b2+D\u00b2. This makes x rational.\n(2) **Signed difference bound**: The quantity s = a\u2212d(X,Q) satisfies |s|\u2264D by the triangle inequality, giving at most 2D+1 choices.\n(3) **Y-linearity**: From the third point R=(r_x,r_y), the constraint (x\u2212r_x)\u00b2+(y\u2212r_y)\u00b2=(a\u2212t)\u00b2 combined with step (1) gives 2D\u00b7(2r_y\u00b7y) = 4a(tD\u2212r_x\u00b7s)+K, which is linear in a.\n(4) **Quadratic identity**: Squaring the linear expression and using y\u00b2=a\u00b2\u2212x\u00b2 gives the quadratic constraint [LIN(a)]\u00b2=4r_y\u00b2[(2Da)\u00b2\u2212(2as\u2212s\u00b2+D\u00b2)\u00b2], bounding a to at most 2 values per (s,t) pair.",
+    "text": "Formalizes the key algebraic identity behind the Anning–Erdős theorem: for fixed non-collinear P=(0,0), Q=(D,0), R=(r_x,r_y) with integer pairwise distances, any additional point X with integer distances satisfies 2D·x = 2as−s²+D² (x-coordinate formula) and [4a(tD−r_x·s)+K]² = 4r_y²[(2Da)²−(2as−s²+D²)²] (the Anning-Erdős quadratic constraint). The explicit count 4(2D+1)(2E+1) bounds the number of such points.",
+    "historicalContext": "Norman Anning proved in 1945 that any set of three non-collinear points at integer pairwise distances can have only finitely many additional points at integer distances from all three. Paul Erdős strengthened this to show any infinite set of points in the plane with pairwise integer distances must be collinear. The proof rests on an elegant algebraic argument: placing two points P,Q on the x-axis, the x-coordinate of any integer-distance point X is rational with denominator dividing 2D; a third non-collinear point R further restricts the y-coordinate via a linear constraint, giving a quadratic polynomial in the distance a = d(X,P). Since there are only (2D+1)(2E+1) possible signed-difference pairs (s,t) and each gives at most 2 values of a and 2 positions for X, the total count is bounded by 4(2D+1)(2E+1).",
+    "problemStatement": "Given a non-collinear triple P, Q, R with integer pairwise distances D = d(P,Q) and E = d(P,R), how many additional points X can have integer distances to all three? The Anning–Erdős bound answers: at most 4(2D+1)(2E+1).",
+    "proofStrategy": "The proof proceeds in four algebraic steps:\n(1) **X-coordinate formula**: Place P=(0,0), Q=(D,0). From the distance equations x²+y²=a² and (x−D)²+y²=(a−s)², derive 2D·x = 2as−s²+D². This makes x rational.\n(2) **Signed difference bound**: The quantity s = a−d(X,Q) satisfies |s|≤D by the triangle inequality, giving at most 2D+1 choices.\n(3) **Y-linearity**: From the third point R=(r_x,r_y), the constraint (x−r_x)²+(y−r_y)²=(a−t)² combined with step (1) gives 2D·(2r_y·y) = 4a(tD−r_x·s)+K, which is linear in a.\n(4) **Quadratic identity**: Squaring the linear expression and using y²=a²−x² gives the quadratic constraint [LIN(a)]²=4r_y²[(2Da)²−(2as−s²+D²)²], bounding a to at most 2 values per (s,t) pair.",
     "keyInsights": [
-      "**Rationality of x**: The formula 2D\u00b7x = a\u00b2\u2212b\u00b2+D\u00b2 shows x \u2208 \u211a with denominator dividing 2D \u2014 a key integrality constraint",
-      "**Linearity**: Substituting x = (2as\u2212s\u00b2+D\u00b2)/(2D), the y-constraint from point R becomes 2r_y\u00b7y = linear(a), enabling the quadratic step",
-      "**The key identity**: [4a(tD\u2212r_x\u00b7s)+K]\u00b2 = 4r_y\u00b2[(2Da)\u00b2\u2212(2as\u2212s\u00b2+D\u00b2)\u00b2] is proved purely by ring arithmetic from the distance equations",
-      "**Counting**: (2D+1)(2E+1) signed-difference pairs \u00d7 2 quadratic roots \u00d7 2 y-signs = 4(2D+1)(2E+1)",
-      "**No collinearity condition needed for the count**: The bound holds for any non-collinear R with r_y\u22600 (i.e., R not on line PQ)"
+      "**Rationality of x**: The formula 2D·x = a²−b²+D² shows x ∈ ℚ with denominator dividing 2D — a key integrality constraint",
+      "**Linearity**: Substituting x = (2as−s²+D²)/(2D), the y-constraint from point R becomes 2r_y·y = linear(a), enabling the quadratic step",
+      "**The key identity**: [4a(tD−r_x·s)+K]² = 4r_y²[(2Da)²−(2as−s²+D²)²] is proved purely by ring arithmetic from the distance equations",
+      "**Counting**: (2D+1)(2E+1) signed-difference pairs × 2 quadratic roots × 2 y-signs = 4(2D+1)(2E+1)",
+      "**No collinearity condition needed for the count**: The bound holds for any non-collinear R with r_y≠0 (i.e., R not on line PQ)"
     ],
     "prerequisites": [
       "Elementary analytic geometry (distance formula)",
@@ -84,7 +84,7 @@
     },
     {
       "id": "key-identity",
-      "title": "Anning\u2013Erd\u0151s Key Identity",
+      "title": "Anning–Erdős Key Identity",
       "startLine": 118,
       "endLine": 165,
       "summary": "The central algebraic identity: $[4a(tD-r_x s)+K]^2 = 4r_y^2[(2Da)^2-(2as-s^2+D^2)^2]$. Proved from the scale identity $(2D(2r_y y))^2 = 4r_y^2((2Da)^2-(2Dx)^2)$ and the x-formula.",
@@ -92,7 +92,7 @@
     },
     {
       "id": "count",
-      "title": "Anning\u2013Erd\u0151s Count",
+      "title": "Anning–Erdős Count",
       "startLine": 168,
       "endLine": 195,
       "summary": "Formalizes the bound: $(2D+1)(2E+1)$ signed-difference pairs times $4$ (two roots, two $y$-signs) equals $4(2D+1)(2E+1)$. Includes concrete examples.",
@@ -100,12 +100,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The Anning\u2013Erd\u0151s algebraic core is fully formalized: the x-coordinate formula, the signed-difference bound, the y-linearity lemma, and the key quadratic identity are all proved without axioms or sorries. The finiteness bound 4(2D+1)(2E+1) follows by counting signed-difference pairs and quadratic roots.",
-    "implications": "This formalization provides the algebraic engine behind the Anning\u2013Erd\u0151s theorem: any non-collinear integer-distance set has bounded size, so the clique number \u03c9(G(A)) of the integer distance graph is finite. The explicit bound 4(2D+1)(2E+1) is tight up to constant factors (as shown by constructions achieving \u03a9(D\u00b2) points).",
+    "summary": "The Anning–Erdős algebraic core is fully formalized: the x-coordinate formula, the signed-difference bound, the y-linearity lemma, and the key quadratic identity are all proved without axioms or sorries. The finiteness bound 4(2D+1)(2E+1) follows by counting signed-difference pairs and quadratic roots.",
+    "implications": "This formalization provides the algebraic engine behind the Anning–Erdős theorem: any non-collinear integer-distance set has bounded size, so the clique number ω(G(A)) of the integer distance graph is finite. The explicit bound 4(2D+1)(2E+1) is tight up to constant factors (as shown by constructions achieving Ω(D²) points).",
     "openQuestions": [
       "What is the sharp constant in the bound? Is 4(2D+1)(2E+1) optimal?",
-      "Can the bound be extended to higher dimensions (\u211d\u207f for n\u22653)?",
-      "What is the chromatic number \u03c7(G(A)) for optimal general-position integer-distance sets? (Erd\u0151s #130 main question)"
+      "Can the bound be extended to higher dimensions (ℝⁿ for n≥3)?",
+      "What is the chromatic number χ(G(A)) for optimal general-position integer-distance sets? (Erdős #130 main question)"
     ]
   },
   "leanFile": {
@@ -125,8 +125,8 @@
     "sorries": 0
   },
   "references": [
-    "Anning, N. & Erd\u0151s, P. (1945): 'Integral Distances', Bull. Amer. Math. Soc. 51, 598-600",
-    "Erd\u0151s, P. (1945): problem formulation and solution",
+    "Anning, N. & Erdős, P. (1945): 'Integral Distances', Bull. Amer. Math. Soc. 51, 598-600",
+    "Erdős, P. (1945): problem formulation and solution",
     "https://erdosproblems.com/130"
   ],
   "crossReferences": [

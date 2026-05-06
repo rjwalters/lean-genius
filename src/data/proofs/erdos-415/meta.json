@@ -1,10 +1,10 @@
 {
   "id": "erdos-415",
-  "title": "Erd\u0151s Problem #415: Ordering Patterns in Euler's Totient Function",
+  "title": "Erdős Problem #415: Ordering Patterns in Euler's Totient Function",
   "slug": "erdos-415",
-  "description": "Let F(n) = largest k such that ALL k! ordering patterns appear in some \u03c6(m+1),...,\u03c6(m+k). Erd\u0151s proved F(n) \u224d log log log n. The exact constant and which pattern fails first remain OPEN.",
+  "description": "Let F(n) = largest k such that ALL k! ordering patterns appear in some φ(m+1),...,φ(m+k). Erdős proved F(n) ≍ log log log n. The exact constant and which pattern fails first remain OPEN.",
   "meta": {
-    "author": "Erd\u0151s (1936)",
+    "author": "Erdős (1936)",
     "sourceUrl": "https://erdosproblems.com/415",
     "date": "1936",
     "status": "axiomatized",
@@ -78,14 +78,14 @@
     "definitionCount": 20
   },
   "overview": {
-    "historicalContext": "This problem concerns the remarkable regularity of ordering patterns in sequences of Euler's totient function. Given k consecutive values \u03c6(m+1), ..., \u03c6(m+k), their relative ordering is one of k! possible permutations. Erd\u0151s asked: how large can k be such that ALL k! patterns appear somewhere in \u03c6(1), ..., \u03c6(n)?\n\nIn 1936, Erd\u0151s proved F(n) \u224d log log log n \u2014 an astonishingly slow growth rate, answering a question of Chowla. Sarvadaman Chowla had asked about consecutive values of arithmetic functions in the early 1930s at the Punjab University in Lahore. Erd\u0151s, then 23, solved the problem using sieve methods and published it in the Proceedings of the National Institute of Sciences of India.\n\nThe same triple-log behavior holds for other arithmetic functions like \u03c3(n), \u03c4(n), and \u03c9(n), suggesting a universal phenomenon rooted in the combinatorial structure of arithmetic functions rather than any specific number-theoretic property.\n\nThe problem connects two seemingly unrelated areas: the combinatorics of permutation patterns (studied intensively since the Stanley-Wilf conjecture, proved by Marcus and Tardos in 2004) and the distribution of values of multiplicative functions (a central topic in analytic number theory since Erd\u0151s and Kac's foundational 1940 paper). Despite nearly 90 years of work, three fundamental questions remain open.",
-    "problemStatement": "**Definition:**\nF(n) = largest k such that all k! ordering patterns appear in some sequence \u03c6(m+1), ..., \u03c6(m+k) with m + k \u2264 n.\n\n**Known:** F(n) \u224d log log log n (Erd\u0151s 1936)\n\n**Open Questions:**\n1. Is there a constant c with F(n) = (c + o(1)) log log log n?\n2. Is the strictly decreasing pattern always the first to fail?\n3. Is the 'natural' pattern (mimicking \u03c6(1),...,\u03c6(k)) the most common?",
-    "text": "Let F(n) = largest k such that ALL k! ordering patterns appear in some \u03c6(m+1),...,\u03c6(m+k). Erd\u0151s proved F(n) \u224d log log log n. The exact constant and which pattern fails first remain OPEN.",
-    "proofStrategy": "The formalization:\n\n1. Defines `OrderingPattern k` as `Equiv.Perm (Fin k)` \u2014 patterns are permutations\n2. Defines `RealizesPattern` via order-isomorphism: pattern \u03c3 is realized by seq when \u03c3(i) < \u03c3(j) \u2194 seq(i) < seq(j)\n3. Defines `AllPatternsAchievable n k` requiring all k! patterns appear in \u03c6-windows up to n\n4. Defines `F n` via `Nat.find` as the largest achievable k\n5. States `AsymptoticTripleLog` with Real.log composed three times\n6. Formalizes the three open questions as `Prop` definitions\n7. Proves `orderingPattern_card` and `phi_prime` from Mathlib; all other results are sorry'd\n8. Shows extension to \u03c3, \u03c4 with analogous F functions",
+    "historicalContext": "This problem concerns the remarkable regularity of ordering patterns in sequences of Euler's totient function. Given k consecutive values φ(m+1), ..., φ(m+k), their relative ordering is one of k! possible permutations. Erdős asked: how large can k be such that ALL k! patterns appear somewhere in φ(1), ..., φ(n)?\n\nIn 1936, Erdős proved F(n) ≍ log log log n — an astonishingly slow growth rate, answering a question of Chowla. Sarvadaman Chowla had asked about consecutive values of arithmetic functions in the early 1930s at the Punjab University in Lahore. Erdős, then 23, solved the problem using sieve methods and published it in the Proceedings of the National Institute of Sciences of India.\n\nThe same triple-log behavior holds for other arithmetic functions like σ(n), τ(n), and ω(n), suggesting a universal phenomenon rooted in the combinatorial structure of arithmetic functions rather than any specific number-theoretic property.\n\nThe problem connects two seemingly unrelated areas: the combinatorics of permutation patterns (studied intensively since the Stanley-Wilf conjecture, proved by Marcus and Tardos in 2004) and the distribution of values of multiplicative functions (a central topic in analytic number theory since Erdős and Kac's foundational 1940 paper). Despite nearly 90 years of work, three fundamental questions remain open.",
+    "problemStatement": "**Definition:**\nF(n) = largest k such that all k! ordering patterns appear in some sequence φ(m+1), ..., φ(m+k) with m + k ≤ n.\n\n**Known:** F(n) ≍ log log log n (Erdős 1936)\n\n**Open Questions:**\n1. Is there a constant c with F(n) = (c + o(1)) log log log n?\n2. Is the strictly decreasing pattern always the first to fail?\n3. Is the 'natural' pattern (mimicking φ(1),...,φ(k)) the most common?",
+    "text": "Let F(n) = largest k such that ALL k! ordering patterns appear in some φ(m+1),...,φ(m+k). Erdős proved F(n) ≍ log log log n. The exact constant and which pattern fails first remain OPEN.",
+    "proofStrategy": "The formalization:\n\n1. Defines `OrderingPattern k` as `Equiv.Perm (Fin k)` — patterns are permutations\n2. Defines `RealizesPattern` via order-isomorphism: pattern σ is realized by seq when σ(i) < σ(j) ↔ seq(i) < seq(j)\n3. Defines `AllPatternsAchievable n k` requiring all k! patterns appear in φ-windows up to n\n4. Defines `F n` via `Nat.find` as the largest achievable k\n5. States `AsymptoticTripleLog` with Real.log composed three times\n6. Formalizes the three open questions as `Prop` definitions\n7. Proves `orderingPattern_card` and `phi_prime` from Mathlib; all other results are sorry'd\n8. Shows extension to σ, τ with analogous F functions",
     "keyInsights": [
-      "**Triple Log Growth:** $F(n) \\asymp \\log\\log\\log n$ is remarkably slow. For $n = 10^{10^{10}}$, $F(n)$ is only about 3-4 \u2014 you can never find more than a handful of consecutive $\\varphi$ values exhibiting all possible orderings.",
+      "**Triple Log Growth:** $F(n) \\asymp \\log\\log\\log n$ is remarkably slow. For $n = 10^{10^{10}}$, $F(n)$ is only about 3-4 — you can never find more than a handful of consecutive $\\varphi$ values exhibiting all possible orderings.",
       "**Why So Slow:** $k!$ patterns need $k!$ independent chances. But $\\varphi$ values cluster heavily (many $n$ share the same $\\varphi(n)$), reducing independence. Each 'log' in $\\log\\log\\log n$ comes from a different source: window count ($\\log n$), Stirling's approximation ($\\log\\log n$), and correlation structure (third log).",
-      "**Universality:** The same triple-log bound holds for $\\sigma$, $\\tau$, $\\omega$, and any 'decent' arithmetic function. This universality suggests the phenomenon is combinatorial rather than number-theoretic \u2014 it reflects the fundamental trade-off between factorial growth and available independent windows.",
+      "**Universality:** The same triple-log bound holds for $\\sigma$, $\\tau$, $\\omega$, and any 'decent' arithmetic function. This universality suggests the phenomenon is combinatorial rather than number-theoretic — it reflects the fundamental trade-off between factorial growth and available independent windows.",
       "**The Hardest Pattern:** Strictly decreasing $\\varphi(m+1) > \\varphi(m+2) > \\cdots$ is conjectured to be the first pattern to fail, because $\\varphi$ tends to increase with $n$ (Mertens: $\\sum \\varphi(n)/n \\to 6/\\pi^2$).",
       "**$\\varphi$ Collisions:** Many integers share the same $\\varphi$ value (e.g., $\\varphi(1) = \\varphi(2) = 1$, $\\varphi(3) = \\varphi(4) = \\varphi(6) = 2$). Carmichael conjectured no totient value is taken exactly once. Ford (1998) showed $|\\{\\varphi(1),\\ldots,\\varphi(n)\\}| = O(n/\\log n)$."
     ],
@@ -96,23 +96,23 @@
       },
       {
         "proofId": "erdos-411",
-        "relationship": "Studies $g(n) = n + \\varphi(n)$ iteration \u2014 same totient function, different dynamical question"
+        "relationship": "Studies $g(n) = n + \\varphi(n)$ iteration — same totient function, different dynamical question"
       },
       {
         "proofId": "erdos-412",
-        "relationship": "Studies $\\sigma$ iteration convergence \u2014 $\\sigma$ ordering patterns also satisfy the triple-log law"
+        "relationship": "Studies $\\sigma$ iteration convergence — $\\sigma$ ordering patterns also satisfy the triple-log law"
       },
       {
         "proofId": "erdos-413",
-        "relationship": "Studies $\\omega$ barriers \u2014 the same additive function $\\omega$ whose ordering patterns follow triple-log"
+        "relationship": "Studies $\\omega$ barriers — the same additive function $\\omega$ whose ordering patterns follow triple-log"
       },
       {
         "proofId": "erdos-414",
-        "relationship": "Studies $\\tau$ orbit coalescence \u2014 the same divisor function $\\tau$ whose ordering patterns follow triple-log"
+        "relationship": "Studies $\\tau$ orbit coalescence — the same divisor function $\\tau$ whose ordering patterns follow triple-log"
       },
       {
         "proofId": "erdos-416",
-        "relationship": "Studies $V(x)$, the counting function for totient values \u2014 directly related to $\\varphi$ collision structure"
+        "relationship": "Studies $V(x)$, the counting function for totient values — directly related to $\\varphi$ collision structure"
       }
     ],
     "prerequisites": [
@@ -156,10 +156,10 @@
     {
       "id": "known-bounds",
       "title": "Known Bounds",
-      "summary": "States `AsymptoticTripleLog` as $c_1 \\log\\log\\log n \\leq F(n) \\leq c_2 \\log\\log\\log n$ using `Real.log` composed three times. The main theorem `erdos_1936_F_asymptotic` is sorry'd \u2014 this is Erd\u0151s's 1936 result proving $F(n) \\asymp \\log\\log\\log n$.",
+      "summary": "States `AsymptoticTripleLog` as $c_1 \\log\\log\\log n \\leq F(n) \\leq c_2 \\log\\log\\log n$ using `Real.log` composed three times. The main theorem `erdos_1936_F_asymptotic` is sorry'd — this is Erdős's 1936 result proving $F(n) \\asymp \\log\\log\\log n$.",
       "startLine": 86,
       "endLine": 98,
-      "mathContext": "States `AsymptoticTripleLog` as $c_1 \\log\\log\\log n \\leq F(n) \\leq c_2 \\log\\log\\log n$ using `Real.log` composed three times. The main theorem `erdos_1936_F_asymptotic` is sorry'd \u2014 this is Erd\u0151s's 1936 result proving $F(n) \\asymp \\log\\log\\log n$."
+      "mathContext": "States `AsymptoticTripleLog` as $c_1 \\log\\log\\log n \\leq F(n) \\leq c_2 \\log\\log\\log n$ using `Real.log` composed three times. The main theorem `erdos_1936_F_asymptotic` is sorry'd — this is Erdős's 1936 result proving $F(n) \\asymp \\log\\log\\log n$."
     },
     {
       "id": "open-questions",
@@ -172,14 +172,14 @@
     {
       "id": "specific-patterns",
       "title": "Specific Pattern Analysis",
-      "summary": "Defines `StrictlyIncreasingPattern` as `Equiv.refl` (identity permutation) and `AlternatingPattern` (sorry'd). States that for $k = 2$ ($n \\geq 10$) and $k = 3$ ($n \\geq 100$) all patterns are achievable \u2014 both sorry'd.",
+      "summary": "Defines `StrictlyIncreasingPattern` as `Equiv.refl` (identity permutation) and `AlternatingPattern` (sorry'd). States that for $k = 2$ ($n \\geq 10$) and $k = 3$ ($n \\geq 100$) all patterns are achievable — both sorry'd.",
       "startLine": 128,
       "endLine": 148,
-      "mathContext": "Defines `StrictlyIncreasingPattern` as `Equiv.refl` (identity permutation) and `AlternatingPattern` (sorry'd). States that for $k = 2$ ($n \\geq 10$) and $k = 3$ ($n \\geq 100$) all patterns are achievable \u2014 both sorry'd."
+      "mathContext": "Defines `StrictlyIncreasingPattern` as `Equiv.refl` (identity permutation) and `AlternatingPattern` (sorry'd). States that for $k = 2$ ($n \\geq 10$) and $k = 3$ ($n \\geq 100$) all patterns are achievable — both sorry'd."
     },
     {
       "id": "phi-properties",
-      "title": "Properties of \u03c6",
+      "title": "Properties of φ",
       "summary": "Proves $\\varphi(p) = p - 1$ from `Nat.totient_prime` (one of the few non-sorry results). States $\\varphi(2p) = p - 1$, consecutive primes give increasing $\\varphi$, and $\\varphi(n)/n$ can be arbitrarily small (via `Filter.atTop` and primorial numbers where $\\varphi(n)/n = \\prod(1-1/p) \\to 0$).",
       "startLine": 149,
       "endLine": 168,
@@ -203,14 +203,14 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #415 asks about ordering patterns in Euler's totient function. While Erd\u0151s proved F(n) \u224d log log log n in 1936, the exact constant, which pattern fails first, and which is most common all remain OPEN after nearly 90 years. The triple-log growth is universal across arithmetic functions, suggesting a deep structural phenomenon.",
-    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Analytic Number Theory:** Distribution of \u03c6 values and their correlations, Mertens' theorem, Ford's work on V(x)\n2. **Combinatorics:** Counting permutation patterns in sequences, Stanley-Wilf conjecture\n**3. Probabilistic Number Theory:** Independence in arithmetic functions, Erd\u0151s-Kac theorem\n4. **Order Statistics:** Extremal behavior of consecutive values, longest monotone subsequences\n5. **Ergodic Theory:** Long-range order in multiplicative functions\n6. **Arithmetic Dynamics:** Related to iterated function problems (#411-#414) studying the same arithmetic functions.",
+    "summary": "Erdős Problem #415 asks about ordering patterns in Euler's totient function. While Erdős proved F(n) ≍ log log log n in 1936, the exact constant, which pattern fails first, and which is most common all remain OPEN after nearly 90 years. The triple-log growth is universal across arithmetic functions, suggesting a deep structural phenomenon.",
+    "implications": "**Theoretical Significance**: This problem connects to:\n\n1. **Analytic Number Theory:** Distribution of φ values and their correlations, Mertens' theorem, Ford's work on V(x)\n2. **Combinatorics:** Counting permutation patterns in sequences, Stanley-Wilf conjecture\n**3. Probabilistic Number Theory:** Independence in arithmetic functions, Erdős-Kac theorem\n4. **Order Statistics:** Extremal behavior of consecutive values, longest monotone subsequences\n5. **Ergodic Theory:** Long-range order in multiplicative functions\n6. **Arithmetic Dynamics:** Related to iterated function problems (#411-#414) studying the same arithmetic functions.",
     "openQuestions": [
       "What is the exact constant c in F(n) = (c + o(1)) log log log n?",
       "Is strictly decreasing always the first pattern to fail?",
-      "Is the natural ordering (mimic \u03c6(1),...,\u03c6(k)) most common?",
+      "Is the natural ordering (mimic φ(1),...,φ(k)) most common?",
       "What is F(n) for small specific values of n?",
-      "How do patterns with equality (\u03c6(m+1) = \u03c6(m+2)) behave?",
+      "How do patterns with equality (φ(m+1) = φ(m+2)) behave?",
       "Does Carmichael's conjecture (no totient value taken exactly once) affect the pattern structure?"
     ]
   },
@@ -236,17 +236,17 @@
   },
   "references": [
     {
-      "authors": "P. Erd\u0151s",
+      "authors": "P. Erdős",
       "title": "On a problem of Chowla and some related problems",
       "year": "1936",
       "venue": "Proc. Nat. Inst. Sci. India",
-      "note": "Original proof that F(n) \u224d log log log n"
+      "note": "Original proof that F(n) ≍ log log log n"
     },
     {
-      "authors": "P. Erd\u0151s, R. L. Graham",
+      "authors": "P. Erdős, R. L. Graham",
       "title": "Old and New Problems and Results in Combinatorial Number Theory",
       "year": "1980",
-      "venue": "Monographies de L'Enseignement Math\u00e9matique",
+      "venue": "Monographies de L'Enseignement Mathématique",
       "note": "Collection of open problems including #415"
     },
     {
@@ -268,17 +268,17 @@
     {
       "targetId": "erdos-1064",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: arithmetic-functions, number-theory, totient-function"
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, number-theory, totient-function"
     },
     {
       "targetId": "erdos-416",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: asymptotics, number-theory, totient-function"
+      "description": "Related Erdős problem sharing themes: asymptotics, number-theory, totient-function"
     },
     {
       "targetId": "erdos-822",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: arithmetic-functions, number-theory, totient-function"
+      "description": "Related Erdős problem sharing themes: arithmetic-functions, number-theory, totient-function"
     }
   ],
   "sorries": 14

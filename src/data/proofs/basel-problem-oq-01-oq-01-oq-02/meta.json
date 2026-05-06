@@ -1,10 +1,10 @@
 {
   "id": "basel-problem-oq-01-oq-01-oq-02",
-  "title": "Ap\u00e9ry's Proof of \u03b6(3) Irrationality",
+  "title": "Apéry's Proof of ζ(3) Irrationality",
   "slug": "basel-problem-oq-01-oq-01-oq-02",
-  "description": "Formalizes the framework for Ap\u00e9ry's 1978 proof that \u03b6(3) is irrational. Defines the Ap\u00e9ry numbers b\u2099 = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2, verifies initial values (b\u2080=1, b\u2081=5, b\u2082=73, b\u2083=1445), states the 3-term recurrence, and sets up the irrationality argument.",
+  "description": "Formalizes the framework for Apéry's 1978 proof that ζ(3) is irrational. Defines the Apéry numbers bₙ = ∑ C(n,k)²C(n+k,k)², verifies initial values (b₀=1, b₁=5, b₂=73, b₃=1445), states the 3-term recurrence, and sets up the irrationality argument.",
   "meta": {
-    "author": "Ap\u00e9ry, Roger (1978)",
+    "author": "Apéry, Roger (1978)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
     "date": "1978",
     "status": "axiomatized",
@@ -25,25 +25,25 @@
     "assumptions": "5 axioms: aperyB_recurrence (WZ recurrence), denominator_control (lcm^3*a_n is integer), lcm_hanson_bound (3^n Hanson bound), apery_linearForm_decay (geometric decay), apery_linearForm_nonzero (L_n != 0 for n>=1). Removed unused nair_lcm_bound. Main theorem apery_theorem PROVED from these 5 axioms.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "Defined Ap\u00e9ry numbers aperyB(n) = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2 as a computable \u2115-valued function",
-      "Proved initial values b\u2080=1, b\u2081=5, b\u2082=73, b\u2083=1445 and positivity",
-      "Stated 3-term Ap\u00e9ry recurrence with verified numerical checks at n=1,2",
+      "Defined Apéry numbers aperyB(n) = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function",
+      "Proved initial values b₀=1, b₁=5, b₂=73, b₃=1445 and positivity",
+      "Stated 3-term Apéry recurrence with verified numerical checks at n=1,2",
       "Identified Mathlib infrastructure gaps for full formalization"
     ],
     "theoremCount": 52,
     "definitionCount": 9
   },
   "overview": {
-    "historicalContext": "Roger Ap\u00e9ry stunned the mathematical community in June 1978 when he announced a proof that \u03b6(3) is irrational. His proof was initially met with skepticism due to its surprising nature \u2014 no one expected such a classical constant to yield to elementary methods. Henri Cohen and Don Zagier independently verified the proof within weeks. Alfred van der Poorten published a detailed exposition in 1979, making the proof widely accessible. The key innovation was an explicit pair of sequences satisfying a common 3-term recurrence, whose ratio converges to \u03b6(3) faster than any rational approximation can.",
-    "problemStatement": "Formalize Ap\u00e9ry's proof that \u03b6(3) = 1 + 1/8 + 1/27 + 1/64 + ... is irrational. The proof constructs explicit integer sequences b\u2099 (Ap\u00e9ry numbers) and rational sequences a\u2099 such that b\u2099\u00b7\u03b6(3) - a\u2099 \u2192 0 geometrically fast, forcing irrationality.",
-    "text": "Defines the Ap\u00e9ry number sequence b\u2099 = \u2211_{k=0}^{n} C(n,k)\u00b2C(n+k,k)\u00b2 and verifies initial values. States the fundamental 3-term recurrence (n+1)\u00b3b\u2099\u208a\u2081 = (2n+1)(17n\u00b2+17n+5)b\u2099 - n\u00b3b\u2099\u208b\u2081 with numerical verification. Sets up the irrationality argument framework.",
-    "proofStrategy": "The proof proceeds in layers:\n\n**Layer 1 (Sequences)**: Define b\u2099 = \u2211C(n,k)\u00b2C(n+k,k)\u00b2 (Ap\u00e9ry numbers) as positive integers.\n\n**Layer 2 (Recurrence)**: Both a\u2099 and b\u2099 satisfy (n+1)\u00b3u\u2099\u208a\u2081 = (2n+1)(17n\u00b2+17n+5)u\u2099 - n\u00b3u\u2099\u208b\u2081. The characteristic polynomial t\u00b2 - 34t + 1 has roots (1+\u221a2)\u2074 \u2248 33.97 and (\u221a2-1)\u2074 \u2248 0.029.\n\n**Layer 3 (Estimates)**: b\u2099 grows like (1+\u221a2)^{4n} while |b\u2099\u03b6(3) - a\u2099| decays like (\u221a2-1)^{4n}.\n\n**Layer 4 (Irrationality)**: If \u03b6(3) = p/q then q\u00b7b\u2099\u00b7\u03b6(3) - q\u00b7a\u2099 is a nonzero integer for large n but converges to 0, contradiction.",
+    "historicalContext": "Roger Apéry stunned the mathematical community in June 1978 when he announced a proof that ζ(3) is irrational. His proof was initially met with skepticism due to its surprising nature — no one expected such a classical constant to yield to elementary methods. Henri Cohen and Don Zagier independently verified the proof within weeks. Alfred van der Poorten published a detailed exposition in 1979, making the proof widely accessible. The key innovation was an explicit pair of sequences satisfying a common 3-term recurrence, whose ratio converges to ζ(3) faster than any rational approximation can.",
+    "problemStatement": "Formalize Apéry's proof that ζ(3) = 1 + 1/8 + 1/27 + 1/64 + ... is irrational. The proof constructs explicit integer sequences bₙ (Apéry numbers) and rational sequences aₙ such that bₙ·ζ(3) - aₙ → 0 geometrically fast, forcing irrationality.",
+    "text": "Defines the Apéry number sequence bₙ = ∑_{k=0}^{n} C(n,k)²C(n+k,k)² and verifies initial values. States the fundamental 3-term recurrence (n+1)³bₙ₊₁ = (2n+1)(17n²+17n+5)bₙ - n³bₙ₋₁ with numerical verification. Sets up the irrationality argument framework.",
+    "proofStrategy": "The proof proceeds in layers:\n\n**Layer 1 (Sequences)**: Define bₙ = ∑C(n,k)²C(n+k,k)² (Apéry numbers) as positive integers.\n\n**Layer 2 (Recurrence)**: Both aₙ and bₙ satisfy (n+1)³uₙ₊₁ = (2n+1)(17n²+17n+5)uₙ - n³uₙ₋₁. The characteristic polynomial t² - 34t + 1 has roots (1+√2)⁴ ≈ 33.97 and (√2-1)⁴ ≈ 0.029.\n\n**Layer 3 (Estimates)**: bₙ grows like (1+√2)^{4n} while |bₙζ(3) - aₙ| decays like (√2-1)^{4n}.\n\n**Layer 4 (Irrationality)**: If ζ(3) = p/q then q·bₙ·ζ(3) - q·aₙ is a nonzero integer for large n but converges to 0, contradiction.",
     "keyInsights": [
-      "Ap\u00e9ry numbers b\u2099 = \u2211C(n,k)\u00b2C(n+k,k)\u00b2 arise naturally in the theory of modular forms and have deep connections to algebraic geometry (Beukers, 1987)",
-      "The characteristic roots (1+\u221a2)\u2074 and (\u221a2-1)\u2074 multiply to 1 (since the recurrence has leading coefficient ratio n\u00b3/(n+1)\u00b3 \u2192 1), explaining why one solution grows and the other decays",
-      "The critical trick is that lcm(1,...,n)\u00b3 clears all denominators of a\u2099, and lcm(1,...,n) \u2264 e^{n+o(n)} by the prime number theorem \u2014 so the denominator growth is only exponential with base e\u00b3 \u2248 20.1, much less than the decay base 1/(\u221a2-1)\u2074 \u2248 34",
+      "Apéry numbers bₙ = ∑C(n,k)²C(n+k,k)² arise naturally in the theory of modular forms and have deep connections to algebraic geometry (Beukers, 1987)",
+      "The characteristic roots (1+√2)⁴ and (√2-1)⁴ multiply to 1 (since the recurrence has leading coefficient ratio n³/(n+1)³ → 1), explaining why one solution grows and the other decays",
+      "The critical trick is that lcm(1,...,n)³ clears all denominators of aₙ, and lcm(1,...,n) ≤ e^{n+o(n)} by the prime number theorem — so the denominator growth is only exponential with base e³ ≈ 20.1, much less than the decay base 1/(√2-1)⁴ ≈ 34",
       "No WZ-theory infrastructure exists in Mathlib, so the recurrence must be proved by direct combinatorial manipulation or trusted numerical verification",
-      "A completely axiom-free result (`denominator_control_factorial`) proves $(n!)^3 \\cdot a_n \\in \\mathbb{Z}$ by pure induction on the recurrence \u2014 demonstrating the denominator structure is provable without oracle lemmas, though the stronger LCM version needed for the main theorem (LCM grows as $e^n$ vs $n!$ grows much faster) remains axiomatized"
+      "A completely axiom-free result (`denominator_control_factorial`) proves $(n!)^3 \\cdot a_n \\in \\mathbb{Z}$ by pure induction on the recurrence — demonstrating the denominator structure is provable without oracle lemmas, though the stronger LCM version needed for the main theorem (LCM grows as $e^n$ vs $n!$ grows much faster) remains axiomatized"
     ],
     "prerequisites": [
       "Number theory (irrationality, Diophantine approximation)",
@@ -57,63 +57,63 @@
       "title": "Module Header and Proof Overview",
       "startLine": 1,
       "endLine": 47,
-      "summary": "Imports, module docstring explaining the Ap\u00e9ry sequence strategy, status summary (5 axioms, 0 sorries), and opens/namespace.",
-      "mathContext": "The module documents the proof architecture: (1) construct b\u2099, a\u2099 satisfying a common recurrence; (2) establish $|b_n\\zeta(3) - a_n| \\to 0$ geometrically; (3) show denominators of a\u2099 are bounded by lcm\u00b3 ~ e^{3n}; (4) integer-squeeze contradiction."
+      "summary": "Imports, module docstring explaining the Apéry sequence strategy, status summary (5 axioms, 0 sorries), and opens/namespace.",
+      "mathContext": "The module documents the proof architecture: (1) construct bₙ, aₙ satisfying a common recurrence; (2) establish $|b_n\\zeta(3) - a_n| \\to 0$ geometrically; (3) show denominators of aₙ are bounded by lcm³ ~ e^{3n}; (4) integer-squeeze contradiction."
     },
     {
       "id": "zeta-infrastructure",
       "title": "Part I: Zeta Value Infrastructure",
       "startLine": 48,
       "endLine": 68,
-      "summary": "Defines zetaValue(s) = \u2211 1/n^s via tsum, proves summability for s \u2265 2 and positivity \u03b6(s) > 0.",
-      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$ by the p-series test. For the Ap\u00e9ry proof, the target is $\\zeta(3) \\approx 1.202$."
+      "summary": "Defines zetaValue(s) = ∑ 1/n^s via tsum, proves summability for s ≥ 2 and positivity ζ(s) > 0.",
+      "mathContext": "$\\zeta(s) = \\sum_{n=1}^{\\infty} 1/n^s$ converges for $s > 1$ by the p-series test. For the Apéry proof, the target is $\\zeta(3) \\approx 1.202$."
     },
     {
       "id": "apery-sequence",
-      "title": "Part II: The Ap\u00e9ry b-Sequence",
+      "title": "Part II: The Apéry b-Sequence",
       "startLine": 69,
       "endLine": 109,
-      "summary": "Defines b\u2099 = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2 as a computable \u2115-valued function. Verifies b\u2080=1, b\u2081=5, b\u2082=73, b\u2083=1445. Proves all Ap\u00e9ry numbers are positive.",
+      "summary": "Defines bₙ = ∑ C(n,k)²C(n+k,k)² as a computable ℕ-valued function. Verifies b₀=1, b₁=5, b₂=73, b₃=1445. Proves all Apéry numbers are positive.",
       "mathContext": "$b_n = \\sum_{k=0}^{n} \\binom{n}{k}^2 \\binom{n+k}{k}^2$. These are OEIS A005259. The growth rate $b_n \\sim C(1+\\sqrt{2})^{4n}/n^{3/2}$ foreshadows the characteristic polynomial."
     },
     {
       "id": "recurrence",
-      "title": "Part III: The Ap\u00e9ry Recurrence",
+      "title": "Part III: The Apéry Recurrence",
       "startLine": 110,
       "endLine": 155,
-      "summary": "Defines aperyRecCoeff(n) = (2n+1)(17n\u00b2+17n+5). Axiomatizes the 3-term recurrence. Verifies n=1,2 numerically. Proves the coefficient bound aperyRecCoeff(n) \u2264 34\u00b7(n+1)\u00b3.",
+      "summary": "Defines aperyRecCoeff(n) = (2n+1)(17n²+17n+5). Axiomatizes the 3-term recurrence. Verifies n=1,2 numerically. Proves the coefficient bound aperyRecCoeff(n) ≤ 34·(n+1)³.",
       "mathContext": "$(n+1)^3 b_{n+1} = (2n+1)(17n^2+17n+5) b_n - n^3 b_{n-1}$. The characteristic polynomial $t^2 - 34t + 1$ has roots $(1\\pm\\sqrt{2})^4 \\approx 33.97$ and $0.029$."
     },
     {
       "id": "growth-estimates",
-      "title": "Part IV: Growth Bound for b\u2099",
+      "title": "Part IV: Growth Bound for bₙ",
       "startLine": 156,
       "endLine": 234,
-      "summary": "Proves b\u2099 \u2264 34^n by induction using the step bound aperyB_le_34_mul_pred. States the characteristic polynomial discriminant.",
+      "summary": "Proves bₙ ≤ 34^n by induction using the step bound aperyB_le_34_mul_pred. States the characteristic polynomial discriminant.",
       "mathContext": "Step: $(n+1)^3 b_{n+1} \\leq \\text{coeff}(n) \\cdot b_n \\leq 34(n+1)^3 b_n$, cancel $(n+1)^3 > 0$, giving $b_{n+1} \\leq 34 b_n$. Induction gives $b_n \\leq 34^n$."
     },
     {
       "id": "a-sequence-and-infrastructure",
-      "title": "Parts V\u2013IX: a-Sequence, Harmonic Numbers, LCM, Linear Form",
+      "title": "Parts V–IX: a-Sequence, Harmonic Numbers, LCM, Linear Form",
       "startLine": 235,
       "endLine": 395,
-      "summary": "Defines aperyA (a\u2080=0, a\u2081=6, a\u2082=351/4 via recurrence), harmonic numbers H_n = \u2211 1/k, generalized harmonics, lcmUpTo (with positivity, monotonicity, concrete values), and the real linear form L\u2099 = b\u2099\u00b7\u03b6(3) - a\u2099. Axiomatizes denominator_control.",
+      "summary": "Defines aperyA (a₀=0, a₁=6, a₂=351/4 via recurrence), harmonic numbers H_n = ∑ 1/k, generalized harmonics, lcmUpTo (with positivity, monotonicity, concrete values), and the real linear form Lₙ = bₙ·ζ(3) - aₙ. Axiomatizes denominator_control.",
       "mathContext": "$a_n$ satisfies the same recurrence as $b_n$ with $a_0=0, a_1=6$. The denominator control axiom: $\\text{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$. This is the key arithmetic fact making the integer-squeeze work."
     },
     {
       "id": "divisibility-and-conditional",
-      "title": "Parts X\u2013XII: Divisibility Infrastructure and Conditional Theorem",
+      "title": "Parts X–XII: Divisibility Infrastructure and Conditional Theorem",
       "startLine": 396,
       "endLine": 579,
-      "summary": "Proves dvd_lcmUpTo, rat_den_dvd_lcmUpTo, apery_bterm_int (integrality of lcm\u00b3\u00b7b\u2099\u00b7r). Core theorem: apery_irrationality_conditional \u2014 IF decay+nonzero+denominator THEN \u03b6(3) irrational. Full integer-squeeze argument formalized.",
-      "mathContext": "Integer-squeeze: if $\\zeta(3) = r \\in \\mathbb{Q}$, then $\\text{lcm}(1,\\ldots,N)^3 \\cdot L_N$ is a nonzero integer (by divisibility) of absolute value $\\geq 1$, but $< 1$ by the decay bound \u2014 contradiction."
+      "summary": "Proves dvd_lcmUpTo, rat_den_dvd_lcmUpTo, apery_bterm_int (integrality of lcm³·bₙ·r). Core theorem: apery_irrationality_conditional — IF decay+nonzero+denominator THEN ζ(3) irrational. Full integer-squeeze argument formalized.",
+      "mathContext": "Integer-squeeze: if $\\zeta(3) = r \\in \\mathbb{Q}$, then $\\text{lcm}(1,\\ldots,N)^3 \\cdot L_N$ is a nonzero integer (by divisibility) of absolute value $\\geq 1$, but $< 1$ by the decay bound — contradiction."
     },
     {
       "id": "main-theorem",
       "title": "Part XIII: Quantitative Bounds and Main Theorem",
       "startLine": 580,
       "endLine": 665,
-      "summary": "Proves apery_decay_rate_pos (0 < 17-12\u221a2), apery_product_lt_one (27\u00b7(17-12\u221a2) < 1). Axiomatizes Hanson's bound (lcm \u2264 3^n), linearForm decay and nonzero. Proves apery_theorem (\u03b6(3) irrational) by combining all components.",
+      "summary": "Proves apery_decay_rate_pos (0 < 17-12√2), apery_product_lt_one (27·(17-12√2) < 1). Axiomatizes Hanson's bound (lcm ≤ 3^n), linearForm decay and nonzero. Proves apery_theorem (ζ(3) irrational) by combining all components.",
       "mathContext": "Key inequality: $27 \\cdot (17-12\\sqrt{2}) < 1$ ensures the product $(\\text{lcm}(1,\\ldots,n)/3^n)^3 \\cdot |L_n| \\to 0$. This is the threshold: $3^3 = 27$ just fits under $1/(17-12\\sqrt{2}) \\approx 34$."
     },
     {
@@ -121,33 +121,33 @@
       "title": "Part XIV: Factorial Denominator Control (Axiom-Free)",
       "startLine": 666,
       "endLine": 760,
-      "summary": "Proves denominator_control_factorial: (n!)\u00b3\u00b7a\u2099 \u2208 \u2124 for all n, entirely without axioms. Induction on the recurrence using factorial identity (n+2)! = (n+2)\u00b7(n+1)!. Also proves lcmUpTo_dvd_of_le, lcmUpTo_three = 6, lcmUpTo_four = 12.",
+      "summary": "Proves denominator_control_factorial: (n!)³·aₙ ∈ ℤ for all n, entirely without axioms. Induction on the recurrence using factorial identity (n+2)! = (n+2)·(n+1)!. Also proves lcmUpTo_dvd_of_le, lcmUpTo_three = 6, lcmUpTo_four = 12.",
       "mathContext": "$(n!)^3 \\cdot a_n \\in \\mathbb{Z}$ proved by induction: base cases $a_0=0$, $a_1=6$; step uses the recurrence to reduce to $((n+1)!)^3 \\cdot a_{n+1}$ and $((n!)^3) \\cdot a_n$, both integral by inductive hypothesis. Weaker than `denominator_control` (LCM $\\leq$ $n!$) but completely proved."
     },
     {
       "id": "lower-bound",
-      "title": "Part XV: Lower Bound \u03b6(3) > 6/5 and Concrete L\u2081 > 0",
+      "title": "Part XV: Lower Bound ζ(3) > 6/5 and Concrete L₁ > 0",
       "startLine": 761,
       "endLine": 791,
-      "summary": "Proves zetaValue_three_gt_6_5 (\u03b6(3) > 6/5) via a 16-term partial sum computed by norm_num. Then proves linearForm_one_pos (L\u2081 = 5\u03b6(3) - 6 > 0) as a concrete axiom-free instance of the nonzero property.",
+      "summary": "Proves zetaValue_three_gt_6_5 (ζ(3) > 6/5) via a 16-term partial sum computed by norm_num. Then proves linearForm_one_pos (L₁ = 5ζ(3) - 6 > 0) as a concrete axiom-free instance of the nonzero property.",
       "mathContext": "$\\sum_{n=1}^{16} 1/n^3 > 6/5$ by direct computation (`norm_num`). Since $\\zeta(3) \\geq \\sum_{n=1}^{16} 1/n^3$ (partial sums bound the series from below by `sum_le_tsum`), we get $\\zeta(3) > 6/5$. Then $L_1 = 5\\zeta(3) - 6 > 5 \\cdot 6/5 - 6 = 0$."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Ap\u00e9ry's 1978 proof of \u03b6(3) irrationality with apery_theorem PROVED from 5 axioms. Added lcmUpTo monotonicity (lcmUpTo_dvd_of_le) and concrete values (lcmUpTo_three=6, lcmUpTo_four=12). Removed unused nair_lcm_bound axiom (4^n bound \u2014 too weak for the main proof). Key proved results: apery_irrationality_conditional (integer-squeeze), apery_product_lt_one (27\u00b7(17-12\u221a2) < 1).",
-    "implications": "The main theorem apery_theorem is now a proved result, not an axiom. The 5 remaining axioms correspond to natural mathematical components: WZ recurrence (aperyB_recurrence), denominator control (denominator_control), Hanson's lcm bound (lcm_hanson_bound), and the two analytic properties of the linear form (decay + nonzero). The Ap\u00e9ry number infrastructure is reusable for Beukers' alternative proof via modular forms.",
+    "summary": "Formalizes Apéry's 1978 proof of ζ(3) irrationality with apery_theorem PROVED from 5 axioms. Added lcmUpTo monotonicity (lcmUpTo_dvd_of_le) and concrete values (lcmUpTo_three=6, lcmUpTo_four=12). Removed unused nair_lcm_bound axiom (4^n bound — too weak for the main proof). Key proved results: apery_irrationality_conditional (integer-squeeze), apery_product_lt_one (27·(17-12√2) < 1).",
+    "implications": "The main theorem apery_theorem is now a proved result, not an axiom. The 5 remaining axioms correspond to natural mathematical components: WZ recurrence (aperyB_recurrence), denominator control (denominator_control), Hanson's lcm bound (lcm_hanson_bound), and the two analytic properties of the linear form (decay + nonzero). The Apéry number infrastructure is reusable for Beukers' alternative proof via modular forms.",
     "openQuestions": [
-      "Prove aperyB_recurrence via direct combinatorial identity or certified Zeilberger telescoping \u2014 this requires WZ-theory infrastructure absent from Mathlib",
-      "Prove denominator_control: lcm(1,...,n)\u00b3\u00b7a\u2099 \u2208 \u2124, which requires an explicit closed-form for a\u2099 involving H_n and H_n^(3)",
-      "Prove lcm_hanson_bound (Hanson 1974): lcm(1,...,n) \u2264 3^n via Chebyshev theta function estimates",
-      "Prove the two analytic axioms (decay + nonzero) using the Beukers integral representation \u222b\u2080\u00b9\u222b\u2080\u00b9\u222b\u2080\u00b9 x\u207fy\u207fz\u207f/((1-z(1-x))\u00b2) dx dy dz"
+      "Prove aperyB_recurrence via direct combinatorial identity or certified Zeilberger telescoping — this requires WZ-theory infrastructure absent from Mathlib",
+      "Prove denominator_control: lcm(1,...,n)³·aₙ ∈ ℤ, which requires an explicit closed-form for aₙ involving H_n and H_n^(3)",
+      "Prove lcm_hanson_bound (Hanson 1974): lcm(1,...,n) ≤ 3^n via Chebyshev theta function estimates",
+      "Prove the two analytic axioms (decay + nonzero) using the Beukers integral representation ∫₀¹∫₀¹∫₀¹ xⁿyⁿzⁿ/((1-z(1-x))²) dx dy dz"
     ]
   },
   "crossReferences": [
     {
       "targetId": "basel-problem-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Parent entry studying \u03b6(5) irrationality; this formalizes the known technique (Ap\u00e9ry's proof) for the solved case \u03b6(3)"
+      "description": "Parent entry studying ζ(5) irrationality; this formalizes the known technique (Apéry's proof) for the solved case ζ(3)"
     },
     {
       "targetId": "basel-problem-oq-02",
@@ -159,12 +159,12 @@
     {
       "name": "aperyB",
       "type": "core",
-      "description": "The Ap\u00e9ry number sequence b\u2099 = \u2211 C(n,k)\u00b2C(n+k,k)\u00b2, defined as a computable \u2115-valued function with verified initial values."
+      "description": "The Apéry number sequence bₙ = ∑ C(n,k)²C(n+k,k)², defined as a computable ℕ-valued function with verified initial values."
     },
     {
       "name": "apery_theorem",
       "type": "core",
-      "description": "\u03b6(3) is irrational. Proved from 5 axioms: aperyB_recurrence (WZ recurrence), denominator_control, lcm_hanson_bound (Hanson 1974), apery_linearForm_decay, apery_linearForm_nonzero."
+      "description": "ζ(3) is irrational. Proved from 5 axioms: aperyB_recurrence (WZ recurrence), denominator_control, lcm_hanson_bound (Hanson 1974), apery_linearForm_decay, apery_linearForm_nonzero."
     }
   ],
   "leanFile": {
@@ -188,32 +188,32 @@
     "definitionCount": 9,
     "path": "Proofs/BaselProblemOQ01OQ01OQ02.lean",
     "sorries": 0,
-    "notes": "11 pre-existing build errors fixed (Mathlib API changes: sum_le_sum_of_subset removed, Finset.lcm normalization, dcstring parser incompatibilities). Parts XVII-XVIII added: telescoping upper bound for \u03b6(3) tail + L\u2082 > 0 via native_decide.",
+    "notes": "11 pre-existing build errors fixed (Mathlib API changes: sum_le_sum_of_subset removed, Finset.lcm normalization, dcstring parser incompatibilities). Parts XVII-XVIII added: telescoping upper bound for ζ(3) tail + L₂ > 0 via native_decide.",
     "additionalFiles": [
       "Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
     ]
   },
   "references": [
     {
-      "authors": "Ap\u00e9ry, Roger",
-      "title": "Irrationalit\u00e9 de \u03b6(2) et \u03b6(3)",
+      "authors": "Apéry, Roger",
+      "title": "Irrationalité de ζ(2) et ζ(3)",
       "year": "1979",
-      "venue": "Ast\u00e9risque, vol. 61, pp. 11-13",
-      "note": "Original announcement of the irrationality proof for \u03b6(3). The sequences and recurrence are stated without proof."
+      "venue": "Astérisque, vol. 61, pp. 11-13",
+      "note": "Original announcement of the irrationality proof for ζ(3). The sequences and recurrence are stated without proof."
     },
     {
       "authors": "van der Poorten, Alfred",
-      "title": "A Proof that Euler Missed... Ap\u00e9ry's Proof of the Irrationality of \u03b6(3)",
+      "title": "A Proof that Euler Missed... Apéry's Proof of the Irrationality of ζ(3)",
       "year": "1979",
       "venue": "The Mathematical Intelligencer, vol. 1(4), pp. 195-203",
-      "note": "The standard readable exposition of Ap\u00e9ry's proof, filling in all details."
+      "note": "The standard readable exposition of Apéry's proof, filling in all details."
     },
     {
       "authors": "Zudilin, Wadim",
-      "title": "Ap\u00e9ry's theorem. Thirty years after",
+      "title": "Apéry's theorem. Thirty years after",
       "year": "2002",
       "venue": "International Journal of Mathematics and Mathematical Sciences, vol. 2003(4), pp. 175-190",
-      "note": "Survey of Ap\u00e9ry-like proofs and generalizations, including connections to modular forms."
+      "note": "Survey of Apéry-like proofs and generalizations, including connections to modular forms."
     }
   ],
   "sorries": 0

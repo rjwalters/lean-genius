@@ -1,10 +1,10 @@
 {
   "id": "erdos-240",
-  "title": "Erd\u0151s Problem #240: Gaps Between P-Smooth Numbers",
+  "title": "Erdős Problem #240: Gaps Between P-Smooth Numbers",
   "slug": "erdos-240",
-  "description": "Is there an infinite set of primes P such that gaps between consecutive P-smooth numbers \u2192 \u221e? YES - Tijdeman (1973) proved for any \u03b5 > 0, exists infinite P with gaps \u226b a\u1d62^{1-\u03b5}.",
+  "description": "Is there an infinite set of primes P such that gaps between consecutive P-smooth numbers → ∞? YES - Tijdeman (1973) proved for any ε > 0, exists infinite P with gaps ≫ aᵢ^{1-ε}.",
   "meta": {
-    "author": "Wintner (problem), P\u00f3lya (1918), Tijdeman (1973)",
+    "author": "Wintner (problem), Pólya (1918), Tijdeman (1973)",
     "sourceUrl": "https://erdosproblems.com/240",
     "date": "1973",
     "status": "axiomatized",
@@ -54,8 +54,8 @@
       "gap definition: difference between consecutive smooths",
       "gapsTendToInfinity predicate: gaps are unbounded",
       "erdos240Question: formal problem statement",
-      "finite_P_unbounded_gaps axiom: finite P implies gaps \u2192 \u221e",
-      "tijdeman_main_theorem axiom: gaps \u226b a\u1d62^{1-\u03b5} for infinite P",
+      "finite_P_unbounded_gaps axiom: finite P implies gaps → ∞",
+      "tijdeman_main_theorem axiom: gaps ≫ aᵢ^{1-ε} for infinite P",
       "erdos240_answer theorem: YES answer",
       "erdos_240 theorem: main result"
     ],
@@ -66,7 +66,7 @@
       "Set theory (infinite sets, finite sets)",
       "Real analysis (limits, sequences)",
       "Polynomial arithmetic (quadratic forms)",
-      "P\u00f3lya's theorem on prime factors of polynomials"
+      "Pólya's theorem on prime factors of polynomials"
     ],
     "lineCount": 264,
     "assumptions": "3 axioms: smoothEnum, finite_P_unbounded_gaps, tijdeman_main_theorem. 2 sorries.",
@@ -74,17 +74,17 @@
     "definitionCount": 5
   },
   "overview": {
-    "historicalContext": "Aurel Wintner posed this question to Erd\u0151s: given an infinite set P of primes, must the gaps between consecutive P-smooth numbers (integers whose prime factors all lie in P) tend to infinity? The finite case was already understood through P\u00f3lya's 1918 theorem, which showed that the largest prime factor of an irreducible quadratic polynomial f(n) grows without bound. Since consecutive P-smooth numbers n, n+k yield n(n+k) as P-smooth, and P\u00f3lya guarantees this product eventually has prime factors outside any finite P, gaps must grow for finite P. St\u00f8rmer had shown in 1897 that for finite P, only finitely many consecutive integers can both be P-smooth, connecting to Pell equations. Tijdeman resolved the full question in his landmark 1973 paper 'On integers with many small prime factors': for any \u03b5 > 0, one can construct an infinite set of primes P such that gaps between consecutive P-smooth numbers grow at least as fast as $a_i^{1-\\varepsilon}$. The key insight is that if the primes in P grow sufficiently rapidly, then P-smooth numbers become sparse enough to force large gaps, even though P is infinite. This result connects to the ABC conjecture, which would give even stronger gap bounds, and to the broader theory of smooth numbers central to modern cryptography and factorization algorithms.",
-    "problemStatement": "**Problem Statement (Solved)**\n\nIs there an infinite set of primes P such that if {a\u2081 < a\u2082 < \u00b7\u00b7\u00b7} are the P-smooth numbers, then lim(a\u1d62\u208a\u2081 - a\u1d62) = \u221e?\n\n**Answer: YES**\n\nTijdeman (1973) proved: For any \u03b5 > 0, there exists an infinite set of primes P such that gaps satisfy a\u1d62\u208a\u2081 - a\u1d62 \u226b a\u1d62^{1-\u03b5}.\n\n**Key insight:** Making P 'sparse' (primes grow fast) makes P-smooth numbers sparse, hence large gaps.",
-    "text": "Is there an infinite set of primes P such that gaps between consecutive P-smooth numbers \u2192 \u221e? YES - Tijdeman (1973) proved for any \u03b5 > 0, exists infinite P with gaps \u226b a\u1d62^{1-\u03b5}.",
-    "proofStrategy": "The formalization builds up from definitions to the main result in layers. First, isPSmooth P n defines P-smoothness as positivity plus all prime factors lying in P, and smoothEnum axiomatizes the ordered enumeration of P-smooth numbers. The gap function measures consecutive differences. The main question erdos240Question asks for an infinite P with unbounded gaps. The proof chain proceeds: P\u00f3lya's theorem (prime factors of quadratics grow) implies finite_P_unbounded_gaps (finite P forces gap divergence), and then Tijdeman's main theorem constructs an infinite P achieving gaps $\\ge c \\cdot a_i^{1-\\varepsilon}$. The final theorem erdos240_answer applies Tijdeman with \u03b5 = 1/2 to yield a YES answer. Two sorries remain in the limit arguments converting the gap growth rate to the unboundedness predicate.",
+    "historicalContext": "Aurel Wintner posed this question to Erdős: given an infinite set P of primes, must the gaps between consecutive P-smooth numbers (integers whose prime factors all lie in P) tend to infinity? The finite case was already understood through Pólya's 1918 theorem, which showed that the largest prime factor of an irreducible quadratic polynomial f(n) grows without bound. Since consecutive P-smooth numbers n, n+k yield n(n+k) as P-smooth, and Pólya guarantees this product eventually has prime factors outside any finite P, gaps must grow for finite P. Størmer had shown in 1897 that for finite P, only finitely many consecutive integers can both be P-smooth, connecting to Pell equations. Tijdeman resolved the full question in his landmark 1973 paper 'On integers with many small prime factors': for any ε > 0, one can construct an infinite set of primes P such that gaps between consecutive P-smooth numbers grow at least as fast as $a_i^{1-\\varepsilon}$. The key insight is that if the primes in P grow sufficiently rapidly, then P-smooth numbers become sparse enough to force large gaps, even though P is infinite. This result connects to the ABC conjecture, which would give even stronger gap bounds, and to the broader theory of smooth numbers central to modern cryptography and factorization algorithms.",
+    "problemStatement": "**Problem Statement (Solved)**\n\nIs there an infinite set of primes P such that if {a₁ < a₂ < ···} are the P-smooth numbers, then lim(aᵢ₊₁ - aᵢ) = ∞?\n\n**Answer: YES**\n\nTijdeman (1973) proved: For any ε > 0, there exists an infinite set of primes P such that gaps satisfy aᵢ₊₁ - aᵢ ≫ aᵢ^{1-ε}.\n\n**Key insight:** Making P 'sparse' (primes grow fast) makes P-smooth numbers sparse, hence large gaps.",
+    "text": "Is there an infinite set of primes P such that gaps between consecutive P-smooth numbers → ∞? YES - Tijdeman (1973) proved for any ε > 0, exists infinite P with gaps ≫ aᵢ^{1-ε}.",
+    "proofStrategy": "The formalization builds up from definitions to the main result in layers. First, isPSmooth P n defines P-smoothness as positivity plus all prime factors lying in P, and smoothEnum axiomatizes the ordered enumeration of P-smooth numbers. The gap function measures consecutive differences. The main question erdos240Question asks for an infinite P with unbounded gaps. The proof chain proceeds: Pólya's theorem (prime factors of quadratics grow) implies finite_P_unbounded_gaps (finite P forces gap divergence), and then Tijdeman's main theorem constructs an infinite P achieving gaps $\\ge c \\cdot a_i^{1-\\varepsilon}$. The final theorem erdos240_answer applies Tijdeman with ε = 1/2 to yield a YES answer. Two sorries remain in the limit arguments converting the gap growth rate to the unboundedness predicate.",
     "keyInsights": [
-      "P\u00f3lya's 1918 theorem on prime factors of quadratics is the foundation: n(n+k) eventually has prime factors outside any finite P, so consecutive P-smooth numbers n, n+k cannot persist",
-      "The finite P case follows by contradiction: bounded gaps would force infinitely many consecutive P-smooth pairs, violating P\u00f3lya",
+      "Pólya's 1918 theorem on prime factors of quadratics is the foundation: n(n+k) eventually has prime factors outside any finite P, so consecutive P-smooth numbers n, n+k cannot persist",
+      "The finite P case follows by contradiction: bounded gaps would force infinitely many consecutive P-smooth pairs, violating Pólya",
       "Tijdeman's quantitative refinement gives gaps $\\gg a_i/(\\log a_i)^C$ for finite P, a much stronger bound than mere unboundedness",
       "For infinite P, making the primes grow sufficiently fast (e.g., super-exponentially) keeps P-smooth numbers sparse enough for gap divergence",
-      "The singleton P = {p} is the simplest case: P-smooth numbers are 1, p, p\u00b2, ... with gaps growing geometrically as $p^n(p-1)$",
-      "St\u00f8rmer's 1897 theorem (only finitely many consecutive P-smooth pairs for finite P) provides an independent route to gap divergence via Pell equation theory"
+      "The singleton P = {p} is the simplest case: P-smooth numbers are 1, p, p², ... with gaps growing geometrically as $p^n(p-1)$",
+      "Størmer's 1897 theorem (only finitely many consecutive P-smooth pairs for finite P) provides an independent route to gap divergence via Pell equation theory"
     ],
     "prerequisites": [
       "Prime numbers and prime factorization",
@@ -92,7 +92,7 @@
       "Set theory (infinite sets, finite sets)",
       "Real analysis (limits, sequences)",
       "Polynomial arithmetic (quadratic forms)",
-      "P\u00f3lya's theorem on prime factors of polynomials"
+      "Pólya's theorem on prime factors of polynomials"
     ]
   },
   "sections": [
@@ -122,7 +122,7 @@
     },
     {
       "id": "polya-theorem",
-      "title": "P\u00f3lya's Theorem (1918)",
+      "title": "Pólya's Theorem (1918)",
       "summary": "polya_theorem, polya_corollary axioms",
       "startLine": 120,
       "endLine": 139,
@@ -170,10 +170,10 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #240, asked by Wintner, asks whether an infinite set of primes P can have unbounded gaps between P-smooth numbers. Tijdeman (1973) proved the answer is YES: for any \u03b5 > 0, there exists an infinite P with gaps \u226b a\u1d62^{1-\u03b5}. The key is choosing primes that grow fast enough to keep P-smooth numbers sparse.",
-    "implications": "Tijdeman's resolution establishes that the gap structure of P-smooth numbers is governed by the growth rate of primes in P, not merely their cardinality. The result connects to multiple areas: St\u00f8rmer's theorem on consecutive smooth pairs via Pell equations, the ABC conjecture which would yield even sharper gap bounds, S-unit equations in Diophantine analysis where smooth numbers are the fundamental objects, and modern cryptography where the density of smooth numbers governs the efficiency of subexponential factorization algorithms like the number field sieve.",
+    "summary": "Erdős Problem #240, asked by Wintner, asks whether an infinite set of primes P can have unbounded gaps between P-smooth numbers. Tijdeman (1973) proved the answer is YES: for any ε > 0, there exists an infinite P with gaps ≫ aᵢ^{1-ε}. The key is choosing primes that grow fast enough to keep P-smooth numbers sparse.",
+    "implications": "Tijdeman's resolution establishes that the gap structure of P-smooth numbers is governed by the growth rate of primes in P, not merely their cardinality. The result connects to multiple areas: Størmer's theorem on consecutive smooth pairs via Pell equations, the ABC conjecture which would yield even sharper gap bounds, S-unit equations in Diophantine analysis where smooth numbers are the fundamental objects, and modern cryptography where the density of smooth numbers governs the efficiency of subexponential factorization algorithms like the number field sieve.",
     "openQuestions": [
-      "Optimal constant in the exponent 1 - \u03b5",
+      "Optimal constant in the exponent 1 - ε",
       "Explicit construction of P achieving large gaps",
       "Distribution of gaps for specific prime sets",
       "Connection to the ABC conjecture",
@@ -186,28 +186,28 @@
       "title": "On integers with many small prime factors",
       "year": "1973",
       "venue": "Compositio Mathematica 26, pp. 319-330",
-      "note": "Resolved Problem #240: for any \u03b5 > 0, exists infinite P with gaps \u226b a\u1d62^{1-\u03b5}"
+      "note": "Resolved Problem #240: for any ε > 0, exists infinite P with gaps ≫ aᵢ^{1-ε}"
     },
     {
-      "authors": "P\u00f3lya, George",
+      "authors": "Pólya, George",
       "title": "Zur arithmetischen Untersuchung der Polynome",
       "year": "1918",
       "venue": "Mathematische Zeitschrift 1, pp. 143-148",
-      "note": "Proved prime factors of irreducible quadratics grow unboundedly \u2014 foundation for the finite P case"
+      "note": "Proved prime factors of irreducible quadratics grow unboundedly — foundation for the finite P case"
     },
     {
-      "authors": "St\u00f8rmer, Carl",
-      "title": "Quelques th\u00e9or\u00e8mes sur l'\u00e9quation de Pell x\u00b2 - Dy\u00b2 = \u00b11",
+      "authors": "Størmer, Carl",
+      "title": "Quelques théorèmes sur l'équation de Pell x² - Dy² = ±1",
       "year": "1897",
       "venue": "Videnskabs-Selskabets Skrifter, I. Math.-Naturv. Klasse",
       "note": "Proved finitely many consecutive P-smooth pairs for any finite P"
     },
     {
-      "authors": "Hildebrand, Adolf; Tenenbaum, G\u00e9rald",
+      "authors": "Hildebrand, Adolf; Tenenbaum, Gérald",
       "title": "Integers without large prime factors",
       "year": "1993",
-      "venue": "Journal de Th\u00e9orie des Nombres de Bordeaux 5, pp. 411-484",
-      "note": "Comprehensive survey of smooth number theory \u2014 density estimates \u03a8(x,y), the Dickman function, and connections to sieve methods"
+      "venue": "Journal de Théorie des Nombres de Bordeaux 5, pp. 411-484",
+      "note": "Comprehensive survey of smooth number theory — density estimates Ψ(x,y), the Dickman function, and connections to sieve methods"
     },
     {
       "authors": "Granville, Andrew",
@@ -221,7 +221,7 @@
     {
       "targetId": "infinitude-primes",
       "relationship": "uses",
-      "description": "The infinitude of primes is the foundation \u2014 the question asks whether an infinite SUBSET of primes can still force smooth number gaps to diverge"
+      "description": "The infinitude of primes is the foundation — the question asks whether an infinite SUBSET of primes can still force smooth number gaps to diverge"
     },
     {
       "targetId": "prime-number-theorem",
@@ -231,7 +231,7 @@
     {
       "targetId": "erdos-205",
       "relationship": "related",
-      "description": "Both problems involve prime factor counts and additive representations: #205 asks about \u03a9(m) for remainders n - 2^k, while #240 concerns integers whose prime factors are restricted to a set P"
+      "description": "Both problems involve prime factor counts and additive representations: #205 asks about Ω(m) for remainders n - 2^k, while #240 concerns integers whose prime factors are restricted to a set P"
     },
     {
       "targetId": "erdos-4",

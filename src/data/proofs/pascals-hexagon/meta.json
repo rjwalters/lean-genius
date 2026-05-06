@@ -23,7 +23,7 @@
     "mathlibDependencies": [
       {
         "theorem": "Mathlib.LinearAlgebra.CrossProduct",
-        "description": "Cross product in \u211d\u00b3 used for line-through and line-intersection operations",
+        "description": "Cross product in ℝ³ used for line-through and line-intersection operations",
         "module": "Mathlib.LinearAlgebra.CrossProduct"
       },
       {
@@ -38,7 +38,7 @@
       }
     ],
     "originalContributions": [
-      "Framework for projective points, lines, and conics in \u211d\u00b3",
+      "Framework for projective points, lines, and conics in ℝ³",
       "Cross-product-based line-through and intersection operations",
       "Hexagon inscribed in conic structure with validity conditions",
       "Pascal line construction via opposite-side intersections",
@@ -53,16 +53,16 @@
     "definitionCount": 27
   },
   "overview": {
-    "historicalContext": "Blaise Pascal discovered this theorem in 1639, at age 16, calling it the *Hexagrammum Mysticum* (Mystic Hexagram). His original proof, presented to the Acad\u00e9mie Parisienne, was lost, but its statement was recorded by Leibniz, who found it among Pascal's papers. Pascal claimed to derive over 400 corollaries from this single result.\n\nThe theorem became a cornerstone of projective geometry, which was systematically developed by Jean-Victor Poncelet in his 1822 *Trait\u00e9 des propri\u00e9t\u00e9s projectives des figures*. Charles-Julien Brianchon discovered the dual theorem in 1806 as a student at the \u00c9cole Polytechnique: if a hexagon is circumscribed about a conic, the three main diagonals are concurrent.\n\nThe configuration of 60 Pascal lines arising from permutations of six points on a conic \u2014 the *Hexagrammum Mysticum* configuration \u2014 attracted major attention from Jakob Steiner (1828), Thomas Kirkman (1849), Arthur Cayley (1849), and George Salmon (1852), who discovered its remarkable incidence properties: 20 Steiner points, 60 Kirkman points, and 15 Pl\u00fccker lines.\n\nPascal's theorem appears as #28 in Freek Wiedijk's list of 100 greatest theorems. The formalization here uses projective coordinates in $\\mathbb{R}^3$ with the cross product serving double duty for line-through and line-intersection, and the key algebraic identity axiomatized via the Cayley-Bacharach / B\u00e9zout argument.",
+    "historicalContext": "Blaise Pascal discovered this theorem in 1639, at age 16, calling it the *Hexagrammum Mysticum* (Mystic Hexagram). His original proof, presented to the Académie Parisienne, was lost, but its statement was recorded by Leibniz, who found it among Pascal's papers. Pascal claimed to derive over 400 corollaries from this single result.\n\nThe theorem became a cornerstone of projective geometry, which was systematically developed by Jean-Victor Poncelet in his 1822 *Traité des propriétés projectives des figures*. Charles-Julien Brianchon discovered the dual theorem in 1806 as a student at the École Polytechnique: if a hexagon is circumscribed about a conic, the three main diagonals are concurrent.\n\nThe configuration of 60 Pascal lines arising from permutations of six points on a conic — the *Hexagrammum Mysticum* configuration — attracted major attention from Jakob Steiner (1828), Thomas Kirkman (1849), Arthur Cayley (1849), and George Salmon (1852), who discovered its remarkable incidence properties: 20 Steiner points, 60 Kirkman points, and 15 Plücker lines.\n\nPascal's theorem appears as #28 in Freek Wiedijk's list of 100 greatest theorems. The formalization here uses projective coordinates in $\\mathbb{R}^3$ with the cross product serving double duty for line-through and line-intersection, and the key algebraic identity axiomatized via the Cayley-Bacharach / Bézout argument.",
     "problemStatement": "**Pascal's Theorem**: Let $ABCDEF$ be a hexagon inscribed in a conic section. Let $P = AB \\cap DE$, $Q = BC \\cap EF$, $R = CD \\cap FA$. Then $P$, $Q$, $R$ are **collinear**.\n\nThe line through $P$, $Q$, $R$ is called the **Pascal line** of the hexagon.",
     "text": "If a hexagon is inscribed in a conic section, the three pairs of opposite sides meet at collinear points. A fundamental result in projective geometry.",
-    "proofStrategy": "The formalization uses **projective coordinates** in $\\mathbb{R}^3$: points and lines are nonzero vectors, the line through $p, q$ is the cross product $p \\times q$, and collinearity is characterized by $\\det(P, Q, R) = 0$. A conic is a symmetric $3 \\times 3$ matrix $C$ with $p^T C p = 0$ defining the conic locus. The key axiom `conic_implies_pascal_constraint` encodes the Cayley-Bacharach argument: two degenerate cubics $\\overline{AB} \\cup \\overline{CD} \\cup \\overline{EF}$ and $\\overline{BC} \\cup \\overline{DE} \\cup \\overline{FA}$ intersect in 9 points (B\u00e9zout), 6 on the conic, so the remaining 3 ($P, Q, R$) are collinear.",
+    "proofStrategy": "The formalization uses **projective coordinates** in $\\mathbb{R}^3$: points and lines are nonzero vectors, the line through $p, q$ is the cross product $p \\times q$, and collinearity is characterized by $\\det(P, Q, R) = 0$. A conic is a symmetric $3 \\times 3$ matrix $C$ with $p^T C p = 0$ defining the conic locus. The key axiom `conic_implies_pascal_constraint` encodes the Cayley-Bacharach argument: two degenerate cubics $\\overline{AB} \\cup \\overline{CD} \\cup \\overline{EF}$ and $\\overline{BC} \\cup \\overline{DE} \\cup \\overline{FA}$ intersect in 9 points (Bézout), 6 on the conic, so the remaining 3 ($P, Q, R$) are collinear.",
     "keyInsights": [
-      "**Cross-product duality**: The same cross product operation computes both the line through two points and the intersection of two lines \u2014 a manifestation of projective point-line duality in $\\mathbb{RP}^2$",
+      "**Cross-product duality**: The same cross product operation computes both the line through two points and the intersection of two lines — a manifestation of projective point-line duality in $\\mathbb{RP}^2$",
       "**Determinant = collinearity**: Three projective points $P, Q, R$ are collinear iff $\\det(P, Q, R) = 0$, since $(p \\times q) \\cdot r = \\det(p, q, r)$ connects the cross product to linear dependence",
-      "**Conic universality**: In projective coordinates all non-degenerate conics are projectively equivalent \u2014 there is no distinction between ellipses, parabolas, and hyperbolas, so Pascal's theorem applies uniformly",
+      "**Conic universality**: In projective coordinates all non-degenerate conics are projectively equivalent — there is no distinction between ellipses, parabolas, and hyperbolas, so Pascal's theorem applies uniformly",
       "**Pappus as degenerate case**: When the conic degenerates to a pair of lines $l_1 \\cup l_2$, Pascal's theorem specializes to Pappus's theorem (c. 340 AD), which is equivalent to commutativity of the coordinate field",
-      "**60 Pascal lines**: The $6!/(2 \\cdot 6) = 60$ hexagon orderings yield 60 Pascal lines forming a configuration with 20 Steiner points, 60 Kirkman points, and 15 Pl\u00fccker lines"
+      "**60 Pascal lines**: The $6!/(2 \\cdot 6) = 60$ hexagon orderings yield 60 Pascal lines forming a configuration with 20 Steiner points, 60 Kirkman points, and 15 Plücker lines"
     ],
     "prerequisites": [
       "Projective geometry (conics, collinearity, duality)",
@@ -84,7 +84,7 @@
       "title": "Projective Points and Lines",
       "startLine": 55,
       "endLine": 73,
-      "summary": "Defines `ProjPoint` and `ProjLine` as `Fin 3 \u2192 \u211d` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$.",
+      "summary": "Defines `ProjPoint` and `ProjLine` as `Fin 3 → ℝ` (vectors in $\\mathbb{R}^3$), with `valid` predicates ensuring nonzero representatives in $\\mathbb{RP}^2$.",
       "mathContext": "Points and lines in $\\mathbb{RP}^2$ are represented as nonzero vectors $p, l \\in \\mathbb{R}^3 \\setminus \\{0\\}$. A point $p$ lies on line $l$ iff $p \\cdot l = \\sum_{i=0}^{2} p_i l_i = 0$. The $\\mathrm{valid}$ predicate ensures the representative is nonzero."
     },
     {
@@ -100,7 +100,7 @@
       "title": "Collinearity and Concurrency",
       "startLine": 88,
       "endLine": 108,
-      "summary": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) \u2014 dual predicates via the same determinant condition.",
+      "summary": "Defines `threeVectorMatrix`, `collinear` ($\\det(p,q,r) = 0$), and `concurrent` ($\\det(l,m,n) = 0$) — dual predicates via the same determinant condition.",
       "mathContext": "Three points $P, Q, R$ are collinear iff $\\det(P \\mid Q \\mid R) = 0$, and three lines $\\ell, m, n$ are concurrent iff $\\det(\\ell \\mid m \\mid n) = 0$. Both conditions reduce to the vanishing of a $3 \\times 3$ determinant, a manifestation of point-line duality."
     },
     {
@@ -140,7 +140,7 @@
       "title": "Special Cases: Pappus's Theorem",
       "startLine": 232,
       "endLine": 248,
-      "summary": "Defines `collinearOnLine` for Pappus's theorem \u2014 the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$.",
+      "summary": "Defines `collinearOnLine` for Pappus's theorem — the degenerate case where the conic is a pair of lines $l_1 \\cup l_2$.",
       "mathContext": "When the conic degenerates to a line pair $C = \\ell_1 \\cup \\ell_2$ (i.e., $\\det C = 0$ and $C$ factors), Pascal's theorem specializes to Pappus's theorem (c. 340 AD): if $A, C, E \\in \\ell_1$ and $B, D, F \\in \\ell_2$, then $\\overline{AB} \\cap \\overline{DE}$, $\\overline{BC} \\cap \\overline{EF}$, $\\overline{CD} \\cap \\overline{FA}$ are collinear."
     },
     {
@@ -153,7 +153,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Pascal's Hexagon Theorem is formalized in projective coordinates using cross products and determinants. The key geometric fact \u2014 that six conic points force collinearity of opposite-side intersections \u2014 is axiomatized via the Cayley-Bacharach argument, and the main theorem follows by definitional unfolding.",
+    "summary": "Pascal's Hexagon Theorem is formalized in projective coordinates using cross products and determinants. The key geometric fact — that six conic points force collinearity of opposite-side intersections — is axiomatized via the Cayley-Bacharach argument, and the main theorem follows by definitional unfolding.",
     "implications": "The formalization demonstrates how projective coordinate methods reduce classical incidence geometry to linear algebra. The framework of `ProjPoint`, `ProjLine`, cross products, and determinants provides a reusable foundation for formalizing other projective theorems (Desargues, Pappus, Brianchon).",
     "openQuestions": [
       "Can the Cayley-Bacharach axiom be proved from Mathlib's algebraic geometry, eliminating the axiom?",
@@ -190,22 +190,22 @@
     {
       "targetId": "euler-polyhedral-formula",
       "relationship": "related",
-      "description": "Both are foundational results in combinatorial geometry: Euler's formula governs the topology of polyhedra (V - E + F = 2), while Pascal's theorem governs the incidence geometry of conics \u2014 both reveal deep structural constraints from simple combinatorial conditions"
+      "description": "Both are foundational results in combinatorial geometry: Euler's formula governs the topology of polyhedra (V - E + F = 2), while Pascal's theorem governs the incidence geometry of conics — both reveal deep structural constraints from simple combinatorial conditions"
     },
     {
       "targetId": "picks-theorem",
       "relationship": "related",
-      "description": "Both relate geometry to combinatorial counting: Pick's theorem counts lattice points to compute area, while Pascal's theorem counts incidences of lines and conics \u2014 both illustrate how discrete combinatorial data encodes continuous geometric information"
+      "description": "Both relate geometry to combinatorial counting: Pick's theorem counts lattice points to compute area, while Pascal's theorem counts incidences of lines and conics — both illustrate how discrete combinatorial data encodes continuous geometric information"
     },
     {
       "targetId": "ptolemys-theorem",
       "relationship": "related",
-      "description": "Both concern configurations of points on conics: Ptolemy's theorem characterizes cyclic quadrilaterals via the product relation on diagonals and sides, while Pascal's theorem characterizes hexagons inscribed in conics via collinearity of opposite-side intersections \u2014 both are classical results in the geometry of circles and conics"
+      "description": "Both concern configurations of points on conics: Ptolemy's theorem characterizes cyclic quadrilaterals via the product relation on diagonals and sides, while Pascal's theorem characterizes hexagons inscribed in conics via collinearity of opposite-side intersections — both are classical results in the geometry of circles and conics"
     },
     {
       "targetId": "four-color-theorem",
       "relationship": "thematic",
-      "description": "Both are landmark results in combinatorial and incidence geometry: the four-color theorem constrains planar graph colorings, while Pascal's theorem constrains projective incidence configurations \u2014 both demonstrate how topological or projective constraints force global combinatorial structure"
+      "description": "Both are landmark results in combinatorial and incidence geometry: the four-color theorem constrains planar graph colorings, while Pascal's theorem constrains projective incidence configurations — both demonstrate how topological or projective constraints force global combinatorial structure"
     }
   ],
   "leanFile": {
@@ -232,7 +232,7 @@
       "title": "Essay pour les coniques",
       "year": "1640",
       "venue": "Paris",
-      "note": "Statement of Pascal's mystic hexagram theorem: opposite sides of a hexagon inscribed in a conic meet in three collinear points \u2014 discovered at age 16"
+      "note": "Statement of Pascal's mystic hexagram theorem: opposite sides of a hexagon inscribed in a conic meet in three collinear points — discovered at age 16"
     }
   ],
   "mainTheorems": [

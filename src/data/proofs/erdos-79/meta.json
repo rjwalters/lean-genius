@@ -1,8 +1,8 @@
 {
   "id": "erdos-79",
-  "title": "Erd\u0151s Problem #79: Minimally Non-Ramsey-Size-Linear Graphs",
+  "title": "Erdős Problem #79: Minimally Non-Ramsey-Size-Linear Graphs",
   "slug": "erdos-79",
-  "description": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K\u2084 is explicitly known.",
+  "description": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K₄ is explicitly known.",
   "meta": {
     "author": "Wigderson (2024)",
     "sourceUrl": "https://erdosproblems.com/79",
@@ -39,16 +39,16 @@
     "definitionCount": 12
   },
   "overview": {
-    "historicalContext": "**Ramsey Size Linearity and Its Origins**\n\nThe concept of Ramsey size linearity emerged from the study of how Ramsey numbers $R(G,H)$ grow as $H$ varies. Frank P. Ramsey proved in 1930 that $R(G,H)$ is always finite, but its growth rate depends subtly on both $G$ and $H$. In 1983, Stefan Burr introduced the notion of a graph being *Ramsey size linear* \u2014 meaning $R(G,H) = O(|E(H)|)$ for all $H$ without isolated vertices \u2014 and conjectured (with Erd\u0151s) that every bounded-degree graph is Ramsey size linear. This celebrated **Burr\u2013Erd\u0151s conjecture** was proved by Choongbum Lee in 2017, a landmark result in extremal combinatorics.\n\n**The Mystery of $K_4$**: The complete graph $K_4$ is the simplest graph known to violate Ramsey size linearity. The Ramsey number $R(K_4, K_n) = \\Omega(n^2/\\log n)$, established using probabilistic deletion methods by Ajtai, Koml\u00f3s, and Szemer\u00e9di (1980). Since $|E(K_n)| = \\binom{n}{2} \\sim n^2/2$, the ratio $R(K_4,K_n)/|E(K_n)|$ grows without bound \u2014 $K_4$ is superlinear. Yet every proper subgraph of $K_4$ (triangles, paths, matchings, stars with $\\leq 3$ edges) has bounded degree or is $K_3$, and is therefore Ramsey size linear by the Chv\u00e1tal\u2013R\u00f6dl\u2013Szemer\u00e9di\u2013Trotter theorem (1983) for triangles or Lee's theorem for general bounded-degree graphs.\n\n**The Question (1993)**: Erd\u0151s, Faudree, Rousseau, and Schelp asked whether $K_4$ is the *only* minimally non-Ramsey-size-linear graph, or whether infinitely many exist. For 31 years, no second example was found.\n\n**Resolution (2024)**: Yuval Wigderson proved that infinitely many such graphs exist, using a blend of probabilistic and extremal methods. The proof is fundamentally non-constructive: it derives a contradiction from assuming finitely many minimal obstructions exist, without exhibiting any new one. $K_4$ remains the sole explicit example, making the search for a second one a compelling open problem at the interface of Ramsey theory and constructive mathematics.",
+    "historicalContext": "**Ramsey Size Linearity and Its Origins**\n\nThe concept of Ramsey size linearity emerged from the study of how Ramsey numbers $R(G,H)$ grow as $H$ varies. Frank P. Ramsey proved in 1930 that $R(G,H)$ is always finite, but its growth rate depends subtly on both $G$ and $H$. In 1983, Stefan Burr introduced the notion of a graph being *Ramsey size linear* — meaning $R(G,H) = O(|E(H)|)$ for all $H$ without isolated vertices — and conjectured (with Erdős) that every bounded-degree graph is Ramsey size linear. This celebrated **Burr–Erdős conjecture** was proved by Choongbum Lee in 2017, a landmark result in extremal combinatorics.\n\n**The Mystery of $K_4$**: The complete graph $K_4$ is the simplest graph known to violate Ramsey size linearity. The Ramsey number $R(K_4, K_n) = \\Omega(n^2/\\log n)$, established using probabilistic deletion methods by Ajtai, Komlós, and Szemerédi (1980). Since $|E(K_n)| = \\binom{n}{2} \\sim n^2/2$, the ratio $R(K_4,K_n)/|E(K_n)|$ grows without bound — $K_4$ is superlinear. Yet every proper subgraph of $K_4$ (triangles, paths, matchings, stars with $\\leq 3$ edges) has bounded degree or is $K_3$, and is therefore Ramsey size linear by the Chvátal–Rödl–Szemerédi–Trotter theorem (1983) for triangles or Lee's theorem for general bounded-degree graphs.\n\n**The Question (1993)**: Erdős, Faudree, Rousseau, and Schelp asked whether $K_4$ is the *only* minimally non-Ramsey-size-linear graph, or whether infinitely many exist. For 31 years, no second example was found.\n\n**Resolution (2024)**: Yuval Wigderson proved that infinitely many such graphs exist, using a blend of probabilistic and extremal methods. The proof is fundamentally non-constructive: it derives a contradiction from assuming finitely many minimal obstructions exist, without exhibiting any new one. $K_4$ remains the sole explicit example, making the search for a second one a compelling open problem at the interface of Ramsey theory and constructive mathematics.",
     "problemStatement": "**Problem Statement**\n\nWe say $G$ is *Ramsey size linear* if $R(G,H) = O(|E(H)|)$ for all graphs $H$ with no isolated vertices.\n\nAre there infinitely many graphs $G$ which are NOT Ramsey size linear but such that all proper subgraphs of $G$ ARE Ramsey size linear?\n\n**Terminology**: Such graphs are called *minimally non-Ramsey-size-linear* or *minimally Ramsey size superlinear*.\n\n**Known Examples**: Only $K_4$ (the complete graph on 4 vertices) is explicitly known.\n\n**Answer**: YES, infinitely many exist (Wigderson 2024), but constructing explicit examples beyond $K_4$ remains open.",
-    "text": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K\u2084 is explicitly known.",
-    "proofStrategy": "**Proof Approach (Wigderson 2024)**\n\nWigderson's non-constructive proof uses probabilistic and extremal methods:\n\n1. **Hereditary Property Analysis**: The class of Ramsey size linear graphs is hereditary (downward-closed under taking subgraphs), so its complement has well-defined minimal elements.\n\n2. **Antichain Structure**: Minimally non-Ramsey-size-linear graphs form an infinite antichain in the subgraph ordering \u2014 no two are related by the subgraph relation.\n\n3. **Probabilistic Existence**: Assuming only finitely many minimal obstructions $G_1, \\ldots, G_k$ exist, every non-linear graph must contain some $G_i$ as a subgraph. But probabilistic arguments show the class of non-linear graphs is too 'rich' to be characterized by finitely many forbidden subgraphs.\n\n4. **Contradiction**: The finite characterization assumption leads to a counting contradiction, establishing that infinitely many minimal obstructions must exist.\n\n**Key Difficulty**: The proof establishes existence without providing a construction. The probabilistic method guarantees a second example exists among graphs of some (unknown) size, but gives no bound on how large it must be.\n\n**Formalization Strategy**: The Lean file axiomatizes the main results (Wigderson's theorem, $K_4$'s minimality, the hereditary property) and builds the formal structure of Ramsey size linearity, proper subgraphs, and minimal obstructions. The single `sorry` (`K4_unique_known`, line 179) handles a type coercion issue for the singleton set of known examples. `K4_edge_count` is proved by `native_decide` and `minimal_form_antichain` is fully proved \u2014 neither uses a sorry.",
+    "text": "A graph is 'Ramsey size linear' if R(G,H) grows linearly in the edges of H. Are there infinitely many graphs that fail this property minimally - not Ramsey size linear, but all subgraphs are? Wigderson (2024) proved yes, though only K₄ is explicitly known.",
+    "proofStrategy": "**Proof Approach (Wigderson 2024)**\n\nWigderson's non-constructive proof uses probabilistic and extremal methods:\n\n1. **Hereditary Property Analysis**: The class of Ramsey size linear graphs is hereditary (downward-closed under taking subgraphs), so its complement has well-defined minimal elements.\n\n2. **Antichain Structure**: Minimally non-Ramsey-size-linear graphs form an infinite antichain in the subgraph ordering — no two are related by the subgraph relation.\n\n3. **Probabilistic Existence**: Assuming only finitely many minimal obstructions $G_1, \\ldots, G_k$ exist, every non-linear graph must contain some $G_i$ as a subgraph. But probabilistic arguments show the class of non-linear graphs is too 'rich' to be characterized by finitely many forbidden subgraphs.\n\n4. **Contradiction**: The finite characterization assumption leads to a counting contradiction, establishing that infinitely many minimal obstructions must exist.\n\n**Key Difficulty**: The proof establishes existence without providing a construction. The probabilistic method guarantees a second example exists among graphs of some (unknown) size, but gives no bound on how large it must be.\n\n**Formalization Strategy**: The Lean file axiomatizes the main results (Wigderson's theorem, $K_4$'s minimality, the hereditary property) and builds the formal structure of Ramsey size linearity, proper subgraphs, and minimal obstructions. The single `sorry` (`K4_unique_known`, line 179) handles a type coercion issue for the singleton set of known examples. `K4_edge_count` is proved by `native_decide` and `minimal_form_antichain` is fully proved — neither uses a sorry.",
     "keyInsights": [
-      "**$K_4$ is the unique known explicit example**: Despite Wigderson's proof that infinitely many minimally non-Ramsey-size-linear graphs exist, $K_4$ remains the only one we can write down \u2014 a striking instance of the gap between existence and construction in combinatorics",
+      "**$K_4$ is the unique known explicit example**: Despite Wigderson's proof that infinitely many minimally non-Ramsey-size-linear graphs exist, $K_4$ remains the only one we can write down — a striking instance of the gap between existence and construction in combinatorics",
       "**Hereditary structure enables minimality**: Ramsey size linearity is closed under taking subgraphs, which makes the notion of 'minimally non-linear' well-defined. This mirrors Kuratowski's theorem, where planarity (also hereditary) has exactly two minimal obstructions ($K_5$, $K_{3,3}$)",
-      "**The Burr\u2013Erd\u0151s conjecture provides the landscape**: Lee's 2017 proof that all bounded-degree graphs are Ramsey size linear narrows the search for non-linear graphs to those with unbounded degree growth, placing $K_4$ at the boundary between 'small enough to be linear' (its subgraphs) and 'just complex enough to be superlinear'",
-      "**Non-constructive proofs reveal structural depth**: Wigderson's argument shows that finitely many obstructions cannot capture the full boundary of Ramsey size linearity \u2014 a phenomenon reminiscent of the Robertson\u2013Seymour theorem's non-constructive aspects in graph minor theory",
-      "**Infinite antichains connect to well-quasi-ordering**: The existence of an infinite antichain of minimal obstructions means the subgraph ordering does NOT well-quasi-order the class of graphs relevant to Ramsey size linearity, contrasting with the graph minor ordering which does (Robertson\u2013Seymour theorem)"
+      "**The Burr–Erdős conjecture provides the landscape**: Lee's 2017 proof that all bounded-degree graphs are Ramsey size linear narrows the search for non-linear graphs to those with unbounded degree growth, placing $K_4$ at the boundary between 'small enough to be linear' (its subgraphs) and 'just complex enough to be superlinear'",
+      "**Non-constructive proofs reveal structural depth**: Wigderson's argument shows that finitely many obstructions cannot capture the full boundary of Ramsey size linearity — a phenomenon reminiscent of the Robertson–Seymour theorem's non-constructive aspects in graph minor theory",
+      "**Infinite antichains connect to well-quasi-ordering**: The existence of an infinite antichain of minimal obstructions means the subgraph ordering does NOT well-quasi-order the class of graphs relevant to Ramsey size linearity, contrasting with the graph minor ordering which does (Robertson–Seymour theorem)"
     ],
     "prerequisites": [
       "Graph theory (vertices, edges, colorings)",
@@ -100,14 +100,14 @@
     {
       "id": "minimal",
       "title": "Minimally Non-Linear Graphs",
-      "summary": "Defines `isMinimallyNonLinear` as the conjunction $\\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)$. These are the minimal obstructions to Ramsey size linearity \u2014 the forbidden subgraphs whose removal from any non-linear graph restores linearity.",
+      "summary": "Defines `isMinimallyNonLinear` as the conjunction $\\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)$. These are the minimal obstructions to Ramsey size linearity — the forbidden subgraphs whose removal from any non-linear graph restores linearity.",
       "startLine": 93,
       "endLine": 106,
       "mathContext": "Defines `isMinimallyNonLinear` as the conjunction $\\neg\\text{linear}(G) \\wedge \\forall H \\subsetneq G,\\; \\text{linear}(H)$."
     },
     {
       "id": "K4",
-      "title": "The Complete Graph K\u2084",
+      "title": "The Complete Graph K₄",
       "summary": "Defines `completeGraph n` on `Fin n` with adjacency $u \\neq v$, then axiomatizes $K_4$'s superlinearity and its subgraphs' linearity. Proves `K4_is_minimal` by combining both axioms via `constructor`. $K_4$ with $\\binom{4}{2} = 6$ edges is the unique known explicit minimally non-linear graph.",
       "startLine": 107,
       "endLine": 133,
@@ -116,10 +116,10 @@
     {
       "id": "main-question",
       "title": "The Main Question",
-      "summary": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erd\u0151s Problem #79 as the proposition $|\\mathcal{M}| = \\infty$. This 1993 question by Erd\u0151s, Faudree, Rousseau, and Schelp stood open for 31 years.",
+      "summary": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erdős Problem #79 as the proposition $|\\mathcal{M}| = \\infty$. This 1993 question by Erdős, Faudree, Rousseau, and Schelp stood open for 31 years.",
       "startLine": 134,
       "endLine": 148,
-      "mathContext": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erd\u0151s Problem #79 as the proposition $|\\mathcal{M}| = \\infty$."
+      "mathContext": "Defines the set $\\mathcal{M} = \\{G : G \\text{ is minimally non-linear}\\}$ and formalizes Erdős Problem #79 as the proposition $|\\mathcal{M}| = \\infty$."
     },
     {
       "id": "wigderson",
@@ -139,11 +139,11 @@
     },
     {
       "id": "K4-structure",
-      "title": "Why K\u2084 Is Special",
-      "summary": "Proves $|E(K_4)| = 6$ via `native_decide`. The Ramsey size linearity of $K_3$ (Chv\u00e1tal\u2013R\u00f6dl\u2013Szemer\u00e9di\u2013Trotter 1983) and paths (Lee 2017) are mentioned in docstrings only \u2014 not axiomatized or formalized in this file. These context notes explain why every proper subgraph of $K_4$ is linear, placing $K_4$ precisely at the boundary.",
+      "title": "Why K₄ Is Special",
+      "summary": "Proves $|E(K_4)| = 6$ via `native_decide`. The Ramsey size linearity of $K_3$ (Chvátal–Rödl–Szemerédi–Trotter 1983) and paths (Lee 2017) are mentioned in docstrings only — not axiomatized or formalized in this file. These context notes explain why every proper subgraph of $K_4$ is linear, placing $K_4$ precisely at the boundary.",
       "startLine": 186,
       "endLine": 204,
-      "mathContext": "Proves $|E(K_4)| = 6$ via `native_decide`. The Ramsey size linearity of $K_3$ (Chv\u00e1tal\u2013R\u00f6dl\u2013Szemer\u00e9di\u2013Trotter 1983) and paths (Lee 2017) appear in docstrings only and are not axiomatized or formalized here."
+      "mathContext": "Proves $|E(K_4)| = 6$ via `native_decide`. The Ramsey size linearity of $K_3$ (Chvátal–Rödl–Szemerédi–Trotter 1983) and paths (Lee 2017) appear in docstrings only and are not axiomatized or formalized here."
     },
     {
       "id": "antichain",
@@ -155,13 +155,13 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erd\u0151s Problem #79 on minimally non-Ramsey-size-linear graphs. It defines Ramsey size linearity ($R(G,H) = O(|E(H)|)$), proves the property is hereditary, defines minimal obstructions, establishes $K_4$ as the unique known example, and axiomatizes Wigderson's 2024 non-constructive proof that infinitely many such graphs exist. The formalization also captures the antichain structure of minimal obstructions and the open problem of explicit construction.",
-    "implications": "1. **Ramsey Theory Boundary**: Reveals the complexity of the boundary between Ramsey size linear and superlinear graphs \u2014 this boundary cannot be described by finitely many forbidden subgraphs\n\n2. **Connection to the Burr\u2013Erd\u0151s Conjecture**: Lee's 2017 proof that bounded-degree graphs are Ramsey size linear provides the 'positive side' of the story; this problem explores the 'negative side' of what lies beyond bounded degree\n\n**3. Infinite Antichains and Well-Quasi-Ordering**: The existence of an infinite antichain of minimal obstructions in the subgraph ordering contrasts sharply with the Robertson\u2013Seymour theorem, where the graph *minor* ordering has no infinite antichains\n\n4. **Constructive vs Non-Constructive Mathematics**: Wigderson's proof is a pure existence result \u2014 we know infinitely many minimal obstructions exist but cannot exhibit a single one beyond $K_4$, highlighting fundamental limitations of probabilistic methods\n\n5. **$K_4$ as a Threshold Phenomenon**: $K_4$ sits precisely at the boundary where degree 3 meets the superlinear regime, suggesting deep connections between degree-based Ramsey bounds and structural graph properties.",
+    "summary": "This formalization captures the full structure of Erdős Problem #79 on minimally non-Ramsey-size-linear graphs. It defines Ramsey size linearity ($R(G,H) = O(|E(H)|)$), proves the property is hereditary, defines minimal obstructions, establishes $K_4$ as the unique known example, and axiomatizes Wigderson's 2024 non-constructive proof that infinitely many such graphs exist. The formalization also captures the antichain structure of minimal obstructions and the open problem of explicit construction.",
+    "implications": "1. **Ramsey Theory Boundary**: Reveals the complexity of the boundary between Ramsey size linear and superlinear graphs — this boundary cannot be described by finitely many forbidden subgraphs\n\n2. **Connection to the Burr–Erdős Conjecture**: Lee's 2017 proof that bounded-degree graphs are Ramsey size linear provides the 'positive side' of the story; this problem explores the 'negative side' of what lies beyond bounded degree\n\n**3. Infinite Antichains and Well-Quasi-Ordering**: The existence of an infinite antichain of minimal obstructions in the subgraph ordering contrasts sharply with the Robertson–Seymour theorem, where the graph *minor* ordering has no infinite antichains\n\n4. **Constructive vs Non-Constructive Mathematics**: Wigderson's proof is a pure existence result — we know infinitely many minimal obstructions exist but cannot exhibit a single one beyond $K_4$, highlighting fundamental limitations of probabilistic methods\n\n5. **$K_4$ as a Threshold Phenomenon**: $K_4$ sits precisely at the boundary where degree 3 meets the superlinear regime, suggesting deep connections between degree-based Ramsey bounds and structural graph properties.",
     "openQuestions": [
-      "Find an explicit minimally non-Ramsey-size-linear graph other than $K_4$ \u2014 can random constructions or algebraic methods produce one?",
+      "Find an explicit minimally non-Ramsey-size-linear graph other than $K_4$ — can random constructions or algebraic methods produce one?",
       "Is there a finite characterization of Ramsey size linear graphs by some other structural parameter (e.g., degeneracy, treewidth)?",
       "What is the minimum number of vertices or edges in a second minimally non-linear graph? Is there a computable upper bound?",
-      "Can Wigderson's proof be made constructive or derandomized using the Lov\u00e1sz Local Lemma or algebraic methods?",
+      "Can Wigderson's proof be made constructive or derandomized using the Lovász Local Lemma or algebraic methods?",
       "Does the subgraph ordering restricted to non-Ramsey-size-linear graphs have infinite width (infinitely many incomparable elements) in a stronger sense than just having an infinite antichain?"
     ]
   },
@@ -190,26 +190,26 @@
     {
       "targetId": "erdos-1014",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1029",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     },
     {
       "targetId": "erdos-1030",
       "relationship": "related",
-      "description": "Related Erd\u0151s problem sharing themes: graph-theory, ramsey-theory"
+      "description": "Related Erdős problem sharing themes: graph-theory, ramsey-theory"
     }
   ],
   "references": [
     {
       "key": "CFGS83",
       "authors": [
-        "V. Chv\u00e1tal",
-        "V. R\u00f6dl",
-        "E. Szemer\u00e9di",
+        "V. Chvátal",
+        "V. Rödl",
+        "E. Szemerédi",
         "W.T. Trotter"
       ],
       "title": "The Ramsey number of a graph with bounded maximum degree",
@@ -223,7 +223,7 @@
       "key": "GR03",
       "authors": [
         "R.L. Graham",
-        "V. R\u00f6dl"
+        "V. Rödl"
       ],
       "title": "Numbers in Ramsey theory",
       "venue": "Surveys in Combinatorics, Cambridge University Press",

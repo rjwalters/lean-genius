@@ -21,12 +21,12 @@
     "mathlibDependencies": [
       {
         "theorem": "roth_3ap_theorem_nat",
-        "description": "Mathlib's Roth theorem for 3-AP-free sets in \u2115 \u2014 the core result used to prove roth_density_bound via the corners-theorem chain (Regularity Lemma \u2192 Triangle Removal \u2192 Corners \u2192 Roth)",
+        "description": "Mathlib's Roth theorem for 3-AP-free sets in ℕ — the core result used to prove roth_density_bound via the corners-theorem chain (Regularity Lemma → Triangle Removal → Corners → Roth)",
         "module": "Mathlib.Combinatorics.Additive.Roth"
       },
       {
         "theorem": "cornersTheoremBound",
-        "description": "Bound function from Mathlib's corners theorem chain used to compute N\u2080 in the main theorem",
+        "description": "Bound function from Mathlib's corners theorem chain used to compute N₀ in the main theorem",
         "module": "Mathlib.Combinatorics.Additive.Corners"
       },
       {
@@ -54,12 +54,12 @@
       "AP-free set definition and characterization on ZMod N",
       "Density increment lemma via large Fourier coefficients (independently proved, Parts I-V)",
       "Fourier analysis framework for additive combinatorics in Lean",
-      "Bridge formalization: ZMod.val mapping from APFree on ZMod N to Mathlib's ThreeAPFree on \u2115, connecting independently proved infrastructure to Mathlib's roth_3ap_theorem_nat"
+      "Bridge formalization: ZMod.val mapping from APFree on ZMod N to Mathlib's ThreeAPFree on ℕ, connecting independently proved infrastructure to Mathlib's roth_3ap_theorem_nat"
     ],
     "dateAdded": "2026-03-21",
     "axiomCount": 0,
     "lineCount": 1401,
-    "assumptions": "No axioms, no sorries. Fully verified. Main theorem roth_density_bound proved via Mathlib's corners-theorem chain (Regularity Lemma \u2192 Triangle Removal \u2192 Corners \u2192 Roth). Fourier-analytic density increment infrastructure (Parts I-V) independently verified.",
+    "assumptions": "No axioms, no sorries. Fully verified. Main theorem roth_density_bound proved via Mathlib's corners-theorem chain (Regularity Lemma → Triangle Removal → Corners → Roth). Fourier-analytic density increment infrastructure (Parts I-V) independently verified.",
     "mathlib_version": "4.26.0",
     "theoremCount": 42,
     "definitionCount": 4
@@ -71,10 +71,10 @@
     "proofStrategy": "The formalization follows the density increment approach:\n\n1. **AP-free sets**: Define what it means for a subset of [N] to be free of 3-term arithmetic progressions and establish basic properties.\n\n2. **Fourier analysis on Z/NZ**: Set up discrete Fourier analysis, defining Fourier coefficients of the characteristic function of A and relating them to 3-AP counts via the identity: the number of 3-APs in A equals N^{-1} * sum_r |hat{1_A}(r)|^2 * hat{1_A}(-2r).\n\n3. **Density increment lemma**: If A has density delta and no 3-AP, then some Fourier coefficient is large, which implies A has increased density on a long subprogression. Specifically, there exists an AP of length at least N^{c} where A has density at least delta + delta^2/C.\n\n4. **Main theorem**: Iterate the density increment. After at most O(1/delta) steps, the density exceeds 1, a contradiction. Therefore no AP-free set can have density delta for N sufficiently large.",
     "keyInsights": [
       "**Fourier Identity:** The count of 3-APs in $A \\subset \\mathbb{Z}/N\\mathbb{Z}$ equals $\\sum_r \\hat{1}_A(r)^2 \\overline{\\hat{1}_A(r)}$. If $A$ has no 3-AP, the off-diagonal terms must cancel the main term $|A|^3/N$.",
-      "**Large Fourier Coefficient:** If $A$ is 3-AP-free with density $\\delta = |A|/N$, Parseval ($\\sum |\\hat{1}_A(r)|^2 = \\delta N$) forces some $r \\neq 0$ to have $|\\hat{1}_A(r)| \\geq c\\delta^2 N$ \u2014 the set has unexpected additive structure.",
+      "**Large Fourier Coefficient:** If $A$ is 3-AP-free with density $\\delta = |A|/N$, Parseval ($\\sum |\\hat{1}_A(r)|^2 = \\delta N$) forces some $r \\neq 0$ to have $|\\hat{1}_A(r)| \\geq c\\delta^2 N$ — the set has unexpected additive structure.",
       "**Density Increment:** A large Fourier coefficient implies $A$ has density $\\geq \\delta + c\\delta^2$ on some arithmetic progression of length $\\geq N^{2/3}$. The set is 'denser than expected' on a structured subset.",
-      "**Iteration Bound:** The density increment step can repeat at most $O(1/\\delta)$ times before density exceeds 1 \u2014 impossible. This forces a 3-AP to exist in any set of density $\\delta \\gg 1/\\log N$ (Roth's bound).",
-      "**Paradigm for Additive Combinatorics:** Roth's density increment method (1953) pioneered the approach used by Szemer\u00e9di (1975, regularity lemma) and Green-Tao (2004, primes contain arbitrarily long APs). The dichotomy 'structured or pseudorandom' is the central theme."
+      "**Iteration Bound:** The density increment step can repeat at most $O(1/\\delta)$ times before density exceeds 1 — impossible. This forces a 3-AP to exist in any set of density $\\delta \\gg 1/\\log N$ (Roth's bound).",
+      "**Paradigm for Additive Combinatorics:** Roth's density increment method (1953) pioneered the approach used by Szemerédi (1975, regularity lemma) and Green-Tao (2004, primes contain arbitrarily long APs). The dichotomy 'structured or pseudorandom' is the central theme."
     ],
     "prerequisites": [
       "Combinatorics (counting, extremal problems)",
@@ -95,7 +95,7 @@
       "title": "Part I: AP-Free Set Definitions",
       "startLine": 21,
       "endLine": 66,
-      "summary": "Defines APFree on Z/NZ: no 3-term AP a, a+d, a+2d with d \u2260 0. Proves 6 foundational results: empty set, singleton, subset closure, and two cardinality bounds card \u2264 N (natural and real). All 0 sorries.",
+      "summary": "Defines APFree on Z/NZ: no 3-term AP a, a+d, a+2d with d ≠ 0. Proves 6 foundational results: empty set, singleton, subset closure, and two cardinality bounds card ≤ N (natural and real). All 0 sorries.",
       "mathContext": "$A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is AP-free: $\\forall a, d,\\; d \\neq 0 \\implies \\neg(a, a+d, a+2d \\in A)$. Card bound: $|A| \\leq N$ for any $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$."
     },
     {
@@ -103,7 +103,7 @@
       "title": "Part II: AP Counting",
       "startLine": 67,
       "endLine": 92,
-      "summary": "Defines tripleCount as the number of nontrivial 3-APs. Proves APFree \u2194 tripleCount = 0, bridging the logical and combinatorial definitions. 0 sorries.",
+      "summary": "Defines tripleCount as the number of nontrivial 3-APs. Proves APFree ↔ tripleCount = 0, bridging the logical and combinatorial definitions. 0 sorries.",
       "mathContext": "$\\Lambda_3(A) = |\\{(a,d) : d \\neq 0,\\; a, a+d, a+2d \\in A\\}|$. AP-free $\\iff \\Lambda_3(A) = 0$."
     },
     {
@@ -111,7 +111,7 @@
       "title": "Part III.A: Fourier Coefficient Definition and Setup",
       "startLine": 93,
       "endLine": 139,
-      "summary": "Proves tripleCount_add_card_eq_triple_sum helper (combinatorial identity relating total triple count to the Fourier sum). Defines fourierCoeff as the discrete Fourier transform. Proves fourierCoeff_norm_le: |\u00c2(r)| \u2264 |A| via triangle inequality.",
+      "summary": "Proves tripleCount_add_card_eq_triple_sum helper (combinatorial identity relating total triple count to the Fourier sum). Defines fourierCoeff as the discrete Fourier transform. Proves fourierCoeff_norm_le: |Â(r)| ≤ |A| via triangle inequality.",
       "mathContext": "$\\hat{1}_A(r) = \\sum_{x \\in A} \\psi(rx)$ where $\\psi(x) = e^{2\\pi i \\cdot \\text{val}(x)/N}$. Bound: $|\\hat{1}_A(r)| \\leq |A|$."
     },
     {
@@ -119,7 +119,7 @@
       "title": "Part III.B: Character Theory Infrastructure",
       "startLine": 140,
       "endLine": 364,
-      "summary": "Defines the character \u03c8(x) = exp(2\u03c0i\u00b7val(x)/N) and proves a comprehensive suite of properties: psi_add (multiplicativity), psi_zero, psi_ne_one, psi_norm (unit circle), conj_psi, character orthogonality (\u2211_r \u03c8(rc) = N\u00b7\u03b4(c,0)), and char_sum_int. All 225 lines fully proved with 0 sorries \u2014 the core Fourier-analytic infrastructure.",
+      "summary": "Defines the character ψ(x) = exp(2πi·val(x)/N) and proves a comprehensive suite of properties: psi_add (multiplicativity), psi_zero, psi_ne_one, psi_norm (unit circle), conj_psi, character orthogonality (∑_r ψ(rc) = N·δ(c,0)), and char_sum_int. All 225 lines fully proved with 0 sorries — the core Fourier-analytic infrastructure.",
       "mathContext": "Character $\\psi: \\mathbb{Z}/N\\mathbb{Z} \\to \\mathbb{C}^*$, $\\psi(x) = e^{2\\pi i \\cdot \\text{val}(x)/N}$. Orthogonality: $\\sum_r \\psi(rc) = N \\cdot \\delta_{c,0}$. All proved via the shift argument $r \\mapsto r+1$."
     },
     {
@@ -127,7 +127,7 @@
       "title": "Part III.C: Parseval Identity and Triple Count Fourier Formula",
       "startLine": 365,
       "endLine": 448,
-      "summary": "Proves Parseval's identity: \u2211_r \u2016\u00c2(r)\u2016\u00b2 = |A|\u00b7N by expanding Fourier coefficients, applying character orthogonality, and simplifying the diagonal. Proves the triple count Fourier identity: \u039b\u2083(A) + |A| = N\u207b\u00b9 \u2211_r \u00c2(r)\u00b2 conj(\u00c2(2r)) by expanding Fourier sums, applying orthogonality, and matching the combinatorial helper. Both 83-line proofs are FULLY PROVED (0 sorries) \u2014 the deepest Fourier-analytic results in the file.",
+      "summary": "Proves Parseval's identity: ∑_r ‖Â(r)‖² = |A|·N by expanding Fourier coefficients, applying character orthogonality, and simplifying the diagonal. Proves the triple count Fourier identity: Λ₃(A) + |A| = N⁻¹ ∑_r Â(r)² conj(Â(2r)) by expanding Fourier sums, applying orthogonality, and matching the combinatorial helper. Both 83-line proofs are FULLY PROVED (0 sorries) — the deepest Fourier-analytic results in the file.",
       "mathContext": "Parseval: $\\sum_r |\\hat{1}_A(r)|^2 = N|A|$. Triple count: $\\Lambda_3(A) + |A| = N^{-1} \\sum_r \\hat{1}_A(r)^2 \\overline{\\hat{1}_A(2r)}$."
     },
     {
@@ -135,7 +135,7 @@
       "title": "Part IV: Large Fourier Coefficient",
       "startLine": 449,
       "endLine": 465,
-      "summary": "Proves fourier_large_coefficient: if A has density \u03b4 and no 3-AP, then \u2203 r \u2260 0 with |\u00c2(r)| \u2265 \u03b4\u00b2N/2. Case 1 (\u03b4\u00b2N<2): Parseval pigeonhole. Case 2 (\u03b4\u00b2N\u22652): Fourier identity + AM-GM bound. 0 sorries \u2014 fully proved.",
+      "summary": "Proves fourier_large_coefficient: if A has density δ and no 3-AP, then ∃ r ≠ 0 with |Â(r)| ≥ δ²N/2. Case 1 (δ²N<2): Parseval pigeonhole. Case 2 (δ²N≥2): Fourier identity + AM-GM bound. 0 sorries — fully proved.",
       "mathContext": "AP-free + density $\\delta$ $\\implies$ $\\exists r \\neq 0$: $|\\hat{1}_A(r)| \\geq \\delta^2 N/2$."
     },
     {
@@ -143,7 +143,7 @@
       "title": "Part V: Density Increment Lemma",
       "startLine": 466,
       "endLine": 495,
-      "summary": "Proves density_increment_lemma (0 sorries): AP-free set of density \u03b4 on Z/NZ (N\u22652) implies AP-free set of density \u2265 \u03b4+\u03b4\u00b2/100 on some Z/MZ with 0<M<N.",
+      "summary": "Proves density_increment_lemma (0 sorries): AP-free set of density δ on Z/NZ (N≥2) implies AP-free set of density ≥ δ+δ²/100 on some Z/MZ with 0<M<N.",
       "mathContext": "AP-free + density $\\delta$ on $\\mathbb{Z}/N\\mathbb{Z}$ $\\implies$ AP-free + density $\\geq \\delta + \\delta^2/100$ on some $\\mathbb{Z}/M\\mathbb{Z}$, $M \\geq \\sqrt{N}$."
     },
     {
@@ -151,7 +151,7 @@
       "title": "Part VI: Iteration and Main Theorem",
       "startLine": 496,
       "endLine": 1401,
-      "summary": "Proves roth_density_bound (Roth's theorem: r\u2083(N) = o(N)) via Mathlib's corners-theorem chain. Maps APFree A \u2286 ZMod N to ThreeAPFree S \u2286 \u2115 via ZMod.val and applies roth_3ap_theorem_nat. 0 sorries \u2014 fully verified.",
+      "summary": "Proves roth_density_bound (Roth's theorem: r₃(N) = o(N)) via Mathlib's corners-theorem chain. Maps APFree A ⊆ ZMod N to ThreeAPFree S ⊆ ℕ via ZMod.val and applies roth_3ap_theorem_nat. 0 sorries — fully verified.",
       "mathContext": "After $k$ increments: density $\\geq \\delta + k\\delta^2/100$. Choose $K > 100/\\delta^2$: density $> 1$, contradiction. Therefore $r_3(N) = o(N)$."
     }
   ],
@@ -174,27 +174,27 @@
     {
       "targetId": "szemeredi-counting",
       "relationship": "related",
-      "description": "The counting lemma complements Szemer\u00e9di regularity by counting subgraph copies in regular partitions. Roth's Fourier approach achieves the k=3 case directly without regularity, but the regularity-based proof of Roth's theorem uses the counting lemma applied to the Ruzsa-Szemer\u00e9di triangle removal graph"
+      "description": "The counting lemma complements Szemerédi regularity by counting subgraph copies in regular partitions. Roth's Fourier approach achieves the k=3 case directly without regularity, but the regularity-based proof of Roth's theorem uses the counting lemma applied to the Ruzsa-Szemerédi triangle removal graph"
     },
     {
       "targetId": "szemeredi-core",
       "relationship": "related",
-      "description": "The core Szemer\u00e9di infrastructure (density, regularity partitions) underpins the alternative graph-theoretic proof of Roth's theorem. The Fourier approach here is more direct for k=3 but does not generalize to k\u22654 where the regularity method (or hypergraph generalizations) is needed"
+      "description": "The core Szemerédi infrastructure (density, regularity partitions) underpins the alternative graph-theoretic proof of Roth's theorem. The Fourier approach here is more direct for k=3 but does not generalize to k≥4 where the regularity method (or hypergraph generalizations) is needed"
     },
     {
       "targetId": "szemeredi-theorem",
       "relationship": "extends",
-      "description": "Roth's theorem is the k=3 base case of Szemer\u00e9di's theorem (1975): every set of positive upper density contains arithmetic progressions of every length. The density increment strategy introduced by Roth was a precursor to Szemer\u00e9di's far more complex regularity-based proof"
+      "description": "Roth's theorem is the k=3 base case of Szemerédi's theorem (1975): every set of positive upper density contains arithmetic progressions of every length. The density increment strategy introduced by Roth was a precursor to Szemerédi's far more complex regularity-based proof"
     },
     {
       "targetId": "erdos-1155-oq-01",
       "relationship": "related",
-      "description": "The triangle removal process (Erd\u0151s #1155) is connected through the triangle removal lemma: Ruzsa-Szemer\u00e9di (1978) showed that the triangle removal lemma implies Roth's theorem by encoding 3-term APs as triangles in a tripartite graph. The removal process is the random greedy counterpart of the deterministic triangle removal"
+      "description": "The triangle removal process (Erdős #1155) is connected through the triangle removal lemma: Ruzsa-Szemerédi (1978) showed that the triangle removal lemma implies Roth's theorem by encoding 3-term APs as triangles in a tripartite graph. The removal process is the random greedy counterpart of the deterministic triangle removal"
     },
     {
       "targetId": "erdos-1155",
       "relationship": "related",
-      "description": "Parent formalization of the triangle removal process \u2014 connected via the triangle removal lemma which provides an alternative graph-theoretic proof of Roth's theorem"
+      "description": "Parent formalization of the triangle removal process — connected via the triangle removal lemma which provides an alternative graph-theoretic proof of Roth's theorem"
     },
     {
       "targetId": "bounded-prime-gaps",
@@ -233,43 +233,43 @@
       "authors": "Roth, Klaus",
       "title": "On certain sets of integers",
       "year": "1953",
-      "venue": "Journal of the London Mathematical Society 28, 104\u2013109",
-      "note": "Proved that any set of positive integers with positive upper density contains a 3-term arithmetic progression \u2014 the first case of Szemer\u00e9di's theorem"
+      "venue": "Journal of the London Mathematical Society 28, 104–109",
+      "note": "Proved that any set of positive integers with positive upper density contains a 3-term arithmetic progression — the first case of Szemerédi's theorem"
     },
     {
-      "authors": "Szemer\u00e9di, Endre",
+      "authors": "Szemerédi, Endre",
       "title": "On sets of integers containing no k elements in arithmetic progression",
       "year": "1975",
-      "venue": "Acta Arithmetica 27, 199\u2013245",
-      "note": "Extended Roth's result to k-term APs for all k, using the regularity lemma \u2014 the full Szemer\u00e9di theorem"
+      "venue": "Acta Arithmetica 27, 199–245",
+      "note": "Extended Roth's result to k-term APs for all k, using the regularity lemma — the full Szemerédi theorem"
     },
     {
       "authors": "Bourgain, Jean",
       "title": "On triples in arithmetic progression",
       "year": "1999",
-      "venue": "Geometric and Functional Analysis 9, 968\u2013984",
-      "note": "Improved Roth's bound to r\u2083(N) = O(N(log log N)\u00b2/(log N)^{2/3}) using a refined Fourier-analytic density increment"
+      "venue": "Geometric and Functional Analysis 9, 968–984",
+      "note": "Improved Roth's bound to r₃(N) = O(N(log log N)²/(log N)^{2/3}) using a refined Fourier-analytic density increment"
     },
     {
       "authors": "Bloom, Thomas; Sisask, Olof",
       "title": "Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions",
       "year": "2020",
       "venue": "arXiv:2007.03528",
-      "note": "Achieved r\u2083(N) = O(N/(log N)^{1+c}) for some c > 0, breaking a longstanding barrier"
+      "note": "Achieved r₃(N) = O(N/(log N)^{1+c}) for some c > 0, breaking a longstanding barrier"
     },
     {
       "authors": "Kelley, Zander; Meka, Raghu",
       "title": "Strong bounds for 3-progressions",
       "year": "2023",
       "venue": "arXiv:2302.05537",
-      "note": "Breakthrough bound r\u2083(N) = O(N \u00b7 exp(-c(log N)^{1/12})), approaching the Behrend construction lower bound"
+      "note": "Breakthrough bound r₃(N) = O(N · exp(-c(log N)^{1/12})), approaching the Behrend construction lower bound"
     },
     {
       "authors": "Green, Ben; Tao, Terence",
       "title": "The primes contain arbitrarily long arithmetic progressions",
       "year": "2008",
-      "venue": "Annals of Mathematics 167, 481\u2013547",
-      "note": "Extended Szemer\u00e9di's theorem to the primes using a relative version of the density increment strategy pioneered by Roth"
+      "venue": "Annals of Mathematics 167, 481–547",
+      "note": "Extended Szemerédi's theorem to the primes using a relative version of the density increment strategy pioneered by Roth"
     },
     {
       "authors": "Tao, Terence; Vu, Van",

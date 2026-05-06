@@ -144,7 +144,10 @@
       "Mathlib.Tactic",
       "Proofs.ContinuumHypothesis"
     ],
-    "opens": ["Cardinal", "ContinuumHypothesis"],
+    "opens": [
+      "Cardinal",
+      "ContinuumHypothesis"
+    ],
     "namespace": "CantorDiagOQ01OQ02",
     "lineCount": 306,
     "axiomCount": 7,

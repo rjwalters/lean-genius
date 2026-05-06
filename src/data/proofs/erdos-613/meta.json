@@ -1,8 +1,8 @@
 {
   "id": "erdos-613",
-  "title": "Erd\u0151s Problem #613: Graph Decomposition and Size Ramsey Numbers",
+  "title": "Erdős Problem #613: Graph Decomposition and Size Ramsey Numbers",
   "slug": "erdos-613",
-  "description": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n\u00b2 + 0.577n^{3/2} < r\u0302 < n\u00b2 + \u221a2\u00b7n^{3/2} + n.",
+  "description": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n.",
   "meta": {
     "author": "Pikhurko (disproof), Tao (Lean verification), Faudree (partial)",
     "sourceUrl": "https://erdosproblems.com/613",
@@ -63,15 +63,15 @@
     "definitionCount": 14
   },
   "overview": {
-    "historicalContext": "The size Ramsey number $\\hat{r}(H_1, H_2)$ was introduced by Erd\u0151s, Faudree, Rousseau, and Schelp in 1978 as an edge-minimization variant of the classical Ramsey number. For Erd\u0151s Problem #613, $H_1 = K_{1,n}$ (a star) and $H_2$ ranges over odd cycles. The conjecture proposed that $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$, equivalently asking whether graphs with one fewer edge always admit a bipartite + bounded-degree decomposition.\n\n**Timeline:**\n- **1978**: Erd\u0151s, Faudree, Rousseau, and Schelp introduce the size Ramsey number concept in *Journal of Graph Theory* and pose the conjecture.\n- **~1980s**: Faudree (unpublished) proves the conjecture holds when $|V| = 2n+1$ exactly, i.e., the minimum number of vertices for a complete graph with the critical edge count.\n- **~2000s**: Oleg Pikhurko DISPROVES the general conjecture, showing $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + 0.577\\,n^{3/2}$, which exceeds the conjectured value $\\approx n^2 + n$ for large $n$. He also establishes the upper bound $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$, pinning the true value at $n^2 + \\Theta(n^{3/2})$.\n- **2020s**: Terence Tao formalizes an explicit counterexample at $n = 5$ in Lean, making this one of the first formally verified disproofs of an Erd\u0151s conjecture.\n\nThe problem sits at the intersection of size Ramsey theory, graph decomposition, and formal verification. The gap between Pikhurko's bounds \u2014 the coefficient of $n^{3/2}$ lying between $0.577$ and $\\sqrt{2} \\approx 1.414$ \u2014 remains open and is related to the probabilistic method in extremal combinatorics.",
-    "problemStatement": "**Question:** For $n \\ge 3$, if $G$ has $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges, must $G$ decompose as $H_1 \\cup H_2$ where $H_1$ is bipartite and $\\Delta(H_2) < n$?\n\n**Equivalently:** Is $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$?\n\n**Answer:** NO \u2014 the conjecture is DISPROVED.\n- $n = 3, 4$: Conjecture holds\n- $n = 5$: First counterexample (Lean-verified)\n- General: Pikhurko's asymptotic bounds show the error is $\\Theta(n^{3/2})$",
-    "text": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n\u00b2 + 0.577n^{3/2} < r\u0302 < n\u00b2 + \u221a2\u00b7n^{3/2} + n.",
-    "proofStrategy": "The formalization takes a **definition-first approach**, building up the mathematical objects before stating and disproving the conjecture:\n\n1. **Foundation** (lines 30\u201345): Defines `criticalEdgeCount n` $= \\binom{2n+1}{2} - \\binom{n}{2} - 1$ and verifies concrete values via `native_decide`.\n2. **Graph decomposition** (lines 47\u201370): Defines bipartiteness, max degree, graph union, and the `HasDecomposition` predicate.\n3. **Conjecture** (lines 72\u201379): States `OriginalConjecture` as a universal quantification over all finite types.\n4. **Size Ramsey machinery** (lines 81\u2013103): Defines star graphs, odd cycle containment, and the size Ramsey number.\n5. **Disproof** (lines 105\u2013120): Axiomatizes Pikhurko's bounds and derives `original_conjecture_false`.\n6. **Counterexample** (lines 122\u2013139): References Tao's Lean-verified counterexample at $n = 5$.\n7. **Partial results** (lines 141\u2013161): Axiomatizes Faudree's result and proves the vertex count dichotomy.\n8. **Asymptotics** (lines 163\u2013195): Analyzes the gap between bounds and connects to classical Ramsey.\n9. **Small cases** (lines 197\u2013225): Verifies $n = 3, 4$ individually.\n10. **Status theorem** (lines 227\u2013260): Assembles the complete picture using `fin_cases`.",
+    "historicalContext": "The size Ramsey number $\\hat{r}(H_1, H_2)$ was introduced by Erdős, Faudree, Rousseau, and Schelp in 1978 as an edge-minimization variant of the classical Ramsey number. For Erdős Problem #613, $H_1 = K_{1,n}$ (a star) and $H_2$ ranges over odd cycles. The conjecture proposed that $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$, equivalently asking whether graphs with one fewer edge always admit a bipartite + bounded-degree decomposition.\n\n**Timeline:**\n- **1978**: Erdős, Faudree, Rousseau, and Schelp introduce the size Ramsey number concept in *Journal of Graph Theory* and pose the conjecture.\n- **~1980s**: Faudree (unpublished) proves the conjecture holds when $|V| = 2n+1$ exactly, i.e., the minimum number of vertices for a complete graph with the critical edge count.\n- **~2000s**: Oleg Pikhurko DISPROVES the general conjecture, showing $\\hat{r}(K_{1,n}, \\mathcal{F}) > n^2 + 0.577\\,n^{3/2}$, which exceeds the conjectured value $\\approx n^2 + n$ for large $n$. He also establishes the upper bound $\\hat{r} < n^2 + \\sqrt{2}\\,n^{3/2} + n$, pinning the true value at $n^2 + \\Theta(n^{3/2})$.\n- **2020s**: Terence Tao formalizes an explicit counterexample at $n = 5$ in Lean, making this one of the first formally verified disproofs of an Erdős conjecture.\n\nThe problem sits at the intersection of size Ramsey theory, graph decomposition, and formal verification. The gap between Pikhurko's bounds — the coefficient of $n^{3/2}$ lying between $0.577$ and $\\sqrt{2} \\approx 1.414$ — remains open and is related to the probabilistic method in extremal combinatorics.",
+    "problemStatement": "**Question:** For $n \\ge 3$, if $G$ has $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges, must $G$ decompose as $H_1 \\cup H_2$ where $H_1$ is bipartite and $\\Delta(H_2) < n$?\n\n**Equivalently:** Is $\\hat{r}(K_{1,n}, \\mathcal{F}) = \\binom{2n+1}{2} - \\binom{n}{2}$?\n\n**Answer:** NO — the conjecture is DISPROVED.\n- $n = 3, 4$: Conjecture holds\n- $n = 5$: First counterexample (Lean-verified)\n- General: Pikhurko's asymptotic bounds show the error is $\\Theta(n^{3/2})$",
+    "text": "Can graphs with C(2n+1,2) - C(n,2) - 1 edges be decomposed into bipartite + bounded-degree? DISPROVED by Pikhurko; Tao verified n=5 counterexample in Lean. Bounds: n² + 0.577n^{3/2} < r̂ < n² + √2·n^{3/2} + n.",
+    "proofStrategy": "The formalization takes a **definition-first approach**, building up the mathematical objects before stating and disproving the conjecture:\n\n1. **Foundation** (lines 30–45): Defines `criticalEdgeCount n` $= \\binom{2n+1}{2} - \\binom{n}{2} - 1$ and verifies concrete values via `native_decide`.\n2. **Graph decomposition** (lines 47–70): Defines bipartiteness, max degree, graph union, and the `HasDecomposition` predicate.\n3. **Conjecture** (lines 72–79): States `OriginalConjecture` as a universal quantification over all finite types.\n4. **Size Ramsey machinery** (lines 81–103): Defines star graphs, odd cycle containment, and the size Ramsey number.\n5. **Disproof** (lines 105–120): Axiomatizes Pikhurko's bounds and derives `original_conjecture_false`.\n6. **Counterexample** (lines 122–139): References Tao's Lean-verified counterexample at $n = 5$.\n7. **Partial results** (lines 141–161): Axiomatizes Faudree's result and proves the vertex count dichotomy.\n8. **Asymptotics** (lines 163–195): Analyzes the gap between bounds and connects to classical Ramsey.\n9. **Small cases** (lines 197–225): Verifies $n = 3, 4$ individually.\n10. **Status theorem** (lines 227–260): Assembles the complete picture using `fin_cases`.",
     "keyInsights": [
       "**Size Ramsey numbers** $\\hat{r}(H, \\mathcal{F})$ measure the minimum edge count (not vertex count) needed to force a Ramsey-type property, making them sensitive to graph density rather than graph order.",
-      "**Decomposition duality:** $G$ decomposes into bipartite + bounded-degree iff every 2-coloring of $E(G)$ yields a color class avoiding $K_{1,n}$ or a color class avoiding odd cycles \u2014 a direct Ramsey-partition equivalence.",
+      "**Decomposition duality:** $G$ decomposes into bipartite + bounded-degree iff every 2-coloring of $E(G)$ yields a color class avoiding $K_{1,n}$ or a color class avoiding odd cycles — a direct Ramsey-partition equivalence.",
       "**Phase transition at $n = 5$:** The conjecture holds for $n \\in \\{3, 4\\}$ but fails at $n = 5$ with 44 edges. This sharp transition illustrates how extremal thresholds can shift abruptly in combinatorics.",
-      "**Vertex count as hidden parameter:** Faudree's result shows that restricting to $|V| = 2n+1$ vertices restores the conjecture \u2014 counterexamples require 'sparse' graphs on many vertices, where edge density drops below the decomposition threshold.",
+      "**Vertex count as hidden parameter:** Faudree's result shows that restricting to $|V| = 2n+1$ vertices restores the conjecture — counterexamples require 'sparse' graphs on many vertices, where edge density drops below the decomposition threshold.",
       "**Error magnitude $\\Theta(n^{3/2})$:** The true $\\hat{r}$ exceeds the conjecture by $\\Theta(n^{3/2})$, a non-trivial correction arising from probabilistic constructions. The exact coefficient between $1/\\sqrt{3}$ and $\\sqrt{2}$ remains open."
     ],
     "prerequisites": [
@@ -99,7 +99,7 @@
     {
       "id": "decomposition",
       "title": "Graph Decomposition Definitions",
-      "summary": "Defines `IsBipartite`, `maxDegree`, `HasMaxDegreeLT`, `IsUnionOf`, and `HasDecomposition G n` \u2014 asserting $G = H_1 \\cup H_2$ with $H_1$ bipartite and $\\Delta(H_2) < n$. These form the core predicates for the conjecture.",
+      "summary": "Defines `IsBipartite`, `maxDegree`, `HasMaxDegreeLT`, `IsUnionOf`, and `HasDecomposition G n` — asserting $G = H_1 \\cup H_2$ with $H_1$ bipartite and $\\Delta(H_2) < n$. These form the core predicates for the conjecture.",
       "startLine": 47,
       "endLine": 71,
       "mathContext": "$\\text{HasDecomposition}(G, n) \\iff \\exists H_1, H_2: E(G) = E(H_1) \\sqcup E(H_2),\\; H_1 \\text{ bipartite},\\; \\Delta(H_2) < n$. Bipartiteness is characterized by $\\chi(G) \\le 2$ or equivalently the absence of odd cycles."
@@ -139,7 +139,7 @@
     {
       "id": "faudree",
       "title": "Faudree's Partial Result and Vertex Dichotomy",
-      "summary": "Axiomatizes Faudree's result that the conjecture holds when $|V| = 2n+1$. Proves `vertex_count_matters`: at $n = 5$, graphs on $\\text{Fin}(11)$ decompose but some larger graphs do not \u2014 a clean separation by vertex count.",
+      "summary": "Axiomatizes Faudree's result that the conjecture holds when $|V| = 2n+1$. Proves `vertex_count_matters`: at $n = 5$, graphs on $\\text{Fin}(11)$ decompose but some larger graphs do not — a clean separation by vertex count.",
       "startLine": 141,
       "endLine": 162,
       "mathContext": "$\\forall n \\ge 3,\\; \\forall G : \\text{SimpleGraph}(\\text{Fin}(2n+1)),\\; |E(G)| = \\text{criticalEdgeCount}(n) \\implies \\text{HasDecomposition}(G, n)$. The vertex count restriction $|V| = 2n+1$ suffices to restore the conjecture."
@@ -170,12 +170,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Erd\u0151s Problem #613 is DISPROVED. The conjecture that graphs with $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges always decompose into a bipartite subgraph and a bounded-degree subgraph is FALSE for $n \\ge 5$. Pikhurko established that the true size Ramsey number $\\hat{r}(K_{1,n}, \\mathcal{F})$ equals $n^2 + \\Theta(n^{3/2})$, exceeding the conjectured $n^2 + O(n)$ by a factor of $n^{1/2}$. Tao's formal Lean verification of the $n = 5$ counterexample makes this one of the first Erd\u0151s disproofs with computer-verified evidence.",
-    "implications": "**Theoretical Significance**: This result has significance across several areas:\n\n1. **Size Ramsey theory:** Demonstrates that natural conjectures about size Ramsey numbers can fail, and that the true asymptotics involve subtle probabilistic phenomena (the $n^{3/2}$ term arises from random constructions).\n2. **Graph decomposition:** Shows that edge count alone is insufficient to guarantee bipartite + bounded-degree decomposition \u2014 vertex count is a hidden structural parameter.\n**3. Formal verification:** Tao's Lean counterexample at $n = 5$ pioneered the use of proof assistants for disproving combinatorial conjectures, demonstrating that exhaustive finite verification can be made rigorous.\n4. **Extremal combinatorics:** The sharp phase transition from $n = 4$ (conjecture holds) to $n = 5$ (conjecture fails) exemplifies threshold phenomena in extremal graph theory.\n5. **Erd\u0151s problem methodology:** The resolution combines three distinct approaches \u2014 Faudree's structural argument for restricted vertex count, Pikhurko's probabilistic disproof, and Tao's computational verification.",
+    "summary": "Erdős Problem #613 is DISPROVED. The conjecture that graphs with $\\binom{2n+1}{2} - \\binom{n}{2} - 1$ edges always decompose into a bipartite subgraph and a bounded-degree subgraph is FALSE for $n \\ge 5$. Pikhurko established that the true size Ramsey number $\\hat{r}(K_{1,n}, \\mathcal{F})$ equals $n^2 + \\Theta(n^{3/2})$, exceeding the conjectured $n^2 + O(n)$ by a factor of $n^{1/2}$. Tao's formal Lean verification of the $n = 5$ counterexample makes this one of the first Erdős disproofs with computer-verified evidence.",
+    "implications": "**Theoretical Significance**: This result has significance across several areas:\n\n1. **Size Ramsey theory:** Demonstrates that natural conjectures about size Ramsey numbers can fail, and that the true asymptotics involve subtle probabilistic phenomena (the $n^{3/2}$ term arises from random constructions).\n2. **Graph decomposition:** Shows that edge count alone is insufficient to guarantee bipartite + bounded-degree decomposition — vertex count is a hidden structural parameter.\n**3. Formal verification:** Tao's Lean counterexample at $n = 5$ pioneered the use of proof assistants for disproving combinatorial conjectures, demonstrating that exhaustive finite verification can be made rigorous.\n4. **Extremal combinatorics:** The sharp phase transition from $n = 4$ (conjecture holds) to $n = 5$ (conjecture fails) exemplifies threshold phenomena in extremal graph theory.\n5. **Erdős problem methodology:** The resolution combines three distinct approaches — Faudree's structural argument for restricted vertex count, Pikhurko's probabilistic disproof, and Tao's computational verification.",
     "openQuestions": [
       "What is the exact leading coefficient in $\\hat{r}(K_{1,n}, \\mathcal{F}) = n^2 + c \\cdot n^{3/2} + o(n^{3/2})$? The current bounds give $c \\in (1/\\sqrt{3}, \\sqrt{2})$.",
       "For which values of $n > 5$ does the conjecture also fail? Is it false for all $n \\ge 5$, or are there sporadic exceptions?",
-      "What is the structure of the extremal graph achieving $\\hat{r}(K_{1,n}, \\mathcal{F})$ \u2014 is it a blow-up of a specific small graph, or does the structure change with $n$?",
+      "What is the structure of the extremal graph achieving $\\hat{r}(K_{1,n}, \\mathcal{F})$ — is it a blow-up of a specific small graph, or does the structure change with $n$?",
       "Can Pikhurko's probabilistic lower bound construction be derandomized to give an explicit family of counterexample graphs for each $n$?",
       "Does a similar bipartite + bounded-degree decomposition threshold exist for the size Ramsey number $\\hat{r}(K_{1,n}, C_{2k+1})$ with a fixed odd cycle length?"
     ]
@@ -204,7 +204,7 @@
   "references": [
     {
       "key": "EFRS78",
-      "citation": "Erd\u0151s, P., Faudree, R., Rousseau, C., and Schelp, R. (1978). The size Ramsey number. Periodica Mathematica Hungarica, 9(1-2), 145-161.",
+      "citation": "Erdős, P., Faudree, R., Rousseau, C., and Schelp, R. (1978). The size Ramsey number. Periodica Mathematica Hungarica, 9(1-2), 145-161.",
       "type": "paper"
     },
     {
@@ -214,7 +214,7 @@
     },
     {
       "key": "Tao",
-      "citation": "Tao, T. Lean verification of counterexample to Erd\u0151s Problem #613 at n = 5.",
+      "citation": "Tao, T. Lean verification of counterexample to Erdős Problem #613 at n = 5.",
       "type": "software"
     }
   ],
@@ -227,7 +227,7 @@
     {
       "targetId": "erdos-36",
       "relationship": "related",
-      "description": "Both concern graph decomposition and partition problems. Problem #36 studies minimum overlap in sequence partitions, while #613 studies graph decomposition into subgraphs satisfying size requirements \u2014 both probe the limits of balanced partitioning"
+      "description": "Both concern graph decomposition and partition problems. Problem #36 studies minimum overlap in sequence partitions, while #613 studies graph decomposition into subgraphs satisfying size requirements — both probe the limits of balanced partitioning"
     }
   ],
   "sorries": 12

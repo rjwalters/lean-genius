@@ -2,7 +2,7 @@
   "id": "erdos-1018-oq-04-incomplete-01",
   "title": "Hypergraph Non-Planar Density: Concrete Embeddability Definition",
   "slug": "erdos-1018-oq-04-incomplete-01",
-  "description": "Completion pass for Erd\u0151s #1018 OQ-04. Replaces the sorry `isEmbeddable` definition with a concrete topological definition via vertex maps and convex hull separation. Provides explicit planar coordinates for K\u2083 and K\u2084, proves K\u2085 has 10 edges, and connects dense graphs to non-embeddable subgraphs via Kostochka-Pyber (r=2 case axiomatized).",
+  "description": "Completion pass for Erdős #1018 OQ-04. Replaces the sorry `isEmbeddable` definition with a concrete topological definition via vertex maps and convex hull separation. Provides explicit planar coordinates for K₃ and K₄, proves K₅ has 10 edges, and connects dense graphs to non-embeddable subgraphs via Kostochka-Pyber (r=2 case axiomatized).",
   "meta": {
     "author": "Research formalization 2026",
     "sourceUrl": "https://erdosproblems.com/1018",
@@ -28,22 +28,22 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "Topological graph theory has roots in Euler's 1750 polyhedral formula $V - E + F = 2$, which Cauchy and Lhuilier later used to characterize planar graphs via the edge bound $|E| \\leq 3|V| - 6$. The definitive characterization of planarity came from Kazimierz Kuratowski in 1930: a graph is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$ as a subgraph. In 1932, van Kampen (and independently Flores in 1933) proved a higher-dimensional generalization: the $r$-skeleton of the $(2r+2)$-simplex cannot be embedded in $\\mathbb{R}^{2r}$, which for $r=1$ recovers the non-planarity of $K_5 = \\Delta_4^{(1)}$. The embeddability question for higher-dimensional simplicial complexes became central in combinatorial topology.\n\nFor dense graphs, Erd\u0151s and others sought quantitative versions: not just whether non-planar subgraphs exist, but how small they can be forced to be. Kostochka and Pyber (1988) proved the graph case: graphs on $n$ vertices with $n^{1+\\varepsilon}$ edges must contain non-planar subgraphs on $O_{\\varepsilon}(1)$ vertices. Erd\u0151s then conjectured a hypergraph generalization (Problem 1018): $r$-uniform hypergraphs with $n^{r-1+\\varepsilon}$ edges must contain non-embeddable sub-hypergraphs of bounded size.\n\nThis completion pass addresses a technical gap in the parent formalization: `isEmbeddable` was defined as `sorry`, making all dependent theorems vacuously true. Replacing it with a concrete definition via vertex maps and convex hull separation transforms the formalization from nominal to substantive, and reduces K\u2083/K\u2084 planarity from axioms to theorems (pending geometric verification sorries).",
-    "problemStatement": "**Completion**: Replace `isEmbeddable := sorry` in Erdos1018OQ04.lean with a concrete topological definition and prove the graph case (K\u2083, K\u2084 planar) by explicit construction.",
-    "text": "Provides a concrete definition of topological embeddability for hypergraphs, with explicit planar embeddings for K\u2083 and K\u2084, and connects the r=2 case to Kostochka-Pyber.",
-    "proofStrategy": "Defines isEmbeddableConc via \u2203 \u03c6 : V \u2192 (Fin d \u2192 \u211d), injective, with convex hull separation for edges. Provides explicit coordinate maps for K\u2083 and K\u2084. Proves n^(1+\u03b5) eventually exceeds 3n (the planar bound), showing density forces non-planarity.",
+    "historicalContext": "Topological graph theory has roots in Euler's 1750 polyhedral formula $V - E + F = 2$, which Cauchy and Lhuilier later used to characterize planar graphs via the edge bound $|E| \\leq 3|V| - 6$. The definitive characterization of planarity came from Kazimierz Kuratowski in 1930: a graph is planar iff it contains no subdivision of $K_5$ or $K_{3,3}$ as a subgraph. In 1932, van Kampen (and independently Flores in 1933) proved a higher-dimensional generalization: the $r$-skeleton of the $(2r+2)$-simplex cannot be embedded in $\\mathbb{R}^{2r}$, which for $r=1$ recovers the non-planarity of $K_5 = \\Delta_4^{(1)}$. The embeddability question for higher-dimensional simplicial complexes became central in combinatorial topology.\n\nFor dense graphs, Erdős and others sought quantitative versions: not just whether non-planar subgraphs exist, but how small they can be forced to be. Kostochka and Pyber (1988) proved the graph case: graphs on $n$ vertices with $n^{1+\\varepsilon}$ edges must contain non-planar subgraphs on $O_{\\varepsilon}(1)$ vertices. Erdős then conjectured a hypergraph generalization (Problem 1018): $r$-uniform hypergraphs with $n^{r-1+\\varepsilon}$ edges must contain non-embeddable sub-hypergraphs of bounded size.\n\nThis completion pass addresses a technical gap in the parent formalization: `isEmbeddable` was defined as `sorry`, making all dependent theorems vacuously true. Replacing it with a concrete definition via vertex maps and convex hull separation transforms the formalization from nominal to substantive, and reduces K₃/K₄ planarity from axioms to theorems (pending geometric verification sorries).",
+    "problemStatement": "**Completion**: Replace `isEmbeddable := sorry` in Erdos1018OQ04.lean with a concrete topological definition and prove the graph case (K₃, K₄ planar) by explicit construction.",
+    "text": "Provides a concrete definition of topological embeddability for hypergraphs, with explicit planar embeddings for K₃ and K₄, and connects the r=2 case to Kostochka-Pyber.",
+    "proofStrategy": "Defines isEmbeddableConc via ∃ φ : V → (Fin d → ℝ), injective, with convex hull separation for edges. Provides explicit coordinate maps for K₃ and K₄. Proves n^(1+ε) eventually exceeds 3n (the planar bound), showing density forces non-planarity.",
     "keyInsights": [
       "A sorry definition is mathematically dangerous: `isEmbeddable := sorry` makes all dependent lemmas vacuously provable, since `sorry` has any type. Replacing it with a concrete definition is essential for the formalization to say anything meaningful.",
-      "The concrete embeddability definition captures exactly geometric realization: \u03c6 maps each vertex to a point in \u211d^d, each r-edge becomes the convex hull of r points (an (r-1)-simplex), and 'no improper intersections' becomes convex hull containment within shared vertices.",
-      "K\u2083 and K\u2084 are just barely planar by Euler's formula: K\u2084 satisfies |E| = 3|V| - 6 = 6 with equality, while K\u2085 has 10 edges vs the planar bound of 3\u00b75 - 6 = 9. This is why K\u2085 is the smallest non-planar graph.",
-      "The density argument is purely asymptotic: n^(1+\u03b5) = n \u00b7 n^\u03b5 eventually exceeds 3n because n^\u03b5 \u2192 \u221e. This uses Mathlib's `Real.tendsto_rpow_atTop`, illustrating how real analysis infrastructure in Mathlib supports combinatorial arguments.",
-      "There is a proof-of-concept gap: even after defining `isEmbeddableConc` concretely, connecting it to the parent's `isEmbeddable` sorry requires a definitional equivalence that cannot be proved \u2014 highlighting how sorry definitions propagate upward to block all downstream reasoning.",
-      "The geometric verification sorries (convex hull non-crossing for specific coordinates) expose a genuine Mathlib gap: while Mathlib has convex hull theory, the infrastructure for computing explicit convex hull intersections for finite point sets in \u211d\u00b2 is not yet fully developed."
+      "The concrete embeddability definition captures exactly geometric realization: φ maps each vertex to a point in ℝ^d, each r-edge becomes the convex hull of r points (an (r-1)-simplex), and 'no improper intersections' becomes convex hull containment within shared vertices.",
+      "K₃ and K₄ are just barely planar by Euler's formula: K₄ satisfies |E| = 3|V| - 6 = 6 with equality, while K₅ has 10 edges vs the planar bound of 3·5 - 6 = 9. This is why K₅ is the smallest non-planar graph.",
+      "The density argument is purely asymptotic: n^(1+ε) = n · n^ε eventually exceeds 3n because n^ε → ∞. This uses Mathlib's `Real.tendsto_rpow_atTop`, illustrating how real analysis infrastructure in Mathlib supports combinatorial arguments.",
+      "There is a proof-of-concept gap: even after defining `isEmbeddableConc` concretely, connecting it to the parent's `isEmbeddable` sorry requires a definitional equivalence that cannot be proved — highlighting how sorry definitions propagate upward to block all downstream reasoning.",
+      "The geometric verification sorries (convex hull non-crossing for specific coordinates) expose a genuine Mathlib gap: while Mathlib has convex hull theory, the infrastructure for computing explicit convex hull intersections for finite point sets in ℝ² is not yet fully developed."
     ],
     "prerequisites": [
-      "Convex hulls in \u211d^d",
+      "Convex hulls in ℝ^d",
       "Graph planarity (Euler's formula)",
-      "K\u0151v\u00e1ri-S\u00f3s-Tur\u00e1n theorem",
+      "Kővári-Sós-Turán theorem",
       "van Kampen-Flores theorem"
     ]
   },
@@ -60,24 +60,24 @@
       "title": "Concrete isEmbeddable Definition",
       "startLine": 40,
       "endLine": 65,
-      "summary": "Defines isEmbeddableConc via vertex maps \u03c6 : V \u2192 Fin d \u2192 \u211d with convex hull separation. Proves injectivity and monotonicity in d (higher-dimensional spaces only help).",
-      "mathContext": "H embeddable in \u211d^d iff \u2203 injective \u03c6 : V \u2192 \u211d^d, \u2200 e\u2081 \u2260 e\u2082 \u2208 H.edges: ConvHull(\u03c6(e\u2081)) \u2229 ConvHull(\u03c6(e\u2082)) \u2286 ConvHull(\u03c6(e\u2081 \u2229 e\u2082))."
+      "summary": "Defines isEmbeddableConc via vertex maps φ : V → Fin d → ℝ with convex hull separation. Proves injectivity and monotonicity in d (higher-dimensional spaces only help).",
+      "mathContext": "H embeddable in ℝ^d iff ∃ injective φ : V → ℝ^d, ∀ e₁ ≠ e₂ ∈ H.edges: ConvHull(φ(e₁)) ∩ ConvHull(φ(e₂)) ⊆ ConvHull(φ(e₁ ∩ e₂))."
     },
     {
       "id": "k3-k4-planar",
-      "title": "K\u2083 and K\u2084 Planarity",
+      "title": "K₃ and K₄ Planarity",
       "startLine": 80,
       "endLine": 130,
-      "summary": "Provides explicit coordinate embeddings for K\u2083 (0,0),(1,0),(0,1) and K\u2084 (0,0),(3,0),(1,2),(2,2). Injectivity is proved; the non-crossing condition has a sorry (requires convex hull intersection theory).",
-      "mathContext": "K\u2083 at {(0,0),(1,0),(0,1)}: non-degenerate triangle. K\u2084 at {(0,0),(3,0),(1,2),(2,2)}: valid planar quadrilateral configuration."
+      "summary": "Provides explicit coordinate embeddings for K₃ (0,0),(1,0),(0,1) and K₄ (0,0),(3,0),(1,2),(2,2). Injectivity is proved; the non-crossing condition has a sorry (requires convex hull intersection theory).",
+      "mathContext": "K₃ at {(0,0),(1,0),(0,1)}: non-degenerate triangle. K₄ at {(0,0),(3,0),(1,2),(2,2)}: valid planar quadrilateral configuration."
     },
     {
       "id": "density",
       "title": "Density Forces Non-Planarity",
       "startLine": 150,
       "endLine": 185,
-      "summary": "Proves n^(1+\u03b5) eventually exceeds 3n (using n^\u03b5 \u2192 \u221e), showing graphs with n^(1+\u03b5) edges cannot be planar.",
-      "mathContext": "n^(1+\u03b5) = n \u00b7 n^\u03b5 \u2192 \u221e faster than 3n for \u03b5 > 0."
+      "summary": "Proves n^(1+ε) eventually exceeds 3n (using n^ε → ∞), showing graphs with n^(1+ε) edges cannot be planar.",
+      "mathContext": "n^(1+ε) = n · n^ε → ∞ faster than 3n for ε > 0."
     },
     {
       "id": "kostochka-pyber",
@@ -85,16 +85,16 @@
       "startLine": 186,
       "endLine": 220,
       "summary": "Axiomatizes the r=2 case (Kostochka-Pyber 1988). Proves this implies the r=2 case of the main conjecture (up to the parent's sorry definition).",
-      "mathContext": "\u2200\u03b5>0, \u2203C,N: graphs on n\u2265N vertices with n^{1+\u03b5} edges contain non-planar subgraph on \u2264C vertices."
+      "mathContext": "∀ε>0, ∃C,N: graphs on n≥N vertices with n^{1+ε} edges contain non-planar subgraph on ≤C vertices."
     }
   ],
   "conclusion": {
-    "summary": "This completion pass replaces the vacuous sorry-based `isEmbeddable` with a concrete definition via vertex maps and convex hull separation. K\u2083 and K\u2084 planarity are established with explicit coordinates, reducing them from axioms to theorems (pending geometric verification sorries). The density argument shows n^(1+\u03b5) edges eventually exceed the planar bound 3n, and the Kostochka-Pyber r=2 result is axiomatized as a bridge to the main conjecture.",
-    "implications": "With `isEmbeddableConc` in place, the van Kampen-Flores axioms in the parent formalization now make genuine mathematical claims. The 3 remaining sorries are more tractable than the original `isEmbeddable` sorry: 2 are geometric edge-crossing verifications for the K\u2083 and K\u2084 explicit embeddings (potentially provable with Mathlib's convex set library), and 1 is the planar edge bound |E| \u2264 3|V| - 6 (Euler's formula for planar graphs, not yet in Mathlib). This pattern \u2014 resolving a central conceptual sorry to expose finer technical sorries \u2014 represents steady progress in formalization. If the convex hull intersection sorries are filled, the file would establish K\u2083 and K\u2084 planarity as proper theorems in Lean 4, which are not yet in Mathlib.",
+    "summary": "This completion pass replaces the vacuous sorry-based `isEmbeddable` with a concrete definition via vertex maps and convex hull separation. K₃ and K₄ planarity are established with explicit coordinates, reducing them from axioms to theorems (pending geometric verification sorries). The density argument shows n^(1+ε) edges eventually exceed the planar bound 3n, and the Kostochka-Pyber r=2 result is axiomatized as a bridge to the main conjecture.",
+    "implications": "With `isEmbeddableConc` in place, the van Kampen-Flores axioms in the parent formalization now make genuine mathematical claims. The 3 remaining sorries are more tractable than the original `isEmbeddable` sorry: 2 are geometric edge-crossing verifications for the K₃ and K₄ explicit embeddings (potentially provable with Mathlib's convex set library), and 1 is the planar edge bound |E| ≤ 3|V| - 6 (Euler's formula for planar graphs, not yet in Mathlib). This pattern — resolving a central conceptual sorry to expose finer technical sorries — represents steady progress in formalization. If the convex hull intersection sorries are filled, the file would establish K₃ and K₄ planarity as proper theorems in Lean 4, which are not yet in Mathlib.",
     "openQuestions": [
-      "Can Mathlib's `Convex.Hull` and `Set.inter` machinery prove that two non-parallel line segments in \u211d\u00b2 in general position share at most one point (needed for K\u2083 and K\u2084 planarity)?",
+      "Can Mathlib's `Convex.Hull` and `Set.inter` machinery prove that two non-parallel line segments in ℝ² in general position share at most one point (needed for K₃ and K₄ planarity)?",
       "Can `turanNumber` be defined using Mathlib's extremal graph theory (which is under active development)?",
-      "What is the status of r=3 Kostochka-Pyber? The general r case of Erd\u0151s Problem 1018 remains open.",
+      "What is the status of r=3 Kostochka-Pyber? The general r case of Erdős Problem 1018 remains open.",
       "Is there a way to unify `isEmbeddableConc` with the parent's `isEmbeddable` sorry, perhaps by rewriting the parent to use the concrete definition directly?"
     ]
   },
@@ -102,7 +102,7 @@
     {
       "targetId": "erdos-1018-oq-04",
       "relationship": "extends",
-      "description": "Parent: Erd\u0151s #1018 OQ-04 (hypergraph non-planar density)"
+      "description": "Parent: Erdős #1018 OQ-04 (hypergraph non-planar density)"
     }
   ],
   "references": [
@@ -110,7 +110,7 @@
       "authors": "Kostochka, A., Pyber, L.",
       "title": "Small topological complete subgraphs of dense graphs",
       "year": "1988",
-      "venue": "Combinatorica 8(1):83\u201386",
+      "venue": "Combinatorica 8(1):83–86",
       "note": "Proves graph case (r=2) of the hypergraph conjecture"
     },
     {
@@ -118,7 +118,7 @@
       "title": "Planarity criterion",
       "year": "1750",
       "venue": "Classical",
-      "note": "V - E + F = 2, giving |E| \u2264 3|V| - 6 for planar graphs"
+      "note": "V - E + F = 2, giving |E| ≤ 3|V| - 6 for planar graphs"
     }
   ],
   "leanFile": {
