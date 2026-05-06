@@ -1,0 +1,133 @@
+[
+  {
+    "id": "ann-imports-preamble",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Module Overview and Imports",
+    "content": "The file imports all of Mathlib plus the companion module NthRootIrrationalOQ01, which contributes the key lemma `eisenstein_X_pow_sub_prime` (X^n - p irreducible over ℚ for prime p). The `open Polynomial` declaration brings Lean's polynomial API into scope without qualification — names like `X`, `C`, `natDegree`, `AdjoinRoot`, `coeff` refer to the polynomial ring API throughout.\n\nThe `variable {p : ℕ} [Fact (Nat.Prime p)]` declaration introduces p as an implicit prime, making all theorems parametric over the prime. This is the standard Mathlib pattern for p-adic theory: `Fact (Nat.Prime p)` is a typeclass providing primality as a proof term that can be automatically threaded through instances like `ℚ_[p]` (the p-adic field) and `AdjoinRoot` computations.\n\nThe `noncomputable section` reflects that p-adic numbers, algebraic closures, and field extension degrees are classical mathematical objects — they are constructed via Zorn's lemma or choice principles and do not have computable representations in Lean's kernel.",
+    "mathContext": "Setting: $p$ is a prime, $\\mathbb{Q}_p = \\widehat{\\mathbb{Q}}_p$ the p-adic completion of $\\mathbb{Q}$, $\\mathbb{Z}_p = \\widehat{\\mathbb{Z}}_p$ the p-adic integers (ring of integers of $\\mathbb{Q}_p$). The algebraic closure $\\overline{\\mathbb{Q}_p}$ is the splitting field of all polynomials in $\\mathbb{Q}_p[X]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "p-adic numbers ℚ_p",
+      "Fact typeclass",
+      "noncomputable declarations",
+      "Polynomial API"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "p-adic number construction",
+      "classical vs constructive mathematics"
+    ]
+  },
+  {
+    "id": "ann-real-case",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
+    "range": { "startLine": 45, "endLine": 56 },
+    "type": "concept",
+    "title": "Part I: Reference Point — [ℂ:ℝ] = 2",
+    "content": "The opening of this file is a reference to the parent result: the complex numbers ℂ form a 2-dimensional ℝ-vector space. Both results in this section are delegation theorems — they simply name Mathlib's built-in instances. `real_complex_finrank` wraps `Complex.finrank_real_complex`, and `real_complex_module_finite` confirms the typeclass instance `Module.Finite ℝ ℂ`.\n\nThese two results serve as the baseline for comparison. The entire subsequent development is a proof that the analogous p-adic statement is FALSE: while [ℂ:ℝ] is finite (= 2), the extension degree [ℚ̄_p:ℚ_p] is infinite. The contrast is as stark as possible: not merely larger, but genuinely infinite.\n\n**Why is [ℂ:ℝ] = 2 special?** The Artin-Schreier theorem (1927) characterizes this: a field F has an algebraic closure of degree 2 over F if and only if F is real-closed (F is not algebraically closed, but every odd-degree polynomial has a root). ℝ is the prototypical real-closed field; ℚ_p is not real-closed for any prime p.",
+    "mathContext": "$[\\mathbb{C}:\\mathbb{R}] = \\dim_{\\mathbb{R}} \\mathbb{C} = 2$, with $\\mathbb{R}$-basis $\\{1, i\\}$.\n\nArtin-Schreier theorem: $F$ is real-closed $\\Leftrightarrow$ $[\\overline{F}:F] = 2$.\n\nFor contrast: $[\\overline{\\mathbb{Q}}:\\mathbb{Q}] = \\infty$ (algebraic numbers of all degrees exist), and $[\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] = \\infty$ (shown in this file).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin-Schreier theorem",
+      "real-closed field",
+      "Module.finrank",
+      "Complex.finrank_real_complex"
+    ],
+    "prerequisites": [
+      "field extension degree",
+      "vector space dimension",
+      "real-closed field definition"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-z",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
+    "range": { "startLine": 57, "endLine": 100 },
+    "type": "technique",
+    "title": "Part II: Eisenstein + Gauss — X^n - p Irreducible over ℤ and ℚ",
+    "content": "This section establishes irreducibility of X^n - p over both ℤ and ℚ. The ℤ result uses Mathlib's `Polynomial.irreducible_of_eisenstein_criterion` directly, verifying four conditions of the Eisenstein criterion at the prime ideal (p) ⊂ ℤ:\n\n1. **(p) is prime**: `Ideal.span_singleton_prime` + `Int.prime_iff_natAbs_prime`\n2. **Leading coefficient 1 ∉ (p)**: uses `hp_int.not_dvd_one`\n3. **Non-leading coefficients ∈ (p)**: coeff k for k < n is 0 (for k > 0) or -p (for k = 0), both in (p)\n4. **Constant term ∉ (p)²**: -p ∉ (p²), proved by showing p² ∤ p; the proof uses `Int.le_of_dvd` and `nlinarith`\n\nThe ℚ result delegates entirely to `NthRootIrrationalOQ01.eisenstein_X_pow_sub_prime`, which handles the Gauss lemma transfer (irreducibility over a UFD like ℤ implies irreducibility over its fraction field ℚ, when the polynomial is primitive).\n\n**Restriction n ≥ 2**: Both theorems require n ≥ 2. This is needed for the Eisenstein criterion (degree ≥ 2 ensures the polynomial is not a unit). For n = 1, X - p is reducible (it has root p ∈ ℚ_p). The p-adic irreducibility axiom uses n ≥ 1 instead, reflecting the different argument.",
+    "mathContext": "Eisenstein criterion at $(p) \\subset \\mathbb{Z}$ for $f = X^n - p$:\n- Leading coeff $= 1 \\notin (p)$\n- Coefficients of $X^k$ for $0 < k < n$: $0 \\in (p)$\n- Constant term: $-p \\in (p)$\n- Constant term: $-p \\notin (p)^2$, since $p^2 \\nmid p$ for prime $p \\geq 2$\n\nGauss's lemma: $f \\in \\mathbb{Z}[X]$ primitive, irreducible over $\\mathbb{Z}$ $\\Rightarrow$ irreducible over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Eisenstein criterion",
+      "Gauss's lemma",
+      "prime ideal",
+      "DVR (discrete valuation ring)",
+      "irreducible polynomial"
+    ],
+    "prerequisites": [
+      "Eisenstein irreducibility criterion",
+      "Gauss's lemma for polynomials",
+      "UFD / PID properties of ℤ"
+    ]
+  },
+  {
+    "id": "ann-newton-polygon-axiom",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
+    "range": { "startLine": 102, "endLine": 127 },
+    "type": "insight",
+    "title": "Part III: Newton Polygon Axiom — X^n - p Irreducible over ℚ_p",
+    "content": "The critical axiom: X^n - p is irreducible over ℚ_p for every n ≥ 1. While the ℤ and ℚ irreducibility (Part II) are proved, the p-adic version requires different machinery.\n\n**Newton polygon argument** (mathematical justification in the docstring): For a polynomial f = a₀ + a₁X + ... + aₙXⁿ ∈ ℚ_p[X], the Newton polygon is the lower convex hull of the points {(k, v_p(aₖ)) : aₖ ≠ 0}. For f = X^n - p:\n- Coefficient of X^n: 1, with v_p(1) = 0 → point (n, 0)\n- Coefficient of X^0: -p, with v_p(-p) = 1 → point (0, 1)  \n- All intermediate coefficients are 0 (omitted from polygon)\n\nThis gives a single segment from (0,1) to (n,0) with slope -1/n. The **Ore-Hensel theorem** states: if the Newton polygon of f has a single segment of slope -h/e with gcd(h,e) = 1, then f is irreducible. Here h = 1, e = n, gcd(1,n) = 1, confirming irreducibility.\n\n**Why this is an axiom**: Mathlib's `PadicInt` is constructed as the inverse limit of ℤ/p^n ℤ, not directly as a DVR. Connecting `PadicInt` to the `DiscreteValuationRing` typeclass (needed for Gauss's lemma and the Eisenstein criterion over ℤ_p) requires bridging lemmas that exist in principle but are not yet assembled into a proof.",
+    "mathContext": "Newton polygon of $X^n - p$: single segment from $(0, v_p(p)) = (0, 1)$ to $(n, 0)$, slope $= -1/n$.\n\nOre-Hensel criterion: if the Newton polygon has a single segment with slope $-h/e$, $\\gcd(h,e)=1$, then $f$ factors as a product of irreducibles of degree $e$. With one segment and $\\gcd(1,n)=1$, $f$ is irreducible.\n\nEquivalently: $X^n - p$ satisfies Eisenstein at the maximal ideal $(p) \\subset \\mathbb{Z}_p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton polygon",
+      "Ore-Hensel theorem",
+      "discrete valuation ring (DVR)",
+      "p-adic valuation",
+      "totally ramified extension"
+    ],
+    "prerequisites": [
+      "p-adic valuation v_p",
+      "Newton polygon construction",
+      "Eisenstein criterion over DVRs"
+    ]
+  },
+  {
+    "id": "ann-finrank-machine-check",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
+    "range": { "startLine": 129, "endLine": 172 },
+    "type": "technique",
+    "title": "Part IV: Machine-Checked — [AdjoinRoot(X^n - p):ℚ_p] = n",
+    "content": "The heart of the machine-checked results. This section proves three things:\n\n1. **Xn_sub_p_ne_zero_Qp**: X^n - C p ≠ 0 over ℚ_p. Proved by showing the polynomial has natDegree n ≥ 1 (hence nonzero). The natDegree computation uses `natDegree_sub_eq_left_of_natDegree_lt`: since natDegree(C p) = 0 < n = natDegree(X^n), the subtraction preserves the degree.\n\n2. **natDegree_Xn_sub_p**: natDegree(X^n - C p) = n. The key inequality is natDegree(C p) = 0 < natDegree(X^n) = n (when n ≥ 1), established via `simp` with `natDegree_C`, `natDegree_pow`, `natDegree_X`.\n\n3. **padic_root_extension_finrank**: Module.finrank ℚ_[p] (AdjoinRoot(X^n - p)) = n. The proof uses `AdjoinRoot.powerBasis hne` where `hne` is the nonzeroness from (1). The PowerBasis gives a basis of size `AdjoinRoot.powerBasis_dim = natDegree(f)`. After rewriting, the goal reduces to `natDegree(X^n - p) = n`, which is (2).\n\n**Crucial observation**: The irreducibility axiom `Xn_sub_p_irred_Qp` is NOT used in padic_root_extension_finrank. The finrank computation only requires nonzeroness — the AdjoinRoot always has a power basis of size natDegree(f), regardless of whether f is irreducible. Irreducibility would be needed to show AdjoinRoot(f) is a field (not just a ring), but for finrank purposes the ring structure suffices.",
+    "mathContext": "$[\\mathrm{AdjoinRoot}(X^n - p) : \\mathbb{Q}_p] = n$.\n\nProof chain:\n$$X^n - C\\,p \\neq 0 \\xrightarrow{\\text{PowerBasis}} \\{1, \\alpha, \\ldots, \\alpha^{n-1}\\} \\text{ is a basis} \\xrightarrow{\\text{dim}} [K:F] = n$$\nwhere $\\alpha$ is the image of $X$ in $\\mathrm{AdjoinRoot}(X^n - p)$.\n\nNote: $\\mathrm{AdjoinRoot}(f) = F[X]/(f)$ as $F$-algebras; its $F$-dimension is $\\mathrm{natDegree}(f)$ whenever $f \\neq 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AdjoinRoot construction",
+      "PowerBasis",
+      "Module.finrank",
+      "AdjoinRoot.powerBasis",
+      "natDegree_sub_eq_left_of_natDegree_lt"
+    ],
+    "prerequisites": [
+      "adjoin-root algebra F[X]/(f)",
+      "power basis for finite extensions",
+      "polynomial degree arithmetic"
+    ]
+  },
+  {
+    "id": "ann-contrast-summary",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-04",
+    "range": { "startLine": 174, "endLine": 214 },
+    "type": "insight",
+    "title": "Parts V-VI: Infinite Closure Axiom and Final Contrast",
+    "content": "The final section axiomatizes [ℚ̄_p:ℚ_p] = ∞ and packages the complete contrast.\n\n**padic_alg_closure_infinite_dim**: The axiom `¬ Module.Finite ℚ_[p] (AlgebraicClosure ℚ_[p])` captures infinite-dimensionality. The mathematical argument is clear: for every n ≥ 1, the extension AdjoinRoot(X^n - p) embeds into AlgebraicClosure ℚ_[p] (since the algebraic closure splits every irreducible polynomial), and has finrank n. If Module.Finite held, finrank would be bounded — contradiction. The formalization gap is constructing the embedding (requires Xn_sub_p_irred_Qp for the field structure) and using finrank monotonicity.\n\n**real_padic_closure_contrast**: The binary conjunction [ℂ:ℝ] = 2 ∧ ¬Module.Finite ℚ_[p] (AlgClosure ℚ_[p]) — the clearest statement of the real/p-adic dichotomy.\n\n**padic_extensions_unbounded** and **padic_extensions_strictly_unbounded**: Pure corollaries of padic_root_extension_finrank — ℚ_p has extensions of every degree n ≥ 1, and extensions exceeding any bound N.\n\n**degree_contrast_summary**: The four-part conjunction assembling all results. This is the main 'headline theorem' of the file: real algebraic closure achieved in degree 2; p-adic extensions exist in all degrees; p-adic algebraic closure is infinite-dimensional.\n\n**Mathematical depth**: The 'one quadratic step' property of ℝ is intimately connected to ℝ being an ordered field. The Artin-Schreier theorem (proved in 1927) shows this is essentially unique: the ONLY fields whose algebraic closure is a finite extension are the real-closed fields, and the extension degree must be exactly 2. ℚ_p is not real-closed because it contains p-th power non-residues (and for odd p, elements without square roots), making it impossible to close in finitely many steps.",
+    "mathContext": "Key dichotomy:\n$$[\\mathbb{C}:\\mathbb{R}] = 2 \\quad \\text{vs} \\quad [\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] = \\infty$$\n\nArtin-Schreier (1927): if $[\\overline{F}:F] < \\infty$, then $[\\overline{F}:F] = 2$ and $F$ is real-closed.\n\nFor p-adic fields: $\\mathbb{Q}_p$ admits totally ramified extensions $\\mathbb{Q}_p(p^{1/n})$ of degree $n$ for all $n \\geq 1$, so $[\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] \\geq n$ for all $n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Artin-Schreier theorem",
+      "totally ramified extension",
+      "Module.Finite vs infinite-dimensional",
+      "AlgebraicClosure",
+      "padic_alg_closure_infinite_dim"
+    ],
+    "prerequisites": [
+      "Artin-Schreier theorem",
+      "algebraic closure",
+      "totally ramified p-adic extensions",
+      "Module.Finite definition"
+    ]
+  }
+]
