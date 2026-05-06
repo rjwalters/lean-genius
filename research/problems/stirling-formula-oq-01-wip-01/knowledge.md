@@ -10,6 +10,36 @@ The 1/(12n) correction coefficient is the key refinement of Stirling's approxima
 
 ---
 
+## Session 2026-05-07 (Session 2) — Step Formula Proved + Telescoping Infrastructure
+
+**Mode**: REVISIT
+**Outcome**: Major progress — `stirling_step_formula` proved, full telescoping framework built
+
+### What I Did
+
+**Proved `stirling_step_formula`** (the only blocker from Session 1): expand `log(stirlingSeq n)` via `Real.log_div/mul/sqrt/pow/exp`, the difference telescopes to `(k+1/2)·(log(k+1)-log k)-1`. Key Lean 4 fix: `↑(k+1) ≠ (k:ℝ)+1` definitionally — add `have h_cast := by push_cast; ring` before log_div rewrites.
+
+**5 arithmetic telescoping lemmas** (k ≥ 2): inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope. All close by nlinarith.
+
+**Partial sum bounds by induction**: log_stirlingSeq_partial_upper and log_stirlingSeq_partial_lower using the telescoping lemmas + stirling_step_upper/lower.
+
+**stirling_first_correction structure** (C=2): upper via le_of_tendsto', lower via le_of_tendsto_of_tendsto. Two remaining mechanical sorrys: (1) G(n+M)→0 and (2) |exp(L)-(1+L)| ≤ L²/2·exp(L) ≤ 1/n².
+
+### Key Mathematical Result
+
+`|L - 1/(12n)| ≤ 1/n²` via simultaneous telescoping: `Σ d_k ≤ F(n) = 1/(12(n-1))+1/(12(n-1)²) ≤ 1/(12n)+1/n²` and `G(n) ≤ Σ d_k` where `G(n) = 1/(12n)-1/(24(n-1)²)-1/(24(n-1)³) ≥ 1/(12n)-1/(2n²)`.
+
+### Files Modified
+
+- `proofs/Proofs/StirlingExpansion.lean` (PR #16442)
+
+### Next Steps
+
+1. Fill sorry 1: `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop` for G(n+M)→0
+2. Fill sorry 2: L ≤ 1/n → |exp(L)-(1+L)| ≤ L²·exp(1/2)/2 ≤ 1/n²
+
+---
+
 ## Session 2026-05-06 (Session 1) — Log Bounds + Step Bounds
 
 **Mode**: FRESH
