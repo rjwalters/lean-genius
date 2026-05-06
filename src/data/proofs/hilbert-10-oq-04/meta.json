@@ -1,0 +1,136 @@
+{
+  "id": "hilbert-10-oq-04",
+  "title": "The Simplest Undecidable Diophantine Equation",
+  "slug": "hilbert-10-oq-04",
+  "description": "Maps the complexity landscape of Diophantine decidability: 1-variable equations are decidable by the Integer Root Theorem (roots must divide the constant term), Pell equations (degree 2) are always solvable by Lagrange's theorem, yet degree-4 polynomials in 9 variables are undecidable by Jones (1982). The boundary at degree 3 remains open.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_tenth_problem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert10OQ04.lean",
+    "tags": [
+      "computability",
+      "number-theory",
+      "hilbert",
+      "diophantine",
+      "decidability",
+      "complexity"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 4,
+    "lineCount": 222,
+    "theoremCount": 5,
+    "definitionCount": 5,
+    "mathlibDependencies": ["Mathlib.Tactic"],
+    "originalContributions": [
+      "root_divides_constant: Integer Root Theorem — every integer root divides the constant term",
+      "one_variable_decidable: Decision algorithm for 1-variable equations (AXIOM)",
+      "pell_always_solvable: Lagrange's theorem on Pell equations (AXIOM)",
+      "jones_universal_polynomial: Jones (1982) degree-4 universal polynomial existence (AXIOM)",
+      "degree4_9var_undecidable: No algorithm for degree-4, 9-variable families (AXIOM)",
+      "complexity_gap: Packages decidable + undecidable halves of the landscape"
+    ],
+    "dateAdded": "2026-05-06",
+    "prerequisites": [
+      "Hilbert's 10th problem (parent file)",
+      "MRDP theorem (parent file)",
+      "Basic number theory (divisibility, Pell equations)"
+    ],
+    "assumptions": "Four axioms: (1) 1-variable decidability via Integer Root Theorem (finite divisor search), (2) Pell solvability for non-square D by Lagrange's continued fraction theory, (3) Jones (1982) universal degree-4 polynomial in 9 variables exists, (4) degree-4 families with 9 variables are undecidable by reduction from Halting Problem via Jones polynomial.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "After Matiyasevich (1970) established that Hilbert's 10th Problem is undecidable over $\\mathbb{Z}$ via the MRDP theorem, the natural follow-up question was: what is the *simplest* undecidable Diophantine equation? This asks for the minimum number of variables and the minimum degree needed to encode undecidable problems.\n\nThe answer developed over decades. Davis (1950s), Putnam (1960s), and Robinson (1960s) introduced exponential Diophantine equations; Matiyasevich (1970) showed exponential is Diophantine via Pell equations. Jones (1982) then carefully reduced the degree and variable count to arrive at: degree 4, 9 variables suffice for a universal Diophantine equation.",
+    "problemStatement": "What is the minimum complexity (degree $\\times$ variable count) for an undecidable Diophantine equation over $\\mathbb{Z}$?",
+    "text": "Formal development of the complexity landscape for Diophantine decidability, from the decidable (1 variable, degree 1, Pell equations) through to the known undecidable case (degree 4, 9 variables).",
+    "proofStrategy": "The file establishes three regions: (1) Decidable — 1-variable equations via Integer Root Theorem, any-variable degree-1 via Euclidean algorithm, degree-2 Pell equations via Lagrange; (2) Unknown — degree 3 with any variables; (3) Undecidable — degree 4, 9 variables by Jones (1982). The gap theorem packages both sides.",
+    "keyInsights": [
+      "The Integer Root Theorem gives a finite search for 1-variable equations: any integer root divides the constant term",
+      "Pell equations x² - Dy² = 1 with non-square D are always solvable (Lagrange 1770), making their decidability trivial",
+      "Jones (1982) constructed a universal degree-4 polynomial in 9 variables via three steps: MRDP, exponential encoding via Pell, degree reduction",
+      "The boundary between decidable and undecidable lies strictly between degree 2 and degree 4",
+      "Degree 3 is the main open problem: no undecidability proof and no general algorithm are known"
+    ]
+  },
+  "sections": [
+    {
+      "title": "1-Variable Equations: Decidable by Integer Root Theorem",
+      "content": "An integer polynomial $p(x) = a_0 + a_1 x + \\cdots + a_n x^n$ has integer roots only among divisors of the constant term $a_0$. This is the Integer Root Theorem: if $p(x_0) = 0$ then $x_0 \\mid a_0$.\n\nThe Lean proof `root_divides_constant` formalizes this by induction: for the cons case $[a_0, a_1, \\ldots]$, the evaluation equation $a_0 + x_0 \\cdot \\mathrm{eval}(\\text{rest}, x_0) = 0$ directly gives $a_0 = -x_0 \\cdot \\mathrm{eval}(\\text{rest}, x_0)$, so $x_0 \\mid a_0$.\n\nThe decision algorithm then checks only finitely many candidates: divisors of $|a_0|$ plus $\\{0\\}$ (if $a_0 = 0$). Since there are at most $2|a_0|$ divisors, this terminates."
+    },
+    {
+      "title": "Pell Equations: Degree-2 Decidability via Continued Fractions",
+      "content": "Pell equations $x^2 - Dy^2 = 1$ provide the key example of degree-2 decidability. Lagrange (1770) proved:\n\n- If $D$ is a perfect square $k^2$: only the trivial solution $(\\pm 1, 0)$ exists (no non-trivial solution)\n- If $D > 0$ is not a perfect square: infinitely many solutions exist with $y \\neq 0$\n\nThe continued fraction expansion of $\\sqrt{D}$ is periodic; the fundamental solution appears at the end of each period. Decidability then reduces to checking if $D$ is a perfect square via `Nat.sqrt`.\n\nPell equations are also the key tool in the MRDP theorem — Matiyasevich used Pell to encode exponentiation as a Diophantine predicate, which was the final ingredient in proving all r.e. sets are Diophantine."
+    },
+    {
+      "title": "Jones (1982): Degree 4, 9 Variables is Undecidable",
+      "content": "Jones (1982) proved the existence of a **universal Diophantine polynomial** $U(n_0, x_1, \\ldots, x_9)$ of degree exactly 4 in 9 integer variables such that every recursively enumerable set $S \\subseteq \\mathbb{N}$ can be encoded as:\n$$m \\in S \\iff \\exists x_1, \\ldots, x_9 \\in \\mathbb{Z},\\ U(n_0, x_1, \\ldots, x_9) = 0$$\nfor some fixed parameter $n_0$.\n\n**Construction chain** (three steps):\n1. **MRDP**: Every r.e. set is exponential Diophantine (Davis-Putnam-Robinson-Matiyasevich)\n2. **Exponential reduction**: $y = x^n$ is Diophantine via Pell-based encoding\n3. **Jones degree reduction**: Reduce from arbitrary degree to exactly degree 4 with 9 variables via systematic variable substitutions\n\nUndecidability follows: a decision algorithm for degree-4, 9-variable equations would (by evaluating the Jones polynomial) decide all r.e. sets, including the Halting Problem."
+    },
+    {
+      "title": "The Degree-3 Open Problem",
+      "content": "Between the decidable region (degree ≤ 2) and the undecidable region (degree 4, 9 variables), lies the open problem:\n\n**Is there an undecidable Diophantine equation of degree 3?**\n\nAs of 2026, neither direction is known:\n- No decision algorithm exists for arbitrary degree-3 integer polynomial equations\n- No undecidability proof exists either\n\nThis is one of the key open problems in mathematical logic and Diophantine geometry. A degree-3 undecidability result would be a major advance; a decision algorithm for degree-3 equations would be equally surprising.\n\nThe gap theorem `complexity_gap` in this file packages both the decidable and undecidable ends, leaving this central region formally open."
+    }
+  ],
+  "conclusion": {
+    "summary": "The complexity landscape of Diophantine decidability has a gap between degree 2 (decidable: 1-variable, linear, Pell) and degree 4 with 9 variables (undecidable: Jones 1982). The boundary at degree 3 is the main open problem.",
+    "significance": "Jones' result gives a precise answer to \"what is the simplest undecidable Diophantine equation\" — a degree-4 polynomial in 9 variables. Whether degree 3 suffices (or whether all degree-3 equations are decidable) remains one of the deepest open problems at the intersection of number theory and mathematical logic.",
+    "futureDirections": [
+      "Prove or disprove: degree-3 Diophantine equations are decidable",
+      "Reduce Jones' variable count: can degree 4 with fewer than 9 variables be universal?",
+      "Investigate degree 2 with many variables: is the general quadratic Diophantine equation decidable?",
+      "Formalize the explicit Jones polynomial and its universality proof in Lean"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "hilbert-10",
+      "relationship": "parent",
+      "description": "MRDP theorem and undecidability of H10 over Z"
+    },
+    {
+      "id": "hilbert-10-oq-01",
+      "relationship": "sibling",
+      "description": "H10 over Q (also open, different direction)"
+    }
+  ],
+  "references": [
+    "Jones, J.P. (1982). Universal Diophantine equation. Journal of Symbolic Logic, 47(3), 549-571.",
+    "Matiyasevich, Yu. (1993). Hilbert's Tenth Problem. MIT Press.",
+    "Davis, M., Putnam, H., Robinson, J. (1961). The decision problem for exponential Diophantine equations. Annals of Mathematics, 74(3), 425-436.",
+    "Lagrange, J.-L. (1770). Sur la solution des problèmes indéterminés du second degré. Nouveaux Mémoires de l'Académie Royale des Sciences de Berlin.",
+    "Poonen, B. (2008). Undecidability in number theory. Notices of the AMS, 55(3), 344-350."
+  ],
+  "leanFile": {
+    "path": "Proofs/Hilbert10OQ04.lean",
+    "axiomCount": 4,
+    "lineCount": 222,
+    "theoremCount": 5,
+    "definitionCount": 5,
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "root_divides_constant",
+      "statement": "∀ (p : IntPoly) (x₀ : Int), eval p x₀ = 0 → x₀ ∣ constantTerm p",
+      "description": "Integer Root Theorem: every integer root divides the constant term"
+    },
+    {
+      "name": "complexity_gap",
+      "statement": "(∃ d₁ : IntPoly → Bool, ∀ p, d₁ p = true ↔ hasSolution p) ∧ ¬∃ d₄, ...",
+      "description": "The complexity gap: 1-variable decidable, degree-4/9-variable undecidable"
+    },
+    {
+      "name": "one_variable_decidable",
+      "statement": "∃ decide : IntPoly → Bool, ∀ p : IntPoly, decide p = true ↔ hasSolution p",
+      "description": "Decision algorithm for 1-variable integer polynomial equations (axiom)"
+    },
+    {
+      "name": "degree4_9var_undecidable",
+      "statement": "¬∃ decide : (Fin 9 → Int) → Bool, ∀ c : Fin 9 → Int, ...",
+      "description": "No algorithm decides degree-4 equations with 9 variables (Jones 1982, axiom)"
+    }
+  ],
+  "sorries": 0,
+  "openQuestions": []
+}
