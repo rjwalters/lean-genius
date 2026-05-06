@@ -21,8 +21,8 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 222,
-    "theoremCount": 8,
+    "lineCount": 259,
+    "theoremCount": 9,
     "definitionCount": 0,
     "dateAdded": "2026-05-06",
     "mathlibDependencies": [
@@ -80,10 +80,10 @@
       "GreensTheoremOQ02",
       "GeneralizedStokes"
     ],
-    "lineCount": 222,
+    "lineCount": 259,
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "openQuestions": [
@@ -132,7 +132,7 @@
       "id": "rectangle-consistency",
       "title": "Self-Consistency for Rectangle Case",
       "startLine": 188,
-      "endLine": 222,
+      "endLine": 259,
       "summary": "l1curl_consistent_with_stokes_rectangle and stokes_hierarchy_summary. Confirms that for C¹ forms on rectangles, stokes_2d_rectangle and greens_stokes_l1curl give the same conclusion.",
       "mathContext": "For smooth forms on rectangles: (1) stokes_2d_rectangle (axiom-free) proves $\\int_{\\partial R} \\omega = \\int_R d\\omega$ via FTC; (2) greens_stokes_l1curl uses Whitney's axiom. Both give identical conclusions, confirming mutual consistency of the two proof strategies."
     }
@@ -155,7 +155,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Bridges Whitney's minimal regularity Green's theorem (OQ-02) with the exterior differential form framework. Eight theorems proved with 0 sorries and 0 new axioms. Key result: greens_theorem_l1curl is exactly the 2D Stokes theorem ∫_C ω = ∫_D dω in the L¹ setting.",
+    "summary": "Bridges Whitney's minimal regularity Green's theorem (OQ-02) with the exterior differential form framework. Nine theorems proved with 0 sorries and 0 new axioms. Key result: greens_theorem_l1curl is exactly the 2D Stokes theorem ∫_C ω = ∫_D dω in the L¹ setting.",
     "implications": "The identification of Whitney's theorem as a Stokes theorem for L¹ forms is mathematically fundamental. When Mathlib eventually formalizes the abstract Stokes theorem for smooth manifolds, it would prove greens_theorem_l1curl (via approximation of Lipschitz boundaries by smooth ones), eliminating the one remaining axiom in OQ-02. This file establishes the conceptual bridge needed for that future development.",
     "openQuestions": [
       "Can Mathlib's eventual abstract Stokes theorem for manifolds prove greens_theorem_l1curl without Whitney's axiom?",
