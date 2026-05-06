@@ -128,7 +128,7 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
                  ((continuous_id.pow 3).div_const 3))).continuousOn
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici] at ht
+        simp only [Set.mem_Ici, Function.id_def] at ht ⊢
         exact ne_of_gt (by linarith)
     · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
       intro t ht
@@ -190,7 +190,7 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       apply ContinuousOn.sub
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici] at ht
+        simp only [Set.mem_Ici, Function.id_def] at ht ⊢
         exact ne_of_gt (by linarith)
       · exact (((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
                  ((continuous_id.pow 3).div_const 3)).sub
@@ -263,6 +263,7 @@ private lemma stirling_step_formula (k : ℕ) (hk : 1 ≤ k) :
     rw [Real.log_mul hsqrt_pos.ne' hpow_pos.ne']
     rw [Real.log_sqrt h2k1_pos.le]
     rw [Real.log_pow, Real.log_div hk1_pos.ne' hexp_pos.ne', Real.log_exp]
+    push_cast
     ring
   rw [expand_k, expand_k1]
   -- Expand log((k+1)!) = log(k+1) + log(k!) using (k+1)! = (k+1) * k!
