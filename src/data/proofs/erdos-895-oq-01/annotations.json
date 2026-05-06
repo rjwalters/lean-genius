@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-001",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 33, "endLine": 49 },
+    "type": "definition",
+    "title": "Core Definitions — Graph, Triangle-Free, and Hindman Sets",
+    "content": "The file sets up four core definitions. GraphOnInterval n = SimpleGraph (Fin n) represents a graph on vertices {0,1,...,n-1}. IsTriangleFree checks that no three vertices form a triangle (no K₃ subgraph). IsAdditiveTriple requires a.val + b.val = c.val with positive a, b (non-trivial sums). hindmanSet base is the FS-set: all values achievable as a finite nonempty sub-sum of base, modeled as a Set ℕ rather than a Finset (since sums can be arbitrarily large in principle).",
+    "mathContext": "The Hindman finite sums set: for a base $B = \\{a_1, \\ldots, a_k\\} \\subseteq \\mathbb{N}$, $$\\mathrm{FS}(B) = \\left\\{\\sum_{i \\in T} a_i : \\emptyset \\neq T \\subseteq B\\right\\}.$$ For $k=2$: $\\mathrm{FS}(\\{a,b\\}) = \\{a, b, a+b\\}$ (3 elements if $a \\neq b$). For $k=3$: $\\mathrm{FS}(\\{a,b,c\\}) = \\{a,b,c,a+b,a+c,b+c,a+b+c\\}$ (7 elements if all distinct). In general $|\\mathrm{FS}(B)| \\leq 2^{|B|} - 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Hindman's theorem", "finite sums set", "triangle-free graphs", "additive combinatorics"],
+    "prerequisites": ["graph theory", "finite sets in Lean", "sumsets"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 53, "endLine": 77 },
+    "type": "technique",
+    "title": "Hindman Set Structural Properties — Monotonicity and Pair Membership",
+    "content": "Four sorry-free structural lemmas: (1) hindmanSet_mem_self: every base element is in its own FS-set (via the singleton subset {a}); (2) hindmanSet_mono: FS is monotone — larger base → larger FS-set (via subset transitivity); (3) hindmanSet_pair_left/right: both elements of a 2-element base are in the FS-set; (4) hindmanSet_pair_sum: the sum a+b is in FS({a,b}) for distinct a ≠ b, using Finset.sum_pair to evaluate the full-set sum.",
+    "mathContext": "Monotonicity: if $B_1 \\subseteq B_2$ then $\\mathrm{FS}(B_1) \\subseteq \\mathrm{FS}(B_2)$. Proof: any sub-sum $\\sum_{i \\in T} a_i$ with $T \\subseteq B_1$ also has $T \\subseteq B_2$. Pair membership: for $B = \\{a,b\\}$ with $a \\neq b$, the three elements are: $a = \\sum_{T=\\{a\\}}$, $b = \\sum_{T=\\{b\\}}$, $a+b = \\sum_{T=\\{a,b\\}}$, giving $|\\mathrm{FS}(\\{a,b\\})| = 3$ (assuming $a \\neq b$ and $a \\neq 0 \\neq b$).",
+    "significance": "supporting",
+    "relatedConcepts": ["sumset monotonicity", "Hindman sets", "Finset operations"],
+    "prerequisites": ["finite sets", "Finset.sum_pair", "set membership in Lean"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 81, "endLine": 91 },
+    "type": "context",
+    "title": "Hajnal's Conjecture — Axiomatized Open Problem",
+    "content": "hajnalConjecture is a Prop stating that ∃ N such that for all n ≥ N and all triangle-free graphs G on Fin n, there exists a base of size ≥ 2 such that all pairs of FS-set elements are non-adjacent. The axiom hajnal_conjecture asserts this conjecture without proof — it is OPEN as of 2026. The definition uses base : Finset (Fin n) and maps to ℕ via (·.val) for the hindmanSet computation.",
+    "mathContext": "The formal conjecture: $\\exists N \\in \\mathbb{N}, \\forall n \\geq N, \\forall G$ triangle-free on $\\{1,\\ldots,n\\}$: $$\\exists B \\subseteq \\{1,\\ldots,n\\}, |B| \\geq 2, \\forall s \\neq t \\in \\mathrm{FS}(\\{b \\in \\mathbb{N} : b \\in B.\\mathrm{image}(\\cdot.\\mathrm{val})\\}): \\neg G.\\mathrm{Adj}(s,t).$$ This wraps the vertex set in `Fin n` while working with natural number values for the sumset computation — hence the `.image (·.val)` transformation.",
+    "significance": "key",
+    "relatedConcepts": ["Hajnal conjecture", "open problems in graph theory", "additive combinatorics", "axiom in Lean"],
+    "prerequisites": ["Hindman sets", "triangle-free graphs", "open problems formalization"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 97, "endLine": 129 },
+    "type": "insight",
+    "title": "The k=2 Reduction — Hajnal Implies Erdős-Barber",
+    "content": "hajnal_k2_gives_additive_triple proves that a Hajnal base of size 2 — {a,b} with a+b < n — gives an independent additive triple (a, b, a+b). The proof constructs d = ⟨a.val + b.val, hsum⟩ ∈ Fin n, shows a.val ≠ b.val ≠ d.val (from hab and hsum), maps the Finset (Fin n) to ℕ values via the image map, then applies the independence hypothesis hindep to all three pairs (a,b), (b,d), (a,d).",
+    "mathContext": "The $k=2$ case: $\\mathrm{FS}(\\{a,b\\}) = \\{a, b, a+b\\}$. A Hajnal base of size 2 means $a$, $b$, $a+b$ are mutually non-adjacent in $G$. This is exactly Erd\\H{o}s-Barber: \\textit{every triangle-free graph on $\\{1,\\ldots,n\\}$ for $n \\geq 18$ contains three mutually non-adjacent vertices $a$, $b$, $a+b$} (Barber 2015). The general conjecture ($|B| \\geq 3$) remains open. The key non-triviality conditions: $a.\\mathrm{val} + b.\\mathrm{val} < n$ (sum stays in vertex set), $a > 0$, $b > 0$ (non-trivial),  $a \\neq b$ (distinct base elements).",
+    "significance": "key",
+    "relatedConcepts": ["Erdős-Barber theorem", "additive triples", "Hajnal conjecture k=2", "independent sets"],
+    "prerequisites": ["Hindman sets k=2", "triangle-free graphs", "Fin type arithmetic"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 133, "endLine": 147 },
+    "type": "technique",
+    "title": "Triangle-Free Neighborhoods Are Independent",
+    "content": "triangleFree_nbhd_independent proves that in a triangle-free graph, no two distinct neighbors of a vertex are adjacent — if G.Adj v u and G.Adj v w, then ¬G.Adj u w. This is the defining property of triangle-free graphs (no K₃ subgraph). Used in the Case 1 independence bound: if deg(v) ≥ √n, then N(v) is an independent set of size ≥ √n.",
+    "mathContext": "In a triangle-free graph $G$: for any vertex $v$, $N(v)$ (the open neighborhood) is an independent set. Proof: if $u, w \\in N(v)$ with $u \\sim v$ and $w \\sim v$, then $u \\sim w$ would create a triangle $\\{v, u, w\\}$, contradicting triangle-freeness. The bound follows: if $|N(v)| \\geq \\sqrt{n}$, then $N(v)$ is an independent set of size $\\geq \\sqrt{n}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["triangle-free graphs", "independent sets", "graph neighborhoods", "Turán-type bounds"],
+    "prerequisites": ["graph theory", "triangle-free definition", "neighborhood sets"]
+  },
+  {
+    "id": "ann-006",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 149, "endLine": 242 },
+    "type": "technique",
+    "title": "Greedy Independent Set via Induction on Candidate Size",
+    "content": "greedy_indep_of_bounded_deg proves: if every vertex has at most Δ neighbors in the candidate set, then there exists an independent set S ⊆ candidates with candidates.card ≤ S.card · (Δ+1). The proof is by strong induction on candidates.card. Base case (empty): empty independent set. Inductive step: greedily pick vertex v, remove v and N(v) ∩ candidates (at most Δ+1 vertices), then apply the inductive hypothesis to the remaining candidates. The independence of S is maintained by ensuring no S-element is in the removed set of any other S-element.",
+    "mathContext": "The greedy bound: if $\\Delta(G[C]) \\leq \\Delta$ (max degree in the induced subgraph on $C$), then $\\alpha(G[C]) \\geq |C|/(\\Delta+1)$. Proof: pick $v \\in C$, remove $\\{v\\} \\cup (N(v) \\cap C)$ (at most $\\Delta+1$ vertices), repeat on the remaining $|C| - \\text{removed}$ candidates. After $|S|$ steps we have removed $\\leq |S|(\\Delta+1)$ vertices, covering all of $C$: $|C| \\leq |S|(\\Delta+1)$, i.e., $|S| \\geq |C|/(\\Delta+1) = \\lceil|C|/(\\Delta+1)\\rceil$.",
+    "significance": "key",
+    "relatedConcepts": ["greedy algorithm", "independence number", "bounded degree graphs", "Turán's theorem"],
+    "prerequisites": ["graph theory", "independent sets", "greedy algorithms", "Lean induction"]
+  },
+  {
+    "id": "ann-007",
+    "proofId": "erdos-895-oq-01",
+    "range": { "startLine": 248, "endLine": 271 },
+    "type": "insight",
+    "title": "α(G) ≥ √n for Triangle-Free Graphs — Two-Case Argument",
+    "content": "triangleFree_independence_bound proves α(G) ≥ √n for any triangle-free graph G on n vertices. The proof splits on whether any vertex has degree ≥ √n. Case 1 (∃v, deg(v) ≥ √n): N(v) is independent (triangleFree_nbhd_independent) and has size ≥ √n. Case 2 (∀v, deg(v) < √n): all degrees ≤ √n - 1, so the greedy bound gives α(G) ≥ n/(√n - 1 + 1) = n/√n = √n. The final step uses Nat.sqrt_le' (i.e., (√n)² ≤ n) to conclude √n · √n ≤ n ≤ |S| · √n, hence |S| ≥ √n.",
+    "mathContext": "The bound $\\alpha(G) \\geq \\sqrt{n}$ for triangle-free $G$ on $n$ vertices is a classical result. Proof: let $\\Delta = \\max_v \\deg(v)$. Case 1: $\\Delta \\geq \\sqrt{n}$, so some $N(v)$ has $|N(v)| \\geq \\sqrt{n}$ and is independent (triangle-free). Case 2: $\\Delta < \\sqrt{n}$, so $\\alpha(G) \\geq n/(\\Delta+1) > n/\\sqrt{n} = \\sqrt{n}$. This is tight: the Petersen graph and Paley graphs of order $q = p^2$ achieve $\\alpha \\approx \\sqrt{n}$. In Lean, `Nat.sqrt_le'` gives $(\\lfloor\\sqrt{n}\\rfloor)^2 \\leq n$, needed to convert the greedy bound $n \\leq |S| \\cdot \\lfloor\\sqrt{n}\\rfloor$ into $|S| \\geq \\lfloor\\sqrt{n}\\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": ["independence number", "Ramsey theory", "Turán-type bounds", "triangle-free graphs", "Nat.sqrt in Lean"],
+    "prerequisites": ["graph theory", "independence number", "greedy algorithm", "integer square root"]
+  }
+]
