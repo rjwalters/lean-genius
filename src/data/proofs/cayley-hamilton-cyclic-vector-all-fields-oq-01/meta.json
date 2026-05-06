@@ -108,14 +108,19 @@
   ],
   "crossReferences": [
     {
-      "proofId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
-      "relationship": "extends",
-      "description": "Imports the primary decomposition theorem (nonderogatory_general_has_cyclic_vector) from WIP04, which proves the cyclic vector exists given a factored minpoly."
+      "id": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+      "title": "Cyclic Vector — Primary Decomposition (WIP04)",
+      "relationship": "Imports the primary decomposition theorem (nonderogatory_general_has_cyclic_vector) from WIP04. That file proves the cyclic vector exists given a factored minpoly via Bezout projections. This entry provides the factorization bridge that WIP04 depends on."
     },
     {
-      "proofId": "cayley-hamilton",
-      "relationship": "related",
-      "description": "The Cayley-Hamilton theorem: every matrix satisfies its characteristic polynomial. The nonderogatory condition used here (minpoly = charpoly) is closely related."
+      "id": "cayley-hamilton",
+      "title": "Cayley-Hamilton Theorem",
+      "relationship": "Foundational: every matrix M satisfies its characteristic polynomial χ_M(M) = 0. The nonderogatory condition (minpoly = charpoly) implies every v is 'almost cyclic' — the Cayley-Hamilton theorem bounds the degree of annihilating polynomials."
+    },
+    {
+      "id": "cayley-hamilton-cyclic-vector-all-fields",
+      "title": "Cyclic Vector — All Fields (Parent)",
+      "relationship": "Parent open question: this entry answers the factorization bridge sub-question and provides the complete axiom-free proof of the cyclic vector theorem over all fields."
     }
   ],
   "conclusion": {
