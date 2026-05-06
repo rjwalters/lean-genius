@@ -128,13 +128,16 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
                  ((continuous_id.pow 3).div_const 3))).continuousOn
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        exact ne_of_gt (by linarith [Set.mem_Ici.mp ht])
+        simp only [Set.mem_Ici] at ht
+        linarith
     · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
       intro t ht
       rw [interior_Ici] at ht
+      simp only [Set.mem_Ioi] at ht
       exact (hderiv t ht).differentiableAt.differentiableWithinAt
     · intro t ht
       rw [interior_Ici] at ht
+      simp only [Set.mem_Ioi] at ht
       have hd : deriv g t = t ^ 3 / (1 + t) := (hderiv t ht).deriv
       rw [hd]
       exact div_nonneg (by positivity) (by linarith)
@@ -187,16 +190,19 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       apply ContinuousOn.sub
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        exact ne_of_gt (by linarith [Set.mem_Ici.mp ht])
+        simp only [Set.mem_Ici] at ht
+        linarith
       · exact (((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
                  ((continuous_id.pow 3).div_const 3)).sub
                  ((continuous_id.pow 4).div_const 4)).continuousOn
     · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
       intro t ht
       rw [interior_Ici] at ht
+      simp only [Set.mem_Ioi] at ht
       exact (hderiv t ht).differentiableAt.differentiableWithinAt
     · intro t ht
       rw [interior_Ici] at ht
+      simp only [Set.mem_Ioi] at ht
       have hd : deriv f t = t ^ 4 / (1 + t) := (hderiv t ht).deriv
       rw [hd]
       exact div_nonneg (by positivity) (by linarith)
