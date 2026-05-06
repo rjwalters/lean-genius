@@ -39,7 +39,8 @@
       "Minimal infrastructure: conjugate pairs + sign variation parity under root extraction",
       "The gap: conjugate pairing gives degree=real_roots (mod 2), but parity needs sv=pos_roots (mod 2)",
       "The irreducible hard part: how multiplication by (X - C r) transforms coefficient sign sequences",
-      "Parity chain theorem composes all three ingredients"
+      "Parity chain theorem composes all three ingredients",
+      "All 9 leanFiles entries had lineCount +1 over actual (systematic off-by-one). DescartesRuleOfSignsOQ01.lean had sorryCount:1 but the \"sorry\" was only in a block comment comment. Fixed all lineCount and sorryCount values."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -71,7 +72,7 @@
     {
       "path": "Proofs/DescartesRuleOfSigns.lean",
       "filename": "DescartesRuleOfSigns.lean",
-      "lineCount": 577,
+      "lineCount": 576,
       "theoremCount": 35,
       "axiomCount": 8,
       "defCount": 11,
@@ -82,18 +83,18 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
       "filename": "DescartesRuleOfSignsOQ01.lean",
-      "lineCount": 1075,
+      "lineCount": 1074,
       "theoremCount": 30,
       "axiomCount": 1,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
     },
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
       "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
-      "lineCount": 155,
+      "lineCount": 154,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -104,7 +105,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
       "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
-      "lineCount": 272,
+      "lineCount": 271,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 0,
@@ -115,7 +116,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
       "filename": "DescartesRuleOfSignsOQ02.lean",
-      "lineCount": 699,
+      "lineCount": 698,
       "theoremCount": 30,
       "axiomCount": 3,
       "defCount": 8,
@@ -126,7 +127,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
       "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
-      "lineCount": 192,
+      "lineCount": 191,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 1,
@@ -137,7 +138,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
       "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
-      "lineCount": 459,
+      "lineCount": 458,
       "theoremCount": 26,
       "axiomCount": 1,
       "defCount": 6,
@@ -148,7 +149,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
       "filename": "DescartesRuleOfSignsOQ03.lean",
-      "lineCount": 441,
+      "lineCount": 440,
       "theoremCount": 24,
       "axiomCount": 0,
       "defCount": 3,
@@ -159,7 +160,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
       "filename": "DescartesRuleOfSignsOQ04.lean",
-      "lineCount": 496,
+      "lineCount": 495,
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 0,
