@@ -351,15 +351,10 @@ field ℚ(t₁,...,tₙ) has Galois group Sₙ. By Hilbert's irreducibility theo
 we can specialize t₁,...,tₙ to rational values while preserving the Galois group.
 -/
 
-/--
-Symmetric groups Sₙ are realizable as Galois groups over ℚ.
-
-This follows from Hilbert's irreducibility theorem applied to the general polynomial.
-The splitting field of a generic degree-n polynomial has Galois group Sₙ.
--/
-/-- Axiomatized: follows from Hilbert's irreducibility theorem applied to the
-    generic polynomial. Hilbert, "Über die Irreducibilität ganzer rationaler
-    Functionen mit ganzzahligen Coefficienten", Crelle's J. 110 (1892). -/
+/-- Axiomatized: Symmetric groups Sₙ are realizable as Galois groups over ℚ.
+    Follows from Hilbert's irreducibility theorem applied to the general polynomial
+    x^n + t₁x^(n-1) + ... + tₙ over ℚ(t₁,...,tₙ). Hilbert, "Über die Irreducibilität
+    ganzer rationaler Functionen mit ganzzahligen Coefficienten", Crelle's J. 110 (1892). -/
 axiom symmetric_group_realizable (n : ℕ) :
     ∃ (K : Type) (_ : Field K) (_ : Algebra ℚ K) (_ : FiniteDimensional ℚ K)
       (_ : IsGalois ℚ K), Nonempty (Equiv.Perm (Fin n) ≃* (K ≃ₐ[ℚ] K))
