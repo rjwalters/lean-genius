@@ -65,5 +65,89 @@
       "Can this abstract formulation be instantiated to prove the standard Sperner lemma on triangulated n-simplices?",
       "Does the abstract cell complex structure generalize to CW-complexes or polyhedral complexes in Mathlib?"
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "zmod2-helpers",
+      "title": "ZMod 2 Parity Helpers",
+      "startLine": 39,
+      "endLine": 47,
+      "summary": "Private helper lemmas for ZMod 2 arithmetic: odd_of_zmod2_one (m : ZMod 2) = 1 → Odd m) and companions. Foundation for all parity arguments."
+    },
+    {
+      "id": "abstract-cell-complex",
+      "title": "Abstract Cell Complex",
+      "startLine": 48,
+      "endLine": 70,
+      "summary": "Defines CellComplex V d with adjacency map, plus axioms: adj_symm (adjacency is symmetric), adj_vertices (adjacent cells share d-vertex face), adj_ne (distinct cells are truly distinct). The minimal abstract structure for Sperner's lemma."
+    },
+    {
+      "id": "door-fc-definitions",
+      "title": "Door and FC Definitions",
+      "startLine": 71,
+      "endLine": 95,
+      "summary": "Defines IsFC (fully colored: coloring surjective on simplex vertices) and isDoorAt (facet (s,k) is a door: removing vertex k leaves all colors {0,...,d-1} covered). These are the key predicates driving the parity argument."
+    },
+    {
+      "id": "involution-parity",
+      "title": "Abstract Involution Parity",
+      "startLine": 96,
+      "endLine": 148,
+      "summary": "Proves even_card_fpf_invol: a fixed-point-free involution on a finite set implies even cardinality. Proved by strong induction removing pairs {x,f(x)}. This is the structural engine for all door-counting parity arguments."
+    },
+    {
+      "id": "abstract-door-parity",
+      "title": "Abstract Door Parity",
+      "startLine": 149,
+      "endLine": 334,
+      "summary": "Proves abstract_door_parity: for a coloring f : Fin(d+1) → Fin(d+1), the number of doors is odd iff f is surjective. The key case analysis handles surjective (exactly 1 door at the unique position mapped to color d) vs non-surjective (0 or 2 doors). Extensive helper lemmas."
+    },
+    {
+      "id": "interior-door-pairing",
+      "title": "Interior Door Pairing",
+      "startLine": 335,
+      "endLine": 407,
+      "summary": "Proves interior_doors_even: interior doors (K.adj ≠ none) form pairs via the adjMap involution. adj_symm gives the involution; adj_vertices ensures door-at-k transfers to door-at-k'; adj_ne prevents self-adjacency. Then even_card_fpf_invol gives even count."
+    },
+    {
+      "id": "parity-theorem",
+      "title": "Parity Theorem",
+      "startLine": 408,
+      "endLine": 503,
+      "summary": "Proves sperner_parity: FC count ≡ boundary doors (mod 2). Sums per-simplex door counts; abstract_door_parity gives per-simplex parity; interior doors cancel (even_card_fpf_invol); the remainder equals the boundary door count mod 2."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Sperner's Lemma",
+      "startLine": 504,
+      "endLine": 521,
+      "summary": "Proves sperner: odd boundary doors → fully-colored cell exists. Immediate from sperner_parity: odd boundary doors → odd FC count → positive FC count → nonempty set of FC cells."
+    }
+  ],
+  "conclusion": {
+    "summary": "This proof establishes Sperner's lemma for abstract cell complexes via the door-counting parity argument, with 0 axioms and 0 sorries. The abstract formulation with CellComplex subsumes all concrete instances (triangulations, barycentric subdivisions, polyhedral complexes) that satisfy the three adjacency axioms.",
+    "implications": "Sperner's lemma is a fundamental result in combinatorial topology with numerous applications: it implies Brouwer's fixed-point theorem, the Borsuk-Ulam theorem, fair division (ham-sandwich cuts, envy-free allocation), and the Nash equilibrium existence theorem. The abstract formulation is the natural level for a Mathlib contribution since it avoids commitment to any specific triangulation scheme. The door-counting proof (attributed to Knuth and others) is more elementary than the homological proof and works computably. The key tool (even_card_fpf_invol) is independently useful throughout combinatorics and could be added to Mathlib as a standalone lemma.",
+    "openQuestions": [
+      "Instantiate CellComplex to prove the standard Sperner lemma on triangulated n-simplices, establishing the bridge between this abstract version and the classical formulation.",
+      "Use Sperner's lemma to prove Brouwer's fixed-point theorem in Lean 4 — the combinatorial path via Sperner → KKM → Brouwer is more elementary than the homological approach.",
+      "Generalize to the Borsuk-Ulam theorem: does the abstract cell complex framework extend to antipodal colorings?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "sperner-ndim",
+      "title": "n-Dimensional Sperner's Lemma via Abstract Triangulation",
+      "relationship": "Sibling formalization with similar abstract triangulation axioms. Companion result using slightly different axiom set."
+    },
+    {
+      "id": "sperner-mathlib",
+      "title": "Sperner's Lemma via Door Counting",
+      "relationship": "Related formalization of the same door-counting argument. This entry targets the abstract cell complex version for Mathlib contribution."
+    },
+    {
+      "id": "sperner-simplicial-bridge",
+      "title": "Sperner Simplicial Bridge",
+      "relationship": "Bridges the abstract cell complex version to the concrete simplicial case."
+    }
+  ]
 }
