@@ -10406,10 +10406,11 @@
     },
     "erdos-895": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
-      "lastAudited": "2026-05-06T11:10:42Z",
-      "result": "issues-found",
-      "notes": "Verified vs origin/main: 260 lines, 7 sorries — matches meta.json. Working-tree mismatch is unmerged researcher WIP."
+      "auditCount": 6,
+      "lastAudited": "2026-05-06T15:10:28Z",
+      "result": "clean",
+      "notes": "Verified vs origin/main: 462 lines, 3 sorries — matches meta.json (sorries=3, status=formalized, badge=wip). Earlier \"7 sorries\" notes were stale.",
+      "issues": []
     },
     "erdos-896": {
       "agentId": "auditor-cycle-20-batch",
@@ -11488,10 +11489,10 @@
       "result": "clean"
     },
     "fundamental-theorem-calculus-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-06T11:10:42Z",
-      "result": "issues-found"
+      "lastAudited": "2026-05-06T15:10:28Z",
+      "result": "clean"
     },
     "furstenberg-correspondence": {
       "auditCount": 3,
@@ -14815,9 +14816,9 @@
       "issues": []
     },
     "fermat-two-squares-oq-01-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T11:10:30Z",
-      "result": "issues-found",
+      "auditCount": 2,
+      "lastAudited": "2026-05-06T15:10:28Z",
+      "result": "clean",
       "issues": []
     },
     "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01": {
@@ -14833,15 +14834,15 @@
       "issues": []
     },
     "erdos-895-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T11:14:56Z",
-      "result": "issues-found",
+      "auditCount": 2,
+      "lastAudited": "2026-05-06T15:10:28Z",
+      "result": "clean",
       "issues": []
     },
     "greens-theorem-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T11:14:56Z",
-      "result": "issues-found",
+      "auditCount": 2,
+      "lastAudited": "2026-05-06T15:10:28Z",
+      "result": "clean",
       "issues": []
     },
     "greens-theorem-oq-01-oq-01-oq-02": {
@@ -14889,6 +14890,12 @@
     "law-of-cosines-oq-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-05-06T13:07:31Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T15:10:28Z",
       "result": "clean",
       "issues": []
     }
