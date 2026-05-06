@@ -44,8 +44,8 @@
       "stirling_step_upper: d_k \u2264 1/(12k\u00b2)+1/(6k\u00b3) (conditional on step formula)",
       "stirling_step_lower: 1/(12k\u00b2)-1/(12k\u00b3)-1/(8k\u2074) \u2264 d_k (conditional on step formula)"
     ],
-    "lineCount": 388,
-    "theoremCount": 10,
+    "lineCount": 413,
+    "theoremCount": 13,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
   },
@@ -137,15 +137,15 @@
       "Filter"
     ],
     "namespace": "StirlingExpansion",
-    "lineCount": 207,
+    "lineCount": 413,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 13,
     "definitionCount": 2,
     "path": "Proofs/StirlingExpansion.lean",
-    "sorries": 1,
+    "sorries": 2,
     "additionalFiles": [
       "Proofs/StirlingExpansionAristotle.lean"
     ]
   },
-  "sorries": 1
+  "sorries": 2
 }
