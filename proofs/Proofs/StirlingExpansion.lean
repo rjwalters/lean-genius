@@ -349,7 +349,7 @@ private lemma inv_sq_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     1 / (12 * k ^ 2) ≤ 1 / (12 * (k - 1)) - 1 / (12 * k) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
-  rw [div_sub_div _ _ (by positivity) hk_pos.ne', div_le_div_iff (by positivity) (by positivity)]
+  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
   nlinarith [sq_nonneg k]
 
 -- 1/(6k³) ≤ 1/(12(k-1)²) - 1/(12k²) = (2k-1)/(12k²(k-1)²) for k ≥ 2
@@ -365,7 +365,7 @@ private lemma inv_harmonic_le_sq (k : ℝ) (hk : 1 ≤ k) :
     1 / (12 * k) - 1 / (12 * (k + 1)) ≤ 1 / (12 * k ^ 2) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k + 1 := by linarith
-  rw [div_sub_div _ _ hk_pos.ne' hk1_pos.ne', div_le_div_iff (by positivity) (by positivity)]
+  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
   nlinarith [sq_nonneg k]
 
 -- 1/(12k³) ≤ 1/(24(k-1)²) - 1/(24k²) for k ≥ 2
@@ -374,15 +374,20 @@ private lemma inv_cube_le_telescope2 (k : ℝ) (hk : 2 ≤ k) :
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
   rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg (k - 1), sq_nonneg k]
+  -- Equivalent: 2(k-1)² ≤ k(2k-1), i.e. -3k ≤ -2, i.e. k ≥ 2/3 ✓
+  nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos]
 
 -- 1/(8k⁴) ≤ 1/(24(k-1)³) - 1/(24k³) for k ≥ 2
+-- Equivalent (after clearing denom 24k⁴(k-1)³): 3(k-1)³ ≤ k⁴ - k(k-1)³
+-- k⁴ - (k+3)(k-1)³ = 6k²-8k+3 = (2k-1)²+2(k-1)² ≥ 0
 private lemma inv_quad_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     1 / (8 * k ^ 4) ≤ 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
+  have key : 0 ≤ 6 * k ^ 2 - 8 * k + 3 := by nlinarith [sq_nonneg (2*k-1), sq_nonneg (k-1)]
   rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg (k - 1), sq_nonneg k, sq_nonneg (k^2), mul_pos hk_pos hk1_pos]
+  nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos,
+             mul_pos (mul_pos hk_pos hk_pos) (mul_pos hk1_pos hk1_pos)]
 
 -- ═══════════════════════════════════════════════════
 -- Part IIIc: Partial Sum Bounds by Induction
@@ -490,12 +495,15 @@ theorem stirling_first_correction :
     apply le_of_tendsto' htend_diff
     intro M
     have h := log_stirlingSeq_partial_upper n M hn
+    have hMn_pos : (0 : ℝ) < (n : ℝ) + M - 1 := by
+      push_cast; linarith [Nat.zero_le M]
     have hpos : 0 ≤ 1 / (12 * ((n : ℝ) + M - 1)) + 1 / (12 * ((n : ℝ) + M - 1) ^ 2) := by
       positivity
     linarith
-  -- Lower bound: G(n) ≤ L, where G(k) = 1/(12k) - 1/(24(k-1)²) - 1/(24(k-1)³)
-  -- Strategy: G(n) - G(n+M) ≤ f M (from partial_lower), G(n+M) → 0, f M → L.
-  -- By le_of_tendsto_of_tendsto, G(n) ≤ L.
+  -- Lower bound: G(n) ≤ L
+  -- Key: G(n) - G(n+M) ≤ f M (partial_lower) and f M ≤ L (since stirlingSeq(n+M) ≥ sqrt π)
+  -- So G(n) - G(n+M) ≤ L for all M, and G(n) - G(n+M) → G(n) (since G(n+M) → 0).
+  -- By le_of_tendsto', G(n) ≤ L.
   have hL_lower : 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
       1 / (24 * ((n : ℝ) - 1) ^ 3) ≤ L := by
     -- G(n+M) → 0 as M → ∞
@@ -503,8 +511,8 @@ theorem stirling_first_correction :
         (fun M : ℕ => (1 : ℝ) / (12 * ((n : ℝ) + M)) - 1 / (24 * ((n : ℝ) + M - 1) ^ 2) -
              1 / (24 * ((n : ℝ) + M - 1) ^ 3))
         Filter.atTop (nhds 0) := by
-      sorry -- KNOWN: each 1/(n+M)^k → 0; standard tendsto arithmetic
-    -- G(n) - G(n+M) → G(n) - 0 = G(n) as M → ∞
+      sorry -- KNOWN: each 1/(n+M)^k → 0 by tendsto_inv_atTop_zero composition
+    -- G(n) - G(n+M) → G(n)
     have htend_Gdiff : Filter.Tendsto
         (fun M : ℕ => 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
              1 / (24 * ((n : ℝ) - 1) ^ 3) -
@@ -512,12 +520,15 @@ theorem stirling_first_correction :
               1 / (24 * ((n : ℝ) + M - 1) ^ 3)))
         Filter.atTop (nhds (1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
              1 / (24 * ((n : ℝ) - 1) ^ 3))) := by
-      have := tendsto_const_nhds.sub htend_Gn
-      simp only [sub_zero] at this
-      exact this
-    -- Apply sandwich: G(n) - G(n+M) ≤ f M, both tendsto to limits, so G(n) ≤ L
-    exact le_of_tendsto_of_tendsto' htend_Gdiff htend_diff
-      (fun M => by have hlb := log_stirlingSeq_partial_lower n M hn; linarith)
+      have := tendsto_const_nhds.sub htend_Gn; simp only [sub_zero] at this; exact this
+    -- f M ≤ L since stirlingSeq(n+M) ≥ sqrt π (antitonicity + Mathlib lower bound)
+    apply le_of_tendsto' htend_Gdiff
+    intro M
+    have hlb := log_stirlingSeq_partial_lower n M hn
+    have h_fM_le_L : Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + M)) ≤ L := by
+      rw [hL_def]; apply sub_le_sub_left
+      exact Real.log_le_log hpi_pos (Stirling.sqrt_pi_le_stirlingSeq (by omega))
+    linarith
   -- exp(L) = stirlingSeq n / sqrt π
   have hexp_eq : Real.exp L = stirlingSeq n / Real.sqrt π := by
     rw [hL_def, Real.exp_sub, Real.exp_log hstir_pos, Real.exp_log hpi_pos]
