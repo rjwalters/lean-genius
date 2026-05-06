@@ -65,7 +65,7 @@ namespace AngleTrisectionInsepGalCorrect
 
 noncomputable def base : Type := FractionRing (Polynomial (ZMod 2))
 
-noncomputable instance base_field : Field base := FractionRing.instField _
+noncomputable instance base_field : Field base := inferInstance
 
 noncomputable def aGen : base :=
   algebraMap (Polynomial (ZMod 2)) base Polynomial.X
@@ -94,15 +94,12 @@ lemma f_derivative_zero : f_target.derivative = 0 := by
 
 /-- In characteristic p, (a - b)^(p^n) = a^(p^n) - b^(p^n).
 
-    Proof: apply CharP.add_pow_char_pow to (a - b) and b to get
-    ((a - b) + b)^(p^n) = (a - b)^(p^n) + b^(p^n), i.e., a^(p^n) = (a-b)^(p^n) + b^(p^n). -/
+    Proof: iterateFrobenius K p n is a ring hom, so map_sub gives the result directly. -/
 lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
     (a b : K) (n : ℕ) : (a - b) ^ p ^ n = a ^ p ^ n - b ^ p ^ n := by
-  have key : a ^ p ^ n = (a - b) ^ p ^ n + b ^ p ^ n := by
-    have h := CharP.add_pow_char_pow K p (a - b) b n
-    simp only [sub_add_cancel] at h
-    exact h
-  linear_combination key
+  have h := (iterateFrobenius K p n).map_sub a b
+  simp only [iterateFrobenius_def] at h
+  exact h
 
 /-- **Key theorem**: Every F-algebra automorphism of a purely inseparable extension is the identity.
 
@@ -112,24 +109,20 @@ lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : F
     - (σ(x) - x)^(p^n) = 0 by char-p Frobenius identity
     - σ(x) = x since K has no nonzero nilpotents -/
 theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K]
-    [Algebra F K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
+    [Algebra F K] {p : ℕ} [CharP F p] [CharP K p] [hp : Fact p.Prime]
     [IsPurelyInseparable F K] (σ : K ≃ₐ[F] K) : σ = AlgEquiv.refl F K := by
   ext x
-  simp only [AlgEquiv.refl_apply]
-  -- Get n with x^(p^n) in the image of algebraMap F K
-  have hchar : CharP K (ringChar K) := ringChar.charP K
-  obtain ⟨n, hn⟩ : ∃ n : ℕ, x ^ (ringChar K) ^ n ∈ (algebraMap F K).range :=
-    IsPurelyInseparable.pow_mem x
+  simp only [AlgEquiv.coe_refl, Function.id_eq]
+  -- Get n with x^(ringChar F)^n in the image of algebraMap F K
+  obtain ⟨n, hn⟩ := IsPurelyInseparable.pow_mem (F := F) x
+  -- Convert ringChar F to p using characteristic uniqueness
+  have hringF : ringChar F = p := CharP.eq F (ringChar.charP F) inferInstance
+  rw [hringF] at hn
   obtain ⟨c, hc⟩ := hn
   -- σ fixes elements in the image of F
-  have hfixed : σ (x ^ (ringChar K) ^ n) = x ^ (ringChar K) ^ n := by
-    rw [← hc]; exact σ.commutes c
+  have hfixed : σ (x ^ p ^ n) = x ^ p ^ n := by rw [← hc]; exact σ.commutes c
   -- σ(x)^(p^n) = x^(p^n) via map_pow
-  have hpow : σ x ^ (ringChar K) ^ n = x ^ (ringChar K) ^ n := by
-    rw [← map_pow σ x, hfixed]
-  -- Align ringChar K with p (they should both be the characteristic)
-  have hchar_eq : ringChar K = p := CharP.eq K (ringChar.charP K) inferInstance
-  rw [hchar_eq] at hpow
+  have hpow : σ x ^ p ^ n = x ^ p ^ n := by rw [← map_pow σ x, hfixed]
   -- (σ(x) - x)^(p^n) = 0 using char-p subtraction
   have hzero : (σ x - x) ^ p ^ n = 0 := by
     rw [sub_pow_char_pow_eq (σ x) x n, hpow, sub_self]
@@ -142,12 +135,12 @@ theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K
     This is the correct replacement for the false axiom `insep_gal_trivial`. -/
 theorem gal_card_one_of_purelyInseparable_splitting {F : Type*} [Field F]
     {p : ℕ} [CharP F p] [hp : Fact p.Prime]
-    (f : F[X]) [hK : IsPurelyInseparable F f.SplittingField] :
+    (f : F[X]) [hK : IsPurelyInseparable F f.SplittingField]
+    [hcharK : CharP f.SplittingField p] :
     Nat.card f.Gal = 1 := by
-  rw [Nat.card_eq_one_iff_unique]
-  exact ⟨⟨algEquiv_eq_refl_of_isPurelyInseparable (AlgEquiv.refl F f.SplittingField)⟩,
-         fun σ τ => (algEquiv_eq_refl_of_isPurelyInseparable σ).trans
-                    (algEquiv_eq_refl_of_isPurelyInseparable τ).symm⟩
+  haveI : Unique f.Gal :=
+    ⟨⟨AlgEquiv.refl F f.SplittingField⟩, fun σ => algEquiv_eq_refl_of_isPurelyInseparable σ⟩
+  exact Nat.card_unique
 
 -- ============================================================================
 -- Part III: The Counterexample — |Gal(f_target)| = 2
@@ -200,8 +193,8 @@ The false axiom should be replaced in the parent entry.
 |---------|--------|
 | `f_is_g_composed_sq` | proved |
 | `f_derivative_zero` | proved |
-| `sub_pow_char_pow_eq` | proved (add_pow_char_pow + linear_combination) |
-| `algEquiv_eq_refl_of_isPurelyInseparable` | proved (CharP.eq uniqueness) |
+| `sub_pow_char_pow_eq` | proved (iterateFrobenius.map_sub) |
+| `algEquiv_eq_refl_of_isPurelyInseparable` | proved (CharP.eq + iterateFrobenius) |
 | `gal_card_one_of_purelyInseparable_splitting` | proved |
 | `insep_gal_trivial_refuted` | proved |
 | `counterexample_gal_card` | axiom |
