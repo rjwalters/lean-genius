@@ -242,8 +242,9 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
     have h := hStep2.clm_apply (hasDerivAt_const p.2 (1, 0 : ℝ × ℝ))
     simp only [map_zero, add_zero] at h; exact h
   rw [hDer2XY.deriv, hDer2YX.deriv]
-  -- Symmetry of the second Fréchet derivative: Clairaut/Schwarz theorem
-  exact hf.contDiffAt.isSymmSndFDerivAt (1, 0) (0, 1)
+  -- Symmetry: IsSymmSndFDerivAt = ∀ v w, fderiv(fderiv f)(p)(v)(w) = fderiv(fderiv f)(p)(w)(v)
+  -- minSmoothness ℝ 2 = 2, proved by le_rfl
+  exact (hf.contDiffAt.isSymmSndFDerivAt le_rfl) (1, 0) (0, 1)
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VI: Green's Theorem as Stokes in 2D
