@@ -64,5 +64,109 @@
       "Can the Gram determinant argument be generalized to prove the full sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c)?",
       "Does the dual law remain true for degenerate triangles (sides of measure 0 or π)?"
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "dihedral-angles",
+      "title": "Dihedral Angle Definitions",
+      "startLine": 38,
+      "endLine": 53,
+      "summary": "Defines angleAtA and angleAtB as arccos of the normalized inner product of perpendicular projections, with a degenerate-triangle guard (defaults to 0 when projections are zero)."
+    },
+    {
+      "id": "inner-products-projections",
+      "title": "Inner Products of Perpendicular Projections",
+      "startLine": 54,
+      "endLine": 80,
+      "summary": "Proves inner_proj_A/B/C: ⟨prj(B,A), prj(C,A)⟩ = cos(a) − cos(b)·cos(c) (and cyclic variants). Uses inner_decomposition from SphericalLawOfCosines and side symmetry."
+    },
+    {
+      "id": "norms-projections",
+      "title": "Norms of Projections",
+      "startLine": 82,
+      "endLine": 103,
+      "summary": "Proves ‖prj(B,A)‖ = sin(c), ‖prj(C,A)‖ = sin(b), and all six norm-projection pairs using norm_projectPerp_eq_sin and arcLength symmetry."
+    },
+    {
+      "id": "gram-determinant",
+      "title": "Gram Determinant",
+      "startLine": 104,
+      "endLine": 124,
+      "summary": "Defines gramDet = 1 − cos²a − cos²b − cos²c + 2cos(a)cos(b)cos(c) and proves it is nonneg via Cauchy-Schwarz: gramDet = ‖prj(B,A)‖²·‖prj(C,A)‖² − ⟨prj(B,A),prj(C,A)⟩² ≥ 0."
+    },
+    {
+      "id": "cosine-formulas",
+      "title": "Cosine Formulas for Dihedral Angles",
+      "startLine": 125,
+      "endLine": 165,
+      "summary": "Proves cos(A)·sin(b)·sin(c) = cos(a) − cos(b)·cos(c) (and cyclic variants) by unfolding arccos, using the projection formulas, and field_simp to clear denominators."
+    },
+    {
+      "id": "sine-squared-gramdet",
+      "title": "Sine Squared Identity",
+      "startLine": 166,
+      "endLine": 192,
+      "summary": "Proves sin²(A)·sin²(b)·sin²(c) = gramDet and sin²(B)·sin²(a)·sin²(c) = gramDet via the Pythagorean identity and cosine formula substitution using linear_combination and nlinarith."
+    },
+    {
+      "id": "sine-nonnegativity",
+      "title": "Nonnegativity of Angle Sines",
+      "startLine": 193,
+      "endLine": 211,
+      "summary": "Proves sinA_nonneg and sinB_nonneg: since arccos maps into [0,π], sin(arccos(x)) ≥ 0. Uses sin_nonneg_of_nonneg_of_le_pi with arccos_nonneg and arccos_le_pi."
+    },
+    {
+      "id": "key-product-identity",
+      "title": "Key Product Identity",
+      "startLine": 213,
+      "endLine": 255,
+      "summary": "The most delicate step: sin(A)·sin(B)·sin(a)·sin(b)·sin²(c) = gramDet. Proved by showing the product squares to gramDet² (from the sine squared identities) then using nonnegativity to extract the square root via a difference-of-squares factoring argument."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Dual Spherical Law of Cosines",
+      "startLine": 257,
+      "endLine": 311,
+      "summary": "Main theorem: cos(C) = −cos(A)·cos(B) + sin(A)·sin(B)·cos(c). Proof multiplies through by sin(a)·sin(b)·sin²(c), assembles all five cosine/product formulas, and reduces to 0=0 by `ring`."
+    },
+    {
+      "id": "verification-examples",
+      "title": "Verification Examples",
+      "startLine": 313,
+      "endLine": 334,
+      "summary": "Two explicit verifications: the 90-90-90 spherical triangle (all sides and angles π/2) and the equilateral 90-degree variant, both reducing to 0 = 0 via cos(arccos(0)) = 0 and simp."
+    }
+  ],
+  "conclusion": {
+    "summary": "This proof establishes the dual spherical law of cosines — cos(C) = −cos(A)cos(B) + sin(A)sin(B)cos(c) — via a direct algebraic route through the Gram determinant, without using the polar triangle construction. All 22 theorems are proved from Mathlib's inner product space theory with zero axioms and zero sorries.",
+    "implications": "The dual law completes the symmetry of spherical trigonometry: the standard law expresses a side in terms of sides and an angle, while the dual expresses an angle in terms of angles and a side. Together they form a duality that mirrors the relationship between a spherical triangle and its polar dual. The Gram determinant approach is more algebraically transparent than the traditional polar triangle construction and generalizes to higher-dimensional spherical geometry. The proof infrastructure (perpendicular projections, Gram determinant nonnegativity) is directly reusable for the spherical sine rule and for analogous results in hyperbolic geometry.",
+    "openQuestions": [
+      "Generalize to prove the full spherical sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c) using the Gram determinant framework established here.",
+      "Extend the proof to degenerate spherical triangles (sides of measure 0 or π), where the perpendicular projections can be zero and the dihedral angle definition needs a careful limit argument.",
+      "Formalize the polar triangle construction and prove the dual law as a corollary — establishing both the direct (Gram determinant) and indirect (polar duality) routes in Lean 4.",
+      "Generalize to spherical polygons: does the Gram determinant argument extend to give angle-side relations for n-gons on S²?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "spherical-law-of-cosines",
+      "title": "Spherical Law of Cosines",
+      "relationship": "Direct predecessor: proves cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C). This entry proves the dual law by importing SphericalLawOfCosines and using its inner product decomposition lemma."
+    },
+    {
+      "id": "law-of-cosines-oq-01",
+      "title": "Spherical Law of Cosines (Open Question)",
+      "relationship": "Parent open question about spherical trigonometry; this entry answers the specific question about the dual law."
+    },
+    {
+      "id": "spherical-law-of-sines",
+      "title": "Spherical Law of Sines",
+      "relationship": "Sibling result: sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c). Both the dual cosine law and the sine rule follow from the same Gram determinant framework."
+    },
+    {
+      "id": "law-of-cosines",
+      "title": "Law of Cosines",
+      "relationship": "Planar analogue: c² = a² + b² − 2ab·cos(C). The spherical law of cosines reduces to this as the sphere radius → ∞ (small-angle limit)."
+    }
+  ]
 }
