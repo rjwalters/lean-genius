@@ -64,7 +64,10 @@ theorem triangleFree_neighbor_disjoint {n : ℕ} (G : GraphOnInterval n)
     [DecidableRel G.Adj] (hG : IsTriangleFree G)
     (u v : Fin n) (huv : G.Adj u v) :
     Disjoint (G.neighborFinset u) (G.neighborFinset v) := by
-  sorry
+  rw [Finset.disjoint_left]
+  intro w hwu hwv
+  rw [SimpleGraph.mem_neighborFinset] at hwu hwv
+  exact hG u w v ⟨hwu, G.symm hwv, huv⟩
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 3: Degree Sum Bound (Key Step for Mantel)
@@ -78,7 +81,10 @@ theorem triangleFree_degree_sum_bound {n : ℕ} (G : GraphOnInterval n)
     [DecidableRel G.Adj] (hG : IsTriangleFree G)
     (u v : Fin n) (huv : G.Adj u v) :
     (G.neighborFinset u).card + (G.neighborFinset v).card ≤ n := by
-  sorry
+  have hdisj := triangleFree_neighbor_disjoint G hG u v huv
+  have hunion_le : (G.neighborFinset u ∪ G.neighborFinset v).card ≤ n :=
+    (Finset.card_le_card (Finset.subset_univ _)).trans_eq (Finset.card_fin n)
+  linarith [Finset.card_union_of_disjoint hdisj]
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 4: Mantel's Theorem
@@ -94,7 +100,26 @@ theorem triangleFree_degree_sum_bound {n : ℕ} (G : GraphOnInterval n)
 theorem mantel_theorem {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
     (hG : IsTriangleFree G) :
     G.edgeFinset.card ≤ n ^ 2 / 4 := by
-  sorry
+  have hcf : G.CliqueFree (2 + 1) := by
+    intro t ht
+    rw [SimpleGraph.isNClique_iff] at ht
+    obtain ⟨hclique_set, hcard⟩ := ht
+    obtain ⟨a, b, c, hab, hac, hbc, rfl⟩ := Finset.card_eq_three.mp hcard
+    exact hG a b c ⟨
+      hclique_set (by simp) (by simp) hab,
+      hclique_set (by simp) (by simp) hbc,
+      hclique_set (by simp) (by simp) hac⟩
+  have hbound : G.edgeFinset.card ≤
+      (n ^ 2 - (n % 2) ^ 2) * (2 - 1) / (2 * 2) + (n % 2).choose 2 := by
+    have key := CliqueFree.card_edgeFinset_le hcf
+    simp only [Fintype.card_fin] at key
+    exact key
+  have hchoose : (n % 2).choose 2 = 0 :=
+    Nat.choose_eq_zero_of_lt (Nat.mod_lt n (by norm_num))
+  calc G.edgeFinset.card
+      ≤ (n ^ 2 - (n % 2) ^ 2) * (2 - 1) / (2 * 2) + (n % 2).choose 2 := hbound
+    _ = (n ^ 2 - (n % 2) ^ 2) / 4 + 0 := by rw [hchoose]; norm_num
+    _ ≤ n ^ 2 / 4 := by simp only [add_zero]; exact Nat.div_le_div_right (Nat.sub_le _ _)
 
 -- ═══════════════════════════════════════════════════════════════════
 -- Section 5: Simple Utility Facts
