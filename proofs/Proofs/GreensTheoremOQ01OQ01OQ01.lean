@@ -68,22 +68,19 @@ private lemma integrable_3d_zx_y {f : ℝ → ℝ → ℝ → ℝ}
   -- G((z,x),y) = f(x,y,z) is continuous: hf ∘ (q ↦ (q.1.2, q.2, q.1.1))
   -- where q.1.2=x, q.2=y, q.1.1=z for q=((z,x),y)
   have hG : Continuous (fun q : (ℝ × ℝ) × ℝ => f q.1.2 q.2 q.1.1) :=
-    hf.comp (continuous_fst.snd.prod_mk (continuous_snd.prod_mk continuous_fst.fst))
+    hf.comp (show Continuous (fun q : (ℝ × ℝ) × ℝ => (q.1.2, q.2, q.1.1)) from by fun_prop)
   have hcpt : IsCompact ((Icc e f' ×ˢ Icc a b) ×ˢ Icc c d) :=
     (isCompact_Icc.prod isCompact_Icc).prod isCompact_Icc
   have hint : IntegrableOn (fun q : (ℝ × ℝ) × ℝ => f q.1.2 q.2 q.1.1)
               ((Icc e f' ×ˢ Icc a b) ×ˢ Icc c d) volume :=
     hG.continuousOn.integrableOn_compact hcpt
-  -- Two restrict_prod_eq_prod_restrict rewrites convert IntegrableOn to Integrable on Icc product
-  rw [Measure.restrict_prod_eq_prod_restrict
-        (measurableSet_Icc.prod measurableSet_Icc) measurableSet_Icc,
-      Measure.restrict_prod_eq_prod_restrict measurableSet_Icc measurableSet_Icc] at hint
-  -- Transfer from Icc to Ioc product measure (Ioc ⊆ Icc ⟹ vol.restrict Ioc ≤ vol.restrict Icc)
-  exact hint.mono_measure (Measure.prod_mono
-    (Measure.prod_mono
-      (Measure.restrict_mono Ioc_subset_Icc_self le_rfl)
-      (Measure.restrict_mono Ioc_subset_Icc_self le_rfl))
-    (Measure.restrict_mono Ioc_subset_Icc_self le_rfl))
+  -- Transfer to Ioc subset, then convert measure via prod_restrict (twice)
+  have hint2 : IntegrableOn (fun q : (ℝ × ℝ) × ℝ => f q.1.2 q.2 q.1.1)
+               ((Ioc e f' ×ˢ Ioc a b) ×ˢ Ioc c d) volume :=
+    hint.mono_set (Set.prod_mono (Set.prod_mono Ioc_subset_Icc_self Ioc_subset_Icc_self)
+                    Ioc_subset_Icc_self)
+  rw [Measure.prod_restrict, Measure.prod_restrict]
+  exact hint2
 
 /-- For continuous f, G((x,y),z) = f(x,y,z) is integrable on the Ioc-product measure.
     Used for the (y,x,z) ↔ (x,y,z) swap. -/
@@ -95,20 +92,18 @@ private lemma integrable_3d_xy_z {f : ℝ → ℝ → ℝ → ℝ}
        (volume.restrict (Ioc e f'))) := by
   -- G((x,y),z) = f(x,y,z) is continuous: hf ∘ (q ↦ (q.1.1, q.1.2, q.2))
   have hG : Continuous (fun q : (ℝ × ℝ) × ℝ => f q.1.1 q.1.2 q.2) :=
-    hf.comp (continuous_fst.fst.prod_mk (continuous_fst.snd.prod_mk continuous_snd))
+    hf.comp (show Continuous (fun q : (ℝ × ℝ) × ℝ => (q.1.1, q.1.2, q.2)) from by fun_prop)
   have hcpt : IsCompact ((Icc a b ×ˢ Icc c d) ×ˢ Icc e f') :=
     (isCompact_Icc.prod isCompact_Icc).prod isCompact_Icc
   have hint : IntegrableOn (fun q : (ℝ × ℝ) × ℝ => f q.1.1 q.1.2 q.2)
               ((Icc a b ×ˢ Icc c d) ×ˢ Icc e f') volume :=
     hG.continuousOn.integrableOn_compact hcpt
-  rw [Measure.restrict_prod_eq_prod_restrict
-        (measurableSet_Icc.prod measurableSet_Icc) measurableSet_Icc,
-      Measure.restrict_prod_eq_prod_restrict measurableSet_Icc measurableSet_Icc] at hint
-  exact hint.mono_measure (Measure.prod_mono
-    (Measure.prod_mono
-      (Measure.restrict_mono Ioc_subset_Icc_self le_rfl)
-      (Measure.restrict_mono Ioc_subset_Icc_self le_rfl))
-    (Measure.restrict_mono Ioc_subset_Icc_self le_rfl))
+  have hint2 : IntegrableOn (fun q : (ℝ × ℝ) × ℝ => f q.1.1 q.1.2 q.2)
+               ((Ioc a b ×ˢ Ioc c d) ×ˢ Ioc e f') volume :=
+    hint.mono_set (Set.prod_mono (Set.prod_mono Ioc_subset_Icc_self Ioc_subset_Icc_self)
+                    Ioc_subset_Icc_self)
+  rw [Measure.prod_restrict, Measure.prod_restrict]
+  exact hint2
 
 -- ═══════════════════════════════════════════════════
 -- Section 2: The Triple Fubini Theorem
@@ -139,25 +134,20 @@ theorem triple_fubini_of_continuous {f : ℝ → ℝ → ℝ → ℝ}
     apply intervalIntegral.integral_congr
     intro z _
     exact GreensTheoremOQ01OQ01.fubini_of_continuous a b c d hab hcd
-      (hf.comp (continuous_fst.prod_mk (continuous_snd.prod_mk continuous_const)))
+      (hf.comp (show Continuous (fun q : ℝ × ℝ => (q.1, q.2, z)) from by fun_prop))
   -- Step 2: Swap outer (z,x) via integral_integral_swap on Ioc set integrals.
   have step2 : ∫ z in e..f', ∫ x in a..b, ∫ y in c..d, f x y z =
                ∫ x in a..b, ∫ z in e..f', ∫ y in c..d, f x y z := by
     simp_rw [integral_of_le hab, integral_of_le hef, integral_of_le hcd]
-    -- After simp_rw: ∫z∂ρ, ∫x∂μ, ∫y∂ν, f x y z = ∫x∂μ, ∫z∂ρ, ∫y∂ν, f x y z
-    -- (ρ = vol.restrict Ioc e f', μ = vol.restrict Ioc a b, ν = vol.restrict Ioc c d)
     apply MeasureTheory.integral_integral_swap
-    -- The integrand for integral_integral_swap is (z,x) ↦ ∫y∂ν, f x y z.
-    -- integral_prod_right applied to integrable_3d_zx_y gives exactly this integrability.
-    exact (integrable_3d_zx_y hf a b c d e f').integral_prod_right
+    exact (integrable_3d_zx_y hf a b c d e f').integral_prod_left
   -- Step 3: For each fixed x, swap (y,z) using 2D Fubini.
-  -- The function (y,z) ↦ f(x,y,z) is continuous: hf composed with fixing x in position 1.
   have step3 : ∫ x in a..b, ∫ z in e..f', ∫ y in c..d, f x y z =
                ∫ x in a..b, ∫ y in c..d, ∫ z in e..f', f x y z := by
     apply intervalIntegral.integral_congr
     intro x _
     exact GreensTheoremOQ01OQ01.fubini_of_continuous c d e f' hcd hef
-      (hf.comp (continuous_const.prod_mk continuous_id))
+      (hf.comp (show Continuous (fun q : ℝ × ℝ => (x, q.1, q.2)) from by fun_prop))
   rw [step1, step2, step3]
 
 /-- The (y,x,z) ordering equals (x,y,z): swap the outer (y,x) pair.
@@ -176,7 +166,7 @@ theorem triple_fubini_yxz_eq_xyz {f : ℝ → ℝ → ℝ → ℝ}
   apply MeasureTheory.integral_integral_swap
   -- Need: Integrable (fun p => ∫z∂μ_e, f p.1 p.2 z) (μ_a.prod μ_c)
   -- Get this from integrable_3d_xy_z + integral_prod_right
-  exact (integrable_3d_xy_z hf a b c d e f').integral_prod_right
+  exact (integrable_3d_xy_z hf a b c d e f').integral_prod_left
 
 -- ═══════════════════════════════════════════════════
 -- Section 3: All Key Orderings Are Equal
@@ -196,7 +186,7 @@ theorem triple_fubini_all_equal {f : ℝ → ℝ → ℝ → ℝ}
          apply intervalIntegral.integral_congr
          intro z _; symm
          exact GreensTheoremOQ01OQ01.fubini_of_continuous a b c d hab hcd
-           (hf.comp (continuous_fst.prod_mk (continuous_snd.prod_mk continuous_const)))
+           (hf.comp (show Continuous (fun q : ℝ × ℝ => (q.1, q.2, z)) from by fun_prop))
      _ = ∫ x in a..b, ∫ y in c..d, ∫ z in e..f', f x y z :=
          triple_fubini_of_continuous hab hcd hef hf,
    triple_fubini_yxz_eq_xyz hab hcd hef hf⟩
@@ -238,7 +228,8 @@ lemma iteratedIntervalIntegral_two {a b : Fin 2 → ℝ} {f : (Fin 2 → ℝ) �
     iteratedIntervalIntegral a b f =
     ∫ x in (a 0)..(b 0), ∫ y in (a 1)..(b 1),
       f (Fin.cons x (Fin.cons y Fin.elim0)) := by
-  simp only [iteratedIntervalIntegral_succ, iteratedIntervalIntegral_zero]
+  simp only [iteratedIntervalIntegral_succ, iteratedIntervalIntegral_zero, Fin.tail,
+             show (Fin.succ (0 : Fin 1) : Fin 2) = 1 from rfl]
 
 /-- **N-Dimensional Order Independence** (axiomatized for n ≥ 4).
 
