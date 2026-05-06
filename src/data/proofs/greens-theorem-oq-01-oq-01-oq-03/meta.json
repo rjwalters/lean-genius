@@ -1,0 +1,182 @@
+{
+  "id": "greens-theorem-oq-01-oq-01-oq-03",
+  "title": "Open Rectangle Integrability for Fubini (Icc ↔ Ioo)",
+  "slug": "greens-theorem-oq-01-oq-01-oq-03",
+  "description": "Proves that the Icc integrability hypothesis for interval integral swap can be weakened to Ioo integrability. For Lebesgue measure, vol.restrict(Icc a b) = vol.restrict(Ioo a b) since the boundary {a,b} has measure zero. Answers the open question from greens-theorem-oq-01-oq-01: YES, open rectangle integrability is equivalent and Mathlib provides all needed tools.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-06",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "lebesgue-measure",
+      "fubini",
+      "integration",
+      "greens-theorem",
+      "interval-integral",
+      "null-sets"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. 0 sorries. All theorems fully proved using Mathlib's measure theory (null sets, restriction equality) and Fubini theorem.",
+    "dateAdded": "2026-05-06",
+    "lineCount": 228,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable.measure_zero",
+        "description": "Countable sets have measure zero for any sigma-finite measure",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "measure_mono_null",
+        "description": "Subsets of null sets are null",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "measure_union_null",
+        "description": "Union of null sets is null",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "measure_union_le",
+        "description": "Subadditivity: μ(s ∪ t) ≤ μ(s) + μ(t)",
+        "module": "Mathlib.MeasureTheory.Measure.MeasureSpace"
+      },
+      {
+        "theorem": "MeasureTheory.integral_integral_swap",
+        "description": "Fubini's theorem for Lebesgue integrals on product spaces",
+        "module": "Mathlib.MeasureTheory.Integral.Prod"
+      },
+      {
+        "theorem": "intervalIntegral.integral_of_le",
+        "description": "Converts interval integral to set integral over Ioc when a ≤ b",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      }
+    ],
+    "originalContributions": [
+      "volume_Icc_sdiff_Ioo: the boundary Icc \\ Ioo has Lebesgue measure zero",
+      "volume_restrict_Icc_eq_Ioo: restriction to Icc equals restriction to Ioo (key novel lemma)",
+      "volume_prod_restrict_Icc_eq_Ioo: product measure equality on rectangles",
+      "intervalIntegral_swap_of_Ioo_integrable: Fubini with weaker Ioo integrability",
+      "integrable_Icc_iff_Ioo: explicit equivalence of Icc and Ioo integrability conditions",
+      "greens_fubini_open_rectangle: application to Green's theorem with open rectangle"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
+    "imports": ["Mathlib"],
+    "opens": ["MeasureTheory", "intervalIntegral", "Set", "Measure", "Filter", "Topology"],
+    "namespace": "GreensTheoremOQ01OQ01OQ03",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "The question of which integrability conditions suffice for Fubini's theorem has a long history. Tonelli's theorem (1909) showed that non-negative measurable functions always satisfy Fubini (with possibly infinite values). Fubini's classical form (1907) requires L¹ integrability on the product space. For the specific case of iterated interval integrals — used in Green's theorem — the natural integrability condition in Mathlib uses the product of Icc-restricted measures, reflecting the fact that interval integrals `∫ x in a..b` are built around closed intervals. The question is whether the closed-interval condition can be weakened to the open-interval condition without losing any theorem content.",
+    "problemStatement": "For the Fubini theorem for iterated interval integrals (proved in greens-theorem-oq-01-oq-01), the integrability hypothesis requires $f$ to be integrable on $[a,b] \\times [c,d]$ (product of Icc-restricted Lebesgue measures). Can this be weakened to integrability on the open rectangle $(a,b) \\times (c,d)$ (product of Ioo-restricted measures)?",
+    "proofStrategy": "The answer is YES, and the proof has three steps: (1) Show that $[a,b] \\setminus (a,b) = \\{a,b\\}$ has Lebesgue measure zero (singletons are countable, countable sets have measure zero). (2) Use measure extensionality to show that $\\text{vol}|_{[a,b]} = \\text{vol}|_{(a,b)}$: for any measurable $s$, $\\text{vol}(s \\cap [a,b]) = \\text{vol}(s \\cap (a,b))$ because their difference is contained in $\\{a,b\\}$, which has measure zero. (3) The product measures are therefore equal, so Ioo and Icc integrability are identical conditions for Lebesgue measure.",
+    "keyInsights": [
+      "For any atomless Borel measure (such as Lebesgue), the restriction to any of Ioo, Ioc, Ico, Icc gives the same result: boundaries are countable (finite in this case) and therefore null.",
+      "The key lemma `volume_restrict_Icc_eq_Ioo` is NOT in Mathlib (as of current revision). Mathlib tends to use Ioc as the canonical interval (it forms a π-system), but the Icc = Ioo equivalence is derivable and could be contributed.",
+      "The proof uses only subadditivity of measure (measure_union_le), not sigma-additivity. This means the result extends to any outer measure, not just sigma-additive measures.",
+      "The equivalence `integrable_Icc_iff_Ioo` is a clean corollary: since the measures are literally equal, the Integrable predicate (which depends only on the measure) is identical for both."
+    ]
+  },
+  "sections": [
+    {
+      "id": "null-boundary",
+      "title": "§ I. Null Boundary Lemmas",
+      "startLine": 44,
+      "endLine": 64,
+      "summary": "Proves that singletons have Lebesgue measure zero (via countability), then that Icc a b \\ Ioo a b ⊆ {a, b} has measure zero.",
+      "mathContext": "The boundary of $[a,b]$ relative to $(a,b)$ is $\\{a,b\\}$, which is finite hence countable, hence null for Lebesgue measure. Proved by monotonicity: $\\text{vol}([a,b] \\setminus (a,b)) \\leq \\text{vol}(\\{a,b\\}) = \\text{vol}(\\{a\\}) + \\text{vol}(\\{b\\}) = 0$."
+    },
+    {
+      "id": "restriction-equality",
+      "title": "§ II. Restriction Equality",
+      "startLine": 66,
+      "endLine": 102,
+      "summary": "Proves the key novel result: vol.restrict(Icc a b) = vol.restrict(Ioo a b) as measures. Also proves the product measure version.",
+      "mathContext": "By measure extensionality: for any measurable $s$, $\\text{vol}(s \\cap [a,b]) = \\text{vol}(s \\cap (a,b))$. The upper bound follows by decomposing $s \\cap [a,b] \\subseteq (s \\cap (a,b)) \\cup ([a,b] \\setminus (a,b))$ and using subadditivity. The lower bound is immediate from $\\text{Ioo} \\subseteq \\text{Icc}$."
+    },
+    {
+      "id": "fubini-core",
+      "title": "§ III. Core Fubini Step",
+      "startLine": 104,
+      "endLine": 125,
+      "summary": "Private theorem: the Fubini swap for ordered intervals with Icc integrability, inlined from greens-theorem-oq-01-oq-01 for self-containedness.",
+      "mathContext": "Converts interval integrals to set integrals using integral_of_le, transfers integrability from Icc to Ioc via monotonicity, then applies Mathlib's abstract integral_integral_swap."
+    },
+    {
+      "id": "main-theorems",
+      "title": "§ IV. Main Theorems",
+      "startLine": 127,
+      "endLine": 162,
+      "summary": "Main results: intervalIntegral_swap_of_Ioo_integrable (Fubini with Ioo hypothesis) and integrable_Icc_iff_Ioo (explicit equivalence).",
+      "mathContext": "The main theorem converts Ioo integrability to Icc integrability using §II, then applies §III. The equivalence theorem is a one-liner from the product measure equality."
+    },
+    {
+      "id": "application",
+      "title": "§ V. Application to Green's Theorem",
+      "startLine": 161,
+      "endLine": 175,
+      "summary": "greens_fubini_open_rectangle: for uncurried dPdy : ℝ × ℝ → ℝ, the Fubini swap holds under open rectangle integrability.",
+      "mathContext": "Direct application of intervalIntegral_swap_of_Ioo_integrable with the uncurried form of the partial derivative, relevant for the standard Green's theorem setup."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Icc integrability hypothesis for interval integral swap can be replaced by Ioo integrability (or any boundary variant: Ioc, Ico) because for Lebesgue measure these restrictions are identical. All needed tools exist in Mathlib.",
+    "implications": "The key novel contribution is vol.restrict(Icc a b) = vol.restrict(Ioo a b) — a useful lemma for any context where Lebesgue integration on intervals must relate Icc and Ioo hypotheses. This could be contributed to Mathlib's MeasureTheory.Measure.Lebesgue.Basic.",
+    "openQuestions": [
+      "Can this restriction equality be generalized to any atomless Borel measure (not just Lebesgue), giving vol.restrict(Icc a b) = vol.restrict(Ioo a b) for any measure that assigns zero to singletons?",
+      "Does Mathlib contain (or could one contribute) a simp lemma stating vol.restrict(Icc a b) = vol.restrict(Ioo a b) directly, avoiding the need for each application to reprove it?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem-oq-01-oq-01",
+      "relationship": "answers",
+      "description": "Directly answers OQ-03 from the Fubini theorem entry: 'The integrability hypothesis uses the product of Icc-restricted measures. Can this be weakened to just L¹ integrability on the open rectangle Ioo a b × Ioo c d?'"
+    },
+    {
+      "targetId": "greens-theorem-oq-01-oq-01-oq-02",
+      "relationship": "companion",
+      "description": "OQ-02 proved a standalone intervalIntegral_swap lemma. OQ-03 proves the Icc↔Ioo equivalence, showing the hypothesis can use either form. Together they fully characterize the integrability conditions for interval integral Fubini."
+    },
+    {
+      "targetId": "greens-theorem-oq-01",
+      "relationship": "related",
+      "description": "The concrete Green's theorem proof that first introduced the Fubini hypothesis. OQ-03 shows this hypothesis is satisfied under weaker (open rectangle) integrability."
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "uses",
+      "description": "Uses the foundational properties of Lebesgue measure: singletons have measure zero, measure is sigma-finite, countable sets are null."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "GreensTheoremOQ01OQ01OQ03.volume_restrict_Icc_eq_Ioo",
+      "statement": "∀ (a b : ℝ), volume.restrict (Icc a b) = volume.restrict (Ioo a b)",
+      "description": "Key novel lemma: Lebesgue restriction to closed interval equals restriction to open interval. Proved via null boundary argument."
+    },
+    {
+      "name": "GreensTheoremOQ01OQ01OQ03.intervalIntegral_swap_of_Ioo_integrable",
+      "statement": "a ≤ b → c ≤ d → Measurable (fun p => f p.1 p.2) → Integrable (fun p => f p.1 p.2) (vol.restrict Ioo × vol.restrict Ioo) → ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y",
+      "description": "Fubini for interval integrals with open rectangle integrability. Answers OQ-03: YES, Ioo integrability suffices."
+    },
+    {
+      "name": "GreensTheoremOQ01OQ01OQ03.integrable_Icc_iff_Ioo",
+      "statement": "Integrable f (vol.restrict Icc × vol.restrict Icc) ↔ Integrable f (vol.restrict Ioo × vol.restrict Ioo)",
+      "description": "Explicit equivalence: Icc and Ioo integrability conditions are identical for Lebesgue measure."
+    }
+  ],
+  "sorries": 0
+}

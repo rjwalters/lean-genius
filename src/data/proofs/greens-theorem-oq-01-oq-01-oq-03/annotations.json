@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-volume-Icc-sdiff-Ioo",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 52,
+      "endLine": 64
+    },
+    "type": "theorem",
+    "title": "volume_Icc_sdiff_Ioo: The Boundary Icc \\ Ioo Has Measure Zero",
+    "content": "The difference Icc a b \\ Ioo a b (the two endpoints {a, b}) has Lebesgue measure zero. Proved by containment in {a} ∪ {b} and countability of singletons.",
+    "mathContext": "$[a,b] \\setminus (a,b) = \\{a,b\\}$, which has measure zero since Lebesgue measure is atomless: $\\text{vol}(\\{x\\}) = 0$ for all $x \\in \\mathbb{R}$ (proved via countability: $\\{x\\}$ is countable, and countable sets have Lebesgue measure zero).",
+    "significance": "key",
+    "relatedConcepts": ["null sets", "singletons", "Lebesgue measure", "countable measure zero"],
+    "prerequisites": ["Set.Countable.measure_zero", "measure_mono_null", "measure_union_null"]
+  },
+  {
+    "id": "ann-volume-restrict-Icc-eq-Ioo",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "volume_restrict_Icc_eq_Ioo: Restriction Equality (Key Novel Lemma)",
+    "content": "The Lebesgue measure restricted to [a,b] equals the Lebesgue measure restricted to (a,b). The proof uses measure extensionality: for any measurable s, vol(s ∩ [a,b]) = vol(s ∩ (a,b)). The upper bound follows from s ∩ [a,b] ⊆ (s ∩ (a,b)) ∪ {a,b} and subadditivity. The lower bound is immediate from Ioo ⊆ Icc.",
+    "mathContext": "For any Borel measure $\\mu$ and any measurable $s$: $\\mu(s \\cap [a,b]) \\leq \\mu(s \\cap (a,b)) + \\mu([a,b] \\setminus (a,b)) = \\mu(s \\cap (a,b)) + 0$. Combined with $\\mu(s \\cap (a,b)) \\leq \\mu(s \\cap [a,b])$ (from $\\text{Ioo} \\subseteq \\text{Icc}$), we get equality.",
+    "significance": "key",
+    "relatedConcepts": ["measure restriction", "null boundary", "Lebesgue measure", "Icc vs Ioo"],
+    "prerequisites": ["volume_Icc_sdiff_Ioo", "measure_union_le", "measure_mono", "Measure.restrict_apply"]
+  },
+  {
+    "id": "ann-product-measure-equality",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "volume_prod_restrict_Icc_eq_Ioo: Product Measure Equality",
+    "content": "One-line corollary: the product of Icc-restricted measures equals the product of Ioo-restricted measures, for all pairs of endpoints a,b,c,d.",
+    "mathContext": "Immediate from applying the restriction equality twice: $(\\mu|_{[a,b]}) \\otimes (\\mu|_{[c,d]}) = (\\mu|_{(a,b)}) \\otimes (\\mu|_{(c,d)})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product measure", "restriction equality"],
+    "prerequisites": ["volume_restrict_Icc_eq_Ioo", "Measure.prod"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 139,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "intervalIntegral_swap_of_Ioo_integrable: Fubini with Open Rectangle Hypothesis",
+    "content": "The main theorem: for ordered intervals with a ≤ b and c ≤ d, Fubini holds under open rectangle (Ioo) integrability. The proof converts Ioo to Icc integrability using volume_restrict_Icc_eq_Ioo, then applies the standard Fubini proof.",
+    "mathContext": "The proof is: $f$ integrable on $(a,b) \\times (c,d)$ iff $f$ integrable on $[a,b] \\times [c,d]$ (since restrictions are equal), and the Fubini swap holds for Icc integrability (proved inline from integral_of_le + integral_integral_swap).",
+    "significance": "key",
+    "relatedConcepts": ["Fubini's theorem", "interval integral", "product measure", "integrability"],
+    "prerequisites": ["volume_restrict_Icc_eq_Ioo", "fubini_core", "integral_of_le", "integral_integral_swap"]
+  },
+  {
+    "id": "ann-equivalence",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 159
+    },
+    "type": "theorem",
+    "title": "integrable_Icc_iff_Ioo: Explicit Equivalence of Integrability Conditions",
+    "content": "One-line proof of the explicit iff: Icc integrability ↔ Ioo integrability for Lebesgue measure. Since the product measures are equal, the Integrable predicate is definitionally the same.",
+    "mathContext": "Since $\\mu|_{\\text{Icc}} = \\mu|_{\\text{Ioo}}$ as measures, $\\text{Integrable}(f, \\mu|_{\\text{Icc}} \\otimes \\mu|_{\\text{Icc}}) \\iff \\text{Integrable}(f, \\mu|_{\\text{Ioo}} \\otimes \\mu|_{\\text{Ioo}})$ is immediate by substitution.",
+    "significance": "supporting",
+    "relatedConcepts": ["integrable predicate", "measure equality", "iff"],
+    "prerequisites": ["volume_prod_restrict_Icc_eq_Ioo"]
+  }
+]
