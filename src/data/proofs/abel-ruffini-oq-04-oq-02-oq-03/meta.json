@@ -143,8 +143,7 @@
       "startLine": 44,
       "endLine": 51,
       "summary": "abelian_isSolvable: CommGroup G → IsSolvable G via inferInstance. One line. Covers all 17 prime-order cyclic groups below 60 and the trivial group of order 1.",
-      "mathContext": "`abelian_isSolvable (G : Type*) [CommGroup G] [Fintype G] : IsSolvable G := inferInstance`. In Lean, `CommGroup G` implies `IsSolvable G` via the typeclass `isSolvable_of_comm`: the derived series $G \\supseteq [G,G] = 1$ terminates at length 1 (since abelian groups have trivial commutator subgroup). Covers: order 1 (trivial, $|G| = 1$), and all 17 prime orders $\\{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59\\}$ below 60 (cyclic groups $\\mathbb{Z}/p\\mathbb{Z}$ are abelian). Combined with `pGroup_isSolvable`, this handles $26$ of the $59$ orders below $60$.",
-      "mathContext": "For abelian $G$: the commutator subgroup $[G,G] = 1$, so the derived series $G \\supseteq 1$ has length 1, confirming solvability. Mathlib's `isSolvable_of_comm` provides the typeclass instance."
+      "mathContext": "`abelian_isSolvable (G : Type*) [CommGroup G] [Fintype G] : IsSolvable G := inferInstance`. In Lean, `CommGroup G` implies `IsSolvable G` via the typeclass `isSolvable_of_comm`: the derived series $G \\supseteq [G,G] = 1$ terminates at length 1 (since abelian groups have trivial commutator subgroup). Covers: order 1 (trivial, $|G| = 1$), and all 17 prime orders $\\{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59\\}$ below 60 (cyclic groups $\\mathbb{Z}/p\\mathbb{Z}$ are abelian). Combined with `pGroup_isSolvable`, this handles $26$ of the $59$ orders below $60$."
     },
     {
       "id": "sec-classification",
