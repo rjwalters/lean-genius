@@ -7,7 +7,7 @@
     "author": "Erdős-Selfridge (1967 problem), Schinzel (partial result)",
     "sourceUrl": "https://erdosproblems.com/891",
     "date": "1967",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos891Problem.lean",
     "tags": [
       "erdos",
@@ -18,7 +18,7 @@
       "intervals",
       "open"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "erdosNumber": 891,
     "erdosUrl": "https://erdosproblems.com/891",
@@ -60,12 +60,14 @@
       "DicksonsConjecture definition: proper formalization of Dickson's conjecture on simultaneous primality of linear forms",
       "weisenberg_conditional result (not formalized): conditional counterexample",
       "isSmooth definition: k-smooth numbers",
-      "polya_theorem result (not formalized): gaps in smooth numbers are unbounded"
+      "polya_theorem result (not formalized): gaps in smooth numbers are unbounded",
+      "nthPrime_zero/one/two/three/four_val: concrete values nthPrime k for k=0..4",
+      "primorial_eq_primorialComp: bridges noncomputable primorial to computable primorialComp for k≤5"
     ],
     "axiomCount": 0,
-    "lineCount": 400,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 29,
+    "lineCount": 439,
+    "assumptions": "",
+    "theoremCount": 35,
     "definitionCount": 11
   },
   "overview": {
@@ -184,9 +186,9 @@
       "Finset"
     ],
     "namespace": "Erdos891",
-    "lineCount": 400,
+    "lineCount": 439,
     "axiomCount": 0,
-    "theoremCount": 29,
+    "theoremCount": 35,
     "definitionCount": 11,
     "path": "Proofs/Erdos891Problem.lean",
     "sorries": 0

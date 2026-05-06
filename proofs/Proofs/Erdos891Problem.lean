@@ -287,7 +287,7 @@ This result is important because it shows the conjecture is "almost true":
 the primorial is the right order of magnitude for the interval length.
 -/
 
-/--
+/-
 **Schinzel's Theorem:**
 For k ≥ 2, the Erdős #891 statement holds with the "skipped primorial"
 Q_k = p₁···pₖ₋₁·pₖ₊₁ (product of first k primes with pₖ replaced by pₖ₊₁).
@@ -327,7 +327,7 @@ def DicksonsConjecture : Prop :=
     (∀ p : ℕ, p.Prime → ∃ n : ℕ, ∀ i : Fin k, ¬(p ∣ a i * n + b i)) →
     Set.Infinite {n : ℕ | ∀ i : Fin k, (a i * n + b i).Prime}
 
-/--
+/-
 **Weisenberg's Observation:**
 Under Dickson's conjecture, the interval length p₁···pₖ is sharp.
 Reducing it by 1 gives infinitely many counterexamples.
@@ -396,5 +396,44 @@ The computable `HasManyFactorsComp` is used only for decidable k=2 verification.
     Uses the general `primorial` so the statement is mathematically correct for all k. -/
 def ErdosProblem891 : Prop :=
     ∀ k : ℕ, k ≥ 2 → ∃ N : ℕ, ∀ n ≥ N, HasManyFactors n k
+
+/-
+## Part VII: Linking Lemma (primorial = primorialComp for k ≤ 5)
+
+The general `primorial` uses Mathlib's `Nat.nth Nat.Prime` (noncomputable),
+while `primorialComp` gives explicit values for k = 0..5.
+This section proves they agree, enabling formal connection between
+the general conjecture and the computable verification.
+-/
+
+private lemma nthPrime_zero_val : nthPrime 0 = 2 := by
+  unfold nthPrime; exact Nat.nth_prime_zero_eq_two
+
+private lemma nthPrime_one_val : nthPrime 1 = 3 := by
+  unfold nthPrime; exact Nat.nth_prime_one_eq_three
+
+private lemma nthPrime_two_val : nthPrime 2 = 5 := by
+  unfold nthPrime; exact Nat.nth_prime_two_eq_five
+
+private lemma nthPrime_three_val : nthPrime 3 = 7 := by
+  have h_count : Nat.count Nat.Prime 7 = 3 := by decide
+  have h_prime : Nat.Prime 7 := by decide
+  unfold nthPrime; rw [← h_count]; exact Nat.nth_count h_prime
+
+private lemma nthPrime_four_val : nthPrime 4 = 11 := by
+  have h_count : Nat.count Nat.Prime 11 = 4 := by decide
+  have h_prime : Nat.Prime 11 := by decide
+  unfold nthPrime; rw [← h_count]; exact Nat.nth_count h_prime
+
+/-- The noncomputable `primorial` and the computable `primorialComp` agree for k ≤ 5.
+    This bridges the general definition (valid for all k) to the decidable
+    computable version used in computational verification. -/
+theorem primorial_eq_primorialComp (k : ℕ) (hk : k ≤ 5) :
+    primorial k = primorialComp k := by
+  interval_cases k <;>
+  simp only [primorial, primorialComp, Finset.prod_range_succ, Finset.prod_range_zero,
+             nthPrime_zero_val, nthPrime_one_val, nthPrime_two_val,
+             nthPrime_three_val, nthPrime_four_val] <;>
+  norm_num
 
 end Erdos891
