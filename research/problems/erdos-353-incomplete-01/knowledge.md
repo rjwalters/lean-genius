@@ -129,3 +129,50 @@ risk diverging from a future Mechanic batch repair.
   `progressSummary`, `currentState`, `nextSteps`
 
 No proof code changed.
+
+## Session 3 (2026-05-06) — Build Repair
+
+**Mode**: REVISIT (RICH, knowledge score 17)
+**Outcome**: Build repair PR #16131 created. All 4 failure categories fixed.
+
+### Root Cause Analysis
+
+Four failure categories identified and fixed:
+
+**A. Orphan `/-- ... -/` docstrings** (lines 222-226, 227-233, 247-251, 256-260):
+Lean 4.26 parser now rejects `/-- ... -/` doc comments that aren't
+immediately followed by a declaration. Converted to `/- ... -/`.
+
+**B. `HSMul ℝ (Set _)` synthesis failure** (lines 274, 285, 347, 350):
+`c⁻¹ • A` for `A : Set (EuclideanSpace ℝ (Fin 2))` requires
+`Set.smulSet` instance which is gated behind `open Pointwise`.
+Fix: add `open Pointwise` to both files.
+
+**C. `Inner.inner` typeclass API drift** (line 88, new in v4.26.0):
+`inner x y` no longer infers `𝕜` from context in all positions.
+Fix: `inner (𝕜 := ℝ) x y` in `IsRightTriangle` definition.
+Pattern confirmed in other project files (BrouwerFixedPointOQ01OQ03,
+CevasTheoremOQ02OQ01 etc.).
+
+**D. `triangleArea_smul_eq` simp regression** (line 320):
+`smul_sub` is forward-direction only (proves `c • (a-b) = c•a - c•b`).
+Goal had `(c•q - c•p)` form, so `smul_sub` never fired.
+Fix: replace with `Pi.sub_apply` + `Pi.smul_apply` + `smul_eq_mul`,
+and update subsequent `rw` to use component coordinates.
+Pattern: `Pi.sub_apply, Pi.smul_apply, smul_eq_mul` confirmed in
+`Erdos107Problem.lean:310` and `MinkowskiTheoremOQ02OQ01.lean:205-212`.
+
+### Why Docker Build Not Verified
+
+Concurrent mechanic/deployer agents keep running `git reset --hard` on
+the main repo filesystem during the build window (~5 min), reverting
+the temporary file copies needed for Docker verification. PR #16131
+should be verified by CI or Deployer.
+
+### Next Steps (after merge)
+
+1. Extend `scaling_property` to right triangles, isosceles trapezoids,
+   and cyclic quadrilaterals (structurally identical to existing isosceles
+   triangle version — use `addHaar_smul` on the corresponding base axiom)
+2. Reduce axiom count: explore whether Koizumi (2025) + Kovač (2023)
+   results can be partially captured by Mathlib analysis lemmas
