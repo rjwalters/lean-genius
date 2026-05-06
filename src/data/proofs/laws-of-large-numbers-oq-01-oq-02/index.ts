@@ -21,6 +21,7 @@ export const lawsOfLargeNumbersOQ01OQ02Proof: Proof = {
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
+  sections: [],
   overview: meta.overview,
   source: sourceRaw,
 }

@@ -2,7 +2,7 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
@@ -22,7 +22,7 @@ export const proof: Proof = {
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
-  sections: meta.sections,
+  sections: [],
   source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,

@@ -1,36 +1,34 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
+import type { Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean?raw'
 
-const meta = metaJson as {
+const meta = metaJson as unknown as {
   id: string
   title: string
   slug: string
   description: string
   meta: ProofMeta
-  overview: ProofOverview
-  conclusion: ProofConclusion
   sections: ProofSection[]
-  crossReferences: CrossReference[]
-  sorries: number
-  leanFile: Record<string, unknown>
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
 }
 
-const annotations = annotationsJson as Annotation[]
+const annotations = annotationsJson as unknown as Annotation[]
 
 export const proof: ProofData = {
-  meta: {
+  proof: {
     id: meta.id,
     title: meta.title,
     slug: meta.slug,
     description: meta.description,
     meta: meta.meta,
+    sections: meta.sections ?? [],
+    source: sourceRaw,
     overview: meta.overview,
     conclusion: meta.conclusion,
-    sections: meta.sections,
     crossReferences: meta.crossReferences,
-    sorries: meta.sorries,
-    leanFile: meta.leanFile,
   },
   annotations,
 }
