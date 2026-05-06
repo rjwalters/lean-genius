@@ -80,15 +80,15 @@ among them completes a triangle or the remaining k-1 colors force one.
 
 /-- Map Fin (k+1) to Fin k by collapsing color c₀.
     Injective on values ≠ c₀. Used for color relabeling in the inductive step. -/
-private def mapColor {k : ℕ} (c₀ x : Fin (k + 1)) : Fin k :=
+private def mapColor {k : ℕ} (hk : k ≥ 1) (c₀ x : Fin (k + 1)) : Fin k :=
   if h : x = c₀ then ⟨0, by omega⟩
   else ⟨if x.val < c₀.val then x.val else x.val - 1, by
     have := x.isLt; have := c₀.isLt; have : x.val ≠ c₀.val := Fin.val_ne_of_ne h
     split <;> omega⟩
 
 /-- mapColor is injective on arguments ≠ c₀ -/
-private lemma mapColor_injective_ne {k : ℕ} {c₀ x y : Fin (k + 1)}
-    (hx : x ≠ c₀) (hy : y ≠ c₀) (heq : mapColor c₀ x = mapColor c₀ y) : x = y := by
+private lemma mapColor_injective_ne {k : ℕ} (hk : k ≥ 1) {c₀ x y : Fin (k + 1)}
+    (hx : x ≠ c₀) (hy : y ≠ c₀) (heq : mapColor hk c₀ x = mapColor hk c₀ y) : x = y := by
   simp only [mapColor, dif_neg hx, dif_neg hy, Fin.mk.injEq] at heq
   have : x.val ≠ c₀.val := Fin.val_ne_of_ne hx
   have : y.val ≠ c₀.val := Fin.val_ne_of_ne hy
@@ -102,7 +102,7 @@ private lemma forces_imp_ge_three {m k : ℕ} (hk : k ≥ 1)
     hf hk (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
   interval_cases m
   · exact i.elim0
-  · exact hij (Subsingleton.elim i j)
+  · exact hij (Fin.ext (by omega))
   · have : i = j ∨ i = l ∨ j = l := by
       rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩; rcases l with ⟨l, hl⟩
       simp only [Fin.mk.injEq]; omega
@@ -117,10 +117,11 @@ theorem forcing_set_nonempty (k : ℕ) (hk : k ≥ 1) :
   | succ k' ih =>
     by_cases hk' : k' = 0
     · -- Base: k=1, K₃ suffices (1 color means all edges monochromatic)
-      subst hk'; exact ⟨3, fun _ c _ =>
-        ⟨⟨0, by omega⟩, ⟨0, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
-         by decide, by decide, by decide,
-         Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _⟩⟩
+      subst hk'
+      refine ⟨3, fun _ c _ => ?_⟩
+      refine ⟨⟨0, by omega⟩, ⟨0, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
+        by decide, by decide, by decide, ?_, ?_, ?_⟩
+      all_goals exact Fin.ext (by omega)
     · -- Inductive step: k'+1 ≥ 2 colors
       have hk'1 : k' ≥ 1 := by omega
       obtain ⟨m, hm⟩ := ih hk'1
@@ -134,9 +135,9 @@ theorem forcing_set_nonempty (k : ℕ) (hk : k ≥ 1) :
       have hoc : others.card = (k' + 1) * (m - 1) + 1 := by
         simp [others, Finset.card_erase_of_mem (Finset.mem_univ v₀), Fintype.card_fin]
       -- Pigeonhole: some color c₀ appears on ≥ m edges from v₀
-      have h_pig : (Finset.univ : Finset (Fin (k' + 1))).card • (m - 1) < others.card := by
-        rw [Finset.card_univ, Fintype.card_fin, hoc, smul_eq_mul]; omega
-      obtain ⟨c₀, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_nsmul_lt_card
+      have h_pig : (Finset.univ : Finset (Fin (k' + 1))).card * (m - 1) < others.card := by
+        rw [Finset.card_univ, Fintype.card_fin, hoc]; omega
+      obtain ⟨c₀, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to
         (f := fun u => c (v₀, u)) (fun _ _ => Finset.mem_univ _) h_pig
       -- The fiber: vertices connected to v₀ by color c₀
       let S := others.filter (fun u => c (v₀, u) = c₀)
@@ -159,21 +160,21 @@ theorem forcing_set_nonempty (k : ℕ) (hk : k ≥ 1) :
       by_cases h_c₀ : ∃ i j : Fin m, i ≠ j ∧ c (e i, e j) = c₀
       · -- Triangle with v₀
         obtain ⟨i, j, hij, hcij⟩ := h_c₀
-        exact ⟨c₀, v₀, e i, e j, e_ne i, e_inj.ne hij, e_ne j,
+        exact ⟨c₀, v₀, e i, e j, (e_ne i).symm, e_inj.ne hij, (e_ne j).symm,
           e_col i, hcij, e_col j⟩
       · -- No c₀-edge among embedded vertices: relabel to k'-coloring
         push_neg at h_c₀
-        let g : EdgeColoring m k' := fun p => mapColor c₀ (c (e p.1, e p.2))
+        let g : EdgeColoring m k' := fun p => mapColor hk'1 c₀ (c (e p.1, e p.2))
         have g_sym : IsSymmetric g := fun i j =>
-          show mapColor c₀ (c (e i, e j)) = mapColor c₀ (c (e j, e i)) from
-            congr_arg (mapColor c₀) (hsym (e i) (e j))
+          show mapColor hk'1 c₀ (c (e i, e j)) = mapColor hk'1 c₀ (c (e j, e i)) from
+            congr_arg (mapColor hk'1 c₀) (hsym (e i) (e j))
         -- Apply inductive hypothesis: k'-coloring of K_m has a monochromatic triangle
         obtain ⟨color', i, j, l, hij, hjl, hil, hcij', hcjl', hcil'⟩ :=
           hm hk'1 g g_sym
         -- All three edges have the same original color (mapColor injective on ≠ c₀)
-        have h_ij_jl := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ j l hjl)
+        have h_ij_jl := mapColor_injective_ne hk'1 (h_c₀ i j hij) (h_c₀ j l hjl)
           (hcij'.trans hcjl'.symm)
-        have h_ij_il := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ i l hil)
+        have h_ij_il := mapColor_injective_ne hk'1 (h_c₀ i j hij) (h_c₀ i l hil)
           (hcij'.trans hcil'.symm)
         exact ⟨c (e i, e j), e i, e j, e l,
           e_inj.ne hij, e_inj.ne hjl, e_inj.ne hil,
@@ -197,24 +198,25 @@ Some values of R(3;k) are known exactly for small k.
 theorem R3k_one : R3k 1 = 3 := by
   unfold R3k
   rw [dif_pos (show (1 : ℕ) ≥ 1 from le_refl 1)]
-  apply Nat.find_eq_iff.mpr
-  refine ⟨?_, ?_⟩
-  · -- ForcesMonochromaticTriangle 3 1: any 1-coloring of K_3 has monochromatic triangle
+  apply Nat.le_antisymm
+  · -- Nat.find h ≤ 3: ForcesMonochromaticTriangle 3 1
+    apply Nat.find_min'
     intro _ c _
-    -- With Fin 1, all edges have the same (unique) color
-    exact ⟨⟨0, by omega⟩, ⟨0, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
-      by decide, by decide, by decide,
-      Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _⟩
-  · -- ∀ m < 3, ¬ForcesMonochromaticTriangle m 1
-    intro m hm hf
-    have := hf (le_refl 1) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
-    obtain ⟨_, i, j, l, hij, hjl, hil, _, _, _⟩ := this
-    -- Fin m with m < 3 can't have 3 distinct elements
-    interval_cases m
+    refine ⟨⟨0, by omega⟩, ⟨0, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
+      by decide, by decide, by decide, ?_, ?_, ?_⟩
+    all_goals exact Fin.ext (by omega)
+  · -- 3 ≤ Nat.find h: all m < 3 fail to force
+    by_contra hlt
+    push_neg at hlt
+    set n := Nat.find (forcing_set_nonempty 1 (le_refl 1)) with hn_def
+    have hn_lt : n < 3 := hlt
+    have h_spec : ForcesMonochromaticTriangle n 1 := Nat.find_spec (forcing_set_nonempty 1 (le_refl 1))
+    have h_bad := h_spec (le_refl 1) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+    obtain ⟨_, i, j, l, hij, hjl, hil, _, _, _⟩ := h_bad
+    interval_cases n
     · exact i.elim0
-    · exact hij (Subsingleton.elim i j)
-    · -- m = 2: Fin 2 = {0, 1}, pigeonhole on 3 elements
-      have : i = j ∨ i = l ∨ j = l := by
+    · exact hij (Fin.ext (by omega))
+    · have : i = j ∨ i = l ∨ j = l := by
         rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩; rcases l with ⟨l, hl⟩
         simp only [Fin.mk.injEq]; omega
       rcases this with rfl | rfl | rfl <;> contradiction
@@ -224,7 +226,24 @@ theorem R3k_one : R3k 1 = 3 := by
 private lemma pigeonhole_five_two (f : Fin 5 → Fin 2) :
     ∃ (color : Fin 2) (i j k : Fin 5), i ≠ j ∧ j ≠ k ∧ i ≠ k ∧
       f i = color ∧ f j = color ∧ f k = color := by
-  native_decide
+  have h_pig : (Finset.univ : Finset (Fin 2)).card * 2 < (Finset.univ : Finset (Fin 5)).card := by
+    simp [Finset.card_fin]
+  obtain ⟨color, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to
+    (s := Finset.univ) (t := Finset.univ) (f := f) (fun _ _ => Finset.mem_univ _) h_pig
+  have h3 : 3 ≤ (Finset.univ.filter (f · = color)).card := by omega
+  obtain ⟨T, hTsub, hTcard⟩ := Finset.exists_subset_card_eq h3
+  let iso := T.orderIsoOfFin hTcard
+  refine ⟨color, (iso ⟨0, by omega⟩).val, (iso ⟨1, by omega⟩).val, (iso ⟨2, by omega⟩).val,
+    ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro h
+    exact absurd (congrArg Fin.val (iso.injective (Subtype.val_injective h))) (by omega)
+  · intro h
+    exact absurd (congrArg Fin.val (iso.injective (Subtype.val_injective h))) (by omega)
+  · intro h
+    exact absurd (congrArg Fin.val (iso.injective (Subtype.val_injective h))) (by omega)
+  · exact (Finset.mem_filter.mp (hTsub (iso ⟨0, by omega⟩).prop)).2
+  · exact (Finset.mem_filter.mp (hTsub (iso ⟨1, by omega⟩).prop)).2
+  · exact (Finset.mem_filter.mp (hTsub (iso ⟨2, by omega⟩).prop)).2
 
 /-- In Fin 2, if x ≠ c then x equals the other value. -/
 private lemma fin2_other {x c : Fin 2} (h : x ≠ c) : x = (1 : Fin 2) - c := by
@@ -257,7 +276,7 @@ private lemma no_three_distinct_lt3 {m : ℕ} (hm : m < 3) (i j l : Fin m)
     (hij : i ≠ j) (hjl : j ≠ l) (hil : i ≠ l) : False := by
   interval_cases m
   · exact i.elim0
-  · exact hij (Subsingleton.elim i j)
+  · exact hij (Fin.ext (by omega))
   · have : i = j ∨ i = l ∨ j = l := by
       rcases i with ⟨i, hi⟩; rcases j with ⟨j, hj⟩; rcases l with ⟨l, hl⟩
       simp only [Fin.mk.injEq]; omega
@@ -266,12 +285,14 @@ private lemma no_three_distinct_lt3 {m : ℕ} (hm : m < 3) (i j l : Fin m)
 /-- R(3;2) = 6 is the classical Ramsey number R(3,3).
     Proof: Upper bound by pigeonhole (vertex with 5 edges → 3 same color → forced triangle).
     Lower bound: exhibit triangle-free 2-colorings for K₃, K₄, K₅. -/
+set_option maxHeartbeats 800000 in
 theorem R3k_two : R3k 2 = 6 := by
   unfold R3k
   rw [dif_pos (show (2 : ℕ) ≥ 1 from by omega)]
-  apply Nat.find_eq_iff.mpr
-  refine ⟨?_, ?_⟩
-  · -- UPPER BOUND: ForcesMonochromaticTriangle 6 2
+  apply Nat.le_antisymm
+  · -- Nat.find h ≤ 6: ForcesMonochromaticTriangle 6 2
+    apply Nat.find_min'
+    -- UPPER BOUND: ForcesMonochromaticTriangle 6 2
     intro _ c _hsym
     -- Consider edges from vertex 0 to the 5 other vertices
     let f : Fin 5 → Fin 2 := fun i => c (⟨0, by omega⟩, ⟨i.val + 1, by omega⟩)
@@ -280,53 +301,50 @@ theorem R3k_two : R3k 2 = 6 := by
     -- Apply the triangle lemma to vertex 0 and the three same-colored neighbors
     exact triangle_from_three_neighbors c
       ⟨0, by omega⟩ ⟨i.val + 1, by omega⟩ ⟨j.val + 1, by omega⟩ ⟨k.val + 1, by omega⟩
-      (by intro h; simp [Fin.ext_iff] at h; omega)
-      (by intro h; simp [Fin.ext_iff] at h; omega)
-      (by intro h; simp [Fin.ext_iff] at h; omega)
-      (by intro h; simp [Fin.ext_iff] at h; exact hij (Fin.ext (by omega)))
-      (by intro h; simp [Fin.ext_iff] at h; exact hjk (Fin.ext (by omega)))
-      (by intro h; simp [Fin.ext_iff] at h; exact hik (Fin.ext (by omega)))
+      (fun h => absurd (congrArg Fin.val h).symm (Nat.succ_ne_zero i.val))
+      (fun h => absurd (congrArg Fin.val h).symm (Nat.succ_ne_zero j.val))
+      (fun h => absurd (congrArg Fin.val h).symm (Nat.succ_ne_zero k.val))
+      (fun h => hij (Fin.ext (Nat.succ.inj (congrArg Fin.val h))))
+      (fun h => hjk (Fin.ext (Nat.succ.inj (congrArg Fin.val h))))
+      (fun h => hik (Fin.ext (Nat.succ.inj (congrArg Fin.val h))))
       color hci hcj hck
-  · -- LOWER BOUND: ∀ m < 6, ¬ForcesMonochromaticTriangle m 2
-    intro m hm hf
-    interval_cases m
-    -- m = 0: Fin 0 is empty
+  · -- 6 ≤ Nat.find h: for all m < 6, ¬ForcesMonochromaticTriangle m 2
+    by_contra hlt
+    push_neg at hlt
+    set n := Nat.find (forcing_set_nonempty 2 (by omega)) with hn_def
+    have hn_lt : n < 6 := hlt
+    have h_spec : ForcesMonochromaticTriangle n 2 := Nat.find_spec (forcing_set_nonempty 2 (by omega))
+    interval_cases n
     · obtain ⟨_, i, _, _, _, _, _, _, _, _⟩ :=
-        hf (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+        h_spec (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
       exact i.elim0
-    -- m = 1: Fin 1 is a singleton
     · obtain ⟨_, i, j, _, hij, _, _, _, _, _⟩ :=
-        hf (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
-      exact hij (Subsingleton.elim i j)
-    -- m = 2: Fin 2, can't find 3 distinct
+        h_spec (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+      exact hij (Fin.ext (by omega))
     · obtain ⟨_, i, j, l, hij, hjl, hil, _, _, _⟩ :=
-        hf (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
+        h_spec (by omega) (fun _ => ⟨0, by omega⟩) (fun _ _ => rfl)
       exact no_three_distinct_lt3 (by omega) i j l hij hjl hil
-    -- m = 3: color edge {0,1} with 0, rest with 1
     · let c₃ : EdgeColoring 3 2 := fun p =>
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) then 0 else 1
       have hsym₃ : IsSymmetric c₃ := by
         intro i j; simp only [c₃]; fin_cases i <;> fin_cases j <;> simp
-      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₃ hsym₃
+      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₃ hsym₃
       fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₃]
-    -- m = 4: matching {01, 23} color 0, rest color 1
     · let c₄ : EdgeColoring 4 2 := fun p =>
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) ∨
            (p.1.val = 2 ∧ p.2.val = 3) ∨ (p.1.val = 3 ∧ p.2.val = 2) then 0 else 1
       have hsym₄ : IsSymmetric c₄ := by
         intro i j; simp only [c₄]; fin_cases i <;> fin_cases j <;> simp
-      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₄ hsym₄
+      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₄ hsym₄
       fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₄]
-    -- m = 5: C₅ coloring — cycle {01,12,23,34,40} color 0, diagonals color 1
     · let c₅ : EdgeColoring 5 2 := fun p =>
         let d := (p.1.val + 5 - p.2.val) % 5
         if d = 1 ∨ d = 4 then 0 else 1
       have hsym₅ : IsSymmetric c₅ := by
         intro i j; simp only [c₅]; fin_cases i <;> fin_cases j <;> simp
-      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := hf (by omega) c₅ hsym₅
+      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₅ hsym₅
       fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;> simp_all [c₅]
 
-/-- R(3;3) = 17 (Greenwood and Gleason, 1955) -/
 /-- Monotonicity: more colors requires more vertices to force a monochromatic triangle.
     Proof: embed a k₁-coloring into a k₂-coloring via Fin.castLE; any monochromatic
     triangle for the k₂-coloring is also monochromatic for the k₁-coloring (injectivity). -/
@@ -389,9 +407,9 @@ private lemma forcing_step (k m : ℕ) (hk : k ≥ 1) (hm : ForcesMonochromaticT
   let others := (Finset.univ : Finset (Fin ((k + 1) * (m - 1) + 2))).erase v₀
   have hoc : others.card = (k + 1) * (m - 1) + 1 := by
     simp [others, Finset.card_erase_of_mem (Finset.mem_univ v₀), Fintype.card_fin]
-  have h_pig : (Finset.univ : Finset (Fin (k + 1))).card • (m - 1) < others.card := by
-    rw [Finset.card_univ, Fintype.card_fin, hoc, smul_eq_mul]; omega
-  obtain ⟨c₀, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_nsmul_lt_card
+  have h_pig : (Finset.univ : Finset (Fin (k + 1))).card * (m - 1) < others.card := by
+    rw [Finset.card_univ, Fintype.card_fin, hoc]; omega
+  obtain ⟨c₀, _, h_fib⟩ := Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to
     (f := fun u => c (v₀, u)) (fun _ _ => Finset.mem_univ _) h_pig
   let S := others.filter (fun u => c (v₀, u) = c₀)
   have hSm : S.card ≥ m := by change m - 1 < S.card at h_fib; omega
@@ -410,18 +428,18 @@ private lemma forcing_step (k m : ℕ) (hk : k ≥ 1) (hm : ForcesMonochromaticT
     simp only [S, Finset.mem_filter] at this; exact this.2
   by_cases h_c₀ : ∃ i j : Fin m, i ≠ j ∧ c (e i, e j) = c₀
   · obtain ⟨i, j, hij, hcij⟩ := h_c₀
-    exact ⟨c₀, v₀, e i, e j, e_ne i, e_inj.ne hij, e_ne j,
+    exact ⟨c₀, v₀, e i, e j, (e_ne i).symm, e_inj.ne hij, (e_ne j).symm,
       e_col i, hcij, e_col j⟩
   · push_neg at h_c₀
-    let g : EdgeColoring m k := fun p => mapColor c₀ (c (e p.1, e p.2))
+    let g : EdgeColoring m k := fun p => mapColor hk c₀ (c (e p.1, e p.2))
     have g_sym : IsSymmetric g := fun i j =>
-      show mapColor c₀ (c (e i, e j)) = mapColor c₀ (c (e j, e i)) from
-        congr_arg (mapColor c₀) (hsym (e i) (e j))
+      show mapColor hk c₀ (c (e i, e j)) = mapColor hk c₀ (c (e j, e i)) from
+        congr_arg (mapColor hk c₀) (hsym (e i) (e j))
     obtain ⟨color', i, j, l, hij, hjl, hil, hcij', hcjl', hcil'⟩ :=
       hm hk g g_sym
-    have h_ij_jl := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ j l hjl)
+    have h_ij_jl := mapColor_injective_ne hk (h_c₀ i j hij) (h_c₀ j l hjl)
       (hcij'.trans hcjl'.symm)
-    have h_ij_il := mapColor_injective_ne (h_c₀ i j hij) (h_c₀ i l hil)
+    have h_ij_il := mapColor_injective_ne hk (h_c₀ i j hij) (h_c₀ i l hil)
       (hcij'.trans hcil'.symm)
     exact ⟨c (e i, e j), e i, e j, e l,
       e_inj.ne hij, e_inj.ne hjl, e_inj.ne hil,
@@ -439,9 +457,10 @@ theorem R3k_inductive_upper (k : ℕ) (hk : k ≥ 2) :
   have hm := Nat.find_spec (forcing_set_nonempty (k - 1) hkm1)
   -- forcing_step gives: ForcesMonochromaticTriangle ((k-1+1)*(find...-1)+2) (k-1+1)
   -- Since k-1+1 = k, this is ForcesMonochromaticTriangle (k*(find...-1)+2) k
-  have : k - 1 + 1 = k := by omega
-  rw [← this]
-  convert forcing_step (k - 1) _ hkm1 hm using 2
+  have heq : k - 1 + 1 = k := by omega
+  have hkey := forcing_step (k - 1) _ hkm1 hm
+  rw [heq] at hkey
+  convert hkey using 1
   omega
 
 /-- R(3;k) ≤ 3·k! for all k ≥ 1.
@@ -463,8 +482,9 @@ theorem R3k_le_three_factorial (k : ℕ) (hk : k ≥ 1) : R3k k ≤ 3 * k.factor
       have h1 : (R3k (n + 1) : ℤ) ≤ 2 + (↑n + 1) * (↑(R3k n) - 1) := by
         have hsub : (↑(R3k n - 1) : ℤ) = ↑(R3k n) - 1 :=
           Nat.cast_sub (show 1 ≤ R3k n by omega)
-        have : (R3k (n + 1) : ℤ) ≤ ↑(2 + (n + 1) * (R3k n - 1)) := by exact_mod_cast h_upper
-        rw [Nat.cast_add, Nat.cast_mul, hsub] at this
+        have hup : (R3k (n + 1) : ℤ) ≤ ↑(2 + (n + 1) * (R3k n - 1)) := by exact_mod_cast h_upper
+        have hcast : (↑(2 + (n + 1) * (R3k n - 1)) : ℤ) = 2 + (↑n + 1) * (↑(R3k n) - 1) := by
+          push_cast [hsub]; ring
         linarith
       have h2 : (R3k n : ℤ) ≤ 3 * ↑(n.factorial) := by exact_mod_cast h_ih
       rw [show ((n + 1).factorial : ℤ) = (↑n + 1) * ↑(n.factorial) from by
@@ -521,18 +541,155 @@ private lemma forces_mono {m m' k : ℕ} (h : m ≤ m')
   · exact hcjl
   · exact hcil
 
-/-- The Ageron et al. (2021) lower bound R(3;k) ≥ 380^{k/5} - O(1).
-    Stated as the existential `∃ c > 1, ∀ k ≥ 1, R(3;k) ≥ c^k`. The deep cited
-    construction gives c = 380^{1/5} ≈ 3.28, but any c > 1 suffices for this
-    statement. A weaker but provable c = 2 follows from the doubling
-    construction (NOT formalized here yet — see `forces_mono` for a building
-    block). The doubling argument: a triangle-free k-coloring of K_n yields a
-    triangle-free (k+1)-coloring of K_{2n} by using a new color for cross-half
-    edges; iterating from R(3;1) = 3 gives R(3;k) ≥ 2^k + 1. -/
-axiom R3k_exponential_lower :
-  ∃ c : ℝ, c > 1 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≥ c ^ k
+/- The lower bound R(3;k) ≥ 2^k is proved below via the doubling construction.
+   This gives R3k_exponential_lower with c = 2, eliminating the axiom. -/
 
-/-- Specifically: R(3;k) ≥ 380^{k/5} - O(1) -/
+/-
+# Part 6b: The Doubling Construction
+
+Formalizes the argument in the docstring above:
+- doubleColoring: a triangle-free k-coloring of K_n → triangle-free (k+1)-coloring of K_{2n}
+- Uses a new color for cross-half edges, reuses the k-coloring within each half
+-/
+
+/-- The doubling construction: given a triangle-free k-coloring of K_n,
+    build a (k+1)-coloring of K_{n+n} by using a new color (index k) for
+    cross-half edges and the original coloring within each half. -/
+def doubleColoring {n k : ℕ} (c : EdgeColoring n k) : EdgeColoring (n + n) (k + 1) :=
+  fun p =>
+    if h₁ : p.1.val < n then
+      if h₂ : p.2.val < n then
+        Fin.castLE (Nat.le_succ k) (c (⟨p.1.val, h₁⟩, ⟨p.2.val, h₂⟩))
+      else Fin.last k
+    else
+      if h₂ : p.2.val < n then Fin.last k
+      else
+        Fin.castLE (Nat.le_succ k)
+          (c (⟨p.1.val - n, by omega⟩, ⟨p.2.val - n, by omega⟩))
+
+/-- The doubling construction preserves symmetry. -/
+lemma doubleColoring_sym {n k : ℕ} (c : EdgeColoring n k) (hc : IsSymmetric c) :
+    IsSymmetric (doubleColoring c) := by
+  intro i j
+  simp only [doubleColoring, Prod.fst, Prod.snd]
+  by_cases hi : i.val < n <;> by_cases hj : j.val < n
+  · simp only [dif_pos hi, dif_pos hj]
+    exact congrArg (Fin.castLE _) (hc ⟨i.val, hi⟩ ⟨j.val, hj⟩)
+  · simp only [dif_pos hi, dif_neg hj]
+  · simp only [dif_neg hi, dif_pos hj]
+  · simp only [dif_neg hi, dif_neg hj]
+    exact congrArg (Fin.castLE _) (hc ⟨i.val - n, by omega⟩ ⟨j.val - n, by omega⟩)
+
+/-- Within-half colors have value < k, while the cross-half color has value = k.
+    This distinguishes the two cases. -/
+private lemma castLE_ne_last {k : ℕ} (x : Fin k) :
+    Fin.castLE (Nat.le_succ k) x ≠ Fin.last k := by
+  intro h
+  have hval : (Fin.castLE (Nat.le_succ k) x).val = x.val := rfl
+  have hlast : (Fin.last k).val = k := rfl
+  rw [h] at hval; simp [hlast] at hval
+  exact Nat.not_lt.mpr (Nat.le_of_eq hval) x.isLt
+
+/-- The doubling construction avoids monochromatic triangles if the original does.
+    With 3 vertices and 2 halves, at least 2 are in the same half. If there's a
+    monochromatic triangle, same-half edges use old colors and cross-half edges use
+    the new color (k). These can't match, giving a contradiction unless all 3 are
+    in the same half — but that gives a triangle in c. -/
+lemma doubleColoring_avoids {n k : ℕ} (c : EdgeColoring n k)
+    (hc : AvoidsMonochromaticTriangles c) :
+    AvoidsMonochromaticTriangles (doubleColoring c) := by
+  intro ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩
+  rcases Nat.lt_or_ge i.val n with hi | hi <;>
+  rcases Nat.lt_or_ge j.val n with hj | hj <;>
+  rcases Nat.lt_or_ge l.val n with hl | hl <;>
+  simp only [doubleColoring, dif_pos, *, Nat.not_lt.mpr] at hcij hcjl hcil
+  -- (T,T,T): all first half — triangle in c
+  · apply hc; exact ⟨c (⟨i.val,hi⟩, ⟨j.val,hj⟩), ⟨i.val,hi⟩, ⟨j.val,hj⟩, ⟨l.val,hl⟩,
+      fun h => hij (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
+      fun h => hjl (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
+      fun h => hil (by simp only [Fin.mk.injEq] at h; exact Fin.ext h),
+      rfl, Fin.castLE_injective _ (hcjl.trans hcij.symm),
+      Fin.castLE_injective _ (hcil.trans hcij.symm)⟩
+  -- (T,T,F): i,j first, l second — i,j edge is within-first (castLE), others cross (last k)
+  · exact absurd (hcij.trans hcil.symm) (castLE_ne_last _)
+  -- (T,F,T): i,l first, j second — i,l edge is within-first, others cross
+  · exact absurd (hcil.trans hcij.symm) (castLE_ne_last _)
+  -- (T,F,F): i first, j,l second — j,l edge within-second, others cross
+  · exact absurd (hcjl.trans hcij.symm) (castLE_ne_last _)
+  -- (F,T,T): j,l first, i second — j,l edge within-first, others cross
+  · exact absurd (hcjl.trans hcij.symm) (castLE_ne_last _)
+  -- (F,T,F): j first, i,l second — i,l edge within-second, others cross
+  · exact absurd (hcil.trans hcij.symm) (castLE_ne_last _)
+  -- (F,F,T): l first, i,j second — i,j edge within-second, others cross
+  · exact absurd (hcij.trans hcil.symm) (castLE_ne_last _)
+  -- (F,F,F): all second half — triangle in c shifted
+  · apply hc; exact ⟨c (⟨i.val-n,by omega⟩, ⟨j.val-n,by omega⟩),
+      ⟨i.val-n,by omega⟩, ⟨j.val-n,by omega⟩, ⟨l.val-n,by omega⟩,
+      fun h => hij (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
+      fun h => hjl (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
+      fun h => hil (Fin.ext (by simp only [Fin.mk.injEq] at h; omega)),
+      rfl, Fin.castLE_injective _ (hcjl.trans hcij.symm),
+      Fin.castLE_injective _ (hcil.trans hcij.symm)⟩
+
+/-- R3k k satisfies both the forcing property and the minimality property. -/
+private lemma R3k_min_spec (k : ℕ) (hk : k ≥ 1) :
+    ForcesMonochromaticTriangle (R3k k) k ∧
+    ∀ m, ForcesMonochromaticTriangle m k → R3k k ≤ m := by
+  unfold R3k; rw [dif_pos hk]
+  exact ⟨Nat.find_spec (forcing_set_nonempty k hk),
+         fun m hm => Nat.find_min' (forcing_set_nonempty k hk) hm⟩
+
+/-- Since R3k k is the minimum forcing n, K_{R3k k - 1} admits a triangle-free k-coloring. -/
+private lemma R3k_avoidance_coloring (k : ℕ) (hk : k ≥ 1) :
+    ∃ c : EdgeColoring (R3k k - 1) k, IsSymmetric c ∧ AvoidsMonochromaticTriangles c := by
+  have h_ge := R3k_ge_three k hk
+  have h_not : ¬ForcesMonochromaticTriangle (R3k k - 1) k := fun hf =>
+    absurd ((R3k_min_spec k hk).2 _ hf) (by omega)
+  unfold ForcesMonochromaticTriangle at h_not
+  push_neg at h_not
+  obtain ⟨-, c, hcsym, hcno⟩ := h_not
+  exact ⟨c, hcsym, hcno⟩
+
+/-- Doubling gives the recurrence 2·(R3k k - 1) + 1 ≤ R3k (k+1). -/
+private lemma R3k_doubling_bound (k : ℕ) (hk : k ≥ 1) :
+    2 * (R3k k - 1) + 1 ≤ R3k (k + 1) := by
+  obtain ⟨c, hcsym, hcavoid⟩ := R3k_avoidance_coloring k hk
+  have hdc_avoids := doubleColoring_avoids c hcavoid
+  have hdc_sym := doubleColoring_sym c hcsym
+  have h_not : ¬ForcesMonochromaticTriangle (R3k k - 1 + (R3k k - 1)) (k + 1) := fun hf =>
+    hdc_avoids (hf (by omega) (doubleColoring c) hdc_sym)
+  have h_lt : R3k k - 1 + (R3k k - 1) < R3k (k + 1) := by
+    by_contra hge
+    push_neg at hge
+    exact h_not (forces_mono hge (R3k_min_spec (k + 1) (by omega)).1)
+  omega
+
+/-- By induction: R3k k ≥ 2^k + 1 for all k ≥ 1. -/
+private lemma R3k_ge_two_pow_succ (k : ℕ) (hk : k ≥ 1) : R3k k ≥ 2 ^ k + 1 := by
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    by_cases hn : n = 0
+    · subst hn; rw [R3k_one]; norm_num
+    · have hn1 : n ≥ 1 := by omega
+      have h_ih := ih hn1
+      have h_dbl := R3k_doubling_bound n hn1
+      have h_sub : R3k n - 1 ≥ 2 ^ n := by omega
+      have h_mul : 2 * (R3k n - 1) ≥ 2 * 2 ^ n := by omega
+      have h_pow : 2 * 2 ^ n = 2 ^ (n + 1) := by ring
+      linarith
+
+/-- The exponential lower bound: R3k k ≥ 2^k for all k ≥ 1.
+    Proved via the doubling construction: a triangle-free k-coloring of K_n yields
+    a triangle-free (k+1)-coloring of K_{2n} by using a new color for cross-half edges.
+    Iterating from R(3;1) = 3 gives R(3;k) ≥ 2^k + 1. -/
+theorem R3k_exponential_lower :
+    ∃ c : ℝ, c > 1 ∧ ∀ k : ℕ, k ≥ 1 → (R3k k : ℝ) ≥ c ^ k := by
+  refine ⟨2, by norm_num, fun k hk => ?_⟩
+  have h_nat : R3k k ≥ 2 ^ k := by linarith [R3k_ge_two_pow_succ k hk]
+  calc (R3k k : ℝ) ≥ ((2 ^ k : ℕ) : ℝ) := by exact_mod_cast h_nat
+    _ = (2 : ℝ) ^ k := by push_cast; ring
+
 /-
 # Part 6: The Main Question - Limit of k-th Root
 
