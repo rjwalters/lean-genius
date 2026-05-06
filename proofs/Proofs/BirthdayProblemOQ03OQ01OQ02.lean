@@ -321,8 +321,26 @@ theorem asympThreshold_d365_bounds :
   Hence the approximation error → 0, giving the Poisson limit.
 -/
 
-/-- Poisson approximation for k=3 birthday coincidences. -/
-axiom poisson_approx_birthday3 (c : ℝ) (hc : 0 < c) :
+/-- **Lemma C (OPEN)**: Poisson limit for no-triple probability.
+    P(no triple in n_c(d) draws from [d]) → exp(-c³/6) as d → ∞.
+    Equivalent to Poisson(C(n,3)/d²) convergence in distribution for the
+    triple-collision count. NOT in Mathlib 4.26 — requires method of factorial
+    moments or Chen-Stein approximation (new probability infrastructure). -/
+axiom p_no_triple_tendsto (c : ℝ) (hc : 0 < c) :
+    let n : ℕ → ℕ := fun d => ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊
+    Filter.Tendsto
+      (fun d : ℕ =>
+        (Finset.univ.filter (fun f : Fin (n d) → Fin d =>
+          ∀ i j k : Fin (n d), i ≠ j → j ≠ k → i ≠ k →
+            ¬(f i = f j ∧ f j = f k))).card /
+        (Fintype.card (Fin (n d) → Fin d) : ℝ))
+      Filter.atTop (nhds (Real.exp (-(c ^ 3 / 6))))
+
+/-- Poisson approximation for k=3 birthday coincidences.
+    Derived from Lemma B (exp_lambda_tendsto) and Lemma C (p_no_triple_tendsto):
+    P - exp(-C(n,3)/d²) = [P - exp(-c³/6)] - [exp(-C(n,3)/d²) - exp(-c³/6)]
+    Both brackets → 0 by Lemma C and Lemma B respectively. -/
+theorem poisson_approx_birthday3 (c : ℝ) (hc : 0 < c) :
     let n : ℕ → ℕ := fun d => ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊
     Filter.Tendsto
       (fun d : ℕ =>
@@ -331,7 +349,9 @@ axiom poisson_approx_birthday3 (c : ℝ) (hc : 0 < c) :
             ¬(f i = f j ∧ f j = f k))).card /
         (Fintype.card (Fin (n d) → Fin d) : ℝ) -
         Real.exp (-(n d).choose 3 / (d : ℝ) ^ 2))
-      Filter.atTop (nhds 0)
+      Filter.atTop (nhds 0) := by
+  have h := (p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)
+  simpa using h
 
 /-
   ## Decomposition of `poisson_approx_birthday3` (Session 2 framing)
@@ -567,8 +587,9 @@ theorem good_count_n3 (d : ℕ) :
   10. `lambda_tendsto` (Lemma A): C(n_c(d),3)/d² → c³/6 (Session 4)
   11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
 
-  **Axioms (1):** `poisson_approx_birthday3` — now simplified to Lemma C only:
-    P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B are proved; only Poisson convergence remains)
+  **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
+    P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
+  12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
 
   **General k-way threshold:** ~ (k! d^{k-1} ln 2)^{1/k} ~ d^{(k-1)/k}
   | k | exponent | formula               |
@@ -583,6 +604,7 @@ theorem good_count_n3 (d : ℕ) :
 #check @k3_threshold_gt_k2
 #check @lambda_tendsto
 #check @exp_lambda_tendsto
+#check @p_no_triple_tendsto
 #check @poisson_approx_birthday3
 
 end BirthdayThreshold3
