@@ -1,6 +1,6 @@
 {
   "slug": "erdos-353-incomplete-01",
-  "title": "Erdős Problem #353: Geometric Configurations in Sets of Infinite Measure",
+  "title": "Erd\u0151s Problem #353: Geometric Configurations in Sets of Infinite Measure",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -22,7 +22,7 @@
     "focus": "Blocked: orphan docstrings + HSMul Set drift",
     "blockers": [
       "Lean 4.26 strict docstring parsing on lines 226/233/251/260",
-      "Mathlib pointwise Set smul instance not synthesized — needs `open Pointwise` in both Erdos353Problem.lean and Erdos353Aristotle.lean"
+      "Mathlib pointwise Set smul instance not synthesized \u2014 needs `open Pointwise` in both Erdos353Problem.lean and Erdos353Aristotle.lean"
     ],
     "nextAction": "Mechanic: orphan docstring conversion + open Pointwise. Researcher (post-repair): extend scaling_property to right triangles, trapezoids, cyclic quadrilaterals.",
     "attemptCounts": {
@@ -32,22 +32,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED on upstream breakage. Docker build of both Proofs.Erdos353Problem and Proofs.Erdos353Aristotle fails on origin/master. Two categories: (A) Lean 4.26 strict docstring parsing — orphan `/-- ... -/` doc-comments on lines 222/227/247/256 of main file; (B) Mathlib drift — `HSMul ℝ (Set _)` instance no longer synthesized for `c • A` set scaling (likely needs `open Pointwise`). Mechanic-owned per project_mathlib_api_drift_2026_04 policy. See knowledge.md Session 2 for fix recipe.",
+    "progressSummary": "PROGRESS: Session 3 \u2014 repaired Mathlib v4.26.0 drift. 4 fix categories: orphan docstrings, HSMul synthesis (open Pointwise), inner typeclass annotation, Pi.sub_apply simp. PR #16131 awaits CI/Deployer.",
     "builtItems": [
       "Proved scaling_property modulo measure scaling sorry in Erdos353Problem.lean",
       "Created Erdos353Aristotle.lean companion file for remaining sorry",
       "Proved inv_smul_set_eq_preimage: preimage characterization of scaled sets",
       "Proved isIsoscelesTriangle_smul: scaling preserves isosceles property",
-      "Proved triangleArea_smul_eq: area scales by c² under vertex scaling",
-      "SORRY FILLED: hasInfiniteMeasure_inv_smul — proved via addHaar_smul + ENNReal.mul_top. volume(c⁻¹•A) = |c⁻¹|^n * ⊤ = ⊤ when c≠0.",
-      "Proved volume_preimage_smul_eq_top in Erdos353Aristotle.lean (0 sorries remaining in companion)"
+      "Proved triangleArea_smul_eq: area scales by c\u00b2 under vertex scaling",
+      "SORRY FILLED: hasInfiniteMeasure_inv_smul \u2014 proved via addHaar_smul + ENNReal.mul_top. volume(c\u207b\u00b9\u2022A) = |c\u207b\u00b9|^n * \u22a4 = \u22a4 when c\u22600.",
+      "Proved volume_preimage_smul_eq_top in Erdos353Aristotle.lean (0 sorries remaining in companion)",
+      "PR #16131: repair all 4 build-failure categories in Erdos353Problem.lean + Erdos353Aristotle.lean"
     ],
     "insights": [
-      "scaling_property theorem proved via scaling argument: scale A by 1/√t, apply Koizumi for area 1, scale back to get area t",
-      "Only remaining sorry is measure-theoretic: volume of preimage under scaling by c ≠ 0",
+      "scaling_property theorem proved via scaling argument: scale A by 1/\u221at, apply Koizumi for area 1, scale back to get area t",
+      "Only remaining sorry is measure-theoretic: volume of preimage under scaling by c \u2260 0",
       "Proved 4 helper lemmas: inv_smul_set_eq_preimage, hasInfiniteMeasure_inv_smul (with sorry), isIsoscelesTriangle_smul, triangleArea_smul_eq",
-      "Haar measure scaling: volume(r•S) = |r|^finrank * volume(S) via MeasureTheory.Measure.addHaar_smul. For preimage: use inv_smul_set_eq_preimage then addHaar_smul.",
-      "Companion file sorry was already solved by technique in main file — direct proof via addHaar_smul"
+      "Haar measure scaling: volume(r\u2022S) = |r|^finrank * volume(S) via MeasureTheory.Measure.addHaar_smul. For preimage: use inv_smul_set_eq_preimage then addHaar_smul.",
+      "Companion file sorry was already solved by technique in main file \u2014 direct proof via addHaar_smul",
+      "Mathlib v4.26.0 introduced Inner outParam drift: inner (\ud835\udd5c := \u211d) annotation required in IsRightTriangle",
+      "open Pointwise fixes HSMul \u211d (Set _) synthesis for c\u207b\u00b9 \u2022 A operations",
+      "Pi.sub_apply replaces smul_sub in simp for EuclideanSpace pointwise subtraction"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -57,7 +61,8 @@
       "Researcher (post-repair): scaling_property_trapezoid (axiom: koizumi_isosceles_trapezoid)",
       "Researcher (post-repair): scaling_property_cyclic (axiom: kovac_predojevic_cyclic)"
     ],
-    "markdown": "# Knowledge: erdos-353-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n"
+    "markdown": "# Knowledge: erdos-353-incomplete-01\n\n## Research Notes\n\n*No research conducted yet. See problem.md for context.*\n\n## Known Facts\n\n- Lean file: `proofs/Proofs/`\n- Sorries: see problem.md\n\n## Approaches Tried\n\n*None yet.*\n",
+    "currentState": "Build repair PR open. 0 sorries, 4 axioms (Koizumi/Kovac cited results). After merge: scaling_property extension to right triangles + cyclic quads is the next step."
   },
   "tags": [],
   "relatedProofs": [

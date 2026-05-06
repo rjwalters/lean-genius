@@ -14,7 +14,7 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Geometry.Euclidean.Basic
 
-open MeasureTheory Set
+open MeasureTheory Set Pointwise
 
 namespace Erdos353Aristotle
 
