@@ -6,10 +6,10 @@
   "leanFile": {
     "path": "Proofs/EhrhartCrossPolytope.lean",
     "filename": "EhrhartCrossPolytope.lean",
-    "lineCount": 331,
+    "lineCount": 330,
     "theoremCount": 12,
     "definitionCount": 2,
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0
   },
   "meta": {
@@ -29,10 +29,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 331,
-    "assumptions": "3 sorries: (1) crossEhrhart_is_poly \u2014 Lean Polynomial API construction; (2) crossBall_card d=0 \u2014 Finset card of singleton; (3) crossBall_card d+1 \u2014 Finset slicing decomposition. All algebraic theorems (expand, succ_d, hockey-stick) are 0-sorry.",
+    "lineCount": 330,
+    "assumptions": "2 sorries: (1) crossEhrhart_is_poly \u2014 Lean Polynomial API; (2) crossBall_card d+1 \u2014 Finset slicing. All 10 key algebraic/combinatorial theorems proved including geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m).",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
