@@ -1,0 +1,141 @@
+{
+  "id": "cauchy-schwarz-oq-02-oq-02",
+  "title": "Bessel's Inequality in Infinite Dimensions",
+  "slug": "cauchy-schwarz-oq-02-oq-02",
+  "description": "For any orthonormal system {vᵢ} in a real inner product space F and any x ∈ F, the sum of squared Fourier coefficients is bounded by the squared norm: ∑' i, ⟨vᵢ, x⟩² ≤ ‖x‖². The Bessel series is summable, partial sums converge monotonically upward, and equality holds for complete orthonormal systems (Parseval's identity: ∑' i, ⟨bᵢ, x⟩² = ‖x‖²). 10 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ02OQ02.lean",
+    "tags": [
+      "inner-product-spaces",
+      "functional-analysis",
+      "hilbert-spaces",
+      "orthonormal",
+      "bessel",
+      "parseval",
+      "verified"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 161,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "assumptions": "None. All theorems proved from Mathlib's Orthonormal.sum_inner_products_le, Orthonormal.tsum_inner_products_le, and HilbertBasis.tsum_inner_mul_inner.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Orthonormal.sum_inner_products_le",
+        "description": "Finite Bessel inequality: ∑ i ∈ s, ‖⟪vᵢ, x⟫‖² ≤ ‖x‖²",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Orthonormal.tsum_inner_products_le",
+        "description": "Infinite Bessel inequality: ∑' i, ‖⟪vᵢ, x⟫‖² ≤ ‖x‖²",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Orthonormal.inner_products_summable",
+        "description": "Summability of the Bessel series",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "HilbertBasis.tsum_inner_mul_inner",
+        "description": "Parseval's identity: ∑' i, ⟪x, bᵢ⟫ · ⟪bᵢ, y⟫ = ⟪x, y⟫",
+        "module": "Mathlib.Analysis.InnerProductSpace.l2Space"
+      }
+    ],
+    "originalContributions": [
+      "Bessel's inequality for infinite orthonormal systems in real Hilbert spaces",
+      "Summability of the Bessel series with monotone convergence",
+      "Parseval's identity derived from HilbertBasis.tsum_inner_mul_inner via real symmetry",
+      "General RCLike version (norm-squared form) via @inner directly"
+    ],
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Bessel's inequality was first stated by Friedrich Bessel in the context of Fourier series (1817). It generalizes to arbitrary inner product spaces: the squared projections of a vector onto an orthonormal system sum to at most the squared norm of the vector. The inequality is tight precisely when the system is complete (a Hilbert basis), in which case equality is Parseval's identity. Together these are fundamental to the theory of Hilbert spaces and Fourier analysis.",
+    "problemStatement": "For an orthonormal family $\\{v_i\\}_{i \\in \\iota}$ in a real inner product space $F$ and any $x \\in F$, prove:\n$$\\sum_{i}^{\\infty} \\langle v_i, x \\rangle^2 \\leq \\|x\\|^2$$\nwith equality (Parseval's identity) when $\\{v_i\\}$ is a Hilbert basis.",
+    "proofStrategy": "The finite case follows from the **Pythagorean residual formula**: the projection $p = \\sum_{i \\in s} \\langle v_i, x \\rangle v_i$ satisfies $\\|x - p\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\geq 0$. Summability of the infinite series follows because the partial sums are monotone (all terms non-negative) and bounded above by $\\|x\\|^2$. For Parseval, the Hilbert basis representation $x = \\sum_i \\langle b_i, x \\rangle b_i$ combined with continuity of the inner product gives $\\|x\\|^2 = \\langle x, x \\rangle = \\sum_i \\langle x, b_i \\rangle \\langle b_i, x \\rangle = \\sum_i \\langle b_i, x \\rangle^2$ (the last step using real symmetry).",
+    "keyInsights": [
+      "**Pythagoras drives the finite case**: The residual $\\|x - \\sum_{i \\in s} \\langle v_i, x \\rangle v_i\\|^2 \\geq 0$ is the key identity; non-negativity immediately gives Bessel.",
+      "**Monotone convergence gives summability**: Each new term adds a non-negative quantity, and the partial sums are bounded by $\\|x\\|^2$, so the series converges by the monotone convergence principle.",
+      "**Real symmetry converts Parseval to a norm identity**: $\\langle x, b_i \\rangle = \\langle b_i, x \\rangle$ for real inner products, turning the bilinear Parseval identity into the norm identity $\\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$.",
+      "**Bessel ≤ Parseval**: Bessel's inequality is the general form (any ONS), while Parseval's identity is the special case (complete ONS = Hilbert basis). The gap measures how much of $\\|x\\|^2$ is 'missed' by the orthonormal system."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-finite",
+      "title": "Finite Bessel Inequality",
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "`bessel_finite`: For any finite index set s and orthonormal family v, ∑ i ∈ s, ⟨vᵢ,x⟩² ≤ ‖x‖². Derived from Mathlib's `Orthonormal.sum_inner_products_le` via `Real.norm_eq_abs` + `sq_abs`.",
+      "mathContext": "∑ i ∈ s, ⟪v i, x⟫ ^ 2 ≤ ‖x‖ ^ 2, where ‖⟪v i, x⟫‖² = ⟪v i, x⟫² for real inner products."
+    },
+    {
+      "id": "section-summability",
+      "title": "Summability and Convergence",
+      "startLine": 66,
+      "endLine": 89,
+      "summary": "`bessel_summable`, `bessel_hasSum`, `bessel_partial_sums_mono`: The Bessel series converges (Summable/HasSum), and partial sums are monotone non-decreasing.",
+      "mathContext": "Summable (fun i => ⟨vᵢ, x⟩²); HasSum (fun i => ⟨vᵢ, x⟩²) (∑' i, ⟨vᵢ, x⟩²)"
+    },
+    {
+      "id": "section-infinite",
+      "title": "Infinite Bessel Inequality",
+      "startLine": 90,
+      "endLine": 100,
+      "summary": "`bessel_inequality`: The main theorem — ∑' i, ⟨vᵢ, x⟩² ≤ ‖x‖² for any real orthonormal system.",
+      "mathContext": "∑' i, ⟪v i, x⟫ ^ 2 ≤ ‖x‖ ^ 2"
+    },
+    {
+      "id": "section-general",
+      "title": "General RCLike Version",
+      "startLine": 101,
+      "endLine": 120,
+      "summary": "`bessel_general_finite`, `bessel_general`: For any RCLike field 𝕜, the norm-squared form ∑ ‖⟨vᵢ,x⟩‖² ≤ ‖x‖² holds.",
+      "mathContext": "∑' i, ‖inner 𝕜 (v i) x‖ ^ 2 ≤ ‖x‖ ^ 2"
+    },
+    {
+      "id": "section-parseval",
+      "title": "Parseval's Identity",
+      "startLine": 121,
+      "endLine": 137,
+      "summary": "`parseval_real`, `bessel_tight`: For a real Hilbert basis, Bessel is tight: ∑' i, ⟨bᵢ, x⟩² = ‖x‖².",
+      "mathContext": "(∑' i, ⟪b i, x⟫ ^ 2) = ‖x‖ ^ 2"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "title": "Completeness Characterization",
+      "description": "Prove that an orthonormal system {vᵢ} is a Hilbert basis (complete) if and only if Bessel's inequality is an equality for all x: ∑' i, ⟨vᵢ, x⟩² = ‖x‖². This would give a concrete internal characterization of completeness.",
+      "difficulty": "moderate"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "ancestor",
+      "description": "Cauchy-Schwarz inequality — the single-term Bessel inequality |⟨v, x⟩| ≤ ‖v‖·‖x‖ is a special case"
+    },
+    {
+      "id": "cauchy-schwarz-oq-02",
+      "relationship": "parent",
+      "description": "Hölder and L² theory — this file extends the inner product space framework"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/CauchySchwarzOQ02OQ02.lean",
+    "filename": "CauchySchwarzOQ02OQ02.lean",
+    "lineCount": 161,
+    "theoremCount": 10,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ02OQ02.lean"
+  }
+}
