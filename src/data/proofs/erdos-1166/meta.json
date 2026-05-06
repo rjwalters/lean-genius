@@ -1,10 +1,10 @@
 {
   "id": "erdos-1166",
-  "title": "Erdős Problem #1166: Most-Visited Points in Planar Random Walk",
+  "title": "Erd\u0151s Problem #1166: Most-Visited Points in Planar Random Walk",
   "slug": "erdos-1166",
   "description": "Is the union of most-visited sites in a planar random walk bounded by a polylogarithmic function almost surely?",
   "meta": {
-    "author": "Erdős",
+    "author": "Erd\u0151s",
     "sourceUrl": "https://erdosproblems.com/1166",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos1166Problem.lean",
@@ -64,7 +64,6 @@
       "origin",
       "RandomWalk",
       "trajectory",
-      "walk_starts_at_origin",
       "visitCount",
       "visitCount_nonneg",
       "visitCount_mono",
@@ -75,22 +74,45 @@
       "maxVisitCount_pos",
       "mostVisitedSet",
       "mem_mostVisitedSet",
-      "mostVisitedSet_nonempty"
+      "mostVisitedSet_nonempty",
+      "starts_at_origin",
+      "cumulativeMostVisited",
+      "AlmostSurely",
+      "asProbFilter",
+      "maxVisitCount_mono_succ",
+      "maxVisitCount_le_of_le",
+      "mostVisited_nesting",
+      "mostVisited_nesting_range",
+      "cumulativeMostVisited_contains",
+      "cumulativeMostVisited_subset",
+      "cumulativeMostVisited_mono",
+      "biUnion_subset_last_of_constant_T",
+      "mostVisited_subset_trajectory",
+      "cumulative_card_bound",
+      "almostSurely_mono",
+      "almostSurely_and",
+      "mostVisited_bounded_eventually",
+      "erdosTaylor_constant",
+      "erdosTaylor_implies_bound",
+      "erdos1166_main",
+      "erdos1166_polylog",
+      "erdos1166_from_ingredients",
+      "connection_to_1165"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 547,
     "assumptions": "4 assumptions (3 axiom declarations + 1 structure field): 1 probability filter (asProbFilter), 1 structural (mostVisited_bounded_eventually), 1 deep result (erdosTaylor_constant), 1 structure field (starts_at_origin). AlmostSurely is now a def via Filter.Eventually; almostSurely_mono and almostSurely_and are proved from Mathlib's filter API.",
     "theoremCount": 25
   },
   "overview": {
-    "historicalContext": "Erdős Problem #1166 was posed by Paul Erdős and Pál Révész in their study of the fine structure of planar random walks. The problem belongs to a cluster of questions (#1165, #1166) about 'favorite points' — the sites most frequently visited by a random walk on $\\mathbb{Z}^2$. The study of favorite points connects to deep results in probability theory going back to Pólya's 1921 recurrence theorem: a simple random walk on $\\mathbb{Z}^2$ returns to its starting point infinitely often, but only barely — the expected number of returns diverges logarithmically, making two dimensions the critical case between recurrence (1D, 2D) and transience (3D+).\n\nThe key breakthrough came from the Erdős–Taylor theorem (1960), which established that the maximum local time $T_n$ (the largest number of visits to any single point through $n$ steps) satisfies $T_n / (\\log n)^2 \\to 1/\\pi$ almost surely. The appearance of $\\pi$ here is remarkable: it arises from the connection between 2D random walks and planar Brownian motion via Donsker's invariance principle, and ultimately from the Green's function of the 2D lattice.\n\nThe answer to Problem #1166 is YES: almost surely $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$. The proof combines two ingredients: (1) $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész, related to #1165), and (2) the Erdős–Taylor bound on $T_n$. Since $T_n$ is integer-valued and bounded by $C(\\log n)^2$, there are at most $O((\\log n)^2)$ distinct 'regimes' of most-visited points, each contributing at most 3 new points. This problem is catalogued at erdosproblems.com/1166 and referenced in Révész's monograph [Va99, 6.78].",
+    "historicalContext": "Erd\u0151s Problem #1166 was posed by Paul Erd\u0151s and P\u00e1l R\u00e9v\u00e9sz in their study of the fine structure of planar random walks. The problem belongs to a cluster of questions (#1165, #1166) about 'favorite points' \u2014 the sites most frequently visited by a random walk on $\\mathbb{Z}^2$. The study of favorite points connects to deep results in probability theory going back to P\u00f3lya's 1921 recurrence theorem: a simple random walk on $\\mathbb{Z}^2$ returns to its starting point infinitely often, but only barely \u2014 the expected number of returns diverges logarithmically, making two dimensions the critical case between recurrence (1D, 2D) and transience (3D+).\n\nThe key breakthrough came from the Erd\u0151s\u2013Taylor theorem (1960), which established that the maximum local time $T_n$ (the largest number of visits to any single point through $n$ steps) satisfies $T_n / (\\log n)^2 \\to 1/\\pi$ almost surely. The appearance of $\\pi$ here is remarkable: it arises from the connection between 2D random walks and planar Brownian motion via Donsker's invariance principle, and ultimately from the Green's function of the 2D lattice.\n\nThe answer to Problem #1166 is YES: almost surely $|\\bigcup_{k \\leq n} F(k)| = O((\\log n)^2)$. The proof combines two ingredients: (1) $|F(n)| \\leq 3$ a.s. for large $n$ (Erd\u0151s\u2013R\u00e9v\u00e9sz, related to #1165), and (2) the Erd\u0151s\u2013Taylor bound on $T_n$. Since $T_n$ is integer-valued and bounded by $C(\\log n)^2$, there are at most $O((\\log n)^2)$ distinct 'regimes' of most-visited points, each contributing at most 3 new points. This problem is catalogued at erdosproblems.com/1166 and referenced in R\u00e9v\u00e9sz's monograph [Va99, 6.78].",
     "problemStatement": "Let $(s_n)_{n \\geq 0}$ be a simple random walk on $\\mathbb{Z}^2$ starting at the origin. For each $k \\geq 0$, let $f_k(x) = |\\{0 \\leq j \\leq k : s_j = x\\}|$ be the visit count to $x$ through step $k$, and let $F(k) = \\{x : f_k(x) = \\max_y f_k(y)\\}$ be the set of most-visited points. Is $|\\bigcup_{k \\leq n} F(k)| \\leq (\\log n)^{O(1)}$ almost surely for all but finitely many $n$?",
     "text": "Is the union of most-visited sites in a planar random walk bounded by a polylogarithmic function almost surely?",
-    "proofStrategy": "The formalization axiomatizes planar random walks, visit counts, and 'almost surely' events, then structures the proof around two classical results. First, the Erdős–Révész theorem that $|F(n)| \\leq 3$ a.s. for large $n$ (the most-visited set is eventually tiny). Second, the Erdős–Taylor theorem that $T_n \\leq C(\\log n)^2$ a.s. (the maximum visit count grows quadratic-logarithmically). The counting argument is: points enter $\\bigcup_{k \\leq n} F(k)$ only when $T_k$ changes value or new ties appear; since $T_n$ takes at most $O((\\log n)^2)$ integer values and each contributes $\\leq 3$ points, the cumulative set has size $\\leq 3C(\\log n)^2 = O((\\log n)^2)$. The `almostSurely_and` axiom combines the two almost sure events, and `almostSurely_mono` lifts pointwise implications.",
+    "proofStrategy": "The formalization axiomatizes planar random walks, visit counts, and 'almost surely' events, then structures the proof around two classical results. First, the Erd\u0151s\u2013R\u00e9v\u00e9sz theorem that $|F(n)| \\leq 3$ a.s. for large $n$ (the most-visited set is eventually tiny). Second, the Erd\u0151s\u2013Taylor theorem that $T_n \\leq C(\\log n)^2$ a.s. (the maximum visit count grows quadratic-logarithmically). The counting argument is: points enter $\\bigcup_{k \\leq n} F(k)$ only when $T_k$ changes value or new ties appear; since $T_n$ takes at most $O((\\log n)^2)$ integer values and each contributes $\\leq 3$ points, the cumulative set has size $\\leq 3C(\\log n)^2 = O((\\log n)^2)$. The `almostSurely_and` axiom combines the two almost sure events, and `almostSurely_mono` lifts pointwise implications.",
     "keyInsights": [
       "The proof hinges on a **regime-counting argument**: since the integer-valued maximum visit count $T_n$ is bounded by $C(\\log n)^2$, it changes value at most $O((\\log n)^2)$ times through step $n$, and each change can introduce at most 3 new favorite points.",
-      "Two dimensions is the **critical case** for random walk recurrence: the walk returns to the origin infinitely often (Pólya 1921), but the Green's function diverges only logarithmically, making the competition for 'most-visited' unusually tight.",
-      "The **Erdős–Taylor constant $1/\\pi$** in the asymptotic $T_n \\sim (\\log n)^2/\\pi$ connects discrete random walks to continuous Brownian motion via Donsker's invariance principle, revealing the role of planar potential theory.",
+      "Two dimensions is the **critical case** for random walk recurrence: the walk returns to the origin infinitely often (P\u00f3lya 1921), but the Green's function diverges only logarithmically, making the competition for 'most-visited' unusually tight.",
+      "The **Erd\u0151s\u2013Taylor constant $1/\\pi$** in the asymptotic $T_n \\sim (\\log n)^2/\\pi$ connects discrete random walks to continuous Brownian motion via Donsker's invariance principle, revealing the role of planar potential theory.",
       "The axiomatization of 'almost surely' as an abstract predicate with monotonicity and conjunction closure elegantly avoids formalizing the full measure-theoretic probability space while preserving the logical structure needed for combining multiple a.s. events.",
       "Problems #1165 and #1166 form an interconnected pair: #1165 bounds $|F(n)|$ (the instantaneous most-visited set), and #1166 bounds the cumulative union $|\\bigcup_{k \\leq n} F(k)|$. The solution to #1165 is a key ingredient for #1166."
     ],
@@ -108,8 +130,8 @@
       "title": "Problem Statement and Imports",
       "startLine": 1,
       "endLine": 31,
-      "summary": "Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers.",
-      "mathContext": "Verified: Documents the problem statement, its resolution, key ingredients (Erdős–Révész bound and Erdős–Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers."
+      "summary": "Documents the problem statement, its resolution, key ingredients (Erd\u0151s\u2013R\u00e9v\u00e9sz bound and Erd\u0151s\u2013Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers.",
+      "mathContext": "Verified: Documents the problem statement, its resolution, key ingredients (Erd\u0151s\u2013R\u00e9v\u00e9sz bound and Erd\u0151s\u2013Taylor theorem), and imports Mathlib modules for finite sets, real analysis, logarithms, and powers."
     },
     {
       "id": "random-walk-definitions",
@@ -161,11 +183,11 @@
     },
     {
       "id": "key-ingredients",
-      "title": "Key Ingredients: Erdős–Révész and Erdős–Taylor",
+      "title": "Key Ingredients: Erd\u0151s\u2013R\u00e9v\u00e9sz and Erd\u0151s\u2013Taylor",
       "startLine": 136,
       "endLine": 155,
-      "summary": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\log n)^2$ a.s. (Erdős–Taylor).",
-      "mathContext": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erdős–Révész) and $T_n \\leq C(\\$\\log n$)^2$ a.s. (Erdős–Taylor)."
+      "summary": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erd\u0151s\u2013R\u00e9v\u00e9sz) and $T_n \\leq C(\\log n)^2$ a.s. (Erd\u0151s\u2013Taylor).",
+      "mathContext": "States the two main ingredients: $|F(n)| \\leq 3$ a.s. for large $n$ (Erd\u0151s\u2013R\u00e9v\u00e9sz) and $T_n \\leq C(\\$\\log n$)^2$ a.s. (Erd\u0151s\u2013Taylor)."
     },
     {
       "id": "main-theorem",
@@ -177,21 +199,21 @@
     },
     {
       "id": "recurrence-and-constant",
-      "title": "Pólya Recurrence and Erdős–Taylor Constant",
+      "title": "P\u00f3lya Recurrence and Erd\u0151s\u2013Taylor Constant",
       "startLine": 222,
       "endLine": 259,
-      "summary": "States Pólya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erdős–Taylor constant $T_n/(\\log n)^2 \\to 1/\\pi$ a.s., with a derivation of the upper bound from the constant.",
-      "mathContext": "States Pólya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erdős–Taylor constant $T_n/(\\$\\log n$)^2 \\to 1/\\$\\pi$$ a.s., with a derivation of the upper bound from the constant."
+      "summary": "States P\u00f3lya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erd\u0151s\u2013Taylor constant $T_n/(\\log n)^2 \\to 1/\\pi$ a.s., with a derivation of the upper bound from the constant.",
+      "mathContext": "States P\u00f3lya's 2D recurrence theorem, the divergence of $T_n$, and the precise Erd\u0151s\u2013Taylor constant $T_n/(\\$\\log n$)^2 \\to 1/\\$\\pi$$ a.s., with a derivation of the upper bound from the constant."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the full structure of Erdős Problem #1166, formalizing the planar random walk setting, visit counts, favorite-point sets, and the polylogarithmic bound on the cumulative most-visited set. The proof architecture cleanly decomposes the result into two classical ingredients (Erdős–Révész and Erdős–Taylor) combined via a counting argument.",
-    "implications": "The formalization demonstrates how deep probabilistic results can be structured axiomatically in Lean 4, separating the combinatorial logic (which is fully verified) from the measure-theoretic foundations (axiomatized). The regime-counting technique — bounding a cumulative union by the number of transitions times the maximum per-step contribution — is a versatile proof pattern applicable beyond random walks.",
+    "summary": "This formalization captures the full structure of Erd\u0151s Problem #1166, formalizing the planar random walk setting, visit counts, favorite-point sets, and the polylogarithmic bound on the cumulative most-visited set. The proof architecture cleanly decomposes the result into two classical ingredients (Erd\u0151s\u2013R\u00e9v\u00e9sz and Erd\u0151s\u2013Taylor) combined via a counting argument.",
+    "implications": "The formalization demonstrates how deep probabilistic results can be structured axiomatically in Lean 4, separating the combinatorial logic (which is fully verified) from the measure-theoretic foundations (axiomatized). The regime-counting technique \u2014 bounding a cumulative union by the number of transitions times the maximum per-step contribution \u2014 is a versatile proof pattern applicable beyond random walks.",
     "openQuestions": [
       "Can the constant in the $O((\\log n)^2)$ bound be made explicit, perhaps as $3/\\pi + \\varepsilon$?",
-      "What is the almost sure growth rate of $|\\bigcup_{k \\leq n} F(k)|$ more precisely — is it $\\Theta((\\log n)^2)$ or could it be $o((\\log n)^2)$?",
+      "What is the almost sure growth rate of $|\\bigcup_{k \\leq n} F(k)|$ more precisely \u2014 is it $\\Theta((\\log n)^2)$ or could it be $o((\\log n)^2)$?",
       "Can the measure-theoretic axioms (`AlmostSurely`, `almostSurely_mono`, `almostSurely_and`) be replaced with proper Mathlib probability foundations using `MeasureTheory.ae`?",
-      "The related Problem #1165 asks whether $|F(n)| \\leq 2$ eventually a.s. — can this sharper bound be formalized?"
+      "The related Problem #1165 asks whether $|F(n)| \\leq 2$ eventually a.s. \u2014 can this sharper bound be formalized?"
     ]
   },
   "leanFile": {
@@ -210,7 +232,7 @@
     ],
     "namespace": "Erdos1166",
     "lineCount": 547,
-    "axiomCount": 3,
+    "axiomCount": 4,
     "theoremCount": 25,
     "definitionCount": 7,
     "path": "Proofs/Erdos1166Problem.lean",
@@ -220,17 +242,17 @@
     {
       "targetId": "erdos-1179",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analysis, combinatorics, probability, solved"
+      "description": "Related Erd\u0151s problem sharing themes: analysis, combinatorics, probability, solved"
     },
     {
       "targetId": "erdos-1090",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: combinatorics, geometry, solved"
+      "description": "Related Erd\u0151s problem sharing themes: combinatorics, geometry, solved"
     },
     {
       "targetId": "erdos-1138",
       "relationship": "related",
-      "description": "Related Erdős problem sharing themes: analysis, combinatorics, probability"
+      "description": "Related Erd\u0151s problem sharing themes: analysis, combinatorics, probability"
     }
   ],
   "sorries": 0
