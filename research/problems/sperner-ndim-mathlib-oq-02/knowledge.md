@@ -525,3 +525,57 @@ Concurrent Docker build cache contention was causing builds #2-#4 failures.
 
 3. **General n**: Use variable-miss Freudenthal triangulation (~300-500 lines, multi-session effort)
 
+
+## Session 2026-05-07 (Session 11) — n=2 triangulation infrastructure complete
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: significant progress — Type-1/Type-2 triangulation built; pseudomanifold proved
+
+### What I Did
+
+- Analyzed AbstractSimplicialData.toTriangulation from SpernerSimplicialInstance.lean: all
+  adj axioms (adj_symm, adj_vertex, adj_ne) are FULLY PROVED — just needs pseudomanifold.
+- Implemented Type-1/Type-2 triangulation for Δ² as an AbstractSimplicialData instance:
+  - Type-1: {(b₀+1,b₁),(b₀,b₁+1),(b₀,b₁)} for b₀+b₁<N (uses Σb=N-1 base)
+  - Type-2: {(b₀+1,b₁+1),(b₀+1,b₁),(b₀,b₁+1)} for b₀+b₁+1<N (uses Σb=N-2 base)
+- Proved t1_card and t2_card (each simplex has exactly 3 distinct vertices)
+- Proved t1_unique_base and t2_unique_base: any edge {u,v} determines its base uniquely
+  (case bash on 3×3×3×3=81 cases via rcases + omega)
+- Proved topSimps2_pseudomanifold: each edge is in at most 1 Type-1 + 1 Type-2 = at most 2
+- Built simData2: AbstractSimplicialData (ℕ×ℕ) 2 with all structural proofs done
+- Import added: SpernerFreudenthalSimplex.lean now imports SpernerSimplicialInstance.lean
+- LinearOrder on ℕ×ℕ: LinearOrder.lift' through toLex : ℕ×ℕ → ℕ×ₗℕ
+
+### Key Findings
+
+- **Pseudomanifold core argument**: the base of a Type-1 (resp. Type-2) simplex is
+  UNIQUELY DETERMINED by any edge it contains. The 3 vertices of t1 b are
+  (b.1+1,b.2), (b.1,b.2+1), b — knowing 2 of these uniquely determines b via omega.
+- **AbstractSimplicialData fully proves adj axioms**: importing SpernerSimplicialInstance
+  and using its toTriangulation gives Triangulation with ALL axioms proved for FREE.
+- **Case bash approach**: for unique_base proofs, the 81 cases from 4 rcases on 3-element
+  Finset membership split into: (1) u=v impossible (handled by absurd+Prod.ext_iff.mpr+omega),
+  (2) b=c from arithmetic (handled by Prod.ext_iff.mpr+omega), (3) contradiction (omega).
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (new Section III: ~178 lines)
+- `src/data/research/problems/sperner-ndim-mathlib-oq-02.json` (knowledge updated)
+
+### Next Steps
+
+1. **Prove boundary_doors_odd for n=2** (~80 lines, key remaining step):
+   - The boundary of Δ² with face 2 (v₂=0) restriction gives the 1D grid
+   - Boundary doors at face 2 = panchromatic edges of 1D grid
+   - By sperner_panchromatic_one (already proved), count is odd
+   - Remaining work: connect abstract Triangulation boundary_doors to concrete grid structure
+
+2. **Complete sperner_panchromatic_two**:
+   - Apply Triangulation.sperner to get panchromatic triangle
+   - Map grid vertices (a₀,a₁) → real point (a₀/N, a₁/N, (N-a₀-a₁)/N)
+   - Extract diameter bound: consecutive simplex vertices differ by at most 1/N in each coord
+   - This eliminates `axiom sperner_panchromatic` for n=2
+
+3. **Eliminate axiom for all n**: either extend Type-k triangulation to general n,
+   or use induction from n=2 (may need separate argument for n≥3)
+

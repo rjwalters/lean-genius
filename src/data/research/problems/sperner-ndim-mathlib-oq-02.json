@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: n=0 and n=1 cases of sperner_panchromatic proved in companion file (0 sorries each). Main file: 1 axiom for general n. FreudCell definitively abandoned (wrong topology). Next: AbstractSimplicialData approach for n>=2.",
+    "progressSummary": "PROGRESS: n=0,1 proved; n=2 triangulation infrastructure complete (pseudomanifold proved); boundary_doors_odd sorry is the key remaining step for n=2 axiom elimination",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -41,7 +41,11 @@
       "fixed_point_from_approx: proved compactness convergence theorem (IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique) in SpernerNDimMathlibOQ02.lean:204-293",
       "Fixed perm_preimage_lt_card sorry: proved |{j<k}|=k.val via Fin.castLE bijection + Fintype.card_fin",
       "sperner_panchromatic_zero: n=0 case proved (trivial), 0 sorries, SpernerFreudenthalSimplex.lean",
-      "sperner_panchromatic_one: n=1 case proved via discrete IVT (Finset.max' transition), 0 sorries, SpernerFreudenthalSimplex.lean"
+      "sperner_panchromatic_one: n=1 case proved via discrete IVT (Finset.max' transition), 0 sorries, SpernerFreudenthalSimplex.lean",
+      "n=2 Type-1/Type-2 triangulation AbstractSimplicialData: topSimps2 N, t1_card, t2_card, topSimps2_card_eq (SpernerFreudenthalSimplex.lean)",
+      "t1_unique_base, t2_unique_base: uniqueness of base from edge determines triangulation membership (SpernerFreudenthalSimplex.lean)",
+      "topSimps2_pseudomanifold: every edge {u,v} in \u0394\u00b2 grid is in at most 1 Type-1 + 1 Type-2 simplex = at most 2 total (SpernerFreudenthalSimplex.lean)",
+      "simData2: AbstractSimplicialData instance for n=2 Nth subdivision (pseudomanifold proved, adj axioms from SpernerSimplicialInstance)"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -54,18 +58,22 @@
       "FreudCell constant-miss triangulation is NOT a pseudomanifold for n>=3: face-0 of (base=(0,0,0,4),id,n=3) is geometrically interior but claimed as boundary by the formula",
       "Cell count formula: C(N,n)*(n+1)! cells total per FreudCell; for n=2,N=3 this is 18 (correct), but face-0 adjacency requires variable-miss steps for n>=3",
       "n=1 case of sperner_panchromatic directly provable via discrete IVT (~60 lines): c(0)=1, c(N)=0, find last transition",
-      "FreudCell constant-miss triangulation is definitively WRONG: triangulates an annulus (\u03c7=0) for n=2,N=2 \u2014 centroid lies in overlapping cells, center triangle DEF missing entirely"
+      "FreudCell constant-miss triangulation is definitively WRONG: triangulates an annulus (\u03c7=0) for n=2,N=2 \u2014 centroid lies in overlapping cells, center triangle DEF missing entirely",
+      "Type-1/Type-2 triangulation correctness: Type-1 {a+e0,a+e1,a+e2} for \u03a3a=N-1 and Type-2 {a+e0+e1,a+e0+e2,a+e1+e2} for \u03a3a=N-2 gives N^2 triangles covering \u0394\u00b2 (N=2: 4 correct triangles vs 6-cell annulus of FreudCell)",
+      "Pseudomanifold proof strategy: the base of t1 (resp. t2) simplex is uniquely determined by any edge {u,v} it contains, so each edge is in at most 1 Type-1 and 1 Type-2 = at most 2 simplices total",
+      "AbstractSimplicialData.toTriangulation from SpernerSimplicialInstance.lean has ALL adj axioms (adj_symm, adj_vertex, adj_ne) fully proved \u2014 just needs pseudomanifold for any concrete triangulation",
+      "LinearOrder on N\u00d7N: use LinearOrder.lift through toLex injection to Lex(N\u00d7N) = N\u00d7l\u00d7N which has Prod.Lex.instLinearOrder"
     ],
     "mathlibGaps": [
       "Grid triangulation of \u0394\u207f as a CellComplex (needed for sperner_near_fixed_point axiom \u2014 significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "Define correct AbstractSimplicialData topSimplices for standard Sperner triangulation (NOT FreudCell)",
-      "Prove pseudomanifold condition for standard Sperner triangulation (~100 lines)",
-      "Use SpernerSimplicialInstance.lean toTriangulation (adj axioms already proved)",
-      "Prove boundary_doors_odd by induction: boundary of n-dim = (n-1)-dim case",
-      "Apply Triangulation.sperner + extract real coordinates with diameter n/N"
+      "Prove boundary_doors_odd for n=2 (~80 lines): boundary doors at face 2 = panchromatic edges of 1D grid; by sperner_panchromatic_one, count is odd",
+      "Connect boundary_doors_odd to Triangulation.sperner \u2192 panchromatic triangle exists",
+      "Map grid vertices to real coordinates (a0/N, a1/N, (N-a0-a1)/N) and extract diameter bound \u2264 2/N",
+      "Prove sperner_panchromatic_two \u2192 eliminate sperner_panchromatic for n=2",
+      "General n: derive inductively from n=2 or build n-dimensional AbstractSimplicialData with Type-k simplices"
     ]
   },
   "tags": [
