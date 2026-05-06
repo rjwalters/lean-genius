@@ -122,7 +122,7 @@ theorem hajnal_k2_gives_additive_triple {n : ℕ} (G : GraphOnInterval n)
   have hbd_val : b.val ≠ d.val := by simp [d]; omega
   -- The image of {a,b} under (·.val) equals {a.val, b.val}
   have hbase_eq : (({a, b} : Finset (Fin n)).image (·.val)) = ({a.val, b.val} : Finset ℕ) := by
-    ext x; simp [Fin.ext_iff]; tauto
+    simp [Finset.image_insert, Finset.image_singleton]
   rw [hbase_eq] at hindep
   -- Each of a, b, d has its .val in the hindmanSet
   have ha_in : a.val ∈ hindmanSet ({a.val, b.val} : Finset ℕ) := hindmanSet_pair_left _ _
