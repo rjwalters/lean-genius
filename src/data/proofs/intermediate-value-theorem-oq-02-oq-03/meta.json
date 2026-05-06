@@ -50,36 +50,99 @@
   },
   "sections": [
     {
+      "id": "intro-setup",
+      "title": "Introduction and Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports, docstring explaining the constructive/classical boundary, namespace and type class setup for real-valued bisection.",
+      "mathContext": "Core question: which parts of the bisection IVT proof require Classical.choice (excluded middle for real comparisons) and which are fully constructive (Bool case analysis)?"
+    },
+    {
+      "id": "param-bisect-defs",
       "title": "Computable Parameterized Bisection",
-      "description": "Defines paramBisect as a regular (computable) def that takes choices: \u2115 \u2192 Bool instead of computing the branch decision from f."
+      "startLine": 57,
+      "endLine": 75,
+      "summary": "Defines paramBisectStep, paramBisect, paramBisectMid \u2014 computable defs (not noncomputable) parameterized by explicit Bool choice oracle instead of computing 'if f(mid) \u2264 0'.",
+      "mathContext": "paramBisect(choices, $n$, $(a,b)$) $\\in \\mathbb{R}^2$ for any choices: $\\mathbb{N} \\to$ Bool \u2014 no Decidable instance on $\\mathbb{R}$ needed."
     },
     {
-      "title": "Width Bounds (Constructive)",
-      "description": "Proves the exact width formula (b-a)/2^n by induction, without classical logic."
+      "id": "width-formula",
+      "title": "Width Formula: (b-a)/2^n \u2014 Constructive",
+      "startLine": 76,
+      "endLine": 156,
+      "summary": "Proves exact width formula, ordering (left\u2264right), nondecreasing left/nonincreasing right, containment in [a,b], and interval nesting \u2014 all constructively via induction on Bool choices.",
+      "mathContext": "$(r_n - l_n) = (b-a)/2^n$. Proved by induction: base case trivial; step uses paramBisectStep_width (Bool cases) + ring."
     },
     {
-      "title": "Ordering and Containment (Constructive)",
-      "description": "Proves left\u2264right, left-nondecreasing, right-nonincreasing, containment in [a,b], and interval nesting \u2014 all without classical logic."
-    },
-    {
+      "id": "sign-preservation",
       "title": "Sign Preservation (Constructive)",
-      "description": "Proves the sign invariant f(left_n)\u22640\u2264f(right_n) holds when the choice sequence is sign-consistent \u2014 no classical logic."
+      "startLine": 157,
+      "endLine": 189,
+      "summary": "Defines SignConsistent oracle hypothesis and proves paramBisect_sign: the invariant f(left_n)\u22640\u2264f(right_n) is preserved by any sign-consistent oracle \u2014 no classical logic.",
+      "mathContext": "SignConsistent$(f, \\text{choices}, p, n)$: $\\forall k < n$, choices$(k) = \\text{true} \\iff f(\\text{mid}_k) \\leq 0$. Given this, $f(l_n) \\leq 0 \\leq f(r_n)$ by induction."
     },
     {
+      "id": "width-convergence",
       "title": "Width Convergence",
-      "description": "Proves width\u21920 using tendsto_const_nhds and tendsto_pow_atTop_nhds_zero_of_lt_one."
+      "startLine": 190,
+      "endLine": 208,
+      "summary": "Proves width\u21920 using tendsto_pow_atTop_nhds_zero_of_lt_one for (1/2)^n. No classical axioms beyond \u211d's topology.",
+      "mathContext": "$\\lim_{n\\to\\infty} (b-a)/2^n = 0$. Uses `tendsto_pow_atTop_nhds_zero_of_lt_one` with $|1/2| < 1$."
     },
     {
-      "title": "Endpoint Convergence (Classical)",
-      "description": "Proves endpoints converge to a common limit using tendsto_atTop_ciSup and tendsto_atTop_ciInf \u2014 requires Classical.choice via completeness."
+      "id": "endpoint-convergence",
+      "title": "Endpoint Convergence \u2014 Classical Boundary",
+      "startLine": 209,
+      "endLine": 247,
+      "summary": "Proves endpoints converge to common limit via tendsto_atTop_ciSup and ciInf (completeness of \u211d). First step requiring Classical.choice.",
+      "mathContext": "$x_L = \\sup_n l_n$, $x_R = \\inf_n r_n$, and $x_R - x_L = \\lim(r_n - l_n) = 0 \\Rightarrow x_L = x_R$. Uses `Classical.choice` via `tendsto_atTop_ciSup`."
     },
     {
+      "id": "root-theorem",
       "title": "Root Theorem (Classical)",
-      "description": "Proves the limit is a root of f when f is continuous and choices are sign-consistent \u2014 uses le_of_tendsto and ge_of_tendsto."
+      "startLine": 248,
+      "endLine": 285,
+      "summary": "Proves limit point is a root via continuity squeeze: f(left_n)\u22640\u2264f(right_n) and both tend to x \u2192 f(x)=0.",
+      "mathContext": "$f(l_n) \\leq 0$, $l_n \\to x$, $f$ continuous $\\Rightarrow f(x) \\leq 0$; similarly $f(x) \\geq 0$; hence $f(x) = 0$."
     },
     {
-      "title": "Main Summary Theorem",
-      "description": "Assembles all results into constructive_vs_classical_ivt, a single theorem that precisely states which parts of bisection-based IVT are constructive and which require Classical.choice."
+      "id": "main-theorem",
+      "title": "Constructive vs Classical Boundary Theorem",
+      "startLine": 286,
+      "endLine": 308,
+      "summary": "constructive_vs_classical_ivt: conjunction assembling all results and precisely identifying which require Classical.choice (endpoint convergence) vs which are fully constructive.",
+      "mathContext": "Parts (1)\u2013(3): provable in Bishop-style constructive mathematics (no LEM). Part (4): requires $\\sup$/$\\inf$ completeness \u2014 equivalent to Classical.choice for real-valued functions."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Intermediate Value Theorem (IVT) is one of the foundational results of real analysis, tracing back to Bolzano (1817) and Cauchy (1821). The classical proof relies on the least upper bound property of \u211d \u2014 a non-constructive axiom. In constructive mathematics (Brouwer, Bishop), the IVT is NOT provable in general: a continuous function can satisfy f(a) < 0 < f(b) without having a computable root.\n\nBishop (1967) showed that the IVT becomes provable constructively if f is **locally non-constant** (a stronger hypothesis). Without this, the bisection argument gets stuck at choosing which half-interval to recurse into \u2014 this requires knowing whether f(mid) \u2264 0 or f(mid) > 0, which requires decidability of real-number comparisons.\n\nThis entry formalizes the precise classical boundary: the bisection **structure** (width formula, sign invariant, width-to-zero) is constructive; the **convergence to a root** requires Classical.choice via the completeness of \u211d.",
+    "problemStatement": "**OQ-02-OQ-03**: Can the constructive IVT be proved in Lean 4 without classical logic?\n\n**Answer**: Partial YES/NO \u2014 the bisection structure is constructive, but convergence requires Classical.choice:\n- **Constructive** (no Classical.em): width formula (b-a)/2^n, sign invariant, width\u21920\n- **Classical** (needs Classical.choice): endpoint convergence, root theorem\n\nThe key technique: parameterize the bisection by an explicit `choices: \u2115 \u2192 Bool` oracle, separating the computable structure from the classical choice.",
+    "proofStrategy": "The parameterized bisection `paramBisect choices n (a,b)` takes an explicit oracle sequence instead of computing branch decisions. This separates two concerns: (1) the structural theorems (width, ordering, sign) which are proved by induction on the oracle without any classical reasoning; (2) the choice of oracle (which branch actually has the correct sign) which requires decidability of f(mid) \u2264 0 \u2014 a classical statement. Convergence is then proved using Mathlib's `tendsto_atTop_ciSup` and `tendsto_atTop_ciInf`, which use completeness of \u211d (Classical.choice).",
+    "keyInsights": [
+      "**The oracle abstraction**: By parameterizing bisection by `choices: \u2115 \u2192 Bool` instead of computing `if f(mid) \u2264 0`, the structural theorems (width formula, sign invariant) become fully constructive inductions. The classical content is isolated to the question 'which oracle is sign-consistent?'",
+      "**The classical boundary**: Endpoint convergence requires `ciSup`/`ciInf` (supremum/infimum of bounded sequences), which Mathlib proves using `Classical.choice` via completeness of \u211d. This is unavoidable in standard Lean/Mathlib without a constructive reals model.",
+      "**Bishop's insight in Lean**: Bishop (1967) showed the IVT is constructively unprovable for general continuous functions. This entry formalizes *why*: not the theorem itself, but the precise location where classical logic enters the bisection proof.",
+      "**Computability vs provability**: `paramBisect` is a `def` (computable) while `noncomputable` is avoided throughout the constructive core. This makes the theorem suitable for code extraction if the oracle is supplied by a Decidable instance (e.g., polynomial sign over \u211a).",
+      "**The squeeze at the limit**: The root theorem uses `le_of_tendsto` and `ge_of_tendsto` \u2014 the key squeeze argument: f(left_n)\u22640 for all n and left_n\u2192x with f continuous gives f(x)\u22640; similarly f(x)\u22650 from right. No classical logic needed once we *have* the limit x."
+    ]
+  },
+  "conclusion": {
+    "summary": "The exact classical boundary in the bisection IVT proof is identified: the structural core (width formula, sign invariant, width convergence) is provable without classical logic via an explicit oracle parameterization. Endpoint convergence \u2014 finding the limit of the nested intervals \u2014 requires Classical.choice via completeness of \u211d. This formalizes Bishop's classical result in Lean 4.",
+    "implications": "This result has practical implications for verified computing: for functions with decidable sign comparisons (e.g., polynomial functions over \u211a), `paramBisect` with a Decidable oracle gives a fully computable, verified bisection root-finder with no noncomputable components. The constructive-vs-classical boundary also illuminates the architecture of Mathlib's real analysis: `ciSup`/`ciInf` are inherently classical, while filter limits for concrete sequences (geometric, power) can be computed without LEM.",
+    "openQuestions": [
+      "For polynomial f over \u211a, can a fully computable IVT be formalized using paramBisect with a Decidable sign oracle?",
+      "Can the endpoint convergence be proved constructively using computable reals (Cauchy sequences with moduli)?",
+      "Is there a Bishop-style IVT in Lean 4 using the locally non-constant hypothesis?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "intermediate-value-theorem",
+      "relationship": "parent \u2014 classical IVT in Lean 4 via Continuous.ivt"
+    },
+    {
+      "id": "intermediate-value-theorem-oq-02",
+      "relationship": "parent \u2014 bisection-based IVT proofs (parent OQ-02 series)"
     }
   ],
   "leanFile": {
