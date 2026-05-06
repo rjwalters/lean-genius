@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-sinc-limit",
+    "proofId": "law-of-cosines-oq-01-oq-04",
+    "range": {
+      "startLine": 32,
+      "endLine": 43
+    },
+    "type": "insight",
+    "title": "Sinc Limit via HasDerivAt",
+    "content": "tendsto_sin_div_zero proves sin(h)/h → 1 as h → 0, h ≠ 0. The key observation is that this limit is exactly the definition of the derivative of sin at 0: HasDerivAt sin 1 0 (since cos(0) = 1), which via hasDerivAt_iff_tendsto_slope gives (sin(x) − sin(0))/(x − 0) → 1. The congr' application removes the slope formulation to expose the raw limit.",
+    "mathContext": "$\\lim_{h \\to 0, h \\neq 0} \\frac{\\sin h}{h} = 1$. Proof: by definition, $f'(a) = \\lim_{x \\to a, x \\neq a} \\frac{f(x)-f(a)}{x-a}$. With $f = \\sin$, $a = 0$: $\\sin'(0) = \\cos(0) = 1 = \\lim_{h \\to 0} \\frac{\\sin(h)-\\sin(0)}{h-0} = \\lim_{h \\to 0} \\frac{\\sin h}{h}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "HasDerivAt in Lean 4",
+      "hasDerivAt_iff_tendsto_slope",
+      "sinc function",
+      "derivative definition"
+    ],
+    "prerequisites": [
+      "Real.hasDerivAt_sin",
+      "Filter.Tendsto and nhdsWithin"
+    ]
+  },
+  {
+    "id": "ann-generalized-sinc",
+    "proofId": "law-of-cosines-oq-01-oq-04",
+    "range": {
+      "startLine": 45,
+      "endLine": 60
+    },
+    "type": "insight",
+    "title": "Generalized Sinc via Chain Rule",
+    "content": "tendsto_sin_mul_div proves sin(tx)/t → x as t → 0, t ≠ 0. This is the key helper for converting sin-over-t limits to linear limits. The proof uses HasDerivAt.comp: the derivative of sin(tx) at t=0 is x·cos(0·x) = x, so by hasDerivAt_iff_tendsto_slope, (sin(tx) − 0)/(t − 0) → x.",
+    "mathContext": "$\\frac{d}{dt}[\\sin(tx)]|_{t=0} = x \\cdot \\cos(0) = x$ by the chain rule. Via the derivative characterization as a limit: $\\frac{\\sin(tx) - \\sin(0)}{t - 0} = \\frac{\\sin(tx)}{t} \\to x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasDerivAt.comp",
+      "chain rule in Lean 4",
+      "sinc generalization"
+    ],
+    "prerequisites": [
+      "tendsto_sin_div_zero",
+      "HasDerivAt.mul_const"
+    ]
+  },
+  {
+    "id": "ann-double-angle-trick",
+    "proofId": "law-of-cosines-oq-01-oq-04",
+    "range": {
+      "startLine": 73,
+      "endLine": 121
+    },
+    "type": "technique",
+    "title": "Double-Angle Identity Converts Cosine to Sinc-Squared",
+    "content": "tendsto_one_sub_cos_div_sq uses 1 − cos(tx) = 2sin²(tx/2) to convert the cosine limit to a sinc-squared limit. This is the central algebraic trick: it transforms (1−cos(tx))/t² into (x²/2)·(sin(tx/2)/(tx/2))², where the second factor → 1 by the sinc limit. The nhdsWithin composition is needed because tx/2 ≠ 0 when t ≠ 0, which must be tracked through the filter.",
+    "mathContext": "For $x \\neq 0$ and $t \\neq 0$: $\\frac{1 - \\cos(tx)}{t^2} = \\frac{2\\sin^2(tx/2)}{t^2} = \\frac{x^2}{2} \\cdot \\left(\\frac{\\sin(tx/2)}{tx/2}\\right)^2 \\to \\frac{x^2}{2} \\cdot 1^2 = \\frac{x^2}{2}$. The nhdsWithin composition shows that $t \\mapsto tx/2$ maps $(\\mathcal{N}(0) \\setminus \\{0\\})$ to $(\\mathcal{N}(0) \\setminus \\{0\\})$, preserving the punctured filter needed by the sinc limit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "double-angle identity for cosine",
+      "nhdsWithin composition",
+      "tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within",
+      "filter composition"
+    ],
+    "prerequisites": [
+      "Real.cos_two_mul",
+      "tendsto_sin_div_zero",
+      "Filter.Tendsto.pow"
+    ]
+  },
+  {
+    "id": "ann-algebraic-decomposition",
+    "proofId": "law-of-cosines-oq-01-oq-04",
+    "range": {
+      "startLine": 123,
+      "endLine": 167
+    },
+    "type": "technique",
+    "title": "Term-by-Term Decomposition of Spherical Expression",
+    "content": "small_angle_limit decomposes the spherical expression (1 − cosα·cosβ − sinα·sinβ·cosC)/t² into three terms that can each be handled by the helper lemmas. The decomposition identity holds for t ≠ 0 (proved by field_simp + ring), and the three limits combine via Tendsto.add and Tendsto.sub. The final algebra ring-simplifies α²/2 + 1·(β²/2) − cosC·(α·β) to (α²+β²−2αβcosC)/2.",
+    "mathContext": "For $t \\neq 0$: $\\frac{1 - \\cos\\alpha \\cdot \\cos\\beta - \\sin\\alpha \\cdot \\sin\\beta \\cdot \\cos C}{t^2} = \\underbrace{\\frac{1-\\cos(t\\alpha)}{t^2}}_{\\to \\alpha^2/2} + \\underbrace{\\cos(t\\alpha)}_{\\to 1} \\cdot \\underbrace{\\frac{1-\\cos(t\\beta)}{t^2}}_{\\to \\beta^2/2} - \\cos C \\cdot \\underbrace{\\frac{\\sin(t\\alpha)}{t}}_{\\to \\alpha} \\cdot \\underbrace{\\frac{\\sin(t\\beta)}{t}}_{\\to \\beta}$. Combined: $\\alpha^2/2 + 1 \\cdot \\beta^2/2 - \\cos C \\cdot \\alpha \\cdot \\beta = (\\alpha^2 + \\beta^2 - 2\\alpha\\beta\\cos C)/2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto.add",
+      "Filter.Tendsto.sub",
+      "Filter.Tendsto.mul",
+      "term-by-term limit theorem"
+    ],
+    "prerequisites": [
+      "tendsto_one_sub_cos_div_sq",
+      "tendsto_cos_mul",
+      "tendsto_sin_mul_div"
+    ]
+  },
+  {
+    "id": "ann-pythagorean-recovery",
+    "proofId": "law-of-cosines-oq-01-oq-04",
+    "range": {
+      "startLine": 176,
+      "endLine": 185
+    },
+    "type": "example",
+    "title": "Pythagorean Theorem Recovered (3-4-5 Right Triangle)",
+    "content": "For a right angle (cosC = 0) with α=3, β=4: the small-angle limit equals (9 + 16)/2 = 25/2. Multiplying by t² recovers c² ≈ 25t² = (5t)², the Pythagorean theorem. This example confirms the formula works on a concrete instance via norm_num.",
+    "mathContext": "With $\\cos C = 0$, $\\alpha = 3$, $\\beta = 4$: limit $= (9 + 16 - 0)/2 = 25/2$. So $c^2 \\approx 2 \\cdot (25/2) \\cdot t^2 = 25t^2$, giving $c \\approx 5t$ — a 3-4-5 right triangle scaled by $t$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pythagorean theorem as special case",
+      "right triangle",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "small_angle_limit"
+    ]
+  },
+  {
+    "id": "ann-equilateral-recovery",
+    "proofId": "law-of-cosines-oq-01-oq-04",
+    "range": {
+      "startLine": 186,
+      "endLine": 191
+    },
+    "type": "example",
+    "title": "Equilateral Triangle Case",
+    "content": "For an equilateral triangle (α = β, cosC = 1/2): the small-angle limit equals (α² + α² − 2α²/2)/2 = α²/2. This recovers the expected Euclidean formula for equilateral triangles, verified by convert + ring from the main theorem.",
+    "mathContext": "With $\\alpha = \\beta$ and $\\cos C = 1/2$: limit $= (\\alpha^2 + \\alpha^2 - 2\\alpha^2 \\cdot 1/2)/2 = \\alpha^2/2$. The scaled limit gives $c^2 \\approx \\alpha^2 t^2$, so $c \\approx \\alpha t = a$ — confirming equilateral geometry.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "equilateral triangle",
+      "cosine of 60 degrees",
+      "convert tactic"
+    ],
+    "prerequisites": [
+      "small_angle_limit"
+    ]
+  }
+]
