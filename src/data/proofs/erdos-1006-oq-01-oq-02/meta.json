@@ -48,7 +48,7 @@
     "dateAdded": "2026-05-03",
     "lineCount": 256,
     "assumptions": "2 axioms: (1) cover_graph_recognition_in_p — the open conjecture that cover recognition is in P; (2) comparability_recognition_in_p — Golumbic's 1977 theorem that comparability graphs are recognized in polynomial time.",
-    "definitionCount": 5
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The recognition problem for **cover graphs** (Hasse diagrams of finite posets) has a rich history intertwined with the theory of comparability graphs and computational complexity.\n\n**Comparability graphs** — where edges represent all related pairs $u < v$ or $v < u$ — have been studied since the 1950s. Dilworth (1950) characterized them via transitive orientations. Golumbic (1977) gave a linear-time algorithm using *implication classes* (a 2-SAT-like structure): for each edge $\\{u,v\\}$, assign $u \\to v$ or $v \\to u$, propagate implications via transitivity, and check for consistency.\n\n**Cover graphs** are more restrictive: edges correspond only to direct covers $u \\lessdot v$ (no intermediate element). Determining when a graph is a Hasse diagram is harder because the shortcut-free condition (no arc $u \\to v$ with an alternative path $u \\to w \\to v$) is not captured by the implication-class method. The Golumbic algorithm for comparability may produce an orientation with shortcuts that cannot be fixed without changing the orientation entirely.\n\nPretzel (1985) and Brightwell (1988) established the structural characterization: $G$ is a cover graph if and only if $G$ has a **robustly acyclic orientation** (Pretzel's term) or equivalently a **Hasse orientation** (acyclic + shortcut-free). This connection to orientations is what makes the problem accessible to computational analysis.\n\nThe open question — whether cover recognition is in P — was raised by Erdős in problem #1006. The NP membership is trivial (the poset is a certificate). The P-time algorithm for comparability (Golumbic 1977) does not extend directly. As of 2025, neither a polynomial algorithm nor an NP-hardness proof is known.",
@@ -144,7 +144,7 @@
     "path": "Proofs/Erdos1006OQ01OQ02.lean",
     "axiomCount": 2,
     "sorries": 0,
-    "definitionCount": 5,
+    "definitionCount": 4,
     "theoremCount": 9
   },
   "sorries": 0

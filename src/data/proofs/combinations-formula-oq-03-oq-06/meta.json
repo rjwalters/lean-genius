@@ -12,7 +12,7 @@
     "axiomCount": 0,
     "lineCount": 241,
     "theoremCount": 11,
-    "definitionCount": 1,
+    "definitionCount": 0,
     "assumptions": "None. All theorems proved for arbitrary CommRing k with parameter q : k. The VermaData structure is abstract (universal); no invertibility hypotheses needed for the Verma module action proofs.",
     "tags": [
       "quantum-groups",
@@ -38,7 +38,7 @@
     "axiomCount": 0,
     "lineCount": 241,
     "theoremCount": 11,
-    "definitionCount": 1
+    "definitionCount": 0
   },
   "overview": {
     "historicalContext": "Quantum groups were introduced by Drinfeld and Jimbo in 1985-1986, arising from the study of integrable systems and the quantum Yang-Baxter equation. The quantum group U_q(𝔰𝔩₂) is the prototypical example: a one-parameter deformation of the universal enveloping algebra of 𝔰𝔩₂ that reduces to the classical case when q=1. Verma modules for quantum groups were studied extensively in the 1990s; their structure — particularly the divided power formula F^n·v₀ = [n]_q!·vₙ — is foundational for quantum representation theory and connects to knot invariants, quantum topology, and the Jones polynomial. This formalization uses the q-number (qNumber) and q-factorial (qFactorial) infrastructure from combinations-formula-oq-03.",

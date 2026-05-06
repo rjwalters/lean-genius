@@ -47,7 +47,7 @@
       "gch_decides_all_aleph theorem: GCH gives exact value of all higher continua",
       "gch_continuum_below_aleph_add_two theorem: GCH → 2^ℵₙ < ℵₙ₊₂ (Cardinal.aleph_lt.mpr + omega)"
     ],
-    "definitionCount": 9
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "After Gödel (1940) and Cohen (1963) established CH's independence from ZFC, set theorists naturally asked whether adding large cardinal axioms — the strongest known axioms of infinity — could settle the question. The answer turned out to be nuanced: the Lévy-Solovay theorem (1967) showed that standard large cardinals (measurable, supercompact) are compatible with both CH and ¬CH via small forcing. However, forcing axioms like Martin's Maximum (1988) do decide CH, implying ¬CH. The Woodin Ultimate-L program (2001–present) remains the frontier, potentially canonically settling CH as true. The Generalized Continuum Hypothesis (GCH: 2^ℵₙ = ℵₙ₊₁ for all n) strengthens CH to all infinite cardinals and is the target of the Ultimate-L program.",
@@ -152,7 +152,7 @@
     "lineCount": 306,
     "axiomCount": 7,
     "theoremCount": 14,
-    "definitionCount": 9,
+    "definitionCount": 10,
     "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
     "sorries": 0
   },
