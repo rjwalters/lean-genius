@@ -63,7 +63,7 @@
     "assumptions": "No axioms. 1 sorry remaining: integerLattice_pinnedDistances (deep constructive existence). maxPinnedDistances and pinnedDistance_le are now sorry-free.",
     "mathlib_version": "4.26.0",
     "theoremCount": 6,
-    "definitionCount": 11
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "The pinned distance problem is a stronger variant of the famous Erdős distinct distances problem (#89). Rather than counting all distinct pairwise distances in a point set, it asks: must some point 'see' many different distances to other points?\n\nErdős posed this across multiple papers from 1957 to 1997, offering a $500 prize. The integer lattice {1,...,√n} × {1,...,√n} shows the answer cannot exceed O(n/√log n), suggesting this might be the truth. The 'unpinned' version of the problem was famously resolved by Guth and Katz in 2015 using the polynomial method and algebraic geometry, achieving the near-optimal Ω(n/log n) bound, but their techniques have not yet been adapted to give the optimal pinned result. Katz and Tardos obtained the best known pinned lower bound of n^{(48-14e)/(55-16e)} ≈ n^{0.864} in 2004 using entropy methods.",
@@ -189,7 +189,7 @@
     "lineCount": 224,
     "axiomCount": 0,
     "theoremCount": 6,
-    "definitionCount": 11,
+    "definitionCount": 10,
     "path": "Proofs/Erdos604Problem.lean",
     "sorries": 1
   },
