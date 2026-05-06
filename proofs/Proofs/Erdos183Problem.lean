@@ -331,28 +331,19 @@ theorem R3k_two : R3k 2 = 6 := by
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) then 0 else 1
       have hsym₃ : IsSymmetric c₃ := by
         intro i j; simp only [c₃]; fin_cases i <;> fin_cases j <;> simp
-      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₃ hsym₃
-      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;>
-        first | exact absurd rfl hij | exact absurd rfl hjl | exact absurd rfl hil |
-                (simp only [c₃, Fin.mk.injEq, ne_eq] at hcij hcjl hcil; omega)
+      have h_avoid₃ : AvoidsMonochromaticTriangles c₃ := by decide
+      exact h_avoid₃ (h_spec (by omega) c₃ hsym₃)
     · let c₄ : EdgeColoring 4 2 := fun p =>
         if (p.1.val = 0 ∧ p.2.val = 1) ∨ (p.1.val = 1 ∧ p.2.val = 0) ∨
            (p.1.val = 2 ∧ p.2.val = 3) ∨ (p.1.val = 3 ∧ p.2.val = 2) then 0 else 1
-      have hsym₄ : IsSymmetric c₄ := by
-        intro i j; simp only [c₄]; fin_cases i <;> fin_cases j <;> simp
-      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₄ hsym₄
-      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;>
-        first | exact absurd rfl hij | exact absurd rfl hjl | exact absurd rfl hil |
-                (simp only [c₄, Fin.mk.injEq, ne_eq] at hcij hcjl hcil; omega)
+      have hsym₄ : IsSymmetric c₄ := by decide
+      have h_avoid₄ : AvoidsMonochromaticTriangles c₄ := by decide
+      exact h_avoid₄ (h_spec (by omega) c₄ hsym₄)
     · let c₅ : EdgeColoring 5 2 := fun p =>
-        let d := (p.1.val + 5 - p.2.val) % 5
-        if d = 1 ∨ d = 4 then 0 else 1
-      have hsym₅ : IsSymmetric c₅ := by
-        intro i j; simp only [c₅]; fin_cases i <;> fin_cases j <;> simp
-      obtain ⟨color, i, j, l, hij, hjl, hil, hcij, hcjl, hcil⟩ := h_spec (by omega) c₅ hsym₅
-      fin_cases color <;> fin_cases i <;> fin_cases j <;> fin_cases l <;>
-        first | exact absurd rfl hij | exact absurd rfl hjl | exact absurd rfl hil |
-                (simp only [c₅, Fin.mk.injEq, ne_eq] at hcij hcjl hcil; omega)
+        if (p.1.val + 5 - p.2.val) % 5 = 1 ∨ (p.1.val + 5 - p.2.val) % 5 = 4 then 0 else 1
+      have hsym₅ : IsSymmetric c₅ := by decide
+      have h_avoid₅ : AvoidsMonochromaticTriangles c₅ := by decide
+      exact h_avoid₅ (h_spec (by omega) c₅ hsym₅)
 
 /-- Monotonicity: more colors requires more vertices to force a monochromatic triangle.
     Proof: embed a k₁-coloring into a k₂-coloring via Fin.castLE; any monochromatic
