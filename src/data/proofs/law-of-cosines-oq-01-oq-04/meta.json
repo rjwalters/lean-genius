@@ -1,0 +1,153 @@
+{
+  "id": "law-of-cosines-oq-01-oq-04",
+  "title": "Small-Angle Limit: Spherical Law of Cosines Reduces to Euclidean",
+  "slug": "law-of-cosines-oq-01-oq-04",
+  "description": "Proves that the spherical law of cosines reduces to the Euclidean law in the small-angle limit. As side lengths shrink proportionally (a = tα, b = tβ, t → 0), the normalized expression (1 − cos(tα)·cos(tβ) − sin(tα)·sin(tβ)·cosC)/t² converges to (α² + β² − 2αβ·cosC)/2.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ04.lean",
+    "tags": [
+      "geometry",
+      "spherical-geometry",
+      "law-of-cosines",
+      "small-angle-limit",
+      "analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 191,
+    "assumptions": "No axioms or sorries. All results proved from Mathlib trigonometric analysis.",
+    "dateAdded": "2026-05-06",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "tendsto_sin_mul_div: sin(tx)/t → x via HasDerivAt chain rule",
+      "tendsto_one_sub_cos_div_sq: (1−cos(tx))/t² → x²/2 via double-angle identity and sinc limit",
+      "small_angle_limit: spherical cosines expression/t² → Euclidean law of cosines value",
+      "spherical_to_euclidean_limit: 2·(spherical excess)/t² → Euclidean law of cosines",
+      "Pythagorean theorem and equilateral triangle recovered as special cases"
+    ],
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The spherical law of cosines, cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C), is the fundamental trigonometric identity of spherical geometry. In the flat-Earth (small-angle) limit, where all sides are small, it must reduce to the Euclidean law of cosines c² = a² + b² − 2ab·cos(C). This reduction is a standard exercise in differential geometry textbooks — it shows that spherical geometry is locally Euclidean. The limit had been known since at least Todhunter (1886), but the formal Lean proof requires careful analysis of the sinc limit sin(u)/u → 1 via derivative-based techniques available in Mathlib.",
+    "problemStatement": "For fixed α, β, cosC ∈ ℝ, prove that\n\n$$\\lim_{t \\to 0} \\frac{1 - \\cos(t\\alpha)\\cos(t\\beta) - \\sin(t\\alpha)\\sin(t\\beta)\\cos C}{t^2} = \\frac{\\alpha^2 + \\beta^2 - 2\\alpha\\beta\\cos C}{2}$$\n\nwhere the limit is taken over t ≠ 0. The right-hand side is the Euclidean law of cosines: setting c² = α² + β² − 2αβ·cosC gives 2·(limit) = c².",
+    "text": "Proves the small-angle limit by decomposing the spherical expression, applying the sinc limit via HasDerivAt, and combining term-by-term limits.",
+    "proofStrategy": "1. Sinc limit: sin(h)/h → 1 as h → 0 is derived from HasDerivAt sin 1 0 and hasDerivAt_iff_tendsto_slope. 2. Generalized sinc: sin(tx)/t → x via the chain rule HasDerivAt for (t ↦ sin(tx)) at 0. 3. Cosine to 1: cos(tx) → 1 by ContinuousAt. 4. Key lemma: (1 − cos(tx))/t² → x²/2 using the double-angle identity 1 − cos(tx) = 2sin²(tx/2) and the sinc-squared limit. 5. Main theorem: decompose (1 − cosα·cosβ − sinα·sinβ·cosC)/t² = (1−cosα)/t² + cosα·(1−cosβ)/t² − cosC·(sinα/t)·(sinβ/t), then take term-by-term limits.",
+    "keyInsights": [
+      "The double-angle identity 1 − cos(tx) = 2sin²(tx/2) converts a cosine limit to a sinc-squared limit, giving the x²/2 factor cleanly.",
+      "The sinc limit sin(h)/h → 1 is the derivative of sin at 0 in disguise: d/dt[sin(t)]|₀ = cos(0) = 1, which matches the definition of derivative as the limit of the difference quotient.",
+      "The nhdsWithin composition tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within is needed to preserve the 'nonzero' filter when composing t ↦ tx/2 with the sinc limit — both the limit point (0) and the punctured nature of the filter must be tracked.",
+      "The algebraic decomposition (1 − cosα·cosβ − sinα·sinβ·cosC)/t² = (1−cosα)/t² + cosα·(1−cosβ)/t² − cosC·(sinα/t)·(sinβ/t) holds exactly for t ≠ 0, proved by field_simp + ring. This splits the problem into three independent limits.",
+      "The Euclidean law of cosines emerges as the coefficient of t² in the Taylor expansion of the spherical law: cos(c) ≈ 1 − c²/2 ≈ 1 − (α²+β²−2αβcosC)t²/2."
+    ],
+    "prerequisites": [
+      "Spherical law of cosines: cos(c) = cos(a)·cos(b) + sin(a)·sin(b)·cos(C)",
+      "Sinc limit: sin(h)/h → 1 as h → 0",
+      "Double-angle identity: 1 − cos(θ) = 2sin²(θ/2)",
+      "HasDerivAt and hasDerivAt_iff_tendsto_slope in Mathlib",
+      "Filter.Tendsto and nhdsWithin composition"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sinc-limit",
+      "title": "Sinc Limit: sin(h)/h → 1",
+      "startLine": 32,
+      "endLine": 43,
+      "summary": "tendsto_sin_div_zero: sin(h)/h → 1 as h → 0, h ≠ 0. Derived from HasDerivAt sin 1 0.",
+      "mathContext": "The sinc limit $\\lim_{h \\to 0} \\frac{\\sin h}{h} = 1$ is fundamental to analysis. In Lean, it follows from the fact that $\\sin'(0) = \\cos(0) = 1$ via hasDerivAt_iff_tendsto_slope: a function $f$ has derivative $L$ at $a$ iff $\\frac{f(x)-f(a)}{x-a} \\to L$ as $x \\to a$, $x \\neq a$. Since $\\sin(0) = 0$, this says $\\frac{\\sin(h)}{h} \\to 1$."
+    },
+    {
+      "id": "generalized-sinc",
+      "title": "Generalized Sinc: sin(tx)/t → x",
+      "startLine": 45,
+      "endLine": 60,
+      "summary": "tendsto_sin_mul_div: sin(tx)/t → x as t → 0, t ≠ 0. Proved via HasDerivAt chain rule at t=0.",
+      "mathContext": "By the chain rule, $\\frac{d}{dt}[\\sin(tx)]|_{t=0} = x \\cdot \\cos(0 \\cdot x) = x$. Via hasDerivAt_iff_tendsto_slope and $\\sin(0 \\cdot x) = 0$, this gives $\\frac{\\sin(tx) - 0}{t - 0} = \\frac{\\sin(tx)}{t} \\to x$. The Lean proof uses HasDerivAt.comp with the affine function $t \\mapsto tx$."
+    },
+    {
+      "id": "cosine-limit",
+      "title": "Cosine Limit: cos(tx) → 1",
+      "startLine": 62,
+      "endLine": 71,
+      "summary": "tendsto_cos_mul: cos(tx) → 1 as t → 0, t ≠ 0. By continuity of cosine.",
+      "mathContext": "$\\cos(0 \\cdot x) = \\cos(0) = 1$. Continuity of $t \\mapsto \\cos(tx)$ at $t = 0$ gives the limit directly. In Lean, ContinuousAt.mono_left nhdsWithin_le_nhds converts the continuity statement to a nhdsWithin limit."
+    },
+    {
+      "id": "one-minus-cos",
+      "title": "Key Lemma: (1−cos(tx))/t² → x²/2",
+      "startLine": 73,
+      "endLine": 121,
+      "summary": "tendsto_one_sub_cos_div_sq: uses 1−cos(tx) = 2sin²(tx/2) and sinc-squared limit.",
+      "mathContext": "For $x \\neq 0$: write $1 - \\cos(tx) = 2\\sin^2(tx/2)$. Then $\\frac{1-\\cos(tx)}{t^2} = \\frac{2\\sin^2(tx/2)}{t^2} = \\frac{x^2}{2} \\cdot \\left(\\frac{\\sin(tx/2)}{tx/2}\\right)^2$. Since $tx/2 \\to 0$ and $tx/2 \\neq 0$ (when $t \\neq 0$), the sinc limit gives $\\frac{\\sin(tx/2)}{tx/2} \\to 1$, so the expression $\\to x^2/2 \\cdot 1 = x^2/2$. For $x = 0$: $\\cos(0) = 1$ so the numerator is 0 and the limit is 0 = $0^2/2$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Small-Angle Limit",
+      "startLine": 123,
+      "endLine": 167,
+      "summary": "small_angle_limit: the full spherical → Euclidean reduction for all α, β, cosC.",
+      "mathContext": "The algebraic decomposition $\\frac{1 - \\cos\\alpha\\cos\\beta - \\sin\\alpha\\sin\\beta\\cos C}{t^2} = \\frac{1-\\cos(t\\alpha)}{t^2} + \\cos(t\\alpha) \\cdot \\frac{1-\\cos(t\\beta)}{t^2} - \\cos C \\cdot \\frac{\\sin(t\\alpha)}{t} \\cdot \\frac{\\sin(t\\beta)}{t}$ holds for $t \\neq 0$ (proved by field_simp + ring). Taking limits term by term: $\\alpha^2/2 + 1 \\cdot (\\beta^2/2) - \\cos C \\cdot \\alpha \\cdot \\beta = (\\alpha^2 + \\beta^2 - 2\\alpha\\beta\\cos C)/2$."
+    },
+    {
+      "id": "scaled-version",
+      "title": "Scaled Version and Special Cases",
+      "startLine": 169,
+      "endLine": 191,
+      "summary": "spherical_to_euclidean_limit and concrete verifications for right and equilateral triangles.",
+      "mathContext": "The scaled version multiplies by 2: $\\lim_{t \\to 0} \\frac{2(1 - \\cos(t\\alpha)\\cos(t\\beta) - \\sin(t\\alpha)\\sin(t\\beta)\\cos C)}{t^2} = \\alpha^2 + \\beta^2 - 2\\alpha\\beta\\cos C$. Special cases: (1) Right triangle ($\\cos C = 0$, $\\alpha=3$, $\\beta=4$): limit = $(9+16)/2 = 25/2$, recovering Pythagorean theorem. (2) Equilateral ($\\alpha=\\beta$, $\\cos C = 1/2$): limit = $(\\alpha^2 + \\alpha^2 - 2\\alpha^2/2)/2 = \\alpha^2/2$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The spherical law of cosines reduces to the Euclidean law in the small-angle limit. The formal Lean proof builds up from the sinc limit (via HasDerivAt) through the double-angle identity to a clean term-by-term limit argument. The proof is fully axiom-free and sorry-free.",
+    "openQuestions": [
+      "Can the full asymptotic expansion of the spherical law of cosines be formalized? The next term would give the curvature correction: cos(c) = 1 − c²/2 + c⁴/24 − ..., and combining the spherical formula would give a formula for the angular excess in terms of the triangle area.",
+      "Can this be generalized to constant curvature κ spaces? In the hyperbolic case, cos(c) is replaced by cosh(c/√(−κ)), and the small-κ limit should recover the Euclidean law. Mathlib's emerging hyperbolic geometry infrastructure might support this."
+    ],
+    "implications": "This result confirms that spherical geometry is locally flat: on a small enough scale, the spherical law of cosines is indistinguishable from the Euclidean one. The proof technique — decomposing via the double-angle identity and applying sinc limits — is broadly applicable to other small-angle or small-curvature limit arguments in differential geometry."
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "parent-problem",
+      "description": "Euclidean law of cosines is the limit of the spherical version"
+    },
+    {
+      "targetId": "law-of-cosines-oq-01",
+      "relationship": "related",
+      "description": "Parent open question about extensions of the law of cosines"
+    },
+    {
+      "targetId": "spherical-law-of-cosines",
+      "relationship": "related",
+      "description": "The spherical law whose small-angle limit is proved here"
+    }
+  ],
+  "references": [
+    {
+      "author": "Todhunter, I.",
+      "title": "Spherical Trigonometry",
+      "year": 1886,
+      "note": "Classical reference; Chapter III discusses the spherical law of cosines and its limiting cases"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "LawOfCosinesSmallAngle",
+    "lineCount": 191,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/LawOfCosinesOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
