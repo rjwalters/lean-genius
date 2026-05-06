@@ -60,7 +60,7 @@
     "assumptions": "0 sorries. The IBP formula fourierCoeffOn_deriv_periodic is now proved via import from AreaOfCircleOQ01OQ02OQ02.lean.",
     "mathlib_version": "4.26.0",
     "theoremCount": 68,
-    "definitionCount": 11
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "The isoperimetric problem — find the shape of maximum area for a given perimeter — is one of the oldest optimization problems in mathematics, traced to ancient Dido of Carthage (~900 BCE). The problem asks: among all closed curves of length $L$, which encloses the most area? The answer is a circle, and the isoperimetric inequality $C^2 \\geq 4\\pi A$ quantifies how much any curve falls short. Archimedes knew the result informally (~250 BCE), but a rigorous proof waited until the 19th century. Steiner (1838) gave an elegant proof using symmetrization, but didn't prove existence of the maximizer. Weierstrass (1870s) gave the first complete proof using calculus of variations. The most elegant proof is due to Hurwitz (1901), who used Fourier series and the Wirtinger inequality.",
@@ -273,7 +273,7 @@
     "lineCount": 1938,
     "axiomCount": 0,
     "theoremCount": 68,
-    "definitionCount": 11,
+    "definitionCount": 13,
     "mainTheorems": [
       {
         "name": "isoperimetric_inequality_smooth",

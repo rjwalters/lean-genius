@@ -22,7 +22,7 @@
     "lineCount": 696,
     "axiomCount": 2,
     "sorries": 0,
-    "definitionCount": 6,
+    "definitionCount": 8,
     "theoremCount": 37
   },
   "meta": {
@@ -79,7 +79,7 @@
       "Axiom reduction: eliminated redundant gyori_keszegh_triangles axiom (m distinct 3-cliques, logically weaker than the partition formula and unused in the file)"
     ],
     "theoremCount": 37,
-    "definitionCount": 6
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The clique partition problem — decomposing a graph's edges into complete subgraphs — emerged from the interplay of extremal graph theory and combinatorial optimization. Erdős, Goodman, and Pósa (1966) proved the foundational bound $\\text{cp}(G) \\leq \\lfloor n^2/4 \\rfloor$ using a greedy triangle extraction followed by Turán's theorem on the triangle-free remainder. This was connected to earlier work by Mantel (1907) on triangle-free graphs and Turán (1941) on extremal graph density.\n\nThe bound is tight for $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$, which is triangle-free and needs one clique per edge. Erdős asked whether dense graphs (with more than $\\lfloor n^2/4 \\rfloor$ edges) — which must contain triangles by Turán's theorem — allow improvement. Győri and Keszegh (2017) resolved the $K_4$-free case by proving that every excess edge yields an edge-disjoint triangle, reducing the partition count by exactly 1 per excess edge. The general case, when $K_4$ and larger cliques are present, remains open and connects to NP-hard optimization problems in graph decomposition.",

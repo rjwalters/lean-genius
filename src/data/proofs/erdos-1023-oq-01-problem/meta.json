@@ -30,7 +30,7 @@
     ],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
-    "definitionCount": 5
+    "definitionCount": 14
   },
   "overview": {
     "historicalContext": "Erdős problem #1023 asks: what is the maximum size $F(n)$ of a **union-free** family $\\mathcal{F} \\subseteq 2^{[n]}$ — a family where no member $A$ equals the union of other members $B_1 \\cup B_2$? The answer, $F(n) = \\binom{n}{\\lfloor n/2 \\rfloor}$, is achieved by the middle layer (all sets of size $\\lfloor n/2 \\rfloor$), which is a maximum antichain. The key tool is the **LYM inequality** (Lubell 1966, Yamamoto 1954, Meshalkin 1963): for any antichain $\\mathcal{F} \\subseteq 2^{[n]}$, $\\sum_{A \\in \\mathcal{F}} 1/\\binom{n}{|A|} \\leq 1$, which gives $|\\mathcal{F}| \\leq \\binom{n}{\\lfloor n/2 \\rfloor}$.\n\nThe concept of antichains in $2^{[n]}$ was studied by Dilworth (1950), who proved that the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$ — the same bound. Sperner (1928) had already proved this for the specific case of the boolean lattice. The **Bollobás two-families theorem** (1965) generalized this: if $(A_i, B_i)_{i=1}^m$ are pairs with $A_i \\cap B_j = \\emptyset$ iff $i = j$, then $\\sum_{i=1}^m \\binom{|A_i|+|B_i|}{|A_i|}^{-1} \\leq 1$. This is a far-reaching generalization of Sperner's theorem.\n\nOQ-01 extends Erdős #1023 in two directions: **k-union-free** families (forbid $A = B_1 \\cup \\cdots \\cup B_k$ for exactly $k$ sets — more restrictive than plain union-free when $k$ is fixed) and the dual notion of **intersection-free** families ($A \\neq B_1 \\cap \\cdots \\cap B_m$). In the Boolean lattice $2^{[n]}$, these notions are dual via the complement map $A \\mapsto [n] \\setminus A$: a family is union-free if and only if its complement family is intersection-free (De Morgan's law for set families).\n\nThe formalization shows that the same maximum antichain witnesses optimality for all these constrained families simultaneously: middle-layer antichains are k-union-free for all $k$ and intersection-free, establishing the middle layer as a universal extremal object for constrained-coverage families.",
@@ -125,7 +125,7 @@
     "lineCount": 244,
     "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 5,
+    "definitionCount": 14,
     "path": "Proofs/Erdos1023OQ01Problem.lean",
     "sorries": 0
   },

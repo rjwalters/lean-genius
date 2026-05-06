@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "lineCount": 256,
     "theoremCount": 14,
-    "definitionCount": 2
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "The base Wiedijk #82 formalization uses covers_unit_cube : True as a placeholder — it records that cubes should cover the unit cube but does not enforce it. OQ-01 asked whether every nonempty dissection has a collision pair (same-size distinct cubes); the answer is YES. OQ-01-OQ-03 asks: can we incorporate the geometric covering condition — specifically, that the volumes sum to 1 — into the structure?",
@@ -127,7 +127,7 @@
     "lineCount": 256,
     "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 2,
+    "definitionCount": 1,
     "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
     "sorries": 0
   },

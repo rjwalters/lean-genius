@@ -88,7 +88,7 @@
       "Gessel-Viennot involution theory"
     ],
     "assumptions": [],
-    "definitionCount": 30
+    "definitionCount": 45
   },
   "overview": {
     "historicalContext": "The Lindström-Gessel-Viennot (LGV) lemma is one of the most versatile tools in enumerative combinatorics. Bernt Lindström proved a general version for vector matroids in 1973, building on ideas from Karlin and McGregor's 1959 work on coincidence probabilities of Markov chains. Ira Gessel and Gérard Viennot independently rediscovered and popularized the result in their influential 1985 paper, providing the elegant sign-reversing involution proof that has become the standard approach. The lemma connects non-intersecting lattice paths to determinants: the number of $r$-tuples of pairwise non-intersecting paths equals $\\det[e(A_i, B_j)]_{i,j}$. This determinantal structure has profound consequences—it underlies the Jacobi-Trudi identity for Schur polynomials, the Cauchy-Binet identity in linear algebra, and the Kasteleyn method for perfect matchings. The GV involution is a paradigmatic example of the 'cancellation via involution' technique that pervades algebraic combinatorics.",
@@ -290,7 +290,7 @@
     "lineCount": 2511,
     "axiomCount": 0,
     "theoremCount": 92,
-    "definitionCount": 30,
+    "definitionCount": 45,
     "path": "Proofs/BallotProblemOQ03OQ02.lean",
     "sorries": 0
   },
