@@ -1,0 +1,95 @@
+{
+    "id": "bezout-identity-oq-03-oq-03",
+    "title": "Multi-Variable Bézout and Diophantine Solvability Criterion",
+    "slug": "bezout-identity-oq-03-oq-03",
+    "description": "Proves the multi-variable Diophantine solvability criterion: the linear equation a₁x₁ + a₂x₂ + ... + aₙxₙ = d has integer solutions if and only if gcd(a₁,...,aₙ) divides d. Generalizes the two-variable Bézout identity to n variables by induction, using Int.gcd_eq_gcd_ab at each step. Formalizes the connection between CRT and Bézout's identity in the multi-variable setting.",
+    "meta": {
+        "author": "Lean Genius",
+        "date": "2026-05-06",
+        "status": "verified",
+        "proofRepoPath": "Proofs/BezoutIdentityOQ03OQ03.lean",
+        "tags": [
+            "number-theory",
+            "diophantine",
+            "bezout",
+            "crt",
+            "generalization"
+        ],
+        "badge": "original",
+        "sorries": 0,
+        "axiomCount": 0,
+        "lineCount": 191,
+        "theoremCount": 7,
+        "definitionCount": 1,
+        "assumptions": ""
+    },
+    "overview": {
+        "historicalContext": "Bézout's identity states that for any integers $a$ and $b$, there exist integers $x$ and $y$ with $ax + by = \\gcd(a,b)$. This was extended to multiple variables by 19th century number theorists: for integers $a_1,\\ldots,a_n$, there exist $x_1,\\ldots,x_n$ with $\\sum a_i x_i = \\gcd(a_1,\\ldots,a_n)$. The solvability criterion then says $\\sum a_i x_i = d$ has integer solutions if and only if $\\gcd(a_1,\\ldots,a_n) \\mid d$. This generalizes the two-variable case proved in bezout-identity-oq-03 using the CRT structure.",
+        "problemStatement": "For integers $a_1,\\ldots,a_n$ and $d$, the linear Diophantine equation $a_1 x_1 + a_2 x_2 + \\cdots + a_n x_n = d$ has integer solutions $(x_1,\\ldots,x_n)$ if and only if $\\gcd(a_1,\\ldots,a_n) \\mid d$.",
+        "proofStrategy": "Define `gcdFin : (Fin n → ℤ) → ℕ` by induction: `gcdFin(a) = Nat.gcd(gcdFin(a ∘ castSucc), a(last n).natAbs)`. Then: (1) Show `gcdFin` divides each element by induction. (2) Prove multi-variable Bézout: ∃ x with ∑ aᵢxᵢ = gcdFin(a), by induction: the IH gives y with ∑ aᵢyᵢ = g, then two-variable Bézout gives g·u + aₙ·v = gcdFin(a), so xᵢ = yᵢ·u and xₙ = v works. (3) The solvability criterion: ⟹ gcd divides each aᵢ hence any linear combination; ⟸ scale the Bézout combination by k where d = gcd·k.",
+        "keyInsights": [
+            "The inductive structure of gcdFin mirrors the binary operation structure: gcd(a₁,...,aₙ) = gcd(gcd(a₁,...,aₙ₋₁), aₙ), allowing the two-variable Int.gcd_eq_gcd_ab to be applied at each step.",
+            "The key step in the induction: if ∑ᵢ<n aᵢyᵢ = g (by IH) and g·u + aₙ·v = gcd(g,aₙ) (by two-variable Bézout), then ∑ᵢ<n aᵢ(yᵢ·u) + aₙ·v = g·u + aₙ·v = gcd(a₁,...,aₙ).",
+            "This is the same CRT structure used in bezout-identity-oq-03-oq-01-oq-01 for the ring isomorphism ℤ/(m₁···mₙ)ℤ ≅ ∏ ℤ/mᵢℤ — both decompose a multi-way structure into binary steps.",
+            "The ℕ/ℤ conversion in gcdFin requires care: (↑g : ℤ).natAbs = g for g : ℕ (by Int.natAbs_ofNat), bridging the gap between Nat.gcd and Int.gcd."
+        ]
+    },
+    "sections": [
+        {
+            "id": "gcd-definition",
+            "title": "gcdFin: GCD of a Finite Family",
+            "startLine": 38,
+            "endLine": 53,
+            "summary": "Defines `gcdFin : (Fin n → ℤ) → ℕ` by induction on n: gcdFin([]) = 0, gcdFin(a :: rest) = Nat.gcd(gcdFin(rest), a.natAbs). Helper `gcdFin_eq_int_gcd` connects this to `Int.gcd` via `Int.natAbs_ofNat`."
+        },
+        {
+            "id": "gcd-divides",
+            "title": "gcdFin_dvd: GCD Divides Each Element",
+            "startLine": 59,
+            "endLine": 82,
+            "summary": "By induction: for last element, case split on sign of aₙ and use Nat.gcd_dvd_right. For earlier elements, use Nat.gcd_dvd_left and the induction hypothesis. Handles ℕ → ℤ conversion by sign case split."
+        },
+        {
+            "id": "bezout-multivar",
+            "title": "bezout_multivar: Multi-Variable Bézout",
+            "startLine": 88,
+            "endLine": 128,
+            "summary": "By induction: IH gives y with ∑ a(castSucc i) * y i = g. Two-variable Bézout (Int.gcd_eq_gcd_ab) gives u, v with g*u + aₙ*v = gcd(g, aₙ) = gcdFin(a). Solution: x(castSucc i) = y i * u, x(last) = v. Verification uses Fin.sum_univ_castSucc and Finset.sum_mul."
+        },
+        {
+            "id": "diophantine-criterion",
+            "title": "diophantine_criterion: Main Theorem",
+            "startLine": 134,
+            "endLine": 158,
+            "summary": "⟹: gcd ∣ each aᵢ (by gcdFin_dvd), so gcd ∣ ∑ aᵢxᵢ = d by dvd_sum and dvd_mul. ⟸: d = gcd·k, take xᵢ = yᵢ·k where y is the Bézout combination. Verification: ∑ aᵢ(yᵢ·k) = (∑ aᵢyᵢ)·k = gcd·k = d."
+        }
+    ],
+    "conclusion": {
+        "summary": "The multi-variable Diophantine solvability criterion is fully machine-checked with 0 sorries and 0 axioms. The proof uses the CRT-style induction that builds multi-variable Bézout from repeated application of the two-variable identity.",
+        "implications": "This result shows that the ideal generated by a₁,...,aₙ in ℤ is exactly {d : gcd(a₁,...,aₙ) ∣ d} = gcd(a₁,...,aₙ) · ℤ, confirming ℤ is a principal ideal domain via constructive proof. The CRT-Bézout connection is explicit: the same inductive binary decomposition that gives CRT ring isomorphisms also gives multi-variable linear Diophantine solvability.",
+        "openQuestions": [
+            "Can the Bézout coefficients be computed explicitly (not just existentially) in Lean 4, giving an algorithm for the multi-variable extended GCD?",
+            "Can this be generalized to other Euclidean domains (polynomials, Gaussian integers) using the `EuclideanDomain` typeclass?"
+        ]
+    },
+    "crossReferences": [
+        {
+            "proofId": "bezout-identity-oq-03",
+            "relationship": "extends",
+            "description": "BezoutIdentityOQ03 proves the two-variable CRT via Bézout; this entry generalizes to n variables."
+        },
+        {
+            "proofId": "bezout-identity-oq-03-oq-01-oq-01",
+            "relationship": "related",
+            "description": "BezoutIdentityOQ03OQ01OQ01 proves the k-fold CRT ring isomorphism; same inductive CRT structure."
+        }
+    ],
+    "leanFile": {
+        "path": "Proofs/BezoutIdentityOQ03OQ03.lean",
+        "axiomCount": 0,
+        "lineCount": 191,
+        "theoremCount": 7,
+        "definitionCount": 1,
+        "sorries": 0
+    }
+}
