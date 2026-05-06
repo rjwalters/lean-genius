@@ -73,7 +73,7 @@
       "multiplicity_trivial_upper theorem: multiplicity ≤ n²",
       "erdos_756 theorem: main result"
     ],
-    "axiomCount": 2,
+    "axiomCount": 5,
     "lineCount": 268,
     "assumptions": "5 axioms: hopf_pannwitz (largest distance multiplicity ≤ n), bhowmick_main (⌊n/4⌋ rich distances for large n), squareGrid (square grid construction), regularPolygon (regular polygon construction), latticeInDisk (lattice points in disk). No sorries.",
     "theoremCount": 8,
@@ -222,7 +222,7 @@
     ],
     "namespace": "Erdos756",
     "lineCount": 268,
-    "axiomCount": 2,
+    "axiomCount": 5,
     "theoremCount": 8,
     "definitionCount": 17,
     "path": "Proofs/Erdos756Problem.lean",
