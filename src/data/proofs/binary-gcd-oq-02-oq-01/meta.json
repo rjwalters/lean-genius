@@ -125,5 +125,19 @@
     "definitionCount": 1,
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "id": "gcd-algorithm",
+      "relationship": "related: the standard Euclidean GCD algorithm, providing the Mathlib Nat.gcd that binaryGcdBit is proved equal to"
+    },
+    {
+      "id": "binary-gcd-oq-02",
+      "relationship": "parent: provides binaryGcd (arithmetic formulation) that binaryGcdBit is structurally modeled on"
+    },
+    {
+      "id": "binary-gcd",
+      "relationship": "grandparent: Stein's binary GCD algorithm baseline, with full verification of correctness"
+    }
+  ]
 }
