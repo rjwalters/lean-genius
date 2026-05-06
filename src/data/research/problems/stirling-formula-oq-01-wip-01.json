@@ -1,0 +1,73 @@
+{
+  "slug": "stirling-formula-oq-01-wip-01",
+  "title": "Complete Higher-Order Stirling Expansion (Work in Progress)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in analysis: Complete Higher-Order Stirling Expansion (Work in Progress).",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-06T14:18:33.488Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "IN-PROGRESS: Proved log_one_plus_le_cubic and log_one_plus_ge_quartic. Step formula sorry remains. Full proof strategy identified.",
+    "builtItems": [
+      "log_one_plus_le_cubic theorem in StirlingExpansion.lean (proved)",
+      "log_one_plus_ge_quartic theorem in StirlingExpansion.lean (proved)",
+      "stirling_step_upper: d_k <= 1/(12k^2)+1/(6k^3) (proved given step formula)",
+      "stirling_step_lower: 1/(12k^2)-1/(12k^3)-1/(8k^4) <= d_k (proved given step formula)"
+    ],
+    "insights": [
+      "d_k = (k+1/2)*log(1+1/k) - 1 is the exact step formula; proved via stirlingSeq definition",
+      "log bounds via derivative monotonicity: f(0)=0, f prime = t^n/(1+t) >= 0 on [0,inf)",
+      "Correct lower bound for d_k: 1/(12k^2) - 1/(12k^3) - 1/(8k^4)",
+      "Main theorem follows from: step_formula + log_bounds + integral_comparison(sum 1/k^2) + exp_approximation"
+    ],
+    "mathlibGaps": [
+      "stirling_step_formula: needs log/sqrt algebraic manipulation (field_simp + ring fails with sqrt)",
+      "No Mathlib theorem for sum bound: |sum_{k>=n} 1/k^2 - 1/n| <= C/n^2"
+    ],
+    "nextSteps": [
+      "Prove stirling_step_formula by explicit log_div/log_mul/log_sqrt/log_pow rewrites from stirlingSeq definition",
+      "Once step formula done, prove sum bound via integral comparison and exp approximation"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "wip",
+    "analysis",
+    "combinatorics"
+  ],
+  "relatedProofs": [
+    "stirling-formula",
+    "stirling-formula-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T14:18:33.488Z",
+  "lastUpdate": "2026-05-06T14:18:33.488Z",
+  "significance": 6,
+  "tractability": 6
+}
