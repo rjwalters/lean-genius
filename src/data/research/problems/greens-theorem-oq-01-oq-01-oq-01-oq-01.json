@@ -29,20 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Lean file created (333 lines, 3 sorries). swap01_cons_eq and swap_outer_two proved. Full 2D case proved. 3 sorries remain for integrability, inner permutation, and general induction.",
+    "progressSummary": "PROGRESS: perm_tail proved (B2 building block complete); 2 sorries remain",
     "builtItems": [
       "swap01_cons_eq: Fin arithmetic computation proving f(cons x\u2081 (cons x\u2080 rest) \u2218 swap 0 1) = f(cons x\u2080 (cons x\u2081 rest))",
       "swap_outer_two: Fubini swap of positions 0 and 1 for continuous f in any n+2 dimensions",
       "order_independent_2d: Full order independence for n=2 (all of Perm(Fin 2))",
       "order_independent_3d_swap01: 3D case for swap(0,1)",
-      "GreensTheoremOQ01OQ01OQ01OQ01.lean (333 lines, 3 sorries)"
+      "GreensTheoremOQ01OQ01OQ01OQ01.lean (333 lines, 3 sorries)",
+      "iteratedIntervalIntegral_perm_tail: fully proved using decomposeFin (GreensTheoremOQ01OQ01OQ01OQ01.lean)",
+      "integrable_swap_pair: reduced to 1 sorry (continuity of G(p)) + completed ContinuousOn path"
     ],
     "insights": [
       "Core computation is pure Fin arithmetic: swap01_cons_eq handles the positions 0, 1, k+2 cases separately via Fin.cases.",
       "Proof structure: expand both LHS and RHS to a common double integral G(x\u2080,x\u2081) over inner variables, then apply integral_integral_swap (Fubini).",
       "The G function (iterated integral over remaining variables) is identical on both sides after the swap01 computation - the key invariant.",
       "Two building blocks suffice: (1) swap positions 0 and 1 (Fubini), (2) permute inner variables (IH inside outer integral). Any permutation decomposes into these.",
-      "Perm(Fin 2) = {id, swap 0 1} case is fully handled by splitting on where \u03c3 sends 0."
+      "Perm(Fin 2) = {id, swap 0 1} case is fully handled by splitting on where \u03c3 sends 0.",
+      "Equiv.Perm.decomposeFin gives \u03c3(0)=0 \u2192 tail permutation \u03c3' with \u03c3(i.succ)=(\u03c3' i).succ; enables perm_tail proof",
+      "continuous_of_dominated_interval is the key Mathlib tool for continuity of parameterized integrals",
+      "ContinuousOn.integrableOn_compact + Measure.prod_restrict converts continuity to integrability on Ioc\u00d7Ioc"
     ],
     "mathlibGaps": [
       "Continuity of iteratedIntervalIntegral as function of outer parameter (needed for integrable_swap_pair)",
@@ -52,7 +57,10 @@
       "Prove continuity of parameterized iterated integral by induction using intervalIntegral.continuous_of_dominated",
       "Prove iteratedIntervalIntegral_perm_tail using integral_congr + IH on Fin.tail permutation",
       "Prove main theorem using Equiv.Perm.induction_on + swap_outer_two compositionality",
-      "Submit integrable_swap_pair sorry to Aristotle after proof outline is complete"
+      "Submit integrable_swap_pair sorry to Aristotle after proof outline is complete",
+      "Prove continuity of G(p) = iteratedIntervalIntegral... (fun rest => f(cons p.1 (cons p.2 rest))) by induction using continuous_of_dominated_interval with bound from max of f on compact box",
+      "Prove main theorem case \u03c3(0)=k\u22600: define \u03c3''=(swap 0 k)\u2218\u03c3, show \u03c3'' 0=0, apply perm_tail+swap_outer_two",
+      "For k>1: generalize swap_outer_two to swap(0,k) via adjacent transposition decomposition"
     ],
     "markdown": "# Knowledge Base: greens-theorem-oq-01-oq-01-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },

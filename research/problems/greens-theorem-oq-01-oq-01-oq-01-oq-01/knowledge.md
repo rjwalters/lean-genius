@@ -76,3 +76,45 @@ proves the building blocks to eliminate that axiom.
    Aristotle after resolving the proof outline (the integrability follows from
    continuity + compact domain via standard Mathlib infrastructure).
 
+
+---
+
+## Session 2026-05-06 (Session 2) — Prove perm_tail Building Block
+
+**Mode**: REVISIT (in-progress problem)
+**Outcome**: progress
+
+### What I Did
+
+- Proved `iteratedIntervalIntegral_perm_tail` using `Equiv.Perm.decomposeFin`
+- Restructured `integrable_swap_pair` to use ContinuousOn.integrableOn_compact path
+- Identified `continuous_of_dominated_interval` as the key Mathlib tool
+- Pushed to PR #16248 branch (original PR was merged; new push creates continuation)
+
+### Key Findings
+
+- **decomposeFin decomposition**: `Equiv.Perm.decomposeFin σ = (σ 0, σ')` where σ'
+  is the tail permutation. When σ 0 = 0: `decomposeFin_symm_apply_succ` gives
+  `σ(i.succ) = swap 0 0 (σ' i).succ = (σ' i).succ`. This is the key computation.
+
+- **Integrability path**: `Continuous G → ContinuousOn.integrableOn_compact (Icc×Icc) 
+  → IntegrableOn (Ioc×Ioc) → Integrable w.r.t. (vol.restrict Ioc)×(vol.restrict Ioc)`
+  via `Measure.prod_restrict`.
+
+- **Remaining sorry for continuity**: Need `Continuous (fun p => iteratedIntervalIntegral
+  ... (fun rest => f(cons p.1 (cons p.2 rest))))`. Fix: induction using
+  `continuous_of_dominated_interval`, with bound = max of ‖f‖ on compact box.
+
+- **Main theorem σ(0)≠0**: Write σ''=(swap 0 k)∘σ, then σ'' 0=0. Apply perm_tail
+  to σ''. Need result for swap(0,k): k=1 by swap_outer_two, k>1 needs generalization.
+
+### Files Modified
+
+- `proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean` (341 lines, 2 sorries)
+- `src/data/proofs/greens-theorem-oq-01-oq-01-oq-01-oq-01/meta.json` (sorries: 3→2)
+
+### Next Steps
+
+1. Prove continuity of G(p) using continuous_of_dominated_interval induction (1 sorry)
+2. Prove main theorem case σ(0)≠0 using perm_tail + generalized swap(0,k) (1 sorry)
+3. For swap(0,k): prove by induction on k using swap(0,k) = swap(k-1,k)∘swap(0,k-1)∘swap(k-1,k)

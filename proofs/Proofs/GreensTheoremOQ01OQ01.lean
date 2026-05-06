@@ -59,10 +59,11 @@ theorem intervalIntegral_swap {f : ℝ → ℝ → ℝ}
   -- RHS = ∫ x ∂(vol.restrict (Ioc a b)), ∫ y ∂(vol.restrict (Ioc c d)), f x y
   -- Step 3: Derive integrability on Ioc product from Icc integrability
   have hf_int' : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
-      ((volume.restrict (Set.Ioc a b)).prod (volume.restrict (Set.Ioc c d))) :=
-    hf_int.mono_measure (Measure.prod_mono
-      (Measure.restrict_mono Set.Ioc_subset_Icc_self le_rfl)
-      (Measure.restrict_mono Set.Ioc_subset_Icc_self le_rfl))
+      ((volume.restrict (Set.Ioc a b)).prod (volume.restrict (Set.Ioc c d))) := by
+    apply hf_int.mono_measure
+    simp only [Measure.prod_restrict]
+    exact Measure.restrict_mono
+        (Set.prod_mono Set.Ioc_subset_Icc_self Set.Ioc_subset_Icc_self) le_rfl
   -- Step 4: Apply Fubini (integral_integral_swap)
   -- integral_integral_swap: ∫ x ∂μ, ∫ y ∂ν, g x y = ∫ y ∂ν, ∫ x ∂μ, g x y
   -- With μ = vol.restrict (Ioc a b), ν = vol.restrict (Ioc c d), g = f:
@@ -117,7 +118,11 @@ theorem fubini_of_continuous {f : ℝ × ℝ → ℝ}
   have hint : IntegrableOn f (Set.Icc a b ×ˢ Set.Icc c d) volume :=
     hf.continuousOn.integrableOn_compact hcpt
   -- Convert: IntegrableOn f (S ×ˢ T) vol = Integrable f (vol.restrict S).prod (vol.restrict T)
-  rwa [Measure.restrict_prod_eq_prod_restrict measurableSet_Icc measurableSet_Icc] at hint
+  -- Measure.prod_restrict: (μ.restrict s).prod (ν.restrict t) = (μ.prod ν).restrict (s ×ˢ t)
+  -- volume (ℝ × ℝ) = volume (ℝ) × volume (ℝ) definitionally
+  have : Integrable f ((volume.restrict (Set.Icc a b)).prod (volume.restrict (Set.Icc c d))) := by
+    rw [Measure.prod_restrict]; exact hint
+  exact this
 
 /-- Spelling out: for C¹ vector fields (P, Q), the Fubini hypothesis
     in Green's theorem is always satisfied. -/
