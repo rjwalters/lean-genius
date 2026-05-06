@@ -2,12 +2,12 @@
   "id": "sperner-mathlib",
   "title": "Sperner's Lemma via Door Counting",
   "slug": "sperner-mathlib",
-  "description": "A combinatorial proof of Sperner's lemma for abstract cell complexes using a door-counting parity argument. The proof works with finite combinatorial data\u2014cells with indexed faces and an adjacency involution\u2014avoiding explicit simplicial or topological structure. Interior doors pair up (even count), and a per-cell parity argument shows that boundary door count and panchromatic cell count have the same parity.",
+  "description": "A combinatorial proof of Sperner's lemma for abstract cell complexes using a door-counting parity argument. The proof works with finite combinatorial data—cells with indexed faces and an adjacency involution—avoiding explicit simplicial or topological structure. Interior doors pair up (even count), and a per-cell parity argument shows that boundary door count and panchromatic cell count have the same parity.",
   "meta": {
     "status": "verified",
     "badge": "original",
     "axiomCount": 0,
-    "sorryCount": 0,
+    "sorries": 0,
     "theoremCount": 24,
     "definitionCount": 6,
     "lineCount": 897,
@@ -22,66 +22,60 @@
       "cell-complex"
     ],
     "assumptions": [],
-    "sorries": 0,
     "proofRepoPath": "Proofs/SpernerMathlib.lean"
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma was proved by Emanuel Sperner in 1928 as a combinatorial result about triangulations of simplices, originally to give a new proof of the Invariance of Domain theorem. Shortly after, it was recognized that Brouwer's fixed-point theorem follows from it, cementing Sperner's lemma as a cornerstone of combinatorial topology. The classical statement asserts that any Sperner-colored triangulation of a d-simplex—where boundary vertices on each face receive colors from that face's complement—contains at least one panchromatic simplex using all d+1 colors. Subsequent decades saw the lemma generalized from simplicial triangulations to abstract cell complexes and pseudomanifolds. The formalization here follows the abstract cell complex approach (after De Longueville, *A Course in Topological Combinatorics*), working entirely with finite combinatorial adjacency data rather than geometric coordinates.",
+    "problemStatement": "Let $\\mathcal{C}$ be a finite collection of cells, each with $d+1$ faces indexed by $\\mathrm{Fin}(d+1)$, and let $\\mathrm{adj} : \\mathcal{C} \\times \\mathrm{Fin}(d+1) \\to \\mathrm{Option}(\\mathcal{C} \\times \\mathrm{Fin}(d+1))$ be a face-adjacency map satisfying symmetry, shared-vertex-image, and no-self-adjacency axioms. Given a vertex coloring $c : V \\to \\mathrm{Fin}(d+1)$, call a facet $(s,k)$ a *door* if removing vertex $k$ from cell $s$ leaves all lower colors $\\{0,\\ldots,d-1\\}$ covered by the remaining vertices. Then $|\\{\\text{panchromatic cells}\\}| \\equiv |\\{\\text{boundary doors}\\}| \\pmod{2}$, so an odd boundary door count guarantees at least one panchromatic cell.",
+    "proofStrategy": "The proof uses a three-step door-counting argument. First, `even_card_fpf_invol` establishes that any fixed-point-free involution on a finite set has even cardinality—the parity engine for everything that follows. Second, `door_count_parity` shows each cell's door count has parity equal to its panchromaticity indicator: bijective colorings contribute exactly 1 door (the preimage of the top color), while non-surjective colorings contribute 0 or 2 via the pigeonhole duplicated fiber. Third, `even_card_interior_doors` shows interior doors cancel in pairs via the adjacency involution, so summing over all cells and cancelling the even interior contribution yields the main congruence in `sperner_parity`.",
+    "keyInsights": [
+      "The door-counting argument replaces all geometric reasoning with finite set cardinality modulo 2—no coordinates, simplicial maps, or topological continuity appear anywhere in the 897-line proof.",
+      "The key invariant `door_count_parity` has a clean case analysis: bijections contribute exactly 1 door (the preimage of color $d$); surjections onto $\\mathrm{Fin}(d)$ contribute exactly 2 via the unique doubled fiber; non-surjections contribute 0. This trichotomy drives the entire argument.",
+      "The adjacency involution bridges local and global door counts: $\\mathrm{adj}(s,k)=(s',k') \\Rightarrow \\mathrm{adj}(s',k')=(s,k)$ creates a fixed-point-free pairing on interior doors, so their total is even and cancels from the mod-2 sum.",
+      "Abstracting to cell complexes with three axioms (symmetry, shared-vertex-image, no self-adjacency) makes the result applicable to any finite polyhedral decomposition—not just simplicial triangulations of the standard simplex.",
+      "The Sperner coloring hypothesis is invoked only at the final step to localize all boundary doors to the last face, converting the abstract odd-boundary-doors condition into a checkable property of the simplex boundary."
+    ]
   },
   "sections": [
     {
       "id": "fpf-invol",
       "title": "Fixed-Point-Free Involution Parity",
-      "description": "A fixed-point-free involution on a finite set has even cardinality, since every element pairs with its distinct image. This foundational lemma applies beyond Sperner: Tucker's lemma, Borsuk-Ulam, and other combinatorial topology results rely on the same parity mechanism.",
-      "theorems": [
-        "even_card_fpf_invol"
-      ]
+      "startLine": 52,
+      "endLine": 103,
+      "summary": "A fixed-point-free involution on a finite set has even cardinality, since every element pairs with its distinct image. This foundational parity lemma applies beyond Sperner: Tucker's lemma, Borsuk-Ulam, and other combinatorial topology results use the same mechanism."
     },
     {
       "id": "door-count",
       "title": "Door Count Parity",
-      "description": "A 'door' at position k of a cell is a face that, if removed, still covers all remaining colors. The key lemma `door_count_parity` shows the number of door positions has the same parity as the surjectivity indicator of the coloring. The proof uses a pigeonhole argument (`surjection_unique_dup_fiber`) to identify the unique duplicated fiber when the coloring is surjective.",
-      "theorems": [
-        "exists_of_sum_eq_one",
-        "door_count_parity"
-      ]
+      "startLine": 105,
+      "endLine": 332,
+      "summary": "A 'door' at position k of a cell is a face that, if removed, still covers all remaining lower colors. The key theorem `door_count_parity` shows the door count has the same parity as the coloring's surjectivity indicator. The proof uses a pigeonhole argument (`surjection_unique_dup_fiber`) identifying the unique duplicated fiber when the coloring is surjective onto Fin(d)."
     },
     {
       "id": "interior-pairing",
       "title": "Interior Door Pairing",
-      "description": "The adjacency relation pairs interior doors: each interior door of cell s at face k corresponds to a door of the adjacent cell s' at face k'. The adjacency involution (`isDoor_iff_of_adj`) ensures these pairs are distinct, so the total interior door count is even.",
-      "theorems": [
-        "isDoor_of_shared_face",
-        "isDoor_iff_of_adj",
-        "even_card_interior_doors"
-      ]
+      "startLine": 334,
+      "endLine": 465,
+      "summary": "This section defines the abstract cell complex data (IsPanchromatic, IsDoor, Decidable instances) and proves that interior doors pair via the adjacency involution. The `isDoor_iff_of_adj` symmetry lemma and `even_card_interior_doors` establish that interior doors always come in pairs, contributing an even count to the global door sum."
     },
     {
       "id": "sperner-main",
       "title": "Sperner's Lemma",
-      "description": "Summing door counts across all cells and using the interior-door pairing, the panchromatic cell count and the boundary door count are congruent modulo 2. If the boundary doors are odd, at least one panchromatic cell exists. With a Sperner coloring (boundary vertices labeled by the face they miss), every boundary door lies on the last face, and the boundary door count is odd.",
-      "theorems": [
-        "per_cell_door_parity",
-        "sum_mod_congr",
-        "card_doors_eq_sum",
-        "doors_partition",
-        "sperner_parity",
-        "exists_panchromatic",
-        "boundary_doors_on_last_face",
-        "boundary_doors_odd_of_last_face"
-      ]
+      "startLine": 466,
+      "endLine": 741,
+      "summary": "Summing door counts across all cells and using the interior-door pairing, the panchromatic cell count and the boundary door count are congruent modulo 2. With a Sperner coloring, every boundary door lies on the last face and the boundary door count is odd, so at least one panchromatic cell must exist."
     },
     {
       "id": "interval-example",
       "title": "1-Dimensional Example",
-      "description": "The interval triangulation demonstrates that the abstract axioms are satisfiable. Cells are segments [i, i+1] for i < m, faces are endpoints (Fin 2), vertices are natural numbers via `ivtx`, and adjacency `iadj` connects adjacent segments. An example shows `exists_panchromatic` applies when the endpoint colorings differ.",
-      "theorems": []
+      "startLine": 742,
+      "endLine": 897,
+      "summary": "The interval triangulation instantiates the abstract axioms: cells are segments [i, i+1] for i < m, faces are endpoints (Fin 2), and adjacency connects consecutive segments. An example theorem confirms `exists_panchromatic` applies when the endpoint colorings differ, verifying that the abstract axioms are satisfiable."
     }
   ],
-  "overview": {
-    "summary": "Sperner's lemma guarantees the existence of a 'rainbow' or panchromatic cell\u2014one whose vertices collectively use all d+1 colors\u2014in any Sperner-colored triangulation of a d-simplex. This formalization proves the result for abstract cell complexes satisfying combinatorial axioms about faces and adjacency.",
-    "approach": "The proof uses a door-counting double-counting argument. A 'door' at position k of cell s is a face whose removal still covers all other colors. Interior doors pair via the adjacency involution (contributing an even count), while panchromatic cells each contribute an odd number of doors. Summing modulo 2 shows the panchromatic cell count has the same parity as the boundary door count.",
-    "significance": "Sperner's lemma is a combinatorial engine powering many fixed-point and fair-division theorems, including Brouwer's fixed-point theorem, Tucker's lemma, and envy-free cake-cutting results. The abstract cell-complex formulation here is more general than the classical simplicial version and applies to arbitrary finite triangulations."
-  },
   "conclusion": {
     "summary": "Sperner's lemma is fully machine-checked for abstract cell complexes with no axioms or sorry placeholders. The door-counting argument is self-contained within Mathlib's finite combinatorics library.",
+    "implications": "This formalization provides a verified parity engine that can serve as a foundation for machine-checked proofs of Brouwer's fixed-point theorem (via triangulation approximation), Tucker's lemma (via the same involution argument with an antipodal coloring), and envy-free cake-cutting algorithms (via fair-division topology). The abstract cell complex formulation is particularly valuable because it decouples topological reasoning from any specific triangulation representation, enabling reuse across different geometric models in future Lean 4 formalizations.",
     "openQuestions": [
       "Can the abstract CellComplex axioms be weakened further, e.g., to hypergraphs or non-pure complexes?",
       "Does the parity argument extend to give a lower bound on panchromatic cell count (KKM-type results)?",
