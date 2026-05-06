@@ -591,14 +591,124 @@ private lemma maxTrail_last_exhausted (E : Finset (V × V)) (v : V) :
 private lemma maxTrail_steps_in_E (E : Finset (V × V)) (v : V) :
     ∀ i, i + 1 < (maxTrail E v).length →
       ((maxTrail E v).get ⟨i, by omega⟩, (maxTrail E v).get ⟨i + 1, by omega⟩) ∈ E := by
-  sorry -- Provable by induction on E.card; deferred for brevity
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    intro i hi
+    by_cases hout : (E.filter (fun e => e.1 = v)).Nonempty
+    · set e := hout.choose with he_def
+      have he_spec := hout.choose_spec
+      have he_E : e ∈ E := (Finset.mem_filter.mp he_spec).1
+      have he_v : e.1 = v := (Finset.mem_filter.mp he_spec).2
+      have hcard : (E.erase e).card < n := h_n ▸ Finset.card_erase_lt_of_mem he_E
+      have hmtail : maxTrail E v = v :: maxTrail (E.erase e) e.2 := by
+        unfold maxTrail; simp only [hout, ↓reduceDite]
+      cases i with
+      | zero =>
+        have h_inner_pos : 0 < (maxTrail (E.erase e) e.2).length := by
+          simp only [hmtail, List.length_cons] at hi; omega
+        have hinner_start : (maxTrail (E.erase e) e.2).get ⟨0, h_inner_pos⟩ = e.2 := by
+          have hmh := maxTrail_head' (E.erase e) e.2
+          cases h_inner : maxTrail (E.erase e) e.2 with
+          | nil => exact absurd h_inner (maxTrail_nonempty' _ _)
+          | cons hd t =>
+            rw [h_inner] at hmh
+            simp only [List.head?_cons, Option.some.injEq] at hmh
+            rw [h_inner, List.get_cons_zero]; exact hmh
+        simp only [hmtail, List.get_cons_zero, List.get_cons_succ, hinner_start, ← he_v]
+        exact he_E
+      | succ i' =>
+        have hlen : i' + 1 < (maxTrail (E.erase e) e.2).length := by
+          simp only [hmtail, List.length_cons] at hi; omega
+        simp only [hmtail, List.get_cons_succ]
+        exact Finset.mem_of_mem_erase (ih _ hcard _ _ rfl i' hlen)
+    · have hmtail : maxTrail E v = [v] := by unfold maxTrail; simp [hout]
+      simp only [hmtail, List.length_singleton] at hi; omega
 
 /-- No edge is used twice in maxTrail (distinct edges). -/
 private lemma maxTrail_steps_distinct (E : Finset (V × V)) (v : V) :
     ∀ i j, i + 1 < (maxTrail E v).length → j + 1 < (maxTrail E v).length → i ≠ j →
       ((maxTrail E v).get ⟨i, by omega⟩, (maxTrail E v).get ⟨i + 1, by omega⟩) ≠
       ((maxTrail E v).get ⟨j, by omega⟩, (maxTrail E v).get ⟨j + 1, by omega⟩) := by
-  sorry -- Key: edge erased at each step prevents reuse; provable by induction
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    intro i j hi hj hij
+    by_cases hout : (E.filter (fun e => e.1 = v)).Nonempty
+    · set e := hout.choose with he_def
+      have he_spec := hout.choose_spec
+      have he_E : e ∈ E := (Finset.mem_filter.mp he_spec).1
+      have hcard : (E.erase e).card < n := h_n ▸ Finset.card_erase_lt_of_mem he_E
+      have hmtail : maxTrail E v = v :: maxTrail (E.erase e) e.2 := by
+        unfold maxTrail; simp only [hout, ↓reduceDite]
+      cases i with
+      | zero =>
+        cases j with
+        | zero => exact absurd rfl hij
+        | succ j' =>
+          -- Step 0 uses e ∈ E; step j'+1 uses an edge in E.erase e (not e)
+          intro heq
+          have h_inner_pos : 0 < (maxTrail (E.erase e) e.2).length := by
+            simp only [hmtail, List.length_cons] at hi; omega
+          have hlen_j : j' + 1 < (maxTrail (E.erase e) e.2).length := by
+            simp only [hmtail, List.length_cons] at hj; omega
+          -- Step 0 produces e
+          have hstep0 : ((maxTrail E v).get ⟨0, by omega⟩,
+              (maxTrail E v).get ⟨1, by omega⟩) = e := by
+            simp only [hmtail, List.get_cons_zero, List.get_cons_succ]
+            have hinner_start : (maxTrail (E.erase e) e.2).get ⟨0, h_inner_pos⟩ = e.2 := by
+              have hmh := maxTrail_head' (E.erase e) e.2
+              cases h_inner : maxTrail (E.erase e) e.2 with
+              | nil => exact absurd h_inner (maxTrail_nonempty' _ _)
+              | cons hd t =>
+                rw [h_inner] at hmh
+                simp only [List.head?_cons, Option.some.injEq] at hmh
+                rw [h_inner, List.get_cons_zero]; exact hmh
+            rw [hinner_start]
+            exact Prod.mk.inj_iff.mpr ⟨(Finset.mem_filter.mp he_spec).2.symm, rfl⟩
+          -- Step j'+1 produces an edge in E.erase e
+          have hstepj : ((maxTrail E v).get ⟨j' + 1, by omega⟩,
+              (maxTrail E v).get ⟨j' + 2, by omega⟩) ∈ E.erase e := by
+            simp only [hmtail, List.get_cons_succ]
+            exact ih _ hcard (E.erase e) e.2 rfl j' hlen_j
+          rw [hstep0] at heq
+          exact absurd (heq ▸ hstepj) (Finset.not_mem_erase e E)
+      | succ i' =>
+        cases j with
+        | zero =>
+          -- i = i'+1, j = 0: symmetric to i=0, j=succ case
+          intro heq
+          have h_inner_pos : 0 < (maxTrail (E.erase e) e.2).length := by
+            simp only [hmtail, List.length_cons] at hj; omega
+          have hlen_i : i' + 1 < (maxTrail (E.erase e) e.2).length := by
+            simp only [hmtail, List.length_cons] at hi; omega
+          have hstep0 : ((maxTrail E v).get ⟨0, by omega⟩,
+              (maxTrail E v).get ⟨1, by omega⟩) = e := by
+            simp only [hmtail, List.get_cons_zero, List.get_cons_succ]
+            have hinner_start : (maxTrail (E.erase e) e.2).get ⟨0, h_inner_pos⟩ = e.2 := by
+              have hmh := maxTrail_head' (E.erase e) e.2
+              cases h_inner : maxTrail (E.erase e) e.2 with
+              | nil => exact absurd h_inner (maxTrail_nonempty' _ _)
+              | cons hd t =>
+                rw [h_inner] at hmh
+                simp only [List.head?_cons, Option.some.injEq] at hmh
+                rw [h_inner, List.get_cons_zero]; exact hmh
+            rw [hinner_start]
+            exact Prod.mk.inj_iff.mpr ⟨(Finset.mem_filter.mp he_spec).2.symm, rfl⟩
+          have hstepi : ((maxTrail E v).get ⟨i' + 1, by omega⟩,
+              (maxTrail E v).get ⟨i' + 2, by omega⟩) ∈ E.erase e := by
+            simp only [hmtail, List.get_cons_succ]
+            exact ih _ hcard (E.erase e) e.2 rfl i' hlen_i
+          rw [hstep0] at heq
+          exact absurd (heq.symm ▸ hstepi) (Finset.not_mem_erase e E)
+        | succ j' =>
+          -- Both steps are in inner trail
+          simp only [hmtail, List.get_cons_succ]
+          have hlen_i : i' + 1 < (maxTrail (E.erase e) e.2).length := by
+            simp only [hmtail, List.length_cons] at hi; omega
+          have hlen_j : j' + 1 < (maxTrail (E.erase e) e.2).length := by
+            simp only [hmtail, List.length_cons] at hj; omega
+          exact ih _ hcard _ _ rfl i' j' hlen_i hlen_j (by omega)
+    · have hmtail : maxTrail E v = [v] := by unfold maxTrail; simp [hout]
+      simp only [hmtail, List.length_singleton] at hi; omega
 
 /-
   STEP 3: MAXIMAL TRAIL IS CLOSED IN A BALANCED GRAPH
