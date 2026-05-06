@@ -1,0 +1,152 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+  "title": "Gauss Sum Squared Identity τ² = χ(-1)·p",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
+  "description": "Proves the central identity in the Gauss sum proof of Quadratic Reciprocity: for odd prime p, the classical Gauss sum τ = Σ_a (a/p)·exp(2πia/p) satisfies τ² = (-1)^((p-1)/2)·p in ℂ. This fills the key gap in the Gauss pathway outlined in ElementaryQuadraticReciprocityOQ01OQ01, converting an axiomatized identity into a theorem. The proof uses Mathlib's gaussSum_sq with the quadratic character of ZMod p and the standard additive character, then computes χ(-1) via the first supplementary law.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-05-05",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "gauss-sums",
+      "legendre-symbol",
+      "additive-characters",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 212,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "dateAdded": "2026-05-05",
+    "mathlibDependencies": [
+      {
+        "theorem": "gaussSum_sq",
+        "description": "For nontrivial quadratic χ and primitive ψ: (gaussSum χ ψ)² = χ(-1)·|G|",
+        "module": "Mathlib.NumberTheory.GaussSum"
+      },
+      {
+        "theorem": "legendreSym.at_neg_one",
+        "description": "First supplementary law: legendreSym p (-1) = χ₄ p",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "χ₄_eq_neg_one_pow",
+        "description": "χ₄ p = (-1)^(p/2) for odd p",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "ZMod.isPrimitive_stdAddChar",
+        "description": "The standard additive character of ZMod p is primitive",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.CircleAddChar"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_neg_one_iff",
+        "description": "IsSquare(-1:ZMod p) ↔ p % 4 ≠ 3 (for prime p)",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.ZMod"
+      }
+    ],
+    "originalContributions": [
+      "gauss_sum_squared: proves τ² = (-1)^(p/2)·p in ℂ using gaussSum_sq instantiation",
+      "gauss_sum_sq_pos_case: τ² = p when p ≡ 1 (mod 4) via Even.neg_one_pow",
+      "gauss_sum_sq_neg_case: τ² = -p when p ≡ 3 (mod 4) via Odd.neg_one_pow",
+      "quadCharC: explicit definition of the Legendre symbol as a ℂ-valued MulChar"
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Introduction and QR Pathway",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Opening docstring, imports, namespace setup, and variable declarations. Explains the four-step Gauss sum proof strategy for QR and states this file proves Step 2: τ² = χ(-1)·p.",
+      "mathContext": "The four-step pathway: (1) Define $\\tau = \\sum_a \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p}$; (2) Prove $\\tau^2 = \\chi(-1) \\cdot p$; (3) Prove $\\tau^q \\equiv \\left(\\frac{p}{q}\\right) \\tau \\pmod{q}$ via Frobenius; (4) Derive QR by comparing two formulas for $\\tau^q$."
+    },
+    {
+      "id": "quad-char-setup",
+      "title": "Quadratic Character Setup",
+      "startLine": 57,
+      "endLine": 88,
+      "summary": "Defines quadCharC as the Legendre symbol promoted to a ℂ-valued multiplicative character, proves it is quadratic (quadCharC_isQuadratic) and nontrivial (quadCharC_ne_one). Both properties are required by Mathlib's gaussSum_sq.",
+      "mathContext": "$\\chi = $ quadCharC $: (\\mathbb{Z}/p\\mathbb{Z}) \\to \\mathbb{C}$, $\\quad \\chi(a) = \\text{Int.cast}\\left(\\left(\\frac{a}{p}\\right)_{\\mathbb{Z}}\\right)$. IsQuadratic means $\\chi(a)^2 = \\chi(a^2) = 1$ or $0$."
+    },
+    {
+      "id": "gauss-sum-def",
+      "title": "Classical Gauss Sum Definition",
+      "startLine": 90,
+      "endLine": 97,
+      "summary": "Defines classicalGaussSum p as gaussSum(quadCharC p)(ZMod.stdAddChar), the ℂ-valued sum Σ_a (a/p)·exp(2πia/p).",
+      "mathContext": "$\\tau_p = \\text{classicalGaussSum}(p) = \\sum_{a \\in \\mathbb{Z}/p\\mathbb{Z}} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p} \\in \\mathbb{C}$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Identity: τ² = χ(-1)·p",
+      "startLine": 99,
+      "endLine": 141,
+      "summary": "Proves gauss_sum_squared via: gaussSum_sq → τ² = χ(-1)·|ZMod p|, then ZMod.card gives |ZMod p| = p, then legendreSym.at_neg_one gives χ(-1) = (-1)^(p/2).",
+      "mathContext": "$\\tau^2 = \\chi(-1) \\cdot |\\mathbb{Z}/p\\mathbb{Z}| = (-1)^{\\lfloor p/2 \\rfloor} \\cdot p$"
+    },
+    {
+      "id": "corollaries",
+      "title": "Sign Corollaries and Existential Form",
+      "startLine": 143,
+      "endLine": 173,
+      "summary": "Derives: (1) gauss_sum_squared_exists — explicit witness for the parent axiom; (2) neg_one_quadratic_residue_iff — first supplement; (3) gauss_sum_sq_pos_case (p≡1 mod 4: τ²=p); (4) gauss_sum_sq_neg_case (p≡3 mod 4: τ²=-p).",
+      "mathContext": "$\\tau^2 = p$ when $p \\equiv 1 \\pmod{4}$, $\\quad \\tau^2 = -p$ when $p \\equiv 3 \\pmod{4}$"
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete Instances and Results Summary",
+      "startLine": 175,
+      "endLine": 212,
+      "summary": "Verifies the identity for p=3,5,7,13 via gauss_sum_squared_exists. Closing table summarizes all five theorems proved with 0 sorries and 0 axioms.",
+      "mathContext": "$p=3$: $\\tau^2 = -3$; $p=5$: $\\tau^2 = 5$; $p=7$: $\\tau^2 = -7$; $p=13$: $\\tau^2 = 13$"
+    }
+  ],
+  "overview": {
+    "summary": "Proves the Gauss sum squared identity τ² = χ(-1)·p in ℂ, the analytic heart of the Gauss sum proof of Quadratic Reciprocity. Uses Mathlib's gaussSum_sq with the Legendre symbol character and the standard additive character.",
+    "historicalContext": "Carl Friedrich Gauss (1777–1855) devoted remarkable attention to the Law of Quadratic Reciprocity, providing eight distinct proofs over his lifetime — a measure of the theorem's depth and his fascination with it. His third proof (1808) introduced the **Gauss sum** τ = Σ_{a=0}^{p-1} (a/p)·e^{2πia/p} as the central object. The key insight, formalized here, is that τ² = χ(-1)·p in ℂ — a clean algebraic identity in the complex plane that immediately encodes information about quadratic residues. The proof strategy is then: compute τ^q in two ways (using the Frobenius endomorphism and the definition), compare them, and read off QR. This approach influenced the development of algebraic number theory, eventually leading to Hecke's generalization using Hecke Grössencharacters and Tate's thesis. The domain ℂ is essential — the analogous statement fails in ℤ, since ±p is not a perfect square for any prime p > 2.",
+    "problemStatement": "For an odd prime $p$, the classical Gauss sum $\\tau = \\sum_{a=0}^{p-1} \\left(\\frac{a}{p}\\right) e^{2\\pi i a/p} \\in \\mathbb{C}$ satisfies $\\tau^2 = \\chi(-1) \\cdot p$, where $\\chi(-1) = \\left(\\frac{-1}{p}\\right) = (-1)^{(p-1)/2}$. Equivalently, $\\tau^2 = p$ if $p \\equiv 1 \\pmod{4}$ and $\\tau^2 = -p$ if $p \\equiv 3 \\pmod{4}$.",
+    "proofStrategy": "Three-step chain via Mathlib: (1) Apply `gaussSum_sq` (Mathlib.NumberTheory.GaussSum) — for nontrivial quadratic χ and primitive ψ over a finite group G, (gaussSum χ ψ)² = χ(-1)·|G|. Both hypotheses are non-trivial: nontriviality requires ruling out the zero character via Int.cast injectivity, and primitivity of ZMod.stdAddChar is a deep fact about exponential characters. (2) Instantiate |G| = |ZMod p| = p using `ZMod.card`. (3) Evaluate χ(-1) via the **first supplementary law** `legendreSym.at_neg_one`, which converts the Legendre symbol at -1 to (-1)^(p/2) via the χ₄ character formula.",
+    "keyInsights": [
+      "The identity τ² = χ(-1)·p lives necessarily in ℂ. For any odd prime p, ±p is not a perfect square in ℤ, so there is no integer Gauss sum satisfying this identity. The complex plane is the minimal domain where the proof works.",
+      "Mathlib's `gaussSum_sq` distills decades of analytic number theory into a single theorem. Its hypotheses — χ nontrivial and ψ primitive — are exactly the conditions that prevent the sum from collapsing to 0 via character orthogonality.",
+      "The first supplementary law (legendreSym p (-1) = (-1)^(p/2)) is equivalent to Euler's criterion for -1: -1 is a quadratic residue mod p iff p ≡ 1 (mod 4). This is why the sign of τ² depends only on p mod 4, not on the specific prime.",
+      "The proof converts an **axiom** (in ElementaryQuadraticReciprocityOQ01OQ01) into a **theorem** with explicit witness. This exemplifies a key pattern in formalization: axiomatize first to unblock dependent results, then prove later when the infrastructure catches up.",
+      "The `noncomputable` keyword reflects a deep truth: while τ² = χ(-1)·p is decidable as a mathematical proposition, computing the actual complex value of τ requires transcendental functions (exponentials) that Lean cannot reduce computationally."
+    ],
+    "difficulty": "intermediate",
+    "prerequisites": [
+      "Multiplicative characters (MulChar)",
+      "Additive characters (AddChar)",
+      "Legendre symbol and quadratic characters",
+      "First supplementary law of QR"
+    ]
+  },
+  "conclusion": {
+    "summary": "YES — the Gauss sum squared identity τ² = χ(-1)·p is fully provable in Lean 4 using Mathlib's gaussSum_sq theorem. The proof has 0 sorries and 0 new axioms, converting the parent OQ02's axiomatized version into a genuine theorem with explicit witness.",
+    "openQuestions": [
+      "Can the Frobenius step τ^q ≡ (p/q)·τ (mod q) be formalized? (OQ-01-OQ-01-OQ-02)",
+      "Does the full Gauss sum QR proof (all four steps) assemble into a single Lean proof?"
+    ],
+    "implications": "The formalization of τ² = χ(-1)·p establishes the hardest intermediate step in the Gauss sum proof of Quadratic Reciprocity. The remaining open step — formalizing the Frobenius argument τ^q ≡ (p/q)·τ (mod q) — would complete a full Lean machine-checked proof of QR via the Gauss sum method, complementing the Eisenstein lattice-point proof already in the gallery. Beyond QR, Gauss sums of this form appear throughout algebraic and analytic number theory: in Dirichlet L-function computations, in Weil's proof of the Riemann hypothesis for curves over finite fields (via Weil sums), and in Hecke's generalization of the functional equation. The ℂ-valued formulation also connects to the theory of Hecke Grössencharacters and Tate's thesis, which reformulates class field theory in terms of characters."
+  },
+  "crossReferences": [
+    {
+      "id": "elementary-quadratic-reciprocity-oq-01-oq-01",
+      "relationship": "parent — outlines the full Gauss sum pathway for QR"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity-oq-02-oq-01",
+      "relationship": "sibling — proves the same identity from the OQ02 parent's axiom perspective"
+    },
+    {
+      "id": "elementary-quadratic-reciprocity",
+      "relationship": "root — the Eisenstein lattice-point proof of QR"
+    }
+  ]
+}
