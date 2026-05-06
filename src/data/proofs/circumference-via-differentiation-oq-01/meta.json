@@ -56,7 +56,7 @@
     "keyInsights": [
       "**Power rule is the engine**: The entire proof reduces to `hasDerivAt_pow n r`. All the geometry is encoded in the constant ω_n — differentiation is pure calculus.",
       "**Gamma recursion connects volume and surface**: The identity Γ(x+1) = x·Γ(x) is the key to showing n·ω_n = 2π^(n/2)/Γ(n/2). Without it, the surface area formula would appear unrelated to the volume formula.",
-      "**Uniform framework across dimensions**: The same three definitions (nBallVolumeFn, nSphereSurfaceConst, nSphereSurfaceFn) work for all n. The n=1 case gives the 2-point boundary, n=2 gives the circumference, n=3 gives the sphere surface.",
+      "**Uniform framework across dimensions**: The same three definitions (nBallVolumeFn, nSphereSurfaceConst, nSphereSurfaceFn) work for all n. The n=2 case gives the circumference 2πr, n=3 gives the sphere surface 4πr². The file verifies n=2 and n=3 explicitly.",
       "**Parent theorem is a special case**: disk_area_matches_parent shows that CircumferenceViaDifferentiation.area_hasDerivAt follows from the general theorem for n=2."
     ]
   },
@@ -64,33 +64,33 @@
     {
       "id": "section-main-deriv",
       "title": "Main Derivative Theorem",
-      "startLine": 50,
-      "endLine": 80,
-      "summary": "`nBallVolumeFn_hasDerivAt`: The n-ball volume V_n(r) = ω_n·rⁿ has derivative n·ω_n·r^(n-1) at every r. Uses `hasDerivAt_pow` + `const_mul` + ring.",
+      "startLine": 92,
+      "endLine": 118,
+      "summary": "`nBallVolumeFn_hasDerivAt`: The n-ball volume V_n(r) = ω_n·rⁿ has derivative n·ω_n·r^(n-1) at every r. Uses `hasDerivAt_pow` + `const_mul` + ring. Also: `nBallVolumeFn_differentiable` and `deriv_nBallVolume`.",
       "mathContext": "HasDerivAt (nBallVolumeFn n) (nSphereSurfaceFn n r) r, proved by combining the power rule with scalar multiplication."
     },
     {
       "id": "section-gamma",
       "title": "Gamma Recursion for Surface Area",
-      "startLine": 82,
-      "endLine": 104,
+      "startLine": 119,
+      "endLine": 135,
       "summary": "`nSphereSurfaceConst_eq_gamma`: For n ≥ 1, the surface constant n·ω_n = 2π^(n/2)/Γ(n/2). Uses `Gamma_add_one` and `field_simp`.",
       "mathContext": "The Gamma recursion Γ(x+1) = x·Γ(x) allows cancellation: n / Γ(n/2+1) = n / ((n/2)·Γ(n/2)) = 2/Γ(n/2)."
     },
     {
       "id": "section-special",
-      "title": "Special Cases (n=1,2,3)",
-      "startLine": 106,
-      "endLine": 145,
-      "summary": "Surface constants: n=1 gives 2 (two points), n=2 gives 2π (circumference), n=3 gives 4π (sphere surface). Verified using unitBallVolume_one/two/three.",
-      "mathContext": "nSphereSurfaceConst 1 = 2, nSphereSurfaceConst 2 = 2π, nSphereSurfaceConst 3 = 4π."
+      "title": "Special Cases (n=2,3) and Concrete Derivatives",
+      "startLine": 136,
+      "endLine": 169,
+      "summary": "Surface constants: n=2 gives 2π (circumference), n=3 gives 4π (sphere surface). Concrete `HasDerivAt` theorems: `disk_area_deriv_eq_circumference` and `ball_volume_deriv_eq_sphere_surface`. Verified using `unitBallVolume_two` and `unitBallVolume_three`.",
+      "mathContext": "nSphereSurfaceConst 2 = 2π, nSphereSurfaceConst 3 = 4π. HasDerivAt (nBallVolumeFn 2) (2πr) r and HasDerivAt (nBallVolumeFn 3) (4πr²) r."
     },
     {
       "id": "section-connection",
-      "title": "Connection to Parent Theorem",
-      "startLine": 147,
-      "endLine": 175,
-      "summary": "`nBallVolumeFn_two_eq_areaFn` and `disk_area_matches_parent` show that the n=2 case recovers the parent file's circumference derivation.",
+      "title": "Connection to Parent Theorem and Properties",
+      "startLine": 170,
+      "endLine": 211,
+      "summary": "`nBallVolumeFn_two_eq_areaFn` and `disk_area_matches_parent` show that the n=2 case recovers the parent file's circumference derivation. Also: `nSphereSurface_unit`, `unitBallVolume_from_surface`, `nBallVolumeFn_nonneg`.",
       "mathContext": "nBallVolumeFn 2 = CircumferenceViaDifferentiation.areaFn, so the parent theorem is a special case."
     }
   ],
