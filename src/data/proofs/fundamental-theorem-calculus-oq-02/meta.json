@@ -17,9 +17,9 @@
     ],
     "proofRepoPath": "Proofs/FundamentalTheoremCalculusStokes.lean",
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms. 1 sorry: d^2=0 in 2D (Clairaut's theorem) \u2014 needs bridge from Mathlib's iteratedFDeriv to concrete partial derivatives. Green's theorem in Stokes form now proved via GreensTheoremOQ01.greens_theorem_concrete.",
+    "assumptions": "0 axioms, 0 sorries in main file. d^2=0 in 2D (Clairaut's theorem) now proved via ContDiff.contDiffAt.isSymmSndFDerivAt; Green's theorem in Stokes form proved via GreensTheoremOQ01.greens_theorem_concrete.",
     "mathlibDependencies": [
       {
         "theorem": "integral_eq_sub_of_hasDerivAt_of_le",
@@ -221,7 +221,7 @@
     "theoremCount": 11,
     "definitionCount": 7,
     "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
     ]
@@ -252,5 +252,5 @@
       "leanType": "Continuous f -> exists F, extDeriv1D F = f"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
