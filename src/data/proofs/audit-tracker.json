@@ -498,9 +498,9 @@
       "result": "clean"
     },
     "area-of-circle-oq-03-oq-03-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:42:47Z",
+      "lastAudited": "2026-05-06T14:37:12Z",
       "result": "clean"
     },
     "area-of-circle-oq-05": {
@@ -878,9 +878,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-02-oq-04": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:42:48Z",
+      "lastAudited": "2026-05-06T14:37:43Z",
       "result": "clean"
     },
     "bezout-identity-oq-03": {
@@ -1365,10 +1365,10 @@
       "result": "clean"
     },
     "buffons-needle-oq-01-oq-01-oq-04": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T01:39:50Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-06T14:34:38Z",
+      "result": "issues-found"
     },
     "buffons-needle-oq-01-oq-02": {
       "auditCount": 3,
@@ -14884,6 +14884,12 @@
     "sperner-ndim-mathlib-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-05-06T14:46:33Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-06T14:36:05Z",
       "result": "issues-found",
       "issues": []
     }
