@@ -219,18 +219,25 @@ theorem dd_eq_zero_2D (f : ℝ × ℝ → ℝ) (hf : ContDiff ℝ 2 f) (p : ℝ 
     ((hDiff (p.1, y)).hasFDerivAt.comp_hasDerivAt p.1
       ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 y)) rfl).deriv
   simp_rw [hDY, hDX]
-  -- Second mixed partial ∂/∂x[fderiv ℝ f (x, p.2) (0, 1)] at p.1
+  -- Second partial: d/dx[fderiv ℝ f (x, p.2)] via the embedding x ↦ (x, p.2)
+  have hStep1 : HasDerivAt (fun x => fderiv ℝ f (x, p.2))
+      (fderiv ℝ (fderiv ℝ f) p (1, 0)) p.1 :=
+    (hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
+      ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 p.2)) rfl
+  have hStep2 : HasDerivAt (fun y => fderiv ℝ f (p.1, y))
+      (fderiv ℝ (fderiv ℝ f) p (0, 1)) p.2 :=
+    (hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
+      ((hasDerivAt_const p.2 p.1).prod (hasDerivAt_id p.2)) rfl
+  -- Apply evaluation at (0, 1) and (1, 0) respectively
+  -- HasDerivAt.clm_apply: if c has deriv c' and u has deriv u', then (fun x => c x (u x)) has deriv c'(u x) + c(x)(u')
   have hDer2XY : HasDerivAt (fun x => fderiv ℝ f (x, p.2) (0, 1))
-      (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 :=
-    ((hFDiff p).hasFDerivAt.comp_hasDerivAt p.1
-      ((hasDerivAt_id p.1).prod (hasDerivAt_const p.1 p.2))
-      (Prod.mk.eta p)).clm_apply (0, 1)
-  -- Second mixed partial ∂/∂y[fderiv ℝ f (p.1, y) (1, 0)] at p.2
+      (fderiv ℝ (fderiv ℝ f) p (1, 0) (0, 1)) p.1 := by
+    have h := hStep1.clm_apply (hasDerivAt_const p.1 (0, 1 : ℝ × ℝ))
+    simp only [map_zero, add_zero] at h; exact h
   have hDer2YX : HasDerivAt (fun y => fderiv ℝ f (p.1, y) (1, 0))
-      (fderiv ℝ (fderiv ℝ f) p (0, 1) (1, 0)) p.2 :=
-    ((hFDiff p).hasFDerivAt.comp_hasDerivAt p.2
-      ((hasDerivAt_const p.2 p.1).prod (hasDerivAt_id p.2))
-      (Prod.mk.eta p)).clm_apply (1, 0)
+      (fderiv ℝ (fderiv ℝ f) p (0, 1) (1, 0)) p.2 := by
+    have h := hStep2.clm_apply (hasDerivAt_const p.2 (1, 0 : ℝ × ℝ))
+    simp only [map_zero, add_zero] at h; exact h
   rw [hDer2XY.deriv, hDer2YX.deriv]
   -- Symmetry of the second Fréchet derivative: Clairaut/Schwarz theorem
   exact hf.contDiffAt.isSymmSndFDerivAt (1, 0) (0, 1)
