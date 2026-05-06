@@ -2,15 +2,8 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/LawOfCosinesOQ01OQ02.lean?raw'
-
-export const meta: ProofMeta = metaJson as ProofMeta
-export const annotations: Annotation[] = annotationsJson as Annotation[]
-export const source: string = sourceRaw
-
-export const proof: ProofData = {
-  meta,
-  annotations,
-  source
-}
-
-export default proof
+const meta = metaJson as unknown as { id: string; title: string; slug: string; description: string; meta: ProofMeta; sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[] }
+export const lawOfCosinesOQ01OQ02Proof: Proof = { id: meta.id, title: meta.title, slug: meta.slug, description: meta.description, meta: meta.meta, sections: meta.sections ?? [], source: sourceRaw, overview: meta.overview, conclusion: meta.conclusion, crossReferences: meta.crossReferences }
+export const lawOfCosinesOQ01OQ02Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const lawOfCosinesOQ01OQ02Data: ProofData = { proof: lawOfCosinesOQ01OQ02Proof, annotations: lawOfCosinesOQ01OQ02Annotations, tacticStates: [] }
+export default lawOfCosinesOQ01OQ02Data
