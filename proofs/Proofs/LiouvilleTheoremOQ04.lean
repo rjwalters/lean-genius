@@ -187,7 +187,8 @@ theorem padicNorm_poly_eval_bound (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0)
     exact_mod_cast hs'
   have hHdpos : (0 : ℚ) < max (r.natAbs : ℚ) (s.natAbs : ℚ) ^ f.natDegree := pow_pos hHpos_q _
   have hxpos : (0 : ℚ) < padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s)) :=
-    padicNorm.pos heval
+    -- Lean 4.26: `padicNorm.pos` removed; combine `nonneg` and `nonzero`.
+    (padicNorm.nonneg _).lt_of_ne (Ne.symm <| padicNorm.nonzero heval)
   refine ⟨padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s)) *
     max (r.natAbs : ℚ) (s.natAbs : ℚ) ^ f.natDegree, mul_pos hxpos hHdpos, ?_⟩
   have hne : max (r.natAbs : ℚ) (s.natAbs : ℚ) ^ f.natDegree ≠ 0 := ne_of_gt hHdpos
@@ -226,6 +227,55 @@ theorem isPadicLiouville_forall (β : ℚ_[p]) (h : IsPadicLiouville p β) :
   fun n => let ⟨r, s, hs, _, _, hpos, happrox⟩ := h n; ⟨r, s, hs, hpos, happrox⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════
+PART IV.5: NORM TRANSPORT BETWEEN ℚ AND ℚ_[p]
+Discharges ingredient (1) of the original bridge axiom: rational-embedding norm
+compatibility. Built on Mathlib's `padicNormE.eq_padicNorm`.
+═══════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Norm Compatibility on ℚ**: For q : ℚ, the ℚ_[p] norm of (q : ℚ_[p]) equals
+    the rational p-adic norm padicNorm p q.
+
+    This is `padicNormE.eq_padicNorm` from Mathlib.NumberTheory.Padics.PadicNumbers,
+    re-exposed in our namespace. Discharges ingredient (1) of the original bridge:
+    `‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q`. -/
+theorem norm_rat_eq_padicNorm (q : ℚ) : ‖((q : ℚ_[p]))‖ = padicNorm p q :=
+  -- In v4.26 Mathlib, this lemma lives in namespace `Padic` (was `padicNormE` historically).
+  Padic.eq_padicNorm q
+
+/-- **Polynomial Evaluation Cast**: For f : ℤ[X] and q : ℚ, evaluating f at
+    (q : ℚ_[p]) (after embedding integer coefficients into ℚ_[p]) equals embedding
+    the rational evaluation. Follows from `Polynomial.aeval_algHom_apply` applied to
+    the ℤ-algebra hom `(Rat.castHom ℚ_[p]).toIntAlgHom : ℚ →ₐ[ℤ] ℚ_[p]`. -/
+theorem padic_eval_int_poly_cast (f : ℤ[X]) (q : ℚ) :
+    (f.map (algebraMap ℤ ℚ_[p])).eval ((q : ℚ_[p])) =
+      (((f.map (algebraMap ℤ ℚ)).eval q : ℚ) : ℚ_[p]) := by
+  -- Recast both sides through aeval over ℤ[X]
+  have h_pp : (f.map (algebraMap ℤ ℚ_[p])).eval ((q : ℚ_[p])) =
+      Polynomial.aeval ((q : ℚ_[p])) f := by
+    rw [Polynomial.aeval_def, ← Polynomial.eval_map]
+  have h_q : (f.map (algebraMap ℤ ℚ)).eval q = Polynomial.aeval q f := by
+    rw [Polynomial.aeval_def, ← Polynomial.eval_map]
+  rw [h_pp, h_q]
+  -- Apply aeval_algHom_apply with the ℤ-algHom Rat.castHom : ℚ →ₐ[ℤ] ℚ_[p]
+  have happly : Polynomial.aeval ((q : ℚ_[p])) f =
+      (Rat.castHom ℚ_[p]).toIntAlgHom (Polynomial.aeval q f) := by
+    have := Polynomial.aeval_algHom_apply (R := ℤ) (Rat.castHom ℚ_[p]).toIntAlgHom q f
+    convert this using 2
+  rw [happly]
+  rfl
+
+/-- **Integer Polynomial Norm Transport**: For f : ℤ[X] and q : ℚ, the ℚ_[p] norm of
+    the p-adic evaluation equals the rational p-adic norm of the rational evaluation.
+    Combines `padic_eval_int_poly_cast` with `norm_rat_eq_padicNorm`.
+
+    This discharges the rational-embedding-norm half of the original bridge axiom,
+    reducing the residual obstruction to the cofactor evaluation bound only. -/
+theorem padic_norm_int_poly_eval (f : ℤ[X]) (q : ℚ) :
+    ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((q : ℚ_[p]))‖ =
+      padicNorm p ((f.map (algebraMap ℤ ℚ)).eval q) := by
+  rw [padic_eval_int_poly_cast, norm_rat_eq_padicNorm]
+
+/-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
@@ -233,14 +283,16 @@ P-adic algebraic numbers are not p-adically Liouville
 /-- **Bridge Axiom**: Given the factorization f = (X - C α) · g in ℚ_[p][X] and the evaluation
     identity f(x) = (x - α) · g(x), the p-adic Liouville estimate holds.
 
-    The proof requires two technical ingredients Mathlib does not yet directly supply:
-    (1) **Norm compatibility**: ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q for q : ℚ.
-        This connects the padicNorm_poly_eval_bound (Part III, working over ℚ) to the
-        ℚ_[p]-norm in the main estimate.
-    (2) **Cofactor evaluation bound**: for g ∈ ℚ_[p][X] with coefficients depending on α,
-        ‖g.eval (r/s : ℚ_[p])‖ ≤ M · H^(deg g) where H = max(|r|, |s|) and M depends on
-        ‖α‖ and the coefficients of f. Follows from ‖r/s‖_p ≤ |s| ≤ H (by Archimedean
-        Complement applied to ‖s‖_p ≥ 1/|s|) and polynomial norm bounds.
+    Status (post Part IV.5):
+    Ingredient (1) (norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q) is now
+    PROVED in Part IV.5 as `norm_rat_eq_padicNorm`, and the integer polynomial transport
+    `padic_norm_int_poly_eval` discharges the full ℚ → ℚ_[p] bridge for `eval`. The only
+    remaining obstacle is ingredient (2) below.
+
+    (2) **Cofactor evaluation bound** (REMAINING): for g ∈ ℚ_[p][X] with coefficients
+        depending on α, ‖g.eval (r/s : ℚ_[p])‖ ≤ M · H^(deg g) where H = max(|r|, |s|)
+        and M depends on ‖α‖ and the coefficients of f. Follows from ‖r/s‖_p ≤ |s| ≤ H
+        (by Archimedean Complement applied to ‖s‖_p ≥ 1/|s|) and polynomial norm bounds.
     Combined: ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ ≥ (C_f/H^d)/(M·H^(d-1)) = C/H^(2d-1) ≥ C/H^(2d). -/
 axiom padic_liouville_norm_bridge
     (α : ℚ_[p]) (f : ℤ[X])
@@ -302,30 +354,35 @@ theorem padic_algebraic_not_liouville
     intro heq
     rw [heq, sub_self, norm_zero] at hpos
     exact lt_irrefl 0 hpos
-  -- Work with H : ℕ := max r.natAbs s.natAbs
-  set H : ℕ := max r.natAbs s.natAbs with hH_def
-  -- H ≥ 2 (from Liouville condition), so (H : ℝ) ≥ 2
-  have hH_ge2 : (2 : ℝ) ≤ (H : ℝ) := by exact_mod_cast hH2
-  have hH_pos : (0 : ℝ) < (H : ℝ) := lt_of_lt_of_le (by norm_num) hH_ge2
-  have hH2d_pos : (0 : ℝ) < (H : ℝ) ^ (2 * f.natDegree) := pow_pos hH_pos _
+  -- Work with H : ℝ := max ↑r.natAbs ↑s.natAbs (real-valued max to match `hbound`/`happrox`)
+  set H : ℝ := max (r.natAbs : ℝ) (s.natAbs : ℝ) with hH_def
+  -- H ≥ 2 (from Liouville condition Nat-form `hH2 : 2 ≤ max r.natAbs s.natAbs`)
+  have hH_ge2 : (2 : ℝ) ≤ H := by
+    rw [hH_def]; exact_mod_cast hH2
+  have hH_pos : (0 : ℝ) < H := lt_of_lt_of_le (by norm_num) hH_ge2
+  have hH2d_pos : (0 : ℝ) < H ^ (2 * f.natDegree) := pow_pos hH_pos _
   -- Lower bound from estimate: C / H^(2d) ≤ ‖α - r/s‖
-  have hlower : C / (H : ℝ) ^ (2 * f.natDegree) ≤ ‖α - (r : ℚ_[p]) / s‖ :=
+  have hlower : C / H ^ (2 * f.natDegree) ≤ ‖α - (r : ℚ_[p]) / s‖ :=
     hbound r s hs hne
   -- Combine with Liouville upper bound: C / H^(2d) < 1 / H^(n₀ + 2d)
-  have hcomb : C / (H : ℝ) ^ (2 * f.natDegree) < 1 / (H : ℝ) ^ (n₀ + 2 * f.natDegree) :=
+  have hcomb : C / H ^ (2 * f.natDegree) < 1 / H ^ (n₀ + 2 * f.natDegree) :=
     lt_of_le_of_lt hlower happrox
   -- H^(n₀+2d) = H^n₀ * H^(2d), so 1/H^(n₀+2d) = (1/H^n₀) / H^(2d)
   rw [pow_add, ← div_div] at hcomb
   -- Cancel H^(2d) from both sides: C < 1/H^n₀
-  have hC_lt : C < 1 / (H : ℝ) ^ n₀ := (div_lt_div_right hH2d_pos).mp hcomb
+  -- (Lean 4.26: `div_lt_div_right` renamed to `div_lt_div_iff_of_pos_right`.)
+  have hC_lt : C < 1 / H ^ n₀ :=
+    (div_lt_div_iff_of_pos_right hH2d_pos).mp hcomb
   -- H ≥ 2 implies H^n₀ ≥ 2^n₀, so 1/H^n₀ ≤ 1/2^n₀
-  have h2n0_le : (2 : ℝ) ^ n₀ ≤ (H : ℝ) ^ n₀ :=
-    pow_le_pow_left (by norm_num) hH_ge2 n₀
-  have h_mono : 1 / (H : ℝ) ^ n₀ ≤ 1 / (2 : ℝ) ^ n₀ :=
+  -- (Lean 4.26: `pow_le_pow_left` renamed to `pow_le_pow_left₀`.)
+  have h2n0_le : (2 : ℝ) ^ n₀ ≤ H ^ n₀ :=
+    pow_le_pow_left₀ (by norm_num) hH_ge2 n₀
+  have h_mono : 1 / H ^ n₀ ≤ 1 / (2 : ℝ) ^ n₀ :=
     one_div_le_one_div_of_le (pow_pos (by norm_num : (0:ℝ) < 2) n₀) h2n0_le
   -- hn₀ : (1/2)^n₀ < C. Rewrite as 1/2^n₀ < C.
   have h_2n0_lt : 1 / (2 : ℝ) ^ n₀ < C := by
-    have : (1 / 2 : ℝ) ^ n₀ = 1 / (2 : ℝ) ^ n₀ := by ring
+    have hpow : (1 / 2 : ℝ) ^ n₀ = 1 / (2 : ℝ) ^ n₀ := by
+      rw [div_pow, one_pow]
     linarith
   -- Chain: C < 1/H^n₀ ≤ 1/2^n₀ < C. Contradiction.
   linarith
@@ -453,14 +510,29 @@ PART IX: SORRY SUMMARY
 - All three examples (2|6, 5|25, 3∤7)
 
 **Axiom** (`padic_liouville_norm_bridge`): Connects the factorization/evaluation identity
-to the final norm estimate. Requires:
-1. Norm compatibility ℚ → ℚ_[p]: `‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q`
-2. Uniform cofactor bound: ‖g.eval (r/s)‖_p ≤ M · H^(d-1)
+to the final norm estimate. Originally required two ingredients; ingredient (1) is now
+proved in Part IV.5:
+1. Norm compatibility ℚ → ℚ_[p]: ✓ PROVED via `padicNormE.eq_padicNorm` (Mathlib).
+   Wrapper theorems: `norm_rat_eq_padicNorm`, `padic_eval_int_poly_cast`,
+   `padic_norm_int_poly_eval`.
+2. Uniform cofactor bound: ‖g.eval (r/s)‖_p ≤ M · H^(d-1) (REMAINING).
 
 **Session 9 changes (2026-05-03)**:
 - Replaced `sorry` in `padic_liouville_estimate` with bridge axiom `padic_liouville_norm_bridge`.
   The proof now establishes the factorization and evaluation identity, then delegates the
   norm-compatibility step to the axiom. This converts sorry 1 → axiom 1, giving 0 sorries.
+
+**Session 10 changes (2026-05-07)**:
+- Added Part IV.5 (norm transport) discharging ingredient (1) of the bridge:
+  - `norm_rat_eq_padicNorm`: ‖(q : ℚ_[p])‖ = padicNorm p q (wraps Mathlib's
+    `padicNormE.eq_padicNorm`).
+  - `padic_eval_int_poly_cast`: integer polynomial evaluation transports through
+    ratCast (proved via `Polynomial.aeval_algHom_apply`).
+  - `padic_norm_int_poly_eval`: combines the two — the ℚ_[p]-norm of an integer
+    polynomial evaluated at a rational equals the rational p-adic norm of the
+    rational evaluation. This is exactly the connection
+    `padicNorm_poly_eval_bound` (Part III) needs to bridge to ℚ_[p].
+  Net: bridge axiom now blocked only by ingredient (2) (cofactor evaluation bound).
 
 -/
 
