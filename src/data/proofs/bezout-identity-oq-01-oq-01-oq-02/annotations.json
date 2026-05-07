@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-bezout-int-binary-overview",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Stein's Algorithm Lifted from ℕ to ℤ",
+    "content": "**Open question OQ-01-OQ-01-OQ-02**: can Stein's binary GCD algorithm — designed for natural numbers using `>>` and `-` only — be extended to integer inputs while preserving the algorithm's signature feature, that it avoids division? This file gives a clean affirmative answer: **reduce via `Int.natAbs`**, then invoke the parent's `binaryGcd` and lift back to ℤ via the cast `↑(- : ℕ → ℤ)`. The 9 theorems characterize the extension as Mathlib's `Int.gcd` (which is *defined* this way), prove sign invariance, divisibility, the Bézout identity, and the GCD universal property.",
+    "mathContext": "**Stein's binary GCD algorithm** (Josef Stein, 1967) replaces division-based Euclid with bit-shifts and subtraction: `gcd(2a, 2b) = 2·gcd(a,b)`, `gcd(2a, b) = gcd(a, b)` for odd `b`, `gcd(a, b) = gcd(|a-b|, min(a,b))`. On modern hardware where right-shift is faster than division, this is empirically faster than Euclid for large integers (used in GMP and OpenSSL's `BN_gcd`). The integer extension here exploits the fact that **GCD is sign-invariant**: $\\gcd(a, b) = \\gcd(|a|, |b|)$, so reducing to $\\mathbb{N}$ via `natAbs` loses no information.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Stein's binary GCD (1967)",
+      "natAbs reduction",
+      "Bézout's identity over ℤ",
+      "extended Euclidean algorithm",
+      "GMP / OpenSSL BN_gcd"
+    ],
+    "prerequisites": [
+      "BezoutIdentityOQ01OQ01 (binaryGcd on ℕ)",
+      "Mathlib Int.gcd, Int.natAbs",
+      "Mathlib Int.gcd_eq_gcd_ab (Bézout coefficients)"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-defn",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 38, "endLine": 44 },
+    "type": "definition",
+    "title": "intBinaryGcd: One-Line Definition via natAbs",
+    "content": "**`intBinaryGcd a b : ℤ := ↑(binaryGcd a.natAbs b.natAbs)`** — the entire integer extension is a single coercion + composition. The output is always nonneg (a nonneg integer cast from ℕ), agreeing with Mathlib's convention that `(Int.gcd a b : ℤ) ≥ 0`. The definition is `def`, not `noncomputable` — `binaryGcd` on ℕ is computable, and so is the result.",
+    "mathContext": "The **definition matches Mathlib** verbatim: `Int.gcd a b := Nat.gcd a.natAbs b.natAbs` (an `Int → Int → ℕ` operation). The only difference is the codomain: Mathlib's returns `ℕ`, ours casts to `ℤ` for cleaner arithmetic with `dvd`. Both factor through `natAbs`, so the *equivalence* `intBinaryGcd a b = (Int.gcd a b : ℤ)` is essentially definitional once `binaryGcd_eq_gcd` (the OQ-01-OQ-01 result) is invoked.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.natAbs : ℤ → ℕ",
+      "natural-number reduction",
+      "computable definitions"
+    ],
+    "prerequisites": [
+      "binaryGcd : ℕ → ℕ → ℕ from BezoutIdentityOQ01OQ01",
+      "Int.natAbs",
+      "Nat to Int coercion"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-eq-gcd",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 50, "endLine": 65 },
+    "type": "technique",
+    "title": "Equivalence with Int.gcd, Nonneg, and Divisibility",
+    "content": "**`intBinaryGcd_eq_gcd`** proves `intBinaryGcd a b = (Int.gcd a b : ℤ)` in three tactics: `unfold intBinaryGcd; rw [binaryGcd_eq_gcd]; rfl`. The first unfolds the definition; the second applies the parent's correctness theorem (binaryGcd on ℕ equals Nat.gcd); the third closes via reflexivity since `Int.gcd` is *defined* as `Nat.gcd a.natAbs b.natAbs`. **`intBinaryGcd_nonneg`** is `positivity`-trivial. The two divisibility theorems then **rewrite via `intBinaryGcd_eq_gcd`** and invoke Mathlib's `Int.gcd_dvd_left/right` — the `▸` operator does the rewrite in-place.",
+    "mathContext": "The `▸` (subst) operator rewrites an equality in the goal: `h ▸ proof` produces a proof of the rewritten goal. Here `intBinaryGcd_eq_gcd a b ▸ Int.gcd_dvd_left a b` says: 'use the lemma `Int.gcd_dvd_left` whose conclusion is `(Int.gcd a b : ℤ) ∣ a`, then rewrite the LHS via the equivalence to get `intBinaryGcd a b ∣ a`'. This is a one-line proof pattern that hides the coercion arithmetic behind Mathlib's existing infrastructure — the Lean idiom for *transporting properties along equalities*.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Int.gcd ≡ Nat.gcd ∘ natAbs (definitional)",
+      "▸ subst tactic",
+      "transport along equalities",
+      "Mathlib Int.gcd_dvd_left/right"
+    ],
+    "prerequisites": [
+      "binaryGcd_eq_gcd from parent",
+      "definitional equality of Int.gcd and Nat.gcd ∘ natAbs",
+      "▸ rewrite operator"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-comm",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 70 },
+    "type": "insight",
+    "title": "Symmetry Inherited from the Natural Number Algorithm",
+    "content": "**`intBinaryGcd_comm`**: $\\text{intBinaryGcd}(a, b) = \\text{intBinaryGcd}(b, a)$. The proof is `simp [intBinaryGcd, binaryGcd_comm]` — symmetry over ℤ is **inherited from symmetry over ℕ**, with no extra arithmetic needed. This pattern recurs throughout the file: properties of the natural-number algorithm transport automatically to the integer extension because `natAbs` doesn't interact with the binary structure.",
+    "mathContext": "The general principle: for any **sign-invariant** operation $f : \\mathbb{Z} \\times \\mathbb{Z} \\to \\mathbb{Z}$ that factors as $f(a,b) = \\iota(g(|a|, |b|))$ for some $g: \\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$, every algebraic property of $g$ (commutativity, associativity, identity, etc.) transports to $f$ via the `natAbs`-reduction. This is one reason GCD is naturally a *natural-number* operation, even when working over ℤ — the integer signs are 'parasitic'.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sign-invariance",
+      "transport via natAbs",
+      "binaryGcd_comm from parent",
+      "commutativity of GCD"
+    ],
+    "prerequisites": [
+      "binaryGcd_comm (ℕ symmetry)",
+      "simp normalization"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-sign",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 89 },
+    "type": "technique",
+    "title": "Sign Invariance: gcd(-a, b) = gcd(a, b)",
+    "content": "**`intBinaryGcd_neg_left/right`**: negating either argument leaves the GCD unchanged. The proof is the one-liner `simp [intBinaryGcd, Int.natAbs_neg]` — the entire content lies in **`Int.natAbs_neg : (-a).natAbs = a.natAbs`** from Mathlib. **`intBinaryGcd_natAbs`** is the further reduction: GCD over ℤ equals GCD applied to nonneg integer casts, justifying the `natAbs` reduction at the type level.",
+    "mathContext": "**Sign invariance** is fundamental: $\\gcd(a, b) = \\gcd(-a, b) = \\gcd(a, -b) = \\gcd(-a, -b) = \\gcd(|a|, |b|)$. Algebraically: GCD is the generator of the ideal $(a) + (b) \\subseteq \\mathbb{Z}$, and $(\\pm a) = (a)$ as ideals. The **constructive content** here is that we don't need a separate algorithm for negative inputs — `natAbs` reduces to the positive case at definition time. For Stein's algorithm specifically, this means the implementation can ignore signs entirely.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.natAbs_neg",
+      "ideal generators in ℤ",
+      "sign-invariance of GCD",
+      "(a) = (-a) as principal ideals"
+    ],
+    "prerequisites": [
+      "Int.natAbs and its sign-invariance",
+      "ideal-theoretic interpretation of GCD"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-boundary",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 95, "endLine": 105 },
+    "type": "technique",
+    "title": "Boundary Cases: gcd(0, b) = |b| and gcd(a, 0) = |a|",
+    "content": "**Boundary identities**: `intBinaryGcd 0 b = (b.natAbs : ℤ)` and `intBinaryGcd a 0 = (a.natAbs : ℤ)`. The proofs unfold the definition, apply `Int.natAbs_zero` (sending 0 to 0), then `binaryGcd_eq_gcd` and `Nat.gcd_zero_left/right` (which give `Nat.gcd 0 n = n`). These three rewrites compose cleanly because each lemma's RHS is the next's LHS.",
+    "mathContext": "The boundary case $\\gcd(0, b) = |b|$ is forced by the **universal property** of GCD: 0 has every integer as a divisor, so the GCD with 0 is determined entirely by the other argument. In Lean's `Nat.gcd`, this is the **base case of the recursion** — `Nat.gcd 0 n = n`. Stein's binary algorithm has the same base case (when one input is 0, return the other), so `binaryGcd_eq_gcd` preserves it definitionally.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.gcd_zero_left/right",
+      "Int.natAbs_zero",
+      "GCD recursion base case"
+    ],
+    "prerequisites": [
+      "Nat.gcd_zero_left",
+      "Int.natAbs_zero",
+      "binaryGcd_eq_gcd"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-bezout",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 111, "endLine": 122 },
+    "type": "insight",
+    "title": "Bézout Identity over ℤ: ∃ u v, u·a + v·b = intBinaryGcd a b",
+    "content": "**`bezout_via_intBinaryGcd`**: for any integers $a, b$, there exist $u, v \\in \\mathbb{Z}$ with $u \\cdot a + v \\cdot b = \\text{intBinaryGcd}(a, b)$. **The witnesses are Mathlib's** `Int.gcdA a b` and `Int.gcdB a b` (the integer-Bézout coefficients computed by the extended Euclidean algorithm), and the equality follows from `Int.gcd_eq_gcd_ab` plus the equivalence `intBinaryGcd a b = (Int.gcd a b : ℤ)`. A `ring` call closes the order of the multiplications.",
+    "mathContext": "**Bézout's identity** (Étienne Bézout, *Théorie générale des équations algébriques*, 1779; the result was known to Bachet de Méziriac as early as 1624): for any nonzero integers $a, b$, there exist $u, v \\in \\mathbb{Z}$ with $ua + vb = \\gcd(a, b)$. Equivalently, $\\gcd(a,b)$ generates the ideal $(a, b)$. **Subtle observation**: the witnesses here are computed by **Mathlib's extended Euclidean**, NOT by an extended binary GCD. Extending Stein's algorithm to track Bézout coefficients is non-trivial (it's the OQ-01 follow-up question), so the Lean proof takes a shortcut: **prove the equality with `Int.gcd`, then borrow Mathlib's coefficients**. This is mathematically clean but algorithmically suboptimal — see openQuestions.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout identity (1779)",
+      "Int.gcdA, Int.gcdB (Mathlib extended Euclidean)",
+      "Int.gcd_eq_gcd_ab",
+      "principal ideals in ℤ",
+      "extended binary GCD (OQ-01)"
+    ],
+    "prerequisites": [
+      "Int.gcd_eq_gcd_ab",
+      "Int.gcdA, Int.gcdB",
+      "intBinaryGcd_eq_gcd",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-universal",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "insight",
+    "title": "Universal Property: d ∣ a ∧ d ∣ b ⟹ d ∣ intBinaryGcd a b",
+    "content": "**`dvd_intBinaryGcd`**: any common divisor of $a$ and $b$ also divides their `intBinaryGcd`. The proof **routes through Bézout**: extract $(u, v)$ with $u \\cdot a + v \\cdot b = \\text{intBinaryGcd}$, then since $d \\mid a \\Rightarrow d \\mid u \\cdot a$ and $d \\mid b \\Rightarrow d \\mid v \\cdot b$, we have $d \\mid (u \\cdot a + v \\cdot b)$. `dvd_add` and `dvd_mul_of_dvd_right` close the proof in two lines.",
+    "mathContext": "This is the **universal property** of GCD as a common divisor: $\\gcd(a,b)$ is the unique nonneg integer that divides $a$ and $b$ AND is divisible by every common divisor. Algebraically, this is the statement that ℤ is a **Bézout domain** (every finitely generated ideal is principal) — and in fact a **PID** (every ideal is principal). The proof technique here — **prove the universal property via Bézout's identity** — is the standard pattern in any commutative ring where Bézout holds: in a Bézout domain, GCD ≡ ideal generator ≡ Bézout-witnesses-yield-divisibility.",
+    "significance": "key",
+    "relatedConcepts": [
+      "universal property of GCD",
+      "Bézout domain",
+      "principal ideal domain (PID)",
+      "ℤ as a Bézout/PID example",
+      "dvd_add, dvd_mul_of_dvd_right"
+    ],
+    "prerequisites": [
+      "Bézout identity",
+      "dvd_add lemma",
+      "dvd_mul_of_dvd_right lemma"
+    ]
+  },
+  {
+    "id": "ann-bezout-int-binary-examples",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 140, "endLine": 144 },
+    "type": "context",
+    "title": "Computational Examples: native_decide on Concrete Inputs",
+    "content": "Five `example` declarations verify concrete computations: $\\gcd(12, 8) = 4$, $\\gcd(-12, 8) = 4$, $\\gcd(12, -8) = 4$, $\\gcd(-35, -15) = 5$, $\\gcd(17, 5) = 1$. Each is closed by **`native_decide`** — a tactic that compiles the goal to native code and runs it. This validates that `intBinaryGcd` is genuinely **computable** (the kernel can reduce it on closed terms) and exercises both signs and the coprime case.",
+    "mathContext": "**`native_decide`** is a Lean 4 tactic that evaluates a `Decidable` proposition by compiling to native machine code (via Lean's compiler), running, and trusting the result. It is faster than `decide` (which runs in the kernel's slow but trusted reducer) but adds the native compiler to the trusted base. For algorithm verification, `native_decide` is the correct choice: it confirms the algorithm's *operational behavior* matches the specification, not just its propositional equivalence to Mathlib's GCD. The five test cases hit every sign combination (++, -+, +-, --) and a coprime pair.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "native_decide tactic",
+      "Decidable propositions",
+      "computable definitions",
+      "trusted base extension"
+    ],
+    "prerequisites": [
+      "intBinaryGcd is computable",
+      "decidable equality on ℤ"
+    ]
+  }
+]
