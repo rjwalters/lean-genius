@@ -40,7 +40,7 @@ This single formula unifies all three classical laws:
 - K = -1: `cosh(c) = cosh(a)cosh(b) - sinh(a)sinh(b)cos(C)` ✓ (K = -1 gives minus)
 - K → 0: reduces to `c² = a² + b² - 2ab·cos(C)` in the limit ✓
 
-## Status (0 axioms, 1 sorry)
+## Status (0 sorries; UnifiedTriangle.law is a structure-encoded assumption)
 - [x] Definitions: curvatureCos, curvatureSin
 - [x] Special values at K = 0, ±1
 - [x] Unified Pythagorean identity: cs_K² + K·sn_K² = 1 for all K
@@ -48,7 +48,7 @@ This single formula unifies all three classical laws:
 - [x] Recovery theorems: K = ±1 recover spherical/hyperbolic laws
 - [x] Algebraic equivalences for K > 0 and K < 0
 - [x] Scaling family consistency
-- [ ] Euclidean limit: K → 0 expansion (sorry — requires analysis)
+- [x] Euclidean limit: K → 0 expansion (proved via explicit Taylor bounds)
 
 ## References
 - Ratcliffe (2006): "Foundations of Hyperbolic Manifolds"
