@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW exchange-step framework wired up; anti-monotone corner helpers added)
+**Phase**: ACT (GNW exchange-step framework wired up; corner-distinctness coordinate lemmas added)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
 **Last Updated**: 2026-05-07
-**Iteration**: 44
+**Iteration**: 45
 
 ## Current Focus
 Close `gnwProb_exchange` (Helpers, line 13871) — the GNW 1979 exchange identity
@@ -60,6 +60,15 @@ in place:
      These reduce the upcoming `gnwProb_exchange` case analysis: given two
      distinct corners with `c.1 < c'.1`, the unique doubly-affected cell
      `(c.1, c'.2)` is in `μ` and lies in the arm of c and leg of c'.
+  8. Corner-distinctness coordinate lemmas (session 45) — added three more
+     structural lemmas after `corner_row_lt_of_col_lt`:
+     `corners_fst_ne`, `corners_snd_ne`, `distinct_corners_dichotomy`.
+     These promote the geometric anti-monotonicity of session 44 to clean
+     coordinate-distinctness predicates: `c ≠ c' → c.1 ≠ c'.1 ∧ c.2 ≠ c'.2`
+     and a packaged dichotomy `(c.1 < c'.1 ∧ c'.2 < c.2) ∨
+     (c'.1 < c.1 ∧ c.2 < c'.2)` for downstream case analysis. They eliminate
+     repeated `rowLen_of_isCorner` / `colLen_of_isCorner` boilerplate in the
+     upcoming `gnwProb_exchange` proof.
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
@@ -98,7 +107,9 @@ exchange step entirely (count weighted walks of every length, divide by
 - `knowledge.md` §Session 37 — GNW infrastructure: `gnwProb`, `gnwProb_sum_corners`
 - `knowledge.md` §Session 38 — `gnwProb_step` and stability
 - `knowledge.md` §Session 40-42 — single-corner case proof, exchange framework
-- `knowledge.md` §Session 43 — strong induction wrapper (this session)
+- `knowledge.md` §Session 43 — strong induction wrapper
+- `knowledge.md` §Session 44 — anti-monotone corner helpers (PR #16648)
+- `knowledge.md` §Session 45 — corner-distinctness coordinate lemmas (this session)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:13871` — `gnwProb_exchange`
   (sorry'd, target of next session)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:13884` — `gnwProb_key`

@@ -1032,3 +1032,95 @@ Estimated proof length: ~100 lines of arm/leg case analysis + arithmetic.
 3. **Alternative: deterministic weighted-walk recasting** (~400 lines self-contained)
    could avoid `gnwProb_exchange` entirely if the GNW 1979 argument resists
    formalization.
+
+## Session 2026-05-07 (Session 45) — Corner-distinctness coordinate lemmas
+
+**Mode**: ACT (RICH, score 192). Builds on session 44 (PR #16648 anti-monotone
+corner helpers) and PR #16665 (F-domain bridge `sum_gnwProb_eq_removeCorner_cells`).
+
+**Outcome**: PROGRESS — added three small structural lemmas; sorry count
+unchanged (still 1: `gnwProb_exchange`).
+
+### What I Did
+
+Added three private lemmas in
+`BallotProblemOQ03OQ01OQ02Helpers.lean` immediately after
+`corner_row_lt_of_col_lt` (~line 4768), promoting the geometric
+anti-monotonicity of session 44 to clean coordinate-distinctness predicates:
+
+1. **`corners_fst_ne`**: `c ≠ c' → c.1 ≠ c'.1` for distinct corners c, c'.
+   Proof: same first coordinate ⇒ both have `rowLen c.1 = c.2 + 1 = c'.2 + 1`
+   via `rowLen_of_isCorner` ⇒ `c.2 = c'.2` ⇒ `c = c'`. Contradiction.
+
+2. **`corners_snd_ne`**: `c ≠ c' → c.2 ≠ c'.2` (symmetric, via `colLen_of_isCorner`).
+
+3. **`distinct_corners_dichotomy`**: packages the geometric anti-monotonicity
+   into a single dichotomy
+   `(c.1 < c'.1 ∧ c'.2 < c.2) ∨ (c'.1 < c.1 ∧ c.2 < c'.2)`,
+   ready for `rcases` case analysis. Proof: `corners_fst_ne` gives
+   `c.1 ≠ c'.1`; `lt_or_gt_of_ne` splits; either branch invokes
+   `corner_col_lt_of_row_lt` (in the appropriate orientation).
+
+### Why This Helps `gnwProb_exchange`
+
+The remaining `gnwProb_exchange` proof requires reasoning about how
+`gnwProb μ c K x` for cells `x ≠ c'` relates to `gnwProb (μ\c') c K' x`.
+The natural case split is on the relative orientation of c and c':
+
+- Case `c.1 < c'.1 ∧ c'.2 < c.2`: c is northeast of c'.
+- Case `c'.1 < c.1 ∧ c.2 < c'.2`: c is southwest of c'.
+
+Without `distinct_corners_dichotomy`, every call site had to:
+1. Derive `c.1 ≠ c'.1` from `c ≠ c'` (re-deriving the rowLen argument).
+2. Use `lt_or_gt_of_ne` to split.
+3. Invoke `corner_col_lt_of_row_lt` in each branch.
+
+The new lemma collapses this pattern into a single `rcases distinct_corners_dichotomy hc hc' hne with ⟨hi, hj⟩ | ⟨hi, hj⟩`,
+eliminating roughly 6–8 lines of bookkeeping per case-split site. Similarly
+`corners_fst_ne` and `corners_snd_ne` are useful when only the inequality
+side (not the orientation) is needed, e.g., for arm/leg disjointness arguments.
+
+### Why This Is Distinct From Session 44
+
+Session 44 (PR #16648) added three GEOMETRIC lemmas:
+
+- `corner_col_lt_of_row_lt`: `c.1 < c'.1 → c'.2 < c.2`.
+- `corner_row_lt_of_col_lt`: `c.2 < c'.2 → c'.1 < c.1`.
+- `doubly_affected_cell_mem`: `(c.1, c'.2) ∈ μ` when `c.1 < c'.1`.
+
+These take the strict inequality as a hypothesis. Session 45 adds the
+COORDINATE-DISTINCTNESS lemmas which take only `c ≠ c'` as a hypothesis
+and provide either bare ≠ predicates or the packaged dichotomy. They sit
+on top of session 44 (and `rowLen_of_isCorner`/`colLen_of_isCorner`) but
+present a different API surface useful for downstream proofs that don't
+already have the anti-monotone hypothesis available.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (14354 → 14398
+  lines): +44 lines, three new private lemmas after
+  `corner_row_lt_of_col_lt`.
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md`
+  (iteration 44 → 45, attempt #8 added).
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md`
+  (this session entry).
+
+### Sorry Count: 1 → 1
+
+- REMAINING: `gnwProb_exchange` (Helpers, line ~13871) — GNW 1979 hook-weight
+  shift identity, ~100 lines, three pieces of infrastructure now ready
+  (sessions 44, 45, plus PR #16665 F-domain bridge).
+
+### Next Steps
+
+1. **Prove `gnwProb_exchange`.** With `distinct_corners_dichotomy` plus
+   the F-domain bridge from #16665 (`sum_gnwProb_eq_removeCorner_cells`)
+   and `gnwProb_at_other_corner`, the remaining proof can be structured:
+   - Apply F-domain bridge to rewrite LHS sum over μ.cells as sum over
+     `(μ\c').cells` (the c' contribution is 0).
+   - Case-split via `distinct_corners_dichotomy` on whether c is NE or
+     SW of c'.
+   - In each case, decompose the sum using arm/leg of c' classification
+     and apply `hookLength_removeCorner_arm`/`leg`.
+2. **Verify build under Docker** once gnwProb_exchange is closed (file
+   will be ~14250+ lines).
