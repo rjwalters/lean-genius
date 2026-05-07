@@ -139,11 +139,42 @@ theorem kakutani_from_brouwer {n : ℕ}
     (hF_convex : ∀ x, Convex ℝ (F x))
     (hF_uhc : IsUpperHemicontinuous F) :
     ∃ x : ↥S, IsFixedPoint F x := by
-  -- Step 1: For each k ≥ 1, get an approximate selection and its fixed point
-  -- This is the core reduction: Kakutani → sequence of Brouwer applications
-  -- Step 2: Extract convergent subsequence
-  -- Step 3: Show limit is a fixed point
-  -- Full formal proof requires metric space calculations in the subtype
+  -- Planned reduction to `approx_fixedpoint_implies_fixedpoint` (defined in Part V):
+  --
+  -- Step A: For each ε > 0, obtain a continuous ε-approximate selection f_ε of F
+  --         using axiom `approx_selection_exists`.
+  -- Step B: Apply axiom `brouwer_fpt` to f_ε on the compact convex S to get
+  --         x_0 with f_ε(x_0) = x_0.
+  -- Step C: The approximate-selection property at x_0 yields y ∈ F(x_0) with
+  --         dist(f_ε(x_0), y) < ε. Since f_ε(x_0) = x_0, this gives dist(x_0, y) < ε.
+  -- Step D: Hand the family of ε-witnesses to `approx_fixedpoint_implies_fixedpoint`,
+  --         which uses sequential compactness + closedness + UHC of F to extract a
+  --         genuine fixed point.
+  --
+  -- The subtype `↥S` inherits a PseudoMetricSpace; `hS_compact` yields
+  -- `CompactSpace ↥S` so `Set.univ : Set ↥S` is compact in the subtype topology.
+  --
+  -- Wiring (requires moving `approx_fixedpoint_implies_fixedpoint` above this theorem
+  -- since Lean 4 forbids forward references within a single file):
+  --
+  --   have hUniv : IsCompact (Set.univ : Set ↥S) := by
+  --     haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  --     exact isCompact_univ
+  --   have hF_closed' : ∀ x ∈ (Set.univ : Set ↥S), IsClosed (F x) :=
+  --     fun x _ => hF_closed x
+  --   have happrox : ∀ ε > 0, ∃ x ∈ (Set.univ : Set ↥S),
+  --       ∃ y ∈ F x, dist x y < ε := by
+  --     intro ε hε
+  --     obtain ⟨f, hf_cont, hf_approx⟩ :=
+  --       approx_selection_exists S hS_ne hS_compact hS_convex F
+  --         hF_ne hF_convex hF_uhc ε hε
+  --     obtain ⟨x0, hx0⟩ := brouwer_fpt S hS_ne hS_compact hS_convex f hf_cont
+  --     obtain ⟨y, hy_F, hy_dist⟩ := hf_approx x0
+  --     exact ⟨x0, Set.mem_univ _, y, hy_F, by simpa [hx0] using hy_dist⟩
+  --   obtain ⟨x_star, _, hfp⟩ :=
+  --     approx_fixedpoint_implies_fixedpoint (Set.univ : Set ↥S) hUniv F
+  --       hF_closed' hF_uhc happrox
+  --   exact ⟨x_star, hfp⟩
   sorry
 
 /-
@@ -178,7 +209,39 @@ of Nash equilibrium existence in game theory.
     for all ε > 0 has a true fixed point (when the target is closed).
 
     This captures the limit argument: if we can get "almost" fixed points
-    for any precision, compactness gives a real one. -/
+    for any precision, compactness gives a real one.
+
+    **Proof outline**:
+    1. Build sequences `xₙ ∈ S`, `yₙ ∈ F(xₙ)` with `dist(xₙ, yₙ) < 1/(n+1)`
+       via choice on `happrox`.
+    2. Compactness of `S` yields a subsequence `x_{φ(n)} → x*` with `x* ∈ S`
+       (`IsCompact.tendsto_subseq` for first-countable / metric spaces —
+       automatic in a `PseudoMetricSpace`).
+    3. Since `dist(x_{φ(n)}, y_{φ(n)}) → 0` (by squeeze with `1/(φ n + 1) → 0`),
+       the subsequence `y_{φ(n)} → x*` as well.
+    4. Suppose `x* ∉ F(x*)`. Then `F(x*)` is closed (by `hF_closed x* hx_star_S`)
+       and either empty or `δ := infDist x* (F x*) > 0`.
+       - **Empty case**: take `V := ∅` (open and contains `F(x*)`); UHC gives an
+         open `U ∋ x*` with `F(U) ⊆ ∅`, hence eventually `F(x_{φ(n)}) = ∅`,
+         contradicting `y_{φ(n)} ∈ F(x_{φ(n)})`.
+       - **Nonempty case**: take `V := Metric.thickening (δ/2) (F x*)`, an open
+         superset of `F(x*)`. UHC gives an open `U ∋ x*` with `F(U) ⊆ V`.
+         Eventually `x_{φ(n)} ∈ U`, hence `y_{φ(n)} ∈ V`, so
+         `infDist y_{φ(n)} (F x*) < δ/2`. Triangle inequality:
+         `infDist x* (F x*) ≤ dist x* y_{φ(n)} + infDist y_{φ(n)} (F x*) < δ`
+         for `n` large, contradicting `δ = infDist x* (F x*)`.
+
+    **Mathlib API needed** (extra imports beyond current):
+    - `Mathlib.Topology.MetricSpace.HausdorffDistance` for `Metric.infDist`,
+      `Metric.infDist_le_dist_add_infDist`, `Metric.infDist_pos_iff_not_mem_closure`.
+    - `Mathlib.Topology.MetricSpace.Thickening` for `Metric.thickening` and
+      `Metric.isOpen_thickening`.
+    - `Mathlib.Topology.Sequences` for `IsCompact.tendsto_subseq` (often pulled
+      transitively, but explicit import is safer).
+
+    **Status**: Documented; proof body remains a single `sorry`. Steps 1–2 are
+    straightforward (`choose ... using fun n => happrox (1/(n+1)) ...` and
+    `hS.tendsto_subseq`). Step 4's nonempty case is the technical core. -/
 theorem approx_fixedpoint_implies_fixedpoint
     {X : Type*} [PseudoMetricSpace X]
     (S : Set X) (hS : IsCompact S)
