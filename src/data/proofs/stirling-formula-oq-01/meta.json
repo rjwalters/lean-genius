@@ -47,7 +47,7 @@
       "stirling_first_correction (fully proved): combines the partial-sum bounds with two limits (htend_diff for L = log(stirlingSeq n) \u2212 log(\u221a\u03c0), htend_Gn for the lower-tail residual via Tendsto.div_atTop on each tail term), Real.exp_bound at degree 2 for the upper-half Taylor remainder |exp L \u2212 (1+L)| \u2264 3\u00b7L\u00b2/4, and the algebraic comparisons (n\u22122)(4n\u22123) \u2265 0 (for L \u2212 1/(12n) \u2264 1/(2n\u00b2)) and (12(n\u22121)\u00b3 \u2212 n\u00b3) \u2265 0 (for the lower half). Yields C = 2.",
       "stirling_two_term_expansion (fully proved from stirling_first_correction via the \u221a(2\u03c0n) = \u221a(2n)\u00b7\u221a\u03c0 split)"
     ],
-    "lineCount": 819,
+    "lineCount": 824,
     "theoremCount": 20,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
@@ -140,7 +140,7 @@
       "Filter"
     ],
     "namespace": "StirlingExpansion",
-    "lineCount": 819,
+    "lineCount": 824,
     "axiomCount": 0,
     "theoremCount": 20,
     "definitionCount": 2,
