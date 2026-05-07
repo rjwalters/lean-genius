@@ -1,0 +1,113 @@
+{
+  "slug": "minkowski-theorem-oq-04",
+  "title": "Blichfeldt's Theorem: k+1 Congruent Points When vol > k",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{If } S \\subseteq \\mathbb{R}^n \\text{ is measurable with } \\mathrm{vol}(S) > k, \\text{ then } S \\text{ contains } k+1 \\text{ points with pairwise differences in } \\mathbb{Z}^n",
+    "plain": "Blichfeldt's theorem (1914): any measurable set S in R^n with volume > k contains k+1 distinct points x_1,...,x_{k+1} whose pairwise differences all lie in the integer lattice Z^n. Unlike Minkowski's theorem, no convexity or symmetry is needed.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-07T16:45:00Z",
+    "iteration": 2,
+    "focus": "Applied 4 Mathlib 4.26.0 API drift fixes; build verification still needed (cancelled mid-cache-fetch).",
+    "blockers": [],
+    "nextAction": "Run docker-build Proofs.MinkowskiTheoremOQ04 to verify the 4 API drift fixes; iterate if more drift surfaces.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS 2026-05-07: applied 4 Mathlib 4.26.0 API drift fixes to MinkowskiTheoremOQ04.lean: (1) `Pairwise (Disjoint on A)` -> `Pairwise fun v w => Disjoint (A v) (A w)` (axiom signature line 81); (2) same fix at line 104 + dropped corresponding `rw [Function.onFun]`; (3) `blichfeldt_general 1 s h_meas h_vol` -> wrap h_vol in `(by exact_mod_cast h_vol)` for ENNReal Nat-coerce mismatch (line 165); (4) dropped `Submodule.mem_toAddSubgroup.mpr (SetLike.mem_coe.mp ...)` (renamed in 4.26) and use `hab_diff` directly (line 215). Build verification cancelled at 600s during fresh dependency clone; cache mount was empty for this Docker setup. Status remains axiomatized (4 axioms, 2 sorries) per pre-existing meta.json.",
+    "builtItems": [
+      "blichfeldt_basic in MinkowskiTheoremOQ04.lean:91: fully proved from axioms",
+      "blichfeldt_basic_from_general in MinkowskiTheoremOQ04.lean:160: proved from blichfeldt_general",
+      "minkowski_from_blichfeldt in MinkowskiTheoremOQ04.lean:192: proved (with 2 sorries)"
+    ],
+    "insights": [
+      "Proof uses fundamental domain pigeonhole: if projections {Sv} are disjoint, sum of volumes <= 1 < vol(S)",
+      "Three axioms capture measure-theory facts provable from IsAddFundamentalDomain.lintegral_eq_tsum",
+      "Minkowski recovered via half-scaling: T = S/2 has vol > 1, Blichfeldt gives congruent points, symmetry+convexity gives lattice point",
+      "Lean 4.26.0 + Mathlib 4.26.0 changed: (a) `Disjoint on f` infix needs `open Function` or rewrite, (b) Nat-cast h_vol in literal-1 contexts needs `by exact_mod_cast`, (c) `Submodule.mem_toAddSubgroup` removed — use direct `∈ ...toAddSubgroup` (defEq via SetLike)."
+    ],
+    "mathlibGaps": [
+      "Disjoint on f infix syntax requires open Function or rewrite to lambda in Mathlib 4.26.0",
+      "Submodule.mem_toAddSubgroup.mpr renamed/removed in Mathlib 4.26.0 (use direct membership)",
+      "IsAddFundamentalDomain.lintegral_eq_tsum exact API needed (may differ from assumed form)",
+      "MeasurableEmbedding for linear scaling map x -> (1/2)*x",
+      "ENNReal.div arithmetic for volume scaling vol(S/2) = vol(S)/2^n"
+    ],
+    "nextSteps": [
+      "Re-run docker build to verify the 4 API drift fixes compile (likely in a future researcher session, with warm cache).",
+      "After verification: ship the Lean file + gallery entry to gallery as `status: axiomatized, badge: axiom`.",
+      "Pre-PR-Work axiom-elimination targets (per researcher.md priority): blichfeldt_proj_measurable looks easiest to prove via translation-preimage measurability; blichfeldt_disj_bound from measure_iUnion + measure_mono."
+    ],
+    "markdown": "# Knowledge Base: minkowski-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "prime-gaps",
+    "sieve-methods"
+  ],
+  "relatedProofs": [
+    "minkowski-theorem",
+    "minkowski-theorem-oq-02",
+    "minkowski-theorem-oq-02-oq-01",
+    "minkowski-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T16:07:09+03:00",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinkowskiTheoremOQ02.lean",
+      "filename": "MinkowskiTheoremOQ02.lean",
+      "lineCount": 285,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
+      "filename": "MinkowskiTheoremOQ02OQ01.lean",
+      "lineCount": 268,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ04.lean",
+      "filename": "MinkowskiTheoremOQ04.lean",
+      "lineCount": 228,
+      "theoremCount": 3,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
+    }
+  ],
+  "lastUpdate": "2026-05-07T16:45:00Z"
+}
