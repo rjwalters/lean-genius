@@ -25,11 +25,13 @@ The 1/(12n) correction coefficient is the key refinement of Stirling's approxima
 
 **stirling_first_correction structure** (C=2): upper via le_of_tendsto', lower via le_of_tendsto_of_tendsto. Two remaining mechanical sorrys: (1) G(n+M)→0 and (2) |exp(L)-(1+L)| ≤ L²/2·exp(L) ≤ 1/n².
 
-### Key Lean 4 API Learnings
+### Key Lean 4 API Learnings (Session 2)
 
-**`div_le_div_iff` FAILS in chained `rw [a, b]` with `by positivity` args** — use named hypotheses or avoid it entirely. Fix: `calc + gcongr` for `a/c ≤ b/c` (same denom), or `div_nonneg` (show RHS - LHS ≥ 0 via `field_simp; ring`).
+**`div_le_div_iff`, `div_le_div_right` UNKNOWN in Lean 4.26** — Use `div_le_div_of_nonneg_right (h : a≤b) (hc : 0≤c) : a/c ≤ b/c` (confirmed in `Erdos487Problem.lean`). For showing `0 ≤ a/b - c/d`, use `div_nonneg` after `field_simp; ring`.
 
-**Cast form mismatch in inductive proofs**: after `push_cast`, `n+(L+1)-1` becomes `n+↑L+1-1 ≠ n+↑L` syntactically. Fix: add `have hnL1_sub : ... := by push_cast; ring` and `rw [hnL1_sub]` before `linarith`.
+**Association mismatch in inductive proofs**: `↑((n+L)+1)` = `(n:ℝ)+↑L+1` [LEFT-assoc via left-assoc `+`] but bound's `(n:ℝ)+(↑L+1)` is RIGHT-assoc. These are DIFFERENT atoms for `linarith`. Fix: `simp only [← add_assoc] at ⊢` normalizes goal to left-assoc, then `rw [hnL1_sub]` (where `hnL1_sub : (n:ℝ)+↑L+1-1 = (n:ℝ)+↑L`).
+
+**Build output filtering**: default `grep | head -30` is filled by `[Xs] Building...` timer lines. Use `grep -v "Downloaded|Building|info:..."` to filter noise, or use the error-only filter `grep -E "error:|sorry|..."` (no "Build" in pattern).
 
 ### Key Mathematical Result
 
