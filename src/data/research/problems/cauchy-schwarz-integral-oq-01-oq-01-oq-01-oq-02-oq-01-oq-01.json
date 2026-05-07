@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
   "title": "Prove equality: M_r = M_s for r < s iff all elements are equal (sharpness of ...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-06T21:20:28.055Z",
+    "phase": "DONE",
+    "since": "2026-05-07T17:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean: 5 theorems, 0 sorries, 0 axioms (205 lines). Gallery status=verified, badge=original. M_r=M_t iff all elements equal proved via strict Jensen contradiction.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — entry complete. Optional follow-on directions tracked in nextSteps (extension to negative r, Mathlib upstream contribution, geometric-mean limit case).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 200-line proof, 0 sorries, 0 axioms. M_r=M_t iff all equal via strict Jensen. Gallery entry created. Build pending network access for Docker.",
+    "progressSummary": "COMPLETE: CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean has 5 theorems, 0 sorries, 0 axioms (205 lines). M_r=M_t iff all elements equal, proved via strict Jensen (map_sum_lt) contradiction. Gallery status=verified, badge=original.",
     "builtItems": [
       "power_mean_eq_iff_all_eq_pos in Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean:85",
       "am_eq_qm_iff_all_eq in Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean:183",
@@ -81,7 +81,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-06T21:20:28.055Z",
+  "lastUpdate": "2026-05-07T17:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
