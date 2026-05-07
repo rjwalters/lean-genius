@@ -340,10 +340,13 @@ launch_agent() {
     print_info "Interval: ${INTERVAL}m (${interval_hours}h)"
     print_info "State: $STATE_FILE"
 
-    # Launch in tmux — no worktree needed (read-only agent)
+    # Launch in tmux — no worktree needed (read-only agent).
+    # Pin standard-context Opus 4.7: herald's prompt + state file can trigger 1M
+    # auto-selection, which fails on accounts without the 1M-context entitlement.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+    local herald_model="${HERALD_CLAUDE_MODEL:-claude-opus-4-7}"
     tmux new-session -d -s "$SESSION_NAME" -c "$REPO_ROOT" \
-        "ENHANCER_ID=herald REPO_ROOT=$REPO_ROOT $wrapper_script --daemon --prompt 'You are the herald agent. Read $prompt_file for your instructions, then start the scan loop.' --log '$LOG_FILE'"
+        "ENHANCER_ID=herald REPO_ROOT=$REPO_ROOT CLAUDE_MODEL=$herald_model $wrapper_script --daemon --prompt 'You are the herald agent. Read $prompt_file for your instructions, then start the scan loop.' --log '$LOG_FILE'"
 
     print_success "Launched herald agent"
     echo ""

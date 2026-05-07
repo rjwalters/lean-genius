@@ -501,8 +501,14 @@ run_claude_once() {
     local tmpfile
     tmpfile=$(mktemp)
 
-    # Run in background so we can monitor for startup hangs
-    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
+    # Run in background so we can monitor for startup hangs.
+    # CLAUDE_MODEL env var pins a specific model (e.g. to avoid 1M-context auto-
+    # selection on accounts that lack the entitlement). Empty/unset → CLI default.
+    local model_arg=()
+    if [[ -n "${CLAUDE_MODEL:-}" ]]; then
+        model_arg=(--model "$CLAUDE_MODEL")
+    fi
+    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "${model_arg[@]}" "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
     local timeout_pid=$!
 
     # Find the actual claude child process (timeout -> claude)
