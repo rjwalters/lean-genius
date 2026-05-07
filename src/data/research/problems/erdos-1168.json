@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1168",
   "title": "Erdős #1168",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T16:53:51.159Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-07T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Gallery: status formalized, badge wip. 0 axioms, 14 theorems, 9 defs, 255 lines, 2 sorries in main file. The two main-file sorries are the GCH-decomposition: base_case_under_gch (GCH → ℵ_{n+1} has bad 2-coloring, Erdős–Hajnal stepping-up) and stepping_up (bad base colorings → bad ℵ_{ω+1} ℵ₀-coloring via Galvin–Hajnal). Aristotle helper has 10 theorems / 8 sorries / 66 lines (routine cardinal arithmetic: aleph monotonicity, infinity, cofinality of successor alephs).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Discharge the 8 Aristotle helper sorries (routine Mathlib lemmas: Cardinal.aleph0_le_aleph, Cardinal.aleph_le_aleph, ord.cof for successor alephs). Then attack base_case_under_gch via GCH = aleph_succ_eq_two_pow plus the standard Erdős–Hajnal partition-tree argument; stepping_up via Galvin–Hajnal's theorem on cofinality omega.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced from 2 axioms to 1. Converted open conjecture from axiom to def. Only axiom is the known GCH result.",
+    "progressSummary": "PROGRESS. The original 2 axioms (open conjecture + GCH-conditional result) have both been removed: the open conjecture became a def (erdos_1168_conjecture as a Prop), and the GCH-conditional result became theorem-with-hypothesis style — base_case_under_gch and stepping_up now take GCH as a hypothesis rather than as an axiom. Two main-file sorries remain (the Erdős–Hajnal stepping-up argument), plus 8 routine cardinal-arithmetic sorries in the Aristotle helper. Gallery: status formalized, 0 axioms.",
     "builtItems": [
       "partitionRelation: multi-color partition relation (ℕ-indexed colors)",
       "IsHomogeneous: homogeneity predicate",
@@ -46,11 +46,20 @@
       "ℕ-indexed colors give countably many color classes",
       "The partition relation is antimonotone in targets (weaker targets easier to satisfy)",
       "Converted erdos_1168 from axiom to def (open conjecture should not be axiomatized as true)",
-      "erdos_1168_under_gch is the only axiom: it encodes the known GCH-conditional result",
-      "Added gch_implies_conjecture theorem: connects the known GCH result to the open conjecture"
+      "GCH-conditional result is now hypothesis-style (base_case_under_gch and stepping_up take GCH as a hypothesis), so axiomCount = 0",
+      "gch_implies_conjecture connects the GCH-decomposition theorems to the open conjecture",
+      "Aristotle helper has 8 routine cardinal-arithmetic sorries (aleph monotonicity, ℵ₀-bounds, cofinality of successor alephs) — well-suited for proof search"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Cardinal.aleph_mono / aleph_le_aleph: needed for aleph_mono and aleph0_le_aleph",
+      "Cardinal.cof_aleph_succ: cofinality of successor alephs (regular cardinal fact)",
+      "GCH ↔ aleph_succ_eq_two_pow: needed to unfold GCH in base_case_under_gch"
+    ],
+    "nextSteps": [
+      "Submit Erdos1168Aristotle.lean to Aristotle (8 routine cardinal sorries)",
+      "Attack base_case_under_gch by unfolding GCH and applying Erdős–Hajnal partition-tree argument",
+      "Attack stepping_up via Galvin–Hajnal cofinality-omega theorem"
+    ],
     "markdown": "# Erdős #1168 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -59,8 +68,7 @@
   "relatedProofs": [
     "erdos-1",
     "erdos-11",
-    "erdos-116",
-    "erdos-1168"
+    "erdos-116"
   ],
   "references": {
     "papers": [],
@@ -68,29 +76,29 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.159Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1168Aristotle.lean",
       "filename": "Erdos1168Aristotle.lean",
-      "lineCount": 67,
+      "lineCount": 66,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 9,
+      "sorryCount": 8,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1168Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos1168Problem.lean",
       "filename": "Erdos1168Problem.lean",
-      "lineCount": 256,
+      "lineCount": 255,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 9,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1168Problem.lean"
     }
