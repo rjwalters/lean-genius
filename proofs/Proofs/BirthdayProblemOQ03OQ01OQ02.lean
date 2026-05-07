@@ -453,15 +453,15 @@ lemma lambda_tendsto (c : ℝ) (hc : 0 < c) :
     have heq : c * (2 / c) = 2 := by field_simp
     linarith [mul_le_mul_of_nonneg_left hd hc.le]
   -- Squeeze: lower ≤ C(nc,3)/d² ≤ upper, both → c³/6
-  apply tendsto_of_tendsto_of_tendsto_of_le_of_le hlower hupper
+  apply tendsto_of_tendsto_of_tendsto_of_le_of_le' hlower hupper
   · filter_upwards [hnc_ge_2, Filter.eventually_ne_atTop 0] with d hn hd
     have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hd
     have hd2 : (0 : ℝ) < (d : ℝ) ^ 2 := by positivity
-    rw [← div_div]; exact (div_le_div_right hd2).mpr (choose3_lb _ hn)
+    rw [← div_div]; exact (div_le_div_iff_of_pos_right hd2).mpr (choose3_lb _ hn)
   · filter_upwards [Filter.eventually_ne_atTop 0] with d hd
     have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hd
     have hd2 : (0 : ℝ) < (d : ℝ) ^ 2 := by positivity
-    rw [← div_div]; exact (div_le_div_right hd2).mpr (choose3_ub _)
+    rw [← div_div]; exact (div_le_div_iff_of_pos_right hd2).mpr (choose3_ub _)
 
 /-- Lemma B: exp(−λ_c(d)) → exp(−c³/6) as d → ∞.
     Direct corollary of Lemma A and continuity of Real.exp. -/
@@ -544,7 +544,8 @@ theorem general_threshold_exponent (k : ℕ) (hk : 2 ≤ k) :
 private lemma bad_count_n3 (d : ℕ) :
     (Finset.univ.filter (fun f : Fin 3 → Fin d =>
       f 0 = f 1 ∧ f 1 = f 2)).card = d := by
-  rw [show d = Fintype.card (Fin d) from (Fintype.card_fin d).symm]
+  rw [show d = Fintype.card (Fin d) from (Fintype.card_fin d).symm,
+      ← Fintype.card_coe]
   apply Fintype.card_congr
   exact {
     toFun := fun ⟨f, _⟩ => f 0
@@ -567,14 +568,38 @@ theorem good_count_n3 (d : ℕ) :
   have h_split : (Finset.univ.filter (fun f : Fin 3 → Fin d => f 0 = f 1 ∧ f 1 = f 2)).card +
       (Finset.univ.filter (fun f : Fin 3 → Fin d => ¬(f 0 = f 1 ∧ f 1 = f 2))).card =
       Fintype.card (Fin 3 → Fin d) := by
-    rw [← Finset.card_univ, ← Finset.filter_card_add_filter_neg_card_eq_card]
+    rw [← Finset.card_univ,
+        ← Finset.filter_card_add_filter_neg_card_eq_card
+          (fun f : Fin 3 → Fin d => f 0 = f 1 ∧ f 1 = f 2)]
   rw [h_bad, h_card] at h_split
   omega
+
+/-- For n=3, d ≥ 1: P(no triple) = 1 - 1/d² as a real number.
+    Real-number probability form of `good_count_n3`.
+
+    Note: `n_c(d) = ⌊c · d^(2/3)⌋` equals 3 only on a sparse set of d (where
+    c·d^(2/3) ∈ [3, 4)), so this is not directly the Lemma C limit at this c.
+    But it is a useful base-case sanity check: as d → ∞ with n held fixed at 3,
+    P_no_triple → 1, matching exp(-c³/6) → 1 in the c → 0 regime where Lemma B
+    gives exp(-C(3,3)/d²) = exp(-1/d²) → 1 also. -/
+theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
+    ((Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      ¬(f 0 = f 1 ∧ f 1 = f 2))).card : ℝ) /
+    (Fintype.card (Fin 3 → Fin d) : ℝ) = 1 - 1 / (d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hge : d ≤ d ^ 3 := by
+    have h : d ^ 1 ≤ d ^ 3 := Nat.pow_le_pow_right hd (by norm_num : 1 ≤ 3)
+    simpa [pow_one] using h
+  have hcard_nat : Fintype.card (Fin 3 → Fin d) = d ^ 3 := by simp [Fintype.card_fun]
+  rw [good_count_n3, hcard_nat, Nat.cast_sub hge]
+  push_cast
+  have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  field_simp
 
 /-
   ## Summary
 
-  **Proved (12 theorems, 1 axiom):**
+  **Proved (13 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -586,10 +611,11 @@ theorem good_count_n3 (d : ℕ) :
   9. `nc_div_pow_tendsto`: n_c(d)/d^{2/3} → c (Session 3)
   10. `lambda_tendsto` (Lemma A): C(n_c(d),3)/d² → c³/6 (Session 4)
   11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
+  12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
+  13. `p_no_triple_n3` (Session 6): P(no triple|n=3) = 1 − 1/d² as a real number
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
-  12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
 
   **General k-way threshold:** ~ (k! d^{k-1} ln 2)^{1/k} ~ d^{(k-1)/k}
   | k | exponent | formula               |
@@ -606,5 +632,6 @@ theorem good_count_n3 (d : ℕ) :
 #check @exp_lambda_tendsto
 #check @p_no_triple_tendsto
 #check @poisson_approx_birthday3
+#check @p_no_triple_n3
 
 end BirthdayThreshold3
