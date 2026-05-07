@@ -159,16 +159,12 @@ theorem snf_exists_zero (m n : ℕ) :
     V := (1 : Matrix (Fin n) (Fin n) ℤ)
     hU := isUnimodular_one
     hV := isUnimodular_one
-    hD_diag := ?_
-    hD_div := ?_ }, ?_⟩
-  · -- D = 0 is diagonal: every entry is 0
-    intro i j _
-    simp
-  · -- D = 0 satisfies the divisibility chain: 0 ∣ 0
-    intro k _ _ _ _ _
-    simp
-  · -- A = 0 = 1 * 0 * 1
-    simp [SmithNormalForm.isDecompOf]
+    hD_diag := fun _ _ _ => Matrix.zero_apply _ _
+    hD_div := fun _ _ _ _ _ _ => by simp }, ?_⟩
+  -- A = 0 = 1 * 0 * 1
+  show (0 : Matrix (Fin m) (Fin n) ℤ) =
+    (1 : Matrix (Fin m) (Fin m) ℤ) * 0 * (1 : Matrix (Fin n) (Fin n) ℤ)
+  rw [Matrix.one_mul, Matrix.zero_mul]
 
 /-! ## Diagonal Entry Extraction -/
 
@@ -342,14 +338,12 @@ theorem intNullSpace_smul {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
   simp only [intNullSpace, Set.mem_setOf_eq] at *
   rw [mulVec_smul, hx, smul_zero]
 
-/-- The null space is closed under negation: a special case of `intNullSpace_smul`
-    with `k = -1`. -/
+/-- The null space is closed under negation. -/
 theorem intNullSpace_neg {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
     {x : Fin n → ℤ} (hx : x ∈ intNullSpace A) :
     (-x) ∈ intNullSpace A := by
-  have hsmul : ((-1 : ℤ) • x) ∈ intNullSpace A := intNullSpace_smul A (-1) hx
-  have heq : (-1 : ℤ) • x = -x := by ext i; simp
-  rwa [heq] at hsmul
+  simp only [intNullSpace, Set.mem_setOf_eq] at *
+  rw [mulVec_neg, hx, neg_zero]
 
 /-- The null space is closed under subtraction.
     Combines closure under addition and negation: x − y = x + (−y). -/
