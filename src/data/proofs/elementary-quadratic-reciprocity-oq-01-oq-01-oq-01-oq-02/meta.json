@@ -21,8 +21,8 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 255,
-    "theoremCount": 14,
+    "lineCount": 254,
+    "theoremCount": 11,
     "definitionCount": 1,
     "dateAdded": "2026-05-07",
     "mathlibDependencies": [
@@ -143,5 +143,22 @@
     "elementary-quadratic-reciprocity-oq-01-oq-01",
     "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
     "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02"
-  ]
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.ElementaryQuadraticReciprocityOQ01OQ01OQ01",
+      "Proofs.ElementaryQuadraticReciprocityOQ01OQ01OQ02",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["MulChar", "ZMod"],
+    "namespace": "GaussSumFullAssembly",
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
+    "lineCount": 254,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "sorries": 0
+  }
 }
