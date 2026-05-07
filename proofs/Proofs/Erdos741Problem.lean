@@ -196,8 +196,9 @@ theorem density_univ : upperDensity Set.univ = 1 := by
   ext n
   have hn : (n : ℝ) + 1 ≠ 0 := by positivity
   have hIic : (Set.Iic n : Set ℕ).ncard = n + 1 := by
-    rw [show (Set.Iic n : Set ℕ) = ↑(Finset.Iic n) from by simp [Finset.coe_Iic]]
-    rw [Set.ncard_coe_Finset]; simp [Finset.card_Iic]
+    rw [show (Set.Iic n : Set ℕ) = ↑(Finset.range (n + 1)) from by
+          ext m; simp [Finset.mem_range, Nat.lt_succ_iff]]
+    rw [Set.ncard_coe_Finset, Finset.card_range]
   rw [hIic, div_eq_one_iff_eq hn]
   push_cast; ring
 
@@ -205,7 +206,7 @@ theorem density_univ : upperDensity Set.univ = 1 := by
 theorem density_mono {A B : Set ℕ} (h : A ⊆ B) : upperDensity A ≤ upperDensity B := by
   unfold upperDensity
   apply Filter.limsup_le_limsup
-  · apply Filter.eventually_of_forall
+  · apply Filter.Eventually.of_forall
     intro n
     apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)
     exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
