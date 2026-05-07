@@ -37,6 +37,10 @@ The non-sorry results proved here:
   - `tan_eq_cot_complement`: complementary angle cotangent bound [Session 12]
   - `odd_harmonic_sum_lb`: ∑ 1/(2j+1) ≥ (1/2)·log(m+1) [Session 12]
   - `half_log_le_log_half_add_one`: (1/2)·log(n+1) ≤ log(n/2+1) [Session 12]
+  - `exists_nearest_chebyshev_angle`: nearest midpoint within π/(2n) [Session 14]
+  - `chebyshev_angle_dist_triangle` / `chebyshev_angle_dist_from_nearest`: Step 3 [Session 15]
+  - `sin_lb_of_in_interior` / `sin_chebyshev_midpoint_lb`: Step 4 sin lb [Session 16]
+  - `chebyshev_term_lb_at_node`: Step 5 per-term lb (Steps 3+4 + cos-Lipschitz) [Session 16]
 
 ## Sorry 1: trig_sum_harmonic_lb (was: chebyshev_trig_sum_lb Case 2)
 Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
@@ -1223,6 +1227,135 @@ private lemma chebyshev_angle_dist_from_nearest (n : ℕ) (hn : 0 < n) (θ : ℝ
     field_simp
     ring
   linarith [htri, hk₀]
+
+/-- **Step 4 of trig_sum_harmonic_lb (sin lower bound on the interior).**
+
+    On the interval [d/2, π - d/2] with d > 0 (and necessarily d ≤ π for the interval
+    to be non-empty), the function sin attains its minimum at the boundary, namely
+    sin(d/2). This is because sin is symmetric about π/2 (sin(π - x) = sin x),
+    sin(d/2) = sin(π - d/2), and sin is monotone on each side of π/2.
+
+    The proof splits on whether x ≤ π/2 (use monotonicity of sin on [-π/2, π/2])
+    or x > π/2 (apply monotonicity to π - x ∈ [d/2, π/2) and use sin(π - x) = sin x). -/
+private lemma sin_lb_of_in_interior
+    (d : ℝ) (hd_pos : 0 < d)
+    (x : ℝ) (h_lower : d / 2 ≤ x) (h_upper : x ≤ Real.pi - d / 2) :
+    Real.sin (d / 2) ≤ Real.sin x := by
+  have hpi_pos := Real.pi_pos
+  have hd_half_pos : 0 < d / 2 := by linarith
+  have hneg_pi_half_le : -(Real.pi / 2) ≤ d / 2 := by linarith
+  by_cases hx : x ≤ Real.pi / 2
+  · -- Case: d/2 ≤ x ≤ π/2 — use monotonicity of sin on [-π/2, π/2]
+    exact Real.sin_le_sin_of_le_of_le_pi_div_two hneg_pi_half_le hx h_lower
+  · push_neg at hx
+    -- Case: x > π/2. Use sin(x) = sin(π - x) with π - x ∈ [d/2, π/2)
+    have h_pi_x_lower : d / 2 ≤ Real.pi - x := by linarith
+    have h_pi_x_upper : Real.pi - x ≤ Real.pi / 2 := by linarith
+    have hsin_le : Real.sin (d / 2) ≤ Real.sin (Real.pi - x) :=
+      Real.sin_le_sin_of_le_of_le_pi_div_two hneg_pi_half_le h_pi_x_upper h_pi_x_lower
+    rwa [Real.sin_pi_sub] at hsin_le
+
+/-- **Step 4 corollary (sin lower bound at chebyshev midpoints).**
+
+    For a chebyshev midpoint φ_k = (2k+1)π/(2n) lying in [d/2, π - d/2] with d > 0,
+    we have sin(φ_k) ≥ sin(d/2). -/
+private lemma sin_chebyshev_midpoint_lb
+    (n : ℕ) (hn : 0 < n) (k : Fin n)
+    (d : ℝ) (hd_pos : 0 < d)
+    (h_lower : d / 2 ≤ (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n))
+    (h_upper : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - d / 2) :
+    Real.sin (d / 2) ≤
+      Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) :=
+  sin_lb_of_in_interior d hd_pos _ h_lower h_upper
+
+/-- **Step 5 of trig_sum_harmonic_lb (per-term lower bound).**
+
+    For a chebyshev midpoint φ_k whose midpoint lies in [d/2, π - d/2] (so
+    `sin(φ_k) ≥ sin(d/2)`), the per-term lower bound combines:
+
+      • Step 3:    |θ - φ_k| ≤ (2|k - k₀| + 1) · π / (2n)
+      • Step 4:    sin(φ_k) ≥ sin(d/2) ≥ 0
+      • Lipschitz: |cos θ - cos φ_k| ≤ |θ - φ_k|
+
+    so that
+
+      sin(φ_k) / |cos θ - cos φ_k|
+        ≥ sin(d/2) · (2n) / ((2|k - k₀| + 1) · π).
+
+    The denominator on the LHS is positive because `cos θ ≠ chebyshevNode n k`.
+    The denominator on the RHS is positive because n ≥ 1 and π > 0. -/
+private lemma chebyshev_term_lb_at_node
+    (n : ℕ) (hn : 0 < n) (k₀ k : Fin n)
+    (θ : ℝ)
+    (d : ℝ) (hd_pos : 0 < d)
+    (hk₀_close : |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n))
+    (h_lower : d / 2 ≤ (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n))
+    (h_upper : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - d / 2)
+    (hne : Real.cos θ ≠ chebyshevNode n k) :
+    Real.sin (d / 2) * (2 * (n : ℝ)) /
+        ((2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi) ≤
+      Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+        |Real.cos θ - chebyshevNode n k| := by
+  set φ : ℝ := (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) with hφ_def
+  -- Positivity facts
+  have hpi_pos := Real.pi_pos
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  have h_abs_kk₀_nn : 0 ≤ |((k.val : ℝ) - k₀.val)| := abs_nonneg _
+  -- Step 4: sin(φ) ≥ sin(d/2) ≥ 0
+  have hsin_lb : Real.sin (d / 2) ≤ Real.sin φ :=
+    sin_chebyshev_midpoint_lb n hn k d hd_pos h_lower h_upper
+  have hsin_d_half_pos : 0 < Real.sin (d / 2) := by
+    apply Real.sin_pos_of_pos_of_lt_pi (by linarith)
+    -- From h_lower ≤ h_upper: d/2 ≤ π - d/2, so d ≤ π
+    have hd_le_pi : d ≤ Real.pi := by linarith
+    linarith
+  have hsin_φ_nn : 0 ≤ Real.sin φ := le_trans (le_of_lt hsin_d_half_pos) hsin_lb
+  -- Step 3 + Lipschitz: |cos θ - cos φ| ≤ |θ - φ| ≤ (2|k-k₀|+1)π/(2n) =: B
+  set B : ℝ := (2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi / (2 * (n : ℝ)) with hB_def
+  have h_num_pos : 0 < 2 * |((k.val : ℝ) - k₀.val)| + 1 := by positivity
+  have h_num_pi_pos : 0 < (2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi := by positivity
+  have h_2n_pos : 0 < 2 * (n : ℝ) := by positivity
+  have hB_pos : 0 < B := by
+    rw [hB_def]; exact div_pos h_num_pi_pos h_2n_pos
+  -- Lipschitz: |cos θ - cos φ| ≤ |θ - φ|
+  have h_lip : |Real.cos θ - Real.cos φ| ≤ |θ - φ| :=
+    Real.abs_cos_sub_cos_le θ φ
+  -- Step 3 corollary: |θ - φ| ≤ B
+  have h_step3 : |θ - φ| ≤ B := chebyshev_angle_dist_from_nearest n hn θ k₀ k hk₀_close
+  -- Combine: |cos θ - cos φ| ≤ B
+  have h_cos_le_B : |Real.cos θ - Real.cos φ| ≤ B := le_trans h_lip h_step3
+  -- |cos θ - chebyshevNode n k| = |cos θ - cos φ|
+  have hnode : chebyshevNode n k = Real.cos φ := by
+    simp only [chebyshevNode, hφ_def]
+  -- The denominator on LHS is positive (from hne)
+  have h_denom_pos : 0 < |Real.cos θ - chebyshevNode n k| := by
+    rw [abs_pos, sub_ne_zero]; exact hne
+  have h_denom_pos' : 0 < |Real.cos θ - Real.cos φ| := by
+    rw [hnode] at h_denom_pos; exact h_denom_pos
+  -- 1/B ≤ 1/|cos θ - cos φ|
+  have h_inv : 1 / B ≤ 1 / |Real.cos θ - Real.cos φ| := by
+    apply one_div_le_one_div_of_le h_denom_pos'
+    rw [hnode]; exact h_cos_le_B
+  -- sin(d/2)/B ≤ sin(φ)/|cos θ - cos φ|
+  have hsin_d_half_nn : 0 ≤ Real.sin (d / 2) := le_of_lt hsin_d_half_pos
+  have h1 : Real.sin (d / 2) / B ≤ Real.sin (d / 2) / |Real.cos θ - Real.cos φ| := by
+    rw [div_eq_mul_one_div, div_eq_mul_one_div]
+    exact mul_le_mul_of_nonneg_left h_inv hsin_d_half_nn
+  have h2 : Real.sin (d / 2) / |Real.cos θ - Real.cos φ| ≤
+            Real.sin φ / |Real.cos θ - Real.cos φ| := by
+    apply div_le_div_of_nonneg_right hsin_lb h_denom_pos'
+  -- Convert sin(d/2)/B to the target form via div_div_eq_mul_div
+  have h_target_eq : Real.sin (d / 2) / B =
+      Real.sin (d / 2) * (2 * (n : ℝ)) /
+        ((2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi) := by
+    rw [hB_def]
+    exact div_div_eq_mul_div _ _ _
+  rw [hnode]
+  calc Real.sin (d / 2) * (2 * (n : ℝ)) /
+          ((2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi)
+      = Real.sin (d / 2) / B := h_target_eq.symm
+    _ ≤ Real.sin (d / 2) / |Real.cos θ - Real.cos φ| := h1
+    _ ≤ Real.sin φ / |Real.cos θ - Real.cos φ| := h2
 
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
