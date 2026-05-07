@@ -1,125 +1,254 @@
-{
-  "source": "manual",
-  "annotations": [
-    {
-      "id": "intro-rate-question",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 1, "endLine": 46 },
-      "type": "insight",
-      "title": "Why Ask About Rates?",
-      "content": "Kolmogorov's SLLN says the sample mean converges, but says nothing about how fast. For finite-variance distributions, the CLT gives rate 1/√n with a Gaussian limit. For heavy-tailed distributions where E[X²] = ∞ — Pareto(α) with α∈(1,2), Lévy stable laws — the CLT fails. The question 'what IS the rate?' requires a completely different theorem: the Marcinkiewicz-Zygmund SLLN, developed in 1937 as part of Polish probability theory's golden era.",
-      "mathContext": "The rate question separates three regimes: $\\mathbb{E}[X^2] < \\infty$ gives rate $n^{1/2}$ (Gaussian CLT); $\\mathbb{E}[|X|^r] < \\infty$ for $r \\in (1,2)$ gives rate $n^{1/r}$ (M-Z / $\\alpha$-stable); and $\\mathbb{E}[|X|] < \\infty$ only gives Kolmogorov's rate $n^1$ with no limit distribution. The file imports `LawsOfLargeNumbersOQ01` (parent SLLN) as the base, then quantifies how much faster convergence can be guaranteed.",
-      "significance": "key",
-      "relatedConcepts": ["strong law of large numbers", "central limit theorem", "heavy-tailed distributions", "stable distributions", "convergence rates"],
-      "prerequisites": ["Kolmogorov's SLLN", "characteristic functions", "Lévy stable laws", "moment conditions"]
+[
+  {
+    "id": "intro-rate-question",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 46
     },
-    {
-      "id": "lr-hierarchy",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 57, "endLine": 88 },
-      "type": "definition",
-      "title": "The Lᵣ Moment Hierarchy",
-      "content": "IsLr X r μ means E[|X|^r] < ∞, captured by Mathlib's Memℒp with ENNReal exponent. The hierarchy L² ⊋ Lʳ (r∈(1,2)) ⊋ L¹ describes a spectrum: L² has 'enough' variance for Gaussian CLT, L¹ has just enough for Kolmogorov, and L^r for r∈(1,2) is the intermediate regime where variance is infinite but the r-th moment provides a convergence rate. The inclusions are proved via mono_exponent, which exploits that probability measures are finite.",
-      "mathContext": "For a probability measure $\\mu$, if $p \\leq q$ then $L^q(\\mu) \\subseteq L^p(\\mu)$. This follows from Jensen's inequality applied to the concave function $t \\mapsto t^{p/q}$: $$\\left(\\int |f|^p\\, d\\mu\\right)^{1/p} \\leq \\left(\\int |f|^q\\, d\\mu\\right)^{1/q}.$$ In infinite-measure spaces this fails; the probability assumption is essential. Mathlib's `Memℒp.mono_exponent` implements this directly.",
-      "significance": "key",
-      "relatedConcepts": ["Lp spaces", "Memℒp", "Jensen's inequality", "probability measures", "moment conditions"],
-      "prerequisites": ["measure theory", "Lp space theory", "Jensen's inequality"]
+    "type": "insight",
+    "title": "Why Ask About Rates?",
+    "content": "Kolmogorov's SLLN says the sample mean converges, but says nothing about how fast. For finite-variance distributions, the CLT gives rate 1/√n with a Gaussian limit. For heavy-tailed distributions where E[X²] = ∞ — Pareto(α) with α∈(1,2), Lévy stable laws — the CLT fails. The question 'what IS the rate?' requires a completely different theorem: the Marcinkiewicz-Zygmund SLLN, developed in 1937 as part of Polish probability theory's golden era.",
+    "mathContext": "The rate question separates three regimes: $\\mathbb{E}[X^2] < \\infty$ gives rate $n^{1/2}$ (Gaussian CLT); $\\mathbb{E}[|X|^r] < \\infty$ for $r \\in (1,2)$ gives rate $n^{1/r}$ (M-Z / $\\alpha$-stable); and $\\mathbb{E}[|X|] < \\infty$ only gives Kolmogorov's rate $n^1$ with no limit distribution. The file imports `LawsOfLargeNumbersOQ01` (parent SLLN) as the base, then quantifies how much faster convergence can be guaranteed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong law of large numbers",
+      "central limit theorem",
+      "heavy-tailed distributions",
+      "stable distributions",
+      "convergence rates"
+    ],
+    "prerequisites": [
+      "Kolmogorov's SLLN",
+      "characteristic functions",
+      "Lévy stable laws",
+      "moment conditions"
+    ]
+  },
+  {
+    "id": "lr-hierarchy",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 88
     },
-    {
-      "id": "mz-rate-exponent",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 89, "endLine": 101 },
-      "type": "insight",
-      "title": "Why 1/r Lives in (1/2, 1)",
-      "content": "For r ∈ (1,2), the rate exponent 1/r lies strictly between 1/2 and 1. This means n^{1/r} lies between n^{1/2} (CLT rate) and n (Kolmogorov scale). The bound n^{-1/r}(Sₙ-nμ) → 0 says deviations grow strictly slower than n but possibly faster than √n. As r→2, the rate approaches √n; as r→1, it approaches n. The M-Z theorem thus interpolates between CLT and SLLN across a continuum of moment conditions.",
-      "mathContext": "The two-sided bound $1/2 < 1/r < 1$ for $r \\in (1,2)$ follows from the order-reversing property of $r \\mapsto 1/r$: $r > 1 \\Rightarrow 1/r < 1$ and $r < 2 \\Rightarrow 1/r > 1/2$. The Lean proof uses `div_lt_div_iff` to cross-multiply, avoiding real division issues: $1/r < 1 \\iff 1 < r$ (multiply both sides by $r > 0$).",
-      "significance": "supporting",
-      "relatedConcepts": ["reciprocal function", "order-reversing maps", "normalization exponents", "interpolation"],
-      "prerequisites": ["real arithmetic", "order theory"]
+    "type": "definition",
+    "title": "The Lᵣ Moment Hierarchy",
+    "content": "IsLr X r μ means E[|X|^r] < ∞, captured by Mathlib's Memℒp with ENNReal exponent. The hierarchy L² ⊋ Lʳ (r∈(1,2)) ⊋ L¹ describes a spectrum: L² has 'enough' variance for Gaussian CLT, L¹ has just enough for Kolmogorov, and L^r for r∈(1,2) is the intermediate regime where variance is infinite but the r-th moment provides a convergence rate. The inclusions are proved via mono_exponent, which exploits that probability measures are finite.",
+    "mathContext": "For a probability measure $\\mu$, if $p \\leq q$ then $L^q(\\mu) \\subseteq L^p(\\mu)$. This follows from Jensen's inequality applied to the concave function $t \\mapsto t^{p/q}$: $$\\left(\\int |f|^p\\, d\\mu\\right)^{1/p} \\leq \\left(\\int |f|^q\\, d\\mu\\right)^{1/q}.$$ In infinite-measure spaces this fails; the probability assumption is essential. Mathlib's `Memℒp.mono_exponent` implements this directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lp spaces",
+      "Memℒp",
+      "Jensen's inequality",
+      "probability measures",
+      "moment conditions"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Lp space theory",
+      "Jensen's inequality"
+    ]
+  },
+  {
+    "id": "mz-rate-exponent",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 101
     },
-    {
-      "id": "mz-axiom-proof-sketch",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 102, "endLine": 141 },
-      "type": "technique",
-      "title": "The Truncation Argument Behind M-Z",
-      "content": "The Marcinkiewicz-Zygmund proof uses a truncation argument: split Xₖ into a truncated part |Xₖ| ≤ n^{1/r} and a tail part |Xₖ| > n^{1/r}. The truncated part is handled by Kolmogorov's 3-series theorem; the tail part vanishes because E[|X|^r] < ∞ implies Σₙ P(|X| > n^{1/r}) < ∞ by Markov's inequality. The full argument requires careful API navigation through Mathlib's probability infrastructure — hence the axiom. Reference: Feller (1971), Vol. II, Theorem IX.4.1.",
-      "mathContext": "The tail series: by Markov's inequality, $\\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] / n$. Summing: $\\sum_{n=1}^\\infty \\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] \\sum_{n=1}^\\infty n^{-1}$, which diverges. The sharper bound uses $\\mathbb{P}(|X| > t) \\leq \\mathbb{E}[|X|^r] t^{-r}$, giving $\\sum \\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] \\sum n^{-1}$ — still needing the 3-series structure to handle the truncated part via Kronecker's lemma.",
-      "significance": "key",
-      "relatedConcepts": ["truncation method", "Kolmogorov 3-series theorem", "Kronecker's lemma", "Markov inequality", "Borel-Cantelli lemma"],
-      "prerequisites": ["Kolmogorov 3-series theorem", "Kronecker's lemma", "Markov inequality", "measure theory"]
+    "type": "insight",
+    "title": "Why 1/r Lives in (1/2, 1)",
+    "content": "For r ∈ (1,2), the rate exponent 1/r lies strictly between 1/2 and 1. This means n^{1/r} lies between n^{1/2} (CLT rate) and n (Kolmogorov scale). The bound n^{-1/r}(Sₙ-nμ) → 0 says deviations grow strictly slower than n but possibly faster than √n. As r→2, the rate approaches √n; as r→1, it approaches n. The M-Z theorem thus interpolates between CLT and SLLN across a continuum of moment conditions.",
+    "mathContext": "The two-sided bound $1/2 < 1/r < 1$ for $r \\in (1,2)$ follows from the order-reversing property of $r \\mapsto 1/r$: $r > 1 \\Rightarrow 1/r < 1$ and $r < 2 \\Rightarrow 1/r > 1/2$. The Lean proof uses `div_lt_div_iff` to cross-multiply, avoiding real division issues: $1/r < 1 \\iff 1 < r$ (multiply both sides by $r > 0$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reciprocal function",
+      "order-reversing maps",
+      "normalization exponents",
+      "interpolation"
+    ],
+    "prerequisites": [
+      "real arithmetic",
+      "order theory"
+    ]
+  },
+  {
+    "id": "mz-axiom-proof-sketch",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 141
     },
-    {
-      "id": "mz-implies-kolmogorov",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 153, "endLine": 167 },
-      "type": "insight",
-      "title": "M-Z Strictly Implies Kolmogorov",
-      "content": "Since r > 1 implies E[|X|^r] < ∞ → E[|X|] < ∞ (by lr_implies_integrable), any distribution satisfying M-Z conditions also satisfies Kolmogorov's SLLN. The proof directly invokes slln_under_finite_mean_only from the parent file rather than deriving SLLN from M-Z — the two routes are equivalent but the direct route is simpler. This highlights that M-Z is strictly stronger: it gives quantitative rate information on top of mere convergence.",
-      "mathContext": "The logical chain: $\\mathbb{E}[|X|^r] < \\infty$ (M-Z, $r > 1$) $\\Rightarrow$ $\\mathbb{E}[|X|] < \\infty$ (Hölder + probability measure) $\\Rightarrow$ $n^{-1} S_n \\to \\mu$ a.s. (Kolmogorov). The `lr_implies_integrable` lemma implements the Hölder step via `Memℒp.integrable` with the bound $\\|f\\|_{L^1} \\leq \\|f\\|_{L^r}$ for probability measures ($r \\geq 1$).",
-      "significance": "supporting",
-      "relatedConcepts": ["Kolmogorov SLLN", "Hölder inequality", "integrability", "implication hierarchy"],
-      "prerequisites": ["Kolmogorov SLLN", "Hölder inequality", "Lp inclusion"]
+    "type": "technique",
+    "title": "The Truncation Argument Behind M-Z",
+    "content": "The Marcinkiewicz-Zygmund proof uses a truncation argument: split Xₖ into a truncated part |Xₖ| ≤ n^{1/r} and a tail part |Xₖ| > n^{1/r}. The truncated part is handled by Kolmogorov's 3-series theorem; the tail part vanishes because E[|X|^r] < ∞ implies Σₙ P(|X| > n^{1/r}) < ∞ by Markov's inequality. The full argument requires careful API navigation through Mathlib's probability infrastructure — hence the axiom. Reference: Feller (1971), Vol. II, Theorem IX.4.1.",
+    "mathContext": "The tail series: by Markov's inequality, $\\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] / n$. Summing: $\\sum_{n=1}^\\infty \\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] \\sum_{n=1}^\\infty n^{-1}$, which diverges. The sharper bound uses $\\mathbb{P}(|X| > t) \\leq \\mathbb{E}[|X|^r] t^{-r}$, giving $\\sum \\mathbb{P}(|X| > n^{1/r}) \\leq \\mathbb{E}[|X|^r] \\sum n^{-1}$ — still needing the 3-series structure to handle the truncated part via Kronecker's lemma.",
+    "significance": "key",
+    "relatedConcepts": [
+      "truncation method",
+      "Kolmogorov 3-series theorem",
+      "Kronecker's lemma",
+      "Markov inequality",
+      "Borel-Cantelli lemma"
+    ],
+    "prerequisites": [
+      "Kolmogorov 3-series theorem",
+      "Kronecker's lemma",
+      "Markov inequality",
+      "measure theory"
+    ]
+  },
+  {
+    "id": "mz-implies-kolmogorov",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 153,
+      "endLine": 167
     },
-    {
-      "id": "moment-rate-monotonicity",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 168, "endLine": 186 },
-      "type": "technique",
-      "title": "More Moments = Faster Rate",
-      "content": "Two dual monotonicity results: (1) higher_moment_tighter_rate shows L^{r₂} ⊆ L^{r₁} for r₁ ≤ r₂ — distributions with more moment conditions are in more Lʳ spaces; (2) rate_normalization_ordering shows n^{1/r₂} < n^{1/r₁} for r₁ < r₂ — so the M-Z bound for r₂ is strictly tighter. Together they make precise: 'the more moment conditions a distribution satisfies, the sharper the convergence rate guarantee'.",
-      "mathContext": "The normalization ordering uses `Real.rpow_lt_rpow_of_exponent_lt`: for base $n > 1$, $y < z \\Rightarrow n^y < n^z$. Applied with $y = 1/r_2 < 1/r_1 = z$ (since $r_1 < r_2$ reverses reciprocal order). The inequality $1/r_2 < 1/r_1$ is verified by `div_lt_div_of_pos_left` with numerator 1. Combined: $r_1 < r_2 \\Rightarrow 1/r_2 < 1/r_1 \\Rightarrow n^{1/r_2} < n^{1/r_1}$.",
-      "significance": "supporting",
-      "relatedConcepts": ["moment conditions", "normalization exponents", "Lp monotonicity", "rpow monotonicity"],
-      "prerequisites": ["real exponentiation", "Lp inclusion", "order theory"]
+    "type": "insight",
+    "title": "M-Z Strictly Implies Kolmogorov",
+    "content": "Since r > 1 implies E[|X|^r] < ∞ → E[|X|] < ∞ (by lr_implies_integrable), any distribution satisfying M-Z conditions also satisfies Kolmogorov's SLLN. The proof directly invokes slln_under_finite_mean_only from the parent file rather than deriving SLLN from M-Z — the two routes are equivalent but the direct route is simpler. This highlights that M-Z is strictly stronger: it gives quantitative rate information on top of mere convergence.",
+    "mathContext": "The logical chain: $\\mathbb{E}[|X|^r] < \\infty$ (M-Z, $r > 1$) $\\Rightarrow$ $\\mathbb{E}[|X|] < \\infty$ (Hölder + probability measure) $\\Rightarrow$ $n^{-1} S_n \\to \\mu$ a.s. (Kolmogorov). The `lr_implies_integrable` lemma implements the Hölder step via `Memℒp.integrable` with the bound $\\|f\\|_{L^1} \\leq \\|f\\|_{L^r}$ for probability measures ($r \\geq 1$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Kolmogorov SLLN",
+      "Hölder inequality",
+      "integrability",
+      "implication hierarchy"
+    ],
+    "prerequisites": [
+      "Kolmogorov SLLN",
+      "Hölder inequality",
+      "Lp inclusion"
+    ]
+  },
+  {
+    "id": "moment-rate-monotonicity",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 168,
+      "endLine": 186
     },
-    {
-      "id": "pareto-definition",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 188, "endLine": 216 },
-      "type": "definition",
-      "title": "Pareto Distribution as Survival Function",
-      "content": "The Pareto(α) distribution with scale x_m=1 is characterized by its survival function P(X > x) = x^{-α} for x ≥ 1. Defining a distribution by its survival function is natural in Lean 4 measure theory: we specify μ{ω | X ω > s} = paretoSurvival α s, avoiding the need for density or CDF machinery. This tail characterization is also the most direct for computing moments via the layer-cake formula E[X^r] = r·∫_0^∞ P(X>t^{1/r}) dt.",
-      "mathContext": "The Pareto($\\alpha$) survival function with scale 1: $\\bar{F}(x) = \\begin{cases} 1 & x < 1 \\\\ x^{-\\alpha} & x \\geq 1 \\end{cases}$. Moments via layer-cake: $\\mathbb{E}[X^r] = r \\int_0^\\infty t^{r-1} \\mathbb{P}(X > t)\\, dt = r \\int_1^\\infty t^{r-1} t^{-\\alpha}\\, dt = \\frac{r}{\\alpha - r}$ when $r < \\alpha$. The tail index $\\alpha$ controls the heaviness: larger $\\alpha$ means lighter tails and more finite moments.",
-      "significance": "key",
-      "relatedConcepts": ["Pareto distribution", "survival function", "power law", "heavy-tailed distributions", "layer-cake formula"],
-      "prerequisites": ["probability distributions", "survival functions", "measure theory", "power functions"]
+    "type": "technique",
+    "title": "More Moments = Faster Rate",
+    "content": "Two dual monotonicity results: (1) higher_moment_tighter_rate shows L^{r₂} ⊆ L^{r₁} for r₁ ≤ r₂ — distributions with more moment conditions are in more Lʳ spaces; (2) rate_normalization_ordering shows n^{1/r₂} < n^{1/r₁} for r₁ < r₂ — so the M-Z bound for r₂ is strictly tighter. Together they make precise: 'the more moment conditions a distribution satisfies, the sharper the convergence rate guarantee'.",
+    "mathContext": "The normalization ordering uses `Real.rpow_lt_rpow_of_exponent_lt`: for base $n > 1$, $y < z \\Rightarrow n^y < n^z$. Applied with $y = 1/r_2 < 1/r_1 = z$ (since $r_1 < r_2$ reverses reciprocal order). The inequality $1/r_2 < 1/r_1$ is verified by `div_lt_div_of_pos_left` with numerator 1. Combined: $r_1 < r_2 \\Rightarrow 1/r_2 < 1/r_1 \\Rightarrow n^{1/r_2} < n^{1/r_1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "moment conditions",
+      "normalization exponents",
+      "Lp monotonicity",
+      "rpow monotonicity"
+    ],
+    "prerequisites": [
+      "real exponentiation",
+      "Lp inclusion",
+      "order theory"
+    ]
+  },
+  {
+    "id": "pareto-definition",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 188,
+      "endLine": 216
     },
-    {
-      "id": "pareto-moment-condition",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 206, "endLine": 255 },
-      "type": "technique",
-      "title": "Why Pareto(α)^r Integrates iff r < α",
-      "content": "For Pareto(α) with x_m=1: E[X^r] = ∫_1^∞ α·x^{r-α-1} dx. When r < α the exponent r-α-1 < -1, so x^{r-α} → 0 and the integral converges to α/(α-r). When r ≥ α the integral diverges. The iff form makes `pareto_in_lr_iff` usable in both directions: pareto_finite_mean picks r=1 < α for the forward direction; pareto_not_l2 uses the contrapositive with r=2 ≥ α.",
-      "mathContext": "The moment integral: $\\mathbb{E}[X^r] = \\int_1^\\infty \\alpha x^{r-\\alpha-1}\\, dx$. When $r < \\alpha$: exponent $r-\\alpha < 0$, so $\\left[\\frac{\\alpha}{r-\\alpha} x^{r-\\alpha}\\right]_1^\\infty = 0 - \\frac{\\alpha}{r-\\alpha} = \\frac{\\alpha}{\\alpha-r}$. When $r = \\alpha$: integral becomes $\\alpha \\int_1^\\infty x^{-1}\\, dx = \\infty$. When $r > \\alpha$: exponent $r-\\alpha > 0$, integrand grows, so integral $= \\infty$. This is classical analysis not yet automated in Mathlib 4.26.",
-      "significance": "key",
-      "relatedConcepts": ["improper integrals", "power function integrals", "moment conditions", "Pareto distribution", "iff characterization"],
-      "prerequisites": ["calculus", "improper integrals", "power functions", "Lp membership"]
+    "type": "definition",
+    "title": "Pareto Distribution as Survival Function",
+    "content": "The Pareto(α) distribution with scale x_m=1 is characterized by its survival function P(X > x) = x^{-α} for x ≥ 1. Defining a distribution by its survival function is natural in Lean 4 measure theory: we specify μ{ω | X ω > s} = paretoSurvival α s, avoiding the need for density or CDF machinery. This tail characterization is also the most direct for computing moments via the layer-cake formula E[X^r] = r·∫_0^∞ P(X>t^{1/r}) dt.",
+    "mathContext": "The Pareto($\\alpha$) survival function with scale 1: $\\bar{F}(x) = \\begin{cases} 1 & x < 1 \\\\ x^{-\\alpha} & x \\geq 1 \\end{cases}$. Moments via layer-cake: $\\mathbb{E}[X^r] = r \\int_0^\\infty t^{r-1} \\mathbb{P}(X > t)\\, dt = r \\int_1^\\infty t^{r-1} t^{-\\alpha}\\, dt = \\frac{r}{\\alpha - r}$ when $r < \\alpha$. The tail index $\\alpha$ controls the heaviness: larger $\\alpha$ means lighter tails and more finite moments.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pareto distribution",
+      "survival function",
+      "power law",
+      "heavy-tailed distributions",
+      "layer-cake formula"
+    ],
+    "prerequisites": [
+      "probability distributions",
+      "survival functions",
+      "measure theory",
+      "power functions"
+    ]
+  },
+  {
+    "id": "pareto-moment-condition",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 206,
+      "endLine": 255
     },
-    {
-      "id": "stable-clt-exact-rate",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 260, "endLine": 295 },
-      "type": "insight",
-      "title": "Why the Stable CLT Gives the EXACT Rate",
-      "content": "The M-Z theorem gives a sequence of bounds o(n^{1/r}) for r < α, approaching but never reaching n^{1/α}. The stable CLT closes this gap: it shows n^{-1/α}(Sₙ-nμ) → 0 a.s., confirming n^{1/α} is achievable. This two-step argument (M-Z bounds + stable CLT confirmation) is the canonical way to establish sharp convergence rates for heavy-tailed distributions. The full distributional limit — convergence to an α-stable law — is distinct from the a.s. convergence to 0 stated here.",
-      "mathContext": "The Gnedenko-Kolmogorov theorem: Pareto($\\alpha$) with $\\alpha \\in (1,2)$ has tails $\\bar{F}(x) \\sim x^{-\\alpha}$, so its characteristic function satisfies $\\varphi_X(t) \\approx 1 - c|t|^\\alpha$ near $t = 0$. After $n$ convolutions: $\\varphi_{S_n/n^{1/\\alpha}}(t) = \\varphi_X(t/n^{1/\\alpha})^n \\to e^{-c|t|^\\alpha}$, the characteristic function of an $\\alpha$-stable law $S_\\alpha$. The a.s. convergence of the normalized sum to 0 follows because $\\mathbb{E}[|S_\\alpha|] < \\infty$ for $\\alpha \\in (1,2)$ and the M-Z rate applies.",
-      "significance": "key",
-      "relatedConcepts": ["α-stable distributions", "domain of attraction", "characteristic functions", "Lévy's continuity theorem", "generalized CLT"],
-      "prerequisites": ["characteristic functions", "stable distributions", "Fourier analysis", "Lévy's continuity theorem"]
+    "type": "technique",
+    "title": "Why Pareto(α)^r Integrates iff r < α",
+    "content": "For Pareto(α) with x_m=1: E[X^r] = ∫_1^∞ α·x^{r-α-1} dx. When r < α the exponent r-α-1 < -1, so x^{r-α} → 0 and the integral converges to α/(α-r). When r ≥ α the integral diverges. The iff form makes `pareto_in_lr_iff` usable in both directions: pareto_finite_mean picks r=1 < α for the forward direction; pareto_not_l2 uses the contrapositive with r=2 ≥ α.",
+    "mathContext": "The moment integral: $\\mathbb{E}[X^r] = \\int_1^\\infty \\alpha x^{r-\\alpha-1}\\, dx$. When $r < \\alpha$: exponent $r-\\alpha < 0$, so $\\left[\\frac{\\alpha}{r-\\alpha} x^{r-\\alpha}\\right]_1^\\infty = 0 - \\frac{\\alpha}{r-\\alpha} = \\frac{\\alpha}{\\alpha-r}$. When $r = \\alpha$: integral becomes $\\alpha \\int_1^\\infty x^{-1}\\, dx = \\infty$. When $r > \\alpha$: exponent $r-\\alpha > 0$, integrand grows, so integral $= \\infty$. This is classical analysis not yet automated in Mathlib 4.26.",
+    "significance": "key",
+    "relatedConcepts": [
+      "improper integrals",
+      "power function integrals",
+      "moment conditions",
+      "Pareto distribution",
+      "iff characterization"
+    ],
+    "prerequisites": [
+      "calculus",
+      "improper integrals",
+      "power functions",
+      "Lp membership"
+    ]
+  },
+  {
+    "id": "stable-clt-exact-rate",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 260,
+      "endLine": 295
     },
-    {
-      "id": "rate-hierarchy-summary",
-      "proofId": "laws-of-large-numbers-oq-01-oq-02",
-      "range": { "startLine": 304, "endLine": 344 },
-      "type": "insight",
-      "title": "The Complete Picture for Pareto(α), α∈(1,2)",
-      "content": "The pareto_complete_rate_hierarchy theorem crystallizes the full answer in four parts: (1) finite mean — SLLN applies; (2) infinite variance — Gaussian CLT fails; (3) Kolmogorov convergence; (4) M-Z rates n^{1/r} for r < α, approaching the sharp rate n^{1/α} from the stable CLT. This is the canonical example where the heavy tail changes the convergence behavior: slower rate, non-Gaussian limit, but still almost sure convergence. The threshold α = 2 is the precise boundary between the finite-variance (Gaussian CLT) and infinite-variance (stable CLT) regimes.",
-      "mathContext": "The four-part conjunction is proved via `refine ⟨?_, ?_, ?_, ?_⟩`. Part (3) uses witness $r = (1+\\alpha)/2 \\in (1,\\alpha)$ (midpoint satisfies both bounds since $\\alpha > 1$ and $\\alpha < 2$). Part (4) universally quantifies over $r \\in (1,\\alpha)$ via `pareto_mz_applicable`. The `pareto_in_lr_iff` axiom is invoked four times across the subproofs to convert the Pareto moment condition into `IsLr` membership.",
-      "significance": "key",
-      "relatedConcepts": ["rate hierarchy", "Pareto distribution", "α-stable distributions", "SLLN", "CLT failure"],
-      "prerequisites": ["Kolmogorov SLLN", "Marcinkiewicz-Zygmund theorem", "Pareto distribution", "stable distributions"]
-    }
-  ]
-}
+    "type": "insight",
+    "title": "Why the Stable CLT Gives the EXACT Rate",
+    "content": "The M-Z theorem gives a sequence of bounds o(n^{1/r}) for r < α, approaching but never reaching n^{1/α}. The stable CLT closes this gap: it shows n^{-1/α}(Sₙ-nμ) → 0 a.s., confirming n^{1/α} is achievable. This two-step argument (M-Z bounds + stable CLT confirmation) is the canonical way to establish sharp convergence rates for heavy-tailed distributions. The full distributional limit — convergence to an α-stable law — is distinct from the a.s. convergence to 0 stated here.",
+    "mathContext": "The Gnedenko-Kolmogorov theorem: Pareto($\\alpha$) with $\\alpha \\in (1,2)$ has tails $\\bar{F}(x) \\sim x^{-\\alpha}$, so its characteristic function satisfies $\\varphi_X(t) \\approx 1 - c|t|^\\alpha$ near $t = 0$. After $n$ convolutions: $\\varphi_{S_n/n^{1/\\alpha}}(t) = \\varphi_X(t/n^{1/\\alpha})^n \\to e^{-c|t|^\\alpha}$, the characteristic function of an $\\alpha$-stable law $S_\\alpha$. The a.s. convergence of the normalized sum to 0 follows because $\\mathbb{E}[|S_\\alpha|] < \\infty$ for $\\alpha \\in (1,2)$ and the M-Z rate applies.",
+    "significance": "key",
+    "relatedConcepts": [
+      "α-stable distributions",
+      "domain of attraction",
+      "characteristic functions",
+      "Lévy's continuity theorem",
+      "generalized CLT"
+    ],
+    "prerequisites": [
+      "characteristic functions",
+      "stable distributions",
+      "Fourier analysis",
+      "Lévy's continuity theorem"
+    ]
+  },
+  {
+    "id": "rate-hierarchy-summary",
+    "proofId": "laws-of-large-numbers-oq-01-oq-02",
+    "range": {
+      "startLine": 304,
+      "endLine": 344
+    },
+    "type": "insight",
+    "title": "The Complete Picture for Pareto(α), α∈(1,2)",
+    "content": "The pareto_complete_rate_hierarchy theorem crystallizes the full answer in four parts: (1) finite mean — SLLN applies; (2) infinite variance — Gaussian CLT fails; (3) Kolmogorov convergence; (4) M-Z rates n^{1/r} for r < α, approaching the sharp rate n^{1/α} from the stable CLT. This is the canonical example where the heavy tail changes the convergence behavior: slower rate, non-Gaussian limit, but still almost sure convergence. The threshold α = 2 is the precise boundary between the finite-variance (Gaussian CLT) and infinite-variance (stable CLT) regimes.",
+    "mathContext": "The four-part conjunction is proved via `refine ⟨?_, ?_, ?_, ?_⟩`. Part (3) uses witness $r = (1+\\alpha)/2 \\in (1,\\alpha)$ (midpoint satisfies both bounds since $\\alpha > 1$ and $\\alpha < 2$). Part (4) universally quantifies over $r \\in (1,\\alpha)$ via `pareto_mz_applicable`. The `pareto_in_lr_iff` axiom is invoked four times across the subproofs to convert the Pareto moment condition into `IsLr` membership.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rate hierarchy",
+      "Pareto distribution",
+      "α-stable distributions",
+      "SLLN",
+      "CLT failure"
+    ],
+    "prerequisites": [
+      "Kolmogorov SLLN",
+      "Marcinkiewicz-Zygmund theorem",
+      "Pareto distribution",
+      "stable distributions"
+    ]
+  }
+]
