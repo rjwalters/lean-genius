@@ -185,6 +185,7 @@
     {
       "id": "sec-corner-induction",
       "title": "Parts XIII-XIV: Corner Recursion + General HLF",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "startLine": 4329,
       "endLine": 4725,
       "summary": "Part XIII proves the corner recursion card_SYT_corner_step. Part XIV proves hook_length_formula_Q in ℚ by WF induction on μ.card using corner step + hook_walk_identity. hook_length_formula_general follows by exact_mod_cast.",
@@ -193,6 +194,7 @@
     {
       "id": "sec-ghookyd",
       "title": "Part VIc: HLF for Generalized Hook Shapes [a, 1ᵇ]",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "startLine": 644,
       "endLine": 1826,
       "summary": "Proves HLF for gHookYD a b (shape [a,1^b]) with 0 sorries. hookProd = (a+b)·(a-1)!·b!, card(SYT) = C(a+b-1,b). Part VIII further proves the hook-shape (m+1,1) via an explicit bijection hookSYT: Fin(m+1) → SYT.",
@@ -201,6 +203,7 @@
     {
       "id": "sec-general-two-row",
       "title": "Parts XI-XII: HLF for General 2-Row [a,b]",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "startLine": 3473,
       "endLine": 4327,
       "summary": "Proves HLF for all 2-row shapes twoRowYD a b. hookProd = (a+1).descFactorial(b)·(a-b)!·b!. card(SYT) = ballotSeqCount(a+1,b) proved via corner recursion. hook_length_formula_atMostTwoRows covers all μ with rowLen 2 = 0.",
@@ -209,6 +212,7 @@
     {
       "id": "sec-transpose-nrow",
       "title": "Parts XV-XXIII: Transpose Duality and N-Row Hook Walk (N=3..9)",
+      "file": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "startLine": 5183,
       "endLine": 13633,
       "summary": "Part XV: hookLength_transpose proves h(μ,i,j)=h(μᵀ,j,i), giving HLF and hook_walk for ≤2-col via duality. Parts XIVc-XXIII prove hook_walk_identity for exactly-3-row through 9-row shapes by computing colLen zones, hookLen polynomials, armProd, and closing with field_simp+ring. ~8,000 lines total.",
