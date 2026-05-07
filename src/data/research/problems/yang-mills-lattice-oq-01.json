@@ -13,10 +13,13 @@
       "In 2D, the partition function factorizes (Z = ∏_P Z_P), making RP trivial — the 4D case has non-trivial plaquette interactions preventing factorization",
       "The GNS construction axiom is honest: mathematically proven (OS 1973, Osterwalder-Seiler 1978) but requires Bochner's theorem, spectral theory, Sobolev spaces beyond Mathlib",
       "The Kallen-Lehmann representation is the second axiom — gives the Euclidean-Minkowski mass gap transfer",
-      "SU(2) string tension σ = 3g²/16 is fully proved from definitions with 0 axioms (purely Mathlib)"
+      "SU(2) string tension σ = 3g²/16 is fully proved from definitions with 0 axioms (purely Mathlib)",
+      "SU(N) fundamental Casimir is C₂ = (N²-1)/(2N), giving string tension σ = g²(N²-1)/(4N²); large-N limit: σ → g²/4 (familiar 't Hooft scaling)",
+      "SU(2) adjoint and fundamental have distinct mass scales (σ_adj = g²/3 vs σ_fund = 3g²/16) — the gluon channel sees a different gap",
+      "The Migdal-level reciprocity σ · ξ = 1 holds for any irrep (unit-normalized), mirroring the abstract OS-transfer-matrix Δ · ξ · a = 1"
     ],
     "builtItems": [
-      "YangMillsLatticeOQ01.lean: 492 lines, 2 axioms, 0 sorries",
+      "YangMillsLatticeOQ01.lean: 579 lines, 2 axioms, 0 sorries (28 theorems, 11 defs)",
       "LatticeOSData structure encoding OS1-OS5 for finite 4D hypercubic lattice",
       "OSTransferMatrix extending TransferMatrix with OS2-derived positivity properties",
       "os_hamiltonian_nonneg: OS transfer matrix → H = -ln(T)/a ≥ 0",
@@ -25,6 +28,11 @@
       "lattice_mass_gap_to_wightman: LatticeOSData with decay → hasSomeMassGap",
       "MigdalData structure with stringTension > 0, migdalS2 decay proof",
       "su2_string_tension: σ_{SU(2)} = 3g²/16 proved by ring",
+      "suNFundamentalMigdalData (N : ℝ) (2 ≤ N): general SU(N) fundamental MigdalData with C₂ = (N²-1)/(2N)",
+      "suN_fundamental_string_tension: σ = g²(N²-1)/(4N²) proved by field_simp + ring",
+      "suN_fundamental_at_two: consistency check that N=2 reproduces 3g²/16",
+      "su2AdjointMigdalData + su2_adjoint_string_tension: σ_adj = g²/3 (gluon-channel gap)",
+      "migdalCorrelationLength = 1/σ + migdal_gap_times_corr_length: σ·ξ = 1",
       "YangMillsContinuumLimitProblem: Lean Prop for Clay Millennium Prize (4D)",
       "millennium_implies_os_formulation: the 4D problem → finite-lattice Wightman QFT"
     ],
@@ -34,11 +42,12 @@
       "Fintype instance for Fin 4 → Fin L needed for Finset.univ.sum in RP quadratic form (simplified to Prop)"
     ],
     "nextSteps": [
-      "Await PR merge by deployer",
       "Follow-up: prove RP for free scalar field (simpler than YM) using OSforGFF techniques",
-      "Connect to yang-mills-transfer-matrix gallery entry"
+      "Connect to yang-mills-transfer-matrix gallery entry",
+      "Add SU(N) adjoint generalization (C₂(adj) = N → σ = g²N/(2(N²-1)))",
+      "Add Migdal correlation length large-N scaling: ξ_fund(N) → 4/g² as N → ∞"
     ],
-    "progressSummary": "ACT→PR: YangMillsLatticeOQ01.lean built (0 sorries, 2 axioms). PR #10953 open. OS reconstruction framework + 2D Migdal solution + Clay problem formulation."
+    "progressSummary": "ACT: 2D Migdal infrastructure expanded — SU(N) fundamental + SU(2) adjoint string tensions + Migdal correlation length. 28 theorems, 11 defs, 2 axioms (OS reconstruction + Kallen-Lehmann), 0 sorries. 4D Millennium continues to require functional-analysis machinery beyond Mathlib."
   },
   "relatedProofs": [
     "yang-mills",
@@ -51,10 +60,10 @@
     {
       "path": "Proofs/YangMillsLatticeOQ01.lean",
       "filename": "YangMillsLatticeOQ01.lean",
-      "lineCount": 501,
-      "theoremCount": 21,
+      "lineCount": 579,
+      "theoremCount": 28,
       "axiomCount": 2,
-      "defCount": 8,
+      "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMillsLatticeOQ01.lean"
