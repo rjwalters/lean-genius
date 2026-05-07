@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. Requires (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q, and (2) cofactor evaluation bound ‖g.eval(r/s)‖_p ≤ M·H^(d-1). The Archimedean Complement Lemma and all other results are fully proved.",
+    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. Originally required two ingredients: (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q, (2) cofactor evaluation bound ‖g.eval(r/s)‖_p ≤ M·H^(deg g). All three sub-ingredients are now formally proved (Part IV.5 norm transport, Part IV.7 height bound padic_norm_int_div_le_height, Part IV.8 polynomial cofactor bound padic_polynomial_eval_norm_bound and padic_cofactor_bound_rat). The remaining obstruction to discharging the bridge as a theorem is the case analysis on rational roots of f distinct from α (finite set, requires taking C ≤ min ‖α - r₀‖ over those roots).",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -59,9 +59,9 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 539,
-    "theoremCount": 19,
-    "definitionCount": 3
+    "lineCount": 732,
+    "theoremCount": 26,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Liouville's 1844 theorem — the first proof that specific transcendental numbers exist — uses the Archimedean property $|N|_{\\infty} \\geq 1$ for nonzero integers. The p-adic number system was developed by Kurt Hensel around 1897, motivated by the analogy between number fields and function fields. P-adic Liouville-type results appear in Mahler's work (1930s–1950s) on p-adic transcendence and in the theory of p-adic Diophantine approximation. The Archimedean Complement Lemma $|N|_p \\geq 1/|N|$ is a weak form of the **adelic product formula** $\\prod_v |N|_v = 1$ (Artin-Whaples, 1945), which underlies all of modern algebraic number theory — the product over all places (one Archimedean + one p-adic for each prime) equals 1. The p-adic Liouville theorem belongs to the broader program of Diophantine approximation in non-Archimedean metrics, developed by Mahler, Ridout, and Roth (Roth's theorem, 1955, Fields Medal). The use of **naive height** $H(r/s) = \\max(|r|, |s|)$ — rather than just the denominator — is the key departure from the classical theory, forced by the non-Archimedean structure where the numerator's p-adic content cannot be ignored.",
@@ -200,10 +200,10 @@
       "Polynomial"
     ],
     "namespace": "LiouvilleTheoremOQ04",
-    "lineCount": 539,
+    "lineCount": 732,
     "axiomCount": 1,
-    "theoremCount": 19,
-    "definitionCount": 3,
+    "theoremCount": 26,
+    "definitionCount": 4,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
     "sorries": 0
   },
