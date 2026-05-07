@@ -9,7 +9,7 @@
   - Algebraic helper: product of complex numbers with zero imaginary parts
   - Algebraic helper: finite products of real-embedded complex monomials
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (2):
   - prod_im_eq_zero_ari: finite product of complex numbers with zero im has zero im

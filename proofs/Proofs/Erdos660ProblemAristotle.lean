@@ -12,7 +12,7 @@
   - Symmetry: pairwiseDistances is symmetric in the two arguments
   - Monotonicity: adding a point can only increase or maintain distinctDistances
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (3):
   - trivial_lower_bound_ari: S.card ≥ 2 → distinctDistances S ≥ 1

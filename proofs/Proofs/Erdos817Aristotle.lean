@@ -8,7 +8,7 @@
   - NOT the Erdős-Sárközy partial result (deep sieve argument)
   - Routine combinatorics: subset sum cardinalities, AP-free small sets, Icc bounds
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

@@ -7,7 +7,7 @@
   - NOT open conjectures (the problem is DISPROVED — Nicolas 1971)
   - All theorems follow from axioms already in Erdos381Problem.lean
   - No definition sorries, no axiom declarations, no True placeholders
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Background:
   - erdos_lower_bound (axiom): Q(x) ≥ K(log x)^{1+c} for some c > 0

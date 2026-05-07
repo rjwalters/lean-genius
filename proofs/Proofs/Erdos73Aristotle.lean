@@ -8,7 +8,7 @@
   - Routine graph-theoretic facts: K₃ properties, bipartiteness
   - Constructive examples: K₃ independence number, K₃ almost-bipartite
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

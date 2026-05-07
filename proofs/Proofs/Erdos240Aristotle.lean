@@ -9,7 +9,7 @@
   - singleton_large_gaps: follows directly from finite_P_unbounded_gaps axiom
   - Simple P-smooth membership lemmas provable from definitions
   - No new axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets:
   - singleton_large_gaps_ari: gapsTendToInfinity {p} for prime p

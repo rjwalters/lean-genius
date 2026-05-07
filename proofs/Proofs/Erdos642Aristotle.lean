@@ -8,7 +8,7 @@
   - NOT the axiomatized bounds (chen_erdos_staton, dmms_2024)
   - Routine arithmetic and graph-theoretic facts supporting the sorry theorems
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

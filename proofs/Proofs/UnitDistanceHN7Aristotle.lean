@@ -11,7 +11,7 @@
   - NOT the main Hadwiger-Nelson theorem (follows from the supporting lemmas above)
   - Standalone theorems (sorries at theorem level, not buried in proofs)
   - No definition sorries, no axiom declarations, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 -/
 import Proofs.UnitDistanceHN7
 import Mathlib

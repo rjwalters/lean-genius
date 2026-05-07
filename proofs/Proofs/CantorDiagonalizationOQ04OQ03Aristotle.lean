@@ -7,7 +7,7 @@
   - Routine derivation from ω-continuity: monotonicity via a step chain
   - The chain construction a, b, b, b, ... connects ω-continuity to monotonicity
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (1):
   - omega_continuous_monotone_ari: ω-continuous functions are monotone

@@ -10,7 +10,7 @@
   - Computational result: K4 has exactly 6 edges (decidable)
   - Logical argument: minimal non-linear graphs form an antichain
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (2):
   - K4_edge_count_ari: edgeCount (completeGraph 4) = 6 (by decide)
