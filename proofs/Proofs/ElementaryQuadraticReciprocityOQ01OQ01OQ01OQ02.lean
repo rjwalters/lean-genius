@@ -62,7 +62,7 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
   ext a
   have ha : (Int.cast : ℤ → ZMod q) (quadraticChar (ZMod p) a) =
       (if IsUnit a then (1 : ZMod q) else 0) := by
-    have := congr_fun (congr_arg MulChar.toFun heq) a
+    have := DFunLike.congr_fun heq a
     simpa [legendreCharQ, MulChar.one_apply] using this
   simp only [MulChar.one_apply]
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv

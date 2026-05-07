@@ -76,7 +76,7 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   intro heq
   apply hqc_ne
   ext a
-  have ha := congr_fun (congr_arg MulChar.toFun heq) a
+  have ha := DFunLike.congr_fun heq a
   have happ : quadCharC p a = (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) := rfl
   rw [happ] at ha
   have h1C : (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 := by
