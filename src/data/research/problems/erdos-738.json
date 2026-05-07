@@ -1,8 +1,8 @@
 {
   "slug": "erdos-738",
   "title": "Erdős #738",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-27T10:00:00Z",
-    "iteration": 3,
-    "focus": "Strengthened FiniteTree with IsTree, added tree-class predicates for partial results",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "Final state: 2 axioms / 14 theorems / 10 defs / 420 lines / 0 sorries. Both axioms (gyarfas_conjecture, gyarfas_finite_version) faithfully encode the open conjecture. Partial results that follow from the full conjecture are stated as theorems with HasRadius / IsCaterpillar constraints to keep them genuinely weaker than the full statement.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None. Lean obligations are fully discharged. The Gyárfás conjecture is wide-open in combinatorics (no proof path is known) and out-of-scope for this entry.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0S, 2A appropriate (gyarfas_conjecture — open, gyarfas_finite_version — deep published result).",
+    "progressSummary": "COMPLETE at 2 axioms / 14 theorems / 10 defs / 420 lines / 0 sorries. Both axioms faithfully encode the open Gyárfás conjecture: gyarfas_conjecture (the full statement — every triangle-free graph with infinite chromatic number contains every tree as an induced subgraph) and gyarfas_finite_version (the equivalent compactness-derived finite formulation, independent via De Bruijn–Erdős). Earlier sessions proved pathGraph_isTree and starGraph_isTree (acyclicity from walk structure analysis), refined FiniteTree to carry IsTree, and tightened partial results (kierstead_penrice_radius2 with HasRadius 2; scott_caterpillars with IsCaterpillar) so they follow strictly weaker hypotheses than the full conjecture.",
     "builtItems": [
       "Proved pathGraph_isTriangleFree in Erdos738Problem.lean:81-92",
       "Proved starGraph_isTriangleFree in Erdos738Problem.lean:94-106",
@@ -68,10 +68,7 @@
       "Cases 0,1,2 handled like starGraph proof (nil, loopless, trail edge-dup). Only length ≥ 3 needs work."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Fill pathGraph acyclicity sorry via max-vertex argument or bridge argument",
-      "Consider submitting to Aristotle if routine enough"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #738 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIf $G$ has infinite chromatic number and is triangle-free (contains no $K_3$) then must $G$ contain every tree as an induced subgraph?\n\n\n\nA conjecture of Gy\\'{a}rf\\'{a}s.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #737\n- Problem #739\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er81\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -79,8 +76,7 @@
   ],
   "relatedProofs": [
     "erdos-7",
-    "erdos-73",
-    "erdos-738"
+    "erdos-73"
   ],
   "references": {
     "papers": [],
@@ -88,15 +84,15 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:33:35.591Z",
-  "lastUpdate": "2026-03-28T12:30:00.000Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos738Problem.lean",
       "filename": "Erdos738Problem.lean",
-      "lineCount": 421,
-      "theoremCount": 10,
+      "lineCount": 420,
+      "theoremCount": 14,
       "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
