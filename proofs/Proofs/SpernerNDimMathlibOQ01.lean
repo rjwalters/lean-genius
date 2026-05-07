@@ -142,28 +142,156 @@ lemma swapAdj_invol (l : List (Fin n)) {k : ℕ} (hk0 : 0 < k) (hkn : k < l.leng
   · simp [hk', hkm1]
 
 -- ============================================================
--- Axioms
+-- Helpers
 -- ============================================================
 
--- Axiom 1: FreudSimplex n is Fintype (bijects with Equiv.Perm (Fin n) via σ ↦ List.ofFn σ).
-axiom freud_simplex_fintype (n : ℕ) : Fintype (FreudSimplex n)
-attribute [instance] freud_simplex_fintype
+/-- swapAdj written as an explicit take-cons-cons-drop concatenation. -/
+private lemma swapAdj_eq_split (l : List (Fin n)) {k : ℕ} (hk0 : 0 < k) (hkn : k < l.length) :
+    swapAdj l hk0 hkn =
+      l.take (k - 1) ++ l.get ⟨k, hkn⟩ :: l.get ⟨k - 1, by omega⟩ :: l.drop (k + 1) := by
+  have hk1 : k - 1 < l.length := by omega
+  have hkeq : k - 1 + 1 = k := by omega
+  -- (l.set (k-1) l[k]) = take (k-1) ++ l[k] :: drop k
+  have h1 : l.set (k - 1) (l.get ⟨k, hkn⟩) =
+            l.take (k - 1) ++ l.get ⟨k, hkn⟩ :: l.drop k := by
+    rw [List.set_eq_take_append_cons_drop, if_pos hk1, hkeq]
+  show (l.set (k - 1) (l.get ⟨k, hkn⟩)).set k _ = _
+  rw [h1]
+  have hk1len : (l.take (k - 1)).length = k - 1 := by
+    rw [List.length_take]; omega
+  rw [List.set_append_right (h := by rw [hk1len]; omega), hk1len,
+      show k - (k - 1) = 1 from by omega]
+  show l.take (k - 1) ++ (l.get ⟨k, hkn⟩ :: l.drop k).set (0 + 1) _ = _
+  rw [List.set_cons_succ]
+  rw [show l.drop k = l.get ⟨k, hkn⟩ :: l.drop (k + 1) from
+        (List.cons_get_drop_succ (l := l) (n := ⟨k, hkn⟩)).symm]
+  rw [List.set_cons_zero]
 
--- Axiom 2: swapAdj preserves Nodup.
--- The result is a permutation of the original list (same multiset, different order at k-1, k).
-axiom swapAdj_nodup (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
-    (hk0 : 0 < k) (hkn : k < l.length) : (swapAdj l hk0 hkn).Nodup
+/-- swapAdj produces a permutation of the original list. -/
+private theorem swapAdj_perm (l : List (Fin n)) {k : ℕ} (hk0 : 0 < k) (hkn : k < l.length) :
+    swapAdj l hk0 hkn ~ l := by
+  have hk1 : k - 1 < l.length := by omega
+  have hsucc : k - 1 + 1 = k := by omega
+  rw [swapAdj_eq_split]
+  -- Goal: l.take (k-1) ++ l[k] :: l[k-1] :: l.drop (k+1) ~ l
+  conv_rhs => rw [← List.take_append_drop (k - 1) l]
+  rw [show l.drop (k - 1) = l.get ⟨k - 1, hk1⟩ :: l.get ⟨k, hkn⟩ :: l.drop (k + 1) from ?_]
+  · exact (List.Perm.swap _ _ _).append_left _
+  · rw [show l.drop (k - 1) = l.get ⟨k - 1, hk1⟩ :: l.drop (k - 1 + 1) from
+          (List.cons_get_drop_succ (l := l) (n := ⟨k - 1, hk1⟩)).symm]
+    rw [hsucc, show l.drop k = l.get ⟨k, hkn⟩ :: l.drop (k + 1) from
+        (List.cons_get_drop_succ (l := l) (n := ⟨k, hkn⟩)).symm]
 
--- Axiom 3: Prefix sets are unchanged at index i ≠ k.
--- For i < k: first i elements are identical. For i > k: same element-set (different order).
-axiom swapAdj_prefixSet_eq (l : List (Fin n)) {k : ℕ} (hl : l.Nodup) (hl_len : l.length = n)
-    {i : ℕ} (hi : i ≤ n) (hik : i ≠ k) (hk0 : 0 < k) (hkn : k < n) :
-    prefixSet (swapAdj l hk0 (hl_len ▸ hkn)) i = prefixSet l i
+-- ============================================================
+-- Eliminated axioms (now theorems)
+-- ============================================================
 
--- Axiom 4: swapAdj ≠ original when l[k-1] ≠ l[k] (guaranteed by Nodup).
--- The element at position k-1 changes from l[k-1] to l[k] ≠ l[k-1], so lists differ.
-axiom swapAdj_ne_self (l : List (Fin n)) {k : ℕ} (hl : l.Nodup) (hl_len : l.length = n)
-    (hk0 : 0 < k) (hkn : k < n) : swapAdj l hk0 (hl_len ▸ hkn) ≠ l
+/-- swapAdj preserves Nodup (since it's a permutation). -/
+private theorem swapAdj_nodup (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
+    (hk0 : 0 < k) (hkn : k < l.length) : (swapAdj l hk0 hkn).Nodup :=
+  (swapAdj_perm l hk0 hkn).nodup_iff.mpr hl
+
+/-- Prefix sets are unchanged at index i ≠ k.
+    For i ≤ k-1 the take is literally equal; for i ≥ k+1 it is a permutation. -/
+private theorem swapAdj_prefixSet_eq (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
+    (hl_len : l.length = n) {i : ℕ} (hi : i ≤ n) (hik : i ≠ k) (hk0 : 0 < k) (hkn : k < n) :
+    prefixSet (swapAdj l hk0 (hl_len ▸ hkn)) i = prefixSet l i := by
+  have hkn' : k < l.length := hl_len ▸ hkn
+  have hi' : i ≤ l.length := hl_len ▸ hi
+  unfold prefixSet
+  apply List.toFinset_eq_of_perm
+  rcases lt_or_gt_of_ne hik with hlt | hgt
+  · -- i < k: take is literally equal
+    have heq : (swapAdj l hk0 hkn').take i = l.take i := by
+      show ((l.set (k - 1) (l.get ⟨k, hkn'⟩)).set k _).take i = _
+      rw [List.take_set_of_le (by omega : i ≤ k)]
+      rw [List.take_set_of_le (by omega : i ≤ k - 1)]
+    exact heq ▸ List.Perm.refl _
+  · -- i > k: split form + Perm.swap
+    have hk1 : k - 1 < l.length := by omega
+    have hsucc : k - 1 + 1 = k := by omega
+    have hkp : k + 1 ≤ i := by omega
+    have hk1le : k - 1 ≤ i := by omega
+    -- LHS: (a ++ y :: x :: b).take i where a = take(k-1), b = drop(k+1), y = l[k], x = l[k-1]
+    rw [swapAdj_eq_split l hk0 hkn']
+    have hk1len : (l.take (k - 1)).length = k - 1 := by
+      rw [List.length_take]; omega
+    -- Split LHS via take_append + take_cons_succ twice
+    rw [List.take_append, hk1len, List.take_of_length_le (by rw [hk1len]; omega)]
+    rw [show i - (k - 1) = (i - (k + 1)) + 1 + 1 from by omega]
+    rw [List.take_succ_cons, List.take_succ_cons]
+    -- Split RHS similarly
+    conv_rhs =>
+      rw [show l = l.take (k - 1) ++ l.drop (k - 1) from (List.take_append_drop _ _).symm,
+          show l.drop (k - 1) = l.get ⟨k - 1, hk1⟩ :: l.get ⟨k, hkn'⟩ :: l.drop (k + 1) from by
+            rw [show l.drop (k - 1) = l.get ⟨k - 1, hk1⟩ :: l.drop (k - 1 + 1) from
+                  (List.cons_get_drop_succ (l := l) (n := ⟨k - 1, hk1⟩)).symm]
+            rw [hsucc, show l.drop k = l.get ⟨k, hkn'⟩ :: l.drop (k + 1) from
+                (List.cons_get_drop_succ (l := l) (n := ⟨k, hkn'⟩)).symm]]
+      rw [List.take_append, hk1len, List.take_of_length_le (by rw [hk1len]; omega),
+          show i - (k - 1) = (i - (k + 1)) + 1 + 1 from by omega,
+          List.take_succ_cons, List.take_succ_cons]
+    -- Now both sides are: take(k-1) ++ y :: x :: rest  vs  take(k-1) ++ x :: y :: rest
+    exact (List.Perm.swap _ _ _).append_left _
+
+/-- swapAdj produces a different list (since k-1 ≠ k as positions in a Nodup list). -/
+private theorem swapAdj_ne_self (l : List (Fin n)) {k : ℕ} (hl : l.Nodup)
+    (hl_len : l.length = n) (hk0 : 0 < k) (hkn : k < n) :
+    swapAdj l hk0 (hl_len ▸ hkn) ≠ l := by
+  intro heq
+  have hkn' : k < l.length := hl_len ▸ hkn
+  have hk1 : k - 1 < l.length := by omega
+  -- (swapAdj l)[k - 1] = l[k]
+  have h1 : (swapAdj l hk0 hkn')[k - 1]'(by rw [swapAdj_length]; omega) = l[k] := by
+    show ((l.set (k - 1) (l.get ⟨k, hkn'⟩)).set k _)[k - 1] = _
+    rw [List.getElem_set_ne (by omega : k ≠ k - 1)]
+    rw [List.getElem_set_self]
+  -- transport via heq using getElem?
+  have h_some : (swapAdj l hk0 hkn')[k - 1]? = some l[k] := by
+    rw [List.getElem?_eq_getElem (by rw [swapAdj_length]; omega)]
+    rw [h1]
+  rw [heq] at h_some
+  rw [List.getElem?_eq_getElem hk1] at h_some
+  have h2 : l[k - 1] = l[k] := Option.some_inj.mp h_some
+  have h3 := (List.Nodup.getElem_inj_iff hl (i := k - 1) (j := k) (hi := hk1) (hj := hkn')).mp h2
+  omega
+
+/-- The bijection from a nodup list of length n on Fin n to a permutation of Fin n. -/
+private noncomputable def listToPermFun {n : ℕ} (l : List (Fin n)) (hl_nodup : l.Nodup)
+    (hl_len : l.length = n) : Fin n → Fin n :=
+  fun i => l.get ⟨i.val, hl_len ▸ i.isLt⟩
+
+private theorem listToPermFun_injective {n : ℕ} (l : List (Fin n)) (hl_nodup : l.Nodup)
+    (hl_len : l.length = n) : Function.Injective (listToPermFun l hl_nodup hl_len) := by
+  intro a b hab
+  apply Fin.ext
+  have h2 : (⟨a.val, hl_len ▸ a.isLt⟩ : Fin l.length) = ⟨b.val, hl_len ▸ b.isLt⟩ :=
+    (List.Nodup.get_inj_iff hl_nodup).mp hab
+  exact Fin.val_eq_of_eq h2
+
+private noncomputable def listToPerm {n : ℕ} (l : List (Fin n)) (hl_nodup : l.Nodup)
+    (hl_len : l.length = n) : Equiv.Perm (Fin n) :=
+  Equiv.ofBijective (listToPermFun l hl_nodup hl_len)
+    ⟨listToPermFun_injective l hl_nodup hl_len,
+     Finite.injective_iff_surjective.mp (listToPermFun_injective l hl_nodup hl_len)⟩
+
+/-- FreudSimplex n is Fintype: surjects from Equiv.Perm (Fin n) via permList. -/
+private noncomputable instance freud_simplex_fintype (n : ℕ) : Fintype (FreudSimplex n) :=
+  Fintype.ofSurjective
+    (fun σ : Equiv.Perm (Fin n) =>
+      (⟨FreudenthalAdjacency.permList σ, FreudenthalAdjacency.permList_nodup σ,
+       FreudenthalAdjacency.permList_length σ⟩ : FreudSimplex n))
+    (fun ⟨l, hnodup, hlen⟩ => by
+      refine ⟨listToPerm l hnodup hlen, ?_⟩
+      apply Subtype.ext
+      show FreudenthalAdjacency.permList (listToPerm l hnodup hlen) = l
+      unfold FreudenthalAdjacency.permList
+      apply List.ext_getElem
+      · simp [List.length_ofFn, hlen]
+      intro i hi1 hi2
+      rw [List.getElem_ofFn]
+      show listToPermFun l hnodup hlen ⟨i, _⟩ = l[i]
+      rfl)
 
 -- ============================================================
 -- CellComplex construction
