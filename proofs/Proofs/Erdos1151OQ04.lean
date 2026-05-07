@@ -1333,9 +1333,8 @@ private lemma chebyshev_term_lb_at_node
   have h_denom_pos' : 0 < |Real.cos θ - Real.cos φ| := by
     rw [hnode] at h_denom_pos; exact h_denom_pos
   -- 1/B ≤ 1/|cos θ - cos φ|
-  have h_inv : 1 / B ≤ 1 / |Real.cos θ - Real.cos φ| := by
-    apply one_div_le_one_div_of_le h_denom_pos'
-    rw [hnode]; exact h_cos_le_B
+  have h_inv : 1 / B ≤ 1 / |Real.cos θ - Real.cos φ| :=
+    one_div_le_one_div_of_le h_denom_pos' h_cos_le_B
   -- sin(d/2)/B ≤ sin(φ)/|cos θ - cos φ|
   have hsin_d_half_nn : 0 ≤ Real.sin (d / 2) := le_of_lt hsin_d_half_pos
   have h1 : Real.sin (d / 2) / B ≤ Real.sin (d / 2) / |Real.cos θ - Real.cos φ| := by
