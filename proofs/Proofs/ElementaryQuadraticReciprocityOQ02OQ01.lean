@@ -98,7 +98,7 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   -- quadCharC p = quadraticChar.ringHomComp f, and f = Int.cast is injective
   -- If quadCharC p = 1, then f ∘ quadraticChar = 1, so quadraticChar = 1 by injectivity
   ext a
-  have ha := DFunLike.congr_fun heq a
+  have ha : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a := by rw [heq]
   -- ha : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a
   -- i.e., Int.cast (quadraticChar (ZMod p) a) = (1 : MulChar (ZMod p) ℂ) a
   have happ : quadCharC p a = (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) := rfl
