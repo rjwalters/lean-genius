@@ -1,1 +1,152 @@
-[]
+[
+  {
+    "id": "ann-sperner-mathlib-oq01-context",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "context",
+    "title": "Two Concrete CellComplex Instances Closing OQ-01",
+    "content": "**Open question OQ-01** from `sperner-ndim-mathlib`: which concrete structures instantiate the abstract `SpernerAbstract.CellComplex` so that the abstract Sperner theorem recovers the standard $n$-dimensional Sperner lemma? This file gives **two instances**. **Part I (0 axioms)**: a *bridge* showing every `SpernerNDim.SpernerTriangulation` is a `CellComplex`, so the abstract Sperner theorem subsumes the concrete one. **Part II (4 axioms)**: the **Freudenthal triangulation** of $[0,1]^n$ as a `CellComplex (Finset (Fin n)) n` — simplices are permutations of $\\text{Fin}(n)$, vertices are prefix sets, and adjacency is the adjacent transposition $(k-1, k)$. Total: 0 sorries, 4 axioms (each ~40-line element-level list arguments).",
+    "mathContext": "**Sperner's lemma** (Emanuel Sperner, 1928): in any triangulation of an $n$-simplex with a *Sperner coloring* (vertex $i$ of the $n$-simplex labelled $i$, and any vertex on a face is labelled with one of the face's vertices), there are an *odd* number of *fully colored* small simplices (one of each color $0, 1, \\ldots, n$). The standard proof is the **door-counting parity argument**: each fully-colored simplex has exactly one face containing $\\{0, 1, \\ldots, n-1\\}$, and parity propagates to the boundary. The `SpernerAbstract.CellComplex` framework axiomatizes this parity argument independently of the underlying triangulation, and this file shows the abstraction is witnessed by two concrete examples — the existing `SpernerTriangulation` and the new Freudenthal triangulation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner's lemma (1928)",
+      "Freudenthal triangulation of [0,1]^n",
+      "abstract cell complex / pseudomanifold",
+      "door-counting parity argument",
+      "permutation-list simplices",
+      "prefix-set vertices"
+    ],
+    "prerequisites": [
+      "SpernerNDimMathlib (CellComplex, sperner abstract theorem)",
+      "SpernerNDim (concrete grid triangulation)",
+      "SpernerNDimOQ01 (Freudenthal pseudomanifold proof)",
+      "Mathlib.Combinatorics.SimplicialComplex"
+    ]
+  },
+  {
+    "id": "ann-sperner-mathlib-oq01-bridge",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 51, "endLine": 105 },
+    "type": "technique",
+    "title": "Part I: SpernerTriangulation → CellComplex Bridge (0 axioms)",
+    "content": "**`toAbstractCellComplex K`**: every `SpernerNDim.SpernerTriangulation d N` projects to a `CellComplex (Vertex d N) d` by *forgetting* the two boundary-specific fields `adj_unique_facet` and `boundary_face`. The remaining fields (`Simplex`, `vertices`, `vertices_injective`, `adj`, `adj_symm`, `adj_vertices`, `adj_ne`) are exactly `CellComplex`'s. **`isFC_bridge`** and **`isDoorAt_bridge`** are `rfl` — the abstract and concrete `IsFC` / `isDoorAt` predicates are definitionally equal across the projection. **`sperner_from_triangulation`** is then a one-line application of `SpernerAbstract.sperner`. **`boundary_doors_agree`**: for *Sperner colorings*, the abstract boundary-door count equals the concrete one (which restricts to face $d$) — this is the bridge that lets the abstract parity argument recover the classical statement.",
+    "mathContext": "**The bridge pattern** is a Lean-formalization idiom: when refining an existing concrete structure to an abstract one, the bridge map is a structural projection (forget extra fields) and the equivalence of derived predicates holds by `rfl`. This is **'free' theorem transfer** — no rewriting is needed. The non-trivial content is `boundary_doors_agree`, which leverages `SpernerNDim.boundary_door_is_last_face` (a concrete-side theorem stating that for Sperner colorings, all boundary doors live on the 'last face' face $k = d$). Without this lemma the abstract count would be larger than the classical one and the parity argument wouldn't reduce.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural projection / forgetting",
+      "definitional-equality bridge (rfl)",
+      "boundary_door_is_last_face",
+      "Sperner coloring"
+    ],
+    "prerequisites": [
+      "SpernerNDim.SpernerTriangulation",
+      "SpernerAbstract.CellComplex",
+      "definitional unfolding of IsFC and isDoorAt"
+    ]
+  },
+  {
+    "id": "ann-sperner-mathlib-oq01-freud-defs",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 115, "endLine": 142 },
+    "type": "definition",
+    "title": "FreudSimplex and swapAdj: Permutations and Adjacent Transposition",
+    "content": "**`FreudSimplex n`**: the subtype of `List (Fin n)` consisting of *nodup* lists of length $n$ — i.e., **permutations of $\\text{Fin}(n)$** in list form. Equipped with `DecidableEq` via the underlying list equality. **`swapAdj l hk0 hkn`**: swaps positions $k-1$ and $k$ in $l$ via two `List.set` operations, defined for any list (not just permutations). **`swapAdj_length`**: `set` doesn't change length (one-line `simp`). **`swapAdj_invol`**: applying `swapAdj` twice is the identity — the proof uses `List.ext_getElem` to compare element-by-element, with four `by_cases` branches on whether $i = k - 1$, $i = k$. The branch $i = k - 1, i = k$ is impossible (handled by `omega`); the other three branches simp through.",
+    "mathContext": "**Adjacent transpositions** $(k-1, k)$ generate the entire symmetric group $S_n$ — Coxeter's theorem says $S_n \\cong \\langle s_1, \\ldots, s_{n-1} \\mid s_i^2 = 1, (s_i s_{i+1})^3 = 1, (s_i s_j)^2 = 1 \\text{ for } |i - j| > 1 \\rangle$. The Freudenthal triangulation uses adjacent transpositions as the **adjacency relation** on the cell complex: two permutations are adjacent at index $k$ iff they differ by the transposition swapping positions $k-1$ and $k$. The involution lemma `swapAdj_invol` is the *minimal* property needed for `adj_symm` in the cell complex.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "permutations as nodup lists",
+      "adjacent transpositions and Coxeter generators",
+      "List.set, List.ext_getElem",
+      "involution from positionwise swap"
+    ],
+    "prerequisites": [
+      "List.Nodup",
+      "List.set / List.get",
+      "by_cases tactic"
+    ]
+  },
+  {
+    "id": "ann-sperner-mathlib-oq01-axioms",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 144, "endLine": 167 },
+    "type": "context",
+    "title": "Four Axioms: Why and What They Cost",
+    "content": "**Four axioms about `swapAdj`**, each provable by ~40-line element-level list arguments: **(1) `freud_simplex_fintype`** — `FreudSimplex n` is `Fintype` (bijects with `Equiv.Perm (Fin n)` via $\\sigma \\mapsto \\text{List.ofFn} \\, \\sigma$). **(2) `swapAdj_nodup`** — adjacent swap preserves `Nodup` (the result is a permutation of the original, same multiset). **(3) `swapAdj_prefixSet_eq`** — for $i \\neq k$, the prefix set $(\\text{swapAdj} \\, l)[0..i].\\text{toFinset} = l[0..i].\\text{toFinset}$ (for $i < k$ the lists agree on $[0, i)$; for $i > k$ they agree as multisets). **(4) `swapAdj_ne_self`** — when $l$ is nodup, swapping at indices $k-1, k$ produces a different list (because the elements at positions $k-1, k$ differ). The axioms are **provable by routine but tedious case-splits** on `List.set` and `List.toFinset` operations; their formalization would expand the file by ~160 lines of pure list combinatorics.",
+    "mathContext": "**The cost-benefit calculation for axiomatization** in Lean formalization: closing each axiom would add ~40 lines of `List.set` casework, with no new mathematical insight — the *content* is the cell-complex structure, not the list-bookkeeping. **Pattern is standard**: when the missing facts are 'algebraically obvious but combinatorially tedious', and Mathlib's `List` API provides no high-level abstraction (e.g., for `prefixSet` after a swap), the file ships with explicit axioms identifying *exactly* what's left. This **localizes the technical debt** and makes the gap actionable: the next iteration (`OQ-01-OQ-01-...`) can target these four axioms in isolation. **Status integrity**: meta.json correctly reports `axiomatized` / 4 axioms / badge `axiom`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiomatization as technical-debt localization",
+      "List.toFinset of a prefix",
+      "Equiv.Perm as nodup list",
+      "List.set Nodup preservation"
+    ],
+    "prerequisites": [
+      "axiom keyword in Lean 4",
+      "attribute [instance] on axioms",
+      "Mathlib List.Nodup, List.toFinset"
+    ]
+  },
+  {
+    "id": "ann-sperner-mathlib-oq01-prefix-inj",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 170, "endLine": 192 },
+    "type": "technique",
+    "title": "Prefix-Set Injectivity via Cardinality",
+    "content": "**`prefixSet_inj`** (private lemma): for a Freudenthal simplex $l$, the map $k \\mapsto \\text{prefixSet}(l, k.\\text{val})$ from $\\text{Fin}(n+1)$ to $\\text{Finset}(\\text{Fin}(n))$ is **injective**. Proof: `prefixSet_card_eq` (from the parent `SpernerNDim.lean`) says $|\\text{prefixSet}(l, i)| = i$ when $l$ is nodup, so different indices yield different cardinalities, hence different sets. The proof is three lines: extract cardinality from each side via `prefixSet_card_eq`, apply `congr_arg Finset.card` to the hypothesis, then `linarith` closes.",
+    "mathContext": "**Cardinality as an invariant**: the injectivity of $k \\mapsto \\text{prefix}_k$ on a nodup list follows because the cardinality is exactly $k$ — this is the *combinatorial counterpart* of the topological fact that the $k$-th vertex of a Freudenthal simplex sits at a unique 'rung' of the staircase $0 \\subset \\{e_{\\sigma(0)}\\} \\subset \\{e_{\\sigma(0)}, e_{\\sigma(1)}\\} \\subset \\cdots \\subset \\{e_0, \\ldots, e_{n-1}\\}$. The vertex map is therefore a *strict ascending chain* of finsets, which is automatically injective. This is the geometric reason Freudenthal triangulations work as triangulations of $[0,1]^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "prefix sets on permutations",
+      "ascending chain of finsets",
+      "cardinality as an invariant",
+      "Freudenthal staircase"
+    ],
+    "prerequisites": [
+      "prefixSet_card_eq (from SpernerNDim.lean)",
+      "Fin.ext, congr_arg",
+      "linarith"
+    ]
+  },
+  {
+    "id": "ann-sperner-mathlib-oq01-cellcomplex",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 193, "endLine": 229 },
+    "type": "insight",
+    "title": "freudenthalCellComplex: Assembling the Eight Fields",
+    "content": "**`freudenthalCellComplex n : CellComplex (Finset (Fin n)) n`** — the second concrete instance, with eight structure fields wired together: **Simplex** = `FreudSimplex n`. **simplex_decidableEq** = `inferInstance`. **simplex_fintype** = axiom 1. **vertices** = $\\lambda l \\, k. \\text{prefixSet}(l.1, k.\\text{val})$. **vertices_injective** = `prefixSet_inj`. **adj** = `freudAdj` (using axioms 2 + length lemma). **adj_symm** = `swapAdj_invol` (the involution lemma above) — wired through `Subtype.ext` because `FreudSimplex` is a subtype. **adj_vertices** = axiom 3. **adj_ne** = axiom 4 + `congr_arg Subtype.val`. **`freudenthal_sperner`** is then a one-line application of the abstract `sperner` to this complex.",
+    "mathContext": "**The structure-assembly pattern**: each `CellComplex` field is satisfied by either an axiom, a routine lemma (`prefixSet_inj`), or the involution lemma `swapAdj_invol`. The non-routine creative step is the **construction of `freudAdj`** as a *partial function*: returns `some (swapAdj l, k)` when $0 < k < n$, returns `none` at the boundary $k = 0$ or $k = n$. This 'optional adjacency' encoding is what makes the Freudenthal complex a true cell complex with a boundary, rather than a pure pseudomanifold. The boundary cases are precisely where Sperner's parity argument 'leaks' to give the parity of fully-colored simplices = parity of boundary doors.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structure assembly with axioms",
+      "Option-valued adjacency for boundary",
+      "Subtype.ext for FreudSimplex equality",
+      "freudAdj as partial function"
+    ],
+    "prerequisites": [
+      "FreudSimplex, swapAdj, swapAdj_invol",
+      "all four axioms",
+      "prefixSet_inj",
+      "freudAdj definition"
+    ]
+  },
+  {
+    "id": "ann-sperner-mathlib-oq01-main",
+    "proofId": "sperner-ndim-mathlib-oq-01",
+    "range": { "startLine": 231, "endLine": 241 },
+    "type": "insight",
+    "title": "freudenthal_sperner: Sperner's Lemma on the n-Cube",
+    "content": "**`freudenthal_sperner`** (final theorem): for the Freudenthal triangulation of $[0,1]^n$ with any coloring $c : \\text{Finset}(\\text{Fin}(n)) \\to \\text{Fin}(n+1)$, if the boundary-door count is *odd*, then $\\exists s$ a fully-colored simplex. The proof is one line: `sperner c (freudenthalCellComplex n) hbdry`, applying the abstract theorem to the constructed cell complex. **This closes OQ-01 affirmatively**: the abstract `CellComplex` framework genuinely captures the Freudenthal triangulation, not just the simpler grid triangulation.",
+    "mathContext": "**Sperner on the n-cube** has applications well beyond the original triangle case: it is the combinatorial heart of **Brouwer's fixed-point theorem** (via the Knaster–Kuratowski–Mazurkiewicz lemma), the **Borsuk–Ulam theorem** (via signed Sperner / Tucker), and **fair division algorithms** (Su's algorithm for envy-free cake cutting). The Freudenthal triangulation specifically is the standard mesh used in **simplicial fixed-point algorithms** (Scarf 1967, Eaves 1972, Merrill 1972) — its combinatorial regularity makes the algorithm's pivot rule explicit. Formalizing Sperner on Freudenthal is therefore the *correct* abstraction layer for downstream applications.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sperner on the n-cube",
+      "Knaster–Kuratowski–Mazurkiewicz lemma",
+      "simplicial fixed-point algorithms (Scarf, Eaves)",
+      "Brouwer fixed-point via Sperner"
+    ],
+    "prerequisites": [
+      "freudenthalCellComplex",
+      "SpernerAbstract.sperner (from SpernerNDimMathlib)"
+    ]
+  }
+]
