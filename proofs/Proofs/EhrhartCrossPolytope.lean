@@ -413,9 +413,10 @@ private lemma sym_fin_sum (f : ℕ → ℕ) (m : ℕ) :
     rw [heq]
     apply Finset.sum_nbij (fun k => 2 * m - k)
     · intro k hk; simp [Finset.mem_range, Finset.mem_Ico] at hk ⊢; omega
-    · intro k₁ _ k₂ _ h; omega
+    · intro k₁ hk₁ k₂ hk₂ h; simp [Finset.mem_range] at hk₁ hk₂; omega
     · intro k hk
-      exact ⟨2 * m - k, by simp [Finset.mem_Ico, Finset.mem_range] at hk ⊢; omega, by omega⟩
+      exact ⟨2 * m - k, by simp [Finset.mem_Ico, Finset.mem_range] at hk ⊢; omega,
+             by simp [Finset.mem_Ico] at hk; omega⟩
     · intro k hk; congr 1; simp [Finset.mem_range] at hk; omega
   rw [hleft, hmid, hright]; ring
 
@@ -475,7 +476,9 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
             rw [Fin.sum_univ_castSucc]
             simp only [Fin.snoc_castSucc, Fin.snoc_last]
             have hmem := (Finset.mem_filter.mp hy).2
-            -- Split on j.val ≤ n to let omega see concrete bounds from hdist
+            -- Split on j.val ≤ n to let omega see concrete bounds from hdist.
+            -- Also expose hm : m ≤ n for omega's Nat subtraction reasoning.
+            have hm' := hm
             by_cases hc : j.val ≤ n
             · simp only [if_pos hc] at hdist hmem ⊢; omega
             · simp only [if_neg hc] at hdist hmem ⊢; omega
@@ -532,12 +535,12 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
         · intro hj
           rw [Finset.mem_image] at hj
           obtain ⟨k, _, hk⟩ := hj
-          rw [Finset.mem_filter, Finset.mem_univ, true_and]
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and]
           -- hk : shift k = j; extract j.val = k.val + (n-m)
           have hval : k.val + (n - m) = j.val := congrArg Fin.val hk
           have := k.isLt; have := hm; split_ifs with h <;> omega
         · intro hj
-          rw [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hj
           rw [Finset.mem_image]
           refine ⟨⟨j.val - (n - m), by
               have := j.isLt; have := hm
