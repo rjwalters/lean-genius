@@ -353,7 +353,10 @@ private lemma inv_sq_le_telescope (k : ℝ) (hk : 2 ≤ k) :
   suffices h : 0 ≤ 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) by linarith
   have h_eq : 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) =
       (k ^ 2 - k * (k - 1)) / (12 * k ^ 2 * (k - 1) * k) := by field_simp; ring
-  rw [h_eq]; apply div_nonneg; · nlinarith [sq_nonneg k]; · positivity
+  rw [h_eq]
+  apply div_nonneg
+  · nlinarith [sq_nonneg k]
+  · positivity
 
 -- 1/(6k³) ≤ 1/(12(k-1)²) - 1/(12k²) for k ≥ 2
 -- 2(k-1)² ≤ k(2k-1) since 2k²-4k+2 ≤ 2k²-k, i.e. k ≥ 2/3 ✓
@@ -376,7 +379,10 @@ private lemma inv_harmonic_le_sq (k : ℝ) (hk : 1 ≤ k) :
   suffices h : 0 ≤ 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) by linarith
   have h_eq : 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) =
       (k * (k + 1) - k ^ 2) / (12 * k ^ 2 * k * (k + 1)) := by field_simp; ring
-  rw [h_eq]; apply div_nonneg; · nlinarith [sq_nonneg k]; · positivity
+  rw [h_eq]
+  apply div_nonneg
+  · nlinarith [sq_nonneg k]
+  · positivity
 
 -- 1/(12k³) ≤ 1/(24(k-1)²) - 1/(24k²) for k ≥ 2
 -- 2(k-1)² ≤ k(2k-1), i.e. k ≥ 2/3 ✓
@@ -462,7 +468,7 @@ private lemma log_stirlingSeq_partial_lower (n L : ℕ) (hn : 2 ≤ n) :
     have hnL1_sub : (n : ℝ) + (↑L + 1 : ℝ) - 1 = (n : ℝ) + ↑L := by ring
     push_cast at hstep h1 h2 h3 ih ⊢
     rw [hnL1_sub]
-    linarith
+    linarith [ih, hstep, h1, h2, h3]
 
 -- ═══════════════════════════════════════════════════
 -- Part III: Main Expansion Theorem
@@ -542,7 +548,14 @@ theorem stirling_first_correction :
               1 / (24 * ((n : ℝ) + M - 1) ^ 3)))
         Filter.atTop (nhds (1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
              1 / (24 * ((n : ℝ) - 1) ^ 3))) := by
-      have := tendsto_const_nhds.sub htend_Gn; simp only [sub_zero] at this; exact this
+      -- Provide explicit type so Lean can synthesize the constant
+      have h_const : Filter.Tendsto
+          (fun (_ : ℕ) => 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+               1 / (24 * ((n : ℝ) - 1) ^ 3))
+          Filter.atTop (nhds (1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+               1 / (24 * ((n : ℝ) - 1) ^ 3))) := tendsto_const_nhds
+      have h := h_const.sub htend_Gn
+      simp only [sub_zero] at h; exact h
     -- f M ≤ L since stirlingSeq(n+M) ≥ sqrt π (antitonicity + Mathlib lower bound)
     apply le_of_tendsto' htend_Gdiff
     intro M
@@ -558,17 +571,23 @@ theorem stirling_first_correction :
   rw [abs_le]
   constructor
   -- Lower: -(2/n²) ≤ exp(L) - (1 + 1/(12n))
-  · have hge : 1 + L ≤ Real.exp L := Real.add_one_le_exp L
-    -- Need: 1/(12n) - 2/n² ≤ L (i.e., 1/(24(n-1)²) + 1/(24(n-1)³) ≤ 1/(2n²))
-    -- Equivalent to n³ ≤ 12*(n-1)³ (after clearing denominators)
-    have hL_lb : 1 / (12 * (n : ℝ)) - 1 / (2 * (n : ℝ) ^ 2) ≤ L := by
+  · -- Real.add_one_le_exp : L + 1 ≤ exp L (note order: L + 1, not 1 + L)
+    have hge : L + 1 ≤ Real.exp L := Real.add_one_le_exp L
+    -- Need: 1/(12n) - 2/n² ≤ L
+    have h_1over2 : 1 / (2 * (n:ℝ)^2) ≤ 2 / (n:ℝ)^2 := by
+      have hn2 : (0:ℝ) < (n:ℝ)^2 := by positivity
+      have h_eq : 2 / (n:ℝ)^2 - 1 / (2 * (n:ℝ)^2) = 3 / (2 * (n:ℝ)^2) := by
+        field_simp; ring
+      linarith [div_pos (by norm_num : (0:ℝ) < 3) (mul_pos (by norm_num : (0:ℝ) < 2) hn2)]
+    have hL_lb : 1 / (12 * (n : ℝ)) - 2 / (n : ℝ) ^ 2 ≤ L := by
       suffices h : 1 / (24 * ((n : ℝ) - 1) ^ 2) + 1 / (24 * ((n : ℝ) - 1) ^ 3) ≤
-                  1 / (2 * (n : ℝ) ^ 2) by linarith [hL_lower]
+                  1 / (2 * (n : ℝ) ^ 2) by linarith [hL_lower, h_1over2]
       suffices h2 : 0 ≤ 1 / (2 * (n:ℝ)^2) -
           (1 / (24 * ((n:ℝ)-1)^2) + 1 / (24 * ((n:ℝ)-1)^3)) by linarith
       have h_eq : 1 / (2 * (n:ℝ)^2) - (1 / (24 * ((n:ℝ)-1)^2) + 1/(24*((n:ℝ)-1)^3)) =
           (12*((n:ℝ)-1)^3 - (n:ℝ)^3) / (24*(n:ℝ)^2*((n:ℝ)-1)^3) := by field_simp; ring
-      rw [h_eq]; apply div_nonneg
+      rw [h_eq]
+      apply div_nonneg
       · nlinarith [mul_pos hn1_pos (mul_pos hn1_pos hn1_pos),
                    mul_pos hn_pos (mul_pos hn_pos hn_pos),
                    mul_pos hn_pos (mul_pos hn1_pos hn1_pos)]
