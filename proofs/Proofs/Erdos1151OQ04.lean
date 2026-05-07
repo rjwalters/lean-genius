@@ -1104,6 +1104,74 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
 
 /-! ## Harmonic Trig Sum Lower Bound (General x ∈ (-1, 1)) -/
 
+/-- **Nearest Chebyshev angle within π/(2n) of θ.**
+
+    For any θ ∈ (0, π) and n ≥ 1, there exists a Chebyshev angle
+    `φ_{k₀} = (2k₀+1)π/(2n)` within distance `π/(2n)` of θ.
+
+    Reason: the n angles φₖ (k = 0,…,n-1) are equispaced at distance π/n
+    and tile (0, π) so that each θ ∈ (0, π) lies within π/(2n) of the
+    nearest midpoint φ_{k₀}.
+
+    The witness is k₀ = ⌊nθ/π⌋, which lies in {0, …, n-1} since 0 < nθ/π < n,
+    and satisfies (k₀)π/n ≤ θ < (k₀+1)π/n by definition of floor; the
+    midpoint φ_{k₀} = (2k₀+1)π/(2n) is then within π/(2n) of θ.
+
+    Formalizes Step 2 of the proof sketch in `trig_sum_harmonic_lb`. -/
+private lemma exists_nearest_chebyshev_angle (n : ℕ) (hn : 0 < n)
+    {θ : ℝ} (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi) :
+    ∃ k₀ : Fin n,
+      |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n) := by
+  have hpi_pos := Real.pi_pos
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+  -- y := nθ/π lies in (0, n).
+  have hy_pos : 0 < (n : ℝ) * θ / Real.pi := by positivity
+  have hy_lt : (n : ℝ) * θ / Real.pi < n := by
+    rw [div_lt_iff₀ hpi_pos]; nlinarith
+  -- Set m := ⌊y⌋ : ℕ via Int.toNat (well-defined since y ≥ 0).
+  set m : ℕ := ⌊(n : ℝ) * θ / Real.pi⌋.toNat with hm_def
+  have hfloor_nn : (0 : ℤ) ≤ ⌊(n : ℝ) * θ / Real.pi⌋ :=
+    Int.floor_nonneg.mpr hy_pos.le
+  have hm_int : (m : ℤ) = ⌊(n : ℝ) * θ / Real.pi⌋ := by
+    rw [hm_def, Int.toNat_of_nonneg hfloor_nn]
+  have hm_floor_eq : (m : ℝ) = (⌊(n : ℝ) * θ / Real.pi⌋ : ℝ) := by exact_mod_cast hm_int
+  -- m < n.
+  have hm_lt : m < n := by
+    have h1 : (⌊(n : ℝ) * θ / Real.pi⌋ : ℝ) ≤ (n : ℝ) * θ / Real.pi := Int.floor_le _
+    have h2 : (m : ℝ) < (n : ℝ) := by rw [hm_floor_eq]; linarith
+    exact_mod_cast h2
+  -- Floor sandwich: m ≤ y < m + 1.
+  have hm_le_y : (m : ℝ) ≤ (n : ℝ) * θ / Real.pi := by
+    rw [hm_floor_eq]; exact Int.floor_le _
+  have hy_lt_succ : (n : ℝ) * θ / Real.pi < (m : ℝ) + 1 := by
+    rw [hm_floor_eq]; exact Int.lt_floor_add_one _
+  refine ⟨⟨m, hm_lt⟩, ?_⟩
+  -- Two-sided bound on θ: m·π/n ≤ θ ≤ (m+1)·π/n.
+  have hL : (m : ℝ) * Real.pi / n ≤ θ := by
+    have h1 : (m : ℝ) * Real.pi ≤ (n : ℝ) * θ := by
+      rw [le_div_iff₀ hpi_pos] at hm_le_y; exact hm_le_y
+    rw [div_le_iff₀ hn_pos]; linarith
+  have hR : θ ≤ ((m : ℝ) + 1) * Real.pi / n := by
+    have h1 : (n : ℝ) * θ < ((m : ℝ) + 1) * Real.pi := by
+      rw [div_lt_iff₀ hpi_pos] at hy_lt_succ; exact hy_lt_succ
+    rw [le_div_iff₀ hn_pos]; linarith
+  -- |θ - midpoint| ≤ half-width π/(2n) via abs_le.
+  rw [abs_le]
+  refine ⟨?_, ?_⟩
+  · -- Lower: (2m+1)π/(2n) - π/(2n) = m·π/n, and m·π/n ≤ θ.
+    have hmid_lo : (2 * (m : ℝ) + 1) * Real.pi / (2 * n) - Real.pi / (2 * n) =
+                   (m : ℝ) * Real.pi / n := by
+      field_simp [hn_ne]
+      ring
+    linarith
+  · -- Upper: (2m+1)π/(2n) + π/(2n) = (m+1)·π/n, and θ ≤ (m+1)·π/n.
+    have hmid_hi : (2 * (m : ℝ) + 1) * Real.pi / (2 * n) + Real.pi / (2 * n) =
+                   ((m : ℝ) + 1) * Real.pi / n := by
+      field_simp [hn_ne]
+      ring
+    linarith
+
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
     For any θ ∈ (0, π) with cos θ not a Chebyshev node for any n, the sum

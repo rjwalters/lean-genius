@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "IN-PROGRESS",
-    "since": "2026-05-04",
-    "iteration": 2,
-    "focus": "Mathlib API drift fixed (5 issues: div_le_div_iff→div_le_div_iff₀, harmonic_eq_sum_range→induction, Nat.eq_or_gt_of_le→eq_or_lt_of_le, Int.even_iff_not_odd→Even.not_odd, arccos_lt_pi.mpr→inline). 2 sorries remain: trig_sum_harmonic_lb (Lipschitz + harmonic sum for θ∈(0,π)) and divergence_from_lebesgue_growth (lim vs limsup gap).",
-    "blockers": [],
-    "nextAction": "Attempt trig_sum_harmonic_lb proof: decompose into sin_ge_sin_of_mem_Icc helper (Step 4) + Lipschitz bound + near-node harmonic sum.",
+    "since": "2026-05-07",
+    "iteration": 3,
+    "focus": "Added exists_nearest_chebyshev_angle helper (Step 2 of trig_sum_harmonic_lb). New lemma type-checks cleanly. Docker build (PR #16593) revealed 23 pre-existing errors in unrelated code: Mathlib API drift was NOT fully fixed despite earlier JSON claim — Nat.harmonic, Nat.harmonic_succ, Even.not_odd, and div_lt_div_iff are all unknown identifiers in the pinned Mathlib (rev 2df2f01). Cascading errors in tan_eq_cot_complement (lines 854-871) and odd_harmonic_sum_lb (lines 923-997).",
+    "blockers": ["Mathlib API drift in pre-existing code blocks file from building: Nat.harmonic renamed/moved, div_lt_div_iff → div_lt_div_iff₀, Even.not_odd unknown. New helper itself is valid."],
+    "nextAction": "(Mechanic / Researcher) Fix the pre-existing Mathlib API drift first: (a) line 889 div_lt_div_iff → div_lt_div_iff₀; (b) lines 943-956 Nat.harmonic → check Mathlib for current name; (c) line 1262 Even.not_odd → use (Even.add_one h).succ_odd or similar. After file builds, continue trig_sum_harmonic_lb proof (Steps 3-7).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Mathlib API drift FIXED (2026-05-04): 5 issues resolved — div_le_div_iff→div_le_div_iff₀, harmonic_eq_sum_range→induction proof, Nat.eq_or_gt_of_le→eq_or_lt_of_le, Int.even_iff_not_odd.mp→Even.not_odd, arccos_lt_pi.mpr→inline lt_of_le_of_ne proof. File now builds (pending Docker validation). 2 genuine sorries remain: trig_sum_harmonic_lb (Lipschitz+harmonic sum lower bound, strategy documented) and divergence_from_lebesgue_growth (lim vs limsup gap, may require axiom relaxation).",
+    "progressSummary": "Session 14 (2026-05-07): Added exists_nearest_chebyshev_angle helper formalizing Step 2 of the trig_sum_harmonic_lb proof — for any θ ∈ (0,π) and n ≥ 1, witness k₀ = ⌊nθ/π⌋ : Fin n satisfies |θ - φ_{k₀}| ≤ π/(2n). New lemma type-checks cleanly (lines 1121-1173 produce no errors/warnings). Docker build (PR #16593) revealed 23 PRE-EXISTING errors: Session 13's claim that Mathlib API drift was 'FIXED' was incorrect. Unknown constants in current Mathlib: Nat.harmonic (lines 943,945,951,956), Nat.harmonic_succ (947), Even.not_odd (1262), div_lt_div_iff (889). Cascading linarith/unsolved-goals errors in tan_eq_cot_complement (807-871) and odd_harmonic_sum_lb (923-997). 2 sorries remain (trig_sum_harmonic_lb at 1192, divergence_from_lebesgue_growth at 1367) but file does not build.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -57,8 +57,9 @@
       "chebyshev_trig_sum_lb: sorry (isolated harmonic sum lower bound: S_n ≥ C₂·n·log(n+1))",
       "chebyshev_lebesgue_lb: proved modulo chebyshev_trig_sum_lb via mul_le_mul chain (δ/n · C₂·n·log(n+1) ≤ |cos(nθ)|/n · S_n)",
       "chebyshev_trig_sum_lb Case 2 PROVED: cos(πp/q) ∈ (-1,1) via parity, arccos setup, reduction to trig_sum_harmonic_lb — Erdos1151OQ04.lean:1146",
-      "trig_sum_harmonic_lb: self-contained sorry for general θ ∈ (0, π), Lipschitz + harmonic Finset argument — Erdos1151OQ04.lean:1083",
-      "cos_pi_p_q_ne_one: cos(πp/q) ≠ 1 when p odd (parity: p = 2kq → even) — Erdos1151OQ04.lean:1151"
+      "trig_sum_harmonic_lb: self-contained sorry for general θ ∈ (0, π), Lipschitz + harmonic Finset argument — Erdos1151OQ04.lean:1192",
+      "cos_pi_p_q_ne_one: cos(πp/q) ≠ 1 when p odd (parity: p = 2kq → even) — Erdos1151OQ04.lean:1217",
+      "exists_nearest_chebyshev_angle: Step 2 of trig_sum_harmonic_lb — for θ ∈ (0,π), n ≥ 1, ∃ k₀ : Fin n with |θ - (2k₀+1)π/(2n)| ≤ π/(2n). Witness: k₀ = ⌊nθ/π⌋. — Erdos1151OQ04.lean:1121"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -82,11 +83,13 @@
       "Session 13: Case 2 factored into self-contained trig_sum_harmonic_lb(θ, hθ∈(0,π), hne). No dependency on p,q.",
       "Real.arccos_pos.mpr / Real.arccos_lt_pi.mpr: get strict bounds θ₀ ∈ (0,π) from x ∈ (-1,1)",
       "Real.cos_eq_one_iff: cos x = 1 ↔ ∃ k : ℤ, x = k*(2π). Use to show cos(πp/q) ≠ 1 from p odd.",
-      "LipschitzWith.dist_le_mul converts edist bound to |cos α - cos β| ≤ |α - β| via Real.dist_eq"
+      "LipschitzWith.dist_le_mul converts edist bound to |cos α - cos β| ≤ |α - β| via Real.dist_eq",
+      "Nearest Chebyshev midpoint via floor: k₀ = ⌊nθ/π⌋ ∈ {0,…,n-1} for θ ∈ (0,π) since 0 < nθ/π < n; the half-interval (k₀π/n, (k₀+1)π/n) containing θ has midpoint φ_{k₀} = (2k₀+1)π/(2n) within π/(2n).",
+      "Don't trust prior progressSummary 'API drift fixed' claims without a Docker build: the 2026-05-04 Session 13 JSON claimed all API drift was fixed, but a 2026-05-07 build of Proofs.Erdos1151OQ04 surfaced 23 errors including Unknown constant Nat.harmonic, Even.not_odd, div_lt_div_iff. Always verify with Docker before declaring resolution."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(Researcher) Prove trig_sum_harmonic_lb: fix k₀ = nearest Chebyshev node to θ (|φₖ₀-θ|≤π/(2n)), use cos_dist_le to bound |cosθ-cosφₖ|≤(j+1)π/n for rank-j nodes, use sin_ge_sin_of_mem_Icc to bound sinφₖ≥sinθ/2 for j≤M=⌊n·sinθ/(2π)⌋, sum harmonic Σ sinθ·n/(2π(j+1)) over j=1..M using odd_harmonic_sum_lb",
+      "(Researcher) Continue trig_sum_harmonic_lb: Step 2 ✓ exists_nearest_chebyshev_angle. Step 3 — for j-th nearest beyond k₀, |θ - φ_{k₀+j+1}| ≤ (2j+3)π/(2n) via triangle. Step 4 — sin lower bound via sin_ge_sin_of_mem_Icc when φ ∈ (d/2, π-d/2). Step 5/6/7 — sub-sum ≥ harmonic + finite Finset.min' for n < N₀.",
       "(Researcher, longer-term) Address divergence_from_lebesgue_growth foundational lim/limsup gap"
     ]
   },
@@ -111,15 +114,15 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-04-27T17:23:30Z",
+  "lastUpdate": "2026-05-07T17:55:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1320,
-      "theoremCount": 31,
+      "lineCount": 1388,
+      "theoremCount": 32,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 2,
@@ -129,11 +132,11 @@
     {
       "path": "Proofs/Erdos1151OQ04Aristotle.lean",
       "filename": "Erdos1151OQ04Aristotle.lean",
-      "lineCount": 141,
+      "lineCount": 140,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04Aristotle.lean"
     },
