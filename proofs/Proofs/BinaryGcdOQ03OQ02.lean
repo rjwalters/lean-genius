@@ -774,6 +774,143 @@ theorem row_product_with_invariant (M : CofactorMatrix)
          by linear_combination (2 : ℤ) ^ s * hinv₂⟩
 
 -- ═══════════════════════════════════════════════════════════════
+-- PART VIIc: ROW-OUTPUT COMPOSITION FOR `mul` (Session 12)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Row-output composition under matrix multiplication
+
+The PART IX docstring on `hgcdMatrix_row_output_le` identifies the
+structural obstacle blocking the recursive case: the IH for the inner
+matrix is at `(aHi, bHi)`, but we need the row output of the inner
+matrix on a *different* pair (the row output of the outer matrix on
+`(a, b)`). This subsection records the algebraic identity that lets
+us substitute one row-output computation for another, plus a clean
+`natAbs` triangle bound that combines an *input*-side bound on the
+outer matrix's row output with an *entry*-side bound on the inner
+matrix.
+
+Key identity (`cofactor_mul_row_output`):
+
+  `a · (M.mul N).α + b · (M.mul N).γ`
+    `= N.α · (a · M.α + b · M.γ) + N.γ · (a · M.β + b · M.δ)`
+  `a · (M.mul N).β + b · (M.mul N).δ`
+    `= N.β · (a · M.α + b · M.γ) + N.δ · (a · M.β + b · M.δ)`
+
+i.e. the row output of `M.mul N` on `(a, b)` equals the row output of
+`N` evaluated at the row output of `M` on `(a, b)`.  This is the
+"row-convention" analogue of `cofactor_mul_apply` (column convention).
+
+Combined with entry bounds for `N` (Step 2b: `entry_bound_of_even/odd`)
+and a row-output bound for `M` (the IH being applied at the outer
+matrix's *own* inputs), this yields a row-output bound for `M.mul N`
+without ever needing a row-output bound for `N` at the outer
+matrix's row output. -/
+
+/-- Triangle bound for row products of a single cofactor matrix.
+
+    `(a · M.α + b · M.γ).natAbs ≤ |a| · |M.α| + |b| · |M.γ|`
+    `(a · M.β + b · M.δ).natAbs ≤ |a| · |M.β| + |b| · |M.δ|`
+
+    This is the row-convention analogue of `cofactor_apply_natAbs_le`
+    (which applies to the column convention `M.α · a + M.β · b`,
+    `M.γ · a + M.δ · b`). The two row products use a different pair
+    of entries, so a separate lemma is needed. -/
+theorem cofactor_row_natAbs_le (M : CofactorMatrix) (a b : ℤ) :
+    (a * M.α + b * M.γ).natAbs ≤ a.natAbs * M.α.natAbs + b.natAbs * M.γ.natAbs ∧
+    (a * M.β + b * M.δ).natAbs ≤ a.natAbs * M.β.natAbs + b.natAbs * M.δ.natAbs := by
+  refine ⟨?_, ?_⟩
+  · calc (a * M.α + b * M.γ).natAbs
+        ≤ (a * M.α).natAbs + (b * M.γ).natAbs := Int.natAbs_add_le _ _
+      _ = a.natAbs * M.α.natAbs + b.natAbs * M.γ.natAbs := by
+            simp [Int.natAbs_mul]
+  · calc (a * M.β + b * M.δ).natAbs
+        ≤ (a * M.β).natAbs + (b * M.δ).natAbs := Int.natAbs_add_le _ _
+      _ = a.natAbs * M.β.natAbs + b.natAbs * M.δ.natAbs := by
+            simp [Int.natAbs_mul]
+
+/-- Row-output bound from entry bounds and input bounds.
+
+    If every entry of `M` is bounded in absolute value by `E`, and the
+    inputs `a, b` are bounded in absolute value by `R`, then both row
+    products of `M` on `(a, b)` are bounded by `2 · E · R`. -/
+theorem cofactor_row_natAbs_le_of_entry_bounds (M : CofactorMatrix) (a b : ℤ)
+    (E R : ℕ)
+    (hα : M.α.natAbs ≤ E) (hβ : M.β.natAbs ≤ E)
+    (hγ : M.γ.natAbs ≤ E) (hδ : M.δ.natAbs ≤ E)
+    (ha : a.natAbs ≤ R) (hb : b.natAbs ≤ R) :
+    (a * M.α + b * M.γ).natAbs ≤ 2 * E * R ∧
+    (a * M.β + b * M.δ).natAbs ≤ 2 * E * R := by
+  obtain ⟨h1, h2⟩ := cofactor_row_natAbs_le M a b
+  refine ⟨?_, ?_⟩
+  · calc (a * M.α + b * M.γ).natAbs
+        ≤ a.natAbs * M.α.natAbs + b.natAbs * M.γ.natAbs := h1
+      _ ≤ R * E + R * E :=
+            Nat.add_le_add (Nat.mul_le_mul ha hα) (Nat.mul_le_mul hb hγ)
+      _ = 2 * E * R := by ring
+  · calc (a * M.β + b * M.δ).natAbs
+        ≤ a.natAbs * M.β.natAbs + b.natAbs * M.δ.natAbs := h2
+      _ ≤ R * E + R * E :=
+            Nat.add_le_add (Nat.mul_le_mul ha hβ) (Nat.mul_le_mul hb hδ)
+      _ = 2 * E * R := by ring
+
+/-- Row-output composition under `CofactorMatrix.mul`.
+
+    The row output of `M.mul N` on `(a, b)` equals the row output of
+    `N` evaluated at the row output of `M` on `(a, b)`. Pure algebra
+    (`ring`); this is the row-convention dual of `cofactor_mul_apply`. -/
+theorem cofactor_mul_row_output (M N : CofactorMatrix) (a b : ℤ) :
+    a * (M.mul N).α + b * (M.mul N).γ =
+      N.α * (a * M.α + b * M.γ) + N.γ * (a * M.β + b * M.δ) ∧
+    a * (M.mul N).β + b * (M.mul N).δ =
+      N.β * (a * M.α + b * M.γ) + N.δ * (a * M.β + b * M.δ) := by
+  simp only [CofactorMatrix.mul]
+  refine ⟨?_, ?_⟩ <;> ring
+
+/-- Row-output bound for `M.mul N` from a row-output bound on `M` and
+    entry bounds on `N`.
+
+    If both row products of `M` on `(a, b)` have `natAbs ≤ R`, and every
+    entry of `N` has `natAbs ≤ E`, then both row products of `M.mul N`
+    on `(a, b)` have `natAbs ≤ 2 · E · R`.
+
+    Combining `cofactor_mul_row_output` (rewrite to row-of-N applied to
+    row-of-M) with the row-natAbs triangle bound, factoring out `N`'s
+    entry bounds. This is the central infrastructure lemma for the
+    joint-induction approach to `hgcdMatrix_row_output_le`: the IH for
+    the inner matrix supplies the entry bounds on `N`, the IH for the
+    outer matrix supplies the row-output bound on `M`. -/
+theorem cofactor_mul_row_output_natAbs_le {M N : CofactorMatrix} {a b : ℤ}
+    {R E : ℕ}
+    (hM₁ : (a * M.α + b * M.γ).natAbs ≤ R)
+    (hM₂ : (a * M.β + b * M.δ).natAbs ≤ R)
+    (hNα : N.α.natAbs ≤ E) (hNβ : N.β.natAbs ≤ E)
+    (hNγ : N.γ.natAbs ≤ E) (hNδ : N.δ.natAbs ≤ E) :
+    (a * (M.mul N).α + b * (M.mul N).γ).natAbs ≤ 2 * E * R ∧
+    (a * (M.mul N).β + b * (M.mul N).δ).natAbs ≤ 2 * E * R := by
+  obtain ⟨hα_eq, hβ_eq⟩ := cofactor_mul_row_output M N a b
+  refine ⟨?_, ?_⟩
+  · rw [hα_eq]
+    calc (N.α * (a * M.α + b * M.γ) + N.γ * (a * M.β + b * M.δ)).natAbs
+        ≤ (N.α * (a * M.α + b * M.γ)).natAbs
+            + (N.γ * (a * M.β + b * M.δ)).natAbs := Int.natAbs_add_le _ _
+      _ = N.α.natAbs * (a * M.α + b * M.γ).natAbs
+            + N.γ.natAbs * (a * M.β + b * M.δ).natAbs := by
+              simp [Int.natAbs_mul]
+      _ ≤ E * R + E * R :=
+            Nat.add_le_add (Nat.mul_le_mul hNα hM₁) (Nat.mul_le_mul hNγ hM₂)
+      _ = 2 * E * R := by ring
+  · rw [hβ_eq]
+    calc (N.β * (a * M.α + b * M.γ) + N.δ * (a * M.β + b * M.δ)).natAbs
+        ≤ (N.β * (a * M.α + b * M.γ)).natAbs
+            + (N.δ * (a * M.β + b * M.δ)).natAbs := Int.natAbs_add_le _ _
+      _ = N.β.natAbs * (a * M.α + b * M.γ).natAbs
+            + N.δ.natAbs * (a * M.β + b * M.δ).natAbs := by
+              simp [Int.natAbs_mul]
+      _ ≤ E * R + E * R :=
+            Nat.add_le_add (Nat.mul_le_mul hNβ hM₁) (Nat.mul_le_mul hNδ hM₂)
+      _ = 2 * E * R := by ring
+
+-- ═══════════════════════════════════════════════════════════════
 -- PART VIII: SIZE REDUCTION PREREQUISITES (Step 4 foundations)
 -- ═══════════════════════════════════════════════════════════════
 
@@ -1003,14 +1140,33 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
     of `hgcdMatrix (fuel+1) a b` is ≤ `max a b`. Proved using `hgcdMatrix_small`
     and `lehmerCofactors_id_apply_le`.
 
+15. **Row-output composition under `mul`** (PART VIIc, Session 12):
+    - `cofactor_row_natAbs_le`: row-convention triangle bound,
+      `(a·M.α + b·M.γ).natAbs ≤ |a|·|M.α| + |b|·|M.γ|` (and symmetrically).
+    - `cofactor_row_natAbs_le_of_entry_bounds`: combined bound, given
+      `|M.•| ≤ E` and `|a|, |b| ≤ R`, both row products are ≤ `2·E·R`.
+    - `cofactor_mul_row_output`: the algebraic identity
+      `a·(M.mul N).α + b·(M.mul N).γ = N.α·(a·M.α + b·M.γ) + N.γ·(a·M.β + b·M.δ)`
+      (and symmetrically). Row output of `M.mul N` on `(a, b)` equals the row
+      output of `N` evaluated at the row output of `M` on `(a, b)`. This is
+      the row-convention dual of `cofactor_mul_apply`. Proved by `ring`.
+    - `cofactor_mul_row_output_natAbs_le`: from a row-output bound on `M`
+      (`R`) and entry bounds on `N` (`E`), the row output of `M.mul N` is
+      bounded by `2·E·R`. This decouples the IH for the inner matrix
+      (entries) from the IH for the outer matrix (row output), avoiding the
+      Session 11 obstacle where M₂'s IH was at the wrong inputs.
+
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
   Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
-  recursive case. Session 11 sign-pattern analysis: individual entries of M₁ and M₂
-  are bounded by `max(aHi,bHi)`, but `rowOut(M₂, rowOut(M₁))` can reach `2·max(a,b)`
-  because M₂'s IH is at its column-output inputs (from M₁), not the row-output.
-  The proof requires joint induction tracking both row and column output bounds
-  (Stehlé–Zimmermann 2004 §4 approach).
+  recursive case. The Session 12 infrastructure (PART VIIc) reframes the
+  recursive case so that the inner subproblem `M_inner = hgcdMatrix f aHi bHi`
+  contributes via *entry* bounds (still to be derived from
+  `lehmerCofactors_has_pattern` + `entry_bound_of_even/odd`, lifted to
+  arbitrary fuel) rather than via its row-output bound at the wrong inputs.
+  The remaining gap is a `hgcdMatrix_entry_bound` lemma (analogue of
+  `entry_bound_of_even/odd` for HGCD), which will need a sign-pattern
+  invariant for `hgcdMatrix` extending the Lehmer-only argument.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
