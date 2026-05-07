@@ -1,0 +1,157 @@
+{
+  "slug": "hilbert-10-oq-01-oq-02",
+  "title": "Is ℤ purely Diophantine over ℚ — can integrality be detected by polynomial equations with rational solutions?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists\\, P : \\mathbb{Q}[t, x_1, \\ldots, x_k] \\text{ such that } \\forall t \\in \\mathbb{Q}: t \\in \\mathbb{Z} \\iff \\exists\\, x_1, \\ldots, x_k \\in \\mathbb{Q}: P(t, x_1, \\ldots, x_k) = 0",
+    "plain": "Hilbert's 10th over ℤ is undecidable (Matiyasevich 1970). Whether the analogous problem over ℚ is decidable is OPEN, and reduces to the question: can the set ℤ ⊂ ℚ be defined PURELY EXISTENTIALLY (i.e., as the projection of a rational-solution set of a polynomial equation)? This is the 'is ℤ Diophantine over ℚ' question. Sister-question OQ-01 asks the same in a 'broader' definability framework; this OQ-01-OQ-02 narrows to the strictly purely-Diophantine (∃-formula) form, where Koenigsmann's celebrated 2016 ∀∃ universal definition does NOT settle the question.",
+    "whyMatters": [
+      "If ℤ is purely Diophantine over ℚ, then Hilbert's 10th problem over ℚ is undecidable (immediate reduction from Matiyasevich): the answer to one of the most famous open problems in mathematical logic would be settled NEGATIVELY",
+      "Mazur's conjecture (1992): the topological closure of any Diophantine subset of ℚ in ℝ has finitely many connected components — would IMPLY ℤ is NOT Diophantine over ℚ (since ℤ is closed in ℝ with infinitely many points but no interval-like structure)",
+      "Koenigsmann (Annals 2016) gave a UNIVERSAL (∀∃) definition of ℤ in ℚ; finding a purely existential (Diophantine) definition would be a substantial strengthening with direct consequences for H10/ℚ",
+      "Bridges mathematical logic, number theory, and arithmetic geometry — connects to the Brauer-Manin obstruction (Poonen 2009 Diophantine definitions over rings of S-integers)",
+      "Resolution either way (positive or negative) would be a major milestone in the model theory of ℚ"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Matiyasevich 1970 (DPRM theorem): every recursively enumerable subset of ℕ is Diophantine over ℤ; in particular, Hilbert's 10th problem over ℤ is UNDECIDABLE.",
+      "Robinson 1949: ℤ is definable in (ℚ, +, ·, 0, 1) by a first-order formula (with universal quantifiers); thus the first-order theory of (ℚ, +, ·) is undecidable.",
+      "Poonen 2009: for many rings of S-integers in number fields (where S has positive density), the analog of Hilbert's 10th is undecidable; uses a Diophantine definition of ℤ in those rings.",
+      "Koenigsmann 2016 (Annals): ℤ has a UNIVERSAL (Π₁) definition in ℚ — i.e., ℤ = {t ∈ ℚ : ∀ y₁,…,yₖ, ∃ z₁,…,zₘ : P(t, y, z) = 0} for an explicit polynomial P. (NOT a Diophantine, i.e., Σ₁, definition — that remains open.)",
+      "Sun 2016, Daans 2021, Eisenträger-Park 2018+: variations and refinements giving alternate ∀∃ definitions; some improving the number of universal quantifiers.",
+      "Mazur's conjecture is KNOWN to imply ℤ is not Diophantine over ℚ (a clean conditional theorem)."
+    ],
+    "open": [
+      "Is ℤ purely Diophantine (Σ₁) over ℚ? — the ORIGINAL question; both positive and negative answers consistent with current knowledge.",
+      "Is Hilbert's 10th problem over ℚ decidable? — closely related; would be undecidable if ℤ is Diophantine over ℚ.",
+      "Is Mazur's conjecture true? — would resolve OQ-01-OQ-02 negatively if proved.",
+      "Existence of a Diophantine definition with low quantifier complexity (e.g., bounded number of variables k); even an upper bound on k would be informative.",
+      "Connections to S-integers: for which sets S of primes does ℤ_S have a Diophantine definition in ℚ?",
+      "Mathematical-logic angle: is there a finite-axiomatizable extension of Robinson's Q in which ℤ becomes Σ₁-definable?"
+    ],
+    "goal": "Either: (a) construct an explicit polynomial P(t, x_1, …, x_k) ∈ ℚ[t, x] witnessing ℤ as a Diophantine subset of ℚ — would imply H10/ℚ undecidable; or (b) prove ℤ is NOT Diophantine over ℚ (e.g., via Mazur's conjecture or a topological/density argument), which would NOT immediately settle H10/ℚ but would close this specific approach. Phase-2 Lean goal: state both directions as axioms with full provenance and document the implication chain `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` already present in `Hilbert10OQ01.lean`."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-07T19:15:00.000Z",
+    "iteration": 1,
+    "focus": "Phase-1 observation. Sister-question OQ-01 (`hilbert-10-oq-01.json`) frames the broad question 'is ℤ Diophantine over ℚ' and `Proofs/Hilbert10OQ01.lean` already defines `IntegersDiophantineOverQ`, the Mazur conjecture as `axiom mazur_conjecture`, and the reduction `axiom integers_diophantine_implies_undecidable`. This OQ-01-OQ-02 sub-question NARROWS to the strictly purely-Diophantine (Σ₁) form, distinct from Koenigsmann's universal (∀∃) definition.",
+    "blockers": [],
+    "nextAction": "Phase 2 (ORIENT): decide whether to (a) author a new `Proofs/Hilbert10OQ01OQ02.lean` strengthening the OQ-01 framework with explicit `IsDiophantineDefinition` (Σ₁) vs `IsUniversalDefinition` (Π₁) typeclasses and stating Koenigsmann's theorem as a witness for the Π₁ side and the open Σ₁ side as an axiom; or (b) MERGE this question into OQ-01 if the gallery deduplicator agrees. Recommendation: (a), because the Σ₁/Π₁ distinction is mathematically substantive and underlies the open question.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE phase. Substantial overlap with `hilbert-10-oq-01` and existing `Proofs/Hilbert10OQ01.lean` (line ~5 explicitly addresses 'analogous question over ℚ'; defines `RatDiophantinePoly`, `DiophantineOverQ`, `IntegersDiophantineOverQ`; axiomatizes `integers_diophantine_implies_undecidable`, `mazur_conjecture`, `mazur_implies_not_diophantine`). The OQ-01-OQ-02 refinement is mathematically the same question but with a sharper Σ₁ vs Π₁ framing motivated by Koenigsmann (2016). Pre-existing infrastructure handles the Σ₁ side (`IntegersDiophantineOverQ`); the Π₁ side (Koenigsmann's universal definition) is NOT yet formalized.",
+    "builtItems": [],
+    "insights": [
+      "The Σ₁/Π₁ distinction (Diophantine vs universal definability) is the precise mathematical content of OQ-01-OQ-02 over and above OQ-01: Koenigsmann 2016 settled Π₁; Σ₁ remains open",
+      "Existing `Proofs/Hilbert10OQ01.lean` already encodes the conditional `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` (the only pivot in the implication chain); reusing this avoids axiom duplication",
+      "A Phase-2 file `Hilbert10OQ01OQ02.lean` should add: `def UniversallyDefinableOverQ (S : ℚ → Prop) : Prop`, `theorem koenigsmann_2016 : UniversallyDefinableOverQ (fun q => q ∈ Set.range (Int.cast : ℤ → ℚ))` (axiomatized, with full citation), and explicitly state `IntegersDiophantineOverQ` as the open question it ALSO refines",
+      "Mazur's conjecture is STRICTLY STRONGER than 'ℤ not Diophantine over ℚ'; a Lean treatment should distinguish them",
+      "The 'integrality detection' phrasing in the seeker's title is precisely the Σ₁-definition question — natural to formalize as `∃ P : Polynomial(ℚ, k+1), ∀ t, t∈ℤ ↔ ∃ x₁..xₖ : P(t,x)=0`",
+      "Decidability of H10/ℚ is the application target, but is one logical step removed: positive Σ₁-definition → undecidable (via Matiyasevich); negative → does NOT immediately give decidable (the decidability could fail through other Diophantine sets)"
+    ],
+    "mathlibGaps": [
+      "No formal definition of 'Diophantine subset of a ring' in Mathlib — `Hilbert10OQ01.lean` uses ad-hoc `RatDiophantinePoly := (Nat → Rat) → Rat`",
+      "No formalization of Matiyasevich's DPRM theorem (would be needed to prove the reduction `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` rather than axiomatizing it)",
+      "No formalization of Koenigsmann's universal definition of ℤ in ℚ (the 2016 Annals paper has explicit polynomials)",
+      "No general first-order logic / Σ_n / Π_n hierarchy in Mathlib for this kind of definability question"
+    ],
+    "nextSteps": [
+      "Phase-2: scaffold `proofs/Proofs/Hilbert10OQ01OQ02.lean` with `def IsDiophantineSubset`, `def IsUniversalSubset`, the open conjecture `axiom integers_diophantine_over_Q : IntegersDiophantineOverQ` (or its negation), and an axiomatized witness `axiom koenigsmann_2016_universal : UniversallyDefinableOverQ (Set.range (Int.cast : ℤ → ℚ))`",
+      "Phase-2: import `Proofs.Hilbert10OQ01` to reuse `IntegersDiophantineOverQ` and the implication chain — do not redefine",
+      "Phase-3: create gallery entry `src/data/proofs/hilbert-10-oq-01-oq-02/` with `meta.json`, `annotations.json`, `index.ts`",
+      "Cross-reference to `hilbert-10`, `hilbert-10-oq-01`, `hilbert-10-oq-04` (and outward to any 'Mazur conjecture' entry that may exist)",
+      "Stretch: formalize Koenigsmann's explicit polynomial witness from the Annals 2016 paper — the polynomial is given explicitly (using quaternion algebras and Hasse symbols); may be tractable if the Hilbert symbol infrastructure (already partial in `Hilbert11_QuadraticForms.lean`) is extended",
+      "Coordinate with seeker / curator: consider whether OQ-01-OQ-02 should be MERGED into OQ-01 if the only refinement is the Σ₁/Π₁ distinction (mathematical preference: KEEP separate, because Koenigsmann 2016 settled Π₁ specifically and the Σ₁ version is the exact question whose answer would close H10/ℚ)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "mathematical-logic",
+    "diophantine",
+    "hilbert-10",
+    "decidability",
+    "open-problem",
+    "matiyasevich",
+    "koenigsmann",
+    "mazur-conjecture"
+  ],
+  "relatedProofs": [
+    "hilbert-10",
+    "hilbert-10-oq-01",
+    "hilbert-10-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Matiyasevich 1970 - Enumerable sets are Diophantine (DAN SSSR) — DPRM theorem, Hilbert's 10th over ℤ undecidable",
+      "Robinson 1949 - Definability and decision problems in arithmetic (J. Symb. Logic) — first definition of ℤ in ℚ",
+      "Mazur 1992 - The topology of rational points (Experimental Math.) — Mazur's conjecture on Diophantine subsets of ℚ",
+      "Poonen 2009 - The set of nonsquares in a number field is Diophantine (Math. Res. Lett. 16, 165-170)",
+      "Poonen 2009 - Hilbert's tenth problem and Mazur's conjecture for large subrings of ℚ (J. AMS)",
+      "Koenigsmann 2016 - Defining ℤ in ℚ (Annals of Math. 183, 73-93) — universal (Π₁) definition",
+      "Eisenträger-Park 2018 - Universally and existentially definable subsets of global fields",
+      "Daans 2021 - Universally defining ℤ in ℚ with 10 quantifiers (J. Number Theory)",
+      "Sun 2016 - On Hilbert's tenth problem and related topics",
+      "Cornelissen-Pheidas 2008 - Survey: Algebra and number theory in mathematical logic"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Hilbert%27s_tenth_problem",
+      "https://annals.math.princeton.edu/articles/10245"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Rat.Defs — rational numbers ℚ",
+      "Mathlib.RingTheory.Polynomial.Basic — polynomials over ℚ",
+      "Mathlib.NumberTheory.Cyclotomic.Basic — cyclotomic background for some Diophantine definitions",
+      "Mathlib.Logic.FirstOrder.Basic — first-order definability framework (limited)"
+    ]
+  },
+  "started": "2026-05-05T02:57:43.927Z",
+  "lastUpdate": "2026-05-07T19:15:00.000Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert10.lean",
+      "filename": "Hilbert10.lean",
+      "lineCount": 239,
+      "theoremCount": 7,
+      "axiomCount": 4,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ01.lean",
+      "filename": "Hilbert10OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 0,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert10OQ04.lean",
+      "filename": "Hilbert10OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 10,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ04.lean"
+    }
+  ]
+}
