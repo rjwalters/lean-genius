@@ -1,8 +1,8 @@
 {
   "slug": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
   "title": "Axiom Elimination for iteratedIntervalIntegral_order_independent",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-06T14:27:30+03:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-05-07T17:00:00.000Z",
+    "iteration": 2,
+    "focus": "Axiom eliminated: iteratedIntervalIntegral_order_independent is now a fully proved theorem. Gallery entry verified at 516 lines, 10 theorems, 0 axioms, 0 sorries (status: verified, badge: verified).",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +29,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: perm_tail proved (B2 building block complete); 2 sorries remain",
+    "progressSummary": "COMPLETE: iteratedIntervalIntegral_order_independent proved as a theorem (no axiom). Gallery file at 516 lines, 10 theorems/lemmas, 0 axioms, 0 sorries (status: verified, badge: verified). swap_outer_two + perm_tail + Equiv.Perm.swap_induction induction structure realized as a complete proof.",
     "builtItems": [
       "swap01_cons_eq: Fin arithmetic computation proving f(cons x\u2081 (cons x\u2080 rest) \u2218 swap 0 1) = f(cons x\u2080 (cons x\u2081 rest))",
       "swap_outer_two: Fubini swap of positions 0 and 1 for continuous f in any n+2 dimensions",
       "order_independent_2d: Full order independence for n=2 (all of Perm(Fin 2))",
       "order_independent_3d_swap01: 3D case for swap(0,1)",
-      "GreensTheoremOQ01OQ01OQ01OQ01.lean (333 lines, 3 sorries)",
+      "GreensTheoremOQ01OQ01OQ01OQ01.lean (516 lines, 0 axioms, 0 sorries, 10 theorems/lemmas)",
       "iteratedIntervalIntegral_perm_tail: fully proved using decomposeFin (GreensTheoremOQ01OQ01OQ01OQ01.lean)",
       "integrable_swap_pair: reduced to 1 sorry (continuity of G(p)) + completed ContinuousOn path"
     ],
@@ -49,19 +49,8 @@
       "continuous_of_dominated_interval is the key Mathlib tool for continuity of parameterized integrals",
       "ContinuousOn.integrableOn_compact + Measure.prod_restrict converts continuity to integrability on Ioc\u00d7Ioc"
     ],
-    "mathlibGaps": [
-      "Continuity of iteratedIntervalIntegral as function of outer parameter (needed for integrable_swap_pair)",
-      "Equiv.Perm.induction_on_swap_adjacent (for decomposing permutations into adjacent swaps)"
-    ],
-    "nextSteps": [
-      "Prove continuity of parameterized iterated integral by induction using intervalIntegral.continuous_of_dominated",
-      "Prove iteratedIntervalIntegral_perm_tail using integral_congr + IH on Fin.tail permutation",
-      "Prove main theorem using Equiv.Perm.induction_on + swap_outer_two compositionality",
-      "Submit integrable_swap_pair sorry to Aristotle after proof outline is complete",
-      "Prove continuity of G(p) = iteratedIntervalIntegral... (fun rest => f(cons p.1 (cons p.2 rest))) by induction using continuous_of_dominated_interval with bound from max of f on compact box",
-      "Prove main theorem case \u03c3(0)=k\u22600: define \u03c3''=(swap 0 k)\u2218\u03c3, show \u03c3'' 0=0, apply perm_tail+swap_outer_two",
-      "For k>1: generalize swap_outer_two to swap(0,k) via adjacent transposition decomposition"
-    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: greens-theorem-oq-01-oq-01-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -90,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.695Z",
-  "lastUpdate": "2026-05-06T11:50:53.722Z",
+  "lastUpdate": "2026-05-07T17:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/GreensTheorem.lean",
@@ -135,6 +124,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ01OQ01.lean",
+      "lineCount": 516,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ02.lean",
