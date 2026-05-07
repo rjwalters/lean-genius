@@ -25,6 +25,10 @@ The 1/(12n) correction coefficient is the key refinement of Stirling's approxima
 
 **stirling_first_correction structure** (C=2): upper via le_of_tendsto', lower via le_of_tendsto_of_tendsto. Two remaining mechanical sorrys: (1) G(n+M)→0 and (2) |exp(L)-(1+L)| ≤ L²/2·exp(L) ≤ 1/n².
 
+### Build Result
+
+**CONFIRMED WORKING**: `⚠ [3083/3083] Replayed Proofs.StirlingExpansion` — compiles with NO errors, only minor style warnings + 2 intentional sorry warnings. PR #16442 ready for next session to fill the 2 remaining sorrys.
+
 ### Key Lean 4 API Learnings (Session 2)
 
 **`div_le_div_iff`, `div_le_div_right` UNKNOWN in Lean 4.26** — Use `div_le_div_of_nonneg_right (h : a≤b) (hc : 0≤c) : a/c ≤ b/c` (confirmed in `Erdos487Problem.lean`). For showing `0 ≤ a/b - c/d`, use `div_nonneg` after `field_simp; ring`.
