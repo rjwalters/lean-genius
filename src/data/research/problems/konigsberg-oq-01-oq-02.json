@@ -18,18 +18,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T11:21:30.000Z",
-    "iteration": 4,
-    "focus": "Hierholzer infrastructure largely complete (PR #15170, #15212, #16153 merged). 4 sorries + 2 axioms remain in KonigsbergOQ01OQ02.lean (958 lines, 25 theorems, 13 defs).",
+    "iteration": 5,
+    "focus": "Hierholzer infrastructure 75% complete after Session 5: 2 sorries + 2 axioms remain in KonigsbergOQ01OQ02.lean (1107 lines, 25 theorems, 13 defs). maxTrail_used_eq and maxTrail_last_exhausted proved by direct strong induction on E.card.",
     "blockers": [],
-    "nextAction": "Prove maxTrail_used_eq (induction on E.card) and maxTrail_last_exhausted (deferred sorries L578/588). Then attack remove_circuit_balanced (L900) using closed_walk_balance.",
+    "nextAction": "Attack remove_circuit_balanced (L953) using closed_walk_balance and walkEdges-distinctness, then strengthen HasEulerianPath with ExistsUnique coverage to enable euler_path_implies_degree_balance (L1007) via walk-bijection + open-walk counting (already proved as open_walk_first_source_excess / open_walk_last_target_excess).",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5→2 axioms (#15170 Session 2). #15212 Session 3 added 478 lines of Hierholzer infrastructure: maxTrail construction (terminates by edge count), maxTrail_closed PROVED (balance contradiction), circuit_exists PROVED, open-walk counting lemmas PROVED. #16153 Session 4 proved maxTrail_steps_in_E and maxTrail_steps_distinct (sorries 6→4). Current state (origin/main 2026-05-06): 958 lines, 25 theorems/lemmas, 13 defs, 2 axioms (directed_eulerian_iff, directed_euler_path_iff), 4 sorries (maxTrail_used_eq L578, maxTrail_last_exhausted L588, remove_circuit_balanced L900, euler_path_implies_degree_balance L954). Remaining axioms still need circuit-splicing (Hierholzer) and HasEulerianPath ∃! coverage strengthening.",
+    "progressSummary": "PROGRESS: 5→2 axioms (#15170 Session 2). #15212 Session 3 added 478 lines of Hierholzer infrastructure: maxTrail construction (terminates by edge count), maxTrail_closed PROVED (balance contradiction), circuit_exists PROVED, open-walk counting lemmas PROVED. #16153 Session 4 proved maxTrail_steps_in_E and maxTrail_steps_distinct (sorries 6→4). Session 5 (2026-05-07) proved maxTrail_used_eq and maxTrail_last_exhausted by direct strong induction on E.card (sorries 4→2; PR pending build verification). Current state: 1107 lines, 25 theorems/lemmas, 13 defs, 2 axioms (directed_eulerian_iff, directed_euler_path_iff), 2 sorries (remove_circuit_balanced L953, euler_path_implies_degree_balance L1007). Remaining axioms still need circuit-splicing (Hierholzer) and HasEulerianPath ∃! coverage strengthening.",
     "builtItems": [
       "sum_outDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:79",
       "sum_inDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:91",
@@ -48,7 +48,9 @@
       "circuit_exists: PROVED KonigsbergOQ01OQ02.lean:746 — every non-empty balanced digraph has a directed circuit",
       "DirectedCircuit: structure KonigsbergOQ01OQ02.lean:738",
       "DiGraph.removeEdgeSet: def KonigsbergOQ01OQ02.lean:781",
-      "remove_circuit_balanced: KonigsbergOQ01OQ02.lean:788 — removing circuit preserves balance (1 sorry in circuit-balance sub-lemma)"
+      "remove_circuit_balanced: KonigsbergOQ01OQ02.lean:788 — removing circuit preserves balance (1 sorry in circuit-balance sub-lemma)",
+      "maxTrail_used_eq: PROVED KonigsbergOQ01OQ02.lean:582 — E \\ maxTrailRem E v equals image of trail steps; strong induction on E.card with x=c vs x∈E.erase c case-split",
+      "maxTrail_last_exhausted: PROVED KonigsbergOQ01OQ02.lean:687 — every edge in E with source last_v appears as a trail step; strong induction with e=c (use step 0) vs e∈E.erase c (apply IH and shift index)"
     ],
     "insights": [
       "Handshaking proved by Finset.sum_comm: expand |{e: e.1=v}| as ∑_e [e.1=v], swap sums, get ∑_e 1 = |E|.",
@@ -58,7 +60,9 @@
       "maxTrail_closed proof strategy: balance contradiction. If last ≠ start: (1) maximality → all outgoing edges of last were used, (2) steps_distinct → each edge appears once, (3) open_walk_last_target_excess → tgt_count = src_count + 1, (4) tgt_count ≤ inDegree (injection), (5) balance: inDegree = outDegree. Contradiction: outDegree + 1 ≤ outDegree.",
       "maxTrailRem_last_no_out proved by Nat.strong_rec_on; the inductive step follows from the recursive structure of maxTrail.",
       "Circuit splicing is the remaining piece: take circuit from circuit_exists, find first vertex on the circuit that has remaining outgoing edges, splice the two circuits. This is the Hierholzer loop.",
-      "HasEulerianPath lacks ∃! unique coverage; adding it would enable euler_path_implies_degree_balance via walk bijection + open-walk counting."
+      "HasEulerianPath lacks ∃! unique coverage; adding it would enable euler_path_implies_degree_balance via walk bijection + open-walk counting.",
+      "maxTrail_used_eq proof: in recursive case, maxTrail E v = v::inner and maxTrailRem E v = maxTrailRem inner; trail steps decompose as {step 0 = c} ∪ {shifted inner steps}; c ∉ maxTrailRem follows from maxTrailRem_subset (c ∉ E.erase c). Both directions of ext-equality use the IH at E.erase c.",
+      "maxTrail_last_exhausted proof: outer last_v = inner last_v (since outer = v :: inner with inner nonempty); case split e = c (step 0 is c, so i = 0) vs e ∈ E.erase c (apply IH to inner trail, shift i → i+1). Base case (no outgoing edges from v): trail = [v], so e ∈ E with e.1 = v contradicts the empty filter."
     ],
     "mathlibGaps": [
       "No Mathlib gap for handshaking or necessity: all proved from scratch.",
@@ -66,10 +70,9 @@
       "HasEulerianPath needs ∃! unique coverage to support the walk-bijection necessity proof."
     ],
     "nextSteps": [
-      "Prove maxTrail_steps_in_E, maxTrail_steps_distinct, maxTrail_used_eq, maxTrail_last_exhausted — each ~30 lines of strong induction",
-      "Once inductive helpers are proved, only circuit-splicing remains for directed_eulerian_iff",
-      "Prove remove_circuit_balanced circuit-balance sub-lemma using closed_walk_balance",
-      "For directed_euler_path_iff: strengthen HasEulerianPath with ∃!, then apply open-walk counting lemmas"
+      "Prove remove_circuit_balanced (L953) circuit-balance sub-lemma: for each vertex v, deg-decrease = (#times C visits v as src) = (#times C visits v as tgt) by closed_walk_balance applied to C.walk; reduce inDegree/outDegree by Finset.card filter and use sdiff/filter distributivity.",
+      "Strengthen HasEulerianPath definition with ExistsUnique coverage, then apply open_walk_first_source_excess + open_walk_last_target_excess + closed_walk_balance to prove euler_path_implies_degree_balance (L1007)",
+      "Hierholzer circuit-splicing remains the last barrier for directed_eulerian_iff (sufficiency direction)"
     ]
   },
   "tags": [
@@ -92,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T07:32:10.536Z",
-  "lastUpdate": "2026-05-07T17:25:00.000Z",
+  "lastUpdate": "2026-05-07T22:05:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -121,11 +124,11 @@
     {
       "path": "Proofs/KonigsbergOQ01OQ02.lean",
       "filename": "KonigsbergOQ01OQ02.lean",
-      "lineCount": 958,
+      "lineCount": 1107,
       "theoremCount": 25,
       "axiomCount": 2,
       "defCount": 13,
-      "sorryCount": 4,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
     },
