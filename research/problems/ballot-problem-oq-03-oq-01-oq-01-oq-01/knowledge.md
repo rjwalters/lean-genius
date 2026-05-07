@@ -1,10 +1,96 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-05-02
-**Knowledge Items**: 39
+**Last Updated**: 2026-05-07
+**Knowledge Items**: 41
 
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-05-07 (Session 19) — Weight factorization + auxiliary `¬ColStrictSym` helpers
+
+**Mode**: REVISIT (RICH knowledge tier, score 95)
+**Outcome**: progress — adds the cornerstone weight identity for the
+corrected proof path (PR #14891), plus two auxiliary structural lemmas
+about `¬ColStrictSym`.
+
+### What I Did
+
+1. **Proved `weight_eq_total_multiset`** (the corrected path's foundation):
+   `wt(P) * wt(Q) = wt(P.1 + Q.1)`, a 2-line proof via `Multiset.map_add`
+   + `Multiset.prod_add`. This directly implements the weight
+   factorization insight from PR #14891 (S18): the polynomial sum
+   identity reduces to a counting identity per total-multiset fiber.
+
+2. **Proved `min_ab_pos_of_not_colStrict`** (auxiliary):
+   `¬ColStrictSym a b P Q → 0 < min a b`. Proof by contraposition:
+   if `min a b = 0` then `Fin 0` is empty, the `∀ j` in `ColStrictSym`
+   is vacuously true, contradicting the negation. ~6-line proof.
+
+3. **Proved `exists_first_violation_idx`** (auxiliary, ~80 lines):
+   For `¬ColStrictSym a b P Q`, there is a smallest `c : Fin (min a b)` with
+   `(Q.sort)[c] ≤ (P.sort)[c]`, and for every earlier `j.val < c.val`,
+   `(P.sort)[j] < (Q.sort)[j]` still holds. Proof: collect violation
+   indices into `V : Finset (Fin (min a b))` via filter, get nonemptiness
+   from negated `ColStrictSym`, take `V.min'`. Minimality from `Finset.min'_le`.
+
+   **Caveat documented in the docstring:** the natural "first violation →
+   insert" map on `(P, Q) ↔ (P', Q')` is non-injective for b ≥ 2 (S18
+   counterexample, PR #14891). This helper is retained as a pure
+   structural lemma about `¬ColStrictSym`, not as the primary bijection
+   tool. May be useful if a future fix restores the bijection approach
+   by adding disambiguating data (e.g. tracking `c` in the codomain).
+
+### Key Findings
+
+- **Weight identity is essentially trivial** (2-line proof): the heavy
+  lifting in the corrected proof path lives in the per-fiber counting
+  identity `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`
+  via the ballot principle.
+
+- **Existence of a canonical first-violation index is also cheap**
+  via `Finset.min'`. The expensive cost was bound-proof boilerplate
+  (~70 of the 80 lines). A future cleanup could extract `length_sort_eq`
+  as a top-level utility to dedupe these.
+
+- **PR #14891's diagnosis stands:** the bijection-via-first-violation
+  forward map collapses two preimages onto the same `(P', Q')`. Confirmed
+  by tracing the counterexample
+  `(P={1,3,4}, Q={0,2,3})` (first violation at j=0, transfer 0) and
+  `(P={0,1,4}, Q={2,3,3})` (first violation at j=2, transfer 3) — both
+  produce `(P'={0,1,3,4}, Q'={2,3})`. Adding back the seam index `c`
+  to the codomain (a Σ-bundle) would restore injectivity but inflate
+  the bijection target — counting via total multiset is cleaner.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (850 → ~990 lines)
+  - Added: `weight_eq_total_multiset` (proved, ~30 lines incl. docstring)
+  - Added: `min_ab_pos_of_not_colStrict` (proved, ~10 lines)
+  - Added: `exists_first_violation_idx` (proved, ~80 lines)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/{knowledge.md, state.md}`
+
+### Next Steps
+
+1. **Restructure `jdt_weight_sum` LHS by total multiset**:
+   - Use `weight_eq_total_multiset` to rewrite each summand as
+     `((P.1 + Q.1).map X).prod` (depends only on `M := P.1 + Q.1`).
+   - Reindex via `Fintype.sum_sigma` to fiber over `M : Sym n (a+b)`.
+
+2. **State and prove `ballot_counting_identity`**:
+   - For `M : Sym n (a+b)`, `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`.
+   - Implement as a `Fintype.card_congr` via an explicit ballot-bijection
+     between the two finite sets indexed by `M`.
+
+3. **Assemble** `jdt_weight_sum` b≥2: combine restructured LHS with
+   `ballot_counting_identity` + the inverse of the LHS restructuring on
+   the RHS. Should close the b≥2 sorry in ~50 additional lines once
+   `ballot_counting_identity` is available.
+
+4. **For `jacobi_trudi_ssyt_eq` k≥3**: RSK or algebraic LGV remain the
+   only paths, ~300 lines. Consider building
+   `BallotProblemOQ03AlgebraicLGV.lean` first as a separate companion.
 
 ---
 

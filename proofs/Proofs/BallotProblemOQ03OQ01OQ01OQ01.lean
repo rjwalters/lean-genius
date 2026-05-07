@@ -560,6 +560,42 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
       Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- **Weight factorization through the total multiset.**
+
+    The product weight of a pair `(P : Sym (Fin n) a, Q : Sym (Fin n) b)`
+    depends only on the total multiset `P.1 + Q.1`:
+
+        wt(P) * wt(Q) = wt(P.1 + Q.1)        (where wt := ((·).map X).prod)
+
+    This is the cornerstone of the corrected proof strategy for the b≥2
+    branch of `jdt_weight_sum` identified in Session 18 (PR #14891). The
+    weight identity reduces the polynomial sum to a per-fiber **counting
+    identity** indexed by the total multiset:
+
+        ∑_{(P,Q) : ¬ColStrictSym a b}      wt(P) * wt(Q)
+          = ∑_{M : Sym n (a+b)} (#{non-cs (a,b) splits of M}) * wt(M)
+
+        ∑_{(P', Q') : (a+1, b-1)}          wt(P') * wt(Q')
+          = ∑_{M : Sym n (a+b)} (#{all (a+1, b-1) splits of M}) * wt(M)
+
+    So `jdt_weight_sum` (b ≥ 2) reduces to: for every `M : Sym n (a+b)`,
+        `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`.
+    The cardinality identity is provable by the ballot bijection
+    (~100-150 lines, standard finite-type combinatorics). No ring-valued
+    LGV is needed.
+
+    **Note:** Session 18 (PR #14891) showed that the naive "insert
+    violation element" forward map on (P, Q) ↔ (P', Q') is *non-injective*
+    for b ≥ 2; the counterexample `(P={1,3,4}, Q={0,2,3})` and
+    `(P={0,1,4}, Q={2,3,3})` both map to `(P'={0,1,3,4}, Q'={2,3})`. The
+    weight-factorization-then-count approach circumvents this. -/
+private lemma weight_eq_total_multiset (n a b : ℕ)
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((P.1 + Q.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [Multiset.map_add, Multiset.prod_add]
+
 /-- **Positivity helper for `¬ColStrictSym`.**
 
     If `¬ColStrictSym a b P Q` holds, then `min a b ≥ 1`. (Otherwise the
@@ -583,15 +619,19 @@ private lemma min_ab_pos_of_not_colStrict {n a b : ℕ}
     `(Q.sort)[c] ≤ (P.sort)[c]`, and for every earlier `j` with `j.val < c.val`,
     the strict inequality `(P.sort)[j] < (Q.sort)[j]` holds.
 
-    This is the "seam" index of the JDT bijection: the element `Q.sort[c]`
-    is what the forward map transfers from `Q` to `P`, and the minimality
-    clause is precisely what makes the inverse seam-search algorithm
-    well-defined.
+    **Use:** auxiliary structural lemma about `¬ColStrictSym` (existence of a
+    canonical witness via `Finset.min'`).
 
-    **Use:** infrastructure for the `b ≥ 2` branch of `jdt_weight_sum`.
-    The forward bijection map sends `(P, Q, ¬col-strict)` to
-    `(Sym.cons (Q.sort[c]) P, Sym.erase Q (Q.sort[c]) hmem)`; the inverse
-    uses the same minimality clause to recover `c` from `(P', Q')`. -/
+    **Important caveat (PR #14891, Session 18):** the natural "first violation
+    index → insert-violation-element" forward map on `(P, Q) ↔ (P', Q')` is
+    NON-INJECTIVE for `b ≥ 2`. The corrected proof path (see
+    `weight_eq_total_multiset` above) avoids this map entirely, factoring the
+    weight through the total multiset and reducing to a counting identity.
+
+    This helper is therefore retained as a pure existence lemma about
+    `¬ColStrictSym` (potentially useful if a future fix restores the
+    bijection approach by adding disambiguating data, e.g. tracking `c`
+    explicitly in the codomain), not as the active primary tool. -/
 private lemma exists_first_violation_idx {n a b : ℕ}
     (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
     ∃ c : Fin (min a b),
