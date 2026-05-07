@@ -381,6 +381,24 @@ private lemma jdt_weight_preserved (n a b : ℕ)
   conv_rhs => rw [hQ, Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- **Weight factorization through total multiset.**
+    For `P : Sym (Fin n) a` and `Q : Sym (Fin n) b`, the product of pair-weights
+    equals the weight of their multiset union `P.1 + Q.1 : Multiset (Fin n)`:
+      `prod(P.1.map X) * prod(Q.1.map X) = prod((P.1 + Q.1).map X)`.
+
+    **Use:** the b ≥ 2 branch of `jdt_weight_sum` regroups the LHS sum
+    by total multiset `M = P + Q : Sym (Fin n) (a + b)` (each `M` appearing
+    once per non-col-strict split). The RHS regroups similarly by `M = P' + Q'`
+    for `(P', Q') : Sym(a+1) × Sym(b-1)`. After applying this lemma both sides
+    become `∑_M (count of M-splits) * (M.1.map X).prod`, reducing the
+    polynomial identity to the **ballot counting identity** on split counts. -/
+private lemma weight_eq_total_multiset {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((P.1 + Q.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [Multiset.map_add, Multiset.prod_add]
+
 /-- For `Q : Sym (Fin n) 1`, the underlying multiset is the singleton `{q}` where `q` is the
     unique element of `Q`. We extract `q` and the equation `Q.1.sort = [q]` simultaneously. -/
 private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
@@ -717,23 +735,33 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- After subst, hba : 1 ≤ a, and the RHS is hsymm (a+1) * hsymm (1 - 1)
       -- which is hsymm (a+1) * hsymm 0 by rfl on Nat subtraction.
       exact jdt_weight_sum_b_one n a hba
-    · -- b ≥ 2: the general JDT seam bijection (still sorry)
+    · -- b ≥ 2: weight factorization + ballot counting identity
       rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
-      -- Need: weight-preserving bijection
-      --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
-      -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
-      --   then P' = Sym.cons v P, Q' = Sym.erase Q v (need v ∈ Q.1)
-      -- Inverse map: find the "seam" element in P'.sort to move back to Q'
-      -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
+      -- **S18 diagnosis:** the naive insert-violation bijection used at b=1
+      -- (move `Q.sort[c]` into `P` at position c) is **non-injective for b ≥ 2**:
+      -- two distinct non-col-strict (P,Q) pairs can produce the same (P',Q') because
+      -- the seam index c is not recoverable from (P',Q') without extra data.
       --
-      -- For b ≥ 2, the bijection generalizes: insert Q.sort[c] into P at position c,
-      -- where c is the first violation index. The inverse map is the JDT seam
-      -- algorithm (find c such that P'.sort[c] came from Q's c-th violation column).
-      -- This is genuinely intricate; ~150-200 lines of focused Lean work.
+      -- **S19 strategy** (current): factor weights through the total multiset
+      -- `M : Sym (Fin n) (a + b)`, then apply a ballot counting identity on splits.
       --
-      -- The b = 1 base case (above) demonstrates the construction with q = Q.sort[0]
-      -- and the inverse via head-of-sort. Generalizing requires tracking the
-      -- "seam index" c through the bijection invariants.
+      -- Step (i)  weight factorization: by `weight_eq_total_multiset` (above),
+      --             prod(P)*prod(Q) = prod(P+Q) and prod(P')*prod(Q') = prod(P'+Q').
+      -- Step (ii) regroup both sides by total multiset M = P+Q = P'+Q' : Sym n (a+b)
+      --             (using `Finset.sum_sigma`/`Fintype.sum_equiv` to fiber the sums).
+      -- Step (iii) ballot counting identity (per multiset M):
+      --              #{(P,Q) // ¬ColStrictSym a b ∧ P+Q = M.1}
+      --              = #{(P',Q') // P'.1 + Q'.1 = M.1, |P'|=a+1, |Q'|=b-1}
+      --            For M with all distinct elements, both counts equal C(a+b, a+1)
+      --            by the classical ballot/cycle lemma; the multiplicity case
+      --            generalizes via the same reflection-style argument.
+      -- Step (iv) combine: ∑_M [count] * prod(M) = ∑_M [count] * prod(M)
+      --             since the counts agree per M.
+      --
+      -- The b = 1 case has `b - 1 = 0`, hence a unique `Q' = ∅`, so step (iii)
+      -- collapses to **unique-existence per M** — that's why b=1 admits a direct
+      -- bijection (cf. `jdt_weight_sum_b_one` and the Aristotle companion).
+      -- Estimated remaining work: ~150-200 lines, dominated by step (iii).
       sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
