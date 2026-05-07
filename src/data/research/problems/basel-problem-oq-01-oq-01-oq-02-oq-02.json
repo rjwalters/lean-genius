@@ -1,7 +1,7 @@
 {
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-02",
   "title": "Apéry denominator_control: lcm(1,…,n)³·aₙ ∈ ℤ for the Apéry a-sequence",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -26,33 +26,40 @@
     "goal": "Replace `axiom denominator_control` with a `theorem denominator_control` (or `lemma`), or prove it in a companion file `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` that re-exports the result, eliminating one of the 5 Apéry axioms."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T20:10:00.000Z",
-    "iteration": 1,
-    "focus": "Survey the explicit a-sequence formula and identify the denominator-clearing lemma chain.",
+    "phase": "ORIENT",
+    "since": "2026-05-07T22:40:00.000Z",
+    "iteration": 2,
+    "focus": "Build the cubed-divisibility infrastructure and refine the proof strategy after discovering that naive recurrence-induction fails (cancellation needed).",
     "blockers": [
+      "Naive recurrence-induction does NOT close: in the step-up from index n to n+2, the integrality of `lcmRange (n+2)^3 · aperyA (n+2)` is established only via cancellation between the two recurrence summands, not term-wise (verified by direct computation at n=2). Closing the induction requires either (P) a strengthened invariant tracking numerators of aₙ modulo (n+2)^3, or (F) the van der Poorten closed form bypassing the cancellation problem.",
       "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo.",
       "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'."
     ],
-    "nextAction": "Session 2: Prove `aperyA_explicit_formula` — the van der Poorten / Apéry closed form `aₙ = ∑_{k=0}^{n} C(n,k)² C(n+k,k)² · (Hₙ⁽³⁾ + ∑_{m=1}^{k} (-1)^{m-1}/(2m³ C(n,m) C(n+m,m)))`, where Hₙ⁽³⁾ = ∑_{j=1}^{n} 1/j³. This makes the denominator analysis tractable.",
+    "nextAction": "Session 3: Decide between strategy (P) [recurrence + strengthened mod-(n+2)^3 invariant] and (F) [van der Poorten closed form]. (F) is the path of least resistance because each summand of the closed form has a manifestly lcm³-friendly denominator, sidestepping the cancellation problem. Estimated ~400-500 lines of Lean for (F).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 1 (2026-05-07, OBSERVE): Title was truncated 'Prove denominator_control: lcm(1,'; replaced with full descriptive title. Surveyed BaselProblemOQ01OQ01OQ02.lean — denominator_control is at line 385, declared as `axiom`. The weaker `denominator_control_factorial` (factorial cubes clear) is already PROVED, establishing the structural technique. Identified the missing piece: the explicit closed-form for aₙ (van der Poorten 1979, also Apéry 1979). Documented: classical formula uses two summations over `n!`/`k!`/`(n-k)!` ratios + harmonic sums, where each rational denominator divides lcm³.",
-    "builtItems": [],
+    "progressSummary": "Session 2 (2026-05-07, ORIENT): Built `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` with 4 reusable infrastructure lemmas (`dvd_lcmRange`, `pow_dvd_lcmRange_pow`, `cube_dvd_lcmRange_cube`, `succ_cube_dvd_lcmRange_succ_cube`) plus 6 numerical witnesses for `lcmRange n` at n=0..5. CRUCIAL CORRECTION to session 1's strategy claim: naive recurrence-induction does NOT line-by-line port from `denominator_control_factorial`. Direct calculation at n=2→n=4 shows that `(L/l)³·c·A` and `(L/m)³·(n+1)³·B` separately leave the SAME nonzero residue (48) modulo (n+2)³=64; integrality of the difference requires CANCELLATION, not term-wise divisibility. The factorial proof works only because `(n+2)! = (n+2)·(n+1)!` is exact multiplicative; lcm has no analogous factorisation (e.g. `lcm(1..4)=12 ≠ 4·lcm(1..3)=24`). Recommended path forward: van der Poorten closed-form route (F).",
+    "builtItems": [
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: dvd_lcmRange (k>0, k≤n → k∣lcmRange n) — basic membership divisibility",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: pow_dvd_lcmRange_pow (k>0, k≤n → k^p ∣ (lcmRange n)^p) — the cubed divisibility ingredient any inductive proof of denominator_control needs",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: cube_dvd_lcmRange_cube (specialization to p=3)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: succ_cube_dvd_lcmRange_succ_cube ((n+1)^3 ∣ (lcmRange (n+1))^3) — the recurrence-step shape",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: lcmRange_zero/one/two/three/four/five numerical witnesses (1, 1, 2, 6, 12, 60)"
+    ],
     "insights": [
-      "BaselProblemOQ01OQ01OQ02.lean already has `denominator_control_factorial : ∃ m : ℤ, (n.factorial : ℚ)^3 * aperyA n = m` PROVED (Part XIX). This is the weaker bound but uses the SAME proof structure — induct on the recurrence, show each step preserves integrality after multiplying by the new factorial cube. The key step `aperyA_factorial_step` (line 869) is a closed-form recurrence on `n!^3 · aₙ` that lets the induction go through. denominator_control is exactly the same induction with `lcm^3` instead of `n!^3`, but requires showing `n³ ∣ lcm(1,…,n)^3 · lcm(1,…,n-1)^3` style divisibility (which holds because lcm contains every k from 1 to n).",
-      "The classical explicit formula (van der Poorten 1979, eq. (8); Apéry 1979): aₙ = ∑_{k=0}^{n} C(n,k)² C(n+k,k)² · cₙₖ, where cₙₖ = ∑_{m=1}^{n} 1/m³ + ∑_{m=1}^{k} (-1)^{m-1}/(2 m³ C(n,m) C(n+m,m)). Each term cₙₖ has a denominator dividing lcm(1,…,n)³ (the first sum directly, the second via the shifted lcm bound).",
-      "Alternative: recurrence-based induction. (n+2)³ · aₙ₊₂ = aperyRecCoeff(n+1) · aₙ₊₁ - (n+1)³ · aₙ. If we know lcm(1..n+1)³ · aₙ₊₁ ∈ ℤ and lcm(1..n)³ · aₙ ∈ ℤ, multiply both sides by lcm(1..n+2)³/(n+2)³. Since (n+2) divides lcm(1..n+2), the cube divides lcm(1..n+2)³, so the multiplier is integral. Then the RHS becomes integers. This is structurally the same as the factorial proof with lcm in place of n!, exploiting that {1,…,n} ⊆ {divisors of lcmUpTo n}.",
-      "Mathlib `Mathlib.Data.Nat.GCD.Basic` has `Nat.lcm` and `Finset.lcm`. The needed divisibility lemma `(k : ℕ) ∈ Finset.range n → (k+1) ∣ Finset.lcm (Finset.range n) (· + 1)` follows from `Finset.dvd_lcm`.",
-      "Mathlib lacks an `lcm_pow_dvd` style lemma for the cubed version `k^3 ∣ lcm(1,…,n)^3` from `k ≤ n`. Trivial corollary of `dvd_pow` once basic divisibility is established.",
-      "Strategy comparison: (A) recurrence-induction is cleaner and ports the existing `denominator_control_factorial` proof line-by-line, replacing `Nat.factorial` with `lcmUpTo` and using the divisibility lemma above. Estimated ~150-200 lines. (B) explicit-formula route requires ~400-500 lines but produces the closed form as a bonus, useful for downstream proofs (especially `apery_linearForm_decay`). Recommend (A) for this slug; (B) is a separate slug.",
-      "The recurrence induction step requires showing (n+2)³ · X ∈ ℤ ∧ (n+1)³ · X ∈ ℤ ⟹ X · lcm(1..n+2)³/(n+2)³ ∈ ℤ when X already has lcm(1..n+1)³ · X ∈ ℤ. The arithmetic is: lcm(1..n+2)³ = (lcm(1..n+1) ∨ (n+2))³ where ∨ = lcm. Use Mathlib's lcm-distributivity and dvd_pow.",
-      "Watch out: `lcmUpTo n = (Finset.range n).lcm (· + 1)` so lcmUpTo n covers integers 1 through n (not 0 through n-1). The defining equation `lcmUpTo_dvd_of_le` (already proved) gives lcm(1..n) ∣ lcm(1..m) for n ≤ m. This is the workhorse for the induction step."
+      "BaselProblemOQ01OQ01OQ02.lean already has `denominator_control_factorial : ∃ m : ℤ, (n.factorial : ℚ)^3 * aperyA n = m` PROVED (Part XIX). The factorial proof works because `(n+2)! = (n+2)·(n+1)!` is EXACT multiplicative — multiplying through the recurrence by `(n+1)!^3` produces `(n+2)!^3` on the LHS with no leftover (n+2)^3 to absorb. lcm has no analogous factorisation: lcm(1..n+2) ≠ (n+2)·lcm(1..n+1) in general (e.g. lcm(1..4)=12 ≠ 4·6=24).",
+      "GAP ANALYSIS — naive recurrence-induction at n=2→n=4 (correcting session 1's strategy claim): With L=lcmRange 4=12, l=lcmRange 3=6, m=lcmRange 2=2, the recurrence rearranges to `L^3·aₙ₊₂·(n+2)^3 = (L/l)^3·c·A - (L/m)^3·(n+1)^3·B` where A=l^3·aₙ₊₁=375186, B=m^3·aₙ=702, c=aperyRecCoeff(n+1)=1463. Each summand has residue 48 mod (n+2)^3=64; the DIFFERENCE has residue 0. So term-wise (n+2)^3-divisibility fails; only the cancellation closes integrality. Any direct induction must therefore track numerators modulo (n+2)^3 — a strengthened invariant.",
+      "RECOMMENDED: van der Poorten closed-form route (F). aₙ = ∑_{k=0}^{n} C(n,k)² C(n+k,k)² · cₙₖ where cₙₖ = ∑_{m=1}^{n} 1/m³ + ∑_{m=1}^{k} (-1)^{m-1}/(2 m³ C(n,m) C(n+m,m)). Each term has a denominator that DOES divide lcm(1..n)³ pointwise: for the first sum, m³ ∣ lcmRange(n)³ via pow_dvd_lcmRange_pow with k=m, p=3; for the second, the binomial denominators C(n,m), C(n+m,m) admit the classical telescoping identity that lcmRange n³ kills. ~400-500 lines of Lean.",
+      "Alternative (P): strengthened recurrence-induction. Track aₙ = pₙ/Dₙ³ in lowest terms where Dₙ ∣ lcmRange n. Build a P-adic invariant: for each prime p ≤ n+2, vₚ(numerator of aₙ₊₂·lcmRange(n+2)^3) ≥ 0. Requires proving that for each prime p with p^e = n+2, vₚ((c·A·(L/l)^3 - (n+1)^3·B·(L/m)^3) / p^{3e}) ≥ 0 — a non-trivial p-adic analysis per prime. Not recommended; (F) is cleaner.",
+      "Mathlib `Mathlib.Data.Nat.GCD.Basic` has `Nat.lcm` and `Finset.lcm`. The basic divisibility `(k+1) ∣ Finset.lcm (Finset.range n) (· + 1)` follows from `Finset.dvd_lcm` and is now packaged in OQ-02-OQ-02 as `dvd_lcmRange`.",
+      "The cubed divisibility `k^p ∣ (lcmRange n)^p` is now AVAILABLE as `pow_dvd_lcmRange_pow` in OQ-02-OQ-02. It packages `dvd_lcmRange` + `pow_dvd_pow_of_dvd`. Reusable across both strategy (P) and (F).",
+      "Sibling file Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean already provides `lcmRange_succ` (lcmRange (n+1) = Nat.lcm (lcmRange n) (n+1)), `lcmRange_dvd_lcmRange_of_le`, `lcmRange_monotone`, `lcmRange_dvd_factorial`. These cover the BasicNat-arithmetic side; OQ-02 file adds the powered version specifically needed for denominator analysis.",
+      "Watch out: `lcmUpTo n = (Finset.range n).lcm (· + 1)` so lcmUpTo n covers integers 1 through n (not 0 through n-1). lcmUpTo 0 = 1 (lcm of empty set). The defining equation `lcmUpTo_dvd_of_le` (already proved in parent) gives lcm(1..n) ∣ lcm(1..m) for n ≤ m."
     ],
     "mathlibGaps": [
       "No Apéry numbers in Mathlib (aperyA, aperyB are gallery-local).",
@@ -60,11 +67,11 @@
       "No `Nat.lcm_range` simp lemma giving `lcm({1,…,n}) = ⋁_{k≤n} k` form."
     ],
     "nextSteps": [
-      "Session 2 (port factorial proof to lcm): Open `Proofs/BaselProblemOQ01OQ01OQ02.lean`, study `denominator_control_factorial` (Part XIX) and `aperyA_factorial_step` (line 869). Port to a new theorem `denominator_control_lcm` using `lcmUpTo` instead of `Nat.factorial`. Companion file: `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` with proper Aristotle-friendly structure.",
-      "Session 3 (divisibility helpers): Prove `lcmUpTo_self_pow_dvd : ∀ k ≤ n, k^p ∣ (lcmUpTo n)^p` and `aperyA_lcm_step : (lcmUpTo (n+2))^3 * aperyA (n+2) = ... ∈ ℤ-friendly form`. Estimated ~80 lines.",
-      "Session 4 (induction): Prove `denominator_control` by induction on n using the lcm step lemma. Estimated ~50 lines.",
-      "Session 5 (axiom elimination): Replace `axiom denominator_control` with `theorem denominator_control` (or import from companion file). Update meta.json axiomCount, status, and gallery integration.",
-      "Optional Session 6 (Mathlib contribution): If `lcmUpTo_self_pow_dvd` is clean and general, draft a Mathlib PR — `Nat.lcm_pow_dvd_lcm_pow_of_le` or similar."
+      "Session 3 (commit to closed-form strategy F): State `aperyA_explicit_formula` as a theorem in `BaselProblemOQ01OQ01OQ02OQ02.lean` (sorried). Prove the formula at small n by `native_decide` to validate the recurrence-equivalence base case. Port the binomial telescoping identity for the second summand. Estimated ~150 lines for skeleton + induction setup; ~250-350 lines for full proof.",
+      "Session 4 (per-summand denominator bound): Prove `denominator_summand_dvd_lcm_pow : ∀ n k, ∃ m : ℤ, lcmRange n^3 · (k-th summand of aperyA n) = m`. Each summand reduces to (i) `lcmRange n^3 / m^3 ∈ ℤ` for the first inner sum (use `pow_dvd_lcmRange_pow`), and (ii) the binomial-coefficient analysis for the second.",
+      "Session 5 (assembly): Combine via `Finset.sum_div` and `Finset.sum_int_cast` to deduce `∃ m : ℤ, lcmRange n^3 · aperyA n = m`. Eliminate the parent's `axiom denominator_control` by importing the result.",
+      "Session 6 (axiom count update): Update meta.json axiomCount 5→4, status remains axiomatized (4 axioms remain: aperyB_recurrence, lcm_hanson_bound, apery_linearForm_decay, apery_linearForm_nonzero). Update gallery integration.",
+      "Optional Session 7 (Mathlib contribution): If `pow_dvd_lcmRange_pow` is judged clean and general, draft a Mathlib PR — `Finset.lcm_pow_dvd_pow_of_mem` or similar. Currently only OQ-02 and OQ-03 in this gallery use this lemma; broader applicability uncertain."
     ]
   },
   "tags": [
@@ -107,7 +114,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-07T20:10:00.000Z",
+  "lastUpdate": "2026-05-07T22:40:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
