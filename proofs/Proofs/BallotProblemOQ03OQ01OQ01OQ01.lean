@@ -560,6 +560,98 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
       Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- **Positivity helper for `¬ColStrictSym`.**
+
+    If `¬ColStrictSym a b P Q` holds, then `min a b ≥ 1`. (Otherwise the
+    universal quantifier in `ColStrictSym` ranges over the empty type
+    `Fin 0`, making the condition vacuously true and contradicting the
+    negation.) Used by the JDT seam bijection to access `(P.sort)[0]`,
+    `(Q.sort)[0]` legitimately when computing the first violation index. -/
+private lemma min_ab_pos_of_not_colStrict {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
+    0 < min a b := by
+  by_contra hle
+  push_neg at hle
+  apply h
+  intro j
+  exact absurd j.isLt (by omega)
+
+/-- **First violation index for `¬ColStrictSym`.**
+
+    For `¬ColStrictSym a b P Q`, there exists a smallest column index
+    `c : Fin (min a b)` at which the col-strict comparison fails:
+    `(Q.sort)[c] ≤ (P.sort)[c]`, and for every earlier `j` with `j.val < c.val`,
+    the strict inequality `(P.sort)[j] < (Q.sort)[j]` holds.
+
+    This is the "seam" index of the JDT bijection: the element `Q.sort[c]`
+    is what the forward map transfers from `Q` to `P`, and the minimality
+    clause is precisely what makes the inverse seam-search algorithm
+    well-defined.
+
+    **Use:** infrastructure for the `b ≥ 2` branch of `jdt_weight_sum`.
+    The forward bijection map sends `(P, Q, ¬col-strict)` to
+    `(Sym.cons (Q.sort[c]) P, Sym.erase Q (Q.sort[c]) hmem)`; the inverse
+    uses the same minimality clause to recover `c` from `(P', Q')`. -/
+private lemma exists_first_violation_idx {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
+    ∃ c : Fin (min a b),
+      (Q.1.sort (· ≤ ·))[c.val]'(by
+          have hj : c.val < min a b := c.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega) ≤
+      (P.1.sort (· ≤ ·))[c.val]'(by
+          have hj : c.val < min a b := c.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) ∧
+      ∀ j : Fin (min a b), j.val < c.val →
+        (P.1.sort (· ≤ ·))[j.val]'(by
+            have hj : j.val < min a b := j.isLt
+            have hlen : (P.1.sort (· ≤ ·)).length = a :=
+              (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+            omega) <
+        (Q.1.sort (· ≤ ·))[j.val]'(by
+            have hj : j.val < min a b := j.isLt
+            have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+              (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+            omega) := by
+  -- Collect violation indices.
+  set V : Finset (Fin (min a b)) := Finset.univ.filter (fun j =>
+    ¬ ((P.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) <
+       (Q.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega))) with hVdef
+  -- V is nonempty: the negated ColStrictSym condition supplies a witness.
+  have hVnonempty : V.Nonempty := by
+    unfold ColStrictSym at h
+    push_neg at h
+    obtain ⟨j, hj⟩ := h
+    refine ⟨j, ?_⟩
+    rw [hVdef, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _, hj⟩
+  -- c := min' V is the first violation index.
+  refine ⟨V.min' hVnonempty, ?_, ?_⟩
+  · -- (Q.sort)[c] ≤ (P.sort)[c]: c is a violation index.
+    have hc_mem := V.min'_mem hVnonempty
+    rw [hVdef, Finset.mem_filter] at hc_mem
+    exact not_lt.mp hc_mem.2
+  · -- For every earlier j, the strict col-comparison still holds.
+    intro j hjlt
+    by_contra hcontra
+    have hjV : j ∈ V := by
+      rw [hVdef, Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, hcontra⟩
+    have hcle : V.min' hVnonempty ≤ j := V.min'_le j hjV
+    have hcle_val : (V.min' hVnonempty).val ≤ j.val := hcle
+    omega
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
