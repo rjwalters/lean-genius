@@ -232,7 +232,7 @@
       "auditCount": 2,
       "issues": [],
       "lastAudited": "2026-05-03T20:24:34Z",
-      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open — marked clean",
+      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open \u2014 marked clean",
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-03": {
@@ -484,7 +484,7 @@
     "area-of-circle-oq-05": {
       "auditCount": 3,
       "issues": [
-        "sorries 1→0, status formalized→verified, badge wip→mathlib (sorry was completed)"
+        "sorries 1\u21920, status formalized\u2192verified, badge wip\u2192mathlib (sorry was completed)"
       ],
       "lastAudited": "2026-04-26T15:26:52Z",
       "result": "clean"
@@ -1902,7 +1902,7 @@
     "central-limit-theorem-oq-01-oq-02-oq-01": {
       "auditCount": 2,
       "issues": [
-        "lineCount 98→112, theoremCount 7→8 (enricher used stale counts)"
+        "lineCount 98\u2192112, theoremCount 7\u21928 (enricher used stale counts)"
       ],
       "lastAudited": "2026-05-04T04:08:08Z",
       "result": "clean"
@@ -2186,7 +2186,7 @@
     "cramers-rule-oq-01-oq-03": {
       "auditCount": 4,
       "issues": [
-        "cramer_ops_{1,2,3,4} prove arithmetically false equalities (1=2, 11=5, 71=53, 479=475); status verified/original suspect — file likely fails to compile but build-safe-subset masks failures. Issue #15032."
+        "cramer_ops_{1,2,3,4} prove arithmetically false equalities (1=2, 11=5, 71=53, 479=475); status verified/original suspect \u2014 file likely fails to compile but build-safe-subset masks failures. Issue #15032."
       ],
       "lastAudited": "2026-05-03T02:50:00Z",
       "result": "issues-fixed"
@@ -2415,7 +2415,7 @@
     "descartes-rule-of-signs-oq-02": {
       "auditCount": 5,
       "issues": [
-        "PR #6448: sorries 2→0, lineCount 552→698"
+        "PR #6448: sorries 2\u21920, lineCount 552\u2192698"
       ],
       "lastAudited": "2026-05-04T04:04:48Z",
       "result": "clean"
@@ -3048,7 +3048,7 @@
       "issues": [],
       "lastAudited": "2026-05-03T02:20:45Z",
       "result": "issues-fixed",
-      "notes": "PR #15021: stale sorry/lineCount after #14937 (top.sorries 4→3, leanFile.sorries 4→3, lineCount 279→287, narrative 5→3)"
+      "notes": "PR #15021: stale sorry/lineCount after #14937 (top.sorries 4\u21923, leanFile.sorries 4\u21923, lineCount 279\u2192287, narrative 5\u21923)"
     },
     "erdos-1019": {
       "agentId": "auditor-cycle-20-batch",
@@ -3793,7 +3793,7 @@
       "lastAudited": "2026-05-02T14:05:00Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom-axiom narrative: 5 \"Axiom (van Doorn-Tao 2025)\" docstrings but only 1 axiom declared (propertyQ_achievable). Section line ranges drifted (main-axioms 93–130 → actual 93–115; special-sequences 154–154 → actual 140–153). originalContributions/proofStrategy overclaim plural axiomatization. Issue #14809."
+        "Phantom-axiom narrative: 5 \"Axiom (van Doorn-Tao 2025)\" docstrings but only 1 axiom declared (propertyQ_achievable). Section line ranges drifted (main-axioms 93\u2013130 \u2192 actual 93\u2013115; special-sequences 154\u2013154 \u2192 actual 140\u2013153). originalContributions/proofStrategy overclaim plural axiomatization. Issue #14809."
       ]
     },
     "erdos-1103": {
@@ -3802,7 +3802,7 @@
       "lastAudited": "2026-05-02T14:07:56Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom-axiom narrative: proofStrategy/sections claim 3 axioms (van Doorn–Tao upper/lower + Konyagin) but only vanDoorn_tao_upper exists; basic-properties says \"Axiomatizes the singleton characterization\" but it is a proved theorem; orphaned docstrings at lines 70-71 and 72-73; section line drift — basic-properties ends at 92 but file has 162 lines (squarefreeSumset_pair, subexp_eventually_lt_exp, erdos_1103_false uncovered). Issue #14812."
+        "Phantom-axiom narrative: proofStrategy/sections claim 3 axioms (van Doorn\u2013Tao upper/lower + Konyagin) but only vanDoorn_tao_upper exists; basic-properties says \"Axiomatizes the singleton characterization\" but it is a proved theorem; orphaned docstrings at lines 70-71 and 72-73; section line drift \u2014 basic-properties ends at 92 but file has 162 lines (squarefreeSumset_pair, subexp_eventually_lt_exp, erdos_1103_false uncovered). Issue #14812."
       ]
     },
     "erdos-1104": {
@@ -3867,7 +3867,7 @@
       "auditCount": 3,
       "lastAudited": "2026-05-02T13:55:59Z",
       "result": "issues-fixed",
-      "notes": "Issue #14804 — phantom-axiom narrative: proofStrategy/sections claim axioms for Reduction-to-t<=c, general c=3 bound, Ramsey/chi-boundedness; only orphan docstrings exist (numerical counts correct)",
+      "notes": "Issue #14804 \u2014 phantom-axiom narrative: proofStrategy/sections claim axioms for Reduction-to-t<=c, general c=3 bound, Ramsey/chi-boundedness; only orphan docstrings exist (numerical counts correct)",
       "issues": []
     },
     "erdos-1112": {
@@ -3876,9 +3876,9 @@
       "lastAudited": "2026-05-02T13:51:20Z",
       "result": "issues-fixed",
       "issues": [
-        "sections[6] (tang-yang-2021) claims a tang_yang_2021 axiom that is not declared in the Lean file (only a docstring); mathContext also writes 'k ≠ 3' instead of 'k ≥ 3'"
+        "sections[6] (tang-yang-2021) claims a tang_yang_2021 axiom that is not declared in the Lean file (only a docstring); mathContext also writes 'k \u2260 3' instead of 'k \u2265 3'"
       ],
-      "notes": "Issue #14800 — phantom tang_yang_2021 axiom in sections; meta.axiomCount=5 is correct (5 actual axioms: erdos_graham_1980, twofold_eq_kfold, threefold_eq_kfold, bhj_r_lacunary, chen_r2_bound)"
+      "notes": "Issue #14800 \u2014 phantom tang_yang_2021 axiom in sections; meta.axiomCount=5 is correct (5 actual axioms: erdos_graham_1980, twofold_eq_kfold, threefold_eq_kfold, bhj_r_lacunary, chen_r2_bound)"
     },
     "erdos-1113": {
       "auditCount": 4,
@@ -3933,7 +3933,7 @@
       ],
       "lastAudited": "2026-05-02T12:32:07Z",
       "result": "issues-fixed",
-      "notes": "Issue #14777 — phantom axioms in narrative + section line drift; meta.axiomCount=3 (correct)"
+      "notes": "Issue #14777 \u2014 phantom axioms in narrative + section line drift; meta.axiomCount=3 (correct)"
     },
     "erdos-112": {
       "auditCount": 4,
@@ -3967,17 +3967,17 @@
       ],
       "lastAudited": "2026-05-02T12:55:29Z",
       "result": "issues-fixed",
-      "notes": "Issue #14781 — phantom axioms (erdos_1122, omega_*) in narrative; meta.axiomCount=3 is correct"
+      "notes": "Issue #14781 \u2014 phantom axioms (erdos_1122, omega_*) in narrative; meta.axiomCount=3 is correct"
     },
     "erdos-1123": {
       "auditCount": 3,
       "issues": [
-        "proofStrategy claims 'axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence' — neither is axiomatized (only docstring placeholders)",
+        "proofStrategy claims 'axiomatizes the Just-Krawczyk conditional isomorphism and ZFC independence' \u2014 neither is axiomatized (only docstring placeholders)",
         "section line drift: just-krawczyk (80-97 vs actual 80-88), ideal-properties (98-110 vs actual 89-94); Part V Summary missing from sections array"
       ],
       "lastAudited": "2026-05-02T13:17:48Z",
       "result": "issues-fixed",
-      "notes": "Issue #14783 — proofStrategy overstates axiomatization; meta.axiomCount=2 is correct"
+      "notes": "Issue #14783 \u2014 proofStrategy overstates axiomatization; meta.axiomCount=2 is correct"
     },
     "erdos-1124": {
       "auditCount": 3,
@@ -4014,7 +4014,7 @@
     "erdos-1127": {
       "auditCount": 3,
       "issues": [
-        "#14765: phantom 'Statement of Erdős-Hajnal necessity result' contribution + false 'former axioms now proved as theorems or definitions' claim (none of the named identifiers exist) + section line drift starting at davies-theorem (Parts VIII/IX missing entirely)"
+        "#14765: phantom 'Statement of Erd\u0151s-Hajnal necessity result' contribution + false 'former axioms now proved as theorems or definitions' claim (none of the named identifiers exist) + section line drift starting at davies-theorem (Parts VIII/IX missing entirely)"
       ],
       "lastAudited": "2026-05-02T12:11:47Z",
       "result": "issues-fixed"
@@ -4395,7 +4395,7 @@
       "lastAudited": "2026-05-02T11:17:28Z",
       "result": "issues-fixed",
       "issues": [
-        "#14741: phantom axiom claims for Mycielski / finite case / Erdős 1959 in proofStrategy + sections (only docstrings; no declarations)"
+        "#14741: phantom axiom claims for Mycielski / finite case / Erd\u0151s 1959 in proofStrategy + sections (only docstrings; no declarations)"
       ]
     },
     "erdos-1176": {
@@ -4421,7 +4421,7 @@
       "auditCount": 4,
       "lastAudited": "2026-05-02T10:47:13Z",
       "result": "issues-fixed",
-      "notes": "#14732: phantom axioms (erdos_renyi_upper, gEps_mono not declared; main_asymptotic now theorem main_asymptotic_derived; trivial_lower_bound→basic_lower_bound) in originalContributions/sections; section line drift (sections cover 1-178 of 316-line file; Parts IX, X missing); proofStrategy says 179-line file"
+      "notes": "#14732: phantom axioms (erdos_renyi_upper, gEps_mono not declared; main_asymptotic now theorem main_asymptotic_derived; trivial_lower_bound\u2192basic_lower_bound) in originalContributions/sections; section line drift (sections cover 1-178 of 316-line file; Parts IX, X missing); proofStrategy says 179-line file"
     },
     "erdos-1179-oq-01": {
       "auditCount": 3,
@@ -4627,7 +4627,7 @@
       "auditCount": 6,
       "issues": [
         "Phantom sorry/partial-verification claims for nondividing_implies_nonaveraging + section line drift across all 8 sections; counts correct; issue #14716",
-        "#14734: residual phantom claims after PR #14724 — sections[0].summary still references nonexistent nondividing_equiv; originalContributions[0] claims false equivalence (nondividing_not_iff_alt proves they are NOT equivalent); sections[1].mathContext + sections[6].mathContext stale (summaries fixed, mathContext not); sections[4].mathContext LaTeX bug"
+        "#14734: residual phantom claims after PR #14724 \u2014 sections[0].summary still references nonexistent nondividing_equiv; originalContributions[0] claims false equivalence (nondividing_not_iff_alt proves they are NOT equivalent); sections[1].mathContext + sections[6].mathContext stale (summaries fixed, mathContext not); sections[4].mathContext LaTeX bug"
       ],
       "lastAudited": "2026-05-02T10:54:29Z",
       "result": "issues-fixed"
@@ -4644,7 +4644,7 @@
       "lastAudited": "2026-05-02T10:05:11Z",
       "result": "issues-fixed",
       "issues": [
-        "#14714: phantom axiom claims for CDL 2025, Spencer-Szemerédi-Trotter, Guth-Katz in proofStrategy/sections"
+        "#14714: phantom axiom claims for CDL 2025, Spencer-Szemer\u00e9di-Trotter, Guth-Katz in proofStrategy/sections"
       ]
     },
     "erdos-133": {
@@ -4866,7 +4866,7 @@
     "erdos-162": {
       "auditCount": 3,
       "issues": [
-        "#14689: stale 'sorry' narrative claims for colourEdgeCount_total/balanced_requires_le_half + 214→237 lineCount drift in historicalContext/conclusion (file has 0 sorries, 237 lines)"
+        "#14689: stale 'sorry' narrative claims for colourEdgeCount_total/balanced_requires_le_half + 214\u2192237 lineCount drift in historicalContext/conclusion (file has 0 sorries, 237 lines)"
       ],
       "lastAudited": "2026-05-02T09:14:15Z",
       "result": "issues-fixed"
@@ -4901,7 +4901,7 @@
     "erdos-167": {
       "auditCount": 3,
       "issues": [
-        "#14679: phantom axioms in proofStrategy/sections (5 axioms claimed; only IsPlanar declared); lineCount 275→274; section line drift in known-results/fractional-version/summary"
+        "#14679: phantom axioms in proofStrategy/sections (5 axioms claimed; only IsPlanar declared); lineCount 275\u2192274; section line drift in known-results/fractional-version/summary"
       ],
       "lastAudited": "2026-05-02T08:57:53Z",
       "result": "issues-fixed"
@@ -4956,7 +4956,7 @@
     "erdos-174": {
       "auditCount": 3,
       "issues": [
-        "section line drift in 5/9 sections (Parts V-IX); known-ramsey endLine 160→158, examples 161-187→159-178, non-ramsey 188-206→179-197, characterization 207-221→198-212, summary 222-247→213-247; not_spherical_not_ramsey at L182 falls outside its claimed section by line; counts/axioms/narrative all accurate (#14671)"
+        "section line drift in 5/9 sections (Parts V-IX); known-ramsey endLine 160\u2192158, examples 161-187\u2192159-178, non-ramsey 188-206\u2192179-197, characterization 207-221\u2192198-212, summary 222-247\u2192213-247; not_spherical_not_ramsey at L182 falls outside its claimed section by line; counts/axioms/narrative all accurate (#14671)"
       ],
       "lastAudited": "2026-05-02T08:42:30Z",
       "result": "issues-fixed"
@@ -5050,7 +5050,7 @@
       "issues": [
         "originalContributions called f3_1, f3_2, f3_3, f3_4 'Small value axioms' but they are theorems (proved). Numerical axiomCount: 2 was correct."
       ],
-      "notes": "Fixed via PR #14654 — phantom small-value axiom narrative in originalContributions."
+      "notes": "Fixed via PR #14654 \u2014 phantom small-value axiom narrative in originalContributions."
     },
     "erdos-186": {
       "agentId": "auditor-cycle-20-batch",
@@ -5099,7 +5099,7 @@
       "lastAudited": "2026-05-02T07:19:59Z",
       "result": "issues-fixed",
       "issues": [
-        "proofStrategy/keyInsight reverse H(k)≤W(k) (Lean proves W(k)≤H(k) at line 177); section line drift in 6/10 sections; filed #14641"
+        "proofStrategy/keyInsight reverse H(k)\u2264W(k) (Lean proves W(k)\u2264H(k) at line 177); section line drift in 6/10 sections; filed #14641"
       ]
     },
     "erdos-191": {
@@ -5184,7 +5184,7 @@
       "agentId": "auditor-agent-2026-05-02",
       "auditCount": 3,
       "issues": [
-        "meta.json: phantom axioms in proofStrategy (claims PNT/conjecture axiomatized — only green_tao is); 3 dangling /-- -/ docstrings (lines 48-55, 77-81, 100-102); section line drift in all sections after core-definitions (structural claims 112-125 but ap_difference_primorial is at 136-146). Issue #14625."
+        "meta.json: phantom axioms in proofStrategy (claims PNT/conjecture axiomatized \u2014 only green_tao is); 3 dangling /-- -/ docstrings (lines 48-55, 77-81, 100-102); section line drift in all sections after core-definitions (structural claims 112-125 but ap_difference_primorial is at 136-146). Issue #14625."
       ],
       "lastAudited": "2026-05-02T06:56:42Z",
       "result": "issues-fixed"
@@ -5309,7 +5309,7 @@
       "lastAudited": "2026-05-02T06:22:03Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom axioms palasti_small_n + erdos_217_conjecture (only docstrings); phantom small_cases_exist/ErdosConjecture217 in originalContributions; proofStrategy overclaims Palásti axiomatization (#14603)"
+        "phantom axioms palasti_small_n + erdos_217_conjecture (only docstrings); phantom small_cases_exist/ErdosConjecture217 in originalContributions; proofStrategy overclaims Pal\u00e1sti axiomatization (#14603)"
       ]
     },
     "erdos-218": {
@@ -5324,7 +5324,7 @@
       "lastAudited": "2026-05-02T06:16:52Z",
       "result": "issues-fixed",
       "issues": [
-        "section line drift across all 6 sections; missing summary section; 2 dangling docstrings (lines 95-96, 102-109) — issue #14601"
+        "section line drift across all 6 sections; missing summary section; 2 dangling docstrings (lines 95-96, 102-109) \u2014 issue #14601"
       ]
     },
     "erdos-22": {
@@ -5353,7 +5353,7 @@
       "agentId": "auditor-1777701908",
       "auditCount": 3,
       "issues": [
-        "phantom axioms in sections (Fermat criterion, Landau, Richards 1982, DEKKM 2022, monotonicity) + section line drift Parts II–VII (#14599)"
+        "phantom axioms in sections (Fermat criterion, Landau, Richards 1982, DEKKM 2022, monotonicity) + section line drift Parts II\u2013VII (#14599)"
       ],
       "lastAudited": "2026-05-02T06:09:26Z",
       "result": "issues-fixed"
@@ -5614,7 +5614,7 @@
       "lastAudited": "2026-05-02T04:38:14Z",
       "result": "issues-fixed",
       "issues": [
-        "section line drift: sections[].startLine/endLine off by ~20–90 lines; missing 'Squarefree Numbers' section (issue #14564)"
+        "section line drift: sections[].startLine/endLine off by ~20\u201390 lines; missing 'Squarefree Numbers' section (issue #14564)"
       ]
     },
     "erdos-26": {
@@ -5656,7 +5656,7 @@
       "lastAudited": "2026-05-02T04:14:26Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom-axiom narrative: originalContributions/proofStrategy/sections claim formal statements for Kovač-Tao negative/positive criteria and 2^(2ⁿ) example that exist only as docstrings (issue #14549)"
+        "phantom-axiom narrative: originalContributions/proofStrategy/sections claim formal statements for Kova\u010d-Tao negative/positive criteria and 2^(2\u207f) example that exist only as docstrings (issue #14549)"
       ]
     },
     "erdos-265": {
@@ -5777,8 +5777,8 @@
       "lastAudited": "2026-05-02T04:18:24Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom axiom 'cambie_only_one_avoider' in originalContributions; section summaries reference cambie_satisfies_growth/cambie_only_one_avoider/cambie_count_is_one/prime_number_theorem_approx that exist only as docstrings; section line ranges drifted — issue #14535",
-        "phantom-axiom narrative in proofStrategy: claims 'growth bound, covering property, exact count, and conjecture refutation are axiomatized' but only original_conjecture_false exists; growth/covering/count are dangling docstrings (lines 78-83) — issue #14552"
+        "phantom axiom 'cambie_only_one_avoider' in originalContributions; section summaries reference cambie_satisfies_growth/cambie_only_one_avoider/cambie_count_is_one/prime_number_theorem_approx that exist only as docstrings; section line ranges drifted \u2014 issue #14535",
+        "phantom-axiom narrative in proofStrategy: claims 'growth bound, covering property, exact count, and conjecture refutation are axiomatized' but only original_conjecture_false exists; growth/covering/count are dangling docstrings (lines 78-83) \u2014 issue #14552"
       ]
     },
     "erdos-281": {
@@ -5787,7 +5787,7 @@
       "lastAudited": "2026-05-02T03:45:20Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom-axiom narrative: claims axiomatization of divergence/coprime/Davenport-Erdős/Rogers but only erdos_281_proved exists; sections.divergence-coprime summary describes content that is only dangling docstrings (lines 217-219) — issue #14532"
+        "phantom-axiom narrative: claims axiomatization of divergence/coprime/Davenport-Erd\u0151s/Rogers but only erdos_281_proved exists; sections.divergence-coprime summary describes content that is only dangling docstrings (lines 217-219) \u2014 issue #14532"
       ]
     },
     "erdos-282": {
@@ -5806,7 +5806,7 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "issues": [
-        "phantom theorems harmonic_interval/croot_2001/f_asymptotic claimed in originalContributions/mainTheorems but only docstrings, never declared; section line drift (examples L147–157 actually contains Part VI Summary header) — issue #14526"
+        "phantom theorems harmonic_interval/croot_2001/f_asymptotic claimed in originalContributions/mainTheorems but only docstrings, never declared; section line drift (examples L147\u2013157 actually contains Part VI Summary header) \u2014 issue #14526"
       ],
       "lastAudited": "2026-05-02T03:33:16Z",
       "result": "issues-fixed"
@@ -6106,7 +6106,7 @@
       "lastAudited": "2026-05-02T01:37:11Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom originalContributions (mahler_theorem, erdos_positive_density_claim — neither axiom exists); proofStrategy + sections.positive-density falsely claim Part VII axiomatizes positive density (orphan docstring only); overview.text says '5 axioms' (actual 3) and '191-line' (actual 182); section line drift +4 from Part III onward (#14493)"
+        "phantom originalContributions (mahler_theorem, erdos_positive_density_claim \u2014 neither axiom exists); proofStrategy + sections.positive-density falsely claim Part VII axiomatizes positive density (orphan docstring only); overview.text says '5 axioms' (actual 3) and '191-line' (actual 182); section line drift +4 from Part III onward (#14493)"
       ]
     },
     "erdos-323": {
@@ -6163,7 +6163,7 @@
       "lastAudited": "2026-05-02T01:17:45Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom Erdős 1/2 axiom + conditional embedding (orphan docstrings, no declarations); section line drift lower-bounds onward (#14484)"
+        "phantom Erd\u0151s 1/2 axiom + conditional embedding (orphan docstrings, no declarations); section line drift lower-bounds onward (#14484)"
       ]
     },
     "erdos-33": {
@@ -6283,7 +6283,7 @@
       "lastAudited": "2026-05-02T00:33:54Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom axioms in sections (ulamSeq_unique_representation, ulamSeq_minimal, ulamSeq_values, five_not_ulam, six_is_ulam, twin_examples, erdos_342, ulamSeq_growth, ulamSeq_growth_constant, ulam_characterization); section line-range drift across all parts; theoremCount 20→19; imports drift (#14463)"
+        "phantom axioms in sections (ulamSeq_unique_representation, ulamSeq_minimal, ulamSeq_values, five_not_ulam, six_is_ulam, twin_examples, erdos_342, ulamSeq_growth, ulamSeq_growth_constant, ulam_characterization); section line-range drift across all parts; theoremCount 20\u219219; imports drift (#14463)"
       ]
     },
     "erdos-343": {
@@ -6570,7 +6570,7 @@
       "lastAudited": "2026-05-02T01:45:00Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom HC_exponent_decreasing/ramanujan_characterization/HC_sparser_than_primes theorems in originalContributions; 4 dangling doc-comments; section line drift Parts VI–IX (#14438)"
+        "phantom HC_exponent_decreasing/ramanujan_characterization/HC_sparser_than_primes theorems in originalContributions; 4 dangling doc-comments; section line drift Parts VI\u2013IX (#14438)"
       ]
     },
     "erdos-382": {
@@ -6646,7 +6646,7 @@
       "lastAudited": "2026-05-01T23:08:58Z",
       "result": "issues-fixed",
       "issues": [
-        "section line drift sections[3..8] (acrstuv-theorem onward) — first 3 sections aligned, drift starts at Part IV; numerical counts and tier all clean (#14427)"
+        "section line drift sections[3..8] (acrstuv-theorem onward) \u2014 first 3 sections aligned, drift starts at Part IV; numerical counts and tier all clean (#14427)"
       ]
     },
     "erdos-392": {
@@ -6774,7 +6774,7 @@
       "lastAudited": "2026-05-01T22:43:27Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom Bajpai-Bennett 131082 axiom (only ≤ 9 declared, 131082 only in docstring); phantom FourRepFamily theorems (def + 2 docstring headers, no proofs); section line drift in main-results/infinite-family/summary (#14418)"
+        "phantom Bajpai-Bennett 131082 axiom (only \u2264 9 declared, 131082 only in docstring); phantom FourRepFamily theorems (def + 2 docstring headers, no proofs); section line drift in main-results/infinite-family/summary (#14418)"
       ]
     },
     "erdos-408": {
@@ -6976,7 +6976,7 @@
       "lastAudited": "2026-05-01T21:47:48Z",
       "result": "issues-fixed",
       "issues": [
-        "PR #14407 / issue #14397 + follow-up comment: phantom non_representable_exist axiom in section main-theorem; conclusion summary claims 6 axioms (only 2 declared); Sylvester–Frobenius docstring labelled axiomatized in section related-results"
+        "PR #14407 / issue #14397 + follow-up comment: phantom non_representable_exist axiom in section main-theorem; conclusion summary claims 6 axioms (only 2 declared); Sylvester\u2013Frobenius docstring labelled axiomatized in section related-results"
       ]
     },
     "erdos-436": {
@@ -7019,7 +7019,7 @@
       "lastAudited": "2026-05-01T20:40:12Z",
       "result": "issues-fixed",
       "issues": [
-        "PR #14387: phantom axiom erdos_szemeredi_liminf_bound in originalContributions/proofStrategy/section-3 — only tao_elementary_proof and van_doorn_sharp_bound declared in Lean"
+        "PR #14387: phantom axiom erdos_szemeredi_liminf_bound in originalContributions/proofStrategy/section-3 \u2014 only tao_elementary_proof and van_doorn_sharp_bound declared in Lean"
       ]
     },
     "erdos-441": {
@@ -7062,7 +7062,7 @@
       "lastAudited": "2026-05-03T03:18:00Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom axiom narrative: \"Historical axioms: Besicovitch/Erdős\" entry claimed axioms for docstring-only sections; ford section claimed phantom ford_2008_general axiom; delta originalContributions overstated constraints; section line ranges were stale by 10-25 lines."
+        "Phantom axiom narrative: \"Historical axioms: Besicovitch/Erd\u0151s\" entry claimed axioms for docstring-only sections; ford section claimed phantom ford_2008_general axiom; delta originalContributions overstated constraints; section line ranges were stale by 10-25 lines."
       ]
     },
     "erdos-447": {
@@ -7304,7 +7304,7 @@
       "lastAudited": "2026-05-01T18:29:13Z",
       "result": "issues-fixed",
       "issues": [
-        "Issue #14351: phantom k=-1 axiom narrative — originalContributions, proofStrategy, sections[partial-results], and erdos_479_summary docstring all claim a Graham-Lehmer-Lehmer k=-1 axiom that does not exist in the Lean source; only solution_set_one_finite and powers_of_two_infinite are declared. Numerical fields (axiomCount=2, sorries=0, lineCount=230) are correct."
+        "Issue #14351: phantom k=-1 axiom narrative \u2014 originalContributions, proofStrategy, sections[partial-results], and erdos_479_summary docstring all claim a Graham-Lehmer-Lehmer k=-1 axiom that does not exist in the Lean source; only solution_set_one_finite and powers_of_two_infinite are declared. Numerical fields (axiomCount=2, sorries=0, lineCount=230) are correct."
       ]
     },
     "erdos-48": {
@@ -7334,7 +7334,7 @@
       "lastAudited": "2026-05-01T18:16:45Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom non-periodicity axiom in originalContributions; sections part-1/3/5 describe docstring-only content as axiomatized — issue #14343"
+        "Phantom non-periodicity axiom in originalContributions; sections part-1/3/5 describe docstring-only content as axiomatized \u2014 issue #14343"
       ]
     },
     "erdos-483": {
@@ -7446,7 +7446,7 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "issues": [
-        "Phantom-axiom narrative: originalContributions list 3 items only present as doc-comments (cassels_swinnerton_dyer_cubic, ekl_hausdorff_dimension_zero, badziahin_velani_padic); ekl_hausdorff_dimension_zero overclaims — actual axiom is ekl_countable_exceptions; section IV/VI summaries also reference these phantoms — issue #14323"
+        "Phantom-axiom narrative: originalContributions list 3 items only present as doc-comments (cassels_swinnerton_dyer_cubic, ekl_hausdorff_dimension_zero, badziahin_velani_padic); ekl_hausdorff_dimension_zero overclaims \u2014 actual axiom is ekl_countable_exceptions; section IV/VI summaries also reference these phantoms \u2014 issue #14323"
       ],
       "lastAudited": "2026-05-01T17:27:08Z",
       "result": "issues-fixed"
@@ -7578,8 +7578,8 @@
       "auditCount": 3,
       "issuesFixed": [
         "stale originalContributions items (#12149)",
-        "annotation L1norm_upper_bound incorrectly labelled (sorry) — proved",
-        "annotation L2_norm incorrectly labelled (sorry) — proved pending expSumNorm_sq_double; range updated to 257-295"
+        "annotation L1norm_upper_bound incorrectly labelled (sorry) \u2014 proved",
+        "annotation L2_norm incorrectly labelled (sorry) \u2014 proved pending expSumNorm_sq_double; range updated to 257-295"
       ],
       "lastAudited": "2026-04-24T05:03:47Z",
       "result": "issues-fixed"
@@ -7608,7 +7608,7 @@
       "lastAudited": "2026-05-01T16:56:28Z",
       "result": "issues-fixed",
       "issues": [
-        "Issue #14314: originalContributions claims 3 phantom Statement-of-theorem items (Wiman 1914, Erdős-Macintyre 1954, Kovári 1965) that exist only as doc-comments; numerical fields (axiomCount=1, sorries=1, lineCount=196) are correct"
+        "Issue #14314: originalContributions claims 3 phantom Statement-of-theorem items (Wiman 1914, Erd\u0151s-Macintyre 1954, Kov\u00e1ri 1965) that exist only as doc-comments; numerical fields (axiomCount=1, sorries=1, lineCount=196) are correct"
       ]
     },
     "erdos-517": {
@@ -7657,7 +7657,7 @@
       "lastAudited": "2026-05-01T16:49:06Z",
       "result": "issues-fixed",
       "issues": [
-        "Issue #14311: proofStrategy claims phantom Erdős-Offord/Yakir/almost-sure-convergence axioms; root-counting section misclaimed as axiomatized; assumptions misnames axiom (KacPolynomialData → KacPolynomialData.isRademacher)"
+        "Issue #14311: proofStrategy claims phantom Erd\u0151s-Offord/Yakir/almost-sure-convergence axioms; root-counting section misclaimed as axiomatized; assumptions misnames axiom (KacPolynomialData \u2192 KacPolynomialData.isRademacher)"
       ]
     },
     "erdos-523": {
@@ -7810,7 +7810,7 @@
       "lastAudited": "2026-05-01T17:15:00Z",
       "result": "issues-fixed",
       "issues": [
-        "Issue #14282: phantom-axiom narrative (axiomCount=1 correct, but assumptions list 3, sections claim EGZ/Erdős-Szemerédi axiomatized, proofStrategy says graham_conjecture is sorry — it is proved)"
+        "Issue #14282: phantom-axiom narrative (axiomCount=1 correct, but assumptions list 3, sections claim EGZ/Erd\u0151s-Szemer\u00e9di axiomatized, proofStrategy says graham_conjecture is sorry \u2014 it is proved)"
       ]
     },
     "erdos-542": {
@@ -7849,7 +7849,7 @@
       "lastAudited": "2026-05-01T14:48:12Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom narrative: originalContributions/proofStrategy/sections claim IsPath/IsStar/IsCaterpillar/Chvátal bound/exact path-star Ramsey numbers/tightness theorem; Lean file has only 3 axioms + erdos_547 wrapper. Filed #14275"
+        "phantom narrative: originalContributions/proofStrategy/sections claim IsPath/IsStar/IsCaterpillar/Chv\u00e1tal bound/exact path-star Ramsey numbers/tightness theorem; Lean file has only 3 axioms + erdos_547 wrapper. Filed #14275"
       ]
     },
     "erdos-548": {
@@ -7960,7 +7960,7 @@
       "lastAudited": "2026-05-01T11:07:37Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom-axiom narrative: proofStrategy/sections claim Erdős–Rado, Erdős–Hajnal, general lower, and main conjecture as axioms but they are docstring-only (issue #14247)"
+        "phantom-axiom narrative: proofStrategy/sections claim Erd\u0151s\u2013Rado, Erd\u0151s\u2013Hajnal, general lower, and main conjecture as axioms but they are docstring-only (issue #14247)"
       ]
     },
     "erdos-563": {
@@ -7975,7 +7975,7 @@
       "lastAudited": "2026-05-01T11:22:23Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom-axiom narrative — originalContributions 6/7/8, proofStrategy steps 7/8, sections small-values/comparison/four-colour describe docstring placeholders, not Lean declarations (axiomCount 3, sorries 1 are correct) — issue #14254"
+        "Phantom-axiom narrative \u2014 originalContributions 6/7/8, proofStrategy steps 7/8, sections small-values/comparison/four-colour describe docstring placeholders, not Lean declarations (axiomCount 3, sorries 1 are correct) \u2014 issue #14254"
       ]
     },
     "erdos-565": {
@@ -8008,7 +8008,7 @@
       "lastAudited": "2026-05-01T10:59:06Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom axioms in narrative: pentagon case + lower bounds in proofStrategy; vertex-bound axiom in section summary; pentagon axiom claimed in known-results section — issue #14242"
+        "Phantom axioms in narrative: pentagon case + lower bounds in proofStrategy; vertex-bound axiom in section summary; pentagon axiom claimed in known-results section \u2014 issue #14242"
       ]
     },
     "erdos-57": {
@@ -8023,14 +8023,14 @@
       "lastAudited": "2026-05-01T10:50:04Z",
       "result": "issues-fixed",
       "issues": [
-        "sections.cases.summary claims four phantom axioms (EFRS/Sidorenko/Jayawardene/CFMPP) — only erdos_570_resolved exists in Lean; numerical fields correct — issue #14234"
+        "sections.cases.summary claims four phantom axioms (EFRS/Sidorenko/Jayawardene/CFMPP) \u2014 only erdos_570_resolved exists in Lean; numerical fields correct \u2014 issue #14234"
       ]
     },
     "erdos-571": {
       "agentId": "auditor-session-1777631912",
       "auditCount": 3,
       "issues": [
-        "phantom axioms in originalContributions / proofStrategy / sections (jiang_qiu_exponents_4_3, jiang_qiu_exponents_5_4, jiang_ma_yepremyan_exponents, conlon_janzer_near_two, bukh_conlon_families, kovari_sos_turan, bondy_simonovits_upper) — issue #14232"
+        "phantom axioms in originalContributions / proofStrategy / sections (jiang_qiu_exponents_4_3, jiang_qiu_exponents_5_4, jiang_ma_yepremyan_exponents, conlon_janzer_near_two, bukh_conlon_families, kovari_sos_turan, bondy_simonovits_upper) \u2014 issue #14232"
       ],
       "lastAudited": "2026-05-01T10:50:00Z",
       "result": "issues-fixed"
@@ -8047,7 +8047,7 @@
       "lastAudited": "2026-05-01T10:25:00Z",
       "result": "issues-fixed",
       "issues": [
-        "Phantom KST/Erdős-Simonovits bound axioms in narrative (counts correct); lineCount 152→177; section line drift — issue #14227"
+        "Phantom KST/Erd\u0151s-Simonovits bound axioms in narrative (counts correct); lineCount 152\u2192177; section line drift \u2014 issue #14227"
       ]
     },
     "erdos-574": {
@@ -8125,7 +8125,7 @@
       "lastAudited": "2026-05-01T09:24:45Z",
       "result": "issues-fixed",
       "issues": [
-        "Inconsistent axioms: folkmanNumber_2_3_4 := 0 (def) with axiom folkman_lower_bound : ≥ 19 — issue #14212"
+        "Inconsistent axioms: folkmanNumber_2_3_4 := 0 (def) with axiom folkman_lower_bound : \u2265 19 \u2014 issue #14212"
       ]
     },
     "erdos-583": {
@@ -8236,7 +8236,7 @@
       "lastAudited": "2026-05-01T07:44:52Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom axioms in narrative: section summaries claim Axiom erdos_596 (Part IV) and Axiom erdos_595_k4_k3 (Part V) — neither declared in Lean file; only nesetril_rodl_c4_c6 and erdos_hajnal_c4_trees exist — issue #14179"
+        "phantom axioms in narrative: section summaries claim Axiom erdos_596 (Part IV) and Axiom erdos_595_k4_k3 (Part V) \u2014 neither declared in Lean file; only nesetril_rodl_c4_c6 and erdos_hajnal_c4_trees exist \u2014 issue #14179"
       ]
     },
     "erdos-597": {
@@ -8262,7 +8262,7 @@
       "auditCount": 3,
       "lastAudited": "2026-05-01T07:15:00Z",
       "result": "issues-fixed",
-      "notes": "Section line ranges drifted from actual Lean section markers — corrected."
+      "notes": "Section line ranges drifted from actual Lean section markers \u2014 corrected."
     },
     "erdos-60": {
       "auditCount": 5,
@@ -8527,7 +8527,7 @@
       "lastAudited": "2026-05-02T21:25:00Z",
       "result": "issues-fixed",
       "issues": [
-        "sorries claim 7 actual 1 (PR #14856 reduced 7→1 but meta.json not refreshed); lineCount 298→332; assumptions string still says \"7 sorries\"; deeper concern: Dissection structure has placeholder area condition (line 93), so *_dissectable theorems use trivial constant-function witness — issue #14859",
+        "sorries claim 7 actual 1 (PR #14856 reduced 7\u21921 but meta.json not refreshed); lineCount 298\u2192332; assumptions string still says \"7 sorries\"; deeper concern: Dissection structure has placeholder area condition (line 93), so *_dissectable theorems use trivial constant-function witness \u2014 issue #14859",
         "Re-audit 2026-05-02 vs origin/main a0a5957: PR #14866 fixed only meta.json text; deeper Dissection placeholder + axiom inconsistency unresolved -> issue #14888"
       ]
     },
@@ -8543,8 +8543,8 @@
       "lastAudited": "2026-05-01T07:20:00Z",
       "result": "issues-fixed",
       "issues": [
-        "phantom axioms in narrative: assumptions field claims 7 former axioms (ramsey_graphs_exist, erdos_faudree_sos, ks_probabilistic_method, signature_distribution, non_ramsey_smaller_bound, ramsey_forces_complexity, induced_path_count) which are absent from the file; sections efs/ramsey/techniques/ramsey-theory and originalContributions/proofStrategy reference axioms that do not exist — issue #14136",
-        "section line ranges drift: kwan-sudakov 135-152 cuts kwan_sudakov axiom (133-137); optimality 153-177 cuts signature_upper_bound axiom (151-155); related 234-256 covers Part XI content; main-result 257-261 contains only #check directives while erdos_636 theorem is at 244-248 — issue #14169"
+        "phantom axioms in narrative: assumptions field claims 7 former axioms (ramsey_graphs_exist, erdos_faudree_sos, ks_probabilistic_method, signature_distribution, non_ramsey_smaller_bound, ramsey_forces_complexity, induced_path_count) which are absent from the file; sections efs/ramsey/techniques/ramsey-theory and originalContributions/proofStrategy reference axioms that do not exist \u2014 issue #14136",
+        "section line ranges drift: kwan-sudakov 135-152 cuts kwan_sudakov axiom (133-137); optimality 153-177 cuts signature_upper_bound axiom (151-155); related 234-256 covers Part XI content; main-result 257-261 contains only #check directives while erdos_636 theorem is at 244-248 \u2014 issue #14169"
       ]
     },
     "erdos-637": {
@@ -8632,7 +8632,7 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 3,
       "issues": [
-        "originalContributions claims Tong's theorem and Mahler's growth theorem as contributions when both are axiom declarations (axiom tong_theorem, axiom mahler_growth) — issue #14123 also covers this proof"
+        "originalContributions claims Tong's theorem and Mahler's growth theorem as contributions when both are axiom declarations (axiom tong_theorem, axiom mahler_growth) \u2014 issue #14123 also covers this proof"
       ],
       "lastAudited": "2026-05-01T05:30:00Z",
       "result": "issues-fixed"
@@ -8710,7 +8710,7 @@
       "lastAudited": "2026-05-01T04:30:00Z",
       "result": "issues-fixed",
       "issues": [
-        "Section range drift (axiom/theorem swapped); 3 of 6 isConfiguration cases reduce to True (isoTrap1, isoTrap2, kite) — issue #14110"
+        "Section range drift (axiom/theorem swapped); 3 of 6 isConfiguration cases reduce to True (isoTrap1, isoTrap2, kite) \u2014 issue #14110"
       ]
     },
     "erdos-659-oq-01": {
@@ -8762,7 +8762,7 @@
       "result": "issues-fixed",
       "issueUrl": "https://github.com/rjwalters/lean-genius/issues/14171",
       "issues": [
-        "Section line ranges drift 1-5 lines in middle sections (II/III/IV/V) — endpoints cross axiom/def boundaries; proofStrategy credits Shrikhande-Singhi embedding theorem and Cramér conjecture as axiomatized but they are docstring-only — issue #14171"
+        "Section line ranges drift 1-5 lines in middle sections (II/III/IV/V) \u2014 endpoints cross axiom/def boundaries; proofStrategy credits Shrikhande-Singhi embedding theorem and Cram\u00e9r conjecture as axiomatized but they are docstring-only \u2014 issue #14171"
       ]
     },
     "erdos-666": {
@@ -8791,14 +8791,14 @@
       "lastAudited": "2026-05-01T03:50:00Z",
       "result": "issues-fixed",
       "issues": [
-        "4 phantom identifiers (burr_grunbaum_sloane, trivial_upper_bound, limit_upper, optimal_configs_exist) in section summaries; section line ranges drift; missing summary section — issue #14091"
+        "4 phantom identifiers (burr_grunbaum_sloane, trivial_upper_bound, limit_upper, optimal_configs_exist) in section summaries; section line ranges drift; missing summary section \u2014 issue #14091"
       ]
     },
     "erdos-67": {
       "agentId": "auditor-agent",
       "auditCount": 4,
       "issues": [
-        "section line ranges drift across 3 sections (complex-variant, stronger-conjecture, multiplicative) — issue #14099"
+        "section line ranges drift across 3 sections (complex-variant, stronger-conjecture, multiplicative) \u2014 issue #14099"
       ],
       "lastAudited": "2026-05-01T05:00:00Z",
       "result": "issues-fixed"
@@ -9144,7 +9144,7 @@
     "erdos-719": {
       "auditCount": 5,
       "issues": [
-        "PR #6447: sorries 2→1, lineCount 175→196"
+        "PR #6447: sorries 2\u21921, lineCount 175\u2192196"
       ],
       "lastAudited": "2026-05-04T04:02:32Z",
       "result": "clean"
@@ -9332,7 +9332,7 @@
     "erdos-746": {
       "auditCount": 7,
       "issues": [
-        "PR #6440: sorry count 3→4",
+        "PR #6440: sorry count 3\u21924",
         "Issue #6441: 9 vacuous True stubs",
         "https://github.com/rjwalters/lean-genius/pull/8651"
       ],
@@ -9501,7 +9501,7 @@
       "lastAudited": "2026-05-03T08:10:00Z",
       "result": "issues-fixed",
       "issues": [
-        "theoremCount 80→74: meta.meta.theoremCount and leanFile.theoremCount overcounted by 6 after PR #15094 merged"
+        "theoremCount 80\u219274: meta.meta.theoremCount and leanFile.theoremCount overcounted by 6 after PR #15094 merged"
       ]
     },
     "erdos-771": {
@@ -9893,8 +9893,8 @@
       "agentId": "mechanic-tracker-sync",
       "auditCount": 3,
       "issues": [
-        "phantom mahler_1935/density_of_sums in originalContributions — fixed via PR #13710",
-        "section line drift — fixed via PR #13710"
+        "phantom mahler_1935/density_of_sums in originalContributions \u2014 fixed via PR #13710",
+        "section line drift \u2014 fixed via PR #13710"
       ],
       "lastAudited": "2026-04-28T23:00:00Z",
       "result": "issues-fixed"
@@ -9969,8 +9969,8 @@
       "agentId": "mechanic-tracker-sync",
       "auditCount": 4,
       "issues": [
-        "phantom axiom narrative in overview/conclusion — fixed via PR #13693",
-        "section structure drift — fixed via PR #13690"
+        "phantom axiom narrative in overview/conclusion \u2014 fixed via PR #13693",
+        "section structure drift \u2014 fixed via PR #13690"
       ],
       "lastAudited": "2026-04-28T23:00:00Z",
       "result": "issues-fixed"
@@ -10004,8 +10004,8 @@
       "agentId": "mechanic-tracker-sync",
       "auditCount": 4,
       "issues": [
-        "phantom axioms burr_unpublished/cfp_density_bounds/burr_erdos_upper_bound in section summaries — fixed via PR #13679",
-        "section line drift — fixed via PR #13689"
+        "phantom axioms burr_unpublished/cfp_density_bounds/burr_erdos_upper_bound in section summaries \u2014 fixed via PR #13679",
+        "section line drift \u2014 fixed via PR #13689"
       ],
       "lastAudited": "2026-05-04T03:12:35Z",
       "result": "clean"
@@ -10369,7 +10369,7 @@
       "auditCount": 6,
       "lastAudited": "2026-05-06T15:10:28Z",
       "result": "clean",
-      "notes": "Verified vs origin/main: 462 lines, 3 sorries — matches meta.json (sorries=3, status=formalized, badge=wip). Earlier \"7 sorries\" notes were stale.",
+      "notes": "Verified vs origin/main: 462 lines, 3 sorries \u2014 matches meta.json (sorries=3, status=formalized, badge=wip). Earlier \"7 sorries\" notes were stale.",
       "issues": []
     },
     "erdos-896": {
@@ -10786,7 +10786,7 @@
       "lastAudited": "2026-05-04T01:00:00Z",
       "result": "issues-fixed",
       "issues": [
-        "IsUntouchable def had empty body (parse error); stale Axiomatizes narratives in 4 sections — fixed via PR #15406"
+        "IsUntouchable def had empty body (parse error); stale Axiomatizes narratives in 4 sections \u2014 fixed via PR #15406"
       ]
     },
     "erdos-956": {
@@ -12078,7 +12078,7 @@
       "lastAudited": "2026-05-03T22:58:18Z",
       "result": "issues-fixed",
       "issues": [
-        "hurwitz_quaternions_euclidean and hurwitz_representation_count True stubs removed; lineCount 410→392, theoremCount 17→15"
+        "hurwitz_quaternions_euclidean and hurwitz_representation_count True stubs removed; lineCount 410\u2192392, theoremCount 17\u219215"
       ]
     },
     "lagrange-four-squares-oq-01": {
@@ -12283,9 +12283,9 @@
       "result": "clean"
     },
     "lhopital-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:28Z",
+      "lastAudited": "2026-05-07T22:03:44Z",
       "result": "clean"
     },
     "lhopital-oq-02": {
@@ -13679,7 +13679,7 @@
     "yang-mills-transfer-matrix": {
       "auditCount": 7,
       "issues": [
-        "axiomCount inconsistency with same-file precedent: yang-mills-lattice fixed to 12 (PR #14832), yang-mills-transfer-matrix still 1 — same Exploration.lean, same 11 :True structure-encoded fields. Issue #14840."
+        "axiomCount inconsistency with same-file precedent: yang-mills-lattice fixed to 12 (PR #14832), yang-mills-transfer-matrix still 1 \u2014 same Exploration.lean, same 11 :True structure-encoded fields. Issue #14840."
       ],
       "lastAudited": "2026-05-02T15:30:00Z",
       "result": "issues-fixed"
@@ -13739,14 +13739,14 @@
       "result": "clean",
       "auditor": "auditor-agent",
       "completedAt": "2026-05-02T23:12:30Z",
-      "notes": "meta.json lineCount stale: 230 → 220 (file is 220 lines). Fixed in both meta.lineCount and leanFile.lineCount. All other fields verified clean: 3 sorries (lines 120/155/192) match meta, 0 axioms, 5 theorems, status/badge formalized appropriate for Tier C scaffold.",
+      "notes": "meta.json lineCount stale: 230 \u2192 220 (file is 220 lines). Fixed in both meta.lineCount and leanFile.lineCount. All other fields verified clean: 3 sorries (lines 120/155/192) match meta, 0 axioms, 5 theorems, status/badge formalized appropriate for Tier C scaffold.",
       "auditCount": 1,
       "lastAudited": "2026-05-02T23:37:33Z"
     },
     "angle-trisection-oq-03-oq-01": {
       "auditCount": 1,
       "issues": [
-        "lineCount 123→150, theoremCount 13→12, all 5 section line ranges off by ~10 (file has been edited since enrichment); core integrity claims (verified/0 sorries/0 axioms) hold — fixed in PR"
+        "lineCount 123\u2192150, theoremCount 13\u219212, all 5 section line ranges off by ~10 (file has been edited since enrichment); core integrity claims (verified/0 sorries/0 axioms) hold \u2014 fixed in PR"
       ],
       "result": "issues-fixed",
       "lastAudited": "2026-05-03T03:37:43Z"
@@ -13905,7 +13905,7 @@
       "auditCount": 2,
       "issues": [
         "missing top-level sorries field; lineCount stale 155->152",
-        "leanFile.theoremCount stale 12→11; PR #15106"
+        "leanFile.theoremCount stale 12\u219211; PR #15106"
       ],
       "lastAudited": "2026-05-03T06:29:52Z",
       "result": "issues-fixed"
@@ -13951,7 +13951,7 @@
       "lastAudited": "2026-05-03T06:29:52Z",
       "result": "issues-fixed",
       "issues": [
-        "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140→156, theoremCount 12→13"
+        "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140\u2192156, theoremCount 12\u219213"
       ],
       "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight"
     },
@@ -13975,7 +13975,7 @@
       "lastAudited": "2026-05-03T08:07:53Z",
       "result": "issues-fixed",
       "issues": [
-        "axiomCount claimed 6, actual 7 — corrected to 7"
+        "axiomCount claimed 6, actual 7 \u2014 corrected to 7"
       ]
     },
     "abel-ruffini-oq-09": {
@@ -14069,7 +14069,7 @@
       "lastAudited": "2026-05-03T14:00:00Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount was 248 (actual 313); leanFile section was missing — both corrected"
+        "lineCount was 248 (actual 313); leanFile section was missing \u2014 both corrected"
       ]
     },
     "bounded-prime-gaps-oq-04-oq-02": {
@@ -14135,7 +14135,7 @@
       "lastAudited": "2026-05-04T00:55:01Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount 463→562, theoremCount 24→27 (stale after PRs #15357/#15414); fix in PR #15414"
+        "lineCount 463\u2192562, theoremCount 24\u219227 (stale after PRs #15357/#15414); fix in PR #15414"
       ]
     },
     "intermediate-value-theorem-oq-02-oq-03": {
@@ -14676,7 +14676,7 @@
       "lastAudited": "2026-05-05T02:55:34Z",
       "result": "issues-fixed",
       "issues": [
-        "sorries mismatch: claims 1, actual 0 (uses axiom declarations not sorry); lineCount mismatch: claims 224, actual 211 — fixed in PR #15942"
+        "sorries mismatch: claims 1, actual 0 (uses axiom declarations not sorry); lineCount mismatch: claims 224, actual 211 \u2014 fixed in PR #15942"
       ]
     },
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03": {
@@ -14684,7 +14684,7 @@
       "lastAudited": "2026-05-05T02:55:34Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount mismatch: claims 221, actual 226; theoremCount mismatch: claims 10, actual 12 — fixed in this PR"
+        "lineCount mismatch: claims 221, actual 226; theoremCount mismatch: claims 10, actual 12 \u2014 fixed in this PR"
       ]
     },
     "dissection-of-cubes-oq-03-oq-02": {
@@ -14698,7 +14698,7 @@
       "lastAudited": "2026-05-05T03:05:00Z",
       "result": "issues-fixed",
       "issues": [
-        "lineCount mismatch: claims 253, actual 311; theoremCount mismatch: claims 7, actual 8 (real_ac_implies_normed_ac undercounted) — fixed in PR #15948"
+        "lineCount mismatch: claims 253, actual 311; theoremCount mismatch: claims 7, actual 8 (real_ac_implies_normed_ac undercounted) \u2014 fixed in PR #15948"
       ]
     },
     "greens-theorem-oq-03-oq-04": {
@@ -14718,7 +14718,7 @@
       "issues": [],
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
-      "notes": "Drift resolved on origin/main: meta-sync PRs #16094/#16101 (and follow-up #16192) merged. File now sorries=0, lineCount=338, theoremCount=12, axiomCount=0; meta status=verified, badge=verified — all consistent. find-targets.ts --issues no longer flags this entry."
+      "notes": "Drift resolved on origin/main: meta-sync PRs #16094/#16101 (and follow-up #16192) merged. File now sorries=0, lineCount=338, theoremCount=12, axiomCount=0; meta status=verified, badge=verified \u2014 all consistent. find-targets.ts --issues no longer flags this entry."
     },
     "lagrange-theorem-oq-01-oq-01": {
       "auditCount": 2,
@@ -14773,7 +14773,7 @@
       "issues": [],
       "lastAudited": "2026-05-06T08:18:00Z",
       "result": "clean",
-      "notes": "Not yet on origin/main; in PR #16077 (feature/researcher-7). Verified PR content: 0 sorries, 0 axioms, status verified, badge original — all consistent."
+      "notes": "Not yet on origin/main; in PR #16077 (feature/researcher-7). Verified PR content: 0 sorries, 0 axioms, status verified, badge original \u2014 all consistent."
     },
     "laws-of-large-numbers-oq-01-oq-03": {
       "auditCount": 1,
@@ -14810,7 +14810,7 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
     },
     "erdos-895-oq-01": {
       "auditCount": 2,
@@ -14841,7 +14841,7 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
     },
     "laws-of-large-numbers-oq-01-oq-02": {
       "auditCount": 1,
@@ -14896,14 +14896,14 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
     },
     "cauchy-schwarz-oq-02-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
     },
     "ehrhart-cube-proven-oq-02": {
       "auditCount": 2,
@@ -14916,7 +14916,7 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
     },
     "chinese-remainder-constructive-oq-04-oq-02": {
       "auditCount": 1,
