@@ -40,9 +40,16 @@
     "assumptions": []
   },
   "overview": {
-    "summary": "The Lindström-Gessel-Viennot (LGV) Lemma is a cornerstone theorem in enumerative combinatorics, establishing that determinants of binomial coefficient matrices always count combinatorial objects — namely, non-intersecting lattice path tuples.",
-    "keyInsight": "For strictly ordered source positions a₁ < ... < aᵣ and target positions b₁ < ... < bᵣ, the matrix M with Mᵢⱼ = C(m + bⱼ - aᵢ, m) has its determinant equal to the number of non-intersecting r-tuples of lattice paths. This is proved via the Gessel-Viennot sign-reversing involution (formalized in BallotProblemOQ03OQ02.lean).",
-    "mathematicalContent": "The file presents the LGV theorem and verifies it for concrete 2×2 examples. For m=2 with sources [0,1] and targets [2,3], the path matrix [[6,10],[3,6]] has det = 36-30 = 6, matching the 6 non-intersecting path pairs. For m=3 with sources [0,1] and targets [3,4], the matrix [[20,35],[10,20]] has det = 400-350 = 50."
+    "historicalContext": "The Lindström–Gessel–Viennot (LGV) Lemma is a cornerstone of enumerative combinatorics, discovered independently by Bernt Lindström (1973, 'On the vector representations of induced matroids') and Ira Gessel & Gérard Viennot (1985, 'Binomial determinants, paths, and hook length formulae'). The Gessel–Viennot proof — a sign-reversing involution on intersecting path tuples — is one of the most influential applications of the *involution principle* in bijective combinatorics. The lemma unifies an astonishing range of classical results: MacMahon's formula for plane partitions, the Cauchy–Binet identity for matrix products, the Karlin–McGregor theorem for non-intersecting Brownian motions, and Schur function identities via semistandard Young tableaux. It also provides the cleanest proof of the hook length formula for standard Young tableaux. The Lean Genius formalization here re-exports the r×r LGV theorem from `BallotProblemOQ03OQ02.lean` (which contains the full involution proof) and demonstrates it on concrete 1×1 and 2×2 examples.",
+    "problemStatement": "**LGV Lemma**: Let $a_1 < a_2 < \\cdots < a_r$ be source positions and $b_1 < b_2 < \\cdots < b_r$ be target positions on a 1D lattice, with $a_r \\le b_1$ (the *well-formed* condition). Form the $r \\times r$ binomial matrix $M_{ij} = \\binom{m + b_j - a_i}{m}$ where $M_{ij}$ counts lattice paths from $(0, a_i)$ to $(m, b_j)$ using $m$ East and $b_j - a_i$ North steps.\n\n**Conclusion**: $\\det(M) = \\#\\{$non-intersecting $r$-tuples of paths from sources to targets, in order$\\}$.\n\n**This file**: re-export the general theorem (`lgv_determinant_formula`) and verify it for r = 1 (`lgv_one_by_one`) and concrete r = 2 examples (`lgv_2x2_det_ex1` det = 6, `lgv_2x2_det_ex2` det = 50).",
+    "proofStrategy": "**Gessel–Viennot involution** (proved in `BallotProblemOQ03OQ02.lean`, re-exported here):\n\n1. **Expand the determinant**: $\\det(M) = \\sum_{\\sigma \\in S_r} \\mathrm{sgn}(\\sigma) \\prod_i M_{i, \\sigma(i)}$. Each term corresponds to an $r$-tuple of paths where path $i$ goes from $a_i$ to $b_{\\sigma(i)}$.\n\n2. **Identify the diagonal**: For $\\sigma = \\mathrm{id}$, the term is $\\prod_i M_{i,i}$ which counts *all* $r$-tuples (not just non-intersecting). For other $\\sigma$, the term has sign $\\mathrm{sgn}(\\sigma)$.\n\n3. **Define the involution**: For any path tuple $(P_1, \\ldots, P_r)$ where some $P_i$ and $P_j$ intersect, find the lexicographically-first crossing $(i, j)$ and swap the tails — this produces another tuple corresponding to the permutation $(i\\ j) \\circ \\sigma$, of opposite sign. The map is its own inverse (involution).\n\n4. **Cancellation**: All intersecting tuples cancel in pairs of opposite sign. Only non-intersecting tuples remain — and these are *exactly* those with $\\sigma = \\mathrm{id}$ (when sources and targets are in the same order, non-intersecting forces a path from $a_i$ to $b_i$).\n\n5. **Conclusion**: $\\det(M) = \\sum_{\\text{non-intersecting tuples}} 1 = \\#\\{$non-intersecting tuples$\\}$.\n\nThe Lean formalization in this file is mostly a thin layer: `lgv_determinant_formula := LGV.lgv_lemma_rxr`, plus structural definitions `lgvConfig1`/`lgvConfig2` and `native_decide` verifications.",
+    "keyInsights": [
+      "**Determinant ↔ count is the heart**: That a determinant of binomial coefficients always equals a non-negative integer (a count!) is non-trivial. Sums of products with alternating signs *can* be negative in general; the LGV lemma says the well-formedness condition forces non-negativity by exhibiting a combinatorial interpretation. This is a manifestation of *total positivity* of binomial matrices.",
+      "**Why well-formedness matters**: The condition $a_r \\le b_1$ ensures that the only non-intersecting tuple where path $i$ goes to target $\\sigma(i)$ is when $\\sigma = \\mathrm{id}$. Drop the condition and the proof breaks: paths can wind around each other, and intersecting tuples may not pair up as the involution requires. The `lgv_2x2_not_wellFormed_when_b_zero` theorem in this file demonstrates the failure boundary.",
+      "**Catalan numbers hide here**: For sources $[0, 1]$ and targets $[m, m+1]$, the determinant is $\\binom{2m}{m}^2 - \\binom{2m+1}{m}\\binom{2m-1}{m}$ — and this equals the Catalan number $C_m = \\binom{2m}{m}/(m+1)$ times another factor. The growth from $\\det = 6$ at $m = 2$ to $\\det = 50$ at $m = 3$ reflects the rapid combinatorial explosion of non-intersecting tuples.",
+      "**Re-export wrapper pattern**: This file is mostly thin wrappers — `lgv_determinant_formula` is one-line delegation to the parent's `lgv_lemma_rxr`. This decouples downstream consumers from the involution machinery. It's a standard Lean architecture pattern: prove the hard theorem in one file with appropriate API, then re-export with the audience's preferred namespace and naming convention.",
+      "**native_decide on small matrices is feasible**: The two concrete 2×2 examples are dispatched by `native_decide` because the binomial coefficient computations and 2×2 determinant fit easily in the compiled-to-native compute envelope. For larger r (e.g. 5×5 with m = 10), `native_decide` would still work but the theorem statement complexity becomes the bottleneck rather than the computation."
+    ]
   },
   "sections": [
     {
@@ -97,19 +104,19 @@
   },
   "crossReferences": [
     {
-      "id": "combinations-formula-oq-01",
+      "targetId": "combinations-formula-oq-01",
       "relationship": "parent",
-      "note": "Extended Binomial Coefficient Identities — this is OQ-04"
+      "description": "Extended Binomial Coefficient Identities — this entry is OQ-04 of that parent. The LGV lemma is the deepest binomial identity in the parent's OQ list."
     },
     {
-      "id": "ballot-problem-oq-03-oq-02",
+      "targetId": "ballot-problem-oq-03-oq-02",
       "relationship": "depends-on",
-      "note": "Imports the r×r LGV proof via Gessel-Viennot involution"
+      "description": "Imports the r×r LGV proof via the Gessel–Viennot sign-reversing involution. This file is a thin re-export wrapper around `LGV.lgv_lemma_rxr` from that file."
     },
     {
-      "id": "ballot-problem-oq-03",
+      "targetId": "ballot-problem-oq-03",
       "relationship": "related",
-      "note": "The 2×2 LGV for ballot problem lattice paths"
+      "description": "The 2×2 LGV specialization for ballot-problem lattice paths. Demonstrates the same theorem on a different combinatorial application — counting paths under a strict-majority constraint."
     }
   ],
   "leanFile": {
