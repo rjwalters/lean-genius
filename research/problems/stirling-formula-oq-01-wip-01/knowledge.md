@@ -25,6 +25,12 @@ The 1/(12n) correction coefficient is the key refinement of Stirling's approxima
 
 **stirling_first_correction structure** (C=2): upper via le_of_tendsto', lower via le_of_tendsto_of_tendsto. Two remaining mechanical sorrys: (1) G(n+M)→0 and (2) |exp(L)-(1+L)| ≤ L²/2·exp(L) ≤ 1/n².
 
+### Key Lean 4 API Learnings
+
+**`div_le_div_iff` FAILS in chained `rw [a, b]` with `by positivity` args** — use named hypotheses or avoid it entirely. Fix: `calc + gcongr` for `a/c ≤ b/c` (same denom), or `div_nonneg` (show RHS - LHS ≥ 0 via `field_simp; ring`).
+
+**Cast form mismatch in inductive proofs**: after `push_cast`, `n+(L+1)-1` becomes `n+↑L+1-1 ≠ n+↑L` syntactically. Fix: add `have hnL1_sub : ... := by push_cast; ring` and `rw [hnL1_sub]` before `linarith`.
+
 ### Key Mathematical Result
 
 `|L - 1/(12n)| ≤ 1/n²` via simultaneous telescoping: `Σ d_k ≤ F(n) = 1/(12(n-1))+1/(12(n-1)²) ≤ 1/(12n)+1/n²` and `G(n) ≤ Σ d_k` where `G(n) = 1/(12n)-1/(24(n-1)²)-1/(24(n-1)³) ≥ 1/(12n)-1/(2n²)`.
