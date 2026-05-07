@@ -596,10 +596,47 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
   have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
   field_simp
 
+/-- For n=3 fixed, P(no triple|n=3, d days) → 1 as d → ∞.
+    Direct corollary of `p_no_triple_n3`: `1 − 1/d² → 1`.
+
+    This is a concrete sanity check on Lemma B's limit: with n held fixed at 3,
+    `λ(d) = C(3,3)/d² = 1/d² → 0`, so `exp(-λ(d)) → 1`. The full Lemma C
+    (`p_no_triple_tendsto`) is the *qualitative Poisson convergence* along
+    the threshold scaling `n_c(d) = ⌊c · d^(2/3)⌋` — a strictly stronger
+    statement requiring method-of-factorial-moments infrastructure absent
+    from Mathlib 4.26. This corollary covers only the n-fixed regime
+    (c → 0), but verifies internal consistency. -/
+theorem p_no_triple_n3_tendsto :
+    Filter.Tendsto
+      (fun d : ℕ =>
+        ((Finset.univ.filter (fun f : Fin 3 → Fin d =>
+          ¬(f 0 = f 1 ∧ f 1 = f 2))).card : ℝ) /
+        (Fintype.card (Fin 3 → Fin d) : ℝ))
+      Filter.atTop (nhds 1) := by
+  have h_d_atTop : Filter.Tendsto (fun d : ℕ => (d : ℝ)) Filter.atTop Filter.atTop :=
+    tendsto_natCast_atTop_atTop
+  have h_d2_atTop : Filter.Tendsto (fun d : ℕ => (d : ℝ) ^ 2)
+      Filter.atTop Filter.atTop := by
+    have heq : (fun d : ℕ => (d : ℝ) ^ 2) = (fun d : ℕ => (d : ℝ) * (d : ℝ)) := by
+      funext d; ring
+    rw [heq]
+    exact h_d_atTop.atTop_mul_atTop₀ h_d_atTop
+  have h_inv : Filter.Tendsto (fun d : ℕ => (1 : ℝ) / (d : ℝ) ^ 2)
+      Filter.atTop (nhds 0) := by
+    have h := tendsto_inv_atTop_zero.comp h_d2_atTop
+    refine h.congr' ?_
+    filter_upwards with d using (one_div _).symm
+  have h_target : Filter.Tendsto (fun d : ℕ => 1 - (1 : ℝ) / (d : ℝ) ^ 2)
+      Filter.atTop (nhds (1 - 0 : ℝ)) := tendsto_const_nhds.sub h_inv
+  simp only [sub_zero] at h_target
+  refine h_target.congr' ?_
+  filter_upwards [Filter.eventually_ge_atTop (1 : ℕ)] with d hd
+  exact (p_no_triple_n3 d hd).symm
+
 /-
   ## Summary
 
-  **Proved (13 theorems, 1 axiom):**
+  **Proved (14 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -613,6 +650,7 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
   11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
   12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
   13. `p_no_triple_n3` (Session 6): P(no triple|n=3) = 1 − 1/d² as a real number
+  14. `p_no_triple_n3_tendsto` (Session 7): P(no triple|n=3) → 1 as d → ∞
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -633,5 +671,6 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
 #check @p_no_triple_tendsto
 #check @poisson_approx_birthday3
 #check @p_no_triple_n3
+#check @p_no_triple_n3_tendsto
 
 end BirthdayThreshold3
