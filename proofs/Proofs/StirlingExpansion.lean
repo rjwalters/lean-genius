@@ -664,9 +664,65 @@ theorem stirling_first_correction :
             rw [h_eq]; apply div_nonneg
             · nlinarith [sq_nonneg ((n:ℝ)-1), mul_pos hn_pos hn1_pos]
             · positivity
-    -- |exp(L) - (1+L)| ≤ L² * exp(L) / 2 ≤ (1/n)² * exp(1/n) / 2 ≤ 1/n²
-    -- exp(L) - (1 + 1/(12n)) = (exp(L) - (1+L)) + (L - 1/(12n)) ≤ L²*exp(L)/2 + C/n²
-    sorry -- HARD: needs |exp(L) - (1+L)| ≤ L²/2 * exp(L) and L ≤ 1/n, exp(L) ≤ 2
+    -- Taylor bound from Mathlib: |exp L - (1 + L)| ≤ 3·L²/4 since |L| ≤ 1.
+    -- Combine with L - 1/(12n) ≤ 1/(2n²) to get exp(L) - (1+1/(12n)) ≤ 5/(4n²) ≤ 2/n².
+    have hL_abs : |L| ≤ 1 := by
+      rw [abs_of_nonneg hL_nn]
+      calc L ≤ 1 / (n : ℝ) := hL_ub
+        _ ≤ 1 := by rw [div_le_one hn_pos]; linarith
+    have htay : |Real.exp L - ∑ m ∈ Finset.range 2, L ^ m / (m.factorial : ℝ)| ≤
+        |L| ^ 2 * ((Nat.succ 2 : ℝ) / ((Nat.factorial 2 : ℝ) * 2)) :=
+      Real.exp_bound hL_abs (n := 2) (by norm_num)
+    -- Simplify Σ_{m<2} L^m/m! = 1 + L
+    have hsum_eq : (∑ m ∈ Finset.range 2, L ^ m / (m.factorial : ℝ)) = 1 + L := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    -- Simplify |L|² · 3 / (2! · 2) = 3·L² / 4
+    have hbnd_eq : |L| ^ 2 * ((Nat.succ 2 : ℝ) / ((Nat.factorial 2 : ℝ) * 2)) =
+        3 * L ^ 2 / 4 := by
+      rw [sq_abs]; simp [Nat.factorial]; ring
+    rw [hsum_eq, hbnd_eq] at htay
+    have htay_ub : Real.exp L - (1 + L) ≤ 3 * L ^ 2 / 4 := by
+      have := abs_le.mp htay
+      linarith [this.2]
+    -- L² ≤ 1/n²  (using 0 ≤ L ≤ 1/n)
+    have hL_sq : L ^ 2 ≤ 1 / (n : ℝ) ^ 2 := by
+      have hLL : L * L ≤ (1 / (n : ℝ)) * (1 / (n : ℝ)) :=
+        mul_self_le_mul_self hL_nn hL_ub
+      have hL2 : L ^ 2 = L * L := by ring
+      have hn2 : (1 / (n : ℝ)) * (1 / (n : ℝ)) = 1 / (n : ℝ) ^ 2 := by
+        field_simp
+      linarith
+    -- L - 1/(12n) ≤ 1/(2n²) using hL_upper
+    have hL_minus : L - 1 / (12 * (n : ℝ)) ≤ 1 / (2 * (n : ℝ) ^ 2) := by
+      suffices hkey : 1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) -
+          1 / (12 * (n : ℝ)) ≤ 1 / (2 * (n : ℝ) ^ 2) by linarith [hL_upper]
+      suffices hpos : 0 ≤ 1 / (2 * (n : ℝ) ^ 2) -
+          (1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) -
+           1 / (12 * (n : ℝ))) by linarith
+      have h_eq : 1 / (2 * (n : ℝ) ^ 2) -
+          (1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) -
+           1 / (12 * (n : ℝ))) =
+          ((n : ℝ) - 2) * (4 * (n : ℝ) - 3) /
+            (12 * (n : ℝ) ^ 2 * ((n : ℝ) - 1) ^ 2) := by
+        field_simp
+        ring
+      rw [h_eq]
+      apply div_nonneg
+      · exact mul_nonneg (by linarith) (by linarith)
+      · positivity
+    -- Combine: exp(L) - (1 + 1/(12n)) = (exp(L) - (1+L)) + (L - 1/(12n)) ≤ 3L²/4 + 1/(2n²)
+    --       ≤ 3/(4n²) + 1/(2n²) = 5/(4n²) ≤ 2/n²
+    have hnsq_pos : (0 : ℝ) < (n : ℝ) ^ 2 := by positivity
+    calc Real.exp L - (1 + 1 / (12 * (n : ℝ)))
+        = (Real.exp L - (1 + L)) + (L - 1 / (12 * (n : ℝ))) := by ring
+      _ ≤ 3 * L ^ 2 / 4 + 1 / (2 * (n : ℝ) ^ 2) := by linarith [htay_ub, hL_minus]
+      _ ≤ 3 * (1 / (n : ℝ) ^ 2) / 4 + 1 / (2 * (n : ℝ) ^ 2) := by linarith [hL_sq]
+      _ = 5 / (4 * (n : ℝ) ^ 2) := by ring
+      _ ≤ 2 / (n : ℝ) ^ 2 := by
+          have h_eq : (2 : ℝ) / (n : ℝ) ^ 2 - 5 / (4 * (n : ℝ) ^ 2) =
+              3 / (4 * (n : ℝ) ^ 2) := by field_simp; ring
+          have hpos : (0 : ℝ) < 4 * (n : ℝ) ^ 2 := by positivity
+          linarith [div_pos (by norm_num : (0 : ℝ) < 3) hpos]
 
 /-- **Stirling Expansion (Two Terms).**
 
@@ -759,15 +815,10 @@ example : (1 : ℝ) + 1 / 1200 = 1201 / 1200 := by norm_num
 - `stirling_step_upper`: d_k ≤ 1/(12k²) + 1/(6k³) [given step formula]
 - `stirling_step_lower`: 1/(12k²) - 1/(8k³) ≤ d_k [given step formula]
 
-**Remaining sorry (1 total):**
-- `stirling_first_correction`: needs the upper-half exp-Taylor bound
-  `|exp L − (1 + L)| ≤ L² · exp L / 2` together with `L ≤ 1/n` and `exp L ≤ 2`.
-  Everything else (step formula, telescoping bounds, partial-sum bounds,
-  the lower half of the absolute value, and the existence of the constant)
-  is proved.
-
-**Sorries at file level:**
-- `stirling_first_correction` (1 sorry, exp Taylor remainder bound)
+**Status:** 0 sorries. The upper-half exp-Taylor bound is now discharged via
+`Real.exp_bound` at degree 2, which yields `|exp L − (1 + L)| ≤ 3·L² / 4`
+under `|L| ≤ 1`. Combined with `L − 1/(12n) ≤ 1/(2n²)` (algebraic) and
+`L² ≤ 1/n²` (from `0 ≤ L ≤ 1/n`), this gives the upper bound `5/(4n²) ≤ 2/n²`.
 -/
 
 end StirlingExpansion

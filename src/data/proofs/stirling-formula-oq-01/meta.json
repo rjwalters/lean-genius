@@ -7,7 +7,7 @@
     "author": "Stirling (1730), de Moivre (1733)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stirling%27s_approximation#Speed_of_convergence_and_error_estimates",
     "date": "1730",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/StirlingExpansion.lean",
     "tags": [
       "analysis",
@@ -16,10 +16,10 @@
       "factorials",
       "bernoulli-numbers"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 1 sorry: stirling_first_correction needs the upper-half exp-Taylor bound |exp L − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n (line 669). All other steps proved: log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower, telescoping bounds (inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope), partial-sum bounds (log_stirlingSeq_partial_upper/lower), the lower half of the abs-value bound, and the existence of the constant.",
+    "assumptions": "None. 0 axioms, 0 sorries. The full chain {log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower, telescoping helpers (inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope), partial-sum bounds (log_stirlingSeq_partial_upper/lower), stirling_first_correction, stirling_two_term_expansion, error_bound_from_correction} is fully proved. The final upper-half exp-Taylor bound is discharged via Real.exp_bound at degree n=2 (|L|≤1 → |exp L − (1+L)| ≤ 3·L²/4), combined with L² ≤ 1/n² (from 0 ≤ L ≤ 1/n) and the algebraic identity L − 1/(12n) ≤ 1/(2n²) (from L ≤ 1/(12(n−1)) + 1/(12(n−1)²)).",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -42,9 +42,12 @@
       "log_one_plus_le_cubic: proved log(1+x) \u2264 x-x\u00b2/2+x\u00b3/3 for x>0 (derivative monotonicity)",
       "log_one_plus_ge_quartic: proved x-x\u00b2/2+x\u00b3/3-x\u2074/4 \u2264 log(1+x) for x>0 (derivative monotonicity)",
       "stirling_step_upper: d_k \u2264 1/(12k\u00b2)+1/(6k\u00b3) (conditional on step formula)",
-      "stirling_step_lower: 1/(12k\u00b2)-1/(12k\u00b3)-1/(8k\u2074) \u2264 d_k (conditional on step formula)"
+      "stirling_step_lower: 1/(12k\u00b2)-1/(12k\u00b3)-1/(8k\u2074) \u2264 d_k (conditional on step formula)",
+      "Telescoping helpers (inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope) and partial-sum bounds (log_stirlingSeq_partial_upper/lower)",
+      "stirling_first_correction (fully proved): combines the partial-sum bounds with two limits (htend_diff for L = log(stirlingSeq n) \u2212 log(\u221a\u03c0), htend_Gn for the lower-tail residual via Tendsto.div_atTop on each tail term), Real.exp_bound at degree 2 for the upper-half Taylor remainder |exp L \u2212 (1+L)| \u2264 3\u00b7L\u00b2/4, and the algebraic comparisons (n\u22122)(4n\u22123) \u2265 0 (for L \u2212 1/(12n) \u2264 1/(2n\u00b2)) and (12(n\u22121)\u00b3 \u2212 n\u00b3) \u2265 0 (for the lower half). Yields C = 2.",
+      "stirling_two_term_expansion (fully proved from stirling_first_correction via the \u221a(2\u03c0n) = \u221a(2n)\u00b7\u221a\u03c0 split)"
     ],
-    "lineCount": 773,
+    "lineCount": 819,
     "theoremCount": 20,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
@@ -116,11 +119,11 @@
     }
   ],
   "conclusion": {
-    "summary": "States the first correction term in Stirling's expansion and shows it implies the axiomatized error bound. The correction proof requires Euler-Maclaurin or Wallis product analysis.",
-    "implications": "Completing the first correction proof would eliminate the axiom stirling_error_bound_ge_2 from StirlingFormula.lean, making it fully verified (0 axioms, 0 sorries). The formalization also provides a template for higher-order corrections: the same Euler-Maclaurin approach that proves the 1/(12n) term would yield 1/(288n\u00b2) and the negative third term \u2212139/(51840n\u00b3), giving successively tighter bounds. In probability theory, the first correction is essential for precise approximations of binomial coefficients via the local CLT and for bounding errors in Poisson approximation. The Stirling series (being asymptotic but divergent) is a classical example of an asymptotic expansion with Borel summability properties, connecting to the broader theory of divergent series.",
+    "summary": "Proves the first correction term in Stirling's expansion: |stirlingSeq(n)/\u221a\u03c0 \u2212 (1 + 1/(12n))| \u2264 2/n\u00b2 for n \u2265 2. The proof combines a Wallis-style telescoping argument (avoiding Euler-Maclaurin) with Mathlib's Real.exp_bound for the final exp-Taylor remainder. 0 axioms, 0 sorries.",
+    "implications": "The first correction is fully verified (0 axioms, 0 sorries) and yields stirling_two_term_expansion and error_bound_from_correction by construction; in conjunction with StirlingFormula.lean (already verified) this gives a complete machine-checked proof of n!/[\u221a(2\u03c0n)\u00b7(n/e)^n] = 1 + 1/(12n) + O(1/n\u00b2) with explicit constant C = 2. The proof method (telescoping bounds via the step formula d_k = (k+1/2)\u00b7log(1+1/k) \u2212 1, plus log Taylor bounds via derivative monotonicity, plus Real.exp_bound at degree 2) is reusable: the same scaffolding applies to the next coefficient 1/(288n\u00b2), with one additional log-bound order needed. In probability theory, the first correction is essential for precise approximations of binomial coefficients via the local CLT and for bounding errors in Poisson approximation. The Stirling series (being asymptotic but divergent) is a classical example of an asymptotic expansion with Borel summability properties, connecting to the broader theory of divergent series.",
     "openQuestions": [
-      "Prove the first correction from Euler-Maclaurin or Wallis product analysis",
-      "Formalize the full asymptotic series with arbitrary number of terms",
+      "Formalize the second correction term 1/(288n\u00b2) and the negative third term \u2212139/(51840n\u00b3)",
+      "Formalize the full asymptotic series with arbitrary number of terms (would need Bernoulli-number infrastructure)",
       "Can the Stirling series be connected to Mathlib's Gamma function asymptotics?"
     ]
   },
@@ -137,15 +140,15 @@
       "Filter"
     ],
     "namespace": "StirlingExpansion",
-    "lineCount": 773,
+    "lineCount": 819,
     "axiomCount": 0,
     "theoremCount": 20,
     "definitionCount": 2,
     "path": "Proofs/StirlingExpansion.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/StirlingExpansionAristotle.lean"
     ]
   },
-  "sorries": 1
+  "sorries": 0
 }
