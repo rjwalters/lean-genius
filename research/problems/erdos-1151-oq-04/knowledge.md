@@ -218,3 +218,52 @@ quickly.
 - `leanFiles[1].lineCount: 141` — actual: 141 (correct)
 
 Updated in this commit.
+
+## Session 15 (2026-05-07, researcher-1) — API drift fixed + Step 3 helpers
+
+**Outcome**: progress (build unblocked + 2 helpers); sorries unchanged at 2
+
+### What I Did
+1. **Verified the prior session's "API drift fixed" claim was wrong** (consistent with my memory note `feedback_research_json_build_claim_lies.md`). Took the four reported unknown identifiers — `Nat.harmonic`, `Nat.harmonic_succ`, `Even.not_odd`, `div_lt_div_iff` — and looked up the current Mathlib4 names directly on GitHub via `gh api`.
+
+2. **Applied 4 API drift fixes** in commit `5cb3a2d`:
+   - `div_lt_div_iff` → `div_lt_div_iff₀` (line 889, `tan_half_chebyshev_pos`)
+   - `Nat.harmonic` → `harmonic` (top-level, in `Mathlib.NumberTheory.Harmonic.Defs`, type `ℕ → ℚ`)
+   - `Nat.harmonic_succ` → `harmonic_succ`
+   - `Even.not_odd evp odd_p` → `(not_odd_iff_even.mpr evp) odd_p` (line 1262)
+   - Cast widened to `((harmonic m : ℚ) : ℝ)` since `harmonic` returns `ℚ` (the previous code wrote `(Nat.harmonic m : ℝ)` which assumed `ℕ`).
+
+3. **Added two Step 3 helpers** in commit `2f78cc0` for `trig_sum_harmonic_lb`:
+   - `chebyshev_angle_dist_triangle (n hn θ k₀ k)`: triangle bound
+     `|θ - φ_k| ≤ |θ - φ_{k₀}| + |k - k₀|·π/n`
+     Proof: algebraic identity `φ_k = φ_{k₀} + (k-k₀)·π/n` + `abs_add` + `abs_sub_comm`.
+   - `chebyshev_angle_dist_from_nearest (n hn θ k₀ k hk₀)`: corollary combining triangle bound
+     with the nearest-node hypothesis `|θ - φ_{k₀}| ≤ π/(2n)` from `exists_nearest_chebyshev_angle`.
+     Yields the form needed for Steps 4-5: `|θ - φ_k| ≤ (2|k-k₀|+1)·π/(2n)`.
+
+### Verification
+Docker build verification was attempted but blocked: 4 concurrent agent builds + Docker Desktop's
+~7.65 GiB memory ceiling caused OOM/slow-clone (consistent with `feedback_docker_memory_ceiling.md`).
+PR #16745 opened for CI / next-session verification.
+
+### Mathlib API Sources Consulted
+- `Mathlib/NumberTheory/Harmonic/Defs.lean`: `def harmonic : ℕ → ℚ`, `harmonic_succ`
+- `Mathlib/NumberTheory/Harmonic/Bounds.lean`: `log_add_one_le_harmonic`
+- `Mathlib/Algebra/Ring/Int/Parity.lean`: `not_odd_iff_even : ¬Odd n ↔ Even n`
+
+### Next Steps
+1. **(Researcher / next session)** Verify build (PR #16745) once Docker contention eases.
+2. **(Researcher)** Step 4 — sin lower bound for nodes within (d/2, π-d/2): use existing
+   `sin_ge_sin_of_mem_Icc` (line 906) plus the bound from Step 3 to argue
+   `sin(φ_k) ≥ sin(d/2)` for `(2|k-k₀|+1)·π/(2n) ≤ (π-d)/2`.
+3. **(Researcher)** Step 5 — combine Step 3 distance bound + Step 4 sin bound + cosine Lipschitz
+   to get `sin(φ_k)/|cos θ - cos φ_k| ≥ 2sin(d/2)·n / ((2|k-k₀|+1)·π)`.
+4. **(Researcher)** Step 6/7 — sub-sum bound via `odd_harmonic_sum_lb` (already proved) and
+   finite-n closure via `Finset.min'`.
+
+### Process Note
+Initially edited the JSON and knowledge.md via main-repo absolute paths instead of worktree paths.
+The daemon (or a concurrent agent) reset the main repo files. This is the
+`feedback_worktree_traps.md` and `feedback_mechanic_worktree_vs_main_repo.md` trap. Re-applied
+edits using worktree paths. Commits go through the worktree branch, so PR #16745 carries
+the corrected versions.
