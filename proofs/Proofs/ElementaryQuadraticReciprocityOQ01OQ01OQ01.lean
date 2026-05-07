@@ -89,7 +89,7 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   · rw [hv] at ha; norm_cast at ha  -- ha: (1:ℂ) = if IsUnit a then 1 else 0
     split_ifs at ha ⊢ with hu
     · rfl
-    · exact absurd ha.symm one_ne_zero
+    · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
   · rw [hv] at ha; push_cast at ha  -- ha: (-1:ℂ) = if IsUnit a then 1 else 0
     exfalso
     split_ifs at ha with hu <;> norm_num at ha
