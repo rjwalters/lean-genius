@@ -428,4 +428,156 @@ theorem sperner_panchromatic_two (N : ℕ) (hN : 0 < N)
 
 end N2Triang
 
+-- ============================================================
+-- SECTION IV: XOR parity (pure combinatorics)
+-- ============================================================
+
+section N2XOR
+
+/-- **XOR parity**: the number of adjacent differing pairs in a binary sequence
+`g : ℕ → Fin 2` over `{0,...,n-1}` has the same parity as `g 0 ≠ g n`. -/
+private lemma changes_parity_mod2 (n : ℕ) (g : ℕ → Fin 2) :
+    ((Finset.range n).filter (fun k => g k ≠ g (k + 1))).card % 2 =
+    if g 0 = g n then 0 else 1 := by
+  induction n with
+  | zero => simp
+  | succ m ih =>
+    rw [Finset.range_succ, Finset.filter_union, Finset.filter_singleton]
+    have hdisj : Disjoint ((Finset.range m).filter (fun k => g k ≠ g (k + 1)))
+        (if g m ≠ g (m + 1) then {m} else ∅) := by
+      apply Finset.disjoint_left.mpr; intro x hx
+      simp only [Finset.mem_filter, Finset.mem_range] at hx
+      split_ifs with h
+      · simp only [Finset.mem_singleton]; omega
+      · exact Finset.not_mem_empty x
+    rw [Finset.card_union_of_disjoint hdisj]
+    by_cases hne : g m ≠ g (m + 1)
+    · rw [if_pos hne, Finset.card_singleton, ih]
+      split_ifs with h0
+      · have h1 : g 0 ≠ g (m + 1) := by
+          fin_cases (g 0) <;> fin_cases (g m) <;> fin_cases (g (m + 1)) <;> simp_all
+        rw [if_neg h1]; omega
+      · have h1 : g 0 = g (m + 1) := by
+          fin_cases (g 0) <;> fin_cases (g m) <;> fin_cases (g (m + 1)) <;> simp_all
+        rw [if_pos h1]; omega
+    · have heq : g m = g (m + 1) := not_ne_iff.mp hne
+      rw [if_neg hne, Finset.card_empty, Nat.add_zero, ih]
+      simp only [heq]
+
+/-- A binary sequence with g(0)=1 and g(n)=0 has an odd number of adjacent transitions. -/
+private lemma odd_changes (n : ℕ) (g : ℕ → Fin 2)
+    (hg0 : g 0 = 1) (hgn : g n = 0) :
+    Odd ((Finset.range n).filter (fun k => g k ≠ g (k + 1))).card := by
+  have hne : g 0 ≠ g n := by rw [hg0, hgn]; decide
+  rw [Nat.odd_iff, changes_parity_mod2, if_neg hne]
+
+end N2XOR
+
+-- ============================================================
+-- SECTION V: Grid infrastructure for n=2 Sperner coloring
+-- ============================================================
+
+section N2Grid
+
+variable (N : ℕ) (hN : 0 < N)
+variable (f : (Fin 3 → ℝ) → Fin 3 → ℝ) (hf_map : ∀ v, InSimplex v → InSimplex (f v))
+
+/-- Grid embedding: (b₀, b₁) ↦ (b₀/N, b₁/N, (N-b₀-b₁)/N) in Δ². -/
+private noncomputable def gridPt (b : ℕ × ℕ) : Fin 3 → ℝ := fun i =>
+  if i.val = 0 then (b.1 : ℝ) / N
+  else if i.val = 1 then (b.2 : ℝ) / N
+  else ((N : ℝ) - b.1 - b.2) / N
+
+/-- `gridPt N b` is in Δ² when b₀ + b₁ ≤ N. -/
+private lemma gridPt_inSimplex (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) :
+    InSimplex (gridPt N b) := by
+  have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  have hb12 : (b.1 : ℝ) + b.2 ≤ N := by exact_mod_cast hb
+  refine ⟨fun i => ?_, ?_⟩
+  · fin_cases i <;>
+      simp only [gridPt, show (0:Fin 3).val=0 from rfl, ↓reduceIte,
+                 show (1:Fin 3).val=1 from rfl, show ¬(1:ℕ)=0 from by omega,
+                 show (2:Fin 3).val=2 from rfl, show ¬(2:ℕ)=0 from by omega,
+                 show ¬(2:ℕ)=1 from by omega] <;>
+      first
+        | exact div_nonneg (Nat.cast_nonneg _) hNr.le
+        | exact div_nonneg (by linarith) hNr.le
+  · rw [Fin.sum_univ_three]
+    simp only [gridPt, show (0:Fin 3).val=0 from rfl, ↓reduceIte,
+               show (1:Fin 3).val=1 from rfl, show ¬(1:ℕ)=0 from by omega,
+               show (2:Fin 3).val=2 from rfl, show ¬(2:ℕ)=0 from by omega,
+               show ¬(2:ℕ)=1 from by omega]
+    field_simp [hNr.ne']
+    ring
+
+/-- Sperner coloring for grid vertex b with b₀+b₁ ≤ N. -/
+private noncomputable def cN2 (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) : Fin 3 :=
+  spernerColor (gridPt N b) (f (gridPt N b))
+    (gridPt_inSimplex N hN b hb) (hf_map _ (gridPt_inSimplex N hN b hb))
+
+/-- Sperner condition: coordinate j = 0 implies color ≠ j. -/
+private lemma cN2_ne_of_zero (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N)
+    (j : Fin 3) (hj : gridPt N b j = 0) :
+    cN2 N hN f hf_map b hb ≠ j :=
+  spernerColor_ne_of_zero (gridPt_inSimplex N hN b hb)
+    (hf_map _ (gridPt_inSimplex N hN b hb)) hj
+
+private lemma gridPt_0N_coord0 : gridPt N (0, N) 0 = 0 := by
+  simp [gridPt, show (0:Fin 3).val=0 from rfl]
+
+private lemma gridPt_0N_coord2 : gridPt N (0, N) 2 = 0 := by
+  simp only [gridPt, show (2:Fin 3).val=2 from rfl,
+             show ¬(2:ℕ)=0 from by omega, show ¬(2:ℕ)=1 from by omega, ↓reduceIte]
+  push_cast; ring
+
+private lemma gridPt_N0_coord1 : gridPt N (N, 0) 1 = 0 := by
+  simp [gridPt, show (1:Fin 3).val=1 from rfl, show ¬(1:ℕ)=0 from by omega]
+
+private lemma gridPt_N0_coord2 : gridPt N (N, 0) 2 = 0 := by
+  simp only [gridPt, show (2:Fin 3).val=2 from rfl,
+             show ¬(2:ℕ)=0 from by omega, show ¬(2:ℕ)=1 from by omega, ↓reduceIte]
+  push_cast; ring
+
+/-- Corner (0, N) has forced color 1: on face 0 (coord 0 = 0) and face 2 (coord 2 = 0). -/
+private lemma cN2_left_corner :
+    cN2 N hN f hf_map (0, N) (by omega) = 1 := by
+  have h0 := cN2_ne_of_zero N hN f hf_map (0, N) (by omega) 0 (gridPt_0N_coord0 N)
+  have h2 := cN2_ne_of_zero N hN f hf_map (0, N) (by omega) 2 (gridPt_0N_coord2 N)
+  fin_cases (cN2 N hN f hf_map (0, N) (by omega)) <;> simp_all
+
+/-- Corner (N, 0) has forced color 0: on face 1 (coord 1 = 0) and face 2 (coord 2 = 0). -/
+private lemma cN2_right_corner :
+    cN2 N hN f hf_map (N, 0) (by omega) = 0 := by
+  have h1 := cN2_ne_of_zero N hN f hf_map (N, 0) (by omega) 1 (gridPt_N0_coord1 N)
+  have h2 := cN2_ne_of_zero N hN f hf_map (N, 0) (by omega) 2 (gridPt_N0_coord2 N)
+  fin_cases (cN2 N hN f hf_map (N, 0) (by omega)) <;> simp_all
+
+/-- Face 2 diagonal: the coloring g(k) = (cN2(k, N-k) mod 2) has g(0)=1, g(N)=0,
+    so by XOR parity there are an odd number of color-changing edges on face 2.
+
+    **Key remaining connection to `sperner_panchromatic_two`** (not yet proved):
+    These color-changing edges correspond exactly to the boundary doors of the
+    n=2 Type-1/Type-2 triangulation. This requires:
+    1. Characterizing adjFn = none for t1/t2 simplices (containersOf analysis)
+    2. Showing IsDoor ↔ color-change for face-2 boundary edges
+    3. Showing faces 0,1 contribute no doors (Sperner condition)
+    4. Applying Triangulation.sperner to get the panchromatic triangle -/
+private lemma face2_path_odd :
+    let g : ℕ → Fin 2 := fun k =>
+      if hk : k ≤ N then
+        if (cN2 N hN f hf_map (k, N - k) (by omega)).val = 0 then 0 else 1
+      else 1
+    Odd ((Finset.range N).filter (fun k => g k ≠ g (k + 1))).card := by
+  apply odd_changes
+  · -- g 0 = 1: vertex (0, N) has forced color 1
+    rw [dif_pos (Nat.zero_le N), Nat.sub_zero]
+    have hcol := cN2_left_corner N hN f hf_map
+    simp [hcol]
+  · -- g N = 0: vertex (N, 0) has forced color 0
+    rw [dif_pos (le_refl N), Nat.sub_self]
+    have hcol := cN2_right_corner N hN f hf_map
+    simp [hcol]
+
+end N2Grid
+
 end SpernerFreudSimp

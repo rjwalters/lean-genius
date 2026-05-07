@@ -579,3 +579,58 @@ Concurrent Docker build cache contention was causing builds #2-#4 failures.
 3. **Eliminate axiom for all n**: either extend Type-k triangulation to general n,
    or use induction from n=2 (may need separate argument for n≥3)
 
+
+
+## Session 2026-05-07 (Session 12) — XOR parity lemma + grid coloring infrastructure
+
+**Mode**: REVISIT (continuing axiom elimination work)
+**Outcome**: progress — XOR parity proved; grid coloring infrastructure added; key gap scoped
+
+### What I Did
+
+- Proved **XOR parity lemma** (`changes_parity_mod2`, `odd_changes`): for a binary sequence
+  g : ℕ → Fin 2 with g(0)=1 and g(n)=0, the number of adjacent differing pairs is odd.
+  Proof: induction with fin_cases case split for all 2×2×2=8 combinations.
+- Added **`gridPt N b`**: real embedding of grid vertex (b₀,b₁) as (b₀/N, b₁/N, (N-b₀-b₁)/N).
+  Proved `gridPt_inSimplex` (InSimplex when b₀+b₁≤N).
+- Added **`cN2 N hN f hf_map b hb`**: Sperner coloring via spernerColor on gridPt.
+  Proved `cN2_ne_of_zero`: Sperner condition (coord j = 0 → color ≠ j).
+- Proved **forced corner colors**:
+  - `cN2_left_corner`: vertex (0,N) has color 1 (on face 0 ∧ face 2 → both colors excluded)
+  - `cN2_right_corner`: vertex (N,0) has color 0 (on face 1 ∧ face 2 → both colors excluded)
+- Proved **`face2_path_odd`**: the binary sequence g(k) = cN2(k,N-k) mod 2 has g(0)=1, g(N)=0,
+  so by XOR parity there are an odd number of color-changing edges on face 2.
+
+### Key Findings
+
+- **XOR parity**: #{k<n : g(k)≠g(k+1)} ≡ if g(0)≠g(n) then 1 else 0 (mod 2).
+  Proved by induction. The case g(m)≠g(m+1) uses `fin_cases` on all 8 combinations
+  to show endpoint change. The case g(m)=g(m+1) is trivial by `not_ne_iff.mp` + `simp [heq]`.
+- **Coloring infrastructure**: `gridPt` uses real subtraction `(N:ℝ)-b.1-b.2` for third coord.
+  `field_simp; ring` proves the sum = 1 (ring identity). `first | exact div_nonneg ... | ...`
+  pattern handles the 3 nonnegativity goals after fin_cases.
+- **Corner colors forced**: two Sperner exclusions from two different geometric faces uniquely
+  determine the color. Pattern: `cN2_ne_of_zero (coord0=0)` + `cN2_ne_of_zero (coord2=0)` 
+  → `fin_cases` on Fin 3 eliminates 2 of 3 options.
+- **Key gap for `sperner_panchromatic_two`**: connecting face2_path_odd to the abstract
+  `Triangulation.sperner` boundary door count requires:
+  1. adj=none characterization: t1(b) at face 0 has adj=none iff b₀+b₁=N-1 (face 2 boundary);
+     t1(b) faces 1,2 boundary when b₁=0 or b₀=0 (faces 1,0 resp.); all t2 interior.
+  2. IsDoor connection: boundary door at face 2 ↔ adjacent vertices have colors 0 and 1.
+  3. Faces 0,1 contribute no IsDoors (Sperner condition excludes color 0 on face 0, color 1 on face 1).
+  This is ~150-200 more lines; containersOf analysis is the hardest piece.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (431→584 lines, Sections IV+V added)
+
+### Next Steps
+
+1. **Prove adj=none characterization** for t1/t2 simplices:
+   - Show containersOf (edge {(b₀,b₁+1),(b₀+1,b₁)}) has card 1 iff b₀+b₁=N-1
+   - This requires showing only t1(b) and possibly t2(b) contain this edge
+   - Key lemma: t2(b) ∈ t2Bases N iff b₀+b₁+1<N
+2. **Prove boundary_doors count = face2_path_odd count**:
+   - Establish bijection between boundary IsDoors and color-changing face-2 edges
+   - Use Sperner condition to exclude faces 0,1
+3. **Apply Triangulation.sperner** and extract witnesses for `sperner_panchromatic_two`
