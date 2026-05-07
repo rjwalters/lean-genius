@@ -27,19 +27,23 @@ So ∃ v ≠ w with Sᵥ ∩ Sw ≠ ∅: pick z there to get z+v, z+w ∈ S with
 
 ## Axioms
 
-Three axioms capture the required measure-theory facts (all provable from Mathlib):
+Two axioms remain (down from four in earlier sessions):
 
 1. `blichfeldt_volume_partition`: vol(S) = ∑' g : ℤⁿ, vol(Sᵍ)
    → Apply `IsAddFundamentalDomain.lintegral_eq_tsum` with f = 1_S.
 
-2. `blichfeldt_proj_measurable`: Each Sᵥ is measurable.
-   → Intersection of measurable sets; translation preserves measurability.
+2. `blichfeldt_general`: the k≥1 covering-count averaging form.
 
-3. `blichfeldt_disj_bound`: Pairwise-disjoint measurable subsets of F have total vol ≤ 1.
-   → `measure_iUnion` (sigma-additivity) + `measure_mono` (monotonicity).
+The two former measure-theoretic axioms are now proved theorems:
+- `blichfeldt_proj_measurable` (translation continuity → preimage measurability)
+- `blichfeldt_disj_bound` (sigma-additivity + monotonicity against vol(F)=1)
+
+`minkowski_from_blichfeldt` is now sorry-free: the half-scaling T = (1/2)·s is
+shown measurable by rewriting as the preimage under doubling, and the volume
+identity vol(T) = vol(s)/2ⁿ is closed via `Measure.addHaar_smul`.
 -/
 
-open MeasureTheory Set MinkowskiProved
+open MeasureTheory Set MinkowskiProved Pointwise
 
 namespace BlichfeldtTheorem
 
@@ -214,10 +218,58 @@ theorem minkowski_from_blichfeldt {n : ℕ} [NeZero n]
     (h_vol : (2 : ENNReal) ^ n < volume s) :
     ∃ p : (stdLattice n).toAddSubgroup, p ≠ 0 ∧ (p : Fin n → ℝ) ∈ s := by
   let T := (fun x : Fin n → ℝ => (2 : ℝ)⁻¹ • x) '' s
+  -- Bridge: T = (2:ℝ)⁻¹ • s definitionally (Set.SMul via Pointwise)
+  have h_T_eq : T = (2 : ℝ)⁻¹ • s := rfl
+  have h2_ne : (2 : ℝ) ≠ 0 := by norm_num
+  -- Measurability: rewrite T as preimage of s under doubling, then preimage of measurable
   have h_meas_T : MeasurableSet T := by
-    sorry -- MeasurableEmbedding for x ↦ (1/2)·x (linear isomorphism) preserves measurability
+    have h_pre : (2 : ℝ)⁻¹ • s = ((2 : ℝ) • · : (Fin n → ℝ) → (Fin n → ℝ)) ⁻¹' s := by
+      ext y
+      simp only [Set.mem_smul_set, Set.mem_preimage]
+      refine ⟨?_, ?_⟩
+      · rintro ⟨a, has, rfl⟩
+        rwa [smul_smul, mul_inv_cancel₀ h2_ne, one_smul]
+      · intro h
+        refine ⟨(2 : ℝ) • y, h, ?_⟩
+        rw [smul_smul, inv_mul_cancel₀ h2_ne, one_smul]
+    rw [h_T_eq, h_pre]
+    exact h_meas.preimage (measurable_const_smul (2 : ℝ))
+  -- Volume identity: vol(T) = (1/2)^n · vol(s) > 1 since vol(s) > 2^n
   have h_vol_T : (1 : ENNReal) < volume T := by
-    sorry -- vol(T) = vol(S)/2ⁿ > 1; proved via Measure.addHaar_smul and ENNReal arithmetic
+    rw [h_T_eq, MeasureTheory.Measure.addHaar_smul volume ((2 : ℝ)⁻¹) s]
+    -- Goal: 1 < ENNReal.ofReal |(2:ℝ)⁻¹| ^ finrank ℝ (Fin n → ℝ) * volume s
+    rw [Module.finrank_fin_fun]
+    -- Goal: 1 < ENNReal.ofReal |(2:ℝ)⁻¹| ^ n * volume s
+    have h_abs : |((2 : ℝ)⁻¹)| = (2 : ℝ)⁻¹ := by norm_num
+    rw [h_abs]
+    -- Convert ENNReal.ofReal (2:ℝ)⁻¹ to (2 : ENNReal)⁻¹
+    have h_ofReal : ENNReal.ofReal ((2 : ℝ)⁻¹) = (2 : ENNReal)⁻¹ := by
+      rw [show ((2 : ℝ)⁻¹) = 1 / 2 by ring,
+          ENNReal.ofReal_div_of_pos (by norm_num : (0:ℝ) < 2)]
+      simp
+    rw [h_ofReal]
+    -- Goal: 1 < (2 : ENNReal)⁻¹ ^ n * volume s
+    -- Use h_vol : (2 : ENNReal)^n < volume s; multiply both sides by (2⁻¹)^n
+    have h2_inv_ne_zero_base : (2 : ENNReal)⁻¹ ≠ 0 :=
+      ENNReal.inv_ne_zero.mpr (by norm_num)
+    have h2_inv_ne_top_base : (2 : ENNReal)⁻¹ ≠ ⊤ :=
+      ENNReal.inv_ne_top.mpr (by norm_num)
+    have h2_inv_ne_zero : ((2 : ENNReal)⁻¹) ^ n ≠ 0 :=
+      pow_ne_zero _ h2_inv_ne_zero_base
+    have h2_inv_ne_top : ((2 : ENNReal)⁻¹) ^ n ≠ ⊤ := by
+      intro hcontra
+      rw [ENNReal.pow_eq_top_iff] at hcontra
+      exact h2_inv_ne_top_base hcontra.1
+    have h_step : ((2 : ENNReal)⁻¹) ^ n * (2 : ENNReal) ^ n
+                  < ((2 : ENNReal)⁻¹) ^ n * volume s :=
+      (ENNReal.mul_lt_mul_left h2_inv_ne_zero h2_inv_ne_top).mpr h_vol
+    have h_eq_one : ((2 : ENNReal)⁻¹) ^ n * (2 : ENNReal) ^ n = 1 := by
+      rw [← mul_pow,
+          ENNReal.inv_mul_cancel (by norm_num : (2 : ENNReal) ≠ 0)
+            (by norm_num : (2 : ENNReal) ≠ ⊤),
+          one_pow]
+    rw [h_eq_one] at h_step
+    exact h_step
   obtain ⟨a, b, haT, hbT, hab_ne, hab_diff⟩ := blichfeldt_basic T h_meas_T h_vol_T
   obtain ⟨x₀, hx₀s, rfl⟩ := haT
   obtain ⟨y₀, hy₀s, rfl⟩ := hbT
