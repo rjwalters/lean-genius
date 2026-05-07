@@ -18,7 +18,7 @@
     "proven": [
       "e is irrational (Euler 1737)",
       "e is transcendental (Hermite 1873)",
-      "First 6 decimal digits of e = 2.718281... proved from Mathlib bounds",
+      "First 9 decimal digits of e = 2.718281828... proved from Mathlib bounds (saturating exp_one_gt_d9)",
       "Normal numbers must be irrational (necessary condition)"
     ],
     "open": [
@@ -47,16 +47,17 @@
     "builtItems": [
       "ETranscendentalOQ02.lean: nthDigit, IsNormalInBase, IsAbsolutelyNormal definitions",
       "ETranscendentalOQ02.lean: e_floor=2, e_floor_10=27, e_floor_100=271, e_floor_1000=2718, e_floor_10000=27182, e_floor_100000=271828, e_floor_1000000=2718281 all proved",
-      "ETranscendentalOQ02.lean: e_digit1=7, e_digit2=1, e_digit3=8, e_digit4=2, e_digit5=8, e_digit6=1 machine-checked",
+      "ETranscendentalOQ02.lean: e_digit1..e_digit9 (digits 7,1,8,2,8,1,8,2,8) machine-checked from exp_one bounds",
+      "ETranscendentalOQ02.lean: periodic_has_missing_ktuple PROVED (PR #15750) via orbit-cardinality argument — no longer an axiom",
       "ETranscendentalOQ02.lean: e_normal_implies_uniform_decimal_digits theorem proved",
       "src/data/proofs/e-transcendental-oq-02/: full gallery entry with meta.json, annotations.json, index.ts"
     ],
     "insights": [
-      "Mathlib's exp_one_gt_d9 (e>2.718281828) and exp_one_lt_d9 (e<2.7182818286) suffice to pin all 6 decimal digits",
+      "Mathlib's exp_one_gt_d9 (e>2.718281828) and exp_one_lt_d9 (e<2.7182818286) suffice to pin all 9 decimal digits 2.718281828... (the 9th saturates the lower bound)",
       "Int.floor_eq_iff.mpr + push_cast + linarith is the canonical pattern for floor lemmas about e",
       "IsNormalInBase uses Tendsto with (b:ℝ)^(-(k:ℤ)) for the 1/bᵏ target — integer exponents handle negative powers",
       "nthDigit uses ℤ return type to avoid subtraction issues; Fin b is used in string patterns",
-      "periodic_has_missing_ktuple and normal_imp_irrational axiomatized due to ℤ↔Fin b casting complexity in Tendsto setting",
+      "periodic_has_missing_ktuple is now PROVED (orbit cardinality + iterated periodicity reduction); normal_imp_irrational remains axiomatized due to ℤ↔Fin b casting complexity in the Tendsto setting",
       "The open conjecture e_absolutely_normal mirrors the pattern from e-transcendental-oq-01 (schanuel_conjecture axiom)"
     ],
     "mathlibGaps": [
@@ -64,7 +65,7 @@
       "No Mathlib formalization of Borel's 1909 normality theorem"
     ],
     "nextSteps": [
-      "Consider proving periodic_has_missing_ktuple via Finset.card_le_card_of_injOn once the injectivity argument is worked out",
+      "Consider proving rational_digits_eventually_periodic (the remaining structural axiom) via the b^n mod q pigeonhole argument",
       "Consider proving normal_imp_irrational fully by adding a bridge lemma connecting nthDigit ℤ values to Fin b"
     ]
   },
@@ -97,7 +98,7 @@
     ]
   },
   "started": "2026-05-04T00:00:00.000Z",
-  "lastUpdate": "2026-05-07T17:35:00.000Z",
+  "lastUpdate": "2026-05-07T19:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
