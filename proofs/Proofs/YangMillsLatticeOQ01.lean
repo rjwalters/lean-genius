@@ -361,6 +361,85 @@ theorem su2_string_tension_pos (g_sq : ℝ) (hg : g_sq > 0) :
   rw [su2_string_tension g_sq hg]
   linarith
 
+/-- SU(2) adjoint representation: dim R = 3, C₂ = 2 (= N for adjoint of SU(N)).
+    String tension: σ = g² · 2 / (2 · 3) = g²/3.
+    Distinct from the fundamental: gluons (adjoint) get a different mass scale. -/
+def su2AdjointMigdalData (g_sq : ℝ) (hg : g_sq > 0) : MigdalData :=
+  { coupling := g_sq
+    coupling_pos := hg
+    casimir := 2
+    casimir_pos := by norm_num
+    repDim := 3
+    repDim_pos := by norm_num }
+
+/-- SU(2) adjoint string tension equals g²/3.
+    The adjoint Casimir for SU(N) is C₂(adj) = N, so SU(2) adjoint has C₂ = 2. -/
+theorem su2_adjoint_string_tension (g_sq : ℝ) (hg : g_sq > 0) :
+    stringTension (su2AdjointMigdalData g_sq hg) = g_sq / 3 := by
+  unfold stringTension su2AdjointMigdalData
+  ring
+
+/-- The SU(2) adjoint string tension is positive. -/
+theorem su2_adjoint_string_tension_pos (g_sq : ℝ) (hg : g_sq > 0) :
+    0 < stringTension (su2AdjointMigdalData g_sq hg) := by
+  rw [su2_adjoint_string_tension g_sq hg]
+  linarith
+
+/-- SU(N) fundamental representation: dim R = N, C₂ = (N²-1)/(2N).
+    String tension: σ = g²(N²-1)/(4N²).
+    Generalizes su2FundamentalMigdalData (N=2 yields σ = 3g²/16).
+    Requires N ≥ 2 (SU(1) is trivial; SU(N) for N ≥ 2 is the non-abelian regime). -/
+def suNFundamentalMigdalData (N : ℝ) (hN : 2 ≤ N) (g_sq : ℝ) (hg : g_sq > 0) :
+    MigdalData :=
+  { coupling := g_sq
+    coupling_pos := hg
+    casimir := (N^2 - 1) / (2 * N)
+    casimir_pos := by
+      have hN_pos : (0:ℝ) < N := by linarith
+      have hNN : (1:ℝ) < N^2 := by nlinarith
+      apply div_pos (by linarith) (by linarith)
+    repDim := N
+    repDim_pos := by linarith }
+
+/-- SU(N) fundamental string tension equals g²(N²-1)/(4N²).
+    For large N, σ → g²/4 (the 't Hooft limit gives a finite mass scale at fixed g²N). -/
+theorem suN_fundamental_string_tension (N : ℝ) (hN : 2 ≤ N) (g_sq : ℝ) (hg : g_sq > 0) :
+    stringTension (suNFundamentalMigdalData N hN g_sq hg) = g_sq * (N^2 - 1) / (4 * N^2) := by
+  unfold stringTension suNFundamentalMigdalData
+  have hN_pos : (0:ℝ) < N := by linarith
+  have hN_ne : N ≠ 0 := ne_of_gt hN_pos
+  field_simp
+  ring
+
+/-- The SU(N) fundamental string tension is positive (for N ≥ 2). -/
+theorem suN_fundamental_string_tension_pos (N : ℝ) (hN : 2 ≤ N)
+    (g_sq : ℝ) (hg : g_sq > 0) :
+    0 < stringTension (suNFundamentalMigdalData N hN g_sq hg) :=
+  stringTension_pos _
+
+/-- **Consistency**: at N = 2, the SU(N) fundamental formula reproduces the SU(2) value
+    σ = 3g²/16. -/
+theorem suN_fundamental_at_two (g_sq : ℝ) (hg : g_sq > 0) :
+    stringTension (suNFundamentalMigdalData 2 (le_refl 2) g_sq hg) = 3 * g_sq / 16 := by
+  rw [suN_fundamental_string_tension 2 (le_refl 2) g_sq hg]
+  ring
+
+/-- The Migdal correlation length ξ = 1/σ: the reciprocal of the string tension.
+    In the 2D lattice gauge theory, ξ controls the spatial decay of the 2-point function:
+    |S₂(t)| ≤ S₂(0) · exp(-t/ξ). -/
+noncomputable def migdalCorrelationLength (f : MigdalData) : ℝ :=
+  1 / stringTension f
+
+/-- The Migdal correlation length is strictly positive. -/
+theorem migdalCorrelationLength_pos (f : MigdalData) : 0 < migdalCorrelationLength f :=
+  div_pos one_pos (stringTension_pos f)
+
+/-- **Reciprocity**: the Migdal mass gap and correlation length satisfy σ · ξ = 1. -/
+theorem migdal_gap_times_corr_length (f : MigdalData) :
+    stringTension f * migdalCorrelationLength f = 1 := by
+  unfold migdalCorrelationLength
+  exact mul_one_div_cancel (ne_of_gt (stringTension_pos f))
+
 /- ═══════════════════════════════════════════════════════════════════════════
 PART V: THE MILLENNIUM PROBLEM — PRECISE LEAN STATEMENT
 ═══════════════════════════════════════════════════════════════════════════ -/
