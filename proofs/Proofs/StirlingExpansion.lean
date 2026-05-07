@@ -345,49 +345,66 @@ private lemma stirling_step_lower (k : ℕ) (hk : 1 ≤ k) :
 -- ═══════════════════════════════════════════════════
 
 -- 1/(12k²) ≤ 1/(12(k-1)) - 1/(12k) = 1/(12k(k-1)) for k ≥ 2
+-- Equiv: k(k-1) ≤ k², i.e. 0 ≤ k ✓
 private lemma inv_sq_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     1 / (12 * k ^ 2) ≤ 1 / (12 * (k - 1)) - 1 / (12 * k) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
-  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg k]
+  suffices h : 0 ≤ 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) by linarith
+  have h_eq : 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) =
+      (k ^ 2 - k * (k - 1)) / (12 * k ^ 2 * (k - 1) * k) := by field_simp; ring
+  rw [h_eq]; apply div_nonneg; · nlinarith [sq_nonneg k]; · positivity
 
--- 1/(6k³) ≤ 1/(12(k-1)²) - 1/(12k²) = (2k-1)/(12k²(k-1)²) for k ≥ 2
+-- 1/(6k³) ≤ 1/(12(k-1)²) - 1/(12k²) for k ≥ 2
+-- 2(k-1)² ≤ k(2k-1) since 2k²-4k+2 ≤ 2k²-k, i.e. k ≥ 2/3 ✓
 private lemma inv_cube_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     1 / (6 * k ^ 3) ≤ 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
-  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg (k - 1), sq_nonneg k]
+  have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
+  calc 1 / (6 * k ^ 3)
+      = 2 * (k - 1) ^ 2 / (12 * k ^ 3 * (k - 1) ^ 2) := by field_simp; ring
+    _ ≤ k * (2 * k - 1) / (12 * k ^ 3 * (k - 1) ^ 2) := by gcongr
+    _ = 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by field_simp; ring
 
--- 1/(12k(k+1)) = 1/(12k) - 1/(12(k+1)) ≤ 1/(12k²) for k ≥ 1
+-- 1/(12k) - 1/(12(k+1)) ≤ 1/(12k²) for k ≥ 1
+-- Equiv: k(k+1) ≥ k², i.e. k+1 ≥ k ✓
 private lemma inv_harmonic_le_sq (k : ℝ) (hk : 1 ≤ k) :
     1 / (12 * k) - 1 / (12 * (k + 1)) ≤ 1 / (12 * k ^ 2) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k + 1 := by linarith
-  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg k]
+  suffices h : 0 ≤ 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) by linarith
+  have h_eq : 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) =
+      (k * (k + 1) - k ^ 2) / (12 * k ^ 2 * k * (k + 1)) := by field_simp; ring
+  rw [h_eq]; apply div_nonneg; · nlinarith [sq_nonneg k]; · positivity
 
 -- 1/(12k³) ≤ 1/(24(k-1)²) - 1/(24k²) for k ≥ 2
+-- 2(k-1)² ≤ k(2k-1), i.e. k ≥ 2/3 ✓
 private lemma inv_cube_le_telescope2 (k : ℝ) (hk : 2 ≤ k) :
     1 / (12 * k ^ 3) ≤ 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
-  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  -- Equivalent: 2(k-1)² ≤ k(2k-1), i.e. -3k ≤ -2, i.e. k ≥ 2/3 ✓
-  nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos]
+  have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
+  calc 1 / (12 * k ^ 3)
+      = 2 * (k - 1) ^ 2 / (24 * k ^ 3 * (k - 1) ^ 2) := by field_simp; ring
+    _ ≤ k * (2 * k - 1) / (24 * k ^ 3 * (k - 1) ^ 2) := by gcongr
+    _ = 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by field_simp; ring
 
 -- 1/(8k⁴) ≤ 1/(24(k-1)³) - 1/(24k³) for k ≥ 2
--- Equivalent (after clearing denom 24k⁴(k-1)³): 3(k-1)³ ≤ k⁴ - k(k-1)³
--- k⁴ - (k+3)(k-1)³ = 6k²-8k+3 = (2k-1)²+2(k-1)² ≥ 0
+-- 3(k-1)³ ≤ k⁴ - k(k-1)³, i.e. (k+3)(k-1)³ ≤ k⁴
+-- since k⁴ - (k+3)(k-1)³ = 6k²-8k+3 = (2k-1)²+2(k-1)² ≥ 0
 private lemma inv_quad_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     1 / (8 * k ^ 4) ≤ 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by
   have hk_pos : (0 : ℝ) < k := by linarith
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
   have key : 0 ≤ 6 * k ^ 2 - 8 * k + 3 := by nlinarith [sq_nonneg (2*k-1), sq_nonneg (k-1)]
-  rw [div_sub_div _ _ (by positivity) (by positivity), div_le_div_iff (by positivity) (by positivity)]
-  nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos,
-             mul_pos (mul_pos hk_pos hk_pos) (mul_pos hk1_pos hk1_pos)]
+  have hineq : 3 * (k - 1) ^ 3 ≤ k ^ 4 - k * (k - 1) ^ 3 := by
+    nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos,
+               mul_pos (mul_pos hk_pos hk_pos) (mul_pos hk1_pos hk1_pos)]
+  calc 1 / (8 * k ^ 4)
+      = 3 * (k - 1) ^ 3 / (24 * k ^ 4 * (k - 1) ^ 3) := by field_simp; ring
+    _ ≤ (k ^ 4 - k * (k - 1) ^ 3) / (24 * k ^ 4 * (k - 1) ^ 3) := by gcongr
+    _ = 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by field_simp; ring
 
 -- ═══════════════════════════════════════════════════
 -- Part IIIc: Partial Sum Bounds by Induction
@@ -420,6 +437,8 @@ private lemma log_stirlingSeq_partial_upper (n L : ℕ) (hn : 2 ≤ n) :
       have hstep' := stirling_step_upper (n + L) (by omega)
       push_cast at hstep' ⊢; linarith
     push_cast at ih hbound hnL1_sub ⊢
+    -- Rewrite (n:ℝ)+↑L+1-1 to (n:ℝ)+↑L in goal to match ih/hbound form
+    rw [hnL1_sub]
     linarith
 
 -- Lower bound: partial sum ≥ G(n) - G(n+L) where G(k) = 1/(12k) - 1/(24(k-1)²) - 1/(24(k-1)³)
@@ -440,7 +459,10 @@ private lemma log_stirlingSeq_partial_lower (n L : ℕ) (hn : 2 ≤ n) :
     have h1 := inv_harmonic_le_sq ((n : ℝ) + L) (by linarith)
     have h2 := inv_cube_le_telescope2 ((n : ℝ) + L) hk
     have h3 := inv_quad_le_telescope ((n : ℝ) + L) hk
-    push_cast at hstep h1 h2 h3 ih ⊢; linarith
+    have hnL1_sub : (n : ℝ) + (↑L + 1 : ℝ) - 1 = (n : ℝ) + ↑L := by ring
+    push_cast at hstep h1 h2 h3 ih ⊢
+    rw [hnL1_sub]
+    linarith
 
 -- ═══════════════════════════════════════════════════
 -- Part III: Main Expansion Theorem
@@ -542,12 +564,15 @@ theorem stirling_first_correction :
     have hL_lb : 1 / (12 * (n : ℝ)) - 1 / (2 * (n : ℝ) ^ 2) ≤ L := by
       suffices h : 1 / (24 * ((n : ℝ) - 1) ^ 2) + 1 / (24 * ((n : ℝ) - 1) ^ 3) ≤
                   1 / (2 * (n : ℝ) ^ 2) by linarith [hL_lower]
-      rw [div_add_div _ _ (by positivity) (by positivity),
-          div_le_div_iff (by positivity) (by positivity)]
-      -- Reduces to: n³ ≤ 12*(n-1)³, holds since 11n³-36n²+36n-12 ≥ 0 for n ≥ 2
-      nlinarith [mul_pos hn1_pos (mul_pos hn1_pos hn1_pos),
-                 mul_pos hn_pos (mul_pos hn_pos hn_pos),
-                 mul_pos hn_pos (mul_pos hn1_pos hn1_pos)]
+      suffices h2 : 0 ≤ 1 / (2 * (n:ℝ)^2) -
+          (1 / (24 * ((n:ℝ)-1)^2) + 1 / (24 * ((n:ℝ)-1)^3)) by linarith
+      have h_eq : 1 / (2 * (n:ℝ)^2) - (1 / (24 * ((n:ℝ)-1)^2) + 1/(24*((n:ℝ)-1)^3)) =
+          (12*((n:ℝ)-1)^3 - (n:ℝ)^3) / (24*(n:ℝ)^2*((n:ℝ)-1)^3) := by field_simp; ring
+      rw [h_eq]; apply div_nonneg
+      · nlinarith [mul_pos hn1_pos (mul_pos hn1_pos hn1_pos),
+                   mul_pos hn_pos (mul_pos hn_pos hn_pos),
+                   mul_pos hn_pos (mul_pos hn1_pos hn1_pos)]
+      · positivity
     linarith
   -- Upper: exp(L) - (1 + 1/(12n)) ≤ 2/n²
   · have hL_ub : L ≤ 1 / (n : ℝ) := by
@@ -555,9 +580,13 @@ theorem stirling_first_correction :
         _ ≤ 1 / (n : ℝ) := by
             -- Need: 1/(12(n-1)) + 1/(12(n-1)²) ≤ 1/n
             -- Equiv: n(n-1) + n ≤ 12(n-1)², i.e., n²≤ 12n²-26n+12, holds for n≥2
-            rw [div_add_div _ _ (by positivity) (by positivity),
-                div_le_div_iff (by positivity) hn_pos]
-            nlinarith [sq_nonneg ((n : ℝ) - 1), mul_pos hn_pos hn1_pos]
+            suffices h : 0 ≤ 1 / (n:ℝ) -
+                (1 / (12 * ((n:ℝ)-1)) + 1 / (12 * ((n:ℝ)-1)^2)) by linarith
+            have h_eq : 1 / (n:ℝ) - (1/(12*((n:ℝ)-1)) + 1/(12*((n:ℝ)-1)^2)) =
+                (12*((n:ℝ)-1)^2 - (n:ℝ)^2) / (12*(n:ℝ)*((n:ℝ)-1)^2) := by field_simp; ring
+            rw [h_eq]; apply div_nonneg
+            · nlinarith [sq_nonneg ((n:ℝ)-1), mul_pos hn_pos hn1_pos]
+            · positivity
     -- |exp(L) - (1+L)| ≤ L² * exp(L) / 2 ≤ (1/n)² * exp(1/n) / 2 ≤ 1/n²
     -- exp(L) - (1 + 1/(12n)) = (exp(L) - (1+L)) + (L - 1/(12n)) ≤ L²*exp(L)/2 + C/n²
     sorry -- HARD: needs |exp(L) - (1+L)| ≤ L²/2 * exp(L) and L ≤ 1/n, exp(L) ≤ 2
