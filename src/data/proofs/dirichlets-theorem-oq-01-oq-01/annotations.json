@@ -12,6 +12,18 @@
     "prerequisites": ["Dirichlet L-functions", "characters mod q", "zero-free regions in analytic number theory", "Siegel's theorem"]
   },
   {
+    "id": "imports-namespace-setup",
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 38, "endLine": 47 },
+    "type": "technique",
+    "title": "Imports, Heartbeat Bump, and the noncomputable Section",
+    "content": "Imports the parent file `Proofs.DirichletsTheoremOQ01` (supplying `IsSiegelZero`, `SiegelZeroConjecture`, and the five framework axioms: `siegel_theorem`, `grh_implies_no_siegel_zeros`, `landau_page_theorem`, `deuring_heilbronn_repulsion`, `tatuzawa_theorem`) plus `Mathlib.Tactic`. The `set_option maxHeartbeats 400000` doubles the default to handle heavy L-function elaboration. The `noncomputable section` is required because L-functions, real characters, and Siegel zeros are intrinsically classical objects (no algorithm computes whether $L(\\beta, \\chi) = 0$). Open declarations expose the API: `Nat`, `Real`, `Filter`, `DirichletCharacter`, the `Topology` scope, and the parent's namespace `DirichletsTheoremOQ01`.",
+    "mathContext": "Five inherited axioms encode the framework: Siegel's ineffective bound, GRH→no-Siegel-zeros, Landau-Page uniqueness, Deuring-Heilbronn repulsion, Tatuzawa single-exception. This file adds 2 net new axioms (`linnik_bound`, `effective_linnik_no_siegel`) and proves 20 theorems on top.",
+    "significance": "technical",
+    "relatedConcepts": ["maxHeartbeats", "noncomputable section", "DirichletsTheoremOQ01 parent file", "open scoped Topology"],
+    "prerequisites": ["Lean 4 noncomputable", "Mathlib.NumberTheory.LSeries.DirichletContinuation"]
+  },
+  {
     "id": "two-worlds-structure",
     "proofId": "dirichlets-theorem-oq-01-oq-01",
     "range": { "startLine": 49, "endLine": 95 },
@@ -62,13 +74,25 @@
   {
     "id": "three-tier-hierarchy",
     "proofId": "dirichlets-theorem-oq-01-oq-01",
-    "range": { "startLine": 248, "endLine": 335 },
+    "range": { "startLine": 248, "endLine": 296 },
     "type": "insight",
-    "title": "World B, Open Question, and Summary: The State of Knowledge",
-    "content": "The final section proves World B structural properties and the formal open question. `world_b_primeCountAP_mono` shows the prime counting function in APs inherits monotonicity. `world_b_siegel_bound_effective` shows: in World B, Siegel's theorem becomes effective (the constant C(ε) can be made explicit). `siegel_zero_in_critical_strip` shows: Siegel zeros (if any) lie in (1/2, 1) — the critical strip, not outside it. `SiegelZeroExistenceQuestion` is defined as SZC ∨ ¬SZC (tautology), and `siegel_zero_question_classical` proves this using classical logic. `state_of_knowledge` collects what IS known: nonvanishing, Siegel's ineffective bound, World B improvements — without resolving the conjecture. `grh_world_summary` then proves the much stronger effective bound C/log²(q) under GRH.",
-    "mathContext": "`SiegelZeroExistenceQuestion := SZC ∨ ¬SZC` (tautological in classical logic). Under GRH: $L(1,\\chi) \\gg 1/\\log^2(q)$ (effective, squared log). Under Siegel (unconditional): $L(1,\\chi) \\gg_{\\varepsilon} q^{-\\varepsilon}$ (ineffective, any power). The gap between these is the Siegel zero problem. In World B: $L(1,\\chi) \\gg 1/\\log q$ (effective, single log) from zero-free region.",
+    "title": "World B Improvements + Formal Open Question (SZC ∨ ¬SZC)",
+    "content": "The penultimate section proves World B structural properties and the formal open question. `world_b_primeCountAP_mono` shows the prime counting function in APs inherits monotonicity. `world_b_siegel_bound_effective` shows: in World B, Siegel's theorem becomes effective (the constant C(ε) can be made explicit). `siegel_zero_in_critical_strip` shows: Siegel zeros (if any) lie in (1/2, 1) — the critical strip, not outside it. `SiegelZeroExistenceQuestion` is defined as SZC ∨ ¬SZC (tautology), and `siegel_zero_question_classical` proves this using `Classical.em`. The point of the tautological wrapping is to surface the genuine mathematical content: the question is *which* alternative holds, not whether one does.",
+    "mathContext": "`SiegelZeroExistenceQuestion := SZC ∨ ¬SZC` (tautological in classical logic, via `Classical.em`). The tautological encoding records that the open question, in propositional form, is trivially decidable — but the *constructive* decision (which side?) requires resolving the conjecture itself.",
     "significance": "key",
-    "relatedConcepts": ["open question formalization", "state of knowledge theorem", "GRH effective bound", "classical logic tautology", "effective vs ineffective bounds"],
-    "prerequisites": ["Lean 4 classical logic (Classical.em)", "Siegel's theorem vs GRH", "zero-free region strength comparison"]
+    "relatedConcepts": ["open question formalization", "Classical.em", "tautological encoding", "World B improvements"],
+    "prerequisites": ["Lean 4 classical logic (Classical.em)", "Siegel's theorem vs GRH"]
+  },
+  {
+    "id": "state-of-knowledge-grh-summary",
+    "proofId": "dirichlets-theorem-oq-01-oq-01",
+    "range": { "startLine": 297, "endLine": 335 },
+    "type": "result",
+    "title": "State-of-Knowledge Theorem + GRH World Summary",
+    "content": "Two summary theorems close the file. `state_of_knowledge` proves the conjunction of three currently-known facts: (1) nonvanishing $L(1,\\chi) \\ne 0$ (proved unconditionally via `L_one_ne_zero`), (2) Siegel's ineffective lower bound $L(1,\\chi) > C(\\varepsilon)/q^\\varepsilon$ (axiom `siegel_theorem`), and (3) Linnik's bound (axiom `linnik_bound`). What remains OPEN: making the Siegel constant $C(\\varepsilon)$ effective for ALL conductors. `grh_world_summary` upgrades to the GRH-conditional effective bound $L(1,\\chi) \\geq C/\\log^2(q)$ — squared-log, much stronger than Siegel's $q^{-\\varepsilon}$. The squared exponent vs single-log is the *quantitative* signature of the GRH-vs-SZC gap.",
+    "mathContext": "Under GRH: $L(1,\\chi) \\gg 1/\\log^2(q)$ (effective, squared log). Under Siegel (unconditional): $L(1,\\chi) \\gg_{\\varepsilon} q^{-\\varepsilon}$ (ineffective, any power). Under SZC (World B): $L(1,\\chi) \\gg 1/\\log q$ (effective, single log) from zero-free region. The triple gap is the quantitative content of the Siegel zero problem.",
+    "significance": "key",
+    "relatedConcepts": ["state of knowledge theorem", "GRH effective bound", "log^{-2} bound", "effective vs ineffective"],
+    "prerequisites": ["Siegel's theorem vs GRH", "zero-free region strength comparison", "Mathlib L_one_ne_zero"]
   }
 ]
