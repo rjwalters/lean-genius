@@ -1060,6 +1060,167 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
     · exact hgcdMatrix_small_row_output_le f a b hsmall
     · sorry
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART X: SIGN-PATTERN INVARIANT FOR `hgcdMatrix` (Session 13)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Lifting EvenPattern/OddPattern from `lehmerCofactors` to `hgcdMatrix`
+
+The PART VI sign-pattern lemmas (`lehmerCofactors_has_pattern`,
+`entry_bound_of_even`, `entry_bound_of_odd`) prove that any matrix produced
+by `lehmerCofactors` from `CofactorMatrix.id` has either `EvenPattern` or
+`OddPattern`, and that this sign discipline yields entry bounds via Cramer.
+
+To extend the entry-bound argument from `lehmerCofactors` to the recursive
+`hgcdMatrix`, we first need to lift the sign-pattern invariant itself: every
+matrix produced by `hgcdMatrix` should have `EvenPattern` or `OddPattern`.
+
+The recursive case `hgcdMatrix (f+1) a b = M_outer.mul M_inner` requires us
+to know how `mul` interacts with patterns. Pattern multiplication is a
+`Z/2`-grading: Even * Even = Even, Even * Odd = Odd, Odd * Even = Odd,
+Odd * Odd = Even. (The product is Even iff both factors agree on parity,
+matching the additive sign-flip of `lehmerInnerStep`.)
+
+This subsection proves the four pattern-multiplication cases and the
+combined existential `cofactor_mul_pattern`, then concludes with
+`hgcdMatrix_has_pattern` by induction on fuel. -/
+
+/-- Even pattern is preserved by multiplying two Even-pattern matrices.
+
+    For `M, N` with `EvenPattern` (`α ≥ 0, β ≤ 0, γ ≤ 0, δ ≥ 0`):
+    - `(M.mul N).α = M.α·N.α + M.β·N.γ = (≥0)(≥0) + (≤0)(≤0) ≥ 0`
+    - `(M.mul N).β = M.α·N.β + M.β·N.δ = (≥0)(≤0) + (≤0)(≥0) ≤ 0`
+    - `(M.mul N).γ = M.γ·N.α + M.δ·N.γ = (≤0)(≥0) + (≥0)(≤0) ≤ 0`
+    - `(M.mul N).δ = M.γ·N.β + M.δ·N.δ = (≤0)(≤0) + (≥0)(≥0) ≥ 0`
+    Each follows from `nlinarith` with `mul_nonneg` / `mul_nonpos_iff` facts. -/
+theorem cofactor_mul_even_even {M N : CofactorMatrix}
+    (hM : EvenPattern M) (hN : EvenPattern N) :
+    EvenPattern (M.mul N) := by
+  obtain ⟨hMα, hMβ, hMγ, hMδ⟩ := hM
+  obtain ⟨hNα, hNβ, hNγ, hNδ⟩ := hN
+  simp only [EvenPattern, CofactorMatrix.mul]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · -- 0 ≤ M.α·N.α + M.β·N.γ
+    nlinarith [mul_nonneg hMα hNα, mul_nonneg (neg_nonneg.mpr hMβ) (neg_nonneg.mpr hNγ)]
+  · -- M.α·N.β + M.β·N.δ ≤ 0
+    nlinarith [mul_nonneg hMα (neg_nonneg.mpr hNβ), mul_nonneg (neg_nonneg.mpr hMβ) hNδ]
+  · -- M.γ·N.α + M.δ·N.γ ≤ 0
+    nlinarith [mul_nonneg (neg_nonneg.mpr hMγ) hNα, mul_nonneg hMδ (neg_nonneg.mpr hNγ)]
+  · -- 0 ≤ M.γ·N.β + M.δ·N.δ
+    nlinarith [mul_nonneg (neg_nonneg.mpr hMγ) (neg_nonneg.mpr hNβ), mul_nonneg hMδ hNδ]
+
+/-- Odd pattern * Odd pattern = Even pattern.
+
+    For `M, N` with `OddPattern` (`α ≤ 0, β ≥ 0, γ ≥ 0, δ ≤ 0`):
+    - `(M.mul N).α = M.α·N.α + M.β·N.γ = (≤0)(≤0) + (≥0)(≥0) ≥ 0`
+    - `(M.mul N).β = M.α·N.β + M.β·N.δ = (≤0)(≥0) + (≥0)(≤0) ≤ 0`
+    - `(M.mul N).γ = M.γ·N.α + M.δ·N.γ = (≥0)(≤0) + (≤0)(≥0) ≤ 0`
+    - `(M.mul N).δ = M.γ·N.β + M.δ·N.δ = (≥0)(≥0) + (≤0)(≤0) ≥ 0` -/
+theorem cofactor_mul_odd_odd {M N : CofactorMatrix}
+    (hM : OddPattern M) (hN : OddPattern N) :
+    EvenPattern (M.mul N) := by
+  obtain ⟨hMα, hMβ, hMγ, hMδ⟩ := hM
+  obtain ⟨hNα, hNβ, hNγ, hNδ⟩ := hN
+  simp only [EvenPattern, CofactorMatrix.mul]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · nlinarith [mul_nonneg (neg_nonneg.mpr hMα) (neg_nonneg.mpr hNα), mul_nonneg hMβ hNγ]
+  · nlinarith [mul_nonneg (neg_nonneg.mpr hMα) hNβ, mul_nonneg hMβ (neg_nonneg.mpr hNδ)]
+  · nlinarith [mul_nonneg hMγ (neg_nonneg.mpr hNα), mul_nonneg (neg_nonneg.mpr hMδ) hNγ]
+  · nlinarith [mul_nonneg hMγ hNβ, mul_nonneg (neg_nonneg.mpr hMδ) (neg_nonneg.mpr hNδ)]
+
+/-- Even pattern * Odd pattern = Odd pattern.
+
+    For `M` Even, `N` Odd:
+    - `(M.mul N).α = (≥0)(≤0) + (≤0)(≥0) ≤ 0`
+    - `(M.mul N).β = (≥0)(≥0) + (≤0)(≤0) ≥ 0`
+    - `(M.mul N).γ = (≤0)(≤0) + (≥0)(≥0) ≥ 0`
+    - `(M.mul N).δ = (≤0)(≥0) + (≥0)(≤0) ≤ 0` -/
+theorem cofactor_mul_even_odd {M N : CofactorMatrix}
+    (hM : EvenPattern M) (hN : OddPattern N) :
+    OddPattern (M.mul N) := by
+  obtain ⟨hMα, hMβ, hMγ, hMδ⟩ := hM
+  obtain ⟨hNα, hNβ, hNγ, hNδ⟩ := hN
+  simp only [OddPattern, CofactorMatrix.mul]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · nlinarith [mul_nonneg hMα (neg_nonneg.mpr hNα), mul_nonneg (neg_nonneg.mpr hMβ) hNγ]
+  · nlinarith [mul_nonneg hMα hNβ, mul_nonneg (neg_nonneg.mpr hMβ) (neg_nonneg.mpr hNδ)]
+  · nlinarith [mul_nonneg (neg_nonneg.mpr hMγ) (neg_nonneg.mpr hNα), mul_nonneg hMδ hNγ]
+  · nlinarith [mul_nonneg (neg_nonneg.mpr hMγ) hNβ, mul_nonneg hMδ (neg_nonneg.mpr hNδ)]
+
+/-- Odd pattern * Even pattern = Odd pattern.
+
+    For `M` Odd, `N` Even:
+    - `(M.mul N).α = (≤0)(≥0) + (≥0)(≤0) ≤ 0`
+    - `(M.mul N).β = (≤0)(≤0) + (≥0)(≥0) ≥ 0`
+    - `(M.mul N).γ = (≥0)(≥0) + (≤0)(≤0) ≥ 0`
+    - `(M.mul N).δ = (≥0)(≤0) + (≤0)(≥0) ≤ 0` -/
+theorem cofactor_mul_odd_even {M N : CofactorMatrix}
+    (hM : OddPattern M) (hN : EvenPattern N) :
+    OddPattern (M.mul N) := by
+  obtain ⟨hMα, hMβ, hMγ, hMδ⟩ := hM
+  obtain ⟨hNα, hNβ, hNγ, hNδ⟩ := hN
+  simp only [OddPattern, CofactorMatrix.mul]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · nlinarith [mul_nonneg (neg_nonneg.mpr hMα) hNα, mul_nonneg hMβ (neg_nonneg.mpr hNγ)]
+  · nlinarith [mul_nonneg (neg_nonneg.mpr hMα) (neg_nonneg.mpr hNβ), mul_nonneg hMβ hNδ]
+  · nlinarith [mul_nonneg hMγ hNα, mul_nonneg (neg_nonneg.mpr hMδ) (neg_nonneg.mpr hNγ)]
+  · nlinarith [mul_nonneg hMγ (neg_nonneg.mpr hNβ), mul_nonneg (neg_nonneg.mpr hMδ) hNδ]
+
+/-- Combined: the matrix product of two pattern-bearing matrices has a
+    pattern. This is the Z/2-grading: Even⊕Even = Even, Even⊕Odd = Odd,
+    Odd⊕Even = Odd, Odd⊕Odd = Even.
+
+    Together with `lehmerCofactors_has_pattern` and the inductive structure
+    of `hgcdMatrix`, this lemma is the key inductive step for
+    `hgcdMatrix_has_pattern` below. -/
+theorem cofactor_mul_pattern {M N : CofactorMatrix}
+    (hM : EvenPattern M ∨ OddPattern M)
+    (hN : EvenPattern N ∨ OddPattern N) :
+    EvenPattern (M.mul N) ∨ OddPattern (M.mul N) := by
+  rcases hM with hM | hM <;> rcases hN with hN | hN
+  · exact Or.inl (cofactor_mul_even_even hM hN)
+  · exact Or.inr (cofactor_mul_even_odd hM hN)
+  · exact Or.inr (cofactor_mul_odd_even hM hN)
+  · exact Or.inl (cofactor_mul_odd_odd hM hN)
+
+/-- Sign-pattern invariant for `hgcdMatrix`: every matrix produced by
+    Schönhage's recursive HGCD has `EvenPattern` or `OddPattern`.
+
+    Proof: induction on fuel.
+    - **Base** (`fuel = 0`): `id` has `EvenPattern`
+      (`CofactorMatrix.id_even_pattern`).
+    - **Threshold case** (`max a b < hgcdThreshold`): result is
+      `lehmerCofactors hgcdThreshold a b id`; pattern by
+      `lehmerCofactors_has_pattern`.
+    - **Recursive case**: result is `M_outer.mul M_inner` where each factor
+      has a pattern by IH; product has a pattern by `cofactor_mul_pattern`.
+
+    This is the first half of the Session 13 plan (sign pattern lifted from
+    Lehmer-only to HGCD). The downstream entry bound `hgcdMatrix_entry_bound`
+    uses this together with a row-vector invariant + Cramer + det to bound
+    individual entries by `max a b`. -/
+theorem hgcdMatrix_has_pattern (fuel a b : ℕ) :
+    EvenPattern (hgcdMatrix fuel a b) ∨ OddPattern (hgcdMatrix fuel a b) := by
+  induction fuel generalizing a b with
+  | zero =>
+    rw [hgcdMatrix_zero]
+    exact Or.inl CofactorMatrix.id_even_pattern
+  | succ f ih =>
+    rw [hgcdMatrix_succ]
+    by_cases hsmall : max a b < hgcdThreshold
+    · rw [if_pos hsmall]
+      exact lehmerCofactors_has_pattern hgcdThreshold a b
+    · rw [if_neg hsmall]
+      -- Result is `M_outer.mul M_inner`. Each factor's pattern by IH;
+      -- product by `cofactor_mul_pattern`.
+      exact cofactor_mul_pattern
+        (ih _ _) (ih (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b))
+
+/-- Top-level HGCD has `EvenPattern` or `OddPattern`. -/
+theorem hgcdMatrixOf_has_pattern (a b : ℕ) :
+    EvenPattern (hgcdMatrixOf a b) ∨ OddPattern (hgcdMatrixOf a b) :=
+  hgcdMatrix_has_pattern _ a b
+
 /-! ## Summary
 
 **Proved (0 axioms, 0 sorries):**
@@ -1156,6 +1317,26 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
       (entries) from the IH for the outer matrix (row output), avoiding the
       Session 11 obstacle where M₂'s IH was at the wrong inputs.
 
+16. **Sign-pattern invariant for `hgcdMatrix`** (PART X, Session 13):
+    - `cofactor_mul_even_even`, `cofactor_mul_odd_odd`, `cofactor_mul_even_odd`,
+      `cofactor_mul_odd_even`: the four Z/2-graded multiplication cases
+      (Even*Even = Odd*Odd = Even; Even*Odd = Odd*Even = Odd). Each proved
+      by sign analysis (`nlinarith` with `mul_nonneg`).
+    - `cofactor_mul_pattern`: combined existential — `M.mul N` has a pattern
+      whenever both factors do.
+    - `hgcdMatrix_has_pattern`, `hgcdMatrixOf_has_pattern`: every matrix
+      produced by recursive HGCD has `EvenPattern` or `OddPattern`. Proved
+      by induction on fuel: identity is Even (base), Lehmer threshold case
+      via `lehmerCofactors_has_pattern`, recursive case via
+      `cofactor_mul_pattern` and the IH for both subproblems.
+
+    This lifts the sign-pattern half of Step 2b from `lehmerCofactors`-only
+    to all of HGCD. It is the first half of the Session 13 plan
+    (sign-pattern invariant); the entry-bound half remains as future work
+    (it requires a row-vector invariant for HGCD, which requires solving the
+    `hgcdMatrix_row_output_le` recursive case — circularity to be broken
+    via joint induction).
+
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
   Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
@@ -1165,8 +1346,9 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
   `lehmerCofactors_has_pattern` + `entry_bound_of_even/odd`, lifted to
   arbitrary fuel) rather than via its row-output bound at the wrong inputs.
   The remaining gap is a `hgcdMatrix_entry_bound` lemma (analogue of
-  `entry_bound_of_even/odd` for HGCD), which will need a sign-pattern
-  invariant for `hgcdMatrix` extending the Lehmer-only argument.
+  `entry_bound_of_even/odd` for HGCD); Session 13 (PART X) supplies the
+  sign-pattern half of this lemma. The entry magnitude half (combining
+  pattern + det + row-vector invariant + Cramer) remains future work.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
