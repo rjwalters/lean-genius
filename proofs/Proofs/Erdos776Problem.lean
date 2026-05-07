@@ -408,3 +408,80 @@ theorem distinctSizes_card_le_n_sub_two {n : ℕ} (hn : 4 ≤ n)
       _ = n - 2 := by
           rw [Finset.Nat.card_Icc]
           omega
+
+/- ## Concrete Achievability — Base Case n = 4
+
+We prove the achievability bound `maxDistinctSizes n 1 ≥ n − 2` for the
+smallest non-trivial case n = 4 by explicit construction. The witness is
+F = {{0, 1}, {0, 2, 3}}, an antichain over Fin 4 with sizes {2, 3} (so
+2 = n − 2 distinct sizes).
+
+This is a verified instance of the `erdos_trotter_r1_achievable` axiom for
+the smallest case. General achievability for all n > 3 still requires a
+uniform combinatorial construction — see research notes for strategy. -/
+
+namespace Erdos776Achievability
+
+/-- A two-set family is an antichain iff the two sets are pairwise
+incomparable. -/
+lemma isAntichainFamily_pair {n : ℕ} {A B : Finset (Fin n)}
+    (hAB : A ≠ B) (hAB_sub : ¬(A ⊆ B)) (hBA_sub : ¬(B ⊆ A)) :
+    IsAntichainFamily ({A, B} : Finset (Finset (Fin n))) := by
+  intro X hX Y hY hXY
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hX hY
+  rcases hX with rfl | rfl
+  · rcases hY with rfl | rfl
+    · exact (hXY rfl).elim
+    · exact hAB_sub
+  · rcases hY with rfl | rfl
+    · exact hBA_sub
+    · exact (hXY rfl).elim
+
+/-- For r = 1, the multiplicity condition is automatic: every size in
+    `distinctSizes F` came from at least one set in F. -/
+lemma hasMultiplicity_one {n : ℕ} (F : SubsetFamily n) :
+    HasMultiplicity F 1 := by
+  intro s hs
+  unfold distinctSizes at hs
+  rw [Finset.mem_image] at hs
+  obtain ⟨X, hX, rfl⟩ := hs
+  have hX_in : X ∈ F.filter (fun A => A.card = X.card) :=
+    Finset.mem_filter.mpr ⟨hX, rfl⟩
+  exact Finset.card_pos.mpr ⟨X, hX_in⟩
+
+/-- Concrete witness for n = 4: F₄ = {{0, 1}, {0, 2, 3}}. -/
+def witness4 : SubsetFamily 4 :=
+  ({({0, 1} : Finset (Fin 4)), ({0, 2, 3} : Finset (Fin 4))} :
+    Finset (Finset (Fin 4)))
+
+/-- The witness family is an antichain over Fin 4. -/
+theorem witness4_antichain : IsAntichainFamily witness4 := by
+  unfold witness4
+  apply isAntichainFamily_pair
+  · decide
+  · decide
+  · decide
+
+/-- The witness family has exactly 2 distinct set sizes. -/
+theorem witness4_distinct_two : numDistinctSizes witness4 = 2 := by
+  unfold numDistinctSizes distinctSizes witness4
+  decide
+
+/-- **Concrete achievability for n = 4**:
+    `maxDistinctSizes 4 1 ≥ 4 − 2`, witnessed by F₄. This is a verified
+    instance of `erdos_trotter_r1_achievable` for n = 4. -/
+theorem maxDistinctSizes_4_1_ge_two : maxDistinctSizes 4 1 ≥ 4 - 2 := by
+  show maxDistinctSizes 4 1 ≥ 2
+  unfold maxDistinctSizes
+  have hF_in : witness4 ∈ Finset.univ.filter
+      (fun (G : SubsetFamily 4) => IsAntichainFamily G ∧ HasMultiplicity G 1) :=
+    Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, witness4_antichain, hasMultiplicity_one _⟩
+  calc 2 = numDistinctSizes witness4 := witness4_distinct_two.symm
+    _ ≤ Finset.sup _ numDistinctSizes := Finset.le_sup hF_in
+
+/-- Erdős–Trotter r = 1 achievability for n = 4 (matching the axiom shape). -/
+theorem erdos_trotter_r1_achievable_n4 : maxDistinctSizes 4 1 ≥ 4 - 2 :=
+  maxDistinctSizes_4_1_ge_two
+
+end Erdos776Achievability
