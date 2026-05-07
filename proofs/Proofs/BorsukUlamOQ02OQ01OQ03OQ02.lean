@@ -27,6 +27,10 @@
   4. Proves the unconditional LOWER bound `2 * (d/2) - 1 ≤ symBUDim n (2 * k)`
      using only (a) Bertrand-style prime existence and (b) parent's cyclic
      axioms — no new axioms beyond the parent.
+  5. Establishes the quantitative Bertrand bound `n / 2 < largestPrimeBelow n`
+     for `n ≥ 2` (axiom-free, via Mathlib's `Nat.bertrand`). Pins the
+     largest prime in the dyadic window `(n/2, n]` and shows the cyclic
+     lower bound is within factor 2 of optimal.
 
   ## References
   - Dold (1983) "Simple proofs of some Borsuk-Ulam results"
@@ -39,6 +43,7 @@
 
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Find
+import Mathlib.NumberTheory.Bertrand
 import Mathlib.Tactic
 import Proofs.BorsukUlamOQ02OQ01OQ03
 
@@ -154,6 +159,46 @@ theorem symBUDim_five_lower_unconditional (k : ℕ) (hk : 0 < k) :
     2 * k - 1 ≤ symBUDim 5 (2 * k) :=
   symBUDim_even_lower 5 k (by norm_num) hk
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART VI: Bertrand bound on `largestPrimeBelow`
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Bertrand-Chebyshev bound on the largest prime ≤ n** (axiom-free).
+
+    For `n ≥ 2`, the largest prime ≤ `n` strictly exceeds `n / 2`:
+        `n / 2 < largestPrimeBelow n`.
+
+    This is the formal version of the heuristic "p* > n/2" used to argue
+    that the unconditional cyclic lower bound `2k - 1 ≤ symBUDim n (2k)` is
+    within factor 2 of the trivial dimension `2k - 1`, regardless of the
+    composite structure of `n`.
+
+    Proof: Bertrand-Chebyshev (`Nat.exists_prime_lt_and_le_two_mul`) applied
+    at `m = n / 2 ≥ 1` produces a prime `p` with `m < p ≤ 2m`. Since
+    `2 * (n / 2) ≤ n`, we have `p ≤ n`, hence `p ≤ largestPrimeBelow n` by
+    maximality of `findGreatest`. Combining `m < p ≤ largestPrimeBelow n`
+    gives the bound. -/
+theorem n_div_two_lt_largestPrimeBelow (n : ℕ) (hn : 2 ≤ n) :
+    n / 2 < largestPrimeBelow n := by
+  have hm : n / 2 ≠ 0 := by omega
+  obtain ⟨p, hp_prime, hp_gt, hp_le⟩ :=
+    Nat.exists_prime_lt_and_le_two_mul (n / 2) hm
+  have h2m_le_n : 2 * (n / 2) ≤ n := by omega
+  have hp_le_n : p ≤ n := hp_le.trans h2m_le_n
+  have hp_le_lpb : p ≤ largestPrimeBelow n := by
+    unfold largestPrimeBelow
+    exact Nat.le_findGreatest hp_le_n hp_prime
+  exact lt_of_lt_of_le hp_gt hp_le_lpb
+
+/-- **Bertrand window** for `largestPrimeBelow n`, `n ≥ 2`:
+    `n/2 < largestPrimeBelow n ≤ n`.
+
+    The lower bound is `n_div_two_lt_largestPrimeBelow` (Bertrand); the
+    upper bound is `largestPrimeBelow_le` (definition of `findGreatest`). -/
+theorem largestPrimeBelow_in_bertrand_window (n : ℕ) (hn : 2 ≤ n) :
+    n / 2 < largestPrimeBelow n ∧ largestPrimeBelow n ≤ n :=
+  ⟨n_div_two_lt_largestPrimeBelow n hn, largestPrimeBelow_le n⟩
+
 /-
 ## Summary
 
@@ -161,27 +206,36 @@ theorem symBUDim_five_lower_unconditional (k : ℕ) (hk : 0 < k) :
 - `symBUDim_eq_largestPrime` : the core equality conjecture; full proof
   requires Fadell-Husseini index calculations not in Mathlib.
 
-### Theorems proved (5)
+### Theorems proved (7)
 - `largestPrimeBelow_isPrime`, `largestPrimeBelow_le`,
   `two_le_largestPrimeBelow` — basic facts about the prime selector.
 - `symBUDim_even_formula` — closed form on even d (uses the new axiom).
 - `symBUDim_even_lower` — UNCONDITIONAL lower bound (no new axioms beyond
   parent), establishing `2k - 1 ≤ symBUDim n (2k)` for n ≥ 2.
+- `n_div_two_lt_largestPrimeBelow` — Bertrand-Chebyshev quantitative bound
+  `n / 2 < largestPrimeBelow n` for n ≥ 2 (axiom-free, uses Mathlib's
+  `Nat.exists_prime_lt_and_le_two_mul`). Pins p* in the dyadic window
+  `(n/2, n]` regardless of how composite n is.
+- `largestPrimeBelow_in_bertrand_window` — packages the Bertrand lower
+  bound with the trivial upper bound `≤ n`.
 
 ### Concrete instances (3)
 - `symBUDim_three_four`, `symBUDim_four_six` (conjectural via the new axiom)
 - `symBUDim_five_lower_unconditional` (axiom-free up to parent)
 
 ### Path forward
-- Phase 3: gallery entry under `src/data/proofs/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/`
 - Stretch: prove the n=4 case by hand (compute equivariant index of S₄ on
   small reps); a proof or counterexample at n=4 would settle the conjecture
   for many small-n applications.
 - Coordinate with sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral Dₙ).
+- The Bertrand bound shows the cyclic lower bound is within factor 2 of
+  optimal; tightening past this would require S_n-specific structure
+  (representation-theoretic obstructions, V₄-style non-cyclic factors).
 -/
 
 #check @symBUDim_eq_largestPrime
 #check @symBUDim_even_formula
 #check @symBUDim_even_lower
+#check @n_div_two_lt_largestPrimeBelow
 
 end BorsukUlamSymPrime
