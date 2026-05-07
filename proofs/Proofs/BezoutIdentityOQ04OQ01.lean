@@ -156,13 +156,12 @@ theorem snf_exists_zero (m n : ℕ) :
   refine ⟨⟨1, 0, 1, isUnimodular_one, isUnimodular_one, ?_, ?_⟩, ?_⟩
   · -- D = 0 is diagonal: every entry is 0
     intro i j _
-    rfl
+    simp
   · -- D = 0 satisfies the divisibility chain: 0 ∣ 0
     intro k _ _ _ _ _
-    exact dvd_refl 0
-  · -- 0 = 1 * 0 * 1
-    show (0 : Matrix (Fin m) (Fin n) ℤ) = (1 : Matrix _ _ ℤ) * 0 * 1
     simp
+  · -- A = 0 = 1 * 0 * 1
+    simp [SmithNormalForm.isDecompOf]
 
 /-! ## Diagonal Entry Extraction -/
 
