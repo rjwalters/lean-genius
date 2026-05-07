@@ -84,11 +84,11 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
   · rw [hv] at ha; norm_cast at ha  -- ha: (0:ℂ) = if IsUnit a then 1 else 0
     split_ifs at ha ⊢ with hu
-    · exact absurd ha one_ne_zero.symm
-    · rfl
+    · exact absurd ha one_ne_zero.symm   -- IsUnit: ha:(0:ℂ)=1 → False
+    · exact hv                           -- ¬IsUnit: goal quadraticChar a = 0, hv: = 0
   · rw [hv] at ha; norm_cast at ha  -- ha: (1:ℂ) = if IsUnit a then 1 else 0
     split_ifs at ha ⊢ with hu
-    · rfl
+    · exact hv                           -- IsUnit: goal quadraticChar a = 1, hv: = 1
     · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
   · rw [hv] at ha; push_cast at ha  -- ha: (-1:ℂ) = if IsUnit a then 1 else 0
     exfalso

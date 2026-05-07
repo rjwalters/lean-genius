@@ -106,10 +106,10 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   · rw [hv] at ha; norm_cast at ha
     split_ifs at ha ⊢ with hu
     · exact absurd ha one_ne_zero.symm
-    · rfl
+    · exact hv
   · rw [hv] at ha; norm_cast at ha
     split_ifs at ha ⊢ with hu
-    · rfl
+    · exact hv
     · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
   · rw [hv] at ha; push_cast at ha
     exfalso

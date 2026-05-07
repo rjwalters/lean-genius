@@ -70,10 +70,10 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
   · rw [hv] at ha; norm_cast at ha  -- ha : (0 : ZMod q) = if IsUnit a then 1 else 0
     split_ifs at ha ⊢ with hu
     · exact absurd ha one_ne_zero.symm
-    · rfl
+    · exact hv
   · rw [hv] at ha; norm_cast at ha
     split_ifs at ha ⊢ with hu
-    · rfl
+    · exact hv
     · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
   · rw [hv] at ha; push_cast at ha  -- ha : (-1 : ZMod q) = if IsUnit a then 1 else 0
     exfalso
