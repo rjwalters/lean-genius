@@ -1,27 +1,40 @@
 {
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-02",
-  "title": "Prove denominator_control: lcm(1,",
-  "phase": "NEW",
+  "title": "Apéry denominator_control: lcm(1,…,n)³·aₙ ∈ ℤ for the Apéry a-sequence",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Prove denominator_control: lcm(1,.",
-    "whyMatters": []
+    "formal": "\\forall n \\in \\mathbb{N}, \\; \\exists m \\in \\mathbb{Z}, \\; \\bigl(\\operatorname{lcm}(1,\\ldots,n)\\bigr)^3 \\cdot a_n = m",
+    "plain": "Eliminate the `denominator_control` axiom in `Proofs/BaselProblemOQ01OQ01OQ02.lean` (line 385). The axiom states `∃ m : ℤ, (lcmUpTo n : ℚ) ^ 3 * aperyA n = m` — that the rational Apéry a-sequence has bounded denominators dividing lcm(1,…,n)³. This is one of the 5 open axioms blocking the unconditional formalization of Apéry's irrationality of ζ(3).",
+    "whyMatters": [
+      "One of the 5 open axioms in the Apéry ζ(3) formalization (Proofs/BaselProblemOQ01OQ01OQ02.lean:385).",
+      "The integer-squeeze argument depends critically on lcm³·aₙ ∈ ℤ; without it the conditional irrationality theorem cannot be discharged.",
+      "Sibling problem oq-01-oq-01-oq-02-oq-03 handles `lcm_hanson_bound` (lcm ≤ 3^n); this problem handles the parallel `denominator_control` axiom — together they discharge two of the 5 axioms.",
+      "Pure number theory: depends on an explicit formula for aₙ + denominator analysis; no analytic ingredients needed."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "denominator_control_factorial (PROVED in BaselProblemOQ01OQ01OQ02.lean) — the weaker bound (n!)³·aₙ ∈ ℤ. Establishes the proof technique: induct on the recurrence, showing factorial cubes clear all denominators.",
+      "Mathlib has Finset.lcm divisibility infrastructure (Finset.dvd_lcm, Finset.lcm_dvd) and Nat.lcm via Mathlib.Data.Nat.GCD.Basic."
+    ],
+    "open": [
+      "denominator_control (axiom): lcm(1,…,n)³·aₙ ∈ ℤ — current target."
+    ],
+    "goal": "Replace `axiom denominator_control` with a `theorem denominator_control` (or `lemma`), or prove it in a companion file `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` that re-exports the result, eliminating one of the 5 Apéry axioms."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-26T08:56:57.649Z",
+    "phase": "OBSERVE",
+    "since": "2026-05-07T20:10:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Survey the explicit a-sequence formula and identify the denominator-clearing lemma chain.",
+    "blockers": [
+      "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo.",
+      "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'."
+    ],
+    "nextAction": "Session 2: Prove `aperyA_explicit_formula` — the van der Poorten / Apéry closed form `aₙ = ∑_{k=0}^{n} C(n,k)² C(n+k,k)² · (Hₙ⁽³⁾ + ∑_{m=1}^{k} (-1)^{m-1}/(2m³ C(n,m) C(n+m,m)))`, where Hₙ⁽³⁾ = ∑_{j=1}^{n} 1/j³. This makes the denominator analysis tractable.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,22 +42,48 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Session 1 (2026-05-07, OBSERVE): Title was truncated 'Prove denominator_control: lcm(1,'; replaced with full descriptive title. Surveyed BaselProblemOQ01OQ01OQ02.lean — denominator_control is at line 385, declared as `axiom`. The weaker `denominator_control_factorial` (factorial cubes clear) is already PROVED, establishing the structural technique. Identified the missing piece: the explicit closed-form for aₙ (van der Poorten 1979, also Apéry 1979). Documented: classical formula uses two summations over `n!`/`k!`/`(n-k)!` ratios + harmonic sums, where each rational denominator divides lcm³.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "insights": [
+      "BaselProblemOQ01OQ01OQ02.lean already has `denominator_control_factorial : ∃ m : ℤ, (n.factorial : ℚ)^3 * aperyA n = m` PROVED (Part XIX). This is the weaker bound but uses the SAME proof structure — induct on the recurrence, show each step preserves integrality after multiplying by the new factorial cube. The key step `aperyA_factorial_step` (line 869) is a closed-form recurrence on `n!^3 · aₙ` that lets the induction go through. denominator_control is exactly the same induction with `lcm^3` instead of `n!^3`, but requires showing `n³ ∣ lcm(1,…,n)^3 · lcm(1,…,n-1)^3` style divisibility (which holds because lcm contains every k from 1 to n).",
+      "The classical explicit formula (van der Poorten 1979, eq. (8); Apéry 1979): aₙ = ∑_{k=0}^{n} C(n,k)² C(n+k,k)² · cₙₖ, where cₙₖ = ∑_{m=1}^{n} 1/m³ + ∑_{m=1}^{k} (-1)^{m-1}/(2 m³ C(n,m) C(n+m,m)). Each term cₙₖ has a denominator dividing lcm(1,…,n)³ (the first sum directly, the second via the shifted lcm bound).",
+      "Alternative: recurrence-based induction. (n+2)³ · aₙ₊₂ = aperyRecCoeff(n+1) · aₙ₊₁ - (n+1)³ · aₙ. If we know lcm(1..n+1)³ · aₙ₊₁ ∈ ℤ and lcm(1..n)³ · aₙ ∈ ℤ, multiply both sides by lcm(1..n+2)³/(n+2)³. Since (n+2) divides lcm(1..n+2), the cube divides lcm(1..n+2)³, so the multiplier is integral. Then the RHS becomes integers. This is structurally the same as the factorial proof with lcm in place of n!, exploiting that {1,…,n} ⊆ {divisors of lcmUpTo n}.",
+      "Mathlib `Mathlib.Data.Nat.GCD.Basic` has `Nat.lcm` and `Finset.lcm`. The needed divisibility lemma `(k : ℕ) ∈ Finset.range n → (k+1) ∣ Finset.lcm (Finset.range n) (· + 1)` follows from `Finset.dvd_lcm`.",
+      "Mathlib lacks an `lcm_pow_dvd` style lemma for the cubed version `k^3 ∣ lcm(1,…,n)^3` from `k ≤ n`. Trivial corollary of `dvd_pow` once basic divisibility is established.",
+      "Strategy comparison: (A) recurrence-induction is cleaner and ports the existing `denominator_control_factorial` proof line-by-line, replacing `Nat.factorial` with `lcmUpTo` and using the divisibility lemma above. Estimated ~150-200 lines. (B) explicit-formula route requires ~400-500 lines but produces the closed form as a bonus, useful for downstream proofs (especially `apery_linearForm_decay`). Recommend (A) for this slug; (B) is a separate slug.",
+      "The recurrence induction step requires showing (n+2)³ · X ∈ ℤ ∧ (n+1)³ · X ∈ ℤ ⟹ X · lcm(1..n+2)³/(n+2)³ ∈ ℤ when X already has lcm(1..n+1)³ · X ∈ ℤ. The arithmetic is: lcm(1..n+2)³ = (lcm(1..n+1) ∨ (n+2))³ where ∨ = lcm. Use Mathlib's lcm-distributivity and dvd_pow.",
+      "Watch out: `lcmUpTo n = (Finset.range n).lcm (· + 1)` so lcmUpTo n covers integers 1 through n (not 0 through n-1). The defining equation `lcmUpTo_dvd_of_le` (already proved) gives lcm(1..n) ∣ lcm(1..m) for n ≤ m. This is the workhorse for the induction step."
+    ],
+    "mathlibGaps": [
+      "No Apéry numbers in Mathlib (aperyA, aperyB are gallery-local).",
+      "No general `lcm_pow_dvd` lemma for `k^p ∣ lcm(1,…,n)^p` from `k ≤ n` (trivial corollary chain — should be in Mathlib).",
+      "No `Nat.lcm_range` simp lemma giving `lcm({1,…,n}) = ⋁_{k≤n} k` form."
+    ],
+    "nextSteps": [
+      "Session 2 (port factorial proof to lcm): Open `Proofs/BaselProblemOQ01OQ01OQ02.lean`, study `denominator_control_factorial` (Part XIX) and `aperyA_factorial_step` (line 869). Port to a new theorem `denominator_control_lcm` using `lcmUpTo` instead of `Nat.factorial`. Companion file: `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` with proper Aristotle-friendly structure.",
+      "Session 3 (divisibility helpers): Prove `lcmUpTo_self_pow_dvd : ∀ k ≤ n, k^p ∣ (lcmUpTo n)^p` and `aperyA_lcm_step : (lcmUpTo (n+2))^3 * aperyA (n+2) = ... ∈ ℤ-friendly form`. Estimated ~80 lines.",
+      "Session 4 (induction): Prove `denominator_control` by induction on n using the lcm step lemma. Estimated ~50 lines.",
+      "Session 5 (axiom elimination): Replace `axiom denominator_control` with `theorem denominator_control` (or import from companion file). Update meta.json axiomCount, status, and gallery integration.",
+      "Optional Session 6 (Mathlib contribution): If `lcmUpTo_self_pow_dvd` is clean and general, draft a Mathlib PR — `Nat.lcm_pow_dvd_lcm_pow_of_le` or similar."
+    ]
   },
   "tags": [
-    "challenging",
+    "number-theory",
+    "apery",
+    "irrationality",
+    "zeta-3",
+    "denominator-control",
+    "lcm",
     "extension",
-    "gallery-extracted"
+    "gallery-extracted",
+    "axiom-elimination"
   ],
   "relatedProofs": [
     "basel-problem",
     "basel-problem-oq-01",
     "basel-problem-oq-01-oq-01",
     "basel-problem-oq-01-oq-01-oq-02",
+    "basel-problem-oq-01-oq-01-oq-02-oq-03",
     "basel-problem-oq-01-oq-03",
     "basel-problem-oq-02",
     "basel-problem-oq-04",
@@ -52,12 +91,23 @@
     "basel-problem-oq-05"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Apéry, R. (1979). Irrationalité de ζ(2) et ζ(3). Astérisque 61, 11–13.",
+      "van der Poorten, A. (1979). A proof that Euler missed: Apéry's proof of the irrationality of ζ(3). Math. Intelligencer 1(4), 195–203.",
+      "Beukers, F. (1979). A note on the irrationality of ζ(2) and ζ(3). Bull. London Math. Soc. 11(3), 268–272."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_theorem",
+      "https://en.wikipedia.org/wiki/Ap%C3%A9ry%27s_constant"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.GCD.Basic — Nat.lcm",
+      "Mathlib.Data.Finset.Lattice — Finset.lcm, Finset.dvd_lcm, Finset.lcm_dvd",
+      "Mathlib.Data.Nat.Choose.Central — Apéry numbers use central binomial coefficients (already imported in OQ02)"
+    ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-04-26T08:56:57.649Z",
+  "lastUpdate": "2026-05-07T20:10:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
