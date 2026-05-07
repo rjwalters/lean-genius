@@ -1,15 +1,21 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (bootstrap complete; full proof requires Mathlib upstream)
+**Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
 **Last Updated**: 2026-05-07
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Bootstrap completed. The OBSERVE/ORIENT phase converted this stub
-problem into a Lean 4 formalization target with:
+Iteration 2 (2026-05-07): added foundational structural lemmas required
+by every subsequent proof attempt:
+- `lcmRange_succ`: lcm(1,...,n+1) = Nat.lcm (lcmRange n) (n+1) — the
+  recursive structure inducting along `n` will use.
+- `lcmRange_dvd_lcmRange_of_le`: divisibility monotonicity.
+- `lcmRange_monotone`: numerical monotonicity (with `n=0` boundary).
+
+Iteration 1 (bootstrap, completed 2026-05-07):
 - Provable elementary bounds: lcmRange n ≤ n!, lcmRange n ≤ n^n.
 - Numerical verification of Hanson's bound for n ∈ {1..10, 12, 15, 20}.
 - Axiom statement of the general claim with documentation of proof
@@ -30,9 +36,10 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 1 (this session: OBSERVE/ORIENT bootstrap).
+- Total attempts: 2.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
-- Approaches tried: bootstrap with elementary bounds + axiom.
+- Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
+  structural-lemma layer for inductive proofs (iter 2).
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
