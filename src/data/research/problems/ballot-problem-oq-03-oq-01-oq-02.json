@@ -34,13 +34,12 @@
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
     "iteration": 5,
-    "focus": "Session 33 (2026-04-27): no code change. Strategy note added to literature/closing-the-final-sorry.md comparing GNW, RSK/Fomin, canonical-LGV routes. Recommends modularize first, then take Route B (RSK) for full HLF + retire hook_walk_identity as corollary.",
+    "focus": "Post-modularization (Session 35): file split into Main (398 lines, 0 sorries, 16 theorems, 1 def) + Helpers (14050 lines, 1 sorry on gnwProb_key, 476 theorems, 38 defs). Sole remaining sorry is gnwProb_key (GNW 1979 KEY theorem) in Helpers. Aristotle companion has 3 sorries reserved for proof-search candidates.",
     "blockers": [
-      "File size: 14022 lines exceeds practical Docker 32GB build envelope; further additions risk unverifiable code",
-      "GNW proof (~300 lines): standard probabilistic hook walk argument, not yet formalized",
-      "LGV well-formedness obstruction: requires transpose-duality case split for tall shapes"
+      "gnwProb_key: GNW 1979 KEY theorem (~200-300 lines via exchange argument); the sole non-Aristotle sorry blocking full HLF",
+      "LGV well-formedness obstruction: requires transpose-duality case split for tall shapes (alternative path)"
     ],
-    "nextAction": "Either (a) extend row-by-row to PART XXIV (10-row case, ~2000 lines, narrows sorry to ≥11×≥10) — but file is at 14022 lines, near build limit; (b) implement GNW probabilistic hook-walk proof to discharge sorry uniformly; (c) implement the canonical-config LGV path (A,B in PART V comment) for an entirely different proof line.",
+    "nextAction": "Prove gnwProb_key — formalize GNW 1979 exchange argument (rectangle case follows from gnwProb_sum_corners + hook_walk_identity_rectYD; non-rectangle case needs induction on |μ|). RSK/Fomin (~600 lines) is an alternative independent path.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -268,7 +267,6 @@
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
     "ballot-problem-oq-03-oq-03"
@@ -286,7 +284,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-04-21T22:00:00-07:00",
+  "lastUpdate": "2026-05-07T17:05:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
@@ -491,33 +489,33 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 399,
-      "theoremCount": 2,
+      "lineCount": 398,
+      "theoremCount": 16,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 114,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
-      "lineCount": 13899,
-      "theoremCount": 78,
+      "lineCount": 14050,
+      "theoremCount": 476,
       "axiomCount": 0,
-      "defCount": 15,
-      "sorryCount": 5,
+      "defCount": 38,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     },
