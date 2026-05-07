@@ -26,7 +26,7 @@
   {
     "id": "ann-formula-exotic",
     "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
-    "range": { "startLine": 128, "endLine": 180 },
+    "range": { "startLine": 128, "endLine": 150 },
     "type": "technique",
     "title": "From Equality to Formula: primeFactors Rewriting",
     "content": "The formula conjecture `buDim(pq, d) ≤ buDimFormula(pq, d)` (where `buDimFormula n d = sup_{p prime, p | n} buDim(p, d)`) follows by rewriting:\n```\nprimeFactors(pq) = primeFactors(p) ∪ primeFactors(q) = {p} ∪ {q}\n```\nusing `Nat.primeFactors_mul`, `Nat.primeFactors_prime`. The CRT upper bound then gives the formula bound directly.\n\nThe 'exotic' connection: a group $G = \\mathbb{Z}/n\\mathbb{Z}$ is exotic if `buDim(n,d) < buDimFormula(n,d)` strictly. For semiprimes, equality holds (formula conjecture proved), so no semiprimes are exotic.",
@@ -34,5 +34,41 @@
     "significance": "supporting",
     "relatedConcepts": ["buDimFormula", "Nat.primeFactors_mul", "IsExotic", "Finset.sup_insert"],
     "prerequisites": ["Nat.primeFactors_prime", "Finset.sup_singleton"]
+  },
+  {
+    "id": "ann-crt-axiom",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 94, "endLine": 111 },
+    "type": "insight",
+    "title": "The CRT Compatibility Axiom — Minimal Assumption",
+    "content": "The single axiom of this file: $\\text{buDim}(pq, d) \\leq \\max(\\text{buDim}(p,d), \\text{buDim}(q,d))$ for distinct primes. The motivation is the CRT isomorphism $\\mathbb{Z}/pq\\mathbb{Z} \\cong \\mathbb{Z}/p\\mathbb{Z} \\times \\mathbb{Z}/q\\mathbb{Z}$: any equivariant representation of $\\mathbb{Z}/pq\\mathbb{Z}$ factors through this product, so the BU dimension is bounded by the max of the factor dimensions.\n\nThis axiom is **strictly weaker** than the full formula conjecture `buDim_le_formula`. It only handles semiprimes pq with distinct primes — not prime powers $p^k$, not products with repeated primes. The estimated proof (using Smith theory for prime-order cyclic groups + direct-product decomposition of representation rings) is ~200 lines, which is why it's axiomatized here. The narrower scope keeps the file focused: we prove what the CRT decomposition gives, and no more.",
+    "mathContext": "Axiom: $\\forall p, q$ distinct primes, $\\forall d$: $\\text{buDim}(pq, d) \\leq \\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$. Source of weakness: prime powers $\\mathbb{Z}/p^k\\mathbb{Z}$ are NOT product groups, so this axiom is silent there.",
+    "significance": "key",
+    "relatedConcepts": ["Smith theory", "direct-product representations", "axiom minimality", "buDim_le_formula"],
+    "prerequisites": ["CRT for ℤ/pqℤ", "equivariant representations of cyclic groups"]
+  },
+  {
+    "id": "ann-concrete-cases",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 151, "endLine": 170 },
+    "type": "concept",
+    "title": "Concrete Cases: n = 6, 10, 15",
+    "content": "The three smallest semiprimes serve as instantiations of the abstract `buDim_semiprime_eq_max` theorem. Each follows the same pattern: `norm_num` discharges the factorization (e.g., 6 = 2·3), then the main equality is applied with the prime-witness terms also closed by `norm_num`. These ready-made lemmas are useful downstream for explicit computations in the BU dimension framework.\n\nNote: the smallest semiprime not in this list is 14 = 2·7. Including it would just be more of the same; the three chosen here cover the smallest cases involving each of {2, 3, 5} as factors.",
+    "mathContext": "$\\text{buDim}(6, d) = \\text{buDim}(2, d) \\sqcup \\text{buDim}(3, d)$, $\\text{buDim}(10, d) = \\text{buDim}(2, d) \\sqcup \\text{buDim}(5, d)$, $\\text{buDim}(15, d) = \\text{buDim}(3, d) \\sqcup \\text{buDim}(5, d)$.",
+    "significance": "context",
+    "relatedConcepts": ["norm_num tactic", "instantiation pattern", "buDim_semiprime_eq_max"],
+    "prerequisites": ["semiprime arithmetic", "Lean elaboration"]
+  },
+  {
+    "id": "ann-not-exotic",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 141, "endLine": 149 },
+    "type": "insight",
+    "title": "Semiprimes Are Not Exotic",
+    "content": "`not_exotic_semiprime` shows that no $\\mathbb{Z}/pq\\mathbb{Z}$ with distinct primes can be exotic. Recall: a group $G = \\mathbb{Z}/n\\mathbb{Z}$ is exotic if $\\text{buDim}(n, d) > \\text{buDimFormula}(n, d)$ for some $d$, meaning the BU dimension exceeds what the prime factor formula predicts. For semiprimes, the formula conjecture is proved (`buDim_le_formula_semiprime`), so the strict inequality required for exotic-ness can never hold. By contradiction: assume exotic, derive $\\text{buDim} > \\text{formula}$, but `buDim_le_formula_semiprime` gives $\\text{buDim} \\leq \\text{formula}$ — absurd.\n\n**Where could exotic behavior live?** Not in semiprimes, not in primes (`buDim p d = buDim p d` trivially). The remaining candidates are prime powers $p^k$ ($k \\geq 2$) and composites with repeated prime factors. This narrows the exotic representation problem significantly.",
+    "mathContext": "$\\text{IsExotic}(n, d) :\\iff \\text{buDim}(n, d) > \\text{buDimFormula}(n, d)$. For semiprimes, $\\leq$ proved $\\Rightarrow$ $>$ impossible.",
+    "significance": "key",
+    "relatedConcepts": ["IsExotic", "exotic representations", "Smith theory frontier"],
+    "prerequisites": ["buDim_le_formula_semiprime", "proof by contradiction"]
   }
 ]
