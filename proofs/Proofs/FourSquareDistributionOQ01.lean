@@ -350,4 +350,53 @@ example : sigmaStar 16 + 4 * sigmaOne 4 = sigmaOne 16 :=
 example : sigmaStar 15 = sigmaOne 15 :=
   sigmaStar_eq_sigmaOne_of_odd (by decide)
 
+-- =====================================================================
+-- PART 8: σ* on odd prime powers (S3 — new this session)
+--
+-- For an odd prime p, no power p^k is divisible by 4 (since 4 = 2^2 and
+-- 2 ∤ p when p ≠ 2). So σ*(p^k) collapses to the standard divisor sum
+-- σ(p^k), which Mathlib provides via `sigma_one_apply_prime_pow`. This
+-- is the σ*-side preparation needed once Mathlib gains q-expansion
+-- machinery: r₄(p^k) = 8·σ*(p^k) will then reduce, for odd primes, to
+-- a statement purely about σ — for which Mathlib already provides
+-- multiplicativity and prime-power closed forms.
+-- =====================================================================
+
+/-- For p prime and p ≠ 2, no power p^k is divisible by 4.
+
+    Proof: 4 = 2² | p^k ⇒ 2 | p^k ⇒ 2 | p (since 2 is prime, by
+    `Nat.Prime.dvd_of_dvd_pow`) ⇒ p = 2 (since p prime) ⇒ contradiction. -/
+theorem not_four_dvd_prime_pow_of_ne_two {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) (k : ℕ) :
+    ¬ 4 ∣ p ^ k := by
+  intro h4
+  have h2_dvd_pk : (2 : ℕ) ∣ p ^ k :=
+    dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h4
+  have h2_dvd_p : (2 : ℕ) ∣ p :=
+    Nat.prime_two.dvd_of_dvd_pow h2_dvd_pk
+  rcases hp.eq_one_or_self_of_dvd 2 h2_dvd_p with h | h
+  · exact absurd h (by decide)
+  · exact h2 h.symm
+
+/-- For an odd prime p, σ*(p^k) = σ(p^k).
+
+    No divisor of p^k is divisible by 4, so the indicator `4 ∤ d` in
+    σ*'s definition is always true on `(p^k).divisors` and σ* collapses
+    to σ. Combined with `Nat.sigma_one_apply_prime_pow`, this gives the
+    closed form σ*(p^k) = 1 + p + p^2 + ... + p^k for odd prime p. -/
+theorem sigmaStar_prime_pow_of_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) (k : ℕ) :
+    sigmaStar (p ^ k) = sigmaOne (p ^ k) :=
+  sigmaStar_eq_sigmaOne_of_not_four_dvd (not_four_dvd_prime_pow_of_ne_two hp h2 k)
+
+/-- Cross-check on p = 3, k = 2: σ*(9) = σ(9) = 1 + 3 + 9 = 13. -/
+example : sigmaStar (3 ^ 2) = sigmaOne (3 ^ 2) :=
+  sigmaStar_prime_pow_of_odd_prime (by decide) (by decide) 2
+
+/-- Cross-check on p = 5, k = 1: σ*(5) = σ(5) = 1 + 5 = 6. -/
+example : sigmaStar (5 ^ 1) = sigmaOne (5 ^ 1) :=
+  sigmaStar_prime_pow_of_odd_prime (by decide) (by decide) 1
+
+/-- Cross-check on p = 7, k = 0: σ*(1) = σ(1) = 1 (vacuous case). -/
+example : sigmaStar (7 ^ 0) = sigmaOne (7 ^ 0) :=
+  sigmaStar_prime_pow_of_odd_prime (by decide) (by decide) 0
+
 end FourSquareDistributionOQ01
