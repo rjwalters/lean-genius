@@ -49,7 +49,7 @@
   Answers: angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01
 
   Axioms: 1 (counterexample_gal_card)
-  Sorries: 2 (IsPurelyInseparable API; char-p sign identity)
+  Sorries: 0
   Theorems: 6
 -/
 
@@ -95,25 +95,12 @@ lemma f_derivative_zero : f_target.derivative = 0 := by
 
 /-- In characteristic p, (a - b)^(p^n) = a^(p^n) - b^(p^n).
 
-    Uses CharP.add_pow_char_pow: (a + b)^(p^n) = a^(p^n) + b^(p^n).
-    The sign of (-b)^(p^n) in characteristic p is -1 for all prime p
-    (since p is odd → (-1)^p = -1, iterated; and p = 2 → (-1)^2 = 1 = -1 in char 2). -/
+    Proof: the iterated Frobenius `iterateFrobenius K p n : K →+* K` is a ring
+    homomorphism whose underlying map is `x ↦ x^(p^n)` (`iterateFrobenius_def`),
+    so it commutes with subtraction by `map_sub`. -/
 lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
     (a b : K) (n : ℕ) : (a - b) ^ p ^ n = a ^ p ^ n - b ^ p ^ n := by
-  have h := CharP.add_pow_char_pow K p (a - b + b) (-b) n
-  have hab : a - b + b = a := by ring
-  simp only [hab] at h
-  have hsum : (a - b) ^ p ^ n + (-b) ^ p ^ n = a ^ p ^ n := h
-  have hneg : (-b) ^ p ^ n = -(b ^ p ^ n) := by
-    rw [neg_pow]
-    split_ifs with heven
-    · -- p^n is even → p^n = 2^k → p = 2 → char 2 → -1 = 1 → eq holds
-      simp only [one_mul]
-      conv_lhs => rw [show (-b) ^ p ^ n = b ^ p ^ n by sorry]  -- in char 2, -x = x
-      sorry
-    · -- p^n is odd → (-1)^(p^n) = -1
-      ring
-  linarith [hsum, hneg.symm]
+  simpa [iterateFrobenius_def] using map_sub (iterateFrobenius K p n) a b
 
 /-- **Key theorem**: Every F-algebra automorphism of a purely inseparable extension is the identity.
 
@@ -139,8 +126,7 @@ theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K
   have hpow : σ x ^ (ringChar K) ^ n = x ^ (ringChar K) ^ n := by
     rw [← map_pow σ x, hfixed]
   -- Align ringChar K with p (they should both be the characteristic)
-  have hchar_eq : ringChar K = p := by
-    rw [ringChar_eq_charP K p]
+  have hchar_eq : ringChar K = p := ringChar.eq K p
   rw [hchar_eq] at hpow
   -- (σ(x) - x)^(p^n) = 0 using char-p subtraction
   have hzero : (σ x - x) ^ p ^ n = 0 := by
@@ -209,11 +195,11 @@ The false axiom should be replaced in the parent entry.
 |---------|--------|
 | `f_is_g_composed_sq` | proved |
 | `f_derivative_zero` | proved |
-| `sub_pow_char_pow_eq` | 1 sorry (char-2 sign) |
-| `algEquiv_eq_refl_of_isPurelyInseparable` | 1 sorry (ringChar_eq_charP name) |
-| `gal_card_one_of_purelyInseparable_splitting` | proved modulo above |
-| `insep_gal_trivial_refuted` | proved modulo 1 sorry (isUnit_iff) |
-| `counterexample_gal_card` | axiom |
+| `sub_pow_char_pow_eq` | proved (via `iterateFrobenius` and `map_sub`) |
+| `algEquiv_eq_refl_of_isPurelyInseparable` | proved |
+| `gal_card_one_of_purelyInseparable_splitting` | proved |
+| `insep_gal_trivial_refuted` | proved |
+| `counterexample_gal_card` | axiom (intentional — Galois count of the explicit f) |
 -/
 
 end AngleTrisectionInsepGalCorrect
