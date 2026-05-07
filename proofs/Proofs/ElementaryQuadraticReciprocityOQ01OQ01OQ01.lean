@@ -78,21 +78,13 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   ext a
   have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
     show quadCharC p a = _; rw [heq]
-  -- Use MulChar.one_apply directly to evaluate the trivial character
-  rw [MulChar.one_apply] at ha
-  rw [MulChar.one_apply]
+  -- MulChar.one_apply : (1 : MulChar R M) a = 1 (constant)
+  rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ℂ) = 1
+  rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · simp only [hv, map_zero] at ha
-    split_ifs at ha ⊢ with hu
-    · exact absurd ha one_ne_zero.symm
-    · rfl
-  · simp only [hv, map_one] at ha
-    split_ifs at ha ⊢ with hu
-    · rfl
-    · exact absurd ha one_ne_zero  -- ha : (1:ℂ)=0, one_ne_zero : 1≠0
-  · simp only [hv, map_neg_one] at ha
-    exfalso
-    split_ifs at ha with hu <;> norm_num at ha
+  · rw [hv, map_zero] at ha; norm_num at ha  -- (0:ℂ) = 1 → contradiction
+  · exact hv                                  -- quadraticChar a = 1 directly
+  · rw [hv] at ha; push_cast at ha; norm_num at ha  -- (-1:ℂ) = 1 → contradiction
 
 -- ============================================================================
 -- The Classical Gauss Sum

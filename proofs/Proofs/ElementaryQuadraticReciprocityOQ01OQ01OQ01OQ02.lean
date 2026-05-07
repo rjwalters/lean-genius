@@ -60,42 +60,29 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
   intro heq
   apply hqc_ne
   ext a
-  have ha : (Int.cast : ℤ → ZMod q) (quadraticChar (ZMod p) a) =
-      (if IsUnit a then (1 : ZMod q) else 0) := by
-    have h : legendreCharQ (p := p) (q := q) a = (1 : MulChar (ZMod p) (ZMod q)) a := by
-      rw [heq]
-    simpa [legendreCharQ, MulChar.one_apply] using h
-  simp only [MulChar.one_apply]
+  have ha : (Int.cast (quadraticChar (ZMod p) a) : ZMod q) = (1 : MulChar (ZMod p) (ZMod q)) a := by
+    have h : legendreCharQ (p := p) (q := q) a = (1 : MulChar (ZMod p) (ZMod q)) a := by rw [heq]
+    simp only [legendreCharQ, MulChar.ringHomComp_apply] at h; exact h
+  -- MulChar.one_apply : (1 : MulChar R M) a = 1 (constant in current Lean)
+  rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ZMod q) = 1
+  rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · -- case 0: both sides are 0 (a is non-unit)
-    rw [hv] at ha; simp only [map_zero] at ha
-    split_ifs at ha with hu
-    · exact absurd ha.symm one_ne_zero  -- ha : (0:ZMod q)=1, ha.symm : 1=0, one_ne_zero : 1≠0
-    · simp [hv, hu, MulChar.one_apply]
-  · -- case 1: both sides are 1 (a is unit and QR)
-    rw [hv] at ha; simp only [map_one] at ha
-    split_ifs at ha with hu
-    · simp [hv, hu, MulChar.one_apply]
-    · exact absurd ha one_ne_zero  -- ha : (1:ZMod q)=0, one_ne_zero : 1≠0
-  · -- case -1: impossible since (-1 : ZMod q) ≠ 0, 1 for q odd prime
-    rw [hv] at ha; simp only [map_neg_one] at ha
+  · -- case 0: (0:ZMod q) = 1 → contradiction
+    rw [hv, map_zero] at ha
+    exact absurd ha one_ne_zero.symm
+  · exact hv  -- quadraticChar a = 1 directly
+  · -- case -1: (-1:ZMod q) = 1 → q divides 2 → q ≤ 2 contradicts q ≥ 3
+    rw [hv] at ha
+    norm_cast at ha  -- ha : (-1 : ZMod q) = 1
     exfalso
-    split_ifs at ha with hu
-    · -- ha : (-1 : ZMod q) = 1, contradiction with q ≠ 2
-      have h2 : (2 : ZMod q) = 0 := by
-        calc (2 : ZMod q) = 1 + 1 := by norm_num
-          _ = -1 + 1 := by rw [ha]
-          _ = 0 := by ring
-      rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) from by norm_cast] at h2
-      rw [ZMod.natCast_eq_zero_iff_dvd] at h2
-      have hq_le : q ≤ 2 := Nat.le_of_dvd (by norm_num) h2
-      omega
-    · -- ha : (-1 : ZMod q) = 0, contradiction since q prime ≥ 2
-      have h1 : (1 : ZMod q) = 0 := by
-        calc (1 : ZMod q) = -(-1 : ZMod q) := by ring
-          _ = -(0 : ZMod q) := by rw [ha]
-          _ = 0 := neg_zero
-      exact one_ne_zero h1
+    have h2 : (2 : ZMod q) = 0 := by
+      calc (2 : ZMod q) = 1 + 1 := by norm_num
+        _ = -1 + 1 := by rw [ha]
+        _ = 0 := by ring
+    rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) from by norm_cast] at h2
+    rw [ZMod.natCast_eq_zero_iff_dvd] at h2
+    have hq_le : q ≤ 2 := Nat.le_of_dvd (by norm_num) h2
+    omega
 
 -- ============================================================================
 -- Part II: Evaluations of legendreCharQ

@@ -100,20 +100,12 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   ext a
   have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
     show quadCharC p a = _; rw [heq]
-  rw [MulChar.one_apply] at ha
-  rw [MulChar.one_apply]
+  rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ℂ) = 1
+  rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · simp only [hv, map_zero] at ha
-    split_ifs at ha ⊢ with hu
-    · exact absurd ha one_ne_zero.symm
-    · rfl
-  · simp only [hv, map_one] at ha
-    split_ifs at ha ⊢ with hu
-    · rfl
-    · exact absurd ha one_ne_zero
-  · simp only [hv, map_neg_one] at ha
-    exfalso
-    split_ifs at ha with hu <;> norm_num at ha
+  · rw [hv, map_zero] at ha; norm_num at ha
+  · exact hv
+  · rw [hv] at ha; push_cast at ha; norm_num at ha
 
 -- ============================================================================
 -- The Main Theorem
