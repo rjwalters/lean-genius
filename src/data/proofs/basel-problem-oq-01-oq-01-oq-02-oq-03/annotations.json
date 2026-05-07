@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-hanson-header",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 5, "endLine": 63 },
+    "type": "context",
+    "title": "Hanson's lcm Bound and Why It Matters for Apéry",
+    "content": "Hanson (1972) proved the explicit bound lcm(1,...,n) ≤ 3ⁿ — the strongest known constant of its kind. This file does *not* prove Hanson's bound; it bootstraps it as a Lean 4 research target. Three layers of progress are delivered: (1) elementary bounds lcm | n! ≤ nⁿ proved without axioms; (2) numerical verification of the 3ⁿ bound for n ≤ 20 by `decide`/`native_decide`; (3) the general statement axiomatized as `hanson_bound`, with the missing-Mathlib infrastructure (Beta integral, Chebyshev prime-power bounds) documented inline. The OQ-03 path target is Apéry's irrationality proof for ζ(3): Apéry's integer-squeeze argument needs cⁿ with c < 1/(17−12√2)^{1/3} ≈ 3.245, so the easier 4ⁿ bound is *not* sufficient — Hanson's exact constant 3 is the threshold.",
+    "mathContext": "**Hanson's bound** (Canad. Math. Bull. 1972): $\\operatorname{lcm}(1, 2, \\ldots, n) \\le 3^n$ for all $n \\ge 1$.\n\n**Apéry's threshold**: irrationality of $\\zeta(3) = \\sum 1/n^3$ via integer-squeeze requires $\\operatorname{lcm}^3 \\cdot a_n \\to 0$, achievable with $\\operatorname{lcm}(1..n) \\le c^n$ for $c < (17-12\\sqrt{2})^{-1/3} \\approx 3.245$. So $3^n$ works, $4^n$ does not.\n\n**Connection to Chebyshev's $\\psi$**: $\\psi(n) := \\log\\operatorname{lcm}(1..n)$, and Hanson's bound is $\\psi(n) \\le n\\log 3$. The PNT gives $\\psi(n) \\sim n$, and $1 < \\log 3 \\approx 1.0986$, so Hanson is consistent but *non-asymptotic*.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev psi function", "prime number theorem", "Apéry's irrationality proof", "primorial bound", "integer-squeeze argument", "Bertrand's postulate"],
+    "prerequisites": ["least common multiple", "factorial", "prime counting"]
+  },
+  {
+    "id": "ann-hanson-def",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 69, "endLine": 79 },
+    "type": "definition",
+    "title": "lcmRange n: lcm(1,...,n) via Finset.lcm",
+    "content": "`lcmRange n := (Finset.range n).lcm (· + 1)` encodes lcm(1,...,n) as the lcm of {1,2,...,n} using Mathlib's GCDMonoid.Finset infrastructure. The `(· + 1)` shift compensates for `Finset.range n = {0, 1, ..., n-1}` — without it the lcm would include 0, collapsing to 0 (since lcm(0,k)=0 in `Nat`). Defined here independently of the parent file's `lcmUpTo` so that this OQ can be type-checked without the parent's heavy analytic dependencies on Apéry's machinery.",
+    "mathContext": "$$\\operatorname{lcmRange}(n) \\;:=\\; \\operatorname{lcm}\\bigl\\{1, 2, \\ldots, n\\bigr\\} \\;=\\; \\operatorname{lcm}\\bigl(\\{0, 1, \\ldots, n-1\\}.\\text{map}(k \\mapsto k+1)\\bigr).$$\n\nFor $n = 0$, the empty `range 0` makes `Finset.lcm ∅ f = 1` (the unit of `lcm`), giving `lcmRange 0 = 1`.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.lcm", "GCDMonoid (Mathlib)", "Finset.range shift", "lcm unit element 1"],
+    "prerequisites": ["Mathlib Finset", "lcm in GCDMonoid"]
+  },
+  {
+    "id": "ann-hanson-basic-props",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 81, "endLine": 105 },
+    "type": "technique",
+    "title": "Basic Properties: Positivity and Divisibility",
+    "content": "Three small lemmas establish the algebraic foundation: `lcmRange_zero = 1` and `lcmRange_one = 1` are by `simp [Finset.lcm]`; `lcmRange_pos` uses `Finset.lcm_ne_zero_iff` to reduce to showing each element `k+1 ≠ 0`. The key downstream lemma is `dvd_lcmRange`: for any 1 ≤ k ≤ n, k divides lcmRange n. The proof shifts via `k - 1 ∈ Finset.range n` (using `omega` on the bound) and applies `Finset.dvd_lcm`. Uses `Nat.sub_add_cancel hk` to recover `(k-1) + 1 = k` cleanly inside `simpa`.",
+    "mathContext": "**Positivity**: $\\operatorname{lcmRange}(n) > 0$ for $n \\ge 1$.\n\n**Divisibility**: $1 \\le k \\le n \\Rightarrow k \\mid \\operatorname{lcmRange}(n)$.\n\nProof: $k - 1 \\in \\{0, \\ldots, n-1\\}$ when $1 \\le k \\le n$; the lcm includes the image $(k-1) + 1 = k$, and `Finset.dvd_lcm` gives divisibility.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.lcm_ne_zero_iff", "Finset.dvd_lcm", "Nat.sub_add_cancel", "omega tactic"],
+    "prerequisites": ["divisibility in ℕ", "Finset lcm API"]
+  },
+  {
+    "id": "ann-hanson-elementary",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 107, "endLine": 127 },
+    "type": "insight",
+    "title": "The Trivial Bound Chain: lcm | n! ≤ nⁿ",
+    "content": "Three theorems establish the *easy* bound lcmRange n ≤ nⁿ via two transitive steps. (1) `lcmRange_dvd_factorial`: every k ∈ {1,...,n} divides n! (`Nat.dvd_factorial`), so by `Finset.lcm_dvd` the lcm divides n!. (2) `lcmRange_le_factorial`: divisibility implies ≤ in ℕ via `Nat.le_of_dvd` (using factorial positivity). (3) `lcmRange_le_self_pow`: chain with `Nat.factorial_le_pow` (n! ≤ nⁿ). This factorial-derived bound is the *baseline* that Hanson's 3ⁿ strictly improves: for n ≥ 4, 3ⁿ < nⁿ (proved at line 178), and the gap grows exponentially.",
+    "mathContext": "$$\\operatorname{lcmRange}(n) \\;\\bigm|\\; n! \\;\\le\\; n^n.$$\n\nProof chain:\n$$k \\le n \\Rightarrow k \\mid n! \\quad \\text{(Mathlib Nat.dvd\\_factorial)}$$\n$$\\Rightarrow \\operatorname{lcmRange}(n) \\mid n! \\quad \\text{(Finset.lcm\\_dvd)}$$\n$$\\Rightarrow \\operatorname{lcmRange}(n) \\le n! \\quad \\text{(Nat.le\\_of\\_dvd, n! > 0)}$$\n$$\\Rightarrow \\operatorname{lcmRange}(n) \\le n^n \\quad \\text{(Nat.factorial\\_le\\_pow)}.$$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_factorial", "Nat.le_of_dvd", "Nat.factorial_le_pow", "Finset.lcm_dvd", "transitive bound chain"],
+    "prerequisites": ["divisibility implies ≤", "factorial bound n! ≤ nⁿ"]
+  },
+  {
+    "id": "ann-hanson-numerical",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 128, "endLine": 150 },
+    "type": "insight",
+    "title": "Numerical Verification: n = 1..10, 12, 15, 20",
+    "content": "13 native_decide checks of Hanson's bound: `lcmRange n ≤ 3^n` for n ∈ {1..10, 12, 15, 20}. The split between `decide` (n ≤ 12) and `native_decide` (n ∈ {15, 20}) reflects the kernel's compute envelope — kernel reduction handles small n directly, but `lcmRange 15 = 360360` and `lcmRange 20 = 232792560` are too large for in-kernel `decide` and need the compiled `native_decide`. Four exact-value sanity checks (`lcmRange_5_eq = 60`, `_10_eq = 2520`, `_15_eq = 360360`, `_20_eq = 232792560`) match OEIS A003418, confirming the lcmRange definition is correct.",
+    "mathContext": "**Verification table** (OEIS A003418):\n\n| n | lcm(1..n) | 3ⁿ | ratio 3ⁿ/lcm |\n|---|---|---|---|\n| 5 | 60 | 243 | 4.05 |\n| 10 | 2520 | 59049 | 23.4 |\n| 15 | 360360 | 14348907 | 39.8 |\n| 20 | 232792560 | 3486784401 | 14.97 |\n\nThe ratio is *always > 1*, confirming Hanson's bound. Note the ratio is non-monotonic in n — number-theoretic structure of n affects the gap.",
+    "significance": "key",
+    "relatedConcepts": ["decide vs native_decide", "OEIS A003418", "kernel reduction envelope", "compiled-to-native verification"],
+    "prerequisites": ["Lean tactics decide and native_decide", "lcm exact values"]
+  },
+  {
+    "id": "ann-hanson-axiom",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 152, "endLine": 171 },
+    "type": "concept",
+    "title": "Axiom: Hanson's General Bound (Open Lean Target)",
+    "content": "`axiom hanson_bound : ∀ n : ℕ, lcmRange n ≤ 3 ^ n` is the precise open Lean target. The classical 1972 proof uses an integral identity: for 0 ≤ k ≤ n, ∫₀¹ x^k(1-x)^(n-k) dx = 1/((n+1)·C(n,k)) (the Beta function evaluation). Multiplying by lcm(1,...,n+1) gives an integer; combined with Chebyshev-style prime-power bounds on lcm, one extracts the 3ⁿ constant. Mathlib has `primorial_le_4_pow` (giving the easier 4ⁿ bound via primorial) but no LCM-specific bound; the bridges (combinatorial primorial-to-lcm, analytic Beta integral, prime-power compilation) are all currently missing and would be substantial upstream contributions.",
+    "mathContext": "**Hanson's strategy** (Canad. Math. Bull. 1972):\n\n1. **Beta-integral identity**: $\\displaystyle\\int_0^1 x^k(1-x)^{n-k}\\,dx = \\frac{k!(n-k)!}{(n+1)!} = \\frac{1}{(n+1)\\binom{n}{k}}$.\n\n2. **Integer multiple**: $\\operatorname{lcm}(1,\\ldots,n+1) \\cdot \\displaystyle\\int_0^1 x^k(1-x)^{n-k}\\,dx \\in \\mathbb{Z}$.\n\n3. **Sum identity**: $\\sum_{k=0}^{n} \\binom{n}{k} \\int_0^1 x^k(1-x)^{n-k}\\,dx = \\int_0^1 1\\,dx = 1$.\n\n4. **Combine** with prime-power bounds: $\\operatorname{lcm}(1,\\ldots,n) \\le 3^n$ via Chebyshev-style estimates.\n\n**Alternative**: Erdős/Nair combinatorial identities give a different proof path with similar Mathlib gaps.",
+    "significance": "key",
+    "relatedConcepts": ["Beta function", "Chebyshev's $\\theta(x)$ and $\\psi(x)$", "Mathlib primorial_le_4_pow", "Erdős combinatorial identities", "Nair's lcm-binomial connection"],
+    "prerequisites": ["Beta function integral", "primorial of n", "Chebyshev's prime-counting estimates"]
+  },
+  {
+    "id": "ann-hanson-strictness",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 173, "endLine": 181 },
+    "type": "context",
+    "title": "Why 3 Is Not Trivially Derivable: 3ⁿ < nⁿ for n ≥ 4",
+    "content": "`hanson_strictly_stronger_than_factorial` proves 3ⁿ < nⁿ for n ≥ 4 in two omega-friendly inputs to `Nat.pow_lt_pow_left`. This documents that Hanson's bound is *genuinely* tighter than the elementary nⁿ bound: at n = 4, 3⁴ = 81 < 4⁴ = 256; at n = 100, 3¹⁰⁰ ≈ 5.15×10⁴⁷ vs 100¹⁰⁰ = 10²⁰⁰. So Hanson's 3ⁿ saves over 152 orders of magnitude relative to nⁿ at n = 100. This justifies why Apéry's threshold c < 3.245 *requires* something like Hanson — neither nⁿ nor 4ⁿ is good enough.",
+    "mathContext": "Strictness: $3^n < n^n$ for $n \\ge 4$, since $3 < 4 \\le n$ and $\\text{Nat.pow\\_lt\\_pow\\_left}: a < b \\Rightarrow a^n < b^n$ (for $n \\ge 1$).\n\n**Threshold comparison** for Apéry's $\\zeta(3)$ irrationality:\n\n| Bound | Constant | Apéry-OK? |\n|---|---|---|\n| $n^n$ | $n$ (grows) | No |\n| $4^n$ (primorial) | 4 | Just fails (4 > 3.245) |\n| $3^n$ (Hanson) | 3 | ✓ (3 < 3.245) |\n| Asymptotic PNT | $\\approx e \\approx 2.718$ | ✓ but non-explicit |",
+    "significance": "context",
+    "relatedConcepts": ["Nat.pow_lt_pow_left", "Apéry threshold (17-12√2)^{-1/3}", "explicit vs asymptotic bounds", "constant tightness"],
+    "prerequisites": ["monotone power inequality", "Apéry's irrationality threshold"]
+  }
+]

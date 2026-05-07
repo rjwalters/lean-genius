@@ -104,14 +104,14 @@
   },
   "crossReferences": [
     {
-      "type": "uses",
-      "target": "basel-problem",
-      "label": "Parent Basel problem (proven via ζ(2) infrastructure)"
+      "targetId": "basel-problem",
+      "relationship": "uses",
+      "description": "Parent Basel problem (Σ 1/n² = π²/6, proven via ζ(2) infrastructure). Hanson's bound is the lcm-arithmetic ingredient that, together with Apéry's irrationality machinery, ultimately depends on the same kind of analytic-number-theory toolkit."
     },
     {
-      "type": "extends",
-      "target": "basel-problem-oq-01-oq-01-oq-02",
-      "label": "Apéry's ζ(3) irrationality (parent file containing the axiom this OQ targets)"
+      "targetId": "basel-problem-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent: Apéry's ζ(3) irrationality formalization. The `hanson_bound` axiom in this file is the precise lcm bound used by the parent's integer-squeeze argument to establish ζ(3) ∉ ℚ; eliminating this axiom would discharge one of five remaining axioms in that file."
     }
   ]
 }
