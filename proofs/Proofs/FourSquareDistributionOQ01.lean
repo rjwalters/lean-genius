@@ -206,4 +206,148 @@ theorem r4Count_zero : r4Count 0 = 1 := by native_decide
 /-- σ*(0) = 0 (the divisors of 0 are empty in Mathlib). -/
 theorem sigmaStar_zero : sigmaStar 0 = 0 := by native_decide
 
+-- =====================================================================
+-- PART 6: Structural lemmas — connecting σ*(n) to the standard divisor
+-- sum σ(n) := Σ_{d|n} d. These are honest (axiom-free) reductions of
+-- the arithmetic content of σ*. They eliminate the need to reason
+-- directly about the indicator `4 ∣ d` and let future work apply
+-- Mathlib's σ machinery (e.g. `ArithmeticFunction.sigma`) to σ*.
+-- =====================================================================
+
+/-- Standard divisor sum σ(n) := Σ_{d|n} d.
+
+    Equivalent to `(ArithmeticFunction.sigma 1) n` from Mathlib via
+    `ArithmeticFunction.sigma_one_apply`, but defined locally to avoid
+    the heavy ArithmeticFunction wrapper for these small structural
+    lemmas. -/
+def sigmaOne (n : ℕ) : ℕ := ∑ d ∈ n.divisors, d
+
+theorem sigmaOne_zero : sigmaOne 0 = 0 := by
+  unfold sigmaOne; simp
+
+theorem sigmaOne_one : sigmaOne 1 = 1 := by
+  unfold sigmaOne; decide
+
+/-- Complement of σ*: sum over divisors of n that ARE divisible by 4.
+    Together with σ*, partitions the standard divisor sum:
+    σ*(n) + sigmaFourDvd(n) = σ(n). -/
+def sigmaFourDvd (n : ℕ) : ℕ := ∑ d ∈ n.divisors, if 4 ∣ d then d else 0
+
+/-- Partition identity: σ* and sigmaFourDvd jointly cover σ.
+    σ*(n) + (sum over 4-divisible divisors) = σ(n). -/
+theorem sigmaStar_add_sigmaFourDvd (n : ℕ) :
+    sigmaStar n + sigmaFourDvd n = sigmaOne n := by
+  unfold sigmaStar sigmaFourDvd sigmaOne
+  rw [← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intros d _
+  split_ifs with h <;> simp
+
+/-- For n with 4 ∤ n, every divisor d of n satisfies 4 ∤ d (because
+    4 ∣ d would imply 4 ∣ n). Hence σ*(n) = σ(n). -/
+theorem sigmaStar_eq_sigmaOne_of_not_four_dvd {n : ℕ} (hn : ¬ 4 ∣ n) :
+    sigmaStar n = sigmaOne n := by
+  unfold sigmaStar sigmaOne
+  refine Finset.sum_congr rfl fun d hd => ?_
+  rw [Nat.mem_divisors] at hd
+  have h4 : ¬ 4 ∣ d := fun h4d => hn (h4d.trans hd.1)
+  simp [h4]
+
+/-- Specialization: for odd n, σ*(n) = σ(n). -/
+theorem sigmaStar_eq_sigmaOne_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) :
+    sigmaStar n = sigmaOne n :=
+  sigmaStar_eq_sigmaOne_of_not_four_dvd
+    (fun h4 => hn (dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h4))
+
+/-- Bijection lemma: when 4 ∣ n, the divisors of n divisible by 4 are
+    in bijection with divisors of n/4 via e ↔ 4·e. -/
+theorem divisors_filter_four_dvd_eq_image {n : ℕ} (h4 : 4 ∣ n) (hn : 0 < n) :
+    n.divisors.filter (4 ∣ ·) = (n / 4).divisors.image (fun e => 4 * e) := by
+  obtain ⟨k, hk⟩ := h4
+  have hk_pos : 0 < k := by
+    rcases Nat.eq_zero_or_pos k with rfl | hk'
+    · simp [hk] at hn
+    · exact hk'
+  have hnk : n / 4 = k := by rw [hk]; exact Nat.mul_div_cancel_left k (by norm_num)
+  ext d
+  rw [Finset.mem_filter, Finset.mem_image, Nat.mem_divisors]
+  constructor
+  · rintro ⟨⟨hdvd, _hn0⟩, hd4⟩
+    obtain ⟨e, rfl⟩ := hd4
+    refine ⟨e, ?_, rfl⟩
+    rw [Nat.mem_divisors, hnk]
+    refine ⟨?_, hk_pos.ne'⟩
+    rw [hk] at hdvd
+    exact (Nat.mul_dvd_mul_iff_left (by norm_num : (0:ℕ) < 4)).mp hdvd
+  · rintro ⟨e, he, rfl⟩
+    rw [Nat.mem_divisors, hnk] at he
+    refine ⟨⟨?_, hn.ne'⟩, ⟨e, rfl⟩⟩
+    obtain ⟨m, hm⟩ := he.1
+    refine ⟨m, ?_⟩
+    rw [hk, hm]; ring
+
+/-- When 4 ∣ n, the sum over 4-divisible divisors of n equals 4·σ(n/4).
+    Proof: each such divisor is 4·e for a unique e | (n/4), and
+    Σ_{e | (n/4)} 4·e = 4·σ(n/4). -/
+theorem sigmaFourDvd_of_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : 0 < n) :
+    sigmaFourDvd n = 4 * sigmaOne (n / 4) := by
+  unfold sigmaFourDvd sigmaOne
+  rw [Finset.mul_sum, Finset.sum_ite, Finset.sum_const_zero, add_zero,
+      divisors_filter_four_dvd_eq_image h4 hn]
+  exact Finset.sum_image (fun e₁ _ e₂ _ h => by omega)
+
+/-- **Structural identity** — main contribution of this session.
+
+    For every n with 4 ∣ n,
+        σ*(n) + 4·σ(n/4) = σ(n),
+    i.e., σ*(n) is exactly σ(n) minus 4·σ(n/4) — the contribution from
+    those divisors of n that are themselves divisible by 4. Combined
+    with `sigmaStar_eq_sigmaOne_of_not_four_dvd` (the case 4 ∤ n), this
+    gives a complete reformulation of σ* in terms of Mathlib's standard
+    divisor sum:
+
+        σ*(n) = σ(n)              if 4 ∤ n,
+        σ*(n) = σ(n) − 4·σ(n/4)   if 4 ∣ n.
+
+    This is a real reduction of Jacobi's formula:
+    once Mathlib gains the q-expansion machinery for `jacobiTheta`, the
+    target identity `r₄(n) = 8·σ*(n)` decomposes into two case-statements
+    in σ — a function for which Mathlib already has multiplicativity
+    (`Nat.Coprime.sum_divisors_mul`), prime-power closed forms, and
+    Eisenstein-series identities. -/
+theorem sigmaStar_of_four_dvd {n : ℕ} (h4 : 4 ∣ n) (hn : 0 < n) :
+    sigmaStar n + 4 * sigmaOne (n / 4) = sigmaOne n := by
+  rw [← sigmaFourDvd_of_four_dvd h4 hn, sigmaStar_add_sigmaFourDvd]
+
+-- =====================================================================
+-- PART 7: Cross-validation of the structural identity for small n
+-- =====================================================================
+
+theorem sigmaOne_1  : sigmaOne 1  = 1   := by native_decide
+theorem sigmaOne_2  : sigmaOne 2  = 3   := by native_decide
+theorem sigmaOne_4  : sigmaOne 4  = 7   := by native_decide
+theorem sigmaOne_8  : sigmaOne 8  = 15  := by native_decide
+theorem sigmaOne_12 : sigmaOne 12 = 28  := by native_decide
+theorem sigmaOne_16 : sigmaOne 16 = 31  := by native_decide
+
+/-- Cross-check: σ*(4) + 4·σ(1) = σ(4), i.e. 3 + 4·1 = 7. -/
+example : sigmaStar 4 + 4 * sigmaOne 1 = sigmaOne 4 :=
+  sigmaStar_of_four_dvd (by decide) (by decide)
+
+/-- Cross-check: σ*(8) + 4·σ(2) = σ(8), i.e. 3 + 4·3 = 15. -/
+example : sigmaStar 8 + 4 * sigmaOne 2 = sigmaOne 8 :=
+  sigmaStar_of_four_dvd (by decide) (by decide)
+
+/-- Cross-check: σ*(12) + 4·σ(3) = σ(12), i.e. 12 + 4·4 = 28. -/
+example : sigmaStar 12 + 4 * sigmaOne 3 = sigmaOne 12 :=
+  sigmaStar_of_four_dvd (by decide) (by decide)
+
+/-- Cross-check: σ*(16) + 4·σ(4) = σ(16), i.e. 3 + 4·7 = 31. -/
+example : sigmaStar 16 + 4 * sigmaOne 4 = sigmaOne 16 :=
+  sigmaStar_of_four_dvd (by decide) (by decide)
+
+/-- Cross-check (odd n): σ*(15) = σ(15). -/
+example : sigmaStar 15 = sigmaOne 15 :=
+  sigmaStar_eq_sigmaOne_of_odd (by decide)
+
 end FourSquareDistributionOQ01

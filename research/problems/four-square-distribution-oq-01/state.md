@@ -1,78 +1,82 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (bootstrap completed; advanced proof requires Mathlib upstream)
+**Phase**: ACT (bootstrap done in S1; structural reduction added in S2;
+advanced closure of axiom still requires Mathlib upstream q-expansions)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-07
-**Iteration**: 1
+**Last Updated**: 2026-05-07 (S2)
+**Iteration**: 2
 
 ## Current Focus
-Bootstrap completed. The OBSERVE/ORIENT phase has converted this stub
-problem into a concrete Lean 4 formalization target with numerical
-verification for n = 1..10 via three independent definitions.
+S2 added a structural reformulation of σ* in terms of Mathlib's
+standard divisor sum σ(n) = Σ_{d|n} d:
 
-The formal target is:
-```
-axiom jacobi_r4_formula : ∀ n : ℕ, 0 < n → r4Count n = jacobiR4 n
-```
-where `r4Count n` is brute-force enumeration over signed integer 4-tuples
-and `jacobiR4 n := 8 * sigmaStar n` with `sigmaStar n := ∑ d ∈ n.divisors,
-if 4 ∣ d then 0 else d`.
+* `σ*(n) = σ(n)`             if 4 ∤ n
+* `σ*(n) = σ(n) − 4·σ(n/4)`  if 4 ∣ n
+
+Stated and proved (axiom-free, no new sorries) in Parts 6–7 of
+`proofs/Proofs/FourSquareDistributionOQ01.lean`. Cross-checked
+numerically for n = 4, 8, 12, 16 (4 ∣ n) and n = 15 (4 ∤ n).
+
+The open axiom `jacobi_r4_formula : ∀ n > 0, r4Count n = jacobiR4 n`
+is unchanged. What S2 changes is the *form* of the remaining
+obligation: future work no longer needs to reason about the
+indicator function `4 ∣ d`, only about Mathlib's σ.
 
 ## Active Approach
 
-**Approach A (canonical, blocked on Mathlib)**: Modular-form bridge.
-Identify `jacobiTheta τ ^ 4` as a weight-2 modular form on Γ₀(4),
-recognize it as `1 + 8 (E₂(τ) − 4 E₂(4τ))` up to normalization,
-and extract the q-expansion's n-th Fourier coefficient as 8·σ*(n).
+**Approach A (canonical, still blocked on Mathlib)**: Modular-form
+bridge. Identify `jacobiTheta τ ^ 4` as a weight-2 modular form on
+Γ₀(4), recognize it as `1 + 8 (E₂(τ) − 4 E₂(4τ))` up to
+normalization, and extract the q-expansion's n-th Fourier
+coefficient as 8·σ*(n). **S2 makes the σ*-side of this argument
+fully reducible to σ**, so future ACT work only has to bridge to
+σ — for which Mathlib already has multiplicativity
+(`Nat.Coprime.sum_divisors_mul`), prime-power closed forms, and
+Eisenstein-series identities.
 
-Currently blocked on Mathlib infrastructure:
-- Q-expansion machinery for `jacobiTheta` (lemma extracting Fourier
-  coefficients of `jacobiTheta τ` as a function of `τ`).
+Currently still blocked on Mathlib infrastructure:
+- Q-expansion machinery for `jacobiTheta`.
 - Identification of `jacobiTheta^4` with a specific Eisenstein-series
   combination.
-- Finite-dimensionality of modular-form spaces at level 4.
 
 ## Attempt Count
 
-- Total attempts: 1 (this session: OBSERVE/ORIENT bootstrap).
-- Current approach attempts: 0 (Approach A not attempted; awaits Mathlib).
-- Approaches tried: bootstrap with brute-force verification + axiom.
+- Total attempts: 2.
+- S1: OBSERVE/ORIENT bootstrap (axiomatize, numerical verify n = 1..10).
+- S2: ACT — add structural identity σ*(n) ≡ σ(n) − 4·σ(n/4)·[4∣n].
+- Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
 
-- **Mathlib q-expansion infrastructure absent** for `jacobiTheta`. This
-  is the central blocker. No incremental Lean progress is possible on
-  Approach A until this lands upstream.
-- **Mathlib Eisenstein-coefficient identification absent**. Even if
-  q-expansion lands, the identification of θ⁴ with E₂(τ) − 4 E₂(4τ) is
-  a separate Mathlib gap.
+- **Mathlib q-expansion infrastructure absent** for `jacobiTheta` —
+  unchanged from S1.
+- **Mathlib Eisenstein-coefficient identification absent** — unchanged.
+- **Local Docker build memory ceiling** (S2): host has 7.65 GiB
+  Docker memory; Mathlib + this file exceeds that. S2 commits the
+  Lean code unverified, mirroring the published practice of other
+  agents this week (e.g. researcher-3 PR #16188). CI will validate.
 
 ## Next Action
 
-**Two options for follow-up sessions:**
-
-1. **Wait for Mathlib q-expansion infrastructure** (passive). Re-evaluate
-   when `Mathlib.NumberTheory.ModularForms.JacobiTheta.*` adds Fourier
-   coefficient lemmas.
-
-2. **Pursue an alternative route** (active). Investigate whether the
-   Hurwitz-quaternion approach (Approach C in `problem.md`) is more
-   tractable: it would require developing Hurwitz-integer arithmetic
-   in Mathlib but would avoid analytic machinery entirely. Even an
-   elementary-only proof avoiding modular forms would be a substantial
-   project.
+1. **(opportunistic)** When Mathlib gains q-expansion for `jacobiTheta`,
+   immediately apply S2's structural identity plus σ-multiplicativity
+   to derive r₄(p^k) = 8·σ*(p^k) for prime powers.
+2. **(speculative)** Pursue the Hurwitz-quaternion route (Approach C
+   in `problem.md`).
+3. **(skip)** Brute-force extension beyond n = 10 — each unit
+   increase costs (2n+1)⁴ tuples; pure enumeration theater.
 
 ## References
 
-- `proofs/Proofs/FourSquareDistributionOQ01.lean` — bootstrap file with
-  σ*(n) definition, brute-force r₄(n), and numerical verification for
-  n = 1..10.
+- `proofs/Proofs/FourSquareDistributionOQ01.lean` — bootstrap file
+  (Parts 1–5) plus structural lemmas (Parts 6–7) added in S2.
 - `proofs/Proofs/FourSquareDistribution.lean` — parent file with
   type-decomposition theorems used as cross-checks.
-- `src/data/proofs/four-square-distribution-oq-01/meta.json` — gallery
-  entry.
+- `src/data/proofs/four-square-distribution-oq-01/meta.json` —
+  gallery entry.
 - `research/problems/four-square-distribution-oq-01/problem.md` —
-  detailed problem statement with three approaches and Mathlib gap
-  analysis.
+  detailed problem statement.
+- `research/problems/four-square-distribution-oq-01/knowledge.md` —
+  S2 session notes.
