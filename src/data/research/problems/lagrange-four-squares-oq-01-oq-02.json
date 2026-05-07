@@ -1,0 +1,226 @@
+{
+  "slug": "lagrange-four-squares-oq-01-oq-02",
+  "title": "Legendre's Three-Square Theorem: Sufficiency Direction (n ≠ 4^a(8b+7) ⇒ n is sum of three squares)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{N},\\ \\bigl(\\exists a, b, c \\in \\mathbb{Z},\\ a^2 + b^2 + c^2 = n\\bigr) \\iff \\neg\\exists a, b \\in \\mathbb{N},\\ n = 4^a (8b + 7)",
+    "plain": "Legendre's three-square theorem (1797–1798): a non-negative integer n is a sum of three integer squares iff n is not of the form 4^a(8b+7). The forward direction (necessity: excluded numbers are not sums of three squares) is fully formalized in `ThreeSquares.lean` and `LagrangeFourSquaresOQ04.lean`. This sub-problem targets the sufficiency direction, currently axiomatized via four `axiom` declarations whose proof requires Minkowski's geometry of numbers and Dirichlet's theorem on primes in arithmetic progressions.",
+    "whyMatters": [
+      "Closes the canonical Lagrange/Legendre/Gauss arc (k=1,2,3,4-squares) at the k=3 layer — the only gap remaining in the four-theorem chain.",
+      "Wiedijk-100 candidate: Lagrange's four-square theorem is #19 on the formalization wishlist; Legendre's three-square theorem is the natural strengthening.",
+      "Forces a concrete use of Mathlib's `MeasureTheory.Group.GeometryOfNumbers` (Minkowski's convex body theorem) for a classical number-theoretic application — currently underused.",
+      "Stress-tests Mathlib's recently-added `LSeries.PrimesInAP` (Dirichlet's theorem) against a textbook downstream consumer.",
+      "Bridges from `lagrange-four-squares-oq-04` (forward direction, axiomatized only at the unproved sufficiency endpoint) to a fully axiom-free formalization of the iff-statement."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Necessity (forward) direction: n = 4^a(8b+7) ⇒ ¬(n = a²+b²+c²). FULLY PROVED, axiom-free in `ThreeSquares.lean` (theorem `excluded_form_not_sum_three_sq`, line 182) and independently in `LagrangeFourSquaresOQ04.lean` (theorem `obstructed_not_three_squares`, line 116). Proof: squares mod 8 ∈ {0,1,4} so sums-of-three-squares mod 8 ∈ {0..6} skipping 7; the 4^a factor handled by descent (4 ∣ a²+b²+c² ⇒ each of a,b,c is even).",
+      "Sums-of-three-squares closed under multiplication by squares: `sum_three_sq_of_sq_mul` (ThreeSquares.lean:277) — k²(a²+b²+c²) = (ka)²+(kb)²+(kc)².",
+      "Sums-of-three-squares preserved upward by 4: `four_mul_sum_three_sq` (ThreeSquares.lean:246) — n = a²+b²+c² ⇒ 4n = (2a)²+(2b)²+(2c)².",
+      "All odd primes p with p ≢ 7 (mod 8) are sums of three squares, axiom-free:",
+      "  • p ≡ 1 (mod 8): `prime_one_mod_eight_is_sum_three_sq` (line 376) via JacobiSymbol/Dirichlet character argument.",
+      "  • p ≡ 3 (mod 8): `prime_three_mod_eight_is_sum_three_sq` (line 472) via the auxiliary file `ZsqrtdNegTwo.lean` (uses `Mathlib.NumberTheory.Zsqrtd.Basic`).",
+      "  • p ≡ 5 (mod 8): `prime_five_mod_eight_is_sum_three_sq` (line 366).",
+      "Combined: `odd_prime_not_7_mod_8_is_sum_three_sq` (line 479).",
+      "Lagrange's four-square theorem available via `Nat.sum_four_squares` (Mathlib).",
+      "Standard ℤ³ lattice infrastructure built: `stdLattice3`, `stdFundamentalDomain3`, `stdLattice3_isAddFundamentalDomain`, `stdLattice3_covolume = 1` (ThreeSquares.lean:557–590, axiom-free).",
+      "Dirichlet ellipsoid {v ∈ ℝ³ : v₀² + d·v₁² + d·v₂² ≤ R}: convexity proved (line 600) and symmetry proved (line 634), axiom-free."
+    ],
+    "open": [
+      "Replace `axiom dirichlet_key_lemma` (ThreeSquares.lean:532): the bridge — for n > 1, d > 0, p = dn-1 prime, and -d a quadratic residue mod p, find x,y,z ∈ ℤ with x²+y²+z² = n.",
+      "Replace `axiom dirichletEllipsoid_volume` (line 655): vol({v₀² + d·v₁² + d·v₂² ≤ R}) = (4π/3) · R^(3/2) / √d. Standard calculus via affine transformation from the unit ball.",
+      "Replace `axiom minkowski_ellipsoid_has_lattice_point` (line 684): when ellipsoid volume > 8 = 2³ · covol(ℤ³), there is a nonzero lattice point. Direct application of Mathlib's `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`.",
+      "Replace `axiom not_excluded_form_is_sum_three_sq` (line 699): the sufficiency conclusion. Once `dirichlet_key_lemma` is proved, this axiom reduces to case analysis on n mod 8 and an application of Dirichlet's theorem on primes in arithmetic progressions to find suitable p = dn - 1."
+    ],
+    "goal": "Formalize the full iff-statement `legendre_three_squares` (ThreeSquares.lean:706) axiom-free. The theorem statement already exists; its forward direction is a real proof and its backward direction unfolds to `not_excluded_form_is_sum_three_sq`, the sufficiency axiom."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-08",
+    "iteration": 2,
+    "focus": "S1 (2026-05-08, researcher-8): inventory of `ThreeSquares.lean` (913 lines, 4 sufficiency axioms + 3 secondary r₃-formula axioms), mapping to Mathlib infrastructure (`MeasureTheory.Group.GeometryOfNumbers`, `LSeries.PrimesInAP`, `Zsqrtd.Basic`), and identification of the four-step axiom-elimination sequence.",
+    "blockers": [
+      "Mathlib has Minkowski's theorem (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) but no closed-form ellipsoid-volume lemma — must be derived from `MeasureTheory.Measure.addHaar_smul` and `volume_ball` of the unit ball in ℝ³.",
+      "Mathlib has Dirichlet's theorem on primes in AP (`Nat.setOf_prime_and_eq_mod_infinite`) but the integer/quadratic-residue compatibility (legendreSym(-d) = 1 for chosen p = dn-1) requires custom case analysis on n mod 8.",
+      "The 4-axiom chain interlocks tightly: removing one in isolation does not reduce the assumption count. The minimal unit of progress is the full Minkowski-application argument."
+    ],
+    "nextAction": "(Researcher) ACT phase S2: prove `dirichletEllipsoid_volume` axiom-free. Strategy: define the linear isomorphism T : ℝ³ → ℝ³ by T(x,y,z) = (x, √d·y, √d·z); show {v² ≤ R} = T⁻¹(B(0, √R)); use `MeasureTheory.Measure.addHaar_image_smul` and `volume_ball` (Mathlib's `EuclideanSpace.volume_ball`). Estimated 60–100 lines.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (2026-05-08, researcher-8): completed full inventory of existing infrastructure and gap analysis. The `ThreeSquares.lean` file (913 lines, written prior to this session) already contains all the theorem statements, all the prime-case proofs, the lattice infrastructure, and the ellipsoid convexity/symmetry — but routes the existence half of the proof through 4 unproved axioms (`dirichletEllipsoid_volume`, `minkowski_ellipsoid_has_lattice_point`, `dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`). The forward direction (necessity) is independently formalized in `LagrangeFourSquaresOQ04.lean`. Three additional axioms (`gauss_eisenstein_r3`, `general_r3_formula`, `class_number_positive`) at lines 813, 820, 825 are r₃-counting formulas, not part of the iff statement, so they are out of scope for this sub-problem. The minimal axiom-elimination ordering is: (1) ellipsoid volume → (2) Minkowski lattice point → (3) Dirichlet key lemma → (4) sufficiency. Steps 1 and 2 are pure Mathlib plumbing; step 3 is the QR-extraction argument; step 4 is case analysis on n mod 8 plus Dirichlet PrimesInAP.",
+    "builtItems": [
+      "ThreeSquares.IsExcludedForm (ThreeSquares.lean:66): predicate ∃ a b, n = 4^a(8b+7).",
+      "ThreeSquares.excluded_form_not_sum_three_sq (ThreeSquares.lean:182): forward direction, axiom-free.",
+      "ThreeSquares.legendre_three_squares (ThreeSquares.lean:706): the full iff statement; backward direction routed through `not_excluded_form_is_sum_three_sq` axiom.",
+      "ThreeSquares.prime_*_mod_eight_is_sum_three_sq (lines 352–474): all odd primes p ≢ 7 (mod 8), axiom-free.",
+      "ThreeSquares.stdLattice3 / stdFundamentalDomain3 / stdLattice3_covolume (lines 557–590): Minkowski-ready ℤ³ infrastructure.",
+      "ThreeSquares.dirichletEllipsoid (line 594): {v₀² + d·v₁² + d·v₂² ≤ R} as Set (Fin 3 → ℝ).",
+      "ThreeSquares.dirichletEllipsoid_convex / dirichletEllipsoid_symmetric (lines 600/634): hypotheses of Minkowski's theorem proved axiom-free.",
+      "LagrangeFourSquaresOQ04.IsObstructed / not_three_sq_of_7_mod_8 / obstructed_not_three_squares (lines 36–116): independent forward-direction formalization.",
+      "ZsqrtdNegTwo.lean (auxiliary file): factorization in ℤ[√-2] used by `prime_three_mod_eight_is_sum_three_sq`."
+    ],
+    "insights": [
+      "The four sufficiency axioms in `ThreeSquares.lean` are not parallel: they form a strict dependency chain (volume → Minkowski → Dirichlet key → sufficiency). Replacing them in this order gives monotone progress on the assumption count without needing intermediate refactors.",
+      "All ODD PRIMES not ≡ 7 (mod 8) are already proved without axioms — the entire remaining gap concerns COMPOSITES. Note that sums-of-three-squares is NOT multiplicatively closed (3 = 1²+1²+1² and 5 = 2²+1², but 3·5 = 15 is excluded), so prime-multiplicativity does NOT save us; Dirichlet's geometric argument represents n directly.",
+      "Mathlib's `MeasureTheory.Group.GeometryOfNumbers.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` requires: measurable convex symmetric set, lattice with finite covolume, volume condition vol(K) > 2^d · covol(L). The hypotheses for our case are all already established axiom-free in `ThreeSquares.lean`; only the volume formula and the volume-strict inequality remain.",
+      "The ellipsoid-volume axiom can be discharged by an affine change of variables: (x, y, z) ↦ (x, √d·y, √d·z) maps the unit ball B(0,√R) to the ellipsoid {v₀² + d·v₁² + d·v₂² ≤ R} with Jacobian determinant 1/d, giving vol(ellipsoid) = vol(ball) · d⁻¹. Mathlib's `EuclideanSpace.volume_ball` gives vol(ball) = (4π/3)·R^(3/2). Combined: vol(ellipsoid) = (4π/3) · R^(3/2) / d. NOTE: the existing axiom statement has 1/√d but the correct formula is 1/d (because the Jacobian determinant of the diagonal scaling diag(1, √d, √d) is d, not √d). The axiom statement may need correction during ACT.",
+      "For the Dirichlet key lemma, the QR extraction step is: given lattice point (x, y, z) ≠ 0 in ellipsoid with x² + d(y² + z²) ≤ p (where p = dn - 1), reduce mod p to derive x² + d(y² + z²) = p (not just ≤ p) using -d a QR mod p. Then x² + d·y² + d·z² = dn - 1 = p, which combined with size constraints from the ellipsoid forces a representation n = a² + b² + c² for some choice of a, b, c built from x, y, z.",
+      "For the sufficiency case analysis, the only nontrivial residue class is n ≡ 3 (mod 8): use d = 2, find prime p = 2n - 1 with -2 a QR mod p (p ≡ 1 or 3 (mod 8)), then apply key lemma. For n ≡ 1, 2, 5, 6 (mod 8), simpler d-choices work. For n ≡ 0 (mod 4), reduce to n/4 via `four_mul_sum_three_sq` (already proved). For n ≡ 4 mod 8 not handled by the previous descent (i.e. 4 ∣ n but n/4 not yet representable), the argument iterates.",
+      "The `gauss_eisenstein_r3`, `general_r3_formula`, `class_number_positive` axioms at lines 813–826 of `ThreeSquares.lean` are about the EXACT NUMBER of representations r₃(n) — a *quantitative* refinement of the existence question. These are NOT needed to prove `legendre_three_squares` (the iff), and are explicitly out of scope for this sub-problem. They belong with sister problems on r₃ formulas, theta-function expansions, and Smith-Minkowski-Siegel mass formulas.",
+      "Provenance note: the `ThreeSquares.lean` file substantially predates this OBSERVE session — most theorem statements and the prime-case proofs were authored before 2026-05-08. The contribution of this OQ-01-OQ-02 sub-problem is to drive axiom elimination, not to author new theorem statements."
+    ],
+    "mathlibGaps": [
+      "No closed-form lemma for the volume of a 3-dimensional axis-aligned ellipsoid in `MeasureTheory.Constructions.HaarToSphere` or related files. The volume must be derived ad-hoc via affine transformation from the unit ball.",
+      "No bridge lemma `Mathlib.NumberTheory.LegendreSymbol.QuadraticResidue.exists_prime_with_residue` connecting Dirichlet's PrimesInAP to fixed-residue conditions on legendreSym (-d).",
+      "No high-level statement of Legendre's three-square theorem in Mathlib (`Mathlib.NumberTheory.SumThreeSquares` does not exist); only `Mathlib.NumberTheory.SumFourSquares` and `Mathlib.NumberTheory.SumTwoSquares`.",
+      "No general n-dimensional ellipsoid volume formula — would be useful for analogous results (e.g. sums of d-squares for general d via Minkowski)."
+    ],
+    "nextSteps": [
+      "(Researcher S2 — ACT) Prove `dirichletEllipsoid_volume` axiom-free via affine change-of-variables from unit ball. Verify the 1/d vs 1/√d formula in the existing axiom and correct if necessary. Estimated 60–100 lines.",
+      "(Researcher S3 — ACT) Prove `minkowski_ellipsoid_has_lattice_point` by adapting `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` from `Mathlib.MeasureTheory.Group.GeometryOfNumbers`, using already-built `stdLattice3` and `dirichletEllipsoid_convex` / `_symmetric`. Estimated 80–120 lines (mostly type-class plumbing).",
+      "(Researcher S4 — ACT) Prove `dirichlet_key_lemma`: combine S2+S3 with the QR-extraction argument. Choose R = (12√d/π)^(2/3) so that vol > 8; show the resulting lattice point (x, y, z) satisfies x² + d(y² + z²) = p exactly (not just ≤ R), then unwind to n = a² + b² + c². Estimated 200–300 lines.",
+      "(Researcher S5 — ACT) Prove `not_excluded_form_is_sum_three_sq` by case analysis on n mod 8. Use Dirichlet's theorem (Mathlib `Nat.setOf_prime_and_eq_mod_infinite`) to find p = dn - 1 prime in the right residue class; verify -d is a QR mod p; apply S4. Handle 4 ∣ n by descent via `four_mul_sum_three_sq`. Estimated 300–500 lines.",
+      "(Coordination) Watch for cross-traffic in `ThreeSquares.lean`: the file is already used by sibling problem `lagrange-four-squares-oq-04` (forward direction). Coordinate axiom-elimination commits to avoid stomping. Prefer additive contributions in new namespaces (`ThreeSquares.Sufficiency.*`) and only flip the four `axiom` declarations to `theorem ... := proof` at the end of each ACT session.",
+      "(Out of scope, but record) The r₃-counting axioms at lines 813–826 belong with a separate sub-problem on the Gauss-Eisenstein formula and theta-function expansions; do not bundle them with sufficiency."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "researcher-observe",
+    "minkowski",
+    "geometry-of-numbers",
+    "dirichlet-primes-ap",
+    "wiedijk-100"
+  ],
+  "relatedProofs": [
+    "lagrange-four-squares",
+    "lagrange-four-squares-oq-01",
+    "lagrange-four-squares-oq-01-oq-01",
+    "lagrange-four-squares-oq-02",
+    "lagrange-four-squares-oq-04",
+    "lagrange-four-squares-waring-g2"
+  ],
+  "references": {
+    "papers": [
+      "Legendre, A.-M. (1797–1798). Essai sur la théorie des nombres (1st ed.). Paris.",
+      "Gauss, C. F. (1801). Disquisitiones Arithmeticae, articles 291–293 (ternary quadratic forms).",
+      "Dirichlet, P. G. L. (1850). Über die Reduction der positiven quadratischen Formen mit drei unbestimmten ganzen Zahlen. J. reine angew. Math. 40, 209–227.",
+      "Mordell, L. J. (1969). Diophantine Equations. Academic Press, Chapter 16 (sums of three squares).",
+      "Cassels, J. W. S. (1978). Rational Quadratic Forms. Academic Press, Chapter 11 (representation by ternary forms).",
+      "Cox, D. A. (1989). Primes of the Form x² + ny². Wiley, §3.B (genus theory) and §6 (class number formulas).",
+      "Hardy, G. H. & Wright, E. M. (1979). An Introduction to the Theory of Numbers (5th ed.). Oxford. §20.10–20.13 (three-squares via Minkowski).",
+      "Serre, J.-P. (1973). A Course in Arithmetic. Springer GTM 7, Chapter IV (quadratic forms over ℚ_p and ℝ; Hasse-Minkowski) — note: the local-global proof is conceptually different from Dirichlet's elementary geometry-of-numbers proof.",
+      "Ankeny, N. C. (1955). Sums of three squares. Proc. Amer. Math. Soc. 8, 316–319 (an early algebraic-number-theory variant)."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Legendre%27s_three-square_theorem",
+      "https://en.wikipedia.org/wiki/Geometry_of_numbers#Minkowski's_theorem",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Group/GeometryOfNumbers.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html",
+      "https://www.cs.ru.nl/~freek/100/ (Wiedijk 100 Theorems list — #19 four squares)"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumFourSquares — Lagrange (4-squares); Nat.sum_four_squares.",
+      "Mathlib.NumberTheory.SumTwoSquares — Fermat (2-squares).",
+      "Mathlib.NumberTheory.LSeries.PrimesInAP — Dirichlet's theorem on primes in arithmetic progressions.",
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol / .QuadraticReciprocity — quadratic residues.",
+      "Mathlib.NumberTheory.Zsqrtd.Basic — ℤ[√d] arithmetic; used by `ZsqrtdNegTwo.lean` for the p ≡ 3 mod 8 prime case.",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers — Minkowski's convex body theorem; key lemma `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`.",
+      "Mathlib.Algebra.Module.ZLattice.Basic — ZSpan / fundamental domains.",
+      "Mathlib.Analysis.InnerProductSpace.PiL2 — EuclideanSpace structure (used for ball volume).",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.EuclideanSpace — `EuclideanSpace.volume_ball`."
+    ]
+  },
+  "started": "2026-05-06T21:20:28.056Z",
+  "lastUpdate": "2026-05-08T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ThreeSquares.lean",
+      "filename": "ThreeSquares.lean",
+      "lineCount": 913,
+      "theoremCount": 45,
+      "axiomCount": 7,
+      "defCount": 9,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ThreeSquares.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquares.lean",
+      "filename": "LagrangeFourSquares.lean",
+      "lineCount": 393,
+      "theoremCount": 15,
+      "axiomCount": 5,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquares.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01.lean",
+      "lineCount": 396,
+      "theoremCount": 71,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ01OQ01.lean",
+      "filename": "LagrangeFourSquaresOQ01OQ01.lean",
+      "lineCount": 214,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ02.lean",
+      "filename": "LagrangeFourSquaresOQ02.lean",
+      "lineCount": 652,
+      "theoremCount": 105,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresOQ04.lean",
+      "filename": "LagrangeFourSquaresOQ04.lean",
+      "lineCount": 227,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresOQ04.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2.lean",
+      "filename": "LagrangeFourSquaresWaringG2.lean",
+      "lineCount": 443,
+      "theoremCount": 68,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2.lean"
+    }
+  ]
+}
