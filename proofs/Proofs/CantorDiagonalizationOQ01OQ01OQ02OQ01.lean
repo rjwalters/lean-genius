@@ -3,7 +3,6 @@ import Mathlib.SetTheory.Cardinal.Ordinal
 import Mathlib.SetTheory.Cardinal.Cofinality
 import Mathlib.Order.SuccPred.Basic
 import Mathlib.Tactic
-import Proofs.CantorDiagonalizationOQ01OQ01OQ02
 
 /-
 # Permitted Values for the Continuum (OQ-01-OQ-01-OQ-02-OQ-01)
@@ -83,7 +82,7 @@ def IsPermittedValue (κ : Cardinal.{0}) : Prop :=
     This is the object-level (no-forcing) verification that the permitted
     values do not violate the König obstruction. -/
 theorem permitted_satisfies_konig (κ : Cardinal.{0}) (h : IsPermittedValue κ) :
-    (κ.ord.cof : Cardinal) > ℵ₀ := by
+    κ.ord.cof > ℵ₀ := by
   rcases h with ⟨hreg, hgt⟩
   rw [hreg.cof_eq]
   exact hgt
@@ -94,13 +93,13 @@ theorem permitted_satisfies_konig (κ : Cardinal.{0}) (h : IsPermittedValue κ) 
     aleph is strictly monotone. -/
 theorem aleph_one_permitted : IsPermittedValue (Cardinal.aleph 1) := by
   refine ⟨Cardinal.isRegular_aleph_one, ?_⟩
-  rw [Cardinal.aleph_zero]
+  -- Goal: ℵ₀ < ℵ_ 1.  Since ℵ₀ = ℵ_ 0 definitionally in current Mathlib,
+  -- aleph_lt_aleph reduces this to (0 : Ordinal) < 1.
   exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
 
 /-- ℵ₂ is permitted: this is the PFA value, 2^ℵ₀ = ℵ₂. -/
 theorem aleph_two_permitted : IsPermittedValue (Cardinal.aleph 2) := by
   refine ⟨Cardinal.isRegular_aleph_succ 1, ?_⟩
-  rw [Cardinal.aleph_zero]
   exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
 
 /-- Every successor aleph ℵ_{α+1} is permitted. The successor alephs
@@ -108,7 +107,6 @@ theorem aleph_two_permitted : IsPermittedValue (Cardinal.aleph 2) := by
 theorem aleph_succ_permitted (α : Ordinal.{0}) :
     IsPermittedValue (Cardinal.aleph (Order.succ α)) := by
   refine ⟨Cardinal.isRegular_aleph_succ α, ?_⟩
-  rw [Cardinal.aleph_zero]
   exact Cardinal.aleph_lt_aleph.mpr
     (Ordinal.pos_iff_ne_zero.mpr (Order.succ_ne_bot α))
 
@@ -145,8 +143,10 @@ structure IsEastonFunction (F : Cardinal.{0} → Cardinal.{0}) : Prop where
   succ_le : ∀ κ : Cardinal.{0}, κ.IsRegular → ℵ₀ ≤ κ → Order.succ κ ≤ F κ
   monotone : ∀ κ ν : Cardinal.{0},
               κ.IsRegular → ν.IsRegular → ℵ₀ ≤ κ → κ ≤ ν → F κ ≤ F ν
+  -- Note: Ordinal.cof returns Cardinal directly in current Mathlib
+  -- (no .card accessor needed); see Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ03 for context.
   konig_pointwise : ∀ κ : Cardinal.{0}, κ.IsRegular → ℵ₀ ≤ κ →
-                      κ < (F κ).ord.cof.card
+                      κ < (F κ).ord.cof
 
 /-- The actual continuum function `κ ↦ 2^κ` is an Easton function. All
     three constraints are provable from Mathlib without forcing:
