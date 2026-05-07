@@ -541,12 +541,63 @@ theorem stirling_first_correction :
   -- By le_of_tendsto', G(n) ≤ L.
   have hL_lower : 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
       1 / (24 * ((n : ℝ) - 1) ^ 3) ≤ L := by
-    -- G(n+M) → 0 as M → ∞
+    -- G(n+M) → 0 as M → ∞ (each 1/(c·(n+M-1)^k) → 0 via div_atTop)
     have htend_Gn : Filter.Tendsto
         (fun M : ℕ => (1 : ℝ) / (12 * ((n : ℝ) + M)) - 1 / (24 * ((n : ℝ) + M - 1) ^ 2) -
              1 / (24 * ((n : ℝ) + M - 1) ^ 3))
         Filter.atTop (nhds 0) := by
-      sorry -- KNOWN: each 1/(n+M)^k → 0 by tendsto_inv_atTop_zero composition
+      have hMcast : Filter.Tendsto (fun M : ℕ => (M : ℝ)) Filter.atTop Filter.atTop :=
+        tendsto_natCast_atTop_atTop
+      have h_nM : Filter.Tendsto (fun M : ℕ => (n : ℝ) + (M : ℝ)) Filter.atTop Filter.atTop :=
+        Filter.tendsto_atTop_add_const_left _ _ hMcast
+      have h_nM1 : Filter.Tendsto (fun M : ℕ => (n : ℝ) + (M : ℝ) - 1) Filter.atTop Filter.atTop := by
+        have heq : (fun M : ℕ => (n : ℝ) + (M : ℝ) - 1) =
+                   (fun M : ℕ => ((n : ℝ) - 1) + (M : ℝ)) := by
+          funext M; ring
+        rw [heq]
+        exact Filter.tendsto_atTop_add_const_left _ _ hMcast
+      -- (n + M - 1)^2 → ∞ via product of two atTop
+      have h_nM1_sq : Filter.Tendsto (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 2)
+          Filter.atTop Filter.atTop := by
+        have heq : (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 2) =
+                   (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) * ((n : ℝ) + (M : ℝ) - 1)) := by
+          funext M; ring
+        rw [heq]
+        exact h_nM1.atTop_mul_atTop₀ h_nM1
+      -- (n + M - 1)^3 → ∞
+      have h_nM1_cu : Filter.Tendsto (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 3)
+          Filter.atTop Filter.atTop := by
+        have heq : (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 3) =
+                   (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 2 * ((n : ℝ) + (M : ℝ) - 1)) := by
+          funext M; ring
+        rw [heq]
+        exact h_nM1_sq.atTop_mul_atTop₀ h_nM1
+      -- 12·(n+M) → ∞
+      have h12 : Filter.Tendsto (fun M : ℕ => (12 : ℝ) * ((n : ℝ) + (M : ℝ)))
+          Filter.atTop Filter.atTop :=
+        h_nM.const_mul_atTop (by norm_num)
+      -- 24·(n+M-1)^2 → ∞
+      have h24sq : Filter.Tendsto (fun M : ℕ => (24 : ℝ) * ((n : ℝ) + (M : ℝ) - 1) ^ 2)
+          Filter.atTop Filter.atTop :=
+        h_nM1_sq.const_mul_atTop (by norm_num)
+      -- 24·(n+M-1)^3 → ∞
+      have h24cu : Filter.Tendsto (fun M : ℕ => (24 : ℝ) * ((n : ℝ) + (M : ℝ) - 1) ^ 3)
+          Filter.atTop Filter.atTop :=
+        h_nM1_cu.const_mul_atTop (by norm_num)
+      -- Each term → 0 directly via div_atTop
+      have h_t1 : Filter.Tendsto (fun M : ℕ => (1 : ℝ) / (12 * ((n : ℝ) + (M : ℝ))))
+          Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop h12
+      have h_t2 : Filter.Tendsto
+          (fun M : ℕ => (1 : ℝ) / (24 * ((n : ℝ) + (M : ℝ) - 1) ^ 2))
+          Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop h24sq
+      have h_t3 : Filter.Tendsto
+          (fun M : ℕ => (1 : ℝ) / (24 * ((n : ℝ) + (M : ℝ) - 1) ^ 3))
+          Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop h24cu
+      -- combine: 0 - 0 - 0 = 0
+      simpa using (h_t1.sub h_t2).sub h_t3
     -- G(n) - G(n+M) → G(n)
     have htend_Gdiff : Filter.Tendsto
         (fun M : ℕ => 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
