@@ -1,7 +1,7 @@
 {
   "slug": "erdos-100-oq-01-wip-01",
   "title": "Distance Set Diameter: Guth-Katz Linear vs Log Gap (WIP)",
-  "phase": "ACT",
+  "phase": "COMPLETE",
   "status": "completed",
   "tier": "A",
   "path": "full",
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-03T11:21:07.633Z",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T17:15:00.000Z",
     "iteration": 1,
-    "focus": "Fiber counting sorry in int_dist_card_le is the final gap; all other lemmas proved",
+    "focus": "Resolved — Anning–Erdős finiteness theorem fully formalized; gallery entry merged in PR #15593 (2026-05-04).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — closed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: int_dist_card_le proved via two-circle fiber counting. anning_erdos_finiteness now sorry-free. PR submitted.",
+    "progressSummary": "COMPLETE: Anning–Erdős finiteness theorem (1945) formalized in Lean 4. File: Erdos100OQ01WIP01.lean (274 lines, 4 theorems, 0 definitions, 0 sorries, 0 axioms). Gallery PR #15593 merged 2026-05-04 (status: verified, badge: original). Proves any non-collinear planar integer-distance set with all distances ≤ d has at most 2d²+2 points via fiber counting.",
     "builtItems": [
       "quadratic_at_most_two_roots in Erdos100OQ01WIP01.lean:27 \u2014 nonzero quadratic has \u2264 2 roots, proved via ring arithmetic",
       "three_pts_two_circles_contra in Erdos100OQ01WIP01.lean:59 \u2014 fully proved, no sorry",
@@ -46,10 +46,7 @@
       "quadratic_at_most_two_roots uses only (p-q)*(a*(p+q)+b) = difference of polynomial evaluations, avoiding Polynomial API entirely"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove piepmeyer_upper: explicit 9-point integer-distance configuration with diameter 4",
-      "Verify Docker build for Erdos100OQ01WIP01.lean"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "discrete-geometry",
@@ -69,7 +66,8 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:21:07.632Z",
-  "lastUpdate": "2026-05-03T11:21:07.632Z",
+  "lastUpdate": "2026-05-07T17:15:00.000Z",
+  "completed": "2026-05-04T10:20:38.000Z",
   "significance": 7,
   "tractability": 4
 }
