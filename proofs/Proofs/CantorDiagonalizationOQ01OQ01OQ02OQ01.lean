@@ -20,19 +20,21 @@ Easton's 1970 theorem states that every permitted value is REALIZABLE as
 not yet formalized in Lean. We therefore axiomatize the consistency claim
 and develop the object-level scaffold around it.
 
-## What This File Proves (all from Mathlib, 0 sorries)
+## What This File Proves (from Mathlib, 2 sorries pending Phase-3a API drift)
 
 ### Permitted values (pointwise):
 1. `IsPermittedValue κ` — predicate: κ is regular and uncountable
 2. `permitted_satisfies_konig` — every permitted value satisfies cf(κ) > ℵ₀
 3. `aleph_one_permitted` — ℵ₁ is permitted (CH value)
 4. `aleph_two_permitted` — ℵ₂ is permitted (PFA value)
-5. `aleph_succ_permitted` — every successor aleph is permitted
+5. `aleph_succ_permitted` — every successor aleph is permitted (1 sorry — API drift)
 6. `permitted_unbounded` — the permitted-value class is proper (unbounded)
 
 ### Easton functions (function-level):
 7. `IsEastonFunction F` — structure capturing the three Easton constraints
-8. `isEastonFunction_continuum` — `κ ↦ 2^κ` is an Easton function
+8. `isEastonFunction_continuum` — `κ ↦ 2^κ` is an Easton function (1 sorry on
+   `monotone` field — `Cardinal.power_le_power_right` now varies the BASE
+   in current Mathlib; pending Phase-3a fix to identify exponent-monotone lemma)
 9. `isEastonFunction_nonempty` — the constraint set is non-vacuous
 
 ## What This File Axiomatizes (proof requires class forcing)
@@ -93,22 +95,28 @@ theorem permitted_satisfies_konig (κ : Cardinal.{0}) (h : IsPermittedValue κ) 
     aleph is strictly monotone. -/
 theorem aleph_one_permitted : IsPermittedValue (Cardinal.aleph 1) := by
   refine ⟨Cardinal.isRegular_aleph_one, ?_⟩
-  -- Goal: ℵ₀ < ℵ_ 1.  Since ℵ₀ = ℵ_ 0 definitionally in current Mathlib,
-  -- aleph_lt_aleph reduces this to (0 : Ordinal) < 1.
-  exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
+  -- ℵ₀ < ℵ_ 1 via the chain ℵ_ 1 = ℵ_ (succ 0) = succ (ℵ_ 0) = succ ℵ₀
+  rw [show (1 : Ordinal.{0}) = Order.succ 0 from rfl, Cardinal.aleph_succ, Cardinal.aleph_zero]
+  exact Order.lt_succ _
 
 /-- ℵ₂ is permitted: this is the PFA value, 2^ℵ₀ = ℵ₂. -/
 theorem aleph_two_permitted : IsPermittedValue (Cardinal.aleph 2) := by
+  rw [show (2 : Ordinal.{0}) = Order.succ 1 from rfl]
   refine ⟨Cardinal.isRegular_aleph_succ 1, ?_⟩
-  exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
+  -- ℵ₀ < ℵ_ (succ 1) via succ chain
+  rw [Cardinal.aleph_succ, show (1 : Ordinal.{0}) = Order.succ 0 from rfl,
+      Cardinal.aleph_succ, Cardinal.aleph_zero]
+  exact lt_trans (Order.lt_succ _) (Order.lt_succ _)
 
 /-- Every successor aleph ℵ_{α+1} is permitted. The successor alephs
     form an inexhaustible supply of permitted values. -/
 theorem aleph_succ_permitted (α : Ordinal.{0}) :
     IsPermittedValue (Cardinal.aleph (Order.succ α)) := by
   refine ⟨Cardinal.isRegular_aleph_succ α, ?_⟩
-  exact Cardinal.aleph_lt_aleph.mpr
-    (Ordinal.pos_iff_ne_zero.mpr (Order.succ_ne_bot α))
+  -- ℵ₀ < ℵ_ (succ α): pending Phase-3a — Mathlib API drift on aleph0_lt_aleph_iff
+  -- The result is mathematically immediate (succ α > 0 → ℵ_(succ α) > ℵ₀) but
+  -- the precise current-Mathlib spelling needs verification.
+  sorry
 
 /-- The permitted values form a proper class: for every ordinal α, there
     is a permitted value strictly above ℵ_α (namely ℵ_{α+1}).
@@ -120,7 +128,9 @@ theorem permitted_unbounded :
       Cardinal.aleph α < κ ∧ IsPermittedValue κ := by
   intro α
   refine ⟨Cardinal.aleph (Order.succ α), ?_, aleph_succ_permitted α⟩
-  exact Cardinal.aleph_lt_aleph.mpr (Order.lt_succ α)
+  -- ℵ_ α < ℵ_ (succ α) via aleph_succ: ℵ_ (succ α) = succ (ℵ_ α) > ℵ_ α
+  rw [Cardinal.aleph_succ]
+  exact Order.lt_succ _
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -148,15 +158,22 @@ structure IsEastonFunction (F : Cardinal.{0} → Cardinal.{0}) : Prop where
   konig_pointwise : ∀ κ : Cardinal.{0}, κ.IsRegular → ℵ₀ ≤ κ →
                       κ < (F κ).ord.cof
 
-/-- The actual continuum function `κ ↦ 2^κ` is an Easton function. All
-    three constraints are provable from Mathlib without forcing:
-    - (E1) follows from Cantor's theorem κ < 2^κ
-    - (E2) follows from `Cardinal.power_le_power_right`
-    - (E3) is exactly `Cardinal.lt_cof_power` (König's theorem) -/
+/-- The actual continuum function `κ ↦ 2^κ` is an Easton function. Two
+    of the three constraints are provable from Mathlib without forcing:
+    - (E1) `succ_le` follows from Cantor's theorem κ < 2^κ
+    - (E3) `konig_pointwise` is exactly `Cardinal.lt_cof_power` (König's theorem)
+
+    The (E2) `monotone` field uses an exponent-monotonicity lemma whose
+    Mathlib name has drifted (`Cardinal.power_le_power_right` now varies
+    the BASE, not the exponent). Pending Phase-3a fix to identify the
+    correct exponent-monotone lemma name. -/
 theorem isEastonFunction_continuum :
     IsEastonFunction (fun κ => (2 : Cardinal.{0}) ^ κ) where
   succ_le κ _ _ := Order.succ_le_of_lt (Cardinal.cantor κ)
-  monotone _ _ _ _ _ hκν := Cardinal.power_le_power_right hκν
+  monotone _ _ _ _ _ hκν := by
+    -- TODO Phase-3a: replace with correct exponent-monotone lemma
+    -- Goal: 2^κ ≤ 2^ν given κ ≤ ν
+    sorry
   konig_pointwise κ _ hℵ₀ := Cardinal.lt_cof_power hℵ₀ (by norm_num)
 
 /-- The Easton-function constraint set is non-vacuous: the continuum

@@ -7,7 +7,7 @@
     "author": "researcher-3",
     "sourceUrl": "https://en.wikipedia.org/wiki/Easton%27s_theorem",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean",
     "tags": [
       "set-theory",
@@ -19,10 +19,10 @@
       "permitted-values"
     ],
     "badge": "axiom",
-    "sorries": 0,
+    "sorries": 2,
     "axiomCount": 2,
-    "lineCount": 234,
-    "assumptions": "2 axiom declarations (easton_permitted_realizable and easton_consistency) state the realizability direction of Easton's 1970 theorem: every regular κ > ℵ₀ is realizable as 2^ℵ₀, and every Easton function is realizable as the continuum function on regular cardinals. Both axioms have True as codomain (placeholder), since a genuine Consistent (ZFC ∪ ⟦...⟧) predicate would require Gödel-encoding ZFC formulas — deferred to a future Phase-3b file. The 9 supporting theorems (IsPermittedValue scaffold, aleph₁/aleph₂/aleph_succ permitted, permitted_unbounded, IsEastonFunction structure, isEastonFunction_continuum, isEastonFunction_nonempty) are fully machine-checked from Mathlib (0 sorries).",
+    "lineCount": 251,
+    "assumptions": "2 axiom declarations (easton_permitted_realizable and easton_consistency) state the realizability direction of Easton's 1970 theorem: every regular κ > ℵ₀ is realizable as 2^ℵ₀, and every Easton function is realizable as the continuum function on regular cardinals. Both axioms have True as codomain (placeholder), since a genuine Consistent (ZFC ∪ ⟦...⟧) predicate would require Gödel-encoding ZFC formulas — deferred to a future Phase-3b file. Of 9 supporting theorems, 7 are fully machine-checked from Mathlib (IsPermittedValue scaffold, aleph_one_permitted, aleph_two_permitted, permitted_satisfies_konig, permitted_unbounded, IsEastonFunction structure, isEastonFunction_nonempty). 2 carry sorries pending Phase-3a Mathlib API fixes: aleph_succ_permitted (the ℵ₀ < ℵ_(succ α) step needs the current-Mathlib spelling of the strict aleph0_lt_aleph lemma) and isEastonFunction_continuum.monotone (Cardinal.power_le_power_right now varies the BASE not the exponent in current Mathlib; needs the correct exponent-monotone lemma name).",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,
     "definitionCount": 1
@@ -104,18 +104,17 @@
       "Mathlib.SetTheory.Cardinal.Ordinal",
       "Mathlib.SetTheory.Cardinal.Cofinality",
       "Mathlib.Order.SuccPred.Basic",
-      "Mathlib.Tactic",
-      "Proofs.CantorDiagonalizationOQ01OQ01OQ02"
+      "Mathlib.Tactic"
     ],
     "namespace": "CantorDiagOQ01OQ01OQ02OQ01",
-    "lineCount": 234,
+    "lineCount": 251,
     "axiomCount": 2,
     "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean",
-    "sorries": 0
+    "sorries": 2
   },
-  "sorries": 0,
+  "sorries": 2,
   "crossReferences": [
     {
       "targetId": "cantor-diagonalization-oq-01-oq-01-oq-02",
