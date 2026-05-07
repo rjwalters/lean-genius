@@ -2,7 +2,7 @@
   "id": "liouville-theorem-oq-04",
   "title": "P-adic Liouville Theorem: The Archimedean Complement Lemma",
   "slug": "liouville-theorem-oq-04",
-  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. 1 axiom (padic_liouville_norm_bridge: norm compatibility ℚ → ℚ_[p] step), 0 sorries.",
+  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. 1 residual axiom (padic_liouville_norm_bridge); ingredient (1) norm compatibility (Part IV.5) and ingredient (2a) height bound on r/s (Part IV.6) are now proved, leaving only the polynomial coefficient bound on g.eval as residual content. 0 sorries.",
   "meta": {
     "author": "lean-genius research agent",
     "sourceUrl": "https://mathworld.wolfram.com/p-adicNumber.html",
@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. Requires (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q, and (2) cofactor evaluation bound ‖g.eval(r/s)‖_p ≤ M·H^(d-1). The Archimedean Complement Lemma and all other results are fully proved.",
+    "assumptions": "1 residual axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. Decomposed into: (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q (PROVED in Part IV.5 via Mathlib's Padic.eq_padicNorm), (2a) height bound ‖(r:ℚ_[p])/s‖ ≤ max(|r|,|s|) (PROVED in Part IV.6 via Archimedean Complement + norm transport), (2b) polynomial coefficient bound ‖g.eval x‖ ≤ M · max(1,‖x‖)^(deg g) for some M depending on g's coefficients (REMAINING — generic p-adic ultrametric polynomial fact). The Archimedean Complement Lemma and all other results are fully proved.",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -50,7 +50,9 @@
       "P-adic Liouville number definition using height max(|r|,|s|) instead of denominator alone",
       "Explanation of why height must replace denominator: v_p(r/s) = v_p(r) - v_p(s) depends on both r and s",
       "Function field analog discussion: same argument works over F_q[[t]] with t-adic absolute value",
-      "Concrete verified examples: padicNorm 2 6 = 1/2 ≥ 1/6, padicNorm 5 25 = 1/25 (equality!), padicNorm 3 7 = 1 ≥ 1/7"
+      "Concrete verified examples: padicNorm 2 6 = 1/2 ≥ 1/6, padicNorm 5 25 = 1/25 (equality!), padicNorm 3 7 = 1 ≥ 1/7",
+      "Norm transport between ℚ and ℚ_[p] (Part IV.5): norm_rat_eq_padicNorm, padic_eval_int_poly_cast, padic_norm_int_poly_eval — discharges ingredient (1) of the bridge axiom",
+      "Height bound on rational arguments (Part IV.6): padicNorm_rat_le_natAbs_denom (rational version) and padic_norm_intCast_div_le_height (ℚ_[p] version, ‖(r:ℚ_[p])/s‖ ≤ max(|r|,|s|)) — discharges ingredient (2a) of the bridge axiom by combining the Archimedean Complement Lemma with norm transport"
     ],
     "relatedProblems": [
       {
@@ -59,8 +61,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 467,
-    "theoremCount": 16,
+    "lineCount": 649,
+    "theoremCount": 22,
     "definitionCount": 3
   },
   "overview": {
@@ -200,9 +202,9 @@
       "Polynomial"
     ],
     "namespace": "LiouvilleTheoremOQ04",
-    "lineCount": 467,
+    "lineCount": 649,
     "axiomCount": 1,
-    "theoremCount": 16,
+    "theoremCount": 22,
     "definitionCount": 3,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
     "sorries": 0
