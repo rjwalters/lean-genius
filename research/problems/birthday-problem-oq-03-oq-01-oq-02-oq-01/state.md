@@ -4,41 +4,49 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 3
+**Iteration**: 7
 
 ## Current Focus
-Lemma A's foundation is in source (`nc_div_pow_tendsto`); next is the
-remainder of Lemma A (cubing + falling-factorial correction) and Lemma B.
+Lemmas A and B proved (Sessions 4-5). `poisson_approx_birthday3` derived from
+Lemma B + Lemma C. n=3 base case proved as a real number (Session 6) and
+extended to a Tendsto statement (Session 7). The remaining axiom is Lemma C
+(`p_no_triple_tendsto`) — qualitative Poisson convergence along the threshold
+scaling — which requires method-of-factorial-moments infrastructure absent
+from Mathlib 4.26.
 
 ## Active Approach
 Decomposition strategy:
-- **`nc_div_pow_tendsto` (foundation, Session 3)**: `n_c(d) / d^(2/3) → c` —
-  direct corollary of `tendsto_nat_floor_mul_div_atTop` ∘ `tendsto_rpow_atTop`.
-  In source as of 2026-04-29 (build verification deferred — Docker
-  unresponsive during session).
-- Lemma A `lambda_tendsto`: `λ(d) := C(⌊c·d^(2/3)⌋, 3)/d² → c³/6` — pending,
-  builds on `nc_div_pow_tendsto` via `.pow 3` + falling-factorial correction.
-- Lemma B `exp_lambda_tendsto`: `exp(−λ(d)) → exp(−c³/6)` — pending one-liner
-  once Lemma A is in.
-- Lemma C `p_no_triple_tendsto`: `P_no_triple(n d, d) → exp(−c³/6)` (Poisson
-  convergence — only sublemma requiring new Mathlib infrastructure).
+- **`nc_div_pow_tendsto` (foundation, Session 3)**: PROVED
+- **Lemma A `lambda_tendsto` (Session 4)**: PROVED via squeeze
+- **Lemma B `exp_lambda_tendsto` (Session 4)**: PROVED via Real.continuous_exp.tendsto
+- **Lemma C `p_no_triple_tendsto` (axiom)**: pure Poisson limit; requires
+  qualitative method-of-factorial-moments → Poisson convergence (≈500 lines,
+  not in Mathlib 4.26). Either build locally for this entry, contribute upstream,
+  or accept as axiomatized.
+- **`poisson_approx_birthday3` (Session 5)**: PROVED via Tendsto.sub from Lemma B + Lemma C
+- **`p_no_triple_n3` (Session 6)**: P(no triple|n=3, d) = 1 − 1/d² real-number form
+- **`p_no_triple_n3_tendsto` (Session 7)**: P(no triple|n=3) → 1 as d → ∞ (build pending)
 
 ## Attempt Count
-- Total attempts: 2 (Session 1 BLOCKED; Session 2 ORIENT decomposition; Session 3 ACT-partial)
-- Current approach attempts: 1 (Session 3 added Lemma A foundation)
+- Total attempts: 7 (Session 1 BLOCKED; Sessions 2-7 progress)
+- Current approach attempts: 1 (Session 7 added n=3 fixed Tendsto corollary)
 - Approaches tried: 1
 
 ## Blockers
-- Docker build was unresponsive during Session 3 — verification of the new
-  lemma is deferred to a later session. The proof body is two lines composing
-  Mathlib lemmas whose signatures were verified by direct file read.
 - Lemma C still requires method-of-factorial-moments → Poisson convergence,
-  which is not in Mathlib but is substantially smaller than full Chen-Stein.
+  which is not in Mathlib 4.26. Alternative: contribute upstream to
+  `Mathlib.Probability.Distributions.Poisson` (currently exposes only PMF/measure
+  constructors, no convergence theorems).
+- Smaller incremental contributions remaining: union bound on triple count
+  (general n), factorial moment definitions, Bonferroni r=1 bound — but each is
+  ≪Lemma C in effect.
 
 ## Next Action
-1. **Verify** `nc_div_pow_tendsto` builds cleanly (Docker)
-2. **Add Lemma A** proper (`lambda_tendsto`) using `nc_div_pow_tendsto.pow 3` +
-   the `(C(n,3) : ℝ) - n³/6` correction → 0 lemma
-3. **Add Lemma B** as a one-liner via `Real.continuous_exp.tendsto`
-4. **Restate the axiom** as the strictly weaker Lemma C alone, isolating the
-   genuine Mathlib gap to one statement
+1. **Build verification** (Session 7): confirm `p_no_triple_n3_tendsto` compiles
+   under Docker (build in progress, cold-cache).
+2. **Lemma C** (open): prove `p_no_triple_tendsto` via qualitative
+   method-of-factorial-moments → Poisson convergence (≈500 lines).
+3. **Alternative**: contribute factorial-moments → Poisson convergence upstream
+   to Mathlib.
+4. **Smaller wins**: union bound `P_no_triple(n,d) ≥ 1 - C(n,3)/d²` for general n
+   (Bonferroni r=1, complementary quantitative bound).

@@ -32,8 +32,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:21:41Z",
-    "iteration": 6,
-    "focus": "Session 6 (2026-05-07): added p_no_triple_n3 — real-number form P(no triple|n=3) = 1 − 1/d² as a corollary of good_count_n3. Concrete base-case sanity check connecting the elementary count (Session 1) to the Lemma C target. Lemma C itself remains the only axiom; its proof requires method-of-factorial-moments → Poisson convergence (≈500 lines, absent from Mathlib 4.26).",
+    "iteration": 7,
+    "focus": "Session 7 (2026-05-07): added p_no_triple_n3_tendsto — Filter.Tendsto form of Session 6's p_no_triple_n3, P(no triple|n=3, d) → 1 as d → ∞. Five-step proof composing tendsto_natCast_atTop_atTop, Tendsto.atTop_mul_atTop₀, tendsto_inv_atTop_zero.comp, Tendsto.sub, congr'. Internal-consistency check on Lemma B (c → 0 specialization). Lemma C itself remains the only axiom; requires method-of-factorial-moments → Poisson convergence (≈500 lines, absent from Mathlib 4.26).",
     "blockers": [],
     "nextAction": "Lemma C requires substantial Mathlib infrastructure (qualitative method-of-factorial-moments → Poisson convergence, ≈500 lines). Either build it locally for this entry, contribute upstream to Mathlib, or accept the entry as axiomatized. Smaller incremental contributions: union bound on triple count (general n), factorial moment definitions, Bonferroni r=1 bound — but each is ≪Lemma C in effect.",
     "attemptCounts": {
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 6, 2026-05-07): added p_no_triple_n3 — real-number form of n=3 base case, P(no triple) = 1 − 1/d² for d ≥ 1. Built directly on good_count_n3 (Session 1, exact triple-free count |good| = d³ − d). Small concrete addition; the principal remaining gap is unchanged: Lemma C (p_no_triple_tendsto axiom) — qualitative Poisson convergence P_no_triple(n_c(d), d) → exp(-c³/6), requiring method-of-factorial-moments infrastructure (~500 lines) absent from Mathlib 4.26. PRIOR (Session 5, PR #16150 merged 2026-05-06): poisson_approx_birthday3 is no longer an axiom — restated as a theorem proved by Filter.Tendsto.sub from Lemma B (exp_lambda_tendsto) and Lemma C (axiom). Lemmas A+B (lambda_tendsto, exp_lambda_tendsto) had been proved in Session 4 (2026-05-03).",
+    "progressSummary": "PROGRESS (Session 7, 2026-05-07): added p_no_triple_n3_tendsto — Filter.Tendsto corollary of Session 6's p_no_triple_n3, asserting P(no triple|n=3, d) → 1 as d → ∞. Five-step proof composes standard Mathlib lemmas (tendsto_natCast_atTop_atTop, Tendsto.atTop_mul_atTop₀, tendsto_inv_atTop_zero.comp, Tendsto.sub, congr'). Internal-consistency sanity check: along the threshold scaling, fixing n=3 forces c → 0 (since c·d^(2/3) ∈ [3,4)), and indeed P → 1 = exp(-0³/6). Build verification deferred (cold-cache Docker still cloning Mathlib at session end). PR #16777 opened as draft. PRIOR (Session 6, PR #16730 merged 2026-05-07): added p_no_triple_n3 — real-number form of n=3 base case, P(no triple) = 1 − 1/d² for d ≥ 1, plus 4 Mathlib API drift fixes. PRIOR (Session 5, PR #16150 merged 2026-05-06): poisson_approx_birthday3 restated as theorem proved by Filter.Tendsto.sub from Lemma B + Lemma C (axiom). Lemmas A+B proved Session 4.",
     "builtItems": [
       "Corrected JSON `problemStatement.formal` to match actual Lean axiom signature (qualitative Tendsto, not |...| ≤ C·n⁴/d³)",
       "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C",
@@ -55,7 +55,8 @@
       "two_div_rpow23_tendsto_zero: private helper 2/d^(2/3) → 0 (Session 4, line ~380)",
       "Session 5, PR #16150 (2026-05-06): poisson_approx_birthday3 axiom replaced by axiom p_no_triple_tendsto (Lemma C only); original statement is now `theorem poisson_approx_birthday3` derived via `(p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)` + `simpa`",
       "Session 6 (2026-05-07): p_no_triple_n3 in BirthdayProblemOQ03OQ01OQ02.lean (line ~585) — real-number form of n=3 base case: ((|good_n=3|) : ℝ) / (d^3 : ℝ) = 1 − 1/d² for d ≥ 1, proved via good_count_n3, Nat.cast_sub, push_cast, field_simp.",
-      "Session 6 (2026-05-07): repaired 4 Mathlib API drift errors in lambda_tendsto, bad_count_n3, good_count_n3 (introduced upstream after PR #16150 merged on 2026-05-06): tendsto_..._of_le_of_le → primed eventual variant; div_le_div_right → div_le_div_iff_of_pos_right; ← Fintype.card_coe inserted to bridge Finset.card ↔ Fintype.card; explicit predicate passed to filter_card_add_filter_neg_card_eq_card to satisfy DecidablePred synthesis."
+      "Session 6 (2026-05-07): repaired 4 Mathlib API drift errors in lambda_tendsto, bad_count_n3, good_count_n3 (introduced upstream after PR #16150 merged on 2026-05-06): tendsto_..._of_le_of_le → primed eventual variant; div_le_div_right → div_le_div_iff_of_pos_right; ← Fintype.card_coe inserted to bridge Finset.card ↔ Fintype.card; explicit predicate passed to filter_card_add_filter_neg_card_eq_card to satisfy DecidablePred synthesis.",
+      "Session 7, PR #16777 (2026-05-07): added p_no_triple_n3_tendsto in BirthdayProblemOQ03OQ01OQ02.lean (line ~609) — Filter.Tendsto form of Session 6's p_no_triple_n3 asserting P(no triple|n=3, d) → 1 as d → ∞. Proof composes tendsto_natCast_atTop_atTop, Tendsto.atTop_mul_atTop₀ (post-rename API), tendsto_inv_atTop_zero.comp + one_div rewrite, tendsto_const_nhds.sub, and congr' with p_no_triple_n3 (eventually d ≥ 1). File 635 → 676 lines, theorems 28 → 29. Build verification deferred (cold-cache Docker; PR opened as draft)."
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",

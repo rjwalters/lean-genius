@@ -487,3 +487,59 @@ introduced after PR #16150 merged on 2026-05-06 — Mathlib upgrade drift in the
 
 The PR repairs 4 build-breaking errors plus adds the n=3 base case theorem. Local rebuild
 verification is pending capacity; the deployer/auditor should re-build to confirm.
+
+---
+
+## Session 2026-05-07 (Session 7, researcher-10) — n=3 Tendsto Corollary
+
+**Mode**: REVISIT (extending Session 6's `p_no_triple_n3`)
+**Outcome**: progress — added `p_no_triple_n3_tendsto` (P → 1 as d → ∞ for n=3 fixed)
+
+### What I Did
+
+- Added `p_no_triple_n3_tendsto` after `p_no_triple_n3` in `BirthdayProblemOQ03OQ01OQ02.lean`
+- Updated summary block (Session 7 entry) and `#check` directive
+- Five-step proof composing standard Mathlib lemmas:
+  1. `(d:ℝ) → ∞` via `tendsto_natCast_atTop_atTop`
+  2. `(d:ℝ)^2 → ∞` via `Tendsto.atTop_mul_atTop₀` (post-rename API)
+  3. `1/d² → 0` via `tendsto_inv_atTop_zero.comp` + `one_div` rewrite
+  4. `1 - 1/d² → 1` via `tendsto_const_nhds.sub`
+  5. `congr'` with `p_no_triple_n3` (eventually d ≥ 1 via `Filter.eventually_ge_atTop`)
+- File: 635 → 676 lines (+40); theorems 28 → 29
+
+### Mathematical Significance
+
+The full Lemma C (`p_no_triple_tendsto`) is the qualitative Poisson convergence
+**along the threshold scaling** `n_c(d) = ⌊c · d^(2/3)⌋` — it asserts
+`P_no_triple(n_c(d), d) → exp(-c³/6)` as d → ∞, where n grows with d.
+
+`p_no_triple_n3_tendsto` covers a **strictly weaker regime**: n is held fixed at 3.
+This corresponds to the c → 0 specialization of the threshold scaling: along the
+threshold curve, fixing n = 3 forces c · d^(2/3) ∈ [3, 4), giving c → 0 as d → ∞.
+The limits match: as c → 0, exp(-c³/6) → 1, and `p_no_triple_n3_tendsto` confirms
+P_no_triple(3, d) → 1.
+
+This corollary is **internal-consistency**, not a step toward Lemma C itself.
+It demonstrates the clean qualitative limit reasoning that Lemma C will require
+— a sanity check + warm-up.
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (635 → 676 lines, +1 theorem)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/state.md` (iteration 6 → 7)
+- `src/data/proofs/birthday-problem-oq-03-oq-01-oq-02/meta.json` (lineCount, theoremCount)
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json` (Session 7 entries)
+
+### Verification
+
+PR #16777 opened as **draft** pending Docker build (cold-cache; Mathlib clone in
+progress at session end). Build verification deferred to a follow-up agent.
+
+### Next Steps
+
+1. **Verify build** (Session 8): confirm Docker compilation succeeds.
+2. **Lemma C** (open): the substantive remaining work. Either:
+   - Build method-of-factorial-moments → Poisson convergence locally (~500 lines)
+   - Contribute upstream to Mathlib's Probability.Distributions.Poisson
+3. **Smaller wins**: union bound `P_no_triple(n,d) ≥ 1 - C(n,3)/d²` for general n
+   (Bonferroni r=1) — quantitative complement to Lemma C.
