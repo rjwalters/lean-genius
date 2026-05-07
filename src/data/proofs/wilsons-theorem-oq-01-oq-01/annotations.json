@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-header-imports",
+    "proofId": "wilsons-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 23
+    },
+    "type": "concept",
+    "title": "Header, Imports, and Namespace",
+    "content": "The opening docstring states the entry's mission: investigate whether infinitely many Wilson primes exist, with concrete formalizations of the three known Wilson primes (5, 13, 563), an axiom for the open infinite conjecture, and Wieferich primes (1093, 3511) as a structural analogue. Imports `Mathlib.Data.Nat.Factorial.Basic` for `Nat.factorial`, `Mathlib.Data.Nat.Prime.Basic` for `Nat.Prime`, and `Mathlib.Tactic` for `native_decide` / `norm_num` / `decide`. The file lives in namespace `WilsonPrimesOQ01` and opens `Nat` so factorial arithmetic and prime predicates are unqualified. The status header (\"1 axiom\") is accurate: only `infinitely_many_wilson_primes` is an axiom — every concrete Wilson prime, including 563, is a fully proved theorem via `native_decide`.",
+    "mathContext": "Wilson's theorem (Lagrange, 1771): for every prime $p$, $(p-1)! \\equiv -1 \\pmod{p}$. A Wilson prime strengthens this to $(p-1)! \\equiv -1 \\pmod{p^2}$. The Wilson quotient $W_p = ((p-1)!+1)/p$ is then divisible by $p$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 imports",
+      "Mathlib organization",
+      "decide vs native_decide"
+    ],
+    "relatedConcepts": [
+      "Wilson's theorem",
+      "Lagrange 1771",
+      "namespace and `open` directives"
+    ]
+  },
+  {
     "id": "ann-core-definitions",
     "proofId": "wilsons-theorem-oq-01-oq-01",
     "range": {
@@ -48,28 +71,28 @@
     ]
   },
   {
-    "id": "ann-axiom-563",
+    "id": "ann-third-wilson-563",
     "proofId": "wilsons-theorem-oq-01-oq-01",
     "range": {
       "startLine": 52,
       "endLine": 63
     },
-    "type": "concept",
-    "title": "The Third Wilson Prime: Axiomatizing an External Computation",
-    "content": "563 cannot be verified by `native_decide` because 562! requires arithmetic with over 1300 decimal digits, exhausting the tactic's time budget. Instead it is declared as an `axiom`, encoding the external computational fact first established by Goldberg (1953) using an early electronic computer, then re-verified by Crandall, Dilcher, and Pomerance (1997) during their search to 5\u00d710\u2078. The number 563\u00b2 = 316,969 divides 562! + 1 is mathematically certain but not formally derivable in Lean's kernel without an efficient modular factorial algorithm. This is a principled use of axiomatization for computationally verified but kernel-infeasible facts.",
-    "mathContext": "$563^2 = 316{,}969 \\mid 562! + 1$. The number $562!$ has $\\lfloor \\log_{10}(562!) \\rfloor + 1 = 1{,}324$ decimal digits. Efficient verification requires computing $\\prod_{k=1}^{562} (k \\bmod 316{,}969) \\bmod 316{,}969$, which is feasible by modular arithmetic but exceeds Lean's `native_decide` time budget.",
+    "type": "theorem",
+    "title": "The Third Wilson Prime: 563 Verified by native_decide",
+    "content": "`fiveHundredSixtyThree_is_wilson_prime` is a fully verified theorem \u2014 not an axiom. The proof splits the IsWilsonPrime conjunction with `refine \u27e8by norm_num, ?_\u27e9`, dispatching primality of 563 with `norm_num` and the divisibility 563\u00b2 | 562! + 1 with `native_decide`. The `native_decide` tactic compiles the decidable proposition to machine code and runs it against Lean 4's GMP-backed natural number representation. Critically, the kernel does not need to evaluate 562! as a 1324-digit literal: the goal `563^2 \u2223 (563-1).factorial + 1` is decidable, and native_decide computes the answer modularly at native speed, finishing in milliseconds. This formalizes Goldberg's 1953 hand-machine result and the Crandall-Dilcher-Pomerance (1997) re-verification.",
+    "mathContext": "$563^2 = 316{,}969 \\mid 562! + 1$. While $562!$ itself has 1{,}324 decimal digits, the divisibility check reduces to computing $562! \\bmod 316{,}969$. The kernel-evaluated `native_decide` performs roughly 562 modular multiplications, each on values fitting in 64 bits (since $316{,}969 < 2^{19}$ and products of two such values fit in $2^{38}$). The result $562! \\bmod 316{,}969 = 316{,}968 \\equiv -1 \\pmod{563^2}$ confirms the Wilson prime condition.",
     "significance": "critical",
     "prerequisites": [
-      "Lean axioms",
-      "native_decide limits",
-      "modular factorial arithmetic",
-      "trusted external computations"
+      "native_decide tactic",
+      "GMP-backed Nat arithmetic",
+      "modular factorial",
+      "Lean 4 decidable instances"
     ],
     "relatedConcepts": [
       "Goldberg 1953",
       "Crandall-Dilcher-Pomerance 1997",
-      "axiomatized computations",
-      "Lean kernel limits"
+      "kernel reduction vs compiled evaluation",
+      "decidability of divisibility"
     ]
   },
   {
@@ -153,9 +176,9 @@
       "endLine": 122
     },
     "type": "insight",
-    "title": "Why 1093 and 3511 Are Feasible but 563 Was Not",
-    "content": "Both Wieferich verifications use `refine \u27e8by norm_num, ?_\u27e9` to separate the primality goal (handled by `norm_num`) from the modular power goal (handled by `native_decide`). Computing 2^1092 mod 1093\u00b2 and 2^3510 mod 3511\u00b2 uses repeated squaring \u2014 O(log p) multiplications, each mod p\u00b2. In contrast, computing (p-1)! mod p\u00b2 for p = 563 requires O(p) multiplications: roughly 563/log\u2082(1093) \u2248 56\u00d7 more work. This is why the Wieferich verifications succeed where the 563 Wilson prime fails: exponential modular arithmetic scales far better than factorial modular arithmetic.",
-    "mathContext": "Modular exponentiation via repeated squaring: $O(\\log p)$ multiplications, each of size $O(\\log p^2)$. Total work: $O(\\log^3 p)$. Modular factorial: $O(p)$ multiplications. Ratio: $O(p/\\log^3 p)$. For $p = 563$ vs $p = 1093$: $563 / \\log^3(1093) \\approx 563/1000 < 1$, but the absolute $O(p)$ cost of 563 factorial multiplications exceeds `native_decide`'s time limit.",
+    "title": "Wieferich Verifications: Modular Exponentiation Scales Logarithmically",
+    "content": "Both Wieferich verifications use `refine \u27e8by norm_num, ?_\u27e9` to separate the primality goal (dispatched by `norm_num`) from the modular power goal (dispatched by `native_decide`). The modular check reduces to computing 2^(p-1) mod p\u00b2 for p \u2208 {1093, 3511}. With repeated squaring this is O(log p) modular multiplications \u2014 11 for p=1093, 12 for p=3511 \u2014 each on values bounded by p\u00b2 \u2248 10\u2076 to 10\u2077, well within native int64 range. Both finish in microseconds. Contrast with the 563 Wilson prime check: modular factorial is O(p) multiplications, ~562 in this case, but each is still mod 316,969 < 2\u00b9\u2079, so individual products fit in 64 bits; native_decide handles 562 such multiplications in milliseconds. Both `native_decide` calls in the file (for 563, 1093, 3511) succeed as theorems \u2014 the file has no computational axioms.",
+    "mathContext": "Modular exponentiation via repeated squaring: $O(\\log p)$ multiplications, each at most $O((\\log p^2)^2)$ machine work. For $p = 1093$: $\\log_2(1093) \\approx 10.1$, so $\\sim 11$ multiplications mod $1093^2 = 1{,}194{,}649$. Modular factorial for $p = 563$: $562$ multiplications mod $563^2 = 316{,}969$. Both algorithms fit native_decide's GMP-backed Nat representation; the 563 case is the heaviest but still completes in milliseconds.",
     "significance": "supporting",
     "prerequisites": [
       "modular exponentiation",
@@ -164,10 +187,11 @@
       "norm_num tactic"
     ],
     "relatedConcepts": [
-      "Wilson prime 563 axiom contrast",
+      "modular factorial",
       "fast modular arithmetic",
       "Meissner 1913",
-      "Beeger 1922"
+      "Beeger 1922",
+      "native_decide complexity"
     ]
   }
 ]
