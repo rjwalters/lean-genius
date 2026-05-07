@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-ftc-oq01-docstring",
+    "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 22 },
+    "type": "context",
+    "title": "Open Question + 4-Step Proof Sketch",
+    "content": "The header poses the OQ-01 question: can the AC ⟹ BV implication be proved directly from the ε-δ definition of absolute continuity, without invoking heavier machinery? The answer is yes, and the docstring sketches the 4-step proof:\n\n1. Apply AC with $\\varepsilon = 1$ to obtain $\\delta > 0$.\n2. Choose $n = \\lceil (b-a)/\\delta \\rceil + 1$ so that $\\text{step} = (b-a)/n < \\delta$.\n3. **Key lemma**: $V_F[c, d] \\leq 1$ whenever $d - c < \\delta$ (via AC + partition sum bound).\n4. **Conclude**: by `eVariationOn.Icc_add_Icc` applied $n-1$ times, $V_F[a, b] \\leq n < +\\infty$.\n\nThe sketch transparently exposes the role of each ingredient: AC provides the local (modulus) bound, the ceiling-based $n$ converts a global length into a global piece count, the short-interval lemma turns the AC bound into a variation bound, and the additivity of variation glues the pieces. No Lebesgue measure, Vitali covering, or Hahn decomposition is needed — purely the ε-δ definition.",
+    "mathContext": "$\\mathrm{AC} \\Rightarrow \\mathrm{BV}$ on $[a, b]$. The AC modulus $\\delta(\\varepsilon)$ for $\\varepsilon = 1$ controls how large $V_F$ can grow per piece of length $< \\delta$. The proof's quantitative content: $V_F[a, b] \\leq \\lceil (b-a)/\\delta \\rceil + 1$, an explicit bound in terms of the AC modulus.",
+    "significance": "context",
+    "relatedConcepts": ["AC ⟹ BV", "AC modulus", "ε-δ characterization", "eVariationOn.Icc_add_Icc", "ceiling argument"],
+    "prerequisites": ["absolute continuity (ε-δ)", "bounded variation", "Vitali-Carathéodory framework"]
+  },
+  {
     "id": "ann-ftc-oq01-header",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
     "range": { "startLine": 23, "endLine": 35 },
