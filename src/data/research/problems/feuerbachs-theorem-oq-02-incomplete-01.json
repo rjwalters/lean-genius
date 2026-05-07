@@ -1,8 +1,8 @@
 {
   "slug": "feuerbachs-theorem-oq-02-incomplete-01",
   "title": "3D Analogue of Feuerbach's Theorem for Tetrahedra",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,16 +27,16 @@
     "goal": "Fill the 5 sorries to complete the 3D Feuerbach proof for orthocentric tetrahedra"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-02T00:50:00Z",
-    "iteration": 3,
-    "focus": "Closed-form refutation of the (N24, R/3)-Feuerbach sphere candidate; 5 sorry-stated tangency theorems removed; new direction is identifying the correct (Murakami / Court) Feuerbach sphere.",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "Original incomplete-01 investigation closed: the (N24, R/3) Feuerbach-sphere candidate was refuted by closed-form symbolic counterexample at the orthocentric tetrahedron T0 = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)). The 5 sorry-stated tangency theorems and the bundled feuerbach_3d_theorem were removed (PR landed). FeuerbachsTheoremOQ02.lean now sits at 1 axiom (feuerbach_3d_fails_general), 17 theorems, 48 defs, 743 lines, 0 sorries, with the gallery showing status axiomatized, badge axiom.",
     "blockers": [],
-    "nextAction": "Survey Murakami (1952) face-circumcircle and Court (1934) isodynamic constructions to identify the correct 3D Feuerbach sphere; record formulas in problem.md for a future session.",
+    "nextAction": "None for this entry. The follow-on Murakami (1952) / Court (1934) survey to identify the correct 3D Feuerbach sphere should be tracked under a separate slug (e.g. a fresh feuerbachs-theorem-oq-02-murakami entry) rather than reopening this one.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {
@@ -92,12 +92,7 @@
       "3D sphere tangency in Mathlib is less developed than 2D circle geometry",
       "The correct 3D Feuerbach theorem statement needs literature research"
     ],
-    "nextSteps": [
-      "Survey Murakami (1952) and Court (1934) to extract the precise center / radius formulas for the correct 3D Feuerbach sphere; record in problem.md",
-      "Once a sqrt-arithmetic tactic is available, promote the refutation to a Lean theorem: there exists T : OrthocentricTetrahedron with not(spheresInternallyTangent ...)",
-      "Adapt the T0 counterexample to a non-orthocentric specimen to discharge the existing axiom feuerbach_3d_fails_general",
-      "Optionally restructure to put the candidate sphere definitions inside an Investigations / Refuted namespace to avoid suggesting the candidate is the standard 3D Feuerbach sphere"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "geometry",
@@ -123,7 +118,20 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-05-02T00:50:00Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 7,
-  "tractability": 5
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FeuerbachsTheoremOQ02.lean",
+      "filename": "FeuerbachsTheoremOQ02.lean",
+      "lineCount": 743,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 48,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FeuerbachsTheoremOQ02.lean"
+    }
+  ]
 }
