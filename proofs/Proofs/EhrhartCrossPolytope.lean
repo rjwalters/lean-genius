@@ -384,7 +384,14 @@ private lemma innerBall_card_eq {d n m : ℕ} (hm : m ≤ n) :
 private lemma sym_fin_sum (f : ℕ → ℕ) (m : ℕ) :
     ∑ k : Fin (2 * m + 1), (if k.val ≤ m then f k.val else f (2 * m - k.val)) =
     f m + 2 * ∑ k ∈ Finset.range m, f k := by
-  rw [Finset.sum_fin_eq_sum_range]
+  -- Convert Fin sum to range sum (removing the dite wrapper from sum_fin_eq_sum_range)
+  have hconv : ∑ k : Fin (2 * m + 1), (if k.val ≤ m then f k.val else f (2 * m - k.val)) =
+               ∑ k ∈ Finset.range (2 * m + 1), (if k ≤ m then f k else f (2 * m - k)) := by
+    rw [Finset.sum_fin_eq_sum_range]
+    apply Finset.sum_congr rfl
+    intro k hk
+    rw [dif_pos (Finset.mem_range.mp hk)]
+  rw [hconv]
   have hsplit : Finset.range (2 * m + 1) =
       Finset.range m ∪ {m} ∪ Finset.Ico (m + 1) (2 * m + 1) := by
     ext k; simp [Finset.mem_range, Finset.mem_Ico]; omega
@@ -468,7 +475,10 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
             rw [Fin.sum_univ_castSucc]
             simp only [Fin.snoc_castSucc, Fin.snoc_last]
             have hmem := (Finset.mem_filter.mp hy).2
-            omega
+            -- Split on j.val ≤ n to let omega see concrete bounds from hdist
+            by_cases hc : j.val ≤ n
+            · simp only [if_pos hc] at hdist hmem ⊢; omega
+            · simp only [if_neg hc] at hdist hmem ⊢; omega
           · simp [Fin.init_snoc]
       · simp only [if_neg hdist]
         rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
@@ -509,55 +519,48 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
       -- Use sum_bij' (dependent bijection): forward map k↦⟨k+(n-m)⟩ is total in Fin(2m+1);
       -- inverse map j↦⟨j-(n-m)⟩ uses filter membership to prove the Fin(2m+1) bound.
       rw [← Finset.sum_filter]
-      -- Use sum_bij with filter as source: explicitly annotate hj type and return type
-      -- to force Lean to infer s = filter(Fin 2n+1) and output = Fin(2m+1).
-      symm
-      let P := fun j : Fin (2 * n + 1) => (if j.val ≤ n then n - j.val else j.val - n) ≤ m
-      refine Finset.sum_bij
-        (fun (j : Fin (2 * n + 1)) (hj : j ∈ Finset.univ.filter P) =>
-          (⟨j.val - (n - m), by
-              have hdist : P j := (Finset.mem_filter.mp hj).2
-              simp only [P] at hdist
-              have := j.isLt
-              split_ifs at hdist with h <;> omega⟩ : Fin (2 * m + 1))) ?_ ?_ ?_ ?_
-      · -- hi: image lands in Finset.univ (trivially)
-        intro j _; exact Finset.mem_univ _
-      · -- injectivity: j₁.val - (n-m) = j₂.val - (n-m) → j₁ = j₂
-        intro j₁ hj₁ j₂ hj₂ h
-        apply Fin.ext; simp only [Fin.mk.injEq] at h
-        have hdist₁ : P j₁ := (Finset.mem_filter.mp hj₁).2
-        have hdist₂ : P j₂ := (Finset.mem_filter.mp hj₂).2
-        simp only [P] at hdist₁ hdist₂
-        have hle₁ : n - m ≤ j₁.val := by
-          by_cases hc : j₁.val ≤ n
-          · simp only [if_pos hc] at hdist₁; omega
-          · simp only [if_neg hc] at hdist₁; omega
-        have hle₂ : n - m ≤ j₂.val := by
-          by_cases hc : j₂.val ≤ n
-          · simp only [if_pos hc] at hdist₂; omega
-          · simp only [if_neg hc] at hdist₂; omega
-        omega
-      · -- surjectivity: preimage of k is ⟨k.val+(n-m),_⟩ ∈ filter
-        intro k _
-        have hk := k.isLt
-        have hnm := hm  -- m ≤ n, needed for omega bounds
-        refine ⟨⟨k.val + (n - m), by omega⟩, ?_, ?_⟩
-        · simp only [Finset.mem_filter, Finset.mem_univ, true_and, P]
-          split_ifs with h <;> omega
-        · apply Fin.ext; simp only [Fin.mk.injEq]; omega
-      · -- function equality: g(i j) = f j
-        intro j hj
-        have hdist : P j := (Finset.mem_filter.mp hj).2
-        simp only [P] at hdist
-        rcases le_or_gt j.val n with hjn | hjn
-        · -- j.val ≤ n: dist j = n-j.val ≤ m, j.val-(n-m) ≤ m
-          have hd : n - j.val ≤ m := by simp only [if_pos hjn] at hdist; exact hdist
-          rw [if_pos (by omega : j.val - (n - m) ≤ m)]
-          congr 1; omega
-        · -- j.val > n: dist j = j.val-n ≤ m, j.val-(n-m) > m
-          have hd : j.val - n ≤ m := by simp only [if_neg (by omega : ¬j.val ≤ n)] at hdist; exact hdist
-          rw [if_neg (by omega : ¬(j.val - (n - m) ≤ m))]
-          congr 1; omega
+      -- Use sum_image: the shift map k↦⟨k+(n-m),_⟩ from Fin(2m+1) has image = filter.
+      -- This avoids sum_bij type inference issues entirely.
+      let shift := fun k : Fin (2 * m + 1) =>
+          (⟨k.val + (n - m), by have := k.isLt; have := hm; omega⟩ : Fin (2 * n + 1))
+      -- Show image of shift = filter
+      have himage : (Finset.univ : Finset (Fin (2 * m + 1))).image shift =
+          Finset.univ.filter (fun j : Fin (2 * n + 1) =>
+            (if j.val ≤ n then n - j.val else j.val - n) ≤ m) := by
+        ext j
+        simp only [shift, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and,
+                   Fin.ext_iff, Fin.val_mk]
+        constructor
+        · rintro ⟨k, _, rfl⟩
+          have := k.isLt; have := hm; split_ifs with h <;> omega
+        · intro hd
+          refine ⟨⟨j.val - (n - m), by
+              have := j.isLt; have := hm
+              by_cases h : j.val ≤ n
+              · simp only [if_pos h] at hd; omega
+              · simp only [if_neg h] at hd; omega⟩, Finset.mem_univ _, ?_⟩
+          have := hm
+          by_cases h : j.val ≤ n
+          · simp only [if_pos h] at hd; omega
+          · simp only [if_neg h] at hd; omega
+      -- Apply sum_image with injectivity of shift
+      rw [← himage, Finset.sum_image (by
+        intro k₁ _ k₂ _ h
+        apply Fin.ext; simp only [shift, Fin.mk.injEq] at h; omega)]
+      -- Now: ∑ k : Fin(2m+1), cE d(m-dist(shift k)) = ∑ k : Fin(2m+1), G k
+      apply Finset.sum_congr rfl
+      intro k _
+      have hk := k.isLt; have := hm
+      simp only [shift]
+      -- Show cE d(m-dist(k+(n-m))) = G k
+      by_cases hkm : k.val ≤ m
+      · have hdist : (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
+                      else k.val + (n - m) - n) = m - k.val := by split_ifs with h <;> omega
+        simp only [hdist, if_pos hkm]
+      · have hdist : (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
+                      else k.val + (n - m) - n) = k.val - m := by split_ifs with h <;> omega
+        simp only [hdist, if_neg hkm]
+        congr 1; omega
 
 -- ============================================================
 -- PART IX: Summary and Exports
