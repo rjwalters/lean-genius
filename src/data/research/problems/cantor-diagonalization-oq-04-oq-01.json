@@ -2,7 +2,7 @@
   "slug": "cantor-diagonalization-oq-04-oq-01",
   "title": "Lawvere Fixed-Point Theorem for Setoids (CCC Generalization)",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -21,12 +21,12 @@
     "goal": "Proved: Lawvere FPT for Setoids, with full gallery entry"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-06T14:45:58.508Z",
+    "phase": "DONE",
+    "since": "2026-05-07T17:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Lawvere FPT for Setoids: 8 theorems, 3 definitions, 0 sorries, 0 axioms in CantorDiagonalizationOQ04OQ01.lean (166 lines). Gallery status=verified, badge=original. Merged in PR #16393.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — entry complete. Optional follow-on directions tracked in nextSteps (CCC typeclass lift, characterization of admissible setoids).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -34,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Lawvere FPT proved for Setoids. 11 theorems, 3 definitions, 0 sorries, 0 axioms. PR pending Docker build.",
+    "progressSummary": "COMPLETED: Lawvere FPT proved for Setoids. CantorDiagonalizationOQ04OQ01.lean has 8 theorems, 3 definitions, 0 sorries, 0 axioms (166 lines). Gallery status=verified, badge=original; merged in PR #16393. The diagonal construction g(y) = f(decode(y)(y)) carries over from the Type-level proof; the retraction condition only needs to hold up to setoid equivalence (decode(encode(f))(y) ≈ f(y)).",
     "builtItems": [
       "CodesEndomorphismsSetoid structure (encode, decode, setoid retraction)",
       "lawvere_fixpoint_setoid: main theorem in CantorDiagonalizationOQ04OQ01.lean",
@@ -92,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:45:58.508Z",
-  "lastUpdate": "2026-05-06T14:45:58.508Z",
+  "lastUpdate": "2026-05-07T17:00:00Z",
   "significance": 5,
   "tractability": 4,
   "leanFiles": [
