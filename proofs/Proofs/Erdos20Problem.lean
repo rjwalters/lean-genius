@@ -61,7 +61,7 @@ axiom sunflowerNumber (n k : ℕ) : ℕ
 /- ## The Sunflower Lemma (Erdős-Rado 1960) -/
 
 /-- **Erdős-Rado Sunflower Lemma (1960)**:
-    f(n,k) ≤ (k-1)^n · n!
+    f(n,k) ≤ (k-1)^n · n! -/
 
 /-- The Erdős-Rado bound explicitly. -/
 def erdosRadoBound (n k : ℕ) : ℕ := (k - 1)^n * n.factorial

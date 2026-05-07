@@ -55,7 +55,7 @@ def ExceptionalSet : Set ℕ :=
   { n : ℕ | Odd n ∧ ¬IsRomanoff n }
 
 /-- Alternative characterization: n is exceptional if for all k with 2^k < n,
-    the number n - 2^k is not prime.
+    the number n - 2^k is not prime. -/
 
 /-
 ## The Romanoff Theorem
@@ -73,9 +73,9 @@ noncomputable def density (A : Set ℕ) (N : ℕ) : ℝ :=
 noncomputable def lowerDensity (A : Set ℕ) : ℝ :=
   ⨅ (N : ℕ), ⨆ (M : ℕ) (_ : M ≥ N), density A M
 
-/-- Romanoff's Theorem (1934): A positive proportion of odd integers are Romanoff.
+/-- Romanoff's Theorem (1934): A positive proportion of odd integers are Romanoff. -/
 
-/-- Corollary: The exceptional set has density less than 1/2.
+/-- Corollary: The exceptional set has density less than 1/2. -/
 
 /-
 ## Erdős's Covering Congruence Result (1950)
@@ -89,7 +89,7 @@ def IsCoveringSystem (residues : List (ℕ × ℕ)) : Prop :=
   ∀ n : ℤ, ∃ rm ∈ residues, rm.2 > 0 ∧ n % rm.2 = rm.1
 
 /-- Erdős's construction (1950): The exceptional set contains an
-    infinite arithmetic progression.
+    infinite arithmetic progression. -/
 
 /-
 ## The Conjecture and Its Disproof
@@ -104,11 +104,11 @@ def ErdosConjecture16 : Prop :=
   ∃ a d : ℕ, d > 0 ∧
     lowerDensity (ExceptionalSet \ { n | ∃ m, n = a + m * d }) = 0
 
-/-- Chen's Theorem (2023): The conjecture is FALSE.
+/-- Chen's Theorem (2023): The conjecture is FALSE. -/
 
 /-- Consequence: The exceptional set contains elements from multiple
     "essentially different" arithmetic progressions, or has positive
-    density outside any single progression.
+    density outside any single progression. -/
 
 /-
 ## Known Exceptional Numbers
@@ -117,7 +117,7 @@ The first few odd integers not of the form 2^k + p (OEIS A006285):
 1, 127, 149, 251, 331, 337, 373, 509, 599, 701, 757, 809, 877, ...
 -/
 
-/-- 127 is in the exceptional set.
+/-- 127 is in the exceptional set. -/
 
 /-
 ## Connection to Covering Congruences
@@ -136,7 +136,7 @@ def erdosCovering : List (ℕ × ℕ) :=
 More precise bounds on the density of the exceptional set.
 -/
 
-/-- The exceptional set has positive lower density.
+/-- The exceptional set has positive lower density. -/
 
 /-
 ## Related Problems

@@ -10,7 +10,7 @@ This gives a completely multiplicative symbol defined for ALL integers a, n.
 
 Definitions:
   (a/0) = if |a| = 1 then 1 else 0
-  (a/-1) = if a < 0 then -1 else 1
+  (a/(-1)) = if a < 0 then -1 else 1
   (a/2) = 0 if 2∣a, 1 if a ≡ ±1 (mod 8), -1 if a ≡ ±3 (mod 8)
   (a/p) = Legendre symbol for odd prime p
   (a/n) = ∏ (a/pᵢ)^eᵢ for n = ±∏ pᵢ^eᵢ (multiplicative extension)
@@ -41,7 +41,7 @@ def kronecker2 (a : ℤ) : ℤ :=
   else if a % 8 = 1 ∨ a % 8 = -1 ∨ a % 8 = 7 then 1
   else -1
 
-/-- (a/-1): the Kronecker symbol at -1.
+/-- (a/(-1)): the Kronecker symbol at -1.
     -1 if a < 0, 1 if a ≥ 0. Encodes the sign character. -/
 def kroneckerNeg1 (a : ℤ) : ℤ :=
   if a < 0 then -1 else 1
@@ -79,11 +79,11 @@ theorem kronecker2_seven : kronecker2 7 = 1 := by
 theorem kronecker2_zero : kronecker2 0 = 0 := by
   simp [kronecker2]
 
-/-- (a/-1) = 1 for nonneg a -/
+/-- (a/(-1)) = 1 for nonneg a -/
 theorem kroneckerNeg1_nonneg (a : ℤ) (ha : 0 ≤ a) : kroneckerNeg1 a = 1 := by
   simp [kroneckerNeg1]; omega
 
-/-- (a/-1) = -1 for neg a -/
+/-- (a/(-1)) = -1 for neg a -/
 theorem kroneckerNeg1_neg (a : ℤ) (ha : a < 0) : kroneckerNeg1 a = -1 := by
   simp [kroneckerNeg1, ha]
 
