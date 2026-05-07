@@ -381,17 +381,35 @@ private lemma jdt_weight_preserved (n a b : ℕ)
   conv_rhs => rw [hQ, Multiset.map_cons, Multiset.prod_cons]
   ring
 
-/-- **Weight factorization through total multiset.**
-    For `P : Sym (Fin n) a` and `Q : Sym (Fin n) b`, the product of pair-weights
-    equals the weight of their multiset union `P.1 + Q.1 : Multiset (Fin n)`:
-      `prod(P.1.map X) * prod(Q.1.map X) = prod((P.1 + Q.1).map X)`.
+/-- **Weight factorization through the total multiset.**
 
-    **Use:** the b ≥ 2 branch of `jdt_weight_sum` regroups the LHS sum
-    by total multiset `M = P + Q : Sym (Fin n) (a + b)` (each `M` appearing
-    once per non-col-strict split). The RHS regroups similarly by `M = P' + Q'`
-    for `(P', Q') : Sym(a+1) × Sym(b-1)`. After applying this lemma both sides
-    become `∑_M (count of M-splits) * (M.1.map X).prod`, reducing the
-    polynomial identity to the **ballot counting identity** on split counts. -/
+    The product weight of a pair `(P : Sym (Fin n) a, Q : Sym (Fin n) b)`
+    depends only on the total multiset `P.1 + Q.1`:
+
+        wt(P) * wt(Q) = wt(P.1 + Q.1)        (where wt := ((·).map X).prod)
+
+    This is the cornerstone of the corrected proof strategy for the b≥2
+    branch of `jdt_weight_sum` identified in Session 18 (PR #14891). The
+    weight identity reduces the polynomial sum to a per-fiber **counting
+    identity** indexed by the total multiset:
+
+        ∑_{(P,Q) : ¬ColStrictSym a b}      wt(P) * wt(Q)
+          = ∑_{M : Sym n (a+b)} (#{non-cs (a,b) splits of M}) * wt(M)
+
+        ∑_{(P', Q') : (a+1, b-1)}          wt(P') * wt(Q')
+          = ∑_{M : Sym n (a+b)} (#{all (a+1, b-1) splits of M}) * wt(M)
+
+    So `jdt_weight_sum` (b ≥ 2) reduces to: for every `M : Sym n (a+b)`,
+        `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`.
+    The cardinality identity is provable by the ballot bijection
+    (~100-150 lines, standard finite-type combinatorics). No ring-valued
+    LGV is needed.
+
+    **Note:** Session 18 (PR #14891) showed that the naive "insert
+    violation element" forward map on (P, Q) ↔ (P', Q') is *non-injective*
+    for b ≥ 2; the counterexample `(P={1,3,4}, Q={0,2,3})` and
+    `(P={0,1,4}, Q={2,3,3})` both map to `(P'={0,1,3,4}, Q'={2,3})`. The
+    weight-factorization-then-count approach circumvents this. -/
 private lemma weight_eq_total_multiset {n a b : ℕ}
     (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
     (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
@@ -577,42 +595,6 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
   rw [getq_spec Q, Multiset.map_singleton, Multiset.prod_singleton,
       Multiset.map_cons, Multiset.prod_cons]
   ring
-
-/-- **Weight factorization through the total multiset.**
-
-    The product weight of a pair `(P : Sym (Fin n) a, Q : Sym (Fin n) b)`
-    depends only on the total multiset `P.1 + Q.1`:
-
-        wt(P) * wt(Q) = wt(P.1 + Q.1)        (where wt := ((·).map X).prod)
-
-    This is the cornerstone of the corrected proof strategy for the b≥2
-    branch of `jdt_weight_sum` identified in Session 18 (PR #14891). The
-    weight identity reduces the polynomial sum to a per-fiber **counting
-    identity** indexed by the total multiset:
-
-        ∑_{(P,Q) : ¬ColStrictSym a b}      wt(P) * wt(Q)
-          = ∑_{M : Sym n (a+b)} (#{non-cs (a,b) splits of M}) * wt(M)
-
-        ∑_{(P', Q') : (a+1, b-1)}          wt(P') * wt(Q')
-          = ∑_{M : Sym n (a+b)} (#{all (a+1, b-1) splits of M}) * wt(M)
-
-    So `jdt_weight_sum` (b ≥ 2) reduces to: for every `M : Sym n (a+b)`,
-        `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`.
-    The cardinality identity is provable by the ballot bijection
-    (~100-150 lines, standard finite-type combinatorics). No ring-valued
-    LGV is needed.
-
-    **Note:** Session 18 (PR #14891) showed that the naive "insert
-    violation element" forward map on (P, Q) ↔ (P', Q') is *non-injective*
-    for b ≥ 2; the counterexample `(P={1,3,4}, Q={0,2,3})` and
-    `(P={0,1,4}, Q={2,3,3})` both map to `(P'={0,1,3,4}, Q'={2,3})`. The
-    weight-factorization-then-count approach circumvents this. -/
-private lemma weight_eq_total_multiset (n a b : ℕ)
-    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
-    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
-      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
-    ((P.1 + Q.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
-  rw [Multiset.map_add, Multiset.prod_add]
 
 /-- **Positivity helper for `¬ColStrictSym`.**
 
