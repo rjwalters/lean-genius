@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Gallery entry ETranscendentalOQ02.lean created (237 lines, 0 sorries, 4 axioms, 21 theorems, 3 defs). Key achievements: rigorous normality definitions, machine-verified first 6 decimal digits of e, and axiomatized normal_imp_irrational + e_absolutely_normal.",
+    "progressSummary": "COMPLETE: Gallery entry ETranscendentalOQ02.lean (origin/main 2026-05-07: 300 lines, 0 sorries, 3 axioms, 28 theorems, 3 defs). #15637 extended decimal digit proofs to 9 digits. #15750 proved periodic_has_missing_ktuple (axioms 4→3). Remaining axioms: rational_digits_eventually_periodic, normal_imp_irrational, e_absolutely_normal (the open conjecture). Key achievements: rigorous normality definitions, machine-verified first 9 decimal digits of e, and axiomatized e_absolutely_normal.",
     "builtItems": [
       "ETranscendentalOQ02.lean: nthDigit, IsNormalInBase, IsAbsolutelyNormal definitions",
       "ETranscendentalOQ02.lean: e_floor=2, e_floor_10=27, e_floor_100=271, e_floor_1000=2718, e_floor_10000=27182, e_floor_100000=271828, e_floor_1000000=2718281 all proved",
@@ -97,14 +97,14 @@
     ]
   },
   "started": "2026-05-04T00:00:00.000Z",
-  "lastUpdate": "2026-05-04T00:00:00.000Z",
+  "lastUpdate": "2026-05-07T17:35:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/ETranscendentalOQ01.lean",
       "filename": "ETranscendentalOQ01.lean",
-      "lineCount": 539,
+      "lineCount": 538,
       "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 2,
@@ -115,7 +115,7 @@
     {
       "path": "Proofs/ETranscendentalOQ01OQ01.lean",
       "filename": "ETranscendentalOQ01OQ01.lean",
-      "lineCount": 342,
+      "lineCount": 341,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 0,
@@ -137,7 +137,7 @@
     {
       "path": "Proofs/ETranscendentalOQ03.lean",
       "filename": "ETranscendentalOQ03.lean",
-      "lineCount": 220,
+      "lineCount": 219,
       "theoremCount": 4,
       "axiomCount": 2,
       "defCount": 0,
