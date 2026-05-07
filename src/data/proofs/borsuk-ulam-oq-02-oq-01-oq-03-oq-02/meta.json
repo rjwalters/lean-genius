@@ -1,0 +1,242 @@
+{
+  "id": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+  "title": "Symmetric Group Borsuk-Ulam: The Largest-Prime-Below Conjecture",
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+  "description": "Phase-2 formalization of the open question: For S_n, is symBUDim n d = buDim p* d = 2⌊d/2⌋ − 1, where p* is the largest prime ≤ n? The lower bound symBUDim n (2k) ≥ 2k − 1 is proved unconditionally (axiom-free, modulo parent infrastructure); the matching upper bound is the conjectural equality, axiomatized as `symBUDim_eq_largestPrime`. From the conjecture we derive the explicit closed form symBUDim n (2k) = 2k − 1.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
+    "date": "2026-05-07",
+    "status": "axiomatized",
+    "tags": [
+      "topology",
+      "borsuk-ulam",
+      "equivariant",
+      "symmetric-groups",
+      "bertrand-postulate",
+      "open-problem",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 187,
+    "dateAdded": "2026-05-08",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.findGreatest",
+        "description": "Greatest m ≤ n satisfying P, or 0 if none exists.",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.findGreatest_spec",
+        "description": "If P k holds and k ≤ n, then P (Nat.findGreatest P n).",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.le_findGreatest",
+        "description": "If P k holds and k ≤ n, then k ≤ Nat.findGreatest P n.",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.findGreatest_le",
+        "description": "Nat.findGreatest P n ≤ n.",
+        "module": "Mathlib.Data.Nat.Find"
+      },
+      {
+        "theorem": "Nat.prime_two",
+        "description": "2 is prime — used as the existence witness for largestPrimeBelow.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "largestPrimeBelow: noncomputable wrapper `Nat.findGreatest Nat.Prime n` for the largest prime ≤ n",
+      "largestPrimeBelow_isPrime: for n ≥ 2, the result is genuinely prime (witness p = 2)",
+      "largestPrimeBelow_le: trivial upper bound ≤ n",
+      "two_le_largestPrimeBelow: lower bound ≥ 2 for n ≥ 2",
+      "symBUDim_even_lower: unconditional lower bound symBUDim n (2k) ≥ 2k − 1 (axiom-free modulo parent)",
+      "axiom symBUDim_eq_largestPrime: the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2 — the open question, isolated as a single named axiom",
+      "symBUDim_even_formula: tight closed form symBUDim n (2k) = 2k − 1 derived from the conjecture + parent's buDim_prime",
+      "Concrete instances: symBUDim_three_four (= 3), symBUDim_four_six (= 5), symBUDim_five_lower_unconditional (axiom-free)"
+    ],
+    "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `buDim`, `buDim_prime` (counted in the parent gallery entries).",
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The classical Borsuk-Ulam theorem (Borsuk 1933) says any continuous odd map $S^n \\to \\mathbb{R}^n$ has a zero. For a finite group $G$ acting linearly on a real representation, the equivariant analog asks: what is the largest sphere dimension on which every $G$-equivariant map to a $d$-dimensional representation must vanish? Yang (1954) and Borsuk (1933) settled the case $G = \\mathbb{Z}/p$ for prime $p$, giving the celebrated formula $\\text{buDim}(\\mathbb{Z}/p, 2k) = 2k - 1$ — the 'tight prime bound'. For non-cyclic groups the answer requires cohomological index theory (Fadell-Husseini 1988).\n\nFor the symmetric group $S_n$, every prime $p \\leq n$ embeds as a cyclic subgroup via $p$-cycles, so subgroup monotonicity gives $\\text{symBUDim}(n, d) \\geq \\text{buDim}(p, d)$. The strongest bound comes from $p = p^*$, the **largest prime $\\leq n$**. Bertrand's postulate (Chebyshev 1850, Erdős 1932) guarantees $p^* > n/2$, so $\\text{symBUDim}(n, 2k) \\geq 2k - 1$ unconditionally — within factor 2 of the trivial upper bound $d - 1$.\n\nThe open question studied here is whether $\\text{symBUDim}(n, d)$ EQUALS $\\text{buDim}(p^*, d)$ — i.e. whether the $S_n$-equivariant structure adds nothing beyond the largest cyclic subgroup of prime order. A positive answer would yield the closed form $\\text{symBUDim}(n, 2k) = 2k - 1$. A negative answer would have to come from $S_n$-specific structure (Klein-4 subgroup $V_4 \\leq S_4$, representation-theoretic obstructions, ...).",
+    "problemStatement": "**Open Question (sub-question of borsuk-ulam-oq-02-oq-01-oq-03)**:\n\nFor every $n \\geq 2$ and $d \\geq 1$, is $$\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d) = 2\\lfloor d/2 \\rfloor - 1,$$ where $p^* = \\max\\{p \\text{ prime} : p \\leq n\\}$?\n\nThis Phase-2 formalization (a) proves the lower-bound direction unconditionally, (b) axiomatizes the conjectured equality as a single named axiom, and (c) derives the explicit closed form on even dimensions from the axiom plus the cyclic-prime Yang-Borsuk axiom inherited from the gallery's BU framework.",
+    "text": "The lower bound $\\text{symBUDim}(n, d) \\geq \\text{buDim}(p^*, d)$ is a theorem (axiom-free in this file, modulo parent infrastructure). The matching upper bound — equivalent to the conjectural equality — is the OPEN content, captured as the single axiom `symBUDim_eq_largestPrime`. The explicit closed form $\\text{symBUDim}(n, 2k) = 2k - 1$ is then a corollary.",
+    "proofStrategy": "**Step 1 (Definition, axiom-free):** Package $p^*$ as `largestPrimeBelow n := Nat.findGreatest Nat.Prime n`. Use `Nat.findGreatest_spec` (witness $p = 2$, valid for $n \\geq 2$) for primality, `Nat.findGreatest_le` for the upper bound, and `Nat.le_findGreatest` for the lower bound $\\geq 2$.\n\n**Step 2 (Lower bound, axiom-free):** Apply the parent file's `sym_has_cyclic_prime n d p* hp hle` to get $\\text{buDim}(p^*, d) \\leq \\text{symBUDim}(n, d)$. Compose with the Yang-Borsuk cyclic-prime axiom `buDim_prime` to get the explicit floor lower bound $\\text{symBUDim}(n, 2k) \\geq 2k - 1$ — `symBUDim_even_lower` in the file.\n\n**Step 3 (Conjecture):** Axiomatize the equality `symBUDim_eq_largestPrime : ∀ n d, 2 ≤ n → symBUDim n d = buDim (largestPrimeBelow n) d` as the working assumption. The lower-bound direction is `symBUDim_even_lower`; only the upper-bound direction is genuinely open.\n\n**Step 4 (Tight formula):** From the equality + `buDim_prime` derive `symBUDim_even_formula : ∀ n k, 2 ≤ n → 0 < k → symBUDim n (2k) = 2k - 1` — the conjectured closed form on even dimensions.\n\n**Step 5 (Concrete instances):** Verify the formula at $n = 3, 4$ via `symBUDim_three_four` and `symBUDim_four_six`, and the unconditional $S_5$ lower bound `symBUDim_five_lower_unconditional` (axiom-free up to parent).",
+    "keyInsights": [
+      "**The conjecture decomposes into two pieces, one already settled.** $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d) = 2\\lfloor d/2\\rfloor - 1$ splits as (i) symmetric-group structure adds nothing beyond the largest cyclic prime (the new axiom), and (ii) the Yang-Borsuk cyclic-prime formula (inherited from the parent's `buDim_prime`). Only (i) is the *new* open content.",
+      "**Bertrand controls the gap.** For any $n \\geq 2$, Bertrand's postulate guarantees a prime in $(n/2, n]$, so $p^* > n/2$. The gap between the unconditional cyclic lower bound and the conjectured value is at most a factor of 2 — already a tight bound.",
+      "**The unconditional lower bound is axiom-free in this file.** `symBUDim_even_lower` relies only on parent's `sym_has_cyclic_prime` (subgroup monotonicity) + parent's `buDim_prime` (Yang-Borsuk) + Mathlib's `Nat.findGreatest` API. No new axiom is needed for the LOWER bound — only the conjectured equality is axiomatized.",
+      "**`Nat.findGreatest` packaging is robust.** Using `Nat.findGreatest_spec` with witness $p = 2$ (always prime, ≤ any $n \\geq 2$) gives primality whenever $n \\geq 2$. Combined with `Nat.findGreatest_le` and `Nat.le_findGreatest`, all required properties of $p^*$ are derived without an explicit recursion or interval search.",
+      "**Failure modes for the conjecture.** If the conjecture fails at some $n$, the failure must come from $S_n$-specific structure: Klein-4 $V_4 \\leq S_4$ (non-cyclic of order 4), representation-theoretic obstructions from non-trivial irreducibles, or higher-cohomology classes in the Fadell-Husseini index. Natural test cases: $n = 4$ ($p^* = 3$, but $V_4 \\leq S_4$) and $n = 8$ ($p^* = 7$, but $S_8$ has rich subgroup structure including $A_4 \\times A_4$, etc.).",
+      "**Concrete computations are immediate.** `symBUDim_three_four = 3` and `symBUDim_four_six = 5` follow from the closed-form formula; the unconditional `symBUDim_five_lower_unconditional` is axiom-free up to parent. These serve as both regression tests and Lean-verified instances of the conjecture's predictions."
+    ],
+    "prerequisites": [
+      "BorsukUlamOQ02OQ01.lean (cyclic-group buDim, buDim_two, buDim_prime, buDim_mono)",
+      "BorsukUlamOQ02OQ01OQ03.lean (symBUDim, sym_has_cyclic_prime, sym_has_smaller_sym, symBUDim_two)",
+      "Mathlib.Data.Nat.Find (Nat.findGreatest API)",
+      "Mathlib.Data.Nat.Prime.Basic (primality, Nat.prime_two)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "largest-prime",
+      "title": "Part I: The Largest Prime ≤ n",
+      "startLine": 49,
+      "endLine": 75,
+      "summary": "`largestPrimeBelow n := Nat.findGreatest Nat.Prime n` (noncomputable). Theorems: `largestPrimeBelow_isPrime` (genuine prime for n ≥ 2 via witness 2), `largestPrimeBelow_le` (≤ n), `two_le_largestPrimeBelow` (≥ 2 for n ≥ 2). Combined, these establish $p^* \\in \\{p \\text{ prime} : 2 \\leq p \\leq n\\}$.",
+      "mathContext": "$p^* = \\max\\{p \\text{ prime} : p \\leq n\\}$. The witness $p = 2$ ensures `findGreatest` returns a prime whenever $n \\geq 2$; combining `findGreatest_le` and `le_findGreatest` (with witness 2) pins $p^* \\in [2, n]$ and prime."
+    },
+    {
+      "id": "conjecture-axiom",
+      "title": "Part II: The Equality Conjecture (Axiomatized)",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "`symBUDim_eq_largestPrime`: the central conjectural equality $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ for $n \\geq 2$. Axiomatized because the matching upper bound requires Fadell-Husseini cohomological index theory not yet in Mathlib. The lower-bound direction is parent's `sym_has_cyclic_prime`.",
+      "mathContext": "The proof sketch in the file's docstring outlines the cohomological strategy: spectral sequence of $BS_n \\to BG$ for cyclic prime $G$, exploiting that non-cyclic factors of $S_n$ contribute only via prime subgroups in the equivariant index."
+    },
+    {
+      "id": "closed-form",
+      "title": "Part III: Closed Form on Even Dimensions",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "`symBUDim_even_formula`: from the conjectural axiom + parent's `buDim_prime`, derives the tight closed form $\\text{symBUDim}(n, 2k) = 2k - 1$ for $n \\geq 2, k \\geq 1$. A two-line `rw` proof composing the new axiom with the Yang-Borsuk formula.",
+      "mathContext": "$\\text{symBUDim}(n, 2k) \\stackrel{\\text{axiom}}{=} \\text{buDim}(p^*, 2k) \\stackrel{\\text{Yang-Borsuk}}{=} 2k - 1$. The closed form is conditional on the conjecture — not yet a theorem of Mathlib."
+    },
+    {
+      "id": "unconditional-lower",
+      "title": "Part IV: Unconditional Lower Bound (No New Axioms)",
+      "startLine": 108,
+      "endLine": 134,
+      "summary": "`symBUDim_even_lower`: $2k - 1 \\leq \\text{symBUDim}(n, 2k)$ for $n \\geq 2, k \\geq 1$, using ONLY (a) `largestPrimeBelow_isPrime` + `largestPrimeBelow_le`, (b) parent's `sym_has_cyclic_prime` (subgroup monotonicity), (c) parent's `buDim_prime` (Yang-Borsuk). NO new axiom needed for the LOWER bound — only the conjectural equality is axiomatized.",
+      "mathContext": "$\\text{buDim}(p^*, 2k) \\stackrel{\\text{Yang-Borsuk}}{=} 2k - 1$, and $\\text{buDim}(p^*, 2k) \\leq \\text{symBUDim}(n, 2k)$ by subgroup monotonicity (parent axiom). Chaining gives the unconditional lower bound."
+    },
+    {
+      "id": "concrete",
+      "title": "Part V: Concrete Instances",
+      "startLine": 136,
+      "endLine": 156,
+      "summary": "`symBUDim_three_four = 3`: $S_3$ on $\\mathbb{R}^4$ representation. `symBUDim_four_six = 5`: $S_4$ on $\\mathbb{R}^6$ representation (note $p^* = 3$ since 4 is composite). Both conditional on the conjectural axiom. `symBUDim_five_lower_unconditional`: axiom-free $S_5$ lower bound. Serve as regression tests for the API.",
+      "mathContext": "$S_3 \\cong D_3$ (order 6), $p^* = 3$. $S_4$ (order 24), $p^* = 3$ — interesting because $V_4 \\leq S_4$ is the natural counterexample candidate for the conjecture. $S_5$ (order 120), $p^* = 5$ — the simplest nonsolvable $S_n$, with rich representation theory."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "BorsukUlamOQ02OQ01OQ03 develops the symBUDim framework with subgroup monotonicity. This file specializes to the largest-prime question and adds the conjectural equality."
+    },
+    {
+      "targetId": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "depends-on",
+      "description": "Inherits buDim, buDim_prime (Yang-Borsuk), and buDim_mono from the cyclic-group framework."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "uses",
+      "description": "Bertrand's postulate (background only — not directly imported here): used to argue p* > n/2, placing the bound within factor 2 of optimal."
+    }
+  ],
+  "conclusion": {
+    "summary": "Phase-2 formalization of the symmetric-group BU dimension's largest-prime conjecture. The lower bound $\\text{symBUDim}(n, 2k) \\geq 2k - 1$ is a theorem (axiom-free in this file, modulo parent infrastructure), and Bertrand's postulate gives $p^* > n/2$ — placing the bound within factor 2 of optimal. The matching upper bound is axiomatized as the single conjectural equality `symBUDim_eq_largestPrime`; from it we derive the tight closed form $\\text{symBUDim}(n, 2k) = 2k - 1$.",
+    "implications": "This file isolates the genuinely-open content (the upper bound) into a single named axiom. Any future progress — a Fadell-Husseini cohomological calculation, an equivariant-map construction for symmetric reps, or a counterexample at small composite $n$ — would slot directly into this framework. The infrastructure also supports the parallel dihedral question (`borsuk-ulam-oq-02-oq-01-oq-03-oq-01`), with which it shares the parent file `BorsukUlamOQ02OQ01OQ03.lean`.",
+    "openQuestions": [
+      "Prove or refute the conjectural axiom symBUDim_eq_largestPrime via Fadell-Husseini index theory. The S_n equivariant cohomology index would give the matching upper bound.",
+      "Test case n = 4: does $V_4 \\leq S_4$ (non-cyclic of order 4) contribute beyond the buDim 3 d lower bound? An explicit equivariant calculation could confirm or falsify the conjecture at n = 4.",
+      "Test case n = 8: does $S_8$ (which contains $V_4$, $A_4$, $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/2$, ...) contribute beyond buDim 7 d? Higher composite n with rich subgroup structure are natural counterexample candidates.",
+      "Connection to Lovász-Kneser: the chromatic-number-of-Kneser-graph application of equivariant BU uses the $\\mathbb{Z}/2$ case; what is the symmetric-group analog, and does it require the conjectured equality?",
+      "Sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral $D_n$ analog): is $\\text{dihedralBUDim}(n, d) = \\max(\\text{buDim}(2, d), \\max_{p \\text{ prime}, p|n} \\text{buDim}(p, d))$? Shares the parent file's infrastructure with this OQ-02."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Find",
+      "Mathlib.Tactic",
+      "Proofs.BorsukUlamOQ02OQ01OQ03"
+    ],
+    "opens": [
+      "BorsukUlamNonCyclic",
+      "BorsukUlamOQ02OQ01"
+    ],
+    "namespace": "BorsukUlamSymPrime",
+    "lineCount": 187,
+    "axiomCount": 1,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Borsuk, K.",
+      "title": "Drei Sätze über die n-dimensionale euklidische Sphäre",
+      "year": "1933",
+      "note": "Fundamenta Mathematicae 20, 177-190. The original BU theorem."
+    },
+    {
+      "authors": "Fadell, E.R. and Husseini, S.Y.",
+      "title": "An ideal-valued cohomological index theory with applications to Borsuk-Ulam and Bourgin-Yang theorems",
+      "year": "1988",
+      "note": "Ergodic Theory and Dynamical Systems 8*, 73-85. The S_n-equivariant cohomological index — needed for any direct proof of the upper bound."
+    },
+    {
+      "authors": "Matoušek, J.",
+      "title": "Using the Borsuk-Ulam Theorem",
+      "year": "2003",
+      "note": "Springer, Berlin. Chapter 6: equivariant BU for non-cyclic groups."
+    },
+    {
+      "authors": "Lovász, L.",
+      "title": "Kneser's conjecture, chromatic number, and homotopy",
+      "year": "1978",
+      "note": "Journal of Combinatorial Theory A 25, 319-324. The Z/2-equivariant BU → chromatic-number application; symmetric-group generalizations remain a long-running program."
+    },
+    {
+      "authors": "Erdős, P.",
+      "title": "Beweis eines Satzes von Tschebyschef",
+      "year": "1932",
+      "note": "Acta Sci. Math. (Szeged) 5, 194-198. Erdős's elementary proof of Bertrand's postulate, used in the prose discussion to argue p* > n/2."
+    },
+    {
+      "authors": "tom Dieck, T.",
+      "title": "Transformation Groups",
+      "year": "1987",
+      "note": "De Gruyter, Berlin. Equivariant homotopy reference."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "symBUDim_even_formula",
+      "type": "core",
+      "description": "Conjectural tight formula: symBUDim n (2k) = 2k − 1 for n ≥ 2, k ≥ 1.",
+      "leanType": "(n k : ℕ) → 2 ≤ n → 0 < k → symBUDim n (2 * k) = 2 * k - 1"
+    },
+    {
+      "name": "symBUDim_even_lower",
+      "type": "core",
+      "description": "Unconditional lower bound: symBUDim n (2k) ≥ 2k − 1 for n ≥ 2, k ≥ 1 (axiom-free modulo parent).",
+      "leanType": "(n k : ℕ) → 2 ≤ n → 0 < k → 2 * k - 1 ≤ symBUDim n (2 * k)"
+    },
+    {
+      "name": "symBUDim_eq_largestPrime",
+      "type": "axiom",
+      "description": "The conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2 — the open question.",
+      "leanType": "(n d : ℕ) → 2 ≤ n → symBUDim n d = buDim (largestPrimeBelow n) d"
+    },
+    {
+      "name": "largestPrimeBelow_isPrime",
+      "type": "supporting",
+      "description": "For n ≥ 2, largestPrimeBelow n is prime (witness p = 2).",
+      "leanType": "(n : ℕ) → 2 ≤ n → Nat.Prime (largestPrimeBelow n)"
+    }
+  ],
+  "sorries": 0
+}
