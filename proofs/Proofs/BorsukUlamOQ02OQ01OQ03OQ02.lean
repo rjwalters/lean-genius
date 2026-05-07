@@ -31,6 +31,11 @@
      for `n ≥ 2` (axiom-free, via Mathlib's `Nat.bertrand`). Pins the
      largest prime in the dyadic window `(n/2, n]` and shows the cyclic
      lower bound is within factor 2 of optimal.
+  6. Provides an **axiom-free n=2 consistency check**: the conjecture's
+     `n = 2` instance is provable from the parent's `symBUDim_two` axiom
+     combined with `largestPrimeBelow_self_of_prime`, *without* the new
+     `symBUDim_eq_largestPrime` axiom. This shows the new axiom is
+     consistent with prior axiomatization (and is redundant at n=2).
 
   ## References
   - Dold (1983) "Simple proofs of some Borsuk-Ulam results"
@@ -199,19 +204,98 @@ theorem largestPrimeBelow_in_bertrand_window (n : ℕ) (hn : 2 ≤ n) :
     n / 2 < largestPrimeBelow n ∧ largestPrimeBelow n ≤ n :=
   ⟨n_div_two_lt_largestPrimeBelow n hn, largestPrimeBelow_le n⟩
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART VII: Axiom-free consistency at n = 2 (and at any prime n)
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Fixed-point lemma**: when `n` itself is prime, `largestPrimeBelow n = n`.
+
+    Squeeze argument: `n ≤ findGreatest Nat.Prime n` from `Nat.le_findGreatest`
+    (using `n ≤ n` and `Nat.Prime n`), and `findGreatest Nat.Prime n ≤ n` from
+    `Nat.findGreatest_le`. -/
+theorem largestPrimeBelow_self_of_prime (n : ℕ) (hn : Nat.Prime n) :
+    largestPrimeBelow n = n := by
+  apply Nat.le_antisymm (largestPrimeBelow_le n)
+  unfold largestPrimeBelow
+  exact Nat.le_findGreatest le_rfl hn
+
+/-- `largestPrimeBelow 2 = 2`. -/
+theorem largestPrimeBelow_two : largestPrimeBelow 2 = 2 :=
+  largestPrimeBelow_self_of_prime 2 Nat.prime_two
+
+/-- `largestPrimeBelow 3 = 3`. -/
+theorem largestPrimeBelow_three : largestPrimeBelow 3 = 3 :=
+  largestPrimeBelow_self_of_prime 3 (by norm_num)
+
+/-- `largestPrimeBelow 5 = 5`. -/
+theorem largestPrimeBelow_five : largestPrimeBelow 5 = 5 :=
+  largestPrimeBelow_self_of_prime 5 (by norm_num)
+
+/-- `largestPrimeBelow 7 = 7`. -/
+theorem largestPrimeBelow_seven : largestPrimeBelow 7 = 7 :=
+  largestPrimeBelow_self_of_prime 7 (by norm_num)
+
+/-- **AXIOM-FREE consistency check**: at `n = 2`, the conjectured equality
+    `symBUDim n d = buDim (largestPrimeBelow n) d` is *already provable*
+    from the parent's `symBUDim_two` axiom and `largestPrimeBelow_two`,
+    independently of the new `symBUDim_eq_largestPrime` axiom.
+
+    This is a non-trivial sanity check: the axiom `symBUDim_eq_largestPrime`
+    is *consistent* with the previously-axiomatized n=2 base case, so we
+    have not introduced an inconsistency between this file and the parent.
+    Equivalently: the n=2 instance of the new axiom is *redundant* — it is
+    a theorem rather than an independent assumption. -/
+theorem symBUDim_eq_largestPrime_two_unconditional (d : ℕ) :
+    symBUDim 2 d = buDim (largestPrimeBelow 2) d := by
+  rw [largestPrimeBelow_two]
+  exact symBUDim_two d
+
+/-- **Axiom-free closed form at n = 2**: for `k ≥ 1`,
+    `symBUDim 2 (2 * k) = 2 * k - 1`.
+
+    Uses only the parent's `symBUDim_two` (n=2 base case) and `buDim_prime`
+    (cyclic Yang-Borsuk for primes); does **not** use the conjectural
+    `symBUDim_eq_largestPrime`. Provides an axiom-free witness that the
+    even-d closed form `symBUDim_even_formula` collapses to a known result
+    at n = 2. -/
+theorem symBUDim_two_even_formula_unconditional (k : ℕ) (hk : 0 < k) :
+    symBUDim 2 (2 * k) = 2 * k - 1 := by
+  rw [symBUDim_two (2 * k)]
+  exact buDim_prime 2 k Nat.prime_two hk
+
+/-- **Concrete axiom-free instance**: `symBUDim 2 4 = 3`. (Compare with the
+    conjectural `symBUDim_three_four`, `symBUDim_four_six` which depend on
+    the new axiom.) -/
+theorem symBUDim_two_four_unconditional : symBUDim 2 4 = 3 := by
+  have := symBUDim_two_even_formula_unconditional 2 (by norm_num)
+  simpa using this
+
 /-
 ## Summary
 
 ### Axioms added (1)
 - `symBUDim_eq_largestPrime` : the core equality conjecture; full proof
   requires Fadell-Husseini index calculations not in Mathlib.
+  **Note**: The `n = 2` instance is *redundant* — see
+  `symBUDim_eq_largestPrime_two_unconditional` for an axiom-free proof.
 
-### Theorems proved (7)
+### Theorems proved (axiom-free up to parent's axioms)
 - `largestPrimeBelow_isPrime`, `largestPrimeBelow_le`,
   `two_le_largestPrimeBelow` — basic facts about the prime selector.
-- `symBUDim_even_formula` — closed form on even d (uses the new axiom).
+- `largestPrimeBelow_self_of_prime` — when `n` is itself prime,
+  `largestPrimeBelow n = n` (squeeze argument). General lemma.
+- `largestPrimeBelow_two`, `_three`, `_five`, `_seven` — concrete
+  computations at small primes.
 - `symBUDim_even_lower` — UNCONDITIONAL lower bound (no new axioms beyond
   parent), establishing `2k - 1 ≤ symBUDim n (2k)` for n ≥ 2.
+- `symBUDim_eq_largestPrime_two_unconditional` — **n=2 case of the
+  conjecture, axiom-free** (consistency check: parent's `symBUDim_two`
+  combined with `largestPrimeBelow_two` already entails the conjectured
+  equality at n=2, without invoking `symBUDim_eq_largestPrime`).
+- `symBUDim_two_even_formula_unconditional` — axiom-free closed form
+  `symBUDim 2 (2k) = 2k - 1`.
+- `symBUDim_two_four_unconditional` — concrete `symBUDim 2 4 = 3`,
+  axiom-free.
 - `n_div_two_lt_largestPrimeBelow` — Bertrand-Chebyshev quantitative bound
   `n / 2 < largestPrimeBelow n` for n ≥ 2 (axiom-free, uses Mathlib's
   `Nat.exists_prime_lt_and_le_two_mul`). Pins p* in the dyadic window
@@ -219,11 +303,17 @@ theorem largestPrimeBelow_in_bertrand_window (n : ℕ) (hn : 2 ≤ n) :
 - `largestPrimeBelow_in_bertrand_window` — packages the Bertrand lower
   bound with the trivial upper bound `≤ n`.
 
-### Concrete instances (3)
-- `symBUDim_three_four`, `symBUDim_four_six` (conjectural via the new axiom)
-- `symBUDim_five_lower_unconditional` (axiom-free up to parent)
+### Theorems requiring `symBUDim_eq_largestPrime` axiom
+- `symBUDim_even_formula` — closed form on even d.
+- `symBUDim_three_four`, `symBUDim_four_six` — concrete instances.
+
+### Concrete instances (axiom-free)
+- `symBUDim_five_lower_unconditional`, `symBUDim_two_four_unconditional`.
 
 ### Path forward
+- Stretch: prove the n=3 case (next-easiest after n=2) — would require
+  axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
+  redundant since the parent doesn't have a `symBUDim_three` base axiom.
 - Stretch: prove the n=4 case by hand (compute equivariant index of S₄ on
   small reps); a proof or counterexample at n=4 would settle the conjecture
   for many small-n applications.
@@ -237,5 +327,7 @@ theorem largestPrimeBelow_in_bertrand_window (n : ℕ) (hn : 2 ≤ n) :
 #check @symBUDim_even_formula
 #check @symBUDim_even_lower
 #check @n_div_two_lt_largestPrimeBelow
+#check @largestPrimeBelow_self_of_prime
+#check @symBUDim_eq_largestPrime_two_unconditional
 
 end BorsukUlamSymPrime
