@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-05-06T13:49:03.933Z",
     "iteration": 1,
-    "focus": "PR #16339 pending Docker build. Algebraic core proved (expand, succ_d, hockey-stick).",
+    "focus": "PR #16339 merged 2026-05-06. EhrhartCrossPolytope.lean is at 12 theorems / 2 sorries / 0 axioms / 330 lines. Algebraic core (crossEhrhart_expand, crossEhrhart_succ_d, sum_choose_range / hockey-stick, base cases d0/d1/n0) all proved. Two sorries remain: crossEhrhart_is_poly (no Mathlib API for evaluating falling factorial at ℕ values) and crossBall_card succ d step (Finset.card_biUnion slicing).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Discharge crossEhrhart_is_poly via Nat.descFactorial or an explicit polynomial coefficient formula. Discharge crossBall_card succ d via Finset.card_biUnion over the |x_d| = j slices and a bijection with crossBall (d, n - j).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (2026-05-06): algebraic proof framework complete. crossEhrhart_expand (Pascal) + crossEhrhart_succ_d (geometric recursion) + sum_choose_range (hockey-stick) all proved. PR #16339 pending build.",
+    "progressSummary": "PROGRESS. PR #16339 merged 2026-05-06: algebraic proof framework complete. crossEhrhart_expand (Pascal split), crossEhrhart_succ_d (geometric recursion), sum_choose_range (hockey-stick), and the base cases (crossEhrhart_d0 / d1 / n0 / d2 / pos / mono) are all proved. EhrhartCrossPolytope.lean: 12 theorems / 2 sorries / 0 axioms / 0 unwanted constructions / 330 lines. Two open sorries (crossEhrhart_is_poly polynomial existence; crossBall_card succ d geometric step) remain.",
     "builtItems": [
       "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:131",
       "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:143",
@@ -54,10 +54,8 @@
       "No lemma for eval of falling factorial at \u2115 values (needed for crossEhrhart_is_poly)"
     ],
     "nextSteps": [
-      "If Docker build fails: debug crossEhrhart_expand proof (sum distribute step)",
-      "Prove crossEhrhart_is_poly without sorry using Nat.descFactorial or falling factorial",
-      "Prove crossBall_card d=0 using Fintype.card (Fin 0 \u2192 \u03b2) = 1",
-      "Prove crossBall_card inductive step via Finset.card_biUnion slicing"
+      "Prove crossEhrhart_is_poly without sorry using Nat.descFactorial or an explicit polynomial coefficient formula",
+      "Prove crossBall_card succ d step via Finset.card_biUnion over the |x_d| = j slices, with a bijection to crossBall (d, n - j)"
     ]
   },
   "tags": [
@@ -75,20 +73,20 @@
     "mathlib": []
   },
   "started": "2026-05-06T13:49:03.933Z",
-  "lastUpdate": "2026-05-06T13:49:03.933Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/EhrhartCubeProven.lean",
-      "filename": "EhrhartCubeProven.lean",
-      "lineCount": 297,
-      "theoremCount": 26,
+      "path": "Proofs/EhrhartCrossPolytope.lean",
+      "filename": "EhrhartCrossPolytope.lean",
+      "lineCount": 330,
+      "theoremCount": 12,
       "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProven.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCrossPolytope.lean"
     }
   ]
 }
