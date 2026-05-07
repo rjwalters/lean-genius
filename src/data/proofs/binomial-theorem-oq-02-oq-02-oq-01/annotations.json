@@ -1,1 +1,198 @@
-[]
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "File Docstring: Filling a Mathlib Gap for q-Binomials",
+    "content": "Mathlib v4.26.0 has no Gaussian binomial coefficient API — `Mathlib.RingTheory.Polynomial.Pochhammer` mentions q-binomials only as a TODO. This file fills that gap with a self-contained, recurrence-based definition that works over any `CommSemiring R`, requiring no rational-function or polynomial-quotient machinery. The 10 stated key results trace a clear arc: the recurrence definition (1), boundary lemmas (2-3), vanishing (4), diagonal (5), q→1 specialization (6), and the m=0, n=0 base cases of q-Vandermonde plus classical analogues (7-10). The file is positioned as a candidate for upstream contribution at `Mathlib/Combinatorics/Enumerative/QBinomial.lean`.",
+    "mathContext": "Three references frame the historical / pedagogical lineage: Andrews's *Theory of Partitions* (1976) places q-binomials in the partition-theoretic tradition (Heine, Rogers); Kac & Cheung's *Quantum Calculus* (2002) develops them in the quantum-group / q-difference framework; Stanley's *Enumerative Combinatorics* I §1.7 gives the standard combinatorial / Grassmannian interpretation.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib gap: no GaussianBinomial in v4.26.0",
+      "Pochhammer symbol",
+      "q-difference operators",
+      "Andrews / Kac-Cheung / Stanley references",
+      "upstream contribution candidate"
+    ],
+    "prerequisites": [
+      "Mathlib namespace conventions",
+      "CommSemiring basics",
+      "ordinary binomial coefficients (Nat.choose)"
+    ]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 63 },
+    "type": "definition",
+    "title": "qBinomial: Recurrence-Based Definition over CommSemiring",
+    "content": "Defines `qBinomial (q : R) : ℕ → ℕ → R` over an arbitrary `CommSemiring R` via the q-Pascal recurrence. Three pattern-matching cases: `_, 0 => 1` (right boundary), `0, _ + 1 => 0` (top-left vanishing), `n + 1, k + 1 => q^(k+1) * qBinomial q n (k+1) + qBinomial q n k` (recurrence). The choice of *recurrence-based* over the equivalent rational-function definition $\\binom{n}{k}_q = \\frac{[n]_q!}{[k]_q![n-k]_q!}$ is deliberate: the recurrence avoids inverse limits and division, so it works over any `CommSemiring` (not just a field), it's *computable* (Lean can evaluate `qBinomial q n k` at concrete numerals), and it avoids the rational-function quotient construction entirely. The trade-off: some closed-form identities (e.g., $\\binom{n}{1}_q = 1 + q + \\cdots + q^{n-1}$) require non-trivial inductive proofs from this definition rather than direct unfolds.",
+    "mathContext": "$\\binom{n+1}{k+1}_q = q^{k+1} \\binom{n}{k+1}_q + \\binom{n}{k}_q$ with $\\binom{n}{0}_q = 1$ and $\\binom{0}{k+1}_q = 0$. Equivalent to the rational-function definition $\\binom{n}{k}_q = \\frac{[n]_q!}{[k]_q![n-k]_q!}$ for $[m]_q := 1 + q + \\cdots + q^{m-1}$, but computable and division-free.",
+    "significance": "key",
+    "relatedConcepts": [
+      "q-Pascal recurrence",
+      "rational function vs recurrence definition",
+      "computable definitions in Lean",
+      "CommSemiring vs Field",
+      "q-factorial [n]_q!"
+    ],
+    "prerequisites": [
+      "Lean 4 pattern-matching with multiple Nat arguments",
+      "CommSemiring algebraic structure",
+      "structural recursion on ℕ × ℕ"
+    ]
+  },
+  {
+    "id": "ann-boundary-recurrence",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 65, "endLine": 75 },
+    "type": "technique",
+    "title": "Boundary Lemmas + Recurrence Re-Statement",
+    "content": "Three @[simp]-tagged lemmas pin down the boundary behavior. `qBinomial_zero_right` (`= 1`) requires a `cases n` because the recursion's `_, 0` pattern is not definitionally equal to either `qBinomial q n 0` template — `cases n <;> rfl` resolves both. `qBinomial_zero_succ` (`= 0`) is `rfl` directly, since `0, k+1 => 0` is the matching pattern. `qBinomial_succ_succ` is the recurrence stated as a theorem (`rfl`-provable), exposed for `rw` use. The `@[simp]` attributes are crucial: downstream proofs of `qVandermonde_zero_left` rely on `simp` automatically firing these to collapse summands.",
+    "mathContext": "$\\binom{n}{0}_q = 1$ (by `cases n`), $\\binom{0}{k+1}_q = 0$ (rfl), and the recurrence $\\binom{n+1}{k+1}_q = q^{k+1} \\binom{n}{k+1}_q + \\binom{n}{k}_q$ as a `rfl` theorem.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "@[simp] lemma tagging",
+      "rfl proofs",
+      "Lean cases tactic",
+      "boundary conditions for recursion"
+    ],
+    "prerequisites": [
+      "structural definitional equality in Lean",
+      "@[simp] attribute mechanics",
+      "qBinomial pattern-matching cases"
+    ]
+  },
+  {
+    "id": "ann-vanishing-diagonal",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 77, "endLine": 97 },
+    "type": "technique",
+    "title": "Vanishing for k > n and Diagonal qBinomial(n, n) = 1",
+    "content": "`qBinomial_eq_zero_of_lt` proves $\\binom{n}{k}_q = 0$ when $k > n$, by structural induction on $(n, k)$. Four cases: `(0, 0)` is contradictory (no `0 < 0`), `(0, k+1)` is `rfl` (definitional zero), `(n+1, 0)` is contradictory (no `n+1 < 0`), and the inductive case `(n+1, k+1)` rewrites via the recurrence and applies the IH twice — once with `n < k+1` and once with `n < k` — then `ring` closes the resulting `q^(k+1) * 0 + 0 = 0`. `qBinomial_self` proves the diagonal `\\binom{n}{n}_q = 1` by induction: the base case is `rfl`, and the inductive step rewrites the recurrence, kills the first summand using `qBinomial_eq_zero_of_lt q (Nat.lt_succ_self n)` (since `n < n+1`), and uses the IH `qBinomial q n n = 1` to leave `0 + 1 = 1` (closed by `ring`). Together these establish the upper-triangular structure: $\\binom{n}{k}_q = 0$ for $k > n$ and $\\binom{n}{n}_q = 1$, mirroring the ordinary binomial coefficient triangle.",
+    "mathContext": "$\\binom{n}{k}_q = 0$ for $k > n$, $\\binom{n}{n}_q = 1$. Together: the q-binomial triangle has the same support as Pascal's triangle ($k \\leq n$), with diagonal entries equal to 1.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structural induction on Nat × Nat",
+      "Nat.lt_succ_self",
+      "ring tactic for CommSemiring",
+      "Pascal's triangle support",
+      "upper-triangular structure"
+    ],
+    "prerequisites": [
+      "induction with multiple Nat arguments",
+      "Nat ordering lemmas",
+      "ring closure of arithmetic identities"
+    ]
+  },
+  {
+    "id": "ann-q-to-one",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 99, "endLine": 109 },
+    "type": "insight",
+    "title": "q→1 Specialization: Recovering Nat.choose",
+    "content": "`qBinomial_at_one` proves that at $q = 1$, the q-binomial coefficient reduces to the ordinary binomial coefficient `Nat.choose n k` cast into $R$. Four-case structural induction. The key step is the `(n+1, k+1)` case: rewriting via `qBinomial_succ_succ` (recurrence), applying the IH twice (for `qBinomial 1 n (k+1)` and `qBinomial 1 n k`), then `one_pow`+`one_mul` collapse the `1^(k+1) * Nat.choose n (k+1)` factor. After this, the goal becomes `Nat.choose n (k+1) + Nat.choose n k = Nat.choose (n+1) (k+1)`, which is exactly `Nat.choose_succ_succ` (Pascal's rule for ordinary binomials). `push_cast` lifts the equation from ℕ to $R$, and `ring` closes any residual algebraic mismatch. This theorem makes the q-binomial a *genuine* deformation of the ordinary binomial: setting $q = 1$ literally recovers the textbook coefficient, with the recurrence collapsing to Pascal's rule.",
+    "mathContext": "$\\binom{n}{k}_1 = \\binom{n}{k}$ (the ordinary binomial). Proof: q-Pascal at $q=1$ is exactly classical Pascal, and induction lifts the equality from the boundary.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.choose_succ_succ (Pascal's rule)",
+      "deformation theory",
+      "limit $q \\to 1$ in q-analogs",
+      "push_cast tactic for ℕ → R",
+      "structural induction"
+    ],
+    "prerequisites": [
+      "Pascal's rule for ordinary binomials",
+      "ring + push_cast tactics",
+      "Nat to R coercion"
+    ]
+  },
+  {
+    "id": "ann-qvandermonde-zero-left",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 111, "endLine": 140 },
+    "type": "technique",
+    "title": "q-Vandermonde m=0 Base Case: Pull-Out + Vanishing Tail",
+    "content": "`qVandermonde_zero_left` proves $\\binom{n}{r}_q = \\sum_{k=0}^{r} q^{(0-k)(r-k)} \\binom{0}{k}_q \\binom{n}{r-k}_q$. The strategy is a single-summand pull-out: only $k = 0$ contributes a nonzero term, since $\\binom{0}{j}_q = 0$ for all $j \\geq 1$. **Step 1**: `Finset.sum_range_succ'` extracts the $k = 0$ term from the front of the sum (note the prime — `_succ'` pulls out the *first* element, while `_succ` pulls out the *last*). **Step 2**: `simp only [Nat.zero_sub, Nat.zero_mul, pow_zero, qBinomial_zero_right, one_mul, Nat.sub_zero]` reduces the pulled-out term `q^((0-0)(r-0)) * qBinomial q 0 0 * qBinomial q n r` to `qBinomial q n r`. The simp set hits each ingredient: `Nat.zero_sub` makes $0 - 0 = 0$, `Nat.zero_mul` zeroes the exponent, `pow_zero` makes `q^0 = 1`, `qBinomial_zero_right` makes $\\binom{0}{0}_q = 1$, `one_mul` clears the leading $1$, and `Nat.sub_zero` makes $r - 0 = r$. **Step 3**: For the remaining sum (over $k = 1, \\ldots, r$, reindexed), prove every summand vanishes via `qBinomial q 0 (i+1) = 0` (a direct simp). **Step 4**: `Finset.sum_const_zero` collapses the all-zero sum, and `zero_add` finishes.",
+    "mathContext": "$\\binom{0+n}{r}_q = \\sum_{k=0}^r q^{(0-k)(r-k)} \\binom{0}{k}_q \\binom{n}{r-k}_q$. Only $k=0$ survives because $\\binom{0}{j}_q = 0$ for $j \\geq 1$. The q-factor at $k = 0$ is $q^{0 \\cdot r} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_succ' (pull first term)",
+      "Finset.sum_range_succ (pull last term)",
+      "simp set engineering",
+      "vanishing tail technique",
+      "Finset.sum_const_zero"
+    ],
+    "prerequisites": [
+      "Finset sum manipulation",
+      "Nat subtraction quirks (truncated)",
+      "qBinomial_zero_right and qBinomial_zero_succ"
+    ]
+  },
+  {
+    "id": "ann-qvandermonde-zero-right",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 142, "endLine": 162 },
+    "type": "technique",
+    "title": "q-Vandermonde n=0 Base Case: Symmetric Pull-Out from the End",
+    "content": "`qVandermonde_zero_right` proves the dual base case $\\binom{m}{r}_q = \\sum_{k=0}^{r} q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{0}{r-k}_q$. Now only $k = r$ contributes (since $\\binom{0}{r-k}_q = 0$ unless $r - k = 0$). The mirror-image structure: use `Finset.sum_range_succ` (no prime — pulls the *last* term, $k = r$) instead of `_succ'`. The pulled-out term simplifies via the same simp set with one critical addition: **`mul_one` is needed in addition to `one_mul`** to clear the trailing `qBinomial q m r * 1` after `qBinomial_zero_right` (here `\\binom{0}{0}_q = 1`) fires. Without `mul_one`, the goal would have a residual `* 1` that `simp` won't touch. The vanishing-tail step uses an existential to write `r - k = j + 1` for $k < r$ (via `omega`), then `simp` reduces the offending `qBinomial q 0 (j+1) = 0` to zero. The pattern is symmetric to the m=0 case but illustrates the asymmetry of `Finset.sum_range_succ` vs `_succ'` and the necessity of *both* `one_mul` and `mul_one` in the simp set.",
+    "mathContext": "$\\binom{m+0}{r}_q = \\sum_{k=0}^r q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{0}{r-k}_q$. Only $k=r$ survives because $\\binom{0}{r-k}_q = 0$ unless $r=k$. The q-factor at $k = r$ is $q^{(m-r) \\cdot 0} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_range_succ (pull last term)",
+      "asymmetry of one_mul / mul_one",
+      "obtain ⟨j, hj⟩ existential extraction",
+      "omega for arithmetic side conditions",
+      "vanishing tail (mirror image)"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ (no prime variant)",
+      "qBinomial_zero_right and qBinomial_zero_succ",
+      "obtain syntax for existentials"
+    ]
+  },
+  {
+    "id": "ann-classical-base-cases",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 164, "endLine": 192 },
+    "type": "insight",
+    "title": "Classical (q=1) Vandermonde Base Cases — Direct ℕ Proofs",
+    "content": "Two ℕ-valued analogues — `vandermonde_zero_left_nat` and `vandermonde_zero_right_nat` — give the classical Vandermonde base cases as standalone theorems in `Nat.choose`. Crucially, these are proved *directly* rather than as q→1 corollaries of the q-versions. The reason is pedagogical clarity: at $q = 1$, the q-factor $q^{(m-k)(r-k)}$ becomes $1$ trivially and the whole convolution simplifies to ordinary binomials, but the formal route (via `qBinomial_at_one` + cast manipulation) is harder to read than the direct ℕ proof. The direct version uses the same pull-out + vanishing-tail strategy: `Finset.sum_range_succ'` for the m=0 case (pulls $k=0$, simp-closes via `Nat.choose_zero_succ`), `Finset.sum_range_succ` for the n=0 case (pulls $k=r$, then explicit existential `r - k = j + 1` + `Nat.choose_zero_succ` + `Nat.mul_zero` for the tail). These ℕ versions are self-contained references for downstream classical-Vandermonde proofs that don't need the full q-machinery.",
+    "mathContext": "Classical: $\\binom{n}{r} = \\sum_k \\binom{0}{k} \\binom{n}{r-k}$ collapses to $\\binom{n}{r}$ via $\\binom{0}{0} = 1$ and $\\binom{0}{j} = 0$ for $j \\geq 1$. Mirror: $\\binom{m}{r} = \\sum_k \\binom{m}{k} \\binom{0}{r-k}$ collapses to $\\binom{m}{r}$ at $k=r$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_zero_succ",
+      "direct vs q-corollary proof style",
+      "pedagogical clarity vs formal economy",
+      "classical Vandermonde convolution"
+    ],
+    "prerequisites": [
+      "Nat.choose API",
+      "ℕ-only Finset sum manipulation",
+      "obtain + omega for arithmetic existentials"
+    ]
+  },
+  {
+    "id": "ann-summary-future-work",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01",
+    "range": { "startLine": 194, "endLine": 242 },
+    "type": "context",
+    "title": "Summary, Future Work, and #check Sentinels",
+    "content": "The trailing `/-! ## Summary -/` block records (a) the established results (definition, boundary, vanishing, diagonal, q→1 specialization, and the four base cases), (b) the open future work (full inductive q-Vandermonde, dual q-Pascal `\\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q`, reflection symmetry $\\binom{n}{k}_q = \\binom{n}{n-k}_q$, the q-binomial theorem (Cauchy), and the Grassmannian / subspace-counting interpretation), and (c) the Mathlib upstream contribution potential. The closing `#check` directives serve as build-time sentinels: if any of the named theorems are renamed or removed, the file fails to elaborate — providing a no-runtime-cost regression check. This is a low-cost discipline pattern that's particularly valuable for a research bootstrap file like this, where the API names are still subject to change.",
+    "mathContext": "Future inductive q-Vandermonde: $\\binom{m+n}{r}_q = \\sum_{k=0}^{r} q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q$. Dual q-Pascal: $\\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q$. q-binomial theorem (Cauchy): $\\prod_{i=0}^{n-1}(1 + q^i x) = \\sum_{k=0}^{n} q^{k(k-1)/2} \\binom{n}{k}_q x^k$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "#check sentinel pattern",
+      "Mathlib upstream contribution path",
+      "q-binomial theorem (Cauchy)",
+      "subspace counting in 𝔽_q^n",
+      "research bootstrap discipline"
+    ],
+    "prerequisites": [
+      "Lean 4 #check elaboration",
+      "Mathlib upstream protocols",
+      "research bootstrap patterns in lean-genius"
+    ]
+  }
+]

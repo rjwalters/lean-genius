@@ -7,7 +7,7 @@
     "author": "Andrews / Kac-Cheung tradition, formalized in Lean 4 with Mathlib 4.26.0",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "tags": [
       "combinatorics",
       "q-analogs",
@@ -54,7 +54,6 @@
   "overview": {
     "historicalContext": "Gaussian binomial (q-binomial) coefficients are a one-parameter deformation of ordinary binomial coefficients introduced by Gauss in his work on cyclotomy and developed extensively by Cauchy, Heine, and Rogers in the 19th century. They have three principal interpretations: (i) algebraic — as the q-deformation \\binom{n}{k}_q satisfying the q-Pascal recurrence, recovering Nat.choose at q = 1; (ii) combinatorial — counting partitions with at most k parts each at most n - k; (iii) geometric — counting k-dimensional subspaces of 𝔽_q^n, the finite-field analogue of Grassmannians. The q-Vandermonde identity \\binom{m+n}{r}_q = ∑_k q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q is the q-analogue of Vandermonde's classical convolution and reduces to it as q → 1. Mathlib v4.26.0 mentions q-binomials only as a TODO in `Mathlib.RingTheory.Polynomial.Pochhammer`; this file fills the gap with a self-contained, recurrence-based API.",
     "problemStatement": "Develop a self-contained Lean 4 API for the Gaussian binomial coefficient `\\binom{n}{k}_q` (no Mathlib equivalent in v4.26.0), prove its foundational identities, and establish the m = 0 and n = 0 base cases of the q-Vandermonde identity together with their classical (q = 1) analogues.",
-    "text": "Defines qBinomial via the q-Pascal recurrence and proves the boundary, vanishing, diagonal, and q→1 specialization lemmas plus the m=0 and n=0 base cases of q-Vandermonde with classical counterparts.",
     "proofStrategy": "Define qBinomial recursively over (n, k) with explicit base cases for k=0 and n=0. Prove all foundational identities by induction on n and/or k using the recurrence. For the q-Vandermonde base cases, pull out the unique nonzero summand (k=0 in the m=0 case, k=r in the n=0 case) using `Finset.sum_range_succ'` / `Finset.sum_range_succ`, then show every other summand vanishes because qBinomial q 0 (j+1) = 0.",
     "keyInsights": [
       "The recurrence-based definition `qBinomial q (n+1) (k+1) = q^(k+1) · qBinomial q n (k+1) + qBinomial q n k` is computable, polynomial-free, and works over any CommSemiring — avoiding the rational-function machinery that the Pochhammer-based definition would require",
@@ -62,11 +61,6 @@
       "For the q-Vandermonde m=0 base case, pulling out k=0 via `Finset.sum_range_succ'` exposes `q^((0-0)(r-0)) · qBinomial q 0 0 · qBinomial q n r`, which simp reduces to `qBinomial q n r`; every other summand vanishes because qBinomial q 0 (j+1) = 0 by the second boundary lemma",
       "Symmetric pull-out at k = r works for the n = 0 base case via `Finset.sum_range_succ` (which extracts the LAST term, not the first); the same simp set with `one_mul` AND `mul_one` is needed to fully close the trailing `1 * qBinomial q m r` after qBinomial_zero_right fires",
       "The classical Vandermonde base cases in ℕ (vandermonde_zero_left_nat, vandermonde_zero_right_nat) are proved directly rather than as q→1 corollaries, since the q-version's q^... factor becomes 1 trivially and a direct ℕ proof is more pedagogically transparent"
-    ],
-    "prerequisites": [
-      "Mathlib.Algebra.BigOperators.Ring.Finset for Finset.sum manipulation",
-      "Mathlib.Data.Nat.Choose.Sum for Nat.choose_succ_succ in the q→1 specialization",
-      "Familiarity with Lean 4 well-founded recursion on (ℕ × ℕ)"
     ]
   },
   "sections": [
