@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 16 (2026-05-08, researcher-1): Built Step 4 + Step 5 toward closing trig_sum_harmonic_lb. Step 4 (sin_lb_of_in_interior): case-split proof that sin(x) ≥ sin(d/2) for x ∈ [d/2, π-d/2] using Real.sin_le_sin_of_le_of_le_pi_div_two on each side of π/2 with sin_pi_sub bridging. Step 5 (chebyshev_term_lb_at_node) chains Step 3 + Step 4 + Real.abs_cos_sub_cos_le into the per-term bound sin(φ_k)/|cos θ - cos φ_k| ≥ sin(d/2)·(2n)/((2|k-k₀|+1)·π). Total +133 lines, 4 new lemmas, 2 sorries unchanged. PR #16765.",
+    "progressSummary": "Session 17 (2026-05-08, researcher-1): Step 6a/6b — sub-sum lower bound assembly. Step 6a (odd_harmonic_sum_shifted_lb, ~20 lines): shifted odd harmonic Σⱼ 1/(2(j+1)+1) ≥ (1/2)·log(m+2) - 1, via odd_harmonic_sum_lb (m+1) + Finset.sum_range_succ' to split off j=0 term. Step 6b (trig_sum_subsum_lb, ~104 lines): sub-sum assembly over Fin m — defines φ : Fin m → Fin n via j ↦ k₀+j+1, applies chebyshev_term_lb_at_node per j, lifts to image sub-sum via Finset.sum_image + sum_le_sum_of_subset_of_nonneg, yielding sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. +144 lines, 2 sorries unchanged. Step 7 (choose m=⌊nd/(4π)⌋, verify h_interior + hm_le, finite-n min') is next.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -66,7 +66,9 @@
       "sin_lb_of_in_interior: ∀ d > 0, x ∈ [d/2, π-d/2] ⇒ sin(d/2) ≤ sin(x) — Erdos1151OQ04.lean (Step 4 generic)",
       "sin_chebyshev_midpoint_lb: corollary at chebyshev midpoints φ_k = (2k+1)π/(2n) — Erdos1151OQ04.lean",
       "chebyshev_term_lb_at_node: per-term lb sin(φ_k)/|cos θ - cos φ_k| ≥ sin(d/2)·(2n)/((2|k-k₀|+1)·π) — Erdos1151OQ04.lean (Step 5)",
-      "Combined Step 3 + Step 4 + cos-Lipschitz (Real.abs_cos_sub_cos_le) into ready-to-sum per-term lower bound"
+      "Combined Step 3 + Step 4 + cos-Lipschitz (Real.abs_cos_sub_cos_le) into ready-to-sum per-term lower bound",
+      "odd_harmonic_sum_shifted_lb (m : ℕ) : (1/2)·log(m+2) - 1 ≤ ∑ j ∈ Finset.range m, 1/(2(j+1)+1) — Erdos1151OQ04.lean:1362 (Step 6a, ~20 lines)",
+      "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -101,13 +103,17 @@
       "Mathlib uses Real.sin_le_sin_of_le_of_le_pi_div_two with hypotheses (-(π/2) ≤ x), (y ≤ π/2), (x ≤ y) → sin x ≤ sin y. Domain is [-π/2, π/2], not [0, π/2].",
       "Real.abs_cos_sub_cos_le: cos is 1-Lipschitz, |cos α - cos β| ≤ |α - β|. Direct from lipschitzWith_cos. Lives in Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds.",
       "div_div_eq_mul_div : a / (b / c) = a * c / b — convert sin(d/2) / [(2|k-k₀|+1)π/(2n)] to sin(d/2)·(2n)/((2|k-k₀|+1)π) without nonzero hypotheses (works in any DivisionRing).",
-      "Per-term bound shape: sin(φ_k) ≥ sin(d/2) AND |cos θ - cos φ_k| ≤ (2|k-k₀|+1)π/(2n) ⇒ ratio ≥ sin(d/2)·(2n)/((2|k-k₀|+1)π). Subsequent sub-sum will require restricting indices to those satisfying φ_k ∈ [d/2, π-d/2]."
+      "Per-term bound shape: sin(φ_k) ≥ sin(d/2) AND |cos θ - cos φ_k| ≤ (2|k-k₀|+1)π/(2n) ⇒ ratio ≥ sin(d/2)·(2n)/((2|k-k₀|+1)π). Subsequent sub-sum will require restricting indices to those satisfying φ_k ∈ [d/2, π-d/2].",
+      "odd_harmonic_sum_shifted_lb (Step 6a): shifted odd harmonic Σⱼ 1/(2(j+1)+1) ≥ (1/2)·log(m+2) - 1, derived from odd_harmonic_sum_lb (m+1) by Finset.sum_range_succ' splitting off j=0 term (= 1).",
+      "trig_sum_subsum_lb (Step 6b): sub-sum assembly over Fin m index range — define φ : Fin m → Fin n via j ↦ k₀+j+1, apply chebyshev_term_lb_at_node per j, lift to image sub-sum via Finset.sum_image + Finset.sum_le_sum_of_subset_of_nonneg.",
+      "Bridge ∑ j : Fin m to ∑ j ∈ Finset.range m via Fin.sum_univ_eq_sum_range; pull constants out of sum via Finset.mul_sum; close field-equality per-term goal with ring.",
+      "Sub-sum lower bound shape: sin(d/2) * (2n/π) * Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Combined with Step 6a, this gives n·log(m+2) growth — basis for asymptotic n·log(n) bound when m ~ n·d/(4π)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(Researcher / next session) Step 6 — define m := ⌊n·d/(4π)⌋ and the index set Sₙ ⊆ Fin n of indices k satisfying φ_k ∈ (d/2, π-d/2). Apply chebyshev_term_lb_at_node per-index to get a sub-sum lower bound.",
-      "(Researcher / next session) Step 7 — combine sub-sum bound with odd_harmonic_sum_lb (∑ 1/(2j+1) ≥ (1/2)·log(m+1)) for large n. Use Finset.min' over {1,...,N₀-1} for small n. Final witness C₂ = min(C_large, C_small).",
-      "(Researcher) Verify that for θ ∈ (0,π) with d = min(θ, π-θ), the index k₀ from exists_nearest_chebyshev_angle has |φ_{k₀} - π/2| ≤ |θ - π/2| + π/(2n), so for n ≥ N₀(d), φ_{k₀+j} ∈ (d/2, π-d/2) for |j| ≤ ⌊nd/(4π)⌋."
+      "(Researcher / next session) Step 7a — choose m := ⌊n·d/(4π)⌋ (with d = min(θ, π-θ)) and prove that for n ≥ N₀(d) the hypotheses of trig_sum_subsum_lb hold: hm_le (k₀+m+1 ≤ n) and h_interior (each midpoint φ_{k₀+j+1} ∈ [d/2, π-d/2]). The latter is the technical heart, requiring k₀ to be near the midpoint π/2 of the interval modulo arccos.",
+      "(Researcher / next session) Step 7b — for 1 ≤ n < N₀(d), use Finset.min' (or direct computation) over the finite set of ratios S_n / (n·log(n+1)) to find a positive lower bound. Combine with Step 7a's asymptotic constant via min.",
+      "(Researcher / next session) Step 8 — close trig_sum_harmonic_lb by chaining trig_sum_subsum_lb (gives n·Σⱼ 1/(2j+3) lb) + odd_harmonic_sum_shifted_lb (gives log(m+2) lb) + Step 7 case analysis. Witness C₂ depends on θ via d = min(θ, π-θ)."
     ]
   },
   "tags": [
