@@ -75,7 +75,7 @@ theorem normSq_cross_eq_projperp (B C : Fin 3 → ℝ) (hB : IsUnit3 B) (hC : Is
     Both equal 1 - (dot A B)² from normSq_projPerp. -/
 theorem normSq_projPerp_comm (A B : Fin 3 → ℝ) (hA : IsUnit3 A) (hB : IsUnit3 B) :
     normSq (projPerp A B) = normSq (projPerp B A) := by
-  simp only [normSq_projPerp A B hB, normSq_projPerp B A hA, hA, hB, dot_comm]
+  rw [normSq_projPerp A B hB, normSq_projPerp B A hA, hA, hB, dot_comm]
 
 /-- Cross product antisymmetry: C×A = -(A×C). -/
 theorem cross_anticomm (A C : Fin 3 → ℝ) : (C ×₃ A) = -(A ×₃ C) := by
@@ -85,7 +85,10 @@ theorem cross_anticomm (A C : Fin 3 → ℝ) : (C ×₃ A) = -(A ×₃ C) := by
 theorem normSq_cross_CA (A C : Fin 3 → ℝ) (hA : IsUnit3 A) (hC : IsUnit3 C) :
     normSq (C ×₃ A) = normSq (projPerp A C) := by
   rw [cross_anticomm]
-  simp only [normSq, dot, Pi.neg_apply, neg_mul_neg, Fin.sum_univ_three]
+  -- normSq is invariant under negation
+  have hneg : normSq (-(A ×₃ C)) = normSq (A ×₃ C) := by
+    simp only [normSq, dot, Pi.neg_apply, Fin.sum_univ_three]; ring
+  rw [hneg]
   exact normSq_cross_eq_projperp A C hA hC
 
 -- ============================================================================
@@ -132,6 +135,7 @@ theorem isUnit3_normalize3 (v : Fin 3 → ℝ) (hv : 0 < normSq v) :
                                                               [normSq_cross_eq_projperp, normSq_cross_CA]
     4. Therefore dot(A', B') = -cos(dihedralAngle C A B)      [definition of dihedral angle]
     5. arcLen = arccos(-cos(γ)) = π - γ                       [Real.arccos_neg] -/
+set_option maxHeartbeats 400000 in
 theorem polar_side_eq_pi_minus_angle (A B C : Fin 3 → ℝ)
     (hA : IsUnit3 A) (hB : IsUnit3 B) (hC : IsUnit3 C)
     (hBC : 0 < normSq (B ×₃ C))
