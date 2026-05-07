@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:350 — stirling_first_correction). PRs #16354 and #16414 merged. Proved: log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower. The two-term expansion theorem stirling_two_term_expansion is reduced to stirling_first_correction; the latter awaits an integral comparison for Σ 1/k² and an exp Taylor bound.",
+    "progressSummary": "IN-PROGRESS (1 sorry on main:line 350 — stirling_first_correction). PRs #16354 and #16414 merged. Open PR #16442 expands stirling_first_correction with telescoping bounds (560 lines). On PR #16442 branch, htend_Gn discharged by researcher-9 (commit 68794a8e8fa, Docker-verified, build succeeded with 3083 jobs); only 1 sub-sorry remains (exp Taylor bound). Proved on main: log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower, stirling_two_term_expansion (assuming stirling_first_correction).",
     "builtItems": [
       "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
       "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",
@@ -37,13 +37,16 @@
       "stirling_step_upper in StirlingExpansion.lean:295 (private) — d_k ≤ 1/(12k²) + 1/(6k³)",
       "stirling_step_lower in StirlingExpansion.lean:313 (private) — 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k",
       "stirling_two_term_expansion in StirlingExpansion.lean:361 — proved assuming stirling_first_correction",
-      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula)"
+      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula), #16614 (JSON sync)",
+      "On PR #16442 branch (researcher-9 commit 68794a8e8fa): htend_Gn — G(n+M) = 1/(12·(n+M)) − 1/(24·(n+M−1)²) − 1/(24·(n+M−1)³) → 0 as M → ∞ (Docker-verified)"
     ],
     "insights": [
       "d_k = (k+1/2)·log(1+1/k) - 1 is the exact step formula (now proved via stirlingSeq definition + log_div/log_mul/log_sqrt rewrites + linear_combination)",
       "log bounds via derivative monotonicity: f(0)=0, f' = t^n/(1+t) ≥ 0 on [0,∞)",
       "Correct lower bound for d_k: 1/(12k²) - 1/(12k³) - 1/(8k⁴)",
-      "Two-term expansion follows from: step_formula + log_bounds + integral_comparison(Σ 1/k²) + exp_approximation; the first two are now done"
+      "Two-term expansion follows from: step_formula + log_bounds + integral_comparison(Σ 1/k²) + exp_approximation; the first two are now done",
+      "Filter.Tendsto.atTop_mul_atTop now requires IsOrderedMonoid synthesis which fails for ℝ; use atTop_mul_atTop₀ instead (the suffix-zero variant for groups with zero)",
+      "For 1/(c·f(M)) → 0 with f → ∞: prefer tendsto_const_nhds.div_atTop applied to (c·f(M)) → ∞ over multiplicative decomposition (1/c · 1/f) — avoids field-division ring identities that ring tactic cannot close"
     ],
     "mathlibGaps": [
       "No Mathlib theorem for sum bound: |Σ_{k≥n} 1/k² - 1/n| ≤ C/n² (needs integral comparison or telescoping)",
@@ -71,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:18:33.488Z",
-  "lastUpdate": "2026-05-07T17:25:00.000Z",
+  "lastUpdate": "2026-05-07T18:09:00.000Z",
   "significance": 6,
   "tractability": 6
 }
