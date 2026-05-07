@@ -69,7 +69,7 @@ theorem cross_dot_eq_neg_projperp (A B C : Fin 3 → ℝ) (hC : IsUnit3 C) :
 /-- For unit B, C: normSq(B×C) = normSq(projPerp B C) = 1 - (dot B C)². -/
 theorem normSq_cross_eq_projperp (B C : Fin 3 → ℝ) (hB : IsUnit3 B) (hC : IsUnit3 C) :
     normSq (B ×₃ C) = normSq (projPerp B C) := by
-  rw [lagrange_identity, normSq_projPerp B C hC, hB]; ring
+  rw [lagrange_identity, normSq_projPerp B C hC, hB, hC]; ring
 
 /-- normSq(projPerp A B) = normSq(projPerp B A) for unit A and B.
     Both equal 1 - (dot A B)² from normSq_projPerp. -/
@@ -123,6 +123,7 @@ theorem isUnit3_normalize3 (v : Fin 3 → ℝ) (hv : 0 < normSq v) :
 -- Part III: Polar Triangle — Principal Result
 -- ============================================================================
 
+set_option maxHeartbeats 400000 in
 /-- **Polar side formula** — the principal theorem of this entry.
 
     The arc-length from A' = normalize(B×C) to B' = normalize(C×A) equals
@@ -135,7 +136,6 @@ theorem isUnit3_normalize3 (v : Fin 3 → ℝ) (hv : 0 < normSq v) :
                                                               [normSq_cross_eq_projperp, normSq_cross_CA]
     4. Therefore dot(A', B') = -cos(dihedralAngle C A B)      [definition of dihedral angle]
     5. arcLen = arccos(-cos(γ)) = π - γ                       [Real.arccos_neg] -/
-set_option maxHeartbeats 400000 in
 theorem polar_side_eq_pi_minus_angle (A B C : Fin 3 → ℝ)
     (hA : IsUnit3 A) (hB : IsUnit3 B) (hC : IsUnit3 C)
     (hBC : 0 < normSq (B ×₃ C))
@@ -154,7 +154,7 @@ theorem polar_side_eq_pi_minus_angle (A B C : Fin 3 → ℝ)
     Real.sqrt_ne_zero'.mpr (lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hpAC))
   have hp2 : Real.sqrt (normSq (projPerp B C)) ≠ 0 :=
     Real.sqrt_ne_zero'.mpr (lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hpBC))
-  rw [arcLen, hdot]
+  rw [arcLen, hdot, neg_div]
   unfold dihedralAngle
   rw [if_neg (by push_neg; exact ⟨hp1, hp2⟩)]
   exact Real.arccos_neg _
