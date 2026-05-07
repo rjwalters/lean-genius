@@ -17,11 +17,11 @@
       "degree-sequences"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 2,
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
     "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
-    "lineCount": 958,
+    "lineCount": 1108,
     "theoremCount": 25,
     "definitionCount": 13,
     "originalContributions": [
@@ -116,7 +116,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 4 sorries (Hierholzer infrastructure helpers deferred), 958 lines.",
+    "summary": "Formalizes the directed Eulerian theorem. Key proved results: directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg, via double-counting), necessity direction (Eulerian circuit → balanced degrees, via walk position bijection and closed-walk degree balance). 8 theorems proved from first principles, 2 axioms (Hierholzer sufficiency and Eulerian path characterization), 2 sorries (Hierholzer infrastructure helpers deferred), 1108 lines.",
     "implications": "The directed Eulerian theorem underpins de Bruijn sequence construction (a de Bruijn graph is Eulerian), DNA fragment assembly algorithms, and Eulerian circuit algorithms in network flow. The degree-balance characterization is also the basis for Hierholzer's O(|E|) directed Eulerian circuit algorithm.",
     "openQuestions": [
       "Formalize Hierholzer's algorithm for constructing directed Eulerian circuits (eliminate directed_eulerian_iff axiom)",
@@ -126,12 +126,12 @@
   },
   "leanFile": {
     "namespace": "KonigsbergOQ01OQ02",
-    "lineCount": 958,
+    "lineCount": 1108,
     "axiomCount": 2,
     "theoremCount": 25,
     "definitionCount": 13,
     "path": "Proofs/KonigsbergOQ01OQ02.lean",
-    "sorries": 4
+    "sorries": 2
   },
   "crossReferences": [
     {
@@ -150,5 +150,5 @@
       "description": "Original Königsberg bridges problem — Euler 1736; the undirected Eulerian theorem whose directed analogue is formalized here."
     }
   ],
-  "sorries": 4
+  "sorries": 2
 }
