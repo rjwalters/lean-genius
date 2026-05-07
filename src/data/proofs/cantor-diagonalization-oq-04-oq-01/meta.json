@@ -37,6 +37,9 @@
     ],
     "axiomCount": 0,
     "sorries": 0,
+    "lineCount": 166,
+    "theoremCount": 8,
+    "definitionCount": 3,
     "badge": "original"
   },
   "conclusion": "If a type Y with setoid equivalence ≈ codes its own endomorphisms up to ≈ (via encode/decode with decode(encode(f))(y) ≈ f(y)), then for every function f : Y → Y there exists p : Y with f(p) ≈ p. The Type version (exact equality) is the special case of the discrete setoid. Bool and ℕ-mod-2 cannot code their endomorphisms, witnessing the theorem's nontriviality.",
