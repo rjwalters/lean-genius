@@ -16,7 +16,7 @@ namespace BallotProblemOQ03OQ01OQ01OQ01Aristotle
 
 variable {R : Type*} [CommRing R]
 
-/-! ### Helper lemmas -/
+/- ### Helper lemmas -/
 
 /-
 For b=1 with a ≥ 1, ¬ColStrictSym a 1 P Q iff the single element of Q
