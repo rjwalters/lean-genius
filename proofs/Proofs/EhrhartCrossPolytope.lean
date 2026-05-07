@@ -18,7 +18,7 @@
   "Can Ehrhart polynomials for polytopes with known formulas be proved
    from first principles without the general existence theorem?"
 
-  Main results (10 theorems, 3 sorries):
+  Main results (11 theorems, 1 sorry):
   1. crossEhrhart_d0          — L(B_0,n) = 1
   2. crossEhrhart_n0          — L(B_d,0) = 1
   3. crossEhrhart_d1          — L(B_1,n) = 2n+1
@@ -29,11 +29,10 @@
   8. sum_shift_hockey          — sum interchange using hockey-stick
   9. crossEhrhart_expand       — key algebraic expansion (Pascal split)
   10. crossEhrhart_succ_d      — geometric recursion: L(B_{d+1},n) = L(B_d,n) + 2·Σ L(B_d,m)
+  11. crossEhrhart_is_poly     — polynomial identification via descPochhammer
 
-  Sorries (3):
-  - crossEhrhart_is_poly: polynomial identification (Lean polynomial API)
-  - crossBall_card base d=0: Finset card of empty-domain functions
-  - crossBall_card step: Finset slicing decomposition
+  Remaining sorry (1):
+  - crossBall_card succ-d: Finset slicing decomposition (geometric recursion)
 -/
 import Mathlib
 
@@ -241,18 +240,88 @@ example : crossEhrhart 3 4 = 129 := by native_decide
 -- PART VII: Ehrhart Polynomial Identification
 -- ============================================================
 
+-- Helper: natDegree of `descPochhammer ℚ k` is at most `k`.
+private lemma natDegree_descPochhammer_le (k : ℕ) :
+    (Polynomial.descPochhammer ℚ k).natDegree ≤ k := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    rw [Polynomial.descPochhammer_succ_right]
+    refine le_trans Polynomial.natDegree_mul_le ?_
+    have h1 : (Polynomial.X - ((k : ℕ) : Polynomial ℚ)).natDegree ≤ 1 := by
+      refine le_trans (Polynomial.natDegree_sub_le _ _) ?_
+      simp
+    omega
+
+-- Helper: `(descPochhammer ℚ k).eval (n : ℚ) = ↑(n.descFactorial k)`.
+private lemma eval_descPochhammer_natCast (k n : ℕ) :
+    (Polynomial.descPochhammer ℚ k).eval ((n : ℕ) : ℚ) =
+      ((n.descFactorial k : ℕ) : ℚ) := by
+  induction k with
+  | zero => simp
+  | succ k ih =>
+    rw [Polynomial.descPochhammer_succ_right]
+    simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X,
+               Polynomial.eval_natCast, ih]
+    rcases le_or_lt k n with hkn | hkn
+    · -- k ≤ n: descFactorial unfolds nicely
+      rw [Nat.descFactorial_succ, Nat.cast_mul, Nat.cast_sub hkn]
+      ring
+    · -- k > n: both descFactorial values vanish
+      have hzero_at : ∀ m, n.descFactorial (n + 1 + m) = 0 := by
+        intro m
+        induction m with
+        | zero =>
+          show n.descFactorial (n + 1) = 0
+          rw [Nat.descFactorial_succ, Nat.sub_self, zero_mul]
+        | succ m ihm =>
+          rw [show n + 1 + (m + 1) = (n + 1 + m) + 1 from by omega,
+              Nat.descFactorial_succ, ihm, mul_zero]
+      have hk_zero : n.descFactorial k = 0 := by
+        obtain ⟨m, hm⟩ : ∃ m, k = n + 1 + m := ⟨k - (n + 1), by omega⟩
+        rw [hm]; exact hzero_at m
+      have hk1_zero : n.descFactorial (k + 1) = 0 := by
+        rw [Nat.descFactorial_succ, hk_zero, mul_zero]
+      rw [hk_zero, hk1_zero]
+      simp
+
 /-- **The formula is a polynomial of degree ≤ d in n** (over ℚ).
 
     Each term 2^k · C(d,k) · C(n,k) is a polynomial of degree k in n,
     with C(n,k) = n(n-1)···(n-k+1)/k! a polynomial of degree k.
-    So the sum is a polynomial of degree d. -/
+    So the sum is a polynomial of degree d.
+
+    The construction is
+    `P = Σ_{k=0}^d C ((2^k · C(d,k))/k!) · descPochhammer ℚ k`.
+    Each summand has natDegree ≤ k ≤ d. Evaluation at `(n : ℚ)` uses
+    `descPochhammer ℚ k`.eval = `descFactorial = k! · C(n,k)`, with
+    the `k!` cancelling against the coefficient denominator. -/
 theorem crossEhrhart_is_poly (d : ℕ) :
     ∃ (P : Polynomial ℚ), P.natDegree ≤ d ∧
     ∀ n : ℕ, P.eval (n : ℚ) = (crossEhrhart d n : ℚ) := by
-  -- Each term 2^k · C(d,k) · C(n,k) is degree k (since C(n,k) = n↓k/k! is degree k).
-  -- The polynomial P = Σ_{k≤d} (2^k·C(d,k)/k!) · X·(X-1)···(X-k+1).
-  -- Full construction omitted; see crossEhrhart_succ_d for the key recursion.
-  sorry
+  refine ⟨∑ k ∈ range (d + 1),
+    Polynomial.C ((2 ^ k : ℚ) * (Nat.choose d k : ℚ) / (k.factorial : ℚ)) *
+      Polynomial.descPochhammer ℚ k, ?_, ?_⟩
+  · -- natDegree ≤ d
+    refine le_trans (Polynomial.natDegree_sum_le _ _) ?_
+    apply Finset.sup_le
+    intro k hk
+    refine le_trans Polynomial.natDegree_mul_le ?_
+    rw [Polynomial.natDegree_C, zero_add]
+    have hk_le : k ≤ d := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+    exact le_trans (natDegree_descPochhammer_le k) hk_le
+  · -- eval property at every Nat n
+    intro n
+    rw [Polynomial.eval_finset_sum, crossEhrhart, Nat.cast_sum]
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [Polynomial.eval_mul, Polynomial.eval_C, eval_descPochhammer_natCast,
+        Nat.descFactorial_eq_factorial_mul_choose]
+    have hk_ne : (k.factorial : ℚ) ≠ 0 := by
+      exact_mod_cast Nat.factorial_ne_zero k
+    push_cast
+    field_simp [hk_ne]
+    ring
 
 -- ============================================================
 -- PART VIII: Connection to Lattice Points

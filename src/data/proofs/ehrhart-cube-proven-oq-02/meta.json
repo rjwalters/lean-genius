@@ -6,10 +6,10 @@
   "leanFile": {
     "path": "Proofs/EhrhartCrossPolytope.lean",
     "filename": "EhrhartCrossPolytope.lean",
-    "lineCount": 330,
-    "theoremCount": 12,
+    "lineCount": 399,
+    "theoremCount": 14,
     "definitionCount": 2,
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0
   },
   "meta": {
@@ -29,10 +29,10 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 330,
-    "assumptions": "2 sorries: (1) crossEhrhart_is_poly \u2014 Lean Polynomial API; (2) crossBall_card d+1 \u2014 Finset slicing. All 10 key algebraic/combinatorial theorems proved including geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m).",
+    "lineCount": 399,
+    "assumptions": "1 sorry: crossBall_card d+1 \u2014 Finset slicing decomposition. All algebraic/combinatorial theorems are proved including the geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m) and the polynomial identification crossEhrhart_is_poly via descPochhammer \u211a k.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -41,11 +41,11 @@
       "sum_shift_hockey: sum interchange converting \u03a3_k 2^k C(d,k) C(n,k+1) to \u03a3_{m<n} \u03a3_k 2^k C(d,k) C(m,k)",
       "crossEhrhart_expand: algebraic expansion L(B_{d+1},n) = L(B_d,n) + 2\u00b7\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal's rule",
       "crossEhrhart_succ_d: geometric recursion L(B_{d+1},n) = L(B_d,n) + 2\u00b7\u03a3_{m<n} L(B_d,m) by combining expand + hockey-stick",
-      "crossEhrhart_is_poly: proof that the formula is a polynomial of degree d in n over \u211a",
+      "crossEhrhart_is_poly: explicit polynomial of degree \u2264 d in n over \u211a, constructed as P = \u03a3_k C((2^k\u00b7C(d,k))/k!) \u00b7 descPochhammer \u211a k via Mathlib's descPochhammer; the k! denominator cancels the descFactorial = k!\u00b7C(n,k) factor",
       "crossBall: Finset model of cross-polytope lattice points via centered Fin (2n+1) coordinates",
       "Concrete verifications: d=1 (2n+1), d=2 (2n\u00b2+2n+1), d=3 spot checks via native_decide"
     ],
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2
   },
   "overview": {
@@ -114,20 +114,20 @@
     {
       "id": "polynomial-identification",
       "title": "Section VII: Ehrhart Polynomial",
-      "startLine": 230,
-      "endLine": 270,
-      "summary": "crossEhrhart_is_poly: \u2203 P : \u211a[X] of degree \u2264 d with P(n) = crossEhrhart d n. Constructed as \u03a3_k (2^k C(d,k)/k!) \u00b7 X\u2193k."
+      "startLine": 240,
+      "endLine": 324,
+      "summary": "crossEhrhart_is_poly: \u2203 P : \u211a[X] of degree \u2264 d with P(n) = crossEhrhart d n. Constructed via two helper lemmas (natDegree_descPochhammer_le, eval_descPochhammer_natCast) using Mathlib's descPochhammer; the polynomial is P = \u03a3_k C((2^k C(d,k))/k!) \u00b7 descPochhammer \u211a k, with the k! denominator cancelling the descFactorial = k!\u00b7C(n,k) factor."
     },
     {
       "id": "lattice-connection",
       "title": "Section VIII: Lattice Point Connection",
-      "startLine": 275,
-      "endLine": 295,
+      "startLine": 327,
+      "endLine": 353,
       "summary": "crossBall: Finset model of n\u00b7B_d lattice points via Fin d \u2192 Fin(2n+1) with L\u00b9-norm constraint. crossBall_card: card = crossEhrhart d n (proved for d=0; inductive step has 1 sorry for Finset slicing)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization answers ehrhart-cube-proven OQ-02 by proving the cross-polytope Ehrhart formula L(B_d,n) = \u03a3 2^k C(d,k) C(n,k) axiom-free. The 10 proved theorems (1 sorry for the geometric Finset argument) establish the formula, its polynomial nature, the geometric recursion, and base cases.\n\nTogether with EhrhartCubeProven and EhrhartSimplexProven, this demonstrates that three major polytope families have fully explicit, axiom-free Ehrhart polynomial proofs in Lean 4, without ever invoking the general Ehrhart existence theorem (ehrhart_theorem axiom). The key principle: for polytopes with combinatorial lattice-point formulas, inductive algebraic proofs replace the transcendental machinery of the general theory.",
+    "summary": "This formalization answers ehrhart-cube-proven OQ-02 by proving the cross-polytope Ehrhart formula L(B_d,n) = \u03a3 2^k C(d,k) C(n,k) axiom-free. The 13 proved theorems (1 sorry for the geometric Finset argument) establish the formula, its polynomial nature (via an explicit descPochhammer construction), the geometric recursion, and base cases.\n\nTogether with EhrhartCubeProven and EhrhartSimplexProven, this demonstrates that three major polytope families have fully explicit, axiom-free Ehrhart polynomial proofs in Lean 4, without ever invoking the general Ehrhart existence theorem (ehrhart_theorem axiom). The key principle: for polytopes with combinatorial lattice-point formulas, inductive algebraic proofs replace the transcendental machinery of the general theory.",
     "implications": "**The three pillars of Ehrhart theory without axioms**: Cube (Fin d \u2192 Fin(n+1)), Simplex (Sym (Fin(d+1)) n), and Cross-Polytope (induction + Pascal + hockey-stick) provide three fundamentally different approaches to axiom-free Ehrhart proofs. Each captures a different combinatorial structure.\n\n**Delannoy numbers**: The formula \u03a3 2^k C(d,k) C(n,k) = D(d,n) (central Delannoy number) connects cross-polytope lattice counting to lattice path enumeration. Formalizing this bijection would give a new combinatorial proof of the Delannoy formula.\n\n**General principle**: The successful axiom-free approach for these three polytopes suggests a research program: identify all families of lattice polytopes with explicit Ehrhart formulas and formalize them without the existence axiom. Candidates include permutohedra, hypersimplices, and flow polytopes.",
     "openQuestions": [
       "Can the crossBall_card sorry be eliminated by formalizing the Finset slicing decomposition of B_{d+1} by last coordinate?",
@@ -152,5 +152,5 @@
       "relationship": "General theory (axiomatized). This file provides an axiom-free proof for the cross-polytope."
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
