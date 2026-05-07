@@ -57,29 +57,43 @@ axiom blichfeldt_volume_partition {n : ℕ} [NeZero n]
     volume s = ∑' g : (stdLattice n).toAddSubgroup,
       volume {z ∈ stdFundDomain n | z + (g : Fin n → ℝ) ∈ s}
 
-/-- **Axiom 2** (Projection Measurability):
+/-- **Lemma** (Projection Measurability):
     For measurable s and lattice element v, the set {z ∈ F | z + v ∈ s} is measurable.
 
-    Proof path: This set equals (stdFundDomain n) ∩ (fun z => z + v) ⁻¹' s.
-    Since (fun z => z + v) is continuous (affine), the preimage is measurable.
-    Intersecting with the measurable stdFundDomain gives measurability. -/
-axiom blichfeldt_proj_measurable {n : ℕ} [NeZero n]
+    Proof: This set equals (stdFundDomain n) ∩ (fun z => z + v) ⁻¹' s.
+    Translation `z ↦ z + v` is measurable (`measurable_id.add_const`), so the preimage
+    is measurable. Intersecting with the measurable `stdFundDomain` gives measurability. -/
+theorem blichfeldt_proj_measurable {n : ℕ} [NeZero n]
     (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
     (v : (stdLattice n).toAddSubgroup) :
-    MeasurableSet {z ∈ stdFundDomain n | z + (v : Fin n → ℝ) ∈ s}
+    MeasurableSet {z ∈ stdFundDomain n | z + (v : Fin n → ℝ) ∈ s} := by
+  have h_translate : Measurable fun z : Fin n → ℝ => z + (v : Fin n → ℝ) :=
+    measurable_id.add_const _
+  have h_pre : MeasurableSet
+      ((fun z : Fin n → ℝ => z + (v : Fin n → ℝ)) ⁻¹' s) :=
+    h_translate h_meas
+  exact (stdFundDomain_measurableSet n).inter h_pre
 
-/-- **Axiom 3** (Disjoint Subsets Bound):
+/-- **Lemma** (Disjoint Subsets Bound):
     Pairwise-disjoint measurable subsets {Aᵥ} of F = stdFundDomain have ∑' vol(Aᵥ) ≤ 1.
 
-    Proof path:
-    ∑' vol(Aᵥ) = vol(⋃ᵥ Aᵥ)  [measure_iUnion for pairwise-disjoint measurable sets]
-    ≤ vol(F) = 1              [measure_mono + stdLattice_covolume] -/
-axiom blichfeldt_disj_bound {n : ℕ} [NeZero n]
+    Proof: ∑' vol(Aᵥ) = vol(⋃ᵥ Aᵥ) by `measure_iUnion` (sigma-additivity for
+    pairwise-disjoint measurable sets), then ≤ vol(F) = 1 via `measure_mono` and
+    `stdLattice_covolume`. -/
+theorem blichfeldt_disj_bound {n : ℕ} [NeZero n]
     (A : (stdLattice n).toAddSubgroup → Set (Fin n → ℝ))
     (h_meas : ∀ v, MeasurableSet (A v))
     (h_sub : ∀ v, A v ⊆ stdFundDomain n)
     (h_disj : Pairwise fun v w => Disjoint (A v) (A w)) :
-    ∑' v, volume (A v) ≤ 1
+    ∑' v, volume (A v) ≤ 1 := by
+  haveI : Countable (stdLattice n).toAddSubgroup := by
+    unfold stdLattice
+    change Countable (Submodule.span ℤ (Set.range (stdBasis n)))
+    infer_instance
+  rw [← MeasureTheory.measure_iUnion h_disj h_meas]
+  calc volume (⋃ v, A v)
+      ≤ volume (stdFundDomain n) := measure_mono (Set.iUnion_subset h_sub)
+    _ = 1 := stdLattice_covolume n
 
 -- ============================================================
 -- PART 2: Blichfeldt's Basic Theorem (k = 1)
