@@ -13964,6 +13964,84 @@ private lemma strictHookCells_removeCorner_eq {μ : YoungDiagram} {c' : ℕ × �
       · have hc_eq : ν.colLen j = μ.colLen j := colLen_removeCorner_other hc' hjj'
         exact Or.inr ⟨r, ⟨hir, by rw [hc_eq]; exact hrc⟩, rfl⟩
 
+/-- For distinct corners `c` and `c'` of `μ`, `gnwProb μ c K c' = 0` for every termination
+    bound `K`.  At `K = 0` the function is identically zero; at `K + 1` the corner branch
+    fires and yields `if c' = c then 1 else 0 = 0`. -/
+private lemma gnwProb_at_other_corner {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc' : isCorner μ c') (hne : c ≠ c') (K : ℕ) :
+    gnwProb μ c K c' = 0 := by
+  cases K with
+  | zero => rfl
+  | succ K =>
+    have h_unfold : gnwProb μ c (K + 1) c' =
+        if isCorner μ c' then (if c' = c then (1 : ℚ) else 0)
+        else (1 / ↑(strictHookCells μ c'.1 c'.2).card : ℚ) *
+             ∑ y ∈ strictHookCells μ c'.1 c'.2, gnwProb μ c K y := rfl
+    rw [h_unfold, if_pos hc', if_neg (fun h : c' = c => hne h.symm)]
+
+/-- When `c'` is not in the strict hook of `(i, j)`, removing `c'` leaves the strict hook
+    unchanged.  Direct corollary of `strictHookCells_removeCorner_eq`. -/
+private lemma strictHookCells_removeCorner_eq_of_not_mem
+    {μ : YoungDiagram} {c' : ℕ × ℕ} (hc' : isCorner μ c') {i j : ℕ}
+    (hnotmem : c' ∉ strictHookCells μ i j) :
+    strictHookCells (removeCorner μ c' hc') i j = strictHookCells μ i j := by
+  rw [strictHookCells_removeCorner_eq hc' i j, ← Finset.erase_eq,
+      Finset.erase_eq_of_notMem hnotmem]
+
+/-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
+    strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
+    that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by
+    `c'`, and `gnwProb μ c K c' = 0` (`gnwProb_at_other_corner`).
+
+    Why this matters for `gnwProb_exchange`: the sum over `strictHookCells μ` appearing
+    in the recursive step of `gnwProb μ c (K+1) x` can be rewritten as a sum over
+    `strictHookCells (μ\c') x.1 x.2`.  Crucially, this lifts the recursive comparison
+    between `gnwProb μ` and `gnwProb (μ\c')` from "different summation domains" to "same
+    summation domain", isolating the remaining comparison to the integrand. -/
+private lemma sum_gnwProb_strictHookCells_eq_removeCorner
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc' : isCorner μ c') (hne : c ≠ c') (i j K : ℕ) :
+    ∑ y ∈ strictHookCells μ i j, gnwProb μ c K y =
+    ∑ y ∈ strictHookCells (removeCorner μ c' hc') i j, gnwProb μ c K y := by
+  have h0 : gnwProb μ c K c' = 0 := gnwProb_at_other_corner hc' hne K
+  rw [strictHookCells_removeCorner_eq hc' i j, ← Finset.erase_eq]
+  by_cases hc'mem : c' ∈ strictHookCells μ i j
+  · -- c' is in the strict hook: split off via Finset.sum_erase_add and use h0.
+    have hsum := Finset.sum_erase_add (strictHookCells μ i j)
+      (fun y => gnwProb μ c K y) hc'mem
+    -- hsum : ∑ y ∈ S.erase c', gnwProb μ c K y + gnwProb μ c K c' = ∑ y ∈ S, gnwProb μ c K y
+    linarith [hsum, h0]
+  · -- c' is not in the strict hook: S.erase c' = S.
+    rw [Finset.erase_eq_of_notMem hc'mem]
+
+/-- F-domain bridge for `gnwProb_exchange`: For distinct corners `c ≠ c'` of `μ`, the
+    sum of `gnwProb μ c (hookLength μ x.1 x.2) x` over `μ.cells` equals the same sum
+    restricted to `(removeCorner μ c' hc').cells`.
+
+    Why this matters: in `gnwProb_exchange`, the LHS sum runs over `μ.cells` while the
+    RHS sum runs over `(μ\c').cells = μ.cells.erase c'`.  This lemma rewrites the LHS
+    domain to match the RHS, isolating the remaining comparison to integrands alone
+    (`gnwProb μ` vs `gnwProb (μ\c')`, and `hookLength μ` vs `hookLength (μ\c')`).
+
+    Proof: `(μ\c').cells = μ.cells.erase c'` definitionally; the only term dropped is
+    the `c'` term itself, which contributes `0` by `gnwProb_at_other_corner`. -/
+private lemma sum_gnwProb_eq_removeCorner_cells
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc' : isCorner μ c') (hne : c ≠ c') :
+    ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
+    ∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb μ c (hookLength μ x.1 x.2) x := by
+  have hc'_mem : c' ∈ μ.cells := YoungDiagram.mem_cells.mpr hc'.1
+  -- Goal RHS: (removeCorner μ c' hc').cells is definitionally μ.cells.erase c'.
+  show ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
+       ∑ x ∈ μ.cells.erase c', gnwProb μ c (hookLength μ x.1 x.2) x
+  -- Split off c' from the LHS via Finset.sum_erase_add and use h0.
+  have hsum := Finset.sum_erase_add μ.cells
+    (fun x => gnwProb μ c (hookLength μ x.1 x.2) x) hc'_mem
+  have h0 : gnwProb μ c (hookLength μ c'.1 c'.2) c' = 0 :=
+    gnwProb_at_other_corner hc' hne (hookLength μ c'.1 c'.2)
+  linarith [hsum, h0]
+
 /-- GNW 1979 exchange identity (core inductive step, product form — no division).
     For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
       F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
