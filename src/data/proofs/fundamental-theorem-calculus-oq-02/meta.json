@@ -6,7 +6,7 @@
   "meta": {
     "author": "Stokes (1854), Cartan (1945)",
     "date": "1854",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "analysis",
       "calculus",
@@ -16,7 +16,7 @@
       "open-question"
     ],
     "proofRepoPath": "Proofs/FundamentalTheoremCalculusStokes.lean",
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries in main file. d^2=0 in 2D (Clairaut's theorem) now proved via ContDiff.contDiffAt.isSymmSndFDerivAt; Green's theorem in Stokes form proved via GreensTheoremOQ01.greens_theorem_concrete.",
