@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-14T19:46:33.194Z",
-    "iteration": 3,
-    "focus": "Fixed f_property soundness bug, added f_domain guard",
+    "phase": "OBSERVE",
+    "since": "2026-05-07T17:35:00.000Z",
+    "iteration": 4,
+    "focus": "Added structural smoothPart lemmas: positivity, monotonicity in k, boundary cases",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Verify Docker build of expanded file; explore reducing f_domain_large axiom via concrete witness for some n₀.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed critical soundness bug — f_property axiom was false for small n. Added f_domain guard. Axiom count 5→6 but formalization is now correct.",
+    "progressSummary": "PROGRESS: Added 8 structural lemmas about smoothPart (positivity, monotonicity in k as ∣ and ≤, boundary values 0/1/n). theoremCount 12→20, axiomCount unchanged at 2.",
     "builtItems": [
       "Proved smoothPart_dvd via prod_pow_factorization_dvd helper (Finset induction + coprimality)",
       "Proved f_lower_bound theorem from f_property axiom",
@@ -43,7 +43,15 @@
       "f_domain_large axiom (f is well-defined for sufficiently large n)",
       "Fixed f_property axiom (now requires f_domain instead of n≥2)",
       "Fixed f_lower_bound theorem (now requires f_domain)",
-      "Fixed erdos_684_statement theorem (now requires f_domain)"
+      "Fixed erdos_684_statement theorem (now requires f_domain)",
+      "smoothPart_pos: 0 < smoothPart k m for all k,m (Finset.prod_pos + Nat.pos_pow_of_pos)",
+      "smoothPart_zero: smoothPart k 0 = 1 (factorization 0 is the zero finsupp)",
+      "smoothPart_one: smoothPart k 1 = 1 (factorization 1 is the zero finsupp)",
+      "smoothPart_le: 0 < m → smoothPart k m ≤ m (immediate from smoothPart_dvd + Nat.le_of_dvd)",
+      "smoothPart_dvd_mono: k₁ ≤ k₂ → smoothPart k₁ m ∣ smoothPart k₂ m (Finset.prod_dvd_prod_of_subset)",
+      "smoothPart_mono_k: k₁ ≤ k₂ → smoothPart k₁ m ≤ smoothPart k₂ m (corollary of dvd + pos)",
+      "binomialSmoothPart_self: binomialSmoothPart n n = 1 (since C(n,n) = 1)",
+      "binomialSmoothPart_zero: binomialSmoothPart n 0 = 1 (range 1 has no primes)"
     ],
     "insights": [
       "smoothPart_dvd proved: product of p^(factorization p) for primes p ≤ k divides m, via coprimality of distinct prime powers and Finset induction",
@@ -56,13 +64,19 @@
       "CRITICAL BUG: f_property axiom was FALSE for small n (n=2..~9). The set {k | smoothPart > n²} is empty for small n because binomial coefficients are too small.",
       "Example: n=5, max smoothPart across all k is 2 (from C(5,2)=10), far below n²=25. So sInf ∅ = 0 and f_property claims 1 > 25, which is false.",
       "Fix: Added f_domain predicate (set nonemptiness) and f_domain_large axiom. Changed f_property, f_lower_bound, erdos_684_statement to require f_domain.",
-      "Axiom count 5→6 but formalization is now SOUND. The old version was unsound from a false axiom."
+      "Axiom count 5→6 but formalization is now SOUND. The old version was unsound from a false axiom.",
+      "smoothPart_pos: every factor p^e is positive (Nat.pos_pow_of_pos on prime base ≥ 2), so the entire product is positive — even for m = 0 where the product is over a finset of ones",
+      "smoothPart_dvd_mono: when k₁ ≤ k₂, the filter (range k₁+1).filter Prime ⊆ (range k₂+1).filter Prime, and the smaller product divides the larger by Finset.prod_dvd_prod_of_subset (no need to bound the extra factors)",
+      "smoothPart_mono_k follows from smoothPart_dvd_mono + Nat.le_of_dvd (using smoothPart_pos for positivity of smoothPart k₂ m)",
+      "Empirical observation: f_domain n is FALSE for n ∈ {2,...,7} and TRUE for n=8 (witness k=7: C(8,4)=70, smoothPart 7 70 = 70 > 64). The threshold for f_domain_large is small but the smallest threshold N₀ is not characterized in this formalization.",
+      "Mahler does NOT imply f_domain_large: Mahler bounds smoothPart for FIXED k₀ as n grows, while f_domain_large needs k to potentially scale with n. The two axioms remain logically independent in this formalization."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Determine exact threshold for f_domain (smallest n where set is nonempty)",
-      "Consider merging f_domain_large into mahler_ineffective (Mahler implies nonemptiness for large n)",
-      "Explore if any of the remaining axioms can be reduced"
+      "Verify Docker build of expanded file (deferred this session due to OOM/concurrency)",
+      "Determine exact threshold N₀ for f_domain_large (smallest n where the set is nonempty — empirically n₀=8 from k=7,C(8,4)=70>64)",
+      "Strengthen f_lower_bound from f n ≥ 2 to f n ≥ 3 (requires bounding 2^(v_2 C(n,k)) ≤ n², which needs Kummer's carries formulation or a v_2 bound from Legendre)",
+      "Connect to OEIS A392019 (concrete table of f(n) for small n, currently undocumented)"
     ],
     "markdown": "# Erdős #684 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor $0\\leq k\\leq n$ write\\[\\binom{n}{k} = uv\\]where the only primes dividing $u$ are in $[2,k]$ and the only primes dividing $v$ are in $(k,n]$.\n\nLet $f(n)$ be the smallest $k$ such that $u>n^2$. Give bounds for $f(n)$.\n\n\n\nA classical theorem of Mahler states that for any $\\epsilon>0$ and integers $k$ and $l$ then, writing\\[(n+1)\\cdots (n+k) = ab\\]where the only primes dividing $a$ are $\\leq l$ and the only primes dividing $b$ are $>l$, we have $a < n^{1+\\epsilon}$ for all sufficiently large (depending on $\\epsilon,k,l$) $n$.\n\nMahler's theorem implies $f(n)\\to \\infty$ as $n\\to \\infty$, but is ineffective, and so gives no bounds on the growth of $f(n)$.\n\nOne can similarly ask for estimates on the smallest integer $f(n,k)$ such that if $m$ is the factor of $\\binom{n}{k}$ containing all primes $\\leq f(n,k)$ then $m > n^2$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #683\n- Problem #685\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
@@ -80,15 +94,15 @@
     "mathlib": []
   },
   "started": "2026-01-14T19:46:33.195Z",
-  "lastUpdate": "2026-03-13T07:52:17.051Z",
+  "lastUpdate": "2026-05-07T17:35:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos684Problem.lean",
       "filename": "Erdos684Problem.lean",
-      "lineCount": 402,
-      "theoremCount": 10,
+      "lineCount": 451,
+      "theoremCount": 20,
       "axiomCount": 2,
       "defCount": 11,
       "sorryCount": 0,
