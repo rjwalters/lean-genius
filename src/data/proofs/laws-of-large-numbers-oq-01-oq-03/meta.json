@@ -61,7 +61,10 @@
     "axiomCount": 0,
     "lineCount": 98,
     "theoremCount": 1,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The Borel-Cantelli lemmas are among the most fundamental results in probability theory. The first lemma (BC1, proved by Borel in 1909 and Cantelli in 1917) states: if Σ P(Aₙ) < ∞ then P(Aₙ i.o.) = 0 — no independence is needed. The second lemma (BC2) states the converse direction: under full mutual independence and Σ P(Aₙ) = ∞, P(Aₙ i.o.) = 1. The condition of full mutual independence in BC2 seemed necessary until Erdős and Rényi (1959) showed that pairwise independence suffices. Their proof uses the Chebyshev-variance method, originally developed by Chung and Erdős (1952) in the context of convergent series. The result became a key ingredient in Etemadi's (1981) celebrated elementary proof of the strong law of large numbers: Etemadi used pairwise-independent BC2 to establish the necessity direction — if the SLLN holds for some subsequence then E[|X₀|] < ∞. Petrov (2002) showed that mere uncorrelated-ness (Cov(1_{Aᵢ}, 1_{Aⱼ}) = 0 without the joint probability condition) is not sufficient for BC2, confirming pairwise independence as the correct minimal threshold.",
