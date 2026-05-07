@@ -66,7 +66,7 @@
     "historicalContext": "Erdős Problem #768 concerns a natural subset $A$ of the positive integers defined by a divisibility-congruence condition: $n \\in A$ if for every prime $p \\mid n$, there exists a divisor $d > 1$ of $n$ with $d \\equiv 1 \\pmod{p}$. This 'witness divisor' property connects to the structure of the divisor lattice and has deep roots in group theory.\n\nThe set $A$ arises naturally from Sylow theory in finite group theory. If $G$ is a non-cyclic simple group of order $n$, then for each prime $p \\mid n$, the number of Sylow $p$-subgroups $n_p > 1$ satisfies $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid n$. This means $n \\in A$, so $|A \\cap [1,N]|$ bounds the number of possible orders of non-cyclic simple groups up to $N$. The Classification of Finite Simple Groups shows this bound is far from tight, but the density of $A$ is independently interesting.\n\nErdős proved two-sided bounds on the density: $\\exp(-c_1 \\sqrt{\\log N} \\cdot \\log \\log N) \\leq |A \\cap [1,N]|/N \\leq \\exp(-(1+o(1))\\sqrt{\\log N \\cdot \\log \\log N})$. The forms of these bounds differ slightly (the lower bound uses $\\sqrt{\\log N} \\cdot \\log \\log N$, the upper uses $\\sqrt{\\log N \\cdot \\log \\log N}$), leaving open whether a single asymptotic form $\\exp(-(c+o(1))f(N))$ captures the truth. OEIS A352287 lists elements of $A$: 1, 6, 12, 56, 60, ...",
     "problemStatement": "Let $A$ be the set of positive integers $n$ such that for every prime $p \\mid n$, there exists a divisor $d > 1$ of $n$ with $d \\equiv 1 \\pmod{p}$.\n\nIs there a constant $c > 0$ such that $|A \\cap [1,N]|/N = \\exp(-(c+o(1))\\sqrt{\\log N} \\cdot \\log \\log N)$?",
     "text": "Determine the exact asymptotic density of integers n where every prime divisor p has a witness divisor d > 1 with d ≡ 1 (mod p).",
-    "proofStrategy": "The formalization defines the witness divisor property `hasWitnessDivisor` and the set $A$ via `inSetA`. Basic membership results are proved: 1 is in $A$ vacuously, and 6 is proved to be in $A$ by constructing explicit witnesses (3 serves as witness for both primes 2 and 3 via `interval_cases` and `norm_num`). Prime powers are shown to not be in $A$ (partially, with a sorry for the key step that divisors of $p^k$ cannot be $\\equiv 1 \\pmod{p}$).\n\nThe counting function `countA` uses `Finset.filter`, and the density is formalized as a ratio. Erdős's bounds are stated as axioms, and the main conjecture is formalized as a disjunction: either $-\\log(\\text{density})/f(N) \\to c$ for some $c > 0$, or no such limit exists. The connection to simple groups is formalized using Mathlib's `IsSimpleGroup` and `IsCyclic`.",
+    "proofStrategy": "The formalization defines the witness divisor property `hasWitnessDivisor` and the set $A$ via `inSetA`. Basic membership results are proved: 1 ∈ A (vacuously, no prime divisors), 12 ∈ A and 56 ∈ A (with explicit witnesses chosen via `interval_cases`), 6 ∉ A (the only prime-3 candidate divisors fail the mod condition), and prime powers $p^k$ ($k ≥ 1$) are not in $A$ (proved via `Nat.exists_prime_and_dvd` plus `Nat.dvd_iff_mod_eq_zero`). A general lemma `product_special_primes_in_setA` shows that products of distinct primes with a witness chain in the list lie in $A$. `smallest_nontrivial_in_setA` proves 12 is the smallest element of $A$ greater than 1.\n\nThe counting function `countA` uses `Finset.filter`, and the density `densityA` is formalized as a ratio. The exponent function $\\sqrt{\\log N} \\cdot \\log \\log N$, the log-log density scale, and the connection to non-cyclic simple group orders are all formalized using Mathlib's `IsSimpleGroup` and `IsCyclic`. The main conjecture and Erdős's two-sided bounds are stated as docstrings only (no axioms or sorries in the file).",
     "keyInsights": [
       "**Prime powers are excluded**: If $n = p^k$, every divisor of $n$ is $p^j$ with $p^j \\equiv 0 \\pmod{p}$ for $j \\geq 1$, so no witness $d > 1$ with $d \\equiv 1 \\pmod{p}$ exists. This means $A$ contains no prime powers, immediately giving $A$ density $< 1$",
       "**Sylow theory creates witnesses**: For non-cyclic simple groups of order $n$, each prime $p \\mid n$ has $n_p > 1$ Sylow $p$-subgroups with $n_p \\equiv 1 \\pmod{p}$ and $n_p \\mid n$, so $n \\in A$. This elegant connection makes $|A \\cap [1,N]|$ an upper bound for simple group order counts",
@@ -101,8 +101,8 @@
       "title": "Basic Membership Properties",
       "startLine": 44,
       "endLine": 76,
-      "summary": "Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes.",
-      "mathContext": "Verified: Proves 1 ∈ A (vacuously), prime powers ∉ A (partial, with sorry), and states a criterion for products of special primes."
+      "summary": "Proves 1 ∈ A (vacuously) and prime powers ∉ A (fully proved via Nat.exists_prime_and_dvd), and proves a criterion for products of special primes (product_special_primes_in_setA).",
+      "mathContext": "Verified: Proves 1 ∈ A (vacuously) and prime powers ∉ A (fully proved via Nat.exists_prime_and_dvd), and proves a criterion for products of special primes (product_special_primes_in_setA)."
     },
     {
       "id": "counting-density",
@@ -133,8 +133,8 @@
       "title": "Structural Properties",
       "startLine": 149,
       "endLine": 166,
-      "summary": "Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A.",
-      "mathContext": "Formal definition: Squarefree part structure theorem (sorry) and existence of smallest non-trivial element of A."
+      "summary": "Documents a previously claimed squarefree-part structure theorem with an explicit counterexample (n = 12) showing it is FALSE; existence of the smallest non-trivial element of A is proved separately in smallest_nontrivial_in_setA.",
+      "mathContext": "Documents a previously claimed squarefree-part structure theorem with an explicit counterexample (n = 12) showing it is FALSE; existence of the smallest non-trivial element of A is proved separately in smallest_nontrivial_in_setA."
     },
     {
       "id": "asymptotic-analysis",
@@ -154,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 6 ∈ A, prime powers ∉ A), connects to simple group orders via Sylow theory, and states Erdős's two-sided density bounds. The 231-line file formalizes the main conjecture as whether the ratio -log(density)/f(N) converges, with 3 sorries remaining in structural proofs.",
+    "summary": "This formalization introduces the witness divisor set A, proves basic membership (1 ∈ A, 12 ∈ A, 56 ∈ A; 6 ∉ A; prime powers ∉ A), proves a product criterion for distinct primes with witness chains, identifies 12 as the smallest non-trivial element, and connects to simple group orders via Sylow theory. The 280-line file formalizes the main conjecture as whether the ratio -log(density)/f(N) converges; the file is fully verified with 0 sorries and 0 axioms.",
     "implications": "**Theoretical Significance**: Resolution would determine the exact density of integers with the witness divisor property, with implications for bounding the distribution of simple group orders.\n\nThe techniques would involve sieve methods, multiplicative number theory, and the distribution of smooth numbers. The constant c would quantify how 'rare' the balanced prime factorization condition is.",
     "openQuestions": [
       "Does the constant c exist, i.e., does -log(density)/√(log N)·log log N converge?",
