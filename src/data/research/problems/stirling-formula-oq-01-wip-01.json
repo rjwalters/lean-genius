@@ -17,45 +17,45 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-07T17:25:00.000Z",
-    "iteration": 2,
-    "focus": "Step bounds and step formula proved (PRs #16354, #16414 merged). Remaining: stirling_first_correction (1 sorry) — needs sum bound on Σ 1/k² and exp Taylor.",
+    "since": "2026-05-07T19:55:00.000Z",
+    "iteration": 3,
+    "focus": "Telescoping body of stirling_first_correction in place on PR #16442; only the upper-half exp-Taylor bound remains. Branch resync'd onto current main (post-#16354/#16414/#16614).",
     "blockers": [],
-    "nextAction": "Prove stirling_first_correction by combining stirling_step_upper/lower with an integral comparison on Σ_{k≥n} 1/k² and an exp Taylor bound.",
+    "nextAction": "Discharge the final sorry on stirling_first_correction (StirlingExpansion.lean:669): need |exp L − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n and exp L ≤ 2.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS (1 sorry on main:line 350 — stirling_first_correction). PRs #16354 and #16414 merged. Open PR #16442 expands stirling_first_correction with telescoping bounds (560 lines). On PR #16442 branch, htend_Gn discharged by researcher-9 (commit 68794a8e8fa, Docker-verified, build succeeded with 3083 jobs); only 1 sub-sorry remains (exp Taylor bound). Proved on main: log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower, stirling_two_term_expansion (assuming stirling_first_correction).",
+    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:669 — upper-half exp-Taylor bound inside stirling_first_correction). PRs #16354, #16414, #16614, #16677 merged on main; PR #16442 (this branch) carries the full telescoping proof of stirling_first_correction with the htend_Gn (G(n+M) → 0) sub-sorry already discharged. Branch resync'd onto current main 2026-05-07 (4 conflict files; Lean code byte-identical to the previously Docker-verified version, only docstring + JSON metadata updated).",
     "builtItems": [
       "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
       "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",
       "stirling_step_formula in StirlingExpansion.lean:233 (private) — log(stirlingSeq k) - log(stirlingSeq(k+1)) = (k+1/2)·log(1+1/k) - 1",
-      "stirling_step_upper in StirlingExpansion.lean:295 (private) — d_k ≤ 1/(12k²) + 1/(6k³)",
-      "stirling_step_lower in StirlingExpansion.lean:313 (private) — 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k",
-      "stirling_two_term_expansion in StirlingExpansion.lean:361 — proved assuming stirling_first_correction",
-      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula), #16614 (JSON sync)",
-      "On PR #16442 branch (researcher-9 commit 68794a8e8fa): htend_Gn — G(n+M) = 1/(12·(n+M)) − 1/(24·(n+M−1)²) − 1/(24·(n+M−1)³) → 0 as M → ∞ (Docker-verified)"
+      "stirling_step_upper in StirlingExpansion.lean:304 (private) — d_k ≤ 1/(12k²) + 1/(6k³)",
+      "stirling_step_lower in StirlingExpansion.lean:322 (private) — 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k",
+      "Telescoping helpers (PR #16442): inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope",
+      "log_stirlingSeq_partial_upper / log_stirlingSeq_partial_lower (PR #16442) — partial-sum bounds for log(stirlingSeq n) - log(stirlingSeq (n+L))",
+      "stirling_first_correction (PR #16442) — full telescoping body with htend_Gn discharged via Tendsto.div_atTop on each tail term; one remaining sorry on the exp Taylor remainder bound",
+      "stirling_two_term_expansion in StirlingExpansion.lean — proved assuming stirling_first_correction",
+      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula), #16614 (JSON sync)"
     ],
     "insights": [
-      "d_k = (k+1/2)·log(1+1/k) - 1 is the exact step formula (now proved via stirlingSeq definition + log_div/log_mul/log_sqrt rewrites + linear_combination)",
+      "d_k = (k+1/2)·log(1+1/k) - 1 is the exact step formula (proved via stirlingSeq definition + log_div/log_mul/log_sqrt rewrites + linear_combination)",
       "log bounds via derivative monotonicity: f(0)=0, f' = t^n/(1+t) ≥ 0 on [0,∞)",
-      "Correct lower bound for d_k: 1/(12k²) - 1/(12k³) - 1/(8k⁴)",
-      "Two-term expansion follows from: step_formula + log_bounds + integral_comparison(Σ 1/k²) + exp_approximation; the first two are now done",
-      "Filter.Tendsto.atTop_mul_atTop now requires IsOrderedMonoid synthesis which fails for ℝ; use atTop_mul_atTop₀ instead (the suffix-zero variant for groups with zero)",
-      "For 1/(c·f(M)) → 0 with f → ∞: prefer tendsto_const_nhds.div_atTop applied to (c·f(M)) → ∞ over multiplicative decomposition (1/c · 1/f) — avoids field-division ring identities that ring tactic cannot close"
+      "Telescoping turns Σ_{k≥n} 1/k² into a closed-form bound 1/(n-1), and Σ_{k≥n} 1/k³ into 1/(2(n-1)²)",
+      "For tendsto-to-zero of 1/(c·f(M)) when f → ∞, use tendsto_const_nhds.div_atTop on (c·f) → ∞; avoid the multiplicative decomposition (1/c)·(1/f) because ring fails on field-inversion identities like (c·x)⁻¹ = x⁻¹·(1/c)",
+      "Filter.Tendsto.atTop_mul_atTop now requires IsOrderedMonoid (fails for ℝ); use Filter.Tendsto.atTop_mul_atTop₀ for groups-with-zero",
+      "Resync onto main needed only conflict resolution in 4 files (StirlingExpansion.lean, knowledge.md, meta.json, this JSON); no new build errors introduced by main's drift"
     ],
     "mathlibGaps": [
-      "No Mathlib theorem for sum bound: |Σ_{k≥n} 1/k² - 1/n| ≤ C/n² (needs integral comparison or telescoping)",
       "No direct Mathlib theorem for: |exp(x) - (1+x)| ≤ C·x² for |x| ≤ 1 (Taylor remainder bound)"
     ],
     "nextSteps": [
-      "Prove |Σ_{k≥n} 1/k² - 1/n| ≤ C/n² via partial-fraction telescoping (1/k² ≤ 1/(k(k-1)) = 1/(k-1) - 1/k for k ≥ 2) or integral comparison",
-      "Prove exp Taylor bound |exp(x) - (1+x)| ≤ C·x² for |x| ≤ 1 (use Real.exp_bound or derive from Real.add_one_le_exp + a quadratic upper bound)",
-      "Combine to discharge the sorry in stirling_first_correction"
+      "Discharge the final sorry on stirling_first_correction (line 669): need |exp(L) − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n",
+      "Approaches to try: (a) Real.exp_bound with explicit n=2 instance; (b) Real.add_one_le_exp combined with a hand-rolled quadratic upper bound for x ∈ [0,1]; (c) lift |exp(x) − 1 − x − x²/2| bound from Real.exp.taylor_series"
     ]
   },
   "tags": [
@@ -74,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:18:33.488Z",
-  "lastUpdate": "2026-05-07T18:09:00.000Z",
+  "lastUpdate": "2026-05-07T17:25:00.000Z",
   "significance": 6,
   "tractability": 6
 }

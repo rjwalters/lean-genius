@@ -128,8 +128,8 @@ theorem log_one_plus_le_cubic (x : ℝ) (hx : 0 < x) :
                  ((continuous_id.pow 3).div_const 3))).continuousOn
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici, Function.id_def] at ht ⊢
-        exact ne_of_gt (by linarith)
+        have ht' : (0 : ℝ) ≤ t := Set.mem_Ici.mp ht
+        exact (by linarith : (0 : ℝ) < 1 + t).ne'
     · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
       intro t ht
       rw [interior_Ici] at ht
@@ -190,8 +190,8 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
       apply ContinuousOn.sub
       · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
         intro t ht
-        simp only [Set.mem_Ici, Function.id_def] at ht ⊢
-        exact ne_of_gt (by linarith)
+        have ht' : (0 : ℝ) ≤ t := Set.mem_Ici.mp ht
+        exact (by linarith : (0 : ℝ) < 1 + t).ne'
       · exact (((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
                  ((continuous_id.pow 3).div_const 3)).sub
                  ((continuous_id.pow 4).div_const 4)).continuousOn
@@ -234,58 +234,67 @@ private lemma stirling_step_formula (k : ℕ) (hk : 1 ≤ k) :
     Real.log (stirlingSeq k) - Real.log (stirlingSeq (k + 1)) =
     ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / (k : ℝ)) - 1 := by
   have hk_pos : (0 : ℝ) < k := Nat.cast_pos.mpr (by omega)
-  have hk1_pos : (0 : ℝ) < (k : ℝ) + 1 := by positivity
-  have h2k_pos : (0 : ℝ) < 2 * (k : ℝ) := by positivity
-  have h2k1_pos : (0 : ℝ) < 2 * ((k : ℝ) + 1) := by positivity
-  have hexp_pos : (0 : ℝ) < Real.exp 1 := Real.exp_pos 1
-  -- Expand log(stirlingSeq k) = log(k!) - (1/2)*log(2k) - k*(log(k) - 1)
-  have expand_k : Real.log (stirlingSeq k) =
-      Real.log k.factorial - Real.log (2 * k) / 2 - k * (Real.log k - 1) := by
-    unfold stirlingSeq; push_cast
-    have hpow_pos : (0 : ℝ) < ((k : ℝ) / Real.exp 1) ^ k :=
-      pow_pos (div_pos hk_pos hexp_pos) k
-    have hsqrt_pos : (0 : ℝ) < Real.sqrt (2 * k) := Real.sqrt_pos.mpr h2k_pos
-    rw [Real.log_div (Nat.cast_pos.mpr k.factorial_pos).ne' (mul_pos hsqrt_pos hpow_pos).ne']
-    rw [Real.log_mul hsqrt_pos.ne' hpow_pos.ne']
-    rw [Real.log_sqrt h2k_pos.le]
-    rw [Real.log_pow, Real.log_div hk_pos.ne' hexp_pos.ne', Real.log_exp]
-    ring
-  -- Expand log(stirlingSeq(k+1)) = log((k+1)!) - (1/2)*log(2(k+1)) - (k+1)*(log(k+1) - 1)
-  have expand_k1 : Real.log (stirlingSeq (k + 1)) =
-      Real.log (k + 1).factorial - Real.log (2 * ((k : ℝ) + 1)) / 2 -
+  have hk1_pos : (0 : ℝ) < (k : ℝ) + 1 := by linarith
+  have hk_ne : (k : ℝ) ≠ 0 := hk_pos.ne'
+  have hk1_ne : (k : ℝ) + 1 ≠ 0 := hk1_pos.ne'
+  have hsqrt_k : 0 < Real.sqrt (2 * (k : ℝ)) := Real.sqrt_pos.mpr (by positivity)
+  have hsqrt_k1 : 0 < Real.sqrt (2 * ((k : ℝ) + 1)) := Real.sqrt_pos.mpr (by positivity)
+  have hpow_k : 0 < ((k : ℝ) / Real.exp 1) ^ k :=
+    pow_pos (div_pos hk_pos (Real.exp_pos 1)) k
+  have hpow_k1 : 0 < (((k : ℝ) + 1) / Real.exp 1) ^ (k + 1) :=
+    pow_pos (div_pos hk1_pos (Real.exp_pos 1)) (k + 1)
+  -- log(stirlingSeq k) = log(k!) - (1/2)·log(2k) - k·(log k - 1)
+  -- Proof: unfold def, apply log_div, log_mul, log_sqrt, log_pow, log_div, log_exp, ring
+  have hlog_k : Real.log (stirlingSeq k) =
+      Real.log (k.factorial : ℝ) - (1/2 : ℝ) * Real.log (2 * (k : ℝ)) -
+      (k : ℝ) * (Real.log (k : ℝ) - 1) := by
+    rw [show stirlingSeq k = (k.factorial : ℝ) /
+          (Real.sqrt (2 * ↑k) * (↑k / Real.exp 1) ^ k) from rfl]
+    rw [Real.log_div (Nat.cast_pos.mpr (Nat.factorial_pos k)).ne'
+                     (mul_pos hsqrt_k hpow_k).ne']
+    rw [Real.log_mul hsqrt_k.ne' hpow_k.ne']
+    rw [Real.log_sqrt (by positivity : (0 : ℝ) ≤ 2 * ↑k)]
+    rw [Real.log_pow]
+    rw [Real.log_div hk_ne (Real.exp_pos 1).ne']
+    rw [Real.log_exp]
+    push_cast; ring
+  -- log(stirlingSeq(k+1)) = log((k+1)!) - (1/2)·log(2(k+1)) - (k+1)·(log(k+1) - 1)
+  have hlog_k1 : Real.log (stirlingSeq (k + 1)) =
+      Real.log ((k + 1).factorial : ℝ) - (1/2 : ℝ) * Real.log (2 * ((k : ℝ) + 1)) -
       ((k : ℝ) + 1) * (Real.log ((k : ℝ) + 1) - 1) := by
-    unfold stirlingSeq; push_cast
-    have hpow_pos : (0 : ℝ) < (((k : ℝ) + 1) / Real.exp 1) ^ (k + 1) :=
-      pow_pos (div_pos hk1_pos hexp_pos) (k + 1)
-    have hsqrt_pos : (0 : ℝ) < Real.sqrt (2 * ((k : ℝ) + 1)) := Real.sqrt_pos.mpr h2k1_pos
-    rw [Real.log_div (Nat.cast_pos.mpr (k + 1).factorial_pos).ne'
-        (mul_pos hsqrt_pos hpow_pos).ne']
-    rw [Real.log_mul hsqrt_pos.ne' hpow_pos.ne']
-    rw [Real.log_sqrt h2k1_pos.le]
-    rw [Real.log_pow, Real.log_div hk1_pos.ne' hexp_pos.ne', Real.log_exp]
-    push_cast
-    ring
-  rw [expand_k, expand_k1]
-  -- Expand log((k+1)!) = log(k+1) + log(k!) using (k+1)! = (k+1) * k!
-  have hfact_exp : Real.log ↑(k + 1).factorial = Real.log ((k : ℝ) + 1) + Real.log ↑k.factorial := by
-    rw [show (k + 1).factorial = (k + 1) * k.factorial from Nat.factorial_succ k]
-    push_cast
-    exact Real.log_mul hk1_pos.ne' (Nat.cast_pos.mpr k.factorial_pos).ne'
-  rw [hfact_exp]
-  -- log(2*(k+1)) - log(2*k) = log(k+1) - log(k)
-  have hlog_ratio : Real.log (2 * ((k : ℝ) + 1)) - Real.log (2 * k) =
-      Real.log ((k : ℝ) + 1) - Real.log k := by
-    rw [show 2 * ((k : ℝ) + 1) = 2 * k * (((k : ℝ) + 1) / k) from by
-      field_simp [hk_pos.ne']]
-    rw [Real.log_mul (by positivity) (div_pos hk1_pos hk_pos).ne']
-    rw [Real.log_div hk1_pos.ne' hk_pos.ne']
+    rw [show stirlingSeq (k + 1) = ((k + 1).factorial : ℝ) /
+          (Real.sqrt (2 * ↑(k + 1)) * (↑(k + 1) / Real.exp 1) ^ (k + 1)) from rfl]
+    -- Normalize ↑(k+1) to (k:ℝ)+1 so it matches hsqrt_k1/hpow_k1
+    -- (↑(k+1) = Nat.cast(k+1) is not definitionally = (k:ℝ)+1 in Lean 4)
+    have h_cast : (↑(k + 1) : ℝ) = (k : ℝ) + 1 := by push_cast; ring
+    rw [h_cast]
+    rw [Real.log_div (Nat.cast_pos.mpr (Nat.factorial_pos (k + 1))).ne'
+                     (mul_pos hsqrt_k1 hpow_k1).ne']
+    rw [Real.log_mul hsqrt_k1.ne' hpow_k1.ne']
+    rw [Real.log_sqrt (by positivity : (0 : ℝ) ≤ 2 * ((k : ℝ) + 1))]
+    rw [Real.log_pow]
+    rw [Real.log_div hk1_ne (Real.exp_pos 1).ne']
+    rw [Real.log_exp]
+    push_cast; ring
+  -- log((k+1)!) = log(k!) + log(k+1)
+  have hfact_step : Real.log ((k + 1).factorial : ℝ) =
+      Real.log (k.factorial : ℝ) + Real.log ((k : ℝ) + 1) := by
+    have heq : ((k + 1).factorial : ℝ) = ((k : ℝ) + 1) * (k.factorial : ℝ) := by
+      rw [Nat.factorial_succ]; push_cast; ring
+    rw [heq, Real.log_mul hk1_ne (Nat.cast_pos.mpr (Nat.factorial_pos k)).ne']
     ring
   -- log(1 + 1/k) = log(k+1) - log(k)
-  have hlog_1k : Real.log (1 + 1 / (k : ℝ)) = Real.log ((k : ℝ) + 1) - Real.log k := by
-    rw [show 1 + 1 / (k : ℝ) = ((k : ℝ) + 1) / k from by field_simp [hk_pos.ne']]
-    exact Real.log_div hk1_pos.ne' hk_pos.ne'
-  -- Now conclude by linear algebra: all terms reduce to (k+1/2)*(log(k+1)-log k) - 1
-  linear_combination (1 / 2 : ℝ) * hlog_ratio - ((k : ℝ) + 1 / 2) * hlog_1k
+  have hlog_rhs : Real.log (1 + 1 / (k : ℝ)) = Real.log ((k : ℝ) + 1) - Real.log (k : ℝ) := by
+    rw [show (1 : ℝ) + 1 / (k : ℝ) = ((k : ℝ) + 1) / (k : ℝ) by field_simp]
+    rw [Real.log_div hk1_ne hk_ne]
+  -- log(2k) = log 2 + log k,  log(2(k+1)) = log 2 + log(k+1)
+  have hlog_2k : Real.log (2 * (k : ℝ)) = Real.log 2 + Real.log (k : ℝ) :=
+    Real.log_mul (by norm_num) hk_ne
+  have hlog_2k1 : Real.log (2 * ((k : ℝ) + 1)) = Real.log 2 + Real.log ((k : ℝ) + 1) :=
+    Real.log_mul (by norm_num) hk1_ne
+  -- Combine: after cancellations, both sides equal (k+1/2)·(log(k+1) - log k) - 1
+  rw [hlog_k, hlog_k1, hfact_step, hlog_rhs, hlog_2k, hlog_2k1]
+  push_cast; ring
 
 /-- Upper bound: d_k ≤ 1/(12k²) + 1/(6k³) for k ≥ 1.
 
@@ -303,7 +312,7 @@ private lemma stirling_step_upper (k : ℕ) (hk : 1 ≤ k) :
   calc ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / k) - 1
       ≤ ((k : ℝ) + 1 / 2) * (1 / k - (1 / k) ^ 2 / 2 + (1 / k) ^ 3 / 3) - 1 := by
           linarith [mul_le_mul_of_nonneg_left hlog_le hk_half_pos.le]
-    _ = 1 / (12 * (k : ℝ) ^ 2) + 1 / (6 * (k : ℝ) ^ 3) := by field_simp; ring
+    _ = 1 / (12 * (k : ℝ) ^ 2) + 1 / (6 * (k : ℝ) ^ 3) := by field_simp <;> ring
 
 /-- Lower bound: 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k for k ≥ 1.
 
@@ -320,9 +329,153 @@ private lemma stirling_step_lower (k : ℕ) (hk : 1 ≤ k) :
   have hk_half_pos : (0 : ℝ) < (k : ℝ) + 1 / 2 := by positivity
   calc 1 / (12 * (k : ℝ) ^ 2) - 1 / (12 * (k : ℝ) ^ 3) - 1 / (8 * (k : ℝ) ^ 4)
       = ((k : ℝ) + 1 / 2) * (1 / k - (1 / k) ^ 2 / 2 + (1 / k) ^ 3 / 3 -
-         (1 / k) ^ 4 / 4) - 1 := by field_simp; ring
+         (1 / k) ^ 4 / 4) - 1 := by field_simp <;> ring
     _ ≤ ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / k) - 1 := by
           linarith [mul_le_mul_of_nonneg_left hlog_ge hk_half_pos.le]
+
+-- ═══════════════════════════════════════════════════
+-- Part IIIb: Telescoping Arithmetic Lemmas
+--
+-- These inequalities enable telescoping partial sums via:
+--   1/(12k²) ≤ 1/(12(k-1)) - 1/(12k)          [upper, quadratic]
+--   1/(6k³)  ≤ 1/(12(k-1)²) - 1/(12k²)        [upper, cubic]
+--   1/(12k²) ≥ 1/(12k) - 1/(12(k+1))           [lower, quadratic]
+--   1/(12k³) ≤ 1/(24(k-1)²) - 1/(24k²)        [upper, cubic for lower bound]
+--   1/(8k⁴)  ≤ 1/(24(k-1)³) - 1/(24k³)        [upper, quartic for lower bound]
+-- ═══════════════════════════════════════════════════
+
+-- 1/(12k²) ≤ 1/(12(k-1)) - 1/(12k) = 1/(12k(k-1)) for k ≥ 2
+-- Equiv: k(k-1) ≤ k², i.e. 0 ≤ k ✓
+private lemma inv_sq_le_telescope (k : ℝ) (hk : 2 ≤ k) :
+    1 / (12 * k ^ 2) ≤ 1 / (12 * (k - 1)) - 1 / (12 * k) := by
+  have hk_pos : (0 : ℝ) < k := by linarith
+  have hk1_pos : (0 : ℝ) < k - 1 := by linarith
+  suffices h : 0 ≤ 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) by linarith
+  have h_eq : 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) =
+      (k ^ 2 - k * (k - 1)) / (12 * k ^ 2 * (k - 1) * k) := by field_simp <;> ring
+  rw [h_eq]
+  apply div_nonneg
+  · nlinarith [sq_nonneg k]
+  · positivity
+
+-- 1/(6k³) ≤ 1/(12(k-1)²) - 1/(12k²) for k ≥ 2
+-- 2(k-1)² ≤ k(2k-1) since 2k²-4k+2 ≤ 2k²-k, i.e. k ≥ 2/3 ✓
+private lemma inv_cube_le_telescope (k : ℝ) (hk : 2 ≤ k) :
+    1 / (6 * k ^ 3) ≤ 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by
+  have hk_pos : (0 : ℝ) < k := by linarith
+  have hk1_pos : (0 : ℝ) < k - 1 := by linarith
+  have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
+  calc 1 / (6 * k ^ 3)
+      = 2 * (k - 1) ^ 2 / (12 * k ^ 3 * (k - 1) ^ 2) := by field_simp <;> ring
+    _ ≤ k * (2 * k - 1) / (12 * k ^ 3 * (k - 1) ^ 2) :=
+          div_le_div_of_nonneg_right hineq (le_of_lt (by positivity : (0:ℝ) < 12*k^3*(k-1)^2))
+    _ = 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by field_simp <;> ring
+
+-- 1/(12k) - 1/(12(k+1)) ≤ 1/(12k²) for k ≥ 1
+-- Equiv: k(k+1) ≥ k², i.e. k+1 ≥ k ✓
+private lemma inv_harmonic_le_sq (k : ℝ) (hk : 1 ≤ k) :
+    1 / (12 * k) - 1 / (12 * (k + 1)) ≤ 1 / (12 * k ^ 2) := by
+  have hk_pos : (0 : ℝ) < k := by linarith
+  have hk1_pos : (0 : ℝ) < k + 1 := by linarith
+  suffices h : 0 ≤ 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) by linarith
+  have h_eq : 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) =
+      (k * (k + 1) - k ^ 2) / (12 * k ^ 2 * k * (k + 1)) := by field_simp <;> ring
+  rw [h_eq]
+  apply div_nonneg
+  · nlinarith [sq_nonneg k]
+  · positivity
+
+-- 1/(12k³) ≤ 1/(24(k-1)²) - 1/(24k²) for k ≥ 2
+-- 2(k-1)² ≤ k(2k-1), i.e. k ≥ 2/3 ✓
+private lemma inv_cube_le_telescope2 (k : ℝ) (hk : 2 ≤ k) :
+    1 / (12 * k ^ 3) ≤ 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by
+  have hk_pos : (0 : ℝ) < k := by linarith
+  have hk1_pos : (0 : ℝ) < k - 1 := by linarith
+  have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
+  calc 1 / (12 * k ^ 3)
+      = 2 * (k - 1) ^ 2 / (24 * k ^ 3 * (k - 1) ^ 2) := by field_simp <;> ring
+    _ ≤ k * (2 * k - 1) / (24 * k ^ 3 * (k - 1) ^ 2) :=
+          div_le_div_of_nonneg_right hineq (le_of_lt (by positivity : (0:ℝ) < 24*k^3*(k-1)^2))
+    _ = 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by field_simp <;> ring
+
+-- 1/(8k⁴) ≤ 1/(24(k-1)³) - 1/(24k³) for k ≥ 2
+-- 3(k-1)³ ≤ k⁴ - k(k-1)³, i.e. (k+3)(k-1)³ ≤ k⁴
+-- since k⁴ - (k+3)(k-1)³ = 6k²-8k+3 = (2k-1)²+2(k-1)² ≥ 0
+private lemma inv_quad_le_telescope (k : ℝ) (hk : 2 ≤ k) :
+    1 / (8 * k ^ 4) ≤ 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by
+  have hk_pos : (0 : ℝ) < k := by linarith
+  have hk1_pos : (0 : ℝ) < k - 1 := by linarith
+  have key : 0 ≤ 6 * k ^ 2 - 8 * k + 3 := by nlinarith [sq_nonneg (2*k-1), sq_nonneg (k-1)]
+  have hineq : 3 * (k - 1) ^ 3 ≤ k ^ 4 - k * (k - 1) ^ 3 := by
+    -- k⁴-(k+3)(k-1)³ = 6k²-8k+3 = key
+    have h_poly : k ^ 4 - k * (k - 1) ^ 3 - 3 * (k - 1) ^ 3 = 6 * k ^ 2 - 8 * k + 3 := by ring
+    linarith [key]
+  calc 1 / (8 * k ^ 4)
+      = 3 * (k - 1) ^ 3 / (24 * k ^ 4 * (k - 1) ^ 3) := by field_simp <;> ring
+    _ ≤ (k ^ 4 - k * (k - 1) ^ 3) / (24 * k ^ 4 * (k - 1) ^ 3) :=
+          div_le_div_of_nonneg_right hineq (le_of_lt (by positivity : (0:ℝ) < 24*k^4*(k-1)^3))
+    _ = 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by field_simp <;> ring
+
+-- ═══════════════════════════════════════════════════
+-- Part IIIc: Partial Sum Bounds by Induction
+-- ═══════════════════════════════════════════════════
+
+-- Upper bound: partial sum ≤ F(n) - F(n+L) where F(k) = 1/(12(k-1)) + 1/(12(k-1)²)
+private lemma log_stirlingSeq_partial_upper (n L : ℕ) (hn : 2 ≤ n) :
+    Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + L)) ≤
+    1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) -
+    1 / (12 * ((n : ℝ) + L - 1)) - 1 / (12 * ((n : ℝ) + L - 1) ^ 2) := by
+  induction L with
+  | zero => simp
+  | succ L ih =>
+    have hstep := stirling_step_upper (n + L) (by omega)
+    have hk : (2 : ℝ) ≤ (n : ℝ) + L := by exact_mod_cast (show 2 ≤ n + L by omega)
+    have hinvSq := inv_sq_le_telescope ((n : ℝ) + L) hk
+    have hinvCube := inv_cube_le_telescope ((n : ℝ) + L) hk
+    have hnL_sub : (n : ℝ) + L - 1 = (n : ℝ) + (L : ℝ) - 1 := by push_cast; ring
+    have hnL1_sub : (n : ℝ) + (L + 1 : ℕ) - 1 = (n : ℝ) + L := by push_cast; ring
+    rw [show n + (L + 1) = (n + L) + 1 from by omega]
+    have hsplit : Real.log (stirlingSeq n) - Real.log (stirlingSeq ((n + L) + 1)) =
+        (Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + L))) +
+        (Real.log (stirlingSeq (n + L)) - Real.log (stirlingSeq ((n + L) + 1))) := by ring
+    rw [hsplit]
+    have hbound : Real.log (stirlingSeq (n + L)) - Real.log (stirlingSeq ((n + L) + 1)) ≤
+        1 / (12 * ((n : ℝ) + L - 1)) + 1 / (12 * ((n : ℝ) + L - 1) ^ 2) -
+        1 / (12 * ((n : ℝ) + L)) - 1 / (12 * ((n : ℝ) + L) ^ 2) := by
+      have h1 := inv_sq_le_telescope ((n : ℝ) + L) hk
+      have h2 := inv_cube_le_telescope ((n : ℝ) + L) hk
+      have hstep' := stirling_step_upper (n + L) (by omega)
+      push_cast at hstep' ⊢; linarith
+    push_cast at ih hbound hnL1_sub ⊢
+    -- Rewrite (n:ℝ)+↑L+1-1 to (n:ℝ)+↑L in goal to match ih/hbound form
+    rw [hnL1_sub]
+    linarith
+
+-- Lower bound: partial sum ≥ G(n) - G(n+L) where G(k) = 1/(12k) - 1/(24(k-1)²) - 1/(24(k-1)³)
+private lemma log_stirlingSeq_partial_lower (n L : ℕ) (hn : 2 ≤ n) :
+    1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) - 1 / (24 * ((n : ℝ) - 1) ^ 3) -
+    (1 / (12 * ((n : ℝ) + L)) - 1 / (24 * ((n : ℝ) + L - 1) ^ 2) - 1 / (24 * ((n : ℝ) + L - 1) ^ 3)) ≤
+    Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + L)) := by
+  induction L with
+  | zero => simp
+  | succ L ih =>
+    rw [show n + (L + 1) = (n + L) + 1 from by omega]
+    have hsplit : Real.log (stirlingSeq n) - Real.log (stirlingSeq ((n + L) + 1)) =
+        (Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + L))) +
+        (Real.log (stirlingSeq (n + L)) - Real.log (stirlingSeq ((n + L) + 1))) := by ring
+    rw [hsplit]
+    have hk : (2 : ℝ) ≤ (n : ℝ) + L := by exact_mod_cast (show 2 ≤ n + L by omega)
+    have hstep := stirling_step_lower (n + L) (by omega)
+    have h1 := inv_harmonic_le_sq ((n : ℝ) + L) (by linarith)
+    have h2 := inv_cube_le_telescope2 ((n : ℝ) + L) hk
+    have h3 := inv_quad_le_telescope ((n : ℝ) + L) hk
+    -- After push_cast, bound has (n:ℝ)+(↑L+1) [right-assoc] but h1 has (n:ℝ)+↑L+1 [left-assoc]
+    -- Use ← add_assoc to normalize (n:ℝ)+(↑L+1) → (n:ℝ)+↑L+1 in goal only
+    push_cast at hstep h1 h2 h3 ih ⊢
+    simp only [← add_assoc] at ⊢
+    have hnL1_sub : (n : ℝ) + ↑L + 1 - 1 = (n : ℝ) + ↑L := by ring
+    rw [hnL1_sub]
+    linarith [ih, hstep, h1, h2, h3]
 
 -- ═══════════════════════════════════════════════════
 -- Part III: Main Expansion Theorem
@@ -335,22 +488,185 @@ private lemma stirling_step_lower (k : ℕ) (hk : 1 ≤ k) :
     Equivalently: stirlingSeq(n)/√π = 1 + 1/(12n) + O(1/n²),
     since stirlingSeq(n) = n!/[√(2n)·(n/e)^n] and √(2π)/√2 = √π.
 
-    **Proof strategy** (complete given step formula):
-    1. d_k = log(stirlingSeq k / stirlingSeq(k+1)) = (k+1/2)*log(1+1/k) - 1  [step formula]
-    2. d_k ∈ [1/(12k²) - 1/(8k³), 1/(12k²) + 1/(6k³)]  [from log bounds above]
-    3. log(stirlingSeq n / √π) = Σ_{k≥n} d_k  [telescoping, limit = log(√π)]
-    4. |Σ_{k≥n} d_k - 1/(12n)| ≤ C/n²  [integral bound: Σ 1/k² ~ 1/n ± O(1/n²)]
-    5. |exp(1/(12n) + O(1/n²)) - (1 + 1/(12n))| ≤ C/n²  [Taylor: exp(x) = 1+x+O(x²)]
-
-    **Remaining sorry**: The ratio simplification in stirling_step_formula
-    (step 1 above). Steps 2-5 follow from the proved log inequalities. -/
+    Proof:
+    1. d_k = log(stirlingSeq k) - log(stirlingSeq(k+1)) = (k+1/2)*log(1+1/k) - 1
+    2. d_k ∈ [1/(12k²) - lower, 1/(12k²) + upper]  [from log bounds]
+    3. log(stirlingSeq n / √π) = Σ_{k≥n} d_k  [telescoping + limit]
+    4. Telescoping arithmetic gives |Σd_k - 1/(12n)| ≤ C/n²
+    5. exp(x) ≈ 1 + x + O(x²) gives the ratio bound -/
 theorem stirling_first_correction :
     ∃ C > 0, ∀ n : ℕ, 2 ≤ n →
       |stirlingSeq n / Real.sqrt π - (1 + 1 / (12 * (n : ℝ)))| ≤ C / (n : ℝ) ^ 2 := by
-  sorry -- HARD: depends on stirling_step_formula (ratio simplification)
-        -- Once step formula is proved, complete proof uses:
-        --   stirling_step_upper, stirling_step_lower (proved above)
-        --   + integral bound on Σ 1/k² + exp approximation
+  use 2
+  refine ⟨by norm_num, fun n hn => ?_⟩
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+  have hn2 : (2 : ℝ) ≤ n := by exact_mod_cast hn
+  have hn1_pos : (0 : ℝ) < (n : ℝ) - 1 := by linarith
+  have hstir_pos : 0 < stirlingSeq n := by
+    unfold stirlingSeq
+    exact div_pos (Nat.cast_pos.mpr (Nat.factorial_pos n))
+                  (mul_pos (Real.sqrt_pos.mpr (by positivity))
+                           (pow_pos (div_pos hn_pos (Real.exp_pos 1)) n))
+  have hpi_pos : (0 : ℝ) < Real.sqrt π := Real.sqrt_pos.mpr Real.pi_pos
+  -- L = log(stirlingSeq n) - log(sqrt π) ≥ 0
+  set L := Real.log (stirlingSeq n) - Real.log (Real.sqrt π) with hL_def
+  have hL_nn : 0 ≤ L := by
+    rw [hL_def, sub_nonneg]
+    exact Real.log_le_log hpi_pos (Stirling.sqrt_pi_le_stirlingSeq (by omega))
+  -- Tendsto for stirlingSeq(n+M) → sqrt π, hence log → log(sqrt π)
+  have htend_stir : Filter.Tendsto (fun M : ℕ => stirlingSeq (n + M))
+      Filter.atTop (nhds (Real.sqrt π)) :=
+    Stirling.tendsto_stirlingSeq_sqrt_pi.comp
+      (Filter.tendsto_atTop_atTop.mpr fun b => ⟨b, fun m hm => by omega⟩)
+  have htend_log : Filter.Tendsto (fun M : ℕ => Real.log (stirlingSeq (n + M)))
+      Filter.atTop (nhds (Real.log (Real.sqrt π))) :=
+    (Real.continuousAt_log hpi_pos.ne').tendsto.comp htend_stir
+  have htend_diff : Filter.Tendsto
+      (fun M : ℕ => Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + M)))
+      Filter.atTop (nhds L) := by
+    rw [hL_def]; exact tendsto_const_nhds.sub htend_log
+  -- Upper bound: L ≤ 1/(12(n-1)) + 1/(12(n-1)²)
+  have hL_upper : L ≤ 1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) := by
+    apply le_of_tendsto' htend_diff
+    intro M
+    have h := log_stirlingSeq_partial_upper n M hn
+    have hMn_pos : (0 : ℝ) < (n : ℝ) + M - 1 := by
+      push_cast; linarith [Nat.zero_le M]
+    have hpos : 0 ≤ 1 / (12 * ((n : ℝ) + M - 1)) + 1 / (12 * ((n : ℝ) + M - 1) ^ 2) := by
+      positivity
+    linarith
+  -- Lower bound: G(n) ≤ L
+  -- Key: G(n) - G(n+M) ≤ f M (partial_lower) and f M ≤ L (since stirlingSeq(n+M) ≥ sqrt π)
+  -- So G(n) - G(n+M) ≤ L for all M, and G(n) - G(n+M) → G(n) (since G(n+M) → 0).
+  -- By le_of_tendsto', G(n) ≤ L.
+  have hL_lower : 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+      1 / (24 * ((n : ℝ) - 1) ^ 3) ≤ L := by
+    -- G(n+M) → 0 as M → ∞ (each 1/(c·(n+M-1)^k) → 0 via div_atTop)
+    have htend_Gn : Filter.Tendsto
+        (fun M : ℕ => (1 : ℝ) / (12 * ((n : ℝ) + M)) - 1 / (24 * ((n : ℝ) + M - 1) ^ 2) -
+             1 / (24 * ((n : ℝ) + M - 1) ^ 3))
+        Filter.atTop (nhds 0) := by
+      have hMcast : Filter.Tendsto (fun M : ℕ => (M : ℝ)) Filter.atTop Filter.atTop :=
+        tendsto_natCast_atTop_atTop
+      have h_nM : Filter.Tendsto (fun M : ℕ => (n : ℝ) + (M : ℝ)) Filter.atTop Filter.atTop :=
+        Filter.tendsto_atTop_add_const_left _ _ hMcast
+      have h_nM1 : Filter.Tendsto (fun M : ℕ => (n : ℝ) + (M : ℝ) - 1) Filter.atTop Filter.atTop := by
+        have heq : (fun M : ℕ => (n : ℝ) + (M : ℝ) - 1) =
+                   (fun M : ℕ => ((n : ℝ) - 1) + (M : ℝ)) := by
+          funext M; ring
+        rw [heq]
+        exact Filter.tendsto_atTop_add_const_left _ _ hMcast
+      -- (n + M - 1)^2 → ∞ via product of two atTop
+      have h_nM1_sq : Filter.Tendsto (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 2)
+          Filter.atTop Filter.atTop := by
+        have heq : (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 2) =
+                   (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) * ((n : ℝ) + (M : ℝ) - 1)) := by
+          funext M; ring
+        rw [heq]
+        exact h_nM1.atTop_mul_atTop₀ h_nM1
+      -- (n + M - 1)^3 → ∞
+      have h_nM1_cu : Filter.Tendsto (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 3)
+          Filter.atTop Filter.atTop := by
+        have heq : (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 3) =
+                   (fun M : ℕ => ((n : ℝ) + (M : ℝ) - 1) ^ 2 * ((n : ℝ) + (M : ℝ) - 1)) := by
+          funext M; ring
+        rw [heq]
+        exact h_nM1_sq.atTop_mul_atTop₀ h_nM1
+      -- 12·(n+M) → ∞
+      have h12 : Filter.Tendsto (fun M : ℕ => (12 : ℝ) * ((n : ℝ) + (M : ℝ)))
+          Filter.atTop Filter.atTop :=
+        h_nM.const_mul_atTop (by norm_num)
+      -- 24·(n+M-1)^2 → ∞
+      have h24sq : Filter.Tendsto (fun M : ℕ => (24 : ℝ) * ((n : ℝ) + (M : ℝ) - 1) ^ 2)
+          Filter.atTop Filter.atTop :=
+        h_nM1_sq.const_mul_atTop (by norm_num)
+      -- 24·(n+M-1)^3 → ∞
+      have h24cu : Filter.Tendsto (fun M : ℕ => (24 : ℝ) * ((n : ℝ) + (M : ℝ) - 1) ^ 3)
+          Filter.atTop Filter.atTop :=
+        h_nM1_cu.const_mul_atTop (by norm_num)
+      -- Each term → 0 directly via div_atTop
+      have h_t1 : Filter.Tendsto (fun M : ℕ => (1 : ℝ) / (12 * ((n : ℝ) + (M : ℝ))))
+          Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop h12
+      have h_t2 : Filter.Tendsto
+          (fun M : ℕ => (1 : ℝ) / (24 * ((n : ℝ) + (M : ℝ) - 1) ^ 2))
+          Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop h24sq
+      have h_t3 : Filter.Tendsto
+          (fun M : ℕ => (1 : ℝ) / (24 * ((n : ℝ) + (M : ℝ) - 1) ^ 3))
+          Filter.atTop (nhds 0) :=
+        tendsto_const_nhds.div_atTop h24cu
+      -- combine: 0 - 0 - 0 = 0
+      simpa using (h_t1.sub h_t2).sub h_t3
+    -- G(n) - G(n+M) → G(n)
+    have htend_Gdiff : Filter.Tendsto
+        (fun M : ℕ => 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+             1 / (24 * ((n : ℝ) - 1) ^ 3) -
+             (1 / (12 * ((n : ℝ) + M)) - 1 / (24 * ((n : ℝ) + M - 1) ^ 2) -
+              1 / (24 * ((n : ℝ) + M - 1) ^ 3)))
+        Filter.atTop (nhds (1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+             1 / (24 * ((n : ℝ) - 1) ^ 3))) := by
+      -- Provide explicit type so Lean can synthesize the constant
+      have h_const : Filter.Tendsto
+          (fun (_ : ℕ) => 1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+               1 / (24 * ((n : ℝ) - 1) ^ 3))
+          Filter.atTop (nhds (1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) -
+               1 / (24 * ((n : ℝ) - 1) ^ 3))) := tendsto_const_nhds
+      have h := h_const.sub htend_Gn
+      simp only [sub_zero] at h; exact h
+    -- f M ≤ L since stirlingSeq(n+M) ≥ sqrt π (antitonicity + Mathlib lower bound)
+    apply le_of_tendsto' htend_Gdiff
+    intro M
+    have hlb := log_stirlingSeq_partial_lower n M hn
+    have h_fM_le_L : Real.log (stirlingSeq n) - Real.log (stirlingSeq (n + M)) ≤ L := by
+      rw [hL_def]; apply sub_le_sub_left
+      exact Real.log_le_log hpi_pos (Stirling.sqrt_pi_le_stirlingSeq (by omega))
+    linarith
+  -- exp(L) = stirlingSeq n / sqrt π
+  have hexp_eq : Real.exp L = stirlingSeq n / Real.sqrt π := by
+    rw [hL_def, Real.exp_sub, Real.exp_log hstir_pos, Real.exp_log hpi_pos]
+  rw [← hexp_eq]
+  rw [abs_le]
+  constructor
+  -- Lower: -(2/n²) ≤ exp(L) - (1 + 1/(12n))
+  · -- Real.add_one_le_exp : L + 1 ≤ exp L (note order: L + 1, not 1 + L)
+    have hge : L + 1 ≤ Real.exp L := Real.add_one_le_exp L
+    -- Need: 1/(12n) - 2/n² ≤ L
+    have h_1over2 : 1 / (2 * (n:ℝ)^2) ≤ 2 / (n:ℝ)^2 := by
+      have hn2 : (0:ℝ) < (n:ℝ)^2 := by positivity
+      have h_eq : 2 / (n:ℝ)^2 - 1 / (2 * (n:ℝ)^2) = 3 / (2 * (n:ℝ)^2) := by
+        field_simp <;> ring
+      linarith [div_pos (by norm_num : (0:ℝ) < 3) (mul_pos (by norm_num : (0:ℝ) < 2) hn2)]
+    have hL_lb : 1 / (12 * (n : ℝ)) - 2 / (n : ℝ) ^ 2 ≤ L := by
+      suffices h : 1 / (24 * ((n : ℝ) - 1) ^ 2) + 1 / (24 * ((n : ℝ) - 1) ^ 3) ≤
+                  1 / (2 * (n : ℝ) ^ 2) by linarith [hL_lower, h_1over2]
+      suffices h2 : 0 ≤ 1 / (2 * (n:ℝ)^2) -
+          (1 / (24 * ((n:ℝ)-1)^2) + 1 / (24 * ((n:ℝ)-1)^3)) by linarith
+      have h_eq : 1 / (2 * (n:ℝ)^2) - (1 / (24 * ((n:ℝ)-1)^2) + 1/(24*((n:ℝ)-1)^3)) =
+          (12*((n:ℝ)-1)^3 - (n:ℝ)^3) / (24*(n:ℝ)^2*((n:ℝ)-1)^3) := by field_simp <;> ring
+      rw [h_eq]
+      apply div_nonneg
+      · nlinarith [mul_pos hn1_pos (mul_pos hn1_pos hn1_pos),
+                   mul_pos hn_pos (mul_pos hn_pos hn_pos),
+                   mul_pos hn_pos (mul_pos hn1_pos hn1_pos)]
+      · positivity
+    linarith
+  -- Upper: exp(L) - (1 + 1/(12n)) ≤ 2/n²
+  · have hL_ub : L ≤ 1 / (n : ℝ) := by
+      calc L ≤ 1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) := hL_upper
+        _ ≤ 1 / (n : ℝ) := by
+            -- Need: 1/(12(n-1)) + 1/(12(n-1)²) ≤ 1/n
+            -- Equiv: n(n-1) + n ≤ 12(n-1)², i.e., n²≤ 12n²-26n+12, holds for n≥2
+            suffices h : 0 ≤ 1 / (n:ℝ) -
+                (1 / (12 * ((n:ℝ)-1)) + 1 / (12 * ((n:ℝ)-1)^2)) by linarith
+            have h_eq : 1 / (n:ℝ) - (1/(12*((n:ℝ)-1)) + 1/(12*((n:ℝ)-1)^2)) =
+                (12*((n:ℝ)-1)^2 - (n:ℝ)^2) / (12*(n:ℝ)*((n:ℝ)-1)^2) := by field_simp <;> ring
+            rw [h_eq]; apply div_nonneg
+            · nlinarith [sq_nonneg ((n:ℝ)-1), mul_pos hn_pos hn1_pos]
+            · positivity
+    -- |exp(L) - (1+L)| ≤ L² * exp(L) / 2 ≤ (1/n)² * exp(1/n) / 2 ≤ 1/n²
+    -- exp(L) - (1 + 1/(12n)) = (exp(L) - (1+L)) + (L - 1/(12n)) ≤ L²*exp(L)/2 + C/n²
+    sorry -- HARD: needs |exp(L) - (1+L)| ≤ L²/2 * exp(L) and L ≤ 1/n, exp(L) ≤ 2
 
 /-- **Stirling Expansion (Two Terms).**
 
@@ -415,7 +731,7 @@ theorem error_bound_from_correction (n : ℕ) (hn : n ≥ 2)
         have hn_ge2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
         suffices h : 1 / (n : ℝ) - (1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ))) ≥ 0 by linarith
         have heq : 1 / (n : ℝ) - (1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ))) =
-            (11 * (n : ℝ) - 12) / (12 * (n : ℝ) ^ 2) := by field_simp; ring
+            (11 * (n : ℝ) - 12) / (12 * (n : ℝ) ^ 2) := by field_simp <;> ring
         rw [heq]
         exact div_nonneg (by nlinarith) (by positivity)
 
@@ -444,19 +760,14 @@ example : (1 : ℝ) + 1 / 1200 = 1201 / 1200 := by norm_num
 - `stirling_step_lower`: 1/(12k²) - 1/(8k³) ≤ d_k [given step formula]
 
 **Remaining sorry (1 total):**
-- `stirling_step_formula`: d_k = (k+1/2)*log(1+1/k) - 1
-  This is a pure algebraic computation from the stirlingSeq definition.
-  Bottleneck: field_simp + ring doesn't handle sqrt algebraically.
-  The step bounds (upper/lower) are fully proved given this formula.
-
-**Note:** `stirling_first_correction` also has a sorry, but this is because
-it depends on `stirling_step_formula`. Once the step formula is proved,
-the full proof chain follows:
-  step_formula → step_upper/lower → Σd_k bounds → first_correction.
+- `stirling_first_correction`: needs the upper-half exp-Taylor bound
+  `|exp L − (1 + L)| ≤ L² · exp L / 2` together with `L ≤ 1/n` and `exp L ≤ 2`.
+  Everything else (step formula, telescoping bounds, partial-sum bounds,
+  the lower half of the absolute value, and the existence of the constant)
+  is proved.
 
 **Sorries at file level:**
-- `stirling_step_formula` (1 sorry, in private lemma)
-- `stirling_first_correction` (1 sorry, blocked by step formula)
+- `stirling_first_correction` (1 sorry, exp Taylor remainder bound)
 -/
 
 end StirlingExpansion

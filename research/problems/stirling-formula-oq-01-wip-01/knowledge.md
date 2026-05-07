@@ -10,6 +10,48 @@ The 1/(12n) correction coefficient is the key refinement of Stirling's approxima
 
 ---
 
+## Session 2026-05-07 (Session 2) — Step Formula Proved + Telescoping Infrastructure
+
+**Mode**: REVISIT
+**Outcome**: Major progress — `stirling_step_formula` proved, full telescoping framework built
+
+### What I Did
+
+**Proved `stirling_step_formula`** (the only blocker from Session 1): expand `log(stirlingSeq n)` via `Real.log_div/mul/sqrt/pow/exp`, the difference telescopes to `(k+1/2)·(log(k+1)-log k)-1`. Key Lean 4 fix: `↑(k+1) ≠ (k:ℝ)+1` definitionally — add `have h_cast := by push_cast; ring` before log_div rewrites.
+
+**5 arithmetic telescoping lemmas** (k ≥ 2): inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope. All close by nlinarith.
+
+**Partial sum bounds by induction**: log_stirlingSeq_partial_upper and log_stirlingSeq_partial_lower using the telescoping lemmas + stirling_step_upper/lower.
+
+**stirling_first_correction structure** (C=2): upper via le_of_tendsto', lower via le_of_tendsto_of_tendsto. Two remaining mechanical sorrys: (1) G(n+M)→0 and (2) |exp(L)-(1+L)| ≤ L²/2·exp(L) ≤ 1/n².
+
+### Build Result
+
+**CONFIRMED WORKING**: `⚠ [3083/3083] Replayed Proofs.StirlingExpansion` — compiles with NO errors, only minor style warnings + 2 intentional sorry warnings. PR #16442 ready for next session to fill the 2 remaining sorrys.
+
+### Key Lean 4 API Learnings (Session 2)
+
+**`div_le_div_iff`, `div_le_div_right` UNKNOWN in Lean 4.26** — Use `div_le_div_of_nonneg_right (h : a≤b) (hc : 0≤c) : a/c ≤ b/c` (confirmed in `Erdos487Problem.lean`). For showing `0 ≤ a/b - c/d`, use `div_nonneg` after `field_simp; ring`.
+
+**Association mismatch in inductive proofs**: `↑((n+L)+1)` = `(n:ℝ)+↑L+1` [LEFT-assoc via left-assoc `+`] but bound's `(n:ℝ)+(↑L+1)` is RIGHT-assoc. These are DIFFERENT atoms for `linarith`. Fix: `simp only [← add_assoc] at ⊢` normalizes goal to left-assoc, then `rw [hnL1_sub]` (where `hnL1_sub : (n:ℝ)+↑L+1-1 = (n:ℝ)+↑L`).
+
+**Build output filtering**: default `grep | head -30` is filled by `[Xs] Building...` timer lines. Use `grep -v "Downloaded|Building|info:..."` to filter noise, or use the error-only filter `grep -E "error:|sorry|..."` (no "Build" in pattern).
+
+### Key Mathematical Result
+
+`|L - 1/(12n)| ≤ 1/n²` via simultaneous telescoping: `Σ d_k ≤ F(n) = 1/(12(n-1))+1/(12(n-1)²) ≤ 1/(12n)+1/n²` and `G(n) ≤ Σ d_k` where `G(n) = 1/(12n)-1/(24(n-1)²)-1/(24(n-1)³) ≥ 1/(12n)-1/(2n²)`.
+
+### Files Modified
+
+- `proofs/Proofs/StirlingExpansion.lean` (PR #16442)
+
+### Next Steps
+
+1. Fill sorry 1: `tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop` for G(n+M)→0
+2. Fill sorry 2: L ≤ 1/n → |exp(L)-(1+L)| ≤ L²·exp(1/2)/2 ≤ 1/n²
+
+---
+
 ## Session 2026-05-06 (Session 1) — Log Bounds + Step Bounds
 
 **Mode**: FRESH
