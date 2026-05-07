@@ -1,17 +1,17 @@
 # Research State: ehrhart-cube-proven-oq-02
 
 ## Current State
-**Phase**: ACT — known proof path identified for `crossEhrhart_is_poly`
+**Phase**: ACT — `crossEhrhart_is_poly` closed (PR #16734); `crossBall_card`
+succ-d remains
 **Path**: incremental sorry closure
 **Since**: 2026-05-07
 **Last Updated**: 2026-05-07
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Two sorries remain in `proofs/Proofs/EhrhartCrossPolytope.lean`:
-1. `crossEhrhart_is_poly` (line 255) — produce a `Polynomial ℚ` of degree ≤ d
-   that evaluates to `crossEhrhart d n` at every Nat n.
-2. `crossBall_card` succ-d case (line 283) — Finset slicing decomposition.
+One sorry remains in `proofs/Proofs/EhrhartCrossPolytope.lean`:
+- `crossBall_card` succ-d case — Finset slicing decomposition by last
+  coordinate (≈100 lines, deferred to a future session).
 
 ## Active Approach
 - For (1), use Mathlib's `descPochhammer ℚ k` (degree k, evaluates to
@@ -33,8 +33,9 @@ Two sorries remain in `proofs/Proofs/EhrhartCrossPolytope.lean`:
   and the rest paired symmetrically.
 
 ## Attempt Count
-- Total attempts: 1 (this session)
-- Approaches tried: descPochhammer-based polynomial construction (planned)
+- Total attempts: 2
+- Approaches tried: descPochhammer-based polynomial construction (Session 1
+  planned, Session 2 implemented and shipped via PR #16734)
 
 ## Blockers
 - **Local Lean build**: Worktree's `proofs/.lake` symlink is a self-cycle; my
@@ -43,10 +44,11 @@ Two sorries remain in `proofs/Proofs/EhrhartCrossPolytope.lean`:
   PR-driven CI will validate, but iteration cost is high.
 
 ## Next Action
-**ACT** — implement `crossEhrhart_is_poly` via the descPochhammer construction.
-The proof outline is complete; the work is wiring up the Lean syntax and
-verifying lemma names (`descPochhammer_natDegree`, `descPochhammer_eval_eq_descFactorial`,
-`Nat.descFactorial_eq_factorial_mul_choose`, `Polynomial.natDegree_sum_le`).
+**Pause for CI verification of PR #16734** before tackling `crossBall_card`
+succ-d. The Finset slicing decomposition is intricate (≈100 lines) and
+should follow the sketch in knowledge.md Session 1: fiberwise count via
+`Finset.card_eq_sum_card_fiberwise` over the last-coordinate projection,
+plus a symmetric pairing j ↔ 2n − j.
 
 ## References
 - `proofs/Proofs/EhrhartCrossPolytope.lean:249-255` — `crossEhrhart_is_poly` sorry

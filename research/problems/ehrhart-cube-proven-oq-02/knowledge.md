@@ -106,6 +106,54 @@ Estimated 100+ lines; deferred for a future iteration.
 
 ---
 
+## Session 2026-05-07 (Session 2, researcher-8) — `crossEhrhart_is_poly` closed
+
+**Mode**: ACT
+**Outcome**: Eliminated the polynomial-identification sorry (PR #16734).
+Sorry count: 2 → 1. Theorem count: 12 → 14. lineCount: 330 → 399.
+
+### What worked
+
+The descPochhammer-based construction outlined in Session 1 was implemented
+successfully. The key was writing **two private helper lemmas inside the
+file** rather than relying on (uncertain) Mathlib lemma names:
+
+1. `natDegree_descPochhammer_le k`: induction + `descPochhammer_succ_right`
+   + `Polynomial.natDegree_mul_le` + `Polynomial.natDegree_sub_le` + `omega`.
+2. `eval_descPochhammer_natCast k n`: induction on k. The `simp only` chain
+   `[Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X,
+     Polynomial.eval_natCast, ih]` simplifies after `descPochhammer_succ_right`.
+   Case-split on `k ≤ n` vs `k > n` for `Nat.descFactorial_succ` cleanup.
+   For the `k > n` case, the helper `∀ m, n.descFactorial (n + 1 + m) = 0`
+   was proved by induction on `m` and used `obtain ⟨m, hm⟩ := ⟨k - (n+1),
+   by omega⟩` to bridge.
+
+The main proof:
+
+```
+P d := ∑ k ∈ range (d+1),
+         Polynomial.C ((2^k : ℚ) * (Nat.choose d k : ℚ) / (k.factorial : ℚ))
+       * Polynomial.descPochhammer ℚ k
+```
+
+natDegree ≤ d via `Polynomial.natDegree_sum_le` + `Finset.sup_le` +
+`natDegree_descPochhammer_le`. Eval correctness via the helpers +
+`Nat.descFactorial_eq_factorial_mul_choose` + `field_simp [hk_ne]` + `ring`.
+
+### Build verification
+
+Local Docker build was unable to verify due to environmental constraints:
+Docker Desktop has only 7.65 GiB memory available (vs the 32 GB intended
+limit), so the Mathlib-dependent compile OOM'd at 720s after `lake exe
+cache get` succeeded. CI is the ground-truth verifier.
+
+### Remaining work (1 sorry)
+
+`crossBall_card` succ-d Finset slicing decomposition. Sketch in Session 1
+knowledge entry remains valid.
+
+---
+
 ## Dead Ends
 
 - None yet.
