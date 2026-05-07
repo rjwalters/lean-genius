@@ -17,7 +17,7 @@
       "open",
       "partition-regularity"
     ],
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "erdosNumber": 741,
     "erdosUrl": "https://erdosproblems.com/741",
@@ -59,16 +59,16 @@
       "trivial_partition, complement_partition, partition_membership: 3 proved partition results",
       "nat_syndetic, empty_not_syndetic, syndetic_nonempty, syndetic_mono, syndetic_infinite: 5 proved syndetic results",
       "density_empty, density_univ, density_mono, density_le_one: 4 proved density theorems",
-      "cofinite_density_one axiom: cofinite sets have density 1",
+      "cofinite_density_one (proved theorem): cofinite sets have density 1",
       "basis_infinite: proved bases are infinite (contradiction via bounded sumsets)",
       "basis_has_pos_density_sumset: proved bases have positive density sumsets",
       "part2_gives_non_syndetic: proved Part 2 implies non-syndetic partition exists",
       "part2_contradicts_part1_for_basis: proved Part 2 implies Part 1 tension"
     ],
-    "axiomCount": 1,
-    "lineCount": 284,
-    "assumptions": "1 axiom: cofinite_density_one. 0 sorries.",
-    "theoremCount": 26,
+    "axiomCount": 0,
+    "lineCount": 336,
+    "assumptions": "0 axioms, 0 sorries. cofinite_density_one proved as a theorem in PR #16461.",
+    "theoremCount": 27,
     "definitionCount": 8
   },
   "overview": {
@@ -163,9 +163,9 @@
       "Filter"
     ],
     "namespace": null,
-    "lineCount": 284,
-    "axiomCount": 1,
-    "theoremCount": 26,
+    "lineCount": 336,
+    "axiomCount": 0,
+    "theoremCount": 27,
     "definitionCount": 8,
     "path": "Proofs/Erdos741Problem.lean",
     "sorries": 0
