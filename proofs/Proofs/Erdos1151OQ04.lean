@@ -1206,7 +1206,7 @@ private lemma chebyshev_angle_dist_triangle (n : ℕ) (hn : 0 < n) (θ : ℝ) (k
       = |(θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)) +
           (((k₀.val : ℝ) - k.val) * Real.pi / n)| := by rw [key]
     _ ≤ |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| +
-        |((k₀.val : ℝ) - k.val) * Real.pi / n| := abs_add _ _
+        |((k₀.val : ℝ) - k.val) * Real.pi / n| := abs_add_le _ _
     _ = |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| +
         |((k.val : ℝ) - k₀.val)| * Real.pi / n := by rw [habs_eq]
 
@@ -1332,17 +1332,7 @@ private lemma chebyshev_term_lb_at_node
     rw [abs_pos, sub_ne_zero]; exact hne
   have h_denom_pos' : 0 < |Real.cos θ - Real.cos φ| := by
     rw [hnode] at h_denom_pos; exact h_denom_pos
-  -- 1/B ≤ 1/|cos θ - cos φ|
-  have h_inv : 1 / B ≤ 1 / |Real.cos θ - Real.cos φ| :=
-    one_div_le_one_div_of_le h_denom_pos' h_cos_le_B
-  -- sin(d/2)/B ≤ sin(φ)/|cos θ - cos φ|
   have hsin_d_half_nn : 0 ≤ Real.sin (d / 2) := le_of_lt hsin_d_half_pos
-  have h1 : Real.sin (d / 2) / B ≤ Real.sin (d / 2) / |Real.cos θ - Real.cos φ| := by
-    rw [div_eq_mul_one_div, div_eq_mul_one_div]
-    exact mul_le_mul_of_nonneg_left h_inv hsin_d_half_nn
-  have h2 : Real.sin (d / 2) / |Real.cos θ - Real.cos φ| ≤
-            Real.sin φ / |Real.cos θ - Real.cos φ| := by
-    apply div_le_div_of_nonneg_right hsin_lb h_denom_pos'
   -- Convert sin(d/2)/B to the target form via div_div_eq_mul_div
   have h_target_eq : Real.sin (d / 2) / B =
       Real.sin (d / 2) * (2 * (n : ℝ)) /
@@ -1350,11 +1340,16 @@ private lemma chebyshev_term_lb_at_node
     rw [hB_def]
     exact div_div_eq_mul_div _ _ _
   rw [hnode]
+  -- Two-step monotone descent:
+  --   sin(d/2)/B  ≤  sin(d/2)/|cos θ - cos φ|   (denom shrinks: |cos θ - cos φ| ≤ B)
+  --             ≤  sin φ /|cos θ - cos φ|       (numer grows: sin(d/2) ≤ sin φ)
   calc Real.sin (d / 2) * (2 * (n : ℝ)) /
           ((2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi)
       = Real.sin (d / 2) / B := h_target_eq.symm
-    _ ≤ Real.sin (d / 2) / |Real.cos θ - Real.cos φ| := h1
-    _ ≤ Real.sin φ / |Real.cos θ - Real.cos φ| := h2
+    _ ≤ Real.sin (d / 2) / |Real.cos θ - Real.cos φ| := by
+        gcongr
+    _ ≤ Real.sin φ / |Real.cos θ - Real.cos φ| := by
+        gcongr
 
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
