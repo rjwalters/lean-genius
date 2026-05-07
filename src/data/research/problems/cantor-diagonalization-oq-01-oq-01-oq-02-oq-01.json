@@ -36,28 +36,33 @@
     "goal": "Phase-2: produce a Lean file `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` that (a) defines `IsEastonFunction (F : Cardinal → Cardinal) : Prop` capturing monotonicity + König + F(κ) ≥ κ⁺ on regular κ, (b) proves `IsEastonFunction (fun κ => κ⁺⁺)` (the trivial Easton function under ¬GCH everywhere), and (c) AXIOMATIZES `easton_consistency` as `Consistent ZFC → ∀ F : Cardinal → Cardinal, IsEastonFunction F → Consistent (ZFC ∪ ⟦∀ κ regular: 2^κ = F κ⟧)`. The 'meta-theoretic forcing required' question is then resolved IN THE NEGATIVE for the STATEMENT level (it can be axiomatized cleanly), and reduced to 'extending flypitch to class forcing' for the PROOF level."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T19:25:00.000Z",
-    "iteration": 1,
-    "focus": "Phase-1 observation. Two of the three Easton ingredients (monotonicity, König) are PROVED in Mathlib and lifted into the gallery via `CantorDiagonalizationOQ01OQ01OQ02.lean`. The third ingredient (consistency of any Easton function as the continuum function on regular cardinals) is the meta-theoretic CORE and has not been formalized; the `flypitch` project formalized Cohen's set forcing for CH in Lean 3 but class forcing has not been done.",
+    "phase": "ORIENT",
+    "since": "2026-05-07T23:15:00.000Z",
+    "iteration": 2,
+    "focus": "Phase-2 scaffold sketched: knowledge.md now contains a concrete buildable Lean scaffold for `IsEastonFunction`, a trivial witness `IsEastonFunction (κ ↦ Order.succ κ)`, and `axiom easton_consistency`, all grounded in the Mathlib API actually exercised by the parent file `CantorDiagonalizationOQ01OQ01OQ02.lean` (`Cardinal.IsRegular`, `Cardinal.isRegular_aleph_succ`, `Cardinal.lt_cof_power`). One small sorry remains in the trivial witness's `konig_pointwise` field — left as the Phase-3 entry point.",
     "blockers": [],
-    "nextAction": "Phase 2 (ORIENT): scope the Lean statement of `IsEastonFunction` and decide the layer at which to axiomatize: (a) statement-level axiomatization in object theory (can be done now); (b) flypitch-style internal forcing model (very large undertaking, would supersede flypitch); (c) meta-theoretic Gödel encoding (technically valid but defeats the spirit of formalization).",
+    "nextAction": "Phase 3 (ACT): write `proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` from the knowledge.md scaffold and discharge the single sorry in `isEastonFunction_succ.konig_pointwise` using `Cardinal.isRegular_aleph_succ`. Build with Docker. Create gallery entry. Defer the `True`→`ConsistencyOf` upgrade to a follow-on Phase-3b session that introduces a real consistency predicate.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE phase. Two Easton constraints (monotonicity via `Cardinal.power_mono`, König via `lt_cof_power` lifted into `CantorDiagonalizationOQ01OQ01OQ02.lean` 4 axioms-free theorems) are formalized. Easton's full consistency theorem is the meta-theoretic centerpiece and has NEVER been formalized in any proof assistant — the closest is flypitch's Cohen-forcing CH independence in Lean 3, which uses set-sized forcing only.",
-    "builtItems": [],
+    "progressSummary": "ORIENT phase (Session 2, 2026-05-07): sharpened the Phase-2 plan into a concrete buildable scaffold. `research/problems/<slug>/knowledge.md` now contains a ready-to-write Lean file `CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` with: (1) `structure IsEastonFunction` capturing the three Easton constraints (succ_le, monotone, konig_pointwise) on regular cardinals; (2) trivial witness `IsEastonFunction (κ ↦ Order.succ κ)` with one small sorry in the `konig_pointwise` field (discharge via `Cardinal.isRegular_aleph_succ`); (3) `axiom easton_consistency` over `Cardinal → Cardinal`, with a `True` placeholder codomain pending a Phase-3b consistency predicate. All API choices verified against the parent file `CantorDiagonalizationOQ01OQ01OQ02.lean` (König's constraint, 16 theorems, 0 axioms). PRIOR (Session 1, OBSERVE): two Easton constraints (monotonicity via Cardinal.power_mono, König via lt_cof_power) are formalized in the parent file; consistency claim is the meta-theoretic centerpiece (flypitch closest, Lean 3 only).",
+    "builtItems": [
+      "Session 2 (2026-05-07): research/problems/<slug>/knowledge.md created — Phase-2 buildable scaffold with structure IsEastonFunction (succ_le/monotone/konig_pointwise), trivial witness `isEastonFunction_succ`, axiomatized `easton_consistency`, and the API map from parent file."
+    ],
     "insights": [
       "The two LOCAL Easton constraints are already in Mathlib (`Cardinal.power_mono`, `Cardinal.lt_cof_power`); only the GLOBAL consistency claim requires forcing — phase-2 can cleanly separate object-level definitions from meta-level consistency",
       "Class forcing (Easton 1970) is strictly stronger than set forcing (Cohen 1963): the partial order P is class-sized in Easton's construction, which prevents naive translation of flypitch into Easton",
       "An axiomatized statement-level Easton theorem is a useful Phase-2 deliverable EVEN IF the full proof remains a long-term flypitch-extension task; the cleanly-stated axiom will guide future formalization",
       "Singular cardinals are NOT covered by Easton (Silver-Magidor-Shelah show genuine constraints on 2^κ for singular κ — the SCH question); future OQs in this hierarchy can target SCH formalization as a separate question",
       "The phrasing 'inherently require a meta-theoretic forcing construction' in the seeker's title is FALSE for the statement (axiomatize cleanly) but PROBABLY TRUE for the proof (no internal-model alternative is known)",
-      "The connection to `CantorDiagonalizationOQ01OQ01OQ02.lean` (König from Mathlib) is the natural import: `IsEastonFunction` definition uses König as a hypothesis"
+      "The connection to `CantorDiagonalizationOQ01OQ01OQ02.lean` (König from Mathlib) is the natural import: `IsEastonFunction` definition uses König as a hypothesis",
+      "Session 2 ORIENT: the Mathlib API surface for the Phase-2 scaffold is exactly what the parent file already uses (Cardinal.IsRegular, isRegular_aleph_succ, lt_cof_power, cof_aleph, power_mono) — no new API exploration is needed before writing the .lean file",
+      "Session 2 ORIENT: the trivial witness `IsEastonFunction (κ ↦ Order.succ κ)` is the right Phase-2 example because (a) all three constraints are nearly definitional, (b) only one small sorry remains (konig_pointwise from successor-aleph regularity), (c) it demonstrates the structure is non-vacuous without reaching for `flypitch`-class forcing",
+      "Session 2 ORIENT: the `True` placeholder codomain on `axiom easton_consistency` is the honest framing — a real `ConsistencyOf : (Cardinal → Cardinal) → Prop` predicate requires Gödel-encoding ZFC, which deserves its own Phase-3b session rather than being slipped into the Easton scaffold"
     ],
     "mathlibGaps": [
       "No formalization of forcing in Mathlib (flypitch lives in Lean 3 + Lean Mathlib3, not yet ported)",
@@ -134,7 +139,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-07T19:25:00.000Z",
+  "lastUpdate": "2026-05-07T23:15:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
