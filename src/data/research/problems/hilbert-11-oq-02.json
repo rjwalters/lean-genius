@@ -1,7 +1,7 @@
 {
   "slug": "hilbert-11-oq-02",
   "title": "When exactly does the Hasse principle fail for higher-degree forms",
-  "phase": "OBSERVE",
+  "phase": "ITERATING",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -40,28 +40,39 @@
     "goal": "Three layers of partial answers: (1) For each degree n and number of variables k, give a sharp bound below which Hasse can fail and above which it must hold (cubic forms: Davenport bound). (2) Identify a uniform obstruction theory (Brauer-Manin / étale-Brauer-Manin) and prove it is the ONLY obstruction for natural classes. (3) Make this effective/algorithmic for explicit families (cubic surfaces, del Pezzo, K3)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T19:10:00.000Z",
+    "phase": "ITERATING",
+    "since": "2026-05-07T22:45:00.000Z",
     "iteration": 1,
-    "focus": "Phase-1 observation: enumerate the known counterexamples (Selmer, Cassels-Guy, Iskovskih, Skorobogatov, Poonen) and the obstruction-theoretic framework (Brauer-Manin, étale-Brauer-Manin). Map what already exists in `Proofs/Hilbert11_QuadraticForms.lean` (which has `axiom selmer_curve_no_rational_points : SelmerCurve` and a placeholder `BrauerManinObstruction`).",
+    "focus": "Iteration 1: established a Lean framework around the Selmer cubic counterexample. Proved real solubility constructively via IVT, proved the easy direction of the Hasse principle (rational ⇒ local) over both ℝ and ℚₚ, axiomatized Selmer 1951 (no rational solutions) and p-adic solubility, and proved that the Hasse principle FAILS for the Selmer cubic from these.",
     "blockers": [],
-    "nextAction": "Phase 2 (ORIENT): create `Proofs/Hilbert11OQ02.lean` with rigorous definitions of (a) `IsHigherDegreeForm n` for n ≥ 3, (b) `HassePrinciple F` and `HasseFails F`, (c) `IsBrauerManinObstructed X`, (d) the Selmer cubic as a specific instance. Lift the `selmer_curve_no_rational_points` axiom out of the parent file and make it the centerpiece of the OQ-02 entry.",
+    "nextAction": "Future iteration: prove p-adic solubility of the Selmer cubic at primes p ∉ {2,3,5} via Hensel's lemma applied to the reduction mod p (currently axiomatized as `selmer_padic_solubility`). At p ∈ {2,3,5} requires direct construction at low precision. Replacing this axiom is the most accessible next step toward reducing the axiom count.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE phase. Parent file `Proofs/Hilbert11_QuadraticForms.lean` already contains: `def SelmerCurve` (line ~345), `axiom selmer_curve_no_rational_points` (line ~364), `def BrauerManinObstruction` (placeholder), and the doc-level discussion of Hasse failures (PART VII). No Lean file `Hilbert11OQ02.lean` exists yet. The mathematical content is well-established (Selmer 1951, Manin 1970, Skorobogatov 1999, Poonen 2010) — the OQ-02 task is to formalize a rigorous gallery entry stating the known failures and the precise open characterization questions.",
-    "builtItems": [],
+    "progressSummary": "ITERATING (iter 1). Created `proofs/Proofs/Hilbert11OQ02.lean` (264 lines, 7 theorems/defs, 2 axioms, 0 sorries) framing the Selmer cubic as the canonical Hasse-principle-failure example. Proved nontrivial real solubility constructively via IVT on g(x)=3x³+4 over [-2,0]; proved easy directions ℚ⇒ℝ and ℚ⇒ℚ_p via Rat.cast; axiomatized Selmer 1951 (no rational solutions, deep) and p-adic solubility (Hensel pending); proved `selmer_hasse_principle_fails` from the two axioms. Defined `colliot_thelene_conjecture` as a documented placeholder. Recovers and extends prior researcher-9 unpushed wip session.",
+    "builtItems": [
+      "selmerPoly definition in Hilbert11OQ02.lean (3x³+4y³+5z³ over CommRing)",
+      "selmerCubic_real_solution in Hilbert11OQ02.lean — nontrivial real solution constructed via IVT on g(x)=3x³+4 over [-2,0]",
+      "selmer_rat_implies_real in Hilbert11OQ02.lean — easy direction ℚ⇒ℝ via Rat.cast embedding",
+      "selmer_rat_implies_padic in Hilbert11OQ02.lean — easy direction ℚ⇒ℚ_p via Rat.cast embedding (parametric in prime p)",
+      "selmer_locally_soluble_everywhere in Hilbert11OQ02.lean — combines proved real solubility with axiomatized p-adic solubility",
+      "selmer_hasse_principle_fails in Hilbert11OQ02.lean — derives Hasse failure from selmer_no_rational_solution + local everywhere",
+      "selmerHassePrinciple definition in Hilbert11OQ02.lean — local-global predicate for the Selmer cubic"
+    ],
     "insights": [
       "Hilbert11_QuadraticForms.lean already AXIOMATIZES the Selmer counterexample (`selmer_curve_no_rational_points`) — OQ-02 should LIFT this axiom into a dedicated entry and frame it as the canonical example of Hasse failure rather than burying it in the quadratic-forms parent",
       "The natural Lean type for 'higher-degree form' is `MvPolynomial (Fin k) ℚ` filtered by `IsHomogeneous F n`, with `n ≥ 3`; Mathlib has `MvPolynomial.IsHomogeneous`",
       "The Brauer-Manin obstruction is naturally stated for projective varieties; a phase-2 Lean formalization should at minimum state it as an axiom on `Type*` with the witness Brauer class abstracted, mirroring how `Hilbert11OQ01.lean` axiomatized `hasse_minkowski_refined`",
       "Three flavors of the open question give three sub-OQs: (a) decidability for explicit forms; (b) Brauer-Manin sufficiency for natural classes; (c) sharp threshold theorems (Davenport-style)",
       "Cubic curves, cubic surfaces, and del Pezzo surfaces are the three natural test cases; Mathlib has `EllipticCurve` (relevant for cubic curves of genus 1) but no `CubicSurface` or `delPezzo` typeclass — likely a Mathlib gap",
-      "The Selmer cubic 3x³+4y³+5z³=0 in ℙ² has genus 1 and is in fact a principal homogeneous space for an elliptic curve E: y² = x³ - 432 (a twist of E_60); this connects to the Tate-Shafarevich group Ш(E/ℚ)"
+      "The Selmer cubic 3x³+4y³+5z³=0 in ℙ² has genus 1 and is in fact a principal homogeneous space for an elliptic curve E: y² = x³ - 432 (a twist of E_60); this connects to the Tate-Shafarevich group Ш(E/ℚ)",
+      "Real solubility of 3x³+4y³+5z³=0 has a one-line constructive proof: fix y=1, z=0, then need x with 3x³+4=0, supplied by IVT on g(x)=3x³+4 over [-2,0] since g(-2)=-20, g(0)=4. This makes the 'real local soluble' direction provable in Lean with no number-theory machinery beyond `intermediate_value_Icc`.",
+      "The easy direction of the Hasse principle (rational ⇒ local) is purely formal in Lean: `Rat.cast : ℚ → ℝ` and `Rat.cast : ℚ → ℚ_[p]` are ring homomorphisms, so `push_cast; ring` closes the polynomial-equation-preservation goal. This is the same pattern used for any ℚ-rational point of any ℚ-variety — generalizable to a future `RatPoint_to_LocalPoint` framework.",
+      "Selmer's deep theorem `selmer_no_rational_solution` is irreducibly axiomatized: 3-descent on the associated elliptic curve E: y²=x³-432·15² is required, and Mathlib v4.26 has no Selmer-group infrastructure. p-adic solubility at p ∉ {2,3,5} could be proved via Hensel applied to the reduction; this is the most accessible axiom-elimination path."
     ],
     "mathlibGaps": [
       "No formal definition of Brauer-Manin obstruction in Mathlib (would require Brauer group of a scheme + adelic points)",
@@ -71,12 +82,12 @@
       "`MvPolynomial.IsHomogeneous` exists but there is no specialized theory of 'rational-points predicate' for homogeneous forms over number fields"
     ],
     "nextSteps": [
-      "Phase-2: scaffold `proofs/Proofs/Hilbert11OQ02.lean` with `IsHigherDegreeForm`, `HasNontrivialRationalSolution`, `HasNontrivialLocalSolutionEverywhere`, `HasseFails` definitions and import them from `MvPolynomial.IsHomogeneous` + `Mathlib.NumberTheory.Padics`",
-      "Phase-2: re-state the Selmer cubic as a specific witness `selmer_cubic_fails_hasse` and reuse the existing `selmer_curve_no_rational_points` axiom from the parent file via `import Proofs.Hilbert11_QuadraticForms`",
-      "Phase-2: state the conjectural `brauer_manin_only_obstruction_for_rationally_connected` as an axiomatized open conjecture, mirroring the `e_absolutely_normal` pattern from e-transcendental-oq-02",
-      "Phase-3: create the gallery entry `src/data/proofs/hilbert-11-oq-02/` with `meta.json`, `annotations.json`, `index.ts`",
-      "Phase-3: cross-reference the entry to `hilbert-11`, `hilbert-11-oq-01`, and (once it exists) the elliptic-curve infrastructure",
-      "Stretch: prove the Selmer cubic axiom for one specific reduction (e.g. mod 5 or mod 9 obstruction) without invoking the full descent argument — the local mod-9 obstruction at p=3 is classical and may be in scope"
+      "Replace `selmer_padic_solubility` axiom with a Hensel-based proof for primes p ∉ {2,3,5}: reduce 3x³+4y³+5z³ mod p, find a smooth ℤ/p-point, lift via Hensel. Mathlib v4.26 has `Polynomial.IsHensel` and `PadicNumbers.Hensel` lemmas applicable.",
+      "Direct construction of p-adic solutions at p ∈ {2,3,5}: low-precision lifts (e.g. 2-adic Hensel needs reduction mod 8 to find a smooth point).",
+      "Promote to gallery: create `src/data/proofs/hilbert-11-oq-02/` with meta.json, annotations.json, index.ts cross-referencing `hilbert-11`, `hilbert-11-oq-01`, and `e-transcendental-oq-02` (similar axiomatization-of-deep-result pattern).",
+      "Long-term: develop generic `IsHigherDegreeForm n` / `HassePrincipleFails F` predicates over `MvPolynomial (Fin k) ℚ` filtered by `IsHomogeneous F n`; restate Selmer as the canonical instance of the generic predicate.",
+      "Stretch: state the Brauer-Manin obstruction conjecture (`brauer_manin_only_obstruction_for_rationally_connected`) as an axiomatized open problem, mirroring the `e_absolutely_normal` pattern.",
+      "Survey: add other classical Hasse failures (Cassels-Guy 1966 cubic surface, Iskovskih 1971 del Pezzo) as parallel `*_hasse_principle_fails` instances, axiomatizing the no-rational-solution part for each."
     ]
   },
   "tags": [
@@ -117,7 +128,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.056Z",
-  "lastUpdate": "2026-05-07T19:10:00.000Z",
+  "lastUpdate": "2026-05-07T22:45:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -175,6 +186,17 @@
       "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ02.lean",
+      "filename": "Hilbert11OQ02.lean",
+      "lineCount": 264,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ02.lean"
     }
   ]
 }
