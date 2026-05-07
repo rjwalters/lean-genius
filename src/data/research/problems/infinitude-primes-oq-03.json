@@ -1,8 +1,8 @@
 {
   "slug": "infinitude-primes-oq-03",
   "title": "Dirichlet's theorem generalizes to arithmetic progressions: if $\\gcd(a,d) = 1...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T01:04:30.789Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Final state: gallery is verified / mathlib at 0 axioms / 7 theorems / 0 sorries / 196 lines for InfinitudePrimes3k2.lean (the primary file for this entry). All three sorries discharged by PR #8074 (researcher-10).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None. Lean obligations are fully discharged.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 3 sorries eliminated by researcher-10 (PR #8074, commit c82c22b4). File has 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETE. All three sorries discharged by PR #8074 (researcher-10, commit c82c22b4). InfinitudePrimes3k2.lean now has 0 sorries / 0 axioms / 7 theorems / 196 lines and the gallery sits at status verified, badge mathlib. Helper files InfinitudePrimes.lean (127 lines, 7 theorems), InfinitudePrimes4k1.lean (177 lines, 5 theorems), InfinitudePrimes4k3.lean (230 lines, 7 theorems), and InfinitudePrimes4k3OQ03.lean (103 lines, 4 theorems) are also clean.",
     "builtItems": [
       "Created proofs/Proofs/InfinitudePrimes3k2.lean — elementary proof of primes ≡ 2 (mod 3)",
       "lemma mul_mod_three_one: product of 1 (mod 3) stays 1 (mod 3)",
@@ -44,11 +44,7 @@
       "Prior session work completed by researcher-10 - proof fully verified"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove prime_factor_large: q|A and q|(A-1) implies q|1",
-      "Prove exists_prime_two_mod_three: combine candidate lemmas with prime_factor_large and prime_mod_three",
-      "Fix infinite_primes_two_mod_three: verify Set.infinite_iff_exists_gt API or use alternative"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "number-theory",
@@ -61,8 +57,7 @@
     "infinitude-primes",
     "infinitude-primes-4k1",
     "infinitude-primes-4k3",
-    "infinitude-primes-4k3-oq-03",
-    "infinitude-primes-oq-03"
+    "infinitude-primes-4k3-oq-03"
   ],
   "references": {
     "papers": [],
@@ -70,14 +65,14 @@
     "mathlib": []
   },
   "started": "2026-03-30T01:04:30.789Z",
-  "lastUpdate": "2026-03-30T01:04:30.789Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 8,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/InfinitudePrimes.lean",
       "filename": "InfinitudePrimes.lean",
-      "lineCount": 128,
+      "lineCount": 127,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -88,7 +83,7 @@
     {
       "path": "Proofs/InfinitudePrimes3k2.lean",
       "filename": "InfinitudePrimes3k2.lean",
-      "lineCount": 197,
+      "lineCount": 196,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -99,7 +94,7 @@
     {
       "path": "Proofs/InfinitudePrimes4k1.lean",
       "filename": "InfinitudePrimes4k1.lean",
-      "lineCount": 178,
+      "lineCount": 177,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
@@ -110,7 +105,7 @@
     {
       "path": "Proofs/InfinitudePrimes4k3.lean",
       "filename": "InfinitudePrimes4k3.lean",
-      "lineCount": 231,
+      "lineCount": 230,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -121,7 +116,7 @@
     {
       "path": "Proofs/InfinitudePrimes4k3OQ03.lean",
       "filename": "InfinitudePrimes4k3OQ03.lean",
-      "lineCount": 104,
+      "lineCount": 103,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
