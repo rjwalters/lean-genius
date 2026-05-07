@@ -1,0 +1,117 @@
+{
+  "id": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+  "title": "Hanson's Bound lcm(1,...,n) ≤ 3^n — Bootstrap and Axiomatization",
+  "slug": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+  "description": "Bootstraps Hanson's 1972 bound lcm(1,...,n) ≤ 3^n as a Lean 4 research target. Defines lcmRange n, proves elementary bounds (lcmRange n | n!, lcmRange n ≤ n!, lcmRange n ≤ n^n) without axioms, verifies Hanson's bound numerically for n ∈ {1..10, 12, 15, 20}, and axiomatizes the general statement whose proof requires modular-form / Chebyshev infrastructure (Beta-integral identity) not yet in Mathlib.",
+  "meta": {
+    "author": "Lean Genius BaselProblemOQ01OQ01OQ02OQ03",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
+    "tags": [
+      "number-theory",
+      "lcm",
+      "hanson",
+      "chebyshev",
+      "open-question",
+      "research-bootstrap"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 182,
+    "theoremCount": 22,
+    "definitionCount": 1,
+    "assumptions": "Axiomatized: hanson_bound — for all n, lcm(1,...,n) ≤ 3^n. Numerically verified for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Hanson's original 1972 proof uses Beta-integral identities and Chebyshev-style prime-power bounds; neither is in Mathlib. Provable easier bounds (lcm | n!, lcm ≤ n!, lcm ≤ n^n) are included with no axioms.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "0 < k → k ≤ n → k ∣ n!, used in lcmRange_dvd_factorial",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_le_pow",
+        "description": "n! ≤ n^n, used in lcmRange_le_self_pow",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Finset.lcm_dvd",
+        "description": "lcm divides any element divisible by all members",
+        "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Finset.dvd_lcm",
+        "description": "Every element divides the lcm",
+        "module": "Mathlib.Data.Finset.Lattice"
+      }
+    ],
+    "dateAdded": "2026-05-07",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The function ψ(n) = log lcm(1,...,n) is the Chebyshev psi function, central to analytic number theory: Mertens' theorem and the prime number theorem are both naturally phrased in terms of ψ. Bertrand's postulate (1845, proved by Chebyshev) is equivalent to a weak version of the bound lcm(1,...,n) · k ≥ n for k ≤ n. The classical asymptotic ψ(n) ~ n is the prime number theorem itself. Hanson (Canad. Math. Bull. 1972) proved an explicit non-asymptotic bound: lcm(1,...,n) ≤ 3^n, strictly improving on the easier lcm(1,...,n) ≤ 4^n that follows from the primorial bound (Erdős's classic 1939 elementary proof of Bertrand). The 3^n bound is the strongest known explicit constant; the precise asymptotic ψ(n)/n → 1 is the PNT. Apéry (1979) used this kind of LCM bound in his celebrated proof of the irrationality of ζ(3): the integer-squeeze argument needs lcm³·aₙ ∈ ℤ combined with a sufficiently small linear-form decay, and the threshold c < (1/(17-12√2))^{1/3} ≈ 3.24 makes Hanson's 3^n bound sufficient — but not the easier 4^n bound. So Apéry's irrationality proof depends critically on Hanson's exact constant.",
+    "problemStatement": "Define lcmRange n = lcm(1,...,n) and prove the chain of bounds lcmRange n ≤ n! ≤ n^n (elementary). State Hanson's bound lcmRange n ≤ 3^n as the open target axiom, with proof requiring the Beta-integral identity 1/((n+1)·C(n,k)) = ∫₀¹ x^k(1-x)^(n-k) dx and Chebyshev-style prime-power bounds.",
+    "proofStrategy": "Five parts. Part 1 reproduces lcmRange = (Finset.range n).lcm (·+1). Part 2 establishes basic properties: lcmRange_pos, dvd_lcmRange (k ∈ {1,...,n} divides lcmRange n). Part 3 proves the chain of provable bounds by combining Mathlib's Nat.dvd_factorial (each k divides n!) with Finset.lcm_dvd (lcm divides any common multiple): lcmRange_dvd_factorial, lcmRange_le_factorial (via Nat.le_of_dvd), lcmRange_le_self_pow (via Nat.factorial_le_pow). Part 4 verifies Hanson's bound numerically for n ∈ {1..10, 12, 15, 20} via decide/native_decide and the OEIS values lcm(1..5)=60, lcm(1..10)=2520, lcm(1..15)=360360, lcm(1..20)=232792560. Part 5 states Hanson's bound as `axiom hanson_bound` and proves `hanson_strictly_stronger_than_factorial` (3^n < n^n for n ≥ 4) showing why Hanson's constant 3 is not trivially derivable.",
+    "keyInsights": [
+      "**Apéry's threshold**: The exponent 3 in Hanson's bound is precisely tight for Apéry's irrationality proof of ζ(3). The integer-squeeze threshold c = (1/(17-12√2))^{1/3} ≈ 3.245 means any bound c^n with c ≥ 3.245 fails. Hanson's 3^n succeeds; the easier 4^n fails. Without Hanson, no Apéry.",
+      "**Bound hierarchy**: Three nested bounds illustrate the difficulty gradient. (i) Trivial: lcm ≤ n! ≤ n^n, proved by elementary divisibility. (ii) Easy from primorial: lcm ≤ 4^n, which Mathlib's `primorial_le_4_pow` plus the unproved bridge `lcm ≤ n · primorial` would give. (iii) Hard (Hanson): lcm ≤ 3^n, requires the Beta-integral identity.",
+      "**Chebyshev-function reformulation**: Hanson's bound is equivalent to ψ(n) ≤ n · ln 3 for ψ(n) = log lcm(1,...,n). The PNT gives ψ(n)/n → 1 < ln 3, so Hanson is consistent with PNT — but Hanson's non-asymptotic constant is what's needed for explicit applications like Apéry.",
+      "**Numerical evidence**: For n = 20, lcm(1,...,20) = 232,792,560 vs 3^20 = 3,486,784,401, a margin of 15×. For n = 50, the ratio grows. This consistent margin gives strong empirical confidence in Hanson's bound.",
+      "**Mathlib infrastructure status**: `Mathlib.NumberTheory.Primorial` has `primorial_le_4_pow`. `Mathlib.NumberTheory.Bertrand` has the Bertrand postulate. `Mathlib.Data.Nat.Lcm` has lcm definitions. None give an `lcm(1..n) ≤ X^n` bound directly. The bridge from primorial to lcm is the missing combinatorial step."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Part 1-2: Definition and Basic Properties",
+      "startLine": 60,
+      "endLine": 100,
+      "summary": "Defines lcmRange n = lcm{1,...,n} (matching the parent file's lcmUpTo), establishes lcmRange_zero, lcmRange_one, lcmRange_pos, and dvd_lcmRange (each k ∈ {1,...,n} divides lcmRange n).",
+      "mathContext": "$\\operatorname{lcmRange}(n) = \\operatorname{lcm}\\{1, 2, \\ldots, n\\}$ encoded as a `Finset.lcm` over `Finset.range n` mapped through (·+1)."
+    },
+    {
+      "id": "elementary-bounds",
+      "title": "Part 3: Provable Elementary Bounds",
+      "startLine": 105,
+      "endLine": 130,
+      "summary": "Proves the three elementary bounds with no axioms: lcmRange_dvd_factorial, lcmRange_le_factorial, lcmRange_le_self_pow. The chain lcm ≤ n! ≤ n^n is the trivial bound that Hanson's 3^n strictly improves upon.",
+      "mathContext": "$\\operatorname{lcm}(1, \\ldots, n) \\mid n!$ via `Nat.dvd_factorial`, then $\\operatorname{lcm}(1, \\ldots, n) \\leq n! \\leq n^n$ via `Nat.factorial_le_pow`."
+    },
+    {
+      "id": "numerical",
+      "title": "Part 4: Numerical Verification of Hanson",
+      "startLine": 132,
+      "endLine": 160,
+      "summary": "Verifies lcmRange n ≤ 3^n for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Includes lcmRange exact values lcmRange 5 = 60, lcmRange 10 = 2520, lcmRange 15 = 360360, lcmRange 20 = 232792560 (matches OEIS A003418).",
+      "mathContext": "Concrete: $\\operatorname{lcm}(1, \\ldots, 20) = 232\\,792\\,560$ vs $3^{20} = 3\\,486\\,784\\,401$, ratio $\\approx 15$."
+    },
+    {
+      "id": "axiom",
+      "title": "Part 5: Hanson's Bound (Axiom)",
+      "startLine": 162,
+      "endLine": 182,
+      "summary": "States `axiom hanson_bound : ∀ n, lcmRange n ≤ 3^n` — Hanson's classical 1972 theorem. Includes hanson_strictly_stronger_than_factorial showing the constant 3 is genuinely tighter than the trivial n^n bound for n ≥ 4.",
+      "mathContext": "Hanson 1972: $\\operatorname{lcm}(1, \\ldots, n) \\leq 3^n$. Original proof uses Beta-integral identity $\\int_0^1 x^k(1-x)^{n-k} dx = \\frac{1}{(n+1)\\binom{n}{k}}$ combined with prime-power bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "Bootstraps Hanson's bound lcm(1,...,n) ≤ 3^n into Lean 4 with three layers: elementary provable bounds (no axioms), numerical verification for n ∈ {1..10, 12, 15, 20}, and axiomatization of the general statement.",
+    "implications": "Eliminating `axiom hanson_bound` would discharge one of five remaining axioms in `BaselProblemOQ01OQ01OQ02.lean`'s formalization of Apéry's ζ(3) irrationality theorem. This file provides the precise formal target and identifies the Mathlib infrastructure that must be developed: Beta-integral identity for 1/((n+1)·C(n,k)), prime-power bounds compiled into LCM divisibility, and a translation from primorial bounds to LCM bounds. Each is a substantial Mathlib upstream contribution.",
+    "openQuestions": [
+      "Replace `axiom hanson_bound` with a Lean theorem using the Beta-integral approach.",
+      "Prove the intermediate bound lcm(1,...,n) ≤ 4^n via a primorial bridge — easier than Hanson's 3^n but still nontrivial.",
+      "Strengthen to non-asymptotic forms of the prime number theorem: ψ(n)/n approaches 1 from below."
+    ]
+  },
+  "crossReferences": [
+    {
+      "type": "uses",
+      "target": "basel-problem",
+      "label": "Parent Basel problem (proven via ζ(2) infrastructure)"
+    },
+    {
+      "type": "extends",
+      "target": "basel-problem-oq-01-oq-01-oq-02",
+      "label": "Apéry's ζ(3) irrationality (parent file containing the axiom this OQ targets)"
+    }
+  ]
+}
