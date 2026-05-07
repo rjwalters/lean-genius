@@ -1,0 +1,357 @@
+{
+  "slug": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+  "title": "For Sₙ, is symBUDim n d = buDim_{largest prime ≤ n} d = 2⌊d/2⌋−1?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\geq 2,\\ d \\geq 1: \\text{symBUDim}\\,n\\,d = \\text{buDim}\\,p^*\\,d = 2\\lfloor d/2\\rfloor - 1, \\text{ where } p^* = \\max\\{p \\text{ prime} : p \\leq n\\}",
+    "plain": "The equivariant Borsuk-Ulam dimension symBUDim n d for the symmetric group Sₙ acting on a d-dimensional real representation is conjectured to equal (i) the BU dimension of the cyclic subgroup of order p* (the largest prime ≤ n), and (ii) the explicit formula 2⌊d/2⌋−1. The lower bound from Bertrand's postulate (some prime p > n/2 always exists) gives a bound within factor 2 of d, but the EXACT value for composite n may genuinely be larger than buDim(p*) — this is the open question.",
+    "whyMatters": [
+      "Borsuk-Ulam dimension theory governs equivariant topology and topological combinatorics; symBUDim is the symmetric-group analog of the cyclic-group BU dimension at the heart of the Borsuk-Ulam–style theorems used in geometric Ramsey theory (Lovász, Schrijver) and combinatorics",
+      "The conjecture would mean Sₙ-equivariance is 'no stronger than' the largest-prime cyclic subgroup it contains — a clean structural statement linking representation theory and topology",
+      "Bertrand's postulate (already at p > n/2) shows the bound is within factor 2; closing the gap to factor 1 (exact equality) requires either a deeper subgroup-restriction result or an explicit construction at composite n",
+      "Connects to the gallery's Sn-equivariant cohomology + index theory infrastructure (`Proofs/BorsukUlamOQ02OQ01OQ03.lean` axiomatizes `symBUDim` and proves the prime-subgroup lower bound)",
+      "Sub-question of `BorsukUlamOQ02OQ01OQ03` (the 'non-cyclic group' open question), this OQ-02 specializes to symmetric Sₙ — distinct from the parallel OQ-01 question on dihedral Dₙ"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Subgroup monotonicity (gallery-formalized in `BorsukUlamOQ02OQ01OQ03.lean`): if H ≤ G, then buDim_H d ≤ buDim_G d. Applied to Z/p ≤ Sₙ for any prime p ≤ n: buDim p d ≤ symBUDim n d.",
+      "Bertrand's postulate (Mathlib `Nat.bertrand`, Erdős 1932 proof): for every n ≥ 1 there is a prime p with n < p ≤ 2n. Equivalently, the largest prime p* ≤ n satisfies p* > n/2.",
+      "Cyclic BU dimension formula for prime p (axiomatized in `BorsukUlamOQ02OQ01.lean`): for free Z/p actions on representation spaces, buDim p d = 2⌊d/2⌋−1 (the so-called 'tight prime bound').",
+      "Lower bound symBUDim n d ≥ buDim p* d ≥ 2⌊d/2⌋−1 (combining the above three).",
+      "Upper bound symBUDim n d ≤ d−1 trivially (BU classical).",
+      "These together pin symBUDim n d ∈ [2⌊d/2⌋−1, d−1], a factor-2 interval."
+    ],
+    "open": [
+      "Is symBUDim n d = buDim p* d (i.e., the largest prime subgroup determines the dimension)? Specifically: does the symmetric structure of Sₙ contribute NOTHING beyond the cyclic-subgroup bound?",
+      "Is symBUDim n d = 2⌊d/2⌋−1 exactly (the tight cyclic-prime formula)?",
+      "If composite n contributes beyond p*, what is the EXTRA structure — character-theoretic, representation-theoretic, or homotopy-theoretic? Could be different at different n.",
+      "Computational/explicit case: small n (n=4, n=6, n=8, …) where p* < n−1 and a symmetric construction may yield a larger lower bound.",
+      "Connection to the Lovász-Kneser theorem (chromatic number of Kneser graphs is computed via Z/2 BU dimension) and its Sₙ generalizations."
+    ],
+    "goal": "Phase-2: produce a Lean file `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` that (a) imports `BorsukUlamOQ02OQ01OQ03` to reuse `symBUDim`, `sym_has_Zp`, `buDim`, (b) defines `largestPrimeBelow n` (Mathlib has `Nat.find` machinery for this), (c) states the EQUALITY conjecture as `axiom symBUDim_eq_largest_prime`, and (d) derives the tight formula `theorem symBUDim_eq_floor_formula` from `symBUDim_eq_largest_prime` + the cyclic-prime axiom. Phase-3: gallery entry. The CORE conjecture remains axiomatized — a full proof would be a significant equivariant-topology contribution."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-07T19:30:00.000Z",
+    "iteration": 1,
+    "focus": "Phase-1 observation. The lower bound `symBUDim n d ≥ buDim p* d` is FORMALIZED in `BorsukUlamOQ02OQ01OQ03.lean` via subgroup monotonicity. The remaining gap is the matching UPPER bound `symBUDim n d ≤ buDim p* d`, which would establish the conjectured equality.",
+    "blockers": [],
+    "nextAction": "Phase 2 (ORIENT): scaffold `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` axiomatizing the equality conjecture and deriving the explicit formula. Phase 3: gallery entry.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE phase. The lower-bound infrastructure is in place: `BorsukUlamOQ02OQ01OQ03.lean` axiomatizes `symBUDim` and `buDim`, proves `sym_has_Zp` (Sₙ contains Z/p for all primes p ≤ n), and via subgroup monotonicity gives `symBUDim n d ≥ buDim p d` for any prime p ≤ n, hence `symBUDim n d ≥ buDim p* d` where p* is the largest prime ≤ n. Combined with the cyclic-prime axiom `buDim p d = 2⌊d/2⌋−1`, this gives `symBUDim n d ≥ 2⌊d/2⌋−1`. The upper bound for the conjectured equality is OPEN.",
+    "builtItems": [],
+    "insights": [
+      "The conjecture splits cleanly into two equalities: (i) `symBUDim n d = buDim p* d` (subgroup-only structure) and (ii) `buDim p d = 2⌊d/2⌋−1` (the tight cyclic-prime formula). (ii) is already axiomatized in the gallery; only (i) is the genuinely-open part of THIS OQ.",
+      "Bertrand's postulate guarantees p* > n/2, so `buDim p* d ≥ buDim_⌊n/2⌋ d` heuristically — the within-factor-2 bound mentioned in the seeker's description",
+      "If the conjecture FAILS at some composite n, the failure must come from Sₙ-specific structure (representation theory, parity-based irreps, or higher-cohomology obstructions) — natural test case is n = 4 (p* = 3, but Sₙ has the V₄ Klein-4 subgroup which is NOT cyclic of prime order)",
+      "The dihedral analog (sister-question OQ-02-OQ-01-OQ-03-OQ-01) faces exactly this issue: Dₙ has both Z/2 reflections and Z/p rotations for p | n",
+      "Phase-2 axiomatization of the equality is appropriate because a full proof requires either (a) Fadell-Husseini index calculations for Sₙ (heavy equivariant cohomology) or (b) explicit equivariant maps showing the upper bound — both substantial",
+      "Connection to chromatic number of Kneser graphs (Lovász 1978): for Z/2 case, BU dimension yields chromatic bounds; symmetric extension is a long-running program"
+    ],
+    "mathlibGaps": [
+      "No formalization of equivariant cohomology / Fadell-Husseini index in Mathlib (would be needed for a proof of the upper bound)",
+      "No `Nat.largestPrimeLE` definition in Mathlib (can be built from `Nat.find` and Bertrand)",
+      "No general framework for equivariant Borsuk-Ulam in Mathlib — `BorsukUlamOQ02OQ01.lean` builds it ad-hoc with axioms",
+      "No representation-theoretic decomposition of Sₙ-modules into irreducibles in Mathlib at the level needed for BU computations"
+    ],
+    "nextSteps": [
+      "Phase-2: scaffold `proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` importing `Proofs.BorsukUlamOQ02OQ01OQ03`",
+      "Phase-2: define `largestPrimeBelow n : ℕ` using `Nat.find` (or rephrase as `Nat.find_greatest (Nat.Prime) n`) and prove it is prime, ≤ n, and > n/2 (Bertrand)",
+      "Phase-2: state `axiom symBUDim_eq_largest_prime : ∀ n d, symBUDim n d = buDim (largestPrimeBelow n) d` with full proof-sketch citation",
+      "Phase-2: prove `theorem symBUDim_eq_floor_formula : ∀ n d, n ≥ 2 → symBUDim n d = 2 * (d / 2) - 1` from the axiom + `buDim p d = 2⌊d/2⌋−1` cyclic axiom",
+      "Phase-2: state and prove the partial result `theorem symBUDim_lower_bound : symBUDim n d ≥ 2 * (d / 2) - 1` from existing Bertrand + subgroup monotonicity (axiom-free up to the cyclic-prime axiom)",
+      "Phase-3: gallery entry `src/data/proofs/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/`",
+      "Coordinate with sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral Dₙ) — they share infrastructure",
+      "Stretch: tackle n = 4 case by hand to either falsify the conjecture (find Sₙ-specific extra structure) or confirm it (compute equivariant index of S₄ on a small d-dim rep)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "equivariant-topology",
+    "borsuk-ulam",
+    "symmetric-group",
+    "bertrand-postulate",
+    "fadell-husseini",
+    "equivariant-cohomology",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "borsuk-ulam",
+    "borsuk-ulam-oq-02",
+    "borsuk-ulam-oq-02-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-01",
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+    "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "borsuk-ulam-oq-02-oq-01-oq-03",
+    "borsuk-ulam-oq-02-oq-01-oq-04",
+    "borsuk-ulam-oq-02-oq-02",
+    "borsuk-ulam-oq-02-oq-03",
+    "borsuk-ulam-oq-03",
+    "borsuk-ulam-oq-03-oq-01",
+    "borsuk-ulam-oq-03-oq-01-oq-01",
+    "borsuk-ulam-oq-03-oq-03",
+    "borsuk-ulam-oq-03-oq-04",
+    "borsuk-ulam-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Borsuk 1933 - Drei Sätze über die n-dimensionale Sphäre — original BU theorem",
+      "Dold 1983 - Simple proofs of some Borsuk-Ulam results (Contemp. Math. 19, 65-69)",
+      "Fadell-Husseini 1988 - An ideal-valued cohomological index theory (Ergodic Theory Dynam. Systems 8*) — Sₙ index",
+      "tom Dieck 1987 - Transformation Groups (de Gruyter) — equivariant topology reference",
+      "Matoušek 2003 - Using the Borsuk-Ulam Theorem (Springer) — Ch. 6 on group-equivariant BU",
+      "Lovász 1978 - Kneser's conjecture, chromatic number, and homotopy (J. Combin. Theory A 25) — BU/chromatic number connection",
+      "Bertrand 1845 / Chebyshev 1850 / Erdős 1932 — Bertrand's postulate p ∈ (n, 2n]",
+      "Volovikov 2000 - Borsuk-Ulam type theorems for the action of finite groups (Russian Math. Surv.)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
+      "https://en.wikipedia.org/wiki/Bertrand%27s_postulate",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Bertrand.html"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Bertrand — Bertrand's postulate (Erdős proof)",
+      "Mathlib.Data.Nat.Prime.Basic — primality",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic — Z/p cyclic groups",
+      "Mathlib.GroupTheory.GroupAction.Basic — group actions (foundation for equivariant statements)",
+      "Proofs.BorsukUlamOQ02OQ01OQ03 — gallery's Sₙ + Dₙ BU framework with the prime-subgroup lower bound"
+    ]
+  },
+  "started": "2026-05-06T21:20:28.055Z",
+  "lastUpdate": "2026-05-07T19:30:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BorsukUlam.lean",
+      "filename": "BorsukUlam.lean",
+      "lineCount": 268,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlam.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ01.lean",
+      "filename": "BorsukUlamOQ01.lean",
+      "lineCount": 329,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02.lean",
+      "filename": "BorsukUlamOQ02.lean",
+      "lineCount": 390,
+      "theoremCount": 18,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 6,
+      "axiomCount": 4,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ01OQ02.lean",
+      "lineCount": 202,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ01OQ02OQ03.lean",
+      "lineCount": 213,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01.lean",
+      "lineCount": 158,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean",
+      "lineCount": 248,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ03.lean",
+      "lineCount": 213,
+      "theoremCount": 14,
+      "axiomCount": 9,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04.lean",
+      "lineCount": 252,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ04OQ01.lean",
+      "lineCount": 236,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ02.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ03.lean",
+      "filename": "BorsukUlamOQ02OQ03.lean",
+      "lineCount": 252,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03.lean",
+      "filename": "BorsukUlamOQ03.lean",
+      "lineCount": 5140,
+      "theoremCount": 211,
+      "axiomCount": 2,
+      "defCount": 35,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01.lean",
+      "lineCount": 1164,
+      "theoremCount": 41,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ01OQ01.lean",
+      "filename": "BorsukUlamOQ03OQ01OQ01.lean",
+      "lineCount": 435,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ03.lean",
+      "filename": "BorsukUlamOQ03OQ03.lean",
+      "lineCount": 2634,
+      "theoremCount": 123,
+      "axiomCount": 1,
+      "defCount": 30,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ03OQ04.lean",
+      "filename": "BorsukUlamOQ03OQ04.lean",
+      "lineCount": 236,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ04.lean",
+      "filename": "BorsukUlamOQ04.lean",
+      "lineCount": 449,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
+    }
+  ]
+}
