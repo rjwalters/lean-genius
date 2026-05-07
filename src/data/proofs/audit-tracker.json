@@ -1,20 +1,4 @@
 {
-  "collatz-structured-oq-03": {
-    "agentId": "auditor-cycle-2",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:24:11Z",
-    "result": "issues-fixed"
-  },
-  "descartes-rule-of-signs-oq-02": {
-    "auditCount": 1,
-    "issues": [
-      "sorries 7->5 (code evolved)",
-      "lineCount 418->491",
-      "theoremCount 28->33"
-    ],
-    "lastAudit": "2026-03-24T21:47:21Z",
-    "result": "issues-fixed"
-  },
   "entries": {
     "No unclaimed targets available": {
       "auditCount": 2,
@@ -15015,66 +14999,6 @@
       "issues": []
     }
   },
-  "erdos-1097-oq-01": {
-    "agentId": "auditor-cycle-2",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:24:11Z",
-    "result": "issues-fixed"
-  },
-  "erdos-327-oq-01": {
-    "agentId": "auditor-cycle-3",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:47:33Z",
-    "result": "issues-fixed"
-  },
-  "erdos-648": {
-    "agentId": "auditor-cycle-3",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:47:33Z",
-    "result": "issues-fixed"
-  },
-  "erdos-668": {
-    "auditCount": 1,
-    "issues": [
-      "sorries 1->0 (sorry eliminated)",
-      "axiomCount 7->8",
-      "lineCount 216->228"
-    ],
-    "lastAudit": "2026-03-24T21:47:21Z",
-    "result": "issues-fixed"
-  },
-  "erdos-744": {
-    "agentId": "auditor-cycle-3",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:47:33Z",
-    "result": "issues-fixed"
-  },
-  "inverse-galois": {
-    "agentId": "auditor-cycle-3",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:47:33Z",
-    "result": "clean"
-  },
-  "inverse-galois-oq-01": {
-    "agentId": "auditor-cycle-3",
-    "auditCount": 1,
-    "lastAudited": "2026-03-29T18:47:33Z",
-    "result": "clean"
-  },
   "version": 1,
-  "erdos-933": {
-    "agentId": "auditor-cycle-20-batch",
-    "auditCount": 4,
-    "lastAudited": "2026-04-28T06:06:43Z",
-    "result": "clean"
-  },
-  "bezout-identity-oq-03-oq-02": {
-    "auditCount": 1,
-    "lastAudit": "2026-05-01T08:54:33Z",
-    "lastAudited": "2026-05-01T08:54:33Z",
-    "result": "clean",
-    "agentId": "auditor-fresh-loop",
-    "notes": "Tier A original. lineCount=187, sorries=0, axiomCount=0, no True stubs. crt_finitely_many built inductively on parent crt_iscop via IsCoprime.prod_right and Fin.prod_univ_castSucc."
-  },
   "lastUpdated": "2026-05-06T10:18:00Z"
 }
