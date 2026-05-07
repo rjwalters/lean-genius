@@ -13747,6 +13747,41 @@ private lemma strictHookCells_hookLen_lt {μ : YoungDiagram} {i j : ℕ}
     have hrow_anti : μ.rowLen r ≤ μ.rowLen i := μ.rowLen_anti i r (by omega : i ≤ r)
     change hookLength μ r j < hookLength μ i j; omega
 
+/-- Membership characterization for `strictHookCells`: a cell `(p, q)` is in the strict
+    hook of `(i, j)` iff it is on the same row to the right (arm) or same column below
+    (leg), within μ. -/
+private lemma mem_strictHookCells_iff {μ : YoungDiagram} {i j p q : ℕ} :
+    (p, q) ∈ strictHookCells μ i j ↔
+      (p = i ∧ j < q ∧ q < μ.rowLen i) ∨ (i < p ∧ q = j ∧ p < μ.colLen j) := by
+  simp only [strictHookCells, Finset.mem_union, Finset.mem_image, Finset.mem_Ico,
+             Prod.mk.injEq]
+  constructor
+  · rintro (⟨s, ⟨hjs, hsr⟩, hps, hqs⟩ | ⟨r, ⟨hir, hrc⟩, hpr, hqr⟩)
+    · exact Or.inl ⟨hps.symm, by omega, by omega⟩
+    · exact Or.inr ⟨by omega, hqr.symm, by omega⟩
+  · rintro (⟨hpi, hjq, hqr⟩ | ⟨hip, hqj, hpc⟩)
+    · exact Or.inl ⟨q, ⟨by omega, hqr⟩, hpi.symm, rfl⟩
+    · exact Or.inr ⟨p, ⟨by omega, hpc⟩, rfl, hqj.symm⟩
+
+/-- For a corner `c'` of μ, membership in `strictHookCells μ i j` simplifies to a clean
+    arm/leg disjunction (the upper bounds `c'.2 < μ.rowLen c'.1` and `c'.1 < μ.colLen c'.2`
+    follow automatically from cornerhood). -/
+private lemma mem_strictHookCells_of_isCorner {μ : YoungDiagram} {c' : ℕ × ℕ}
+    (hc' : isCorner μ c') (i j : ℕ) :
+    c' ∈ strictHookCells μ i j ↔
+      (i = c'.1 ∧ j < c'.2) ∨ (i < c'.1 ∧ j = c'.2) := by
+  obtain ⟨p, q⟩ := c'
+  rw [mem_strictHookCells_iff]
+  have hrl : μ.rowLen p = q + 1 := rowLen_of_isCorner hc'
+  have hcl : μ.colLen q = p + 1 := colLen_of_isCorner hc'
+  constructor
+  · rintro (⟨hpi, hjq, _⟩ | ⟨hip, hqj, _⟩)
+    · exact Or.inl ⟨hpi.symm, hjq⟩
+    · exact Or.inr ⟨hip, hqj.symm⟩
+  · rintro (⟨hip, hjq⟩ | ⟨hip, hjq⟩)
+    · refine Or.inl ⟨hip.symm, hjq, ?_⟩; rw [← hip, hrl]; omega
+    · refine Or.inr ⟨hip, hjq.symm, ?_⟩; rw [hjq, hcl]; omega
+
 /-- GNW walk probability: gnwProb μ c K x = probability that a GNW walk started at
     x ends at corner c, with K as a termination bound (correct when hookLen(x) ≤ K). -/
 noncomputable private def gnwProb (μ : YoungDiagram) (c : ℕ × ℕ) : ℕ → ℕ × ℕ → ℚ
