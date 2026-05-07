@@ -1,59 +1,165 @@
-{
-  "proofId": "circumference-via-differentiation-oq-01",
-  "annotations": [
-    {
-      "id": "annotation-power-rule",
-      "lineStart": 57,
-      "lineEnd": 68,
-      "type": "insight",
-      "content": "The entire geometric content is encoded in one line: `(hasDerivAt_pow n r).const_mul (unitBallVolume n)`. The power rule `hasDerivAt_pow` gives d/dr(rⁿ) = n·r^(n-1), and `const_mul` scales by ω_n. The rest is ring arithmetic.",
-      "mathContext": "HasDerivAt.const_mul: if f has derivative f' at x, then c·f has derivative c·f' at x.",
-      "significance": "high"
+[
+  {
+    "id": "cvd01-ann-01",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
     },
-    {
-      "id": "annotation-gamma-recursion",
-      "lineStart": 82,
-      "lineEnd": 103,
-      "type": "technique",
-      "content": "The Gamma recursion Γ(x+1) = x·Γ(x) is the key bridge between the volume formula (using Γ(n/2+1)) and the surface area formula (using Γ(n/2)). Without this recursion, the two formulas would appear unrelated.",
-      "mathContext": "Gamma_add_one hn2ne: Γ(x+1) = x·Γ(x) for x ≠ 0. Applied at x = n/2 to get Γ(n/2+1) = (n/2)·Γ(n/2).",
-      "significance": "high"
+    "type": "concept",
+    "title": "Header, Strategy, and Imports",
+    "content": "The opening docstring states the file's central claim: $\\frac{d}{dr} V_n(r) = n \\cdot \\omega_n \\cdot r^{n-1} = S_{n-1}(r)$, where $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$ is the unit $n$-ball volume. The result generalizes Archimedes' classical $C = dA/dr$ from 2D to all dimensions. Three Mathlib imports do all the work: `Analysis.Calculus.Deriv.Pow` provides `hasDerivAt_pow` (the power rule that drives the entire proof), `Analysis.SpecialFunctions.Gamma.Basic` provides `Gamma_add_one` and `Gamma_pos_of_pos` (needed for the surface-area constant identity), and `Analysis.Calculus.Deriv.Mul` (via `Mathlib.Tactic`) provides `HasDerivAt.const_mul` for scaling by $\\omega_n$. The fourth import `Proofs.CircumferenceViaDifferentiation` is the parent file whose 2D theorem this generalizes — used at the end (Part 5) to prove the parent statement is the $n=2$ instance.",
+    "mathContext": "$V_n(r) = \\omega_n r^n$, $\\omega_n = \\pi^{n/2}/\\Gamma(n/2+1)$, $S_{n-1}(r) = \\frac{2\\pi^{n/2}}{\\Gamma(n/2)} r^{n-1}$. Identity bridging the two: $n \\cdot \\omega_n = 2\\pi^{n/2}/\\Gamma(n/2)$, derived from $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Archimedes' onion-peel argument",
+      "Gamma function recursion",
+      "n-ball volume formula",
+      "power rule"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace and imports",
+      "Mathlib calculus API",
+      "Gamma function basics"
+    ]
+  },
+  {
+    "id": "cvd01-ann-02",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 75
     },
-    {
-      "id": "annotation-field-simp-ring",
-      "lineStart": 97,
-      "lineEnd": 101,
-      "type": "technique",
-      "content": "The proof uses `field_simp [hGne, hn_cast.ne']` to clear the Gamma denominators (knowing Γ(n/2) ≠ 0 and n ≠ 0), then `ring` for the algebraic identity n/(n/2) = 2.",
-      "mathContext": "Gamma_pos_of_pos ensures Γ(n/2) > 0 hence ≠ 0. The field_simp then transforms the division identity to a polynomial identity provable by ring.",
-      "significance": "medium"
+    "type": "definition",
+    "title": "Unit Ball Volume and Special Values",
+    "content": "`unitBallVolume n = π^(n/2) / Γ(n/2 + 1)` defines $\\omega_n$ exactly as the textbook formula. Two helper lemmas evaluate $\\Gamma(3/2) = \\sqrt{\\pi}/2$ and $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$ via repeated application of `Gamma_add_one` from $\\Gamma(1/2) = \\sqrt{\\pi}$ (`Gamma_one_half_eq`). These then give the special values: `unitBallVolume_two` proves $\\omega_2 = \\pi$ (via $\\Gamma(2) = 1$, the standard `Gamma_two`), and `unitBallVolume_three` proves $\\omega_3 = 4\\pi/3$ (via the $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$ helper and the `rpow_add` decomposition $\\pi^{3/2} = \\pi \\cdot \\sqrt{\\pi}$). The proof of $\\omega_3$ is the most intricate calculation in the file: clearing denominators with `field_simp [hsqrt]` (knowing $\\sqrt{\\pi} \\ne 0$) and finishing with `ring` reduces $\\frac{\\pi^{3/2}}{3\\sqrt{\\pi}/4}$ to $\\frac{4\\pi}{3}$.",
+    "mathContext": "Specialization: $\\omega_0 = 1$, $\\omega_1 = 2$, $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$, $\\omega_4 = \\pi^2/2$. Gamma half-integer recursion: $\\Gamma(1/2) = \\sqrt{\\pi}$, $\\Gamma(3/2) = \\sqrt{\\pi}/2$, $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$, $\\Gamma((2k+1)/2) = (2k-1)!!\\sqrt{\\pi}/2^k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gamma_one_half_eq",
+      "Gamma_two",
+      "rpow_add",
+      "Real.sqrt_eq_rpow"
+    ],
+    "prerequisites": [
+      "real powers and `rpow`",
+      "Gamma function evaluation",
+      "field_simp tactic"
+    ]
+  },
+  {
+    "id": "cvd01-ann-03",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 91
     },
-    {
-      "id": "annotation-uniform-framework",
-      "lineStart": 36,
-      "lineEnd": 47,
-      "type": "insight",
-      "content": "The three definitions nBallVolumeFn, nSphereSurfaceConst, nSphereSurfaceFn form a uniform framework: V_n(r) = ω_n·rⁿ, C_n = n·ω_n, S_{n-1}(r) = C_n·r^(n-1). This separates the constant part (depending only on n) from the radius-dependent part.",
-      "mathContext": "Natural number subtraction in r^(n-1): for n=0, gives r^0=1 (trivially); for n=2, gives r^1=r (circumference); for n=3, gives r^2 (sphere surface).",
-      "significance": "medium"
+    "type": "definition",
+    "title": "Uniform n-Dimensional Framework",
+    "content": "Three definitions establish a uniform framework that works across all dimensions: `nBallVolumeFn n r = ω_n · rⁿ` (volume), `nSphereSurfaceConst n = n · ω_n` (surface constant, sometimes denoted $C_n$), and `nSphereSurfaceFn n r = C_n · r^(n-1)` (surface area as a function of radius). Crucially this separates the constant part (depending only on $n$ via the Gamma function) from the radius-dependent part (a single power $r^k$). The natural-number subtraction `n - 1` is benign in the dimensions of interest: for $n \\ge 1$ it gives $r^{n-1}$ as expected; for $n = 0$ the formula degenerates to $0 \\cdot r^0 / -1 = 0$ which is the correct boundary value (a 0-ball is a point with zero surface).",
+    "mathContext": "$V_n(r) = \\omega_n r^n$, $C_n = n \\omega_n$, $S_{n-1}(r) = C_n r^{n-1}$. The factorization $S_{n-1}(r) = C_n r^{n-1}$ separates the dimensional constant from the geometric scaling.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat subtraction in Lean",
+      "dimensional analysis",
+      "scale invariance"
+    ],
+    "prerequisites": [
+      "n-dimensional measure",
+      "real-power vs nat-power"
+    ]
+  },
+  {
+    "id": "cvd01-ann-04",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 117
     },
-    {
-      "id": "annotation-parent-connection",
-      "lineStart": 147,
-      "lineEnd": 165,
-      "type": "insight",
-      "content": "The parent theorem `CircumferenceViaDifferentiation.area_hasDerivAt` is literally a special case of `nBallVolumeFn_hasDerivAt` for n=2. This is formalized by `disk_area_matches_parent`, which recovers the parent result from the general one.",
-      "mathContext": "nBallVolumeFn 2 r = unitBallVolume 2 * r^2 = π * r^2 = areaFn r. The derivative at r is nSphereSurfaceFn 2 r = 2π * r = circumferenceFn r.",
-      "significance": "high"
+    "type": "technique",
+    "title": "Power Rule Drives the Main Theorem",
+    "content": "`nBallVolumeFn_hasDerivAt` is a five-line proof: unfold the three definitions, apply `(hasDerivAt_pow n r).const_mul (unitBallVolume n)` (giving $\\frac{d}{dr}(\\omega_n r^n) = \\omega_n \\cdot n r^{n-1}$), then a single `ring` rewrite reorders to $n \\omega_n \\cdot r^{n-1}$. The entire geometric content of the theorem is encoded in the constant $\\omega_n$; differentiation is pure calculus. Two corollaries follow immediately: `nBallVolumeFn_differentiable` (via `HasDerivAt.differentiableAt`) and `deriv_nBallVolume` (the unique-derivative bridge from the proposition `HasDerivAt` to the function `deriv`). This third form is what's needed for `deriv` rewriting in downstream computations like the final example `deriv (nBallVolumeFn 2) 1 = 2π`.",
+    "mathContext": "Power rule: $\\frac{d}{dx} x^n = n x^{n-1}$. `HasDerivAt.const_mul`: if $f$ has derivative $f'$ at $x$, then $cf$ has derivative $cf'$. Composition: $\\frac{d}{dr}(\\omega_n r^n) = \\omega_n \\cdot n r^{n-1} = n \\omega_n r^{n-1} = S_{n-1}(r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "hasDerivAt_pow",
+      "HasDerivAt.const_mul",
+      "deriv vs HasDerivAt",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.Calculus.Deriv API",
+      "differentiable function basics"
+    ]
+  },
+  {
+    "id": "cvd01-ann-05",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 134
     },
-    {
-      "id": "annotation-n3-sphere",
-      "lineStart": 130,
-      "lineEnd": 143,
-      "type": "result",
-      "content": "For n=3: the sphere surface area formula 4πr² emerges as the derivative of the ball volume (4π/3)r³. This confirms the classical result d/dr(4πr³/3) = 4πr² and shows the general framework handles the 3D case automatically.",
-      "mathContext": "nSphereSurfaceConst 3 = 3 * unitBallVolume 3 = 3 * (4π/3) = 4π. Then nSphereSurfaceFn 3 r = 4π * r^2.",
-      "significance": "high"
-    }
-  ]
-}
+    "type": "technique",
+    "title": "Gamma Recursion Closes the Loop",
+    "content": "`nSphereSurfaceConst_eq_gamma` proves $C_n = n \\omega_n = 2\\pi^{n/2}/\\Gamma(n/2)$ for $n \\ge 1$ — the identity that lets the surface formula be written without referring back to the volume formula. The key step is `Gamma_add_one hn2ne` rewriting $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$ in the denominator of the unfolded $\\omega_n$. After `field_simp [hGne, hn_pos.ne', hn2ne]` clears the cascade of denominators (using non-vanishing of $\\Gamma(n/2)$, $n$, and $n/2$), `ring` finishes by recognizing $n / (n/2) = 2$. The hypothesis $n \\ge 1$ is necessary because $\\Gamma(0)$ has a simple pole; for $n = 0$ the surface formula $2 \\pi^0 / \\Gamma(0)$ is meaningless, which matches geometric intuition (a 0-ball is a point, no surface). This is also why the file's `nSphereSurfaceConst_eq_gamma` is the only step requiring a positivity hypothesis on $n$ — every other theorem holds vacuously or with both sides zero at $n = 0$.",
+    "mathContext": "Gamma recursion: $\\Gamma(x+1) = x\\Gamma(x)$ for $x > 0$. Applied at $x = n/2$: $\\Gamma(n/2+1) = (n/2)\\Gamma(n/2)$, hence $\\frac{n}{\\Gamma(n/2+1)} = \\frac{n}{(n/2)\\Gamma(n/2)} = \\frac{2}{\\Gamma(n/2)}$. Surface form: $C_n = n \\omega_n = \\frac{2\\pi^{n/2}}{\\Gamma(n/2)}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma function recursion",
+      "field_simp tactic",
+      "Gamma_pos_of_pos",
+      "ring tactic over fields"
+    ],
+    "prerequisites": [
+      "Gamma function poles",
+      "Real.Gamma_add_one signature",
+      "non-vanishing hypotheses for field_simp"
+    ]
+  },
+  {
+    "id": "cvd01-ann-06",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 169
+    },
+    "type": "insight",
+    "title": "Special Cases: n = 2 and n = 3",
+    "content": "The two classical cases drop out cleanly. `nSphereSurfaceConst_two` shows $C_2 = 2 \\cdot \\omega_2 = 2\\pi$ (the unit-circle circumference), and `nSphereSurfaceConst_three` shows $C_3 = 3 \\cdot \\omega_3 = 4\\pi$ (the unit-sphere surface area). Both reduce to `unfold; rw; norm_num` once the special values $\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$ are in hand. The named derivative theorems `disk_area_deriv_eq_circumference` (`HasDerivAt (V_2) (2\\pi r) r`) and `ball_volume_deriv_eq_sphere_surface` (`HasDerivAt (V_3) (4\\pi r^2) r`) state the classical results in their textbook form: $\\frac{d}{dr}(\\pi r^2) = 2\\pi r$ and $\\frac{d}{dr}(\\frac{4}{3}\\pi r^3) = 4\\pi r^2$. The `convert` tactic bridges between the general surface-function form and the textbook polynomial expression. These named theorems are the file's user-facing 'main results' for anyone who wants the classical 2D/3D facts and doesn't care about the general $n$-dimensional framework.",
+    "mathContext": "$C_2 = 2 \\cdot \\pi = 2\\pi$ (circumference). $C_3 = 3 \\cdot (4\\pi/3) = 4\\pi$ (sphere surface). Derivative forms: $\\frac{d}{dr}(\\pi r^2) = 2\\pi r$, $\\frac{d}{dr}(\\frac{4}{3}\\pi r^3) = 4\\pi r^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "circle circumference",
+      "sphere surface area",
+      "convert tactic",
+      "Archimedes onion-peel"
+    ],
+    "prerequisites": [
+      "unitBallVolume_two and _three (this file)",
+      "concrete polynomial differentiation"
+    ]
+  },
+  {
+    "id": "cvd01-ann-07",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 170,
+      "endLine": 213
+    },
+    "type": "insight",
+    "title": "Parent Theorem as the n=2 Instance, and Closure Properties",
+    "content": "Part 5 closes the loop with the parent file `Proofs.CircumferenceViaDifferentiation`. `nBallVolumeFn_two_eq_areaFn` shows pointwise that the n=2 specialization equals the parent's `areaFn`; `disk_area_matches_parent` upgrades this to function equality (via `funext`) and rewrites to recover the parent's circumference theorem from the general $n$-dimensional one. This is a *generalization-by-extension* relationship: the parent file proved the 2D case directly, and this OQ-01 file shows the proof was already implicit in the general framework. Part 6 collects three closure properties: `nSphereSurface_unit` (surface at $r=1$ equals the constant $C_n$), `unitBallVolume_from_surface` (the constant inversion $\\omega_n = C_n / n$), and `nBallVolumeFn_nonneg` (volume is non-negative for non-negative radius). The closing examples reduce $V_2(r) = \\pi r^2$, $V_3(r) = \\frac{4\\pi}{3} r^3$, and $\\frac{d V_2}{d r}\\bigg|_{r=1} = 2\\pi$ — direct sanity checks against high-school formulas.",
+    "mathContext": "Parent's circumference theorem $C(r) = dA/dr$ as the $n=2$ specialization of $S_{n-1}(r) = dV_n/dr$. Closure: $V_n(0) = 0$, $V_n(r) \\ge 0$ for $r \\ge 0$, $S_{n-1}(1) = C_n$, $\\omega_n = C_n / n$ for $n \\ge 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "funext",
+      "convert tactic",
+      "function equality vs pointwise",
+      "specialization to dimension n"
+    ],
+    "prerequisites": [
+      "Proofs.CircumferenceViaDifferentiation parent file",
+      "function equality from pointwise equality"
+    ]
+  }
+]
