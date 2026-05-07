@@ -4730,6 +4730,53 @@ private lemma colLen_of_isCorner {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCo
     rw [← YoungDiagram.mem_iff_lt_colLen]; exact hc.2.2
   omega
 
+/-- Two distinct corners of μ are anti-monotone: if `c.1 < c'.1` then `c'.2 < c.2`.
+    This is a structural fact: corners step strictly down-and-left in the diagram.
+    Useful for identifying the unique cell `(c.1, c'.2)` that is in the arm of `c` and
+    leg of `c'` (the "doubly-affected cell" in the GNW exchange argument). -/
+private lemma corner_col_lt_of_row_lt {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hi : c.1 < c'.1) :
+    c'.2 < c.2 := by
+  -- c'.1 < μ.colLen c'.2 from c' ∈ μ
+  have hc'_col : c'.1 < μ.colLen c'.2 := YoungDiagram.mem_iff_lt_colLen.mp hc'.1
+  -- If c.2 ≤ c'.2, then μ.colLen c'.2 ≤ μ.colLen c.2 (colLen anti-monotone),
+  -- and μ.colLen c.2 = c.1 + 1, so c'.1 < c.1 + 1, i.e., c'.1 ≤ c.1, contradicting hi.
+  by_contra h_le
+  push_neg at h_le -- c.2 ≤ c'.2
+  have h_anti : μ.colLen c'.2 ≤ μ.colLen c.2 := by
+    apply Nat.le_of_not_lt
+    intro hlt
+    have h1 : (μ.colLen c.2, c'.2) ∈ μ := YoungDiagram.mem_iff_lt_colLen.mpr hlt
+    have h2 : (μ.colLen c.2, c.2) ∈ μ :=
+      μ.isLowerSet (Prod.mk_le_mk.mpr ⟨le_refl _, h_le⟩) h1
+    exact absurd (YoungDiagram.mem_iff_lt_colLen.mp h2) (lt_irrefl _)
+  rw [colLen_of_isCorner hc] at h_anti
+  omega
+
+/-- Symmetric form: if two distinct corners satisfy `c.2 < c'.2` then `c'.1 < c.1`.
+    Equivalently, corners are also row-anti-monotone in column index. -/
+private lemma corner_row_lt_of_col_lt {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hj : c.2 < c'.2) :
+    c'.1 < c.1 := by
+  by_contra h_le
+  push_neg at h_le -- c.1 ≤ c'.1
+  rcases lt_or_eq_of_le h_le with hlt | heq
+  · exact absurd (corner_col_lt_of_row_lt hc hc' hlt) (not_lt.mpr (le_of_lt hj))
+  · -- c.1 = c'.1; combined with c.2 < c'.2 and rowLen of corner ⇒ contradiction
+    have hrl : μ.rowLen c.1 = c.2 + 1 := rowLen_of_isCorner hc
+    have hc'_row : c'.2 < μ.rowLen c'.1 := YoungDiagram.mem_iff_lt_rowLen.mp hc'.1
+    rw [← heq, hrl] at hc'_row; omega
+
+/-- For two distinct corners `c, c'` of μ with `c.1 < c'.1`, the cell `(c.1, c'.2)`
+    lies in μ. It is the unique cell in the arm of `c` and leg of `c'`, and plays
+    a key role in the GNW 1979 exchange identity. -/
+private lemma doubly_affected_cell_mem {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hi : c.1 < c'.1) :
+    (c.1, c'.2) ∈ μ := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  -- (c.1, c'.2) ≤ (c.1, c.2) = c, and c ∈ μ, so by lower-set property (c.1, c'.2) ∈ μ
+  exact μ.isLowerSet (Prod.mk_le_mk.mpr ⟨le_refl _, le_of_lt h_col_lt⟩) hc.1
+
 /-- Removing corner c decreases rowLen at row c.1 by 1: from c.2+1 to c.2. -/
 private lemma rowLen_removeCorner_self {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c) :
     (removeCorner μ c hc).rowLen c.1 = c.2 := by
