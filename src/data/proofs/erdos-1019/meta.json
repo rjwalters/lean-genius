@@ -283,7 +283,10 @@
     "theoremCount": 13,
     "definitionCount": 22,
     "path": "Proofs/Erdos1019Problem.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/Erdos1019Aristotle.lean"
+    ]
   },
   "mathlibDependencies": [
     "Mathlib.Combinatorics.SimpleGraph.Basic",
