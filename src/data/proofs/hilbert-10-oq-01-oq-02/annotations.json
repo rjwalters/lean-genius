@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-file-header",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 60 },
+    "type": "context",
+    "title": "Σ₁ vs Π₂: The Precise Refinement of OQ-01",
+    "content": "The header positions this file as the model-theoretic refinement of OQ-01. The OPEN question asks whether $\\mathbb{Z} \\subseteq \\mathbb{Q}$ admits a $\\Sigma_1$ (purely existential, Diophantine) definition. Koenigsmann (Annals 2016) settled the $\\Pi_2$ ($\\forall\\exists$) version by exhibiting an explicit polynomial built from Hilbert symbols and quaternion algebras over $\\mathbb{Q}$. The $\\Sigma_1$/$\\Pi_2$ gap is precisely the mathematical content separating the open problem from Koenigsmann's theorem — and it matters because only the $\\Sigma_1$ version implies H10/$\\mathbb{Q}$ undecidability via MRDP.",
+    "mathContext": "$\\Sigma_1$: $\\exists P \\in \\mathbb{Q}[t,x_1,\\ldots,x_k] : (t \\in \\mathbb{Z} \\iff \\exists x \\in \\mathbb{Q}^k, P(t,x) = 0)$ — OPEN.\n$\\Pi_2$: $\\exists P : (t \\in \\mathbb{Z} \\iff \\forall y \\in \\mathbb{Q}^n, \\exists z \\in \\mathbb{Q}^m, P(t,y,z) = 0)$ — PROVED (Koenigsmann 2016).",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's 10th problem", "MRDP theorem", "arithmetic hierarchy", "Koenigsmann 2016", "Mazur's conjecture"],
+    "prerequisites": ["mathematical logic", "computability theory", "elementary number theory"]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 62, "endLine": 64 },
+    "type": "technique",
+    "title": "Import Companion + Namespace",
+    "content": "Imports `Proofs.Hilbert10OQ01` to reuse the OQ-01 infrastructure: `RatDiophantinePoly`, `hasRationalSolution`, `IntegersDiophantineOverQ`, `H10_Rational_Decidable`, and the existing reduction axiom `integers_diophantine_implies_undecidable`. The namespace `Hilbert10Rationals` is shared with the parent file — both files contribute to the same model-theoretic vocabulary.",
+    "mathContext": "The companion design avoids redefining shared concepts: the OQ-02 file is a refinement layer on top of OQ-01, not a fork.",
+    "significance": "technical",
+    "relatedConcepts": ["Lean module system", "Hilbert10OQ01.lean"],
+    "prerequisites": ["Lean 4 imports"]
+  },
+  {
+    "id": "ann-rat-subset",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 75 },
+    "type": "definition",
+    "title": "Subsets of ℚ as Predicates",
+    "content": "Establishes the predicate-style encoding of subsets: `RatSubset := Rat → Prop`, and the canonical example `IntSubset q := ∃ z : Int, q = z` (the image of $\\mathbb{Z}$ under $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$). Using `Prop`-valued predicates rather than `Set`-typed objects makes the $\\Sigma_1$/$\\Pi_2$ definability statements unfold cleanly into first-order quantifier blocks.",
+    "mathContext": "$\\mathbb{Z} = \\{q \\in \\mathbb{Q} : \\exists z \\in \\mathbb{Z}, q = z\\}$ — the image of the canonical inclusion $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$. Encoded as a `Prop`-valued predicate `IntSubset` to make subsequent quantifier-class definitions transparent.",
+    "significance": "supporting",
+    "relatedConcepts": ["predicate logic", "Set.range Int.cast", "first-order definability"],
+    "prerequisites": ["Lean 4 type theory", "predicate vs set encodings"]
+  },
+  {
+    "id": "ann-sigma1-def",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 102 },
+    "type": "concept",
+    "title": "Σ₁ Definability: The OPEN Layer",
+    "content": "`IsDiophantineDefinition S` says there exists a parametric family $P : \\mathbb{Q} \\to \\text{RatDiophantinePoly}$ such that $S(q) \\iff $ the rational equation $P(q) = 0$ has a solution. `IntegersAreDiophantineOverQ := IsDiophantineDefinition IntSubset` is the open question. The lemma `integers_diophantine_iff` proves $\\Sigma_1$-definability $\\iff$ OQ-01's `IntegersDiophantineOverQ` by `Iff.rfl` — they are *definitionally* equal, not merely logically equivalent. This is the bridge that lets the file re-export OQ-01 conditionals without introducing new axioms.",
+    "mathContext": "$\\Sigma_1$ subset $S \\subseteq \\mathbb{Q}$: $\\exists P \\in \\mathbb{Q}[t, \\bar x] \\, \\forall q \\in \\mathbb{Q} : S(q) \\iff \\exists \\bar x \\in \\mathbb{Q}^k, P(q, \\bar x) = 0$. The open question is whether $\\mathbb{Z}$ is such a subset. By MRDP, a positive answer would yield H10/$\\mathbb{Q}$ undecidable.",
+    "significance": "key",
+    "relatedConcepts": ["existential definability", "Diophantine sets", "MRDP", "RatDiophantinePoly", "Iff.rfl definitional equality"],
+    "prerequisites": ["polynomial rings", "model theory of arithmetic"]
+  },
+  {
+    "id": "ann-pi2-def",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 103, "endLine": 126 },
+    "type": "concept",
+    "title": "Π₂ Definability + Koenigsmann's Axiom",
+    "content": "`IsUniversalExistentialDefinition S` adds a *universal* quantifier block: $S(q) \\iff \\forall y \\in \\mathbb{Q}^\\mathbb{N}, P(q, y) = 0$ has a rational solution. Koenigsmann 2016 is captured as the SINGLE axiom `koenigsmann_2016_universal : IsUniversalExistentialDefinition IntSubset`. The axiomatization is honest: the original proof is constructive (an explicit polynomial built from Hilbert symbols and quaternion algebras over $\\mathbb{Q}$), but Mathlib lacks the Hilbert-symbol/quaternion-form infrastructure to build the polynomial, so we record the conclusion as a black-box assumption pending future formalization.",
+    "mathContext": "$\\Pi_2$ subset: $\\exists P \\, \\forall q : S(q) \\iff \\forall y \\in \\mathbb{Q}^n, \\exists \\bar z \\in \\mathbb{Q}^m, P(q, y, \\bar z) = 0$. Koenigsmann's polynomial uses Hilbert symbols $(a, b)_p \\in \\{\\pm 1\\}$ at each prime $p$ — a deeply arithmetic construction, not a model-theoretic abstraction.",
+    "significance": "key",
+    "relatedConcepts": ["Hilbert symbols", "quaternion algebras over ℚ", "local-global principle", "Brauer group of ℚ", "Koenigsmann's polynomial"],
+    "prerequisites": ["class field theory", "quadratic forms over ℚ"]
+  },
+  {
+    "id": "ann-containment",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 127, "endLine": 156 },
+    "type": "insight",
+    "title": "Σ₁ ⊆ Π₂: One-Direction Trivial, Other Direction Open",
+    "content": "Proves the easy direction: any $\\Sigma_1$ definition extends to $\\Pi_2$ by adding a dummy universal block (just ignore $y$ and use the constant $0$ as a witness for the existential `mpr` step). The two-line proof is `refine ⟨fun q _ => P q, ?_⟩` followed by trivial implications. This makes mathematically precise why the $\\Sigma_1$/$\\Pi_2$ refinement is one-sided: the open content is $\\Pi_2 \\subseteq \\Sigma_1$ for $\\mathbb{Z}$, not vice versa. The corollary `integers_diophantine_strengthens_koenigsmann` packages this: any positive answer to the open Σ₁ question is automatically stronger than Koenigsmann.",
+    "mathContext": "$\\Sigma_1 \\subseteq \\Pi_2$: trivially, $\\exists \\bar x P \\implies \\forall y \\exists \\bar x P$ (with $P$ not depending on $y$). The reverse $\\Pi_2 \\subseteq \\Sigma_1$ for $\\mathbb{Z} \\subseteq \\mathbb{Q}$ would *strengthen* Koenigsmann to a Diophantine definition — and would settle H10/$\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic hierarchy collapse", "quantifier elimination", "definability strength"],
+    "prerequisites": ["first-order logic"]
+  },
+  {
+    "id": "ann-h10q-consequence",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 158, "endLine": 169 },
+    "type": "insight",
+    "title": "Σ₁ ⟹ H10/ℚ Undecidable (Re-Export, NOT a New Axiom)",
+    "content": "Re-exports OQ-01's `integers_diophantine_implies_undecidable` against the new $\\Sigma_1$ predicate. The proof is `intro h; exact integers_diophantine_implies_undecidable (integers_diophantine_iff.mp h)` — pure logical bookkeeping using the definitional equivalence. The point is methodological: the Σ₁/Π₂ distinction lets us state the H10/ℚ-reduction *only* against Σ₁, making explicit that Koenigsmann's Π₂ result does NOT automatically yield H10/ℚ undecidable. This is the substantive content of the refinement, captured in a 3-line theorem.",
+    "mathContext": "MRDP gives H10/$\\mathbb{Z}$ undecidable. The reduction $\\mathbb{Z}$-Diophantine-in-$\\mathbb{Q}$ $\\implies$ H10/$\\mathbb{Q}$-undecidable requires the *Σ₁* form: a Π₂ definition does not immediately propagate undecidability across the rational/integer interface.",
+    "significance": "key",
+    "relatedConcepts": ["MRDP theorem", "many-one reduction", "Davis-Putnam-Robinson-Matiyasevich"],
+    "prerequisites": ["computability theory", "Turing reductions"]
+  },
+  {
+    "id": "ann-mazur-consequence",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 171, "endLine": 186 },
+    "type": "insight",
+    "title": "Mazur ⟹ ¬Σ₁ (Re-Export, NOT a New Axiom)",
+    "content": "Re-exports OQ-01's `mazur_implies_not_diophantine` against the new $\\Sigma_1$ predicate, again as a logical consequence (not an axiom). Mazur's conjecture (1992) places topological constraints on the closure of $\\mathbb{Q}$-solution sets of polynomial equations — constraints that an $\\mathbb{R}$-discrete set like $\\mathbb{Z}$ would violate. So Mazur $\\implies$ $\\mathbb{Z}$ is not $\\Sigma_1$-definable in $\\mathbb{Q}$. Crucially, Mazur is *consistent* with $\\Pi_2$-definability — clarifying why the conjecture does not contradict Koenigsmann.",
+    "mathContext": "Mazur's conjecture: for any $V \\subseteq \\mathbb{Q}^n$ that is the rational-solution set of a polynomial system, the closure $\\bar V \\subseteq \\mathbb{R}^n$ has only finitely many connected components. $\\mathbb{Z} \\subseteq \\mathbb{R}$ has infinitely many connected components, so $\\mathbb{Z}$ cannot be a $\\Sigma_1$-projection of such a $V$.",
+    "significance": "key",
+    "relatedConcepts": ["Mazur's conjecture", "topology of rational points", "Brauer-Manin obstruction", "Cornelissen-Zahidi"],
+    "prerequisites": ["arithmetic geometry", "real-analytic topology"]
+  },
+  {
+    "id": "ann-landscape",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 187, "endLine": 231 },
+    "type": "context",
+    "title": "Status Table: Σ₁ Open, Π₂ Closed",
+    "content": "The closing comment block presents the sharpened landscape as a table — Σ₁ (∃) OPEN, Π₁ (∀ on the complement) OPEN-equivalent, Π₂ (∀∃) PROVED by Koenigsmann — and explains why the gap matters: only Σ₁ yields H10/ℚ-undecidability via MRDP; Mazur refutes Σ₁ but is consistent with Π₂; a positive Σ₁ answer would be a constructive polynomial witness while a negative answer would likely come from Brauer-Manin / topological structure on ℚ-points. The block also tallies the file's axiom count (1 net new) and theorem count (4-5).",
+    "mathContext": "$\\Sigma_1 \\Leftrightarrow \\neg \\Pi_1$ on the complement (basic logic), so the open content is $\\Sigma_1$ vs $\\Pi_2$. Daans 2021 reduced Koenigsmann's Π₂ definition to 10 universal quantifiers — the next milestone would be reducing further toward Σ₁.",
+    "significance": "context",
+    "relatedConcepts": ["arithmetic hierarchy", "Daans 2021", "Eisenträger-Park 2018", "Poonen 2009 nonsquares"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-checks-and-end",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 232, "endLine": 239 },
+    "type": "technique",
+    "title": "#check Sanity Tests + Namespace Close",
+    "content": "Five `#check` commands serve as type-level regression tests: `IsDiophantineDefinition`, `IsUniversalExistentialDefinition`, `koenigsmann_2016_universal`, `integers_diophantine_iff`, and `diophantine_implies_universal_existential`. If any of these signatures shift (e.g., the import refactors `RatDiophantinePoly`), the elaboration fails at compile time — pinning the file's API surface. The `end Hilbert10Rationals` closes the namespace cleanly.",
+    "mathContext": "The 5 #check'd identifiers are exactly the public API of the file: 2 definitions ($\\Sigma_1$, $\\Pi_2$), 1 axiom (Koenigsmann), and 2 theorems (definitional equivalence, $\\Sigma_1 \\subseteq \\Pi_2$). Together they characterize the refinement.",
+    "significance": "technical",
+    "relatedConcepts": ["Lean #check command", "API stability"],
+    "prerequisites": []
+  }
+]
