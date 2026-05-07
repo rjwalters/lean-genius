@@ -21,20 +21,21 @@
       "general_threshold_exponent: For general k, threshold scales as (k! d^{k-1} ln 2)^{1/k}",
       "bad_count_n3 / good_count_n3: exact triple-free counts at n=3 (Session 1, 2026-04-21)",
       "lambda_tendsto (Lemma A): λ_c(d) := C(nc(d),3)/d² → c³/6 as d → ∞ (Session 4, 2026-05-03)",
-      "exp_lambda_tendsto (Lemma B): exp(-λ_c(d)) → exp(-c³/6) as d → ∞ (Session 4, 2026-05-03)"
+      "exp_lambda_tendsto (Lemma B): exp(-λ_c(d)) → exp(-c³/6) as d → ∞ (Session 4, 2026-05-03)",
+      "poisson_approx_birthday3 (Session 5, PR #16150): now a theorem, proved by Filter.Tendsto.sub from Lemma B (proved) + Lemma C (axiom)"
     ],
     "open": [
-      "poisson_approx_birthday3 (qualitative form): Tendsto (P_no_triple(n d, d) − exp(−C(n d, 3)/d²)) atTop (nhds 0), where n d := ⌊c·d^(2/3)⌋"
+      "p_no_triple_tendsto (Lemma C, axiom in BirthdayProblemOQ03OQ01OQ02.lean): Tendsto (fun d => P_no_triple(n_c(d), d)) atTop (nhds (exp(-c³/6))), where n_c(d) := ⌊c·d^(2/3)⌋"
     ],
-    "goal": "Prove the qualitative Tendsto form via decomposition: (A) λ(d) → c³/6 (asymptotic analysis), (B) exp(−λ(d)) → exp(−c³/6) (continuity), (C) P_no_triple(n d, d) → exp(−c³/6) (Poisson convergence)"
+    "goal": "Discharge Lemma C (p_no_triple_tendsto) — the only remaining axiom — via qualitative method-of-factorial-moments → Poisson convergence (or coupling-to-independent-Bernoullis)."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-03T00:00:00Z",
-    "iteration": 4,
-    "focus": "Lemmas A+B proved; axiom is now Lemma C only (P_no_triple → exp(-c³/6))",
+    "since": "2026-05-06T13:21:41Z",
+    "iteration": 5,
+    "focus": "Restatement landed in PR #16150 (Session 5, 2026-05-06): the monolithic poisson_approx_birthday3 axiom is replaced by axiom p_no_triple_tendsto (Lemma C only — P_no_triple(n_c(d), d) → exp(-c³/6)); the original poisson_approx_birthday3 is now a theorem proved via Filter.Tendsto.sub from Lemma B (exp_lambda_tendsto, proved) and Lemma C (axiom). Gallery parent (birthday-problem-oq-03-oq-01-oq-02) carries axiomCount=1 with the new minimal axiom.",
     "blockers": [],
-    "nextAction": "Release claim. Lemma C requires method-of-factorial-moments Poisson convergence, absent from Mathlib 4.26. Build Docker to verify Lemmas A+B compile, then create PR.",
+    "nextAction": "Genuine remaining gap: prove Lemma C in Lean. Requires qualitative method-of-factorial-moments → Poisson convergence (≈500 lines), absent from Mathlib 4.26. Either build it locally for this entry or contribute upstream to Mathlib.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -42,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 4, 2026-05-03): Lemmas A+B proved (lambda_tendsto, exp_lambda_tendsto). Remaining axiom is Lemma C only: P_no_triple(nc(d),d) → exp(-c^3/6).",
+    "progressSummary": "PROGRESS (Session 5, PR #16150 merged 2026-05-06): poisson_approx_birthday3 is no longer an axiom. The new axiom is Lemma C alone (p_no_triple_tendsto: P_no_triple(n_c(d), d) → exp(-c³/6)); the original poisson_approx_birthday3 statement is now a theorem proved by Filter.Tendsto.sub from Lemma B (exp_lambda_tendsto, proved) and Lemma C (axiom). Lemmas A+B (lambda_tendsto, exp_lambda_tendsto) had been proved in Session 4 (2026-05-03). Remaining real research: prove Lemma C — qualitative method-of-factorial-moments → Poisson convergence, ≈500 lines, not in Mathlib 4.26.",
     "builtItems": [
       "Corrected JSON `problemStatement.formal` to match actual Lean axiom signature (qualitative Tendsto, not |...| ≤ C·n⁴/d³)",
       "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C",
@@ -51,7 +52,8 @@
       "lambda_tendsto (Lemma A): C(nc(d),3)/d^2 → c^3/6, squeeze proof (Session 4, line ~393)",
       "exp_lambda_tendsto (Lemma B): exp(-C(nc(d),3)/d^2) → exp(-c^3/6), one-liner (Session 4, line ~448)",
       "rpow23_atTop: private helper d^(2/3) → +∞ (Session 4, line ~375)",
-      "two_div_rpow23_tendsto_zero: private helper 2/d^(2/3) → 0 (Session 4, line ~380)"
+      "two_div_rpow23_tendsto_zero: private helper 2/d^(2/3) → 0 (Session 4, line ~380)",
+      "Session 5, PR #16150 (2026-05-06): poisson_approx_birthday3 axiom replaced by axiom p_no_triple_tendsto (Lemma C only); original statement is now `theorem poisson_approx_birthday3` derived via `(p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)` + `simpa`"
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",
@@ -74,9 +76,8 @@
       "(Quantitative) Chen-Stein bound — NOT NEEDED for the actual qualitative axiom; was only needed for the misframed quantitative bound"
     ],
     "nextSteps": [
-      "Restate poisson_approx_birthday3 as Lemma C only: P_no_triple(nc(d),d) → exp(-c^3/6).",
-      "Lemma C: method-of-factorial-moments (qualitative Poisson, not in Mathlib 4.26, ~500 lines if built).",
-      "After Docker build: submit PR, update gallery meta."
+      "Lemma C (open): prove p_no_triple_tendsto in Lean — P_no_triple(n_c(d), d) → exp(-c³/6) — via the qualitative method-of-factorial-moments → Poisson convergence (≈500 lines, not in Mathlib 4.26).",
+      "Alternative: contribute method-of-factorial-moments → Poisson convergence upstream to Mathlib (Mathlib.Probability.Distributions.Poisson currently exposes only PMF/measure constructors, no convergence theorems)."
     ]
   },
   "tags": [
@@ -110,7 +111,7 @@
     ]
   },
   "started": "2026-04-21T06:38:17Z",
-  "lastUpdate": "2026-05-04T00:00:00Z",
+  "lastUpdate": "2026-05-07T17:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
