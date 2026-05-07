@@ -6,7 +6,7 @@
   "meta": {
     "author": "Researcher-10 (lean-genius)",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LawOfCosinesOQ05.lean",
     "tags": [
       "geometry",
@@ -17,11 +17,11 @@
       "unification",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 693,
-    "assumptions": "None. All results fully proved from Mathlib: euclidean_limit_holds completed with explicit K→0 Taylor expansion bounds.",
+    "assumptions": "1 structure-encoded assumption: UnifiedTriangle K.law — the unified law of cosines cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C) is a structure field (not proved from a Riemannian metric model). All other results — the unified Pythagorean identity, parity properties, K=±1 recovery theorems, algebraic equivalences, and the K→0 Euclidean limit (euclidean_limit_holds) — are fully proved from Mathlib (0 sorries).",
     "dateAdded": "2026-04-21",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -186,13 +186,15 @@
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Series",
       "Mathlib.Analysis.SpecialFunctions.ExpDeriv",
       "Mathlib.Analysis.SpecialFunctions.Sqrt",
       "Mathlib.Tactic"
     ],
     "namespace": "UnifiedLawOfCosines",
     "lineCount": 693,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "theoremCount": 28,
     "definitionCount": 2,
     "path": "Proofs/LawOfCosinesOQ05.lean",
