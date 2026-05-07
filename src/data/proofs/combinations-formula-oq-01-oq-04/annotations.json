@@ -162,5 +162,46 @@
       "Existential introduction: ⟨witness, proof⟩",
       ".symm to reverse an equation"
     ]
+  },
+  {
+    "id": "ann-lgv-2x2-nonneg",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 164, "endLine": 167 },
+    "type": "insight",
+    "title": "Parametric Non-Negativity from the Total-Positivity Family",
+    "content": "lgv_2x2_det_nonneg is parametric over $(m, a, b)$ with hypothesis $a + 1 \\leq b$. Unlike the concrete examples (which establish exact values), this theorem makes a *uniform* statement about an infinite family. The proof is a 1-line application of `lgv_det_nonneg` (the general $r \\times r$ statement from Part I) specialized via `lgvConfig2_wellFormed`. This gives a *family* of inequalities $\\binom{m+b-a}{m}^2 \\geq \\binom{m+b+1-a}{m} \\cdot \\binom{m+b-a-1}{m}$ — a known total-positivity property of binomial matrices, here proven combinatorially rather than via Cauchy's classical algebraic identity.",
+    "mathContext": "For all $m, a, b$ with $a + 1 \\leq b$: $\\binom{m+b-a}{m}^2 \\geq \\binom{m+b+1-a}{m} \\cdot \\binom{m+b-a-1}{m}$. Letting $n = m + b - a$, this becomes $\\binom{n}{m}^2 \\geq \\binom{n+1}{m} \\binom{n-1}{m}$, the *log-concavity* of $n \\mapsto \\binom{n}{m}$ along the upper-row direction — equivalent to a well-known Newton-Maclaurin inequality on Pascal's triangle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Total positivity of binomial matrices",
+      "Newton-Maclaurin / log-concave inequalities",
+      "Cauchy's 1841 determinant identity",
+      "lgv_det_nonneg as the underlying r×r statement"
+    ],
+    "prerequisites": [
+      "lgv_det_nonneg specialization to r=2",
+      "lgvConfig2_wellFormed",
+      "Total positivity / log-concavity intuition"
+    ]
+  },
+  {
+    "id": "ann-namespace-and-imports",
+    "proofId": "combinations-formula-oq-01-oq-04",
+    "range": { "startLine": 36, "endLine": 38 },
+    "type": "context",
+    "title": "Namespace and the open LGV Directive",
+    "content": "The file opens the `LGV` namespace from the parent `Proofs.BallotProblemOQ03OQ02` module, making `pathMatrix`, `niTupleCount`, `LGVConfig`, `lgv_lemma_rxr`, and `pathMatrix_det_nonneg` available without their full prefix. Note that imports go through `Proofs.BallotProblemOQ03OQ02` rather than directly to a smaller library: this carries the entire ballot-problem proof infrastructure, including the Gessel-Viennot involution. Wrapping these in a fresh `CombinationsFormulaOQ01OQ04` namespace creates a clean re-export interface so downstream proofs (combinations identities, MacMahon-style formulas) only need to depend on this thin layer.",
+    "mathContext": "Module structure: `import Proofs.BallotProblemOQ03OQ02`; `namespace CombinationsFormulaOQ01OQ04`; `open LGV`. The `open LGV` brings `pathMatrix`, `niTupleCount`, `LGVConfig`, `lgv_lemma_rxr`, `pathMatrix_det_nonneg` into scope.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lean 4 namespace and open directive",
+      "Module re-export pattern",
+      "BallotProblemOQ03OQ02.LGV namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 module imports",
+      "namespace / open syntax",
+      "Mathlib import discipline"
+    ]
   }
 ]
