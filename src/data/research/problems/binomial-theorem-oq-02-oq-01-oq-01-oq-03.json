@@ -34,16 +34,18 @@
     "goal": "Phase-2: produce `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with (a) a precise Lean statement of the marginal CLT for the i-th coordinate of Multinomial(n, p₁,…,pₖ), (b) either a proof via Mathlib's `ProbabilityTheory.iid_central_limit_theorem` applied to the indicator variables Yⱼ = 𝟙[trial j → outcome i] (which are Bernoulli(pᵢ) i.i.d.), or an axiomatized statement with full proof sketch, and (c) a coordinate-free version using Cramér-Wold for the joint vector CLT."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T19:20:00.000Z",
+    "phase": "ORIENT",
+    "since": "2026-05-07T20:30:00.000Z",
     "iteration": 1,
-    "focus": "Phase-1 observation. The multinomial-to-binomial-marginal reduction is FORMALIZED in `Proofs/BinomialTheoremOQ02OQ01OQ02.lean`. The remaining content of OQ-02-OQ-01-OQ-01-OQ-03 is to combine that with a Lean-stated binomial CLT (which is standard but not yet a named theorem of Mathlib in the form we need).",
-    "blockers": [],
-    "nextAction": "Phase 2 (ORIENT): inventory Mathlib's CLT infrastructure (`Mathlib.Probability.CentralLimitTheorem`, `tendsto_central_limit_lemma`, characteristic-function tools). Decide whether the binomial CLT can be EXTRACTED via the Bernoulli-sum representation Xⱼ = ∑ᵢ₌₁ⁿ Bᵢⱼ where Bᵢⱼ ~ Bernoulli(pⱼ) i.i.d. Phase 3 (Lean): scaffold `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with statement + proof sketch.",
+    "focus": "Phase-2 orientation: decomposition (A/B/C/D) recorded in research/problems/<slug>/knowledge.md. Sublemma A is DONE in BinomialTheoremOQ02OQ01OQ02.lean (`multinomial_marginal_pmf`). Next ACT session: confirm Mathlib's i.i.d. CLT signature and scaffold the new Lean file.",
+    "blockers": [
+      "Local Docker build memory is ~7.65 GiB — risky for a new Mathlib-dependent file. CI verification only."
+    ],
+    "nextAction": "Phase 3 (ACT) in a future session: scaffold `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with sublemma A re-export, the marginal-CLT statement, and either a full proof via Mathlib's i.i.d. CLT applied to the Bernoulli-sum representation or a one-axiom isolation (axiomatise sublemma C only).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
