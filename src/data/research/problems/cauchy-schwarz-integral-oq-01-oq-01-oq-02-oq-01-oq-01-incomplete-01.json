@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-03T11:21:07.632Z",
+    "phase": "DONE",
+    "since": "2026-05-07T17:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean: 0 sorries, 0 axioms (952 lines). All infrastructure (hext_ind, hagree_n, lp_truncation_tendsto_zero, extByZeroCLM, integrationCLM_sf) is in place; the final localization_existence sorry was eliminated in PR #15581 (feat(cs-localization): sigma-finite Riesz — all sorries eliminated). Gallery status=verified, badge=original.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — entry complete.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remains in localization_existence (consistency+MCT); hext_ind+hagree_n proved this session",
+    "progressSummary": "COMPLETE: CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean has 0 sorries, 0 axioms (952 lines). The final localization_existence sorry — consistency of g_seq across spanning sets + MCT gluing — was eliminated in PR #15581 (feat(cs-localization): sigma-finite Riesz — all sorries eliminated, merged 2026-05-03). Earlier sessions had built the infrastructure (extByZeroCLM, integrationCLM_sf, integral_representation_sf, lp_truncation_tendsto_zero, hext_ind, hagree_n) across PRs #15278/#15462/#15485. Gallery status=verified, badge=original.",
     "builtItems": [
       "integrationCLM_sf: integration CLM for pure SigmaFinite mu",
       "integral_representation_sf: density extension via Lp.induction",
@@ -59,11 +59,7 @@
       "Lp restriction map Lp(mu) -> Lp(mu.restrict S) not available as isometric map",
       "Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) API verbosity for unifIntegrable + unifTight"
     ],
-    "nextSteps": [
-      "Prove consistency: g_seq m =ᵐ[μ.restrict Sₘ] g_seq n via ae_eq_restrict_of_forall_setIntegral_eq (AEEqOfIntegral.lean:403)",
-      "Define global g := lim g_seq pointwise, prove MemLp g q μ via lintegral_iUnion bound",
-      "Prove indicator agreement: φ(1_{E∩Sₙ}) → φ(1_E) via CLM continuity + lp_truncation_tendsto_zero"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "functional-analysis",
@@ -87,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:21:07.632Z",
-  "lastUpdate": "2026-05-03T11:21:07.632Z",
+  "lastUpdate": "2026-05-07T17:00:00Z",
   "significance": 7,
   "tractability": 4
 }
