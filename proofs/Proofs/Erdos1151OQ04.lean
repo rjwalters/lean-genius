@@ -886,7 +886,7 @@ private lemma tan_half_chebyshev_pos (n : ℕ) (hn : 0 < n) (k : Fin n) :
   have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
   have hangle_pos : 0 < (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) := by positivity
   have hangle_lt : (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) < Real.pi / 2 := by
-    rw [div_lt_div_iff (by positivity : (0 : ℝ) < 4 * n) (by positivity : (0 : ℝ) < 2)]
+    rw [div_lt_div_iff₀ (by positivity : (0 : ℝ) < 4 * n) (by positivity : (0 : ℝ) < 2)]
     have hlt : 2 * k.val + 1 < 2 * n := by omega
     nlinarith [Real.pi_pos, (show (2 * k.val + 1 : ℝ) < 2 * n from by exact_mod_cast hlt)]
   apply div_pos
@@ -940,20 +940,20 @@ private lemma odd_harmonic_sum_lb (m : ℕ) (hm : 0 < m) :
       (1 : ℝ) / 2 * ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) := by
     rw [Finset.mul_sum]; congr 1; ext j; ring
   -- Step 3: ∑_{j=0}^{m-1} 1/(j+1) = H_m (harmonic number)
-  have hharmonic : ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) = (Nat.harmonic m : ℝ) := by
+  have hharmonic : ∑ j ∈ Finset.range m, (1 : ℝ) / (↑j + 1) = ((harmonic m : ℚ) : ℝ) := by
     induction m with
-    | zero => simp [Nat.harmonic]
+    | zero => simp [harmonic]
     | succ n ih =>
-      rw [Finset.sum_range_succ, Nat.harmonic_succ]
+      rw [Finset.sum_range_succ, harmonic_succ]
       push_cast [ih]
       ring
   -- Step 4: log(m+1) ≤ H_m
-  have hlog_harmonic : Real.log (↑m + 1) ≤ (Nat.harmonic m : ℝ) := by
+  have hlog_harmonic : Real.log (↑m + 1) ≤ ((harmonic m : ℚ) : ℝ) := by
     have := log_add_one_le_harmonic m
     exact_mod_cast this
   -- Combine: (1/2)·log(m+1) ≤ (1/2)·H_m = ∑ 1/(2(j+1)) ≤ ∑ 1/(2j+1)
   calc (1 : ℝ) / 2 * Real.log (↑m + 1)
-      ≤ 1 / 2 * (Nat.harmonic m : ℝ) := by
+      ≤ 1 / 2 * ((harmonic m : ℚ) : ℝ) := by
           apply mul_le_mul_of_nonneg_left hlog_harmonic (by norm_num)
     _ = ∑ j ∈ Finset.range m, 1 / (2 * (↑j + 1)) := by rw [hsum_half, hharmonic]
     _ ≤ ∑ j ∈ Finset.range m, 1 / (2 * ↑j + 1) := Finset.sum_le_sum h_compare
@@ -1259,7 +1259,7 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
       have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
       have hpR : (p : ℝ) = k * (2 * q) := by field_simp at hk; linarith
       have hpZ : (p : ℤ) = k * (2 * q) := by exact_mod_cast hpR
-      exact (Even.not_odd (⟨k * q, by linarith⟩ : Even (p : ℤ))) (by exact_mod_cast hp)
+      exact (not_odd_iff_even.mpr (⟨k * q, by linarith⟩ : Even (p : ℤ))) (by exact_mod_cast hp)
     -- Step 2: arccos gives canonical angle θ₀ ∈ (0, π) with cos θ₀ = cos(πp/q)
     set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
     set θ₀ := Real.arccos x with hθ₀_def
