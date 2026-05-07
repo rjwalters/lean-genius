@@ -44,12 +44,12 @@
       }
     ],
     "originalContributions": [
-      "sin_div_tendsto_zero: sin(x)/x → 0 as x → ∞ via squeeze with x⁻¹",
-      "f_div_g_tendsto_one: (x + sin x)/x → 1 via sin(x)/x → 0",
-      "cos_two_pi_nat: cos(2πn) = 1 for all n : ℕ using cos_int_mul_two_pi",
-      "cos_pi_add_two_pi_nat: cos(π + 2πn) = -1 for all n : ℕ via cos_add_pi",
+      "tendsto_sin_div_atTop: sin(x)/x → 0 as x → ∞ via direct ε-N squeeze with x⁻¹",
+      "lim_ratio_eq_one: (x + sin x)/x → 1 via 1 + sin(x)/x rewrite",
+      "val_on_seq1: cos(n·2π) = 1 for all n : ℕ via Real.cos_nat_mul_two_pi",
+      "val_on_seq2: cos(n·2π + π) = -1 for all n : ℕ via Real.cos_nat_mul_two_pi_add_pi",
       "deriv_ratio_no_limit: ¬∃ L, Tendsto (1 + cos x) atTop (nhds L) via two subsequences",
-      "lhopital_failure: combined statement of the counterexample"
+      "lhopital_converse_fails: combined statement of the counterexample"
     ],
     "dateAdded": "2026-04-21",
     "lineCount": 142,
@@ -59,7 +59,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "L'Hôpital's rule was published in the first calculus textbook, *Analyse des Infiniment Petits* (1696) by Guillaume de l'Hôpital, though the rule was actually discovered by Johann Bernoulli, who communicated it privately. The rule states: if $f(a) = g(a) = 0$ (or both approach $\\pm\\infty$) and $f'(x)/g'(x) \\to L$ as $x \\to a$, then $f(x)/g(x) \\to L$. Students and practitioners often wonder whether the rule can be applied in reverse — if we know $f/g \\to L$, can we conclude anything about $f'/g'$? The answer is emphatically NO. The canonical counterexample — $f(x) = x + \\sin x$, $g(x) = x$ — appears in Rudin's *Principles of Mathematical Analysis* (§5.13), Apostol's *Calculus*, and most standard real analysis textbooks. It is pedagogically important because it prevents the common error of 'running L'Hôpital backwards'. This Lean 4 formalization (169 lines, 0 axioms) is the first machine-verified proof of this counterexample, extending the parent `LHopital.lean` (Wiedijk list entry #64). The proof technique — squeeze theorem for $\\sin(x)/x \\to 0$, and the two-subsequence argument for non-convergence of $1 + \\cos(x)$ — is classical and appears in virtually all real analysis courses.",
+    "historicalContext": "L'Hôpital's rule was published in the first calculus textbook, *Analyse des Infiniment Petits* (1696) by Guillaume de l'Hôpital, though the rule was actually discovered by Johann Bernoulli, who communicated it privately. The rule states: if $f(a) = g(a) = 0$ (or both approach $\\pm\\infty$) and $f'(x)/g'(x) \\to L$ as $x \\to a$, then $f(x)/g(x) \\to L$. Students and practitioners often wonder whether the rule can be applied in reverse — if we know $f/g \\to L$, can we conclude anything about $f'/g'$? The answer is emphatically NO. The canonical counterexample — $f(x) = x + \\sin x$, $g(x) = x$ — appears in Rudin's *Principles of Mathematical Analysis* (§5.13), Apostol's *Calculus*, and most standard real analysis textbooks. It is pedagogically important because it prevents the common error of 'running L'Hôpital backwards'. This Lean 4 formalization (142 lines, 0 axioms) is the first machine-verified proof of this counterexample, extending the parent `LHopital.lean` (Wiedijk list entry #64). The proof technique — squeeze theorem for $\\sin(x)/x \\to 0$, and the two-subsequence argument for non-convergence of $1 + \\cos(x)$ — is classical and appears in virtually all real analysis courses.",
     "problemStatement": "Show that L'Hôpital's rule has no converse: there exists f, g differentiable on (0, ∞) such that $\\lim_{x \\to \\infty} \\frac{f(x)}{g(x)}$ exists but $\\lim_{x \\to \\infty} \\frac{f'(x)}{g'(x)}$ does not exist.",
     "text": "Formalizes the canonical L'Hôpital counterexample: f(x) = x + sin(x), g(x) = x. The limit f/g = (x + sin x)/x → 1 is proved via the squeeze theorem (|sin x/x| ≤ 1/x → 0). The non-existence of the limit of f'/g' = 1 + cos(x) is proved via the two-subsequence argument: along 2πn the value is 2, along π + 2πn the value is 0, so no single limit exists.",
     "proofStrategy": "The limit sin(x)/x → 0 is proved via the squeeze: using tendsto_inv_atTop_zero, we get x⁻¹ < ε eventually, and |sin x/x| ≤ x⁻¹ by gcongr + |sin x| ≤ 1. For the non-convergence: cos(2πn) = 1 via Real.cos_int_mul_two_pi (after casting ℕ → ℤ), and cos(π + 2πn) = -1 via Real.cos_add_pi. Both subsequences 2πn and π + 2πn tend to ∞, so by tendsto_nhds_unique any hypothetical limit must be both 2 and 0.",
@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms): 11 theorems proving that L'Hôpital's rule cannot be reversed. The counterexample f(x) = x + sin(x), g(x) = x demonstrates that the existence of lim f/g gives no information about lim f'/g'.",
+    "summary": "Fully verified (0 sorries, 0 axioms): 8 theorems/lemmas proving that L'Hôpital's rule cannot be reversed. The counterexample f(x) = x + sin(x), g(x) = x demonstrates that the existence of lim f/g gives no information about lim f'/g'.",
     "implications": "**Pedagogical**: This counterexample is essential for students learning L'Hôpital's rule — it prevents the common error of 'running L'Hôpital's rule backwards.' The proof illustrates the squeeze theorem for sin(x)/x and the subsequence argument for oscillating limits.\n\n**Extension of LHopital.lean**: The parent proof establishes L'Hôpital's rule; this extension proves the boundary of the theorem's applicability.",
     "openQuestions": [
       "Can the converse hold for monotone quotients? For instance, if f/g is monotone and the indeterminate-form conditions hold, must lim f/g = lim f'/g' whenever both limits exist?",
@@ -149,14 +149,18 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib"
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Topology.Algebra.Order.Field",
+      "Mathlib.Order.Filter.AtTopBot.Archimedean",
+      "Mathlib.Topology.Separation.Hausdorff"
     ],
     "opens": [
       "Real",
       "Filter",
       "Topology"
     ],
-    "namespace": "LHopitalFailure",
+    "namespace": "LHopitalConverse",
     "lineCount": 142,
     "axiomCount": 0,
     "theoremCount": 8,
