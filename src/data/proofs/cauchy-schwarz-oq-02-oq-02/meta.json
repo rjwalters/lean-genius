@@ -59,7 +59,8 @@
       "**Pythagoras drives the finite case**: The residual $\\|x - \\sum_{i \\in s} \\langle v_i, x \\rangle v_i\\|^2 \\geq 0$ is the key identity; non-negativity immediately gives Bessel.",
       "**Monotone convergence gives summability**: Each new term adds a non-negative quantity, and the partial sums are bounded by $\\|x\\|^2$, so the series converges by the monotone convergence principle.",
       "**Real symmetry converts Parseval to a norm identity**: $\\langle x, b_i \\rangle = \\langle b_i, x \\rangle$ for real inner products, turning the bilinear Parseval identity into the norm identity $\\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$.",
-      "**Bessel ≤ Parseval**: Bessel's inequality is the general form (any ONS), while Parseval's identity is the special case (complete ONS = Hilbert basis). The gap measures how much of $\\|x\\|^2$ is 'missed' by the orthonormal system."
+      "**Bessel ≤ Parseval**: Bessel's inequality is the general form (any ONS), while Parseval's identity is the special case (complete ONS = Hilbert basis). The gap measures how much of $\\|x\\|^2$ is 'missed' by the orthonormal system.",
+      "**Cauchy-Schwarz is the one-term special case**: The example at the end of the file specializes Bessel to a single unit vector $v$, recovering $\\langle v, x \\rangle^2 \\le \\|x\\|^2$. Bessel is therefore literally a many-axis generalization of the classical Cauchy-Schwarz bound — projecting onto an entire orthonormal frame instead of just one direction."
     ]
   },
   "sections": [
@@ -102,8 +103,25 @@
       "endLine": 137,
       "summary": "`parseval_real`, `bessel_tight`: For a real Hilbert basis, Bessel is tight: ∑' i, ⟨bᵢ, x⟩² = ‖x‖².",
       "mathContext": "(∑' i, ⟪b i, x⟫ ^ 2) = ‖x‖ ^ 2"
+    },
+    {
+      "id": "section-examples",
+      "title": "Cauchy-Schwarz as One-Vector Bessel",
+      "startLine": 138,
+      "endLine": 161,
+      "summary": "Worked example showing classical Cauchy-Schwarz $\\langle v, x \\rangle^2 \\le \\|x\\|^2$ (for unit $v$) is the singleton case of finite Bessel: indexing by `Fin 1` makes the orthonormality off-diagonal condition vacuous, reducing Bessel to one term.",
+      "mathContext": "$\\langle v, x \\rangle^2 \\le \\|x\\|^2$ when $\\|v\\| = 1$ — the classical Cauchy-Schwarz bound recovered as a one-axis instance of Bessel."
     }
   ],
+  "conclusion": {
+    "summary": "This file formalizes Bessel's inequality and Parseval's identity in real inner product spaces, with a parallel statement over arbitrary RCLike fields. The infinite Bessel inequality $\\sum_i \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$ is proved for any orthonormal family (not just a basis); summability and monotonicity of the partial sums are established explicitly. Parseval $\\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$ follows for any real Hilbert basis by combining `HilbertBasis.tsum_inner_mul_inner` with real symmetry. A concluding example demonstrates that classical Cauchy-Schwarz is the one-term Bessel inequality.",
+    "implications": "Bessel's inequality is the foundational tool for projecting any element of a Hilbert space onto its Fourier coefficients with respect to an orthonormal frame. It bounds the energy that an orthonormal system can extract from $x$ by $\\|x\\|^2$, and Parseval saturates that bound exactly when the frame is complete. Together, these results power the spectral theory of compact self-adjoint operators (eigenfunction expansions converge in $L^2$), the convergence of Fourier series in $L^2[-\\pi,\\pi]$, the Plancherel theorem for the Fourier transform, the wavelet decomposition of signals, and quantum-mechanical state expansions $|\\psi\\rangle = \\sum_n c_n |n\\rangle$ where $\\sum_n |c_n|^2 = 1$. The gap $\\|x\\|^2 - \\sum_i \\langle v_i, x \\rangle^2$ measures the orthogonal complement of the closed span of $\\{v_i\\}$ — a quantitative defect of completeness. In approximation theory the Bessel inequality is what guarantees that least-squares projection onto any orthonormal family is non-expansive, the linchpin of best-approximation arguments.",
+    "openQuestions": [
+      "**Quantitative completeness criterion**: For a given orthonormal family $\\{v_i\\}$ in $F$, is there an effectively computable quantity (e.g. in terms of approximation errors on a dense subset) that detects whether the inequality is tight for all $x$ — i.e. that $\\{v_i\\}$ is a Hilbert basis?",
+      "**Rate of convergence**: For specific orthonormal systems (Fourier basis, Legendre polynomials, Haar wavelets), how fast does the Bessel partial sum approach $\\|x\\|^2$ as a function of regularity properties of $x$ (Sobolev norm, modulus of continuity)? This drives quantitative approximation theory.",
+      "**Generalization to frames**: A frame is an over-complete generalization of an orthonormal basis where Bessel becomes $A\\|x\\|^2 \\le \\sum_i |\\langle f_i, x \\rangle|^2 \\le B\\|x\\|^2$ for frame bounds $0 < A \\le B$. Can the Lean formalization here be extended to general Bessel sequences and frames, with a clean statement of the dual-frame reconstruction formula?"
+    ]
+  },
   "openQuestions": [
     {
       "id": "oq-01",
