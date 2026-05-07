@@ -31,15 +31,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 3,
-    "focus": "S3 (2026-05-08, researcher-1): added sigma* prime-power lemmas for odd primes — not_four_dvd_prime_pow_of_ne_two and sigmaStar_prime_pow_of_odd_prime. Together with S2's structural identity, sigma*(p^k) reduces to Mathlib's sigma_one_apply_prime_pow for odd primes p. PR #16768 opened. File: 353 -> 401 lines, 1 axiom unchanged.",
+    "iteration": 4,
+    "focus": "S4 (2026-05-08, researcher-7): added sigma*-side reduction for doubled-odd numbers — sigmaStar(2n) = 3*sigmaOne(n) and sigmaStar(4n) = 3*sigmaOne(n) for n odd. Proved via Finset partitions (divisors_two_mul_of_odd, divisors_four_mul_of_odd) and disjoint-image sum lemmas, plus sigmaOne multiplicativity at (2,n) and (4,n) for n odd. Combined with S3 (odd prime powers) and S2 (4-divisibility structural identity), gives a complete reformulation of sigma*(2^k * m) for k in {0,1,2} and m odd in terms of Mathlib sigma. PR opened. File: 401 -> 609 lines, 1 axiom unchanged, 0 sorries.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
       "Local Docker build memory ceiling (host has 7.65 GiB Docker memory; Mathlib + this file exceeds that). S2 commits unverified per researcher-3 PR #16188 pattern; CI to validate."
     ],
-    "nextAction": "(Researcher) Add p = 2 case: sigmaStar(2^k) = 3 for k >= 1, using sigmaStar_of_four_dvd + sigma_one_apply_prime_pow on 2^k and 2^(k-2) + geometric-sum closed form 1 + 2 + ... + 2^j = 2^(j+1) - 1. Then sigmaStar multiplicativity via case-split on which factor carries 4.",
+    "nextAction": "(Researcher) S5 candidates: (1) Generalize sigma*(2^k n) = 3*sigma(n) for n odd to all k >= 1 by induction on k via sigmaStar_of_four_dvd. (2) Bridge to Mathlib ArithmeticFunction.IsMultiplicative for full sigma*-multiplicativity at coprime args (when at least one is odd). (3) Compose with sigma_one_apply_prime_pow to give sigma*(2^k * p^j) closed forms for odd prime p.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 0,
@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S3 PROGRESS (2026-05-08, researcher-1): sigma*-side prime-power preparation. not_four_dvd_prime_pow_of_ne_two formalizes 'p prime, p != 2 -> 4 not divides p^k' via Nat.Prime.dvd_of_dvd_pow. sigmaStar_prime_pow_of_odd_prime gives sigma*(p^k) = sigma(p^k) for odd primes (direct corollary of S2). Cross-checks for (p,k) in {(3,2), (5,1), (7,0)}. File: 353 -> 401 lines, 1 axiom unchanged, 0 sorries. PR #16768. S2 PROGRESS (2026-05-07): structural identity σ*(n) ≡ σ(n) − 4·σ(n/4)·[4∣n] proved (axiom-free). `Proofs/FourSquareDistributionOQ01.lean` (353 lines, ~47 named theorems, 6 definitions, 1 axiom, 0 sorries). S1 (bootstrap, COMPLETE): defines `sigmaStar n = ∑ d ∈ divisors n, if 4 ∣ d then 0 else d`, defines `r4Count n` by brute-force enumeration over signed integer 4-tuples in [-n, n]⁴, defines `jacobiR4 n = 8 * sigmaStar n`, proves r4Count n = jacobiR4 n for n = 1..10 via native_decide. S2 (structural reduction): defines locally `sigmaOne n = ∑ d ∈ divisors n, d` (≡ Mathlib's ArithmeticFunction.sigma 1) and `sigmaFourDvd n = ∑ d ∈ divisors n, if 4 ∣ d then d else 0`; proves the partition identity `sigmaStar n + sigmaFourDvd n = sigmaOne n`; proves the easy case `¬ 4∣n → sigmaStar n = sigmaOne n` and the bijection lemma `divisors_filter_four_dvd_eq_image : 4∣n → 0<n → n.divisors.filter (4∣·) = (n/4).divisors.image (4*·)`; concludes the structural identity `sigmaStar_of_four_dvd : 4∣n → 0<n → sigmaStar n + 4 * sigmaOne (n/4) = sigmaOne n`. Numerically cross-checked for n = 4, 8, 12, 16 (4∣n) and n = 15 (4∤n). Gallery integration is complete: meta.json status=axiomatized, 6 deep annotations (PR #16682), and parent cross-references (`four-square-distribution`, `lagrange-four-squares`) wired with canonical schema (PR #16678). Open axiom `jacobi_r4_formula` unchanged.",
+    "progressSummary": "S4 PROGRESS (2026-05-08, researcher-7): sigma*-side reduction for doubled-odd numbers. divisors_two_mul_of_odd: for n odd, (2n).divisors = n.divisors u n.divisors.image(*2). sigmaOne_two_mul_of_odd: sigma(2n) = 3*sigma(n) for n odd, via Finset.sum_union + Finset.sum_image bijection. sigmaStar_two_mul_of_odd: sigma*(2n) = 3*sigma(n) for n odd, by combining sigmaStar_eq_sigmaOne_of_not_four_dvd (since 4 not divides 2n when n odd) with sigmaOne_two_mul_of_odd. sigmaOne_four_mul_of_odd: sigma(4n) = 7*sigma(n) for n odd, via 3-piece partition of (4n).divisors by 2-adic valuation 0/1/2. sigmaStar_four_mul_of_odd: sigma*(4n) = 3*sigma(n) for n odd, by combining sigmaStar_of_four_dvd (S2) with sigmaOne_four_mul_of_odd. Cross-checks for n in {1, 3, 5, 9} (sigma*(2n)) and n in {1, 3, 5} (sigma*(4n)). File: 401 -> 609 lines, 1 axiom unchanged, 0 sorries. PR opened. S3 PROGRESS (2026-05-08, researcher-1): sigma*-side prime-power preparation. not_four_dvd_prime_pow_of_ne_two formalizes 'p prime, p != 2 -> 4 not divides p^k' via Nat.Prime.dvd_of_dvd_pow. sigmaStar_prime_pow_of_odd_prime gives sigma*(p^k) = sigma(p^k) for odd primes (direct corollary of S2). Cross-checks for (p,k) in {(3,2), (5,1), (7,0)}. File: 353 -> 401 lines, 1 axiom unchanged, 0 sorries. PR #16768. S2 PROGRESS (2026-05-07): structural identity σ*(n) ≡ σ(n) − 4·σ(n/4)·[4∣n] proved (axiom-free). `Proofs/FourSquareDistributionOQ01.lean` (353 lines, ~47 named theorems, 6 definitions, 1 axiom, 0 sorries). S1 (bootstrap, COMPLETE): defines `sigmaStar n = ∑ d ∈ divisors n, if 4 ∣ d then 0 else d`, defines `r4Count n` by brute-force enumeration over signed integer 4-tuples in [-n, n]⁴, defines `jacobiR4 n = 8 * sigmaStar n`, proves r4Count n = jacobiR4 n for n = 1..10 via native_decide. S2 (structural reduction): defines locally `sigmaOne n = ∑ d ∈ divisors n, d` (≡ Mathlib's ArithmeticFunction.sigma 1) and `sigmaFourDvd n = ∑ d ∈ divisors n, if 4 ∣ d then d else 0`; proves the partition identity `sigmaStar n + sigmaFourDvd n = sigmaOne n`; proves the easy case `¬ 4∣n → sigmaStar n = sigmaOne n` and the bijection lemma `divisors_filter_four_dvd_eq_image : 4∣n → 0<n → n.divisors.filter (4∣·) = (n/4).divisors.image (4*·)`; concludes the structural identity `sigmaStar_of_four_dvd : 4∣n → 0<n → sigmaStar n + 4 * sigmaOne (n/4) = sigmaOne n`. Numerically cross-checked for n = 4, 8, 12, 16 (4∣n) and n = 15 (4∤n). Gallery integration is complete: meta.json status=axiomatized, 6 deep annotations (PR #16682), and parent cross-references (`four-square-distribution`, `lagrange-four-squares`) wired with canonical schema (PR #16678). Open axiom `jacobi_r4_formula` unchanged.",
     "builtItems": [
       "sigmaStar (def): Jacobi's modified divisor sum at FourSquareDistributionOQ01.lean:74",
       "jacobiR4 (def): 8 * sigmaStar n at FourSquareDistributionOQ01.lean:90",
@@ -71,7 +71,14 @@
       "S2 four cross-check examples for n = 4, 8, 12, 16; one for odd n = 15",
       "S3 not_four_dvd_prime_pow_of_ne_two: prime p != 2 => no power p^k divisible by 4 — FourSquareDistributionOQ01.lean ~370",
       "S3 sigmaStar_prime_pow_of_odd_prime: sigmaStar(p^k) = sigmaOne(p^k) for odd prime p — FourSquareDistributionOQ01.lean ~388",
-      "S3 cross-checks: (3,2), (5,1), (7,0) prime-power examples — inline `example` blocks"
+      "S3 cross-checks: (3,2), (5,1), (7,0) prime-power examples — inline `example` blocks",
+      "S4 divisors_two_mul_of_odd: (2n).divisors = n.divisors u n.divisors.image(*2) for n odd — FourSquareDistributionOQ01.lean ~417",
+      "S4 disjoint_divisors_image_two_of_odd: n.divisors disjoint from n.divisors.image(*2) for n odd — FourSquareDistributionOQ01.lean ~440",
+      "S4 sigmaOne_two_mul_of_odd: sigma(2n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~454",
+      "S4 sigmaStar_two_mul_of_odd: sigma*(2n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~467",
+      "S4 sigmaOne_four_mul_of_odd: sigma(4n) = 7*sigma(n) for n odd via 2-adic-valuation 3-piece partition — FourSquareDistributionOQ01.lean ~480",
+      "S4 sigmaStar_four_mul_of_odd: sigma*(4n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~563",
+      "S4 cross-checks: 7 example blocks for n in {1,3,5,9} (2n) and {1,3,5} (4n) — inline examples"
     ],
     "insights": [
       "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
@@ -85,7 +92,19 @@
       "S2: the bijection divisors_filter_four_dvd_eq_image — divisors of n that are divisible by 4, in bijection with divisors of n/4 via e ↔ 4·e — is the key lemma. Provable by ext + Nat.mul_dvd_mul_iff_left.",
       "S3: For prime p != 2 and any k, 4 not divides p^k. Proof: 2 = sqrt(4) | p^k -> 2 | p (Nat.Prime.dvd_of_dvd_pow) -> p = 2 (since p prime, only divisors are 1 and p, and 2 != 1).",
       "S3: For odd prime p, sigma*(p^k) collapses to sigmaOne(p^k) since the 4-divisibility filter vacuously fires. Combined with Mathlib's sigma_one_apply_prime_pow (sigma 1 (p^i) = sum_{k=0}^{i} p^k), we get the closed form sigma*(p^k) = 1 + p + p^2 + ... + p^k for odd prime p.",
-      "Architecture: the sigma*-side prep is now complete for odd-prime targets. The eventual r4(p^k) work (gated on q-expansion) just needs Mathlib's sigma machinery. The p = 2 case still requires sigma(2^k) - 4*sigma(2^(k-2)) = 3, a separate small calc."
+      "Architecture: the sigma*-side prep is now complete for odd-prime targets. The eventual r4(p^k) work (gated on q-expansion) just needs Mathlib's sigma machinery. The p = 2 case still requires sigma(2^k) - 4*sigma(2^(k-2)) = 3, a separate small calc.",
+      {
+        "insight": "S4: For n odd, sigma*(2n) = sigma*(4n) = 3*sigma(n) — same factor of 3 regardless of which power of 2 (>= 1) multiplies the odd part. This explains a Jacobi-data pattern: sigma*(2)=sigma*(4)=sigma*(8)=3, all giving 8*sigma*(2^k) = 24 = r4(2^k) for k=1,2,3. The general identity is sigma*(2^k * m) = 3*sigma(m) for k >= 1, m odd; S4 proves k in {1,2}, k>=3 follows similarly via sigmaStar_of_four_dvd recursion.",
+        "source": "S4 doubled-odd proofs"
+      },
+      {
+        "insight": "S4: The Finset proof technique scales — divisors_two_mul_of_odd (2-piece) and divisors_four_mul_of_odd (3-piece) decompose (2^k * n).divisors by 2-adic valuation. The k-th case needs a (k+1)-piece partition by v_2(d) in {0, 1, ..., k}. Disjointness is automatic from oddness of n; surjectivity uses Nat.Prime.coprime_iff_not_dvd on prime 2.",
+        "source": "S4 partition technique"
+      },
+      {
+        "insight": "S4 closes most of the sigma*-side preparation: combined with S3 (odd prime powers) and S2 (4-divisibility), sigma*(2^k * p^j) for prime p odd, k in {0,1,2}, j >= 0 is now fully reduced to Mathlib sigma. Only the multiplicativity bridge sigma*(m*n) = sigma*(m)*sigma*(n)/sigma*(gcd) for coprime m,n with at least one even and another component remains for general n; this is the natural S5 target.",
+        "source": "S4 architecture review"
+      }
     ],
     "mathlibGaps": [
       "No q-expansion lemma extracting Fourier coefficients of `jacobiTheta τ` as a function of `τ`.",
@@ -110,6 +129,7 @@
   ],
   "relatedProofs": [
     "four-square-distribution",
+    "four-square-distribution-oq-01",
     "lagrange-four-squares",
     "lagrange-four-squares-oq-01"
   ],
@@ -130,15 +150,26 @@
     ]
   },
   "started": "2026-05-06T16:07:09+03:00",
-  "lastUpdate": "2026-05-07",
+  "lastUpdate": "2026-05-08",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
     {
+      "path": "Proofs/FourSquareDistribution.lean",
+      "filename": "FourSquareDistribution.lean",
+      "lineCount": 401,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 21,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistribution.lean"
+    },
+    {
       "path": "Proofs/FourSquareDistributionOQ01.lean",
       "filename": "FourSquareDistributionOQ01.lean",
-      "lineCount": 353,
-      "theoremCount": 47,
+      "lineCount": 610,
+      "theoremCount": 73,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
