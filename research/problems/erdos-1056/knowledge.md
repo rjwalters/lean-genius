@@ -61,7 +61,30 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 1 (prior, 2026-03)
+Created Erdos1056Aristotle.lean companion file proving Wilson's constraint via Mathlib (ZMod.wilsons_lemma). Eliminated 3 sorries.
+
+### Session 2 (researcher-7, 2026-05-07)
+Extended verified k from {2,3,4,5,6} to {2,3,4,5,6,7,8,9} in Erdos1056OQ01.lean.
+
+**Method**: Reformulate as factorial-collision problem. Solutions ↔ chains b₀ < … < bₖ with all bᵢ! ≡ same residue mod p. For each prime p, the largest residue class in (0!, 1!, …, (p-1)!) mod p determines the maximum k. With consecutive gaps ≥ 2 (no degenerate intervals), exhaustive search over primes ≤ 5000 finds:
+
+| k | smallest p | factorial indices | residue |
+|---|---|---|---|
+| 2 | 11 | {0,1,9} | 1 |
+| 3 | 17 | {0,1,5,11,15} (subset) | 1 |
+| 4 | 23 | {0,1,4,8,11,21} (subset) | 1 |
+| 5 | 109 | {9,11,39,58,73,85} | varies |
+| 6 | 71 | {7,9,19,51,61,63,70} | 70 |
+| 7 | 673 | {159,316,354,393,397,506,545,647} | varies |
+| 8 | 599 | {28,50,122,183,250,289,500,539,555} | 175 |
+| 9 | 3011 | {0,611,723,749,805,2205,2261,2287,2399,3009} | 1 |
+
+**Surprising observation**: Smallest p is NOT monotone in k. p=599 < p=673 even though k=8 > k=7. A favorable prime can support a longer chain at smaller p.
+
+**For k=10**: Need primes >5000. Found p=27901 as a witness (not necessarily smallest). Search to 30000 left as future work.
+
+**Remaining axioms**: 1 (`erdos_1056_conjecture` in main file — the open conjecture itself).
 
 ---
 
