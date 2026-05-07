@@ -405,8 +405,9 @@ private lemma inv_quad_le_telescope (k : ℝ) (hk : 2 ≤ k) :
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
   have key : 0 ≤ 6 * k ^ 2 - 8 * k + 3 := by nlinarith [sq_nonneg (2*k-1), sq_nonneg (k-1)]
   have hineq : 3 * (k - 1) ^ 3 ≤ k ^ 4 - k * (k - 1) ^ 3 := by
-    nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos,
-               mul_pos (mul_pos hk_pos hk_pos) (mul_pos hk1_pos hk1_pos)]
+    -- k⁴-(k+3)(k-1)³ = 6k²-8k+3 = key
+    have h_poly : k ^ 4 - k * (k - 1) ^ 3 - 3 * (k - 1) ^ 3 = 6 * k ^ 2 - 8 * k + 3 := by ring
+    linarith [key]
   calc 1 / (8 * k ^ 4)
       = 3 * (k - 1) ^ 3 / (24 * k ^ 4 * (k - 1) ^ 3) := by field_simp <;> ring
     _ ≤ (k ^ 4 - k * (k - 1) ^ 3) / (24 * k ^ 4 * (k - 1) ^ 3) := by gcongr
