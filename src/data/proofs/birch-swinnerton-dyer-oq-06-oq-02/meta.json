@@ -41,52 +41,66 @@
     "mathContext": "Connects to BirchSwinnertonDyerOQ06 (BSD verification for 389a), HeightPairingMatrix2 (height pairing structure), and the BSD constant calculation.",
     "proofStrategy": "Direct rational arithmetic using the Weierstrass addition/doubling formulas. All point coordinates are computed symbolically and verified via norm_num. No Mathlib elliptic curve API is used — formulas are applied directly to the specific curve y² + y = x³ + x² - 2x with coefficients a₁=0, a₂=1, a₃=1, a₄=-2, a₆=0.",
     "historicalContext": "Curve 389a (Cremona label 389a1) was the focus of the 1985 Buhler-Gross-Zagier computation, which provided the first numerical verification of the BSD formula for a rank-2 curve. The canonical heights ĥ(P₁) ≈ 0.7622 and ĥ(P₂) ≈ 0.2720 appear in the 2×2 regulator matrix R ≈ 0.1524. This entry formalizes the group-theoretic side of that computation.",
-    "problemStatement": "Connect the height pairing matrix values h₁₁ ≈ 0.7622, h₁₂ ≈ -0.1323, h₂₂ ≈ 0.2720 to the Weierstrass group law computations for generators P₁=(0,0) and P₂=(-1,1) on y² + y = x³ + x² - 2x.",
-    "sections": [
-      {
-        "id": "sec-curve-membership",
-        "title": "Curve Membership Verification",
-        "summary": "Six theorems verifying that specific rational points lie on curve 389a: P₁=(0,0), P₂=(-1,1), [2]P₁=(3,5), [2]P₂=(10/9,-35/27), [4]P₁=(114/121,-267/1331), and P₁+P₂=(1,0).",
-        "theorems": ["p1_on_curve", "p2_on_curve", "double_p1_on_curve", "double_p2_on_curve", "quadruple_p1_on_curve", "sum_p1_p2_on_curve"]
-      },
-      {
-        "id": "sec-addition",
-        "title": "Addition Formula: P₁ + P₂ = (1,0)",
-        "summary": "Three theorems computing slope λ=-1, x-coordinate=1, and y-coordinate=0 for P₁+P₂ using the Weierstrass addition formula.",
-        "theorems": ["add_p1p2_slope", "add_p1p2_x", "add_p1p2_y"]
-      },
-      {
-        "id": "sec-double-p1",
-        "title": "Doubling [2]P₁ = (3,5)",
-        "summary": "Three theorems computing slope λ=-2, x-coordinate=3, and y-coordinate=5 for [2]P₁ using the Weierstrass doubling formula.",
-        "theorems": ["double_p1_slope", "double_p1_x", "double_p1_y"]
-      },
-      {
-        "id": "sec-double-p2",
-        "title": "Doubling [2]P₂ = (10/9, -35/27)",
-        "summary": "Three theorems computing slope λ=-1/3, x-coordinate=10/9, and y-coordinate=-35/27 for [2]P₂.",
-        "theorems": ["double_p2_slope", "double_p2_x", "double_p2_y"]
-      },
-      {
-        "id": "sec-quadruple-p1",
-        "title": "Quadrupling [4]P₁ = (114/121, -267/1331)",
-        "summary": "Three theorems computing slope λ=31/11, x-coordinate=114/121, and y-coordinate=-267/1331 for [4]P₁ via iterated doubling.",
-        "theorems": ["quadruple_p1_slope", "quadruple_p1_x", "quadruple_p1_y"]
-      },
-      {
-        "id": "sec-height-approx",
-        "title": "Naive Height Approximations",
-        "summary": "Seven theorems establishing positivity and ordering of naive height approximations, connecting to the canonical height limit.",
-        "theorems": ["double_p1_height_pos", "first_approx_p1_pos", "quadruple_p1_height_pos", "second_approx_p1_pos", "second_approx_exceeds_first", "double_p2_height_pos"]
-      },
-      {
-        "id": "sec-summary",
-        "title": "Summary Theorem",
-        "summary": "Collects all verified curve membership results and height approximation monotonicity into a single conjunction.",
-        "theorems": ["weierstrass_group_law_summary"]
-      }
-    ]
+    "problemStatement": "Connect the height pairing matrix values h₁₁ ≈ 0.7622, h₁₂ ≈ -0.1323, h₂₂ ≈ 0.2720 to the Weierstrass group law computations for generators P₁=(0,0) and P₂=(-1,1) on y² + y = x³ + x² - 2x."
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 65,
+      "summary": "Imports `Mathlib`, opens `noncomputable section`, and declares the namespace `BirchSwinnertonDyerOQ06OQ02`. Opening docstring describes the goal: connect the OQ-06 axiomatized height pairing matrix (h₁₁, h₁₂, h₂₂ ≈ 0.7622, -0.1323, 0.2720) for curve 389a to explicit Weierstrass group-law computations on generators P₁ = (0, 0) and P₂ = (-1, 1)."
+    },
+    {
+      "id": "sec-curve-membership",
+      "title": "Curve Membership Verification — On the Curve 389a",
+      "startLine": 66,
+      "endLine": 99,
+      "summary": "Six theorems (`p1_on_curve`, `p2_on_curve`, `double_p1_on_curve`, `double_p2_on_curve`, `quadruple_p1_on_curve`, `sum_p1_p2_on_curve`) verify by `norm_num` that P₁ = (0, 0), P₂ = (-1, 1), [2]P₁ = (3, 5), [2]P₂ = (10/9, -35/27), [4]P₁ = (114/121, -267/1331), and P₁ + P₂ = (1, 0) all satisfy the curve equation $y^2 + y = x^3 + x^2 - 2x$. Defines `onCurve389a (x y : ℚ) : Prop` as the predicate."
+    },
+    {
+      "id": "sec-addition",
+      "title": "Addition Formula: P₁ + P₂ = (1, 0)",
+      "startLine": 100,
+      "endLine": 117,
+      "summary": "Three theorems (`add_p1p2_slope`, `add_p1p2_x`, `add_p1p2_y`) decompose the addition P₁ + P₂ into slope $\\lambda = -1$, x-coordinate $1$, and y-coordinate $0$, using the general Weierstrass addition formula adapted for $a_3 = 1$ (the $+y$ term modifies the y-formula)."
+    },
+    {
+      "id": "sec-double-p1",
+      "title": "Doubling [2]P₁ = (3, 5)",
+      "startLine": 119,
+      "endLine": 137,
+      "summary": "Three theorems (`double_p1_slope`, `double_p1_x`, `double_p1_y`) compute $\\lambda = -2$, x-coordinate $= 3$, y-coordinate $= 5$ for $[2]P_1$ using the Weierstrass doubling formula $\\lambda = (3x_1^2 + 2a_2 x_1 + a_4) / (2y_1 + a_3)$ with $a_2 = 1, a_3 = 1, a_4 = -2$."
+    },
+    {
+      "id": "sec-double-p2",
+      "title": "Doubling [2]P₂ = (10/9, -35/27)",
+      "startLine": 139,
+      "endLine": 156,
+      "summary": "Three theorems (`double_p2_slope`, `double_p2_x`, `double_p2_y`) compute $\\lambda = -1/3$, x-coordinate $= 10/9$, y-coordinate $= -35/27$ for $[2]P_2$. The non-integer rational coordinates illustrate that the height growth is genuinely logarithmic — naive height $h_x([2]P_2) = \\log\\,9 = 2 \\log 3$."
+    },
+    {
+      "id": "sec-quadruple-p1",
+      "title": "Quadrupling [4]P₁ = (114/121, -267/1331)",
+      "startLine": 157,
+      "endLine": 174,
+      "summary": "Three theorems (`quadruple_p1_slope`, `quadruple_p1_x`, `quadruple_p1_y`) compute $\\lambda = 31/11$, x-coordinate $= 114/121$, y-coordinate $= -267/1331$ for $[4]P_1$ via iterated doubling on $[2]P_1 = (3, 5)$. The denominators $121 = 11^2$ and $1331 = 11^3$ illustrate the standard quadratic-growth pattern of denominators under repeated doubling."
+    },
+    {
+      "id": "sec-height-approx",
+      "title": "Naive Height Approximations and Monotonicity",
+      "startLine": 176,
+      "endLine": 213,
+      "summary": "Seven theorems on naive height approximations: `double_p1_x_numerator` and `double_p1_height_pos` (height $\\log 3 > 0$ at scale 4), `first_approx_p1_pos` ($\\log 3 / 4 > 0$), `quadruple_p1_height_pos` ($\\log 121 > 0$ at scale 16), `second_approx_p1_pos` ($\\log 121 / 16 > 0$), `second_approx_exceeds_first` (the key monotonicity $\\log 121 / 16 > \\log 3 / 4$ via the rewrite $\\log 3 / 4 = \\log 81 / 16$), and `double_p2_height_pos` ($\\log 10 > 0$ for $[2]P_2$)."
+    },
+    {
+      "id": "sec-summary",
+      "title": "weierstrass_group_law_summary",
+      "startLine": 215,
+      "endLine": 247,
+      "summary": "The headline theorem `weierstrass_group_law_summary` bundles all six curve-membership facts plus the height-monotonicity inequality into a single conjunction. The closing docstring records the BSD-formula context: the canonical heights $\\hat h(P_1) \\approx 0.7622$ and $\\hat h(P_2) \\approx 0.2720$ from the OQ-06 height-pairing matrix are connected here to explicit group-law iterates, with naive height approximations bounded below by the verified rationals."
+    }
+  ],
   "overview": {
     "historicalContext": "Curve 389a1 (Cremona label 389a1, conductor N = 389) holds the distinction of being the smallest-conductor elliptic curve of rank 2 over ℚ. Its generators P₁ = (0,0) and P₂ = (-1,1) appear in the 1985 paper 'Numerical Investigations Related to the L-Series of Certain Elliptic Curves' by Buhler, Gross, and Zagier, which provided early numerical evidence for the Birch–Swinnerton-Dyer conjecture on a rank-2 curve. The conductor 389 is prime, making this curve a minimal model with a single place of bad reduction. The Néron-Tate canonical heights ĥ(P₁) ≈ 0.7622 and ĥ(P₂) ≈ 0.2720 appear in the 2×2 height regulator matrix R (with off-diagonal ĥ(P₁,P₂) ≈ -0.1323), whose determinant det(R) ≈ 0.1898 enters the BSD formula L''(E,1)/2 = (BSD constant)·R·Ω·∏cₚ/|E(ℚ)_tors|². This entry formalizes the group-theoretic computations underlying those canonical height values.",
     "problemStatement": "Connect the height pairing matrix values $h_{11} \\approx 0.7622$, $h_{12} \\approx -0.1323$, $h_{22} \\approx 0.2720$ to the Weierstrass group law computations for generators $P_1=(0,0)$ and $P_2=(-1,1)$ on curve 389a: $y^2 + y = x^3 + x^2 - 2x$. Verify all rational point computations via exact arithmetic and show the naive height approximation sequence is increasing.",
