@@ -13861,6 +13861,74 @@ private lemma gnwProb_stable (μ : YoungDiagram) (c : ℕ × ℕ) (x : ℕ × �
     rw [Nat.add_succ, gnwProb_step μ c (hookLength μ x.1 x.2 + d) x hx (Nat.le_add_right _ _)]
     exact ihd
 
+/-- Removing corner c' from μ deletes c' from the strict hook cells of every other cell.
+    For x ∈ μ\c': strictHookCells (μ\c') x = strictHookCells μ x \ {c'}.
+
+    Proof by case analysis on whether x shares a row/column with c':
+    - If x.1 = c'.1 (same row, x left of c'): rowLen drops by 1, so c' is removed from arm.
+    - If x.2 = c'.2 (same column, x above c'): colLen drops by 1, so c' is removed from leg.
+    - Otherwise: row/col lengths unchanged, and c' was never in arm/leg of x. -/
+private lemma strictHookCells_removeCorner_eq {μ : YoungDiagram} {c' : ℕ × ℕ}
+    (hc' : isCorner μ c') (i j : ℕ) :
+    strictHookCells (removeCorner μ c' hc') i j =
+      strictHookCells μ i j \ {c'} := by
+  set ν := removeCorner μ c' hc'
+  ext y
+  simp only [strictHookCells, Finset.mem_union, Finset.mem_image, Finset.mem_Ico,
+             Finset.mem_sdiff, Finset.mem_singleton]
+  constructor
+  · -- (⊆) cells in strict hook of (i,j) inside ν are in strict hook inside μ and ≠ c'.
+    rintro (⟨s, ⟨hjs, hsr⟩, hy_eq⟩ | ⟨r, ⟨hir, hrc⟩, hy_eq⟩)
+    · subst hy_eq
+      have hsν : (i, s) ∈ ν := YoungDiagram.mem_iff_lt_rowLen.mpr hsr
+      have hsμ : (i, s) ∈ μ := ((mem_removeCorner hc').mp hsν).1
+      have hsr_μ : s < μ.rowLen i := YoungDiagram.mem_iff_lt_rowLen.mp hsμ
+      refine ⟨Or.inl ⟨s, ⟨hjs, hsr_μ⟩, rfl⟩, ?_⟩
+      intro hy_eq
+      have h1 : i = c'.1 := congr_arg Prod.fst hy_eq
+      have h2 : s = c'.2 := congr_arg Prod.snd hy_eq
+      have hrl : ν.rowLen c'.1 = c'.2 := rowLen_removeCorner_self hc'
+      rw [← h1, ← h2] at hrl
+      omega
+    · subst hy_eq
+      have hrν : (r, j) ∈ ν := YoungDiagram.mem_iff_lt_colLen.mpr hrc
+      have hrμ : (r, j) ∈ μ := ((mem_removeCorner hc').mp hrν).1
+      have hrc_μ : r < μ.colLen j := YoungDiagram.mem_iff_lt_colLen.mp hrμ
+      refine ⟨Or.inr ⟨r, ⟨hir, hrc_μ⟩, rfl⟩, ?_⟩
+      intro hy_eq
+      have h1 : r = c'.1 := congr_arg Prod.fst hy_eq
+      have h2 : j = c'.2 := congr_arg Prod.snd hy_eq
+      have hcl : ν.colLen c'.2 = c'.1 := colLen_removeCorner_self hc'
+      rw [← h1, ← h2] at hcl
+      omega
+  · -- (⊇) cells in strict hook of (i,j) inside μ that are ≠ c' lift to ν.
+    rintro ⟨h_or, hyne⟩
+    rcases h_or with ⟨s, ⟨hjs, hsr⟩, hy_eq⟩ | ⟨r, ⟨hir, hrc⟩, hy_eq⟩
+    · subst hy_eq
+      by_cases hii' : i = c'.1
+      · -- Same row as c': must have s ≠ c'.2 (else (i,s) = c') and s < rowLen μ i = c'.2 + 1.
+        have hsj' : s ≠ c'.2 := fun hsj => hyne (Prod.ext hii' hsj)
+        have hr_μ : μ.rowLen i = c'.2 + 1 := by
+          rw [hii']; exact rowLen_of_isCorner hc'
+        have hr_ν : ν.rowLen i = c'.2 := by
+          rw [hii']; exact rowLen_removeCorner_self hc'
+        have hs_lt : s < c'.2 := by omega
+        exact Or.inl ⟨s, ⟨hjs, by rw [hr_ν]; exact hs_lt⟩, rfl⟩
+      · -- Different row: rowLen unchanged.
+        have hr_eq : ν.rowLen i = μ.rowLen i := rowLen_removeCorner_other hc' hii'
+        exact Or.inl ⟨s, ⟨hjs, by rw [hr_eq]; exact hsr⟩, rfl⟩
+    · subst hy_eq
+      by_cases hjj' : j = c'.2
+      · have hri' : r ≠ c'.1 := fun hri => hyne (Prod.ext hri hjj')
+        have hc_μ : μ.colLen j = c'.1 + 1 := by
+          rw [hjj']; exact colLen_of_isCorner hc'
+        have hc_ν : ν.colLen j = c'.1 := by
+          rw [hjj']; exact colLen_removeCorner_self hc'
+        have hr_lt : r < c'.1 := by omega
+        exact Or.inr ⟨r, ⟨hir, by rw [hc_ν]; exact hr_lt⟩, rfl⟩
+      · have hc_eq : ν.colLen j = μ.colLen j := colLen_removeCorner_other hc' hjj'
+        exact Or.inr ⟨r, ⟨hir, by rw [hc_eq]; exact hrc⟩, rfl⟩
+
 /-- GNW 1979 exchange identity (core inductive step, product form — no division).
     For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
       F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
