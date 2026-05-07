@@ -70,8 +70,9 @@ lemma proj_inner_eq (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A) =
     Real.cos t.sideA - Real.cos t.sideB * Real.cos t.sideC := by
   have h := spherical_law_of_cosines_algebraic t.B t.C t.A t.hB t.hC t.hA
-  rw [← cos_sideA, real_inner_comm t.B t.A, ← cos_sideC,
-      real_inner_comm t.C t.A, ← cos_sideB] at h
+  -- real_inner_comm x y : ⟪y, x⟫ = ⟪x, y⟫ (Mathlib 4.26 ordering)
+  rw [← cos_sideA, real_inner_comm t.A t.B, ← cos_sideC,
+      real_inner_comm t.A t.C, ← cos_sideB] at h
   linarith
 
 /-- ‖projectPerp B A‖ = sin(sideC) = sin(arcLength A B). -/
@@ -99,7 +100,7 @@ lemma proj_inner_eq_B (t : SphericalTriangle) :
     @inner ℝ Vec3 _ (projectPerp t.A t.B) (projectPerp t.C t.B) =
     Real.cos t.sideB - Real.cos t.sideA * Real.cos t.sideC := by
   have h := spherical_law_of_cosines_algebraic t.A t.C t.B t.hA t.hC t.hB
-  rw [← cos_sideB, ← cos_sideC, real_inner_comm t.C t.B, ← cos_sideA] at h
+  rw [← cos_sideB, ← cos_sideC, real_inner_comm t.B t.C, ← cos_sideA] at h
   linarith
 
 -- ============================================================================
@@ -122,14 +123,20 @@ lemma gramDet_as_proj (t : SphericalTriangle) :
     gramDet t = ‖projectPerp t.B t.A‖ ^ 2 * ‖projectPerp t.C t.A‖ ^ 2 -
       @inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A) ^ 2 := by
   rw [gramDet_expand, proj_inner_eq, norm_proj_BA, norm_proj_CA]
+  ring
 
 /-- The Gram determinant is non-negative (Cauchy-Schwarz inequality). -/
 lemma gramDet_nonneg (t : SphericalTriangle) : 0 ≤ gramDet t := by
   rw [gramDet_as_proj]
-  have h_cs := abs_real_inner_le_norm (projectPerp t.B t.A) (projectPerp t.C t.A)
-  have h_abs_sq := sq_abs (@inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A))
-  nlinarith [sq_nonneg ‖projectPerp t.B t.A‖, sq_nonneg ‖projectPerp t.C t.A‖,
-             mul_nonneg (norm_nonneg (projectPerp t.B t.A)) (norm_nonneg (projectPerp t.C t.A))]
+  set x := projectPerp t.B t.A with hx_def
+  set y := projectPerp t.C t.A with hy_def
+  have h_cs := abs_real_inner_le_norm x y
+  have h_norm_nn : 0 ≤ ‖x‖ * ‖y‖ := mul_nonneg (norm_nonneg _) (norm_nonneg _)
+  have h_abs_sq_le : |@inner ℝ Vec3 _ x y| ^ 2 ≤ (‖x‖ * ‖y‖) ^ 2 :=
+    pow_le_pow_left₀ (abs_nonneg _) h_cs 2
+  have h_abs_sq : |@inner ℝ Vec3 _ x y| ^ 2 = @inner ℝ Vec3 _ x y ^ 2 := sq_abs _
+  rw [h_abs_sq, mul_pow] at h_abs_sq_le
+  linarith
 
 -- ============================================================================
 -- Part III: Dihedral Angles
@@ -183,7 +190,8 @@ lemma cos_angleA (t : SphericalTriangle)
   simp only [ne_eq, hne_c, hne_b, or_self, ↓reduceIte, not_false_eq_true]
   have hbounds := arg_angleA_bounds t hb hc
   rw [norm_proj_BA, norm_proj_CA] at hbounds
-  rw [Real.cos_arccos hbounds.1 hbounds.2, proj_inner_eq, norm_proj_BA, norm_proj_CA]
+  rw [Real.cos_arccos hbounds.1 hbounds.2, proj_inner_eq]
+  ring
 
 /-- Cauchy-Schwarz bound for the argument of arccos in angleB. -/
 private lemma arg_angleB_bounds (t : SphericalTriangle)
@@ -214,7 +222,8 @@ lemma cos_angleB (t : SphericalTriangle)
   simp only [ne_eq, hne_a, hne_c, or_self, ↓reduceIte, not_false_eq_true]
   have hbounds := arg_angleB_bounds t ha hc
   rw [norm_proj_AB, norm_proj_CB] at hbounds
-  rw [Real.cos_arccos hbounds.1 hbounds.2, proj_inner_eq_B, norm_proj_AB, norm_proj_CB]
+  rw [Real.cos_arccos hbounds.1 hbounds.2, proj_inner_eq_B]
+  ring
 
 -- ============================================================================
 -- Part V: sin²(angle)·sin²(sides) = gramDet
@@ -233,7 +242,6 @@ lemma sinA_sq_times_bc (t : SphericalTriangle)
   have hbc : Real.sin t.sideB * Real.sin t.sideC ≠ 0 :=
     mul_ne_zero (ne_of_gt hb) (ne_of_gt hc)
   field_simp
-  ring
 
 /-- sin²(B)·sin²(a)·sin²(c) = gramDet.
     By symmetric reasoning with vertices A and B swapped. -/
@@ -330,28 +338,47 @@ theorem spherical_law_of_sines_all (t : SphericalTriangle)
       · -- sin(t'.sideC) > 0: t'.sideC = arcLength t'.A t'.B = arcLength t.C t.A
         show 0 < Real.sin (arcLength t.C t.A)
         rwa [arcLength_comm]
-    -- Now unwrap: t'.sideA = t.sideC, t'.sideB = t.sideA (reversed via arcLength_comm)
-    -- t'.angleA = t.angleC, t'.angleB = t.angleA (by definition of angle)
-    have h_sideA : t'.sideA = t.sideC := by
-      show arcLength t.A t.B = arcLength t.A t.B; rfl
-    have h_sideB_comm : t'.sideB = arcLength t.C t.B := rfl
-    have h_sideA_comm : t'.sideB = arcLength t.B t.C := by
-      rw [h_sideB_comm, arcLength_comm]
-    -- Actually t'.sideB should equal t.sideA = arcLength B C
-    -- t.sideA = arcLength t.B t.C
-    have h_eq : Real.sin (arcLength t.C t.B) = Real.sin t.sideA := by
-      rw [arcLength_comm]; rfl
-    -- angleA of t' uses projectPerp t'.B onto t'.A = projectPerp t.A onto t.C
-    -- That's the same as t.angleC
-    have h_angA : t'.angleA = t.angleC := by
-      simp only [SphericalTriangle.angleA, SphericalTriangle.angleC, t']
-    have h_angB : t'.angleB = t.angleA := by
-      simp only [SphericalTriangle.angleB, SphericalTriangle.angleA, t']
-    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hC)]
-    rw [h_sideA, h_angA, h_angB] at h_perm
-    have : Real.sin (arcLength t.C t.B) = Real.sin t.sideA := by
+    -- Translate t' angles/sides back to t.
+    --   t'.sideA = arcLength t.A t.B = t.sideC                 (definitional)
+    --   t'.sideB = arcLength t.C t.B; sin t'.sideB = sin t.sideA via arcLength_comm
+    --   t'.angleA = t.angleC                                   (ite vs dite, same body)
+    --   t'.angleB = t.angleA                                   (Or.comm + inner_comm + mul_comm)
+    have h_sideA : t'.sideA = t.sideC := rfl
+    have h_sin_sideB : Real.sin t'.sideB = Real.sin t.sideA := by
+      show Real.sin (arcLength t.C t.B) = Real.sin (arcLength t.B t.C)
       rw [arcLength_comm]
-    rw [this] at h_perm
+    have h_angA : t'.angleA = t.angleC := by
+      show
+        (if ‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0 then (0 : ℝ)
+          else Real.arccos
+            ((@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
+              (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖))) =
+        (if h : ‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0 then (0 : ℝ)
+          else Real.arccos
+            ((@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
+              (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖)))
+      by_cases hh : ‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0
+      · rw [if_pos hh, dif_pos hh]
+      · rw [if_neg hh, dif_neg hh]
+    have h_angB : t'.angleB = t.angleA := by
+      show
+        (if ‖projectPerp t.C t.A‖ = 0 ∨ ‖projectPerp t.B t.A‖ = 0 then (0 : ℝ)
+          else Real.arccos
+            ((@inner ℝ Vec3 _ (projectPerp t.C t.A) (projectPerp t.B t.A)) /
+              (‖projectPerp t.C t.A‖ * ‖projectPerp t.B t.A‖))) =
+        (if ‖projectPerp t.B t.A‖ = 0 ∨ ‖projectPerp t.C t.A‖ = 0 then (0 : ℝ)
+          else Real.arccos
+            ((@inner ℝ Vec3 _ (projectPerp t.B t.A) (projectPerp t.C t.A)) /
+              (‖projectPerp t.B t.A‖ * ‖projectPerp t.C t.A‖)))
+      by_cases h1 : ‖projectPerp t.C t.A‖ = 0
+      · rw [if_pos (Or.inl h1), if_pos (Or.inr h1)]
+      · by_cases h2 : ‖projectPerp t.B t.A‖ = 0
+        · rw [if_pos (Or.inr h2), if_pos (Or.inl h2)]
+        · rw [if_neg (not_or.mpr ⟨h1, h2⟩), if_neg (not_or.mpr ⟨h2, h1⟩),
+              real_inner_comm (projectPerp t.C t.A) (projectPerp t.B t.A),
+              mul_comm ‖projectPerp t.C t.A‖ ‖projectPerp t.B t.A‖]
+    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hC)]
+    rw [h_sideA, h_angA, h_angB, h_sin_sideB] at h_perm
     linarith
 
 -- ============================================================================
