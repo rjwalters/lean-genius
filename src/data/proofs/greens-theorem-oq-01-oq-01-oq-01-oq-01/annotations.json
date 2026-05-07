@@ -99,28 +99,78 @@
     ]
   },
   {
-    "id": "gtoq01x4-ann-05",
+    "id": "gtoq01x4-ann-05a",
     "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
     "range": {
       "startLine": 211,
-      "endLine": 422
+      "endLine": 269
     },
     "type": "technique",
-    "title": "B2 + B3: Tail Permutations and Arbitrary Transpositions",
-    "content": "Three private lemmas chain B1 into a full transposition handler. **`iteratedIntervalIntegral_perm_tail`** (B2): permuting only the tail positions $1, \\dots, n$ (fixing position 0) reduces to the IH applied *inside* the outermost integral — concretely, for any $\\tau \\in \\text{Equiv.Perm}(\\text{Fin}\\,(n+1))$ fixing 0, the iterated integral with $\\tau$ applied equals the unpermuted integral, by induction over the inner integral and the IH for dimension $n$. **`iter_integral_swap_zero`**: handles the special transposition swap(0, k) that moves position 0 to position $k$ — built by chaining $k$ adjacent transpositions $\\text{swap}(j, j+1)$ outward and then back, each adjacent swap implemented by a B1 + tail-shift via B2. **`iter_integral_swap_any`**: handles any transposition swap(j, k) by conjugating swap(0, k) with a tail permutation that brings $j$ to position 0 — the structural form $\\text{swap}(j, k) = \\sigma \\cdot \\text{swap}(0, k') \\cdot \\sigma^{-1}$ where $\\sigma$ is built from B2-amenable tail moves. These three lemmas are the file's combinatorial core (lines 211-422 are dense bookkeeping). They convert the *one* analytic primitive (B1) into a handler for *every* transposition in $S_n$, which is what `swap_induction_on` needs.",
-    "mathContext": "Coxeter-style decomposition: any transposition in $S_n$ can be written as a conjugate of an adjacent transposition by a chain of inner permutations. Combined with B1 (adjacent swap) and B2 (inner permutation), this realizes every transposition.",
+    "title": "B2: iteratedIntervalIntegral_perm_tail (Fix-0 Permutations Reduce to IH)",
+    "content": "Handles any permutation $\\sigma \\in \\text{Equiv.Perm}(\\text{Fin}(n+1))$ that fixes position 0: the iterated integral with $\\sigma$ applied equals the original. The proof core is `Equiv.Perm.decomposeFin σ`, a Mathlib factorization that splits $\\sigma$ into (i) the value at position 0 (here, `(decomposeFin σ).1 = 0` because $\\sigma 0 = 0$, leaving `Equiv.swap 0 0 = id`) and (ii) the induced permutation $\\sigma' \\in \\text{Equiv.Perm}(\\text{Fin}\\,n)$ on the tail. After verifying that $\\sigma\\,i.\\text{succ} = (\\sigma' i).\\text{succ}$ for all tail indices (the `hsucc` chain), the proof rewrites the outer integral via `iteratedIntervalIntegral_succ` to expose the inner integral over `Fin n`, then applies the dimension-$n$ inductive hypothesis with $\\tau = \\sigma'$ pointwise inside the outer integral via `intervalIntegral.integral_congr`. The bridge `funext hfun` shows the tail-reindexed integrand under $\\sigma.\\text{symm}$ equals the integrand reindexed by $\\sigma'.\\text{symm}$ on the tail. This is the *only* place the IH on $n$ is used, isolating dimension-induction from the Coxeter combinatorics that follow.",
+    "mathContext": "Fix-0 permutation reduction: $\\sigma 0 = 0 \\Rightarrow \\int_a^b \\cdots f \\, dx = \\int_{a \\circ \\sigma}^{b \\circ \\sigma} f \\circ \\sigma^{-1} \\, dx$, by lifting the IH for dimension $n$ inside the outer $dx_0$ integral.",
     "significance": "key",
     "relatedConcepts": [
-      "Coxeter generators of S_n",
-      "adjacent transpositions",
-      "conjugation in symmetric groups",
+      "Equiv.Perm.decomposeFin",
       "induction inside an integral",
-      "B1 + B2 composition pattern"
+      "intervalIntegral.integral_congr",
+      "Fin.tail and Fin.cons",
+      "structural recursion on Fin"
     ],
     "prerequisites": [
       "Equiv.Perm operations",
-      "induction on dimension n",
-      "B1 (swap_outer_two), B2 building block recursion"
+      "B0 (continuous_param) for the inner-integrand continuity used implicitly via IH",
+      "iteratedIntervalIntegral_succ"
+    ]
+  },
+  {
+    "id": "gtoq01x4-ann-05b",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 270,
+      "endLine": 375
+    },
+    "type": "technique",
+    "title": "B3a: iter_integral_swap_zero (swap(0, k) for any k)",
+    "content": "Handles the special transposition swap(0, k) for any $k \\in \\text{Fin}(n+1)$. Proof by induction on $k.\\text{val}$: **k=0** is trivial (swap_self = id); **k=1** is exactly `swap_outer_two` (B1) after a Nat-existence rewrite to expose $n = n' + 1$; **k = m+2** uses the symmetric-group identity $\\text{swap}(0, k) = \\text{swap}(0, k_0) \\cdot \\text{swap}(k_0, k) \\cdot \\text{swap}(0, k_0)$ where $k_0 = k - 1$. Concretely: apply IH at $k_0$ (step1), then `iteratedIntervalIntegral_perm_tail` with the tail-fixing transposition $\\text{swap}(k_0, k)$ (step2 — note $k_0, k \\ge 1$ so the swap fixes 0), then IH at $k_0$ again (step3). Composing the three rewrites under `.trans` yields a 3-fold-composed permutation, which `funext fun i => congr_arg a (hcomp i)` collapses back to a single `swap 0 k`. The pointwise identity `hcomp` (line 327) is closed by `simp [Equiv.swap_apply_def] <;> split_ifs <;> simp_all <;> omega` — pure Fin arithmetic. The choice of conjugation (rather than a generic Coxeter braid) is targeted: each of the three factors is *individually* handled by the simpler tools, so no new Mathlib machinery is needed beyond swap-product expansion.",
+    "mathContext": "swap(0, k) handler: $\\text{swap}(0, k) = \\text{swap}(0, k_0) \\cdot \\text{swap}(k_0, k) \\cdot \\text{swap}(0, k_0)$ for $k_0 = k - 1 \\ge 1$. Each factor is either an outer swap (B1, when k₀ = 0) or fixes 0 (B2).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Coxeter conjugation identity",
+      "induction on Fin index",
+      "swap(a,b)·swap(b,c)·swap(a,b) = swap(a,c)",
+      "IH chaining via .trans",
+      "Equiv.swap_apply_def"
+    ],
+    "prerequisites": [
+      "B1 (swap_outer_two)",
+      "B2 (iteratedIntervalIntegral_perm_tail)",
+      "Nat induction with Match",
+      "omega tactic on Fin.val arithmetic"
+    ]
+  },
+  {
+    "id": "gtoq01x4-ann-05c",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 376,
+      "endLine": 422
+    },
+    "type": "technique",
+    "title": "B3b: iter_integral_swap_any (Any Single Transposition)",
+    "content": "Promotes B3a from `swap(0, k)` to `swap(x, y)` for arbitrary $x, y \\in \\text{Fin}(n+1)$. Three-way case split: (i) $x = y$ — swap is identity, dispatch by `Equiv.swap_self`; (ii) $x = 0$ — apply B3a directly with $k = y$; (iii) $y = 0$ — rewrite via `Equiv.swap_comm x 0` to flip the order, then apply B3a with $k = x$; (iv) $x, y \\ne 0$ — the transposition fixes 0 (`Equiv.swap_apply_of_ne` gives $(\\text{swap}\\,x\\,y)(0) = 0$), so dispatch to B2 (`iteratedIntervalIntegral_perm_tail`). Each branch terminates in a single `exact`. This case analysis is what makes the file's main theorem a one-liner: every transposition in $S_n$ is handled by *exactly one* of B1, B2, or B3a, and B3b just routes between them.",
+    "mathContext": "Any transposition router: case split on whether the two transposed indices include position 0, dispatching to B2 (neither does) or B3a (one of them is 0).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Equiv.swap_self",
+      "Equiv.swap_comm",
+      "Equiv.swap_apply_of_ne",
+      "case analysis on Fin equality"
+    ],
+    "prerequisites": [
+      "B2 (iteratedIntervalIntegral_perm_tail)",
+      "B3a (iter_integral_swap_zero)",
+      "rcases on equality"
     ]
   },
   {
