@@ -312,7 +312,7 @@ private lemma stirling_step_upper (k : ℕ) (hk : 1 ≤ k) :
   calc ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / k) - 1
       ≤ ((k : ℝ) + 1 / 2) * (1 / k - (1 / k) ^ 2 / 2 + (1 / k) ^ 3 / 3) - 1 := by
           linarith [mul_le_mul_of_nonneg_left hlog_le hk_half_pos.le]
-    _ = 1 / (12 * (k : ℝ) ^ 2) + 1 / (6 * (k : ℝ) ^ 3) := by field_simp; ring
+    _ = 1 / (12 * (k : ℝ) ^ 2) + 1 / (6 * (k : ℝ) ^ 3) := by field_simp <;> ring
 
 /-- Lower bound: 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k for k ≥ 1.
 
@@ -329,7 +329,7 @@ private lemma stirling_step_lower (k : ℕ) (hk : 1 ≤ k) :
   have hk_half_pos : (0 : ℝ) < (k : ℝ) + 1 / 2 := by positivity
   calc 1 / (12 * (k : ℝ) ^ 2) - 1 / (12 * (k : ℝ) ^ 3) - 1 / (8 * (k : ℝ) ^ 4)
       = ((k : ℝ) + 1 / 2) * (1 / k - (1 / k) ^ 2 / 2 + (1 / k) ^ 3 / 3 -
-         (1 / k) ^ 4 / 4) - 1 := by field_simp; ring
+         (1 / k) ^ 4 / 4) - 1 := by field_simp <;> ring
     _ ≤ ((k : ℝ) + 1 / 2) * Real.log (1 + 1 / k) - 1 := by
           linarith [mul_le_mul_of_nonneg_left hlog_ge hk_half_pos.le]
 
@@ -352,7 +352,7 @@ private lemma inv_sq_le_telescope (k : ℝ) (hk : 2 ≤ k) :
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
   suffices h : 0 ≤ 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) by linarith
   have h_eq : 1 / (12 * (k-1)) - 1 / (12 * k) - 1 / (12 * k^2) =
-      (k ^ 2 - k * (k - 1)) / (12 * k ^ 2 * (k - 1) * k) := by field_simp; ring
+      (k ^ 2 - k * (k - 1)) / (12 * k ^ 2 * (k - 1) * k) := by field_simp <;> ring
   rw [h_eq]
   apply div_nonneg
   · nlinarith [sq_nonneg k]
@@ -366,9 +366,9 @@ private lemma inv_cube_le_telescope (k : ℝ) (hk : 2 ≤ k) :
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
   have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
   calc 1 / (6 * k ^ 3)
-      = 2 * (k - 1) ^ 2 / (12 * k ^ 3 * (k - 1) ^ 2) := by field_simp; ring
+      = 2 * (k - 1) ^ 2 / (12 * k ^ 3 * (k - 1) ^ 2) := by field_simp <;> ring
     _ ≤ k * (2 * k - 1) / (12 * k ^ 3 * (k - 1) ^ 2) := by gcongr
-    _ = 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by field_simp; ring
+    _ = 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by field_simp <;> ring
 
 -- 1/(12k) - 1/(12(k+1)) ≤ 1/(12k²) for k ≥ 1
 -- Equiv: k(k+1) ≥ k², i.e. k+1 ≥ k ✓
@@ -378,7 +378,7 @@ private lemma inv_harmonic_le_sq (k : ℝ) (hk : 1 ≤ k) :
   have hk1_pos : (0 : ℝ) < k + 1 := by linarith
   suffices h : 0 ≤ 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) by linarith
   have h_eq : 1 / (12 * k^2) - (1 / (12 * k) - 1 / (12 * (k+1))) =
-      (k * (k + 1) - k ^ 2) / (12 * k ^ 2 * k * (k + 1)) := by field_simp; ring
+      (k * (k + 1) - k ^ 2) / (12 * k ^ 2 * k * (k + 1)) := by field_simp <;> ring
   rw [h_eq]
   apply div_nonneg
   · nlinarith [sq_nonneg k]
@@ -392,9 +392,9 @@ private lemma inv_cube_le_telescope2 (k : ℝ) (hk : 2 ≤ k) :
   have hk1_pos : (0 : ℝ) < k - 1 := by linarith
   have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
   calc 1 / (12 * k ^ 3)
-      = 2 * (k - 1) ^ 2 / (24 * k ^ 3 * (k - 1) ^ 2) := by field_simp; ring
+      = 2 * (k - 1) ^ 2 / (24 * k ^ 3 * (k - 1) ^ 2) := by field_simp <;> ring
     _ ≤ k * (2 * k - 1) / (24 * k ^ 3 * (k - 1) ^ 2) := by gcongr
-    _ = 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by field_simp; ring
+    _ = 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by field_simp <;> ring
 
 -- 1/(8k⁴) ≤ 1/(24(k-1)³) - 1/(24k³) for k ≥ 2
 -- 3(k-1)³ ≤ k⁴ - k(k-1)³, i.e. (k+3)(k-1)³ ≤ k⁴
@@ -408,9 +408,9 @@ private lemma inv_quad_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     nlinarith [sq_nonneg (k - 1), sq_nonneg k, mul_pos hk_pos hk1_pos,
                mul_pos (mul_pos hk_pos hk_pos) (mul_pos hk1_pos hk1_pos)]
   calc 1 / (8 * k ^ 4)
-      = 3 * (k - 1) ^ 3 / (24 * k ^ 4 * (k - 1) ^ 3) := by field_simp; ring
+      = 3 * (k - 1) ^ 3 / (24 * k ^ 4 * (k - 1) ^ 3) := by field_simp <;> ring
     _ ≤ (k ^ 4 - k * (k - 1) ^ 3) / (24 * k ^ 4 * (k - 1) ^ 3) := by gcongr
-    _ = 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by field_simp; ring
+    _ = 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by field_simp <;> ring
 
 -- ═══════════════════════════════════════════════════
 -- Part IIIc: Partial Sum Bounds by Induction
@@ -577,7 +577,7 @@ theorem stirling_first_correction :
     have h_1over2 : 1 / (2 * (n:ℝ)^2) ≤ 2 / (n:ℝ)^2 := by
       have hn2 : (0:ℝ) < (n:ℝ)^2 := by positivity
       have h_eq : 2 / (n:ℝ)^2 - 1 / (2 * (n:ℝ)^2) = 3 / (2 * (n:ℝ)^2) := by
-        field_simp; ring
+        field_simp <;> ring
       linarith [div_pos (by norm_num : (0:ℝ) < 3) (mul_pos (by norm_num : (0:ℝ) < 2) hn2)]
     have hL_lb : 1 / (12 * (n : ℝ)) - 2 / (n : ℝ) ^ 2 ≤ L := by
       suffices h : 1 / (24 * ((n : ℝ) - 1) ^ 2) + 1 / (24 * ((n : ℝ) - 1) ^ 3) ≤
@@ -585,7 +585,7 @@ theorem stirling_first_correction :
       suffices h2 : 0 ≤ 1 / (2 * (n:ℝ)^2) -
           (1 / (24 * ((n:ℝ)-1)^2) + 1 / (24 * ((n:ℝ)-1)^3)) by linarith
       have h_eq : 1 / (2 * (n:ℝ)^2) - (1 / (24 * ((n:ℝ)-1)^2) + 1/(24*((n:ℝ)-1)^3)) =
-          (12*((n:ℝ)-1)^3 - (n:ℝ)^3) / (24*(n:ℝ)^2*((n:ℝ)-1)^3) := by field_simp; ring
+          (12*((n:ℝ)-1)^3 - (n:ℝ)^3) / (24*(n:ℝ)^2*((n:ℝ)-1)^3) := by field_simp <;> ring
       rw [h_eq]
       apply div_nonneg
       · nlinarith [mul_pos hn1_pos (mul_pos hn1_pos hn1_pos),
@@ -602,7 +602,7 @@ theorem stirling_first_correction :
             suffices h : 0 ≤ 1 / (n:ℝ) -
                 (1 / (12 * ((n:ℝ)-1)) + 1 / (12 * ((n:ℝ)-1)^2)) by linarith
             have h_eq : 1 / (n:ℝ) - (1/(12*((n:ℝ)-1)) + 1/(12*((n:ℝ)-1)^2)) =
-                (12*((n:ℝ)-1)^2 - (n:ℝ)^2) / (12*(n:ℝ)*((n:ℝ)-1)^2) := by field_simp; ring
+                (12*((n:ℝ)-1)^2 - (n:ℝ)^2) / (12*(n:ℝ)*((n:ℝ)-1)^2) := by field_simp <;> ring
             rw [h_eq]; apply div_nonneg
             · nlinarith [sq_nonneg ((n:ℝ)-1), mul_pos hn_pos hn1_pos]
             · positivity
@@ -673,7 +673,7 @@ theorem error_bound_from_correction (n : ℕ) (hn : n ≥ 2)
         have hn_ge2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
         suffices h : 1 / (n : ℝ) - (1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ))) ≥ 0 by linarith
         have heq : 1 / (n : ℝ) - (1 / (n : ℝ) ^ 2 + 1 / (12 * (n : ℝ))) =
-            (11 * (n : ℝ) - 12) / (12 * (n : ℝ) ^ 2) := by field_simp; ring
+            (11 * (n : ℝ) - 12) / (12 * (n : ℝ) ^ 2) := by field_simp <;> ring
         rw [heq]
         exact div_nonneg (by nlinarith) (by positivity)
 
