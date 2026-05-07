@@ -126,12 +126,14 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     -- coeff p d = 1 (since leadingCoeff p = 1 and natDegree p = d)
     have hpd : p.coeff d = 1 := by
       have : p.coeff d = p.leadingCoeff := by
-        rw [Polynomial.leadingCoeff, hd_deg]
+        -- leadingCoeff p = coeff p (natDegree p), use natDegree p = d
+        change p.coeff d = p.coeff p.natDegree
+        rw [hd_deg]
       exact this.trans hlc
     -- (p - X^d) has natDegree ≤ d
     have hle : (p - Polynomial.X ^ d).natDegree ≤ d :=
       (Polynomial.natDegree_sub_le p _).trans
-        (by simp [hd_deg, Polynomial.natDegree_X_pow])
+        (by simp [hd_deg])
     -- The coeff at degree d is 0 (leading terms cancel: 1 - 1 = 0)
     have hcoeff : (p - Polynomial.X ^ d).coeff d = 0 := by
       rw [Polynomial.coeff_sub, Polynomial.coeff_X_pow, if_pos rfl, hpd, sub_self]
@@ -152,8 +154,10 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     rw [hq_def, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X,
         sub_div, div_self hnd, sub_add_cancel]
   -- q(n)/n^d → 0, so q(n)/n^d + 1 → 0 + 1 = 1
-  rw [show (1 : ℚ) = 0 + 1 from by ring]
-  exact (low_degree_poly_ratio_tendsto_zero q d hd hq_deg).add tendsto_const_nhds
+  rw [show (1 : ℚ) = 0 + 1 from (zero_add 1).symm]
+  apply Filter.Tendsto.add
+  · exact low_degree_poly_ratio_tendsto_zero q d hd hq_deg
+  · exact tendsto_const_nhds
 
 /- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
 
