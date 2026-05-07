@@ -30,9 +30,9 @@
     "phase": "IN-PROGRESS",
     "since": "2026-05-07",
     "iteration": 3,
-    "focus": "Step 2 of trig_sum_harmonic_lb proof formalized as exists_nearest_chebyshev_angle helper. Witness k₀ = ⌊nθ/π⌋ proved to lie in {0,…,n-1} with |θ - φ_{k₀}| ≤ π/(2n). 2 sorries remain: trig_sum_harmonic_lb (still needs Steps 3-7: Lipschitz+sin bound+harmonic sum+finite case) and divergence_from_lebesgue_growth.",
-    "blockers": [],
-    "nextAction": "Continue trig_sum_harmonic_lb: Step 3 — bound |θ - φ_{k₀+j+1}| ≤ (2j+3)π/(2n) for nearby nodes via the new helper. Step 4 — sin lower bound via sin_ge_sin_of_mem_Icc.",
+    "focus": "Added exists_nearest_chebyshev_angle helper (Step 2 of trig_sum_harmonic_lb). New lemma type-checks cleanly. Docker build (PR #16593) revealed 23 pre-existing errors in unrelated code: Mathlib API drift was NOT fully fixed despite earlier JSON claim — Nat.harmonic, Nat.harmonic_succ, Even.not_odd, and div_lt_div_iff are all unknown identifiers in the pinned Mathlib (rev 2df2f01). Cascading errors in tan_eq_cot_complement (lines 854-871) and odd_harmonic_sum_lb (lines 923-997).",
+    "blockers": ["Mathlib API drift in pre-existing code blocks file from building: Nat.harmonic renamed/moved, div_lt_div_iff → div_lt_div_iff₀, Even.not_odd unknown. New helper itself is valid."],
+    "nextAction": "(Mechanic / Researcher) Fix the pre-existing Mathlib API drift first: (a) line 889 div_lt_div_iff → div_lt_div_iff₀; (b) lines 943-956 Nat.harmonic → check Mathlib for current name; (c) line 1262 Even.not_odd → use (Even.add_one h).succ_odd or similar. After file builds, continue trig_sum_harmonic_lb proof (Steps 3-7).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 14 (2026-05-07): Added exists_nearest_chebyshev_angle helper formalizing Step 2 of the trig_sum_harmonic_lb proof — for any θ ∈ (0,π) and n ≥ 1, witness k₀ = ⌊nθ/π⌋ : Fin n satisfies |θ - φ_{k₀}| ≤ π/(2n). 2 sorries remain: trig_sum_harmonic_lb (Steps 3-7 of proof sketch: Lipschitz bound+sin lower bound+harmonic sum+finite case), and divergence_from_lebesgue_growth (lim vs limsup gap). Earlier Session 13 (2026-05-04): Mathlib API drift FIXED (5 issues resolved — div_le_div_iff→div_le_div_iff₀, harmonic_eq_sum_range→induction, Nat.eq_or_gt_of_le→eq_or_lt_of_le, Int.even_iff_not_odd→Even.not_odd, arccos_lt_pi.mpr→inline).",
+    "progressSummary": "Session 14 (2026-05-07): Added exists_nearest_chebyshev_angle helper formalizing Step 2 of the trig_sum_harmonic_lb proof — for any θ ∈ (0,π) and n ≥ 1, witness k₀ = ⌊nθ/π⌋ : Fin n satisfies |θ - φ_{k₀}| ≤ π/(2n). New lemma type-checks cleanly (lines 1121-1173 produce no errors/warnings). Docker build (PR #16593) revealed 23 PRE-EXISTING errors: Session 13's claim that Mathlib API drift was 'FIXED' was incorrect. Unknown constants in current Mathlib: Nat.harmonic (lines 943,945,951,956), Nat.harmonic_succ (947), Even.not_odd (1262), div_lt_div_iff (889). Cascading linarith/unsolved-goals errors in tan_eq_cot_complement (807-871) and odd_harmonic_sum_lb (923-997). 2 sorries remain (trig_sum_harmonic_lb at 1192, divergence_from_lebesgue_growth at 1367) but file does not build.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -84,7 +84,8 @@
       "Real.arccos_pos.mpr / Real.arccos_lt_pi.mpr: get strict bounds θ₀ ∈ (0,π) from x ∈ (-1,1)",
       "Real.cos_eq_one_iff: cos x = 1 ↔ ∃ k : ℤ, x = k*(2π). Use to show cos(πp/q) ≠ 1 from p odd.",
       "LipschitzWith.dist_le_mul converts edist bound to |cos α - cos β| ≤ |α - β| via Real.dist_eq",
-      "Nearest Chebyshev midpoint via floor: k₀ = ⌊nθ/π⌋ ∈ {0,…,n-1} for θ ∈ (0,π) since 0 < nθ/π < n; the half-interval (k₀π/n, (k₀+1)π/n) containing θ has midpoint φ_{k₀} = (2k₀+1)π/(2n) within π/(2n)."
+      "Nearest Chebyshev midpoint via floor: k₀ = ⌊nθ/π⌋ ∈ {0,…,n-1} for θ ∈ (0,π) since 0 < nθ/π < n; the half-interval (k₀π/n, (k₀+1)π/n) containing θ has midpoint φ_{k₀} = (2k₀+1)π/(2n) within π/(2n).",
+      "Don't trust prior progressSummary 'API drift fixed' claims without a Docker build: the 2026-05-04 Session 13 JSON claimed all API drift was fixed, but a 2026-05-07 build of Proofs.Erdos1151OQ04 surfaced 23 errors including Unknown constant Nat.harmonic, Even.not_odd, div_lt_div_iff. Always verify with Docker before declaring resolution."
     ],
     "mathlibGaps": [],
     "nextSteps": [
