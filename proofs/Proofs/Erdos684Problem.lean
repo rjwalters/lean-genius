@@ -95,12 +95,62 @@ theorem smooth_rough_decomposition (k m : ℕ) (hm : m > 0) :
   simp only [roughPart]
   exact (Nat.mul_div_cancel' (smoothPart_dvd k m)).symm
 
+-- The smooth part is always positive (each factor p^e is positive for prime p ≥ 2)
+theorem smoothPart_pos (k m : ℕ) : 0 < smoothPart k m := by
+  apply Finset.prod_pos
+  intro p hp
+  rw [Finset.mem_filter, Finset.mem_range] at hp
+  exact Nat.pos_pow_of_pos _ hp.2.pos
+
+-- Boundary cases: smoothPart of 0 or 1 is 1 (no prime factors to keep)
+theorem smoothPart_zero (k : ℕ) : smoothPart k 0 = 1 := by
+  simp only [smoothPart, Nat.factorization_zero, Finsupp.zero_apply, pow_zero,
+    Finset.prod_const_one]
+
+theorem smoothPart_one (k : ℕ) : smoothPart k 1 = 1 := by
+  simp only [smoothPart, Nat.factorization_one, Finsupp.zero_apply, pow_zero,
+    Finset.prod_const_one]
+
+-- The smooth part is bounded by m (since it divides m, when m > 0)
+theorem smoothPart_le (k m : ℕ) (hm : 0 < m) : smoothPart k m ≤ m :=
+  Nat.le_of_dvd hm (smoothPart_dvd k m)
+
+-- Monotonicity of smoothPart in k (as divisibility): more primes admitted ⇒ larger smooth part
+-- The filter set grows with k, so the product over fewer primes divides the larger one.
+theorem smoothPart_dvd_mono (k₁ k₂ m : ℕ) (h : k₁ ≤ k₂) :
+    smoothPart k₁ m ∣ smoothPart k₂ m := by
+  apply Finset.prod_dvd_prod_of_subset
+  intro p hp
+  rw [Finset.mem_filter, Finset.mem_range] at hp ⊢
+  exact ⟨by omega, hp.2⟩
+
+-- Monotonicity of smoothPart in k (as ≤): direct corollary of divisibility + positivity
+theorem smoothPart_mono_k (k₁ k₂ m : ℕ) (h : k₁ ≤ k₂) :
+    smoothPart k₁ m ≤ smoothPart k₂ m :=
+  Nat.le_of_dvd (smoothPart_pos k₂ m) (smoothPart_dvd_mono k₁ k₂ m h)
+
 -- For binomial coefficient, decompose by factor range
 noncomputable def binomialSmoothPart (n k : ℕ) : ℕ :=
   smoothPart k (Nat.choose n k)
 
 noncomputable def binomialRoughPart (n k : ℕ) : ℕ :=
   roughPart k (Nat.choose n k)
+
+-- Boundary case: binomialSmoothPart n n = 1 since C(n,n) = 1
+theorem binomialSmoothPart_self (n : ℕ) : binomialSmoothPart n n = 1 := by
+  unfold binomialSmoothPart
+  rw [Nat.choose_self]
+  exact smoothPart_one n
+
+-- Boundary case: binomialSmoothPart n 0 = 1 since the filter range is empty (no primes ≤ 0)
+theorem binomialSmoothPart_zero (n : ℕ) : binomialSmoothPart n 0 = 1 := by
+  unfold binomialSmoothPart smoothPart
+  rw [Nat.choose_zero_right]
+  have : (Finset.range 1).filter Nat.Prime = ∅ := by
+    ext p
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.notMem_empty, iff_false, not_and]
+    intro hp; exact fun hprime => absurd hprime.two_le (by omega)
+  rw [this, Finset.prod_empty]
 
 /-
 # Part 2: The Function f(n)
