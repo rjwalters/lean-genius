@@ -13817,7 +13817,10 @@
       "auditCount": 1,
       "lastAudited": "2026-05-07T22:30:00Z",
       "result": "issues-found",
-      "issues": ["meta.theoremCount=33 vs actual 51", "meta.lineCount=210 vs actual 209"],
+      "issues": [
+        "meta.theoremCount=33 vs actual 51",
+        "meta.lineCount=210 vs actual 209"
+      ],
       "notes": "stale theoremCount and lineCount in legacy meta sub-object; lf block absent so find-targets misses. See issue #16708."
     },
     "inverse-galois-d4": {
@@ -14795,7 +14798,7 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
     },
     "erdos-895-oq-01": {
       "auditCount": 2,
@@ -14826,7 +14829,7 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
     },
     "laws-of-large-numbers-oq-01-oq-02": {
       "auditCount": 1,
@@ -14881,14 +14884,14 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
     },
     "cauchy-schwarz-oq-02-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
     },
     "ehrhart-cube-proven-oq-02": {
       "auditCount": 2,
@@ -14901,7 +14904,7 @@
       "lastAudited": "2026-05-07T20:00:00Z",
       "result": "issues-fixed",
       "issues": [],
-      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found \u2192 issues-fixed."
+      "notes": "Re-audit confirms drift resolved on origin/main: sorries/axioms/true_stubs all match meta. Bumping issues-found → issues-fixed."
     },
     "chinese-remainder-constructive-oq-04-oq-02": {
       "auditCount": 1,
@@ -14978,6 +14981,12 @@
     "basel-problem-oq-01-oq-01-oq-02-oq-03": {
       "auditCount": 1,
       "lastAudited": "2026-05-07T19:11:54Z",
+      "result": "clean",
+      "issues": []
+    },
+    "euler-identity-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-07T20:29:30Z",
       "result": "clean",
       "issues": []
     }
