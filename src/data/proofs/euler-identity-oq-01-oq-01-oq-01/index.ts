@@ -1,5 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
 import sourceRaw from '../../../../proofs/Proofs/EulerIdentityOQ01OQ01OQ01.lean?raw'
 
 const meta = metaJson as unknown as {
@@ -27,7 +28,7 @@ export const eulerIdentityOq01Oq01Oq01Proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const eulerIdentityOq01Oq01Oq01Annotations: Annotation[] = []
+export const eulerIdentityOq01Oq01Oq01Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const eulerIdentityOq01Oq01Oq01Data: ProofData = {
   proof: eulerIdentityOq01Oq01Oq01Proof,
