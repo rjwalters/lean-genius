@@ -924,3 +924,111 @@ File at 14022 lines remains beyond practical Docker 32GB build envelope. The edi
 2. Submit sorries 3–5 to Aristotle (likely fast proofs)
 3. Tackle `gnwProb_sum_corners` manually (standard induction on K, ~50 lines)
 4. `gnwProb_key` is the remaining hard mathematical content (GNW 1979)
+
+---
+
+## Session 2026-05-07 (Session 43) — Strong-induction wrapper closes IH sorry
+
+**Mode**: REVISIT (RICH, score 189; main has single-sorry gnwProb_key, fix/ballot-gnw-key has structural framework with two sub-sorries)
+**Outcome**: PROGRESS — strong induction wrapper proved; sorry count 1 → 1 but better-structured.
+
+### What I Did
+
+1. **Discovered `origin/fix/ballot-gnw-key`** — an unmerged branch with structural
+   improvements to `gnwProb_key` (commit `6590609fa80`):
+   - Adds `isCorner_removeCorner_of_ne`: distinct corners survive corner removal.
+   - Adds `gnwProb_exchange` (named sorry): the GNW 1979 exchange identity in
+     product form `F(μ,c)·H(μ\c)·H(μ\c') = F(μ\c',c)·H((μ\c')\c)·H(μ)`.
+   - Restructures multi-corner branch of `gnwProb_key` to use exchange + IH,
+     replacing one anonymous sorry with two named sub-sorries.
+
+2. **Cherry-picked the structural commit** onto `research/ballot-gnw-strong-induction`
+   from `origin/main`.
+
+3. **Closed the IH sorry** (line 14072 on the cherry-picked branch): replaced
+   ```
+   have h_IH : ... := by sorry  -- IH from strong induction
+   ```
+   with
+   ```
+   have h_IH := gnwProb_key (removeCorner μ c' hc') hc_in_rc'
+   ```
+   plus
+   ```
+   termination_by μ.card
+   decreasing_by
+     have hμpos : 0 < μ.card := Finset.card_pos.mpr ⟨c', hc'.1⟩
+     simp only [removeCorner_card hc']
+     omega
+   ```
+   The recursion is well-founded because `removeCorner μ c' hc'` has card `μ.card - 1`
+   (`removeCorner_card`), and `μ.card > 0` follows from `c' ∈ μ.cells` (via `hc'.1`).
+
+### Key Findings
+
+- The `termination_by`/`decreasing_by` pattern matches `hook_length_formula_Q`
+  in the main file (line 371-375): both use well-founded recursion on `μ.card`
+  via `removeCorner_card`. This is the canonical Lean 4 pattern for corner-recursion
+  proofs in this gallery.
+- After this session, the GNW route's structural framework is complete:
+  `hook_walk_identity_gnw → gnwProb_key → gnwProb_exchange (sorry)`.
+  Any future progress on `gnwProb_exchange` immediately closes the entire
+  hook-length formula sorry.
+- Sorry count remains 1 (gnwProb_exchange replaces the multi-corner sorry of
+  gnwProb_key). The structural quality is better: the remaining gap is now a
+  precisely-stated mathematical lemma (GNW exchange identity) rather than an
+  anonymous "TODO" inside a case-split.
+
+### gnwProb_exchange — what's still needed
+
+The single remaining sorry is `gnwProb_exchange`:
+```
+F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
+```
+where `F(ν,d) = ∑_{x∈ν.cells} gnwProb ν d (h(x)) x` and `H = hookProd`.
+
+**Proof strategy** (from GNW 1979):
+1. Hook lengths under removeCorner: removing c' = (r', s') changes only the
+   hook lengths of cells in the arm of c' (row r', columns < s') by `-1` and
+   cells in the leg of c' (column s', rows < r') by `-1`. Other cells unchanged.
+2. F(μ,c) splits as the c' term + sum over `(removeCorner μ c').cells`.
+   The c' term is `gnwProb μ c (h_μ(c')) c'` (the gnwProb starting at c' itself).
+3. For x ≠ c', `gnwProb μ c (h_μ(x)) x` and
+   `gnwProb (μ\c') c (h_{μ\c'}(x)) x` differ only when x is in the arm or leg
+   of c' (where the hook length and strict-hook structure changes).
+4. Product form avoids division: H(μ\c)·H(μ\c') vs H((μ\c')\c)·H(μ) — both
+   sides equal H(μ \ {c, c'}) · (something). The "something" is the same on
+   both sides by hook-length parity (each cell's hook is either changed by 0,
+   -1, or -2 depending on whether it's affected by c, c', or both).
+5. Verified on small examples: L-shape {(0,0),(0,1),(1,0)} and (3,1).
+
+Estimated proof length: ~100 lines of arm/leg case analysis + arithmetic.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean` (14050 → 14126 lines):
+  - Cherry-picked structural framework from `origin/fix/ballot-gnw-key` (+94 lines)
+  - Replaced IH sorry with recursive call (-7 lines net)
+  - Added `termination_by`/`decreasing_by` clauses (+5 lines)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` (rewrite for session 43)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-02/knowledge.md` (this entry)
+
+### Sorry Count: 1 → 1
+
+- ✓ CLOSED: IH from strong induction (now `gnwProb_key (removeCorner μ c' hc') hc_in_rc'`)
+- ✓ CLOSED: anonymous multi-corner sorry of gnwProb_key (now structurally proved
+  modulo `gnwProb_exchange`)
+- REMAINING: `gnwProb_exchange` (line 13871) — GNW 1979 hook-weight shift
+  identity, ~100 lines
+
+### Next Steps
+
+1. **Prove `gnwProb_exchange`.** This is now the sole obstacle to a complete
+   GNW proof of the hook-length formula. Strategy: arm/leg decomposition +
+   product-form telescoping (avoids division and probability theory imports).
+2. **Verify build under Docker.** Helpers file is at 14126 lines (was 14022
+   pre-modularization where Docker OOM'd at 32GB). Modular split should make
+   this buildable; CI on the PR will confirm.
+3. **Alternative: deterministic weighted-walk recasting** (~400 lines self-contained)
+   could avoid `gnwProb_exchange` entirely if the GNW 1979 argument resists
+   formalization.

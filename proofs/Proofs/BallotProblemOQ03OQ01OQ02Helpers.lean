@@ -14062,14 +14062,9 @@ private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ
     -- c is a corner of removeCorner μ c' hc' (distinct corners survive removal).
     have hc_in_rc' : isCorner (removeCorner μ c' hc') c :=
       isCorner_removeCorner_of_ne hc' hc hne.symm
-    -- (a) IH: gnwProb_key holds for removeCorner μ c' hc' and corner c.
-    -- (Requires strong induction; removeCorner μ c' hc' has card < μ.card.)
-    have h_IH : ∑ x ∈ (removeCorner μ c' hc').cells,
-        gnwProb (removeCorner μ c' hc') c
-          (hookLength (removeCorner μ c' hc') x.1 x.2) x =
-        (hookProd (removeCorner μ c' hc') : ℚ) /
-          hookProd (removeCorner (removeCorner μ c' hc') c hc_in_rc') := by
-      sorry  -- IH from strong induction on μ.card; removeCorner_card gives card < μ.card
+    -- (a) IH: gnwProb_key holds for removeCorner μ c' hc' and corner c
+    -- (well-founded recursion on μ.card; removeCorner_card hc' gives card - 1 < card).
+    have h_IH := gnwProb_key (removeCorner μ c' hc') hc_in_rc'
     -- Rearrange IH: F(μ\c',c) * H((μ\c')\c) = H(μ\c')
     have hHrc' : (0 : ℚ) < hookProd (removeCorner (removeCorner μ c' hc') c hc_in_rc') :=
       Nat.cast_pos.mpr (Finset.prod_pos (fun x _ => hookLength_pos _ _ _))
@@ -14098,6 +14093,11 @@ private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ
       mul_right_cancel₀ h_Hc' h_exch
     rw [eq_div_iff (ne_of_gt hHrc)]
     linarith [h_main_prod]
+termination_by μ.card
+decreasing_by
+  have hμpos : 0 < μ.card := Finset.card_pos.mpr ⟨c', hc'.1⟩
+  simp only [removeCorner_card hc']
+  omega
 
 /-- Hook-walk identity for arbitrary non-empty Young diagrams via GNW walk.
     Proof: rewrite each ratio using gnwProb_key, swap the double sum, and apply
