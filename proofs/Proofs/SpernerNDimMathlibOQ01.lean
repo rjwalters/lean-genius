@@ -19,7 +19,7 @@ Answers **OQ-01** from `sperner-ndim-mathlib`: which concrete structures instant
 The bridge `toAbstractCellComplex` projects them away, and `SpernerAbstract.sperner` applies.
 For Sperner colorings, both boundary conditions agree by `boundary_door_is_last_face`.
 
-## Part II: Freudenthal CellComplex (4 axioms)
+## Part II: Freudenthal CellComplex (0 axioms, fully proved)
 
 The Freudenthal triangulation of [0,1]^n gives `CellComplex (Finset (Fin n)) n`:
 - **Simplex**: nodup lists of `Fin n` of length `n` (permutations)
@@ -27,14 +27,22 @@ The Freudenthal triangulation of [0,1]^n gives `CellComplex (Finset (Fin n)) n`:
 - **Interior adjacency** (0 < k < n): swap positions k-1 and k in the permutation list
 - **Boundary** (k = 0 or k = n): `none`
 
-Four facts are axiomatized (each a ~40-line list-element argument):
-1. `freud_simplex_fintype`: `FreudSimplex n` is Fintype (bijects with `Equiv.Perm (Fin n)`)
-2. `swapAdj_nodup`: adjacent swap preserves `Nodup` (same multiset of elements)
-3. `swapAdj_prefixSet_ne_pos_eq`: prefix sets agree at index ≠ k (key for `adj_vertices`)
-4. `swapAdj_ne_self`: swapping adjacent distinct elements yields a different list
+Four facts (originally axiomatized, all eliminated as theorems):
+1. `freud_simplex_fintype` (instance, line 279): `FreudSimplex n` is Fintype, proved via
+   the `listToPerm`/`permList` round-trip with `Equiv.Perm (Fin n)`.
+2. `swapAdj_nodup` (line 190): adjacent swap preserves `Nodup`, proved from
+   `swapAdj_perm.nodup_iff`.
+3. `swapAdj_prefixSet_eq` (line 196): prefix sets agree at index ≠ k, proved by
+   `take` casework + `List.Perm.swap` for the interior split.
+4. `swapAdj_ne_self` (line 238): adjacent swap produces a different list, proved
+   from `Nodup.getElem_inj_iff` at the swapped positions.
 
-Proved: `adj_symm` (involution), `adj_vertices` (axiom 3), `adj_ne` (axiom 4),
-`vertices_injective` (prefix cardinality), and the main `freudenthal_sperner` theorem.
+The supporting list-permutation infrastructure (`swapAdj_perm`, `swapAdj_eq_split`,
+`listToPerm`, `listToPermFun_injective`) lives in this file as private lemmas.
+
+Proved at the CellComplex level: `adj_symm` (involution), `adj_vertices` (uses
+axiom-3-now-theorem), `adj_ne` (uses axiom-4-now-theorem), `vertices_injective`
+(prefix cardinality), and the main `freudenthal_sperner` theorem.
 
 ## Tags
 
