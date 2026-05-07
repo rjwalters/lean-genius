@@ -104,6 +104,51 @@ theorem dvd_lcmRange {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
   have := Finset.dvd_lcm (f := (· + 1)) hk'
   simpa [Nat.sub_add_cancel hk] using this
 
+/-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
+
+    The inductive step that any inductive proof of Hanson's bound
+    (or any bound on `lcmRange`) needs. Foundational structural
+    lemma for future ACT-phase work on this OQ. -/
+theorem lcmRange_succ (n : ℕ) :
+    lcmRange (n + 1) = Nat.lcm (lcmRange n) (n + 1) := by
+  apply Nat.dvd_antisymm
+  · unfold lcmRange
+    apply Finset.lcm_dvd
+    intro i hi
+    have hi_lt : i < n + 1 := Finset.mem_range.mp hi
+    rcases Nat.lt_succ_iff_lt_or_eq.mp hi_lt with hi' | hi'
+    · exact dvd_trans (Finset.dvd_lcm (Finset.mem_range.mpr hi'))
+        (Nat.dvd_lcm_left _ _)
+    · subst hi'; exact Nat.dvd_lcm_right _ _
+  · apply Nat.lcm_dvd
+    · unfold lcmRange
+      apply Finset.lcm_dvd
+      intro i hi
+      have : i < n + 1 :=
+        lt_of_lt_of_le (Finset.mem_range.mp hi) (Nat.le_succ n)
+      exact Finset.dvd_lcm (Finset.mem_range.mpr this)
+    · exact dvd_lcmRange (Nat.succ_pos n) (Nat.le_refl _)
+
+/-- **Divisibility monotonicity**: m ≤ n → lcm(1,...,m) ∣ lcm(1,...,n).
+
+    Every divisor of the smaller LCM appears in the larger one. -/
+theorem lcmRange_dvd_lcmRange_of_le {m n : ℕ} (h : m ≤ n) :
+    lcmRange m ∣ lcmRange n := by
+  unfold lcmRange
+  apply Finset.lcm_dvd
+  intro i hi
+  have hi_lt : i < n :=
+    lt_of_lt_of_le (Finset.mem_range.mp hi) h
+  exact Finset.dvd_lcm (Finset.mem_range.mpr hi_lt)
+
+/-- **Numerical monotonicity**: m ≤ n → lcm(1,...,m) ≤ lcm(1,...,n). -/
+theorem lcmRange_monotone : Monotone lcmRange := by
+  intro m n h
+  apply Nat.le_of_dvd _ (lcmRange_dvd_lcmRange_of_le h)
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · rw [lcmRange_zero]; exact Nat.one_pos
+  · exact lcmRange_pos n hn
+
 -- =====================================================================
 -- PART 3: Provable bounds (no axioms)
 -- =====================================================================
