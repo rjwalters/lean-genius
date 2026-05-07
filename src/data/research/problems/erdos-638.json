@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated ramsey_triangle axiom. File 0 axioms, 0 sorries. Proved ramsey_inductive_step via pigeonhole + shrinkFin + IH.",
+    "progressSummary": "EXTENDED: Two complementary partial results toward Erdős #638. complete_omega_finite_ramsey: K_ℕ inherits finite-colour Ramsey from finite Ramsey theorem (restrict to first R(n) vertices). complete_omega_no_nat_ramsey: K_ℕ does NOT have ℕ-cardinal Ramsey (counterexample: c(i,j)=min(i,j)). Together establish a sharp threshold: ω vertices suffice for finite colours but fail at ℵ₀ colours, so the conjecture cannot be reduced to a K_ℕ statement. File: 299 lines, 10 theorems, 0 axioms, 0 sorries.",
     "builtItems": [
       "theorem complete_graphs_ramsey: proved from ramsey_triangle via Set.mem_singleton",
       "theorem triangle_ramsey_mono: proved via Fin.castLE injection",
@@ -42,7 +42,9 @@
       "PROVED ramsey_inductive_step: pigeonhole + shrinkFin + Ramsey IH",
       "PROVED shrinkFin_injective",
       "ELIMINATED ramsey_triangle axiom: 0 axioms 0 sorries",
-      "Fixed declaration order: ramsey_triangle_base before ramsey_triangle"
+      "Fixed declaration order: ramsey_triangle_base before ramsey_triangle",
+      "PROVED complete_omega_finite_ramsey: K_ℕ has Fin n triangle Ramsey for n ≥ 1 (corollary of finite Ramsey, embed first R(n) vertices)",
+      "PROVED complete_omega_no_nat_ramsey: K_ℕ has no ℕ-cardinal triangle Ramsey, witnessed by c(i,j)=min(i,j) — three distinct ℕ values cannot have all three pairwise mins equal (omega-checked)"
     ],
     "insights": [
       "complete_graphs_ramsey follows directly from ramsey_triangle: just instantiate with K_N",
@@ -55,7 +57,10 @@
       "ramsey_inductive_step proved: pigeonhole gives large mono neighborhood, case split on same-color edges",
       "shrinkFin helper removes one color from Fin (n+2), with proven injectivity",
       "Key deps: Finset.exists_lt_card_fiber_of_mul_lt_card_of_maps_to, Finset.orderIsoOfFin",
-      "ramsey_triangle axiom ELIMINATED: fully proved by induction"
+      "ramsey_triangle axiom ELIMINATED: fully proved by induction",
+      "Sharp threshold: K_ℕ has Fin n Ramsey for finite n but fails for ℕ-many colours — finite Ramsey does not lift to infinite cardinals on the same vertex set",
+      "min-coloring c(i,j)=min(i,j) defeats ℕ-cardinal Ramsey on K_ℕ: among 3 distinct naturals, two pairs share the smallest as their min while the third pair is strictly larger",
+      "Erdős–Rado theorem (2^|κ|)⁺ → (κ⁺)²_κ provides the positive answer for the complete-graph family of Erdős #638 — but at strictly more than κ vertices, so K_ℕ at ℵ₀ colours is not a counterexample to the conjecture, only to the naive |V|=|κ| approach"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -82,8 +87,8 @@
     {
       "path": "Proofs/Erdos638Problem.lean",
       "filename": "Erdos638Problem.lean",
-      "lineCount": 243,
-      "theoremCount": 6,
+      "lineCount": 299,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
