@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-03T07:32:10.537Z",
-    "iteration": 1,
-    "focus": "Proved handshaking lemmas via indicator-function double-counting; 3 axioms remain (necessity, iff, path-iff)",
+    "since": "2026-05-06T11:21:30.000Z",
+    "iteration": 4,
+    "focus": "Hierholzer infrastructure largely complete (PR #15170, #15212, #16153 merged). 4 sorries + 2 axioms remain in KonigsbergOQ01OQ02.lean (958 lines, 25 theorems, 13 defs).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove maxTrail_used_eq (induction on E.card) and maxTrail_last_exhausted (deferred sorries L578/588). Then attack remove_circuit_balanced (L900) using closed_walk_balance.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 5→2 axioms (Session 2). Session 3 adds 478 lines of Hierholzer infrastructure: maxTrail construction (terminates by edge count), maxTrail_closed PROVED (balance contradiction), circuit_exists PROVED, open-walk counting lemmas PROVED. Remaining axioms: directed_eulerian_iff (needs circuit-splicing) and directed_euler_path_iff.",
+    "progressSummary": "PROGRESS: 5→2 axioms (#15170 Session 2). #15212 Session 3 added 478 lines of Hierholzer infrastructure: maxTrail construction (terminates by edge count), maxTrail_closed PROVED (balance contradiction), circuit_exists PROVED, open-walk counting lemmas PROVED. #16153 Session 4 proved maxTrail_steps_in_E and maxTrail_steps_distinct (sorries 6→4). Current state (origin/main 2026-05-06): 958 lines, 25 theorems/lemmas, 13 defs, 2 axioms (directed_eulerian_iff, directed_euler_path_iff), 4 sorries (maxTrail_used_eq L578, maxTrail_last_exhausted L588, remove_circuit_balanced L900, euler_path_implies_degree_balance L954). Remaining axioms still need circuit-splicing (Hierholzer) and HasEulerianPath ∃! coverage strengthening.",
     "builtItems": [
       "sum_outDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:79",
       "sum_inDegree_eq_edgeCount: proved via Finset.sum_comm double-count in KonigsbergOQ01OQ02.lean:91",
@@ -92,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T07:32:10.536Z",
-  "lastUpdate": "2026-05-03T10:45:00.000Z",
+  "lastUpdate": "2026-05-07T17:25:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -121,11 +121,11 @@
     {
       "path": "Proofs/KonigsbergOQ01OQ02.lean",
       "filename": "KonigsbergOQ01OQ02.lean",
-      "lineCount": 849,
-      "theoremCount": 12,
+      "lineCount": 958,
+      "theoremCount": 25,
       "axiomCount": 2,
-      "defCount": 9,
-      "sorryCount": 6,
+      "defCount": 13,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
     },
