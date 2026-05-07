@@ -1,5 +1,5 @@
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Data.Nat.Lcm
+import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Tactic
 
 /-
