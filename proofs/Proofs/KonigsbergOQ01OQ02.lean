@@ -982,7 +982,7 @@ theorem maxTrail_closed (G : DiGraph V) (hbal : IsEulerianBalanced G) (v : V) :
     · exact hlast_def
   -- STEP E: Balance gives contradiction
   have hbal_last : inDegree G last_v = outDegree G last_v :=
-    (hbal last_v).symm
+    hbal last_v
   omega
 
 /-
@@ -998,7 +998,7 @@ structure DirectedCircuit (G : DiGraph V) where
   walk : List V
   head_eq_last : walk.head? = walk.getLast?
   length_ge_2  : 2 ≤ walk.length
-  steps_in_G   : ∀ i, i + 1 < walk.length →
+  steps_in_G   : ∀ i (h : i + 1 < walk.length),
     (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges
 
 /-- Every non-empty balanced digraph has a directed circuit. -/
@@ -1013,10 +1013,11 @@ theorem circuit_exists (G : DiGraph V) (hbal : IsEulerianBalanced G)
   have hne_trail := maxTrail_nonempty' G.edges v
   -- v has an outgoing edge e₀, so the trail has length ≥ 2.
   have hlen : 2 ≤ trail.length := by
-    unfold_let trail; unfold maxTrail
+    show 2 ≤ (maxTrail G.edges v).length
+    unfold maxTrail
     have hout : (G.edges.filter (fun e => e.1 = v)).Nonempty :=
       ⟨e₀, Finset.mem_filter.mpr ⟨he₀, hv_def⟩⟩
-    simp [hout, List.length_cons]
+    simp only [hout, ↓reduceDite, List.length_cons]
     exact Nat.succ_le_succ (Nat.one_le_iff_ne_zero.mpr
       (List.length_ne_zero.mpr (maxTrail_nonempty' _ _)))
   exact ⟨⟨trail, hclosed, hlen, maxTrail_steps_in_E G.edges v⟩⟩
@@ -1076,10 +1077,10 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
     have hn0 : n = 0 := by omega
     have hlen1 : walk.length = 1 := by omega
     have hhead_last : walk.head? = walk.getLast? := by
-      cases walk with
-      | nil => simp at hlen1
-      | cons a [] => simp
-      | cons a (b :: l) => simp at hlen1
+      rcases walk with _ | ⟨a, _ | ⟨b, l⟩⟩
+      · simp at hlen1
+      · rfl
+      · simp at hlen1
     rw [hhead, hlast] at hhead_last
     exact hst (Option.some.inj hhead_last)
   have hget_head : walk.get ⟨0, by omega⟩ = s := by
