@@ -13813,6 +13813,13 @@
       "result": "clean",
       "issues": []
     },
+    "four-square-distribution-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-07T22:30:00Z",
+      "result": "issues-found",
+      "issues": ["meta.theoremCount=33 vs actual 51", "meta.lineCount=210 vs actual 209"],
+      "notes": "stale theoremCount and lineCount in legacy meta sub-object; lf block absent so find-targets misses. See issue #16708."
+    },
     "inverse-galois-d4": {
       "auditCount": 1,
       "lastAudited": "2026-05-03T04:51:00Z",
