@@ -17,43 +17,46 @@
   },
   "currentState": {
     "phase": "REFINE",
-    "since": "2026-05-07T17:40:00.000Z",
-    "iteration": 9,
-    "focus": "Single axiom (padic_liouville_norm_bridge) remains; main theorem padic_algebraic_not_liouville is fully proved from it. Next step is to discharge the bridge axiom with the norm-compatibility + cofactor-bound combination.",
+    "since": "2026-05-07T22:50:00.000Z",
+    "iteration": 10,
+    "focus": "Bridge axiom INGREDIENT (1) DISCHARGED: rational-embedding norm compatibility ‖(q:ℚ_[p])‖ = padicNorm p q proved via Mathlib's Padic.eq_padicNorm. New helper Part IV.5 (norm_rat_eq_padicNorm, padic_eval_int_poly_cast, padic_norm_int_poly_eval) establishes the full ℚ → ℚ_[p] eval-norm transport. Remaining obstruction: ingredient (2), the cofactor evaluation bound ‖g.eval(r/s)‖ ≤ M·H^(d-1). Also fixed Lean 4.26 API drift in padic_algebraic_not_liouville and padicNorm_poly_eval_bound (file no longer built before this session).",
     "blockers": [
-      "Need Mathlib lookup for ‖(q : ℚ_[p])‖ = padicNorm p q (rational embedding norm)"
+      "Cofactor evaluation bound: ‖g.eval(r/s : ℚ_[p])‖ ≤ M · H^(deg g) where M depends only on ‖α‖ and coefficients of f. Requires polynomial norm triangle inequality + ‖r/s‖_p ≤ H (from Archimedean Complement applied in the reverse direction)."
     ],
-    "nextAction": "Locate the Mathlib rational-embedding norm lemma; combine with the proved Archimedean Complement Lemma to discharge padic_liouville_norm_bridge.",
+    "nextAction": "Prove the cofactor bound as a standalone theorem and use it (plus padic_norm_int_poly_eval) to discharge padic_liouville_norm_bridge into a proper theorem.",
     "attemptCounts": {
-      "total": 8,
-      "currentApproach": 1,
+      "total": 9,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 axiom (padic_liouville_norm_bridge), 0 sorries — current actual state of LiouvilleTheoremOQ04.lean. Architecture is complete: factorization f = (X - C α) · g via Polynomial.dvd_iff_isRoot, evaluation identity, and main theorem padic_algebraic_not_liouville fully proved from the bridge axiom. The remaining axiom encapsulates two technical ingredients: (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q, and (2) cofactor evaluation bound ‖g.eval(r/s)‖ ≤ M·H^(deg g). Replacing this single axiom with a proof unblocks 0 → 0 axioms.",
+    "progressSummary": "PROGRESS (Session 10, 2026-05-07): Discharged ingredient (1) of the bridge axiom. New Part IV.5 contains three formal lemmas built on Mathlib's Padic.eq_padicNorm: norm_rat_eq_padicNorm (rational-embedding norm compatibility), padic_eval_int_poly_cast (integer polynomial evaluation transport via aeval_algHom_apply), and padic_norm_int_poly_eval (the combined statement that ‖(f.map alg ℤ ℚ_[p]).eval ((q:ℚ_[p]))‖ = padicNorm p ((f.map alg ℤ ℚ).eval q)). This is exactly the connection padicNorm_poly_eval_bound (Part III) needs to bridge from ℚ to ℚ_[p]. Also repaired Lean 4.26 API drift: padicNorm.pos → padicNorm.nonneg + padicNorm.nonzero, padicNormE.eq_padicNorm → Padic.eq_padicNorm, div_lt_div_right → div_lt_div_iff_of_pos_right, pow_le_pow_left → pow_le_pow_left₀, ring → div_pow + one_pow, and switched H : ℕ → H : ℝ to match real-valued max on hbound's RHS. File now builds cleanly (Docker, lean v4.26.0) with 1 axiom, 0 sorries — the remaining axiom now blocks ONLY on ingredient (2) (the cofactor bound).",
     "builtItems": [
       "IsPadicLiouville (LiouvilleTheoremOQ04.lean): definition with strict positivity 0 < ‖β - r/s‖ and height bound 2 ≤ max r.natAbs s.natAbs",
-      "padic_liouville_estimate: proved via factorization + bridge axiom — exposes the standard (C/H^(2d)) lower bound (LiouvilleTheoremOQ04.lean:266)",
-      "padic_algebraic_not_liouville: proved (0 sorries) — closes the main contradiction via exists_pow_lt_of_lt_one + div_lt_div_right + one_div_le_one_div_of_le (LiouvilleTheoremOQ04.lean:289)",
+      "padic_liouville_estimate: proved via factorization + bridge axiom — exposes the standard (C/H^(2d)) lower bound",
+      "padic_algebraic_not_liouville: proved (0 sorries) — closes the main contradiction via exists_pow_lt_of_lt_one + div_lt_div_iff_of_pos_right + one_div_le_one_div_of_le + pow_le_pow_left₀",
       "Archimedean Complement Lemma: padicNorm p n ≥ 1/n for n > 0, proved via pow_padicValNat_dvd (Part I)",
-      "Polynomial evaluation lemmas over ℚ via padicNorm (Part III) — supplies C_f for the bridge axiom"
+      "Polynomial evaluation lemmas over ℚ via padicNorm (Part III) — supplies C_f for the bridge axiom",
+      "norm_rat_eq_padicNorm (Part IV.5, NEW Session 10): ‖(q:ℚ_[p])‖ = padicNorm p q via Padic.eq_padicNorm",
+      "padic_eval_int_poly_cast (Part IV.5, NEW Session 10): polynomial evaluation transport ℚ → ℚ_[p] via aeval_algHom_apply with (Rat.castHom ℚ_[p]).toIntAlgHom",
+      "padic_norm_int_poly_eval (Part IV.5, NEW Session 10): combined ℚ_[p]-norm of integer polynomial evaluation equals rational p-adic norm of the rational evaluation"
     ],
     "insights": [
       "IsPadicLiouville needs both 2 ≤ max(|r|,|s|) and 0 < ‖β - r/s‖. Without H≥2, bound 1/H^n=1 gives no useful constraint. Without strict positivity, every rational is trivially Liouville (r/s = β gives ‖β - r/s‖ = 0).",
       "padic_liouville_estimate is FALSE as originally stated (without α ≠ r/s): taking r/s = α gives ‖α - r/s‖ = 0 < C/H^d. The hne hypothesis is guaranteed by the IsPadicLiouville strict positivity in the main theorem.",
       "Exponent 2d (instead of d) suffices via the simple cofactor bound: ‖g(r/s)‖_p ≤ M_g · H^(d-1) (non-Archimedean + ‖r/s‖_p ≤ H), giving ‖α - r/s‖ ≥ C_f / (M_g · H^(2d-1)) ≥ C / H^(2d). The tight bound d would require an ultrametric case split.",
-      "The bridge axiom is mathematically routine but pulls in ℚ → ℚ_[p] norm transport machinery; resolution is a Mathlib-completeness question, not a math question."
+      "The norm-compatibility lemma sits in namespace Padic in v4.26 (was historically padicNormE) — direct dot-notation `padicNormE.eq_padicNorm` triggers AbsoluteValue field-access; use `Padic.eq_padicNorm` instead.",
+      "Polynomial evaluation transport ℚ → ℚ_[p] is one line via Polynomial.aeval_algHom_apply applied to (Rat.castHom ℚ_[p]).toIntAlgHom : ℚ →ₐ[ℤ] ℚ_[p]; no manual map_map / eval_map gymnastics needed.",
+      "Lean 4.26 API drift in this file: padicNorm.pos removed (use nonneg + nonzero), div_lt_div_right → div_lt_div_iff_of_pos_right, pow_le_pow_left → pow_le_pow_left₀. Also `set H : ℕ` no longer unifies with real-valued max output of `hbound`; switch to `set H : ℝ`."
     ],
     "mathlibGaps": [
-      "Norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q — likely exists in some form in Mathlib.NumberTheory.Padics; needs lookup and adapter lemma",
-      "Uniform polynomial evaluation bound padicNorm p (f.eval (r/s)) ≥ C_f / H^d — needs to be assembled from coefficient bounds + Archimedean Complement"
+      "Cofactor norm bound ‖g.eval (r/s : ℚ_[p])‖ ≤ M · H^(deg g) for polynomial g ∈ ℚ_[p][X] and rational r/s, where M depends only on coefficients — needs to be assembled from triangle inequality + ‖r/s‖_p ≤ H"
     ],
     "nextSteps": [
-      "Locate Mathlib lemma for ‖(q : ℚ_[p])‖ = padicNorm p q (the rational embedding norm); if absent, prove via Padic.coe_rat / padicNormE definitional unfolding",
-      "Prove uniform polynomial evaluation bound: ∃ C_f, ∀ r s (s≠0, f(r/s)≠0), padicNorm p (f(r/s)) ≥ C_f / H^d — apply Archimedean Complement to s.natAbs and combine with coefficient bounds",
-      "Prove cofactor bound: if f.map alg = (X - C α) * g over ℚ_[p][X], then ‖g.eval (r/s)‖ ≤ M_g · H^(d-1) — direct from polynomial-norm triangle inequality + ‖r/s‖_p ≤ |s| ≤ H",
-      "Combine the three lemmas to prove padic_liouville_norm_bridge as a theorem — eliminating the last axiom"
+      "Prove ‖((r:ℚ_[p])/s)‖ ≤ (max r.natAbs s.natAbs : ℝ) using padicNorm_int_le_one for ‖r‖_p and padicNorm_int_ge_inv for 1/‖s‖_p ≤ |s| ≤ H",
+      "Prove polynomial cofactor bound: for g ∈ ℚ_[p][X] of degree d-1, ‖g.eval x‖ ≤ M_g · max(1, ‖x‖)^(d-1) where M_g = max ‖coeff_i‖, via Polynomial.eval over the non-Archimedean norm",
+      "Combine padic_norm_int_poly_eval (Part IV.5) + padicNorm_poly_eval_bound (Part III) + cofactor bound to prove padic_liouville_norm_bridge as a theorem — eliminating the last axiom"
     ]
   },
   "tags": [
@@ -73,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.505Z",
-  "lastUpdate": "2026-05-07T17:40:00.000Z",
+  "lastUpdate": "2026-05-07T22:50:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -91,8 +94,8 @@
     {
       "path": "Proofs/LiouvilleTheoremOQ04.lean",
       "filename": "LiouvilleTheoremOQ04.lean",
-      "lineCount": 432,
-      "theoremCount": 15,
+      "lineCount": 539,
+      "theoremCount": 19,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
