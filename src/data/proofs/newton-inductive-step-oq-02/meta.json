@@ -9,6 +9,7 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/NewtonInductiveStepOQ02.lean",
+    "parentProofId": "newton-inductive-step-oq-01",
     "tags": [
       "algebra",
       "symmetric-polynomials",
@@ -41,13 +42,82 @@
       "Key identity: 2·C(n+1,p+1) = n·(n+1) via Pascal's rule for boundary case",
       "Quadratic-nonneg reduction: both k=1 and k=n cases via linear_combination ring identity"
     ],
-    "proofStrategy": "Induction on list length. Two boundary cases: k=1 (quadratic in new element x with discriminant from 2·C(n,2)=n·(n-1)) and k=n (quadratic via 2·C(n+1,n-1)=n·(n+1)). Interior cases: esymm_cross_condition plus newton_cleared_denom_inductive_step from AmgmInequalityOQ02OQ02.",
     "axiomCount": 0,
-    "assumptions": [],
+    "assumptions": "None. Fully machine-verified.",
     "lineCount": 611,
     "theoremCount": 6,
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "Newton's inequalities first appeared in his *Arithmetica Universalis* (1707) as a tool for analyzing polynomial roots. For a degree-$n$ real polynomial $\\prod_i (x - r_i)$ with all real roots, the elementary symmetric polynomials $e_k(r_1, \\ldots, r_n)$ satisfy $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ (log-concavity) and the stronger normalized form involving binomial coefficients. The classical reference is Hardy, Littlewood, and Pólya's *Inequalities* (1934/1952, Ch. 2). The inequality is the prototype 'log-concavity' result, generalizing to a vast literature on log-concave sequences in combinatorics (matroid theory, Hodge theory of polytopes, the Heron-Rota-Welsh conjecture solved by June Huh, Adiprasito, and Katz in 2018). Ultra-log-concavity ($a_{k-1} \\cdot a_{k+1} \\leq a_k^2 (k+1)k / ((k+1) \\cdot k) \\cdot (1 - 1/k - 1/(k+1))$ in some conventions; here taken as the squared form $C(n,k)^4 \\geq C(n,k-1)^2 C(n,k+1)^2$) is a strengthening that often suggests deeper combinatorial structure — total positivity, real-rootedness, or Schubert-calculus interpretations.",
+    "problemStatement": "Prove Newton's inequality in cleared-denominator (binomial-coefficient-weighted) form for the elementary symmetric polynomials of a list of nonnegative reals. Formally: $\\binom{n}{k-1} \\binom{n}{k+1} e_k(\\mathbf{x})^2 \\geq \\binom{n}{k}^2 \\, e_{k-1}(\\mathbf{x}) \\, e_{k+1}(\\mathbf{x})$ for all $1 \\leq k \\leq n - 1$ and all lists $\\mathbf{x} = [x_1, \\ldots, x_n]$ with $x_i \\geq 0$. Two corollaries are proved as building blocks: ultra-log-concavity of binomial coefficients (purely arithmetic), and the unnormalized log-concavity $e_k^2 \\geq e_{k-1} e_{k+1}$.",
+    "proofStrategy": "Three layers. **Layer 1 (Ultra-log-concavity, ~30 lines):** From the parent file's `binom_log_concave` ($a^2 \\geq bc$), the algebraic identity $(a^2 - bc)(a^2 + bc) = a^4 - b^2 c^2$ gives $a^4 \\geq b^2 c^2$ since both factors are nonneg (one by hypothesis, the other by sum-of-nonneg). **Layer 2 (Unnormalized Newton, ~140 lines):** Induction on the list length, with auxiliary `esymm_zero_tail` (if $e_j = 0$ on a nonneg list then $e_{j+1} = 0$, since $e_j = 0$ means fewer than $j$ positive entries). Boundary cases $k = 1$ and $k = n$ both reduce to a quadratic-nonneg argument: in $k = 1$, the discriminant unfolds via $2\\binom{n}{2} = n(n-1)$ from Pascal's rule; in $k = n$, similarly via $2\\binom{n+1}{n-1} = n(n+1)$. **Layer 3 (Cleared-denominator Newton, ~350 lines):** The main theorem. The k=1 base case is a direct quadratic-nonneg proof via `linear_combination`; the inductive step (k ≥ 2) packages the unnormalized Newton inequality (Layer 2) and the cross condition (`esymm_cross_condition`) as inputs to `newton_cleared_denom_inductive_step` from `AmgmInequalityOQ02OQ02.lean`, which encapsulates the algebraic combinatorial identity that makes the binomial-weighted form descend through induction.",
+    "keyInsights": [
+      "Ultra-log-concavity is a *square-then-factor* trick: from $a^2 \\geq bc$, multiplying $(a^2 - bc) \\geq 0$ by $(a^2 + bc) \\geq 0$ gives $a^4 \\geq b^2 c^2$ — a 4-line proof that demonstrates how a stronger inequality emerges purely algebraically from log-concavity, no extra mathematical content needed",
+      "The zero-tail property `esymm_zero_tail` is essential for the unnormalized Newton's induction: e_j = 0 means the list has fewer than j positive entries, which is a *combinatorial* property that propagates to e_{j+1}; this is the only place where the nonnegativity hypothesis is used non-trivially",
+      "Boundary cases collapse to discriminant arguments: at k = 1, the inequality is $\\binom{n}{0}\\binom{n}{2} e_1^2 \\geq \\binom{n}{1}^2 e_2$ which after simplification is a quadratic in the new list element x; similarly at k = n; the key identity is $2\\binom{n+1}{p+1} = n(n+1)$ from Pascal's rule, which makes the discriminant nonneg",
+      "The 350-line bulk of Layer 3 is a careful case split on whether each of $k$, $k-1$, $k+1$ exceeds the list length; when an esymm is zero by overflow, the inequality becomes trivial (RHS = 0); when all three are nonzero, the inductive hypothesis applies via the AMGM file's pre-packaged combinatorial identity",
+      "The `linear_combination` tactic is doing essential work in the boundary cases: it produces a single algebraic identity with rational coefficients that, when added to the hypotheses, gives the goal — manually expanding out $C(n+1,2) = n(n+1)/2$ and the resulting quadratic discriminant would balloon the proof to many hundreds of lines",
+      "The cleared-denominator form is the *normalized* one used in applications: dividing both sides by $\\binom{n}{k-1}\\binom{n}{k+1}\\binom{n}{k}^2$ and using ultra-log-concavity, one obtains the Maclaurin inequality $S_k^{1/k} \\geq S_{k+1}^{1/(k+1)}$ where $S_k = e_k / \\binom{n}{k}$, which is the form Newton's inequality takes in textbooks"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports, Docstring, Namespace",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module-level docstring stating the three main results (binom_log_concave, binom_ultra_log_concave, esymm_log_concave, newton_inequality_binomial). Imports the parent NewtonInductiveStepOQ01 (provides binom_log_concave) and AmgmInequalityOQ02OQ02 (provides newton_cleared_denom_inductive_step). Opens List and Nat; namespace NewtonInductiveStepOQ02."
+    },
+    {
+      "id": "ultra-log-concavity",
+      "title": "Part I — Ultra-Log-Concavity of Binomial Coefficients",
+      "startLine": 37,
+      "endLine": 70,
+      "summary": "Two theorems. `binom_log_concave'` re-exports the parent's log-concavity C(n,k)² ≥ C(n,k-1)·C(n,k+1). `binom_ultra_log_concave` proves C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)² in 18 lines: factor a⁴ − b²c² = (a² − bc)(a² + bc), each factor nonneg (one by log-concavity, one by sum-of-nonneg), so the product is nonneg."
+    },
+    {
+      "id": "unnormalized-newton",
+      "title": "Part II — Unnormalized Newton Inequality for Lists",
+      "startLine": 72,
+      "endLine": 213,
+      "summary": "Two theorems. `esymm_zero_tail` (lines 81–115): if a nonneg list's e_j vanishes, so does e_{j+1}, by recursive list induction over List.cons. `esymm_log_concave` (lines 117–213): the unnormalized Newton inequality e_k² ≥ e_{k-1}·e_{k+1}, proved by induction on the list length with k=1 and k=n boundary cases via quadratic-nonneg arguments using 2·C(n+1, k) = n·(n+1) from Pascal's rule."
+    },
+    {
+      "id": "cleared-denominator-newton",
+      "title": "Part III — Normalized Newton Inequality (Cleared-Denominator Form)",
+      "startLine": 214,
+      "endLine": 611,
+      "summary": "The headline result. `esymm_cross_condition` (lines 220–252, private): given the unnormalized Newton inequality at k and k-1, the cross-product e_k · e_{k-1} ≥ e_{k-2} · e_{k+1} follows via NewtonLogConcavity.cross_product_of_log_concave with zero-tail handling. `newton_inequality_binomial` (lines 261–611): C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1} by induction on the list length, with k=1 base via linear_combination and k≥2 inductive step delegating to newton_cleared_denom_inductive_step from the AMGM file."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file completes the proof of Newton's inequality in its normalized (binomial-coefficient-weighted) form for elementary symmetric polynomials of nonnegative real lists. Six theorems and zero axioms in 611 lines: a re-export of binom_log_concave, the new ultra-log-concavity result C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)², the zero-tail combinatorial lemma, the unnormalized Newton inequality e_k² ≥ e_{k-1}·e_{k+1}, the auxiliary cross-condition, and the headline cleared-denominator inequality. The boundary cases k=1 and k=n both reduce to quadratic-nonneg arguments via the Pascal-rule identity 2·C(n+1,p+1) = n·(n+1).",
+    "implications": "Newton's inequality is the prototype log-concavity result, and ultra-log-concavity is its squared strengthening. The formalization establishes both forms in Lean 4 with no axioms, providing a foundation for downstream applications: Maclaurin's inequality (S_k^{1/k} ≥ S_{k+1}^{1/(k+1)}), the analytic-arithmetic-mean ladder, and connections to real-rootedness criteria for polynomials (every polynomial with all real roots has log-concave and even ultra-log-concave coefficient sequences). The cleared-denominator form is the version most directly useful in induction-based proofs of polynomial inequalities, since it avoids divisions that would break clean algebraic manipulation. The proof's modular structure (ultra-log-concavity from log-concavity, unnormalized from zero-tail + boundary, normalized from unnormalized + cross-condition) demonstrates a layered strategy that should generalize to other symmetric-function inequalities (Schur, Muirhead).",
+    "openQuestions": [
+      "Can the cleared-denominator form be derived from ultra-log-concavity directly, bypassing the unnormalized inequality? The squared form C(n,k)⁴ ≥ C(n,k-1)² C(n,k+1)² combined with e_k² ≥ ... suggests a parallel two-tier proof.",
+      "Does the formalization extend to Maclaurin's inequality $S_k^{1/k} \\geq S_{k+1}^{1/(k+1)}$? The roots involved (k-th and (k+1)-th roots of nonnegative reals) are now in Mathlib; the implication from cleared-denominator Newton is classical but currently un-formalized.",
+      "Can ultra-log-concavity be used to derive Newton's inequality with strict inequality in the case where the $x_i$ are not all equal? The extension to the strictness gap (which characterizes when equality holds) is folklore but requires additional case analysis on multiplicities."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "newton-inductive-step",
+      "relationship": "grandparent — original Newton's inequality formalization context"
+    },
+    {
+      "proofId": "newton-inductive-step-oq-01",
+      "relationship": "parent — provides binom_log_concave (binomial log-concavity); the foundation for both ultra-log-concavity (Layer 1) and the inductive boundary cases"
+    },
+    {
+      "proofId": "newton-inductive-step-oq-03",
+      "relationship": "sibling — further open question/extension on Newton's inequality"
+    },
+    {
+      "proofId": "amgm-inequality-oq-02-oq-02",
+      "relationship": "supporting library — provides newton_cleared_denom_inductive_step, the algebraic combinatorial identity that drives the inductive step in Layer 3"
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.NewtonInductiveStepOQ01",
