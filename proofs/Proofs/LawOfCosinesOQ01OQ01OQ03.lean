@@ -60,7 +60,7 @@ theorem cos_arcLen_unit (u v : Fin 3 → ℝ) (hu : IsUnit3 u) (hv : IsUnit3 v) 
 theorem cross_dot_eq_neg_projperp (A B C : Fin 3 → ℝ) (hC : IsUnit3 C) :
     dot (B ×₃ C) (C ×₃ A) = -dot (projPerp A C) (projPerp B C) := by
   have h : C 0 * C 0 + C 1 * C 1 + C 2 * C 2 = 1 := unit_sum C hC
-  simp only [dot, projPerp, crossProduct, Fin.sum_univ_three]
+  simp [dot, projPerp, crossProduct, Fin.sum_univ_three]
   linear_combination
     (B 0 * A 0 + B 1 * A 1 + B 2 * A 2) * h -
     (A 0 * C 0 + A 1 * C 1 + A 2 * C 2) *
