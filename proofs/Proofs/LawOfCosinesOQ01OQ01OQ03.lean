@@ -78,8 +78,8 @@ theorem normSq_projPerp_comm (A B : Fin 3 → ℝ) (hA : IsUnit3 A) (hB : IsUnit
   simp only [normSq_projPerp A B hB, normSq_projPerp B A hA, hA, hB, dot_comm]
 
 /-- Cross product antisymmetry: C×A = -(A×C). -/
-theorem cross_anticomm (A C : Fin 3 → ℝ) : C ×₃ A = -(A ×₃ C) := by
-  funext i; fin_cases i <;> simp [crossProduct]; ring
+theorem cross_anticomm (A C : Fin 3 → ℝ) : (C ×₃ A) = -(A ×₃ C) := by
+  funext i; fin_cases i <;> simp [crossProduct] <;> ring
 
 /-- For unit A, C: normSq(C×A) = normSq(projPerp A C). -/
 theorem normSq_cross_CA (A C : Fin 3 → ℝ) (hA : IsUnit3 A) (hC : IsUnit3 C) :
@@ -100,7 +100,7 @@ noncomputable def normalize3 (v : Fin 3 → ℝ) : Fin 3 → ℝ :=
 theorem dot_normalize3 (u v : Fin 3 → ℝ) :
     dot (normalize3 u) (normalize3 v) =
       dot u v / (Real.sqrt (normSq u) * Real.sqrt (normSq v)) := by
-  simp only [normalize3, dot, Fin.sum_univ_three]; field_simp; ring
+  simp only [normalize3, dot, Fin.sum_univ_three]; field_simp
 
 /-- Normalization of a nonzero vector gives a unit vector. -/
 theorem isUnit3_normalize3 (v : Fin 3 → ℝ) (hv : 0 < normSq v) :
@@ -108,9 +108,13 @@ theorem isUnit3_normalize3 (v : Fin 3 → ℝ) (hv : 0 < normSq v) :
   unfold IsUnit3 normalize3 normSq dot; simp only [Fin.sum_univ_three]
   have hpos : (0 : ℝ) < v 0 * v 0 + v 1 * v 1 + v 2 * v 2 := by
     simpa [normSq, dot, Fin.sum_univ_three] using hv
+  have hpos' : (0 : ℝ) < v 0 ^ 2 + v 1 ^ 2 + v 2 ^ 2 := by
+    have : v 0 ^ 2 + v 1 ^ 2 + v 2 ^ 2 = v 0 * v 0 + v 1 * v 1 + v 2 * v 2 := by ring
+    rw [this]; exact hpos
   have hne : Real.sqrt (v 0 * v 0 + v 1 * v 1 + v 2 * v 2) ≠ 0 :=
     Real.sqrt_ne_zero'.mpr hpos
-  field_simp; rw [Real.sq_sqrt (le_of_lt hpos)]
+  field_simp
+  rw [Real.sq_sqrt (le_of_lt hpos')]
 
 -- ============================================================================
 -- Part III: Polar Triangle — Principal Result
@@ -148,12 +152,7 @@ theorem polar_side_eq_pi_minus_angle (A B C : Fin 3 → ℝ)
     Real.sqrt_ne_zero'.mpr (lt_of_le_of_ne (normSq_nonneg _) (Ne.symm hpBC))
   rw [arcLen, hdot]
   unfold dihedralAngle
-  rw [if_neg (by push_neg; exact ⟨hp2, hp1⟩)]
-  rw [show -(dot (projPerp A C) (projPerp B C)) /
-        (Real.sqrt (normSq (projPerp A C)) * Real.sqrt (normSq (projPerp B C))) =
-      -(dot (projPerp B C) (projPerp A C) /
-        (Real.sqrt (normSq (projPerp B C)) * Real.sqrt (normSq (projPerp A C)))) by
-    rw [dot_comm]; ring]
+  rw [if_neg (by push_neg; exact ⟨hp1, hp2⟩)]
   exact Real.arccos_neg _
 
 -- ============================================================================
@@ -278,8 +277,8 @@ theorem polar_triangle_std_law (A B C : Fin 3 → ℝ)
   have hdec : dot A' B' = dot A' C' * dot B' C' + dot (projPerp A' C') (projPerp B' C') := by
     have h : C' 0 * C' 0 + C' 1 * C' 1 + C' 2 * C' 2 = 1 := unit_sum C' hC'
     simp only [dot, projPerp, Fin.sum_univ_three]
-    linear_combination (A' 0 * C' 0 + A' 1 * C' 1 + A' 2 * C' 2) *
-      (B' 0 * C' 0 + B' 1 * C' 1 + B' 2 * C' 2) * h
+    linear_combination -((A' 0 * C' 0 + A' 1 * C' 1 + A' 2 * C' 2) *
+      (B' 0 * C' 0 + B' 1 * C' 1 + B' 2 * C' 2)) * h
   rw [← hc', ← ha', ← hb', ← hγ']
   rw [cos_arcLen_unit A' B' hA' hB', cos_arcLen_unit A' C' hA' hC',
       cos_arcLen_unit B' C' hB' hC']
