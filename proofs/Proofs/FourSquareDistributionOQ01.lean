@@ -1,6 +1,5 @@
 import Proofs.FourSquareDistribution
 import Mathlib.NumberTheory.Divisors
-import Mathlib.Algebra.BigOperators.Basic
 import Mathlib.Tactic
 
 /-
