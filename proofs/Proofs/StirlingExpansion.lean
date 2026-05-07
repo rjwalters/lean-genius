@@ -367,7 +367,8 @@ private lemma inv_cube_le_telescope (k : ℝ) (hk : 2 ≤ k) :
   have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
   calc 1 / (6 * k ^ 3)
       = 2 * (k - 1) ^ 2 / (12 * k ^ 3 * (k - 1) ^ 2) := by field_simp <;> ring
-    _ ≤ k * (2 * k - 1) / (12 * k ^ 3 * (k - 1) ^ 2) := by gcongr
+    _ ≤ k * (2 * k - 1) / (12 * k ^ 3 * (k - 1) ^ 2) :=
+          (div_le_div_right (by positivity : (0:ℝ) < 12*k^3*(k-1)^2)).mpr hineq
     _ = 1 / (12 * (k - 1) ^ 2) - 1 / (12 * k ^ 2) := by field_simp <;> ring
 
 -- 1/(12k) - 1/(12(k+1)) ≤ 1/(12k²) for k ≥ 1
@@ -393,7 +394,8 @@ private lemma inv_cube_le_telescope2 (k : ℝ) (hk : 2 ≤ k) :
   have hineq : 2 * (k - 1) ^ 2 ≤ k * (2 * k - 1) := by nlinarith [sq_nonneg (k - 1)]
   calc 1 / (12 * k ^ 3)
       = 2 * (k - 1) ^ 2 / (24 * k ^ 3 * (k - 1) ^ 2) := by field_simp <;> ring
-    _ ≤ k * (2 * k - 1) / (24 * k ^ 3 * (k - 1) ^ 2) := by gcongr
+    _ ≤ k * (2 * k - 1) / (24 * k ^ 3 * (k - 1) ^ 2) :=
+          (div_le_div_right (by positivity : (0:ℝ) < 24*k^3*(k-1)^2)).mpr hineq
     _ = 1 / (24 * (k - 1) ^ 2) - 1 / (24 * k ^ 2) := by field_simp <;> ring
 
 -- 1/(8k⁴) ≤ 1/(24(k-1)³) - 1/(24k³) for k ≥ 2
@@ -410,7 +412,8 @@ private lemma inv_quad_le_telescope (k : ℝ) (hk : 2 ≤ k) :
     linarith [key]
   calc 1 / (8 * k ^ 4)
       = 3 * (k - 1) ^ 3 / (24 * k ^ 4 * (k - 1) ^ 3) := by field_simp <;> ring
-    _ ≤ (k ^ 4 - k * (k - 1) ^ 3) / (24 * k ^ 4 * (k - 1) ^ 3) := by gcongr
+    _ ≤ (k ^ 4 - k * (k - 1) ^ 3) / (24 * k ^ 4 * (k - 1) ^ 3) :=
+          (div_le_div_right (by positivity : (0:ℝ) < 24*k^4*(k-1)^3)).mpr hineq
     _ = 1 / (24 * (k - 1) ^ 3) - 1 / (24 * k ^ 3) := by field_simp <;> ring
 
 -- ═══════════════════════════════════════════════════
