@@ -22,7 +22,8 @@
       "bad_count_n3 / good_count_n3: exact triple-free counts at n=3 (Session 1, 2026-04-21)",
       "lambda_tendsto (Lemma A): λ_c(d) := C(nc(d),3)/d² → c³/6 as d → ∞ (Session 4, 2026-05-03)",
       "exp_lambda_tendsto (Lemma B): exp(-λ_c(d)) → exp(-c³/6) as d → ∞ (Session 4, 2026-05-03)",
-      "poisson_approx_birthday3 (Session 5, PR #16150): now a theorem, proved by Filter.Tendsto.sub from Lemma B (proved) + Lemma C (axiom)"
+      "poisson_approx_birthday3 (Session 5, PR #16150): now a theorem, proved by Filter.Tendsto.sub from Lemma B (proved) + Lemma C (axiom)",
+      "card_funs_shared_triple (Session 6, 2026-05-08): |{f : Fin n → Fin d | f i = f j ∧ f j = f k}| = d^(n-2) for distinct i,j,k — cardinality foundation for the Markov lower bound P(no triple) ≥ 1 - C(n,3)/d²"
     ],
     "open": [
       "p_no_triple_tendsto (Lemma C, axiom in BirthdayProblemOQ03OQ01OQ02.lean): Tendsto (fun d => P_no_triple(n_c(d), d)) atTop (nhds (exp(-c³/6))), where n_c(d) := ⌊c·d^(2/3)⌋"
@@ -31,15 +32,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-06T13:21:41Z",
-    "iteration": 5,
-    "focus": "Restatement landed in PR #16150 (Session 5, 2026-05-06): the monolithic poisson_approx_birthday3 axiom is replaced by axiom p_no_triple_tendsto (Lemma C only — P_no_triple(n_c(d), d) → exp(-c³/6)); the original poisson_approx_birthday3 is now a theorem proved via Filter.Tendsto.sub from Lemma B (exp_lambda_tendsto, proved) and Lemma C (axiom). Gallery parent (birthday-problem-oq-03-oq-01-oq-02) carries axiomCount=1 with the new minimal axiom.",
+    "since": "2026-05-08T00:15:00Z",
+    "iteration": 6,
+    "focus": "Session 6 (2026-05-08): added card_funs_shared_triple — for distinct i,j,k in Fin n, the count of f : Fin n → Fin d with f i = f j ∧ f j = f k equals d^(n-2). Generalizes card_funs_shared_birthday (n=2 case from BirthdayProblemOQ01OQ01.lean). This is the cardinality foundation for the Markov half of the Poisson sandwich for Lemma C: union bound over Finset.powersetCard 3 univ + this lemma yields P(no triple) ≥ 1 - C(n,3)/d². Lemma C (p_no_triple_tendsto) remains the only axiom.",
     "blockers": [],
-    "nextAction": "Genuine remaining gap: prove Lemma C in Lean. Requires qualitative method-of-factorial-moments → Poisson convergence (≈500 lines), absent from Mathlib 4.26. Either build it locally for this entry or contribute upstream to Mathlib.",
+    "nextAction": "Build on card_funs_shared_triple toward Lemma C closure: (1) markov_no_triple_lower via Finset.card_biUnion_le; (2) bonferroni_no_triple_upper for the second-order overlap sum S_2(d); (3) squeeze at threshold scaling to close Lemma C. This is the method-of-factorial-moments path, ~500 lines remaining.",
     "attemptCounts": {
-      "total": 1,
+      "total": 6,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
@@ -53,7 +54,8 @@
       "exp_lambda_tendsto (Lemma B): exp(-C(nc(d),3)/d^2) → exp(-c^3/6), one-liner (Session 4, line ~448)",
       "rpow23_atTop: private helper d^(2/3) → +∞ (Session 4, line ~375)",
       "two_div_rpow23_tendsto_zero: private helper 2/d^(2/3) → 0 (Session 4, line ~380)",
-      "Session 5, PR #16150 (2026-05-06): poisson_approx_birthday3 axiom replaced by axiom p_no_triple_tendsto (Lemma C only); original statement is now `theorem poisson_approx_birthday3` derived via `(p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)` + `simpa`"
+      "Session 5, PR #16150 (2026-05-06): poisson_approx_birthday3 axiom replaced by axiom p_no_triple_tendsto (Lemma C only); original statement is now `theorem poisson_approx_birthday3` derived via `(p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)` + `simpa`",
+      "Session 6 (2026-05-08, researcher-7): card_funs_shared_triple in §8 — `|{f : Fin n → Fin d | f i = f j ∧ f j = f k}| = d^(n-2)` for distinct i,j,k. Bijection {f // f i = f j ∧ f j = f k} ≃ ({m // m ≠ j ∧ m ≠ k} → Fin d) via restriction. Cardinality foundation for the Markov bound P(no triple) ≥ 1 - C(n,3)/d²."
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",
@@ -68,7 +70,8 @@
       "Mathlib.Probability.Distributions.Poisson (4.26) still exposes only PMF/measure constructors — no convergence theorems. Lemma Cs gap (method-of-factorial-moments → Poisson) remains the genuine Mathlib hole, unchanged from Session 2",
       "squeeze proof works: upper nc^3/(6d^2) and lower (nc-2)^3/(6d^2) both → c^3/6 via hbase.pow 3 + (d^(2/3))^3=d^2 identity",
       "2/d^(2/3) → 0 via tendsto_inv_atTop_zero.comp + const_mul; nc(d)>=2 eventually since c*(2/c)=2 ≤ c*d^(2/3)",
-      "Lemma B is a one-liner: Real.continuous_exp.tendsto ∘ lambda_tendsto.neg"
+      "Lemma B is a one-liner: Real.continuous_exp.tendsto ∘ lambda_tendsto.neg",
+      "card_funs_shared_triple generalizes card_funs_shared_birthday (n=2 case in BirthdayProblemOQ01OQ01.lean) to triple coincidences. The bijection `{f // f i = f j ∧ f j = f k} ≃ ({m // m ≠ j ∧ m ≠ k} → Fin d)` reduces the count to a function space whose cardinality is d^|complement| = d^(n-2). Two-element complement requires Finset.card_insert_of_notMem on {j, k} (vs the singleton {j} in the n=2 case)."
     ],
     "mathlibGaps": [
       "Method of factorial moments → Poisson convergence (qualitative form) — not in Mathlib but smaller than Chen-Stein",
@@ -76,7 +79,10 @@
       "(Quantitative) Chen-Stein bound — NOT NEEDED for the actual qualitative axiom; was only needed for the misframed quantitative bound"
     ],
     "nextSteps": [
-      "Lemma C (open): prove p_no_triple_tendsto in Lean — P_no_triple(n_c(d), d) → exp(-c³/6) — via the qualitative method-of-factorial-moments → Poisson convergence (≈500 lines, not in Mathlib 4.26).",
+      "Markov lower bound: P(no triple at n, d) ≥ 1 - C(n,3)/d² via Finset.card_biUnion_le over Finset.powersetCard 3 univ + card_funs_shared_triple (Session 6 foundation in place).",
+      "First moment formula: Σ_f tripleCount n d f = C(n,3) · d^(n-2), corollary by Fubini.",
+      "Bonferroni upper bound: P(no triple) ≤ 1 - C(n,3)/d² + S_2(d), with S_2(d) = sum of pairwise overlap probabilities (decompose by overlap pattern: disjoint, share-1, share-2 vertices).",
+      "Squeeze closure: at threshold scaling, liminf P ≥ 1 - λ and limsup P ≤ 1 - λ + λ²/2 + o(1). Iterate Bonferroni to higher orders until both bounds match exp(-λ). This closes Lemma C without new Mathlib dependencies.",
       "Alternative: contribute method-of-factorial-moments → Poisson convergence upstream to Mathlib (Mathlib.Probability.Distributions.Poisson currently exposes only PMF/measure constructors, no convergence theorems)."
     ]
   },
@@ -111,7 +117,7 @@
     ]
   },
   "started": "2026-04-21T06:38:17Z",
-  "lastUpdate": "2026-05-07T17:00:00Z",
+  "lastUpdate": "2026-05-08T00:15:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

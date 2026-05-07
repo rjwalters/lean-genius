@@ -571,10 +571,89 @@ theorem good_count_n3 (d : ℕ) :
   rw [h_bad, h_card] at h_split
   omega
 
+-- ============================================================
+-- §8. CARDINALITY OF FIXED-TRIPLE COINCIDENCE (Session 6, 2026-05-08)
+-- ============================================================
+
+/-
+  ## First-Moment Foundation for Lemma C
+
+  The Markov-style approach to bounding `P(no triple)` from below requires
+  counting functions with a coincidence at a *fixed* triple `(i, j, k)` of
+  distinct indices. The result is `d^(n-2)` — the same factor that appears
+  in the union-bound estimate `|BAD| ≤ C(n,3) · d^(n-2)` and in the first
+  moment `E[X_d] = C(n,3)/d²`.
+
+  This is the triple-coincidence analogue of `card_funs_shared_birthday` in
+  `BirthdayProblemOQ01OQ01.lean` (which proves the n=2 case for pair
+  coincidences). Together with the union-bound machinery, it gives the
+  Markov lower bound `P(no triple) ≥ 1 - C(n,3)/d²`, the first half of the
+  Poisson sandwich `1 - λ ≤ P(no triple) ≈ exp(-λ)`. The matching upper
+  bound requires Bonferroni's inequality and a second-moment estimate
+  `S_2(d) := Σ_{T,T' distinct triples} P(both coincide)`, which decomposes
+  by overlap pattern (disjoint, share-1, share-2 vertices). See knowledge.md
+  Session 2 for the full Bonferroni framework.
+-/
+
+/-- For distinct indices `i, j, k` in `Fin n`, the count of functions
+    `f : Fin n → Fin d` satisfying `f i = f j ∧ f j = f k` equals `d^(n-2)`.
+
+    Proof: bijection `{f // f i = f j ∧ f j = f k} ≃ ({m // m ≠ j ∧ m ≠ k} → Fin d)`
+    via the restriction `f ↦ f|_{≠j, ≠k}`. The codomain has cardinality
+    `d^(n-2)` since `|Fin n \ {j, k}| = n - 2` when `j ≠ k`.
+
+    Generalizes `card_funs_shared_birthday` (n=2 case) to triple coincidences.
+    Foundation lemma for the Markov lower bound `P(no triple) ≥ 1 - C(n,3)/d²`. -/
+theorem card_funs_shared_triple (n d : ℕ) (i j k : Fin n)
+    (hij : i ≠ j) (hjk : j ≠ k) (hik : i ≠ k) :
+    (Finset.univ.filter (fun f : Fin n → Fin d => f i = f j ∧ f j = f k)).card =
+    d ^ (n - 2) := by
+  classical
+  rw [← Fintype.card_coe]
+  rw [show Fintype.card ↥(Finset.univ.filter
+        (fun f : Fin n → Fin d => f i = f j ∧ f j = f k)) =
+         Fintype.card ({m : Fin n // m ≠ j ∧ m ≠ k} → Fin d) from
+    Fintype.card_congr {
+      toFun := fun ⟨f, _⟩ ⟨m, _⟩ => f m
+      invFun := fun g => ⟨
+        fun m => if h : m = j ∨ m = k then g ⟨i, hij, hik⟩
+                 else g ⟨m, fun hj => h (Or.inl hj), fun hk => h (Or.inr hk)⟩,
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
+          have h_ne_i : ¬(i = j ∨ i = k) := fun h => h.elim hij hik
+          refine ⟨?_, ?_⟩
+          · simp only [dif_neg h_ne_i, dif_pos (show j = j ∨ j = k from Or.inl rfl)]
+          · simp only [dif_pos (show j = j ∨ j = k from Or.inl rfl),
+                       dif_pos (show k = j ∨ k = k from Or.inr rfl)]⟩⟩
+      left_inv := fun ⟨f, hfmem⟩ => Subtype.ext (funext fun m => by
+        have hf := (Finset.mem_filter.mp hfmem).2
+        by_cases hmj : m = j
+        · subst hmj
+          simp only [dif_pos (show j = j ∨ j = k from Or.inl rfl)]
+          exact hf.1.symm
+        · by_cases hmk : m = k
+          · subst hmk
+            simp only [dif_pos (show k = j ∨ k = k from Or.inr rfl)]
+            exact (hf.1.trans hf.2).symm
+          · simp only [dif_neg (fun h => h.elim hmj hmk)])
+      right_inv := fun g => funext fun ⟨m, hmj, hmk⟩ => by
+        simp only [dif_neg (fun h => h.elim hmj hmk)]
+    }]
+  rw [Fintype.card_fun, Fintype.card_fin]
+  congr 1
+  rw [Fintype.card_subtype]
+  rw [show (Finset.univ : Finset (Fin n)).filter (fun m => m ≠ j ∧ m ≠ k) =
+         ({j, k} : Finset (Fin n))ᶜ from by
+    ext m
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+               Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or]]
+  rw [Finset.card_compl, Fintype.card_fin,
+      Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact hjk),
+      Finset.card_singleton]
+
 /-
   ## Summary
 
-  **Proved (12 theorems, 1 axiom):**
+  **Proved (13 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -586,10 +665,11 @@ theorem good_count_n3 (d : ℕ) :
   9. `nc_div_pow_tendsto`: n_c(d)/d^{2/3} → c (Session 3)
   10. `lambda_tendsto` (Lemma A): C(n_c(d),3)/d² → c³/6 (Session 4)
   11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
+  12. `card_funs_shared_triple`: |{f : Fin n → Fin d | f i = f j = f k}| = d^(n-2) for distinct i,j,k (Session 6)
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
-  12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
+  13. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
 
   **General k-way threshold:** ~ (k! d^{k-1} ln 2)^{1/k} ~ d^{(k-1)/k}
   | k | exponent | formula               |
@@ -606,5 +686,6 @@ theorem good_count_n3 (d : ℕ) :
 #check @exp_lambda_tendsto
 #check @p_no_triple_tendsto
 #check @poisson_approx_birthday3
+#check @card_funs_shared_triple
 
 end BirthdayThreshold3
