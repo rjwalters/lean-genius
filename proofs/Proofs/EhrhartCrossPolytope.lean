@@ -528,21 +528,29 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
           Finset.univ.filter (fun j : Fin (2 * n + 1) =>
             (if j.val ≤ n then n - j.val else j.val - n) ≤ m) := by
         ext j
-        simp only [shift, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and,
-                   Fin.ext_iff]
         constructor
-        · rintro ⟨k, _, rfl⟩
+        · intro hj
+          rw [Finset.mem_image] at hj
+          obtain ⟨k, _, hk⟩ := hj
+          rw [Finset.mem_filter, Finset.mem_univ, true_and]
+          -- hk : shift k = j; extract j.val = k.val + (n-m)
+          have hval : k.val + (n - m) = j.val := congrArg Fin.val hk
           have := k.isLt; have := hm; split_ifs with h <;> omega
-        · intro hd
+        · intro hj
+          rw [Finset.mem_filter, Finset.mem_univ, true_and] at hj
+          rw [Finset.mem_image]
           refine ⟨⟨j.val - (n - m), by
               have := j.isLt; have := hm
               by_cases h : j.val ≤ n
-              · simp only [if_pos h] at hd; omega
-              · simp only [if_neg h] at hd; omega⟩, Finset.mem_univ _, ?_⟩
+              · simp only [if_pos h] at hj; omega
+              · simp only [if_neg h] at hj; omega⟩, Finset.mem_univ _, ?_⟩
+          -- Prove shift ⟨j.val-(n-m),...⟩ = j
+          apply Fin.ext
+          simp only [shift]
           have := hm
           by_cases h : j.val ≤ n
-          · simp only [if_pos h] at hd; omega
-          · simp only [if_neg h] at hd; omega
+          · simp only [if_pos h] at hj; omega
+          · simp only [if_neg h] at hj; omega
       -- Apply sum_image with injectivity of shift
       rw [← himage, Finset.sum_image (by
         intro k₁ _ k₂ _ h
