@@ -1,8 +1,8 @@
 {
   "slug": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
   "title": "Does the full Gauss sum QR proof (all four steps) assemble into a single Lean...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-06T21:20:28.056Z",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T17:10:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Resolved YES — gallery entry submitted in PR #16579 (merged 2026-05-07).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — closed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full four-step Gauss sum QR assembly proved in Lean 4. File: ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean. 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETE: Full four-step Gauss sum QR assembly proved in Lean 4 (PR #16443) and submitted to gallery (PR #16579, merged 2026-05-07). File: ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean (254 lines, 11 theorems, 1 def, 0 sorries, 0 axioms). Gallery entry: src/data/proofs/elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02/.",
     "builtItems": [
       "legendreCharQ: MulChar (ZMod p) (ZMod q) via ringHomComp Int.castRingHom",
       "legendreCharQ_ne_one: nontriviality proved via case analysis on IsQuadratic values",
@@ -47,9 +47,7 @@
       "legendreSym.eq_pow provides Euler criterion; legendreSym.at_neg_one gives first supplement"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Submit to gallery: create src/data/proofs/elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02/"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected"
@@ -79,7 +77,8 @@
     "mathlib": []
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-06T21:20:28.055Z",
+  "lastUpdate": "2026-05-07T17:10:00.000Z",
+  "completed": "2026-05-07T17:10:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -130,8 +129,8 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
-      "lineCount": 326,
-      "theoremCount": 10,
+      "lineCount": 254,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
