@@ -11,7 +11,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 7 theorems proved, 0 sorries, 0 axioms. Fixed DerangementsConvergence.lean syntax and proved the nearest integer theorem.",
+    "progressSummary": "COMPLETE: 7 theorems proved, 0 sorries, 0 axioms in DerangementsConvergenceOQ01OQ01.lean (nearest integer theorem). Reconciled stale leanFiles drift (DerangementsConvergenceOQ01.lean: sorryCount 4→0, lineCount 153→152) — those 'sorries' were comment mentions, the file actually has 0 real sorries.",
     "builtItems": [
       "derangements_rate_scaled: |D(n) - n!/e| ≤ 1/(n+1) for all n",
       "derangements_nearest_integer: |D(n) - n!/e| < 1/2 for n ≥ 2",
@@ -44,11 +44,11 @@
     {
       "path": "Proofs/DerangementsConvergenceOQ01.lean",
       "filename": "DerangementsConvergenceOQ01.lean",
-      "lineCount": 153,
+      "lineCount": 152,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DerangementsConvergenceOQ01.lean"
     },
