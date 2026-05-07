@@ -2,7 +2,7 @@
   "id": "erdos-1056-oq-01",
   "title": "Erdős Problem #1056 OQ01: New Solutions for Consecutive Interval Products ≡ 1",
   "slug": "erdos-1056-oq-01",
-  "description": "Erdős (1979) asked: do there exist primes p and k disjoint intervals I₁,...,Iₖ of consecutive integers all with product ≡ 1 (mod p)? This extends known solutions from k=3 (Makowski 1983, p=17) to k=4 (p=23), k=5 (p=71), and k=6 (p=71) via computational verification.",
+  "description": "Erdős (1979) asked: do there exist primes p and k disjoint intervals I₁,...,Iₖ of consecutive integers all with product ≡ 1 (mod p)? This extends known solutions from k=3 (Makowski 1983, p=17) to k=4 (p=23), k=5 (p=71), k=6 (p=71), k=7 (p=673), and k=8 (p=599, the smallest prime giving k=8) via computational verification.",
   "meta": {
     "author": "Erdős (1979); Makowski (1983); Lean Genius OQ-01",
     "sourceUrl": "https://erdosproblems.com/1056",
@@ -22,9 +22,10 @@
     "erdosUrl": "https://erdosproblems.com/1056",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 226,
-    "theoremCount": 29,
-    "assumptions": "None. All 29 theorems are fully proved. Computational verification via native_decide.",
+    "lineCount": 362,
+    "theoremCount": 52,
+    "definitionCount": 9,
+    "assumptions": "None. All 52 theorems are fully proved. Computational verification via native_decide.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",
@@ -38,19 +39,20 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "mathlib_version": "4.26.0",
-    "definitionCount": 7
+    "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős (1979) asked: do there exist a prime $p$ and $k$ disjoint intervals of consecutive integers $I_1, \\ldots, I_k$ such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j$? Makowski (1983) found the first multi-interval solution: for $k=3$ with $p=17$, the intervals $[2,6)$, $[6,12)$, $[12,16)$ all have products $\\equiv 1 \\pmod{17}$.\n\nThe connection to Wilson's theorem is key: $(p-1)! \\equiv -1 \\pmod{p}$, so the product of all integers from 1 to $p-1$ is $\\equiv -1$, not $1$. Solutions require carefully chosen sub-intervals that \"balance\" to give product $\\equiv 1$. The boundary points $b_0 < b_1 < \\cdots < b_k$ define the intervals $[b_{i-1}, b_i)$, and the condition $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod{p}$ is equivalent to consecutive factorials being congruent: $b_{i-1}!/\\gcd \\equiv b_i!/\\gcd$.\n\nThis OQ-01 file extends the known solutions: Erdős's original $k=2$ with $p=11$, Makowski's $k=3$ with $p=17$, and new solutions $k=4$ (p=23), $k=5$ (p=71), $k=6$ (p=71).",
+    "historicalContext": "Erdős (1979) asked: do there exist a prime $p$ and $k$ disjoint intervals of consecutive integers $I_1, \\ldots, I_k$ such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j$? Makowski (1983) found the first multi-interval solution: for $k=3$ with $p=17$, the intervals $[2,6)$, $[6,12)$, $[12,16)$ all have products $\\equiv 1 \\pmod{17}$.\n\nThe connection to Wilson's theorem is key: $(p-1)! \\equiv -1 \\pmod{p}$, so the product of all integers from 1 to $p-1$ is $\\equiv -1$, not $1$. Solutions require carefully chosen sub-intervals that \"balance\" to give product $\\equiv 1$. The boundary points $b_0 < b_1 < \\cdots < b_k$ define the intervals $[b_{i-1}, b_i)$, and the condition $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod{p}$ is equivalent to consecutive factorials being congruent: $b_{i-1}!/\\gcd \\equiv b_i!/\\gcd$.\n\nThis OQ-01 file extends the known solutions: Erdős's original $k=2$ with $p=11$, Makowski's $k=3$ with $p=17$, and new solutions $k=4$ (p=23), $k=5$ (p=71), $k=6$ (p=71), $k=7$ (p=673), and $k=8$ (p=599, the smallest prime giving $k=8$).",
     "problemStatement": "Do there exist a prime $p$ and $k \\geq 2$ disjoint intervals $I_1, \\ldots, I_k$ of consecutive positive integers such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j = 1, \\ldots, k$?",
-    "proofStrategy": "The proofs are entirely computational: the intervals and primes are explicitly exhibited, and `native_decide` verifies all modular arithmetic. The definitions encode the combinatorial structure: `HasSolutionk` checks primality of $p$ and the interval-boundary ordering and product conditions. The main theorems `erdos_k2` through `erdos_k6` instantiate these with explicit witnesses, then `exists_k2` through `exists_k6` existentially quantify the witnesses. The `all_solutions_2_to_6` theorem collects all results.",
+    "proofStrategy": "The proofs are entirely computational: the intervals and primes are explicitly exhibited, and `native_decide` verifies all modular arithmetic. The definitions encode the combinatorial structure: `HasSolutionk` checks primality of $p$ and the interval-boundary ordering and product conditions. The main theorems `erdos_k2` through `erdos_k8` instantiate these with explicit witnesses, then `exists_k2` through `exists_k8` existentially quantify the witnesses. The `all_solutions_2_to_8` theorem collects all results. The high-k boundaries (k=7,8) are obtained by enumerating $\\{n! \\bmod p : 0 \\le n < p\\}$ for small primes and selecting residue classes with maximum multiplicity: $p=599$ has nine factorials in residue class 175, $p=673$ has eight in residue class 56.",
     "keyInsights": [
       "**Wilson's constraint as boundary**: $(p-1)! \\equiv -1 \\pmod{p}$ means the intervals must span [1, p-1) with boundary factorials congruent mod p. For $p=23$: $1! \\equiv 4! \\equiv 8! \\equiv 11! \\equiv 21! \\pmod{23}$ gives the 4-interval solution.",
       "**Factorial congruence reformulation**: $\\prod_{n=a}^{b-1} n \\equiv 1 \\pmod{p}$ iff $b!/a! \\equiv 1 \\pmod{p}$ iff $b! \\equiv a! \\pmod{p}$. Finding solutions reduces to finding primes where the factorial sequence has repeated values modulo $p$.",
       "**New k=4 solution (p=23)**: Intervals $[2,5)$, $[5,9)$, $[9,12)$, $[12,22)$ all have products $\\equiv 1 \\pmod{23}$. Verified by `native_decide` in `erdos_k4`.",
       "**New k=5,6 solutions (p=71)**: The prime $p=71$ supports both 5- and 6-interval solutions using the same boundary set $\\{8,10,20,52,62,64,71\\}$. The $k=6$ solution adds one more interval $[64,71)$ to the $k=5$ solution.",
-      "**Computational completeness**: All 29 theorems are proved by `native_decide` or by combining `native_decide` lemmas. No auxiliary mathematical lemmas are needed — the problem is fundamentally combinatorial and the instances are small enough for decision procedures."
+      "**New k=7 solution (p=673)**: Boundaries $\\{160, 317, 355, 394, 398, 507, 546, 648\\}$. The underlying factorial pattern is $159! \\equiv 316! \\equiv 354! \\equiv 393! \\equiv 397! \\equiv 506! \\equiv 545! \\equiv 647! \\equiv 56 \\pmod{673}$. All boundaries are positive, avoiding the zero-product issue that arises when $0! = 1!$ are in the residue class.",
+      "**New k=8 solution (p=599, smallest)**: Boundaries $\\{29, 51, 123, 184, 251, 290, 501, 540, 556\\}$. The factorial pattern $28! \\equiv 50! \\equiv 122! \\equiv 183! \\equiv 250! \\equiv 289! \\equiv 500! \\equiv 539! \\equiv 555! \\equiv 175 \\pmod{599}$ gives nine factorial values in one residue class — the smallest prime $p < 1000$ admitting this multiplicity, hence the smallest $p$ giving $k=8$.",
+      "**Computational completeness**: All 52 theorems are proved by `native_decide` or by combining `native_decide` lemmas. No auxiliary mathematical lemmas are needed — the problem is fundamentally combinatorial and the instances are small enough for decision procedures."
     ]
   },
   "sections": [
@@ -112,12 +114,13 @@
     }
   ],
   "conclusion": {
-    "summary": "OQ-01 computationally verifies new solutions to Erdős Problem #1056 for k=4, k=5, and k=6, with 29 theorems, 0 sorries, 0 axioms. The k=4 solution uses p=23, and k=5,6 use p=71 with the same boundary points.",
-    "implications": "The existence of solutions for k up to 6 strongly suggests (but does not prove) solutions exist for all k. The factorial congruence pattern for p=71 is particularly rich: six repeated factorial values give both a 5-interval and 6-interval solution. Finding the pattern for k=7 and beyond, or proving no solution exists for large k, remains open.",
+    "summary": "OQ-01 computationally verifies new solutions to Erdős Problem #1056 for k=4, k=5, k=6, k=7, and k=8, with 52 theorems, 0 sorries, 0 axioms. The k=4 solution uses p=23, k=5,6 use p=71 with the same boundary points, k=7 uses p=673, and k=8 uses p=599 (the smallest prime giving k=8).",
+    "implications": "The existence of solutions for k up to 8 strongly suggests (but does not prove) solutions exist for all k. The smallest-prime sequence (k → p_min(k)) so far reads 11, 17, 23, 71, 71, 673, 599 — non-monotonic in k=8 because going from k=7 to k=8 admits a smaller prime. Finding such 'reversals' empirically is unusual and may suggest structure in the distribution of factorial residue classes mod p.",
     "openQuestions": [
       "Do solutions exist for all k ≥ 2?",
       "What is the smallest prime p admitting a k-interval solution for each k?",
-      "Is there a pattern connecting solution primes? (11, 17, 23, 71, ...)",
+      "What is the asymptotic growth of p_min(k) as k → ∞?",
+      "Why does p_min(k=8)=599 < p_min(k=7)=673? Is the sequence p_min eventually monotonic?",
       "Can all solutions for a given k and p be enumerated computationally?"
     ]
   },
@@ -131,10 +134,14 @@
       "Finset"
     ],
     "namespace": "Erdos1056OQ01",
+<<<<<<< HEAD
     "lineCount": 226,
+=======
+    "lineCount": 362,
+>>>>>>> ed77a9e9ff6 (research(erdos-1056-oq-01): update meta.json for k=7,k=8 extensions)
     "axiomCount": 0,
-    "theoremCount": 29,
-    "definitionCount": 7,
+    "theoremCount": 52,
+    "definitionCount": 9,
     "path": "Proofs/Erdos1056OQ01.lean",
     "sorries": 0
   },
@@ -149,16 +156,16 @@
     {
       "name": "erdos_1056_new_solutions",
       "type": "core",
-      "statement": "ExistsSolution 4 ∧ ExistsSolution 5 ∧ ExistsSolution 6",
-      "description": "Main result: new solutions exist for k=4 (p=23), k=5 (p=71), k=6 (p=71).",
-      "significance": "Extends Erdős (k=2) and Makowski (k=3) to higher k"
+      "statement": "ExistsSolution 4 ∧ ExistsSolution 5 ∧ ExistsSolution 6 ∧ ExistsSolution 7 ∧ ExistsSolution 8",
+      "description": "Main result: new solutions exist for k=4 (p=23), k=5 (p=71), k=6 (p=71), k=7 (p=673), and k=8 (p=599).",
+      "significance": "Extends Erdős (k=2) and Makowski (k=3) to k=8, the smallest prime witness"
     },
     {
-      "name": "all_solutions_2_to_6",
+      "name": "all_solutions_2_to_8",
       "type": "core",
-      "statement": "ExistsSolution 2 ∧ ExistsSolution 3 ∧ ExistsSolution 4 ∧ ExistsSolution 5 ∧ ExistsSolution 6",
-      "description": "Solutions exist for all 2 ≤ k ≤ 6.",
-      "significance": "Comprehensive verification of all known small cases"
+      "statement": "ExistsSolution 2 ∧ ExistsSolution 3 ∧ ExistsSolution 4 ∧ ExistsSolution 5 ∧ ExistsSolution 6 ∧ ExistsSolution 7 ∧ ExistsSolution 8",
+      "description": "Solutions exist for all 2 ≤ k ≤ 8.",
+      "significance": "Comprehensive verification of all known small cases through k=8"
     }
   ],
   "sorries": 0
