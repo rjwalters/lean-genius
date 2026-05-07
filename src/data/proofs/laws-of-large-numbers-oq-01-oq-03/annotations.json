@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "laws-of-large-numbers-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "Open Question + Erdős-Rényi 1959 Background",
+    "content": "The header poses the OQ-03 sub-question: can the pairwise-independent Borel-Cantelli lemma be extracted as a standalone Mathlib-worthy theorem, and is pairwise independence the *minimal* hypothesis? The answer is yes on both counts. The result is due to Erdős & Rényi (1959), proved as a Cantor-series convergence question and now standard in probability textbooks (Feller II, Ch. VIII). The five-step proof sketch in the header — divergent expectation, variance ≤ expectation via covariance cancellation, Chebyshev, monotone limit, equivalence to limsup — is exactly the Aristotle-discovered proof in the companion file.",
+    "mathContext": "Theorem (Erdős-Rényi 1959): if $\\{A_n\\}$ are pairwise-independent measurable events with $\\sum_n P(A_n) = \\infty$, then $P(\\limsup A_n) = 1$. Key strengthening over classical BC2: only PAIRWISE independence required (not full mutual). For events, pairwise independence is equivalent to uncorrelated-ness of indicators (the Petrov counterexample applies to random variables, not events).",
+    "significance": "context",
+    "relatedConcepts": ["Borel-Cantelli lemma", "Erdős-Rényi 1959", "Petrov 2002", "pairwise independence", "Cantor series"],
+    "prerequisites": ["measure-theoretic probability", "limsup of sets"]
+  },
+  {
     "id": "ann-001",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
     "range": { "startLine": 60, "endLine": 66 },
@@ -16,7 +28,7 @@
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
     "range": { "startLine": 68, "endLine": 96 },
     "type": "insight",
-    "title": "BC2 for Pairwise Independence — Minimal Independence Threshold",
+    "title": "BC2 for Pairwise Independence — Statement and Three Hypotheses",
     "content": "The theorem borel_cantelli_pairwise_indep has three hypotheses: (1) hmeas: all events Aₙ are measurable; (2) hindep: the events are pairwise independent (IndepSet Aᵢ Aⱼ μ for i ≠ j), meaning μ(Aᵢ ∩ Aⱼ) = μ(Aᵢ)·μ(Aⱼ); (3) hsum: the total probability diverges (Σₙ μ(Aₙ) = ∞ as a sum in the extended nonneg reals, expressed as = ⊤). The conclusion μ(limsup A atTop) = 1 says almost every ω ∈ Ω lies in infinitely many Aₙ.",
     "mathContext": "The Lean statement captures the classical probability theory result precisely:\n```\ntheorem borel_cantelli_pairwise_indep\n    {A : ℕ → Set Ω}\n    (hmeas : ∀ n, MeasurableSet (A n))\n    (hindep : Pairwise fun i j => IndepSet (A i) (A j) μ)\n    (hsum : ∑' n, μ (A n) = ⊤) :\n    μ (limsup A atTop) = 1\n```\nHere `IndepSet E F μ` is Mathlib's `μ (E ∩ F) = μ E * μ F`; `∑' n, μ (A n) = ⊤` means the tsum in `ℝ≥0∞` (extended nonneg reals) equals $+\\infty$; `limsup A atTop` is $\\bigcap_{m} \\bigcup_{n \\geq m} A_n = \\{\\omega : \\omega \\in A_n \\text{ for i.o. } n\\}$.",
     "significance": "key",
@@ -26,7 +38,7 @@
   {
     "id": "ann-003",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
-    "range": { "startLine": 82, "endLine": 89 },
+    "range": { "startLine": 80, "endLine": 86 },
     "type": "technique",
     "title": "Chebyshev-Variance Method — Why Pairwise Independence Suffices",
     "content": "The docstring explains the Chebyshev-variance proof method. The key calculation: let Sₙ = Σ_{k<n} 1_{Aₖ} be the partial count of events occurring. Pairwise independence eliminates all cross-covariance terms in Var(Sₙ) = Σᵢ Σⱼ Cov(1_{Aᵢ}, 1_{Aⱼ}), since Cov(1_{Aᵢ}, 1_{Aⱼ}) = μ(Aᵢ∩Aⱼ) − μ(Aᵢ)μ(Aⱼ) = 0 for i ≠ j. This gives Var(Sₙ) = Σ_{k<n} Var(1_{Aₖ}) ≤ Σ_{k<n} μ(Aₖ) = E[Sₙ] → ∞.",
@@ -40,11 +52,11 @@
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
     "range": { "startLine": 87, "endLine": 89 },
     "type": "insight",
-    "title": "Minimality: Pairwise vs Uncorrelated",
-    "content": "The docstring notes that uncorrelated-ness (Cov(1_{Aᵢ}, 1_{Aⱼ}) = 0 for all i ≠ j) is NOT sufficient for BC2. Pairwise independence — which requires μ(Aᵢ∩Aⱼ) = μ(Aᵢ)μ(Aⱼ), a stronger joint distributional condition — is the correct minimal hypothesis. Petrov (2002, §10) gives an explicit counterexample: events with all pairwise correlations zero but P(Aₙ i.o.) < 1 despite Σ P(Aₙ) = ∞.",
-    "mathContext": "The distinction: **pairwise independence** $\\Leftrightarrow$ $\\mu(A_i \\cap A_j) = \\mu(A_i) \\cdot \\mu(A_j)$ (a condition on the joint measure); **uncorrelated-ness** $\\Leftrightarrow$ $\\mathrm{Cov}(1_{A_i}, 1_{A_j}) = 0$ (a condition on the second moment). These are equivalent when the covariance formula gives $\\mathrm{Cov}(X,Y) = E[XY] - E[X]E[Y]$, so $\\mathrm{Cov}(1_{A_i},1_{A_j}) = \\mu(A_i \\cap A_j) - \\mu(A_i)\\mu(A_j)$. Hence $\\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$ $\\Leftrightarrow$ $\\mathrm{Cov}(1_{A_i},1_{A_j}) = 0$. Wait — these ARE equivalent! The key point is that Petrov's counterexample uses events that are uncorrelated but NOT pairwise independent in the `IndepSet` sense...\n\nActually, in measure theory, `IndepSet A B μ` in Mathlib means exactly `μ(A ∩ B) = μ A * μ B` — which IS the same as Cov(1_A, 1_B) = 0. So pairwise independence in the Lean sense equals uncorrelated-ness for events. The Petrov counterexample constructs events that are not in general position — the point is that \"pairwise independent\" events are sometimes easier to construct than might seem, so the result is more general than it looks.",
+    "title": "Minimality: Pairwise Independence Is the Correct Threshold",
+    "content": "The docstring records that pairwise independence is exactly the right hypothesis for BC2: stronger conditions (full mutual independence) are unnecessary, weaker ones do not suffice. **A subtlety**: for *events*, pairwise independence ($\\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$) is *equivalent* to uncorrelated-ness of indicators ($\\mathrm{Cov}(1_{A_i}, 1_{A_j}) = 0$), since $\\mathrm{Cov}(1_{A_i}, 1_{A_j}) = \\mu(A_i \\cap A_j) - \\mu(A_i)\\mu(A_j)$. The Petrov 2002 counterexample (Σ P(Aₙ) = ∞ but P(limsup Aₙ) < 1) operates at a different level: it relaxes from pairwise to *finite-block uncorrelatedness for arbitrary functions*, or constructs a triangular-array / non-trivial dependence structure where the BC argument fails. The headline takeaway for the present file: requiring less than pairwise independence is genuinely weaker and breaks the conclusion.",
+    "mathContext": "$\\mathrm{Cov}(1_{A_i}, 1_{A_j}) = E[1_{A_i \\cap A_j}] - E[1_{A_i}]E[1_{A_j}] = \\mu(A_i \\cap A_j) - \\mu(A_i)\\mu(A_j)$. So for events, uncorrelated $\\Leftrightarrow$ pairwise independent. Petrov's counterexample weakens *beyond* pairwise (e.g., permitting triple-overlap structure that defeats the variance-cancellation argument) — not merely from independence to uncorrelated-ness.",
     "significance": "supporting",
-    "relatedConcepts": ["uncorrelated events", "pairwise independence", "Petrov counterexample", "independence hierarchy"],
+    "relatedConcepts": ["Petrov 2002 counterexample", "independence hierarchy", "covariance vs joint distribution", "uncorrelated indicators"],
     "prerequisites": ["covariance", "independence conditions", "probability counterexamples"]
   },
   {
