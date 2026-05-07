@@ -9,7 +9,7 @@
   - GPF definition lemmas derivable from Mathlib's primeFactors API
   - Conditional derivations given deep results as hypotheses
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

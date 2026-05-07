@@ -66,13 +66,51 @@ noncomputable def powerSumRatio (k n : ℕ) : ℚ :=
   if n = 0 then 0
   else (∑ i ∈ range n, (i : ℚ) ^ k) / (n : ℚ) ^ (k + 1)
 
+/-- Constant divided by n^d tends to 0 for d ≥ 1 (moved before use). -/
+private lemma const_div_pow_tendsto_zero' (c : ℚ) (d : ℕ) (hd : 0 < d) :
+    Tendsto (fun n : ℕ => c / (n : ℚ) ^ d) atTop (nhds 0) := by
+  rw [show (0 : ℚ) = c * 0 from by ring]
+  apply Filter.Tendsto.const_mul
+  apply Filter.Tendsto.inv_tendsto_atTop
+  apply tendsto_atTop_atTop.mpr
+  intro b
+  obtain ⟨N₀, hN₀⟩ := exists_nat_gt b
+  refine ⟨max 1 N₀, fun n hn => ?_⟩
+  have hn1 : 1 ≤ n := (le_max_left 1 N₀).trans hn
+  have hn2 : N₀ ≤ n := (le_max_right 1 N₀).trans hn
+  have hn1q : (1 : ℚ) ≤ (n : ℚ) := by exact_mod_cast hn1
+  have hbn : b < (n : ℚ) := hN₀.trans_le (by exact_mod_cast hn2)
+  calc b ≤ (n : ℚ) := hbn.le
+    _ = (n : ℚ) ^ 1 := (pow_one _).symm
+    _ ≤ (n : ℚ) ^ d := pow_le_pow_right₀ hn1q hd
+
 /-- For a polynomial q with degree < d, q(n)/n^d → 0 as n → ∞.
     Proof idea: q(n) = ∑_{i<d} c_i n^i, divide by n^d to get ∑ c_i/n^{d-i},
     each term → 0 by const_div_pow_tendsto_zero. -/
 private lemma low_degree_poly_ratio_tendsto_zero (q : Polynomial ℚ) (d : ℕ)
     (hd : 0 < d) (hdeg : q.natDegree < d) :
     Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d) atTop (nhds 0) := by
-  sorry -- Routine: decompose eval into coeff sum, each c_i/n^{d-i} → 0
+  -- Rewrite q(n)/n^d as a finite sum ∑ c_i/n^(d-i) → 0
+  -- Step 1: The sum ∑ c_i/n^(d-i) → 0 (each term → 0)
+  have h_sum : Tendsto (fun n : ℕ => ∑ i ∈ Finset.range d,
+        (q.coeff i : ℚ) / (↑n : ℚ) ^ (d - i)) atTop (nhds 0) := by
+    rw [show (0 : ℚ) = ∑ _i ∈ Finset.range d, (0 : ℚ) from Finset.sum_const_zero.symm]
+    exact tendsto_finset_sum fun i hi => const_div_pow_tendsto_zero' (q.coeff i) (d - i)
+        (Nat.sub_pos_of_lt (Finset.mem_range.mp hi))
+  -- Step 2: q(n)/n^d equals the sum for large n
+  apply h_sum.congr'
+  filter_upwards [Filter.eventually_gt_atTop 0] with n hn
+  have hn' : (n : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  have hnd : (↑n : ℚ) ^ d ≠ 0 := pow_ne_zero _ hn'
+  -- q.eval ↑n = ∑ i ∈ range d, q.coeff i * ↑n^i (since natDegree q < d)
+  have heval : q.eval (↑n : ℚ) = ∑ i ∈ Finset.range d, q.coeff i * (↑n : ℚ)^i := by
+    rw [Polynomial.eval_eq_sum_range hdeg]
+  rw [heval, Finset.sum_div]
+  apply Finset.sum_congr rfl
+  intro i hi
+  simp only [Finset.mem_range] at hi
+  rw [div_eq_div_iff hnd (pow_ne_zero _ hn'), mul_assoc, ← pow_add,
+      Nat.add_sub_cancel' (Nat.le_of_lt hi)]
 
 /-- For any monic polynomial p of degree d, p(n)/n^d → 1 as n → ∞ over ℚ.
     PROVED (was axiom): p = X^d + q with deg(q) < d, so p(n)/n^d = 1 + q(n)/n^d → 1+0.
@@ -84,7 +122,28 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
   -- q = p - X^d has degree < d (leading terms cancel: coeff d = 1-1 = 0)
   set q := p - Polynomial.X ^ d with hq_def
   have hq_deg : q.natDegree < d := by
-    sorry -- Routine: natDegree_sub_le gives ≤ d; coeff d = hlc - 1 = 0 gives strict <
+    show (p - Polynomial.X ^ d).natDegree < d
+    -- coeff p d = 1 (since leadingCoeff p = 1 and natDegree p = d)
+    have hpd : p.coeff d = 1 := by
+      have : p.coeff d = p.leadingCoeff := by
+        -- leadingCoeff p = coeff p (natDegree p), use natDegree p = d
+        change p.coeff d = p.coeff p.natDegree
+        rw [hd_deg]
+      exact this.trans hlc
+    -- (p - X^d) has natDegree ≤ d
+    have hle : (p - Polynomial.X ^ d).natDegree ≤ d :=
+      (Polynomial.natDegree_sub_le p _).trans
+        (by simp [hd_deg])
+    -- The coeff at degree d is 0 (leading terms cancel: 1 - 1 = 0)
+    have hcoeff : (p - Polynomial.X ^ d).coeff d = 0 := by
+      rw [Polynomial.coeff_sub, Polynomial.coeff_X_pow, if_pos rfl, hpd, sub_self]
+    -- natDegree < d since natDegree ≤ d and coeff d = 0
+    rcases eq_or_ne (p - Polynomial.X ^ d) 0 with h | h
+    · simp [h, hd]
+    · refine Nat.lt_of_le_of_ne hle ?_
+      intro heq
+      rw [← heq] at hcoeff
+      exact Polynomial.leadingCoeff_ne_zero.mpr h hcoeff
   -- Reduce to: Tendsto (fun n => q(n)/n^d + 1) atTop (nhds 1)
   suffices h : Tendsto (fun n : ℕ => q.eval (↑n : ℚ) / (↑n : ℚ) ^ d + 1)
       atTop (nhds 1) by
@@ -95,8 +154,10 @@ theorem monic_poly_ratio_tendsto (p : Polynomial ℚ) (d : ℕ)
     rw [hq_def, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X,
         sub_div, div_self hnd, sub_add_cancel]
   -- q(n)/n^d → 0, so q(n)/n^d + 1 → 0 + 1 = 1
-  rw [show (1 : ℚ) = 0 + 1 from by ring]
-  exact (low_degree_poly_ratio_tendsto_zero q d hd hq_deg).add tendsto_const_nhds
+  rw [show (1 : ℚ) = 0 + 1 from (zero_add 1).symm]
+  apply Filter.Tendsto.add
+  · exact low_degree_poly_ratio_tendsto_zero q d hd hq_deg
+  · exact tendsto_const_nhds
 
 /- **Main theorem**: The ratio ∑_{i=0}^{n-1} i^k / n^{k+1} → 1/(k+1) as n → ∞.
 

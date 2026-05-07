@@ -18,20 +18,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 5,
-    "focus": "Step 2b complete (Session 4): Cramer identity + sign pattern + entry bounds in PART VI. Next: Session 5 Step 3 perturbation bound.",
+    "iteration": 12,
+    "focus": "Session 12 (2026-05-07): row-output composition under `mul` (PART VIIc). Reframed the recursive-case obstacle of hgcdMatrix_row_output_le by adding cofactor_mul_row_output (algebraic identity) + cofactor_mul_row_output_natAbs_le (entry-bound × row-output combiner). Next: hgcdMatrix_entry_bound (sign-pattern lifted across HGCD recursion).",
     "blockers": [
       "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication. Genuinely blocked; not a blocker on size-reduction work."
     ],
-    "nextAction": "Session 4: Cramer-inversion entry bound. From the row-vector invariant (a₀, b₀) · M = (ahat', bhat') and det M = ±1, invert to (a₀, b₀) = (ahat', bhat') · M⁻¹ and bound entries of M.",
+    "nextAction": "Session 13: prove hgcdMatrix_entry_bound — extend lehmerCofactors_has_pattern + entry_bound_of_even/odd through the HGCD recursion. With this lemma plus PART VIIc Session 12 infrastructure (cofactor_mul_row_output_natAbs_le), the recursive case of hgcdMatrix_row_output_le closes by joint induction.",
     "attemptCounts": {
-      "total": 4,
+      "total": 12,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Session 7 (2026-05-03): CORRECTION + PROGRESS — discovered hgcdMatrix_joint_bound is FALSE (column convention output is not bounded). Replaced with correct row-output bound. Proved base case hgcdMatrix_small_row_output_le. hgcdMatrix_row_output_le has 1 sorry (recursive case) requiring new invariant infrastructure.",
+    "progressSummary": "Session 12 (2026-05-07): row-output composition under `mul` (PART VIIc, +155 lines, 4 lemmas, 0 new sorries). Added cofactor_row_natAbs_le, cofactor_row_natAbs_le_of_entry_bounds, cofactor_mul_row_output (algebraic identity: row-out of M.mul N on (a,b) = row-out of N at row-out of M on (a,b)), and cofactor_mul_row_output_natAbs_le (combines a row-output bound on M with entry bounds on N). Decouples the IH for the inner subproblem (entries) from the IH for the outer subproblem (row output), avoiding the Session 11 obstacle. Remaining: 1 sorry (recursive case) now reduced to a hgcdMatrix_entry_bound lemma — sign-pattern across HGCD recursion. | Session 7 (2026-05-03): discovered hgcdMatrix_joint_bound is FALSE (column convention output is not bounded). Replaced with correct row-output bound. Proved base case hgcdMatrix_small_row_output_le.",
     "builtItems": [
       "BinaryGcdOQ03OQ02.lean: hgcdMatrix def — fuel-indexed recursive HGCD (Schönhage). Threshold-based bottoming via lehmerCofactors; otherwise top-half-shift recursion + apply + bottom-half recursion + matrix product.",
       "BinaryGcdOQ03OQ02.lean: cofactor_mul_apply — proves CofactorMatrix.mul corresponds to composition of CofactorMatrix.apply. Algebraic kernel justifying the M₂.mul M₁ return.",
@@ -57,7 +57,11 @@
       "BinaryGcdOQ03OQ02.lean PART VII: cofactor_apply_err_bound_snd — same bound for second component using |M.γ|,|M.δ|.",
       "hgcdMatrix_small_row_output_le (proved): for max a b < hgcdThreshold, row output of hgcdMatrix (fuel+1) a b is bounded by max a b. Proved via hgcdMatrix_small + lehmerCofactors_id_apply_le. BinaryGcdOQ03OQ02.lean:824",
       "hgcdMatrix_row_output_le (1 sorry): full statement that row output of hgcdMatrix fuel a b <= max a b. Base cases proved; recursive case sorry. BinaryGcdOQ03OQ02.lean:850",
-      "native_decide counterexample: (hgcdMatrix 1 37 5).apply(37,5).2.natAbs = 184 and 2^(hgcdShift 37 5 + 3) = 64. Confirms falsity of joint-bound column statement."
+      "native_decide counterexample: (hgcdMatrix 1 37 5).apply(37,5).2.natAbs = 184 and 2^(hgcdShift 37 5 + 3) = 64. Confirms falsity of joint-bound column statement.",
+      "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_row_natAbs_le — row-convention triangle bound, |a*M.α + b*M.γ| ≤ |a|*|M.α| + |b|*|M.γ| (and symmetrically). Dual of cofactor_apply_natAbs_le (column).",
+      "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_row_natAbs_le_of_entry_bounds — given |M.•| ≤ E and |a|, |b| ≤ R, both row products of M on (a, b) are ≤ 2*E*R.",
+      "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_mul_row_output — pure-algebra identity (ring) showing the row output of (M.mul N) on (a,b) equals the row output of N evaluated at the row output of M on (a,b). Row-convention dual of cofactor_mul_apply.",
+      "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_mul_row_output_natAbs_le — given (a*M.α+b*M.γ).natAbs ≤ R, (a*M.β+b*M.δ).natAbs ≤ R, and entry bounds |N.•| ≤ E, both row products of (M.mul N) on (a,b) are ≤ 2*E*R. The infrastructure lemma decoupling outer-row-bound IH from inner-entry-bound IH for the joint induction in hgcdMatrix_row_output_le."
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -76,7 +80,8 @@
       "Step 3 algebraic split is clean: apply(aHi·2^s+ea, bHi·2^s+eb) = 2^s·apply(aHi,bHi) + apply(ea,eb). Proved by ring. This reduces Step 3 to bounding the error apply(ea,eb) using Step 2b entry bounds (|M.α|,|M.β| ≤ max(aHi,bHi)) and the fact ea,eb < 2^s.",
       "The MISSING piece for closing hgcdMatrix_size_reduction is inductive: need to show hgcdMatrix fuel aHi bHi reduces max(aHi,bHi) by at least half. This is an induction on bitsize that requires fuel to track depth — genuinely recursive and multi-session.",
       "hgcdMatrix_joint_bound is FALSE: for a=37,b=5, column output component has natAbs=184 > 64=2^(hgcdShift 37 5+3). Root cause: right-accumulated Lehmer matrix satisfies row convention, NOT column convention. Column output = M.alpha*a + M.beta*b is NOT bounded by max a b.",
-      "Correct bound is on ROW output: (a*M.alpha + b*M.gamma, a*M.beta + b*M.delta) gives Euclidean residues bounded by max a b. This is the content of lehmerCofactors_id_apply_le, extended to hgcdMatrix."
+      "Correct bound is on ROW output: (a*M.alpha + b*M.gamma, a*M.beta + b*M.delta) gives Euclidean residues bounded by max a b. This is the content of lehmerCofactors_id_apply_le, extended to hgcdMatrix.",
+      "Session 12 reframing: the row output of (M.mul N) on (a,b) is the row output of N at the row output of M on (a,b). This algebraic identity (cofactor_mul_row_output, proved by ring) lets the joint induction substitute entry bounds for N (independent of (a,b)) in place of a row-output bound for N at the wrong inputs. The recursive case of hgcdMatrix_row_output_le now reduces to: (a) a row-output bound for the outer matrix (M_outer's IH at its own column-output inputs feeds in via cofactor_mul_row_output_natAbs_le), and (b) entry bounds for the inner matrix (still to be derived from a hgcdMatrix-wide sign-pattern invariant)."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -85,9 +90,8 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Recursive case of hgcdMatrix_row_output_le: need invariant tracking that hgcdMatrix f a b was constructed for inputs (a,b), so rowOut(M2*M1,a,b) feeds correctly into the IH for M2.",
-      "Specifically: hgcdMatrix_succ defines M1=hgcdMatrix f (a/2^s) (b/2^s) and M2=hgcdMatrix f (rowOut M1 applied to a/2^s,b/2^s). Prove rowOut(M2*M1, a, b) = rowOut(M1, rowOut(M2, a/2^s, b/2^s)) * 2^s + small-correction.",
-      "Alternative: prove stronger invariant that rowOut(hgcdMatrix fuel a b, a, b) <= max a b by tracking the Euclidean algorithm relation explicitly rather than via matrix IH."
+      "Session 13 — hgcdMatrix_entry_bound: prove that every entry of `hgcdMatrix fuel a b` has natAbs ≤ max a b (or some uniform bound parameterized by max a b). Strategy: lift the EvenPattern/OddPattern invariant from `lehmerCofactors_has_pattern` to hgcdMatrix by tracking the sign pattern across the threshold/recursive cases, then apply entry_bound_of_even/odd at each level. Combined with the Session 12 cofactor_mul_row_output_natAbs_le, the recursive case of hgcdMatrix_row_output_le closes via joint induction.",
+      "Alternative path: build a typeclass-style 'admissible matrix' predicate carrying both (1) row-output bound at constructor inputs and (2) entry bounds, prove hgcdMatrix preserves it inductively, then read off both halves of hgcdMatrix_row_output_le as corollaries."
     ]
   },
   "tags": [
@@ -109,7 +113,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.650Z",
-  "lastUpdate": "2026-05-02T00:00:00.000Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -182,11 +186,11 @@
     {
       "path": "Proofs/BinaryGcdOQ03OQ02.lean",
       "filename": "BinaryGcdOQ03OQ02.lean",
-      "lineCount": 1021,
-      "theoremCount": 33,
+      "lineCount": 1176,
+      "theoremCount": 37,
       "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
     }

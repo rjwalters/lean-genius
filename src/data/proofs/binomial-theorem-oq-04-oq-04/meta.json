@@ -5,6 +5,7 @@
   "description": "Connects the Lindstr\u00f6m\u2013Gessel\u2013Viennot (LGV) lemma to Vandermonde-type identities. The Vandermonde identity C(m+n,r) = \u03a3 C(m,k)\u00b7C(n,r-k) is the single-path (1\u00d71) degenerate case of the LGV lemma, where no involution is needed because path pairs are automatically non-crossing. Includes a combinatorial proof via Finset.powersetCard partition, the LGV e-function for lattice path counting, and the 2\u00d72 LGV determinant for staircase configurations.",
   "meta": {
     "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ04.lean",
     "badge": "original",
     "axiomCount": 0,
     "theoremCount": 13,
@@ -119,5 +120,6 @@
       "BigOperators"
     ],
     "namespace": "LGVVandermonde"
-  }
+  },
+  "sorries": 0
 }

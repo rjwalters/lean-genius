@@ -2,7 +2,7 @@
   "slug": "law-of-cosines-oq-04-oq-02",
   "title": "Angle Bisector Length Formula from Stewart's Theorem",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,9 @@
     "phase": "COMPLETED",
     "since": "2026-05-04T19:00:00.000Z",
     "iteration": 1,
-    "focus": "Complete proof submitted as PR.",
+    "focus": "Proof merged to main: 173 lines, 9 theorems/lemmas, 0 sorries, 0 axioms (gallery status: verified, badge: original).",
     "blockers": [],
-    "nextAction": "Await PR merge.",
+    "nextAction": "None.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Lean file written (163 lines, 0 sorries, 0 axioms). Proved angle bisector formula as corollary of Stewart's theorem using polynomial linear_combination witnesses.",
+    "progressSummary": "COMPLETE: Lean file merged to main (173 lines, 9 theorems/lemmas, 0 sorries, 0 axioms). Proved angle bisector formula as corollary of Stewart's theorem using polynomial linear_combination witnesses.",
     "builtItems": [
       "LawOfCosinesOQ04OQ02.lean: bisector_ratio_m (line 40)",
       "LawOfCosinesOQ04OQ02.lean: bisector_ratio_n (line 52)",
@@ -83,7 +83,7 @@
     ]
   },
   "started": "2026-05-04T19:00:00.000Z",
-  "lastUpdate": "2026-05-04T19:45:00.000Z",
+  "lastUpdate": "2026-05-07T16:50:00.000Z",
   "significance": 5,
   "tractability": 9
 }

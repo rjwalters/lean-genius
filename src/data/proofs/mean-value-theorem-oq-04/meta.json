@@ -5,6 +5,7 @@
   "description": "Establishes the Fundamental Theorem of Calculus and its connection to the Mean Value Theorem: MVT (local) gives one value c with f'(c) = (f(b)-f(a))/(b-a), while FTC (global) gives the exact integral formula. Both are proved, along with integration by parts, uniqueness of antiderivatives, MVT as an integral average, and the Lipschitz distance bound.",
   "meta": {
     "status": "verified",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ04.lean",
     "badge": "original",
     "axiomCount": 0,
     "theoremCount": 14,
@@ -103,5 +104,6 @@
       "Set"
     ],
     "namespace": "MeanValueTheoremOQ04"
-  }
+  },
+  "sorries": 0
 }

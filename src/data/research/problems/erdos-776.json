@@ -1,6 +1,6 @@
 {
   "slug": "erdos-776",
-  "title": "Erdős #776",
+  "title": "Erd\u0151s #776",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T08:39:26.858Z",
-    "iteration": 4,
-    "focus": "Proved size1_and_complement_pair_only + distinctSizes_card_le_n_sub_two. Upper bound for r=1 case established. Need achievability construction.",
+    "iteration": 5,
+    "focus": "Achievability base case n=4 proved (witness F = {{0,1}, {0,2,3}}). Helper lemmas added. General r=1 achievability still axiomatized; SCD strategy identified.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Generalize achievability witness to n=5, n=6, then attack uniform construction via SCD or explicit per-n family (e.g., extending F_n piecewise).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,48 +29,66 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION: Proved size1_and_complement_pair_only (structural pair lemma) + distinctSizes_card_le_n_sub_two (n-2 upper bound). Building toward proving erdos_trotter_r1.",
+    "progressSummary": "ACHIEVABILITY BASE CASE: Proved maxDistinctSizes 4 1 \u2265 2 via explicit witness F = {{0,1}, {0,2,3}}. Added Erdos776Achievability namespace with helper lemmas (isAntichainFamily_pair, hasMultiplicity_one). Three axioms remain (general achievability r=1, upper r>1, achievability r>1). General r=1 achievability still needs uniform construction across n; SCD-based approach identified.",
     "builtItems": [
       "Proved size_availability (axiom->theorem) in Erdos776Problem.lean",
       "Proved size_variety_tradeoff (axiom->theorem) via Finset.card_biUnion + Finset.sum_le_sum",
       "Proved middle_layer_antichain (axiom->theorem) via powersetCard construction",
       "Proved sperner_theorem (axiom->theorem) via Mathlib LYM bridge",
-      "Renamed IsAntichain → IsAntichainFamily (Mathlib collision fix)",
+      "Renamed IsAntichain \u2192 IsAntichainFamily (Mathlib collision fix)",
       "Proved empty_not_in_nontrivial_antichain via Finset.empty_subset + antichain contradiction",
       "Proved univ_not_in_nontrivial_antichain via Finset.subset_univ + antichain contradiction",
       "Proved same_size_is_antichain via Finset.eq_of_subset_of_card_le + omega",
       "Proved zero_not_in_antichain_sizes via Finset.card_eq_zero + card_le_one",
       "Proved n_not_in_antichain_sizes via Finset.eq_univ_of_card + card_le_one",
       "erdos_776_threshold proved from erdos_trotter_exact + Nat.find (was axiom)",
-      "Proved size1_and_complement_pair_only: size-1 + size-(n-1) coexistence forces F ⊆ {A,B} (2-element family)",
-      "Proved distinctSizes_card_le_n_sub_two: any antichain over Fin n (n≥4) has ≤ n-2 distinct sizes"
+      "Proved size1_and_complement_pair_only: size-1 + size-(n-1) coexistence forces F \u2286 {A,B} (2-element family)",
+      "Proved distinctSizes_card_le_n_sub_two: any antichain over Fin n (n\u22654) has \u2264 n-2 distinct sizes",
+      "Proved isAntichainFamily_pair: helper for two-set antichain construction (Erdos776Achievability namespace)",
+      "Proved hasMultiplicity_one: F satisfies HasMultiplicity F 1 trivially via Finset.card_pos",
+      "Defined witness4: Finset (Finset (Fin 4)) = {{0,1}, {0,2,3}}",
+      "Proved witness4_antichain via isAntichainFamily_pair + decide on subset failures",
+      "Proved witness4_distinct_two via decide on numDistinctSizes computation",
+      "Proved maxDistinctSizes_4_1_ge_two: concrete achievability for n=4 via Finset.le_sup",
+      "Proved erdos_trotter_r1_achievable_n4: matches axiom shape `\u2265 n - 2` for n=4"
     ],
     "insights": [
-      "size_availability axiom has trivially True conclusion — provable with intro; trivial",
+      "size_availability axiom has trivially True conclusion \u2014 provable with intro; trivial",
       "size_variety_tradeoff provable via partition-by-cardinality: biUnion of disjoint filters, sum of lower bounds",
       "middle_layer_antichain provable by constructing powersetCard (n/2) univ and showing antichain + singleton image",
       "sperner_theorem: Mathlib has IsAntichain.sperner via LYM, but custom IsAntichain definition creates bridge gap",
-      "IsAntichain.sperner in Mathlib.Combinatorics.SetFamily.LYM gives Sperner bound directly. Bridge: custom IsAntichain ↔ Mathlib IsAntichain (· ⊆ ·) via Finset.mem_coe.",
-      "IsAntichain naming conflict with Mathlib.Order.Antichain — renamed to IsAntichainFamily",
-      "SubsetFamily is opaque def: theorems using ∈ F need F : Finset (Finset (Fin n)) in signatures",
-      "Key structural results proved: ∅ and univ excluded from non-trivial antichains",
-      "Sizes 0 and n excluded from distinctSizes of antichains with ≥2 sets",
+      "IsAntichain.sperner in Mathlib.Combinatorics.SetFamily.LYM gives Sperner bound directly. Bridge: custom IsAntichain \u2194 Mathlib IsAntichain (\u00b7 \u2286 \u00b7) via Finset.mem_coe.",
+      "IsAntichain naming conflict with Mathlib.Order.Antichain \u2014 renamed to IsAntichainFamily",
+      "SubsetFamily is opaque def: theorems using \u2208 F need F : Finset (Finset (Fin n)) in signatures",
+      "Key structural results proved: \u2205 and univ excluded from non-trivial antichains",
+      "Sizes 0 and n excluded from distinctSizes of antichains with \u22652 sets",
       "Same-size families are automatically antichains (via Finset.eq_of_subset_of_card_le)",
       "Remaining 3 known-result axioms require substantial combinatorial constructions to prove",
-      "erdos_776_threshold follows from erdos_trotter_exact via Nat.find — the threshold is just the minimum N",
-      "Key structural insight: if {a}∈F and B (size n-1) ∈F in antichain, then B=univ\\{a} (forced by antichain+cardinality)",
-      "Upper bound proof splits into 3 cases: both sizes 1,n-1 present (→F≤2 sets≤n-2), size n-1 absent (→Icc 1 (n-2)), size 1 absent (→Icc 2 (n-1))",
+      "erdos_776_threshold follows from erdos_trotter_exact via Nat.find \u2014 the threshold is just the minimum N",
+      "Key structural insight: if {a}\u2208F and B (size n-1) \u2208F in antichain, then B=univ\\{a} (forced by antichain+cardinality)",
+      "Upper bound proof splits into 3 cases: both sizes 1,n-1 present (\u2192F\u22642 sets\u2264n-2), size n-1 absent (\u2192Icc 1 (n-2)), size 1 absent (\u2192Icc 2 (n-1))",
       "The upper bound for erdos_trotter_r1 is now proved as a theorem (distinctSizes_card_le_n_sub_two)",
-      "Remaining: achievability lower bound (need explicit n-2 size antichain construction) for erdos_trotter_r1"
+      "Remaining: achievability lower bound (need explicit n-2 size antichain construction) for erdos_trotter_r1",
+      "Concrete achievability for n=4 verified: F = {{0,1}, {0,2,3}} witnesses maxDistinctSizes 4 1 \u2265 2",
+      "Two-set antichain construction: a pair {A,B} is antichain iff A \u2284 B AND B \u2284 A (both directions needed since IsAntichainFamily quantifies over ordered pairs)",
+      "HasMultiplicity F 1 is automatic for any non-empty F: each size in distinctSizes F came from at least one A \u2208 F",
+      "Achievability via symmetric chain decomposition (SCD) is the canonical strategy: pick one element of size s from a chain in 2^[n] for each s \u2208 {2,...,n-1}; chains are disjoint so picks are pairwise incomparable",
+      "Construction obstruction observed empirically: simple shifted-interval families A_s = {s, s+1, ..., 2s-1} (mod n) form antichains for n=4, n=5 but fail at n=6 because A_2={2,3} \u2286 A_5={0,1,2,3,5}",
+      "Construction obstruction: prefix-style A_s = {0,1,...,s-2, n-1} is always nested (A_s \u2282 A_{s+1}) \u2014 pure prefix constructions cannot give antichain across sizes",
+      "Working n=5 witness: F_5 = {{0,1}, {0,2,3}, {1,2,3,4}} \u2014 sizes {2,3,4}; pairwise incomparable verified",
+      "Working n=6 witness: F_6 = {{0,1}, {0,2,3}, {0,2,4,5}, {1,2,3,4,5}} \u2014 sizes {2,3,4,5}; pairwise incomparable verified by hand",
+      "Extension obstruction n=6\u2192n=7: extending F_6 with a size-6 set fails because size-6 set must miss some x, but every x \u2208 [7] is shared between two existing F_6 members forcing a containment",
+      "Strategic insight: extending a working F_n to F_{n+1} likely requires restructuring sizes, not just appending \u2014 uniform inductive construction may not exist; explicit family per n may be needed (e.g., via SCD)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove achievability: for n>3, exhibit antichain F with n-2 distinct sizes and r=1 — construction needed",
-      "Convert erdos_trotter_r1 from axiom to theorem using distinctSizes_card_le_n_sub_two + achievability",
-      "Prove erdos_trotter_achievable constructively (need antichain with n-3 distinct sizes and multiplicity r)",
-      "erdos_trotter_upper is hardest remaining axiom — may need Bollobas set-pairs inequality"
+      "Generalize n=4 witness to n=5, n=6 base cases (manual constructions known: F_5, F_6 in insights)",
+      "Investigate symmetric chain decomposition (SCD) approach for uniform n>3 achievability",
+      "Convert general erdos_trotter_r1_achievable axiom to theorem via SCD (or equivalent: 'antichain extension by chains')",
+      "erdos_trotter_upper for r>1 \u2014 hardest remaining axiom; may need Bollob\u00e1s set-pairs inequality",
+      "erdos_trotter_achievable for r>1 \u2014 second hardest; need r-fold copies of distinct-size construction"
     ],
-    "markdown": "# Erdős #776 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $A_i\\not\\subseteq A_j$ for all $i\\neq j$ and for any $t$ if there exists some $i$ with $\\lvert A_i\\rvert=t$ then there must exist at least $r$ sets of that size.\n\nHow large must $n$ be (as a function of $r$) to ensure that there is such a family which achieves $n-3$ distinct sizes of sets?\n\n\n\nA problem of Erd\\H{o}s and Trotter. For $r=1$ and $n>3$ the maximum possible is $n-2$. For $r>1$ and $n$ sufficiently large $n-3$ is achievable, but $n-2$ is never achievable.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #775\n- Problem #777\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu83\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
+    "markdown": "# Erd\u0151s #776 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $r\\geq 2$ and $A_1,\\ldots,A_m\\subseteq \\{1,\\ldots,n\\}$ be such that $A_i\\not\\subseteq A_j$ for all $i\\neq j$ and for any $t$ if there exists some $i$ with $\\lvert A_i\\rvert=t$ then there must exist at least $r$ sets of that size.\n\nHow large must $n$ be (as a function of $r$) to ensure that there is such a family which achieves $n-3$ distinct sizes of sets?\n\n\n\nA problem of Erd\\H{o}s and Trotter. For $r=1$ and $n>3$ the maximum possible is $n-2$. For $r>1$ and $n$ sufficiently large $n-3$ is achievable, but $n-2$ is never achievable.\n\n\nBack to the problem\n\n## Status\n\n**Erd\u0151s Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #775\n- Problem #777\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu83\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
     "erdos"
@@ -86,7 +104,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:39:26.858Z",
-  "lastUpdate": "2026-03-28T21:00:00.000Z",
+  "lastUpdate": "2026-05-07T16:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

@@ -31,7 +31,7 @@ Axiom count reduced: 3 → 1 (only the hard bracketing step remains axiomatic).
 -/
 
 import Proofs.LawsOfLargeNumbersOQ04
-import Mathlib.MeasureTheory.Integral.SetIntegral
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Tactic
 
 namespace GlivenkoCantelli

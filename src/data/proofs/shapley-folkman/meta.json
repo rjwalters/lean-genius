@@ -220,7 +220,10 @@
       "Finset",
       "Pointwise"
     ],
-    "namespace": "ShapleyFolkman"
+    "namespace": "ShapleyFolkman",
+    "additionalFiles": [
+      "Proofs/ShapleyFolkmanAristotle.lean"
+    ]
   },
   "mainTheorems": [
     {

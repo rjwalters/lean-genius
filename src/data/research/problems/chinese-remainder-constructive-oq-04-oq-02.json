@@ -2,7 +2,7 @@
   "slug": "chinese-remainder-constructive-oq-04-oq-02",
   "title": "Unifying List-Based CRT with Ring-Theoretic CRT",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-06T14:45:58.508Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Final state: gallery is verified / original. ChineseRemainderConstructiveOQ04OQ02.lean has 12 theorems / 0 sorries / 0 axioms / 0 defs / 180 lines. Bridge theorem satisfies_pair_iff_chineseRemainder connects CRTList.Satisfies with ZMod.chineseRemainder via map_natCast on the ring isomorphism.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for this entry. The k-fold extension (CRTProd-to-CRTList bridge) is tracked under follow-on entries chinese-remainder-constructive-oq-04-oq-03 and -oq-04-oq-04.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE 2026-05-06: Bridge theorem connecting CRTList.Satisfies with ZMod.chineseRemainder proved. 12 theorems, 0 sorries, 0 axioms. PR pending.",
+    "progressSummary": "COMPLETE. Bridge theorem connecting CRTList.Satisfies with ZMod.chineseRemainder fully proved (PR #16312, merged 2026-05-06). The primary file Proofs/ChineseRemainderConstructiveOQ04OQ02.lean has 12 theorems / 0 sorries / 0 axioms / 0 defs / 180 lines and the gallery sits at status verified, badge original.",
     "builtItems": [
       "satisfies_pair_iff: CRTList.Satisfies unpacks to two modular congruences",
       "chineseRemainder_natCast: ring iso applied to ↑x gives ((↑x : ZMod m), (↑x : ZMod n))",
@@ -45,9 +45,7 @@
       "uniqueness (crt_list_minimal_unique) forces the canonical ℕ-representative to equal ZMod.val of ring iso preimage"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Extend bridge to k-fold case connecting CRTProd (BezoutOQ03OQ01OQ01) with CRTList.Satisfies"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "number-theory",
@@ -68,14 +66,14 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:45:58.508Z",
-  "lastUpdate": "2026-05-06T14:45:58.508Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/ChineseRemainderConstructive.lean",
       "filename": "ChineseRemainderConstructive.lean",
-      "lineCount": 417,
+      "lineCount": 416,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 2,
@@ -86,8 +84,8 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ03.lean",
       "filename": "ChineseRemainderConstructiveOQ03.lean",
-      "lineCount": 323,
-      "theoremCount": 24,
+      "lineCount": 322,
+      "theoremCount": 31,
       "axiomCount": 0,
       "defCount": 9,
       "sorryCount": 0,
@@ -97,7 +95,7 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ03OQ03.lean",
       "filename": "ChineseRemainderConstructiveOQ03OQ03.lean",
-      "lineCount": 204,
+      "lineCount": 203,
       "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 2,
@@ -108,8 +106,8 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ04.lean",
       "filename": "ChineseRemainderConstructiveOQ04.lean",
-      "lineCount": 157,
-      "theoremCount": 4,
+      "lineCount": 156,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -119,7 +117,7 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ04OQ02.lean",
       "filename": "ChineseRemainderConstructiveOQ04OQ02.lean",
-      "lineCount": 178,
+      "lineCount": 180,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 0,
@@ -130,7 +128,7 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ04OQ03.lean",
       "filename": "ChineseRemainderConstructiveOQ04OQ03.lean",
-      "lineCount": 100,
+      "lineCount": 99,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
@@ -141,7 +139,7 @@
     {
       "path": "Proofs/ChineseRemainderConstructiveOQ04OQ04.lean",
       "filename": "ChineseRemainderConstructiveOQ04OQ04.lean",
-      "lineCount": 123,
+      "lineCount": 122,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,

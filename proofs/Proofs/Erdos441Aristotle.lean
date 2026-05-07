@@ -9,7 +9,7 @@
   - Membership and interval lemmas for ErdosFirstPart and ErdosSecondPart
   - LCM bound supporting lemmas using Nat.lcm API
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 
   Excluded (too deep for Aristotle):
   - construction_gives_lower_bound: requires LCM bound proof for full construction

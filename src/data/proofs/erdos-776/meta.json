@@ -58,11 +58,11 @@
       "Proved distinctSizes_card_le_n_sub_two: antichain over Fin n (n≥4) has ≤ n-2 distinct sizes"
     ],
     "axiomCount": 3,
-    "lineCount": 410,
+    "lineCount": 487,
     "assumptions": "3 axioms: erdos_trotter_r1_achievable (achievability for r=1, known), erdos_trotter_upper (known), erdos_trotter_achievable (known). erdos_trotter_r1 now proved from upper bound theorem + achievability axiom. erdos_776_threshold proved from erdos_trotter_exact via Nat.find.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14,
-    "definitionCount": 6
+    "theoremCount": 20,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős and Trotter studied extremal problems on antichains in the Boolean lattice $2^{[n]}$, extending Sperner's celebrated 1928 theorem that the maximum antichain has size $\\binom{n}{\\lfloor n/2 \\rfloor}$. Problem 776 adds a *multiplicity constraint*: every occurring set size must appear at least $r$ times. For $r = 1$ (no constraint), Griggs showed in 1983 that an antichain can use at most $n - 2$ distinct set sizes for $n > 3$, since sizes $0$ and $n$ correspond to $\\{\\emptyset\\}$ and $\\{[n]\\}$ which are incomparable to nothing else non-trivially. For $r \\geq 2$, the constraint $\\binom{n}{k} \\geq r$ excludes the extreme layers $k \\in \\{0, 1, n-1, n\\}$ for small $r$ and more layers as $r$ grows. Erdős and Trotter showed the maximum drops to $n - 3$ for large $n$, but the precise threshold $N(r)$ remains open. This connects to the 'anatomy' of the Boolean lattice and the LYM inequality.",
@@ -172,10 +172,10 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 410,
+    "lineCount": 487,
     "axiomCount": 3,
-    "theoremCount": 14,
-    "definitionCount": 6,
+    "theoremCount": 20,
+    "definitionCount": 7,
     "path": "Proofs/Erdos776Problem.lean",
     "sorries": 0
   },

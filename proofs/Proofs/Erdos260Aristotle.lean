@@ -8,7 +8,7 @@
   - Routine analysis facts: n/2^n summability, exponential domination, limit comparisons
   - Helper lemmas for series_converges, fastGrowth_of_gapsToInfinity, fastGrowth_of_superlogarithmic
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

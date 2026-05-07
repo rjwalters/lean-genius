@@ -1,0 +1,174 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "title": "Power Mean Equality: M_r = M_s iff All Elements Equal",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+  "description": "Proves that weighted power means M_r and M_s (for 0 < r < s) are equal if and only if all elements z_i are equal. This is the sharp equality characterization of the power mean monotonicity theorem M_r ≤ M_s. The proof uses the strict Jensen inequality (StrictConvexOn.map_sum_lt for f(x) = x^(s/r), which is strictly convex since s/r > 1) to derive a contradiction when elements are non-constant. Fills the equality case explicitly marked as TODO in Mathlib's MeanInequalitiesPow.lean. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Power_mean",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "power-means",
+      "mean-inequalities",
+      "convexity",
+      "jensen",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 205,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "power_mean_eq_iff_all_eq_pos: M_r = M_t (0 < r < t) iff all z_i equal, proved via strict Jensen inequality",
+      "am_eq_qm_iff_all_eq: arithmetic mean = quadratic mean iff all elements equal (r=1, t=2 case)",
+      "am_lt_qm_of_not_all_eq: strict AM < QM when elements are not all equal"
+    ],
+    "prerequisites": [
+      "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): weightedPowerMean definition, power_mean_monotone_pos",
+      "PowerMeanMonotoneOQ (Proofs/PowerMeanMonotoneOQ.lean): full M_r ≤ M_s monotonicity"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "StrictConvexOn.map_sum_lt",
+        "description": "Strict Jensen inequality: f(Σ w_i p_i) < Σ w_i f(p_i) when f strictly convex and points non-constant",
+        "module": "Mathlib.Analysis.Convex.Jensen"
+      },
+      {
+        "theorem": "strictConvexOn_rpow",
+        "description": "x ↦ x^p is strictly convex on [0,∞) for p > 1",
+        "module": "Mathlib.Analysis.Convex.SpecificFunctions.Basic"
+      },
+      {
+        "theorem": "Real.rpow_left_inj",
+        "description": "Injectivity of x ↦ x^p on nonneg reals for p ≠ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_mul",
+        "description": "Power rule: x^(p*q) = (x^p)^q for x ≥ 0",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The power mean inequality $M_r \\leq M_s$ for $r \\leq s$ is classical, established by Hardy, Littlewood, and Pólya (1934) using Jensen's inequality. The equality characterization — $M_r = M_s$ if and only if all elements are equal — is an equally classical result that gives the inequality its sharpness. Intuitively, the power mean $M_r$ measures the 'spread' of a distribution with exponent $r$; when all elements coincide the distribution has no spread, and all power means collapse to the common value.\n\nIn Lean formalization, this equality condition was explicitly marked as a TODO in Mathlib's `MeanInequalitiesPow.lean` (line 36): 'each inequality $A \\leq B$ should come with a theorem $A = B \\leftrightarrow\\_$'. This proof provides the first machine-checked formalization of this classical sharpness result in the Lean 4 / Mathlib 4 ecosystem.\n\nThe proof strategy — using the **strict** Jensen inequality (rather than the equality characterization of Jensen) — is particularly clean: if elements are non-constant, strict convexity of $x \\mapsto x^{t/r}$ gives strict Jensen, forcing $M_r < M_t$. This contradicts $M_r = M_t$ without needing to identify the equality case of Jensen separately.",
+    "problemStatement": "**Open Question (OQ-01):** For positive weights $w_1, \\ldots, w_n$ summing to 1 and positive reals $z_1, \\ldots, z_n$, prove that\n$$M_r(z,w) = M_t(z,w) \\text{ for } 0 < r < t$$\nif and only if $z_1 = z_2 = \\cdots = z_n$.\n\nHere $M_r(z,w) = \\left(\\sum_i w_i z_i^r\\right)^{1/r}$ is the weighted power mean of order $r$.",
+    "proofStrategy": "**→ direction** (equality implies all equal):\n\n1. **Algebraic reduction**: From $M_r = M_t$, raise both sides to power $t > 0$:\n   $A^{t/r} = B$ where $A = \\sum w_i z_i^r$ and $B = \\sum w_i z_i^t$.\n2. **Strict Jensen contradiction**: If some $z_j \\neq z_k$, then $z_j^r \\neq z_k^r$ (injectivity of $x \\mapsto x^r$). Apply `StrictConvexOn.map_sum_lt` with $f(x) = x^{t/r}$ (strictly convex since $t/r > 1$):\n   $A^{t/r} = f(\\sum w_i z_i^r) < \\sum w_i f(z_i^r) = \\sum w_i z_i^t = B$.\n   This contradicts $A^{t/r} = B$.\n3. **Injectivity**: All $z_i^r$ equal implies all $z_i$ equal by `Real.rpow_left_inj`.\n\n**← direction** (all equal implies equality):\nIf all $z_i = c$, then $A = c^r$ and $B = c^t$, giving $M_r = (c^r)^{1/r} = c = (c^t)^{1/t} = M_t$.",
+    "keyInsights": [
+      "Proving strict Jensen (using `StrictConvexOn.map_sum_lt`) is cleaner than identifying the Jensen equality case: the contradiction approach avoids a separate analysis of when Jensen is tight.",
+      "The key reduction M_r = M_t → A^(t/r) = B is obtained by raising both sides to power t, using `Real.rpow_mul` to simplify (A^(1/r))^t = A^(t/r).",
+      "Strict convexity of x ↦ x^p for p > 1 is available in Mathlib as `strictConvexOn_rpow` (from SpecificFunctions/Basic.lean), making the Jensen application direct.",
+      "The connection between the smul-based Jensen API and the multiplication-based power mean formulas is bridged by `simp only [smul_eq_mul]`, which converts scalar multiplication to ordinary multiplication in ℝ.",
+      "Mathlib's `MeanInequalitiesPow.lean` (line 36) explicitly marks this equality case as a TODO — this formalization fills that gap."
+    ],
+    "prerequisites": [
+      "AmgmInequalityOQ03 (Proofs/AmgmInequalityOQ03.lean): weightedPowerMean definition, power_mean_monotone_pos",
+      "PowerMeanMonotoneOQ (Proofs/PowerMeanMonotoneOQ.lean): M_r ≤ M_s for all r ≤ s (used in corollary)"
+    ],
+    "furtherWork": [
+      "Extend to the general case r < s (without positivity restriction on r, s) using the M_r = M_{-r}(z⁻¹)⁻¹ duality from AmgmInequalityOQ03",
+      "Prove the equality condition for the geometric mean limit: M_0 = M_r iff all z_i equal",
+      "Contribute the strict Jensen equality case to Mathlib's MeanInequalitiesPow as the A = B ↔ _ counterpart"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-setup",
+      "title": "§0: Imports and Setup",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Imports Mathlib.Analysis.Convex.Jensen (for StrictConvexOn.map_sum_lt), Mathlib.Analysis.Convex.SpecificFunctions.Basic (for strictConvexOn_rpow), and ProofAmgmInequalityOQ03 (for weightedPowerMean definition). Namespace PowerMeanEqualityCase, open Real Finset.",
+      "mathContext": "The strict Jensen inequality is in Mathlib.Analysis.Convex.Jensen as StrictConvexOn.map_sum_lt; strict convexity of rpow is in Mathlib.Analysis.Convex.SpecificFunctions.Basic as strictConvexOn_rpow."
+    },
+    {
+      "id": "support-lemmas",
+      "title": "§1: Supporting Lemmas",
+      "startLine": 56,
+      "endLine": 72,
+      "summary": "nonempty_of_pos_sum_one: positive weights summing to 1 implies nonempty index set. power_sum_pos: weighted power sum Σ w_i z_i^r > 0 when all weights and values positive.",
+      "mathContext": "nonempty_of_pos_sum_one proves s is nonempty by contradiction: if s = ∅ then Σ w_i = 0 ≠ 1. power_sum_pos uses Finset.sum_pos with each term being mul_pos (hw i hi) (rpow_pos_of_pos (hz i hi) r)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§2: Main Theorem — Power Mean Equality Condition",
+      "startLine": 73,
+      "endLine": 180,
+      "summary": "power_mean_eq_iff_all_eq_pos: M_r = M_t iff all z_i equal (0 < r < t). Forward direction by contradiction using strict Jensen; backward direction by substituting common value.",
+      "mathContext": "The proof reduces M_r = M_t to A^(t/r) = B via Real.rpow_mul, then uses StrictConvexOn.map_sum_lt for f(x) = x^(t/r) (strictly convex by strictConvexOn_rpow, since t/r > 1). Injectivity step uses Real.rpow_left_inj."
+    },
+    {
+      "id": "corollaries",
+      "title": "§3: Corollaries",
+      "startLine": 181,
+      "endLine": 200,
+      "summary": "am_eq_qm_iff_all_eq: AM = QM iff all equal (r=1, t=2 specialization). am_lt_qm_of_not_all_eq: strict AM < QM when values differ (combining monotonicity and equality condition).",
+      "mathContext": "am_eq_qm_iff_all_eq is immediate from the main theorem with r=1, t=2. am_lt_qm_of_not_all_eq combines power_mean_monotone_pos (for ≤) with the negation of am_eq_qm_iff_all_eq (for ≠) via lt_of_le_of_ne."
+    }
+  ],
+  "openQuestions": [],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean",
+    "lineCount": 205,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "axiomCount": 0,
+    "sorries": 0
+  },
+  "conclusion": {
+    "summary": "Establishes the equality characterization of the weighted power mean monotonicity: M_r(z, w) = M_t(z, w) for 0 < r < t if and only if all zᵢ are equal. Proved via strict Jensen's inequality applied to the strictly convex function x ↦ x^(t/r), with t/r > 1 the load-bearing inequality. Two corollaries (AM = QM iff all equal; AM < QM when values vary) deliver the most pedagogically familiar specializations. Verified with 0 sorries and 0 axioms; fills the equality-case TODO in Mathlib's MeanInequalitiesPow.lean (line 36).",
+    "implications": "First, the proof closes the equality-case gap that Hardy-Littlewood-Pólya (1934) leaves implicit in classical proofs of the power-mean inequality. The strict-Jensen approach is cleaner than the equality-case-of-Jensen approach because it avoids tracing exactly when Jensen is tight; instead, non-constant input plus strict convexity directly gives strict <. Second, the AM-QM specialization is dual to the variance identity Var(z) = E[z²] - E[z]² ≥ 0 with equality iff z is a.s. constant — this proof is a deterministic Finset version of that probabilistic fact. Third, this is a candidate Mathlib contribution: MeanInequalitiesPow.lean explicitly comments that each weak inequality should come paired with an iff theorem identifying the equality case, and this entry provides exactly that pairing for the positive-exponent power mean. Fourth, the techniques (strict convexity + non-constant witness ⟹ strict Jensen) generalize directly to Hölder, Minkowski, and arithmetic-geometric mean equality cases — each can be characterized analogously.",
+    "openQuestions": [
+      "Extend to the general case r < s without positivity restriction on r and s, using the duality M_r(z, w) = M_{-r}(z⁻¹, w)⁻¹ from AmgmInequalityOQ03. The negative-exponent case requires a separate analysis when the exponent crosses 0.",
+      "Prove the analogous equality condition for the geometric mean limit: M₀(z, w) = ∏ zᵢ^{wᵢ}, with M_r = M₀ iff all zᵢ equal. The limit r → 0 is delicate and requires a different technique (e.g., L'Hôpital on log z^r or convexity of -log).",
+      "Contribute this equality case to Mathlib's MeanInequalitiesPow.lean as a paired iff theorem with the existing inner_le_nnreal_pow_pow_two and related ≤-style lemmas. The framing should match Mathlib's smul-based API for Jensen inequalities.",
+      "Generalize to Hölder's inequality and Minkowski's inequality equality cases, which follow the same strict-convexity pattern but with f(x) = x^p for different exponent regimes. The integral version (replacing Σ wᵢ with ∫ dμ) is a natural target once σ-finite measure spaces are involved."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "amgm-inequality-oq-03",
+      "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
+      "relationship": "prerequisite",
+      "description": "Defines the weightedPowerMean used here and proves the weak monotonicity power_mean_monotone_pos: M_r ≤ M_t for 0 < r ≤ t. This entry sharpens that to the equality characterization."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "title": "Full Power Mean Monotonicity: M_r ≤ M_s for All r ≤ s",
+      "relationship": "sibling",
+      "description": "Companion entry that proves the full weak inequality (no positivity restriction on r, s); this entry is the equality-case characterization of that result."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+      "title": "Power Mean Inequality Chain",
+      "relationship": "ancestor",
+      "description": "Higher-level entry surveying the full chain HM ≤ GM ≤ AM ≤ QM via power means; this entry provides the equality endpoint of the AM ≤ QM step."
+    },
+    {
+      "proofId": "amgm-inequality",
+      "title": "Arithmetic Mean - Geometric Mean Inequality",
+      "relationship": "related",
+      "description": "AM-GM is the r=1, t=0 limiting case of the power mean monotonicity. The equality case 'AM = GM iff all equal' is the analogue of this entry's equality characterization at the GM endpoint."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "title": "Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu's Lemma",
+      "relationship": "related",
+      "description": "Provides finite-dimensional specializations of Cauchy-Schwarz, including Titu's lemma. The strict-Jensen technique used here transfers directly to derive the equality case of Cauchy-Schwarz."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral",
+      "title": "Bunyakovsky-Schwarz Integral Inequality",
+      "relationship": "ancestor",
+      "description": "Top-level Cauchy-Schwarz integral entry. The equality cases for Cauchy-Schwarz and the power-mean inequality both rely on the strict-convexity-plus-nonconstant pattern formalized here."
+    }
+  ]
+}

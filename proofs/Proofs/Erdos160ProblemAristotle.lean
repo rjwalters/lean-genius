@@ -9,7 +9,7 @@
   - Derivable consequences of the known axiomatized bounds
   - Standard real analysis: rpow monotonicity, exp/log Filter.Tendsto facts
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (2):
   - h_sublinear_ari: for ε ∈ (0, 1/3), h(n) ≤ n^(1-ε) for large n

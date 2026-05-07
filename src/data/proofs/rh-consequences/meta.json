@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 9,
+    "axiomCount": 18,
     "assumptions": "9 axioms for classical RH consequences: rh_implies_mertens_bound (|M(x)| = O(√x)), lis_criterion (LI series criterion), riemann_von_mangoldt_formula, RH_implies_DensityHypothesis, rh_implies_psi_bound, explicit_formula_error, zeta_in_selberg_class, explicit_formula_zero_free, hadamard_product_exists. These are known results not yet formalized in Mathlib.",
     "lineCount": 1735,
     "theoremCount": 122,
@@ -71,7 +71,7 @@
   "leanFile": {
     "namespace": "RHConsequences",
     "lineCount": 1735,
-    "axiomCount": 9,
+    "axiomCount": 18,
     "theoremCount": 122,
     "definitionCount": 17,
     "path": "Proofs/RiemannHypothesisConsequences.lean",

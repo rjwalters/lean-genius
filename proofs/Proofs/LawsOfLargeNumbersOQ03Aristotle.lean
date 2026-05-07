@@ -9,7 +9,7 @@
   - NOT the maximal ergodic lemma (axiom — sunrise lemma)
   - Only the mixing → ergodic implication (theorem sorry, standard argument)
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (1):
   - mixing_implies_ergodic_ari: IsMixing T μ → Ergodic T μ

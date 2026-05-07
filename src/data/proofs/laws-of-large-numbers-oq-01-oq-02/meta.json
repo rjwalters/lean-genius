@@ -159,18 +159,19 @@
   "crossReferences": [
     {
       "id": "laws-of-large-numbers-oq-01",
-      "title": "LLN for Heavy-Tailed Distributions",
-      "relationship": "Parent open question: proves SLLN for integrable heavy-tailed distributions using Kolmogorov's theorem. This entry quantifies the convergence rate via M-Z."
+      "relationship": "parent",
+      "description": "Proves SLLN for integrable heavy-tailed distributions via Kolmogorov's theorem. This entry quantifies the convergence rate via Marcinkiewicz-Zygmund."
     },
     {
       "id": "laws-of-large-numbers",
-      "title": "Laws of Large Numbers",
-      "relationship": "Foundation: establishes WLLN and SLLN for finite-variance distributions. The M-Z theorem extends SLLN to the infinite-variance regime with quantitative rates."
+      "relationship": "ancestor",
+      "description": "Foundation: establishes WLLN and SLLN for finite-variance distributions. The M-Z theorem extends SLLN to the infinite-variance regime with quantitative rates n^{1/r}."
     },
     {
       "id": "central-limit-theorem",
-      "title": "Central Limit Theorem",
-      "relationship": "Complement: the CLT gives rate n^{1/2} and Gaussian limit for L² distributions. M-Z applies when L² fails, giving slower rate n^{1/r} with α-stable (non-Gaussian) limit."
+      "relationship": "related",
+      "description": "Complement: the CLT gives rate n^{1/2} and Gaussian limit for L² distributions. M-Z applies when L² fails, giving slower rate n^{1/r} with α-stable (non-Gaussian) limit."
     }
-  ]
+  ],
+  "sorries": 0
 }

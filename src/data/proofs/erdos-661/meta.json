@@ -19,13 +19,13 @@
     "sourceUrl": "https://erdosproblems.com/661",
     "erdosUrl": "https://erdosproblems.com/661",
     "erdosProblemStatus": "open",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 10,
     "lineCount": 164,
-    "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
+    "assumptions": "2 assumption-bearing opaque constants (minBipartiteDist and minDistinct2n, both declared `opaque ... := fun _ => 0` as placeholders since exact values are unknown). 0 explicit `axiom` declarations, 0 sorries. The Lenz construction theorems in ℝ⁴ are fully proved.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
-    "definitionCount": 7
+    "definitionCount": 9
   },
   "sections": [
     {
@@ -123,9 +123,9 @@
     "opens": [],
     "namespace": null,
     "lineCount": 164,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "theoremCount": 10,
-    "definitionCount": 7,
+    "definitionCount": 9,
     "path": "Proofs/Erdos661Problem.lean",
     "sorries": 0
   },

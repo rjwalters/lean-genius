@@ -42,7 +42,7 @@
       }
     ],
     "theoremCount": 7,
-    "definitionCount": 3
+    "definitionCount": 1
   },
   "overview": {
     "historicalContext": "Georges-Louis Leclerc, Comte de Buffon (1707–1788) posed the needle problem in his 1777 *Essai d'arithmétique morale*: drop a needle of length $l$ onto a floor with parallel lines spaced $d$ apart; the probability of crossing a line is $2l/(\\pi d)$. In 1860, Joseph-Émile Barbier extended the result dramatically: *any* planar curve of arc length $L$ has the same expected crossing count $E = 2L/(\\pi d)$, regardless of its shape. This is Barbier's theorem, or the Buffon-Barbier formula for Buffon's Noodle.\n\nThe result is a foundational example of integral geometry — a special case of the Cauchy-Crofton formula (Cauchy 1850, Crofton 1868), which expresses arc length as an integral of crossing counts over all lines: $L = (\\pi d/2) \\cdot E[\\text{crossings}]$.\n\nThe Lean Genius formalization proceeded in stages: the original `BuffonsNoodle.lean` axiomatized the smooth case; `BuffonsNeedleOQ01` and `BuffonsNeedleOQ01OQ01` built the angular-average integration infrastructure; this file completes the chain, eliminating all axioms for a fully machine-checked proof of Barbier's theorem for C¹ curves.",
@@ -169,7 +169,7 @@
     "path": "Proofs/BuffonsNeedleOQ01OQ01OQ01.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 3,
+    "definitionCount": 1,
     "theoremCount": 7
   },
   "sorries": 0

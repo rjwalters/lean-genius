@@ -1,99 +1,105 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW proof ready to implement)
+**Phase**: ACT (GNW exchange-step framework wired up; anti-monotone corner helpers added)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
-**Last Updated**: 2026-05-02
-**Iteration**: 35
+**Last Updated**: 2026-05-07
+**Iteration**: 44
 
 ## Current Focus
-Close the sole remaining `sorry` in `BallotProblemOQ03OQ01OQ02.lean` — the
-`hook_walk_identity` dispatcher branch covering Young diagrams with **≥10 rows
-AND ≥10 cols AND non-rectangular** (line 302 of the NEW 392-line file).
-
-**Modularization completed (session 35):** The 14022-line file has been split:
-- `BallotProblemOQ03OQ01OQ02Helpers.lean` (13645 lines, PARTS I-XXIV, 0 sorries)
-- `BallotProblemOQ03OQ01OQ02.lean` (392 lines, PART XXV + dispatcher + HLF, 1 sorry)
-
-The Docker build envelope is no longer a blocker. GNW Route A can be added
-directly to the 392-line Main file.
+Close `gnwProb_exchange` (Helpers, line 13871) — the GNW 1979 exchange identity
+in product form. This is now the SOLE remaining sorry-bearing lemma; the
+`hook_length_formula_general` dispatcher is sorry-free, and `gnwProb_key` for the
+multi-corner case is now structurally proved by well-founded recursion on
+`μ.card`, modulo `gnwProb_exchange` and `isCorner_removeCorner_of_ne`.
 
 ## Active Approach
-Three routes are characterised in
-`literature/closing-the-final-sorry.md` (session 33, 2026-04-27):
+Route A (GNW probabilistic hook-walk) is the chosen path; the proof skeleton is
+in place:
 
-- **Route A — Greene–Nijenhuis–Wilf probabilistic hook walk** (~300–400 lines).
-  Recommended path. Closes all remaining shapes in one argument and replaces
-  the row-by-row tower if reformulated. A deterministic recasting (counting
-  weighted hook walks) avoids `ProbabilityTheory` imports.
-- **Route B — Fomin growth diagrams / RSK**. Heavier infrastructure;
-  contributes the SYT ↔ NI-paths bijection separately documented as the
-  canonical-config LGV path in PART V comments.
-- **Route C — Continue row-by-row** (PART XXVII = exactly-10-row, ~2300 more
-  lines). Mechanical but rejected: each new row pushes the file further beyond
-  the build envelope; reaching ≥50 rows would require ~90 K lines.
-
-**Pre-requisite for ANY route:** modularize the file. Sessions 31–32 confirmed
-that PARTS XII–XXIII (~10 000 lines of row-by-row coverage) can be split into a
-dedicated module without disturbing PARTS I–XI (definitions, hook-product
-infrastructure) or the corner-recursion / `hook_length_formula_general` plumbing
-in PARTS XIII–XIV.
+1. **Single-corner case** of `gnwProb_key` (rectangles): PROVED (~144 lines,
+   arm/leg telescoping via `hookProd_ratio_formula`).
+2. **Multi-corner case** of `gnwProb_key`: PROVED modulo `gnwProb_exchange`,
+   using strong induction on `μ.card` (`termination_by μ.card`,
+   `decreasing_by removeCorner_card hc'; omega`).
+3. **`gnwProb_exchange`** (~100 lines, sorry'd): the GNW 1979 exchange
+   identity in product form
+   `F(μ,c)·H(μ\c)·H(μ\c') = F(μ\c',c)·H((μ\c')\c)·H(μ)`
+   for distinct corners c, c'. Proof requires careful analysis of how removing
+   c' shifts hook lengths in the arm/leg of c. Verified on small examples
+   (L-shape, (3,1)).
 
 ## Attempt Count
-- Total attempts: 33 (sessions 1–33; sessions 1–4 archived to
-  `sessions/`; sessions 5–33 in `knowledge.md`)
-- Current approach attempts: 0 (GNW route not yet attempted)
+- Total attempts: 43 (sessions 1–43; sessions 1–4 archived to
+  `sessions/`; sessions 5–43 in `knowledge.md`)
+- Current approach attempts: 7 (sessions 37–43 on GNW)
 - Approaches tried:
   1. LGV-determinant via `lgv_lemma_rxr` + Jacobi–Trudi (sessions 1–10) —
-     blocked on `ni_count_eq_syt_count` and `lgv_det_factors_as_hook_quotient`;
-     deleted as dead scaffolding in session 32.
+     dead scaffolding deleted in session 32.
   2. Corner recursion via `card_SYT_corner_step` + `hook_walk_identity`
      (sessions 11–14) — successful: gave `hook_length_formula_general`
-     modulo a single `hook_walk_identity` sorry.
+     modulo `hook_walk_identity`.
   3. Row-by-row dispatch on `hook_walk_identity` (sessions 15–30) —
      successful for ≤9 rows / ≤9 cols (transpose duality) / all rectangles;
      hit file-size wall at session 30.
-  4. Housekeeping: dead-code removal and LGV restatement as comments
-     (sessions 31–33).
+  4. Modularization (session 35) — split monolithic file into
+     `BallotProblemOQ03OQ01OQ02.lean` (main, 398 lines, 0 sorries) +
+     `BallotProblemOQ03OQ01OQ02Helpers.lean` (~14000 lines, 1 sorry) +
+     `BallotProblemOQ03OQ01OQ02Aristotle.lean` (companion, 113 lines).
+  5. GNW infrastructure (sessions 37–42) — added `strictHookCells`, `gnwProb`,
+     `gnwProb_step`, `gnwProb_stable`, `gnwProb_sum_corners`. Proved single-corner
+     case of `gnwProb_key`. Stated `gnwProb_exchange` and
+     `isCorner_removeCorner_of_ne`.
+  6. Strong induction wrapper (session 43) — wired `gnwProb_key` multi-corner
+     to `gnwProb_exchange` via `termination_by μ.card`; reduces remaining work
+     to a single sorry on `gnwProb_exchange`.
+  7. Anti-monotone corner helpers (session 44) — added three structural lemmas
+     `corner_col_lt_of_row_lt`, `corner_row_lt_of_col_lt`,
+     `doubly_affected_cell_mem` (after `colLen_of_isCorner` ~line 4733).
+     These reduce the upcoming `gnwProb_exchange` case analysis: given two
+     distinct corners with `c.1 < c'.1`, the unique doubly-affected cell
+     `(c.1, c'.2)` is in `μ` and lies in the arm of c and leg of c'.
 
 ## Blockers
-- **File size beyond Docker envelope.** At 14022 lines
-  `BallotProblemOQ03OQ01OQ02.lean` cannot be type-checked under the standard
-  `./proofs/scripts/docker-build.sh` invocation (32 GB memory limit). All
-  edits since session 27 are *unverified by the build*. Modularization is
-  required before any further large additions.
-- **No probabilistic toolkit imported.** Route A in its classical form leans
-  on uniform sampling and conditional probability machinery from
-  `Mathlib.MeasureTheory` / `Mathlib.ProbabilityTheory`. Transitive import
-  weight may further worsen the build envelope problem; a deterministic
-  weighted-walk recasting is preferred.
+- **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
+  The proof requires showing that hookProd and the gnwProb sum transform
+  predictably when one corner c' is removed. Estimated ~100 lines of careful
+  case analysis on arm/leg of c vs c'.
+- **Build verification.** Helpers file is at 14126 lines; whether it
+  type-checks under Docker's 32GB memory limit (post-modularization) is
+  not yet confirmed in this session. CI will verify the PR.
 
 ## Next Action
-**OBSERVE → PLAN — file modularization, then GNW.**
+**ACT — prove `gnwProb_exchange`.**
 
-1. Map the dependency graph between PARTS in `BallotProblemOQ03OQ01OQ02.lean`
-   to identify a clean cut-line. Candidate split:
-   - `BallotProblemOQ03OQ01OQ02Core.lean` ← PARTS I–XI + XIII–XIV
-     (definitions, `hookProd`, `hookProd_ratio_formula`, corner recursion,
-     `hook_length_formula_general` modulo `hook_walk_identity`).
-   - `BallotProblemOQ03OQ01OQ02RowCases.lean` ← PARTS XII + XV–XXIII
-     (per-row dispatchers and `hook_walk_identity_*Row` lemmas).
-   - `BallotProblemOQ03OQ01OQ02.lean` (top-level): imports the two above,
-     re-exports `hook_length_formula` and `hook_length_formula_general`.
-2. Verify each part compiles independently (or at least the Core file does)
-   under Docker.
-3. Once the Core file builds, attempt Route A (deterministic GNW recasting)
-   in a fresh `BallotProblemOQ03OQ01OQ02HookWalk.lean` companion.
+1. Decompose `μ.cells = (removeCorner μ c').cells ∪ {c'}` and split the LHS sum
+   into the c' contribution + the rest.
+2. For x ≠ c', relate `gnwProb μ c (h(x)) x` to `gnwProb (μ\c') c (h(x)) x`
+   by analyzing how `strictHookCells x` changes when c' is removed
+   (changes only when x is in the arm/leg of c').
+3. The hook lengths satisfy:
+   - `h_{μ\c'}(r,c'.2) = h_μ(r,c'.2) - 1` for r < c'.1 (leg of c')
+   - `h_{μ\c'}(c'.1,s) = h_μ(c'.1,s) - 1` for s < c'.2 (arm of c')
+   - `h_{μ\c'}(x) = h_μ(x)` elsewhere
+4. The product
+   `H(μ)·H((μ\c')\c) = H(μ\c)·H(μ\c')` follows from a careful tally of the
+   doubly-affected cell `(c'.1,c.2)` (or similar boundary cells if c, c'
+   are adjacent in the appropriate sense).
 
-If modularization itself proves to be larger than a single session, scope down
-to extracting only the `hook_walk_identity_*Row` lemmas (PARTS XV–XXIII) into
-the row-cases module; the dispatcher itself stays in the main file as a thin
-case split.
+Alternative: a deterministic weighted-path recasting of GNW that avoids the
+exchange step entirely (count weighted walks of every length, divide by
+`μ.card · ∏ |strict hook|`); ~400 lines self-contained.
 
 ## References
 
 - `literature/closing-the-final-sorry.md` — three-route comparison (session 33)
-- `knowledge.md` §Session 32 — dead-code removal and LGV restatement
-- `knowledge.md` §Session 31 — file-size wall first hit
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean:13932` — the sole remaining sorry
+- `knowledge.md` §Session 35 — modularization decision and split
+- `knowledge.md` §Session 37 — GNW infrastructure: `gnwProb`, `gnwProb_sum_corners`
+- `knowledge.md` §Session 38 — `gnwProb_step` and stability
+- `knowledge.md` §Session 40-42 — single-corner case proof, exchange framework
+- `knowledge.md` §Session 43 — strong induction wrapper (this session)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:13871` — `gnwProb_exchange`
+  (sorry'd, target of next session)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:13884` — `gnwProb_key`
+  (proved modulo `gnwProb_exchange`)

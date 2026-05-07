@@ -47,28 +47,40 @@
         "content": "For any ε > 0 and constant C > 0, the bound C · log(n)² eventually falls below n^ε. The proof uses `isLittleO_log_rpow_atTop` from Mathlib: log = o(x^(ε/4)), so log² = o(x^(ε/2)). For large n, the factor n^(ε/2) exceeds C, giving C · log²(n) < n^ε. This is the analytic engine for the main theorem.",
         "startLine": 62,
         "endLine": 119,
-        "theorems": ["log_sq_lt_rpow_eventually"]
+        "theorems": [
+          "log_sq_lt_rpow_eventually"
+        ]
       },
       {
         "title": "Next-Prime Definition and Bridge Axiom",
         "content": "nextPrimeFrom(x) is the smallest prime ≥ x, defined via Nat.infinite_setOf_prime.exists_gt. The bridge axiom cramer_implies_nextPrime_bound converts Cramér's nth-prime formulation to an interval bound: Cramér gap p_{n+1}-p_n ≤ C·log²(p_n) implies nextPrime(x) ≤ x + C·log²(x). This avoids technical Nat.nth index manipulation while preserving mathematical substance.",
         "startLine": 121,
         "endLine": 163,
-        "theorems": ["nextPrimeFrom_prime", "nextPrimeFrom_ge", "cramer_implies_nextPrime_bound"]
+        "theorems": [
+          "nextPrimeFrom_prime",
+          "nextPrimeFrom_ge",
+          "cramer_implies_nextPrime_bound"
+        ]
       },
       {
         "title": "Main Theorem: Cramér → PrimeGapConjecture(ε) for All ε > 0",
         "content": "cramer_implies_primeGapConjecture_eventually proves existence eventually: for any ε > 0, for all large enough x, there is a prime in [x, x+x^ε]. The proof chains the bridge axiom with the log² asymptotic: nextPrime(x) ≤ x + C·log²(x) < x + x^ε for large x. The full cramer_implies_primeGapConjecture extends this to ALL x ≥ 2 by using BHP (0.525 unconditional) for small x.",
         "startLine": 165,
         "endLine": 230,
-        "theorems": ["cramer_implies_primeGapConjecture_eventually", "cramer_implies_primeGapConjecture"]
+        "theorems": [
+          "cramer_implies_primeGapConjecture_eventually",
+          "cramer_implies_primeGapConjecture"
+        ]
       },
       {
         "title": "The Density Gap and Hierarchy",
         "content": "PrimeGapConjecture(ε) guarantees EXISTENCE of a prime in [x, x+x^ε]; ShortIntervalPNT(ε) requires COUNT ≈ x^ε/log(x). The converse of existence_is_weaker_than_density is not known: gap bounds alone do not control density. cramer_hierarchy summarizes: BHP gives ε ≥ 0.525 unconditionally; Cramér gives all ε > 0; RH gives density for ε > 0 (from parent entry).",
         "startLine": 232,
         "endLine": 257,
-        "theorems": ["existence_is_weaker_than_density", "cramer_hierarchy"]
+        "theorems": [
+          "existence_is_weaker_than_density",
+          "cramer_hierarchy"
+        ]
       }
     ],
     "mathContext": {
@@ -161,5 +173,14 @@
       "Can ShortIntervalPNT(ε) for ε < 1 be proved, even conditionally on RH? (Currently only ε > 1/2 is known under RH.)",
       "Does the converse hold: does PrimeGapConjecture(ε) for all ε > 0 imply Cramér's conjecture?"
     ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
+    "lineCount": 257,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "axiomCount": 1,
+    "sorries": 0
   }
 }

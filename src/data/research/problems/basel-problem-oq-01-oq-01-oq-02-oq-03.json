@@ -1,0 +1,130 @@
+{
+  "slug": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+  "title": "Hanson's Bound lcm(1,...,n) ≤ 3^n in Lean 4",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{Z}_{\\geq 1},\\ \\operatorname{lcm}(1, 2, \\ldots, n) \\leq 3^n",
+    "plain": "Formalize Hanson's 1972 bound: for every n ≥ 1, the least common multiple of {1, 2, ..., n} is at most 3^n. This is the explicit non-asymptotic bound used (with critical exponent 3) in Apéry's 1979 proof of ζ(3) irrationality.",
+    "whyMatters": [
+      "Apéry's ζ(3) irrationality proof (1979) requires Hanson's exact 3^n constant; the easier 4^n bound is too weak (threshold c ≈ 3.245).",
+      "Foundational testcase for non-asymptotic prime-distribution bounds in Mathlib (Chebyshev psi function: ψ(n) ≤ n log 3).",
+      "Bridges Mathlib's primorial and lcm infrastructure (currently disjoint)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Hanson 1972: lcm(1,...,n) ≤ 3^n for n ≥ 1 — pencil-and-paper, not yet in Mathlib.",
+      "lcm(1,...,n) ≤ 4^n via primorial bound + missing bridge (proven on paper).",
+      "Trivial bounds lcm | n!, lcm ≤ n!, lcm ≤ n^n — proven in this file, no axioms.",
+      "Numerical verification of Hanson's bound for n ∈ {1..10, 12, 15, 20} — proven in this file via decide/native_decide."
+    ],
+    "open": [
+      "Replace `axiom hanson_bound` with a Lean theorem.",
+      "Develop Mathlib bridge from `primorial(n)` to `lcm(1,...,n)`.",
+      "Develop Mathlib Beta-integral identity in usable rational form."
+    ],
+    "goal": "Replace `axiom hanson_bound` and `axiom lcm_hanson_bound` (parent file) with a fully proved Lean theorem."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-07",
+    "iteration": 1,
+    "focus": "Bootstrap completed. The OBSERVE/ORIENT phase has converted this stub into a Lean 4 formalization target with elementary provable bounds (lcm ≤ n!, lcm ≤ n^n), numerical verification for n ≤ 20, and an axiom statement of the general claim with proof strategy and Mathlib gap analysis.",
+    "blockers": [
+      "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
+      "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route."
+    ],
+    "nextAction": "Two paths: (a) attempt the easier `lcm(1,...,n) ≤ 4^n` via primorial bridge (1-2 weeks), or (b) wait for/contribute Mathlib Beta-integral infrastructure.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Bootstrap COMPLETE. `Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (182 lines, 22 theorems, 1 def, 1 axiom, 0 sorries): defines `lcmRange n = (Finset.range n).lcm (·+1)`, proves elementary bounds (`lcmRange_dvd_factorial`, `lcmRange_le_factorial`, `lcmRange_le_self_pow`), verifies Hanson's bound `lcmRange n ≤ 3^n` numerically for n ∈ {1..10, 12, 15, 20} via decide/native_decide, and axiomatizes the general statement as `axiom hanson_bound`. Includes `hanson_strictly_stronger_than_factorial` showing the constant 3 is genuinely tighter than the trivial n^n bound.",
+    "builtItems": [
+      "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:67",
+      "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:75-87",
+      "dvd_lcmRange: each k ∈ {1,...,n} divides lcmRange n at BaselProblemOQ01OQ01OQ02OQ03.lean:95",
+      "lcmRange_dvd_factorial: lcm | n! at BaselProblemOQ01OQ01OQ02OQ03.lean:109",
+      "lcmRange_le_factorial: lcm ≤ n! at BaselProblemOQ01OQ01OQ02OQ03.lean:118",
+      "lcmRange_le_self_pow: lcm ≤ n^n at BaselProblemOQ01OQ01OQ02OQ03.lean:122",
+      "hanson_n1 .. hanson_n20: numerical verification for 13 values of n",
+      "lcmRange_5/10/15/20_eq: concrete OEIS values 60, 2520, 360360, 232792560",
+      "hanson_bound (axiom): the open target ∀ n, lcmRange n ≤ 3^n",
+      "hanson_strictly_stronger_than_factorial: 3^n < n^n for n ≥ 4"
+    ],
+    "insights": [
+      "Apéry's proof of ζ(3) irrationality requires the exact constant 3 (threshold c ≈ 3.245); the easier 4^n is insufficient.",
+      "The bound hierarchy: trivial (n^n) > Erdős (4^n) > Hanson (3^n). Each step requires substantial mathematics.",
+      "Mathlib has `primorial_le_4_pow` but no `lcm(1,...,n)`-specific bound; the bridge is the missing combinatorial step.",
+      "Numerical evidence is strong: lcm(1..20) = 232,792,560 vs 3^20 = 3,486,784,401, a factor-15 margin.",
+      "The Chebyshev function reformulation ψ(n) = log lcm(1,...,n) connects this to the Prime Number Theorem (which gives only the asymptotic ψ(n)/n → 1)."
+    ],
+    "mathlibGaps": [
+      "No `lcm(1,...,n) ≤ X^n`-style bound exists in Mathlib for any X.",
+      "No primorial → lcm bridge: `lcm(1,...,n) ≤ n · primorial(n)` is missing.",
+      "No Beta-integral identity in usable rational form: `(n+1)·C(n,k)·∫₀¹ x^k(1-x)^(n-k) dx = 1`."
+    ],
+    "nextSteps": [
+      "Pursue the intermediate bound `lcm(1,...,n) ≤ 4^n` via primorial bridge (more tractable than full Hanson).",
+      "Wait for or contribute Mathlib Beta-integral machinery for ℚ-valued bounds.",
+      "Explore Nair's 1982 alternative constants as a possibly-easier intermediate.",
+      "Add cross-references in `basel-problem-oq-01-oq-01-oq-02` and `basel-problem` gallery entries pointing to this OQ-03."
+    ],
+    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (bootstrap complete)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (182 lines, 1 axiom, 0 sorries, numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / primorial-bridge infrastructure.\n"
+  },
+  "tags": [
+    "number-theory",
+    "lcm",
+    "hanson",
+    "chebyshev",
+    "apery",
+    "open-question",
+    "research-bootstrap"
+  ],
+  "relatedProofs": [
+    "basel-problem",
+    "basel-problem-oq-01-oq-01-oq-02",
+    "basel-problem-oq-01-oq-01-oq-02-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Hanson, 'On the product of the primes', Canad. Math. Bull. 15 (1972) 33-37",
+      "Nair, 'On Chebyshev-type inequalities for primes', Amer. Math. Monthly 89 (1982) 126-129",
+      "Apéry, 'Irrationalité de ζ(2) et ζ(3)', Astérisque 61 (1979)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Chebyshev_function",
+      "https://oeis.org/A003418"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Data.Nat.Lcm",
+      "Mathlib.Data.Finset.Lattice",
+      "Mathlib.Data.Nat.Factorial.Basic"
+    ]
+  },
+  "started": "2026-04-26T08:56:57.649Z",
+  "lastUpdate": "2026-05-07",
+  "significance": 7,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 182,
+      "theoremCount": 22,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean"
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
   "slug": "erdos-827",
   "title": "Erdős #827",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,27 +16,28 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "AUDIT",
-    "since": "2026-04-27T21:05:00.000Z",
-    "iteration": 2,
-    "focus": "Metadata sync + Nat.find refactor planning. 4 axioms / 14 theorems / 0 sorries; further reduction (4 → 2) requires Nat.find refactor of minimalNk, deferred until Docker build is safe.",
-    "blockers": [
-      "Disk at 89% (1.6GB free) — Docker build unsafe; refactor PR deferred"
-    ],
-    "nextAction": "When disk pressure clears: prototype Nat.find refactor of minimalNk + valid + sharp into 1 axiom (witness existence) + 1 noncomputable def. Update nk_ge_k, nk_three, nk_monotone proofs. Verify with Docker.",
+    "phase": "COMPLETE",
+    "since": "2026-05-07T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Final state: 2 axioms / 17 theorems / 0 sorries. Prior PR #15296 reduced 4 → 2 axioms via sInf-based minimalNk (Nat.sInf_mem / Nat.sInf_le) — minimalNk_valid and minimalNk_sharp are now theorems. Two residual axioms remain: nk_exists_witness (existence of n_k for k ≥ 3, from Erdős 1978) and martinez_roldan_pensado (n_k ≪ k⁹, Acta Math. Hungar. 2015).",
+    "blockers": [],
+    "nextAction": "None. Further axiom reduction would require formalizing the Martínez–Roldán-Pensado 2015 paper (incidence geometry, polynomial method) — a multi-month effort and out-of-scope for this entry. Open Erdős conjecture (determine n_k exactly) is unsolved.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "STABLE at 4 axioms / 14 theorems / 0 sorries. Prior PRs eliminated nk_ge_k, nk_three, nk_monotone (axiom → theorem). Audit (2026-04-27) identifies Nat.find refactor as concrete path 4 → 2 axioms; deferred until Docker build is safe.",
+    "progressSummary": "COMPLETE at 2 axioms / 17 theorems / 0 sorries. PR #15296 reduced axiom count 4 → 2 by replacing the {minimalNk, minimalNk_valid, minimalNk_sharp} axiom triple with a sInf-based noncomputable definition plus theorem proofs from Nat.sInf_mem / Nat.sInf_le. Earlier PRs (#7696, #13029) eliminated nk_ge_k, nk_three, nk_monotone (axiom → theorem). Residual axioms: nk_exists_witness (n_k existence, Erdős 1978) and martinez_roldan_pensado (n_k ≪ k⁹, MaRo 2015) — both faithful encodings of the open conjecture's known partial results.",
     "builtItems": [
-      "Assessment: all axioms appropriate for opaque function design",
+      "PROVED minimalNk_valid: NkProperty k (minimalNk k) via Nat.sInf_mem (axiom → theorem, PR #15296)",
+      "PROVED minimalNk_sharp: ¬ NkProperty k (minimalNk k - 1) via Nat.sInf_le (axiom → theorem, PR #15296)",
+      "noncomputable def minimalNk: sInf {n | NkProperty k n} replaces opaque axiom (PR #15296)",
       "PROVED nk_ge_k: k ≤ minimalNk k via parabola contradiction (axiom→theorem)",
       "PROVED nk_three: minimalNk 3 = 3 via vacuous AllDistinctCircumradii for 3-sets",
       "PROVED nk_monotone: monotonicity via sharp witness + hereditary AllDistinctCircumradii",
+      "PROVED nkProperty_nonempty: bridges nk_exists_witness axiom to set-theoretic Nonempty",
       "PROVED structural lemmas: distSq_comm/self/nonneg/eq_zero_iff, generalPosition_subset, allDistinctCircumradii_subset",
       "parabolaPoint/parabolaSet: reusable GP set construction for any size n",
       "parabolaSet_gp: collinearity determinant factoring proof (ring + cast injection)",
@@ -44,23 +45,16 @@
       "allDistinctCircumradii_of_card_three: vacuous case for |T|=3 (Finset cardinality)"
     ],
     "insights": [
-      "minimalNk is an axiom (opaque function), forcing valid + sharp to also be axioms; the triple is structurally coupled",
-      "Nat.find refactor: replace {minimalNk, valid, sharp} with {nk_property_witness, noncomputable def using Nat.find}; reduces axiom count 4 → 2",
-      "Refactor sketch: NkProperty k n : Prop; axiom nk_property_witness; minimalNk k := if h then Nat.find h else 0; valid follows from Nat.find_spec, sharp from Nat.find_min",
+      "sInf refactor (PR #15296) replaced {minimalNk, valid, sharp} axiom triple with one noncomputable def + two theorems via Nat.sInf_mem / Nat.sInf_le; works because nkProperty_nonempty proves the underlying set is Nonempty",
       "Definitions (GeneralPosition, circumRadiusSq, AllDistinctCircumradii) are mathematically correct",
       "Parabola y=x² points are in GP: collinearity determinant is (a-c)(b-c)(b-a)!=0 for distinct a,b,c",
       "n_3 = 3 is combinatorial (vacuous distinct-triples), not geometric — proved without circumRadiusSq facts",
       "nk_monotone: hereditary AllDistinctCircumradii on subsets allows shrinking k₂-witness to k₁-witness",
-      "Properly stated MRP (free of minimalNk reference) implies nk_property_witness via threshold n = ⌈C·k⁹⌉; in principle axiom count could drop to 1",
+      "Properly stated MRP (free of minimalNk reference) implies nk_exists_witness via threshold n = ⌈C·k⁹⌉; in principle axiom count could drop to 1, but only by formalizing MRP in full",
       "Deepest residual axiom: martinez_roldan_pensado — formalizing it requires the 2015 Acta Math. Hungar. paper (incidence geometry, polynomial method, multi-month effort)"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Wait for disk pressure to clear (currently 89%, Docker unsafe)",
-      "Prototype Nat.find refactor in fresh worktree with Docker verification",
-      "Update nk_ge_k, nk_three, nk_monotone to use Nat.find_spec / Nat.find_min instead of valid/sharp",
-      "Submit refactor PR (axiom count 4 → 2) with explicit verification log"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #827 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $n_k$ be minimal such that if $n_k$ points in $\\mathbb{R}^2$ are in general position then there exists a subset of $k$ points such that all $\\binom{k}{3}$ triples determine circles of different radii.\n\nDetermine $n_k$.\n\n\n\nIn \\cite{Er75h} Erd\\H{o}s asks whether $n_k$ exists. In \\cite{Er78c} he gave a simple argument which proves that it does, and in fact\\[n_k \\leq k+2\\binom{k-1}{2}\\binom{k-1}{3},\\]but this argument is incorrect, as explained by Martinez and Rold\\'{a}n-Pensado \\cite{MaRo15}.\n\nMartinez and Rold\\'{a}n-Pensado give a corrected argument that proves $n_k\\ll k^9$.\n\n\n\n\nReferences\n\n\n[Er75h] Erd\\H{o}s, P., Some problems on elementary geometry. Austral. Math. Soc. Gaz. (1975), 2-3.\n\n[Er78c] Erd\\H{o}s, P., Some more problems on elementary geometry. Austral. Math. Soc. Gaz. (1978), 52-54.\n\n[MaRo15] Mart\\'{I}nez, L. and Rold\\'an-Pensado, E., Points defining triangles with distinct circumradii. Acta Math. Hungar. (2015), 136--141.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #826\n- Problem #828\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er75h\n- Er78c\n- Er92e\n- MaRo15\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -68,8 +62,7 @@
   ],
   "relatedProofs": [
     "erdos-8",
-    "erdos-82",
-    "erdos-827"
+    "erdos-82"
   ],
   "references": {
     "papers": [],
@@ -77,17 +70,17 @@
     "mathlib": []
   },
   "started": "2026-01-15T09:39:18.200Z",
-  "lastUpdate": "2026-04-27T21:10:00.000Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos827Problem.lean",
       "filename": "Erdos827Problem.lean",
-      "lineCount": 287,
+      "lineCount": 286,
       "theoremCount": 17,
       "axiomCount": 2,
-      "defCount": 12,
+      "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos827Problem.lean"

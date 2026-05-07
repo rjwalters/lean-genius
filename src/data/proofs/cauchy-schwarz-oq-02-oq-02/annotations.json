@@ -1,0 +1,171 @@
+[
+  {
+    "id": "csqq22-ann-01",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Header, Imports, and Strategy",
+    "content": "The opening docstring states the goal $\\sum_i \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$ and previews the four-step strategy used in the proof: (1) finite Bessel from the Pythagorean residual, (2) summability from monotone convergence, (3) the infinite tsum bound by passing to the limit, and (4) Parseval via `HilbertBasis.tsum_inner_mul_inner` plus real symmetry. The two non-`Tactic` imports — `Mathlib.Analysis.InnerProductSpace.Basic` and `Mathlib.Analysis.InnerProductSpace.l2Space` — are precisely the modules that house the three lemmas this file delegates to: `Orthonormal.sum_inner_products_le`, `Orthonormal.tsum_inner_products_le`, and `HilbertBasis.tsum_inner_mul_inner`. The line `open scoped RealInnerProductSpace` activates the `⟪x, y⟫` notation, which unfolds to `@inner ℝ _ _ x y` and lets the file write inner products in textbook style without explicit type ascriptions.",
+    "mathContext": "Bessel: $\\sum_i^{\\infty} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$ for any orthonormal family $\\{v_i\\}$ in a real inner product space. Parseval: equality when $\\{v_i\\}$ is a Hilbert basis (complete ONS). Real symmetry: $\\langle a, b \\rangle = \\langle b, a \\rangle$ over $\\mathbb{R}$ (sesquilinearity collapses to bilinearity).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib InnerProductSpace API",
+      "scoped notation",
+      "Hilbert basis",
+      "real inner product"
+    ],
+    "prerequisites": [
+      "Lean 4 module system",
+      "inner product space axioms",
+      "orthonormal families"
+    ]
+  },
+  {
+    "id": "csqq22-ann-02",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 36,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Namespace Setup and Real-Valued Term Non-Negativity",
+    "content": "The namespace `BesselInequality` and the variable block fix `F` as a real `InnerProductSpace` so every theorem gets a uniform signature. The lemma `bessel_term_nonneg` states a one-line fact, $0 \\le \\langle v_i, x \\rangle^2$, but it does real work: every step downstream — summability, monotone partial sums, the bound on the tsum — depends on the term-wise non-negativity of the real squared coefficient. Over $\\mathbb{C}$ one would use $|\\langle v_i, x \\rangle|^2$ and `sq_abs`; over $\\mathbb{R}$ the value is already $\\ge 0$ via `sq_nonneg`. This term-wise non-negativity is also what justifies the move from `‖⟪v i, x⟫‖^2` (Mathlib's normalized form) to `⟪v i, x⟫^2` via `Real.norm_eq_abs` + `sq_abs`, a rewrite that recurs in `bessel_finite`, `bessel_summable`, and `bessel_inequality`.",
+    "mathContext": "For a real orthonormal family $v$ in $F$ and any $x \\in F$, each Fourier coefficient $\\langle v_i, x \\rangle \\in \\mathbb{R}$, and so $\\langle v_i, x \\rangle^2 \\ge 0$. Bridge to Mathlib's normalized form: $\\|\\langle v_i, x \\rangle\\|^2 = |\\langle v_i, x \\rangle|^2 = \\langle v_i, x \\rangle^2$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Real.norm_eq_abs",
+      "sq_abs",
+      "sq_nonneg",
+      "RCLike normalization"
+    ],
+    "prerequisites": [
+      "real numbers",
+      "absolute value vs norm",
+      "Mathlib RCLike abstraction"
+    ]
+  },
+  {
+    "id": "csqq22-ann-03",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 82
+    },
+    "type": "technique",
+    "title": "Finite Bessel via the Pythagorean Residual",
+    "content": "`bessel_finite` proves $\\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$ for any finite index set $s$. Conceptually the proof is the Pythagorean residual identity: setting $p_s = \\sum_{i \\in s} \\langle v_i, x \\rangle v_i$ (the orthogonal projection of $x$ onto the span of $\\{v_i\\}_{i \\in s}$), expanding $\\|x - p_s\\|^2 = \\|x\\|^2 - 2 \\langle x, p_s \\rangle + \\|p_s\\|^2$ and using orthonormality of $v$ collapses $\\langle x, p_s \\rangle = \\sum_{i \\in s} \\langle v_i, x \\rangle^2 = \\|p_s\\|^2$, leaving $\\|x - p_s\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} \\langle v_i, x \\rangle^2$. Non-negativity of $\\|x - p_s\\|^2$ rearranges to Bessel. In Lean this is delegated to `Orthonormal.sum_inner_products_le`, which states the Mathlib normalized form $\\sum \\|\\langle v_i, x \\rangle\\|^2 \\le \\|x\\|^2$; the file rewrites `Real.norm_eq_abs` then `sq_abs` to drop the norm. The companion `bessel_partial_sums_mono` says the partial sums are monotone in $s \\subseteq t$, which combined with the bound supplies the hypothesis for monotone convergence in the next section.",
+    "mathContext": "Pythagorean residual: $\\|x - \\sum_{i \\in s} \\langle v_i, x \\rangle v_i\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} \\langle v_i, x \\rangle^2$. Non-negativity of the residual yields $\\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$. Equality holds iff $x$ lies in $\\mathrm{span}\\{v_i : i \\in s\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthogonal projection",
+      "Pythagorean theorem",
+      "Gram-Schmidt",
+      "Fourier coefficients"
+    ],
+    "prerequisites": [
+      "finite sums in Finset",
+      "orthonormal family definition",
+      "InnerProductSpace.sum_inner_products_le"
+    ]
+  },
+  {
+    "id": "csqq22-ann-04",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 83,
+      "endLine": 95
+    },
+    "type": "technique",
+    "title": "Summability via Monotone Convergence",
+    "content": "`bessel_summable` shows the unindexed Bessel series converges. The strategy is a textbook application of the monotone convergence principle for non-negative series: each term $\\langle v_i, x \\rangle^2 \\ge 0$, partial sums are monotone in the index set (`bessel_partial_sums_mono`), and they are uniformly bounded above by $\\|x\\|^2$ (`bessel_finite`). This is enough to invoke `Orthonormal.inner_products_summable` from Mathlib, which packages exactly this argument. `bessel_hasSum` is then a one-line corollary saying the series HasSum to its tsum, which downstream callers can chain into `HasSum.le_of_sum_le` style arguments without re-proving summability. The infinite Bessel inequality `bessel_inequality` immediately follows by passing to the tsum: a non-negative summable series whose finite truncations are bounded by $\\|x\\|^2$ has tsum at most $\\|x\\|^2$.",
+    "mathContext": "Monotone convergence for series: if $a_i \\ge 0$ and $\\sum_{i \\in s} a_i \\le M$ for all finite $s$, then $\\sum_i a_i$ is summable and $\\sum_i^{\\infty} a_i \\le M$. Applied with $a_i = \\langle v_i, x \\rangle^2$ and $M = \\|x\\|^2$ this yields both summability and the infinite Bessel inequality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "tsum",
+      "Summable",
+      "HasSum",
+      "monotone convergence",
+      "non-negative series"
+    ],
+    "prerequisites": [
+      "tsum vs HasSum vs Summable distinction",
+      "Real.norm_eq_abs",
+      "Finset.sum_le_sum_of_subset_of_nonneg"
+    ]
+  },
+  {
+    "id": "csqq22-ann-05",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 96,
+      "endLine": 115
+    },
+    "type": "concept",
+    "title": "General RCLike Field Version",
+    "content": "Sections 3–4 generalize from the real case to any `RCLike` field $\\mathbb{K}$ — i.e., $\\mathbb{R}$ or $\\mathbb{C}$. `bessel_general_finite` and `bessel_general` state $\\sum_i \\|\\langle v_i, x \\rangle\\|^2 \\le \\|x\\|^2$ over $\\mathbb{K}$, where the norm is necessary because over $\\mathbb{C}$ each Fourier coefficient is complex and the squared real number is $|\\langle v_i, x \\rangle|^2$, not $\\langle v_i, x \\rangle^2$. Mathlib's `Orthonormal.sum_inner_products_le` and `Orthonormal.tsum_inner_products_le` already use this normalized form, so for the general field statements no rewriting is needed — the lemmas are direct applications. The real case in earlier sections is the special case where dropping the norm-bars is justified by `Real.norm_eq_abs`. The `@inner 𝕜 E _` explicit application is a Mathlib idiom for cases where typeclass resolution would otherwise be ambiguous between real and complex inner products.",
+    "mathContext": "RCLike abstraction: $\\mathbb{K} \\in \\{\\mathbb{R}, \\mathbb{C}\\}$ uniformly. General Bessel: $\\sum_i \\|\\langle v_i, x \\rangle_{\\mathbb{K}}\\|^2 \\le \\|x\\|^2$ where $\\|\\cdot\\|$ is the absolute value on $\\mathbb{K}$. Over $\\mathbb{C}$: $|\\langle v_i, x \\rangle|^2 = \\langle v_i, x \\rangle \\overline{\\langle v_i, x \\rangle}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "RCLike",
+      "complex inner product",
+      "sesquilinearity",
+      "Mathlib InnerProductSpace abstraction"
+    ],
+    "prerequisites": [
+      "RCLike typeclass",
+      "complex conjugation",
+      "complex vs real inner products"
+    ]
+  },
+  {
+    "id": "csqq22-ann-06",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 134
+    },
+    "type": "insight",
+    "title": "Parseval via Real Symmetry",
+    "content": "`parseval_real` upgrades Bessel to an equality when $\\{b_i\\}$ is a Hilbert basis (complete orthonormal system). The starting point is `b.tsum_inner_mul_inner x x`, which gives the bilinear identity $\\sum_i \\langle x, b_i \\rangle \\cdot \\langle b_i, x \\rangle = \\langle x, x \\rangle$. The crux of the proof is a real-symmetry rewrite: over $\\mathbb{R}$, $\\langle x, b_i \\rangle = \\langle b_i, x \\rangle$ (by `real_inner_comm`), so the product collapses to $\\langle b_i, x \\rangle^2$. Then `real_inner_self_eq_norm_sq` rewrites $\\langle x, x \\rangle$ as $\\|x\\|^2$. The combined rewrite turns the bilinear Parseval identity into the norm-squared Parseval $\\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$ — exactly Bessel's inequality at equality. The reverse rewrite would not be available over $\\mathbb{C}$ because there $\\langle x, b_i \\rangle = \\overline{\\langle b_i, x \\rangle}$, so the product is $|\\langle b_i, x \\rangle|^2$, not the squared coefficient.\n\n`bessel_tight` is a definitional alias renaming `parseval_real` to emphasize the perspective: Parseval is precisely the case where Bessel becomes tight.",
+    "mathContext": "Parseval (general bilinear): $\\sum_i \\langle x, b_i \\rangle \\langle b_i, y \\rangle = \\langle x, y \\rangle$ for any Hilbert basis $\\{b_i\\}$. Real specialization: $\\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$ via $\\langle x, b_i \\rangle = \\langle b_i, x \\rangle$ and $\\langle x, x \\rangle = \\|x\\|^2$. Complex form: $\\sum_i |\\langle b_i, x \\rangle|^2 = \\|x\\|^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Hilbert basis",
+      "Parseval's identity",
+      "real_inner_comm",
+      "real_inner_self_eq_norm_sq",
+      "completeness of orthonormal systems"
+    ],
+    "prerequisites": [
+      "HilbertBasis.tsum_inner_mul_inner",
+      "complete inner product spaces",
+      "real vs complex symmetry"
+    ]
+  },
+  {
+    "id": "csqq22-ann-07",
+    "proofId": "cauchy-schwarz-oq-02-oq-02",
+    "range": {
+      "startLine": 135,
+      "endLine": 161
+    },
+    "type": "context",
+    "title": "Cauchy–Schwarz as the One-Vector Bessel Inequality",
+    "content": "The closing example explicitly demonstrates that classical Cauchy-Schwarz, $\\langle v, x \\rangle^2 \\le \\|v\\|^2 \\|x\\|^2$, is the singleton case of Bessel. For a unit vector $v$ ($\\|v\\| = 1$), the family $\\{v\\}$ indexed by `Fin 1` is orthonormal, and the finite Bessel sum collapses to a single term $\\langle v, x \\rangle^2 \\le \\|x\\|^2$. The orthonormality witness is built inline: the diagonal condition is $\\|v\\| = 1$, and the off-diagonal condition is vacuous on `Fin 1` since `Subsingleton.elim` shows any two indices in `Fin 1` are equal. This collapse — from a singleton orthonormal system to a single inner product bound — is the precise reason Bessel is often called the 'general Cauchy-Schwarz' in functional analysis: it bounds the orthogonal projection on each axis of an arbitrary orthonormal frame, not just one. The trailing `#check` lines pin down the exported theorem signatures so that any downstream importer can re-use these results without re-typing the type variable triple `{F} [NormedAddCommGroup F] [InnerProductSpace ℝ F]`.",
+    "mathContext": "Cauchy-Schwarz: $|\\langle v, x \\rangle|^2 \\le \\|v\\|^2 \\|x\\|^2$. Specializing to $\\|v\\| = 1$: $\\langle v, x \\rangle^2 \\le \\|x\\|^2$. From Bessel with $|s|=1$: $\\sum_{i \\in \\{*\\}} \\langle v_i, x \\rangle^2 = \\langle v, x \\rangle^2 \\le \\|x\\|^2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "single-vector projection",
+      "Subsingleton.elim",
+      "Fin 1"
+    ],
+    "prerequisites": [
+      "Finset.univ on Fin 1",
+      "Orthonormal definition for trivial families"
+    ]
+  }
+]

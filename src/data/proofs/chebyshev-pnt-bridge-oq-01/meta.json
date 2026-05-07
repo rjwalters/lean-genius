@@ -55,14 +55,14 @@
       "title": "p-adic Valuation Infrastructure",
       "startLine": 26,
       "endLine": 68,
-      "summary": "Establishes the carry-counting framework: Legendre's formula for $v_p(n!)$ (sorry), the carry bound $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ (proved), vanishing of carries for $p^i > 2n$ (proved), and existence of a truncation point $k \\leq 2n$ with $p^k > 2n$ (proved by induction on $2^{2n} > 2n$)."
+      "summary": "Establishes the carry-counting framework: Legendre's formula for $v_p(n!)$ (proved via `Nat.Prime.multiplicity_factorial`), the carry bound $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ (proved), vanishing of carries for $p^i > 2n$ (proved), and existence of a truncation point $k \\leq 2n$ with $p^k > 2n$ (proved by induction on $2^{2n} > 2n$)."
     },
     {
       "id": "main-bound",
       "title": "Main Factorization Bound",
       "startLine": 70,
       "endLine": 86,
-      "summary": "Proves the main theorem $p^{v_p\\binom{2n}{n}} \\leq 2n$ via Mathlib's `Nat.pow_factorization_choose_le`. States the corollary $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$ (sorry)."
+      "summary": "Proves the main theorem $p^{v_p\\binom{2n}{n}} \\leq 2n$ via Mathlib's `Nat.pow_factorization_choose_le`. Proves the corollary $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$ by reconstructing the central binomial from its prime factorization via `Nat.factorization_prod_pow_eq_self`."
     },
     {
       "id": "chebyshev-connection",
@@ -80,11 +80,9 @@
     }
   ],
   "conclusion": {
-    "summary": "Establishes the key factorization bound $p^{v_p\\binom{2n}{n}} \\leq 2n$ for Chebyshev's argument, proved in one line via Mathlib's `Nat.pow_factorization_choose_le`. Also proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ and synthesizes Chebyshev's combined inequality. The carry-counting infrastructure (carry bound, vanishing for large powers, digit count bound) is fully proved, though 2 sorries remain in the Legendre formula connection and the product bound corollary.",
-    "implications": "This factorization bound is the combinatorial core of Chebyshev's elementary approach to prime distribution. Combined with the central binomial lower bound, it gives $\\pi(x) \\geq c \\cdot x/\\ln x$ without any analytic machinery — a remarkable result that predated the Prime Number Theorem by nearly 50 years. Closing the 2 remaining sorries would complete the formal chain from Kummer's theorem to Chebyshev's bound.",
+    "summary": "Establishes the key factorization bound $p^{v_p\\binom{2n}{n}} \\leq 2n$ for Chebyshev's argument, proved in one line via Mathlib's `Nat.pow_factorization_choose_le`. Also proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ and synthesizes Chebyshev's combined inequality. The carry-counting infrastructure (Legendre formula, carry bound, vanishing for large powers) and the product bound corollary are fully proved with 0 axioms and 0 sorries.",
+    "implications": "This factorization bound is the combinatorial core of Chebyshev's elementary approach to prime distribution. Combined with the central binomial lower bound, it gives $\\pi(x) \\geq c \\cdot x/\\ln x$ without any analytic machinery — a remarkable result that predated the Prime Number Theorem by nearly 50 years. The complete formal chain from Kummer's theorem to Chebyshev's bound is now established.",
     "openQuestions": [
-      "Can the sorry in `legendre_factorial_val` be closed by connecting `Nat.factorization` to the floor-sum representation, possibly via `Nat.Prime.factorization_factorial`?",
-      "Can the product bound `central_binom_le_pow_prime_counting` be proved using `Nat.factorization_prod_pow_eq_self` to reconstruct the central binomial from its prime factorization?",
       "Can this be extended to prove Bertrand's postulate ($\\exists$ prime $p$ with $n < p \\leq 2n$) by refining the upper bound on $\\binom{2n}{n}$ to exclude primes in $(\\sqrt{2n}, 2n/3)$?"
     ]
   },

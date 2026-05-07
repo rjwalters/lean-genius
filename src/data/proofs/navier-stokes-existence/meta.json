@@ -63,10 +63,10 @@
     ],
     "dateAdded": "2026-03-14",
     "relatedProblems": [],
-    "lineCount": 21111,
+    "lineCount": 21110,
     "mathlib_version": "4.26.0",
-    "theoremCount": 845,
-    "definitionCount": 104
+    "theoremCount": 611,
+    "definitionCount": 100
   },
   "overview": {
     "historicalContext": "**Navier-Stokes Existence and Smoothness (Millennium Prize Problem)**\n\nThe Navier-Stokes equations describe fluid motion: $\\partial_t u + (u \\cdot \\nabla)u = \\nu\\Delta u - \\nabla p + f$ with $\\nabla \\cdot u = 0$. The Millennium Prize asks whether smooth solutions exist globally in 3D. Leray (1934) proved weak solutions exist; Ladyzhenskaya (1962/1969) solved the 2D case; Caffarelli-Kohn-Nirenberg (1982) showed the 3D singular set has Hausdorff dimension at most 1. The 3D problem remains open after 90+ years.\n\nThis formalization is the largest single proof file in the gallery at 20,000+ lines across 110 parts, containing 1200+ definitions/theorems with 0 sorries. The 3D conditional result uses the NSAxioms structure (5 structure-encoded assumptions).",
@@ -266,10 +266,10 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21111,
+    "lineCount": 21110,
     "axiomCount": 0,
-    "theoremCount": 845,
-    "definitionCount": 104,
+    "theoremCount": 611,
+    "definitionCount": 100,
     "path": "Proofs/NavierStokes.lean",
     "sorries": 0
   },

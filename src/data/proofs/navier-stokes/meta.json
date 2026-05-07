@@ -73,9 +73,9 @@
     "millenniumProblem": "navier-stokes",
     "proofRepoPath": "Proofs/NavierStokes.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 21111,
-    "theoremCount": 845,
-    "definitionCount": 104
+    "lineCount": 21110,
+    "theoremCount": 611,
+    "definitionCount": 100
   },
   "objection": {
     "verdict": "CONDITIONAL 3D + PROVEN 2D",
@@ -365,10 +365,10 @@
     }
   ],
   "leanFile": {
-    "lineCount": 21111,
+    "lineCount": 21110,
     "structureCount": 249,
     "axiomCount": 0,
-    "theoremCount": 845,
+    "theoremCount": 611,
     "lemmaCount": 14,
     "imports": [
       "Mathlib.Analysis.Calculus.Deriv.Basic",
@@ -408,7 +408,7 @@
     ],
     "path": "Proofs/NavierStokes.lean",
     "sorries": 0,
-    "definitionCount": 104
+    "definitionCount": 100
   },
   "mainTheorems": [
     {

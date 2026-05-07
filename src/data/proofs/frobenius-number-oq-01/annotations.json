@@ -1,1 +1,113 @@
-{"annotations": []}
+[
+  {
+    "id": "ann-frob-oq01-context",
+    "proofId": "frobenius-number-oq-01",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "context",
+    "title": "Sylvester's Companion Theorem: Counting Non-Representable Numbers",
+    "content": "**Open question OQ-01** to the parent `frobenius-number`: for coprime $a, b \\geq 2$ with Frobenius number $g(a, b) = ab - a - b$, **how many** positive integers in $\\{1, \\ldots, g\\}$ are *not* representable as $ax + by$ for $x, y \\in \\mathbb{N}$? **Answer**: exactly $\\frac{(a-1)(b-1)}{2}$. For $(3, 5)$ this gives 4 non-representable values $\\{1, 2, 4, 7\\}$; for $(3, 7)$ it gives 6; for $(5, 8)$ it gives 14. The proof is a beautiful **bijection-via-symmetry** argument: the Frobenius symmetry $\\text{Rep}(k) \\Leftrightarrow \\neg\\text{Rep}(g - k)$ (proved in OQ-02) immediately gives that the involution $k \\mapsto g - k$ pairs every non-representable $k \\in \\{1, \\ldots, g-1\\}$ with a representable $g - k$ in the same range — so the two halves have equal cardinality, both equal to $\\frac{g-1}{2}$, and adding $g$ (always non-representable) gives total $\\frac{g+1}{2} = \\frac{(a-1)(b-1)}{2}$.",
+    "mathContext": "**Sylvester's two theorems on the Frobenius problem** (J. J. Sylvester, *On a question in the geometry of situation*, Quart. J. Pure Appl. Math. 1 (1857), 79; revisited in *Mathematical Questions with Their Solutions*, Educational Times 41 (1884), 21): **(I)** the largest non-representable integer is $g(a, b) = ab - a - b$ (the *Frobenius number* / *coin problem* answer); **(II)** there are exactly $\\frac{(a-1)(b-1)}{2}$ non-representable positive integers. Theorem (II) is sometimes called the **Genus formula** (in the language of numerical semigroups, the *genus* of the semigroup $\\langle a, b \\rangle$ is its complement in $\\mathbb{N}$). Both theorems generalize to arbitrary numerical semigroups via *Apéry sets* and *Hilbert series*, but the symmetry-based proof for two generators is uniquely elegant.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Frobenius coin problem (Frobenius 1880s, Sylvester 1884)",
+      "genus of a numerical semigroup",
+      "Apéry set",
+      "Hilbert series of a graded ring",
+      "Chicken McNugget theorem",
+      "symmetric numerical semigroup"
+    ],
+    "prerequisites": [
+      "Frobenius number g(a, b) = ab - a - b (parent FrobeniusNumber)",
+      "Frobenius symmetry Rep(k) ↔ ¬Rep(g - k) (sibling FrobeniusNumberOQ02)",
+      "Finset.card_bij for cardinality via bijection",
+      "Finset.filter_card_add_filter_neg_card_eq_card for partition"
+    ]
+  },
+  {
+    "id": "ann-frob-oq01-bijection",
+    "proofId": "frobenius-number-oq-01",
+    "range": { "startLine": 33, "endLine": 58 },
+    "type": "technique",
+    "title": "card_nonrep_eq_rep: The Bijection-via-Symmetry Lemma",
+    "content": "**`card_nonrep_eq_rep`** (private): the involution $k \\mapsto g - k$ bijects $\\text{nonRep} \\cap \\{1, \\ldots, g-1\\}$ onto $\\text{Rep} \\cap \\{1, \\ldots, g-1\\}$. The proof uses **`Finset.card_bij`** with the bijection map $\\lambda k \\, \\_. \\, g - k$, with three obligations: **(1) Well-defined**: if $\\neg\\text{Rep}(k)$ for $k \\in \\{1, \\ldots, g-1\\}$, then $\\text{Rep}(g - k)$ — by `by_contra`, if not, then `frobenius_symmetry.mpr` would give $\\text{Rep}(k)$, contradiction. **(2) Injective**: if $g - k_1 = g - k_2$ then $k_1 = k_2$ (one-line `omega`). **(3) Surjective**: for any $\\text{Rep}(m)$, the preimage is $g - m$, and `frobenius_symmetry.mp` gives $\\neg\\text{Rep}(g - (g - m)) = \\neg\\text{Rep}(m)$... wait, that's the wrong direction — it gives $\\neg\\text{Rep}(g - m)$, which is $\\neg\\text{Rep}$ at the preimage value, exactly what we need.",
+    "mathContext": "**Bijection-via-involution** is one of the most elegant proof techniques in combinatorics: when an involution $\\sigma$ on a set $S$ pairs up elements satisfying property $P$ with elements satisfying $\\neg P$, the two subsets have equal cardinality. Here $\\sigma(k) = g - k$, $P = \\text{Rep}$, and the pairing is enforced by the Frobenius symmetry. The same technique appears in the *Garsia–Milne involution principle*, the *non-crossing matching* bijection in Catalan number identities, and the *RSK correspondence*. **Lean idiom**: `Finset.card_bij` is the workhorse — it takes a forward map plus three obligations and concludes cardinality equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "involution principle (Garsia–Milne)",
+      "Finset.card_bij",
+      "frobenius_symmetry from OQ-02",
+      "involution-pairing argument"
+    ],
+    "prerequisites": [
+      "Finset.card_bij",
+      "frobenius_symmetry biconditional",
+      "by_contra tactic",
+      "omega for arithmetic on Nat"
+    ]
+  },
+  {
+    "id": "ann-frob-oq01-parity",
+    "proofId": "frobenius-number-oq-01",
+    "range": { "startLine": 60, "endLine": 76 },
+    "type": "technique",
+    "title": "prod_pred_even: (a-1)(b-1) is Always Even for Coprime a, b ≥ 2",
+    "content": "**`prod_pred_even`** (private): for coprime $a, b \\geq 2$, $2 \\mid (a-1)(b-1)$. **Why it matters**: the count formula $\\frac{(a-1)(b-1)}{2}$ must be a *natural number*, not just a rational, so $(a-1)(b-1)$ must be even. Proof by **case split on parity of $a$**: (case A) if $a$ is even, then $b$ must be odd (else $\\gcd(a, b) \\geq 2 \\neq 1$), so $b - 1$ is even, and $b - 1 \\mid (a-1)(b-1)$. (case B) if $a$ is odd, then $a - 1$ is even, with explicit witness `(ka * (b - 1))` constructed inline.",
+    "mathContext": "**Parity in coprime pairs**: if $a, b$ are both even, $\\gcd(a, b) \\geq 2$ contradicting coprimality; so at most one of them is even. **Three sub-cases**: (i) both odd → both $a-1, b-1$ are even, product divisible by 4; (ii) $a$ odd, $b$ even → $a-1$ even, $b-1$ odd, product even; (iii) $a$ even, $b$ odd → $a-1$ odd, $b-1$ even, product even. The Lean proof handles cases (i) + (ii) together (via `a` odd) and case (iii) separately (via `a` even). The constraint $a, b \\geq 2$ rules out trivial degenerations.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity in coprime pairs",
+      "Nat.dvd_gcd contradiction",
+      "constructive divisibility witnesses",
+      "case-split on Nat.even_or_odd"
+    ],
+    "prerequisites": [
+      "Nat.Coprime, Nat.dvd_gcd",
+      "Nat.even_or_odd",
+      "Nat.dvd_iff_mod_eq_zero",
+      "constructive Dvd.intro"
+    ]
+  },
+  {
+    "id": "ann-frob-oq01-main",
+    "proofId": "frobenius-number-oq-01",
+    "range": { "startLine": 78, "endLine": 131 },
+    "type": "insight",
+    "title": "Main Theorem frobenius_count: The Six-Step Assembly",
+    "content": "**`frobenius_count`**: $|\\{k \\in \\{1, \\ldots, g\\} : \\neg\\text{Rep}(k)\\}| = \\frac{(a-1)(b-1)}{2}$. Six-step proof: **(1)** Set $g$ = Frobenius number, prove $g > 0$ and $\\neg\\text{Rep}(g)$ (the latter from `sylvester_frobenius`). **(2)** Split $\\{1, \\ldots, g\\} = \\{1, \\ldots, g-1\\} \\cup \\{g\\}$ as a disjoint union of nonRep-filtered finsets. **(3)** Let $c = |\\text{nonRep} \\cap \\{1, \\ldots, g-1\\}|$. **(4)** From `card_nonrep_eq_rep`: $c = |\\text{Rep} \\cap \\{1, \\ldots, g-1\\}|$. **(5)** From `Finset.filter_card_add_filter_neg_card_eq_card`: $c + |\\text{Rep}| = g - 1$, so $2c = g - 1$. **(6)** Algebraic identity $g + 1 = (a-1)(b-1)$ (from the definition $g = ab - a - b$) plus `prod_pred_even` gives $2q = g + 1$ where $q = \\frac{(a-1)(b-1)}{2}$. Conclude $c + 1 = q$.",
+    "mathContext": "**The proof's mathematical core** is the equation $2c + 1 = g$, where $c$ is the nonRep count in $(0, g)$ and the $+1$ accounts for $g$ itself. This is equivalent to $|\\text{nonRep} \\cap \\{1, \\ldots, g\\}| = c + 1 = \\frac{g + 1}{2} = \\frac{(a-1)(b-1)}{2}$ via the identity $(a-1)(b-1) = ab - a - b + 1 = g + 1$. The `linarith` at the end discharges the final integer arithmetic from $2c = g - 1$ and $2q = g + 1$ to $c + 1 = q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sylvester's count = (g+1)/2",
+      "g + 1 = (a-1)(b-1) algebraic identity",
+      "Finset.card_union_of_disjoint",
+      "Finset.filter_card_add_filter_neg_card_eq_card"
+    ],
+    "prerequisites": [
+      "card_nonrep_eq_rep",
+      "prod_pred_even",
+      "sylvester_frobenius (parent)",
+      "Finset.card_Icc, omega, linarith"
+    ]
+  },
+  {
+    "id": "ann-frob-oq01-examples",
+    "proofId": "frobenius-number-oq-01",
+    "range": { "startLine": 137, "endLine": 158 },
+    "type": "context",
+    "title": "Concrete Examples: (3,5), (3,7), (5,8)",
+    "content": "Three concrete instances confirm the count formula: **(3, 5)**: $g = 7$, count $= 4$, with nonRep $= \\{1, 2, 4, 7\\}$ (each verified by `fun ⟨x, y, h⟩ => by omega`). **(3, 7)**: $g = 11$, count $= 6$. **(5, 8)**: $g = 27$, count $= 14$. The Frobenius number itself is checked by `native_decide`, the count formula by `norm_num`, and the individual non-representability claims by direct refutation of the existential — if $3x + 5y = 1$ then by inspection $x, y$ would have to be negative.",
+    "mathContext": "**The (3, 5) case is the canonical 'McNugget' example**: with chicken nugget box sizes 3 and 5, the largest order that *cannot* be filled exactly is 7, and the impossible orders are 1, 2, 4, 7 (four of them, = $\\frac{2 \\cdot 4}{2}$). For larger coprime pairs the genus grows roughly as $\\frac{ab}{2}$ — in particular **at least half the integers in $\\{1, \\ldots, g\\}$ are non-representable** (since $\\frac{(a-1)(b-1)}{2} > \\frac{g}{2}$ for $a, b \\geq 2$). This non-trivial density is what makes the Frobenius problem interesting: representable integers are *rare* below the Frobenius number, but *all* integers above it are representable.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Chicken McNugget (3, 5) instance",
+      "density of representable vs non-representable",
+      "native_decide for concrete computations",
+      "direct refutation of existentials"
+    ],
+    "prerequisites": [
+      "frobeniusNumber definition",
+      "Representable predicate",
+      "native_decide tactic"
+    ]
+  }
+]

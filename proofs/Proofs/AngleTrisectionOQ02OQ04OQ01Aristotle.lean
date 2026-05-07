@@ -8,7 +8,7 @@
   - NOT the abstract tower-Galois equivalence
   - Concrete example: ℚ(√2) as an explicit quadratic tower of height 1
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (1):
   - sqrt2_constructible_tower_ari: √2 lies in a quadratic tower of height 1 over ℚ

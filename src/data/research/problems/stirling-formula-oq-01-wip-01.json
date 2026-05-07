@@ -1,7 +1,7 @@
 {
   "slug": "stirling-formula-oq-01-wip-01",
   "title": "Complete Higher-Order Stirling Expansion (Work in Progress)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,44 +16,46 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-06T14:18:33.488Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-07T19:55:00.000Z",
+    "iteration": 3,
+    "focus": "Telescoping body of stirling_first_correction in place on PR #16442; only the upper-half exp-Taylor bound remains. Branch resync'd onto current main (post-#16354/#16414/#16614).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Discharge the final sorry on stirling_first_correction (StirlingExpansion.lean:669): need |exp L − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n and exp L ≤ 2.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: PR #16354 - log_one_plus_le_cubic and log_one_plus_ge_quartic PROVED (derivative monotonicity). Build verified. 2 sorries remaining: stirling_step_formula (algebraic, Aristotle candidate) + stirling_first_correction.",
+    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:669 — upper-half exp-Taylor bound inside stirling_first_correction). PRs #16354 and #16414 merged on main; PR #16442 (this branch) carries the full telescoping proof of stirling_first_correction with the htend_Gn (G(n+M) → 0) sub-sorry already discharged. Branch resync'd onto current main 2026-05-07. Build verified post-resync.",
     "builtItems": [
-      "log_one_plus_le_cubic theorem in StirlingExpansion.lean (proved)",
-      "log_one_plus_ge_quartic theorem in StirlingExpansion.lean (proved)",
-      "stirling_step_upper: d_k <= 1/(12k^2)+1/(6k^3) (proved given step formula)",
-      "stirling_step_lower: 1/(12k^2)-1/(12k^3)-1/(8k^4) <= d_k (proved given step formula)",
-      "PR #16354 open: log bounds + step bounds + DifferentiableOn fix"
+      "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
+      "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",
+      "stirling_step_formula in StirlingExpansion.lean:233 (private) — log(stirlingSeq k) - log(stirlingSeq(k+1)) = (k+1/2)·log(1+1/k) - 1",
+      "stirling_step_upper in StirlingExpansion.lean:304 (private) — d_k ≤ 1/(12k²) + 1/(6k³)",
+      "stirling_step_lower in StirlingExpansion.lean:322 (private) — 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k",
+      "Telescoping helpers (PR #16442): inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope",
+      "log_stirlingSeq_partial_upper / log_stirlingSeq_partial_lower (PR #16442) — partial-sum bounds for log(stirlingSeq n) - log(stirlingSeq (n+L))",
+      "stirling_first_correction (PR #16442) — full telescoping body with htend_Gn discharged via Tendsto.div_atTop on each tail term; one remaining sorry on the exp Taylor remainder bound",
+      "stirling_two_term_expansion in StirlingExpansion.lean — proved assuming stirling_first_correction",
+      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula), #16614 (JSON sync)"
     ],
     "insights": [
-      "d_k = (k+1/2)*log(1+1/k) - 1 is the exact step formula; proved via stirlingSeq definition",
-      "log bounds via derivative monotonicity: f(0)=0, f prime = t^n/(1+t) >= 0 on [0,inf)",
-      "Correct lower bound for d_k: 1/(12k^2) - 1/(12k^3) - 1/(8k^4)",
-      "Main theorem follows from: step_formula + log_bounds + integral_comparison(sum 1/k^2) + exp_approximation",
-      "(by linarith : 0 < 1+t).ne prime is the correct Lean 4 idiom for 1+t!=0 from 0<=t",
-      "monotoneOn_of_deriv_nonneg takes 4 args: Convex + ContinuousOn + DifferentiableOn + deriv>=0",
-      "Build from worktree (not main repo) to avoid daemon file resets during 25-min build cycles",
-      "simp Set.mem_Ici/Ioi needed to convert membership predicates for linarith/positivity"
+      "d_k = (k+1/2)·log(1+1/k) - 1 is the exact step formula (proved via stirlingSeq definition + log_div/log_mul/log_sqrt rewrites + linear_combination)",
+      "log bounds via derivative monotonicity: f(0)=0, f' = t^n/(1+t) ≥ 0 on [0,∞)",
+      "Telescoping turns Σ_{k≥n} 1/k² into a closed-form bound 1/(n-1), and Σ_{k≥n} 1/k³ into 1/(2(n-1)²)",
+      "For tendsto-to-zero of 1/(c·f(M)) when f → ∞, use tendsto_const_nhds.div_atTop on (c·f) → ∞; avoid the multiplicative decomposition (1/c)·(1/f) because ring fails on field-inversion identities like (c·x)⁻¹ = x⁻¹·(1/c)",
+      "Filter.Tendsto.atTop_mul_atTop now requires IsOrderedMonoid (fails for ℝ); use Filter.Tendsto.atTop_mul_atTop₀ for groups-with-zero",
+      "Resync onto main needed only conflict resolution in 4 files (StirlingExpansion.lean, knowledge.md, meta.json, this JSON); no new build errors introduced by main's drift"
     ],
     "mathlibGaps": [
-      "stirling_step_formula: needs log/sqrt algebraic manipulation (field_simp + ring fails with sqrt)",
-      "No Mathlib theorem for sum bound: |sum_{k>=n} 1/k^2 - 1/n| <= C/n^2"
+      "No direct Mathlib theorem for: |exp(x) - (1+x)| ≤ C·x² for |x| ≤ 1 (Taylor remainder bound)"
     ],
     "nextSteps": [
-      "Prove stirling_step_formula by explicit log_div/log_mul/log_sqrt/log_pow rewrites from stirlingSeq definition",
-      "Once step formula done, prove sum bound via integral comparison and exp approximation"
+      "Discharge the final sorry on stirling_first_correction (line 669): need |exp(L) − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n",
+      "Approaches to try: (a) Real.exp_bound with explicit n=2 instance; (b) Real.add_one_le_exp combined with a hand-rolled quadratic upper bound for x ∈ [0,1]; (c) lift |exp(x) − 1 − x − x²/2| bound from Real.exp.taylor_series"
     ]
   },
   "tags": [
@@ -72,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:18:33.488Z",
-  "lastUpdate": "2026-05-06T14:18:33.488Z",
+  "lastUpdate": "2026-05-07T17:25:00.000Z",
   "significance": 6,
   "tractability": 6
 }

@@ -21,10 +21,10 @@
     "erdosUrl": "https://erdosproblems.com/638",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 242,
-    "assumptions": "0 axioms, 0 sorries. The finite Ramsey theorem for triangles and all supporting lemmas are fully proved by induction with the pigeonhole principle. The infinite-cardinal open conjecture is not formalized as an axiom; badge updated from 'axiom' to 'wip'.",
+    "lineCount": 300,
+    "assumptions": "0 axioms, 0 sorries. The finite Ramsey theorem for triangles and all supporting lemmas are fully proved by induction with the pigeonhole principle. Two complementary partial results bound the cardinal-Ramsey question: K_ℕ has finite-colour triangle Ramsey (immediate from finite Ramsey) but does NOT have ℕ-cardinal Ramsey (min-coloring counterexample). The infinite-cardinal open conjecture is not formalized as an axiom; badge updated from 'axiom' to 'wip'.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 6
   },
   "overview": {
@@ -94,16 +94,24 @@
       "startLine": 218,
       "endLine": 242,
       "summary": "Proves ramsey_triangle by induction: for every n ≥ 1, there exists N such that every n-colouring of K_N contains a monochromatic triangle. Bound: R(1) = 3, R(n+1) ≤ (n+1)·(R(n)-1) + 2. Derives complete_graphs_ramsey: the family of complete graphs forms a Ramsey family."
+    },
+    {
+      "id": "partial-results-638",
+      "title": "Partial Results toward Erdős Problem #638",
+      "startLine": 244,
+      "endLine": 299,
+      "summary": "Two complementary cardinal-Ramsey results that locate the threshold where finite Ramsey breaks down. complete_omega_finite_ramsey: K_ℕ has the n-colour triangle Ramsey property for any n ≥ 1, by restricting to the first R(n) vertices. complete_omega_no_nat_ramsey: K_ℕ does NOT have the ℕ-cardinal triangle Ramsey property, witnessed by the symmetric coloring c(i,j) = min(i,j) — three distinct naturals cannot have all three pairwise mins equal. Together these show that finite Ramsey lifts to ω vertices for finite colours but breaks at ℵ₀ colours, identifying the gap where the Erdős–Rado theorem (requiring strictly more than ℵ₀ vertices) becomes necessary."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes Erdős Problem #638 on lifting Ramsey families to infinite-cardinal colourings. The classical n-colour Ramsey theorem for triangles is fully proved by induction (0 axioms, 0 sorries), establishing the finite foundation. The open conjecture — whether Ramsey families extend to infinite cardinals — is precisely stated. Supporting infrastructure includes monotonicity, the complete graph Ramsey family, and the pigeonhole-based inductive step.",
-    "implications": "An affirmative answer would significantly extend Ramsey theory to infinite settings, establishing a bridge between finite combinatorial Ramsey properties and infinite partition calculus. It would enable the extensions and generalisations Erdős anticipated, potentially yielding new tools for infinite graph colouring problems.",
+    "summary": "Formalizes Erdős Problem #638 on lifting Ramsey families to infinite-cardinal colourings. The classical n-colour Ramsey theorem for triangles is fully proved by induction (0 axioms, 0 sorries), establishing the finite foundation. The open conjecture — whether Ramsey families extend to infinite cardinals — is precisely stated. Two partial results frame the difficulty: K_ℕ inherits finite-colour Ramsey from the finite theorem, but the symmetric min-coloring shows K_ℕ fails the ℵ₀-cardinal version, so the conjecture cannot follow from any K_ℕ-level statement and genuinely requires more vertices than colours. Supporting infrastructure includes monotonicity, the complete graph Ramsey family, and the pigeonhole-based inductive step.",
+    "implications": "An affirmative answer would significantly extend Ramsey theory to infinite settings, establishing a bridge between finite combinatorial Ramsey properties and infinite partition calculus. It would enable the extensions and generalisations Erdős anticipated, potentially yielding new tools for infinite graph colouring problems. The min-coloring obstruction in complete_omega_no_nat_ramsey rules out the simplest naive approach (taking V = ℕ) and aligns with the Erdős–Rado lower bound (2^ℵ₀)⁺ for the complete-graph case.",
     "openQuestions": [
       "Does every Ramsey family extend to infinite cardinals, as Erdős conjectured?",
       "Can compactness-type arguments (ultraproducts, direct limits) resolve the problem, or are new techniques needed?",
       "Is the answer dependent on set-theoretic axioms (GCH, large cardinals)?",
-      "Does the answer change if triangles K₃ are replaced by larger complete graphs K_r?"
+      "Does the answer change if triangles K₃ are replaced by larger complete graphs K_r?",
+      "Is there an explicit ℵ₀-coloring obstruction at every cardinal κ < (2^ℵ₀)⁺, or does the obstruction collapse below the Erdős–Rado bound?"
     ]
   },
   "leanFile": {
@@ -118,9 +126,9 @@
       "SimpleGraph"
     ],
     "namespace": null,
-    "lineCount": 242,
+    "lineCount": 300,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 6,
     "path": "Proofs/Erdos638Problem.lean",
     "sorries": 0

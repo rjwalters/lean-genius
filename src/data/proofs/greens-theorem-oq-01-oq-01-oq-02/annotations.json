@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-imports",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 24, "endLine": 35 },
+    "type": "context",
+    "title": "Imports + maxHeartbeats Bump",
+    "content": "Three Mathlib measure-theory imports stake out the territory: IntervalIntegral (the calculus-friendly ∫ x in a..b notation), Integral.Prod (Fubini for Lebesgue product measure), and Measure.Prod (the σ-algebra of product measures). The maxHeartbeats 800000 directive accommodates the 4-case general version, where each case threads multiple sign-flip rewrites through linarith. The set_option linter declarations quiet expected linter warnings from the symmetric case structure.",
+    "mathContext": "Three layers of integration API: (1) intervalIntegral (calculus, signed), (2) MeasureTheory.integral over Set (measure-theoretic, unsigned), (3) MeasureTheory.integral_integral_swap (Fubini bridge between the two)",
+    "significance": "context",
+    "relatedConcepts": ["Fubini-Tonelli theorem", "Lebesgue product measure", "Mathlib measure theory hierarchy"],
+    "prerequisites": ["Lebesgue integration", "interval integral notation"]
+  },
+  {
+    "id": "ann-ordered-fubini",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 38, "endLine": 60 },
+    "type": "technique",
+    "title": "Ordered Fubini: Bridging Interval and Lebesgue Integrals",
+    "content": "The core technical step. Uses integral_of_le hab to convert ∫ x in a..b (signed interval integral, defined for any a, b) to ∫ x in Ioc a b (Lebesgue integral over an open-closed interval, defined when a ≤ b). The integrability hypothesis must be downgraded from Icc (closed interval, what hf_int provides) to Ioc (what integral_of_le requires) — done via Measure.prod_mono with two Measure.restrict_mono applications and Ioc_subset_Icc_self. Once both interval integrals are converted to Lebesgue, MeasureTheory.integral_integral_swap delivers the Fubini swap.",
+    "mathContext": "$\\int_{a}^{b} f \\, dx = \\int_{(a,b]} f \\, d\\mu$ when $a \\le b$ (integral_of_le); Fubini swaps Lebesgue iterated integrals (integral_integral_swap)",
+    "significance": "key",
+    "relatedConcepts": ["intervalIntegral.integral_of_le", "MeasureTheory.integral_integral_swap", "Measure.prod_mono", "Ioc vs Icc"],
+    "prerequisites": ["Mathlib measure theory API", "restriction of measures"]
+  },
+  {
+    "id": "ann-flip-bounds",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 64, "endLine": 67 },
+    "type": "definition",
+    "title": "The Sign-Flip Identity",
+    "content": "The cornerstone of interval integral arithmetic: ∫ x in a..b, f x = -(∫ x in b..a, f x). This is what distinguishes the signed interval integral from the unsigned Lebesgue integral. The proof is a one-liner: integral_symm b a is exactly this identity. This sign convention is what makes interval integrals a directed quantity and gives them their algebraic richness — but it's also what forces the 4-case analysis in the general Fubini below.",
+    "mathContext": "$\\int_a^b f(x) \\, dx = -\\int_b^a f(x) \\, dx$ — the directional sign convention of interval integrals",
+    "significance": "key",
+    "relatedConcepts": ["signed integrals", "directed quantities", "intervalIntegral.integral_symm"],
+    "prerequisites": ["interval integral definition"]
+  },
+  {
+    "id": "ann-neg-outside",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "definition",
+    "title": "Negation Pulls Out of Integrals",
+    "content": "A trivial but indispensable wrapper around intervalIntegral.integral_neg: ∫ x in a..b, -g x = -(∫ x in a..b, g x). Used heavily in the general-Fubini cases to commute the sign-flip out from the inner integral to the outer. Without this lemma each case proof would have to repeat the same negation-extraction calculation.",
+    "mathContext": "$\\int_a^b (-g(x)) \\, dx = -\\int_a^b g(x) \\, dx$ — linearity of the integral with respect to negation",
+    "significance": "supporting",
+    "relatedConcepts": ["linearity of integration", "intervalIntegral.integral_neg"],
+    "prerequisites": ["measurability of g"]
+  },
+  {
+    "id": "ann-general-swap-case-structure",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 174 },
+    "type": "insight",
+    "title": "General Fubini: 4-Case Sign Analysis",
+    "content": "The mathematical novelty of the file. With no ordering assumption on a, b, c, d, the proof splits into four cases via two le_or_lt rcases. In each case, applying the ordered-Fubini lemma intervalIntegral_swap_of_le requires bounds in canonical (≤) order, so the proof first uses flip_bounds and neg_outside to rewrite each interval integral with bounds reversed. Each reversal introduces a (-1) factor; in any case the SIGNS CANCEL because there are an even number of flips needed to bring the LHS and RHS into the same canonical form. The bookkeeping is closed by linarith on the chain of three sign-flip identities.\n\nThe genius is that the SAME lemma intervalIntegral_swap_of_le services all four cases — the sign-flip identities turn each case into an instance of the ordered case applied to permuted bounds. Compare with the alternative approach: 4 independent ordered-Fubini proofs, each with its own integrability conversion. That would be 4× the boilerplate.",
+    "mathContext": "$\\int_c^d \\int_a^b = \\int_a^b \\int_c^d$ regardless of bound order — the sign-flips $\\int_a^b = -\\int_b^a$ on each side cancel symmetrically",
+    "significance": "key",
+    "relatedConcepts": ["case analysis on order", "sign cancellation", "uIcc (unordered interval)", "linarith chaining"],
+    "prerequisites": ["intervalIntegral_swap_of_le", "flip_bounds", "uIcc_of_le"]
+  },
+  {
+    "id": "ann-case2",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 95, "endLine": 121 },
+    "type": "technique",
+    "title": "Case 2: a ≤ b, d < c — Single Outer Flip",
+    "content": "The first non-trivial case. Three intermediate quantities are defined: A = LHS, B = LHS with c, d swapped, C = (a,b)/(d,c)-ordered swap, D = RHS. The chain of equalities is A = -B (flip_bounds c d on the OUTER bound), B = C (ordered Fubini, since now a ≤ b and d ≤ c), C = -D (pull negation through the inner integral via simp_rw + neg_outside). Combined: A = -B = -C = D. linarith closes from these three equations. The key craft move is recognizing that flipping the outer bounds is structurally simpler than flipping the inner integral pointwise.",
+    "mathContext": "$\\int_c^d \\int_a^b f = -\\int_d^c \\int_a^b f = -\\int_a^b \\int_d^c f = -\\int_a^b (-\\int_c^d f) = \\int_a^b \\int_c^d f$",
+    "significance": "supporting",
+    "relatedConcepts": ["sign chain", "outer-vs-inner flip", "linarith on integral chains"],
+    "prerequisites": ["intervalIntegral_swap_of_le", "flip_bounds applied to function-of-y"]
+  },
+  {
+    "id": "ann-case4",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 174 },
+    "type": "technique",
+    "title": "Case 4: b < a, d < c — Both Reversed",
+    "content": "The maximally-flipped case. SIX intermediate equalities chain together: hAB (flip inner for each y), hBC (flip outer), hCD (ordered Fubini), hDE (flip inner back), hEF (flip outer back). The final linarith resolves the alternating-sign chain to A = D. While longer than other cases, the structure is symmetric: each reversal creates a (-1), and there are an even total number, so the original equality is restored. This case is the most pedagogically illuminating: it shows that the sign-flip technique scales gracefully — even with both pairs reversed, the proof is mechanical sign bookkeeping plus one ordered-Fubini application.",
+    "mathContext": "Six sign flips total; even count implies final equality unchanged. Demonstrates: the technique scales to arbitrarily many bound orderings",
+    "significance": "supporting",
+    "relatedConcepts": ["sign cancellation theorem", "even number of flips invariance"],
+    "prerequisites": ["all cases 1-3 understood"]
+  },
+  {
+    "id": "ann-continuous-case",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 178, "endLine": 195 },
+    "type": "technique",
+    "title": "Continuous Case: Auto-Discharged Hypotheses",
+    "content": "The most user-friendly version: for continuous f, no measurability or integrability hypotheses are needed. Continuity gives measurability via Continuous.measurable. Integrability follows from ContinuousOn.integrableOn_compact applied to the compact rectangle uIcc a b ×ˢ uIcc c d (uIcc compactness is isCompact_uIcc). The restrict_prod_eq_prod_restrict lemma converts (volume.restrict R₁).prod (volume.restrict R₂) to volume.restrict (R₁ ×ˢ R₂), bridging product-of-restrictions with restriction-of-product. This version is what the application below uses, and what most callers will reach for.",
+    "mathContext": "$f$ continuous $\\implies f$ integrable on any compact set $\\implies$ Fubini auto-applies on $\\overline{[a,b]} \\times \\overline{[c,d]}$",
+    "significance": "key",
+    "relatedConcepts": ["ContinuousOn.integrableOn_compact", "isCompact_uIcc", "restrict_prod_eq_prod_restrict", "compact rectangles"],
+    "prerequisites": ["continuity → measurability", "uIcc compactness"]
+  },
+  {
+    "id": "ann-greens-application",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 199, "endLine": 213 },
+    "type": "concept",
+    "title": "Application: Discharging Green's Theorem's hFubini",
+    "content": "The intended downstream use. The parent Green's theorem proof (greens-theorem-oq-01) takes a hFubini hypothesis as a black box; here that hypothesis is reduced to mere continuity of dPdy via the continuous-case Fubini. The construction h.comp (continuous_prod_mk.mpr ⟨continuous_fst, continuous_snd⟩) rewrites Continuous dPdy as Continuous (fun p => dPdy (p.1, p.2)) — a syntactic shuffle to match the swap lemma's expected shape. With this, every C¹ vector field automatically satisfies the swap, and the parent Green's theorem becomes truly self-contained.",
+    "mathContext": "$dP/dy$ continuous $\\implies$ Fubini swap on the rectangle holds $\\implies$ Green's theorem hypothesis discharged",
+    "significance": "key",
+    "relatedConcepts": ["Green's theorem", "C¹ vector field", "continuous_prod_mk", "hypothesis discharge"],
+    "prerequisites": ["intervalIntegral_swap_of_continuous"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 215, "endLine": 230 },
+    "type": "context",
+    "title": "Summary: Mathlib Gap and Contribution Target",
+    "content": "The summary docstring documents the research finding: Mathlib (rev 2df2f015) lacks a standalone intervalIntegral_swap. Three theorems are proved with 0 sorries and 0 axioms; the contribution target is Mathlib.MeasureTheory.Integral.IntervalIntegral with suggested name intervalIntegral.swap or intervalIntegral.integral_comm. This kind of self-contained reusable-lemma extraction is exactly the pattern Mathlib welcomes: identify a gap via a real application (Green's theorem), prove the missing lemma, document the Mathlib path. The Mathlib reviewers can then make the lemma authoritative.",
+    "mathContext": "Mathlib4 rev 2df2f015 — searched intervalIntegral_swap, intervalIntegral.swap, integral_comm — none exist for the signed interval integral",
+    "significance": "context",
+    "relatedConcepts": ["Mathlib contribution workflow", "API gap analysis", "reusable lemma extraction"],
+    "prerequisites": ["familiarity with Mathlib organization"]
+  }
+]

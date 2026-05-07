@@ -16,11 +16,11 @@
       "factorization",
       "central-binomial"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-21",
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 sorries and 0 axioms.",
+    "assumptions": "None. 0 sorries and 0 axioms — core argument calls Mathlib's prod_pow_factorization_centralBinom and pow_factorization_choose_le.",
     "lineCount": 79,
     "theoremCount": 1,
     "definitionCount": 0,
@@ -47,7 +47,7 @@
       }
     ],
     "originalContributions": [
-      "centralBinom_le_pow_primeCounting_via_factorization: C(2n,n) ≤ (2n)^π(2n), alternative proof (0 sorries) — answers chebyshev-pnt-bridge-oq-01-oq-02"
+      "centralBinom_le_pow_primeCounting_via_factorization: alternative 4-step calc proof of C(2n,n) ≤ (2n)^π(2n) via Mathlib's prod_pow_factorization_centralBinom (no hcb_ne hypothesis required, vs. 6-step factorization_prod_pow_eq_self approach in ChebyshevPNTBridge.lean) — answers chebyshev-pnt-bridge-oq-01-oq-02"
     ]
   },
   "overview": {
@@ -133,7 +133,6 @@
   ],
   "leanFile": {
     "namespace": "ChebyshevPNTBridgeOQ01OQ02",
-    "lineCount": 65,
     "axiomCount": 0,
     "theoremCount": 1,
     "definitionCount": 0,

@@ -21,7 +21,8 @@
     "sorries": 0,
     "axiomCount": 2,
     "lineCount": 206,
-    "theoremCount": 8,
+    "theoremCount": 6,
+    "definitionCount": 3,
     "assumptions": "Two axioms: snf_pid_exists (every matrix over a PID has a Smith Normal Form) and snf_pid_solvability (solvability criterion via invariant factors). These generalize the same axioms from BezoutIdentityOQ04OQ01 to arbitrary PIDs.",
     "mathlibDependencies": [
       {
@@ -127,5 +128,27 @@
       "id": "bezout-identity",
       "relationship": "root: Bezout's identity — the foundational result formalized in the main entry"
     }
-  ]
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.PrincipalIdealDomain",
+      "Mathlib.RingTheory.GCDMonoid.Basic",
+      "Mathlib.Algebra.GCDMonoid.Basic",
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.Data.Matrix.Diagonal",
+      "Mathlib.LinearAlgebra.Matrix.Diagonal",
+      "Mathlib.LinearAlgebra.Matrix.IsDiag",
+      "Mathlib.LinearAlgebra.Matrix.Determinant",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Matrix", "GCDMonoid"],
+    "namespace": "BezoutIdentityOQ04OQ01OQ01",
+    "path": "Proofs/BezoutIdentityOQ04OQ01OQ01.lean",
+    "lineCount": 206,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "sorries": 0
+  }
 }

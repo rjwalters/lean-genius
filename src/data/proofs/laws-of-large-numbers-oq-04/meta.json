@@ -20,11 +20,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 3,
-    "lineCount": 208,
-    "theoremCount": 11,
+    "axiomCount": 1,
+    "lineCount": 235,
+    "theoremCount": 14,
     "defCount": 3,
-    "assumptions": "3 axioms: thresholdIndicator_integrable (bounded measurable function integrability), integral_thresholdIndicator_eq_cdf (E[1_{X≤x}] = F(x)), glivenko_cantelli_uniform (finite bracketing argument for uniform convergence — not in Mathlib 4.26). Pointwise convergence theorem is fully proved via SLLN.",
+    "assumptions": "1 axiom: glivenko_cantelli_uniform (finite bracketing argument for uniform convergence — needs CDF continuity-point density infrastructure not in Mathlib 4.26). The two integration facts thresholdIndicator_integrable and integral_thresholdIndicator_eq_cdf are now fully proved. Pointwise convergence theorem is fully proved via SLLN.",
     "mathlibDependencies": [
       {
         "theorem": "ProbabilityTheory.strong_law_ae_real",
@@ -43,13 +43,16 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "definitionCount": 3
+    "definitionCount": 3,
+    "originalContributions": [
+      "Inlined the integration proofs from companion LawsOfLargeNumbersOQ04OQ03.lean into the parent file, eliminating thresholdIndicator_integrable and integral_thresholdIndicator_eq_cdf as axioms. Axiom count reduced 3→1; only glivenko_cantelli_uniform (the bracketing uniformity step) remains axiomatic."
+    ]
   },
   "overview": {
     "historicalContext": "The Glivenko-Cantelli theorem, proved independently by Valery Glivenko and Francesco Cantelli in 1933, establishes the fundamental statistical fact that the empirical distribution function is a uniformly consistent estimator of the true distribution function. This result is foundational for nonparametric statistics, as it guarantees that the empirical CDF—the most natural nonparametric estimator—converges to the true CDF not just at each individual point, but uniformly over all thresholds simultaneously. The theorem is often called the 'fundamental theorem of statistics'. It was later substantially generalized by Vapnik and Chervonenkis (1971) to classes of sets beyond half-lines, leading to VC theory and statistical learning theory.",
     "problemStatement": "For i.i.d. real-valued random variables X₁, X₂, ... from distribution F, define the empirical CDF Fₙ(x) = (1/n)|{i ≤ n : Xᵢ ≤ x}|. Then sup_{x∈ℝ} |Fₙ(x) - F(x)| → 0 almost surely as n → ∞.",
     "text": "The empirical CDF converges uniformly to the true CDF almost surely for any i.i.d. sequence.",
-    "proofStrategy": "The formalization proceeds in two stages. Stage 1 (proved): For each fixed threshold x, the indicators 1_{Xᵢ ≤ x} are i.i.d. Bernoulli(F(x)) random variables. Applying Mathlib's `strong_law_ae_real` gives Fₙ(x) → F(x) a.s. for each x. Stage 2 (axiomatized): For ε > 0, choose finitely many continuity points q₁,...,qₖ of F partitioning ℝ with F-mass < ε per interval. Pointwise convergence holds simultaneously on the finite grid a.s. (finite intersection). For any x between grid points, monotonicity gives |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε, establishing uniform convergence. The bracketing argument is axiomatized as `glivenko_cantelli_uniform` since the finite covering infrastructure is not available in Mathlib 4.26.",
+    "proofStrategy": "The formalization proceeds in two stages. Stage 1 (fully proved, no axioms): For each fixed threshold x, the indicators 1_{Xᵢ ≤ x} are i.i.d. Bernoulli(F(x)) random variables. Their integrability follows from Integrable.mono' against the constant 1 on the probability space; the integral identity E[1_{Xᵢ ≤ x}] = F(x) follows from rewriting via the preimage indicator and applying integral_indicator + integral_const + Measure.restrict_apply. Applying Mathlib's `strong_law_ae_real` then gives Fₙ(x) → F(x) a.s. for each x. Stage 2 (axiomatized): For ε > 0, choose finitely many continuity points q₁,...,qₖ of F partitioning ℝ with F-mass < ε per interval. Pointwise convergence holds simultaneously on the finite grid a.s. (finite intersection). For any x between grid points, monotonicity gives |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε, establishing uniform convergence. The bracketing argument is axiomatized as `glivenko_cantelli_uniform` since the finite covering infrastructure (continuity-point density of CDFs) is not available in Mathlib 4.26.",
     "keyInsights": [
       "The key insight is that uniform convergence follows from pointwise convergence plus monotonicity of both Fₙ and F, via a finite bracketing argument",
       "Indicator functions 1_{Xᵢ ≤ x} transform the problem into SLLN for Bernoulli random variables, connecting to Mathlib's existing `strong_law_ae_real`",
@@ -67,62 +70,70 @@
     {
       "id": "definitions",
       "title": "Empirical and True CDF Definitions",
-      "startLine": 44,
-      "endLine": 56,
+      "startLine": 45,
+      "endLine": 57,
       "summary": "Defines empiricalCDF as the sample mean of threshold indicators, trueCDF as μ{ω | X₀(ω) ≤ x}.toReal, and thresholdIndicator as the composition of X_i with the Iic indicator function.",
       "mathContext": "empiricalCDF X n x ω = (1/n) * Σᵢ 1_{Xᵢ(ω) ≤ x}; trueCDF X μ x = (μ{ω | X₀(ω) ≤ x}).toReal"
     },
     {
       "id": "basic-identities",
       "title": "Basic Identities and Composition Structure",
-      "startLine": 58,
-      "endLine": 68,
+      "startLine": 59,
+      "endLine": 69,
       "summary": "Proves empiricalCDF equals the sample mean of thresholdIndicators (the form expected by strong_law_ae_real), and that thresholdIndicator is function composition with the Iic indicator — the form required by iIndepFun.comp and IdentDistrib.comp.",
       "mathContext": "empiricalCDF X n x ω = (Σᵢ thresholdIndicator X x i ω) / n; thresholdIndicator X x i = (1_{·≤x}) ∘ X i"
     },
     {
       "id": "measurability",
       "title": "Measurability of Indicator Functions",
-      "startLine": 70,
-      "endLine": 75,
+      "startLine": 71,
+      "endLine": 76,
       "summary": "Proves measurability of x ↦ 1_{v ≤ x} as a real-valued Borel function, using measurable_const.indicator measurableSet_Iic.",
       "mathContext": "The composition structure thresholdIndicator X x i = (1_{· ≤ x}) ∘ X i is key for applying iIndepFun.comp."
     },
     {
       "id": "iid-structure",
       "title": "I.I.D. Structure of Threshold Indicators",
-      "startLine": 77,
-      "endLine": 96,
+      "startLine": 78,
+      "endLine": 97,
       "summary": "Proves identical distribution via IdentDistrib.comp, and pairwise independence via iIndepFun.comp + iIndepFun.indepFun. These are the two key hypotheses for SLLN.",
       "mathContext": "If X_i ~ X₀ (IdentDistrib) and X_i are iIndepFun, then 1_{Xᵢ ≤ x} ~ 1_{X₀ ≤ x} and are pairwise independent."
     },
     {
+      "id": "integration-facts",
+      "title": "Integration Facts (formerly axioms, now proved)",
+      "startLine": 99,
+      "endLine": 138,
+      "summary": "PROVED: thresholdIndicator_integrable (bounded indicator integrable on probability space via Integrable.mono' with constant 1 dominating function) and integral_thresholdIndicator_eq_cdf (E[1_{X₀ ≤ x}] = F(x) via preimage rewrite + integral_indicator + integral_const + Measure.restrict_apply). These two facts were previously axiomatized; their proofs are inlined from the companion file LawsOfLargeNumbersOQ04OQ03.lean.",
+      "mathContext": "‖1_{X₀ ≤ x}‖ ≤ 1, so integrability follows from Integrable.mono' against integrable_const 1; the integral identity follows from rewriting the indicator via its preimage form and applying integral_indicator on the measurable preimage X 0 ⁻¹' Iic x."
+    },
+    {
       "id": "pointwise-convergence",
       "title": "Pointwise Convergence via SLLN",
-      "startLine": 113,
-      "endLine": 136,
+      "startLine": 140,
+      "endLine": 163,
       "summary": "PROVED: For each fixed x, Fₙ(x) → F(x) a.s. Applies strong_law_ae_real to threshold indicators, then uses integral_thresholdIndicator_eq_cdf to identify the limit as trueCDF.",
       "mathContext": "strong_law_ae_real gives (Σᵢ 1_{Xᵢ ≤ x})/n → E[1_{X₀ ≤ x}] = F(x) a.s. Requires pairwise independence and identical distribution."
     },
     {
       "id": "uniform-convergence",
       "title": "Uniform Convergence (Glivenko-Cantelli)",
-      "startLine": 138,
-      "endLine": 158,
+      "startLine": 165,
+      "endLine": 184,
       "summary": "AXIOM: sup_x |Fₙ(x) - F(x)| → 0 a.s. The bracketing argument for uniform convergence is axiomatized as glivenko_cantelli_uniform since finite covering infrastructure is absent from Mathlib 4.26.",
       "mathContext": "The bracketing uses: (1) continuity points of F are dense; (2) finite grid gives simultaneous a.s. convergence; (3) monotonicity of Fₙ and F control off-grid error."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties: Monotonicity and Non-negativity",
-      "startLine": 159,
-      "endLine": 208,
+      "startLine": 186,
+      "endLine": 233,
       "summary": "Proves empiricalCDF and trueCDF are both non-decreasing in x and non-negative. These properties are prerequisites for the bracketing argument, as monotonicity bounds |Fₙ(x) - F(x)| between grid points. Ends with empiricalCDF_error_vanishes: a corollary deducing pointwise error → 0 from pointwise convergence.",
       "mathContext": "x ≤ y → empiricalCDF X n x ω ≤ empiricalCDF X n y ω (via Iic_subset_Iic); trueCDF X μ x ≤ trueCDF X μ y (via measure_mono)"
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the Glivenko-Cantelli theorem with 3 axioms. The pointwise convergence theorem is fully proved from Mathlib's SLLN via the i.i.d. structure of threshold indicators. The uniform convergence step is axiomatized, as the finite bracketing argument requires continuity-point infrastructure not yet in Mathlib 4.26.",
+    "summary": "This formalization captures the Glivenko-Cantelli theorem with 1 axiom (down from 3). The two integration facts (indicator integrability and the integral=CDF identity) are now fully proved using Integrable.mono' and the integral_indicator API. The pointwise convergence theorem is therefore axiom-free, deduced from Mathlib's SLLN via the i.i.d. structure of threshold indicators. Only the uniform convergence step remains axiomatized, as the finite bracketing argument requires CDF continuity-point density infrastructure not yet in Mathlib 4.26.",
     "implications": "**Statistical Significance**: Glivenko-Cantelli guarantees that the empirical CDF—the simplest nonparametric estimator—is uniformly consistent. This underpins the validity of the Kolmogorov-Smirnov test, empirical likelihood methods, and virtually all nonparametric statistics.\n\n**Mathematical Significance**: This is the simplest instance of empirical process theory. The Vapnik-Chervonenkis theorem (1971) generalizes Glivenko-Cantelli from indicator classes indexed by half-lines to arbitrary VC classes, which is the foundation of statistical learning theory and PAC learning.",
     "openQuestions": [
       "Can the bracketing argument for glivenko_cantelli_uniform be formalized in Lean 4 using Mathlib's existing topology and measure theory infrastructure?",
@@ -188,6 +199,7 @@
       "Mathlib.Probability.StrongLaw",
       "Mathlib.Probability.Independence.Basic",
       "Mathlib.Probability.IdentDistrib",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -196,9 +208,9 @@
       "Set"
     ],
     "namespace": "GlivenkoCantelli",
-    "lineCount": 208,
-    "axiomCount": 3,
-    "theoremCount": 11,
+    "lineCount": 235,
+    "axiomCount": 1,
+    "theoremCount": 14,
     "definitionCount": 3,
     "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
     "sorries": 0

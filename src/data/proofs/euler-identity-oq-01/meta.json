@@ -35,7 +35,7 @@
       "Algebraic identities I^{2k} = (-1)^k and I^{2k+1} = i*(-1)^k proved from I^2 = -1",
       "Taylor series splitting proof of Euler's formula e^{ix} = cos(x) + i*sin(x)",
       "Euler's identity e^{i*pi} + 1 = 0 derived from the Taylor series proof",
-      "Axiom elimination roadmap (~200-250 lines total)"
+      "Full axiom elimination: tsum_even_add_odd, cos_eq_tsum, sin_eq_tsum all proved from Mathlib"
     ],
     "dateAdded": "2026-03-28",
     "prerequisites": [
@@ -55,14 +55,14 @@
   },
   "overview": {
     "historicalContext": "Euler published $e^{ix} = \\cos(x) + i\\sin(x)$ in 1748 in *Introductio in analysin infinitorum* (Chapter 8), using precisely this Taylor series splitting argument: he expanded $e^{ix}$ as a power series, separated even and odd terms, and identified them as the cosine and sine series. Euler was working in an era before rigorous convergence theory (Cauchy's work came ~80 years later), treating the manipulation of infinite series as formal algebra. The result was so striking that it connected the five most important constants in mathematics \u2014 $e$, $i$, $\\pi$, $1$, and $0$ \u2014 in a single equation $e^{i\\pi} + 1 = 0$, which physicist Richard Feynman called 'the most remarkable formula in mathematics.' The formula is foundational to complex analysis, appearing in Fourier analysis, quantum mechanics (where wave functions $e^{ikx}$ encode momentum states), signal processing, and the theory of Lie groups. The modern Lean formalization faces an extra challenge: Mathlib defines $\\cos$ and $\\sin$ via the complex exponential (not via Taylor series), creating a circularity that requires careful handling.",
-    "problemStatement": "**Question**: Can the full Taylor series proof of Euler's formula be formalized independently of Complex.exp_mul_I?\n\n**Answer**: Yes, with 2 axioms (tsum splitting and Taylor series identification). The algebraic core (powers of i) is fully proved.",
+    "problemStatement": "**Question**: Can the full Taylor series proof of Euler's formula be formalized independently of Complex.exp_mul_I?\n\n**Answer**: Yes, with 0 axioms. The even/odd `tsum` splitting and the cos/sin Taylor series identifications are all proved from Mathlib (`tsum_even_add_odd`, `Complex.cos_eq_tsum`, `Complex.sin_eq_tsum`). The algebraic core (powers of i) is also fully proved.",
     "text": "Derives e^{ix} = cos(x) + i*sin(x) by: (1) expanding exp(ix) as sum of (ix)^n/n!, (2) splitting into even/odd indices using tsum_even_add_odd, (3) simplifying (ix)^{2k} = (-1)^k x^{2k} and (ix)^{2k+1} = i*(-1)^k x^{2k+1} using the proved identities I^{2k} = (-1)^k, (4) identifying the even subseries as cos and odd as i*sin.",
     "proofStrategy": "Split the exponential Taylor series \u2211 (ix)^n/n! into even-indexed terms (giving the cosine series) and odd-indexed terms (giving i times the sine series). The key algebraic identities i^{2k} = (-1)^k and i^{2k+1} = i*(-1)^k are proved by induction from i^2 = -1.",
     "keyInsights": [
       "The powers-of-i identities $i^{2k} = (-1)^k$ and $i^{2k+1} = i \\cdot (-1)^k$ are the algebraic heart of the proof, proved by induction from $i^2 = -1$ using just `pow_succ` and `I_sq`",
       "The `tsum` even/odd splitting is the analytic bottleneck: while mathematically obvious, formalizing `\u2211_n a_n = \u2211_k a_{2k} + \u2211_k a_{2k+1}` requires the bijection `\u2115 \u2243 \u2115 \u2295 \u2115` and careful use of Mathlib's `HasSum` API",
       "The three definitions `expTerm`, `evenTerm`, `oddTerm` are designed so that `expTerm_even` and `expTerm_odd` hold definitionally after `rw [I_pow_even/odd]`, making the main proof a clean sequence of rewrites",
-      "Mathlib's circular definition \u2014 cos and sin are defined via exp, not via Taylor series \u2014 creates an axiom gap that would not exist if Mathlib took the Taylor series as primitive; the 3-axiom cost is entirely a Mathlib API artifact",
+      "Mathlib's circular definition \u2014 cos and sin are defined via exp, not via Taylor series \u2014 once made the Taylor series identification feel axiomatic, but Mathlib's `Complex.cos_eq_tsum` and `Complex.sin_eq_tsum` close the gap, so the proof now stands at 0 axioms",
       "This proof follows Euler's original 1748 argument step-by-step, while Mathlib's `Complex.exp_mul_I` uses a different (more modern) approach; having both gives a cross-check of the formula's derivation"
     ]
   },
@@ -91,12 +91,12 @@
       "mathContext": "$i^{2k} = (-1)^k$ and $i^{2k+1} = i \\cdot (-1)^k$, proved by induction. Consequence: $(ix)^{2k}/(2k)! = (-1)^k x^{2k}/(2k)! = \\texttt{evenTerm}(x,k)$ and $(ix)^{2k+1}/(2k+1)! = i(-1)^k x^{2k+1}/(2k+1)! = \\texttt{oddTerm}(x,k)$. These two equations convert the abstract $\\sum \\texttt{expTerm}(ix,n)$ into the cos and sin series."
     },
     {
-      "id": "axioms-and-summability",
-      "title": "Axioms: tsum Splitting, Cos/Sin Identification, and Summability",
+      "id": "tsum-splitting-and-summability",
+      "title": "Tsum Splitting, Cos/Sin Identification, and Summability",
       "startLine": 88,
       "endLine": 135,
-      "summary": "Three axioms: tsum_even_add_odd (even/odd series splitting), cos_eq_tsum (cosine Taylor series), sin_eq_tsum (sine Taylor series times I). Helper theorem expSeries_summable translates Mathlib's NormedSpace.expSeries_summable to the expTerm definition.",
-      "mathContext": "The three axioms correspond to three analytic facts: (1) $\\sum_n a_n = \\sum_k a_{2k} + \\sum_k a_{2k+1}$ for summable $a$; (2) $\\cos x = \\sum_k (-1)^k x^{2k}/(2k)!$; (3) $i\\sin x = \\sum_k (-1)^k ix^{2k+1}/(2k+1)!$. All three are true in Mathlib's framework but require non-trivial API work to prove formally."
+      "summary": "Three theorems (formerly axioms): tsum_even_add_odd (even/odd series splitting via Mathlib's tsum_even_add_odd + Summable.comp_injective), cos_eq_tsum (cosine Taylor series via Complex.cos_eq_tsum + ofReal_cos), sin_eq_tsum (sine Taylor series times I via Complex.sin_eq_tsum + ofReal_sin + tsum_mul_right). Helper theorem expSeries_summable translates Mathlib's NormedSpace.expSeries_summable to the expTerm definition.",
+      "mathContext": "Three analytic facts, all proved from Mathlib: (1) $\\sum_n a_n = \\sum_k a_{2k} + \\sum_k a_{2k+1}$ for summable $a$; (2) $\\cos x = \\sum_k (-1)^k x^{2k}/(2k)!$; (3) $i\\sin x = \\sum_k (-1)^k ix^{2k+1}/(2k+1)!$. All three are derived from Mathlib's existing API; the formalization closes the loop without introducing axioms."
     },
     {
       "id": "main-theorem",
@@ -108,11 +108,9 @@
     }
   ],
   "conclusion": {
-    "summary": "The Taylor series proof of Euler's formula $e^{ix} = \\cos x + i\\sin x$ is formalizable in Lean 4 with 3 axioms: the even/odd `tsum` splitting and the Taylor series identifications for $\\cos$ and $\\sin$. The algebraic core (powers of $i$ and term matching) is fully verified. All 3 axioms are eliminable with approximately 200-250 lines of additional work, making this a near-complete formalization of Euler's original 1748 argument.",
-    "implications": "This provides an independent verification path for one of the most important identities in mathematics, following the historical argument rather than Mathlib's definition-based approach. Having both derivations (`euler_formula_taylor` via Taylor series and Mathlib's `Complex.exp_mul_I`) provides a mutual consistency check. The formalization also exposes the Mathlib circularity between cos/sin and exp, which suggests a potential Mathlib contribution: adding `cos_eq_tsum` and `sin_eq_tsum` as proved theorems rather than axioms.",
+    "summary": "The Taylor series proof of Euler's formula $e^{ix} = \\cos x + i\\sin x$ is fully formalized in Lean 4 with 0 axioms. The even/odd `tsum` splitting and the Taylor series identifications for $\\cos$ and $\\sin$ are all proved from Mathlib (`tsum_even_add_odd`, `Complex.cos_eq_tsum`, `Complex.sin_eq_tsum`), and the algebraic core (powers of $i$ and term matching) is fully verified. This is a complete, axiom-free formalization of Euler's original 1748 argument.",
+    "implications": "This provides an independent verification path for one of the most important identities in mathematics, following the historical argument rather than Mathlib's definition-based approach. Having both derivations (`euler_formula_taylor` via Taylor series and Mathlib's `Complex.exp_mul_I`) provides a mutual consistency check. The formalization shows that despite Mathlib's circular definition of cos/sin via exp, the Taylor-series characterizations are recoverable as theorems through the existing Mathlib API.",
     "openQuestions": [
-      "Can `tsum_even_add_odd` be proved using `Equiv.tsum_eq` with the explicit bijection $\\mathbb{N} \\simeq \\mathbb{N} \\sqcup \\mathbb{N}$ given by even/odd decomposition?",
-      "Can `cos_eq_tsum` be derived from Mathlib's definition $\\cos z = (e^{iz}+e^{-iz})/2$ by expanding both exponentials and collecting even-indexed terms?",
       "Is there a way to define cos/sin in Lean via their Taylor series first, then prove the Mathlib definition as a theorem (reversing the current dependency direction)?",
       "Can the Lean proof be extended to give the full group isomorphism $\\mathbb{R}/2\\pi\\mathbb{Z} \\cong S^1$ by viewing Euler's formula as the exponential map of the Lie group $\\mathbb{R}$?"
     ]

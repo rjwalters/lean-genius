@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-26T14:43:29.520Z",
     "iteration": 1,
-    "focus": "Formalized Sturm sequence and key structural lemmas. Main axiom to be proved in follow-up sessions.",
+    "focus": "Gallery entry merged: 458 lines, 28 theorems/lemmas, 6 defs, 1 axiom (sturm_exact_count_axiom), 0 sorries — gallery status: axiomatized, badge: axiom. Sturm sequence + key structural lemmas (mod_eval_at_root, sturm_neighbors_opposite_at_root, sturmVariations_antitone, squarefree_no_common_roots, linear specialization) are fully proved; the main count theorem remains axiomatized.",
     "blockers": [],
-    "nextAction": "Prove sturm_exact_count_axiom by formalizing sign-count monotonicity",
+    "nextAction": "Open follow-up: prove sturm_exact_count_axiom (sign-count piecewise constancy + decrease analysis). Tracked as future research, not blocking this entry.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: PR #14919 — 1 axiom, 0 sorries, Docker build passes. 22 theorems proved, full gallery entry.",
+    "progressSummary": "COMPLETE: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, Docker build passes. 28 theorems/lemmas proved across 458 lines, 6 noncomputable defs, full gallery entry at status: axiomatized.",
     "builtItems": [
-      "DescartesRuleOfSignsOQ02OQ01OQ02.lean (448 lines, 1 axiom, 0 sorries)",
+      "DescartesRuleOfSignsOQ02OQ01OQ02.lean (458 lines, 1 axiom, 0 sorries)",
       "sturmSeqAux: fuel-based Sturm sequence construction via EuclideanDomain.mod",
       "sturmSeq p: the complete Sturm sequence starting from [p, p']",
       "signVariations, countSignAlts: sign change counting for real lists",
@@ -78,7 +78,6 @@
     "descartes-rule-of-signs-oq-01-oq-02",
     "descartes-rule-of-signs-oq-02",
     "descartes-rule-of-signs-oq-02-oq-01",
-    "descartes-rule-of-signs-oq-02-oq-01-oq-02",
     "descartes-rule-of-signs-oq-03",
     "descartes-rule-of-signs-oq-04"
   ],
@@ -88,14 +87,14 @@
     "mathlib": []
   },
   "started": "2026-04-26T14:43:29.519Z",
-  "lastUpdate": "2026-04-26T14:43:29.519Z",
+  "lastUpdate": "2026-05-07T17:55:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/DescartesRuleOfSigns.lean",
       "filename": "DescartesRuleOfSigns.lean",
-      "lineCount": 577,
+      "lineCount": 576,
       "theoremCount": 35,
       "axiomCount": 8,
       "defCount": 11,
@@ -106,18 +105,18 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
       "filename": "DescartesRuleOfSignsOQ01.lean",
-      "lineCount": 1075,
-      "theoremCount": 30,
+      "lineCount": 1074,
+      "theoremCount": 48,
       "axiomCount": 1,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
     },
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
       "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
-      "lineCount": 155,
+      "lineCount": 154,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -128,7 +127,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
       "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
-      "lineCount": 272,
+      "lineCount": 271,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 0,
@@ -139,8 +138,8 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
       "filename": "DescartesRuleOfSignsOQ02.lean",
-      "lineCount": 699,
-      "theoremCount": 30,
+      "lineCount": 698,
+      "theoremCount": 43,
       "axiomCount": 3,
       "defCount": 8,
       "sorryCount": 0,
@@ -150,7 +149,7 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
       "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
-      "lineCount": 192,
+      "lineCount": 191,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 1,
@@ -161,8 +160,8 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
       "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
-      "lineCount": 459,
-      "theoremCount": 26,
+      "lineCount": 458,
+      "theoremCount": 28,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
@@ -172,8 +171,8 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
       "filename": "DescartesRuleOfSignsOQ03.lean",
-      "lineCount": 441,
-      "theoremCount": 24,
+      "lineCount": 440,
+      "theoremCount": 29,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -183,8 +182,8 @@
     {
       "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
       "filename": "DescartesRuleOfSignsOQ04.lean",
-      "lineCount": 496,
-      "theoremCount": 16,
+      "lineCount": 495,
+      "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

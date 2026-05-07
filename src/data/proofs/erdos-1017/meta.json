@@ -27,7 +27,7 @@
     "assumptions": "2 axioms inherited from Erdos1017OQ01.lean: egp_theorem (Erdős-Gallai-type partitioning theorem), k4free_partition_number (K₄-free partition number bound). gyori_keszegh_triangles was removed. 0 own axioms. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 37,
-    "definitionCount": 6
+    "definitionCount": 8
   },
   "overview": {
     "historicalContext": "The clique partition problem has roots in the early days of graph decomposition theory. The fundamental question—how many complete subgraphs are needed to partition all edges of a graph?—connects to classical work of König (1931) on bipartite matching, Dilworth (1950) on chain decompositions, and the broader program of decomposing combinatorial structures into 'simple' pieces.\n\nErdős, Goodman, and Pósa (1966) proved the elegant theorem that $f(n,k) \\le \\lfloor n^2/4 \\rfloor$ for all $n$ and $k$, where $f(n,k)$ is the minimum number of complete subgraphs needed to partition any graph with $n$ vertices and $k$ edges. Their proof uses only edges ($K_2$'s) and triangles ($K_3$'s)—larger cliques are never required. The key insight is that a maximal set of edge-disjoint triangles leaves behind a triangle-free graph, which by Ramsey theory (or equivalently König's theorem) is bipartite. The triangle-free part then needs at most $\\lfloor n^2/4 \\rfloor$ individual edges for its partition, by Turán's theorem applied to its complement.\n\nThe bound $\\lfloor n^2/4 \\rfloor$ is tight: the complete bipartite graph $K_{\\lfloor n/2 \\rfloor, \\lceil n/2 \\rceil}$ (the Turán graph $T(n,2)$) has exactly $\\lfloor n^2/4 \\rfloor$ edges and no triangles, so every edge must be its own clique in any partition. This extremal example is sparse—it has the maximum number of edges a triangle-free graph can have, by Turán's theorem.\n\nErdős then asked the natural follow-up: when $k > n^2/4$ (more edges than any triangle-free graph), the graph *must* contain triangles. Can these triangles be exploited to bring the partition count *below* $n^2/4$? This is the core of Problem #1017.\n\nThe major partial result came from Győri and Keszegh (2017), who completely resolved the $K_4$-free case. They proved: if $G$ is $K_4$-free with $\\lfloor n^2/4 \\rfloor + m$ edges, then $G$ contains $m$ edge-disjoint triangles. Since each triangle replaces 3 edges with 1 clique (saving 2 from the count), the clique partition number drops to $\\lfloor n^2/4 \\rfloor - m$ for such graphs. Their proof uses a sophisticated induction on $m$, combined with the Kruskal-Katona theorem to control the triangle distribution.\n\nThe general case—when $K_4$ and larger cliques are allowed—remains open. The difficulty is combinatorial: larger cliques offer bigger savings ($K_r$ replaces $\\binom{r}{2}$ edges with 1 piece), but edges may belong to multiple overlapping cliques, creating a complex optimization problem related to fractional relaxations and potentially NP-hard in the worst case.",
@@ -192,7 +192,7 @@
     "lineCount": 696,
     "axiomCount": 2,
     "theoremCount": 37,
-    "definitionCount": 6,
+    "definitionCount": 8,
     "path": "Proofs/Erdos1017OQ01.lean",
     "sorries": 0
   },

@@ -8,7 +8,7 @@
   - Concrete small cases: f(2) = 1 and f(4) = 2, which are decidable computations
   - Helper lemmas for sum-free partition witnesses
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets:
   - set1_is_2sum_free_ari: {1} is 2-sum-free (no subset sums to 2)

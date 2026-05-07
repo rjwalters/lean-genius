@@ -1843,6 +1843,29 @@ cmd_daemon() {
             local status
             status=$(get_agent_status "$session")
 
+            # Failure-loop check: wrapper retries on its own (e.g. 5min cooldown),
+            # so an agent can stay RUNNING/IDLE while every cycle errors. Force a
+            # respawn once consecutive_failures crosses the threshold.
+            local failures
+            failures=$(get_consecutive_failures "$session")
+            if [[ "$status" == "RUNNING" || "$status" == "IDLE" ]] && \
+               [[ "$failures" -ge "$CONSECUTIVE_FAILURE_THRESHOLD" ]]; then
+                if is_cooldown_elapsed "$session"; then
+                    daemon_log "WARN" "Agent $session FAILING (${failures} consecutive failures), killing and respawning..."
+                    if kill_and_respawn "$session"; then
+                        cycle_respawns=$((cycle_respawns + 1))
+                    fi
+                    continue
+                else
+                    local last_f
+                    last_f=$(get_last_respawn "$session")
+                    local now_f
+                    now_f=$(date +%s)
+                    local remaining_f=$(( RESPAWN_COOLDOWN_SECONDS - (now_f - last_f) ))
+                    daemon_log "WARN" "Agent $session FAILING (${failures}) but in cooldown (${remaining_f}s remaining)"
+                fi
+            fi
+
             case "$status" in
                 RUNNING)
                     running_count=$((running_count + 1))

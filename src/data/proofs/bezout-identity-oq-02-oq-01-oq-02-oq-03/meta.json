@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Uses Mathlib's IsDedekindDomain typeclass, Zsqrtd infrastructure for ℤ[√-5], UniqueFactorizationMonoid.irreducible_iff_prime, and decide/native_decide for norm computations.",
     "lineCount": 265,
-    "theoremCount": 18,
+    "theoremCount": 24,
     "definitionCount": 1,
     "mathlibDependencies": [
       {
@@ -123,5 +123,17 @@
       "Can Mathlib's ideal FTA be applied concretely to ℤ[√-5] to write out the prime ideal factorization (6) = (2,1+√-5)²·(3,1+√-5)·(3,1-√-5), making the connection between element and ideal factorizations computationally tangible?",
       "For which values of d does ℤ[√d] have class number 1 (i.e., is a UFD/PID), and can Lean verify these computationally? The Stark-Heegner theorem says there are exactly 9 such negative d: -1,-2,-3,-7,-11,-19,-43,-67,-163."
     ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.BezoutIdentityOQ02OQ01OQ02"],
+    "opens": ["Zsqrtd"],
+    "namespace": "DedekindIdealFTA",
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ03.lean",
+    "lineCount": 265,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 1,
+    "sorries": 0
   }
 }

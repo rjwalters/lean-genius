@@ -15,7 +15,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 49,
+    "axiomCount": 57,
     "assumptions": "49 axiom declarations (down from 101) encoding Hodge structures, known cases (Lefschetz 1,1, abelian varieties, K3, top codimension), categorical operations, motives, p-adic Hodge theory, counterexamples (Atiyah-Hirzebruch, Voisin, Totaro), and related conjectures. 3 unused axioms removed (tateTwist, tateStructure, deligne_cycle_class). The Hodge Conjecture itself remains open. 0 sorries remain.",
     "mathlibDependencies": [],
     "originalContributions": [
@@ -41,7 +41,7 @@
     "mathlib_version": "4.26.0",
     "lineCount": 10517,
     "theoremCount": 430,
-    "definitionCount": 81
+    "definitionCount": 89
   },
   "overview": {
     "historicalContext": "The Hodge Conjecture was proposed by Sir William Vallance Douglas Hodge at the 1950 International Congress of Mathematicians in Cambridge. Hodge developed his theory of harmonic integrals in the 1930s–1940s, building on Solomon Lefschetz's 1924 theorem that every (1,1) integral Hodge class is algebraic (the Lefschetz theorem on (1,1) classes). Hodge conjectured this should extend to all codimensions p.\n\nFor over 70 years the conjecture has resisted resolution. Key milestones: Atiyah–Hirzebruch (1962) disproved the integral version using topological K-theory and Steenrod operations, showing rational coefficients are essential. Grothendieck (1968) proposed his Standard Conjectures, which would imply the Hodge Conjecture as a corollary; they also remain open. Deligne proved the Weil conjectures (1974), which are related but distinct. Voisin (2002) proved the conjecture fails for compact Kähler manifolds that are not projective, confirming projectivity is an essential hypothesis.\n\nIn 2000, the Clay Mathematics Institute designated the Hodge Conjecture as one of seven Millennium Prize Problems with a $1,000,000 prize. The only proven cases are: divisors on any variety (Lefschetz (1,1)), curves, surfaces, and special abelian varieties (Deligne, Hazama). The conjecture stands as one of the deepest open questions in mathematics.",
@@ -261,7 +261,7 @@
   "leanFile": {
     "lineCount": 10517,
     "structureCount": 104,
-    "axiomCount": 49,
+    "axiomCount": 57,
     "theoremCount": 430,
     "lemmaCount": 0,
     "imports": [
@@ -293,7 +293,7 @@
     ],
     "path": "Proofs/HodgeConjecture.lean",
     "sorries": 0,
-    "definitionCount": 81
+    "definitionCount": 89
   },
   "mainTheorems": [
     {

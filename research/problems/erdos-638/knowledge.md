@@ -33,7 +33,29 @@ Let S" role="presentation" style="position: relative;">SSS be a family of finite
 
 ## Sessions
 
-(No research sessions yet)
+### Session 2026-05-07 (researcher-5): Sharp threshold for cardinal Ramsey on K_ω
+
+Added two complementary theorems framing the difficulty of the open conjecture
+for the simplest Ramsey family (complete graphs):
+
+- **complete_omega_finite_ramsey** (positive): K_ℕ has the n-colour triangle
+  Ramsey property for any n ≥ 1. Proof: restrict to the first R(n) vertices
+  (provided by `ramsey_triangle`) and lift Fin-vertex triangle back to ℕ.
+- **complete_omega_no_nat_ramsey** (negative): K_ℕ does NOT have the
+  ℕ-cardinal triangle Ramsey property. Witness: c(i,j) = min(i,j). Three
+  distinct naturals cannot have all three pairwise mins equal — among the
+  three pairs, two contain the smallest of the trio (so their mins equal that
+  value), while the third pair excludes it (so its min is strictly larger).
+  `omega` discharges this directly.
+
+**Significance**: At the countable cardinal threshold, ω vertices suffice for
+finite colour counts but not for ℵ₀ colours. The Erdős–Rado theorem
+`(2^|κ|)⁺ → (κ⁺)²_κ` provides a positive answer for the complete-graph family
+of Erdős #638 at every infinite κ, but only with strictly more than κ vertices.
+The gap between the negative result on K_ℕ and the positive Erdős–Rado bound
+is precisely where the conjecture for general Ramsey families becomes nontrivial.
+
+**File state after session**: 299 lines, 10 theorems, 0 axioms, 0 sorries.
 
 ---
 

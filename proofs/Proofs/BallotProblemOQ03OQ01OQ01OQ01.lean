@@ -381,6 +381,24 @@ private lemma jdt_weight_preserved (n a b : ℕ)
   conv_rhs => rw [hQ, Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- **Weight factorization through total multiset.**
+    For `P : Sym (Fin n) a` and `Q : Sym (Fin n) b`, the product of pair-weights
+    equals the weight of their multiset union `P.1 + Q.1 : Multiset (Fin n)`:
+      `prod(P.1.map X) * prod(Q.1.map X) = prod((P.1 + Q.1).map X)`.
+
+    **Use:** the b ≥ 2 branch of `jdt_weight_sum` regroups the LHS sum
+    by total multiset `M = P + Q : Sym (Fin n) (a + b)` (each `M` appearing
+    once per non-col-strict split). The RHS regroups similarly by `M = P' + Q'`
+    for `(P', Q') : Sym(a+1) × Sym(b-1)`. After applying this lemma both sides
+    become `∑_M (count of M-splits) * (M.1.map X).prod`, reducing the
+    polynomial identity to the **ballot counting identity** on split counts. -/
+private lemma weight_eq_total_multiset {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((P.1 + Q.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [Multiset.map_add, Multiset.prod_add]
+
 /-- For `Q : Sym (Fin n) 1`, the underlying multiset is the singleton `{q}` where `q` is the
     unique element of `Q`. We extract `q` and the equation `Q.1.sort = [q]` simultaneously. -/
 private lemma sym_one_sort_head_singleton (n : ℕ) (Q : Sym (Fin n) 1) :
@@ -560,6 +578,138 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
       Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- **Weight factorization through the total multiset.**
+
+    The product weight of a pair `(P : Sym (Fin n) a, Q : Sym (Fin n) b)`
+    depends only on the total multiset `P.1 + Q.1`:
+
+        wt(P) * wt(Q) = wt(P.1 + Q.1)        (where wt := ((·).map X).prod)
+
+    This is the cornerstone of the corrected proof strategy for the b≥2
+    branch of `jdt_weight_sum` identified in Session 18 (PR #14891). The
+    weight identity reduces the polynomial sum to a per-fiber **counting
+    identity** indexed by the total multiset:
+
+        ∑_{(P,Q) : ¬ColStrictSym a b}      wt(P) * wt(Q)
+          = ∑_{M : Sym n (a+b)} (#{non-cs (a,b) splits of M}) * wt(M)
+
+        ∑_{(P', Q') : (a+1, b-1)}          wt(P') * wt(Q')
+          = ∑_{M : Sym n (a+b)} (#{all (a+1, b-1) splits of M}) * wt(M)
+
+    So `jdt_weight_sum` (b ≥ 2) reduces to: for every `M : Sym n (a+b)`,
+        `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`.
+    The cardinality identity is provable by the ballot bijection
+    (~100-150 lines, standard finite-type combinatorics). No ring-valued
+    LGV is needed.
+
+    **Note:** Session 18 (PR #14891) showed that the naive "insert
+    violation element" forward map on (P, Q) ↔ (P', Q') is *non-injective*
+    for b ≥ 2; the counterexample `(P={1,3,4}, Q={0,2,3})` and
+    `(P={0,1,4}, Q={2,3,3})` both map to `(P'={0,1,3,4}, Q'={2,3})`. The
+    weight-factorization-then-count approach circumvents this. -/
+private lemma weight_eq_total_multiset (n a b : ℕ)
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((P.1 + Q.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [Multiset.map_add, Multiset.prod_add]
+
+/-- **Positivity helper for `¬ColStrictSym`.**
+
+    If `¬ColStrictSym a b P Q` holds, then `min a b ≥ 1`. (Otherwise the
+    universal quantifier in `ColStrictSym` ranges over the empty type
+    `Fin 0`, making the condition vacuously true and contradicting the
+    negation.) Used by the JDT seam bijection to access `(P.sort)[0]`,
+    `(Q.sort)[0]` legitimately when computing the first violation index. -/
+private lemma min_ab_pos_of_not_colStrict {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
+    0 < min a b := by
+  by_contra hle
+  push_neg at hle
+  apply h
+  intro j
+  exact absurd j.isLt (by omega)
+
+/-- **First violation index for `¬ColStrictSym`.**
+
+    For `¬ColStrictSym a b P Q`, there exists a smallest column index
+    `c : Fin (min a b)` at which the col-strict comparison fails:
+    `(Q.sort)[c] ≤ (P.sort)[c]`, and for every earlier `j` with `j.val < c.val`,
+    the strict inequality `(P.sort)[j] < (Q.sort)[j]` holds.
+
+    **Use:** auxiliary structural lemma about `¬ColStrictSym` (existence of a
+    canonical witness via `Finset.min'`).
+
+    **Important caveat (PR #14891, Session 18):** the natural "first violation
+    index → insert-violation-element" forward map on `(P, Q) ↔ (P', Q')` is
+    NON-INJECTIVE for `b ≥ 2`. The corrected proof path (see
+    `weight_eq_total_multiset` above) avoids this map entirely, factoring the
+    weight through the total multiset and reducing to a counting identity.
+
+    This helper is therefore retained as a pure existence lemma about
+    `¬ColStrictSym` (potentially useful if a future fix restores the
+    bijection approach by adding disambiguating data, e.g. tracking `c`
+    explicitly in the codomain), not as the active primary tool. -/
+private lemma exists_first_violation_idx {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
+    ∃ c : Fin (min a b),
+      (Q.1.sort (· ≤ ·))[c.val]'(by
+          have hj : c.val < min a b := c.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega) ≤
+      (P.1.sort (· ≤ ·))[c.val]'(by
+          have hj : c.val < min a b := c.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) ∧
+      ∀ j : Fin (min a b), j.val < c.val →
+        (P.1.sort (· ≤ ·))[j.val]'(by
+            have hj : j.val < min a b := j.isLt
+            have hlen : (P.1.sort (· ≤ ·)).length = a :=
+              (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+            omega) <
+        (Q.1.sort (· ≤ ·))[j.val]'(by
+            have hj : j.val < min a b := j.isLt
+            have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+              (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+            omega) := by
+  -- Collect violation indices.
+  set V : Finset (Fin (min a b)) := Finset.univ.filter (fun j =>
+    ¬ ((P.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) <
+       (Q.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega))) with hVdef
+  -- V is nonempty: the negated ColStrictSym condition supplies a witness.
+  have hVnonempty : V.Nonempty := by
+    unfold ColStrictSym at h
+    push_neg at h
+    obtain ⟨j, hj⟩ := h
+    refine ⟨j, ?_⟩
+    rw [hVdef, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _, hj⟩
+  -- c := min' V is the first violation index.
+  refine ⟨V.min' hVnonempty, ?_, ?_⟩
+  · -- (Q.sort)[c] ≤ (P.sort)[c]: c is a violation index.
+    have hc_mem := V.min'_mem hVnonempty
+    rw [hVdef, Finset.mem_filter] at hc_mem
+    exact not_lt.mp hc_mem.2
+  · -- For every earlier j, the strict col-comparison still holds.
+    intro j hjlt
+    by_contra hcontra
+    have hjV : j ∈ V := by
+      rw [hVdef, Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, hcontra⟩
+    have hcle : V.min' hVnonempty ≤ j := V.min'_le j hjV
+    have hcle_val : (V.min' hVnonempty).val ≤ j.val := hcle
+    omega
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
@@ -585,23 +735,33 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- After subst, hba : 1 ≤ a, and the RHS is hsymm (a+1) * hsymm (1 - 1)
       -- which is hsymm (a+1) * hsymm 0 by rfl on Nat subtraction.
       exact jdt_weight_sum_b_one n a hba
-    · -- b ≥ 2: the general JDT seam bijection (still sorry)
+    · -- b ≥ 2: weight factorization + ballot counting identity
       rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
-      -- Need: weight-preserving bijection
-      --   {non-col-strict (a,b) pairs} ≃ {all (a+1, b-1) pairs}
-      -- Forward map: find first violation c in ColStrictSym, let v = Q.sort[c],
-      --   then P' = Sym.cons v P, Q' = Sym.erase Q v (need v ∈ Q.1)
-      -- Inverse map: find the "seam" element in P'.sort to move back to Q'
-      -- Weight preserved by Multiset.prod_cons + Multiset.prod_erase
+      -- **S18 diagnosis:** the naive insert-violation bijection used at b=1
+      -- (move `Q.sort[c]` into `P` at position c) is **non-injective for b ≥ 2**:
+      -- two distinct non-col-strict (P,Q) pairs can produce the same (P',Q') because
+      -- the seam index c is not recoverable from (P',Q') without extra data.
       --
-      -- For b ≥ 2, the bijection generalizes: insert Q.sort[c] into P at position c,
-      -- where c is the first violation index. The inverse map is the JDT seam
-      -- algorithm (find c such that P'.sort[c] came from Q's c-th violation column).
-      -- This is genuinely intricate; ~150-200 lines of focused Lean work.
+      -- **S19 strategy** (current): factor weights through the total multiset
+      -- `M : Sym (Fin n) (a + b)`, then apply a ballot counting identity on splits.
       --
-      -- The b = 1 base case (above) demonstrates the construction with q = Q.sort[0]
-      -- and the inverse via head-of-sort. Generalizing requires tracking the
-      -- "seam index" c through the bijection invariants.
+      -- Step (i)  weight factorization: by `weight_eq_total_multiset` (above),
+      --             prod(P)*prod(Q) = prod(P+Q) and prod(P')*prod(Q') = prod(P'+Q').
+      -- Step (ii) regroup both sides by total multiset M = P+Q = P'+Q' : Sym n (a+b)
+      --             (using `Finset.sum_sigma`/`Fintype.sum_equiv` to fiber the sums).
+      -- Step (iii) ballot counting identity (per multiset M):
+      --              #{(P,Q) // ¬ColStrictSym a b ∧ P+Q = M.1}
+      --              = #{(P',Q') // P'.1 + Q'.1 = M.1, |P'|=a+1, |Q'|=b-1}
+      --            For M with all distinct elements, both counts equal C(a+b, a+1)
+      --            by the classical ballot/cycle lemma; the multiplicity case
+      --            generalizes via the same reflection-style argument.
+      -- Step (iv) combine: ∑_M [count] * prod(M) = ∑_M [count] * prod(M)
+      --             since the counts agree per M.
+      --
+      -- The b = 1 case has `b - 1 = 0`, hence a unique `Q' = ∅`, so step (iii)
+      -- collapses to **unique-existence per M** — that's why b=1 admits a direct
+      -- bijection (cf. `jdt_weight_sum_b_one` and the Aristotle companion).
+      -- Estimated remaining work: ~150-200 lines, dominated by step (iii).
       sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-cos-arclen-unit",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 45, "endLine": 54 },
+    "type": "lemma",
+    "title": "cos(arcLen u v) = ⟨u,v⟩ for Unit Vectors",
+    "content": "Foundational lemma: for unit vectors $u, v$ on $S^2$, the cosine of their spherical distance equals their Euclidean dot product. The proof unfolds $\\mathrm{arcLen}$ as $\\arccos(\\langle u, v\\rangle)$ and applies $\\cos \\circ \\arccos = \\mathrm{id}$ on $[-1, 1]$. The two `nlinarith` calls discharge the side conditions $-1 \\leq \\langle u, v \\rangle \\leq 1$ via the Lagrange identity $\\|u \\times v\\|^2 = \\|u\\|^2\\|v\\|^2 - \\langle u, v\\rangle^2$ and unit-norm hypotheses — i.e., the Cauchy–Schwarz bound is recovered from cross-product algebra rather than imported.",
+    "mathContext": "$\\cos(\\mathrm{arcLen}(u, v)) = \\langle u, v\\rangle$ for $\\|u\\| = \\|v\\| = 1$",
+    "significance": "key",
+    "relatedConcepts": ["spherical metric", "arccos", "Cauchy–Schwarz inequality", "Lagrange identity"],
+    "prerequisites": ["Real.cos_arccos", "unit vectors on S²"]
+  },
+  {
+    "id": "ann-cross-dot-projperp",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "theorem",
+    "title": "Key Algebraic Identity — Cross Bridges to Projection",
+    "content": "**The mathematical pivot of the entire proof.** For unit $C$, the dot product of two cross products $\\langle B \\times C,\\ C \\times A\\rangle$ equals the negative of $\\langle \\mathrm{proj}_{C^\\perp} A,\\ \\mathrm{proj}_{C^\\perp} B\\rangle$. Both sides reduce to $-(\\langle A, B\\rangle - \\langle A, C\\rangle\\langle B, C\\rangle)$, which is exactly the off-diagonal Gram entry after deflating along $C$. This identity is what links the *cross-product geometry* of polar vertices to the *projection geometry* used to define the dihedral angle. The Lean proof uses `linear_combination` with the unit constraint $C_0^2 + C_1^2 + C_2^2 = 1$ as a polynomial certificate — no analytic content, just polynomial identity.",
+    "mathContext": "$\\langle B \\times C,\\ C \\times A \\rangle = -\\langle \\mathrm{proj}_{C^\\perp}A,\\ \\mathrm{proj}_{C^\\perp}B\\rangle$ when $\\|C\\| = 1$",
+    "significance": "critical",
+    "relatedConcepts": ["Gram matrix", "orthogonal projection", "linear_combination tactic", "polynomial identity certificates"],
+    "prerequisites": ["cross product in ℝ³", "projection onto orthogonal complement"]
+  },
+  {
+    "id": "ann-normsq-cross-projperp",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 69, "endLine": 89 },
+    "type": "lemma",
+    "title": "Cross-Norm Equals Projection-Norm",
+    "content": "For unit $B, C$, we have $\\|B \\times C\\|^2 = \\|\\mathrm{proj}_{C^\\perp} B\\|^2 = 1 - \\langle B, C\\rangle^2 = \\sin^2(\\mathrm{arcLen}(B, C))$. This converts cross-product norms into the *sine* of spherical distances. The companion lemma `normSq_cross_CA` covers the asymmetric case $C \\times A$ via cross-product antisymmetry $C \\times A = -(A \\times C)$, and `normSq_projPerp_comm` records the (non-obvious!) symmetry $\\|\\mathrm{proj}_{B^\\perp} A\\|^2 = \\|\\mathrm{proj}_{A^\\perp} B\\|^2$ for unit $A, B$.",
+    "mathContext": "$\\|B \\times C\\|^2 = 1 - \\langle B, C\\rangle^2 = \\sin^2(\\mathrm{arcLen}(B, C))$",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange identity", "Gram-Schmidt", "spherical sine"],
+    "prerequisites": ["lagrange_identity", "cross product antisymmetry"]
+  },
+  {
+    "id": "ann-normalize3",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 91, "endLine": 113 },
+    "type": "definition",
+    "title": "normalize3 — Unit Vector Construction",
+    "content": "Defines $\\mathrm{normalize3}(v) = v / \\sqrt{\\|v\\|^2}$. The companion `dot_normalize3` shows $\\langle \\hat u, \\hat v\\rangle = \\langle u, v\\rangle / (\\|u\\| \\|v\\|)$, and `isUnit3_normalize3` proves the result is genuinely unit-length when $\\|v\\|^2 > 0$. The use of `Real.sq_sqrt` carefully respects the squaring/square-root cancellation, since `Real.sqrt` is total in Lean (sqrt of a negative is 0) and would otherwise need careful side-conditions.",
+    "mathContext": "$\\hat v := v / \\sqrt{\\langle v, v\\rangle}$; $\\|\\hat v\\| = 1$ when $v \\neq 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.sqrt totality", "field_simp tactic", "non-degenerate vectors"],
+    "prerequisites": ["scalar multiplication on Fin 3 → ℝ"]
+  },
+  {
+    "id": "ann-polar-side-formula",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 115, "endLine": 157 },
+    "type": "theorem",
+    "title": "Principal Theorem — Polar Side = π − Original Angle",
+    "content": "**The headline result: each side of the polar triangle equals $\\pi$ minus the corresponding angle of the original triangle.** Specifically, $\\mathrm{arcLen}(\\widehat{B \\times C}, \\widehat{C \\times A}) = \\pi - \\gamma$, where $\\gamma$ is the dihedral angle at $C$. The proof chains five steps: (1) `dot_normalize3` reduces to $\\langle B \\times C, C \\times A\\rangle / (\\|B \\times C\\|\\|C \\times A\\|)$; (2) `cross_dot_eq_neg_projperp` rewrites the numerator as $-\\langle \\mathrm{proj}_{C^\\perp} A, \\mathrm{proj}_{C^\\perp} B\\rangle$; (3) `normSq_cross_eq_projperp` and `normSq_cross_CA` rewrite the denominators as projection norms; (4) the resulting expression matches the $\\mathrm{dihedralAngle}$ definition modulo a sign; (5) `Real.arccos_neg` packages $\\arccos(-x) = \\pi - \\arccos(x)$ to convert sign to supplementary angle. The clever bit is the rewrite by symmetry of the dot/sqrt expression — the dihedral-angle definition uses $(B,A)$-projections in a fixed order that doesn't directly match the cross-product expression.",
+    "mathContext": "$\\mathrm{arcLen}(\\widehat{B \\times C},\\ \\widehat{C \\times A}) = \\pi - \\mathrm{dihedralAngle}(C, A, B)$",
+    "significance": "critical",
+    "relatedConcepts": ["polar triangle duality", "Real.arccos_neg", "supplementary angle", "Napier's circles"],
+    "prerequisites": ["all preceding cross-product lemmas", "dihedral angle definition"]
+  },
+  {
+    "id": "ann-polar-angle-axiom",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 163, "endLine": 175 },
+    "type": "warning",
+    "title": "Axiom: Polar Angle = π − Original Side",
+    "content": "Axiom #1 of 2. States the dual to `polar_side_eq_pi_minus_angle`: the dihedral angles of the polar triangle equal $\\pi$ minus the corresponding sides of the original. Mathematically the proof is *exactly analogous* to the side formula — apply `cross_dot_eq_neg_projperp` to the polar triangle's projections — but the chain involves nested `normalize3` and `projPerp` of cross products, which compounds the algebraic complexity. **Open question (#1)**: the meta lists this as the natural target for axiom elimination once the bookkeeping is simplified.",
+    "mathContext": "$\\mathrm{dihedralAngle}(\\widehat{A\\times B},\\ \\widehat{B\\times C},\\ \\widehat{C\\times A}) = \\pi - \\mathrm{arcLen}(A, B)$",
+    "significance": "supporting",
+    "relatedConcepts": ["axiomatized statement", "duality of polar triangle"],
+    "prerequisites": ["polar_side_eq_pi_minus_angle pattern"]
+  },
+  {
+    "id": "ann-projperp-sinsincos-axiom",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 177, "endLine": 184 },
+    "type": "warning",
+    "title": "Axiom: Projection Dot = sin·sin·cos",
+    "content": "Axiom #2 of 2. The standard identity $\\langle \\mathrm{proj}_{C^\\perp} A,\\ \\mathrm{proj}_{C^\\perp} B\\rangle = \\sin a \\cdot \\sin b \\cdot \\cos\\gamma$ where $a = \\mathrm{arcLen}(A, C)$, $b = \\mathrm{arcLen}(B, C)$, $\\gamma$ = dihedral angle at $C$. Follows from the definition $\\gamma = \\arccos\\bigl(\\langle \\mathrm{proj} A, \\mathrm{proj} B\\rangle / (\\|\\mathrm{proj} A\\|\\|\\mathrm{proj} B\\|)\\bigr)$ plus the identity $\\|\\mathrm{proj}_{C^\\perp} A\\| = \\sin a$ established earlier. The remaining work is bookkeeping with `Real.cos_arccos` and a Cauchy–Schwarz bound to show the ratio lies in $[-1, 1]$.",
+    "mathContext": "$\\langle \\mathrm{proj}_{C^\\perp} A,\\ \\mathrm{proj}_{C^\\perp} B\\rangle = \\sin a \\sin b \\cos\\gamma$",
+    "significance": "supporting",
+    "relatedConcepts": ["dihedral angle", "Cauchy–Schwarz", "Real.cos_arccos"],
+    "prerequisites": ["definition of dihedralAngle"]
+  },
+  {
+    "id": "ann-dual-trig-identity",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 186, "endLine": 194 },
+    "type": "lemma",
+    "title": "Pure Trig: cos(π−x) = −cos x, sin(π−x) = sin x",
+    "content": "An algebraic Lemma packaging the polar substitution. Given the standard spherical law $\\cos(\\pi - \\gamma) = \\cos(\\pi - \\alpha)\\cos(\\pi - \\beta) + \\sin(\\pi - \\alpha)\\sin(\\pi - \\beta)\\cos(\\pi - c)$, applies $\\cos(\\pi - x) = -\\cos x$ and $\\sin(\\pi - x) = \\sin x$ to derive the dual law $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$. The proof is a one-liner: `simp` rewrites with `Real.cos_pi_sub` and `Real.sin_pi_sub`, then `linarith` closes. This is the only step in the whole pipeline that's pure trigonometry — everything else is geometric.",
+    "mathContext": "$\\cos(\\pi - \\gamma) = \\cos(\\pi - \\alpha)\\cos(\\pi - \\beta) + \\sin(\\pi - \\alpha)\\sin(\\pi - \\beta)\\cos(\\pi - c) \\implies \\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$",
+    "significance": "supporting",
+    "relatedConcepts": ["supplementary angle identity", "Real.cos_pi_sub", "Real.sin_pi_sub"],
+    "prerequisites": ["basic trigonometric identities"]
+  },
+  {
+    "id": "ann-polar-std-law",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 200, "endLine": 234 },
+    "type": "theorem",
+    "title": "Standard Spherical Law Applied to Polar Triangle",
+    "content": "Verifies that the *polar triangle itself* satisfies the standard spherical law of cosines — i.e., the polar triangle is just another spherical triangle, so it inherits the same relation. The clever part is the dot decomposition $\\langle A', B'\\rangle = \\langle A', C'\\rangle\\langle B', C'\\rangle + \\langle \\mathrm{proj}_{C'^\\perp} A',\\ \\mathrm{proj}_{C'^\\perp} B'\\rangle$, proved by `linear_combination` with the unit constraint $\\|C'\\|^2 = 1$ as polynomial certificate. Combined with `cos_arcLen_unit` (3×) and `projperp_dot_sinsincos`, this assembles into the standard law.",
+    "mathContext": "$\\cos c' = \\cos a' \\cos b' + \\sin a' \\sin b' \\cos\\gamma'$ for the polar triangle $A'B'C'$",
+    "significance": "key",
+    "relatedConcepts": ["spherical law of cosines", "Gram identity", "dot decomposition along unit vector"],
+    "prerequisites": ["cos_arcLen_unit", "projperp_dot_sinsincos"]
+  },
+  {
+    "id": "ann-dual-law-main",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-03",
+    "range": { "startLine": 236, "endLine": 269 },
+    "type": "theorem",
+    "title": "Main Result — Dual Spherical Law of Cosines",
+    "content": "**The headline theorem.** For any non-degenerate spherical triangle with unit vertices $A, B, C$, the dual spherical law holds: $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$, where $\\alpha, \\beta, \\gamma$ are dihedral angles at $A, B, C$ and $c = \\mathrm{arcLen}(A, B)$. Note the *negative* sign on the leading $\\cos\\alpha\\cos\\beta$ — this is what distinguishes the dual law from the standard law on the sphere. The proof assembles `polar_triangle_std_law` (applied to the polar triangle of $A, B, C$) with three instances of `polar_side_eq_pi_minus_angle` (substituting $a' = \\pi - \\alpha$, $b' = \\pi - \\beta$, $c' = \\pi - \\gamma$) and one application of the `polar_angle_eq` axiom (substituting $\\gamma' = \\pi - c$). The final `dual_trig_identity` step converts $\\cos(\\pi - \\cdot)$ to $-\\cos$ and $\\sin(\\pi - \\cdot)$ to $\\sin$ throughout. The rewrites `arcLen_comm` and `dihedralAngle_comm_last` are needed for the second polar-side instance because the polar construction is cyclic but `polar_side_eq_pi_minus_angle` is not symmetric in its argument order.",
+    "mathContext": "$\\cos\\gamma = -\\cos\\alpha \\cdot \\cos\\beta + \\sin\\alpha \\cdot \\sin\\beta \\cdot \\cos c$",
+    "significance": "critical",
+    "relatedConcepts": ["dual spherical law", "Gauss-Bonnet on sphere", "Napier's analogies", "spherical trigonometry"],
+    "prerequisites": ["all preceding theorems and both axioms"]
+  }
+]

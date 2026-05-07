@@ -8,7 +8,7 @@
   - NOT the open counting asymptotics (f_m(n) ~ 2^{n/4})
   - Routine sum-free set arithmetic: parity, filter bounds
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

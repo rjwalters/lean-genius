@@ -122,7 +122,7 @@ by all primes up to about (2 + o(1)) log(n) because n itself is
 constructed from primes in that range. -/
 
 /-- Known: q(n, log n) ≥ (2 + o(1)) log n is achievable by taking n
-    as the product of primes between log(n) and (2 + o(1)) log(n).
+    as the product of primes between log(n) and (2 + o(1)) log(n). -/
 
 /- ## Part VI: Upper Bound Sub-Question
 

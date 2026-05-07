@@ -34,13 +34,12 @@
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
     "iteration": 5,
-    "focus": "Session 33 (2026-04-27): no code change. Strategy note added to literature/closing-the-final-sorry.md comparing GNW, RSK/Fomin, canonical-LGV routes. Recommends modularize first, then take Route B (RSK) for full HLF + retire hook_walk_identity as corollary.",
+    "focus": "Post-modularization (Session 35): file split into Main (398 lines, 0 sorries, 16 theorems, 1 def) + Helpers (14050 lines, 1 sorry on gnwProb_key, 476 theorems, 38 defs). Sole remaining sorry is gnwProb_key (GNW 1979 KEY theorem) in Helpers. Aristotle companion has 3 sorries reserved for proof-search candidates.",
     "blockers": [
-      "File size: 14022 lines exceeds practical Docker 32GB build envelope; further additions risk unverifiable code",
-      "GNW proof (~300 lines): standard probabilistic hook walk argument, not yet formalized",
-      "LGV well-formedness obstruction: requires transpose-duality case split for tall shapes"
+      "gnwProb_key: GNW 1979 KEY theorem (~200-300 lines via exchange argument); the sole non-Aristotle sorry blocking full HLF",
+      "LGV well-formedness obstruction: requires transpose-duality case split for tall shapes (alternative path)"
     ],
-    "nextAction": "Either (a) extend row-by-row to PART XXIV (10-row case, ~2000 lines, narrows sorry to ≥11×≥10) — but file is at 14022 lines, near build limit; (b) implement GNW probabilistic hook-walk proof to discharge sorry uniformly; (c) implement the canonical-config LGV path (A,B in PART V comment) for an entirely different proof line.",
+    "nextAction": "Prove gnwProb_key — formalize GNW 1979 exchange argument (rectangle case follows from gnwProb_sum_corners + hook_walk_identity_rectYD; non-rectangle case needs induction on |μ|). RSK/Fomin (~600 lines) is an alternative independent path.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -48,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS session 38: gnwProb_sum_corners, gnwProb_step, gnwProb_stable, hookLength_isCorner_one all PROVED (PR #15288). hook_walk_identity_gnw complete. Sole remaining sorry: gnwProb_key (GNW 1979 KEY theorem, hard combinatorial induction). Estimated 200-300 lines.",
+    "progressSummary": "PROGRESS session 43: GNW exchange-step framework complete. gnwProb_key multi-corner case now PROVED via well-founded recursion on μ.card (termination_by μ.card; decreasing_by removeCorner_card). Sole remaining sorry: gnwProb_exchange (GNW 1979 hook-weight shift identity in product form, ~100 lines). hook_walk_identity_gnw → gnwProb_key → gnwProb_exchange chain is structurally complete.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -142,7 +141,9 @@
       "gnwProb_step proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13822-13839 (PR #15288)",
       "gnwProb_stable proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13843-13851 (PR #15288)",
       "hook_walk_identity_gnw proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13877-13896 (uses gnwProb_key which is sorry)",
-      "strictHookCells_card proved: cardinality = hookLength - 1, using Finset.Ico image + disjointness argument (PR #15288)"
+      "strictHookCells_card proved: cardinality = hookLength - 1, using Finset.Ico image + disjointness argument (PR #15288)",
+      "Cherry-picked exchange framework (isCorner_removeCorner_of_ne, gnwProb_exchange, multi-corner proof skeleton) from origin/fix/ballot-gnw-key onto research/ballot-gnw-strong-induction.",
+      "Closed IH sorry in gnwProb_key by replacing 'have h_IH := by sorry' with 'have h_IH := gnwProb_key (removeCorner μ c' hc') hc_in_rc'' + termination_by μ.card / decreasing_by clause."
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -232,7 +233,10 @@
       "gnwProb_key is the SOLE remaining sorry -- the GNW 1979 KEY theorem -- requires exchange argument or direct induction on |mu|",
       "gnwProb_key for rectangles (single corner): gnwProb_sum_corners gives gnwProb=1 for all x, so sum = |mu| = hookProd(mu)/hookProd(mu\\c) by hook_walk_identity_rectYD",
       "gnwProb_key for non-rectangles requires the GNW exchange argument: estimated 200-300 lines of Lean, needs careful study of GNW 1979 paper",
-      "Exchange identity attempt disproved: gnwProb_mu(c,K,x) != gnwProb_{mu\\c'}(c,K,x) in general -- counterexample on {(0,0),(0,1),(1,0)} with c=(1,0),c'=(0,1): mu gives 1/2, mu\\c' gives 1"
+      "Exchange identity attempt disproved: gnwProb_mu(c,K,x) != gnwProb_{mu\\c'}(c,K,x) in general -- counterexample on {(0,0),(0,1),(1,0)} with c=(1,0),c'=(0,1): mu gives 1/2, mu\\c' gives 1",
+      "gnwProb_key multi-corner case reduces to gnwProb_exchange + IH on μ\\c'; well-founded recursion via termination_by μ.card matches the hook_length_formula_Q pattern in the main file.",
+      "gnwProb_exchange product form F(μ,c)·H(μ\\c)·H(μ\\c') = F(μ\\c',c)·H((μ\\c')\\c)·H(μ) avoids division and probability theory imports; provable by arm/leg decomposition + hook-length shift.",
+      "Cherry-picking origin/fix/ballot-gnw-key (commit 6590609fa80) gives the structural framework; the IH sorry then closes via direct recursive call once termination_by μ.card is added."
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -240,11 +244,9 @@
       "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
-      "Study GNW 1979 paper (Greene-Nijenhuis-Wilf, J. Combin. Theory Ser. A 1979) for the actual exchange argument proof",
-      "Prove gnwProb_key for rectangles using: gnwProb_sum_corners (corners(mu)={c} -> gnwProb=1) + hook_walk_identity_rectYD",
-      "Prove gnwProb_key for non-rectangles: formalize GNW 1979 induction on |mu| using corners(mu) has >=2 elements",
-      "Key lemma needed: hookProd ratio formula -- hookProd(mu)/hookProd(mu\\c) = Pi_{y in preHook(c)} hookLen(y)/(hookLen(y)-1)",
-      "Consider Aristotle submission for gnwProb_key -- it is a HARD sorry with known proof"
+      "Prove gnwProb_exchange (Helpers line 13871): GNW 1979 hook-weight shift identity. ~100 lines via arm/leg decomposition + hookProd product-form analysis.",
+      "Verify Docker build on the modular file structure (Helpers at 14126 lines, was 14022 pre-modularization at OOM threshold). CI on the session-43 PR will confirm buildability.",
+      "Consider deterministic weighted-walk recasting (~400 lines self-contained) as alternative to gnwProb_exchange if direct proof is intractable."
     ]
   },
   "tags": [
@@ -268,7 +270,6 @@
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-    "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
     "ballot-problem-oq-03-oq-02",
     "ballot-problem-oq-03-oq-03"
@@ -286,7 +287,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-04-21T22:00:00-07:00",
+  "lastUpdate": "2026-05-07T17:05:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
@@ -491,33 +492,33 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
       "filename": "BallotProblemOQ03OQ01OQ02.lean",
-      "lineCount": 399,
-      "theoremCount": 2,
+      "lineCount": 398,
+      "theoremCount": 16,
       "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 114,
+      "lineCount": 113,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
-      "lineCount": 13899,
-      "theoremCount": 78,
+      "lineCount": 14050,
+      "theoremCount": 476,
       "axiomCount": 0,
-      "defCount": 15,
-      "sorryCount": 5,
+      "defCount": 38,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     },

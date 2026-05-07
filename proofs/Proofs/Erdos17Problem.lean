@@ -135,9 +135,9 @@ noncomputable def clusterPrimeCount (x : ℕ) : ℕ :=
   (primesUpTo x).filter (fun p => @Decidable.decide (IsClusterPrime p) (Classical.dec _)) |>.card
 
 /-- Blecksmith-Erdős-Selfridge (1999): For any A > 0, the count of
-    cluster primes up to x is O(x / (log x)^A).
+    cluster primes up to x is O(x / (log x)^A). -/
 
-/-- Elsholtz (2003): Improved bound with double-logarithmic decay.
+/-- Elsholtz (2003): Improved bound with double-logarithmic decay. -/
 
 /-
 ## Consequences of the Bounds

@@ -104,7 +104,7 @@
     ],
     "assumptions": "1 axiom: density_one_conjecture — asserts that the natural density of qualifying primes among all primes equals 1. Formally: for every k, there exists X such that for all x ≥ X, qualifyingPrimeCount(x) * (k+1) ≥ primeCount(x) * k.",
     "theoremCount": 35,
-    "definitionCount": 5
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "Erdős Problem #1059 asks whether infinitely many primes p satisfy the 'factorial-subtraction' property: every p - k! (with k! < p) is composite. The natural follow-up (OQ-01) asks: what fraction of all primes satisfy this property?\n\nThe probabilistic heuristic gives a compelling answer. For a prime p ∈ (l!, (l+1)!], exactly l+1 factorial differences must be checked. By the Prime Number Theorem, each p - k! is independently prime with probability ≈ 1/ln(p). Since l+1 = O(log p / log log p) and ln(p) grows faster, the expected number of 'bad' differences is O(log p / (log p · log log p)) = O(1/log log p) → 0. This suggests not just infinitely many qualifying primes, but density 1 among all primes.\n\nComputational evidence confirms this picture: among primes up to 769, six satisfy the property (101, 211, 461, 557, 673, 769). The first five are in the 'level 5' range (120, 720) = (5!, 6!], requiring 5–6 checks; the sixth (p = 769) is the first 'level 6' witness in (720, 5040) = (6!, 7!], requiring 7 checks. The formal bound factorialCheckCount(n) ≤ ⌊log₂ n⌋ + 2 proves that the number of checks grows only logarithmically.",
@@ -209,7 +209,7 @@
     ],
     "path": "Proofs/Erdos1059OQ01.lean",
     "sorries": 0,
-    "definitionCount": 5
+    "definitionCount": 6
   },
   "mainTheorems": [
     {

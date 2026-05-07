@@ -59,11 +59,11 @@
       "Theorem continuous_dependence_2d: for any ε > 0, threshold δ = ε·exp(-C·E(0)·T) gives W(0) ≤ δ implies W(t) ≤ ε, establishing Hadamard well-posedness"
     ],
     "dateAdded": "2026-02-28",
-    "lineCount": 21111,
+    "lineCount": 21110,
     "assumptions": "1 structure-encoded assumption: NSSolutionPair2D.stability_estimate (Ladyzhenskaya stability estimate W'(t) ≤ C·E(t)·W(t), the core PDE estimate — mathematically known but not formalized in this file)",
     "mathlib_version": "4.26.0",
-    "theoremCount": 845,
-    "definitionCount": 104
+    "theoremCount": 611,
+    "definitionCount": 100
   },
   "overview": {
     "historicalContext": "The theory of well-posedness for 2D Navier-Stokes equations has a rich history beginning with Jean Leray's pioneering 1934 paper, which established the existence of weak solutions in both 2D and 3D. For 2D, Leray showed that solutions remain regular for all time — a result that fails (or at least remains unproven) in 3D.\n\nThe concept of well-posedness itself was formalized by Jacques Hadamard in his 1902 lectures: a problem is well-posed if it has (1) existence, (2) uniqueness, and (3) continuous dependence on data. Hadamard argued that physically meaningful problems should satisfy all three criteria.\n\nOlga Ladyzhenskaya's landmark 1969 monograph 'The Mathematical Theory of Viscous Incompressible Flow' provided the definitive treatment of 2D well-posedness. Her key contribution was the Ladyzhenskaya inequality in 2D: $\\|u\\|_{L^4(\\mathbb{R}^2)} \\leq C \\|u\\|_{L^2}^{1/2} \\|\\nabla u\\|_{L^2}^{1/2}$, which gives the stability estimate $W'(t) \\leq C \\cdot E(t) \\cdot W(t)$ for the difference energy $W(t) = \\|u_1 - u_2\\|_{L^2}^2$. The critical feature of 2D: enstrophy $E(t) = \\|\\nabla u\\|_{L^2}^2$ is bounded by its initial value $E(0)$, making the Gronwall growth rate $K = C \\cdot E(0)$ finite.\n\nThomas Gronwall's 1919 inequality — if $u'(t) \\leq \\beta(t) u(t)$ then $u(t) \\leq u(0) \\exp(\\int_0^t \\beta)$ — is the analytic engine of the proof. Combined with bounded enstrophy, it yields exponential stability $W(t) \\leq W(0) e^{CE(0)t}$ and hence uniqueness.\n\nIn 3D, enstrophy could potentially blow up ($E(t) \\to \\infty$), making $K(t) = C \\cdot E(t)$ unbounded and the Gronwall argument ineffective. This is precisely the obstruction at the heart of the Clay Millennium Prize Problem: proving or disproving 3D global regularity. The 2D well-posedness result formalized here serves as a template showing exactly where the 3D argument breaks down.\n\nThis formalization in Lean 4 is novel: the `NSSolutionPair2D` structure encodes the Ladyzhenskaya stability estimate as a structural hypothesis, abstracting away the PDE-specific Sobolev space analysis (not yet available in Mathlib) and focusing on the Gronwall argument itself.",
@@ -204,10 +204,10 @@
       "TwoDimensionalGlobal"
     ],
     "namespace": "NavierStokesRegularity",
-    "lineCount": 21111,
+    "lineCount": 21110,
     "axiomCount": 0,
-    "theoremCount": 845,
-    "definitionCount": 104,
+    "theoremCount": 611,
+    "definitionCount": 100,
     "path": "Proofs/NavierStokes.lean",
     "sorries": 0
   },

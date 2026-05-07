@@ -205,7 +205,7 @@ def lehmerInnerStep (ahat bhat : ℕ) (M : CofactorMatrix) :
 def euclidStepMatrix (q : ℤ) : CofactorMatrix := ⟨0, 1, 1, -q⟩
 
 theorem euclidStepMatrix_det (q : ℤ) : (euclidStepMatrix q).det = -1 := by
-  simp [euclidStepMatrix, CofactorMatrix.det]; ring
+  simp [euclidStepMatrix, CofactorMatrix.det]
 
 /-- Run the inner Lehmer loop for at most `fuel` steps on approximations (â, b̂),
     accumulating cofactors into M. Returns the final cofactor matrix. -/
@@ -229,9 +229,7 @@ theorem lehmerInnerStep_det {ahat bhat : ℕ} {M : CofactorMatrix}
     (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
     M'.det = -M.det := by
   simp [lehmerInnerStep] at h
-  split at h <;> simp_all
-  split at h <;> simp_all
-  obtain ⟨_, _, rfl⟩ := h
+  obtain ⟨_, _, _, _, rfl⟩ := h
   simp [CofactorMatrix.det]
   ring
 
@@ -300,10 +298,10 @@ def topBits (n : ℕ) (w : ℕ) : ℕ × ℕ :=
     where 0 ≤ remainder < 2^shift. -/
 theorem topBits_approx (n w : ℕ) :
     n = (topBits n w).1 * 2 ^ (topBits n w).2 + n % 2 ^ (topBits n w).2 := by
-  simp [topBits]
-  split
-  · simp
-  · exact (Nat.div_add_mod n _).symm
+  by_cases h : Nat.log 2 n + 1 ≤ w
+  · simp [topBits, h]; omega
+  · simp [topBits, h]
+    exact (Nat.div_add_mod' n _).symm
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VII: THE LEHMER-SCHÖNHAGE HYBRID GCD
@@ -408,7 +406,7 @@ example : (euclidStepMatrix 3).det = -1 := by native_decide
 -- Verify top-bits extraction
 example : (topBits 255 8).1 = 255 := by native_decide
 example : (topBits 255 8).2 = 0 := by native_decide
-example : (topBits 1000 8).1 = 125 := by native_decide -- 1000 >> 3 = 125
+example : (topBits 1000 8).1 = 250 := by native_decide -- bits=10, shift=2, 1000/4=250
 
 -- Verify cofactor accumulation preserves det ±1
 -- Starting from Id (det=1), after 1 step det=-1, after 2 steps det=1, etc.
@@ -453,7 +451,7 @@ theorem lehmerCofactorSteps_pos {fuel ahat bhat : ℕ} {M M' : CofactorMatrix}
   simp [lehmerCofactors, lehmerCofactorSteps] at hne ⊢
   match hstep : lehmerInnerStep ahat bhat M with
   | none => simp [hstep] at hne
-  | some (ahat', bhat', M') => simp [hstep]; omega
+  | some (ahat', bhat', M') => simp
 
 /-! ## Summary
 

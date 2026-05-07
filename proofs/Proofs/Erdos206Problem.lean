@@ -142,7 +142,7 @@ def explicit_nongreedy_example_exists : Prop :=
 
     If greedy continued from R_1: 1/3 + 1/m needs 1/m < 11/24 - 1/3 = 3/24 = 1/8
     So greedy would give 1/3 + 1/9 = 4/9 ≈ 0.444
-    But 1/4 + 1/5 = 9/20 = 0.45 > 4/9
+    But 1/4 + 1/5 = 9/20 = 0.45 > 4/9 -/
 
 /- ## Part VII: Connection to Egyptian Fractions -/
 

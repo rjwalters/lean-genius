@@ -13,7 +13,7 @@
   - Equality characterizations for d = 1, 2, 3
   - d = 4 maximum bound (extending the d=1,2,3 pattern from parent)
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

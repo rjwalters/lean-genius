@@ -8,7 +8,7 @@
   - Routine: arithmetic about 2^n ± 3, convergence setup, logical implications
   - Transcendence → irrationality (follows from Mathlib's Transcendental.irrational)
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

@@ -760,19 +760,14 @@ example : (1 : ℝ) + 1 / 1200 = 1201 / 1200 := by norm_num
 - `stirling_step_lower`: 1/(12k²) - 1/(8k³) ≤ d_k [given step formula]
 
 **Remaining sorry (1 total):**
-- `stirling_step_formula`: d_k = (k+1/2)*log(1+1/k) - 1
-  This is a pure algebraic computation from the stirlingSeq definition.
-  Bottleneck: field_simp + ring doesn't handle sqrt algebraically.
-  The step bounds (upper/lower) are fully proved given this formula.
-
-**Note:** `stirling_first_correction` also has a sorry, but this is because
-it depends on `stirling_step_formula`. Once the step formula is proved,
-the full proof chain follows:
-  step_formula → step_upper/lower → Σd_k bounds → first_correction.
+- `stirling_first_correction`: needs the upper-half exp-Taylor bound
+  `|exp L − (1 + L)| ≤ L² · exp L / 2` together with `L ≤ 1/n` and `exp L ≤ 2`.
+  Everything else (step formula, telescoping bounds, partial-sum bounds,
+  the lower half of the absolute value, and the existence of the constant)
+  is proved.
 
 **Sorries at file level:**
-- `stirling_step_formula` (1 sorry, in private lemma)
-- `stirling_first_correction` (1 sorry, blocked by step formula)
+- `stirling_first_correction` (1 sorry, exp Taylor remainder bound)
 -/
 
 end StirlingExpansion

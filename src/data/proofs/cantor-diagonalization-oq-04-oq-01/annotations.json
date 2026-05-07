@@ -1,0 +1,187 @@
+[
+  {
+    "id": "ann-cantor-oq04-oq01-context",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Lawvere FPT for Setoids: Stepping Toward CCC Generality",
+    "content": "**Open question OQ-04-OQ-01**: can the retraction-version of Lawvere's fixed-point theorem be formalized beyond the Type category — in a general topos or cartesian closed category? This file gives the cleanest intermediate step: **replace strict Type equality with a `Setoid` equivalence relation**. The retraction condition relaxes from `decode (encode g) = g` (function-level equality) to the *pointwise setoid equivalence* `decode (encode g) y ≈ g y`, and the theorem still holds. Crucially, **`f` need NOT be a setoid morphism**: the fixed point exists for arbitrary functions $Y \\to Y$.",
+    "mathContext": "Lawvere's fixed-point theorem (1969) is the categorical heart of every diagonal argument: if $T : Y \\to Y^Y$ is *weakly point-surjective* (every $g : Y \\to Y$ is named by some $y_0$), then every $f : Y \\to Y$ has a fixed point. **Cantor's theorem**, **Russell's paradox**, **Gödel's incompleteness**, **Tarski's undefinability of truth**, and **Turing's halting problem** are all corollaries — each says some $Y$ *fails* to be Lawvere, in different settings (cardinality, expressibility, computability). The setoid version here lifts the result from `Type` to **setoids = preordered Type-valued structures with an equivalence relation**, the standard model of the *internal language of a topos* without quotient types. The discrete setoid recovers the original; richer setoids capture quotient-type analogues.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lawvere's fixed-point theorem (1969)",
+      "Cantor's diagonal argument",
+      "cartesian closed category (CCC)",
+      "topos theory and internal language",
+      "Setoid = type + equivalence relation",
+      "Russell, Gödel, Tarski, Turing as corollaries"
+    ],
+    "prerequisites": [
+      "Setoid equivalence relations",
+      "Lawvere FPT (Type version) — parent CantorDiagonalizationOQ04",
+      "encode/decode retract pair"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-codes-setoid",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 51, "endLine": 61 },
+    "type": "definition",
+    "title": "CodesEndomorphismsSetoid: A Pointwise-Equivalence Retract",
+    "content": "**`CodesEndomorphismsSetoid Y s`**: a structure with three fields — `encode : (Y → Y) → Y` (names a function), `decode : Y → (Y → Y)` (extracts a function), and `retract : ∀ g y, s.r (decode (encode g) y) (g y)`. The retract is **pointwise** in $y$ and uses the **setoid relation** `s.r`, not exact equality. This is strictly weaker than the parent's `decode (encode g) = g` (function-level equality, which by funext = pointwise *equality*).",
+    "mathContext": "**Three layers of weakening** as we move from Type to Setoid: (1) function-level equality $f = g$; (2) pointwise equality $\\forall y, f(y) = g(y)$ — equivalent to (1) by `funext`; (3) **pointwise setoid equivalence** $\\forall y, f(y) \\approx g(y)$ — strictly weaker. The setoid version lives at layer (3). Categorically, this corresponds to working in the **category of setoids** rather than `Type`: morphisms are setoid-respecting functions, but the *retraction* doesn't need to factor through that quotient — only the pointwise relation matters.",
+    "significance": "key",
+    "relatedConcepts": [
+      "function extensionality (funext)",
+      "pointwise vs functional equality",
+      "Setoid.r (the underlying equivalence relation)",
+      "category of setoids"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Setoid.Basic",
+      "structure declarations in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-main",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 67, "endLine": 79 },
+    "type": "insight",
+    "title": "Main Theorem: Setoid Fixed Point in Three Lines",
+    "content": "**`lawvere_fixpoint_setoid`**: if `Y` codes its endomorphisms up to setoid `s`, then for every $f : Y \\to Y$ there exists $p$ with $f(p) \\approx p$. The **proof is three lines**: (1) define the diagonal $g(y) = f(\\text{decode}(y, y))$; (2) let $y_0 = \\text{encode}(g)$; (3) the witness is $p = \\text{decode}(y_0, y_0)$, with proof $f(p) \\approx p$ obtained by symmetry from the retract. The proof's brevity is the point: **the diagonal construction is identical to the Type version** — only the final setoid-symmetry step changes.",
+    "mathContext": "The 'diagonal construction' is the canonical anti-fixed-point engine: $g(y) = f(\\text{decode}(y, y))$ applies $f$ to the function named by $y$ at $y$ itself. Setting $y_0 = \\text{encode}(g)$ gives $\\text{decode}(y_0, y_0) \\approx g(y_0) = f(\\text{decode}(y_0, y_0))$ — i.e., $p \\approx f(p)$, hence $f(p) \\approx p$ by `Setoid.iseqv.symm`. **Cantor's argument** is the contrapositive applied to $f = \\text{not}$: in $\\text{Prop}$, no element can satisfy $\\neg P \\approx P$, so $\\text{Prop}$ cannot encode all its endomorphisms in the surjective sense. The setoid version inherits this contrapositive structure unchanged.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal construction",
+      "fixed-point combinator (Y combinator analogy)",
+      "self-reference and incompleteness",
+      "Setoid.iseqv.symm"
+    ],
+    "prerequisites": [
+      "CodesEndomorphismsSetoid structure",
+      "anonymous constructor syntax ⟨..., ...⟩",
+      "let-bindings in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-contrapositive",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 85, "endLine": 89 },
+    "type": "technique",
+    "title": "Contrapositive: Fixed-Point-Free f Blocks Coding",
+    "content": "**`no_coding_setoid_if_fixpoint_free`**: if some $f : Y \\to Y$ has *no* setoid fixed point ($\\forall y, \\neg (f(y) \\approx y)$), then `Y` cannot code its endomorphisms. The proof is one line: any coding `c` would yield a fixed point by `lawvere_fixpoint_setoid`, contradicting the hypothesis.",
+    "mathContext": "**This is the contrapositive form** that powers all the impossibility results: Cantor (no surjection $Y \\to 2^Y$), Gödel (no consistent recursive theory of arithmetic decides itself), Tarski (no truth predicate within the language). The **structural pattern**: exhibit a fixed-point-free $f$ on the alleged 'self-encoding' codomain, then conclude no encoding can exist. For $\\text{Bool}$: $f = \\text{not}$. For $\\text{Prop}$: $f = \\neg$. For $\\mathbb{N}$ mod parity: $f = (+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive proof pattern",
+      "Cantor's diagonal as a corollary",
+      "Gödel's incompleteness via Lawvere",
+      "Tarski's undefinability of truth"
+    ],
+    "prerequisites": [
+      "lawvere_fixpoint_setoid",
+      "negation of existential"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-discrete",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 95, "endLine": 114 },
+    "type": "technique",
+    "title": "Discrete Setoid: Recovering the Type Version Exactly",
+    "content": "**`discreteSetoid Y`**: the finest setoid on `Y`, where $a \\approx b \\Leftrightarrow a = b$. **`typeToSetoidCoding`**: any Type-level coding (`decode (encode g) = g`) lifts to a setoid coding under `discreteSetoid`, with `retract` instantiated by `congr_fun (retract g) y`. **`lawvere_type_from_setoid`**: applying `lawvere_fixpoint_setoid` to this discrete coding **recovers** the Type-version fixed-point theorem — i.e., $\\exists y, f(y) = y$, since setoid equivalence under `discreteSetoid` is just equality. This proves the new theorem is a **strict generalization**, not a parallel result.",
+    "mathContext": "**The discrete setoid** $(a \\approx b \\Leftrightarrow a = b)$ is the *initial* object in the category of setoids on `Y`: every other setoid factors through it via the unique surjection. So 'discrete-setoid Lawvere' = 'Type-level Lawvere' is structurally guaranteed. The fact that the proof goes through verbatim — `congr_fun` translates function-equality to pointwise-equality, which under `discreteSetoid` is the setoid relation itself — confirms that the setoid version is a **conservative generalization**: it adds expressive power without losing any old theorems.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "discrete setoid (≈ ≡ =)",
+      "conservative generalization",
+      "congr_fun for pointwise equality",
+      "category of setoids: initial object"
+    ],
+    "prerequisites": [
+      "eq_equivalence",
+      "Eq.refl, Eq.symm, Eq.trans"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-bool",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 120, "endLine": 127 },
+    "type": "insight",
+    "title": "Bool Cannot Code Its Endomorphisms",
+    "content": "**`bool_not_no_fixed_point`**: $\\forall p : \\text{Bool}, \\neg p \\neq p$, closed by `decide`. **`cannot_code_endomorphisms_bool_setoid`**: applies `no_coding_setoid_if_fixpoint_free` to $\\text{Bool}$ with $f = \\lambda b. \\neg b$, concluding that **no encoding** $(\\text{Bool} \\to \\text{Bool}) \\to \\text{Bool}$ admits a Type-level retract — even though there are only $2^2 = 4$ functions $\\text{Bool} \\to \\text{Bool}$ and $\\text{Bool}$ has 2 elements, so the function space is *not* injectively codable in $\\text{Bool}$.",
+    "mathContext": "This is **the simplest concrete non-Lawvere example**: $\\text{Bool}$ fails to code its 4-element endomorphism set into its 2 elements, witnessed by the fixed-point-free `not`. The result has the flavor of a **finite Cantor**: $|2^Y| > |Y|$ for $|Y| = 2$ (4 > 2), and Lawvere's theorem strengthens the cardinality argument to a structural one: it's not just that the encoding can't be a *bijection*, but that it can't even be a *retract*. Compare with $\\mathbb{N}$: there are countably many endomorphisms $\\mathbb{N} \\to \\mathbb{N}$ (continuum many, in fact), so the cardinality obstruction also blocks coding — but Lawvere gives a constructive obstruction even when the cardinalities match.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bool.not as fixed-point-free involution",
+      "decide tactic",
+      "finite Cantor / cardinality vs structural obstruction",
+      "non-Lawvere objects"
+    ],
+    "prerequisites": [
+      "Bool, Bool.not, decide tactic",
+      "no_coding_setoid_if_fixpoint_free"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-cantor-pred",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 133, "endLine": 142 },
+    "type": "technique",
+    "title": "Cantor's Theorem in the Setoid Setting (No Surjection Y → Y → Prop)",
+    "content": "**`cantor_setoid_no_surjection`**: there is no function $h : Y \\to (Y \\to \\text{Prop})$ that is *point-surjective* (every predicate $P : Y \\to \\text{Prop}$ has a name $y$ with $h(y) = P$). The proof is the classical Russell trick: take $D = \\lambda y. \\neg h(y)(y)$, find $y_0$ with $h(y_0) = D$, then $h(y_0)(y_0) \\Leftrightarrow \\neg h(y_0)(y_0)$ is contradictory. The key intermediate step is `iff_of_eq (congr_fun hy₀ y₀)` — converting the function-equality $h(y_0) = D$ into a pointwise iff at $y_0$.",
+    "mathContext": "**Cantor's theorem** in its purely logical form: $|Y| < |2^Y|$ for any set $Y$, here recast as 'no point-surjection $Y \\to (Y \\to \\text{Prop})$'. The construction is **Russell's paradox** stripped of typing: $D(y) = \\neg h(y)(y)$ is the diagonal predicate, and any $y_0$ with $h(y_0) = D$ leads to $D(y_0) \\Leftrightarrow \\neg D(y_0)$. The Lean proof does the entire argument in 5 lines of structured term-mode tactic: `intro`, `let`, `obtain`, `have`, `exact absurd`. Note the proof works **in any Type universe** — Prop here is impredicatively absorbed into $Y \\to \\text{Prop}$ via `congr_fun`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cantor's theorem (1891)",
+      "Russell's paradox (1901)",
+      "diagonal predicate D(y) = ¬h(y)(y)",
+      "iff_of_eq, congr_fun",
+      "absurd from contradictory iff"
+    ],
+    "prerequisites": [
+      "function extensionality at the iff level",
+      "iff_of_eq, absurd"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-parity",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 148, "endLine": 164 },
+    "type": "insight",
+    "title": "ℕ Parity Setoid: Encoding Fails Even Modulo 2",
+    "content": "**`paritySetoidN`**: $a \\approx b \\Leftrightarrow a \\bmod 2 = b \\bmod 2$ — the setoid quotient $\\mathbb{N} / 2 \\mathbb{N} \\cong \\text{Bool}$. **`succ_no_parity_fixpoint`**: $\\forall n, \\neg (n+1 \\equiv n \\pmod 2)$, by `omega`. **`cannot_code_endomorphisms_nat_parity`**: $\\mathbb{N}$ cannot code its endomorphisms up to parity — even though $\\mathbb{N}$ is countably infinite (so cardinality is no obstruction in the trivial sense), the parity-shifting `succ` provides a fixed-point-free witness that blocks any coherent encoding.",
+    "mathContext": "**This is the most subtle example**: cardinality $|\\mathbb{N}| = |\\mathbb{N}^{\\mathbb{N}}|$ is irrelevant because we're working *modulo parity*, where the effective cardinality is 2. The example shows Lawvere's theorem is **sensitive to the setoid structure**, not just the underlying type's cardinality. **Generalization**: for any $\\mathbb{N}/k\\mathbb{N}$ with $k \\geq 2$, the function $n \\mapsto n+1$ is fixed-point-free modulo $k$, so $\\mathbb{N}$ cannot code its endomorphisms up to mod-$k$. This is a one-parameter family of non-Lawvere setoids on $\\mathbb{N}$ — and the parity case ($k=2$) is the simplest.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity setoid ℕ/2ℤ",
+      "succ as fixed-point-free shift",
+      "omega tactic for mod arithmetic",
+      "non-Lawvere setoids beyond cardinality"
+    ],
+    "prerequisites": [
+      "Nat.mod, omega tactic",
+      "Setoid construction from a relation"
+    ]
+  },
+  {
+    "id": "ann-cantor-oq04-oq01-end",
+    "proofId": "cantor-diagonalization-oq-04-oq-01",
+    "range": { "startLine": 166, "endLine": 166 },
+    "type": "context",
+    "title": "Closing: Toward a Full CCC Formalization",
+    "content": "Closes the namespace. The 8 theorems together establish: (1) Lawvere's FPT for setoids, (2) its contrapositive, (3) recovery of the Type version, (4) two concrete non-Lawvere setoids ($\\text{Bool}$, $\\mathbb{N}$ mod parity), and (5) Cantor's theorem in the setoid setting. The remaining gap to a full CCC formalization is replacing `(Y → Y)` with the internal-hom $[Y, Y]$ in a CCC and re-stating the retract using the evaluation morphism — a substantial categorical refactor left to OQ-04-OQ-01-OQ-XX.",
+    "mathContext": "The setoid layer is the **bridge** between Lean's Type-level Lawvere and a fully categorical Lawvere in any CCC. **Mathlib's `CartesianClosed`** typeclass would be the natural target: it provides $\\text{ihom}$, evaluation, and currying as morphisms, but applying Lawvere requires either (a) working with global elements (morphisms from the terminal object) — which lose generality — or (b) full internal-language reasoning, which Lean doesn't natively support without setoid (or quotient) machinery. The setoid version is therefore the *maximal* Lawvere FPT achievable purely in Lean's term language.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib CartesianClosed typeclass",
+      "internal-hom and evaluation morphism",
+      "global elements vs general points",
+      "setoid as bridge to topos theory"
+    ],
+    "prerequisites": [
+      "all preceding theorems",
+      "categorical CCC structure (for OQ-XX)"
+    ]
+  }
+]

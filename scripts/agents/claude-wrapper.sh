@@ -501,8 +501,14 @@ run_claude_once() {
     local tmpfile
     tmpfile=$(mktemp)
 
-    # Run in background so we can monitor for startup hangs
-    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
+    # Run in background so we can monitor for startup hangs.
+    # Default to standard-context Opus 4.7. Without --model the CLI auto-selects
+    # claude-opus-4-7[1m] when the prompt + system context is large (CLAUDE.md
+    # alone is enough), and accounts without the 1M-context entitlement reject
+    # the request with `API Error: Extra usage is required for 1M context`.
+    # Override via CLAUDE_MODEL=<other-model> for accounts that do have it.
+    local model="${CLAUDE_MODEL:-claude-opus-4-7}"
+    timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions --model "$model" "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
     local timeout_pid=$!
 
     # Find the actual claude child process (timeout -> claude)

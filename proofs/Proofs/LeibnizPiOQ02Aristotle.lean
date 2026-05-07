@@ -9,7 +9,7 @@
   - NOT numerical bounds on infinite sums (catalan_bounds — too complex for Aristotle)
   - Convergence theorems accessible via Mathlib's alternating series results
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (5):
   - alternating_harmonic_series_ari: altHarmonicPartialSum → log 2

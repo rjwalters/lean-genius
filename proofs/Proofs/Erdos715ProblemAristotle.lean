@@ -10,7 +10,7 @@
   - Finite decidable instances: K4 regularity and minimality
   - Combinatorial parity argument: regularity implies even degree sum
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (3):
   - K4_is_3_regular_ari: every vertex of K4 has degree 3 (decidable on Fin 4)

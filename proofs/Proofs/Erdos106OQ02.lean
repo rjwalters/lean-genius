@@ -614,6 +614,91 @@ theorem no_rotation_help_at_2 : f_rot 2 = g_ap 2 := by
   rw [h, bku_theorem_ap 1 (by omega)]
   norm_num
 
+/-
+## Boundary Cases: n = 0 and Dichotomy of the Open Question
+
+The empty packing (Fin 0 → RotatedSquare) gives the achievable-sum singleton {0},
+so f_rot(0) = g_ap(0) = 0 unconditionally. Combined with agree_at_1 and
+agree_at_perfect_squares, this lets us tighten the open question: if rotation
+ever helps, it must help at some n ≥ 2, and the n ≥ 2 form is equivalent to
+the unrestricted form.
+-/
+
+/-- The empty general packing of 0 squares (sumSides = 0). -/
+private def emptyGeneralPacking : GeneralPacking 0 where
+  squares := Fin.elim0
+  contained := fun i => i.elim0
+  disjoint := fun i => i.elim0
+
+/-- The empty axis-parallel packing of 0 squares. -/
+private def emptyAxisParallelPacking : AxisParallelPacking 0 where
+  toGeneralPacking := emptyGeneralPacking
+  axisParallel := fun i => i.elim0
+
+/-- The empty general packing has sumSides = 0. -/
+private lemma emptyGeneralPacking_sumSides : emptyGeneralPacking.sumSides = 0 := by
+  show ∑ i : Fin 0, (emptyGeneralPacking.squares i).side = 0
+  simp
+
+/-- The empty axis-parallel packing has sumSides = 0. -/
+private lemma emptyAxisParallelPacking_sumSides : emptyAxisParallelPacking.sumSides = 0 := by
+  show emptyAxisParallelPacking.toGeneralPacking.sumSides = 0
+  exact emptyGeneralPacking_sumSides
+
+/-- f_rot(0) = 0: the only general packing of 0 squares has sumSides = 0. -/
+theorem f_rot_zero : f_rot 0 = 0 := by
+  apply le_antisymm
+  · -- Upper bound: f_rot 0 ≤ √0 = 0
+    have h := f_rot_bounded 0
+    simp at h
+    exact h
+  · -- Lower bound: 0 = sumSides of the empty packing is in the set
+    apply le_csSup (f_rot_set_bddAbove 0)
+    exact ⟨emptyGeneralPacking, emptyGeneralPacking_sumSides⟩
+
+/-- g_ap(0) = 0: the only AP packing of 0 squares has sumSides = 0. -/
+theorem g_ap_zero : g_ap 0 = 0 := by
+  apply le_antisymm
+  · -- g_ap 0 ≤ f_rot 0 = 0
+    have h := g_ap_le_f_rot 0
+    rw [f_rot_zero] at h
+    exact h
+  · -- 0 ∈ AP achievable set via empty packing
+    apply le_csSup
+    · exact (f_rot_set_bddAbove 0).mono (achievable_sums_subset 0)
+    · exact ⟨emptyAxisParallelPacking, emptyAxisParallelPacking_sumSides⟩
+
+/-- At n = 0, both functions agree: f_rot(0) = g_ap(0) = 0. -/
+theorem agree_at_0 : f_rot 0 = g_ap 0 := by
+  rw [f_rot_zero, g_ap_zero]
+
+/-- The open question is genuinely a dichotomy: rotation either helps somewhere
+    or never helps. -/
+theorem rotation_helps_iff_not_never_helps :
+    rotationHelps ↔ ¬ rotationNeverHelps := by
+  unfold rotationHelps rotationNeverHelps
+  constructor
+  · rintro ⟨n, hn⟩ h
+    exact absurd (h n) (ne_of_gt hn)
+  · intro h
+    push_neg at h
+    obtain ⟨n, hn⟩ := h
+    exact ⟨n, lt_of_le_of_ne (g_ap_le_f_rot n) (Ne.symm hn)⟩
+
+/-- The "rotation helps with witness ≥ 2" form is equivalent to the unrestricted form.
+    Combines agree_at_0 and agree_at_1: rotation cannot help at n ∈ {0, 1}. -/
+theorem axisParallelSuboptimal_iff_rotationHelps :
+    axisParallelSuboptimal ↔ rotationHelps := by
+  unfold axisParallelSuboptimal rotationHelps
+  refine ⟨fun ⟨n, _, hn⟩ => ⟨n, hn⟩, ?_⟩
+  rintro ⟨n, hn⟩
+  refine ⟨n, ?_, hn⟩
+  by_contra h
+  push_neg at h
+  interval_cases n
+  · exact absurd hn (by rw [agree_at_0]; exact lt_irrefl _)
+  · exact absurd hn (by rw [agree_at_1]; exact lt_irrefl _)
+
 -- ============================================================================
 -- § TIGHT BOUNDS AT k²+1: ROTATION BENEFIT IN [0, 1)
 -- ============================================================================

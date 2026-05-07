@@ -23,7 +23,7 @@
     "assumptions": "None. Constructive core (Parts I-V) uses no classical axioms. Endpoint convergence (Part VI) uses Classical.choice via Mathlib's tendsto_atTop_ciSup (completeness of \u211d). Root theorem (Part VII) uses Continuous.tendsto.",
     "lineCount": 308,
     "theoremCount": 13,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "originalContributions": [
       "paramBisect: computable (non-noncomputable) bisection parameterized by explicit choice oracle",
       "paramBisect_width: exact width formula (b-a)/2^n for any choice sequence \u2014 no classical logic",
@@ -148,7 +148,7 @@
   "leanFile": {
     "path": "Proofs/IntermediateValueTheoremOQ02OQ03.lean",
     "theoremCount": 13,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "axiomCount": 0,
     "lineCount": 308,
     "sorries": 0
@@ -165,5 +165,6 @@
       "Constructive IVT over computable reals"
     ],
     "goal": "Identify and formalize the exact classical boundary in constructive IVT proofs"
-  }
+  },
+  "sorries": 0
 }

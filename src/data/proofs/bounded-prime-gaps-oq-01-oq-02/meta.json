@@ -20,6 +20,7 @@
     "axiomCount": 1,
     "lineCount": 219,
     "theoremCount": 25,
+    "definitionCount": 3,
     "assumptions": "1 axiom: maynard_tao_sieve_eh \u2014 the EH-conditional Maynard-Tao sieve result: for any admissible 5-tuple H with all elements \u2264 D, infinitely many prime gaps \u2264 D exist. This axiom encodes the Elliott-Halberstam conjecture (distribution of primes in APs up to modulus x^{1/2}) combined with the Maynard-Tao sieve framework.",
     "mathlibDependencies": [
       {
@@ -132,9 +133,11 @@
   ],
   "sorries": 0,
   "leanFile": {
+    "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
     "axiomCount": 0,
     "theoremCount": 25,
     "lineCount": 219,
-    "sorries": 0
+    "sorries": 0,
+    "definitionCount": 3
   }
 }

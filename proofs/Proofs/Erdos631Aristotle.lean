@@ -8,7 +8,7 @@
   - NOT deep results about planar graphs or list coloring conjecture
   - Monotonicity of k-choosability: a well-defined predicate about list colorings
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (1):
   - choosable_monotone_ari: IsKChoosable G k → IsKChoosable G (k+1)

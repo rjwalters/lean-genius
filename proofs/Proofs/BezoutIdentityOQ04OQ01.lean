@@ -73,6 +73,22 @@ theorem IsUnimodular.mul {n : Type*} [Fintype n] [DecidableEq n]
   rw [det_mul, Int.natAbs_mul]
   simp [hM, hN]
 
+/-- The transpose of a unimodular matrix is unimodular.
+    Follows from `det Mᵀ = det M`. -/
+theorem IsUnimodular.transpose {n : Type*} [Fintype n] [DecidableEq n]
+    {M : Matrix n n ℤ} (hM : IsUnimodular M) : IsUnimodular Mᵀ := by
+  rcases hM with h | h
+  · left; rw [Matrix.det_transpose]; exact h
+  · right; rw [Matrix.det_transpose]; exact h
+
+/-- A unimodular matrix has nonzero determinant.
+    Immediate from `det = ±1`. -/
+theorem IsUnimodular.det_ne_zero {n : Type*} [Fintype n] [DecidableEq n]
+    {M : Matrix n n ℤ} (hM : IsUnimodular M) : M.det ≠ 0 := by
+  rcases hM with h | h
+  · rw [h]; norm_num
+  · rw [h]; norm_num
+
 /-! ## Smith Normal Form Structure -/
 
 /-- Smith Normal Form decomposition of an m × n integer matrix.
@@ -129,6 +145,26 @@ This is proved constructively via the Euclidean algorithm on matrix entries
     decreases when step 4 is needed, and ℤ is well-ordered on |·|. -/
 axiom snf_exists (m n : ℕ) (A : Matrix (Fin m) (Fin n) ℤ) :
     ∃ snf : SmithNormalForm m n, snf.isDecompOf A
+
+/-- **Constructive special case**: The zero matrix is its own SNF
+    with U = V = I and D = 0 (no Euclidean reduction needed).
+    All invariant factors are zero, satisfying the divisibility chain
+    vacuously (0 ∣ 0). -/
+theorem snf_exists_zero (m n : ℕ) :
+    ∃ snf : SmithNormalForm m n,
+      snf.isDecompOf (0 : Matrix (Fin m) (Fin n) ℤ) := by
+  refine ⟨{
+    U := (1 : Matrix (Fin m) (Fin m) ℤ)
+    D := (0 : Matrix (Fin m) (Fin n) ℤ)
+    V := (1 : Matrix (Fin n) (Fin n) ℤ)
+    hU := isUnimodular_one
+    hV := isUnimodular_one
+    hD_diag := fun _ _ _ => Matrix.zero_apply _ _
+    hD_div := fun _ _ _ _ _ _ => by simp }, ?_⟩
+  -- A = 0 = 1 * 0 * 1
+  show (0 : Matrix (Fin m) (Fin n) ℤ) =
+    (1 : Matrix (Fin m) (Fin m) ℤ) * 0 * (1 : Matrix (Fin n) (Fin n) ℤ)
+  rw [Matrix.one_mul, Matrix.zero_mul]
 
 /-! ## Diagonal Entry Extraction -/
 
@@ -302,6 +338,21 @@ theorem intNullSpace_smul {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
   simp only [intNullSpace, Set.mem_setOf_eq] at *
   rw [mulVec_smul, hx, smul_zero]
 
+/-- The null space is closed under negation. -/
+theorem intNullSpace_neg {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
+    {x : Fin n → ℤ} (hx : x ∈ intNullSpace A) :
+    (-x) ∈ intNullSpace A := by
+  simp only [intNullSpace, Set.mem_setOf_eq] at *
+  rw [mulVec_neg, hx, neg_zero]
+
+/-- The null space is closed under subtraction.
+    Combines closure under addition and negation: x − y = x + (−y). -/
+theorem intNullSpace_sub {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
+    {x y : Fin n → ℤ} (hx : x ∈ intNullSpace A) (hy : y ∈ intNullSpace A) :
+    (x - y) ∈ intNullSpace A := by
+  rw [sub_eq_add_neg]
+  exact intNullSpace_add A hx (intNullSpace_neg A hy)
+
 /-! ## Solution Lattice Structure
 
 When Ax = b has at least one solution x₀, the full solution set
@@ -389,8 +440,20 @@ via Smith Normal Form?"
 
 ## Sorries
 
-- snf_1x2_invariant_factor: connecting 1×2 SNF to gcd (requires manipulating
-  the specific SNF decomposition for 1×2 matrices)
+None — every theorem is fully proved. The two axioms are stated assumptions only.
+
+## Algebraic Closure Properties
+
+In addition to the SNF results, the file establishes:
+
+- **Unimodular closure**: identity, product, and **transpose** are unimodular;
+  unimodular matrices have nonzero determinant (`IsUnimodular.det_ne_zero`).
+- **Null space closure**: `intNullSpace A` is closed under addition,
+  scalar multiplication, **negation**, and **subtraction** — confirming
+  the ℤ-submodule structure beyond what's needed for the affine-lattice
+  characterization.
+- **Constructive special case**: `snf_exists_zero` proves SNF directly
+  (no axiom) for the zero matrix, with `D = 0` and `U = V = I`.
 
 These axioms encode well-known, fully-proved mathematical results.
 The constructive proofs would require implementing the full row/column
@@ -399,9 +462,12 @@ reduction algorithm for ℤ-matrices, which is a substantial infrastructure task
 
 #check @snf_exists
 #check @snf_solvability_criterion
+#check @snf_exists_zero
 #check bezout_from_snf
 #check solution_iff_particular_plus_null
 #check three_var_example
 #check two_var_no_solution
+#check @IsUnimodular.transpose
+#check @intNullSpace_sub
 
 end BezoutIdentityOQ04OQ01

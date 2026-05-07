@@ -9,7 +9,7 @@
   - AlmostSurely-based theorems (AlmostSurely unfolds to ∀ ε > 0, ∃ N, ∀ n ≥ N, True — trivial)
   - Logical implication and structural theorems
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 -/
 import Proofs.Erdos625Problem
 import Mathlib

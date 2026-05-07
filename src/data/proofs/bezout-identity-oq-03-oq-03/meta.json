@@ -19,7 +19,7 @@
         "sorries": 0,
         "axiomCount": 0,
         "lineCount": 187,
-        "theoremCount": 7,
+        "theoremCount": 8,
         "definitionCount": 1,
         "assumptions": ""
     },
@@ -74,22 +74,33 @@
     },
     "crossReferences": [
         {
-            "proofId": "bezout-identity-oq-03",
-            "relationship": "extends",
-            "description": "BezoutIdentityOQ03 proves the two-variable CRT via Bézout; this entry generalizes to n variables."
+            "id": "bezout-identity-oq-03",
+            "relationship": "parent",
+            "description": "BezoutIdentityOQ03 proves the two-variable CRT via Bézout; this entry generalizes to n variables by repeatedly invoking the two-variable Int.gcd_eq_gcd_ab."
         },
         {
-            "proofId": "bezout-identity-oq-03-oq-01-oq-01",
+            "id": "bezout-identity-oq-03-oq-01-oq-01",
+            "relationship": "sibling",
+            "description": "BezoutIdentityOQ03OQ01OQ01 proves the k-fold CRT ring isomorphism; same inductive binary-decomposition pattern from two-variable to n-variable."
+        },
+        {
+            "id": "bezout-identity",
+            "relationship": "ancestor",
+            "description": "Root Bézout identity entry. The general principle that ℤ is a PID, made constructive and computable, originates here."
+        },
+        {
+            "id": "gcd-algorithm",
             "relationship": "related",
-            "description": "BezoutIdentityOQ03OQ01OQ01 proves the k-fold CRT ring isomorphism; same inductive CRT structure."
+            "description": "Euclidean / extended-Euclidean GCD computation. The Bézout coefficients (u, v) used in the inductive step come from this constructive algorithm."
         }
     ],
     "leanFile": {
         "path": "Proofs/BezoutIdentityOQ03OQ03.lean",
         "axiomCount": 0,
         "lineCount": 187,
-        "theoremCount": 7,
+        "theoremCount": 8,
         "definitionCount": 1,
         "sorries": 0
-    }
+    },
+  "sorries": 0
 }

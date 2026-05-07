@@ -1,1 +1,165 @@
-[]
+[
+  {
+    "id": "header-converse-direction",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 26
+    },
+    "type": "context",
+    "title": "Closing the Loop: The Converse to the Cyclic Vector Theorem",
+    "content": "The parent file `CayleyHamiltonCyclicVectorAllFields.lean` proved the *forward* direction: every nonderogatory matrix has a cyclic vector. That direction is the difficult one — its proof uses primary decomposition over an arbitrary field and is essentially the heart of rational canonical form. This file proves the *converse*, which is structurally simpler but logically essential: if M has a cyclic vector, M must be nonderogatory. Combined, the two directions yield the biconditional `IsNonderogatory M ↔ ∃ v, IsCyclicVector M v`, completing the cyclic-vector characterization of nonderogatory matrices over any field. The header docstring lays out the four-step proof skeleton: (1) divisibility gives deg(minpoly) ≤ n, (2) cyclicity gives deg(minpoly) ≥ n, (3) both monic of degree n with one dividing the other, hence equal.",
+    "mathContext": "Statement: $\\text{IsCyclicVector}(M, v) \\Rightarrow \\text{IsNonderogatory}(M)$, where IsNonderogatory means $\\mu_M = \\chi_M$. Combined with parent: $\\text{IsNonderogatory}(M) \\iff \\exists v,\\, \\text{IsCyclicVector}(M, v)$ over any field $K$.",
+    "significance": "context",
+    "prerequisites": [
+      "minimal polynomial μ_M",
+      "characteristic polynomial χ_M",
+      "cyclic vector definition",
+      "Cayley–Hamilton theorem"
+    ],
+    "relatedConcepts": [
+      "rational canonical form",
+      "companion matrix",
+      "primary decomposition",
+      "K[X]-module structure on Kⁿ"
+    ]
+  },
+  {
+    "id": "step-1-divisibility-bound",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 62
+    },
+    "type": "technique",
+    "title": "Step 1: Cayley–Hamilton Gives deg(μ) ≤ n",
+    "content": "The first half of the degree squeeze comes from Cayley–Hamilton via Mathlib's `Matrix.aeval_self_charpoly` (which states $\\chi_M(M) = 0$ in matrix form). Feeding this into `minpoly.dvd K M` produces `hdvd : minpoly K M ∣ M.charpoly`. Then `Polynomial.natDegree_le_of_dvd hdvd hchar_ne` gives `(minpoly K M).natDegree ≤ M.charpoly.natDegree`. Combined with `Matrix.charpoly_natDegree_eq_dim` (degree of charpoly is the matrix dimension n) and `Fintype.card_fin`, this yields `(minpoly K M).natDegree ≤ n`. This step uses *only* Cayley–Hamilton — no cyclicity needed yet.",
+    "mathContext": "$\\chi_M(M) = 0$ (Cayley–Hamilton) $\\Rightarrow \\mu_M \\mid \\chi_M$ (universal property of minimal polynomial). Since $\\deg \\chi_M = n$ and $\\chi_M$ is nonzero, $\\deg \\mu_M \\leq n$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Cayley–Hamilton theorem",
+      "minpoly.dvd: minpoly divides any annihilator",
+      "Matrix.charpoly_natDegree_eq_dim",
+      "Polynomial.natDegree_le_of_dvd"
+    ],
+    "relatedConcepts": [
+      "minimal polynomial as monic generator of annihilator ideal",
+      "universal property of minimal polynomial",
+      "matrix-form Cayley–Hamilton: aeval_self_charpoly"
+    ]
+  },
+  {
+    "id": "step-2-cyclic-forces-deg-n",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "Step 2: Cyclic Vector Forces deg(μ) ≥ n via Contradiction",
+    "content": "The second half of the squeeze is where the cyclic vector hypothesis actually does work. The trick: minpoly applied to M is the zero matrix (`minpoly.aeval K M`), so `(aeval M (minpoly K M)).mulVec v = 0` for any vector v — including the cyclic vector. Now `IsCyclicVector M v` says: any polynomial p of degree < n with `p(M)·v = 0` must be the zero polynomial. So if `(minpoly K M).natDegree < n`, then minpoly K M would equal 0 — contradicting `minpoly.ne_zero (Matrix.isIntegral M)`. The proof closes this gap with `by_contra hlt; push_neg at hlt; exact absurd (hcyc (minpoly K M) hlt hann) (minpoly.ne_zero ...)`. The cyclic vector v is essentially testing the minimal polynomial, and the only way a low-degree minpoly could annihilate v is by being zero — which it isn't.",
+    "mathContext": "Cyclic-vector definition: $\\forall p \\in K[X],\\ \\deg p < n \\land p(M) \\cdot v = 0 \\Rightarrow p = 0$. Apply to $p = \\mu_M$: $p(M) = 0$ as a matrix, so $p(M) \\cdot v = 0$. If $\\deg p < n$ then $p = 0$. Since $\\mu_M \\neq 0$ (matrix is integral), $\\deg \\mu_M \\geq n$.",
+    "significance": "key",
+    "prerequisites": [
+      "cyclic vector definition: no nonzero low-degree annihilator on v",
+      "minpoly.aeval: μ_M(M) = 0 as a matrix",
+      "minpoly.ne_zero: μ_M ≠ 0 for integral elements",
+      "Matrix.isIntegral: matrices are integral over the base field"
+    ],
+    "relatedConcepts": [
+      "cyclic vector as 'witness' for minimal polynomial",
+      "K[X]-module structure: K[X]·v ⊂ Kⁿ",
+      "equivalence of K[M]·v = Kⁿ and dim K[M] = n"
+    ]
+  },
+  {
+    "id": "step-3-monic-quotient-equals-one",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 74,
+      "endLine": 95
+    },
+    "type": "technique",
+    "title": "Step 3: Two Monics, Same Degree, One Divides the Other → Equal",
+    "content": "Once `(minpoly K M).natDegree = n` and `M.charpoly.natDegree = n`, we have two monic polynomials of the same degree where one divides the other. The proof writes `M.charpoly = minpoly K M * r` (extracting the quotient `r` from `hdvd`), then uses three Polynomial lemmas to nail down `r = 1`: (1) `Polynomial.Monic.of_mul_monic_left` shows r is monic (the product is monic and the left factor is monic, so the right factor is monic); (2) `Polynomial.natDegree_mul` gives `deg(minpoly · r) = deg(minpoly) + deg(r)`; combined with the n + 0 = n arithmetic, `deg(r) = 0`; (3) `Polynomial.eq_C_of_natDegree_eq_zero` shows `r = C(r.coeff 0)`, and since r is monic, `r.coeff 0 = 1`, so `r = C(1) = 1` via `map_one`. Final rewrite: `M.charpoly = minpoly K M * 1 = minpoly K M`, which after `mul_one` gives `IsNonderogatory M`.",
+    "mathContext": "Two monic polynomials $p, q \\in K[X]$ with $p \\mid q$ and $\\deg p = \\deg q$ satisfy $p = q$. Proof: write $q = p \\cdot r$. Since $q$ is monic and $p$ is monic, $r$ is monic. Degree arithmetic: $\\deg p + \\deg r = \\deg q$, so $\\deg r = 0$. A monic polynomial of degree 0 is $1$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Polynomial.Monic.of_mul_monic_left",
+      "Polynomial.natDegree_mul (for nonzero polynomials)",
+      "Polynomial.eq_C_of_natDegree_eq_zero",
+      "Polynomial.Monic.def: leading coefficient = 1"
+    ],
+    "relatedConcepts": [
+      "monic polynomials as canonical representatives",
+      "K[X] is a PID, so divisibility + degrees determine equality up to units",
+      "C : K → K[X] (constant polynomial embedding)"
+    ]
+  },
+  {
+    "id": "biconditional-trivial-combine",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "The Biconditional: Just Combine Forward + Converse",
+    "content": "`nonderogatory_iff_has_cyclic_vector` is a one-line wrapper: forward direction uses `nonderogatory_has_cyclic_vector` from the parent file (the genuinely hard primary-decomposition proof), converse direction uses `cyclic_implies_nonderogatory` proved above. The biconditional itself is a trivial `constructor; · ...; · ...` split. But the *content* of the biconditional is profound: it characterizes nonderogatory matrices intrinsically (without reference to minimal/characteristic polynomials) — they are exactly the matrices that admit a cyclic vector. This is the bridge to companion-matrix theory: every nonderogatory matrix is similar to a companion matrix, and the cyclic vector v gives the explicit similarity transformation via the basis $\\{v, Mv, M^2 v, \\dots, M^{n-1} v\\}$.",
+    "mathContext": "$\\text{IsNonderogatory}(M) \\iff \\exists v \\in K^n,\\, \\text{IsCyclicVector}(M, v)$. Equivalent characterizations of 'nonderogatory': (1) $\\mu_M = \\chi_M$; (2) $\\dim K[M] = n$; (3) similar to companion matrix; (4) admits cyclic vector. This file proves (4) ⟺ (1), the parent proves (1) ⟹ (4); together with classical results, all four are equivalent.",
+    "significance": "key",
+    "prerequisites": [
+      "forward direction: CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector",
+      "converse direction: cyclic_implies_nonderogatory (this file)"
+    ],
+    "relatedConcepts": [
+      "rational canonical form theorem",
+      "similarity to companion matrix",
+      "K[X]-module isomorphism K[X]/(μ_M) ≅ Kⁿ"
+    ]
+  },
+  {
+    "id": "contrapositive-derogatory",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "context",
+    "title": "Contrapositive: Derogatory Matrices Have No Cyclic Vector",
+    "content": "`derogatory_has_no_cyclic_vector` is the contrapositive of `cyclic_implies_nonderogatory` and follows in two lines. If M has *any* cyclic vector, M is nonderogatory. Equivalently: if M is *not* nonderogatory (i.e., $\\mu_M \\neq \\chi_M$, called 'derogatory'), then *no* vector is cyclic for M. This is a useful 'no-go' result — it tells us that for derogatory matrices, the K[X]-module $K^n = K[X] \\cdot v$ for any single v is impossible, and one needs at least two generators (the rational canonical form has multiple companion blocks). The classic example is the $n \\times n$ identity matrix $I_n$: $\\mu_I = X - 1$, $\\chi_I = (X-1)^n$, derogatory for $n \\geq 2$, and indeed $K[I] = K \\cdot I$ is 1-dimensional, so no single vector can generate $K^n$.",
+    "mathContext": "Contrapositive: $\\neg \\text{IsNonderogatory}(M) \\Rightarrow \\forall v,\\, \\neg \\text{IsCyclicVector}(M, v)$. Example: $I_n$ for $n \\geq 2$: $\\mu = X - 1$, $\\chi = (X-1)^n$, $\\mu \\neq \\chi$, no cyclic vector. Indeed $K[I] = \\langle I \\rangle$ has dimension 1, but generating $K^n$ via a single vector requires $\\dim K[M] \\geq n$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "cyclic_implies_nonderogatory (used contrapositively)"
+    ],
+    "relatedConcepts": [
+      "derogatory matrices",
+      "module-generation arguments",
+      "obstruction to single-generator K[X]-module structure"
+    ]
+  },
+  {
+    "id": "degree-characterization",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 132
+    },
+    "type": "insight",
+    "title": "Degree Characterization: cyclic ⟹ deg(μ) = n",
+    "content": "`minpoly_natDegree_of_cyclic` gives a numerical invariant: a matrix with a cyclic vector has minimal polynomial of degree exactly $n$. The proof: apply `cyclic_implies_nonderogatory` to get $\\mu_M = \\chi_M$, then use `Matrix.charpoly_natDegree_eq_dim` to get $\\deg \\chi_M = n$. This degree characterization is sometimes more useful than the equational one — for instance, when checking cyclic-vector-ness numerically: just compute $\\deg \\mu_M$ via Smith normal form or by direct reduction, and check whether it equals $n$. By the biconditional, $\\deg \\mu_M = n$ is also sufficient (with cyclicity equivalent to nonderogatoriness). So the characterization `cyclic vector exists ⟺ $\\deg \\mu_M = n$ ⟺ $\\mu_M = \\chi_M$` gives three equivalent computational tests.",
+    "mathContext": "$\\exists v,\\, \\text{IsCyclicVector}(M, v) \\Rightarrow \\deg \\mu_M = n$. By the biconditional, also: $\\text{IsNonderogatory}(M) \\Rightarrow \\deg \\mu_M = \\deg \\chi_M = n$. The converse $\\deg \\mu_M = n \\Rightarrow \\mu_M = \\chi_M$ also holds because $\\mu_M \\mid \\chi_M$, both monic, equal degree.",
+    "significance": "supporting",
+    "prerequisites": [
+      "cyclic_implies_nonderogatory",
+      "Matrix.charpoly_natDegree_eq_dim",
+      "Fintype.card_fin"
+    ],
+    "relatedConcepts": [
+      "computational test for cyclicity",
+      "Smith normal form",
+      "minimal polynomial degree as invariant"
+    ]
+  }
+]

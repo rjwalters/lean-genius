@@ -116,6 +116,10 @@
       "Szemeredi.Core",
       "Szemeredi.Regularity"
     ],
-    "namespace": "Szemeredi.EnergyIncrement"
-  }
+    "namespace": "Szemeredi.EnergyIncrement",
+    "additionalFiles": [
+      "Proofs/SzemerediCoreOQ01Aristotle.lean"
+    ]
+  },
+  "sorries": 0
 }

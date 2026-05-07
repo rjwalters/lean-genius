@@ -49,7 +49,8 @@
       "Identification that parent's optimalConstant = 1 is trivial (placeholder) vs. non-trivial (true ISC)"
     ],
     "dateAdded": "2026-05-06",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Shelah's 1998 theorem (improving on Erdős-Hajnal) states that every graph with no clique or independent set of size c·log n must have exponentially many distinct induced subgraph isomorphism classes. The exponent c'(c) > 0 is guaranteed but the optimal value is unknown.\n\nThe random graph G(n, 1/2) serves as the key example: with high probability, all 2^n vertex subsets yield non-isomorphic induced subgraphs, achieving c'(c) = 1 exactly. Since G(n, 1/2) is also non-Ramsey(c) for c < 2/log 2, this shows the upper bound 1 is achievable.\n\nThe Erdős-Hajnal conjecture (related but different) asks about clique/independent set sizes in graphs with forbidden induced subgraphs — a different but connected line of research.",
@@ -110,5 +111,14 @@
       "id": "erdos-1036",
       "relationship": "parent: Shelah's theorem (1998) with placeholder ISC count — this entry refines with true ISC and asks for the optimal constant"
     }
-  ]
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Erdos1036OQ01.lean",
+    "lineCount": 169,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "axiomCount": 6,
+    "sorries": 0
+  }
 }

@@ -1,57 +1,68 @@
 {
   "slug": "fair-games-theorem-oq-03",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Fair Games Theorem: Substantive Application Proofs",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For each application stub in FairGamesTheorem.lean (martingale time-invariance, Gambler's Ruin, betting systems, risk-neutral pricing, submartingale characterization, Doob's maximal inequality), provide a substantive Lean 4 / Mathlib 4.26.0 proof.}",
+    "plain": "The main FairGamesTheorem.lean file contained several application theorem stubs left as trivial placeholders (e.g. (1:ℕ)+1=2 := rfl). Replace each with a real, mathematically meaningful proof.",
+    "whyMatters": [
+      "Demonstrates that Doob's Optional Stopping Theorem yields concrete formalizable consequences (Gambler's Ruin, no-betting-system theorems, risk-neutral pricing, Doob's maximal inequality)",
+      "Eliminates one axiom (submartingale_of_stoppedValue_mono) by deriving it from Mathlib's submartingale_iff_expected_stoppedValue_mono — but only inside a standalone file using the new Mathlib 4.26.0 ℕ∞-valued IsStoppingTime API; the parent file's axiom (which uses the legacy ℕ-valued API) remains unchanged here"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "All 9 application theorems (martingale_time_invariance, gamblers_ruin_win_prob/lose_prob/probs_sum_one, any_bounded_strategy_preserves_expectation, two_strategies_same_expectation, risk_neutral_pricing_neutrality, submartingale_of_stoppedValue_mono_proved, doobs_maximal_inequality) are fully proved in Proofs/FairGamesTheoremOQ03.lean — 0 sorries, 0 axioms"
+    ],
+    "open": [
+      "Parent file FairGamesTheorem.lean still declares axiom submartingale_of_stoppedValue_mono with ℕ-valued stopping times (legacy API). Eliminating it would require either updating the parent to the ℕ∞ API or proving an ℕ→ℕ∞ coercion bridge — out of scope for this OQ."
+    ],
+    "goal": "All application stubs replaced with substantive proofs; companion file FairGamesTheoremOQ03Aristotle.lean exposes routine supporting lemmas for proof search."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T15:47:16-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-05-07T00:00:00Z",
+    "iteration": 4,
+    "focus": "Reconciliation: file is fully proved (9 theorems, 0 sorries, 0 axioms). Earlier sessions had documented 4 honest sorries pending WithTop.untopA simp API; subsequent work closed them.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — entry is complete. Gallery meta.json already reflects status: verified.",
     "attemptCounts": {
-      "total": 0,
+      "total": 4,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "Substantive application proofs for Optional Stopping Theorem. Standalone file (no import of FairGamesTheorem). 5 proved + 4 sorry, 0 axioms. Axiom in parent file eliminated via submartingale_iff_expected_stoppedValue_mono iff.",
+    "progressSummary": "COMPLETED: Substantive application proofs for Optional Stopping Theorem. Standalone file using Mathlib 4.26.0 ℕ∞-valued IsStoppingTime API. 9 proved + 0 sorry, 0 axioms. Companion FairGamesTheoremOQ03Aristotle.lean (11 lemmas, 0 sorries) exposes routine supporting lemmas. Gallery meta.json marks status as verified.",
     "builtItems": [
-      "martingale_time_invariance: E[f_n]=E[f_0] via Martingale.setIntegral_eq with s=Set.univ",
-      "gamblers_ruin_win_prob/lose_prob/probs_sum_one: P(win)=W0/(W0+a) algebraically from fair game condition",
-      "submartingale_of_stoppedValue_mono_proved: eliminates axiom in parent file via rw [submartingale_iff_expected_stoppedValue_mono] + exact h",
-      "4 honest sorries: any_bounded_strategy, two_strategies, risk_neutral_pricing, doobs_inequality — pending WithTop.untopA simp API",
-      "Gallery data: src/data/proofs/fair-games-theorem-oq-03/meta.json + annotations.json + index.ts"
+      "martingale_time_invariance: E[f_n]=E[f_0] via Martingale.setIntegral_eq with s=Set.univ + simp [Measure.restrict_univ]",
+      "gamblers_ruin_win_prob/lose_prob/probs_sum_one: algebraic derivation P(win)=W0/(W0+a), P(lose)=a/(W0+a), sum=1 from fair-game expectation condition",
+      "any_bounded_strategy_preserves_expectation, two_strategies_same_expectation, risk_neutral_pricing_neutrality: direct corollaries of the Optional Stopping equality for martingales",
+      "submartingale_of_stoppedValue_mono_proved: rw [submartingale_iff_expected_stoppedValue_mono hadapt hint]; exact h — proves the ℕ∞-valued backward direction (note: parent file's axiom uses ℕ-valued API and is NOT eliminated by this theorem)",
+      "doobs_maximal_inequality (real-valued): converts Mathlib's ENNReal/NNReal maximal_ineq via ε:NNReal coercion + le_sup'_iff set equality; restricted integral ≤ full integral since f≥0",
+      "FairGamesTheoremOQ03Aristotle.lean: 11 routine supporting lemmas (Aristotle companion), 0 sorries",
+      "Gallery integration: src/data/proofs/fair-games-theorem-oq-03/meta.json + annotations.json + index.ts; status verified, 9 theorems, 0 axioms, 0 sorries"
     ],
     "insights": [
-      "Mathlib 4.26.0 breaking change: IsStoppingTime uses t:Omega->WithTop iota, not t:Omega->iota. FairGamesTheorem.lean has pre-existing build failures.",
-      "martingale_time_invariance: use Martingale.setIntegral_eq with s=Set.univ + simp Measure.restrict_univ — avoids stopping time machinery",
-      "submartingale axiom elimination: one-line rw [submartingale_iff_expected_stoppedValue_mono hadapt hint]; exact h"
+      "Mathlib 4.26.0 breaking change: IsStoppingTime uses τ:Ω→WithTop ι, not τ:Ω→ι. FairGamesTheorem.lean (using the legacy ℕ-valued API) has pre-existing build failures unrelated to this OQ; the OQ-03 file sidesteps by using ℕ∞ throughout.",
+      "martingale_time_invariance: prefer Martingale.setIntegral_eq with s=Set.univ over stopping-time machinery — clean one-step proof.",
+      "submartingale characterization (ℕ∞ API): one-line rw [submartingale_iff_expected_stoppedValue_mono hadapt hint]; exact h closes the converse direction. Direct elimination of the parent's ℕ-valued axiom would require an ℕ→ℕ∞ stopping-time coercion bridge — out of scope here.",
+      "Doob's maximal inequality real-valued formulation: bridge ENNReal/NNReal Mathlib statement via NNReal.coe_mk for ε and le_sup'_iff for the exceedance set; restricted integral monotonicity gives the final bound for non-negative submartingales."
     ],
-    "mathlibGaps": [
-      "WithTop.untopA simp lemmas not yet stable in Mathlib 4.26.0 — blocks stoppedValue evaluation for tau:Omega->NNat"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: fair-games-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "probability",
+    "martingale",
+    "optional-stopping",
+    "gambling",
+    "doob",
+    "wiedijk-100"
   ],
   "relatedProofs": [
     "fair-games-theorem",
@@ -59,8 +70,7 @@
     "fair-games-theorem-oq-02",
     "fair-games-theorem-oq-02-oq-01",
     "fair-games-theorem-oq-02-oq-01-oq-01",
-    "fair-games-theorem-oq-02-oq-04",
-    "fair-games-theorem-oq-03"
+    "fair-games-theorem-oq-02-oq-04"
   ],
   "references": {
     "papers": [],
@@ -140,11 +150,11 @@
     {
       "path": "Proofs/FairGamesTheoremOQ03.lean",
       "filename": "FairGamesTheoremOQ03.lean",
-      "lineCount": 331,
+      "lineCount": 330,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03.lean"
     },

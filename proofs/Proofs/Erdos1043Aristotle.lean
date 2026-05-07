@@ -7,7 +7,7 @@
   - NOT the main hard results (disk projection measure, level set compactness)
   - Routine order/lattice facts: iInf ≤ iSup, ENNReal arithmetic contradictions
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

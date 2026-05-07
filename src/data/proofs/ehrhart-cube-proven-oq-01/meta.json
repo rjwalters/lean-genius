@@ -6,7 +6,7 @@
   "leanFile": {
     "path": "Proofs/EhrhartSimplexProven.lean",
     "filename": "EhrhartSimplexProven.lean",
-    "lineCount": 208,
+    "lineCount": 207,
     "theoremCount": 12,
     "definitionCount": 0,
     "sorries": 0,
@@ -29,7 +29,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 208,
+    "lineCount": 207,
     "assumptions": "No axioms or sorries. All results proved from Mathlib multiset cardinality theory.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
@@ -118,14 +118,15 @@
   },
   "crossReferences": [
     {
-      "slug": "ehrhart-cube-proven",
-      "title": "Ehrhart Polynomial of the Unit Cube: First-Principles Proof",
-      "relationship": "This file answers OQ-01 of the cube proof: both use the same axiom-free strategy (Fintype cardinality) but the simplex uses multisets (Sym) while the cube uses functions (Fin d → Fin (n+1))."
+      "id": "ehrhart-cube-proven",
+      "relationship": "parent",
+      "description": "Cube Ehrhart formula L([0,1]^d, n) = (n+1)^d, proved axiom-free via the Fintype bijection Fin d → Fin (n+1). This entry answers OQ-01 of that proof: both use Fintype cardinality, but the simplex uses multisets (Sym) while the cube uses functions."
     },
     {
-      "slug": "ehrhart-polynomials",
-      "title": "Ehrhart Polynomials for Lattice Polytopes",
-      "relationship": "The general Ehrhart theory axiomatizes L_P(n) as a polynomial. This file provides an axiom-free proof for the simplex, complementing the axiomatized framework."
+      "id": "ehrhart-polynomials",
+      "relationship": "ancestor",
+      "description": "General Ehrhart theory: L_P(n) is a polynomial of degree dim P for any convex lattice polytope P. This file provides an axiom-free proof of the formula for the standard simplex, a key motivating example."
     }
-  ]
+  ],
+  "sorries": 0
 }

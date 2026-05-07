@@ -354,19 +354,20 @@ theorem harmonic_mean_le_geom_mean_via_power
     (∑ i ∈ s, w i * (z i)⁻¹)⁻¹ ≤ weightedGeomMean s w z :=
   harmonic_mean_le_geom_mean_direct s w z hw hw' hz
 
-/-- **Summary: The Interpolation Chain**.
+/-
+Summary: The Interpolation Chain.
 
 The power means M_r form a continuous monotone family in r ∈ [-∞, +∞]:
 
     min(z) ≤ ... ≤ HM = M_{-1} ≤ GM = M_0 ≤ AM = M_1 ≤ M_2 ≤ ... ≤ max(z)
 
 Key proved relationships:
-- [✓] GM ≤ AM  (`geom_mean_le_arith_mean` — from Mathlib)
-- [✓] AM ≤ M_p for p ≥ 1  (`arith_mean_le_power_mean` — from Mathlib)
-- [✓] GM ≤ M_p for p ≥ 1  (`geom_mean_le_power_mean_of_one_le`)
-- [✓] Jensen's inequality  (`jensen_pow_ineq` — from Mathlib)
-- [✓] HM ≤ GM  (`harmonic_mean_le_geom_mean_direct` — proved here)
-- [✓] M_r ≤ M_s for 0 < r ≤ s  (`power_mean_monotone_pos` — proved here)
-- [✓] M_r ≤ M_s for r ≤ s < 0  (`power_mean_monotone_neg` — proved here via dual argument)
-- [axiom] Mixed-sign case (r < 0 < s, crossing the geometric mean limit) -/
--- Summary above; see individual theorems for formal proofs.
+- GM ≤ AM  (geom_mean_le_arith_mean — from Mathlib)
+- AM ≤ M_p for p ≥ 1  (arith_mean_le_power_mean — from Mathlib)
+- GM ≤ M_p for p ≥ 1  (geom_mean_le_power_mean_of_one_le)
+- Jensen's inequality  (jensen_pow_ineq — from Mathlib)
+- HM ≤ GM  (harmonic_mean_le_geom_mean_direct — proved here)
+- M_r ≤ M_s for 0 < r ≤ s  (power_mean_monotone_pos — proved here)
+- M_r ≤ M_s for r ≤ s < 0  (power_mean_monotone_neg — proved here via dual argument)
+- Mixed-sign case (r < 0 < s, crossing the geometric mean limit) is an axiom.
+-/

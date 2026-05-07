@@ -1,0 +1,92 @@
+{
+  "slug": "ehrhart-cube-proven-oq-02",
+  "title": "Ehrhart Polynomials Without General Existence Theorem",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Ehrhart Polynomials Without General Existence Theorem.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-06T13:49:03.933Z",
+    "iteration": 1,
+    "focus": "PR #16339 merged 2026-05-06. EhrhartCrossPolytope.lean is at 12 theorems / 2 sorries / 0 axioms / 330 lines. Algebraic core (crossEhrhart_expand, crossEhrhart_succ_d, sum_choose_range / hockey-stick, base cases d0/d1/n0) all proved. Two sorries remain: crossEhrhart_is_poly (no Mathlib API for evaluating falling factorial at ℕ values) and crossBall_card succ d step (Finset.card_biUnion slicing).",
+    "blockers": [],
+    "nextAction": "Discharge crossEhrhart_is_poly via Nat.descFactorial or an explicit polynomial coefficient formula. Discharge crossBall_card succ d via Finset.card_biUnion over the |x_d| = j slices and a bijection with crossBall (d, n - j).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS. PR #16339 merged 2026-05-06: algebraic proof framework complete. crossEhrhart_expand (Pascal split), crossEhrhart_succ_d (geometric recursion), sum_choose_range (hockey-stick), and the base cases (crossEhrhart_d0 / d1 / n0 / d2 / pos / mono) are all proved. EhrhartCrossPolytope.lean: 12 theorems / 2 sorries / 0 axioms / 0 unwanted constructions / 330 lines. Two open sorries (crossEhrhart_is_poly polynomial existence; crossBall_card succ d geometric step) remain.",
+    "builtItems": [
+      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:131",
+      "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:143",
+      "crossEhrhart_expand: Pascal split at EhrhartCrossPolytope.lean:155",
+      "crossEhrhart_succ_d: geometric recursion at EhrhartCrossPolytope.lean:205",
+      "crossEhrhart_d0/d1/n0: base cases at EhrhartCrossPolytope.lean:64-83",
+      "crossEhrhart_pos/mono: structural properties",
+      "crossEhrhart_d2: proved via induction using recursion (after succ_d)",
+      "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:257"
+    ],
+    "insights": [
+      "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*\u03a3 C(d,k+1)C(n,k+1) = \u03a3 C(d,k)C(n,k)",
+      "sum_choose_range (hockey-stick): \u03a3_{m<n} C(m,k) = C(n,k+1) proved by induction with Pascal step",
+      "sum_shift_hockey: \u03a3_k f(k)*C(n,k+1) = \u03a3_{m<n} \u03a3_k f(k)*C(m,k) via \u2190 sum_choose_range + Finset.sum_comm",
+      "crossEhrhart_succ_d: one-step from expand + hshift; proved via linarith after sum_shift_hockey",
+      "Key identity in proof: \u03a3 2^k C(d,k) C(n,k) = 1 + 2*\u03a3 2^k C(d,k+1) C(n,k+1) \u2014 proved by extracting k=0 via sum_range_succ then dropping d+1 term (C(d,d+1)=0)",
+      "Lean 4.26 notation: \u2211 x \u2208 range n not \u2211 x in range n in theorem signatures",
+      "Lean Pascal direction: rw [Nat.choose_succ_succ] not \u2190 to go C(d+1,k+1) \u2192 C(d,k)+C(d,k+1)",
+      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)"
+    ],
+    "mathlibGaps": [
+      "No lemma for eval of falling factorial at \u2115 values (needed for crossEhrhart_is_poly)"
+    ],
+    "nextSteps": [
+      "Prove crossEhrhart_is_poly without sorry using Nat.descFactorial or an explicit polynomial coefficient formula",
+      "Prove crossBall_card succ d step via Finset.card_biUnion over the |x_d| = j slices, with a bijection to crossBall (d, n - j)"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "lattice-points",
+    "ehrhart"
+  ],
+  "relatedProofs": [
+    "ehrhart-cube-proven"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T13:49:03.933Z",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EhrhartCrossPolytope.lean",
+      "filename": "EhrhartCrossPolytope.lean",
+      "lineCount": 330,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCrossPolytope.lean"
+    }
+  ]
+}

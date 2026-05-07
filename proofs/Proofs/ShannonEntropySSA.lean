@@ -296,11 +296,196 @@ theorem strong_subadditivity {α β γ : Type*}
     (hsum : ∑ xyz : α × β × γ, pXYZ xyz = 1) :
     shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤
     shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ) := by
-  -- Express the deficit as conditional mutual information I(X;Z|Y):
-  -- I(X;Z|Y) = H(X,Y) + H(Y,Z) - H(X,Y,Z) - H(Y)
-  --           = Σ_y p(y) D(p(x,z|y) || p(x|y)·p(z|y))
-  --           ≥ 0 since D(·||·) ≥ 0 for each y.
-  sorry
+  -- kl_term_bound (private in ShannonEntropy.lean — copied here)
+  have kl_tb : ∀ {p q : ℝ}, 0 < p → 0 < q → p * Real.log (p / q) ≥ p - q := by
+    intro p q hp hq
+    have h1 : Real.log (q / p) ≤ q / p - 1 := Real.log_le_sub_one_of_pos (div_pos hq hp)
+    have h2 : p * Real.log (q / p) ≤ q - p :=
+      calc p * Real.log (q / p) ≤ p * (q / p - 1) :=
+              mul_le_mul_of_nonneg_left h1 (le_of_lt hp)
+            _ = q - p := by field_simp; ring
+    linarith [show p * Real.log (p / q) = -(p * Real.log (q / p)) by
+      rw [Real.log_div (ne_of_gt hp) (ne_of_gt hq),
+          Real.log_div (ne_of_gt hq) (ne_of_gt hp)]; ring]
+
+  -- Nested sum = 1
+  have hsum_n : ∑ x : α, ∑ y : β, ∑ z : γ, pXYZ (x, y, z) = 1 := by
+    have h := hsum; rw [Fintype.sum_prod_type] at h; simp_rw [Fintype.sum_prod_type] at h; exact h
+
+  -- Marginal telescoping: if S=0 then 0 else S·log S = Σ (if aᵢ=0 then 0 else aᵢ·log S)
+  have htele : ∀ {ι : Type*} [Fintype ι] (a : ι → ℝ) (_ : ∀ i, 0 ≤ a i),
+      (if (∑ i, a i) = 0 then (0 : ℝ) else (∑ i, a i) * Real.log (∑ i, a i)) =
+      ∑ i, (if a i = 0 then 0 else a i * Real.log (∑ j, a j)) := by
+    intro ι _ a ha
+    by_cases hs : (∑ i, a i) = 0
+    · have : ∀ i, a i = 0 := fun i =>
+        le_antisymm (by linarith [Finset.single_le_sum (fun j _ => ha j) (Finset.mem_univ i)]) (ha i)
+      simp [hs, this]
+    · simp only [hs, ↓reduceIte]; symm
+      rw [show ∑ i, (if a i = 0 then (0 : ℝ) else a i * Real.log (∑ j, a j)) =
+          ∑ i, a i * Real.log (∑ j, a j) from
+        Finset.sum_congr rfl fun i _ => by by_cases h : a i = 0 <;> simp [h]]
+      rw [← Finset.sum_mul]
+
+  -- XY marginal telescoping
+  have hXY : ∀ x y, (if (∑ z : γ, pXYZ (x, y, z)) = 0 then (0 : ℝ)
+      else (∑ z, pXYZ (x, y, z)) * Real.log (∑ z, pXYZ (x, y, z))) =
+      ∑ z : γ, (if pXYZ (x, y, z) = 0 then 0
+        else pXYZ (x, y, z) * Real.log (∑ z' : γ, pXYZ (x, y, z'))) := by
+    intro x y; exact htele (fun z => pXYZ (x, y, z)) (fun z => hp (x, y, z))
+
+  -- YZ marginal telescoping
+  have hYZ : ∀ y z, (if (∑ x : α, pXYZ (x, y, z)) = 0 then (0 : ℝ)
+      else (∑ x, pXYZ (x, y, z)) * Real.log (∑ x, pXYZ (x, y, z))) =
+      ∑ x : α, (if pXYZ (x, y, z) = 0 then 0
+        else pXYZ (x, y, z) * Real.log (∑ x' : α, pXYZ (x', y, z))) := by
+    intro y z; exact htele (fun x => pXYZ (x, y, z)) (fun x => hp (x, y, z))
+
+  -- Y marginal telescoping
+  have hY : ∀ y, (if (∑ x : α, ∑ z : γ, pXYZ (x, y, z)) = 0 then (0 : ℝ)
+      else (∑ x, ∑ z, pXYZ (x, y, z)) * Real.log (∑ x, ∑ z, pXYZ (x, y, z))) =
+      ∑ x : α, ∑ z : γ, (if pXYZ (x, y, z) = 0 then 0
+        else pXYZ (x, y, z) * Real.log (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z'))) := by
+    intro y
+    have h := htele (fun (xz : α × γ) => pXYZ (xz.1, y, xz.2)) (fun xz => hp (xz.1, y, xz.2))
+    simp_rw [Fintype.sum_prod_type] at h; exact h
+
+  -- Term splitting: p·log(p) = CMI_term + p·log(pXY) + p·log(pYZ) - p·log(pY)
+  have hterm : ∀ x y z,
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ) else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z))) =
+      (if pXYZ (x, y, z) = 0 then 0
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) *
+         (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+         ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))))) +
+      (if pXYZ (x, y, z) = 0 then 0
+       else pXYZ (x, y, z) * Real.log (∑ z' : γ, pXYZ (x, y, z'))) +
+      (if pXYZ (x, y, z) = 0 then 0
+       else pXYZ (x, y, z) * Real.log (∑ x' : α, pXYZ (x', y, z))) -
+      (if pXYZ (x, y, z) = 0 then 0
+       else pXYZ (x, y, z) * Real.log (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z'))) := by
+    intro x y z
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · simp [hpxyz]
+    · simp only [hpxyz, ↓reduceIte]
+      have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
+      have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
+        lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp _) (Finset.mem_univ z))
+      have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
+        lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp _) (Finset.mem_univ x))
+      have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
+        lt_of_lt_of_le hpXY (Finset.single_le_sum
+          (fun x' _ => Finset.sum_nonneg fun z' _ => hp _) (Finset.mem_univ x))
+      have hlog : Real.log (pXYZ (x, y, z)) =
+          Real.log (pXYZ (x, y, z) * (∑ x', ∑ z', pXYZ (x', y, z')) /
+            ((∑ z', pXYZ (x, y, z')) * (∑ x', pXYZ (x', y, z)))) +
+          Real.log (∑ z', pXYZ (x, y, z')) +
+          Real.log (∑ x', pXYZ (x', y, z)) -
+          Real.log (∑ x', ∑ z', pXYZ (x', y, z')) := by
+        rw [Real.log_div (ne_of_gt (mul_pos hpos hpY)) (ne_of_gt (mul_pos hpXY hpYZ)),
+            Real.log_mul (ne_of_gt hpos) (ne_of_gt hpY),
+            Real.log_mul (ne_of_gt hpXY) (ne_of_gt hpYZ)]
+        ring
+      calc pXYZ (x, y, z) * Real.log (pXYZ (x, y, z))
+          = pXYZ (x, y, z) * (
+            Real.log (pXYZ (x, y, z) * (∑ x', ∑ z', pXYZ (x', y, z')) /
+              ((∑ z', pXYZ (x, y, z')) * (∑ x', pXYZ (x', y, z)))) +
+            Real.log (∑ z', pXYZ (x, y, z')) +
+            Real.log (∑ x', pXYZ (x', y, z)) -
+            Real.log (∑ x', ∑ z', pXYZ (x', y, z'))) := by congr 1; exact hlog
+        _ = _ := by ring
+
+  -- === PART 1: Show the conditional MI ≥ 0 ===
+  set q := fun x y z => (∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z)) /
+    (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) with hq_def
+  have hq_nn : ∀ x y z, 0 ≤ q x y z := fun x y z => div_nonneg
+    (mul_nonneg (Finset.sum_nonneg fun z' _ => hp _) (Finset.sum_nonneg fun x' _ => hp _))
+    (Finset.sum_nonneg fun x' _ => Finset.sum_nonneg fun z' _ => hp _)
+  have hq_sum_y : ∀ y, ∑ x : α, ∑ z : γ, q x y z = ∑ x, ∑ z, pXYZ (x, y, z) := by
+    intro y
+    simp only [hq_def]
+    by_cases hpy : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) = 0
+    · have hall : ∀ x z, pXYZ (x, y, z) = 0 := by
+        intro x z; linarith [hp (x, y, z),
+          Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z),
+          Finset.single_le_sum (fun x' _ =>
+            Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x)]
+      simp [hall, hpy]
+    · have hpy_ne : (∑ x', ∑ z', pXYZ (x', y, z')) ≠ 0 := hpy
+      simp_rw [mul_div_assoc]
+      simp_rw [← Finset.sum_div, ← Finset.mul_sum]
+      rw [← Finset.sum_div, ← Finset.sum_mul]
+      rw [show ∑ z : γ, ∑ x' : α, pXYZ (x', y, z) = ∑ x' : α, ∑ z : γ, pXYZ (x', y, z) from
+        Finset.sum_comm]
+      rw [mul_div_cancel₀ _ hpy_ne]
+  have hq_sum : ∑ x : α, ∑ y : β, ∑ z : γ, q x y z = 1 := by
+    conv_lhs => rw [Finset.sum_comm]
+    simp_rw [hq_sum_y]
+    rw [Finset.sum_comm]; exact hsum_n
+  have h_cmi : 0 ≤ ∑ x : α, ∑ y : β, ∑ z : γ,
+      (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+       else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) *
+         (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) /
+         ((∑ z' : γ, pXYZ (x, y, z')) * (∑ x' : α, pXYZ (x', y, z))))) := by
+    suffices h_lb : ∑ x, ∑ y, ∑ z, (pXYZ (x, y, z) - q x y z) ≤
+        ∑ x, ∑ y, ∑ z, (if pXYZ (x, y, z) = 0 then (0 : ℝ)
+         else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z) *
+           (∑ x', ∑ z', pXYZ (x', y, z')) /
+           ((∑ z', pXYZ (x, y, z')) * (∑ x', pXYZ (x', y, z))))) by
+      have hzero : ∑ x, ∑ y, ∑ z, (pXYZ (x, y, z) - q x y z) = 0 := by
+        simp only [Finset.sum_sub_distrib]; rw [hsum_n, hq_sum, sub_self]
+      linarith
+    apply Finset.sum_le_sum; intro x _; apply Finset.sum_le_sum; intro y _
+    apply Finset.sum_le_sum; intro z _
+    by_cases hpxyz : pXYZ (x, y, z) = 0
+    · simp [hpxyz]; exact hq_nn x y z
+    · simp only [hpxyz, ↓reduceIte]
+      have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
+      have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
+        lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp _) (Finset.mem_univ z))
+      have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
+        lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp _) (Finset.mem_univ x))
+      have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
+        lt_of_lt_of_le hpXY (Finset.single_le_sum
+          (fun x' _ => Finset.sum_nonneg fun z' _ => hp _) (Finset.mem_univ x))
+      have hq_pos : 0 < q x y z := by
+        simp only [hq_def]; exact div_pos (mul_pos hpXY hpYZ) hpY
+      have hlog_eq : pXYZ (x, y, z) * (∑ x', ∑ z', pXYZ (x', y, z')) /
+          ((∑ z', pXYZ (x, y, z')) * (∑ x', pXYZ (x', y, z))) =
+          pXYZ (x, y, z) / q x y z := by
+        simp only [hq_def]; field_simp; ring
+      rw [hlog_eq]
+      exact kl_tb hpos hq_pos
+
+  -- === PART 2: Entropy algebra — connect CMI to SSA deficit ===
+  unfold shannonEntropy' marginalXY marginalYZ marginalY_3
+  dsimp only
+  conv_lhs => arg 1; arg 1; rw [show ∑ xyz : α × β × γ,
+    (if pXYZ xyz = 0 then (0 : ℝ) else pXYZ xyz * Real.log (pXYZ xyz)) =
+    ∑ x : α, ∑ y : β, ∑ z : γ,
+    (if pXYZ (x, y, z) = 0 then 0 else pXYZ (x, y, z) * Real.log (pXYZ (x, y, z))) from by
+      rw [Fintype.sum_prod_type]; simp_rw [Fintype.sum_prod_type]]
+  conv_rhs => arg 1; arg 1; rw [show ∑ xy : α × β,
+    (if (fun xy => ∑ z : γ, pXYZ (xy.1, xy.2, z)) xy = 0 then (0 : ℝ)
+     else (fun xy => ∑ z, pXYZ (xy.1, xy.2, z)) xy *
+       Real.log ((fun xy => ∑ z, pXYZ (xy.1, xy.2, z)) xy)) =
+    ∑ x : α, ∑ y : β,
+    (if (∑ z : γ, pXYZ (x, y, z)) = 0 then 0
+     else (∑ z, pXYZ (x, y, z)) * Real.log (∑ z, pXYZ (x, y, z))) from by
+      rw [Fintype.sum_prod_type]]
+  conv_rhs => arg 2; arg 1; rw [show ∑ yz : β × γ,
+    (if (fun yz => ∑ x : α, pXYZ (x, yz.1, yz.2)) yz = 0 then (0 : ℝ)
+     else (fun yz => ∑ x, pXYZ (x, yz.1, yz.2)) yz *
+       Real.log ((fun yz => ∑ x, pXYZ (x, yz.1, yz.2)) yz)) =
+    ∑ y : β, ∑ z : γ,
+    (if (∑ x : α, pXYZ (x, y, z)) = 0 then 0
+     else (∑ x, pXYZ (x, y, z)) * Real.log (∑ x, pXYZ (x, y, z))) from by
+      rw [Fintype.sum_prod_type]]
+  simp_rw [hXY]
+  simp_rw [hYZ]
+  simp_rw [hY]
+  simp_rw [hterm]
+  simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib]
+  linarith [h_cmi]
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART VI: Consequences of SSA

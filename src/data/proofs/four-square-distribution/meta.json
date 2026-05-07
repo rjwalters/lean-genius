@@ -30,7 +30,7 @@
     ],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
-    "definitionCount": 8
+    "definitionCount": 22
   },
   "overview": {
     "historicalContext": "Jacobi's four-square theorem (1829) states r₄(n) = 8·Σ_{d|n, 4∤d} d, proved using Jacobi theta functions: r₄(n) is the n-th Fourier coefficient of θ(q)⁴. Lagrange (1770) proved existence; Euler first studied r₄. The '8' factor mystified mathematicians until the group-theoretic perspective: the signed permutation symmetry group acting on a 4-tuple has order 2^k·(4!/∏mᵢ!) by orbit-stabilizer, and the representation count for each type is exactly this orbit size. This file analyzes HOW the total r₄(n) = 8σ*(n) splits among types: contributions range from 8 (single nonzero entry, like (0,0,0,k)) to 384 (all distinct nonzero, like (1,2,3,4)), a 24:1 ratio matching |S₄| = 4!. The connection to modular forms lies deeper: r₄(n) is multiplicative (via θ⁴ being a weight-2 Eisenstein series), which Jacobi's formula makes explicit through σ*.",
@@ -105,7 +105,7 @@
     "lineCount": 400,
     "axiomCount": 0,
     "theoremCount": 38,
-    "definitionCount": 8,
+    "definitionCount": 22,
     "path": "Proofs/FourSquareDistribution.lean",
     "sorries": 0
   },

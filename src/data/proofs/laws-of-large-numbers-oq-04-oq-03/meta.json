@@ -88,7 +88,7 @@
     "namespace": "GlivenkoCantelli",
     "imports": [
       "Proofs.LawsOfLargeNumbersOQ04",
-      "Mathlib.MeasureTheory.Integral.SetIntegral",
+      "Mathlib.MeasureTheory.Integral.Bochner.Set",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -103,6 +103,15 @@
     "definitionCount": 0
   },
   "sorries": 0,
+  "conclusion": {
+    "summary": "Eliminates two of the three axioms in the parent Glivenko–Cantelli formalization (`LawsOfLargeNumbersOQ04`) by proving them from Mathlib's standard integration API. Four theorems, 0 sorries, 0 axioms. The proved facts — integrability of threshold indicators on probability spaces, and the integral-equals-CDF identity — are derived in one short Lean file each, using `Integrable.mono'` (bounded measurable on finite measure → integrable) and the standard `integral_indicator` + `integral_const` + `Measure.restrict_apply` chain. Together with the unchanged independence/identity-of-distribution lifts from the parent, these unlock a fully axiom-free pointwise convergence corollary `empiricalCDF_pointwise_convergence_no_axiom`.",
+    "implications": "The Glivenko–Cantelli theorem is the foundation of nonparametric statistics: it justifies the Kolmogorov–Smirnov test, distribution-free hypothesis testing, and resampling methods (bootstrap). Reducing the axiom count from 3 to 1 means that *only one* genuinely hard mathematical step (the bracketing uniformity) remains as an admitted hypothesis — every other piece is now a Mathlib-derived theorem. This sharpens the formalization's credibility and isolates the remaining work to a well-defined Mathlib-side gap (CDF continuity-point density), making future axiom elimination concretely tractable.\n\nThe pattern demonstrated here — wrapping bounded measurable functions with `Integrable.mono'` and chaining `integral_indicator` for set-membership integrals — applies broadly. Any time a probability formalization carries 'integrability of a 0/1-valued function' as an axiom, the same two-line proof technique applies. We expect this approach to retire several similar axioms across the gallery's probability-theoretic formalizations.",
+    "openQuestions": [
+      "Can the remaining `glivenko_cantelli_uniform` axiom be eliminated by formalizing CDF continuity-point density in Mathlib? Specifically: prove that for any CDF $F$ and $\\varepsilon > 0$, finitely many continuity points of $F$ partition $\\mathbb{R}$ with $F$-mass less than $\\varepsilon$ on each cell.",
+      "Can the integration-axiom elimination technique be applied to other probability formalizations in the gallery — e.g., birthday-problem variants, central-limit-theorem follow-ups — to systematically reduce their axiom counts?",
+      "Does the indicator-integrability + indicator-CDF pair generalize to vector-valued indicators (e.g., $\\mathbf{1}_{X \\in A}$ for measurable $A \\subseteq \\mathbb{R}^d$)? The scalar case proved here is the $d = 1$ instance with $A = (-\\infty, x]$."
+    ]
+  },
   "crossReferences": [
     {
       "id": "laws-of-large-numbers-oq-04",

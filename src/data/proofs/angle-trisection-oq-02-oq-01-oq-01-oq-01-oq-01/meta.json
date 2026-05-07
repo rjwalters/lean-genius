@@ -28,9 +28,14 @@
         "module": "Mathlib.FieldTheory.PurelyInseparable"
       },
       {
-        "theorem": "CharP.add_pow_char_pow",
-        "description": "(a + b)^(p^n) = a^(p^n) + b^(p^n) in char-p rings",
-        "module": "Mathlib.RingTheory.Charleory.Basic"
+        "theorem": "iterateFrobenius",
+        "description": "The iterated Frobenius x ↦ x^(p^n) as a ring homomorphism R →+* R; combined with map_sub gives (a-b)^(p^n) = a^(p^n) - b^(p^n) directly",
+        "module": "Mathlib.Algebra.CharP.Frobenius"
+      },
+      {
+        "theorem": "ringChar.eq",
+        "description": "ringChar R = p when [CharP R p]; aligns the (ringChar K)^n exponent with p^n",
+        "module": "Mathlib.Algebra.CharP.Defs"
       },
       {
         "theorem": "AlgEquiv.commutes",
@@ -42,20 +47,22 @@
       "Identified that insep_gal_trivial is mathematically FALSE in general",
       "Counterexample: f = X^4 + X^2 + a over F₂(a) is inseparable, irreducible, but |Gal(f)| = 2",
       "Proved the correct theorem: IsPurelyInseparable F f.SplittingField → |Gal(f)| = 1",
-      "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents"
+      "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents",
+      "Replaced parity-case-split sub_pow_char_pow_eq with a one-liner via iterateFrobenius (a ring hom) and map_sub"
     ],
     "axiomCount": 1,
-    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample). The main theorem algEquiv_eq_refl_of_isPurelyInseparable has 2 sorries pending Mathlib API alignment for char-p power identities.",
-    "lineCount": 219,
+    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries).",
+    "lineCount": 205,
     "theoremCount": 6,
     "definitionCount": 4
   },
   "leanFile": {
+    "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 4,
-    "lineCount": 219,
-    "sorries": 2
+    "lineCount": 205,
+    "sorries": 0
   },
   "overview": {
     "historicalContext": "The parent entry `angle-trisection-oq-02-oq-01-oq-01-oq-01` axiomatized `insep_gal_trivial`: for inseparable irreducible polynomials over characteristic-p fields, the Galois group has cardinality 1. This axiom was stated as a 'documented counterexample to natDegree | |Gal|' with a comment that a full proof requires 'building the function field F_p(t), proving irreducibility via Eisenstein's criterion, and computing the automorphism group of a purely inseparable extension.' This entry shows the axiom is mathematically incorrect in its general form.",
@@ -98,10 +105,10 @@
     "summary": "The axiom insep_gal_trivial is mathematically incorrect. The correct theorem requires the splitting field to be purely inseparable, not just the polynomial to be inseparable.",
     "implications": "The parent entry's axiom should be replaced with the weaker (and correct) claim for purely inseparable polynomials only (f = X^(p^e) - c type). The general inseparable case has |Gal(f)| = |Gal(g)| where g is the separable part of f.",
     "openQuestions": [
-      "Can the 2 remaining sorries be eliminated using Mathlib's CharP.add_pow_char_pow and ringChar_eq_charP?",
       "Can xPow_sub_of_irreducible_isPurelyInseparable be proved directly from Mathlib's SplittingField API?",
-      "Does Mathlib have a direct theorem Subsingleton (K ≃ₐ[F] K) when IsPurelyInseparable F K?"
+      "Does Mathlib have a direct theorem Subsingleton (K ≃ₐ[F] K) when IsPurelyInseparable F K?",
+      "Can `counterexample_gal_card` be replaced with a real proof of |Gal(X⁴+X²+a over F₂(a))| = 2 via Artin-Schreier theory?"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }
