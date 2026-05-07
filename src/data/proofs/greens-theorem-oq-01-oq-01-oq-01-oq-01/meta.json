@@ -116,9 +116,30 @@
     "proofStrategy": "Induction on n with two building blocks: swap_outer_two (Fubini for positions 0,1) and inner permutation reduction (IH applied inside outer integral). Any permutation σ decomposes as (move σ⁻¹(0) to position 0) ∘ (inner permutation fixing position 0), and each step uses one of the two building blocks."
   },
   "conclusion": {
-    "summary": "Fully proves iteratedIntervalIntegral_order_independent (0 sorries, 0 axioms): the iterated interval integral of a continuous function is independent of the order of integration, for all dimensions and all permutations.",
-    "significance": "Eliminates an axiom from the n-dimensional Fubini chain. The proof constructs a complete Lean 4 formalization of order-independence from Fubini's theorem, with the key combinatorial ingredient being the decomposition of permutations into transpositions via swap_induction_on.",
-    "limitations": "The parent module Proofs.GreensTheoremOQ01OQ01OQ01 still declares iteratedIntervalIntegral_order_independent as an axiom. That declaration is mathematically redundant given this file's proof. Removing it from the parent would require either restructuring the parent or introducing a shared Core file."
+    "summary": "Fully proves `iteratedIntervalIntegral_order_independent` from first principles in Lean 4 with 0 sorries and 0 axioms of its own. The architecture is a four-block chain: B0 (`continuous_param`, parameterized integral continuity), B1 (`swap_outer_two`, the single Fubini step from `integral_integral_swap`), B2 (`iteratedIntervalIntegral_perm_tail`, inner-permutation reduction by IH), B3 (`iter_integral_swap_any`, arbitrary transposition via Coxeter-style conjugation). The main theorem composes these via `Equiv.Perm.swap_induction_on`, recovering the parent's axiom as a derived fact.",
+    "implications": "**Axiom elimination**: this entry replaces the parent file's `iteratedIntervalIntegral_order_independent` axiom with a complete proof, contributing to the broader program of reducing the n-dimensional Fubini chain feeding into Green's theorem to elementary measure-theoretic primitives. **Methodological pattern**: the four-block decomposition (continuity → outer swap → tail permutation → arbitrary transposition → product of transpositions) is a reusable template for axiom-elimination on multi-variable integration claims. The same pattern applies to dual-form theorems (Stokes', divergence, Gauss-Bonnet) where the integrand is a differential form rather than a scalar — the *same* Coxeter combinatorics handles permutations, and the analytic primitive (Fubini for the swap) only needs to be verified at codimension 2. **Pedagogical value**: by exposing `swap_outer_two` as a non-private theorem, the file gives downstream files a clean Fubini swap that bypasses the full machinery — useful when only the outermost two variables need to be exchanged (a common case in physics, where one integrates over fast and slow variables). **Bridge to product measures**: the proof relies on `MeasureTheory.integral_integral_swap` (the Mathlib statement of Fubini for *product measures*) and the bridge `intervalIntegral.integral_of_le` (which converts the textbook interval integral to a measure integral over `Ioc`). The whole construction therefore depends on the consistency of Mathlib's product-measure machinery — anything that strengthens that foundation propagates here.",
+    "openQuestions": [
+      "**Remove the parent axiom**: the parent module `Proofs.GreensTheoremOQ01OQ01OQ01` still *declares* `iteratedIntervalIntegral_order_independent` as an axiom even though this file proves it. The follow-up is to either restructure the parent to import this proof, or extract the result to a shared `Core` file imported by both. Either way the parent's `axiomCount` should drop.",
+      "**Generalize beyond continuity**: the result is stated for continuous $f$, but Fubini holds under integrability alone. Can the four-block argument be lifted to integrable (rather than continuous) functions? The bottleneck is B0 (`continuous_param`) — its dominated-convergence proof leverages continuity to get pointwise bounds; an integrable analog would need a more refined parameterized-integrability lemma.",
+      "**Multivariate change of variables**: order-independence is the simplest invariance of the iterated integral. Can the same B0-B3 technology be extended to prove the multivariate change-of-variables formula $\\int f(\\phi(x)) |\\det D\\phi| dx = \\int f(y) dy$ for diffeomorphisms $\\phi$? This would replace `Equiv.Perm` (discrete swaps) with a Lie-group-style action; the analog of `integral_integral_swap` is the Jacobian determinant theorem."
+    ]
   },
+  "crossReferences": [
+    {
+      "id": "greens-theorem-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Parent file that originally axiomatized iteratedIntervalIntegral_order_independent. This entry derives that statement, leaving the parent's axiom mathematically redundant."
+    },
+    {
+      "id": "greens-theorem",
+      "relationship": "ancestor",
+      "description": "Root Green's theorem entry. The order-independence eliminated here is one of several Fubini-chain axioms feeding into the n-dimensional Green's theorem statement."
+    },
+    {
+      "id": "fundamental-theorem-calculus",
+      "relationship": "related",
+      "description": "Underlies the interval-integral interpretation used here: each ∫_a^b reduces to FTC + Riemann/Lebesgue agreement, and Fubini composes those one-variable statements."
+    }
+  ],
   "sorries": 0
 }

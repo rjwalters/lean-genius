@@ -1,26 +1,150 @@
 [
   {
-    "id": "ann-swap01-cons",
-    "line": 85,
-    "annotation": "The core Fin arithmetic computation: for σ = swap 0 1, applying σ to a Fin.cons chain gives f(cons x₁ (cons x₀ rest) ∘ swap 0 1) = f(cons x₀ (cons x₁ rest)). Proved by Fin.cases splitting positions 0, 1, and k+2.",
-    "type": "insight"
+    "id": "gtoq01x4-ann-01",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "context",
+    "title": "Axiom Elimination Goal and Proof Architecture",
+    "content": "The parent file `Proofs.GreensTheoremOQ01OQ01OQ01` axiomatizes `iteratedIntervalIntegral_order_independent`: any permutation $\\sigma \\in S_n$ of integration variables preserves the iterated interval integral of a continuous function on a compact box. This file eliminates that axiom from first principles, with 0 sorries and 0 axiom declarations of its own. The architecture is a four-block decomposition: **B0** (`continuous_param`) — parameterized iterated integrals are continuous in their parameter (proved by induction on $n$ via `continuousAt_of_dominated_interval`); **B1** (`swap_outer_two`) — swapping the outermost two integration positions is exactly Fubini (`MeasureTheory.integral_integral_swap`); **B2** (`iteratedIntervalIntegral_perm_tail`) — permuting tail positions reduces to the IH applied inside the outermost integral; **B3** (`iter_integral_swap_any`) — any single transposition decomposes into a B1 outer-swap conjugated by B2 tail-permutations. The main theorem uses `Equiv.Perm.swap_induction_on` to chain transpositions: any $\\sigma$ is a product of transpositions, and each transposition is handled by B3. The result eliminates one axiom from the n-dimensional Fubini chain feeding into Green's theorem in the gallery.",
+    "mathContext": "Iterated interval integral order-independence: for continuous $f : [a,b]^n \\to \\mathbb{R}$ and $\\sigma \\in S_n$, the iterated integral with the natural order equals the iterated integral with order $\\sigma$ applied to the integration variables and the integrand reindexed by $\\sigma^{-1}$. This is Fubini for finite-dimensional Euclidean integration, repeated.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Fubini's theorem",
+      "iterated vs product integrals",
+      "interval integral",
+      "permutation of integration variables",
+      "axiom elimination"
+    ],
+    "prerequisites": [
+      "Mathlib.MeasureTheory.Integral.Prod",
+      "Equiv.Perm.swap_induction_on",
+      "interval integral on ℝ"
+    ]
   },
   {
-    "id": "ann-swap-outer",
-    "line": 130,
-    "annotation": "The primitive Fubini building block: swapping positions 0 and 1 in the iterated integral. Proof: expand both sides to a common double integral, apply integral_integral_swap (Fubini for product measures) to swap, then show the integrand G(x₀,x₁) is the same on both sides.",
-    "type": "technique"
+    "id": "gtoq01x4-ann-02",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 37,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "B0: Parameterized Iterated Integral is Continuous",
+    "content": "`continuous_param` proves that for any first-countable, locally compact, T2 space $\\alpha$ and continuous $F : \\alpha \\times \\mathbb{R}^n \\to \\mathbb{R}$, the function $x \\mapsto \\int_a^b F(x, \\cdot) d\\lambda^n$ is continuous in $x$. The proof is by induction on $n$. **Base $n=0$**: the integral collapses to $F(x, \\text{Fin.elim0})$, which is continuous in $x$ by hypothesis. **Inductive step**: package the integrand as $H(x, t_0) := \\int_{\\text{tail}(a, b)} F(x, \\text{cons}\\,t_0\\,t) d\\lambda^{n-1}$, continuous in $(x, t_0)$ by the inductive hypothesis applied with $\\alpha' = \\alpha \\times \\mathbb{R}$. Then `continuousAt_of_dominated_interval` is invoked with a uniform compact bound $M$ on $H$ over a compact neighborhood $K \\times [a_0, b_0]$ — the existence of $M$ uses compactness + continuity. The technical genericity (`FirstCountableTopology`, `LocallyCompactSpace`, `T2Space`) is what makes the induction's parameter-space `α' = α × ℝ` typecheck at every recursion step. This block is what makes the *parameterized* Fubini argument work: applying `integral_integral_swap` inside an outer integral requires the integrand $\\int F(x, \\cdot)$ to be measurable in $x$, and continuity is the stronger property that lets us avoid bare measurability gymnastics.",
+    "mathContext": "Parameterized integral continuity: $F$ continuous on $\\alpha \\times \\mathbb{R}^n$ ⇒ $x \\mapsto \\int_a^b F(x, t)\\,dt$ continuous on $\\alpha$. Proved via dominated convergence on intervals, with the dominating bound coming from compactness.",
+    "significance": "key",
+    "relatedConcepts": [
+      "continuousAt_of_dominated_interval",
+      "dominated convergence",
+      "parameterized integral",
+      "FirstCountableTopology",
+      "compact bound"
+    ],
+    "prerequisites": [
+      "induction on Nat",
+      "topological prerequisites for parameter spaces",
+      "Mathlib's interval integral continuity API"
+    ]
   },
   {
-    "id": "ann-integrability",
-    "line": 60,
-    "annotation": "Key technical lemma (sorry): for continuous f, the parameterized inner integral (x₀,x₁) ↦ [integral over x₂,...,xₙ] is integrable. Follows from continuity of the iterated integral as a function of its parameter (proved inductively using dominated convergence), then integrableOn_compact on [a₀,b₀] × [a₁,b₁].",
-    "type": "gap"
+    "id": "gtoq01x4-ann-03",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 167
+    },
+    "type": "technique",
+    "title": "B1 Prerequisites: integrable_swap_pair and swap01_cons_eq",
+    "content": "Two private lemmas prepare the ground for the B1 outer swap. `integrable_swap_pair` proves that for continuous $f$ on a compact $(n+2)$-dim box, the function $(x_0, x_1) \\mapsto \\int_{a_2}^{b_2} \\cdots \\int_{a_{n+1}}^{b_{n+1}} f(x_0, x_1, x_2, \\dots) dx_{n+1} \\cdots dx_2$ is integrable on $\\text{Ioc}(a_0, b_0) \\times \\text{Ioc}(a_1, b_1)$. The proof uses **B0** (`continuous_param`) to show the integrand is continuous in $(x_0, x_1)$, then `integrableOn_compact` over the compact rectangle. `swap01_cons_eq` is the Fin-arithmetic identity that justifies the equality after the swap: for $\\sigma = \\text{swap}\\,0\\,1 \\in \\text{Equiv.Perm}(\\text{Fin}(n+2))$, applying $\\sigma$ to a `Fin.cons` chain gives $f(\\text{cons}\\,x_1\\,(\\text{cons}\\,x_0\\,r) \\circ \\sigma) = f(\\text{cons}\\,x_0\\,(\\text{cons}\\,x_1\\,r))$ for all rest-tuples $r$. The proof is `Fin.cases` splitting on positions $0$, $1$, and $k+2$ — the first two are explicit (sent to each other) and the third uses that swap fixes positions $\\ge 2$. These two lemmas package the *measure-theoretic* and *combinatorial* parts respectively, so the actual Fubini application in B1 is clean.",
+    "mathContext": "Integrability of the parametrized Fubini integrand: continuous + compact domain ⇒ integrable on Ioc × Ioc. Fin-arithmetic: $(\\text{swap}\\,0\\,1)^{-1}(0) = 1$, $(\\text{swap}\\,0\\,1)^{-1}(1) = 0$, $(\\text{swap}\\,0\\,1)^{-1}(k+2) = k+2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integrableOn_compact",
+      "Fin.cons",
+      "Fin.cases",
+      "Equiv.swap",
+      "interval × interval product measure"
+    ],
+    "prerequisites": [
+      "Fin types and constructors",
+      "MeasureTheory.Integrable on product spaces",
+      "B0 (continuous_param)"
+    ]
   },
   {
-    "id": "ann-2d-case",
-    "line": 260,
-    "annotation": "Complete proof for n=2: Perm(Fin 2) = {id, swap 0 1}. The case split uses Fin.cases on where σ sends 0: if σ(0)=0 then σ=id (trivial), if σ(0)=1 then σ=swap 0 1 (handled by swap_outer_two).",
-    "type": "result"
+    "id": "gtoq01x4-ann-04",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 210
+    },
+    "type": "technique",
+    "title": "B1: Swapping the Outermost Two Integration Positions",
+    "content": "`swap_outer_two` is the workhorse: for continuous $f$ on the $(n+2)$-dim compact box, swapping integration positions 0 and 1 in the iterated integral leaves the value unchanged. The proof unfolds both sides into a common double integral $\\int\\int G(x_0, x_1) \\, d\\lambda^2$ where $G(x_0, x_1) = \\int_{a_2}^{b_2} \\cdots \\int_{a_{n+1}}^{b_{n+1}} f(\\text{cons}\\,x_0\\,(\\text{cons}\\,x_1\\,\\dots)) dx_{n+1} \\cdots dx_2$, then invokes `MeasureTheory.integral_integral_swap` (Fubini for product measures, requiring `Integrable G`, supplied by **B1 prereq** `integrable_swap_pair`), and uses `swap01_cons_eq` to verify the integrand on the swapped side is the same $G$ with $(x_0, x_1)$ exchanged. The whole argument is the single 'real' Fubini step in the file — every other order-independence claim is a structural reduction to this one. Crucially, `swap_outer_two` is exposed as a non-private theorem (not `private lemma`), making it a building block other files can invoke if they need *only* the outermost swap (a common need in physics applications where one integrates over a fast variable last).",
+    "mathContext": "Outer Fubini swap: $\\int_{a_0}^{b_0} \\int_{a_1}^{b_1} G(x_0, x_1) dx_1 dx_0 = \\int_{a_1}^{b_1} \\int_{a_0}^{b_0} G(x_0, x_1) dx_0 dx_1$ when $G$ is integrable on $[a_0, b_0] \\times [a_1, b_1]$. Specialized to the iterated-integral form via the `cons` rewrite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MeasureTheory.integral_integral_swap",
+      "Fubini-Tonelli",
+      "iterated vs double integral",
+      "interval integral as measure integral over Ioc"
+    ],
+    "prerequisites": [
+      "B1 prereqs (integrable_swap_pair, swap01_cons_eq)",
+      "intervalIntegral.integral_of_le",
+      "Fubini's theorem"
+    ]
+  },
+  {
+    "id": "gtoq01x4-ann-05",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 211,
+      "endLine": 422
+    },
+    "type": "technique",
+    "title": "B2 + B3: Tail Permutations and Arbitrary Transpositions",
+    "content": "Three private lemmas chain B1 into a full transposition handler. **`iteratedIntervalIntegral_perm_tail`** (B2): permuting only the tail positions $1, \\dots, n$ (fixing position 0) reduces to the IH applied *inside* the outermost integral — concretely, for any $\\tau \\in \\text{Equiv.Perm}(\\text{Fin}\\,(n+1))$ fixing 0, the iterated integral with $\\tau$ applied equals the unpermuted integral, by induction over the inner integral and the IH for dimension $n$. **`iter_integral_swap_zero`**: handles the special transposition swap(0, k) that moves position 0 to position $k$ — built by chaining $k$ adjacent transpositions $\\text{swap}(j, j+1)$ outward and then back, each adjacent swap implemented by a B1 + tail-shift via B2. **`iter_integral_swap_any`**: handles any transposition swap(j, k) by conjugating swap(0, k) with a tail permutation that brings $j$ to position 0 — the structural form $\\text{swap}(j, k) = \\sigma \\cdot \\text{swap}(0, k') \\cdot \\sigma^{-1}$ where $\\sigma$ is built from B2-amenable tail moves. These three lemmas are the file's combinatorial core (lines 211-422 are dense bookkeeping). They convert the *one* analytic primitive (B1) into a handler for *every* transposition in $S_n$, which is what `swap_induction_on` needs.",
+    "mathContext": "Coxeter-style decomposition: any transposition in $S_n$ can be written as a conjugate of an adjacent transposition by a chain of inner permutations. Combined with B1 (adjacent swap) and B2 (inner permutation), this realizes every transposition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Coxeter generators of S_n",
+      "adjacent transpositions",
+      "conjugation in symmetric groups",
+      "induction inside an integral",
+      "B1 + B2 composition pattern"
+    ],
+    "prerequisites": [
+      "Equiv.Perm operations",
+      "induction on dimension n",
+      "B1 (swap_outer_two), B2 building block recursion"
+    ]
+  },
+  {
+    "id": "gtoq01x4-ann-06",
+    "proofId": "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 423,
+      "endLine": 516
+    },
+    "type": "insight",
+    "title": "Main Theorem and Verified Special Cases",
+    "content": "`iteratedIntervalIntegral_order_independent` is the file's headline: for continuous $f$ on a compact $n$-dim box and any $\\sigma \\in S_n$, the iterated interval integral is preserved under the permutation. The proof is a one-line application of `Equiv.Perm.swap_induction_on σ`: the identity case is immediate, and the transposition case (every $\\sigma$ is a product of transpositions) is supplied by **B3** `iter_integral_swap_any`. The two named special cases verify the headline at small dimensions: `order_independent_2d` enumerates $\\text{Equiv.Perm}(\\text{Fin}\\,2) = \\{\\text{id}, \\text{swap}\\,0\\,1\\}$ and dispatches the swap case to `swap_outer_two` (since at $n=2$, the outer swap *is* the only non-identity permutation); `order_independent_3d_swap01` checks the specific 3D outer swap, again via `swap_outer_two`. The 2D case is the simplest dimension where the theorem is non-trivial, and it serves as the file's pedagogical entry point — for a 3D check (the most physically relevant case), the named version exposes one specific permutation, with the general 3D case handled by the main theorem. The key intellectual payoff: a single Fubini swap (`integral_integral_swap`), promoted via Coxeter-style combinatorics + parameterized continuity, suffices to eliminate the entire `iteratedIntervalIntegral_order_independent` axiom.",
+    "mathContext": "Main theorem: for continuous $f$ on $[a, b]^n \\subset \\mathbb{R}^n$ and any $\\sigma \\in S_n$, the iterated integral is preserved under permutation of integration variables (the integrand is reindexed by $\\sigma^{-1}$). Reduction: $S_n$ generated by transpositions ⇒ enough to verify on each transposition (B3).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Equiv.Perm.swap_induction_on",
+      "transposition generators of S_n",
+      "axiom elimination chain (parent file)",
+      "n-dimensional Fubini"
+    ],
+    "prerequisites": [
+      "B3 (iter_integral_swap_any)",
+      "Equiv.Perm.swap_induction_on",
+      "all preceding building blocks"
+    ]
   }
 ]
