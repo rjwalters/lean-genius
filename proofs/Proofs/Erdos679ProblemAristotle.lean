@@ -10,7 +10,7 @@
   - NOT the open dichotomy conjecture
   - Factored sub-lemmas for omega_primorial (structural induction steps)
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 -/
 import Proofs.Erdos679Problem
 import Mathlib

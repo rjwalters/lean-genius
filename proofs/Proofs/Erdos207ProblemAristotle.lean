@@ -8,7 +8,7 @@
   - NOT girth_3_iff_pasch_free: complex combinatorial equivalence
   - Girth ≥ 2 for any Steiner triple system: provable from STS uniqueness
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (1):
   - sts_has_girth_at_least_2_ari: every STS has girth ≥ 2

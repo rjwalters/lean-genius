@@ -17,7 +17,7 @@
   - finsetToNat_injective is a standalone theorem about binary sums
   - The fact follows from: distinct powers of 2 are Z-linearly independent
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

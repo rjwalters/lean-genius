@@ -13,7 +13,7 @@
   - NOT open gap questions (ErdosQuestion876, graham_result)
   - Routine arithmetic facts about powers of 2 and Finset sums
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

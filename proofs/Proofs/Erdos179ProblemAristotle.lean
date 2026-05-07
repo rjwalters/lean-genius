@@ -10,7 +10,7 @@
   - Membership and containment lemmas
   - Supporting infrastructure for AP_free_has_2APs and F_2_well_defined
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections
+  - Use only block comments, not module docstrings
 -/
 import Mathlib
 

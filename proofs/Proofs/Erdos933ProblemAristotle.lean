@@ -9,7 +9,7 @@
   - Factorization additivity lemmas: power of prime p in n*(n+1)
     equals sum of powers in n and n+1 (from Nat.factorization_mul)
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (2):
   - power2_consecutive_ari: v_2(n*(n+1)) = v_2(n) + v_2(n+1)

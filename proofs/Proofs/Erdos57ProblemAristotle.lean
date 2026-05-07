@@ -8,7 +8,7 @@
   - NOT UpperDensityConjecture / HalfDensityConjecture: open conjectures
   - Bipartite characterization lemmas, classical graph theory
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (2):
   - colorable_two_no_odd_cycles_ari: IsColorable G 2 → oddCycleLengths G = ∅

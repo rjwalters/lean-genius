@@ -12,7 +12,7 @@
   - Arithmetic identities (probability of monochromatic event)
   - Concrete finite instance (hypergraph_m2 lacks Property B)
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (3):
   - propertyB_dichotomy_ari: HasPropertyB ↔ ¬LacksPropertyB (definitional iff)

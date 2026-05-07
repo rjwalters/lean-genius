@@ -9,7 +9,7 @@
   - NOT the marginal, mean, or covariance theorems (statistical theory)
   - Computational examples and product nonzero characterizations
   - No axioms, no definition sorries, no open conjectures
-  - No /-! docstring sections (use /- instead)
+  - Use only block comments, not module docstrings
 
   Included targets (2):
   - dice_six_rolls_all_different_ari: multinomial({0..5}, fun _ => 1) * 1 = 6!
