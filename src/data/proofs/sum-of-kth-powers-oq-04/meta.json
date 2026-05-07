@@ -7,7 +7,7 @@
     "author": "Euler (1738), Maclaurin (1742), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%E2%80%93Maclaurin_formula",
     "date": "1738",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SumOfKthPowersOQ04.lean",
     "tags": [
       "analysis",
@@ -16,7 +16,7 @@
       "bernoulli-numbers",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. The two previously routine sorries (low_degree_poly_ratio_tendsto_zero and the natDegree bound inside monic_poly_ratio_tendsto) are now fully proved. monic_poly_ratio_tendsto was previously an axiom but was proved in V3.",
