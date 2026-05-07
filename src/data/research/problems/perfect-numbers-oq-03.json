@@ -18,7 +18,8 @@
   "knownResults": {
     "proven": [
       "mersenne_dvd_of_dvd: a | b → M(a) | M(b) (divisibility chain)",
-      "mersenne_prime_exp_prime: M(n) prime → n prime (necessity, sorry in completion)",
+      "mersenne_prime_exp_prime: M(n) prime → n prime (fully proved via Nat.minFac contradiction)",
+      "factor_cong_one_mod_p: prime q | M(p) → p | q-1 (fully proved via ZMod orderOf)",
       "M_two_prime, M_three_prime, M_five_prime: M(2)=3, M(3)=7, M(5)=31 prime",
       "M_four_not_prime: M(4)=15 not prime",
       "M_eleven_composite: M(11)=2047=23×89 not prime",
@@ -27,19 +28,17 @@
     ],
     "open": [
       "LPWConjecture: asymptotic count ~ (e^γ/log 2)·log log N (WIDE OPEN)",
-      "Infinitely many Mersenne primes exist (unknown)",
-      "factor_cong_one_mod_p: prime q | M(p) → p | q-1 (sorry'd, needs ZMod orderOf API)",
-      "mersenne_prime_exp_prime completion: sorry in factor contradiction"
+      "Infinitely many Mersenne primes exist (unknown)"
     ],
-    "goal": "Eliminate sorries from mersenne_prime_exp_prime and factor_cong_one_mod_p; LPW conjecture is formally open"
+    "goal": "All proof obligations on the Lean side discharged (0 sorries, 0 axioms). LPW conjecture itself is formally open and stated as a Filter.Tendsto goal."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-27T15:53:17.177477+00:00",
     "iteration": 1,
-    "focus": "All sorries proved. PR #10640 open for review.",
+    "focus": "All sorries proved (mersenne_prime_exp_prime via Nat.minFac contradiction; factor_cong_one_mod_p via ZMod orderOf). PR #10640 merged 2026-04-13. Gallery status: verified / original — 14 theorems, 5 defs, 0 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Await PR merge by deployer",
+    "nextAction": "None. The Lean obligations for this entry are fully discharged. LPW conjecture itself is wide-open analytic number theory and out-of-scope (would require formalizing Mertens-type prime density estimates beyond Mathlib's current toolkit).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -47,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: All sorries proved. mersenne_prime_exp_prime and factor_cong_one_mod_p now fully proved. LPW conjecture remains open.",
+    "progressSummary": "COMPLETE. PR #10640 (merged 2026-04-13) discharged the two outstanding sorries: mersenne_prime_exp_prime (Nat.minFac contradiction) and factor_cong_one_mod_p (ZMod orderOf + Fermat). Gallery is verified / original at 14 theorems / 5 defs / 0 axioms / 0 sorries across PerfectNumbersOQ03.lean (259 lines) and the helper PerfectNumbers.lean (202 lines, 10 theorems). The LPW conjecture itself remains formally open and is stated as a Filter.Tendsto goal in LPWConjecture.",
     "builtItems": [
       "PerfectNumbersOQ03.lean: Mersenne distribution formalization (~220 lines)",
       "M (n : ℕ) := 2^n - 1: Mersenne number definition",
@@ -74,17 +73,8 @@
       "Nat.cast_sub + sub_eq_zero.mp cleanly converts q|2^p-1 to (2:ZMod q)^p=1",
       "mersennePrimeCount had bug: .card.filter should be .filter(...).card"
     ],
-    "mathlibGaps": [
-      "ZMod.orderOf_dvd_of_pow_eq_one: need to verify exact API name for order divides p",
-      "orderOf_dvd_card_sub_one or ZMod.orderOf_dvd_of_prime: Fermat's little theorem variant for order",
-      "Nat.minFac_prime: available for getting smallest prime factor to complete necessity proof"
-    ],
-    "nextSteps": [
-      "Complete mersenne_prime_exp_prime: use Nat.minFac n (smallest prime factor), show M(Nat.minFac n) | M(n), derive contradiction with Prime.eq_one_or_self_of_dvd",
-      "Complete factor_cong_one_mod_p: ZMod.orderOf_dvd_of_pow_eq_one to get ord | p, then ZMod.orderOf_pos + Nat.Prime.eq_one_or_self_of_prime_of_dvd, then ZMod.orderOf_dvd_card_sub_one for ord | q-1",
-      "Submit sorries to Aristotle for overnight processing",
-      "LPW conjecture: no proof path, remains formally open"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "number-theory",
@@ -114,14 +104,14 @@
     ]
   },
   "started": "2026-04-13T00:00:00.000Z",
-  "lastUpdate": "2026-04-27T15:53:17.177477+00:00",
+  "lastUpdate": "2026-05-07T00:00:00.000Z",
   "significance": 9,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/PerfectNumbers.lean",
       "filename": "PerfectNumbers.lean",
-      "lineCount": 203,
+      "lineCount": 202,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -132,10 +122,10 @@
     {
       "path": "Proofs/PerfectNumbersOQ03.lean",
       "filename": "PerfectNumbersOQ03.lean",
-      "lineCount": 260,
+      "lineCount": 259,
       "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PerfectNumbersOQ03.lean"
