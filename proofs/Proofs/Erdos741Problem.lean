@@ -196,8 +196,8 @@ theorem density_univ : upperDensity Set.univ = 1 := by
   ext n
   have hn : (n : ℝ) + 1 ≠ 0 := by positivity
   have hIic : (Set.Iic n : Set ℕ).ncard = n + 1 := by
-    rw [← Set.ncard_coe_Finset, Finset.toSet_toFinset]
-    simp [Set.toFinset_Iic, Finset.card_Iic]
+    rw [show (Set.Iic n : Set ℕ) = ↑(Finset.Iic n) from by simp [Finset.coe_Iic]]
+    rw [Set.ncard_coe_Finset]; simp [Finset.card_Iic]
   rw [hIic, div_eq_one_iff_eq hn]
   push_cast; ring
 
@@ -205,7 +205,8 @@ theorem density_univ : upperDensity Set.univ = 1 := by
 theorem density_mono {A B : Set ℕ} (h : A ⊆ B) : upperDensity A ≤ upperDensity B := by
   unfold upperDensity
   apply Filter.limsup_le_limsup
-  · filter_upwards [] with n
+  · apply Filter.eventually_of_forall
+    intro n
     apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)
     exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
         ((Set.Iic n).toFinite.subset Set.inter_subset_right)
@@ -228,7 +229,7 @@ theorem basis_infinite {A : Set ℕ} (h : IsBasisOrder2 A) : A.Infinite := by
   by_contra hfin
   push_neg at hfin
   -- All elements of A are ≤ n
-  have hA_bound : ∀ a ∈ A, a ≤ n := fun a ha => le_of_not_gt (fun h => hfin a ha h)
+  have hA_bound : ∀ a ∈ A, a ≤ n := fun a ha => hfin a ha
   -- Then sumset A A ⊆ [0, 2n]
   have hS_bound : ∀ s ∈ sumset A A, s ≤ 2 * n := by
     rintro s ⟨a, ha, b, hb, rfl⟩
