@@ -124,5 +124,16 @@
       "For which values of d does ℤ[√d] have class number 1 (i.e., is a UFD/PID), and can Lean verify these computationally? The Stark-Heegner theorem says there are exactly 9 such negative d: -1,-2,-3,-7,-11,-19,-43,-67,-163."
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.BezoutIdentityOQ02OQ01OQ02"],
+    "opens": ["Zsqrtd"],
+    "namespace": "DedekindIdealFTA",
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ02OQ03.lean",
+    "lineCount": 265,
+    "axiomCount": 0,
+    "theoremCount": 24,
+    "definitionCount": 1,
+    "sorries": 0
+  }
 }

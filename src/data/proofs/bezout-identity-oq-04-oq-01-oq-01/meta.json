@@ -128,5 +128,26 @@
       "relationship": "root: Bezout's identity — the foundational result formalized in the main entry"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.PrincipalIdealDomain",
+      "Mathlib.RingTheory.GCDMonoid.Basic",
+      "Mathlib.Algebra.GCDMonoid.Basic",
+      "Mathlib.Data.Matrix.Basic",
+      "Mathlib.Data.Matrix.Diagonal",
+      "Mathlib.LinearAlgebra.Matrix.Diagonal",
+      "Mathlib.LinearAlgebra.Matrix.IsDiag",
+      "Mathlib.LinearAlgebra.Matrix.Determinant",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Matrix", "GCDMonoid"],
+    "namespace": "BezoutIdentityOQ04OQ01OQ01",
+    "path": "Proofs/BezoutIdentityOQ04OQ01OQ01.lean",
+    "lineCount": 206,
+    "axiomCount": 2,
+    "theoremCount": 6,
+    "definitionCount": 3,
+    "sorries": 0
+  }
 }
