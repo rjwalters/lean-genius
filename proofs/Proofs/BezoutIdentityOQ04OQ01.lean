@@ -153,7 +153,14 @@ axiom snf_exists (m n : ℕ) (A : Matrix (Fin m) (Fin n) ℤ) :
 theorem snf_exists_zero (m n : ℕ) :
     ∃ snf : SmithNormalForm m n,
       snf.isDecompOf (0 : Matrix (Fin m) (Fin n) ℤ) := by
-  refine ⟨⟨1, 0, 1, isUnimodular_one, isUnimodular_one, ?_, ?_⟩, ?_⟩
+  refine ⟨{
+    U := (1 : Matrix (Fin m) (Fin m) ℤ)
+    D := (0 : Matrix (Fin m) (Fin n) ℤ)
+    V := (1 : Matrix (Fin n) (Fin n) ℤ)
+    hU := isUnimodular_one
+    hV := isUnimodular_one
+    hD_diag := ?_
+    hD_div := ?_ }, ?_⟩
   · -- D = 0 is diagonal: every entry is 0
     intro i j _
     simp
@@ -349,8 +356,7 @@ theorem intNullSpace_neg {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
 theorem intNullSpace_sub {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℤ)
     {x y : Fin n → ℤ} (hx : x ∈ intNullSpace A) (hy : y ∈ intNullSpace A) :
     (x - y) ∈ intNullSpace A := by
-  have heq : x - y = x + (-y) := by ext i; ring
-  rw [heq]
+  rw [sub_eq_add_neg]
   exact intNullSpace_add A hx (intNullSpace_neg A hy)
 
 /-! ## Solution Lattice Structure
