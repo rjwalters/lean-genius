@@ -1,1 +1,123 @@
-[]
+[
+  {
+    "id": "ehrcube01-ann-01",
+    "proofId": "ehrhart-cube-proven-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Header: The Multiset Bijection and Cube/Simplex Parallel",
+    "content": "The opening docstring lays out the core idea: lattice points of $n \\cdot \\Delta^d$ biject with size-$n$ multisets from $\\{0, 1, \\dots, d\\}$, where element $0$ encodes the *slack* $n - \\sum_i x_i$ and elements $1, \\dots, d$ encode the standard coordinates $x_1, \\dots, x_d$. This is the *exact* simplex analogue of the cube proof's bijection $\\text{Fin}\\,d \\to \\text{Fin}\\,(n+1)$ from `EhrhartCubeProven.lean` — both use a Mathlib `Fintype` whose cardinality is given by an explicit closed form (`Sym.card_sym_eq_choose` for the simplex, `Fintype.card_fun` for the cube). The whole file's proof reduces to this one observation plus binomial-coefficient symmetry. The single `import Mathlib` line is intentional — only `Sym.card_sym_eq_choose`, `Fintype.card_fin`, `Nat.choose_symm_of_eq_add`, `Nat.choose_le_choose`, and `Nat.choose_succ_succ` are needed, but bringing them in à la carte is more brittle than the catch-all import.",
+    "mathContext": "Stars and bars / multiset cardinality: $|\\text{Sym}\\,\\alpha\\,n| = \\binom{|\\alpha| + n - 1}{n}$. With $\\alpha = \\text{Fin}\\,(d+1)$ this is $\\binom{n + d}{n} = \\binom{n + d}{d}$ by binomial symmetry — the Ehrhart polynomial of $\\Delta^d$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Ehrhart polynomial",
+      "stars and bars",
+      "multiset cardinality",
+      "cube/simplex parallel"
+    ],
+    "prerequisites": [
+      "Sym (Fin k) n in Mathlib",
+      "binomial coefficients",
+      "Ehrhart theory background"
+    ]
+  },
+  {
+    "id": "ehrcube01-ann-02",
+    "proofId": "ehrhart-cube-proven-oq-01",
+    "range": {
+      "startLine": 36,
+      "endLine": 64
+    },
+    "type": "technique",
+    "title": "Main Theorem: Simplex Lattice Count = C(n+d, d)",
+    "content": "`simplex_lattice_count` is the file's headline: $|\\text{Sym}\\,(\\text{Fin}\\,(d+1))\\,n| = \\binom{n+d}{d}$. The proof is three lines. **Step 1** rewrites with `Sym.card_sym_eq_choose`, giving cardinality $\\binom{(d+1) + n - 1}{n}$. **Step 2** uses `Fintype.card_fin` to compute $|\\text{Fin}\\,(d+1)| = d + 1$, leaving the goal as $\\binom{(d+1) + n - 1}{n} = \\binom{n+d}{d}$. **Step 3** simplifies $(d+1) + n - 1 = n + d$ via `omega` and applies `Nat.choose_symm_of_eq_add` for the binomial symmetry $\\binom{n+d}{n} = \\binom{n+d}{d}$. The whole proof is a clean cascade: the *real* mathematical content (the multiset bijection) is in Mathlib's `Sym.card_sym_eq_choose`; this file is the bookkeeping that converts the Mathlib cardinality formula into the textbook Ehrhart formula. Notably, the proof avoids any explicit construction of the bijection — it works purely at the level of cardinalities.",
+    "mathContext": "$|\\text{Sym}\\,(\\text{Fin}\\,(d+1))\\,n| = \\binom{(d+1) + n - 1}{n} = \\binom{n+d}{n} = \\binom{n+d}{d}$. The first equality is Mathlib's `Sym.card_sym_eq_choose`; the third is `Nat.choose_symm_of_eq_add` (binomial symmetry).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Sym.card_sym_eq_choose",
+      "Nat.choose_symm_of_eq_add",
+      "Fintype.card_fin",
+      "omega tactic"
+    ],
+    "prerequisites": [
+      "Mathlib's Sym Fintype API",
+      "binomial coefficient symmetry",
+      "Nat arithmetic via omega"
+    ]
+  },
+  {
+    "id": "ehrcube01-ann-03",
+    "proofId": "ehrhart-cube-proven-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "Base Cases and Dimensional Specializations",
+    "content": "Sections II and III drop down to small dimensions to verify the formula matches classical sequences. **Base cases**: `simplex_at_zero` gives count 1 ($\\binom{d}{d} = 1$, just the origin); `simplex_at_one` gives $d + 1$ ($\\binom{d+1}{d} = d+1$, the $d+1$ vertices). **Dimensional specializations**: `simplex_0d` (always 1 — a single point), `simplex_1d` (segment $[0, n]$ has $n + 1$ lattice points, identical to the 1D cube), `simplex_2d` (triangular numbers $\\binom{n+2}{2}$), `simplex_3d` (tetrahedral numbers $\\binom{n+3}{3}$). The triangular numbers $1, 3, 6, 10, 15, \\dots$ and tetrahedral numbers $1, 4, 10, 20, 35, \\dots$ are immediate Ehrhart corollaries — the count of lattice points in the dilated triangle and tetrahedron, respectively. Six `native_decide` examples verify concrete small values: $|\\text{Sym}\\,(\\text{Fin}\\,3)\\,2| = 6$ (six lattice points in $2\\Delta^2$), $|\\text{Sym}\\,(\\text{Fin}\\,4)\\,3| = 20$ (the truncated tetrahedral number). These act as both pedagogical examples and regression tests against any future Mathlib drift in the `Sym` API.",
+    "mathContext": "Triangular numbers $T_n = \\binom{n+2}{2} = \\frac{(n+1)(n+2)}{2}$. Tetrahedral numbers $\\text{Te}_n = \\binom{n+3}{3} = \\frac{(n+1)(n+2)(n+3)}{6}$. 1D agreement: $\\Delta^1 = [0, n]$ has $n+1$ points, same as the cube $[0, n]^1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "triangular numbers",
+      "tetrahedral numbers",
+      "Pascal's triangle diagonals",
+      "native_decide regression tests"
+    ],
+    "prerequisites": [
+      "simplex_lattice_count (this file)",
+      "Nat.choose_one_right",
+      "small-dimension simplex geometry"
+    ]
+  },
+  {
+    "id": "ehrcube01-ann-04",
+    "proofId": "ehrhart-cube-proven-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 154
+    },
+    "type": "technique",
+    "title": "Interior Lattice Points and Ehrhart-Macdonald",
+    "content": "Section IV computes the *interior* lattice points: $\\{(x_1, \\dots, x_d) \\in \\mathbb{Z}^d : x_i \\ge 1, \\sum_i x_i \\le n - 1\\}$ — strictly positive coordinates with sum strictly less than $n$. The shift $y_i = x_i - 1$ converts this to $\\{(y_1, \\dots, y_d) \\in \\mathbb{N}^d : \\sum_i y_i \\le n - d - 1\\}$, which is exactly $\\text{Sym}\\,(\\text{Fin}\\,(d+1))\\,(n - d - 1)$ via the same multiset bijection. `simplex_interior_count` computes this cardinality as $\\binom{n - 1}{d}$, valid for $n \\ge d + 1$ (otherwise the interior is empty). The proof structure is identical to `simplex_lattice_count`: `Sym.card_sym_eq_choose` + `Fintype.card_fin` + `omega` arithmetic + `Nat.choose_symm_of_eq_add`. **Ehrhart-Macdonald reciprocity** appears in numerical form: `simplex_boundary_count` computes total count minus interior count as $\\binom{n+d}{d} - \\binom{n-1}{d}$, which is the *boundary* lattice point count. For the 2D triangle at $n \\ge 2$, this evaluates to $3n$ (three sides each contributing $n$ points, with the three vertices double-counted but corrected), matching classical Pick-style boundary counts. The connection to the polynomial-extension form of Ehrhart-Macdonald — $L_P(-n) = (-1)^d L_{P^\\circ}(n)$ — is suggestive but not formalized here; doing so would require extending binomial coefficients to negative integers (open question 3 in the conclusion).",
+    "mathContext": "Interior count: $|\\{x \\in \\mathbb{Z}_{\\ge 1}^d : \\sum x_i \\le n - 1\\}| = \\binom{n - 1}{d}$ for $n \\ge d + 1$. Boundary count: $\\binom{n + d}{d} - \\binom{n - 1}{d}$. For $\\Delta^2$ at $n \\ge 2$: $\\binom{n + 2}{2} - \\binom{n - 1}{2} = 3n$ boundary points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ehrhart-Macdonald reciprocity",
+      "shifted multiset bijection",
+      "boundary vs interior counts",
+      "Pick's theorem (2D analog)"
+    ],
+    "prerequisites": [
+      "shift map y_i = x_i - 1",
+      "simplex_lattice_count (this file)",
+      "n ≥ d + 1 for nonempty interior"
+    ]
+  },
+  {
+    "id": "ehrcube01-ann-05",
+    "proofId": "ehrhart-cube-proven-oq-01",
+    "range": {
+      "startLine": 155,
+      "endLine": 207
+    },
+    "type": "insight",
+    "title": "Monotonicity, Pascal Recursion, and Cube Comparison",
+    "content": "Section V derives two structural properties of the Ehrhart count. **`simplex_monotone`** says the count is increasing in $n$ — geometrically obvious (a larger dilation contains all points of a smaller dilation), proved via `Nat.choose_le_choose d (by omega)` after rewriting with `simplex_lattice_count`. **`simplex_pascal`** is the file's prettiest result: the $(d+1)$-simplex at dilation $n + 1$ decomposes as $\\binom{(n+1) + (d+1)}{d+1} = \\binom{(n+1) + d}{d} + \\binom{n + (d+1)}{d+1}$. Geometrically: $(n+1) \\cdot \\Delta^{d+1}$ splits as $\\{x : x_{d+1} = 0\\}$ (which is $(n+1) \\cdot \\Delta^d$, contributing $\\binom{(n+1) + d}{d}$ points) plus $\\{x : x_{d+1} \\ge 1\\}$ (which shifts to $n \\cdot \\Delta^{d+1}$, contributing $\\binom{n + (d+1)}{d+1}$ points). The proof reduces to `Nat.choose_succ_succ` (Pascal's rule) after `omega`-arithmetic on the indices. **Section VI** compares simplex and cube: `simplex_cube_1d_agree` confirms that in 1D both have $n+1$ lattice points (a sanity check that 1D Ehrhart depends only on the segment length, not the polytope shape), and a closing `native_decide` example contrasts $|\\text{Sym}\\,(\\text{Fin}\\,4)\\,2| = 10 < 27 = |\\text{Fin}\\,3 \\to \\text{Fin}\\,3|$ — i.e., the 3D simplex at $n = 2$ has 10 points while the 3D cube at $n = 2$ has 27. The growth rate $\\binom{n+d}{d} \\sim n^d / d!$ is strictly slower than the cube's $(n+1)^d$, reflecting the smaller volume of the simplex (volume $1/d!$) versus the cube (volume 1).",
+    "mathContext": "Monotonicity: $\\binom{n+d}{d} \\le \\binom{(n+1)+d}{d}$. Pascal recursion: $\\binom{m+1}{k+1} = \\binom{m}{k} + \\binom{m}{k+1}$, applied to the $(n+d+1)$, $(d+1)$-coordinate of the simplex Ehrhart formula. Asymptotic: $\\binom{n+d}{d} \\sim n^d / d!$ as $n \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.choose_le_choose",
+      "Nat.choose_succ_succ",
+      "Pascal's triangle",
+      "simplex/cube volume ratio 1/d!",
+      "Ehrhart polynomial leading coefficient"
+    ],
+    "prerequisites": [
+      "simplex_lattice_count (this file)",
+      "Pascal's rule for binomial coefficients",
+      "asymptotic comparison of Ehrhart polynomials"
+    ]
+  }
+]
