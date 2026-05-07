@@ -118,7 +118,7 @@
       "notes": "Mathlib has Int.gcd and the extended Euclidean algorithm. A formal proof of the n-variable Bézout identity using Mathlib.Data.Int.GCD is feasible (~100 lines)."
     }
   ],
-  "crossRefs": [
+  "crossReferences": [
     {
       "id": "hilbert-10",
       "relationship": "parent",
@@ -128,8 +128,23 @@
       "id": "hilbert-10-oq-01",
       "relationship": "sibling",
       "description": "Addresses H10 over the rationals (open problem). Related question about decidability thresholds."
+    },
+    {
+      "id": "halting-problem",
+      "relationship": "ancestor",
+      "description": "Halting problem — undecidable r.e. set whose Diophantine encoding (via MRDP/Jones) yields the 9-variable undecidability axiom used here."
     }
   ],
+  "conclusion": {
+    "summary": "The file maps the complexity boundary of Hilbert's tenth problem with a four-part survey: (1) constructive decidability proofs for the trivial cases (0 variables, 1-variable linear); (2) a `LinearForm n` data structure for systematic study of degree-1 equations in any number of variables; (3) a clean monotonicity proof showing undecidability is upward-closed in variable count, via a `Fin.castSucc` reduction; and (4) five axioms from the literature (MRDP, Jones-Matiyasevich, 9-variable undecidability, n-variable Bézout, Jones universal polynomial). The `complexity_gap_summary` theorem packages the boundary into a single statement: degree-1 single-variable equations are decidable, 9-variable general equations are not — the open question lies strictly between.",
+    "implications": "Hilbert's tenth problem sits at the intersection of three foundational areas: number theory (Diophantine equations), computability (r.e. sets and reducibility), and proof theory (the MRDP encoding shows that elementary number theory is at least as expressive as recursion theory). The minimum-complexity question matters in several places. (i) **Lower bounds for proof complexity**: a small-variable, low-degree undecidable equation gives a minimal 'arithmetical encoding' of computation, useful in arithmetical hierarchy lower bounds and in the proof of Gödel's incompleteness via Diophantine encodings. (ii) **Number theory**: the simplest Diophantine equation whose solvability cannot be settled by any algorithm is presumably one whose solvability cannot be settled by any standard number-theoretic technique; sharper bounds would clarify which Diophantine techniques can in principle handle which complexity classes. (iii) **Computer algebra**: better lower bounds on undecidability would justify when computer-algebra systems are wasting effort on solvability questions, while better upper bounds (smaller universal polynomials) immediately give universal Turing machines of correspondingly small description. (iv) **Cryptography and post-quantum**: lattice-based and isogeny-based cryptosystems rest on hardness assumptions about specific Diophantine problems; understanding the boundary informs which families can support hardness assumptions.",
+    "openQuestions": [
+      "**Variable-count gap (3 ≤ ? ≤ 9)**: Determine the minimum $n$ such that $\\text{H10}_n$ is undecidable. The lower bound $n \\ge 3$ is from algorithmic results for $\\text{H10}_2$ (Pell-equation-style methods give decidability for many 2-variable cases, and conjecturally for all). The upper bound $n \\le 9$ is Jones (1982). No progress in 40+ years.",
+      "**Degree gap (2 ≤ ? ≤ 4)**: Determine the minimum degree for an undecidable Diophantine family. Degree 1 is decidable (Bézout); degree 4 is undecidable (Jones). Whether degree 2 (quadratic Diophantine systems) or degree 3 (cubic) suffices is unresolved.",
+      "**Eliminate `linear_bezout_n` axiom**: Prove the n-variable Bézout characterization in Lean using Mathlib's `Int.gcd` and the extended Euclidean algorithm. Estimated ~100 lines; this would reduce the file's axiom count from 5 to 4 (oq-03 in the openQuestions list).",
+      "**Constructive Jones polynomial**: Replace `jones_universal_poly` with an explicit 9-variable degree-4 polynomial whose universality is mechanically verified. Jones (1982) gives an explicit construction; transcribing it into Lean would make the axiom into a definition + theorem (likely a multi-thousand-line undertaking but tractable)."
+    ]
+  },
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/Hilbert10OQ04.lean",

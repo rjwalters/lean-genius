@@ -1,1 +1,150 @@
-[]
+[
+  {
+    "id": "h10oq04-ann-01",
+    "proofId": "hilbert-10-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "context",
+    "title": "The Open Question and Known Bounds",
+    "content": "The opening docstring frames the question this file partially answers: among all undecidable Diophantine problems, what is the minimal complexity in (i) variable count and (ii) polynomial degree? Davis-Putnam-Robinson-Matiyasevich (1970) settled Hilbert's tenth problem in the negative — there is no algorithm — but the proof yielded a polynomial in many variables of high degree. Subsequent decades chased the minimum: Matiyasevich's 1977 bound of 13 variables, Jones (1982) reduced to 9 variables and degree 4, and the lower bound was improved to ≥ 3 variables. This file proves the *boundary*: 0-variable and 1-variable linear cases are decidable, undecidability is monotone in variable count, and (axiomatized from the literature) 9 variables suffice to encode any r.e. set. The current open gap (3 ≤ minimum ≤ 9 variables, 2 ≤ minimum degree ≤ 4) is one of the most concrete open problems in computability theory. The three Mathlib imports — `Tactic`, `Data.Fin.Basic`, `Data.Int.Order` — are minimal: only `Fin.elim0`, `Fin.castSucc`, and integer divisibility / ordering lemmas are needed.",
+    "mathContext": "MRDP theorem (1970): a set $S \\subseteq \\mathbb{N}$ is r.e. iff there is a polynomial $P(k, x_1, \\dots, x_n) \\in \\mathbb{Z}[k, x_1, \\dots, x_n]$ such that $k \\in S \\iff \\exists x_1, \\dots, x_n \\in \\mathbb{Z},\\ P(k, x_1, \\dots, x_n) = 0$. Jones (1982): can be done with $n = 9$ and $\\deg P \\le 4$. Open: minimum $(n, \\deg)$ for undecidability — known $(n, \\deg) \\in [3, 9] \\times [2, 4]$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hilbert's 10th problem",
+      "Matiyasevich-Robinson-Davis-Putnam theorem",
+      "r.e. sets",
+      "halting problem",
+      "computable reduction"
+    ],
+    "prerequisites": [
+      "computability basics (Turing machines, r.e. sets)",
+      "polynomial Diophantine equations",
+      "decidability vs undecidability"
+    ]
+  },
+  {
+    "id": "h10oq04-ann-02",
+    "proofId": "hilbert-10-oq-04",
+    "range": {
+      "startLine": 51,
+      "endLine": 87
+    },
+    "type": "definition",
+    "title": "Variable-Bounded Diophantine Equations and Linear Forms",
+    "content": "`DiophantineN n = (Fin n → Int) → Int` represents an $n$-variable polynomial as a function from integer assignments to its value — this is the abstract type-theoretic form of a polynomial that hides whatever monomial expansion produced the function. `hasSolutionN P` is the existential $\\exists x : \\text{Fin}\\,n \\to \\mathbb{Z},\\ P(x) = 0$. Crucially, decidability is defined as the existence of an algorithm `alg : DiophantineN n → Bool` whose output matches solvability: `H10_n_decidable n := ∃ alg, ∀ P, alg P = true ↔ hasSolutionN P`. This intentionally uses the constructive form `∃ alg` rather than a `Decidable` typeclass so the negation `H10_n_undecidable n := ¬ H10_n_decidable n` captures the algorithmic-undecidability statement (not the much stronger statement that decidability fails in the type theory). The `LinearForm n` structure isolates degree-1 polynomials with coefficients $a_1,\\dots,a_n$ and constant $c$; `LinearForm.eval` evaluates $\\sum a_i x_i + c$ via `Finset.sum`. This separation lets later theorems be stated about *all* polynomials of the given complexity bound, not just the polynomials encoded as a particular term.",
+    "mathContext": "$\\text{DiophantineN}\\,n = (\\text{Fin}\\,n \\to \\mathbb{Z}) \\to \\mathbb{Z}$. $\\text{hasSolutionN}\\,P \\iff \\exists x \\in \\mathbb{Z}^n,\\ P(x) = 0$. $\\text{H10}_n$-decidable $\\iff \\exists \\text{alg} : \\text{DiophantineN}\\,n \\to \\text{Bool}, \\forall P, \\text{alg}\\,P = \\text{true} \\iff \\text{hasSolutionN}\\,P$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Diophantine equations",
+      "decision problems",
+      "Bool-valued algorithms vs Decidable typeclass",
+      "linear forms"
+    ],
+    "prerequisites": [
+      "Fin n in Lean",
+      "Finset.sum",
+      "constructive existence"
+    ]
+  },
+  {
+    "id": "h10oq04-ann-03",
+    "proofId": "hilbert-10-oq-04",
+    "range": {
+      "startLine": 88,
+      "endLine": 122
+    },
+    "type": "technique",
+    "title": "Decidable Cases: 0 Variables and 1-Variable Linear",
+    "content": "`zero_var_decidable` proves $\\text{H10}_0$ is decidable: the entire input is the polynomial's value at the unique map `Fin.elim0` (out of the empty type), so the algorithm is `decide (P Fin.elim0 = 0)`. The `funext` step is the only subtlety — one direction needs to show that any solution $x : \\text{Fin}\\,0 \\to \\mathbb{Z}$ is equal to `Fin.elim0`, which is automatic because `Fin.elim0`'s domain is empty (there are no values $i.\\text{val} < 0$, so `absurd i.isLt (Nat.not_lt_zero _)` does the work). `linear_one_var` is the classical Bézout content for one variable: $ax = b$ has an integer solution iff $a \\mid b$. The proof is two destructuring rewrites — given a solution, write $b = a \\cdot x_0$ to witness divisibility; given $b = a \\cdot k$, take $x = k$. The corollaries `zero_coeff_linear`, `unit_coeff_linear`, `neg_unit_coeff_linear` illustrate the decision procedure on simple coefficient choices. The strict 'no degree ≥ 2 here' boundary is what makes this section *the* lower bound for undecidability.",
+    "mathContext": "0-variable: $P() = c \\in \\mathbb{Z}$, decidable trivially. 1-variable linear: $ax = b$ has integer solution iff $a \\mid b$ (Bézout in one variable; the higher-variable form is `linear_bezout_n` axiom). Boundary: degree-1 equations are *uniformly* decidable in any variable count via Bézout / extended Euclidean.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Bézout's identity",
+      "extended Euclidean algorithm",
+      "Fin.elim0",
+      "decide tactic",
+      "divisibility in ℤ"
+    ],
+    "prerequisites": [
+      "integer divisibility",
+      "Fin 0 is empty",
+      "decide / Decidable in Lean"
+    ]
+  },
+  {
+    "id": "h10oq04-ann-04",
+    "proofId": "hilbert-10-oq-04",
+    "range": {
+      "startLine": 123,
+      "endLine": 147
+    },
+    "type": "technique",
+    "title": "Monotonicity of Undecidability",
+    "content": "`H10_undecidable_monotone` is the only non-trivial proof in the file: undecidability of $\\text{H10}_n$ implies undecidability of $\\text{H10}_{n+1}$. The argument is a textbook many-one reduction. Embed $P : \\text{DiophantineN}\\,n$ into $\\text{DiophantineN}\\,(n+1)$ as $\\bar{P}(x) := P(x \\circ \\text{castSucc})$ — i.e., ignore the last variable. Both directions of $\\bar{P}$ being solvable iff $P$ is need to be checked: forward, given a solution $y$ for $\\bar{P}$, restrict via `castSucc` to a solution for $P$; reverse, extend any solution $x$ for $P$ to $y$ for $\\bar{P}$ by setting the last coordinate to 0. Lean's `if hlt : j.val < n then x ⟨j.val, hlt⟩ else 0` handles the extension via dependent if, and the `convert ... using 2` step bridges the syntactic difference between `j.castSucc` and `⟨j.val, hlt⟩`. Mathematically, this is the standard 'undecidability spreads upward' phenomenon — once a single $\\text{H10}_k$ is undecidable, every $\\text{H10}_m$ with $m \\ge k$ is too. Combined with `nine_var_h10_undecidable` (axiom), this immediately gives $\\text{H10}_{10}, \\text{H10}_{11}, \\dots$ all undecidable, the proved corollaries in Part V.",
+    "mathContext": "Many-one reduction $\\text{H10}_n \\le_m \\text{H10}_{n+1}$: $P \\mapsto P \\circ \\pi$ where $\\pi : \\mathbb{Z}^{n+1} \\to \\mathbb{Z}^n$ is the first-$n$ projection. Solvability is preserved exactly. Hence undecidable $\\text{H10}_n$ implies undecidable $\\text{H10}_{n+1}$. By induction, undecidability propagates to all higher variable counts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "many-one reduction",
+      "computable functions",
+      "Fin.castSucc",
+      "convert tactic in Lean",
+      "upward closure of undecidability"
+    ],
+    "prerequisites": [
+      "decision problem reductions",
+      "Fin coercions",
+      "dependent if-then-else"
+    ]
+  },
+  {
+    "id": "h10oq04-ann-05",
+    "proofId": "hilbert-10-oq-04",
+    "range": {
+      "startLine": 148,
+      "endLine": 201
+    },
+    "type": "context",
+    "title": "Five Axioms from the Literature",
+    "content": "The five axioms encapsulate seventy years of computability and number-theory research. **`mrdp_finite_var`** is the celebrated MRDP theorem (Matiyasevich 1970, building on Davis-Putnam-Robinson 1961): every recursively enumerable set is a Diophantine set, in some finite number of variables. **`jones_matiyasevich_bound`** is the quantitative refinement: 9 variables always suffice (Jones 1982 improved Matiyasevich's earlier 13-variable bound). **`nine_var_h10_undecidable`** is the immediate consequence: choose $S$ to be the halting set, get a 9-variable Diophantine encoding, conclude that an algorithm for $\\text{H10}_9$ would solve halting. **`linear_bezout_n`** generalizes Bézout to any number of variables: $\\sum a_i x_i = b$ has an integer solution iff $\\gcd(a_1, \\dots, a_n) \\mid b$, with the GCD characterized by its lattice-theoretic universal property. **`jones_universal_poly`** is the existence of a single 9-variable degree-4 polynomial that, parameterized by an integer offset, can encode every r.e. set — a quantitative form of MRDP. Each axiom is a candidate for elimination: `linear_bezout_n` can plausibly be proved from Mathlib's `Int.gcd` and the extended Euclidean algorithm (~100 lines, see openQuestion oq-03), while the MRDP-family axioms are deep theorems whose Lean formalization is a major research project (cf. `Hilbert10.lean` parent file).",
+    "mathContext": "MRDP (1970): r.e. = Diophantine. Jones (1982): 9 variables, degree 4 suffice. Bézout ($n$-variable): $\\sum a_i x_i = b$ has integer solution $\\iff \\gcd(a_1, \\dots, a_n) \\mid b$. Halting ↔ 9-variable Diophantine solvability gives undecidability of $\\text{H10}_9$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "MRDP theorem",
+      "Jones universal polynomial",
+      "halting problem reduction",
+      "Bézout in n variables",
+      "axiom integrity"
+    ],
+    "prerequisites": [
+      "halting problem",
+      "r.e. set definition",
+      "GCD universal property"
+    ]
+  },
+  {
+    "id": "h10oq04-ann-06",
+    "proofId": "hilbert-10-oq-04",
+    "range": {
+      "startLine": 202,
+      "endLine": 250
+    },
+    "type": "insight",
+    "title": "Consequences and the Complexity Gap",
+    "content": "`ten_var_h10_undecidable` and `eleven_var_h10_undecidable` are direct consequences of `H10_undecidable_monotone` chained with `nine_var_h10_undecidable` — these sample the upward closure but the same argument gives undecidability for every $n \\ge 9$. `degree_1_decidable_1var` repeats `linear_one_var` under a name that emphasizes the degree-1 reading. The capstone `complexity_gap_summary` packages the two boundary results into a single theorem: simultaneously, 1-variable linear is decidable AND 9-variable general is undecidable. This encodes the exact open gap: somewhere strictly between these complexity classes, the decidability boundary lives. The closing comment block in the Lean source spells out the three open sub-questions of OQ-04 (minimum variable count, minimum degree, joint optimum) and notes Jones' (1982) result that the joint optimum can be achieved at $(9, 4)$ — i.e., one cannot make both bounds tight separately and then combine them; the joint bound is *not* the obvious $(\\min n, \\min \\deg)$. As of 2026, no progress on closing the variable-count gap (3 vs 9) has been made in 40+ years.",
+    "mathContext": "Complexity gap (open since 1982): the undecidability boundary for $\\text{H10}_n$ lies in the range $3 \\le n \\le 9$. Joint optimum (Jones 1982): 9 variables, degree 4. Whether $(n, \\deg)$ can be improved on either axis is open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "decidability frontier",
+      "minimal universal Diophantine equation",
+      "degree-variable trade-off",
+      "open problems in computability"
+    ],
+    "prerequisites": [
+      "monotonicity (this file)",
+      "Jones-Matiyasevich axiom",
+      "Hilbert's 10th problem statement"
+    ]
+  }
+]
