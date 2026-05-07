@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ann-shafarevich-feas-context",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "Can Mathlib Prove Shafarevich's Theorem? A 4-Cell Status Report",
+    "content": "**Open question OQ-05-OQ-01**: can the **Shafarevich theorem** (every finite *solvable* group $G$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some number field $K$) be proved in Lean 4 using Mathlib's developing class field theory? This file gives the **first formal status report**, classifying the four cases by what Mathlib already supports vs. what is missing. **Cyclic case** is fully proved upstream (`InverseGalois.lean`, via Dirichlet primes + fixed fields). **Coprime products $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ with $\\gcd(m,n)=1$** are proved here, in 7 lines, by reducing via the Chinese Remainder Theorem to the cyclic case. **General abelian** has exactly **one identified gap** — linear disjointness of cyclotomic subfields at distinct primes (~500 Lean lines). **Full Shafarevich** is gated on a **major missing module**: Galois embedding problems, Brauer groups, Galois cohomology, and Tate–Poitou duality (~5000+ lines), none of which exist in Mathlib 2026.",
+    "mathContext": "**Shafarevich's theorem** (I. R. Shafarevich, *Construction of fields of algebraic numbers with given solvable Galois group*, Izv. Akad. Nauk SSSR Ser. Mat. 18 (1954) 525–578): every finite *solvable* group is a Galois group over $\\mathbb{Q}$. The proof is a tour-de-force through 20th-century algebraic number theory: it begins with the abelian case (essentially Kronecker–Weber + CRT), then handles non-abelian solvable extensions inductively via *embedding problems* — given a solution of $G/N$ realizable, find a $G$-extension. The deeper machinery includes the Hochschild–Serre spectral sequence in Galois cohomology, Tate's local-global principle for Brauer groups, and the duality theorems of Poitou–Tate. The **inverse Galois problem** for non-solvable groups (e.g., $A_n$, $S_n$, sporadic simple groups) is *open* in general, with major partial results from Hilbert's irreducibility theorem and Belyi's theorem on the modular tower.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Shafarevich's theorem (1954)",
+      "inverse Galois problem (Hilbert 1892)",
+      "embedding problems in Galois cohomology",
+      "Brauer groups and class field theory",
+      "Tate–Poitou duality",
+      "Hochschild–Serre spectral sequence"
+    ],
+    "prerequisites": [
+      "InverseGalois.lean (cyclic case)",
+      "AbelRuffiniGaloisExtensions.lean (S_n solvability)",
+      "Mathlib's NumberTheory.Cyclotomic.Gal",
+      "Galois correspondence for fixed fields"
+    ]
+  },
+  {
+    "id": "ann-shafarevich-cyclic-recap",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 51, "endLine": 70 },
+    "type": "technique",
+    "title": "Part I: Cyclic Case (Recap from InverseGalois.lean)",
+    "content": "**`cyclic_realizable n hn`** is a thin wrapper around `InverseGaloisProblem.cyclic_group_realizable`: for every $n > 0$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong \\mathbb{Z}/n\\mathbb{Z}$. **The four-step proof** (proved upstream): (1) **Dirichlet's theorem** gives a prime $p \\equiv 1 \\pmod n$; (2) the $p$-th cyclotomic field $\\mathbb{Q}(\\zeta_p)$ has Galois group $(\\mathbb{Z}/p)^\\times \\cong \\mathbb{Z}/(p-1)$; (3) since $n \\mid p - 1$, take the **fixed field** $K = E^H$ of the unique index-$n$ subgroup $H$; (4) by `IsGalois.normalAutEquivQuotient`, $\\text{Gal}(K/\\mathbb{Q}) \\cong (\\mathbb{Z}/p)^\\times / H \\cong \\mathbb{Z}/n$.",
+    "mathContext": "**Dirichlet's theorem on primes in arithmetic progressions** (1837) is a deep analytic result — its proof uses $L$-functions and the *Dirichlet density* of primes. In Mathlib 4 it is `Nat.forall_exists_prime_gt_and_modEq` (proved via the fully-formalized analytic theory in `Mathlib.NumberTheory.Dirichlet`). **`IsGalois.normalAutEquivQuotient`** is the algebraic core of the Galois correspondence: for any normal intermediate field $K \\subseteq E$, $\\text{Gal}(K/F) \\cong \\text{Gal}(E/F)/\\text{Gal}(E/K)$. Together these tools give the cyclic realization with no axioms.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dirichlet's theorem (1837)",
+      "cyclotomic fields and Gal(ℚ(ζ_n)/ℚ)",
+      "Galois correspondence for normal subgroups",
+      "IsGalois.normalAutEquivQuotient (Mathlib)"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.Dirichlet",
+      "Mathlib.NumberTheory.Cyclotomic.Gal",
+      "Galois fixed-field theorem"
+    ]
+  },
+  {
+    "id": "ann-shafarevich-crt-iso",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 81, "endLine": 88 },
+    "type": "definition",
+    "title": "zmod_coprime_crt: The Algebraic Heart of the Reduction",
+    "content": "**`zmod_coprime_crt`**: when $\\gcd(m, n) = 1$, Mathlib's `ZMod.chineseRemainder` gives a *ring* isomorphism $\\mathbb{Z}/(mn) \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$, and `.toAddEquiv` extracts the additive-group isomorphism. The reduction $\\text{coprime cyclic product} \\to \\text{cyclic}$ relies entirely on this one Mathlib lemma — the structural-engineering rest of the file is just plumbing.",
+    "mathContext": "**Chinese Remainder Theorem** (Sun Zi Suan Jing, ~5th century CE): for coprime $m, n$, the natural map $\\mathbb{Z}/(mn) \\to \\mathbb{Z}/m \\times \\mathbb{Z}/n$ is an isomorphism. The **inverse map** is non-trivial — it's the explicit residue-reconstruction $x \\mapsto u m \\cdot x_n + v n \\cdot x_m$ where $um + vn = 1$ (Bézout). Mathlib's `ZMod.chineseRemainder` is constructed via Bézout coefficients and verified by direct computation. **Key consequence for Galois theory**: the additive structure of a coprime cyclic product is itself cyclic, so its realizability comes for free from the cyclic case — no new field constructions needed.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem",
+      "ZMod.chineseRemainder",
+      "ring iso → additive iso (.toAddEquiv)",
+      "Bézout coefficients in ZMod CRT",
+      "Sun Zi Suan Jing"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.ZMod.Basic",
+      "ZMod.chineseRemainder",
+      "Coprime in Nat",
+      "AddEquiv vs RingEquiv"
+    ]
+  },
+  {
+    "id": "ann-shafarevich-coprime-prod",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 89, "endLine": 112 },
+    "type": "insight",
+    "title": "Coprime Product Realizable: A 7-Line Reduction to Cyclic",
+    "content": "**`coprime_product_cyclic_realizable m n hm hn hcop`**: when $\\gcd(m, n) = 1$, $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ is realizable. The proof is **literally one line**: `cyclic_realizable (m * n) (Nat.mul_pos hm hn)`. Why? Because by CRT $\\mathbb{Z}/(mn) \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$ is *itself* cyclic, so realizing $\\mathbb{Z}/(mn)$ realizes the product directly — no compositum needed. **Concrete instances**: `z2z3_realizable` ($\\mathbb{Z}/2 \\times \\mathbb{Z}/3 \\cong \\mathbb{Z}/6$), `z5z7_realizable` ($\\mathbb{Z}/5 \\times \\mathbb{Z}/7 \\cong \\mathbb{Z}/35$).",
+    "mathContext": "**The reduction lesson**: most 'easy' cases of the inverse Galois problem reduce to the cyclic case via the structure theorem for finite abelian groups, which says every such group is a direct product of cyclic groups of prime-power order. The **coprime product subcase** is *trivially easy* because the product is again cyclic. The **harder subcase** is products with shared prime factors, e.g., $(\\mathbb{Z}/p)^k$ for $k \\geq 2$ — there the product is **not cyclic**, and a true compositum construction is needed (the linear-disjointness gap below). Realizing all of $(\\mathbb{Z}/p)^k$ across all primes $p$ would close the abelian half of the inverse Galois problem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structure theorem for finite abelian groups",
+      "coprime cyclic product is cyclic",
+      "reduction by CRT",
+      "p-Sylow components"
+    ],
+    "prerequisites": [
+      "cyclic_realizable",
+      "zmod_coprime_crt",
+      "Nat.mul_pos"
+    ]
+  },
+  {
+    "id": "ann-shafarevich-axiom",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 132, "endLine": 148 },
+    "type": "context",
+    "title": "The Linear Disjointness Axiom: Identifying the Mathlib Gap",
+    "content": "**`galois_compositum_product`** is the **single axiom** in this file. Statement: if $K_1, K_2 / \\mathbb{Q}$ are Galois with **coprime Galois group orders**, then $\\exists K$ Galois with $\\text{Gal}(K_1/\\mathbb{Q}) \\times \\text{Gal}(K_2/\\mathbb{Q}) \\cong \\text{Gal}(K/\\mathbb{Q})$. **Mathematical justification**: when $K_i \\subseteq \\mathbb{Q}(\\zeta_{p_i})$ with distinct primes $p_1 \\neq p_2$, the extensions are unramified at each other's primes, so by the discriminant criterion they are **linearly disjoint** over $\\mathbb{Q}$, and $\\text{Gal}(K_1 K_2 / \\mathbb{Q}) \\cong \\text{Gal}(K_1/\\mathbb{Q}) \\times \\text{Gal}(K_2/\\mathbb{Q})$ by Galois theory. **Why an axiom**: Mathlib 2026 lacks **conductor theory** for subfields of cyclotomic extensions and the linear-disjointness criterion. Filling this gap is estimated at ~500 lines.",
+    "mathContext": "**Linear disjointness** of $K_1, K_2$ over $\\mathbb{Q}$ means $K_1 \\otimes_\\mathbb{Q} K_2 \\to K_1 K_2$ is an isomorphism — equivalently, $[K_1 K_2 : \\mathbb{Q}] = [K_1 : \\mathbb{Q}] \\cdot [K_2 : \\mathbb{Q}]$. **The discriminant criterion**: if $\\gcd(\\text{disc}(K_1), \\text{disc}(K_2)) = 1$ (i.e., the extensions ramify at disjoint primes), they are linearly disjoint. **Conductor theory**: the *conductor* of a subfield $K \\subseteq \\mathbb{Q}(\\zeta_m)$ is the smallest $f$ with $K \\subseteq \\mathbb{Q}(\\zeta_f)$, and conductors at distinct primes guarantee disjoint ramification. Mathlib's cyclotomic-field machinery (`Mathlib.NumberTheory.Cyclotomic.*`) gives the full Galois group $(\\mathbb{Z}/m)^\\times$ but does not yet expose the discriminant or conductor of arbitrary subfields. **Closing the gap** requires (a) defining the conductor of an algebraic extension, (b) proving the conductor of a fixed field $E^H$, (c) the linear-disjointness theorem from coprime conductors, (d) the compositum-Galois-group product theorem.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear disjointness over a base field",
+      "discriminant criterion for disjointness",
+      "conductor of an abelian extension",
+      "Kronecker–Weber theorem (every abelian extension of ℚ is cyclotomic)",
+      "ramification theory"
+    ],
+    "prerequisites": [
+      "Mathlib.NumberTheory.Cyclotomic.* (basic Galois group)",
+      "discriminant of a number field (partially in Mathlib)",
+      "compositum of fields (partially in Mathlib)"
+    ]
+  },
+  {
+    "id": "ann-shafarevich-s3",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 150, "endLine": 174 },
+    "type": "insight",
+    "title": "S₃ Realizable: A Non-Shafarevich Direct Construction",
+    "content": "**`s3_realizable_via_cubic`** wraps `InverseGaloisProblem.s3_realizable`, which proves $S_3 \\cong \\text{Gal}(\\mathbb{Q}(\\sqrt[3]{2}, \\omega)/\\mathbb{Q})$ via the splitting field of $X^3 - 2$. **The lesson**: individual non-abelian solvable groups can be realized **ad-hoc** by clever polynomial choices — but a *uniform* proof for all solvable groups requires Shafarevich's machinery. **`s3_is_solvable`**: $S_3$ has the derived series $S_3 \\rhd A_3 \\rhd \\{1\\}$ with abelian quotients $S_3/A_3 \\cong \\mathbb{Z}/2$, $A_3/\\{1\\} \\cong \\mathbb{Z}/3$, closed by `AbelRuffiniGaloisExtensions.symmetric_solvable_of_le_four`.",
+    "mathContext": "**$S_3$ via $X^3 - 2$**: the splitting field over $\\mathbb{Q}$ is $\\mathbb{Q}(\\alpha, \\omega)$ where $\\alpha = \\sqrt[3]{2}$ and $\\omega = e^{2\\pi i / 3}$. The degree is $6 = 3 \\cdot 2$ (degree 3 for $\\alpha$, degree 2 for $\\omega$ over $\\mathbb{Q}(\\alpha)$). The Galois group permutes the three cube roots $\\alpha, \\omega \\alpha, \\omega^2 \\alpha$, giving $S_3 \\subseteq \\text{Gal}(\\mathbb{Q}(\\alpha, \\omega)/\\mathbb{Q})$, with equality by the order count. **Why this isn't Shafarevich**: the proof uses *algebraic* construction (a specific polynomial), not the *cohomological* embedding-problem machinery. Shafarevich's beauty is its **uniformity**: a single proof handles every solvable $G$ at once.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "S₃ as Gal(ℚ(∛2, ω)/ℚ)",
+      "splitting field of X³ - 2",
+      "derived series and solvability",
+      "ad-hoc vs uniform realization"
+    ],
+    "prerequisites": [
+      "InverseGaloisProblem.s3_realizable",
+      "AbelRuffiniGaloisExtensions.symmetric_solvable_of_le_four",
+      "splitting fields and Galois groups of polynomials"
+    ]
+  },
+  {
+    "id": "ann-shafarevich-summary",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 176, "endLine": 200 },
+    "type": "context",
+    "title": "Summary: Status Table and the Path Forward",
+    "content": "**`shafarevich_cyclic_case_proved`** is the formal summary theorem: cyclic groups are realizable. The closing comment block restates the **four-cell status table** that opens the file, with concrete Lean-line estimates: cyclic case (proved), coprime products (proved here, ~50 lines), general abelian (~500 more lines for conductor theory), full solvable (~5000+ lines for embedding problems / Galois cohomology / Brauer groups / Tate-Poitou duality). The file's main contribution is **identifying these gaps precisely** rather than closing them — a roadmap for future Mathlib contributors.",
+    "mathContext": "**Mathlib 2026 status for Galois cohomology / class field theory**: cohomology of profinite groups (`Mathlib.GroupTheory.Cohomology`) is partially formalized (degree 1, basic functoriality); higher cohomology and the cup product are not yet present. **Brauer groups** are defined for general fields but the local Brauer group $\\text{Br}(\\mathbb{Q}_p) \\cong \\mathbb{Q}/\\mathbb{Z}$ and the global exact sequence $0 \\to \\text{Br}(\\mathbb{Q}) \\to \\bigoplus_v \\text{Br}(\\mathbb{Q}_v) \\to \\mathbb{Q}/\\mathbb{Z} \\to 0$ (the heart of class field theory) await formalization. **Tate–Poitou duality** for global fields would require the local–global theory and is a multi-year project. The closer term goal — **filling the conductor gap** to close the abelian half — is much more accessible.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib roadmap for class field theory",
+      "Galois cohomology in Mathlib (partial)",
+      "Brauer groups (partial)",
+      "Tate–Poitou duality (absent)",
+      "embedding problems"
+    ],
+    "prerequisites": [
+      "all preceding theorems",
+      "summary perspective on Mathlib's number theory infrastructure"
+    ]
+  }
+]
