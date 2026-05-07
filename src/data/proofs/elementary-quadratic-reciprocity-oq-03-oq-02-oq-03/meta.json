@@ -105,39 +105,67 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Imports the parent OQ-03/OQ-03-OQ-02/OQ-03-OQ-02-OQ-01 modules plus Mathlib's Jacobi-symbol API; opening docstring states the OQ-03-OQ-02 question (does Kronecker QR generalize to fundamental discriminants?), summarizes the answer (yes, with sign correction when both negative), and tabulates the five main theorems with their proof methods."
+    },
+    {
       "id": "fund-disc-def",
-      "title": "Fundamental Discriminants",
-      "startLine": 57,
-      "endLine": 88,
-      "summary": "Definition of IsFundamentalDiscriminant: D ≡ 1 (mod 4) and squarefree, OR D = 4m with m ≡ 2,3 (mod 4) and m squarefree. Proved instances: D=1 (trivial) and D=-4 (discriminant of ℚ(i))."
+      "title": "Part I — Fundamental Discriminants",
+      "startLine": 48,
+      "endLine": 77,
+      "summary": "Defines `IsFundamentalDiscriminant : ℤ → Prop` as the disjunction (D ≡ 1 mod 4 ∧ Squarefree D) ∨ (D = 4m with m ≡ 2,3 mod 4 ∧ Squarefree m), recognizing the discriminants of quadratic number fields ℚ(√m). Proves the trivial instance D = 1 and the imaginary case D = -4 (discriminant of ℚ(i))."
     },
     {
       "id": "kronecker-qr-proved",
-      "title": "Proved Kronecker QR Cases",
-      "startLine": 89,
-      "endLine": 145,
-      "summary": "Two proved QR theorems: kronecker_symm_pos_one_mod_four (D₁ ≡ 1 mod 4 gives symmetry) and kronecker_sign_three_mod_four (both ≡ 3 mod 4 gives sign flip). Both reduce to Jacobi QR via kronecker_eq_jacobi."
+      "title": "Part II — Proved Cases for Positive ODD Discriminants",
+      "startLine": 78,
+      "endLine": 124,
+      "summary": "Three theorems on ℕ inputs: `kronecker_symm_pos_one_mod_four` (D₁ ≡ 1 mod 4, D₂ odd ⇒ symmetry), `kronecker_symm_both_one_mod_four` (both ≡ 1 ⇒ symmetry by corollary), and `kronecker_sign_three_mod_four` (both ≡ 3 mod 4 ⇒ sign flip). All reduce to `jacobiSym.quadratic_reciprocity_*` via `kronecker_eq_jacobi`."
     },
     {
-      "id": "kronecker-qr-axiom",
-      "title": "General Kronecker QR — Axiom",
-      "startLine": 146,
-      "endLine": 165,
-      "summary": "kronecker_qr_fundamental: corrected axiom for coprime fundamental discriminants. States (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K with ε=-1 iff both negative. The original false claim of unconditional equality is corrected here."
+      "id": "qr-helpers",
+      "title": "Part III.A — Helper Lemmas for the Odd-Fundamental QR",
+      "startLine": 125,
+      "endLine": 156,
+      "summary": "Four private lemmas: `natAbs_mod4_of_pos` and `natAbs_mod4_of_neg` propagate D % 4 = 1 to D.natAbs % 4 ∈ {1, 3} depending on sign; `jac_neg1_one` and `jac_neg1_neg_one` evaluate jacobiSym(-1, n) at the two relevant residue classes via JacobiQR.jacobiSym_neg_one and Even/Odd.neg_one_pow."
+    },
+    {
+      "id": "qr-odd-fundamental",
+      "title": "Part III.B — Generalized QR for ODD Fundamental Discriminants (Proved)",
+      "startLine": 157,
+      "endLine": 263,
+      "summary": "`kronecker_qr_odd_fundamental` is the file's deepest result: for coprime ODD fundamental discriminants D₁, D₂ ∈ ℤ (both ≡ 1 mod 4 by definition), the Kronecker symbols satisfy (D₁/|D₂|)_K = ε·(D₂/|D₁|)_K with ε = -1 iff both negative. Proof is a 4-way case split on signs (both positive / D₁ neg only / D₂ neg only / both neg), each branch reducing to Jacobi QR via `kronecker_eq_jacobi` with explicit `jacobiSym (-1, ·)` factor extraction."
+    },
+    {
+      "id": "qr-even-axiom",
+      "title": "Part III.C — Axiom for EVEN Fundamental Discriminants",
+      "startLine": 264,
+      "endLine": 286,
+      "summary": "The file's sole axiom `kronecker_qr_even_fundamental` covers the case where at least one discriminant is even (D = 4m with m ≡ 2,3 mod 4, e.g. ±4, ±8, 12). The reduction kronecker(4, n) = jacobiSym(2, n)² = 1 for odd n trivializes the even part; the remaining odd part satisfies QR. Full elimination would need genus theory or Artin reciprocity for quadratic extensions, both of which are not yet formalized in Mathlib."
+    },
+    {
+      "id": "qr-combined",
+      "title": "Part III.D — General Theorem (Combines Proved + Axiom)",
+      "startLine": 287,
+      "endLine": 321,
+      "summary": "`kronecker_qr_fundamental` is the user-facing theorem: it case-splits on `Even D₁ ∨ Even D₂`, dispatching the even branch to the axiom and the odd branch to `kronecker_qr_odd_fundamental`. The Dirichlet-character interpretation (χ_D odd when D < 0) explains the ε sign correction via Artin reciprocity."
     },
     {
       "id": "numerical-verifications",
-      "title": "Numerical Verifications",
-      "startLine": 166,
-      "endLine": 213,
-      "summary": "Numerical checks via native_decide: positive examples plus the key both-negative verification kronecker_neg7_neg3_vals showing (-7/3)=-1 ≠ (-3/7)=1, confirming the axiom's sign correction."
+      "title": "Part IV — Numerical Verifications",
+      "startLine": 322,
+      "endLine": 371,
+      "summary": "Eleven numerical checks via `native_decide` and direct application of the proved cases: confirmations of (5/3)=(3/5)=-1, (5/7)=(7/5), (5/11)=(11/5), (5/13)=(13/5), (13/17)=(17/13) [all symmetry cases], (3/7)=-(7/3) [sign flip], and the headline `kronecker_neg7_neg3_vals` showing (-7/3)=-1 ≠ 1=(-3/7), which numerically refutes the historically common naïve statement of unconditional equality."
     },
     {
       "id": "summary-theorem",
-      "title": "Complete Summary",
-      "startLine": 214,
-      "endLine": 242,
-      "summary": "kronecker_qr_all_cases bundles all three QR cases: symmetry for ≡1(4), sign flip for ≡3(4), and general axiom. Algebraic meaning: the Kronecker character χ_D is self-dual under Artin reciprocity."
+      "title": "Part V — Complete Summary (kronecker_qr_all_cases)",
+      "startLine": 372,
+      "endLine": 403,
+      "summary": "`kronecker_qr_all_cases` bundles the three QR statements (symmetry for ≡1(4), sign flip for ≡3(4), general fundamental-discriminant law) into a single conjunction. Closing docstring records the Dirichlet-character / Artin-reciprocity interpretation: (D/·)_K is the unique real primitive character of conductor |D|, odd iff D < 0, and quadratic Artin reciprocity asserts χ_D₁(D₂) = χ_D₂(D₁)."
     }
   ],
   "conclusion": {
