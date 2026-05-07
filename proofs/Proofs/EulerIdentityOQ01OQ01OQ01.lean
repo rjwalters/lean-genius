@@ -70,10 +70,8 @@ theorem circleMap_add (a b : ℝ) :
 
 @[simp] theorem circleMap_neg (t : ℝ) :
     circleMap (-t) = (circleMap t)⁻¹ := by
-  have h : circleMap t * circleMap (-t) = 1 := by
-    rw [← circleMap_add, add_neg_cancel, circleMap_zero]
-  field_simp
-  linear_combination h
+  unfold circleMap
+  rw [show ((-t : ℝ) : ℂ) * I = -((t : ℝ) * I) by push_cast; ring, Complex.exp_neg]
 
 theorem circleMap_sub (a b : ℝ) :
     circleMap (a - b) = circleMap a * (circleMap b)⁻¹ := by
@@ -91,8 +89,8 @@ theorem circleMap_eq_cos_add_sin_I (t : ℝ) :
 
 /-- `circleMap` lands on the unit circle: `|exp(it)| = 1`. -/
 theorem norm_circleMap (t : ℝ) : ‖circleMap t‖ = 1 := by
-  rw [circleMap_eq_cos_add_sin_I]
-  exact Complex.norm_cos_add_sin_mul_I t
+  unfold circleMap
+  exact Complex.norm_exp_ofReal_mul_I t
 
 /-- `circleMap t` is a unit in ℂ. -/
 theorem circleMap_ne_zero (t : ℝ) : circleMap t ≠ 0 := by
@@ -185,16 +183,14 @@ theorem circleMap_surjective_unit_circle (z : ℂ) (hz : ‖z‖ = 1) :
     ∃ t : ℝ, circleMap t = z := by
   refine ⟨Complex.arg z, ?_⟩
   rw [circleMap_eq_cos_add_sin_I]
-  -- z = cos(arg z) + sin(arg z) i  when |z| = 1
-  have habs : Complex.abs z = 1 := by
-    rwa [show Complex.abs z = ‖z‖ from rfl]
-  -- Use Complex.abs_mul_cos_add_sin_mul_I-style identity
-  have := Complex.abs_mul_cos_add_sin_mul_I z
-  rw [habs] at this
-  rw [show ((1 : ℝ) : ℂ) * (Real.cos (Complex.arg z) + Real.sin (Complex.arg z) * I) =
-        Real.cos (Complex.arg z) + Real.sin (Complex.arg z) * I from by ring] at this
-  -- this : 1 * (cos (arg z) + sin (arg z) * I) = z
-  exact this.symm
+  have hzne : z ≠ 0 := by
+    intro h; rw [h, norm_zero] at hz; norm_num at hz
+  have hcos : Real.cos (Complex.arg z) = z.re := by
+    rw [Complex.cos_arg hzne, hz, div_one]
+  have hsin : Real.sin (Complex.arg z) = z.im := by
+    rw [Complex.sin_arg, hz, div_one]
+  rw [hcos, hsin]
+  exact Complex.re_add_im z
 
 /-! ## §7. Bonus: De Moivre's Theorem in One Line -/
 
@@ -214,15 +210,11 @@ theorem circleMap_npow (t : ℝ) (n : ℕ) :
 for all `n : ℤ`. The negative-exponent case follows from `circleMap_neg`. -/
 theorem circleMap_zpow (t : ℝ) (n : ℤ) :
     (circleMap t) ^ n = circleMap ((n : ℝ) * t) := by
-  cases n with
-  | ofNat k =>
-    show (circleMap t) ^ (k : ℕ) = circleMap ((k : ℝ) * t)
-    rw [circleMap_npow]
-  | negSucc k =>
-    show (circleMap t) ^ (-(k + 1 : ℤ)) = circleMap ((-(k + 1) : ℝ) * t)
-    rw [zpow_neg, zpow_natCast, circleMap_npow]
-    have : ((-(k + 1 : ℤ) : ℝ) * t) = -((k + 1 : ℕ) * t) := by push_cast; ring
-    rw [this, circleMap_neg]
+  unfold circleMap
+  rw [← Complex.exp_int_mul]
+  congr 1
+  push_cast
+  ring
 
 /-! ## §8. Summary -/
 
