@@ -529,7 +529,7 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
             (if j.val ≤ n then n - j.val else j.val - n) ≤ m) := by
         ext j
         simp only [shift, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and,
-                   Fin.ext_iff, Fin.val_mk]
+                   Fin.ext_iff]
         constructor
         · rintro ⟨k, _, rfl⟩
           have := k.isLt; have := hm; split_ifs with h <;> omega
@@ -557,9 +557,12 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
       · have hdist : (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
                       else k.val + (n - m) - n) = m - k.val := by split_ifs with h <;> omega
         simp only [hdist, if_pos hkm]
+        -- Goal: cE d (m - (m - k.val)) = cE d k.val; need m-(m-k)=k for k≤m
+        congr 1; omega
       · have hdist : (if k.val + (n - m) ≤ n then n - (k.val + (n - m))
                       else k.val + (n - m) - n) = k.val - m := by split_ifs with h <;> omega
         simp only [hdist, if_neg hkm]
+        -- Goal: cE d (m - (k.val - m)) = cE d (2*m - k.val); need m-(k-m)=2m-k for k≤2m
         congr 1; omega
 
 -- ============================================================
