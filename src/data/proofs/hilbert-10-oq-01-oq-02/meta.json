@@ -1,0 +1,227 @@
+{
+  "id": "hilbert-10-oq-01-oq-02",
+  "title": "Is ℤ Purely Diophantine over ℚ? — Σ₁ vs Π₂ Definability",
+  "slug": "hilbert-10-oq-01-oq-02",
+  "description": "Sharpens the open question 'is ℤ Diophantine over ℚ' (companion to hilbert-10-oq-01) by drawing the precise distinction between Σ₁ (purely existential, Diophantine) and Π₂ (universal-existential, ∀∃) definability. Σ₁ is the OPEN question; Π₂ is settled by Koenigsmann (Annals 2016). Proves Σ₁ ⊆ Π₂, the equivalence with the OQ-01 formulation, and re-exports the H10/ℚ-undecidability and Mazur-conjecture conditional implications.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_tenth_problem",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert10OQ01OQ02.lean",
+    "tags": [
+      "computability",
+      "number-theory",
+      "mathematical-logic",
+      "hilbert",
+      "diophantine",
+      "open-problem",
+      "koenigsmann",
+      "mazur-conjecture"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "IsDiophantineDefinition: Σ₁ (purely existential) definability of subsets of ℚ",
+      "IsUniversalExistentialDefinition: Π₂ (∀∃, universal-existential) definability of subsets of ℚ",
+      "IntegersAreDiophantineOverQ: explicit Σ₁ form of the OPEN question, ↔-equivalent to OQ-01's IntegersDiophantineOverQ",
+      "koenigsmann_2016_universal: Π₂-definability of ℤ in ℚ as an axiomatized witness of Koenigsmann (Annals 2016)",
+      "diophantine_implies_universal_existential: Σ₁ ⊆ Π₂ — every Diophantine subset is universally-existentially definable",
+      "integers_diophantine_sigma1_implies_h10_q_undecidable: re-export of the MRDP-reduction implication against the Σ₁ predicate",
+      "mazur_implies_not_sigma1_definable: re-export of Mazur's-conjecture-rules-out-Σ₁ implication"
+    ],
+    "dateAdded": "2026-05-08",
+    "axiomCount": 1,
+    "lineCount": 239,
+    "prerequisites": [
+      "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
+      "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
+      "Basic computability (rational polynomial evaluation)"
+    ],
+    "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. The two further conditional results (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁) are NOT new axioms — they are logical consequences of the OQ-01 axioms via the Σ₁ ↔ existing-formulation equivalence proved in this file.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "After MRDP (1970) settled H10/$\\mathbb{Z}$ negatively, attention turned to H10/$\\mathbb{Q}$ — open since at least Robinson 1949. The companion file `hilbert-10-oq-01` surveys the broad landscape; this file (OQ-01-OQ-02) zooms in on the precise model-theoretic content separating the OPEN question from Koenigsmann's celebrated 2016 Annals theorem.\n\nThe distinction is between two layers of the arithmetic hierarchy over $\\mathbb{Q}$:\n\n- **$\\Sigma_1$ (Diophantine, purely existential):** $\\mathbb{Z}$ is the projection of a rational-solution set of one polynomial equation. Equivalently, there exists $P \\in \\mathbb{Q}[t, x_1, \\ldots, x_k]$ with $t \\in \\mathbb{Z} \\iff \\exists x \\in \\mathbb{Q}^k, P(t,x) = 0$. **OPEN.**\n- **$\\Pi_2$ (universal-existential, $\\forall\\exists$):** there exists $P$ with $t \\in \\mathbb{Z} \\iff \\forall y \\in \\mathbb{Q}^n, \\exists z \\in \\mathbb{Q}^m, P(t,y,z) = 0$. **PROVED by Koenigsmann (2016).**\n\nThe Σ₁ direction is the substantive open question because it is precisely Σ₁ definability that yields the implication 'ℤ Diophantine over ℚ ⟹ H10/ℚ undecidable' (via MRDP). Π₂ definability does not carry this implication, so Koenigsmann's theorem leaves H10/ℚ untouched.\n\nMazur's conjecture (1992), a topological constraint on rational-point sets, would refute the $\\Sigma_1$ definition of $\\mathbb{Z}$ in $\\mathbb{Q}$ but is consistent with $\\Pi_2$.",
+    "problemStatement": "Does there exist a polynomial $P(t, x_1, \\ldots, x_k) \\in \\mathbb{Q}[t,x]$ such that for every $t \\in \\mathbb{Q}$,\n$$ t \\in \\mathbb{Z} \\iff \\exists x_1, \\ldots, x_k \\in \\mathbb{Q} : P(t, x_1, \\ldots, x_k) = 0 \\,? $$\nEquivalently: is $\\mathbb{Z} \\subseteq \\mathbb{Q}$ a $\\Sigma_1$ (purely Diophantine) subset?",
+    "text": "Refines the OQ-01 framework with the precise Σ₁/Π₂ distinction.",
+    "proofStrategy": "We do NOT settle the open question. Instead, we provide the precise formal vocabulary in which the question becomes well-posed, distinguishing it from Koenigsmann's settled Π₂ result. Specifically: (1) define `IsDiophantineDefinition` (Σ₁) and `IsUniversalExistentialDefinition` (Π₂) as predicates on rational subsets; (2) prove definitional equivalence with the existing `IntegersDiophantineOverQ`; (3) state Koenigsmann 2016 as an axiom witnessing Π₂; (4) prove the trivial Σ₁ ⊆ Π₂ inclusion to make precise that the gap is one-sided; (5) re-export the H10/ℚ and Mazur conditionals against the new Σ₁ predicate as logical consequences (no new axioms).",
+    "keyInsights": [
+      "The $\\Sigma_1$ vs $\\Pi_2$ distinction IS the mathematical content separating the open question from Koenigsmann's theorem",
+      "Koenigsmann (Annals 2016) settled $\\Pi_2$: $\\mathbb{Z}$ is $\\forall\\exists$-definable in $\\mathbb{Q}$ via an explicit Hilbert-symbol/quaternion polynomial",
+      "$\\Sigma_1$ remains open and is precisely the form whose positive answer would yield H10/ℚ undecidable",
+      "$\\Sigma_1 \\subseteq \\Pi_2$ is trivial (any existential formula is also $\\forall\\exists$ with a dummy universal block); the reverse is the open content",
+      "Mazur's conjecture refutes $\\Sigma_1$ but is consistent with $\\Pi_2$ — clarifying why the conjecture does not contradict Koenigsmann"
+    ],
+    "prerequisites": [
+      "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
+      "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
+      "Basic computability (rational polynomial evaluation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Σ₁ vs Π₂: Problem Statement and References",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module documentation positioning this file as the Σ₁/Π₂ refinement of OQ-01. States the open Σ₁ question, contrasts with Koenigsmann's settled Π₂, lists the references (Koenigsmann 2016, Mazur 1992, Poonen 2009, Eisenträger-Park, Daans 2021)."
+    },
+    {
+      "id": "subsets",
+      "title": "Subsets of ℚ as Predicates",
+      "startLine": 61,
+      "endLine": 75,
+      "summary": "Defines the abbreviation `RatSubset := Rat → Prop` and the specific subset `IntSubset := fun q => ∃ z : Int, q = z` representing ℤ ⊂ ℚ."
+    },
+    {
+      "id": "sigma1",
+      "title": "Σ₁ (Diophantine) Definability",
+      "startLine": 76,
+      "endLine": 110,
+      "summary": "Defines `IsDiophantineDefinition` (existence of a parametric family of polynomials whose rational solutions characterize the subset) and `IntegersAreDiophantineOverQ` as the open Σ₁ question for ℤ ⊂ ℚ. Proves `integers_diophantine_iff` showing definitional equivalence with `IntegersDiophantineOverQ` from OQ-01 (no axioms used)."
+    },
+    {
+      "id": "pi2",
+      "title": "Π₂ (Universal-Existential) Definability and Koenigsmann's Witness",
+      "startLine": 111,
+      "endLine": 130,
+      "summary": "Defines `IsUniversalExistentialDefinition` (parametric polynomial with both a universal block and an existential block over ℚ) and axiomatizes Koenigsmann's Annals 2016 theorem as `koenigsmann_2016_universal`: ℤ is Π₂-definable in ℚ."
+    },
+    {
+      "id": "containment",
+      "title": "Σ₁ ⊆ Π₂",
+      "startLine": 131,
+      "endLine": 160,
+      "summary": "Proves `diophantine_implies_universal_existential`: every Σ₁-definable subset is Π₂-definable, by ignoring the universal block. As corollary `integers_diophantine_strengthens_koenigsmann`: a positive answer to the open Σ₁ question would strengthen Koenigsmann's result."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: H10/ℚ Undecidability and Mazur's Conjecture",
+      "startLine": 161,
+      "endLine": 200,
+      "summary": "Re-exports the OQ-01 conditionals against the Σ₁ predicate: `integers_diophantine_sigma1_implies_h10_q_undecidable` (Σ₁ → ¬decidable) and `mazur_implies_not_sigma1_definable` (Mazur → ¬Σ₁). Both are logical consequences of the OQ-01 axioms via `integers_diophantine_iff`, NOT new axioms."
+    },
+    {
+      "id": "landscape",
+      "title": "The Sharpened Landscape",
+      "startLine": 201,
+      "endLine": 239,
+      "summary": "Status table summarizing Σ₁ (open), Π₁ (open, equivalent to Σ₁ for the complement), Π₂ (proved by Koenigsmann). Lists this file's 1 net new axiom and 5 theorems, with #check commands for the main definitions and theorems."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-10-oq-01",
+      "relationship": "extends",
+      "description": "Companion: this file imports `Proofs.Hilbert10OQ01` to reuse `IntegersDiophantineOverQ`, `H10_Rational_Decidable`, and the OQ-01 axioms. This file's Σ₁ predicate is ↔-equivalent to OQ-01's `IntegersDiophantineOverQ`."
+    },
+    {
+      "targetId": "hilbert-10",
+      "relationship": "extends",
+      "description": "Grandparent: MRDP theorem proving H10/ℤ undecidable. The Σ₁ → ¬H10/ℚ-decidable implication ultimately rests on this."
+    },
+    {
+      "targetId": "hilbert-10-oq-04",
+      "relationship": "related",
+      "description": "Sibling open question on the complexity of the simplest undecidable Diophantine equation over ℤ — different angle on H10."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "related",
+      "description": "Foundational undecidability result that underlies MRDP and the computability-theoretic approach to H10."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file refines the OQ-01 framework with the precise Σ₁/Π₂ distinction that captures the mathematical content separating the open question from Koenigsmann's 2016 Annals theorem. With 1 axiom (Koenigsmann's Π₂ result, proved in 2016 and pending Lean formalization of the explicit polynomial witness) and 5 theorems re-exporting the OQ-01 conditionals against the new Σ₁ predicate, it provides the formal vocabulary in which 'is ℤ purely Diophantine over ℚ' becomes a well-posed Lean statement.",
+    "implications": "A positive answer to the Σ₁ question would strengthen Koenigsmann (we prove this strengthening as `integers_diophantine_strengthens_koenigsmann`) and would resolve H10/ℚ negatively. A negative answer (e.g., via Mazur's conjecture) would NOT settle H10/ℚ but would close this specific reduction route.",
+    "openQuestions": [
+      "Resolve the Σ₁ question: does $\\mathbb{Z}$ admit a purely Diophantine definition in $\\mathbb{Q}$?",
+      "Reduce the quantifier complexity of Koenigsmann's Π₂ definition (Daans 2021 reduced to 10 universal quantifiers; can it be reduced further toward Σ₁?)",
+      "Formalize the explicit Koenigsmann polynomial in Lean — would replace `koenigsmann_2016_universal` with a constructive proof. Requires Hilbert-symbol infrastructure (partial in `Hilbert11_QuadraticForms.lean`)",
+      "Resolve Mazur's conjecture, which would refute the Σ₁ definition and partially clarify the H10/ℚ landscape",
+      "Find a $\\Sigma_1$-Diophantine definition of an intermediate ring $R$ with $\\mathbb{Z} \\subsetneq R \\subsetneq \\mathbb{Q}$ — Poonen-style results approaching $\\mathbb{Q}$"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Hilbert10OQ01"
+    ],
+    "opens": [],
+    "namespace": "Hilbert10Rationals",
+    "lineCount": 239,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 5,
+    "path": "Proofs/Hilbert10OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "key": "Ko16",
+      "citation": "Koenigsmann, J. (2016). Defining ℤ in ℚ. Annals of Math. 183, 73-93.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma92",
+      "citation": "Mazur, B. (1992). The topology of rational points. Experimental Math. 1(1), 35-45.",
+      "type": "paper"
+    },
+    {
+      "key": "Po09",
+      "citation": "Poonen, B. (2009). The set of nonsquares in a number field is Diophantine. Math. Res. Lett. 16(1), 165-170.",
+      "type": "paper"
+    },
+    {
+      "key": "EP18",
+      "citation": "Eisenträger, K. and Park, J. (2018). Universally and existentially definable subsets of global fields. Math. Res. Lett. 25, 1173-1188.",
+      "type": "paper"
+    },
+    {
+      "key": "Da21",
+      "citation": "Daans, N. (2021). Universally defining ℤ in ℚ with 10 quantifiers. J. Number Theory 221, 121-143.",
+      "type": "paper"
+    },
+    {
+      "key": "Ma70",
+      "citation": "Matiyasevich, Y. (1970). Enumerable sets are Diophantine. Soviet Math. Doklady 11, 354-358.",
+      "type": "paper"
+    },
+    {
+      "key": "Ro49",
+      "citation": "Robinson, J. (1949). Definability and decision problems in arithmetic. J. Symb. Logic 14, 98-114.",
+      "type": "paper"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "IsDiophantineDefinition",
+      "type": "definition",
+      "description": "Σ₁ (purely existential) definability of subsets of ℚ"
+    },
+    {
+      "name": "IsUniversalExistentialDefinition",
+      "type": "definition",
+      "description": "Π₂ (universal-existential, ∀∃) definability of subsets of ℚ"
+    },
+    {
+      "name": "koenigsmann_2016_universal",
+      "type": "axiom",
+      "description": "Koenigsmann (Annals 2016): ℤ is Π₂-definable in ℚ"
+    },
+    {
+      "name": "integers_diophantine_iff",
+      "type": "theorem",
+      "description": "Σ₁ predicate ↔ existing OQ-01 formulation (definitional equivalence)"
+    },
+    {
+      "name": "diophantine_implies_universal_existential",
+      "type": "theorem",
+      "description": "Σ₁ ⊆ Π₂: every Diophantine subset is universally-existentially definable"
+    }
+  ],
+  "sorries": 0
+}
