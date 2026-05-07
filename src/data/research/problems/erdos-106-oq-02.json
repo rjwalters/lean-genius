@@ -29,18 +29,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-29T05:28:40-07:00",
-    "iteration": 3,
-    "focus": "Axiom elimination: 8→6 axioms via geometric side bound and sSup reasoning",
+    "iteration": 4,
+    "focus": "Boundary case + dichotomy lemmas: n=0 base case via empty packing, axisParallelSuboptimal_iff_rotationHelps reduces conjecture to n ≥ 2 form",
     "blockers": [],
-    "nextAction": "Docker build verification when Docker available",
+    "nextAction": "Attempt to prove f_rot(2) = 1 from convexity of unitSquare' (would eliminate the f_rot_2 axiom)",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 3 axioms total (g_ap_bounded, f_rot_perfect_square, g_ap_perfect_square → theorems). 5 axioms remain: rotated_square_area, f_rot_bounded, f_rot_mono, bku_theorem_ap, f_rot_2. 0 sorries.",
+    "progressSummary": "PROGRESS: 749 lines, 39 theorems, 16 defs, 5 axioms, 0 sorries. Session 2026-05-07: added boundary case n=0 (f_rot_zero, g_ap_zero, agree_at_0 via empty packing) + dichotomy lemmas (rotation_helps_iff_not_never_helps, axisParallelSuboptimal_iff_rotationHelps) tightening the open question to n ≥ 2 form. Earlier sessions eliminated 3 axioms (g_ap_bounded, f_rot_perfect_square, g_ap_perfect_square → theorems). 5 axioms remain: rotated_square_area, f_rot_bounded, f_rot_mono, bku_theorem_ap, f_rot_2.",
     "builtItems": [
       "Created proofs/Proofs/Erdos106OQ02.lean (219 lines, 11 theorems, 8 axioms, 0 sorries)",
       "RotatedSquare structure with center, side, angle; interior via inverse rotation",
@@ -54,7 +54,11 @@
       "g_ap_le_f_rot: g_ap(n) ≤ f_rot(n) proved",
       "g_ap_bounded: now theorem (was axiom)",
       "f_rot_perfect_square: now theorem (was axiom)",
-      "g_ap_perfect_square theorem (~110 lines): containment via edge bounds, disjointness via column/row separation, sum via Finset.sum_const"
+      "g_ap_perfect_square theorem (~110 lines): containment via edge bounds, disjointness via column/row separation, sum via Finset.sum_const",
+      "Session 2026-05-07: emptyGeneralPacking and emptyAxisParallelPacking (Fin 0 elimination) + emptyGeneralPacking_sumSides = 0",
+      "f_rot_zero, g_ap_zero, agree_at_0: boundary case n = 0 via empty packing membership and Cauchy-Schwarz upper bound",
+      "rotation_helps_iff_not_never_helps: classical-logic dichotomy of the open question",
+      "axisParallelSuboptimal_iff_rotationHelps: any rotation benefit must occur at n ≥ 2 (uses agree_at_0 + agree_at_1 to rule out n ∈ {0, 1})"
     ],
     "insights": [
       "Rotation preserves area, so Cauchy-Schwarz bound f_rot(n) <= sqrt(n) still holds",
@@ -70,10 +74,11 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify compilation when Docker is available",
-      "Attempt to prove f_rot(2) = 1 from first principles instead of axiomatizing",
+      "Attempt to prove f_rot(2) = 1 from first principles instead of axiomatizing (Erdős original argument: 2 squares of side > 1/2 cannot fit; reachable via convexity of unitSquare')",
       "Investigate if area argument alone can prove g(n) <= f_rot(n) formally in Lean",
-      "Consider creating Aristotle companion file for routine lemmas"
+      "Consider creating Aristotle companion file for routine lemmas",
+      "Tackle quantitative gap: f_rot(k²+1) ∈ [k, √(k²+1)] is proved; the open question is whether the upper bound is ever attained for some k",
+      "Consider proving f_rot_mono from the achievable-set monotonicity (extend a packing of n by adding a square of side 0)"
     ],
     "markdown": "# Knowledge Base: erdos-106-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
