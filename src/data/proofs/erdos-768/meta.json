@@ -48,11 +48,11 @@
     ],
     "originalContributions": [
       "Formal definition of the witness divisor property and set A",
-      "Proof that 1 ∈ A (vacuous) and 6 ∈ A (explicit witness construction)",
-      "Partial proof that prime powers are not in A",
+      "Proof that 1 ∈ A (vacuously), 12 ∈ A and 56 ∈ A (explicit witness construction); 6 ∉ A (interval_cases on divisors)",
+      "Proof that prime powers are not in A (via Nat.exists_prime_and_dvd)",
       "Formal connection to non-cyclic simple group orders via IsSimpleGroup",
       "Counting function and density formalized with Finset.filter",
-      "Erdős's bounds formalized as Filter.Tendsto statements",
+      "Erdős's two-sided bounds documented as docstrings (no axioms or theorems in the file)",
       "Main conjecture as a disjunction: either the constant c exists or it doesn't"
     ],
     "axiomCount": 0,
@@ -117,8 +117,8 @@
       "title": "Erdős's Density Bounds",
       "startLine": 102,
       "endLine": 127,
-      "summary": "States Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction.",
-      "mathContext": "States Erdős's lower bound (density $\\geq$ exp(-c·f(N))) and upper bound (density $\\leq$ exp(-(1+o(1))√(log N·log log N))) as axioms. Main conjecture as a disjunction."
+      "summary": "Documents Erdős's lower bound (density ≥ exp(-c·f(N))) and upper bound (density ≤ exp(-(1+o(1))√(log N·log log N))) as docstring-only narrative (no axioms or theorems declared). Main conjecture stated as a disjunction in a docstring.",
+      "mathContext": "Documents Erdős's lower bound (density $\\geq$ exp(-c·f(N))) and upper bound (density $\\leq$ exp(-(1+o(1))√(log N·log log N))) as docstring-only narrative (no axioms or theorems declared). Main conjecture stated as a disjunction in a docstring."
     },
     {
       "id": "simple-groups",
@@ -141,8 +141,8 @@
       "title": "Asymptotic Analysis and OEIS",
       "startLine": 167,
       "endLine": 206,
-      "summary": "Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases.",
-      "mathContext": "Formal definition: Log-log density definition, scaling axiom, small elements from OEIS A352287, and proof that 6 ∈ A via interval_cases."
+      "summary": "Log-log density definition (logLogDensity), expected scaling docstring (no axiom), small elements from OEIS A352287, and proof that 6 ∉ A via interval_cases (six_not_in_setA).",
+      "mathContext": "Formal definition: Log-log density definition (logLogDensity), expected scaling docstring (no axiom), small elements from OEIS A352287, and proof that 6 ∉ A via interval_cases (six_not_in_setA)."
     },
     {
       "id": "main-problem",
