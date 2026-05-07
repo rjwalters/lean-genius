@@ -415,8 +415,11 @@ private lemma sym_fin_sum (f : ℕ → ℕ) (m : ℕ) :
     · intro k hk; simp [Finset.mem_range, Finset.mem_Ico] at hk ⊢; omega
     · intro k₁ hk₁ k₂ hk₂ h; simp [Finset.mem_range] at hk₁ hk₂; omega
     · intro k hk
+      have hkle : k ≤ 2 * m := by simp [Finset.mem_Ico] at hk; omega
       exact ⟨2 * m - k, by simp [Finset.mem_Ico, Finset.mem_range] at hk ⊢; omega,
-             by simp [Finset.mem_Ico] at hk; omega⟩
+             -- Use Nat.sub_sub_self: k ≤ 2*m → 2*m - (2*m - k) = k.
+             -- omega treats the lambda opaque; Nat.sub_sub_self avoids this.
+             Nat.sub_sub_self hkle⟩
     · intro k hk; congr 1; simp [Finset.mem_range] at hk; omega
   rw [hleft, hmid, hright]; ring
 
@@ -476,12 +479,18 @@ theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := 
             rw [Fin.sum_univ_castSucc]
             simp only [Fin.snoc_castSucc, Fin.snoc_last]
             have hmem := (Finset.mem_filter.mp hy).2
-            -- Split on j.val ≤ n to let omega see concrete bounds from hdist.
-            -- Also expose hm : m ≤ n for omega's Nat subtraction reasoning.
-            have hm' := hm
+            -- Use calc + Nat.sub_add_cancel to avoid omega's Nat subtraction issues.
             by_cases hc : j.val ≤ n
-            · simp only [if_pos hc] at hdist hmem ⊢; omega
-            · simp only [if_neg hc] at hdist hmem ⊢; omega
+            · simp only [if_pos hc] at hdist hmem ⊢
+              -- hdist : n-j.val ≤ m, hmem : Σ ≤ m-(n-j.val), goal : Σ + (n-j.val) ≤ m
+              calc ∑ i, _ + (n - j.val)
+                  ≤ (m - (n - j.val)) + (n - j.val) := Nat.add_le_add_right hmem _
+                _ = m := Nat.sub_add_cancel hdist
+            · simp only [if_neg hc] at hdist hmem ⊢
+              -- hdist : j.val-n ≤ m, hmem : Σ ≤ m-(j.val-n), goal : Σ + (j.val-n) ≤ m
+              calc ∑ i, _ + (j.val - n)
+                  ≤ (m - (j.val - n)) + (j.val - n) := Nat.add_le_add_right hmem _
+                _ = m := Nat.sub_add_cancel hdist
           · simp [Fin.init_snoc]
       · simp only [if_neg hdist]
         rw [Finset.card_eq_zero, Finset.eq_empty_iff_forall_notMem]
