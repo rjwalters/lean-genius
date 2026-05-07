@@ -1,0 +1,125 @@
+{
+  "slug": "euler-identity-oq-01-oq-01-oq-01",
+  "title": "Can the proof be extended to prove the Lie group exponential map ℝ → S¹ is a ...",
+  "phase": "COMPLETE",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove } \\mathbb{R} \\to S^1, \\ t \\mapsto e^{it} \\text{ is a continuous group homomorphism with kernel } 2\\pi\\mathbb{Z}.",
+    "plain": "Extend the axiom-free Taylor-series proof of Euler's identity to show that t ↦ exp(it) is a Lie group homomorphism from (ℝ,+) to the unit circle (S¹,·) — including continuity, kernel = 2π·ℤ, and surjectivity.",
+    "whyMatters": [
+      "Identifies S¹ ≅ ℝ/2πℤ as a topological group — foundation of Fourier analysis on the circle",
+      "Establishes the prototype Lie group exponential map from a Lie algebra (iℝ) to its compact Lie group (S¹)",
+      "Yields de Moivre's theorem (e^{iθ})^n = e^{inθ} as a one-line consequence"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "circleMap_add: (a+b) ↦ exp(i(a+b)) = exp(ia) * exp(ib) — homomorphism law",
+      "norm_circleMap: ‖exp(it)‖ = 1 — image on unit circle",
+      "continuous_circleMap: continuity of t ↦ exp(it)",
+      "circleMap_eq_one_iff: kernel = {2πn : n ∈ ℤ}",
+      "circleMap_surjective_unit_circle: image = S¹",
+      "circleMap_npow / circleMap_zpow: de Moivre as corollary"
+    ],
+    "open": [],
+    "goal": "Continuous Lie group homomorphism ℝ → S¹"
+  },
+  "currentState": {
+    "phase": "COMPLETE",
+    "since": "2026-05-07T22:30:00Z",
+    "iteration": 1,
+    "focus": "Closed: 0 sorries, 0 axioms, Docker-verified.",
+    "blockers": [],
+    "nextAction": "Open question now answered.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE — Docker-verified 0 sorries / 0 axioms in EulerIdentityOQ01OQ01OQ01.lean (241 lines, 16 theorems, 2 defs). Proves circleMap : ℝ → ℂ, t ↦ exp(it), is a continuous group homomorphism (ℝ,+) → (ℂˣ,·) packaged as a Mathlib MonoidHom from Multiplicative ℝ to ℂˣ; image lies on unit circle; kernel = 2π·ℤ; surjective onto S¹; de Moivre's theorem as one-line corollary via Complex.exp_int_mul. Builds directly on EulerIdentityOQ01OQ01.euler_formula.",
+    "builtItems": [
+      "EulerIdentityOQ01OQ01OQ01.lean:241 lines, 16 theorems, 2 defs, 0 sorries, 0 axioms",
+      "circleMap : ℝ → ℂ, t ↦ exp(it)",
+      "circleHom : Multiplicative ℝ →* ℂˣ (packaged as MonoidHom)",
+      "Gallery entry src/data/proofs/euler-identity-oq-01-oq-01-oq-01/ with meta.json + index.ts"
+    ],
+    "insights": [
+      "Complex.exp_eq_one_iff cleanly gives kernel description: cancel I from t·I = n·2π·I to get t = 2π·n.",
+      "Surjectivity uses polar decomposition: for ‖z‖=1, cos(arg z) = z.re and sin(arg z) = z.im; then re_add_im closes the proof.",
+      "De Moivre's theorem (zpow case) drops out from Complex.exp_int_mul + ring in 4 lines — bypasses all classical trigonometric identity manipulations.",
+      "Multiplicative ℝ →* ℂˣ is the idiomatic Mathlib formulation of '(ℝ,+) → (G,·) homomorphism', avoiding the bundled Lie-group framework."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Smooth (C∞) Lie group exp formulation in Mathlib's LieGroup framework",
+      "Lift to compact Lie groups with non-trivial Lie algebra (e.g., SU(2))"
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "euler-identity",
+    "euler-identity-oq-01",
+    "euler-identity-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-06T21:20:28.056Z",
+  "lastUpdate": "2026-05-06T21:20:28.056Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerIdentity.lean",
+      "filename": "EulerIdentity.lean",
+      "lineCount": 342,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentity.lean"
+    },
+    {
+      "path": "Proofs/EulerIdentityOQ01.lean",
+      "filename": "EulerIdentityOQ01.lean",
+      "lineCount": 211,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerIdentityOQ01OQ01.lean",
+      "filename": "EulerIdentityOQ01OQ01.lean",
+      "lineCount": 143,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerIdentityOQ01OQ01OQ01.lean",
+      "filename": "EulerIdentityOQ01OQ01OQ01.lean",
+      "lineCount": 241,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01OQ01OQ01.lean"
+    }
+  ]
+}
