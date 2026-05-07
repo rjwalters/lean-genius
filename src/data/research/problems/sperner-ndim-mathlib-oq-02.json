@@ -1,7 +1,7 @@
 {
   "slug": "sperner-ndim-mathlib-oq-02",
   "title": "Use Sperner's lemma to prove Brouwer's fixed-point theorem in Lean 4",
-  "phase": "NEW",
+  "phase": "REFINE",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -21,7 +21,7 @@
     "iteration": 2,
     "focus": "Axiom alignment: replace Lipschitz-requiring near-fixed-point axiom with the panchromatic-tuple formulation that matches what Sperner's lemma actually provides.",
     "blockers": [],
-    "nextAction": "Build the grid CellComplex for Δⁿ to eliminate sperner_panchromatic axiom (would need ~200 lines of triangulation infrastructure, already partially explored in SpernerGrid.lean).",
+    "nextAction": "Either (a) review/merge open PR #16308 by researcher-11 first, then (b) build grid CellComplex for Δⁿ to eliminate sperner_panchromatic axiom (~200 lines of triangulation infrastructure, see knowledge.nextSteps for plan).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: axiomCount remains 1, but the axiom is now mathematically aligned with Sperner's lemma's actual output. Replaced sperner_near_fixed_point (single point with per-coordinate bound — required Lipschitz to derive from Sperner) with sperner_panchromatic (n+1 vertices, one per color, each with one-sided bound, plus diameter bound). Renamed fixed_point_from_approx → brouwer_from_panchromatic with a new proof using sum-equality forcing instead of squeeze-on-difference; removes the implicit Lipschitz dependency. Build verified.",
+    "progressSummary": "STATE (2026-05-07): SpernerNDimMathlibOQ02.lean has 0 sorries and 1 axiom (sperner_panchromatic) in 356 lines. SpernerNDimMathlibOQ01.lean has 0 sorries and 0 axioms in 369 lines (the four originally-axiomatized facts — swapAdj_nodup, swapAdj_prefixSet_eq, swapAdj_ne_self, freud_simplex_fintype — were all eliminated as theorems). The single remaining axiom (sperner_panchromatic) is the one mathematically-meaningful gap: it asserts that the Nth grid triangulation of Δⁿ produces a panchromatic top-simplex with diameter ≤ (n+1)/(N+1). Eliminating it requires building the grid CellComplex for Δⁿ as a Mathlib-style triangulation and applying the abstract Sperner lemma already in SpernerNDimMathlib.lean — estimated ~200 lines. Earlier session correctly aligned the axiom statement with what Sperner actually provides (panchromatic tuples, not single near-fixed-points), removing the implicit Lipschitz dependency that the original sperner_near_fixed_point formulation had.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -47,14 +47,17 @@
       "The endgame is a sum trick: per-color inequalities f(x*)ᵢ ≤ x*ᵢ summed give Σf(x*) ≤ Σx*. But both equal 1 (since x*, f(x*) ∈ Δⁿ), so all inequalities are equalities. Replaces the squeeze-on-difference argument that needs Lipschitz.",
       "The proof route is fundamentally different from the algebraic topology approach (singular homology) in BrouwerFixedPointOQ01OQ02OQ03.lean — pure combinatorics replaces homology theory.",
       "Lean API: le_of_tendsto_of_tendsto' for passing pointwise inequalities to limits.",
-      "Lean API: Finset.sum_lt_sum (with a witnessing strict inequality) to derive sum strict inequality contradiction."
+      "Lean API: Finset.sum_lt_sum (with a witnessing strict inequality) to derive sum strict inequality contradiction.",
+      "S20 reconcile (2026-05-07): the OQ-01 docstring at SpernerNDimMathlibOQ01.lean:22 still says 'Part II: Freudenthal CellComplex (4 axioms)' but all four are now theorems on lines 190/196/238/279 — leftover comment from the pre-elimination version. Cosmetic but worth fixing in the next docstring sweep.",
+      "S20 reconcile (2026-05-07): an open PR #16308 by researcher-11 restructures this proof via panchromatic tuples — appears to overlap with what's already on origin/main (the panchromatic restructure may already be merged via a different PR). Check PR diff before resuming work to avoid duplicate-helper races (see feedback_researcher_duplicate_helper_race for what happened on ballot-jdt S19)."
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_panchromatic axiom — significant work ~200 lines, output is a panchromatic top-simplex with diameter bound)"
     ],
     "nextSteps": [
-      "Prove swapAdj_nodup, swapAdj_prefixSet_eq, swapAdj_ne_self to eliminate OQ-01 axioms (Aristotle candidates)",
-      "Build the grid CellComplex for Δⁿ to eliminate sperner_panchromatic axiom (would need to extract n+1 panchromatic vertices from CellComplex.sperner output and prove diameter bound)"
+      "DONE (already on origin/main): swapAdj_nodup (SpernerNDimMathlibOQ01.lean:190), swapAdj_prefixSet_eq (line 196), swapAdj_ne_self (line 238), freud_simplex_fintype instance (line 279) — all four originally-listed OQ-01 axioms are now theorems with no sorries.",
+      "REMAINING (axiom-elimination, ~200 lines): build the grid CellComplex for Δⁿ to eliminate sperner_panchromatic. Concrete plan: (a) define GridSimplex n N := { l : List (Fin (n+1)) // l.Perm univ.toList } with Freudenthal-style barycentric subdivision at scale 1/N; (b) instantiate CellComplex (Vertex (n+1) N) (n+1) on it (boundary axioms via existing FreudenthalAdjacency machinery in SpernerNDimMathlibOQ01); (c) call SpernerAbstract.sperner with the spernerColor coloring; (d) extract the n+1 panchromatic vertices via colorSet ↔ vertices bijection; (e) prove |v_i k - v_j k| ≤ (n+1)/(N+1) from grid-edge-length bound. Step (b) is the heaviest — reuse adj_unique_facet/boundary_face proofs from OQ01 by parameterizing over Vertex type.",
+      "BLOCKED ON OPEN PR: #16308 (researcher-11) restructures the proof via panchromatic tuples — overlaps with whatever the next agent does on this file. Either rebase against #16308 or wait for it to merge."
     ]
   },
   "tags": [
@@ -74,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-07T17:35:00.000Z",
+  "lastUpdate": "2026-05-07T22:35:00.000Z",
   "significance": 7,
   "tractability": 5
 }
