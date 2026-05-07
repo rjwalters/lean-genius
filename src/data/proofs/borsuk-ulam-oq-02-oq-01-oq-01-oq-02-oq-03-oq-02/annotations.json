@@ -1,1 +1,148 @@
-[]
+[
+  {
+    "id": "buoq03oq02-ann-01",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "context",
+    "title": "Header: The Open Question and the Surprise Answer",
+    "content": "The opening docstring poses the local OQ: does the CRT compatibility for BU dimensions, $\\text{buDim}(pq, d) \\le \\max(\\text{buDim}(p, d), \\text{buDim}(q, d))$ for distinct primes $p, q$ — proved in OQ-03 and OQ-03/OQ-01 for the *semiprime* case — generalize to $k$-prime squarefree $n = p_1 \\cdots p_k$? The surprise answer (and the main contribution): YES, and the equality $\\text{buDim}(n, d) = \\sup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$ holds for *all* composite $n \\ge 2$, not just squarefree ones. The reason this is not a deep new theorem but rather an immediate corollary: `buDimFormula n d` is *defined* in the parent file as `n.primeFactors.sup (fun p => buDim p d)`, and the parent's `buDim_eq_formula` axiom gives `buDim n d = buDimFormula n d` for every $n \\ge 2$. So the CRT compatibility is structural — encoded in the formula — rather than a special property of low-prime products. The six imports establish the namespace chain: `BorsukUlamOQ02OQ01` (defines `buDim`, `buDim_mono`), `BorsukUlamOQ02OQ01OQ01` (defines `buDimFormula`, `buDim_eq_formula`), and Mathlib's prime-factorization API. The 5 axioms cited in `meta.assumptions` are all *imported* from the parent files; this entry adds zero new axioms.",
+    "mathContext": "Borsuk-Ulam dimension on $\\mathbb{Z}/n\\mathbb{Z}$: $\\text{buDim}(n, d)$ measures the BU complexity of $\\mathbb{Z}/n\\mathbb{Z}$-equivariant maps in dimension $d$. CRT structure: $\\mathbb{Z}/(p_1 \\cdots p_k)\\mathbb{Z} \\cong \\prod_i \\mathbb{Z}/p_i\\mathbb{Z}$ for distinct primes, predicting that the BU dimension factors over prime factors.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Borsuk-Ulam theorem",
+      "Chinese Remainder Theorem",
+      "primorial",
+      "primeFactors",
+      "axiom integrity"
+    ],
+    "prerequisites": [
+      "equivariant Borsuk-Ulam theory",
+      "ℤ/nℤ as a ring",
+      "Nat.primeFactors API"
+    ]
+  },
+  {
+    "id": "buoq03oq02-ann-02",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 86
+    },
+    "type": "technique",
+    "title": "Main Theorem: Three-Line Proof from the Formula",
+    "content": "`buDim_eq_sup_primeFactors` is the file's flagship result, stated and proved in three lines: `buDim_eq_formula n d hn` gives `buDim n d = buDimFormula n d`; `simp only [buDimFormula]` unfolds the definition; the resulting equation `buDim n d = n.primeFactors.sup (fun p => buDim p d)` *is* the goal. The cleanness exposes a structural insight: when the parent file's `buDimFormula` was *defined* as `primeFactors.sup buDim`, the entire CRT-for-arbitrary-$n$ result was already implicit. The squarefree specialization `buDim_squarefree_crt` is literally `buDim_eq_sup_primeFactors` with an extra unused hypothesis (the `_hsq : Squarefree n` argument is named with a leading underscore precisely because it is *not* used in the proof). This makes a substantive mathematical point: squarefreeness is irrelevant to the bound — the structure $\\text{buDim}(n) = \\sup_{p|n,\\text{prime}} \\text{buDim}(p)$ doesn't see prime multiplicities. `buDim_le_sup_primeFactors` extracts the inequality direction for clients that only need an upper bound.",
+    "mathContext": "Three-line proof template: `have h := parent_axiom args; simp only [definition_unfold] at h; exact h`. The squarefree hypothesis is informational only — the bound holds for all $n \\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "buDimFormula definition",
+      "buDim_eq_formula axiom",
+      "Squarefree.def",
+      "structural vs special-case proofs"
+    ],
+    "prerequisites": [
+      "Finset.sup",
+      "Nat.primeFactors",
+      "simp only with definitional unfolds"
+    ]
+  },
+  {
+    "id": "buoq03oq02-ann-03",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 100
+    },
+    "type": "technique",
+    "title": "Lower Bounds via Monotonicity",
+    "content": "Part 2 establishes companion lower bounds: each prime factor's BU dimension is bounded above by the composite's BU dimension. `buDim_prime_le_of_dvd` is a one-line application of the parent's `buDim_mono p n d hp` (a divisibility-monotonicity axiom). `buDim_le_prod_primes` specializes this to a product over a Finset $S$ of primes: for any $p \\in S$, `buDim p d ≤ buDim (∏ q ∈ S, q) d` since $p \\mid \\prod_{q \\in S} q$ via `Finset.dvd_prod_of_mem`. These are the dual direction to the upper bound — together they give an exact characterization of the BU dimension of a product as the supremum of the parts. In the broader Borsuk-Ulam program, this is the analog of the spectral monotonicity theorem (the spectrum of a product space is at least as complex as any factor).",
+    "mathContext": "Monotonicity axiom: $p \\mid n \\Rightarrow \\text{buDim}(p, d) \\le \\text{buDim}(n, d)$. Finset.dvd_prod_of_mem: $p \\in S \\Rightarrow p \\mid \\prod_{q \\in S} q$. Combination yields the lower-bound family.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "buDim_mono axiom",
+      "Finset.dvd_prod_of_mem",
+      "monotonicity of complexity invariants",
+      "lower-bound dual"
+    ],
+    "prerequisites": [
+      "divisibility in ℕ",
+      "Finset products",
+      "BorsukUlamOQ02OQ01 namespace"
+    ]
+  },
+  {
+    "id": "buoq03oq02-ann-04",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 101,
+      "endLine": 132
+    },
+    "type": "technique",
+    "title": "Concrete Primorials via native_decide",
+    "content": "Three primorials — $30 = 2 \\cdot 3 \\cdot 5$, $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7$, $2310 = 2 \\cdot 3 \\cdot 5 \\cdot 7 \\cdot 11$ — are evaluated explicitly. The pattern is identical for each: (1) `have h30 : (30 : ℕ).primeFactors = {2, 3, 5} := by native_decide` lets Lean's native compiler compute the prime factorization at elaboration time, sidestepping the symbolic computation cost; (2) `have hn : 2 ≤ (30 : ℕ) := by norm_num` discharges the side condition for `buDim_eq_sup_primeFactors`; (3) `rw [buDim_eq_sup_primeFactors 30 d hn, h30]` replaces the BU dimension by the sup over the explicit Finset, and `simp only [Finset.sup_insert, Finset.sup_singleton, sup_assoc]` flattens the chained `Finset.sup` over `{2, 3, 5}` into the binary join $\\text{buDim}\\,2 \\sqcup \\text{buDim}\\,3 \\sqcup \\text{buDim}\\,5$. `native_decide` is what makes this practical: pure `decide` would time out on $2310$'s factorization, but the native compiler runs it in microseconds.",
+    "mathContext": "Primorials $p_n\\# = p_1 \\cdot p_2 \\cdots p_n$ are squarefree by construction. $30 = 2 \\cdot 3 \\cdot 5 = 3\\#$, $210 = 2 \\cdot 3 \\cdot 5 \\cdot 7 = 4\\#$, $2310 = 5\\#$. Each is a Finset.sup of $k$ prime BU dimensions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primorial",
+      "native_decide tactic",
+      "Finset.sup_insert",
+      "compile-time computation"
+    ],
+    "prerequisites": [
+      "decide vs native_decide",
+      "Finset.sup join structure",
+      "norm_num for inequalities"
+    ]
+  },
+  {
+    "id": "buoq03oq02-ann-05",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 133,
+      "endLine": 205
+    },
+    "type": "technique",
+    "title": "primeFactors of a Product of Distinct Primes (Induction)",
+    "content": "`primeFactors_prod_primes` proves that for a Finset $S$ of distinct primes, $\\text{primeFactors}(\\prod_{p \\in S} p) = S$. The proof is `Finset.induction_on` with two cases. The empty case is impossible (`hne : S.Nonempty`). For the inductive step `insert a s` with `a ∉ s`, two sub-cases on whether `s.Nonempty`. **Sub-case (a) `s.Nonempty`**: split via `Nat.primeFactors_mul ha.ne_zero hprod_ne`, then use `ih hs' hs` to identify `(∏ p ∈ s, p).primeFactors = s`, identify `a.primeFactors = {a}` directly (the API name `Nat.primeFactors_prime` is unavailable in v4.26.0, so the proof rebuilds the singleton characterization via `Finset.eq_singleton_iff_unique_mem` + `Nat.mem_primeFactors`), and finish with `Finset.singleton_union`. **Sub-case (b) `s = ∅`**: the product collapses to `a * 1 = a` via `Finset.prod_empty`, so the goal is `a.primeFactors = {a}`, again proved by the rebuild. The non-vanishing hypothesis `hprod_ne : ∏ p ∈ s, p ≠ 0` is supplied by `Finset.prod_pos` over the prime-positivity hypothesis. `two_le_prod_primes` is a small auxiliary: any non-empty Finset of primes has product $\\ge 2$, supplied by `Finset.single_le_prod'` with `q.two_le` from any chosen $q \\in S$ — needed to satisfy the $n \\ge 2$ side condition of `buDim_eq_sup_primeFactors`.",
+    "mathContext": "$\\text{primeFactors}(\\prod_{p \\in S} p) = S$ for $S$ a Finset of distinct primes. Inductive split: $\\text{primeFactors}(a \\cdot \\prod_s) = \\text{primeFactors}(a) \\cup \\text{primeFactors}(\\prod_s) = \\{a\\} \\cup S' = S$. Singleton characterization: $\\text{primeFactors}(p) = \\{p\\}$ for $p$ prime, derived from $x \\in \\text{primeFactors}(p) \\iff x \\text{ prime} \\wedge x \\mid p$ and primality of $p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.induction_on",
+      "Nat.primeFactors_mul",
+      "Nat.mem_primeFactors",
+      "Finset.eq_singleton_iff_unique_mem",
+      "Mathlib API drift (primeFactors_prime)"
+    ],
+    "prerequisites": [
+      "Finset induction principle",
+      "primality and divisibility",
+      "Finset.prod_pos for positivity"
+    ]
+  },
+  {
+    "id": "buoq03oq02-ann-06",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "range": {
+      "startLine": 196,
+      "endLine": 222
+    },
+    "type": "insight",
+    "title": "Recovering the Semiprime Case",
+    "content": "`buDim_prod_primes_eq` is the full $k$-prime CRT statement: for any non-empty Finset $S$ of primes, $\\text{buDim}(\\prod_{p \\in S} p, d) = \\bigsqcup_{p \\in S} \\text{buDim}(p, d)$. The proof composes the three-line main theorem with the inductive `primeFactors_prod_primes` to rewrite $\\text{primeFactors}(\\prod S) = S$ inside the formula. `crt_recovers_semiprime` then recovers the $k = 2$ case (`buDim(pq, d) = buDim p d ⊔ buDim q d`) by specializing $S = \\{p, q\\}$ — the semiprime CRT proved with an axiom in the parent OQ-03 file is now a direct corollary, with no axiom invoked beyond the imports. The relationship can be summarized: OQ-03 introduced `buDim_crt_semiprime` as an axiom; OQ-03/OQ-01 derived it from the formula axiom `buDim_le_formula`; this entry generalizes that derivation to all $k$ and recovers semiprime CRT as a special case. The chain `OQ-03 → OQ-03/OQ-01 → OQ-03/OQ-02` thus illustrates *axiom reduction by generalization*: the more general result needed *fewer* assumptions because it exposed the structural reason behind the semiprime case.",
+    "mathContext": "$k$-prime CRT: $\\text{buDim}(\\prod_{p \\in S} p, d) = \\bigsqcup_{p \\in S} \\text{buDim}(p, d)$ for $S$ a non-empty Finset of distinct primes. Semiprime as $|S| = 2$: $\\text{buDim}(pq, d) = \\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$. Axiom-reduction: generalizing eliminates the need for `buDim_crt_semiprime`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom reduction by generalization",
+      "specialization to subset",
+      "Finset.prod_insert",
+      "ladder of generality"
+    ],
+    "prerequisites": [
+      "Finset operations on {p, q}",
+      "primeFactors_prod_primes (this file)",
+      "BorsukUlam OQ-03 / OQ-03-OQ-01 history"
+    ]
+  }
+]

@@ -133,20 +133,34 @@
   ],
   "crossReferences": [
     {
-      "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
-      "relationship": "extends",
-      "description": "Parent: proved CRT for semiprimes (n=pq) with axiom buDim_crt_semiprime. This entry generalizes to squarefree n with k prime factors and proves without that axiom."
+      "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "parent",
+      "description": "Semiprime CRT (k=2): proved buDim(pq,d) = buDim(p,d) ⊔ buDim(q,d) using the axiom buDim_crt_semiprime. This entry generalizes to k distinct primes and recovers the semiprime case as a corollary, eliminating the dedicated semiprime axiom."
     },
     {
-      "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
-      "relationship": "extends",
-      "description": "Grandparent: defines buDimFormula and proves buDim_eq_formula. The CRT result here is a direct consequence of that formula."
+      "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "ancestor",
+      "description": "Defines buDimFormula = primeFactors.sup (buDim · d) and proves buDim_eq_formula (axiom). The CRT-for-all-n result here is a direct consequence of that formula axiom plus the definitional unfold."
+    },
+    {
+      "id": "borsuk-ulam-oq-02-oq-01",
+      "relationship": "ancestor",
+      "description": "Defines buDim and the monotonicity axiom buDim_mono : p ∣ n ⇒ buDim(p,d) ≤ buDim(n,d). Used here to derive the dual lower-bound family."
+    },
+    {
+      "id": "borsuk-ulam",
+      "relationship": "ancestor",
+      "description": "The original Borsuk-Ulam theorem on Sⁿ → Sᵐ; the equivariant generalization to ℤ/nℤ-actions is what defines buDim(n, d) in the first place."
     }
   ],
   "conclusion": {
-    "summary": "The CRT compatibility buDim(n,d) = sup_{prime p|n} buDim(p,d) holds for ALL n ≥ 2 (proved), not just squarefree numbers. For squarefree n = p₁·…·pₖ with distinct primes, this gives buDim(n,d) = max(buDim(pᵢ,d)). The proof uses 0 new axioms beyond the base framework (buDim, buDim_mono, buDim_le_formula). The squarefree generalization to k primes is proved by induction on the Finset of prime factors.",
-    "implications": "The CRT compatibility was previously established case-by-case (semiprime n=pq in OQ03, then proved from formula in OQ03-OQ01). This entry shows the result is not special to 2-prime products: it holds for any composite n and follows directly from the formula axiom. The key structural insight is that buDimFormula is *defined* as the sup over prime factors, so the CRT property is literally built into the formula.",
-    "openQuestions": []
+    "summary": "The CRT compatibility $\\text{buDim}(n, d) = \\sup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$ holds for *all* $n \\ge 2$, not just squarefree numbers. For squarefree $n = p_1 \\cdots p_k$, this specializes to $\\text{buDim}(n, d) = \\bigsqcup_i \\text{buDim}(p_i, d)$. The proof adds 0 new axioms beyond the parent framework (`buDim`, `buDim_mono`, `buDim_le_formula`). The squarefree-to-arbitrary-$k$ generalization is proved by Finset induction on the set of prime factors, with concrete $k = 3, 4, 5$ instances via `native_decide` on primorials $30, 210, 2310$.",
+    "implications": "**Axiom reduction by generalization**: the semiprime CRT statement was promoted to an axiom (`buDim_crt_semiprime`) in OQ-03; its derivation from the formula in OQ-03/OQ-01 used only the semiprime structure. Here, generalizing to $k$ primes makes the argument *simpler*, not harder — the entire CRT compatibility is structural, encoded in the *definition* of `buDimFormula` as `primeFactors.sup`. This is a recurring pattern in formalization: the right level of generality often eliminates assumptions rather than requiring more. **Borsuk-Ulam content**: the result says that BU complexity for $\\mathbb{Z}/n\\mathbb{Z}$-actions sees only the *prime support* of $n$, not its multiplicities — $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ would follow from this combined with the formula axiom. **Connection to representation theory**: the CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod_p \\mathbb{Z}/p^{v_p(n)}\\mathbb{Z}$ at the level of group rings induces a tensor decomposition of representations, and the BU dimension's prime-factor support is the topological shadow of this tensor structure. **Pattern for future entries**: the OQ-03 → OQ-03/OQ-01 → OQ-03/OQ-02 chain is a model for axiom-elimination via generalization, applicable to other CRT-style results in the gallery (Erdős-style multiplicative bounds, Möbius-function-related identities).",
+    "openQuestions": [
+      "**Higher-prime-power independence**: Does $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ for $k \\ge 2$? This would be the analog of the squarefree result for prime-power factors. It follows from the formula axiom + an additional fact that $\\text{primeFactors}(p^k) = \\{p\\}$ (already in Mathlib); the only barrier is composing the rewrites in Lean.",
+      "**Quantitative refinement**: The current statement is an order-theoretic equality. Is there a quantitative version giving the BU dimension as a *sum* (rather than supremum) of prime-factor contributions when the action splits cleanly? Such a refinement would correspond to an additivity property of equivariant cohomology under product decompositions.",
+      "**Eliminate `buDim_le_formula` axiom**: The remaining axiom in the chain is the parent's `buDim_le_formula` (the upper-bound half of the formula). Proving this from a more elementary characterization of $\\text{buDim}$ in equivariant terms is the natural next step in axiom reduction for the BU project."
+    ]
   },
   "sorries": 0
 }
