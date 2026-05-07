@@ -58,7 +58,7 @@
       "Proved distinctSizes_card_le_n_sub_two: antichain over Fin n (n≥4) has ≤ n-2 distinct sizes"
     ],
     "axiomCount": 3,
-    "lineCount": 410,
+    "lineCount": 487,
     "assumptions": "3 axioms: erdos_trotter_r1_achievable (achievability for r=1, known), erdos_trotter_upper (known), erdos_trotter_achievable (known). erdos_trotter_r1 now proved from upper bound theorem + achievability axiom. erdos_776_threshold proved from erdos_trotter_exact via Nat.find.",
     "mathlib_version": "4.26.0",
     "theoremCount": 14,
@@ -172,7 +172,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 410,
+    "lineCount": 487,
     "axiomCount": 3,
     "theoremCount": 14,
     "definitionCount": 6,
