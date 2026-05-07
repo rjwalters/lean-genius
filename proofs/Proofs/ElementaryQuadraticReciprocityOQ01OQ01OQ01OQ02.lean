@@ -60,26 +60,39 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
   intro heq
   apply hqc_ne
   ext a
-  -- ha stated with Int.cast explicitly for syntactic rewrites
+  -- ha with Int.cast explicitly for syntactic rewrites after MulChar.one_apply
   have ha : (Int.cast (quadraticChar (ZMod p) a) : ZMod q) = (1 : MulChar (ZMod p) (ZMod q)) a := by
     have h : legendreCharQ (p := p) (q := q) a = (1 : MulChar (ZMod p) (ZMod q)) a := by rw [heq]
     simp only [legendreCharQ, MulChar.ringHomComp_apply] at h; exact h
-  rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ZMod q) = 1
-  rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
+  rw [MulChar.one_apply] at ha  -- ha : Int.cast(quadraticChar a) = if IsUnit a then 1 else 0
+  rw [MulChar.one_apply]        -- goal : quadraticChar a = if IsUnit a then 1 else 0
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv] at ha; norm_cast at ha  -- ha : (0 : ZMod q) = 1 → contradiction
-    exact absurd ha one_ne_zero.symm
-  · exact hv
-  · rw [hv] at ha; norm_cast at ha  -- ha : (-1 : ZMod q) = 1
+  · rw [hv] at ha; norm_cast at ha  -- ha : (0 : ZMod q) = if IsUnit a then 1 else 0
+    split_ifs at ha ⊢ with hu
+    · exact absurd ha one_ne_zero.symm
+    · rfl
+  · rw [hv] at ha; norm_cast at ha
+    split_ifs at ha ⊢ with hu
+    · rfl
+    · exact absurd ha.symm one_ne_zero
+  · rw [hv] at ha; push_cast at ha  -- ha : (-1 : ZMod q) = if IsUnit a then 1 else 0
     exfalso
-    have h2 : (2 : ZMod q) = 0 := by
-      calc (2 : ZMod q) = 1 + 1 := by norm_num
-        _ = -1 + 1 := by rw [ha]
-        _ = 0 := by ring
-    rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) from by norm_cast] at h2
-    rw [ZMod.natCast_eq_zero_iff_dvd] at h2
-    have hq_le : q ≤ 2 := Nat.le_of_dvd (by norm_num) h2
-    omega
+    split_ifs at ha with hu
+    · -- ha : (-1 : ZMod q) = 1, contradiction with q ≠ 2
+      have h2 : (2 : ZMod q) = 0 := by
+        calc (2 : ZMod q) = 1 + 1 := by norm_num
+          _ = -1 + 1 := by rw [ha]
+          _ = 0 := by ring
+      rw [show (2 : ZMod q) = ((2 : ℕ) : ZMod q) from by norm_cast] at h2
+      rw [ZMod.natCast_eq_zero_iff_dvd] at h2
+      have hq_le : q ≤ 2 := Nat.le_of_dvd (by norm_num) h2
+      omega
+    · -- ha : (-1 : ZMod q) = 0, contradiction
+      have h1 : (1 : ZMod q) = 0 := by
+        calc (1 : ZMod q) = -(-1 : ZMod q) := by ring
+          _ = -(0 : ZMod q) := by rw [ha]
+          _ = 0 := neg_zero
+      exact one_ne_zero h1
 
 -- ============================================================================
 -- Part II: Evaluations of legendreCharQ

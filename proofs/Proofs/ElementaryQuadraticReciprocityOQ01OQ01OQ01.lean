@@ -76,18 +76,23 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   intro heq
   apply hqc_ne
   ext a
-  -- ha : quadCharC p a = 1 (via MulChar.one_apply giving constant 1)
-  have ha : quadCharC p a = 1 := by
-    have h : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a := by rw [heq]
-    rwa [MulChar.one_apply] at h
-  rw [MulChar.one_apply]  -- goal : quadraticChar a = 1
+  -- MulChar.one_apply : (1:MulChar R M) a = if IsUnit a then 1 else 0
+  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
+    show quadCharC p a = _; rw [heq]
+  rw [MulChar.one_apply] at ha  -- ha: Int.cast(quadraticChar a) = if IsUnit a then 1 else 0
+  rw [MulChar.one_apply]        -- goal: quadraticChar a = if IsUnit a then 1 else 0
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · -- Spell out: quadCharC p a = Int.cast (quadraticChar a) definitionally
-    have ha2 : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = 1 := ha
-    rw [hv] at ha2; norm_num at ha2        -- (0:ℂ) = 1 → False
-  · exact hv
-  · have ha2 : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = 1 := ha
-    rw [hv] at ha2; push_cast at ha2; norm_num at ha2  -- (-1:ℂ) = 1 → False
+  · rw [hv] at ha; norm_cast at ha  -- ha: (0:ℂ) = if IsUnit a then 1 else 0
+    split_ifs at ha ⊢ with hu
+    · exact absurd ha one_ne_zero.symm
+    · rfl
+  · rw [hv] at ha; norm_cast at ha  -- ha: (1:ℂ) = if IsUnit a then 1 else 0
+    split_ifs at ha ⊢ with hu
+    · rfl
+    · exact absurd ha.symm one_ne_zero
+  · rw [hv] at ha; push_cast at ha  -- ha: (-1:ℂ) = if IsUnit a then 1 else 0
+    exfalso
+    split_ifs at ha with hu <;> norm_num at ha
 
 -- ============================================================================
 -- The Classical Gauss Sum
