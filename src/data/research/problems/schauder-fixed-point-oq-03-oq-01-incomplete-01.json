@@ -28,30 +28,47 @@
     "goal": "Fill 2 sorries using Mathlib's partition of unity machinery"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-21T00:00:00Z",
-    "iteration": 1,
-    "focus": "Read the 2 sorries in SchauderFixedPointOQ03OQ01.lean",
+    "phase": "PLAN",
+    "since": "2026-05-07T23:10:00Z",
+    "iteration": 2,
+    "focus": "Move approx_fixedpoint_implies_fixedpoint above kakutani_from_brouwer; close limit-argument sorry",
     "blockers": [],
-    "nextAction": "OBSERVE: Read proofs/Proofs/SchauderFixedPointOQ03OQ01.lean to understand the 2 sorry contexts",
+    "nextAction": "ATTEMPT: prove approx_fixedpoint_implies_fixedpoint using IsCompact.tendsto_subseq + Metric.thickening + Metric.infDist; once closed, kakutani_from_brouwer reduces to it",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "S2 (researcher-3, 2026-05-07): The 2 sorries are NOT in approx_selection_exists (which is an axiom). They are in (1) kakutani_from_brouwer and (2) approx_fixedpoint_implies_fixedpoint. Architectural insight: kakutani_from_brouwer reduces cleanly to approx_fixedpoint_implies_fixedpoint by chaining axioms 1+2 (brouwer_fpt + approx_selection_exists) to produce ε-approximate fixed points, then invoking the limit-argument helper. Closing the helper closes BOTH sorries. Detailed proof outlines + commented code skeletons committed in PR (proofs/Proofs/SchauderFixedPointOQ03OQ01.lean).",
+    "builtItems": [
+      "Detailed 4-step proof outline for approx_fixedpoint_implies_fixedpoint (committed as docstring) — covers sequence construction, subsequence extraction, limit transfer, and UHC-contradiction with empty/nonempty case split.",
+      "Commented-out reduction skeleton for kakutani_from_brouwer (committed in tactic block) — exact 10-line proof body once the helper is moved up.",
+      "Architectural insight that closing the helper closes BOTH sorries (no separate work needed for kakutani_from_brouwer beyond reordering)."
+    ],
+    "insights": [
+      "approx_selection_exists is an AXIOM, not a sorry — the file's 2 sorries are kakutani_from_brouwer and approx_fixedpoint_implies_fixedpoint. The original problemStatement framing is misleading.",
+      "kakutani_from_brouwer reduces in ~10 lines to approx_fixedpoint_implies_fixedpoint after pulling the helper above the main theorem (Lean 4 disallows forward references). Closing the helper closes BOTH sorries.",
+      "The reduction in kakutani_from_brouwer: for each ε, get continuous f_ε via approx_selection_exists, get fixed point x_0 = f_ε(x_0) via brouwer_fpt, extract y ∈ F(x_0) with dist(f_ε(x_0), y) < ε, conclude dist(x_0, y) < ε. Hand the family of ε-witnesses to the helper.",
+      "The subtype ↥S inherits PseudoMetricSpace from the ambient Euclidean space; CompactSpace ↥S follows from IsCompact S (via isCompact_iff_compactSpace.mp). Set.univ : Set ↥S is then compact.",
+      "approx_fixedpoint_implies_fixedpoint proof: build sequences via choice with εₙ = 1/(n+1); extract convergent subsequence (IsCompact.tendsto_subseq, automatic for metric); show y_φ(n) → x* (squeeze); contradict x* ∉ F(x*) using UHC + thickening of F(x*) by δ/2 where δ = infDist(x*, F(x*)) > 0.",
+      "Empty-F(x*) edge case: take V = ∅ (open superset of empty F(x*)); UHC forces F(x_φ(n)) = ∅ eventually, contradicting y_φ(n) ∈ F(x_φ(n)).",
+      "Docker build attempt with added imports (Mathlib.Topology.Sequences, Mathlib.Topology.Compactness.Compact) hit 32GB memory limit during Mathlib clone+build. Build verification deferred to a session with warm Docker cache OR a slimmer import set."
+    ],
     "mathlibGaps": [
-      "Mathlib.Topology.PartitionOfUnity has partition of unity constructions",
-      "Check Mathlib.Analysis.Convex.Basic for convex-valued map infrastructure"
+      "Mathlib.Topology.MetricSpace.HausdorffDistance for Metric.infDist, Metric.infDist_le_dist_add_infDist, Metric.infDist_pos_iff_not_mem_closure",
+      "Mathlib.Topology.MetricSpace.Thickening for Metric.thickening, Metric.isOpen_thickening (alternatively use Metric.ball_iUnion or compose Metric.ball arguments)",
+      "Mathlib.Topology.Sequences for IsCompact.tendsto_subseq (often pulled transitively but explicit import is safer)",
+      "Mathlib.Topology.PartitionOfUnity has partition of unity constructions (only relevant if proving approx_selection_exists; not needed for the two current sorries)"
     ],
     "nextSteps": [
-      "Read SchauderFixedPointOQ03OQ01.lean for sorry context",
-      "Search Mathlib for PartitionOfUnity.exists_continuous_sum_one",
-      "Plan approximate selection construction from partition of unity"
+      "(1) Move `approx_fixedpoint_implies_fixedpoint` block from Part V to between the axioms (Part II) and `kakutani_from_brouwer` (Part III) — or rename Parts. Forward references are not allowed in Lean 4.",
+      "(2) Add imports: Mathlib.Topology.MetricSpace.HausdorffDistance, Mathlib.Topology.MetricSpace.Thickening, Mathlib.Topology.Sequences. Verify these don't bloat compile time excessively in Docker.",
+      "(3) Prove approx_fixedpoint_implies_fixedpoint following the documented outline. Key tactic chain: choose for sequence construction; hS.tendsto_subseq for subsequence; by_cases on (F x_star).Nonempty; in nonempty case: let δ := Metric.infDist x_star (F x_star); use Metric.infDist_pos_iff_not_mem_closure (after closing F(x*) closure case); construct V := Metric.thickening (δ/2) (F x_star); use hF_uhc V (Metric.isOpen_thickening) to get U ∋ x_star; combine with hφ_tend and triangle inequality on infDist.",
+      "(4) Replace `kakutani_from_brouwer`'s sorry with the commented skeleton already present in the file (uncomment, remove the closing `sorry`).",
+      "(5) Docker build to verify; update meta.json sorries from 2 to 0 if both close (and adjust theoremCount/lineCount).",
+      "(6) If Docker OOMs again, try with --memory 65536 or run on a host with more RAM, OR build incrementally (helper first, kakutani_from_brouwer in a follow-up)."
     ]
   },
   "tags": [
@@ -79,7 +96,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-04-21T00:00:00Z",
+  "lastUpdate": "2026-05-07T23:10:00Z",
   "significance": 7,
   "tractability": 5
 }
