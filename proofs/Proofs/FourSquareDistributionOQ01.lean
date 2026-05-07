@@ -351,7 +351,7 @@ example : sigmaStar 15 = sigmaOne 15 :=
   sigmaStar_eq_sigmaOne_of_odd (by decide)
 
 -- =====================================================================
--- PART 8: σ* on odd prime powers (S3 — new this session)
+-- PART 8: σ* on odd prime powers
 --
 -- For an odd prime p, no power p^k is divisible by 4 (since 4 = 2^2 and
 -- 2 ∤ p when p ≠ 2). So σ*(p^k) collapses to the standard divisor sum
@@ -398,5 +398,216 @@ example : sigmaStar (5 ^ 1) = sigmaOne (5 ^ 1) :=
 /-- Cross-check on p = 7, k = 0: σ*(1) = σ(1) = 1 (vacuous case). -/
 example : sigmaStar (7 ^ 0) = sigmaOne (7 ^ 0) :=
   sigmaStar_prime_pow_of_odd_prime (by decide) (by decide) 0
+
+-- =====================================================================
+-- PART 9: σ* on doubled odd numbers — σ*(2n) = 3·σ(n) for n odd.
+--
+-- This is the cleanest non-trivial structural identity for σ*. It
+-- exhibits σ* as a "twisted multiplicative" function: σ*(2 · n) factors
+-- as σ*(2) · σ*(n) = 3 · σ(n) when n is odd, paralleling Mathlib's
+-- general multiplicativity for σ at coprime arguments. It also explains
+-- a numerical pattern in Jacobi's data: σ*(2) = σ*(4) = σ*(8) = 3, and
+-- more generally σ*(2^k · m) = 3 · σ(m) for k ≥ 1, m odd (proven for
+-- k = 1, 2 below).
+-- =====================================================================
+
+/-- For n odd with n > 0, the divisors of 2n partition into
+    `n.divisors` (the odd divisors of 2n) and `n.divisors.image (· * 2)`
+    (the even divisors of 2n, all of the form 2·d with d | n).
+
+    Note: this set equality actually holds for any n > 0 (even or odd),
+    but the *partition* / disjointness is what requires oddness — see
+    `disjoint_divisors_image_two_of_odd`. -/
+theorem divisors_two_mul_of_odd {n : ℕ} (_hn : ¬ 2 ∣ n) (hpos : 0 < n) :
+    (2 * n).divisors = n.divisors ∪ n.divisors.image (fun e => 2 * e) := by
+  have h2n_ne : 2 * n ≠ 0 := by positivity
+  ext d
+  simp only [Finset.mem_union, Finset.mem_image, Nat.mem_divisors]
+  refine ⟨?_, ?_⟩
+  · rintro ⟨hdvd, _⟩
+    by_cases hd2 : 2 ∣ d
+    · obtain ⟨e, rfl⟩ := hd2
+      right
+      refine ⟨e, ⟨?_, hpos.ne'⟩, by ring⟩
+      exact (Nat.mul_dvd_mul_iff_left (show 0 < 2 by decide)).mp hdvd
+    · left
+      refine ⟨?_, hpos.ne'⟩
+      have hcop : Nat.Coprime d 2 :=
+        ((Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hd2).symm
+      exact hcop.dvd_of_dvd_mul_left hdvd
+  · rintro (⟨hd, _⟩ | ⟨e, ⟨he, _⟩, rfl⟩)
+    · exact ⟨hd.mul_left 2, h2n_ne⟩
+    · exact ⟨Nat.mul_dvd_mul_left 2 he, h2n_ne⟩
+
+/-- Disjointness of the two pieces in `divisors_two_mul_of_odd`: an odd
+    n has only odd divisors, so `n.divisors` and `n.divisors.image (· * 2)`
+    cannot overlap. -/
+theorem disjoint_divisors_image_two_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) :
+    Disjoint n.divisors (n.divisors.image (fun e => 2 * e)) := by
+  rw [Finset.disjoint_left]
+  intro d hd hd'
+  rw [Nat.mem_divisors] at hd
+  rw [Finset.mem_image] at hd'
+  obtain ⟨e, _, rfl⟩ := hd'
+  exact hn (dvd_trans ⟨e, rfl⟩ hd.1)
+
+/-- Multiplicativity of σ at (2, n) for n odd: σ(2n) = 3·σ(n).
+
+    Proof: partition (2n).divisors as in `divisors_two_mul_of_odd` and
+    sum each piece. The odd-divisor sum is σ(n); the even-divisor sum
+    is 2·σ(n) by the image bijection e ↦ 2e (injective on n.divisors). -/
+theorem sigmaOne_two_mul_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) (hpos : 0 < n) :
+    sigmaOne (2 * n) = 3 * sigmaOne n := by
+  unfold sigmaOne
+  rw [divisors_two_mul_of_odd hn hpos,
+      Finset.sum_union (disjoint_divisors_image_two_of_odd hn)]
+  rw [Finset.sum_image (fun e₁ _ e₂ _ h => by omega)]
+  rw [← Finset.mul_sum]
+  ring
+
+/-- **σ*-multiplicativity at (2, n) for n odd**: σ*(2n) = 3·σ(n).
+
+    Proof: 4 ∤ 2n when n is odd, so σ*(2n) = σ(2n) by
+    `sigmaStar_eq_sigmaOne_of_not_four_dvd`; then σ(2n) = 3·σ(n) by
+    `sigmaOne_two_mul_of_odd`. Combined with `sigmaStar_eq_sigmaOne_of_odd`
+    (which gives σ*(n) = σ(n) for odd n), this also says
+    σ*(2n) = 3·σ*(n) for n odd — a clean multiplicativity statement. -/
+theorem sigmaStar_two_mul_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) (hpos : 0 < n) :
+    sigmaStar (2 * n) = 3 * sigmaOne n := by
+  have h4 : ¬ 4 ∣ (2 * n) := by
+    intro h
+    obtain ⟨k, hk⟩ := h
+    exact hn ⟨k, by linarith⟩
+  rw [sigmaStar_eq_sigmaOne_of_not_four_dvd h4, sigmaOne_two_mul_of_odd hn hpos]
+
+/-- σ(4n) = 7·σ(n) for n odd: by partitioning (4n).divisors into three
+    pieces by 2-adic valuation 0, 1, 2 (i.e., d, 2d, 4d for d | n). -/
+theorem sigmaOne_four_mul_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) (hpos : 0 < n) :
+    sigmaOne (4 * n) = 7 * sigmaOne n := by
+  have h4n_pos : 0 < 4 * n := by positivity
+  have h4n_ne : 4 * n ≠ 0 := h4n_pos.ne'
+  have hSet : (4 * n).divisors =
+      n.divisors ∪
+      (n.divisors.image (fun e => 2 * e) ∪ n.divisors.image (fun e => 4 * e)) := by
+    ext d
+    simp only [Finset.mem_union, Finset.mem_image, Nat.mem_divisors]
+    refine ⟨?_, ?_⟩
+    · rintro ⟨hdvd, _⟩
+      by_cases hd2 : 2 ∣ d
+      · obtain ⟨e, rfl⟩ := hd2
+        by_cases he2 : 2 ∣ e
+        · obtain ⟨f, rfl⟩ := he2
+          right; right
+          refine ⟨f, ⟨?_, hpos.ne'⟩, by ring⟩
+          have h4f : 4 * f ∣ 4 * n := by
+            have hh : 2 * (2 * f) ∣ 4 * n := hdvd
+            have : 4 * f = 2 * (2 * f) := by ring
+            rw [this]; exact hh
+          exact (Nat.mul_dvd_mul_iff_left (show 0 < 4 by decide)).mp h4f
+        · right; left
+          refine ⟨e, ⟨?_, hpos.ne'⟩, rfl⟩
+          have h2e_dvd_2_2n : 2 * e ∣ 2 * (2 * n) := by
+            have : 2 * (2 * n) = 4 * n := by ring
+            rw [this]; exact hdvd
+          have he_dvd_2n : e ∣ 2 * n :=
+            (Nat.mul_dvd_mul_iff_left (show 0 < 2 by decide)).mp h2e_dvd_2_2n
+          have hcop : Nat.Coprime e 2 :=
+            ((Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr he2).symm
+          exact hcop.dvd_of_dvd_mul_left he_dvd_2n
+      · left
+        refine ⟨?_, hpos.ne'⟩
+        have hcop2 : Nat.Coprime d 2 :=
+          ((Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hd2).symm
+        have hcop4 : Nat.Coprime d 4 := by
+          have h22 : (4 : ℕ) = 2 * 2 := by decide
+          rw [h22]
+          exact hcop2.mul_right hcop2
+        exact hcop4.dvd_of_dvd_mul_left hdvd
+    · rintro (⟨hd, _⟩ | (⟨e, ⟨he, _⟩, rfl⟩ | ⟨e, ⟨he, _⟩, rfl⟩))
+      · exact ⟨dvd_mul_of_dvd_right hd 4, h4n_ne⟩
+      · refine ⟨?_, h4n_ne⟩
+        have h4n_eq : 4 * n = 2 * (2 * n) := by ring
+        rw [h4n_eq]
+        exact Nat.mul_dvd_mul_left 2 (dvd_mul_of_dvd_right he 2)
+      · exact ⟨Nat.mul_dvd_mul_left 4 he, h4n_ne⟩
+  have hd01 : Disjoint n.divisors (n.divisors.image (fun e => 2 * e)) :=
+    disjoint_divisors_image_two_of_odd hn
+  have hd02 : Disjoint n.divisors (n.divisors.image (fun e => 4 * e)) := by
+    rw [Finset.disjoint_left]
+    intro d hd hd'
+    rw [Nat.mem_divisors] at hd
+    rw [Finset.mem_image] at hd'
+    obtain ⟨e, _, rfl⟩ := hd'
+    exact hn (dvd_trans ⟨2 * e, by ring⟩ hd.1)
+  have hd12 : Disjoint (n.divisors.image (fun e => 2 * e))
+                       (n.divisors.image (fun e => 4 * e)) := by
+    rw [Finset.disjoint_left]
+    intro d hd hd'
+    rw [Finset.mem_image] at hd hd'
+    obtain ⟨e₁, he₁, rfl⟩ := hd
+    obtain ⟨e₂, he₂, he12⟩ := hd'
+    have heq : e₁ = 2 * e₂ := by linarith
+    rw [Nat.mem_divisors] at he₁
+    exact hn (dvd_trans ⟨e₂, heq⟩ he₁.1)
+  have hd_union : Disjoint n.divisors
+      (n.divisors.image (fun e => 2 * e) ∪ n.divisors.image (fun e => 4 * e)) :=
+    Finset.disjoint_union_right.mpr ⟨hd01, hd02⟩
+  unfold sigmaOne
+  rw [hSet, Finset.sum_union hd_union, Finset.sum_union hd12]
+  rw [Finset.sum_image (fun e₁ _ e₂ _ h => by omega)]
+  rw [Finset.sum_image (fun e₁ _ e₂ _ h => by omega)]
+  rw [← Finset.mul_sum, ← Finset.mul_sum]
+  ring
+
+/-- **σ*(4n) = 3·σ(n) for n odd** — same factor of 3 as σ*(2n).
+
+    This proves the k = 2 case of the general pattern σ*(2^k m) = 3·σ(m)
+    for k ≥ 1, m odd: the power of 2 contributes the same factor 3 = σ*(2)
+    independent of how high (≥ 1). Proof: combine `sigmaStar_of_four_dvd`
+    (σ*(4n) + 4·σ(n) = σ(4n)) with `sigmaOne_four_mul_of_odd`
+    (σ(4n) = 7·σ(n)). -/
+theorem sigmaStar_four_mul_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) (hpos : 0 < n) :
+    sigmaStar (4 * n) = 3 * sigmaOne n := by
+  have h4 : 4 ∣ (4 * n) := ⟨n, rfl⟩
+  have h4n_pos : 0 < 4 * n := by positivity
+  have hdiv : (4 * n) / 4 = n :=
+    Nat.mul_div_cancel_left _ (by norm_num : (0:ℕ) < 4)
+  have hbase : sigmaStar (4 * n) + 4 * sigmaOne ((4 * n) / 4) = sigmaOne (4 * n) :=
+    sigmaStar_of_four_dvd h4 h4n_pos
+  rw [hdiv] at hbase
+  rw [sigmaOne_four_mul_of_odd hn hpos] at hbase
+  omega
+
+-- =====================================================================
+-- PART 10: Cross-validation of σ*(2n) = 3·σ(n) and σ*(4n) = 3·σ(n).
+-- =====================================================================
+
+/-- Cross-check: σ*(2·1) = 3·σ(1) — i.e., σ*(2) = 3. -/
+example : sigmaStar (2 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_mul_of_odd (by decide) (by decide)
+
+/-- Cross-check: σ*(2·3) = 3·σ(3) — i.e., σ*(6) = 12. -/
+example : sigmaStar (2 * 3) = 3 * sigmaOne 3 :=
+  sigmaStar_two_mul_of_odd (by decide) (by decide)
+
+/-- Cross-check: σ*(2·5) = 3·σ(5) — i.e., σ*(10) = 18. -/
+example : sigmaStar (2 * 5) = 3 * sigmaOne 5 :=
+  sigmaStar_two_mul_of_odd (by decide) (by decide)
+
+/-- Cross-check: σ*(2·9) = 3·σ(9) — i.e., σ*(18) = 39. -/
+example : sigmaStar (2 * 9) = 3 * sigmaOne 9 :=
+  sigmaStar_two_mul_of_odd (by decide) (by decide)
+
+/-- Cross-check: σ*(4·1) = 3·σ(1) — i.e., σ*(4) = 3. -/
+example : sigmaStar (4 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_four_mul_of_odd (by decide) (by decide)
+
+/-- Cross-check: σ*(4·3) = 3·σ(3) — i.e., σ*(12) = 12. -/
+example : sigmaStar (4 * 3) = 3 * sigmaOne 3 :=
+  sigmaStar_four_mul_of_odd (by decide) (by decide)
+
+/-- Cross-check: σ*(4·5) = 3·σ(5) — i.e., σ*(20) = 18. -/
+example : sigmaStar (4 * 5) = 3 * sigmaOne 5 :=
+  sigmaStar_four_mul_of_odd (by decide) (by decide)
 
 end FourSquareDistributionOQ01
