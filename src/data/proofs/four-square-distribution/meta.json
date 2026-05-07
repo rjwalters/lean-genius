@@ -129,6 +129,11 @@
       "targetId": "prime-number-theorem",
       "relationship": "related",
       "description": "Jacobi's formula r₄(n) = 8σ*(n) and the multiplicativity of σ* are tied to prime distribution; the average order σ*(n) ~ (π²/12)n from PNT gives the asymptotic growth rate r₄(n) ~ (2π²/3)n"
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 bootstraps Jacobi's closed form r₄(n) = 8·σ*(n) as a Lean 4 research target: defines σ*(n) and a brute-force r₄(n), verifies the formula numerically for n = 1..10 by native_decide (cross-checking the type-decomposition theorems here), and axiomatizes the general formula as the precise open target awaiting Mathlib q-expansion infrastructure for jacobiTheta"
     }
   ],
   "mainTheorems": [
