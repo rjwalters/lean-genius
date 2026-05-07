@@ -560,6 +560,138 @@ private lemma jdt_weight_sum_b_one (n a : ℕ) (ha : 1 ≤ a) :
       Multiset.map_cons, Multiset.prod_cons]
   ring
 
+/-- **Weight factorization through the total multiset.**
+
+    The product weight of a pair `(P : Sym (Fin n) a, Q : Sym (Fin n) b)`
+    depends only on the total multiset `P.1 + Q.1`:
+
+        wt(P) * wt(Q) = wt(P.1 + Q.1)        (where wt := ((·).map X).prod)
+
+    This is the cornerstone of the corrected proof strategy for the b≥2
+    branch of `jdt_weight_sum` identified in Session 18 (PR #14891). The
+    weight identity reduces the polynomial sum to a per-fiber **counting
+    identity** indexed by the total multiset:
+
+        ∑_{(P,Q) : ¬ColStrictSym a b}      wt(P) * wt(Q)
+          = ∑_{M : Sym n (a+b)} (#{non-cs (a,b) splits of M}) * wt(M)
+
+        ∑_{(P', Q') : (a+1, b-1)}          wt(P') * wt(Q')
+          = ∑_{M : Sym n (a+b)} (#{all (a+1, b-1) splits of M}) * wt(M)
+
+    So `jdt_weight_sum` (b ≥ 2) reduces to: for every `M : Sym n (a+b)`,
+        `#{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M}`.
+    The cardinality identity is provable by the ballot bijection
+    (~100-150 lines, standard finite-type combinatorics). No ring-valued
+    LGV is needed.
+
+    **Note:** Session 18 (PR #14891) showed that the naive "insert
+    violation element" forward map on (P, Q) ↔ (P', Q') is *non-injective*
+    for b ≥ 2; the counterexample `(P={1,3,4}, Q={0,2,3})` and
+    `(P={0,1,4}, Q={2,3,3})` both map to `(P'={0,1,3,4}, Q'={2,3})`. The
+    weight-factorization-then-count approach circumvents this. -/
+private lemma weight_eq_total_multiset (n a b : ℕ)
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((P.1 + Q.1).map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [Multiset.map_add, Multiset.prod_add]
+
+/-- **Positivity helper for `¬ColStrictSym`.**
+
+    If `¬ColStrictSym a b P Q` holds, then `min a b ≥ 1`. (Otherwise the
+    universal quantifier in `ColStrictSym` ranges over the empty type
+    `Fin 0`, making the condition vacuously true and contradicting the
+    negation.) Used by the JDT seam bijection to access `(P.sort)[0]`,
+    `(Q.sort)[0]` legitimately when computing the first violation index. -/
+private lemma min_ab_pos_of_not_colStrict {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
+    0 < min a b := by
+  by_contra hle
+  push_neg at hle
+  apply h
+  intro j
+  exact absurd j.isLt (by omega)
+
+/-- **First violation index for `¬ColStrictSym`.**
+
+    For `¬ColStrictSym a b P Q`, there exists a smallest column index
+    `c : Fin (min a b)` at which the col-strict comparison fails:
+    `(Q.sort)[c] ≤ (P.sort)[c]`, and for every earlier `j` with `j.val < c.val`,
+    the strict inequality `(P.sort)[j] < (Q.sort)[j]` holds.
+
+    **Use:** auxiliary structural lemma about `¬ColStrictSym` (existence of a
+    canonical witness via `Finset.min'`).
+
+    **Important caveat (PR #14891, Session 18):** the natural "first violation
+    index → insert-violation-element" forward map on `(P, Q) ↔ (P', Q')` is
+    NON-INJECTIVE for `b ≥ 2`. The corrected proof path (see
+    `weight_eq_total_multiset` above) avoids this map entirely, factoring the
+    weight through the total multiset and reducing to a counting identity.
+
+    This helper is therefore retained as a pure existence lemma about
+    `¬ColStrictSym` (potentially useful if a future fix restores the
+    bijection approach by adding disambiguating data, e.g. tracking `c`
+    explicitly in the codomain), not as the active primary tool. -/
+private lemma exists_first_violation_idx {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ColStrictSym a b P Q) :
+    ∃ c : Fin (min a b),
+      (Q.1.sort (· ≤ ·))[c.val]'(by
+          have hj : c.val < min a b := c.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega) ≤
+      (P.1.sort (· ≤ ·))[c.val]'(by
+          have hj : c.val < min a b := c.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) ∧
+      ∀ j : Fin (min a b), j.val < c.val →
+        (P.1.sort (· ≤ ·))[j.val]'(by
+            have hj : j.val < min a b := j.isLt
+            have hlen : (P.1.sort (· ≤ ·)).length = a :=
+              (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+            omega) <
+        (Q.1.sort (· ≤ ·))[j.val]'(by
+            have hj : j.val < min a b := j.isLt
+            have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+              (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+            omega) := by
+  -- Collect violation indices.
+  set V : Finset (Fin (min a b)) := Finset.univ.filter (fun j =>
+    ¬ ((P.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) <
+       (Q.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega))) with hVdef
+  -- V is nonempty: the negated ColStrictSym condition supplies a witness.
+  have hVnonempty : V.Nonempty := by
+    unfold ColStrictSym at h
+    push_neg at h
+    obtain ⟨j, hj⟩ := h
+    refine ⟨j, ?_⟩
+    rw [hVdef, Finset.mem_filter]
+    exact ⟨Finset.mem_univ _, hj⟩
+  -- c := min' V is the first violation index.
+  refine ⟨V.min' hVnonempty, ?_, ?_⟩
+  · -- (Q.sort)[c] ≤ (P.sort)[c]: c is a violation index.
+    have hc_mem := V.min'_mem hVnonempty
+    rw [hVdef, Finset.mem_filter] at hc_mem
+    exact not_lt.mp hc_mem.2
+  · -- For every earlier j, the strict col-comparison still holds.
+    intro j hjlt
+    by_contra hcontra
+    have hjV : j ∈ V := by
+      rw [hVdef, Finset.mem_filter]
+      exact ⟨Finset.mem_univ _, hcontra⟩
+    have hcle : V.min' hVnonempty ≤ j := V.min'_le j hjV
+    have hcle_val : (V.min' hVnonempty).val ≤ j.val := hcle
+    omega
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
