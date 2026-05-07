@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW exchange-step framework wired up)
+**Phase**: ACT (GNW exchange-step framework wired up; anti-monotone corner helpers added)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
 **Last Updated**: 2026-05-07
-**Iteration**: 43
+**Iteration**: 44
 
 ## Current Focus
 Close `gnwProb_exchange` (Helpers, line 13871) — the GNW 1979 exchange identity
@@ -54,6 +54,12 @@ in place:
   6. Strong induction wrapper (session 43) — wired `gnwProb_key` multi-corner
      to `gnwProb_exchange` via `termination_by μ.card`; reduces remaining work
      to a single sorry on `gnwProb_exchange`.
+  7. Anti-monotone corner helpers (session 44) — added three structural lemmas
+     `corner_col_lt_of_row_lt`, `corner_row_lt_of_col_lt`,
+     `doubly_affected_cell_mem` (after `colLen_of_isCorner` ~line 4733).
+     These reduce the upcoming `gnwProb_exchange` case analysis: given two
+     distinct corners with `c.1 < c'.1`, the unique doubly-affected cell
+     `(c.1, c'.2)` is in `μ` and lies in the arm of c and leg of c'.
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
