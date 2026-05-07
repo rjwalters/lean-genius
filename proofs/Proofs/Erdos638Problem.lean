@@ -111,7 +111,7 @@ private theorem shrinkFin_injective {m : ℕ} (i₀ : Fin (m + 1))
   have hv2 : j₂.val ≠ i₀.val := Fin.val_ne_of_ne hj₂
   have heq' := congrArg Fin.val heq
   unfold shrinkFin at heq'
-  split_ifs at heq' with h₁ h₂ h₁ h₂
+  split_ifs at heq' with h₁ h₂ h₁ h₂ <;> dsimp only at heq'
   · exact Fin.ext heq'
   · omega
   · omega
@@ -151,7 +151,8 @@ private theorem ramsey_inductive_step
   -- Step 2: Non-v₀ vertices, colored by edge to v₀
   set S := Finset.univ.erase v₀
   have hS_card : S.card = N - 1 := by
-    simp [Finset.card_erase_of_mem (Finset.mem_univ v₀)]
+    show (Finset.univ.erase v₀).card = N - 1
+    rw [Finset.card_erase_of_mem (Finset.mem_univ v₀), Finset.card_univ, Fintype.card_fin]
   -- Step 3: Pigeonhole — some color class has > M-1 (i.e. ≥ M) vertices
   have hpig : (Finset.univ : Finset (Fin (n + 2))).card * (M - 1) < S.card := by
     simp [Finset.card_fin, hS_card]; omega
@@ -170,9 +171,9 @@ private theorem ramsey_inductive_step
     obtain ⟨a₁, ha₁, a₂, ha₂, hne, hcol⟩ := hcase
     exact ⟨v₀, a₁, a₂,
       (hA_ne a₁ ha₁).symm, hne, (hA_ne a₂ ha₂).symm,
-      top_adj.mpr (hA_ne a₁ ha₁).symm,
-      top_adj.mpr hne,
-      top_adj.mpr (hA_ne a₂ ha₂).symm,
+      (hA_ne a₁ ha₁).symm,
+      hne,
+      (hA_ne a₂ ha₂).symm,
       by rw [hA_color a₁ ha₁, hcol],
       by rw [hcol, hA_color a₂ ha₂]⟩
   · -- Case 2: No pair in A has color i₀ → restricted to n+1 colors → use IH
@@ -209,7 +210,7 @@ private theorem ramsey_inductive_step
     rw [hc'_bd, hc'_ad] at hc2'
     exact ⟨(emb a).val, (emb b).val, (emb d).val,
       hab', hbd', had',
-      top_adj.mpr hab', top_adj.mpr hbd', top_adj.mpr had',
+      hab', hbd', had',
       shrinkFin_injective i₀ (hA_avoid _ (he_mem a) _ (he_mem b) hab')
         (hA_avoid _ (he_mem b) _ (he_mem d) hbd') hc1',
       shrinkFin_injective i₀ (hA_avoid _ (he_mem b) _ (he_mem d) hbd')
@@ -272,9 +273,9 @@ theorem complete_omega_finite_ramsey (n : ℕ) (hn : 1 ≤ n) :
   · exact fun h => hab (Fin.ext h)
   · exact fun h => hbd (Fin.ext h)
   · exact fun h => had (Fin.ext h)
-  · exact top_adj.mpr (fun h => hab (Fin.ext h))
-  · exact top_adj.mpr (fun h => hbd (Fin.ext h))
-  · exact top_adj.mpr (fun h => had (Fin.ext h))
+  · exact fun h => hab (Fin.ext h)
+  · exact fun h => hbd (Fin.ext h)
+  · exact fun h => had (Fin.ext h)
 
 /-- **Negative partial result**: The complete graph on ℕ does NOT have the
     ℕ-cardinal triangle Ramsey property.
