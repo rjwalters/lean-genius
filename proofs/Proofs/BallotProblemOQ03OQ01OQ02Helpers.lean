@@ -14014,6 +14014,34 @@ private lemma sum_gnwProb_strictHookCells_eq_removeCorner
   · -- c' is not in the strict hook: S.erase c' = S.
     rw [Finset.erase_eq_of_notMem hc'mem]
 
+/-- F-domain bridge for `gnwProb_exchange`: For distinct corners `c ≠ c'` of `μ`, the
+    sum of `gnwProb μ c (hookLength μ x.1 x.2) x` over `μ.cells` equals the same sum
+    restricted to `(removeCorner μ c' hc').cells`.
+
+    Why this matters: in `gnwProb_exchange`, the LHS sum runs over `μ.cells` while the
+    RHS sum runs over `(μ\c').cells = μ.cells.erase c'`.  This lemma rewrites the LHS
+    domain to match the RHS, isolating the remaining comparison to integrands alone
+    (`gnwProb μ` vs `gnwProb (μ\c')`, and `hookLength μ` vs `hookLength (μ\c')`).
+
+    Proof: `(μ\c').cells = μ.cells.erase c'` definitionally; the only term dropped is
+    the `c'` term itself, which contributes `0` by `gnwProb_at_other_corner`. -/
+private lemma sum_gnwProb_eq_removeCorner_cells
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc' : isCorner μ c') (hne : c ≠ c') :
+    ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
+    ∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb μ c (hookLength μ x.1 x.2) x := by
+  have hc'_mem : c' ∈ μ.cells := YoungDiagram.mem_cells.mpr hc'.1
+  -- Goal RHS: (removeCorner μ c' hc').cells is definitionally μ.cells.erase c'.
+  show ∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x =
+       ∑ x ∈ μ.cells.erase c', gnwProb μ c (hookLength μ x.1 x.2) x
+  -- Split off c' from the LHS via Finset.sum_erase_add and use h0.
+  have hsum := Finset.sum_erase_add μ.cells
+    (fun x => gnwProb μ c (hookLength μ x.1 x.2) x) hc'_mem
+  have h0 : gnwProb μ c (hookLength μ c'.1 c'.2) c' = 0 :=
+    gnwProb_at_other_corner hc' hne (hookLength μ c'.1 c'.2)
+  linarith [hsum, h0]
+
 /-- GNW 1979 exchange identity (core inductive step, product form — no division).
     For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
       F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
