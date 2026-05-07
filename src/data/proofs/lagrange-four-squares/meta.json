@@ -162,6 +162,11 @@
       "targetId": "chinese-remainder-non-coprime",
       "relationship": "foundational",
       "description": "The Chinese Remainder Theorem allows the four-squares problem to be decomposed by prime powers: proving $p = a^2+b^2+c^2+d^2$ for each prime $p$ and extending via Euler's multiplicative identity. CRT provides the algebraic framework for this prime-by-prime analysis"
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 sharpens Lagrange's qualitative existence theorem ($r_4(n) \\geq 1$) to Jacobi's exact 1834 count $r_4(n) = 8 \\sigma^*(n) = 8 \\sum_{d \\mid n,\\ 4 \\nmid d} d$. The OQ-01 entry verifies the formula numerically for $n = 1..10$ via native_decide and axiomatizes the general statement, identifying the precise Mathlib gap (q-expansion of jacobiTheta + Eisenstein-coefficient identification) that blocks a full Lean proof"
     }
   ],
   "leanFile": {
