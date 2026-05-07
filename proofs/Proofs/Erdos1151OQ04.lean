@@ -1172,6 +1172,58 @@ private lemma exists_nearest_chebyshev_angle (n : ℕ) (hn : 0 < n)
       ring
     linarith
 
+/-- **Step 3 of trig_sum_harmonic_lb (triangle bound).**
+
+    For any two indices k₀, k : Fin n, the distance between θ and the chebyshev angle
+    φ_k = (2k+1)π/(2n) is bounded by the distance from θ to φ_{k₀} plus the
+    inter-node distance |k.val - k₀.val|·π/n.
+
+    Combined with `exists_nearest_chebyshev_angle` (giving |θ - φ_{k₀}| ≤ π/(2n)),
+    this yields the bound |θ - φ_k| ≤ (2|k.val - k₀.val| + 1)·π/(2n). -/
+private lemma chebyshev_angle_dist_triangle (n : ℕ) (hn : 0 < n) (θ : ℝ) (k₀ k : Fin n) :
+    |θ - (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)| ≤
+      |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| +
+        |((k.val : ℝ) - k₀.val)| * Real.pi / n := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have hpi_pos := Real.pi_pos
+  -- Algebraic identity: φ_k = φ_{k₀} + (k - k₀)·π/n, so
+  -- θ - φ_k = (θ - φ_{k₀}) + (k₀ - k)·π/n
+  have key : θ - (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) =
+             (θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)) +
+             (((k₀.val : ℝ) - k.val) * Real.pi / n) := by
+    field_simp
+    ring
+  -- |k₀ - k|·π/n = |k - k₀|·π/n
+  have habs_eq : |((k₀.val : ℝ) - k.val) * Real.pi / n| =
+                 |((k.val : ℝ) - k₀.val)| * Real.pi / n := by
+    rw [abs_div, abs_mul, abs_of_pos hpi_pos, abs_of_pos hn_pos, abs_sub_comm]
+  calc |θ - (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)|
+      = |(θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)) +
+          (((k₀.val : ℝ) - k.val) * Real.pi / n)| := by rw [key]
+    _ ≤ |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| +
+        |((k₀.val : ℝ) - k.val) * Real.pi / n| := abs_add _ _
+    _ = |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| +
+        |((k.val : ℝ) - k₀.val)| * Real.pi / n := by rw [habs_eq]
+
+/-- **Step 3 corollary**: when k₀ is within π/(2n) of θ (the nearest node), then
+    for any other k : Fin n, the distance |θ - φ_k| ≤ (2|k - k₀| + 1)·π/(2n). -/
+private lemma chebyshev_angle_dist_from_nearest (n : ℕ) (hn : 0 < n) (θ : ℝ) (k₀ k : Fin n)
+    (hk₀ : |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n)) :
+    |θ - (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)| ≤
+      (2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi / (2 * n) := by
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have hpi_pos := Real.pi_pos
+  -- Triangle bound
+  have htri := chebyshev_angle_dist_triangle n hn θ k₀ k
+  -- Combine: |θ - φ_k| ≤ π/(2n) + |k - k₀|·π/n = (2|k-k₀|+1)·π/(2n)
+  have hsimp : Real.pi / (2 * n) + |((k.val : ℝ) - k₀.val)| * Real.pi / n =
+               (2 * |((k.val : ℝ) - k₀.val)| + 1) * Real.pi / (2 * n) := by
+    field_simp
+    ring
+  linarith [htri, hk₀]
+
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
     For any θ ∈ (0, π) with cos θ not a Chebyshev node for any n, the sum
