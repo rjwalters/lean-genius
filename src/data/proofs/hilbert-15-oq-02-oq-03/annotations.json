@@ -1,1 +1,151 @@
-[]
+[
+  {
+    "id": "h15oq03-ann-01",
+    "proofId": "hilbert-15-oq-02-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 70
+    },
+    "type": "context",
+    "title": "The LP Reduction Question and Klyachko's Theorem",
+    "content": "The opening docstring poses a feasibility question: what is the *minimal* Mathlib extension to formally state and prove that Littlewood-Richardson positivity $c^\\nu_{\\lambda, \\mu} > 0$ reduces to a polynomial-time linear program via Klyachko's Horn inequalities? The answer turns out to be remarkably small — exactly two new pieces of infrastructure (a general n-part LR coefficient and the recursive admissibility predicate) plus the imported axiom for Klyachko's theorem itself. Mathematically, this is a beautiful crystallization of a classical question of Weyl (1912) about possible eigenvalues of a sum $C = A + B$ of Hermitian matrices: Horn (1962) conjectured a recursive characterization, Klyachko (1998) proved it via stable vector bundles, and Knutson-Tao (1999) closed the loop by proving the saturation conjecture via the honeycomb model. Three Mathlib imports — `Tactic`, `Data.Finset.Basic`, `Data.Fin.Basic` — plus the parent `Proofs.Hilbert15OQ02` (which provides the 2-row LR coefficient `lrCoeff2` and the `LRComplexity` namespace) carry the entire framework. The file's `axiomCount = 3` is honest: every claimed result is fully proved relative to those three imported facts, with no sorries.",
+    "mathContext": "Hermitian sum problem (Weyl 1912): for $A, B$ Hermitian with eigenvalues $\\alpha, \\beta$, what are the possible eigenvalues $\\gamma$ of $C = A + B$? Klyachko (1998): exactly the $\\gamma$ satisfying all *admissible* Horn inequalities $\\sum_K \\gamma_k \\le \\sum_I \\alpha_i + \\sum_J \\beta_j$ — equivalently, those with positive LR coefficient $c^\\gamma_{\\alpha, \\beta} > 0$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Horn conjecture",
+      "Hermitian sum problem",
+      "Knutson-Tao honeycomb model",
+      "saturation conjecture",
+      "Schubert calculus"
+    ],
+    "prerequisites": [
+      "representation theory of GL_n",
+      "Littlewood-Richardson coefficients",
+      "linear programming feasibility"
+    ]
+  },
+  {
+    "id": "h15oq03-ann-02",
+    "proofId": "hilbert-15-oq-02-oq-03",
+    "range": {
+      "startLine": 71,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "n-Part Partitions",
+    "content": "`Partition n` is a structure with two fields: `parts : Fin n → ℕ` and `sorted`, the proof that the parts are weakly decreasing (`i ≤ j → parts j ≤ parts i`). The first field is the partition's data; the second is its invariant. `Partition.weight` is the total size $|\\alpha| = \\sum_i \\alpha_i$, computed as `Finset.univ.sum α.parts`. `Partition.zero n` is the all-zeros partition, and `Partition.zero_weight` confirms its weight is 0 (one-line `simp` proof). This more general type subsumes the 2-row `Partition2` from the parent file `Hilbert15OQ02`, capturing all GL_n representations rather than just GL_2. The choice to encode the sorted condition as a *field* rather than as a quotient or via `Sorted` instance is pragmatic: it gives the Lean elaborator easy access to the monotonicity hypothesis at every use site without quotient unfolding.",
+    "mathContext": "Partition $\\alpha = (\\alpha_0 \\ge \\alpha_1 \\ge \\dots \\ge \\alpha_{n-1} \\ge 0)$. Weight $|\\alpha| = \\sum_i \\alpha_i$. Each $\\alpha$ indexes an irreducible polynomial GL_n representation $V_\\alpha$ with highest weight $\\alpha$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Young diagrams",
+      "irreducible GL_n representations",
+      "highest weight",
+      "Fin n → ℕ encoding",
+      "Finset.univ.sum"
+    ],
+    "prerequisites": [
+      "Lean structures with proof fields",
+      "Finset basics",
+      "monotone functions on Fin n"
+    ]
+  },
+  {
+    "id": "h15oq03-ann-03",
+    "proofId": "hilbert-15-oq-02-oq-03",
+    "range": {
+      "startLine": 91,
+      "endLine": 132
+    },
+    "type": "definition",
+    "title": "Index Triples and the Horn Inequality",
+    "content": "`IndexTriple n r` packages three $r$-element subsets $I, J, K \\subseteq \\{0, \\dots, n-1\\}$ — the indexing data for a single Horn inequality at rank $r$. The structure carries cardinality witnesses `hI : I.card = r`, `hJ`, `hK` to keep all three at the same rank. `hornInequality t α β γ` is the propositional content: $\\sum_{k \\in K} \\gamma_k \\le \\sum_{i \\in I} \\alpha_i + \\sum_{j \\in J} \\beta_j$. Crucially, this reduces to `Finset.sum` operations on `ℕ`-valued functions, which Mathlib already supports — no new infrastructure needed. Decidability is automatic via `Nat.decLe`. `horn_ineq_swap` proves the Horn inequalities respect $\\alpha \\leftrightarrow \\beta$ symmetry: swap $I \\leftrightarrow J$ and the inequality with $\\alpha, \\beta$ swapped is the same. This symmetry is needed because LR coefficients themselves satisfy $c^\\gamma_{\\alpha, \\beta} = c^\\gamma_{\\beta, \\alpha}$, so any LP characterization had better respect the same symmetry.",
+    "mathContext": "Horn inequality at rank $r$ for index triple $(I, J, K)$, $|I| = |J| = |K| = r$: $\\sum_{k \\in K} \\gamma_k \\le \\sum_{i \\in I} \\alpha_i + \\sum_{j \\in J} \\beta_j$. The inequality is *linear* in the parts of $\\alpha, \\beta, \\gamma$ — this is the linearity that makes the LR-positivity-as-LP reduction possible.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rank-r subsystem",
+      "Schubert classes (G/P)",
+      "linearity in partition parts",
+      "α ↔ β symmetry of LR coefficients"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "Finset.sum",
+      "structure with proof obligations"
+    ]
+  },
+  {
+    "id": "h15oq03-ann-04",
+    "proofId": "hilbert-15-oq-02-oq-03",
+    "range": {
+      "startLine": 133,
+      "endLine": 173
+    },
+    "type": "context",
+    "title": "Three Axioms: lrCoeffN, admissible, klyachko_theorem",
+    "content": "The file's three axioms are precisely the gap to a complete formal proof. **`lrCoeffN`** is the general $n$-row LR coefficient $c^\\gamma_{\\alpha, \\beta} \\in \\mathbb{N}$, the primary missing Mathlib ingredient (estimated ~300 lines to formalize via Mathlib's developing semistandard Young tableaux machinery: reverse-row reading word, ballot/lattice condition for skew shapes). The 2-row case `lrCoeff2` is already in the parent file. **`admissible`** is the recursive predicate on index triples: $(I, J, K)$ is admissible at rank $r$ iff the LR coefficient $c^K_{I, J}$ at rank $r$ is positive. The recursion bottoms out at $r = 1$, where every singleton triple is admissible (Weyl inequalities are unconditional). Estimated ~200 lines to formalize, depending on `lrCoeffN`. **`klyachko_theorem`** is the headline equivalence: for any partitions $\\alpha, \\beta, \\gamma$ with $|\\alpha| + |\\beta| = |\\gamma|$, $c^\\gamma_{\\alpha, \\beta} > 0$ iff every admissible Horn inequality holds. Klyachko's 1998 proof uses stable vector bundles on $\\mathbb{P}^1$, GIT quotients, and Schubert calculus on Grassmannians — none currently in Mathlib (estimated ~3000 lines). The Knutson-Tao honeycomb model gives an alternative combinatorial proof that *might* be more Lean-tractable.",
+    "mathContext": "The three axioms span the entire Klyachko framework: definition of LR coefficient, definition of admissible triples, and their equivalence with positivity. Eliminating any one in Mathlib advances the gallery; eliminating all three would be a major Lean formalization milestone (~3500 lines total).",
+    "significance": "key",
+    "relatedConcepts": [
+      "semistandard Young tableaux",
+      "ballot condition",
+      "stable vector bundles",
+      "GIT quotients",
+      "honeycomb model alternative"
+    ],
+    "prerequisites": [
+      "axiom integrity policy",
+      "recursive definitions in Lean",
+      "Klyachko's 1998 proof outline"
+    ]
+  },
+  {
+    "id": "h15oq03-ann-05",
+    "proofId": "hilbert-15-oq-02-oq-03",
+    "range": {
+      "startLine": 174,
+      "endLine": 211
+    },
+    "type": "insight",
+    "title": "LP Reduction and Linearity",
+    "content": "`lr_positivity_reduces_to_lp` is the headline result of the file: a one-line corollary of `klyachko_theorem` rewriting LR positivity as the conjunction of all admissible Horn inequalities. Because each Horn inequality is linear in the partition parts (verified by `horn_scale`, which proves the Horn predicate is preserved under uniform scaling — uniform scaling preserves the constraint), the whole system is a finite linear program. `lr_polytime_positivity` packages this as the existence claim: there is a polynomial-time oracle for LR positivity. The proof composes Klyachko's equivalence with the polynomial bound on constraint count (`total_horn_constraints`, in Part V) and the standard fact that linear feasibility for poly($n$) constraints in poly($n$) variables is in $\\mathsf{P}$ via the ellipsoid method or interior-point methods. **Importance for complexity**: prior to Klyachko, no polynomial-time algorithm for LR positivity was known — the only available algorithms required computing the full LR coefficient (combinatorial polynomial-space, exponential-time in the worst case via SSYT enumeration). The LP reduction collapses positivity (a yes/no question) from $\\#\\mathsf{P}$ to $\\mathsf{P}$, even though *computing* the value remains $\\#\\mathsf{P}$-hard.",
+    "mathContext": "$c^\\gamma_{\\alpha, \\beta} > 0$ iff $\\forall r < n, \\forall (I,J,K)$ admissible at $r$: $\\sum_K \\gamma_k \\le \\sum_I \\alpha_i + \\sum_J \\beta_j$. Linearity (horn-scale invariance) + polynomial constraint count + LP feasibility in $\\mathsf{P}$ ⇒ LR positivity in $\\mathsf{P}$. *Computing* $c^\\gamma_{\\alpha, \\beta}$ is $\\#\\mathsf{P}$-hard (Narayanan 2006).",
+    "significance": "key",
+    "relatedConcepts": [
+      "P vs #P",
+      "ellipsoid method",
+      "linear programming feasibility",
+      "saturation conjecture",
+      "Narayanan #P-hardness"
+    ],
+    "prerequisites": [
+      "klyachko_theorem (axiom)",
+      "linearity of Horn inequalities",
+      "polynomial-time linear feasibility"
+    ]
+  },
+  {
+    "id": "h15oq03-ann-06",
+    "proofId": "hilbert-15-oq-02-oq-03",
+    "range": {
+      "startLine": 212,
+      "endLine": 249
+    },
+    "type": "insight",
+    "title": "Weyl Inequalities and the n·8^n Constraint Bound",
+    "content": "The closing section grounds the framework in Weyl's classical inequalities and proves the polynomial bound on constraint count. **`weyl_inequality`** derives the $r = 1$ base case: for any singleton triple $(\\{i\\}, \\{j\\}, \\{k\\})$ that is admissible (which holds for every singleton in the Horn recursion, vacuously), $\\gamma_k \\le \\alpha_i + \\beta_j$. This is *exactly* Weyl's 1912 inequality $\\lambda_k(C) \\le \\lambda_i(A) + \\lambda_j(B)$ — now appearing as a corollary of the general framework, validating that the formalization recovers the historical starting point. **`admissible_triple_count_bound`** bounds the number of admissible triples at rank $r$ by $\\binom{n}{r}^3$ (the total number of triples of $r$-subsets, since admissibility only restricts). **`total_horn_constraints`** sums over $r = 0, \\dots, n-1$ to get $\\sum_r \\binom{n}{r}^3 \\le n \\cdot 8^n$ — the quoted polynomial bound. The proof uses $\\binom{n}{r} \\le 2^n$, so $\\binom{n}{r}^3 \\le 8^n$, and there are $n$ terms in the sum. **Caveat**: this is *single-exponential* in $n$, not polynomial in the partition input alone; the polynomial-time complexity claim of `lr_polytime_positivity` is in the bit-length of the partition (since each partition has $n$ parts of poly-bounded size, the LP has poly variables and poly constraints in the right encoding). The $n \\cdot 8^n$ bound is the constraint count for fixed-rank-$n$ partitions; the LP is genuinely solved in time polynomial in the input bit-length.",
+    "mathContext": "Weyl's inequality: $\\lambda_k(A + B) \\le \\lambda_i(A) + \\lambda_j(B)$ for any singleton index. Constraint count: $\\sum_{r=0}^{n-1} \\binom{n}{r}^3 \\le n \\cdot 8^n$ via $\\binom{n}{r} \\le 2^n$. Complexity: LR positivity in $\\mathsf{P}$ in the bit-length of the input (partitions encoded with poly($n, \\log \\max \\alpha_i$) bits).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weyl inequalities",
+      "binomial coefficient bounds",
+      "P-time complexity in bit-length",
+      "Narayanan complexity result",
+      "saturation conjecture (parent OQ-02)"
+    ],
+    "prerequisites": [
+      "klyachko_theorem applied to singletons",
+      "binomial coefficient bound 2^n",
+      "polynomial-time LP feasibility"
+    ]
+  }
+]
