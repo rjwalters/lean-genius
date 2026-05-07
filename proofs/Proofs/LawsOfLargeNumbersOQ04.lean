@@ -22,17 +22,18 @@ where Fₙ(x) = (1/n) |{i ≤ n : Xᵢ ≤ x}|.
 
 ## Axioms
 
-1. `indicator_integrable`: threshold indicators are integrable (bounded by 1)
-2. `indicator_integral_eq_cdf`: E[1_{X₀ ≤ x}] = F(x) (standard integral computation)
-3. `glivenko_cantelli_uniform`: the bracketing uniformity step (not in Mathlib 4.26)
+1. `glivenko_cantelli_uniform`: the bracketing uniformity step (not in Mathlib 4.26)
 
-The first two could in principle be proved from Mathlib lemmas but require careful
-API navigation; the third requires a finite covering argument unavailable in Mathlib 4.26.
+The two integration facts that were previously axiomatic
+(`thresholdIndicator_integrable` and `integral_thresholdIndicator_eq_cdf`) are now
+proved in this file using Mathlib's bounded-measurable integrability (`Integrable.mono'`)
+and the integral-indicator API; only the bracketing uniformity step remains axiomatic.
 -/
 
 import Mathlib.Probability.StrongLaw
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Probability.IdentDistrib
+import Mathlib.MeasureTheory.Integral.SetIntegral
 import Mathlib.Tactic
 
 namespace GlivenkoCantelli
@@ -95,20 +96,46 @@ theorem thresholdIndicator_pairwise_indep {X : ℕ → Ω → ℝ}
   intro i j hij
   exact h_comp.indepFun hij
 
-/-! ## Axioms for Integration and Integrability -/
+/-! ## Integration Facts (formerly axioms, now proved) -/
 
-/-- Threshold indicators are integrable on probability spaces.
-    These are bounded measurable functions on a finite-measure space. -/
-axiom thresholdIndicator_integrable [IsProbabilityMeasure μ]
+/-- **PROVED** (formerly axiom): Threshold indicators are integrable on probability
+    spaces. They are bounded measurable functions on a finite-measure space, so
+    `Integrable.mono'` against the constant function `1` gives integrability. -/
+theorem thresholdIndicator_integrable [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ} (hX : ∀ i, Measurable (X i)) (x : ℝ) :
-    Integrable (thresholdIndicator X x 0) μ
+    Integrable (thresholdIndicator X x 0) μ := by
+  apply Integrable.mono' (integrable_const (1 : ℝ))
+  · exact ((measurable_iic_indicator x).comp (hX 0)).aemeasurable
+  · filter_upwards with ω
+    simp only [thresholdIndicator, Set.indicator, norm_one]
+    split_ifs with h
+    · norm_num
+    · norm_num
 
-/-- The expected value of the threshold indicator equals the true CDF.
-    Proof: ∫ ω, 1_{X₀(ω) ≤ x} dμ = μ{ω | X₀(ω) ≤ x} = F(x).
-    Uses integral_indicator_const and measurability of {ω | X₀ ≤ x}. -/
-axiom integral_thresholdIndicator_eq_cdf [IsProbabilityMeasure μ]
+/-- The threshold indicator factors through the preimage indicator. -/
+private lemma thresholdIndicator_eq_preimage_indicator_fun
+    {X : ℕ → Ω → ℝ} (x : ℝ) :
+    (fun ω => thresholdIndicator X x 0 ω) =
+    (fun ω => (X 0 ⁻¹' Set.Iic x).indicator (fun _ => (1 : ℝ)) ω) := by
+  ext ω
+  simp only [thresholdIndicator, Set.indicator, Set.mem_preimage, Set.mem_Iic]
+
+/-- **PROVED** (formerly axiom): The expected value of the threshold indicator equals
+    the true CDF. The proof rewrites the indicator via its preimage form, applies
+    `integral_indicator` to convert to a set integral, then evaluates the constant
+    integral as the measure of the preimage set. -/
+theorem integral_thresholdIndicator_eq_cdf [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ} (hX : ∀ i, Measurable (X i)) (x : ℝ) :
-    μ[thresholdIndicator X x 0] = trueCDF X μ x
+    μ[thresholdIndicator X x 0] = trueCDF X μ x := by
+  have hms : MeasurableSet (X 0 ⁻¹' Set.Iic x) := (hX 0) measurableSet_Iic
+  simp_rw [thresholdIndicator_eq_preimage_indicator_fun]
+  rw [integral_indicator hms]
+  rw [integral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter,
+      smul_eq_mul, mul_one]
+  simp only [trueCDF]
+  congr 1
+  ext ω
+  simp [Set.mem_preimage, Set.mem_Iic, Set.mem_setOf_eq]
 
 /-! ## Pointwise Convergence (proved) -/
 
