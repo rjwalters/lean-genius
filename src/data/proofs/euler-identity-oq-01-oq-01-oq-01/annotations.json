@@ -1,0 +1,194 @@
+[
+  {
+    "id": "eioq01x3-ann-01",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "Goal: Lie Group Exponential ℝ → S¹ from Euler's Formula",
+    "content": "The file's docstring poses the open question from the parent (`EulerIdentityOQ01OQ01`): can the axiom-free Taylor-series proof of $e^{it} = \\cos t + i\\sin t$ be promoted to the statement that $t \\mapsto e^{it}$ is the canonical Lie group exponential $\\mathbb{R} \\to S^1$? The answer is YES, and the file delivers a five-piece package: (1) homomorphism $(\\mathbb{R}, +) \\to (\\mathbb{C}^\\times, \\cdot)$, (2) continuity, (3) image on the unit circle, (4) kernel exactly $2\\pi\\mathbb{Z}$, (5) surjectivity onto $S^1$. De Moivre's theorem falls out as a one-line bonus. The Lie-theoretic significance is that this is the *prototype* of every Lie group exponential — `circleHom` is the unique continuous homomorphism $\\mathbb{R} \\to S^1$ whose derivative at $0$ sends $1 \\in \\mathbb{R}$ to $i \\in \\mathfrak{s}^1 = i\\mathbb{R}$, and the kernel description identifies $S^1$ as the topological-group quotient $\\mathbb{R}/2\\pi\\mathbb{Z}$.",
+    "mathContext": "Lie group exponential: $\\exp_G : \\mathfrak{g} \\to G$. For $G = S^1$, $\\mathfrak{g} = i\\mathbb{R}$, and $\\exp(it) = e^{it}$. Goal: formalize this map and its structural properties (homomorphism, kernel, surjectivity) in Lean 4 / Mathlib.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lie group exponential map",
+      "1-parameter subgroup",
+      "S¹ as ℝ/2πℤ",
+      "Pontryagin duality",
+      "topological group homomorphism"
+    ],
+    "prerequisites": [
+      "Euler's formula (parent file EulerIdentityOQ01OQ01)",
+      "Complex.exp_add",
+      "Mathlib's MonoidHom and Multiplicative wrapper"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-02",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 87 },
+    "type": "definition",
+    "title": "§1: circleMap and Algebraic Identities",
+    "content": "Defines `circleMap : ℝ → ℂ` as $t \\mapsto e^{it}$ (`Complex.exp ((t : ℂ) * I)`). The four algebraic identities `circleMap_zero`, `circleMap_add`, `circleMap_neg`, `circleMap_sub` are direct consequences of the corresponding identities for `Complex.exp` plus a `push_cast`/`ring` rewrite to handle real-to-complex coercion. The crucial step is `circleMap_add` (lines 66–69): unfolding both sides to `Complex.exp ((↑a * I) + (↑b * I))` and applying `Complex.exp_add` recovers the homomorphism law without any trigonometric identities — the addition formula is built into the definition. The bridge `circleMap_eq_cos_add_sin_I` (lines 80–86) imports `EulerIdentityOQ01OQ01.euler_formula` to recover the trigonometric form $e^{it} = \\cos t + i\\sin t$ on demand, but is *not* used in the homomorphism, kernel, or continuity proofs — those rely only on properties of `Complex.exp`.",
+    "mathContext": "$\\text{circleMap}(t) = e^{it}$. Algebraic identities: $e^{i \\cdot 0} = 1$, $e^{i(a+b)} = e^{ia} e^{ib}$, $e^{-it} = (e^{it})^{-1}$, $e^{i(a-b)} = e^{ia} (e^{ib})^{-1}$. All inherited from $\\text{Complex.exp}$ via the linear substitution $z \\mapsto t \\cdot i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex exponential",
+      "exponential addition law",
+      "real-to-complex coercion",
+      "homomorphism via substitution"
+    ],
+    "prerequisites": [
+      "Complex.exp_add, Complex.exp_neg",
+      "push_cast for ℝ ↪ ℂ",
+      "EulerIdentityOQ01OQ01.euler_formula (for the trig bridge)"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-03",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 88, "endLine": 100 },
+    "type": "technique",
+    "title": "§2: Image on the Unit Circle (norm_circleMap)",
+    "content": "`norm_circleMap` (lines 90–93) proves $\\|e^{it}\\| = 1$ in two lines via `Complex.norm_exp_ofReal_mul_I` — Mathlib's pre-packaged statement that the exponential of a purely imaginary number has modulus one. `circleMap_ne_zero` (lines 95–100) is the immediate corollary used as the non-vanishing hypothesis when packaging `circleMap` as a `ℂˣ`-valued function: if $\\|z\\| = 1$ then $z \\ne 0$. The two-step proof (assume $z = 0$, derive $\\|0\\| = 0 \\ne 1$) is standard and could be a one-liner via `norm_ne_zero` if Mathlib exposed it directly. The role here is supporting: both lemmas are needed only because the `MonoidHom` packaging in §3 requires inputs to land in `ℂˣ` (units), not just $\\mathbb{C}$.",
+    "mathContext": "$|e^{it}| = |e^{it} \\overline{e^{it}}|^{1/2} = |e^{it} e^{-it}|^{1/2} = |e^0|^{1/2} = 1$. Mathlib packages this directly as `Complex.norm_exp_ofReal_mul_I`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "unit circle",
+      "norm of complex exponential",
+      "modulus identity",
+      "ℂˣ (units of ℂ)"
+    ],
+    "prerequisites": [
+      "Complex.norm_exp_ofReal_mul_I",
+      "norm_zero, norm_num"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-04",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 102, "endLine": 132 },
+    "type": "technique",
+    "title": "§3: Packaging as MonoidHom Multiplicative ℝ →* ℂˣ",
+    "content": "`circleHom` (lines 109–122) is the Mathlib-idiomatic way to express a homomorphism from an *additive* group to a *multiplicative* group. The trick is the type-level wrapper `Multiplicative ℝ`: same underlying type as ℝ, but with the multiplication of `Multiplicative ℝ` defined as the addition of ℝ. So a `MonoidHom (Multiplicative ℝ) ℂˣ` is exactly an additive→multiplicative group homomorphism. The construction has three pieces: (1) `toFun t := Units.mk0 (circleMap (Multiplicative.toAdd t)) (circleMap_ne_zero _)` — convert `t` back to its real form, evaluate `circleMap`, then promote to a unit using non-vanishing; (2) `map_one'`: $\\text{circleMap}(0) = 1$ from `circleMap_zero`; (3) `map_mul'`: shown by tracing through `Multiplicative.toAdd (a * b) = Multiplicative.toAdd a + Multiplicative.toAdd b` (definitional unfold) and applying `circleMap_add`. The two `show` rewrites in lines 113–114 and 118–121 expose the underlying additive identity to Lean's typechecker — Mathlib's `Multiplicative` design forces this minor verbosity. `circleHom_apply` (lines 124–126) is the user-facing extraction lemma giving back $\\text{circleMap}(t)$ from $\\text{circleHom}(\\text{ofAdd}\\,t)$.",
+    "mathContext": "MonoidHom: a structure-preserving map between monoids. `Multiplicative ℝ →* ℂˣ` ≅ additive-to-multiplicative homomorphism $(\\mathbb{R}, +) \\to (\\mathbb{C}^\\times, \\cdot)$. The `Units.mk0 x hx` constructor builds an element of $\\mathbb{C}^\\times$ from $x : \\mathbb{C}$ and a proof $x \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "MonoidHom",
+      "Multiplicative type-level wrapper",
+      "Units.mk0",
+      "additive vs multiplicative groups",
+      "ofAdd / toAdd round-trip"
+    ],
+    "prerequisites": [
+      "Mathlib's MonoidHom / Multiplicative API",
+      "Units of a monoid",
+      "circleMap_zero, circleMap_add, circleMap_ne_zero"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-05",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 134, "endLine": 146 },
+    "type": "technique",
+    "title": "§4: Continuity (Topological Group Homomorphism)",
+    "content": "`continuous_circleMap` (lines 137–139) factors continuity into the composition `Complex.exp ∘ (·*I) ∘ ofReal`: `Complex.continuous_exp` gives continuity of $\\exp$, and `Complex.continuous_ofReal.mul continuous_const` gives continuity of $t \\mapsto t \\cdot i$ (linear, hence continuous). `continuous_circleHom` (lines 144–146) lifts this to a continuity statement for `circleHom` as a function $\\mathbb{R} \\to \\mathbb{C}$ via the embedding $\\mathbb{C}^\\times \\hookrightarrow \\mathbb{C}$; the proof is `simpa using continuous_circleMap` because `circleHom_apply` gives definitional equality to `circleMap`. Together with §3, these two lemmas exhibit `circleHom` as a *continuous* group homomorphism — the structure that defines a Lie group homomorphism (modulo smoothness, which holds automatically for continuous group homomorphisms between Lie groups by Cartan's theorem on closed subgroups, but Mathlib's `LieGroup` framework would need this stated explicitly).",
+    "mathContext": "Continuity: $f$ continuous + $g$ continuous ⇒ $f \\circ g$ continuous. For Lie groups, continuous + group hom ⇒ smooth (Cartan), so `continuous_circleHom` is enough to certify a Lie group homomorphism.",
+    "significance": "key",
+    "relatedConcepts": [
+      "topological group",
+      "Lie group homomorphism",
+      "Cartan's theorem on closed subgroups",
+      "composition of continuous functions"
+    ],
+    "prerequisites": [
+      "Complex.continuous_exp, Complex.continuous_ofReal",
+      "continuous_const, .mul, .comp",
+      "subspace topology on ℂˣ"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-06",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 148, "endLine": 173 },
+    "type": "insight",
+    "title": "§5: Kernel = 2π·ℤ (Identifying S¹ ≅ ℝ/2πℤ)",
+    "content": "`circleMap_eq_one_iff` (lines 153–173) is the structurally most important theorem in the file: it identifies the kernel of the homomorphism $t \\mapsto e^{it}$ as exactly $2\\pi\\mathbb{Z}$. The proof unfolds `circleMap` to apply `Complex.exp_eq_one_iff`, which gives the *complex* characterization $e^z = 1 \\iff \\exists n \\in \\mathbb{Z}, z = n \\cdot 2\\pi i$. To extract the *real* statement $t = 2\\pi n$, the proof must cancel the imaginary unit from both sides of $t \\cdot i = n \\cdot 2\\pi \\cdot i$. The cancellation pipeline (lines 162–169) is the technical heart: rewrite the RHS as $(n \\cdot 2\\pi) \\cdot i$ via `ring`, apply `mul_right_cancel₀` against `Complex.I_ne_zero` to get a complex equation $t = n \\cdot 2\\pi$, then `exact_mod_cast` + `linarith` to descend to the real-number equation. The reverse direction is a straightforward `push_cast` + `ring` once `n` is given. The mathematical payoff: $\\text{circleHom}$ has kernel $2\\pi\\mathbb{Z}$, so the first isomorphism theorem (in topological-group form) gives $S^1 \\cong \\mathbb{R}/2\\pi\\mathbb{Z}$ — the foundation of Fourier series on the circle.",
+    "mathContext": "Kernel of $\\text{circleHom}$: $\\{t \\in \\mathbb{R} : e^{it} = 1\\} = 2\\pi\\mathbb{Z}$. By the first isomorphism theorem for topological groups, $\\text{circleHom}(\\mathbb{R}) = S^1 \\cong \\mathbb{R}/\\ker = \\mathbb{R}/2\\pi\\mathbb{Z}$. Pontryagin dual $\\widehat{S^1} \\cong \\mathbb{Z}$ via $\\chi_n(\\theta) = e^{in\\theta}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "kernel of a homomorphism",
+      "first isomorphism theorem",
+      "Pontryagin dual",
+      "Fourier series on the circle",
+      "fundamental group π₁(S¹) ≅ ℤ"
+    ],
+    "prerequisites": [
+      "Complex.exp_eq_one_iff",
+      "mul_right_cancel₀",
+      "Complex.I_ne_zero",
+      "exact_mod_cast"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-07",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 175, "endLine": 193 },
+    "type": "insight",
+    "title": "§6: Surjectivity onto S¹ via Polar Decomposition",
+    "content": "`circleMap_surjective_unit_circle` (lines 182–193) closes the structural package: every $z$ with $\\|z\\| = 1$ is the image of *some* $t \\in \\mathbb{R}$ under $\\text{circleMap}$. The proof witness is $t = \\arg z$, the principal argument; the verification uses Mathlib's `Complex.cos_arg` and `Complex.sin_arg`, which give $\\cos(\\arg z) = z.\\text{re} / \\|z\\|$ and $\\sin(\\arg z) = z.\\text{im} / \\|z\\|$. With $\\|z\\| = 1$, both denominators vanish, leaving $\\cos(\\arg z) = z.\\text{re}$ and $\\sin(\\arg z) = z.\\text{im}$. The bridge `circleMap_eq_cos_add_sin_I` from §1 reduces $\\text{circleMap}(\\arg z) = \\cos(\\arg z) + i \\sin(\\arg z) = z.\\text{re} + i \\cdot z.\\text{im}$, which equals $z$ by `Complex.re_add_im`. This is the *polar decomposition* in action: the unit-circle case of $z = \\|z\\|(\\cos(\\arg z) + i \\sin(\\arg z))$ collapses to $z = e^{i \\arg z}$. Combined with §5, this shows `circleHom` factors as $\\mathbb{R} \\twoheadrightarrow \\mathbb{R}/2\\pi\\mathbb{Z} \\xrightarrow{\\cong} S^1$, the Lie-theoretic identification of $S^1$ as a quotient.",
+    "mathContext": "Polar decomposition: $z = \\|z\\| e^{i \\arg z}$ for $z \\ne 0$. Restricted to $\\|z\\| = 1$: $z = e^{i \\arg z}$. So $\\arg : S^1 \\to \\mathbb{R}/2\\pi\\mathbb{Z}$ is the inverse of $\\text{circleHom}$ (modulo periodicity).",
+    "significance": "key",
+    "relatedConcepts": [
+      "polar decomposition",
+      "principal argument",
+      "Complex.cos_arg, Complex.sin_arg",
+      "homogeneous space",
+      "first isomorphism theorem"
+    ],
+    "prerequisites": [
+      "Complex.cos_arg, Complex.sin_arg",
+      "Complex.re_add_im",
+      "circleMap_eq_cos_add_sin_I (from §1)"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-08",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 195, "endLine": 217 },
+    "type": "insight",
+    "title": "§7: De Moivre's Theorem in One Line",
+    "content": "`circleMap_npow` (lines 199–207) and `circleMap_zpow` (lines 211–217) deliver de Moivre's theorem $(e^{it})^n = e^{int}$ as one-line consequences of the algebraic structure. The natural-number case uses induction: the base case $n = 0$ is `simp` (since $z^0 = 1 = e^{i \\cdot 0}$), and the successor case rewrites $(e^{it})^{k+1} = (e^{it})^k \\cdot e^{it}$ via `pow_succ`, applies the IH to convert $(e^{it})^k = e^{ikt}$, and then `circleMap_add` reassembles to $e^{i(k+1)t}$. The integer-exponent case is even cleaner — bypassing the natural/integer split entirely — by invoking `Complex.exp_int_mul`, which states $e^{n \\cdot z} = (e^z)^n$ for $n : \\mathbb{Z}$. The three-line proof unfolds `circleMap`, rewrites with `← Complex.exp_int_mul` to fold the integer factor inside the exponent, then `push_cast`/`ring` to verify $n \\cdot (t \\cdot i) = (n \\cdot t) \\cdot i$. This is the cleanest possible formalization of de Moivre: no trigonometric identities, no induction, no addition formulas for $\\cos$ and $\\sin$ — just the algebraic property of $\\exp$.",
+    "mathContext": "De Moivre: $(\\cos t + i \\sin t)^n = \\cos(nt) + i \\sin(nt)$. Equivalent reformulation: $(e^{it})^n = e^{int}$. The latter is *trivial* given the homomorphism law, while the former requires expanding the binomial and re-collecting trigonometric terms — the version in 18th-century textbooks.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "de Moivre's theorem",
+      "Complex.exp_int_mul",
+      "homomorphism corollary",
+      "exponential identities"
+    ],
+    "prerequisites": [
+      "circleMap_add",
+      "Complex.exp_int_mul",
+      "pow_succ, induction on Nat"
+    ]
+  },
+  {
+    "id": "eioq01x3-ann-09",
+    "proofId": "euler-identity-oq-01-oq-01-oq-01",
+    "range": { "startLine": 219, "endLine": 241 },
+    "type": "context",
+    "title": "§8: Summary and Lie-Theoretic Synopsis",
+    "content": "The closing section bundles the file's five structural results (homomorphism / unit-circle image / continuity / kernel / surjectivity) into the docstring of `main`, and restates the trigonometric form `main : ∀ t : ℝ, circleMap t = (Real.cos t : ℂ) + (Real.sin t : ℂ) * I` for downstream consumers who want to pattern-match against Euler's formula. The five `#check` directives at lines 235–239 are documentation-only — they instruct `lean` to print the type signatures of the principal results during compilation, useful as a self-test of the file's API surface. The Lie-theoretic synopsis in the docstring (lines 221–231) records the identification of $S^1$ as a 1-parameter Lie group with Lie algebra $i\\mathbb{R}$, the canonical example used in every Lie theory textbook and the foundation for representation theory of compact connected Lie groups.",
+    "mathContext": "1-parameter subgroup: continuous group hom $\\mathbb{R} \\to G$. For $G = S^1$, the unique 1-parameter subgroups are $t \\mapsto e^{int}$ for $n \\in \\mathbb{Z}$ (parameterized by Pontryagin dual $\\widehat{S^1} \\cong \\mathbb{Z}$). `circleHom` is the $n = 1$ generator.",
+    "significance": "context",
+    "relatedConcepts": [
+      "1-parameter subgroup",
+      "Lie algebra of S¹",
+      "Pontryagin dual",
+      "compact connected Lie groups",
+      "API surface checks"
+    ],
+    "prerequisites": [
+      "all preceding sections"
+    ]
+  }
+]
