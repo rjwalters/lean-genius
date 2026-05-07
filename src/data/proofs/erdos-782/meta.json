@@ -59,7 +59,7 @@
       "no_4AP_in_squares axiom (classical)",
       "squares_contain_3AP: PROVED by explicit construction {1,25,49}={1²,5²,7²} with d=24 (was axiom)"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "lineCount": 328,
     "assumptions": "3 axioms: no_4AP_in_squares (Euler), question1_implies_question2 (Ramsey-type), cilleruelo_granville (conditional). BombieriLangConjecture converted to opaque Prop (not an axiom). squares_contain_3AP proved by explicit construction {1,25,49}.",
     "theoremCount": 10,
@@ -186,7 +186,7 @@
     ],
     "namespace": "Erdos782",
     "lineCount": 328,
-    "axiomCount": 3,
+    "axiomCount": 4,
     "theoremCount": 10,
     "definitionCount": 18,
     "path": "Proofs/Erdos782Problem.lean",
