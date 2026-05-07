@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "IN-PROGRESS",
-    "since": "2026-05-07",
-    "iteration": 4,
-    "focus": "Session 15: Fixed all 4 Mathlib API drift sites identified in Session 14 (verified against current Mathlib4 source via gh api). Added two Step 3 helpers for trig_sum_harmonic_lb: chebyshev_angle_dist_triangle (triangle bound on |θ - φ_k|) and chebyshev_angle_dist_from_nearest (corollary combining triangle bound with the |θ - φ_{k₀}| ≤ π/(2n) hypothesis). PR #16745 opened.",
+    "since": "2026-05-08",
+    "iteration": 5,
+    "focus": "Session 16: Added Step 4 (sin lower bound on [d/2, π-d/2] via case-split + sin_pi_sub) and Step 5 (per-term lower bound combining Step 3 + Step 4 + cos-Lipschitz). New private lemmas: sin_lb_of_in_interior, sin_chebyshev_midpoint_lb, chebyshev_term_lb_at_node. PR #16765 opened.",
     "blockers": [],
-    "nextAction": "(Researcher) Step 4 — sin lower bound for nodes within (d/2, π-d/2) using sin_ge_sin_of_mem_Icc. Step 5 — combine Step 3 distance bound + Step 4 sin bound + cosine Lipschitz to get per-term lower bound. Step 6/7 — sub-sum via odd_harmonic_sum_lb + finite-n closure via Finset.min'.",
+    "nextAction": "(Researcher) Step 6 — sub-sum of size m = ⌊n·d/(4π)⌋ over indices near k₀ applying chebyshev_term_lb_at_node to derive S_n ≥ (2dn/π²)·Σ_j 1/(2j+3). Step 7 — combine with odd_harmonic_sum_lb for large n + Finset.min' over {1,...,N₀-1} for small n. Verify constraint that φ_{k₀+j+1} ∈ (d/2, π-d/2) when |j| ≤ ⌊nd/(4π)⌋.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 15 (2026-05-07, researcher-1): Verified prior 'API drift fixed' claim was wrong (per memory feedback_research_json_build_claim_lies). Looked up the 4 unknown identifiers directly in Mathlib4 source via gh api. Applied fixes: Nat.harmonic → harmonic (in Mathlib.NumberTheory.Harmonic.Defs, type ℕ → ℚ); Nat.harmonic_succ → harmonic_succ; div_lt_div_iff → div_lt_div_iff₀; Even.not_odd evp odd_p → (not_odd_iff_even.mpr evp) odd_p. Cast widened to ((harmonic m : ℚ) : ℝ). Added two Step 3 helpers (chebyshev_angle_dist_triangle, chebyshev_angle_dist_from_nearest) yielding |θ - φ_k| ≤ (2|k-k₀|+1)·π/(2n) — the form needed for Steps 4-5. PR #16745. 2 sorries unchanged.",
+    "progressSummary": "Session 16 (2026-05-08, researcher-1): Built Step 4 + Step 5 toward closing trig_sum_harmonic_lb. Step 4 (sin_lb_of_in_interior): case-split proof that sin(x) ≥ sin(d/2) for x ∈ [d/2, π-d/2] using Real.sin_le_sin_of_le_of_le_pi_div_two on each side of π/2 with sin_pi_sub bridging. Step 5 (chebyshev_term_lb_at_node) chains Step 3 + Step 4 + Real.abs_cos_sub_cos_le into the per-term bound sin(φ_k)/|cos θ - cos φ_k| ≥ sin(d/2)·(2n)/((2|k-k₀|+1)·π). Total +133 lines, 4 new lemmas, 2 sorries unchanged. PR #16765.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -62,7 +62,11 @@
       "exists_nearest_chebyshev_angle: Step 2 of trig_sum_harmonic_lb — for θ ∈ (0,π), n ≥ 1, ∃ k₀ : Fin n with |θ - (2k₀+1)π/(2n)| ≤ π/(2n). Witness: k₀ = ⌊nθ/π⌋. — Erdos1151OQ04.lean:1121",
       "API drift fix (Session 15): div_lt_div_iff → div_lt_div_iff₀; Nat.harmonic → harmonic; Nat.harmonic_succ → harmonic_succ; Even.not_odd → not_odd_iff_even.mpr — Erdos1151OQ04.lean:889,943-956,1262",
       "chebyshev_angle_dist_triangle: |θ - φ_k| ≤ |θ - φ_{k₀}| + |k - k₀|·π/n via algebraic identity + abs_add — Erdos1151OQ04.lean:1175",
-      "chebyshev_angle_dist_from_nearest: corollary, |θ - φ_k| ≤ (2|k-k₀|+1)·π/(2n) when k₀ is within π/(2n) of θ — Erdos1151OQ04.lean:1208"
+      "chebyshev_angle_dist_from_nearest: corollary, |θ - φ_k| ≤ (2|k-k₀|+1)·π/(2n) when k₀ is within π/(2n) of θ — Erdos1151OQ04.lean:1208",
+      "sin_lb_of_in_interior: ∀ d > 0, x ∈ [d/2, π-d/2] ⇒ sin(d/2) ≤ sin(x) — Erdos1151OQ04.lean (Step 4 generic)",
+      "sin_chebyshev_midpoint_lb: corollary at chebyshev midpoints φ_k = (2k+1)π/(2n) — Erdos1151OQ04.lean",
+      "chebyshev_term_lb_at_node: per-term lb sin(φ_k)/|cos θ - cos φ_k| ≥ sin(d/2)·(2n)/((2|k-k₀|+1)·π) — Erdos1151OQ04.lean (Step 5)",
+      "Combined Step 3 + Step 4 + cos-Lipschitz (Real.abs_cos_sub_cos_le) into ready-to-sum per-term lower bound"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -92,13 +96,18 @@
       "Mathlib.NumberTheory.Harmonic.Defs: harmonic : ℕ → ℚ (NOT Nat.harmonic, NOT ℝ); cast for ℝ usage requires ((harmonic m : ℚ) : ℝ).",
       "Mathlib.Algebra.Ring.Int.Parity: Even.not_odd is removed; replacement is not_odd_iff_even : ¬Odd n ↔ Even n. Use .mpr to derive ¬Odd from Even.",
       "Triangle bound for equispaced midpoints: φ_k - φ_{k₀} = (k - k₀)·spacing, so |θ - φ_k| ≤ |θ - φ_{k₀}| + |k - k₀|·spacing. For Chebyshev midpoints, spacing = π/n.",
-      "When the previous session's blocker is API drift in 4-5 specific places, gh api search for current decl names is faster than waiting on Docker (which is contended)."
+      "When the previous session's blocker is API drift in 4-5 specific places, gh api search for current decl names is faster than waiting on Docker (which is contended).",
+      "sin attains min on [d/2, π-d/2] at d/2 (= π-d/2 by sin_pi_sub). Cleanest formalization: case split x ≤ π/2 vs > π/2, apply Real.sin_le_sin_of_le_of_le_pi_div_two on monotone side; for x > π/2 reduce to π-x ∈ [d/2, π/2) via Real.sin_pi_sub.",
+      "Mathlib uses Real.sin_le_sin_of_le_of_le_pi_div_two with hypotheses (-(π/2) ≤ x), (y ≤ π/2), (x ≤ y) → sin x ≤ sin y. Domain is [-π/2, π/2], not [0, π/2].",
+      "Real.abs_cos_sub_cos_le: cos is 1-Lipschitz, |cos α - cos β| ≤ |α - β|. Direct from lipschitzWith_cos. Lives in Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds.",
+      "div_div_eq_mul_div : a / (b / c) = a * c / b — convert sin(d/2) / [(2|k-k₀|+1)π/(2n)] to sin(d/2)·(2n)/((2|k-k₀|+1)π) without nonzero hypotheses (works in any DivisionRing).",
+      "Per-term bound shape: sin(φ_k) ≥ sin(d/2) AND |cos θ - cos φ_k| ≤ (2|k-k₀|+1)π/(2n) ⇒ ratio ≥ sin(d/2)·(2n)/((2|k-k₀|+1)π). Subsequent sub-sum will require restricting indices to those satisfying φ_k ∈ [d/2, π-d/2]."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(Researcher / next session) Verify build (PR #16745) with Docker once contention eases. If green, file builds for first time since 2026-05-04 regression.",
-      "(Researcher) Continue trig_sum_harmonic_lb: Step 2 ✓ exists_nearest_chebyshev_angle. Step 3 ✓ chebyshev_angle_dist_triangle + chebyshev_angle_dist_from_nearest. Step 4 — sin lower bound via sin_ge_sin_of_mem_Icc when φ_k ∈ (d/2, π-d/2) where d = min(θ, π-θ). Step 5 — combine Step 3 + Step 4 + cosine Lipschitz to derive sin(φ_k)/|cos θ - cos φ_k| ≥ 2sin(d/2)·n/((2|k-k₀|+1)·π). Step 6/7 — sub-sum via odd_harmonic_sum_lb + finite-n closure via Finset.min'.",
-      "(Researcher, longer-term) Address divergence_from_lebesgue_growth foundational lim/limsup gap"
+      "(Researcher / next session) Step 6 — define m := ⌊n·d/(4π)⌋ and the index set Sₙ ⊆ Fin n of indices k satisfying φ_k ∈ (d/2, π-d/2). Apply chebyshev_term_lb_at_node per-index to get a sub-sum lower bound.",
+      "(Researcher / next session) Step 7 — combine sub-sum bound with odd_harmonic_sum_lb (∑ 1/(2j+1) ≥ (1/2)·log(m+1)) for large n. Use Finset.min' over {1,...,N₀-1} for small n. Final witness C₂ = min(C_large, C_small).",
+      "(Researcher) Verify that for θ ∈ (0,π) with d = min(θ, π-θ), the index k₀ from exists_nearest_chebyshev_angle has |φ_{k₀} - π/2| ≤ |θ - π/2| + π/(2n), so for n ≥ N₀(d), φ_{k₀+j} ∈ (d/2, π-d/2) for |j| ≤ ⌊nd/(4π)⌋."
     ]
   },
   "tags": [
