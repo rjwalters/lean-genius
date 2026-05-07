@@ -1,0 +1,77 @@
+{
+  "id": "bezout-identity-oq-01-oq-01-oq-02",
+  "title": "Binary GCD Extended to Integers: intBinaryGcd",
+  "slug": "bezout-identity-oq-01-oq-01-oq-02",
+  "description": "Extends Stein's binary GCD algorithm from natural numbers to integers by reducing via Int.natAbs. Proves the extension equals Mathlib's Int.gcd, satisfies divisibility and GCD properties, is sign-invariant, and yields explicit B\u00e9zout coefficients: \u2203 u v : \u2124, u*a + v*b = intBinaryGcd a b. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ01OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "algorithm",
+      "gcd",
+      "integers",
+      "bezout",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 146,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "intBinaryGcd: integer binary GCD via natAbs reduction",
+      "intBinaryGcd_eq_gcd: equals Mathlib Int.gcd",
+      "intBinaryGcd_dvd_left/right: divisibility in \u2124",
+      "dvd_intBinaryGcd: GCD property for integers",
+      "intBinaryGcd_neg_left/right: sign invariance",
+      "intBinaryGcd_zero_left/right: boundary cases (|b|, |a|)",
+      "bezout_via_intBinaryGcd: integer B\u00e9zout identity via binary GCD"
+    ],
+    "prerequisites": [
+      "BezoutIdentityOQ01OQ01 (Proofs/BezoutIdentityOQ01OQ01.lean): binaryGcd for \u2115, binaryGcd_eq_gcd, bezout_via_binaryGcd"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.gcd",
+        "description": "Integer GCD via natAbs: Int.gcd a b = Nat.gcd a.natAbs b.natAbs",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcd_dvd_left",
+        "description": "Int.gcd a b (as \u2124) divides a",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.dvd_gcd",
+        "description": "Common divisor divides Int.gcd",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "B\u00e9zout identity: Int.gcd a b = a * gcdA + b * gcdB",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 146,
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "openQuestions": [
+    {
+      "id": "bezout-identity-oq-01-oq-01-oq-02-oq-01",
+      "question": "Can the integer binary GCD be extended to compute B\u00e9zout coefficients directly by tracking the algorithm's steps, analogous to the extended Euclidean algorithm?",
+      "significance": "medium"
+    }
+  ]
+}
