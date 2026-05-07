@@ -5,6 +5,7 @@
   "description": "Proves the non-cyclic case of the Gauss-Wilson theorem: when (ZMod n)\u00d7 is not cyclic (n \u2265 3), the product of all units is 1 rather than -1. The key tool is the two-involution trick on the 2-torsion subgroup S = {x | x\u00b2=1}: two distinct FPF involutions on S both compute \u220fS, forcing \u220fS = 1. Combined with the cyclic case, this gives gaussWilson_abstract_ext: \u220f(ZMod n)\u00d7 = -1 iff (ZMod n)\u00d7 is cyclic.",
   "meta": {
     "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ02Ext.lean",
     "badge": "original",
     "axiomCount": 0,
     "theoremCount": 22,
