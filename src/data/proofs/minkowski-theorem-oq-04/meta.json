@@ -1,0 +1,215 @@
+{
+  "id": "minkowski-theorem-oq-04",
+  "title": "Blichfeldt's Theorem: k+1 Congruent Points When vol(S) > k",
+  "slug": "minkowski-theorem-oq-04",
+  "description": "Blichfeldt's theorem (1914): any measurable set S ⊆ ℝⁿ with Lebesgue measure > k contains k+1 distinct points whose pairwise differences lie in ℤⁿ. Generalizes Minkowski's lattice point theorem (no convexity or symmetry needed) and recovers Minkowski as a corollary via the half-scaling T = S/2.",
+  "meta": {
+    "id": "minkowski-theorem-oq-04",
+    "title": "Blichfeldt's Theorem: k+1 Congruent Points When vol(S) > k",
+    "slug": "minkowski-theorem-oq-04",
+    "author": "Hans Frederik Blichfeldt (1914)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Blichfeldt%27s_theorem",
+    "date": "1914",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/MinkowskiTheoremOQ04.lean",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "geometry-of-numbers",
+      "measure-theory"
+    ],
+    "badge": "axiom",
+    "sorries": 2,
+    "axiomCount": 4,
+    "lineCount": 227,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "Four axioms remain. Three measure-theoretic facts capture the fundamental-domain pigeonhole core: (1) `blichfeldt_volume_partition` — vol(S) = Σ' v ∈ ℤⁿ, vol({z ∈ F | z+v ∈ S}), the partition formula provable from `IsAddFundamentalDomain.lintegral_eq_tsum`; (2) `blichfeldt_proj_measurable` — the projections {z ∈ F | z+v ∈ S} are measurable as preimages of measurable sets under continuous translations; (3) `blichfeldt_disj_bound` — pairwise-disjoint measurable subsets of F have total volume ≤ 1, from `measure_iUnion` + `measure_mono`. (4) `blichfeldt_general` — the general k≥1 case via averaging the covering count function c(z) = #{v | z+v ∈ S}; the k=1 case is fully proved without it. Two sorries remain in `minkowski_from_blichfeldt`: the measurability of T = (1/2)·S (linear isomorphism preserves measurability) and the volume identity vol(T) = vol(S)/2ⁿ from `Measure.addHaar_smul`. The k=1 Blichfeldt theorem and the structural Minkowski reduction (central symmetry + convexity argument) are proved without sorry.",
+    "dateAdded": "2026-05-07",
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.IsAddFundamentalDomain.lintegral_eq_tsum",
+        "description": "Fundamental domain integral identity: ∫ f = Σ' g, ∫_F f(z + g) — the engine behind the volume partition axiom",
+        "module": "Mathlib.MeasureTheory.Group.FundamentalDomain"
+      },
+      {
+        "theorem": "MeasureTheory.measure_iUnion",
+        "description": "Sigma-additivity of measure on pairwise-disjoint measurable sets — backs the disjoint-bound axiom",
+        "module": "Mathlib.MeasureTheory.MeasureSpace"
+      },
+      {
+        "theorem": "MinkowskiProved.stdLattice",
+        "description": "The standard integer lattice ℤⁿ ⊆ ℝⁿ from the parent Minkowski formalization",
+        "module": "Proofs.MinkowskiFundamentalTheorem"
+      },
+      {
+        "theorem": "MinkowskiProved.stdFundDomain",
+        "description": "The fundamental domain F = [0,1)ⁿ for ℤⁿ in ℝⁿ",
+        "module": "Proofs.MinkowskiFundamentalTheorem"
+      }
+    ],
+    "originalContributions": [
+      "blichfeldt_basic: full proof of the k=1 case from three measure-theory axioms (0 sorries, 100 lines)",
+      "Pairwise-disjointness argument: if no two points of S are ℤⁿ-congruent, the fundamental-domain projections {z ∈ F | z+v ∈ S} are pairwise disjoint, contradicting the partition formula",
+      "blichfeldt_basic_from_general: derives k=1 from the general-k axiom with the Fin (k+1) injectivity argument",
+      "minkowski_from_blichfeldt: structural reduction Minkowski → Blichfeldt via T = (1/2)·S; central symmetry + convexity give the lattice point in S",
+      "Mathlib 4.26.0 API drift fixes: `Pairwise (Disjoint on f)` lambda rewrite; ENNReal Nat-coerce via `exact_mod_cast`; `Submodule.mem_toAddSubgroup` removal compensation"
+    ],
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Lebesgue measure on ℝⁿ and the fundamental-domain integral formula",
+      "Sigma-additivity and monotonicity of measure",
+      "Integer lattices ℤⁿ as additive subgroups of ℝⁿ",
+      "Minkowski's convex body theorem (recovered as a corollary)"
+    ],
+    "relatedProofs": [
+      "minkowski-theorem",
+      "minkowski-theorem-oq-02",
+      "minkowski-theorem-oq-02-oq-01"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hans Blichfeldt published this strengthening of Minkowski's geometry of numbers in 1914 (Trans. AMS), removing the convexity and symmetry hypotheses entirely. The proof — the fundamental-domain pigeonhole — is so geometric that it makes Minkowski's theorem a one-line corollary: apply Blichfeldt to T = (1/2)·S, then use central symmetry + convexity to extract a lattice point of S. Blichfeldt's theorem is now a standard pillar of geometry of numbers (Cassels 1959, ch. III; Gruber–Lekkerkerker 1987, ch. 6).",
+    "problemStatement": "**Blichfeldt's Theorem**: If S ⊆ ℝⁿ is Lebesgue measurable with vol(S) > k for some k ∈ ℕ, then S contains k+1 distinct points x₀, …, xₖ such that all pairwise differences xᵢ − xⱼ lie in ℤⁿ.\n\nNo convexity or symmetry is required. The k=1 case (two ℤⁿ-congruent points whenever vol(S) > 1) is the original Blichfeldt statement.",
+    "text": "Proves the k=1 case of Blichfeldt's theorem fully (227 lines, 0 sorries on the path) from three measure-theoretic axioms that capture standard Mathlib facts about Lebesgue measure on the fundamental domain. The general k+1 case is taken as an axiom, and Minkowski's theorem is recovered as a corollary via the half-scaling T = (1/2)·S; the convex-symmetric extraction step requires two technical sorries on the volume scaling identity vol(T) = vol(S)/2ⁿ and the measurability of T.",
+    "proofStrategy": "**Fundamental domain pigeonhole** (k=1 case, fully proved):\n\n1. **Setup**: ℤⁿ tiles ℝⁿ with fundamental domain F = [0,1)ⁿ. For each v ∈ ℤⁿ, define the projection Sᵥ = {z ∈ F | z+v ∈ S}.\n2. **Suppose no two ℤⁿ-congruent points in S** (proof by contradiction). Then for v ≠ w in ℤⁿ, Sᵥ and Sw are *disjoint*: any z in both would give two points z+v, z+w ∈ S with difference v − w ∈ ℤⁿ.\n3. **Volume identity (Axiom 1)**: vol(S) = Σ'ᵥ vol(Sᵥ). This is the fundamental-domain partition formula from `IsAddFundamentalDomain.lintegral_eq_tsum` applied to the indicator 1_S.\n4. **Disjoint bound (Axiom 3)**: pairwise-disjoint measurable subsets of F have total volume ≤ vol(F) = 1.\n5. **Contradiction**: Σ'ᵥ vol(Sᵥ) ≤ 1 but equals vol(S) > 1.\n\n**Recovering Minkowski** (Part 4):\n1. T = (1/2)·S has vol(T) = vol(S)/2ⁿ > 1.\n2. Blichfeldt gives a ≠ b ∈ T with a − b ∈ ℤⁿ.\n3. Write a = x₀/2, b = y₀/2 with x₀, y₀ ∈ S. Central symmetry: −y₀ ∈ S.\n4. Convexity: (x₀ + (−y₀))/2 = a − b ∈ S, and a − b ≠ 0.",
+    "keyInsights": [
+      "Removing convexity and symmetry: Blichfeldt's pigeonhole works on the *measure* of S alone, no geometric structure of S beyond measurability is used. The fundamental domain provides the pigeonholes.",
+      "The half-scaling trick T = (1/2)·S is the bridge to Minkowski: vol(S) > 2ⁿ becomes vol(T) > 1, and the central symmetry + convexity of S give the lattice point in S itself rather than in (S − S)/2.",
+      "The k=1 to general-k gap: the general case uses a covering-count averaging argument (∫_F #{v | z+v ∈ S} dz = vol(S)) but the existence of z with high covering count is more subtle than the disjoint-set pigeonhole in the k=1 case. We axiomatize this step here.",
+      "Lean 4 + Mathlib 4.26.0 friction points: `Pairwise (Disjoint on f)` infix needs a lambda rewrite; ENNReal Nat-coercion at literal-1 sites needs `exact_mod_cast`; `Submodule.mem_toAddSubgroup` was removed and SetLike defEq must be used directly."
+    ],
+    "prerequisites": [
+      "Lebesgue measure and Lebesgue integration on ℝⁿ",
+      "Fundamental domain integral identity (Mathlib `IsAddFundamentalDomain.lintegral_eq_tsum`)",
+      "Pairwise-disjoint measurable sets and sigma-additivity",
+      "Integer lattice ℤⁿ ⊆ ℝⁿ as an additive subgroup",
+      "Minkowski's convex body theorem (used as a downstream consequence, not a prerequisite)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "axioms",
+      "title": "Measure-Theoretic Axioms",
+      "startLine": 50,
+      "endLine": 82,
+      "summary": "Three axioms capture the measure-theoretic facts needed by Blichfeldt's pigeonhole: the fundamental-domain partition formula, the measurability of the projections {z ∈ F | z+v ∈ S}, and the bound Σ' vol(Aᵥ) ≤ 1 for pairwise-disjoint measurable subsets of F.",
+      "mathContext": "All three axioms admit Mathlib proofs: (1) follows from `IsAddFundamentalDomain.lintegral_eq_tsum` applied to 1_S; (2) is intersection-of-measurables (continuous translation preimages are measurable); (3) is `measure_iUnion` (sigma-additivity) + `measure_mono` against vol(F) = 1."
+    },
+    {
+      "id": "k1-blichfeldt",
+      "title": "Blichfeldt's Basic Theorem (k = 1)",
+      "startLine": 88,
+      "endLine": 132,
+      "summary": "Full proof of the k=1 case from the three axioms. Assumes no two ℤⁿ-congruent points and shows the fundamental-domain projections are pairwise disjoint, then chains the partition formula and disjoint bound to derive vol(S) ≤ 1 < vol(S).",
+      "mathContext": "The disjointness argument is the geometric heart: if z ∈ Sᵥ ∩ Sw for v ≠ w, then z+v, z+w are distinct (since v ≠ w), both in S, with difference v−w ∈ ℤⁿ — a forbidden ℤⁿ-congruent pair."
+    },
+    {
+      "id": "general-case",
+      "title": "The General k+1 Version (Axiom)",
+      "startLine": 137,
+      "endLine": 168,
+      "summary": "States the general-k Blichfeldt axiom: vol(S) > k yields k+1 distinct ℤⁿ-congruent points. Uses the covering-count function c(z) = #{v | z+v ∈ S} which integrates to vol(S) > k over F; we axiomatize the existence of a high-covering point z. The k=1 corollary is derived from this axiom as a sanity check (`blichfeldt_basic_from_general`).",
+      "mathContext": "The general case is a Lebesgue averaging argument: ∫_F c dz = vol(S) > k = k · vol(F), so c attains a value ≥ k+1 on a positive-measure set."
+    },
+    {
+      "id": "minkowski-corollary",
+      "title": "Minkowski as a Corollary",
+      "startLine": 174,
+      "endLine": 218,
+      "summary": "Proves Minkowski's theorem from `blichfeldt_basic` via the half-scaling T = (1/2)·S. Two technical sorries remain: (a) measurability of T (the linear isomorphism x ↦ x/2 preserves measurability) and (b) the volume identity vol(T) = vol(S)/2ⁿ (Mathlib `Measure.addHaar_smul`). The structural reduction — central symmetry + convexity giving (a − b) ∈ S — is proved cleanly.",
+      "mathContext": "Central symmetry gives −y₀ ∈ S; convexity then gives the midpoint (x₀ + (−y₀))/2 = a − b ∈ S. The lattice membership a − b ∈ ℤⁿ is the Blichfeldt output. Nonzero-ness comes from a ≠ b."
+    }
+  ],
+  "conclusion": {
+    "summary": "Provides a Lean 4 formalization of Blichfeldt's 1914 strengthening of Minkowski's lattice point theorem. The k=1 case of Blichfeldt's theorem is fully proved (0 sorries on the proof path) from three measure-theoretic axioms that admit standard Mathlib proofs. The general-k case is axiomatized pending the covering-count averaging argument. Minkowski's classical theorem is recovered as a corollary via the half-scaling T = (1/2)·S, with two technical sorries on the volume scaling identity. Builds successfully against Lean 4.26.0 / Mathlib 4.26.0 with surgical API drift fixes.",
+    "implications": "Blichfeldt's theorem is the geometry-of-numbers tool of choice when convexity or central symmetry is unavailable. Applications include: pigeonhole arguments in number theory (e.g., bounds on simultaneous Diophantine approximations of irrationals); transference theorems between primal and dual lattices; and modern algorithmic results like LLL-based shortest-vector enumeration. Eliminating the four axioms (especially the general-k case) would graduate this entry from `axiomatized` to a fully verified Mathlib-grade formalization of Blichfeldt's theorem.",
+    "openQuestions": [
+      "Can the three measure-theoretic axioms (`blichfeldt_volume_partition`, `blichfeldt_proj_measurable`, `blichfeldt_disj_bound`) be proved directly from Mathlib's `IsAddFundamentalDomain` API?",
+      "Can `blichfeldt_general` (the k≥1 case) be proved from the k=1 case via the covering-count averaging argument c(z) = #{v | z+v ∈ S}?",
+      "Can the two sorries in `minkowski_from_blichfeldt` (volume scaling and measurability under x ↦ x/2) be closed via `Measure.addHaar_smul`?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "extends",
+      "description": "Blichfeldt's theorem strengthens Minkowski's theorem by removing convexity and central symmetry. The Minkowski theorem is recovered here as `minkowski_from_blichfeldt`."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-02",
+      "relationship": "related",
+      "description": "Sibling Minkowski OQ — Dirichlet's approximation theorem from Minkowski. Uses the same `MinkowskiProved` infrastructure (stdLattice, stdFundDomain) from `Proofs.MinkowskiFundamentalTheorem`."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/MinkowskiTheoremOQ04.lean",
+    "imports": [
+      "Mathlib.Algebra.Module.ZLattice.Basic",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Proofs.MinkowskiFundamentalTheorem",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "BlichfeldtTheorem",
+    "axiomCount": 4,
+    "sorries": 2,
+    "lineCount": 227,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "blichfeldt_basic",
+        "type": "proved",
+        "description": "Blichfeldt's theorem k=1: vol(S) > 1 yields two distinct ℤⁿ-congruent points in S (0 sorries; depends on three measure-theory axioms)",
+        "leanType": "{n : ℕ} [NeZero n] (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_vol : (1 : ENNReal) < volume s) → ∃ x y, x ∈ s ∧ y ∈ s ∧ x ≠ y ∧ x − y ∈ stdLattice n"
+      },
+      {
+        "name": "blichfeldt_general",
+        "type": "axiom",
+        "description": "Blichfeldt's theorem general k: vol(S) > k yields k+1 ℤⁿ-congruent points (axiomatized; covering-count averaging argument)",
+        "leanType": "{n : ℕ} [NeZero n] (k : ℕ) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_vol : (k : ENNReal) < volume s) → ∃ pts : Fin (k+1) → Fin n → ℝ, Function.Injective pts ∧ (∀ i, pts i ∈ s) ∧ ∀ i j, pts i − pts j ∈ stdLattice n"
+      },
+      {
+        "name": "minkowski_from_blichfeldt",
+        "type": "partial",
+        "description": "Recovers Minkowski's theorem via T = (1/2)·S (2 sorries: measurability of T, volume identity vol(T) = vol(S)/2ⁿ)",
+        "leanType": "{n : ℕ} [NeZero n] (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_symm : ∀ x ∈ s, −x ∈ s) (h_conv : Convex ℝ s) (h_vol : (2 : ENNReal)^n < volume s) → ∃ p : (stdLattice n).toAddSubgroup, p ≠ 0 ∧ (p : Fin n → ℝ) ∈ s"
+      }
+    ],
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
+  },
+  "references": [
+    {
+      "authors": "Blichfeldt, Hans Frederik",
+      "title": "A new principle in the geometry of numbers, with some applications",
+      "year": "1914",
+      "venue": "Transactions of the American Mathematical Society 15(3), pp. 227–235",
+      "note": "Original publication of Blichfeldt's theorem (the k=1 measure-pigeonhole on a fundamental domain)"
+    },
+    {
+      "authors": "Cassels, J. W. S.",
+      "title": "An Introduction to the Geometry of Numbers",
+      "year": "1959",
+      "venue": "Springer, Grundlehren der mathematischen Wissenschaften 99",
+      "note": "Chapter III: Blichfeldt's theorem and its relationship to Minkowski's theorem"
+    },
+    {
+      "authors": "Gruber, Peter M. and Lekkerkerker, Cornelis G.",
+      "title": "Geometry of Numbers (2nd ed.)",
+      "year": "1987",
+      "venue": "North-Holland, Amsterdam",
+      "note": "Chapter 6: Modern presentation of Blichfeldt and Minkowski with measure-theoretic detail"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "blichfeldt_basic",
+      "type": "core",
+      "description": "Blichfeldt's theorem (k=1): vol(S) > 1 implies S contains two ℤⁿ-congruent points",
+      "leanType": "{n : ℕ} [NeZero n] (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) (h_vol : (1 : ENNReal) < volume s) → ∃ x y, x ∈ s ∧ y ∈ s ∧ x ≠ y ∧ x − y ∈ stdLattice n"
+    }
+  ],
+  "sorries": 2
+}

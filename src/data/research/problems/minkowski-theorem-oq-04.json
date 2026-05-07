@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-07T16:45:00Z",
-    "iteration": 2,
-    "focus": "Applied 4 Mathlib 4.26.0 API drift fixes; build verification still needed (cancelled mid-cache-fetch).",
+    "since": "2026-05-07T18:00:00Z",
+    "iteration": 3,
+    "focus": "Build verified (3075 jobs OK). Gallery entry shipped (axiomatized: 4 axioms, 2 sorries).",
     "blockers": [],
-    "nextAction": "Run docker-build Proofs.MinkowskiTheoremOQ04 to verify the 4 API drift fixes; iterate if more drift surfaces.",
+    "nextAction": "Eliminate axioms in priority order: (1) blichfeldt_proj_measurable from continuous translation preimages; (2) blichfeldt_disj_bound from measure_iUnion + measure_mono on F; (3) blichfeldt_volume_partition from IsAddFundamentalDomain.lintegral_eq_tsum applied to 1_S; (4) close minkowski_from_blichfeldt sorries via Measure.addHaar_smul.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS 2026-05-07: applied 4 Mathlib 4.26.0 API drift fixes to MinkowskiTheoremOQ04.lean: (1) `Pairwise (Disjoint on A)` -> `Pairwise fun v w => Disjoint (A v) (A w)` (axiom signature line 81); (2) same fix at line 104 + dropped corresponding `rw [Function.onFun]`; (3) `blichfeldt_general 1 s h_meas h_vol` -> wrap h_vol in `(by exact_mod_cast h_vol)` for ENNReal Nat-coerce mismatch (line 165); (4) dropped `Submodule.mem_toAddSubgroup.mpr (SetLike.mem_coe.mp ...)` (renamed in 4.26) and use `hab_diff` directly (line 215). Build verification cancelled at 600s during fresh dependency clone; cache mount was empty for this Docker setup. Status remains axiomatized (4 axioms, 2 sorries) per pre-existing meta.json.",
+    "progressSummary": "VERIFIED 2026-05-07: docker-build.sh Proofs.MinkowskiTheoremOQ04 PASSED (3075/3075 jobs, 7.0s incremental, ~22min cold). The 4 Mathlib 4.26.0 API drift fixes from 2026-05-07T16:45:00Z compile cleanly: (1) `Pairwise (Disjoint on A)` -> `Pairwise fun v w => Disjoint (A v) (A w)` at lines 81 and 104; (2) dropped corresponding `rw [Function.onFun]` at line 104; (3) `blichfeldt_general 1 s h_meas (by exact_mod_cast h_vol)` for ENNReal Nat-coerce mismatch at line 165; (4) dropped `Submodule.mem_toAddSubgroup.mpr (SetLike.mem_coe.mp ...)` (removed in 4.26) and use `hab_diff` directly at line 215. Gallery entry shipped at src/data/proofs/minkowski-theorem-oq-04/ (status axiomatized, badge axiom, 4 axioms, 2 sorries, 227 lines, 3 theorems).",
     "builtItems": [
       "blichfeldt_basic in MinkowskiTheoremOQ04.lean:91: fully proved from axioms",
       "blichfeldt_basic_from_general in MinkowskiTheoremOQ04.lean:160: proved from blichfeldt_general",
@@ -39,7 +39,8 @@
       "Proof uses fundamental domain pigeonhole: if projections {Sv} are disjoint, sum of volumes <= 1 < vol(S)",
       "Three axioms capture measure-theory facts provable from IsAddFundamentalDomain.lintegral_eq_tsum",
       "Minkowski recovered via half-scaling: T = S/2 has vol > 1, Blichfeldt gives congruent points, symmetry+convexity gives lattice point",
-      "Lean 4.26.0 + Mathlib 4.26.0 changed: (a) `Disjoint on f` infix needs `open Function` or rewrite, (b) Nat-cast h_vol in literal-1 contexts needs `by exact_mod_cast`, (c) `Submodule.mem_toAddSubgroup` removed — use direct `∈ ...toAddSubgroup` (defEq via SetLike)."
+      "Lean 4.26.0 + Mathlib 4.26.0 changed: (a) `Disjoint on f` infix needs `open Function` or rewrite, (b) Nat-cast h_vol in literal-1 contexts needs `by exact_mod_cast`, (c) `Submodule.mem_toAddSubgroup` removed — use direct `∈ ...toAddSubgroup` (defEq via SetLike).",
+      "Build verification confirmed all 4 drift fixes compile cleanly under Mathlib 4.26.0; 4 axioms + 2 sorries match meta.json exactly; gallery entry now shippable as axiomatized."
     ],
     "mathlibGaps": [
       "Disjoint on f infix syntax requires open Function or rewrite to lambda in Mathlib 4.26.0",
@@ -49,9 +50,11 @@
       "ENNReal.div arithmetic for volume scaling vol(S/2) = vol(S)/2^n"
     ],
     "nextSteps": [
-      "Re-run docker build to verify the 4 API drift fixes compile (likely in a future researcher session, with warm cache).",
-      "After verification: ship the Lean file + gallery entry to gallery as `status: axiomatized, badge: axiom`.",
-      "Pre-PR-Work axiom-elimination targets (per researcher.md priority): blichfeldt_proj_measurable looks easiest to prove via translation-preimage measurability; blichfeldt_disj_bound from measure_iUnion + measure_mono."
+      "Eliminate `blichfeldt_proj_measurable` (Axiom 2) — easiest target; the projection {z ∈ F | z+v ∈ s} = stdFundDomain n ∩ (· + v) ⁻¹' s, and translation `(· + v)` is continuous hence measurable.",
+      "Eliminate `blichfeldt_disj_bound` (Axiom 3) — pairwise-disjoint measurable subsets of F: chain `measure_iUnion` (sigma-additivity) with `measure_mono` against `volume (stdFundDomain n) = 1` from MinkowskiProved.",
+      "Eliminate `blichfeldt_volume_partition` (Axiom 1) — apply `(stdLattice_isAddFundamentalDomain n).lintegral_eq_tsum` to f = Set.indicator s 1; the LHS is volume s and each summand collapses to vol of the projection.",
+      "Close the 2 sorries in `minkowski_from_blichfeldt` — measurability of T = (1/2)·S via `MeasurableEmbedding` of the linear iso x ↦ x/2; volume identity vol(T) = vol(S)/2ⁿ via `Measure.addHaar_smul` with c = 1/2.",
+      "Once all 4 axioms eliminated and 2 sorries closed: graduate to `verified` (status badge `original`)."
     ],
     "markdown": "# Knowledge Base: minkowski-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -109,5 +112,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
     }
   ],
-  "lastUpdate": "2026-05-07T16:45:00Z"
+  "lastUpdate": "2026-05-07T18:00:00Z"
 }
