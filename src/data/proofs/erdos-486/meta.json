@@ -55,11 +55,7 @@
       "Classical logic for decidability instances"
     ],
     "axiomCount": 0,
-    "assumptions": [
-      "erdos486_conjecture: The main open conjecture — every modular avoidance set has a logarithmic density",
-      "davenport_erdos_theorem: The proven special case (Xₙ = {0}) — stated as axiom pending Mathlib formalization",
-      "besicovitch_counterexample: Existence of a set with logarithmic but not natural density — stated as axiom pending formalization"
-    ],
+    "assumptions": "0 axioms declared. The Lean file is a definitional skeleton: 5 definitions (logSum, HasLogDensity, avoidanceSet, zeroAvoidanceSet, HasNaturalDensity) plus docstring placeholders for the open conjecture (Erdős #486), the Davenport-Erdős theorem (1936), and the Besicovitch counterexample (1934). No formal axiom or theorem statements are declared; the conjecture and partial results are documented in prose only.",
     "theoremCount": 0,
     "definitionCount": 5
   },
