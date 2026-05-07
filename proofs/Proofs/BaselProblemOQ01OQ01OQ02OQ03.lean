@@ -116,10 +116,11 @@ theorem lcmRange_succ (n : ℕ) :
     apply Finset.lcm_dvd
     intro i hi
     have hi_lt : i < n + 1 := Finset.mem_range.mp hi
-    rcases Nat.lt_succ_iff_lt_or_eq.mp hi_lt with hi' | hi'
-    · exact dvd_trans (Finset.dvd_lcm (Finset.mem_range.mpr hi'))
+    by_cases hi_eq : i = n
+    · subst hi_eq; exact Nat.dvd_lcm_right _ _
+    · have hi' : i < n := by omega
+      exact dvd_trans (Finset.dvd_lcm (Finset.mem_range.mpr hi'))
         (Nat.dvd_lcm_left _ _)
-    · subst hi'; exact Nat.dvd_lcm_right _ _
   · apply Nat.lcm_dvd
     · unfold lcmRange
       apply Finset.lcm_dvd
