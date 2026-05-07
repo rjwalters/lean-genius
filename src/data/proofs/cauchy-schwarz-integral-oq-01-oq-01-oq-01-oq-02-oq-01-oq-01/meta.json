@@ -122,5 +122,53 @@
     "definitionCount": 0,
     "axiomCount": 0,
     "sorries": 0
-  }
+  },
+  "conclusion": {
+    "summary": "Establishes the equality characterization of the weighted power mean monotonicity: M_r(z, w) = M_t(z, w) for 0 < r < t if and only if all zᵢ are equal. Proved via strict Jensen's inequality applied to the strictly convex function x ↦ x^(t/r), with t/r > 1 the load-bearing inequality. Two corollaries (AM = QM iff all equal; AM < QM when values vary) deliver the most pedagogically familiar specializations. Verified with 0 sorries and 0 axioms; fills the equality-case TODO in Mathlib's MeanInequalitiesPow.lean (line 36).",
+    "implications": "First, the proof closes the equality-case gap that Hardy-Littlewood-Pólya (1934) leaves implicit in classical proofs of the power-mean inequality. The strict-Jensen approach is cleaner than the equality-case-of-Jensen approach because it avoids tracing exactly when Jensen is tight; instead, non-constant input plus strict convexity directly gives strict <. Second, the AM-QM specialization is dual to the variance identity Var(z) = E[z²] - E[z]² ≥ 0 with equality iff z is a.s. constant — this proof is a deterministic Finset version of that probabilistic fact. Third, this is a candidate Mathlib contribution: MeanInequalitiesPow.lean explicitly comments that each weak inequality should come paired with an iff theorem identifying the equality case, and this entry provides exactly that pairing for the positive-exponent power mean. Fourth, the techniques (strict convexity + non-constant witness ⟹ strict Jensen) generalize directly to Hölder, Minkowski, and arithmetic-geometric mean equality cases — each can be characterized analogously.",
+    "openQuestions": [
+      "Extend to the general case r < s without positivity restriction on r and s, using the duality M_r(z, w) = M_{-r}(z⁻¹, w)⁻¹ from AmgmInequalityOQ03. The negative-exponent case requires a separate analysis when the exponent crosses 0.",
+      "Prove the analogous equality condition for the geometric mean limit: M₀(z, w) = ∏ zᵢ^{wᵢ}, with M_r = M₀ iff all zᵢ equal. The limit r → 0 is delicate and requires a different technique (e.g., L'Hôpital on log z^r or convexity of -log).",
+      "Contribute this equality case to Mathlib's MeanInequalitiesPow.lean as a paired iff theorem with the existing inner_le_nnreal_pow_pow_two and related ≤-style lemmas. The framing should match Mathlib's smul-based API for Jensen inequalities.",
+      "Generalize to Hölder's inequality and Minkowski's inequality equality cases, which follow the same strict-convexity pattern but with f(x) = x^p for different exponent regimes. The integral version (replacing Σ wᵢ with ∫ dμ) is a natural target once σ-finite measure spaces are involved."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "amgm-inequality-oq-03",
+      "title": "Power Mean Interpolation: How Do Weighted Power Means Relate to AM and GM?",
+      "relationship": "prerequisite",
+      "description": "Defines the weightedPowerMean used here and proves the weak monotonicity power_mean_monotone_pos: M_r ≤ M_t for 0 < r ≤ t. This entry sharpens that to the equality characterization."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01",
+      "title": "Full Power Mean Monotonicity: M_r ≤ M_s for All r ≤ s",
+      "relationship": "sibling",
+      "description": "Companion entry that proves the full weak inequality (no positivity restriction on r, s); this entry is the equality-case characterization of that result."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+      "title": "Power Mean Inequality Chain",
+      "relationship": "ancestor",
+      "description": "Higher-level entry surveying the full chain HM ≤ GM ≤ AM ≤ QM via power means; this entry provides the equality endpoint of the AM ≤ QM step."
+    },
+    {
+      "proofId": "amgm-inequality",
+      "title": "Arithmetic Mean - Geometric Mean Inequality",
+      "relationship": "related",
+      "description": "AM-GM is the r=1, t=0 limiting case of the power mean monotonicity. The equality case 'AM = GM iff all equal' is the analogue of this entry's equality characterization at the GM endpoint."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+      "title": "Finite-Dimensional Cauchy-Schwarz, AM-GM, Nesbitt, and Titu's Lemma",
+      "relationship": "related",
+      "description": "Provides finite-dimensional specializations of Cauchy-Schwarz, including Titu's lemma. The strict-Jensen technique used here transfers directly to derive the equality case of Cauchy-Schwarz."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral",
+      "title": "Bunyakovsky-Schwarz Integral Inequality",
+      "relationship": "ancestor",
+      "description": "Top-level Cauchy-Schwarz integral entry. The equality cases for Cauchy-Schwarz and the power-mean inequality both rely on the strict-convexity-plus-nonconstant pattern formalized here."
+    }
+  ]
 }
