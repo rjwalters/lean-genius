@@ -53,8 +53,9 @@
     "path": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean"
   },
   "overview": {
-    "historicalContext": "The polar triangle is a classical construction in spherical trigonometry, attributed to Napier and developed systematically by Todhunter. Every spherical triangle ABC has a polar (dual) triangle A'B'C' defined by the unit normals to its sides. The key duality — that sides of the polar triangle equal π minus the angles of the original — provides an elegant derivation of the dual spherical law of cosines from the standard law.",
-    "problemStatement": "Given a spherical triangle with vertices A, B, C on S² and sides a = arcLen(B,C), b = arcLen(A,C), c = arcLen(A,B) and dihedral angles α, β, γ at A, B, C respectively, construct the polar triangle A' = normalize(B×C), B' = normalize(C×A), C' = normalize(A×B) and prove that each side of the polar triangle satisfies: arcLen(A', B') = π - γ (and cyclically). Derive the dual law: cos(γ) = -cos(α)cos(β) + sin(α)sin(β)cos(c).",
+    "historicalContext": "The polar triangle construction is a classical pillar of spherical trigonometry, traced back through John Napier (Mirifici logarithmorum canonis descriptio, 1614) and refined by Isaac Todhunter (Spherical Trigonometry, 1859) into the textbook duality theorems. Every spherical triangle $ABC$ admits a polar (or supplemental) triangle $A'B'C'$ whose vertices are the *poles* — unit normals to the great-circle planes spanned by each pair of original vertices. The duality between sides and angles ($a' = \\pi - \\alpha$, $\\alpha' = \\pi - a$, etc.) is the spherical analogue of the projective principle of duality: any theorem about sides of a spherical triangle has a 'dual' theorem about angles, obtained by passing through the polar triangle. The dual law of cosines $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$ is the most striking example — it expresses the angle of a vertex in terms of the *opposite side* and the other two angles, with a critical sign reversal compared to the standard law. Modern formalizations of spherical geometry are scarce in Mathlib; this entry contributes both the polar-triangle construction (via cyclic cross products) and the dual law as derivable consequences of cross-product algebra plus two cleanly isolated axioms.",
+    "problemStatement": "Given a spherical triangle with unit vertices $A, B, C \\in S^2$ and sides $a = \\mathrm{arcLen}(B, C)$, $b = \\mathrm{arcLen}(A, C)$, $c = \\mathrm{arcLen}(A, B)$ and dihedral angles $\\alpha, \\beta, \\gamma$ at $A, B, C$, construct the polar triangle $A' = \\widehat{B \\times C}$, $B' = \\widehat{C \\times A}$, $C' = \\widehat{A \\times B}$ and prove: (i) each side of the polar triangle satisfies $\\mathrm{arcLen}(A', B') = \\pi - \\gamma$ (and cyclic variants); (ii) the dual spherical law of cosines: $\\cos\\gamma = -\\cos\\alpha\\cos\\beta + \\sin\\alpha\\sin\\beta\\cos c$.",
+    "mathematicalSignificance": "The dual spherical law of cosines is the angle-side analogue of the standard spherical law of cosines, with the structural twist that the leading product term carries a minus sign: $-\\cos\\alpha\\cos\\beta$ rather than $+\\cos a \\cos b$. This sign flip is the algebraic manifestation of the polar triangle's role as a *involutive duality* on the sphere — applying it twice returns the original. In formal terms, the polar map sends sides ↔ angles, and the standard law (involving sides on the LHS) maps to the dual law (involving angles) through this duality. As a Lean 4 formalization, the proof exhibits a clean separation between (a) cross-product polynomial identities (proved via `linear_combination`), (b) sphere-specific identities like $\\|B \\times C\\| = \\sin(\\mathrm{arcLen}(B, C))$ (proved via Lagrange identity), and (c) trigonometric identities for the polar substitution (`cos_pi_sub`, `sin_pi_sub`). The two remaining axioms isolate the bookkeeping-heavy parts of the argument that don't require new mathematical content — making this entry a cleaner candidate for axiom elimination than the original proof which needed a Gram-determinant computation.",
     "keyInsights": [
       "The polar vertex A' = normalize(B×C) is the unit normal to the plane spanned by B and C, i.e., the pole of the great circle arc BC",
       "The key algebraic identity dot(B×C, C×A) = -dot(projPerp A C, projPerp B C) connects the cross product geometry to the projection-based definition of dihedral angles",
@@ -62,7 +63,15 @@
       "The polar side formula follows: dot(A', B') = -cos(γ), so arcLen(A', B') = arccos(-cos(γ)) = π - γ by Real.arccos_neg",
       "The dual law is then a pure trigonometric identity: substituting π-γ, π-α, π-β, π-c into the standard law and simplifying gives the dual"
     ],
-    "proofStrategy": "1. Prove key algebraic identity via linear_combination on component expansions.\n2. Show normSq of cross products = normSq of projections using lagrange_identity.\n3. Compute dot product of normalized polar vertices = -cos(dihedral angle) using the ratio.\n4. Apply arccos_neg to get arcLen = π - angle.\n5. Substitute into standard spherical law of cosines for polar triangle.\n6. Simplify using cos(π-x) = -cos(x) and sin(π-x) = sin(x) to get dual law."
+    "proofStrategy": "1. Prove key algebraic identity via linear_combination on component expansions.\n2. Show normSq of cross products = normSq of projections using lagrange_identity.\n3. Compute dot product of normalized polar vertices = -cos(dihedral angle) using the ratio.\n4. Apply arccos_neg to get arcLen = π - angle.\n5. Substitute into standard spherical law of cosines for polar triangle.\n6. Simplify using cos(π-x) = -cos(x) and sin(π-x) = sin(x) to get dual law.",
+    "prerequisites": [
+      "Cross product on ℝ³ (Mathlib.LinearAlgebra.CrossProduct) — antisymmetry, Lagrange identity",
+      "Spherical metric and arcLen via arccos of dot product",
+      "Real.cos_arccos / Real.arccos_neg — bridging analytic and combinatorial supplementary angle",
+      "linear_combination tactic — discharging polynomial identities with side hypotheses",
+      "Standard spherical law of cosines (Proofs.SphericalLawOfSines)",
+      "Definition of dihedral angle as arccos of normalized projection ratio"
+    ]
   },
   "sections": [
     {
@@ -104,8 +113,32 @@
     "openQuestions": [
       "Can the polar_angle_eq axiom be eliminated by applying cross_dot_eq_neg_projperp to the polar triangle's projections? (the computation is analogous to the side formula)",
       "Can projperp_dot_sinsincos be proved from cos_arccos and Cauchy-Schwarz (|dot u v| ≤ ‖u‖·‖v‖)?",
-      "Does Mathlib have a direct Cauchy-Schwarz for the dot product on Fin 3 → ℝ?"
+      "Does Mathlib have a direct Cauchy-Schwarz for the dot product on Fin 3 → ℝ?",
+      "Generalize the polar-triangle construction to S^n for n ≥ 3 — does the side/angle duality persist in higher-dimensional spherical simplices, and what's the analogue of cross product algebra there (wedge products in ⋀^(n-1)ℝ^(n+1))?",
+      "Derive the spherical law of sines from the dual law — does the symmetric form sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ) emerge naturally from the polar duality?"
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "law-of-cosines-oq-01-oq-01",
+      "relationship": "The parent entry: proves the same dual spherical law of cosines via Gram determinants and Cramer's rule. This polar-triangle approach offers a more conceptual route (duality) at the cost of two cleanly isolated axioms."
+    },
+    {
+      "proofId": "law-of-cosines-oq-01",
+      "relationship": "Grandparent entry. Establishes the standard spherical law of cosines (cos c = cos a · cos b + sin a · sin b · cos γ) which is the input to the polar substitution used here."
+    },
+    {
+      "proofId": "law-of-cosines",
+      "relationship": "The Euclidean law of cosines — the planar limit of the spherical version as the radius → ∞."
+    },
+    {
+      "proofId": "law-of-cosines-oq-01-oq-02",
+      "relationship": "Sibling spherical-trigonometry entry exploring related angle-side identities."
+    },
+    {
+      "proofId": "law-of-cosines-oq-03-oq-02",
+      "relationship": "Sibling formalization — alternative approach to spherical-law variants using different vector-algebra techniques."
+    }
+  ],
   "sorries": 0
 }
