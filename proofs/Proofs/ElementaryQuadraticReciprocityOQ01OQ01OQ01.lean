@@ -76,15 +76,18 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   intro heq
   apply hqc_ne
   ext a
-  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
-    show quadCharC p a = _; rw [heq]
-  -- MulChar.one_apply : (1 : MulChar R M) a = 1 (constant)
-  rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ℂ) = 1
-  rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
+  -- ha : quadCharC p a = 1 (via MulChar.one_apply giving constant 1)
+  have ha : quadCharC p a = 1 := by
+    have h : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a := by rw [heq]
+    rwa [MulChar.one_apply] at h
+  rw [MulChar.one_apply]  -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv] at ha; norm_num at ha            -- Int.cast 0 = 0 ≠ 1
-  · exact hv                                  -- quadraticChar a = 1 directly
-  · rw [hv] at ha; push_cast at ha; norm_num at ha  -- Int.cast (-1) = -1 ≠ 1
+  · -- Spell out: quadCharC p a = Int.cast (quadraticChar a) definitionally
+    have ha2 : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = 1 := ha
+    rw [hv] at ha2; norm_num at ha2        -- (0:ℂ) = 1 → False
+  · exact hv
+  · have ha2 : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = 1 := ha
+    rw [hv] at ha2; push_cast at ha2; norm_num at ha2  -- (-1:ℂ) = 1 → False
 
 -- ============================================================================
 -- The Classical Gauss Sum

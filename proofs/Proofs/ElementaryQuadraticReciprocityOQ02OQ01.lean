@@ -98,14 +98,16 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   -- quadCharC p = quadraticChar.ringHomComp f, and f = Int.cast is injective
   -- If quadCharC p = 1, then f ∘ quadraticChar = 1, so quadraticChar = 1 by injectivity
   ext a
-  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
-    show quadCharC p a = _; rw [heq]
-  rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ℂ) = 1
-  rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
+  have ha : quadCharC p a = 1 := by
+    have h : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a := by rw [heq]
+    rwa [MulChar.one_apply] at h
+  rw [MulChar.one_apply]
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv] at ha; norm_num at ha
+  · have ha2 : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = 1 := ha
+    rw [hv] at ha2; norm_num at ha2
   · exact hv
-  · rw [hv] at ha; push_cast at ha; norm_num at ha
+  · have ha2 : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = 1 := ha
+    rw [hv] at ha2; push_cast at ha2; norm_num at ha2
 
 -- ============================================================================
 -- The Main Theorem

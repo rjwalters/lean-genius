@@ -60,20 +60,17 @@ theorem legendreCharQ_ne_one (hp2 : p ≠ 2) (hq2 : q ≠ 2) :
   intro heq
   apply hqc_ne
   ext a
+  -- ha stated with Int.cast explicitly for syntactic rewrites
   have ha : (Int.cast (quadraticChar (ZMod p) a) : ZMod q) = (1 : MulChar (ZMod p) (ZMod q)) a := by
     have h : legendreCharQ (p := p) (q := q) a = (1 : MulChar (ZMod p) (ZMod q)) a := by rw [heq]
     simp only [legendreCharQ, MulChar.ringHomComp_apply] at h; exact h
-  -- MulChar.one_apply : (1 : MulChar R M) a = 1 (constant in current Lean)
   rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ZMod q) = 1
   rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · -- case 0: (0:ZMod q) = 1 → contradiction
-    rw [hv, map_zero] at ha
+  · rw [hv] at ha; norm_cast at ha  -- ha : (0 : ZMod q) = 1 → contradiction
     exact absurd ha one_ne_zero.symm
-  · exact hv  -- quadraticChar a = 1 directly
-  · -- case -1: (-1:ZMod q) = 1 → q divides 2 → q ≤ 2 contradicts q ≥ 3
-    rw [hv] at ha
-    norm_cast at ha  -- ha : (-1 : ZMod q) = 1
+  · exact hv
+  · rw [hv] at ha; norm_cast at ha  -- ha : (-1 : ZMod q) = 1
     exfalso
     have h2 : (2 : ZMod q) = 0 := by
       calc (2 : ZMod q) = 1 + 1 := by norm_num
