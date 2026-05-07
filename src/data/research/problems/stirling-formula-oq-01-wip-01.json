@@ -1,7 +1,7 @@
 {
   "slug": "stirling-formula-oq-01-wip-01",
   "title": "Complete Higher-Order Stirling Expansion (Work in Progress)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,40 +16,43 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-06T14:18:33.488Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-07T17:25:00.000Z",
+    "iteration": 2,
+    "focus": "Step bounds and step formula proved (PRs #16354, #16414 merged). Remaining: stirling_first_correction (1 sorry) — needs sum bound on Σ 1/k² and exp Taylor.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove stirling_first_correction by combining stirling_step_upper/lower with an integral comparison on Σ_{k≥n} 1/k² and an exp Taylor bound.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: PR #16354 open. Proved log_one_plus_le_cubic and log_one_plus_ge_quartic (derivative monotonicity). Step bounds conditional on step_formula sorry. Build pending.",
+    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:350 — stirling_first_correction). PRs #16354 and #16414 merged. Proved: log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower. The two-term expansion theorem stirling_two_term_expansion is reduced to stirling_first_correction; the latter awaits an integral comparison for Σ 1/k² and an exp Taylor bound.",
     "builtItems": [
-      "log_one_plus_le_cubic theorem in StirlingExpansion.lean (proved)",
-      "log_one_plus_ge_quartic theorem in StirlingExpansion.lean (proved)",
-      "stirling_step_upper: d_k <= 1/(12k^2)+1/(6k^3) (proved given step formula)",
-      "stirling_step_lower: 1/(12k^2)-1/(12k^3)-1/(8k^4) <= d_k (proved given step formula)",
-      "PR #16354 open: log bounds + step bounds + DifferentiableOn fix"
+      "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
+      "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",
+      "stirling_step_formula in StirlingExpansion.lean:233 (private) — log(stirlingSeq k) - log(stirlingSeq(k+1)) = (k+1/2)·log(1+1/k) - 1",
+      "stirling_step_upper in StirlingExpansion.lean:295 (private) — d_k ≤ 1/(12k²) + 1/(6k³)",
+      "stirling_step_lower in StirlingExpansion.lean:313 (private) — 1/(12k²) - 1/(12k³) - 1/(8k⁴) ≤ d_k",
+      "stirling_two_term_expansion in StirlingExpansion.lean:361 — proved assuming stirling_first_correction",
+      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula)"
     ],
     "insights": [
-      "d_k = (k+1/2)*log(1+1/k) - 1 is the exact step formula; proved via stirlingSeq definition",
-      "log bounds via derivative monotonicity: f(0)=0, f prime = t^n/(1+t) >= 0 on [0,inf)",
-      "Correct lower bound for d_k: 1/(12k^2) - 1/(12k^3) - 1/(8k^4)",
-      "Main theorem follows from: step_formula + log_bounds + integral_comparison(sum 1/k^2) + exp_approximation"
+      "d_k = (k+1/2)·log(1+1/k) - 1 is the exact step formula (now proved via stirlingSeq definition + log_div/log_mul/log_sqrt rewrites + linear_combination)",
+      "log bounds via derivative monotonicity: f(0)=0, f' = t^n/(1+t) ≥ 0 on [0,∞)",
+      "Correct lower bound for d_k: 1/(12k²) - 1/(12k³) - 1/(8k⁴)",
+      "Two-term expansion follows from: step_formula + log_bounds + integral_comparison(Σ 1/k²) + exp_approximation; the first two are now done"
     ],
     "mathlibGaps": [
-      "stirling_step_formula: needs log/sqrt algebraic manipulation (field_simp + ring fails with sqrt)",
-      "No Mathlib theorem for sum bound: |sum_{k>=n} 1/k^2 - 1/n| <= C/n^2"
+      "No Mathlib theorem for sum bound: |Σ_{k≥n} 1/k² - 1/n| ≤ C/n² (needs integral comparison or telescoping)",
+      "No direct Mathlib theorem for: |exp(x) - (1+x)| ≤ C·x² for |x| ≤ 1 (Taylor remainder bound)"
     ],
     "nextSteps": [
-      "Prove stirling_step_formula by explicit log_div/log_mul/log_sqrt/log_pow rewrites from stirlingSeq definition",
-      "Once step formula done, prove sum bound via integral comparison and exp approximation"
+      "Prove |Σ_{k≥n} 1/k² - 1/n| ≤ C/n² via partial-fraction telescoping (1/k² ≤ 1/(k(k-1)) = 1/(k-1) - 1/k for k ≥ 2) or integral comparison",
+      "Prove exp Taylor bound |exp(x) - (1+x)| ≤ C·x² for |x| ≤ 1 (use Real.exp_bound or derive from Real.add_one_le_exp + a quadratic upper bound)",
+      "Combine to discharge the sorry in stirling_first_correction"
     ]
   },
   "tags": [
@@ -68,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:18:33.488Z",
-  "lastUpdate": "2026-05-06T14:18:33.488Z",
+  "lastUpdate": "2026-05-07T17:25:00.000Z",
   "significance": 6,
   "tractability": 6
 }
