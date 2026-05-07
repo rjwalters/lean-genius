@@ -1,7 +1,7 @@
 {
   "slug": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
   "title": "For Sₙ, is symBUDim n d = buDim_{largest prime ≤ n} d = 2⌊d/2⌋−1?",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -35,28 +35,42 @@
     "goal": "Phase-2: produce a Lean file `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` that (a) imports `BorsukUlamOQ02OQ01OQ03` to reuse `symBUDim`, `sym_has_Zp`, `buDim`, (b) defines `largestPrimeBelow n` (Mathlib has `Nat.find` machinery for this), (c) states the EQUALITY conjecture as `axiom symBUDim_eq_largest_prime`, and (d) derives the tight formula `theorem symBUDim_eq_floor_formula` from `symBUDim_eq_largest_prime` + the cyclic-prime axiom. Phase-3: gallery entry. The CORE conjecture remains axiomatized — a full proof would be a significant equivariant-topology contribution."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T19:30:00.000Z",
-    "iteration": 1,
-    "focus": "Phase-1 observation. The lower bound `symBUDim n d ≥ buDim p* d` is FORMALIZED in `BorsukUlamOQ02OQ01OQ03.lean` via subgroup monotonicity. The remaining gap is the matching UPPER bound `symBUDim n d ≤ buDim p* d`, which would establish the conjectured equality.",
+    "phase": "ACT",
+    "since": "2026-05-08T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Phase-2 ACTION COMPLETE. Created `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` (221 lines, 1 axiom, 8 theorems, 1 def, 0 sorries). Build verified via Docker. Created gallery entry `src/data/proofs/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/`. The conjectural equality `symBUDim_eq_largest_prime` is the single new axiom; the lower-bound direction `symBUDim_ge_largest_prime` and Bertrand bound `largestPrimeBelow_gt_half` are both proved (axiom-free, modulo parent infrastructure). Tight floor formula `symBUDim n (2k) = 2k − 1` is derived from the conjecture + parent buDim_prime. Consistency at n=2 verified.",
     "blockers": [],
-    "nextAction": "Phase 2 (ORIENT): scaffold `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` axiomatizing the equality conjecture and deriving the explicit formula. Phase 3: gallery entry.",
+    "nextAction": "Phase-3 (annotations / pedagogical content) optional. Core proof scaffolding is complete.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE phase. The lower-bound infrastructure is in place: `BorsukUlamOQ02OQ01OQ03.lean` axiomatizes `symBUDim` and `buDim`, proves `sym_has_Zp` (Sₙ contains Z/p for all primes p ≤ n), and via subgroup monotonicity gives `symBUDim n d ≥ buDim p d` for any prime p ≤ n, hence `symBUDim n d ≥ buDim p* d` where p* is the largest prime ≤ n. Combined with the cyclic-prime axiom `buDim p d = 2⌊d/2⌋−1`, this gives `symBUDim n d ≥ 2⌊d/2⌋−1`. The upper bound for the conjectured equality is OPEN.",
-    "builtItems": [],
+    "progressSummary": "PROGRESS: Phase-2 formalization complete. Created BorsukUlamOQ02OQ01OQ03OQ02.lean (221 lines) with the single new axiom `symBUDim_eq_largest_prime` capturing the open conjecture, plus 8 theorems including the unconditional lower bound `symBUDim_lower_bound : 2k − 1 ≤ symBUDim n (2k)` and the conditional tight formula `symBUDim_eq_floor_formula : symBUDim n (2k) = 2k − 1`. Bertrand bound `largestPrimeBelow_gt_half : n/2 < largestPrimeBelow n` proved from Mathlib. Gallery entry created. Build verified. Status: axiomatized (1 axiom, the open question).",
+    "builtItems": [
+      "largestPrimeBelow : ℕ → ℕ — noncomputable def via Nat.findGreatest Nat.Prime in BorsukUlamOQ02OQ01OQ03OQ02.lean:55",
+      "largestPrimeBelow_le, largestPrimeBelow_prime, largestPrimeBelow_two — basic API in BorsukUlamOQ02OQ01OQ03OQ02.lean:58-71",
+      "largestPrimeBelow_gt_half — Bertrand bound n/2 < p* via Nat.exists_prime_lt_and_le_two_mul (n/2) in BorsukUlamOQ02OQ01OQ03OQ02.lean:80-95",
+      "symBUDim_ge_largest_prime — unconditional lower bound buDim p* d ≤ symBUDim n d in BorsukUlamOQ02OQ01OQ03OQ02.lean:108-111",
+      "symBUDim_lower_bound — explicit floor lower bound 2k − 1 ≤ symBUDim n (2k) in BorsukUlamOQ02OQ01OQ03OQ02.lean:118-122",
+      "axiom symBUDim_eq_largest_prime — the open conjectural equality in BorsukUlamOQ02OQ01OQ03OQ02.lean:144-147",
+      "symBUDim_eq_floor_formula — derived tight formula symBUDim n (2k) = 2k − 1 from conjecture + buDim_prime in BorsukUlamOQ02OQ01OQ03OQ02.lean:158-162",
+      "symBUDim_eq_largest_prime_two — consistency check: new axiom collapses to parent symBUDim_two at n=2 in BorsukUlamOQ02OQ01OQ03OQ02.lean:169-172",
+      "Gallery entry src/data/proofs/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/ (meta.json + index.ts + annotations.json)"
+    ],
     "insights": [
       "The conjecture splits cleanly into two equalities: (i) `symBUDim n d = buDim p* d` (subgroup-only structure) and (ii) `buDim p d = 2⌊d/2⌋−1` (the tight cyclic-prime formula). (ii) is already axiomatized in the gallery; only (i) is the genuinely-open part of THIS OQ.",
       "Bertrand's postulate guarantees p* > n/2, so `buDim p* d ≥ buDim_⌊n/2⌋ d` heuristically — the within-factor-2 bound mentioned in the seeker's description",
       "If the conjecture FAILS at some composite n, the failure must come from Sₙ-specific structure (representation theory, parity-based irreps, or higher-cohomology obstructions) — natural test case is n = 4 (p* = 3, but Sₙ has the V₄ Klein-4 subgroup which is NOT cyclic of prime order)",
       "The dihedral analog (sister-question OQ-02-OQ-01-OQ-03-OQ-01) faces exactly this issue: Dₙ has both Z/2 reflections and Z/p rotations for p | n",
       "Phase-2 axiomatization of the equality is appropriate because a full proof requires either (a) Fadell-Husseini index calculations for Sₙ (heavy equivariant cohomology) or (b) explicit equivariant maps showing the upper bound — both substantial",
-      "Connection to chromatic number of Kneser graphs (Lovász 1978): for Z/2 case, BU dimension yields chromatic bounds; symmetric extension is a long-running program"
+      "Connection to chromatic number of Kneser graphs (Lovász 1978): for Z/2 case, BU dimension yields chromatic bounds; symmetric extension is a long-running program",
+      "The conjectural axiom symBUDim_eq_largest_prime cleanly isolates the genuinely-open content. The lower-bound direction is a theorem (parent infrastructure suffices); only the upper bound is open.",
+      "Nat.findGreatest packaging is robust for largestPrimeBelow: with witness p = 2 (always prime), the API gives primality, ≤ n, and Bertrand-derived > n/2 without needing a custom recursion or interval search.",
+      "Consistency check at n = 2: symBUDim_eq_largest_prime 2 d gives buDim 2 d, matching the parent file's standalone symBUDim_two axiom — the new axiom is a strengthening, not a contradiction.",
+      "The unconditional lower bound 2k − 1 ≤ symBUDim n (2k) is now formalized for all n ≥ 2, k ≥ 1, modulo parent infrastructure axioms only — making this a meaningful PARTIAL formalization of the closed form even without the conjecture."
     ],
     "mathlibGaps": [
       "No formalization of equivariant cohomology / Fadell-Husseini index in Mathlib (would be needed for a proof of the upper bound)",
@@ -65,14 +79,11 @@
       "No representation-theoretic decomposition of Sₙ-modules into irreducibles in Mathlib at the level needed for BU computations"
     ],
     "nextSteps": [
-      "Phase-2: scaffold `proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` importing `Proofs.BorsukUlamOQ02OQ01OQ03`",
-      "Phase-2: define `largestPrimeBelow n : ℕ` using `Nat.find` (or rephrase as `Nat.find_greatest (Nat.Prime) n`) and prove it is prime, ≤ n, and > n/2 (Bertrand)",
-      "Phase-2: state `axiom symBUDim_eq_largest_prime : ∀ n d, symBUDim n d = buDim (largestPrimeBelow n) d` with full proof-sketch citation",
-      "Phase-2: prove `theorem symBUDim_eq_floor_formula : ∀ n d, n ≥ 2 → symBUDim n d = 2 * (d / 2) - 1` from the axiom + `buDim p d = 2⌊d/2⌋−1` cyclic axiom",
-      "Phase-2: state and prove the partial result `theorem symBUDim_lower_bound : symBUDim n d ≥ 2 * (d / 2) - 1` from existing Bertrand + subgroup monotonicity (axiom-free up to the cyclic-prime axiom)",
-      "Phase-3: gallery entry `src/data/proofs/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/`",
-      "Coordinate with sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral Dₙ) — they share infrastructure",
-      "Stretch: tackle n = 4 case by hand to either falsify the conjecture (find Sₙ-specific extra structure) or confirm it (compute equivariant index of S₄ on a small d-dim rep)"
+      "Phase-3 (optional): write pedagogical annotations for BorsukUlamOQ02OQ01OQ03OQ02.lean covering the Nat.findGreatest pattern, the Bertrand bound, and the structural decomposition of the conjecture.",
+      "Test case n = 4: explicitly compute or estimate the contribution of V_4 ≤ S_4 to symBUDim 4 d. If V_4-equivariant maps force a strictly larger BU dimension than buDim 3 d, the conjecture fails at n = 4.",
+      "Coordinate with sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral D_n analog): they share parent infrastructure and the dihedral conjecture has analogous structure (max over Z/2 and odd-prime divisors).",
+      "Long-term: pursue a Fadell-Husseini cohomological index calculation in Mathlib to prove (or refute) the upper bound. Currently no Mathlib infrastructure for equivariant cohomology indices.",
+      "Connection to Lovász-Kneser chromatic-number theory: identify whether the Sn-generalization of Lovász needs the upper bound in this conjecture or only the lower bound (already proved)."
     ]
   },
   "tags": [
@@ -129,7 +140,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-07T19:30:00.000Z",
+  "lastUpdate": "2026-05-08T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -352,6 +363,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"
+    },
+    {
+      "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
+      "filename": "BorsukUlamOQ02OQ01OQ03OQ02.lean",
+      "lineCount": 221,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean"
     }
   ]
 }
