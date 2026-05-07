@@ -2,7 +2,7 @@
 
 **Slug**: erdos-1-oq-02-oq-02
 **Created**: 2026-04-23T11:58:33+02:00
-**Status**: Active
+**Status**: COMPLETED — resolved 2026-04-26 by PR [#12782](https://github.com/rjwalters/lean-genius/pull/12782); the `dfx_lower_bound` sorry was eliminated by tightening the theorem's preconditions (`hN : 2 ≤ N`, `hA_pos : ∀ a ∈ A, 0 < a`) rather than by computational base-case checks. See `knowledge.md` for the full resolution narrative.
 **Source**: gallery-gap
 
 ## Problem Statement
