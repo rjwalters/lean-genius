@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "2 sorries remain: (1) jdt_weight_sum b≥2 — strategy refined in S19 to weight factorization + ballot counting identity (S18 diagnosed naive insert-violation bijection as non-injective for b≥2); (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). S19 added weight_eq_total_multiset helper: prod(P)*prod(Q) = prod(P+Q) via Multiset.map_add+prod_add. jdt_weight_sum_b_one proved (S17): b=1 bijection via Sym.cons/erase + Multiset.sort_cons (~100 lines). ssytSchurFin_two_row and ssytFin_two_row_eq_sum_colstrict proved. k=0,1,2 proved.",
-    "lineCount": 878,
+    "lineCount": 992,
     "theoremCount": 20,
     "definitionCount": 6,
     "originalContributions": [
@@ -78,7 +78,7 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 878,
+    "lineCount": 992,
     "axiomCount": 0,
     "theoremCount": 20,
     "definitionCount": 6,

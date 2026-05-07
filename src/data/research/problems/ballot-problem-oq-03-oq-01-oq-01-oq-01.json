@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 19: Added weight_eq_total_multiset (cornerstone of the corrected proof path from PR #14891) plus auxiliary ¬ColStrictSym helpers (min_ab_pos_of_not_colStrict, exists_first_violation_idx). The weight identity reduces jdt_weight_sum b≥2 to a per-fiber counting identity. 2 sorries remain. Lean file 850 → ~990 lines.",
+    "progressSummary": "Session 20 (2026-05-07): Removed duplicate `weight_eq_total_multiset` definition introduced by parallel S19 PRs #16637 and #16661 (both merged within 2 minutes, both adding the same lemma — the second occurrence shadowed the first and would prevent the file from compiling once the parent OQ03OQ02 dependency is fixed). Kept the implicit `{n a b}` signature from #16661, promoted the longer S19 expository docstring from #16637 onto it. File 1010 → 992 lines. Session 19: Added weight_eq_total_multiset (cornerstone of the corrected proof path from PR #14891) plus auxiliary ¬ColStrictSym helpers (min_ab_pos_of_not_colStrict, exists_first_violation_idx). The weight identity reduces jdt_weight_sum b≥2 to a per-fiber counting identity. 2 sorries remain (both unchanged).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -77,7 +77,8 @@
     ,
       "weight_eq_total_multiset (S19): wt(P)*wt(Q) = wt(P.1+Q.1) — corrected-path cornerstone, 2-line proof",
       "min_ab_pos_of_not_colStrict (S19): ¬ColStrictSym a b P Q → 0 < min a b",
-      "exists_first_violation_idx (S19): smallest c : Fin (min a b) with (Q.sort)[c] ≤ (P.sort)[c]; auxiliary (not on primary path)"
+      "exists_first_violation_idx (S19): smallest c : Fin (min a b) with (Q.sort)[c] ≤ (P.sort)[c]; auxiliary (not on primary path)",
+      "S20 cleanup (this PR): removed duplicate `private lemma weight_eq_total_multiset` introduced when parallel S19 PRs #16637 and #16661 merged within 2 minutes of each other, both adding the same lemma. Kept the implicit-argument signature, promoted the longer expository docstring."
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -125,7 +126,8 @@
       "S18: The polynomial identity for jdt_weight_sum reduces to a COUNTING identity: for every M : Sym n (a+b), #{non-cs (a,b) splits of M} = #{all (a+1,b-1) splits of M}. No ring-valued LGV needed.",
       "S18: Correct proof path for b≥2: group LHS by total multiset M, count non-cs splits per fiber via ballot bijection, regroup RHS. Estimated ~100-150 lines standard Lean combinatorics.",
       "S19: weight_eq_total_multiset is a 2-line lemma: rw [Multiset.map_add, Multiset.prod_add]. The hard work is the per-fiber counting identity, not the polynomial reduction.",
-      "S19: exists_first_violation_idx (smallest c with (Q.sort)[c] ≤ (P.sort)[c]) is provable via Finset.min' but is NOT the primary tool for the corrected b≥2 proof — the seam-bijection it would parametrise is non-injective (PR #14891). Retained as auxiliary structural lemma."
+      "S19: exists_first_violation_idx (smallest c with (Q.sort)[c] ≤ (P.sort)[c]) is provable via Finset.min' but is NOT the primary tool for the corrected b≥2 proof — the seam-bijection it would parametrise is non-injective (PR #14891). Retained as auxiliary structural lemma.",
+      "S20 race-condition lesson: when two PRs work the same problem in parallel, even when both Lean changes are identical, the merge order can leave a duplicate `private lemma` declaration — invisible until the parent dependency builds (here masked by ongoing OQ03OQ02 API drift). Future sessions: before adding a helper that may be in flight elsewhere, `gh pr list --search '<lemma name>' --state open` is a 5-second guard."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -142,8 +144,8 @@
       "For jacobi_trudi_ssyt_eq k≥3: RSK or algebraic LGV remain the only paths. ~300 lines. Consider building BallotProblemOQ03AlgebraicLGV.lean first."
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
-    "insightsCount": 38,
-    "builtItemsCount": 40,
+    "insightsCount": 39,
+    "builtItemsCount": 41,
     "nextStepsCount": 4
   },
   "tags": [
@@ -177,7 +179,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-07T19:50:00.000Z",
+  "lastUpdate": "2026-05-07T22:20:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
@@ -358,8 +360,8 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 850,
-      "theoremCount": 19,
+      "lineCount": 992,
+      "theoremCount": 20,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 2,
