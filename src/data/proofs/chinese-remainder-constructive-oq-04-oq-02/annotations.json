@@ -17,7 +17,38 @@
       "modular arithmetic",
       "ring isomorphism",
       "NatCast"
-    ]
+    ],
+    "prerequisites": ["modular arithmetic", "ring theory"]
+  },
+  {
+    "id": "ann-imports-namespace-opens",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 28,
+      "endLine": 37
+    },
+    "type": "technique",
+    "title": "Imports, Heartbeat Bump, and Namespace",
+    "content": "Imports `Mathlib.Data.ZMod.Basic` (for `ZMod.chineseRemainder`, `ZMod.natCast_eq_natCast_iff`, `ZMod.natCast_zmod_val`, `ZMod.val_lt`) plus the two parent OQ-04 files supplying `CRTList.Satisfies`, `moduli`, `moduliProd`, and `crt_list_minimal_unique`. The `set_option maxHeartbeats 400000` doubles the default to handle the heavy ZMod typeclass elaboration. The `open CRTList ZMod Nat` exposes the API in unqualified form, so theorem statements like `Satisfies x [(a,m),(b,n)]` and `chineseRemainder hmn` read cleanly.",
+    "mathContext": "Two parent files anchor the construction: `ChineseRemainderConstructiveOQ04.lean` (list-based formulation, `CRTList.Satisfies`) and `ChineseRemainderConstructiveOQ04OQ04.lean` (uniqueness theorem `crt_list_minimal_unique`). The bridge to `ZMod` lives in this OQ-02 child.",
+    "significance": "technical",
+    "relatedConcepts": ["maxHeartbeats", "namespace organization", "Mathlib.Data.ZMod.Basic"],
+    "prerequisites": ["Lean 4 imports"]
+  },
+  {
+    "id": "ann-section-1-helpers",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 38,
+      "endLine": 69
+    },
+    "type": "technique",
+    "title": "Section 1: Unpacking the 2-Element System",
+    "content": "Four helper lemmas reduce the list-based formulation at length 2 to its essential ingredients: `moduli_pair` ([m,n]), `moduliProd_pair` (m·n), `pairwise_coprime_pair` (reduces `List.Pairwise Coprime` on [m,n] to `Nat.Coprime m n`), and `satisfies_pair_iff` (unpacks `Satisfies x [(a,m),(b,n)]` into the conjunction `x ≡ a [MOD m] ∧ x ≡ b [MOD n]`). The proofs are short `simp` and case-splits on `List.mem_cons`. These lemmas isolate the 'list of length 2' boilerplate so the bridge theorems in Section 2 can focus on the substantive ZMod content.",
+    "mathContext": "$\\text{moduli}([(a,m),(b,n)]) = [m,n]$; $\\text{moduliProd}([(a,m),(b,n)]) = m \\cdot n$. Pairwise coprimality of the singleton-tail list collapses to $\\gcd(m,n) = 1$. The 2-element `Satisfies` predicate is precisely the system $x \\equiv a \\pmod m \\land x \\equiv b \\pmod n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["List.Pairwise", "Nat.Coprime", "CRTList.Satisfies", "list-of-length-2"],
+    "prerequisites": ["Lean 4 simp tactic", "list pattern matching"]
   },
   {
     "id": "ann-map-natcast-key",
@@ -36,7 +67,8 @@
       "NatCast",
       "map_natCast",
       "ZMod.chineseRemainder"
-    ]
+    ],
+    "prerequisites": ["ring homomorphism", "product NatCast instance"]
   },
   {
     "id": "ann-bridge-theorem",
@@ -45,7 +77,7 @@
       "startLine": 68,
       "endLine": 76
     },
-    "type": "theorem",
+    "type": "insight",
     "title": "satisfies_pair_iff_chineseRemainder: The Main Bridge",
     "content": "This is the central theorem of the file. After establishing chineseRemainder_natCast (the ring iso applied to ↑x gives (↑x,↑x)), the bridge reduces to a pure algebra fact: (↑x : ZMod m) = (↑a : ZMod m) iff x ≡ a [MOD m], which is ZMod.natCast_eq_natCast_iff. The proof is two rewrites and a simp — the mathematical substance is entirely captured by the preparatory lemmas.",
     "mathContext": "$\\text{Satisfies}(x, [(a,m),(b,n)]) \\Leftrightarrow \\phi(\\bar{x}) = (\\bar{a},\\bar{b})$ where $\\phi$ is the CRT isomorphism. Proof: $\\phi(\\bar{x}) = (\\bar{x}^{(m)}, \\bar{x}^{(n)})$ by map_natCast, and $(\\bar{x}^{(m)} = \\bar{a}^{(m)}) \\Leftrightarrow (x \\equiv a \\pmod m)$ by ZMod.natCast_eq_natCast_iff.",
@@ -55,25 +87,72 @@
       "Nat.ModEq",
       "ring isomorphism",
       "Chinese Remainder Theorem"
-    ]
+    ],
+    "prerequisites": ["ring isomorphism", "modular arithmetic"]
   },
   {
     "id": "ann-canonical-bridge",
     "proofId": "chinese-remainder-constructive-oq-04-oq-02",
     "range": {
-      "startLine": 101,
-      "endLine": 116
+      "startLine": 99,
+      "endLine": 121
     },
-    "type": "theorem",
-    "title": "crt_min_eq_chineseRemainder_val: Canonical Representatives Agree",
-    "content": "This theorem completes the unification at the level of canonical representatives. The list-based OQ-04-OQ-04 defines the canonical solution as the unique x < M satisfying all congruences. The ring-theoretic definition is ZMod.val of the preimage under the ring iso. These must agree by uniqueness: both satisfy the congruence system and lie in [0, M), so crt_list_minimal_unique forces equality.",
-    "mathContext": "The minimal CRT representative and the ZMod.val preimage both live in $\\{0,\\ldots,M-1\\}$ and satisfy the same system of congruences. By the uniqueness theorem for minimal solutions, they must be equal. This identifies the two 'canonical forms': the constructive ℕ-representative and the algebraic ZMod.val.",
+    "type": "technique",
+    "title": "Section 3a: Symm-Image Lies in [0, m·n) and Satisfies the System",
+    "content": "Two preparatory lemmas for the canonical-form bridge. `chineseRemainder_symm_val_lt` shows the ring-theoretic preimage's `ZMod.val` lies in [0, m·n) (immediate from `ZMod.val_lt` once `NeZero (m*n)` is supplied via `Nat.mul_pos`). `chineseRemainder_symm_satisfies` shows the same preimage satisfies the congruence system: rewrite via the bridge theorem, then close with `ZMod.natCast_zmod_val` (val is right inverse of cast) and `RingEquiv.apply_symm_apply`. Together these establish that the ring-theoretic preimage is a *valid candidate* for the canonical solution.",
+    "mathContext": "Let $w = \\phi^{-1}((\\bar a, \\bar b))$. Then $\\text{val}(w) < m \\cdot n$ (range of `ZMod`), and $\\overline{\\text{val}(w)} = w$ (val ∘ cast = id), so $\\phi(\\overline{\\text{val}(w)}) = \\phi(w) = (\\bar a, \\bar b)$. Combined with `satisfies_pair_iff_chineseRemainder`, this gives `Satisfies (val w) [(a,m),(b,n)]`.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod.val_lt", "ZMod.natCast_zmod_val", "RingEquiv.apply_symm_apply", "NeZero typeclass"],
+    "prerequisites": ["ZMod.val", "ring isomorphism inverse"]
+  },
+  {
+    "id": "ann-canonical-bridge-main",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 122,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "crt_min_eq_chineseRemainder_val: Canonical Forms Agree",
+    "content": "The canonical-form bridge: ANY solution `x ∈ [0, m·n)` to the congruence system equals the `ZMod.val` of the ring-theoretic preimage. Both candidates satisfy the same system, both lie in the same range — by `crt_list_minimal_unique` (parent OQ-04-OQ-04), they must be equal. This identifies the two natural 'canonical forms': the constructive minimal ℕ-representative and the algebraic `ZMod.val` of `(ZMod.chineseRemainder).symm`. The same lemma serves both directions of the unification.",
+    "mathContext": "Two candidates in $\\{0, \\ldots, m\\cdot n - 1\\}$ satisfying the same congruence system are forced equal by uniqueness. Identifies $\\text{crt\\_minimal}([(a,m),(b,n)]) = \\text{val}(\\phi^{-1}((\\bar a, \\bar b)))$ as the joint canonical form.",
     "significance": "key",
     "relatedConcepts": [
       "crt_list_minimal_unique",
       "ZMod.val",
       "canonical representative",
       "uniqueness"
-    ]
+    ],
+    "prerequisites": ["unique-existence theorems"]
+  },
+  {
+    "id": "ann-section-4-existence-uniqueness",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 163
+    },
+    "type": "result",
+    "title": "Section 4a: Existence and Uniqueness via ZMod",
+    "content": "Two summary theorems package the round-trip. `crt_exists_via_zmod` is an alternative existence proof for the 2-fold CRT — instead of constructing the solution by hand, take `ZMod.val ∘ symm` of the target pair; the witness lies in [0, m·n) and satisfies the system by the lemmas of Section 3a. `crt_unique_two_fold` is uniqueness in the 2-element case: any two solutions in [0, m·n) coincide, by `crt_list_minimal_unique` applied to both. Together they re-prove the existence-and-uniqueness statement of the 2-fold CRT entirely through the ring-theoretic interface.",
+    "mathContext": "Existence: $\\exists x \\in [0, m\\cdot n) : \\text{Satisfies}(x, [(a,m),(b,n)])$ — witness is $\\text{val}(\\phi^{-1}((\\bar a, \\bar b)))$. Uniqueness: $x, y \\in [0, m\\cdot n)$ both satisfying the system $\\Rightarrow x = y$. Together: a unique solution in the canonical interval.",
+    "significance": "supporting",
+    "relatedConcepts": ["existence-uniqueness", "alternative proof", "ring-theoretic CRT"],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-concrete-example",
+    "proofId": "chinese-remainder-constructive-oq-04-oq-02",
+    "range": {
+      "startLine": 164,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "Concrete Example: x ≡ 2 (mod 3), x ≡ 3 (mod 5) → x = 8",
+    "content": "A regression-test theorem: `example_8_mod3_mod5` verifies that the system $x \\equiv 2 \\pmod 3, x \\equiv 3 \\pmod 5$ has the unique solution $x = 8$ in $[0, 15)$. The proof uses `native_decide` for the congruence checks and `crt_unique_two_fold` for uniqueness against an arbitrary candidate. This serves as both a regression test for the API and a Lean-checked instance of the bridge theorems — the value 8 is simultaneously the list-based minimal representative AND the `ZMod.val` of the ring-theoretic preimage `(ZMod.chineseRemainder).symm (2, 3)`.",
+    "mathContext": "$8 \\equiv 2 \\pmod 3$ ($8 = 2 \\cdot 3 + 2$) and $8 \\equiv 3 \\pmod 5$ ($8 = 1 \\cdot 5 + 3$). Range: $0 \\leq 8 < 15 = 3 \\cdot 5$. By the unification theorem, $\\text{val}((\\phi^{-1})(\\bar 2, \\bar 3)) = 8$ in $\\mathbb{Z}/15\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["native_decide", "regression test", "concrete instance"],
+    "prerequisites": ["Lean 4 native_decide tactic"]
   }
 ]
