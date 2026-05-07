@@ -1,8 +1,8 @@
 {
   "slug": "stirling-formula-oq-01-wip-01",
   "title": "Complete Higher-Order Stirling Expansion (Work in Progress)",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-07T19:55:00.000Z",
-    "iteration": 3,
-    "focus": "Telescoping body of stirling_first_correction in place on PR #16442; only the upper-half exp-Taylor bound remains. Branch resync'd onto current main (post-#16354/#16414/#16614).",
+    "phase": "COMPLETED",
+    "since": "2026-05-08T01:30:00.000Z",
+    "iteration": 4,
+    "focus": "Closed. Final sorry discharged via Real.exp_bound at degree 2.",
     "blockers": [],
-    "nextAction": "Discharge the final sorry on stirling_first_correction (StirlingExpansion.lean:669): need |exp L − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n and exp L ≤ 2.",
+    "nextAction": "None — problem complete.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:669 — upper-half exp-Taylor bound inside stirling_first_correction). PRs #16354, #16414, #16614, #16677 merged on main; PR #16442 (this branch) carries the full telescoping proof of stirling_first_correction with the htend_Gn (G(n+M) → 0) sub-sorry already discharged. Branch resync'd onto current main 2026-05-07 (4 conflict files; Lean code byte-identical to the previously Docker-verified version, only docstring + JSON metadata updated).",
+    "progressSummary": "COMPLETED 2026-05-08. StirlingExpansion.lean is fully verified (0 axioms, 0 sorries, 819 lines) — the final upper-half exp-Taylor bound was discharged via Real.exp_bound at degree 2. Build verified via Docker (3083 jobs replayed, no errors). Together with the previously-merged StirlingFormula.lean, this gives a complete machine-checked proof of n!/[√(2πn)·(n/e)^n] = 1 + 1/(12n) + O(1/n²) with explicit O(1/n²) constant 2. Prior PRs that built up to this: #16354 (log bounds + step bounds), #16414 (step formula), #16442 (telescoping body + htend_Gn), #16614 + #16677 (JSON sync), and the closing PR (this session).",
     "builtItems": [
       "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
       "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",
@@ -50,12 +50,10 @@
       "Filter.Tendsto.atTop_mul_atTop now requires IsOrderedMonoid (fails for ℝ); use Filter.Tendsto.atTop_mul_atTop₀ for groups-with-zero",
       "Resync onto main needed only conflict resolution in 4 files (StirlingExpansion.lean, knowledge.md, meta.json, this JSON); no new build errors introduced by main's drift"
     ],
-    "mathlibGaps": [
-      "No direct Mathlib theorem for: |exp(x) - (1+x)| ≤ C·x² for |x| ≤ 1 (Taylor remainder bound)"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Discharge the final sorry on stirling_first_correction (line 669): need |exp(L) − (1+L)| ≤ L²·exp L/2 with L ≤ 1/n",
-      "Approaches to try: (a) Real.exp_bound with explicit n=2 instance; (b) Real.add_one_le_exp combined with a hand-rolled quadratic upper bound for x ∈ [0,1]; (c) lift |exp(x) − 1 − x − x²/2| bound from Real.exp.taylor_series"
+      "Optional: formalize the second correction term 1/(288n²) using the same scaffolding (one additional log-bound order needed)",
+      "Optional: connect to Mathlib's Gamma function asymptotics for log Γ(z)"
     ]
   },
   "tags": [
@@ -74,7 +72,8 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:18:33.488Z",
-  "lastUpdate": "2026-05-07T17:25:00.000Z",
+  "lastUpdate": "2026-05-08T01:30:00.000Z",
+  "completed": "2026-05-08T01:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }

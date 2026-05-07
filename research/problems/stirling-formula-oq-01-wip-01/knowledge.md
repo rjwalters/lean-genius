@@ -10,6 +10,54 @@ The 1/(12n) correction coefficient is the key refinement of Stirling's approxima
 
 ---
 
+## Session 2026-05-08 (Session 3) — CLOSED
+
+**Mode**: REVISIT
+**Outcome**: Problem closed. StirlingExpansion.lean is fully verified (0 axioms, 0 sorries, 819 lines).
+
+### What I Did
+
+Discharged the final sorry on `stirling_first_correction` (StirlingExpansion.lean:669) — the upper-half exp Taylor remainder bound. Strategy: `Real.exp_bound` at degree `n=2`.
+
+### Proof structure (~50 lines)
+
+```
+exp(L) ≤ 1 + L + 3·L²/4         from Real.exp_bound at n=2 (|L| ≤ 1)
+L² ≤ 1/n²                        from 0 ≤ L ≤ 1/n + mul_self_le_mul_self
+L − 1/(12n) ≤ 1/(2n²)            algebraic, from L ≤ 1/(12(n−1)) + 1/(12(n−1)²)
+                                  via the identity 1/(2n²) − [LHS − 1/(12n)] = (n−2)(4n−3)/(12n²(n−1)²)
+exp(L) − (1 + 1/(12n))           = (exp(L) − (1+L)) + (L − 1/(12n))
+                                  ≤ 3·L²/4 + 1/(2n²)
+                                  ≤ 3/(4n²) + 1/(2n²)
+                                  = 5/(4n²) ≤ 2/n²    ✓
+```
+
+The constant `C = 2` was already chosen via `use 2` at the top of the theorem; the proof needed `5/4 ≤ 2`, i.e., slack `3/(4n²)`.
+
+### Key Lean 4.26 API Notes (Session 3)
+
+**`Real.exp_bound (h : |x| ≤ 1) (n : ℕ) (hn : 0 < n)`** — gives `|exp x − Σ_{m<n} x^m/m!| ≤ |x|^n · ((n+1) / (n!·n))`. For `n = 2`: bound is `|x|² · 3/(2!·2) = 3|x|²/4`. The sum `Σ_{m<2} x^m/m! = 1 + x`. Closed via `simp [Finset.sum_range_succ, Nat.factorial]` after `rw [sq_abs]`.
+
+**`div_le_div_iff` is gone in Lean 4.26** (matches MEMORY note). For `5/(4n²) ≤ 2/n²`, sidestep entirely: compute `2/n² − 5/(4n²) = 3/(4n²)` via `field_simp; ring`, then `linarith [div_pos (3>0) (4n² > 0)]`.
+
+**`mul_self_le_mul_self hL_nn hL_ub` gives `L*L ≤ (1/n)*(1/n)` but `nlinarith` can't bridge to `L² ≤ 1/n²`** without explicit `L² = L*L` and `(1/n)*(1/n) = 1/n²` (use `field_simp` for the latter, since `ring` doesn't always simplify field divisions). Then `linarith` closes.
+
+### Build Result
+
+Docker build verified: `Build completed successfully (3083 jobs)`, no errors, only pre-existing style linter warnings. Verified `grep -c "^axiom "` = 0 and stripped-comments-sorry-count = 0.
+
+### Files Modified
+
+- `proofs/Proofs/StirlingExpansion.lean` (line 669 sorry → ~50-line proof; lineCount 773 → 819)
+- `src/data/proofs/stirling-formula-oq-01/meta.json` (status: formalized → verified, badge: wip → original, sorries: 1 → 0, lineCount sync, originalContributions/conclusion rewrites)
+- `src/data/research/problems/stirling-formula-oq-01-wip-01.json` (phase: ACT → COMPLETED, status: active → completed, knowledge.progressSummary, completed timestamp)
+
+### Final Status
+
+The chain `{stirling_first_correction → stirling_two_term_expansion → error_bound_from_correction}` is now closed. Together with the previously-merged StirlingFormula.lean, this gives a complete machine-checked proof of n!/[√(2πn)·(n/e)^n] = 1 + 1/(12n) + O(1/n²) with explicit constant C = 2 for n ≥ 2.
+
+---
+
 ## Session 2026-05-07 (Session 2) — Step Formula Proved + Telescoping Infrastructure
 
 **Mode**: REVISIT
