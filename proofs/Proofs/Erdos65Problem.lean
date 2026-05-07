@@ -133,7 +133,7 @@ We use Mathlib's definition: G.IsBipartite
 noncomputable def bipartiteCycleSum (r s : ℕ) : ℝ :=
   ∑ i ∈ Finset.Icc 2 (min r s), (1 : ℝ) / (2 * i)
 
-/-- The bipartite cycle sum is 1/2 times a partial harmonic sum.
+/-- The bipartite cycle sum is 1/2 times a partial harmonic sum. -/
 
 /-
 ## Lower Bounds on Cycle Variety
@@ -158,7 +158,7 @@ The GKS result uses similar extremal graph theory techniques.
 /-- For k = 1 (n edges, average degree 2), the graph has a cycle.
 
     Proof: A forest (acyclic graph) on n vertices has at most n-1 edges.
-    With n edges, the graph cannot be acyclic, so it contains a cycle.
+    With n edges, the graph cannot be acyclic, so it contains a cycle. -/
 
 /-
 ## Remarks on the Open Question
@@ -179,7 +179,7 @@ the structure of ALL graphs with given edge count, not just bipartite ones.
     Proof: In a 2-coloring, adjacent vertices have different colors.
     Walking around a cycle of length k, colors alternate, so after k steps
     we return to the starting color iff k is even. Since we return to the
-    starting vertex (which has the starting color), k must be even.
+    starting vertex (which has the starting color), k must be even. -/
 
 /-- Odd cycle contribution: if G has an odd cycle of length k, it contributes 1/k > 0.
     The oddness hypothesis is semantically relevant (odd cycles are the non-bipartite ones)

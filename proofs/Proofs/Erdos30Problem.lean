@@ -125,7 +125,7 @@ def RequiredUpperBound (ε : ℝ) : Prop :=
 /-- Achieving the conjecture for one ε < 1/4 would be a breakthrough.
     Proof sketch: If we have a bound with exponent ε₀ < 1/4, we can derive
     the conjecture for all ε > 0 by using N^ε₀ ≤ N^ε for ε ≤ ε₀ (when N ≥ 1)
-    or C * N^ε₀ ≤ N^ε for large enough N when ε > ε₀.
+    or C * N^ε₀ ≤ N^ε for large enough N when ε > ε₀. -/
 
 /- ## Perfect Difference Sets -/
 
@@ -162,7 +162,7 @@ def IsBhSet (A : Finset ℕ) (h : ℕ) : Prop :=
 
 /-- Sidon sets are B₂ sets.
     A Sidon set requires all pairwise sums to be distinct, which is exactly
-    the B₂ condition (all 2-element multiset sums are distinct).
+    the B₂ condition (all 2-element multiset sums are distinct). -/
 
 /- ## Problem Status -/
 
