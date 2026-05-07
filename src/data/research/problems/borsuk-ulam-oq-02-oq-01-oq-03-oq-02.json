@@ -35,22 +35,29 @@
     "goal": "Phase-2: produce a Lean file `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` that (a) imports `BorsukUlamOQ02OQ01OQ03` to reuse `symBUDim`, `sym_has_Zp`, `buDim`, (b) defines `largestPrimeBelow n` (Mathlib has `Nat.find` machinery for this), (c) states the EQUALITY conjecture as `axiom symBUDim_eq_largest_prime`, and (d) derives the tight formula `theorem symBUDim_eq_floor_formula` from `symBUDim_eq_largest_prime` + the cyclic-prime axiom. Phase-3: gallery entry. The CORE conjecture remains axiomatized — a full proof would be a significant equivariant-topology contribution."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T19:30:00.000Z",
-    "iteration": 1,
-    "focus": "Phase-1 observation. The lower bound `symBUDim n d ≥ buDim p* d` is FORMALIZED in `BorsukUlamOQ02OQ01OQ03.lean` via subgroup monotonicity. The remaining gap is the matching UPPER bound `symBUDim n d ≤ buDim p* d`, which would establish the conjectured equality.",
+    "phase": "ORIENT",
+    "since": "2026-05-07T23:20:00Z",
+    "iteration": 2,
+    "focus": "Phase 2 scaffold COMMITTED. Next: wire into Proofs.lean, Docker-build, then attempt n=4 case-by-hand or coordinate with dihedral sister-question.",
     "blockers": [],
-    "nextAction": "Phase 2 (ORIENT): scaffold `Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` axiomatizing the equality conjecture and deriving the explicit formula. Phase 3: gallery entry.",
+    "nextAction": "Add `import Proofs.BorsukUlamOQ02OQ01OQ03OQ02` to proofs/Proofs.lean; run Docker build to verify; then Phase 3 gallery entry.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE phase. The lower-bound infrastructure is in place: `BorsukUlamOQ02OQ01OQ03.lean` axiomatizes `symBUDim` and `buDim`, proves `sym_has_Zp` (Sₙ contains Z/p for all primes p ≤ n), and via subgroup monotonicity gives `symBUDim n d ≥ buDim p d` for any prime p ≤ n, hence `symBUDim n d ≥ buDim p* d` where p* is the largest prime ≤ n. Combined with the cyclic-prime axiom `buDim p d = 2⌊d/2⌋−1`, this gives `symBUDim n d ≥ 2⌊d/2⌋−1`. The upper bound for the conjectured equality is OPEN.",
-    "builtItems": [],
+    "progressSummary": "S2 (researcher-3, 2026-05-07): Phase 2 scaffold committed in PR — `proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean`. Adds 1 new axiom (`symBUDim_eq_largestPrime`) and proves 5 theorems including `symBUDim_even_lower` — an UNCONDITIONAL Yang-Borsuk lower bound `2k-1 ≤ symBUDim n (2k)` with no new axioms beyond parent (uses `Nat.findGreatest Nat.Prime n` for largestPrimeBelow). Build verification deferred (Docker fresh Mathlib OOM).\n\nOBSERVE phase. The lower-bound infrastructure is in place: `BorsukUlamOQ02OQ01OQ03.lean` axiomatizes `symBUDim` and `buDim`, proves `sym_has_Zp` (Sₙ contains Z/p for all primes p ≤ n), and via subgroup monotonicity gives `symBUDim n d ≥ buDim p d` for any prime p ≤ n, hence `symBUDim n d ≥ buDim p* d` where p* is the largest prime ≤ n. Combined with the cyclic-prime axiom `buDim p d = 2⌊d/2⌋−1`, this gives `symBUDim n d ≥ 2⌊d/2⌋−1`. The upper bound for the conjectured equality is OPEN.",
+    "builtItems": [
+      "proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean — Phase 2 scaffold with axiom symBUDim_eq_largestPrime + 5 theorems (build verification deferred)",
+      "Unconditional theorem symBUDim_even_lower : 2k-1 ≤ symBUDim n (2k) for n ≥ 2 (no new axioms beyond parent)",
+      "Closed-form theorem symBUDim_even_formula : symBUDim n (2k) = 2k-1 (conjectural, uses new axiom)"
+    ],
     "insights": [
+      "Nat.findGreatest Nat.Prime n is a clean Mathlib idiom for largestPrimeBelow — Nat.Prime is DecidablePred so findGreatest is computable. Lemmas: Nat.findGreatest_spec / Nat.findGreatest_le / Nat.le_findGreatest.",
+      "The unconditional Yang-Borsuk lower bound `2k-1 ≤ symBUDim n (2k)` for n ≥ 2 follows from just (a) Nat.Prime 2 + 2 ≤ n giving largestPrimeBelow ≥ 2, (b) parent's `buDim_prime` (cyclic Yang-Borsuk), and (c) parent's `sym_has_cyclic_prime` (subgroup monotonicity). NO new axioms.",
+      "The conjectural equality only adds expressive power for SHARP upper bounds (`symBUDim n d ≤ buDim p* d`). The lower-bound side is already axiom-free.",
       "The conjecture splits cleanly into two equalities: (i) `symBUDim n d = buDim p* d` (subgroup-only structure) and (ii) `buDim p d = 2⌊d/2⌋−1` (the tight cyclic-prime formula). (ii) is already axiomatized in the gallery; only (i) is the genuinely-open part of THIS OQ.",
       "Bertrand's postulate guarantees p* > n/2, so `buDim p* d ≥ buDim_⌊n/2⌋ d` heuristically — the within-factor-2 bound mentioned in the seeker's description",
       "If the conjecture FAILS at some composite n, the failure must come from Sₙ-specific structure (representation theory, parity-based irreps, or higher-cohomology obstructions) — natural test case is n = 4 (p* = 3, but Sₙ has the V₄ Klein-4 subgroup which is NOT cyclic of prime order)",
@@ -65,6 +72,9 @@
       "No representation-theoretic decomposition of Sₙ-modules into irreducibles in Mathlib at the level needed for BU computations"
     ],
     "nextSteps": [
+      "Add `import Proofs.BorsukUlamOQ02OQ01OQ03OQ02` to proofs/Proofs.lean (around line 261, after BorsukUlamOQ02OQ03)",
+      "Docker build (`./proofs/scripts/docker-build.sh Proofs.BorsukUlamOQ02OQ01OQ03OQ02`) — verify the scaffold compiles. Watch for: (a) Nat.findGreatest_spec API drift, (b) DecidablePred Nat.Prime resolution, (c) `simpa using this` numeric reductions in symBUDim_three_four / symBUDim_four_six",
+      "If `simpa using this` fails for the symBUDim_three_four / symBUDim_four_six concrete instances, use `convert symBUDim_even_formula 3 2 ... using 2 <;> norm_num` style instead.",
       "Phase-2: scaffold `proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean` importing `Proofs.BorsukUlamOQ02OQ01OQ03`",
       "Phase-2: define `largestPrimeBelow n : ℕ` using `Nat.find` (or rephrase as `Nat.find_greatest (Nat.Prime) n`) and prove it is prime, ≤ n, and > n/2 (Bertrand)",
       "Phase-2: state `axiom symBUDim_eq_largest_prime : ∀ n d, symBUDim n d = buDim (largestPrimeBelow n) d` with full proof-sketch citation",
@@ -129,7 +139,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-07T19:30:00.000Z",
+  "lastUpdate": "2026-05-07T23:20:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
