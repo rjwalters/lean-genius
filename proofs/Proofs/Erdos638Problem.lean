@@ -240,3 +240,60 @@ theorem complete_graphs_ramsey :
   intro n hn
   obtain ⟨N, hN⟩ := ramsey_triangle n hn
   exact ⟨N, ⊤, Set.mem_singleton _, hN⟩
+
+/- ## Partial results toward Erdős Problem #638
+
+These lemmas locate the precise threshold at which the cardinal-Ramsey question
+becomes nontrivial. For the complete-graph family, the answer is YES whenever the
+colour count is finite (sec. complete_omega_finite_ramsey, immediate from the
+finite Ramsey theorem) but NO for ω vertices and ℵ₀ colours (sec.
+complete_omega_no_nat_ramsey, via an explicit min-coloring counterexample). The
+Erdős–Rado theorem `(2^ℵ₀)⁺ → (ℵ₁)²_ℵ₀` would establish the conjecture for the
+complete-graph family at every infinite cardinal κ, but the required vertex set
+must be at least `(2^|κ|)⁺` — strictly more than κ. Bridging the finite/infinite
+threshold for general Ramsey families is what makes Problem #638 open.
+-/
+
+/-- **Positive partial result**: The complete graph on ℕ has the n-colour
+    triangle Ramsey property for any n ≥ 1.
+
+    This is an immediate corollary of the finite Ramsey theorem: the first
+    R(n) values of ℕ form a copy of K_{R(n)}, so any n-colouring of K_ℕ
+    restricted there yields a monochromatic triangle. Establishes that the
+    finite Ramsey theorem lifts to ω vertices whenever the colour count is
+    finite. -/
+theorem complete_omega_finite_ramsey (n : ℕ) (hn : 1 ≤ n) :
+    HasTriangleRamsey (⊤ : SimpleGraph ℕ) n := by
+  intro c
+  obtain ⟨N, hN⟩ := ramsey_triangle n hn
+  obtain ⟨a, b, d, hab, hbd, had, _, _, _, hc1, hc2⟩ :=
+    hN (fun i j => c i.val j.val)
+  refine ⟨a.val, b.val, d.val, ?_, ?_, ?_, ?_, ?_, ?_, hc1, hc2⟩
+  · exact fun h => hab (Fin.ext h)
+  · exact fun h => hbd (Fin.ext h)
+  · exact fun h => had (Fin.ext h)
+  · exact top_adj.mpr (fun h => hab (Fin.ext h))
+  · exact top_adj.mpr (fun h => hbd (Fin.ext h))
+  · exact top_adj.mpr (fun h => had (Fin.ext h))
+
+/-- **Negative partial result**: The complete graph on ℕ does NOT have the
+    ℕ-cardinal triangle Ramsey property.
+
+    The symmetric coloring `c i j = min i j` admits no monochromatic triangle:
+    for any three distinct vertices a, b, d, two of the three pairwise mins
+    equal the smallest of the trio while the third is strictly larger, so all
+    three colours cannot coincide.
+
+    This identifies the precise obstruction in Erdős Problem #638: at the
+    countable cardinal threshold, ω vertices are insufficient to force
+    monochromatic triangles. The Erdős–Rado theorem requires at least
+    `(2^ℵ₀)⁺` vertices for the ℵ₀-colour case. -/
+theorem complete_omega_no_nat_ramsey :
+    ¬ HasCardinalTriangleRamsey (⊤ : SimpleGraph ℕ) ℕ := by
+  intro h
+  obtain ⟨a, b, d, hab, hbd, had, _, _, _, hc1, hc2⟩ :=
+    h (fun i j => min i j)
+  -- hc1 : min a b = min b d, hc2 : min b d = min a d
+  -- Three distinct naturals cannot have all three pairwise mins equal.
+  simp only at hc1 hc2
+  omega
