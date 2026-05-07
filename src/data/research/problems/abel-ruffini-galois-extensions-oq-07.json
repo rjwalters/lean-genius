@@ -1,0 +1,158 @@
+{
+  "slug": "abel-ruffini-galois-extensions-oq-07",
+  "title": "Burnside's p^a q^b theorem: every group of order p^a q^b is solvable",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall G \\text{ finite group}, \\; \\forall p, q \\text{ primes}, \\; \\forall a, b \\in \\mathbb{N}, \\; |G| = p^a q^b \\implies \\text{IsSolvable } G",
+    "plain": "Burnside's theorem (1904): every finite group whose order is divisible by at most two distinct primes is solvable. The bound is sharp: |A₅| = 60 = 2²·3·5 has three distinct primes and A₅ is not solvable. Origin: question 7 of the gallery entry abel-ruffini-galois-extensions: 'Burnside's p^a q^b theorem in Lean'.",
+    "whyMatters": [
+      "Sharply complements the threshold proved in the parent gallery entry (`abel-ruffini-galois-extensions`): the smallest non-solvable group A₅ has order 60 = 2²·3·5 — exactly one more distinct prime than Burnside's bound of two. Formalizing Burnside explains *why* 60 is the threshold.",
+      "One of the earliest applications of character theory to pure group theory (1904); a milestone in the development of representation theory.",
+      "Mathlib has `IsSolvable`, derived series, and Sylow theory but NOT Burnside p^a q^b — would be a substantial Mathlib contribution.",
+      "Two proof routes: (i) original Burnside (1904) via character theory + algebraic integers; (ii) Goldschmidt/Matsuyama (1970s) character-free via transfer + focal subgroup. The character-free route avoids cyclotomic algebraic-integer machinery."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical mathematical result; well-known and rigorous since Burnside 1904.",
+      "Mathlib (verified 2026-05-07 grep) has: `IsSolvable G` (Mathlib.GroupTheory.Solvable), commutator subgroups, derived series, Sylow p-subgroups (Mathlib.GroupTheory.Sylow), nilpotent groups (Mathlib.GroupTheory.Nilpotent), and Z-groups (Mathlib.GroupTheory.SpecificGroups.ZGroup) — but NOT Burnside's p^a q^b.",
+      "Mathlib has substantial character-theory infrastructure: `Mathlib.RepresentationTheory.Character` (Antoine Labelle, 2022) with `char_orthonormal` (orthogonality of irreducible characters); `FDRep`, `FinGroupCharZero`. Foundation for the original Burnside proof.",
+      "The complementary half is in the gallery's parent: A₅ non-solvable proof exists. Extending to Burnside seals 'order ≤ p^a q^b ⇒ solvable' direction."
+    ],
+    "open": [
+      "Lean 4 / Mathlib formalization — no prior work."
+    ],
+    "goal": "Prove `theorem burnside_pq : ∀ {G : Type*} [Group G] [Finite G] {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}, Nat.card G = p^a * q^b → IsSolvable G`."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-07T20:25:00.000Z",
+    "iteration": 1,
+    "focus": "Survey Mathlib group-theory infrastructure; choose between character-theoretic and character-free proof; estimate scope.",
+    "blockers": [
+      "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama).",
+      "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed."
+    ],
+    "nextAction": "Session 2: Prototype the *Sylow-theoretic preliminary* `burnside_pq_p_eq_q` (when p = q, group is a p-group, hence nilpotent, hence solvable — trivially follows from existing Mathlib `IsPGroup.isSolvable`). Establish the file structure `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` with the main statement as `sorry` and the easy degenerate cases proved.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Session 1 (2026-05-07, OBSERVE): Replaced placeholder title `[Problem Title]` and tags artifact (`number-theory  # or: ...`) with proper content. Identified the seed open question as #7 of the parent gallery (`abel-ruffini-galois-extensions`): Burnside's p^a q^b theorem. Confirmed Mathlib has IsSolvable + Sylow + character theory but no Burnside. Documented two proof strategies (character-theoretic vs Goldschmidt-Matsuyama character-free) and their tradeoffs.",
+    "builtItems": [],
+    "insights": [
+      "Sharpness of bound: |A₅| = 60 = 2²·3·5 is the smallest non-solvable order; it has three distinct prime factors, exactly one more than Burnside's two. Burnside's theorem is therefore sharp at exactly this point.",
+      "Trivial cases for Lean: (1) p = q reduces to a p-group, which is nilpotent and hence solvable (Mathlib `IsPGroup.isSolvable` exists); (2) a = 0 or b = 0 also reduces to a p-group; (3) |G| = 1 is solvable trivially. The non-trivial content is when both a ≥ 1, b ≥ 1, p ≠ q.",
+      "Standard textbook proofs use Sylow + characters: the proof shows that a minimal counterexample is a non-abelian simple group of order p^a q^b with no normal Sylow subgroup, then uses the column orthogonality relation in the character table to derive a contradiction (via algebraic integer arithmetic in a cyclotomic ring).",
+      "Goldschmidt-Matsuyama character-free proof (1970s): uses the focal subgroup theorem (Mathlib has `Mathlib.GroupTheory.Transfer` with `transferSylow`?) and a transfer argument to show Sylow p-subgroups have a non-trivial intersection with the derived subgroup, contradicting minimality.",
+      "Mathlib has `Mathlib.RepresentationTheory.Character.char_orthonormal` (orthogonality of characters), which is a central ingredient of the character-theoretic proof. Algebraic-integer hypotheses on |G|/χ(1) need to be added.",
+      "Mathlib has `IsPGroup` (Mathlib.GroupTheory.PGroup) with `IsPGroup.isSolvable` already proved — gives the trivial cases for free.",
+      "Mathlib has `Mathlib.GroupTheory.SpecificGroups.ZGroup` — Z-groups (groups whose Sylows are all cyclic) — these are solvable, an entirely separate special-case classification, NOT Burnside.",
+      "Estimated scope (character-theoretic): ~600-1000 lines. Estimated scope (character-free Goldschmidt-Matsuyama): ~400-800 lines but requires building/extending transfer theory in Mathlib first.",
+      "Key Mathlib API to study before starting: `Mathlib.RepresentationTheory.Character` (orthogonality), `Mathlib.GroupTheory.Sylow` (p-subgroups, Sylow's theorems), `Mathlib.GroupTheory.Solvable` (IsSolvable definitions), `Mathlib.GroupTheory.PGroup`/`Nilpotent` (degenerate cases), `Mathlib.RingTheory.Polynomial.Cyclotomic.Basic` (algebraic integers in ℤ[ζ_n]).",
+      "Companion lemma plan: separate `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` exposing the trivial Sylow lemmas (a = 0, b = 0, p = q) for automated proof search. Main file `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` axiomatizes Burnside and proves the corollary `S_n_unsolvable_iff` connection back to A_n classification (already in parent)."
+    ],
+    "mathlibGaps": [
+      "No `theorem Group.burnside_pq` — Burnside's p^a q^b theorem.",
+      "No infrastructure for 'algebraic integer' element of a class function evaluation `(|G| / χ(1)) χ(g)` central to the original character-theoretic proof.",
+      "Possibly missing: focal subgroup theorem in full generality (Mathlib has `Mathlib.GroupTheory.Transfer` with the transfer homomorphism but full focal subgroup statement may not be there).",
+      "No 'minimal counterexample' tactic infrastructure for finite-group induction proofs — would be a useful methodological add."
+    ],
+    "nextSteps": [
+      "Session 2 (file scaffold + trivial cases): Create `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` and `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` with: (i) main theorem statement as `sorry`, (ii) trivial cases p = q, a = 0, b = 0 proved via `IsPGroup.isSolvable`, (iii) decomposition lemma `card_eq_pq_pow → existence of Sylow subgroups`. Estimated 80-100 lines.",
+      "Session 3 (literature review): Choose between character-theoretic and Goldschmidt-Matsuyama. Recommend Goldschmidt-Matsuyama (character-free) given Mathlib's character-theory algebraic-integer gap; if Mathlib's transfer infrastructure is incomplete, fall back to character-theoretic. Document the choice in the JSON.",
+      "Session 4 (Sylow setup): Prove that a minimal counterexample is non-abelian simple with no normal Sylow subgroup. Use `Mathlib.GroupTheory.Sylow` and `IsSolvable_of_normalSubgroup_solvable`-style reductions.",
+      "Session 5+ (main argument): chosen-strategy execution. Many sub-sessions expected.",
+      "Final session: replace `axiom burnside_pq` (if scaffolded) with theorem; sync meta.json; consider Mathlib upstream PR."
+    ]
+  },
+  "tags": [
+    "group-theory",
+    "solvability",
+    "burnside",
+    "character-theory",
+    "extension",
+    "open-question-7"
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-galois-extensions",
+    "abel-ruffini-galois-extensions-oq-04",
+    "abel-ruffini-galois-extensions-oq-05",
+    "abel-ruffini-galois-extensions-oq-05-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Burnside, W. (1904). On groups of order p^a q^b. Proc. London Math. Soc. (2) 1, 388–392.",
+      "Goldschmidt, D. M. (1970). A group theoretic proof of the p^a q^b theorem for odd primes. Math. Z. 113, 373–375.",
+      "Matsuyama, H. (1973). Solvability of groups of order 2^a p^b. Osaka J. Math. 10, 375–378.",
+      "Isaacs, I. M. (2008). Finite Group Theory. AMS Graduate Studies in Mathematics 92, §3F."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Burnside_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.GroupTheory.Solvable — IsSolvable, derivedSeries",
+      "Mathlib.GroupTheory.Sylow — Sylow's theorems",
+      "Mathlib.GroupTheory.PGroup — IsPGroup, IsPGroup.isSolvable",
+      "Mathlib.GroupTheory.Nilpotent — IsNilpotent",
+      "Mathlib.GroupTheory.Transfer — transfer homomorphism (focal subgroup precursor)",
+      "Mathlib.RepresentationTheory.Character — char_orthonormal (orthogonality)",
+      "Mathlib.RepresentationTheory.FinGroupCharZero — finite-group char-zero rep theory"
+    ]
+  },
+  "started": "2026-05-06T21:20:28.054Z",
+  "lastUpdate": "2026-05-07T20:25:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 535,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ04.lean",
+      "lineCount": 235,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ05.lean",
+      "lineCount": 215,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean"
+    }
+  ]
+}
