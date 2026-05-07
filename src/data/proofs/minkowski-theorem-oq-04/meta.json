@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 289,
+    "lineCount": 293,
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "Two axioms remain (down from four). The two structural measure-theory axioms (`blichfeldt_proj_measurable` and `blichfeldt_disj_bound`) have been promoted to proved theorems via continuous-translation preimages and `measure_iUnion`/`measure_mono` against `stdLattice_covolume = 1`. The two remaining axioms are: (1) `blichfeldt_volume_partition` \u2014 vol(S) = \u2211' v \u2208 \u2124\u207f, vol({z \u2208 F | z+v \u2208 S}), the partition formula provable from `IsAddFundamentalDomain.lintegral_eq_tsum`; (2) `blichfeldt_general` \u2014 the general k\u22651 case via averaging the covering count function c(z) = #{v | z+v \u2208 S}; the k=1 case is fully proved without it. The two former sorries in `minkowski_from_blichfeldt` are now closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`.",
@@ -168,7 +168,7 @@
     "namespace": "BlichfeldtTheorem",
     "axiomCount": 2,
     "sorries": 0,
-    "lineCount": 289,
+    "lineCount": 293,
     "theoremCount": 5,
     "definitionCount": 0,
     "mainTheorems": [
