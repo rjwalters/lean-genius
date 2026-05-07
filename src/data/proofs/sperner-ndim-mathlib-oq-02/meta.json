@@ -51,50 +51,142 @@
     "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimMathlibOQ02.lean"
   },
   "overview": {
-    "historicalContext": "Brouwer's fixed-point theorem (1911) is one of the central results of topology. The combinatorial proof via Sperner's lemma, due to various authors in the 1920s–1940s and made widely accessible by Knaster–Kuratowski–Mazurkiewicz (1929), shows that the theorem can be derived from elementary combinatorics without algebraic topology. This formalization follows the simplex version: Δⁿ = {x : Fin(n+1) → ℝ | all xᵢ ≥ 0, Σxᵢ = 1}.",
-    "mathematicalSignificance": "The Sperner-based proof is notable because it avoids homology theory and works with the simplex directly. The key insight is the coloring construction: for f: Δⁿ → Δⁿ, color vertex v with c(v) = min{i ∈ supp(v) : f(v)ᵢ ≤ vᵢ}. The well-definedness is a pure arithmetic fact (proved here with 0 sorries), and the Sperner boundary condition follows immediately from the support structure.",
-    "proofStrategy": "1. Define the Sperner coloring c(v) = min{i ∈ supp(v) : f(v)ᵢ ≤ vᵢ} where supp(v) = {i : vᵢ > 0}. 2. Prove well-definedness: since Σf(v)ᵢ = 1 = Σvᵢ and f(v)ᵢ ≥ 0 = vᵢ for i ∉ supp(v), some index in supp(v) must satisfy f(v)ᵢ ≤ vᵢ. 3. Prove Sperner boundary condition: if vⱼ = 0 then j ∉ supp(v), so c(v) ≠ j. 4. (axiom) Apply abstract Sperner's lemma (SpernerNDimMathlib.lean) to the Nth grid triangulation to get a panchromatic simplex — n+1 vertices, one per color, each satisfying its color-i inequality, with diameter ≤ (n+1)/(N+1). 5. Take the first vertex of each tuple as a sequence in Δⁿ; extract a convergent subsequence. The diameter bound forces all vertices of the same tuple to share the same limit x*. By continuity, the per-color inequalities pass to the limit: f(x*)ᵢ ≤ x*ᵢ. Summing and using Σf(x*)ᵢ = 1 = Σx*ᵢ forces all inequalities to be equalities, giving f(x*) = x*.",
+    "historicalContext": "Brouwer's fixed-point theorem (L.E.J. Brouwer, 1911) is one of the central results of topology, with consequences spanning game theory (Nash equilibria, 1950), economics (Arrow-Debreu general equilibrium, 1954), differential equations (Schauder fixed-point theorem and PDE existence), and topology itself (degree theory). Brouwer's original proof used the topological invariance of degree, an algebraic-topology argument. The combinatorial route via Sperner's lemma was discovered by Emanuel Sperner (1928) for the dimension theorem, then sharpened by Knaster, Kuratowski, and Mazurkiewicz (KKM, 1929) into a unified proof of Brouwer that avoids homology entirely. This combinatorial route became the standard pedagogical proof in textbooks (Border 1985, Park 1997) because it reduces a hard topological theorem to a parity argument on a triangulation. This formalization follows the simplex version: Δⁿ = {x : Fin(n+1) → ℝ | all xᵢ ≥ 0, Σxᵢ = 1}.",
+    "mathematicalSignificance": "The Sperner-based proof is notable for three reasons. First, it avoids homology theory entirely and works with the simplex directly via combinatorics — making it accessible to undergraduates and giving a constructive (in the sense of finite combinatorial witnesses for each grid level) flavor. Second, the coloring construction c(v) = min{i ∈ supp(v) : f(v)ᵢ ≤ vᵢ} is a beautiful piece of mathematical engineering: the well-definedness is a pure arithmetic fact (proved here with 0 sorries via Finset.sum_lt_sum), and the Sperner boundary condition follows immediately from the support structure. Third, this exact route generalizes to Kakutani (multivalued maps, brouwer-fixed-point-oq-04), Schauder (infinite-dimensional, schauder-fixed-point), and the KKM lemma — all of which can be reduced to or derived from Sperner. The combinatorial structure exposed here is the right abstraction for many fixed-point phenomena.",
+    "proofStrategy": "1. Define the Sperner coloring c(v) = min{i ∈ supp(v) : f(v)ᵢ ≤ vᵢ} where supp(v) = {i : vᵢ > 0}. 2. Prove well-definedness: since Σf(v)ᵢ = 1 = Σvᵢ and f(v)ᵢ ≥ 0 = vᵢ for i ∉ supp(v), some index in supp(v) must satisfy f(v)ᵢ ≤ vᵢ (key lemma exists_le_of_simplex_map). 3. Prove Sperner boundary condition: if vⱼ = 0 then j ∉ supp(v), so c(v) ≠ j (spernerColor_ne_of_zero). 4. (axiom sperner_panchromatic) Apply abstract Sperner's lemma (sperner-ndim-mathlib, 0 axioms) to the Nth grid triangulation (sperner-ndim-mathlib-oq-01, the Freudenthal bridge) to get a panchromatic simplex — n+1 vertices, one per color, each satisfying its color-i inequality, with coordinatewise diameter ≤ (n+1)/(N+1). 5. Take the first vertex of each tuple as a sequence in compact Δⁿ; extract a convergent subsequence (Bolzano-Weierstrass via IsCompact.tendsto_subseq). 6. The diameter bound forces all vertices of the same tuple to share the same limit x* (squeeze theorem on coordinate differences). 7. By continuity, the per-color inequalities pass to the limit: f(x*)ᵢ ≤ x*ᵢ for all i (le_of_tendsto_of_tendsto'). 8. Summing and using Σf(x*)ᵢ = 1 = Σx*ᵢ forces all inequalities to be equalities (sum-forcing via Finset.sum_lt_sum contrapositive), giving f(x*) = x*.",
     "keyInsights": [
-      "The coloring well-definedness is purely algebraic: if f(v)ᵢ > vᵢ for all i ∈ supp(v) and f(v)ᵢ ≥ 0 = vᵢ for i ∉ supp(v), then Σf(v)ᵢ > Σvᵢ = 1, contradicting Σf(v)ᵢ = 1. This is proved rigorously using Finset.sum_lt_sum.",
-      "The Sperner boundary condition (c(v) ∈ supp(v)) follows immediately from the definition: the colorSet is a subset of supp(v), so the minimum element lies in supp(v). If vⱼ = 0 then j ∉ supp(v), hence c(v) ≠ j.",
-      "Use panchromatic tuples, not single near-fixed-points. A 'near-fixed-point' formulation '|f(x)ᵢ - xᵢ| ≤ ε for all i' would require Lipschitz continuity of f to derive from Sperner alone, because extracting a per-coordinate bound at a single x means comparing f(x) to f(vᵢ) at each color-i vertex, costing a Lipschitz factor. The panchromatic formulation gives the raw Sperner output: one one-sided inequality per distinct vertex, plus a diameter bound. Continuity alone suffices.",
-      "The endgame is a sum trick: the per-color inequalities f(x*)ᵢ ≤ x*ᵢ summed give Σf(x*) ≤ Σx*. But both equal 1 (since x*, f(x*) ∈ Δⁿ), so all inequalities must be tight, hence f(x*) = x*. This forcing-by-sum-equality replaces the squeeze-on-difference argument that would otherwise need Lipschitz.",
-      "This proof route is genuinely different from the algebraic topology approach (SingularHomology axiom in BrouwerFixedPointOQ01OQ02OQ03.lean). It replaces homology theory with combinatorial parity, at the cost of requiring the construction of a triangulation sequence."
+      "The coloring well-definedness is purely algebraic: if f(v)ᵢ > vᵢ for all i ∈ supp(v) and f(v)ᵢ ≥ 0 = vᵢ for i ∉ supp(v), then Σf(v)ᵢ > Σvᵢ = 1, contradicting Σf(v)ᵢ = 1. This is proved rigorously using Finset.sum_lt_sum and uses NEITHER continuity NOR topology — the coloring is well-defined for any simplex self-map.",
+      "The Sperner boundary condition (c(v) ∈ supp(v)) drops out of the construction by design: the colorSet is filtered to be a subset of supp(v), so its minimum element lies in supp(v). If vⱼ = 0 then j ∉ supp(v), hence c(v) ≠ j. This is the cleanest known way to package an admissible coloring as a deterministic function for input to abstract Sperner.",
+      "Use panchromatic tuples, not single near-fixed-points. A 'near-fixed-point' formulation '∃ x, |f(x)ᵢ - xᵢ| ≤ ε for all i' would require Lipschitz continuity of f to derive from Sperner alone, because extracting a per-coordinate bound at a single x means comparing f(x) to f(vᵢ) at each color-i vertex, costing a Lipschitz factor. The panchromatic formulation gives the raw Sperner output: one one-sided inequality per distinct vertex, plus a diameter bound. Continuity alone suffices.",
+      "The endgame is a sum-forcing trick: the per-color inequalities f(x*)ᵢ ≤ x*ᵢ summed give Σf(x*) ≤ Σx*. But both equal 1 (since x*, f(x*) ∈ Δⁿ), so all inequalities must be tight, hence f(x*) = x*. This forcing-by-sum-equality replaces the squeeze-on-difference argument that would otherwise need Lipschitz. The technique is reusable: any time you have inequalities and a known sum equality, forcing tightness is automatic.",
+      "This proof route is genuinely different from the algebraic-topology approach (SingularHomology axiom in BrouwerFixedPointOQ01OQ02OQ03.lean / brouwer-fixed-point). It replaces homology theory with combinatorial parity (Sperner's lemma is a parity statement), at the cost of requiring the construction of a triangulation sequence. The two routes axiomatize qualitatively different things: the homological approach axiomatizes an abstract category-theoretic edifice, while this approach axiomatizes one concrete combinatorial fact about grid colorings.",
+      "The compactness argument is built explicitly rather than imported wholesale: Δⁿ is rewritten as the intersection of n+1 closed half-spaces and a hyperplane, all level sets of continuous functions. This gives a self-contained proof of compactness that does not depend on Mathlib's Convex.isCompact_iff_isClosed_isBounded or any theory of polyhedra — useful in formalization because it minimizes import surface and exposes the elementary geometry."
     ],
     "prerequisites": [
       "Standard simplex as a compact convex subset of ℝⁿ⁺¹",
-      "Finset sum inequalities (Mathlib.Algebra.BigOperators.Order)",
-      "Abstract Sperner's lemma (SpernerNDimMathlib.lean, 0 axioms)",
-      "Sequential compactness of bounded closed subsets of ℝⁿ"
+      "Finset sum inequalities (Mathlib.Algebra.BigOperators.Order, particularly Finset.sum_lt_sum)",
+      "Abstract Sperner's lemma (sperner-ndim-mathlib, 0 axioms)",
+      "Concrete Freudenthal grid triangulation (sperner-ndim-mathlib-oq-01)",
+      "Sequential compactness of bounded closed subsets of ℝⁿ (IsCompact.tendsto_subseq)",
+      "Filter-based limit manipulation (Filter.Tendsto, le_of_tendsto_of_tendsto', squeeze_zero_norm)"
     ]
   },
   "sections": [
     {
+      "id": "section-simplex-support",
       "title": "Standard Simplex and Support",
+      "startLine": 83,
+      "endLine": 111,
+      "summary": "Defines InSimplex (the standard n-simplex predicate) and supp (set of strictly positive coordinates). The auxiliary supp_le shows coordinates outside the support are exactly 0; the key supp_nonempty proves supp(v) ≠ ∅ via the constraint Σvᵢ = 1 > 0.",
       "content": "InSimplex v holds when all coordinates of v are nonneg and sum to 1. The support supp(v) is the set of strictly positive coordinates. Key lemma: supp_nonempty shows that supp(v) ≠ ∅ for any InSimplex v, since the coordinates sum to 1 > 0. The auxiliary supp_le shows that coordinates outside the support must be exactly 0.",
       "lean_ref": "supp_nonempty"
     },
     {
+      "id": "section-key-coloring",
       "title": "Key Coloring Lemma (fully proved)",
+      "startLine": 113,
+      "endLine": 136,
+      "summary": "exists_le_of_simplex_map: for v, fv ∈ Δⁿ, some i ∈ supp(v) has fv i ≤ v i. Proof by contradiction using Finset.sum_lt_sum — pure arithmetic, no continuity. This is the well-definedness witness for the Sperner coloring.",
       "content": "exists_le_of_simplex_map is the mathematical heart of the proof: for any v, fv ∈ Δⁿ, there exists i ∈ supp(v) with fv i ≤ v i. Proof by contradiction: assume fv i > v i for all i ∈ supp(v). For i ∉ supp(v), v i = 0 ≤ fv i. Then Finset.sum_lt_sum gives Σv < Σfv, but both equal 1. This is a pure arithmetic argument with 0 sorry.",
       "lean_ref": "exists_le_of_simplex_map"
     },
     {
+      "id": "section-sperner-coloring",
       "title": "Sperner Coloring Construction (fully proved)",
+      "startLine": 138,
+      "endLine": 203,
+      "summary": "Builds the Sperner coloring c(v) := min(colorSet v fv) and proves three properties: c(v) ∈ supp(v), fv(c(v)) ≤ v(c(v)), and the boundary condition vⱼ = 0 ⟹ c(v) ≠ j. The boundary condition is the input that abstract Sperner's lemma demands.",
       "content": "The colorSet v fv = {i ∈ supp(v) : fv i ≤ v i} is nonempty by the key lemma. The Sperner color spernerColor v fv hv hfv is the minimum element of this set. It lies in supp(v) (spernerColor_in_supp) and satisfies fv c ≤ v c (spernerColor_le). The boundary condition spernerColor_ne_of_zero proves: if v j = 0, then c(v) ≠ j, since j ∉ supp(v) but c(v) ∈ supp(v).",
       "lean_ref": "spernerColor"
     },
     {
+      "id": "section-panchromatic-axiom",
+      "title": "Grid Triangulation → Panchromatic Tuple (axiom)",
+      "startLine": 205,
+      "endLine": 237,
+      "summary": "The single remaining axiom sperner_panchromatic: from the Nth grid triangulation + proved Sperner coloring + abstract Sperner's lemma, returns n+1 vertices in Δⁿ, one per color, with the color-i inequality and coordinate-gap bound (n+1)/(N+1).",
+      "content": "sperner_panchromatic (1 remaining axiom): the Nth grid triangulation of Δⁿ with the proved Sperner coloring (spernerColorMap_boundary) yields a panchromatic top-simplex — n+1 vertices, one per color, each satisfying its color-i inequality, with pairwise coordinate gap ≤ (n+1)/(N+1). Follows from abstract Sperner (SpernerNDimMathlib) + boundary condition + grid CellComplex construction. This is the raw output of grid Sperner; the choice of panchromatic over single-near-fixed-point eliminates the need for a Lipschitz hypothesis on f. The main theorem brouwer_fixed_point_simplex now depends on only this one axiom.",
+      "lean_ref": "sperner_panchromatic"
+    },
+    {
+      "id": "section-panchromatic-fixed-point",
       "title": "Panchromatic Tuples → Fixed Point (proved, no Lipschitz)",
+      "startLine": 239,
+      "endLine": 340,
+      "summary": "brouwer_from_panchromatic is fully proved: compactness of Δⁿ + Bolzano-Weierstrass + diameter squeeze + continuity-driven sum-forcing yield a fixed point with no Lipschitz hypothesis on f.",
       "content": "brouwer_from_panchromatic is a fully proved theorem (no axiom). Proof: (1) Δⁿ is compact — closed subset of [0,1]^(n+1) via isCompact_univ_pi + isClosed_iInter + isClosed_eq. (2) Take the first vertex of each panchromatic tuple to form a sequence in Δⁿ; IsCompact.tendsto_subseq extracts a convergent subsequence v_{φ(k)}⁰ → x*. (3) The diameter bound (n+1)/(N+1) → 0 forces every other vertex v_{φ(k)}ⁱ of the same tuple to converge to the same x* (squeeze on coordinatewise differences). (4) For each color i, f(v_{φ(k)}ⁱ)ᵢ ≤ (v_{φ(k)}ⁱ)ᵢ; pass to the limit by continuity using le_of_tendsto_of_tendsto' to get f(x*)ᵢ ≤ x*ᵢ. (5) Sum trick: Σ f(x*)ᵢ ≤ Σ x*ᵢ, but both = 1, so all inequalities are equalities — f(x*) = x*.",
       "lean_ref": "brouwer_from_panchromatic"
     },
     {
-      "title": "Grid Triangulation → Panchromatic Tuple (axiom)",
-      "content": "sperner_panchromatic (1 remaining axiom): the Nth grid triangulation of Δⁿ with the proved Sperner coloring (spernerColorMap_boundary) yields a panchromatic top-simplex — n+1 vertices, one per color, each satisfying its color-i inequality, with pairwise coordinate gap ≤ (n+1)/(N+1). Follows from abstract Sperner (SpernerNDimMathlib) + boundary condition + grid CellComplex construction. This is the raw output of grid Sperner; the choice of panchromatic over single-near-fixed-point eliminates the need for a Lipschitz hypothesis on f. The main theorem brouwer_fixed_point_simplex now depends on only this one axiom.",
+      "id": "section-main-theorem",
+      "title": "Main Theorem: Brouwer for Δⁿ",
+      "startLine": 342,
+      "endLine": 356,
+      "summary": "brouwer_fixed_point_simplex composes the proved fixed-point extraction with the panchromatic axiom in a single line, exposing the entire dependency graph: 1 axiom + abstract Sperner + proved coloring + Mathlib compactness.",
+      "content": "The main theorem is a one-line composition of brouwer_from_panchromatic with sperner_panchromatic, applied to the Sperner coloring spernerColorMap. The dependency graph is now crystal clear: every continuous self-map of Δⁿ has a fixed point, predicated on exactly one axiom.",
       "lean_ref": "brouwer_fixed_point_simplex"
     }
   ],
   "annotations": [],
-  "sorries": 0
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Brouwer's fixed-point theorem for the standard n-simplex Δⁿ is derived from a single concrete combinatorial axiom (sperner_panchromatic), reducing the topological theorem to (1) a fully proved Sperner coloring construction with proved well-definedness and boundary condition, and (2) a fully proved fixed-point extraction from panchromatic tuples that uses sequential compactness, a diameter squeeze, and continuity-driven sum-forcing — but no Lipschitz hypothesis. The proof depends on no Mathlib axioms beyond classical logic (used implicitly via choose_spec) and on three sister formalizations: abstract Sperner (sperner-ndim-mathlib, 0 axioms), the Freudenthal grid bridge (sperner-ndim-mathlib-oq-01), and standard sequential compactness from Mathlib.",
+    "implications": "First, this entry closes OQ-02 of the sperner-ndim-mathlib initiative: it shows the abstract Sperner machinery is sufficient input to derive Brouwer with a single residual axiom, and identifies that residual axiom precisely (panchromatic grid output, not near-fixed-point). Second, the panchromatic-vs-near-fixed-point distinction is the key architectural insight: it eliminates a spurious Lipschitz hypothesis and exposes that Brouwer is fundamentally a continuity-plus-compactness theorem, not a regularity theorem. Third, the proof is the linchpin in a longer chain: from Brouwer-on-simplex one obtains Brouwer on disks (via homeomorphism), the Schauder fixed-point theorem (infinite-dimensional via finite-dimensional approximation), and Kakutani's theorem (multivalued via convex combination tricks) — each with reduced axiom budget if this entry is taken as foundational. Fourth, the sum-forcing endgame is a generally useful proof technique whenever inequalities are known to integrate to a known total: it replaces ad-hoc squeeze arguments with a single application of Finset.sum_lt_sum (contrapositive).",
+    "openQuestions": [
+      "Can the residual axiom sperner_panchromatic be discharged? This requires formalizing the Freudenthal triangulation as a CellComplex instance and showing the abstract Sperner output (a panchromatic top-simplex in the CellComplex) refines to a panchromatic tuple of grid vertices with the diameter bound. This is the natural next OQ in the sperner-ndim-mathlib initiative.",
+      "Does the panchromatic formulation extend to non-simplex domains? Brouwer's theorem holds on any compact convex set in ℝⁿ via Schauder, but the combinatorial route requires triangulating the domain. Can a panchromatic-tuple version of KKM survive on disk-like domains via the Freudenthal-on-cube triangulation, and what is the analogue of the sum-forcing endgame there?",
+      "What is the optimal diameter bound? The proof uses (n+1)/(N+1), but the actual grid edge length is 1/N. Tightening this matters for any quantitative Brouwer (effective fixed-point algorithms à la Scarf, 1967), where the convergence rate is tied to the explicit relationship between grid mesh and approximation accuracy.",
+      "Can the Lipschitz-free path be transported to Kakutani's theorem (brouwer-fixed-point-oq-04)? The current Kakutani formalization carries 2 axioms; a panchromatic-style argument over multivalued maps may reduce that count and clarify which assumptions are essential vs artifacts of the chosen proof shape."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "sperner-ndim-mathlib",
+      "title": "Sperner's Lemma via Abstract Cell Complex",
+      "relationship": "foundation",
+      "description": "Provides the abstract Sperner's lemma (0 axioms) that this proof feeds with a Sperner coloring satisfying the boundary condition. The output of abstract Sperner — a panchromatic simplex on the cell complex — is what sperner_panchromatic packages into a coordinatewise tuple."
+    },
+    {
+      "proofId": "sperner-ndim-mathlib-oq-01",
+      "title": "Concrete CellComplex Instances for Sperner's Lemma: The Freudenthal Bridge",
+      "relationship": "sibling",
+      "description": "Provides the concrete Freudenthal grid triangulation of Δⁿ as a CellComplex instance, which is the missing piece needed to discharge the panchromatic axiom in this proof. Together with this entry, it completes the OQ-01 + OQ-02 closure of the sperner-ndim-mathlib initiative."
+    },
+    {
+      "proofId": "sperner-mathlib4",
+      "title": "Abstract Sperner's Lemma (Mathlib-Style)",
+      "relationship": "alternative",
+      "description": "An alternative Mathlib-style formalization of the abstract Sperner's lemma (0 axioms). Demonstrates that the abstract combinatorial input to this Brouwer proof has multiple complete formalizations."
+    },
+    {
+      "proofId": "brouwer-fixed-point",
+      "title": "Brouwer Fixed Point Theorem (homological route)",
+      "relationship": "alternative",
+      "description": "Alternative proof of Brouwer's fixed-point theorem that axiomatizes Singular Homology rather than a panchromatic combinatorial output. Useful for comparing the two routes: the homological proof is shorter at the surface but pulls in vastly more abstract machinery via its axiom."
+    },
+    {
+      "proofId": "brouwer-fixed-point-oq-01",
+      "title": "Brouwer Fixed Point Theorem: 1D Elementary Proof via IVT",
+      "relationship": "specialization",
+      "description": "The 1-dimensional case (n = 0 or n = 1) of Brouwer, proved elementarily from the Intermediate Value Theorem with 0 axioms. Useful as a sanity check: the result of this Δⁿ proof specializes to the IVT-based proof when n = 1."
+    },
+    {
+      "proofId": "brouwer-fixed-point-oq-04",
+      "title": "Kakutani Fixed Point Theorem (OQ-04)",
+      "relationship": "generalization",
+      "description": "Kakutani extends Brouwer to upper-hemicontinuous multivalued maps with convex values. The combinatorial Sperner-based route formalized here is the standard path to Kakutani via convex-combination averaging."
+    },
+    {
+      "proofId": "schauder-fixed-point",
+      "title": "Schauder Fixed Point Theorem",
+      "relationship": "generalization",
+      "description": "Schauder generalizes Brouwer to compact convex subsets of Banach spaces via finite-dimensional approximation. This entry is the finite-dimensional input that the Schauder proof iteratively applies."
+    },
+    {
+      "proofId": "sperner-ndim",
+      "title": "n-Dimensional Sperner's Lemma via Abstract Triangulation",
+      "relationship": "related",
+      "description": "An older abstract-triangulation formulation of n-dimensional Sperner. Predates the cell-complex refinement used here and serves as historical context for the architectural choices."
+    }
+  ]
 }
