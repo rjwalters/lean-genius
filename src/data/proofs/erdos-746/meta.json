@@ -78,9 +78,9 @@
         "description": "Chromatic number problems — connected via random graph thresholds for coloring"
       }
     ],
-    "axiomCount": 2,
+    "axiomCount": 4,
     "lineCount": 271,
-    "assumptions": "2 axioms: korshunov_theorem (Hamiltonicity a.a.s. above (1/2+ε)n log n) and komlos_szemeredi_theorem (limiting probability e^{-e^{-2c}}). Probabilistic statements use opaque AlmostSurely/ProbInGnm predicates since full formalization requires a measure space on graphs.",
+    "assumptions": "4 assumptions: 2 opaque constants (AlmostSurely predicate and ProbInGnm probability function — declared opaque since full formalization requires a measure space on graphs) + 2 axioms: korshunov_theorem (Hamiltonicity a.a.s. above (1/2+ε)n log n) and komlos_szemeredi_theorem (limiting probability e^{-e^{-2c}}).",
     "theoremCount": 7,
     "definitionCount": 19
   },
@@ -227,7 +227,7 @@
     ],
     "namespace": "Erdos746",
     "lineCount": 271,
-    "axiomCount": 2,
+    "axiomCount": 4,
     "theoremCount": 7,
     "definitionCount": 19,
     "path": "Proofs/Erdos746Problem.lean",
