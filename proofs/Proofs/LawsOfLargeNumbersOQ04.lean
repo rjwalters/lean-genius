@@ -33,7 +33,7 @@ and the integral-indicator API; only the bracketing uniformity step remains axio
 import Mathlib.Probability.StrongLaw
 import Mathlib.Probability.Independence.Basic
 import Mathlib.Probability.IdentDistrib
-import Mathlib.MeasureTheory.Integral.SetIntegral
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Tactic
 
 namespace GlivenkoCantelli
