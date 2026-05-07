@@ -51,8 +51,8 @@
     "axiomCount": 3,
     "lineCount": 1403,
     "assumptions": "3 axiom(s) and 1 sorry(s). See the Lean source for details.",
-    "theoremCount": 42,
-    "definitionCount": 20
+    "theoremCount": 39,
+    "definitionCount": 16
   },
   "overview": {
     "historicalContext": "This problem belongs to extremal hypergraph theory, asking about the minimum number of edges that forces a specific forbidden configuration.\n\nThe 'crossed pair' configuration—four edges A,B,C,D where A∪B = C∪D but the pairs {A,B} and {C,D} are both disjoint—generalizes the concept of a 4-cycle in graphs. For ordinary graphs (t=2), avoiding crossed pairs is equivalent to avoiding C₄, connecting to the classical Kővári–Sós–Turán theorem.\n\nFor hypergraphs (t≥3), the problem becomes much more subtle. The natural construction is a 'sunflower': all edges share a common (t-1)-element core, with distinct single elements (petals) distinguishing them. This gives about C(n-1,t-1) edges.\n\nSignificant progress was made by Pikhurko and Verstraëte (2009) for 3-uniform hypergraphs, establishing f(n,3) ≤ (13/9)·C(n,2).\n\nThe conjecture that f(n,t) ~ C(n,t-1) would show that sunflower-type constructions are essentially optimal.",
@@ -190,8 +190,8 @@
     "namespace": "Harmonic.GeneralizeProofs",
     "lineCount": 1403,
     "axiomCount": 3,
-    "theoremCount": 42,
-    "definitionCount": 20,
+    "theoremCount": 39,
+    "definitionCount": 16,
     "path": "Proofs/Erdos643Problem.lean",
     "sorries": 1
   },
