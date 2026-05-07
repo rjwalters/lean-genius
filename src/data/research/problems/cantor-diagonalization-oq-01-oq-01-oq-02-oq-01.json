@@ -1,0 +1,373 @@
+{
+  "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+  "title": "Can Easton's theorem (consistency of 2^ℵ₀ = κ for regular κ ≥ ℵ₁) be formalized in Lean, or does it inherently require a meta-theoretic forcing construction?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Easton (1970): For any reasonable class function } F : \\text{RegCard} \\to \\text{Card with } F(\\kappa) \\geq \\kappa^+, \\kappa < \\lambda \\Rightarrow F(\\kappa) \\leq F(\\lambda), \\text{ and } \\text{cf}(F(\\kappa)) > \\kappa, \\text{ the theory ZFC} + \\forall \\kappa\\, \\text{regular: } 2^\\kappa = F(\\kappa) \\text{ is consistent (assuming Con(ZFC)).}",
+    "plain": "Easton's theorem (1970) shows that the cardinality of the continuum 2^κ for regular κ ≥ ℵ₁ can be ANY cardinal subject only to (a) monotonicity and (b) König's constraint cf(2^κ) > κ. The construction uses class forcing — a meta-theoretic technique. The OPEN-FORMALIZATION question is: can the STATEMENT (and ideally the PROOF) be formalized in Lean 4 / Mathlib, or does the proof inherently require working at a meta-level outside the object theory?",
+    "whyMatters": [
+      "Easton's theorem is the definitive answer to 'how arbitrary can 2^κ be?' for regular κ — it shows that ZFC pins down ALMOST NOTHING about the continuum function beyond monotonicity and König's constraint",
+      "Bridges set theory (forcing, class-sized partial orders) and proof assistant infrastructure (does Lean's type theory accommodate forcing, or are meta-theoretic statements required?)",
+      "Cohen's 1963 forcing is a celebrated formalization target — Easton's class forcing extends this to constructions that violate GCH at every regular cardinal simultaneously",
+      "A successful formalization would close an open question about the expressivity of Lean for foundational set theory; a clear meta-theoretic argument that it CANNOT would be equally informative",
+      "Connects directly to existing gallery work: `CantorDiagonalizationOQ01OQ01OQ02.lean` proves König's constraint from Mathlib; Easton's theorem is the 'converse' showing this constraint is also SUFFICIENT"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "König's theorem (Mathlib, formalized in `CantorDiagonalizationOQ01OQ01OQ02.lean`): cf(2^κ) > κ for infinite κ. This is one of the two Easton constraints proved in ZFC.",
+      "Monotonicity (trivial in ZFC, formalized in Mathlib `Cardinal.power_mono`): κ ≤ λ implies 2^κ ≤ 2^λ. This is the second Easton constraint.",
+      "Cohen 1963: 2^ℵ₀ = ℵ₂ is consistent with ZFC (forcing); first instance of forcing-driven independence.",
+      "Easton 1970 (PhD thesis): for ANY 'Easton function' F (regular κ → Card with F(κ) ≥ κ⁺, monotone, cf(F(κ)) > κ), there is a class forcing producing a model of ZFC + ∀ regular κ: 2^κ = F(κ).",
+      "Solovay 1965 / Easton 1970: the same is NOT true at singular cardinals — the Singular Cardinal Hypothesis (SCH) puts genuine constraints on 2^κ for singular κ; this contrasts with regular κ and is itself a deep theorem (Silver, Magidor, Shelah).",
+      "Lean / Mathlib has `Mathlib.SetTheory.Cardinal.Cofinality`, `lt_cof_power` (König), `Cardinal.power_mono`, `Cardinal.cof` — the OBJECT-LEVEL constraints are formalized.",
+      "Han-Van Doorn 2020 (`flypitch`): Cohen's independence of CH from ZFC was formalized in Lean 3; this is the closest existing forcing formalization but uses heavy meta-theoretic machinery and does NOT scale to Easton's class forcing."
+    ],
+    "open": [
+      "Can Easton's theorem be STATED in Lean 4 / Mathlib without resorting to a meta-theoretic encoding? Status: PARTIAL. The two constraints (monotonicity, König) can be stated and proved on `Cardinal`. The full consistency claim 'Con(ZFC) → Con(ZFC + 2^κ = F(κ))' requires either (a) an internal model construction (proper class forcing) or (b) Gödel-encoded meta-theoretic statement.",
+      "Does Lean's type theory accommodate class forcing directly? Mathlib's `Cardinal` is a type, not a class — so class-sized forcing posets need either type universes (lean's universe variables) or a meta-encoding.",
+      "Can the PROOF be formalized? The flypitch project (Han-Van Doorn) formalized Cohen forcing for CH; extending to Easton's product/iterated class forcing has not been done.",
+      "Is there a 'soft' formalization of Easton that avoids forcing entirely — e.g., extending an inner model with the desired continuum function via known absoluteness lemmas? Probably not, but worth scoping.",
+      "What is the right Lean STATEMENT — should it be `theorem easton : ∀ F : Easton-function, ∃ M : Model (ZFC ∪ {∀κ regular: 2^κ = F(κ)})`, or just the DEDUCTIVE form `∀ F, Easton-function F → Consistent (ZFC ∪ {∀κ regular: 2^κ = F(κ)})`?"
+    ],
+    "goal": "Phase-2: produce a Lean file `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` that (a) defines `IsEastonFunction (F : Cardinal → Cardinal) : Prop` capturing monotonicity + König + F(κ) ≥ κ⁺ on regular κ, (b) proves `IsEastonFunction (fun κ => κ⁺⁺)` (the trivial Easton function under ¬GCH everywhere), and (c) AXIOMATIZES `easton_consistency` as `Consistent ZFC → ∀ F : Cardinal → Cardinal, IsEastonFunction F → Consistent (ZFC ∪ ⟦∀ κ regular: 2^κ = F κ⟧)`. The 'meta-theoretic forcing required' question is then resolved IN THE NEGATIVE for the STATEMENT level (it can be axiomatized cleanly), and reduced to 'extending flypitch to class forcing' for the PROOF level."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-07T19:25:00.000Z",
+    "iteration": 1,
+    "focus": "Phase-1 observation. Two of the three Easton ingredients (monotonicity, König) are PROVED in Mathlib and lifted into the gallery via `CantorDiagonalizationOQ01OQ01OQ02.lean`. The third ingredient (consistency of any Easton function as the continuum function on regular cardinals) is the meta-theoretic CORE and has not been formalized; the `flypitch` project formalized Cohen's set forcing for CH in Lean 3 but class forcing has not been done.",
+    "blockers": [],
+    "nextAction": "Phase 2 (ORIENT): scope the Lean statement of `IsEastonFunction` and decide the layer at which to axiomatize: (a) statement-level axiomatization in object theory (can be done now); (b) flypitch-style internal forcing model (very large undertaking, would supersede flypitch); (c) meta-theoretic Gödel encoding (technically valid but defeats the spirit of formalization).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE phase. Two Easton constraints (monotonicity via `Cardinal.power_mono`, König via `lt_cof_power` lifted into `CantorDiagonalizationOQ01OQ01OQ02.lean` 4 axioms-free theorems) are formalized. Easton's full consistency theorem is the meta-theoretic centerpiece and has NEVER been formalized in any proof assistant — the closest is flypitch's Cohen-forcing CH independence in Lean 3, which uses set-sized forcing only.",
+    "builtItems": [],
+    "insights": [
+      "The two LOCAL Easton constraints are already in Mathlib (`Cardinal.power_mono`, `Cardinal.lt_cof_power`); only the GLOBAL consistency claim requires forcing — phase-2 can cleanly separate object-level definitions from meta-level consistency",
+      "Class forcing (Easton 1970) is strictly stronger than set forcing (Cohen 1963): the partial order P is class-sized in Easton's construction, which prevents naive translation of flypitch into Easton",
+      "An axiomatized statement-level Easton theorem is a useful Phase-2 deliverable EVEN IF the full proof remains a long-term flypitch-extension task; the cleanly-stated axiom will guide future formalization",
+      "Singular cardinals are NOT covered by Easton (Silver-Magidor-Shelah show genuine constraints on 2^κ for singular κ — the SCH question); future OQs in this hierarchy can target SCH formalization as a separate question",
+      "The phrasing 'inherently require a meta-theoretic forcing construction' in the seeker's title is FALSE for the statement (axiomatize cleanly) but PROBABLY TRUE for the proof (no internal-model alternative is known)",
+      "The connection to `CantorDiagonalizationOQ01OQ01OQ02.lean` (König from Mathlib) is the natural import: `IsEastonFunction` definition uses König as a hypothesis"
+    ],
+    "mathlibGaps": [
+      "No formalization of forcing in Mathlib (flypitch lives in Lean 3 + Lean Mathlib3, not yet ported)",
+      "No Lean/Mathlib infrastructure for class-sized partial orders or proper-class forcing",
+      "No `IsConsistent` / model-existence predicate for ZFC at the level Mathlib operates on (would require Gödel-encoding ZFC formulas)",
+      "Mathlib's `Cardinal.cof` is set-level; the regular cardinals form a proper class (not a set) — needs careful universe handling"
+    ],
+    "nextSteps": [
+      "Phase-2: scaffold `proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` with `def IsRegularCardinal`, `def IsEastonFunction`, basic instances (e.g., `IsEastonFunction (κ ↦ κ⁺⁺)` proved from `Cardinal.cof_lt_power_aleph0` style lemmas)",
+      "Phase-2: axiomatize `axiom easton_consistency : Consistent ZFC → ∀ F, IsEastonFunction F → Consistent (ZFC ∪ ⟦∀ regular κ, 2^κ = F κ⟧)` with full citation of Easton 1970",
+      "Phase-2: prove the 'easy' partial result `theorem easton_function_iff : IsEastonFunction F ↔ ∀ κ regular, F κ ≥ κ⁺ ∧ ∀ κ ≤ λ regular, F κ ≤ F λ ∧ cf (F κ) > κ` from existing Mathlib lemmas (no axioms needed)",
+      "Phase-3: gallery entry `src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/`",
+      "Cross-link with `flypitch` references and the existing CH-independence narrative in `ContinuumHypothesis.lean`",
+      "Stretch (multi-session): start a flypitch-port effort to give a TYPE-THEORETIC forcing model in Lean 4 — would be a major Mathlib contribution and would unlock Easton + many other independence results"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "set-theory",
+    "forcing",
+    "continuum-hypothesis",
+    "cardinal-arithmetic",
+    "easton",
+    "konig",
+    "open-formalization",
+    "independence",
+    "meta-theory"
+  ],
+  "relatedProofs": [
+    "cantor-diagonalization",
+    "cantor-diagonalization-oq-01",
+    "cantor-diagonalization-oq-01-oq-01",
+    "cantor-diagonalization-oq-01-oq-01-oq-02",
+    "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "cantor-diagonalization-oq-01-oq-02",
+    "cantor-diagonalization-oq-02",
+    "cantor-diagonalization-oq-02-oq-01",
+    "cantor-diagonalization-oq-02-oq-03",
+    "cantor-diagonalization-oq-02-oq-03-oq-02",
+    "cantor-diagonalization-oq-03",
+    "cantor-diagonalization-oq-03-oq-01",
+    "cantor-diagonalization-oq-03-oq-01-incomplete-01",
+    "cantor-diagonalization-oq-03-oq-01-oq-01",
+    "cantor-diagonalization-oq-03-oq-01-oq-02",
+    "cantor-diagonalization-oq-03-oq-01-oq-03",
+    "cantor-diagonalization-oq-03-oq-01-oq-04",
+    "cantor-diagonalization-oq-04",
+    "cantor-diagonalization-oq-04-oq-01",
+    "cantor-diagonalization-oq-04-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Easton 1970 - Powers of regular cardinals (Annals of Math. Logic 1, 139-178) — the original class forcing construction",
+      "Cohen 1963 - The independence of the continuum hypothesis (Proc. Nat. Acad. Sci. USA) — set forcing for ¬CH",
+      "Solovay 1965 - The cardinality of Σ_2^1 sets (Proc. AMS) — companion result on definability constraints",
+      "Silver 1975 - On the Singular Cardinals Problem (ICM) — companion contrast: SCH constraints on singular κ",
+      "Magidor 1977 - On the singular cardinals problem (Israel J. Math.) — singular case",
+      "Shelah 1994 - Cardinal Arithmetic (Oxford Logic Guides) — pcf theory for singular cardinals",
+      "Han, Van Doorn 2020 - A formal proof of the independence of the continuum hypothesis (CPP) — flypitch project, Lean 3 set forcing",
+      "Jech 2003 - Set Theory (Springer) — standard reference on Easton's theorem and class forcing",
+      "Kunen 2011 - Set Theory: An Introduction to Independence Proofs (revised edition) — pedagogical class-forcing exposition"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Easton%27s_theorem",
+      "https://flypitch.github.io/",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.Basic — Cardinal arithmetic",
+      "Mathlib.SetTheory.Cardinal.Cofinality — cf, Cardinal.lt_cof_power (König)",
+      "Mathlib.SetTheory.Cardinal.Ordinal — ℵ-hierarchy",
+      "Mathlib.SetTheory.Ordinal.Basic — ordinals (foundation for cardinals)",
+      "Proofs.CantorDiagonalizationOQ01OQ01OQ02 — gallery's König formalization (already extends Mathlib)"
+    ]
+  },
+  "started": "2026-05-06T21:20:28.055Z",
+  "lastUpdate": "2026-05-07T19:25:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CantorDiagonalization.lean",
+      "filename": "CantorDiagonalization.lean",
+      "lineCount": 176,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalization.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01.lean",
+      "filename": "CantorDiagonalizationOQ01.lean",
+      "lineCount": 443,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ01.lean",
+      "filename": "CantorDiagonalizationOQ01OQ01.lean",
+      "lineCount": 304,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean",
+      "filename": "CantorDiagonalizationOQ01OQ01OQ02.lean",
+      "lineCount": 256,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
+      "filename": "CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
+      "filename": "CantorDiagonalizationOQ01OQ02.lean",
+      "lineCount": 307,
+      "theoremCount": 14,
+      "axiomCount": 7,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02.lean",
+      "filename": "CantorDiagonalizationOQ02.lean",
+      "lineCount": 273,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ01.lean",
+      "filename": "CantorDiagonalizationOQ02OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
+      "filename": "CantorDiagonalizationOQ02OQ03.lean",
+      "lineCount": 143,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean",
+      "filename": "CantorDiagonalizationOQ02OQ03OQ02.lean",
+      "lineCount": 381,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean",
+      "filename": "CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean",
+      "lineCount": 49,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 6,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03.lean",
+      "filename": "CantorDiagonalizationOQ03.lean",
+      "lineCount": 150,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01.lean",
+      "lineCount": 304,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01Incomplete01.lean",
+      "lineCount": 241,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01OQ02.lean",
+      "lineCount": 276,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ03.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01OQ03.lean",
+      "lineCount": 257,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ03OQ01OQ04.lean",
+      "filename": "CantorDiagonalizationOQ03OQ01OQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04.lean",
+      "filename": "CantorDiagonalizationOQ04.lean",
+      "lineCount": 305,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04OQ01.lean",
+      "filename": "CantorDiagonalizationOQ04OQ01.lean",
+      "lineCount": 167,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
+      "filename": "CantorDiagonalizationOQ04OQ03.lean",
+      "lineCount": 300,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean",
+      "filename": "CantorDiagonalizationOQ04OQ03Aristotle.lean",
+      "lineCount": 65,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean"
+    }
+  ]
+}
