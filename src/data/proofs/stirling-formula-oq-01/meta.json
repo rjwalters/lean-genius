@@ -17,9 +17,9 @@
       "bernoulli-numbers"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 2 sorries: (1) stirling_step_formula (private, pure algebraic computation from stirlingSeq def); (2) stirling_first_correction (depends on step formula + sum bounds). New in this session: proved log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_upper, stirling_step_lower.",
+    "assumptions": "0 axioms, 1 sorry: stirling_first_correction (depends on the still-stated step-formula derivation and sum bounds; see line 350). stirling_step_formula is now fully proved. Supporting lemmas in place: log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_upper, stirling_step_lower.",
     "dateAdded": "2026-03-29",
     "mathlibDependencies": [
       {
@@ -44,7 +44,7 @@
       "stirling_step_upper: d_k \u2264 1/(12k\u00b2)+1/(6k\u00b3) (conditional on step formula)",
       "stirling_step_lower: 1/(12k\u00b2)-1/(12k\u00b3)-1/(8k\u2074) \u2264 d_k (conditional on step formula)"
     ],
-    "lineCount": 413,
+    "lineCount": 462,
     "theoremCount": 13,
     "definitionCount": 2,
     "mathlib_version": "4.26.0"
@@ -137,15 +137,15 @@
       "Filter"
     ],
     "namespace": "StirlingExpansion",
-    "lineCount": 413,
+    "lineCount": 462,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 2,
     "path": "Proofs/StirlingExpansion.lean",
-    "sorries": 2,
+    "sorries": 1,
     "additionalFiles": [
       "Proofs/StirlingExpansionAristotle.lean"
     ]
   },
-  "sorries": 2
+  "sorries": 1
 }
