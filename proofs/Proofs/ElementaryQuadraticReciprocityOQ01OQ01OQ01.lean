@@ -76,16 +76,23 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   intro heq
   apply hqc_ne
   ext a
-  have ha : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a := by rw [heq]
-  have happ : quadCharC p a = (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) := rfl
-  rw [happ] at ha
-  have h1C : (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 := by
-    simp [MulChar.one_apply]
-  rw [show (1 : MulChar (ZMod p) ℤ) a = if IsUnit a then 1 else 0 from by
-    simp [MulChar.one_apply]]
-  apply Int.cast_injective
-  simp only [Int.cast_ite, Int.cast_one, Int.cast_zero]
-  rw [← h1C]; exact ha
+  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
+    show quadCharC p a = _; rw [heq]
+  -- Use MulChar.one_apply directly to evaluate the trivial character
+  rw [MulChar.one_apply] at ha
+  rw [MulChar.one_apply]
+  rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
+  · simp only [hv, map_zero] at ha
+    split_ifs at ha ⊢ with hu
+    · exact absurd ha one_ne_zero.symm
+    · rfl
+  · simp only [hv, map_one] at ha
+    split_ifs at ha ⊢ with hu
+    · rfl
+    · exact absurd ha one_ne_zero  -- ha : (1:ℂ)=0, one_ne_zero : 1≠0
+  · simp only [hv, map_neg_one] at ha
+    exfalso
+    split_ifs at ha with hu <;> norm_num at ha
 
 -- ============================================================================
 -- The Classical Gauss Sum
