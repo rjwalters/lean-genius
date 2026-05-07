@@ -59,7 +59,8 @@
     "assumptions": "0 axioms. 0 sorries (core result via Mathlib bridge). Relies on Mathlib's EuclideanGeometry.mul_dist_add_mul_dist_eq_mul_dist_of_cospherical for the Euclidean Ptolemy step. Assumes: Cospherical condition (points on common circle), angle conditions for diagonal crossing, unit sphere (‖a‖=‖b‖=‖c‖=‖d‖=1).",
     "mathlib_version": "4.26.0",
     "parentProof": "ptolemys-theorem-oq-01",
-    "theoremCount": 3
+    "theoremCount": 3,
+    "definitionCount": 0
   },
   "sections": [
     {
@@ -242,6 +243,7 @@
     "axiomCount": 0,
     "theoremCount": 3,
     "sorries": 0,
+    "definitionCount": 0,
     "path": "Proofs/PtolemysTheoremOQ01OQ02.lean"
   }
 }
