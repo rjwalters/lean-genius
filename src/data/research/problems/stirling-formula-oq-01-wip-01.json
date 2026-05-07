@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:669 — upper-half exp-Taylor bound inside stirling_first_correction). PRs #16354 and #16414 merged on main; PR #16442 (this branch) carries the full telescoping proof of stirling_first_correction with the htend_Gn (G(n+M) → 0) sub-sorry already discharged. Branch resync'd onto current main 2026-05-07. Build verified post-resync.",
+    "progressSummary": "IN-PROGRESS (1 sorry remaining in StirlingExpansion.lean:669 — upper-half exp-Taylor bound inside stirling_first_correction). PRs #16354, #16414, #16614, #16677 merged on main; PR #16442 (this branch) carries the full telescoping proof of stirling_first_correction with the htend_Gn (G(n+M) → 0) sub-sorry already discharged. Branch resync'd onto current main 2026-05-07 (4 conflict files; Lean code byte-identical to the previously Docker-verified version, only docstring + JSON metadata updated).",
     "builtItems": [
       "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
       "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",

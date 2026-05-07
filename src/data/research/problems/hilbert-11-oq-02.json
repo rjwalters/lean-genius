@@ -1,0 +1,180 @@
+{
+  "slug": "hilbert-11-oq-02",
+  "title": "When exactly does the Hasse principle fail for higher-degree forms",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\geq 3, \\exists \\text{ a homogeneous form } F \\in \\mathbb{Q}[x_1,\\ldots,x_k] \\text{ of degree } n \\text{ with } F = 0 \\text{ solvable over } \\mathbb{R} \\text{ and every } \\mathbb{Q}_p \\text{ but not over } \\mathbb{Q}; \\text{ characterize the obstruction}",
+    "plain": "For quadratic forms over ℚ, Hasse-Minkowski says the local-global principle holds: F=0 is solvable over ℚ iff it is solvable over ℝ and every ℚ_p. For forms of degree ≥ 3 this fails — the Selmer cubic 3x³ + 4y³ + 5z³ = 0 is the classical 1951 counterexample. The open question is to give a complete characterization of when the Hasse principle fails for higher-degree forms (and of when the Brauer-Manin or étale-Brauer-Manin obstruction is the only obstruction).",
+    "whyMatters": [
+      "The Hasse-Minkowski theorem (degree 2) is one of the foundational local-global theorems of arithmetic; understanding precisely when it BREAKS in higher degree is a central goal of modern arithmetic geometry",
+      "Selmer's 1951 counterexample 3x³+4y³+5z³=0 was the first explicit demonstration that the local-global principle is genuinely a phenomenon of low degree, opening the entire field of obstruction theory",
+      "The Brauer-Manin obstruction (Manin 1970) and the étale-Brauer-Manin obstruction (Skorobogatov 1999) provide the modern framework; whether they are the *only* obstruction for various classes of varieties (rationally connected, Kummer, K3, abelian surfaces ...) is one of the major open problems linking number theory to algebraic geometry",
+      "A definitive answer would have direct algorithmic consequences for deciding rational solvability of Diophantine equations of low degree",
+      "Connects directly to the Birch-Swinnerton-Dyer conjecture, the Hasse principle for K3 surfaces, and the Skorobogatov-style failure-of-Brauer-Manin examples"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Hasse-Minkowski (degree 2): the local-global principle HOLDS for quadratic forms over ℚ (Minkowski 1890 ternary; Hasse 1923 general). This is the degree=2 baseline.",
+      "Selmer 1951: 3x³ + 4y³ + 5z³ = 0 has solutions over ℝ and every ℚ_p but no nontrivial rational solutions — first explicit Hasse-principle failure (cubic curve, genus 1, in fact a principal homogeneous space for an elliptic curve).",
+      "Cassels-Guy 1966: the cubic surface 5x³ + 9y³ + 10z³ + 12w³ = 0 fails Hasse for a different reason (rank-1 example).",
+      "Iskovskih 1971: del Pezzo surfaces of degree 4 (intersections of two quadrics in ℙ⁴) can fail the Hasse principle; explicit counterexample given.",
+      "Birch-Swinnerton-Dyer 1975: families of cubic surfaces violating Hasse, all explained by the Brauer-Manin obstruction.",
+      "Manin 1970/1971: the Brauer-Manin obstruction X(𝔸_K)^{Br} ⊆ X(𝔸_K) explains all known failures up to that date — provides a *uniform* framework.",
+      "Colliot-Thélène-Sansuc 1980s: for rational varieties / smooth proper geometrically rational, the Brauer-Manin obstruction often controls weak approximation as well.",
+      "Skorobogatov 1999: there exist varieties (a bielliptic surface) where the Brauer-Manin obstruction is *not* the only obstruction; the étale-Brauer-Manin obstruction X(𝔸_K)^{ét,Br} is strictly stronger.",
+      "Poonen 2010: there exist varieties where even the étale-Brauer-Manin obstruction is insufficient — an *intermediate* failure of the local-global principle exists.",
+      "Meyer 1884 (degree 2, dimension ≥ 5): every indefinite quadratic form in ≥ 5 variables over ℚ has a nontrivial rational zero — explains why Hasse failures must be in low dimension for quadratics."
+    ],
+    "open": [
+      "Is the étale-Brauer-Manin obstruction the only obstruction for SMOOTH PROJECTIVE RATIONALLY CONNECTED varieties over a number field? (Major open conjecture; CT-Sansuc-style.)",
+      "Is the Brauer-Manin obstruction the only obstruction for K3 surfaces over a number field? (Open; partial results due to Harpaz-Skorobogatov for elliptic K3.)",
+      "Algorithmic decidability: is there an algorithm that, given a homogeneous form F ∈ ℚ[x_1,…,x_k] of degree n ≥ 3, decides whether F = 0 has a nontrivial rational solution? (Unknown for n ≥ 3; equivalent to Hilbert's 10th over ℚ for these special varieties.)",
+      "Quantitative version: how often (in the sense of natural density or Manin's conjecture counting) does the Hasse principle fail among, say, smooth cubic surfaces ax³+by³+cz³+dw³=0?",
+      "Cubic forms in many variables: for cubic forms in ≥ 16 variables, Davenport (1963) proved Hasse holds; the SHARP threshold (some say 10, some 14) is open.",
+      "Diagonal cubic 3-folds ax³+by³+cz³+dw³+et³=0: a complete characterization of the (a,b,c,d,e) for which Hasse fails."
+    ],
+    "goal": "Three layers of partial answers: (1) For each degree n and number of variables k, give a sharp bound below which Hasse can fail and above which it must hold (cubic forms: Davenport bound). (2) Identify a uniform obstruction theory (Brauer-Manin / étale-Brauer-Manin) and prove it is the ONLY obstruction for natural classes. (3) Make this effective/algorithmic for explicit families (cubic surfaces, del Pezzo, K3)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-07T19:10:00.000Z",
+    "iteration": 1,
+    "focus": "Phase-1 observation: enumerate the known counterexamples (Selmer, Cassels-Guy, Iskovskih, Skorobogatov, Poonen) and the obstruction-theoretic framework (Brauer-Manin, étale-Brauer-Manin). Map what already exists in `Proofs/Hilbert11_QuadraticForms.lean` (which has `axiom selmer_curve_no_rational_points : SelmerCurve` and a placeholder `BrauerManinObstruction`).",
+    "blockers": [],
+    "nextAction": "Phase 2 (ORIENT): create `Proofs/Hilbert11OQ02.lean` with rigorous definitions of (a) `IsHigherDegreeForm n` for n ≥ 3, (b) `HassePrinciple F` and `HasseFails F`, (c) `IsBrauerManinObstructed X`, (d) the Selmer cubic as a specific instance. Lift the `selmer_curve_no_rational_points` axiom out of the parent file and make it the centerpiece of the OQ-02 entry.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE phase. Parent file `Proofs/Hilbert11_QuadraticForms.lean` already contains: `def SelmerCurve` (line ~345), `axiom selmer_curve_no_rational_points` (line ~364), `def BrauerManinObstruction` (placeholder), and the doc-level discussion of Hasse failures (PART VII). No Lean file `Hilbert11OQ02.lean` exists yet. The mathematical content is well-established (Selmer 1951, Manin 1970, Skorobogatov 1999, Poonen 2010) — the OQ-02 task is to formalize a rigorous gallery entry stating the known failures and the precise open characterization questions.",
+    "builtItems": [],
+    "insights": [
+      "Hilbert11_QuadraticForms.lean already AXIOMATIZES the Selmer counterexample (`selmer_curve_no_rational_points`) — OQ-02 should LIFT this axiom into a dedicated entry and frame it as the canonical example of Hasse failure rather than burying it in the quadratic-forms parent",
+      "The natural Lean type for 'higher-degree form' is `MvPolynomial (Fin k) ℚ` filtered by `IsHomogeneous F n`, with `n ≥ 3`; Mathlib has `MvPolynomial.IsHomogeneous`",
+      "The Brauer-Manin obstruction is naturally stated for projective varieties; a phase-2 Lean formalization should at minimum state it as an axiom on `Type*` with the witness Brauer class abstracted, mirroring how `Hilbert11OQ01.lean` axiomatized `hasse_minkowski_refined`",
+      "Three flavors of the open question give three sub-OQs: (a) decidability for explicit forms; (b) Brauer-Manin sufficiency for natural classes; (c) sharp threshold theorems (Davenport-style)",
+      "Cubic curves, cubic surfaces, and del Pezzo surfaces are the three natural test cases; Mathlib has `EllipticCurve` (relevant for cubic curves of genus 1) but no `CubicSurface` or `delPezzo` typeclass — likely a Mathlib gap",
+      "The Selmer cubic 3x³+4y³+5z³=0 in ℙ² has genus 1 and is in fact a principal homogeneous space for an elliptic curve E: y² = x³ - 432 (a twist of E_60); this connects to the Tate-Shafarevich group Ш(E/ℚ)"
+    ],
+    "mathlibGaps": [
+      "No formal definition of Brauer-Manin obstruction in Mathlib (would require Brauer group of a scheme + adelic points)",
+      "No `Mathlib.NumberTheory.HassePrinciple` namespace; the local-global principle is implicit in Hasse-Minkowski lemmas but not isolated",
+      "No `CubicSurface` / `delPezzoSurface` typeclass in Mathlib for natural test cases",
+      "Tate-Shafarevich group Ш(E/K) is not formalized in Mathlib (relevant for Selmer-cubic-style examples)",
+      "`MvPolynomial.IsHomogeneous` exists but there is no specialized theory of 'rational-points predicate' for homogeneous forms over number fields"
+    ],
+    "nextSteps": [
+      "Phase-2: scaffold `proofs/Proofs/Hilbert11OQ02.lean` with `IsHigherDegreeForm`, `HasNontrivialRationalSolution`, `HasNontrivialLocalSolutionEverywhere`, `HasseFails` definitions and import them from `MvPolynomial.IsHomogeneous` + `Mathlib.NumberTheory.Padics`",
+      "Phase-2: re-state the Selmer cubic as a specific witness `selmer_cubic_fails_hasse` and reuse the existing `selmer_curve_no_rational_points` axiom from the parent file via `import Proofs.Hilbert11_QuadraticForms`",
+      "Phase-2: state the conjectural `brauer_manin_only_obstruction_for_rationally_connected` as an axiomatized open conjecture, mirroring the `e_absolutely_normal` pattern from e-transcendental-oq-02",
+      "Phase-3: create the gallery entry `src/data/proofs/hilbert-11-oq-02/` with `meta.json`, `annotations.json`, `index.ts`",
+      "Phase-3: cross-reference the entry to `hilbert-11`, `hilbert-11-oq-01`, and (once it exists) the elliptic-curve infrastructure",
+      "Stretch: prove the Selmer cubic axiom for one specific reduction (e.g. mod 5 or mod 9 obstruction) without invoking the full descent argument — the local mod-9 obstruction at p=3 is classical and may be in scope"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "hasse-principle",
+    "local-global",
+    "brauer-manin",
+    "selmer",
+    "open-problem",
+    "hilbert-problems"
+  ],
+  "relatedProofs": [
+    "hilbert-11",
+    "hilbert-11-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Selmer 1951 - The Diophantine equation ax³+by³+cz³=0 (Acta Math.) — first explicit Hasse-principle failure",
+      "Manin 1970 - Le groupe de Brauer-Grothendieck en géométrie diophantienne (Actes du Congrès) — introduces the Brauer-Manin obstruction",
+      "Iskovskih 1971 - A counterexample to the Hasse principle for a system of two quadratic forms in five variables",
+      "Cassels-Guy 1966 - On the Hasse principle for cubic surfaces (Mathematika)",
+      "Skorobogatov 1999 - Beyond the Manin obstruction (Invent. Math.) — étale-Brauer-Manin",
+      "Poonen 2010 - Insufficiency of the Brauer-Manin obstruction applied to étale covers (Annals of Math.)",
+      "Davenport 1963 - Cubic forms in sixteen variables (Proc. Roy. Soc. A)",
+      "Colliot-Thélène-Sansuc 1980 - La descente sur les variétés rationnelles, II (Duke Math. J.)",
+      "Harpaz-Skorobogatov 2016 - Hasse principle for Kummer varieties"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Hasse_principle",
+      "https://en.wikipedia.org/wiki/Brauer%E2%80%93Manin_obstruction"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.QuadraticForm.Basic — for the degree-2 baseline",
+      "Mathlib.NumberTheory.Padics.PadicNumbers — for local conditions ℚ_p",
+      "Mathlib.RingTheory.MvPolynomial.Homogeneous — for higher-degree forms",
+      "Mathlib.AlgebraicGeometry.EllipticCurve.Weierstrass — for genus-1 Selmer-cubic instance"
+    ]
+  },
+  "started": "2026-05-06T21:20:28.056Z",
+  "lastUpdate": "2026-05-07T19:10:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert11_QuadraticForms.lean",
+      "filename": "Hilbert11_QuadraticForms.lean",
+      "lineCount": 499,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 17,
+      "sorryCount": 14,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticForms.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01.lean",
+      "filename": "Hilbert11OQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01Aristotle.lean",
+      "filename": "Hilbert11OQ01Aristotle.lean",
+      "lineCount": 65,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01OQ01.lean",
+      "filename": "Hilbert11OQ01OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01OQ01Aristotle.lean",
+      "filename": "Hilbert11OQ01OQ01Aristotle.lean",
+      "lineCount": 105,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01OQ01Aristotle.lean"
+    }
+  ]
+}

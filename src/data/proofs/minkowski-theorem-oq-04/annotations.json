@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-mk04-header",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 7, "endLine": 40 },
+    "type": "context",
+    "title": "Blichfeldt's Strengthening of Minkowski",
+    "content": "Hans Blichfeldt's 1914 theorem replaces Minkowski's geometric hypotheses (convex, centrally symmetric) with a single measure-theoretic one: vol(S) > 1 already forces two ℤⁿ-congruent points. The proof — a fundamental-domain pigeonhole — is so flexible that Minkowski becomes a corollary via the half-scaling T = (1/2)·S. The general k≥1 form (vol(S) > k yields k+1 ℤⁿ-congruent points) is the modern statement found in Cassels and Gruber–Lekkerkerker.",
+    "mathContext": "**Statement** (k=1): If $S \\subseteq \\mathbb{R}^n$ is Lebesgue measurable with $\\mathrm{vol}(S) > 1$, then $\\exists\\, x \\ne y \\in S$ with $x - y \\in \\mathbb{Z}^n$.\n\n**Statement** (general): $\\mathrm{vol}(S) > k \\Rightarrow$ $\\exists$ $k{+}1$ distinct points $x_0,\\ldots,x_k \\in S$ with all $x_i - x_j \\in \\mathbb{Z}^n$.",
+    "significance": "context",
+    "relatedConcepts": ["geometry of numbers", "Minkowski's lattice point theorem", "fundamental domain", "Lebesgue measure", "pigeonhole principle"],
+    "prerequisites": ["Lebesgue measure on ℝⁿ", "integer lattice ℤⁿ", "fundamental domain F = [0,1)ⁿ"]
+  },
+  {
+    "id": "ann-mk04-axiom1-partition",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 50, "endLine": 58 },
+    "type": "concept",
+    "title": "Axiom 1: Fundamental-Domain Volume Partition",
+    "content": "The partition formula vol(S) = Σ' v ∈ ℤⁿ, vol(Sᵥ) where Sᵥ = {z ∈ F | z+v ∈ S} expresses S's measure as a sum over translates of its slice through the fundamental domain F = [0,1)ⁿ. This is the engine of the entire proof: it is the only step that uses the actual measure of S, and everything afterwards is set-theoretic. In Mathlib the formula is essentially `IsAddFundamentalDomain.lintegral_eq_tsum` applied to the indicator function of S.",
+    "mathContext": "$$\\mathrm{vol}(S) \\;=\\; \\sum_{v \\in \\mathbb{Z}^n}{}^{\\!\\!\\prime}\\; \\mathrm{vol}\\bigl(\\{z \\in F \\mid z + v \\in S\\}\\bigr)$$\n\nDerivation: $\\int_{\\mathbb{R}^n} \\mathbf{1}_S = \\sum_{v} \\int_F \\mathbf{1}_S(z+v)\\, dz = \\sum_v \\mathrm{vol}(S_v)$, where the middle step is $\\mathbb{Z}^n$-translate disjointness of $F$.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental domain integration", "tsum (unconditional sum)", "indicator function", "Z^n-translates of [0,1)^n", "Mathlib IsAddFundamentalDomain.lintegral_eq_tsum"],
+    "prerequisites": ["Lebesgue integration", "fundamental domain", "ℤⁿ as additive subgroup of ℝⁿ"]
+  },
+  {
+    "id": "ann-mk04-axiom2-meas",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 60, "endLine": 69 },
+    "type": "technique",
+    "title": "Axiom 2: Projection Measurability",
+    "content": "The slice Sᵥ = F ∩ (z ↦ z+v)⁻¹(S) is measurable because translation by v is continuous (hence Borel-measurable), and F is measurable. Without this we cannot apply the partition formula or the disjoint-bound axiom. The Mathlib path is `MeasurableSet.inter` ∘ `Continuous.measurable` ∘ `MeasurableSet.preimage`; bundling it as an axiom keeps the proof above focused on the geometry.",
+    "mathContext": "$$\\{z \\in F \\mid z + v \\in S\\} \\;=\\; F \\;\\cap\\; (\\,\\cdot\\, + v)^{-1}(S)$$\n\nMeasurability chain: (1) translation $z \\mapsto z + v$ is continuous on $\\mathbb{R}^n$; (2) continuous maps are Borel-measurable; (3) preimages of measurable sets are measurable; (4) intersection of two measurable sets is measurable.",
+    "significance": "technical",
+    "relatedConcepts": ["measurable preimage", "continuous translation", "Borel sets", "Mathlib MeasurableSet.preimage"],
+    "prerequisites": ["σ-algebra of measurable sets", "continuity of affine maps"]
+  },
+  {
+    "id": "ann-mk04-axiom3-disj",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 71, "endLine": 82 },
+    "type": "concept",
+    "title": "Axiom 3: Disjoint Subsets of F Have Volume ≤ 1",
+    "content": "The pigeonhole bound: pairwise-disjoint measurable subsets {Aᵥ} of the unit-volume fundamental domain F satisfy Σ' vol(Aᵥ) ≤ 1. This is the only step that uses the unit covolume of the standard lattice ℤⁿ. The Mathlib derivation is sigma-additivity (`measure_iUnion`) followed by monotonicity (`measure_mono`) against vol(F) = 1.",
+    "mathContext": "$$\\sum_{v \\in \\mathbb{Z}^n}{}^{\\!\\!\\prime}\\; \\mathrm{vol}(A_v) \\;=\\; \\mathrm{vol}\\!\\Bigl(\\bigcup_v A_v\\Bigr) \\;\\le\\; \\mathrm{vol}(F) \\;=\\; 1$$\n\nFirst equality: σ-additivity for pairwise-disjoint measurable sets. Inequality: $\\bigcup_v A_v \\subseteq F$ and monotonicity of measure. Final equality: $F = [0,1)^n$ has Lebesgue measure 1 (the *covolume* of the standard lattice).",
+    "significance": "key",
+    "relatedConcepts": ["sigma-additivity", "monotonicity of measure", "covolume of a lattice", "Mathlib measure_iUnion", "Mathlib measure_mono"],
+    "prerequisites": ["σ-additive measures", "Lebesgue measure of [0,1)ⁿ"]
+  },
+  {
+    "id": "ann-mk04-statement",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 88, "endLine": 95 },
+    "type": "definition",
+    "title": "Statement of Blichfeldt's Basic Theorem",
+    "content": "The k=1 form: a measurable S ⊆ ℝⁿ with volume strictly greater than 1 contains two distinct points whose difference lies in ℤⁿ. The output type uses `(stdLattice n : Set (Fin n → ℝ))` — coercing the ℝ-submodule ℤⁿ to its underlying set so that the membership statement `x - y ∈ stdLattice n` is decidable from the additive-subgroup structure.",
+    "mathContext": "$$\\mathrm{vol}(S) > 1 \\;\\Longrightarrow\\; \\exists\\, x, y \\in S,\\ x \\ne y,\\ x - y \\in \\mathbb{Z}^n$$\n\nIn Lean: `∃ x y : Fin n → ℝ, x ∈ s ∧ y ∈ s ∧ x ≠ y ∧ x - y ∈ (stdLattice n : Set (Fin n → ℝ))`. The `[NeZero n]` instance ensures the ambient space is nontrivial; without it $\\mathbb{R}^0 = \\{0\\}$ has volume 0 and the hypothesis is vacuous.",
+    "significance": "key",
+    "relatedConcepts": ["lattice point", "ℤⁿ-congruence", "stdLattice (standard integer lattice)", "Subtype coercion"],
+    "prerequisites": ["Lean Set membership", "ENNReal hypothesis vol(S) > 1"]
+  },
+  {
+    "id": "ann-mk04-disjointness",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 96, "endLine": 121 },
+    "type": "insight",
+    "title": "The Geometric Heart: Pairwise Disjointness of Projections",
+    "content": "By contradiction: assume no two points of S are ℤⁿ-congruent. Then for distinct lattice elements v ≠ w, the projections Sᵥ and Sw are *disjoint*. If z were in both, then z+v and z+w would be two distinct points of S with difference v−w ∈ ℤⁿ — exactly the forbidden ℤⁿ-congruence. The Lean proof uses `disjoint_left` to reduce to producing a contradiction from a common element z, then chains `add_left_cancel` (to show z+v ≠ z+w from v ≠ w) with `Subtype.ext` (to lift the inequality back to the lattice subtype). The key algebraic step `(z + v) - (z + w) = v - w` is closed by `ring`.",
+    "mathContext": "Suppose for contradiction $\\forall x, y \\in S,\\ x \\ne y \\Rightarrow x - y \\notin \\mathbb{Z}^n$. Pick $v \\ne w \\in \\mathbb{Z}^n$ and $z \\in S_v \\cap S_w$. Then\n$$z + v,\\ z + w \\in S,\\quad z + v \\ne z + w,\\quad (z+v) - (z+w) = v - w \\in \\mathbb{Z}^n,$$\ncontradicting the assumption.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "Pairwise disjointness", "Disjoint relation in Mathlib", "add_left_cancel", "Subtype.ext"],
+    "prerequisites": ["contradiction reasoning", "additive subgroup closure under subtraction"]
+  },
+  {
+    "id": "ann-mk04-pigeonhole",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 122, "endLine": 132 },
+    "type": "technique",
+    "title": "Chaining Partition + Disjoint Bound to a Contradiction",
+    "content": "With pairwise disjointness established, the rest is mechanical. Apply Axiom 3 to bound Σ' vol(Sᵥ) ≤ 1, apply Axiom 1 to identify Σ' vol(Sᵥ) with vol(S), then observe vol(S) > 1 — contradicting the bound. The Lean tactic `absurd h_vol (not_lt.mpr (h_eq ▸ h_bound))` performs the rewrite-then-contradict pattern: `h_eq` rewrites vol(S) into the sum, `h_bound` says the sum is ≤ 1, and `not_lt.mpr` flips this into ¬(1 < vol(S)).",
+    "mathContext": "Chain of inequalities:\n$$\\mathrm{vol}(S) \\;\\overset{\\text{Ax 1}}{=}\\; \\sum_{v}{}^{\\!\\!\\prime}\\,\\mathrm{vol}(S_v) \\;\\overset{\\text{Ax 3}}{\\le}\\; 1 \\;\\overset{\\text{hyp}}{<}\\; \\mathrm{vol}(S),$$\nwhich forces $\\mathrm{vol}(S) < \\mathrm{vol}(S)$ — impossible.",
+    "significance": "supporting",
+    "relatedConcepts": ["term-mode rewriting (▸)", "Lean absurd tactic", "ENNReal not_lt"],
+    "prerequisites": ["hypothesis chaining in Lean", "ENNReal arithmetic"]
+  },
+  {
+    "id": "ann-mk04-general-axiom",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 138, "endLine": 157 },
+    "type": "context",
+    "title": "Axiom: General k+1 Version via Covering Count",
+    "content": "The k=1 disjointness pigeonhole does not lift to k≥2: pairwise-disjointness is too strong. The standard remedy is the *covering count function* c(z) = #{v ∈ ℤⁿ | z+v ∈ S}. Then ∫_F c dz = vol(S) > k = k·vol(F), so by averaging there exists z with c(z) ≥ k+1, giving k+1 lattice elements v₀,...,vₖ with z+vᵢ ∈ S. Their pairwise differences (z+vᵢ) − (z+vⱼ) = vᵢ − vⱼ all lie in ℤⁿ. Formalizing this averaging argument in Lean requires Lebesgue integration of an ℕ∞-valued function — currently axiomatized.",
+    "mathContext": "**Covering count**: $c(z) = \\#\\{v \\in \\mathbb{Z}^n \\mid z + v \\in S\\}$.\n\n**Averaging**: $\\int_F c\\, dz = \\sum_v \\mathrm{vol}(S_v) = \\mathrm{vol}(S) > k\\cdot 1 = k\\cdot\\mathrm{vol}(F)$.\n\nSo $c(z) \\ge k+1$ on a set of positive measure. Pick any such $z$; the lattice elements $v_0,\\ldots,v_k$ with $z + v_i \\in S$ give $k+1$ pairwise $\\mathbb{Z}^n$-congruent points of $S$.",
+    "significance": "context",
+    "relatedConcepts": ["covering function", "Lebesgue averaging", "Fubini for indicator", "essential supremum", "ℕ∞-valued integration"],
+    "prerequisites": ["Lebesgue integration", "averaging arguments in measure theory"]
+  },
+  {
+    "id": "ann-mk04-basic-from-general",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 159, "endLine": 168 },
+    "type": "technique",
+    "title": "Sanity Check: k=1 from General",
+    "content": "Provides an alternative derivation of `blichfeldt_basic` from the general-k axiom by specializing k = 1. The output of the general theorem at k=1 is two points indexed by `Fin 2`; we extract pts 0 and pts 1 and use `Function.Injective` plus `decide` to discharge `(0 : Fin 2) ≠ 1`. This is a redundant proof — the direct k=1 theorem above doesn't need the general axiom — but its presence documents that the axiomatized `blichfeldt_general` is consistent with the directly-proved k=1 case.",
+    "mathContext": "Specialize the general theorem at $k = 1$. The output is `pts : Fin 2 → ℝⁿ` injective with all values in $S$ and pairwise differences in $\\mathbb{Z}^n$. Set $x = $ pts 0, $y = $ pts 1; injectivity gives $x \\ne y$ via `(0 : Fin 2) ≠ 1`.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fin 2", "Function.Injective", "decide tactic", "axiom consistency"],
+    "prerequisites": ["finite types in Lean", "Function.Injective unfolding"]
+  },
+  {
+    "id": "ann-mk04-mink-setup",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 195, "endLine": 206 },
+    "type": "technique",
+    "title": "Recovering Minkowski: The Half-Scaling Trick",
+    "content": "Define T = (1/2)·S = {x/2 | x ∈ S}. Then vol(T) = vol(S)/2ⁿ > 1, so Blichfeldt applies to T. The two sorries are technical: (a) measurability of T as the image of S under the linear isomorphism x ↦ x/2; (b) the scaling identity vol(T) = vol(S)/2ⁿ from Mathlib's `Measure.addHaar_smul`. Both are bookkeeping facts about Lebesgue measure under nonzero scalar multiplication; neither requires deep work.",
+    "mathContext": "**Half-scaling**: $T = \\tfrac{1}{2}\\!\\cdot\\! S$.\n\n**Volume**: The linear map $x \\mapsto \\tfrac{1}{2}x$ has Jacobian $(1/2)^n = 2^{-n}$, so $\\mathrm{vol}(T) = 2^{-n}\\,\\mathrm{vol}(S) > 2^{-n}\\cdot 2^n = 1$.\n\n**Mathlib**: `Measure.addHaar_smul (volume) c s = |c|^n · volume s` for $c \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Haar measure scaling", "linear isomorphism", "Jacobian determinant", "Measure.addHaar_smul"],
+    "prerequisites": ["scalar action on Set ℝⁿ", "Lebesgue measure under linear maps"]
+  },
+  {
+    "id": "ann-mk04-symm-conv",
+    "proofId": "minkowski-theorem-oq-04",
+    "range": { "startLine": 207, "endLine": 217 },
+    "type": "insight",
+    "title": "Central Symmetry + Convexity Yield the Lattice Point",
+    "content": "Blichfeldt gives a ≠ b ∈ T with a − b ∈ ℤⁿ. Writing a = x₀/2, b = y₀/2 with x₀, y₀ ∈ S, central symmetry of S gives −y₀ ∈ S, and convexity gives the midpoint (x₀ + (−y₀))/2 = a − b in S. This is exactly Minkowski's classical extraction step: convexity converts a *difference* of two elements of T into a *single element* of S. Without convexity (or symmetry) we'd only know a − b lies in (S − S)/2, a strictly larger set — hence Blichfeldt's theorem really *is* stronger than Minkowski's, even though Minkowski is recovered as a corollary at vol > 2ⁿ.",
+    "mathContext": "Given $a \\ne b \\in T = \\tfrac{1}{2}S$ with $a - b \\in \\mathbb{Z}^n$: write $a = \\tfrac{1}{2}x_0$, $b = \\tfrac{1}{2}y_0$ with $x_0, y_0 \\in S$. Then\n$$a - b \\;=\\; \\tfrac{1}{2}x_0 - \\tfrac{1}{2}y_0 \\;=\\; \\tfrac{1}{2}\\bigl(x_0 + (-y_0)\\bigr).$$\nCentral symmetry: $-y_0 \\in S$. Convexity (with weights $1/2, 1/2$): the midpoint $\\tfrac{1}{2}(x_0 + (-y_0)) = a - b \\in S$. Nonzero from $a \\ne b$. Lattice membership directly from Blichfeldt.",
+    "significance": "key",
+    "relatedConcepts": ["central symmetry", "convex combination", "midpoint in convex set", "Convex.add_mem (Mathlib)", "Minkowski's lattice point theorem"],
+    "prerequisites": ["convexity", "central symmetry", "Mathlib Convex.smul_add"]
+  }
+]

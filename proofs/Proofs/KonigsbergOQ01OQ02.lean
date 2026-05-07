@@ -570,22 +570,171 @@ private lemma maxTrailRem_last_no_out (E : Finset (V × V)) (v : V) :
       simp only [List.getLast_singleton]
       simpa using hout
 
-/-- The edges used by maxTrail (= E \ remaining) are exactly E minus maxTrailRem. -/
+/-- The edges used by maxTrail (= E \ remaining) are exactly E minus maxTrailRem.
+    Direct induction on E.card. In the recursive case, pick c, then
+    maxTrail E v = v :: maxTrail (E.erase c) c.2 and maxTrailRem E v =
+    maxTrailRem (E.erase c) c.2. The trail steps decompose as {step 0 = c} ∪
+    {steps shifted from inner trail}. Use IH on (E.erase c) and the fact that
+    c ∉ maxTrailRem (since maxTrailRem ⊆ E.erase c). -/
 private lemma maxTrail_used_eq (E : Finset (V × V)) (v : V) :
     E \ maxTrailRem E v =
     (Finset.range ((maxTrail E v).length - 1)).image (fun i =>
       ((maxTrail E v).get ⟨i, by omega⟩, (maxTrail E v).get ⟨i + 1, by omega⟩)) := by
-  sorry -- Provable by joint induction on E.card; deferred for brevity
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    by_cases hout : (E.filter (fun e => e.1 = v)).Nonempty
+    · -- Recursive case: maxTrail E v = v :: maxTrail (E.erase c) c.2
+      set c := hout.choose with hc_def
+      have hc_spec := hout.choose_spec
+      have hc_E : c ∈ E := (Finset.mem_filter.mp hc_spec).1
+      have hc_v : c.1 = v := (Finset.mem_filter.mp hc_spec).2
+      have hcard : (E.erase c).card < n := h_n ▸ Finset.card_erase_lt_of_mem hc_E
+      have hmtail : maxTrail E v = v :: maxTrail (E.erase c) c.2 := by
+        unfold maxTrail; simp only [hout, ↓reduceDite]
+      have hmrem : maxTrailRem E v = maxTrailRem (E.erase c) c.2 := by
+        unfold maxTrailRem; simp only [hout, ↓reduceDite]
+      have hne_inner : maxTrail (E.erase c) c.2 ≠ [] := maxTrail_nonempty' _ _
+      have h_inner_pos : 0 < (maxTrail (E.erase c) c.2).length := by
+        cases h_inner : maxTrail (E.erase c) c.2 with
+        | nil => exact absurd h_inner hne_inner
+        | cons _ _ => simp [h_inner]
+      have hinner_start : (maxTrail (E.erase c) c.2).get ⟨0, h_inner_pos⟩ = c.2 := by
+        have hmh := maxTrail_head' (E.erase c) c.2
+        cases h_inner : maxTrail (E.erase c) c.2 with
+        | nil => exact absurd h_inner hne_inner
+        | cons hd t =>
+          rw [h_inner] at hmh
+          simp only [List.head?_cons, Option.some.injEq] at hmh
+          rw [h_inner, List.get_cons_zero]; exact hmh
+      have hcRem : c ∉ maxTrailRem (E.erase c) c.2 :=
+        fun hmem => Finset.not_mem_erase c E (maxTrailRem_subset _ _ hmem)
+      have hIH := ih _ hcard (E.erase c) c.2 rfl
+      ext x
+      rw [hmrem]
+      simp only [Finset.mem_sdiff, Finset.mem_image, Finset.mem_range]
+      constructor
+      · rintro ⟨hxE, hxRem⟩
+        by_cases hxc : x = c
+        · -- x = c: outer step 0 is c
+          subst hxc
+          refine ⟨0, ?_, ?_⟩
+          · simp only [hmtail, List.length_cons]; omega
+          · simp only [hmtail, List.get_cons_zero, List.get_cons_succ, hinner_start]
+            exact Prod.ext hc_v.symm rfl
+        · -- x ≠ c: x ∈ E.erase c, apply IH and shift index by 1
+          have hxE' : x ∈ E.erase c := Finset.mem_erase.mpr ⟨hxc, hxE⟩
+          have hxIn : x ∈ (E.erase c) \ maxTrailRem (E.erase c) c.2 :=
+            Finset.mem_sdiff.mpr ⟨hxE', hxRem⟩
+          rw [hIH] at hxIn
+          simp only [Finset.mem_image, Finset.mem_range] at hxIn
+          obtain ⟨j, hj_lt, hj_eq⟩ := hxIn
+          refine ⟨j + 1, ?_, ?_⟩
+          · simp only [hmtail, List.length_cons]; omega
+          · simp only [hmtail, List.get_cons_succ]; exact hj_eq
+      · rintro ⟨i, hi_lt, hi_eq⟩
+        cases i with
+        | zero =>
+          -- step_outer 0 = c
+          have hstep0 : ((maxTrail E v).get ⟨0, by simp only [hmtail, List.length_cons]; omega⟩,
+              (maxTrail E v).get ⟨0 + 1, by simp only [hmtail, List.length_cons]; omega⟩) = c := by
+            simp only [hmtail, List.get_cons_zero, List.get_cons_succ, hinner_start]
+            exact Prod.ext hc_v.symm rfl
+          rw [hstep0] at hi_eq
+          subst hi_eq
+          exact ⟨hc_E, hcRem⟩
+        | succ i' =>
+          have hi'_lt : i' < (maxTrail (E.erase c) c.2).length - 1 := by
+            simp only [hmtail, List.length_cons] at hi_lt; omega
+          have hstep_eq : ((maxTrail E v).get ⟨i' + 1,
+                by simp only [hmtail, List.length_cons]; omega⟩,
+              (maxTrail E v).get ⟨i' + 1 + 1,
+                by simp only [hmtail, List.length_cons]; omega⟩) =
+              ((maxTrail (E.erase c) c.2).get ⟨i', by omega⟩,
+               (maxTrail (E.erase c) c.2).get ⟨i' + 1, by omega⟩) := by
+            simp only [hmtail, List.get_cons_succ]
+          rw [hstep_eq] at hi_eq
+          have hxIn : x ∈ (E.erase c) \ maxTrailRem (E.erase c) c.2 := by
+            rw [hIH]
+            simp only [Finset.mem_image, Finset.mem_range]
+            exact ⟨i', hi'_lt, hi_eq⟩
+          obtain ⟨hxE', hxRem'⟩ := Finset.mem_sdiff.mp hxIn
+          exact ⟨Finset.mem_of_mem_erase hxE', hxRem'⟩
+    · -- Base case: no outgoing edges, maxTrail = [v], maxTrailRem = E
+      have hmtail : maxTrail E v = [v] := by unfold maxTrail; simp [hout]
+      have hmrem : maxTrailRem E v = E := by unfold maxTrailRem; simp [hout]
+      rw [hmrem, Finset.sdiff_self]
+      ext x
+      simp only [Finset.not_mem_empty, Finset.mem_image, Finset.mem_range, false_iff,
+                 not_exists, not_and]
+      intro i hi_lt _
+      rw [hmtail] at hi_lt
+      simp at hi_lt
 
 /-- Every edge from the last vertex in E appears as a trail step.
-    Equivalently: maxTrailRem has no outgoing edges from the last vertex in E. -/
+    Equivalently: maxTrailRem has no outgoing edges from the last vertex in E.
+    Direct induction on E.card: in the recursive case, pick the first outgoing edge c
+    (so maxTrail E v = v :: maxTrail (E.erase c) c.2); the last vertex of the outer
+    trail equals the last vertex of the inner trail. Either e = c (use step 0) or
+    e ∈ E.erase c (apply IH and shift index by 1). -/
 private lemma maxTrail_last_exhausted (E : Finset (V × V)) (v : V) :
     let last_v := (maxTrail E v).getLast (maxTrail_nonempty' E v)
     ∀ e ∈ E, e.1 = last_v →
       ∃ i, i + 1 < (maxTrail E v).length ∧
         (maxTrail E v).get ⟨i, by omega⟩ = e.1 ∧
         (maxTrail E v).get ⟨i + 1, by omega⟩ = e.2 := by
-  sorry -- Follows from maxTrailRem_last_no_out + maxTrail_used_eq; deferred
+  induction h_n : E.card using Nat.strong_rec_on generalizing E v with
+  | _ n ih =>
+    intro e he hev
+    by_cases hout : (E.filter (fun e => e.1 = v)).Nonempty
+    · -- Recursive case: maxTrail E v = v :: maxTrail (E.erase c) c.2
+      set c := hout.choose with hc_def
+      have hc_spec := hout.choose_spec
+      have hc_E : c ∈ E := (Finset.mem_filter.mp hc_spec).1
+      have hc_v : c.1 = v := (Finset.mem_filter.mp hc_spec).2
+      have hcard : (E.erase c).card < n := h_n ▸ Finset.card_erase_lt_of_mem hc_E
+      have hmtail : maxTrail E v = v :: maxTrail (E.erase c) c.2 := by
+        unfold maxTrail; simp only [hout, ↓reduceDite]
+      have hne_inner : maxTrail (E.erase c) c.2 ≠ [] := maxTrail_nonempty' _ _
+      have h_inner_pos : 0 < (maxTrail (E.erase c) c.2).length := by
+        cases h_inner : maxTrail (E.erase c) c.2 with
+        | nil => exact absurd h_inner hne_inner
+        | cons _ _ => simp [h_inner]
+      have hinner_start : (maxTrail (E.erase c) c.2).get ⟨0, h_inner_pos⟩ = c.2 := by
+        have hmh := maxTrail_head' (E.erase c) c.2
+        cases h_inner : maxTrail (E.erase c) c.2 with
+        | nil => exact absurd h_inner hne_inner
+        | cons hd t =>
+          rw [h_inner] at hmh
+          simp only [List.head?_cons, Option.some.injEq] at hmh
+          rw [h_inner, List.get_cons_zero]; exact hmh
+      have hlast_eq : (maxTrail E v).getLast (maxTrail_nonempty' E v) =
+          (maxTrail (E.erase c) c.2).getLast hne_inner := by
+        rw [hmtail]; exact List.getLast_cons hne_inner
+      by_cases h_ec : e = c
+      · -- Step 0 of outer trail is exactly the edge c = e.
+        subst h_ec
+        refine ⟨0, ?_, ?_, ?_⟩
+        · simp only [hmtail, List.length_cons]; omega
+        · simp only [hmtail, List.get_cons_zero]; exact hc_v.symm
+        · simp only [hmtail, List.get_cons_succ]
+          exact hinner_start
+      · -- e ∈ E.erase c: apply IH at (E.erase c, c.2), shift index by 1.
+        have he_erase : e ∈ E.erase c := Finset.mem_erase.mpr ⟨h_ec, he⟩
+        have hev_inner : e.1 = (maxTrail (E.erase c) c.2).getLast hne_inner := by
+          rw [← hlast_eq]; exact hev
+        obtain ⟨i, hi_lt, hi_src, hi_tgt⟩ :=
+          ih _ hcard (E.erase c) c.2 rfl e he_erase hev_inner
+        refine ⟨i + 1, ?_, ?_, ?_⟩
+        · simp only [hmtail, List.length_cons]; omega
+        · simp only [hmtail, List.get_cons_succ]; exact hi_src
+        · simp only [hmtail, List.get_cons_succ]; exact hi_tgt
+    · -- Base case: maxTrail E v = [v], so last_v = v, but no edge from v exists in E.
+      exfalso
+      have hmtail : maxTrail E v = [v] := by unfold maxTrail; simp [hout]
+      have hlast_v : (maxTrail E v).getLast (maxTrail_nonempty' E v) = v := by
+        rw [hmtail]; rfl
+      rw [hlast_v] at hev
+      exact hout ⟨e, Finset.mem_filter.mpr ⟨he, hev⟩⟩
 
 /-- All steps of maxTrail E v use edges from E. -/
 private lemma maxTrail_steps_in_E (E : Finset (V × V)) (v : V) :
@@ -833,7 +982,7 @@ theorem maxTrail_closed (G : DiGraph V) (hbal : IsEulerianBalanced G) (v : V) :
     · exact hlast_def
   -- STEP E: Balance gives contradiction
   have hbal_last : inDegree G last_v = outDegree G last_v :=
-    (hbal last_v).symm
+    hbal last_v
   omega
 
 /-
@@ -849,7 +998,7 @@ structure DirectedCircuit (G : DiGraph V) where
   walk : List V
   head_eq_last : walk.head? = walk.getLast?
   length_ge_2  : 2 ≤ walk.length
-  steps_in_G   : ∀ i, i + 1 < walk.length →
+  steps_in_G   : ∀ i (h : i + 1 < walk.length),
     (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges
 
 /-- Every non-empty balanced digraph has a directed circuit. -/
@@ -864,10 +1013,11 @@ theorem circuit_exists (G : DiGraph V) (hbal : IsEulerianBalanced G)
   have hne_trail := maxTrail_nonempty' G.edges v
   -- v has an outgoing edge e₀, so the trail has length ≥ 2.
   have hlen : 2 ≤ trail.length := by
-    unfold_let trail; unfold maxTrail
+    show 2 ≤ (maxTrail G.edges v).length
+    unfold maxTrail
     have hout : (G.edges.filter (fun e => e.1 = v)).Nonempty :=
       ⟨e₀, Finset.mem_filter.mpr ⟨he₀, hv_def⟩⟩
-    simp [hout, List.length_cons]
+    simp only [hout, ↓reduceDite, List.length_cons]
     exact Nat.succ_le_succ (Nat.one_le_iff_ne_zero.mpr
       (List.length_ne_zero.mpr (maxTrail_nonempty' _ _)))
   exact ⟨⟨trail, hclosed, hlen, maxTrail_steps_in_E G.edges v⟩⟩
@@ -927,10 +1077,10 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
     have hn0 : n = 0 := by omega
     have hlen1 : walk.length = 1 := by omega
     have hhead_last : walk.head? = walk.getLast? := by
-      cases walk with
-      | nil => simp at hlen1
-      | cons a [] => simp
-      | cons a (b :: l) => simp at hlen1
+      rcases walk with _ | ⟨a, _ | ⟨b, l⟩⟩
+      · simp at hlen1
+      · rfl
+      · simp at hlen1
     rw [hhead, hlast] at hhead_last
     exact hst (Option.some.inj hhead_last)
   have hget_head : walk.get ⟨0, by omega⟩ = s := by

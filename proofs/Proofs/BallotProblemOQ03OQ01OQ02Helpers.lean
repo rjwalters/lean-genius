@@ -4767,6 +4767,50 @@ private lemma corner_row_lt_of_col_lt {μ : YoungDiagram} {c c' : ℕ × ℕ}
     have hc'_row : c'.2 < μ.rowLen c'.1 := YoungDiagram.mem_iff_lt_rowLen.mp hc'.1
     rw [← heq, hrl] at hc'_row; omega
 
+/-- Distinct corners of μ have distinct first coordinates: each row of μ has at
+    most one corner (namely the rightmost cell of the row, if any).
+    Useful in the GNW exchange argument when reasoning about hookLength shifts:
+    distinct corners c, c' never share a row, so the arm of c and the arm of c'
+    are disjoint apart from the doubly-affected cell. -/
+private lemma corners_fst_ne {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    c.1 ≠ c'.1 := by
+  intro heq
+  -- Same row ⇒ both have rowLen at row c.1 = c.2 + 1 = c'.2 + 1, hence c = c'.
+  have h1 : μ.rowLen c.1 = c.2 + 1 := rowLen_of_isCorner hc
+  have h2 : μ.rowLen c'.1 = c'.2 + 1 := rowLen_of_isCorner hc'
+  rw [← heq] at h2
+  have hsnd : c.2 = c'.2 := by omega
+  exact hne (Prod.ext heq hsnd)
+
+/-- Distinct corners of μ have distinct second coordinates: each column of μ has
+    at most one corner (namely the bottom cell of the column, if any). -/
+private lemma corners_snd_ne {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    c.2 ≠ c'.2 := by
+  intro heq
+  have h1 : μ.colLen c.2 = c.1 + 1 := colLen_of_isCorner hc
+  have h2 : μ.colLen c'.2 = c'.1 + 1 := colLen_of_isCorner hc'
+  rw [← heq] at h2
+  have hfst : c.1 = c'.1 := by omega
+  exact hne (Prod.ext hfst heq)
+
+/-- Trichotomy for distinct corners (collapses to dichotomy): either `c` is
+    strictly above-and-to-the-right of `c'`, or vice versa. The middle case
+    (`c.1 = c'.1`) is impossible by `corners_fst_ne`.
+
+    This packages the existing `corner_col_lt_of_row_lt` for use in case
+    analysis without re-deriving the row-coordinate dichotomy at each call site.
+    Used in the GNW exchange identity to split on the relative orientation of
+    `c` and `c'`. -/
+private lemma distinct_corners_dichotomy {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    (c.1 < c'.1 ∧ c'.2 < c.2) ∨ (c'.1 < c.1 ∧ c.2 < c'.2) := by
+  have h_fst_ne : c.1 ≠ c'.1 := corners_fst_ne hc hc' hne
+  rcases lt_or_gt_of_ne h_fst_ne with hlt | hgt
+  · exact Or.inl ⟨hlt, corner_col_lt_of_row_lt hc hc' hlt⟩
+  · exact Or.inr ⟨hgt, corner_col_lt_of_row_lt hc' hc hgt⟩
+
 /-- For two distinct corners `c, c'` of μ with `c.1 < c'.1`, the cell `(c.1, c'.2)`
     lies in μ. It is the unique cell in the arm of `c` and leg of `c'`, and plays
     a key role in the GNW 1979 exchange identity. -/

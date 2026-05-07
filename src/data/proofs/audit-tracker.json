@@ -4262,9 +4262,9 @@
       "result": "issues-fixed"
     },
     "erdos-1156": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:42:51Z",
+      "lastAudited": "2026-05-07T18:58:07Z",
       "result": "clean"
     },
     "erdos-1157": {
@@ -11545,9 +11545,9 @@
       "result": "clean"
     },
     "godel-first-incompleteness-oq01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:25Z",
+      "lastAudited": "2026-05-07T19:26:16Z",
       "result": "clean"
     },
     "godel-incompleteness": {
@@ -11713,10 +11713,10 @@
       "result": "clean"
     },
     "hilbert-15-oq-02": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:26Z",
-      "result": "clean"
+      "lastAudited": "2026-05-07T19:26:16Z",
+      "result": "issues-found"
     },
     "hilbert-16": {
       "agentId": "auditor-cycle-20-batch",
@@ -12043,9 +12043,9 @@
       "result": "clean"
     },
     "kummer-theorem-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:26Z",
+      "lastAudited": "2026-05-07T22:50:00Z",
       "result": "clean"
     },
     "kummer-theorem-oq-02": {
@@ -12151,9 +12151,9 @@
       "result": "clean"
     },
     "law-of-sines-oq-06": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:27Z",
+      "lastAudited": "2026-05-07T19:26:16Z",
       "result": "clean"
     },
     "laws-of-large-numbers": {
@@ -12175,9 +12175,9 @@
       "issues": []
     },
     "laws-of-large-numbers-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:27Z",
+      "lastAudited": "2026-05-07T19:26:16Z",
       "result": "clean"
     },
     "laws-of-large-numbers-oq-04": {
@@ -13813,6 +13813,13 @@
       "result": "clean",
       "issues": []
     },
+    "four-square-distribution-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-07T22:30:00Z",
+      "result": "issues-found",
+      "issues": ["meta.theoremCount=33 vs actual 51", "meta.lineCount=210 vs actual 209"],
+      "notes": "stale theoremCount and lineCount in legacy meta sub-object; lf block absent so find-targets misses. See issue #16708."
+    },
     "inverse-galois-d4": {
       "auditCount": 1,
       "lastAudited": "2026-05-03T04:51:00Z",
@@ -14778,8 +14785,8 @@
       "issues": []
     },
     "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T11:11:52Z",
+      "auditCount": 2,
+      "lastAudited": "2026-05-07T19:07:34Z",
       "result": "issues-fixed",
       "issues": []
     },
@@ -14965,6 +14972,12 @@
     "minkowski-theorem-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-05-07T18:35:17Z",
+      "result": "clean",
+      "issues": []
+    },
+    "basel-problem-oq-01-oq-01-oq-02-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-07T19:11:54Z",
       "result": "clean",
       "issues": []
     }

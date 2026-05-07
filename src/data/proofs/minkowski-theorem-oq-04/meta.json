@@ -78,6 +78,7 @@
       "Removing convexity and symmetry: Blichfeldt's pigeonhole works on the *measure* of S alone, no geometric structure of S beyond measurability is used. The fundamental domain provides the pigeonholes.",
       "The half-scaling trick T = (1/2)·S is the bridge to Minkowski: vol(S) > 2ⁿ becomes vol(T) > 1, and the central symmetry + convexity of S give the lattice point in S itself rather than in (S − S)/2.",
       "The k=1 to general-k gap: the general case uses a covering-count averaging argument (∫_F #{v | z+v ∈ S} dz = vol(S)) but the existence of z with high covering count is more subtle than the disjoint-set pigeonhole in the k=1 case. We axiomatize this step here.",
+      "Why exactly three measure axioms? Each captures one ingredient of the pigeonhole: partition (Axiom 1) reads vol(S) as a sum over translates; measurability (Axiom 2) makes that sum well-defined; covolume bound (Axiom 3) says the sum cannot exceed vol(F)=1. Removing any one collapses the proof — and each axiom is a one-line Mathlib invocation, so the formalization is genuinely close to fully verified.",
       "Lean 4 + Mathlib 4.26.0 friction points: `Pairwise (Disjoint on f)` infix needs a lambda rewrite; ENNReal Nat-coercion at literal-1 sites needs `exact_mod_cast`; `Submodule.mem_toAddSubgroup` was removed and SetLike defEq must be used directly."
     ],
     "prerequisites": [
@@ -138,9 +139,19 @@
       "description": "Blichfeldt's theorem strengthens Minkowski's theorem by removing convexity and central symmetry. The Minkowski theorem is recovered here as `minkowski_from_blichfeldt`."
     },
     {
+      "targetId": "minkowski-fundamental-theorem",
+      "relationship": "depends-on",
+      "description": "Imports `Proofs.MinkowskiFundamentalTheorem` for the `MinkowskiProved.stdLattice` and `MinkowskiProved.stdFundDomain` infrastructure (the standard ℤⁿ lattice and the fundamental domain F = [0,1)ⁿ). The half-scaling reduction `minkowski_from_blichfeldt` re-derives Minkowski's classical statement from Blichfeldt + ℤⁿ."
+    },
+    {
       "targetId": "minkowski-theorem-oq-02",
       "relationship": "related",
       "description": "Sibling Minkowski OQ — Dirichlet's approximation theorem from Minkowski. Uses the same `MinkowskiProved` infrastructure (stdLattice, stdFundDomain) from `Proofs.MinkowskiFundamentalTheorem`."
+    },
+    {
+      "targetId": "minkowski-theorem-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling Minkowski OQ — axiom-free Dirichlet via Minkowski. Demonstrates the alternate formalization style (verified, 0 axioms via measurability/convexity/volume lemmas) that Blichfeldt's `axiomatized` status could eventually graduate to."
     }
   ],
   "leanFile": {

@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 210,
-    "theoremCount": 33,
+    "lineCount": 209,
+    "theoremCount": 51,
     "definitionCount": 4,
     "assumptions": "Axiomatized: jacobi_r4_formula — for all n ≥ 1, the integer-tuple count r₄(n) equals 8·σ*(n). Numerically verified for n = 1..10. The general statement is open in this formalization because Mathlib lacks the q-expansion / Fourier-coefficient infrastructure for jacobiTheta and the identification of θ⁴ with the weight-2 Eisenstein series E₂(τ) − 4·E₂(4τ).",
     "mathlibDependencies": [
@@ -103,14 +103,14 @@
   },
   "crossReferences": [
     {
-      "type": "extends",
-      "target": "four-square-distribution",
-      "label": "Parent gallery entry: type-decomposition r₄(n) = ∑ contribution(t)"
+      "targetId": "four-square-distribution",
+      "relationship": "extends",
+      "description": "Parent gallery entry: type-decomposition r₄(n) = ∑ contribution(t). The 'distribution_matches_jacobi_*' theorems in Part 4 cross-check Jacobi's formula against the parent's combinatorial type contributions for n = 1..7, 9, 10."
     },
     {
-      "type": "uses",
-      "target": "lagrange-four-squares",
-      "label": "Lagrange existence theorem (every n ≥ 0 is a sum of four squares)"
+      "targetId": "lagrange-four-squares",
+      "relationship": "uses",
+      "description": "Lagrange's four-square theorem (every n ≥ 0 is a sum of four integer squares). Lagrange gives existence; Jacobi's formula refines this by counting representations exactly. r₄(n) ≥ 1 for all n ≥ 0 from Lagrange, and Jacobi's r₄(n) = 8·σ*(n) > 0 confirms this for n ≥ 1."
     }
   ]
 }

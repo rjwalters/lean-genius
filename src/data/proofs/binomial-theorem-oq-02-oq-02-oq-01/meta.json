@@ -1,0 +1,182 @@
+{
+  "id": "binomial-theorem-oq-02-oq-02-oq-01",
+  "title": "q-Vandermonde Base Cases via Gaussian Binomial Coefficients",
+  "slug": "binomial-theorem-oq-02-oq-02-oq-01",
+  "description": "Foundational q-binomial coefficient API and the m=0 / n=0 base cases of the q-Vandermonde identity. Defines `qBinomial : R → ℕ → ℕ → R` over any CommSemiring via the q-Pascal recurrence (Mathlib v4.26.0 has no GaussianBinomial yet) and proves boundary, vanishing, diagonal, q→1 specialization, and the two q-Vandermonde base cases plus their classical (q=1) analogues.",
+  "meta": {
+    "author": "Andrews / Kac-Cheung tradition, formalized in Lean 4 with Mathlib 4.26.0",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+    "date": "2026",
+    "status": "axiomatized",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "q-vandermonde",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Pulls out the last term of a finite range sum",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "Pulls out the first term and re-indexes the rest",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule for ordinary binomial coefficients (used in the q→1 specialization)",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Self-contained `qBinomial` definition over an arbitrary CommSemiring via the recurrence \\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q (no rational-function or polynomial-quotient machinery)",
+      "Boundary lemmas \\binom{n}{0}_q = 1 and \\binom{0}{k+1}_q = 0; vanishing for k > n; diagonal \\binom{n}{n}_q = 1",
+      "q→1 specialization theorem proving qBinomial (1 : R) n k = Nat.choose n k cast into R, by induction using Nat.choose_succ_succ",
+      "q-Vandermonde base cases: m = 0 and n = 0, with the convolution sum collapsing to a single term in each case",
+      "Classical Vandermonde base cases (vandermonde_zero_left_nat, vandermonde_zero_right_nat) derived directly in ℕ, providing the q = 1 specialization in a more readable form"
+    ],
+    "dateAdded": "2026-05-07",
+    "axiomCount": 0,
+    "lineCount": 242,
+    "assumptions": "0 axioms, 0 sorries. The full inductive q-Vandermonde identity \\binom{m+n}{r}_q = ∑_{k=0}^{r} q^{(m-k)(r-k)} · \\binom{m}{k}_q · \\binom{n}{r-k}_q is recorded as future work; only the m=0 and n=0 base cases (plus their classical analogues) are formally proved here.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Gaussian binomial (q-binomial) coefficients are a one-parameter deformation of ordinary binomial coefficients introduced by Gauss in his work on cyclotomy and developed extensively by Cauchy, Heine, and Rogers in the 19th century. They have three principal interpretations: (i) algebraic — as the q-deformation \\binom{n}{k}_q satisfying the q-Pascal recurrence, recovering Nat.choose at q = 1; (ii) combinatorial — counting partitions with at most k parts each at most n - k; (iii) geometric — counting k-dimensional subspaces of 𝔽_q^n, the finite-field analogue of Grassmannians. The q-Vandermonde identity \\binom{m+n}{r}_q = ∑_k q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q is the q-analogue of Vandermonde's classical convolution and reduces to it as q → 1. Mathlib v4.26.0 mentions q-binomials only as a TODO in `Mathlib.RingTheory.Polynomial.Pochhammer`; this file fills the gap with a self-contained, recurrence-based API.",
+    "problemStatement": "Develop a self-contained Lean 4 API for the Gaussian binomial coefficient `\\binom{n}{k}_q` (no Mathlib equivalent in v4.26.0), prove its foundational identities, and establish the m = 0 and n = 0 base cases of the q-Vandermonde identity together with their classical (q = 1) analogues.",
+    "text": "Defines qBinomial via the q-Pascal recurrence and proves the boundary, vanishing, diagonal, and q→1 specialization lemmas plus the m=0 and n=0 base cases of q-Vandermonde with classical counterparts.",
+    "proofStrategy": "Define qBinomial recursively over (n, k) with explicit base cases for k=0 and n=0. Prove all foundational identities by induction on n and/or k using the recurrence. For the q-Vandermonde base cases, pull out the unique nonzero summand (k=0 in the m=0 case, k=r in the n=0 case) using `Finset.sum_range_succ'` / `Finset.sum_range_succ`, then show every other summand vanishes because qBinomial q 0 (j+1) = 0.",
+    "keyInsights": [
+      "The recurrence-based definition `qBinomial q (n+1) (k+1) = q^(k+1) · qBinomial q n (k+1) + qBinomial q n k` is computable, polynomial-free, and works over any CommSemiring — avoiding the rational-function machinery that the Pochhammer-based definition would require",
+      "The q→1 specialization `qBinomial (1 : R) n k = Nat.choose n k` follows by structural induction: the recurrence collapses to `Nat.choose_succ_succ` once `1^(k+1) = 1` and `1 · _ = _` are applied",
+      "For the q-Vandermonde m=0 base case, pulling out k=0 via `Finset.sum_range_succ'` exposes `q^((0-0)(r-0)) · qBinomial q 0 0 · qBinomial q n r`, which simp reduces to `qBinomial q n r`; every other summand vanishes because qBinomial q 0 (j+1) = 0 by the second boundary lemma",
+      "Symmetric pull-out at k = r works for the n = 0 base case via `Finset.sum_range_succ` (which extracts the LAST term, not the first); the same simp set with `one_mul` AND `mul_one` is needed to fully close the trailing `1 * qBinomial q m r` after qBinomial_zero_right fires",
+      "The classical Vandermonde base cases in ℕ (vandermonde_zero_left_nat, vandermonde_zero_right_nat) are proved directly rather than as q→1 corollaries, since the q-version's q^... factor becomes 1 trivially and a direct ℕ proof is more pedagogically transparent"
+    ],
+    "prerequisites": [
+      "Mathlib.Algebra.BigOperators.Ring.Finset for Finset.sum manipulation",
+      "Mathlib.Data.Nat.Choose.Sum for Nat.choose_succ_succ in the q→1 specialization",
+      "Familiarity with Lean 4 well-founded recursion on (ℕ × ℕ)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "qBinomial Definition",
+      "summary": "Recursive definition of qBinomial via the q-Pascal recurrence over any CommSemiring.",
+      "startLine": 54,
+      "endLine": 63
+    },
+    {
+      "id": "boundary",
+      "title": "Boundary and Recurrence Lemmas",
+      "summary": "qBinomial_zero_right (=1), qBinomial_zero_succ (=0), and the q-Pascal recurrence as a definitional theorem.",
+      "startLine": 65,
+      "endLine": 75
+    },
+    {
+      "id": "vanishing-diagonal",
+      "title": "Vanishing and Diagonal",
+      "summary": "qBinomial_eq_zero_of_lt: \\binom{n}{k}_q = 0 when k > n; qBinomial_self: \\binom{n}{n}_q = 1.",
+      "startLine": 77,
+      "endLine": 97
+    },
+    {
+      "id": "q-to-one",
+      "title": "Specialization at q = 1",
+      "summary": "qBinomial_at_one: at q = 1, qBinomial reduces to Nat.choose cast into R, by induction using Nat.choose_succ_succ.",
+      "startLine": 99,
+      "endLine": 109
+    },
+    {
+      "id": "qvandermonde-base",
+      "title": "q-Vandermonde Base Cases",
+      "summary": "qVandermonde_zero_left (m = 0) and qVandermonde_zero_right (n = 0): the convolution sum collapses to a single term.",
+      "startLine": 111,
+      "endLine": 159
+    },
+    {
+      "id": "classical-base",
+      "title": "Classical Vandermonde Base Cases",
+      "summary": "vandermonde_zero_left_nat and vandermonde_zero_right_nat: q = 1 specialization in ℕ, derived directly.",
+      "startLine": 161,
+      "endLine": 191
+    }
+  ],
+  "conclusion": {
+    "summary": "Self-contained q-binomial API built from the q-Pascal recurrence, with 10 theorems, 1 definition, 0 axioms, 0 sorries. Establishes the m = 0 and n = 0 base cases of q-Vandermonde and their classical analogues — the foundation for a full inductive q-Vandermonde proof.",
+    "implications": "This API positions Lean 4 to support the q-Vandermonde identity, the q-binomial theorem, and finite Grassmannian counting — none of which are currently in Mathlib. The recurrence-based definition is candidate for upstream contribution at `Mathlib/Combinatorics/Enumerative/QBinomial.lean`: it is entirely self-contained, requires only `CommSemiring`, and avoids the rational-function machinery that polynomial-quotient definitions would need. The base cases proved here are the induction anchor for the full q-Vandermonde, which in turn unlocks the q-binomial theorem (Cauchy's identity), reflection symmetry \\binom{n}{k}_q = \\binom{n}{n-k}_q, and the closed forms \\binom{n}{1}_q = 1 + q + ⋯ + q^{n-1}.",
+    "openQuestions": [
+      "Full inductive q-Vandermonde: prove \\binom{m+n}{r}_q = ∑_{k=0}^{r} q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q for all m, n, r by induction on m, using the q-Pascal recurrence and the base cases established here",
+      "Dual q-Pascal: prove \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q (the 'other' recurrence). This requires the closed form \\binom{n}{1}_q = 1 + q + ⋯ + q^{n-1} as a stepping stone, or a sophisticated double induction",
+      "Reflection symmetry \\binom{n}{k}_q = \\binom{n}{n-k}_q for k ≤ n, which follows from the dual q-Pascal rule",
+      "q-binomial theorem (Cauchy): ∏_{i=0}^{n-1} (1 + q^i x) = ∑_{k=0}^{n} q^{k(k-1)/2} \\binom{n}{k}_q · x^k, the q-deformation of the binomial theorem",
+      "Subspace counting: \\binom{n}{k}_q counts k-dimensional subspaces of 𝔽_q^n, linking the algebraic definition above to its finite-field-Grassmannian interpretation. Requires Mathlib's `Module.rank` API for finite vector spaces"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Nat.Choose.Sum",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "QBinomial",
+    "lineCount": 242,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/BinomialTheoremOQ02OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": "1976",
+      "venue": "Cambridge University Press, Encyclopedia of Mathematics and its Applications, Vol. 2"
+    },
+    {
+      "authors": "V. Kac and P. Cheung",
+      "title": "Quantum Calculus",
+      "year": "2002",
+      "venue": "Springer Universitext"
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition, §1.7"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Parent: classical Vandermonde's identity. This entry develops the q-deformation of the underlying binomial coefficients and proves the m=0 / n=0 base cases of the q-Vandermonde convolution, with the classical Vandermonde base cases recovered as the q → 1 specialization."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-03",
+      "relationship": "related",
+      "description": "q-Multinomial Coefficients and the q-Multinomial Theorem — the higher-arity sibling. Both entries develop q-analogues of Pascal-style identities; the q-Vandermonde proved here (in its base cases) is a 2-variable specialization of the q-multinomial convolution."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02",
+      "relationship": "related",
+      "description": "Multinomial theorem — the classical (q = 1) underpinning of the convolution structure that the q-Vandermonde identity generalizes."
+    }
+  ],
+  "sorries": 0
+}
