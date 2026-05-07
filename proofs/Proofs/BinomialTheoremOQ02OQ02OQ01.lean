@@ -191,6 +191,61 @@ theorem vandermonde_zero_right_nat (m r : ℕ) :
     rw [hj, Nat.choose_zero_succ, Nat.mul_zero]
   rw [Finset.sum_congr rfl this, Finset.sum_const_zero, zero_add]
 
+/-!
+## Closed Form for k = 1: Geometric Sum
+
+The q-binomial $\binom{n}{1}_q$ equals the geometric sum $\sum_{i=0}^{n-1} q^i$.
+This is the q-analog of $\binom{n}{1} = n$, and is the simplest non-trivial
+closed form: it instantiates the general principle that q-binomials are
+"polynomials with $\binom{n}{k}$ terms in $q$".
+
+Combined with the symmetric closed form $\binom{n+1}{n}_q = \sum_{i=0}^{n} q^i$,
+this gives the simplest case of q-binomial reflection symmetry:
+$\binom{n+1}{1}_q = \binom{n+1}{n}_q$.
+-/
+
+/-- **Closed form at k = 1**: `\binom{n}{1}_q = ∑_{i=0}^{n-1} q^i`.
+
+    Proof by induction on n using the q-Pascal recurrence
+    $\binom{n+1}{1}_q = q \binom{n}{1}_q + \binom{n}{0}_q = q \binom{n}{1}_q + 1$,
+    so $\binom{n}{1}_q$ satisfies $a_{n+1} = q a_n + 1$, $a_0 = 0$,
+    whose solution is the geometric sum. -/
+theorem qBinomial_one_eq_geom_sum (q : R) :
+    ∀ n : ℕ, qBinomial q n 1 = ∑ i ∈ range n, q ^ i
+  | 0 => by simp
+  | n + 1 => by
+      rw [qBinomial_succ_succ, qBinomial_zero_right, qBinomial_one_eq_geom_sum q n,
+          pow_one, Finset.sum_range_succ' (fun i => q ^ i) n]
+      simp [Finset.mul_sum, pow_succ, mul_comm]
+
+/-- **Closed form at k = n** for $\binom{n+1}{n}_q$:
+    `\binom{n+1}{n}_q = ∑_{i=0}^{n} q^i`.
+
+    Proof by induction on n using the q-Pascal recurrence
+    $\binom{n+1}{n}_q = q^n \binom{n}{n}_q + \binom{n}{n-1}_q = q^n + \binom{n}{n-1}_q$
+    (after handling the base case n = 0). -/
+theorem qBinomial_succ_pred_eq_geom_sum (q : R) :
+    ∀ n : ℕ, qBinomial q (n + 1) n = ∑ i ∈ range (n + 1), q ^ i
+  | 0 => by
+      -- qBinomial q 1 0 = 1; ∑ i ∈ range 1, q^i = q^0 = 1
+      simp
+  | n + 1 => by
+      -- qBinomial q (n+2) (n+1) = q^(n+1) * qBinomial q (n+1) (n+1) + qBinomial q (n+1) n
+      --                         = q^(n+1) + ∑_{i=0}^{n} q^i = ∑_{i=0}^{n+1} q^i
+      rw [qBinomial_succ_succ, qBinomial_self,
+          qBinomial_succ_pred_eq_geom_sum q n,
+          Finset.sum_range_succ (fun i => q ^ i) (n + 1)]
+      ring
+
+/-- **Reflection symmetry at k = 1**: `\binom{n+1}{1}_q = \binom{n+1}{n}_q`.
+
+    Both equal the geometric sum $\sum_{i=0}^{n} q^i$. This is the simplest
+    non-trivial case of the reflection symmetry $\binom{n}{k}_q = \binom{n}{n-k}_q$
+    for k ≤ n; the general statement requires the dual q-Pascal recurrence. -/
+theorem qBinomial_reflection_at_one (q : R) (n : ℕ) :
+    qBinomial q (n + 1) 1 = qBinomial q (n + 1) n := by
+  rw [qBinomial_one_eq_geom_sum q (n + 1), qBinomial_succ_pred_eq_geom_sum q n]
+
 end QBinomial
 
 /-!
