@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 40, "endLine": 47 },
+    "type": "context",
+    "title": "Imports and Namespace Setup",
+    "content": "Imports the parent file `BorsukUlamOQ02OQ01OQ03` (which provides `symBUDim`, `sym_has_cyclic_prime`, `buDim`, `buDim_prime`) along with Mathlib's `Nat.findGreatest` API and primality basics. The `open BorsukUlamNonCyclic BorsukUlamOQ02OQ01` directive brings the parent axioms into scope without qualification.",
+    "mathContext": "Two namespaces are opened: `BorsukUlamNonCyclic` (the cyclic-group BU framework providing $\\text{buDim}(p, d)$) and `BorsukUlamOQ02OQ01` (the symmetric-group framework providing $\\text{symBUDim}(n, d)$ and the subgroup-monotonicity axiom).",
+    "significance": "context",
+    "relatedConcepts": ["Lean module system", "Mathlib.Data.Nat.Find", "Borsuk-Ulam framework"],
+    "prerequisites": ["Lean 4 imports", "Mathlib namespaces"]
+  },
+  {
+    "id": "ann-largest-prime-def",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "Largest Prime Below n (noncomputable)",
+    "content": "Defines `largestPrimeBelow n` as `Nat.findGreatest Nat.Prime n` — the greatest natural ≤ n that is prime, or 0 if none exists. Marked `noncomputable` because primality testing is decidable but extracting the largest such k via `findGreatest` doesn't yield an efficient algorithm in Lean's kernel reduction.",
+    "mathContext": "$p^*(n) := \\max\\{p \\in \\mathbb{N} : p \\leq n \\text{ and } p \\text{ is prime}\\}$. By Bertrand's postulate, $p^*(n) > n/2$ for $n \\geq 2$, placing this within factor 2 of $n$ itself.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.findGreatest", "Bertrand's postulate", "Chebyshev's theorem", "prime number theorem"],
+    "prerequisites": ["primality", "noncomputable definitions in Lean 4", "Nat.findGreatest semantics"]
+  },
+  {
+    "id": "ann-largest-prime-isprime",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 57, "endLine": 65 },
+    "type": "technique",
+    "title": "Primality of largestPrimeBelow via Witness 2",
+    "content": "Proves that `largestPrimeBelow n` is itself prime whenever $n \\geq 2$, using `Nat.findGreatest_spec` with the explicit witness `Nat.prime_two`. The hypothesis `2 ≤ n` is exactly what `findGreatest_spec` needs: a value ≤ n satisfying the predicate, ensuring the search returns a real prime rather than the default 0.",
+    "mathContext": "$\\forall n \\geq 2, \\text{Nat.Prime}(p^*(n))$. The proof exploits that for any $n \\geq 2$, the value $2$ itself is a prime $\\leq n$, so $\\text{findGreatest}$ returns a witness whose predicate holds — necessarily prime.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.findGreatest_spec", "Nat.prime_two", "witness-based existence"],
+    "prerequisites": ["Nat.findGreatest API", "primality of 2"]
+  },
+  {
+    "id": "ann-largest-prime-bounds",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 67, "endLine": 75 },
+    "type": "technique",
+    "title": "Upper and Lower Bounds for p*",
+    "content": "Two bounds: `largestPrimeBelow_le` (the trivial upper bound $p^* \\leq n$ from `Nat.findGreatest_le`), and `two_le_largestPrimeBelow` (the lower bound $p^* \\geq 2$ for $n \\geq 2$, from `Nat.le_findGreatest` with witness `Nat.prime_two`). Together with `largestPrimeBelow_isPrime`, these establish $p^* \\in \\{p \\text{ prime} : 2 \\leq p \\leq n\\}$.",
+    "mathContext": "$2 \\leq p^*(n) \\leq n$ for $n \\geq 2$. The upper bound is automatic from `findGreatest`'s contract; the lower bound is structural — the smallest prime is 2, which is always a candidate when $n \\geq 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.findGreatest_le", "Nat.le_findGreatest", "interval bounds"],
+    "prerequisites": ["Nat.findGreatest API"]
+  },
+  {
+    "id": "ann-conjecture-axiom",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 81, "endLine": 91 },
+    "type": "concept",
+    "title": "The Central Conjecture (axiomatized)",
+    "content": "The single open content of this file: `symBUDim_eq_largestPrime` asserts $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ for $n \\geq 2$. Axiomatized because the matching upper bound — that no $S_n$-equivariant rigidity beyond the largest prime cyclic subgroup exists — requires Fadell-Husseini cohomological index theory not currently in Mathlib. The lower-bound direction is already a theorem (parent's `sym_has_cyclic_prime`).",
+    "mathContext": "$\\forall n \\geq 2, \\forall d, \\quad \\text{symBUDim}(n, d) = \\text{buDim}(p^*(n), d)$. Equivalent to: the $S_n$-equivariant Borsuk-Ulam dimension is determined by the largest cyclic prime subgroup. Fails iff some $S_n$-specific structure (e.g. $V_4 \\leq S_4$) provides additional equivariant obstruction.",
+    "significance": "key",
+    "relatedConcepts": ["Fadell-Husseini index", "equivariant cohomology", "Yang-Borsuk theorem", "Klein four-group", "subgroup monotonicity"],
+    "prerequisites": ["equivariant cohomology", "spectral sequence of $BS_n \\to BG$", "ideal-valued index"]
+  },
+  {
+    "id": "ann-even-formula",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 97, "endLine": 106 },
+    "type": "insight",
+    "title": "Closed Form on Even Dimensions (Conditional)",
+    "content": "Two-line proof: rewrite via the conjectural axiom to reduce `symBUDim n (2k)` to `buDim p* (2k)`, then apply the parent's Yang-Borsuk axiom `buDim_prime` to evaluate it as `2k - 1`. The combined assumption count is small: one new axiom plus parent's cyclic Yang-Borsuk axiom.",
+    "mathContext": "$\\text{symBUDim}(n, 2k) \\stackrel{\\text{axiom}}{=} \\text{buDim}(p^*, 2k) \\stackrel{\\text{Yang-Borsuk}}{=} 2k - 1$ for $n \\geq 2, k \\geq 1$. Note: the result does NOT depend on $p^*$ — the floor formula $2\\lfloor d/2\\rfloor - 1$ is independent of which prime is used.",
+    "significance": "key",
+    "relatedConcepts": ["Yang-Borsuk theorem", "buDim_prime", "rw chaining tactic"],
+    "prerequisites": ["the conjecture axiom", "parent's buDim_prime"]
+  },
+  {
+    "id": "ann-even-lower-unconditional",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 112, "endLine": 133 },
+    "type": "insight",
+    "title": "Unconditional Lower Bound (No New Axioms)",
+    "content": "The most mathematically substantive theorem in the file: $2k - 1 \\leq \\text{symBUDim}(n, 2k)$ for $n \\geq 2$, proved without invoking the conjectural axiom. Proof uses three steps: (1) extract $p^* = \\text{largestPrimeBelow}(n)$ with primality and $\\leq n$; (2) `buDim_prime` gives the explicit value $\\text{buDim}(p^*, 2k) = 2k - 1$; (3) `sym_has_cyclic_prime` (subgroup monotonicity) lifts the cyclic bound to $S_n$. The conjecture would only be needed for the matching UPPER bound.",
+    "mathContext": "$\\text{buDim}(p^*, 2k) \\stackrel{\\text{Yang-Borsuk}}{=} 2k - 1 \\stackrel{\\text{subgroup mono.}}{\\leq} \\text{symBUDim}(n, 2k)$. The unconditional part of the bound — by Bertrand, $p^* > n/2$, so the gap to the trivial upper bound $d - 1$ is at most a factor of 2, already tight.",
+    "significance": "key",
+    "relatedConcepts": ["sym_has_cyclic_prime", "subgroup monotonicity", "Yang-Borsuk", "Bertrand's postulate", "set tactic"],
+    "prerequisites": ["parent's symBUDim framework", "buDim_prime axiom"]
+  },
+  {
+    "id": "ann-concrete-three-four",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 139, "endLine": 142 },
+    "type": "insight",
+    "title": "Concrete Case: S₃ on ℝ⁴",
+    "content": "$\\text{symBUDim}(3, 4) = 3$ (conditional on the conjectural axiom). Specializes `symBUDim_even_formula` at $n = 3, k = 2$. Numerical content: largestPrimeBelow(3) = 3, so $\\text{symBUDim}(3, 4) = \\text{buDim}(3, 4) = 2 \\cdot 2 - 1 = 3$.",
+    "mathContext": "Interpretation: every $S_3$-equivariant continuous map $S^3 \\to V$ where $V$ is a 4-dimensional real $S_3$-representation must have a zero, but no such guarantee for $S^4 \\to V$. $S_3$ acts on $\\mathbb{R}^4$ via the standard representation $+$ trivial.",
+    "significance": "supporting",
+    "relatedConcepts": ["S₃ representation theory", "standard representation", "equivariant maps"],
+    "prerequisites": ["symBUDim_even_formula", "small-case representation theory"]
+  },
+  {
+    "id": "ann-concrete-four-six",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 144, "endLine": 149 },
+    "type": "insight",
+    "title": "Concrete Case: S₄ on ℝ⁶ — The Klein-4 Test",
+    "content": "$\\text{symBUDim}(4, 6) = 5$ (conditional). Mathematically the most interesting concrete case because $S_4$ contains the non-cyclic Klein four-group $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ — a natural counterexample candidate to the conjecture. Note `largestPrimeBelow 4 = 3` (since 4 is composite), so the conjecture predicts $\\text{symBUDim}(4, 6) = \\text{buDim}(3, 6) = 5$, NOT $\\text{buDim}(4, 6)$.",
+    "mathContext": "$V_4 \\leq S_4$ is a non-cyclic abelian subgroup of order 4. Its equivariant cohomology has higher torsion than $\\mathbb{Z}/3$, so a priori $V_4$ could provide a stronger obstruction than $\\mathbb{Z}/3$. The conjecture asserts it does NOT — refuting the conjecture would likely start here.",
+    "significance": "key",
+    "relatedConcepts": ["Klein four-group", "$V_4 \\leq S_4$", "non-cyclic abelian groups", "Fadell-Husseini index", "counterexample candidates"],
+    "prerequisites": ["subgroup structure of $S_4$", "equivariant cohomology of $V_4$"]
+  },
+  {
+    "id": "ann-five-lower-unconditional",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 151, "endLine": 155 },
+    "type": "insight",
+    "title": "Axiom-Free S₅ Lower Bound",
+    "content": "The unconditional version: for any $k \\geq 1$, $2k - 1 \\leq \\text{symBUDim}(5, 2k)$, with NO use of the conjectural axiom. Proves directly via `symBUDim_even_lower` specialized at $n = 5$. Useful for $S_5$ applications (e.g. Lovász-style chromatic-number arguments) where one only needs the lower bound and wants to avoid conjectural assumptions.",
+    "mathContext": "$S_5$ is the smallest non-solvable symmetric group (since $A_5$ is the smallest non-abelian simple group). Its representation theory is rich, but the unconditional lower bound only requires $\\mathbb{Z}/5 \\leq S_5$ — a single 5-cycle.",
+    "significance": "supporting",
+    "relatedConcepts": ["$A_5$ simple", "5-cycle subgroup", "Lovász chromatic number", "axiom-free corollary"],
+    "prerequisites": ["symBUDim_even_lower", "$\\mathbb{Z}/5$-cyclic subgroups of $S_5$"]
+  },
+  {
+    "id": "ann-summary-docstring",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
+    "range": { "startLine": 157, "endLine": 187 },
+    "type": "context",
+    "title": "Summary and Path Forward",
+    "content": "The closing docstring inventories the file's content (1 axiom, 5 theorems, 3 concrete instances) and outlines next steps: hand-proving the $n = 4$ case via direct equivariant index calculation would settle many small-$n$ applications. The sister-question OQ-02-OQ-01-OQ-03-OQ-01 is the dihedral analog ($D_n$ instead of $S_n$), sharing the same parent infrastructure.",
+    "mathContext": "Three `#check` directives at the end act as a compile-time API surface check: they ensure `symBUDim_eq_largestPrime`, `symBUDim_even_formula`, and `symBUDim_even_lower` are well-formed and exported.",
+    "significance": "context",
+    "relatedConcepts": ["dihedral analog", "Phase-2 axiomatization", "compile-time API checks"],
+    "prerequisites": ["Lean 4 #check command"]
+  }
+]
