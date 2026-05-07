@@ -241,9 +241,43 @@ theorem basis_infinite {A : Set ℕ} (h : IsBasisOrder2 A) : A.Infinite := by
   have := hS_bound _ hm
   omega
 
-/-- A cofinite set (containing all sufficiently large n) has density 1. -/
-axiom cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
-    upperDensity S = 1
+/-- A cofinite set (containing all sufficiently large n) has density 1.
+    Proof: for n ≥ N₀, |S∩{0,...,n}| ≥ n-N₀+1, giving ratio ≥ (n-N₀+1)/(n+1) → 1. -/
+theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
+    upperDensity S = 1 := by
+  apply le_antisymm (density_le_one S)
+  rw [Filter.eventually_atTop] at h
+  obtain ⟨N₀, hN₀⟩ := h
+  unfold upperDensity
+  rw [Filter.le_limsup_iff]
+  intro b hb
+  rw [Filter.frequently_atTop]
+  intro M
+  have h1mb : (0 : ℝ) < 1 - b := by linarith
+  obtain ⟨N, hN_gt⟩ := exists_nat_gt (N₀ / (1 - b))
+  refine ⟨max M (max N N₀), le_max_left _ _, ?_⟩
+  set n := max M (max N N₀) with hn_def
+  have hn_ge_N : N ≤ n := (le_max_left N N₀).trans (le_max_right M _)
+  have hn_ge_N₀ : N₀ ≤ n := (le_max_right N N₀).trans (le_max_right M _)
+  -- |S ∩ {0,...,n}| ≥ n - N₀ + 1 (all of {N₀,...,n} is in S)
+  have hcard_lb : n - N₀ + 1 ≤ (S ∩ Set.Iic n).ncard := by
+    have hfin : (S ∩ Set.Iic n).Finite := (Set.finite_Iic n).subset (Set.inter_subset_right)
+    have hincl : Finset.Icc N₀ n ⊆ hfin.toFinset := by
+      intro m hm
+      simp only [Finset.mem_Icc] at hm
+      simp only [Set.Finite.mem_toFinset, Set.mem_inter_iff, Set.mem_Iic]
+      exact ⟨hN₀ m hm.1, hm.2⟩
+    have : (Finset.Icc N₀ n).card ≤ hfin.toFinset.card := Finset.card_le_card hincl
+    rwa [Nat.Icc_card_eq_sub_add_one hn_ge_N₀, Set.ncard_eq_toFinset_card' _,
+         Set.Finite.toFinset_inter, Set.toFinset_Iic] at this
+  -- (n - N₀ + 1)/(n+1) > b
+  have hn_pos : (0 : ℝ) < n + 1 := by positivity
+  rw [lt_div_iff hn_pos]
+  -- b * (n + 1) < n - N₀ + 1, i.e., (1-b)*(n+1) > N₀
+  push_cast [Nat.sub_add_cancel hn_ge_N₀]
+  have hN₀_lt : (N₀ : ℝ) < (N + 1) * (1 - b) := by
+    have := hN_gt; push_cast at this ⊢; nlinarith
+  nlinarith [Nat.cast_le.mpr hn_ge_N, Nat.cast_nonneg N₀]
 
 /-- A basis of order 2 has positive density sumset. -/
 theorem basis_has_pos_density_sumset {A : Set ℕ} (h : IsBasisOrder2 A) :
