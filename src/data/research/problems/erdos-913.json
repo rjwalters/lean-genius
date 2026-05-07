@@ -1,7 +1,7 @@
 {
   "slug": "erdos-913",
   "title": "Erdős #913",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
@@ -60,11 +60,7 @@
       "proofStrategy text corrected: exponent_structure is a proved theorem, not an axiom; both conditional paths are now described"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove example_n3, example_n7, example_n8 via native_decide on primeFactors",
-      "Attempt to prove exponent_structure using ring_nf + factorization lemmas",
-      "Add structural lemmas about HasDistinctExponents"
-    ],
+    "nextSteps": [],
     "markdown": "# Erdős #913 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that if\\[n(n+1) = \\prod_i p_i^{k_i}\\]is the factorisation into distinct primes then all exponents $k_i$ are distinct?\n\n\n\nIt is likely that there are infinitely many primes $p$ such that $8p^2-1$ is also prime, in which case this is true with exponents $\\{1,2,3\\}$, letting $n=8p^2-1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #912\n- Problem #914\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -72,8 +68,7 @@
   ],
   "relatedProofs": [
     "erdos-9",
-    "erdos-91",
-    "erdos-913"
+    "erdos-91"
   ],
   "references": {
     "papers": [],
@@ -88,8 +83,8 @@
     {
       "path": "Proofs/Erdos913Problem.lean",
       "filename": "Erdos913Problem.lean",
-      "lineCount": 345,
-      "theoremCount": 11,
+      "lineCount": 344,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
