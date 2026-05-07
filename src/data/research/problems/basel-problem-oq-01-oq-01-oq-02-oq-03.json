@@ -30,29 +30,33 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-07",
-    "iteration": 1,
-    "focus": "Bootstrap completed. The OBSERVE/ORIENT phase has converted this stub into a Lean 4 formalization target with elementary provable bounds (lcm ≤ n!, lcm ≤ n^n), numerical verification for n ≤ 20, and an axiom statement of the general claim with proof strategy and Mathlib gap analysis.",
+    "since": "2026-05-08",
+    "iteration": 3,
+    "focus": "Building structural lemma library toward prime-power decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}. Iteration 2 (#16704 merged) added lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (this PR) adds pow_dvd_lcmRange — any positive base power b^k ≤ n divides lcmRange n — the structural building block specialised to powers, applicable directly to prime powers without requiring an additional Mathlib import.",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
-      "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route."
+      "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)"
     ],
-    "nextAction": "Two paths: (a) attempt the easier `lcm(1,...,n) ≤ 4^n` via primorial bridge (1-2 weeks), or (b) wait for/contribute Mathlib Beta-integral infrastructure.",
+    "nextAction": "Continue building the prime-power decomposition: the next structural step is `lcmRange_eq_prod_prime_powers : lcmRange n = ∏ p ∈ filter Prime (range (n+1)), p ^ Nat.log p n`. With pow_dvd_lcmRange this gives the easy direction (RHS dvd LHS); the reverse direction follows from the unique-factorization property and is in Mathlib's Nat.factorization framework.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Bootstrap COMPLETE. `Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (182 lines, 22 theorems, 1 def, 1 axiom, 0 sorries): defines `lcmRange n = (Finset.range n).lcm (·+1)`, proves elementary bounds (`lcmRange_dvd_factorial`, `lcmRange_le_factorial`, `lcmRange_le_self_pow`), verifies Hanson's bound `lcmRange n ≤ 3^n` numerically for n ∈ {1..10, 12, 15, 20} via decide/native_decide, and axiomatizes the general statement as `axiom hanson_bound`. Includes `hanson_strictly_stronger_than_factorial` showing the constant 3 is genuinely tighter than the trivial n^n bound.",
+    "progressSummary": "Iteration 3. `Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (237 lines, 29 theorems, 1 def, 1 axiom, 0 sorries). Iteration 1 (bootstrap, merged) defined lcmRange and elementary bounds. Iteration 2 (#16704 merged) added structural lemmas lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (this PR) adds `pow_dvd_lcmRange : 0 < b → b^k ≤ n → b^k ∣ lcmRange n`, the structural building block for prime-power-decomposition arguments. With it, the prime-case `p^(⌊log_p n⌋) ∣ lcmRange n` for any prime p ≤ n becomes a one-line corollary (using `Nat.pow_log_le_self`).",
     "builtItems": [
-      "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:67",
-      "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:75-87",
-      "dvd_lcmRange: each k ∈ {1,...,n} divides lcmRange n at BaselProblemOQ01OQ01OQ02OQ03.lean:95",
-      "lcmRange_dvd_factorial: lcm | n! at BaselProblemOQ01OQ01OQ02OQ03.lean:109",
-      "lcmRange_le_factorial: lcm ≤ n! at BaselProblemOQ01OQ01OQ02OQ03.lean:118",
-      "lcmRange_le_self_pow: lcm ≤ n^n at BaselProblemOQ01OQ01OQ02OQ03.lean:122",
+      "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:78",
+      "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:85-96",
+      "dvd_lcmRange: each k ∈ {1,...,n} divides lcmRange n at BaselProblemOQ01OQ01OQ02OQ03.lean:99",
+      "pow_dvd_lcmRange: any b^k ≤ n with positive base divides lcmRange n at BaselProblemOQ01OQ01OQ02OQ03.lean:115",
+      "lcmRange_succ: recursion lcm(1..n+1) = lcm(lcm(1..n), n+1) (#16704)",
+      "lcmRange_dvd_lcmRange_of_le: monotone divisibility (#16704)",
+      "lcmRange_monotone: numerical monotonicity (#16704)",
+      "lcmRange_dvd_factorial: lcm | n!",
+      "lcmRange_le_factorial: lcm ≤ n!",
+      "lcmRange_le_self_pow: lcm ≤ n^n",
       "hanson_n1 .. hanson_n20: numerical verification for 13 values of n",
       "lcmRange_5/10/15/20_eq: concrete OEIS values 60, 2520, 360360, 232792560",
       "hanson_bound (axiom): the open target ∀ n, lcmRange n ≤ 3^n",
@@ -63,7 +67,9 @@
       "The bound hierarchy: trivial (n^n) > Erdős (4^n) > Hanson (3^n). Each step requires substantial mathematics.",
       "Mathlib has `primorial_le_4_pow` but no `lcm(1,...,n)`-specific bound; the bridge is the missing combinatorial step.",
       "Numerical evidence is strong: lcm(1..20) = 232,792,560 vs 3^20 = 3,486,784,401, a factor-15 margin.",
-      "The Chebyshev function reformulation ψ(n) = log lcm(1,...,n) connects this to the Prime Number Theorem (which gives only the asymptotic ψ(n)/n → 1)."
+      "The Chebyshev function reformulation ψ(n) = log lcm(1,...,n) connects this to the Prime Number Theorem (which gives only the asymptotic ψ(n)/n → 1).",
+      "**Counterexample**: `lcm(1..n) ≤ n · primorial(n)` is FALSE in general — already at n=9 we have lcm(1..9) = 2520 > 9 · 210 = 1890. The intermediate primorial bridge as commonly stated does NOT yield the 4^n bound; the correct path goes through Chebyshev's prime-power formula `lcm(1..n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}`.",
+      "**pow_dvd_lcmRange** is the structural-lemma counterpart of `dvd_lcmRange` for prime-power arguments: applied with `b = p` prime and `k = Nat.log p n`, with `Nat.pow_log_le_self p hn` it gives the maximal-prime-power divisibility `p^(⌊log_p n⌋) ∣ lcmRange n` in a single line — the easy direction of the Chebyshev decomposition."
     ],
     "mathlibGaps": [
       "No `lcm(1,...,n) ≤ X^n`-style bound exists in Mathlib for any X.",
@@ -71,12 +77,14 @@
       "No Beta-integral identity in usable rational form: `(n+1)·C(n,k)·∫₀¹ x^k(1-x)^(n-k) dx = 1`."
     ],
     "nextSteps": [
-      "Pursue the intermediate bound `lcm(1,...,n) ≤ 4^n` via primorial bridge (more tractable than full Hanson).",
+      "Add `prime_pow_dvd_lcmRange : ∀ p n, p.Prime → 1 ≤ n → p^(Nat.log p n) ∣ lcmRange n` (one-liner from `pow_dvd_lcmRange` + `Nat.pow_log_le_self`). Requires `import Mathlib.Data.Nat.Prime.Basic` and `Mathlib.Data.Nat.Log`.",
+      "Add `lcmRange_eq_prod_prime_powers : lcmRange n = ∏ p ∈ filter Prime (range (n+1)), p ^ Nat.log p n`. Forward direction (RHS ∣ LHS) follows from `prime_pow_dvd_lcmRange` + pairwise-coprimality of distinct primes; reverse direction uses Mathlib's `Nat.factorization` framework.",
+      "With Chebyshev's decomposition, derive `lcmRange n ≤ ∏_{p ≤ n} n = n^{π(n)}` (still weaker than 3^n but proves a non-trivial bound).",
       "Wait for or contribute Mathlib Beta-integral machinery for ℚ-valued bounds.",
-      "Explore Nair's 1982 alternative constants as a possibly-easier intermediate.",
+      "Explore Nair's 1982 alternative constants as a possibly-easier intermediate (uses central binomial coefficients).",
       "Add cross-references in `basel-problem-oq-01-oq-01-oq-02` and `basel-problem` gallery entries pointing to this OQ-03."
     ],
-    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (bootstrap complete)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (182 lines, 1 axiom, 0 sorries, numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / primorial-bridge infrastructure.\n"
+    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (iteration 3)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (237 lines, 29 theorems, 1 def, 1 axiom, 0 sorries; numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / Chebyshev-prime-power-formula infrastructure.\n* **Iteration 3 (this PR)**: added `pow_dvd_lcmRange`, the structural building block for prime-power decompositions of `lcmRange n`.\n"
   },
   "tags": [
     "number-theory",
@@ -111,15 +119,15 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-07",
+  "lastUpdate": "2026-05-08",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
       "filename": "BaselProblemOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 182,
-      "theoremCount": 22,
+      "lineCount": 237,
+      "theoremCount": 29,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,

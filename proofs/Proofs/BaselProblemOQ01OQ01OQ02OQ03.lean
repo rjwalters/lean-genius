@@ -104,6 +104,15 @@ theorem dvd_lcmRange {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
   have := Finset.dvd_lcm (f := (· + 1)) hk'
   simpa [Nat.sub_add_cancel hk] using this
 
+/-- **Power divisibility**: any power b^k with positive base and b^k ≤ n divides
+    lcmRange n. Specialization of `dvd_lcmRange` to powers; the case where b is
+    prime and k = ⌊log_b n⌋ is the structural building block for the prime-power
+    decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋} that underlies any
+    Hanson-style proof. -/
+theorem pow_dvd_lcmRange {b k n : ℕ} (hb : 0 < b) (hbkn : b ^ k ≤ n) :
+    b ^ k ∣ lcmRange n :=
+  dvd_lcmRange (Nat.pos_pow_of_pos k hb) hbkn
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
