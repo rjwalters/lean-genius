@@ -1,37 +1,122 @@
 [
   {
-    "id": "ann-01",
-    "type": "insight",
-    "line": 51,
-    "text": "The exterior derivative d(P dx + Q dy) = (∂Q/∂x - ∂P/∂y) dx∧dy is definitionally equal to the classical curl formula — no proof required, just unfolding definitions.",
-    "tags": ["exterior-derivative", "curl", "definitional"]
+    "id": "ann-header",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "The Three-Level Hierarchy of 2D Green/Stokes",
+    "content": "The opening docstring positions this file as the *bridge* between two existing gallery proofs: `GreensTheoremOQ01` (Green for C¹ vector fields on a rectangle, axiom-free) and `GreensTheoremOQ02` (Whitney's minimal-regularity theorem for Lipschitz boundary + L¹ curl, with Whitney's identity as a single axiom). The open question — can the abstract Stokes theorem on differential forms unify these and eventually eliminate the Whitney axiom? — is answered with a precise *language equivalence*: the exterior derivative $d_1$ of a 1-form is *definitionally* the classical curl, so `greens_theorem_l1curl` and the Stokes-form $\\int_C \\omega = \\int_D d\\omega$ are the same theorem written in two notations. The four references at the bottom (Whitney 1957 'Geometric Integration Theory', de Rham 1931) anchor the historical lineage.",
+    "mathContext": "Hierarchy: $\\text{OQ-01 (C}^1, \\text{rect, 0 ax)} \\subset \\text{OQ-02 (Lipschitz, } L^1, \\text{1 ax: Whitney)} \\xleftrightarrow{\\text{this file}} \\text{de Rham/Stokes form } \\int_C \\omega = \\int_D d\\omega.$ The L¹ setting strictly generalizes C¹ (a corner-free Lipschitz curve and a curl with a measure-zero discontinuity set are both admissible).",
+    "significance": "key",
+    "relatedConcepts": ["Whitney 1957", "de Rham complex", "exterior derivative", "regularity hierarchy"],
+    "prerequisites": ["Green's theorem", "Lipschitz boundary", "L¹ integrability"]
   },
   {
-    "id": "ann-02",
-    "type": "insight",
-    "line": 85,
-    "text": "Whitney's theorem (greens_theorem_l1curl) is restated in Stokes form ∫_C ω = ∫_D dω, making the connection to exterior calculus explicit. The proof is a direct application of the axiom with terminology translation.",
-    "tags": ["stokes", "whitney", "l1-curl"]
+    "id": "ann-oneform-def",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 47, "endLine": 65 },
+    "type": "definition",
+    "title": "OneForm2D: A 2D 1-Form as a Coefficient Pair",
+    "content": "`OneForm2D` is the minimal Lean encoding of a 2D 1-form $\\omega = P\\,dx + Q\\,dy$ — just the pair $(P, Q)$ of coefficient functions $\\mathbb{R}^2 \\to \\mathbb{R}$. Anywhere the Lean code uses `ω.P` and `ω.Q`, the mathematical statement is reading off the dx- and dy-coefficients. The integration pairing $\\int_C \\omega$ unrolls to $\\int_0^T [P(\\gamma(t)) \\cdot \\gamma_1'(t) + Q(\\gamma(t)) \\cdot \\gamma_2'(t)] \\, dt$. This is *not* a generic Mathlib differential form (which would require manifold structure); it's a research-grade lightweight model that captures exactly the algebraic structure needed for 2D Stokes. The deliberate minimality is what lets the file's main theorems be one-line wrappers around `greens_theorem_l1curl`.",
+    "mathContext": "$\\omega = P(x, y) \\, dx + Q(x, y) \\, dy.$ Integration along $\\gamma : [0, T] \\to \\mathbb{R}^2$: $\\int_C \\omega = \\int_0^T [P(\\gamma) \\gamma_1' + Q(\\gamma) \\gamma_2'] \\, dt.$",
+    "significance": "supporting",
+    "relatedConcepts": ["differential 1-form", "line integral", "structure type"],
+    "prerequisites": ["Lean structure syntax", "differential forms"]
   },
   {
-    "id": "ann-03",
-    "type": "insight",
-    "line": 116,
-    "text": "The L¹ closure condition dω = 0 a.e. is the coordinate-free version of ∂Q/∂x = ∂P/∂y a.e. Cauchy-Goursat generalizes: any conservative L¹ field has zero circulation on Lipschitz loops.",
-    "tags": ["closed-form", "cauchy-goursat", "l1-curl"]
+    "id": "ann-extderiv-def",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 66, "endLine": 85 },
+    "type": "definition",
+    "title": "Exterior Derivative d₁ = Curl (Definitional)",
+    "content": "`extDeriv1_2D ω p := ∂Q/∂x(p) - ∂P/∂y(p)` is *literally* the classical curl formula written in exterior-calculus typing. The accompanying `extDeriv1_2D_eq_curl` theorem closes by `rfl` — there's no proof obligation, just unfolding. This is the file's central observation: the Cartan exterior calculus and the classical 2D curl coincide *as Lean definitions*, so the two languages are interchangeable at the syntactic level. The de Rham complex $\\Omega^0 \\xrightarrow{d_0} \\Omega^1 \\xrightarrow{d_1} \\Omega^2$ has its first arrow $d_0 f = (\\partial_x f) \\, dx + (\\partial_y f) \\, dy$ (gradient as 1-form) and its second arrow $d_1 \\omega$ defined here. The composition $d_1 \\circ d_0 = 0$ would be Clairaut's mixed-partials theorem.",
+    "mathContext": "$d_1(P\\,dx + Q\\,dy) = \\left(\\frac{\\partial Q}{\\partial x} - \\frac{\\partial P}{\\partial y}\\right) dx \\wedge dy.$ Equivalently, $d_1 \\omega = \\text{curl}(P, Q).$ The `noncomputable` keyword is needed because `deriv` is a non-computable real-analysis construct.",
+    "significance": "key",
+    "relatedConcepts": ["exterior derivative", "curl", "de Rham complex", "Clairaut's theorem"],
+    "prerequisites": ["Mathlib `deriv`", "1-forms"]
   },
   {
-    "id": "ann-04",
-    "type": "technique",
-    "line": 140,
-    "text": "Continuity of the curl (C¹ condition) immediately gives L¹ integrability via continuousOn.integrableOn_compact — this one-line proof shows why the smooth case is automatic under Whitney's framework.",
-    "tags": ["c1-implies-l1", "integrability", "compact"]
+    "id": "ann-language-bridge",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 87, "endLine": 108 },
+    "type": "insight",
+    "title": "Language Bridge: Whitney's Curl Hypothesis = extDeriv",
+    "content": "Two short theorems formalize the language-bridge claim. `curl_eq_extDeriv_iff` states the trivial bi-implication between the curl-form and exterior-form versions of Whitney's pointwise hypothesis — `simp [extDeriv1_2D_eq_curl]` closes it because both sides reduce to the same expression. `extDeriv_eq_curl_ae` packages the same equality in the *almost-everywhere* form Whitney's theorem actually consumes (`∀ᵐ p ∂μ, ...`); the proof `filter_upwards [] with p; rfl` is the Lean idiom for 'pick any $p$, the equality holds by `rfl`'. The empty `filter_upwards` says we don't need to discard any null set — equality is *literal* everywhere, not just a.e.",
+    "mathContext": "$\\text{curlF}(p) = \\partial_x Q - \\partial_y P \\iff \\text{curlF}(p) = \\text{extDeriv1\\_2D} \\, \\omega \\, p.$ Both sides reduce to the same expression by `rfl`; the a.e. version is a strictly weaker form with the same content.",
+    "significance": "supporting",
+    "relatedConcepts": ["a.e. equality", "filter_upwards idiom", "definitional unfolding"],
+    "prerequisites": ["extDeriv1_2D_eq_curl", "ae filter notation"]
   },
   {
-    "id": "ann-05",
+    "id": "ann-stokes-form",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 110, "endLine": 139 },
+    "type": "concept",
+    "title": "Whitney = Stokes: The Headline Theorem",
+    "content": "`greens_stokes_l1curl` is the file's headline: under Whitney's hypotheses (Lipschitz closed curve $C$ traversing the boundary of a rectangle $D$, plus L¹ integrability of $d\\omega$ on $D$), the line integral $\\int_C \\omega$ equals the area integral $\\int_D d\\omega$. The Lean statement uses `lipschitzLineIntegral ω.P ω.Q C` (left-hand side) and `∫ p in Ioo a b ×ˢ Ioo c d, extDeriv1_2D ω p ∂volume` (right-hand side). The proof is a one-line wrapper: `simp only [extDeriv1_2D]` unfolds the exterior-form notation back to the classical curl, then the parent's `greens_theorem_l1curl` axiom closes the goal. The wrap-up shows that `greens_theorem_l1curl` and the Stokes form $\\int_C \\omega = \\int_D d\\omega$ are *literally the same theorem* — the file's empirical confirmation of the de Rham–Whitney connection.",
+    "mathContext": "$\\int_C \\omega = \\int_D d\\omega \\quad \\text{(Stokes form, L}^1\\text{ regularity)}.$ For $\\omega = P\\,dx + Q\\,dy$ this is $\\oint_C (P\\,dx + Q\\,dy) = \\iint_D (\\partial_x Q - \\partial_y P) \\, dA$ — the classical Green's theorem.",
+    "significance": "key",
+    "relatedConcepts": ["generalized Stokes theorem", "line integral", "area integral", "Whitney 1957"],
+    "prerequisites": ["greens_theorem_l1curl axiom", "extDeriv1_2D", "Lipschitz curve"]
+  },
+  {
+    "id": "ann-cauchy-goursat",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 141, "endLine": 169 },
     "type": "insight",
-    "line": 185,
-    "text": "The hierarchy OQ-01 ⊂ C¹-Whitney ⊂ L¹-Whitney establishes that Whitney's axiom is a genuine extension: it proves new results (Lipschitz boundary + L¹ curl) not reachable by OQ-01's FTC approach.",
-    "tags": ["hierarchy", "regularity", "extension"]
+    "title": "Cauchy–Goursat for L¹-Closed Forms",
+    "content": "`closed_l1form_zero_integral` is the L¹ version of the Cauchy–Goursat theorem: if $d\\omega = 0$ a.e. on the rectangle $D$, then the line integral $\\oint_C \\omega = 0$ for any Lipschitz closed curve traversing $\\partial D$. The proof unfolds `extDeriv1_2D` in the a.e. hypothesis to recover the classical 'partial derivatives equal a.e.' form (`hCurlZeroAE`), then invokes `lineIntegral_zero_curl` from the parent file. Two important generalizations over the holomorphic Cauchy–Goursat theorem: (1) $\\omega$ need not be holomorphic — only L¹-closed; (2) $C$ need not be smooth — only Lipschitz. This unifies the complex-analytic Cauchy–Goursat with the Lebesgue measure-theoretic version under a common roof.",
+    "mathContext": "$d\\omega = 0$ a.e. on $D$ $\\implies$ $\\oint_C \\omega = 0.$ Equivalently: $\\partial_x Q = \\partial_y P$ a.e. (a measure-theoretic conservativeness condition) implies zero circulation along any Lipschitz boundary curve.",
+    "significance": "key",
+    "relatedConcepts": ["Cauchy-Goursat theorem", "closed form", "conservative field", "holomorphic generalization"],
+    "prerequisites": ["greens_stokes_l1curl", "lineIntegral_zero_curl"]
+  },
+  {
+    "id": "ann-c1-l1-bridge",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 171, "endLine": 206 },
+    "type": "insight",
+    "title": "C¹ ⊂ L¹: Smooth Forms Satisfy Whitney Automatically",
+    "content": "Two related theorems formalize the inclusion 'smooth ⊂ Whitney'. `c1_form_l1_integrable` shows that a 1-form whose partial-derivative coefficients are continuous has a continuous exterior derivative (`hQ_cont.sub hP_cont`), and continuity on a compact rectangle gives L¹ integrability via `Continuous.continuousOn.integrableOn_compact isCompact_Icc`. `c1_form_satisfies_whitney` repackages this: any C¹ 1-form satisfies all of Whitney's hypotheses for `greens_stokes_l1curl`. The key proof step `hcurl_cont : Continuous (extDeriv1_2D ω)` exposes the structural reason: extDeriv is a *linear combination* of two continuous quantities (the two partial derivatives), and continuity is closed under subtraction. The L¹ setting is *strictly* more general — counterexamples show L¹ admits forms whose curl has a single discontinuity (a measure-zero set), which C¹ does not.",
+    "mathContext": "$\\omega \\in C^1 \\implies \\text{extDeriv1\\_2D}(\\omega) \\in C^0 \\implies \\text{extDeriv1\\_2D}(\\omega) \\in L^1_{\\text{loc}}.$ The strict inclusion $C^1 \\subsetneq L^1$ is witnessed by, e.g., $\\omega$ with $\\text{curl} = \\chi_{\\{x = 0\\}}$ (zero except on a null set).",
+    "significance": "key",
+    "relatedConcepts": ["regularity inclusion", "ContinuousOn.integrableOn_compact", "compact support"],
+    "prerequisites": ["continuity of partials", "L¹ on compact sets"]
+  },
+  {
+    "id": "ann-c1-stokes-from-whitney",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 208, "endLine": 221 },
+    "type": "concept",
+    "title": "C¹ Stokes from Whitney (Specialization)",
+    "content": "`c1_stokes_from_whitney` shows that for a C¹ 1-form on a Lipschitz-bounded rectangle, the Stokes equality $\\int_C \\omega = \\int_D d\\omega$ follows from Whitney's theorem applied via the C¹-to-L¹ bridge. The two-line proof composes `c1_form_l1_integrable` (to discharge the L¹ hypothesis) with `greens_stokes_l1curl` (Whitney in Stokes form). This is the explicit specialization that confirms 'smooth Stokes is a corollary of Whitney' — a sanity check that the L¹ generalization does not lose the smooth case.",
+    "mathContext": "Smooth Stokes $\\subset$ L¹ Stokes: if $\\omega \\in C^1$ on a Lipschitz-bounded rectangle, then $\\int_C \\omega = \\int_D d\\omega$ (this exact statement, proved via Whitney + C¹ regularity).",
+    "significance": "supporting",
+    "relatedConcepts": ["smooth Stokes corollary", "specialization"],
+    "prerequisites": ["c1_form_l1_integrable", "greens_stokes_l1curl"]
+  },
+  {
+    "id": "ann-stokes-scaling",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 223, "endLine": 243 },
+    "type": "insight",
+    "title": "Linearity / Scaling of the Stokes Pairing",
+    "content": "`stokes_scaling` confirms that scaling the form $\\omega$ by a real $k$ scales both the line integral and the area integral by the same $k$: $\\int_C k\\omega = k \\int_C \\omega = k \\int_D d\\omega$. The proof uses `lineIntegral_smul` (linearity of line integration in the field) to pull $k$ out of the LHS, then applies `greens_stokes_l1curl` to the unscaled form. Linearity is *a fortiori* obvious mathematically, but its formal verification confirms that the integration pairing $\\langle \\omega, C \\rangle = \\int_C \\omega$ is bilinear over $(\\mathbb{R}, \\text{LipschitzClosedCurve})$ — a property essential for any downstream decomposition argument (e.g., splitting $\\omega = \\omega_{\\text{exact}} + \\omega_{\\text{closed}}$).",
+    "mathContext": "$\\int_C k\\omega = k \\int_C \\omega = k \\int_D d\\omega$ — bilinearity of the de Rham pairing $H^1_{\\text{dR}} \\times H_1 \\to \\mathbb{R}$ in its smooth-cycle ↔ form pairing.",
+    "significance": "supporting",
+    "relatedConcepts": ["linearity of integration", "lineIntegral_smul", "de Rham pairing"],
+    "prerequisites": ["greens_stokes_l1curl", "linearity of integration"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "greens-theorem-oq-02-oq-04",
+    "range": { "startLine": 244, "endLine": 259 },
+    "type": "concept",
+    "title": "Hierarchy Summary and the Path to Eliminating the Axiom",
+    "content": "The closing comment block summarizes the three-level hierarchy as a markdown table — OQ-01 (C¹/rectangle, 0 axioms), OQ-02 (Lipschitz/L¹, 1 axiom: Whitney), OQ-02-OQ-04 (Stokes form, 0 new axioms) — and points at the eventual *prize*: a future Mathlib formalization of the abstract Stokes theorem $\\int_M d\\omega = \\int_{\\partial M} \\omega$ for smooth manifolds with boundary would prove `greens_theorem_l1curl` as a special case (via approximation of Lipschitz boundaries by smooth ones, plus weak limits of L¹ forms), eliminating the one remaining axiom from OQ-02. This file's contribution is the *conceptual bridge* — when Mathlib gets abstract Stokes, the route from there to Whitney's L¹ theorem is now fully laid out.",
+    "mathContext": "Future path: $\\text{abstract Stokes for smooth } M \\xrightarrow{\\text{approximation}} \\text{Whitney's L}^1 \\text{ Stokes (no axioms)}.$ Approximation = (a) smooth $\\partial D \\to$ Lipschitz $\\partial D$ (well-known in geometric measure theory), (b) C¹ form sequences converging to L¹ form (standard via mollification).",
+    "significance": "context",
+    "relatedConcepts": ["abstract Stokes theorem", "axiom elimination roadmap", "approximation of Lipschitz by smooth"],
+    "prerequisites": ["all earlier sections"]
   }
 ]
