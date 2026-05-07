@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Header: Eliminating Two Glivenko–Cantelli Axioms",
+    "content": "The opening docstring positions this file as the *axiom-reduction* follow-up to the parent `LawsOfLargeNumbersOQ04` formalization of the Glivenko–Cantelli theorem. The parent file carries three axioms; this file proves two of them (`thresholdIndicator_integrable` and `integral_thresholdIndicator_eq_cdf`), reducing the axiom count to one. The remaining axiom — `glivenko_cantelli_uniform`, the finite-bracketing uniformity step — is the genuinely hard part requiring CDF continuity-point density infrastructure not yet available in Mathlib 4.26. The four enumerated Mathlib lemmas (`Integrable.mono'`, `integral_indicator`, `integral_const`, `restrict_apply`) are the tools that make the elimination possible — each replaces what was previously an unproved assumption with a chain of standard measure-theoretic moves.",
+    "mathContext": "Glivenko–Cantelli (1933): $\\sup_x |F_n(x) - F(x)| \\to 0$ a.s. Axiom reduction: 3 → 1, leaving only the bracketing uniformity step from pointwise to uniform convergence.",
+    "significance": "context",
+    "relatedConcepts": ["Glivenko-Cantelli theorem", "axiom reduction", "empirical CDF", "uniform convergence"],
+    "prerequisites": ["LawsOfLargeNumbersOQ04 parent", "probability measure", "indicator function"]
+  },
+  {
     "id": "ann-axiom-1-proof",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
     "range": { "startLine": 37, "endLine": 55 },
@@ -46,6 +58,18 @@
       "Measure.restrict_apply",
       "trueCDF"
     ]
+  },
+  {
+    "id": "ann-pointwise-convergence",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 105, "endLine": 136 },
+    "type": "concept",
+    "title": "Corollary: Axiom-Free Pointwise Convergence of the Empirical CDF",
+    "content": "`empiricalCDF_pointwise_convergence_no_axiom` is the file's payoff: assuming the SLLN-applicable hypotheses (i.i.d., identically distributed, measurable) plus a probability measure, the empirical CDF converges pointwise to the true CDF a.s., and the proof now invokes *zero* integration axioms. The chain of steps inside the proof body is illuminating: (1) get integrability of the threshold indicator from `thresholdIndicator_integrable_proved` (this file), (2) get pairwise independence and identical distribution from the parent file (these are *not* integration axioms — they're structural lifts of independence/identity from $X$ to indicators, provable from definitions), (3) apply `strong_law_ae_real` (Mathlib's SLLN), (4) substitute the integral identity from `integral_thresholdIndicator_eq_cdf_proved` to identify the SLLN limit as $F(x)$, (5) `convert hω using 1; ext n; simp` extracts the empirical-mean form. Pointwise GC is now a chain of theorems with no holes; only the uniform-bracketing step remains.",
+    "mathContext": "$\\forall x \\in \\mathbb{R}: \\quad F_n(x) := \\frac{1}{n} \\sum_{i=1}^n \\mathbf{1}_{X_i \\leq x} \\to F(x) := \\mu(X_0 \\leq x) \\quad \\text{a.s.}$ The SLLN applied to the indicator sequence $\\{\\mathbf{1}_{X_i \\leq x}\\}_i$ — independent (from i.i.d. of $X_i$) and identically distributed (from i.d. of $X_i$) — gives the empirical mean converging to the expectation, which is exactly $F(x)$ by the integral identity.",
+    "significance": "key",
+    "relatedConcepts": ["strong law of large numbers", "empirical CDF", "pointwise convergence", "iIndepFun"],
+    "prerequisites": ["thresholdIndicator_integrable_proved", "integral_thresholdIndicator_eq_cdf_proved", "strong_law_ae_real"]
   },
   {
     "id": "ann-remaining-axiom",
