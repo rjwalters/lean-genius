@@ -82,9 +82,9 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ℂ) = 1
   rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv, map_zero] at ha; norm_num at ha  -- (0:ℂ) = 1 → contradiction
+  · rw [hv] at ha; norm_num at ha            -- Int.cast 0 = 0 ≠ 1
   · exact hv                                  -- quadraticChar a = 1 directly
-  · rw [hv] at ha; push_cast at ha; norm_num at ha  -- (-1:ℂ) = 1 → contradiction
+  · rw [hv] at ha; push_cast at ha; norm_num at ha  -- Int.cast (-1) = -1 ≠ 1
 
 -- ============================================================================
 -- The Classical Gauss Sum

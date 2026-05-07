@@ -103,7 +103,7 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   rw [MulChar.one_apply] at ha  -- ha : (Int.cast (quadraticChar a) : ℂ) = 1
   rw [MulChar.one_apply]        -- goal : quadraticChar a = 1
   rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
-  · rw [hv, map_zero] at ha; norm_num at ha
+  · rw [hv] at ha; norm_num at ha
   · exact hv
   · rw [hv] at ha; push_cast at ha; norm_num at ha
 
