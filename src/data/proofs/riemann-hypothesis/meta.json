@@ -17,7 +17,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 32,
+    "axiomCount": 44,
     "assumptions": "32 axiom declarations in main file. Main: RH equivalences (Robin, Mertens, Nyman-Beurling, Lagarias, Speiser, Weil positivity, de Bruijn-Newman, Li positivity, BSY integral, Riesz, Báez-Duarte, Volchkov), partial results (Hardy, classical zero-free region, Conrey 2/5, Montgomery pair correlation), moment bounds (Harper, Radziwiłł-Soundararajan), Selberg class (Kaczorowski-Perelli), explicit estimates (Rosser-Schoenfeld, prime counting), GRH consequences (Artin primitive root, Miller primality), prime gap bounds. Consequences: Mertens bound, Li criterion, Riemann-von Mangoldt, density hypothesis, Chebyshev bounds, explicit formula, Selberg class, Hadamard product. Soundness audit: removed li_criterion (was inconsistent with wrong liCoefficient def), fixed auto-bound RiemannHypothesisStatement, unified eulerMascheroniGamma. 6594 lines, 32 axioms, 0 sorries remain. 0 sorries remain.(s) remain.",
     "mathlibDependencies": [
       {
@@ -355,7 +355,7 @@
     "opens": [],
     "namespace": "RiemannHypothesis",
     "lineCount": 6594,
-    "axiomCount": 32,
+    "axiomCount": 44,
     "theoremCount": 363,
     "definitionCount": 50,
     "path": "Proofs/RiemannHypothesis.lean",
