@@ -81,3 +81,68 @@ P-adic extension of Liouville's approximation theorem.
 - `inv_le_inv_of_le` is unknown in Mathlib 4.26 — use `one_div_le_one_div_of_le` instead
 - `Irreducible.ne_zero` — uncertain whether this dot-notation lemma exists in Mathlib 4.26; safer to use degree argument: if `g = 0` then `natDegree(fQ) = 0` contradicting `natDegree ≥ 2`
 - `not_isUnit_of_degree_pos` — uncertain whether this name exists; use `Polynomial.isUnit_iff` (confirmed in codebase: `∃ c : R, c ≠ 0 ∧ p = C c`) + `congr_arg Polynomial.natDegree` + `simp [natDegree_X_sub_C, natDegree_C]` instead
+
+---
+
+## Session 2026-05-08 (Session 11) — Cofactor Bound + Height Bound (researcher-6)
+
+**Mode**: REVISIT
+**Outcome**: progress (ingredient (2) of bridge axiom now formally proved at the helper level)
+
+### What I Did
+
+Added two new sections to `LiouvilleTheoremOQ04.lean`:
+
+**Part IV.7** — P-adic height bound on rationals:
+- `padicNorm_rat_int_div_le_natAbs (r s : ℤ) (hs : s ≠ 0) : padicNorm p ((r:ℚ)/s) ≤ |s|`
+  Proof: `padicNorm.div` (multiplicativity) + `padicNorm.of_int` (≤ 1) +
+  `padicNorm_int_ge_inv` (Archimedean Complement) + `div_le_iff₀` + `mul_inv_cancel₀`.
+- `padicNorm_rat_int_div_le_height`: corollary with `max(|r|,|s|)`.
+- `padic_norm_intCast_eq_padicNorm (z : ℤ) : ‖((z:ℤ):ℚ_[p])‖ = padicNorm p (z:ℚ)` —
+  bridges integer-cast form to rational-cast form via `norm_cast`.
+- `padic_norm_int_div_le_height (r s : ℤ) (hs : s ≠ 0) : ‖((r:ℚ_[p])/s)‖ ≤ max(|r|,|s|)`.
+
+**Part IV.8** — Polynomial cofactor evaluation bound:
+- `coeffNormSum (g : Polynomial ℚ_[p]) : ℝ := g.support.sum fun i => ‖g.coeff i‖`
+- `coeffNormSum_nonneg`: nonneg of the cofactor magnitude.
+- `padic_polynomial_eval_norm_bound (g : Polynomial ℚ_[p]) (x : ℚ_[p]) (H : ℝ)
+    (hH : 1 ≤ H) (hxH : ‖x‖ ≤ H) : ‖g.eval x‖ ≤ coeffNormSum p g · H^(natDegree g)`.
+  Proof: rewrite via `Polynomial.eval_eq_sum`, then `norm_sum_le` + `norm_mul` +
+  `norm_pow` + `pow_le_pow_left₀` + `pow_le_pow_right₀` + factor out `H^natDegree`.
+- `padic_cofactor_bound_rat`: rational-point specialization with `H = max(|r|,|s|)`.
+
+Updated bridge axiom docstring + Sorry Summary to reflect new state. File builds
+cleanly (Docker, lean 4.26.0): 1 axiom, 0 sorries, 732 lines, 26 theorems, 4 defs.
+
+### Key Findings
+
+- **Cast-rewrite isDefEq blowup**: The natural pattern `have hcast : ((r:ℚ_[p])/s) = (((r:ℚ)/s):ℚ_[p]) := by push_cast; rfl; rw [hcast, norm_rat_eq_padicNorm]` triggers a deterministic timeout at `isDefEq` (heartbeats=400000). The rewrite engine can't reconcile the cast layers inside `‖·‖` quickly enough.
+- **Robust pattern**: rewrite `norm_div` first (breaks the norm into integer norms), then use a separate `padic_norm_intCast_eq_padicNorm` helper on each integer norm. The integer-cast bridge uses `norm_cast` (not `push_cast; rfl`) which is more efficient for one-step cast equalities.
+- **Bridge ingredient (2) anatomy**: the cofactor bound packages naturally as `‖g.eval x‖ ≤ M · max(1, ‖x‖)^(natDegree g)`, where `M = ∑ i ∈ support, ‖g.coeff i‖` is the L¹ coefficient norm. This is a direct application of triangle + multiplicativity to `g.eval x = ∑ g.coeff i · x^i`.
+- **Residual obstruction is purely algebraic**: with all three sub-ingredients formally proved, discharging the bridge axiom reduces to handling the case `f(r/s) = 0 ∧ r/s ≠ α`. Since this set is the rational roots of `f` minus α (finite, ≤ deg f elements), one can take `C ≤ min ‖α - r₀‖` over the set.
+
+### Pending — Bridge Discharge Sketch
+
+```
+theorem padic_liouville_norm_bridge_proof (...) :
+    ∃ C : ℝ, 0 < C ∧ ∀ r s : ℤ, s ≠ 0 → α ≠ (r:ℚ_[p])/s →
+      C / H^(2d) ≤ ‖α - (r:ℚ_[p])/s‖ := by
+  -- Get C₁ from the algebraic case f(r/s) ≠ 0
+  obtain ⟨C₁, hC₁_pos, hC₁⟩ := /- combine padicNorm_poly_eval_bound + padic_norm_int_poly_eval + padic_cofactor_bound_rat -/
+  -- Get δ = min over rational roots of f distinct from α
+  let RatRoots : Finset ℚ := /- rational roots of f.map (algebraMap ℤ ℚ) -/
+  let RatRootsExceptAlpha := RatRoots.filter (fun q => (q : ℚ_[p]) ≠ α)
+  by_cases hempty : RatRootsExceptAlpha.Nonempty
+  case pos =>
+    let δ := RatRootsExceptAlpha.inf' hempty (fun q => ‖α - (q : ℚ_[p])‖)
+    use min C₁ δ
+    -- C₁ handles f(r/s) ≠ 0 case; δ handles the finite rational-root case
+    ...
+  case neg => use C₁; ...
+```
+
+### Next Steps
+
+1. Identify the right Mathlib name for "finite set of rational roots of an integer polynomial". Candidates: `Polynomial.roots`, `Polynomial.aroots`. Need a ℚ-version with finiteness from degree.
+2. Prove the bridge using the case-split sketched above.
+3. After bridge discharge: convert `axiom padic_liouville_norm_bridge` to `theorem ... := by <proof>`, drop the `axiomCount: 1` to 0, change `status: "axiomatized"` to `"verified"`, change `badge: "axiom"` to `"verified"` (or `"original"` since this is a from-scratch p-adic Liouville).

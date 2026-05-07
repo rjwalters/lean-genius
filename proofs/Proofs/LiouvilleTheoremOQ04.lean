@@ -276,6 +276,167 @@ theorem padic_norm_int_poly_eval (f : ℤ[X]) (q : ℚ) :
   rw [padic_eval_int_poly_cast, norm_rat_eq_padicNorm]
 
 /-! ═══════════════════════════════════════════════════════════════════════════
+PART IV.7: P-ADIC HEIGHT BOUND ON RATIONALS
+For r, s : ℤ with s ≠ 0:  padicNorm p ((r:ℚ)/s) ≤ |s| ≤ max(|r|,|s|).
+
+This is the dual face of the Archimedean Complement: rather than bounding
+`padicNorm p N` from below by `1/|N|`, we bound `padicNorm p (r/s)` from
+ABOVE by `|s|` (and hence by the height H = max(|r|,|s|)). Combined with
+norm transport (Part IV.5), it transfers to ℚ_[p]:
+  `‖((r:ℚ_[p])/s)‖ ≤ H`.
+
+This is ingredient (a) of the cofactor bound (Part IV.8).
+═══════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Rational division height bound**: For r, s : ℤ with s ≠ 0,
+    `padicNorm p ((r:ℚ)/s) ≤ |s|`.
+
+    Proof: Use multiplicativity `padicNorm p (r/s) = padicNorm p r / padicNorm p s`,
+    then bound numerator by `1` (Mathlib's `padicNorm.of_int`) and denominator
+    from below by `1/|s|` (the Archimedean Complement, Part I/II). -/
+theorem padicNorm_rat_int_div_le_natAbs (r s : ℤ) (hs : s ≠ 0) :
+    padicNorm p ((r : ℚ) / s) ≤ (s.natAbs : ℚ) := by
+  by_cases hr : r = 0
+  · subst hr
+    simp [padicNorm.zero]
+  · have hr_q : (r : ℚ) ≠ 0 := Int.cast_ne_zero.mpr hr
+    have hs_q : (s : ℚ) ≠ 0 := Int.cast_ne_zero.mpr hs
+    have hs_natAbs_pos : (0 : ℚ) < (s.natAbs : ℚ) := by
+      have := Int.natAbs_pos.mpr hs
+      exact_mod_cast this
+    -- Step 1: multiplicativity on division
+    rw [padicNorm.div]
+    -- Step 2: numerator bound padicNorm p r ≤ 1
+    have hr_le : padicNorm p (r : ℚ) ≤ 1 := padicNorm.of_int r
+    -- Step 3: denominator bound 1/|s| ≤ padicNorm p s
+    have hs_ge : ((s.natAbs : ℚ))⁻¹ ≤ padicNorm p (s : ℚ) :=
+      padicNorm_int_ge_inv p s hs
+    -- Step 4: padicNorm p s > 0
+    have hs_norm_pos : 0 < padicNorm p (s : ℚ) :=
+      (padicNorm.nonneg _).lt_of_ne (Ne.symm <| padicNorm.nonzero hs_q)
+    -- Step 5: a/b ≤ c ↔ a ≤ c * b (for b > 0)
+    rw [div_le_iff₀ hs_norm_pos]
+    -- Goal: padicNorm p r ≤ (s.natAbs : ℚ) * padicNorm p s
+    calc padicNorm p (r : ℚ)
+        ≤ 1 := hr_le
+      _ = (s.natAbs : ℚ) * ((s.natAbs : ℚ))⁻¹ :=
+          (mul_inv_cancel₀ (ne_of_gt hs_natAbs_pos)).symm
+      _ ≤ (s.natAbs : ℚ) * padicNorm p (s : ℚ) :=
+          mul_le_mul_of_nonneg_left hs_ge (le_of_lt hs_natAbs_pos)
+
+/-- Height bound corollary: `padicNorm p ((r:ℚ)/s) ≤ max(|r|,|s|)`. -/
+theorem padicNorm_rat_int_div_le_height (r s : ℤ) (hs : s ≠ 0) :
+    padicNorm p ((r : ℚ) / s) ≤ (max r.natAbs s.natAbs : ℚ) :=
+  le_trans (padicNorm_rat_int_div_le_natAbs p r s hs)
+    (by exact_mod_cast Nat.le_max_right r.natAbs s.natAbs)
+
+/-- Helper: ‖((z : ℤ) : ℚ_[p])‖ = padicNorm p (z : ℚ).
+    This bridges the integer-cast form to the rational form via norm_rat_eq_padicNorm. -/
+theorem padic_norm_intCast_eq_padicNorm (z : ℤ) :
+    ‖((z : ℤ) : ℚ_[p])‖ = padicNorm p ((z : ℤ) : ℚ) := by
+  have hcast : ((z : ℤ) : ℚ_[p]) = (((z : ℤ) : ℚ) : ℚ_[p]) := by norm_cast
+  rw [hcast]
+  exact norm_rat_eq_padicNorm p _
+
+/-- **P-adic norm height bound on ℚ_[p]**: For r, s : ℤ with s ≠ 0,
+    `‖(r : ℚ_[p]) / s‖ ≤ max(|r|, |s|)`.
+
+    Proof: Use multiplicativity of norm (`norm_div`) to break into integer norms,
+    convert each to padicNorm via `padic_norm_intCast_eq_padicNorm`, then apply the
+    rational bound `padicNorm_rat_int_div_le_height` after using `padicNorm.div`. -/
+theorem padic_norm_int_div_le_height (r s : ℤ) (hs : s ≠ 0) :
+    ‖((r : ℚ_[p]) / s)‖ ≤ (max r.natAbs s.natAbs : ℝ) := by
+  have hs_q : (s : ℚ) ≠ 0 := Int.cast_ne_zero.mpr hs
+  -- Multiplicativity: ‖r/s‖_pp = ‖r‖_pp / ‖s‖_pp
+  rw [norm_div]
+  -- Convert each integer ℚ_[p]-norm to a rational padicNorm
+  rw [padic_norm_intCast_eq_padicNorm, padic_norm_intCast_eq_padicNorm]
+  -- Rational bound on the division
+  have key : padicNorm p ((r : ℚ) / s) ≤ (max r.natAbs s.natAbs : ℚ) :=
+    padicNorm_rat_int_div_le_height p r s hs
+  rw [padicNorm.div] at key
+  exact_mod_cast key
+
+/-! ═══════════════════════════════════════════════════════════════════════════
+PART IV.8: POLYNOMIAL EVALUATION NORM BOUND IN ℚ_[p] (cofactor bound)
+For g ∈ ℚ_[p][X] of degree e, x ∈ ℚ_[p] with `‖x‖ ≤ H` and `H ≥ 1`:
+  `‖g.eval x‖ ≤ (∑ i ∈ g.support, ‖g.coeff i‖) · H^e`.
+
+This discharges ingredient (2) of the bridge axiom: the upper bound on
+`‖g.eval (r/s : ℚ_[p])‖`. Combined with the height bound (Part IV.7), it
+yields `‖g.eval ((r:ℚ_[p])/s)‖ ≤ M · H^(deg g)` where M = coeffNormSum p g
+depends only on g (not on r, s).
+═══════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Coefficient norm sum** of a polynomial over ℚ_[p].
+    `coeffNormSum p g = ∑ i ∈ g.support, ‖g.coeff i‖`.
+
+    This is the M in `‖g.eval x‖ ≤ M · max(1,‖x‖)^(deg g)`. -/
+noncomputable def coeffNormSum (g : Polynomial ℚ_[p]) : ℝ :=
+  g.support.sum (fun i => ‖g.coeff i‖)
+
+theorem coeffNormSum_nonneg (g : Polynomial ℚ_[p]) : 0 ≤ coeffNormSum p g :=
+  Finset.sum_nonneg (fun _ _ => norm_nonneg _)
+
+/-- **Cofactor evaluation bound** (key technical lemma): For g ∈ ℚ_[p][X] and x : ℚ_[p]
+    with `1 ≤ H` and `‖x‖ ≤ H`:
+      `‖g.eval x‖ ≤ coeffNormSum p g · H^g.natDegree`.
+
+    Proof: Expand `g.eval x = ∑ i ∈ support, (g.coeff i) · x^i`, then chain:
+    triangle inequality (`norm_sum_le`), multiplicativity of norm (`norm_mul`,
+    `norm_pow`), monotonicity of pow in base (`pow_le_pow_left₀` with hxH),
+    monotonicity in exponent (`pow_le_pow_right₀` with i ≤ natDegree, H ≥ 1),
+    factor out the constant H^natDegree. -/
+theorem padic_polynomial_eval_norm_bound (g : Polynomial ℚ_[p]) (x : ℚ_[p])
+    (H : ℝ) (hH : 1 ≤ H) (hxH : ‖x‖ ≤ H) :
+    ‖g.eval x‖ ≤ coeffNormSum p g * H ^ g.natDegree := by
+  have hH_nn : (0 : ℝ) ≤ H := le_trans zero_le_one hH
+  -- Express g.eval x = ∑ i ∈ support, g.coeff i * x^i
+  have hsum : g.eval x = ∑ i ∈ g.support, g.coeff i * x ^ i := by
+    rw [Polynomial.eval_eq_sum]
+    rfl
+  rw [hsum]
+  -- Chain of inequalities
+  calc ‖∑ i ∈ g.support, g.coeff i * x ^ i‖
+      ≤ ∑ i ∈ g.support, ‖g.coeff i * x ^ i‖ := norm_sum_le _ _
+    _ = ∑ i ∈ g.support, ‖g.coeff i‖ * ‖x‖ ^ i := by
+        refine Finset.sum_congr rfl (fun i _ => ?_)
+        rw [norm_mul, norm_pow]
+    _ ≤ ∑ i ∈ g.support, ‖g.coeff i‖ * H ^ i := by
+        refine Finset.sum_le_sum (fun i _ => ?_)
+        exact mul_le_mul_of_nonneg_left
+          (pow_le_pow_left₀ (norm_nonneg _) hxH i) (norm_nonneg _)
+    _ ≤ ∑ i ∈ g.support, ‖g.coeff i‖ * H ^ g.natDegree := by
+        refine Finset.sum_le_sum (fun i hi => ?_)
+        exact mul_le_mul_of_nonneg_left
+          (pow_le_pow_right₀ hH (Polynomial.le_natDegree_of_mem_supp i hi))
+          (norm_nonneg _)
+    _ = (∑ i ∈ g.support, ‖g.coeff i‖) * H ^ g.natDegree := by
+        rw [← Finset.sum_mul]
+    _ = coeffNormSum p g * H ^ g.natDegree := rfl
+
+/-- **Cofactor bound at rational points**: Specialization of
+    `padic_polynomial_eval_norm_bound` to `x = (r:ℚ_[p])/s` with `H = max(|r|,|s|)`.
+
+    For g ∈ ℚ_[p][X], r, s : ℤ with s ≠ 0 and `2 ≤ max(|r|,|s|)`:
+      `‖g.eval ((r:ℚ_[p])/s)‖ ≤ coeffNormSum p g · max(|r|,|s|)^g.natDegree`.
+
+    The hypothesis `2 ≤ H` is convenient (matches `IsPadicLiouville`); the proof
+    only uses `1 ≤ H`. This is the form needed by the bridge axiom discharge. -/
+theorem padic_cofactor_bound_rat (g : Polynomial ℚ_[p]) (r s : ℤ) (hs : s ≠ 0)
+    (hH : 2 ≤ max r.natAbs s.natAbs) :
+    ‖g.eval ((r : ℚ_[p]) / s)‖ ≤
+      coeffNormSum p g * (max r.natAbs s.natAbs : ℝ) ^ g.natDegree := by
+  set H : ℝ := (max r.natAbs s.natAbs : ℝ) with hH_def
+  have hH_one : (1 : ℝ) ≤ H := by
+    rw [hH_def]
+    have : (2 : ℕ) ≤ max r.natAbs s.natAbs := hH
+    have : (1 : ℕ) ≤ max r.natAbs s.natAbs := le_trans (by norm_num) this
+    exact_mod_cast this
+  have hxH : ‖((r : ℚ_[p]) / s)‖ ≤ H := padic_norm_int_div_le_height p r s hs
+  exact padic_polynomial_eval_norm_bound p g ((r : ℚ_[p]) / s) H hH_one hxH
+
+/-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
@@ -283,17 +444,26 @@ P-adic algebraic numbers are not p-adically Liouville
 /-- **Bridge Axiom**: Given the factorization f = (X - C α) · g in ℚ_[p][X] and the evaluation
     identity f(x) = (x - α) · g(x), the p-adic Liouville estimate holds.
 
-    Status (post Part IV.5):
-    Ingredient (1) (norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q) is now
-    PROVED in Part IV.5 as `norm_rat_eq_padicNorm`, and the integer polynomial transport
-    `padic_norm_int_poly_eval` discharges the full ℚ → ℚ_[p] bridge for `eval`. The only
-    remaining obstacle is ingredient (2) below.
+    Status (post Part IV.8):
+    - Ingredient (1) (norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q):
+      ✓ PROVED in Part IV.5 as `norm_rat_eq_padicNorm`. Combined with
+      `padic_norm_int_poly_eval` this fully discharges the ℚ → ℚ_[p] bridge for `eval`.
+    - Ingredient (2a) (height bound on ℚ_[p]: ‖(r:ℚ_[p])/s‖ ≤ max(|r|,|s|)):
+      ✓ PROVED in Part IV.7 as `padic_norm_int_div_le_height`.
+    - Ingredient (2b) (uniform polynomial cofactor bound):
+      ✓ PROVED in Part IV.8 as `padic_polynomial_eval_norm_bound` and
+      `padic_cofactor_bound_rat`: for any g ∈ ℚ_[p][X], r, s : ℤ with s ≠ 0,
+      `‖g.eval ((r:ℚ_[p])/s)‖ ≤ coeffNormSum p g · H^(deg g)`.
 
-    (2) **Cofactor evaluation bound** (REMAINING): for g ∈ ℚ_[p][X] with coefficients
-        depending on α, ‖g.eval (r/s : ℚ_[p])‖ ≤ M · H^(deg g) where H = max(|r|, |s|)
-        and M depends on ‖α‖ and the coefficients of f. Follows from ‖r/s‖_p ≤ |s| ≤ H
-        (by Archimedean Complement applied to ‖s‖_p ≥ 1/|s|) and polynomial norm bounds.
-    Combined: ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ ≥ (C_f/H^d)/(M·H^(d-1)) = C/H^(2d-1) ≥ C/H^(2d). -/
+    Remaining obstacle (now ONLY): assembling the algebra. The bridge requires
+    handling the case f(r/s) = 0 with r/s ≠ α (the finitely-many rational roots of
+    f distinct from α): for those, the formula ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ is the
+    indeterminate 0/0 (since heval forces g(r/s) = 0 too when r/s ≠ α and f(r/s) = 0).
+    We must take the constant C ≤ min ‖α - r₀‖ over the finite set of rational
+    roots r₀ ≠ α to cover this case directly.
+
+    Combined estimate (when f(r/s) ≠ 0):
+      ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ ≥ (C_f/H^d)/(M·H^(d-1)) = C/H^(2d-1) ≥ C/H^(2d). -/
 axiom padic_liouville_norm_bridge
     (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
@@ -510,12 +680,19 @@ PART IX: SORRY SUMMARY
 - All three examples (2|6, 5|25, 3∤7)
 
 **Axiom** (`padic_liouville_norm_bridge`): Connects the factorization/evaluation identity
-to the final norm estimate. Originally required two ingredients; ingredient (1) is now
-proved in Part IV.5:
-1. Norm compatibility ℚ → ℚ_[p]: ✓ PROVED via `padicNormE.eq_padicNorm` (Mathlib).
-   Wrapper theorems: `norm_rat_eq_padicNorm`, `padic_eval_int_poly_cast`,
-   `padic_norm_int_poly_eval`.
-2. Uniform cofactor bound: ‖g.eval (r/s)‖_p ≤ M · H^(d-1) (REMAINING).
+to the final norm estimate. All three originally-listed ingredients are now proved:
+1. Norm compatibility ℚ → ℚ_[p]: ✓ PROVED in Part IV.5 via Mathlib's `Padic.eq_padicNorm`.
+   Wrappers: `norm_rat_eq_padicNorm`, `padic_eval_int_poly_cast`, `padic_norm_int_poly_eval`.
+2a. Height bound: ‖(r : ℚ_[p])/s‖ ≤ H : ✓ PROVED in Part IV.7 as `padic_norm_int_div_le_height`
+    (via the dual face of the Archimedean Complement: `padicNorm_rat_int_div_le_natAbs`).
+2b. Cofactor evaluation bound: ‖g.eval x‖ ≤ M · H^(deg g) : ✓ PROVED in Part IV.8 as
+    `padic_polynomial_eval_norm_bound` (general) and `padic_cofactor_bound_rat`
+    (rational-point specialization).
+
+The axiom now reduces to a finite case analysis: handling the "rational roots of f
+distinct from α" set (finite, at most deg(f) elements) where both sides of the
+formula `‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖` vanish to zero. A standalone discharge
+must take the bridge constant C as `min(C_algebra, min_{r₀ rational root ≠ α} ‖α - r₀‖)`.
 
 **Session 9 changes (2026-05-03)**:
 - Replaced `sorry` in `padic_liouville_estimate` with bridge axiom `padic_liouville_norm_bridge`.
@@ -533,6 +710,22 @@ proved in Part IV.5:
     rational evaluation. This is exactly the connection
     `padicNorm_poly_eval_bound` (Part III) needs to bridge to ℚ_[p].
   Net: bridge axiom now blocked only by ingredient (2) (cofactor evaluation bound).
+
+**Session 11 changes (2026-05-08)**:
+- Added Part IV.7 (height bound on rational division):
+  - `padicNorm_rat_int_div_le_natAbs`: padicNorm p (r/s) ≤ |s| via padicNorm.div +
+    padicNorm.of_int + Archimedean Complement (Part I).
+  - `padicNorm_rat_int_div_le_height`: corollary with max(|r|,|s|).
+  - `padic_norm_int_div_le_height`: ℚ_[p] version via norm_rat_eq_padicNorm.
+- Added Part IV.8 (polynomial cofactor evaluation bound):
+  - `coeffNormSum`: ∑ i ∈ support, ‖coeff i‖ — the cofactor magnitude.
+  - `padic_polynomial_eval_norm_bound`: ‖g.eval x‖ ≤ coeffNormSum · H^(natDegree g)
+    when ‖x‖ ≤ H and 1 ≤ H. Proved by triangle + norm-mul + norm-pow + monotonicity.
+  - `padic_cofactor_bound_rat`: rational-point specialization combining the above
+    with `padic_norm_int_div_le_height`.
+  Net: ingredients (1), (2a), (2b) of the bridge axiom are all now formally proved.
+  The remaining obstruction to discharging the bridge as a theorem is purely the
+  algebraic case analysis on rational roots of f distinct from α.
 
 -/
 
