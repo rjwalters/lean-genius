@@ -195,23 +195,25 @@ theorem density_univ : upperDensity Set.univ = 1 := by
     rw [h]; exact Filter.limsup_const 1
   ext n
   have hn : (n : ℝ) + 1 ≠ 0 := by positivity
-  rw [Set.ncard_Iic, div_eq_one_iff_eq hn]
+  have hIic : (Set.Iic n : Set ℕ).ncard = n + 1 := by
+    rw [← Set.ncard_coe_Finset, Finset.toSet_toFinset]
+    simp [Set.toFinset_Iic, Finset.card_Iic]
+  rw [hIic, div_eq_one_iff_eq hn]
   push_cast; ring
 
 /-- Density is monotone: A ⊆ B implies upperDensity A ≤ upperDensity B. -/
 theorem density_mono {A B : Set ℕ} (h : A ⊆ B) : upperDensity A ≤ upperDensity B := by
   unfold upperDensity
   apply Filter.limsup_le_limsup
-  · exact Filter.eventually_of_forall (fun n => by
-      apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)
-      exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
-        ((Set.Iic n).toFinite.subset Set.inter_subset_right))
+  · filter_upwards [] with n
+    apply div_le_div_of_nonneg_right _ (by positivity : (0 : ℝ) ≤ (n : ℝ) + 1)
+    exact_mod_cast Set.ncard_le_ncard (Set.inter_subset_inter_left _ h)
+        ((Set.Iic n).toFinite.subset Set.inter_subset_right)
 
 /-- Upper density is at most 1 for any set. -/
 theorem density_le_one (A : Set ℕ) : upperDensity A ≤ 1 :=
   density_univ ▸ density_mono (Set.subset_univ A)
 
-/-- Every finite set has zero upper density. -/
 /-
 ## Basis Properties
 -/
@@ -234,7 +236,7 @@ theorem basis_infinite {A : Set ℕ} (h : IsBasisOrder2 A) : A.Infinite := by
     have := hA_bound b hb
     omega
   -- But h says all large enough numbers are in sumset A A
-  rw [Filter.Eventually, Filter.mem_atTop_sets] at h
+  rw [Filter.eventually_atTop] at h
   obtain ⟨N, hN⟩ := h
   -- Take m = max(N, 2*n + 1)
   have hm := hN (max N (2 * n + 1)) (le_max_left _ _)
@@ -259,7 +261,7 @@ theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
       intro m hm
       simp only [Finset.coe_Icc, Set.mem_Icc] at hm
       exact ⟨hN₀ m hm.1, hm.2⟩
-    calc n - N₀ + 1 = (Finset.Icc N₀ n).card := by simp [Nat.Icc_card_eq_sub_add_one hn]
+    calc n - N₀ + 1 = (Finset.Icc N₀ n).card := by simp [Finset.card_Icc]; omega
       _ = ((Finset.Icc N₀ n : Set ℕ)).ncard := (Set.ncard_coe_Finset _).symm
       _ ≤ (S ∩ Set.Iic n).ncard := Set.ncard_le_ncard hincl hfin
   -- The ratio sequence is eventually ≥ 1 - N₀/(n+1)
@@ -289,8 +291,8 @@ theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
     linarith
   -- limsup ≥ lim of lower bound = 1
   calc (1 : ℝ) = atTop.limsup (fun n : ℕ => 1 - ↑N₀ / (↑n + 1)) := by
-          exact (htend_lb.limsup_eq ⟨1, Filter.eventually_of_forall fun n => by
-            apply sub_le_self; positivity⟩).symm
+          exact (htend_lb.limsup_eq ⟨1, by
+            filter_upwards [] with n; apply sub_le_self; positivity⟩).symm
       _ ≤ atTop.limsup (fun n : ℕ => ((S ∩ Set.Iic n).ncard : ℝ) / (↑n + 1)) :=
           Filter.limsup_le_limsup hlb
 
