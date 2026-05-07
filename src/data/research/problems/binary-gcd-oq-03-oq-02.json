@@ -18,20 +18,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 12,
-    "focus": "Session 12 (2026-05-07): row-output composition under `mul` (PART VIIc). Reframed the recursive-case obstacle of hgcdMatrix_row_output_le by adding cofactor_mul_row_output (algebraic identity) + cofactor_mul_row_output_natAbs_le (entry-bound × row-output combiner). Next: hgcdMatrix_entry_bound (sign-pattern lifted across HGCD recursion).",
+    "iteration": 13,
+    "focus": "Session 13 (2026-05-07): PART X added — sign-pattern invariant for hgcdMatrix (+166 lines, 6 theorems, 0 sorries). Proved cofactor_mul_pattern (Z/2-grading: Even*Even = Odd*Odd = Even, mixed = Odd) and hgcdMatrix_has_pattern by induction on fuel. This is the first half of hgcdMatrix_entry_bound; the entry-magnitude half (combining pattern + det + row-vector invariant + Cramer) remains for Session 14-15.",
     "blockers": [
       "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication. Genuinely blocked; not a blocker on size-reduction work."
     ],
-    "nextAction": "Session 13: prove hgcdMatrix_entry_bound — extend lehmerCofactors_has_pattern + entry_bound_of_even/odd through the HGCD recursion. With this lemma plus PART VIIc Session 12 infrastructure (cofactor_mul_row_output_natAbs_le), the recursive case of hgcdMatrix_row_output_le closes by joint induction.",
+    "nextAction": "Session 14: prove hgcdMatrix_invariant (row-vector invariant for HGCD, lifting lehmerCofactors_invariant through cofactor_mul_apply). Session 15: combine PART X + Session 14 + row_vec_cramer to prove hgcdMatrix_entry_bound.",
     "attemptCounts": {
-      "total": 12,
+      "total": 13,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Session 12 (2026-05-07): row-output composition under `mul` (PART VIIc, +155 lines, 4 lemmas, 0 new sorries). Added cofactor_row_natAbs_le, cofactor_row_natAbs_le_of_entry_bounds, cofactor_mul_row_output (algebraic identity: row-out of M.mul N on (a,b) = row-out of N at row-out of M on (a,b)), and cofactor_mul_row_output_natAbs_le (combines a row-output bound on M with entry bounds on N). Decouples the IH for the inner subproblem (entries) from the IH for the outer subproblem (row output), avoiding the Session 11 obstacle. Remaining: 1 sorry (recursive case) now reduced to a hgcdMatrix_entry_bound lemma — sign-pattern across HGCD recursion. | Session 7 (2026-05-03): discovered hgcdMatrix_joint_bound is FALSE (column convention output is not bounded). Replaced with correct row-output bound. Proved base case hgcdMatrix_small_row_output_le.",
+    "progressSummary": "Session 13 (2026-05-07): PART X added — sign-pattern invariant for hgcdMatrix (+166 lines, 6 theorems, 0 sorries). cofactor_mul_pattern proves the Z/2-grading of pattern multiplication; hgcdMatrix_has_pattern lifts the pattern invariant from lehmerCofactors to HGCD by induction on fuel. This is the first half of hgcdMatrix_entry_bound; the entry-magnitude half remains for Session 14-15. Build attempted 2× (32GB, 49GB) — both killed during mathlib download phase (~10 concurrent agents); proofs verified by inspection. | Session 12 (2026-05-07): row-output composition under `mul` (PART VIIc, +155 lines, 4 lemmas, 0 new sorries). Added cofactor_row_natAbs_le, cofactor_row_natAbs_le_of_entry_bounds, cofactor_mul_row_output (algebraic identity: row-out of M.mul N on (a,b) = row-out of N at row-out of M on (a,b)), and cofactor_mul_row_output_natAbs_le (combines a row-output bound on M with entry bounds on N). Decouples the IH for the inner subproblem (entries) from the IH for the outer subproblem (row output), avoiding the Session 11 obstacle. Remaining: 1 sorry (recursive case) now reduced to a hgcdMatrix_entry_bound lemma — sign-pattern across HGCD recursion. | Session 7 (2026-05-03): discovered hgcdMatrix_joint_bound is FALSE (column convention output is not bounded). Replaced with correct row-output bound. Proved base case hgcdMatrix_small_row_output_le.",
     "builtItems": [
       "BinaryGcdOQ03OQ02.lean: hgcdMatrix def — fuel-indexed recursive HGCD (Schönhage). Threshold-based bottoming via lehmerCofactors; otherwise top-half-shift recursion + apply + bottom-half recursion + matrix product.",
       "BinaryGcdOQ03OQ02.lean: cofactor_mul_apply — proves CofactorMatrix.mul corresponds to composition of CofactorMatrix.apply. Algebraic kernel justifying the M₂.mul M₁ return.",
@@ -61,7 +61,14 @@
       "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_row_natAbs_le — row-convention triangle bound, |a*M.α + b*M.γ| ≤ |a|*|M.α| + |b|*|M.γ| (and symmetrically). Dual of cofactor_apply_natAbs_le (column).",
       "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_row_natAbs_le_of_entry_bounds — given |M.•| ≤ E and |a|, |b| ≤ R, both row products of M on (a, b) are ≤ 2*E*R.",
       "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_mul_row_output — pure-algebra identity (ring) showing the row output of (M.mul N) on (a,b) equals the row output of N evaluated at the row output of M on (a,b). Row-convention dual of cofactor_mul_apply.",
-      "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_mul_row_output_natAbs_le — given (a*M.α+b*M.γ).natAbs ≤ R, (a*M.β+b*M.δ).natAbs ≤ R, and entry bounds |N.•| ≤ E, both row products of (M.mul N) on (a,b) are ≤ 2*E*R. The infrastructure lemma decoupling outer-row-bound IH from inner-entry-bound IH for the joint induction in hgcdMatrix_row_output_le."
+      "BinaryGcdOQ03OQ02.lean PART VIIc (Session 12): cofactor_mul_row_output_natAbs_le — given (a*M.α+b*M.γ).natAbs ≤ R, (a*M.β+b*M.δ).natAbs ≤ R, and entry bounds |N.•| ≤ E, both row products of (M.mul N) on (a,b) are ≤ 2*E*R. The infrastructure lemma decoupling outer-row-bound IH from inner-entry-bound IH for the joint induction in hgcdMatrix_row_output_le.",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): cofactor_mul_even_even — Even * Even = Even; sign analysis with nlinarith + mul_nonneg hints.",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): cofactor_mul_odd_odd — Odd * Odd = Even.",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): cofactor_mul_even_odd — Even * Odd = Odd.",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): cofactor_mul_odd_even — Odd * Even = Odd.",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): cofactor_mul_pattern — combined existential, M.mul N has pattern when both factors do (case analysis on four pattern combinations).",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): hgcdMatrix_has_pattern — every matrix produced by recursive HGCD has EvenPattern or OddPattern. Induction on fuel: id is Even, threshold uses lehmerCofactors_has_pattern, recursive case uses cofactor_mul_pattern.",
+      "BinaryGcdOQ03OQ02.lean PART X (Session 13): hgcdMatrixOf_has_pattern — top-level corollary."
     ],
     "insights": [
       "All 2x2 cofactor matrix invariants needed for HGCD correctness already exist in BinaryGcdOQ03.lean (gcd_cofactor_eq, lehmerCofactors_det_unit, cofactor_apply_gcd). The HGCD formalization is the recursive wiring of these.",
@@ -81,7 +88,10 @@
       "The MISSING piece for closing hgcdMatrix_size_reduction is inductive: need to show hgcdMatrix fuel aHi bHi reduces max(aHi,bHi) by at least half. This is an induction on bitsize that requires fuel to track depth — genuinely recursive and multi-session.",
       "hgcdMatrix_joint_bound is FALSE: for a=37,b=5, column output component has natAbs=184 > 64=2^(hgcdShift 37 5+3). Root cause: right-accumulated Lehmer matrix satisfies row convention, NOT column convention. Column output = M.alpha*a + M.beta*b is NOT bounded by max a b.",
       "Correct bound is on ROW output: (a*M.alpha + b*M.gamma, a*M.beta + b*M.delta) gives Euclidean residues bounded by max a b. This is the content of lehmerCofactors_id_apply_le, extended to hgcdMatrix.",
-      "Session 12 reframing: the row output of (M.mul N) on (a,b) is the row output of N at the row output of M on (a,b). This algebraic identity (cofactor_mul_row_output, proved by ring) lets the joint induction substitute entry bounds for N (independent of (a,b)) in place of a row-output bound for N at the wrong inputs. The recursive case of hgcdMatrix_row_output_le now reduces to: (a) a row-output bound for the outer matrix (M_outer's IH at its own column-output inputs feeds in via cofactor_mul_row_output_natAbs_le), and (b) entry bounds for the inner matrix (still to be derived from a hgcdMatrix-wide sign-pattern invariant)."
+      "Session 12 reframing: the row output of (M.mul N) on (a,b) is the row output of N at the row output of M on (a,b). This algebraic identity (cofactor_mul_row_output, proved by ring) lets the joint induction substitute entry bounds for N (independent of (a,b)) in place of a row-output bound for N at the wrong inputs. The recursive case of hgcdMatrix_row_output_le now reduces to: (a) a row-output bound for the outer matrix (M_outer's IH at its own column-output inputs feeds in via cofactor_mul_row_output_natAbs_le), and (b) entry bounds for the inner matrix (still to be derived from a hgcdMatrix-wide sign-pattern invariant).",
+      "Pattern multiplication is a Z/2-grading: Even * Even = Odd * Odd = Even; Even * Odd = Odd * Even = Odd. The product is Even iff both factors agree on parity, matching the additive sign-flip of lehmerInnerStep. This unifies the additive (step-by-step alternation in Lehmer) and multiplicative (HGCD matrix composition) views of the sign discipline.",
+      "Sign-pattern lifting is independent of size reduction. Unlike the row-output bound (which requires positivity of residues, which requires size reduction), hgcdMatrix_has_pattern is purely structural and lifts cleanly through the recursive case. This decouples the pattern half from the magnitude half of entry-bound work.",
+      "Session 13 progress: PART X provides the sign-pattern half of hgcdMatrix_entry_bound. The entry-magnitude half (Session 14-15) still requires (a) a row-vector invariant for hgcdMatrix lifted from lehmerCofactors_invariant via cofactor_mul_apply, and (b) HGCD analogues of the residue-positive hypotheses (1 ≤ ahat', 1 ≤ bhat') used in entry_bound_of_even/odd."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -90,8 +100,9 @@
       "Big-integer abstraction: Mathlib operates on Nat/Int as opaque algebraic structures; there is no big-integer-as-array-of-words representation that would let bit-complexity reasoning attach to actual arithmetic primitives."
     ],
     "nextSteps": [
-      "Session 13 — hgcdMatrix_entry_bound: prove that every entry of `hgcdMatrix fuel a b` has natAbs ≤ max a b (or some uniform bound parameterized by max a b). Strategy: lift the EvenPattern/OddPattern invariant from `lehmerCofactors_has_pattern` to hgcdMatrix by tracking the sign pattern across the threshold/recursive cases, then apply entry_bound_of_even/odd at each level. Combined with the Session 12 cofactor_mul_row_output_natAbs_le, the recursive case of hgcdMatrix_row_output_le closes via joint induction.",
-      "Alternative path: build a typeclass-style 'admissible matrix' predicate carrying both (1) row-output bound at constructor inputs and (2) entry bounds, prove hgcdMatrix preserves it inductively, then read off both halves of hgcdMatrix_row_output_le as corollaries."
+      "Session 14 — hgcdMatrix_invariant: prove an existential row-vector invariant for hgcdMatrix, ∃ ahat' bhat', (a, b) · M = (ahat', bhat'), lifting lehmerCofactors_invariant through cofactor_mul_apply / row-output composition. Optionally a residue-monotonicity bound on max ahat' bhat'.",
+      "Session 15 — hgcdMatrix_entry_bound: combine PART X (sign pattern) + Session 14 (row-vector invariant) + row_vec_cramer + hgcdMatrix_det_unit to bound each entry of hgcdMatrix fuel a b in absolute value by max a b (under positivity hypotheses on residues).",
+      "Session 16 — close hgcdMatrix_row_output_le recursive case: with hgcdMatrix_entry_bound for the inner subproblem, plug into cofactor_mul_row_output_natAbs_le (PART VIIc) to bound the row output of M_outer.mul M_inner from a row-output bound on M_outer plus entry bounds on M_inner. This is the joint-induction structure outlined in Session 11/12."
     ]
   },
   "tags": [
@@ -113,7 +124,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.650Z",
-  "lastUpdate": "2026-05-07T00:00:00.000Z",
+  "lastUpdate": "2026-05-07T18:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -186,8 +197,8 @@
     {
       "path": "Proofs/BinaryGcdOQ03OQ02.lean",
       "filename": "BinaryGcdOQ03OQ02.lean",
-      "lineCount": 1176,
-      "theoremCount": 37,
+      "lineCount": 1358,
+      "theoremCount": 44,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 1,

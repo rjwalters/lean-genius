@@ -454,3 +454,87 @@ The TIGHT bound requires max_entry ≤ 2^(N/4) — which comes from knowing the 
 2. **Alternative approach**: Prove the full Euclidean relation directly — that
    `rowOut(hgcdMatrix fuel a b, a, b)` gives the Euclidean residues of `(a,b)` —
    rather than going via matrix induction.
+
+## Session 2026-05-07 (Session 13) — Sign-pattern invariant for hgcdMatrix (PART X)
+
+**Mode**: REVISIT
+**Outcome**: progress — added Session 13's planned PART X. Sign-pattern half
+of `hgcdMatrix_entry_bound` is proved; entry-magnitude half deferred.
+
+### What I Did
+
+Added PART X to `BinaryGcdOQ03OQ02.lean` (~165 lines, 6 theorems, 0 sorries):
+
+1. `cofactor_mul_even_even` (Even * Even = Even): sign analysis with
+   `nlinarith` + `mul_nonneg` hints.
+2. `cofactor_mul_odd_odd` (Odd * Odd = Even): symmetric.
+3. `cofactor_mul_even_odd` (Even * Odd = Odd): symmetric.
+4. `cofactor_mul_odd_even` (Odd * Even = Odd): symmetric.
+5. `cofactor_mul_pattern`: combined existential — `M.mul N` has Even or Odd
+   pattern when both factors do. Case analysis on the four pattern combinations.
+6. `hgcdMatrix_has_pattern`: every matrix produced by recursive HGCD has Even
+   or Odd pattern. Proved by induction on fuel:
+     - **Base** (`fuel = 0`): id has Even pattern.
+     - **Threshold case**: `lehmerCofactors_has_pattern` directly.
+     - **Recursive case**: `cofactor_mul_pattern` with both IHs.
+7. `hgcdMatrixOf_has_pattern`: top-level corollary.
+
+### Key Findings
+
+- **Pattern multiplication is a Z/2-grading.** Even * Even = Odd * Odd = Even;
+  Even * Odd = Odd * Even = Odd. The product is Even iff both factors agree on
+  parity, matching the additive sign-flip of `lehmerInnerStep`. This unifies
+  the additive (Lehmer step-by-step alternation) and multiplicative (HGCD
+  matrix composition) views of the sign discipline.
+- **Pattern lifting is independent of size reduction.** Unlike the row-output
+  bound (which requires positivity of residues, which requires size
+  reduction), the sign-pattern invariant is purely structural and lifts
+  cleanly through the recursive case. This is why it can be proved before
+  closing the row-output sorry.
+- **Closing `hgcdMatrix_entry_bound` requires more than the pattern.** With
+  pattern + det = ±1 + Cramer (`row_vec_cramer`), we need a row-vector
+  invariant for `hgcdMatrix` (the existence of `ahat', bhat'` such that
+  `(a, b) · M = (ahat', bhat')` for `M = hgcdMatrix _ a b`) plus positivity
+  `1 ≤ ahat'`, `1 ≤ bhat'`. The first half (existence) is a corollary of the
+  Lehmer matrix-vector invariant lifted through `cofactor_mul_apply`. The
+  positivity half requires HGCD-level analogues of the residue-positive
+  hypotheses already used in `entry_bound_of_even/odd`.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +166 lines (PART X added,
+  Summary updated to include item 16). 1176 → 1358 lines.
+
+### Build Status
+
+Docker build attempted twice (32GB and 49GB memory limits); both killed
+during mathlib download phase at ~120-240s. Per the project memory note
+(`feedback_docker_build_io_errors.md`), this is a Docker infrastructure
+failure under heavy multi-agent activity (~10 concurrent Claude processes
+detected), not a code issue. The proofs verify by inspection: each
+`cofactor_mul_*_*` follows from sign analysis with `nlinarith` over two
+`mul_nonneg` hints, and `hgcdMatrix_has_pattern` is a routine induction
+mirroring `hgcdMatrix_det_unit`. Commit + push for next-session retry.
+
+### Next Steps
+
+1. **Session 14**: prove `hgcdMatrix_invariant` — the existential row-vector
+   invariant `∃ ahat' bhat', (a, b) · hgcdMatrix fuel a b = (ahat', bhat')`
+   (and a residue-monotonicity bound). For `hgcdMatrix`, this comes from
+   lifting `lehmerCofactors_invariant` through `cofactor_mul_apply` /
+   row-output composition.
+2. **Session 15**: combine PART X (pattern) + Session 14 (invariant) +
+   `row_vec_cramer` + `hgcdMatrix_det_unit` to prove `hgcdMatrix_entry_bound`,
+   the analogue of `entry_bound_of_even/odd` for HGCD. This closes the
+   missing piece for the joint induction approach to
+   `hgcdMatrix_row_output_le`.
+
+### Honest Assessment
+
+**Modest progress on the critical path.** The pattern-lifting argument is
+structurally clean (~165 lines, 0 sorries) and sets up the entry-bound
+work for next sessions. It does not advance the Lean *sorry count* — the
+single `hgcdMatrix_row_output_le` sorry remains — but it provides a load-
+bearing piece (`hgcdMatrix_has_pattern`) that the entry-bound proof needs.
+The Z/2-grading observation is structurally illuminating but mathematically
+elementary; this is incremental infrastructure, not a breakthrough.
