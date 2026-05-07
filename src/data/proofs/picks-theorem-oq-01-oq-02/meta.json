@@ -19,8 +19,8 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-03",
-    "axiomCount": 3,
-    "assumptions": "3 axioms: picks_theorem (Pick's formula A=i+B/2-1, matching the gallery's axiomatized PicksTheorem.lean), scaled_area (Area(tP)=t²A), scaled_boundary (|∂(tP)|=t·B for t≥1). The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
+    "axiomCount": 4,
+    "assumptions": "4 assumptions: 3 axioms (picks_theorem — Pick's formula A=i+B/2-1, matching the gallery's axiomatized PicksTheorem.lean; scaled_area — Area(tP)=t²A; scaled_boundary — |∂(tP)|=t·B for t≥1) plus 1 opaque constant (scaledPolygon — the integer dilation tP, opaque since its concrete construction is not needed for the theorem). The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
     "lineCount": 309,
     "theoremCount": 24,
     "definitionCount": 6,
@@ -113,7 +113,7 @@
     "lineCount": 309,
     "theoremCount": 24,
     "definitionCount": 6,
-    "axiomCount": 3,
+    "axiomCount": 4,
     "sorries": 0
   },
   "crossReferences": [
