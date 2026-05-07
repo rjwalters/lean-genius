@@ -25,6 +25,21 @@
     ]
   },
   {
+    "id": "ann-imports-namespace",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+    "range": {
+      "startLine": 23,
+      "endLine": 30
+    },
+    "type": "technique",
+    "title": "Imports + Namespace + Open Declarations",
+    "content": "The file opens with `import Mathlib` (full Mathlib, since the inductive proof touches `Finset`, `Fin.castSucc`, `Fin.last`, `Real.exp`-style ring identities via `linear_combination`, `linarith`, `omega`, and `push_cast`). It also imports `Proofs.AmgmInequalityOQ02` to inherit `elemSymm`, `elemSymm_succ`, `elemSymm_zero`, and `elemSymm_fin_zero`. The deeply-nested namespace `AmgmInequalityOQ02OQ01OQ02OQ01OQ03` reflects the file's position as the third sub-question of the second sub-question of OQ-01 of OQ-02 of the AM-GM hub. The `open Finset Real BigOperators` lifts `∑` notation, `range`, and real-valued operations into scope without qualification.",
+    "mathContext": "Inheritance chain: `AmgmInequalityOQ02` (defines $e_k$ on `Fin n → ℝ`) → `AmgmInequalityOQ02OQ01OQ02` (proves `elemSymm_succ`: $e_k(x', Y) = e_k(x') + Y e_{k-1}(x')$) → this file (proves Newton-Girard inductively).",
+    "significance": "technical",
+    "relatedConcepts": ["Mathlib full import", "BigOperators notation", "AmgmInequalityOQ02 parent", "AmgmInequalityOQ02OQ01OQ02 sibling"],
+    "prerequisites": ["Lean 4 imports", "BigOperators ∑ notation"]
+  },
+  {
     "id": "ann-power-sum-def",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
     "range": {
@@ -54,7 +69,7 @@
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
     "range": {
       "startLine": 47,
-      "endLine": 80
+      "endLine": 78
     },
     "type": "insight",
     "title": "Sign-Cancellation Lemma: The Algebraic Heart of the Induction",
@@ -79,12 +94,12 @@
     "id": "ann-newton-girard-main",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
     "range": {
-      "startLine": 86,
-      "endLine": 179
+      "startLine": 80,
+      "endLine": 186
     },
     "type": "insight",
     "title": "newton_girard: Induction on n with Four-Sum Expansion",
-    "content": "**Theorem** `newton_girard`: For all $n, k : \\mathbb{N}$ and $x : \\text{Fin}\\,n \\to \\mathbb{R}$,\n$$k \\cdot e_k(x) = \\sum_{j=0}^{k-1} (-1)^j e_{k-1-j}(x) p_{j+1}(x)$$\n\nThe proof is by induction on $n$.\n\n**Base case** $n=0$: For $k=0$, both sides are 0 by `simp`. For $k \\ge 1$, `elemSymm_fin_zero` gives $e_k(x) = 0$ and each $e_{k-1-j}(x) = 0$, so both sides are 0.\n\n**Inductive step** $n+1$: Let $Y = x(\\text{Fin.last}\\,n)$ and $x' = x \\circ \\text{Fin.castSucc}$. For $k=0$ both sides are 0. For $k+1$:\n\n1. **Expand LHS**: Apply `elemSymm_succ k x` to get $(k+1)(e_{k+1}(x') + Y e_k(x'))$.\n2. **Expand each RHS term**: For each $j < k$, $e_{k-j}(x) = e_{k-j}(x') + Y e_{k-j-1}(x')$ (elemSymm_succ) and $p_{j+1}(x) = p_{j+1}(x') + Y^{j+1}$ (powerSum_succ). Expanding the product gives four cross-terms.\n3. **Collect into four sums** $A, B', C, D'$:\n   - $A = \\sum_{j<k}(-1)^j e_{k-j}(x') p_{j+1}(x')$ — same as IH at k+1 (up to the extra $(-1)^k p_{k+1}(x')$ term)\n   - $B' = \\sum_{j<k}(-1)^j e_{k-1-j}(x') p_{j+1}(x')$ — IH at k gives $k e_k(x')$\n   - $C = \\sum_{j<k}(-1)^j e_{k-j}(x') Y^{j+1}$ — part of cancel_sum\n   - $D' = \\sum_{j<k}(-1)^j e_{k-1-j}(x') Y^{j+1}$ — part of cancel_sum\n4. **Apply three identities**:\n   - `hA`: $A + (-1)^k p_{k+1}(x') = (k+1) e_{k+1}(x')$ (by IH at k+1, after re-indexing)\n   - `hB`: $Y B' = Y k e_k(x')$ (by IH at k, scaled by Y)\n   - `hCD`: $C + Y D' + (-1)^k Y^{k+1} = Y e_k(x')$ (by cancel_sum)\n5. **Combine with `linarith`**: $(k+1)(e_{k+1}(x') + Y e_k(x')) = (k+1)e_{k+1}(x') + Y k e_k(x') + Y e_k(x')$ ✓\n\nThe four-sum expansion (`h_inner`) is the most technical step, using `simp_rw [← Finset.sum_add_distrib]` to factor out $Y$ and distribute the product, plus `elemSymm_succ` and `powerSum_succ` applied termwise.",
+    "content": "**Theorem** `newton_girard`: For all $n, k : \\mathbb{N}$ and $x : \\text{Fin}\\,n \\to \\mathbb{R}$,\n$$k \\cdot e_k(x) = \\sum_{j=0}^{k-1} (-1)^j e_{k-1-j}(x) p_{j+1}(x)$$\n\nThe proof is by induction on $n$.\n\n**Base case** $n=0$: For $k=0$, both sides are 0 by `simp`. For $k \\ge 1$, `elemSymm_fin_zero` gives $e_k(x) = 0$ and each $e_{k-1-j}(x) = 0$, so both sides are 0.\n\n**Inductive step** $n+1$: Let $Y = x(\\text{Fin.last}\\,n)$ and $x' = x \\circ \\text{Fin.castSucc}$. For $k=0$ both sides are 0. For $k+1$:\n\n1. **Expand LHS**: Apply `elemSymm_succ k x` to get $(k+1)(e_{k+1}(x') + Y e_k(x'))$.\n2. **Expand each RHS term**: For each $j < k$, $e_{k-j}(x) = e_{k-j}(x') + Y e_{k-j-1}(x')$ (elemSymm_succ) and $p_{j+1}(x) = p_{j+1}(x') + Y^{j+1}$ (powerSum_succ). Expanding the product gives four cross-terms.\n3. **Collect into four sums** $A, B', C, D'$:\n   - $A = \\sum_{j<k}(-1)^j e_{k-j}(x') p_{j+1}(x')$ — same as IH at k+1 (up to the extra $(-1)^k p_{k+1}(x')$ term)\n   - $B' = \\sum_{j<k}(-1)^j e_{k-1-j}(x') p_{j+1}(x')$ — IH at k gives $k e_k(x')$\n   - $C = \\sum_{j<k}(-1)^j e_{k-j}(x') Y^{j+1}$ — part of cancel_sum\n   - $D' = \\sum_{j<k}(-1)^j e_{k-1-j}(x') Y^{j+1}$ — part of cancel_sum\n4. **Apply three identities**:\n   - `hA`: $A + (-1)^k p_{k+1}(x') = (k+1) e_{k+1}(x')$ (by IH at k+1, after re-indexing)\n   - `hB`: $Y B' = Y k e_k(x')$ (by IH at k, scaled by Y)\n   - `hCD`: $C + Y D' + (-1)^k Y^{k+1} = Y e_k(x')$ (by cancel_sum)\n5. **Combine with `linarith`**: $(k+1)(e_{k+1}(x') + Y e_k(x')) = (k+1)e_{k+1}(x') + Y k e_k(x') + Y e_k(x')$ ✓\n\nThe four-sum expansion (`h_inner`) is the most technical step, using `simp_rw [← Finset.sum_add_distrib]` to factor out $Y$ and distribute the product, plus `elemSymm_succ` and `powerSum_succ` applied termwise. The final `linarith [hA, hB, hCD, hfinal]` closes the goal once all four identities are in scope.",
     "mathContext": "For $n+1$ variables $x = (x_1,\\ldots,x_n, Y)$: $e_k(x) = e_k(x') + Y e_{k-1}(x')$ and $p_k(x) = p_k(x') + Y^k$. Expanding the RHS of Newton-Girard for $n+1$ at degree $k+1$:\n$$\\sum_{j<k+1}(-1)^j e_{k-j}(x) p_{j+1}(x) = \\underbrace{\\sum_{j<k}(-1)^j e_{k-j}(x') p_{j+1}(x')}_A + Y \\underbrace{\\sum_{j<k}(-1)^j e_{k-1-j}(x') p_{j+1}(x')}_{B'} + \\underbrace{\\sum_{j<k}(-1)^j e_{k-j}(x') Y^{j+1}}_C + Y \\underbrace{\\sum_{j<k}(-1)^j e_{k-1-j}(x') Y^{j+1}}_{D'} + (-1)^k e_0(x') p_{k+1}(x')$$\nThe last term simplifies: $e_0 = 1$, giving $(-1)^k p_{k+1}(x')$. Then $A + (-1)^k p_{k+1}(x') = (k+1) e_{k+1}(x')$ by IH; $Y B' = Yk e_k(x')$ by IH; $C + Y D' + (-1)^k Y^{k+1} = Y e_k(x')$ by cancel_sum.",
     "significance": "key",
     "relatedConcepts": [
