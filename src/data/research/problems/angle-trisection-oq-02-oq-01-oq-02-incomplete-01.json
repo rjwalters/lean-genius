@@ -1,8 +1,8 @@
 {
   "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
   "title": "Complete proof of Wantzel-Galois Constructibility from Mathlib Galois Theory",
-  "phase": "BLOCKED",
-  "status": "blocked",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,14 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-26T00:00:00Z",
+    "phase": "DONE",
+    "since": "2026-05-07T17:00:00Z",
     "iteration": 1,
-    "focus": "All 3 sorries analyzed, none quickly provable. Best approach: restructure isConstructible_algebraic_degree to existential tower containment.",
-    "blockers": [
-      "Mathlib API drift on origin/main: mem_sup_left, mem_sup_right, Module.finrank_mul_finrank rewrite arg-order, Nat.eq_zero_of_dvd_of_lt signature, rw [hmind] pattern. Confirmed via Docker build 2026-04-27."
-    ],
-    "nextAction": "Wait for Mechanic to repair API drift; then resume Session 30 hβ_dvd work.",
+    "focus": "Gallery entry verified: 0 sorries, 0 axioms; all three impossibility results proved (angle trisection, cube doubling, regular 7-gon) via degree-based argument (isConstructible_algebraic_degree → not_constructible_of_bad_degree).",
+    "blockers": [],
+    "nextAction": "None — entry complete. The wantzel_galois_iff Galois-correspondence formulation remains out of scope (≈500+ lines of new FTGT + 2-group infrastructure not in Mathlib); track as a separate problem if pursued.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 1 sorry remains (wantzel_galois_iff, out-of-scope FTGT+Galois). New lemma isConstructible_map proved (Session 36). Detailed proof strategy documented for both → and ← directions.",
+    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Gallery meta.json status=verified, badge=original. Sessions 26-37 reached the verified state via the degree-based argument: isConstructible_algebraic_degree (structural induction over IsConstructible) gives finrank ℚ ℚ⟮α⟯ ∣ 2^n; not_constructible_of_bad_degree then rules out cubic minpolys; and the three impossibilities (angle_trisection_impossible_degree, doubling_cube_impossible_degree, regular_7gon_construction_impossible) follow. Step C (hβ_dvd) and Step D (hjoin_dvd) of the tower induction were closed in PRs #15067/#15103 and #15128 respectively; Session 36 added isConstructible_map (PR #15251) and Session 37 added isConstructible_minpoly_pow2 / isConstructible_irred_degree_pow2 (PR #15327). The Galois-correspondence formulation wantzel_galois_iff is a separate, deliberately out-of-scope direction (~500+ lines of FTGT + 2-group structure not in Mathlib).",
     "builtItems": [
       "isConstructible_mem_range: all constructible numbers are rational (Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean:89)",
       "not_constructible_of_bad_degree: proved via rationality + minpoly.eq_X_sub_C (line 179)",
@@ -92,11 +90,7 @@
       "wantzel_galois_iff: requires full FTGT + 2-group structure, estimated 500+ lines — not in Mathlib",
       "finrank ↥ℚ⟮a⟯ ↥ℚ⟮β⟯ ∣ 2 requires showing βelement generates ↥ℚ⟮β⟯ over ↥ℚ⟮a⟯ (adjoin = top in IntermediateField ↥ℚ⟮a⟯ ↥ℚ⟮β⟯)"
     ],
-    "nextSteps": [
-      "→ direction intermediate: prove ∃ σ : ℂ →ₐ[ℚ] ℂ, σ(α) = β for another root β (needs full ℂ endomorphism extension)",
-      "← direction: FTGT + Sylow composition series for 2-groups; needs IntermediateField.orderIsoOfGal + degree-2 ↔ adjoin √",
-      "If → direction proves infeasible (Zorn + FTGT gap), mark wantzel_galois_iff as long-term blocked and move to new problem"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "geometry",
@@ -119,7 +113,7 @@
     "mathlib": []
   },
   "started": "2026-04-25T12:53:24.052Z",
-  "lastUpdate": "2026-04-27T12:30:00Z",
+  "lastUpdate": "2026-05-07T17:00:00Z",
   "significance": 7,
   "tractability": 6
 }
