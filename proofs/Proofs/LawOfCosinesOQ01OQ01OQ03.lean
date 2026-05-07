@@ -22,9 +22,9 @@
   Parent: LawOfCosinesOQ01OQ01
   Answers: law-of-cosines-oq-01-oq-01-oq-03
 
-  Axioms: 2 (polar_angle_eq; projperp_dot_sinsincos)
+  Axioms: 1 (polar_angle_eq)
   Sorries: 0
-  Theorems: 12
+  Theorems: 13
 -/
 
 import Mathlib.LinearAlgebra.CrossProduct
@@ -175,13 +175,66 @@ axiom polar_angle_eq (A B C : Fin 3 → ℝ)
       π - arcLen A B
 
 /-- The projPerp dot product equals sin·sin·cos(angle).
-    Follows from the definition of dihedralAngle and Cauchy-Schwarz inequality.
-    Formally: cos(arccos(x/(a·b))) * a * b = x where a,b are norms of projPerps. -/
-axiom projperp_dot_sinsincos (A B C : Fin 3 → ℝ)
+
+    Proof: unfold dihedralAngle in the non-degenerate case, apply `Real.cos_arccos`
+    using Cauchy–Schwarz `(dot pA pB)² ≤ normSq pA * normSq pB` (from
+    `lagrange_identity` + `normSq_cross_nonneg`), and use
+    `normSq_projPerp_unit` to convert sin²(arcLen) → normSq(projPerp). -/
+theorem projperp_dot_sinsincos (A B C : Fin 3 → ℝ)
     (hA : IsUnit3 A) (hB : IsUnit3 B) (hC : IsUnit3 C)
     (h1 : normSq (projPerp A C) ≠ 0) (h2 : normSq (projPerp B C) ≠ 0) :
     dot (projPerp A C) (projPerp B C) =
-      Real.sin (arcLen A C) * Real.sin (arcLen B C) * Real.cos (dihedralAngle C A B)
+      Real.sin (arcLen A C) * Real.sin (arcLen B C) * Real.cos (dihedralAngle C A B) := by
+  set pA := projPerp A C with hpA_def
+  set pB := projPerp B C with hpB_def
+  have hpA_pos : 0 < normSq pA := lt_of_le_of_ne (normSq_nonneg _) (Ne.symm h1)
+  have hpB_pos : 0 < normSq pB := lt_of_le_of_ne (normSq_nonneg _) (Ne.symm h2)
+  set nA := Real.sqrt (normSq pA) with hnA_def
+  set nB := Real.sqrt (normSq pB) with hnB_def
+  have hnA_pos : 0 < nA := Real.sqrt_pos.mpr hpA_pos
+  have hnB_pos : 0 < nB := Real.sqrt_pos.mpr hpB_pos
+  have hnA_ne : nA ≠ 0 := ne_of_gt hnA_pos
+  have hnB_ne : nB ≠ 0 := ne_of_gt hnB_pos
+  have hnA_sq : nA ^ 2 = normSq pA := Real.sq_sqrt (normSq_nonneg pA)
+  have hnB_sq : nB ^ 2 = normSq pB := Real.sq_sqrt (normSq_nonneg pB)
+  -- sin(arcLen A C) = nA: sin²(arcLen) = normSq(projPerp), then sqrt of both sides (sin ≥ 0)
+  have hsinA_sq : Real.sin (arcLen A C) ^ 2 = normSq pA :=
+    (normSq_projPerp_unit A C hA hC).symm
+  have hsinB_sq : Real.sin (arcLen B C) ^ 2 = normSq pB :=
+    (normSq_projPerp_unit B C hB hC).symm
+  have hsinA_nn : 0 ≤ Real.sin (arcLen A C) := by
+    rw [arcLen, Real.sin_arccos]; exact Real.sqrt_nonneg _
+  have hsinB_nn : 0 ≤ Real.sin (arcLen B C) := by
+    rw [arcLen, Real.sin_arccos]; exact Real.sqrt_nonneg _
+  have hsinA : Real.sin (arcLen A C) = nA := by
+    have h := Real.sqrt_sq hsinA_nn
+    rw [hsinA_sq] at h
+    exact h.symm
+  have hsinB : Real.sin (arcLen B C) = nB := by
+    have h := Real.sqrt_sq hsinB_nn
+    rw [hsinB_sq] at h
+    exact h.symm
+  -- Cauchy–Schwarz: (dot pA pB)² ≤ (nA * nB)²
+  have h_lag := lagrange_identity pA pB
+  have h_cross_nn := normSq_cross_nonneg pA pB
+  have h_cs : (dot pA pB) ^ 2 ≤ (nA * nB) ^ 2 := by
+    rw [mul_pow, hnA_sq, hnB_sq]; linarith
+  have h_prod_pos : 0 < nA * nB := mul_pos hnA_pos hnB_pos
+  have h_prod_ne : nA * nB ≠ 0 := ne_of_gt h_prod_pos
+  -- bounds for arccos
+  have h_lo : -1 ≤ dot pA pB / (nA * nB) := by
+    rw [le_div_iff₀ h_prod_pos]
+    nlinarith [sq_nonneg (dot pA pB + nA * nB), h_cs]
+  have h_hi : dot pA pB / (nA * nB) ≤ 1 := by
+    rw [div_le_iff₀ h_prod_pos]
+    nlinarith [sq_nonneg (nA * nB - dot pA pB), h_cs]
+  -- cos(dihedralAngle C A B) = dot pA pB / (nA * nB)
+  have hcos : Real.cos (dihedralAngle C A B) = dot pA pB / (nA * nB) := by
+    simp only [dihedralAngle]
+    rw [if_neg (by push_neg; exact ⟨hnA_ne, hnB_ne⟩)]
+    exact Real.cos_arccos h_lo h_hi
+  rw [hsinA, hsinB, hcos]
+  field_simp
 
 /-- The algebraic identity underlying the polar substitution.
     cos(π-x) = -cos(x) and sin(π-x) = sin(x) give the result by linear arithmetic. -/
