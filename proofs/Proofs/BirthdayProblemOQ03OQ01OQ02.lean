@@ -621,9 +621,9 @@ theorem card_funs_shared_triple (n d : ℕ) (i j k : Fin n)
         Finset.mem_filter.mpr ⟨Finset.mem_univ _, by
           have h_ne_i : ¬(i = j ∨ i = k) := fun h => h.elim hij hik
           refine ⟨?_, ?_⟩
-          · simp only [dif_neg h_ne_i, dif_pos (show j = j ∨ j = k from Or.inl rfl)]
-          · simp only [dif_pos (show j = j ∨ j = k from Or.inl rfl),
-                       dif_pos (show k = j ∨ k = k from Or.inr rfl)]⟩⟩
+          · rw [dif_neg h_ne_i, dif_pos (show j = j ∨ j = k from Or.inl rfl)]
+          · rw [dif_pos (show j = j ∨ j = k from Or.inl rfl),
+                dif_pos (show k = j ∨ k = k from Or.inr rfl)]⟩⟩
       left_inv := fun ⟨f, hfmem⟩ => Subtype.ext (funext fun m => by
         have hf := (Finset.mem_filter.mp hfmem).2
         by_cases hmj : m = j
