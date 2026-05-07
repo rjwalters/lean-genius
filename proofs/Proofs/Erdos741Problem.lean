@@ -242,42 +242,57 @@ theorem basis_infinite {A : Set ℕ} (h : IsBasisOrder2 A) : A.Infinite := by
   omega
 
 /-- A cofinite set (containing all sufficiently large n) has density 1.
-    Proof: for n ≥ N₀, |S∩{0,...,n}| ≥ n-N₀+1, giving ratio ≥ (n-N₀+1)/(n+1) → 1. -/
+    Proof strategy: for n ≥ N₀, |S∩{0,...,n}| ≥ n-N₀+1, so ratio ≥ (n-N₀+1)/(n+1) → 1.
+    Combined with ratio ≤ 1 (density_le_one), limsup = 1. -/
 theorem cofinite_density_one {S : Set ℕ} (h : ∀ᶠ n in atTop, n ∈ S) :
     upperDensity S = 1 := by
-  apply le_antisymm (density_le_one S)
   rw [Filter.eventually_atTop] at h
   obtain ⟨N₀, hN₀⟩ := h
+  apply le_antisymm (density_le_one S)
   unfold upperDensity
-  rw [Filter.le_limsup_iff]
-  intro b hb
-  rw [Filter.frequently_atTop]
-  intro M
-  have h1mb : (0 : ℝ) < 1 - b := by linarith
-  obtain ⟨N, hN_gt⟩ := exists_nat_gt (N₀ / (1 - b))
-  refine ⟨max M (max N N₀), le_max_left _ _, ?_⟩
-  set n := max M (max N N₀) with hn_def
-  have hn_ge_N : N ≤ n := (le_max_left N N₀).trans (le_max_right M _)
-  have hn_ge_N₀ : N₀ ≤ n := (le_max_right N N₀).trans (le_max_right M _)
-  -- |S ∩ {0,...,n}| ≥ n - N₀ + 1 (all of {N₀,...,n} is in S)
-  have hcard_lb : n - N₀ + 1 ≤ (S ∩ Set.Iic n).ncard := by
-    have hfin : (S ∩ Set.Iic n).Finite := (Set.finite_Iic n).subset (Set.inter_subset_right)
-    have hincl : Finset.Icc N₀ n ⊆ hfin.toFinset := by
+  -- Card bound: for n ≥ N₀, |S ∩ Iic n| ≥ n - N₀ + 1 via {N₀,...,n} ⊆ S
+  have hcard : ∀ n ≥ N₀, (n - N₀ + 1 : ℕ) ≤ (S ∩ Set.Iic n).ncard := by
+    intro n hn
+    have hfin : (S ∩ Set.Iic n).Finite :=
+      (Set.finite_Iic n).subset Set.inter_subset_right
+    have hincl : (Finset.Icc N₀ n : Set ℕ) ⊆ S ∩ Set.Iic n := by
       intro m hm
-      simp only [Finset.mem_Icc] at hm
-      simp only [Set.Finite.mem_toFinset, Set.mem_inter_iff, Set.mem_Iic]
+      simp only [Finset.coe_Icc, Set.mem_Icc] at hm
       exact ⟨hN₀ m hm.1, hm.2⟩
-    have : (Finset.Icc N₀ n).card ≤ hfin.toFinset.card := Finset.card_le_card hincl
-    rwa [Nat.Icc_card_eq_sub_add_one hn_ge_N₀, Set.ncard_eq_toFinset_card' _,
-         Set.Finite.toFinset_inter, Set.toFinset_Iic] at this
-  -- (n - N₀ + 1)/(n+1) > b
-  have hn_pos : (0 : ℝ) < n + 1 := by positivity
-  rw [lt_div_iff hn_pos]
-  -- b * (n + 1) < n - N₀ + 1, i.e., (1-b)*(n+1) > N₀
-  push_cast [Nat.sub_add_cancel hn_ge_N₀]
-  have hN₀_lt : (N₀ : ℝ) < (N + 1) * (1 - b) := by
-    have := hN_gt; push_cast at this ⊢; nlinarith
-  nlinarith [Nat.cast_le.mpr hn_ge_N, Nat.cast_nonneg N₀]
+    calc n - N₀ + 1 = (Finset.Icc N₀ n).card := by simp [Nat.Icc_card_eq_sub_add_one hn]
+      _ = ((Finset.Icc N₀ n : Set ℕ)).ncard := (Set.ncard_coe_Finset _).symm
+      _ ≤ (S ∩ Set.Iic n).ncard := Set.ncard_le_ncard hincl hfin
+  -- The ratio sequence is eventually ≥ 1 - N₀/(n+1)
+  have hlb : ∀ᶠ n : ℕ in Filter.atTop,
+      (1 : ℝ) - N₀ / (↑n + 1) ≤ ((S ∩ Set.Iic n).ncard : ℝ) / (↑n + 1) := by
+    filter_upwards [Filter.eventually_ge_atTop N₀] with n hn
+    have hn_pos : (0 : ℝ) < n + 1 := by positivity
+    rw [div_le_div_iff hn_pos hn_pos]  -- both as cross-multiply
+    have hc := Nat.cast_le.mpr (hcard n hn)
+    push_cast [Nat.sub_add_cancel hn] at hc ⊢
+    linarith
+  -- 1 - N₀/(n+1) → 1 as n → ∞
+  have htend_lb : Filter.Tendsto (fun n : ℕ => (1 : ℝ) - N₀ / (↑n + 1))
+      Filter.atTop (nhds 1) := by
+    rw [show (1 : ℝ) = 1 - 0 from by ring]
+    apply Filter.Tendsto.sub tendsto_const_nhds
+    -- N₀/(n+1) → 0: write as N₀ * (n+1)⁻¹ → N₀ * 0 = 0
+    simp_rw [div_eq_mul_inv]
+    rw [show (0 : ℝ) = N₀ * 0 from (mul_zero _).symm]
+    apply Filter.Tendsto.const_mul
+    -- (n+1)⁻¹ → 0 since n+1 → ∞
+    apply Filter.Tendsto.inv_tendsto_atTop
+    apply Filter.tendsto_atTop_atTop.mpr
+    intro b; refine ⟨⌈b⌉₊, fun n hn => ?_⟩
+    have hb : b ≤ (⌈b⌉₊ : ℝ) := Nat.le_ceil b
+    have hn_cast : (⌈b⌉₊ : ℝ) ≤ (n : ℝ) := Nat.cast_le.mpr hn
+    linarith
+  -- limsup ≥ lim of lower bound = 1
+  calc (1 : ℝ) = atTop.limsup (fun n : ℕ => 1 - ↑N₀ / (↑n + 1)) := by
+          exact (htend_lb.limsup_eq ⟨1, Filter.eventually_of_forall fun n => by
+            apply sub_le_self; positivity⟩).symm
+      _ ≤ atTop.limsup (fun n : ℕ => ((S ∩ Set.Iic n).ncard : ℝ) / (↑n + 1)) :=
+          Filter.limsup_le_limsup hlb
 
 /-- A basis of order 2 has positive density sumset. -/
 theorem basis_has_pos_density_sumset {A : Set ℕ} (h : IsBasisOrder2 A) :
