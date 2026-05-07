@@ -1,8 +1,8 @@
 {
   "slug": "four-square-distribution-oq-01",
   "title": "Jacobi's Four-Square Formula r₄(n) = 8·σ*(n) in Lean 4",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "surveyed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,23 +29,24 @@
     "goal": "Replace the axiom `jacobi_r4_formula` with a fully proved theorem in Lean 4."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-05-07",
-    "iteration": 1,
-    "focus": "Bootstrap completed. The OBSERVE/ORIENT phase has produced a Lean 4 formalization target with three converging definitions of r₄(n) verified for n = 1..10 via native_decide. The general formula is axiomatized (1 axiom: jacobi_r4_formula).",
+    "iteration": 2,
+    "focus": "Terminal axiomatized state. Bootstrap delivered FourSquareDistributionOQ01.lean (210 lines, 33 theorems, 4 defs, 1 axiom, 0 sorries) — three converging definitions of r₄(n) verified for n = 1..10. The general formula is axiomatized via `jacobi_r4_formula`; replacing the axiom with a Lean 4 proof remains an open problem gated on Mathlib upstream q-expansion + Eisenstein-coefficient infrastructure that is out of scope for this entry.",
     "blockers": [
-      "Mathlib q-expansion machinery for `jacobiTheta` is absent.",
-      "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ))."
+      "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
+      "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
+      "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib."
     ],
-    "nextAction": "Either (a) wait for Mathlib upstream to add q-expansion infrastructure, or (b) pursue an alternative route via Hurwitz quaternions (also requires upstream work).",
+    "nextAction": "No further action in this entry; replacement of `jacobi_r4_formula` will reopen this OQ once Mathlib's modular-form q-expansion (or Hurwitz quaternion) infrastructure lands.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Bootstrap COMPLETE. `Proofs/FourSquareDistributionOQ01.lean` (210 lines, 33 theorems, 4 definitions, 1 axiom, 0 sorries): defines `sigmaStar n = ∑ d ∈ divisors n, if 4 ∣ d then 0 else d`, defines `r4Count n` by brute-force enumeration over signed integer 4-tuples in [-n, n]⁴, defines `jacobiR4 n = 8 * sigmaStar n`, and proves r4Count n = jacobiR4 n for n = 1..10 via native_decide. Bridges to FourSquareDistribution's per-type contribution theorems for n = 1..7, 9, 10. The general formula `r4Count n = jacobiR4 n` is stated as `axiom jacobi_r4_formula`, the precise open target whose formal proof requires modular-form infrastructure not yet in Mathlib.",
+    "progressSummary": "TERMINAL (axiomatized) — bootstrap COMPLETE. `Proofs/FourSquareDistributionOQ01.lean` (210 lines, 33 theorems, 4 definitions, 1 axiom, 0 sorries): defines `sigmaStar n = ∑ d ∈ divisors n, if 4 ∣ d then 0 else d`, defines `r4Count n` by brute-force enumeration over signed integer 4-tuples in [-n, n]⁴, defines `jacobiR4 n = 8 * sigmaStar n`, and proves r4Count n = jacobiR4 n for n = 1..10 via native_decide. Bridges to FourSquareDistribution's per-type contribution theorems for n = 1..7, 9, 10. The general formula `r4Count n = jacobiR4 n` is stated as `axiom jacobi_r4_formula`, the precise open target whose formal proof requires modular-form infrastructure not yet in Mathlib. Gallery integration is complete: meta.json status=axiomatized, 6 deep annotations (PR #16682), and parent cross-references (`four-square-distribution`, `lagrange-four-squares`) wired with canonical schema (PR #16678).",
     "builtItems": [
       "sigmaStar (def): Jacobi's modified divisor sum at FourSquareDistributionOQ01.lean:65",
       "jacobiR4 (def): 8 * sigmaStar n at FourSquareDistributionOQ01.lean:88",
@@ -62,7 +63,10 @@
       "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
       "The 4-divisibility constraint in σ*(n) is precisely what makes the formula consistent for n divisible by 4; e.g. r₄(4) = 24 and σ*(4) = 1+2 = 3.",
       "The same number r₄(n) is computed three different ways here for n = 1..10 (brute enumeration, divisor sum, and parent's type decomposition), all agreeing — providing strong cross-validation.",
-      "Mathlib has sufficient infrastructure for stating Jacobi's formula but lacks the q-expansion / Eisenstein-coefficient bridge needed to prove it."
+      "Mathlib has sufficient infrastructure for stating Jacobi's formula but lacks the q-expansion / Eisenstein-coefficient bridge needed to prove it.",
+      "Hurwitz-quaternion alternative route: the classical algebraic proof works in the Hurwitz order ℋ = ℤ[i,j,k,(1+i+j+k)/2] ⊂ ℍ. Each n with the correct r₄(n) count corresponds bijectively (modulo unit groups) to factorizations in ℋ. This route avoids analysis but is also gated on Mathlib infrastructure — there is no Hurwitz-integer arithmetic, no division algorithm in ℋ, and no left/right ideal theory for non-commutative orders. So the algebraic path saves analysis but does not save formalization labor.",
+      "Native_decide envelope: `r4Count n` enumerates `(2n+1)⁴` integer 4-tuples; at n=10 this is 21⁴ ≈ 194,481, comfortably tractable for the kernel. Extending verification to n=11..15 would push to 23⁴..31⁴ ≈ 280k..924k enumerations — still feasible but with non-trivial Docker compile-time growth and diminishing research value (each new value is a single redundant data point rather than evidence toward the general formula).",
+      "Provenance: the bootstrap commit landed on 2026-05-06; gallery enrichment (annotations PR #16682) and cross-reference wiring (PR #16678 + reciprocal back-refs in `four-square-distribution` / `lagrange-four-squares`) followed on 2026-05-07. Research JSON reconciliation aligns the research workflow's ACT phase with the gallery's terminal axiomatized state."
     ],
     "mathlibGaps": [
       "No q-expansion lemma extracting Fourier coefficients of `jacobiTheta τ` as a function of `τ`.",
@@ -70,12 +74,10 @@
       "No Hurwitz-integer arithmetic in Mathlib (alternative route to Jacobi via Hurwitz quaternions)."
     ],
     "nextSteps": [
-      "Wait for or contribute upstream Mathlib q-expansion infrastructure for jacobiTheta.",
-      "Explore whether the Hurwitz-quaternion approach (algebraic, no analysis) is more tractable.",
-      "Extend brute-force verification beyond n = 10 if compute envelope allows.",
-      "Add cross-references in `four-square-distribution` and `lagrange-four-squares` gallery entries pointing to this OQ-01."
+      "(Reopens this OQ.) Contribute upstream Mathlib q-expansion infrastructure for `jacobiTheta`, then identify θ⁴ with E₂(τ) − 4·E₂(4τ) on Γ₀(4) and discharge `axiom jacobi_r4_formula` against the resulting Fourier coefficients.",
+      "(Alternative reopen path.) Develop Hurwitz-integer arithmetic + non-commutative ideal theory in Mathlib, then port the algebraic proof of Jacobi's identity that counts unit-orbit factorizations in ℋ ⊂ ℍ."
     ],
-    "markdown": "# Knowledge Base: four-square-distribution-oq-01\n\nSee `research/problems/four-square-distribution-oq-01/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (bootstrap complete)\n* **Files**: `proofs/Proofs/FourSquareDistributionOQ01.lean` (210 lines, 1 axiom, 0 sorries, numerically verified n = 1..10).\n* **Open target**: replace `axiom jacobi_r4_formula` with a theorem.\n* **Blocker**: Mathlib lacks q-expansion machinery for `jacobiTheta` and Eisenstein-coefficient identification.\n"
+    "markdown": "# Knowledge Base: four-square-distribution-oq-01\n\nSee `research/problems/four-square-distribution-oq-01/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: COMPLETED (terminal axiomatized state)\n* **Files**: `proofs/Proofs/FourSquareDistributionOQ01.lean` (210 lines, 1 axiom, 0 sorries, numerically verified n = 1..10).\n* **Gallery**: meta.json status=axiomatized; 6 deep annotations (PR #16682); canonical-schema cross-refs to parents (PR #16678).\n* **Open target (held in axiom)**: replace `axiom jacobi_r4_formula` with a theorem.\n* **Blocker**: Mathlib lacks q-expansion machinery for `jacobiTheta` and Eisenstein-coefficient identification. Hurwitz-quaternion alternative is also Mathlib-blocked.\n"
   },
   "tags": [
     "number-theory",
