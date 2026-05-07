@@ -537,17 +537,27 @@ theorem stirling_first_correction :
   constructor
   -- Lower: -(2/n²) ≤ exp(L) - (1 + 1/(12n))
   · have hge : 1 + L ≤ Real.exp L := Real.add_one_le_exp L
+    -- Need: 1/(12n) - 2/n² ≤ L (i.e., 1/(24(n-1)²) + 1/(24(n-1)³) ≤ 1/(2n²))
+    -- Equivalent to n³ ≤ 12*(n-1)³ (after clearing denominators)
     have hL_lb : 1 / (12 * (n : ℝ)) - 1 / (2 * (n : ℝ) ^ 2) ≤ L := by
-      calc 1 / (12 * (n : ℝ)) - 1 / (2 * (n : ℝ) ^ 2) ≤
-          1 / (12 * (n : ℝ)) - 1 / (24 * ((n : ℝ) - 1) ^ 2) - 1 / (24 * ((n : ℝ) - 1) ^ 3) := by
-            nlinarith [sq_nonneg ((n : ℝ) - 1)]
-        _ ≤ L := hL_lower
+      suffices h : 1 / (24 * ((n : ℝ) - 1) ^ 2) + 1 / (24 * ((n : ℝ) - 1) ^ 3) ≤
+                  1 / (2 * (n : ℝ) ^ 2) by linarith [hL_lower]
+      rw [div_add_div _ _ (by positivity) (by positivity),
+          div_le_div_iff (by positivity) (by positivity)]
+      -- Reduces to: n³ ≤ 12*(n-1)³, holds since 11n³-36n²+36n-12 ≥ 0 for n ≥ 2
+      nlinarith [mul_pos hn1_pos (mul_pos hn1_pos hn1_pos),
+                 mul_pos hn_pos (mul_pos hn_pos hn_pos),
+                 mul_pos hn_pos (mul_pos hn1_pos hn1_pos)]
     linarith
   -- Upper: exp(L) - (1 + 1/(12n)) ≤ 2/n²
   · have hL_ub : L ≤ 1 / (n : ℝ) := by
       calc L ≤ 1 / (12 * ((n : ℝ) - 1)) + 1 / (12 * ((n : ℝ) - 1) ^ 2) := hL_upper
         _ ≤ 1 / (n : ℝ) := by
-            nlinarith [sq_nonneg ((n : ℝ) - 1)]
+            -- Need: 1/(12(n-1)) + 1/(12(n-1)²) ≤ 1/n
+            -- Equiv: n(n-1) + n ≤ 12(n-1)², i.e., n²≤ 12n²-26n+12, holds for n≥2
+            rw [div_add_div _ _ (by positivity) (by positivity),
+                div_le_div_iff (by positivity) hn_pos]
+            nlinarith [sq_nonneg ((n : ℝ) - 1), mul_pos hn_pos hn1_pos]
     -- |exp(L) - (1+L)| ≤ L² * exp(L) / 2 ≤ (1/n)² * exp(1/n) / 2 ≤ 1/n²
     -- exp(L) - (1 + 1/(12n)) = (exp(L) - (1+L)) + (L - 1/(12n)) ≤ L²*exp(L)/2 + C/n²
     sorry -- HARD: needs |exp(L) - (1+L)| ≤ L²/2 * exp(L) and L ≤ 1/n, exp(L) ≤ 2
