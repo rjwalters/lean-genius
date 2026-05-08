@@ -592,6 +592,113 @@ theorem minkowski_from_blichfeldt {n : ℕ} [NeZero n]
     hab_diff
   exact ⟨⟨_, hp_mem_sg⟩, fun h => (sub_ne_zero.mpr hab_ne) (congrArg Subtype.val h), hp_in_s⟩
 
+/-- **Generalized Minkowski (k+1-point form)**:
+A measurable convex centrally-symmetric set `s ⊆ ℝⁿ` with
+`volume s > k · 2ⁿ` contains `k + 1` distinct lattice points.
+
+Strengthens `minkowski_from_blichfeldt` (the `k = 1` case yielding one
+nonzero lattice point: paired with `0 ∈ s` from convex+symmetric+nonempty,
+that is exactly two distinct lattice points).  The `k = 0` case
+degenerates to `0 < volume s`, with the conclusion giving one lattice
+point in `s` (anchored at the origin via the convexity step).
+
+The proof mirrors `minkowski_from_blichfeldt` step-by-step, replacing the
+`blichfeldt_basic` invocation with `blichfeldt_general k`.  Half-scaling
+turns `volume s > k · 2ⁿ` into `volume T > k` where `T = (1/2) • s`;
+`blichfeldt_general k T` then yields `k + 1` points `pts_T i ∈ T` with
+all pairwise differences in the lattice; anchoring at index `0` produces
+`q i := pts_T i - pts_T 0`, each in the lattice and (by convexity +
+symmetry) each in `s`. -/
+theorem minkowski_general_k {n : ℕ} [NeZero n] (k : ℕ)
+    (s : Set (Fin n → ℝ))
+    (h_meas : MeasurableSet s)
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : (k : ENNReal) * (2 : ENNReal) ^ n < volume s) :
+    ∃ pts : Fin (k + 1) → (stdLattice n).toAddSubgroup,
+      Function.Injective pts ∧
+      (∀ i, ((pts i : Fin n → ℝ)) ∈ s) := by
+  let T := (fun x : Fin n → ℝ => (2 : ℝ)⁻¹ • x) '' s
+  have h_T_eq : T = (2 : ℝ)⁻¹ • s := rfl
+  have h2_ne : (2 : ℝ) ≠ 0 := by norm_num
+  -- Measurability of T (same argument as in `minkowski_from_blichfeldt`).
+  have h_meas_T : MeasurableSet T := by
+    have h_pre : (2 : ℝ)⁻¹ • s = ((2 : ℝ) • · : (Fin n → ℝ) → (Fin n → ℝ)) ⁻¹' s := by
+      ext y
+      simp only [Set.mem_smul_set, Set.mem_preimage]
+      refine ⟨?_, ?_⟩
+      · rintro ⟨a, has, rfl⟩
+        rwa [smul_smul, mul_inv_cancel₀ h2_ne, one_smul]
+      · intro h
+        refine ⟨(2 : ℝ) • y, h, ?_⟩
+        rw [smul_smul, inv_mul_cancel₀ h2_ne, one_smul]
+    rw [h_T_eq, h_pre]
+    exact h_meas.preimage (measurable_const_smul (2 : ℝ))
+  -- Volume identity: vol(T) = (1/2)^n · vol(s) > k since vol(s) > k · 2^n.
+  have h_vol_T : (k : ENNReal) < volume T := by
+    rw [h_T_eq, MeasureTheory.Measure.addHaar_smul volume ((2 : ℝ)⁻¹) s]
+    rw [Module.finrank_fin_fun, abs_pow]
+    rw [ENNReal.ofReal_pow (abs_nonneg _)]
+    have h_abs : |((2 : ℝ)⁻¹)| = (2 : ℝ)⁻¹ := by norm_num
+    rw [h_abs]
+    have h_ofReal : ENNReal.ofReal ((2 : ℝ)⁻¹) = (2 : ENNReal)⁻¹ := by
+      rw [show ((2 : ℝ)⁻¹) = 1 / 2 by ring,
+          ENNReal.ofReal_div_of_pos (by norm_num : (0 : ℝ) < 2)]
+      simp
+    rw [h_ofReal]
+    -- Goal: (k : ENNReal) < (2 : ENNReal)⁻¹ ^ n * volume s
+    have h2_inv_ne_zero_base : (2 : ENNReal)⁻¹ ≠ 0 :=
+      ENNReal.inv_ne_zero.mpr (by norm_num)
+    have h2_inv_ne_top_base : (2 : ENNReal)⁻¹ ≠ ⊤ :=
+      ENNReal.inv_ne_top.mpr (by norm_num)
+    have h2_inv_ne_zero : ((2 : ENNReal)⁻¹) ^ n ≠ 0 :=
+      pow_ne_zero _ h2_inv_ne_zero_base
+    have h2_inv_ne_top : ((2 : ENNReal)⁻¹) ^ n ≠ ⊤ := by
+      intro hcontra
+      rw [ENNReal.pow_eq_top_iff] at hcontra
+      exact h2_inv_ne_top_base hcontra.1
+    -- Multiply both sides of `h_vol` on the left by `((2 : ENNReal)⁻¹)^n`.
+    have h_step : ((2 : ENNReal)⁻¹) ^ n * ((k : ENNReal) * (2 : ENNReal) ^ n)
+                  < ((2 : ENNReal)⁻¹) ^ n * volume s :=
+      ENNReal.mul_lt_mul_right h2_inv_ne_zero h2_inv_ne_top h_vol
+    have h_eq_k : ((2 : ENNReal)⁻¹) ^ n * ((k : ENNReal) * (2 : ENNReal) ^ n)
+                  = (k : ENNReal) := by
+      rw [← mul_assoc, mul_comm (((2 : ENNReal)⁻¹) ^ n) (k : ENNReal),
+          mul_assoc, ← mul_pow,
+          ENNReal.inv_mul_cancel (by norm_num : (2 : ENNReal) ≠ 0)
+            (by norm_num : (2 : ENNReal) ≠ ⊤),
+          one_pow, mul_one]
+    rw [h_eq_k] at h_step
+    exact h_step
+  -- Apply `blichfeldt_general k` to `T`.
+  obtain ⟨pts_T, h_pts_inj, h_pts_in_T, h_pts_diff⟩ :=
+    blichfeldt_general k T h_meas_T h_vol_T
+  -- Anchor: `q i := pts_T i - pts_T 0`. Lattice membership is immediate
+  -- from `h_pts_diff`.
+  have h_q_lattice : ∀ i : Fin (k + 1),
+      pts_T i - pts_T 0 ∈ (stdLattice n).toAddSubgroup :=
+    fun i => h_pts_diff i 0
+  -- `q i ∈ s` via convexity + symmetry: each `pts_T i = (1/2) • y_i` with
+  -- `y_i ∈ s`, hence `q i = (1/2) • y_i + (1/2) • (-y_0) ∈ s`.
+  have h_q_in_s : ∀ i : Fin (k + 1), pts_T i - pts_T 0 ∈ s := by
+    intro i
+    obtain ⟨y_i, hy_i_s, h_y_i_eq⟩ := h_pts_in_T i
+    obtain ⟨y_0, hy_0_s, h_y_0_eq⟩ := h_pts_in_T 0
+    -- `h_y_i_eq : (2 : ℝ)⁻¹ • y_i = pts_T i`
+    have key : (2 : ℝ)⁻¹ • y_i + (2 : ℝ)⁻¹ • (-y_0) ∈ s :=
+      h_conv hy_i_s (h_symm y_0 hy_0_s) (by norm_num) (by norm_num) (by norm_num)
+    have h_rewrite : (2 : ℝ)⁻¹ • y_i - (2 : ℝ)⁻¹ • y_0
+                   = (2 : ℝ)⁻¹ • y_i + (2 : ℝ)⁻¹ • (-y_0) := by
+      rw [smul_neg, sub_eq_add_neg]
+    rw [← h_y_i_eq, ← h_y_0_eq, h_rewrite]
+    exact key
+  -- Package the anchored map.
+  refine ⟨fun i => ⟨pts_T i - pts_T 0, h_q_lattice i⟩, ?_, h_q_in_s⟩
+  intro i j hij
+  apply h_pts_inj
+  have h_val : pts_T i - pts_T 0 = pts_T j - pts_T 0 := congrArg Subtype.val hij
+  exact sub_left_inj.mp h_val
+
 end BlichfeldtTheorem
 
 -- ============================================================
@@ -604,3 +711,4 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.blichfeldt_four_points
 #check BlichfeldtTheorem.blichfeldt_general_finset
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
+#check BlichfeldtTheorem.minkowski_general_k

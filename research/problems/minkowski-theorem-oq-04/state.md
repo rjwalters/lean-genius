@@ -5,7 +5,94 @@
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
 **Last Updated**: 2026-05-09
-**Iteration**: 17 (Finset transport of general theorem)
+**Iteration**: 18 (`minkowski_general_k` — primary spec realization)
+
+## Iteration 18 (researcher-10, 2026-05-09)
+
+**Focus**: S18 — `minkowski_general_k`, the still-deferred primary
+extension flagged in the S15/S16 next-action lists and fully specified in
+`research/problems/minkowski-theorem-oq-04/minkowski-general-k-spec.md`
+(researcher-4, 2026-05-08, doc-only PR #17510).  This iteration realizes
+§2.1 of that spec verbatim.
+
+### Outcome
+
+One downstream theorem (build-pending convention, like S13–S17):
+
+* `minkowski_general_k` (~107 lines including docstring): for measurable
+  convex centrally-symmetric `s ⊆ ℝⁿ` with `volume s > k · 2ⁿ`, there
+  exist `k + 1` distinct lattice points in `s`.  Strengthens
+  `minkowski_from_blichfeldt` (the `k = 1` case yields one nonzero
+  lattice point; combined with `0 ∈ s` from convex+symmetric+nonempty
+  that gives two distinct lattice points, exactly the `k = 1`
+  specialization).  Proved by mirroring `minkowski_from_blichfeldt`
+  step-by-step, replacing the `blichfeldt_basic` invocation with
+  `blichfeldt_general k` and anchoring the resulting `(k + 1)`-point
+  family at index `0` (so `q i := pts_T i - pts_T 0`).
+
+### Why this scope
+
+The spec doc PR #17510 was opened doc-only on 2026-05-08, deliberately
+not touching the Lean source so that an implementation iteration could
+claim it verbatim.  This is that implementation iteration.  S17 already
+landed `blichfeldt_general_finset`, the uniform Finset transport, so the
+remaining open candidate from the post-S15 next-action list was the
+`minkowski_general_k` primary form.  The §2.2 strengthened variant
+(±-symmetric pair form) remains explicitly deferred in the spec as it
+needs a non-trivial lattice-combinatorics argument; this PR ships the
+clean primary form only.
+
+Pedagogical value: the result is the natural sharp strengthening of
+classical Minkowski.  The classical form reads "vol > 2ⁿ ⇒ one nonzero
+lattice point"; the generalized form scales linearly with `k`:
+"vol > k · 2ⁿ ⇒ k + 1 distinct lattice points".  The proof reveals that
+the half-scaling bridge to Blichfeldt is genuinely uniform in `k`, and
+that anchoring at index `0` is the canonical bridge from "all pairwise
+differences are lattice points" (Blichfeldt) to "all points are lattice
+points" (Minkowski).
+
+### Counts (build-pending convention)
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **606 → 714** lines (+108):
+  * +107 lines for `minkowski_general_k` body + docstring + blank line.
+  * +1 line: `#check BlichfeldtTheorem.minkowski_general_k` in the
+    Export check section.
+* `theoremCount`: 10 → 11 (+1; mechanic to sync after CI green).
+* `axiomCount`: 0 (unchanged).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, following the S15/S16
+build-pending convention to avoid line-conflict with mechanic sync PRs.
+The next mechanic pass naturally bumps to lineCount 714 / theoremCount
+11 after this PR and any pending post-S17 mechanic syncs both merge.
+
+### Mathlib API used
+
+All lemmas reused from `minkowski_from_blichfeldt` and
+`blichfeldt_general` already on origin/main; **zero new Mathlib
+references**.  The full table is in `minkowski-general-k-spec.md` §5.
+Drift risk inherits from those existing theorems' build status (any
+upstream Mathlib change affecting them would surface there first).
+
+### Next Action
+
+**Session 19** (when post-#17508 / #17510 / this PR all merge): one of:
+
+* `minkowski_general_k_symm` (§2.2 of the spec; ~120–150 lines): the
+  ±-symmetric pair form.  Conclusion: `k` nonzero lattice points
+  `p₁,…,pₖ` with all `pᵢ, -pᵢ ∈ s` and `pᵢ ∉ {0, ±p₁,…,±pᵢ₋₁}`.
+  Requires a sign-selection argument; spec §6 outlines the approach.
+* `blichfeldt_general_pairwise` (~10 lines): explicit-nonzero-diffs
+  wrapper around `blichfeldt_general` via `sub_eq_zero` +
+  `Function.Injective`.  Smaller and uniformly useful downstream.
+* `minkowski_general_k_lattice` (~30 lines): generalize from the
+  standard `ℤⁿ`-lattice to any full-rank `ℤ`-lattice `Λ ⊆ ℝⁿ` with
+  covolume `V`, hypothesis `vol(s) > k · V`.
+* Once Docker CI verifies S13–S18, Mechanic/Auditor flips
+  `meta.status: axiomatized → verified`, `meta.badge: axiom → original`,
+  rewrites `meta.assumptions` to reflect 0 axioms.
+
+----
 
 ## Iteration 17 (researcher-13, 2026-05-09)
 
