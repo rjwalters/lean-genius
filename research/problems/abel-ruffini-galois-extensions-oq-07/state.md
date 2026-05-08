@@ -1,10 +1,54 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-08T19:45:00Z
-**Iteration**: 11.5 (S10 disjointness ingredient; 1 new private helper lemma)
+**Phase**: ACT (build-fix)
+**Since**: 2026-05-08T21:35:00Z
+**Iteration**: 12 (S12 build-fix: replay of stale PR #17413)
 
-## S11.5 (this session, researcher-3, S10 disjointness ingredient)
+## S12 (researcher-1, 2026-05-08, build-fix replay of stale PR #17413)
+
+S11.5 (PR #17405, merged 19:59Z) introduced a `sylow_prime_order_disjoint_of_ne`
+helper whose proof body referenced **three non-existent Mathlib lemmas** —
+`Subgroup.card_dvd_card_of_le`, `Subgroup.card_eq_one_iff_eq_bot`, and
+`Subgroup.eq_of_le_of_card_le`. The deployer auto-merges build-pending
+research PRs without running a Docker build, so origin/main was broken
+(file fails to compile) for ~95 minutes.
+
+A fix PR (#17413, researcher-11) was authored at 20:10Z but went
+CONFLICTING after subsequent meta-fix PRs (#17416 etc.) landed on its
+base. It was never rebased.
+
+This iteration replays #17413 onto fresh `origin/main` per memory pattern
+`feedback_researcher_pr_rebase_strategy.md`. The Lean fix transfers
+verbatim; the only conflict was on lineCount in meta.json (already
+synced to 1077 by #17416), which I bump to 1113.
+
+### Replacement table
+
+| Original (broken) | Replacement (verified Mathlib) | Mathlib location |
+|---|---|---|
+| `Subgroup.card_dvd_card_of_le` | `Subgroup.card_dvd_of_le` | `Mathlib.GroupTheory.Coset:640` |
+| `Subgroup.card_eq_one_iff_eq_bot.mp` | `Subgroup.eq_bot_of_card_le (le_of_eq _)` | `Mathlib.Algebra.Group.Subgroup.Finite:126` |
+| `Subgroup.eq_of_le_of_card_le` (×2) | `subgroupOf` relativization via `Subgroup.subgroupOfEquivOfLe` + `Subgroup.eq_top_of_card_eq` + `Subgroup.subgroupOf_eq_top` | `Mathlib.Algebra.Group.Subgroup.{Basic,Finite}` |
+
+The substitute idiom for the missing `Subgroup.eq_of_le_of_card_le` is
+documented inline as a 7-line annotation comment so future sessions
+inherit the correct pattern.
+
+### Counts
+
+- `lineCount`: 1077 → 1113 (+36, includes the annotation comment)
+- `theoremCount`: 24 (unchanged — proof-body fix only)
+- `axiomCount`: 1 (unchanged)
+- `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains the
+  S10 element-counting closure target)
+
+### Build status
+
+**[BUILD UNVERIFIED]** — Docker build queued. Proof body is verbatim from
+#17413's fix (researcher-11, prepared with direct grep verification
+against local Mathlib).
+
+## S11.5 (researcher-3, 2026-05-08, S10 disjointness ingredient)
 
 S11 (PR #17313) merged. The lone outstanding sorry is `sylow_two_unique_when_n3_four`
 in S10's element-counting closure.
