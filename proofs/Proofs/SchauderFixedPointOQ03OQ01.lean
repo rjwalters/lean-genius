@@ -73,26 +73,100 @@ def IsUpperHemicontinuous {X Y : Type*} [TopologicalSpace X]
 -- Part II: Key Axioms
 -- ============================================================
 
-/-- **Axiom 1: Brouwer's Fixed Point Theorem**
+/-- **Axiom 1: Brouwer's Fixed Point Theorem on the Closed Unit Ball**
 
-    Every continuous function from a nonempty compact convex subset
-    of Euclidean space to itself has a fixed point.
+    Every continuous self-map of the closed unit ball in
+    `EuclideanSpace ℝ (Fin n)` has a fixed point.
 
-    **Mathlib status (v4.26.0, S10 verified 2026-05-08):** Brouwer FPT is
-    NOT in Mathlib4 — neither for general compact convex sets nor for the
-    unit ball. The `docs/100.yaml` entry for "Brouwer Fixed Point Theorem"
-    points to an external Lean 3 implementation (Brendan Murphy's
-    `Shamrock-Frost/BrouwerFixedPoint` repo); `docs/1000.yaml` flags it as
-    "in Lean 3". A GitHub code search at the pinned rev returned no Lean
-    file using "Brouwer" outside the Heyting-algebra/lattice-theoretic
-    sense (`Mathlib/Order/Heyting/...`). This axiom therefore stands as
-    an unconditional open dependency on Mathlib upstream.
-    See `research/problems/.../s10-mathlib-v426-lookup3-resolved.md`. -/
-axiom brouwer_fpt {n : ℕ}
+    **S11.A strict-weakening (2026-05-09):** This axiom replaces the
+    previous `axiom brouwer_fpt` (which asserted the FPT for *any*
+    nonempty compact convex `S`). Following S10's reconnaissance
+    (Brouwer FPT is absent from Mathlib4 — neither unit-ball nor
+    general-compact-convex form is present at the pinned rev or on
+    master; see `s10-mathlib-v426-lookup3-resolved.md`), this
+    iteration adopts S10's recommended **Option A**:
+
+    * Strict-weakening on the Brouwer side: assume only the unit-ball
+      form (a smaller mathematical commitment, identical axiom
+      *count*).
+    * The general-compact-convex form is recovered in-house as
+      `theorem brouwer_fpt` via the nearest-point retraction reduction
+      (S8 design + S11.B helper), pulling the obstruction to a single
+      Mathlib API surface (`exists_norm_eq_iInf_of_complete_convex` plus
+      its variational-inequality continuity refinement).
+
+    **Mathlib status (S10):** Absent. `docs/100.yaml` entry for
+    "Brouwer Fixed Point Theorem" points to an external Lean 3
+    implementation; `docs/1000.yaml` flags it as `comment: "in Lean 3"`.
+    No Lean file in `Mathlib/Topology/...` or `Mathlib/Analysis/...` at
+    the pinned rev contains the topological Brouwer FPT (the three
+    `Brouwer` hits across all `.lean` files are in
+    `Mathlib/Order/Heyting/...` — Heyting-algebra Brouwer, not the FPT). -/
+axiom brouwer_unit_ball {n : ℕ}
+    (f : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)
+       → ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))
+    (hf : Continuous f) :
+    ∃ x, f x = x
+
+/-- **LOOKUP-2 helper (S11.B work item, currently `sorry`-stubbed):**
+    Nearest-point retraction onto a nonempty compact convex set in
+    `EuclideanSpace ℝ (Fin n)`, packaged as a continuous map that is the
+    identity on the set.
+
+    **Proof outline (deferred to S11.B):** existence and uniqueness of
+    the nearest point come from
+    `exists_norm_eq_iInf_of_complete_convex`
+    (`Mathlib.Analysis.InnerProductSpace.Projection`) combined with
+    strict convexity of the Euclidean norm; continuity comes from the
+    variational inequality (`norm_eq_iInf_iff_real_inner_le_zero`
+    family); idempotency on `↥S` follows from `dist_self` plus the
+    uniqueness clause. The full proof is ~30–80 Lean lines and is the
+    isolated dependency of the S11.A retraction reduction below. -/
+lemma exists_continuous_proj_convex {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S) :
+    ∃ r : EuclideanSpace ℝ (Fin n) → ↥S,
+      Continuous r ∧ ∀ x : ↥S, r (x : EuclideanSpace ℝ (Fin n)) = x := by
+  sorry  -- S11.B work item; see docstring above.
+
+/-- **Theorem 1 (was Axiom 1): Brouwer's FPT on a compact convex subset.**
+
+    Derived from `axiom brouwer_unit_ball` via the nearest-point
+    retraction reduction. Net axiom dependence on the Brouwer side is
+    strictly weakened from "general compact convex `S`" to "closed unit
+    ball only" (S11.A, 2026-05-09; see
+    `s10-mathlib-v426-lookup3-resolved.md` Option A).
+
+    **Proof sketch (body deferred to S11.A.body — see
+    `s11-strict-weakening-spec.md` for the full Lean stub):**
+
+    1. Since `S` is compact, it is bounded
+       (`IsCompact.isBounded`); pick `R > 0` with
+       `S ⊆ Metric.closedBall 0 R` via `Bornology.IsBounded.subset_closedBall_lt`
+       (LOOKUP-1, S9-confirmed at the pinned rev).
+    2. Build the nearest-point retraction `r : E → ↥S` from
+       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B).
+    3. Compose `F : ↥(closedBall 0 R) → ↥(closedBall 0 R)` via
+       `b ↦ f (r b)` (well-defined: `f (r b) ∈ ↥S ⊆ closedBall 0 R`;
+       continuous: composition of continuous maps via
+       `Continuous.codRestrict`).
+    4. Conjugate by `Homeomorph.smul` (multiplication by `1/R`) to get
+       `F' : ↥(closedBall 0 1) → ↥(closedBall 0 1)`; apply
+       `brouwer_unit_ball` to `F'`; rescale the fixed point back.
+    5. The fixed point `b₀ ∈ closedBall 0 R` satisfies
+       `F b₀ = ⟨f (r b₀), _⟩`, so `b₀ ∈ S`. Idempotency `r b₀ = b₀`
+       (from the helper's second clause) gives `f b₀ = b₀`.
+
+    The rescaling in step 4 is the only Mathlib-API-uncertain step in
+    the body; `s11-strict-weakening-spec.md` pins it down to either
+    `Homeomorph.smul` + fixed-point conjugation or a direct elementwise
+    rescaling argument. -/
+theorem brouwer_fpt {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
     (f : ↥S → ↥S) (hf : Continuous f) :
-    ∃ x : ↥S, f x = x
+    ∃ x : ↥S, f x = x := by
+  sorry  -- S11.A.body work item; structured stub in s11-strict-weakening-spec.md.
 
 /-- A continuous `f : S → S` is an ε-graph-approximate selection of `F`
     if for every `x` there is a nearby point `x'` (within `ε`) and a point
@@ -396,25 +470,46 @@ infrastructure can produce via the Cellina averaging argument.
 ## Summary
 
 ### Axioms (2)
-1. `brouwer_fpt` - Brouwer's FPT for compact convex subsets of ℝⁿ
-2. `approx_selection_exists` - UHC + convex values → continuous
-   `ε`-graph-approximate selections (Cellina–Browder form)
+1. `brouwer_unit_ball` — Brouwer's FPT on the closed unit ball in
+   `EuclideanSpace ℝ (Fin n)` (S11.A strict-weakening, 2026-05-09).
+   Strictly weaker than the previous `axiom brouwer_fpt` (general
+   compact convex `S`); the general form is now derived as
+   `theorem brouwer_fpt` via in-house retraction reduction.
+2. `approx_selection_exists` — UHC + convex values → continuous
+   `ε`-graph-approximate selections (Cellina–Browder form).
 
-### Theorems (proved)
-- `seq_compact_of_compact` - Sequential compactness in compact metric spaces
-  (was an axiom; now derived from Mathlib)
-- `approx_fixedpoint_implies_fixedpoint` - Limit argument for approximate fixed points
-- `kakutani_from_brouwer` - The main reduction: Kakutani from the two axioms
-  (uses the graph form via a triangle-inequality `ε ↦ 2·(ε/2) = ε` step)
+### Theorems (proved + transitional)
+- `seq_compact_of_compact` — Sequential compactness in compact metric
+  spaces (was an axiom; now derived from Mathlib).
+- `approx_fixedpoint_implies_fixedpoint` — Limit argument for
+  approximate fixed points.
+- `kakutani_from_brouwer` — The main reduction: Kakutani from the two
+  axioms (uses the graph form via a triangle-inequality
+  `ε ↦ 2·(ε/2) = ε` step).
+- `brouwer_fpt` — Brouwer's FPT for general compact convex `S`,
+  derived from `axiom brouwer_unit_ball`. **Currently `sorry`-stubbed**
+  (S11.A.body work item; structured stub in
+  `s11-strict-weakening-spec.md`).
+- `exists_continuous_proj_convex` — Continuous nearest-point retraction
+  onto a compact convex set, used by the `brouwer_fpt` body.
+  **Currently `sorry`-stubbed** (S11.B work item, ~30–80 Lean lines via
+  `exists_norm_eq_iInf_of_complete_convex` + variational inequality).
 
 ### Path to Full Verification
-1. Prove `approx_selection_exists` (graph form) using `PartitionOfUnity`
-   plus the Cellina averaging argument
-2. Verify `brouwer_fpt` against Mathlib's existing Brouwer formalization
-   for the unit ball, extended to compact convex sets via a retraction
+1. **S11.B (next)**: prove `exists_continuous_proj_convex` from
+   `Mathlib.Analysis.InnerProductSpace.Projection` API.
+2. **S11.A.body**: fill the body of `theorem brouwer_fpt` using the
+   helper from step 1 plus the rescaling step
+   `closedBall 0 R ↔ closedBall 0 1` (`Homeomorph.smul`).
+3. **S12+**: prove `approx_selection_exists` (graph form) using
+   `PartitionOfUnity` plus the Cellina averaging argument.
+4. **(Optional, far future)**: in-house Brouwer FPT proof to eliminate
+   `brouwer_unit_ball` (Option B from S10's note).
 -/
 
+#check @brouwer_unit_ball
 #check @brouwer_fpt
+#check @exists_continuous_proj_convex
 #check @approx_selection_exists
 #check @approx_fixedpoint_implies_fixedpoint
 #check @kakutani_from_brouwer
