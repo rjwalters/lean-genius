@@ -96,9 +96,21 @@
     "prerequisites": ["Finset operations", "filter and products", "prime-power analysis"]
   },
   {
+    "id": "ann-hanson-chebyshev-reverse",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 221, "endLine": 282 },
+    "type": "insight",
+    "title": "Hard Direction of Chebyshev's Decomposition (Iter 8) — via Nat.factorization",
+    "content": "`lcmRange_dvd_prod_prime_powers` (Iter 8) proves the *reverse* (harder) direction of Chebyshev's decomposition: $\\operatorname{lcmRange}(n) \\mid \\prod_{p \\le n,\\, p \\text{ prime}} p^{\\lfloor \\log_p n \\rfloor}$. Combined with the forward direction `prod_prime_powers_dvd_lcmRange` (Iter 7), `Nat.dvd_antisymm` will yield Chebyshev's exact identity in the next iteration. The proof technique is essentially different from the forward direction: it routes through Mathlib's `Nat.factorization` framework. **Strategy** — for each $m \\in \\{1, \\ldots, n\\}$: (i) write $m$ as a product over its prime factors via `Nat.factorization_prod_pow_eq_self` (the `Nat.factorization` decomposition theorem), giving $m = \\prod_{p \\in m.\\text{primeFactors}} p^{m.\\text{factorization}(p)}$; (ii) extend the index set from `m.primeFactors` to the full `(range (n+1)).filter Prime` via `Finset.prod_subset` — extra factors contribute $p^0 = 1$ since `m.factorization p = 0` for non-prime-factors of $m$; (iii) bound each exponent by $\\lfloor \\log_p n \\rfloor$ using `Nat.le_log_of_pow_le` together with the key inequality $p^{m.\\text{factorization}(p)} \\mid m \\le n$. Step (iii) is where `Nat.Prime.pow_dvd_iff_le_factorization` does the structural work — packaging 'maximal exponent in the prime decomposition' as the hook into `Nat.log p n`.",
+    "mathContext": "**Reverse direction** (proved in Iter 8):\n$$\\boxed{\\;\\operatorname{lcmRange}(n) \\;\\bigm|\\; \\prod_{\\substack{p \\le n \\\\ p \\text{ prime}}} p^{\\lfloor \\log_p n \\rfloor}.\\;}$$\n\n**Per-element decomposition** (the heart of the proof): for each $m \\in \\{1, \\ldots, n\\}$,\n$$m \\;=\\; \\prod_{p \\in m.\\text{primeFactors}} p^{m.\\text{factorization}(p)} \\;\\stackrel{\\text{extend}}{=}\\; \\prod_{p \\le n,\\, p \\text{ prime}} p^{m.\\text{factorization}(p)},$$\nwhere the extension adds factors of $p^0 = 1$ for primes that don't divide $m$. Then\n$$m.\\text{factorization}(p) \\;\\le\\; \\lfloor \\log_p n \\rfloor$$\nbecause $p^{m.\\text{factorization}(p)} \\mid m \\le n$, and `Nat.le_log_of_pow_le` (with `p > 1`) lifts this. Hence\n$$\\prod_{p \\le n} p^{m.\\text{factorization}(p)} \\;\\mid\\; \\prod_{p \\le n} p^{\\lfloor \\log_p n \\rfloor}.$$\n\n**Combined with Iter 7** (next iteration): `Nat.dvd_antisymm` gives the exact identity $\\operatorname{lcmRange}(n) = \\prod_{p \\le n} p^{\\lfloor \\log_p n \\rfloor}$, opening the path to Beta-integral / primorial bounds on the RHS to discharge `hanson_bound`.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.factorization", "Nat.factorization_prod_pow_eq_self", "Finset.prod_subset", "Nat.Prime.pow_dvd_iff_le_factorization", "Nat.le_log_of_pow_le", "Chebyshev's exact identity"],
+    "prerequisites": ["Mathlib Nat.factorization framework", "prime decomposition", "Finset.prod manipulation", "log floor bounds"]
+  },
+  {
     "id": "ann-hanson-recursion",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
-    "range": { "startLine": 220, "endLine": 264 },
+    "range": { "startLine": 284, "endLine": 328 },
     "type": "technique",
     "title": "Recursion and Monotonicity Structure",
     "content": "Three structural lemmas package `lcmRange` for inductive arguments. (1) `lcmRange_succ` proves `lcmRange (n+1) = Nat.lcm (lcmRange n) (n+1)` by `Nat.dvd_antisymm` — both directions reduce to `Finset.lcm_dvd` / `Finset.dvd_lcm` after case-splitting on whether the index `i` equals `n` (the new element) or `i < n` (carried over). This is the inductive step any proof of Hanson's bound by induction on `n` will need: lcm grows by an `lcm(·, n+1)` operation, which can either preserve the value (when `n+1` shares all prime factors with the existing lcm at strictly smaller exponents) or multiply by a single prime power. (2) `lcmRange_dvd_lcmRange_of_le` shows `m ≤ n ⇒ lcmRange m ∣ lcmRange n` — every divisor of the smaller lcm is among the larger range. (3) `lcmRange_monotone` upgrades divisibility to numerical inequality via `Nat.le_of_dvd`, with a small case-split for `n = 0` (where `lcmRange 0 = 1`). Together these give the structural toolkit for any future inductive Hanson proof.",
@@ -110,7 +122,7 @@
   {
     "id": "ann-hanson-elementary",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
-    "range": { "startLine": 270, "endLine": 285 },
+    "range": { "startLine": 334, "endLine": 349 },
     "type": "insight",
     "title": "The Trivial Bound Chain: lcm | n! ≤ nⁿ",
     "content": "Three theorems establish the *easy* bound lcmRange n ≤ nⁿ via two transitive steps. (1) `lcmRange_dvd_factorial`: every k ∈ {1,...,n} divides n! (`Nat.dvd_factorial`), so by `Finset.lcm_dvd` the lcm divides n!. (2) `lcmRange_le_factorial`: divisibility implies ≤ in ℕ via `Nat.le_of_dvd` (using factorial positivity). (3) `lcmRange_le_self_pow`: chain with `Nat.factorial_le_pow` (n! ≤ nⁿ). This factorial-derived bound is the *baseline* that Hanson's 3ⁿ strictly improves: for n ≥ 4, 3ⁿ < nⁿ (proved at line 337), and the gap grows exponentially.",
@@ -122,7 +134,7 @@
   {
     "id": "ann-hanson-numerical",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
-    "range": { "startLine": 287, "endLine": 309 },
+    "range": { "startLine": 355, "endLine": 373 },
     "type": "insight",
     "title": "Numerical Verification: n = 1..10, 12, 15, 20",
     "content": "13 native_decide checks of Hanson's bound: `lcmRange n ≤ 3^n` for n ∈ {1..10, 12, 15, 20}. The split between `decide` (n ≤ 12) and `native_decide` (n ∈ {15, 20}) reflects the kernel's compute envelope — kernel reduction handles small n directly, but `lcmRange 15 = 360360` and `lcmRange 20 = 232792560` are too large for in-kernel `decide` and need the compiled `native_decide`. Four exact-value sanity checks (`lcmRange_5_eq = 60`, `_10_eq = 2520`, `_15_eq = 360360`, `_20_eq = 232792560`) match OEIS A003418, confirming the lcmRange definition is correct.",
@@ -134,7 +146,7 @@
   {
     "id": "ann-hanson-axiom",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
-    "range": { "startLine": 311, "endLine": 330 },
+    "range": { "startLine": 379, "endLine": 394 },
     "type": "concept",
     "title": "Axiom: Hanson's General Bound (Open Lean Target)",
     "content": "`axiom hanson_bound : ∀ n : ℕ, lcmRange n ≤ 3 ^ n` is the precise open Lean target. The classical 1972 proof uses an integral identity: for 0 ≤ k ≤ n, ∫₀¹ x^k(1-x)^(n-k) dx = 1/((n+1)·C(n,k)) (the Beta function evaluation). Multiplying by lcm(1,...,n+1) gives an integer; combined with Chebyshev-style prime-power bounds on lcm, one extracts the 3ⁿ constant. Mathlib has `primorial_le_4_pow` (giving the easier 4ⁿ bound via primorial) but no LCM-specific bound; the bridges (combinatorial primorial-to-lcm, analytic Beta integral, prime-power compilation) are all currently missing and would be substantial upstream contributions.",
@@ -146,7 +158,7 @@
   {
     "id": "ann-hanson-strictness",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
-    "range": { "startLine": 332, "endLine": 339 },
+    "range": { "startLine": 396, "endLine": 403 },
     "type": "context",
     "title": "Why 3 Is Not Trivially Derivable: 3ⁿ < nⁿ for n ≥ 4",
     "content": "`hanson_strictly_stronger_than_factorial` proves 3ⁿ < nⁿ for n ≥ 4 in two omega-friendly inputs to `Nat.pow_lt_pow_left`. This documents that Hanson's bound is *genuinely* tighter than the elementary nⁿ bound: at n = 4, 3⁴ = 81 < 4⁴ = 256; at n = 100, 3¹⁰⁰ ≈ 5.15×10⁴⁷ vs 100¹⁰⁰ = 10²⁰⁰. So Hanson's 3ⁿ saves over 152 orders of magnitude relative to nⁿ at n = 100. This justifies why Apéry's threshold c < 3.245 *requires* something like Hanson — neither nⁿ nor 4ⁿ is good enough.",
