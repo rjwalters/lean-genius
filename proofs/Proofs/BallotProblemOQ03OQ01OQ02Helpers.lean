@@ -4387,6 +4387,36 @@ lemma removeCorner_proof_irrel (μ : YoungDiagram) (c : ℕ × ℕ)
   apply YoungDiagram.ext
   simp [removeCorner]
 
+/-- Removing two distinct corners commutes: the diagram obtained by removing
+    `c` then `c'` equals the one obtained by removing `c'` then `c`.
+
+    Why this matters for `gnwProb_exchange`: the exchange identity relates
+    `H((μ\c')\c)` to `H(μ\c)` and `H(μ\c')`.  Writing the equation in either
+    iteration order is equivalent thanks to this commutativity, freeing the
+    proof from having to track whether `c` is removed before or after `c'`. -/
+private lemma removeCorner_swap {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne) =
+    removeCorner (removeCorner μ c' hc') c
+        (isCorner_removeCorner_of_ne hc' hc hne.symm) := by
+  apply YoungDiagram.ext
+  show (μ.cells.erase c).erase c' = (μ.cells.erase c').erase c
+  ext x
+  simp only [Finset.mem_erase]
+  tauto
+
+/-- Hook products are invariant under swapping the order of two distinct corner
+    removals.  Direct corollary of `removeCorner_swap`: equal diagrams have
+    equal hook products. -/
+private lemma hookProd_removeCorner_swap {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    hookProd (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) =
+    hookProd (removeCorner (removeCorner μ c' hc') c
+        (isCorner_removeCorner_of_ne hc' hc hne.symm)) := by
+  rw [removeCorner_swap hc hc' hne]
+
 /-- For any SYT, its entries surject onto {1,...,μ.card}. -/
 private lemma syt_entry_image {μ : YoungDiagram} (T : StandardYoungTableau μ)
     (hn : 0 < μ.card) :

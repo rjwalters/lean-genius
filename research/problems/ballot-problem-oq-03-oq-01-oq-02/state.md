@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW exchange-step framework wired up; corner-distinctness coordinate lemmas added; Aristotle Target 3 closed via dispatcher)
+**Phase**: ACT (GNW exchange-step framework + diagram commutativity; corner-distinctness coordinate lemmas added; Aristotle Target 3 closed via dispatcher)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
 **Last Updated**: 2026-05-08
-**Iteration**: 46
+**Iteration**: 47
 
 ## Current Focus
 Close `gnwProb_exchange` (Helpers, line 14143) — the GNW 1979 exchange identity
@@ -76,14 +76,22 @@ in place:
      `ni_count_eq_syt_count_Aristotle` and `lgv_det_factors_as_hook_quotient_Aristotle`
      remain).  No new dependency is introduced; transitive dependence on
      `gnwProb_exchange` is unchanged.
+ 10. Diagram commutativity for double removal (session 47) — added
+     `removeCorner_swap` (line ~4397) and its corollary
+     `hookProd_removeCorner_swap`.  The first is a `Finset`-level identity
+     `(μ.cells.erase c).erase c' = (μ.cells.erase c').erase c` lifted to
+     `YoungDiagram` via `YoungDiagram.ext`; the second is a one-line
+     `rw` corollary.  Together they let the upcoming `gnwProb_exchange`
+     proof rewrite `H((μ\c')\c)` ↔ `H((μ\c)\c')` freely, avoiding
+     iteration-order bookkeeping at every algebraic step.
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
   The proof requires showing that hookProd and the gnwProb sum transform
   predictably when one corner c' is removed. Estimated ~100 lines of careful
   case analysis on arm/leg of c vs c'.
-- **Build verification.** Helpers file is at 14398 lines; whether it
-  type-checks under Docker's 32GB memory limit (post-modularization) is
+- **Build verification.** Helpers file is at 14428 lines (was 14398); whether
+  it type-checks under Docker's 32GB memory limit (post-modularization) is
   not yet confirmed in this session. CI will verify the PR.
 
 ## Next Action
@@ -118,9 +126,12 @@ exchange step entirely (count weighted walks of every length, divide by
 - `knowledge.md` §Session 44 — anti-monotone corner helpers (PR #16648)
 - `knowledge.md` §Session 45 — corner-distinctness coordinate lemmas
 - `sessions/2026-05-08-s01.md` — Session 46: Aristotle Target 3 closed via dispatcher
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14143` — `gnwProb_exchange`
-  (sorry'd, target of next session)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14168` — `gnwProb_key`
+- `sessions/2026-05-08-s02.md` — Session 47: `removeCorner_swap` + `hookProd_removeCorner_swap`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14173` — `gnwProb_exchange`
+  (sorry'd, target of next session — line shifted by +30 from session 47 additions)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14198` — `gnwProb_key`
   (proved modulo `gnwProb_exchange`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14377` — `hook_walk_identity_gnw`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14407` — `hook_walk_identity_gnw`
   (sorry-free dispatcher, transitive on `gnwProb_exchange`)
