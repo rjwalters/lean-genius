@@ -554,25 +554,61 @@ private lemma sylow_prime_order_disjoint_of_ne
     (hne : Q ≠ Q') :
     (Q : Subgroup G) ⊓ (Q' : Subgroup G) = ⊥ := by
   -- Strategy: |Q ⊓ Q'| ∣ |Q| = p (prime), so it's 1 or p; rule out p.
+  -- (S12 build-fix: replaces non-existent Mathlib API references in the
+  -- original S11.5 commit. `Subgroup.card_dvd_card_of_le`,
+  -- `Subgroup.card_eq_one_iff_eq_bot`, and `Subgroup.eq_of_le_of_card_le`
+  -- are NOT in current Mathlib. The corrected proof uses
+  -- `Subgroup.card_dvd_of_le`, `Subgroup.eq_bot_of_card_le`, and the
+  -- `subgroupOf` relativization via `Subgroup.subgroupOfEquivOfLe` +
+  -- `Subgroup.eq_top_of_card_eq` + `Subgroup.subgroupOf_eq_top`.)
   have hint_le_Q : (Q : Subgroup G) ⊓ (Q' : Subgroup G) ≤ (Q : Subgroup G) := inf_le_left
   have hint_le_Q' : (Q : Subgroup G) ⊓ (Q' : Subgroup G) ≤ (Q' : Subgroup G) := inf_le_right
   have hp_prime : Nat.Prime p := Fact.out
   have hdvd : Nat.card ((Q : Subgroup G) ⊓ (Q' : Subgroup G) : Subgroup G) ∣ p := by
     rw [← hQ_card]
-    exact Subgroup.card_dvd_card_of_le hint_le_Q
+    exact Subgroup.card_dvd_of_le hint_le_Q
   rcases hp_prime.eq_one_or_self_of_dvd _ hdvd with h1 | hp_eq
-  · -- card = 1: H = ⊥.
-    exact Subgroup.card_eq_one_iff_eq_bot.mp h1
-  · -- card = p: H = Q (same card, ≤). Then Q ≤ Q' and equality follows.
+  · -- |inter| = 1 ⇒ inter = ⊥ via `Subgroup.eq_bot_of_card_le`
+    -- (`Mathlib.Algebra.Group.Subgroup.Finite`, line 126).
+    exact Subgroup.eq_bot_of_card_le (le_of_eq h1)
+  · -- |inter| = p = |Q| = |Q'|: forces Q = Q' as Sylow, contradicting hne.
+    -- Use `subgroupOf` relativization to derive Q ≤ Q' and Q' ≤ Q.
     exfalso
-    have h_eq_Q : ((Q : Subgroup G) ⊓ (Q' : Subgroup G) : Subgroup G) = (Q : Subgroup G) :=
-      Subgroup.eq_of_le_of_card_le hint_le_Q
-        (by rw [hp_eq, hQ_card])
-    have h_Q_le_Q' : (Q : Subgroup G) ≤ (Q' : Subgroup G) := h_eq_Q ▸ hint_le_Q'
-    have h_Q_eq_Q' : (Q : Subgroup G) = (Q' : Subgroup G) :=
-      Subgroup.eq_of_le_of_card_le h_Q_le_Q'
-        (by rw [hQ_card, hQ'_card])
-    exact hne (Sylow.ext h_Q_eq_Q')
+    apply hne
+    apply Sylow.ext
+    -- Sub-step 1: derive Q ≤ Q'.
+    -- `(Q ⊓ Q').subgroupOf Q ≃* Q ⊓ Q'` has card |Q ⊓ Q'| = p = |Q|;
+    -- hence it's `⊤` in the lattice of subgroups of Q, giving Q ≤ Q ⊓ Q' ≤ Q'.
+    have hequiv1 :
+        (((Q : Subgroup G) ⊓ (Q' : Subgroup G)).subgroupOf (Q : Subgroup G)) ≃*
+        ((Q : Subgroup G) ⊓ (Q' : Subgroup G) : Subgroup G) :=
+      Subgroup.subgroupOfEquivOfLe hint_le_Q
+    have hcard1 :
+        Nat.card ((((Q : Subgroup G) ⊓ (Q' : Subgroup G)).subgroupOf (Q : Subgroup G))) =
+        Nat.card (Q : Subgroup G) := by
+      rw [Nat.card_congr hequiv1.toEquiv]
+      exact hp_eq.trans hQ_card.symm
+    have htop1 :
+        ((Q : Subgroup G) ⊓ (Q' : Subgroup G)).subgroupOf (Q : Subgroup G) = ⊤ :=
+      Subgroup.eq_top_of_card_eq _ hcard1
+    have h_Q_le_inter : (Q : Subgroup G) ≤ (Q : Subgroup G) ⊓ (Q' : Subgroup G) :=
+      Subgroup.subgroupOf_eq_top.mp htop1
+    have h_Q_le_Q' : (Q : Subgroup G) ≤ (Q' : Subgroup G) := h_Q_le_inter.trans hint_le_Q'
+    -- Sub-step 2: derive Q' ≤ Q symmetrically.
+    -- `Q.subgroupOf Q' ≃* Q` has card |Q| = |Q'|; hence ⊤ in subgroups of Q',
+    -- giving Q' ≤ Q.
+    have hequiv2 : ((Q : Subgroup G).subgroupOf (Q' : Subgroup G)) ≃* (Q : Subgroup G) :=
+      Subgroup.subgroupOfEquivOfLe h_Q_le_Q'
+    have hcard2 :
+        Nat.card ((Q : Subgroup G).subgroupOf (Q' : Subgroup G)) = Nat.card (Q' : Subgroup G) := by
+      rw [Nat.card_congr hequiv2.toEquiv]
+      exact hQ_card.trans hQ'_card.symm
+    have htop2 : (Q : Subgroup G).subgroupOf (Q' : Subgroup G) = ⊤ :=
+      Subgroup.eq_top_of_card_eq _ hcard2
+    have h_Q'_le_Q : (Q' : Subgroup G) ≤ (Q : Subgroup G) :=
+      Subgroup.subgroupOf_eq_top.mp htop2
+    -- Conclusion: Q = Q' as subgroups; Sylow.ext lifts to Sylow p G.
+    exact le_antisymm h_Q_le_Q' h_Q'_le_Q
 
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
