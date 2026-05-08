@@ -1,23 +1,27 @@
 # Current State
 
-**Phase**: ACT — Path A's algorithmic story (S18–S20) is closed.
-S21 adds the API surface: 11 wrapper lemmas + fuel-irrelevance,
-making `schonhageGcdOf` a drop-in replacement for `Nat.gcd` under
-standard rewriting.
+**Phase**: ACT — Path A's algorithmic story (S18–S20) and primary
+API (S21) are closed. S22 fills the residual algebraic gaps:
+multiplicative laws, the iff form of the universal property,
+strict positivity, and a Fibonacci-style coprimality witness;
+plus five `native_decide` empirical witnesses that exercise the
+full Path A recursion stack on inputs spanning the threshold edge,
+the S17 PR #17024 survey range, and beyond.
 
 **Since**: 2026-05-01
-**Iteration**: 21
+**Iteration**: 22
 
 ## Current Focus
 
-Session 21 packages the API surface for `schonhageGcdOf`. With
-`schonhageGcdOf_eq_gcd` (S20) in hand, the entire `Nat.gcd`
-algebraic theory transfers to the verified Schönhage GCD by
-routine rewriting — but downstream consumers shouldn't have to
-invoke the correctness theorem at every site. PART X provides
-named wrappers for every standard `Nat.gcd` identity, plus a
-fuel-irrelevance theorem packaging the corollary that the fuel
-parameter is semantically inert.
+Session 22 extends the S21 API surface with six further `Nat.gcd`
+identities not previously packaged (`schonhageGcdOf_dvd_iff`,
+`_mul_left`, `_mul_right`, `_pos_of_pos_left`,
+`_pos_of_pos_right`, `_succ_self`) and adds a PART XII section of
+five `native_decide`-checked sanity examples. Together with S21
+the algebraic API for `schonhageGcdOf` now mirrors the standard
+Mathlib `Nat.gcd` theory, and the `native_decide` checks confirm
+the closed-form recursion produces correct answers on inputs
+where the unguarded `hgcdMatrix` (S17) blew up.
 
 The body iterates `hgcdSafeApply` (S19) on the reduced pair: each
 step takes the column output `(p.1.natAbs, p.2.natAbs)` and
@@ -114,7 +118,7 @@ Status of the proof plan (Sessions 1–19):
     with two structural fallbacks (below-threshold + per-step
     guard). Native-decide examples include the S17
     counterexample family and `(1000000, 999999)`.
-14. **API surface for `schonhageGcdOf`** ✅ (S21, this session):
+14. **API surface for `schonhageGcdOf`** ✅ (S21, PR #17104):
     11 wrapper lemmas covering the standard `Nat.gcd` identities
     (`schonhageGcdOf_zero_left`, `_zero_right`, `_self`,
     `_one_left`, `_one_right`, `_comm`, `_dvd_left`, `_dvd_right`,
@@ -126,6 +130,18 @@ Status of the proof plan (Sessions 1–19):
     pragmatic — `schonhageGcdOf` now responds to standard
     `simp`-style tactics without manual unfolding at the call
     site, completing the drop-in replacement story.
+15. **Extended algebraic identities + empirical witnesses** ✅
+    (S22, this session): 6 additional wrapper lemmas in PART XI
+    (`schonhageGcdOf_dvd_iff`, `_mul_left`, `_mul_right`,
+    `_pos_of_pos_left`, `_pos_of_pos_right`, `_succ_self`) plus 5
+    PART XII `native_decide` empirical sanity examples
+    (`(64, 64)`, `(65, 64)`, `(121, 88)`, `(200, 175)`,
+    `(2520, 1980)`). The S22 wrappers fill the gaps left by S21:
+    multiplicative laws, the iff form of the universal property,
+    strict positivity from either side, and a concrete Fibonacci-
+    style coprimality witness. The PART XII examples exercise the
+    closed-form recursion at scale — the kernel reduces every fuel
+    level and every `hgcdSafeApply` call.
 
 **Open / Refuted**:
 - **Recursive case of `hgcdMatrix_row_output_le`** ❌ (line 1078,
@@ -154,6 +170,10 @@ The verified ALGORITHMIC story for Path A is now complete:
 - S21: API surface (PART X) — eleven wrapper lemmas + fuel
   irrelevance, making `schonhageGcdOf` a drop-in replacement
   for `Nat.gcd` under standard rewriting tactics.
+- S22: extended algebraic identities (PART XI) and empirical
+  witnesses (PART XII) — six further wrappers covering the gaps
+  in S21 plus five `native_decide` sanity examples spanning the
+  threshold edge and the S17 survey range.
 
 Remaining work for Path A is QUANTITATIVE only (asymptotic
 speedup, bit-complexity bound).
@@ -171,22 +191,26 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
-1. **Session 22 — quantitative inner-reduction characterisation**:
+1. **Session 23 — quantitative inner-reduction characterisation**:
    establish the input regime in which `hgcdMatrixSafe`'s inner
    runtime guard fires. The S17 PART XIV counterexample shows the
    guard can abort, but a density argument may still yield a
-   probabilistic speedup bound.
-2. **Empirical comparison**: native_decide-checked
-   `schonhageGcdOf` on the S17 counterexample family vs `Nat.gcd`,
-   to characterise the practical impact of the OUTER guard
-   firing on those inputs (e.g. by exhibiting that
-   `(hgcdSafeApply 130 89)` does NOT reduce `max`, so the OUTER
-   guard fires unconditionally on this input).
-3. **Bit-complexity bound**: still blocked on Mathlib; defer.
+   probabilistic speedup bound. A first concrete sub-target:
+   prove a Boolean predicate `outerGuardFires a b : Bool` and
+   characterise it on the S17 counterexample family by
+   `native_decide`, anchoring the claim that the OUTER guard in
+   `schonhageGcd` is the actual mechanism that handles these
+   pathological inputs.
+2. **Bit-complexity bound**: still blocked on Mathlib; defer.
+3. **Mathlib upstream**: the current `schonhageGcdOf` API surface
+   (S21+S22) is now sufficient that, contingent on a working
+   Docker build, candidate Mathlib upstream PRs could be drafted
+   for one or two of the routine wrapper lemmas. Survey what
+   already exists in Mathlib's `Nat.GCD` family before submitting.
 
 ## Attempt Counts
 
-- Total attempts: 21 (Sessions 1–21)
+- Total attempts: 22 (Sessions 1–22)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: Sessions 3–16
@@ -195,6 +219,9 @@ speedup, bit-complexity bound).
   - Path A algorithm refinement: GCD-preservation foundation
     (S18, #17042), verified single-step GCD function (S19, #17063),
     recursive Schönhage-style iterated GCD (S20, #17087).
-  - Path A API surface (S21, this PR): standard `Nat.gcd` API
+  - Path A API surface (S21, #17104): standard `Nat.gcd` API
     transferred to `schonhageGcdOf`; fuel irrelevance packaged.
-  - Path A quantitative bounds (S22+): pending.
+  - Path A extended algebraic identities + empirical witnesses
+    (S22, this PR): multiplicative laws, dvd-iff, positivity,
+    coprimality witness, plus 5 `native_decide` sanity examples.
+  - Path A quantitative bounds (S23+): pending.
