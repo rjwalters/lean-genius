@@ -105,8 +105,16 @@
   ],
   "sections": [
     {
+      "id": "header-imports-namespace",
+      "title": "Header, Imports, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Imports `Mathlib.Data.Nat.Prime.Basic`, `Nat.Factorization.Basic`, `Finset.Basic`, plus the parent files `Proofs.BorsukUlamOQ02OQ01` (provides `buDim` and `buDim_mono`) and `Proofs.BorsukUlamOQ02OQ01OQ01` (provides `buDimFormula`, `buDim_le_formula` axiom, `buDimFormula_le`). Module docstring (8-51) frames the open question — does the semiprime CRT compatibility `buDim(pq,d) ≤ max(buDim p d, buDim q d)` generalize to squarefree n = p₁⋯pₖ? — and reveals the surprise answer: yes, and the *equality* holds for all n ≥ 2, not just squarefree, as an immediate consequence of `buDim_eq_formula` plus the definition of `buDimFormula`. Lists the 5-step proof structure (general equality, squarefree specialization, k-prime lower bound, concrete examples, semiprime recovery) and references Dummit & Foote §7.6 for CRT background. Closes with `namespace BorsukUlamCRTSquarefree` + `open BorsukUlamOQ02OQ01 BorsukUlamCompositeFormula` to expose the parent definitions.",
+      "mathContext": "**The CRT-compatibility question** (informal): if $\\text{buDim}(p, d)$ is well-understood for prime $p$, can we determine $\\text{buDim}(n, d)$ for composite $n$ using $n$'s prime factorization? The semiprime case $\\text{buDim}(pq, d) = \\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$ was settled by the parent file (axiom `buDim_crt_semiprime`). This file climbs the iteration ladder to k primes and discovers the cleaner statement: $\\text{buDim}(n, d) = \\bigsqcup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$ for *all* $n \\ge 2$, with squarefreeness becoming a notational simplification rather than a structural hypothesis.\n\n**Why the squarefreeness drops**: $\\text{buDimFormula}$ is *defined* as a sup over $\\text{primeFactors}(n)$, which is the set of *distinct* primes dividing $n$ regardless of multiplicity. So the parent's $\\text{buDim} = \\text{buDimFormula}$ axiom-chain already encodes the multiplicity-collapse; the squarefree specialization is just `primeFactors n = {p₁, ..., pₖ}` when $n = \\prod p_i$ is squarefree."
+    },
+    {
       "id": "general-crt",
-      "title": "General CRT Formula (All n ≥ 2)",
+      "title": "Part 1: General CRT Formula (All n ≥ 2)",
       "startLine": 55,
       "endLine": 95,
       "summary": "buDim_eq_sup_primeFactors, buDim_squarefree_crt, buDim_le_sup_primeFactors: the main theorem and its squarefree specialization. All follow from buDim_eq_formula + definition of buDimFormula.",
@@ -130,11 +138,27 @@
     },
     {
       "id": "general-k-prime",
-      "title": "General k-Prime Formula (Induction)",
+      "title": "Part 4: General k-Prime Formula (Induction)",
       "startLine": 146,
-      "endLine": 210,
-      "summary": "primeFactors_prod_primes (inductive proof), two_le_prod_primes (product ≥ 2), buDim_prod_primes_eq (CRT for k primes), crt_recovers_semiprime (k=2 special case).",
-      "mathContext": "For a Finset $S$ of primes: $\\text{primeFactors}(\\prod_{p \\in S} p) = S$ and $\\text{buDim}(\\prod_{p \\in S} p, d) = \\bigsqcup_{p \\in S} \\text{buDim}(p, d)$."
+      "endLine": 204,
+      "summary": "Three structural lemmas + the k-prime CRT theorem: (1) `sup_buDim_le_buDim_prod` — the lower-bound direction for a Finset of primes; (2) `primeFactors_prod_primes` — for a Finset $S$ of distinct primes, primeFactors(∏ S) = S, proved by Finset induction (the only nontrivial proof in this file); (3) `two_le_prod_primes` — any nonempty product of primes is ≥ 2 (needed to invoke the n ≥ 2 hypothesis of buDim_eq_sup_primeFactors); (4) `buDim_prod_primes_eq` — the headline k-prime CRT result, proved as a one-liner by composing buDim_eq_sup_primeFactors with primeFactors_prod_primes.",
+      "mathContext": "$\\text{primeFactors}(\\prod_{p \\in S} p) = S$ for $S$ a Finset of distinct primes (proved by Finset induction — the only inductive argument in the file). Composing with the general CRT formula: $\\text{buDim}\\bigl(\\prod_{p \\in S} p,\\, d\\bigr) = \\bigsqcup_{p \\in S} \\text{buDim}(p, d)$. The induction handles the multi-prime case in one move; the bookkeeping is in the prime-distinctness propagation through `Finset.prod_insert`."
+    },
+    {
+      "id": "semiprime-recovery",
+      "title": "Part 5: Recovers Semiprime Case (k = 2)",
+      "startLine": 206,
+      "endLine": 222,
+      "summary": "`crt_recovers_semiprime` shows the k-prime CRT specializes back to the semiprime case `buDim(p·q, d) = buDim(p, d) ⊔ buDim(q, d)` for distinct primes p ≠ q. The proof instantiates `buDim_prod_primes_eq` at the Finset {p, q}, unfolds `Finset.prod_insert` and `Finset.prod_singleton` to get `p · q`, and unfolds `Finset.sup_insert` and `Finset.sup_singleton` on the right. This eliminates the need for the parent file's dedicated `buDim_crt_semiprime` axiom — the semiprime case is a pure corollary of the k-prime general result, not an independent assumption.",
+      "mathContext": "**Semiprime corollary**: setting $S = \\{p, q\\}$ in `buDim_prod_primes_eq` gives $\\text{buDim}(p \\cdot q, d) = \\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$. The Lean proof unfolds the Finset operations: `Finset.prod_insert hpq` (with $p \\notin \\{q\\}$ from $p \\ne q$) gives $p \\cdot q$ on the LHS; `Finset.sup_insert` + `Finset.sup_singleton` give $\\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$ on the RHS.\n\n**Axiom-elimination**: the parent file `borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03` had a dedicated `buDim_crt_semiprime` axiom. This file shows that axiom was *redundant* — the semiprime case follows from the more general `buDim_le_formula` axiom of `BorsukUlamOQ02OQ01OQ01`."
+    },
+    {
+      "id": "summary-table",
+      "title": "Closing Summary Table and Namespace End",
+      "startLine": 223,
+      "endLine": 247,
+      "summary": "Closing module-level docstring (223-245) summarizes the OQ and answer, lists all 8 theorems with their statements and verification status (5 fully proved, 3 via native_decide), and confirms the file's bookkeeping: 0 sorries, 0 axioms (only consumes the upstream `buDim_le_formula` axiom from `BorsukUlamOQ02OQ01OQ01` — itself the residue of the entire BorsukUlam composite-formula chain). Closes with `end BorsukUlamCRTSquarefree`.",
+      "mathContext": "**Provenance accounting**: this file is `axiomatized` only via inheritance — every theorem in the file is `Proved`, but the chain consumes one upstream axiom (`buDim_le_formula : buDim n d ≤ buDimFormula n d` for $n \\ge 2$) from the `BorsukUlamOQ02OQ01OQ01` parent. The companion `buDimFormula_le` is *proved* in that parent, so the composite-formula reduction `buDim = buDimFormula` is half-axiomatized. Eliminating `buDim_le_formula` is the next research milestone in the BorsukUlam chain — it would render every downstream file (including this one) fully verified with no axiom inheritance."
     }
   ],
   "crossReferences": [
