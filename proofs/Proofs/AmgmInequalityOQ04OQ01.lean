@@ -121,6 +121,7 @@ theorem ellipticK_pos (hk : k ^ 2 < 1) : 0 < ellipticK k := by
           (ellipticK_integrable hk) ?_
         intro θ
         rw [integrand_zero_eq_one]
+        unfold ellipticIntegrand
         rw [one_le_div (sqrt_denom_pos hk θ)]
         calc Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
             ≤ Real.sqrt 1 := Real.sqrt_le_sqrt
