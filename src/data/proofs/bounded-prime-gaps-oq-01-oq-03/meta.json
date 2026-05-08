@@ -124,6 +124,16 @@
       "id": "bounded-prime-gaps-oq-01-oq-02",
       "relationship": "sibling",
       "description": "EH-conditional H ≤ 12 using the admissible 5-tuple {0,2,6,8,12}"
+    },
+    {
+      "id": "bounded-prime-gaps-oq-03",
+      "relationship": "dependency",
+      "description": "Provides the public engelsma50Tuple definition, its admissibility/cardinality/diameter lemmas, and the engelsma_lower_bound axiom — the entire mathematical content this file assembles into the OQ-01 framework"
+    },
+    {
+      "id": "bounded-prime-gaps-oq-04",
+      "relationship": "related",
+      "description": "Bombieri–Vinogradov formalizability assessment: the missing analytic input that bounds the unconditional Maynard–Tao approach to H ≤ 246, motivating why the 246 ceiling here is a methodological (not quantitative) limit"
     }
   ],
   "leanFile": {
