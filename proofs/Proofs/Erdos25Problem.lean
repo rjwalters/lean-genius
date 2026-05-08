@@ -164,3 +164,45 @@ theorem sieve_monotone (σ : CongruenceSieve) (k : ℕ) :
         (m : ℤ) < σ.seq_n i ∨ ¬((m : ℤ) ≡ σ.seq_a i [ZMOD σ.seq_n i]) } := by
   intro m hm i hi
   exact hm i
+
+/-- Generalized monotonicity: dropping any set of indices from the sieve
+    enlarges the sieved set. The original `sieve_monotone` is the special case
+    `S = {k}`. -/
+theorem sieve_monotone_set (σ : CongruenceSieve) (S : Set ℕ) :
+    sievedSet σ ⊆
+      { m : ℕ | ∀ i, i ∉ S →
+        (m : ℤ) < σ.seq_n i ∨ ¬((m : ℤ) ≡ σ.seq_a i [ZMOD σ.seq_n i]) } := by
+  intro m hm i _
+  exact hm i
+
+/-
+## Section VII: Reduction to Natural Density
+-/
+
+/-- If the sieved set has natural density `d`, then it has logarithmic density `d`.
+    This is a direct corollary of `naturalDensity_implies_logDensity`
+    specialized to congruence-sieved sets. -/
+theorem sieved_set_logDensity_of_naturalDensity (σ : CongruenceSieve) (d : ℝ)
+    (h : HasNaturalDensity (sievedSet σ) d) : logDensity (sievedSet σ) d :=
+  naturalDensity_implies_logDensity (sievedSet σ) d h
+
+/-- If the sieved set has any natural density, its logarithmic density exists. -/
+theorem LogDensityExists_of_naturalDensity (σ : CongruenceSieve)
+    (h : ∃ d : ℝ, HasNaturalDensity (sievedSet σ) d) :
+    LogDensityExists (sievedSet σ) := by
+  obtain ⟨d, hd⟩ := h
+  exact ⟨d, sieved_set_logDensity_of_naturalDensity σ d hd⟩
+
+/-- **Reduction to natural density**: a positive answer to the (a priori
+    stronger) question "does every sieved set have natural density?" implies
+    Erdős Problem #25. This *does not* solve the problem — natural density of
+    sieved sets is itself open in general — but it isolates a sufficient
+    condition expressed in classical terms.
+
+    Note the converse fails: there are sets with log density but no natural
+    density (`exists_logDensity_no_naturalDensity`), so the strengthening is
+    strict. -/
+theorem erdos_25_via_naturalDensity
+    (h : ∀ σ : CongruenceSieve, ∃ d : ℝ, HasNaturalDensity (sievedSet σ) d) :
+    ErdosProblem25 :=
+  fun σ => LogDensityExists_of_naturalDensity σ (h σ)
