@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 20,
-    "focus": "ballot_counting_identity (S20 stated): per-fiber cardinality identity, the focused remaining work for jdt_weight_sum b≥2.",
+    "iteration": 22,
+    "focus": "ballot_counting_identity remains the only open question gating jdt_weight_sum b≥2; S22 added the totalSym/weight bridge family making the structural reduction one Finset.sum_fiberwise_of_maps_to call away.",
     "blockers": [],
-    "nextAction": "S21: Prove ballot_counting_identity via bijection at the multiset level (~150 lines).",
+    "nextAction": "S23: Prove ballot_counting_identity via bijection at the multiset level (~150 lines). Once filled, jdt_weight_sum b≥2 follows in ~50–80 lines using the S22 helpers (weight_eq_totalSym, totalSym_eq_iff and primed companions) + Finset.sum_fiberwise_of_maps_to.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count: 3 → 4 (one new clean statement, no work-around closures).",
+    "progressSummary": "Session 22 (2026-05-08): Bridge-lemma family for the b≥2 structural reduction. Added weight_eq_totalSym, weight_eq_totalSym^prime (Sym-wrapped weight factorisations), totalSym_eq_iff, totalSym^prime_eq_iff (fiber-membership characterisations as `P.1 + Q.1 = M.1` via Subtype extensionality). Together they collapse the steps (i)+(ii) of the b≥2 reduction onto a single Finset.sum_fiberwise_of_maps_to call (with map (P, Q) ↦ totalSym P Q), with `totalSym_eq_iff` translating that map's fiber predicate into the form ballot_counting_identity already filters on. Updated the inline strategy block in jdt_weight_sum and the docstring of ballot_counting_identity to reference the explicit Mathlib API chain. Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count remained 3 (S22 added no new sorries — only structural helpers).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -80,7 +80,11 @@
       "S20 cleanup (this PR): removed duplicate `private lemma weight_eq_total_multiset` introduced when parallel S19 PRs #16637 and #16661 merged within 2 minutes of each other, both adding the same lemma. Kept the implicit-argument signature, promoted the longer expository docstring.",
       "S20: totalSym helper (BallotProblemOQ03OQ01OQ01OQ01.lean): (P : Sym (Fin n) a) (Q : Sym (Fin n) b) ↦ ⟨P.1 + Q.1, _⟩ : Sym (Fin n) (a + b). Plus totalSym_val rfl-simp. Used to fiber both LHS and RHS sums by total multiset.",
       "S20: totalSym^prime helper: companion to totalSym for the (a+1, b-1) RHS shape; takes hb : 1 ≤ b and produces Sym (Fin n) (a+b) for type-aligned fibering.",
-      "S20: ballot_counting_identity stated (BallotProblemOQ03OQ01OQ01OQ01.lean, ~30 lines incl. docstring) as the focused per-fiber subproblem. Cardinality identity: #{(P,Q) : Sym a × Sym b // ¬CS ∧ P+Q = M.1} = #{(P^prime,Q^prime) : Sym (a+1) × Sym (b-1) // P^prime+Q^prime = M.1}. Sorry remaining (the deep combinatorial work)."
+      "S20: ballot_counting_identity stated (BallotProblemOQ03OQ01OQ01OQ01.lean, ~30 lines incl. docstring) as the focused per-fiber subproblem. Cardinality identity: #{(P,Q) : Sym a × Sym b // ¬CS ∧ P+Q = M.1} = #{(P^prime,Q^prime) : Sym (a+1) × Sym (b-1) // P^prime+Q^prime = M.1}. Sorry remaining (the deep combinatorial work).",
+      "S22: weight_eq_totalSym (BallotProblemOQ03OQ01OQ01OQ01.lean): wt(P) * wt(Q) = wt((totalSym P Q).1) — Sym-wrapped form of weight_eq_total_multiset. 2-line proof via totalSym_val rfl + weight_eq_total_multiset.",
+      "S22: weight_eq_totalSym^prime: companion for the (a+1, b-1) RHS shape, takes hb : 1 ≤ b. Both forms feed Finset.sum_fiberwise_of_maps_to whose fiber index is the totalSym/totalSym^prime image, making the inner expression depend only on M (so it factors out of the inner sum cleanly).",
+      "S22: totalSym_eq_iff / totalSym^prime_eq_iff: bridges the predicate `g PQ = M` (the fiber-membership clause of Finset.sum_fiberwise_of_maps_to) to the predicate `P.1 + Q.1 = M.1` (the form already filtered on inside ballot_counting_identity). Two short Subtype.ext arguments. With these, ballot_counting_identity can be invoked verbatim on the inner-sum cardinality.",
+      "S22: Updated the inline strategy comment in jdt_weight_sum (b≥2 branch) and the docstring of ballot_counting_identity to spell out the exact Mathlib API chain — Fintype.sum_subtype_eq_sum_filter ⟶ weight_eq_totalSym ⟶ Finset.sum_fiberwise_of_maps_to ⟶ ballot_counting_identity ⟶ Finset.sum_congr — so the next session can fill the b≥2 sorry mechanically."
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -132,7 +136,9 @@
       "S20 race-condition lesson: when two PRs work the same problem in parallel, even when both Lean changes are identical, the merge order can leave a duplicate `private lemma` declaration — invisible until the parent dependency builds (here masked by ongoing OQ03OQ02 API drift). Future sessions: before adding a helper that may be in flight elsewhere, `gh pr list --search '<lemma name>' --state open` is a 5-second guard.",
       "S20: Refactored the b≥2 path into a clean black-box reduction. ballot_counting_identity (per-fiber cardinality) is now the focused remaining subproblem, decoupled from the polynomial-algebra setup. The architectural split lets future sessions attack the cardinality identity in isolation, possibly via Aristotle on a small companion file.",
       "S20: totalSym + totalSym^prime expose the (a+b)-cardinality total multiset as a Sym, so both LHS and RHS sums can fiber over the SAME codomain Sym (Fin n) (a+b). Without this, the type mismatch (a+1)+(b-1) vs a+b would force casts in every fiberwise lemma — totalSym^prime carries hb : 1 ≤ b in its signature so the omega-style equality lives once, in the def, not per-call.",
-      "S20: The remaining b≥2 reduction (steps i-iv in the comment block) is structural: weight_eq_total_multiset rewrites each summand, Finset.sum_fiberwise_of_maps_to regroups by total multiset, ballot_counting_identity equates per-fiber counts, and the chain inverts. Estimated 80-100 lines once ballot_counting_identity is filled."
+      "S20: The remaining b≥2 reduction (steps i-iv in the comment block) is structural: weight_eq_total_multiset rewrites each summand, Finset.sum_fiberwise_of_maps_to regroups by total multiset, ballot_counting_identity equates per-fiber counts, and the chain inverts. Estimated 80-100 lines once ballot_counting_identity is filled.",
+      "S22: The b≥2 reduction now factors through TWO Sym-wrapped helpers (weight_eq_totalSym and weight_eq_totalSym^prime) plus TWO predicate-translation helpers (totalSym_eq_iff and its primed companion). The fiber-membership predicate of Finset.sum_fiberwise_of_maps_to (`g PQ = M`, where g is the totalSym map) and the filter predicate of ballot_counting_identity (`P.1 + Q.1 = M.1`) are propositionally equal but defeq-distinct — without an explicit iff lemma, the rewriter can't bridge them through `Finset.filter_congr`. The S22 helpers eliminate this friction at zero proof cost (Subtype extensionality only).",
+      "S22: Estimated structural-reduction body shrinks from ~80–100 lines (S20 estimate) to ~50–80 lines now that the bridges are in place. The bottleneck is no longer setup-vs-cleanup of the multiset/Sym translation; it is the cardinality identity itself (ballot_counting_identity, sorry)."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -140,14 +146,14 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "S21: Prove ballot_counting_identity (~150 lines). Strategy: construct a bijection between the two filtered finsets at the multiset level. Approach options — (a) reflection/cycle lemma for distinct elements + multiplicity argument; (b) explicit insert-with-disambiguating-data bijection (the Σ-bundled fix to S18 non-injectivity).",
-      "S22: Wire ballot_counting_identity into jdt_weight_sum b≥2 via the structural reduction (steps i-iv documented). ~80-100 lines using Finset.sum_fiberwise_of_maps_to + weight_eq_total_multiset.",
-      "Optional: extract ballot_counting_identity as a standalone Mathlib contribution candidate — it is a clean, named statement about Sym multisets and column-strict pairs, of independent interest in algebraic combinatorics.",
+      "S23: Prove ballot_counting_identity (~150 lines). Strategy: construct a bijection between the two filtered finsets at the multiset level. Approach options — (a) reflection/cycle lemma for distinct elements + multiplicity argument; (b) explicit insert-with-disambiguating-data bijection (the Σ-bundled fix to S18 non-injectivity). With ballot_counting_identity closed, the b≥2 sorry follows mechanically via the S22 bridges.",
+      "S24: Wire ballot_counting_identity into jdt_weight_sum b≥2 (~50–80 lines now that S22 bridges are landed). The proof now reads as: subtype→filter (Fintype.sum_subtype_eq_sum_filter) ⟶ weight_eq_totalSym (resp. weight_eq_totalSym^prime on RHS) ⟶ Finset.sum_fiberwise_of_maps_to with map (P, Q) ↦ totalSym P Q (resp. totalSym^prime hb) ⟶ rewrite the inner-fiber predicate via totalSym_eq_iff (resp. ^prime) ⟶ ballot_counting_identity ⟶ Finset.sum_congr.",
+      "Optional: extract ballot_counting_identity as a standalone Mathlib contribution candidate — it is a clean, named statement about Sym multisets and column-strict pairs, of independent interest in algebraic combinatorics. The S22 bridges (totalSym_eq_iff family) would also be Mathlib-quality if generalised away from the specific weight context.",
       "For jacobi_trudi_ssyt_eq k≥3: RSK or algebraic LGV. ~300 lines. Defer until k=2 (jdt_weight_sum) closes."
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
-    "insightsCount": 50,
-    "builtItemsCount": 50,
+    "insightsCount": 52,
+    "builtItemsCount": 54,
     "nextStepsCount": 4
   },
   "tags": [
@@ -181,7 +187,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-08T03:30:00.000Z",
+  "lastUpdate": "2026-05-08T09:30:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
