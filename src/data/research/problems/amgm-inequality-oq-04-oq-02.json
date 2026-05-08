@@ -26,18 +26,18 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-05-08T02:30:00.000Z",
-    "iteration": 2,
-    "focus": "Stub written and building. ellipticE rigorously defined; complementary modulus and K', E' wired up; symmetric Legendre at k=1/√2 derived from the general axiom. Next focus: prove the general legendre_relation by differentiation under the integral.",
+    "since": "2026-05-08T07:50:00Z",
+    "iteration": 3,
+    "focus": "S3 SURVEY: pinned down the exact Mathlib lemma to use for differentiation-under-the-integral: intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le in Mathlib/Analysis/Calculus/ParametricIntervalIntegral.lean. The dominated-bound form fits because both the E and K integrands and their k-derivatives admit straightforward uniform bounds on any compact subinterval [k0-delta, k0+delta] subset (0,1). Session 4 (ACT) implements dE_dk: HasDerivAt ellipticE ((ellipticE k - ellipticK k)/k) k via this lemma, with the algebraic identity -k^2 sin^2 theta = (1 - k^2 sin^2 theta) - 1 to convert the resulting integral to (E-K)/k. Estimated 75-100 lines.",
     "blockers": [
-      "Mathlib has differentiation-under-the-integral lemmas but they are not yet wired up to ellipticK.",
-      "Need explicit derivatives dK/dk = (E - k'²K)/(k·k'²) and dE/dk = (E - K)/k as Lean lemmas.",
-      "Need the Legendre ODE for K(k) (k(1-k²)y'' + (1-3k²)y' - ky = 0) — currently no Mathlib infrastructure for second-order ODEs of this form."
+      "(NOT a Mathlib gap — RESOLVED by S3 survey) Mathlib HAS differentiation-under-the-integral via intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le. Plumbing to ellipticK/ellipticE is gallery-side, ~75-100 lines per derivative.",
+      "Need explicit derivatives dK/dk = (E - k'^2 K)/(k k'^2) and dE/dk = (E - K)/k as Lean lemmas — gallery-side ACT work, no Mathlib gap.",
+      "Legendre's second-order ODE for K is NOT needed: the Wronskian closure uses only first derivatives + eq_of_hasDerivAt_eq_zero (Mathlib MVT corollary)."
     ],
-    "nextAction": "Session 3: Prove dE/dk = (E - K)/k via differentiation under the integral. This is the simpler of the two derivative formulas and is the entry point to the Wronskian argument.",
+    "nextAction": "Session 4 (ACT): implement dE_dk in Proofs/AmgmInequalityOQ04OQ02.lean via the lemma pinned in S3. Target signature: theorem dE_dk (k : R) (hk_pos : 0 < k) (hk_lt : k < 1) : HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k. Estimated ~75-100 lines. See research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-05-08-s03-mathlib-survey.md for the full hypothesis-by-hypothesis plan.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
@@ -73,7 +73,8 @@
       "Symmetric Legendre at k=1/√2 requires complModulus_symmetric : √(1-(1/√2)²) = 1/√2. Proof technique: rewrite 1 - 1/2 = (1/√2)² (so the inner subtraction becomes a square), then apply Real.sqrt_sq with positivity. ~3 lines.",
       "linear_combination tactic closes the gap between the general Legendre form 'E·K + E·K - K·K = π/2' (after specializing to k = k' = 1/√2) and the goal '2·K·E - K² = π/2'. ring-equivalent, but `linear_combination h` with h being the unfolded form is cleanest.",
       "The general Legendre relation axiom is the only deep assumption in this file; it is honestly comparable in depth to OQ04OQ01.agm_ellipticK_connection (Gauss's 200-page result). The proof requires Mathlib's intervalIntegral.deriv_* (DOES exist) plus explicit Lean derivations of dK/dk and dE/dk (do not yet exist for ellipticK).",
-      "Mathlib v4.26.0 API drift: intervalIntegral.integral_mono now takes hab : a ≤ b as the first explicit argument (was implicit/internal in older versions). Existing OQ04OQ01.ellipticK_pos used the old order; fixed in the same PR by inserting `(by linarith [Real.pi_pos] : (0:ℝ) ≤ π / 2)` before the integrability arguments."
+      "Mathlib v4.26.0 API drift: intervalIntegral.integral_mono now takes hab : a ≤ b as the first explicit argument (was implicit/internal in older versions). Existing OQ04OQ01.ellipticK_pos used the old order; fixed in the same PR by inserting `(by linarith [Real.pi_pos] : (0:ℝ) ≤ π / 2)` before the integrability arguments.",
+      "S3 (2026-05-08, SURVEY): the Mathlib derivative-under-the-integral lemma to use is intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le in Mathlib/Analysis/Calculus/ParametricIntervalIntegral.lean. The dominated-bound form (uniform integrable bound on F') is preferable to the Lipschitz form for elliptic integrals because both F = sqrt(1 - k^2 sin^2 theta) and F' = -k sin^2 theta / sqrt(1 - k^2 sin^2 theta) admit explicit uniform bounds on any compact [k0-delta, k0+delta] subset (0,1). The 7 hypotheses (hs, hF_meas, hF_int, hF'_meas, h_bound, bound_integrable, h_diff) discharge mechanically via Continuous.aestronglyMeasurable, Continuous.intervalIntegrable, monotonicity, and chain rule for sqrt/quotient. ~75-100 lines per derivative."
     ],
     "mathlibGaps": [
       "No Mathlib.Analysis.SpecialFunctions.Elliptic.Complete — complete elliptic integrals K(k), E(k) of first and second kind over real moduli are not formalized. (This file fills part of this gap: rigorous E(k); K(k) was already filled by OQ04OQ01.)",
@@ -83,11 +84,11 @@
       "Explicit derivatives: dK/dk = (E - k'²K)/(k·k'²) and dE/dk = (E - K)/k — these are the key Wronskian inputs. Both reachable from Mathlib but require work."
     ],
     "nextSteps": [
-      "Session 3 (E derivative): Prove dE/dk = (E(k) - K(k))/k for 0 < k < 1. Strategy: differentiate under the integral using `MeasureTheory.intervalIntegral.deriv_integral_*`. The integrand's k-derivative is `-k·sin²θ / √(1-k²sin²θ)`, and ∫₀^{π/2} of this rearranges to (E - K)/k. ~80 lines.",
-      "Session 4 (K derivative): Prove dK/dk = (E(k) - (k')²·K(k))/(k·(k')²) for 0 < k < 1. Significantly harder: requires manipulating ∫ k·sin²θ / (1-k²sin²θ)^{3/2} dθ via Legendre's ODE or direct integration by parts. ~150 lines.",
-      "Session 5 (Wronskian-vanishing): Define f(k) := E·K' + E'·K - K·K' for 0 < k < 1 and show f'(k) = 0 using the derivatives from Sessions 3-4. ~100 lines of algebraic manipulation.",
-      "Session 6 (boundary value): Compute lim_{k→1/√2} f(k) = 2KE - K² (use legendre_relation_symmetric from this session if symmetric form is what we settle on, or take the limit k → 0⁺). ~50 lines.",
-      "Session 7 (axiom elimination cleanup): Update AmgmInequalityOQ04OQ05 to import this file and discharge its `legendre_relation` (symmetric) axiom by `legendre_relation_symmetric`. Re-verify Brent-Salamin formula proof. Small follow-up PR.",
+      "Session 4 (E derivative, ACT): Prove dE/dk = (E(k) - K(k))/k for 0 < k < 1 in Proofs/AmgmInequalityOQ04OQ02.lean. Use intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le (now pinned in S3) with bound (theta) := (k+delta) sin^2 theta / sqrt(1 - (k+delta)^2 sin^2 theta) on s := Set.Ioo (k - delta) (k + delta). The integrand's k-derivative is -k sin^2 theta / sqrt(1 - k^2 sin^2 theta); the resulting integral rearranges to (E - K)/k via the algebraic split -k^2 sin^2 theta = (1 - k^2 sin^2 theta) - 1. ~75-100 lines.",
+      "Session 5 (K derivative, ACT): Prove dK/dk = (E(k) - (k')^2 K(k))/(k (k')^2) for 0 < k < 1. Same Mathlib lemma as Session 4; integrand is 1/sqrt(1 - k^2 sin^2 theta), k-derivative is k sin^2 theta / (1 - k^2 sin^2 theta)^{3/2}. ~80-100 lines.",
+      "Session 6 (Wronskian-vanishing, ACT): Define f(k) := E K' + E' K - K K' for 0 < k < 1 and show f'(k) = 0 using the derivatives from S4-S5 + the chain rule for k' = sqrt(1 - k^2). Then conclude f is constant via Mathlib's eq_of_hasDerivAt_eq_zero (no second-order ODE needed). ~50-80 lines.",
+      "Session 7 (boundary value, ACT): Pin the constant via legendre_relation_symmetric (already proved in S2 from the general axiom — once the axiom is replaced by the Wronskian theorem, the dependency direction reverses cleanly). ~20 lines.",
+      "Session 8 (axiom-elimination cleanup): Update AmgmInequalityOQ04OQ05 to import this file and discharge its `legendre_relation` (symmetric) axiom by `legendre_relation_symmetric`. Re-verify Brent-Salamin formula proof. Small follow-up PR.",
       "Future Mathlib contribution: After all sessions complete and the file is sorry-free + axiom-free, propose `Mathlib.Analysis.SpecialFunctions.Elliptic.Complete` containing K, E, and Legendre's relation. Targets a Mathlib PR similar to NNReal.agm (Tan 2025)."
     ]
   },
@@ -135,11 +136,13 @@
       "Mathlib.Analysis.SpecialFunctions.ArithmeticGeometricMean (NNReal.agm)",
       "Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass (PeriodPair.weierstrassP)",
       "Mathlib.Analysis.SpecialFunctions.Integrals.Basic (integral_sin_pow, integral_cos)",
-      "Mathlib.MeasureTheory.Integral.IntervalIntegral (intervalIntegral, IntervalIntegrable)"
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral (intervalIntegral, IntervalIntegrable)",
+      "Mathlib.Analysis.Calculus.ParametricIntervalIntegral — intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le (S3-pinned workhorse for dE/dk and dK/dk)",
+      "Mathlib.Analysis.Calculus.MeanValue — eq_of_hasDerivAt_eq_zero (Wronskian-constancy step)"
     ]
   },
   "started": "2026-05-06T14:45:58.507Z",
-  "lastUpdate": "2026-05-08T02:30:00.000Z",
+  "lastUpdate": "2026-05-08T07:50:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
