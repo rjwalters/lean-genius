@@ -4,8 +4,77 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S29 — researcher-6)
-**Iteration**: 29
+**Last Updated**: 2026-05-09 (S30 — researcher-11)
+**Iteration**: 30
+
+## S30 Summary (2026-05-09, researcher-11)
+
+**Mode**: ACT (constructive `firstViolationIdx` infrastructure + dead-end
+correction for the §3 first-violation drop bijection proposed by
+PR #17454).
+
+**Outcome**: two new private items just after `exists_first_violation_idx`
+(line 693 in S29 file) plus a §8 collision finding in
+`sublemma-2b-cycle-lemma-spec.md`:
+
+1. **`firstViolationIdx`** (`private noncomputable def`, ~5-line body):
+   `Classical.choose`-based extraction of a `Fin (min a b)` witness from the
+   existing existence lemma `exists_first_violation_idx` (S18). Lets the
+   first-violation index be referenced as a term-level expression (not just
+   an existence binder) — useful infrastructure for any cycle-lemma-style
+   bijection that needs a tagged column index per `(P, Q)` pair.
+
+2. **`firstViolationIdx_spec`** (`private lemma`, ~20 lines including bound
+   proofs): the violation property and minimality property at
+   `firstViolationIdx P Q h`, as a conjunction. Proof body is a single
+   `unfold firstViolationIdx; exact (exists_first_violation_idx P Q h).choose_spec`.
+
+3. **WARNING docstring on `firstViolationIdx`** (~30 lines): explicitly
+   documents the §3 collision finding so future sessions reading the file
+   inline see the dead-end note before trying the same approach. Cross-refs
+   `sublemma-2b-cycle-lemma-spec.md §8`.
+
+4. **§8 — Collision finding (in `sublemma-2b-cycle-lemma-spec.md`)**:
+   small-case audit on Case 3 (n=4, a=b=2, M={0,1,2,3}) showing that the
+   §3 forward map `drop(P) := P + ⟨{Q.sort[firstViolationIdx]}, _⟩` is
+   non-injective AND non-surjective. Concrete collision: `drop({0,3}) =
+   drop({2,3}) = {0,2,3}`, while `{1,2,3}` is missing from the image.
+   Includes a revised §5 decomposition (replaces 2B.3/2B.4 with a 2B.3'
+   rotation-infrastructure / 2B.4' refined-codomain bijection /
+   2B.5' cycle-class-cardinality plan, ~100 lines total — slightly larger
+   than the §5 estimate because the §5 decomposition silently relied on
+   the broken drop map).
+
+**Net sorry count**: 2 → 2 (unchanged). 0 axioms (unchanged).
+`firstViolationIdx` is structural infrastructure, not a sorry-discharger;
+the §8 finding **redirects** the cycle-lemma proof shape rather than
+advancing it.
+
+**Why this matters for S31+**: the §3 first-violation drop dead-end would
+have cost the next 2-3 sessions if they tried to implement 2B.3 / 2B.4 as
+specced. §8 documents the collision concretely (with the actual computed
+images on Case 3), and proposes the rotation-infrastructure path 2B.3'
+that is necessary to even state the corrected bijection. `firstViolationIdx`
+is still useful — it gives the **descent index** within a fixed rotation —
+but the cycle-lemma's outer `k`-tagging must wrap around it.
+
+**Files modified**:
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (1705 → 1785 lines,
+  net +80: one new `def`, one new `lemma`, plus their docstrings —
+  including the long WARNING block on `firstViolationIdx`).
+- `research/problems/.../sublemma-2b-cycle-lemma-spec.md` (327 → +95 lines:
+  §8 collision finding section appended).
+- `src/data/proofs/.../meta.json` (lineCount 1705 → 1785, theoremCount
+  38 → 39, definitionCount 8 → 9; description / assumptions /
+  originalContributions updated for S30).
+- `research/problems/.../state.md` (this file: iteration 29 → 30,
+  S30 summary).
+
+**Build**: pending. `firstViolationIdx` only uses `Classical.choose` on the
+existing `exists_first_violation_idx` lemma — no new Mathlib API surface.
+`firstViolationIdx_spec`'s body uses `unfold firstViolationIdx; exact
+.choose_spec` which should elaborate cleanly given proof irrelevance on
+the bound-proof terms in the indexing operation. Build risk: low.
 
 ## S29 Summary (2026-05-08, researcher-6)
 
@@ -486,7 +555,7 @@ None for current approach. The ballot bijection inside
    pair encoding is fully dissolved from the cycle-lemma input; the
    remaining sorry is on the canonical single-Sym statement.
 
-5. ✅ **S29 (this session)**: Canonical-complement bridge infrastructure
+5. ✅ **S29**: Canonical-complement bridge infrastructure
    for Sub-lemma 2B's eventual cycle-lemma proof. Three pure private
    helpers added just before Sub-lemma 2B:
    `comp_card_eq` ((M.1 − P.1).card = b), `comp_add_eq`
@@ -497,8 +566,25 @@ None for current approach. The ballot bijection inside
    reformulation at the cycle-lemma proof step. Net sorry count
    unchanged at 2.
 
-6. **S30+**: Attack **Sub-lemma 2B** via the multiset Cycle Lemma. The
-   target statement:
+5b. ✅ **PR #17454 (researcher-4 supplementary recon)**: standalone markdown
+   spec doc `sublemma-2b-cycle-lemma-spec.md` (~330 lines) with three
+   small-case verifications of the cardinality identity, an inventory of
+   v4.26.0 Mathlib API for the cycle-lemma proof, and a 4-step
+   decomposition (2B.1 ✅ done, 2B.2 / 2B.3 / 2B.4 deferred). Did not
+   advance the iteration counter.
+
+6. ✅ **S30 (this session)**: Constructive `firstViolationIdx` definition +
+   spec lemma added just after `exists_first_violation_idx` (S18 existence
+   form). Plus §8 of `sublemma-2b-cycle-lemma-spec.md` documents a
+   non-injectivity finding on the §3 "first-violation drop" forward map:
+   on Case 3 (n=4, a=b=2, M={0,1,2,3}), `drop({0,3}) = drop({2,3}) =
+   {0,2,3}`, while `{1,2,3}` is missing from the image. The §5
+   4-step decomposition has been revised (in §8) to a 3-step
+   rotation-infrastructure plan (2B.3' / 2B.4' / 2B.5'). Net sorry
+   count unchanged at 2.
+
+7. **S31+**: Attack **Sub-lemma 2B** via the multiset Cycle Lemma using
+   the §8 revised decomposition. The target statement:
 
    ```lean
    private lemma noColStrict_subSym_a_count_eq_subSym_le_aplus1_count

@@ -692,6 +692,87 @@ private lemma exists_first_violation_idx {n a b : ℕ}
     have hcle_val : (V.min' hVnonempty).val ≤ j.val := hcle
     omega
 
+/-- **First violation index, as a definition** (S30 — constructive form of
+    `exists_first_violation_idx`).
+
+    Extracts a `Fin (min a b)` witness from the existence lemma so that the
+    first-violation index can be referenced as a term-level expression — useful
+    for stating downstream "drop" / "shift" / `Finset.card_bij`-style maps that
+    rely on a tagged column index per `(P, Q)` pair.
+
+    Implementation: `Classical.choose` on `exists_first_violation_idx`. The
+    noncomputable annotation reflects this; a fully constructive variant could
+    be obtained by inlining the `Finset.min' V hVnonempty` body of
+    `exists_first_violation_idx`, but is unnecessary for the cycle-lemma proof
+    DAG (no `#eval` site in this file).
+
+    ### WARNING — naive "first-violation drop" is not a valid Sub-lemma 2B map
+
+    Researcher-11's S30 small-case audit (see
+    `research/problems/.../sublemma-2b-cycle-lemma-spec.md §8`) shows that the
+    proposed map
+    `drop(P) := P + ⟨{(Q.sort)[(firstViolationIdx P Q h).val]}, _⟩` is **not
+    injective** on `n = 4, a = b = 2, M = {0, 1, 2, 3}`:
+
+    * `P = {0, 3}`: `Q.sort = [1, 2]`, `j* = 1`, `Q.sort[j*] = 2`,
+      so `drop(P) = {0, 2, 3}`.
+    * `P = {2, 3}`: `Q.sort = [0, 1]`, `j* = 0`, `Q.sort[j*] = 0`,
+      so `drop(P) = {0, 2, 3}`.
+
+    Both bad `P`'s collapse to the same `P' = {0, 2, 3}`, and the size-3
+    submultiset `{1, 2, 3}` is missing from the image — so the map is neither
+    injective nor surjective onto `{P' ≤ M.1 // P'.card = a + 1}`. The
+    cardinality identity `#bad = #(P' ≤ M of size a+1)` (verified in `§1` of
+    the recon doc) holds, but its proof requires a more sophisticated
+    bijection — most likely on cyclic rotations of `M.sort` (Lyndon /
+    Dvoretzky-Motzkin), not a direct shift on submultisets.
+
+    This `firstViolationIdx` is therefore retained as **structural
+    infrastructure** (unique tagged index per bad pair) without committing to
+    any particular bijection shape. The actual cycle-lemma proof of
+    Sub-lemma 2B will likely need to package `firstViolationIdx` together with
+    additional disambiguating data (e.g., the rotation index of `M.sort` that
+    realises the violation as a "first descent"). -/
+private noncomputable def firstViolationIdx {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ ColStrictSym a b P Q) :
+    Fin (min a b) :=
+  (exists_first_violation_idx P Q h).choose
+
+/-- **First-violation index spec** (S30): the index extracted by
+    `firstViolationIdx` is a violation point and is minimal among them.
+
+    Direct extraction of `Classical.choose_spec` for `exists_first_violation_idx`,
+    repackaged with `firstViolationIdx P Q h` substituted for the existential
+    binder. Use the conjunction's `.1` and `.2` projections at call sites for
+    the violation property and the minimality property respectively. -/
+private lemma firstViolationIdx_spec {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (h : ¬ ColStrictSym a b P Q) :
+    (Q.1.sort (· ≤ ·))[(firstViolationIdx P Q h).val]'(by
+        have hj : (firstViolationIdx P Q h).val < min a b :=
+          (firstViolationIdx P Q h).isLt
+        have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+          (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+        omega) ≤
+    (P.1.sort (· ≤ ·))[(firstViolationIdx P Q h).val]'(by
+        have hj : (firstViolationIdx P Q h).val < min a b :=
+          (firstViolationIdx P Q h).isLt
+        have hlen : (P.1.sort (· ≤ ·)).length = a :=
+          (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+        omega) ∧
+    ∀ j : Fin (min a b), j.val < (firstViolationIdx P Q h).val →
+      (P.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (P.1.sort (· ≤ ·)).length = a :=
+            (Multiset.length_sort (· ≤ ·) P.1).trans P.2
+          omega) <
+      (Q.1.sort (· ≤ ·))[j.val]'(by
+          have hj : j.val < min a b := j.isLt
+          have hlen : (Q.1.sort (· ≤ ·)).length = b :=
+            (Multiset.length_sort (· ≤ ·) Q.1).trans Q.2
+          omega) := by
+  unfold firstViolationIdx
+  exact (exists_first_violation_idx P Q h).choose_spec
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in

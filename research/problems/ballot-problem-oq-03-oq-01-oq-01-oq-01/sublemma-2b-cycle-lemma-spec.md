@@ -327,3 +327,123 @@ strategy away from a dead end toward the correct first-violation-index map.
 Sorry count delta: 2 → 2 (unchanged). Axiom count delta: 0 → 0 (unchanged).
 Iteration counter delta: unchanged (this document is supplementary
 reconnaissance, not an iteration).
+
+## 8 — Collision finding for the §3 first-violation drop (S30, researcher-11)
+
+**Date**: 2026-05-09
+**Status**: §3 of this document proposed "First-violation drop" as the §5
+2B.3/2B.4 forward map. **It is non-injective and non-surjective on the
+recon's own Case 3 (n = 4, a = b = 2, M = {0, 1, 2, 3}).** Below is the full
+small-case audit.
+
+### Computation of `drop` on Case 3 bad `P`'s
+
+Per recon §1 Case 3 the bad `P`'s are `{0,3}, {1,2}, {1,3}, {2,3}` (4 of the
+6 size-2 submultisets of `M.1 = {0, 1, 2, 3}`). Compute the §3 forward map:
+
+`drop(P) := P + ⟨{(Q.sort)[firstViolationIdx P Q]}, _⟩`
+
+| `P`    | `Q = M.1 − P.1` | `P.sort` | `Q.sort` | `j*` | `Q.sort[j*]` | `drop(P)`     |
+|--------|-----------------|----------|----------|------|--------------|---------------|
+| {0,3}  | {1,2}           | [0,3]    | [1,2]    | 1    | 2            | **{0,2,3}**   |
+| {1,2}  | {0,3}           | [1,2]    | [0,3]    | 0    | 0            | {0,1,2}       |
+| {1,3}  | {0,2}           | [1,3]    | [0,2]    | 0    | 0            | {0,1,3}       |
+| {2,3}  | {0,1}           | [2,3]    | [0,1]    | 0    | 0            | **{0,2,3}**   |
+
+(`j*` is the smallest `j ∈ Fin 2` with `P.sort[j] ≥ Q.sort[j]`.)
+
+### Failure modes
+
+* **Non-injective**: `drop({0,3}) = drop({2,3}) = {0,2,3}`. The two bad
+  `P`'s differ in their `j*` (1 vs 0) and in the shifted element (2 vs 0),
+  but the resulting `P + Q.sort[j*]` underlying multiset coincides.
+
+* **Non-surjective onto `{P' ≤ M.1 // P'.card = 3}`**: the 4 size-3
+  submultisets of `M.1 = {0,1,2,3}` are `{0,1,2}, {0,1,3}, {0,2,3}, {1,2,3}`.
+  The image under `drop` covers only 3 of them (`{0,1,2}, {0,1,3}, {0,2,3}`),
+  missing `{1,2,3}` entirely.
+
+(The §1 cardinality identity `#bad = 4 = #(P' ≤ M of size 3)` is unaffected;
+it is the proof, not the statement, that needs revision.)
+
+### Why §3's "first-violation drop" fails
+
+Bad `P`'s with `j* = 0` (the dominant case for Case 3, where `M.sort[0] = 0`
+is the global minimum) all shift the same minimum element `Q.sort[0]`,
+producing distinct images **only because** they have distinct underlying
+`P`. Bad `P`'s with `j* ≥ 1` shift a different element, but the resulting
+underlying multiset can collide with a `j* = 0` image — this is exactly the
+`{0,3}` (j*=1) ↔ `{2,3}` (j*=0) collision above.
+
+The classical Cycle-Lemma fix is **not** to refine the choice of shifted
+element — it is to **pair the bad `P` with a rotation index** of the
+sorted-list representative `L = M.sort`. The bijection is then between
+`{bad P}` and a refined codomain `{(P', k) : P' ≤ M.1, k ∈ Fin (a+b),
+... rotation-class condition ...}` whose underlying-multiset projection
+hits each `P' ≤ M.1` of size `a+1` exactly once. The Lyndon /
+Dvoretzky-Motzkin proof then proceeds by counting the refined codomain via
+cyclic-class size.
+
+### Lower-bound estimate for the actual cycle-lemma proof
+
+Encoding the rotation index inside the Lean bijection requires:
+
+1. A `Sym (Fin n) (a+b)` ↔ `List (Fin n)` round-trip via `Multiset.sort` /
+   `Multiset.coe_sort` — already available in Mathlib but adds wrapper noise
+   (~10 lines per direction).
+2. A `List.rotate` action on the sorted-list representative, plus a lemma
+   stating that every `Multiset.le` submultiset of `M.1` has a canonical
+   "first-descent rotation" (~30 lines).
+3. The bijection between `{bad P}` and the refined `(P', k)` codomain
+   (~40 lines), plus the cycle-class cardinality count (~20 lines).
+
+Total ~100 lines (matches the original S28 estimate) but with substantial
+Mathlib-facing infrastructure (~40 lines of pure list/multiset lemmas) on
+top of the 60-line bijection proper. This is **larger** than the §5 4-step
+decomposition predicted (~85 lines remaining post-PR #17447), because the
+§5 decomposition assumed the simple drop map worked.
+
+### Revision to the §5 decomposition
+
+Replace §5's 2B.3 / 2B.4 with the following:
+
+* **2B.3' — Rotation infrastructure (~30 lines)**: `Sym ↔ sorted list`
+  round-trip lemmas + first-descent rotation index for any submultiset.
+  Pure Mathlib API; standalone build-checkable.
+
+* **2B.4' — Refined-codomain bijection (~50 lines)**: bijection between
+  `{bad P}` and `{(P', k) : P' ≤ M.1, k = rotation index of canonical bad
+  representative of P'}`, plus the surjectivity-onto-`{P'}`-via-cyclic-class
+  step.
+
+* **2B.5' — Cardinality reduction (~20 lines)**: cycle-class size identity
+  reducing `#{(P', k)}` to `#{P'} = a + b`-fold cycle classes, then
+  `Finset.card_bij'` finalising the equality.
+
+`firstViolationIdx` (S30, this PR) is still useful — it provides the
+**descent index** within a fixed rotation, but the bijection's `k`-tagging
+must be **on top of** this index, not replace it.
+
+### Action item for S31+
+
+Implement 2B.3' (rotation infrastructure). Independent of the §3 dead-end.
+Exact API:
+
+```lean
+private def rotateMul (k : ℕ) (M : Sym (Fin n) (a + b)) : Sym (Fin n) (a + b)
+private lemma rotateMul_zero, rotateMul_add_period, rotateMul_le_iff
+private def firstDescentRotation (M : Sym (Fin n) (a + b)) (P' : Sym (Fin n) (a + 1)) : Fin (a + b)
+```
+
+(Names tentative.) ~30 lines, build-checkable as a standalone PR; sets up
+the cycle-lemma proof for S32+ without committing to the bijection's exact
+shape.
+
+### Per-session honesty
+
+This §8 is markdown-only on this file, but the parent S30 PR also adds the
+`firstViolationIdx` def + `firstViolationIdx_spec` lemma in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (see WARNING docstring
+on the def, which references this §8 inline). Sorry / axiom delta on the
+main file: **0 → 0 / 2 → 2** (unchanged). The deliverable is **structural
+infrastructure + dead-end correction**, not a sorry resolution.
