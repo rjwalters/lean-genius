@@ -1,14 +1,109 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 bijection templates + circuit-balance helper for `remove_circuit_balanced`)
+**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 bijection templates + circuit-balance helper + List→Finset bridge for `remove_circuit_balanced`)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 14
-**Last Update**: 2026-05-08 (Session 14, researcher-4) — **BUILD VERIFIED**
+**Iteration**: 15
+**Last Update**: 2026-05-09 (Session 15, researcher-4) — **BUILD VERIFIED**
 
 ## Current Focus
-Session 14 (this session, researcher-4) **extended the build-verified
+Session 15 (this session, researcher-4) **added the List→Finset bridge
+lemma `toFinset_balance'` plus a packaged corollary
+`circuit_edge_balance_list'`** that connects the abstract Finset-level
+`circuit_edge_balance'` (S14) to the concrete `List (V × V)` shape
+produced by `walkEdges` in the broken main file. This closes the
+"toFinset bijection" gap noted in S14's next-action plan and reduces
+`remove_circuit_balanced` to two purely List-level hypotheses on
+`walkEdges C.walk` (coverage and step-witness).
+
+S15 deliberately did NOT attempt the full in-place refactor of the
+broken main file — same reasoning as S7–S14 (≥3 hours mechanical work
++ 30–60 min Docker build, exceeds typical agent-session budgets). The
+recipe-extension pattern continues: each session adds a build-verifiable
+template that reduces total mathematical risk for the eventual
+single-pass S16+ in-place refactor.
+
+### What `toFinset_balance'` proves
+
+Given a `List (V × V)` `L` with List-level coverage and step-witness
+hypotheses, the Finset-level coverage and step-witness hypotheses for
+`L.toFinset` follow automatically:
+
+```
+List-level hcov:    ∀ e ∈ L, ∃! i, walk[i]? = some e.1 ∧ walk[i+1]? = some e.2
+List-level hsteps:  ∀ i < n, ∃ e ∈ L, walk[i]? = some e.1 ∧ walk[i+1]? = some e.2
+                                             ↓
+Finset-level hcov:    ∀ e ∈ L.toFinset, ∃! i, ...
+Finset-level hsteps:  ∀ i < n, ∃ e ∈ L.toFinset, ...
+```
+
+Proof: both directions follow from `List.mem_toFinset` (under
+`[DecidableEq V]`). **No `Nodup` hypothesis is needed**: the Finset-level
+`hcov` only quantifies over Finset members (which are L's distinct
+elements), so List-level uniqueness implies Finset-level uniqueness
+without any distinctness assumption on L. Duplicates in L collapse in
+toFinset and don't introduce new Finset members.
+
+### What `circuit_edge_balance_list'` proves
+
+Direct corollary combining `toFinset_balance'` with `circuit_edge_balance'`:
+
+```
+For closed walks (walk.length = n + 1, walk[0]? = walk[n]?):
+  L-level hcov + L-level hsteps
+    ⟹ (L.toFinset.filter src=v).card = (L.toFinset.filter tgt=v).card
+```
+
+This is the form `remove_circuit_balanced` (L1103) needs: its sdiff
+edge-set is `(walkEdges C.walk).toFinset`, which is `L.toFinset` for
+`L := walkEdges C.walk : List (V × V)`. The List-level hypotheses are
+straightforward to derive from `walkEdges`'s `filterMap` definition
+plus (for `hcov`) the `maxTrail_steps_distinct` lemma (already proved
+in the broken main file at L832–916) when C comes from `circuit_exists`.
+
+### Recipe library status post-S15
+
+The Recipe file now contains:
+- `getElem?_eq_some_iff_of_lt` — bridge lemma (S9, S11-verified)
+- `closed_walk_balance'` — cyclic-bijection template (S9, S11-verified)
+- `open_walk_interior_balanced'` — linear bijection w/ endpoint exclusions (S10, S11-verified)
+- `open_walk_last_target_excess'` — endpoint-target excess (S12, S13-verified)
+- `open_walk_first_source_excess'` — endpoint-source excess (S12, S13-verified)
+- `walk_source_eq_edge_filter'` — Classical.choose source bijection (S13-verified)
+- `walk_target_eq_edge_filter'` — Classical.choose target bijection (S13-verified)
+- `circuit_edge_balance'` — connective lemma for `remove_circuit_balanced` (S14-verified)
+- `toFinset_balance'` — List→Finset hypothesis bridge (**S15-added, S15-verified**)
+- `circuit_edge_balance_list'` — packaged corollary for `walkEdges`-style List input (**S15-added, S15-verified**)
+
+This completes the **List-input route** to `remove_circuit_balanced`.
+After the S16+ in-place refactor lands and `remove_circuit_balanced`
+becomes the next sorry-elimination target, the proof body reduces to
+~20 lines: produce the two List-level hypotheses for `walkEdges C.walk`
+(both decompose mechanically over the `filterMap` definition; uniqueness
+uses `maxTrail_steps_distinct`), then apply `circuit_edge_balance_list'`
+plus `Finset.card_sdiff` distributing over filter.
+
+### Why the L→Finset bridge isn't trivial
+
+While the proof of `toFinset_balance'` is short (two `List.mem_toFinset`
+applications), packaging it as a named lemma matters because:
+
+1. **It documents the shape of the gap.** Future S16 transcribers see
+   exactly what hypotheses they need to derive (List-level, not
+   Finset-level), removing ambiguity in the proof obligation.
+2. **It removes an `[DecidableEq V]`-dependent rewrite from the main
+   file's transcription.** The main file uses `[DecidableEq V]` already
+   (since `outDegree`/`inDegree` filter on edges), but the bridge
+   keeps it modular.
+3. **The List-level hypotheses are easier to discharge.** A walk's
+   `List` of position-edges has natural induction structure on the
+   `range n` indexing; the corresponding Finset hypotheses don't, and
+   would force the user to manually prove `e ∈ L.toFinset → e ∈ L`
+   inline at every use.
+
+### Previous Focus (Session 14)
+Session 14 (researcher-4) **extended the build-verified
 Recipe library with the connective lemma `circuit_edge_balance'`** that
 combines `closed_walk_balance'` with the two `Classical.choose`-based
 edge-filter templates (`walk_source_eq_edge_filter'`,
