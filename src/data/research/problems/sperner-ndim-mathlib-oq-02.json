@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "REFINE",
     "since": "2026-05-06T11:50:53.576Z",
-    "iteration": 18,
-    "focus": "S18 part 2: interior-face neighbor existentials in N2BoundaryInteriorNeighbors section",
+    "iteration": 19,
+    "focus": "S19: abstract adj-bridge — adjFn_eq_none_iff_card_le_one + ..._eq_one + toTriangulation_adj_eq_none_iff in new S19AdjBridge section",
     "blockers": [],
-    "nextAction": "S19: assemble _hBoundaryOnFace by case-splitting through the 11 building blocks (S16/S17/S18.1/S18.2)",
+    "nextAction": "S20: case-split _hBoundaryOnFace via topSimps2_mem_iff using the bridge lemma + S18.1/S18.2/S17 building blocks (~80 lines)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "STATE (2026-05-08, session 18 part 2, build pending): n=0,1 fully proved; n=2 has all _hBoundaryOnFace building blocks now in place across S16 (edge containment), S17 (base \u2194 topSimps2 bridge, PR #17101 merged), S18.1 (t1-boundary container singletons + onFace\u03942 witnesses, PR #17133 open), and S18.2 (this session, interior-face existentials: 5 lemmas in new N2BoundaryInteriorNeighbors section). Six face/edge \u00d7 cell-type combinations all covered; remaining S19 work is pure case-split assembly of `_hBoundaryOnFace` from these blocks + adjFn-to-cardinality bridge (~80 lines). Then _hLastFace (~120 lines) + apply Triangulation.sperner (~50 lines). Main file SpernerNDimMathlibOQ02.lean unchanged at 1 axiom.",
+    "progressSummary": "STATE (2026-05-08, session 19, build pending): n=0,1 fully proved; n=2 has all _hBoundaryOnFace building blocks AND the abstract adj-bridge in place. S16 (edge containment, PR #17051 merged), S17 (base \u2194 topSimps2 bridge, PR #17101 merged), S18.1 (t1-boundary container singletons + onFace\u03942 witnesses, PR #17133 merged), S18.2 (interior-face existentials, PR #17149 merged), and S19 (this session, abstract adjFn=none \u2194 container card = 1 bridge: 3 generic lemmas in new S19AdjBridge section). Remaining S20 work is the case-split assembly of `_hBoundaryOnFace` from the 11 building blocks + bridge (~60-80 lines). Then _hLastFace (~120 lines) + apply Triangulation.sperner (~50 lines). Main file SpernerNDimMathlibOQ02.lean unchanged at 1 axiom.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -68,9 +68,12 @@
       "Created lemma SpernerFreudSimp.diagonal_neighbor_topSimps2 in SpernerFreudenthalSimplex.lean (S17): top-level classification \u2203 s \u2208 topSimps2, s \u2260 t1 b \u2227 {diagonal} \u2286 s \u2194 b.1+b.2+1 < N.",
       "horizontal_neighbor_topSimps2: for b \u2208 t1Bases N with b.2 \u2265 1, \u2203 other simplex of topSimps2 N containing horizontal edge of t1 b \u2014 witness t2 (b.1, b.2 - 1) (S18.2.1, build pending)",
       "vertical_neighbor_topSimps2: analogous, b.1 \u2265 1, witness t2 (b.1 - 1, b.2) (S18.2.2, build pending)",
-      "t2_face0_neighbor_topSimps2: for c \u2208 t2Bases N, t2 face0 shared with t1 (c.1+1, c.2) (S18.2.3, build pending)",
-      "t2_face1_neighbor_topSimps2: t2 face1 shared with t1 (c.1, c.2+1) (S18.2.4, build pending)",
-      "t2_face2_neighbor_topSimps2: t2 face2 shared with t1 c (S18.2.5, build pending)"
+      "t2_face0_neighbor_topSimps2: for c \u2208 t2Bases N, t2 face0 shared with t1 (c.1+1, c.2) (S18.2.3, PR #17149 merged)",
+      "t2_face1_neighbor_topSimps2: t2 face1 shared with t1 (c.1, c.2+1) (S18.2.4, PR #17149 merged)",
+      "t2_face2_neighbor_topSimps2: t2 face2 shared with t1 c (S18.2.5, PR #17149 merged)",
+      "S19 adjFn_eq_none_iff_card_le_one: pure dite-unfolding bridge \u2014 D.adjFn p k = none \u2194 (D.containersOf (D.faceOf s hs k)).card \u2264 1, no pseudomanifold needed; three-branch dispatch (boundary OK, interior happy-path contradicts none, would-be third branch impossible since s \u2208 containers) (SpernerFreudenthalSimplex.lean S19AdjBridge, build pending)",
+      "S19 adjFn_eq_none_iff_card_eq_one: pseudomanifold-strengthened form combining S19.1 with Finset.card_pos.mpr \u27e8s, self_mem_containersOf\u27e9 to upgrade card \u2264 1 to card = 1 (build pending)",
+      "S19 toTriangulation_adj_eq_none_iff: Triangulation.adj-level statement, follows from adjFn_eq_none_iff_card_eq_one by definitional equality D.toTriangulation.adj = D.adjFn (build pending)"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -103,19 +106,22 @@
       "S17 \u2014 diagonal_neighbor_topSimps2 is the consumable form for S18. Cleanly says 'the diagonal of t1(b) is contained in some other simplex of topSimps2 \u2194 b.1+b.2+1 < N', with the witness simplex being t2(b). This is exactly what S18's containersOf-based assembly of _hBoundaryOnFace will plug into.",
       "S18 part 2 (researcher-5): the *interior* complement to S18.1's boundary singletons. Term-mode 4-tuples flatten correctly through `\u2203 s \u2208 S, P \u2227 Q` \u2014 no explicit nested \u27e8_, \u27e8_, _\u27e9\u27e9 needed. Pattern matches S17's diagonal_neighbor_topSimps2 reverse direction.",
       "Witness-direction asymmetry: when the cell is t1, witness is t2 \u2192 use `(t1_ne_t2 b _).symm` for `t2 _ \u2260 t1 b`. When cell is t2, witness is t1 \u2192 use raw `t1_ne_t2 _ c` for `t1 _ \u2260 t2 c`.",
-      "Six-cell coverage table now complete for n=2 _hBoundaryOnFace: t1 cells \u00d7 {diagonal, horizontal, vertical} have both boundary singleton (S18.1) AND interior existential (S17 + S18.2); t2 cells \u00d7 {face0, face1, face2} are always interior (S18.2.3-5; t2 contributes no boundary doors)."
+      "Six-cell coverage table now complete for n=2 _hBoundaryOnFace: t1 cells \u00d7 {diagonal, horizontal, vertical} have both boundary singleton (S18.1) AND interior existential (S17 + S18.2); t2 cells \u00d7 {face0, face1, face2} are always interior (S18.2.3-5; t2 contributes no boundary doors).",
+      "S19 \u2014 abstract adj-bridge factors cleanly into pure-dite vs pseudomanifold-strengthened forms. The first lemma adjFn_eq_none_iff_card_le_one needs no pseudomanifold and is the natural unfolding theorem; pseudomanifold (containers_card \u2264 2 + s \u2208 containers) only matters for the corollary card \u2264 1 \u2194 card = 1. The split keeps each lemma minimal \u2014 pure dite-unfolding \u2248 25 lines, the corollary 7 lines.",
+      "S19 \u2014 would-be third branch of nested dite (card > 1 but cs.erase s empty) is provably impossible: cs.erase s has card \u2265 cs.card - 1 because s \u2208 cs (self_mem_containersOf), and card > 1 forces cs.erase s nonempty. This is the lemma's most subtle case, but it falls to a single Finset.card_erase_of_mem + omega.",
+      "S19 \u2014 toTriangulation_adj_eq_none_iff is by-rfl after the corollary because AbstractSimplicialData.toTriangulation defines its adj field as D.adjFn directly (line 777 of SpernerSimplicialInstance.lean). The Triangulation.adj-level statement is the form that S20 will pattern-match against the _hBoundaryOnFace hypothesis of Triangulation.boundary_doors_odd."
     ],
     "mathlibGaps": [
       "Grid triangulation of \u0394\u207f as a CellComplex (needed for sperner_near_fixed_point axiom \u2014 significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "S18: assemble _hBoundaryOnFace for the n=2 case using S16 edge lemmas + S17 base bridge. For each cell s = \u27e8S, hS\u27e9 with S \u2208 topSimps2 N, case-split via topSimps2_mem_iff. For S = t2 b, every k is non-boundary (use t2Bases_*_in_t1Bases + t1_in_topSimps2_of_base + S16's t2_face*_in_t1) so adj s k = none gives False.elim. For S = t1 b, each k corresponds to one boundary condition (b.1=0, b.2=0, or b.1+b.2+1\u2265N) and the existential faceIdx is one of Fin 3 (\u0394\u00b2-face 0/1/2). ~80 lines.",
-      "Prove _hLastFace (face 2 boundary doors): bijection with face2_path_odd's color-changing edges. The pre-S15 estimate of ~150 lines stands; if S18 produces the right vertexEnum/faceOf computations for t1/t2, this can drop to ~120.",
+      "S20: assemble _hBoundaryOnFace for the n=2 case using S19 bridge + S16/S17/S18.1/S18.2 building blocks. Now that toTriangulation_adj_eq_none_iff translates the abstract adj=none to container card = 1, the proof opens with `intro \u27e8S, hS\u27e9 k h_adj; rw [toTriangulation_adj_eq_none_iff] at h_adj`. Case-split via topSimps2_mem_iff: t2 b case contradicts (S18.2 t2-share lemmas + t1 \u2208 containers gives card \u2265 2); t1 b case branches on k via boundary conditions (b.1=0, b.2=0, or b.1+b.2+1\u2265N) and the existential faceIdx witness comes from S18.1 *_endpoints_on_face* lemmas. ~60-80 lines.",
+      "Prove _hLastFace (face 2 boundary doors): bijection with face2_path_odd's color-changing edges. The pre-S15 estimate of ~150 lines stands; if S20 produces the right vertexEnum/faceOf computations for t1/t2, this can drop to ~120.",
       "Apply Triangulation.sperner and extract real-coordinate witnesses with diameter \u2264 2/N (~50 lines).",
       "After sperner_panchromatic_two is complete (axiom-free n=2): generalize the Type-1/Type-2 grid construction to n\u22653 via Freudenthal triangulation. Each top simplex is determined by a base + permutation of {1, ..., n}; pseudomanifold proof scales linearly with n.",
       "The main file SpernerNDimMathlibOQ02.lean remains at 1 axiom (sperner_panchromatic for general n). Once n=2 is proved, the axiom can be replaced for n=2 or kept generically.",
-      "Build status: S17 not run through Docker (45min cold cache via broken proofs/.lake symlink). Pattern matches S14/S15/S16 build-pending merges. Lemmas are mechanical case-bash + omega."
+      "Build status: S19 not run through Docker (45min cold cache via broken proofs/.lake symlink). Pattern matches S14/S15/S16/S17/S18 build-pending merges. Lemmas are mechanical dite-unfolding + Finset card arithmetic."
     ]
   },
   "tags": [
@@ -135,7 +141,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-08T13:00:00Z",
+  "lastUpdate": "2026-05-08T14:30:00Z",
   "significance": 7,
   "tractability": 5
 }

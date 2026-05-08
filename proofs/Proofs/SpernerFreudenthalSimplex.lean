@@ -1464,3 +1464,104 @@ private lemma t2_face2_neighbor_topSimps2
 
 end N2BoundaryInteriorNeighbors
 end SpernerFreudSimp
+
+-- ============================================================
+-- (Session 19) Abstract adj-bridge for AbstractSimplicialData.
+--
+-- Generic lemmas translating `D.toTriangulation.adj ⟨s, hs⟩ k =
+-- none` to a concrete container-cardinality condition. These are
+-- the missing piece bridging the abstract `Triangulation` API
+-- (`_hBoundaryOnFace` of `boundary_doors_odd`) to the concrete
+-- `containersOf`-based analysis built up in S16-S18.
+--
+-- Three increasingly specific forms are provided:
+--
+-- 1. `adjFn_eq_none_iff_card_le_one`: pure dite-unfolding —
+--    `D.adjFn p k = none ↔ container card ≤ 1`.
+--    Holds for any AbstractSimplicialData (no pseudomanifold).
+-- 2. `adjFn_eq_none_iff_card_eq_one`: combined with
+--    `containersOf_card_one_or_two` (pseudomanifold) to give
+--    `D.adjFn p k = none ↔ container card = 1`.
+-- 3. `toTriangulation_adj_eq_none_iff`: same restated for
+--    `D.toTriangulation.adj` (definitionally equal to D.adjFn).
+--
+-- Used by upcoming S20 to translate the n=2
+-- `_hBoundaryOnFace` hypothesis of `boundary_doors_odd` (applied
+-- to `simData2.toTriangulation`) into the case-split through the
+-- container-cardinality dichotomy from S18.1/S18.2.
+-- ============================================================
+
+namespace SpernerFreudSimp
+section S19AdjBridge
+
+/-- Pure dite-unfolding bridge: `D.adjFn p k = none` iff the
+codimension-1 face has at most one top-simplex container. The
+forward direction handles three branches of the nested `dite`:
+the boundary (card ≤ 1) branch trivially; the interior happy-path
+(card > 1, neighbor exists) yields `some`, contradicting `none`;
+and the would-be third branch (card > 1 but `cs.erase s` empty)
+is impossible because `s ∈ containers`, hence `cs.erase s` has
+card `≥ cs.card - 1 ≥ 1`. -/
+private lemma adjFn_eq_none_iff_card_le_one
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.adjFn ⟨s, hs⟩ k = none ↔
+    (D.containersOf (D.faceOf s hs k)).card ≤ 1 := by
+  constructor
+  · intro h
+    by_contra hgt
+    push_neg at hgt
+    unfold AbstractSimplicialData.adjFn at h
+    simp only at h
+    split_ifs at h with hc hne
+    · -- Branch 1: hc says card ≤ 1; contradicts hgt
+      omega
+    · -- Branch 2: card > 1 and erase nonempty → adjFn returned some
+      -- h : some ⟨..., ...⟩ = none, impossible
+      exact Option.noConfusion h
+    · -- Branch 3: card > 1 but erase empty → impossible because
+      -- s itself is in containers
+      rw [Finset.not_nonempty_iff_eq_empty] at hne
+      have hs_cont : s ∈ D.containersOf (D.faceOf s hs k) :=
+        D.self_mem_containersOf s hs k
+      have hcerase := Finset.card_erase_of_mem hs_cont
+      rw [hne, Finset.card_empty] at hcerase
+      omega
+  · intro hle
+    unfold AbstractSimplicialData.adjFn
+    simp only
+    rw [dif_pos hle]
+
+/-- Pseudomanifold-strengthened bridge: under the pseudomanifold
+condition baked into `AbstractSimplicialData`, `containersOf` is
+always nonempty (since `s ∈ containers`), so `card ≤ 1` is
+equivalent to `card = 1`. -/
+private lemma adjFn_eq_none_iff_card_eq_one
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.adjFn ⟨s, hs⟩ k = none ↔
+    (D.containersOf (D.faceOf s hs k)).card = 1 := by
+  rw [adjFn_eq_none_iff_card_le_one]
+  have h1 : 0 < (D.containersOf (D.faceOf s hs k)).card :=
+    Finset.card_pos.mpr ⟨s, D.self_mem_containersOf s hs k⟩
+  omega
+
+/-- Bridge for `Triangulation.adj` directly: since
+`D.toTriangulation.adj` is defined as `D.adjFn` (see
+`AbstractSimplicialData.toTriangulation` in
+`SpernerSimplicialInstance`), the previous lemma applies
+verbatim. This is the form S20 will consume to discharge the
+`_hBoundaryOnFace` hypothesis of `Triangulation.boundary_doors_odd`. -/
+private lemma toTriangulation_adj_eq_none_iff
+    {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1)) :
+    D.toTriangulation.adj ⟨s, hs⟩ k = none ↔
+    (D.containersOf (D.faceOf s hs k)).card = 1 :=
+  adjFn_eq_none_iff_card_eq_one D s hs k
+
+end S19AdjBridge
+end SpernerFreudSimp
+

@@ -2,14 +2,49 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 18 part 2, researcher-5)
-**Iteration**: 18
+**Last Updated**: 2026-05-08 (Iteration 19, researcher-5)
+**Iteration**: 19
 
 ## Current Focus
 
-Session 18 part 2 (this session, build pending): Added 5 new
-`private` existential lemmas in a new `N2BoundaryInteriorNeighbors`
-section (appended after `N2BoundaryAnalysis` at end of file) that
+Session 19 (this session, build pending): Added 3 new generic
+`private` lemmas in a new `S19AdjBridge` section (appended after
+`end SpernerFreudSimp`) that translate the abstract
+`D.toTriangulation.adj ⟨s, hs⟩ k = none` hypothesis of
+`Triangulation.boundary_doors_odd` to the concrete
+container-cardinality condition built up in S16-S18:
+
+1. `adjFn_eq_none_iff_card_le_one`: pure dite-unfolding —
+   `D.adjFn ⟨s, hs⟩ k = none ↔ (D.containersOf (D.faceOf s hs k)).card ≤ 1`.
+   Holds for any `AbstractSimplicialData V n` (no pseudomanifold
+   needed). Three-branch dispatch through the nested `dite` of
+   `adjFn`: boundary branch trivial; interior happy-path
+   contradicts `none`; the would-be third branch (card > 1, but
+   `cs.erase s` empty) is impossible because `s ∈ containers`.
+2. `adjFn_eq_none_iff_card_eq_one`: pseudomanifold-strengthened
+   form. Combines (1) with `Finset.card_pos.mpr ⟨s, self_mem_containersOf⟩`
+   to upgrade `card ≤ 1` to `card = 1`.
+3. `toTriangulation_adj_eq_none_iff`: same restated for
+   `D.toTriangulation.adj` (definitionally equal to `D.adjFn`,
+   so the proof is by direct application of (2)).
+
+This is the **last abstract bridge piece** before S20 can wire
+the S16/S17/S18.1/S18.2 building-block table into the existential
+`∃ faceIdx, ∀ j ≠ k, onFaceΔ2 (vertex s j) faceIdx` required by
+`_hBoundaryOnFace`. The S20 case-split now reads:
+
+```
+intro s k h_adj
+rw [toTriangulation_adj_eq_none_iff] at h_adj
+-- h_adj : (containers (faceOf s k)).card = 1
+obtain ⟨b, hb, rfl⟩ | ⟨c, hc, rfl⟩ := topSimps2_mem_iff.mp s.2
+-- t1 b case: containers card = 1 ↔ boundary edge (S18.1)
+-- t2 c case: containers card ≥ 2 (S18.2 t2-share, PR #17150) → False
+```
+
+Session 18 part 2 (PR #17149, merged): Added 5 new `private`
+existential lemmas in a new `N2BoundaryInteriorNeighbors`
+section (appended after `end SpernerFreudSimp`) that
 complement S18 part 1 (PR #17133, merged) by covering the
 **interior** side of `_hBoundaryOnFace`:
 
@@ -41,10 +76,11 @@ building blocks.
 | t2   | face1      | (impossible, no boundary) | S18.2.4 `t2_face1_neighbor_topSimps2` |
 | t2   | face2      | (impossible, no boundary) | S18.2.5 `t2_face2_neighbor_topSimps2` |
 
-Remaining S19 work is **abstract-level bridge**: translate
-`T.adj s k = none` ↔ `(containers ...).card ≤ 1` and case-split
-through the 11 building blocks above (~80 lines, mostly
-case-splitting).
+**Note (S19, PR pending)**: the abstract `T.adj s k = none ↔
+container card = 1` bridge is now done as 3 generic lemmas in
+`S19AdjBridge` (`adjFn_eq_none_iff_card_le_one`,
+`adjFn_eq_none_iff_card_eq_one`, `toTriangulation_adj_eq_none_iff`).
+S20 next: case-split through the 11 building blocks above.
 
 Session 18 part 1 (PR #17133, merged): Promoted S16/S17 edge
 building blocks into the **boundary-edge container singletons**: for
@@ -167,32 +203,46 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
   `t1_ne_t2`, `diagonal_in_t{1,2}_iff`, `horizontal_in_t2_pos`,
   `vertical_in_t2_pos`, `horizontal_not_in_t2_at_y0`,
   `vertical_not_in_t2_at_x0`, `t2_face{0,1,2}_in_t1`
-- `N2BoundaryAnalysis` base ↔ topSimps2 bridge (S17, this session,
-  build pending): 13 new lemmas converting base membership to
+- `N2BoundaryAnalysis` base ↔ topSimps2 bridge (S17, PR #17101
+  merged): 13 new lemmas converting base membership to
   topSimps2 containment, plus the missing diagonal-boundary case
   `diagonal_not_in_t2_at_diagonal` and the top-level classification
   `diagonal_neighbor_topSimps2`.
+- `N2BoundaryAnalysis` t1-boundary container singletons +
+  onFaceΔ2 witnesses (S18 part 1, PR #17133, merged): 9 new
+  lemmas — three `*_only_container_of_t1_boundary`, three
+  `*_card_eq_one_of_t1_boundary` corollaries, and three
+  `*_endpoints_on_face*` Δ²-face witness lemmas.
+- `N2BoundaryInteriorNeighbors` interior-face existentials (S18
+  part 2, PR #17149, merged): 5 new lemmas covering the interior
+  side for each of the six face/edge × cell-type combinations.
+- `S19AdjBridge` abstract adj-bridge (S19, this session, build
+  pending): 3 new generic lemmas —
+  `adjFn_eq_none_iff_card_le_one` (no pseudomanifold needed),
+  `adjFn_eq_none_iff_card_eq_one` (combined with pseudomanifold),
+  and `toTriangulation_adj_eq_none_iff` (restated for the
+  abstract `Triangulation.adj`).
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
-## Path Forward for n≥2 (post-S18)
+## Path Forward for n≥2 (post-S19)
 
 `Triangulation.boundary_doors_odd` requires four hypotheses:
 1. `_hSperner` — done generically by S14 wrapper (cN2_total_isSpernerColoring)
-2. `_hBoundaryOnFace` — S16/S17/S18.1/S18.2 now supply ALL six
+2. `_hBoundaryOnFace` — S16/S17/S18.1/S18.2 supply ALL six
    face/edge × cell-type combinations as `private lemma`s (see
-   coverage table above). **S19 next**: walk through the abstract
-   `adjFn` in `simData2.toTriangulation` to translate
-   `adjFn s k = none` ↔ `(containersOf (faceOf s k)).card ≤ 1`,
-   then case-split through the 6+6 building blocks above to assemble
-   the existential `∃ faceIdx, ...` for the boundary cases and
-   produce a `False.elim` for the t2-cell cases (~80 lines, mostly
-   case-splitting; arithmetic content is in S16-S18).
+   coverage table above). S19 (this session) supplies the
+   abstract bridge `T.adj s k = none ↔ container card = 1`.
+   **S20 next**: case-split through the 11 building blocks
+   above to assemble the existential `∃ faceIdx, ...` for the
+   boundary cases and produce a `False.elim` for the t2-cell
+   cases (~80 lines, mostly case-splitting; arithmetic content
+   is in S16-S18).
 3. `_hLowerDim` — done generically by S15 helper
 4. `_hLastFace` — TODO (~120 lines, bijection with face2_path_odd via S12)
 
 Then apply `Triangulation.sperner` (~50 lines for diameter bound + real
-coordinates). Total estimated remaining: ~200 lines across 2 sessions.
+coordinates). Total estimated remaining: ~200 lines across 2-3 sessions.
 
 ## Gallery Status
 
