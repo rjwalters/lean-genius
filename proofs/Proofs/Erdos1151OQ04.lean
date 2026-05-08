@@ -2069,7 +2069,7 @@ private lemma chebyshev_quarter_floor_log_asymp_lb
     ring
   have h_rhs_simp : (n : ℝ) ^ 2 * (θ ^ 2 / (16 * Real.pi ^ 2)) =
       (n : ℝ) ^ 2 * θ ^ 2 / (16 * Real.pi ^ 2) := by
-    field_simp
+    ring
   rw [hK_simp, h_rhs_simp] at h_main_step
   -- Combine: `(n + 1)·e⁴ ≤ n²·θ²/(16π²) ≤ (m + 2)²`.
   have h_combine : ((n : ℝ) + 1) * Real.exp 4 ≤ ((m : ℝ) + 2) ^ 2 :=
