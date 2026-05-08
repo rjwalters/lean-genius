@@ -1,0 +1,162 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+  "title": "Multinomial Marginal Central Limit Theorem (Phase-2 Scaffold)",
+  "description": "States the multinomial marginal CLT as a CDF-pointwise convergence to the standard normal, derived from the de Moivre-Laplace axiom plus the marginal-PMF identity proved in BinomialTheoremOQ02OQ01OQ02",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-05-08",
+    "status": "axiomatized",
+    "tags": [
+      "probability",
+      "central-limit-theorem",
+      "multinomial",
+      "binomial",
+      "de-moivre-laplace",
+      "convergence-in-distribution"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+    "badge": "axiom",
+    "sorries": 1,
+    "dateAdded": "2026-05-08",
+    "axiomCount": 2,
+    "lineCount": 178,
+    "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. (2) `standardNormalCDF` opaque marker — the standard normal CDF Φ(x) = (1/√(2π)) ∫_{-∞}^x e^{-t²/2} dt, currently opaque pending bridge from Mathlib's measure-theoretic Gaussian. The main theorem `multinomial_marginal_clt` is *derived* from these — it is not itself an axiom. The Phase-3 reduction lemma `multinomialMarginalCDF_eq_binomialCDF` carries one sorry (provable from the already-proved `multinomial_marginal_pmf`).",
+    "originalContributions": [
+      "binomialCDF: concrete CDF of Binomial(n,p) as a finite sum of binomial PMF terms with a step indicator",
+      "multinomialMarginalCDF: marginal CDF of coordinate i₀ of Multinomial(n,p), defined directly from multinomialProb",
+      "binomial_clt_pointwise: axiomatic statement of de Moivre-Laplace in CDF form (statement matches the classical formulation, avoids measure-theoretic machinery)",
+      "multinomialMarginalCDF_eq_binomialCDF: stated reduction lemma whose proof is a fiber-grouping over k(i₀) values plus the parent's multinomial_marginal_pmf (sorry; Phase-3 target)",
+      "multinomial_marginal_clt: derived theorem (no axiom of its own) combining the above via Filter.Tendsto.congr"
+    ],
+    "theoremCount": 2,
+    "substantiveTheoremCount": 1,
+    "definitionCount": 2
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Multinomial",
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Sqrt",
+      "Mathlib.Topology.Algebra.Order.LiminfLimsup",
+      "Mathlib.Tactic",
+      "Proofs.BinomialTheoremOQ02OQ01OQ02"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
+    "lineCount": 178,
+    "axiomCount": 2,
+    "theoremCount": 2,
+    "substantiveTheoremCount": 1,
+    "duplicateTheorems": 0,
+    "definitionCount": 2,
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+    "sorries": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "multinomial_marginal_clt",
+      "type": "core",
+      "description": "Standardized multinomial marginal CDF converges pointwise to the standard normal CDF (DERIVED, no separate axiom).",
+      "leanType": "(s : Finset α) (p : α → ℝ) (hp : ∑ i ∈ s, p i = 1) (i₀ : α) (hi₀ : i₀ ∈ s) (hp0 : 0 < p i₀) (hp1 : p i₀ < 1) (x : ℝ) → Filter.Tendsto (fun n => multinomialMarginalCDF s p n i₀ ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀)))) Filter.atTop (nhds (standardNormalCDF x))"
+    },
+    {
+      "name": "multinomialMarginalCDF_eq_binomialCDF",
+      "type": "supporting",
+      "description": "The marginal CDF of the multinomial equals the binomial CDF with parameter p(i₀); reduction lemma (sorry, Phase-3 target — provable from multinomial_marginal_pmf).",
+      "leanType": "(s : Finset α) (p : α → ℝ) (n : ℕ) (hp : ∑ i ∈ s, p i = 1) (i₀ : α) (hi₀ : i₀ ∈ s) (x : ℝ) → multinomialMarginalCDF s p n i₀ x = binomialCDF n (p i₀) x"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-cdf-defs",
+      "title": "CDF Definitions: Binomial and Multinomial Marginal",
+      "range": null,
+      "startLine": 83,
+      "endLine": 103
+    },
+    {
+      "id": "sec-stdnormal",
+      "title": "Standard Normal CDF (opaque)",
+      "range": null,
+      "startLine": 105,
+      "endLine": 112
+    },
+    {
+      "id": "sec-binomial-clt-axiom",
+      "title": "Axiom: Classical de Moivre-Laplace (Binomial CLT)",
+      "range": null,
+      "startLine": 114,
+      "endLine": 131
+    },
+    {
+      "id": "sec-reduction",
+      "title": "Reduction Lemma: Multinomial Marginal CDF = Binomial CDF",
+      "range": null,
+      "startLine": 133,
+      "endLine": 149
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: Multinomial Marginal CLT (Derived)",
+      "range": null,
+      "startLine": 151,
+      "endLine": 178
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Central Limit Theorem traces from de Moivre's 1733 result that the standardized binomial $(X-np)/\\sqrt{np(1-p)}$ converges to the standard normal, through Laplace (1812), Lyapunov (1901), and Lindeberg (1922). The multinomial marginal CLT is the natural extension to a single coordinate of a multinomial vector: since each marginal $X_i$ of a $\\text{Multinomial}(n; p_1, \\ldots, p_k)$ is itself $\\text{Binomial}(n, p_i)$, the de Moivre-Laplace theorem applies directly. The joint multinomial CLT (vector form) is more subtle — coordinates sum to $n$, so the limiting distribution is degenerate multivariate normal — and is out of scope for this entry.",
+    "problemStatement": "**Open Question (OQ-03 from binomial-theorem-oq-02-oq-01-oq-01)**: Can the multinomial marginal CLT be formalized in Lean 4? Specifically: for $X \\sim \\text{Multinomial}(n; p_1, \\ldots, p_k)$ and any coordinate $i_0$ with $0 < p_{i_0} < 1$, does the standardized marginal $(X_{i_0} - n p_{i_0}) / \\sqrt{n p_{i_0}(1 - p_{i_0}})$ converge in distribution to $\\mathcal{N}(0, 1)$ as $n \\to \\infty$?\n\n**Answer**: Yes, *as a derivation* — the marginal-PMF identity $\\sum_{k: k(i_0) = j} P(X=k) = \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}$ proved in `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf` reduces the marginal CLT to the classical de Moivre-Laplace theorem on $\\text{Binomial}(n, p_{i_0})$. We axiomatize de Moivre-Laplace and a `standardNormalCDF` marker; the marginal CLT then follows by `Filter.Tendsto.congr`.",
+    "text": "Multinomial marginal CLT formalized in CDF form — derived (not axiomatized separately) from de Moivre-Laplace plus the marginal-PMF identity already proved in the parent file",
+    "proofStrategy": "(1) Define $\\text{binomialCDF}\\,n\\,p\\,x = \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\binom{n}{j} p^j (1-p)^{n-j}$ and $\\text{multinomialMarginalCDF}\\,s\\,p\\,n\\,i_0\\,x = \\sum_{k \\in \\pi(s,n)} \\mathbf{1}_{[k(i_0) \\le x]} P(X=k)$. (2) Axiomatize de Moivre-Laplace: $\\text{binomialCDF}\\,n\\,p\\,(np + x\\sqrt{np(1-p)}) \\to \\Phi(x)$ for $0 < p < 1$. (3) Reduce: $\\text{multinomialMarginalCDF}\\,s\\,p\\,n\\,i_0\\,x = \\text{binomialCDF}\\,n\\,(p\\,i_0)\\,x$ by regrouping the sum into fibers over $k(i_0)$ and applying the parent's `multinomial_marginal_pmf`. (4) Combine via `Filter.Tendsto.congr` to get the marginal CLT.",
+    "keyInsights": [
+      "The marginal-PMF identity from `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf` does the heavy lifting: once it's established that $\\sum_{k: k(i_0) = j} P(X=k) = \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}$, the multinomial marginal CDF *equals* the binomial CDF (not just converges to it), so the CLT for the marginal is exactly the CLT for the binomial.",
+      "Stating the CLT in CDF form (`Filter.Tendsto` of `binomialCDF`) avoids the measure-theoretic setup needed to instantiate Mathlib's `iid_central_limit_theorem`. The CDF form matches the classical de Moivre-Laplace presentation and keeps the reduction transparent.",
+      "Declaring `standardNormalCDF` as `opaque` records that it is *some* function ℝ → ℝ — Lean treats it as an unknown — while keeping the namespace open for a Phase-3 substitution that bridges to Mathlib's Gaussian measure.",
+      "The DERIVED theorem `multinomial_marginal_clt` is not an axiom: it follows from the de Moivre-Laplace axiom plus the reduction lemma via `Filter.Tendsto.congr`. The reduction itself is provable (from already-proved Mathlib + parent-file lemmas), so closing the sorry would shift the only assumption to de Moivre-Laplace.",
+      "The non-degeneracy hypothesis $0 < p_{i_0} < 1$ is essential: $p_{i_0} = 0$ gives $X_{i_0} = 0$ a.s. (degenerate), and $p_{i_0} = 1$ gives $X_{i_0} = n$ a.s. (degenerate); the standardization $\\sqrt{np_{i_0}(1-p_{i_0})}$ vanishes in both cases.",
+      "The joint multinomial CLT (vector convergence to a degenerate multivariate normal supported on the hyperplane $\\sum y_i = 0$) is *not* derivable from coordinate-wise marginal CLTs — Cramér-Wold is required — and is out of scope here."
+    ],
+    "prerequisites": [
+      "BinomialTheoremOQ02OQ01OQ02: multinomialProb, multinomial_marginal_pmf",
+      "Real.sqrt, Filter.Tendsto, Filter.Tendsto.congr",
+      "Probability theory: convergence in distribution, CDFs",
+      "Classical reference: Feller, Introduction to Probability Theory, Vol. I (1968), Ch. VII §3 (de Moivre-Laplace)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The multinomial marginal CLT can be stated cleanly in CDF form and *derived* (not axiomatized separately) from two axioms: the classical de Moivre-Laplace theorem on standardized binomial CDFs, and an opaque marker for the standard normal CDF. The derivation uses the marginal-PMF identity already proved in the parent file (`BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf`). One sorry remains in the reduction lemma (Phase-3 target) — the proof is a routine fiber-grouping of `s.piAntidiag n` over $k(i_0)$ values plus the parent identity.",
+    "implications": "The reduction-based scaffold demonstrates that multinomial marginal CLT does not require new probabilistic machinery beyond what is already proved for the binomial case. Once Mathlib provides a CDF-form de Moivre-Laplace (via a measure-weak-convergence bridge from `ProbabilityTheory.iid_central_limit_theorem`), this entry's `binomial_clt_pointwise` axiom becomes derivable, leaving zero axioms (modulo the `standardNormalCDF` opaque, which can be replaced by a Mathlib-Gaussian-measure-CDF bridge).",
+    "openQuestions": [
+      "Can the reduction lemma `multinomialMarginalCDF_eq_binomialCDF` be proved by fiber-grouping over $k(i_0)$ values? The proof should regroup $\\sum_{k \\in \\pi(s,n)}$ into $\\sum_{j=0}^n \\sum_{k: k(i_0) = j}$ and apply `multinomial_marginal_pmf`.",
+      "Can `binomial_clt_pointwise` be discharged from Mathlib's `ProbabilityTheory.iid_central_limit_theorem`? Bridging a measure-weak-convergence statement to a CDF-pointwise-convergence statement requires the Portmanteau theorem at continuity points of the limit CDF.",
+      "Can the JOINT multinomial CLT (convergence of the full standardized vector $(X - np)/\\sqrt{n}$ to a degenerate multivariate normal supported on $\\{y : \\sum y_i = 0\\}$) be stated and derived via Cramér-Wold from the marginal CLT plus a covariance computation (already available in `BinomialTheoremOQ02OQ01OQ03.multinomial_covariance`)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "answers-question",
+      "description": "Answers OQ-03 of binomial-theorem-oq-02-oq-01-oq-01: marginal CLT for multinomial coordinates"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "uses",
+      "description": "Imports multinomialProb and depends on multinomial_marginal_pmf for the reduction-to-binomial step"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "specializes",
+      "description": "The de Moivre-Laplace axiom here is the binomial special case of the general CLT in central-limit-theorem"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Sibling OQ-03 from oq-02-oq-01: multinomial covariance — relevant for a future joint-CLT entry via Cramér-Wold"
+    }
+  ]
+}
