@@ -686,16 +686,23 @@ theorem schonhageGcdOf_pos_of_pos_right (a : ℕ) {b : ℕ} (h : 0 < b) :
   rw [schonhageGcdOf_eq_gcd]
   exact Nat.gcd_pos_of_pos_right a h
 
-/-- Two consecutive naturals are coprime under `schonhageGcdOf`,
-    inherited from `Nat.coprime_succ_self_right` (Mathlib v4.26
-    renamed the older `Nat.coprime_succ_self` to the `_right`
-    variant). Reduces via `schonhageGcdOf_eq_gcd` to
-    `Nat.gcd (n + 1) n = 1`, then `Nat.gcd_comm` flips arguments
-    to match the Mathlib lemma's `Coprime n (n + 1)` form. -/
+/-- Two consecutive naturals are coprime under `schonhageGcdOf`.
+    Reduces via `schonhageGcdOf_eq_gcd` to `Nat.gcd (n + 1) n = 1`,
+    then proved by the standard Bézout argument: any divisor `d`
+    of both `n + 1` and `n` must divide their difference `1`, so
+    `d = 1`. Self-contained proof using only core
+    `Nat.gcd_dvd_left/right`, `Nat.dvd_sub'`, and
+    `Nat.eq_one_of_dvd_one`. -/
 theorem schonhageGcdOf_succ_self (n : ℕ) :
     schonhageGcdOf (n + 1) n = 1 := by
-  rw [schonhageGcdOf_eq_gcd, Nat.gcd_comm]
-  exact Nat.coprime_succ_self_right
+  rw [schonhageGcdOf_eq_gcd]
+  have h1 : Nat.gcd (n + 1) n ∣ (n + 1) := Nat.gcd_dvd_left _ _
+  have h2 : Nat.gcd (n + 1) n ∣ n := Nat.gcd_dvd_right _ _
+  have h3 : Nat.gcd (n + 1) n ∣ 1 := by
+    have hsub : (n + 1) - n = 1 := by omega
+    rw [← hsub]
+    exact Nat.dvd_sub' h1 h2
+  exact Nat.eq_one_of_dvd_one h3
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART XII: EMPIRICAL COMPARISON WITNESSES (S22)
