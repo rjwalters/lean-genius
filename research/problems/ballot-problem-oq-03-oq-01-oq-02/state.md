@@ -4,15 +4,19 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-08
-**Iteration**: 55
+**Last Updated**: 2026-05-09
+**Iteration**: 56
 
 ## Current Focus
-Close `F_side_identity` (Helpers, line ~14795) — the **parametric F-side
-hook-shift identity** that is now the SOLE remaining sorry-bearing lemma
-on the GNW route, after S55a wired `gnwProb_exchange` to dispatch through
-S53/S54 combiners.  `gnwProb_exchange` itself is now sorry-free; only
-`F_side_identity` blocks `verified` status.
+Close `F_side_identity_aligned` (Helpers, line ~14811) — the
+**common-domain parametric F-side hook-shift identity** that is now the
+sole remaining sorry-bearing lemma on the GNW route, after S56 (this
+session) sharpened the open obligation by aligning both summation
+domains to `(μ\c').cells`.  `F_side_identity` (S55a) is now sorry-free,
+deriving from `F_side_identity_aligned` via the existing S43 bridge
+`sum_gnwProb_eq_removeCorner_cells`.  `gnwProb_exchange` (S55a)
+remains sorry-free; only `F_side_identity_aligned` blocks `verified`
+status.
 
 ## Active Approach
 Route A (GNW probabilistic hook-walk) is the chosen path; the proof skeleton is
@@ -200,25 +204,48 @@ in place:
      points to S54; `gnwProb_key`'s "two sorry'd steps" comment is
      reduced to one (step (a) `termination_by` was already resolved
      since S43).  +63 Helpers.lean lines.
+ 18. Common-domain sharpening of `F_side_identity` (session 56,
+     **this session**) — added `private lemma F_side_identity_aligned`
+     (line ~14811, sorry-bearing, +46 lines including 38-line
+     docstring) running both sums over `(removeCorner μ c' hc').cells`
+     (the same finite-cell domain).  Replaced `F_side_identity`'s
+     `sorry` with a 2-line proof:
+     `rw [sum_gnwProb_eq_removeCorner_cells hc' hne]`
+     `exact F_side_identity_aligned hc hc' hne`,
+     deriving the original `μ.cells`-domain statement from the aligned
+     form via the existing S43 bridge (which uses
+     `gnwProb_at_other_corner` to deduce `gnwProb μ c K c' = 0`, so the
+     `c'` term vanishes when erasing the LHS sum domain).
+     **Sorry count unchanged (1)**: the abstract `F_side_identity`
+     sorry has been *relocated* to the more concrete same-domain
+     `F_side_identity_aligned` sorry — no net regression, but a
+     structural sharpening that removes the cell-wise `c'` excision
+     step from the K-induction's burden (S57+ now compares integrands
+     pointwise on a single common domain).
 
 ## Blockers
-- **`F_side_identity` proof.** The parametric F-side hook-shift identity
-  (S55a) is now the sole open sorry on the GNW route.  Quantifies how
-  the F-sum `F(μ,c) := ∑_x gnwProb μ c (h_μ x) x` transforms when corner
-  c' is removed.  Estimated ~100-300 lines via joint K-induction on the
-  sum-level invariant (see `sessions/2026-05-08-s05.md` recipe).
-- **Build verification.** Helpers file is at 15090 lines after S55a
-  (was 15027 after S54, +63 lines for `F_side_identity` + dispatcher);
-  ~410 lines under the Docker 32GB-memory ceiling estimate (~15500).
-  CI will verify the PR.
+- **`F_side_identity_aligned` proof.** The common-domain parametric
+  F-side hook-shift identity (S56) is now the sole open sorry on the
+  GNW route.  Both summation domains run over `(μ\c').cells`; the
+  remaining obligation compares **integrands pointwise**:
+  `gnwProb μ c (h_μ x) x` (LHS) versus
+  `gnwProb (μ\c') c (h_{μ\c'} x) x` (RHS).  Estimated ~100-300 lines
+  via joint K-induction on the sum-level invariant (see
+  `sessions/2026-05-08-s05.md` recipe).
+- **Build verification.** Helpers file is at 15136 lines after S56
+  (was 15090 after S55a, +46 lines for `F_side_identity_aligned`
+  + sorry-free `F_side_identity`); ~360 lines under the Docker 32GB-
+  memory ceiling estimate (~15500).  CI will verify the PR.
 
 ## Next Action
-**S55 — prove the parametric `F_side_identity`** via joint K-induction
-on the sum-level invariant.  After S55a (this session) wired
-`gnwProb_exchange` through the dispatcher, the open obligation is now a
-single statement:
+**S57 — prove the common-domain `F_side_identity_aligned`** via joint
+K-induction on the sum-level invariant.  After S56 (this session)
+sharpened the obligation to a same-domain comparison, the open
+statement is:
 ```
-F(μ,c) · (h_d − 1)² = F(μ\c',c) · h_d · (h_d − 2)
+[∑ x ∈ (μ\c').cells, gnwProb μ c (h_μ x) x] · (h_d − 1)²
+  = [∑ x ∈ (μ\c').cells, gnwProb (μ\c') c (h_{μ\c'} x) x]
+    · h_d · (h_d − 2)
 where  h_d = hookLength μ (min c.1 c'.1) (min c.2 c'.2)
 ```
 On both branches of `distinct_corners_dichotomy`, `(min c.1 c'.1, min c.2 c'.2)`
@@ -230,10 +257,14 @@ collapses to the doubly-affected cell `d`:
 
 Approach: joint K-induction using `gnwProb_step` for K-stability and the
 S43 sum-bridges (`sum_gnwProb_eq_removeCorner_cells`,
-`sum_gnwProb_strictHookCells_eq_removeCorner`).  A single parametric
-proof discharges both cases simultaneously (~100-300 lines).  Once
-`F_side_identity` is sorry-free, the entry promotes to `verified` (last
-sorry eliminated).
+`sum_gnwProb_strictHookCells_eq_removeCorner`).  Crucially, both sums
+in `F_side_identity_aligned` are now over the **same** finite-cell
+domain `(μ\c').cells`, so the K-induction can attack the integrands
+pointwise; the cell-wise `c'` excision step (LHS sum split) is no
+longer needed, having been absorbed by the bridge in `F_side_identity`.
+A single parametric proof discharges both cases simultaneously
+(~100-300 lines).  Once `F_side_identity_aligned` is sorry-free, the
+entry promotes to `verified` (last sorry eliminated).
 
 S53–S54 (sessions completed) closed step 3 of 3 from the s05 recipe for
 **both** branches of `distinct_corners_dichotomy`: the algebraic
@@ -249,33 +280,39 @@ Remaining steps in the s05 recipe:
 
 2. **F-side "hard half"** (~150-250 lines if proved parametrically for
    both cases, or ~100-200 each).  Joint K-induction on the sum-level
-   invariant.  Confidence: medium.  May require S55.5 to extract the
-   K=0 base case as a separate lemma if the induction step is too large
-   for one PR.
+   invariant.  Confidence: medium.  S56 (this session) sharpened the
+   obligation to a common-domain form `F_side_identity_aligned`; the
+   K-induction now compares integrands pointwise on `(μ\c').cells`.
+   May still require S57.5 to extract the K=0 base case as a separate
+   lemma if the induction step is too large for one PR.
 
 3. ✓ **Combine** to close `gnwProb_exchange`:
    - Case 1 (`c.1 < c'.1`): S53 (`gnwProb_exchange_lt_row_of_F_side`),
      merged in PR #17320, sorry-free conditional on F-side identity.
    - Case 2 (`c'.1 < c.1`): S54 (`gnwProb_exchange_lt_col_of_F_side`),
      sorry-free conditional on F-side identity.
-   - Final dispatcher: ✓ S55a (**this session**) — wired
-     `gnwProb_exchange` through `distinct_corners_dichotomy` + S53/S54
-     + parametric `F_side_identity` (sorry-bearing).  `gnwProb_exchange`
-     is now sorry-free; the open obligation is `F_side_identity`.
+   - Final dispatcher: ✓ S55a — wired `gnwProb_exchange` through
+     `distinct_corners_dichotomy` + S53/S54 + parametric
+     `F_side_identity` (sorry-bearing).  `gnwProb_exchange` is now
+     sorry-free.
+   - Common-domain sharpening: ✓ S56 (**this session**) — added
+     `F_side_identity_aligned` (sorry-bearing, both sums over
+     `(μ\c').cells`); `F_side_identity` is now sorry-free, deriving
+     from `F_side_identity_aligned` via the S43 bridge.
 
-Step 2 reduces to a single sorry'd lemma `F_side_identity` (parametric
-in `min`-coordinates), which is the sole remaining open piece of the
-GNW route.
+Step 2 reduces to a single sorry'd lemma `F_side_identity_aligned`
+(parametric in `min`-coordinates, both sums on `(μ\c').cells`), which
+is the sole remaining open piece of the GNW route.
 
-**File-size**: Helpers.lean is at 15090 lines after S55a (+63 from 15027
-after S54).  ~410 lines under the Docker 32GB-memory ceiling estimate
-(~15500 lines).  S55 (full F-side proof) is likely to push beyond 15500;
-extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` should now
-be a *blocking prerequisite* for S55 (or S55 should target the extracted
-file directly).  The natural extraction boundary is the entire
-double-removal infrastructure (S48-S55a: lines ~5035–5500 for
-geometric+S52, plus ~14629–14844 for S53/S54/S55a-dispatcher and
-`F_side_identity`).
+**File-size**: Helpers.lean is at 15136 lines after S56 (+46 from 15090
+after S55a).  ~360 lines under the Docker 32GB-memory ceiling estimate
+(~15500 lines).  S57 (full F-side proof) is likely to push beyond
+15500; extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
+should now be a *blocking prerequisite* for S57 (or S57 should target
+the extracted file directly).  The natural extraction boundary is the
+entire double-removal infrastructure (S48-S56: lines ~5035–5500 for
+geometric+S52, plus ~14629–14850 for S53/S54/S55a-dispatcher and the
+S55a/S56 F-side block).
 
 Alternative (deferred): a deterministic weighted-path recasting of GNW
 that avoids the exchange step entirely (count weighted walks of every
@@ -302,6 +339,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-08-s08.md` — Session 53: `gnwProb_exchange_lt_row_of_F_side` algebraic combiner (case 1)
 - `sessions/2026-05-08-s09.md` — Session 54: `gnwProb_exchange_lt_col_of_F_side` algebraic combiner (case 2)
 - `sessions/2026-05-08-s10.md` — Session 55a: parametric `F_side_identity` + sorry-free `gnwProb_exchange` dispatcher
+- `sessions/2026-05-09-s01.md` — Session 56: common-domain `F_side_identity_aligned` + sorry-free `F_side_identity`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -318,11 +356,13 @@ Fallback if S55+ stalls.
   (S53 combiner, sorry-free conditional on F-side identity, case `c.1 < c'.1`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14724` — `gnwProb_exchange_lt_col_of_F_side`
   (S54 combiner, sorry-free conditional on F-side identity, case `c'.1 < c.1`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14795` — `F_side_identity`
-  (S55a, sorry-bearing, parametric in `(min c.1 c'.1, min c.2 c'.2)` — sole open sorry on the GNW route)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14820` — `gnwProb_exchange`
-  (S55a, sorry-free, dispatches via `distinct_corners_dichotomy` to S53/S54 combiners, transitive on `F_side_identity`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14858` — `gnwProb_key`
-  (proved modulo `gnwProb_exchange` and `isCorner_removeCorner_of_ne`; `gnwProb_exchange` itself is now sorry-free as of S55a)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15069` — `hook_walk_identity_gnw`
-  (sorry-free dispatcher, transitive on `F_side_identity`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14811` — `F_side_identity_aligned`
+  (S56, sorry-bearing, both sums on `(μ\c').cells` — sole open sorry on the GNW route)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14840` — `F_side_identity`
+  (S55a; sorry-free as of S56, derives from `F_side_identity_aligned` via `sum_gnwProb_eq_removeCorner_cells`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14866` — `gnwProb_exchange`
+  (S55a, sorry-free, dispatches via `distinct_corners_dichotomy` to S53/S54 combiners, transitive on `F_side_identity_aligned`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14904` — `gnwProb_key`
+  (proved modulo `gnwProb_exchange` and `isCorner_removeCorner_of_ne`; `gnwProb_exchange` itself is sorry-free as of S55a)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15115` — `hook_walk_identity_gnw`
+  (sorry-free dispatcher, transitive on `F_side_identity_aligned`)
