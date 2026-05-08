@@ -34,6 +34,8 @@ import Mathlib.Tactic
 
 open SimpleGraph
 
+namespace Erdos761
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- CORE DEFINITIONS
 -- ═══════════════════════════════════════════════════════════════════════
@@ -256,3 +258,5 @@ axiom erdos_761_question2 :
     (G : SimpleGraph V) [DecidableRel G.Adj],
     G.cochromNumber ≥ g →
       ∃ (S : Finset V), (G.induce (↑S : Set V)).dichromNumber ≥ k
+
+end Erdos761
