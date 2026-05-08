@@ -67,14 +67,16 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Borel-Cantelli lemmas are among the most fundamental results in probability theory. The first lemma (BC1, proved by Borel in 1909 and Cantelli in 1917) states: if Σ P(Aₙ) < ∞ then P(Aₙ i.o.) = 0 — no independence is needed. The second lemma (BC2) states the converse direction: under full mutual independence and Σ P(Aₙ) = ∞, P(Aₙ i.o.) = 1. The condition of full mutual independence in BC2 seemed necessary until Erdős and Rényi (1959) showed that pairwise independence suffices. Their proof uses the Chebyshev-variance method, originally developed by Chung and Erdős (1952) in the context of convergent series. The result became a key ingredient in Etemadi's (1981) celebrated elementary proof of the strong law of large numbers: Etemadi used pairwise-independent BC2 to establish the necessity direction — if the SLLN holds for some subsequence then E[|X₀|] < ∞. Petrov (2002) showed that mere uncorrelated-ness (Cov(1_{Aᵢ}, 1_{Aⱼ}) = 0 without the joint probability condition) is not sufficient for BC2, confirming pairwise independence as the correct minimal threshold.",
+    "historicalContext": "The Borel-Cantelli lemmas are among the most fundamental results in probability theory. The first lemma (BC1, proved by Borel in 1909 in his work on normal numbers, and given its modern measure-theoretic form by Cantelli in 1917) states: if Σ P(Aₙ) < ∞ then P(Aₙ i.o.) = 0 — no independence is needed. The second lemma (BC2) gives a partial converse: under full mutual independence and Σ P(Aₙ) = ∞, P(Aₙ i.o.) = 1. Borel's interest in BC1 was driven by his 1909 theorem that almost every real number in [0,1] is normal in every base — the first nontrivial consequence of the strong law of large numbers, predating its general formulation by Kolmogorov (1933).\n\nThe condition of full mutual independence in BC2 was widely believed necessary until Erdős and Rényi proved their landmark 1959 paper, *On Cantor's series with convergent Σ 1/qₙ* (Annales Univ. Sci. Budapest. Sect. Math. 2, 93–109). The paper's actual subject was a number-theoretic question about Cantor expansions $x = \\sum a_n / q_n$ with $\\sum 1/q_n = \\infty$; the BC2 result for pairwise independence was an enabling lemma. Their proof uses the Chebyshev-variance method already employed by Chung and Erdős (1952, *Bull. Amer. Math. Soc.* 58, p. 100) for the convergence half. The Erdős-Rényi result demonstrated for the first time that the natural complete-σ-algebra independence of classical BC2 was overkill for the conclusion — a remarkable instance of *hypothesis economy*.\n\nThe result became a key ingredient in Etemadi's (1981, *Z. Wahrscheinlichkeitstheorie verw. Gebiete* 55, 119–122) celebrated elementary proof of the strong law of large numbers, which used pairwise-independent BC2 to establish the necessity direction: if the SLLN holds then $E[|X_1|] < \\infty$. Etemadi's proof avoided Kolmogorov's three-series theorem, the truncation+symmetrization machinery of classical proofs, and replaced them with a few lines of variance bounds — at the cost of needing only pairwise independence, which Etemadi was the first to recognize as a natural hypothesis class for the SLLN itself. Petrov (2002, *Statist. Probab. Lett.* 67(3), 233–239) constructed events with $\\sum P(A_n) = \\infty$ and zero pairwise covariance but $P(A_n \\text{ i.o.}) < 1$ when one passes to a *weaker* notion than pairwise independence — confirming pairwise independence as the correct minimal threshold for the events level. Modern probabilistic combinatorics (Alon-Spencer, Tao-Vu) treats the pairwise-independent BC2 as the canonical tool for showing that random constructions exhibit their expected almost-sure behavior.",
     "problemStatement": "Can the second Borel-Cantelli lemma for pairwise independent events — used inside the proof of the SLLN necessity direction in `LawsOfLargeNumbersOQ01OQ01` — be extracted as a clean standalone Lean 4 theorem? And what is the minimal independence assumption for BC2?\n\nFormally: Given a probability space $(\\Omega, \\mathcal{F}, \\mu)$ and measurable events $A_n \\in \\mathcal{F}$ that are pairwise independent ($\\forall i \\neq j: \\mu(A_i \\cap A_j) = \\mu(A_i) \\cdot \\mu(A_j)$) with $\\sum_n \\mu(A_n) = \\infty$, prove:\n$$\\mu\\left(\\limsup_{n\\to\\infty} A_n\\right) = 1.$$",
     "proofStrategy": "The proof delegates to `LawsOfLargeNumbersOQ01.borel_cantelli_of_pairwise_independent` from the Aristotle companion file, which implements the Chebyshev-variance method in 5 steps: (1) Define the partial count Sₙ = Σ_{k<n} 1_{Aₖ}; (2) Show E[Sₙ] = Σ_{k<n} P(Aₖ) → ∞ (diverges by hypothesis); (3) Bound Var(Sₙ) ≤ E[Sₙ] using pairwise independence: the cross-covariance terms Cov(1_{Aᵢ}, 1_{Aⱼ}) vanish, leaving Var(Sₙ) = Σ_{k<n} P(Aₖ) = E[Sₙ]; (4) Apply Chebyshev: for any M, P(Sₙ ≤ M) ≤ Var(Sₙ)/(E[Sₙ] − M)² → 0 as E[Sₙ] → ∞; (5) Since Sₙ is non-decreasing and P(Sₙ ≤ M) → 0 for every M, we have Sₙ → ∞ a.s., which is equivalent to μ(limsup Aₙ) = 1.",
     "keyInsights": [
       "Pairwise independence is exactly the right condition to kill the cross-covariance terms in Var(Sₙ) = Σᵢ Σⱼ Cov(1_{Aᵢ}, 1_{Aⱼ}). Pairwise independence gives Cov(1_{Aᵢ}, 1_{Aⱼ}) = E[1_{Aᵢ}·1_{Aⱼ}] − P(Aᵢ)P(Aⱼ) = μ(Aᵢ∩Aⱼ) − μ(Aᵢ)μ(Aⱼ) = 0 for all i ≠ j, reducing Var(Sₙ) to the diagonal terms Σ Var(1_{Aₖ}) ≤ Σ P(Aₖ) = E[Sₙ].",
       "The Chebyshev-variance method bypasses the product-probability calculation that classical BC2 requires. Classical BC2 uses P(∩_{k=m}^{n} Aₖᶜ) = Π_{k=m}^{n}(1 − P(Aₖ)) → 0 to show P(Aₙ finitely often) = 0 — this requires full independence. The variance method is more elementary and works with pairwise independence alone.",
       "Pairwise independence is strictly weaker than mutual independence, but strictly stronger than uncorrelated-ness. Uncorrelated events (Cov = 0 without the joint independence condition P(A∩B) = P(A)P(B)) can fail BC2: Petrov (2002, §10) constructs events Aₙ with all pairwise correlations zero but P(Aₙ i.o.) = 0 despite Σ P(Aₙ) = ∞. The 'pairwise' level is optimal.",
-      "The limsup of a sequence of sets — {ω : ω ∈ Aₙ for infinitely many n} = ∩_{m} ∪_{n≥m} Aₙ — is modeled in Lean via `Filter.limsup A atTop`. The proof that Sₙ → ∞ a.s. is equivalent to μ(limsup Aₙ) = 1 relies on the equivalence: ω is in limsup Aₙ iff 1_{Aₙ}(ω) does not converge to 0, iff Sₙ(ω) = Σ_{k<n} 1_{Aₖ}(ω) is unbounded."
+      "The limsup of a sequence of sets — {ω : ω ∈ Aₙ for infinitely many n} = ∩_{m} ∪_{n≥m} Aₙ — is modeled in Lean via `Filter.limsup A atTop`. The proof that Sₙ → ∞ a.s. is equivalent to μ(limsup Aₙ) = 1 relies on the equivalence: ω is in limsup Aₙ iff 1_{Aₙ}(ω) does not converge to 0, iff Sₙ(ω) = Σ_{k<n} 1_{Aₖ}(ω) is unbounded.",
+      "**Etemadi's leverage**: Etemadi's 1981 elementary SLLN proof exploits this lemma at exactly one place — the necessity direction. Given the SLLN $S_n / n \\to \\mu$ a.s., apply the lemma to $A_n = \\{|X_n| > n\\}$. If $E[|X_1|]$ were infinite, then $\\sum_n P(|X_1| > n) = \\sum_n P(A_n) = \\infty$ (this is the layer-cake lemma). Pairwise independence of $X_n$ implies pairwise independence of $A_n$, so BC2 forces $|X_n| > n$ infinitely often a.s., contradicting $S_n/n \\to \\mu$ (since the latter forces $X_n / n \\to 0$). The classical proof needed full mutual independence here; Etemadi's contribution was recognizing pairwise suffices, opening the door to weak-dependence SLLNs.",
+      "**Hypothesis economy as a research principle**: This result is a paradigm case of identifying the *minimal* hypothesis for a probabilistic conclusion. The same paradigm has driven extensions of the SLLN to ergodic stationary processes (Birkhoff 1931), exchangeable sequences (de Finetti), m-dependent and weakly dependent sequences, and martingales — each by relaxing independence to the next-weakest property compatible with variance control. The Chebyshev-variance method is robust enough to apply throughout this hierarchy, making it one of the most reused proof templates in probability theory."
     ],
     "openQuestions": [
       "Can borel_cantelli_pairwise_indep be contributed to Mathlib4 directly? The existing Mathlib theorem measure_limsup_eq_one requires full independence (via limsup_ae_eq_of_forall_ae_eq or similar), so this would be a genuine new contribution.",
@@ -82,6 +84,13 @@
     ]
   },
   "sections": [
+    {
+      "id": "header-docstring",
+      "title": "Module Docstring — Open Question, Theorem Statement, and References",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "59-line module-level docstring framing the OQ-03 sub-question: can pairwise-independent BC2 (used inside laws-of-large-numbers-oq-01-oq-01's slln_necessity proof) be extracted as a clean standalone Mathlib-worthy theorem, and is pairwise independence the minimal hypothesis? Records both answers as YES and provides the 5-step Chebyshev-variance proof sketch (divergent expectation → Var ≤ E via covariance cancellation → Chebyshev → monotone limit → equivalence to limsup), the minimality argument (stronger is unnecessary; mere uncorrelated-ness is insufficient — Petrov 2002), the Erdős-Rényi (1959) attribution, and primary references (Erdős-Rényi original Cantor-series paper, Petrov counterexample, Feller II)."
+    },
     {
       "id": "setup",
       "title": "Setup and Imports",
@@ -108,24 +117,24 @@
   },
   "crossReferences": [
     {
-      "id": "laws-of-large-numbers-oq-01-oq-01",
-      "title": "SLLN Necessity via Pairwise BC2",
-      "relationship": "Parent proof: the source of this open question. laws-of-large-numbers-oq-01-oq-01 proved the necessity direction of the SLLN using borel_cantelli_of_pairwise_independent as an internal lemma. This entry extracts that lemma as a standalone result."
+      "proofId": "laws-of-large-numbers-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Parent proof: the source of this open question. laws-of-large-numbers-oq-01-oq-01 proved the necessity direction of the SLLN using borel_cantelli_of_pairwise_independent as an internal lemma. This entry extracts that lemma as a standalone result."
     },
     {
-      "id": "laws-of-large-numbers-oq-01",
-      "title": "Strong Law of Large Numbers — Extension Questions",
-      "relationship": "Grandparent: the SLLN open question tree that generated this line of research into minimal independence assumptions."
+      "proofId": "laws-of-large-numbers-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: the SLLN open question tree that generated this line of research into minimal independence assumptions."
     },
     {
-      "id": "laws-of-large-numbers",
-      "title": "Laws of Large Numbers",
-      "relationship": "Root: the foundational gallery entry for the strong and weak laws of large numbers. BC2 is a key component of the SLLN proof chain."
+      "proofId": "laws-of-large-numbers",
+      "relationship": "supports",
+      "description": "Root: the foundational gallery entry for the strong and weak laws of large numbers. BC2 is a key component of the SLLN proof chain."
     },
     {
-      "id": "laws-of-large-numbers-oq-01-oq-02",
-      "title": "SLLN for Pairwise Independent Random Variables",
-      "relationship": "Sibling: explores pairwise independence in the SLLN context more broadly (Etemadi's theorem). BC2 for pairwise independence (this entry) is a lemma in that proof."
+      "proofId": "laws-of-large-numbers-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling: explores pairwise independence in the SLLN context more broadly (Etemadi's theorem). BC2 for pairwise independence (this entry) is a lemma in that proof."
     }
   ],
   "sorries": 0
