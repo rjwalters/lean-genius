@@ -123,6 +123,16 @@
       "targetId": "bezout-identity",
       "relationship": "ancestor",
       "description": "Root of the Bézout identity hub. Bézout's identity $\\gcd(a,b) = sa + tb$ underlies the practical role of GCD algorithms — once the gcd is computed, the coefficients $s, t$ can be extracted from the same recursion. Stein's algorithm computes the gcd; an extended-Bézout variant tracks $s, t$ at the cost of constant-factor overhead per step (the $O(\\log^2 n)$ bound here applies equally)."
+    },
+    {
+      "targetId": "binary-gcd-oq-02-oq-01",
+      "relationship": "supports",
+      "description": "**Direct relevance to this entry's openQuestion #1**: that question asks whether `stepBitOps_le` can be eliminated by defining a more explicit bit-level computation model. `binary-gcd-oq-02-oq-01` does exactly that: it expresses Stein's algorithm using hardware-level bit operations (`Nat.testBit 0` for parity, `Nat.shiftRight 1` for halving) and proves equivalence with `Nat.gcd`. A future enrichment of the present entry could replace the `stepBitOps`/`stepBitOps_le` axioms with a step-cost lemma stated in terms of those bit-level primitives, eliminating one of the two remaining axioms (modulo a still-needed model of comparison cost on `testBit` representations)."
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "shares-technique",
+      "description": "Sibling formulation of Stein's algorithm in the gallery's separate `binary-gcd` hub. The two hubs (`bezout-identity-*` and `binary-gcd-*`) approach the same algorithm from complementary angles — the bezout-identity branch focuses on correctness and complexity for the specific Bézout-extension use case (computing $s, t$ as well as gcd); the binary-gcd branch focuses on bit-level operational equivalences with hardware primitives. The complexity bound proved here transfers to the binary-gcd branch verbatim, since the step count is a property of the abstract control flow, not the bit-level encoding."
     }
   ],
   "references": [
