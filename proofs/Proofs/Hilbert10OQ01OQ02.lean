@@ -76,6 +76,9 @@ import Mathlib.Algebra.Order.Ring.Lemmas
 -- S12 (iter 12, Path B): `linarith` to discharge the conclusion
 -- `a*a + b*b = 0  ∧  0 ≤ a*a  ∧  0 ≤ b*b  →  a*a = 0  ∧  b*b = 0`.
 import Mathlib.Tactic.Linarith
+-- Iter 17 (Path B): `Finset.toList` and `Finset.mem_toList` for Finset
+-- transports of the iter 10 / iter 14 / iter 15 list closures.
+import Mathlib.Data.Finset.Basic
 
 namespace Hilbert10Rationals
 
@@ -1674,6 +1677,158 @@ theorem finIntersectionList_isExistentialUniversalDefinition
     IsExistentialUniversalDefinition (fun q : Rat => ∀ S ∈ l, S q) :=
   codiophantine_implies_existentialUniversal _
     (finIntersectionList_isCoDiophantineDefinition l h)
+
+-- ============================================================
+-- Part VIII.19 (iter 17, Path B): Finset transport of the singleton-list
+-- closure of iter 10 (S11.4).
+-- ============================================================
+
+/-- Iter 17, Path B: **every `Finset Rat`-indexed finite subset of ℚ is
+    Σ₁-definable**.
+
+    Direct Finset transport of iter 10's
+    `finUnionList_singletons_isDiophantineDefinition`: for any
+    `s : Finset Rat`, the predicate `q ∈ s` is Σ₁-definable. Routed
+    through the Mathlib bridge `Finset.mem_toList : a ∈ s.toList ↔ a ∈ s`
+    via the iter 4 Σ₁ class congruence helper. The polynomial witness is
+    iter 10's inductive product polynomial on `s.toList`, unchanged.
+
+    **Significance**: completes the iter-13 next-action priority **S11.4**
+    (Finset arity for the singletons-list closure). Pairs with iter 10's
+    List version to give Σ₁-definability of every finite subset of ℚ
+    indexed either by `List Rat` or by `Finset Rat`. The OPEN content
+    remains unchanged: it is still the COUNTABLY-INFINITE union
+    `⋃_{n : ℤ} {n}` that requires a UNIFORM Σ₁ witness. Iter 17 only
+    promotes the FINITE side from list-indexing to set-indexing, not
+    the open Σ₁ question. -/
+theorem finUnionFinset_singletons_isDiophantineDefinition (s : Finset Rat) :
+    IsDiophantineDefinition (fun q : Rat => q ∈ s) := by
+  have hbridge : ∀ q : Rat, (fun q : Rat => q ∈ s) q ↔
+      (fun q : Rat => q ∈ s.toList) q := by
+    intro q; exact Finset.mem_toList.symm
+  exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr
+    (finUnionList_singletons_isDiophantineDefinition s.toList)
+
+/-- Iter 17 dual, Path B: **every `Finset Rat`-indexed cofinite subset of
+    ℚ is Π₁-definable**.
+
+    Direct Finset transport of iter 10's
+    `finIntersectionList_complement_singletons_isCoDiophantineDefinition`:
+    for any `s : Finset Rat`, the predicate `q ∉ s` is Π₁-definable.
+    Routed through `not_congr Finset.mem_toList` + iter 4 Π₁ congruence. -/
+theorem finIntersectionFinset_complement_singletons_isCoDiophantineDefinition
+    (s : Finset Rat) :
+    IsCoDiophantineDefinition (fun q : Rat => q ∉ s) := by
+  have hbridge : ∀ q : Rat, (fun q : Rat => q ∉ s) q ↔
+      (fun q : Rat => q ∉ s.toList) q := by
+    intro q; exact (not_congr Finset.mem_toList).symm
+  exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr
+    (finIntersectionList_complement_singletons_isCoDiophantineDefinition s.toList)
+
+/-- Iter 17 corollary, Path B: **every `Finset Rat`-indexed finite subset
+    of ℚ is Π₂-definable** via the trivial inclusion `Σ₁ ⊆ Π₂`. -/
+theorem finUnionFinset_singletons_isUniversalExistentialDefinition
+    (s : Finset Rat) :
+    IsUniversalExistentialDefinition (fun q : Rat => q ∈ s) :=
+  diophantine_implies_universal_existential _
+    (finUnionFinset_singletons_isDiophantineDefinition s)
+
+/-- Iter 17 corollary, Path B: **every `Finset Rat`-indexed cofinite
+    subset of ℚ is Σ₂-definable** via the trivial inclusion `Π₁ ⊆ Σ₂`. -/
+theorem finIntersectionFinset_complement_singletons_isExistentialUniversalDefinition
+    (s : Finset Rat) :
+    IsExistentialUniversalDefinition (fun q : Rat => q ∉ s) :=
+  codiophantine_implies_existentialUniversal _
+    (finIntersectionFinset_complement_singletons_isCoDiophantineDefinition s)
+
+-- ============================================================
+-- Part VIII.20 (iter 17, Path B): Finset transport of the arbitrary-
+-- subset list closures of iter 14 / iter 15.
+-- ============================================================
+
+/-- Iter 17, Path B: **the Σ₁ class is closed under `Finset RatSubset`-
+    indexed intersection of arbitrary Σ₁-definable subsets**.
+
+    Finset analog of iter 14's `finIntersectionList_isDiophantineDefinition`,
+    transported via `Finset.mem_toList`. The witness polynomial is the
+    inductive sum-of-squares + interleave on `s.toList` from iter 14
+    (which itself unfolds to iter 12 per cons step). -/
+theorem finIntersectionFinset_isDiophantineDefinition
+    (s : Finset RatSubset) (h : ∀ S ∈ s, IsDiophantineDefinition S) :
+    IsDiophantineDefinition (fun q : Rat => ∀ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsDiophantineDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∀ S ∈ s, S q) q ↔
+      (fun q : Rat => ∀ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · intro hall S hS; exact hall S (Finset.mem_toList.mp hS)
+    · intro hall S hS; exact hall S (Finset.mem_toList.mpr hS)
+  exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr
+    (finIntersectionList_isDiophantineDefinition s.toList h_list)
+
+/-- Iter 17, Path B: **the Π₁ class is closed under `Finset RatSubset`-
+    indexed union of arbitrary Π₁-definable subsets**.
+
+    Finset analog of iter 14's `finUnionList_isCoDiophantineDefinition`,
+    transported via `Finset.mem_toList`. -/
+theorem finUnionFinset_isCoDiophantineDefinition
+    (s : Finset RatSubset) (h : ∀ S ∈ s, IsCoDiophantineDefinition S) :
+    IsCoDiophantineDefinition (fun q : Rat => ∃ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsCoDiophantineDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∃ S ∈ s, S q) q ↔
+      (fun q : Rat => ∃ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mpr hS, hSq⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mp hS, hSq⟩
+  exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr
+    (finUnionList_isCoDiophantineDefinition s.toList h_list)
+
+/-- Iter 17, Path B: **the Σ₁ class is closed under `Finset RatSubset`-
+    indexed union of arbitrary Σ₁-definable subsets**.
+
+    Finset analog of iter 15's `finUnionList_isDiophantineDefinition`,
+    transported via `Finset.mem_toList`. The witness polynomial is the
+    inductive product polynomial on `s.toList` from iter 15 (which
+    itself unfolds to iter 9 per cons step). -/
+theorem finUnionFinset_isDiophantineDefinition
+    (s : Finset RatSubset) (h : ∀ S ∈ s, IsDiophantineDefinition S) :
+    IsDiophantineDefinition (fun q : Rat => ∃ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsDiophantineDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∃ S ∈ s, S q) q ↔
+      (fun q : Rat => ∃ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mpr hS, hSq⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mp hS, hSq⟩
+  exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr
+    (finUnionList_isDiophantineDefinition s.toList h_list)
+
+/-- Iter 17, Path B: **the Π₁ class is closed under `Finset RatSubset`-
+    indexed intersection of arbitrary Π₁-definable subsets**.
+
+    Finset analog of iter 15's `finIntersectionList_isCoDiophantineDefinition`,
+    transported via `Finset.mem_toList`. -/
+theorem finIntersectionFinset_isCoDiophantineDefinition
+    (s : Finset RatSubset) (h : ∀ S ∈ s, IsCoDiophantineDefinition S) :
+    IsCoDiophantineDefinition (fun q : Rat => ∀ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsCoDiophantineDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∀ S ∈ s, S q) q ↔
+      (fun q : Rat => ∀ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · intro hall S hS; exact hall S (Finset.mem_toList.mp hS)
+    · intro hall S hS; exact hall S (Finset.mem_toList.mpr hS)
+  exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr
+    (finIntersectionList_isCoDiophantineDefinition s.toList h_list)
 
 -- ============================================================
 -- Part IX: The landscape, sharpened
