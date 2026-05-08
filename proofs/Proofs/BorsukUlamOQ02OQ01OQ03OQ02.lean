@@ -706,6 +706,104 @@ theorem not_conjectureLPB_of_buDim_three_five_lt_four
   not_conjectureLPB_of_buDim_lt (p := 3) (d := 5) (by decide) (by norm_num)
     (by simpa using h)
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XVI: Plateau infrastructure for largestPrimeBelow
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Successor non-prime preserves LPB**: if `n + 1` is not prime, then
+    `largestPrimeBelow (n + 1) = largestPrimeBelow n`. Direct corollary of
+    Mathlib's `Nat.findGreatest_of_not`.
+
+    This is the atomic step underlying the plateau pattern: as `m` ranges
+    over a maximal prime-gap interval `[p, q)`, `largestPrimeBelow m` stays
+    pinned at the prime `p` because each successor jump is at a composite
+    number. -/
+theorem largestPrimeBelow_succ_of_not_prime (n : ℕ)
+    (h : ¬ Nat.Prime (n + 1)) :
+    largestPrimeBelow (n + 1) = largestPrimeBelow n := by
+  unfold largestPrimeBelow
+  exact Nat.findGreatest_of_not h
+
+/-- **Plateau lemma — no-prime range form**: if no prime exists in the
+    half-open interval `(n, m]`, then `largestPrimeBelow m = largestPrimeBelow n`.
+    Proved by induction on `m - n` via `Nat.le_induction`, repeatedly applying
+    `largestPrimeBelow_succ_of_not_prime` at each composite successor.
+
+    This is the structural reason the LPB function is locally constant
+    between consecutive primes — and hence (conjecturally) why
+    `symBUDim n d` should be constant on the same intervals. -/
+theorem largestPrimeBelow_const_in_no_prime_range (n m : ℕ) (hnm : n ≤ m)
+    (h_no_prime : ∀ k, n < k → k ≤ m → ¬ Nat.Prime k) :
+    largestPrimeBelow m = largestPrimeBelow n := by
+  induction m, hnm using Nat.le_induction with
+  | base => rfl
+  | succ k hk ih =>
+    have h_not_kp1 : ¬ Nat.Prime (k + 1) :=
+      h_no_prime (k + 1) (Nat.lt_succ_of_le hk) le_rfl
+    have h_no_prime_lower : ∀ j, n < j → j ≤ k → ¬ Nat.Prime j := fun j hj1 hj2 =>
+      h_no_prime j hj1 (le_trans hj2 (Nat.le_succ k))
+    rw [largestPrimeBelow_succ_of_not_prime k h_not_kp1, ih h_no_prime_lower]
+
+/-- **Plateau lemma — prime-anchored form**: if `p` is prime, `p ≤ n ≤ m`,
+    `largestPrimeBelow n = p`, and no prime lies in `(n, m]`, then
+    `largestPrimeBelow m = p` as well. -/
+theorem largestPrimeBelow_eq_of_in_plateau (p n m : ℕ)
+    (hp : Nat.Prime p) (hpn : p ≤ n) (hnm : n ≤ m)
+    (h_lpb_n : largestPrimeBelow n = p)
+    (h_no_prime : ∀ k, n < k → k ≤ m → ¬ Nat.Prime k) :
+    largestPrimeBelow m = p := by
+  rw [largestPrimeBelow_const_in_no_prime_range n m hnm h_no_prime, h_lpb_n]
+
+-- ─────────────────────────────────────────────────────────────────────
+-- Conditional consequences (depend on `symBUDim_eq_largestPrime`)
+-- ─────────────────────────────────────────────────────────────────────
+
+/-- **Conjectural `symBUDim` equality from same LPB**: any two `n, m ≥ 2`
+    with `largestPrimeBelow n = largestPrimeBelow m` have `symBUDim n d =
+    symBUDim m d` at every dimension `d`. Conditional on
+    `symBUDim_eq_largestPrime`.
+
+    Combined with `largestPrimeBelow_const_in_no_prime_range`, this is the
+    formal expression of the "plateau collapse" prediction: the conjecture
+    forces three distinct symmetric groups in any prime-gap interval to
+    have identical equivariant Borsuk-Ulam dimension. -/
+theorem symBUDim_eq_of_lpb_eq (n m d : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m)
+    (h : largestPrimeBelow n = largestPrimeBelow m) :
+    symBUDim n d = symBUDim m d := by
+  rw [symBUDim_eq_largestPrime n d hn, symBUDim_eq_largestPrime m d hm, h]
+
+/-- **Conjectural plateau on no-prime range**: if no prime exists in `(n, m]`
+    and `n ≥ 2`, then `symBUDim n d = symBUDim m d` for every `d`.
+    Conditional on `symBUDim_eq_largestPrime`.
+
+    This is the symBUDim-side of the plateau lemma. The atomic version of
+    `symBUDim n d = symBUDim m d` for `m = n + 1` with `n + 1` composite
+    falls out as a direct corollary. -/
+theorem symBUDim_const_in_no_prime_range (n m d : ℕ) (hn : 2 ≤ n) (hnm : n ≤ m)
+    (h_no_prime : ∀ k, n < k → k ≤ m → ¬ Nat.Prime k) :
+    symBUDim n d = symBUDim m d := by
+  have hm : 2 ≤ m := le_trans hn hnm
+  exact symBUDim_eq_of_lpb_eq n m d hn hm
+    (largestPrimeBelow_const_in_no_prime_range n m hnm h_no_prime).symm
+
+/-- **Hypothesis-form of `symBUDim_eq_of_lpb_eq`** — uses the explicit
+    `ConjectureLPB` hypothesis introduced in Part XV instead of the file's
+    axiom. -/
+theorem symBUDim_eq_of_lpb_eq_of (h_conj : ConjectureLPB)
+    (n m d : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m)
+    (h : largestPrimeBelow n = largestPrimeBelow m) :
+    symBUDim n d = symBUDim m d := by
+  rw [h_conj n d hn, h_conj m d hm, h]
+
+/-- **Hypothesis-form of `symBUDim_const_in_no_prime_range`**. -/
+theorem symBUDim_const_in_no_prime_range_of (h_conj : ConjectureLPB)
+    (n m d : ℕ) (hn : 2 ≤ n) (hnm : n ≤ m)
+    (h_no_prime : ∀ k, n < k → k ≤ m → ¬ Nat.Prime k) :
+    symBUDim n d = symBUDim m d := by
+  have hm : 2 ≤ m := le_trans hn hnm
+  exact symBUDim_eq_of_lpb_eq_of h_conj n m d hn hm
+    (largestPrimeBelow_const_in_no_prime_range n m hnm h_no_prime).symm
+
 /-
 ## Summary
 
@@ -835,6 +933,29 @@ theorem not_conjectureLPB_of_buDim_three_five_lt_four
   (which only fires on even d). These pinpoint exactly where future
   Yang-Borsuk research could refute the conjecture.
 
+### Iteration 10 additions (plateau infrastructure for `largestPrimeBelow`)
+- `largestPrimeBelow_succ_of_not_prime` — **axiom-free** atomic step:
+  if `n + 1` is composite, `largestPrimeBelow (n + 1) = largestPrimeBelow n`.
+  Direct corollary of Mathlib's `Nat.findGreatest_of_not`.
+- `largestPrimeBelow_const_in_no_prime_range` — **axiom-free** general
+  plateau lemma: if no prime exists in `(n, m]`, `largestPrimeBelow m =
+  largestPrimeBelow n`. Proved by `Nat.le_induction` lifting the atomic
+  step over each composite successor in the gap.
+- `largestPrimeBelow_eq_of_in_plateau` — **axiom-free** prime-anchored
+  packaging: if `p` is prime, `lpb n = p`, and no prime lies in `(n, m]`,
+  then `lpb m = p` too.
+- `symBUDim_eq_of_lpb_eq` — **conditional** plateau collapse: any two
+  `n, m ≥ 2` with the same `largestPrimeBelow` have equal `symBUDim n d
+  = symBUDim m d` at every `d`. Conditional on `symBUDim_eq_largestPrime`.
+- `symBUDim_const_in_no_prime_range` — **conditional** corollary chaining
+  the two: if no prime exists in `(n, m]` and `n ≥ 2`, then `symBUDim n d
+  = symBUDim m d` for all `d`. Formal expression of the "plateau collapse"
+  prediction (S_n's in any prime-gap interval conjecturally share the
+  equivariant BU dimension at every dimension).
+- `symBUDim_eq_of_lpb_eq_of`, `symBUDim_const_in_no_prime_range_of` —
+  hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument
+  rather than relying on the file's axiom (matches Part XV's pattern).
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -875,4 +996,11 @@ theorem not_conjectureLPB_of_buDim_three_five_lt_four
 #check @symBUDim_eq_buDim_at_prime_of
 #check @not_conjectureLPB_of_buDim_lt
 
+#check @largestPrimeBelow_succ_of_not_prime
+#check @largestPrimeBelow_const_in_no_prime_range
+#check @largestPrimeBelow_eq_of_in_plateau
+#check @symBUDim_eq_of_lpb_eq
+#check @symBUDim_const_in_no_prime_range
+#check @symBUDim_eq_of_lpb_eq_of
+#check @symBUDim_const_in_no_prime_range_of
 end BorsukUlamSymPrime

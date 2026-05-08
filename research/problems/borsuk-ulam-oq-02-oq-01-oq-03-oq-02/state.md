@@ -284,3 +284,77 @@ equivariant cohomology of Z/3 on small spheres. A proof of
 `not_conjectureLPB_of_buDim_three_three_lt_two`; a proof of
 `buDim 3 3 = 2` would tighten the conjecture's content at the
 simplest odd-d case beyond Yang-Borsuk.
+
+## Iteration 10 Builds (researcher-6, 2026-05-08)
+
+Focus: **plateau infrastructure for `largestPrimeBelow`**. Adds the
+axiom-free engine for the local-constancy structure of `lpb` between
+consecutive primes (the structural reason `lpb` is constant on
+prime-gap intervals) plus the conditional `symBUDim` consequence —
+the formal "plateau collapse" content of the conjecture.
+
+### Part XVI additions (axiom-free)
+
+- `largestPrimeBelow_succ_of_not_prime`: atomic step. If `n + 1` is
+  not prime, `largestPrimeBelow (n + 1) = largestPrimeBelow n`.
+  One-line corollary of Mathlib's `Nat.findGreatest_of_not`.
+- `largestPrimeBelow_const_in_no_prime_range`: general plateau
+  lemma. If no prime exists in `(n, m]`, then `largestPrimeBelow m =
+  largestPrimeBelow n`. Proved by `Nat.le_induction` — each successor
+  jump in the gap is at a composite number, so the atomic step
+  applies.
+- `largestPrimeBelow_eq_of_in_plateau`: prime-anchored packaging.
+  If `p` is prime, `p ≤ n ≤ m`, `largestPrimeBelow n = p`, and no
+  prime lies in `(n, m]`, then `largestPrimeBelow m = p`. Convenient
+  for combining with prime-gap data.
+
+### Part XVI additions (conditional on `symBUDim_eq_largestPrime`)
+
+- `symBUDim_eq_of_lpb_eq`: plateau collapse — any two `n, m ≥ 2`
+  with `largestPrimeBelow n = largestPrimeBelow m` have `symBUDim n d
+  = symBUDim m d` at every dimension `d`. Two-line `rw` proof through
+  the file's axiom.
+- `symBUDim_const_in_no_prime_range`: chained corollary. If no prime
+  exists in `(n, m]` and `n ≥ 2`, then `symBUDim n d = symBUDim m d`
+  for every `d`. Formal expression of the "plateau collapse"
+  prediction: distinct symmetric groups within any maximal prime-gap
+  interval conjecturally share the equivariant Borsuk-Ulam dimension
+  at every dimension.
+
+### Hypothesis-form variants (matching Part XV)
+
+- `symBUDim_eq_of_lpb_eq_of`, `symBUDim_const_in_no_prime_range_of`:
+  identical statements with the dependence on the conjecture encoded
+  via a `ConjectureLPB` hypothesis (Part XV) rather than via the
+  file's `axiom symBUDim_eq_largestPrime`. For downstream
+  developments that want to track conjecture-dependence in the type
+  signature.
+
+**Counts**: lineCount 878→1006 (+128), theoremCount 58→65 (+7,
+substantive 56→63), definitionCount 2 (unchanged — no new defs;
+all seven additions are theorems), axiomCount 1 (unchanged), sorries
+0 (unchanged).
+
+**Significance**: combined with the concrete LPB values at composite
+n (PR #17286 — Parts XII, XIII, currently open), this gives a
+uniform *structural* engine for the "plateau collapse" pattern.
+Where #17286 shows individual values like `largestPrimeBelow 8 = 7`,
+`_9 = 7`, `_10 = 7` via `decide`, this iteration shows the *general
+reason* those values agree: no prime in `(7, 11)`, so the
+atomic-step induction pins them all at 7. And the conditional
+consequence `symBUDim_const_in_no_prime_range` says the conjecture
+forces `symBUDim 8 d = symBUDim 9 d = symBUDim 10 d` for all `d` —
+three distinct symmetric groups with qualitatively different
+subgroup structures (S₈ ⊃ V₄ × A₄, S₉ ⊃ A₉ simple of order 181440,
+S₁₀ ⊃ A₅ × A₅) nevertheless share the *same* equivariant BU
+dimension at every `d`. The plateau collapse is the most concrete
+content-bearing prediction of the conjecture between primes, and
+now has a uniform axiom-free machine behind it — independent of any
+individual `decide`-based LPB-at-composite-n computation.
+
+**Build**: pending (Docker rebuild from fresh Mathlib cache).
+
+**Path forward** (unchanged from iter 9 plus iter 10): once #17286
+merges, two-line specializations of `symBUDim_const_in_no_prime_range`
+should give clean axiom-pinning plateau collapse instances at
+concrete composite n.
