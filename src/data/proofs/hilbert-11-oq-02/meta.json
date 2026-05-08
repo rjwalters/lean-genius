@@ -22,8 +22,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 328,
-    "theoremCount": 5,
+    "lineCount": 418,
+    "theoremCount": 17,
     "definitionCount": 3,
     "assumptions": "2 axioms: (1) selmer_no_rational_solution — Selmer's 1951 theorem that 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions; the full proof uses 3-descent on the associated elliptic curve y² = x³ - 432·15² and computation of the 3-Selmer group, neither of which is available in Mathlib v4.26.0. (2) selmer_padic_solubility — for every prime p, the Selmer cubic is solvable over ℚₚ; provable via Hensel's lemma on the smooth reduction mod p for p ∉ {2,3,5} and direct construction at the small primes, but requires Hensel infrastructure for ℚₚ. The real solubility (existence of a nontrivial real root) and the easy directions ℚ → ℝ and ℚ → ℚₚ are proved unconditionally from Mathlib's intermediate_value_Icc and the standard ring embeddings.",
     "dateAdded": "2026-05-08",
@@ -55,7 +55,8 @@
       "Axiom selmer_padic_solubility: p-adic solubility at every prime (Hensel infrastructure pending in Lean).",
       "Theorem selmer_locally_soluble_everywhere: local solubility ℝ + every ℚₚ, combining the proved real case with the axiomatized p-adic case.",
       "Theorem selmer_hasse_principle_fails: the Hasse principle fails for the Selmer cubic — proved from the two axioms in 4 lines.",
-      "Definition colliot_thelene_conjecture: documented placeholder (`Prop := True`) for the Brauer-Manin conjecture, which would require étale cohomology and adelic-points machinery not present in Mathlib."
+      "Definition colliot_thelene_conjecture: documented placeholder (`Prop := True`) for the Brauer-Manin conjecture, which would require étale cohomology and adelic-points machinery not present in Mathlib.",
+      "Section 9 — twelve `decide`-verified mod-`p` (or mod-27) witness lemmas covering every prime appearing in the Section 8 Hensel-elimination roadmap: selmer_witness_p11, p17, p23, p29 (Case A: p ≡ 2 mod 3, p ∉ {2,5}); selmer_witness_p7, p13, p19, p31, p37 (Case B: p ≡ 1 mod 3, p ≥ 7); selmer_witness_p2, p5 (special primes via direct construction); selmer_witness_p3_mod27 (singular reduction, strong-form Hensel input). Lifts to ℚ_p require Mathlib's Hensel API and are deferred."
     ]
   },
   "overview": {
@@ -147,10 +148,26 @@
     {
       "id": "padic-roadmap",
       "title": "Section 8: Roadmap for Eliminating selmer_padic_solubility",
-      "startLine": 256,
-      "endLine": 328,
+      "startLine": 257,
+      "endLine": 319,
       "summary": "Documentation-only section catalogues the explicit Hensel-lift recipe for `selmer_padic_solubility` prime by prime. Case A (p ≡ 2 mod 3, p ∉ {2,5}): cubing is bijective on (ℤ/p)*, so the (0,1,z) projection lifts; explicit z₀ given for p = 11, 17, 23, 29. Case B (p ≡ 1 mod 3, p ≥ 7): only 1/3 of nonzero residues are cubes; smooth zeros nevertheless exist by Hasse-Weil; explicit smooth (x,y,z) given for p = 7, 13, 19, 31, 37. Special primes p ∈ {2, 5}: smooth direct constructions. Special prime p = 3: singular reduction (every Jacobian coefficient ≡ 0 mod 3); strong-form Hensel applies after climbing to mod 27, witness (0, 1, 4) mod 27 with v₃(f) = 3 > 2·v₃(∂_z f) = 2.",
       "mathContext": "**Cube-residue analysis.** The structure of (ℤ/p)* under cubing splits primes into two regimes: p ≡ 2 (mod 3) ⇒ cubing is a bijection (every element is a cube); p ≡ 1 (mod 3) ⇒ exactly one third of (ℤ/p)* are cubes. **Hensel hypothesis.** For p ∉ {3}, standard Hensel `|f(α)|_p < |f'(α)|_p` lifts a smooth mod-p zero to a unique p-adic zero. **Singular reduction at p = 3.** Since 3 divides every coefficient of the Jacobian (9, 12, 15) of the Selmer cubic, no smooth mod-3 zero exists; one must use the strong-form Hensel `|f(α)|_p < |f'(α)|_p²` after climbing to mod 27. **Hasse-Weil bound.** A smooth genus-1 cubic curve over F_p has at least p + 1 - 2√p ≥ 5 (for p ≥ 5) F_p-points, guaranteeing the existence of a smooth mod-p zero for every p ≥ 5; for the Selmer cubic specifically the discriminant is supported on {2, 3, 5} so smooth reduction holds for p ≥ 7."
+    },
+    {
+      "id": "padic-witnesses",
+      "title": "Section 9: Computational Verification of Hensel-Elimination Witnesses",
+      "startLine": 321,
+      "endLine": 392,
+      "summary": "Twelve named `decide`-verified mod-`p` (or mod-27, for p = 3) witness lemmas covering every prime in the Section 8 roadmap. Case A (selmer_witness_p11, p17, p23, p29) uses the (0, 1, z₀) projection; Case B (selmer_witness_p7, p13, p19, p31, p37) uses smooth zeros from the Hasse–Weil bound; special primes (selmer_witness_p2, p5) use direct constructions; the singular-reduction prime p = 3 (selmer_witness_p3_mod27) is recorded mod 27 to feed strong-form Hensel. Lifting these witnesses to ℚ_p requires Mathlib's Hensel API and is left for a future session.",
+      "mathContext": "Each witness lemma is a closed proposition `selmerPoly (a : ZMod m) b c = 0`, decidable in finite time by computation in the finite ring `ZMod m`. The `decide` tactic resolves each by evaluating the polynomial expression and checking equality with `0`. This converts the prose witness data of Section 8 into machine-verified theorems, removing all hand-arithmetic gaps in the roadmap."
+    },
+    {
+      "id": "post-section9-summary",
+      "title": "Section 10: Status Summary (post Section 9)",
+      "startLine": 394,
+      "endLine": 418,
+      "summary": "Updated counts after Section 9: 17 theorems (5 substantive + 12 witness lemmas), 3 definitions, 2 axioms, 0 sorries. Status remains `axiomatized`; the witness lemmas are infrastructure for future axiom-elimination, not a reduction in the assumption count.",
+      "mathContext": "Section 9 contribution: 12 named theorems, each a `decide`-closed proposition in `ZMod p` (or `ZMod 27`). The substantive (non-`decide`) theorem count is unchanged at 5; the additional witness lemmas are the inputs that future Hensel lifts will consume to discharge `selmer_padic_solubility` per prime."
     }
   ],
   "conclusion": {
@@ -189,15 +206,16 @@
       "Mathlib.Topology.Algebra.Order.IntermediateValue",
       "Mathlib.Topology.Order.Bornology",
       "Mathlib.Analysis.Polynomial.Basic",
+      "Mathlib.Data.ZMod.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [
       "Set"
     ],
     "namespace": "Hilbert11OQ02",
-    "lineCount": 328,
+    "lineCount": 418,
     "axiomCount": 2,
-    "theoremCount": 5,
+    "theoremCount": 17,
     "definitionCount": 3,
     "path": "Proofs/Hilbert11OQ02.lean",
     "sorries": 0

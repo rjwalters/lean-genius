@@ -2,6 +2,7 @@ import Mathlib.NumberTheory.Padics.PadicNumbers
 import Mathlib.Topology.Algebra.Order.IntermediateValue
 import Mathlib.Topology.Order.Bornology
 import Mathlib.Analysis.Polynomial.Basic
+import Mathlib.Data.ZMod.Basic
 import Mathlib.Tactic
 
 /-
@@ -316,6 +317,95 @@ into the per-prime lemmas above and discharge each via the recipe given.
 The `colliot_thelene_conjecture` placeholder (currently `Prop := True`)
 is *not* in scope here; that requires Brauer-Manin / scheme-theoretic
 infrastructure not present in Mathlib. -/
+
+/-! ## Section 9: Computational Verification of Hensel-Elimination Witnesses
+
+For each prime in the Section 8 roadmap we record the mod-`p` (or mod-27,
+for `p = 3`) witness that satisfies `selmerPoly = 0`. The arithmetic check
+is by `decide` in `ZMod p`, so each lemma is *machine-verified* — there
+is no hand-computation gap between the roadmap text and the
+formalization.
+
+Lifting these witnesses to ℚ_p requires Mathlib's Hensel API
+(`Mathlib.NumberTheory.Padics.Hensel.hensels_lemma` and friends) and is
+left for a future session; the lemmas here are the *inputs* that Hensel
+will consume. -/
+
+/-! ### Case A: p ≡ 2 (mod 3), p ∉ {2, 5} — `(0, 1, z₀)` projection -/
+
+/-- Witness for the Selmer cubic at `p = 11`: `(0, 1, 2)` mod 11. -/
+theorem selmer_witness_p11 :
+    selmerPoly (0 : ZMod 11) 1 2 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 17`: `(0, 1, 5)` mod 17. -/
+theorem selmer_witness_p17 :
+    selmerPoly (0 : ZMod 17) 1 5 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 23`: `(0, 1, 18)` mod 23. -/
+theorem selmer_witness_p23 :
+    selmerPoly (0 : ZMod 23) 1 18 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 29`: `(0, 1, 22)` mod 29. -/
+theorem selmer_witness_p29 :
+    selmerPoly (0 : ZMod 29) 1 22 = 0 := by decide
+
+/-! ### Case B: p ≡ 1 (mod 3), p ≥ 7 — smooth zero from Hasse–Weil bound -/
+
+/-- Witness for the Selmer cubic at `p = 7`: `(1, 1, 0)` mod 7. -/
+theorem selmer_witness_p7 :
+    selmerPoly (1 : ZMod 7) 1 0 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 13`: `(1, 4, 2)` mod 13. -/
+theorem selmer_witness_p13 :
+    selmerPoly (1 : ZMod 13) 4 2 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 19`: `(1, 0, 4)` mod 19. -/
+theorem selmer_witness_p19 :
+    selmerPoly (1 : ZMod 19) 0 4 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 31`: `(1, 3, 17)` mod 31. -/
+theorem selmer_witness_p31 :
+    selmerPoly (1 : ZMod 31) 3 17 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 37`: `(0, 1, 5)` mod 37. -/
+theorem selmer_witness_p37 :
+    selmerPoly (0 : ZMod 37) 1 5 = 0 := by decide
+
+/-! ### Special primes p ∈ {2, 5} — direct construction -/
+
+/-- Witness for the Selmer cubic at `p = 2`: `(1, 0, 1)` mod 2. -/
+theorem selmer_witness_p2 :
+    selmerPoly (1 : ZMod 2) 0 1 = 0 := by decide
+
+/-- Witness for the Selmer cubic at `p = 5`: `(1, 2, 0)` mod 5. -/
+theorem selmer_witness_p5 :
+    selmerPoly (1 : ZMod 5) 2 0 = 0 := by decide
+
+/-! ### Special prime p = 3 — singular reduction; mod-27 witness -/
+
+/-- Witness for the Selmer cubic at `p = 3` in the mod-27 strong-form
+    Hensel sense: `selmerPoly 0 1 4 ≡ 0 (mod 27)`. The mod-3 reduction
+    of the Selmer cubic is singular (every coefficient is ≡ 0 mod 3),
+    so the witness is recorded mod 27 = 3³ to feed the strong-form
+    Hensel hypothesis. See Section 8 for the valuation analysis. -/
+theorem selmer_witness_p3_mod27 :
+    selmerPoly (0 : ZMod 27) 1 4 = 0 := by decide
+
+/-! ## Section 10: Status Summary (post Section 9) -/
+
+/-!
+Section 9 adds 12 named, machine-verified witness lemmas covering every
+prime appearing in the Section 8 roadmap. The witnesses are now
+*integrated* into the Lean development — not just text in a comment —
+and any future per-prime Hensel lift can cite them by name.
+
+### Updated counts
+- Theorems: 5 + 12 witness lemmas = 17.
+- Substantive theorems (non-`decide` content): 5 (unchanged).
+- Definitions: 2 (`selmerPoly`, `selmerHassePrinciple` + `colliot_thelene_conjecture`).
+- Sorries: 0 (unchanged).
+- Axioms: 2 (unchanged): `selmer_no_rational_solution` + `selmer_padic_solubility`.
+- Status: still `axiomatized`. -/
 
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
