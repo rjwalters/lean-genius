@@ -12,6 +12,18 @@
     "prerequisites": ["ballot-problem-oq-01-oq-01", "BallotProblemOQ01OQ01.lean"]
   },
   {
+    "id": "ann-structural-overview",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 35, "endLine": 211 },
+    "type": "insight",
+    "title": "Structural Overview: Decomposing the Cycle Lemma into Two Ingredients",
+    "content": "Reading the file at the level of *which property of the step alphabet is being exploited where*, the 9 theorems split cleanly into two groups corresponding to the file's two parts.\n\n**Part I (lines 35-120, unit-decrement)** isolates the *downward continuity* property: with steps $\\geq -1$, prefix sums cannot 'jump over' an integer level going down. This gives a discrete IVT. The 3 theorems formalize: (a) the local one-step bound `unit_decrement_step_bound`, (b) the abstract IVT primitive `unit_decrement_downward_ivt` via leftmost-crossing, and (c) its global consequence `unit_decrement_levels_achieved`. This is exactly *one half* of the algebraic content of the Dvoretzky-Motzkin cycle lemma — the half needed to show $|\\text{goodRotations}| \\geq S$ in the $\\{+1, -k\\}$ case.\n\n**Part II (lines 121-211, all-positive)** explores the degenerate boundary where the cycle lemma trivializes. With steps $> 0$, prefix sums are *strictly* monotone — the strongest possible local condition. The 6 theorems chain: (1) one-step strict increase → (2) global strict monotonicity → (3) strict upper bound by the total sum → (4) non-negativity → (5) every rotation is good (case-split on wrapping vs non-wrapping prefix) → (6) cardinality $|\\text{goodRotations}| = |l|$ by Finset extensionality. This is the *opposite extreme* from $\\{+1, -k\\}$: the count $|l|$ is the maximum possible, and the cycle lemma's content collapses into a triviality.\n\n**The bracketing principle**: the unit-decrement case (Part I) is the *weakest* alphabet for which the Dvoretzky-Motzkin downward-IVT mechanism survives; the all-positive case (Part II) is the *strongest* alphabet for which the cycle lemma's count formula degenerates. Together they bracket the classical $\\{+1, -k\\}$ case and clarify which structural ingredients are essential to the lemma. A reader interested in extending the cycle lemma to a new alphabet $\\Sigma$ can use this decomposition as a checklist: does $\\Sigma$ admit a downward IVT (Part I-style)? Does $\\Sigma$ have a non-trivial cycle structure (i.e., not Part II)? If both, an analog of the classical cycle lemma is plausible; the missing ingredient is then the level-achievement property specific to the alphabet.",
+    "mathContext": "$\\text{Part I} = \\text{downward IVT for } \\Sigma = \\{x \\in \\mathbb{Z} : x \\geq -1\\}$ (an infinite alphabet).\n$\\text{Part II} = \\text{degenerate cycle structure for } \\Sigma = \\{x \\in \\mathbb{Z} : x > 0\\}.$\nClassical Dvoretzky-Motzkin: $\\Sigma = \\{+1, -k\\}$ for fixed $k$. The classical count $|\\text{goodRotations}| = S$ requires both directions of the IVT plus the alphabet-specific level-achievement; this file isolates each.",
+    "significance": "key",
+    "relatedConcepts": ["proof decomposition", "alphabet-determined combinatorics", "Dvoretzky-Motzkin 1947", "Raney 1960", "discrete IVT methodology"],
+    "prerequisites": ["BallotProblemOQ01OQ01 (parent {+1, -k} cycle lemma)", "cycle lemma history"]
+  },
+  {
     "id": "ann-step-bound",
     "proofId": "ballot-problem-oq-01-oq-01-oq-02",
     "range": { "startLine": 39, "endLine": 47 },
