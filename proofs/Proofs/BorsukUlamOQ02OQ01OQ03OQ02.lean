@@ -386,6 +386,61 @@ theorem symBUDim_twelve_lower_unconditional (k : ℕ) (hk : 0 < k) :
     2 * k - 1 ≤ symBUDim 12 (2 * k) :=
   symBUDim_even_lower 12 k (by norm_num) hk
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART VIII: Conjecture specialized at prime n
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Specialization at prime n**: at any prime `p`, the conjectural equality
+    `symBUDim_eq_largestPrime` simplifies to the clean statement
+        `symBUDim p d = buDim p d`,
+    because `largestPrimeBelow p = p` by `largestPrimeBelow_self_of_prime`.
+
+    This isolates the *prime-n content* of the open question: when `n` is
+    itself prime, the conjecture asks whether the Sₙ-equivariant BU
+    dimension equals the cyclic-prime-`n` BU dimension — a strictly
+    Sₙ-versus-ℤ/p question, no Bertrand selector involved.
+
+    **Conditional on the axiom** `symBUDim_eq_largestPrime`. The statement
+    has no prime-≥2 hypothesis on the RHS because primality already forces
+    `2 ≤ p` via `Nat.Prime.two_le`. -/
+theorem symBUDim_eq_buDim_at_prime (p d : ℕ) (hp : Nat.Prime p) :
+    symBUDim p d = buDim p d := by
+  have h2 : 2 ≤ p := hp.two_le
+  rw [symBUDim_eq_largestPrime p d h2, largestPrimeBelow_self_of_prime p hp]
+
+/-- **Tight closed form at prime n on even d** (conditional on the axiom):
+    for prime `p` and `k ≥ 1`,
+        `symBUDim p (2k) = 2k - 1`.
+    Combines `symBUDim_eq_buDim_at_prime` with parent's `buDim_prime`. -/
+theorem symBUDim_prime_even_formula (p k : ℕ) (hp : Nat.Prime p) (hk : 0 < k) :
+    symBUDim p (2 * k) = 2 * k - 1 := by
+  rw [symBUDim_eq_buDim_at_prime p (2 * k) hp]
+  exact buDim_prime p k hp hk
+
+/-- **Concrete prime-n instance at n = 11** (conditional):
+    `symBUDim 11 d = buDim 11 d`. -/
+theorem symBUDim_eleven_eq_buDim_eleven (d : ℕ) :
+    symBUDim 11 d = buDim 11 d :=
+  symBUDim_eq_buDim_at_prime 11 d (by norm_num)
+
+/-- **Concrete prime-n instance at n = 13** (conditional):
+    `symBUDim 13 d = buDim 13 d`. Pushes the enumerated range past 12. -/
+theorem symBUDim_thirteen_eq_buDim_thirteen (d : ℕ) :
+    symBUDim 13 d = buDim 13 d :=
+  symBUDim_eq_buDim_at_prime 13 d (by norm_num)
+
+/-- **Concrete closed form at n = 11** (conditional):
+    `symBUDim 11 (2k) = 2k - 1` for k ≥ 1. -/
+theorem symBUDim_eleven_even_formula (k : ℕ) (hk : 0 < k) :
+    symBUDim 11 (2 * k) = 2 * k - 1 :=
+  symBUDim_prime_even_formula 11 k (by norm_num) hk
+
+/-- **Concrete closed form at n = 13** (conditional):
+    `symBUDim 13 (2k) = 2k - 1` for k ≥ 1. -/
+theorem symBUDim_thirteen_even_formula (k : ℕ) (hk : 0 < k) :
+    symBUDim 13 (2 * k) = 2 * k - 1 :=
+  symBUDim_prime_even_formula 13 k (by norm_num) hk
+
 /-
 ## Summary
 
@@ -430,6 +485,15 @@ theorem symBUDim_twelve_lower_unconditional (k : ℕ) (hk : 0 < k) :
 ### Theorems requiring `symBUDim_eq_largestPrime` axiom
 - `symBUDim_even_formula` — closed form on even d.
 - `symBUDim_three_four`, `symBUDim_four_six` — concrete instances.
+- `symBUDim_eq_buDim_at_prime` — at any prime p, conjecture collapses to
+  `symBUDim p d = buDim p d` (isolates the *prime-n content*: Sₙ vs ℤ/p,
+  no Bertrand selector).
+- `symBUDim_prime_even_formula` — closed form `symBUDim p (2k) = 2k - 1`
+  at any prime p, k ≥ 1.
+- `symBUDim_eleven_eq_buDim_eleven`, `symBUDim_thirteen_eq_buDim_thirteen` —
+  concrete prime-n instances at n = 11, 13.
+- `symBUDim_eleven_even_formula`, `symBUDim_thirteen_even_formula` —
+  concrete closed forms at n = 11, 13.
 
 ### Concrete instances (axiom-free)
 - `symBUDim_five_lower_unconditional`, `symBUDim_two_four_unconditional`,
@@ -460,5 +524,7 @@ theorem symBUDim_twelve_lower_unconditional (k : ℕ) (hk : 0 < k) :
 #check @largestPrimeBelow_lt_of_not_prime
 #check @largestPrimeBelow_mono
 #check @symBUDim_eq_largestPrime_two_unconditional
+#check @symBUDim_eq_buDim_at_prime
+#check @symBUDim_prime_even_formula
 
 end BorsukUlamSymPrime
