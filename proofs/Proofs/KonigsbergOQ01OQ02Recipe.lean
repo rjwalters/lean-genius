@@ -109,4 +109,79 @@ lemma closed_walk_balance' (walk : List V) (n : ℕ)
       · have hne : j + 1 ≠ 0 := Nat.succ_ne_zero j
         simp [h, hne]
 
+/-- **Generic open_walk_interior_balanced** in the new `walk[i]? = some v` form.
+    For an OPEN walk where neither endpoint equals `v` (so `v` is purely
+    interior), the source-count of `v` equals its target-count.
+
+    Proof: bijection `i ↦ i - 1` maps source positions to target positions.
+    The endpoint hypotheses ensure `i = 0` is not a source position (because
+    `walk[0]? ≠ some v`) and `j = n - 1` is not the largest target position
+    (because `walk[n]? ≠ some v` would forbid `j + 1 = n`), keeping the
+    bijection well-defined on `[1, n-1] → [0, n-2]`.
+
+    This is the worked-out template Session 10/11 should transcribe in-place
+    into `KonigsbergOQ01OQ02.lean`'s `open_walk_interior_balanced` (currently
+    L517–559 of the broken main file).
+
+    Compared to the broken version, the differences are:
+    1. Endpoint hypotheses use `walk[0]? ≠ some v` / `walk[n]? ≠ some v`
+       (Option-form, no bound proof needed).
+    2. Filter predicates use `walk[i]? = some v`.
+    3. The `by_contra; push_neg; have : i = 0 := by omega; exact hw0 ...`
+       contradiction shape ports verbatim — the only change is that the
+       `hi_v` rewrite target is `walk[0]? = some v` instead of
+       `walk.get ⟨0, _⟩ = v`. -/
+lemma open_walk_interior_balanced' (walk : List V) (n : ℕ)
+    (hlen : walk.length = n + 1)
+    (v : V)
+    (hw0 : walk[0]? ≠ some v)
+    (hwn : walk[n]? ≠ some v) :
+    ((Finset.range n).filter fun i => walk[i]? = some v).card =
+    ((Finset.range n).filter fun i => walk[i + 1]? = some v).card := by
+  apply Finset.card_bij (fun i _ => i - 1)
+  · -- maps into target filter
+    intro i hi
+    simp only [Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_lt, hi_v⟩ := hi
+    -- i ≥ 1: walk[0]? ≠ some v, so i = 0 contradicts walk[i]? = some v
+    have hi1 : 1 ≤ i := by
+      by_contra h
+      push_neg at h
+      have hi0 : i = 0 := by omega
+      exact hw0 (hi0 ▸ hi_v)
+    refine ⟨by omega, ?_⟩
+    -- walk[(i - 1) + 1]? = walk[i]? = some v
+    have hidx : i - 1 + 1 = i := by omega
+    rw [hidx]
+    exact hi_v
+  · -- injective: i - 1 = j - 1 with i, j ≥ 1 ⟹ i = j
+    intro i hi j hj heq
+    simp only [Finset.mem_filter, Finset.mem_range] at hi hj
+    obtain ⟨_, hi_v⟩ := hi
+    obtain ⟨_, hj_v⟩ := hj
+    have hi1 : 1 ≤ i := by
+      by_contra h
+      push_neg at h
+      have hi0 : i = 0 := by omega
+      exact hw0 (hi0 ▸ hi_v)
+    have hj1 : 1 ≤ j := by
+      by_contra h
+      push_neg at h
+      have hj0 : j = 0 := by omega
+      exact hw0 (hj0 ▸ hj_v)
+    omega
+  · -- surjective: target position j has preimage j + 1
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range] at hj ⊢
+    obtain ⟨hj_lt, hj_v⟩ := hj
+    -- j + 1 < n: walk[n]? ≠ some v, so j + 1 = n would contradict walk[j+1]? = some v
+    have hjn : j + 1 < n := by
+      by_contra h
+      push_neg at h
+      have hjn_eq : j + 1 = n := by omega
+      exact hwn (hjn_eq ▸ hj_v)
+    refine ⟨j + 1, ⟨by omega, ?_⟩, by omega⟩
+    -- walk[j + 1]? = some v (direct from hypothesis)
+    exact hj_v
+
 end KonigsbergOQ01OQ02Recipe
