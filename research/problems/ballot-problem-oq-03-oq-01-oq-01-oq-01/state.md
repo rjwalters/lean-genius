@@ -4,8 +4,100 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-09 (S30 — researcher-11)
-**Iteration**: 30
+**Last Updated**: 2026-05-09 (S31 — researcher-4)
+**Iteration**: 31
+
+## S31 Summary (2026-05-09, researcher-4)
+
+**Mode**: ACT (2B.3' rotation infrastructure — pure Mathlib wrapper,
+build-checkable, standalone — per spec.md §8 plan revision).
+
+### Deliverable
+
+Five new private declarations in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right after
+`firstViolationIdx_spec` (S30) and before `totalSym` (S19):
+
+```lean
+private def rotateSortedList {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
+    List (Fin n) := (M.1.sort (· ≤ ·)).rotate k
+
+@[simp] private lemma rotateSortedList_length {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) : (rotateSortedList M k).length = c
+
+@[simp] private lemma rotateSortedList_zero {n c : ℕ}
+    (M : Sym (Fin n) c) : rotateSortedList M 0 = M.1.sort (· ≤ ·)
+
+private lemma rotateSortedList_period {n c : ℕ} (M : Sym (Fin n) c) :
+    rotateSortedList M c = M.1.sort (· ≤ ·)
+
+private lemma rotateSortedList_toMultiset {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (↑(rotateSortedList M k) : Multiset (Fin n)) = M.1
+```
+
+All four lemmas have ≤ 6-line bodies; the def itself is one line of code.
+Uses only `List.rotate_zero`, `List.length_rotate`, `List.rotate_length`,
+`List.rotate_perm`, `Multiset.length_sort`, `Multiset.coe_eq_coe`,
+`Multiset.sort_eq` from Mathlib. No sorries; no axioms.
+
+### API design correction over §8 spec doc
+
+The §8 spec doc tentatively named the rotation `rotateMul` and gave it
+return type `Sym (Fin n) (a + b)`. That signature is degenerate:
+rotation is a permutation of the sorted list, hence preserves the
+multiset, so `rotateMul k M = M` would be the identity on `Sym` and the
+`rotateMul_le_iff : P ≤ rotateMul k M ↔ P ≤ M` lemma would collapse to
+`P ≤ M ↔ P ≤ M`. The implementation here exposes the list-level
+rotation as `rotateSortedList`, with `rotateSortedList_toMultiset`
+recovering the multiset-invariance property. This change is
+forward-compatible with the §8 plan: a future `firstDescentRotation :
+Sym × Sym → Fin (a + b)` returning a rotation index modulo c can wrap
+`rotateSortedList` directly without further plumbing.
+
+### Why this is the right S31 step
+
+The §8 plan calls for 2B.3' (rotation infrastructure) → 2B.4'
+(refined-codomain bijection) → 2B.5' (cycle-class cardinality
+reduction) as the post-dead-end decomposition. 2B.3' is independent of
+the bijection's exact shape, so it can be committed as a standalone
+build-checkable PR without committing to the cycle-lemma proof strategy.
+2B.4' / 2B.5' build on top.
+
+`rotateSortedList_toMultiset` is the structural lemma that future 2B.4'
+will rely on: any `(P', k) : Sym (a+1) × Fin (a+b)` with rotation-class
+condition projects to a unique `P' ≤ M.1`, with the rotation index
+playing no role in the underlying multiset. This is the non-trivial
+content underlying the `Finset.card_bij'` argument in 2B.5'.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1786 → 1861 lines
+  (+75: 1 def + 4 lemmas + section docstring).
+- Theorems / lemmas: 39 → 43 (+4 — all pure proofs, no sorries).
+- Definitions: 9 → 10 (+1 — `rotateSortedList`).
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+- meta.json `lineCount` 1785 → 1861 (off-by-1 pre-existing drift + +75
+  from this session); `theoremCount` 39 → 43; `definitionCount` 9 → 10.
+
+### Next action (S32+)
+
+Pick one of:
+
+* **2B.4' refined-codomain bijection (~50 lines)**: define
+  `firstDescentRotation` (or analogous canonical rotation index for any
+  `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`) and the bijection between
+  `{bad P}` and the refined `(P', k)` codomain. Heaviest step; commits
+  to the cycle-lemma proof shape.
+
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement the
+  Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset prefixes as
+  a Mathlib contribution. Independent of this proof; reusable across
+  other gallery work.
+
+* **Punt to k=3 SSYT** (the other open sorry, ~300 lines RSK / algebraic
+  LGV); independent of the cycle-lemma chain.
 
 ## S30 Summary (2026-05-09, researcher-11)
 
