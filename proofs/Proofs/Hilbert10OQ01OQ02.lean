@@ -364,6 +364,64 @@ theorem universalExistentialDefinition_iff_of_pred_iff
     refine ⟨P, fun q => ?_⟩
     exact (h q).trans (hP q)
 
+/-- The Σ₁ class is invariant under propositional equivalence of the
+    defining predicate. Pure logical congruence; no axioms.
+
+    Direct analog of `universalExistentialDefinition_iff_of_pred_iff`
+    (Π₂ congruence). Useful when bridging between Σ₁ predicates whose
+    statements are propositionally equivalent up to a classical
+    rewrite (e.g., `¬¬p ↔ p`). -/
+theorem diophantineDefinition_iff_of_pred_iff
+    {S S' : RatSubset} (h : ∀ q, S q ↔ S' q) :
+    IsDiophantineDefinition S ↔ IsDiophantineDefinition S' := by
+  constructor
+  · intro hS
+    obtain ⟨P, hP⟩ := hS
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).symm.trans (hP q)
+  · intro hS'
+    obtain ⟨P, hP⟩ := hS'
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).trans (hP q)
+
+/-- The Π₁ class is invariant under propositional equivalence of the
+    defining predicate. Pure logical congruence; no axioms.
+
+    Direct analog of `universalExistentialDefinition_iff_of_pred_iff`
+    (Π₂ congruence). -/
+theorem coDiophantineDefinition_iff_of_pred_iff
+    {S S' : RatSubset} (h : ∀ q, S q ↔ S' q) :
+    IsCoDiophantineDefinition S ↔ IsCoDiophantineDefinition S' := by
+  constructor
+  · intro hS
+    obtain ⟨P, hP⟩ := hS
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).symm.trans (hP q)
+  · intro hS'
+    obtain ⟨P, hP⟩ := hS'
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).trans (hP q)
+
+/-- The Σ₂ class is invariant under propositional equivalence of the
+    defining predicate. Pure logical congruence; no axioms.
+
+    Direct analog of `universalExistentialDefinition_iff_of_pred_iff`
+    (Π₂ congruence). Completes the four-class congruence story:
+    Σ₁, Π₁, Σ₂, Π₂ are all invariant under propositional equivalence
+    of the defining predicate. -/
+theorem existentialUniversalDefinition_iff_of_pred_iff
+    {S S' : RatSubset} (h : ∀ q, S q ↔ S' q) :
+    IsExistentialUniversalDefinition S ↔ IsExistentialUniversalDefinition S' := by
+  constructor
+  · intro hS
+    obtain ⟨P, hP⟩ := hS
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).symm.trans (hP q)
+  · intro hS'
+    obtain ⟨P, hP⟩ := hS'
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).trans (hP q)
+
 /-- **Corollary of Koenigsmann via Σ₂/Π₂ duality**:
 
     The complement `ℚ \ ℤ` is Σ₂-definable in ℚ.
@@ -429,7 +487,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (12)
+## Theorems in THIS file (16)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -443,6 +501,9 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂, dual of Σ₁ ⊆ Π₂)
   - `existentialUniversal_iff_universalExistential_complement` (Σ₂/Π₂ duality)
   - `universalExistentialDefinition_iff_of_pred_iff` (Π₂ class congruence)
+  - `diophantineDefinition_iff_of_pred_iff` (Σ₁ class congruence, iter 4)
+  - `coDiophantineDefinition_iff_of_pred_iff` (Π₁ class congruence, iter 4)
+  - `existentialUniversalDefinition_iff_of_pred_iff` (Σ₂ class congruence, iter 4)
   - `koenigsmann_implies_complement_existentialUniversal` (Σ₂(ℚ\ℤ) corollary)
 -/
 
@@ -457,6 +518,9 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @integers_diophantine_iff_complement_codiophantine
 #check @codiophantine_implies_existentialUniversal
 #check @existentialUniversal_iff_universalExistential_complement
+#check @diophantineDefinition_iff_of_pred_iff
+#check @coDiophantineDefinition_iff_of_pred_iff
+#check @existentialUniversalDefinition_iff_of_pred_iff
 #check @koenigsmann_implies_complement_existentialUniversal
 
 end Hilbert10Rationals
