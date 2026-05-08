@@ -39,7 +39,9 @@
             "natDegree_le_of_dvd gives the critical inequality: if q | p and p ≠ 0 then natDegree q ≤ natDegree p",
             "The coefficient extraction coeff(p, i) = cᵢ is verified by fin_cases + simp: the polynomial C(c₀) + C(c₁)X + C(c₂)X² has exactly cᵢ at position i for i ∈ {0,1,2}",
             "Fintype.linearIndependent_iff reformulates the goal as: ∀ c : Fin 3 → ℚ, (Σ cᵢ • αⁱ = 0) → (∀ i, cᵢ = 0), cleanly separating construction from extraction",
-            "The proof exhibits a constructive-destructive duality: cᵢ are first packaged into a polynomial p (constructive step using Polynomial.C and X), then read back from p's coefficients (destructive step using Polynomial.coeff). The minpoly divisibility argument lives between these two transformations and forces p = 0 by a degree count"
+            "The proof exhibits a constructive-destructive duality: cᵢ are first packaged into a polynomial p (constructive step using Polynomial.C and X), then read back from p's coefficients (destructive step using Polynomial.coeff). The minpoly divisibility argument lives between these two transformations and forces p = 0 by a degree count",
+            "This file deliberately bypasses Mathlib's abstract `PowerBasis` machinery: it goes straight from `minpoly` + `natDegree_le_of_dvd` to the contradiction. The trade-off is intentional — the abstract `PowerBasis K α` construction packages the same conclusion but presupposes a `Module.Finite K (K[α])` instance and a `Basis` extraction step. The direct proof here removes those two layers, making the dependency footprint a single import (`CubeRoot2IrrationalOQ03`) and keeping the proof transparent to readers learning minimal-polynomial techniques",
+            "Working in ℝ rather than the abstract algebraic closure matters: `(3:ℝ)^(1/3)` is the unique real cube root, while in ℂ there are three roots {α, ωα, ω²α} where ω = e^(2πi/3). The minimal polynomial `X³ - 3` has degree 3 over ℚ regardless of which embedding is chosen, so the linear-independence conclusion transports — but the *meaning* of `α^2` differs (real vs. complex pre-image of the cube map). This file commits to the real branch via `Real.rpow`, which is the convention also used in the parent and sibling entries"
         ],
         "prerequisites": [
             "CubeRoot2IrrationalOQ03.lean: minpoly_nthRoot_natDegree (Eisenstein → degree = n)",
@@ -98,6 +100,16 @@
             "targetId": "nth-root-irrational",
             "relationship": "related",
             "description": "General nth-root irrationality framework: the broader pattern this file specializes — for any n ≥ 2 and squarefree m, ⁿ√m has minimal polynomial X^n - m of degree n over ℚ."
+        },
+        {
+            "targetId": "sqrt2-irrational",
+            "relationship": "related",
+            "description": "Degree-2 sibling: irrationality of √2 corresponds to {1, √2} being ℚ-linearly independent (the n=2 instance of the power-basis theorem). The same minpoly-divisibility argument transports verbatim with n = 2 in place of n = 3."
+        },
+        {
+            "targetId": "sqrt2-plus-sqrt3-irrational",
+            "relationship": "related",
+            "description": "Multi-radical sibling: irrationality of √2 + √3 uses a degree-4 minpoly argument (over ℚ, the minimal polynomial of √2 + √3 is X⁴ − 10X² + 1). Same minpoly-divisibility template, applied at n = 4 and to a non-pure-power algebraic number."
         }
     ],
     "conclusion": {
@@ -106,7 +118,9 @@
         "openQuestions": [
             "Can the same argument prove {1, ∛m, (∛m)²} is linearly independent for any m with a squarefree prime factor? (Yes: minpoly_nthRoot_natDegree from CubeRoot2IrrationalOQ03 gives the same degree-3 bound.)",
             "Is {1, α, ..., α^(n-1)} linearly independent whenever natDegree(minpoly ℚ α) = n? (Yes, by the same argument — this is essentially the definition of having degree-n minimal polynomial.)",
-            "Could a Mathlib-contributable lemma `linearIndependent_powers_of_minpoly_natDegree`, packaging the degree-comparison argument generically over field K and n : ℕ, replace this special-case proof? Such a lemma would specialize trivially to ∛3 here and to every analogous power-basis instance in the gallery."
+            "Could a Mathlib-contributable lemma `linearIndependent_powers_of_minpoly_natDegree`, packaging the degree-comparison argument generically over field K and n : ℕ, replace this special-case proof? Such a lemma would specialize trivially to ∛3 here and to every analogous power-basis instance in the gallery.",
+            "Algorithmic refinement: given an explicit ℚ-linear combination $c_0 + c_1 \\alpha + c_2 \\alpha^2 = 0$ that has been certified to vanish to a numerical tolerance $\\varepsilon$, can the proof be turned into a procedure that returns `(c_0, c_1, c_2) = (0, 0, 0)` with a verifiable certificate, rather than just an existence statement? This connects to integer-relation algorithms (LLL, PSLQ) used to *find* such relations in numerical computations — the formal proof certifies that no such nonzero relation exists.",
+            "Cross-field comparison: the same theorem holds with ℚ replaced by any subfield $K \\subseteq \\mathbb{R}$ over which $X^3 - 3$ remains irreducible. For which subfields does irreducibility fail (e.g., $K = \\mathbb{Q}(\\zeta_3)$ where the minimal polynomial factors)? A version of the file parameterized by $K$ would expose this dependency explicitly."
         ]
     },
     "leanFile": {
@@ -129,6 +143,26 @@
             "title": "Polynomial.natDegree_le_of_dvd",
             "year": "2024",
             "note": "If p | q and q ≠ 0 then natDegree p ≤ natDegree q"
+        },
+        {
+            "authors": "Mathlib Contributors",
+            "title": "Mathlib.RingTheory.PowerBasis",
+            "year": "2024",
+            "note": "Abstract `PowerBasis K α` machinery that packages the same {1, α, …, αⁿ⁻¹}-is-a-basis conclusion. This file deliberately avoids the `PowerBasis` API to keep the proof self-contained and pedagogically transparent."
+        },
+        {
+            "authors": "Eisenstein, F. G.",
+            "year": "1850",
+            "title": "Über die Irreductibilität und einige andere Eigenschaften der Gleichung",
+            "venue": "J. Reine Angew. Math. (Crelle) 39: 160–179",
+            "note": "Original irreducibility criterion. Eisenstein at p=3 proves X³−3 irreducible over ℚ, the algebraic input to this file's degree-3 minpoly conclusion."
+        },
+        {
+            "authors": "Lang, S.",
+            "year": "2002",
+            "title": "Algebra (Revised 3rd ed.)",
+            "venue": "Springer Graduate Texts in Mathematics 211, Ch. V §1",
+            "note": "Standard reference for the power-basis theorem [K(α):K] = deg(minpoly K α) and {1, α, …, αⁿ⁻¹} as a K-basis."
         }
     ],
     "sorries": 0
