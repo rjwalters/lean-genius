@@ -1,5 +1,17 @@
 [
   {
+    "id": "amgm-oq02-oq02-header-docstring",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "Module Header — 8-Part Architecture and the Two Axioms Eliminated",
+    "content": "The 27-line module docstring states the file's purpose precisely: prove `newton_log_concavity_proved` and `maclaurin_step_derived` as theorems, eliminating the two axioms `newton_log_concavity` and `maclaurin_step` from the parent `AmgmInequalityOQ02.lean`. The 8-part architecture (Parts I–VIII) is laid out explicitly:\n\n- **Part I** (lines 36–162): Structural properties of $e_k$ — the *zero-tail* lemma `elemSymm_zero_implies_higher_zero` says that if any $e_j(x) = 0$ for non-negative $x$, then $e_k(x) = 0$ for every $k \\ge j$. This handles the degenerate case where some inputs are zero, simplifying the inductive arguments later.\n- **Part II** (lines 163–300): Unnormalized Newton $e_k^2 \\ge e_{k-1} \\cdot e_{k+1}$ by induction on $n$. The Newton-Girard recurrence $e_k(x, t) = e_k(x) + t \\cdot e_{k-1}(x)$ makes the inductive step a quadratic-in-$t$.\n- **Part III** (lines 301–394): Binomial log-concavity $\\binom{n}{k}^2 \\ge \\binom{n}{k-1} \\binom{n}{k+1}$ — a discrete log-concavity lemma needed to convert the unnormalized Newton inequality into the normalized form.\n- **Parts IV–V** (lines 395–810): Cleared-denominator inductive step (the 520-line workhorse) and the cleared-denominator main induction. The cleared form replaces $(e_k / \\binom{n}{k})^2 \\ge (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$ with the equivalent $\\binom{n}{k-1} \\binom{n}{k+1} \\cdot e_k^2 \\ge \\binom{n}{k}^2 \\cdot e_{k-1} \\cdot e_{k+1}$, avoiding the division-by-zero edge cases.\n- **Parts VI–VIII** (lines 811–959): Normalize, transfer to real powers via `Real.rpow`, and take $k$-th roots to derive the Maclaurin step $M_k \\ge M_{k+1}$.\n\n**Why this matters**: with `newton_log_concavity` and `maclaurin_step` no longer axioms, the entire Maclaurin chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ — and in particular AM ≥ GM (the extreme case $M_1 \\ge M_n$) — is now closed end-to-end with no remaining assumptions. The references list (Hardy-Littlewood-Pólya 1934 §2.22, Newton 1707, Maclaurin 1729) names the historical sources of the inequality and its modern textbook treatment, but the Lean proof here is independent of any majorization / Schur-concavity machinery (which Mathlib does not yet have).",
+    "mathContext": "**Two axioms eliminated**:\n\n- `newton_log_concavity`: $\\left(\\dfrac{e_k}{\\binom{n}{k}}\\right)^2 \\ge \\dfrac{e_{k-1}}{\\binom{n}{k-1}} \\cdot \\dfrac{e_{k+1}}{\\binom{n}{k+1}}$ — replaced by `newton_log_concavity_proved` (Part VI).\n- `maclaurin_step`: $M_k \\ge M_{k+1}$ where $M_j = (e_j / \\binom{n}{j})^{1/j}$ — replaced by `maclaurin_step_derived` (Part VIII).\n\n**Status after this file**: 0 axioms in the entire AM-GM via Maclaurin chain; AM ≥ GM is the special case $M_1 \\ge M_n$ of the chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$.",
+    "significance": "context",
+    "relatedConcepts": ["Newton's inequalities", "Maclaurin chain", "log-concavity", "axiom elimination", "8-part architecture"],
+    "prerequisites": ["AmgmInequalityOQ02 (parent)", "elementary symmetric polynomials", "binomial coefficients", "Real.rpow"]
+  },
+  {
     "id": "amgm-oq02-oq02-part-i-structure",
     "proofId": "amgm-inequality-oq-02-oq-02",
     "type": "technique",
