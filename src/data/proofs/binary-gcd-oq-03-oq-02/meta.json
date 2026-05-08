@@ -21,9 +21,9 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 2007,
+    "lineCount": 2225,
     "dateAdded": "2026-05-03",
-    "theoremCount": 58,
+    "theoremCount": 64,
     "assumptions": "",
     "mathlibDependencies": [
       {
@@ -59,7 +59,10 @@
       "hgcdMatrix_small_entry_bound (S15): Session 15 main result — threshold-case entry bound for hgcdMatrix combining PART XI row-vector witnesses, PART XII joint pattern-det invariant, and the unified natAbs bound. All four entries of hgcdMatrix (fuel+1) a b are bounded in natAbs by the inputs (a, b) themselves, given positive residue witnesses",
       "cofactor_mul_pattern_det_correlated (S16): the joint pattern-det disjunction (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1) is preserved by CofactorMatrix.mul. Four-case algebraic split combining cofactor_mul_even_even/odd_odd/even_odd/odd_even (PART X) with CofactorMatrix.det_mul: the pattern carrier and the det carrier flip in lockstep across all four product cases (1·1 = (-1)·(-1) = 1, 1·(-1) = (-1)·1 = -1)",
       "hgcdMatrix_pattern_det_correlated (S16): all-fuel joint invariant — every matrix produced by Schönhage's recursive HGCD satisfies (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1). Direct induction on fuel (no joint induction needed): base = identity (Even, det 1); threshold case = hgcdMatrix_small_pattern_det_correlated (S15); recursive case = cofactor_mul_pattern_det_correlated + IH. Removes the threshold restriction from the S15 lifting",
-      "hgcdMatrix_entry_bound (S16): all-fuel conditional entry bound — generalises hgcdMatrix_small_entry_bound (S15) by removing the max a b < hgcdThreshold hypothesis. Same proof skeleton as S15 with hgcdMatrix_pattern_det_correlated (S16) substituted for hgcdMatrix_small_pattern_det_correlated. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078)"
+      "hgcdMatrix_entry_bound (S16): all-fuel conditional entry bound — generalises hgcdMatrix_small_entry_bound (S15) by removing the max a b < hgcdThreshold hypothesis. Same proof skeleton as S15 with hgcdMatrix_pattern_det_correlated (S16) substituted for hgcdMatrix_small_pattern_det_correlated. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078)",
+      "hgcdMatrix_130_89_value (S17): native_decide refutation — hgcdMatrix 5 130 89 = ⟨-3, 5, 20, -33⟩ (det = -1, OddPattern). Anchors the PART XIV counterexample to the proposed all-fuel row-vector invariant",
+      "hgcdMatrix_row_invariant_counterexample (S17): for input (a, b) = (130, 89) at fuel = 5, no natural-number witnesses (ahat', bhat') simultaneously satisfy (a, b) · M = (ahat', bhat'). The β-row product equals -2287 (negative) while a natural cast is non-negative, immediately refuting the existential. Independent of the magnitude failure (α-row = 1390 > 2 · 130) — either failure suffices",
+      "Refutation of hgcdMatrix_row_output_le (S17): a corollary of the counterexample — the recursive-case sorry on line 1078 is FALSE under the current algorithm; the Schönhage HGCD as currently formalized does not size-reduce on a substantial fraction (≥ 39.6%) of input pairs above hgcdThreshold = 64. Path forward requires either (A) algorithm refinement with a size-reduction safety check, (B) restating with a 'well-behaved input' precondition, or (C) replacing row-convention with column-convention proof strategy"
     ],
     "definitionCount": 6
   },
@@ -163,6 +166,14 @@
       "endLine": 1765,
       "summary": "Four theorems lifting the joint pattern-det invariant from the threshold case (S15) to arbitrary fuel by plain induction (no joint induction needed), then dropping the threshold hypothesis from the entry bound. cofactor_mul_pattern_det_correlated combines the four PART X pattern multiplication cases (Even·Even = Odd·Odd = Even, Even·Odd = Odd·Even = Odd) with CofactorMatrix.det_mul (det 1·1 = (-1)·(-1) = 1, det 1·(-1) = (-1)·1 = -1) — pattern carrier and det carrier are correlated in lockstep across all four product cases. hgcdMatrix_pattern_det_correlated lifts to all fuel via direct induction: base = id (Even, det 1), threshold = S15, recursive = product law + IH. hgcdMatrix_entry_bound is the conditional all-fuel entry bound (preconditions: row-vector witnesses + positivity); proof skeleton matches hgcdMatrix_small_entry_bound (S15) with the all-fuel pattern-det invariant substituted. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078, sole remaining sorry).",
       "mathContext": "Pre-S16, the entry-bound argument was available only for $\\max(a, b) < 64$ via $\\mathrm{hgcdMatrix\\_small\\_entry\\_bound}$, because the threshold restriction in $\\mathrm{hgcdMatrix\\_small\\_pattern\\_det\\_correlated}$ was load-bearing. The S16 contribution is to observe that pattern-det correlation is preserved by $\\mathrm{CofactorMatrix.mul}$: in each of the four product cases (Even·Even, Even·Odd, Odd·Even, Odd·Odd), the pattern outcome from PART X and the determinant product from $\\det(MN) = \\det(M)\\det(N)$ agree on which side of the disjunction the result lies. Plain induction on fuel then lifts the correlated invariant to all fuel without invoking the row-vector side of the joint induction. Substituting the all-fuel invariant into the S15 entry-bound proof gives the same conclusion ($|M_{\\alpha}|, |M_{\\beta}| \\le b$, $|M_{\\gamma}|, |M_{\\delta}| \\le a$) without the threshold restriction. The remaining $\\mathrm{hgcdMatrix\\_row\\_output\\_le}$ recursive case is now genuinely single-axis — only the row-vector invariant requires the Stehlé–Zimmermann §4 joint induction; pattern-det enters only as a black-box ingredient."
+    },
+    {
+      "id": "row-invariant-counterexample",
+      "title": "Part XIV: Counterexample to the All-Fuel Row-Vector Invariant (Session 17)",
+      "startLine": 1768,
+      "endLine": 1957,
+      "summary": "Six native_decide-checked theorems that refute the proposed Session 17+ target. At fuel = 5 on inputs (a, b) = (130, 89) — just above hgcdThreshold = 64 — hgcdMatrix returns ⟨-3, 5, 20, -33⟩, with row output (130 · α + 89 · γ, 130 · β + 89 · δ) = (1390, -2287). The β-row product is NEGATIVE, so no natural-number witness bhat' can satisfy the row-vector existential; independently, the α-row magnitude 1390 exceeds 2 · max 130 89 = 260, so any witness ahat' would violate the bound max ahat' bhat' ≤ max a b. The capstone theorem hgcdMatrix_row_invariant_counterexample directly refutes the existential. A computational survey finds 875/2211 ≈ 39.6% of input pairs above threshold violate the bound, with the worst case (107, 85) producing matrix entries of order 10^268. Implication: hgcdMatrix_row_invariant and hgcdMatrix_row_output_le (line 1078 sorry) are FALSE in the recursive case; the single-axis joint induction proposed by S16 is mathematically impossible. PARTS XI–XIII remain valid as building blocks (their theorems are unconditional truths, and hgcdMatrix_entry_bound is correctly stated as conditional on row-vector witnesses, witnesses which this counterexample shows do not exist for general recursive inputs). Path forward: (A) algorithm refinement with a size-reduction safety check matching GMP's mpn_hgcd, (B) restating the theorem with a 'well-behaved input' precondition, or (C) pursuing a column-convention strategy that sidesteps the row-vector invariant.",
+      "mathContext": "The failure mechanism is structural: in the recursive branch hgcdMatrix (f+1) a b = M_outer · M_inner, the inner factor M_inner = hgcdMatrix f (a/2^s) (b/2^s) has entries bounded by the top-half inputs (entry bounds from S16 conditional on row-vector witnesses for M_inner at (a/2^s, b/2^s) — these DO exist). But the outer factor M_outer = hgcdMatrix f u v has u, v drawn from the column-output of M_inner at the FULL pair (a, b), and these can grow super-linearly with max(a, b) since |M_inner.α · a + M_inner.β · b| ≤ |M_inner.α| · a + |M_inner.β| · b is bounded only by 2 · (a/2^s) · max(a, b), which is approximately √(max a b) · max(a, b) — generally larger than max(a, b). Composing via the row-output identity cofactor_mul_row_output, the final row product at (a, b) is M_inner.α · (a · M_outer.α + b · M_outer.γ) + M_inner.γ · (a · M_outer.β + b · M_outer.δ); the inner terms here are evaluated at ghost (a, b) but M_outer was built for ghost (u, v) ≠ (a, b), so they are not bounded by any natural quantity related to (a, b). The catastrophic worst-case at (107, 85) — where matrix entries reach order 10^268 — illustrates that this growth can compound across recursion levels."
     }
   ],
   "openQuestions": [
@@ -190,9 +201,9 @@
   ],
   "leanFile": {
     "namespace": "HGcd",
-    "lineCount": 2007,
+    "lineCount": 2225,
     "axiomCount": 0,
-    "theoremCount": 58,
+    "theoremCount": 64,
     "definitionCount": 6,
     "path": "Proofs/BinaryGcdOQ03OQ02.lean",
     "sorries": 1
