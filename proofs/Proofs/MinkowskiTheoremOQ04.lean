@@ -162,12 +162,78 @@ For vol(S) > k, the covering count function c : F → ℕ∞ defined by
 satisfies ∫_F c dz = vol(S) > k. Since c is ℕ∞-valued and ∫ c > k · vol(F) = k,
 there exists z ∈ F with c(z) ≥ k+1. This gives k+1 distinct lattice elements
 v₁,...,v_{k+1} with z + vᵢ ∈ S, yielding k+1 ℤⁿ-congruent points.
+
+`volume_eq_setLIntegral_indicator_tsum` below proves the integral identity
+`∫_F (∑' g, 1_S(g + x)) dx = vol(S)` directly from `IsAddFundamentalDomain.lintegral_eq_tsum''`
+combined with Tonelli (`lintegral_tsum`); this is the analytic core of the covering-count
+argument and reduces the remaining work for `blichfeldt_general` to the combinatorial
+extraction step (from a pointwise tsum > k, produce k+1 distinct lattice elements).
 -/
+
+/-- **Covering-count integral identity** (infrastructure for `blichfeldt_general`).
+
+For any measurable `s ⊆ ℝⁿ`, the integral over the standard fundamental domain `F` of
+the "covering count" — the sum over the integer lattice `ℤⁿ` of the indicator that
+`(g : ℝⁿ) + x ∈ s` — equals `volume s`:
+  ∫⁻ x in F, (∑' g : ℤⁿ, 1_s((g : ℝⁿ) + x)) ∂volume = volume s.
+
+Proof: applying `IsAddFundamentalDomain.lintegral_eq_tsum''` to the indicator of `s`
+gives `∫⁻ x, 1_s = ∑' g, ∫⁻ x in F, 1_s(g +ᵥ x)`; the LHS is `volume s` by
+`lintegral_indicator_const` with constant 1. Tonelli (`lintegral_tsum`) swaps the
+tsum and the integral, and `AddSubgroup.vadd_def + vadd_eq_add` unfold `g +ᵥ x` to
+`(g : ℝⁿ) + x`. -/
+theorem volume_eq_setLIntegral_indicator_tsum {n : ℕ} [NeZero n]
+    {s : Set (Fin n → ℝ)} (h_meas : MeasurableSet s) :
+    ∫⁻ x in stdFundDomain n,
+        (∑' g : (stdLattice n).toAddSubgroup,
+            s.indicator (fun _ => (1 : ENNReal))
+              ((g : Fin n → ℝ) + x)) ∂volume
+      = volume s := by
+  haveI : Countable (stdLattice n).toAddSubgroup := by
+    unfold stdLattice
+    change Countable (Submodule.span ℤ (Set.range (stdBasis n)))
+    infer_instance
+  set ind : (Fin n → ℝ) → ENNReal := s.indicator (fun _ => (1 : ENNReal)) with h_ind_def
+  have h_ind_meas : Measurable ind :=
+    measurable_const.indicator h_meas
+  have h_shift_meas_vadd : ∀ g : (stdLattice n).toAddSubgroup,
+      Measurable (fun x : Fin n → ℝ => ind (g +ᵥ x)) := by
+    intro g
+    have h_add : Measurable (fun x : Fin n → ℝ => g +ᵥ x) := by
+      have h_eq : (fun x : Fin n → ℝ => g +ᵥ x)
+                = fun x => (g : Fin n → ℝ) + x := by
+        funext x
+        rw [AddSubgroup.vadd_def, vadd_eq_add]
+      rw [h_eq]
+      exact measurable_const.add measurable_id
+    exact h_ind_meas.comp h_add
+  have h_fund := stdLattice_isAddFundamentalDomain n
+  calc ∫⁻ x in stdFundDomain n,
+          (∑' g : (stdLattice n).toAddSubgroup, ind ((g : Fin n → ℝ) + x)) ∂volume
+      = ∫⁻ x in stdFundDomain n,
+          (∑' g : (stdLattice n).toAddSubgroup, ind (g +ᵥ x)) ∂volume := by
+        apply lintegral_congr
+        intro x
+        apply tsum_congr
+        intro g
+        -- `g +ᵥ x = (g : Fin n → ℝ) + x` is definitionally equal via
+        -- `AddSubgroup.vadd_def := rfl`, so `congr 1` closes the goal directly.
+        congr 1
+    _ = ∑' g : (stdLattice n).toAddSubgroup,
+          ∫⁻ x in stdFundDomain n, ind (g +ᵥ x) ∂volume :=
+        lintegral_tsum (fun g => (h_shift_meas_vadd g).aemeasurable)
+    _ = ∫⁻ x, ind x ∂volume :=
+        (h_fund.lintegral_eq_tsum'' ind).symm
+    _ = volume s := by
+        rw [h_ind_def, lintegral_indicator_const h_meas, one_mul]
 
 /-- **Blichfeldt's General Theorem**: vol(S) > k implies k+1 ℤⁿ-congruent points in S.
 
     (The k=1 case is proved above; the general case uses an averaging argument
-    on the covering count function c(z) = #{v | z + v ∈ S}.) -/
+    on the covering count function c(z) = #{v | z + v ∈ S}. The integral
+    identity ∫_F c = vol(s) is established by `volume_eq_setLIntegral_indicator_tsum`
+    above; what remains is a combinatorial extraction step turning a pointwise
+    `c(z) > k` into k+1 distinct lattice elements.) -/
 axiom blichfeldt_general {n : ℕ} [NeZero n]
     (k : ℕ) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
     (h_vol : (k : ENNReal) < volume s) :
@@ -263,9 +329,11 @@ theorem minkowski_from_blichfeldt {n : ℕ} [NeZero n]
       intro hcontra
       rw [ENNReal.pow_eq_top_iff] at hcontra
       exact h2_inv_ne_top_base hcontra.1
+    -- Mathlib 4.26: `ENNReal.mul_lt_mul_right` is a direct implication
+    -- `(h0 : a ≠ 0) (hinf : a ≠ ⊤) (bc : b < c) : a * b < a * c` (not an Iff).
     have h_step : ((2 : ENNReal)⁻¹) ^ n * (2 : ENNReal) ^ n
                   < ((2 : ENNReal)⁻¹) ^ n * volume s :=
-      (ENNReal.mul_lt_mul_left h2_inv_ne_zero h2_inv_ne_top).mpr h_vol
+      ENNReal.mul_lt_mul_right h2_inv_ne_zero h2_inv_ne_top h_vol
     have h_eq_one : ((2 : ENNReal)⁻¹) ^ n * (2 : ENNReal) ^ n = 1 := by
       rw [← mul_pow,
           ENNReal.inv_mul_cancel (by norm_num : (2 : ENNReal) ≠ 0)

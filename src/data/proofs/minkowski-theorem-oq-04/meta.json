@@ -22,10 +22,10 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 296,
-    "theoremCount": 5,
+    "lineCount": 359,
+    "theoremCount": 6,
     "definitionCount": 0,
-    "assumptions": "One axiom remains (down from four). Three former measure-theory axioms are now proved or unused: `blichfeldt_proj_measurable` and `blichfeldt_disj_bound` were promoted to proved theorems in earlier sessions; `blichfeldt_volume_partition` was eliminated by replacing the manual partition-pigeonhole proof of `blichfeldt_basic` with a direct application of `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib's pigeonhole on a fundamental domain). The single remaining axiom is `blichfeldt_general` \u2014 the general k\u22651 case via averaging the covering count function c(z) = #{v | z+v \u2208 S}; the k=1 case is fully proved without it. The two former sorries in `minkowski_from_blichfeldt` are closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`.",
+    "assumptions": "One axiom remains (down from four). Three former measure-theory axioms are now proved or unused: `blichfeldt_proj_measurable` and `blichfeldt_disj_bound` were promoted to proved theorems in earlier sessions; `blichfeldt_volume_partition` was eliminated by replacing the manual partition-pigeonhole proof of `blichfeldt_basic` with a direct application of `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib's pigeonhole on a fundamental domain). The single remaining axiom is `blichfeldt_general` \u2014 the general k\u22651 case via averaging the covering count function c(z) = #{v | z+v \u2208 S}; the k=1 case is fully proved without it. The two former sorries in `minkowski_from_blichfeldt` are closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`. S9 (researcher-3, 2026-05-08) added the analytic core of the covering-count argument as a new fully-proved theorem `volume_eq_setLIntegral_indicator_tsum`: \u222b\u207b x in F, (\u03a3' g, 1_s((g : \u211d\u207f) + x)) dx = vol(s), proved from `IsAddFundamentalDomain.lintegral_eq_tsum''` + Tonelli (`lintegral_tsum`); this reduces the remaining work for `blichfeldt_general` to a self-contained combinatorial extraction step.",
     "dateAdded": "2026-05-07",
     "mathlibDependencies": [
       {
@@ -55,6 +55,7 @@
       "blichfeldt_basic: axiom-free proof of the k=1 case via direct application of `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib pigeonhole on a fundamental domain). The earlier proof manually built the partition-pigeonhole from a `blichfeldt_volume_partition` axiom; that axiom is now eliminated.",
       "Bridge from `g +\u1d65 x = y` (AddSubgroup action on the parent group) to `(g : \u211d\u207f) + x = y` (additive group equation) via `AddSubgroup.vadd_def` + `vadd_eq_add`; this gives `y - x = (g : \u211d\u207f) \u2208 \u2124\u207f` directly.",
       "blichfeldt_basic_from_general: derives k=1 from the general-k axiom with the Fin (k+1) injectivity argument.",
+      "volume_eq_setLIntegral_indicator_tsum: covering-count integral identity \u222b_F (\u03a3' g : \u2124\u207f, 1_s((g : \u211d\u207f) + x)) dx = vol(s). Fully proved (~63 lines) from `IsAddFundamentalDomain.lintegral_eq_tsum''` (additive form via `to_additive`) combined with Tonelli (`lintegral_tsum`); the `g +\u1d65 x` \u2194 `(g : \u211d\u207f) + x` conversion uses `AddSubgroup.vadd_def + vadd_eq_add`. This is the analytic core of the covering-count argument and reduces the remaining `blichfeldt_general` work to a self-contained combinatorial extraction step (S9, 2026-05-08).",
       "minkowski_from_blichfeldt: structural reduction Minkowski \u2192 Blichfeldt via T = (1/2)\u00b7s; central symmetry + convexity give the lattice point in s. The two former sorries (measurability of T, volume identity vol(T) = vol(s)/2\u207f) are now closed via preimage rewriting + `Measure.addHaar_smul` + ENNReal arithmetic.",
       "Mathlib 4.26.0 API drift fixes: `Pairwise (Disjoint on f)` lambda rewrite; ENNReal Nat-coerce via `exact_mod_cast`; `Submodule.mem_toAddSubgroup` removal compensation; `open Pointwise` for the `Set.SMul` instance needed by `Measure.addHaar_smul`."
     ],
@@ -110,17 +111,17 @@
     },
     {
       "id": "general-case",
-      "title": "The General k+1 Version (Axiom)",
+      "title": "The General k+1 Version (Axiom + Covering-Count Integral Identity)",
       "startLine": 154,
-      "endLine": 185,
-      "summary": "States the general-k Blichfeldt axiom: vol(S) > k yields k+1 distinct \u2124\u207f-congruent points. Uses the covering-count function c(z) = #{v | z+v \u2208 S} which integrates to vol(S) > k over F; we axiomatize the existence of a high-covering point z. The k=1 corollary is derived from this axiom as a sanity check (`blichfeldt_basic_from_general`).",
-      "mathContext": "The general case is a Lebesgue averaging argument: \u222b_F c dz = vol(S) > k = k \u00b7 vol(F), so c attains a value \u2265 k+1 on a positive-measure set."
+      "endLine": 248,
+      "summary": "States the general-k Blichfeldt axiom: vol(S) > k yields k+1 distinct \u2124\u207f-congruent points. Uses the covering-count function c(z) = #{v | z+v \u2208 S} which integrates to vol(S) > k over F; we axiomatize the existence of a high-covering point z. The k=1 corollary is derived from this axiom as a sanity check (`blichfeldt_basic_from_general`). S9 (2026-05-08) added the analytic core as a fully-proved theorem `volume_eq_setLIntegral_indicator_tsum`: \u222b_F (\u03a3' g, 1_s((g : \u211d\u207f) + x)) dx = vol(s), built from `IsAddFundamentalDomain.lintegral_eq_tsum''` + Tonelli; this isolates the remaining work for `blichfeldt_general` to combinatorial extraction.",
+      "mathContext": "The general case is a Lebesgue averaging argument: \u222b_F c dz = vol(S) > k = k \u00b7 vol(F), so c attains a value \u2265 k+1 on a positive-measure set. The integral identity \u222b_F c = vol(s) is now proved (S9); only the contrapositive extraction step (from a pointwise tsum > k, build k+1 distinct lattice translates) remains axiomatized."
     },
     {
       "id": "minkowski-corollary",
       "title": "Minkowski as a Corollary",
-      "startLine": 191,
-      "endLine": 280,
+      "startLine": 254,
+      "endLine": 343,
       "summary": "Proves Minkowski's theorem from `blichfeldt_basic` via the half-scaling T = (1/2)\u00b7s. **0 sorries** (was 2). Measurability of T proved by rewriting as preimage of s under the doubling map; volume identity vol(T) = vol(s)/2\u207f proved via `Measure.addHaar_smul` + ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`. The structural reduction \u2014 central symmetry + convexity giving (a \u2212 b) \u2208 s \u2014 was already proved cleanly.",
       "mathContext": "Central symmetry gives \u2212y\u2080 \u2208 S; convexity then gives the midpoint (x\u2080 + (\u2212y\u2080))/2 = a \u2212 b \u2208 S. The lattice membership a \u2212 b \u2208 \u2124\u207f is the Blichfeldt output. Nonzero-ness comes from a \u2260 b."
     }
@@ -167,8 +168,8 @@
     "namespace": "BlichfeldtTheorem",
     "axiomCount": 1,
     "sorries": 0,
-    "lineCount": 296,
-    "theoremCount": 5,
+    "lineCount": 359,
+    "theoremCount": 6,
     "definitionCount": 0,
     "mainTheorems": [
       {
@@ -178,9 +179,15 @@
         "leanType": "{n : \u2115} [NeZero n] (s : Set (Fin n \u2192 \u211d)) (h_meas : MeasurableSet s) (h_vol : (1 : ENNReal) < volume s) \u2192 \u2203 x y, x \u2208 s \u2227 y \u2208 s \u2227 x \u2260 y \u2227 x \u2212 y \u2208 stdLattice n"
       },
       {
+        "name": "volume_eq_setLIntegral_indicator_tsum",
+        "type": "proved",
+        "description": "Covering-count integral identity (S9 infrastructure for `blichfeldt_general`): \u222b\u207b x in F, (\u03a3' g : \u2124\u207f, 1_s((g : \u211d\u207f) + x)) \u2202volume = vol(s). Fully proved from `IsAddFundamentalDomain.lintegral_eq_tsum''` (additive form via `to_additive`) and Tonelli (`lintegral_tsum`).",
+        "leanType": "{n : \u2115} [NeZero n] {s : Set (Fin n \u2192 \u211d)} (h_meas : MeasurableSet s) \u2192 \u222b\u207b x in stdFundDomain n, (\u2211' g : (stdLattice n).toAddSubgroup, s.indicator (fun _ => 1) ((g : Fin n \u2192 \u211d) + x)) \u2202volume = volume s"
+      },
+      {
         "name": "blichfeldt_general",
         "type": "axiom",
-        "description": "Blichfeldt's theorem general k: vol(S) > k yields k+1 \u2124\u207f-congruent points (axiomatized; covering-count averaging argument)",
+        "description": "Blichfeldt's theorem general k: vol(S) > k yields k+1 \u2124\u207f-congruent points (axiomatized; covering-count averaging argument). With `volume_eq_setLIntegral_indicator_tsum` now in place, the remaining work is a self-contained combinatorial extraction step.",
         "leanType": "{n : \u2115} [NeZero n] (k : \u2115) (s : Set (Fin n \u2192 \u211d)) (h_meas : MeasurableSet s) (h_vol : (k : ENNReal) < volume s) \u2192 \u2203 pts : Fin (k+1) \u2192 Fin n \u2192 \u211d, Function.Injective pts \u2227 (\u2200 i, pts i \u2208 s) \u2227 \u2200 i j, pts i \u2212 pts j \u2208 stdLattice n"
       },
       {
