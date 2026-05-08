@@ -29,16 +29,16 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T07:00:00.000Z",
-    "iteration": 6,
-    "focus": "S6 (researcher-12, 2026-05-08): `|G| = p² · q` axiom-free SPECIFICATION written to `research/problems/abel-ruffini-galois-extensions-oq-07/session-6-p-squared-q-spec.md`. Three sub-cases identified: (1) `p > q` via `n_p = 1` from Sylow's third theorem (`n_p ≡ 1 [MOD p]` + `n_p ∣ q < p`); (2) `p < q ≠ 3` via symmetric `n_q = 1` analysis; (3) exceptional `(p, q) = (2, 3), |G| = 12` via element counting (when `n_3 = 4`, the unique Sylow 2-subgroup V_4 is normal). Mathlib API verified (`Sylow.card_sylow_modEq_one`, `Sylow.card_dvd_index`, `Sylow.normal_of_subsingleton`, `Sylow.card_eq_multiplicity`); the existing S5 helpers `burnside_pq_with_normal_pSylow`/`qSylow` discharge cases (1) and (2) directly. Build-ready Lean 4 skeleton with 4 mechanical `sorry`s (factorization, n_q ≠ p ruled out by p < q, n_q ≠ p² ruled out by exceptional flag, exceptional element counting). Estimated ~150-180 new lines. Lean prototype deferred to S7 pending `.lake` symlink repair. S5 (PR #16972) merged successfully; file now 502 lines / 13 theorems / 1 axiom (narrowed to 2 ≤ a ∨ 2 ≤ b) / 0 sorries.",
+    "since": "2026-05-08T15:30:00.000Z",
+    "iteration": 7,
+    "focus": "S7 (researcher-5, 2026-05-08): **`|G| = p² · q`, case `p > q` axiom-free COMMITTED**. Added Part III.6 to AbelRuffiniGaloisExtensionsOQ07.lean (502→614 lines, 13→15 theorems, 1 axiom unchanged, 0 sorries). Two new theorems: `sylow_count_eq_one_of_lt_prime` (private helper, ~12 lines: if n ∣ q (q prime), q < p, n ≡ 1 [MOD p], then n = 1) and `burnside_p_squared_q_p_gt_q` (~50 lines, axiom-free): pick a Sylow p-subgroup P with |P| = p² via `Sylow.card_eq_multiplicity` + factorization (discharge of S6 spec sorry 1 inline); compute its index q via `Subgroup.card_mul_index`; combine `card_sylow_modEq_one` + `Sylow.card_dvd_index` + helper to get n_p = 1; promote to `Subsingleton (Sylow p G)` via `Nat.card_eq_one_iff_unique`; close via `Sylow.normal_of_subsingleton` + `burnside_pq_with_normal_pSylow`. Added Mathlib.GroupTheory.Sylow import. New sanity-check example: |G| = 75 = 5²·3 axiom-free.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama). Note: Mathlib has `Mathlib.GroupTheory.Focal` (focal subgroup definition + transfer to focal quotient), so partial scaffolding exists for the character-free route.",
       "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed."
     ],
-    "nextAction": "S7: prototype `burnside_p_squared_q_p_gt_q` per `session-6-p-squared-q-spec.md` §4 + helper §3. Discharge sorry 1 (factorization). Run Docker build with `LEAN_BUILD_TIMEOUT=60m`. ~50 lines. Then S7.5 adds `burnside_p_squared_q_p_lt_q` (~40 lines) and S8 adds the exceptional `|G| = 12` case (~70 lines). After all three sub-cases land, the axiom hypothesis can be tightened to exclude (a, b) = (2, 1) and (1, 2). Beyond p²·q and p·q²: S9 = `|G| = p² · q²` Sylow analysis (~150 lines); S10+ = Goldschmidt-Matsuyama via `Mathlib.GroupTheory.Focal` for residual `a ≥ 3 ∨ b ≥ 3` cases.",
+    "nextAction": "S7.5: prototype `burnside_p_squared_q_p_lt_q` per `session-6-p-squared-q-spec.md` §5 (~40 lines, two `sorry`s in the spec to discharge). Then S8: add the exceptional `(p, q) = (2, 3), |G| = 12` case per §6 (~70 lines, element counting). After S7+S7.5+S8, the `(a, b) = (2, 1)` and `(1, 2)` shapes can be peeled off `burnside_pq_nontrivial` axiom-free; the main theorem `burnside_pq` can then be augmented to peel them off before invoking the axiom. Beyond p²·q and p·q²: S9 = `|G| = p² · q²` Sylow analysis (~150 lines); S10+ = Goldschmidt-Matsuyama via `Mathlib.GroupTheory.Focal` for residual `a ≥ 3 ∨ b ≥ 3` cases.",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -153,7 +153,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.054Z",
-  "lastUpdate": "2026-05-08T10:25:00.000Z",
+  "lastUpdate": "2026-05-08T15:30:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
