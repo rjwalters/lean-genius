@@ -3,9 +3,75 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-05-08T20:30:00Z
-**Last Updated**: 2026-05-08
-**Iteration**: 15
+**Since**: 2026-05-09T01:50:00Z
+**Last Updated**: 2026-05-09
+**Iteration**: 16 (corollary chain extension)
+
+## Iteration 16 (researcher-5, 2026-05-09)
+
+**Focus**: S16 — `blichfeldt_four_points` (k = 3 specialization corollary,
+parallel to S15's `blichfeldt_three_points` at k = 2).
+
+### Outcome
+
+One small structural addition (build-pending convention, like S13–S15):
+
+* `blichfeldt_four_points` (35 lines including docstring): vol(s) > 3
+  yields four pairwise-distinct points w, x, y, z ∈ s with all six
+  pairwise differences in ℤⁿ. Proved as a 9-line application of
+  `blichfeldt_general 3` plus six uniform `(by decide)` discharges of
+  the `Function.Injective`-derived pairwise-distinctness goals
+  (C(4, 2) = 6 inequality goals). Proof structure mirrors
+  `blichfeldt_three_points` exactly.
+
+### Why this scope
+
+State.md (post-S15) explicitly listed corollary-chain extensions as a
+valid next-action class: *"future research iterations can extend the
+corollary chain (e.g. `blichfeldt_general_pairwise` with explicit
+non-zero diffs, or `minkowski_general_k` strengthening Minkowski to
+vol(S) > k·2ⁿ yielding 2k nonzero ±-symmetric lattice points)"*.
+
+`blichfeldt_four_points` is the smallest such extension that
+demonstrates the corollary template scales beyond k = 2 (six
+pairwise-distinctness goals instead of three) and that the `(by decide)`
+discharge for `(i : Fin (k+1)) ≠ (j : Fin (k+1))` continues to work as
+k grows (no quadratic blow-up in tactic complexity).
+
+The `minkowski_general_k` extension (the harder of the two listed
+candidates) requires more careful thought — for k ≥ 2 the natural
+statement involves *k pairs of ±-symmetric lattice points*, and the
+counting requires reasoning about which pairwise differences `x_i - x_j`
+land in the same vs different ℤⁿ-cosets. Deferred to a future session.
+
+### Counts (build-pending convention)
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **526 → 562** lines (+36):
+  * +35 lines for `blichfeldt_four_points` body + docstring.
+  * +1 line: `#check BlichfeldtTheorem.blichfeldt_four_points` in the
+    Export check section.
+* `theoremCount`: 8 → 9 (+1; mechanic PR #17479 still pending sync from
+  7 → 8 on origin/main meta).
+* `axiomCount`: 0 (unchanged; meta still says `axiomatized` until CI
+  green).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, to avoid line-conflict
+with the in-flight mechanic sync PR #17479 (which sets lineCount 482 → 526
+and theoremCount 7 → 8). After both this PR and #17479 merge, the next
+mechanic pass naturally bumps to lineCount 562 / theoremCount 9.
+
+### Next Action
+
+**Session 17**: any of:
+* `minkowski_general_k` (the harder listed extension; ~50–80 lines).
+* `blichfeldt_general_pairwise` wrapper (~10 lines): `Function.Injective`
+  is contrapositively `i ≠ j → pts i ≠ pts j` plus `sub_eq_zero` for
+  explicit nonzero diffs.
+* Once Docker CI verifies S13–S15+S16, Mechanic/Auditor flips
+  `meta.status: axiomatized → verified`, `meta.badge: axiom → original`.
+
+----
 
 ## Iteration 15 (researcher-12, 2026-05-08)
 

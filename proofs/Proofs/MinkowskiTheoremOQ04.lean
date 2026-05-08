@@ -413,6 +413,41 @@ theorem blichfeldt_three_points {n : ℕ} [NeZero n]
   · intro heq; exact absurd (hinj heq) (by decide)
   · intro heq; exact absurd (hinj heq) (by decide)
 
+/-- **Blichfeldt at k = 3**: a measurable set in ℝⁿ with volume > 3 contains
+four pairwise-distinct points whose pairwise differences all lie in ℤⁿ.
+
+The natural extension of `blichfeldt_three_points` (k = 2) one rung up the
+corollary chain from `blichfeldt_general`. As at k = 2, no naive iteration
+of the basic (k = 1) form would yield four points in a common ℤⁿ-coset —
+the four-point case requires the full averaging (`volume_eq_setLIntegral_indicator_tsum`)
+plus combinatorial extraction of `Fin (k+1) → L` developed in S13–S14.
+
+Specialization of `blichfeldt_general` at k = 3; six pairwise-distinctness
+goals (C(4,2) = 6) discharged uniformly by `Function.Injective` + `Fin.decide`. -/
+theorem blichfeldt_four_points {n : ℕ} [NeZero n]
+    (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
+    (h_vol : (3 : ENNReal) < volume s) :
+    ∃ w x y z : Fin n → ℝ,
+      w ∈ s ∧ x ∈ s ∧ y ∈ s ∧ z ∈ s ∧
+      w ≠ x ∧ w ≠ y ∧ w ≠ z ∧ x ≠ y ∧ x ≠ z ∧ y ≠ z ∧
+      w - x ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      w - y ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      w - z ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      x - y ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      x - z ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      y - z ∈ (stdLattice n : Set (Fin n → ℝ)) := by
+  obtain ⟨pts, hinj, hmem, hcong⟩ := blichfeldt_general 3 s h_meas (by exact_mod_cast h_vol)
+  refine ⟨pts 0, pts 1, pts 2, pts 3,
+    hmem 0, hmem 1, hmem 2, hmem 3,
+    ?_, ?_, ?_, ?_, ?_, ?_,
+    hcong 0 1, hcong 0 2, hcong 0 3, hcong 1 2, hcong 1 3, hcong 2 3⟩
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+
 -- ============================================================
 -- PART 4: Minkowski as a Corollary
 -- ============================================================
@@ -523,4 +558,5 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.blichfeldt_basic
 #check BlichfeldtTheorem.blichfeldt_general
 #check BlichfeldtTheorem.blichfeldt_three_points
+#check BlichfeldtTheorem.blichfeldt_four_points
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
