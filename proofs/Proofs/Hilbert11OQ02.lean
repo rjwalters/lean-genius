@@ -253,6 +253,70 @@ def colliot_thelene_conjecture : Prop := True
 ### Sorry count: 0
 -/
 
+/-! ## Section 8: Roadmap for Eliminating `selmer_padic_solubility`
+
+The axiom `selmer_padic_solubility` is *not* a deep theorem — it is a routine
+application of Hensel's lemma to the reduction `f̄(x,y,z) = 3x³+4y³+5z³ ∈
+F_p[x,y,z]` once a *smooth* mod-p (or, at p = 3, mod-27) zero is known.
+The work below catalogues, prime-by-prime, where the smooth zero lives and
+which Hensel statement is needed; this turns the universal axiom into a
+finite collection of prime-specific lemmas, each closeable with the standard
+Mathlib `PadicNumbers`/`PadicInt` Hensel API.
+
+### Decomposition by residue class of p mod 3
+
+**Case A — p ≡ 2 (mod 3), p ∉ {2, 5}** (e.g. p ∈ {11, 17, 23, 29, 41, …}).
+Cubing is a bijection on (ℤ/p)*, so for *any* nonzero a ∈ (ℤ/p)* the
+equation z³ = a has a unique solution. Take x = 0, y = 1: the equation
+reduces to 5z³ + 4 ≡ 0, i.e. z³ ≡ -4·5⁻¹ ∈ (ℤ/p)*, with the unique cube
+root in (ℤ/p)*. The derivative ∂_z f = 15z² is nonzero at the root
+(since z ≠ 0 mod p and p ∉ {3, 5}), so single-variable Hensel along z
+lifts to a unique 3-adic z̃ ∈ ℤ_p with selmerPoly 0 1 z̃ = 0 in ℚ_p.
+**Witness data.** p = 11: take z₀ = 2 (since 2³ = 8 ≡ -4·5⁻¹ ≡ -4·9 ≡ 8
+mod 11, and ∂_z f(0,1,2) = 60 ≡ 5 ≢ 0 mod 11). p = 17: z₀ = 5.
+p = 23: z₀ = 18. p = 29: z₀ = 22.
+
+**Case B — p ≡ 1 (mod 3), p ≥ 7** (e.g. p ∈ {7, 13, 19, 31, 37, 43, …}).
+Only one third of (ℤ/p)* are cubes, so the (0, 1, z) projection often
+fails (it fails at p = 7, 13, 19, 31 but works at p = 37). Smooth
+mod-p zeros nevertheless exist by Hasse-Weil applied to the smooth genus-1
+curve {3x³+4y³+5z³ = 0} ⊂ ℙ²_{F_p}: the count of F_p-points lies in the
+interval [p+1-2√p, p+1+2√p], which is ≥ 5 for every p ≥ 5. After fixing
+two affine coordinates one obtains a polynomial in the third with
+nonsingular reduction, and standard univariate Hensel lifts.
+**Witness data.** p = 7: smooth zero (1, 1, 0), Jacobian (9, 12, 0) ≡
+(2, 5, 0) mod 7 (∂_x and ∂_y both invertible). p = 13: (1, 4, 2). p = 19:
+(1, 0, 4). p = 31: (1, 3, 17). p = 37: (0, 1, 5).
+
+### Special primes p ∈ {2, 3, 5}
+
+**p = 2.** The polynomial reduces to x³ + z³ mod 2, with smooth zero
+(1, 0, 1) (Jacobian (1, 0, 1) mod 2 has rank ≥ 1). Hensel along z lifts
+to a unique 2-adic z̃ ∈ ℤ_2 with selmerPoly 1 0 z̃ = 0 in ℚ_2.
+
+**p = 5.** The polynomial reduces to 3x³ + 4y³ mod 5 (the leading 5 in
+the z-coefficient vanishes). Smooth zero (1, 2, 0) since 3 + 4·8 = 35
+≡ 0 mod 5 and Jacobian (4, 3, 0) mod 5 is invertible in the (x,y)-plane.
+Hensel lifts.
+
+**p = 3.** *Singular reduction.* All of 9, 12, 15 are divisible by 3, so
+every mod-3 zero of `selmerPoly` has Jacobian ≡ 0 mod 3 — naive single-
+variable Hensel does not lift. We must climb to mod 27 = 3³ before the
+strong-form Hensel hypothesis `|f(α)|_p < |f'(α)|_p²` is met. The
+witness (0, 1, 4) mod 27 satisfies `selmerPoly 0 1 4 = 4 + 5·64 = 324 =
+12·27 ≡ 0 (mod 27)` with `∂_z f(0,1,4) = 15·16 = 240`, valuation
+v₃(240) = 1. Since v₃(f) ≥ 3 > 2 · v₃(∂_z f) = 2, strong-form Hensel
+applies and lifts to a unique 3-adic z̃ with v₃(z̃ - 4) ≥ 3.
+
+### Status of this roadmap
+
+This section is **documentation only** — no Lean code, no axiom changes,
+no proof obligations. The next session can split `selmer_padic_solubility`
+into the per-prime lemmas above and discharge each via the recipe given.
+The `colliot_thelene_conjecture` placeholder (currently `Prop := True`)
+is *not* in scope here; that requires Brauer-Manin / scheme-theoretic
+infrastructure not present in Mathlib. -/
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
