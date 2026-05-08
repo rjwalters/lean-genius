@@ -39,18 +39,18 @@
     "goal": "Formalize the full iff-statement `legendre_three_squares` (ThreeSquares.lean:706) axiom-free. The theorem statement already exists; its forward direction is a real proof and its backward direction unfolds to `not_excluded_form_is_sum_three_sq`, the sufficiency axiom."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-08T03:30:00.000Z",
-    "iteration": 3,
-    "focus": "S3 (2026-05-08, researcher-3): **CORRECTED a wrong volume formula** in two existing axioms. `dirichletEllipsoid_volume` previously claimed vol = (4π/3) · R^(3/2) / √d; correct value is (4π/3) · R^(3/2) / d (off by factor √d). Same correction applied to `minkowski_ellipsoid_has_lattice_point` threshold. Axiom statements remain (still not proved) but now mathematically correct. Verified via standard ellipsoid volume formula V = (4π/3)abc with a = √R, b = c = √(R/d).",
+    "phase": "ACT",
+    "since": "2026-05-08T13:00:00.000Z",
+    "iteration": 8,
+    "focus": "S8 (2026-05-08, researcher-3): **QR square-root extraction helper**. Added `private lemma exists_int_sqrt_neg_d_mod_p` in `ThreeSquares.lean` (between S6 helpers and `not_excluded_form_is_sum_three_sq` axiom). Given `p` prime, `0 < d < p`, and `legendreSym p (-d : ℤ) = 1`, the lemma extracts an integer `r` with `(p : ℤ) ∣ r² + d`. Proof (~30 lines) faithfully adapts the QR-lift technique from `ZsqrtdNegTwo.lean:not_irreducible_of_neg_two_is_qr` (used for the p ≡ 3 mod 8 case): apply `legendreSym.eq_one_iff` → `IsSquare ((-d : ℤ) : ZMod p)`; lift the square root `c.val` to ℤ; convert to divisibility via `ZMod.intCast_zmod_eq_zero_iff_dvd`. This is the **QR side** of the Dirichlet Key Lemma — combined with S6's integer Minkowski result and a sublattice covolume argument (S9+), it produces `p ∣ x² + d y² + d z²` on the sublattice. Axiom count unchanged (still 2 after S7's PR #17099 merge); S8 is *infrastructure* for the eventual `dirichlet_key_lemma` proof.",
     "blockers": [
-      "Mathlib has Minkowski's theorem (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) but no closed-form ellipsoid-volume lemma — must be derived from `MeasureTheory.Measure.addHaar_smul` and `volume_ball` of the unit ball in ℝ³.",
+      "Mathlib has Minkowski's theorem (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) but no closed-form ellipsoid-volume lemma — must be derived from `MeasureTheory.Measure.addHaar_smul` and `volume_ball` of the unit ball in ℝ³. (Discharged in S4.)",
       "Mathlib has Dirichlet's theorem on primes in AP (`Nat.setOf_prime_and_eq_mod_infinite`) but the integer/quadratic-residue compatibility (legendreSym(-d) = 1 for chosen p = dn-1) requires custom case analysis on n mod 8.",
-      "The 4-axiom chain interlocks tightly: removing one in isolation does not reduce the assumption count. The minimal unit of progress is the full Minkowski-application argument."
+      "S5 region of `ThreeSquares.lean` has latent build errors (Matrix.det_toLin', Matrix.cons_val_succ, EuclideanSpace.real_norm_sq_eq) that surface only when build is run; auto-merge of math PRs without CI masked these. Build-fix PR needed before subsequent sessions can rely on green build."
     ],
-    "nextAction": "(Researcher) ACT phase S4: prove the (now-correct) `dirichletEllipsoid_volume` axiom. Strategy: define the linear isomorphism T : ℝ³ → ℝ³ via T = diag(√R, √(R/d), √(R/d)); show `dirichletEllipsoid d R = T '' B(0,1)`; use `MeasureTheory.Measure.addHaar_image_linearMap` with `det T = R^(3/2)/d` and `EuclideanSpace.volume_ball`. Estimated 60–100 lines.",
+    "nextAction": "(Researcher S9 — ACT) Build the sublattice for the Minkowski-on-sublattice step. Define `L_r = {(x, y, z) ∈ ℤ³ : x ≡ r·y (mod p)}` (single constraint, covolume p) or `L_{r,r'} = {... : x ≡ r y, x ≡ r' z}` (two constraints, covolume p²). Identify it as `Submodule ℤ (Fin 3 → ℝ)` via `Submodule.span ℤ {basis_vectors}`. Compute covolume using `ZSpan.volume_fundamentalDomain` adapted to the new basis. Estimated 80–100 lines.",
     "attemptCounts": {
-      "total": 2,
+      "total": 8,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -150,7 +150,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.056Z",
-  "lastUpdate": "2026-05-08T00:00:00.000Z",
+  "lastUpdate": "2026-05-08T13:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
