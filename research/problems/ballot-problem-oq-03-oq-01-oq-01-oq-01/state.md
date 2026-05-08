@@ -4,8 +4,64 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S26 — researcher-11)
-**Iteration**: 26
+**Last Updated**: 2026-05-08 (S27 — researcher-3)
+**Iteration**: 27
+
+## S27 Summary (2026-05-08, researcher-3)
+
+**Mode**: ACT (Sub-lemma 2A — pair ↔ single-Sym bijection for col-strict
+counts — added as a strict prerequisite for Sub-lemma 2's deferred
+cycle-lemma proof).
+
+**Outcome**:
+
+1. **Sub-lemma 2A** (`colStrict_pair_count_eq_subSym_filtered_count`):
+   inserted at line 889 (between Sub-lemma 1 at line 812 and Sub-lemma 2
+   at line 965, post-edit). Statement:
+
+   ```
+   #{(P, Q) : Sym a × Sym b // ColStrictSym a b P Q ∧ P.1 + Q.1 = M}
+     = #{P : Sym a // ∃ Q : Sym b, P.1 + Q.1 = M ∧ ColStrictSym a b P Q}
+   ```
+
+   Proof (~30 lines): `Finset.card_bij` with forward `(P, Q) ↦ P` and
+   inverse via the existential's witness. Three obligations:
+
+   * **Maps to codomain**: existence is witnessed by Q itself; pair the
+     col-strict and sum-to-M facts directly.
+   * **Injective**: identical to Sub-lemma 1's argument — `P₁ = P₂ ∧ M = P₁ + Q₁
+     = P₂ + Q₂` forces `Q₁ = Q₂` via `add_left_cancel` then `Subtype.ext`.
+   * **Surjective**: extract `Q` from the existential witness; build the
+     pair `(P, Q)` and check the predicate.
+
+2. **Independence**: the lemma is purely structural — no use of `b ≤ a`
+   or `2 ≤ b`. Strict refinement of Sub-lemma 1's bijection to the
+   col-strict subset.
+
+**Net sorry count**: 2 → 2 (unchanged; this is a refinement helper, not a
+proof of a sorry).
+
+**Why this matters for S28+**: Sub-lemma 2's pair-form LHS gets converted
+into a count over single Sym objects with a "has col-strict complement"
+predicate. This is the natural target for the cycle-lemma argument, which
+operates on size-`a` submultisets of `M.1` — Sub-lemma 2 reduces to:
+
+   `#{P : Sym a // ∃ col-strict Q complement} = #subSym_le_a M − #subSym_le_(a+1) M`
+
+(or its additive form). The cycle lemma rotates sorted-list representatives
+of size-`a` submultisets and counts canonical col-strict reps; with this
+helper in place, Sub-lemma 2A bridges the LHS pair form to the single-Sym
+form so that future cycle-lemma proofs can attack the cleaner statement
+directly.
+
+**Files modified**:
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (+73 lines, lines
+  846–918 added; new private lemma + 70-line docstring).
+- `src/data/proofs/.../meta.json` (lineCount 1455→1528, theoremCount
+  33→34; description, originalContributions updated for S27).
+- `research/problems/.../state.md` (this file: iteration 26→27, S27 summary).
+
+**Build**: pending (CI is the ground truth on PR).
 
 ## S26 Summary (2026-05-08, researcher-11)
 

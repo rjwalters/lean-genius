@@ -843,6 +843,79 @@ private lemma split_count_eq_subSym_le_count {n p q : ℕ}
     rw [add_comm]
     exact tsub_add_cancel_of_le hP
 
+/-- **Sub-lemma 2A of `ballot_counting_identity`** (S27 — pair ↔ single-Sym
+    bijection for col-strict counts; prerequisite for Sub-lemma 2's deferred
+    cycle-lemma proof).
+
+    For `M : Multiset (Fin n)` with `M.card = a + b`, the count of column-strict
+    `(a, b)`-Sym-pair splits of `M` (LHS of Sub-lemma 2) equals the count of
+    size-`a` Sym objects `P` admitting a col-strict complement Sym of size `b`:
+
+      `#{(P, Q) // ColStrictSym a b P Q ∧ P.1 + Q.1 = M}
+       = #{P : Sym (Fin n) a // ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M ∧ ColStrictSym a b P Q}`
+
+    The forward map is `(P, Q) ↦ P` (drop the second component, since `Q := M − P.1`
+    is forced by `P.1 + Q.1 = M`); the inverse picks out the unique `Q` from
+    the existential witness.
+
+    ### Why this is a strict refinement of Sub-lemma 1
+
+    Sub-lemma 1 proved the bijection `(P, Q) ↦ P` from total `(a, b)`-splits
+    (no col-strict constraint) to `{P : Sym a // P.1 ≤ M}`. This lemma restricts
+    the bijection to the col-strict subset on each side, which is consistent
+    because the col-strict condition `ColStrictSym a b P Q` depends only on
+    `(P, Q)` and `Q` is forced by `P` once we fix `P.1 + Q.1 = M`.
+
+    ### Use site for Sub-lemma 2
+
+    Combined with Sub-lemma 1 (twice, at `(p, q) := (a, b)` and
+    `(p, q) := (a + 1, b - 1)`) and the `Finset.filter_card_add_filter_neg_card_eq_card`
+    partition over the col-strict / ¬col-strict split, this lemma converts
+    Sub-lemma 2's pair-indexed LHS into the single-Sym difference-identity form
+    of S24's plan:
+
+      `#{P ∈ subSym_le_a M // P has col-strict complement} = #subSym_le_a M − #subSym_le_(a+1) M`
+
+    The right-hand side is the natural target for the cycle-lemma argument,
+    which operates on size-`a` submultisets directly without the redundant
+    `Q = M − P` data carried by the pair form.
+
+    ### Independence
+
+    This bijection is purely structural — it makes no use of `b ≤ a` or
+    `2 ≤ b`. The col-strict condition is preserved verbatim by the bijection;
+    only the *count* on the right-hand side of Sub-lemma 2 (vs. the
+    submultiset complement form) needs the cycle-lemma input. -/
+private lemma colStrict_pair_count_eq_subSym_filtered_count {n a b : ℕ}
+    (M : Multiset (Fin n)) (hM : M.card = a + b) :
+    ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+      (fun PQ => ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M)).card =
+    ((Finset.univ : Finset (Sym (Fin n) a)).filter
+      (fun P => ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M ∧ ColStrictSym a b P Q)).card := by
+  classical
+  apply Finset.card_bij (fun (PQ : Sym (Fin n) a × Sym (Fin n) b) _ => PQ.1)
+  · -- Maps to codomain: (P, Q) with col-strict and P + Q = M gives P with witness Q.
+    intro PQ hPQ
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ ⊢
+    exact ⟨PQ.2, hPQ.2, hPQ.1⟩
+  · -- Injective: PQ₁.1 = PQ₂.1 forces PQ₁.2 = PQ₂.2 via add_left_cancel on M.
+    intro PQ₁ hPQ₁ PQ₂ hPQ₂ heq
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ₁ hPQ₂
+    have hP_val : PQ₁.1.1 = PQ₂.1.1 := congrArg Subtype.val heq
+    have hQval : PQ₁.2.1 = PQ₂.2.1 := by
+      have hadd : PQ₁.1.1 + PQ₁.2.1 = PQ₁.1.1 + PQ₂.2.1 := by
+        rw [hPQ₁.2, ← hPQ₂.2, hP_val]
+      exact add_left_cancel hadd
+    have hQ : PQ₁.2 = PQ₂.2 := Subtype.ext hQval
+    exact Prod.ext heq hQ
+  · -- Surjective: given P with ∃ Q, P + Q = M ∧ col-strict, that Q is the preimage.
+    intro P hP
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hP
+    obtain ⟨Q, hPQ, hCS⟩ := hP
+    refine ⟨(P, Q), ?_, rfl⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact ⟨hCS, hPQ⟩
+
 /-- **Sub-lemma 2 of `ballot_counting_identity`** (S26, deferred proof to S27+).
 
     For `b ≥ 2` and `b ≤ a`, the count of column-strict `(a, b)`-splits of
