@@ -209,6 +209,42 @@ theorem multinomialMarginalCDF_eq_binomialCDF
     rw [Finset.mem_filter] at hk
     rw [hk.2, if_neg hcond]
 
+/-! ## Structural properties of `binomialCDF` (Phase-4 prep) -/
+
+/-- For `x < 0`, `binomialCDF n p x = 0`. Every `j ∈ {0, …, n}` satisfies
+    `(j : ℝ) ≥ 0 > x`, so the if-guard is false in every term. -/
+theorem binomialCDF_neg (n : ℕ) (p : ℝ) {x : ℝ} (hx : x < 0) :
+    binomialCDF n p x = 0 := by
+  unfold binomialCDF
+  apply Finset.sum_eq_zero
+  intro j _
+  rw [if_neg (not_le.mpr (lt_of_lt_of_le hx (Nat.cast_nonneg j)))]
+
+/-- `binomialCDF n p` is monotone in `x`, when `0 ≤ p ≤ 1`.
+
+    Each summand is either `0` or the binomial PMF
+    `C(n, j) · p^j · (1 − p)^(n − j)`, which is non-negative under the
+    standing hypothesis `0 ≤ p ≤ 1`. As `x` increases, more if-guards
+    become true, so each summand is non-decreasing.
+
+    Useful for the Phase-4 Portmanteau bridge: continuous monotone CDFs
+    characterize weak convergence on `ℝ`. -/
+theorem binomialCDF_mono (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    Monotone (binomialCDF n p) := by
+  intro x y hxy
+  unfold binomialCDF
+  apply Finset.sum_le_sum
+  intro j _
+  by_cases hjx : (j : ℝ) ≤ x
+  · rw [if_pos hjx, if_pos (le_trans hjx hxy)]
+  · rw [if_neg hjx]
+    by_cases hjy : (j : ℝ) ≤ y
+    · rw [if_pos hjy]
+      have h1mp : 0 ≤ 1 - p := by linarith
+      exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
+        (pow_nonneg h1mp _)
+    · rw [if_neg hjy]
+
 /-! ## Main theorem: multinomial marginal CLT (derived) -/
 
 /-- **Multinomial marginal CLT** (DERIVED THEOREM, no separate axiom):

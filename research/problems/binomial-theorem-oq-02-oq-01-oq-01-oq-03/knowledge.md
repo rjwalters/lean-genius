@@ -288,6 +288,116 @@ measure-theoretic `gaussianMeasure` CDF, removing the second axiom.
 
 ---
 
+## Session 2026-05-08 (Session 4, researcher-10) — ACT (Phase-4 prep)
+
+**Mode**: BUILD-ON-PRIOR (Sessions 1–3 produced a sorry-free, two-axiom
+file; the natural next step is Phase-4 work on the remaining axioms).
+**Outcome**: added two structural lemmas about `binomialCDF` that the
+Phase-4 Portmanteau bridge will need (`binomialCDF_neg`,
+`binomialCDF_mono`). No axiom elimination this session.
+
+### What Was Built
+
+* `binomialCDF_neg (n : ℕ) (p : ℝ) {x : ℝ} (hx : x < 0) :
+    binomialCDF n p x = 0`
+  — every `j ∈ Finset.range (n+1)` satisfies `(j : ℝ) ≥ 0 > x`, so the
+  if-guard is false in every term and the whole sum vanishes. ~6 lines,
+  uses `Finset.sum_eq_zero` + `if_neg` + `not_le.mpr` + `Nat.cast_nonneg`.
+
+* `binomialCDF_mono (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    Monotone (binomialCDF n p)`
+  — pointwise on each summand: case-split on whether `(j : ℝ) ≤ x`. If
+  yes, monotonicity gives `(j : ℝ) ≤ y`, both terms equal the PMF.
+  If no (LHS = 0), need `0 ≤ PMF` when the RHS if-guard holds; that's
+  `mul_nonneg` + `pow_nonneg` on `Nat.choose`, `p^j`, and `(1-p)^(n-j)`.
+  ~13 lines.
+
+### Why These Lemmas
+
+The Phase-4 work is to discharge `binomial_clt_pointwise` — the classical
+de Moivre–Laplace theorem in CDF form. The natural Mathlib path is:
+
+1. Apply Mathlib's `ProbabilityTheory.iid_central_limit_theorem` to a
+   Bernoulli($p$) i.i.d. sequence to get measure-weak-convergence of
+   the standardized binomial law to the standard Gaussian.
+2. Bridge measure-weak-convergence to CDF-pointwise convergence via
+   the Portmanteau theorem at continuity points of the limit CDF.
+
+For step (2), one ingredient is the standard Portmanteau equivalence:
+weak convergence is equivalent to CDF-pointwise convergence at every
+continuity point of the limit CDF when the CDFs in question are
+**monotone** on `ℝ`. So `binomialCDF_mono` is on the critical path.
+Similarly, edge-of-support facts (CDF = 0 below the support) are
+typical Portmanteau-bridge lemmas; `binomialCDF_neg` covers the
+lower edge.
+
+### Status After This Session
+
+* Sorries: 0 (unchanged).
+* Axioms: 2 (unchanged): `binomial_clt_pointwise` + `standardNormalCDF`
+  opaque.
+* Theorems: 5 (was 3): added `binomialCDF_neg` and `binomialCDF_mono`.
+  Substantive theorem count: 4 (was 2; the two new theorems are public
+  named results).
+* Definitions: 2 (unchanged).
+* File length: 275 lines (was 239; +36 for the two lemmas + section
+  header + docstrings).
+* Status: still `axiomatized`.
+
+### Honest Reporting
+
+* Local Docker build was **not** run (CI is the ground truth, and the
+  worktree has the recursive `.lake` symlink trap that forces a fresh
+  Mathlib clone). The proofs use only well-tested Mathlib idioms —
+  `Finset.sum_eq_zero`, `Finset.sum_le_sum`, `Nat.cast_nonneg`,
+  `mul_nonneg`, `pow_nonneg`, `not_le.mpr`, `if_pos`, `if_neg`,
+  `by_cases`, `linarith`. Confidence is high but not CI-verified.
+
+* This is **infrastructure**, not axiom elimination. The session does
+  not reduce the axiom count — it adds named structural lemmas that
+  the next session can chain into a Portmanteau-style bridge.
+
+* `binomialCDF_le_one` (CDF bounded above by 1) is **not** added here:
+  it requires `add_pow` (binomial expansion in a commutative ring) and
+  the proof has more moving parts than a single linear pass. Deferred
+  to Session 5.
+
+### Files Changed
+
+- UPDATED `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+  (239 → 275 lines, +2 theorems).
+- UPDATED `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+  (lineCount, theoremCount, substantiveTheoremCount, originalContributions,
+   sections; added `sec-structural` and shifted `sec-main` line range).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+  (this entry).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`
+  (Phase-4 prep status).
+- UPDATED `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json`
+  (knowledge fields).
+
+### Next Steps
+
+1. **Session 5 (immediate Phase-4 prep continuation)**: prove
+   `binomialCDF_le_one` and `binomialCDF_zero_le` to round out the
+   structural-properties library. `binomialCDF_le_one` reduces to
+   `(p + (1-p))^n = 1^n = 1` via `add_pow` (or `Commute.add_pow`).
+   `binomialCDF_zero_le` follows from non-negativity of each summand.
+
+2. **Session 6 (axiom attack)**: discharge `binomial_clt_pointwise`
+   from `ProbabilityTheory.iid_central_limit_theorem` via the
+   Portmanteau bridge. The structural lemmas added this session are
+   prerequisites. Estimated ~150–200 lines of new Lean.
+
+3. **Stretch**: replace the `standardNormalCDF` opaque with a
+   concrete `noncomputable def` integrating `gaussianPDFReal` over
+   `Set.Iic x`. ShannonEntropyOQ01.lean uses
+   `ProbabilityTheory.gaussianPDFReal μ ⟨σ², sq_nonneg σ⟩` so the
+   API is precedented in this gallery; the bridge to CDF is one
+   `MeasureTheory.integral` definition.
+
+---
+
 ## Dead Ends
 
 - None yet.
