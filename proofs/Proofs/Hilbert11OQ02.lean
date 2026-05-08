@@ -1275,6 +1275,69 @@ Section-8 roadmap now admit axiom-free `ℚ_[p]`-solubility proofs.
   down `selmer_no_rational_solution`. Both are far beyond present
   Mathlib. -/
 
+/-! ## Section 21: Iteration 11 — Bundled discharge over the Section-8 prime set
+
+The twelve axiom-free per-prime theorems (Sections 11–19) collectively
+exhibit that the universal axiom `selmer_padic_solubility p` is
+**provable** for every prime `p` in the Section-8 roadmap
+`{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`. The following bundled
+statement records this in a single named theorem, giving downstream
+consumers a single citation point for the discharged sub-collection
+without invoking the universal axiom.
+
+This is *not* a discharge of the universal axiom — the axiom
+quantifies over **all** primes, and the per-prime recipe (Hensel-lift
+on a concrete witness with a verified strong-form hypothesis) does not
+extend uniformly to every prime ≥ 41 (each such prime would need its
+own witness search, Hensel hypothesis verification, and corollary
+proof). It does, however, give a tight finite witness of the
+discharged sub-collection: the 12 primes in
+`selmer_locally_soluble_everywhere`'s prime sweep are *exactly* the
+primes for which the Hasse-failure proof needs `ℚ_[p]`-solubility
+(`p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`), so for the
+Hasse-failure pipeline the universal axiom is no longer load-bearing
+on any specific input. -/
+
+/-- **Bundled axiom-free `ℚ_[p]`-solubility** for the twelve primes in
+    the Section-8 roadmap. For each
+    `p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`, the Selmer cubic
+    `3x³ + 4y³ + 5z³ = 0` has a nontrivial `ℚ_[p]`-solution, proved
+    axiom-free via the Hensel-lifting machinery of Sections 11–19.
+
+    Stated as a 12-fold conjunction (one conjunct per prime) so the
+    universally-quantified version with type `ℚ_[p]` for an arbitrary
+    `p : ℕ` (which would require `[Fact p.Prime]` to even form `ℚ_[p]`)
+    can be derived as a corollary by `fin_cases` plus instance lookup
+    over the 12 global `Fact (Nat.Prime N)` instances. The conjunction
+    form is a single citation point for the cumulative result of
+    Sections 11–19 and avoids any tactic dispatch on the prime-set
+    membership at consumer sites. -/
+theorem selmer_padic_solubility_section8_primes :
+    (∃ x y z : ℚ_[2],  (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[3],  (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[5],  (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[7],  (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[11], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[13], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[17], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[19], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[23], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[29], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[31], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[37], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) :=
+  ⟨selmer_padic_solubility_p2_hensel,
+   selmer_padic_solubility_p3_hensel,
+   selmer_padic_solubility_p5_hensel,
+   selmer_padic_solubility_p7_hensel,
+   selmer_padic_solubility_p11_hensel,
+   selmer_padic_solubility_p13_hensel,
+   selmer_padic_solubility_p17_hensel,
+   selmer_padic_solubility_p19_hensel,
+   selmer_padic_solubility_p23_hensel,
+   selmer_padic_solubility_p29_hensel,
+   selmer_padic_solubility_p31_hensel,
+   selmer_padic_solubility_p37_hensel⟩
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -1297,5 +1360,6 @@ Section-8 roadmap now admit axiom-free `ℚ_[p]`-solubility proofs.
 #check @selmer_padic_solubility_p2_hensel
 #check @selmer_padic_solubility_p5_hensel
 #check @selmer_padic_solubility_p3_hensel
+#check @selmer_padic_solubility_section8_primes
 
 end Hilbert11OQ02
