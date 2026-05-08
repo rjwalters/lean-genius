@@ -131,6 +131,31 @@ theorem prime_pow_dvd_lcmRange {p n : ℕ} (hp : p.Prime) (hn : 1 ≤ n) :
     p ^ Nat.log p n ∣ lcmRange n :=
   pow_dvd_lcmRange hp.pos (Nat.pow_log_le_self p (by omega))
 
+/-- **Coprimality of distinct prime powers**: for distinct primes `p ≠ q`,
+    any prime-power factors `p ^ a` and `q ^ b` are coprime.
+
+    The pairwise-coprimality input needed to assemble the prime-power
+    factors of `lcmRange n` into Chebyshev's product decomposition
+    `lcmRange n = ∏ p ∈ filter Prime (range (n+1)), p ^ ⌊log_p n⌋`.
+
+    Combined with `prime_pow_dvd_lcmRange` it closes the easy direction
+    `(∏ p, p ^ ⌊log_p n⌋) ∣ lcmRange n` (next session): pairwise-coprime
+    divisors of a fixed `N` have their product dividing `N`.
+
+    Proof: `Nat.dvd_prime` reduces `p ∣ q` to `p = 1 ∨ p = q`; the first
+    contradicts `hp.one_lt`, the second contradicts `hpq`. Then
+    `Nat.Prime.coprime_iff_not_dvd` upgrades `¬ p ∣ q` to `Coprime p q`,
+    and `Coprime.pow_left a` / `Coprime.pow_right b` lift it to
+    `Coprime (p ^ a) (q ^ b)`. -/
+theorem coprime_prime_pow_pow_of_ne {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
+    (hpq : p ≠ q) (a b : ℕ) : Nat.Coprime (p ^ a) (q ^ b) := by
+  have hndvd : ¬ p ∣ q := by
+    intro h
+    rcases (Nat.dvd_prime hq).mp h with h1 | heq
+    · exact hp.one_lt.ne' h1
+    · exact hpq heq
+  exact ((hp.coprime_iff_not_dvd.mpr hndvd).pow_left a).pow_right b
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
