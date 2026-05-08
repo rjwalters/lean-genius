@@ -225,6 +225,21 @@
       "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
       "relationship": "sibling",
       "description": "Sibling open-question line in the ballot-problem family. Both entries instantiate the broader research program of eliminating axioms in continuous-time ballot/Brownian formalizations by extracting the precise topological hypotheses (closed hitting set, nonemptiness) needed for csInf and order-theoretic arguments to discharge the original assumptions."
+    },
+    {
+      "proofId": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "Classical discrete ballot problem (Bertrand 1887, Whitworth 1878): in an election with $p > q$ votes, $\\Pr[A\\text{ leads throughout}] = (p-q)/(p+q)$. The continuous-time first-passage-time identity formalized here is the limiting / continuum analog of the discrete reflection-principle proof of the ballot problem. The two share their proof DNA — André's 1887 reflection at the diagonal, the simple random walk in the discrete case, Brownian motion in the continuous case — so reading the discrete entry first gives the combinatorial intuition that the csInf machinery here makes rigorous in the continuous limit."
+    },
+    {
+      "proofId": "ballot-problem-oq-03",
+      "relationship": "sibling",
+      "description": "Higher-dimensional sibling: 2D Crossing Lemma and Lindström-Gessel-Viennot infrastructure via lattice-path reflection. Where the present entry handles a single 1D continuous path and the level-crossing identity, OQ-03 handles families of non-intersecting 2D lattice paths and their sign-weighted determinant counts. Both descend from the same reflection-principle ancestor (André 1887) but make disjoint formalization choices: this entry uses csInf + IVT + IsClosed.csInf_mem on $\\mathbb{R}_{\\ge 0}$, while OQ-03 uses bijective combinatorics on $\\mathbb{Z}^2$."
+    },
+    {
+      "proofId": "intermediate-value-theorem-oq-01",
+      "relationship": "uses-shared-tool",
+      "description": "Bisection method for constructive root-finding from IVT. Where this entry uses IVT once to *witness existence* of a level-crossing (`ivt_first_crossing` invokes `isPreconnected_Icc.intermediate_value₂` non-constructively), the bisection entry uses IVT recursively to *constructively approximate* a root (each step halves the bracketing interval, giving a $1/2^n$ convergence rate). Both establish the same kind of result — a witness $s \\in [0,T]$ with a continuous path attaining a target value — but trade off differently between existence proof and constructivity. The non-emptiness conclusion in `hittingSet_nonempty_of_ivt` would in principle be replaceable by a bisection-style constructive witness for use cases that need the actual value of $\\tau$, not just that it exists."
     }
   ],
   "leanFile": {
