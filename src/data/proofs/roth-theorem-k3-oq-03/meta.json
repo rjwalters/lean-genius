@@ -17,11 +17,14 @@
     "badge": "axiom",
     "sorries": 1,
     "dateAdded": "2026-03-30",
-    "axiomCount": 1,
-    "assumptions": "1 axiom: density_increment_kAP (density increases on subprogression, AP-free preserved). gowersNorm and kAPCount constructive.",
+    "axiomCount": 2,
+    "assumptions": "2 axioms: density_increment_kAP (density increases on subprogression, AP-free preserved) declared in this file; szemeredi_k_ge_4 inherited transitively via Proofs.SzemerediTheorem. gowersNorm and kAPCount constructive.",
     "lineCount": 277,
     "theoremCount": 4,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/SzemerediTheorem.lean"
+    ]
   },
   "crossReferences": [
     {
