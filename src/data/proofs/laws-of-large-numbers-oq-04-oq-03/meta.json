@@ -65,23 +65,98 @@
       "The preimage identification X₀ ⁻¹' Iic x = {ω | X₀ ω ≤ x} connects the integral computation to the trueCDF definition by definitional equality of sets.",
       "The one remaining axiom (glivenko_cantelli_uniform) corresponds to a qualitatively harder problem: choosing CDF continuity points with controlled mass per interval requires a measurability + density argument not yet in Mathlib.",
       "Forward path — VC-class generalization framework: the classical (distribution-free) bracketing step and its VC-class generalization share most of their Mathlib needs, and inherit the same scaffolding. Three classical pieces are required: (a) density of CDF continuity points — derivable from Mathlib's lemma that monotone real functions have countably many discontinuities, since the complement of a countable set is dense in ℝ; (b) a constructive ε-cover lemma producing finitely many continuity points q₁ < ⋯ < q_k with each F-jump F(q_{j+1}) − F(q_j⁻) < ε — this is the genuinely missing piece, requiring a covering-by-ε-mass induction over [0,1] under monotone F; (c) finite intersection of pointwise convergence events — already available via `MeasureTheory.ae_all_iff`. The VC-class generalization (uniform LLN over a class 𝓕 of indicators with finite VC dimension d, giving rate O(√(d/n))) requires three additional Mathlib gaps: shatter-coefficient/VC-dimension definitions, the Vapnik–Chervonenkis symmetrization inequality (Sauer–Shelah lemma + ghost-sample argument), and the Talagrand-style maximal inequality for empirical processes. Specializing the indicator class to threshold functions {1_{x ≤ ·} : x ∈ ℝ} (VC dimension 1) recovers classical Glivenko–Cantelli, so a VC-class formalization in Mathlib subsumes the classical step — making (b) above redundant once (d)–(f) are available."
+    ],
+    "prerequisites": [
+      "Probability spaces: $(\\Omega, \\mathcal{F}, \\mu)$ with $\\mu(\\Omega) = 1$. Mathlib's `IsProbabilityMeasure` / `IsFiniteMeasure` typeclasses",
+      "Random variables and CDF: $X : \\Omega \\to \\mathbb{R}$ measurable, $F(x) := \\mu(X \\leq x)$. Mathlib's `Measurable`, `Set.preimage`, `Set.Iic`, and the file's `trueCDF`",
+      "Lebesgue/Bochner integral basics: $\\int_\\Omega f \\, d\\mu$, integral of a constant ($\\int_\\Omega c\\, d\\mu = c \\cdot \\mu(\\Omega)$ for finite measures), `MeasureTheory.integral_const`",
+      "Indicator functions: `Set.indicator s f` $= \\mathbf{1}_s \\cdot f$. Pointwise rewrite identities (`Set.mem_preimage`, `Set.mem_Iic`, `Set.indicator_apply`)",
+      "Integrability via domination: `MeasureTheory.Integrable.mono'`: an AEMeasurable function dominated a.e. in norm by an integrable function is integrable. Used here with the integrable constant 1",
+      "Restricted measure: `Measure.restrict s` acts as $\\mu$ on $s$ and 0 elsewhere; `Measure.restrict_apply (MeasurableSet.univ)` computes $(\\mu.\\mathrm{restrict}\\,s)\\,\\mathrm{Set.univ} = \\mu(\\mathrm{Set.univ} \\cap s) = \\mu\\,s$",
+      "`MeasureTheory.integral_indicator`: converts $\\int_\\Omega s.\\mathrm{indicator}\\,f \\, d\\mu$ to $\\int_{s} f \\, d\\mu$ when $s$ is measurable — the principal lemma that turns a range-side indicator into a domain-side set integral",
+      "i.i.d. structures: `iIndepFun X μ`, `IdentDistrib (X i) (X 0) μ μ`. Mathlib's `MeasureTheory.strong_law_ae_real` (SLLN) consumes these plus integrability of the first coordinate",
+      "Empirical CDF: $F_n(x) := \\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{X_i \\leq x}$. The parent file's `empiricalCDF_eq_mean` rewrites this as the empirical mean of the threshold indicator sequence — exactly the form SLLN consumes",
+      "Glivenko–Cantelli theorem (1933): the empirical CDF converges *uniformly* to the true CDF a.s. The pointwise step proved here is the easier half; the genuinely hard part is the bracketing argument that lifts pointwise to uniform convergence"
     ]
   },
   "sections": [
     {
-      "title": "Integrability of Threshold Indicators",
-      "content": "The threshold indicator ω ↦ 1_{X₀(ω) ≤ x} takes values 0 or 1, so its norm is bounded by 1. On a probability space, the constant function 1 is integrable. By `Integrable.mono'`, any AEMeasurable function dominated by an integrable function is itself integrable. The AEMeasurability follows from composing the measurable function X₀ with the Borel-measurable indicator of Iic x.",
-      "lean_names": ["thresholdIndicator_integrable_proved"]
+      "id": "sec-header",
+      "title": "Header Docstring and Imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring states the file's purpose: discharge two of the three Glivenko–Cantelli axioms (`thresholdIndicator_integrable`, `integral_thresholdIndicator_eq_cdf`) by proving them from Mathlib's measure-theoretic API. Lists the four key Mathlib lemmas used (`Integrable.mono'`, `integral_indicator`, `integral_const`, `Measure.restrict_apply`) and records the resulting axiom-count reduction 3 → 1. Imports the parent `Proofs.LawsOfLargeNumbersOQ04` (for `thresholdIndicator`, `trueCDF`, `empiricalCDF`, and the structural independence/identity lifts), `Mathlib.MeasureTheory.Integral.Bochner.Set` (for `integral_indicator`), and `Mathlib.Tactic`. Opens `MeasureTheory`, `ProbabilityTheory`, `Set` and enters the `GlivenkoCantelli` namespace.",
+      "mathContext": "Goal: replace `axiom thresholdIndicator_integrable` and `axiom integral_thresholdIndicator_eq_cdf` from the parent file with theorems whose proofs use only Mathlib. Result: $\\mathrm{axiomCount}_{\\mathrm{parent}} : 3 \\to 1$, with only the bracketing-uniformity axiom remaining open."
     },
     {
-      "title": "Integral of Indicator Equals CDF",
-      "content": "The key algebraic identity: the indicator function 1_{X₀(ω) ≤ x} evaluated at ω equals the preimage indicator (X₀ ⁻¹' Iic x).indicator evaluated at ω. This allows `integral_indicator` to convert the integral to a set integral on the preimage. Then `integral_const` evaluates the constant-1 integral over a set as the measure of the set.",
-      "lean_names": ["integral_thresholdIndicator_eq_cdf_proved", "thresholdIndicator_eq_preimage_indicator_fun"]
+      "id": "sec-axiom-1",
+      "title": "Proof of Axiom 1 — Threshold Indicators Are Integrable",
+      "startLine": 43,
+      "endLine": 63,
+      "summary": "Theorem `thresholdIndicator_integrable_proved`: on a probability space, the threshold indicator $\\omega \\mapsto \\mathbf{1}_{X_0(\\omega) \\leq x}$ is integrable. Strategy: apply `Integrable.mono' (integrable_const (1 : ℝ))` — the constant function 1 is integrable on a finite measure space, and the indicator is dominated by it (values ∈ {0, 1}). The two side conditions are: (a) AEMeasurability via `(measurable_iic_indicator x).comp (hX 0)` (composition of a measurable random variable with the Borel indicator of $(-\\infty, x]$), and (b) the pointwise norm bound `‖indicator ω‖ ≤ 1`, discharged by `filter_upwards`/`split_ifs` into the two cases $X_0(\\omega) \\leq x$ and $X_0(\\omega) > x$.",
+      "mathContext": "$\\|\\mathbf{1}_{X_0(\\omega) \\leq x}\\| \\leq 1 \\;\\text{a.e.}$; combined with $\\int_\\Omega 1 \\, d\\mu = 1 < \\infty$, `Integrable.mono'` produces $\\int_\\Omega |\\mathbf{1}_{X_0(\\omega) \\leq x}| \\, d\\mu \\leq 1 < \\infty$."
     },
     {
-      "title": "Axiom-Free Pointwise Convergence",
-      "content": "Combining the two proved lemmas with the existing SLLN infrastructure, the pointwise convergence theorem for the empirical CDF holds without any integration axioms. Only the uniform convergence step (glivenko_cantelli_uniform) remains axiomatic.",
-      "lean_names": ["empiricalCDF_pointwise_convergence_no_axiom"]
+      "id": "sec-preimage-lemma",
+      "title": "Preimage Indicator Factorization",
+      "startLine": 65,
+      "endLine": 75,
+      "summary": "Private lemma `thresholdIndicator_eq_preimage_indicator_fun`: pointwise equality $\\mathbf{1}_{X_0(\\omega) \\leq x} = (X_0^{-1}((-\\infty, x])).\\mathrm{indicator}\\,(\\lambda \\_, 1)\\,\\omega$. Proved by `ext`/`simp only [thresholdIndicator, Set.indicator, Set.mem_preimage, Set.mem_Iic]`. This is the algebraic step that bridges from a real-valued function-of-a-random-variable indicator (range-side) to a set-of-the-domain indicator (domain-side), unlocking `integral_indicator`. The lemma is `private` because it is purely a rewrite consumed only inside the next theorem.",
+      "mathContext": "$\\mathbf{1}_{X_0(\\omega) \\in (-\\infty, x]} = \\mathbf{1}_{\\omega \\in X_0^{-1}((-\\infty, x])}$ — definitional, but the orientation matters: `integral_indicator` requires the indicator of a *subset of the integration domain*, not of the codomain."
+    },
+    {
+      "id": "sec-axiom-2",
+      "title": "Proof of Axiom 2 — Integral of Indicator Equals CDF",
+      "startLine": 77,
+      "endLine": 103,
+      "summary": "Theorem `integral_thresholdIndicator_eq_cdf_proved`: $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}] = F(x)$ where $F$ is `trueCDF X μ`. Five-step proof: (1) establish `MeasurableSet (X 0 ⁻¹' Iic x)` from `(hX 0) measurableSet_Iic`; (2) `simp_rw thresholdIndicator_eq_preimage_indicator_fun` to convert to the preimage-indicator form; (3) `rw integral_indicator hms` to convert the integral over $\\Omega$ of an indicator to a set integral over the preimage with the constant integrand 1; (4) chain `integral_const` + `Measure.restrict_apply MeasurableSet.univ` + `Set.univ_inter` + `smul_eq_mul` + `mul_one` to evaluate $\\int_{\\Omega \\cap s} 1 \\, d\\mu = (\\mu \\, s).\\mathrm{toReal}$; (5) `simp only [trueCDF]; congr 1; ext ω; simp [...]` to identify the preimage set $X_0^{-1}((-\\infty, x])$ with the trueCDF set $\\{\\omega \\mid X_0(\\omega) \\leq x\\}$.",
+      "mathContext": "$\\int_\\Omega \\mathbf{1}_{X_0 \\leq x}\\,d\\mu = \\int_{X_0^{-1}((-\\infty, x])} 1\\,d\\mu = \\mu\\bigl(X_0^{-1}((-\\infty, x])\\bigr).\\mathrm{toReal} = \\mu\\bigl(\\{\\omega \\mid X_0(\\omega) \\leq x\\}\\bigr).\\mathrm{toReal} = F(x)$."
+    },
+    {
+      "id": "sec-pointwise-corollary",
+      "title": "Application — Axiom-Free Pointwise Convergence",
+      "startLine": 105,
+      "endLine": 135,
+      "summary": "Theorem `empiricalCDF_pointwise_convergence_no_axiom`: for each fixed $x$, $F_n(x) \\to F(x)$ a.s. Composes the two newly-proved lemmas with the parent file's structural lifts (`thresholdIndicator_pairwise_indep`, `thresholdIndicator_identDistrib`) plus Mathlib's `strong_law_ae_real`. Step-by-step: get integrability from `thresholdIndicator_integrable_proved`, get pairwise independence and identical distribution from the parent's structural lifts (these are not integration axioms — just rewrites of indep/i.d. through the indicator function), apply SLLN, substitute the integral identity from `integral_thresholdIndicator_eq_cdf_proved` to identify the limit with $F(x)$, then `convert hω using 1; ext n; simp [empiricalCDF_eq_mean]` to extract the empirical-mean form. Result: pointwise GC has zero remaining integration axioms — only the bracketing-uniformity step is still open.",
+      "mathContext": "$\\forall x \\in \\mathbb{R} \\colon \\quad F_n(x) := \\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{X_i \\leq x} \\xrightarrow[n \\to \\infty]{\\text{a.s.}} F(x).$ The SLLN is applied to the i.i.d. indicator sequence; the limit $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}]$ is identified with $F(x)$ via Axiom 2 (now a theorem)."
+    },
+    {
+      "id": "sec-axiom-status",
+      "title": "Axiom Status Summary",
+      "startLine": 137,
+      "endLine": 158,
+      "summary": "Closing block: enumerates the parent file's three axioms with status flags — `thresholdIndicator_integrable` ✓ proved, `integral_thresholdIndicator_eq_cdf` ✓ proved, `glivenko_cantelli_uniform` ✗ remains. Notes that the remaining axiom is mathematically genuine: the uniformity step requires choosing finitely many CDF continuity points with controlled jump sizes plus a finite-intersection-of-pointwise-convergence-events argument — infrastructure for the first piece (a constructive ε-cover by continuity points of a monotone $F$) is not yet present in Mathlib 4.26. Records the headline corollary `empiricalCDF_pointwise_convergence_no_axiom` as the file's take-away.",
+      "mathContext": "Axiom-elimination ledger: $\\{\\mathrm{integrable}, \\mathrm{integral{=}CDF}, \\mathrm{uniform}\\} \\to \\{\\mathrm{uniform}\\}$. The remaining axiom is the only piece that depends on Mathlib infrastructure not yet in 4.26."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "thresholdIndicator_integrable_proved",
+      "type": "theorem",
+      "statement": "$\\forall \\Omega\\colon \\mathrm{MeasurableSpace}, \\forall \\mu\\colon \\mathrm{Measure}\\,\\Omega, [\\mathrm{IsProbabilityMeasure}\\,\\mu], \\forall X : \\mathbb{N} \\to \\Omega \\to \\mathbb{R}, (\\forall i, \\mathrm{Measurable}\\,(X_i)) \\Rightarrow \\forall x \\in \\mathbb{R}\\colon \\mathrm{Integrable}\\,(\\mathrm{thresholdIndicator}\\,X\\,x\\,0)\\,\\mu$",
+      "significance": "**Proves Axiom 1 of the parent Glivenko–Cantelli formalization.** Discharges integrability of the threshold indicator $\\omega \\mapsto \\mathbf{1}_{X_0(\\omega) \\leq x}$ by `Integrable.mono'` against the integrable constant 1, with the bound $\\|\\mathbf{1}_{X_0 \\leq x}\\| \\leq 1$ from values in $\\{0, 1\\}$. The pattern (`Integrable.mono' (integrable_const c) hAEMeas (filter_upwards bound)`) is the canonical Lean approach for any bounded measurable function on a finite measure space — replacing dozens of similar axioms across probability formalizations with a two-line proof.",
+      "description": "Theorem replacing the parent file's `thresholdIndicator_integrable` axiom. Uses `Integrable.mono'` with dominating function 1, AEMeasurability from composing measurability of $X_0$ with the Borel indicator of $(-\\infty, x]$, and the norm bound proved by case-splitting on whether $X_0(\\omega) \\leq x$."
+    },
+    {
+      "name": "thresholdIndicator_eq_preimage_indicator_fun",
+      "type": "lemma",
+      "statement": "$\\forall X : \\mathbb{N} \\to \\Omega \\to \\mathbb{R}, \\forall x \\in \\mathbb{R}\\colon (\\lambda\\,\\omega, \\mathrm{thresholdIndicator}\\,X\\,x\\,0\\,\\omega) = (\\lambda\\,\\omega, (X_0^{-1}((-\\infty, x])).\\mathrm{indicator}\\,(\\lambda\\,\\_, 1)\\,\\omega)$",
+      "significance": "**Bridge lemma between range-side and domain-side indicators.** Pointwise rewrite $\\mathbf{1}_{X_0(\\omega) \\leq x} = \\mathbf{1}_{\\omega \\in X_0^{-1}((-\\infty, x])}\\cdot 1$. This orientation flip is exactly what `integral_indicator` requires (it integrates an indicator of a subset of the integration domain), so without this lemma the next theorem cannot rewrite the integral as a set integral. Marked `private` because it is consumed only locally.",
+      "description": "Private lemma. Pointwise equality of the threshold indicator with the preimage-indicator function. One-line proof via `ext` + `simp only [thresholdIndicator, Set.indicator, Set.mem_preimage, Set.mem_Iic]`."
+    },
+    {
+      "name": "integral_thresholdIndicator_eq_cdf_proved",
+      "type": "theorem",
+      "statement": "$\\forall \\Omega\\colon \\mathrm{MeasurableSpace}, \\forall \\mu\\colon \\mathrm{Measure}\\,\\Omega, [\\mathrm{IsProbabilityMeasure}\\,\\mu], \\forall X : \\mathbb{N} \\to \\Omega \\to \\mathbb{R}, (\\forall i, \\mathrm{Measurable}\\,(X_i)) \\Rightarrow \\forall x \\in \\mathbb{R}\\colon \\int_\\Omega \\mathrm{thresholdIndicator}\\,X\\,x\\,0\\,d\\mu = \\mathrm{trueCDF}\\,X\\,\\mu\\,x$",
+      "significance": "**Proves Axiom 2 of the parent Glivenko–Cantelli formalization.** $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}] = F(x)$, the integral identity that lets the SLLN limit be identified with the CDF. The proof chain — `integral_indicator` to collapse the indicator into a set integral, `integral_const` + `Measure.restrict_apply` to evaluate the constant-1 integral, then a `congr` + `ext` to identify the preimage set with the `trueCDF` defining set — is a fully reusable template for any 'integral of an indicator equals a measure' identity.",
+      "description": "Theorem replacing the parent file's `integral_thresholdIndicator_eq_cdf` axiom. Five-step proof chain: preimage-indicator rewrite → `integral_indicator` → `integral_const` → `Measure.restrict_apply` → `congr` to identify the trueCDF set."
+    },
+    {
+      "name": "empiricalCDF_pointwise_convergence_no_axiom",
+      "type": "theorem",
+      "statement": "$\\forall \\Omega\\colon \\mathrm{MeasurableSpace}, \\forall \\mu\\colon \\mathrm{Measure}\\,\\Omega, [\\mathrm{IsProbabilityMeasure}\\,\\mu], \\forall X : \\mathbb{N} \\to \\Omega \\to \\mathbb{R}, (\\forall i, \\mathrm{Measurable}\\,(X_i)) \\land \\mathrm{iIndepFun}\\,X\\,\\mu \\land (\\forall i, \\mathrm{IdentDistrib}\\,(X_i)\\,(X_0)\\,\\mu\\,\\mu) \\Rightarrow \\forall x \\in \\mathbb{R}, \\forall^\\mathrm{a.e.}\\,\\omega\\,\\partial\\mu, \\mathrm{Tendsto}\\,(\\lambda\\,n, \\mathrm{empiricalCDF}\\,X\\,n\\,x\\,\\omega)\\,\\mathrm{atTop}\\,(\\mathrm{nhds}\\,(\\mathrm{trueCDF}\\,X\\,\\mu\\,x))$",
+      "significance": "**Headline corollary of this file.** Pointwise convergence of the empirical CDF to the true CDF, $F_n(x) \\to F(x)$ a.s., with **zero integration axioms**. Composes the two preceding theorems with the parent file's structural lifts (`thresholdIndicator_pairwise_indep`, `thresholdIndicator_identDistrib`) and Mathlib's `strong_law_ae_real`. After this theorem, only the bracketing-uniformity axiom (`glivenko_cantelli_uniform`) stands between the formalization and a fully axiom-free proof of the classical Glivenko–Cantelli theorem.",
+      "description": "**The take-away.** Pointwise convergence of the empirical CDF using only proved lemmas and structural lifts — no integration axioms. SLLN-applied-to-indicators with the integrability and integral-equals-CDF identities discharged by the two preceding theorems."
     }
   ],
   "leanFile": {

@@ -14,77 +14,87 @@
   {
     "id": "ann-axiom-1-proof",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
-    "range": { "startLine": 37, "endLine": 55 },
+    "range": { "startLine": 43, "endLine": 63 },
     "type": "technique",
     "title": "Integrability via Integrable.mono'",
-    "content": "The standard Lean 4 pattern for proving integrability of bounded measurable functions: find a dominating integrable function, prove AEMeasurability of the target, and bound the norm pointwise.\n\nHere the dominating function is the constant 1 (integrable on any probability space via `integrable_const`). The indicator 1_{X₀ ≤ x} has norm ≤ 1 (it takes values 0 or 1), proved by splitting on whether X₀(ω) ≤ x. AEMeasurability follows from composing Measurable (X 0) with the Borel-measurable indicator.",
-    "mathContext": "$\\|\\mathbf{1}_{X_0(\\omega) \\leq x}\\| \\leq 1$ for all $\\omega$ and $\\int_\\Omega 1 \\, d\\mu < \\infty$ when $\\mu$ is a probability measure. Therefore $\\mathbf{1}_{X_0 \\leq x}$ is integrable.",
+    "content": "The standard Lean 4 pattern for proving integrability of bounded measurable functions: find a dominating integrable function, prove AEMeasurability of the target, and bound the norm pointwise.\n\nHere the dominating function is the constant 1 (integrable on any probability space via `integrable_const`). The indicator 1_{X₀ ≤ x} has norm ≤ 1 (it takes values 0 or 1), proved by splitting on whether X₀(ω) ≤ x. AEMeasurability follows from composing Measurable (X 0) with the Borel-measurable indicator.\n\n**Lean walkthrough (lines 53–63)**:\n```\napply Integrable.mono' (integrable_const (1 : ℝ))\n· exact ((measurable_iic_indicator x).comp (hX 0)).aemeasurable  -- AEMeasurable\n· filter_upwards with ω; simp only [thresholdIndicator, Set.indicator, norm_one]\n  split_ifs with h\n  · norm_num   -- case X₀ ω ≤ x: indicator value 1, ‖1‖ = 1 ≤ 1\n  · norm_num   -- case X₀ ω > x: indicator value 0, ‖0‖ = 0 ≤ 1\n```\nThis is the *canonical* pattern for any 0/1-valued indicator on a probability space — replacing what could otherwise be a bare integrability axiom in dozens of similar formalizations.",
+    "mathContext": "$\\|\\mathbf{1}_{X_0(\\omega) \\leq x}\\| \\leq 1$ for all $\\omega$ and $\\int_\\Omega 1 \\, d\\mu = 1 < \\infty$ when $\\mu$ is a probability measure. By `Integrable.mono'`, an AEMeasurable function dominated a.e.\\ in norm by an integrable function is itself integrable. Hence $\\mathbf{1}_{X_0 \\leq x}$ is integrable with $\\int |\\mathbf{1}_{X_0 \\leq x}|\\, d\\mu \\leq 1$.",
     "significance": "key",
     "relatedConcepts": [
       "bounded measurable functions",
       "integrable_const",
       "Integrable.mono'",
-      "AEMeasurable"
-    ]
+      "AEMeasurable",
+      "filter_upwards",
+      "split_ifs"
+    ],
+    "prerequisites": ["IsProbabilityMeasure", "Measurable", "Set.indicator", "AEMeasurable composition"]
   },
   {
     "id": "ann-preimage-rewrite",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
-    "range": { "startLine": 58, "endLine": 68 },
+    "range": { "startLine": 65, "endLine": 75 },
     "type": "technique",
     "title": "Preimage Indicator Factorization",
-    "content": "The key algebraic step: the indicator function 1_{X₀ ≤ x}(ω) = (X₀ ⁻¹' Iic x).indicator(ω). This converts the indicator of a set in the range space (Iic x ⊆ ℝ) to an indicator of a set in the domain space (X₀ ⁻¹' Iic x ⊆ Ω). Only after this conversion can `integral_indicator` be applied, since that lemma requires the indicator to be of a subset of the integration domain.",
+    "content": "The key algebraic step (private lemma `thresholdIndicator_eq_preimage_indicator_fun`): the indicator function 1_{X₀ ≤ x}(ω) = (X₀ ⁻¹' Iic x).indicator(ω). This converts the indicator of a set in the range space (Iic x ⊆ ℝ) to an indicator of a set in the domain space (X₀ ⁻¹' Iic x ⊆ Ω). Only after this conversion can `integral_indicator` be applied, since that lemma requires the indicator to be of a subset of the integration domain.\n\n**Lean proof** (lines 70–75):\n```\nprivate lemma thresholdIndicator_eq_preimage_indicator_fun\n    {X : ℕ → Ω → ℝ} (x : ℝ) :\n    (fun ω => thresholdIndicator X x 0 ω) =\n    (fun ω => (X 0 ⁻¹' Set.Iic x).indicator (fun _ => (1 : ℝ)) ω) := by\n  ext ω\n  simp only [thresholdIndicator, Set.indicator, Set.mem_preimage, Set.mem_Iic]\n```\nThe one-line `simp only` discharges both the `thresholdIndicator` unfold and the membership rewrites $\\omega \\in X_0^{-1}(\\mathrm{Iic}\\,x) \\iff X_0(\\omega) \\in \\mathrm{Iic}\\,x \\iff X_0(\\omega) \\leq x$.",
     "mathContext": "$\\mathbf{1}_{X_0(\\omega) \\leq x} = \\mathbf{1}_{X_0(\\omega) \\in (-\\infty, x]} = \\mathbf{1}_{\\omega \\in X_0^{-1}((-\\infty, x])}$",
     "significance": "key",
     "relatedConcepts": [
       "Set.preimage",
       "Set.indicator",
       "integral_indicator",
-      "Set.mem_preimage"
-    ]
+      "Set.mem_preimage",
+      "Set.mem_Iic"
+    ],
+    "prerequisites": ["function extensionality (ext)", "simp lemma database"]
   },
   {
     "id": "ann-integral-chain",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
-    "range": { "startLine": 70, "endLine": 105 },
+    "range": { "startLine": 77, "endLine": 103 },
     "type": "proof-step",
     "title": "Three-Step Integration Chain for CDF Identity",
-    "content": "The proof of the CDF identity chains three Mathlib lemmas:\n\n1. **integral_indicator**: converts ∫ (X₀ ⁻¹' Iic x).indicator(ω) dμ to ∫ in X₀ ⁻¹' Iic x, 1 dμ. Requires MeasurableSet of the integration domain, which follows from Measurable (X 0) applied to the Borel set Iic x.\n\n2. **integral_const**: evaluates ∫ _, 1 ∂(μ.restrict s) as ((μ.restrict s) Set.univ).toReal • 1.\n\n3. **Measure.restrict_apply** + **Set.univ_inter**: computes (μ.restrict s) Set.univ = μ (Set.univ ∩ s) = μ s.",
+    "content": "Theorem `integral_thresholdIndicator_eq_cdf_proved`. The proof chains three Mathlib lemmas after a preimage rewrite:\n\n1. **`integral_indicator`**: converts ∫ (X₀ ⁻¹' Iic x).indicator(ω) dμ to ∫ in X₀ ⁻¹' Iic x, 1 dμ. Requires MeasurableSet of the integration domain — discharged by `(hX 0) measurableSet_Iic` since measurable functions pull back Borel sets to measurable sets.\n2. **`integral_const`**: evaluates ∫ _, 1 ∂(μ.restrict s) as ((μ.restrict s) Set.univ).toReal • 1.\n3. **`Measure.restrict_apply` + `Set.univ_inter`**: computes (μ.restrict s) Set.univ = μ (Set.univ ∩ s) = μ s.\n\nFinally a `simp only [trueCDF]; congr 1; ext ω; simp [...]` identifies the preimage set with the trueCDF defining set $\\{\\omega \\mid X_0(\\omega) \\leq x\\}$ — these are *definitionally* equal as sets, but Lean still needs the explicit `congr` + `ext` to align the two functional forms after the integral has been collapsed.\n\n**Reusable template**: any \"integral of an indicator equals a measure value\" identity follows the same chain — preimage rewrite, `integral_indicator`, `integral_const`, `Measure.restrict_apply`, `congr` to align with the target measure. This template applies to any random variable / measurable space, not just real-valued $X_0$ and $\\mathrm{Iic}\\,x$.",
     "mathContext": "\\begin{align*}\n\\int_\\Omega \\mathbf{1}_{X_0(\\omega) \\leq x} \\, d\\mu &= \\int_\\Omega \\mathbf{1}_{X_0^{-1}((-\\infty,x])}(\\omega) \\, d\\mu \\\\\n&= \\int_{X_0^{-1}((-\\infty,x])} 1 \\, d\\mu \\\\\n&= \\mu(X_0^{-1}((-\\infty, x])) \\\\\n&= \\mu(\\{\\omega : X_0(\\omega) \\leq x\\}) = F(x)\n\\end{align*}",
     "significance": "key",
     "relatedConcepts": [
       "integral_indicator",
       "integral_const",
       "Measure.restrict_apply",
-      "trueCDF"
-    ]
+      "trueCDF",
+      "Set.univ_inter",
+      "MeasurableSet.preimage"
+    ],
+    "prerequisites": ["thresholdIndicator_eq_preimage_indicator_fun", "Measure.restrict", "Bochner integral basics"]
   },
   {
     "id": "ann-pointwise-convergence",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
-    "range": { "startLine": 105, "endLine": 136 },
+    "range": { "startLine": 105, "endLine": 135 },
     "type": "concept",
     "title": "Corollary: Axiom-Free Pointwise Convergence of the Empirical CDF",
-    "content": "`empiricalCDF_pointwise_convergence_no_axiom` is the file's payoff: assuming the SLLN-applicable hypotheses (i.i.d., identically distributed, measurable) plus a probability measure, the empirical CDF converges pointwise to the true CDF a.s., and the proof now invokes *zero* integration axioms. The chain of steps inside the proof body is illuminating: (1) get integrability of the threshold indicator from `thresholdIndicator_integrable_proved` (this file), (2) get pairwise independence and identical distribution from the parent file (these are *not* integration axioms — they're structural lifts of independence/identity from $X$ to indicators, provable from definitions), (3) apply `strong_law_ae_real` (Mathlib's SLLN), (4) substitute the integral identity from `integral_thresholdIndicator_eq_cdf_proved` to identify the SLLN limit as $F(x)$, (5) `convert hω using 1; ext n; simp` extracts the empirical-mean form. Pointwise GC is now a chain of theorems with no holes; only the uniform-bracketing step remains.",
+    "content": "`empiricalCDF_pointwise_convergence_no_axiom` is the file's payoff: assuming the SLLN-applicable hypotheses (i.i.d., identically distributed, measurable) plus a probability measure, the empirical CDF converges pointwise to the true CDF a.s., and the proof now invokes *zero* integration axioms.\n\nThe chain of steps inside the proof body is illuminating: (1) get integrability of the threshold indicator from `thresholdIndicator_integrable_proved` (this file); (2) get pairwise independence and identical distribution from the parent file's `thresholdIndicator_pairwise_indep` and `thresholdIndicator_identDistrib` (these are *not* integration axioms — they're structural lifts of indep/i.d. from $X$ to indicators, provable from definitions); (3) apply `strong_law_ae_real` (Mathlib's SLLN); (4) `rw integral_thresholdIndicator_eq_cdf_proved` to identify the SLLN limit as $F(x)$; (5) `filter_upwards [hslln] with ω hω; convert hω using 1; ext n; simp only [empiricalCDF_eq_mean]` extracts the empirical-mean form $F_n(x, \\omega) = \\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{X_i(\\omega) \\leq x}$ from the SLLN's empirical-mean conclusion. Pointwise GC is now a chain of theorems with no holes; only the uniform-bracketing step remains.",
     "mathContext": "$\\forall x \\in \\mathbb{R}: \\quad F_n(x) := \\frac{1}{n} \\sum_{i=1}^n \\mathbf{1}_{X_i \\leq x} \\to F(x) := \\mu(X_0 \\leq x) \\quad \\text{a.s.}$ The SLLN applied to the indicator sequence $\\{\\mathbf{1}_{X_i \\leq x}\\}_i$ — independent (from i.i.d. of $X_i$) and identically distributed (from i.d. of $X_i$) — gives the empirical mean converging to the expectation, which is exactly $F(x)$ by the integral identity.",
     "significance": "key",
-    "relatedConcepts": ["strong law of large numbers", "empirical CDF", "pointwise convergence", "iIndepFun"],
-    "prerequisites": ["thresholdIndicator_integrable_proved", "integral_thresholdIndicator_eq_cdf_proved", "strong_law_ae_real"]
+    "relatedConcepts": ["strong law of large numbers", "empirical CDF", "pointwise convergence", "iIndepFun", "IdentDistrib", "filter_upwards"],
+    "prerequisites": ["thresholdIndicator_integrable_proved", "integral_thresholdIndicator_eq_cdf_proved", "strong_law_ae_real", "thresholdIndicator_pairwise_indep", "thresholdIndicator_identDistrib", "empiricalCDF_eq_mean"]
   },
   {
     "id": "ann-remaining-axiom",
     "proofId": "laws-of-large-numbers-oq-04-oq-03",
-    "range": { "startLine": 110, "endLine": 128 },
+    "range": { "startLine": 137, "endLine": 156 },
     "type": "context",
     "title": "The One Remaining Axiom: Uniform Bracketing",
-    "content": "After this entry, only one axiom remains in the Glivenko-Cantelli formalization: `glivenko_cantelli_uniform`, the step that upgrades pointwise to uniform convergence.\n\nThis step requires: for any ε > 0, find continuity points q₁,...,qₖ of F such that (a) each interval [qⱼ, qⱼ₊₁) has F-mass < ε, and (b) for any x between grid points, |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε by monotonicity of both Fₙ and F.\n\nThis requires: (1) existence of CDF continuity points with controlled density, (2) monotonicity of Fₙ and F, and (3) finite intersection of pointwise convergence events. Steps (2) and (3) are available in Mathlib. Step (1) — the density of continuity points with controlled jump sizes — is the missing piece in Mathlib 4.26.",
+    "content": "After this entry, only one axiom remains in the Glivenko-Cantelli formalization: `glivenko_cantelli_uniform`, the step that upgrades pointwise to uniform convergence.\n\nThis step requires: for any ε > 0, find continuity points q₁,...,qₖ of F such that (a) each interval [qⱼ, qⱼ₊₁) has F-mass < ε, and (b) for any x between grid points, |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε by monotonicity of both Fₙ and F.\n\nThis requires: (1) existence of CDF continuity points with controlled density, (2) monotonicity of Fₙ and F, and (3) finite intersection of pointwise convergence events. Steps (2) and (3) are available in Mathlib (parent file's `empiricalCDF_mono`/`trueCDF_mono`, plus `MeasureTheory.ae_all_iff`). Step (1) — the density of continuity points with controlled jump sizes — is the missing piece in Mathlib 4.26.\n\nWhy is step (1) hard? *Density* alone of continuity points is straightforward (Mathlib has `Monotone.countable_not_continuousAt` for countability of discontinuities, and the complement of a countable set is dense in ℝ via `Set.Countable.dense_compl`). But the *bracketing* requires more: an ε-cover induction over [0,1] under the monotone $F$, producing a *finite* sequence with each F-jump < ε. Constructively producing this finite sequence — rather than just asserting its existence non-constructively — is what's currently missing.",
     "mathContext": "For the uniform bound: for $\\varepsilon > 0$, choose continuity points $q_1 < \\cdots < q_k$ of $F$ with $F(q_{j+1}) - F(q_j^-) < \\varepsilon$. For any $x$, find $j$ with $q_j \\leq x < q_{j+1}$. By monotonicity of $F_n$ and $F$:\n$$|F_n(x) - F(x)| \\leq |F_n(q_{j+1}) - F(q_{j+1})| + \\varepsilon$$\nand the right side is bounded by $\\max_j |F_n(q_j) - F(q_j)| + \\varepsilon \\to \\varepsilon$ a.s.",
-    "significance": "context",
+    "significance": "supporting",
     "relatedConcepts": [
       "glivenko_cantelli_uniform",
       "CDF continuity points",
       "uniform convergence",
-      "bracketing argument"
+      "bracketing argument",
+      "Monotone.countable_not_continuousAt",
+      "MeasureTheory.ae_all_iff"
     ]
   },
   {
