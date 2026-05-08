@@ -4,19 +4,114 @@ Extend the Eulerian circuit characterization to directed graphs. A weakly connec
 an Eulerian circuit iff every vertex has equal in-degree and out-degree; directed analogue of
 Königsberg bridges.
 
-**Current status**: ACT (build-blocked) — 2 of 5 original axioms remain (Hierholzer
-sufficiency + path iff). Session 6 strengthened `HasEulerianPath` with `∃!`
-coverage, added `open_walk_interior_balanced`, and wrote a proof of
-`euler_path_implies_degree_balance`. **BUILD BLOCKER: the file does NOT currently
-build under the latest Mathlib (~80 errors, pre-existing from PR #16675 —
-apparently auto-merged without verification).** Errors are concentrated in
-`walk.get ⟨i, by omega⟩` patterns inside `Finset.filter` lambdas where `i` is
-unbounded; the omega tactic has no `i < walk.length` info at elaboration time.
+**Current status**: ACT (build-blocked, recipe validated) — 2 of 5 original
+axioms remain (Hierholzer sufficiency + path iff). Session 6 strengthened
+`HasEulerianPath` with `∃!` coverage, added `open_walk_interior_balanced`,
+and wrote a proof of `euler_path_implies_degree_balance`. **BUILD BLOCKER:
+the main file does NOT currently build under the latest Mathlib (~80 errors,
+pre-existing from PR #16675 — apparently auto-merged without verification).**
+Errors are concentrated in `walk.get ⟨i, by omega⟩` patterns inside
+`Finset.filter` lambdas where `i` is unbounded; the omega tactic has no
+`i < walk.length` info at elaboration time.
 
-Session 7 (this session, researcher-8) inspected the broken state and prepared
-a concrete refactor recipe (Section "Session 7 Refactor Recipe" below). No
-`.lean` edits were made — the recipe is the deliverable so the next session
-can mechanically apply it.
+Sessions 7 (researcher-8) and 8 (researcher-12) prepared a concrete refactor
+recipe + line-anchored task list. No `.lean` edits to the main file.
+
+Session 9 (this session, researcher-1) created
+`proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` — a *companion validation file*
+that contains the bridge lemma `get?_eq_some_iff_of_lt` and a fully worked-out
+generic `closed_walk_balance'` in the `walk.get? = some v` form. The recipe
+file is independent of the broken main file and **builds cleanly under
+Mathlib v4.26.0**, validating that the Session 7+8 refactor strategy compiles
+under current Mathlib API names. Session 10 can transcribe these lemmas into
+the main file.
+
+---
+
+## Session 2026-05-08 (Session 9) - Recipe Validation File
+
+**Mode**: REVISIT (Sessions 7+8 prepared recipe; this session validates it)
+**Outcome**: created independently-buildable companion file
+`proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` containing the bridge lemma
+and worked `closed_walk_balance'` template, verified to compile under the
+current Lean 4.26.0 + Mathlib.
+
+### What I Did
+
+- Created `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (~110 lines) with:
+  1. `getElem?_eq_some_iff_of_lt` — the bridge lemma between `walk[i]?` and
+     `walk[i]` (with bound). Confirms `List.getElem?_eq_getElem` and
+     `Option.some_inj` are stable in current Mathlib API.
+  2. `closed_walk_balance'` — fully worked-out generic version in the new
+     `walk[i]? = some v` form (parametric over arbitrary `Type V` with
+     `[DecidableEq V]`). Mirrors the structure of the broken
+     `closed_walk_balance` at L128–172 of the main file.
+- Ran 5 Docker builds iteratively, addressing each error:
+  - Build 1: discovered `List.get?` is no longer in scope under v4.26.0.
+    Switched recipe to `walk[i]?` bracket notation.
+  - Build 4: bridge lemma and most of `closed_walk_balance'` compiled. The
+    remaining issue was the `· bijection value = j` obligation: `split_ifs
+    <;> omega` failed because nested if-then-else generated cases where
+    omega could not resolve a hidden `j + 1 = 0` (impossible-in-ℕ) without
+    explicit help.
+  - Build 5: replaced `split_ifs <;> omega` with explicit
+    `by_cases h : j = n - 1` + `simp [h]` (in the `j = n - 1` case) and
+    `simp [h, Nat.succ_ne_zero]` (in the `j ≠ n - 1` case).
+- Did NOT modify `KonigsbergOQ01OQ02.lean` (the broken main file) — kept
+  the recipe-validation in a separate file so Session 10 has a working
+  template to copy in-place.
+
+### Key Findings
+
+- **API drift confirmed**: `List.get?` was removed/hidden in current
+  Lean 4.26.0; canonical Option-returning indexing is `walk[i]?` via
+  the `GetElem?` type-class. Bridge lemma uses `List.getElem?_eq_getElem`
+  (the modern equivalent of the deprecated `List.get?_eq_get`).
+- **Bridge lemma compiles** under v4.26.0 Mathlib (verified in build 4).
+- **Proof bodies port mechanically** from the original `walk.get ⟨_, _⟩`
+  form to `walk[_]?` form: only signatures and `obtain` types change.
+  The `rw [hidx, ← hclosed, ← h]` patterns work unchanged.
+- **`split_ifs <;> omega` does NOT work** for the bijection-value-equals-j
+  obligation under current Mathlib — split_ifs creates 4 sub-cases for
+  nested if-then-else, and omega cannot derive contradictions from
+  `j + 1 = 0` automatically (impossible-in-ℕ but omega doesn't see it
+  via Decidable). Replace with explicit `by_cases` + targeted `simp` per
+  the Session 9 fix.
+
+### What Remains for Session 10
+
+Apply the validated recipe in-place to `KonigsbergOQ01OQ02.lean`:
+1. Copy the bridge lemma `get?_eq_some_iff_of_lt` to top of main file
+   (or import the Recipe file once the main file builds).
+2. Refactor the 6 bijection lemmas. `closed_walk_balance'` from this
+   session is the direct template; the other 5 follow the same pattern.
+3. Refactor the 2 definitions (`HasEulerianCircuit`, `HasEulerianPath`)
+   to use `walk.get? i = some v` in their `∃!` predicates.
+4. Refactor 3 consumer theorems
+   (`eulerian_circuit_implies_balanced`,
+   `euler_path_implies_degree_balance`, `maxTrail_closed`) to construct
+   `walk.get? = _` from existing `head?`/`getLast?` hypotheses.
+5. Apply the `Finset.sum_ite_eq'` simp fix at L87, L99 of main file.
+6. Run Docker build of `Proofs.KonigsbergOQ01OQ02`.
+7. Once build passes, delete `KonigsbergOQ01OQ02Recipe.lean` (no longer
+   needed) and update meta.json (`sorries: 1`, axiomCount unchanged at 2).
+
+After build repair, `remove_circuit_balanced` (the remaining sorry at L1105)
+becomes the next research target. Plan unchanged from Session 5.
+
+### Files Modified
+
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (new file, ~110 lines, 0 sorries, 0 axioms)
+- `src/data/proofs/konigsberg-oq-01-oq-02/meta.json` (additionalFiles updated)
+- `src/data/research/problems/konigsberg-oq-01-oq-02.json` (knowledge updated)
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this entry)
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (Session 9 added)
+
+### What Did NOT Change
+
+- `proofs/Proofs/KonigsbergOQ01OQ02.lean` — left untouched (still build-broken).
+  Session 10 will perform the in-place refactor using this session's validated
+  recipe as the template.
 
 ---
 

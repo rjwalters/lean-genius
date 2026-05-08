@@ -20,7 +20,7 @@
     "sorries": 1,
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
-    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, concrete examples, consequences) are proved from first principles. NOTE 2026-05-08: file currently does not build under the latest Mathlib (omega tactic API drift on `walk.get ⟨i, by omega⟩` patterns inside Finset.filter expressions, pre-existing from PR #16675). Session 6 strengthened HasEulerianPath def and added a proof of euler_path_implies_degree_balance, but build verification is blocked until the file's omega calls are restructured.",
+    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, concrete examples, consequences) are proved from first principles. NOTE 2026-05-08: main file currently does not build under the latest Mathlib (omega tactic API drift on `walk.get ⟨i, by omega⟩` patterns inside Finset.filter expressions, pre-existing from PR #16675). Sessions 7–8 prepared a refactor recipe; Session 9 created `KonigsbergOQ01OQ02Recipe.lean` (companion validation file) containing the bridge lemma `get?_eq_some_iff_of_lt` and a worked-out generic `closed_walk_balance'` in the new `walk.get? = some v` form, verified to compile under v4.26.0. Session 10 will transcribe this into the main file.",
     "lineCount": 1202,
     "theoremCount": 26,
     "definitionCount": 13,
@@ -131,7 +131,10 @@
     "theoremCount": 26,
     "definitionCount": 13,
     "path": "Proofs/KonigsbergOQ01OQ02.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/KonigsbergOQ01OQ02Recipe.lean"
+    ]
   },
   "crossReferences": [
     {
