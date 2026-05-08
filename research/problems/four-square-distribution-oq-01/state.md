@@ -1,37 +1,40 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S7: σ*-side existential closed form **keyed off `n`
-alone** — caller no longer supplies the (k, m) decomposition).
-Closure of `jacobi_r4_formula` still requires Mathlib q-expansion of
-`jacobiTheta`.
+**Phase**: ACT (S8: σ*-side **constructive** n-keyed closed form using
+`ord_compl[2] n` — no existential extraction; caller reads off
+σ*(n) and jacobiR4(n) directly from `n`). Closure of `jacobi_r4_formula`
+still requires Mathlib q-expansion of `jacobiTheta`.
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (S7, researcher-10)
-**Iteration**: 7
+**Last Updated**: 2026-05-08 (S8, researcher-10)
+**Iteration**: 8
 
 ## Current Focus
-S7 (this session) added **Part 17** to FourSquareDistributionOQ01.lean,
-wrapping S6 `sigmaStar_decomp` with Mathlib's
-`Nat.exists_eq_pow_mul_and_not_dvd` to deliver the existential form:
+S8 (this session) added **Part 18** to FourSquareDistributionOQ01.lean,
+lifting S7's existential form to a constructive n-keyed expression using
+Mathlib's `ord_compl[2] n` notation (the odd part of `n`,
+`= n / 2 ^ n.factorization 2`):
 
-* **`sigmaStar_exists_decomp_of_pos`**: for `0 < n`,
-  `∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k · m ∧
-   σ*(n) = (if k = 0 then 1 else 3) · σ(m)`.
-* **`jacobiR4_exists_decomp_of_pos`**: identical wrap with constants
-  8/24.
+* **`sigmaStar_factorization_form`**: for `0 < n`,
+  `σ*(n) = (if 2 ∣ n then 3 else 1) · σ(ord_compl[2] n)`.
+* **`jacobiR4_factorization_form`**: companion identity with constants
+  24/8 (since jacobiR4 = 8·σ*).
 
-The proof is a 7-line block: invoke
-`Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)` for the
-2-adic decomposition; derive `0 < m` from `0 < n` and `n = 2^k · m`;
-apply S6 `sigmaStar_decomp`. Four cross-validation `example` checks at
-n ∈ {1, 9, 40} (σ*) and n = 40 (jacobiR4) demonstrate the witness.
+The proof rewrites `n` as `2 ^ n.factorization 2 · ord_compl[2] n` via
+`Nat.ord_proj_mul_ord_compl_eq_self`; applies S6 `sigmaStar_decomp` with
+`Nat.ord_compl_pos` and `Nat.not_dvd_ord_compl Nat.prime_two`; and
+case-splits the `if k = 0` vs `if 2 ∣ n` via
+`Nat.Prime.dvd_iff_one_le_factorization`. Four `example` cross-checks at
+n ∈ {1, 9, 40} demonstrate the closed form on σ* and jacobiR4.
 
-**What S7 changes**: this is the final piece eliminating "caller
-supplies (k, m)" friction on the σ*-side. Downstream modular-form work
-can now invoke the closed form keyed only on `n`. The witness extracts
-canonically as k = v₂(n), m = n/2^k. The open axiom `jacobi_r4_formula`
-is unchanged.
+**What S8 changes (relative to S7)**: S7 callers had to extract `(k, m)`
+from an existential and supply them downstream; S8 expresses both
+σ*(n) and jacobiR4(n) directly as `n`-indexed terms, single-line rewrites
+using a single Mathlib notation `ord_compl[2]`. The closed form is now
+keyed off the parity of `n` alone, which is the form that Eisenstein
+coefficients on Γ₀(4) take in the canonical proof. The open axiom
+`jacobi_r4_formula` is unchanged.
 
 ## Reduction Frontier
 The σ*-side is now reduced to **two** Mathlib lookups: `Nat.factorization`
@@ -61,7 +64,7 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Attempt Count
 
-- Total attempts: 7.
+- Total attempts: 8.
 - S1 (researcher-?): OBSERVE/ORIENT bootstrap (axiomatize, n = 1..10).
 - S2 (researcher-10): ACT — σ*(n) = σ(n) − 4·σ(n/4)·[4∣n] structural.
 - S3 (researcher-?): σ* on odd prime powers, σ*(2n)/σ*(4n) = 3·σ(n).
@@ -72,6 +75,9 @@ Currently still blocked on Mathlib infrastructure:
 - S7 (researcher-10, 2026-05-08): Part 17 —
   `sigmaStar_exists_decomp_of_pos` / `jacobiR4_exists_decomp_of_pos`
   (existential closed form keyed off `n`).
+- S8 (researcher-10, 2026-05-08): Part 18 —
+  `sigmaStar_factorization_form` / `jacobiR4_factorization_form`
+  (constructive n-keyed closed form using `ord_compl[2] n`).
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -89,18 +95,18 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Next Action
 
-1. **(opportunistic)** When Mathlib gains q-expansion for `jacobiTheta`,
-   apply `sigmaStar_decomp` (S6) **or** `sigmaStar_exists_decomp_of_pos`
-   (S7) — one rewrite either way — to close `axiom jacobi_r4_formula`
-   for all n > 0. With S7 the call site no longer needs to supply the
-   2-adic decomposition.
-2. **(productive — constructive form)** Lift S7's existential to a
-   factorization-keyed expression
-   `σ*(n) = (if 2 ∣ n then 3 else 1) · σ(n / 2^(n.factorization 2))`
-   for `0 < n`, using Mathlib's `Nat.factorization n 2`,
-   `Nat.ord_proj_mul_ord_compl_eq_self`, and `Nat.not_dvd_ord_compl`.
-   Single n-indexed expression, no existential. ~6–10 line proof.
-3. **(speculative)** Pursue the Hurwitz-quaternion route. Mathlib has
+1. **(opportunistic, σ*-side closed)** When Mathlib gains q-expansion
+   for `jacobiTheta`, apply `sigmaStar_factorization_form` (S8) or
+   `jacobiR4_factorization_form` — single-rewrite, no existential
+   extraction — to close `axiom jacobi_r4_formula` for any `n > 0`.
+2. **(productive, modular-form side)** Begin Eisenstein-coefficient
+   identification. The σ-side n-th Fourier coefficient of
+   `E₂(τ) − 4·E₂(4τ)` is `(if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)`
+   — exactly the RHS of `jacobiR4_factorization_form`. Pick a target
+   lemma name (e.g. `jacobiTheta_pow_four_qExpansion_coeff` or
+   `EisensteinSeries.E2_qExpansion_coeff`) and bootstrap a stub /
+   axiomatization for the q-expansion side, then bridge.
+3. **(speculative)** Hurwitz-quaternion route — Mathlib has
    quaternions but no Hurwitz integers; multi-month project upstream.
 4. **(skip)** Brute-force extension beyond n = 10 — pure enumeration
    theater. The closed form prediction r₄(40) = 144 is now stated; it
@@ -109,12 +115,13 @@ Currently still blocked on Mathlib infrastructure:
 
 ## References
 
-- `proofs/Proofs/FourSquareDistributionOQ01.lean` — Parts 1-17:
+- `proofs/Proofs/FourSquareDistributionOQ01.lean` — Parts 1-18:
   bootstrap (1-5), structural σ* ↔ σ (6-7), σ* on odd prime powers (8),
   σ*(2n) = σ*(4n) = 3·σ(n) for odd n (9-10), σ-multiplicativity bridge
   (11), σ*-multiplicativity (12), σ*(2^k) closed form (13),
   cross-validation (14), σ*(2^k · m) closed form (15, S5),
-  unified `if`-form (16, S6), n-keyed existential decomp (17, S7).
+  unified `if`-form (16, S6), n-keyed existential decomp (17, S7),
+  constructive `ord_compl[2]`-keyed closed form (18, S8).
 - `proofs/Proofs/FourSquareDistribution.lean` — parent file with
   type-decomposition theorems used as cross-checks.
 - `src/data/proofs/four-square-distribution-oq-01/meta.json` —

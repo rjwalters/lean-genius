@@ -1122,4 +1122,92 @@ example : ∃ k m : ℕ, 0 < m ∧ ¬ 2 ∣ m ∧ (40 : ℕ) = 2 ^ k * m ∧
     jacobiR4 40 = (if k = 0 then 8 else 24) * sigmaOne m :=
   jacobiR4_exists_decomp_of_pos (by decide)
 
+-- =====================================================================
+-- PART 18: σ* and jacobiR4 in CONSTRUCTIVE n-keyed form, using Mathlib's
+-- `ord_compl[2] n = n / 2 ^ n.factorization 2` (the odd part of `n`).
+--
+-- Part 17 (`sigmaStar_exists_decomp_of_pos`) gives an EXISTENTIAL closed
+-- form: callers must extract `(k, m)` witnesses from the existential.
+-- Part 18 lifts this to an EXPLICIT n-indexed expression, removing the
+-- existential entirely:
+--
+--    σ*(n)       = (if 2 ∣ n then 3 else 1) · σ(ord_compl[2] n)
+--    jacobiR4(n) = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)
+--
+-- The `if` condition is the parity of `n`, and the `σ` argument is the
+-- odd part of `n`. Mathlib infrastructure supplied:
+--   * `Nat.ord_proj_mul_ord_compl_eq_self` :
+--       `2 ^ n.factorization 2 * ord_compl[2] n = n`.
+--   * `Nat.ord_compl_pos` : `n ≠ 0 → 0 < ord_compl[2] n`.
+--   * `Nat.not_dvd_ord_compl` : `Prime 2 → n ≠ 0 → ¬ 2 ∣ ord_compl[2] n`.
+--   * `Nat.Prime.dvd_iff_one_le_factorization` :
+--       `2 ∣ n ↔ 1 ≤ n.factorization 2` (for `n ≠ 0`).
+--
+-- Closed-form discharge for the modular-form / Eisenstein bridge can
+-- now invoke `sigmaStar_factorization_form` directly without producing
+-- a 2-adic decomposition.
+-- =====================================================================
+
+/-- Constructive `n`-keyed closed form for σ*: parametrise by parity of
+    `n` and the odd part `ord_compl[2] n = n / 2 ^ n.factorization 2`.
+    For any `0 < n`,
+      `σ*(n) = (if 2 ∣ n then 3 else 1) · σ(ord_compl[2] n)`.
+
+    Lifts the existential `sigmaStar_exists_decomp_of_pos` (Part 17) to
+    a single n-indexed expression with no existential witnesses. -/
+theorem sigmaStar_factorization_form {n : ℕ} (hn : 0 < n) :
+    sigmaStar n = (if 2 ∣ n then 3 else 1) * sigmaOne (ord_compl[2] n) := by
+  have hne : n ≠ 0 := hn.ne'
+  have hkm : 2 ^ n.factorization 2 * ord_compl[2] n = n :=
+    Nat.ord_proj_mul_ord_compl_eq_self n 2
+  have hm_pos : 0 < ord_compl[2] n := Nat.ord_compl_pos 2 hne
+  have hm_odd : ¬ 2 ∣ ord_compl[2] n :=
+    Nat.not_dvd_ord_compl Nat.prime_two hne
+  conv_lhs => rw [← hkm]
+  rw [sigmaStar_decomp hm_pos hm_odd]
+  -- Goal: (if n.factorization 2 = 0 then 1 else 3) * σ(ord_compl[2] n)
+  --     = (if 2 ∣ n then 3 else 1) * σ(ord_compl[2] n)
+  congr 1
+  by_cases h2n : 2 ∣ n
+  · have hk_one_le : 1 ≤ n.factorization 2 :=
+      (Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne).mp h2n
+    have hk_ne : n.factorization 2 ≠ 0 := Nat.one_le_iff_ne_zero.mp hk_one_le
+    rw [if_pos h2n, if_neg hk_ne]
+  · have hk_zero : n.factorization 2 = 0 := by
+      by_contra hk_ne
+      apply h2n
+      exact (Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne).mpr
+        (Nat.one_le_iff_ne_zero.mpr hk_ne)
+    rw [if_neg h2n, if_pos hk_zero]
+
+/-- Constructive `n`-keyed closed form for `jacobiR4 = 8·σ*`. For any
+    `0 < n`,
+      `jacobiR4(n) = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)`. -/
+theorem jacobiR4_factorization_form {n : ℕ} (hn : 0 < n) :
+    jacobiR4 n = (if 2 ∣ n then 24 else 8) * sigmaOne (ord_compl[2] n) := by
+  unfold jacobiR4
+  rw [sigmaStar_factorization_form hn]
+  split_ifs <;> ring
+
+-- ---------------------------------------------------------------------
+-- Cross-validation: numeric values match Part 1 with no caller-supplied
+-- decomposition.
+-- ---------------------------------------------------------------------
+
+/-- σ*(1): n odd, ord_compl[2] 1 = 1, σ*(1) = 1·σ(1) = 1. -/
+example : sigmaStar 1 = (if 2 ∣ 1 then 3 else 1) * sigmaOne (ord_compl[2] 1) :=
+  sigmaStar_factorization_form (by decide)
+
+/-- σ*(40): n even, ord_compl[2] 40 = 5, σ*(40) = 3·σ(5) = 18. -/
+example : sigmaStar 40 = (if 2 ∣ 40 then 3 else 1) * sigmaOne (ord_compl[2] 40) :=
+  sigmaStar_factorization_form (by decide)
+
+/-- σ*(9): n odd, ord_compl[2] 9 = 9, σ*(9) = σ(9) = 13. -/
+example : sigmaStar 9 = (if 2 ∣ 9 then 3 else 1) * sigmaOne (ord_compl[2] 9) :=
+  sigmaStar_factorization_form (by decide)
+
+/-- jacobiR4(40) = 24·σ(5) = 144. -/
+example : jacobiR4 40 = (if 2 ∣ 40 then 24 else 8) * sigmaOne (ord_compl[2] 40) :=
+  jacobiR4_factorization_form (by decide)
+
 end FourSquareDistributionOQ01

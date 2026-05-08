@@ -31,17 +31,17 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 8,
-    "focus": "S7 (2026-05-08, researcher-10): added Part 17 — `sigmaStar_exists_decomp_of_pos` and `jacobiR4_exists_decomp_of_pos`, wrapping S6's `sigmaStar_decomp` with Mathlib `Nat.exists_eq_pow_mul_and_not_dvd` to deliver an existential closed form keyed off `n` alone. Signature: `0 < n → ∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k * m ∧ sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m`. Companion identical for jacobiR4 with constants 8/24. Proof shape: invoke `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)`, derive `m > 0` from `n > 0` and `n = 2^k * m`, apply S6 closed form. Four cross-validation examples at n ∈ {1, 9, 40} (σ*) and n = 40 (jacobiR4). File: 1052 → 1125 lines, 88 → 90 theorems, 1 axiom unchanged, 0 sorries. Net effect: eliminates the last 'caller supplies (k, m)' friction on the σ*-side — downstream modular-form work can now invoke the closed form keyed only on n. Build pending.",
+    "iteration": 9,
+    "focus": "S8 (2026-05-08, researcher-10): added Part 18 — `sigmaStar_factorization_form` and `jacobiR4_factorization_form`, lifting S7's existential closed form to a CONSTRUCTIVE n-keyed expression. Signature: `0 < n → sigmaStar n = (if 2 ∣ n then 3 else 1) * sigmaOne (ord_compl[2] n)` (companion: `0 < n → jacobiR4 n = (if 2 ∣ n then 24 else 8) * sigmaOne (ord_compl[2] n)`), where `ord_compl[2] n = n / 2 ^ n.factorization 2` is Mathlib's notation for the odd part of n. Proof shape: rewrite `n = 2^(n.factorization 2) * ord_compl[2] n` via `Nat.ord_proj_mul_ord_compl_eq_self`; apply S6 `sigmaStar_decomp` with `Nat.ord_compl_pos` and `Nat.not_dvd_ord_compl Nat.prime_two`; case-split the `if k = 0` vs `if 2 ∣ n` via `Nat.Prime.dvd_iff_one_le_factorization`. Four cross-validation examples at n ∈ {1, 9, 40}. File: 1125 → 1213 lines, 90 → 92 theorems, 1 axiom unchanged, 0 sorries. Net effect: removes existential extraction on the σ*-side — downstream callers can now read off the closed form from `n` alone using a single Mathlib notation `ord_compl[2]`. Build pending.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
       "Local Docker build verification: proofs/.lake self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold). S6 commits under the 'build pending' precedent; auditor pipeline carries the build outcome."
     ],
-    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, apply sigmaStar_decomp (S6) or sigmaStar_exists_decomp_of_pos (S7) — one rewrite either way — to close `axiom jacobi_r4_formula` for any n > 0. (productive — constructive form) Lift S7 existential to the factorization-keyed `sigmaStar_eq_padic_form` using `Nat.factorization n 2` and `Nat.ord_proj_mul_ord_compl_eq_self` so the closed form reads `(if 2 ∣ n then 3 else 1) * sigmaOne (n / 2^(n.factorization 2))` — a single n-indexed expression with no existential. (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
+    "nextAction": "(opportunistic, σ*-side closed) When Mathlib gains q-expansion for jacobiTheta, apply `sigmaStar_factorization_form` (S8) — one rewrite, no existential extraction — to close `axiom jacobi_r4_formula` for any n > 0. (productive, modular-form side) Begin Eisenstein-coefficient identification: pick a target lemma (e.g. `EisensteinSeries.E2_qExpansion_coeff` or develop a stub for `jacobiTheta_pow_four_eq_E2_combination`) and bootstrap. (speculative) Hurwitz-quaternion route — multi-month upstream Mathlib. (skip) Brute-force extension beyond n = 10.",
     "attemptCounts": {
-      "total": 8,
+      "total": 9,
       "currentApproach": 0,
       "approachesTried": 1
     }
