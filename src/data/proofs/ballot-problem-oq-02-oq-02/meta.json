@@ -117,6 +117,13 @@
       "description": "The hitting set $H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ is closed in $\\mathbb{R}$. Proof: rewrite as $\\{t : 0 \\le t\\} \\cap (B(\\cdot,\\omega))^{-1}([a,\\infty))$; both pieces are closed (the first by `isClosed_Ici`, the second by `isClosed_Ici.preimage hcont` from path continuity)."
     },
     {
+      "name": "hittingSet_bddBelow",
+      "type": "theorem",
+      "statement": "$\\forall (bm, a, \\omega)\\colon \\mathrm{BddBelow}\\,\\{t \\in \\mathbb{R} \\mid 0 \\le t \\land bm.W\\,t\\,\\omega \\ge a\\}$",
+      "significance": "The second half of the topological prerequisites for `IsClosed.csInf_mem`: the hitting set is bounded below by 0. Together with `hittingSet_isClosed`, these two facts let `IsClosed.csInf_mem` fire on any nonempty hitting set, making `hittingSet_csInf_mem` a one-liner. The lower bound is *intrinsic* (the $0 \\le t$ conjunct in the set-builder), not a separate hypothesis — which is why the bundled definition of $H_a(\\omega)$ in the file conjoins $0 \\le t$ rather than restricting to $t \\in [0,\\infty)$ via intersection.",
+      "description": "$H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ is bounded below by $0$. The proof is a one-line anonymous-constructor witness $\\langle 0, \\lambda\\,t\\,h_t \\Rightarrow h_t.1\\rangle$: the lower-bound witness is $0$, and the proof that every $t \\in H_a(\\omega)$ satisfies $0 \\le t$ is just the first conjunct of the membership predicate."
+    },
+    {
       "name": "csInf_empty_eq_zero",
       "type": "theorem",
       "statement": "$\\mathrm{sInf}\\,(\\emptyset : \\mathrm{Set}\\,\\mathbb{R}) = 0$",
@@ -164,6 +171,13 @@
       "statement": "$B(0,\\omega) < a \\le B(T,\\omega) \\Rightarrow \\exists s \\in [0,T], B(s,\\omega) = a \\land 0 < s$",
       "significance": "The IVT bridge: continuous paths that strictly cross level $a$ over $[0,T]$ have an honest crossing time strictly inside $(0,T]$. Discharges the strictness $0 < s$ from the strict inequality $B(0,\\omega) < a$.",
       "description": "By IVT applied to $f = B(\\cdot,\\omega)$ and $g = a$ (constant), there is $s \\in [0,T]$ with $B(s,\\omega) = a$. Strict $B(0,\\omega) < a$ rules out $s = 0$, so $s > 0$. Lean uses `isPreconnected_Icc.intermediate_value₂`."
+    },
+    {
+      "name": "hittingSet_nonempty_of_ivt",
+      "type": "theorem",
+      "statement": "$B(0,\\omega) < a \\le B(T,\\omega) \\Rightarrow H_a(\\omega).\\mathrm{Nonempty}$",
+      "significance": "The bridge between the IVT existence theorem and the nonemptiness side condition of `fpt_le_iff_maxEvent`. Replaces the *abstract* nonemptiness hypothesis with a *concrete and easily verified* path condition (a strict crossing of level $a$ on $[0,T]$). This is the lemma that makes `fpt_le_T_of_crossing` automatic in the natural Brownian use case — end users never have to manufacture a nonemptiness witness manually.",
+      "description": "Given a strict crossing $B(0,\\omega) < a \\le B(T,\\omega)$ of a continuous path, the hitting set $H_a(\\omega)$ is nonempty. The proof reads off the IVT crossing time $s \\in [0,T]$ from `ivt_first_crossing`, and exhibits $s$ as the nonemptiness witness via $\\langle s, \\langle 0 \\le s, B(s,\\omega) = a \\Rightarrow B(s,\\omega) \\ge a\\rangle\\rangle$. The `hs_eq ▸ le_refl a` rewrite turns the equality $B(s,\\omega) = a$ into the inequality $B(s,\\omega) \\ge a$ that the hitting-set predicate demands."
     },
     {
       "name": "fpt_le_T_of_crossing",
