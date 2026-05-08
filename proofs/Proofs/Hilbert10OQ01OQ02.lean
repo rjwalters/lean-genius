@@ -1290,6 +1290,106 @@ theorem intersection_isUniversalExistentialDefinition
     (intersection_isDiophantineDefinition h₁ h₂)
 
 -- ============================================================
+-- Part VIII.13 (iter 13, Path B): Π₁ closed under binary union
+--                                  (duality + S11.2 sum-of-squares)
+-- ============================================================
+
+/-- Iter 13, Path B: **the Π₁ class is closed under binary union**.
+
+    If `S₁` and `S₂` are both Π₁-definable over ℚ, then so is the
+    pointwise disjunction `fun q => S₁ q ∨ S₂ q`.
+
+    **Strategy** (no new Mathlib lemmas, no new imports): chain through
+    the iter 5 Σ₁/Π₁ duality, iter 12's binary intersection closure of
+    Σ₁, and the iter 4 Σ₁ class congruence helper.
+
+      Π₁(S₁), Π₁(S₂)
+        →[iter 5 codiophantine_iff_diophantine_complement]  Σ₁(¬S₁), Σ₁(¬S₂)
+        →[iter 12 intersection_isDiophantineDefinition]      Σ₁(¬S₁ ∧ ¬S₂)
+        →[iter 4 diophantineDefinition_iff_of_pred_iff
+           via constructive de Morgan ¬S₁ ∧ ¬S₂ ↔ ¬(S₁ ∨ S₂)] Σ₁(¬(S₁ ∨ S₂))
+        →[iter 5 codiophantine_iff_diophantine_complement]   Π₁(S₁ ∨ S₂)
+
+    The "underlying" polynomial witness (after unfolding the iter 5
+    duality, which is identity on the polynomial family P) is therefore
+    the same sum-of-squares construction as iter 12:
+
+        P(q, x) := P₁(q, evenProj x)² + P₂(q, oddProj x)²
+
+    where `P_i` is now interpreted as the Π₁ witness of `S_i` (so
+    `S_i q ↔ ¬ ∃ x, P_i(q, x) = 0`). This is the symmetric companion
+    of iter 12's Σ₁ ∩ closure under the Σ₁/Π₁ duality.
+
+    The de Morgan bridge `¬ S₁ q ∧ ¬ S₂ q ↔ ¬ (S₁ q ∨ S₂ q)` is
+    **constructive** (no LEM needed). The two duality steps each use
+    the iter 5 `Classical.byContradiction` move internally, but no NEW
+    classical reasoning is introduced beyond what was already required
+    in iter 5.
+
+    **Combined with iter 9** (`intersection_isCoDiophantineDefinition`):
+    the Π₁ class over ℚ is closed under both binary union AND binary
+    intersection — hence under arbitrary FINITE Boolean combinations
+    using ∪ and ∩. Π₁ is NOT (known to be) closed under complement;
+    that would collapse Π₁ = Σ₁, equivalent to the OPEN question.
+
+    Combined with iter 9 (Σ₁ ∪, Π₁ ∩) and iter 12 (Σ₁ ∩), this completes
+    the **2×2 closure grid** for finite Boolean combinations:
+
+        | Class | ∪ closure | ∩ closure |
+        |-------|-----------|-----------|
+        | Σ₁    | iter 9    | iter 12   |
+        | Π₁    | iter 13   | iter 9    |
+
+    Neither class is (known to be) closed under complement; that would
+    collapse Σ₁ = Π₁ over ℚ, equivalent to the OPEN question (via
+    `diophantine_iff_codiophantine_complement`). -/
+theorem union_isCoDiophantineDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsCoDiophantineDefinition S₁) (h₂ : IsCoDiophantineDefinition S₂) :
+    IsCoDiophantineDefinition (fun q => S₁ q ∨ S₂ q) := by
+  -- Step 1: dualize each Π₁ to Σ₁ on the complement (iter 5 duality).
+  have hd₁ : IsDiophantineDefinition (fun q => ¬ S₁ q) :=
+    (codiophantine_iff_diophantine_complement S₁).mp h₁
+  have hd₂ : IsDiophantineDefinition (fun q => ¬ S₂ q) :=
+    (codiophantine_iff_diophantine_complement S₂).mp h₂
+  -- Step 2: Σ₁ closed under binary intersection (iter 12, S11.2).
+  have hcap : IsDiophantineDefinition (fun q => ¬ S₁ q ∧ ¬ S₂ q) :=
+    intersection_isDiophantineDefinition hd₁ hd₂
+  -- Step 3: bridge via constructive de Morgan
+  --     `¬ S₁ q ∧ ¬ S₂ q ↔ ¬ (S₁ q ∨ S₂ q)`.
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ¬ S₁ q ∧ ¬ S₂ q) q ↔
+        (fun q : Rat => ¬ (S₁ q ∨ S₂ q)) q := by
+    intro q
+    refine ⟨fun ⟨hn₁, hn₂⟩ hor => hor.elim hn₁ hn₂,
+            fun hnor => ⟨fun h₁q => hnor (Or.inl h₁q),
+                          fun h₂q => hnor (Or.inr h₂q)⟩⟩
+  have hd : IsDiophantineDefinition (fun q : Rat => ¬ (S₁ q ∨ S₂ q)) :=
+    (diophantineDefinition_iff_of_pred_iff hbridge).mp hcap
+  -- Step 4: Σ₁(¬T) ↔ Π₁(T) via duality (iter 5), with T = S₁ ∪ S₂.
+  exact (codiophantine_iff_diophantine_complement
+    (fun q => S₁ q ∨ S₂ q)).mpr hd
+
+/-- Iter 13 corollary, Path B: **the Σ₂ class contains every binary union
+    of Π₁-definable subsets**.
+
+    Direct application of `union_isCoDiophantineDefinition` followed by
+    `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂). Stated as a
+    transport: if `S₁`, `S₂` are Π₁-definable, then `S₁ ∪ S₂` is
+    Σ₂-definable.
+
+    NOT the strongest possible Σ₂-closure statement (which would require
+    a direct Σ₂ witness for `S₁ ∪ S₂` when `S₁`, `S₂` are arbitrary
+    Σ₂-definable subsets — strictly bigger than Π₁ ∪ closure). The
+    stronger Σ₂ ∪ Σ₂ ⊆ Σ₂ closure is left as future work. -/
+theorem union_isExistentialUniversalDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsCoDiophantineDefinition S₁) (h₂ : IsCoDiophantineDefinition S₂) :
+    IsExistentialUniversalDefinition (fun q => S₁ q ∨ S₂ q) :=
+  codiophantine_implies_existentialUniversal _
+    (union_isCoDiophantineDefinition h₁ h₂)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -1371,6 +1471,17 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   combinations using ∪ and ∩. Σ₁ is NOT (known to be) closed under
   complement; that would collapse Σ₁ = Π₁, which is the OPEN question
   in disguise.
+- **Π₁ is closed under binary union** (iter 13): the missing dual of
+  iter 9's Σ₁-union closure. Constructed via the iter 5 Σ₁/Π₁ duality,
+  iter 12's Σ₁ ∩ closure, and the iter 4 Σ₁ class congruence helper —
+  with the underlying polynomial witness identical to iter 12's
+  sum-of-squares construction (the duality is identity on the
+  polynomial family P). **Combined with iter 9 (Σ₁ ∪, Π₁ ∩) and
+  iter 12 (Σ₁ ∩)**, this completes the 2×2 closure grid for finite
+  Boolean combinations: every finite ∪/∩-combination of Σ₁-definable
+  (resp. Π₁-definable) subsets of ℚ remains in the same class. Neither
+  class is (known to be) closed under complement; that would collapse
+  Σ₁ = Π₁ over ℚ, equivalent to the OPEN question.
 
 ## Axioms in THIS file (1 net new)
 
@@ -1437,6 +1548,8 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `coDiophantine_implies_universal_existential` (Π₁ ⊆ Π₂ via inversion, iter 11)
   - `intersection_isDiophantineDefinition` (Σ₁ closed under binary intersection via sum-of-squares + interleave, iter 12)
   - `intersection_isUniversalExistentialDefinition` (Σ₁ ∩ Σ₁ ⊆ Π₂ corollary, iter 12)
+  - `union_isCoDiophantineDefinition` (Π₁ closed under binary union via iter 5 duality + iter 12 Σ₁ ∩ closure, iter 13)
+  - `union_isExistentialUniversalDefinition` (Π₁ ∪ Π₁ ⊆ Σ₂ corollary, iter 13)
 -/
 
 #check @IsDiophantineDefinition
@@ -1491,5 +1604,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @coDiophantine_implies_universal_existential
 #check @intersection_isDiophantineDefinition
 #check @intersection_isUniversalExistentialDefinition
+#check @union_isCoDiophantineDefinition
+#check @union_isExistentialUniversalDefinition
 
 end Hilbert10Rationals

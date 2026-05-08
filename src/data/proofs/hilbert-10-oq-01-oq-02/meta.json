@@ -97,11 +97,13 @@
       "finUnionList_singletons_isUniversalExistentialDefinition: every finite subset of ℚ is Π₂-definable, corollary via Σ₁ ⊆ Π₂ (iter 10)",
       "finIntersectionList_complement_singletons_isExistentialUniversalDefinition: every complement of a finite subset of ℚ is Σ₂-definable, corollary via Π₁ ⊆ Σ₂ (iter 10)",
       "intersection_isDiophantineDefinition: Σ₁ class is closed under binary intersection over ℚ via the sum-of-squares polynomial witness P(q, x) = (P₁(q, evenProj x))² + (P₂(q, oddProj x))² with even/odd variable packing (iter 12 Path B; combined with iter 9 union closure, Σ₁ over ℚ is closed under finite Boolean combinations using ∪ and ∩ but NOT under complement)",
-      "intersection_isUniversalExistentialDefinition: trivial Π₂ corollary of intersection_isDiophantineDefinition via Σ₁ ⊆ Π₂ (iter 12, axiom-free)"
+      "intersection_isUniversalExistentialDefinition: trivial Π₂ corollary of intersection_isDiophantineDefinition via Σ₁ ⊆ Π₂ (iter 12, axiom-free)",
+      "union_isCoDiophantineDefinition: Π₁ class is closed under binary union over ℚ — the missing dual of iter 9's Σ₁-union closure. Constructed via the iter 5 Σ₁/Π₁ duality, iter 12's Σ₁ ∩ closure, and the iter 4 Σ₁ class congruence helper, with the underlying polynomial witness identical to iter 12's sum-of-squares construction (the duality is identity on the polynomial family P). The de Morgan bridge ¬S₁∧¬S₂ ↔ ¬(S₁∨S₂) is constructive — no NEW classical reasoning is introduced beyond what iter 5 already required (iter 13 Path B; no new Mathlib lemmas, no new imports)",
+      "union_isExistentialUniversalDefinition: trivial Σ₂ corollary of union_isCoDiophantineDefinition via Π₁ ⊆ Σ₂ (iter 13, axiom-free); together with iter 9 (Σ₁ ∪, Π₁ ∩) and iter 12 (Σ₁ ∩) completes the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over ℚ — neither class is closed under complement (which would collapse Σ₁ = Π₁, equivalent to the OPEN question)"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 1495,
+    "lineCount": 1610,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -109,7 +111,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 59,
+    "theoremCount": 61,
     "definitionCount": 15
   },
   "overview": {
@@ -241,9 +243,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 1495,
+    "lineCount": 1610,
     "axiomCount": 1,
-    "theoremCount": 59,
+    "theoremCount": 61,
     "definitionCount": 15,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
@@ -355,6 +357,16 @@
       "name": "intersection_isCoDiophantineDefinition",
       "type": "theorem",
       "description": "Π₁ closed under binary intersection: if S₁, S₂ are Π₁-definable, so is `fun q => S₁ q ∧ S₂ q`. Same product polynomial witness, dual of union closure (iter 9 Path B)"
+    },
+    {
+      "name": "intersection_isDiophantineDefinition",
+      "type": "theorem",
+      "description": "Σ₁ closed under binary intersection over ℚ: sum-of-squares polynomial witness with even/odd variable packing (iter 12 Path B)"
+    },
+    {
+      "name": "union_isCoDiophantineDefinition",
+      "type": "theorem",
+      "description": "Π₁ closed under binary union over ℚ: missing dual of iter 9 Σ₁-union closure. Constructed via iter 5 duality + iter 12 Σ₁-intersection closure + iter 4 Σ₁ class congruence; underlying polynomial witness is the same iter 12 sum-of-squares construction (iter 13 Path B; no new Mathlib lemmas, no new imports)"
     }
   ],
   "sorries": 0
