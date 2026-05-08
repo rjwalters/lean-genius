@@ -34,12 +34,15 @@
   },
   "overview": {
     "problemStatement": "For a spherical triangle on the unit sphere with arc-length sides a, b, c and dihedral angles A, B, C at the opposite vertices, prove the spherical law of sines: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C).",
-    "historicalContext": "The spherical law of sines was first proved by medieval Islamic mathematicians and later systematized by European geometers. It is analogous to the planar law of sines c/sin(C) = 2R (circumradius formula) but adapted to spherical geometry where arcs replace lengths. The formula is essential for solving spherical triangles (given two angles and a side, find the remaining sides).",
+    "historicalContext": "The spherical law of sines is one of the oldest non-trivial results in non-Euclidean geometry, with a tradition stretching across more than a millennium. The theorem is first attested in the 10th-century Baghdad school: Abū al-Wafāʾ al-Būzjānī and Abū Maḥmūd al-Khujandī used it in astronomical computations, and al-Bīrūnī's *Maqālīd ʿilm al-hayʾa* (c. 1000) gives a spherical-triangle proof. Naṣīr al-Dīn al-Ṭūsī's *Treatise on the Quadrilateral* (c. 1260) treated spherical trigonometry as an autonomous discipline for the first time, separating it from astronomy. Regiomontanus's *De triangulis omnimodis* (1464, printed 1533) brought the result into Latin Europe, and John Napier's *Mirifici logarithmorum canonis descriptio* (1614) and *Mirifici logarithmorum canonis constructio* (1619) systematized the spherical analogues via Napier's rules. The modern algebraic derivation via the Gram determinant — used in this Lean formalization — is closer to the 19th-century treatments of Cagnoli, Casey, and Todhunter, which connected spherical trigonometry to the inner-product geometry of the unit sphere as a submanifold of ℝ³. The formula is analogous to the planar law of sines c/sin(C) = 2R (circumradius formula) but adapted to spherical geometry where arcs replace lengths. It remains essential for navigation, astronomy, and geodesy (and, more recently, for orbital mechanics and GPS triangulation).",
     "keyInsights": [
       "The Gram determinant G = 1-cos²a-cos²b-cos²c+2cos(a)cos(b)cos(c) is the key symmetric quantity: it equals sin²(b)sin²(c) - (cos(a)-cos(b)cos(c))², sin²(a)sin²(c) - (cos(b)-cos(a)cos(c))², etc. — all by ring.",
       "G ≥ 0 by Cauchy-Schwarz on the projection vectors: G = ‖projB_A‖²·‖projC_A‖² - ⟨projB_A,projC_A⟩² ≥ 0.",
       "The spherical law of cosines (from SphericalLawOfCosines.lean) gives the inner product of projections as cos(a)-cos(b)cos(c), connecting the geometric angle to the algebraic formula.",
-      "The multiplicative form sin(a)·sin(B) = sin(b)·sin(A) is equivalent to the ratio form but avoids division — it is proved first from the squared identity, then non-negativity gives the sign."
+      "The multiplicative form sin(a)·sin(B) = sin(b)·sin(A) is equivalent to the ratio form but avoids division — it is proved first from the squared identity, then non-negativity gives the sign.",
+      "G admits **three symmetric ring representations**, one centered at each vertex: G = sin²b·sin²c−(cos a−cos b cos c)², G = sin²a·sin²c−(cos b−cos a cos c)², G = sin²a·sin²b−(cos c−cos a cos b)². The S₃-symmetry of G under permutations of (a,b,c) is exactly what powers the law of sines — the proof is essentially a triangle-symmetrization argument made algebraic.",
+      "The proof avoids the planar law of sines entirely and never uses the circumradius. This is structurally important: on the sphere, there is no constant circumradius across triangles (the dual quantity is the diameter of the great-circle through the vertices, which has spherical excess as a curvature term). Working from the Gram determinant sidesteps this complication and gives a proof that generalizes cleanly to other constant-curvature surfaces.",
+      "The squared-equality-to-linear-equality pattern (sin²A·sin²b = sin²B·sin²a → sinA·sinb = sinB·sina) uses non-negativity twice: once via `nlinarith` with the squared difference (sinA·sinb − sinB·sina)² ≥ 0, and once via the squared sum (sinA·sinb + sinB·sina)² ≥ 0. This is a reusable algebraic move whenever a quadratic identity over non-negatives needs to be reduced to its linear root."
     ],
     "proofStrategy": "Step 1: Prove the Gram identity G = sin²b·sin²c-(cos(a)-cos(b)cos(c))² by ring. Step 2: G ≥ 0 by Cauchy-Schwarz on projection vectors (from SphericalLawOfCosines infrastructure). Step 3: Define dihedral angles A, B via perpendicular projections (as in SphericalLawOfCosines). Step 4: cos(A) = ⟨projB_A, projC_A⟩/(‖projB_A‖·‖projC_A‖) = (cos(a)-cos(b)cos(c))/(sin(b)sin(c)). Step 5: sin²A·sin²b·sin²c = G (substitution + ring). Step 6: By symmetry sin²B·sin²a·sin²c = G. Step 7: Cancel sin²c → sin²A·sin²b = sin²B·sin²a. Step 8: Non-negativity (angles in [0,π]) → sin(A)·sin(b) = sin(B)·sin(a).",
     "prerequisites": [
@@ -124,23 +127,97 @@
     }
   ],
   "conclusion": {
-    "summary": "The spherical law of sines is proved in full generality for unit-sphere triangles. The multiplicative form sin(a)·sin(B) = sin(b)·sin(A) requires no assumptions beyond non-degeneracy of sides (sin(a), sin(b), sin(c) > 0). The ratio form additionally requires the angles to be non-degenerate (sin(A), sin(B) > 0), which is guaranteed when G > 0. The proof uses only inner product geometry and the ring identity for the Gram determinant.",
-    "implications": "This completes the basic spherical trigonometry toolkit in Lean: law of cosines (from SphericalLawOfCosines.lean) + law of sines (this file). Together they enable the solution of any spherical triangle from minimal data. The Gram determinant identity G = sin²b·sin²c - (cos(a)-cos(b)cos(c))² is a useful reusable lemma.",
+    "summary": "The spherical law of sines is proved in full generality for unit-sphere triangles. The multiplicative form sin(a)·sin(B) = sin(b)·sin(A) requires no assumptions beyond non-degeneracy of sides (sin(a), sin(b), sin(c) > 0). The ratio form additionally requires the angles to be non-degenerate (sin(A), sin(B) > 0), which is guaranteed when G > 0. The proof uses only inner product geometry and the ring identity for the Gram determinant — no curvature, no circumradius, no calculus.",
+    "implications": "This completes the basic spherical trigonometry toolkit in Lean: law of cosines (from SphericalLawOfCosines.lean) + law of sines (this file). Together they enable the solution of any spherical triangle from minimal data. The Gram determinant identity G = sin²b·sin²c - (cos(a)-cos(b)cos(c))² is a useful reusable lemma in its own right — it appears in the volume formula for spherical tetrahedra, in the determinantal characterization of when three unit vectors form a triangle, and (with sign reversed) in the analogous hyperbolic setting where it gives sin²(b)sinh²(c) instead.\n\nThe proof's reliance on the **Cauchy-Schwarz inequality** as the only non-algebraic input is itself notable: it shows that spherical trigonometry can be derived from a single analytic ingredient (Cauchy-Schwarz) plus polynomial identities. This makes the result especially clean to formalize and suggests an analogue strategy for other classical trigonometric identities. The algebraic skeleton (a Gram-style determinant + a ring identity) is reusable for the spherical law of cosines, the dual law of cosines for angles, and the spherical version of Heron's area formula.\n\nFrom a meta-formalization perspective, this entry demonstrates the value of building a strong infrastructure file (SphericalLawOfCosines.lean) and then deriving multiple gallery entries from it. The same projection norm + inner-product decomposition lemmas that proved the law of cosines also give the law of sines without rewriting any geometry — only the symbolic manipulation differs.",
     "openQuestions": [
-      "Can the four-part equality sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) = 2R be proved, where R is the circumradius of the spherical triangle?",
-      "What is the spherical analogue of the law of tangents? Can it be derived from the law of sines in this Lean framework?"
+      "Can the four-part equality sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) = 2 sin(R) be proved, where R is the circumradius of the spherical triangle (in arc-length units)? The classical statement of this is in Todhunter §52, but a fully formalized version requires a Lean treatment of the spherical circumcenter.",
+      "What is the spherical analogue of the law of tangents (tan((A−B)/2)/tan((A+B)/2) = tan((a−b)/2)/tan((a+b)/2))? Can it be derived from the law of sines in this Lean framework?",
+      "Does the proof technique (Gram determinant + Cauchy-Schwarz + ring) extend to **hyperbolic** triangles by replacing cos with cosh and sin with sinh? The analogous identity G_h = -1+cosh²a+cosh²b+cosh²c-2cosh(a)cosh(b)cosh(c) holds, but the sign and non-negativity behave differently due to the indefinite metric.",
+      "Can the proof be generalized from the unit sphere S² to spheres of arbitrary radius R, with the law of sines reading sin(a/R)/sin(A) = sin(b/R)/sin(B) = sin(c/R)/sin(C)? The current proof is invariant under uniform rescaling of arc-lengths, so this should be a matter of bookkeeping."
     ]
   },
-  "references": [
+  "mainTheorems": [
     {
-      "title": "Todhunter, Spherical Trigonometry (1886)",
-      "url": "",
-      "description": "Classical reference for spherical law of sines §17-18"
+      "name": "spherical_law_of_sines_mul",
+      "type": "core",
+      "description": "Multiplicative form: sin(a)·sin(B) = sin(b)·sin(A) for spherical triangles. The headline theorem proved without division."
     },
     {
-      "title": "Mathlib abs_real_inner_le_norm",
+      "name": "spherical_law_of_sines",
+      "type": "core",
+      "description": "Ratio form: sin(a)/sin(A) = sin(b)/sin(B) for non-degenerate spherical triangles, derived from the multiplicative form via div_eq_div_iff."
+    },
+    {
+      "name": "spherical_law_of_sines_all",
+      "type": "core",
+      "description": "Three-way ratio: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C), the full spherical law of sines."
+    },
+    {
+      "name": "gramDet_expand",
+      "type": "supporting",
+      "description": "Ring identity: G = sin²b·sin²c−(cos a−cos b cos c)². The polynomial backbone of the proof."
+    },
+    {
+      "name": "gramDet_nonneg",
+      "type": "supporting",
+      "description": "G ≥ 0 via Cauchy-Schwarz on perpendicular projections — the only analytic input to the entire proof."
+    },
+    {
+      "name": "cos_angleA",
+      "type": "supporting",
+      "description": "cos(A)·sin(b)·sin(c) = cos(a)−cos(b)cos(c). The dihedral-angle cosine formula linking the spherical law of cosines to the projection geometry."
+    },
+    {
+      "name": "sinA_sq_times_bc",
+      "type": "supporting",
+      "description": "sin²(A)·sin²(b)·sin²(c) = G. The bridge identity that lets the Gram determinant act as a common value at all three vertices."
+    },
+    {
+      "name": "equilateral_angles_equal",
+      "type": "supporting",
+      "description": "Application: sin(a)=sin(b) ⇒ sin(A)=sin(B). The spherical analogue of the Euclidean isoceles-triangle theorem."
+    }
+  ],
+  "references": [
+    {
+      "title": "al-Bīrūnī, Abū Rayḥān (c. 1000)",
+      "url": "",
+      "description": "Maqālīd ʿilm al-hayʾa (Keys to the Science of Astronomy). Earliest extant systematic spherical-triangle treatment, including a form of the law of sines for use in qibla computations."
+    },
+    {
+      "title": "al-Ṭūsī, Naṣīr al-Dīn (c. 1260)",
+      "url": "",
+      "description": "Treatise on the Quadrilateral (Kitāb al-shakl al-qaṭṭāʿ). The first work to treat spherical trigonometry as an independent discipline, formalizing the law of sines and the spherical law of cosines."
+    },
+    {
+      "title": "Regiomontanus, J. (1464, printed 1533)",
+      "url": "",
+      "description": "De triangulis omnimodis. Brought systematic spherical trigonometry into Latin Europe."
+    },
+    {
+      "title": "Napier, J. (1614, 1619)",
+      "url": "",
+      "description": "Mirifici logarithmorum canonis descriptio + constructio. Napier's rules of circular parts give a mnemonic-driven approach to spherical triangle solutions, with the law of sines as a core component."
+    },
+    {
+      "title": "Todhunter, I. (1886)",
+      "url": "",
+      "description": "Spherical Trigonometry, 5th edition (Macmillan). Classical reference; §17–18 derives the spherical law of sines, §52 connects it to the spherical circumradius."
+    },
+    {
+      "title": "Casey, J. (1889)",
+      "url": "",
+      "description": "A Treatise on Spherical Trigonometry. Modern algebraic treatment using inner-product geometry; structurally close to the Lean proof here."
+    },
+    {
+      "title": "Mathlib: abs_real_inner_le_norm",
       "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/InnerProductSpace/Basic.html",
-      "description": "Cauchy-Schwarz used for Gram determinant non-negativity"
+      "description": "Cauchy-Schwarz used for Gram determinant non-negativity — the only non-algebraic ingredient."
+    },
+    {
+      "title": "Mathlib: Real.cos_arccos",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Trigonometric/Inverse.html",
+      "description": "Used to extract cos(A)·sin(b)·sin(c) = cos(a)−cos(b)cos(c) from the arccos-based definition of the dihedral angle."
     }
   ]
 }
