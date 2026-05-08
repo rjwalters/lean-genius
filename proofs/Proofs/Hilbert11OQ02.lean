@@ -560,16 +560,25 @@ open Polynomial
     only the witness `z₀` and the divisibility data change. -/
 def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 
+private lemma Gint_derivative_eq : Gint.derivative = C 15 * X ^ 2 := by
+  unfold Gint
+  rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
+      derivative_X_pow]
+  push_cast
+  ring
+
 private lemma Gint_aeval {p : ℕ} [Fact (Nat.Prime p)] (a : ℤ_[p]) :
     aeval a Gint = (4 : ℤ_[p]) + (5 : ℤ_[p]) * a ^ 3 := by
   unfold Gint
-  simp [aeval_C, aeval_X_pow] <;> ring
+  rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  push_cast
+  ring
 
 private lemma Gint_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (a : ℤ_[p]) :
     aeval a Gint.derivative = (15 : ℤ_[p]) * a ^ 2 := by
-  unfold Gint
-  simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
-        aeval_C, aeval_X_pow] <;> ring
+  rw [Gint_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  push_cast
+  ring
 
 end HenselCaseA
 

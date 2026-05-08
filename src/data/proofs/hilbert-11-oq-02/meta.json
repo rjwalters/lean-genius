@@ -22,8 +22,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 699,
-    "theoremCount": 22,
+    "lineCount": 708,
+    "theoremCount": 23,
     "definitionCount": 5,
     "assumptions": "2 axioms: (1) selmer_no_rational_solution — Selmer's 1951 theorem that 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions; the full proof uses 3-descent on the associated elliptic curve y² = x³ - 432·15² and computation of the 3-Selmer group, neither of which is available in Mathlib v4.26.0. (2) selmer_padic_solubility — for every prime p, the Selmer cubic is solvable over ℚₚ; provable via Hensel's lemma on the smooth reduction mod p for p ∉ {2,3,5} and direct construction at the small primes, but requires Hensel infrastructure for ℚₚ. The real solubility (existence of a nontrivial real root) and the easy directions ℚ → ℝ and ℚ → ℚₚ are proved unconditionally from Mathlib's intermediate_value_Icc and the standard ring embeddings.",
     "dateAdded": "2026-05-08",
@@ -191,15 +191,15 @@
       "id": "hensel-caseA-parametric",
       "title": "Section 13: Parametric Case-A Hensel Lift",
       "startLine": 542,
-      "endLine": 670,
+      "endLine": 679,
       "summary": "Theorem selmer_padic_solubility_caseA generalizes the Section 11 argument to every Case-A prime (p ≡ 2 mod 3, p ∉ {2, 5}). Inputs: a prime p with [Fact (Nat.Prime p)], an integer witness z₀ : ℤ, divisibility (p : ℤ) ∣ (4 + 5·z₀³), and coprimality IsCoprime (15·z₀² : ℤ) (p : ℤ). Output: ∃ (x y z : ℚ_[p]), nontrivial ∧ selmerPoly x y z = 0, witnessed by (0, 1, (zt : ℚ_[p])) where zt is the Hensel-lifted root of HenselCaseA.Gint = C 4 + C 5·X^3 ∈ ℤ[X]. Three corollaries discharge p ∈ {17, 23, 29} as one-line invocations with `by decide` on the witness arithmetic: selmer_padic_solubility_p17_hensel (z₀ = 5), selmer_padic_solubility_p23_hensel (z₀ = 18), selmer_padic_solubility_p29_hensel (z₀ = 22). Combined with Section 11 (p = 11), this covers every Case-A prime listed in Section 9.",
       "mathContext": "**Parametric Hensel hypothesis.** For the polynomial g(z) = 5z³ + 4 ∈ ℤ[z] and any integer witness z₀ with $p \\mid g(z_0)$ and $\\gcd(g'(z_0), p) = 1$, the Hensel hypothesis $\\|g(z_0)\\|_p < \\|g'(z_0)\\|_p^2$ holds: the LHS equals $\\|g(z_0)\\|_p < 1$ (from $p \\mid g(z_0)$) and the RHS equals $1^2 = 1$ (from $\\gcd(g'(z_0), p) = 1$). **Case-A coverage.** Section 9's Case-A primes are $\\{11, 17, 23, 29\\}$. After this section all four admit axiom-free $\\mathbb{Q}_p$-solubility proofs via the same parametric mechanism. **Why parametric.** The polynomial $g(z) = 5z^3 + 4$ is the same for every prime; only the witness $z_0$ and the per-prime divisibility data change. Mathlib's `hensels_lemma` is itself parametric in p, so the entire Section 11 argument lifts uniformly once we factor out the prime-specific evaluation lemmas."
     },
     {
       "id": "post-section13-summary",
       "title": "Section 14: Status Summary (post Section 13)",
-      "startLine": 671,
-      "endLine": 699,
+      "startLine": 680,
+      "endLine": 708,
       "summary": "Updated counts after Section 13: 22 theorems (7 substantive + 12 Section-9 witness lemmas + 3 per-prime Hensel corollaries from Section 13 + the parametric Case-A theorem), 5 definitions (selmerPoly, selmerHassePrinciple, colliot_thelene_conjecture, Hensel11.Gint, HenselCaseA.Gint), 2 axioms unchanged, 0 sorries. The four Case-A primes from Section 9 (p ∈ {11, 17, 23, 29}) now all admit axiom-free ℚ_[p]-solubility proofs.",
       "mathContext": "The universal axiom `selmer_padic_solubility` is logically unchanged, but the gap between the universal axiom and what is concretely provable is shrinking: every Case-A prime in Section 9 is now discharged. Remaining obligations: Case B primes (`p ∈ {7, 13, 19, 31, 37}`), special primes (`p ∈ {2, 5}`), and the singular-reduction prime `p = 3` (strong-form Hensel on the mod-27 witness)."
     }
@@ -249,9 +249,9 @@
       "Polynomial"
     ],
     "namespace": "Hilbert11OQ02",
-    "lineCount": 699,
+    "lineCount": 708,
     "axiomCount": 2,
-    "theoremCount": 22,
+    "theoremCount": 23,
     "definitionCount": 5,
     "path": "Proofs/Hilbert11OQ02.lean",
     "sorries": 0
