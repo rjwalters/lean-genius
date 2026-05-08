@@ -3,21 +3,62 @@
 **Phase**: ACT — Path A's algorithmic story (S18–S20), primary
 API (S21–S22), the outer-guard branching characterisation (S23),
 the List-based survey-range tabulation framework (S24, PR #17393),
-and now the **Finset-parameterised density framework** (S25, this
-session) are in place. S25 adds
-`outerGuardSurveyPairs lo hi : Finset (ℕ × ℕ)` (the parameterised
-analogue of S24's hard-coded `surveyRange`),
-`outerGuardFiringCount_le_surveySize` (structural ≤ bound via
-`Finset.card_filter_le`), and a closed-form theorem
-`outerGuardFiringCount_below_threshold` proving zero firings
-on any sub-threshold survey region without `native_decide`
-enumeration. Six combinatorial / sub-threshold `native_decide`
-witnesses corroborate the framework on concrete inputs.
+the Finset-parameterised density framework (S25, PR #17415), and
+now the **empty-range structural dispatch** (S26, this session,
+PR #17432) are in place. Together with S25, every density
+question whose answer is forced to zero by structural constraints
+— empty range OR sub-threshold — is now handled by closed-form
+theorems without `native_decide` enumeration.
 
 **Since**: 2026-05-01
-**Iteration**: 25
+**Iteration**: 26
 
 ## Current Focus
+
+Session 26 (PR #17432, researcher-3, build pending) adds Path A
+PART XVIII to `BinaryGcdOQ03OQ02PathA.lean`: closed-form
+dispatch of the **empty-range** density question (`hi ≤ lo`),
+complementing S25's `outerGuardFiringCount_below_threshold`
+(sub-threshold case `hi ≤ 64`).
+
+Four new theorems plus three `example` witnesses in a new
+`PART XVIII: EMPTY-RANGE STRUCTURAL LEMMAS` section (+102 lines,
+0 new axioms, 0 new sorries):
+
+* `outerGuardSurveyPairs_eq_empty_iff` — survey range empty iff
+  `hi ≤ lo`. Forward direction by contraposition exhibiting the
+  canonical witness `(lo, lo)`; backward direction by
+  `Finset.eq_empty_iff_forall_not_mem` + Ico bounds + omega.
+* `outerGuardSurveySize_eq_zero_iff` — survey size = 0 iff
+  `hi ≤ lo`. Direct corollary via `Finset.card_eq_zero`.
+* `outerGuardFiringCount_eq_zero_of_empty` — firing count = 0
+  whenever `hi ≤ lo`. Uses S25's `_le_surveySize` bound + the
+  size-zero iff.
+* `outerGuardFiringCount_eq_zero_of_size_zero` — firing count = 0
+  whenever survey size = 0 (generalised form in terms of size
+  rather than the raw range bound).
+* Three concrete witness `example`s on degenerate ranges
+  (`(64, 64)` flat, `(130, 64)` reversed) confirming the
+  theorems on edge inputs without invoking `hgcdSafeApply`.
+
+Proof techniques are routine (`Finset.mem_filter`,
+`Finset.mem_product`, `Finset.mem_Ico`,
+`Finset.eq_empty_iff_forall_not_mem`, `Finset.card_eq_zero`,
+`omega`) and isolated from the recursion machinery — no
+dependence on `hgcdSafeApply` or `schonhageOuterGuardFires`.
+
+**S27 (next):** With both empty-range (S26) and sub-threshold
+(S25) closed-form theorems in place, the remaining open density
+question is the actual `outerGuardFiringCount 64 hi` calibration
+for `hi > 64`. This necessarily requires `native_decide`
+enumeration since the firing pattern depends on the
+`hgcdSafeApply` recursion. Possible S27 directions: either a
+single `native_decide` witness on `outerGuardFiringCount 64 130`
+giving the survey-range density magnitude, or further structural
+decomposition of `outerGuardSurveyPairs` (e.g. closed-form
+triangular cardinality `(hi - lo) * (hi - lo + 1) / 2`).
+
+### Previous focus (S25 — PR #17415, merged)
 
 Session 25 (this PR, researcher-10) adds the
 **Finset-parameterised density framework** (Path A PART XVI),
