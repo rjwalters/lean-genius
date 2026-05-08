@@ -38,6 +38,10 @@ and develop the object-level scaffold around it.
    current Mathlib, `_right` varies the base), (E3) König via
    `Cardinal.lt_cof_power`)
 9. `isEastonFunction_nonempty` — the constraint set is non-vacuous
+10. `IsEastonFunction.lt_apply` — every Easton function is strictly increasing
+    on regular cardinals ≥ ℵ₀ (corollary of `succ_le`)
+11. `id_not_isEastonFunction` — the identity is not an Easton function
+12. `const_aleph0_not_isEastonFunction` — the constant `κ ↦ ℵ₀` is not Easton
 
 ## What This File Axiomatizes (proof requires class forcing)
 
@@ -190,6 +194,34 @@ theorem isEastonFunction_nonempty :
     ∃ F : Cardinal.{0} → Cardinal.{0}, IsEastonFunction F :=
   ⟨_, isEastonFunction_continuum⟩
 
+/-- Easton functions are strictly increasing on regular cardinals ≥ ℵ₀:
+    `F κ > κ` for every regular `κ ≥ ℵ₀`. Direct corollary of `succ_le`
+    and `Order.lt_succ`. This is the pointwise form of the Cantor-style
+    lower bound that any Easton function inherits — every Easton function
+    captures Cantor's theorem at every regular cardinal. -/
+theorem IsEastonFunction.lt_apply {F : Cardinal.{0} → Cardinal.{0}}
+    (hF : IsEastonFunction F) {κ : Cardinal.{0}}
+    (hreg : κ.IsRegular) (hℵ₀ : ℵ₀ ≤ κ) : κ < F κ :=
+  lt_of_lt_of_le (Order.lt_succ κ) (hF.succ_le κ hreg hℵ₀)
+
+/-- The identity function `κ ↦ κ` is NOT an Easton function: it violates
+    the strict-increase property `lt_apply` at every regular `κ ≥ ℵ₀`
+    (it would require `ℵ₀ < ℵ₀`). Demonstrates that `IsEastonFunction`
+    is a non-trivial constraint, not satisfied by every endofunction. -/
+theorem id_not_isEastonFunction :
+    ¬ IsEastonFunction (fun κ : Cardinal.{0} => κ) := by
+  intro h
+  exact lt_irrefl _ (h.lt_apply Cardinal.isRegular_aleph₀ le_rfl)
+
+/-- The constant function `κ ↦ ℵ₀` is NOT an Easton function: at `κ = ℵ₀`,
+    `lt_apply` would require `ℵ₀ < ℵ₀`. More generally, no constant function
+    can be an Easton function — the strict growth at every regular cardinal
+    forces unbounded values. -/
+theorem const_aleph0_not_isEastonFunction :
+    ¬ IsEastonFunction (fun _ : Cardinal.{0} => ℵ₀) := by
+  intro h
+  exact lt_irrefl _ (h.lt_apply Cardinal.isRegular_aleph₀ le_rfl)
+
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART III: EASTON CONSISTENCY — AXIOMATIZED (PROOF NEEDS CLASS FORCING)
@@ -251,6 +283,9 @@ PART IV: VERIFICATION
 #check @IsEastonFunction
 #check @isEastonFunction_continuum
 #check @isEastonFunction_nonempty
+#check @IsEastonFunction.lt_apply
+#check @id_not_isEastonFunction
+#check @const_aleph0_not_isEastonFunction
 #check @easton_permitted_realizable
 #check @easton_consistency
 

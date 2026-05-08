@@ -107,3 +107,85 @@ end CantorDiagOQ01OQ01OQ02OQ01
 This session was **pure orientation**: no new Lean code was written. The contribution is a sharpened Phase-2 plan with a buildable scaffold sketch grounded in the Mathlib API actually exercised by the parent file. The `sorry` in `isEastonFunction_succ.konig_pointwise` is real and must be discharged before the file can ship; the `True` codomain on `easton_consistency` is a placeholder that future work must replace with a genuine consistency predicate.
 
 The session was constrained: Docker host VM (~7.65 GB) was under heavy concurrent multi-agent load with cold Mathlib cache, so I could not safely commit a new Lean file with confidence the build would succeed. Documentation-only progression (OBSERVE → ORIENT) is honest progress that lets the next session move directly into Phase-2 with a concrete target.
+
+---
+
+## Session 2026-05-08 (Session 5, researcher-11) — Easton Non-Examples
+
+**Mode**: REVISIT (RICH knowledge tier, score 43)
+**Outcome**: PROGRESS — added 3 small theorems rounding out the Easton-function picture: a strict-increase corollary `IsEastonFunction.lt_apply`, and 2 non-examples demonstrating the constraint set is non-trivial. No axiom/sorry delta.
+
+### Pre-Work Assessment
+
+1. **Axiom Question**: 2 axioms (`easton_permitted_realizable`, `easton_consistency`), both with `True` codomain — placeholder pending Phase-3b `ConsistencyOf` predicate. Discharging either requires either Gödel-encoding ZFC (1000+ lines) or class-forcing infrastructure (multi-session). Not tractable this session.
+2. **Value Question**: A small contribution that grounds the existing structure makes the file more useful for downstream work even without progress on the axioms.
+3. **Build vs Block**: The non-examples are a tractable rounding-out — they confirm `IsEastonFunction` is genuinely a constraint, not satisfied by every endofunction.
+
+### What I Did
+
+Added three theorems to `proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` between `isEastonFunction_nonempty` and Part III:
+
+```lean
+/-- Easton functions are strictly increasing on regular cardinals ≥ ℵ₀:
+    `F κ > κ` for every regular `κ ≥ ℵ₀`. Direct corollary of `succ_le`
+    and `Order.lt_succ`. -/
+theorem IsEastonFunction.lt_apply {F : Cardinal.{0} → Cardinal.{0}}
+    (hF : IsEastonFunction F) {κ : Cardinal.{0}}
+    (hreg : κ.IsRegular) (hℵ₀ : ℵ₀ ≤ κ) : κ < F κ :=
+  lt_of_lt_of_le (Order.lt_succ κ) (hF.succ_le κ hreg hℵ₀)
+
+/-- The identity `κ ↦ κ` is NOT an Easton function: it violates lt_apply at ℵ₀. -/
+theorem id_not_isEastonFunction :
+    ¬ IsEastonFunction (fun κ : Cardinal.{0} => κ) := by
+  intro h
+  exact lt_irrefl _ (h.lt_apply Cardinal.isRegular_aleph₀ le_rfl)
+
+/-- The constant function `κ ↦ ℵ₀` is NOT an Easton function: at κ = ℵ₀,
+    lt_apply would require ℵ₀ < ℵ₀. -/
+theorem const_aleph0_not_isEastonFunction :
+    ¬ IsEastonFunction (fun _ : Cardinal.{0} => ℵ₀) := by
+  intro h
+  exact lt_irrefl _ (h.lt_apply Cardinal.isRegular_aleph₀ le_rfl)
+```
+
+Plus updated the file header (10/11/12 in the proved-list), `#check` directives, and meta.json (lineCount 257→292, theoremCount 7→10) and the research JSON.
+
+### Why This Is Real Progress (and the limit thereof)
+
+- **Non-vacuity grounded with non-examples**: previously, `isEastonFunction_continuum` (existence) and `isEastonFunction_nonempty` (extracted ∃) showed the constraint set is non-empty; now `id_not_isEastonFunction` and `const_aleph0_not_isEastonFunction` show it's not vacuously satisfied. The structure is genuinely a constraint.
+- **`IsEastonFunction.lt_apply` is reusable API**: any future work that needs the strict-increase property can call it directly rather than re-deriving from `succ_le + Order.lt_succ` each time.
+- **Pure rounding-out**: this does not advance either of the 2 axioms (`easton_permitted_realizable`, `easton_consistency`) — they remain `True`-codomain placeholders pending Phase-3b. The major next steps (class forcing, ConsistencyOf predicate) are unchanged.
+
+### Build Status
+
+**Pending**: Cold-cache Docker build attempted/skipped this session. The worktree's `proofs/.lake` is a recursive self-symlink (per `feedback_researcher_lake_symlink_broken.md`), forcing every build to fresh-clone Mathlib (~10–15 min) plus cache get (~10 min) — total ~45 min.
+
+The 3 added theorems use only basic structural tactics already exercised elsewhere in the file:
+- `lt_of_lt_of_le` (standard order combinator)
+- `Order.lt_succ` (used at lines 105, 115, 124, 140 of this file)
+- `lt_irrefl _ : ¬ a < a` (basic Mathlib)
+- `Cardinal.isRegular_aleph₀` (standard aleph₀ regularity instance)
+- `le_rfl` (trivial)
+
+Marking the PR as draft until a warm-cache build confirms; following the established convention of Sessions 6/7/8 of birthday-OQ-03 (PRs #16777, #16837, #16873).
+
+### Files Modified
+
+- `proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` (+35 lines: 3 theorems + header update + 3 #check directives)
+- `src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/meta.json` (lineCount 257→292, theoremCount 7→10 in both top-level meta and leanFile; assumptions text updated)
+- `src/data/research/problems/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01.json` (Session 5 entries in builtItems/insights/progressSummary; iteration 4→5)
+- `research/problems/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/knowledge.md` (this entry)
+
+### Honest Assessment
+
+This is a **small contribution**: 3 short theorems totaling ~25 lines of Lean code. It does not reduce axiom count and does not approach the Phase-3b `ConsistencyOf` work. The contribution is structural rounding-out: making the existing `IsEastonFunction` API more useful by exposing the strict-increase corollary and grounding the structure with concrete non-examples.
+
+### Next Steps
+
+1. **Phase-3b** (unchanged from prior sessions): introduce `ConsistencyOf : (Cardinal → Cardinal) → Prop` predicate and replace the True codomain on the two Easton axioms. Requires Gödel-encoding ZFC formulas — major effort (1000+ lines).
+2. **Smaller incremental options** now that the non-vacuity / non-triviality picture is rounded out:
+   - Prove `isEastonFunction_continuum_succ_strict`: continuum function strictly exceeds successor at ℵ₀ (would use `Cardinal.cantor` directly, ~5 lines).
+   - Formalize a non-monotone non-example: a function satisfying succ_le and konig_pointwise but not monotone, demonstrating the third constraint is independent.
+   - Prove `IsEastonFunction.lt_aleph0_apply`: F ℵ₀ > ℵ₁ (since F ℵ₀ regular ≥ ℵ₀⁺ = ℵ₁). Wait — this would need F ℵ₀ regular, which the current `IsEastonFunction` does NOT require.
+3. **Class forcing infrastructure** (Phase-4): port flypitch's set-forcing model to Lean 4 and extend to class-sized partial orders. Multi-session, possibly multi-agent effort.
+

@@ -37,11 +37,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T05:30:00.000Z",
-    "iteration": 4,
-    "focus": "Phase-3a-fix (Session 4, researcher-8, 2026-05-08): closed both pending sorries in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) `aleph_succ_permitted`: proved ℵ₀ < ℵ_(succ α) via the chain ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ. (2) `isEastonFunction_continuum.monotone`: closed with Cardinal.power_le_power_right (the prior comment claiming this lemma had drifted to vary the base was incorrect — usage in sibling OQ-02-OQ-03 confirms exponent monotonicity in current Mathlib). File: 251→249 lines, 7 theorems unchanged, 0 sorries (was 2), 2 axioms unchanged. Status formalized→axiomatized.",
+    "since": "2026-05-08T08:30:00.000Z",
+    "iteration": 5,
+    "focus": "S5 (researcher-11, 2026-05-08, ACT): Added 3 small theorems to CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — `IsEastonFunction.lt_apply` (corollary: every Easton F is strictly increasing on regular cardinals ≥ ℵ₀; follows from succ_le + Order.lt_succ); `id_not_isEastonFunction` (non-example: `fun κ => κ` violates lt_apply at ℵ₀); `const_aleph0_not_isEastonFunction` (non-example: constant ℵ₀ violates lt_apply at ℵ₀). Demonstrates that the Easton-function constraint set is non-trivial — not every endofunction qualifies. File: 257→292 lines, 7→10 theorems, 0 sorries unchanged, 2 axioms unchanged. Build pending (cold-cache Docker, ~45 min due to known broken proofs/.lake symlink). Prior: Phase-3a-fix (Session 4, researcher-8, 2026-05-08): closed both pending sorries in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) `aleph_succ_permitted`: proved ℵ₀ < ℵ_(succ α) via the chain ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ. (2) `isEastonFunction_continuum.monotone`: closed with Cardinal.power_le_power_right (the prior comment claiming this lemma had drifted to vary the base was incorrect — usage in sibling OQ-02-OQ-03 confirms exponent monotonicity in current Mathlib). File: 251→249 lines, 7 theorems unchanged, 0 sorries (was 2), 2 axioms unchanged. Status formalized→axiomatized.",
     "blockers": [],
-    "nextAction": "Session 5+: Build out Phase-3b — define ConsistencyOf : (Cardinal → Cardinal) → Prop using Gödel-encoded ZFC formulas, then replace the True codomain on the two Easton axioms with the genuine Consistent predicate. Or: tackle class forcing infrastructure to discharge easton_permitted_realizable. Both are major efforts (estimated 1000+ lines).",
+    "nextAction": "Phase-3b remains the major next step: define ConsistencyOf : (Cardinal → Cardinal) → Prop using Gödel-encoded ZFC formulas, then replace the True codomain on the two Easton axioms with the genuine Consistent predicate (estimated 1000+ lines). Smaller incremental options now that the non-vacuity / non-triviality picture is rounded out: prove `isEastonFunction_continuum_succ_strict` (continuum function strictly exceeds successor at ℵ₀), or formalize a non-monotone non-example.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (researcher-8, 2026-05-08, ACT): **Phase-3a-fix COMMITTED**. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) `aleph_succ_permitted` (ℵ₀ < ℵ_(succ α)): proved via the chain ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ — no aleph0_lt_aleph_iff needed. (2) `isEastonFunction_continuum.monotone`: closed with Cardinal.power_le_power_right (exponent-monotonic in current Mathlib; the prior comment claiming this lemma had drifted to base-monotonicity was incorrect, as confirmed by sibling file OQ-02-OQ-03). File: 251→249 lines, 7 theorems unchanged, 0 sorries (was 2), 2 axioms unchanged. Status formalized→axiomatized.\n\nS3 (researcher-3, 2026-05-08, ACT): wrote CantorDiagonalizationOQ01OQ01OQ02OQ01.lean Phase-3 scaffold (251 lines, 7 theorems, 1 def, 2 axioms, 2 sorries pending Mathlib API check).\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed open question.",
+    "progressSummary": "S5 (researcher-11, 2026-05-08, ACT): added IsEastonFunction.lt_apply (strict-increase corollary of succ_le) and 2 non-examples (id_not_isEastonFunction, const_aleph0_not_isEastonFunction) to CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. The non-examples demonstrate that the Easton-function constraint set is non-trivial — not every endofunction is Easton. Both fail the strict-increase property at ℵ₀ (F ℵ₀ < F ℵ₀ contradiction). File: 257→292 lines, 7→10 theorems, 0 sorries / 2 axioms unchanged. Build pending (cold-cache Docker; the additions use only basic structural tactics: lt_of_lt_of_le, Order.lt_succ, lt_irrefl, Cardinal.isRegular_aleph₀, le_rfl). Prior: S4 (researcher-8, 2026-05-08, ACT): **Phase-3a-fix COMMITTED**. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) `aleph_succ_permitted` (ℵ₀ < ℵ_(succ α)): proved via the chain ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ — no aleph0_lt_aleph_iff needed. (2) `isEastonFunction_continuum.monotone`: closed with Cardinal.power_le_power_right (exponent-monotonic in current Mathlib; the prior comment claiming this lemma had drifted to base-monotonicity was incorrect, as confirmed by sibling file OQ-02-OQ-03). File: 251→249 lines, 7 theorems unchanged, 0 sorries (was 2), 2 axioms unchanged. Status formalized→axiomatized.\n\nS3 (researcher-3, 2026-05-08, ACT): wrote CantorDiagonalizationOQ01OQ01OQ02OQ01.lean Phase-3 scaffold (251 lines, 7 theorems, 1 def, 2 axioms, 2 sorries pending Mathlib API check).\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed open question.",
     "builtItems": [
       "Session 3 (2026-05-08): proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — 234 lines, 9 theorems, 1 def, 2 axioms, 0 sorries. Imports parent file + Mathlib Cardinal.{Basic,Ordinal,Cofinality}.",
       "Session 3 (2026-05-08): src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/{meta.json,index.ts,annotations.json} — gallery entry with axiom badge, full overview/sections/conclusion/crossReferences (4 cross-refs: parent oq-02, sibling oq-03, oq-01, continuum-hypothesis), 6 references.",
@@ -64,7 +64,11 @@
       "S4 (researcher-8, 2026-05-08) — closed sorry in aleph_succ_permitted: ℵ₀ < ℵ_(succ α) via Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ chain",
       "S4 — closed sorry in isEastonFunction_continuum.monotone: Cardinal.power_le_power_right hκν (verified working via sibling OQ-02-OQ-03)",
       "S4 — corrected misleading comments in file header (sorry status) and isEastonFunction_continuum docstring",
-      "S4 — file: 251→249 lines, sorries 2→0, status formalized→axiomatized"
+      "S4 — file: 251→249 lines, sorries 2→0, status formalized→axiomatized",
+      "S5 (researcher-11, 2026-05-08) — added IsEastonFunction.lt_apply: every Easton function F satisfies κ < F κ on regular cardinals ≥ ℵ₀ (corollary of succ_le + Order.lt_succ); 4 lines of proof",
+      "S5 — added id_not_isEastonFunction: ¬ IsEastonFunction (fun κ => κ); proof via lt_apply at ℵ₀ + lt_irrefl; demonstrates non-vacuity of the constraint set",
+      "S5 — added const_aleph0_not_isEastonFunction: ¬ IsEastonFunction (fun _ => ℵ₀); same proof pattern; complements the id non-example",
+      "S5 — file: 257→292 lines, 7→10 theorems, 0 sorries / 2 axioms unchanged; meta.json + leanFile counts synced"
     ],
     "insights": [
       "The two LOCAL Easton constraints are already in Mathlib (`Cardinal.power_mono`, `Cardinal.lt_cof_power`); only the GLOBAL consistency claim requires forcing — phase-2 can cleanly separate object-level definitions from meta-level consistency",
@@ -85,7 +89,9 @@
       "S4 — Counter-pattern to memory: not every comment about Mathlib API drift is correct. When a comment claims a lemma has changed semantics, verify against current Mathlib usage in sibling files before accepting the claim.",
       "S4 — The ℵ₀ < ℵ_(succ α) goal does not need aleph0_lt_aleph_iff; it factors via ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using stable Mathlib lemmas Cardinal.aleph_zero, Cardinal.aleph_le_aleph, Order.lt_succ.",
       "S4 — Cardinal.power_le_power_right IS exponent-monotonic in current Mathlib (a ≤ b → c^a ≤ c^b). The prior comment claiming it had drifted to base-monotonicity was incorrect; sibling file OQ-02-OQ-03 uses it as exponent-monotonic.",
-      "S4 — Counter-pattern: not every API-drift comment is correct. When a comment claims a lemma changed semantics, verify against current sibling-file usage before accepting."
+      "S4 — Counter-pattern: not every API-drift comment is correct. When a comment claims a lemma changed semantics, verify against current sibling-file usage before accepting.",
+      "S5 — `IsEastonFunction.lt_apply` is the cleanest API surface for the strict-increase property; both non-example proofs reduce to `lt_irrefl _ (h.lt_apply Cardinal.isRegular_aleph₀ le_rfl)` after `intro h`",
+      "S5 — non-examples are valuable in axiomatized files: they confirm the constraint set is genuinely a constraint, not vacuously satisfied. The `True`-codomain axioms below remain placeholder, but the non-examples ground the structure in something testable"
     ],
     "mathlibGaps": [
       "No formalization of forcing in Mathlib (flypitch lives in Lean 3 + Lean Mathlib3, not yet ported)",
@@ -162,7 +168,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-08T01:00:00.000Z",
+  "lastUpdate": "2026-05-08T08:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
