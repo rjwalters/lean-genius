@@ -960,4 +960,56 @@ lemma integral_cos_sq_div_sqrt_denom (hk_pos : 0 < k) (hk_lt : k < 1) :
   field_simp
   ring
 
+-- ============================================================================
+-- § 13. Auxiliary Function `auxFnK` for the K-side IBP Step
+-- ============================================================================
+
+/-
+The full K-side integral identity
+  `∫₀^{π/2} dIntegrandK k θ dθ = (E(k) - (1-k²) K(k)) / (k (1-k²))`
+is established by integration by parts on the auxiliary function
+  `auxFnK k θ := sin θ · cos θ / √(1 − k² sin²θ)`.
+
+This section provides the **endpoint vanishing** layer of the IBP step:
+
+* `auxFnK` — the definition.
+* `auxFnK_zero` — `auxFnK k 0 = 0`  (because `sin 0 = 0`).
+* `auxFnK_pi_div_two` — `auxFnK k (π/2) = 0`  (because `cos (π/2) = 0`).
+
+The chain-rule computation `(d/dθ) auxFnK k θ` and the FTC closure
+  `∫₀^{π/2} (auxFnK k)' dθ = auxFnK k (π/2) − auxFnK k 0 = 0`
+are deferred to a follow-up session (S9 parts 2–4 in `state.md`).
+
+The endpoint vanishings established here are precisely the reason the
+IBP boundary terms drop out, leaving the clean identity
+  `∫₀^{π/2} (auxFnK k)' dθ = 0`,
+which combines with §12's `integral_cos_sq_div_sqrt_denom` to yield the
+target K-side integral identity.
+-/
+
+/-- **Auxiliary function for the K-side IBP step.**
+
+    `auxFnK k θ := sin θ · cos θ / √(1 − k² sin²θ)`.
+
+    Its derivative in θ decomposes (via the standard chain rule on a
+    quotient) into terms involving `cos²θ / √D` and
+    `sin²θ / [(1 − k² sin²θ) · √D]` — both of which appear in the K-side
+    integral algebra of §12. Pinning down that decomposition and applying
+    the fundamental theorem of calculus on `[0, π/2]` is the next
+    sub-step (S9 parts 2–4); the endpoint vanishings below close the
+    boundary side of FTC. -/
+noncomputable def auxFnK (k θ : ℝ) : ℝ :=
+  Real.sin θ * Real.cos θ / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+
+/-- **Left endpoint vanishing.** `auxFnK k 0 = 0`, because `sin 0 = 0`. -/
+lemma auxFnK_zero (k : ℝ) : auxFnK k 0 = 0 := by
+  unfold auxFnK
+  rw [Real.sin_zero, zero_mul, zero_div]
+
+/-- **Right endpoint vanishing.** `auxFnK k (π/2) = 0`, because
+    `cos (π/2) = 0`. -/
+lemma auxFnK_pi_div_two (k : ℝ) : auxFnK k (π / 2) = 0 := by
+  unfold auxFnK
+  rw [Real.cos_pi_div_two, mul_zero, zero_div]
+
 end AmgmInequalityOQ04OQ02

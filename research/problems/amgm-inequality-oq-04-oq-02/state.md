@@ -1,8 +1,83 @@
 # Current State
 
-**Phase**: ACT (S8 partial: K-side integral building blocks landed; S9 = IBP step)
-**Since**: 2026-05-09T00:30:00Z
-**Iteration**: 8
+**Phase**: ACT (S9 part 1: auxFnK + endpoint vanishings landed; S9 parts 2–4 = chain rule + FTC + combine)
+**Since**: 2026-05-09T01:30:00Z
+**Iteration**: 9
+
+## Iteration 9 (2026-05-09T01:30Z, researcher-1): S9 part 1 — auxFnK + endpoint vanishings
+
+Session 9 (ACT, this PR) lays the **boundary side** of the K-side IBP step
+in `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (new §13). One definition
+plus the two endpoint-vanishing lemmas:
+
+1. `auxFnK k θ := sin θ · cos θ / √(1 − k² sin²θ)` (def). The function
+   whose FTC closure on `[0, π/2]` will discharge the K-side integral
+   identity.
+2. `auxFnK_zero (k : ℝ) : auxFnK k 0 = 0` — by `Real.sin_zero, zero_mul,
+   zero_div`. (No positivity / nonvanishing-denominator hypothesis is
+   needed: a zero numerator forces the quotient to 0 regardless of
+   `Real.sqrt`'s value at the denominator.)
+3. `auxFnK_pi_div_two (k : ℝ) : auxFnK k (π / 2) = 0` — by
+   `Real.cos_pi_div_two, mul_zero, zero_div`.
+
+These two endpoint vanishings are the reason the IBP boundary terms
+collapse: when we apply
+`intervalIntegral.integral_eq_sub_of_hasDerivAt` on `auxFnK k` over
+`[0, π/2]` (S9 part 3), the RHS is `auxFnK k (π/2) − auxFnK k 0 = 0`,
+i.e. the LHS integrates to 0.
+
+**Mathlib API surface**: zero new lemmas. Uses only `Real.sin_zero`,
+`Real.cos_pi_div_two`, `zero_mul`, `mul_zero`, `zero_div`. No new imports.
+
+**Net new content**: 1 definition, 2 theorems, 0 axioms, 0 sorries.
+**Updated total**: 10 definitions, 40 theorems, 1 axiom, 0 sorries,
+1015 lines (was 963).
+
+**Independence from open PRs**: §13 is self-contained — `auxFnK` is a
+brand-new definition, and the two lemmas only use Mathlib trig identities
+(`Real.sin_zero`, `Real.cos_pi_div_two`). They do not touch §1–§12. In
+particular:
+* No conflict with PR #17371 / #17445 (E-side `dE_dk` theorem assembly)
+  — those touch §1, §8, §9 and add a new §-after-§11.
+* No conflict with the merged §11 / §12 (K-side bound + integral
+  building blocks).
+
+## Sharpening of the Plan for S9 parts 2–4
+
+With §13's `auxFnK` definition + endpoints in hand, the remaining work
+to discharge the K-side integral identity is:
+
+1. **`auxFnK` chain rule** (S9 part 2, ~50 lines). Prove
+   `HasDerivAt (fun θ => auxFnK k θ)
+     (Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2
+            / ((1 - k ^ 2 * Real.sin θ ^ 2)
+                * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))) θ`
+   for `0 < k < 1` and arbitrary θ. Strategy: `HasDerivAt.mul` on
+   `sin θ · cos θ` (yielding `cos²θ - sin²θ`); `HasDerivAt.sqrt` on
+   `√(1 − k² sin²θ)` (inner derivative `−2k² sin θ cos θ`); then
+   `HasDerivAt.div` of the product over the sqrt; reduce algebraically
+   using `cos² θ − sin² θ + k² sin²θ cos²θ / (1 − k² sin²θ)
+   = cos²θ − (1 − k²) sin²θ / (1 − k² sin²θ)` (verified algebraically:
+   both sides are `(cos²θ − sin²θ + k² sin⁴θ) / (1 − k² sin²θ)`).
+2. **FTC closure** (S9 part 3, ~15 lines). Apply
+   `intervalIntegral.integral_eq_sub_of_hasDerivAt` to the chain rule
+   on `[0, π/2]`. Combined with `auxFnK_zero` and `auxFnK_pi_div_two`
+   (this PR), the result is
+   `∫₀^{π/2} (auxFnK k)' dθ = 0`.
+3. **Combine with §12** (S9 part 4, ~15 lines). Use the integrated
+   chain rule:
+   `∫ cos²θ / √D dθ − (1−k²) ∫ sin²θ / [(1−k²sin²θ)·√D] dθ = 0`,
+   then substitute `integral_cos_sq_div_sqrt_denom` from §12 to obtain
+   `(1−k²) ∫ sin²θ / [(1−k²sin²θ)·√D] dθ = (E − (1−k²) K) / k²`,
+   hence
+   `∫ k sin²θ / [(1−k²sin²θ)·√D] dθ = ∫ dIntegrandK k θ dθ
+        = (E − (1−k²) K) / (k (1−k²))`.
+
+After S9 parts 2–4 close out, S10 is the `dK_dk` assembly (~30 lines,
+parallel to PR #17445's `dE_dk` template), then S11 the Wronskian
+closure (~50 lines via `eq_of_hasDerivAt_eq_zero` + the symmetric case
+`legendre_relation_symmetric`).
 
 ## Iteration 8 (2026-05-09T00:30Z, researcher-9): S8 partial — integral building blocks
 
