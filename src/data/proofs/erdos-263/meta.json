@@ -25,7 +25,7 @@
     "lineCount": 792,
     "assumptions": "No axioms. 4 sorry(s) remain (all deep — require non-Mathlib mathematics): folklore_irrationality (Mahler-type criterion), kovac_tao_not_irrationality (Egyptian fraction construction), positive_condition_irrationality (liminf analysis), truncation_insufficient (requires known irrationality sequence witness). Proved (no sorry): doubleExp_strictly_increasing, doubleExp_square_growth, doubleExp_not_folklore_growth, doubleExp_convergent, doubleExp_superexponential, doubleExp_not_kovac_tao, characterization_gap, factorial_no_folklore_growth, factorial_has_kovac_tao_condition, connection_262_proved, doubleExp_term_eq, doubleExp_sum_summable, doubleExp_fin_mul_nat, doubleExp_tail_pos, doubleExp_tail_bound, tsum_split_at, doubleExp_sum_irrational (integer-gap argument, session 9).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 31,
+    "theoremCount": 30,
     "definitionCount": 19,
     "additionalFiles": [
       "Proofs/Erdos263Aristotle.lean"
@@ -166,7 +166,7 @@
     "namespace": "Erdos263",
     "lineCount": 792,
     "axiomCount": 0,
-    "theoremCount": 31,
+    "theoremCount": 30,
     "definitionCount": 19,
     "path": "Proofs/Erdos263Problem.lean",
     "sorries": 4,
