@@ -7,7 +7,7 @@
     "author": "Lean Genius",
     "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number",
     "date": "2026-04-12",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CombinationsFormulaOQ02.lean",
     "tags": [
       "combinatorics",
@@ -15,8 +15,8 @@
       "binomial-coefficients",
       "central-binomial"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "",
@@ -135,5 +135,5 @@
       "description": "Also uses central binomial coefficient bounds $\\binom{2n}{n} \\leq 4^n$ for prime distribution estimates"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }

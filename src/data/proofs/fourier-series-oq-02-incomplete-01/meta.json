@@ -37,7 +37,7 @@
   "meta": {
     "author": "Classical (Bernstein, Zygmund, Sobolev)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fourier_series#Rate_of_convergence",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/FourierSeriesOQ02Incomplete01.lean",
     "tags": [
       "analysis",
@@ -47,8 +47,8 @@
       "coefficient-decay",
       "infrastructure"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 5,
     "dateAdded": "2026-04-05",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -179,5 +179,5 @@
       "url": "https://en.wikipedia.org/wiki/Harmonic_analysis"
     }
   ],
-  "sorries": 0
+  "sorries": 5
 }

@@ -6,7 +6,7 @@
   "meta": {
     "author": "Formalized in Lean 4",
     "date": "2026-04-12",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "probability",
       "combinatorics",
@@ -14,8 +14,8 @@
       "measure-theory"
     ],
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
-    "badge": "original",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 1,
     "originalContributions": [
       "multiCountedSequence_eq_biUnion: multi-candidate sequences = disjoint union of fibers",
       "multiProjectionFiber_pairwise_disjoint: fibers over distinct targets are disjoint",
@@ -174,5 +174,5 @@
       "description": "Uniform fibers preserve uniformOn probability (0 sorries, complete proof)"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }

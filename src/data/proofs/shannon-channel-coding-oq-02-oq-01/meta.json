@@ -7,7 +7,7 @@
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1952",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
     "tags": [
       "information-theory",
@@ -17,8 +17,8 @@
       "research",
       "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 4,
     "mathlibDependencies": [
       {
         "theorem": "FanoInequality.fano_theorem",
@@ -162,5 +162,5 @@
       "Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 4
 }

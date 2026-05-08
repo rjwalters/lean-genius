@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_formula",
     "date": "Classical result, formalized 2026",
-    "status": "verified",
+    "status": "formalized",
     "tags": [
       "analysis",
       "complex-analysis",
@@ -17,8 +17,8 @@
       "euler-formula"
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ02.lean",
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "wip",
+    "sorries": 2,
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries via Mathlib bridge. The core step uses Mathlib's NormedSpace.expSeries_div_hasSum_exp for the exp series; all 16 theorems including the bonus bridge lemmas are proved with 0 sorries.",
     "originalContributions": [
@@ -148,5 +148,5 @@
       "Generalize: can this approach prove the power series identity for cosh/sinh (replacing ix with x), giving cosh x = \u2211 x^{2k}/(2k)! and sinh x = \u2211 x^{2k+1}/(2k+1)!?"
     ]
   },
-  "sorries": 0
+  "sorries": 2
 }
