@@ -139,24 +139,56 @@
   ],
   "crossReferences": [
     {
-      "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
+      "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03",
       "relationship": "parent",
       "description": "Semiprime CRT (k=2): proved buDim(pq,d) = buDim(p,d) ⊔ buDim(q,d) using the axiom buDim_crt_semiprime. This entry generalizes to k distinct primes and recovers the semiprime case as a corollary, eliminating the dedicated semiprime axiom."
     },
     {
-      "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
+      "proofId": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02",
       "relationship": "ancestor",
       "description": "Defines buDimFormula = primeFactors.sup (buDim · d) and proves buDim_eq_formula (axiom). The CRT-for-all-n result here is a direct consequence of that formula axiom plus the definitional unfold."
     },
     {
-      "id": "borsuk-ulam-oq-02-oq-01",
+      "proofId": "borsuk-ulam-oq-02-oq-01",
       "relationship": "ancestor",
       "description": "Defines buDim and the monotonicity axiom buDim_mono : p ∣ n ⇒ buDim(p,d) ≤ buDim(n,d). Used here to derive the dual lower-bound family."
     },
     {
-      "id": "borsuk-ulam",
+      "proofId": "borsuk-ulam",
       "relationship": "ancestor",
       "description": "The original Borsuk-Ulam theorem on Sⁿ → Sᵐ; the equivariant generalization to ℤ/nℤ-actions is what defines buDim(n, d) in the first place."
+    },
+    {
+      "proofId": "chinese-remainder-non-coprime",
+      "relationship": "uses-shared-tool",
+      "description": "The Chinese Remainder Theorem at the level of rings: $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod_{p \\in \\text{primeFactors}(n)} \\mathbb{Z}/p^{v_p(n)}\\mathbb{Z}$ (and for squarefree $n$, $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod_p \\mathbb{Z}/p\\mathbb{Z}$). The CRT compatibility of $\\text{buDim}$ proved here is the equivariant-topology shadow of this algebraic factorization: representations of $\\mathbb{Z}/n\\mathbb{Z}$ split through the CRT product, and BU complexity is the prime-supremum because no individual prime factor can dominate the others in the join structure."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Borsuk, K. (1933). \"Drei Sätze über die n-dimensionale euklidische Sphäre.\" Fundamenta Mathematicae 20, 177–190.",
+      "relevance": "Original statement of the Borsuk-Ulam theorem on $S^n \\to S^m$. The equivariant generalization to $\\mathbb{Z}/n\\mathbb{Z}$-actions, whose dimension function $\\text{buDim}(n, d)$ this entry studies, descends from this 1933 paper through Bartsch's and Volovikov's later equivariant refinements."
+    },
+    {
+      "type": "textbook",
+      "citation": "Matoušek, J. (2003). Using the Borsuk-Ulam Theorem: Lectures on Topological Methods in Combinatorics and Geometry. Springer Universitext.",
+      "relevance": "Standard reference for equivariant Borsuk-Ulam in combinatorial applications. §6 develops $\\mathbb{Z}/p$- and $\\mathbb{Z}/n$-equivariant methods for chromatic numbers, partition theorems, and necklace splitting; the BU dimension function is the cohomological complexity tracked through these arguments."
+    },
+    {
+      "type": "textbook",
+      "citation": "Volovikov, A.Yu. (1996). \"On the index of $G$-spaces.\" Sbornik: Mathematics 191(9), 1259–1277.",
+      "relevance": "Proves the prime-power equivariant Borsuk-Ulam index for $G = (\\mathbb{Z}/p)^k$. The CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod_p \\mathbb{Z}/p^{v_p(n)}\\mathbb{Z}$ reduces $\\text{buDim}$ for cyclic groups to the prime-power case via the supremum-over-prime-factors structure proved here."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Data.Nat.Factorization.Basic — Nat.primeFactors, Nat.primeFactors_mul, Nat.mem_primeFactors.\" (accessed 2026).",
+      "relevance": "Core API used by the technical heart of this file (`primeFactors_prod_primes`): `Nat.primeFactors_mul` for the inductive step and `Nat.mem_primeFactors` for the singleton characterization (used to rebuild `primeFactors_prime` since that lemma name was unavailable in Mathlib 4.26.0 at the time of authoring)."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Data.Finset.Basic — Finset.induction_on, Finset.dvd_prod_of_mem, Finset.eq_singleton_iff_unique_mem.\" (accessed 2026).",
+      "relevance": "Finset machinery underpinning the $k$-prime induction: `Finset.induction_on` for `primeFactors_prod_primes`, `Finset.dvd_prod_of_mem` for the lower-bound family (`buDim_le_prod_primes`), and `Finset.eq_singleton_iff_unique_mem` for the singleton-rebuild that compensates for the missing `Nat.primeFactors_prime`."
     }
   ],
   "conclusion": {
