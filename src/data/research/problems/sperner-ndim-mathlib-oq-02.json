@@ -16,17 +16,26 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "REFINE",
     "since": "2026-05-06T11:50:53.576Z",
     "iteration": 19,
-    "focus": "S19 part 2: vertex/face bridge + 6 erase computations preparing for S19.3 _hBoundaryOnFace assembly",
+    "focus": "S19 part 3 (this session, build pending): wired up the concrete _hBoundaryOnFace_simData2 discharge, consuming all S16-S19 building blocks. Adds containers_two_distinct helper + boundaryOnFace_simData2 main lemma in a new SpernerFreudSimp.SpernerFreudSimp.N2HBoundaryOnFace namespace section (~220 lines). The lemma signature exactly matches the _hBoundaryOnFace argument of Triangulation.boundary_doors_odd for (simData2 N).toTriangulation.",
     "blockers": [],
-    "nextAction": "S19 part 3: assemble _hBoundaryOnFace_simData2 by case-splitting on vertexEnum ∈ {3 vertices} per cell type, using t{1,2}_erase_* + S18.5 + S18 part 2",
+    "nextAction": "S20: discharge _hLastFace via bijection with face2_path_odd (S12), ~120 lines. Then S21: apply Triangulation.sperner + diameter bound + real coords, ~50 lines. _hBoundaryOnFace done (this session); _hSperner done (S14); _hLowerDim done (S15). Only _hLastFace + sperner glue remain to close sperner_panchromatic_two.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
       "approachesTried": 0
-    }
+    },
+    "builtItems": [
+      "containers_two_distinct: helper showing two distinct top-simplices both containing a face yield container card ≥ 2 (uniform contradiction tool for t1 interior + t1 diagonal interior cases)",
+      "boundaryOnFace_simData2: the concrete _hBoundaryOnFace discharge for (simData2 N).toTriangulation. 6 sub-cases (3 t1 + 3 t2) by dropped-vertex case-split. t1 cases force boundary condition by interior contradiction, then S18.5 supplies onFaceΔ2 endpoint witnesses; t2 cases all contradict via S18 part 2 t2-share card-≥-2 lemmas."
+    ],
+    "insights": [
+      "The case-split-on-dropped-vertex pattern (`vertexEnum (t1 b) hS k ∈ t1 b → 3-disjunction`) avoids the awkwardness of computing vertexEnum at specific Fin 3 indices. We never need to know which k corresponds to which dropped vertex — only that the dropped vertex is one of the three explicit cell vertices.",
+      "Uniform 'two-distinct-containers gives card ≥ 2' helper streamlines all four interior contradictions (t1 vertical/horizontal/diagonal + the 'edge belongs to t1 b ∧ to t2 b' fact for t1 diagonal). Replaces 4 nearly-identical inline argument blocks with a single private lemma.",
+      "(simData2 N).containersOf f = (topSimps2 N).filter (fun s => f ⊆ s) is rfl (definitional unfolding of containersOf + the topSimplices field of simData2). This rfl-bridge turns the abstract containersOf reasoning into the same shape that S18's *_card_ge_two and *_only_container_of_t1_boundary lemmas produce."
+    ]
   },
   "knowledge": {
     "progressSummary": "STATE (2026-05-08, session 19 part 2, build pending): n=0,1 fully proved; n=2 has all _hBoundaryOnFace infrastructure in place. S19.1 (PR #17162) supplied the generic adjFn=none↔card≤1 translation; S19.2 (this session) supplies the generic ∀-quantifier face bridge (forall_vertex_ne_iff_forall_face_mem) + 6 concrete face-erase computations (t{1,2}_erase_first/second/third). S19.3 next: assemble _hBoundaryOnFace_simData2 by case-splitting on vertexEnum∈{3 vertices} per cell type (~80 lines, pure case work). Then _hLastFace (~120 lines) + apply Triangulation.sperner (~50 lines). Main file SpernerNDimMathlibOQ02.lean unchanged at 1 axiom.",
@@ -140,7 +149,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-08T13:00:00Z",
+  "lastUpdate": "2026-05-08",
   "significance": 7,
   "tractability": 5
 }

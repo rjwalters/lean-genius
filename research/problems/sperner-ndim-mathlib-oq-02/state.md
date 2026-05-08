@@ -2,18 +2,81 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 19 part 2, researcher-6)
+**Last Updated**: 2026-05-08 (Iteration 19 part 3, researcher-8)
 **Iteration**: 19
 
 ## Current Focus
 
-Session 19 part 2 (this session, build pending): Added the
+Session 19 part 3 (this session, build pending): Added the
+**concrete `_hBoundaryOnFace_simData2` discharge** plus a
+"two-distinct-containers ⇒ card ≥ 2" helper. This is the actual
+consumer of S16–S19's combinatorial infrastructure: given any
+boundary door of `(simData2 N).toTriangulation`, it produces the
+geometric `faceIdx : Fin 3` and a witness that all non-`k`
+vertices satisfy `onFaceΔ2_strict N · faceIdx`.
+
+Two new private lemmas in
+`SpernerFreudSimp.SpernerFreudSimp.N2HBoundaryOnFace`
+(~220 lines total in `SpernerFreudenthalSimplex.lean`):
+
+* `containers_two_distinct`: two distinct top-simplices
+  containing the same codim-1 face yield a container card ≥ 2.
+  Helper for the t1-interior contradictions and the t1-diagonal
+  case (clean replacement for inlining the {S₁, S₂} insert
+  pattern in each branch).
+* `boundaryOnFace_simData2`: the main lemma. Signature exactly
+  matches the `_hBoundaryOnFace` hypothesis of
+  `Triangulation.boundary_doors_odd` for
+  `(simData2 N).toTriangulation`. Proof strategy:
+
+  1. Apply `SimplicialAdjFnHelper.adjFn_eq_none_iff_card_le_one`
+     to convert `adj = none` to `containers card ≤ 1`.
+  2. Establish the in-range hypothesis on every face vertex
+     (`topSimps2_vertex_in_range` + `faceOf_subset`).
+  3. Apply `forall_vertex_ne_iff_forall_face_mem` (S19.2 bridge)
+     to reshape the existential goal in face-content form.
+  4. Case-split `S = t1 b ∨ S = t2 c` via `topSimps2_mem_iff`.
+  5. For `t1 b`: case-split on `vertexEnum (t1 b) hS k ∈ t1 b`,
+     identifying the dropped vertex (3 cases). Each case rewrites
+     `(simData2 N).faceOf` to the matching edge via the S19.2
+     `t1_erase_*` lemmas, then forces the geometric boundary
+     condition (b.1 = 0, b.2 = 0, or N ≤ b.1+b.2+1) by
+     contradiction with S17 (`diagonal_neighbor_topSimps2`) or
+     S18.2 (`horizontal_neighbor_topSimps2` /
+     `vertical_neighbor_topSimps2`). Boundary case discharges via
+     S18.5 `*_endpoints_on_face*`.
+  6. For `t2 c`: 3 cases on dropped vertex; each face has ≥ 2
+     containers via S18 `t2_face{0,1,2}_card_ge_two`,
+     contradicting card ≤ 1. (t2 contributes no boundary doors.)
+
+This closes the `_hBoundaryOnFace` slot of
+`Triangulation.boundary_doors_odd` for `simData2 N`. The
+remaining slots are:
+
+* `_hSperner` — already proved (`cN2_total_isSpernerColoring`,
+  S14).
+* `_hLowerDim` — already discharged generically by
+  `SpernerLowerDimHelper.sperner_lowerDim_card_even` (S15).
+* `_hLastFace` — TODO (S20, ~120 lines, bijection with
+  `face2_path_odd` via S12).
+
+After `_hLastFace`, applying `Triangulation.sperner` yields the
+panchromatic-cell existential, plus diameter-bound + real-coord
+extraction completes `sperner_panchromatic_two` (~50 lines).
+Total estimated remaining for `sperner_panchromatic_two`:
+~170 lines across 2 sessions (S20 = `_hLastFace`, S21 = sperner
+glue + real coords).
+
+## Previous Focus
+
+Session 19 part 2 (PR #17352, merged): Added the
 **vertex-vs-face universal-quantifier bridge** in
 `SimplicialAdjFnHelper`, plus six concrete **face-erase
 computations** for `t1 b` and `t2 c` of `simData2 N`. Together
 with S19 part 1's `adjFn_eq_none_iff_card_le_one`, these complete
 the infrastructure needed for a clean case-split assembly of
-`_hBoundaryOnFace` for `simData2 N` (deferred to S19 part 3).
+`_hBoundaryOnFace` for `simData2 N` (consumed by this session's
+S19.3).
 
 New generic lemma in `SimplicialAdjFnHelper` (this session):
 
