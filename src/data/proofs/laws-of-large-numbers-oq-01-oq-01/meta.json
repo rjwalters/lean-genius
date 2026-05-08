@@ -60,7 +60,7 @@
     "historicalContext": "The Strong Law of Large Numbers has a layered history. Émile Borel (1909) first proved a strong law for Bernoulli trials in his work on normal numbers — historically, the first 'almost sure' result in probability, predating the formal axiomatization of measure-theoretic probability. Francesco Cantelli (1917) generalized Borel's argument to bounded i.i.d. random variables. Andrei Kolmogorov, in his foundational 1930 paper and 1933 monograph 'Grundbegriffe der Wahrscheinlichkeitsrechnung', established the general SLLN: for i.i.d. integrable random variables on any probability space, the sample mean converges almost surely to E[X]. The independence assumption was relaxed in stages: Erdős & Rényi (1959) showed the Borel-Cantelli second lemma holds under mere pairwise independence (a major surprise — pairwise independence is much weaker than full mutual independence in most other contexts), and Nasrollah Etemadi (1981) used this to give an 'elementary proof of the strong law' under pairwise independence alone. The converse direction — that SLLN convergence forces finite first moment — is classical (going back to Kolmogorov and explicitly in Loève and Feller) but is often stated without proof in graduate textbooks because the contradiction argument requires careful machinery: layer cake, Cesàro, and BC2 in tandem. This entry formalizes the necessity direction in Lean 4 using the Etemadi/Erdős-Rényi pairwise BC2 approach, completing Kolmogorov's biconditional characterization SLLN ⟺ E[|X|] < ∞ machine-checked for the first time.",
     "problemStatement": "**The Open Question**: Can the converse direction (slln_necessity) of Kolmogorov's SLLN characterization — that SLLN convergence forces finite first moment — be formally proved in Lean 4 using only Mathlib infrastructure?\n\n**Answer**: Yes. The proof proceeds by contradiction: assume E[|X₀|] = ∞. By the layer cake formula, Σ P(|Xₙ| > n) = ∞. By the second Borel-Cantelli lemma (pairwise independence suffices), P(|Xₙ| > n i.o.) = 1. But SLLN implies Xₙ/n → 0 a.s. via Cesàro, so |Xₙ| ≤ n for all large n a.s. — contradiction. The full proof is carried out by Aristotle in LawsOfLargeNumbersOQ01Aristotle.lean.",
     "text": "The necessity direction of Kolmogorov's SLLN states: if i.i.d. random variables X₁, X₂, ... satisfy (1/n)·Σᵢ₌₁ⁿ Xᵢ → c a.s. for some c ∈ ℝ, then E[|X₀|] < ∞.\n\nProof by contradiction:\n1. **Cesàro**: sample mean → c a.s. implies Xₙ/n → 0 a.s.\n2. **Layer cake**: E[|X₀|] = ∞ implies Σₙ P(|X₀| > n) = ∞\n3. **i.i.d.**: Σₙ P(|Xₙ| > n) = ∞ (same distribution)\n4. **BC2**: pairwise independence + divergent sum → P(|Xₙ| > n i.o.) = 1\n5. **Contradiction**: Xₙ/n → 0 a.s. means |Xₙ| ≤ n eventually a.s.",
-    "proofStrategy": "Contradiction: assume ¬Integrable (X 0) μ. The layer cake formula (Σ P(‖X₀‖ > n) = ∞) combined with identical distribution gives Σ P(‖Xₙ‖ > n) = ∞. The second Borel-Cantelli lemma under pairwise independence (via `borel_cantelli_of_pairwise_independent`) then gives μ(limsup {|Xₙ| > n}) = 1. Meanwhile, the SLLN hypothesis implies Xₙ/n → 0 a.s. via Cesàro (`tendsto_zero_div_of_tendsto_sum_div`), giving |Xₙ| ≤ n for all large n almost surely. These two conclusions contradict each other.",
+    "proofStrategy": "Contradiction: assume ¬Integrable (X 0) μ. The layer cake formula (Σ P(‖X₀‖ > n) = ∞) combined with identical distribution gives Σ P(‖Xₙ‖ > n) = ∞. The second Borel-Cantelli lemma under pairwise independence (via `borel_cantelli_of_pairwise_independent`) then gives μ(limsup {|Xₙ| > n}) = 1. Meanwhile, the SLLN hypothesis implies Xₙ/n → 0 a.s. via Cesàro (`tendsto_zero_div_of_tendsto_sum_div`), giving |Xₙ| ≤ n for all large n almost surely. These two conclusions contradict each other.\n\n**Mathlib infrastructure leveraged**: `MeasureTheory.Integrable` (Bochner integrability), `MeasureTheory.HasFiniteIntegral`, `ProbabilityTheory.IndepFun` and `ProbabilityTheory.IdentDistrib`, `Filter.Tendsto` over `atTop`, `Filter.limsup` for the i.o. event, `Pairwise` and `MeasureTheory.ae` (`∀ᵐ`). The reverse direction (sufficiency, currently `ProbabilityTheory.strong_law_ae`) closes the biconditional. The variance bound for indicator sums under pairwise independence requires the `Kernel.indepFun_iff_measure_inter_preimage_eq_mul` ↔ `Kernel.indepSet_iff_measure_inter_eq_mul` bridge to translate IndepFun on the random variables into IndepSet on the level events, after which `Variance.add` for orthogonal indicators applies term-by-term.",
     "keyInsights": [
       "The proof uses pairwise independence (not full mutual independence): IndepFun gives pairwise independence of the events {|Xₙ| > n}, which suffices for BC2 via the variance-Chebyshev approach.",
       "The layer cake formula is central: E[|X|] = Σₙ P(|X| > n) (for nonneg X). Its divergence characterizes non-integrability: E[|X|] = ∞ ↔ Σ P(|X| > n) = ∞.",
@@ -68,7 +68,8 @@
       "IndepFun → IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul and Kernel.indepSet_iff_measure_inter_eq_mul to connect random variable independence to event independence.",
       "Pairwise independence suffices for BC2 — historically, this was Erdős & Rényi's 1959 result, which Etemadi (1981) leveraged to give an 'elementary' SLLN proof under pairwise independence. Most introductory probability textbooks instead assume full mutual independence (which makes BC2 a one-line Borel zero-one consequence), masking the deeper truth that the variance-Chebyshev approach needs only pairwise.",
       "The biconditional is now complete: combining this entry (necessity) with Mathlib's ProbabilityTheory.strong_law_ae (sufficiency), we have SLLN ⟺ E[|X₀|] < ∞ — a sharp characterization that was fully formalized in Lean 4 for the first time by this work.",
-      "The proof exhibits a dual-engine structure: the *probabilistic* engine (BC2 + i.i.d. transfer) drives the lower estimate Σ P(|Xₙ|>n)=∞ → infinitely many exceedances, while the *analytic* engine (Cesàro + a.s. convergence) drives the upper estimate Xₙ/n→0 → eventually no exceedances. The contradiction is precisely that the divergence regime of the tail series cannot coexist with the regularity regime of Cesàro decay."
+      "The proof exhibits a dual-engine structure: the *probabilistic* engine (BC2 + i.i.d. transfer) drives the lower estimate Σ P(|Xₙ|>n)=∞ → infinitely many exceedances, while the *analytic* engine (Cesàro + a.s. convergence) drives the upper estimate Xₙ/n→0 → eventually no exceedances. The contradiction is precisely that the divergence regime of the tail series cannot coexist with the regularity regime of Cesàro decay.",
+      "The result is a tail-event statement under disguise: integrability of X₀ is determined entirely by the asymptotic behaviour of the sequence (Xₙ), so the SLLN convergence acts as a tail-measurable certificate of finite mean. Through Kolmogorov's 0-1 law, the same proof template would lift verbatim to any tail event characterised by a Cesàro-style decay rate, suggesting that Kolmogorov's SLLN biconditional is one of an infinite family of analogous biconditionals indexed by tail decay rates."
     ]
   },
   "leanFile": {
@@ -166,7 +167,9 @@
       "Can the BC2 pairwise-independence lemma be contributed to Mathlib directly? (See `laws-of-large-numbers-oq-01-oq-03` for a standalone-friendly extraction.)",
       "Does the necessity direction extend to L^p convergence (p > 1)? Specifically, does (1/n)·Σ Xᵢ → c in L^p force E[|X|^p] < ∞?",
       "Can the layer cake formula be strengthened to give sharp estimates on convergence rates (Marcinkiewicz–Zygmund) — see sibling oq-01-oq-02 for the heavy-tailed regime?",
-      "Is there a quantitative refinement of slln_necessity giving an explicit lower bound on E[|X|] in terms of the SLLN convergence speed?"
+      "Is there a quantitative refinement of slln_necessity giving an explicit lower bound on E[|X|] in terms of the SLLN convergence speed?",
+      "Does an analogous necessity theorem hold for martingale strong laws? Specifically: if (Sₙ/aₙ) → 0 a.s. for some normalizing sequence aₙ ↑ ∞, does this force a corresponding tail-decay condition on the increments? The pairwise-independence pathway breaks down for martingales (increments are conditionally orthogonal but not pairwise independent), so a different pathway through the variance estimates of the conditional Borel-Cantelli lemma would be needed.",
+      "Can the contradiction proof be replaced by a direct construction? For each ω in the SLLN convergence set, the proof's a.s. argument is non-constructive; a constructive version would explicit-witness an N(ω) such that |Xₙ(ω)| ≤ n for all n ≥ N(ω), which would in turn give explicit moment bounds on truncated tail sums."
     ]
   },
   "references": [
@@ -211,6 +214,20 @@
       "title": "An Introduction to Probability Theory and Its Applications",
       "venue": "Vol. II, 2nd ed., Wiley; Chapter VIII",
       "note": "Standard graduate textbook treatment of the SLLN biconditional and the layer-cake reformulation."
+    },
+    {
+      "author": "Mathlib contributors",
+      "year": 2024,
+      "title": "ProbabilityTheory.strong_law_ae",
+      "venue": "Mathlib.Probability.StrongLaw",
+      "note": "Mathlib's formalization of the sufficiency direction (E[|X|]<∞ ⇒ SLLN holds). Combined with `slln_necessity` here, gives the full Kolmogorov biconditional."
+    },
+    {
+      "author": "Loève, M.",
+      "year": 1977,
+      "title": "Probability Theory I",
+      "venue": "Springer Graduate Texts in Mathematics 45, 4th ed., §17.3",
+      "note": "Reference treatment of the Kolmogorov SLLN biconditional, including the necessity argument via Borel-Cantelli."
     }
   ],
   "mainTheorems": [
