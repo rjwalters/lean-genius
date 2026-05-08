@@ -2,10 +2,52 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 20, researcher-3)
-**Iteration**: 20
+**Last Updated**: 2026-05-08 (Iteration 21, researcher-12)
+**Iteration**: 21
 
 ## Current Focus
+
+Session 21A (this iteration, researcher-12, 2026-05-08, build
+pending): Added the **t1-side forward extraction lemma** for
+`_hLastFace`, eliminating the two non-diagonal drop cases by
+inconsistent face-2 sums and identifying the diagonal-drop case
+with `b ∈ satDiagBases N`.
+
+New private lemma in a new `N2LastFaceExtract` section appended
+to `SpernerFreudSimp` (84 lines added to
+`SpernerFreudenthalSimplex.lean`):
+
+* `t1_lastFace_implies_satDiag` — for `b ∈ t1Bases N` and
+  `k : Fin 3`, if every non-`k` vertex of `t1 b` lies on
+  geometric face 2, then `b ∈ satDiagBases N` and the dropped
+  vertex is `b` itself. Proof case-splits on
+  `vertexEnum (t1 b) hS k ∈ t1 b` (the S19.3 pattern):
+    - Drop `(b.1+1, b.2)` ⟹ face = `{b, (b.1, b.2+1)}`.
+      Both on face 2 ⟹ `b.1+b.2 = N ∧ b.1+(b.2+1) = N`.
+      Contradiction (`omega`).
+    - Drop `(b.1, b.2+1)` ⟹ face = `{b, (b.1+1, b.2)}`.
+      Symmetric contradiction.
+    - Drop `b` ⟹ face = `{(b.1, b.2+1), (b.1+1, b.2)}`
+      (diagonal). Endpoint on face 2 ⟹ `b.1+b.2+1 = N`,
+      exactly the `satDiagBases_mem_iff` defining condition.
+
+Together with S20's `satDiagBases_card N = N`, this gives a
+forward map `(t1 b, k₀) ↦ b` from t1-cell members of the
+`_hLastFace` filter into `satDiagBases N`. **S21B** will handle
+the t2 side (every t2 face has ≥ 2 containers per
+`t2_face*_card_ge_two`, so `adj = none ∧ S = t2 c` is impossible
+— already proved as the `exfalso` branch of
+`boundaryOnFace_simData2`) and add the `IsDoor` ↔
+`g k ≠ g (k+1)` color-change bridge needed to match the
+`face2_path_odd` filter exactly.
+
+S21A keeps the iterative-PR cadence small (one self-contained
+lemma) to reduce merge-conflict risk and keep any build
+regressions narrow, given the persistent `proofs/.lake`
+recursive-symlink build infrastructure issue (every Docker
+build is a 30–45 min Mathlib refetch + 10 min cache fetch).
+
+## Previous Focus
 
 Session 20 (PR #17426, build pending): Introduced the
 **saturating-diagonal base set** `satDiagBases N` and its core
@@ -50,11 +92,17 @@ attempting the full `_hLastFace` discharge in one commit. Keeping
 the iterative-PR cadence small reduces merge-conflict risk and
 keeps any build regressions narrow.
 
-**S21 (next):** Pin down the matching `vertexEnum` index `k` (via
-the S19.3 case-split pattern on `vertexEnum (t1 b) hS k ∈ t1 b`);
-bridge `IsDoor c (T.toCellComplex) (t1 b) k` to `face2_path_odd`'s
+**S21 (next, partially done — S21A this session):** Pin down the
+matching `vertexEnum` index `k` (via the S19.3 case-split pattern
+on `vertexEnum (t1 b) hS k ∈ t1 b`); bridge
+`IsDoor c (T.toCellComplex) (t1 b) k` to `face2_path_odd`'s
 color-change predicate `g k ≠ g (k+1)`; assemble the `_hLastFace`
 discharge for `simData2 N`. Estimated ~80–100 lines.
+
+S21A (this session) handles the first sub-task: the t1-side
+forward extraction `t1_lastFace_implies_satDiag` (~84 lines).
+S21B will add the IsDoor ↔ color-change bridge and assemble the
+full `_hLastFace_simData2` discharge.
 
 ## Previous Focus
 
@@ -398,9 +446,20 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
 - `SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem`
   (S19 part 2, this session, build pending): generic vertex/face
   bridge converting the `∀ j ≠ k` quantifier to `∀ v ∈ faceOf`.
-- `N2FaceErase` t1/t2 erase computations (S19 part 2, this
-  session, build pending): 6 explicit Finset.erase equalities for
+- `N2FaceErase` t1/t2 erase computations (S19 part 2,
+  PR #17352, merged): 6 explicit Finset.erase equalities for
   the three vertex removals of `t1 b` and `t2 c`.
+- `N2LastFaceBases` saturating-diagonal base set (S20,
+  PR #17426, build pending): `satDiagBases N` definition + 8
+  structural lemmas (membership iff, image-of-range
+  parametrization, cardinality = N, endpoints in range,
+  endpoints on face 2, t1 ∈ topSimps2 alias).
+- `N2LastFaceExtract` t1-side `_hLastFace` forward extraction
+  (S21A, this session, build pending): `t1_lastFace_implies_satDiag`
+  identifies `b ∈ satDiagBases N` and the dropped vertex = `b`
+  for any `(t1 b, k)` with face-2 condition; eliminates the
+  vertical-edge and horizontal-edge drop cases by inconsistent
+  face-2 sums.
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
@@ -420,10 +479,19 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
    boundary cells) or invoking S18.5 endpoint witnesses (for
    boundary t1 cells). ~80 lines of pure case work.
 3. `_hLowerDim` — done generically by S15 helper
-4. `_hLastFace` — TODO (~120 lines, bijection with face2_path_odd via S12)
+4. `_hLastFace` — IN PROGRESS:
+    * S20 (PR #17426): `satDiagBases N` foundation + count = N.
+    * S21A (this session): t1-side forward extraction
+      (`t1_lastFace_implies_satDiag`) identifies dropped vertex
+      and `b ∈ satDiagBases N`.
+    * S21B (next): `IsDoor` ↔ `g k ≠ g (k+1)` color-change
+      bridge + assembly of full `_hLastFace_simData2`
+      (~60-80 lines). The t2-extinction is already implicit in
+      `boundaryOnFace_simData2`'s `exfalso` t2 branch (every t2
+      face has ≥ 2 containers per `t2_face*_card_ge_two`).
 
 Then apply `Triangulation.sperner` (~50 lines for diameter bound + real
-coordinates). Total estimated remaining: ~200 lines across 2 sessions.
+coordinates). Total estimated remaining: ~150 lines across 2 sessions.
 
 ## Gallery Status
 
