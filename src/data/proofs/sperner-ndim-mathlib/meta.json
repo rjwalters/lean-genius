@@ -44,7 +44,7 @@
     "definitionCount": 3
   },
   "overview": {
-    "historicalContext": "Sperner's lemma (1928) states that any Sperner coloring of a triangulated simplex contains a fully-colored face. The door-counting proof was formalized by Knuth and others; the abstract formulation for arbitrary cell complexes generalizes both the combinatorial (triangulation) and topological (barycentric subdivision) settings. This abstract version is the natural candidate for a Mathlib contribution, since it subsumes all concrete instances.",
+    "historicalContext": "Sperner's lemma was proved by Emanuel Sperner in his 1928 paper *Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes* (Abh. Math. Sem. Univ. Hamburg 6, 265–272), where it served as the combinatorial substrate for an elementary proof of the *invariance of dimension* and *invariance of domain* — results previously known only via the homological / Brouwer-degree machinery of Brouwer (1911) and Lebesgue (1911). Sperner's contribution was to recast a topological invariance question as a finite combinatorial counting argument: given any *Sperner coloring* of the vertices of a triangulated simplex (vertex $i$ on the original face opposite $i$ never receives color $i$), the number of fully-coloured small simplices is *odd*, hence at least one exists.\n\nThe modern *door-counting* proof — assigning each $(d-1)$-facet of each $d$-simplex a 'door' label and observing that interior doors pair up while exterior doors do not — was popularised by Donald Knuth in *The Art of Computer Programming* Vol. 1, §1.2.6 Ex. 47, and is now standard in combinatorial textbooks (Aigner-Ziegler, *Proofs from THE BOOK*, Ch. 27). The door-counting proof is essentially constructive (it gives an explicit pivoting algorithm for finding a fully-coloured cell, used in algorithmic fair-division and in the Lemke-Howson algorithm for bimatrix Nash equilibria).\n\nThe *abstract cell complex* formulation in this file is the natural Mathlib-shaped abstraction: rather than committing to a specific triangulation scheme (Freudenthal, barycentric subdivision, Kuhn), the proof axiomatises adjacency directly via three axioms — `adj_symm` (adjacency is symmetric), `adj_vertices` (adjacent cells share a $(d-1)$-face), and `adj_ne` (distinct cells stay distinct). Concrete triangulations and CW-style polyhedral complexes both instantiate this structure. The argument works over `ZMod 2`-counts, and the combinatorial heart is the lemma `even_card_fpf_invol` (a fixed-point-free involution on a finite set has even cardinality), which is independently useful and a standalone Mathlib-worthy contribution. The full Sperner-via-CellComplex argument lives in 521 lines without sorries or axioms, and is part of an active push (Spring 2026) to upstream Sperner's lemma to Mathlib (mathlib4#25231 *Sperner's Lemma*, ongoing).",
     "problemStatement": "Let K be an abstract cell complex with d+1 vertex colors. A cell is fully colored (FC) if all d+1 colors appear among its vertices. A facet (s,k) is a door if the d remaining vertices (excluding position k) carry all colors in {0,...,d-1}. Boundary facets have no adjacent simplex (K.adj s k = none).\n\nProve: if the number of boundary doors is odd, then K contains a fully-colored cell.",
     "text": "Proves Sperner's lemma via the abstract door-counting parity argument, working for any abstract cell complex satisfying the adjacency axioms.",
     "proofStrategy": "1. Per-simplex door parity: the number of doors in simplex s is odd iff s is fully colored (abstract_door_parity, proved combinatorially). 2. Interior doors pair up: the adjacency map pairs each interior door with its neighbor, giving even total (interior_doors_even, proved via fixed-point-free involution). 3. Sperner parity: summing door counts over all simplices and reducing mod 2 gives FC count ≡ boundary doors (mod 2). 4. Main theorem: odd boundary doors → odd FC count → ∃ FC cell.",
@@ -135,19 +135,129 @@
   },
   "crossReferences": [
     {
-      "id": "sperner-ndim",
-      "title": "n-Dimensional Sperner's Lemma via Abstract Triangulation",
-      "relationship": "Sibling formalization with similar abstract triangulation axioms. Companion result using slightly different axiom set."
+      "proofId": "sperner-ndim",
+      "relationship": "sibling",
+      "description": "n-Dimensional Sperner's Lemma via Abstract Triangulation. Sibling formalization with a similar abstract-triangulation axiom set; companion result using a slightly different framing of adjacency."
     },
     {
-      "id": "sperner-mathlib",
-      "title": "Sperner's Lemma via Door Counting",
-      "relationship": "Related formalization of the same door-counting argument. This entry targets the abstract cell complex version for Mathlib contribution."
+      "proofId": "sperner-mathlib",
+      "relationship": "related",
+      "description": "Sperner's Lemma via Door Counting (concrete triangulation). Related formalisation of the same door-counting argument; this entry targets the abstract `CellComplex` version aimed at the Mathlib upstream PR (mathlib4#25231)."
     },
     {
-      "id": "sperner-simplicial-bridge",
-      "title": "Sperner Simplicial Bridge",
-      "relationship": "Bridges the abstract cell complex version to the concrete simplicial case."
+      "proofId": "sperner-simplicial-bridge",
+      "relationship": "bridges",
+      "description": "Sperner Simplicial Bridge. Bridges the abstract `CellComplex` formalisation to the concrete simplicial / triangulation case, instantiating the three adjacency axioms for a standard triangulated $n$-simplex."
+    },
+    {
+      "proofId": "brouwer-fixed-point",
+      "relationship": "supports",
+      "description": "Sperner's lemma is the combinatorial substrate of one of the most elementary proofs of Brouwer's fixed-point theorem (Sperner → KKM → Brouwer). The abstract `CellComplex` framework here is engineered to make that downstream chain instantiable in Lean 4."
+    },
+    {
+      "proofId": "borsuk-ulam",
+      "relationship": "context",
+      "description": "Borsuk-Ulam is the antipodal sibling of Brouwer; it can also be derived from a Sperner-style combinatorial counting argument (Tucker's lemma is its $\\mathbb{Z}/2$-equivariant analogue). The `CellComplex` axiomatisation in this file is general enough to accommodate Tucker-style colourings as a future extension."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "CellComplex",
+      "type": "structure",
+      "statement": "$\\mathrm{CellComplex}\\ V\\ d := \\{\\text{Simplex} : \\mathrm{Type},\\ \\text{vertex} : \\mathrm{Simplex} \\to \\mathrm{Fin}(d{+}1) \\to V,\\ \\text{adj} : \\mathrm{Simplex} \\to \\mathrm{Fin}(d{+}1) \\to \\mathrm{Option}\\,(\\mathrm{Simplex} \\times \\mathrm{Fin}(d{+}1)),\\ \\text{adj\\_symm},\\ \\text{adj\\_vertices},\\ \\text{adj\\_ne}\\}$",
+      "significance": "**The abstraction at the heart of the file.** Three axioms package what Sperner's argument needs from a triangulation: symmetry of adjacency (interior facets pair), shared $(d-1)$-faces between adjacent cells, and distinctness of adjacent cells. Generalises both simplicial triangulations (Freudenthal, Kuhn, barycentric) and polyhedral / CW complexes that satisfy the three axioms, making this the natural Mathlib-level statement.",
+      "description": "Abstract cell-complex structure with adjacency map and three axioms. Adjacency is partial: `adj s k = none` for boundary facets, `adj s k = some (s', k')` for interior facets where `s'` is the unique neighbour across position `k`."
+    },
+    {
+      "name": "IsFC",
+      "type": "definition",
+      "statement": "$\\mathrm{IsFC}\\ c\\ K\\ s := \\mathrm{Surjective}\\ (k \\mapsto c\\,(K.\\text{vertex}\\ s\\ k))$",
+      "significance": "Defines a *fully coloured* simplex: one whose $d{+}1$ vertices, under the colouring $c : V \\to \\mathrm{Fin}(d{+}1)$, hit every colour. The headline conclusion of Sperner is the existence of such a simplex.",
+      "description": "Predicate: simplex `s` is fully coloured iff the restricted colouring is surjective onto `Fin (d+1)`."
+    },
+    {
+      "name": "isDoorAt",
+      "type": "definition",
+      "statement": "$\\mathrm{isDoorAt}\\ c\\ K\\ s\\ k := \\{c\\,(K.\\text{vertex}\\ s\\ j) : j \\ne k\\} = \\{0,\\ldots,d-1\\}$",
+      "significance": "Defines a *door*: a $(d{-}1)$-facet (the face opposite vertex $k$) whose remaining $d$ vertex colours hit each of the colours $\\{0,\\ldots,d-1\\}$ exactly once. Doors are the parity-tracking objects that drive the entire counting argument.",
+      "description": "Facet `(s, k)` is a door iff dropping vertex `k` leaves a $(d{-}1)$-face whose colouring covers $\\{0, \\ldots, d-1\\}$."
+    },
+    {
+      "name": "even_card_fpf_invol",
+      "type": "theorem",
+      "statement": "$\\forall \\alpha\\ \\text{finite},\\ \\forall S \\subseteq \\alpha\\ \\text{finite},\\ \\forall f : \\alpha \\to \\alpha,\\ (\\forall x \\in S, f(x) \\in S \\land f(f(x)) = x \\land f(x) \\ne x) \\Rightarrow 2 \\mid |S|$",
+      "significance": "**Independent Mathlib contribution.** A fixed-point-free involution on a finite set has even cardinality. Strong-induction proof removing the pair $\\{x, f(x)\\}$ at each step. Used in the door-pairing argument and is reusable throughout combinatorics.",
+      "description": "Fixed-point-free involution parity. Proved by strong induction on `|S|`: pick any `x ∈ S`, remove `{x, f(x)}` (size drops by 2), apply IH."
+    },
+    {
+      "name": "abstract_door_parity",
+      "type": "theorem",
+      "statement": "$\\forall d,\\ \\forall f : \\mathrm{Fin}(d{+}1) \\to \\mathrm{Fin}(d{+}1),\\ |\\{k : \\{f(j) : j \\ne k\\} = \\{0,\\ldots,d-1\\}\\}| \\equiv 1\\ (\\mathrm{mod}\\ 2) \\iff \\mathrm{Surjective}\\ f$",
+      "significance": "**The combinatorial heart of the per-simplex parity.** A surjective coloring contributes exactly one door (at the unique position mapped to colour $d$); a non-surjective one contributes zero or two doors. Door-count parity therefore detects fully-coloured simplices.",
+      "description": "Per-simplex door-parity criterion. Case analysis on surjectivity of `f`; relies on `door_parity_all_small` for the small-`d` base cases."
+    },
+    {
+      "name": "interior_doors_even",
+      "type": "theorem",
+      "statement": "$\\forall c, K,\\ |\\{(s, k) : \\mathrm{isDoorAt}\\ c\\ K\\ s\\ k \\land K.\\mathrm{adj}\\ s\\ k \\ne \\mathrm{none}\\}| \\equiv 0\\ (\\mathrm{mod}\\ 2)$",
+      "significance": "Interior doors pair up via the `adjMap` involution. `adj_symm` makes the involution well-defined; `adj_vertices` ensures door-at-`k` transfers to door-at-`k'`; `adj_ne` rules out fixed points. Then `even_card_fpf_invol` gives the even count.",
+      "description": "Interior-door pairing. `adjMap (s, k) := (K.adj s k).get` is a fixed-point-free involution on the set of interior doors; `even_card_fpf_invol` finishes."
+    },
+    {
+      "name": "sperner_parity",
+      "type": "theorem",
+      "statement": "$\\forall c, K,\\ |\\{s : \\mathrm{IsFC}\\ c\\ K\\ s\\}| \\equiv |\\{(s, k) : \\mathrm{isDoorAt}\\ c\\ K\\ s\\ k \\land K.\\mathrm{adj}\\ s\\ k = \\mathrm{none}\\}|\\ (\\mathrm{mod}\\ 2)$",
+      "significance": "**The headline parity identity.** FC-cell count is congruent mod 2 to the boundary-door count. Combines `abstract_door_parity` (per-simplex side) with `interior_doors_even` (interior cancellation). Most of the linear-algebraic / parity-arithmetic machinery in the file (`per_simplex_door_parity`, `card_doors_eq_sum`, `doors_partition`, `sum_mod_congr`) feeds into this theorem.",
+      "description": "FC count ≡ boundary doors (mod 2). Proof: sum per-simplex door counts; each FC-simplex contributes 1 (mod 2) by `abstract_door_parity`; interior doors cancel by `interior_doors_even`; what remains is the boundary-door count."
+    },
+    {
+      "name": "sperner",
+      "type": "theorem",
+      "statement": "$\\forall c, K,\\ \\text{(boundary-door count is odd)} \\Rightarrow \\exists s,\\ \\mathrm{IsFC}\\ c\\ K\\ s$",
+      "significance": "**Sperner's lemma at full generality.** Existence of a fully-coloured cell from odd boundary doors. Immediate from `sperner_parity`: if the boundary-door count is odd, the FC count is odd, so it is positive, so the FC set is non-empty.",
+      "description": "Main theorem of the file. From `sperner_parity` and `Nat.odd_pos`-style reasoning. The downstream chain Sperner → KKM → Brouwer can now be built on top of this CellComplex-level statement."
+    }
+  ],
+  "references": [
+    {
+      "type": "paper",
+      "citation": "Sperner, E. (1928). \"Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes.\" Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6, 265–272.",
+      "relevance": "Original publication. Sperner introduced the colouring lemma to give an elementary combinatorial proof of invariance of dimension / invariance of domain, replacing Brouwer's homological argument."
+    },
+    {
+      "type": "textbook",
+      "citation": "Knuth, D. E. (1973). The Art of Computer Programming, Vol. 1: Fundamental Algorithms (3rd ed., 1997 reprint), §1.2.6 Exercise 47. Addison-Wesley.",
+      "relevance": "Popularised the door-counting proof in the algorithmic / computer-science literature. The exercise is the textbook reference for the algorithmic / pivoting view of Sperner."
+    },
+    {
+      "type": "textbook",
+      "citation": "Aigner, M. and Ziegler, G. M. (2018). Proofs from THE BOOK (6th ed.), Chapter 27 \"Cubes, Crowns, and the Counting Lemma.\" Springer.",
+      "relevance": "Modern textbook treatment of Sperner's lemma via door-counting; the cleanest expository source for the combinatorial argument formalised here."
+    },
+    {
+      "type": "paper",
+      "citation": "Cohen, D. I. A. (1967). \"On the Sperner lemma.\" J. Combinatorial Theory 2 (4), 585–587.",
+      "relevance": "First published statement of the door-counting proof in the combinatorics literature; precedes Knuth's exposition."
+    },
+    {
+      "type": "textbook",
+      "citation": "Henle, M. (1979). A Combinatorial Introduction to Topology. Freeman.",
+      "relevance": "Pedagogical exposition of Sperner → Brouwer → invariance of domain via combinatorial methods. Standard reference for the abstract / CellComplex-style framing."
+    },
+    {
+      "type": "paper",
+      "citation": "Su, F. E. (1999). \"Rental Harmony: Sperner's Lemma in Fair Division.\" American Mathematical Monthly 106 (10), 930–942.",
+      "relevance": "Showcases the algorithmic content of Sperner: the door-counting proof is essentially a pivoting algorithm, which Su uses to give a constructive fair-rental-division procedure. Justifies the constructive emphasis in this Lean formalisation."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Data.Finset.Card — `Finset.card_image_of_injective`, `Finset.sum_partition`.\" (accessed 2026).",
+      "relevance": "Finset cardinality / partition lemmas underlying `card_doors_eq_sum`, `doors_partition`, and the `sum_mod_congr` helper."
+    },
+    {
+      "type": "issue",
+      "citation": "Mathlib upstream: Pull Request #25231 *Sperner's Lemma* (rjwalters et al., 2026).",
+      "relevance": "Active upstreaming effort to land Sperner's lemma in Mathlib. The CellComplex-level statement here is the form being proposed for the Mathlib API surface."
     }
   ],
   "sorries": 0
