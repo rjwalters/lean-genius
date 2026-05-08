@@ -120,3 +120,95 @@ would need the Cellina–Browder graph form for the projection too.
   reformulating contradiction via `dist_triangle` + `infDist_le_dist_of_mem`.
 - `simp_rw [dist_comm]`: would loop because `dist_comm a b = dist b a` rewrites
   in both directions. Replaced with `simpa [dist_comm] using h`.
+
+---
+
+## S10 (researcher-12, 2026-05-08)
+
+### LOOKUP-3 resolved against pinned mathlib4 rev — definitively absent
+
+Direct GitHub-API inspection of mathlib4 at the pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the rev recorded in
+`proofs/lake-manifest.json` for `inputRev: "v4.26.0"`) settles S9's
+flagged scenario question:
+
+- `docs/100.yaml` Brouwer entry's only `result:` link is the external
+  Lean 3 repo `Shamrock-Frost/BrouwerFixedPoint`.
+- `docs/1000.yaml` Brouwer entry is annotated `comment: "in Lean 3"`
+  (the Mathlib-curator convention for unported theorems).
+- A repo-wide GitHub code search for `Brouwer language:lean` in
+  `leanprover-community/mathlib4` returns three files only:
+  `Mathlib/Order/Heyting/Basic.lean`,
+  `Mathlib/Order/CompleteBooleanAlgebra.lean`,
+  `Mathlib/Order/PrimeSeparator.lean`. All three reference the
+  *order-theoretic / lattice* Brouwer (Brouwer–Heyting–Kolmogorov), not
+  the topological FPT.
+- `Mathlib/Topology/MetricSpace/` has no `Brouwer.lean` file at the
+  pinned rev (47 files, all listed in the S10 note).
+- The same searches against the current default branch return identical
+  results, ruling out a recent landing.
+
+**Conclusion:** Mathlib4 lacks Brouwer FPT entirely — neither the
+general compact-convex form nor the unit-ball form. The S8 docstring
+claim that it is "proved in Mathlib for the unit ball via degree
+theory" was incorrect. This places LOOKUP-3 in S9's *scenario 2*
+(Mathlib-level block).
+
+### Decision: Option A (strict-weakening) recommended for S11
+
+Three options were evaluated in `s10-mathlib-v426-lookup3-resolved.md`:
+
+| Option | Axiom count Δ | Axiom strength Δ | Lean lines | Sessions |
+|---|---|---|---|---|
+| A — strict-weakening (`brouwer_unit_ball` + retraction reduction) | 0 | reduced (general → unit ball) | ~60 | 1–2 |
+| B — in-house Brouwer FPT proof (Sperner-based or degree-theoretic) | -1 | reduced to 0 | 500–1500 | 5–15 |
+| C — status quo | 0 | unchanged | 0 | 0 |
+
+Option A is the recommended next iteration because:
+1. It produces verifiable Lean progress in a single session.
+2. The retraction reduction needed for Option A is the same shape as
+   S8's Lean stub, so the work is largely already designed.
+3. The LOOKUP-2 work (continuous nearest-point projection helper, S9
+   §"Updated estimate") is required by either Option A or Option B and
+   so is not duplicated.
+4. Option B remains a future upgrade path that does not contradict
+   Option A — the new `axiom brouwer_unit_ball` is a clean target for a
+   later in-house proof.
+
+### Why this iteration matters
+
+S9 left LOOKUP-3 as the single open question gating the brouwer_fpt
+elimination, with the explicit ask "the next session should resolve
+scenario 1 vs 2 first, before touching any Lean." S10 does exactly
+that. The implementation iteration (S11.A + S11.B) can now proceed with
+no remaining design uncertainty on the Brouwer side; the only
+unresolved sub-task is the LOOKUP-2 helper's continuity proof, which
+S9 already scoped (~50 lines, variational-inequality method).
+
+### Methodology note (reusable)
+
+When `proofs/.lake` is broken and the on-disk Mathlib copy is at the
+wrong toolchain version, lookup of names against a pinned mathlib rev
+is still tractable via the GitHub API:
+
+```bash
+REV=$(jq -r '.packages[] | select(.name=="mathlib") | .rev' \
+  proofs/lake-manifest.json)
+
+# List a specific folder at the pinned rev
+gh api "repos/leanprover-community/mathlib4/contents/Mathlib/Some/Folder?ref=$REV" \
+  --jq '.[].name'
+
+# Read a specific file at the pinned rev
+gh api "repos/leanprover-community/mathlib4/contents/path/to/file.lean?ref=$REV" \
+  | jq -r '.content' | base64 -d | head -50
+
+# Repo-wide code search (NOTE: not pinnable to a rev; use only for absence
+# tests across master/default-branch and the pinned rev jointly)
+gh api -X GET "search/code?q=<query>+language:lean+repo:leanprover-community/mathlib4" \
+  --jq '.items[].path'
+```
+
+Absence findings via the pinned-`?ref=$REV` content API are
+authoritative for the build's actual mathlib version, unlike grep
+against a divergent on-disk copy.

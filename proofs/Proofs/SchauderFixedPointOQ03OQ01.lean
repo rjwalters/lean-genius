@@ -78,8 +78,16 @@ def IsUpperHemicontinuous {X Y : Type*} [TopologicalSpace X]
     Every continuous function from a nonempty compact convex subset
     of Euclidean space to itself has a fixed point.
 
-    This is proved in Mathlib for the unit ball via degree theory.
-    We state it here for general compact convex subsets. -/
+    **Mathlib status (v4.26.0, S10 verified 2026-05-08):** Brouwer FPT is
+    NOT in Mathlib4 — neither for general compact convex sets nor for the
+    unit ball. The `docs/100.yaml` entry for "Brouwer Fixed Point Theorem"
+    points to an external Lean 3 implementation (Brendan Murphy's
+    `Shamrock-Frost/BrouwerFixedPoint` repo); `docs/1000.yaml` flags it as
+    "in Lean 3". A GitHub code search at the pinned rev returned no Lean
+    file using "Brouwer" outside the Heyting-algebra/lattice-theoretic
+    sense (`Mathlib/Order/Heyting/...`). This axiom therefore stands as
+    an unconditional open dependency on Mathlib upstream.
+    See `research/problems/.../s10-mathlib-v426-lookup3-resolved.md`. -/
 axiom brouwer_fpt {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
