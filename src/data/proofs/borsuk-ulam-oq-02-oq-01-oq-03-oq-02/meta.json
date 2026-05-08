@@ -73,7 +73,7 @@
       "symBUDim_two_four_unconditional: concrete axiom-free instance symBUDim 2 4 = 3"
     ],
     "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **The n=2 instance of this axiom is redundant** — `symBUDim_eq_largestPrime_two_unconditional` proves it axiom-free from the parent's `symBUDim_two` axiom + `largestPrimeBelow_two`. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime` (counted in the parent gallery entries).",
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 1
   },
   "overview": {
