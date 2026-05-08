@@ -18,27 +18,31 @@
   "currentState": {
     "phase": "REFINE",
     "since": "2026-05-06T11:50:53.576Z",
-    "iteration": 19,
-    "focus": "S19 part 3 (this session, build pending): wired up the concrete _hBoundaryOnFace_simData2 discharge, consuming all S16-S19 building blocks. Adds containers_two_distinct helper + boundaryOnFace_simData2 main lemma in a new SpernerFreudSimp.SpernerFreudSimp.N2HBoundaryOnFace namespace section (~220 lines). The lemma signature exactly matches the _hBoundaryOnFace argument of Triangulation.boundary_doors_odd for (simData2 N).toTriangulation.",
+    "iteration": 21,
+    "focus": "S21B (this PR, build pending): added the generic d=2 IsDoor characterization isDoor_dim_two_iff to SimplicialAdjFnHelper. Converts the abstract `∀ j : Fin 2, ∃ i ≠ k, c (vertex s i) = Fin.castSucc j` quantifier into the explicit conjunction `(∃ i ≠ k, c v_i = 0) ∧ (∃ i ≠ k, c v_i = 1)`. This is the abstract half of the IsDoor ↔ color-change bridge from PR #17464's S21B roadmap. ~50 lines including docstring.",
     "blockers": [],
-    "nextAction": "S20: discharge _hLastFace via bijection with face2_path_odd (S12), ~120 lines. Then S21: apply Triangulation.sperner + diameter bound + real coords, ~50 lines. _hBoundaryOnFace done (this session); _hSperner done (S14); _hLowerDim done (S15). Only _hLastFace + sperner glue remain to close sperner_panchromatic_two.",
+    "nextAction": "S21C: Sperner + face-2 specialisation of S21B. Combine isDoor_dim_two_iff with cN2_total_isSpernerColoring + satDiagBases_endpoints_on_face2 to force the 2 non-k vertex colors into {0, 1}, then conclude IsDoor ↔ colors differ (matching face2_path_odd's `g k ≠ g (k+1)`). ~30 lines. Then S21D assembles _hLastFace_simData2 (~60 lines) consuming S21A (PR #17464) + S21C + face2_path_odd. Then S22 applies Triangulation.sperner + diameter + real coords (~50 lines).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
       "approachesTried": 0
     },
     "builtItems": [
-      "containers_two_distinct: helper showing two distinct top-simplices both containing a face yield container card ≥ 2 (uniform contradiction tool for t1 interior + t1 diagonal interior cases)",
-      "boundaryOnFace_simData2: the concrete _hBoundaryOnFace discharge for (simData2 N).toTriangulation. 6 sub-cases (3 t1 + 3 t2) by dropped-vertex case-split. t1 cases force boundary condition by interior contradiction, then S18.5 supplies onFaceΔ2 endpoint witnesses; t2 cases all contradict via S18 part 2 t2-share card-≥-2 lemmas."
+      "S21B (this PR): SimplicialAdjFnHelper.isDoor_dim_two_iff — generic CellComplex.IsDoor characterization for d=2: IsDoor c K s k ↔ (∃ i ≠ k, c (K.vertex s i) = 0) ∧ (∃ i ≠ k, c (K.vertex s i) = 1). Proof by unfold + Fin.castSucc 0 / Fin.castSucc 1 reduction (Fin.ext rfl) + fin_cases on j : Fin 2 in the reverse direction. ~50 lines including docstring.",
+      "S21A (PR #17464): t1_lastFace_implies_satDiag — t1-side forward extraction for _hLastFace. Given b ∈ t1Bases N + ∀ j ≠ k, onFaceΔ2_strict (vertexEnum (t1 b) hS j) 2, concludes b ∈ satDiagBases N ∧ vertexEnum (t1 b) hS k = b (drop must be b itself). 84 lines.",
+      "S20 (PR #17426): satDiagBases N + supporting structural lemmas (mem_iff, subset_t1Bases, image_map_injOn, eq_image_range, card = N, endpoints_in_range, endpoints_on_face2, t1_in_topSimps2). The count side of the future _hLastFace ↔ face2_path_odd bijection."
     ],
     "insights": [
+      "S21B insight: For d=2, CellComplex.IsDoor c K s k unfolds to a quantifier over j : Fin 2, which fin_cases splits cleanly into the j=0 and j=1 cases. Fin.castSucc (0 : Fin 2) = (0 : Fin 3) and Fin.castSucc (1 : Fin 2) = (1 : Fin 3) both reduce by Fin.ext rfl, giving a clean iff into a concrete conjunction without any Fin-arithmetic gymnastics.",
+      "Placement choice for S21B: SimplicialAdjFnHelper namespace (not SpernerFreudSimp), making the lemma generic and reusable for any future d=2 CellComplex Sperner instance. Sits naturally next to S19's adjFn_eq_none_iff_card_le_one and forall_vertex_ne_iff_forall_face_mem helpers.",
+      "S21B is independent of S21A: the bridge characterizes IsDoor in terms of color predicates without referring to satDiagBases or the t1/t2 cell structure. This decoupling lets S21B land even if S21A needs revision, and makes the eventual S21C/D assembly modular.",
       "The case-split-on-dropped-vertex pattern (`vertexEnum (t1 b) hS k ∈ t1 b → 3-disjunction`) avoids the awkwardness of computing vertexEnum at specific Fin 3 indices. We never need to know which k corresponds to which dropped vertex — only that the dropped vertex is one of the three explicit cell vertices.",
       "Uniform 'two-distinct-containers gives card ≥ 2' helper streamlines all four interior contradictions (t1 vertical/horizontal/diagonal + the 'edge belongs to t1 b ∧ to t2 b' fact for t1 diagonal). Replaces 4 nearly-identical inline argument blocks with a single private lemma.",
       "(simData2 N).containersOf f = (topSimps2 N).filter (fun s => f ⊆ s) is rfl (definitional unfolding of containersOf + the topSimplices field of simData2). This rfl-bridge turns the abstract containersOf reasoning into the same shape that S18's *_card_ge_two and *_only_container_of_t1_boundary lemmas produce."
     ]
   },
   "knowledge": {
-    "progressSummary": "S20 (PR #17426, build pending): Introduced saturating-diagonal base set satDiagBases N (t1Bases filtered by b.1+b.2+1=N). Proved core structural results — explicit Finset.range N parametrization, cardinality = N, in-range and onFaceΔ2_strict witnesses for diagonal endpoints. Foundation for S21 _hLastFace discharge via face2_path_odd color-change bijection.",
+    "progressSummary": "S21B (this PR, build pending): added generic d=2 IsDoor characterization isDoor_dim_two_iff to SimplicialAdjFnHelper — abstract half of the IsDoor ↔ color-change bridge slated in S21A's PR #17464 roadmap. ~50 lines, build pending. Builds on: S20 (PR #17426, satDiagBases foundation, build pending), S21A (PR #17464, t1-side forward extraction, build pending). Next: S21C Sperner+face-2 specialisation, then S21D _hLastFace assembly, then S22 Triangulation.sperner glue.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -83,7 +87,9 @@
       "forall_vertex_ne_iff_forall_face_mem: generic ∀ j≠k vs ∀ v∈faceOf bridge in SimplicialAdjFnHelper (S19 part 2)",
       "t1_erase_first/second/third: explicit (t1 b).erase v computations giving the 3 edges (vertical/horizontal/diagonal) (S19 part 2)",
       "t2_erase_first/second/third: explicit (t2 c).erase v computations giving the 3 edges (face2/face1/face0) (S19 part 2)",
-      "S20 (PR #17426): satDiagBases N + satDiagBases_mem_iff + satDiagBases_subset_t1Bases + satDiagBases_image_map_injOn + satDiagBases_eq_image_range + satDiagBases_card + satDiagBases_endpoints_in_range + satDiagBases_endpoints_on_face2 + satDiagBases_t1_in_topSimps2 in SpernerFreudenthalSimplex.lean (N2LastFaceBases section)"
+      "S20 (PR #17426): satDiagBases N + satDiagBases_mem_iff + satDiagBases_subset_t1Bases + satDiagBases_image_map_injOn + satDiagBases_eq_image_range + satDiagBases_card + satDiagBases_endpoints_in_range + satDiagBases_endpoints_on_face2 + satDiagBases_t1_in_topSimps2 in SpernerFreudenthalSimplex.lean (N2LastFaceBases section)",
+      "S21A (PR #17464): SpernerFreudSimp.t1_lastFace_implies_satDiag in SpernerFreudenthalSimplex.lean (N2LastFaceExtract section). Given b ∈ t1Bases N + drop-index k with all non-k vertices on face 2, concludes b ∈ satDiagBases N ∧ vertexEnum (t1 b) hS k = b.",
+      "S21B (this PR): SimplicialAdjFnHelper.isDoor_dim_two_iff in SpernerFreudenthalSimplex.lean. Generic CellComplex.IsDoor characterization for d=2: IsDoor c K s k ↔ (∃ i ≠ k, c (K.vertex s i) = 0) ∧ (∃ i ≠ k, c (K.vertex s i) = 1)."
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -132,7 +138,11 @@
       "After sperner_panchromatic_two is complete (axiom-free n=2): generalize the Type-1/Type-2 grid construction to n≥3 via Freudenthal triangulation. Each top simplex is determined by a base + permutation of {1, ..., n}; pseudomanifold proof scales linearly with n.",
       "The main file SpernerNDimMathlibOQ02.lean remains at 1 axiom (sperner_panchromatic for general n). Once n=2 is proved, the axiom can be replaced for n=2 or kept generically.",
       "Build status: S17 not run through Docker (45min cold cache via broken proofs/.lake symlink). Pattern matches S14/S15/S16 build-pending merges. Lemmas are mechanical case-bash + omega.",
-      "S21: Pin down the matching vertexEnum index k for saturating-diagonal t1 cells (3-way case-split via vertexEnum (t1 b) hs k ∈ t1 b, S19.3 pattern); bridge IsDoor to face2_path_odd's color-change predicate; assemble _hLastFace discharge for simData2 N (~80-100 lines)."
+      "S21A (PR #17464, build pending): t1_lastFace_implies_satDiag — drop-vertex identification + b ∈ satDiagBases N. Done.",
+      "S21B (this PR, build pending): isDoor_dim_two_iff — generic d=2 IsDoor characterization in SimplicialAdjFnHelper. Done.",
+      "S21C (next): Sperner + face-2 specialisation. Combine S21B with cN2_total_isSpernerColoring + satDiagBases_endpoints_on_face2 to force colors of non-k vertices into {0, 1}, concluding IsDoor ↔ colors differ. ~30 lines.",
+      "S21D (after): full _hLastFace_simData2 assembly composing S21A + S21C + face2_path_odd to discharge the last remaining slot of Triangulation.boundary_doors_odd for simData2 N. ~60 lines.",
+      "S22: apply Triangulation.sperner + diameter bound + real-coord extraction to close sperner_panchromatic_two (~50 lines)."
     ]
   },
   "tags": [
@@ -152,7 +162,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-08",
+  "lastUpdate": "2026-05-09",
   "significance": 7,
   "tractability": 5
 }

@@ -1859,6 +1859,56 @@ lemma forall_vertex_ne_iff_forall_face_mem
     exact Finset.mem_image.mpr ⟨j,
       Finset.mem_erase.mpr ⟨hj_ne, Finset.mem_univ j⟩, rfl⟩
 
+/-- Generic `d = 2` characterization of `CellComplex.IsDoor`:
+for a 2-dim cell complex with coloring `c : V → Fin 3`, the door
+condition at face `k` says exactly that colors `0` and `1` both
+appear among the non-`k` vertices.
+
+`CellComplex.IsDoor` is defined as
+`∀ j : Fin d, ∃ i : Fin (d + 1), i ≠ k ∧ c (K.vertex s i) = Fin.castSucc j`.
+For `d = 2`, the inner quantifier ranges over `j : Fin 2 = {0, 1}`,
+and `Fin.castSucc` lifts each reflexively into `Fin 3`, giving the
+explicit color-existence conjunction below.
+
+This is the abstract-level bridge consumed by `_hLastFace` discharges
+that need to translate the door condition into concrete color
+predicates on the codim-1 face vertices. For an `n = 2` Sperner
+instance whose two non-`k` vertices both lie on geometric face `2`
+(forcing both colors into `{0, 1}` by the Sperner condition), this
+iff specialises further to "the two non-`k` vertices have different
+colors", matching the `g k ≠ g (k + 1)` predicate of
+`face2_path_odd`. -/
+lemma isDoor_dim_two_iff
+    {V : Type*} [DecidableEq V] (K : CellComplex V 2)
+    (c : V → Fin 3) (s : K.Cell) (k : Fin 3) :
+    CellComplex.IsDoor c K s k ↔
+      (∃ i : Fin 3, i ≠ k ∧ c (K.vertex s i) = (0 : Fin 3)) ∧
+      (∃ i : Fin 3, i ≠ k ∧ c (K.vertex s i) = (1 : Fin 3)) := by
+  unfold CellComplex.IsDoor
+  -- `Fin.castSucc (0 : Fin 2) = (0 : Fin 3)` and
+  -- `Fin.castSucc (1 : Fin 2) = (1 : Fin 3)`, both by `Fin.ext rfl`.
+  have h0_cast : ((0 : Fin 2).castSucc : Fin 3) = 0 := Fin.ext rfl
+  have h1_cast : ((1 : Fin 2).castSucc : Fin 3) = 1 := Fin.ext rfl
+  refine ⟨fun h => ⟨?_, ?_⟩, fun ⟨h0, h1⟩ j => ?_⟩
+  · -- Forward direction, `j = 0`.
+    obtain ⟨i, hi_ne, hi_color⟩ := h 0
+    rw [h0_cast] at hi_color
+    exact ⟨i, hi_ne, hi_color⟩
+  · -- Forward direction, `j = 1`.
+    obtain ⟨i, hi_ne, hi_color⟩ := h 1
+    rw [h1_cast] at hi_color
+    exact ⟨i, hi_ne, hi_color⟩
+  · -- Reverse direction: case-split on `j : Fin 2`.
+    fin_cases j
+    · -- `j = 0`
+      obtain ⟨i, hi_ne, hi_color⟩ := h0
+      rw [← h0_cast] at hi_color
+      exact ⟨i, hi_ne, hi_color⟩
+    · -- `j = 1`
+      obtain ⟨i, hi_ne, hi_color⟩ := h1
+      rw [← h1_cast] at hi_color
+      exact ⟨i, hi_ne, hi_color⟩
+
 end SimplicialAdjFnHelper
 
 -- ============================================================

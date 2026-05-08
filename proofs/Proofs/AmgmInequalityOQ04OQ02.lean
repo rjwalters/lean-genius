@@ -999,4 +999,226 @@ lemma integral_cos_sq_div_sqrt_denom (hk_pos : 0 < k) (hk_lt : k < 1) :
   field_simp
   ring
 
+-- ============================================================================
+-- § 13. Auxiliary Function `auxFnK` for the K-side IBP Step
+-- ============================================================================
+
+/-
+The full K-side integral identity
+  `∫₀^{π/2} dIntegrandK k θ dθ = (E(k) - (1-k²) K(k)) / (k (1-k²))`
+is established by integration by parts on the auxiliary function
+  `auxFnK k θ := sin θ · cos θ / √(1 − k² sin²θ)`.
+
+This section provides the **endpoint vanishing** layer of the IBP step:
+
+* `auxFnK` — the definition.
+* `auxFnK_zero` — `auxFnK k 0 = 0`  (because `sin 0 = 0`).
+* `auxFnK_pi_div_two` — `auxFnK k (π/2) = 0`  (because `cos (π/2) = 0`).
+
+The chain-rule computation `(d/dθ) auxFnK k θ` and the FTC closure
+  `∫₀^{π/2} (auxFnK k)' dθ = auxFnK k (π/2) − auxFnK k 0 = 0`
+are deferred to a follow-up session (S9 parts 2–4 in `state.md`).
+
+The endpoint vanishings established here are precisely the reason the
+IBP boundary terms drop out, leaving the clean identity
+  `∫₀^{π/2} (auxFnK k)' dθ = 0`,
+which combines with §12's `integral_cos_sq_div_sqrt_denom` to yield the
+target K-side integral identity.
+-/
+
+/-- **Auxiliary function for the K-side IBP step.**
+
+    `auxFnK k θ := sin θ · cos θ / √(1 − k² sin²θ)`.
+
+    Its derivative in θ decomposes (via the standard chain rule on a
+    quotient) into terms involving `cos²θ / √D` and
+    `sin²θ / [(1 − k² sin²θ) · √D]` — both of which appear in the K-side
+    integral algebra of §12. Pinning down that decomposition and applying
+    the fundamental theorem of calculus on `[0, π/2]` is the next
+    sub-step (S9 parts 2–4); the endpoint vanishings below close the
+    boundary side of FTC. -/
+noncomputable def auxFnK (k θ : ℝ) : ℝ :=
+  Real.sin θ * Real.cos θ / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+
+/-- **Left endpoint vanishing.** `auxFnK k 0 = 0`, because `sin 0 = 0`. -/
+lemma auxFnK_zero (k : ℝ) : auxFnK k 0 = 0 := by
+  unfold auxFnK
+  rw [Real.sin_zero, zero_mul, zero_div]
+
+/-- **Right endpoint vanishing.** `auxFnK k (π/2) = 0`, because
+    `cos (π/2) = 0`. -/
+lemma auxFnK_pi_div_two (k : ℝ) : auxFnK k (π / 2) = 0 := by
+  unfold auxFnK
+  rw [Real.cos_pi_div_two, mul_zero, zero_div]
+
+-- ============================================================================
+-- § 14. Pointwise Chain Rule for `auxFnK` in θ (S9 part 2)
+-- ============================================================================
+
+/-
+With `auxFnK` and the endpoint vanishings in place (§13), the next sub-step
+of the K-side IBP layer is the **pointwise chain rule** for `auxFnK` in θ.
+
+This section computes
+  `(d/dθ) auxFnK k θ
+     = cos²θ / √(1 − k² sin²θ)
+        − (1−k²) · sin²θ / [(1 − k² sin²θ) · √(1 − k² sin²θ)]`,
+valid whenever `k² < 1`. The two terms on the right will be integrated
+separately in the FTC closure (S9 part 3); the first matches the
+integrand of `integral_cos_sq_div_sqrt_denom` (§12), and the second is
+the IBP-driven term that combines with §12 to deliver the K-side
+integral identity (S9 part 4).
+
+The proof is the standard quotient/chain rule:
+* `(sin · cos)' = cos²θ − sin²θ` from
+  `Real.hasDerivAt_sin.mul Real.hasDerivAt_cos`.
+* `(√(1 − k² sin²θ))' = −k² sin θ cos θ / √(1 − k² sin²θ)` via
+  `HasDerivAt.sqrt` on the inner polynomial `1 − k² sin²θ` (whose
+  derivative is `−2k² sin θ cos θ`).
+* `HasDerivAt.div` on the quotient.
+* Algebraic reduction of the raw quotient form to the target. The
+  reduction uses the trig identity `sin²θ + cos²θ = 1` (substituted as
+  `cos²θ = 1 − sin²θ`); see `auxFnK_deriv_form_eq` below.
+-/
+
+/-- **Algebraic equality of the two forms** of the `auxFnK` derivative.
+
+    The chain rule on `auxFnK k θ = sin θ · cos θ / √(1 − k² sin²θ)`
+    naturally produces a derivative with `cos²θ − sin²θ` in the
+    numerator (from the product rule on `sin · cos`) and a
+    `k² sin²θ cos²θ / (D · √D)` correction from the chain rule on the
+    denominator. Algebraically this is equivalent to the cleaner
+    `cos²θ / √D − (1−k²) sin²θ / (D · √D)` form needed downstream
+    (where `D = 1 − k² sin²θ`); the conversion uses the trig identity
+    `sin²θ + cos²θ = 1`. -/
+lemma auxFnK_deriv_form_eq {k θ : ℝ} (hk : k ^ 2 < 1) :
+    (Real.cos θ ^ 2 - Real.sin θ ^ 2)
+        / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+      + k ^ 2 * Real.sin θ ^ 2 * Real.cos θ ^ 2 /
+        ((1 - k ^ 2 * Real.sin θ ^ 2)
+          * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+    = Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+      - (1 - k ^ 2) * Real.sin θ ^ 2 /
+        ((1 - k ^ 2 * Real.sin θ ^ 2)
+          * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)) := by
+  have h_pos : 0 < 1 - k ^ 2 * Real.sin θ ^ 2 :=
+    AmgmInequalityOQ04OQ01.denom_pos hk θ
+  have h_pos_ne : (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := h_pos.ne'
+  have hs_pos : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ
+  have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hs_pos.ne'
+  have hcos_sq : Real.cos θ ^ 2 = 1 - Real.sin θ ^ 2 := by
+    have h := Real.sin_sq_add_cos_sq θ
+    linarith
+  rw [hcos_sq]
+  field_simp [h_pos_ne, hs_ne]
+  ring
+
+/-- **Pointwise chain rule** for `auxFnK` in θ.
+
+    For fixed `k` with `k² < 1`,
+      `(d/dθ) auxFnK k θ
+         = cos²θ / √(1 − k² sin²θ)
+            − (1 − k²) · sin²θ /
+              [(1 − k² sin²θ) · √(1 − k² sin²θ)]`,
+    pointwise in θ.
+
+    The two terms decompose along the lines of the K-side integral
+    algebra of §12: the first integrates to
+    `(E − (1−k²) K) / k²` (cf. `integral_cos_sq_div_sqrt_denom`), and
+    the second is the IBP-driven term that the FTC closure (S9 part 3)
+    combines with §13's endpoint vanishings to deliver the K-side
+    integral identity (S9 part 4). -/
+lemma auxFnK_hasDerivAt {k : ℝ} (hk : k ^ 2 < 1) (θ : ℝ) :
+    HasDerivAt (fun θ' : ℝ => auxFnK k θ')
+      (Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2 /
+          ((1 - k ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))) θ := by
+  -- Positivity (uniform in θ since |k| < 1 and sin²θ ≤ 1).
+  have h_pos : 0 < 1 - k ^ 2 * Real.sin θ ^ 2 :=
+    AmgmInequalityOQ04OQ01.denom_pos hk θ
+  have h_pos_ne : (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := h_pos.ne'
+  have hs_pos : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ
+  have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hs_pos.ne'
+  -- Numerator derivative: u(θ) = sin θ · cos θ; u'(θ) = cos²θ − sin²θ.
+  have h_sin : HasDerivAt Real.sin (Real.cos θ) θ := Real.hasDerivAt_sin θ
+  have h_cos : HasDerivAt Real.cos (-Real.sin θ) θ := Real.hasDerivAt_cos θ
+  have h_num : HasDerivAt (fun θ' : ℝ => Real.sin θ' * Real.cos θ')
+      (Real.cos θ * Real.cos θ + Real.sin θ * (-Real.sin θ)) θ :=
+    h_sin.mul h_cos
+  -- sin² derivative: (sin θ' · sin θ')' = cos θ · sin θ + sin θ · cos θ.
+  have h_sin_mul_sin : HasDerivAt (fun θ' : ℝ => Real.sin θ' * Real.sin θ')
+      (Real.cos θ * Real.sin θ + Real.sin θ * Real.cos θ) θ :=
+    h_sin.mul h_sin
+  -- Convert to `sin θ' ^ 2` form via `pow_two`.
+  have h_pow : HasDerivAt (fun θ' : ℝ => Real.sin θ' ^ 2)
+      (2 * Real.sin θ * Real.cos θ) θ := by
+    have h_eq_fun : (fun θ' : ℝ => Real.sin θ' ^ 2)
+        = fun θ' : ℝ => Real.sin θ' * Real.sin θ' := by
+      funext θ'; ring
+    rw [h_eq_fun]
+    have h_eq_deriv :
+        Real.cos θ * Real.sin θ + Real.sin θ * Real.cos θ
+          = 2 * Real.sin θ * Real.cos θ := by ring
+    rw [← h_eq_deriv]
+    exact h_sin_mul_sin
+  -- Inner polynomial: g(θ) = 1 − k² sin²θ; g'(θ) = −(k² · 2 sin θ cos θ).
+  have h_inner : HasDerivAt (fun θ' : ℝ => 1 - k ^ 2 * Real.sin θ' ^ 2)
+      (-(k ^ 2 * (2 * Real.sin θ * Real.cos θ))) θ := by
+    have h_mul : HasDerivAt (fun θ' : ℝ => k ^ 2 * Real.sin θ' ^ 2)
+        (k ^ 2 * (2 * Real.sin θ * Real.cos θ)) θ :=
+      h_pow.const_mul (k ^ 2)
+    have h_sub : HasDerivAt (fun θ' : ℝ => 1 - k ^ 2 * Real.sin θ' ^ 2)
+        (0 - k ^ 2 * (2 * Real.sin θ * Real.cos θ)) θ :=
+      (hasDerivAt_const θ (1 : ℝ)).sub h_mul
+    simpa using h_sub
+  -- Sqrt of inner: HasDerivAt (θ' ↦ √(1 − k² sin²θ')) (...) θ.
+  have h_sqrt := h_inner.sqrt h_pos_ne
+  -- Quotient: HasDerivAt (θ' ↦ sin θ' · cos θ' / √(1 − k² sin²θ')) (...) θ.
+  have h_div := h_num.div h_sqrt hs_ne
+  -- Convert `(fun θ' => auxFnK k θ')` to its unfolded body.
+  have h_fun_eq :
+      (fun θ' : ℝ => auxFnK k θ')
+        = fun θ' : ℝ =>
+          Real.sin θ' * Real.cos θ' /
+            Real.sqrt (1 - k ^ 2 * Real.sin θ' ^ 2) := by
+    funext θ'; rfl
+  rw [h_fun_eq]
+  -- Reduce h_div's raw quotient derivative through an intermediate
+  -- form, then to the target via `auxFnK_deriv_form_eq`.
+  have h_eq_intermediate :
+      ((Real.cos θ * Real.cos θ + Real.sin θ * (-Real.sin θ))
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - Real.sin θ * Real.cos θ
+            * (-(k ^ 2 * (2 * Real.sin θ * Real.cos θ))
+                / (2 * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))))
+        / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ^ 2
+      = (Real.cos θ ^ 2 - Real.sin θ ^ 2)
+            / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+          + k ^ 2 * Real.sin θ ^ 2 * Real.cos θ ^ 2 /
+            ((1 - k ^ 2 * Real.sin θ ^ 2)
+              * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)) := by
+    have hsq : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ^ 2
+        = 1 - k ^ 2 * Real.sin θ ^ 2 := by
+      rw [sq, Real.mul_self_sqrt h_pos.le]
+    rw [hsq]
+    field_simp [h_pos_ne, hs_ne]
+    ring
+  -- Compose: target → intermediate → raw, in reverse so `exact h_div` closes.
+  rw [show
+      Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2 /
+          ((1 - k ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+        = ((Real.cos θ * Real.cos θ + Real.sin θ * (-Real.sin θ))
+              * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+            - Real.sin θ * Real.cos θ
+                * (-(k ^ 2 * (2 * Real.sin θ * Real.cos θ))
+                    / (2 * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))))
+          / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ^ 2 from by
+      rw [h_eq_intermediate, ← auxFnK_deriv_form_eq hk]]
+  exact h_div
+
 end AmgmInequalityOQ04OQ02

@@ -1239,6 +1239,186 @@ example : outerGuardSurveySize 130 64 = 0 := by
 example : outerGuardFiringCount 64 64 = 0 :=
   outerGuardFiringCount_eq_zero_of_empty 64 64 (le_refl _)
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XIX: TRIANGULAR CARDINALITY (Session 27)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Closed-form survey-size formula (structural)
+
+    S25 (PART XVI) documented `outerGuardSurveySize lo hi` as the
+    triangular sum `(hi - lo) · (hi - lo + 1) / 2`, and S25 PART
+    XVII established the formula on three concrete ranges via
+    `native_decide`. This section closes the gap with a fully
+    structural proof.
+
+    Strategy:
+      * Recurrence (`outerGuardSurveySize_succ`): extending the
+        survey range from `hi` to `hi + 1` (when `lo ≤ hi`) adds
+        exactly the row `{(hi, b) | b ∈ Ico lo (hi + 1)}`, so the
+        size grows by `hi + 1 - lo`. Proved by `ext` + Finset
+        case-analysis with `omega`.
+      * Closed form (`outerGuardSurveySize_triangular`): induction
+        on the range width via `Nat.le_induction`, with the
+        algebraic identity
+        `m · (m + 1) / 2 + (m + 1) = (m + 1) · (m + 2) / 2`
+        discharged by exhibiting an explicit `2 ∣ m · (m + 1)`
+        witness and reducing via `omega`.
+
+    Net contribution: the three S25 `native_decide` size witnesses
+    (`528`, `2080`, `2211`) are now corollaries of one structural
+    theorem, and the same closed form applies to every `(lo, hi)`
+    with `lo ≤ hi` without any `native_decide` enumeration. -/
+
+/-- **One-step recurrence for `outerGuardSurveySize`.** Extending
+    the survey range from `hi` to `hi + 1` (with `lo ≤ hi`) adds
+    exactly the new row `{(hi, b) | b ∈ Ico lo (hi + 1)}`, of
+    cardinality `hi + 1 - lo`.
+
+    Decomposition: the new survey set is the disjoint union of
+    the old survey set (pairs with `a < hi`) and the new row
+    (pairs with `a = hi` and `b ∈ [lo, hi + 1)`). The disjointness
+    follows from `a < hi` (old) vs `a = hi` (new); the row's
+    cardinality follows from `Finset.card_image_of_injective`
+    applied to the injection `b ↦ (hi, b)`. -/
+theorem outerGuardSurveySize_succ (lo hi : ℕ) (h : lo ≤ hi) :
+    outerGuardSurveySize lo (hi + 1) =
+      outerGuardSurveySize lo hi + (hi + 1 - lo) := by
+  unfold outerGuardSurveySize outerGuardSurveyPairs
+  set newRow := (Finset.Ico lo (hi + 1)).image (fun b => (hi, b)) with hnewRow
+  have hunion :
+      ((Finset.Ico lo (hi + 1)) ×ˢ (Finset.Ico lo (hi + 1))).filter
+          (fun p => p.2 ≤ p.1) =
+        ((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter
+            (fun p => p.2 ≤ p.1) ∪ newRow := by
+    ext ⟨a, b⟩
+    simp only [hnewRow, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_Ico, Finset.mem_union, Finset.mem_image,
+               Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨⟨ha_lo, ha_hi⟩, hb_lo, hb_hi⟩, hba⟩
+      by_cases hcase : a < hi
+      · left
+        refine ⟨⟨⟨ha_lo, hcase⟩, hb_lo, ?_⟩, hba⟩
+        omega
+      · push_neg at hcase
+        have ha_eq : a = hi := by omega
+        right
+        exact ⟨b, ⟨hb_lo, hb_hi⟩, ha_eq.symm, rfl⟩
+    · rintro (⟨⟨⟨ha_lo, ha_hi⟩, hb_lo, hb_hi⟩, hba⟩ |
+              ⟨b', ⟨hb'_lo, hb'_hi⟩, ha_eq, hb_eq⟩)
+      · refine ⟨⟨⟨ha_lo, by omega⟩, hb_lo, by omega⟩, hba⟩
+      · subst ha_eq; subst hb_eq
+        refine ⟨⟨⟨h, by omega⟩, hb'_lo, hb'_hi⟩, ?_⟩
+        omega
+  have hdisj :
+      Disjoint
+        (((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter
+            (fun p => p.2 ≤ p.1))
+        newRow := by
+    rw [Finset.disjoint_left]
+    rintro ⟨a, b⟩ h1 h2
+    rw [hnewRow] at h2
+    simp only [Finset.mem_filter, Finset.mem_product,
+               Finset.mem_Ico] at h1
+    simp only [Finset.mem_image, Prod.mk.injEq] at h2
+    obtain ⟨⟨⟨_, ha_hi⟩, _, _⟩, _⟩ := h1
+    obtain ⟨_, _, ha_eq, _⟩ := h2
+    omega
+  rw [hunion, Finset.card_union_of_disjoint hdisj]
+  have hnew_card : newRow.card = hi + 1 - lo := by
+    rw [hnewRow,
+        Finset.card_image_of_injective _
+          (fun a₁ a₂ heq => (Prod.mk.inj heq).2)]
+    exact Finset.card_Ico ..
+  rw [hnew_card]
+
+/-- **Closed-form triangular cardinality.** The parameterised
+    survey size `outerGuardSurveySize lo hi` equals the triangular
+    sum `(hi - lo) · (hi - lo + 1) / 2` for all `lo ≤ hi`.
+
+    By induction on the range width via `Nat.le_induction`. The
+    base case `hi = lo` reduces to `0 = 0 · 1 / 2 = 0` via S26's
+    `outerGuardSurveySize_eq_zero_iff`. The successor step uses
+    `outerGuardSurveySize_succ` to add `(k + 1 - lo)` to the
+    inductive value, and discharges the arithmetic identity
+    `m · (m + 1) / 2 + (m + 1) = (m + 1) · (m + 2) / 2` (where
+    `m = k - lo`) via explicit divisibility witnesses for
+    `2 ∣ m · (m + 1)` and `2 ∣ (m + 1) · (m + 2)`, plus `omega`. -/
+theorem outerGuardSurveySize_triangular (lo hi : ℕ) (h : lo ≤ hi) :
+    outerGuardSurveySize lo hi = (hi - lo) * (hi - lo + 1) / 2 := by
+  induction hi, h using Nat.le_induction with
+  | base =>
+    rw [outerGuardSurveySize_eq_zero_iff.mpr le_rfl, Nat.sub_self]
+    decide
+  | succ k hk ih =>
+    rw [outerGuardSurveySize_succ lo k hk, ih]
+    have h1 : k + 1 - lo = (k - lo) + 1 := Nat.succ_sub hk
+    rw [h1]
+    set m := k - lo
+    -- Goal: m * (m + 1) / 2 + (m + 1) = (m + 1) * ((m + 1) + 1) / 2
+    -- Strategy: explicit witnesses for 2 ∣ m·(m+1) and
+    -- 2 ∣ (m+1)·(m+2); then `omega` closes.
+    have hdiv : 2 ∣ m * (m + 1) := by
+      rcases Nat.even_or_odd m with ⟨j, hj⟩ | ⟨j, hj⟩
+      · exact ⟨j * (2 * j + 1), by rw [hj]; ring⟩
+      · exact ⟨(2 * j + 1) * (j + 1), by rw [hj]; ring⟩
+    have hdiv' : 2 ∣ (m + 1) * ((m + 1) + 1) := by
+      rcases Nat.even_or_odd (m + 1) with ⟨j, hj⟩ | ⟨j, hj⟩
+      · exact ⟨j * (2 * j + 1), by rw [hj]; ring⟩
+      · exact ⟨(2 * j + 1) * (j + 1), by rw [hj]; ring⟩
+    obtain ⟨x, hx⟩ := hdiv
+    obtain ⟨y, hy⟩ := hdiv'
+    have hlhs : m * (m + 1) / 2 = x := by
+      rw [hx]; exact Nat.mul_div_cancel_left x (by decide : (0 : ℕ) < 2)
+    have hrhs : (m + 1) * ((m + 1) + 1) / 2 = y := by
+      rw [hy]; exact Nat.mul_div_cancel_left y (by decide : (0 : ℕ) < 2)
+    have h_alg : (m + 1) * ((m + 1) + 1) = m * (m + 1) + 2 * (m + 1) := by
+      ring
+    omega
+
+/-! ### Concrete survey-size witnesses (structural)
+
+    The S25 PART XVII `native_decide` survey-size witnesses are
+    now structural corollaries of the closed-form triangular
+    formula. Identical numerical content; the proofs no longer
+    rely on `native_decide` enumeration over `Finset.Ico`. -/
+
+/-- Survey size on the S17 PR #17024 family (lo = 64, hi = 130):
+    `66 · 67 / 2 = 2211`. Structural derivation; matches S24's
+    `surveyRange_length` and the S25 PART XVII witness. -/
+theorem outerGuardSurveySize_64_130 :
+    outerGuardSurveySize 64 130 = 2211 := by
+  rw [outerGuardSurveySize_triangular 64 130 (by decide)]
+
+/-- Survey size on the entire below-threshold region
+    (lo = 0, hi = 64): `64 · 65 / 2 = 2080`. -/
+theorem outerGuardSurveySize_0_64 :
+    outerGuardSurveySize 0 64 = 2080 := by
+  rw [outerGuardSurveySize_triangular 0 64 (by decide)]
+
+/-- Survey size on the half-threshold region (lo = 0, hi = 32):
+    `32 · 33 / 2 = 528`. -/
+theorem outerGuardSurveySize_0_32 :
+    outerGuardSurveySize 0 32 = 528 := by
+  rw [outerGuardSurveySize_triangular 0 32 (by decide)]
+
+/-! ### Bridge to S24's List-based survey
+
+    The S24 (PART XV) `List`-based `surveyRange` and the S25
+    (PART XVI) `Finset`-based `outerGuardSurveyPairs 64 130` both
+    enumerate the lower-triangular set
+    `{(a, b) : 64 ≤ b ≤ a < 130}` with cardinality 2211. This
+    bridge theorem makes the equality explicit, derived from the
+    structural closed form rather than `native_decide` on the
+    underlying enumeration. -/
+
+/-- **Bridge: S24 List length = S25 Finset cardinality on
+    (64, 130).** Both frameworks enumerate the same
+    lower-triangular range; their cardinalities agree at 2211. -/
+theorem surveyRange_length_eq_outerGuardSurveySize :
+    surveyRange.length = outerGuardSurveySize 64 130 := by
+  rw [surveyRange_length, outerGuardSurveySize_64_130]
+
 end HGcdSafe
 
 /-! ## Summary

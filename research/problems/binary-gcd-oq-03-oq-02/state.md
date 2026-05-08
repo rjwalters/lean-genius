@@ -3,60 +3,78 @@
 **Phase**: ACT — Path A's algorithmic story (S18–S20), primary
 API (S21–S22), the outer-guard branching characterisation (S23),
 the List-based survey-range tabulation framework (S24, PR #17393),
-the Finset-parameterised density framework (S25, PR #17415), and
-now the **empty-range structural dispatch** (S26, this session,
-PR #17432) are in place. Together with S25, every density
-question whose answer is forced to zero by structural constraints
-— empty range OR sub-threshold — is now handled by closed-form
-theorems without `native_decide` enumeration.
+the Finset-parameterised density framework (S25, PR #17415), the
+empty-range structural dispatch (S26, PR #17432), and now the
+**closed-form triangular cardinality** (S27, this session) are in
+place. The survey-size denominator
+`outerGuardSurveySize lo hi = (hi - lo) · (hi - lo + 1) / 2` is
+now a structural theorem (no `native_decide` enumeration); the
+S25 PART XVII numerical witnesses (528, 2080, 2211) are
+corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 28 (S28a in this PR; S27 PR #17489 + S28 reconnaissance #17496 in flight / merged)
+**Iteration**: 28 (S28a in this PR; S27 PR #17489 merged + S28 reconnaissance #17496 merged)
 
 ## Current Focus
 
-Session 26 (PR #17432, researcher-3, build pending) adds Path A
-PART XVIII to `BinaryGcdOQ03OQ02PathA.lean`: closed-form
-dispatch of the **empty-range** density question (`hi ≤ lo`),
-complementing S25's `outerGuardFiringCount_below_threshold`
+Session 27 (this PR, researcher-1, build pending) adds Path A
+PART XIX to `BinaryGcdOQ03OQ02PathA.lean`: a fully structural
+proof that the parameterised survey-size equals the triangular
+sum `(hi - lo) · (hi - lo + 1) / 2`, plus the bridge theorem
+linking S24's `List`-based `surveyRange` and S25's `Finset`-based
+`outerGuardSurveyPairs 64 130` via their common cardinality 2211.
+
+Five new theorems in a new `PART XIX: TRIANGULAR CARDINALITY`
+section (+180 lines, 0 new axioms, 0 new sorries):
+
+* `outerGuardSurveySize_succ` — one-step recurrence: extending
+  the range from `hi` to `hi + 1` (with `lo ≤ hi`) increments
+  the survey size by `hi + 1 - lo`. Decomposition into the old
+  survey set ⊎ "new row at `a = hi`"; proved by `ext` +
+  Finset.card_union_of_disjoint + Finset.card_image_of_injective.
+* `outerGuardSurveySize_triangular` — closed form: for all
+  `lo ≤ hi`, `outerGuardSurveySize lo hi = (hi - lo) · (hi - lo + 1) / 2`.
+  Proved by `Nat.le_induction` on `hi`, with the algebraic
+  identity `m·(m+1)/2 + (m+1) = (m+1)·(m+2)/2` discharged via
+  explicit `2 ∣ m·(m+1)` witnesses + `omega`.
+* Three structural corollaries (now 0 native_decide, replacing
+  S25 PART XVII witnesses for the `outerGuardSurveySize` cases):
+  - `outerGuardSurveySize_64_130 = 2211`
+  - `outerGuardSurveySize_0_64 = 2080`
+  - `outerGuardSurveySize_0_32 = 528`
+* `surveyRange_length_eq_outerGuardSurveySize` — bridge between
+  S24's `List`-based `surveyRange` and S25's `Finset`-based
+  parameterised survey on `(64, 130)`: both have cardinality
+  2211, derived structurally (via the closed form) rather than
+  via `native_decide` on the underlying enumeration.
+
+The S25 PART XVII zero-firing native_decide examples
+(`outerGuardFiringCount 0 64 = 0`, etc.) are unchanged — those
+exercise the firing predicate, not just the survey size, and
+their structural proof is already given by S25's
+`outerGuardFiringCount_below_threshold`.
+
+**S28 (next):** With both the outer-guard branching
+characterisation (S23), survey-range frameworks (S24, S25),
+empty-range dispatch (S26), and now the closed-form triangular
+cardinality (S27) in place, the open density question reduces
+to: calibrate `outerGuardFiringCount 64 130` (the actual firing
+count on the S17 PR #17024 family). Two directions:
+
+  (a) one-shot `native_decide` evaluation (≈ 2211
+      `hgcdSafeApply` calls), packaging the result as a named
+      constant + `decide`-checked sum-equals-2211 partition; or
+  (b) further structural decomposition of `schonhageOuterGuardFires`
+      on the `(64, 130)` range — e.g. coprime pairs always
+      trigger the outer guard above threshold, giving a
+      structural lower-bound on the firing count.
+
+### Previous focus (S26 — PR #17432, merged)
+
+Session 26 (PR #17432, researcher-3) added Path A PART XVIII:
+closed-form dispatch of the **empty-range** density question
+(`hi ≤ lo`), complementing S25's `outerGuardFiringCount_below_threshold`
 (sub-threshold case `hi ≤ 64`).
-
-Four new theorems plus three `example` witnesses in a new
-`PART XVIII: EMPTY-RANGE STRUCTURAL LEMMAS` section (+102 lines,
-0 new axioms, 0 new sorries):
-
-* `outerGuardSurveyPairs_eq_empty_iff` — survey range empty iff
-  `hi ≤ lo`. Forward direction by contraposition exhibiting the
-  canonical witness `(lo, lo)`; backward direction by
-  `Finset.eq_empty_iff_forall_not_mem` + Ico bounds + omega.
-* `outerGuardSurveySize_eq_zero_iff` — survey size = 0 iff
-  `hi ≤ lo`. Direct corollary via `Finset.card_eq_zero`.
-* `outerGuardFiringCount_eq_zero_of_empty` — firing count = 0
-  whenever `hi ≤ lo`. Uses S25's `_le_surveySize` bound + the
-  size-zero iff.
-* `outerGuardFiringCount_eq_zero_of_size_zero` — firing count = 0
-  whenever survey size = 0 (generalised form in terms of size
-  rather than the raw range bound).
-* Three concrete witness `example`s on degenerate ranges
-  (`(64, 64)` flat, `(130, 64)` reversed) confirming the
-  theorems on edge inputs without invoking `hgcdSafeApply`.
-
-Proof techniques are routine (`Finset.mem_filter`,
-`Finset.mem_product`, `Finset.mem_Ico`,
-`Finset.eq_empty_iff_forall_not_mem`, `Finset.card_eq_zero`,
-`omega`) and isolated from the recursion machinery — no
-dependence on `hgcdSafeApply` or `schonhageOuterGuardFires`.
-
-**S27 (next):** With both empty-range (S26) and sub-threshold
-(S25) closed-form theorems in place, the remaining open density
-question is the actual `outerGuardFiringCount 64 hi` calibration
-for `hi > 64`. This necessarily requires `native_decide`
-enumeration since the firing pattern depends on the
-`hgcdSafeApply` recursion. Possible S27 directions: either a
-single `native_decide` witness on `outerGuardFiringCount 64 130`
-giving the survey-range density magnitude, or further structural
-decomposition of `outerGuardSurveyPairs` (e.g. closed-form
-triangular cardinality `(hi - lo) * (hi - lo + 1) / 2`).
 
 ### Previous focus (S25 — PR #17415, merged)
 

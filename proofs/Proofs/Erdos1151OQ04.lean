@@ -1842,6 +1842,58 @@ private lemma trig_sum_reindex_symmetry (n : ℕ) (hn : 0 < n) (θ : ℝ) :
         -(Real.cos θ - chebyshevNode n k) from by ring,
       abs_neg]
 
+/-- **(Step 7 helper) `hne` reindex via `θ ↦ π − θ`.**
+
+    For any `θ` whose cosine avoids all `n` Chebyshev nodes, the value
+    `cos(π − θ) = −cos θ` also avoids all `n` Chebyshev nodes. This is the
+    **`hne` side** of the half-π → general `θ ∈ (0, π)` WLOG bridge for
+    `trig_sum_harmonic_lb`.
+
+    Combined with `trig_sum_reindex_symmetry` (S18), which already gives
+    `S(θ, n) = S(π − θ, n)`, this lets the general `θ ∈ (0, π)` asymptotic
+    bound be obtained from a half-π asymptotic bound (Step 7a packaging,
+    in flight as `trig_sum_harmonic_lb_asymp_le_half_pi`) by case-splitting
+    on `θ ≤ π/2` vs `θ > π/2` and reindexing to `θ' := π − θ ∈ (0, π/2)`
+    in the latter case.
+
+    **Proof**: `cos(π − θ) = −cos θ` (`Real.cos_pi_sub`); the involution
+    `σ : Fin n ≃ Fin n`, `k ↦ n − 1 − k` from S18 sends `chebyshevNode n k`
+    to `−chebyshevNode n k` (via the angle identity
+    `(2(n−1−k)+1)π/(2n) = π − (2k+1)π/(2n)`). So
+    `cos(π − θ) = chebyshevNode n k`
+    ⟺ `−cos θ = chebyshevNode n k`
+    ⟺ `cos θ = −chebyshevNode n k = chebyshevNode n (σ k)`,
+    contradicting `hne (σ k)`. -/
+private lemma chebyshev_hne_pi_sub (n : ℕ) (hn : 0 < n) (θ : ℝ)
+    (hne : ∀ k : Fin n, Real.cos θ ≠ chebyshevNode n k) :
+    ∀ k : Fin n, Real.cos (Real.pi - θ) ≠ chebyshevNode n k := by
+  intro k
+  -- Reindex map (same `σ` as in `trig_sum_reindex_symmetry`).
+  let σk : Fin n := ⟨n - 1 - k.val, by have := k.isLt; omega⟩
+  have hk_le : k.val ≤ n - 1 := by have := k.isLt; omega
+  have hone_le : 1 ≤ n := hn
+  -- Cast `σk.val` from ℕ to ℝ as `n − 1 − k.val`.
+  have hσ_val : (σk.val : ℝ) = (n : ℝ) - 1 - (k.val : ℝ) := by
+    show ((n - 1 - k.val : ℕ) : ℝ) = _
+    rw [Nat.cast_sub hk_le, Nat.cast_sub hone_le, Nat.cast_one]
+  -- Angle identity in ℝ: `φ_{σ k} = π − φ_k` where `φ_j = (2j+1)π/(2n)`.
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have hangle_eq : (2 * (σk.val : ℝ) + 1) * Real.pi / (2 * (n : ℝ)) =
+      Real.pi - (2 * (k.val : ℝ) + 1) * Real.pi / (2 * (n : ℝ)) := by
+    rw [hσ_val]; field_simp; ring
+  -- Sign-flip on the node: `chebyshevNode n (σ k) = − chebyshevNode n k`.
+  have hnode_eq : chebyshevNode n σk = -chebyshevNode n k := by
+    simp only [chebyshevNode]
+    rw [hangle_eq, Real.cos_pi_sub]
+  -- Goal: `cos(π − θ) ≠ chebyshevNode n k`. Rewrite LHS via `cos_pi_sub`.
+  rw [Real.cos_pi_sub]
+  intro h
+  -- `h : -cos θ = chebyshevNode n k`. Hence
+  -- `cos θ = -chebyshevNode n k = chebyshevNode n σk`, contradicting `hne σk`.
+  apply hne σk
+  rw [hnode_eq]; linarith
+
 /-- **(Step 6/7 helper) Strict positivity of the Chebyshev-Lebesgue trig sum.**
 
     For any `θ` whose cosine avoids all `n` Chebyshev nodes, the trig sum
