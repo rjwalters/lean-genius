@@ -106,36 +106,52 @@
   },
   "sections": [
     {
+      "id": "header-docstring",
+      "title": "Module Docstring — OQ-03 Statement and Mathlib Infrastructure Inventory",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "49-line module-level docstring framing the OQ-01-OQ-01-OQ-03 sub-question (does the Gauss-sum approach extend to cubic/quartic via Jacobi sums?), recording the answer (YES, via the unified Jacobi-sum framework), the algebraic structure of $J(\\chi,\\chi) \\in \\mathbb{Z}[\\zeta_n]$ in the cubic and quartic cases (giving $p = a^2 - ab + b^2$ and $p = a^2 + b^2$ respectively), and the inventory of `Mathlib.NumberTheory.JacobiSum.Basic` lemmas (`jacobiSum_mul_nontrivial`, `jacobiSum_mul_jacobiSum_inv`, `jacobiSum_nontrivial_inv`, `jacobiSum_one_nontrivial`, `gaussSum_pow_eq_prod_jacobiSum`) that this file repackages.",
+      "mathContext": "Statement: for $\\chi, \\psi$ multiplicative characters on a finite field $F$ with $\\chi\\psi \\neq 1$, the Gauss-Jacobi identity $g(\\chi)g(\\psi) = J(\\chi,\\psi)g(\\chi\\psi)$ and the algebraic norm $J(\\chi,\\psi)J(\\chi^{-1},\\psi^{-1}) = |F|$ together give all higher-power reciprocity laws. Algebraic-integer ring containment: $J(\\chi,\\chi) \\in \\mathbb{Z}[\\zeta_n]$ for $\\chi$ of order $n$, with $N(J) = p$ over $\\mathbb{Q}$. Cubic ($n=3$): in $\\mathbb{Z}[\\omega]$, $J(\\chi,\\chi) = a + b\\omega$ with $a^2 - ab + b^2 = p$. Quartic ($n=4$): in $\\mathbb{Z}[i]$, $J(\\chi,\\chi) = a + bi$ with $a^2 + b^2 = p$ — Fermat's two-squares theorem in disguise. References: Ireland-Rosen Chs. 8-9, Berndt-Evans-Williams."
+    },
+    {
       "id": "fundamental-identities",
       "title": "Fundamental Jacobi–Gauss Identities",
-      "startLine": 55,
-      "endLine": 110,
-      "summary": "Wrappers for Mathlib's core Jacobi sum identities: the Gauss–Jacobi relation, ratio form, trivial-nontrivial case, complementary pair, and commutativity.",
-      "mathContext": "For χ, φ: F → R with χφ ≠ 1: g(χ)·g(φ) = J(χ,φ)·g(χφ). Special cases: J(1,χ) = -1 and J(χ,χ⁻¹) = -χ(-1)."
+      "startLine": 62,
+      "endLine": 107,
+      "summary": "Wrappers for Mathlib's core Jacobi sum identities: the Gauss–Jacobi product relation `jacobiSum_gaussSum_relation` (g(χφ)·J(χ,φ) = g(χ)·g(φ)), the ratio form `jacobiSum_ratio_form` (J = gχ·gφ/g(χφ) when |F|≠0), the trivial-nontrivial case `jacobiSum_trivial_left` (J(1,χ) = -1), the complementary pair `jacobiSum_self_inv` (J(χ,χ⁻¹) = -χ(-1)), and commutativity `jacobiSum_is_symmetric`. Each is a one-line term-mode delegation to `Mathlib.NumberTheory.JacobiSum.Basic`.",
+      "mathContext": "For $\\chi, \\phi : F \\to R$ multiplicative characters with $\\chi\\phi \\neq 1$ and $\\psi : F \\to R$ an additive character: $g(\\chi\\phi, \\psi) \\cdot J(\\chi, \\phi) = g(\\chi, \\psi) \\cdot g(\\phi, \\psi)$. Special cases: $J(1, \\chi) = -1$ for nontrivial $\\chi$, $J(\\chi, \\chi^{-1}) = -\\chi(-1)$ for nontrivial $\\chi$ (so for quadratic $\\chi$ where $\\chi = \\chi^{-1}$, $J(\\chi,\\chi) = -\\chi(-1) = \\pm 1$). Commutativity $J(\\chi,\\phi) = J(\\phi,\\chi)$ follows from the symmetric definition $\\sum_t \\chi(t)\\phi(1-t)$ via change of variable $t \\to 1-t$."
     },
     {
       "id": "algebraic-norm",
-      "title": "Algebraic Norm Formula",
-      "startLine": 115,
-      "endLine": 155,
-      "summary": "The algebraic norm J(χ,φ)·J(χ⁻¹,φ⁻¹) = #F, specialized to prime fields as J·J̄ = p.",
-      "mathContext": "For nontrivial χ, φ, χφ on F with target field F' of different characteristic: J(χ,φ)·J(χ⁻¹,φ⁻¹) = #F. This is the algebraic norm of J as an element of ℤ[ζ_n]."
+      "title": "Algebraic Norm Formula and Prime-Field Specialization",
+      "startLine": 109,
+      "endLine": 141,
+      "summary": "Two theorems implementing the algebraic norm chain. `jacobiSum_algebraic_norm`: J(χ,φ)·J(χ⁻¹,φ⁻¹) = |F| for nontrivial χ, φ, χφ on F with target field F' of *different* characteristic — a one-line wrapper around Mathlib's `jacobiSum_mul_jacobiSum_inv`. `jacobiSum_prime_field_norm`: specializes to F = ℤ/pℤ, giving the cleaner `J·J̄ = p` once `ZMod.ringChar_zmod_n` and `ZMod.card` discharge the cardinality and characteristic conditions.",
+      "mathContext": "Statement: for fields $F, F'$ with $\\mathrm{char}(F') \\neq \\mathrm{char}(F)$ and nontrivial characters $\\chi, \\phi, \\chi\\phi : F \\to F'$, we have $J(\\chi, \\phi) \\cdot J(\\chi^{-1}, \\phi^{-1}) = |F| \\in F'$. The cross-characteristic hypothesis is essential: if $\\mathrm{char}(F') = \\mathrm{char}(F) = p$ then $|F| = p^k = 0$ in $F'$, collapsing the formula. The prime-field specialization $|F| = p$ then surfaces $p$ as a *unit* (or rather, a nonzero element) in $F'$, so the norm carries arithmetic content."
     },
     {
       "id": "cubic-quartic",
-      "title": "Cubic and Quartic Reciprocity Setup",
-      "startLine": 158,
-      "endLine": 200,
-      "summary": "Specializes the norm formula to cubic characters (ord χ = 3, χ²≠1) and quartic characters (ord χ = 4, χ²≠1), and gives the general k-th power result.",
-      "mathContext": "For χ of order 3 on 𝔽_p: J(χ,χ)·J(χ⁻¹,χ⁻¹) = p, enabling p = a² - ab + b² in ℤ[ω]. For quartic: J(χ,χ)·J(χ⁻¹,χ⁻¹) = p enabling p = a² + b²."
+      "title": "Cubic, Quartic, and General k-th Power Norm Theorems",
+      "startLine": 143,
+      "endLine": 189,
+      "summary": "Three specializations of the prime-field norm formula. `cubic_jacobi_algebraic_norm`: J(χ,χ)·J(χ⁻¹,χ⁻¹) = p when χ ≠ 1 and χ² ≠ 1 (the non-degeneracy hypothesis automatically holds for any character of order ≥ 3). `quartic_jacobi_algebraic_norm`: implemented as a *one-line wrapper* around the cubic version — the abstract Mathlib theorem only sees χ²≠1, so 'cubic' and 'quartic' are formally indistinguishable here. `general_jacobi_norm`: J(χ,χ^k)·J(χ⁻¹,χ^{-k}) = p for arbitrary power k, using `pow_succ` to discharge the χ^{k+1}≠1 hypothesis as `χ * χ^k ≠ 1`.",
+      "mathContext": "For $\\chi$ of order $n$ on $\\mathbb{F}_p$ with $p \\equiv 1 \\pmod n$, the conclusion $J(\\chi,\\chi) \\cdot J(\\chi^{-1},\\chi^{-1}) = p$ in any $F'$ of characteristic $\\neq p$ specializes to: **cubic** ($n=3$) — $J(\\chi,\\chi) = a + b\\omega \\in \\mathbb{Z}[\\omega]$ with $a^2 - ab + b^2 = p$ (Eisenstein factorization); **quartic** ($n=4$) — $J(\\chi,\\chi) = a + bi \\in \\mathbb{Z}[i]$ with $a^2 + b^2 = p$ (Fermat's two-squares); **general $n$** — $J(\\chi,\\chi^k) \\in \\mathbb{Z}[\\zeta_n]$ of norm $p$. The fact that `quartic_jacobi_algebraic_norm := cubic_jacobi_algebraic_norm` proves that *the abstract Mathlib statement is order-blind*: it captures only the nondegeneracy $\\chi^2 \\neq 1$, not the order itself."
     },
     {
       "id": "quadratic-recovery",
       "title": "Quadratic Case — Why It Is Degenerate",
-      "startLine": 205,
-      "endLine": 245,
-      "summary": "Shows that for quadratic χ, J(χ,χ⁻¹) = J(χ,χ) = -χ(-1) is just ±1, explaining why quadratic reciprocity requires a different tool (Gauss sum norm g(χ)² = χ(-1)·p) rather than the Jacobi algebraic norm.",
-      "mathContext": "Quadratic: χ²=1 → χ*χ=1 (trivial product) → norm formula doesn't apply → J(χ,χ) = ±1 (sign only). The interesting quadratic object is g(χ)² = χ(-1)·p from OQ01OQ01OQ01.lean."
+      "startLine": 191,
+      "endLine": 230,
+      "summary": "`quadratic_jacobi_is_sign`: for any nontrivial χ, J(χ,χ⁻¹) = -χ(-1); for quadratic χ (χ²=1), this collapses to J(χ,χ) = -χ(-1) ∈ {±1}, just a sign. `cubic_vs_quadratic_contrast`: a parallel theorem statement showing that for cubic χ (χ²≠1), J(χ,χ)·J(χ⁻¹,χ⁻¹) = p — full algebraic norm, not just a sign. The contrast explains why quadratic reciprocity requires the Gauss-sum norm $g(\\chi)^2 = \\chi(-1) p$ from sibling OQ01OQ01OQ01, not the Jacobi-sum framework.",
+      "mathContext": "**Quadratic degeneracy**: $\\chi^2 = 1 \\Rightarrow \\chi^{-1} = \\chi$, so $J(\\chi,\\chi) = J(\\chi, \\chi^{-1}) = -\\chi(-1)$. The product $\\chi \\cdot \\chi = \\chi^2 = 1$ violates the nontriviality hypothesis of `jacobiSum_algebraic_norm`, so the norm formula does not apply. Result: $J(\\chi,\\chi) = -\\chi(-1) = \\pm 1$, encoding only the sign $\\chi(-1) = \\pm 1$ (which itself depends on $p \\bmod 4$). **Cubic non-degeneracy**: order $\\geq 3$ ensures $\\chi^2 \\neq 1$, the product $\\chi \\cdot \\chi$ remains nontrivial, and the full norm $J \\cdot \\bar J = p$ activates — providing the algebraic content that drives Eisenstein's 1844 cubic reciprocity proof. **Methodological observation**: the quadratic case being a *boundary* (rather than a special case) of the Jacobi-sum framework explains why classical proofs of quadratic reciprocity look so different from cubic/quartic proofs."
+    },
+    {
+      "id": "results-summary",
+      "title": "Results Summary Table and Reciprocity-Program Map",
+      "startLine": 232,
+      "endLine": 277,
+      "summary": "44-line trailing docstring inventorying the file's 12 theorems (5 Mathlib wrappers, 5 new contributions, 2 quadratic-case sign lemmas) in a Markdown table, then mapping the algebraic-norm identity J(χ,φ)·J(χ⁻¹,φ⁻¹) = p onto three classical higher-power reciprocity laws — cubic (Gauss 1828, Eisenstein 1844 in ℤ[ω]), quartic (Gauss/Eisenstein in ℤ[i]), and general Eisenstein reciprocity (Eisenstein 1850 in ℤ[ζ_ℓ]). Each row records the residue-symbol formula and identifies the Jacobi sum as the explicit element of norm p in the relevant cyclotomic ring whose reduction modulo a second prime q yields the residue symbol.",
+      "mathContext": "**Reciprocity program**: for each odd prime $\\ell$, working in $\\mathbb{Z}[\\zeta_\\ell]$, the $\\ell$-th power residue symbol $\\left(\\tfrac{\\alpha}{\\pi}\\right)_\\ell$ is determined by the reduction of $J(\\chi, \\chi^k)$ modulo $\\pi$ for the appropriate character $\\chi$ on $\\mathbb{F}_q = \\mathcal{O}_K / \\pi$. **Cubic**: $\\left(\\tfrac{\\pi}{q}\\right)_3 = \\left(\\tfrac{q}{\\pi}\\right)_3$ for primary $\\pi, q$ in $\\mathbb{Z}[\\omega]$. **Quartic**: $\\left(\\tfrac{\\pi}{q}\\right)_4 \\cdot \\left(\\tfrac{q}{\\pi}\\right)_4 = (-1)^{(N(\\pi)-1)(N(q)-1)/16}$ for primary $\\pi, q$ in $\\mathbb{Z}[i]$ congruent to 1 mod $(2+2i)$. **General $\\ell$-th power**: Eisenstein's reciprocity, stated via Hilbert symbols and the Hasse-Artin reciprocity law."
     }
   ],
   "openQuestions": [
