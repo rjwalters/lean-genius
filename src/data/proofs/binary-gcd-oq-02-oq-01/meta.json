@@ -102,25 +102,25 @@
       "id": "definition",
       "title": "II. The Bit-Level Binary GCD Algorithm",
       "startLine": 52,
-      "endLine": 80,
-      "summary": "Defines binaryGcdBit using testBit 0 for parity and >>> 1 for halving. Structurally mirrors binaryGcd but with bit operations.",
+      "endLine": 77,
+      "summary": "Defines binaryGcdBit using testBit 0 for parity and >>> 1 for halving. Structurally mirrors binaryGcd but with bit operations. Termination by decreasing measure a+b is closed by `decreasing_by all_goals simp [shiftRight_one_eq_div_two]; omega` — the bridge lemma is what makes Lean recognize the shift as halving for termination.",
       "mathContext": "The algorithm uses $n.\\mathrm{testBit}\\ 0 = \\mathrm{false}$ to test if $n$ is even (LSB = 0), and $n \\mathbin{>>>} 1$ to halve $n$. The termination measure $a + b$ decreases in each recursive call since $a \\mathbin{>>>} 1 = \\lfloor a/2 \\rfloor < a$ for $a \\geq 1$."
     },
     {
       "id": "correctness",
       "title": "III. Correctness: binaryGcdBit = Nat.gcd",
-      "startLine": 82,
-      "endLine": 152,
-      "summary": "Proves binaryGcdBit_eq_gcd by induction on the 7-case recursive structure of binaryGcd. Each case translates bit conditions to arithmetic conditions using the bridge lemmas.",
+      "startLine": 79,
+      "endLine": 154,
+      "summary": "Proves binaryGcdBit_eq_gcd by induction on the 7-case recursive structure of binaryGcd. The private helper testBit_ne_false_of_odd (line 82) contraposes the bridge lemma to handle the odd cases. Each of cases 1–7 translates bit conditions to arithmetic conditions via the bridge lemmas, then closes via the matching identity from the parent file (gcd_two_mul, gcd_mul_two_left/right, gcd_odd_sub_half, gcd_odd_sub_half_right).",
       "mathContext": "The 7 cases cover: (1-2) base cases a=0 or b=0; (3) both even: $2\\gcd(a/2,b/2)=\\gcd(a,b)$; (4) a even, b odd: $\\gcd(a/2,b)=\\gcd(a,b)$ since $\\gcd(2,\\mathrm{odd})=1$; (5) a odd, b even: symmetric; (6-7) both odd, subtract-and-halve: $\\gcd((a-b)/2,b)=\\gcd(a,b)$ since $a-b$ is even."
     },
     {
       "id": "properties",
       "title": "IV. Properties and Sanity Checks",
-      "startLine": 154,
-      "endLine": 163,
-      "summary": "Proves commutativity and identity elements (binaryGcdBit_comm, binaryGcdBit_zero_left, binaryGcdBit_zero_right), and verifies concrete examples via decide.",
-      "mathContext": "Properties follow by reducing to Nat.gcd properties via binaryGcdBit_eq_gcd. Sanity checks include gcd(12,18)=6, gcd(48,36)=12, gcd(17,13)=1, gcd(100,75)=25."
+      "startLine": 156,
+      "endLine": 174,
+      "summary": "Proves commutativity (binaryGcdBit_comm) and identity elements (binaryGcdBit_zero_left, binaryGcdBit_zero_right) as one-line corollaries via the headline equation, and verifies five concrete examples (12,18 ↦ 6; 48,36 ↦ 12; 17,13 ↦ 1; 0,7 ↦ 7; 100,75 ↦ 25) by `decide`, exercising the bit-level kernel end-to-end on a representative spread of cases (both-even, both-odd-coprime, base case, mixed parity).",
+      "mathContext": "Properties follow by reducing to Nat.gcd properties via binaryGcdBit_eq_gcd. Sanity checks include gcd(12,18)=6, gcd(48,36)=12, gcd(17,13)=1, gcd(0,7)=7, gcd(100,75)=25."
     }
   ],
   "conclusion": {
@@ -246,6 +246,26 @@
       "proofId": "bezout-identity-oq-01-oq-01-oq-01",
       "relationship": "sibling",
       "description": "Sibling entry on Stein's binary GCD: this entry proves correctness of the bit-level formulation, while bezout-identity-oq-01-oq-01-oq-01 proves the $O(\\log^2 n)$ bit-complexity bound. Together they constitute a complete formal verification of binary GCD: the algorithm computes the right answer (this entry) with the expected asymptotic cost (the sibling)."
+    },
+    {
+      "proofId": "binary-gcd-oq-01",
+      "relationship": "sibling",
+      "description": "Step-count comparison sibling: formalizes Lamé's $O(\\log\\min(a,b))$ bound for the Euclidean algorithm and the $O(\\log a + \\log b)$ bound for binary GCD. Where the present entry establishes that the bit-level algorithm computes the right *value*, this sibling establishes that it does so in the right *number of steps* — closing the second half of the binary-GCD verification story (correctness × cost)."
+    },
+    {
+      "proofId": "binary-gcd-oq-03",
+      "relationship": "extension",
+      "description": "Lehmer-Schönhage hybrid GCD (Lehmer 1938): extracts the top bits of $a, b$, runs Euclid on the small approximations to derive a $2 \\times 2$ cofactor matrix, then applies it back to the full-precision inputs. Identified in `openQuestions` #1 as the natural successor to the bit-level testBit/shiftRight kernel proved here — Lehmer's algorithm processes whole bit-blocks rather than single bits, but its inner loop still relies on bit-level primitives that fit the bridge-lemma framework of this entry."
+    },
+    {
+      "proofId": "binary-gcd-oq-03-oq-02",
+      "relationship": "extension",
+      "description": "Schönhage's recursive half-GCD (HGCD): the subquadratic $O(M(n) \\log n)$ extension of the Lehmer hybrid. Two layers above this entry: where `binaryGcdBit` is single-bit shifts on $\\mathbb{N}$, HGCD operates on bit-blocks via $2 \\times 2$ matrix products and recursion. Both share the trust-direction structure highlighted in this entry's keyInsights — a complex hardware-efficient algorithm proved equal to the simpler `Nat.gcd` reference specification through a chain of bridge equations."
+    },
+    {
+      "proofId": "gcd-algorithm-oq-02",
+      "relationship": "imports",
+      "description": "Lean import dependency. This entry's Lean file imports `Proofs.GCDAlgorithmOQ02`, which is the gallery counterpart of `gcd-algorithm-oq-02` (\"Binary GCD (Stein's Algorithm)\"). That file provides `binaryGcd` (arithmetic formulation), the 7-case `binaryGcd.induct` principle reused here, and the GCD identities (`gcd_two_mul`, `gcd_mul_two_left`, `gcd_mul_two_right`, `gcd_odd_sub_half`, `gcd_odd_sub_half_right`) that close each case of `binaryGcdBit_eq_gcd`."
     }
   ]
 }
