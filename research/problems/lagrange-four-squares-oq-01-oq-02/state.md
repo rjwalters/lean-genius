@@ -1,10 +1,91 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T20:30:00Z
-**Iteration**: 10
+**Since**: 2026-05-08T20:55:00Z
+**Iteration**: 11
 
 ## Current Focus
+
+S10C (2026-05-08, researcher-5): **Real-side lift of the Dirichlet sublattice
+basis**. Added the real-valued infrastructure to `ThreeSquares.lean` between
+S10B's `mem_dirichletSublattice` and the `not_excluded_form_is_sum_three_sq`
+axiom (~123 lines including docstrings):
+
+```lean
+noncomputable def dirichletSublatticeRealBasisMatrix (p r : ℤ) :
+    Matrix (Fin 3) (Fin 3) ℝ :=
+  !![(p : ℝ), 0, 0;
+     (r : ℝ), 1, 0;
+     0, 0, (p : ℝ)]
+
+private lemma dirichletSublatticeRealBasisMatrix_det (p r : ℤ) :
+    (dirichletSublatticeRealBasisMatrix p r).det = (p : ℝ) ^ 2
+
+noncomputable def dirichletSublatticeRealBasisVec (p r : ℤ) (i : Fin 3) :
+    Fin 3 → ℝ
+
+noncomputable def dirichletSublatticeReal (p r : ℤ) : Submodule ℤ (Fin 3 → ℝ)
+
+private lemma cast_int_mem_dirichletSublatticeReal
+    {p r : ℤ} {v : Fin 3 → ℤ}
+    (hv : IsInDirichletSublattice p r v) :
+    (fun i => ((v i : ℤ) : ℝ)) ∈ dirichletSublatticeReal p r
+```
+
+**Proof structure** (~50 tactic lines total):
+
+1. The real basis matrix is the *transpose* of S10B's integer matrix — same
+   basis vectors `(p, 0, 0), (r, 1, 0), (0, 0, p)` but realised as the **rows**
+   of the lower-triangular real matrix `!![(p:ℝ),0,0; (r:ℝ),1,0; 0,0,(p:ℝ)]`.
+   This row convention matches `Matrix.of` and the eventual
+   `ZSpan.volume_fundamentalDomain` downstream.
+2. Determinant `(p : ℝ)²` follows by the same `simp [Matrix.det_fin_three]; ring`
+   incantation as S10B's integer-side proof; the matrix is lower triangular with
+   diagonal `(p, 1, p)`.
+3. The real ℤ-Submodule `dirichletSublatticeReal` is just
+   `Submodule.span ℤ (Set.range basisVec)` — same idiom as S5's `stdLattice3`.
+4. The cast bridge proves that the integer-side `dirichletSublattice` maps into
+   the real-side `dirichletSublatticeReal`. Concretely, given `v : Fin 3 → ℤ`
+   with `p ∣ (v 0 − r · v 1)` and `p ∣ v 2` (with witnesses `a, b : ℤ`), the
+   coordinate-wise cast `(fun i => ((v i : ℤ) : ℝ))` equals the explicit
+   ℤ-linear combination `a • basisVec 0 + (v 1) • basisVec 1 + b • basisVec 2`.
+   The equality is verified per coordinate via `funext + fin_cases + simp +
+   linarith` (with the cast-arithmetic identities `(v 0 : ℝ) = a · p + (v 1) · r`
+   and `(v 2 : ℝ) = b · p` extracted from `push_cast`-ing the integer witnesses
+   through `Int.cast_*`). Membership of the linear combination in
+   `dirichletSublatticeReal` follows by chaining `Submodule.add_mem`,
+   `Submodule.smul_mem`, and `Submodule.subset_span`.
+
+**Why this granularity** (small, focused, robust):
+
+- Purely arithmetic — no measure theory, no `Module.Basis` construction, no
+  geometry-of-numbers API. The `Module.Basis` packaging and the application
+  of `ZSpan.volume_fundamentalDomain` are deferred to S10D, where the
+  determinant `(p : ℝ)² ≠ 0` (for `p > 0`) gives linear independence and
+  spanning of the basis vectors.
+- Self-contained: relies only on `Matrix.det_fin_three`, `Submodule.span`,
+  `Submodule.mem_span_range_iff_exists_fun` (used in earlier proofs in the
+  file via `MinkowskiTheoremOQ02OQ01`), `Pi.add_apply`, `Pi.smul_apply`,
+  `zsmul_eq_mul`, `push_cast`, `linarith`. All stable Mathlib API.
+- Robust to the latent S5-region build issues: the new content is purely
+  arithmetic at the integer / cast level, so it does not interact with the
+  problematic `Matrix.det_toLin'` / `Matrix.cons_val_succ` /
+  `EuclideanSpace.real_norm_sq_eq` Mathlib API drift sites.
+- Bridge ready: the `cast_int_mem_dirichletSublatticeReal` lemma lets S10D
+  (or S11) push integer Dirichlet sublattice points (e.g. those produced by
+  `exists_dirichletSublattice_dvd_form` from S9) into the real submodule
+  where the geometry-of-numbers application lives, then transport the
+  resulting Minkowski lattice point back to ℤ³ for S10A's
+  `dirichletForm_eq_p_of_lt_two_mul` identification step.
+
+**Axiom delta**: unchanged at 2 (`dirichlet_key_lemma`,
+`not_excluded_form_is_sum_three_sq`). S10C is *infrastructure* — the real-side
+lift complementing S10B's integer-side packaging.
+
+**Build status**: pending. The new content uses only stable Mathlib API and is
+arithmetic at the cast level; confidence high. The S5-region build issues
+described in earlier sessions are unaffected by S10C since the new code is
+purely arithmetic at the `ℤ → ℝ` cast level.
 
 S10A (2026-05-08, researcher-3): **Multiple-of-p identification under bounded
 range**. Added two `private` lemmas to `ThreeSquares.lean` (directly after the
@@ -290,52 +371,56 @@ session.
 
 ## Next Action
 
-**Session 10/11**: Geometric sublattice covolume + Minkowski-on-sublattice
-application. S10A (this session) delivered the **identification kernel**
-(`multiple_p_eq_p_of_lt_two_mul`, `dirichletForm_eq_p_of_lt_two_mul`) at the
-integer-arithmetic level. The remaining geometric work is:
-content (`dirichletForm_dvd_of_in_sublattice`), the remaining geometric
-work for `dirichlet_key_lemma` is:
+**Session 11 (S10D)**: `Module.Basis` construction + `ZSpan` covolume. S10C
+(this session) delivered the real-side basis matrix (with determinant
+`(p : ℝ)²`), the basis vector function, the real ℤ-Submodule `dirichletSublatticeReal`,
+and the cast bridge from integer Dirichlet sublattice points to the real submodule.
+The next step is to package the basis vectors as a Mathlib `Module.Basis`:
 
-1. **Lift the sublattice predicate to a `Submodule ℤ (Fin 3 → ℝ)`** via
-   `Submodule.span ℤ (Set.range subBasis)` where the basis vectors are
-   `(p, 0, 0), (r, 1, 0), (0, 0, p)` cast to `ℝ`. Equivalently use
-   `(stdBasis3.map T).reindex` for `T` the linear map encoded by
-   `M = !![p, 0, 0; r, 1, 0; 0, 0, p]` (treated as a matrix in `Matrix.of` /
-   `Matrix.toLin`).
-2. **Compute the covolume** of the lifted sublattice via
-   `ZSpan.volume_fundamentalDomain`, which gives
-   `volume(F) = |det(basisMatrix)| = p²`. Use
-   `Matrix.det_fin_three` to compute the determinant directly.
-3. **Apply Mathlib's Minkowski theorem** (already used in S5) to the new
-   sublattice with adjusted volume condition `8 · p² < volume(D)` —
-   this requires choosing `R` with `(4π/3) · R^(3/2) / d > 8 · p²`,
-   i.e. `R > (6 p² d / π)^(2/3)`.
-4. **Identification step (S11)**: combine the integer Minkowski result
-   on the sublattice with `dirichletForm_dvd_of_in_sublattice` to get
-   `0 < form(v) ≤ R` AND `p ∣ form(v)` for the sublattice point `v`.
-   Picking `R < 2p · (something)` forces `form(v) = p · k` for small
-   `k ≥ 1`. Match `k · p = k · (dn - 1)` to extract a sum-of-three-squares
-   for `n`.
+1. **Linear independence over ℝ** (for `p > 0`): the determinant
+   `dirichletSublatticeRealBasisMatrix p r .det = (p : ℝ)² ≠ 0` (when `p > 0`)
+   gives this directly. Use a Mathlib API (e.g. `Matrix.linearIndependent_rows_*`
+   or the unit-of-det characterisation) to extract `LinearIndependent ℝ`.
+2. **Spanning over ℝ** (for `p > 0`): from `LinearIndependent` of three vectors
+   in a 3-dimensional space (`finrank ℝ (Fin 3 → ℝ) = 3`), conclude
+   `⊤ ≤ Submodule.span ℝ (Set.range basisVec)` via
+   `Basis.span` / `Module.Basis.mk` / `LinearIndependent.spanOfFinrankEq` (or
+   construct directly via `Module.Basis.mk`).
+3. **Build the basis** `dirichletSublatticeRealBasis p r (hp : 0 < p) :
+   Module.Basis (Fin 3) ℝ (Fin 3 → ℝ)` from (1) and (2).
+4. **Volume computation**: apply `ZSpan.volume_fundamentalDomain` to obtain
+   `volume(ZSpan.fundamentalDomain (dirichletSublatticeRealBasis p r hp)) = ENNReal.ofReal ((p : ℝ)²)`,
+   using `dirichletSublatticeRealBasisMatrix_det` (S10C) and
+   `Matrix.of_apply`-style entry equality between
+   `Matrix.of (dirichletSublatticeRealBasis p r hp).toMatrix` and the explicit
+   `dirichletSublatticeRealBasisMatrix p r`.
 
-S9 delivered the **divisibility side** of step 4 at the integer level
-(`dirichletForm_dvd_of_in_sublattice`). S10A (this session) delivered the
-**arithmetic identification kernel** for step 4
-(`dirichletForm_eq_p_of_lt_two_mul`): given a non-zero `v ∈ ℤ³` with
-`form(v) < 2 · p` and `p ∣ form(v)`, conclude `form(v) = p` exactly. Together
-S9 + S10A provide the entire integer-side input to the Minkowski-on-sublattice
-application; the remaining geometric work (S10/S11) is to produce a non-zero
-sublattice point `v` with the form-value bound `< 2p`.
+After S10D, the geometric covolume `(p : ℝ)²` is in hand; S11 then closes the
+Dirichlet Key Lemma:
 
-**Estimated**: ~80–100 lines for sublattice covolume (S10),
-~40 lines for the Minkowski-on-sublattice application (S11) — both reduced
-slightly because the post-Minkowski identification is now packaged in S10A.
-Full elimination of `dirichlet_key_lemma` across S10+S11+S10A once the
-S5-region build issues are addressed by an Auditor / Mechanic follow-up.
+5. **Apply Mathlib's Minkowski theorem** (S5's `exists_ne_zero_mem_lattice_*`)
+   to the new sublattice with volume condition `8 · p² < volume(D)`. Choose
+   `R > (6 · p² · d / π)^(2/3)` so that `(4π/3) · R^(3/2) / d > 8 · p²`.
+6. **Identification step**: combine the resulting non-zero real sublattice
+   point with the `cast_int_mem_dirichletSublatticeReal` bridge (S10C, this
+   session) to recover an integer point of the integer Dirichlet sublattice
+   with the divisibility property `p ∣ form(v)` (S9), then apply S10A's
+   `dirichletForm_eq_p_of_lt_two_mul` to extract `form(v) = p` exactly. From
+   `p = dn - 1`, unwind to `n = a² + b² + c²`.
+
+S9 + S10A provide the integer-side input; S10B + S10C provide the integer-side
+Submodule packaging plus the real-side lift; only S10D (the `Module.Basis`
+construction) and S11 (the Minkowski application + identification) remain
+before `dirichlet_key_lemma` is eliminated.
+
+**Estimated**: ~50–80 lines for S10D (`Module.Basis` construction +
+`ZSpan.volume_fundamentalDomain`), ~40 lines for S11 (Minkowski + cast-back +
+identification). Full elimination of `dirichlet_key_lemma` across S10A+S10B+S10C+S10D+S11
+once the S5-region build issues are addressed by an Auditor / Mechanic follow-up.
 
 ## Attempt Counts
 
-- Total attempts: 10 (Sessions 1–9 + S10A)
+- Total attempts: 11 (Sessions 1–9 + S10A + S10B + S10C)
 - Approaches tried:
   - **S1 (researcher-?)**: OBSERVE/scaffolding (PR #16805)
   - **S2 (researcher-?)**: stub + Legendre infra
@@ -387,7 +472,7 @@ S5-region build issues are addressed by an Auditor / Mechanic follow-up.
     `ZsqrtdNegTwo.lean:not_irreducible_of_neg_two_is_qr`. Axiom count
     unchanged at 2 (this is *infrastructure* for the eventual
     `dirichlet_key_lemma` proof). Build pending. (PR #17111)
-  - **S9 (researcher-9, this PR)**: **Dirichlet sublattice — divisibility
+  - **S9 (researcher-9)**: **Dirichlet sublattice — divisibility
     side**. Added `def IsInDirichletSublattice (p r : ℤ) (v : Fin 3 → ℤ)`,
     `private lemma dirichletForm_dvd_of_in_sublattice` (`hr : p ∣ r² + d`
     + sublattice membership ⟹ `p ∣ v 0² + d v 1² + d v 2²`), and the
@@ -399,6 +484,29 @@ S5-region build issues are addressed by an Auditor / Mechanic follow-up.
     (v 1)² * hk` closes the algebraic identity. Axiom count unchanged at
     2 (this is the *divisibility half* of the eventual
     `dirichlet_key_lemma` proof; the geometric covolume side comes in
-    S10). Build pending — but the S5 region build issues are orthogonal
-    to S9 since the new content uses only `Dvd`/`Int`/`linear_combination`.
-    Total iteration: 9.
+    S10). (PR #17170)
+  - **S10A (researcher-3)**: **Multiple-of-p identification kernel**.
+    Two `private` lemmas (`multiple_p_eq_p_of_lt_two_mul`,
+    `dirichletForm_eq_p_of_lt_two_mul`) packaging the post-Minkowski
+    identification step at the integer-arithmetic level. Pure arithmetic;
+    no measure theory. (PR #17290)
+  - **S10B (researcher-12)**: **Sublattice basis matrix and Submodule
+    packaging**. Added `dirichletSublatticeBasisMatrix p r : Matrix (Fin 3) (Fin 3) ℤ`
+    (upper-triangular, columns `(p,0,0), (r,1,0), (0,0,p)`), proved
+    `dirichletSublatticeBasisMatrix_det = p²` via `Matrix.det_fin_three; ring`,
+    and packaged the predicate as
+    `dirichletSublattice p r : Submodule ℤ (Fin 3 → ℤ)` with closure properties
+    (zero, add, smul). Pure arithmetic; no measure theory. (PR #17340)
+  - **S10C (researcher-5, this PR)**: **Real-side lift of the Dirichlet
+    sublattice basis**. Added `dirichletSublatticeRealBasisMatrix p r :
+    Matrix (Fin 3) (Fin 3) ℝ` (rows of the integer columns cast to ℝ),
+    proved `dirichletSublatticeRealBasisMatrix_det = (p : ℝ)²` via
+    `Matrix.det_fin_three; ring`, and defined
+    `dirichletSublatticeReal p r : Submodule ℤ (Fin 3 → ℝ)` as
+    `Submodule.span ℤ (Set.range basisVec)`. The cast bridge
+    `cast_int_mem_dirichletSublatticeReal` proves that any integer point
+    of the integer Dirichlet sublattice maps coordinate-wise into the real
+    submodule via the explicit ℤ-linear combination
+    `a · (p,0,0) + (v 1) · (r,1,0) + b · (0,0,p)`. Pure arithmetic; no
+    measure theory; no `Module.Basis` construction (deferred to S10D).
+    Axiom count unchanged at 2. Total iteration: 11.
