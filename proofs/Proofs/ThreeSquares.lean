@@ -7,6 +7,9 @@ import Mathlib.NumberTheory.Zsqrtd.Basic
 import Mathlib.MeasureTheory.Group.GeometryOfNumbers
 import Mathlib.Algebra.Module.ZLattice.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+import Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls
+import Mathlib.MeasureTheory.Measure.Haar.InnerProductSpace
 import Mathlib.Tactic
 import Proofs.ZsqrtdNegTwo
 
@@ -639,32 +642,192 @@ theorem dirichletEllipsoid_symmetric (d : ℕ) (R : ℝ) :
   simp only [Pi.neg_apply, neg_sq]
   exact hx
 
-/-- **Axiom: Volume of the Dirichlet ellipsoid**: (4π/3) · R^(3/2) / d.
+/-! ### Linear scaling map for the Dirichlet ellipsoid
 
-For the standard ellipsoid x²/a² + y²/b² + z²/c² ≤ 1, the volume is (4π/3)abc.
+For the standard ellipsoid `x²/a² + y²/b² + z²/c² ≤ 1`, the volume is `(4π/3)abc`.
 Our ellipsoid `dirichletEllipsoid d R = {v : v₀² + d v₁² + d v₂² ≤ R}` has
-semi-axes `a = √R`, `b = c = √(R/d)`. So
-  volume = (4π/3) · √R · √(R/d) · √(R/d)
-         = (4π/3) · √R · (R/d)
-         = (4π/3) · R^(3/2) / d.
+semi-axes `a = √R`, `b = c = √(R/d)`. The image of the unit Euclidean ball under the
+linear map `T = diag(√R, √(R/d), √(R/d))` is exactly `dirichletEllipsoid d R`, and
+`det T = √R · √(R/d) · √(R/d) = R · √R / d = R^(3/2)/d`.
 
-The denominator is `d`, NOT `√d`. (A prior version of this axiom incorrectly
-used `Real.sqrt d`, off by a factor of √d. Verified 2026-05-08 against the
-standard ellipsoid volume formula and a worked-out instance d = 1, R = 1
-where vol(unit ball in ℝ³) = 4π/3 = (4π/3) · 1^(3/2) / 1.)
+This section provides the scaling map, computes its determinant, and proves the
+set equation `dirichletEllipsoid d R = T '' (unit Euclidean ball)`. The volume
+theorem then follows from `addHaar_image_linearMap` plus the volume of the unit
+Euclidean ball in ℝ³, which we transfer from `EuclideanSpace ℝ (Fin 3)` via
+`PiLp.volume_preserving_ofLp`. -/
 
-**Proof status**: This is a standard calculus result. A full Lean proof would require:
-- Defining the ellipsoid as a measurable set
-- Computing its volume via an integral or linear transformation from the unit ball
-- Using `EuclideanSpace.volume_ball` and `MeasureTheory.Measure.addHaar_image_smul`
+/-- The diagonal scaling matrix `diag(√R, √(R/d), √(R/d))`. -/
+noncomputable def dirichletScaleMatrix (d : ℕ) (R : ℝ) : Matrix (Fin 3) (Fin 3) ℝ :=
+  Matrix.diagonal ![Real.sqrt R, Real.sqrt (R / d), Real.sqrt (R / d)]
 
-Concrete strategy: define `T : (Fin 3 → ℝ) →ₗ[ℝ] (Fin 3 → ℝ)` by `T v 0 = √R · v 0`,
-`T v 1 = √(R/d) · v 1`, `T v 2 = √(R/d) · v 2`. Then `dirichletEllipsoid d R = T '' B(0,1)`.
-The Jacobian is `det T = √R · √(R/d) · √(R/d) = R^(3/2) / d`, and Mathlib's
-`MeasureTheory.Measure.addHaar_image_linearMap` gives the volume formula. -/
-axiom dirichletEllipsoid_volume (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
+/-- Linear scaling map `T : ℝ³ → ℝ³` from the unit Euclidean ball onto the Dirichlet
+ellipsoid. -/
+noncomputable def dirichletScale (d : ℕ) (R : ℝ) : (Fin 3 → ℝ) →ₗ[ℝ] (Fin 3 → ℝ) :=
+  Matrix.toLin' (dirichletScaleMatrix d R)
+
+/-- Pointwise formula for the scaling map: `T v = (√R · v 0, √(R/d) · v 1, √(R/d) · v 2)`. -/
+lemma dirichletScale_apply (d : ℕ) (R : ℝ) (v : Fin 3 → ℝ) (i : Fin 3) :
+    (dirichletScale d R v) i = ![Real.sqrt R, Real.sqrt (R / d), Real.sqrt (R / d)] i * v i := by
+  unfold dirichletScale dirichletScaleMatrix
+  rw [Matrix.toLin'_apply, Matrix.mulVec_diagonal]
+
+/-- Determinant of the Dirichlet scaling map: `R^(3/2)/d` for `d > 0`, `R > 0`. -/
+theorem dirichletScale_det (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
+    LinearMap.det (dirichletScale d R) = R ^ (3 / 2 : ℝ) / d := by
+  have hd' : (0 : ℝ) < d := by exact_mod_cast hd
+  have hRle : (0 : ℝ) ≤ R := hR.le
+  have hRd : (0 : ℝ) ≤ R / d := (div_pos hR hd').le
+  have h_sqRd : Real.sqrt (R / d) * Real.sqrt (R / d) = R / d := Real.sqrt_mul_self hRd
+  have h_target : R ^ (3 / 2 : ℝ) = R * Real.sqrt R := by
+    rw [show (3 / 2 : ℝ) = 1 + 1 / (2 : ℝ) by norm_num,
+        Real.rpow_add hR, Real.rpow_one, ← Real.sqrt_eq_rpow]
+  unfold dirichletScale dirichletScaleMatrix
+  rw [Matrix.det_toLin', Matrix.det_diagonal, Fin.prod_univ_three]
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    Matrix.cons_val_succ, Matrix.cons_val_fin_one, Matrix.cons_val_two,
+    Matrix.tail_cons]
+  calc Real.sqrt R * Real.sqrt (R / d) * Real.sqrt (R / d)
+      = Real.sqrt R * (Real.sqrt (R / d) * Real.sqrt (R / d)) := by ring
+    _ = Real.sqrt R * (R / d) := by rw [h_sqRd]
+    _ = (R * Real.sqrt R) / d := by ring
+    _ = R ^ (3 / 2 : ℝ) / d := by rw [h_target]
+
+/-- The unit Euclidean ball in ℝ³ defined as a set in `Fin 3 → ℝ`:
+`{v : v₀² + v₁² + v₂² ≤ 1}`. Its volume is `4π/3` (proved below). -/
+def unitEuclideanBall3 : Set (Fin 3 → ℝ) :=
+  {v | v 0 ^ 2 + v 1 ^ 2 + v 2 ^ 2 ≤ 1}
+
+/-- The Dirichlet ellipsoid is the image of the unit Euclidean ball under
+`dirichletScale d R`. -/
+theorem dirichletEllipsoid_eq_image (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
+    dirichletEllipsoid d R = (dirichletScale d R) '' unitEuclideanBall3 := by
+  have hd' : (0 : ℝ) < d := by exact_mod_cast hd
+  have hRd_pos : (0 : ℝ) < R / d := div_pos hR hd'
+  have hsqrtR_pos : (0 : ℝ) < Real.sqrt R := Real.sqrt_pos.mpr hR
+  have hsqrtRd_pos : (0 : ℝ) < Real.sqrt (R / d) := Real.sqrt_pos.mpr hRd_pos
+  have hsqrtR_ne : Real.sqrt R ≠ 0 := ne_of_gt hsqrtR_pos
+  have hsqrtRd_ne : Real.sqrt (R / d) ≠ 0 := ne_of_gt hsqrtRd_pos
+  have h_sqR : Real.sqrt R * Real.sqrt R = R := Real.sqrt_mul_self hR.le
+  have h_sqRd : Real.sqrt (R / d) * Real.sqrt (R / d) = R / d :=
+    Real.sqrt_mul_self hRd_pos.le
+  have hRne : R ≠ 0 := ne_of_gt hR
+  have hRdne : R / d ≠ 0 := ne_of_gt hRd_pos
+  ext v
+  simp only [dirichletEllipsoid, unitEuclideanBall3, Set.mem_image, Set.mem_setOf_eq]
+  constructor
+  · intro hv
+    refine ⟨![v 0 / Real.sqrt R, v 1 / Real.sqrt (R / d), v 2 / Real.sqrt (R / d)], ?_, ?_⟩
+    · simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+        Matrix.cons_val_succ, Matrix.cons_val_fin_one, Matrix.cons_val_two,
+        Matrix.tail_cons]
+      have h0 : (v 0 / Real.sqrt R) ^ 2 = v 0 ^ 2 / R := by
+        rw [div_pow]; congr 1; rw [sq]; exact h_sqR
+      have h1 : (v 1 / Real.sqrt (R / d)) ^ 2 = v 1 ^ 2 / (R / d) := by
+        rw [div_pow]; congr 1; rw [sq]; exact h_sqRd
+      have h2 : (v 2 / Real.sqrt (R / d)) ^ 2 = v 2 ^ 2 / (R / d) := by
+        rw [div_pow]; congr 1; rw [sq]; exact h_sqRd
+      rw [h0, h1, h2]
+      rw [show v 0 ^ 2 / R + v 1 ^ 2 / (R / d) + v 2 ^ 2 / (R / d)
+            = (v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2) / R by
+          field_simp
+          ring]
+      rw [div_le_one hR]
+      exact hv
+    · ext i
+      rw [dirichletScale_apply]
+      fin_cases i <;>
+        simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+          Matrix.cons_val_succ, Matrix.cons_val_fin_one, Matrix.cons_val_two,
+          Matrix.tail_cons, hsqrtR_ne, hsqrtRd_ne, mul_div_cancel₀]
+  · rintro ⟨u, hu, hTu⟩
+    have h_eq : ∀ i : Fin 3, v i =
+        ![Real.sqrt R, Real.sqrt (R / d), Real.sqrt (R / d)] i * u i := by
+      intro i
+      rw [← hTu, dirichletScale_apply]
+    have hv0 : v 0 = Real.sqrt R * u 0 := by
+      have := h_eq 0
+      simpa [Matrix.cons_val_zero] using this
+    have hv1 : v 1 = Real.sqrt (R / d) * u 1 := by
+      have := h_eq 1
+      simpa [Matrix.cons_val_one, Matrix.head_cons] using this
+    have hv2 : v 2 = Real.sqrt (R / d) * u 2 := by
+      have := h_eq 2
+      simpa [Matrix.cons_val_succ, Matrix.cons_val_two, Matrix.head_cons,
+        Matrix.tail_cons] using this
+    rw [hv0, hv1, hv2]
+    have step : (Real.sqrt R * u 0) ^ 2 + d * (Real.sqrt (R / d) * u 1) ^ 2
+                + d * (Real.sqrt (R / d) * u 2) ^ 2
+              = R * (u 0 ^ 2 + u 1 ^ 2 + u 2 ^ 2) := by
+      have e1 : (Real.sqrt R * u 0) ^ 2 = R * u 0 ^ 2 := by
+        rw [mul_pow, sq, h_sqR]
+      have e2 : (Real.sqrt (R / d) * u 1) ^ 2 = (R / d) * u 1 ^ 2 := by
+        rw [mul_pow, sq, h_sqRd]
+      have e3 : (Real.sqrt (R / d) * u 2) ^ 2 = (R / d) * u 2 ^ 2 := by
+        rw [mul_pow, sq, h_sqRd]
+      rw [e1, e2, e3]
+      field_simp
+      ring
+    rw [step]
+    calc R * (u 0 ^ 2 + u 1 ^ 2 + u 2 ^ 2) ≤ R * 1 :=
+          mul_le_mul_of_nonneg_left hu hR.le
+      _ = R := by ring
+
+/-- The preimage of `unitEuclideanBall3` under `WithLp.ofLp` is the closed unit ball
+in `EuclideanSpace ℝ (Fin 3)`. -/
+private theorem unitEuclideanBall3_preimage :
+    @WithLp.ofLp 2 (Fin 3 → ℝ) ⁻¹' unitEuclideanBall3 =
+      Metric.closedBall (0 : EuclideanSpace ℝ (Fin 3)) 1 := by
+  ext x
+  simp only [Set.mem_preimage, unitEuclideanBall3, Set.mem_setOf_eq,
+    Metric.mem_closedBall, dist_zero_right]
+  have h_norm_sq : ‖x‖ ^ 2 = x 0 ^ 2 + x 1 ^ 2 + x 2 ^ 2 := by
+    rw [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three]
+  have hnn : 0 ≤ ‖x‖ := norm_nonneg _
+  constructor
+  · intro hv
+    have h_sq : ‖x‖ ^ 2 ≤ 1 := h_norm_sq.trans_le hv
+    nlinarith
+  · intro hx
+    have h_sq : ‖x‖ ^ 2 ≤ 1 := by nlinarith
+    rw [h_norm_sq] at h_sq
+    exact h_sq
+
+/-- The unit Euclidean ball is measurable. -/
+private theorem unitEuclideanBall3_measurableSet : MeasurableSet unitEuclideanBall3 := by
+  unfold unitEuclideanBall3
+  refine measurableSet_le ?_ measurable_const
+  refine Measurable.add (Measurable.add ?_ ?_) ?_ <;>
+    exact (measurable_pi_apply _).pow_const _
+
+/-- Volume of the unit Euclidean ball in ℝ³: `4π/3`. -/
+theorem unitEuclideanBall3_volume :
+    MeasureTheory.volume unitEuclideanBall3 = ENNReal.ofReal (4 * Real.pi / 3) := by
+  rw [← (PiLp.volume_preserving_ofLp (ι := Fin 3)).measure_preimage
+        unitEuclideanBall3_measurableSet.nullMeasurableSet,
+    unitEuclideanBall3_preimage,
+    EuclideanSpace.volume_closedBall_fin_three]
+  simp only [ENNReal.ofReal_one, one_pow, one_mul]
+  congr 1
+  ring
+
+/-- **Volume of the Dirichlet ellipsoid**: `(4π/3) · R^(3/2) / d`.
+
+For `0 < d` and `0 < R`, the ellipsoid `{v : v₀² + d v₁² + d v₂² ≤ R}` has volume
+`(4π/3) · R^(3/2) / d`. Proof via `addHaar_image_linearMap` applied to the linear
+scaling `T = diag(√R, √(R/d), √(R/d))` whose image of the unit ball is exactly
+the ellipsoid. -/
+theorem dirichletEllipsoid_volume (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
     MeasureTheory.volume (dirichletEllipsoid d R) =
-      ENNReal.ofReal ((4 * Real.pi / 3) * R ^ (3/2 : ℝ) / d)
+      ENNReal.ofReal ((4 * Real.pi / 3) * R ^ (3 / 2 : ℝ) / d) := by
+  have hd' : (0 : ℝ) < d := by exact_mod_cast hd
+  have hRd_nn : (0 : ℝ) ≤ R ^ (3 / 2 : ℝ) := Real.rpow_nonneg hR.le _
+  have h_det_nn : (0 : ℝ) ≤ R ^ (3 / 2 : ℝ) / d := div_nonneg hRd_nn hd'.le
+  rw [dirichletEllipsoid_eq_image d R hd hR,
+    MeasureTheory.Measure.addHaar_image_linearMap, dirichletScale_det d R hd hR,
+    unitEuclideanBall3_volume, abs_of_nonneg h_det_nn,
+    ← ENNReal.ofReal_mul h_det_nn]
+  congr 1
+  ring
 
 /-- **Axiom: Minkowski Application**: When the ellipsoid is large enough, it contains a nonzero integer point.
 
