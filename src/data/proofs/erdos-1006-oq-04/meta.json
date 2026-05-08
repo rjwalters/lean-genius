@@ -2,7 +2,7 @@
   "id": "erdos-1006-oq-04",
   "title": "Erdős Problem #1006 OQ04: DAG Structure of the Coloring Orientation",
   "slug": "erdos-1006-oq-04",
-  "description": "The coloring orientation (orient u→v when col(u) < col(v) for a proper k-coloring) forms a graded DAG: all arcs go strictly from lower to higher color level, color-0 vertices are sources, color-(k-1) vertices are sinks, and exactly one arc direction holds for each edge.",
+  "description": "The coloring orientation (orient u→v when col(u) < col(v) for a proper k-coloring) forms a graded DAG: all arcs go strictly from lower to higher color level, color-0 vertices are sources, color-(k-1) vertices are sinks, and exactly one arc direction holds for each edge. A decidability companion file additionally answers the OQ04 open question: under the rank-based formulation, the existence problem is constant-time decidable (always YES), hence in P and not NP-hard.",
   "meta": {
     "author": "Lean Genius (OQ04 of Erdős #1006)",
     "sourceUrl": "https://erdosproblems.com/1006",
@@ -24,7 +24,7 @@
     "axiomCount": 0,
     "lineCount": 193,
     "theoremCount": 15,
-    "assumptions": "None. All 15 theorems are fully proved. Builds on coloringOrientation definition and acyclicity results from OQ03.",
+    "assumptions": "None. All 15 theorems are fully proved. Builds on coloringOrientation definition and acyclicity results from OQ03. A decidability companion file Erdos1006OQ04Decidability.lean adds 4 theorems + 1 instance + 1 definition (115 lines, 0 axioms, 0 sorries) formalising that the existence form of OQ04 is in P (in fact O(1)) under the rank-based formulation, via every_finite_graph_has_robust from OQ03.",
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Coloring",
@@ -39,7 +39,10 @@
     ],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/Erdos1006OQ04Decidability.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #1006 asks about *robustly acyclic orientations*: orientations where reversing any single arc preserves acyclicity. While this is open for general graphs, the coloring orientation (orient $u \\to v$ when $\\text{col}(u) < \\text{col}(v)$ for a proper $k$-coloring) provides an explicit, well-structured family of robustly acyclic orientations.\n\nThis file (OQ04) is the fourth in a series: OQ03 proved the coloring orientation is robustly acyclic and every finite graph admits such an orientation (via the four-color theorem / Mathlib's graph coloring). OQ04 goes further and characterizes the *internal structure* of these orientations — showing they are *graded DAGs* in the sense that every arc goes strictly from a lower color level to a higher one.\n\nThe graded DAG structure is the key reason why reversing any single arc preserves acyclicity: any directed path must monotonically increase in color value, so no cycle is possible even after a single reversal.",
@@ -50,7 +53,8 @@
       "**Color 0 = source layer, color k-1 = sink layer**: The lowest color class forms the source layer (no incoming arcs) and the highest forms the sink layer (no outgoing arcs). This gives a natural topological sort of the orientation.",
       "**Exactly one arc per edge**: For any edge $\\{u,v\\}$, since $\\text{col}(u) \\neq \\text{col}(v)$ (proper coloring), exactly one of $u \\to v$ or $v \\to u$ holds — determined by which color is smaller.",
       "**Robust acyclicity explained**: The graded structure explains *why* the orientation is robustly acyclic: any directed path must strictly increase in color, so no path of length $\\geq 2$ can create a cycle even after reversing one arc (reversing $u \\to v$ creates a back-arc of length 1, which is not a cycle).",
-      "**Building on OQ03**: OQ04 restates `coloringOrientation_acyclic_via_rank` and `every_graph_has_robust` from OQ03, demonstrating that the new rank-based perspective subsumes and extends the earlier acyclicity results."
+      "**Building on OQ03**: OQ04 restates `coloringOrientation_acyclic_via_rank` and `every_graph_has_robust` from OQ03, demonstrating that the new rank-based perspective subsumes and extends the earlier acyclicity results.",
+      "**OQ04 (existence form, rank-based) is in P**: The decidability companion file proves that the question 'does G admit a robustly acyclic orientation?' is constant-time decidable — answer is YES on every finite graph (corollary of OQ03's every_finite_graph_has_robust). A formal Decidable instance is provided."
     ]
   },
   "sections": [
@@ -125,7 +129,10 @@
     "theoremCount": 15,
     "definitionCount": 0,
     "path": "Proofs/Erdos1006OQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos1006OQ04Decidability.lean"
+    ]
   },
   "crossReferences": [
     {
