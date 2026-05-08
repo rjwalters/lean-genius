@@ -149,14 +149,16 @@ merge_prs() {
     local merged=0
     local failed=0
 
-    # Skip PRs with loom:review-requested — those are opted into Loom Judge review
-    local jq_filter='[.[] | select(.labels | map(.name) | any(. == "loom:review-requested") | not)]'
-    local all_prs=$(gh pr list --limit 100 --json number,mergeable,labels)
+    # Skip drafts (researcher "build pending" PRs) and PRs with loom:review-requested
+    # (those are opted into Loom Judge review).
+    local jq_filter='[.[] | select(.isDraft | not) | select(.labels | map(.name) | any(. == "loom:review-requested") | not)]'
+    local all_prs=$(gh pr list --limit 100 --json number,mergeable,labels,isDraft)
     local eligible_prs=$(echo "$all_prs" | jq "$jq_filter")
     local total=$(echo "$eligible_prs" | jq 'length')
-    local skipped=$(echo "$all_prs" | jq "length - ($total)")
+    local drafts=$(echo "$all_prs" | jq '[.[] | select(.isDraft)] | length')
+    local review_requested=$(echo "$all_prs" | jq '[.[] | select(.isDraft | not) | select(.labels | map(.name) | any(. == "loom:review-requested"))] | length')
 
-    print_info "Found $total eligible PRs ($skipped skipped — loom:review-requested)"
+    print_info "Found $total eligible PRs ($drafts drafts skipped, $review_requested loom:review-requested skipped)"
 
     if [[ $total -eq 0 ]]; then
         print_success "No PRs to merge"
