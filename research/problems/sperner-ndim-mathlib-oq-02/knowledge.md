@@ -1154,3 +1154,96 @@ short term-mode applications of already-merged S16/S17 lemmas.
    `face2_path_odd`'s color-changing edges. ~120 lines.
 3. **Apply `Triangulation.sperner`** with diameter bound + real
    coordinates. ~50 lines.
+
+## Session 2026-05-08 (Session 19 part 2) — Generic vertex/face bridge + 6 erase computations
+
+**Mode**: REVISIT (continuing post-S19.1 framework completion)
+**Outcome**: progress — added 1 generic bridge + 6 concrete erase
+lemmas (177 lines) preparing for S19.3 assembly
+
+### What I Did
+
+Added two-tier infrastructure for `_hBoundaryOnFace_simData2`:
+
+**Tier A — generic (in `SimplicialAdjFnHelper`):**
+
+* `forall_vertex_ne_iff_forall_face_mem`: converts the
+  `∀ j : Fin (n+1), j ≠ k → P (vertexEnum s hs j)` quantifier
+  required by the `_hBoundaryOnFace` hypothesis into the
+  face-content form `∀ v ∈ faceOf s hs k, P v`. Direct
+  reformulation via `vertexEnum_image_erase`. ~25 lines.
+
+**Tier B — concrete (in `SpernerFreudSimp.N2FaceErase`):**
+
+For each of the three vertices of `t1 b` and `t2 c`, an explicit
+`Finset.erase` equality giving the resulting edge:
+
+* `t1_erase_first/_second/_third`: `(t1 b).erase v` for
+  `v ∈ {(b.1+1, b.2), (b.1, b.2+1), b}` → the three edges
+  `{b, (b.1, b.2+1)}` (vertical), `{b, (b.1+1, b.2)}`
+  (horizontal), `{(b.1, b.2+1), (b.1+1, b.2)}` (diagonal).
+* `t2_erase_first/_second/_third`: `(t2 c).erase v` for
+  `v ∈ {(c.1+1, c.2+1), (c.1+1, c.2), (c.1, c.2+1)}` → the three
+  edges `{(c.1, c.2+1), (c.1+1, c.2)}` (face2),
+  `{(c.1, c.2+1), (c.1+1, c.2+1)}` (face1),
+  `{(c.1+1, c.2), (c.1+1, c.2+1)}` (face0).
+
+Each is a 2-direction Finset.ext + Prod.ext_iff + omega
+discharge. ~150 lines total.
+
+### Why This Matters
+
+The S19.1 generic translation `adjFn p k = none ↔ (containersOf
+(faceOf p.1 p.2 k)).card ≤ 1` connects the abstract `adjFn` to
+the *abstract* `containersOf face`. But the geometric S18 lemmas
+(`*_only_container_of_t1_boundary`, `t2_face*_card_ge_two`) work
+with *concrete* edge filter sets — e.g.
+`(topSimps2 N).filter (fun s => {b, (b.1, b.2+1)} ⊆ s)`.
+
+The missing link is: when `s = t1 b` and `vertexEnum (t1 b) hs k`
+is the v-th vertex, what concrete 2-element edge IS
+`faceOf (t1 b) hs k = (t1 b).erase v`?
+
+The 6 erase lemmas answer this precisely. Combined with the
+generic ∀-quantifier bridge, S19.3 can now case-split on the
+removed vertex (3 cases per cell type) and pattern-match each
+to the corresponding S18 lemma.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (1685 → 1862 lines, +177)
+
+### Build Status
+
+Build pending (Docker). Local build infrastructure has the
+broken `proofs/.lake` self-symlink trap (per memory feedback,
+forces 45+ min Docker rebuilds). PR submitted with explicit
+"build pending" disclaimer; auditor and S19.3 will verify.
+
+### Next Steps (Session 19 part 3)
+
+Assemble the concrete `_hBoundaryOnFace_simData2` lemma. The
+infrastructure is now complete. Schematic structure:
+
+```
+private lemma hBoundaryOnFace_simData2 (N : ℕ) :
+    ∀ (s : { s // s ∈ topSimps2 N }) (k : Fin 3),
+      (simData2 N).adjFn s k = none →
+        ∃ faceIdx : Fin 3, ∀ j : Fin 3, j ≠ k →
+          onFaceΔ2 N ((simData2 N).vertexEnum s.1 s.2 j) faceIdx := by
+  intro ⟨s, hs⟩ k hadj
+  have hcard := (adjFn_eq_none_iff_card_le_one _ _ _).mp hadj
+  -- Use forall_vertex_ne_iff_forall_face_mem for goal
+  -- Case t1 b vs t2 c via topSimps2_mem_iff
+  -- For t1: case on vertexEnum_mem (t1 b) hs k ∈ t1 b (3 cases)
+  --   each case: rewrite faceOf using t1_erase_*, then either
+  --     (a) contradict card ≤ 1 with interior witness (S17,
+  --         S18.2.1, S18.2.2) → derive boundary condition
+  --     (b) use S18.5 endpoints_on_face* to discharge ∃ faceIdx
+  -- For t2: case on vertexEnum_mem (t2 c) hs k (3 cases)
+  --   each: rewrite using t2_erase_*, contradict via
+  --     t2_face*_card_ge_two (always card ≥ 2)
+  ...
+```
+
+Estimated: ~80 lines.
