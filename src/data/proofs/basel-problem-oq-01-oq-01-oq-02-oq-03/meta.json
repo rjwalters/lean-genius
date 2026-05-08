@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 237,
-    "theoremCount": 29,
+    "lineCount": 255,
+    "theoremCount": 30,
     "definitionCount": 1,
     "assumptions": "Axiomatized: hanson_bound — for all n, lcm(1,...,n) ≤ 3^n. Numerically verified for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Hanson's original 1972 proof uses Beta-integral identities and Chebyshev-style prime-power bounds; neither is in Mathlib. Provable easier bounds (lcm | n!, lcm ≤ n!, lcm ≤ n^n) are included with no axioms.",
     "mathlibDependencies": [
@@ -42,6 +42,11 @@
         "theorem": "Finset.dvd_lcm",
         "description": "Every element divides the lcm",
         "module": "Mathlib.Data.Finset.Lattice"
+      },
+      {
+        "theorem": "Nat.pow_log_le_self",
+        "description": "b ^ Nat.log b n ≤ n for n ≠ 0; used in prime_pow_dvd_lcmRange to lift pow_dvd_lcmRange to the maximal-prime-power case",
+        "module": "Mathlib.Data.Nat.Log"
       }
     ],
     "dateAdded": "2026-05-07",
@@ -63,32 +68,32 @@
     {
       "id": "definition",
       "title": "Part 1-2: Definition and Basic Properties",
-      "startLine": 60,
-      "endLine": 160,
-      "summary": "Defines lcmRange n = lcm{1,...,n} (matching the parent file's lcmUpTo), establishes lcmRange_zero, lcmRange_one, lcmRange_pos, dvd_lcmRange, pow_dvd_lcmRange (any positive base power b^k ≤ n divides lcmRange n — the building block for prime-power decompositions), and the structural lemmas lcmRange_succ (recursion), lcmRange_dvd_lcmRange_of_le (divisibility monotonicity), lcmRange_monotone.",
+      "startLine": 65,
+      "endLine": 178,
+      "summary": "Defines lcmRange n = lcm{1,...,n} (matching the parent file's lcmUpTo), establishes lcmRange_zero, lcmRange_one, lcmRange_pos, dvd_lcmRange, pow_dvd_lcmRange (any positive base power b^k ≤ n divides lcmRange n — the building block for prime-power decompositions), prime_pow_dvd_lcmRange (specialization to the maximal prime-power p^⌊log_p n⌋ — the prime-power half of Chebyshev's decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^⌊log_p n⌋), and the structural lemmas lcmRange_succ (recursion), lcmRange_dvd_lcmRange_of_le (divisibility monotonicity), lcmRange_monotone.",
       "mathContext": "$\\operatorname{lcmRange}(n) = \\operatorname{lcm}\\{1, 2, \\ldots, n\\}$ encoded as a `Finset.lcm` over `Finset.range n` mapped through (·+1)."
     },
     {
       "id": "elementary-bounds",
       "title": "Part 3: Provable Elementary Bounds",
-      "startLine": 162,
-      "endLine": 182,
+      "startLine": 180,
+      "endLine": 200,
       "summary": "Proves the three elementary bounds with no axioms: lcmRange_dvd_factorial, lcmRange_le_factorial, lcmRange_le_self_pow. The chain lcm ≤ n! ≤ n^n is the trivial bound that Hanson's 3^n strictly improves upon.",
       "mathContext": "$\\operatorname{lcm}(1, \\ldots, n) \\mid n!$ via `Nat.dvd_factorial`, then $\\operatorname{lcm}(1, \\ldots, n) \\leq n! \\leq n^n$ via `Nat.factorial_le_pow`."
     },
     {
       "id": "numerical",
       "title": "Part 4: Numerical Verification of Hanson",
-      "startLine": 183,
-      "endLine": 205,
+      "startLine": 201,
+      "endLine": 223,
       "summary": "Verifies lcmRange n ≤ 3^n for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Includes lcmRange exact values lcmRange 5 = 60, lcmRange 10 = 2520, lcmRange 15 = 360360, lcmRange 20 = 232792560 (matches OEIS A003418).",
       "mathContext": "Concrete: $\\operatorname{lcm}(1, \\ldots, 20) = 232\\,792\\,560$ vs $3^{20} = 3\\,486\\,784\\,401$, ratio $\\approx 15$."
     },
     {
       "id": "axiom",
       "title": "Part 5: Hanson's Bound (Axiom)",
-      "startLine": 207,
-      "endLine": 237,
+      "startLine": 225,
+      "endLine": 255,
       "summary": "States `axiom hanson_bound : ∀ n, lcmRange n ≤ 3^n` — Hanson's classical 1972 theorem. Includes hanson_strictly_stronger_than_factorial showing the constant 3 is genuinely tighter than the trivial n^n bound for n ≥ 4.",
       "mathContext": "Hanson 1972: $\\operatorname{lcm}(1, \\ldots, n) \\leq 3^n$. Original proof uses Beta-integral identity $\\int_0^1 x^k(1-x)^{n-k} dx = \\frac{1}{(n+1)\\binom{n}{k}}$ combined with prime-power bounds."
     }

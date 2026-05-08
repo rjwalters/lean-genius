@@ -4,16 +4,30 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-07
-**Iteration**: 2
+**Last Updated**: 2026-05-08 (Iteration 5, researcher-1)
+**Iteration**: 5
 
 ## Current Focus
-Iteration 2 (2026-05-07): added foundational structural lemmas required
-by every subsequent proof attempt:
-- `lcmRange_succ`: lcm(1,...,n+1) = Nat.lcm (lcmRange n) (n+1) — the
-  recursive structure inducting along `n` will use.
+Iteration 5 (2026-05-08, this PR): added the prime-power
+specialization on top of Iteration 3's `pow_dvd_lcmRange`:
+
+- `prime_pow_dvd_lcmRange : ∀ {p n : ℕ}, p.Prime → 1 ≤ n →
+   p ^ Nat.log p n ∣ lcmRange n`
+
+The proof is a one-line specialization of `pow_dvd_lcmRange`, using
+`Nat.pow_log_le_self p hn'` to discharge `p ^ Nat.log p n ≤ n`. New
+imports: `Mathlib.Data.Nat.Log`, `Mathlib.Data.Nat.Prime.Basic`. This
+is the maximal-prime-power half of Chebyshev's decomposition
+`lcm(1,...,n) = ∏_{p prime ≤ n} p ^ ⌊log_p n⌋`.
+
+Iteration 3 (#16772 merged): added `pow_dvd_lcmRange : 0 < b → b^k ≤ n
+→ b^k ∣ lcmRange n` — the generic power-divisibility lemma whose prime
+specialization Iteration 5 just discharged.
+
+Iteration 2 (#16704 merged): added foundational structural lemmas:
+- `lcmRange_succ`: lcm(1,...,n+1) = Nat.lcm (lcmRange n) (n+1).
 - `lcmRange_dvd_lcmRange_of_le`: divisibility monotonicity.
-- `lcmRange_monotone`: numerical monotonicity (with `n=0` boundary).
+- `lcmRange_monotone`: numerical monotonicity.
 
 Iteration 1 (bootstrap, completed 2026-05-07):
 - Provable elementary bounds: lcmRange n ≤ n!, lcmRange n ≤ n^n.
@@ -36,10 +50,13 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 2.
+- Total attempts: 5.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
-  structural-lemma layer for inductive proofs (iter 2).
+  structural-lemma layer for inductive proofs (iter 2); generic
+  power-divisibility lemma `pow_dvd_lcmRange` (iter 3); empirical
+  evidence extension n ∈ {25, 30, 50} (iter 4, in flight as #16880);
+  prime-power specialization `prime_pow_dvd_lcmRange` (iter 5, this PR).
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -48,17 +65,38 @@ Currently blocked on:
 
 ## Next Action
 
-**Two follow-up paths:**
+**Iteration 6 candidate**: prove `lcmRange_eq_prod_prime_powers`,
+the Chebyshev decomposition
 
-1. **Intermediate `lcm(1..n) ≤ 4^n`** (easier). Develop the bridge
-   `primorial(n) ≤ lcm(1..n) ≤ n · primorial(n)` and combine with
-   Mathlib's `primorial_le_4_pow`. Estimated 1-2 weeks of focused work.
+  `lcmRange n = ∏ p ∈ Finset.filter Nat.Prime (Finset.range (n+1)),
+                p ^ Nat.log p n`.
 
-2. **Full Hanson `3^n`** (harder). Requires Beta-integral machinery.
-   Estimated months.
+Forward direction (RHS ∣ LHS): use `prime_pow_dvd_lcmRange` (this PR)
+together with pairwise-coprimality of distinct primes — distinct prime
+powers are coprime, so a finite-product divisibility argument gives
+the result. The relevant Mathlib facts are
+`Nat.Coprime.prime_pow_pow` and `Finset.prod_dvd_of_dvd_of_pairwiseDisjoint`.
 
-Either result discharges (or strengthens) the parent file's
-`lcm_hanson_bound` axiom.
+Reverse direction (LHS ∣ RHS): for each `k ∈ {1,...,n}` use unique
+factorization (`Nat.factorization`) to express `k = ∏_p p^(k.factorization p)`
+and bound each exponent by `Nat.log p n`.
+
+After this, the Chebyshev product gives an explicit numerator-denominator
+form for `lcmRange n` as a product over primes ≤ n, and the bound
+`lcmRange n ≤ ∏_{p ≤ n} n = n^{π(n)}` follows immediately
+(strictly weaker than 3^n but a non-trivial published-bound milestone).
+
+**Long-term paths still open:**
+
+1. **Intermediate `lcm(1..n) ≤ 4^n`** via primorial bridge: blocked on
+   the Mathlib bridge `lcm(1..n) ≤ n · primorial(n)`. Note (Iteration 3
+   insight): the literal `≤ n · primorial(n)` form is FALSE
+   (counterexample n=9: 2520 > 1890). Correct route is via Chebyshev's
+   prime-power formula above.
+
+2. **Full Hanson `3^n`** (Beta-integral + Chebyshev): months.
+
+Either result discharges the parent file's `lcm_hanson_bound` axiom.
 
 ## References
 

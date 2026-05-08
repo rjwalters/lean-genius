@@ -1,5 +1,7 @@
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Algebra.GCDMonoid.Finset
+import Mathlib.Data.Nat.Log
+import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
 /-
@@ -112,6 +114,22 @@ theorem dvd_lcmRange {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
 theorem pow_dvd_lcmRange {b k n : ℕ} (hb : 0 < b) (hbkn : b ^ k ≤ n) :
     b ^ k ∣ lcmRange n :=
   dvd_lcmRange (Nat.pos_pow_of_pos k hb) hbkn
+
+/-- **Maximal prime-power divisibility**: for any prime `p` and `n ≥ 1`,
+    `p ^ ⌊log_p n⌋` divides `lcmRange n`.
+
+    This is the prime-power half of Chebyshev's decomposition
+    `lcm(1,...,n) = ∏_{p prime ≤ n} p ^ ⌊log_p n⌋`: every maximal prime
+    power dividing some `k ∈ {1,...,n}` divides `lcmRange n`. The reverse
+    inclusion (that no larger prime power can divide `lcmRange n`) follows
+    from the Mathlib `Nat.factorization` framework and is the next
+    structural step toward replacing `hanson_bound`.
+
+    The proof is a one-line specialization of `pow_dvd_lcmRange`:
+    `Nat.pow_log_le_self p hn'` gives `p ^ Nat.log p n ≤ n`. -/
+theorem prime_pow_dvd_lcmRange {p n : ℕ} (hp : p.Prime) (hn : 1 ≤ n) :
+    p ^ Nat.log p n ∣ lcmRange n :=
+  pow_dvd_lcmRange hp.pos (Nat.pow_log_le_self p (by omega))
 
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
