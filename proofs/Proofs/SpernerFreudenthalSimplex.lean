@@ -1352,4 +1352,115 @@ private lemma vertical_endpoints_on_face0
   · rw [onFaceΔ2_zero_iff]; exact hb1
 
 end N2BoundaryAnalysis
+
+-- ============================================================
+-- (Session 18 part 2) Interior-face neighbor existentials.
+--
+-- Companion to S18 part 1's t1-boundary container singletons:
+-- whereas part 1 covers the case when an edge of t1(b) has NO
+-- other top-simplex container (geometric boundary cases:
+--    diagonal at b.1+b.2+1 ≥ N, horizontal at b.2 = 0,
+--    vertical at b.1 = 0),
+-- this section covers the *interior* cases — when an edge of
+-- a t1 or t2 cell DOES have another top-simplex container, and
+-- explicitly produces the witness (`t2(face-mate)` or
+-- `t1(face-mate)`).
+--
+-- Together these cover all six face/edge × cell-type
+-- combinations needed by `_hBoundaryOnFace` for the n=2
+-- triangulation:
+--   * t1 cell, diagonal: S17 `diagonal_neighbor_topSimps2`
+--                        (interior) + S18.1 (boundary)
+--   * t1 cell, horizontal: S18.2.1 below (interior)
+--                          + S18.1 (boundary)
+--   * t1 cell, vertical:   S18.2.2 below (interior)
+--                          + S18.1 (boundary)
+--   * t2 cell, face0/1/2:  S18.2.3-5 below (always interior;
+--                          t2 contributes no boundary doors)
+-- ============================================================
+
+namespace SpernerFreudSimp
+section N2BoundaryInteriorNeighbors
+
+-- ----------------------------------------------------------------
+-- (S18.2.1) Interior horizontal: for `b ∈ t1Bases N` with
+-- `b.2 ≥ 1`, the horizontal edge `{b, (b.1+1, b.2)}` of `t1 b`
+-- is also contained in `t2 (b.1, b.2 - 1)`, which is a distinct
+-- simplex of `topSimps2 N`.
+-- ----------------------------------------------------------------
+
+private lemma horizontal_neighbor_topSimps2
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb2 : 1 ≤ b.2) :
+    ∃ s ∈ topSimps2 N, s ≠ t1 b ∧
+      ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s :=
+  ⟨t2 (b.1, b.2 - 1),
+   t2_in_topSimps2_of_base N (t1Bases_horizontal_neighbor_in_t2Bases N hb hb2),
+   (t1_ne_t2 b (b.1, b.2 - 1)).symm,
+   horizontal_in_t2_pos b hb2⟩
+
+-- ----------------------------------------------------------------
+-- (S18.2.2) Interior vertical: for `b ∈ t1Bases N` with
+-- `b.1 ≥ 1`, the vertical edge `{b, (b.1, b.2+1)}` of `t1 b`
+-- is also contained in `t2 (b.1 - 1, b.2)`, distinct from t1 b.
+-- ----------------------------------------------------------------
+
+private lemma vertical_neighbor_topSimps2
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb1 : 1 ≤ b.1) :
+    ∃ s ∈ topSimps2 N, s ≠ t1 b ∧
+      ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s :=
+  ⟨t2 (b.1 - 1, b.2),
+   t2_in_topSimps2_of_base N (t1Bases_vertical_neighbor_in_t2Bases N hb hb1),
+   (t1_ne_t2 b (b.1 - 1, b.2)).symm,
+   vertical_in_t2_pos b hb1⟩
+
+-- ----------------------------------------------------------------
+-- (S18.2.3) t2 face0 ("right side") is always shared with a t1
+-- cell. For `c ∈ t2Bases N`, the edge `{(c.1+1, c.2),
+-- (c.1+1, c.2+1)}` is contained in `t1 (c.1+1, c.2)`, which is a
+-- distinct simplex of `topSimps2 N`. Hence t2 cells contribute
+-- no boundary doors via face0.
+-- ----------------------------------------------------------------
+
+private lemma t2_face0_neighbor_topSimps2
+    (N : ℕ) {c : ℕ × ℕ} (hc : c ∈ t2Bases N) :
+    ∃ s ∈ topSimps2 N, s ≠ t2 c ∧
+      ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) ⊆ s :=
+  ⟨t1 (c.1+1, c.2),
+   t1_in_topSimps2_of_base N (t2Bases_right_in_t1Bases N hc),
+   t1_ne_t2 (c.1+1, c.2) c,
+   t2_face0_in_t1 c⟩
+
+-- ----------------------------------------------------------------
+-- (S18.2.4) t2 face1 ("top side") is always shared with a t1
+-- cell. For `c ∈ t2Bases N`, the edge `{(c.1, c.2+1),
+-- (c.1+1, c.2+1)}` is contained in `t1 (c.1, c.2+1)`, distinct
+-- from t2 c.
+-- ----------------------------------------------------------------
+
+private lemma t2_face1_neighbor_topSimps2
+    (N : ℕ) {c : ℕ × ℕ} (hc : c ∈ t2Bases N) :
+    ∃ s ∈ topSimps2 N, s ≠ t2 c ∧
+      ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) ⊆ s :=
+  ⟨t1 (c.1, c.2+1),
+   t1_in_topSimps2_of_base N (t2Bases_top_in_t1Bases N hc),
+   t1_ne_t2 (c.1, c.2+1) c,
+   t2_face1_in_t1 c⟩
+
+-- ----------------------------------------------------------------
+-- (S18.2.5) t2 face2 ("diagonal") is always shared with a t1
+-- cell — specifically `t1 c` itself. For `c ∈ t2Bases N`, the
+-- edge `{(c.1, c.2+1), (c.1+1, c.2)}` is contained in `t1 c`,
+-- which is distinct from t2 c (different vertex sets).
+-- ----------------------------------------------------------------
+
+private lemma t2_face2_neighbor_topSimps2
+    (N : ℕ) {c : ℕ × ℕ} (hc : c ∈ t2Bases N) :
+    ∃ s ∈ topSimps2 N, s ≠ t2 c ∧
+      ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) ⊆ s :=
+  ⟨t1 c,
+   t1_in_topSimps2_of_base N (t2Bases_self_in_t1Bases N hc),
+   t1_ne_t2 c c,
+   t2_face2_in_t1 c⟩
+
+end N2BoundaryInteriorNeighbors
 end SpernerFreudSimp

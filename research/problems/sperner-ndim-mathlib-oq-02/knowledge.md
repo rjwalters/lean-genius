@@ -1058,3 +1058,99 @@ CI is the ground truth.
 Total estimated remaining for `sperner_panchromatic_two`:
 ~200 lines across 2 sessions (S17 cuts ~30 from the post-S16 estimate
 of 250).
+
+## Session 2026-05-08 (Session 18 part 2, researcher-5) — N2BoundaryInteriorNeighbors
+
+**Mode**: REVISIT (continuing S18 work after PR #17133 merged)
+**Outcome**: progress — added 5 interior-face existentials so the
+n=2 `_hBoundaryOnFace` building blocks are *complete*; build pending.
+
+### What I Did
+
+PR #17133 (S18 part 1, researcher-1) merged into origin/main mid-session.
+That PR covers the **boundary** side of t1 cells: container-singleton
++ cardinality-1 + onFaceΔ2-endpoint-witness lemmas. Identified the
+symmetric **interior** gap: t1 cells with non-saturating geometric
+position need a *positive* witness ("there IS another simplex
+containing this edge"), and t2 cells need that witness for *all
+three* faces (since t2 cells contribute no boundary doors at all).
+
+Added 5 `private lemma`s with 4-tuple term-mode proofs in a new
+`section N2BoundaryInteriorNeighbors` appended *after*
+`N2BoundaryAnalysis` and `end SpernerFreudSimp` (re-opening the
+namespace; private lemmas remain accessible as they're file-scoped):
+
+1. `horizontal_neighbor_topSimps2` — t1 cell, horizontal edge,
+   `b.2 ≥ 1` ⇒ witness `t2 (b.1, b.2 - 1)`.
+2. `vertical_neighbor_topSimps2` — t1 cell, vertical edge,
+   `b.1 ≥ 1` ⇒ witness `t2 (b.1 - 1, b.2)`.
+3. `t2_face0_neighbor_topSimps2` — t2 cell, face0 ⇒ witness
+   `t1 (c.1+1, c.2)`.
+4. `t2_face1_neighbor_topSimps2` — t2 cell, face1 ⇒ witness
+   `t1 (c.1, c.2+1)`.
+5. `t2_face2_neighbor_topSimps2` — t2 cell, face2 ⇒ witness `t1 c`.
+
+Each proof uses the same 4-element constructor as S17's
+`diagonal_neighbor_topSimps2` reverse direction: witness simplex,
+membership in `topSimps2 N` (via `t1_in_topSimps2_of_base` /
+`t2_in_topSimps2_of_base`), distinctness from the original cell (via
+`t1_ne_t2 _ _` or its `.symm`), and edge containment (via S16's
+`horizontal_in_t2_pos` / `vertical_in_t2_pos` /
+`t2_face{0,1,2}_in_t1`).
+
+### Key Findings
+
+- **Six-cell coverage table** is now complete for `_hBoundaryOnFace`:
+  every (cell-type, face-index) pair has either a boundary-singleton
+  lemma (S18.1) or an interior-existential lemma (S17 + S18.2).
+- **The `(t1_ne_t2 b c).symm` vs raw `t1_ne_t2 b c` direction
+  matters**. For t1-as-the-cell (witness is t2): we want `t2 _ ≠ t1 b`,
+  so use `.symm` of `t1_ne_t2 b _`. For t2-as-the-cell (witness is t1):
+  we want `t1 _ ≠ t2 c`, so use raw `t1_ne_t2 _ c`.
+- **Term-mode 4-tuples flatten correctly** through `∃ s ∈ S, P ∧ Q`
+  without explicit nested `⟨_, ⟨_, _⟩⟩`. Verified pattern: S17's
+  `refine ⟨t2 b, ?_, ?_, ?_⟩` (tactic) → `⟨t2 b, p1, p2, p3⟩`
+  (term).
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (+111 lines,
+  appended `section N2BoundaryInteriorNeighbors` AFTER existing
+  `end SpernerFreudSimp`, then re-opened the namespace)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md`
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md`
+  (this entry)
+- `src/data/research/problems/sperner-ndim-mathlib-oq-02.json`
+
+### Build Status
+
+Docker build not run this session: same recursive `.lake` symlink
+constraint (~25–45 min fresh-clone of Mathlib). All 5 lemmas are
+short term-mode applications of already-merged S16/S17 lemmas.
+
+### Avoided Conflicts / Traps
+
+- Edit-tool absolute-path-into-main-repo trap triggered once at
+  session start; rescued by `git checkout HEAD -- <file>` in main
+  repo + `git apply` of extracted patch in worktree. (Memory:
+  `feedback_mechanic_worktree_vs_main_repo`.)
+- Origin/main moved forward TWICE during the session as deployer
+  merged other PRs; rebased fresh from origin/main both times to
+  keep diff scoped to my work only.
+- New section appended *after* `end SpernerFreudSimp` (re-opens the
+  namespace) so future merge with any in-flight PR inserting
+  inside `N2BoundaryAnalysis` won't textually conflict.
+
+### Next Steps (Session 19)
+
+1. **Translate `T.adj s k = none` to the building blocks above**:
+   `simData2.toTriangulation`'s `adjFn` returns `none` iff there's
+   no other simplex sharing the (k-th) face. Combine with
+   `topSimps2_mem_iff` case split + the 11 building blocks
+   (S16/S17/S18.1/S18.2) to produce a clean `_hBoundaryOnFace`
+   statement (~80 lines, mostly case-splitting; arithmetic content
+   already done).
+2. **`_hLastFace`** (face 2 boundary doors): bijection with
+   `face2_path_odd`'s color-changing edges. ~120 lines.
+3. **Apply `Triangulation.sperner`** with diameter bound + real
+   coordinates. ~50 lines.
