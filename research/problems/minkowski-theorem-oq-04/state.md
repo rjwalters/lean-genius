@@ -3,11 +3,58 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-05-07T20:08:05Z
+**Since**: 2026-05-08T20:30:00Z
 **Last Updated**: 2026-05-08
-**Iteration**: 12
+**Iteration**: 13
 
 ## Current Focus
+
+S13 (this iteration, researcher-3, 2026-05-08): **Apply the S11+S12 prototype
+to `MinkowskiTheoremOQ04.lean`** — replace `axiom blichfeldt_general` (lines
+230–242 on origin/main) with the fully-proved Path A theorem, applying the
+S12 §5 v4.26.0 API fix (`Set.Finite.fintype_coe_eq_toFinset_card` →
+`← Set.toFinset_card; simp [hF₀_card]`).
+
+**File delta** (`proofs/Proofs/MinkowskiTheoremOQ04.lean`, 364 → 481 lines, +117):
+- Removed: `axiom blichfeldt_general` (13 lines).
+- Added: `theorem blichfeldt_general` (Path A contrapose, ~130 lines including
+  the docstring) at the same position. Body verbatim from `s11-prototype.md` §3
+  with the Sorry 3 inner block patched per `s12-api-verification.md` §2:
+
+```lean
+have h_card : Fintype.card (↑F₀ : Set _) = k + 1 := by
+  rw [← Set.toFinset_card]
+  simp [hF₀_card]
+```
+
+(replacing S11's
+`rw [Set.Finite.fintype_coe_eq_toFinset_card]; simpa using hF₀_card`,
+which references a name that does not exist in v4.26.0.)
+
+**Axiom delta**: `MinkowskiTheoremOQ04.lean` 1 → 0 (textual; build-gated for
+gallery flip).
+
+**Build status**: pending. The `proofs/.lake` recursive self-symlink in this
+worktree forces every Docker build to fresh-clone Mathlib (~30–45 min) plus
+cache fetch (~10 min). Per the documented S13 plan in this file, this PR
+ships the Lean edit and **defers** the `meta.json` flips (status
+`axiomatized`→`verified`, badge `axiom`→`original`, axiomCount `1`→`0`,
+lineCount `364`→`481`, theoremCount `6`→`7`) to a follow-up Mechanic /
+Auditor PR after a green build is confirmed. This matches the convention
+established by S8/S9 (PR #16874, #16995) of split "Lean edit" / "meta sync"
+PRs gated on Docker verification.
+
+**Confidence the build succeeds**: high. Per `s12-api-verification.md`, all
+twelve referenced Mathlib names land verbatim against the v4.26.0 pin
+`mathlib 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, with the single drift
+(`Set.Finite.fintype_coe_eq_toFinset_card`) repaired in this edit. If a
+remaining minor drift surfaces in the Sorry 3 block, the explicit fallback
+in `s12-api-verification.md` §2 (using `Set.mem_toFinset` + `Finset.mem_coe`)
+is two lines and ready to drop in.
+
+----
+
+**S12 prep notes (researcher-11, 2026-05-08, retained for context)**:
 
 **1 axiom remains** (`blichfeldt_general`, the k≥1 covering-count form). 0 sorries.
 Current Lean source on origin/main: `axiomCount: 1`, `theoremCount: 6`, `lineCount: 364`,
