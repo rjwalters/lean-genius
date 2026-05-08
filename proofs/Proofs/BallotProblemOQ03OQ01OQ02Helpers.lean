@@ -5204,6 +5204,73 @@ private lemma hookLength_doubleRemove_other
   have h_unaff_c' := hookLength_eq_of_not_arm_leg hc'_in_rc hxν hxc' hxarm_c' hxleg_c'
   rw [h_unaff_c', h_unaff_c]
 
+-- ============================================================
+-- Single-removal hookLength shifts at arm/leg cells of *another* corner
+-- (Session 50, prerequisites for `hookProd_doubleRemove_factor`)
+--
+-- These two lemmas are the *dual chain* of the S48 double-removal lemmas:
+-- they state how `hookLength` shifts at the arm/leg cells of corner `c`
+-- when the *other* corner `c'` is removed (rather than `c`).  Combined
+-- with `hookLength_removeCorner_arm`/`_leg` for corner `c`, they give an
+-- alternative derivation of S48 via the iteration order `(μ\c')\c`.
+--
+-- More importantly, they are the building blocks of the upcoming
+-- `hookProd_doubleRemove_factor` proof: applying `hookProd_ratio_formula`
+-- to corner `c` on `μ` and on `μ\c'` produces two arm/leg products that
+-- are pointwise equal *except* at the doubly-affected cell `d = (c.1, c'.2)`.
+-- These lemmas establish that pointwise equality at all cells off `d`.
+-- ============================================================
+
+/-- **At arm-of-`c` cells off the doubly-affected cell, removing `c'` preserves hookLength.**
+
+For two distinct corners `c, c'` of `μ` with `c.1 < c'.1`, an arm-of-`c` cell
+`(c.1, s)` with `s < c.2` and `s ≠ c'.2` is in neither arm nor leg of `c'`:
+* not in arm of `c'` because `c.1 ≠ c'.1` (since `c.1 < c'.1`);
+* not in leg of `c'` because the column `s ≠ c'.2`.
+Therefore `hookLength_eq_of_not_arm_leg` applied to corner `c'` gives
+hookLength invariance at this cell. -/
+private lemma hookLength_removeCornerC'_arm_of_c_off_d
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hi : c.1 < c'.1)
+    {s : ℕ} (hs : s < c.2) (hs' : s ≠ c'.2) :
+    hookLength (removeCorner μ c' hc') c.1 s = hookLength μ c.1 s := by
+  have hsmem : (c.1, s) ∈ μ :=
+    YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega)
+  have hxc' : (c.1, s) ≠ c' := fun h => by
+    have : c.1 = c'.1 := congr_arg Prod.fst h; omega
+  have hxarm : ¬((c.1, s).1 = c'.1 ∧ (c.1, s).2 < c'.2) := by
+    rintro ⟨h1, _⟩; exact absurd h1 (Nat.ne_of_lt hi)
+  have hxleg : ¬((c.1, s).1 < c'.1 ∧ (c.1, s).2 = c'.2) := by
+    rintro ⟨_, h2⟩; exact hs' h2
+  exact hookLength_eq_of_not_arm_leg hc' hsmem hxc' hxarm hxleg
+
+/-- **At leg-of-`c` cells, removing `c'` preserves hookLength.**
+
+For two distinct corners `c, c'` of `μ` with `c.1 < c'.1` (whence `c'.2 < c.2`
+by `corner_col_lt_of_row_lt`), a leg-of-`c` cell `(r, c.2)` with `r < c.1` is
+in neither arm nor leg of `c'`:
+* not in arm of `c'` because `r < c.1 < c'.1`, so `r ≠ c'.1`;
+* not in leg of `c'` because `c'.2 < c.2`, so the column `c.2 ≠ c'.2`.
+Therefore `hookLength_eq_of_not_arm_leg` applied to corner `c'` gives
+hookLength invariance at this cell.  Note: unlike the arm case, *all*
+leg-of-`c` cells are off the doubly-affected cell `d = (c.1, c'.2)`,
+since `d` lies in the *arm* of `c` (row `c.1`, col `c'.2 < c.2`). -/
+private lemma hookLength_removeCornerC'_leg_of_c
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hi : c.1 < c'.1)
+    {r : ℕ} (hr : r < c.1) :
+    hookLength (removeCorner μ c' hc') r c.2 = hookLength μ r c.2 := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  have hsmem : (r, c.2) ∈ μ :=
+    YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega)
+  have hxc' : (r, c.2) ≠ c' := fun h => by
+    have : c.2 = c'.2 := congr_arg Prod.snd h; omega
+  have hxarm : ¬((r, c.2).1 = c'.1 ∧ (r, c.2).2 < c'.2) := by
+    rintro ⟨h1, _⟩; omega
+  have hxleg : ¬((r, c.2).1 < c'.1 ∧ (r, c.2).2 = c'.2) := by
+    rintro ⟨_, h2⟩; omega
+  exact hookLength_eq_of_not_arm_leg hc' hsmem hxc' hxarm hxleg
+
 /-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
 private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
     {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
