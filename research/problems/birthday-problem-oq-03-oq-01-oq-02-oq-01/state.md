@@ -1,11 +1,67 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 begun: sub-pieces 3a/3b implemented)
+**Phase**: ACT (Layer 3 advancing: 3a–3d complete; 3e–3g remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 14
-**Last Update**: 2026-05-08 (Session 14, researcher-3)
+**Iteration**: 15
+**Last Update**: 2026-05-08 (Session 15, researcher-10)
+
+## Session 15 Summary (2026-05-08, researcher-10)
+
+**Mode**: ACT (Layer 3 sub-pieces 3c/3d per roadmap §8a).
+
+**Outcome**: implemented Layer 3 sub-pieces 3c (overlap-pattern partition)
+and 3d (factorial-moment-2 sum decomposition) in a new §7 of
+`BirthdayProblemOQ03OQ01OQ02.lean` (≈ 263 lines added; file 1295 → 1555
+lines, 41 → 48 theorems / lemmas, 6 → 8 defs):
+
+- `def tripleSet {n} (T : Fin n × Fin n × Fin n) : Finset (Fin n)` —
+  underlying 3-element index set `{T.1, T.2.1, T.2.2}` of a triple.
+- `card_tripleSet_of_strict` — for `T ∈ strictTriples n` (i.e. a < b < c),
+  `(tripleSet T).card = 3`. Proved by the chain `Finset.card_insert_of_not_mem
+  ∘ Finset.card_insert_of_not_mem ∘ Finset.card_singleton` with explicit
+  non-membership hypotheses derived from the strict order.
+- **Key lemma** `strict_eq_of_tripleSet_eq` — for STRICT triples, the
+  underlying 3-element set determines the triple as a sorted tuple. Proof:
+  destructure both T₁ = (a, b, c) and T₂ = (a', b', c'), then derive
+  a = min(set) = a' by `le_antisymm` (each element of one is ≥ the min of
+  the other); similarly c = max = c'; finally b is the unique remaining
+  element. This is the geometric content that rules out the overlap-3
+  stratum in `overlapPattern`.
+- `tripleSet_inter_card_le_three` — auxiliary bound for the fiberwise
+  partition (the intersection card is ≤ tripleSet.card = 3).
+- **Layer 3c** `def overlapPattern (n k : ℕ)` — ordered pairs (T₁, T₂)
+  of distinct strict triples with `(tripleSet T₁ ∩ tripleSet T₂).card = k`.
+  Index range is `k ∈ {0, 1, 2, 3}` formally; the genuine partition is
+  `{0, 1, 2}` after the next lemma.
+- **Layer 3c** `overlapPattern_three_eq_empty` — the k = 3 stratum is empty.
+  Proved by: if T₁ ∩ T₂ has card 3, then by
+  `Finset.eq_of_subset_of_card_le` it equals both `tripleSet T₁` and
+  `tripleSet T₂`, hence those underlying sets coincide; then by
+  `strict_eq_of_tripleSet_eq` the triples coincide, contradicting T₁ ≠ T₂.
+- **Layer 3c** `overlapPattern_partitions_offDiag` — the four strata
+  partition the diagonal-removed pair-of-strict-triples space:
+  `(((strictTriples n) ×ˢ (strictTriples n)).filter (· ≠ ·)).card =
+   ∑ k ∈ Finset.range 4, (overlapPattern n k).card`. Proved via
+  `Finset.card_eq_sum_card_fiberwise` with the overlap-size as the fiber
+  function (bounded by 3 from `tripleSet_inter_card_le_three`).
+- **Layer 3d** `tripleCount_descFact_2_eq_overlap_sum` — per-`f`
+  structural identity:
+  `(tripleCount d n f).descFactorial 2 = ∑ k ∈ Finset.range 4,
+  ((overlapPattern n k).filter (f-trivialise both)).card`. Proved by
+  combining Layer 3b (S14, `tripleCount_descFact_2_eq_pairs`) with the
+  same fiberwise partition + `tauto` for the conjunction reordering of
+  membership predicates.
+
+**Build status**: pending (32 GB cgroup limit + recent build-pending PRs
+on this file; following same convention as S10–S14).
+
+**Lemma C axiom unchanged**. Layer 3 sub-pieces 3a–3d (S14+S15) are now
+complete; Layer 3 will close at S17 after S16 implements the
+quantitative pieces 3e (disjoint contribution `1/d⁴` per pair) and 3f
+(non-disjoint contributions vanish at `O(d^{-2/3})`) and S17 combines
+3d/3e/3f to get `factorial_moment_2 → (c³/6)²`.
 
 ## Session 14 Summary (2026-05-08, researcher-3)
 
@@ -150,21 +206,27 @@ Roadmap layers (Session 9, see `lemma-c-roadmap.md`):
 
 ## Next Action
 1. ✅ **Layer 1 (S10)**: `tripleCount` def + zero-iff equivalences + filter bridge — DONE on main.
-2. ✅ **Layer 2 part 1 (S11)**: `bad_count_general` + `p_triple_general` — DONE pending build.
+2. ✅ **Layer 2 part 1 (S11)**: `bad_count_general` + `p_triple_general` — DONE on main.
 3. ✅ **Layer 2 part 2 (S12)**: `card_strict_triples` + `tripleCount_sum_eq` +
-   `expectedTripleCount_eq` — DONE pending build. **LAYER 2 COMPLETE.**
+   `expectedTripleCount_eq` — DONE on main. **LAYER 2 COMPLETE.**
 4. ✅ **Layer 3 sub-decomposition (S13)**: roadmap §8a (7 sub-pieces 3a–3g). DONE.
-5. ✅ **Layer 3a/3b (S14, this session)**: `strictTriples` def, `descFactorial_two_real_eq`,
-   `tripleCount_descFact_2_eq_pairs` — DONE pending build.
-6. **Layer 3c (S15)**: define `overlapPattern n : Fin 4 → Finset (...)` partitioning the
-   diagonal-removed pair-of-strict-triples space by intersection size. Show overlap-3 is
-   empty (strict triples are uniquely ordered) so the partition is over {0, 1, 2}.
-   ≈ 60 lines.
-7. **Layer 3d (S15)**: `factorial_moment_2_eq_sum_overlapPattern` — combine 3a/3b/3c via
-   `Finset.sum_disjUnion`. ≈ 40 lines.
-8. **Layer 3e (S16)**: disjoint contribution `1/d⁴` per pair (generalises S11's
-   `bad_count_general` to two disjoint triples). ≈ 70 lines.
-9. **Layer 3f (S16)**: non-disjoint contributions vanish at rate `O(d^{-2/3})`. ≈ 80 lines.
+5. ✅ **Layer 3a/3b (S14)**: `strictTriples` def, `descFactorial_two_real_eq`,
+   `tripleCount_descFact_2_eq_pairs` — DONE on main (#17227).
+6. ✅ **Layer 3c (S15, this session)**: `tripleSet`, `overlapPattern n k`,
+   `overlapPattern_three_eq_empty`, `overlapPattern_partitions_offDiag` — DONE
+   pending build. The `Fin 4`-based roadmap signature was specialised to
+   `ℕ`-indexed Finset.range 4 to align with `Finset.card_eq_sum_card_fiberwise`.
+7. ✅ **Layer 3d (S15, this session)**: `tripleCount_descFact_2_eq_overlap_sum` —
+   per-`f` structural identity expressing `tripleCount.descFactorial 2` as a
+   sum over overlap strata of f-trivialised counts. DONE pending build.
+8. **Layer 3e (S16)**: `jointCoincidence_disjoint`: for disjoint strict
+   triples T₁, T₂ (|T₁ ∩ T₂| = 0, requires n ≥ 6), the joint-coincidence
+   count is `d^(n-4)`; after dividing by `d^n`, this is `1/d⁴` per pair.
+   Generalises S11's `bad_count_general` from one triple to two disjoint
+   triples via independent bijection with `({m // m ∉ T₁.tripleSet ∪
+   T₂.tripleSet} → Fin d)`. ≈ 70 lines.
+9. **Layer 3f (S16)**: non-disjoint contributions (k = 1, 2 strata) vanish at
+   rate `O(d^{-2/3})` per roadmap §4c. ≈ 80 lines.
 10. **Layer 3g (S17)**: combine 3d/3e/3f to get `factorial_moment_2 → (c³/6)²`. ≈ 30 lines.
 11. **Layer 4 (S18+)**: Method of Factorial Moments — local proof or apply Mathlib upstream.
 12. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
