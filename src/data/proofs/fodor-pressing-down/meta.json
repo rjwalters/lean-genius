@@ -32,7 +32,9 @@
       "diagInter_isClubBelow: the diagonal intersection of \u03ba-many clubs is still a club (for regular uncountable \u03ba). This requires both a closure argument and a 'zipper' construction to prove unboundedness",
       "The zipper construction for unboundedness: to find a large element of \u0394(C_\u03b1), build an increasing sequence \u03b3_0 < \u03b3_1 < ... where \u03b3_{n+1} \u2208 C_{\u03b3_n} (each step is inside the club for the previous ordinal), then the limit is in the diagonal intersection by closure",
       "This infrastructure (IsClubBelow, IsStationaryBelow, diagInter) is not yet formalized in Mathlib, making this a genuine contribution to the set-theoretic library",
-      "The \u2135\u2081 corollary (fodor_aleph1) is the most commonly used instance: regressive functions on stationary subsets of \u03c9\u2081 are constant on a stationary subset"
+      "The \u2135\u2081 corollary (fodor_aleph1) is the most commonly used instance: regressive functions on stationary subsets of \u03c9\u2081 are constant on a stationary subset",
+      "Regularity of \u03ba is essential for the zipper construction. For singular \u03ba (e.g., \u2135_\u03c9), one can build a regressive function on a stationary set whose fibers are all non-stationary by sending each \u03b1 to its cofinality-class representative \u2014 Fodor's lemma genuinely fails. This is why the lemma is sometimes phrased 'Fodor for regular \u03ba' rather than just 'Fodor', and why the implicit `[h\u03ba : \u03ba.ord.IsRegular]` typeclass argument is load-bearing in the Lean statement",
+      "Fodor's lemma is equivalent to the **normality** of the club filter $\\mathcal{C}_\\kappa$ on \u03ba (i.e., closure under diagonal intersections): the club filter is the largest \u03ba-complete normal filter on \u03ba, and Fodor is precisely the statement that no regressive function escapes the filter. This recasts a combinatorial lemma as a structural fact about $\\mathcal{C}_\\kappa$, opening the gateway to applications via the Solovay splitting theorem and the proper forcing axiom"
     ]
   },
   "sections": [
@@ -64,10 +66,87 @@
     "openQuestions": [
       "Can the club and stationary set infrastructure be contributed to Mathlib as a standalone library, analogous to the existing Ordinal.Topology module?",
       "Can the Diamond principle \u25c7_\u03ba (a combinatorial statement about predicting functions on ordinals) be proved from club filter normality using this infrastructure?",
-      "Does the formalization extend to the more general Shelah-style reflection principles (e.g., \u25a1_\u03ba sequences, which use the non-club structure)?"
+      "Does the formalization extend to the more general Shelah-style reflection principles (e.g., \u25a1_\u03ba sequences, which use the non-club structure)?",
+      "Solovay splitting: every stationary subset of a regular uncountable \u03ba can be partitioned into \u03ba-many disjoint stationary sets. The proof uses Fodor's lemma plus a careful diagonal argument; can the Solovay theorem be formalized atop this entry, and would the resulting proof fit comfortably in Lean given Mathlib's current cardinal arithmetic API?",
+      "Galvin\u2013Hajnal cardinal arithmetic bounds for $\\aleph_{\\omega_1}^{\\aleph_0}$ rely on Fodor-style pressing-down arguments at $\\omega_1$. Can this entry be specialized into a self-contained Lean proof of the Galvin\u2013Hajnal $\\aleph_{\\omega_1}^{\\aleph_0} < \\aleph_{(2^{\\aleph_1})^+}$ bound?"
     ]
   },
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Fodor's lemma is one of the standard tools used in Cohen's forcing-style independence proof for the continuum hypothesis. Stationary-set arguments under Fodor's lemma feature in many of the deeper consequences of CH and its negation."
+    },
+    {
+      "targetId": "continuum-hypothesis-oq-01",
+      "relationship": "related",
+      "description": "Cohen-forcing arguments around CH lean on stationary-set techniques and club filter normality (Fodor) for showing preservation of cardinals across generic extensions."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "fodor",
+      "type": "core",
+      "description": "Main theorem: for regular uncountable κ, any regressive function on a stationary subset of κ is constant on some stationary subset. ∃ β, f⁻¹(β) ∩ S is stationary."
+    },
+    {
+      "name": "fodor_aleph1",
+      "type": "core",
+      "description": "Specialization to κ = ℵ₁: any regressive function on a stationary subset of ω₁ is constant on a stationary subset. The most commonly cited form of Fodor's lemma."
+    },
+    {
+      "name": "diagInter_isClubBelow",
+      "type": "supporting",
+      "description": "Key infrastructure: the diagonal intersection of κ-many clubs (for regular uncountable κ) is itself a club. Combines diagInter_isClosedBelow + diagInter_isUnboundedBelow (zipper construction)."
+    },
+    {
+      "name": "diagInter_isUnboundedBelow",
+      "type": "supporting",
+      "description": "Zipper construction lemma: building δ < γ_0 < γ_1 < ... with γ_{n+1} ∈ f(γ_n) gives a sequence whose limit lies in the diagonal intersection (uses regularity of κ for boundedness)."
+    },
+    {
+      "name": "IsStationaryBelow.nonempty",
+      "type": "supporting",
+      "description": "A stationary set is nonempty (immediate from intersection-with-club property, but stated for ergonomics)."
+    }
+  ],
+  "references": [
+    {
+      "author": "Fodor, G.",
+      "year": 1956,
+      "title": "Eine Bemerkung zur Theorie der regressiven Funktionen",
+      "venue": "Acta Sci. Math. (Szeged) 17: 139–142",
+      "note": "Original publication of the pressing-down lemma. Fodor's argument is essentially the same diagonal-intersection / zipper construction formalized in this entry."
+    },
+    {
+      "author": "Jech, T.",
+      "year": 2003,
+      "title": "Set Theory: The Third Millennium Edition",
+      "venue": "Springer Monographs in Mathematics, §8",
+      "note": "Canonical reference for club filters, stationary sets, diagonal intersections, and Fodor's lemma. The textbook's exposition matches this entry's proof structure step-for-step."
+    },
+    {
+      "author": "Kanamori, A.",
+      "year": 2003,
+      "title": "The Higher Infinite: Large Cardinals in Set Theory from Their Beginnings",
+      "venue": "Springer Monographs in Mathematics, 2nd ed., §0",
+      "note": "Treats Fodor's lemma and club filter normality in the broader context of large-cardinal axioms; useful reference for the Solovay splitting theorem and downstream applications."
+    },
+    {
+      "author": "Solovay, R. M.",
+      "year": 1971,
+      "title": "Real-valued measurable cardinals",
+      "venue": "Axiomatic Set Theory (Proc. Sympos. Pure Math.) 13(1): 397–428",
+      "note": "Source of Solovay's splitting theorem (every stationary set partitions into κ-many disjoint stationary sets), which uses Fodor's lemma essentially."
+    },
+    {
+      "author": "Mathlib contributors",
+      "year": 2024,
+      "title": "Mathlib.SetTheory.Ordinal.Topology",
+      "venue": "Mathlib4",
+      "note": "The closest existing Mathlib analogue to this entry's club/stationary/diagInter infrastructure. A direct upstream contribution would extend this module."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/FodorPressingDown.lean",
     "lineCount": 385,
