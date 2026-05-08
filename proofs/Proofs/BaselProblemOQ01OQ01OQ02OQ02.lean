@@ -95,10 +95,11 @@ strong-induction proof of `denominator_control`.
 ## File Status
 * axioms: 0
 * sorries: 0
-* lemmas: 4 reusable lcm/cube + 6 numerical witnesses + Part 4 adds
-  `harmonicCubed` (the cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3)
-  with base values, non-negativity, and monotonicity (4 lemmas), plus
-  the **main divisibility theorem** `harmonicCubed_lcm_clear`:
+* lemmas: 4 reusable lcm/cube + 8 numerical witnesses (`lcmRange 0..7`)
+  + lcm positivity + Part 4 adds `harmonicCubed` (the cubed-harmonic
+  sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3) with base values, non-negativity,
+  and monotonicity (4 lemmas), plus the **main divisibility theorem**
+  `harmonicCubed_lcm_clear`:
       `∃ m : ℤ, (lcmRange n : ℚ)^3 * H_n^{(3)} = m`,
   with strengthened natural-number-witness variant
   `harmonicCubed_lcm_clear_nat`. The proof reduces termwise via the
@@ -111,6 +112,19 @@ strong-induction proof of `denominator_control`.
   the alternating-bilinear "second summand"
       `Cnk = ∑_{j=1}^{k} (-1)^(j+1) / (2 j^3 · C(n,j)^2 · C(n+j,j)^2)`,
   which is deferred to a follow-up session.
+
+* Part 5 (Session 5) adds the **binomial-absorption identity**
+  `mul_choose_eq_mul_choose_pred`:
+      `0 < m → m ≤ n → m * Nat.choose n m = n * Nat.choose (n-1) (m-1)`,
+  packaging Mathlib's `Nat.succ_mul_choose_eq` in the convenient
+  `m · C(n,m)` form. Together with `dvd_lcmRange`, this exposes
+  `m * C(n, m)` as a multiple of `n` (and hence of any `q` dividing
+  `n`), which is the entry point for the binomial-denominator
+  analysis of the alternating bilinear sum in Session 6 (the second
+  summand of the van der Poorten closed form). See the Part 5
+  docstring for the planned Session 6 lemma
+  `mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m · C(n,m) ∣ lcmRange n`,
+  which the absorption identity is intended to support.
 -/
 
 namespace BaselProblemOQ01OQ01OQ02OQ02
@@ -192,6 +206,27 @@ theorem lcmRange_four : lcmRange 4 = 12 := by decide
 
 /-- `lcmRange 5 = 60`. -/
 theorem lcmRange_five : lcmRange 5 = 60 := by decide
+
+/-- `lcmRange 6 = 60` (the new prime needed at 6 is 3·2 = 6 ∣ 60 already). -/
+theorem lcmRange_six : lcmRange 6 = 60 := by decide
+
+/-- `lcmRange 7 = 420 = 7 · 60` (introducing the new prime 7). -/
+theorem lcmRange_seven : lcmRange 7 = 420 := by decide
+
+/-- **Positivity of `lcmRange`** (for all `n`, including `n = 0` where
+    `lcmRange 0 = 1`).
+
+    Proof: `lcmRange n = (Finset.range n).lcm (· + 1)` is non-zero
+    because every value in the family `(· + 1)` is a successor and
+    hence non-zero. Apply `Finset.lcm_ne_zero_iff` and conclude via
+    `Nat.pos_of_ne_zero`. Mirrors the parent file's `lcmUpTo_pos`
+    (which assumes `1 ≤ n`); the present statement is unconditional. -/
+theorem lcmRange_pos (n : ℕ) : 0 < lcmRange n := by
+  unfold lcmRange
+  apply Nat.pos_of_ne_zero
+  rw [Finset.lcm_ne_zero_iff]
+  intro k _
+  exact Nat.succ_ne_zero k
 
 -- =====================================================================
 -- PART 4: Harmonic-cube denominator clearing (vdP closed-form prep)
@@ -278,5 +313,71 @@ theorem harmonicCubed_lcm_clear (n : ℕ) :
   rw [harmonicCubed_lcm_clear_nat]
   push_cast
   rfl
+
+-- =====================================================================
+-- PART 5 (Session 5): Binomial-absorption identity (vdP §6 prep)
+-- =====================================================================
+
+/-! ### Why this is the next ingredient
+
+The remaining half of the van der Poorten denominator analysis is the
+*alternating bilinear* sum
+  `Cnk(n, k) = ∑_{m=1}^{k} (-1)^{m-1} / (2 m^3 · C(n, m) · C(n+m, m))`.
+After multiplying through by `lcmRange n^3`, every per-term denominator
+of the shape `m · C(n, m)` must be absorbed.
+
+The classical absorption mechanism is the binomial identity
+  `m · C(n, m) = n · C(n-1, m-1)`,
+which says the rising factor `m` in front of `C(n, m)` can always be
+swapped for the rising factor `n` in front of the *predecessor* binomial
+`C(n-1, m-1)`. Since `n ∣ lcmRange n` (a special case of
+`dvd_lcmRange`), this rewriting transforms a term whose denominator is
+`m · C(n, m)` into one whose denominator is divisible by `n` — and so
+divisible by any `lcmRange n` shifted by one position.
+
+The Session 6 target is therefore
+  `mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m · C(n, m) ∣ lcmRange n`.
+The present part proves the absorption identity itself
+(`mul_choose_eq_mul_choose_pred`), which is a one-line consequence of
+Mathlib's `Nat.succ_mul_choose_eq` once the off-by-one in indexing is
+discharged. The full divisibility lemma requires combining this
+identity with `dvd_lcmRange` *and* a structural argument relating
+`C(n-1, m-1)` to a chain of multiplicative cancellations (via Kummer's
+theorem on `v_p(C(n, m))` and the digit-sum carry count, or by a
+double induction on `(n, m)`); both routes are deferred. -/
+
+/-- **Binomial-absorption identity**: for `0 < m ≤ n`,
+    `m · C(n, m) = n · C(n-1, m-1)`.
+
+    A repackaging of Mathlib's
+      `Nat.add_one_mul_choose_eq : (n+1) * C(n, k) = C(n+1, k+1) * (k+1)`
+    in the more useful "small-to-large" direction with explicit
+    predecessors. The substitution is `n' := n - 1`, `k' := m - 1`,
+    after which the off-by-ones cancel via `Nat.sub_add_cancel`.
+
+    The statement is the foundational input for Session 6's planned
+    `mul_choose_dvd_lcmRange` and (via a chain of such absorptions)
+    for the alternating-bilinear half of the van der Poorten
+    denominator analysis underlying `denominator_control`. -/
+theorem mul_choose_eq_mul_choose_pred {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
+    m * Nat.choose n m = n * Nat.choose (n - 1) (m - 1) := by
+  have hn : 0 < n := lt_of_lt_of_le hm hmn
+  have h := Nat.add_one_mul_choose_eq (n - 1) (m - 1)
+  -- h : ((n-1)+1) * C(n-1, m-1) = C((n-1)+1, (m-1)+1) * ((m-1)+1)
+  -- Collapse `n-1+1 → n` and `m-1+1 → m` via `Nat.sub_add_cancel`,
+  -- then commute the goal's `m * C(n, m)` to align with `h`'s
+  -- `C(n, m) * m`.
+  rw [Nat.sub_add_cancel hn, Nat.sub_add_cancel hm] at h
+  -- h : n * Nat.choose (n - 1) (m - 1) = Nat.choose n m * m
+  rw [Nat.mul_comm m (Nat.choose n m)]
+  exact h.symm
+
+/-- **Absorption corollary**: `n` divides `m · C(n, m)` whenever
+    `0 < m ≤ n`. A direct rewrite via `mul_choose_eq_mul_choose_pred`
+    exposes the LHS as `n · C(n-1, m-1)`, which is divisible by `n`. -/
+theorem dvd_mul_choose {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
+    n ∣ m * Nat.choose n m := by
+  rw [mul_choose_eq_mul_choose_pred hm hmn]
+  exact dvd_mul_right n (Nat.choose (n - 1) (m - 1))
 
 end BaselProblemOQ01OQ01OQ02OQ02

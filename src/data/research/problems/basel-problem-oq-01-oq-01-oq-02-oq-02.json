@@ -27,23 +27,24 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T04:30:00.000Z",
-    "iteration": 4,
-    "focus": "Discharged the H_n^{(3)} half of the van der Poorten denominator analysis (route F). Proved `harmonicCubed_lcm_clear_nat` (explicit ℕ-witness identity) and `harmonicCubed_lcm_clear` (existential `∃ m : ℤ, …` form matching the parent's `denominator_control` axiom shape). Integer witness: `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3 : ℕ`, exact-divisible per term via `pow_dvd_lcmRange_pow` (Part 2). Build verified (PR #16898 merged 2026-05-08T03:57:56Z). Remaining blockers shifted to the alternating-bilinear half + closed-form expansion of `aperyA n`.",
+    "since": "2026-05-08T05:00:00.000Z",
+    "iteration": 5,
+    "focus": "Session 5 (2026-05-08, ACT): added the binomial-absorption identity `mul_choose_eq_mul_choose_pred : 0 < m → m ≤ n → m * Nat.choose n m = n * Nat.choose (n-1) (m-1)` plus its corollary `dvd_mul_choose : 0 < m → m ≤ n → n ∣ m * Nat.choose n m`. The proof is a one-line repackaging of Mathlib's `Nat.succ_mul_choose_eq` after `Nat.sub_add_cancel` discharges the off-by-one. Also added `lcmRange_pos` (positivity for all `n`, including `n=0`) and extended the numerical witnesses to `lcmRange 6 = 60` and `lcmRange 7 = 420`. Discovered: the originally proposed `mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m · C(n,m) ∣ lcmRange n` does not follow directly from the absorption identity alone — it additionally requires either Kummer's theorem on `v_p(C(n, m)) = c_p(m, n-m)` or a double `(n, m)`-induction. Reframed as Session 6.",
     "blockers": [
-      "The alternating bilinear summand ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) needs binomial-coefficient denominator analysis — concretely: C(n,m) and C(n+m,m) have denominators that, after multiplying by lcm(1..n)^3, leave integers. Classical telescoping identity (van der Poorten 1979 §6) handles this but is non-trivial to port. Estimated ~200 lines.",
+      "The `mul_choose_dvd_lcmRange` divisibility is harder than the next-action originally suggested: empirically true (verified n ≤ 8, all m), but the absorption identity `m·C(n,m) = n·C(n-1,m-1)` only proves divisibility by `n`, not by `lcmRange n`. Closing this requires either (a) a digit-sum/Kummer p-adic argument: v_p(m) + c_p(m, n-m) ≤ ⌊log_p n⌋, or (b) a strong (n, m)-induction whose step uses Pascal `C(n, m) = C(n-1, m) + C(n-1, m-1)` plus the absorption identity to flip indices. Both routes are ~100-200 lines.",
+      "The alternating bilinear summand ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) needs `mul_choose_dvd_lcmRange` as input. Once that is available, the `m^3 · C(n,m)` denominators absorb into `lcmRange n^3` per term; the remaining `C(n+m, m)` factor needs a similar second absorption (or van der Poorten's central-binomial telescoping identity).",
       "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo. Stating `aperyA_explicit_formula` as a sorried theorem and validating numerically at small n is a future session.",
       "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'. The H_n^{(3)} clearing now in BaselProblemOQ01OQ01OQ02OQ02.lean is the first such instance and could potentially be upstreamed."
     ],
-    "nextAction": "Session 5: stub `vdpAlternatingSum_lcm_clear` with the classical denominator telescoping identity (van der Poorten 1979 §6). Begin with the binomial-denominator divisibility lemma `m · Nat.choose n m ∣ lcmRange n` for `0 < m ≤ n`, derived from the identity `m · C(n, m) = n · C(n-1, m-1)`. This packages the absorbtion of the binomial-coefficient denominators in the alternating sum.",
+    "nextAction": "Session 6: prove `mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m · Nat.choose n m ∣ lcmRange n`. Recommended route: strong induction on `n` with case split on `m`. Base `m = 1`: `1 · C(n, 1) = n` and `n ∣ lcmRange n` by `dvd_lcmRange`. Step `m > 1`: combine the absorption identity (now available as `mul_choose_eq_mul_choose_pred`) with `dvd_lcmRange n hn n_le_n` to reduce `m · C(n, m) = n · C(n-1, m-1)` to a divisibility involving `C(n-1, m-1)`, then bound `n · C(n-1, m-1) ∣ lcmRange n` via `Nat.lcm`-ness of `lcmRange n` (every `k ≤ n` divides). Alternative if induction stalls: digit-sum p-adic argument.",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 4 (2026-05-08, ACT): discharged the H_n^{(3)} half of the van der Poorten denominator analysis (route F). Proved harmonicCubed_lcm_clear_nat (explicit ℕ-sum identity) and harmonicCubed_lcm_clear (existential form matching denominator_control). The integer witness is ∑ k ∈ range n, (lcmRange n)^3/(k+1)^3 (Nat division — each summand exact via pow_dvd_lcmRange_pow). Proof technique: Finset.mul_sum → Nat.cast_sum → per-term Nat.cast_div hdvd hk1ne → mul_one_div → push_cast; ring. Session 3 (ORIENT): added harmonicCubed (cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3) plus 4 reusable lemmas. Session 2 (ORIENT): built infrastructure lemmas (dvd_lcmRange, pow_dvd_lcmRange_pow, etc.) and corrected session 1 strategy. Session 1 (OBSERVE): surveyed and identified van der Poorten path. NEXT (session 5): vdpAlternatingSum_lcm_clear — the alternating-bilinear half via central-binomial telescoping (vdP 1979 §6).",
+    "progressSummary": "Session 5 (2026-05-08, ACT): added Part 5 to BaselProblemOQ01OQ01OQ02OQ02.lean — the binomial-absorption identity `mul_choose_eq_mul_choose_pred : 0 < m → m ≤ n → m * Nat.choose n m = n * Nat.choose (n-1) (m-1)` (one-line repackaging of Mathlib's `Nat.succ_mul_choose_eq` after `Nat.sub_add_cancel`) and its corollary `dvd_mul_choose : 0 < m → m ≤ n → n ∣ m * Nat.choose n m`. Also added `lcmRange_pos` (positivity for all n) and extended numerical witnesses to `lcmRange 6 = 60` and `lcmRange 7 = 420`. Identified that the originally-planned `mul_choose_dvd_lcmRange` is harder than the next-action implied: the absorption only proves divisibility by `n`, not by `lcmRange n`; closing the full claim requires either Kummer's theorem on `v_p(C(n,m)) = c_p(m, n-m)` or a double `(n, m)`-induction via Pascal. Reframed as Session 6. Session 4 (2026-05-08, ACT): discharged the H_n^{(3)} half of the van der Poorten denominator analysis (route F). Proved harmonicCubed_lcm_clear_nat (explicit ℕ-sum identity) and harmonicCubed_lcm_clear (existential form matching denominator_control). The integer witness is ∑ k ∈ range n, (lcmRange n)^3/(k+1)^3 (Nat division — each summand exact via pow_dvd_lcmRange_pow). Proof technique: Finset.mul_sum → Nat.cast_sum → per-term Nat.cast_div hdvd hk1ne → mul_one_div → push_cast; ring. Session 3 (ORIENT): added harmonicCubed (cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3) plus 4 reusable lemmas. Session 2 (ORIENT): built infrastructure lemmas (dvd_lcmRange, pow_dvd_lcmRange_pow, etc.) and corrected session 1 strategy. Session 1 (OBSERVE): surveyed and identified van der Poorten path.",
     "builtItems": [
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: dvd_lcmRange (k>0, k≤n → k∣lcmRange n) — basic membership divisibility",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: pow_dvd_lcmRange_pow (k>0, k≤n → k^p ∣ (lcmRange n)^p) — the cubed divisibility ingredient any inductive proof of denominator_control needs",
@@ -55,7 +56,11 @@
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_nonneg (H_n^{(3)} ≥ 0)",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_mono (m ≤ n → H_m^{(3)} ≤ H_n^{(3)})",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_lcm_clear_nat (explicit ℕ-witness identity (lcmRange n)^3 · H_n^{(3)} = ∑ k ∈ range n, (lcmRange n)^3/(k+1)^3)",
-      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_lcm_clear (existential ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m — matches denominator_control shape)"
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_lcm_clear (existential ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m — matches denominator_control shape)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: lcmRange_six (= 60) and lcmRange_seven (= 420) — extends numerical witness chain past prime 7",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: lcmRange_pos (unconditional 0 < lcmRange n; uses Finset.lcm_ne_zero_iff + Nat.succ_ne_zero)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: mul_choose_eq_mul_choose_pred (m·C(n,m) = n·C(n-1,m-1) for 0 < m ≤ n) — packages Nat.succ_mul_choose_eq in the small-to-large form needed by the vdP §6 alternating-bilinear analysis",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: dvd_mul_choose (n ∣ m · C(n, m) for 0 < m ≤ n) — direct corollary of mul_choose_eq_mul_choose_pred + dvd_mul_right; first half of the would-be mul_choose_dvd_lcmRange"
     ],
     "insights": [
       "BaselProblemOQ01OQ01OQ02.lean already has `denominator_control_factorial : ∃ m : ℤ, (n.factorial : ℚ)^3 * aperyA n = m` PROVED (Part XIX). The factorial proof works because `(n+2)! = (n+2)·(n+1)!` is EXACT multiplicative — multiplying through the recurrence by `(n+1)!^3` produces `(n+2)!^3` on the LHS with no leftover (n+2)^3 to absorb. lcm has no analogous factorisation: lcm(1..n+2) ≠ (n+2)·lcm(1..n+1) in general (e.g. lcm(1..4)=12 ≠ 4·6=24).",
@@ -66,7 +71,10 @@
       "The cubed divisibility `k^p ∣ (lcmRange n)^p` is now AVAILABLE as `pow_dvd_lcmRange_pow` in OQ-02-OQ-02. It packages `dvd_lcmRange` + `pow_dvd_pow_of_dvd`. Reusable across both strategy (P) and (F).",
       "Sibling file Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean already provides `lcmRange_succ` (lcmRange (n+1) = Nat.lcm (lcmRange n) (n+1)), `lcmRange_dvd_lcmRange_of_le`, `lcmRange_monotone`, `lcmRange_dvd_factorial`. These cover the BasicNat-arithmetic side; OQ-02 file adds the powered version specifically needed for denominator analysis.",
       "Watch out: `lcmUpTo n = (Finset.range n).lcm (· + 1)` so lcmUpTo n covers integers 1 through n (not 0 through n-1). lcmUpTo 0 = 1 (lcm of empty set). The defining equation `lcmUpTo_dvd_of_le` (already proved in parent) gives lcm(1..n) ∣ lcm(1..m) for n ≤ m.",
-      "SESSION 4 (2026-05-08, ACT): proved harmonicCubed_lcm_clear and harmonicCubed_lcm_clear_nat in Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean. The H_n^{(3)} half of the van der Poorten denominator analysis (route F) is now discharged. Proof flow: Finset.mul_sum → Nat.cast_sum → per-term Nat.cast_div hdvd hk1ne → mul_one_div → push_cast; ring. The dvd hypothesis is exactly pow_dvd_lcmRange_pow (Part 2). Inlining the per-term work into the main theorem (no separate private helper) avoids the cast-form mismatch (↑k+1)^3 vs ((k+1:ℕ):ℚ)^3 that session 3 hit."
+      "SESSION 4 (2026-05-08, ACT): proved harmonicCubed_lcm_clear and harmonicCubed_lcm_clear_nat in Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean. The H_n^{(3)} half of the van der Poorten denominator analysis (route F) is now discharged. Proof flow: Finset.mul_sum → Nat.cast_sum → per-term Nat.cast_div hdvd hk1ne → mul_one_div → push_cast; ring. The dvd hypothesis is exactly pow_dvd_lcmRange_pow (Part 2). Inlining the per-term work into the main theorem (no separate private helper) avoids the cast-form mismatch (↑k+1)^3 vs ((k+1:ℕ):ℚ)^3 that session 3 hit.",
+      "SESSION 5 (2026-05-08, ACT): the absorption identity mul_choose_eq_mul_choose_pred packages Nat.succ_mul_choose_eq (which is `(n+1) * C(n, k) = (k+1) * C(n+1, k+1)`) in the predecessor form `m * C(n, m) = n * C(n-1, m-1)` for `0 < m ≤ n`. The proof is one application of `Nat.succ_mul_choose_eq (n-1) (m-1)` followed by two `Nat.sub_add_cancel` rewrites. This is the foundational step for any future mul_choose_dvd_lcmRange.",
+      "SESSION 5 SUBTLE POINT: mul_choose_eq_mul_choose_pred only proves `n ∣ m·C(n,m)` (corollary dvd_mul_choose); it does NOT immediately yield `m·C(n,m) ∣ lcmRange n`. The latter is empirically true (verified for n ≤ 8, all m): n=4 m=2: 2·C(4,2)=12 ∣ lcmRange 4=12; n=8 m=3: 3·C(8,3)=168 ∣ lcmRange 8=840 (5×); etc. But the proof requires either (a) Kummer's theorem on v_p(C(n,m)) + a digit-count argument that v_p(m) + c_p(m, n-m) ≤ ⌊log_p n⌋, or (b) a strong (n, m)-induction using Pascal C(n, m) = C(n-1, m) + C(n-1, m-1) where both summands are bounded by IH. Both routes ~100-200 lines.",
+      "SESSION 5 INFRASTRUCTURE: lcmRange_pos lifts the parent file's `lcmUpTo_pos` (which assumed `1 ≤ n`) to an unconditional version, since `lcmRange 0 = 1` is positive too. The proof pattern (`Nat.pos_of_ne_zero` + `Finset.lcm_ne_zero_iff` + `Nat.succ_ne_zero`) is reusable for any `lcm` over `Finset.range n` of a strictly-positive family."
     ],
     "mathlibGaps": [
       "No Apéry numbers in Mathlib (aperyA, aperyB are gallery-local).",
@@ -74,10 +82,11 @@
       "No `Nat.lcm_range` simp lemma giving `lcm({1,…,n}) = ⋁_{k≤n} k` form."
     ],
     "nextSteps": [
-      "Session 5 (vdp alternating sum): State and prove vdpAlternatingSum_lcm_clear: ∃ m : ℤ, (lcmRange n)^3 · ∑_{k=0}^{n} ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) = m. Use central-binomial telescoping: m·C(n,m) = n·C(n-1,m-1), so 2 m^3 · C(n,m) · C(n+m,m) divides lcm(1..n)^3. Estimated ~200 lines.",
-      "Session 6 (vdp closed form, sorried): State aperyA_explicit_formula : aperyA n = ∑_{k=0}^{n} C(n,k)^2 C(n+k,k)^2 (H_n^{(3)} + cnk(n,k)) as a sorried theorem. Validate at n=0,1,2,3,4 via native_decide. Estimated ~80 lines.",
-      "Session 7 (assembly): Combine harmonicCubed_lcm_clear, vdpAlternatingSum_lcm_clear, and aperyA_explicit_formula to prove denominator_control_lcm. Eliminate the parent axiom denominator_control. Estimated ~80 lines.",
-      "Session 8 (axiom count update): Update parent meta.json axiomCount 5→4 once denominator_control is eliminated. Status remains axiomatized (4 axioms remain)."
+      "Session 6 (mul_choose_dvd_lcmRange): Prove `0 < m → m ≤ n → m · Nat.choose n m ∣ lcmRange n`. Recommended route: strong induction on `n` with case split on `m`. Base m=1: 1·C(n, 1) = n, divisible by lcmRange n via dvd_lcmRange. Step m > 1, n > 1: by Pascal `C(n, m) = C(n-1, m) + C(n-1, m-1)`, so `m·C(n,m) = m·C(n-1,m) + m·C(n-1,m-1) = m·C(n-1,m) + n·C(n-1,m-1)` (absorption identity). The first summand: by IH on (n-1, m), `m·C(n-1, m) ∣ lcmRange (n-1) ∣ lcmRange n`. The second: `n·C(n-1,m-1)` — `n ∣ lcmRange n`, but the C factor needs further argument. Estimated ~80-150 lines. Alternative if induction stalls: digit-sum/Kummer p-adic argument.",
+      "Session 7 (vdpAlternatingSum_lcm_clear with mul_choose_dvd_lcmRange in hand): State and prove vdpAlternatingSum_lcm_clear: ∃ m : ℤ, (lcmRange n)^3 · ∑_{k=0}^{n} ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) = m. The m^3·C(n,m) denominators absorb via mul_choose_dvd_lcmRange. The C(n+m, m) factor needs a parallel `mul_choose_dvd_lcmRange_shifted` (relating to lcmRange (n+m)) or van der Poorten's central-binomial telescoping. Estimated ~150-200 lines.",
+      "Session 8 (vdp closed form, sorried): State aperyA_explicit_formula : aperyA n = ∑_{k=0}^{n} C(n,k)^2 C(n+k,k)^2 (H_n^{(3)} + cnk(n,k)) as a sorried theorem. Validate at n=0,1,2,3,4 via native_decide. Estimated ~80 lines.",
+      "Session 9 (assembly): Combine harmonicCubed_lcm_clear, vdpAlternatingSum_lcm_clear, and aperyA_explicit_formula to prove denominator_control_lcm. Eliminate the parent axiom denominator_control. Estimated ~80 lines.",
+      "Session 10 (axiom count update): Update parent meta.json axiomCount 5→4 once denominator_control is eliminated. Status remains axiomatized (4 axioms remain)."
     ]
   },
   "tags": [
@@ -120,7 +129,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-08T00:00:00.000Z",
+  "lastUpdate": "2026-05-08T05:30:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
