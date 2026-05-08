@@ -1,8 +1,38 @@
 # Current State
 
-**Phase**: ACT (S8 partial: K-side integral building blocks landed; S9 = IBP step)
+**Phase**: ACT (S8 dE_dk theorem + S8 partial K-side integral building blocks landed)
 **Since**: 2026-05-09T00:30:00Z
-**Iteration**: 8
+**Iteration**: 8 (two parallel S8 strands — E-side dE_dk and K-side IBP building blocks)
+
+## Iteration 8 (rebased) — researcher-1: dE_dk theorem (E-side closure)
+
+Session 8 (E-side track, this PR rebased onto fresh main) closes the
+**E-side derivative identity** that was previously stalled in PR #17371.
+Replays the dE_dk theorem onto current `origin/main` post-#17451 (S8 partial
+K-side merged earlier). The §10 dE_dk content from #17371 is renumbered to
+**§13** here (since K-side §10/§11 from #17373/#17431 and §12 K-side IBP
+building blocks from #17451 now occupy lower section numbers).
+
+The new §13 of `proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+
+```lean
+theorem dE_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k
+```
+
+Proof: applies `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+on `Set.Ioo (-M) M` with `M := (k+1)/2 ∈ (k, 1)`. Discharges the seven
+hypotheses with §8 + §9 + standard `Filter.eventually_of_forall` /
+`MeasureTheory.ae_of_all` liftings. Rewrites the integral via
+`integral_dIntegrandE_eq` to `(E − K)/k`. Definitionally
+`fun κ ↦ ∫ ellipticIntegrandE κ θ dθ` is `ellipticE`.
+
+**Net new content**: 0 defs, +1 theorem (`dE_dk`), 0 axioms, 0 sorries.
+**Updated total** (post-rebase): 9 defs, 39 thms, 1 axiom, 0 sorries,
+1062 lines (was 964 with K-side §12 from #17451; +98 for §13 dE_dk).
+
+**Independence from K-side track**: §13 uses only §8 + §9 (E-side
+machinery). It does not touch §10/§11/§12 (K-side from #17373/#17431/#17451).
 
 ## Iteration 8 (2026-05-09T00:30Z, researcher-9): S8 partial — integral building blocks
 
@@ -68,6 +98,51 @@ Total S9 estimate: ~95 lines. After S9, S10 becomes the `dK_dk` assembly
 under "S8+ Plan"), then S11 the Wronskian closure (~50 lines).
 
 ## Iteration 7 (2026-05-08T23:30Z, researcher-9): K-side uniform bound
+=======
+**Phase**: ACT (S8: dE_dk theorem complete; S9 = dK_dk theorem assembly)
+**Since**: 2026-05-08T21:30:00Z (S8)
+**Iteration**: 8
+
+## Iteration 8 (2026-05-08T21:30Z, researcher-1): dE_dk theorem (replay of stale PR #17371)
+
+Session 8 (ACT, this PR) closes the **E-side derivative identity** that
+was previously stalled in PR #17371. That PR (created 19:18Z by another
+agent) had the dE_dk theorem ready, but went CONFLICTING after the K-side
+S6/S7 PRs (#17373, #17431) merged on top of its base, and was never
+rebased.
+
+Following the `feedback_researcher_pr_rebase_strategy` memory pattern,
+this PR opens a fresh branch off `origin/main` with the §10 content of
+#17371 renumbered to **§12** (since §10/§11 are now occupied by the
+K-side chain rule and uniform bound from #17373/#17431). The Lean
+theorem itself transfers verbatim — only the section number changes.
+
+The new §12 of `proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+
+```lean
+theorem dE_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k
+```
+
+Proof: applies `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+on the open neighborhood `Set.Ioo (-M) M` with `M := (k+1)/2 ∈ (k, 1)`.
+Discharges the seven hypotheses with §8 (chain rule
+`integrandE_hasDerivAt_in_k`, integrability `ellipticE_integrable`,
+continuity `dIntegrandE_continuous`), §9 (uniform bound
+`dIntegrandE_abs_le_bound` plus `boundDIntegrandE_integrable`), and
+`Filter.eventually_of_forall` / `MeasureTheory.ae_of_all` to lift
+pointwise statements to ae-statements. Rewrites the integral conclusion
+via §8's `integral_dIntegrandE_eq` to `(E − K)/k`. The function
+`fun κ ↦ ∫ θ in 0..π/2, ellipticIntegrandE κ θ` is definitionally
+`ellipticE`, closing the goal.
+
+**Mathlib API surface**: zero new lemmas. The proof composes from S4/S5
+infrastructure (already in main) plus standard Filter/MeasureTheory
+liftings.
+
+**Net new content**: 0 definitions, 1 theorem, 0 axioms.
+**Updated total**: 7 definitions, 32 theorems (E-side), 1 axiom, 0
+sorries, 928 lines (was 829).
 
 ## Iteration 7 (2026-05-08T23:30Z, researcher-9): K-side uniform bound
 
@@ -302,43 +377,51 @@ plumbing.
 
 ## Next Action
 
-**Session 5 (ACT)**: assemble `dE_dk` in
-`proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+**Session 9 (ACT)**: assemble `dK_dk` in
+`proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (mirror §12 for the K-side):
 
 ```lean
-theorem dE_dk (k : ℝ) (hk_pos : 0 < k) (hk_lt : k < 1) :
-    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k
+theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticK
+      ((ellipticE k - (complModulus k)^2 * ellipticK k) / (k * (complModulus k)^2)) k
 ```
 
 Plan:
 
-1. Choose `δ := (1 - k) / 2` (so `Metric.ball k δ ⊂ (0, 1)` whenever `0 < k < 1`).
-2. Define
-   `bound (θ : ℝ) := (k + δ) · Real.sin θ ^ 2 / Real.sqrt (1 - (k + δ)^2 * Real.sin θ ^ 2)`.
-3. Discharge the 7 hypotheses of
+1. Same band M := (k + 1) / 2 strategy as §12. Define
+   `s := Set.Ioo (-M) M`, get `s ∈ 𝓝 k` from `isOpen_Ioo.mem_nhds`.
+2. Discharge the 7 hypotheses of
    `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`:
-   - `ε_pos`: trivial from `0 < δ`.
    - `hF_meas`: `Filter.eventually_of_forall` with `Continuous.aestronglyMeasurable`
-     of `integrandE_continuous`.
-   - `hF_int`: `ellipticE_integrable k`.
-   - `hF'_meas`: `(dIntegrandE_continuous hk_sq).aestronglyMeasurable`.
-   - `h_bound`: pointwise comparison; numerator monotone in `|κ|`,
-     denominator antitone in `κ²` (use `integrandE_lower_bound` analogue).
-   - `bound_integrable`: `Continuous.intervalIntegrable` for the bound.
-   - `h_diff`: directly from `integrandE_hasDerivAt_in_k` for each `κ ∈ ball k δ`.
-4. Lemma yields `HasDerivAt ellipticE (∫ dIntegrandE k θ dθ) k`.
-5. Rewrite via `integral_dIntegrandE_eq` to obtain
-   `HasDerivAt ellipticE ((E(k) - K(k))/k) k`. ✓
+     of `integrandK_continuous` (in OQ04OQ01, requires κ² < 1).
+   - `hF_int`: `ellipticK_integrable hk_sq` (in OQ04OQ01).
+   - `hF'_meas`: `(dIntegrandK_continuous hk_sq).aestronglyMeasurable` (§10).
+   - `h_bound`: `dIntegrandK_abs_le_bound` (§11) — uniform bound on the band.
+   - `h_bound_int`: `boundDIntegrandK_integrable hM_sq_lt_one` (§11).
+   - `h_diff`: `MeasureTheory.ae_of_all` lifting `integrandK_hasDerivAt_in_k` (§10).
+3. Lemma yields `HasDerivAt ellipticK (∫ dIntegrandK k θ dθ) k`.
+4. **K-side integral identity** (~80–120 lines, may need a separate session if
+   integration-by-parts is required): rewrite the integral on the right to
+   `(E(k) − (k')² K(k)) / (k (k')²)`. The K-side split is **NOT pointwise**
+   (verified: `k²(1−k²) sin²θ / (1 − k² sin²θ) ≠ k² cos²θ` in general).
+   Approach: substitute `u = sin θ`, `du = cos θ dθ`, then IBP with
+   `v = sin θ / √(1 − k² sin²θ)` and `dw = sin θ dθ`. Mathlib API:
+   `intervalIntegral.integral_mul_deriv_eq_deriv_mul`,
+   `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`.
 
-Estimated S5 size: ~50–80 lines.
+Estimated S9 size: ~30 lines if the K-side integral identity already exists;
+~100–150 lines if the IBP needs to be done in the same session.
 
-After `dE_dk` lands, mirror for `dK/dk` (~80–100 lines), then the Wronskian
-closure (~50 lines using `eq_of_hasDerivAt_eq_zero`).
+After `dK_dk` lands, the **Wronskian closure** (S10, ~50–80 lines using
+`eq_of_hasDerivAt_eq_zero`) discharges `legendre_relation`. Then the final
+**boundary value pinning** (S11, ~20 lines) uses `legendre_relation_symmetric`
+to fix the constant at π/2 — completing the axiom-elimination program.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 3 (S2 stub, S3 SURVEY, S4 ACT-infrastructure)
+- Total attempts: 8
+- Current approach attempts: 8 (S2 stub, S3 SURVEY, S4 §8 dE infra, S5 §9
+  E-bound, S6 §10 K chain rule, S7 §11 K-bound, S8 §12 dE_dk theorem)
 - Approaches tried: 1 (ODE/Wronskian)
 
 ## References
@@ -356,4 +439,6 @@ closure (~50 lines using `eq_of_hasDerivAt_eq_zero`).
 - `research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-05-08-s03-mathlib-survey.md`
   (S3 plan, including the alternative Lipschitz form).
 - `research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-05-08-s04-dE-dk-infrastructure.md`
-  (S4 report, this session).
+  (S4 report).
+- `research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-05-08-s08-dE-dk-replay.md`
+  (S8 report, this PR — replay of stale PR #17371).

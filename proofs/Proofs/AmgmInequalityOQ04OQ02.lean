@@ -960,4 +960,103 @@ lemma integral_cos_sq_div_sqrt_denom (hk_pos : 0 < k) (hk_lt : k < 1) :
   field_simp
   ring
 
+-- ============================================================================
+-- § 13. dE/dk = (E − K) / k for 0 < k < 1
+-- ============================================================================
+
+/-!
+This section closes the E-side derivation by applying
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` with the
+§8 ingredients (pointwise chain rule, integral identity) and the §9 uniform
+bound. The result is the Lean-side formalization of one half of the
+Whittaker–Watson §22.41 derivative pair:
+
+  dE/dk = (E(k) − K(k)) / k    for 0 < k < 1.
+
+The companion identity `dK/dk = (E − (k')² K) / (k (k')²)` (whose §10–§11
+infrastructure is now in place) and the final Wronskian closure are deferred
+to subsequent sessions.
+-/
+
+/-- **Differentiation under the integral sign** for `ellipticE`.
+
+    For `0 < k < 1`,
+    `dE/dk = (E(k) − K(k)) / k`.
+
+    Proof: apply `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+    on the open neighborhood `Set.Ioo (-M) M` with `M := (k+1)/2 ∈ (k, 1)`.
+    Discharge the seven hypotheses with the §8 chain rule and integrability
+    facts, the §9 uniform bound (`dIntegrandE_abs_le_bound` plus
+    `boundDIntegrandE_integrable`), and `Filter.eventually_of_forall` /
+    `MeasureTheory.ae_of_all` to lift pointwise statements to ae-statements.
+    The lemma yields
+    `HasDerivAt ellipticE (∫₀^{π/2} dIntegrandE k θ dθ) k`, and the §8
+    integral identity `integral_dIntegrandE_eq` rewrites the integral to
+    `(E(k) − K(k))/k`. -/
+theorem dE_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k := by
+  -- Pick the band M = (k+1)/2 ∈ (k, 1); note M² < 1.
+  set M : ℝ := (k + 1) / 2 with hM_def
+  have hM_pos : 0 < M := by simp only [hM_def]; linarith
+  have hk_lt_M : k < M := by simp only [hM_def]; linarith
+  have hM_lt_one : M < 1 := by simp only [hM_def]; linarith
+  have hM_sq_lt_one : M ^ 2 < 1 := by nlinarith
+  have hM_nn : (0 : ℝ) ≤ M := le_of_lt hM_pos
+  have hk_sq_lt_one : k ^ 2 < 1 := by nlinarith
+  -- The open neighborhood s := Set.Ioo (-M) M of k.
+  set s : Set ℝ := Set.Ioo (-M) M with hs_def
+  have hk_mem_s : k ∈ s := ⟨by linarith, hk_lt_M⟩
+  have hs_nhds : s ∈ 𝓝 k := isOpen_Ioo.mem_nhds hk_mem_s
+  -- For κ ∈ s, κ² ≤ M² (and a fortiori κ² < 1).
+  have h_kappa_sq_le : ∀ κ ∈ s, κ ^ 2 ≤ M ^ 2 := by
+    intro κ hκ
+    obtain ⟨hκ_low, hκ_hi⟩ := hκ
+    exact le_of_lt (sq_lt_sq' hκ_low hκ_hi)
+  have h_kappa_sq_lt_one : ∀ κ ∈ s, κ ^ 2 < 1 := fun κ hκ =>
+    lt_of_le_of_lt (h_kappa_sq_le κ hκ) hM_sq_lt_one
+  -- Hypothesis: F is ae-strongly-measurable in a neighborhood of k.
+  have hF_meas : ∀ᶠ x in 𝓝 k,
+      MeasureTheory.AEStronglyMeasurable
+        (fun θ => ellipticIntegrandE x θ)
+        (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) := by
+    refine Filter.eventually_of_forall fun x => ?_
+    exact (integrandE_continuous x).aestronglyMeasurable
+  -- Hypothesis: F at x₀ = k is interval-integrable.
+  have hF_int : IntervalIntegrable (fun θ => ellipticIntegrandE k θ)
+      MeasureTheory.volume 0 (π / 2) := ellipticE_integrable k
+  -- Hypothesis: F' at x₀ = k is ae-strongly-measurable on the restriction.
+  have hF'_meas : MeasureTheory.AEStronglyMeasurable
+      (fun θ => dIntegrandE k θ)
+      (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) :=
+    (dIntegrandE_continuous hk_sq_lt_one).aestronglyMeasurable
+  -- Hypothesis: pointwise majorization on the band.
+  have h_bound : ∀ᵐ θ ∂MeasureTheory.volume,
+      θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
+      ∀ κ ∈ s, ‖dIntegrandE κ θ‖ ≤ boundDIntegrandE M θ := by
+    refine MeasureTheory.ae_of_all _ ?_
+    intro θ _ κ hκ
+    rw [Real.norm_eq_abs]
+    exact dIntegrandE_abs_le_bound hM_sq_lt_one hM_nn κ θ (h_kappa_sq_le κ hκ)
+  -- Hypothesis: bound is interval-integrable.
+  have h_bound_int : IntervalIntegrable (boundDIntegrandE M)
+      MeasureTheory.volume 0 (π / 2) :=
+    boundDIntegrandE_integrable hM_sq_lt_one
+  -- Hypothesis: pointwise differentiability on the band.
+  have h_diff : ∀ᵐ θ ∂MeasureTheory.volume,
+      θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
+      ∀ κ ∈ s, HasDerivAt (fun x => ellipticIntegrandE x θ) (dIntegrandE κ θ) κ := by
+    refine MeasureTheory.ae_of_all _ ?_
+    intro θ _ κ hκ
+    exact integrandE_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκ) θ
+  -- Apply the parametric integral derivative lemma and extract the deriv.
+  have h := intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
+    hs_nhds hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
+  have h_deriv :
+      HasDerivAt (fun κ => ∫ θ in (0 : ℝ)..π / 2, ellipticIntegrandE κ θ)
+        (∫ θ in (0 : ℝ)..π / 2, dIntegrandE k θ) k := h.2
+  -- Rewrite the integral via the §8 integral identity.
+  rw [integral_dIntegrandE_eq hk_pos hk_lt] at h_deriv
+  -- The function fun κ ↦ ∫ ellipticIntegrandE κ is ellipticE by definition.
+  exact h_deriv
+
 end AmgmInequalityOQ04OQ02

@@ -20,8 +20,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 964,
-    "theoremCount": 38,
+    "lineCount": 1062,
+    "theoremCount": 39,
     "definitionCount": 9,
     "assumptions": "1 axiom: legendre_relation (the general Legendre relation E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2 for 0 < k < 1; classical 19th-century result; proof requires differentiation under the integral sign and the Wronskian of the Legendre ODE — to be replaced with a constructive proof in a future session). The file inherits 1 additional axiom from AmgmInequalityOQ04OQ01 (agm_ellipticK_connection), but that is not declared in this file.",
     "mathlib_version": "4.26.0"
@@ -162,6 +162,11 @@
       "name": "AmgmInequalityOQ04OQ02.legendre_relation_symmetric",
       "statement": "2 * ellipticK (1 / Real.sqrt 2) * ellipticE (1 / Real.sqrt 2) - (ellipticK (1 / Real.sqrt 2))^2 = Real.pi / 2",
       "description": "Symmetric Legendre relation at k = 1/√2: 2KE - K² = π/2. Derived from the general axiom plus complModulus_symmetric. Matches the form used in AmgmInequalityOQ04OQ05 (Brent-Salamin)."
+    },
+    {
+      "name": "AmgmInequalityOQ04OQ02.dE_dk",
+      "statement": "0 < k → k < 1 → HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k",
+      "description": "Differentiation under the integral sign for E(k): for 0 < k < 1, dE/dk = (E(k) − K(k))/k. Proof discharges the seven hypotheses of intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le on the band Set.Ioo (-M) M with M := (k+1)/2 ∈ (k, 1). Uses the §8 chain rule (integrandE_hasDerivAt_in_k) and integral identity (integral_dIntegrandE_eq), and the §9 uniform bound (dIntegrandE_abs_le_bound, boundDIntegrandE_integrable). One half of the Whittaker–Watson §22.41 derivative pair; the dK/dk companion and the Wronskian closure remain."
     }
   ],
   "leanFile": {
@@ -176,9 +181,9 @@
       "AmgmInequalityOQ04OQ01"
     ],
     "namespace": "AmgmInequalityOQ04OQ02",
-    "lineCount": 964,
+    "lineCount": 1062,
     "axiomCount": 1,
-    "theoremCount": 38,
+    "theoremCount": 39,
     "definitionCount": 9,
     "path": "Proofs/AmgmInequalityOQ04OQ02.lean",
     "sorries": 0
