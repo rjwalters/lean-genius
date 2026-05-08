@@ -86,5 +86,25 @@
       "uniform convergence",
       "bracketing argument"
     ]
+  },
+  {
+    "id": "ann-vc-class-roadmap",
+    "proofId": "laws-of-large-numbers-oq-04-oq-03",
+    "range": { "startLine": 137, "endLine": 156 },
+    "type": "context",
+    "title": "Forward Path: Minimal Mathlib Infrastructure for VC-Class Glivenko–Cantelli",
+    "content": "The candidate-pool reformulates this entry's open question as: *what is the minimal Mathlib infrastructure needed for the VC-class Glivenko–Cantelli theorem?*\n\nThe answer factors into three layers, each with a sharp Mathlib status:\n\n**Layer A — Classical bracketing (closing the last axiom in the parent file).** Three sub-pieces:\n  1. `Monotone.countable_not_continuousAt` (Mathlib ✓): monotone real functions have countably many discontinuities. Combined with `Set.Countable.dense_compl`, this yields *density* of CDF continuity points in ℝ.\n  2. ε-cover by continuity points with controlled F-jump (**missing**): from density alone, one needs a constructive procedure producing a finite sequence q₁ < ⋯ < q_k of continuity points with F(q_{j+1}) − F(q_j) < ε. This is the only genuinely missing ingredient.\n  3. Finite-intersection of pointwise convergence events (Mathlib ✓ via `MeasureTheory.ae_all_iff` over a finite index).\n\nGiven (1)–(3), the bracketing axiom `glivenko_cantelli_uniform` becomes a one-page Lean proof.\n\n**Layer B — VC-class definitions (prerequisite for any non-classical empirical-process result).** All missing in Mathlib 4.26: `VCDimension`, `ShatterCoefficient (𝓕 : Set (α → Bool)) (n : ℕ)`, the Sauer–Shelah lemma (shatter coefficient is polynomial in n once VC dimension is finite). These are pure combinatorics and have no measure-theoretic dependencies; they could be added independently.\n\n**Layer C — Empirical-process inequalities (the substantive measure-theoretic content).** Two missing pieces:\n  - The Vapnik–Chervonenkis symmetrization inequality: for an i.i.d. sample and an independent ghost sample, `P(sup_{f ∈ 𝓕} |Pₙf − Pf| > ε) ≤ 2 P(sup_{f ∈ 𝓕} |Pₙf − P'ₙf| > ε/2)`.\n  - A Talagrand/Massart-style maximal inequality bounding the right side by `4 · ShatterCoefficient(𝓕, 2n) · exp(−nε²/8)` (Hoeffding inequality applied to the symmetrized empirical process).\n\n**Strategic implication.** Layer A alone retires the last classical axiom but yields a one-off lemma. Layer B+C is a substantial Mathlib investment (estimated ~2000 lines: Sauer–Shelah is ~200 lines, symmetrization ~300, Talagrand bound ~400, plus surrounding API), but it *subsumes* Layer A: applying the VC-class theorem to the threshold class {1_{· ≤ x} : x ∈ ℝ} (VC dimension 1) gives the classical Glivenko–Cantelli with the rate O(√(1/n)). A decision to invest in B+C is therefore the higher-leverage path: one proof, classical *and* generalized result, plus enabling infrastructure for ML/statistics formalizations (PAC learning, regression generalization bounds).",
+    "mathContext": "**VC-class Glivenko–Cantelli (Vapnik–Chervonenkis 1971)**: Let $\\mathcal{F}$ be a class of $\\{0,1\\}$-valued measurable functions with VC dimension $d < \\infty$. Then\n$$\\mathbb{E}\\left[\\sup_{f \\in \\mathcal{F}} \\left|\\frac{1}{n}\\sum_{i=1}^n f(X_i) - \\mathbb{E}[f(X_1)]\\right|\\right] \\leq C\\sqrt{\\frac{d}{n}}$$\nand convergence is almost sure. Specializing $\\mathcal{F} = \\{1_{(-\\infty, x]} : x \\in \\mathbb{R}\\}$ (VC dim 1) recovers classical Glivenko–Cantelli.\n\n**Sauer–Shelah lemma**: For a class with VC dimension $d$, the shatter coefficient satisfies $\\Pi_{\\mathcal{F}}(n) \\leq \\sum_{k=0}^d \\binom{n}{k} \\leq (n+1)^d$.\n\n**Symmetrization**: For $\\varepsilon \\geq 1/\\sqrt{n}$,\n$$\\mathbb{P}\\left(\\sup_{f \\in \\mathcal{F}}|P_n f - Pf| > \\varepsilon\\right) \\leq 2\\,\\mathbb{P}\\left(\\sup_{f \\in \\mathcal{F}}|P_n f - P_n' f| > \\varepsilon/2\\right)$$\nwhere $P_n'$ is an independent ghost-sample empirical measure.",
+    "significance": "context",
+    "relatedConcepts": [
+      "VC dimension",
+      "shatter coefficient",
+      "Sauer–Shelah lemma",
+      "symmetrization inequality",
+      "empirical process theory",
+      "Mathlib infrastructure",
+      "Talagrand inequality",
+      "PAC learning"
+    ]
   }
 ]
