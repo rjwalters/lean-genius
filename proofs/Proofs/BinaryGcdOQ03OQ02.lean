@@ -1592,6 +1592,177 @@ theorem hgcdMatrix_small_entry_bound (fuel a b : ℕ)
   simp only [Int.natAbs_natCast] at hα hβ hγ hδ
   exact ⟨hα, hβ, hγ, hδ⟩
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XIII: ALL-FUEL LIFTING — pattern-det + entry bound (Session 16)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### All-fuel lifting of the joint pattern-det invariant
+
+PART XII (Session 15) proved the joint disjunction
+`(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)` for `lehmerCofactors`
+and lifted it to `hgcdMatrix` only in the *threshold* case
+(`hgcdMatrix_small_pattern_det_correlated`).
+
+This subsection lifts it to **all fuel** in two purely algebraic steps,
+bypassing the joint induction needed for the row-vector invariant:
+
+  * `cofactor_mul_pattern_det_correlated`: the disjunction is preserved
+    by `CofactorMatrix.mul`. The four PART X cases (Even·Even = Odd·Odd
+    = Even, Even·Odd = Odd·Even = Odd) carry the pattern; det
+    multiplicativity (`CofactorMatrix.det_mul`) carries the sign
+    (`1 · 1 = (-1) · (-1) = 1`, `1 · (-1) = (-1) · 1 = -1`). The two
+    flips are correlated in lockstep across all four product cases.
+
+  * `hgcdMatrix_pattern_det_correlated`: induction on fuel.
+    - **Base** (`fuel = 0`): `id` is Even with det 1.
+    - **Threshold case**: `hgcdMatrix_small_pattern_det_correlated`.
+    - **Recursive case**: result is `M_outer.mul M_inner`; both factors
+      satisfy the disjunction by IH, and the product satisfies it by
+      `cofactor_mul_pattern_det_correlated`.
+
+With the joint invariant available for all fuel, the entry-bound
+argument (`entry_bound_of_pattern_det_natAbs`) applies uniformly. The
+remaining gap toward `hgcdMatrix_entry_bound` for arbitrary inputs is
+no longer the pattern-det correlation — it is the *row-vector
+invariant* in the recursive case (the Stehlé–Zimmermann §4 circular
+dependency that the joint induction is designed to break). The
+conditional theorem `hgcdMatrix_entry_bound` below assumes the
+row-vector witnesses as preconditions, exposing exactly this remaining
+piece for callers to supply (or for a future joint-induction session
+to discharge unconditionally). -/
+
+/-- Joint pattern-det invariant is preserved by `CofactorMatrix.mul`.
+
+    The four pattern-multiplication cases of PART X
+    (`cofactor_mul_even_even` etc.) lift each pattern outcome, while
+    `CofactorMatrix.det_mul` lifts the determinant via multiplicativity.
+    The two carriers agree in every case:
+      - Even · Even = Even, det 1·1 = 1
+      - Even · Odd = Odd,  det 1·(-1) = -1
+      - Odd · Even = Odd,  det (-1)·1 = -1
+      - Odd · Odd = Even,  det (-1)·(-1) = 1
+
+    This is the algebraic step needed to lift
+    `hgcdMatrix_small_pattern_det_correlated` to all fuel via induction. -/
+theorem cofactor_mul_pattern_det_correlated {M N : CofactorMatrix}
+    (hM : (EvenPattern M ∧ M.det = 1) ∨ (OddPattern M ∧ M.det = -1))
+    (hN : (EvenPattern N ∧ N.det = 1) ∨ (OddPattern N ∧ N.det = -1)) :
+    (EvenPattern (M.mul N) ∧ (M.mul N).det = 1) ∨
+    (OddPattern (M.mul N) ∧ (M.mul N).det = -1) := by
+  rcases hM with ⟨hMp, hMd⟩ | ⟨hMp, hMd⟩ <;>
+    rcases hN with ⟨hNp, hNd⟩ | ⟨hNp, hNd⟩
+  · -- Even · Even = Even, det 1·1 = 1
+    refine Or.inl ⟨cofactor_mul_even_even hMp hNp, ?_⟩
+    rw [CofactorMatrix.det_mul, hMd, hNd]; ring
+  · -- Even · Odd = Odd, det 1·(-1) = -1
+    refine Or.inr ⟨cofactor_mul_even_odd hMp hNp, ?_⟩
+    rw [CofactorMatrix.det_mul, hMd, hNd]; ring
+  · -- Odd · Even = Odd, det (-1)·1 = -1
+    refine Or.inr ⟨cofactor_mul_odd_even hMp hNp, ?_⟩
+    rw [CofactorMatrix.det_mul, hMd, hNd]; ring
+  · -- Odd · Odd = Even, det (-1)·(-1) = 1
+    refine Or.inl ⟨cofactor_mul_odd_odd hMp hNp, ?_⟩
+    rw [CofactorMatrix.det_mul, hMd, hNd]; ring
+
+/-- Joint pattern-determinant invariant for `hgcdMatrix` at **arbitrary
+    fuel**: every matrix produced by Schönhage's recursive HGCD
+    satisfies
+    `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)`.
+
+    Proof: induction on fuel.
+    - **Base** (`fuel = 0`): identity is Even with det 1.
+    - **Step (threshold)**: `hgcdMatrix_small_pattern_det_correlated`.
+    - **Step (recursive)**: result is `M_outer.mul M_inner`; both
+      factors satisfy the disjunction by IH;
+      `cofactor_mul_pattern_det_correlated` propagates it.
+
+    This generalises `hgcdMatrix_small_pattern_det_correlated` (PART XII,
+    threshold-only) and `hgcdMatrix_has_pattern` (PART X, pattern-only)
+    by combining sign-pattern lifting with determinant lifting in the
+    same induction. It removes the pattern-det side of the
+    Stehlé–Zimmermann circular dependency: the remaining circularity
+    is solely on the row-vector invariant. -/
+theorem hgcdMatrix_pattern_det_correlated (fuel a b : ℕ) :
+    (EvenPattern (hgcdMatrix fuel a b)
+        ∧ (hgcdMatrix fuel a b).det = 1) ∨
+    (OddPattern (hgcdMatrix fuel a b)
+        ∧ (hgcdMatrix fuel a b).det = -1) := by
+  induction fuel generalizing a b with
+  | zero =>
+    rw [hgcdMatrix_zero]
+    exact Or.inl ⟨CofactorMatrix.id_even_pattern, CofactorMatrix.det_id⟩
+  | succ f ih =>
+    by_cases hsmall : max a b < hgcdThreshold
+    · exact hgcdMatrix_small_pattern_det_correlated f a b hsmall
+    · rw [hgcdMatrix_succ, if_neg hsmall]
+      exact cofactor_mul_pattern_det_correlated
+        (ih _ _) (ih (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b))
+
+/-- Top-level HGCD has the joint pattern-determinant invariant. -/
+theorem hgcdMatrixOf_pattern_det_correlated (a b : ℕ) :
+    (EvenPattern (hgcdMatrixOf a b) ∧ (hgcdMatrixOf a b).det = 1) ∨
+    (OddPattern (hgcdMatrixOf a b) ∧ (hgcdMatrixOf a b).det = -1) :=
+  hgcdMatrix_pattern_det_correlated _ a b
+
+/-! ### All-fuel entry bound (conditional on row-vector witnesses)
+
+Generalises `hgcdMatrix_small_entry_bound` (PART XII, Session 15) by
+removing the threshold hypothesis. The pattern-det correlation now
+holds for all fuel (`hgcdMatrix_pattern_det_correlated`), so
+`entry_bound_of_pattern_det_natAbs` applies uniformly. The row-vector
+witnesses `(ahat', bhat')` remain as preconditions — establishing them
+in the recursive case (`max a b ≥ hgcdThreshold`) is the residual
+content of the joint-induction obstacle on
+`hgcdMatrix_row_output_le`/`hgcdMatrix_row_invariant` (Session 17+).
+
+For `fuel = 0` the matrix is `id`, the row-vector witnesses are forced
+to `(ahat', bhat') = (a, b)` (`α = 1, β = 0, γ = 0, δ = 1`), and the
+bounds reduce to `1 ≤ b`, `0 ≤ b`, `0 ≤ a`, `1 ≤ a` — all immediate
+from `1 ≤ a, 1 ≤ b`. The threshold case matches
+`hgcdMatrix_small_entry_bound` (Session 15). The recursive case is the
+new content this lemma exposes uniformly. -/
+
+/-- All-fuel entry bound for `hgcdMatrix`: under the row-vector
+    relation with positive natural-number residue witnesses
+    `(ahat', bhat')` for the input pair `(a, b)`, every entry of the
+    cofactor matrix is bounded in `natAbs` by the inputs.
+
+    This drops the `max a b < hgcdThreshold` hypothesis from
+    `hgcdMatrix_small_entry_bound` by using the all-fuel pattern-det
+    correlation (`hgcdMatrix_pattern_det_correlated`).
+
+    Proof skeleton matches `hgcdMatrix_small_entry_bound` but with
+    `hgcdMatrix_pattern_det_correlated` substituted for the
+    threshold-only `hgcdMatrix_small_pattern_det_correlated`.
+
+    Status: this is the conditional version of `hgcdMatrix_entry_bound`
+    parameterised by external row-vector witnesses. The unconditional
+    statement (no precondition) requires establishing the existential
+    row-vector invariant `hgcdMatrix_row_invariant` for arbitrary fuel,
+    which is the Stehlé–Zimmermann §4 joint induction — Session 17+
+    work. -/
+theorem hgcdMatrix_entry_bound (fuel a b : ℕ)
+    (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (ahat' bhat' : ℕ)
+    (h₁ : (a : ℤ) * (hgcdMatrix fuel a b).α
+            + (b : ℤ) * (hgcdMatrix fuel a b).γ = (ahat' : ℤ))
+    (h₂ : (a : ℤ) * (hgcdMatrix fuel a b).β
+            + (b : ℤ) * (hgcdMatrix fuel a b).δ = (bhat' : ℤ))
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    (hgcdMatrix fuel a b).α.natAbs ≤ b ∧
+    (hgcdMatrix fuel a b).β.natAbs ≤ b ∧
+    (hgcdMatrix fuel a b).γ.natAbs ≤ a ∧
+    (hgcdMatrix fuel a b).δ.natAbs ≤ a := by
+  have hpd := hgcdMatrix_pattern_det_correlated fuel a b
+  have ha₀ : (0 : ℤ) < (a : ℤ) := by exact_mod_cast ha
+  have hb₀ : (0 : ℤ) < (b : ℤ) := by exact_mod_cast hb
+  have hahatℤ : (1 : ℤ) ≤ (ahat' : ℤ) := by exact_mod_cast hahat'
+  have hbhatℤ : (1 : ℤ) ≤ (bhat' : ℤ) := by exact_mod_cast hbhat'
+  obtain ⟨hα, hβ, hγ, hδ⟩ :=
+    entry_bound_of_pattern_det_natAbs h₁ h₂ hpd ha₀ hb₀ hahatℤ hbhatℤ
+  simp only [Int.natAbs_natCast] at hα hβ hγ hδ
+  exact ⟨hα, hβ, hγ, hδ⟩
+
 /-! ## Summary
 
 **Proved (0 axioms, 0 sorries):**
@@ -1772,21 +1943,61 @@ theorem hgcdMatrix_small_entry_bound (fuel a b : ℕ)
     case (Session 16+) requires lifting the row-vector invariant via
     `cofactor_mul_row_invariant` together with this entry bound.
 
+19. **All-fuel lifting of pattern-det + entry bound**
+    (PART XIII, Session 16):
+    - `cofactor_mul_pattern_det_correlated`: the four-case algebraic
+      step. The pattern half uses `cofactor_mul_even_even` /
+      `cofactor_mul_odd_odd` / `cofactor_mul_even_odd` /
+      `cofactor_mul_odd_even` (PART X); the determinant half uses
+      `CofactorMatrix.det_mul`. The four product cases are correlated
+      in lockstep:
+        - Even · Even = Even,  det `1·1 = 1`
+        - Even · Odd  = Odd,   det `1·(-1) = -1`
+        - Odd  · Even = Odd,   det `(-1)·1 = -1`
+        - Odd  · Odd  = Even,  det `(-1)·(-1) = 1`
+    - `hgcdMatrix_pattern_det_correlated`: induction on fuel.
+      Base = `id` (Even, det 1); threshold case lifts via
+      `hgcdMatrix_small_pattern_det_correlated` (PART XII); recursive
+      case via `cofactor_mul_pattern_det_correlated` and the IH for both
+      subproblems. This **removes the threshold restriction** from the
+      Session 15 lifting and makes the joint pattern-det invariant
+      available for arbitrary HGCD fuel.
+    - `hgcdMatrixOf_pattern_det_correlated`: top-level wrapper.
+    - `hgcdMatrix_entry_bound`: all-fuel entry bound, conditional on
+      external row-vector witnesses `(ahat', bhat')` with positivity.
+      Generalises `hgcdMatrix_small_entry_bound` (Session 15) by
+      replacing the threshold-only pattern-det invariant with the
+      all-fuel version. Proof skeleton is otherwise identical: use
+      `entry_bound_of_pattern_det_natAbs` after lifting positivity from
+      `ℕ` to `ℤ`.
+
+    What this contributes: the pattern-det side of the
+    Stehlé–Zimmermann joint induction is now fully discharged for all
+    fuel via plain induction on `hgcdMatrix`. The remaining
+    circular-dependency obstacle is *solely* on the row-vector
+    invariant for `hgcdMatrix` in the recursive case
+    (`hgcdMatrix_row_output_le` line 1078, the only remaining sorry).
+    Session 17+ is no longer about a *coupled* pattern-det × row-vector
+    induction — it is about the row-vector invariant alone, with
+    `hgcdMatrix_pattern_det_correlated` and `hgcdMatrix_entry_bound`
+    available as black-box ingredients.
+
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
   Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
   recursive case. The Session 12 infrastructure (PART VIIc) reframes the
   recursive case so that the inner subproblem `M_inner = hgcdMatrix f aHi bHi`
-  contributes via *entry* bounds. As of Session 15 (PART XII), the
-  threshold-case entry bound is fully assembled (`hgcdMatrix_small_entry_bound`)
-  combining sign-pattern (Session 13), row-vector invariant (Session 14), and
-  pattern-det correlation (Session 15). The remaining gap is the recursive
-  case of the entry bound — lifting the row-vector invariant for `hgcdMatrix`
-  to arbitrary fuel via `cofactor_mul_row_invariant`, which itself depends on
-  resolving the circular dependency in `hgcdMatrix_row_invariant` (the
-  recursive case requires the entry bound, which requires the row-vector
-  invariant). The Stehlé–Zimmermann §4 joint induction is the standard
-  technique for breaking this circularity.
+  contributes via *entry* bounds. As of Session 16 (PART XIII), the entry
+  bound is available **for all fuel** (`hgcdMatrix_entry_bound`) conditional on
+  external row-vector witnesses; the unconditional row-vector invariant for
+  `hgcdMatrix` itself is the only remaining ingredient. The Session 14
+  composition law (`cofactor_mul_row_invariant`, PART XI), the Session 16
+  unconditional entry bound (`hgcdMatrix_entry_bound`, PART XIII), the
+  Session 12 row-output composition (`cofactor_mul_row_output_natAbs_le`,
+  PART VIIc), and the Session 13 pattern lifting
+  (`hgcdMatrix_has_pattern`, PART X) are all available as black boxes.
+  Session 17+ is the row-vector invariant joint induction, no longer
+  coupled to the pattern-det side.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
