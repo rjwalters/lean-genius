@@ -186,14 +186,14 @@ theorem volume_eq_setLIntegral_indicator_tsum {n : ℕ} [NeZero n]
     {s : Set (Fin n → ℝ)} (h_meas : MeasurableSet s) :
     ∫⁻ x in stdFundDomain n,
         (∑' g : (stdLattice n).toAddSubgroup,
-            s.indicator (fun _ => (1 : ℝ≥0∞))
+            s.indicator (fun _ => (1 : ENNReal))
               ((g : Fin n → ℝ) + x)) ∂volume
       = volume s := by
   haveI : Countable (stdLattice n).toAddSubgroup := by
     unfold stdLattice
     change Countable (Submodule.span ℤ (Set.range (stdBasis n)))
     infer_instance
-  set ind : (Fin n → ℝ) → ℝ≥0∞ := s.indicator (fun _ => (1 : ℝ≥0∞)) with h_ind_def
+  set ind : (Fin n → ℝ) → ENNReal := s.indicator (fun _ => (1 : ENNReal)) with h_ind_def
   have h_ind_meas : Measurable ind :=
     measurable_const.indicator h_meas
   have h_shift_meas_vadd : ∀ g : (stdLattice n).toAddSubgroup,
