@@ -1652,6 +1652,119 @@ private lemma chebyshev_h_interior_of_close_and_max_index_cap
         _ = (m : ℝ) * Real.pi / n := by ring
     linarith
 
+/-- **Step 7a (m-choice + `hm_le` + `hcap_max` packager).**
+
+    For `θ ∈ (0, π/2]`, `n ≥ 4`, the standard nearest-node closeness
+    `|θ - φ_{k₀}| ≤ π/(2n)`, and any `m : ℕ` with `(m : ℝ) ≤ n·θ/(4π)`,
+    both arithmetic preconditions of the trig sub-sum chain hold:
+
+      • `hm_le`: `k₀.val + m + 1 ≤ n` (input to `trig_sum_subsum_log_lb`),
+      • `hcap_max`: `φ_{k₀+m} ≤ π - θ/2` (input to
+        `chebyshev_h_interior_of_close_and_max_index_cap`).
+
+    The standard Step 7a caller-side choice `m := ⌊n·θ/(4π)⌋` satisfies the
+    `(m : ℝ) ≤ n·θ/(4π)` hypothesis via `Nat.floor_le`. Combined with
+    `chebyshev_h_interior_of_close_and_max_index_cap`, this closes every
+    arithmetic precondition of `trig_sum_subsum_log_lb` for the asymptotic
+    branch of `trig_sum_harmonic_lb`.
+
+    **Key arithmetic** (with `θ ≤ π/2` and `n ≥ 4`):
+
+      • From closeness: `(2k₀+1)·π/(2n) ≤ θ + π/(2n)`, hence
+        `2 k₀ · π ≤ 2 n θ ≤ n π`, giving `2 k₀ ≤ n` (in ℕ).
+      • From `(m : ℝ) ≤ n·θ/(4π) ≤ n/8`: `8 m ≤ n` (in ℕ).
+      • Then `omega` closes `k₀.val + m + 1 ≤ n` from `2 k₀ ≤ n`,
+        `8 m ≤ n`, `n ≥ 4` (since `8(k₀ + m + 1) ≤ 4n + n + 8 ≤ 8n`).
+      • For the cap: `φ_{k₀+m} = φ_{k₀} + m·π/n ≤ (θ + π/(2n)) + θ/4`.
+        With `θ ≤ π/2` and `n ≥ 4`: `≤ π/2 + π/8 + π/8 = 3π/4`, and
+        `π - θ/2 ≥ π - π/4 = 3π/4`. -/
+private lemma chebyshev_quarter_floor_hm_le_and_cap_max
+    (n : ℕ) (hn : 4 ≤ n) (θ : ℝ) (hθ_pos : 0 < θ) (hθ_le : θ ≤ Real.pi / 2)
+    (k₀ : Fin n)
+    (hk₀_close : |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n))
+    (m : ℕ) (hm_real_le : (m : ℝ) ≤ (n : ℝ) * θ / (4 * Real.pi)) :
+    k₀.val + m + 1 ≤ n ∧
+    (2 * ((k₀.val + m : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - θ / 2 := by
+  have hpi_pos := Real.pi_pos
+  have hπ_ne : Real.pi ≠ 0 := hpi_pos.ne'
+  have hn_pos_nat : 0 < n := by omega
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn_pos_nat
+  have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+  have h2n_pos : (0 : ℝ) < 2 * (n : ℝ) := by linarith
+  have h2n_ne : 2 * (n : ℝ) ≠ 0 := h2n_pos.ne'
+  have h4_le_n : (4 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  -- Step 1: m·π/n ≤ θ/4 (multiply hm_real_le by π/n > 0 and simplify)
+  have hm_pi_n_le_θ4 : (m : ℝ) * Real.pi / n ≤ θ / 4 := by
+    have hπn_nn : (0 : ℝ) ≤ Real.pi / n := (div_pos hpi_pos hn_pos).le
+    have step :
+        (m : ℝ) * (Real.pi / n) ≤ ((n : ℝ) * θ / (4 * Real.pi)) * (Real.pi / n) :=
+      mul_le_mul_of_nonneg_right hm_real_le hπn_nn
+    have hLHS : (m : ℝ) * (Real.pi / n) = (m : ℝ) * Real.pi / n := by ring
+    have hRHS : ((n : ℝ) * θ / (4 * Real.pi)) * (Real.pi / n) = θ / 4 := by
+      field_simp
+      ring
+    linarith
+  have hθ4_le_π8 : θ / 4 ≤ Real.pi / 8 := by linarith
+  have hm_pi_n_le_π8 : (m : ℝ) * Real.pi / n ≤ Real.pi / 8 :=
+    le_trans hm_pi_n_le_θ4 hθ4_le_π8
+  -- Step 2: φ_{k₀} ≤ θ + π/(2n) (from |θ - φ_{k₀}| ≤ π/(2n) via abs_le)
+  have hφk₀_le : (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n) ≤ θ + Real.pi / (2 * n) := by
+    have := (abs_le.mp hk₀_close).1
+    linarith
+  -- Step 3: φ_{k₀+m} = φ_{k₀} + m·π/n (Nat-cast bridge + algebra)
+  have hφ_k0m_decomp :
+      (2 * ((k₀.val + m : ℕ) : ℝ) + 1) * Real.pi / (2 * n) =
+        (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n) + (m : ℝ) * Real.pi / n := by
+    have hcast : ((k₀.val + m : ℕ) : ℝ) = (k₀.val : ℝ) + (m : ℝ) := by push_cast; ring
+    rw [hcast]; field_simp; ring
+  -- Step 4: π/(2n) ≤ π/8 (since n ≥ 4 ⟹ 2n ≥ 8)
+  have hπ_2n_le_π_8 : Real.pi / (2 * n) ≤ Real.pi / 8 := by
+    rw [div_le_div_iff₀ h2n_pos (by norm_num : (0 : ℝ) < 8)]
+    have h_8_le_2n : (8 : ℝ) ≤ 2 * (n : ℝ) := by linarith
+    nlinarith [hpi_pos]
+  -- Step 5: hcap_max — assemble the cap bound.
+  -- φ_{k₀+m} ≤ (θ + π/(2n)) + m·π/n ≤ (θ + π/8) + π/8 ≤ (π/2 + π/8) + π/8 = 3π/4 ≤ π - θ/2.
+  have hcap_max :
+      (2 * ((k₀.val + m : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - θ / 2 := by
+    rw [hφ_k0m_decomp]
+    have h_3π4_eq : Real.pi / 2 + Real.pi / 8 + Real.pi / 8 = 3 * Real.pi / 4 := by ring
+    have h_target_ge_3π4 : 3 * Real.pi / 4 ≤ Real.pi - θ / 2 := by linarith
+    linarith [hφk₀_le, hπ_2n_le_π_8, hθ_le, hm_pi_n_le_π8, h_3π4_eq, h_target_ge_3π4]
+  refine ⟨?_, hcap_max⟩
+  -- Step 6: hm_le — derive 2*k₀ ≤ n and 8*m ≤ n in ℕ, then `omega`.
+  -- 2*k₀ ≤ n: clear (2n) from hφk₀_le, then bound by 2nθ ≤ nπ via θ ≤ π/2.
+  have h2k0_real_le : 2 * (k₀.val : ℝ) ≤ (n : ℝ) := by
+    have hφk₀_clear :
+        (2 * (k₀.val : ℝ) + 1) * Real.pi ≤ 2 * (n : ℝ) * θ + Real.pi := by
+      have step := mul_le_mul_of_nonneg_right hφk₀_le h2n_pos.le
+      have hLHS :
+          (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n) * (2 * n) =
+            (2 * (k₀.val : ℝ) + 1) * Real.pi := by
+        field_simp
+      have hRHS :
+          (θ + Real.pi / (2 * n)) * (2 * n) = 2 * (n : ℝ) * θ + Real.pi := by
+        field_simp; ring
+      linarith
+    have h_2nθ_le_nπ : 2 * (n : ℝ) * θ ≤ (n : ℝ) * Real.pi := by
+      nlinarith [hθ_le, hn_pos.le]
+    have h_2k0π_le_nπ : 2 * (k₀.val : ℝ) * Real.pi ≤ (n : ℝ) * Real.pi := by linarith
+    nlinarith [h_2k0π_le_nπ, hpi_pos]
+  have h2k0_nat_le : 2 * k₀.val ≤ n := by exact_mod_cast h2k0_real_le
+  -- 8*m ≤ n: from m·π/n ≤ π/8, clear denominators via 8n > 0.
+  have h8m_real_le : 8 * (m : ℝ) ≤ (n : ℝ) := by
+    have h8n_pos : (0 : ℝ) < 8 * (n : ℝ) := by linarith
+    have step := mul_le_mul_of_nonneg_right hm_pi_n_le_π8 h8n_pos.le
+    have hLHS :
+        (m : ℝ) * Real.pi / n * (8 * (n : ℝ)) = 8 * (m : ℝ) * Real.pi := by
+      field_simp; ring
+    have hRHS : Real.pi / 8 * (8 * (n : ℝ)) = (n : ℝ) * Real.pi := by
+      field_simp; ring
+    have h_8mπ_le_nπ : 8 * (m : ℝ) * Real.pi ≤ (n : ℝ) * Real.pi := by linarith
+    nlinarith [h_8mπ_le_nπ, hpi_pos]
+  have h8m_nat_le : 8 * m ≤ n := by exact_mod_cast h8m_real_le
+  -- Conclude k₀.val + m + 1 ≤ n: 8(k₀ + m + 1) ≤ 4n + n + 8 ≤ 8n iff n ≥ 8/3.
+  omega
+
 /-- **Reindex symmetry of the Chebyshev-Lebesgue trig sum: θ ↔ π - θ.**
 
     Under the involution `σ : Fin n ≃ Fin n`, `k ↦ n - 1 - k`:
