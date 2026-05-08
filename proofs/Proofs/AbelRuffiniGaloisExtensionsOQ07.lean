@@ -528,10 +528,57 @@ private lemma sylow_count_dvd_four_modEq_one_three
     exact absurd hdvd (by decide)
   · right; rfl
 
+/-- **S10 helper (S11.5, this session)**: distinct Sylow `p`-subgroups
+    of prime order intersect trivially.
+
+    For Sylow `p`-subgroups `Q ≠ Q'` with `|Q| = |Q'| = p` (which holds
+    when `|G| = p · m` with `gcd(p, m) = 1`, e.g. `|G| = 12 = 2² · 3`
+    and `p = 3`), the intersection `Q ⊓ Q'` is a subgroup of `Q` whose
+    cardinality divides `|Q| = p` (prime), so it's either `1` or `p`.
+
+    The case `card = p` would force `Q ⊓ Q' = Q` (both are subgroups
+    of `Q` with the same cardinality), hence `Q ≤ Q'` (via the `inf_le_right`
+    side); and then `Q = Q'` as subgroups (both order `p`), which lifts
+    to `Q = Q'` as `Sylow` via `Sylow.ext` — contradicting `hne`. So
+    `card = 1`, equivalently `Q ⊓ Q' = ⊥`.
+
+    **First ingredient** of S10's element-counting closure: the set
+    `{g : G | g^3 = 1}` decomposes as the disjoint union `{e} ⊔ ⊔ᵢ (Qᵢ \ {e})`,
+    requiring this disjointness fact for the `n_3 = 4` Sylow 3-subgroups
+    of `|G| = 12`. -/
+private lemma sylow_prime_order_disjoint_of_ne
+    {G : Type*} [Group G] [Finite G] {p : ℕ} [Fact (Nat.Prime p)]
+    (Q Q' : Sylow p G)
+    (hQ_card : Nat.card (Q : Subgroup G) = p)
+    (hQ'_card : Nat.card (Q' : Subgroup G) = p)
+    (hne : Q ≠ Q') :
+    (Q : Subgroup G) ⊓ (Q' : Subgroup G) = ⊥ := by
+  -- Strategy: |Q ⊓ Q'| ∣ |Q| = p (prime), so it's 1 or p; rule out p.
+  have hint_le_Q : (Q : Subgroup G) ⊓ (Q' : Subgroup G) ≤ (Q : Subgroup G) := inf_le_left
+  have hint_le_Q' : (Q : Subgroup G) ⊓ (Q' : Subgroup G) ≤ (Q' : Subgroup G) := inf_le_right
+  have hp_prime : Nat.Prime p := Fact.out
+  have hdvd : Nat.card ((Q : Subgroup G) ⊓ (Q' : Subgroup G) : Subgroup G) ∣ p := by
+    rw [← hQ_card]
+    exact Subgroup.card_dvd_card_of_le hint_le_Q
+  rcases hp_prime.eq_one_or_self_of_dvd _ hdvd with h1 | hp_eq
+  · -- card = 1: H = ⊥.
+    exact Subgroup.card_eq_one_iff_eq_bot.mp h1
+  · -- card = p: H = Q (same card, ≤). Then Q ≤ Q' and equality follows.
+    exfalso
+    have h_eq_Q : ((Q : Subgroup G) ⊓ (Q' : Subgroup G) : Subgroup G) = (Q : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_le hint_le_Q
+        (by rw [hp_eq, hQ_card])
+    have h_Q_le_Q' : (Q : Subgroup G) ≤ (Q' : Subgroup G) := h_eq_Q ▸ hint_le_Q'
+    have h_Q_eq_Q' : (Q : Subgroup G) = (Q' : Subgroup G) :=
+      Subgroup.eq_of_le_of_card_le h_Q_le_Q'
+        (by rw [hQ_card, hQ'_card])
+    exact hne (Sylow.ext h_Q_eq_Q')
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
-    intersection of distinct prime-order Sylow 3-subgroups), so
+    intersection of distinct prime-order Sylow 3-subgroups, now provided
+    by `sylow_prime_order_disjoint_of_ne` above), so
     `|G \ {g | g^3 = 1}| = 3 = |P| - 1` for any Sylow 2-subgroup `P`,
     pinning down `P` as `{e} ∪ (G \ {g | g^3 = 1})` independent of choice.
     The full Lean proof requires set/Finset cardinality machinery;
