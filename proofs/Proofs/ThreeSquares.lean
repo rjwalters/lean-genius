@@ -829,7 +829,24 @@ theorem dirichletEllipsoid_volume (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) 
   congr 1
   ring
 
-/-- **Axiom: Minkowski Application**: When the ellipsoid is large enough, it contains a nonzero integer point.
+/-! ### Minkowski's Theorem applied to the Dirichlet Ellipsoid
+
+We discharge the Minkowski step by direct application of Mathlib's
+`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+to the lattice `stdLattice3`, the convex symmetric ellipsoid `dirichletEllipsoid`,
+and the volume bound `dirichletEllipsoid_volume` proved in S4.
+
+The integer-coordinate extraction from `Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin 3)))`
+follows the 2D pattern in `Proofs/MinkowskiTheoremOQ02OQ01.lean` (Dirichlet's
+Diophantine approximation).
+-/
+
+/-- Auxiliary: convert `2 ^ 3 = ENNReal.ofReal 8`. -/
+private lemma two_pow_three_ennreal : ((2 : ENNReal) ^ 3 : ENNReal) = ENNReal.ofReal 8 := by
+  norm_num
+
+/-- **Minkowski Application** (formerly axiom, now proved 2026-05-08, S5):
+When the ellipsoid is large enough, it contains a nonzero integer point.
 
 By Minkowski's convex body theorem, if vol(E) > 2³ · covolume(ℤ³) = 8, then E ∩ ℤ³ ≠ {0}.
 
@@ -842,25 +859,102 @@ The key role this plays:
 - Minkowski gives integer point (x, y, z) ≠ 0 in ellipsoid
 - The quadratic residue condition allows extracting n = x² + y² + z²
 
-(Threshold corrected 2026-05-08 from `/ √d` to `/ d` to match the corrected
-`dirichletEllipsoid_volume` formula.)
-
-**Proof status**: This follows from Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
-in `MeasureTheory.Group.GeometryOfNumbers`, applied to:
-- E = (Fin 3 → ℝ) with standard inner product
-- L = ℤ³ (integers embedded as AddSubgroup)
-- s = dirichletEllipsoid d R
-- The hypothesis hvol and dirichletEllipsoid_volume give the volume condition
-
-The setup requires:
-1. Constructing ℤ³ as an AddSubgroup with fundamental domain of volume 1
-2. Verifying the ellipsoid is convex (proved above) and symmetric (proved above)
-3. Converting between measure spaces
-
-This is mechanical but requires ~100 lines of infrastructure. -/
-axiom minkowski_ellipsoid_has_lattice_point (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R)
+**Proof outline**:
+1. Convert `8 < (4π/3) R^(3/2) / d` to `(2:ℝ≥0∞)^3 < volume(ellipsoid)`
+   using `dirichletEllipsoid_volume` (proved S4).
+2. Apply `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
+   with `stdLattice3.toAddSubgroup` and `stdFundamentalDomain3`.
+3. Extract integer coordinates via `Submodule.mem_span_range_iff_exists_fun`.
+-/
+theorem minkowski_ellipsoid_has_lattice_point (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R)
     (hvol : 8 < (4 * Real.pi / 3) * R ^ (3/2 : ℝ) / d) :
-    ∃ v : Fin 3 → ℤ, v ≠ 0 ∧ (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 ≤ R
+    ∃ v : Fin 3 → ℤ, v ≠ 0 ∧ (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 ≤ R := by
+  -- Step 1: countability of stdLattice3 (instance for the Mathlib lemma).
+  haveI : Countable stdLattice3.toAddSubgroup := by
+    unfold stdLattice3
+    change Countable (Submodule.span ℤ (Set.range stdBasis3)); infer_instance
+  -- Step 2: fundamental domain in AddSubgroup form.
+  have h_fund :
+      MeasureTheory.IsAddFundamentalDomain stdLattice3.toAddSubgroup
+        stdFundamentalDomain3 MeasureTheory.volume := by
+    unfold stdLattice3 stdFundamentalDomain3
+    exact ZSpan.isAddFundamentalDomain' stdBasis3 MeasureTheory.volume
+  -- Step 3: positivity of the real-valued volume.
+  have h_pos : 0 < (4 * Real.pi / 3) * R ^ (3 / 2 : ℝ) / d := by linarith
+  -- Step 4: the ENNReal volume condition required by Mathlib's lemma.
+  have h_meas_cov :
+      MeasureTheory.volume stdFundamentalDomain3 *
+        2 ^ Module.finrank ℝ (Fin 3 → ℝ) <
+      MeasureTheory.volume (dirichletEllipsoid d R) := by
+    rw [stdLattice3_covolume, one_mul, Module.finrank_fin_fun,
+        dirichletEllipsoid_volume d R hd hR, two_pow_three_ennreal]
+    exact (ENNReal.ofReal_lt_ofReal_iff h_pos).mpr hvol
+  -- Step 5: apply Mathlib's geometry-of-numbers theorem.
+  obtain ⟨⟨x_val, hx_mem⟩, hx_ne, hx_S⟩ :=
+    MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure
+      h_fund (dirichletEllipsoid_symmetric d R)
+      (dirichletEllipsoid_convex d R hd hR.le) h_meas_cov
+  -- Step 6: extract integer coordinates via the basis.
+  rw [Submodule.mem_toAddSubgroup] at hx_mem
+  unfold stdLattice3 at hx_mem
+  rw [Submodule.mem_span_range_iff_exists_fun] at hx_mem
+  obtain ⟨c, hc⟩ := hx_mem
+  -- Pi.basisFun coordinate values.
+  have hb00 : stdBasis3 0 0 = 1 := by
+    change Pi.basisFun ℝ (Fin 3) 0 0 = 1; simp [Pi.basisFun_apply]
+  have hb01 : stdBasis3 0 1 = 0 := by
+    change Pi.basisFun ℝ (Fin 3) 0 1 = 0; simp [Pi.basisFun_apply]
+  have hb02 : stdBasis3 0 2 = 0 := by
+    change Pi.basisFun ℝ (Fin 3) 0 2 = 0; simp [Pi.basisFun_apply]
+  have hb10 : stdBasis3 1 0 = 0 := by
+    change Pi.basisFun ℝ (Fin 3) 1 0 = 0; simp [Pi.basisFun_apply]
+  have hb11 : stdBasis3 1 1 = 1 := by
+    change Pi.basisFun ℝ (Fin 3) 1 1 = 1; simp [Pi.basisFun_apply]
+  have hb12 : stdBasis3 1 2 = 0 := by
+    change Pi.basisFun ℝ (Fin 3) 1 2 = 0; simp [Pi.basisFun_apply]
+  have hb20 : stdBasis3 2 0 = 0 := by
+    change Pi.basisFun ℝ (Fin 3) 2 0 = 0; simp [Pi.basisFun_apply]
+  have hb21 : stdBasis3 2 1 = 0 := by
+    change Pi.basisFun ℝ (Fin 3) 2 1 = 0; simp [Pi.basisFun_apply]
+  have hb22 : stdBasis3 2 2 = 1 := by
+    change Pi.basisFun ℝ (Fin 3) 2 2 = 1; simp [Pi.basisFun_apply]
+  -- x_val i = c i (as ℝ) for each coordinate.
+  have hx0 : x_val 0 = (c 0 : ℝ) := by
+    have h := congr_fun hc 0
+    rw [Fin.sum_univ_three] at h
+    simp only [Pi.add_apply, Pi.smul_apply] at h
+    rw [hb00, hb10, hb20] at h
+    simp only [zsmul_one, smul_zero, add_zero, zero_add] at h
+    exact h.symm
+  have hx1 : x_val 1 = (c 1 : ℝ) := by
+    have h := congr_fun hc 1
+    rw [Fin.sum_univ_three] at h
+    simp only [Pi.add_apply, Pi.smul_apply] at h
+    rw [hb01, hb11, hb21] at h
+    simp only [zsmul_one, smul_zero, add_zero, zero_add] at h
+    exact h.symm
+  have hx2 : x_val 2 = (c 2 : ℝ) := by
+    have h := congr_fun hc 2
+    rw [Fin.sum_univ_three] at h
+    simp only [Pi.add_apply, Pi.smul_apply] at h
+    rw [hb02, hb12, hb22] at h
+    simp only [zsmul_one, smul_zero, add_zero, zero_add] at h
+    exact h.symm
+  -- Step 7: c is the desired integer triple.
+  refine ⟨c, ?_, ?_⟩
+  · -- nonzero: from hx_ne (the subtype is nonzero).
+    intro hc_zero
+    apply hx_ne
+    apply Subtype.ext
+    funext i
+    fin_cases i
+    · show x_val 0 = 0; rw [hx0]; simp [hc_zero]
+    · show x_val 1 = 0; rw [hx1]; simp [hc_zero]
+    · show x_val 2 = 0; rw [hx2]; simp [hc_zero]
+  · -- ellipsoid bound: rewrite x_val coords as c coords.
+    simp only [dirichletEllipsoid, Set.mem_setOf_eq] at hx_S
+    rw [hx0, hx1, hx2] at hx_S
+    exact hx_S
 
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
