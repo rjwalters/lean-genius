@@ -4,41 +4,42 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 3
+**Iteration**: 7
+**Last Update**: 2026-05-08 (Session 7, researcher-9)
 
 ## Current Focus
-Lemma A's foundation is in source (`nc_div_pow_tendsto`); next is the
-remainder of Lemma A (cubing + falling-factorial correction) and Lemma B.
+Lemmas A, B proved (Session 4). Lemma C remains the only axiom. Sessions 6–7
+added n=3 base-case real-number probability forms (good and bad sides) and the
+n=3 first-moment identity P(triple) = expectedTriples 3 d. Next sessions should
+target the per-triple coincidence count and Markov bound for general n.
 
 ## Active Approach
 Decomposition strategy:
-- **`nc_div_pow_tendsto` (foundation, Session 3)**: `n_c(d) / d^(2/3) → c` —
-  direct corollary of `tendsto_nat_floor_mul_div_atTop` ∘ `tendsto_rpow_atTop`.
-  In source as of 2026-04-29 (build verification deferred — Docker
-  unresponsive during session).
-- Lemma A `lambda_tendsto`: `λ(d) := C(⌊c·d^(2/3)⌋, 3)/d² → c³/6` — pending,
-  builds on `nc_div_pow_tendsto` via `.pow 3` + falling-factorial correction.
-- Lemma B `exp_lambda_tendsto`: `exp(−λ(d)) → exp(−c³/6)` — pending one-liner
-  once Lemma A is in.
-- Lemma C `p_no_triple_tendsto`: `P_no_triple(n d, d) → exp(−c³/6)` (Poisson
-  convergence — only sublemma requiring new Mathlib infrastructure).
+- **Lemma A** (`lambda_tendsto`, Session 4 PROVED): `λ_c(d) → c³/6`.
+- **Lemma B** (`exp_lambda_tendsto`, Session 4 PROVED): `exp(−λ_c(d)) → exp(−c³/6)`.
+- **Lemma C** (`p_no_triple_tendsto`, axiom): `P_no_triple(n_c(d), d) → exp(−c³/6)`.
+  Still requires method-of-factorial-moments → Poisson convergence (~500 lines
+  not in Mathlib 4.26).
+
+n=3 base-case scaffolding (Sessions 6–7):
+- `p_no_triple_n3` (Session 6): P(no triple|n=3) = 1 − 1/d²
+- `p_triple_n3` (Session 7): P(triple|n=3) = 1/d²
+- `p_triple_n3_eq_expectedTriples` (Session 7): n=3 first-moment identity
 
 ## Attempt Count
-- Total attempts: 2 (Session 1 BLOCKED; Session 2 ORIENT decomposition; Session 3 ACT-partial)
-- Current approach attempts: 1 (Session 3 added Lemma A foundation)
-- Approaches tried: 1
+- Total attempts: 7
+- Current approach attempts: 4 (Sessions 4–7 ACT)
+- Approaches tried: 1 (decomposition into Lemmas A/B/C, with n=3 scaffolding)
 
 ## Blockers
-- Docker build was unresponsive during Session 3 — verification of the new
-  lemma is deferred to a later session. The proof body is two lines composing
-  Mathlib lemmas whose signatures were verified by direct file read.
-- Lemma C still requires method-of-factorial-moments → Poisson convergence,
-  which is not in Mathlib but is substantially smaller than full Chen-Stein.
+- Lemma C requires method-of-factorial-moments → Poisson convergence, which is
+  not in Mathlib but is substantially smaller than full Chen-Stein.
 
 ## Next Action
-1. **Verify** `nc_div_pow_tendsto` builds cleanly (Docker)
-2. **Add Lemma A** proper (`lambda_tendsto`) using `nc_div_pow_tendsto.pow 3` +
-   the `(C(n,3) : ℝ) - n³/6` correction → 0 lemma
-3. **Add Lemma B** as a one-liner via `Real.continuous_exp.tendsto`
-4. **Restate the axiom** as the strictly weaker Lemma C alone, isolating the
-   genuine Mathlib gap to one statement
+1. **Per-triple coincidence count** for n ≥ 3, d ≥ 1, distinct i,j,k:
+   `card {f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n−2)`.
+   ~50–100 lines via explicit Equiv with `Fin d × (Fin (n−3) → Fin d)`.
+2. **Markov bound for general n**: P(some triple) ≤ C(n,3)/d² = expectedTriples n d.
+   The global form of Session 7's n=3 identity.
+3. **Bonferroni r=2 lower bound**: foundation for higher-order factorial moments.
+4. **Lemma C itself**: multi-session push or Mathlib upstream contribution.

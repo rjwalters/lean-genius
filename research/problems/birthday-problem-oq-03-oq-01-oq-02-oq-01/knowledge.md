@@ -487,3 +487,101 @@ introduced after PR #16150 merged on 2026-05-06 — Mathlib upgrade drift in the
 
 The PR repairs 4 build-breaking errors plus adds the n=3 base case theorem. Local rebuild
 verification is pending capacity; the deployer/auditor should re-build to confirm.
+
+---
+
+## Session 2026-05-08 (Session 7, researcher-9) — n=3 First-Moment Identity
+
+**Mode**: REVISIT (RICH knowledge tier, score 30)
+**Outcome**: PROGRESS — added p_triple_n3 (real-number form of bad_count_n3) and
+p_triple_n3_eq_expectedTriples (n=3 first-moment identity). The first explicit
+identification in the file of `expectedTriples` (an analytic formula) with an actual
+probability. No axiom/sorry delta; Lemma C still axiomatized.
+
+### Pre-Work Assessment
+
+1. **Axiom Question**: 1 axiom (`p_no_triple_tendsto`, Lemma C). Not provable in this
+   session — needs ~500 lines of method-of-factorial-moments → Poisson convergence
+   infrastructure absent from Mathlib 4.26.
+2. **Value Question**: Closing the n=3 base-case picture and seeding the broader
+   first-moment identity is real (small) progress.
+3. **Build vs Block**: STUCK on Lemma C. Decompose into a concrete subgoal — the
+   n=3 first-moment identity is the simplest non-trivial instance of the broader
+   identity needed for Bonferroni / factorial moments.
+
+### What I Did
+
+Added two theorems at the end of §7 in `BirthdayProblemOQ03OQ01OQ02.lean`, before the
+Summary block:
+
+```lean
+/-- Real-number probability form of `bad_count_n3`: P(triple | n=3, d ≥ 1) = 1/d². -/
+theorem p_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
+    ((Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card : ℝ) /
+    (Fintype.card (Fin 3 → Fin d) : ℝ) = 1 / (d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hcard_nat : Fintype.card (Fin 3 → Fin d) = d ^ 3 := by simp [Fintype.card_fun]
+  rw [bad_count_n3, hcard_nat]
+  push_cast
+  have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  field_simp
+  ring
+
+/-- At n=3, the probability of a birthday triple equals `expectedTriples 3 d`.
+    This is the n=3 first-moment identity: when X_d ≤ 1 (only one possible triple),
+    Markov is tight and E[X_d] = P(X_d ≥ 1). Seed of the broader factorial-moment
+    identity needed for Lemma C. -/
+theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
+    ((Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card : ℝ) /
+    (Fintype.card (Fin 3 → Fin d) : ℝ) = expectedTriples 3 d := by
+  rw [p_triple_n3 d hd]
+  simp [expectedTriples, Nat.choose_self]
+```
+
+Plus updated meta.json (`lineCount` 637→667, `theoremCount` 28→30) and the in-source
+summary block to reflect 15 proved theorems.
+
+### Why This Is Real Progress (and the limit thereof)
+
+- It is the **first explicit identification** in the file of `expectedTriples` (a
+  purely analytic quantity defined as `(n.choose 3 : ℝ) / d^2`) with an actual
+  probability. Up to this point `expectedTriples` was a definition manipulated for
+  threshold characterizations (asympThreshold) without any tie to the function-counting
+  probability that motivates it.
+- It completes the n=3 base case from both sides (Session 6 added the
+  no-triple form; this session adds the triple form and the identity with
+  `expectedTriples`).
+- At n=3, Markov is tight: there is only one possible triple (0,1,2), so the
+  indicator-sum X_d = `|{(i,j,k) | i<j<k ∧ f(i)=f(j)=f(k)}|` ∈ {0,1}, and
+  P(X_d ≥ 1) = E[X_d] follows tautologically. This is the simplest non-trivial
+  instance of the first-moment identity that any factorial-moment proof of
+  Lemma C must establish for general n.
+- It does **not** advance Lemma C itself. The genuine remaining work is still
+  ~500 lines of method-of-factorial-moments → Poisson convergence infrastructure.
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+30 lines: 2 theorems +
+  Summary block update + 2 #check lines)
+- `src/data/proofs/birthday-problem-oq-03-oq-01-oq-02/meta.json` (lineCount 637→667,
+  theoremCount 28→30 in both top-level meta and leanFile)
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json`
+  (Session 7 entries in builtItems/insights/progressSummary; iteration 6→7)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md` (this entry)
+
+### Next Steps
+
+1. **Per-triple coincidence count** for general n ≥ 3 and d ≥ 1: prove
+   `card {f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n-2)` for distinct i,j,k.
+   This is the next building block — the structural constant that any union bound
+   or factorial-moment expansion of the triple-count must use. Estimated: 50–100
+   lines of Finset/Fintype combinatorics with an explicit Equiv to `Fin d × (Fin (n-3) → Fin d)`.
+2. **Markov bound for general n**: combine the per-triple count with C(n,3) triples
+   to get the union bound P(some triple) ≤ C(n,3)/d² = expectedTriples n d. This is
+   the global form of Session 7's n=3 identity, this time as an inequality.
+3. **Bonferroni r=2 lower bound**: refines the Markov bound with a second-order
+   correction. Foundation for higher-order factorial moments.
+4. Lemma C itself remains the target; expect to need a multi-session push or a
+   Mathlib upstream contribution.

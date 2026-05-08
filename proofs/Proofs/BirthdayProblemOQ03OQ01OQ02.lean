@@ -596,10 +596,35 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
   have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
   field_simp
 
+/-- Real-number probability form of `bad_count_n3`: P(triple | n=3, d ≥ 1) = 1/d².
+    Complements `p_no_triple_n3`; together they cover both halves of the n=3 base case. -/
+theorem p_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
+    ((Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card : ℝ) /
+    (Fintype.card (Fin 3 → Fin d) : ℝ) = 1 / (d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hcard_nat : Fintype.card (Fin 3 → Fin d) = d ^ 3 := by simp [Fintype.card_fun]
+  rw [bad_count_n3, hcard_nat]
+  push_cast
+  have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  field_simp
+  ring
+
+/-- At n=3, the probability of a birthday triple equals `expectedTriples 3 d`.
+    This is the n=3 first-moment identity: when X_d ≤ 1 (only one possible triple),
+    Markov is tight and E[X_d] = P(X_d ≥ 1). The seed of the broader factorial-moment
+    identity needed for Lemma C. -/
+theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
+    ((Finset.univ.filter (fun f : Fin 3 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card : ℝ) /
+    (Fintype.card (Fin 3 → Fin d) : ℝ) = expectedTriples 3 d := by
+  rw [p_triple_n3 d hd]
+  simp [expectedTriples, Nat.choose_self]
+
 /-
   ## Summary
 
-  **Proved (13 theorems, 1 axiom):**
+  **Proved (15 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -613,6 +638,9 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
   11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
   12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
   13. `p_no_triple_n3` (Session 6): P(no triple|n=3) = 1 − 1/d² as a real number
+  14. `p_triple_n3` (Session 7): P(triple|n=3) = 1/d² as a real number
+  15. `p_triple_n3_eq_expectedTriples` (Session 7): n=3 first-moment identity
+      P(triple|n=3) = expectedTriples 3 d (Markov is tight at n=3 since X_d ≤ 1)
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -633,5 +661,7 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
 #check @p_no_triple_tendsto
 #check @poisson_approx_birthday3
 #check @p_no_triple_n3
+#check @p_triple_n3
+#check @p_triple_n3_eq_expectedTriples
 
 end BirthdayThreshold3
