@@ -29,10 +29,10 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 406,
-    "theoremCount": 14,
+    "lineCount": 509,
+    "theoremCount": 17,
     "definitionCount": 2,
-    "assumptions": "0 assumptions. Fully machine-verified. The previous hMn_axiom is now `private theorem hMn_axiom`, derived from `minpoly.aeval K M : aeval M (minpoly K M) = 0`, `minpoly.monic (Matrix.isIntegral M)` (giving the leading coefficient is 1), and a local lemma `aeval_eq_sum_pow_local` that expands aeval via `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`. Applying mulVec v to both sides of M^n = -∑_{k<n} c_k • M^k yields the desired identity. **Session 3** adds the *converse* direction (`similar_to_companion_implies_nonderogatory`) via cyclic-vector transport: the standard basis vector e₀ is cyclic for `companionMx p` for any p (subdiagonal structure), and similarity P⁻¹ M P = N transports cyclic vectors. The full biconditional `nonderogatory_iff_similar_to_companion` is now machine-verified.",
+    "assumptions": "0 assumptions. Fully machine-verified. The previous hMn_axiom is now `private theorem hMn_axiom`, derived from `minpoly.aeval K M : aeval M (minpoly K M) = 0`, `minpoly.monic (Matrix.isIntegral M)` (giving the leading coefficient is 1), and a local lemma `aeval_eq_sum_pow_local` that expands aeval via `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`. Applying mulVec v to both sides of M^n = -∑_{k<n} c_k • M^k yields the desired identity. **Session 3** adds the *converse* direction (`similar_to_companion_implies_nonderogatory`) via cyclic-vector transport: the standard basis vector e₀ is cyclic for `companionMx p` for any p (subdiagonal structure), and similarity P⁻¹ M P = N transports cyclic vectors. The full biconditional `nonderogatory_iff_similar_to_companion` is now machine-verified. **Session 4** adds the vector-level Cayley-Hamilton identity for the companion: for monic p of degree n, `(aeval (companionMx p) p).mulVec e₀ = 0`. Three new private lemmas (`companionMx_mulVec_eNm1`, `companionMx_pow_n_eq_lastCol_e0`, `aeval_companionMx_p_mulVec_e0_zero`) make the last-column structure of `companionMx p` explicit, computing `C^n e₀ = -∑ p.coeff i • e_i` and showing monicity cancels with the lower-power sum.",
     "dateAdded": "2026-05-08",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -76,7 +76,7 @@
     ],
     "openQuestions": [
       "**Companion-similarity biconditional (Session 3 — DONE)**: ✅ Resolved. The converse direction *similar-to-companion ⇒ nonderogatory* is now machine-verified as `similar_to_companion_implies_nonderogatory`, and packaged as the full biconditional `nonderogatory_iff_similar_to_companion`. Proof: e₀ is cyclic for companionMx p (any p, by subdiagonal structure), similarity transports cyclic vectors (via aeval(M)*P = P*aeval(N) and injectivity of P.mulVec), and the cyclic-vector biconditional from OQ-01-OQ-01 closes the converse.",
-      "**Companion-matrix charpoly/minpoly identities**: Mathlib lacks `Matrix.charpoly_companionMatrix` and `Matrix.minpoly_companionMatrix` for the `companionMx` defined here. These are standard results (`charpoly = minpoly = p` for the companion of monic `p` of degree `n`) and would let the gallery entry export an even tighter `nonderogatory_companion` corollary asserting the companion is the unique nonderogatory representative in its similarity class. *Note*: with Session 3's `companionMx_isCyclic_e0`, the minpoly identity for monic degree-n p is one short step away — e₀ being cyclic gives `(minpoly K (companionMx p)).natDegree = n` via `minpoly_natDegree_of_cyclic`, and then `aeval (companionMx p) p = 0` (a direct consequence of monic degree-n + the M^n-from-last-column relation) would force `minpoly = p` by minimality.",
+      "**Companion-matrix charpoly/minpoly identities (Session 4 — vector-form annihilation)**: Session 4 establishes the *vector-level* annihilation `(aeval (companionMx p) p).mulVec e₀ = 0` for monic `p` of degree `n`, via three new private lemmas: `companionMx_mulVec_eNm1` (action of C on e_{n-1} = the last column = `-(p.coeff i)_{i<n}`), `companionMx_pow_n_eq_lastCol_e0` (combining with `companionMx_pow_e0` for `k = n-1`), and `aeval_companionMx_p_mulVec_e0_zero` (monicity cancels the C^n-term against the lower-power sum). Remaining for Session 5: lift to the matrix-level `aeval (companionMx p) p = 0` via cyclicity of e₀, then derive `minpoly K (companionMx p) = p` by minimality (giving `Matrix.minpoly_companionMatrix`).",
       "**Mathlib contribution**: With `companionMx`, `nonderogatory_similar_to_companion`, and the full biconditional now axiom-free, this entry is a candidate seed for a Mathlib contribution adding `Matrix.companionMatrix` and `Matrix.IsSimilar.companionMatrix_of_nonderogatory`. The route to the multi-block RCF would then go through the K[X]-module structure theorem (`Module.IsTorsion.exists_isInternal`-style) — a much larger project but with this single-block result as a natural scaffold.",
       "**Functor between cyclic representations and cyclic-module-style RCF**: The K[X]-module given by M acting on K^n is cyclic (single-generator) iff M is nonderogatory. Can the existing `Module.IsTorsion`-style results be specialized cleanly to recover this entry's similarity? Doing so would unify the matrix-form proof with the module-theoretic proof and clarify which direction is more economical for Mathlib.",
       "**Eliminate hMn_axiom (Session 2 — DONE)**: ✅ Resolved. The previous residual axiom `(M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v` is now derived as `private theorem hMn_axiom` from `minpoly.aeval`, `minpoly.monic (Matrix.isIntegral M)`, and a local `aeval_eq_sum_pow_local` lemma (which uses `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`)."
@@ -90,9 +90,9 @@
       "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01"
     ],
     "namespace": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02",
-    "lineCount": 214,
+    "lineCount": 509,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 17,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
     "sorries": 0,
