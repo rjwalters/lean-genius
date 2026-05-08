@@ -715,8 +715,8 @@ theorem sigmaStar_mul_of_coprime {m n : ℕ}
     have struct_mn :
         sigmaStar (m * n) + 4 * sigmaOne ((m * n) / 4) = sigmaOne (m * n) :=
       sigmaStar_of_four_dvd h4mn hmn_pos
-    have h_mn_div4 : (m * n) / 4 = (m / 4) * n :=
-      Nat.mul_div_assoc n h4m
+    have h_mn_div4 : (m * n) / 4 = (m / 4) * n := by
+      rw [mul_comm m n, Nat.mul_div_assoc n h4m, mul_comm]
     have h_cop_div : Nat.Coprime (m / 4) n :=
       coprime_div_four_of_dvd_left h h4m
     have h_mult : sigmaOne (m * n) = sigmaOne m * sigmaOne n :=
@@ -753,8 +753,8 @@ theorem sigmaStar_mul_of_coprime {m n : ℕ}
       have struct_mn :
           sigmaStar (m * n) + 4 * sigmaOne ((m * n) / 4) = sigmaOne (m * n) :=
         sigmaStar_of_four_dvd h4mn hmn_pos
-      have h_mn_div4 : (m * n) / 4 = m * (n / 4) := by
-        rw [mul_comm m n, Nat.mul_div_assoc m h4n, mul_comm]
+      have h_mn_div4 : (m * n) / 4 = m * (n / 4) :=
+        Nat.mul_div_assoc m h4n
       have h_cop_div : Nat.Coprime m (n / 4) :=
         coprime_div_four_of_dvd_right h h4n
       have h_mult : sigmaOne (m * n) = sigmaOne m * sigmaOne n :=
@@ -819,17 +819,16 @@ private theorem sigmaOne_two_pow (k : ℕ) : sigmaOne (2 ^ k) = 2 ^ (k + 1) - 1 
     and the latter sum is 4·σ(2^(k-2)) = 2^(k+1) - 4 by the Part 6
     structural identity. So σ*(2^k) = (2^(k+1) - 1) - (2^(k+1) - 4) = 3. -/
 theorem sigmaStar_two_pow {k : ℕ} (hk : 1 ≤ k) : sigmaStar (2 ^ k) = 3 := by
-  have hpos : 0 < 2 ^ k := Nat.pos_pow_of_pos k (by decide)
+  have hpos : 0 < 2 ^ k := pow_pos (by decide : (0:ℕ) < 2) k
   have hsum_partition :
       sigmaStar (2 ^ k) + sigmaFourDvd (2 ^ k) = sigmaOne (2 ^ k) :=
     sigmaStar_add_sigmaFourDvd (2 ^ k)
   have hsigma : sigmaOne (2 ^ k) = 2 ^ (k + 1) - 1 := sigmaOne_two_pow k
   have hfourdvd : sigmaFourDvd (2 ^ k) = 2 ^ (k + 1) - 4 := by
     rcases Nat.lt_or_ge k 2 with hk2 | hk2
-    · interval_cases k
-      · omega
-      · -- k = 1
-        unfold sigmaFourDvd; native_decide
+    · -- k = 1 (only case since hk : 1 ≤ k, hk2 : k < 2)
+      interval_cases k
+      unfold sigmaFourDvd; native_decide
     · have h4_dvd : 4 ∣ 2 ^ k := by
         have hdvd : (2 : ℕ) ^ 2 ∣ 2 ^ k := Nat.pow_dvd_pow 2 hk2
         have h4eq : (4 : ℕ) = 2 ^ 2 := by norm_num
