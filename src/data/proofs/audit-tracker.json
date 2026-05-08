@@ -538,9 +538,9 @@
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-24T19:51:34Z",
+      "lastAudited": "2026-05-08T19:46:39Z",
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-01-oq-01": {
@@ -556,9 +556,9 @@
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-24T19:51:34Z",
+      "lastAudited": "2026-05-08T19:46:39Z",
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-02-oq-03": {
@@ -826,9 +826,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-24T20:50:40Z",
+      "lastAudited": "2026-05-08T19:46:40Z",
       "result": "clean"
     },
     "bezout-identity-oq-02-oq-01-oq-02": {
@@ -1072,9 +1072,9 @@
       "result": "clean"
     },
     "binomial-theorem-oq-04-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-26T00:08:42Z",
+      "lastAudited": "2026-05-08T19:46:42Z",
       "result": "clean"
     },
     "binomial-theorem-oq-04-oq-02": {
@@ -1860,9 +1860,9 @@
       "result": "clean"
     },
     "cayley-hamilton-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-25T11:06:04Z",
+      "lastAudited": "2026-05-08T19:46:42Z",
       "result": "clean"
     },
     "cayley-hamilton-reduction": {
@@ -2230,15 +2230,15 @@
       "result": "clean"
     },
     "cramers-rule-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-25T11:04:26Z",
+      "lastAudited": "2026-05-08T19:46:42Z",
       "result": "clean"
     },
     "cube-root-2-irrational": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-25T10:57:05Z",
+      "lastAudited": "2026-05-08T19:46:40Z",
       "result": "clean"
     },
     "cube-root-3-irrational": {
@@ -2296,8 +2296,8 @@
       "result": "clean"
     },
     "denumerability-rationals-oq-02": {
-      "auditCount": 3,
-      "lastAudited": "2026-04-24T19:51:34Z",
+      "auditCount": 4,
+      "lastAudited": "2026-05-08T19:43:41Z",
       "result": "clean"
     },
     "denumerability-rationals-oq-02-oq-02": {
@@ -5545,9 +5545,9 @@
       "result": "clean"
     },
     "erdos-247-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-25T10:59:24Z",
+      "lastAudited": "2026-05-08T19:46:41Z",
       "result": "clean"
     },
     "erdos-248": {
@@ -11898,9 +11898,9 @@
       "result": "clean"
     },
     "inclusion-exclusion-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-04-25T10:57:56Z",
+      "lastAudited": "2026-05-08T19:46:41Z",
       "result": "clean"
     },
     "infinitude-primes": {
@@ -12479,13 +12479,13 @@
       "result": "clean"
     },
     "newton-inductive-step-oq-03": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
         "meta.json claimed status:verified but build verification was pending (Docker unavailable); downgraded to status:formalized badge:wip",
         "gaussBinom_ratio_mul: added explicit hdk1 nonzero hypothesis for field_simp"
       ],
-      "lastAudited": "2026-04-25T00:00:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-08T19:46:40Z",
+      "result": "clean"
     },
     "nth-root-irrational": {
       "agentId": "auditor-cycle-20-batch",
