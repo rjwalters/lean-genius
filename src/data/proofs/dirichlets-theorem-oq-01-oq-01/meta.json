@@ -45,16 +45,26 @@
     "sorries": 0
   },
   "overview": {
-    "summary": "This file directly addresses the question 'Do Siegel zeros exist?' by formalizing the consequences of each answer. The two worlds explored are: World A (Siegel zeros exist, ¬SiegelZeroConjecture) and World B (no Siegel zeros, SiegelZeroConjecture). Key results include: the MVT-Siegel combination constraining how close a Siegel zero can be to 1; Linnik's theorem and its L=2 improvement under no Siegel zeros; the Landau-Page uniqueness of exceptional conductors per region; and the Deuring-Heilbronn repulsion phenomenon showing Siegel zeros are 'self-limiting'.",
-    "keyInsight": "Even in World A, Siegel's ineffective lower bound prevents L(1,χ) from being exactly zero (nonvanishing holds unconditionally), but it can be exponentially small — smaller than any power of 1/log(q). The effective bound C/log(q)² from GRH is what the Siegel zero problem is about.",
+    "historicalContext": "The Siegel zero problem traces to **Carl Ludwig Siegel's 1935 theorem** giving an ineffective lower bound $L(1,\\chi) \\gg_\\varepsilon q^{-\\varepsilon}$. The term 'Siegel zero' was coined for the potential zeros of Dirichlet $L$-functions in the region $(1 - c/\\log q, 1)$ whose existence Siegel's method cannot rule out. **Deuring (1933)** and **Heilbronn (1934)** showed that Siegel zeros, if they exist, would *repel* other zeros (the Deuring-Heilbronn phenomenon). **Linnik (1944)** proved that the smallest prime in an arithmetic progression $a \\bmod q$ is $\\leq C q^L$ for some absolute exponent $L$, and his proof depends critically on the depth of any Siegel zero. **Heath-Brown (1992)** connected the Linnik exponent quantitatively to Siegel zeros. **Xylouris (2011)** improved the unconditional bound to $L \\leq 5$, but $L = 2$ (the GRH/no-Siegel-zero value) remains conjectural. The question of Siegel zero existence remains open as of 2026 and is one of the most central open problems in analytic number theory.",
+    "problemStatement": "**Open question (`SiegelZeroConjecture`)**: Does there exist an absolute constant $c > 0$ such that for every modulus $q \\geq 2$ and every real primitive Dirichlet character $\\chi$ of conductor $q$, the $L$-function $L(s, \\chi)$ has no zeros in the real interval $(1 - c/\\log q, 1)$?\n\nEquivalently: is Siegel's ineffective lower bound $L(1,\\chi) \\gg_\\varepsilon q^{-\\varepsilon}$ improvable to an *effective* bound $L(1,\\chi) \\gg 1/\\log q$ (or stronger)?\n\nThis file does **not** resolve the conjecture — it formalizes the consequences of each answer. **World A** = `¬SiegelZeroConjecture` (Siegel zeros exist); **World B** = `SiegelZeroConjecture` (no Siegel zeros). Each world has a rich web of consequences proved here.",
+    "proofStrategy": "**Two-worlds bookkeeping**: All theorems are stated as conditionals on either World A or World B. The file directly addresses 'Do Siegel zeros exist?' by formalizing what each answer implies, without committing to either.\n\n**World A (Siegel zeros exist)**: Even with a zero at $\\beta < 1$, four constraints hold: (1) $1 - \\beta > 0$ (the zero is genuinely below 1); (2) the MVT bound combined with Siegel's theorem forces $(1-\\beta) \\cdot M > C(\\varepsilon)/q^\\varepsilon$ from below; (3) Tatuzawa's theorem shows the effective Siegel bound fails for at most ONE conductor; (4) $L(1,\\chi) > 0$ unconditionally (nonvanishing survives even in World A).\n\n**World B (no Siegel zeros)**: Linnik's exponent improves to $L = 2$ — the same as GRH would give. Siegel's bound becomes effective. Prime-counting in arithmetic progressions becomes monotone in the natural quantitative sense.\n\n**Hierarchy**: GRH $\\Rightarrow$ SZC $\\Rightarrow$ $L(1,\\chi) > 0$. Each implication is proved here; the strict containments are open.\n\n**Landau-Page + Deuring-Heilbronn**: Siegel zeros are 'self-limiting' — if one exists at $\\beta_1$, it pushes ALL other $L$-function zeros away from 1 by Deuring-Heilbronn repulsion, and at most ONE conductor per region can have such a zero (Landau-Page).",
     "keyInsights": [
-      "Even in World A (Siegel zeros exist), L(1,χ) > 0 is unconditional — nonvanishing is proved regardless. The problem is purely about the SIZE of L(1,χ), not its vanishing.",
+      "Even in World A (Siegel zeros exist), $L(1,\\chi) > 0$ is **unconditional** — nonvanishing is proved regardless. The Siegel zero problem is purely about the *size* of $L(1,\\chi)$, not its vanishing.",
       "The two worlds are logically independent: nothing in current mathematics rules out either World A or World B. GRH would rule out Siegel zeros, but GRH is itself open.",
-      "Deuring-Heilbronn repulsion makes Siegel zeros 'self-limiting': if one exists at β₁, it pushes ALL other L-function zeros away from 1, creating a wider zero-free region. A Siegel zero would be an isolated phenomenon.",
-      "The Linnik exponent L measures the difficulty of finding primes in APs. Current best is L ≤ 5 (Xylouris 2011). No Siegel zeros (World B) gives L = 2, the same as GRH. This tight connection makes Siegel zeros central to sieve theory.",
-      "The three-tier hierarchy GRH ⊃ SZC ⊃ L(1,χ) > 0 shows that Siegel zeros sit at exactly the gap between GRH and unconditional results. Proving SZC without GRH would be a major advance."
+      "Deuring-Heilbronn repulsion makes Siegel zeros 'self-limiting': if one exists at $\\beta_1$, it pushes ALL other $L$-function zeros away from 1, creating a *wider* zero-free region for everyone else. A Siegel zero would be an isolated phenomenon.",
+      "The Linnik exponent $L$ measures the difficulty of finding primes in APs. Current best is $L \\leq 5$ (Xylouris 2011). No Siegel zeros (World B) gives $L = 2$, the same as GRH. This tight connection makes Siegel zeros central to sieve theory.",
+      "The three-tier hierarchy GRH $\\supseteq$ SZC $\\supseteq$ $L(1,\\chi) > 0$ shows that Siegel zeros sit at exactly the gap between GRH and unconditional results. Proving SZC without GRH would be a major advance — it would close the SZC-to-GRH gap from below.",
+      "The quantitative gap between the three bounds is striking: GRH gives $L(1,\\chi) \\gg 1/\\log^2 q$ (squared log, effective); SZC alone gives $\\gg 1/\\log q$ (single log, effective); Siegel gives $\\gg_\\varepsilon q^{-\\varepsilon}$ (any power, ineffective). The squared-log vs single-log vs $q^{-\\varepsilon}$ comparison is the *quantitative* signature of where each hypothesis bites.",
+      "`SiegelZeroExistenceQuestion := SZC ∨ ¬SZC` is a classical tautology, but its tautological *form* is itself meaningful: in classical logic the question is decidable, but the constructive answer (which side?) requires the conjecture itself. The encoding records that this is an open question of mathematical *content*, not of formal expressibility."
     ],
-    "historicalContext": "The Siegel zero problem traces to Carl Ludwig Siegel's 1935 theorem giving an ineffective lower bound on L(1,χ). The term 'Siegel zero' was coined for the potential zeros in (1-c/log(q), 1) whose existence Siegel's method cannot rule out. Heath-Brown (1992) connected Linnik's constant to Siegel zeros. Xylouris (2011) proved L ≤ 5 for Linnik's theorem. Deuring (1933) and Heilbronn (1934) showed that Siegel zeros, if they exist, would repel other zeros. The question remains open as of 2026."
+    "prerequisites": [
+      "Dirichlet $L$-functions $L(s, \\chi)$ for primitive $\\chi$",
+      "Real primitive characters and their conductors",
+      "Zero-free regions in analytic number theory",
+      "Siegel's theorem (ineffective lower bound on $L(1, \\chi)$)",
+      "Generalized Riemann Hypothesis (GRH) for $L$-functions",
+      "Linnik's theorem and the Linnik exponent"
+    ]
   },
   "sections": [
     {
@@ -99,23 +109,31 @@
     }
   ],
   "conclusion": {
-    "summary": "This file formalizes the landscape of knowledge about Siegel zero existence: the complete formalization shows that while L(1,χ) ≠ 0 is proved, whether Siegel zeros exist remains open. The two axioms (Linnik bound, effective Linnik under SZC) represent infrastructure not yet in Mathlib. Key proved results: Landau-Page uniqueness of exceptional conductors, Deuring-Heilbronn repulsion from a Siegel zero, GRH eliminates zeros in standard range, Tatuzawa has at most one exception, Linnik implies Dirichlet existence.",
+    "summary": "This file formalizes the landscape of knowledge about Siegel zero existence: the complete formalization shows that while $L(1,\\chi) \\neq 0$ is proved, whether Siegel zeros exist remains open. The two new axioms (Linnik bound, effective Linnik under SZC) represent infrastructure not yet in Mathlib. Key proved results: Landau-Page uniqueness of exceptional conductors, Deuring-Heilbronn repulsion from a Siegel zero, GRH eliminates zeros in standard range, Tatuzawa has at most one exception, Linnik implies Dirichlet existence.",
+    "implications": "**Siegel zeros are the gap between GRH and Siegel's theorem**: this file makes the three-tier hierarchy GRH $\\supseteq$ SZC $\\supseteq$ $L(1,\\chi) > 0$ explicit and machine-checked. Anyone proving SZC without GRH would close exactly the gap exhibited here.\n\n**Linnik's exponent is conjecturally tight at $L = 2$**: the formalization records that no Siegel zeros gives $L = 2$, matching GRH, and current unconditional bounds ($L \\leq 5$, Xylouris 2011) are limited precisely by Siegel zero possibilities. This file pinpoints which step of Linnik's argument needs improvement.\n\n**Deuring-Heilbronn repulsion is internally consistent**: by proving repulsion as a *consequence* of a Siegel zero rather than as an axiom in isolation, the file shows that the existence of a single Siegel zero would impose strong constraints on the entire family of Dirichlet $L$-functions — a kind of self-stabilization that helps explain why no Siegel zero has ever been observed.\n\n**Two-worlds methodology as a template**: the World A / World B formal split is a reusable pattern for any open question of the form 'does X exist?' — formalize each branch's consequences without committing to either, and the open question becomes a question of *which* branch to inhabit. Applicable beyond Siegel zeros (e.g., to twin primes, BSD rank predictions, etc.).",
     "openQuestions": [
-      "Does the SiegelZeroConjecture hold? (The central question — almost certainly YES under GRH, but unknown unconditionally)",
-      "Is there an effective version of Siegel's theorem with no exceptions? (Would imply Linnik L=2 and extended Siegel-Walfisz)",
-      "What is the precise relationship between Linnik's constant L and the depth of Siegel zeros?"
+      "Does the `SiegelZeroConjecture` hold? (The central question — believed YES under GRH, but unknown unconditionally; this is one of the most studied open problems in analytic number theory)",
+      "Is there an effective version of Siegel's theorem with no exceptions? (Would imply Linnik $L = 2$ and extended Siegel-Walfisz)",
+      "What is the precise relationship between Linnik's constant $L$ and the depth $1 - \\beta$ of any Siegel zero? (Heath-Brown 1992 showed they are tightly linked; the explicit dependence is partially known)",
+      "Can one rule out Siegel zeros for *infinitely many* conductors $q$, even without ruling them out for all $q$? (A density form of SZC; some partial results exist)",
+      "Does the Goldbach-type variant of Siegel zeros (zeros of $L$-functions of *complex* characters near $s = 1$) admit a parallel theory? (Mostly understood — the real-character case is genuinely harder due to functional equation symmetries)"
     ]
   },
   "crossReferences": [
     {
-      "id": "dirichlets-theorem-oq-01",
+      "targetId": "dirichlets-theorem-oq-01",
       "relationship": "parent",
       "description": "Parent file establishing Siegel zeros framework, IsSiegelZero definition, and the five key axioms (Siegel's theorem, GRH conditional, Landau-Page, Deuring-Heilbronn, Tatuzawa)"
     },
     {
-      "id": "dirichlets-theorem-oq-02-oq-01",
+      "targetId": "dirichlets-theorem-oq-02-oq-01",
       "relationship": "sibling",
       "description": "GRH for Dirichlet L-functions — the hypothesis that would imply SiegelZeroConjecture via grh_implies_no_siegel_zeros_standard"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "depends-on",
+      "description": "Original Dirichlet's theorem on primes in arithmetic progressions — Linnik's quantitative refinement is exactly the open question this entry investigates"
     }
   ],
   "originalContributions": [
