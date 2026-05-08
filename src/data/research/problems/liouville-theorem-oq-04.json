@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "REFINE",
-    "since": "2026-05-08T06:30:00.000Z",
-    "iteration": 14,
-    "focus": "Part IV.11 (`padic_liouville_bridge_rational_roots_case`) added in Session 14. A fully-proved theorem (no new axioms, no sorries) that discharges the **rational-roots case** of `padic_liouville_norm_bridge`. Construction: form Finset R' of rational roots q with (q:ℚ_[p]) ≠ α (finite, ≤ deg f); when nonempty take δ = R'.inf' (q ↦ ‖α - (q:ℚ_[p])‖) — strictly positive via `Finset.lt_inf'_iff` since each entry is the norm of a nonzero element; when empty take δ = 1 (vacuous). Together with Part IV.10 (algebraic case, Session 13), BOTH case-analysis pieces are now proved. The bridge axiom can now be discharged in a single combine-and-case-split session.",
+    "since": "2026-05-08T11:00:00.000Z",
+    "iteration": 15,
+    "focus": "Session 15 (this) — `padic_liouville_norm_bridge` rewritten from `axiom` to `theorem`. Composes Part IV.10 (`padic_liouville_bridge_algebraic_case`, Session 13) and Part IV.11 (`padic_liouville_bridge_rational_roots_case`, Session 14): C' := min(1/(L·M), δ) with case split on (f.map alg').eval ((r:ℚ)/s) ?= 0 over ℚ. Degree bookkeeping (g.natDegree + 1 ≤ f.natDegree) comes from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le`. f ≠ 0 derived from hf_deg; g ≠ 0 from the factorization; algebraMap ℤ ℚ_[p] injectivity via integer-cast → ratCast composition. Lean file: 1216 → 1333 lines, 34 → 35 theorems, 1 → 0 axioms (build pending; meta.json status update deferred to a post-build follow-up PR).",
     "blockers": [],
-    "nextAction": "Session 15 (next): combine Part IV.10 (algebraic case) + Part IV.11 (rational-roots case) to discharge `padic_liouville_norm_bridge` from axiom to theorem. Take C := min(1/(L·M), δ); case-split on (f.map alg').eval (r/s) ?= 0 over ℚ. After discharge: axiomCount 1 → 0, status axiomatized → verified, badge axiom → original.",
+    "nextAction": "Session 16 (next, if build verifies): update meta.json status `axiomatized` → `verified`, badge `axiom` → `original`, axiomCount 1 → 0, lineCount 1216 → 1333, theoremCount 34 → 35; refresh assumptions/conclusion narratives. If the build fails: triage Mathlib 4.26 API drift in the new theorem (`Polynomial.natDegree_map_le`, `div_le_div_iff_of_pos_right`, `set`+`rw` round-trip) and push corrective commits.",
     "attemptCounts": {
-      "total": 13,
-      "currentApproach": 6,
+      "total": 14,
+      "currentApproach": 7,
       "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 14, 2026-05-08): Added Part IV.11 — `padic_liouville_bridge_rational_roots_case`, a fully-proved theorem (no new axioms, no sorries) that discharges the **rational-roots case** of `padic_liouville_norm_bridge`. For any α : ℚ_[p] and any non-zero f ∈ ℤ[X], there exists δ > 0 such that for every rational q with (f.map (algebraMap ℤ ℚ)).eval q = 0 and (q : ℚ_[p]) ≠ α, δ ≤ ‖α - (q : ℚ_[p])‖. Construction: form the Finset R' = (f.map alg').roots.toFinset filtered by (q : ℚ_[p]) ≠ α (finite of cardinality ≤ deg f). When R' is non-empty, take δ = R'.inf' (q ↦ ‖α - (q : ℚ_[p])‖); positivity from Finset.lt_inf'_iff because each entry is the norm of a non-zero element. When R' is empty, take δ = 1 (vacuous). The non-zero hypothesis on f is required — for f = 0, every rational is a root and rationals can approach α arbitrarily closely in ℚ_[p]. Combined with Part IV.10 (algebraic case, Session 13), BOTH case-analysis pieces of the bridge axiom are now formally proved. The bridge axiom can be discharged in a single combine-and-case-split session by taking C := min((1/(L·M)), δ) and case-splitting on (f.map alg').eval (r/s) ?= 0 over ℚ. Status: 1 axiom (unchanged), 0 sorries, 1216 lines, 34 theorems, 6 defs. Build pending per established convention on this slug (cold-cache Docker ~45 min).",
+    "progressSummary": "PROGRESS (Session 15, 2026-05-08): `padic_liouville_norm_bridge` rewritten from `axiom` to fully-proved `theorem` by composing the two Session 13/14 ingredients. Witness: C' := min(1/(L·M), δ) where L = intPolyL1 f, M = coeffNormSum p g, δ from Part IV.11. Case split on (f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s) ?= 0 over ℚ — nonzero branch dispatches to Part IV.10 (`padic_liouville_bridge_algebraic_case`); zero branch dispatches to Part IV.11 (`padic_liouville_bridge_rational_roots_case`) with `push_cast; rfl` to bridge the cast `((r:ℚ)/s : ℚ_[p]) = (r:ℚ_[p])/s`. Bookkeeping: f ≠ 0 from hf_deg ≥ 1; algebraMap ℤ ℚ_[p] injective via the integer-cast → ratCast factoring with `simpa [eq_intCast]` + `exact_mod_cast`; f.map alg ≠ 0 by `Polynomial.map_injective`; g ≠ 0 from the factorization; degree relation `g.natDegree + 1 ≤ f.natDegree` from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le` (no injectivity needed for the natDegree_map step). The new theorem occupies ~120 lines (894–1042) and is 0-sorry, 0-axiom. After the proof, padic_liouville_estimate (and through it padic_algebraic_not_liouville) become axiom-free as well: the entire file is 0 axioms, 0 sorries — pending build verification (cold-cache Docker ~45 min). Status accounting (post-build): axiomCount 1 → 0, theoremCount 34 → 35, lineCount 1216 → 1333. meta.json status update from `axiomatized` to `verified` deferred to a follow-up PR after the build finishes (per slug convention).",
     "builtItems": [
       "IsPadicLiouville (LiouvilleTheoremOQ04.lean): definition with strict positivity 0 < ‖β - r/s‖ and height bound 2 ≤ max r.natAbs s.natAbs",
       "padic_liouville_estimate: proved via factorization + bridge axiom — exposes the standard (C/H^(2d)) lower bound",
@@ -54,7 +54,8 @@
       "padicNorm_intCast_pow_le_one (Part IV.9, NEW Session 12, private): padicNorm p ((s:ℚ)^d) ≤ 1 by induction on d",
       "padicNorm_int_poly_eval_uniform_lb (Part IV.9, NEW Session 12, MAIN RESULT): UNIFORM lower bound 1/(intPolyL1 f · H^d) ≤ padicNorm p ((f.map alg).eval (r/s)) for nonzero f, s, eval — the structural piece making bridge discharge possible",
       "padic_liouville_bridge_algebraic_case (Part IV.10, NEW Session 13, MAIN RESULT): Algebraic case of the bridge — for f ≠ 0, g ≠ 0 cofactor with `g.natDegree + 1 ≤ f.natDegree` and the heval identity, when `f.eval(r/s) ≠ 0` over ℚ, `1/(intPolyL1 f · coeffNormSum p g) / max(|r|,|s|)^(2·f.natDegree) ≤ ‖α - (r:ℚ_[p])/s‖`. Composes Parts IV.5/6/8/9 — no new axioms. The bridge axiom now factors cleanly into algebraic case (proved) + rational-roots case (open).",
-      "padic_liouville_bridge_rational_roots_case (Part IV.11, NEW Session 14, MAIN RESULT): Rational-roots case of the bridge — for f ≠ 0, there exists δ > 0 such that for every rational q with (f.map (algebraMap ℤ ℚ)).eval q = 0 and (q : ℚ_[p]) ≠ α, the bound δ ≤ ‖α - (q : ℚ_[p])‖ holds. Construction: form the Finset R' = (f.map alg').roots.toFinset filtered by (q : ℚ_[p]) ≠ α (finite, ≤ deg f). Non-empty case: δ := R'.inf' (q ↦ ‖α - (q:ℚ_[p])‖), positivity from `Finset.lt_inf'_iff`. Empty case: δ := 1 (vacuous). Combined with Part IV.10, ALL ingredients of the bridge axiom are formally proved — discharge is now a single combine-and-case-split session."
+      "padic_liouville_bridge_rational_roots_case (Part IV.11, NEW Session 14, MAIN RESULT): Rational-roots case of the bridge — for f ≠ 0, there exists δ > 0 such that for every rational q with (f.map (algebraMap ℤ ℚ)).eval q = 0 and (q : ℚ_[p]) ≠ α, the bound δ ≤ ‖α - (q : ℚ_[p])‖ holds. Construction: form the Finset R' = (f.map alg').roots.toFinset filtered by (q : ℚ_[p]) ≠ α (finite, ≤ deg f). Non-empty case: δ := R'.inf' (q ↦ ‖α - (q:ℚ_[p])‖), positivity from `Finset.lt_inf'_iff`. Empty case: δ := 1 (vacuous). Combined with Part IV.10, ALL ingredients of the bridge axiom are formally proved — discharge is now a single combine-and-case-split session.",
+      "padic_liouville_norm_bridge (Part V — DISCHARGED Session 15, MAIN RESULT): The bridge axiom is now a fully-proved theorem. C' := min(1/(L·M), δ); case split on (f.map alg').eval ((r:ℚ)/s) ?= 0 over ℚ — nonzero → Part IV.10, zero → Part IV.11 (with `((r:ℚ)/s : ℚ_[p]) = (r:ℚ_[p])/s` cast via `push_cast; rfl`). Bookkeeping: f ≠ 0 from `hf_deg`, `algebraMap ℤ ℚ_[p]` injective via integer-cast→ratCast, f.map alg ≠ 0 by `Polynomial.map_injective`, g ≠ 0 from factorization, g.natDegree+1 ≤ f.natDegree from `natDegree_mul + natDegree_X_sub_C + Polynomial.natDegree_map_le`. ~120 lines (894–1042). After discharge: file is 0-axiom, 0-sorry (build pending; meta.json status update deferred to follow-up PR)."
     ],
     "insights": [
       "IsPadicLiouville needs both 2 ≤ max(|r|,|s|) and 0 < ‖β - r/s‖. Without H≥2, bound 1/H^n=1 gives no useful constraint. Without strict positivity, every rational is trivially Liouville (r/s = β gives ‖β - r/s‖ = 0).",
@@ -80,9 +81,9 @@
       "Polynomial evaluation norm bound `‖g.eval x‖ ≤ M · max(1, ‖x‖)^(deg g)` for normed semirings (we proved padic_polynomial_eval_norm_bound directly via norm_sum_le)"
     ],
     "nextSteps": [
-      "Combine Part IV.10 (algebraic case, Session 13) + Part IV.11 (rational-roots case, Session 14, NEW) into a proved version of padic_liouville_norm_bridge. Take C := min(1/(L·M), δ). Case-split on (f.map alg').eval (r/s) over ℚ: nonzero case → Part IV.10; zero case → Part IV.11. Estimated 80-120 lines.",
-      "After bridge discharge: file is axiom-free (verified status). Update meta.json status from 'axiomatized' to 'verified' and badge from 'axiom' to 'original' (from-scratch p-adic Liouville).",
-      "Follow-up open questions to consider after verification: (a) function-field analog over F_q(t) with t-adic absolute value; (b) Roth-style sharpening from H^d to H^(2+ε); (c) multi-place generalization simultaneous for all primes."
+      "S16 (post-build): update meta.json status `axiomatized` → `verified`, badge `axiom` → `original`, axiomCount 1 → 0, lineCount 1216 → 1333, theoremCount 34 → 35; refresh `assumptions`, `description`, and `conclusion` narratives to drop the bridge-axiom language; update candidate-pool status `in-progress` → `completed`.",
+      "Follow-up OQ candidates (after verified): (a) function-field analog over F_q(t) with t-adic absolute value (mirrors Mahler's framework — would need a Mathlib `LaurentSeries` p-adic analog); (b) Roth-style sharpening from H^(2d) to H^(2+ε) (much harder — Roth's theorem is the classical analog and required Fields Medal-level techniques); (c) multi-place generalization (∀ primes p simultaneously, the same algebraic α has μ_p ≤ d) — corresponds to Mahler's classification refined per-place.",
+      "If build fails: triage Mathlib 4.26 API drift (`Polynomial.natDegree_map_le` arg form, `div_le_div_iff_of_pos_right` availability, `set L := ... with hL_def` + `rw [hL_def]` round-trip) and push corrective commits to the same PR."
     ]
   },
   "tags": [
@@ -102,7 +103,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.505Z",
-  "lastUpdate": "2026-05-08T09:00:00.000Z",
+  "lastUpdate": "2026-05-08T11:30:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [

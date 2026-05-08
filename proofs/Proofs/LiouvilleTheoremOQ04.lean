@@ -464,8 +464,13 @@ theorem intPolyL1_pos {f : ℤ[X]} (hf : f ≠ 0) : 0 < intPolyL1 f := by
   have hcoeff : f.coeff i ≠ 0 := Polynomial.mem_support_iff.mp hi
   have hpos : 0 < (f.coeff i).natAbs := Int.natAbs_pos.mpr hcoeff
   refine lt_of_lt_of_le hpos ?_
-  -- Lean 4.26: use fully positional args (named `(f := ...)` may shadow local `f : ℤ[X]`)
-  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi
+  -- Unfold so the function being summed is explicit, side-stepping the
+  -- `f` name clash between the local polynomial and `Finset.single_le_sum`'s
+  -- implicit summand argument.
+  show (f.coeff i).natAbs ≤ f.support.sum (fun j => (f.coeff j).natAbs)
+  exact Finset.single_le_sum
+    (f := fun j => (Polynomial.coeff f j).natAbs)
+    (fun _ _ => Nat.zero_le _) hi
 
 /-- "Homogenized integer evaluation": `intPolyHomogEval f r s = ∑ aᵢ · r^i · s^(d-i)`
     over `i ∈ f.support`, where d = f.natDegree. By construction,
@@ -504,10 +509,13 @@ theorem intPolyHomogEval_cast_eq (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0) :
     rw [← pow_add, Nat.sub_add_cancel hi_le]
   rw [hpow_split, div_pow]
   have hsi_ne : ((s : ℚ))^i ≠ 0 := pow_ne_zero _ hs_q
-  -- Lean 4.26: `(algebraMap ℤ ℚ) z` is not definitionally `↑z`; reduce explicitly.
-  simp only [Int.algebraMap_eq_intCast]
-  field_simp
-  ring
+  -- Lean 4.26: `(algebraMap ℤ ℚ) z` reduces to the integer cast via `eq_intCast`
+  -- (the previous `Int.algebraMap_eq_intCast` lemma was renamed/removed).
+  -- After `simp [eq_intCast]`, `field_simp` already closes the goal; the
+  -- subsequent `ring` would error with "No goals". Use `<;> ring` to make
+  -- ring optional on any residual subgoals.
+  simp only [eq_intCast]
+  field_simp <;> ring
 
 /-- Bound: `|intPolyHomogEval f r s| ≤ intPolyL1 f · max(|r|,|s|)^d` (triangle). -/
 theorem intPolyHomogEval_natAbs_le (f : ℤ[X]) (r s : ℤ) :
@@ -854,8 +862,12 @@ theorem padic_liouville_bridge_rational_roots_case
     have hinj : Function.Injective (Polynomial.map (algebraMap ℤ ℚ)) :=
       Polynomial.map_injective (algebraMap ℤ ℚ) h_alg_inj
     apply hinj
-    simp [hfQ_def] at h0
-    rw [Polynomial.map_zero, h0]
+    -- Goal: `f.map (algebraMap ℤ ℚ) = (0 : ℤ[X]).map (algebraMap ℤ ℚ)`. Rewrite
+    -- the RHS via `Polynomial.map_zero`, then transport `h0 : fQ = 0` back to
+    -- the goal via `← hfQ_def` (avoids `simp` unfolding `algebraMap` to
+    -- `Int.castRingHom`, which broke the subsequent `rw [h0]`).
+    rw [Polynomial.map_zero, ← hfQ_def]
+    exact h0
   -- Finite set of rational roots of fQ; filter to those distinct (in ℚ_[p]) from α.
   let R : Finset ℚ := fQ.roots.toFinset
   let R' : Finset ℚ := R.filter (fun q : ℚ => (q : ℚ_[p]) ≠ α)
@@ -891,30 +903,36 @@ PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Bridge Axiom**: Given the factorization f = (X - C α) · g in ℚ_[p][X] and the evaluation
-    identity f(x) = (x - α) · g(x), the p-adic Liouville estimate holds.
+/-- **Bridge Theorem (Session 15 — discharged)**: Given the factorization
+    f = (X - C α) · g in ℚ_[p][X] and the evaluation identity
+    f(x) = (x - α) · g(x), the p-adic Liouville estimate holds.
 
-    Status (post Part IV.8):
-    - Ingredient (1) (norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q):
-      ✓ PROVED in Part IV.5 as `norm_rat_eq_padicNorm`. Combined with
-      `padic_norm_int_poly_eval` this fully discharges the ℚ → ℚ_[p] bridge for `eval`.
-    - Ingredient (2a) (height bound on ℚ_[p]: ‖(r:ℚ_[p])/s‖ ≤ max(|r|,|s|)):
-      ✓ PROVED in Part IV.7 as `padic_norm_int_div_le_height`.
-    - Ingredient (2b) (uniform polynomial cofactor bound):
-      ✓ PROVED in Part IV.8 as `padic_polynomial_eval_norm_bound` and
-      `padic_cofactor_bound_rat`: for any g ∈ ℚ_[p][X], r, s : ℤ with s ≠ 0,
-      `‖g.eval ((r:ℚ_[p])/s)‖ ≤ coeffNormSum p g · H^(deg g)`.
+    Combines Part IV.10 (`padic_liouville_bridge_algebraic_case`, the
+    `f(r/s) ≠ 0` over ℚ branch) with Part IV.11
+    (`padic_liouville_bridge_rational_roots_case`, the rational-roots branch).
 
-    Remaining obstacle (now ONLY): assembling the algebra. The bridge requires
-    handling the case f(r/s) = 0 with r/s ≠ α (the finitely-many rational roots of
-    f distinct from α): for those, the formula ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ is the
-    indeterminate 0/0 (since heval forces g(r/s) = 0 too when r/s ≠ α and f(r/s) = 0).
-    We must take the constant C ≤ min ‖α - r₀‖ over the finite set of rational
-    roots r₀ ≠ α to cover this case directly.
+    Construction:
+    - Let `L := intPolyL1 f`, `M := coeffNormSum p g`, both positive (since
+      `f ≠ 0` from `hf_deg` and `g ≠ 0` from the factorization).
+    - The rational-roots case yields `δ > 0` separating α from every rational
+      root q of `f.map (algebraMap ℤ ℚ)` with `(q : ℚ_[p]) ≠ α`.
+    - Take `C' := min (1/(L·M)) δ`. Both factors are strictly positive, so
+      `C' > 0`.
 
-    Combined estimate (when f(r/s) ≠ 0):
-      ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ ≥ (C_f/H^d)/(M·H^(d-1)) = C/H^(2d-1) ≥ C/H^(2d). -/
-axiom padic_liouville_norm_bridge
+    Case split on `(f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) = 0` over ℚ
+    (decidable):
+    * If `≠ 0`: Part IV.10 gives `1/(L·M) / H^(2d) ≤ ‖α - r/s‖`. Since
+      `C' ≤ 1/(L·M)`, dividing by `H^(2d) > 0` preserves the inequality.
+    * If `= 0`: Part IV.11 gives `δ ≤ ‖α - ((r:ℚ)/s : ℚ_[p])‖`. The cast
+      `((r:ℚ)/s : ℚ_[p]) = (r:ℚ_[p])/s` (via `push_cast`) lets us conclude.
+      Since `H ≥ 1` (from `s ≠ 0`), we have `1 ≤ H^(2d)`, so
+      `C'/H^(2d) ≤ C' ≤ δ ≤ ‖α - r/s‖`.
+
+    The hypotheses `hfact` and `heval` are used only to derive
+    `g.natDegree + 1 ≤ f.natDegree` (degree bookkeeping for Part IV.10's
+    cofactor weakening). The factorization-from-root `hf_root + hf_deg`
+    ensures `f.natDegree ≥ 1`, in particular `f ≠ 0`. -/
+theorem padic_liouville_norm_bridge
     (α : ℚ_[p]) (f : ℤ[X])
     (hf_root : (f.map (algebraMap ℤ ℚ_[p])).eval α = 0)
     (hf_deg : 1 ≤ f.natDegree)
@@ -922,7 +940,117 @@ axiom padic_liouville_norm_bridge
     (hfact : f.map (algebraMap ℤ ℚ_[p]) = (X - C α) * g)
     (heval : ∀ x : ℚ_[p], (f.map (algebraMap ℤ ℚ_[p])).eval x = (x - α) * g.eval x) :
     ∃ C' : ℝ, 0 < C' ∧ ∀ r s : ℤ, s ≠ 0 → α ≠ (r : ℚ_[p]) / s →
-      C' / (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤ ‖α - (r : ℚ_[p]) / s‖
+      C' / (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤ ‖α - (r : ℚ_[p]) / s‖ := by
+  classical
+  -- `hf_root` and `heval` are bridge-shape hypotheses; we don't directly invoke
+  -- `hf_root` here (it is captured by `heval` at `x = α` if needed).
+  -- Step 1: f ≠ 0 from `hf_deg`.
+  have hf_ne : f ≠ 0 := by
+    intro h
+    rw [h, Polynomial.natDegree_zero] at hf_deg
+    omega
+  -- Step 2: `algebraMap ℤ ℚ_[p]` is injective.
+  have h_alg_inj_p : Function.Injective (algebraMap ℤ ℚ_[p]) := fun a b hab => by
+    have : (a : ℚ_[p]) = (b : ℚ_[p]) := by simpa [eq_intCast] using hab
+    exact_mod_cast this
+  -- Step 3: f.map alg ≠ 0 (uses injectivity).
+  have hf_map_ne : f.map (algebraMap ℤ ℚ_[p]) ≠ 0 := by
+    intro h
+    apply hf_ne
+    have hinj : Function.Injective (Polynomial.map (algebraMap ℤ ℚ_[p])) :=
+      Polynomial.map_injective (algebraMap ℤ ℚ_[p]) h_alg_inj_p
+    apply hinj
+    rw [Polynomial.map_zero]; exact h
+  -- Step 4: g ≠ 0 from the factorization + f.map alg ≠ 0.
+  have hg_ne : g ≠ 0 := by
+    intro hg0
+    apply hf_map_ne
+    rw [hfact, hg0, mul_zero]
+  -- Step 5: degree relation `g.natDegree + 1 ≤ f.natDegree`.
+  have hX_sub_C_ne : (X - C α : Polynomial ℚ_[p]) ≠ 0 := X_sub_C_ne_zero α
+  have h_natDeg_prod :
+      ((X - C α : Polynomial ℚ_[p]) * g).natDegree =
+        (X - C α : Polynomial ℚ_[p]).natDegree + g.natDegree :=
+    Polynomial.natDegree_mul hX_sub_C_ne hg_ne
+  have h_natDeg_X_sub_C : (X - C α : Polynomial ℚ_[p]).natDegree = 1 :=
+    Polynomial.natDegree_X_sub_C α
+  have h_natDeg_map_le : (f.map (algebraMap ℤ ℚ_[p])).natDegree ≤ f.natDegree :=
+    Polynomial.natDegree_map_le
+  have hg_deg_le : g.natDegree + 1 ≤ f.natDegree := by
+    have h_eq : (f.map (algebraMap ℤ ℚ_[p])).natDegree = 1 + g.natDegree := by
+      rw [hfact, h_natDeg_prod, h_natDeg_X_sub_C]
+    omega
+  -- Step 6: rational-roots case (Part IV.11) — uniform δ > 0.
+  obtain ⟨δ, hδ_pos, hδ⟩ :=
+    padic_liouville_bridge_rational_roots_case p α f hf_ne
+  -- Step 7: name L = intPolyL1 f, M = coeffNormSum p g; both positive.
+  set L : ℝ := (intPolyL1 f : ℝ) with hL_def
+  set M : ℝ := coeffNormSum p g with hM_def
+  have hL_pos_n : 0 < intPolyL1 f := intPolyL1_pos hf_ne
+  have hL_pos : 0 < L := by rw [hL_def]; exact_mod_cast hL_pos_n
+  have hM_pos : 0 < M := by
+    rw [hM_def, coeffNormSum]
+    refine Finset.sum_pos (fun i hi => ?_) (Polynomial.support_nonempty.mpr hg_ne)
+    rw [norm_pos_iff]
+    exact Polynomial.mem_support_iff.mp hi
+  have hLM_pos : 0 < L * M := mul_pos hL_pos hM_pos
+  have h_inv_LM_pos : 0 < 1 / (L * M) := one_div_pos.mpr hLM_pos
+  -- Step 8: define the witness `C' := min (1/(L·M)) δ`, strictly positive.
+  refine ⟨min (1 / (L * M)) δ, lt_min h_inv_LM_pos hδ_pos, ?_⟩
+  intro r s hs hαne
+  set H : ℝ := (max r.natAbs s.natAbs : ℝ) with hH_def
+  -- H ≥ 1 from `s ≠ 0`.
+  have hs_natAbs_pos : 0 < s.natAbs := Int.natAbs_pos.mpr hs
+  have hH_n_ge_one : 1 ≤ max r.natAbs s.natAbs :=
+    le_trans hs_natAbs_pos (Nat.le_max_right _ _)
+  have hH_one : (1 : ℝ) ≤ H := by rw [hH_def]; exact_mod_cast hH_n_ge_one
+  have hH_pos : 0 < H := lt_of_lt_of_le zero_lt_one hH_one
+  have hHpow_pos : 0 < H ^ (2 * f.natDegree) := pow_pos hH_pos _
+  have hHpow_ge_one : (1 : ℝ) ≤ H ^ (2 * f.natDegree) :=
+    one_le_pow₀ hH_one
+  -- Step 9: case split on `(f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) ?= 0`.
+  by_cases hf_eval :
+      (f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) = 0
+  · -- Rational-roots branch: q := (r:ℚ)/s is a rational root of f.map alg'.
+    -- Part IV.11 expects `α ≠ (q : ℚ_[p])`; transport from `hαne`.
+    have h_cast_eq :
+        (((r : ℚ) / s : ℚ) : ℚ_[p]) = (r : ℚ_[p]) / s := by push_cast; rfl
+    have h_α_ne_cast : α ≠ (((r : ℚ) / s : ℚ) : ℚ_[p]) := by
+      rw [h_cast_eq]; exact hαne
+    -- Apply Part IV.11 to q := (r:ℚ)/s.
+    have h_lb : δ ≤ ‖α - (((r : ℚ) / s : ℚ) : ℚ_[p])‖ :=
+      hδ ((r : ℚ) / s) hf_eval h_α_ne_cast
+    rw [h_cast_eq] at h_lb
+    -- min ≤ δ, and dividing by H^(2d) ≥ 1 weakens.
+    have h_min_le_δ : min (1 / (L * M)) δ ≤ δ := min_le_right _ _
+    have h_min_pos : 0 < min (1 / (L * M)) δ := lt_min h_inv_LM_pos hδ_pos
+    have h_div_le_min :
+        min (1 / (L * M)) δ / H ^ (2 * f.natDegree) ≤ min (1 / (L * M)) δ := by
+      rw [div_le_iff₀ hHpow_pos]
+      calc min (1 / (L * M)) δ
+          = min (1 / (L * M)) δ * 1 := by ring
+        _ ≤ min (1 / (L * M)) δ * H ^ (2 * f.natDegree) :=
+            mul_le_mul_of_nonneg_left hHpow_ge_one h_min_pos.le
+    linarith
+  · -- Algebraic branch: apply Part IV.10.
+    -- Build the algebraic-case bound directly in terms of L, M, H — defeq via the
+    -- `set` let-bindings — to avoid a `set + rw` round-trip that can fail to
+    -- match `L` in the goal against `(intPolyL1 f : ℝ)` in the lemma's output.
+    have h_alg' :
+        1 / (L * M) / H ^ (2 * f.natDegree) ≤
+          ‖α - (r : ℚ_[p]) / s‖ := by
+      show 1 / ((intPolyL1 f : ℝ) * coeffNormSum p g) /
+          (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤
+            ‖α - (r : ℚ_[p]) / s‖
+      exact padic_liouville_bridge_algebraic_case p α f hf_ne g hg_ne hg_deg_le
+        heval r s hs hαne hf_eval
+    -- min ≤ 1/(L·M) ⇒ min/H^(2d) ≤ (1/(L·M))/H^(2d).
+    have h_min_le_inv : min (1 / (L * M)) δ ≤ 1 / (L * M) := min_le_left _ _
+    have h_div_mono :
+        min (1 / (L * M)) δ / H ^ (2 * f.natDegree) ≤
+          1 / (L * M) / H ^ (2 * f.natDegree) :=
+      (div_le_div_iff_of_pos_right hHpow_pos).mpr h_min_le_inv
+    linarith
 
 /-- **P-adic Liouville Theorem** (key estimate):
     If α ∈ ℚ_[p] is algebraic over ℚ with a polynomial f ∈ ℤ[X] of degree d having α as root,
