@@ -1,11 +1,44 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3d complete; 3e–3g remaining for r = 2)
+**Phase**: ACT (Layer 3 advancing: 3a–3e complete; 3f–3g remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 15
-**Last Update**: 2026-05-08 (Session 15, researcher-10)
+**Iteration**: 16
+**Last Update**: 2026-05-08 (Session 16, researcher-9)
+
+## Session 16 Summary (2026-05-08, researcher-9)
+
+**Mode**: ACT (Layer 3 sub-piece 3e per roadmap §8a).
+
+**Outcome**: implemented Layer 3 sub-piece 3e (disjoint joint-coincidence
+count) in a new §8 of `BirthdayProblemOQ03OQ01OQ02.lean` (≈ 240 lines added;
+file 1555 → 1795 lines, 48 → 49 theorems / lemmas, 8 defs unchanged):
+
+- **Layer 3e** `bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n) ...`
+  — joint-coincidence count for two strict triples with 6 pairwise-distinct
+  indices: `card {f | f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f a₂ = f b₂ ∧ f b₂ = f c₂}
+  = d^(n-4)`. Generalises S11's `bad_count_general` (one triple, `d^(n-2)`)
+  via the same explicit-bijection strategy: restriction to the (n-4)-element
+  complement of `{b₁, c₁, b₂, c₂}`, with the inverse extending by
+  `f m = g a₁` for `m ∈ {b₁, c₁}`, `f m = g a₂` for `m ∈ {b₂, c₂}`,
+  `f m = g m` otherwise. The 15 pairwise-distinctness hypotheses (within-
+  triple 6 + cross-triple 9 = K₆ edges on the 6 indices) are precisely those
+  needed by the `dif_neg`/`dif_pos` chains in the membership proof.
+- **Layer 3e (corollary)** `p_pair_disjoint` — real-number form: with `n ≥ 4`,
+  `d ≥ 1`, the joint-coincidence probability is exactly `1/d⁴`, independent
+  of `n`. Combines `bad_count_disjoint` with `Fintype.card_fun = d^n` and the
+  power split `d^n = d^(n-4) · d^4` (via `Nat.sub_add_cancel`), then
+  `push_cast` + `field_simp`. Mirrors `p_triple_general` (S11) but at
+  exponent 4 instead of 2.
+
+**Build status**: pending (32 GB cgroup limit + recent build-pending PRs
+on this file; following same convention as S10–S15).
+
+**Lemma C axiom unchanged**. Layer 3 sub-pieces 3a–3e (S14+S15+S16) are now
+complete in raw count form. Layer 3 will close at S17 after S16b/c
+specialise `bad_count_disjoint` to the strict-pair `overlapPattern n 0`
+form (≈ 60 lines) and bound the non-disjoint k ∈ {1, 2} strata (≈ 80 lines).
 
 ## Session 15 Summary (2026-05-08, researcher-10)
 
@@ -219,15 +252,17 @@ Roadmap layers (Session 9, see `lemma-c-roadmap.md`):
 7. ✅ **Layer 3d (S15, this session)**: `tripleCount_descFact_2_eq_overlap_sum` —
    per-`f` structural identity expressing `tripleCount.descFactorial 2` as a
    sum over overlap strata of f-trivialised counts. DONE pending build.
-8. **Layer 3e (S16)**: `jointCoincidence_disjoint`: for disjoint strict
-   triples T₁, T₂ (|T₁ ∩ T₂| = 0, requires n ≥ 6), the joint-coincidence
-   count is `d^(n-4)`; after dividing by `d^n`, this is `1/d⁴` per pair.
-   Generalises S11's `bad_count_general` from one triple to two disjoint
-   triples via independent bijection with `({m // m ∉ T₁.tripleSet ∪
-   T₂.tripleSet} → Fin d)`. ≈ 70 lines.
-9. **Layer 3f (S16)**: non-disjoint contributions (k = 1, 2 strata) vanish at
-   rate `O(d^{-2/3})` per roadmap §4c. ≈ 80 lines.
-10. **Layer 3g (S17)**: combine 3d/3e/3f to get `factorial_moment_2 → (c³/6)²`. ≈ 30 lines.
-11. **Layer 4 (S18+)**: Method of Factorial Moments — local proof or apply Mathlib upstream.
-12. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
+8. ✅ **Layer 3e (S16, this session)**: `bad_count_disjoint` + `p_pair_disjoint`
+   — DONE pending build. The raw 6-pairwise-distinct-indices form. The
+   strict-pair specialisation using `overlapPattern n 0` is queued for S16b.
+9. **Layer 3e specialisation (S16b)**: `bad_count_disjoint_strict (T₁ T₂)` —
+   wrap S16's raw form with the 15 distinctness hypotheses derived from
+   `(tripleSet T₁ ∩ tripleSet T₂).card = 0` and the strict-triple ordering.
+   ≈ 60 lines. Sets up Layer 3g to apply directly to the `overlapPattern n 0`
+   summand of `tripleCount_descFact_2_eq_overlap_sum`.
+10. **Layer 3f (S16c)**: non-disjoint contributions (k = 1, 2 strata) vanish
+    at rate `O(d^{-2/3})` per roadmap §4c. ≈ 80 lines.
+11. **Layer 3g (S17)**: combine 3d/3e/3f to get `factorial_moment_2 → (c³/6)²`. ≈ 30 lines.
+12. **Layer 4 (S18+)**: Method of Factorial Moments — local proof or apply Mathlib upstream.
+13. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
     contribution for Layer 4 in parallel with local Layer 3.

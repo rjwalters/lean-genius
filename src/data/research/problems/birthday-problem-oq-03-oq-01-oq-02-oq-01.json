@@ -32,13 +32,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:21:41Z",
-    "iteration": 15,
-    "focus": "Layer 3c+3d implemented (Session 15, researcher-10): new §7 of BirthdayProblemOQ03OQ01OQ02.lean (~263 lines added; file 1295→1555, 41→48 theorems / lemmas, 6→8 defs). New decls: (a) public def `tripleSet T : Finset (Fin n)` — underlying 3-element index set {T.1, T.2.1, T.2.2}; (b) `card_tripleSet_of_strict` — strict triples have set-card 3; (c) `strict_eq_of_tripleSet_eq` — for STRICT triples, underlying-set equality forces triple equality (key lemma ruling out overlap-3 stratum); (d) `tripleSet_inter_card_le_three` — intersection of two strict-triple sets has card ≤ 3 (auxiliary for fiberwise partition); (e) public def `overlapPattern n k` — Layer 3c: ordered pairs of distinct strict triples with intersection-size exactly k; (f) `overlapPattern_three_eq_empty` — Layer 3c: the k=3 stratum is empty for STRICT triples (genuine partition is {0, 1, 2}); (g) `overlapPattern_partitions_offDiag` — Layer 3c: the four strata partition the diagonal-removed pair-of-strict-triples space (sum of stratum cards = total), proved via Finset.card_eq_sum_card_fiberwise; (h) `tripleCount_descFact_2_eq_overlap_sum` — Layer 3d: per-`f` structural identity: tripleCount.descFactorial 2 equals the sum over k ∈ {0,1,2,3} of f-trivialised counts in overlapPattern n k. Sets up Layers 3e/3f (S16) to compute the disjoint contribution `1/d⁴` per pair and bound the non-disjoint contributions as `O(d^{-2/3})`. Next: Layer 3e (S16) — disjoint contribution.",
+    "iteration": 16,
+    "focus": "Layer 3e implemented (Session 16, researcher-9): new §8 of BirthdayProblemOQ03OQ01OQ02.lean (~240 lines added; file 1555→1795, 48→49 theorems/lemmas, 8 defs unchanged). Two new theorems: (a) `bad_count_disjoint` — joint-coincidence count for two strict triples whose 6 indices are pairwise distinct: card{f | f a₁=f b₁ ∧ f b₁=f c₁ ∧ f a₂=f b₂ ∧ f b₂=f c₂} = d^(n-4). Generalises `bad_count_general` (one triple, d^(n-2)) via explicit Equiv with the (n-4)-element complement function space `({m // m ≠ b₁ ∧ m ≠ c₁ ∧ m ≠ b₂ ∧ m ≠ c₂} → Fin d)`. The 15 distinctness hypotheses (within-triple 6 + cross-triple 9 = K₆ edges on the 6 indices) are needed by the membership proof's dif_neg/dif_pos chain. (b) `p_pair_disjoint` — real-number form: with n ≥ 4, d ≥ 1, joint-coincidence probability = 1/d⁴, independent of n. Combines bad_count_disjoint with d^n = d^(n-4)·d^4 split via Nat.sub_add_cancel + push_cast + field_simp. Sets up Layer 3f (S16b: non-disjoint vanishing) and Layer 3g (S17: limit `(c³/6)²`). PRIOR (S15, researcher-10): Layer 3c+3d (overlapPattern partition + tripleCount.descFactorial 2 expansion).",
     "blockers": [],
-    "nextAction": "Layer 3e (S16): disjoint-pair contribution `jointCoincidence_disjoint`: for disjoint strict triples T₁, T₂ (|T₁ ∩ T₂| = 0, requires n ≥ 6), the joint-coincidence count is d^(n-4); after dividing by d^n, this is 1/d⁴ per pair. Generalises S11's `bad_count_general` from one triple to two disjoint triples via independent bijection with `({m // m ∉ T₁.tripleSet ∪ T₂.tripleSet} → Fin d)`. ≈ 70 lines. Then Layer 3f (S16): non-disjoint contributions (k = 1, 2 strata) vanish at rate O(d^{-2/3}) per roadmap §4c. ≈ 80 lines. Then Layer 3g (S17): combine 3d/3e/3f to conclude `factorial_moment_2_tendsto`: factorial_moment_2 → (c³/6)² along threshold scaling.",
+    "nextAction": "Layer 3e specialisation (S16b): wrap `bad_count_disjoint` (Session 16, ~240 lines) into a strict-pair form using `overlapPattern n 0`. Specifically: derive the 15 distinctness hypotheses from `(tripleSet T₁ ∩ tripleSet T₂).card = 0` + strict-triple ordering, yielding `bad_count_disjoint_strict (T₁ T₂ : ...) (hd : (tripleSet T₁ ∩ tripleSet T₂).card = 0) : ...card = d^(n-4)`. ≈ 60 lines. Then Layer 3f (S16c): non-disjoint contributions (k=1, 2 strata) vanish at rate O(d^{-2/3}) per roadmap §4c. ≈ 80 lines. Then Layer 3g (S17): combine 3d/3e/3f to conclude `factorial_moment_2_tendsto`: factorial_moment_2 → (c³/6)² along threshold scaling.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 4,
+      "total": 6,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
@@ -139,7 +139,7 @@
     ]
   },
   "started": "2026-04-21T06:38:17Z",
-  "lastUpdate": "2026-05-08T13:19:46Z",
+  "lastUpdate": "2026-05-08T19:20:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -256,10 +256,10 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 1178,
-      "theoremCount": 34,
+      "lineCount": 1795,
+      "theoremCount": 49,
       "axiomCount": 1,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"

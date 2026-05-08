@@ -1433,10 +1433,239 @@ lemma tripleCount_descFact_2_eq_overlap_sum (d n : ℕ) (f : Fin n → Fin d) :
   simp only [overlapPattern, Finset.mem_filter, Finset.mem_product]
   tauto
 
+-- ============================================================
+-- §8. DISJOINT JOINT-COINCIDENCE COUNT (Layer 3e, Session 16)
+-- ============================================================
+
+/-- **Layer 3e.** Disjoint joint-coincidence count: with two strict triples
+    `(a₁, b₁, c₁)` and `(a₂, b₂, c₂)` whose 6 indices are pairwise distinct,
+    the number of `f : Fin n → Fin d` simultaneously trivialising both triples
+    is exactly `d^(n - 4)`. Generalises `bad_count_general` (Session 11,
+    Layer 2) from one triple to two disjoint triples.
+
+    **Strategy.** Build an explicit bijection
+    `{f // f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f a₂ = f b₂ ∧ f b₂ = f c₂}
+       ≃  ({m : Fin n // m ≠ b₁ ∧ m ≠ c₁ ∧ m ≠ b₂ ∧ m ≠ c₂} → Fin d)`
+    via restriction to the (n − 4)-element complement of `{b₁, c₁, b₂, c₂}`.
+    The inverse extends a function `g` on the complement by
+    `f m = g a₁` for `m ∈ {b₁, c₁}` (well-defined since `a₁ ∉ {b₁, c₁, b₂, c₂}`),
+    `f m = g a₂` for `m ∈ {b₂, c₂}`, and `f m = g m` otherwise. The target
+    function space has cardinality `d^(n - 4)` since the complement has
+    `n - 4` elements (using the four pairwise-distinctness hypotheses on
+    `{b₁, c₁, b₂, c₂}`).
+
+    The 6 pairwise-distinctness hypotheses needed are precisely the entries
+    of the upper triangle of the 6×6 distinctness matrix, restricted to those
+    needed by the membership/extension proofs. Specifically: within-triple
+    distinctness `a_i ≠ b_i ≠ c_i ≠ a_i` for i ∈ {1, 2} (6 hypotheses) plus
+    cross-triple distinctness for the 9 pairs `(x, y)` with x ∈ {a₁, b₁, c₁},
+    y ∈ {a₂, b₂, c₂} (9 hypotheses). Total: 15 hypotheses, matching the
+    edges of the complete graph K₆ on the 6 indices. -/
+theorem bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
+    (h₁₂ : a₁ ≠ b₁) (h₂₃ : b₁ ≠ c₁) (h₁₃ : a₁ ≠ c₁)
+    (h₄₅ : a₂ ≠ b₂) (h₅₆ : b₂ ≠ c₂) (h₄₆ : a₂ ≠ c₂)
+    (h₁₄ : a₁ ≠ a₂) (h₁₅ : a₁ ≠ b₂) (h₁₆ : a₁ ≠ c₂)
+    (h₂₄ : b₁ ≠ a₂) (h₂₅ : b₁ ≠ b₂) (h₂₆ : b₁ ≠ c₂)
+    (h₃₄ : c₁ ≠ a₂) (h₃₅ : c₁ ≠ b₂) (h₃₆ : c₁ ≠ c₂) :
+    (Finset.univ.filter (fun f : Fin n → Fin d =>
+      f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f a₂ = f b₂ ∧ f b₂ = f c₂)).card =
+      d ^ (n - 4) := by
+  classical
+  -- Step 1: cardinality of the complement subtype = n - 4.
+  have hcompl_card :
+      Fintype.card {m : Fin n // m ≠ b₁ ∧ m ≠ c₁ ∧ m ≠ b₂ ∧ m ≠ c₂} = n - 4 := by
+    rw [Fintype.card_subtype]
+    have heq : (Finset.univ.filter
+                  (fun m : Fin n => m ≠ b₁ ∧ m ≠ c₁ ∧ m ≠ b₂ ∧ m ≠ c₂)) =
+               Finset.univ \ ({b₁, c₁, b₂, c₂} : Finset (Fin n)) := by
+      ext m
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+                 Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or,
+                 and_assoc]
+    have hquad_card : ({b₁, c₁, b₂, c₂} : Finset (Fin n)).card = 4 := by
+      rw [Finset.card_insert_of_not_mem
+            (by simp [h₂₃, h₂₅, h₂₆]),
+          Finset.card_insert_of_not_mem
+            (by simp [h₃₅, h₃₆]),
+          Finset.card_insert_of_not_mem
+            (by simp [h₅₆]),
+          Finset.card_singleton]
+    rw [heq, Finset.card_sdiff (Finset.subset_univ _),
+        Finset.card_univ, Fintype.card_fin, hquad_card]
+  -- Step 2: target function space has cardinality d^(n - 4).
+  have hcard_target :
+      Fintype.card ({m : Fin n // m ≠ b₁ ∧ m ≠ c₁ ∧ m ≠ b₂ ∧ m ≠ c₂} → Fin d) =
+        d ^ (n - 4) := by
+    rw [Fintype.card_fun, Fintype.card_fin, hcompl_card]
+  -- Step 3: rewrite Finset.card via Fintype.card of the constrained subtype.
+  rw [show (d ^ (n - 4) : ℕ) =
+        Fintype.card ({m : Fin n // m ≠ b₁ ∧ m ≠ c₁ ∧ m ≠ b₂ ∧ m ≠ c₂} → Fin d)
+      from hcard_target.symm,
+      ← Fintype.card_coe]
+  -- Step 4: build the bijection.
+  apply Fintype.card_congr
+  refine {
+    toFun := fun f m => f.val m.val
+    invFun := fun g =>
+      ⟨fun m =>
+        if hb1 : m = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+        else if hc1 : m = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+        else if hb2 : m = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+        else if hc2 : m = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+        else g ⟨m, hb1, hc1, hb2, hc2⟩,
+       Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
+    left_inv := ?_
+    right_inv := ?_ }
+  · -- Membership: the extended function satisfies the four equalities.
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · -- f a₁ = f b₁: LHS reduces (a₁ ∉ {b₁, c₁, b₂, c₂}) to g ⟨a₁, …⟩;
+      -- RHS picks the b₁-branch via dif_pos rfl, also g ⟨a₁, …⟩.
+      show (if hb1 : a₁ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : a₁ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : a₁ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : a₁ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨a₁, hb1, hc1, hb2, hc2⟩) =
+           (if hb1 : b₁ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : b₁ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : b₁ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : b₁ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨b₁, hb1, hc1, hb2, hc2⟩)
+      rw [dif_neg h₁₂, dif_neg h₁₃, dif_neg h₁₅, dif_neg h₁₆, dif_pos rfl]
+    · -- f b₁ = f c₁: both reduce to g ⟨a₁, …⟩.
+      show (if hb1 : b₁ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : b₁ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : b₁ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : b₁ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨b₁, hb1, hc1, hb2, hc2⟩) =
+           (if hb1 : c₁ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : c₁ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : c₁ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : c₁ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨c₁, hb1, hc1, hb2, hc2⟩)
+      rw [dif_pos rfl, dif_neg h₂₃.symm, dif_pos rfl]
+    · -- f a₂ = f b₂: LHS (a₂ ∉ {b₁, c₁, b₂, c₂}) reduces to g ⟨a₂, …⟩;
+      -- RHS at b₂ picks the b₂-branch (dif_neg, dif_neg, dif_pos), also g ⟨a₂, …⟩.
+      show (if hb1 : a₂ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : a₂ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : a₂ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : a₂ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨a₂, hb1, hc1, hb2, hc2⟩) =
+           (if hb1 : b₂ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : b₂ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : b₂ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : b₂ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨b₂, hb1, hc1, hb2, hc2⟩)
+      rw [dif_neg h₂₄.symm, dif_neg h₃₄.symm, dif_neg h₄₅, dif_neg h₄₆,
+          dif_neg h₂₅.symm, dif_neg h₃₅.symm, dif_pos rfl]
+    · -- f b₂ = f c₂: both reduce to g ⟨a₂, …⟩.
+      show (if hb1 : b₂ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : b₂ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : b₂ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : b₂ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨b₂, hb1, hc1, hb2, hc2⟩) =
+           (if hb1 : c₂ = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hc1 : c₂ = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+            else if hb2 : c₂ = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else if hc2 : c₂ = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+            else g ⟨c₂, hb1, hc1, hb2, hc2⟩)
+      rw [dif_neg h₂₅.symm, dif_neg h₃₅.symm, dif_pos rfl,
+          dif_neg h₂₆.symm, dif_neg h₃₆.symm, dif_neg h₅₆.symm, dif_pos rfl]
+  · -- left_inv: invFun (toFun ⟨f, hf⟩) = ⟨f, hf⟩.
+    rintro ⟨f, hf⟩
+    apply Subtype.ext
+    have h := (Finset.mem_filter.mp hf).2
+    funext m
+    by_cases hmb1 : m = b₁
+    · subst hmb1
+      show (if hb1 : m = b₁ then f a₁
+            else if hc1 : m = c₁ then f a₁
+            else if hb2 : m = b₂ then f a₂
+            else if hc2 : m = c₂ then f a₂
+            else f m) = f m
+      rw [dif_pos rfl]; exact h.1
+    · by_cases hmc1 : m = c₁
+      · subst hmc1
+        show (if hb1 : m = b₁ then f a₁
+              else if hc1 : m = c₁ then f a₁
+              else if hb2 : m = b₂ then f a₂
+              else if hc2 : m = c₂ then f a₂
+              else f m) = f m
+        rw [dif_neg hmb1, dif_pos rfl]; exact h.1.trans h.2.1
+      · by_cases hmb2 : m = b₂
+        · subst hmb2
+          show (if hb1 : m = b₁ then f a₁
+                else if hc1 : m = c₁ then f a₁
+                else if hb2 : m = b₂ then f a₂
+                else if hc2 : m = c₂ then f a₂
+                else f m) = f m
+          rw [dif_neg hmb1, dif_neg hmc1, dif_pos rfl]; exact h.2.2.1
+        · by_cases hmc2 : m = c₂
+          · subst hmc2
+            show (if hb1 : m = b₁ then f a₁
+                  else if hc1 : m = c₁ then f a₁
+                  else if hb2 : m = b₂ then f a₂
+                  else if hc2 : m = c₂ then f a₂
+                  else f m) = f m
+            rw [dif_neg hmb1, dif_neg hmc1, dif_neg hmb2, dif_pos rfl]
+            exact h.2.2.1.trans h.2.2.2
+          · show (if hb1 : m = b₁ then f a₁
+                  else if hc1 : m = c₁ then f a₁
+                  else if hb2 : m = b₂ then f a₂
+                  else if hc2 : m = c₂ then f a₂
+                  else f m) = f m
+            rw [dif_neg hmb1, dif_neg hmc1, dif_neg hmb2, dif_neg hmc2]
+  · -- right_inv: toFun (invFun g) = g.
+    intro g
+    funext m
+    obtain ⟨m, hmb1, hmc1, hmb2, hmc2⟩ := m
+    show (if hb1 : m = b₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+          else if hc1 : m = c₁ then g ⟨a₁, h₁₂, h₁₃, h₁₅, h₁₆⟩
+          else if hb2 : m = b₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+          else if hc2 : m = c₂ then g ⟨a₂, h₂₄.symm, h₃₄.symm, h₄₅, h₄₆⟩
+          else g ⟨m, hb1, hc1, hb2, hc2⟩) = g ⟨m, hmb1, hmc1, hmb2, hmc2⟩
+    rw [dif_neg hmb1, dif_neg hmc1, dif_neg hmb2, dif_neg hmc2]
+
+/-- **Layer 3e (corollary).** Real-number form of `bad_count_disjoint`: with
+    two strict triples whose 6 indices are pairwise distinct, and `n ≥ 4`,
+    `d ≥ 1`, the joint-coincidence probability is exactly `1/d⁴`. This is the
+    quantitative content used by Layer 3g (S17) to extract the disjoint-stratum
+    contribution `(c³/6)²` to `factorial_moment_2`.
+
+    Note: when n ≥ 6 (which is necessary to have two disjoint strict triples
+    in `Fin n`), the bound `n ≥ 4` is automatic. The hypothesis is kept at
+    `n ≥ 4` so the lemma applies in any context where the 6-index distinctness
+    is given (regardless of strictness). -/
+theorem p_pair_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
+    (h₁₂ : a₁ ≠ b₁) (h₂₃ : b₁ ≠ c₁) (h₁₃ : a₁ ≠ c₁)
+    (h₄₅ : a₂ ≠ b₂) (h₅₆ : b₂ ≠ c₂) (h₄₆ : a₂ ≠ c₂)
+    (h₁₄ : a₁ ≠ a₂) (h₁₅ : a₁ ≠ b₂) (h₁₆ : a₁ ≠ c₂)
+    (h₂₄ : b₁ ≠ a₂) (h₂₅ : b₁ ≠ b₂) (h₂₆ : b₁ ≠ c₂)
+    (h₃₄ : c₁ ≠ a₂) (h₃₅ : c₁ ≠ b₂) (h₃₆ : c₁ ≠ c₂)
+    (hd : 1 ≤ d) (hn : 4 ≤ n) :
+    ((Finset.univ.filter (fun f : Fin n → Fin d =>
+      f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f a₂ = f b₂ ∧ f b₂ = f c₂)).card : ℝ) /
+    (Fintype.card (Fin n → Fin d) : ℝ) = 1 / (d : ℝ) ^ 4 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have hcard_nat : Fintype.card (Fin n → Fin d) = d ^ n := by simp [Fintype.card_fun]
+  rw [bad_count_disjoint d n a₁ b₁ c₁ a₂ b₂ c₂
+        h₁₂ h₂₃ h₁₃ h₄₅ h₅₆ h₄₆
+        h₁₄ h₁₅ h₁₆ h₂₄ h₂₅ h₂₆ h₃₄ h₃₅ h₃₆,
+      hcard_nat]
+  -- Goal: ↑(d^(n-4)) / ↑(d^n) = 1 / d⁴.
+  have hge : n - 4 + 4 = n := Nat.sub_add_cancel hn
+  have hpow_split : d ^ n = d ^ (n - 4) * d ^ 4 := by
+    conv_lhs => rw [← hge]
+    rw [pow_add]
+  rw [hpow_split]
+  push_cast
+  have hpow_ne : (d : ℝ) ^ (n - 4) ≠ 0 := pow_ne_zero _ hd_ne
+  field_simp
+
 /-
   ## Summary
 
-  **Proved (32 theorems / lemmas, 1 axiom):**
+  **Proved (35 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -1513,6 +1742,15 @@ lemma tripleCount_descFact_2_eq_overlap_sum (d n : ℕ) (f : Fin n → Fin d) :
       Combines Layer 3b (S14) with the fiberwise partition. Sets up Layers
       3e/3f (S16) to compute the disjoint contribution `1/d⁴` per pair and
       bound the non-disjoint contributions as `O(d^{-2/3})`.
+  34. `bad_count_disjoint` (Session 16, Layer 3e): joint-coincidence count
+      for two strict triples with 6 pairwise-distinct indices: the number
+      of `f : Fin n → Fin d` simultaneously trivialising both triples is
+      `d^(n-4)`. Generalises `bad_count_general` (one triple, `d^(n-2)`)
+      via an explicit bijection with `({m // m ∉ {b₁, c₁, b₂, c₂}} → Fin d)`.
+  35. `p_pair_disjoint` (Session 16, Layer 3e): real-number form. With
+      `n ≥ 4`, `d ≥ 1`, the joint disjoint-pair probability is exactly
+      `1/d⁴`, independent of n. This is the per-disjoint-pair quantitative
+      content used by Layer 3g (S17) to extract the limit `(c³/6)²`.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -1551,5 +1789,7 @@ lemma tripleCount_descFact_2_eq_overlap_sum (d n : ℕ) (f : Fin n → Fin d) :
 #check @overlapPattern_three_eq_empty
 #check @overlapPattern_partitions_offDiag
 #check @tripleCount_descFact_2_eq_overlap_sum
+#check @bad_count_disjoint
+#check @p_pair_disjoint
 
 end BirthdayThreshold3
