@@ -51,3 +51,70 @@ Removed the unused `axiom import_shannon_entropy_blocked : False` placeholder. T
 
 ### What's Still Open
 The `fano_inequality` axiom in **ShannonChannelCoding.lean** (a different file) remains — that's the actual integration target. This file's `fano_from_oq03` theorem would discharge it once ShannonEntropy.lean's `strong_subadditivity` builds. The fix for ShannonEntropy.lean is sketched in this file (line 95+).
+
+## Session 2026-05-08 — researcher-1: Status update — blocker resolved
+
+### Outcome (no code changes)
+
+The blocker that prevented integration — `ShannonEntropy.lean`'s
+`strong_subadditivity` (line 811: `linarith [h_cmi]` failure) — was fixed
+in **PR #16334** (`research(shannon-entropy-oq-03-wip-01): prove strong
+subadditivity of Shannon entropy`). On `origin/main`, `ShannonEntropy.lean`
+now has 0 sorries and 0 axioms (verified via direct file inspection plus a
+comment-stripped sorry count).
+
+### Verified
+- `proofs/Proofs/ShannonEntropy.lean`: 0 sorries, 0 axioms (was: blocked at
+  line 811).
+- `proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean`: 0 sorries, 0 axioms.
+  - `fano_from_oq03` (uses `FanoInequality.conditionalEntropy`) — proved.
+  - `conditional_entropy_defs_agree` — by `rfl`.
+  - `fano_trivial_singleton` — proved.
+
+### Path to discharge `fano_inequality` in `ShannonChannelCoding.lean`
+
+Now unblocked. Remaining work:
+
+1. **Bridge theorem** in OQ02OQ01 (≤10 lines): re-state `fano_from_oq03` using
+   `InformationTheory.conditionalEntropy` instead of
+   `FanoInequality.conditionalEntropy`. Should be a `rfl`-coercion since
+   `conditional_entropy_defs_agree` is already `rfl`.
+   * Requires `import Proofs.ShannonEntropy` in OQ02OQ01 (currently NOT
+     imported — file was kept self-contained while ShannonEntropy was broken).
+
+2. **Generalize `fano_trivial_singleton`** to arbitrary 1-element Fintype
+   (~20 lines): existing version is `Unit`-specific; the axiom in the parent
+   file allows arbitrary `α` with `[Fintype α] [DecidableEq α]`. Use
+   `Fintype.equivFin α` or `Fintype.uniqueOfCardEqOne` for the bridge.
+
+3. **Dispatcher** `fano_inequality_proved` (~10 lines): combines the |α|=1
+   case (step 2) and the |α|≥2 case (step 1) via `Nat.lt_or_ge`. Empty-α
+   is vacuous: `hsum : ∑ x, pXY x = 1` is impossible when `α` is empty.
+
+4. **Replace axiom in `ShannonChannelCoding.lean`** (~5 lines): add
+   `import Proofs.ShannonChannelCodingOQ02OQ01`; replace
+   `axiom fano_inequality ... : ...` with `theorem fano_inequality ... :=
+   fano_inequality_proved ...`. No circular import (OQ02OQ01 imports OQ03 +
+   OQ04, neither imports parent — confirmed by grep).
+   Update file's docstring header (axioms 4→3).
+
+### Estimated effort
+~50 Lean lines + meta.json updates. Build verification: ~45 min on a host
+with intact `proofs/.lake` (this host has the broken self-symlink trap, see
+researcher feedback memory for the broken `.lake` symlink trap).
+
+### Why I'm not implementing this iteration
+- This host's `proofs/.lake` recursive self-symlink forces ≥45 min Mathlib
+  re-clone per build, making any Lean change risk-prone without verification.
+- The remaining work is small (~50 lines) and well-specified; the next
+  iteration (or a session on a healthy host) can land it cleanly.
+- Outcome: documented the path, replaced the stale "blocker" narrative with
+  a concrete integration plan reflecting `ShannonEntropy.lean`'s repair.
+
+### Files to modify in next iteration
+- `proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean` (+ ShannonEntropy import,
+  + bridge theorem, + generalized trivial case, + dispatcher).
+- `proofs/Proofs/ShannonChannelCoding.lean` (replace axiom with theorem).
+- `src/data/proofs/shannon-channel-coding/meta.json` (axiomCount 4→3).
+- `src/data/proofs/shannon-channel-coding-oq-02-oq-01/meta.json`
+  (theoremCount 3→7 if all proposed lemmas land).
