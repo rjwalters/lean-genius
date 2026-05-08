@@ -19,14 +19,17 @@
   Key identity used: |Sym α n| = C(|α|+n-1, n) (Sym.card_sym_eq_choose)
 
   Main results:
-  1. simplex_lattice_count:   |Sym (Fin (d+1)) n| = C(n+d, d)
-  2. simplex_at_zero:         count at n=0 is 1 (the origin)
-  3. simplex_at_one:          count at n=1 is d+1 (the d+1 vertices)
-  4. simplex_1d:              segment [0,n]: n+1 lattice points
-  5. simplex_interior_count:  interior points = C(n-1, d) for n ≥ d+1
-  6. simplex_reciprocity:     Ehrhart-Macdonald: total vs interior counts
-  7. simplex_monotone:        count is increasing in n
-  8. simplex_pascal:          Pascal-type recursion between dimensions
+  1. simplex_lattice_count:        |Sym (Fin (d+1)) n| = C(n+d, d)
+  2. simplex_at_zero:              count at n=0 is 1 (the origin)
+  3. simplex_at_one:               count at n=1 is d+1 (the d+1 vertices)
+  4. simplex_1d:                   segment [0,n]: n+1 lattice points
+  5. simplex_interior_count:       interior points = C(n-1, d) for n ≥ d+1
+  6. simplex_boundary_count:       Ehrhart-Macdonald: total vs interior counts
+  7. simplex_monotone:             count is increasing in n
+  8. simplex_pascal:               Pascal-type recursion between dimensions
+  9. simplex_count_descFactorial:  count·d! = (n+d)(n+d−1)···(n+1)
+  10. simplex_count_ascFactorial:  count·d! = (n+1)(n+2)···(n+d)
+  11. simplex_count_prod:          count·d! = ∏ i ∈ range d, (n + 1 + i)
 -/
 import Mathlib
 
@@ -196,6 +199,61 @@ example : Fintype.card (Sym (Fin 4) 2) < Fintype.card (Fin 3 → Fin 3) := by
   native_decide
 
 -- ============================================================
+-- SECTION VII: Polynomial Form (closed form via factorials)
+-- ============================================================
+
+/-
+## The Ehrhart Count is a Polynomial in n
+
+The simplex Ehrhart count L(Δ^d, n) = C(n+d, d) is a polynomial of
+degree d in n with positive rational coefficients. Multiplying by
+d! exhibits the polynomial directly, with three equivalent forms:
+
+  L(Δ^d, n) · d! = (n+d)(n+d−1)···(n+1)         (descending factorial)
+                = (n+1)(n+2)···(n+d)             (ascending factorial)
+                = ∏ i ∈ range d, (n + 1 + i)     (product form)
+
+The polynomial has roots at n = −1, −2, …, −d and leading
+coefficient 1/d! when divided by d!. This is the analogue, for the
+simplex, of the cube's `(n+1)^d`: a closed-form polynomial that
+makes the Ehrhart polynomial existence theorem unnecessary in
+this case.
+-/
+
+/-- **Polynomial form (descending)**: L(Δ^d, n) · d! = (n+d)(n+d−1)···(n+1).
+
+    Direct corollary of `Nat.descFactorial_eq_factorial_mul_choose`. -/
+theorem simplex_count_descFactorial (d n : ℕ) :
+    Fintype.card (Sym (Fin (d + 1)) n) * d.factorial = (n + d).descFactorial d := by
+  rw [simplex_lattice_count, mul_comm]
+  exact (Nat.descFactorial_eq_factorial_mul_choose (n + d) d).symm
+
+/-- **Polynomial form (ascending)**: L(Δ^d, n) · d! = (n+1)(n+2)···(n+d).
+
+    Direct corollary of `Nat.ascFactorial_eq_factorial_mul_choose`. -/
+theorem simplex_count_ascFactorial (d n : ℕ) :
+    Fintype.card (Sym (Fin (d + 1)) n) * d.factorial = (n + 1).ascFactorial d := by
+  rw [simplex_lattice_count, mul_comm]
+  exact (Nat.ascFactorial_eq_factorial_mul_choose n d).symm
+
+/-- **Product form**: L(Δ^d, n) · d! = ∏ i ∈ range d, (n + 1 + i).
+
+    Combines `simplex_count_ascFactorial` with `Nat.ascFactorial_eq_prod_range`,
+    exhibiting the count as an explicit finite product. -/
+theorem simplex_count_prod (d n : ℕ) :
+    Fintype.card (Sym (Fin (d + 1)) n) * d.factorial =
+      ∏ i ∈ Finset.range d, (n + 1 + i) := by
+  rw [simplex_count_ascFactorial, Nat.ascFactorial_eq_prod_range]
+
+-- Concrete polynomial verifications
+-- 2D triangle at n=3:  2! · 10 = 20 = 4 · 5
+example : Fintype.card (Sym (Fin 3) 3) * 2 = 4 * 5 := by native_decide
+-- 3D tetrahedron at n=2: 3! · 10 = 60 = 3 · 4 · 5
+example : Fintype.card (Sym (Fin 4) 2) * 6 = 3 * 4 * 5 := by native_decide
+-- 4D pentachoron at n=2: 4! · 15 = 360 = 3 · 4 · 5 · 6
+example : Fintype.card (Sym (Fin 5) 2) * 24 = 3 * 4 * 5 * 6 := by native_decide
+
+-- ============================================================
 -- Exports
 -- ============================================================
 
@@ -203,5 +261,8 @@ example : Fintype.card (Sym (Fin 4) 2) < Fintype.card (Fin 3 → Fin 3) := by
 #check simplex_interior_count
 #check simplex_monotone
 #check simplex_pascal
+#check simplex_count_descFactorial
+#check simplex_count_ascFactorial
+#check simplex_count_prod
 
 end EhrhartSimplexProven
