@@ -74,7 +74,7 @@
       }
     ],
     "theoremCount": 14,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "problemStatement": "Prove the retraction formulation of Lawvere's fixed-point theorem: if a type $Y$ codes its own endomorphisms (i.e., $Y \\to Y$ retracts into $Y$ via encode/decode with $\\text{decode} \\circ \\text{encode} = \\text{id}$), then every endomorphism $f : Y \\to Y$ has a fixed point.",
@@ -211,7 +211,7 @@
     "lineCount": 304,
     "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/CantorDiagonalizationOQ04.lean",
     "sorries": 0
   },
