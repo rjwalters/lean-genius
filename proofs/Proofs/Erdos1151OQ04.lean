@@ -41,6 +41,11 @@ The non-sorry results proved here:
   - `chebyshev_angle_dist_triangle` / `chebyshev_angle_dist_from_nearest`: Step 3 [Session 15]
   - `sin_lb_of_in_interior` / `sin_chebyshev_midpoint_lb`: Step 4 sin lb [Session 16]
   - `chebyshev_term_lb_at_node`: Step 5 per-term lb (Steps 3+4 + cos-Lipschitz) [Session 16]
+  - `odd_harmonic_sum_shifted_lb`: Step 6a shifted Σ 1/(2(j+1)+1) ≥ (1/2)·log(m+2)−1 [Session 17]
+  - `trig_sum_subsum_lb`: Step 6b sub-sum ≥ harmonic via per-term lb + image-sum [Session 17]
+  - `trig_sum_subsum_log_lb`: Step 6c — combined log lower bound (S6a ∘ S6b) [Session 21]
+  - `trig_sum_reindex_symmetry`: S(θ,n) = S(π−θ,n) via involution σ k = ⟨n−1−k, _⟩ [Session 18]
+  - `chebyshev_trig_sum_pos`: strict positivity of S(θ,n) per term [Session 20]
 
 ## Sorry 1: trig_sum_harmonic_lb (was: chebyshev_trig_sum_lb Case 2)
 Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
@@ -1507,6 +1512,47 @@ private lemma trig_sum_subsum_lb (n : ℕ) (hn : 0 < n)
     have h_denom_ne : 2 * ((↑j : ℝ) + 1) + 1 ≠ 0 := h_denom_pos.ne'
     field_simp
   linarith [hLHS_eq, hsub_sum_lb, hsub_eq_image, himg_le_full]
+
+/-- **Step 6c (combined log lower bound).**
+
+    Direct corollary of `odd_harmonic_sum_shifted_lb` (Step 6a) and
+    `trig_sum_subsum_lb` (Step 6b): the trig sum is bounded below by a
+    quantity of shape `sin(d/2) · (2n/π) · ((1/2)·log(m+2) − 1)`, the
+    canonical `n · log(m)` growth that drives `trig_sum_harmonic_lb`.
+
+    Hypotheses match `trig_sum_subsum_lb` plus `d ≤ π` (so `sin(d/2) ≥ 0`).
+    Note: when `m` is small (e.g. `m ≤ 5`) the LHS is negative and the bound
+    is vacuous — the substantive content kicks in at `m ≥ 6` where
+    `(1/2)·log(8) - 1 ≈ 0.04 > 0`. -/
+private lemma trig_sum_subsum_log_lb (n : ℕ) (hn : 0 < n)
+    (θ : ℝ)
+    (d : ℝ) (hd_pos : 0 < d) (hd_le_pi : d ≤ Real.pi)
+    (hne : ∀ k : Fin n, Real.cos θ ≠ chebyshevNode n k)
+    (k₀ : Fin n)
+    (hk₀_close : |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n))
+    (m : ℕ) (hm_le : k₀.val + m + 1 ≤ n)
+    (h_interior : ∀ j : Fin m,
+      d / 2 ≤ (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ∧
+      (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - d / 2) :
+    Real.sin (d / 2) * (2 * (n : ℝ)) / Real.pi *
+        ((1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 2) - 1) ≤
+      ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                   |Real.cos θ - chebyshevNode n k| := by
+  have hpi_pos := Real.pi_pos
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  have hsin_nn : 0 ≤ Real.sin (d / 2) :=
+    Real.sin_nonneg_of_nonneg_of_le_pi (by linarith) (by linarith)
+  have hfactor_nn : 0 ≤ Real.sin (d / 2) * (2 * (n : ℝ)) / Real.pi :=
+    div_nonneg (mul_nonneg hsin_nn (by linarith)) hpi_pos.le
+  have h6a := odd_harmonic_sum_shifted_lb m
+  have h6b := trig_sum_subsum_lb n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior
+  calc Real.sin (d / 2) * (2 * (n : ℝ)) / Real.pi *
+          ((1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 2) - 1)
+      ≤ Real.sin (d / 2) * (2 * (n : ℝ)) / Real.pi *
+          ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * ((↑j : ℝ) + 1) + 1) :=
+        mul_le_mul_of_nonneg_left h6a hfactor_nn
+    _ ≤ ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := h6b
 
 /-- **Reindex symmetry of the Chebyshev-Lebesgue trig sum: θ ↔ π - θ.**
 

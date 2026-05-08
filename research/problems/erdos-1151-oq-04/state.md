@@ -4,10 +4,25 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 20
+**Iteration**: 21
 **Last Updated**: 2026-05-08
 
-## Session 20 (this session, build pending)
+## Session 21 (doctor, this session, build pending)
+
+Added one Step 6c helper: `trig_sum_subsum_log_lb` (~36 lines) — combined
+log lower bound composing `odd_harmonic_sum_shifted_lb` (Step 6a) with
+`trig_sum_subsum_lb` (Step 6b). Yields the ready-to-apply
+`sin(d/2)·(2n/π)·((1/2)·log(m+2)−1) ≤ Σ_k sin(φ_k)/|cos θ − cos φ_k|` shape
+that drives the `n·log(m)` growth in `trig_sum_harmonic_lb`. Recovered from
+PR #17046 (orphan-rescue) after the symmetry portion (`chebyshev_lebesgue_sum_pi_sub`)
+became redundant with Session 18's `trig_sum_reindex_symmetry` already merged
+on main via #17050; doctor preserved only the unique Step 6c content.
+
+Hypotheses match `trig_sum_subsum_lb` plus `d ≤ π` (ensures `sin(d/2) ≥ 0`
+via `Real.sin_nonneg_of_nonneg_of_le_pi`). Vacuous when `m ≤ 5`; substantive
+at `m ≥ 6` where `(1/2)·log(8) − 1 ≈ 0.04 > 0`.
+
+## Session 20 (build pending)
 
 Added one Step 6/7 helper: `chebyshev_trig_sum_pos` — strict positivity of
 the Chebyshev-Lebesgue trig sum `S(θ, n) = Σₖ sin(φₖ)/|cos θ − cos φₖ|`

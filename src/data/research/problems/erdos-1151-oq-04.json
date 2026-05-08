@@ -29,10 +29,10 @@
   "currentState": {
     "phase": "IN-PROGRESS",
     "since": "2026-05-08",
-    "iteration": 18,
-    "focus": "Session 18 (researcher-10, 2026-05-08): Added reindex-symmetry helper trig_sum_reindex_symmetry — S(θ,n) = S(π-θ,n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Proof structure: define σ as involution; reindex via Equiv.sum_comp; combine sin_pi_sub (sin invariance) + cos_pi_sub (chebyshevNode sign-flip) + cos(π-θ) = -cos θ; resulting denom |-cos θ - (-cn)| = |cos θ - cn| via abs_neg. ~70 lines, sorries unchanged at 2.",
+    "iteration": 21,
+    "focus": "Session 21 (doctor, 2026-05-08): Added trig_sum_subsum_log_lb (Step 6c, ~36 lines) — combined log lower bound composing Step 6a (odd_harmonic_sum_shifted_lb) and Step 6b (trig_sum_subsum_lb) via mul_le_mul_of_nonneg_left + Real.sin_nonneg_of_nonneg_of_le_pi. Yields the ready-to-apply n·log(m) lower bound sin(d/2)·(2n/π)·((1/2)·log(m+2)-1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Recovers Step 6c content from PR #17046 after the symmetry helper portion (chebyshev_lebesgue_sum_pi_sub) became redundant with #17050's trig_sum_reindex_symmetry already on main.",
     "blockers": [],
-    "nextAction": "(Researcher) Step 7 closure of trig_sum_harmonic_lb. Use trig_sum_reindex_symmetry to WLOG assume θ ∈ (0, π/2] (so d = θ). Then for n ≥ N₀(θ), choose m = ⌊nθ/(4π)⌋ and verify: hm_le (k₀+m+1 ≤ n via k₀ ≤ n-1 and m bound) and h_interior (each midpoint φ_{k₀+j+1} ∈ [d/2, π-d/2]: lower θ + (2j+1)π/(2n) ≥ θ ≥ d/2; upper (2j+3)π/(2n) ≤ π - 3θ/2 since d/2 = θ/2). For 1 ≤ n < N₀, use Finset.min'.",
+    "nextAction": "(Researcher) Step 7 closure of trig_sum_harmonic_lb: use trig_sum_reindex_symmetry to WLOG θ ∈ (0, π/2]; choose m = ⌊nθ/(8π)⌋ with d := min(θ, π−θ); verify hm_le and h_interior for j ∈ Fin m; apply trig_sum_subsum_log_lb (Step 6c) for the n·log(m) lower bound; pick N₀(d) for the asymptotic side; finite-set min over 1 ≤ n < N₀ via Finset.min'.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 18 (2026-05-08, researcher-10): Reindex-symmetry helper trig_sum_reindex_symmetry — S(θ,n) = S(π-θ,n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Proof: define σ as Equiv (involutive); reindex via Equiv.sum_comp; then sin_pi_sub gives sin invariance, cos_pi_sub gives chebyshevNode sign-flip (cos(π-x) = -cos x), and cos(π-θ) = -cos θ combines so |cos(π-θ) - (-cn)| = |cos θ - cn| via abs_neg. This reduces trig_sum_harmonic_lb to θ ∈ (0, π/2] (so the going-up sub-sum from trig_sum_subsum_lb suffices). +77 lines (1711→1788), 2 sorries unchanged. Step 7 closure (choose m=⌊nθ/(4π)⌋, verify h_interior + hm_le, finite-n min') still next, but now with cleaner θ ≤ π/2 setup.",
+    "progressSummary": "Session 21 (2026-05-08, doctor): Added trig_sum_subsum_log_lb (Step 6c, ~36 lines) — recovered from PR #17046 after symmetry portion (chebyshev_lebesgue_sum_pi_sub) became redundant with #17050's trig_sum_reindex_symmetry already on main. Proof: bind hsin_nn := Real.sin_nonneg_of_nonneg_of_le_pi (uses new hd_le_pi hyp), hfactor_nn := div_nonneg ...; chain mul_le_mul_of_nonneg_left applied to odd_harmonic_sum_shifted_lb (Step 6a) followed by trig_sum_subsum_lb (Step 6b). Yields sin(d/2)·(2n/π)·((1/2)·log(m+2)-1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Vacuous for m ≤ 5; substantive at m ≥ 6. Builds on prior Sessions 18 (#17050: trig_sum_reindex_symmetry) and 20 (#17140: chebyshev_trig_sum_pos). Step 7 closure (choose m=⌊nd/(8π)⌋, verify h_interior + hm_le, finite-n min') is next.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -69,7 +69,8 @@
       "Combined Step 3 + Step 4 + cos-Lipschitz (Real.abs_cos_sub_cos_le) into ready-to-sum per-term lower bound",
       "odd_harmonic_sum_shifted_lb (m : ℕ) : (1/2)·log(m+2) - 1 ≤ ∑ j ∈ Finset.range m, 1/(2(j+1)+1) — Erdos1151OQ04.lean:1362 (Step 6a, ~20 lines)",
       "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)",
-      "trig_sum_reindex_symmetry (n hn θ) : Σ_k sin(φ_k)/|cos θ - cn| = Σ_k sin(φ_k)/|cos(π-θ) - cn| via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Combines Equiv.sum_comp + sin_pi_sub + cos_pi_sub + abs_neg. ~70 lines, Erdos1151OQ04.lean:1498 (Session 18, this session)"
+      "trig_sum_reindex_symmetry (n hn θ) : Σ_k sin(φ_k)/|cos θ - cn| = Σ_k sin(φ_k)/|cos(π-θ) - cn| via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Combines Equiv.sum_comp + sin_pi_sub + cos_pi_sub + abs_neg. ~70 lines, Erdos1151OQ04.lean:1498 (Session 18, #17050)",
+      "trig_sum_subsum_log_lb (n hn θ d hd_pos hd_le_pi hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · ((1/2)·log(m+2) - 1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1510 (Step 6c, ~36 lines, composes 6a + 6b). Recovered from PR #17046 (Session 21)"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -148,8 +149,8 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1802,
-      "theoremCount": 35,
+      "lineCount": 1872,
+      "theoremCount": 55,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 2,
