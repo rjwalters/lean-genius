@@ -90,29 +90,59 @@
       "**3-step transposition for n=3**: `triple_fubini_of_continuous` performs (z,y,x) → (z,x,y) → (x,z,y) → (x,y,z), using inner 2D Fubini (Step 1, Step 3) and outer integral_integral_swap (Step 2). The cycle visits three of the six orderings; the remaining (y,x,z) → (x,y,z) is handled by `triple_fubini_yxz_eq_xyz` as a single outer transposition.",
       "**General n via Equiv.Perm.swap_induction_on**: an arbitrary $\\sigma \\in S_n$ decomposes into adjacent swaps; each adjacent swap is an `integral_integral_swap` at the appropriate recursion depth. This induction is performed in the subsidiary module `Proofs.GreensTheoremOQ01OQ01OQ01OQ01`, where it eliminates the axiom that earlier drafts of this file used to defer the inductive proof.",
       "**Axiom elimination — verified status earned**: the entry's `badge: verified` and `axiomCount: 0` are not historical accidents. Earlier versions of this file declared `axiom iteratedIntervalIntegral_order_independent : ...` to defer the inductive proof; the current version genuinely proves it (in the subsidiary module) and removes the axiom. This is a worked example of axiom retirement via permutation-group induction."
+    ],
+    "prerequisites": [
+      "Mathlib's measure theory: `MeasureTheory.Measure`, `Measure.prod`, `Measure.restrict`, and the difference between `volume`-on-`Icc` (closed box) and `Measure.prod (volume.restrict (Ioc ..))` (half-open product)",
+      "Bochner integration: `MeasureTheory.integral`, `Integrable`, `IntegrableOn`, and the null-set tolerance of the integral (modify on a measure-zero set, value unchanged)",
+      "`MeasureTheory.integral_integral_swap`: Fubini for product Bochner integrals — the building block from which all higher-dimensional swaps are assembled",
+      "`Integrable.integral_prod_right`: integrability of a parameterized integral on the 2D product follows from integrability on the 3D product — the technical oracle that makes the 3D proof tractable without separate measurability arguments",
+      "`intervalIntegral`: the one-dimensional `∫ x in a..b, f x dx` and its relation to `integral` over `Icc a b` (only the orientation differs)",
+      "`Fin n → ℝ` as the type of n-tuples, with `Fin.cons` (prepend) and `Fin.tail` (drop first); these are the structural operations that make the iteratedIntervalIntegral recursion clean",
+      "`Equiv.Perm.swap_induction_on`: every permutation of `Fin n` is a product of adjacent transpositions, used in the subsidiary module to lift adjacent-swap Fubini to arbitrary-permutation order independence"
     ]
   },
   "sections": [
     {
+      "id": "header-docstring",
+      "title": "Header: Mathematical Context and Axiom-Retirement Note",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the open question (does the 2D Fubini bridge generalize to n dimensions?) and answering YES via the iteratedIntervalIntegral definition + 3D triple-Fubini + permutation-group lift. Notes that the previously-stated axiom iteratedIntervalIntegral_order_independent has been retired, with the real proof now living in the subsidiary module Proofs.GreensTheoremOQ01OQ01OQ01OQ01."
+    },
+    {
       "id": "integrability",
-      "title": "3D Integrability Infrastructure",
-      "startLine": 48,
-      "endLine": 111,
-      "summary": "Two private lemmas prove that continuous functions G((z,x),y) = f(x,y,z) and G((x,y),z) = f(x,y,z) are integrable on the triple Ioc product measure. Both use the pattern: continuity → compactness → IntegrableOn Icc box → restrict_prod_eq_prod_restrict → mono_measure Ioc ⊆ Icc."
+      "title": "Section 1: 3D Integrability Infrastructure",
+      "startLine": 52,
+      "endLine": 110,
+      "summary": "Two private lemmas — integrable_3d_zx_y and integrable_3d_xy_z — prove that continuous f composed into the 3D product structure is integrable on the triple Ioc product measure. Both use the pattern: continuity ⇒ compactness on Icc-box ⇒ IntegrableOn Icc ⇒ restrict_prod_eq_prod_restrict ⇒ mono_measure Ioc ⊆ Icc. These are the integrability oracles consumed by Section 2."
     },
     {
       "id": "triple-fubini",
-      "title": "Triple Fubini Theorem",
-      "startLine": 113,
-      "endLine": 202,
-      "summary": "Three theorems: triple_fubini_of_continuous (∫z∫y∫x f = ∫x∫y∫z f via 3-step swap), triple_fubini_yxz_eq_xyz ((y,x,z) = (x,y,z) via integral_integral_swap), and triple_fubini_all_equal (collects all 3 key orderings). All proved with 0 sorries using integral_integral_swap + Integrable.integral_prod_right."
+      "title": "Section 2: The Triple Fubini Theorem",
+      "startLine": 112,
+      "endLine": 173,
+      "summary": "Two theorems: triple_fubini_of_continuous (∫z∫y∫x f = ∫x∫y∫z f via the 3-step transposition cycle (z,y,x)→(z,x,y)→(x,z,y)→(x,y,z)) and triple_fubini_yxz_eq_xyz ((y,x,z) = (x,y,z) via a single outer integral_integral_swap). All proved with 0 sorries by composing integral_integral_swap with Integrable.integral_prod_right."
+    },
+    {
+      "id": "all-orderings",
+      "title": "Section 3: All Key Orderings Are Equal",
+      "startLine": 175,
+      "endLine": 196,
+      "summary": "triple_fubini_all_equal collects three of the six orderings of ∫∫∫ f for continuous f. Combines triple_fubini_of_continuous and triple_fubini_yxz_eq_xyz into a clean statement (∫z∫y∫x = ∫x∫y∫z = ∫y∫x∫z) that downstream proofs can cite by a single name."
     },
     {
       "id": "n-dimensional",
-      "title": "N-Dimensional Iterated Integral",
-      "startLine": 204,
-      "endLine": 248,
-      "summary": "Defines iteratedIntervalIntegral by Fin-n recursion: base f(∅), inductive ∫_{a₀}^{b₀} iteratedIntervalIntegral(tail). Proves n=0,1,2 cases explicitly. The general order independence for permutations σ ∈ Sₙ is delegated to the subsidiary module Proofs.GreensTheoremOQ01OQ01OQ01OQ01, where it is proved as a real theorem; this file no longer carries an axiom."
+      "title": "Section 4: N-Dimensional Iterated Integral",
+      "startLine": 198,
+      "endLine": 236,
+      "summary": "fubini_n2 recovers the 2D parent result. iteratedIntervalIntegral is defined by Fin-n recursion — base f(∅) at n=0, inductive ∫_{a₀}^{b₀} iteratedIntervalIntegral(tail) at n+1. The two @[simp] lemmas iteratedIntervalIntegral_zero / iteratedIntervalIntegral_succ unfold the recursion. iteratedIntervalIntegral_one and iteratedIntervalIntegral_two recover the 1D and 2D cases. General-permutation order independence is delegated to Proofs.GreensTheoremOQ01OQ01OQ01OQ01 — the file no longer carries an axiom."
+    },
+    {
+      "id": "research-outcome",
+      "title": "Research Outcome Summary",
+      "startLine": 238,
+      "endLine": 260,
+      "summary": "Trailing docstring summarizing the YES answer to the open question, listing the three proved 3D theorems, identifying Integrable.integral_prod_right as the key technical lemma, and confirming that the n-D order-independence axiom was retired in favor of the subsidiary-module proof."
     }
   ],
   "conclusion": {
@@ -125,6 +155,18 @@
   },
   "references": [
     {
+      "title": "Fubini, G. (1907). 'Sugli integrali multipli.' Atti della Accademia dei Lincei. Rendiconti 16: 608-614.",
+      "description": "The original publication. Fubini's theorem for L¹ integrands on product measure spaces — the historical seed of every iterated-integral order-of-integration argument, and the version this entry generalizes to arbitrary n."
+    },
+    {
+      "title": "Tonelli, L. (1909). 'Sull'integrazione per parti.' Atti della Accademia dei Lincei. Rendiconti 18: 246-253.",
+      "description": "Tonelli's sharpening of Fubini to nonnegative measurable integrands without an integrability hypothesis (the Fubini-Tonelli theorem). Justifies the swap of integration order under the much weaker σ-finiteness + nonnegativity assumption used by Mathlib's `MeasureTheory.lintegral_lintegral_swap`."
+    },
+    {
+      "title": "Halmos, P. R. (1950). Measure Theory. Van Nostrand.",
+      "description": "The crystallization of the abstract product-measure formulation of Fubini's theorem in the form Mathlib follows. Chapter VII (Product Measures) develops `Measure.prod` and proves the iterated-integral identities used in this entry."
+    },
+    {
       "title": "Fubini's Theorem",
       "url": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
       "description": "Classical statement and proof"
@@ -132,7 +174,34 @@
     {
       "title": "Mathlib: MeasureTheory.Integral.Marginal",
       "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/Marginal.html",
-      "description": "Lean 4 formalization of n-dimensional marginal integrals"
+      "description": "Lean 4 formalization of n-dimensional marginal integrals — the alternative-API approach to n-D Fubini explored in the sibling entry greens-theorem-oq-01-oq-01-oq-03."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "triple_fubini_of_continuous",
+      "type": "core",
+      "description": "For continuous f : ℝ → ℝ → ℝ → ℝ on a 3D box [a₁,b₁]×[a₂,b₂]×[a₃,b₃], the triple iterated integral ∫_{a₁}^{b₁} ∫_{a₂}^{b₂} ∫_{a₃}^{b₃} f(x,y,z) dz dy dx equals ∫_{a₃}^{b₃} ∫_{a₂}^{b₂} ∫_{a₁}^{b₁} f(x,y,z) dx dy dz. Proved by the 3-step transposition cycle (z,y,x) → (z,x,y) → (x,z,y) → (x,y,z) using integral_integral_swap at each step, with integrability of the parameterized integrals supplied by Integrable.integral_prod_right."
+    },
+    {
+      "name": "triple_fubini_yxz_eq_xyz",
+      "type": "supporting",
+      "description": "The (y,x,z) ordering equals the (x,y,z) ordering: ∫y∫x∫z f = ∫x∫y∫z f. A single outer 2D Fubini swap (since the innermost ∫z f is the same in both orderings). Provides the second leg needed for triple_fubini_all_equal."
+    },
+    {
+      "name": "triple_fubini_all_equal",
+      "type": "core",
+      "description": "Collects three of the six orderings of the triple iterated integral into one statement: ∫z∫y∫x = ∫x∫y∫z = ∫y∫x∫z. The natural single-citation lemma that downstream proofs use when they need 'order doesn't matter' for a continuous 3D integrand."
+    },
+    {
+      "name": "iteratedIntervalIntegral",
+      "type": "definition",
+      "description": "The n-fold iterated interval integral over `Fin n → ℝ`-indexed bounds: defined by Fin-recursion, with iteratedIntervalIntegral_zero (n=0 base case) and iteratedIntervalIntegral_succ (peel-off-outer recursion) as @[simp] unfolders. Specializations iteratedIntervalIntegral_one and iteratedIntervalIntegral_two recover the 1D and 2D cases verbatim. fubini_n2 is the n=2 version equivalent to the parent entry's 2D bridge."
+    },
+    {
+      "name": "fubini_n2",
+      "type": "supporting",
+      "description": "n=2 case of iteratedIntervalIntegral, recovering the 2D Fubini bridge from the parent entry GreensTheoremOQ01OQ01. Confirms that the n-D definition reduces correctly to the 2D parent at n=2 — a sanity check ensuring no off-by-one in the Fin-cons / Fin-tail recursion."
     }
   ],
   "crossReferences": [
