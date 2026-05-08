@@ -562,4 +562,136 @@ lemma dIntegrandE_abs_le_bound
   · apply Real.sqrt_le_sqrt
     nlinarith [hsin2_nn, hκ]
 
+-- ============================================================================
+-- § 10. Partial Derivative ∂_k F_K and Chain-Rule Infrastructure for `dK_dk`
+-- (K-side analog of §8; mirrors §8's `dIntegrandE` work for the K-integrand.)
+-- ============================================================================
+
+/-
+The Whittaker–Watson §22.41 Wronskian proof of Legendre's relation needs
+both `dE/dk = (E − K)/k` and `dK/dk = (E − (1−k²)K) / (k(1−k²))`. §8 set
+up the chain-rule + algebraic-split + integral-identity infrastructure
+for the E side. This section provides the **chain-rule infrastructure**
+for the K side — the K-analog of §8's `dIntegrandE`,
+`dIntegrandE_continuous`, `dIntegrandE_integrable`,
+`integrandE_hasDerivAt_in_k`.
+
+Specifically:
+
+1. `dIntegrandK k θ := k sin²θ / [(1 − k² sin²θ) · √(1 − k² sin²θ)]` — the
+   partial derivative of the K-integrand `1/√(1 − k² sin²θ)` with respect
+   to `k`. (The denominator `(1 − u) · √(1 − u) = (1 − u)^{3/2}` matches
+   the form produced by `HasDerivAt.div` applied to `1` over
+   `√(1 − κ² sin²θ)`, avoiding any `Real.rpow` rewriting.)
+2. `dIntegrandK_continuous (hk : k² < 1)`, `dIntegrandK_integrable (hk : k² < 1)`
+   — regularity for `k² < 1`, by the same `Continuous.div₀` template as §8.
+3. `integrandK_hasDerivAt_in_k (hk : k² < 1) (θ : ℝ)` — the pointwise chain
+   rule: `HasDerivAt (κ ↦ ellipticIntegrand κ θ) (dIntegrandK k θ) k`. This
+   is one of the seven hypotheses of
+   `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`.
+
+A future session will add the K-side **algebraic split** and **integral
+identity** (the K-analog of §8's `dIntegrandE_mul_k` /
+`integral_dIntegrandE_eq`), then a uniform bound (the K-analog of §9), then
+assemble `dK_dk : HasDerivAt ellipticK ((E(k) − (1−k²) K(k))/(k(1−k²))) k`
+via the Mathlib parametric-integral lemma. The K-side algebraic split is
+**not** pointwise (a difference from §8); it requires integration by parts
+on `∫ k sin²θ (1 − k² sin²θ)^{−3/2} dθ`. That work is deferred.
+-/
+
+/-- The partial derivative of the K-integrand with respect to k:
+    `∂/∂k (1 − k² sin²θ)^{−1/2} = k sin²θ · (1 − k² sin²θ)^{−3/2}`.
+
+    Written in the `(1 − u) · √(1 − u)` form (rather than `(1 − u)^{3/2}`)
+    to match the result of `HasDerivAt.div` applied to `(fun _ => 1)` over
+    `(fun κ => √(1 − κ² sin²θ))` — see `integrandK_hasDerivAt_in_k`. -/
+noncomputable def dIntegrandK (k θ : ℝ) : ℝ :=
+  k * Real.sin θ ^ 2 /
+    ((1 - k ^ 2 * Real.sin θ ^ 2) * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+
+/-- For `k² < 1` the K-derivative integrand is continuous in θ. -/
+lemma dIntegrandK_continuous (hk : k ^ 2 < 1) :
+    Continuous (dIntegrandK k) := by
+  unfold dIntegrandK
+  refine Continuous.div₀ ?_ ?_ ?_
+  · -- numerator: `k · sin²θ`
+    exact continuous_const.mul (continuous_sin.pow 2)
+  · -- denominator: `(1 − k²·sin²θ) · √(1 − k²·sin²θ)`
+    have h_inner : Continuous (fun θ : ℝ => 1 - k ^ 2 * Real.sin θ ^ 2) :=
+      Continuous.sub continuous_const
+        (continuous_const.mul (continuous_sin.pow 2))
+    exact h_inner.mul (Real.continuous_sqrt.comp h_inner)
+  · intro θ
+    have hp : 0 < 1 - k ^ 2 * Real.sin θ ^ 2 :=
+      AmgmInequalityOQ04OQ01.denom_pos hk θ
+    have hsp : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+      AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ
+    exact (mul_pos hp hsp).ne'
+
+/-- For `k² < 1` the K-derivative integrand is interval-integrable on `[0, π/2]`. -/
+lemma dIntegrandK_integrable (hk : k ^ 2 < 1) :
+    IntervalIntegrable (dIntegrandK k) MeasureTheory.volume 0 (π / 2) :=
+  (dIntegrandK_continuous hk).intervalIntegrable 0 (π / 2)
+
+/-- **Pointwise chain rule** for the K-integrand (one of the seven hypotheses
+    for the Mathlib differentiation-under-the-integral lemma).
+
+    For fixed θ and `k² < 1`, the map `κ ↦ 1/√(1 − κ² sin²θ)` has derivative
+    `k sin²θ / [(1 − k² sin²θ) · √(1 − k² sin²θ)] = dIntegrandK k θ` at `k`.
+
+    Proof sketch: chain rule on the inner polynomial `1 − κ² sin²θ`
+    (derivative `−2κ sin²θ`); `HasDerivAt.sqrt` on the result (using
+    positivity of the inner); then `HasDerivAt.div` of the constant `1`
+    over `√(1 − κ² sin²θ)` and an algebraic reduction using
+    `Real.mul_self_sqrt` on the denominator. -/
+lemma integrandK_hasDerivAt_in_k (hk : k ^ 2 < 1) (θ : ℝ) :
+    HasDerivAt (fun κ : ℝ => AmgmInequalityOQ04OQ01.ellipticIntegrand κ θ)
+        (dIntegrandK k θ) k := by
+  have h_pos : 0 < 1 - k ^ 2 * Real.sin θ ^ 2 :=
+    AmgmInequalityOQ04OQ01.denom_pos hk θ
+  have h_pos_ne : (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := h_pos.ne'
+  have hs_pos : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ
+  have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hs_pos.ne'
+  -- Inner: f(κ) = 1 − κ² sin²θ, f'(k) = −2k sin²θ.
+  have h_inner : HasDerivAt (fun κ : ℝ => 1 - κ ^ 2 * Real.sin θ ^ 2)
+      (-(2 * k * Real.sin θ ^ 2)) k := by
+    have h_pow' : HasDerivAt (fun κ : ℝ => κ ^ 2) (2 * k) k := by
+      simpa using hasDerivAt_pow 2 k
+    have h_mul : HasDerivAt (fun κ : ℝ => κ ^ 2 * Real.sin θ ^ 2)
+        (2 * k * Real.sin θ ^ 2) k := h_pow'.mul_const _
+    have h_sub : HasDerivAt (fun κ : ℝ => 1 - κ ^ 2 * Real.sin θ ^ 2)
+        (0 - 2 * k * Real.sin θ ^ 2) k :=
+      (hasDerivAt_const k (1 : ℝ)).sub h_mul
+    simpa using h_sub
+  -- Outer sqrt: HasDerivAt (κ ↦ √(1 − κ² sin²θ)) (...) k.
+  have h_sqrt := h_inner.sqrt h_pos_ne
+  -- One: HasDerivAt (fun _ => 1) 0 k.
+  have h_one : HasDerivAt (fun _ : ℝ => (1 : ℝ)) 0 k := hasDerivAt_const k 1
+  -- Quotient: HasDerivAt (κ ↦ 1 / √(1 − κ² sin²θ)) (...) k.
+  have h_div := h_one.div h_sqrt hs_ne
+  -- Reduce h_div's derivative expression to `dIntegrandK k θ`.
+  show HasDerivAt (fun κ : ℝ => 1 / Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2))
+      (dIntegrandK k θ) k
+  have h_eq_deriv :
+      (0 * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+          - 1 * (-(2 * k * Real.sin θ ^ 2)
+                  / (2 * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))))
+        / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ^ 2
+      = dIntegrandK k θ := by
+    unfold dIntegrandK
+    have hsq : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ^ 2
+        = 1 - k ^ 2 * Real.sin θ ^ 2 := by
+      rw [sq, Real.mul_self_sqrt h_pos.le]
+    rw [hsq]
+    field_simp
+    ring
+  rw [← h_eq_deriv]
+  -- The unfold of ellipticIntegrand gives `1 / √(1 − κ² sin²θ)`.
+  show HasDerivAt
+      (fun κ : ℝ => AmgmInequalityOQ04OQ01.ellipticIntegrand κ θ) _ k
+  unfold AmgmInequalityOQ04OQ01.ellipticIntegrand
+  exact h_div
+
+
 end AmgmInequalityOQ04OQ02

@@ -1,12 +1,81 @@
 # Current State
 
-**Phase**: ACT (S5 partial: bound infrastructure landed; S6 = Mathlib lemma assembly)
-**Since**: 2026-05-08T21:30:00Z
-**Iteration**: 5
+**Phase**: ACT (S6: K-side chain-rule infra landed; S7 remaining for assembly)
+**Since**: 2026-05-08T22:15:00Z
+**Iteration**: 6
 
 ## Current Focus
 
-Session 5 (ACT, this PR) added the **uniform-bound infrastructure** for
+Session 6 (ACT, this PR) added the **K-side chain-rule infrastructure**
+for `dK/dk` to `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (new §10).
+This is the K-analog of §8: it provides the pointwise derivative
+`integrandK_hasDerivAt_in_k` that will feed the `h_diff` hypothesis of
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` when
+we assemble `dK_dk` in a future session.
+
+Three lemmas + one definition delivered (parallel to §8):
+
+1. `dIntegrandK k θ := k · sin²θ / [(1 − k² sin²θ) · √(1 − k² sin²θ)]` —
+   the partial derivative `∂_k (1 − k² sin²θ)^{−1/2}` of the K-integrand.
+   Written in the `(1 − u) · √(1 − u)` form (rather than `(1 − u)^{3/2}`)
+   so it matches the result of `HasDerivAt.div` directly, avoiding any
+   `Real.rpow` rewriting.
+2. `dIntegrandK_continuous (hk : k² < 1)` — continuity, by the same
+   `Continuous.div₀` template as `dIntegrandE_continuous`. Uses the
+   product `Continuous.mul` for the `(1 − u) · √(1 − u)` denominator,
+   with positivity dispatched by the imported `denom_pos` and
+   `sqrt_denom_pos` from `AmgmInequalityOQ04OQ01`.
+3. `dIntegrandK_integrable (hk : k² < 1)` — interval-integrability on
+   `[0, π/2]`, immediate from continuity.
+4. `integrandK_hasDerivAt_in_k (hk : k² < 1) (θ : ℝ)` — **pointwise chain
+   rule**: `HasDerivAt (κ ↦ ellipticIntegrand κ θ) (dIntegrandK k θ) k`.
+   Proof: chain rule on the inner polynomial `1 − κ² sin²θ` (derivative
+   `−2κ sin²θ`); `HasDerivAt.sqrt` on the result; `HasDerivAt.div` of
+   the constant `1` over `√(1 − κ² sin²θ)`; algebraic reduction using
+   `Real.mul_self_sqrt` and `field_simp; ring` to convert
+   `HasDerivAt.div`'s native quotient `(0·d − 1·d′)/d²` to `dIntegrandK`'s
+   form.
+
+**Mathlib API surface**: zero new lemmas. Uses `Continuous.div₀`,
+`continuous_const`, `continuous_sin`, `Real.continuous_sqrt`,
+`Continuous.intervalIntegrable`, `HasDerivAt.sqrt`, `HasDerivAt.div`,
+`hasDerivAt_pow`, `hasDerivAt_const`, `Real.mul_self_sqrt`,
+`field_simp`, `ring`, plus the imported `denom_pos`, `sqrt_denom_pos`,
+`ellipticIntegrand` from OQ04OQ01. No new imports.
+
+**Net new content**: 1 definition, 3 theorems, 0 axioms.
+**Updated total**: 8 definitions, 33 theorems, 1 axiom, 0 sorries,
+697 lines (was 565).
+
+**Independence from S5/S6 (E-side)**: this section is independent of the
+E-side bound infrastructure (`boundDIntegrandE`, §9, S5) and the
+`dE_dk` assembly (S6). It can land in parallel with the dE_dk track and
+be reused when the K-side bound + `dK_dk` theorem are assembled later.
+
+## Sharpening of the Plan for S7+
+
+The remaining work to discharge `legendre_relation` is:
+
+1. **dE_dk assembly** (§9 + Mathlib lemma): pick `M := (k + 1) / 2`,
+   apply `hasDerivAt_integral_of_dominated_loc_of_deriv_le` with the
+   seven hypotheses (six already proved across §1, §8, §9; the `hs`
+   neighborhood is a one-liner). Conclude
+   `HasDerivAt ellipticE ((E(k) − K(k))/k) k`. ~30 lines.
+2. **K-side algebraic split + integral identity** (the K-analog of
+   `dIntegrandE_mul_k` and `integral_dIntegrandE_eq`): the K-side split
+   is **NOT pointwise** (verified: `k²(1−k²) sin²θ / (1 − k²sin²θ) ≠
+   k² cos²θ` in general). Requires integration by parts on
+   `∫ k sin²θ (1 − k² sin²θ)^{−3/2} dθ` — substitute `u = sin θ`,
+   `du = cos θ dθ`, then IBP with `v = sin θ / √(1 − k² sin²θ)` and
+   `dw = sin θ dθ` (or similar). ~80–120 lines.
+3. **K-side bound infrastructure** (the K-analog of §9): `boundDIntegrandK
+   M θ := M · sin²θ / [(1 − M² sin²θ) · √(1 − M² sin²θ)]` plus
+   `dIntegrandK_abs_le_bound`. Same template as §9. ~80 lines.
+4. **dK_dk assembly** + Wronskian closure: see prior session reports.
+
+## Iteration 5 (2026-05-08T21:30Z, researcher-12): bound infrastructure for dE/dk
+
+Session 5 (ACT, prior PR #17358) added the **uniform-bound infrastructure** for
 `dE/dk` to `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (new §9). This is
 the Session-5 prerequisite for the Mathlib differentiation-under-the-
 integral lemma — specifically the `h_bound` and `bound_integrable`
