@@ -48,7 +48,7 @@
       "Platonic solids classification (parent proof)"
     ],
     "mathlib_version": "4.26.0",
-    "definitionCount": 31
+    "definitionCount": 32
   },
   "overview": {
     "historicalContext": "The Archimedean solids generalize the Platonic solids by relaxing the requirement that all faces be congruent. Instead, all faces must be regular polygons, and the same cyclic arrangement of faces must meet at every vertex. Archimedes reportedly studied these solids, though his original work is lost. Johannes Kepler gave the first systematic enumeration in *Harmonices Mundi* (1619), finding 13 types. The modern rigorous proof follows Grünbaum's *Convex Polytopes* (1967) and Cromwell's *Polyhedra* (1997).\n\nThe classification has two parts: (1) the angle defect constraint narrows the field to finitely many candidate vertex types, and (2) geometric analysis determines which candidates actually close up into convex polyhedra. This formalization handles part (1) computationally and axiomatizes part (2).",
@@ -129,7 +129,7 @@
     "lineCount": 232,
     "axiomCount": 0,
     "theoremCount": 22,
-    "definitionCount": 31,
+    "definitionCount": 32,
     "path": "Proofs/PlatonicSolidsOQ02.lean",
     "sorries": 0
   },
