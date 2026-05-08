@@ -27,29 +27,34 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-05-07T22:40:00.000Z",
-    "iteration": 2,
-    "focus": "Build the cubed-divisibility infrastructure and refine the proof strategy after discovering that naive recurrence-induction fails (cancellation needed).",
+    "since": "2026-05-08T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Defined harmonicCubed (H_n^{(3)}) infrastructure (4 lemmas: base values, non-negativity, monotonicity) — the first half of the van der Poorten denominator analysis for route (F). The main divisibility theorem `harmonicCubed_lcm_clear` is deferred to a follow-up session due to Docker build timeout from concurrent agent contention.",
     "blockers": [
-      "Naive recurrence-induction does NOT close: in the step-up from index n to n+2, the integrality of `lcmRange (n+2)^3 · aperyA (n+2)` is established only via cancellation between the two recurrence summands, not term-wise (verified by direct computation at n=2). Closing the induction requires either (P) a strengthened invariant tracking numerators of aₙ modulo (n+2)^3, or (F) the van der Poorten closed form bypassing the cancellation problem.",
-      "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo.",
+      "The main divisibility theorem `harmonicCubed_lcm_clear : ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m` requires careful `Nat.cast_div`/`field_simp` handling — `push_cast` aggressively pushes through `Nat.div` via `Int.ofNat_div`, creating an `Int.div` that doesn't match the per-term identity. Workaround: use `harmonicCubed_term_eq` private lemma + `Int.cast_natCast` + `Nat.cast_sum` — proved correct on paper, but local Docker build (cold cache + concurrent agents) exceeded 30-minute timeout in 2 attempts during session 3.",
+      "The alternating bilinear summand ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) needs binomial-coefficient denominator analysis — concretely: C(n,m) and C(n+m,m) have denominators that, after multiplying by lcm(1..n)^3, leave integers. Classical telescoping identity (van der Poorten 1979 §6) handles this but is non-trivial to port.",
+      "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo. Stating `aperyA_explicit_formula` as a sorry-axiom is a future session.",
       "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'."
     ],
-    "nextAction": "Session 3: Decide between strategy (P) [recurrence + strengthened mod-(n+2)^3 invariant] and (F) [van der Poorten closed form]. (F) is the path of least resistance because each summand of the closed form has a manifestly lcm³-friendly denominator, sidestepping the cancellation problem. Estimated ~400-500 lines of Lean for (F).",
+    "nextAction": "Session 4: Re-attempt `harmonicCubed_lcm_clear` (proof scaffolded in Session 3 but Docker build timed out) — once verified, advance to `vdpAlternatingSum_lcm_clear`.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 2 (2026-05-07, ORIENT): Built `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` with 4 reusable infrastructure lemmas (`dvd_lcmRange`, `pow_dvd_lcmRange_pow`, `cube_dvd_lcmRange_cube`, `succ_cube_dvd_lcmRange_succ_cube`) plus 6 numerical witnesses for `lcmRange n` at n=0..5. CRUCIAL CORRECTION to session 1's strategy claim: naive recurrence-induction does NOT line-by-line port from `denominator_control_factorial`. Direct calculation at n=2→n=4 shows that `(L/l)³·c·A` and `(L/m)³·(n+1)³·B` separately leave the SAME nonzero residue (48) modulo (n+2)³=64; integrality of the difference requires CANCELLATION, not term-wise divisibility. The factorial proof works only because `(n+2)! = (n+2)·(n+1)!` is exact multiplicative; lcm has no analogous factorisation (e.g. `lcm(1..4)=12 ≠ 4·lcm(1..3)=24`). Recommended path forward: van der Poorten closed-form route (F).",
+    "progressSummary": "Session 3 (2026-05-08, ORIENT): Added the `harmonicCubed` definition (the cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3) plus 4 reusable lemmas (`harmonicCubed_zero`, `harmonicCubed_one`, `harmonicCubed_nonneg`, `harmonicCubed_mono`) to `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean`. These provide the basic infrastructure for the H_n^{(3)} half of the van der Poorten denominator analysis (route F). The MAIN divisibility theorem `harmonicCubed_lcm_clear : ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m` was scaffolded with witness and proof structure but local Docker build timed out twice (30-min cold cache + concurrent agent contention). Documented for next session: the integer witness is `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3` (each term integral via `pow_dvd_lcmRange_pow`); the per-term identity `(lcmRange n : ℚ)^3 * (1/(k+1)^3) = ((Nat.div : ℕ→ℚ))` requires `Int.cast_natCast` + `Nat.cast_sum` + private `Nat.cast_div`-based lemma to avoid `push_cast` pushing through to `Int.div`. PROOF TECHNIQUE INSIGHT: `push_cast` is aggressive on `((a/b : ℕ) : ℤ)` via `Int.ofNat_div` — collapse the ℕ→ℤ→ℚ chain to ℕ→ℚ FIRST via `Int.cast_natCast`, then per-term work in ℕ→ℚ using `Nat.cast_div`. Session 2 (ORIENT): Built infrastructure lemmas (`dvd_lcmRange`, `pow_dvd_lcmRange_pow`, etc.) and corrected session 1's strategy. Session 1 (OBSERVE): Surveyed and identified van der Poorten path.",
     "builtItems": [
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: dvd_lcmRange (k>0, k≤n → k∣lcmRange n) — basic membership divisibility",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: pow_dvd_lcmRange_pow (k>0, k≤n → k^p ∣ (lcmRange n)^p) — the cubed divisibility ingredient any inductive proof of denominator_control needs",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: cube_dvd_lcmRange_cube (specialization to p=3)",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: succ_cube_dvd_lcmRange_succ_cube ((n+1)^3 ∣ (lcmRange (n+1))^3) — the recurrence-step shape",
-      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: lcmRange_zero/one/two/three/four/five numerical witnesses (1, 1, 2, 6, 12, 60)"
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: lcmRange_zero/one/two/three/four/five numerical witnesses (1, 1, 2, 6, 12, 60)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed (cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^n 1/k^3, reproduced locally to keep file self-contained)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_zero, harmonicCubed_one (base values: H_0^{(3)} = 0, H_1^{(3)} = 1)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_nonneg (H_n^{(3)} ≥ 0)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_mono (m ≤ n → H_m^{(3)} ≤ H_n^{(3)})"
     ],
     "insights": [
       "BaselProblemOQ01OQ01OQ02.lean already has `denominator_control_factorial : ∃ m : ℤ, (n.factorial : ℚ)^3 * aperyA n = m` PROVED (Part XIX). The factorial proof works because `(n+2)! = (n+2)·(n+1)!` is EXACT multiplicative — multiplying through the recurrence by `(n+1)!^3` produces `(n+2)!^3` on the LHS with no leftover (n+2)^3 to absorb. lcm has no analogous factorisation: lcm(1..n+2) ≠ (n+2)·lcm(1..n+1) in general (e.g. lcm(1..4)=12 ≠ 4·6=24).",
@@ -67,11 +72,11 @@
       "No `Nat.lcm_range` simp lemma giving `lcm({1,…,n}) = ⋁_{k≤n} k` form."
     ],
     "nextSteps": [
-      "Session 3 (commit to closed-form strategy F): State `aperyA_explicit_formula` as a theorem in `BaselProblemOQ01OQ01OQ02OQ02.lean` (sorried). Prove the formula at small n by `native_decide` to validate the recurrence-equivalence base case. Port the binomial telescoping identity for the second summand. Estimated ~150 lines for skeleton + induction setup; ~250-350 lines for full proof.",
-      "Session 4 (per-summand denominator bound): Prove `denominator_summand_dvd_lcm_pow : ∀ n k, ∃ m : ℤ, lcmRange n^3 · (k-th summand of aperyA n) = m`. Each summand reduces to (i) `lcmRange n^3 / m^3 ∈ ℤ` for the first inner sum (use `pow_dvd_lcmRange_pow`), and (ii) the binomial-coefficient analysis for the second.",
-      "Session 5 (assembly): Combine via `Finset.sum_div` and `Finset.sum_int_cast` to deduce `∃ m : ℤ, lcmRange n^3 · aperyA n = m`. Eliminate the parent's `axiom denominator_control` by importing the result.",
-      "Session 6 (axiom count update): Update meta.json axiomCount 5→4, status remains axiomatized (4 axioms remain: aperyB_recurrence, lcm_hanson_bound, apery_linearForm_decay, apery_linearForm_nonzero). Update gallery integration.",
-      "Optional Session 7 (Mathlib contribution): If `pow_dvd_lcmRange_pow` is judged clean and general, draft a Mathlib PR — `Finset.lcm_pow_dvd_pow_of_mem` or similar. Currently only OQ-02 and OQ-03 in this gallery use this lemma; broader applicability uncertain."
+      "Session 4 (vdp alternating sum): State and prove `vdpAlternatingSum_lcm_clear`: `∃ m : ℤ, (lcmRange n)^3 · ∑_{k=0}^n ∑_{m=1}^k (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) = m`. The classical denominator identity (van der Poorten 1979 §6) shows that 2 m^3 · C(n,m) · C(n+m,m) divides lcm(1..n)^3 (the factor 2 is absorbed by the squared central binomial; the m^3 factor is `pow_dvd_lcmRange_pow`; the binomial denominators follow from m·C(n,m) = n·C(n-1,m-1) and similar). Estimated ~200 lines.",
+      "Session 5 (vdp closed form, sorried): State `aperyA_explicit_formula : aperyA n = ∑_{k=0}^{n} C(n,k)^2 C(n+k,k)^2 (H_n^{(3)} + cnk(n,k))` as a sorried theorem. Validate at n=0,1,2,3,4 via `native_decide`. Estimated ~80 lines.",
+      "Session 6 (assembly): Combine `harmonicCubed_lcm_clear`, `vdpAlternatingSum_lcm_clear`, and `aperyA_explicit_formula` to prove `denominator_control_lcm : ∃ m : ℤ, (lcmRange n)^3 · aperyA n = m`. Eliminate the parent's `axiom denominator_control` by importing the result. Estimated ~80 lines.",
+      "Session 7 (axiom count update): Update meta.json axiomCount 5→4, status remains axiomatized (4 axioms remain: aperyB_recurrence, lcm_hanson_bound, apery_linearForm_decay, apery_linearForm_nonzero). Update gallery integration.",
+      "Optional Session 8 (Mathlib contribution): If `pow_dvd_lcmRange_pow` is judged clean and general, draft a Mathlib PR — `Finset.lcm_pow_dvd_pow_of_mem` or similar. Currently only OQ-02 and OQ-03 in this gallery use this lemma; broader applicability uncertain."
     ]
   },
   "tags": [
@@ -114,7 +119,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-07T22:40:00.000Z",
+  "lastUpdate": "2026-05-08T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
