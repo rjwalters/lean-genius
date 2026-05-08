@@ -41,3 +41,72 @@
 - **Axiom count**: 0 (no external assumptions)
 - **Sorry count**: 0
 - **Phase**: COMPLETED (pending Docker build verification)
+
+## Session 2026-05-08 (Session 2) — Follow-Up Direction Documented (researcher-6)
+
+**Mode**: REVISIT
+**Outcome**: documented — problem confirmed COMPLETED; identified one substantive follow-up direction (parity-sign theorem) with full proof sketch using existing infrastructure.
+
+### Verification of Prior Work
+- `DerangementsConvergenceOQ01OQ01.lean`: 147 lines, 7 theorems, 0 sorries, 0 axioms ✓
+- Parent `DerangementsConvergence.lean`: 282 lines, 14 theorems, 0 sorries, 0 axioms ✓
+- Pool entry was stale (`status: in-progress` with note about already-resolved `∑ k in` issue) — corrected to `completed` in `.lean/state/candidate-pool.json` runtime state.
+
+### Follow-Up: Parity-Controlled Error Sign
+
+The current file proves `|D(n) - n!/e| < 1/2`. A natural strengthening is the **signed** version: the rounding direction is determined by parity of `n`.
+
+**Conjecture (`derangements_error_sign`)**:
+$$0 \le (-1)^n \cdot \big(D(n) - n!/e\big) \quad \text{for all } n \ge 0$$
+
+Equivalently: $D(n) \ge n!/e$ when $n$ is even, $D(n) \le n!/e$ when $n$ is odd.
+
+**Empirical verification** (`D(n)` and `n!/e`):
+- $n=0$: $D(0)=1$, $0!/e = 1/e \approx 0.368$, diff $\approx +0.632$ → sign $+$ → $(-1)^0 = +$ ✓
+- $n=1$: $D(1)=0$, $1!/e \approx 0.368$, diff $\approx -0.368$ → sign $-$ → $(-1)^1 = -$ ✓
+- $n=2$: $D(2)=1$, $2!/e \approx 0.736$, diff $\approx +0.264$ → sign $+$ → $(-1)^2 = +$ ✓
+- $n=3$: $D(3)=2$, $3!/e \approx 2.207$, diff $\approx -0.207$ → sign $-$ → $(-1)^3 = -$ ✓
+- $n=4$: $D(4)=9$, $4!/e \approx 8.829$, diff $\approx +0.171$ → sign $+$ → $(-1)^4 = +$ ✓
+
+### Proof Sketch (uses only already-public lemmas)
+
+Let $a_k = (-1)^k / k!$ so $\text{altFactPartialSum}(n) = \sum_{k=0}^n a_k$ and $e^{-1} = \sum_{k\ge 0} a_k$.
+
+1. From `derangements_div_factorial`: $D(n)/n! = \sum_{k=0}^n a_k$.
+2. From `exp_neg_one_eq_tsum_alt` and `tsum_eq_partial_sum_add_tail`:
+   $$e^{-1} = \sum_{k=0}^n a_k + \sum_{k\ge 0} a_{n+1+k}$$
+3. So $D(n)/n! - e^{-1} = -\sum_{k\ge 0} a_{n+1+k}$.
+4. **Factor extraction**: $a_{n+1+k} = (-1)^{n+1+k}/(n+1+k)! = (-1)^{n+1} \cdot c_k$ where $c_k = (-1)^k/(n+1+k)!$.
+5. Therefore $D(n)/n! - e^{-1} = (-1)^{n} \cdot \sum_{k\ge 0} c_k$ (the two minus signs combine).
+6. **Sign of the residual sum**: by `alt_partial_sum_nonneg` (already proved, with `m = n+1`), every partial sum $\sum_{k=0}^N c_k \ge 0$. Taking the limit: $\sum_{k\ge 0} c_k \ge 0$.
+7. Multiply by $(-1)^n$: $(-1)^n \cdot (D(n)/n! - e^{-1}) = \sum_{k\ge 0} c_k \ge 0$.
+8. Multiply by $n! > 0$: $(-1)^n \cdot (D(n) - n!/e) \ge 0$. ∎
+
+### Lean Skeleton (for future implementation)
+
+```lean
+/-- The sign of D(n) - n!/e is (-1)^n. -/
+theorem derangements_error_sign (n : ℕ) :
+    0 ≤ (-1 : ℝ) ^ n * ((numDerangements n : ℝ) - (n.factorial : ℝ) / rexp 1) := by
+  -- Strategy: show (-1)^n * (D(n)/n! - 1/e) = ∑' k, (-1)^k / (n+1+k)! ≥ 0,
+  -- then scale by n! ≥ 0.
+  -- Uses: derangements_div_factorial, exp_neg_one_eq_tsum_alt,
+  --       tsum_eq_partial_sum_add_tail, alt_partial_sum_nonneg
+  sorry  -- TODO
+```
+
+### Why This Is Worth Proving
+- **Theory-level**: Tells us the precise rounding rule (round-up for even $n$, round-down for odd $n$), not just that rounding works.
+- **Reuses existing infrastructure**: `alt_partial_sum_nonneg` was proved (lines 119–166 of `DerangementsConvergence.lean`) but is currently unused outside the absolute-value bound. The signed version exposes its mathematical content.
+- **Sharper bound**: Combined with `derangements_rate_scaled`, gives $0 \le (-1)^n(D(n) - n!/e) \le 1/(n+1)$ — a two-sided sharp bound.
+- **Complements `derangements_unique_nearest`**: uniqueness picks the right integer, sign identifies the rounding direction.
+
+### Why Not Done This Session
+- Build infrastructure currently slow (`proofs/.lake` is a recursive self-symlink → every Docker build does fresh Mathlib clone, ~30–45 min).
+- Risk of partial Lean error not worth holding the gallery entry; this slug is already verified+original.
+- Recorded as a self-contained follow-up so the next researcher (or Aristotle) can pick it up cheaply.
+
+### Status
+- **Axiom count**: 0 (unchanged)
+- **Sorry count**: 0 (unchanged)
+- **Phase**: COMPLETED with documented follow-up
