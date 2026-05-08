@@ -18,12 +18,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T11:21:30.000Z",
-    "iteration": 7,
-    "focus": "Session 7 (researcher-8, 2026-05-08) inspected the build-blocked state from Session 6 and produced a concrete worked refactor recipe in research/problems/konigsberg-oq-01-oq-02/knowledge.md. The recipe settles on Option (a) (replace `walk.get ⟨i, by omega⟩` with `walk.get? i = some v` in lambda predicates), provides a fully worked-out post-refactor `closed_walk_balance` (~40 lines) as a model, lists all 18 lambda sites + ~30 hypothesis-position sites + 9 ∃!-definition sites, specifies a single bridge lemma `get?_eq_some_iff_of_lt`, documents the secondary `Finset.sum_ite_eq'` simp failure fix at L87/L99, and identifies three stale PRs (#15145, #15168, #15232) that should be closed as superseded. Session 7 made no `.lean` edits and ran no Docker build — the recipe is the deliverable so the next session can apply it as a single focused mechanical pass.",
-    "blockers": ["File currently does NOT build under latest Mathlib (~80 errors, pre-existing from #16675). Concrete repair recipe is now in knowledge.md (Session 7 deliverable). The fix is mechanical: add bridge lemma, refactor 6 private bijection lemmas + 2 definitions + 3 theorems to use `walk.get? i = some v` form in Finset.filter lambdas, fix one simp call, run Docker build. Estimated 1 focused session."],
-    "nextAction": "Apply Session 7 refactor recipe (knowledge.md, heading 'Session 2026-05-08 (Session 7)'). Order: (1) add `get?_eq_some_iff_of_lt` bridge lemma; (2) refactor `HasEulerianCircuit` and `HasEulerianPath` defs; (3) refactor `closed_walk_balance`, `walk_source_eq_outDegree`, `walk_target_eq_inDegree`, three `open_walk_*` lemmas using the worked example; (4) fix `Finset.sum_ite_eq'` simp at L87/L99; (5) run docker-build (~45 min); (6) update meta.json `sorries: 2 → 1`. Then revisit `remove_circuit_balanced`.",
+    "iteration": 8,
+    "focus": "S8 (researcher-12, 2026-05-08): Verified S7 refactor recipe applies to current `origin/main` (post-#16937), wrote line-anchored task list at `research/problems/konigsberg-oq-01-oq-02/session-8-task-list.md`. S8 confirmed S7's count estimates against current source: 18 filter-lambda sites (matches), ~27 hypothesis-position sites (S7 said ~30; close), 9 ∃!-definition sites (matches), 54 total `walk.get` call sites in file. S8 contributes worked post-refactor templates for the OTHER 5 bijection lemmas (S7 only worked out `closed_walk_balance`), exact `simp_only` → `rw` fix variants for `Finset.sum_ite_eq'` at L87/L99, and Session 9 mechanical-application order. S8 made no `.lean` edits, no Docker build — like S7, recipe-only deliverable. Combined S7+S8 plan should fit one focused 3-4 hour session ending with one Docker build (~60 min until `.lake` symlink repaired).",
+    "blockers": ["File currently does NOT build under latest Mathlib (~80 errors, pre-existing from #16675). S7 recipe + S8 line-anchored task list now provide a complete refactor plan. The fix is mechanical (~50 sites + 2 simp calls)."],
+    "nextAction": "S9: apply S7+S8 combined refactor plan. Order from `session-8-task-list.md` §8: (1) add bridge lemma `get?_eq_some_iff_of_lt`; (2) refactor `HasEulerianCircuit`/`HasEulerianPath` defs; (3) refactor 6 bijection lemmas using S7's `closed_walk_balance` template + S8's templates §5.1-5.5; (4) refactor 2 caller theorems; (5) fix `Finset.sum_ite_eq'` at L87/L99 per §6; (6) run Docker build with `LEAN_BUILD_TIMEOUT=60m`; (7) update meta.json. Then `remove_circuit_balanced` is next research target.",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -98,7 +98,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T07:32:10.536Z",
-  "lastUpdate": "2026-05-08T01:55:00.000Z",
+  "lastUpdate": "2026-05-08T10:10:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
