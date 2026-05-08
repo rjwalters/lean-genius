@@ -302,11 +302,10 @@ theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : Cofac
     a₀ * M'.α + b₀ * M'.γ = (ahat' : ℤ) ∧
     a₀ * M'.β + b₀ * M'.δ = (bhat' : ℤ) := by
   simp [lehmerInnerStep] at h_step
-  split at h_step <;> simp_all
-  split at h_step <;> simp_all
-  -- Surviving case: bhat ≠ 0 and ahat % bhat ≠ 0; the some-equation
-  -- has reduced to the equality of the triples.
-  obtain ⟨rfl, rfl, rfl⟩ := h_step
+  -- Modern simp reduces the some-equation directly to a 5-conjunct
+  -- (bhat ≠ 0, ahat%bhat ≠ 0, bhat = ahat', ahat%bhat = bhat', struct = M');
+  -- destructure with `rfl` on the last three to substitute ahat', bhat', M'.
+  obtain ⟨_, _, rfl, rfl, rfl⟩ := h_step
   refine ⟨?_, ?_⟩
   · -- a₀ * M'.α + b₀ * M'.γ = a₀ * M.β + b₀ * M.δ = bhat
     exact h_inv₂
@@ -500,9 +499,7 @@ theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
     (heven : EvenPattern M) :
     OddPattern M' := by
   simp [lehmerInnerStep] at hstep
-  split at hstep <;> simp_all
-  split at hstep <;> simp_all
-  obtain ⟨_, _, rfl⟩ := hstep
+  obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := heven
   simp only [OddPattern]
   have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
@@ -517,9 +514,7 @@ theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
     (hodd : OddPattern M) :
     EvenPattern M' := by
   simp [lehmerInnerStep] at hstep
-  split at hstep <;> simp_all
-  split at hstep <;> simp_all
-  obtain ⟨_, _, rfl⟩ := hstep
+  obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
   simp only [EvenPattern]
   have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
@@ -1015,8 +1010,8 @@ theorem hgcdMatrix_small_row_output_le (fuel a b : ℕ) (h : max a b < hgcdThres
   rw [hgcdMatrix_small fuel a b h]
   obtain ⟨ahat', bhat', h1, h2, hmax⟩ := lehmerCofactors_id_apply_le hgcdThreshold a b
   constructor
-  · rw [h1]; simp only [Int.natAbs_ofNat]; exact le_trans (le_max_left ahat' bhat') hmax
-  · rw [h2]; simp only [Int.natAbs_ofNat]; exact le_trans (le_max_right ahat' bhat') hmax
+  · rw [h1]; simp only [Int.natAbs_natCast]; exact le_trans (le_max_left ahat' bhat') hmax
+  · rw [h2]; simp only [Int.natAbs_natCast]; exact le_trans (le_max_right ahat' bhat') hmax
 
 /-- [Sorry] The ROW output of `hgcdMatrix fuel a b` is bounded by `max a b`.
 
@@ -1062,7 +1057,7 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
   induction fuel generalizing a b with
   | zero =>
     rw [hgcdMatrix_zero]
-    simp [CofactorMatrix.id, Int.natAbs_ofNat]
+    simp [CofactorMatrix.id, Int.natAbs_natCast]
     exact ⟨le_max_left a b, le_max_right a b⟩
   | succ f ih =>
     by_cases hsmall : max a b < hgcdThreshold
