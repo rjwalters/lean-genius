@@ -1081,6 +1081,62 @@ theorem finIntersectionList_complement_singletons_isExistentialUniversalDefiniti
   codiophantine_implies_existentialUniversal _
     (finIntersectionList_complement_singletons_isCoDiophantineDefinition l)
 
+/-- Iter 11, Path B: **Π₁ ⊆ Π₂** via the polynomial-inversion trick
+    (axiom-free).
+
+    Every Π₁-definable subset of ℚ is also Π₂-definable. Closes the
+    last "diagonal" containment in the Σ₁/Π₁/Σ₂/Π₂ square not derivable
+    from a dummy-block argument.
+
+    **Strategy** (polynomial-inversion). If `S q ⟺ ∀ y, P(q, y) ≠ 0`,
+    replace each non-vanishing constraint by an existential witness for
+    the rational inverse: in the field ℚ,
+
+        a ≠ 0  ⟺  ∃ z : ℚ, a · z - 1 = 0     (z = a⁻¹).
+
+    The Π₂ polynomial witness is therefore
+
+        P'(q, y, x) := P(q, y) · x 0 - 1,
+
+    and `∀ y, ∃ x, P'(q, y, x) = 0` is equivalent to `∀ y, P(q, y) ≠ 0`,
+    i.e., to the Π₁ form of `S q`.
+
+    **Path B** (Mathlib): uses `mul_inv_cancel₀` from
+    `Mathlib.Algebra.GroupWithZero.Basic` (already imported for the S9
+    union/intersection closure) and `sub_eq_zero` from
+    `Mathlib.Algebra.Group.Basic` (already imported for the S8
+    `singletonOf` generalization). No new imports.
+
+    **Diagonal companion** of `diophantine_implies_universal_existential`
+    (Σ₁ ⊆ Π₂, dummy-block trick) and
+    `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂, dummy-block
+    trick). With this lemma, the Σ₁/Π₁/Σ₂/Π₂ square has all four
+    "vertical" containments (Σ₁ ⊆ Π₂, Σ₁ ⊆ Σ₂?, Π₁ ⊆ Π₂, Π₁ ⊆ Σ₂)
+    proved except Σ₁ ⊆ Σ₂, which has no obvious axiom-free proof in
+    this framework (the arithmetic hierarchy is not "collapsed" by
+    inversion or dummy-blocks). -/
+theorem coDiophantine_implies_universal_existential
+    (S : RatSubset) (h : IsCoDiophantineDefinition S) :
+    IsUniversalExistentialDefinition S := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q y x => P q y * x 0 - 1, fun q => ?_⟩
+  constructor
+  · -- Forward: `S q` → `∀ y, ∃ x, P q y * x 0 - 1 = 0`. Pick the inverse.
+    intro hSq y
+    have hne : P q y ≠ 0 := fun hzero => (hP q).mp hSq ⟨y, hzero⟩
+    refine ⟨fun _ => (P q y)⁻¹, ?_⟩
+    show P q y * (P q y)⁻¹ - 1 = 0
+    rw [mul_inv_cancel₀ hne, sub_self]
+  · -- Reverse: `∀ y, ∃ x, P q y * x 0 - 1 = 0` → `S q`. Existence of an
+    -- inverse rules out `P q y = 0`, which discharges the Π₁ form of `S q`.
+    intro hAll
+    apply (hP q).mpr
+    rintro ⟨y, hy⟩
+    obtain ⟨x, hx⟩ := hAll y
+    have heq : P q y * x 0 = 1 := sub_eq_zero.mp hx
+    rw [hy, zero_mul] at heq
+    exact zero_ne_one heq
+
 -- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
@@ -1256,5 +1312,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @notSingletonPair_isCoDiophantineDefinition
 #check @singletonPair_isUniversalExistentialDefinition
 #check @notSingletonPair_isExistentialUniversalDefinition
+#check @finUnionList_singletons_isDiophantineDefinition
+#check @finIntersectionList_complement_singletons_isCoDiophantineDefinition
+#check @finUnionList_singletons_isUniversalExistentialDefinition
+#check @finIntersectionList_complement_singletons_isExistentialUniversalDefinition
+#check @coDiophantine_implies_universal_existential
 
 end Hilbert10Rationals
