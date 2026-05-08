@@ -5,7 +5,7 @@
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-08
-**Iteration**: 52
+**Iteration**: 53
 
 ## Current Focus
 Close `gnwProb_exchange` (Helpers, line 14597 after S52) — the GNW 1979 exchange identity
@@ -31,9 +31,9 @@ in place:
    (L-shape, (3,1)).
 
 ## Attempt Count
-- Total attempts: 52 (sessions 1–52; sessions 1–4 archived to
-  `sessions/`; sessions 5–52 in `knowledge.md` + `sessions/`)
-- Current approach attempts: 16 (sessions 37–52 on GNW)
+- Total attempts: 53 (sessions 1–53; sessions 1–4 archived to
+  `sessions/`; sessions 5–53 in `knowledge.md` + `sessions/`)
+- Current approach attempts: 17 (sessions 37–53 on GNW)
 - Approaches tried:
   1. LGV-determinant via `lgv_lemma_rxr` + Jacobi–Trudi (sessions 1–10) —
      dead scaffolding deleted in session 32.
@@ -139,6 +139,27 @@ in place:
      `hookLength_at_d_ge_3` via `linarith`.  Closes step 1 of 3 in the s05
      recipe; step 2 (F-side joint K-induction) is S53, step 3 (combine) is
      S54+.  Sorry count unchanged (1).
+ 15. Algebraic combiner for `gnwProb_exchange` (session 53, **this session**)
+     — proved `private lemma gnwProb_exchange_lt_row_of_F_side` (line ~14591,
+     +87 lines including ~37-line docstring).  This is **step 3 of the s05
+     recipe**, NOT step 2 (the F-side K-induction is still open).  The
+     combiner takes the F-side identity as a hypothesis `h_F` and discharges
+     `gnwProb_exchange` (case 1: `c.1 < c'.1`) algebraically by:
+     - Multiplying both sides of the goal by `(h_d − 1)²` (nonzero by
+       `hookLength_at_d_ge_3` ≥ 3) via `mul_right_cancel₀`.
+     - Applying `hookProd_removeCorner_swap` to align iteration orders
+       `H((μ\c')\c) ↔ H((μ\c)\c')` so S52 applies directly.
+     - `linear_combination` with coefficients `(H(μ\c) · H(μ\c'))` for `h_F`
+       and `(−F_ν)` for `h_S52` closes the polynomial identity over ℚ.
+     **Correctness verified concretely** on the (3,1) shape: c = (0,2),
+     c' = (1,0), h_d = 4, F(μ,c) = 8/3, F(μ\c',c) = 3, identity
+     `(8/3) · 9 = 24 = 3 · 4 · 2` ✓.  Important side discovery: the F-side
+     direction recorded in state.md was **reversed** — corrected here.
+     **Sorry count unchanged (1)**: the combiner is sorry-free; future
+     S53 work that proves the F-side identity in this form can immediately
+     instantiate `gnwProb_exchange_lt_row_of_F_side` to close case 1.
+     Case 2 (`c'.1 < c.1`) needs an analogous combiner (deferred to a
+     follow-up session — symmetric proof structure).
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
@@ -151,47 +172,54 @@ in place:
   CI will verify the PR.
 
 ## Next Action
-**S53 — prove the F-side "hard half" of `gnwProb_exchange`** via joint
-K-induction on the sum-level invariant
+**S54 — prove the F-side "hard half" of `gnwProb_exchange`** via joint
+K-induction on the sum-level invariant.  After S53's combiner, the
+remaining target is the **corrected** F-side identity (case `c.1 < c'.1`):
 ```
-(∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\c') c K) · (h_d − 1)²
+F(μ,c) · (h_d − 1)² = F(μ\c',c) · h_d · (h_d − 2)
 ```
-using `gnwProb_step` for K-stability and the S43 sum-bridges
-(`sum_gnwProb_eq_removeCorner_cells`,
-`sum_gnwProb_strictHookCells_eq_removeCorner`).
+where `F(ν,c) := ∑_{x ∈ ν.cells} gnwProb ν c (h_ν(x)) x` and
+`h_d = h_μ(c.1, c'.2)`.  **Note**: the direction here is the reverse of
+what was recorded in state.md before S53 — verified concretely on the
+(3,1) shape (`F(μ,c) = 8/3`, `F(μ\c',c) = 3`, `h_d = 4`,
+`(8/3)·9 = 24 = 3·4·2` ✓).
 
-S52 (this session) closed step 1 of 3 from the s05 recipe: the algebraic
-"easy half" `hookProd_doubleRemove_factor`.  The proof applies
-`hookProd_ratio_formula` to corner `c` on `μ` and (via
-`isCorner_removeCorner_of_ne hc' hc hne.symm`) to corner `c` on `μ\c'`.
-Off the doubly-affected cell `d = (c.1, c'.2)` the integrands agree by
-the S50 bridges; at `d` the arm factors `h_d/(h_d-1)` (in `R₁`) and
-`(h_d-1)/(h_d-2)` (in `R₂`, after substituting
-`hookLength (μ\c') c.1 c'.2 = h_d - 1`) differ by exactly the rational
-factor required.  After clearing the LHS divisions with
-`div_eq_iff`, applying `hookProd_removeCorner_swap` to identify
-`H((μ\c')\c) = H((μ\c)\c')`, and substituting both ratio formulas into
-the goal, `field_simp; ring` closes the polynomial identity.  ~95 proof
-lines + 38 docstring lines.
+Once S54 proves this identity (~100-200 lines of joint K-induction using
+`gnwProb_step` for K-stability and the S43 sum-bridges
+`sum_gnwProb_eq_removeCorner_cells`,
+`sum_gnwProb_strictHookCells_eq_removeCorner`), case 1 of
+`gnwProb_exchange` closes via S53's
+`gnwProb_exchange_lt_row_of_F_side`.  Case 2 (`c'.1 < c.1`) requires a
+symmetric companion combiner + a symmetric F-side identity.  After both
+cases, `gnwProb_exchange` itself is closed via
+`distinct_corners_dichotomy`, and the entry can be promoted to
+`verified` (last sorry eliminated).
+
+S53 (this session) closed step 3 of 3 from the s05 recipe: the
+**algebraic combiner** that takes the F-side identity as a hypothesis
+and closes `gnwProb_exchange` (case `c.1 < c'.1`) by combining with S52
+and `hookProd_removeCorner_swap`.  The combiner is sorry-free.  S52 had
+already closed step 1.  Step 2 (F-side joint K-induction) is now the
+sole remaining open piece of `gnwProb_exchange`.
 
 Remaining steps in the s05 recipe:
 
 1. ✓ **Algebraic "easy half" — `hookProd_doubleRemove_factor`** (S52,
-   this session, sorry-free).
+   sorry-free, merged in PR #17173).
 
-2. **F-side "hard half"** (~100-200 lines, S53 next action).  Joint
-   K-induction on the sum-level invariant.  Confidence: medium.  May
-   require S53.5 to extract the K=0 base case as a separate lemma if
-   the induction step is too large for one PR.
+2. **F-side "hard half"** (~100-200 lines, S54 next action — corrected
+   direction).  Joint K-induction on the sum-level invariant.
+   Confidence: medium.  May require S54.5 to extract the K=0 base case
+   as a separate lemma if the induction step is too large for one PR.
 
-3. **Combine** to close `gnwProb_exchange` (~50 lines algebraic
-   rearrangement, S54+).
+3. ✓ **Combine** to close `gnwProb_exchange` case 1 (S53, this session,
+   sorry-free conditional on F-side identity).  Case 2 combiner deferred.
 
-**File-size**: Helpers.lean is at 14852 lines after S52 (+133 from 14719
-after S51).  Approaching the Docker 32GB-memory ceiling estimate (~15500
-lines).  S53 will likely push us close to or over 15000 — extraction into
+**File-size**: Helpers.lean is at 14939 lines after S53 (+87 from 14852
+after S52).  Approaching the Docker 32GB-memory ceiling estimate (~15500
+lines).  S54 will likely push us close to or over 15000 — extraction into
 `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` should now be a *blocking
-prerequisite* for S53 (or S53 should target the extracted file directly).
+prerequisite* for S54 (or S54 should target the extracted file directly).
 
 Alternative (deferred): a deterministic weighted-path recasting of GNW
 that avoids the exchange step entirely (count weighted walks of every
