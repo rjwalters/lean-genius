@@ -24,6 +24,18 @@
     "prerequisites": ["measure theory", "probability spaces", "Lean 4 typeclasses"]
   },
   {
+    "id": "ann-probability-typeclass",
+    "proofId": "laws-of-large-numbers-oq-01-oq-03",
+    "range": { "startLine": 66, "endLine": 66 },
+    "type": "definition",
+    "title": "Why `[IsProbabilityMeasure μ]` and Not Just `[SigmaFinite μ]`?",
+    "content": "The `variable` declaration constrains $\\mu$ to be a probability measure (total mass 1) rather than merely $\\sigma$-finite. This is mathematically essential at three points in the Chebyshev-variance argument: (1) the indicator variance bound $\\mathrm{Var}(\\mathbf{1}_{A_k}) = \\mu(A_k)(1 - \\mu(A_k)) \\leq \\mu(A_k)$ uses $\\mu(A_k) \\leq 1$, which fails for general $\\sigma$-finite measures; (2) Chebyshev's inequality $P(|X - E[X]| \\geq t) \\leq \\mathrm{Var}(X)/t^2$ is stated for probability measures (with general expectations defined via integrals against a probability measure); (3) the conclusion $\\mu(\\limsup A_n) = 1$ uses 1 as the total mass — for a general measure the natural conclusion would be $\\mu(\\limsup A_n) = \\mu(\\Omega)$ if finite, or $= \\infty$ if $\\sigma$-finite. The conclusion's `openQuestions` flags the $\\sigma$-finite generalization as genuinely open: while the *qualitative* statement 'limsup has full measure' should survive, the *Chebyshev-variance* proof method does not transfer cleanly outside the probability setting. An ergodic-theoretic reformulation (e.g., via Hopf's ratio ergodic theorem) is the natural path for the $\\sigma$-finite case, but the constants and the role of pairwise independence are different in that regime.",
+    "mathContext": "**Mathlib typeclass distinction**:\n- `IsProbabilityMeasure μ` ⟺ `μ Set.univ = 1` (total mass 1)\n- `IsFiniteMeasure μ` ⟺ `μ Set.univ < ⊤` (finite total mass, can rescale to probability)\n- `SigmaFinite μ` ⟺ $\\Omega = \\bigcup_n B_n$ with $\\mu(B_n) < \\infty$ (e.g., Lebesgue on $\\mathbb{R}^d$).\n\nThe `[IsProbabilityMeasure μ]` typeclass is the strongest of these. It implies `IsFiniteMeasure` and `SigmaFinite`, so all of Mathlib's measure-theoretic machinery is available, and the variance bound $\\mathrm{Var}(\\mathbf{1}_A) \\leq \\mathbb{E}[\\mathbf{1}_A]$ specializes correctly.\n\n**Generalization landscape**: For $\\sigma$-finite measures, the natural BC2 analog is the *Borel-Cantelli-Hopf lemma*: if $T : \\Omega \\to \\Omega$ is an ergodic measure-preserving transformation of a $\\sigma$-finite space and $A_n = T^{-n}A_0$, then $\\sum_n \\mu(A_n) = \\infty \\Rightarrow \\mu(\\limsup A_n) = \\mu(\\Omega)$. But this needs the ergodicity hypothesis, not pairwise independence — the structural content shifts.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsProbabilityMeasure", "IsFiniteMeasure", "SigmaFinite", "Hopf ratio ergodic theorem", "indicator variance bound"],
+    "prerequisites": ["Mathlib measure typeclasses", "variance of indicator", "σ-finite measures"]
+  },
+  {
     "id": "ann-002",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
     "range": { "startLine": 68, "endLine": 96 },
