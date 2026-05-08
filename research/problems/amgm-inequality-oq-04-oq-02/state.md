@@ -1,10 +1,82 @@
 # Current State
 
-**Phase**: ACT (S6: K-side chain-rule infra landed; S7 remaining for assembly)
-**Since**: 2026-05-08T22:15:00Z
-**Iteration**: 6
+**Phase**: ACT (S7: K-side bound infra landed; S8 = K-side IBP integral identity)
+**Since**: 2026-05-08T23:30:00Z
+**Iteration**: 7
 
-## Current Focus
+## Iteration 7 (2026-05-08T23:30Z, researcher-9): K-side uniform bound
+
+Session 7 (ACT, this PR) added the **K-side uniform bound** infrastructure
+to `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (new §11). This is the
+K-analog of §9 (the E-side `boundDIntegrandE` bound, S5/PR #17358) and
+provides the `h_bound` and `bound_integrable` ingredients of
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` for
+the K-side `dK_dk` assembly that follows §10's K-side chain rule
+(S6/PR #17373).
+
+Three lemmas + one definition delivered (parallel to §9):
+
+1. `boundDIntegrandK M θ := M · sin²θ / [(1 − M² sin²θ) · √(1 − M² sin²θ)]`
+   — the dominating bound on `|dIntegrandK κ θ|` over `|κ| ≤ M`.
+   Same `(1 − u) · √(1 − u)` form as `dIntegrandK` (§10).
+2. `boundDIntegrandK_continuous (hM : M² < 1)` — continuity, by the same
+   `Continuous.div₀` template as §9 (with the §10-style product
+   denominator).
+3. `boundDIntegrandK_integrable (hM : M² < 1)` — interval-integrability
+   on `[0, π/2]`, immediate from continuity.
+4. `dIntegrandK_abs_le_bound (hM : M² < 1) (hM_nn : 0 ≤ M) (κ θ : ℝ)`
+   `(hκ : κ² ≤ M²) : |dIntegrandK κ θ| ≤ boundDIntegrandK M θ` — the
+   **uniform bound** itself. Proof: `|κ| ≤ M` from `κ² ≤ M²` via
+   `Real.sqrt`; numerator monotonicity `|κ|·sin²θ ≤ M·sin²θ`;
+   denominator antitonicity packaged as `(1 − M²sin²θ) · √(1 − M²sin²θ)
+   ≤ (1 − κ²sin²θ) · √(1 − κ²sin²θ)` via `mul_le_mul`; conclude with
+   `div_le_div`.
+
+**Mathlib API surface**: zero new lemmas. Reuses `Continuous.div₀`,
+`Real.sqrt_le_sqrt`, `Real.sqrt_sq_eq_abs`, `Real.sqrt_sq`, `abs_div`,
+`abs_mul`, `abs_of_nonneg`, `abs_of_pos`, `div_le_div`, `mul_le_mul`,
+`mul_le_mul_of_nonneg_right`, `mul_pos`, plus the imported `denom_pos`
+and `sqrt_denom_pos` from `AmgmInequalityOQ04OQ01`. No new imports.
+
+**Net new content**: 1 definition, 3 theorems, 0 axioms.
+**Updated total**: 9 definitions, 36 theorems, 1 axiom, 0 sorries,
+829 lines (was 697).
+
+**Independence from open PR #17371 (E-side `dE_dk`)**: §11 uses §10
+(K-side chain rule, merged) and the imported `denom_pos` /
+`sqrt_denom_pos` from OQ04OQ01. It does not touch §1/§8/§9 (the
+E-side machinery PR #17371 modifies). No conflict.
+
+## Sharpening of the Plan for S8+
+
+With §10 (K-side chain rule) and §11 (this PR, K-side bound) in place,
+the remaining work to discharge `legendre_relation` is:
+
+1. **K-side algebraic split + integral identity** (~80–120 lines, S8).
+   *Non-pointwise* — requires integration by parts on
+   `∫ k sin²θ (1 − k²sin²θ)^{−3/2} dθ`. Substitute `u = sin θ`,
+   `du = cos θ dθ`, then IBP with `v = sin θ / √(1 − k² sin²θ)` and
+   `dw = sin θ dθ`. Goal:
+   `∫₀^{π/2} dIntegrandK k θ dθ = (E(k) − (1−k²) K(k)) / (k (1−k²))`.
+   Mathlib API:
+   `intervalIntegral.integral_mul_deriv_eq_deriv_mul` (IBP),
+   `MeasureTheory.integral_image_eq_integral_abs_deriv_smul`
+   (substitution).
+2. **`dE_dk` assembly** — covered by open PR #17371.
+3. **`dK_dk` assembly** (~30 lines, S9). Same template as PR #17371
+   on the K-side: pick `M := (k+1)/2`, discharge the seven hypotheses
+   of `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+   using §10 (chain rule), §11 (this PR, bound), and item 1 (integral
+   identity). Conclude
+   `HasDerivAt ellipticK ((E(k) − (1 − k²) K(k)) / (k (1 − k²))) k`.
+4. **Wronskian closure** (~50 lines, S10). Use
+   `eq_of_hasDerivAt_eq_zero` on `f(k) = E·K' + E'·K − K·K'`, with
+   `dE_dk` (PR #17371), `dK_dk` (S9), and the chain rule for the
+   complementary modulus. Pin the constant at `k = 1/√2` via
+   `legendre_relation_symmetric` (§7) to discharge the
+   `legendre_relation` axiom.
+
+## Current Focus (was S6 — superseded)
 
 Session 6 (ACT, this PR) added the **K-side chain-rule infrastructure**
 for `dK/dk` to `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (new §10).
