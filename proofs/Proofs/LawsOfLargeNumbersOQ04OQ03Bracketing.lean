@@ -117,4 +117,31 @@ axiom bracketingGrid_exists [IsProbabilityMeasure μ]
     {ε : ℝ} (hε : 0 < ε) :
     Nonempty (BracketingGrid (trueCDF X μ) ε)
 
+-- ============================================================================
+-- §2.3: Simultaneous pointwise convergence at all grid points
+-- ============================================================================
+
+/-- **Provable** in this file. Given a finite (`Fin (k+2)`-indexed) sequence of
+    threshold values `q`, the a.s. pointwise convergence
+    `Fₙ(qⱼ, ω) → F(qⱼ)` from the parent's `empiricalCDF_pointwise_convergence`
+    holds *simultaneously* at all `q j` on a single full-measure set.
+
+    The proof commutes the universal `∀ j : Fin (k+2)` with the a.s. quantifier
+    via `MeasureTheory.ae_all_iff` (countable conjunction of a.s. statements;
+    `Fin (k+2)` is finite, hence countable). For each individual `j`, the parent
+    file's `empiricalCDF_pointwise_convergence` (line 144) supplies the
+    a.s. tendsto. -/
+theorem bracketing_simultaneous_pointwise [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ}
+    (hX_meas : ∀ i, Measurable (X i))
+    (hX_iid : iIndepFun X μ)
+    (hX_ident : ∀ i, IdentDistrib (X i) (X 0) μ μ)
+    {k : ℕ} (q : Fin (k + 2) → ℝ) :
+    ∀ᵐ ω ∂μ, ∀ j : Fin (k + 2),
+      Filter.Tendsto (fun n => empiricalCDF X n (q j) ω)
+        Filter.atTop (nhds (trueCDF X μ (q j))) := by
+  rw [ae_all_iff]
+  intro j
+  exact empiricalCDF_pointwise_convergence hX_meas hX_iid hX_ident (q j)
+
 end GlivenkoCantelli

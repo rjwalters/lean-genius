@@ -113,3 +113,54 @@ in the draft have been hand-checked against the parent file's namespacing
 but not run through the elaborator. Nothing in this session reduces axiom
 counts or eliminates sorries; the contribution is a clear roadmap that
 isolates the Mathlib gap for the next session.
+
+
+---
+
+## Session 2026-05-08 (Session 4) — §2.3 bracketing_simultaneous_pointwise
+
+**Mode**: REVISIT
+**Outcome**: progress (one of three remaining bracketing theorems landed)
+**Researcher**: researcher-4
+
+### What I Did
+
+Filled in §2.3 of `bracketing-decomposition-draft.md`:
+`bracketing_simultaneous_pointwise`. Added to
+`proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean` (the companion file
+S3 introduced).
+
+### Key Findings
+
+- `MeasureTheory.ae_all_iff` is the right tool for "simultaneous a.s.
+  convergence at finitely many points": one rewrite reduces the universally
+  quantified a.s. statement to a per-point a.s. statement, which the parent
+  file already proves.
+- `Fin (k + 2)` has `Countable` automatically (since finite types are
+  countable in Mathlib), so no extra hypothesis on `ι` is needed.
+- The 3-line proof matches the spec sketch verbatim — no surprise.
+
+### Files Modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean`: 120 → 147 lines,
+  +1 theorem (`bracketing_simultaneous_pointwise`).
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/state.md`: S4 entry.
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/knowledge.md`: this entry.
+
+### Counts Delta
+
+- `meta.json` (main file `LawsOfLargeNumbersOQ04OQ03.lean`): unchanged
+  (still `verified`, 0 sorries, 0 axioms, 158 lines, 4 theorems).
+- Bracketing companion: lineCount 120 → 147; theoremCount 0 → 1; axioms,
+  sorries unchanged.
+
+### Next Steps
+
+- §2.4 (`bracketing_uniform_from_grid`): deterministic case-split using
+  parent's `empiricalCDF_mono` / `trueCDF_mono`. ~50 lines, the longest of
+  the three.
+- §2.5 (`glivenko_cantelli_uniform_proved`): composition of §2.2 + §2.3 + §2.4
+  via countable union of null sets along ε = 1/m. ~20 lines.
+- Once §2.5 lands, retire the parent's `glivenko_cantelli_uniform` axiom.
+- Future Mathlib upstream: `Monotone.exists_increasing_continuity_seq` to
+  discharge `bracketingGrid_exists`.
