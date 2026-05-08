@@ -4,12 +4,32 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Iteration 10, researcher-9)
-**Iteration**: 10
+**Last Updated**: 2026-05-08 (Iteration 11, researcher-5)
+**Iteration**: 11
 
 ## Current Focus
-Iteration 10 (2026-05-08, this PR): extracts the **first non-trivial
-published-bound** from the just-closed Chebyshev decomposition:
+Iteration 11 (2026-05-08, this PR): reformulates Iter 10's
+prime-counting bound in Mathlib's `Nat.primeCounting` vocabulary —
+the literal published form of the bound:
+
+- `lcmRange_le_pow_primeCounting (n : ℕ) :
+   lcmRange n ≤ n ^ Nat.primeCounting n`
+
+A one-line corollary of Iter 10's `lcmRange_le_pow_card_primes_le`
+plus the standard identification
+`Nat.primeCounting n = ((Finset.range (n+1)).filter Nat.Prime).card`
+via `Nat.count_eq_card_filter_range` (cf. the analogous central-binomial
+bound `(2n).choose n ≤ (2n) ^ π(2n)` in
+`ChebyshevPNTBridgeOQ01.lean:140-147` for the pattern).
+
+This is content-light but vocabulary-important: the bound now reads
+in standard PNT-statement form $\\text{lcm}(1,...,n) \\leq n^{\\pi(n)}$
+and is directly compatible with Mathlib's `Nat.primeCounting` API
+(monotonicity, asymptotics, etc.) for downstream chaining. New import:
+`Mathlib.NumberTheory.PrimeCounting`.
+
+Iteration 10 (#17369 merged): extracted the **first non-trivial
+published-bound** from the closed Chebyshev decomposition:
 
 - `lcmRange_le_pow_card_primes_le (n : ℕ) :
    lcmRange n ≤ n ^ ((Finset.range (n+1)).filter Nat.Prime).card`
@@ -116,7 +136,7 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 10.
+- Total attempts: 11.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
   structural-lemma layer for inductive proofs (iter 2); generic
@@ -130,7 +150,8 @@ Currently blocked on:
   (iter 8, #17312); antisymmetric closure
   `lcmRange_eq_prod_prime_powers` (iter 9, #17333);
   prime-counting bound `lcmRange_le_pow_card_primes_le` (iter 10,
-  this PR).
+  #17369); primeCounting reformulation
+  `lcmRange_le_pow_primeCounting` (iter 11, this PR).
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -139,24 +160,23 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 11 candidate**: reformulate Iter 10 in terms of
-`Nat.primeCounting`:
-
-  `lcmRange_le_pow_primeCounting (n : ℕ) :
-     lcmRange n ≤ n ^ Nat.primeCounting n`
-
-A one-line corollary: rewrite `Nat.primeCounting n` as
-`((Finset.range (n+1)).filter Nat.Prime).card` via
-`Nat.count_eq_card_filter_range` (cf. `ChebyshevPNTBridgeOQ01.lean`
-line 145–147 for the exact pattern), then apply Iter 10. This is the
-literal published form of the bound and brings the file into the
-PNT-statement vocabulary.
-
 **Iteration 12 candidate**: state and prove the chain
 `lcmRange n ≤ n ^ Nat.primeCounting n ≤ n ^ n` (the second inequality
-holds when `Nat.primeCounting n ≤ n`, trivially since primes ≤ n are
-a subset of {1,...,n}). This makes explicit that Iter 10/11 sharpen
-`lcmRange_le_self_pow` (Part 3 of the file).
+holds for n ≥ 1 because `Nat.primeCounting n ≤ n` — primes ≤ n are
+a subset of {2,...,n} hence at most n - 1 ≤ n in cardinality). This
+makes explicit that Iter 10/11 sharpen `lcmRange_le_self_pow`
+(Part 3 of the file). Mathlib has `Nat.primeCounting_le_card`-adjacent
+lemmas; the bound `Nat.primeCounting n ≤ n` should be a one-line
+corollary of `Finset.card_filter_le` plus the fact that primes ≥ 2
+exclude 0 and 1 from the count.
+
+**Iteration 13 candidate**: connect the prime-counting bound to
+asymptotic Chebyshev-style improvements. Mathlib has
+`Nat.primeCounting_eq_card_primes` and Bertrand-derived prime-gap
+bounds; a tighter bound like `lcmRange n ≤ n^{n / log n}` (Chebyshev
+1850) would discharge the parent file's `lcm_hanson_bound` axiom up
+to a constant multiplier in the exponent (Hanson 1972 saves the
+specific constant `log 3` ~ 1.0986).
 
 **Long-term paths still open:**
 
