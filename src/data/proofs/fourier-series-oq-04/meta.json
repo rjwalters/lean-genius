@@ -37,7 +37,7 @@
   "overview": {
     "historicalContext": "The theory of Fourier series on the circle (1D torus) was developed by Fourier (1807-1822) and formalized by Dirichlet (1829), who proved pointwise convergence for piecewise smooth functions. The extension to multiple dimensions became urgent in the 20th century as PDEs on rectangular domains and crystallography required multi-dimensional Fourier analysis. A fundamental watershed came in 1966: Lennart Carleson proved (winning the Fields Medal in 2006 for this and related work) that the Fourier series of every L²(T¹) function converges almost everywhere. Charles Fefferman's 1971 result shattered hopes for a straightforward generalization: for n ≥ 2, rectangular partial sums of Fourier series can diverge even for L¹ functions, meaning the summation method fundamentally matters in multiple dimensions. Elias Stein and Guido Weiss (1971) developed the Bochner-Riesz framework for spherical summation. The 2D analogue of Carleson's theorem—does the spherical Fourier series of every L²(T²) function converge a.e.?—remains one of the great open problems in harmonic analysis.",
     "problemStatement": "For $f \\in L^2(\\mathbb{T}^n)$, does the spherical Fourier partial sum $S_R^{\\text{sph}} f(x) = \\sum_{|k|_2 \\leq R} \\hat{f}(k) e^{2\\pi i k \\cdot x}$ converge to $f(x)$ for almost every $x$ as $R \\to \\infty$? For $n=1$: YES (Carleson 1966). For $n \\geq 2$: OPEN. Related: does the Bochner-Riesz mean $S_R^\\delta f$ converge for $\\delta > n|1/p - 1/2| - 1/2$ in $L^p(\\mathbb{T}^n)$? (Bochner-Riesz conjecture, partially proved)",
-    "proofStrategy": "The file provides a conceptual scaffold rather than a full formalization. Part I defines the Torus type, MultiIndex, and a placeholder `fourierCoeff` (the actual n-fold integral requires Haar measure infrastructure), and implements `dotProduct` (the inner product k·x). Part II defines placeholder partial sums for rectangular and spherical summation methods. Part III documents the convergence landscape via a table and two sentinel theorems (`carleson_1d_reference`, `carleson_2d_open`) that mark the 1D result as proved and the 2D case as open.",
+    "proofStrategy": "The file provides a conceptual scaffold rather than a full formalization. Part I defines the Torus type, MultiIndex, and a placeholder `fourierCoeff` (the actual n-fold integral requires Haar measure infrastructure), and implements `dotProduct` (the inner product k·x). Part II defines placeholder partial sums for rectangular and spherical summation methods. Part III documents the convergence landscape via a table and commentary blocks that flag the 1D Carleson result and the open 2D case.",
     "keyInsights": [
       "Rectangular summation fails in n≥2 because the n-dimensional Dirichlet kernel $D_N^{(n)}(x) = \\prod_j D_N(x_j)$ has $L^1$ norm growing as $(\\log N)^n \\to \\infty$, by the Banach-Steinhaus theorem this implies the existence of L¹ functions with divergent rectangular partial sums—Fefferman made this explicit with a sharp 1971 example.",
       "Spherical summation avoids the tensor product structure: the kernel for $S_R^{\\text{sph}}$ is the inverse Fourier transform of $\\mathbf{1}_{|k| \\leq R}$, a Bessel function in the continuous setting. While better behaved, its pointwise convergence for L² remains open in n≥2.",
@@ -73,15 +73,7 @@
       "title": "Part III: Convergence Results and Open Problems",
       "startLine": 75,
       "endLine": 101,
-      "summary": "Mathematical commentary summarizing convergence properties in a table: L² always holds (Parseval), pointwise a.e. for L² holds in 1D (Carleson), fails for rectangular in n≥2 (Fefferman), open for spherical in n≥2 (2D Carleson conjecture). Two trivial theorems mark the 1D result as proved and the 2D case as open."
-    },
-    {
-      "id": "l2-parseval",
-      "title": "Part IV: L² Convergence and Parseval's Identity",
-      "startLine": 75,
-      "endLine": 102,
-      "summary": "Axiomatizes l2_convergence (rectangular/spherical sums converge in L²) and parseval_identity (Plancherel theorem in n dimensions). These are the clean part of the theory: L² convergence holds in all dimensions without restriction.",
-      "mathContext": "$\\|f - S_N f\\|_{L^2(T^n)} \\to 0$ for all $f \\in L^2(T^n)$, where $S_N$ is rectangular or spherical summation. Parseval: $\\int_{T^n} |f|^2 = \\sum_{k} |\\hat{f}(k)|^2$. The difficulty is that pointwise convergence is a strictly harder problem, failing for rectangular sums in $n \\geq 2$."
+      "summary": "Mathematical commentary summarizing convergence properties in a table: L² always holds (Parseval), pointwise a.e. for L² holds in 1D (Carleson), fails for rectangular in n≥2 (Fefferman), open for spherical in n≥2 (2D Carleson conjecture). Two trailing commentary blocks flag the 1D Carleson result and the open 2D case."
     }
   ],
   "conclusion": {
