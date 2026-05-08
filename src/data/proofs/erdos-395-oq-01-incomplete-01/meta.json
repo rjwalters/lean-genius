@@ -85,25 +85,52 @@
   },
   "sections": [
     {
-      "id": "header-helpers",
-      "title": "Section I: Helpers — neg_one_zmod2, cc_re, cc_im",
-      "startLine": 30,
-      "endLine": 70,
-      "summary": "Three private helpers: neg_one_zmod2 ((-1 : ZMod 2) = 1, by decide), cc_re (real part of the signed sum on the counterexample equals ε₀, only z₀ = 1 contributes since Re(i) = 0), cc_im (imaginary part equals the tail sum T = ε₁ + ⋯ + εₙ₋₁, since only z_k = i for k ≥ 1 contributes a nonzero imaginary part)."
+      "id": "sec-preamble",
+      "title": "Preamble: Header, Imports, Namespace",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "File docstring laying out the proof strategy (S = ε₀ + iT decomposition; T ≠ 0 by parity; |S|² ≥ 1 + 1 = 2). Imports Mathlib.Analysis.Complex.Basic, Mathlib.Data.Complex.Basic, Mathlib.Tactic, and the parent file Proofs.Erdos395Problem (source of signedSum, signedSumAbs, isSignVector, carnielli_carolino_counterexample, and the placeholder counterexample_always_large axiom that this file removes). Opens Complex/Erdos395/Real/Finset namespaces and enters Erdos395OQ01Incomplete01.",
+      "mathContext": "$S = \\sum_k \\varepsilon_k z_k = \\varepsilon_0 + i T,\\ T = \\sum_{k=1}^{n-1} \\varepsilon_k$. Goal: $|S| \\ge \\sqrt{2}$, ax-free."
     },
     {
-      "id": "tail-nonzero",
-      "title": "Section I (continued): tail_nonzero — Parity Argument",
+      "id": "sec-zmod-helper",
+      "title": "Section I.A — ZMod 2 Helper: neg_one_zmod2",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "Section I header (Helpers) plus the trivial-but-load-bearing lemma neg_one_zmod2: (-1 : ZMod 2) = 1, discharged by `decide`. This identifies both possible integer sign values ±1 with the same ZMod 2 representative 1, which is the kernel of the parity argument later in tail_nonzero.",
+      "mathContext": "$-1 \\equiv 1 \\pmod 2$. In Lean: `(-1 : ZMod 2) = 1` by `decide` (ZMod 2 has only 2 elements, equality is decidable)."
+    },
+    {
+      "id": "sec-cc-re",
+      "title": "Section I.B — Real Part: cc_re",
+      "startLine": 36,
+      "endLine": 48,
+      "summary": "cc_re: for the Carnielli-Carolino configuration z = (1, i, i, …, i) and any sign vector ε, the real part of the signed sum is exactly ε₀. Proof uses `Complex.reAddGroupHom` to push Re inside the Finset.sum, then Finset.sum_eq_single ⟨0, _⟩ to isolate the only term with nonzero real part: the i=0 term (z₀ = 1, Re=1·ε₀); all other i contribute Re(ε_k · i) = 0 since I_re = 0.",
+      "mathContext": "$\\mathrm{Re}\\bigl(\\sum_k \\varepsilon_k z_k\\bigr) = \\sum_k \\varepsilon_k \\cdot \\mathrm{Re}(z_k) = \\varepsilon_0 \\cdot 1 + \\sum_{k\\geq 1} \\varepsilon_k \\cdot 0 = \\varepsilon_0.$"
+    },
+    {
+      "id": "sec-cc-im",
+      "title": "Section I.C — Imaginary Part: cc_im",
+      "startLine": 50,
+      "endLine": 70,
+      "summary": "cc_im: the imaginary part of the signed sum equals the tail sum T = ε₁ + ⋯ + εₙ₋₁ (cast to ℝ). Proof pushes Im inside the Finset.sum via `Complex.imAddGroupHom`, simplifies each term ε_k·z_k.im (z_0=1 contributes 0, z_k=i for k≥1 contributes ε_k), then converts the resulting sum-with-zero-at-i=0 into the equivalent sum over `Finset.univ.erase ⟨0, _⟩` via Finset.add_sum_erase + Finset.sum_congr.",
+      "mathContext": "$\\mathrm{Im}\\bigl(\\sum_k \\varepsilon_k z_k\\bigr) = \\varepsilon_0 \\cdot 0 + \\sum_{k\\geq 1} \\varepsilon_k \\cdot 1 = \\sum_{k=1}^{n-1} \\varepsilon_k = T$. Together with cc_re, this is the decomposition $S = \\varepsilon_0 + iT$."
+    },
+    {
+      "id": "sec-tail-nonzero",
+      "title": "Section I.D — The Parity Heart: tail_nonzero",
       "startLine": 72,
       "endLine": 90,
-      "summary": "The mathematical core: tail_nonzero proves T = ε₁ + ⋯ + εₙ₋₁ ≠ 0 by contradiction in ZMod 2. Each εₖ ≡ 1 mod 2; with n even the tail has n-1 (odd) terms; sum ≡ n-1 ≡ 1 mod 2 ≠ 0. Uses Finset.card_erase_of_mem + Finset.card_fin to compute the tail-card, then heq : n - 1 = 2*(k-1) + 1 to extract the odd part."
+      "summary": "tail_nonzero: T = ε₁ + ⋯ + εₙ₋₁ ≠ 0 (as an integer). The mathematical heart of the file. Proof by contradiction: assume T = 0, so T mod 2 = 0. Independently compute T mod 2 = sum of (ε_i mod 2); each ε_i ∈ {-1,+1} gives ε_i ≡ 1 mod 2 (using neg_one_zmod2 for the −1 branch). The tail has n − 1 terms (Finset.card_erase_of_mem + Finset.card_fin), so T ≡ n − 1 mod 2. With n even, write n − 1 = 2(k − 1) + 1; push_cast + simp on (2 : ZMod 2) = 0 leaves T ≡ 1 mod 2. Contradiction with T ≡ 0.",
+      "mathContext": "$T \\equiv \\underbrace{1 + 1 + \\cdots + 1}_{n-1\\ \\text{terms}} \\equiv n - 1 \\pmod 2$. With $n$ even, $n - 1$ is odd, so $T \\equiv 1 \\not\\equiv 0 \\pmod 2$, hence $T \\ne 0$ as an integer."
     },
     {
-      "id": "main-theorem",
-      "title": "Section II: counterexample_always_large_proved",
+      "id": "sec-main-theorem",
+      "title": "Section II — Main Theorem: counterexample_always_large_proved",
       "startLine": 92,
-      "endLine": 117,
-      "summary": "Main theorem assembling the helpers: unfold signedSumAbs and Complex.abs_apply, reduce to Real.sqrt_le_sqrt on normSq ≥ 2. Then unfold normSq = Re² + Im², apply cc_re and cc_im, observe ε₀² = 1 (since ε₀ ∈ {-1, 1}), and chain T ≠ 0 → |T| ≥ 1 → T² ≥ 1 via Int.natAbs_pos and nlinarith[sq_abs T]. Final linarith gives normSq ≥ 1 + 1 = 2."
+      "endLine": 118,
+      "summary": "counterexample_always_large_proved: assembles the four helpers into the final |S| ≥ √2 bound. Unfold signedSumAbs to Complex.abs, apply Real.sqrt_le_sqrt to reduce to normSq ≥ 2. Unfold normSq = Re² + Im² and rewrite by cc_re + cc_im, giving normSq = ε₀² + T². Observe ε₀² = 1 (since ε₀ ∈ {-1,1}). Chain T ≠ 0 → 1 ≤ |T| via Int.natAbs_pos → 1 ≤ T² via nlinarith [sq_abs T]. Final linarith: normSq = 1 + T² ≥ 1 + 1 = 2.",
+      "mathContext": "$|S|^2 = (\\mathrm{Re}\\,S)^2 + (\\mathrm{Im}\\,S)^2 = \\varepsilon_0^2 + T^2 = 1 + T^2 \\ge 1 + 1 = 2 \\Rightarrow |S| \\ge \\sqrt{2}.$ The integer $T \\ne 0$ supplies the discrete jump: $|T| \\ge 1 \\Rightarrow T^2 \\ge 1$, the source of the $\\sqrt{2}$ threshold."
     }
   ],
   "conclusion": {
