@@ -1,121 +1,119 @@
 # Current State
 
-**Phase**: ACT — gallery entry built; 2 axioms tractable, 1 is the main open conjecture
+**Phase**: ACT — Layer 3b done; `rational_digits_eventually_periodic` discharged
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 10, researcher-11)
-**Iteration**: 10
+**Last Updated**: 2026-05-08 (Session 11, researcher-8)
+**Iteration**: 11
 
 ## Current Focus
 
-Session 10 split **Layer 3** of the 3-layer recipe for
-`rational_digits_eventually_periodic` into two parts and implemented
-**Layer 3a** — the `ℝ → ℤ` cast bridge — as a single private helper:
+Session 11 closed the 3-layer recipe by implementing **Layer 3b** — the
+integer-arithmetic residue-to-digit bridge — and using it (together with
+Layers 1, 2, 3a) to discharge the previous `rational_digits_eventually_periodic`
+axiom. The axiom is now a theorem.
+
+### New code (4 lemmas + 1 theorem; ~75 lines)
 
 ```lean
-private lemma floor_pow_mul_div (b : ℕ) (p : ℤ) (q : ℕ) (n : ℕ) :
-    ⌊(b : ℝ) ^ n * ((p : ℝ) / (q : ℝ))⌋ = ((b : ℤ) ^ n * p) / q
+-- Cast bridge: lift Layer 3a from (p, q : ℕ × ℤ) to q : ℚ
+private lemma floor_pow_rat_eq_ediv (b : ℕ) (q : ℚ) (n : ℕ) :
+    ⌊((b : ℝ) ^ n * (q : ℝ))⌋ = (q.num * (b : ℤ) ^ n) / (q.den : ℤ)
+
+-- Integer-arithmetic identity (Euclidean division decomposition)
+private lemma int_mul_ediv_eq (b a m : ℤ) (hm : m ≠ 0) :
+    b * a / m = b * (a / m) + (b * (a % m)) / m
+
+-- Layer 3b core: digit at n+1 = (b · residue at n / q.den) % b
+private lemma nthDigit_succ_via_residue (b : ℕ) (q : ℚ) (n : ℕ) :
+    nthDigit b (n + 1) (q : ℝ) =
+      (((b : ℤ) * ((q.num * (b : ℤ) ^ n) % (q.den : ℤ))) / (q.den : ℤ)) % (b : ℤ)
+
+-- Bridge: residue equality at n, m ⇒ digit equality at n+1, m+1
+private lemma nthDigit_succ_eq_of_emod_eq (b : ℕ) (q : ℚ) {n m : ℕ}
+    (h : (q.num * (b : ℤ) ^ n) % (q.den : ℤ) =
+         (q.num * (b : ℤ) ^ m) % (q.den : ℤ)) :
+    nthDigit b (n + 1) (q : ℝ) = nthDigit b (m + 1) (q : ℝ)
+
+-- Replaces axiom: digits eventually periodic
+theorem rational_digits_eventually_periodic (b : ℕ) (_hb : 2 ≤ b) (q : ℚ) :
+    ∃ T N₀, 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
 ```
 
-The proof is two lines: `push_cast` + `ring` rewrites the `ℝ` expression
-as a single `ℤ`-cast over a `ℕ`-divisor, then `Int.floor_div_natCast` +
-`Int.floor_intCast` discharge the floor. This isolates the cast burden
-of the residue bridge `nthDigit_rat_eq_residue` from the integer-arithmetic
-`(b^n · p) / q ↔ (b^n · p mod q) · b / q` algebra of Layer 3b.
+### Key Mathlib API used (all v4.26.0)
 
-After Layer 3a is in place, **Layer 3b** is a pure-integer-arithmetic
-step (`Int.ediv_add_emod` + `Int.emod_lt_of_pos` style), free of any
-`Real`/`Rat` machinery. Estimated 30–50 lines for Layer 3b once the
-sign-handling for negative `p` is decomposed (recipe convention:
-restrict to `p ≥ 0, q > 0` first, then handle `p < 0` via
-`nthDigit b n (-x)` symmetry as a small follow-up).
-
-Earlier session context:
-
-* Session 9 (researcher-9, PR #17016): Layer 2 — `ratResidue`,
-  `ratResidue_succ`, `ratResidue_eq_iterate`,
-  `ratResidue_eventually_periodic`.
-* Session 8 (researcher-11, PR #16993): Layer 1 —
-  `exists_iterate_collision`, `eventually_periodic_iterate`.
-* Session 3 (researcher-11, PR #16976): the 3-layer recipe.
+| Lemma | Module | Role |
+|-------|--------|------|
+| `Rat.cast_def` | `Mathlib.Algebra.Field.Defs` | `(q : ℝ) = q.num / q.den` |
+| `Int.ediv_add_emod` | core | `m·(a/m) + a%m = a` |
+| `Int.add_mul_ediv_left` | core | `(x + m·y)/m = x/m + y` |
+| `Int.add_mul_emod_self_left` | core | `(x + m·y)%m = x%m` |
+| `ZMod.intCast_eq_intCast_iff'` | `Mathlib.Data.ZMod.Basic` | residue ↔ `% q.den` equality |
+| `Rat.den_pos` | core | `0 < q.den` |
 
 ## Active Approach
 
-The current Lean entry establishes the framework:
-- Definitions: `nthDigit`, `IsNormalInBase`, `IsAbsolutelyNormal`,
+The Lean entry now establishes:
+- **Definitions**: `nthDigit`, `IsNormalInBase`, `IsAbsolutelyNormal`,
   `ratResidue` (private, S9).
-- 28 public theorems: `e_floor`, `e_floor_10..1000000000`, `e_digit1..9`
-  (first 9 decimal digits 2.718281828 from `Real.exp_one_gt_d9` /
-  `Real.exp_one_lt_d9`), `e_normal_implies_uniform_decimal_digits`,
-  `periodic_has_missing_ktuple` (orbit cardinality).
-- 6 private helpers (Layers 1, 2, 3a): `exists_iterate_collision`,
-  `eventually_periodic_iterate`, `ratResidue_succ`,
-  `ratResidue_eq_iterate`, `ratResidue_eventually_periodic`,
-  `floor_pow_mul_div`.
+- **29 public theorems**: `e_floor`, `e_floor_10..1000000000`, `e_digit1..9`,
+  `e_normal_implies_uniform_decimal_digits`, `periodic_has_missing_ktuple`,
+  and now (S11) `rational_digits_eventually_periodic`.
+- **10 private helpers** (Layers 1, 2, 3a, 3b): `exists_iterate_collision`,
+  `eventually_periodic_iterate`, `ratResidue_succ`, `ratResidue_eq_iterate`,
+  `ratResidue_eventually_periodic`, `floor_pow_mul_div`, `floor_pow_rat_eq_ediv`,
+  `int_mul_ediv_eq`, `nthDigit_succ_via_residue`,
+  `nthDigit_succ_eq_of_emod_eq`.
 
-Three remaining axioms:
-- `rational_digits_eventually_periodic` — **tractable**. Layers 1, 2, 3a
-  in place; Layer 3b (residue → digit form) is the only piece remaining.
-- `normal_imp_irrational` — derives from axiom 1 +
-  `periodic_has_missing_ktuple`. Discharging axiom 1 first then proving 2
-  is the natural sequence.
-- `e_absolutely_normal` — the **main open conjecture**. Genuinely
-  open as of 2026; will remain axiomatized.
+**Two remaining axioms**:
+- `normal_imp_irrational` — now directly tractable. Recipe: apply (proved)
+  `rational_digits_eventually_periodic` to get T, N₀; pick k with bᵏ > T;
+  apply (proved) `periodic_has_missing_ktuple` to get a missing k-tuple;
+  bound count by N₀ ⇒ frequency → 0; contradict Tendsto to b^(-k) > 0.
+  ~50 lines, no new axioms.
+- `e_absolutely_normal` — the **main open conjecture**. Genuinely open
+  as of 2026; will remain axiomatized.
 
 ## Blockers
 
 - **Local Lean build unreliable**: Worktree's `proofs/.lake` is a
   self-cycle symlink — Docker build cold-clones Mathlib (~45 min).
-  Following S8/S9 convention, build verification is deferred to CI.
-  Layer 3a uses well-established Mathlib v4.26.0 lemmas
-  (`Int.floor_div_natCast`, `Int.floor_intCast`, both confirmed via
-  `gh api repos/leanprover-community/mathlib4/contents/...`), so
-  the build risk is contained to the `push_cast` + `ring` step which
-  uses only standard cast-pushing simp lemmas.
+  Following S8/S9/S10 convention, build verification is deferred to CI.
+  All Mathlib lemmas used are well-established and stable in v4.26.0.
 
 ## Next Action
 
-**ACT (Session 11)** — implement Layer 3b: the integer-arithmetic
-residue-to-digit bridge
+**ACT (Session 12)** — discharge `normal_imp_irrational` via the recipe above.
+With `rational_digits_eventually_periodic` now a theorem, the path is:
 
-```lean
-private lemma nthDigit_rat_eq_residue (b : ℕ) (hb : 2 ≤ b)
-    (p : ℤ) (q : ℕ) (hq : 0 < q) (n : ℕ) :
-    nthDigit b n ((p : ℝ) / (q : ℝ)) =
-      (b * ((p * (b : ℤ)^n) % (q : ℤ))) / (q : ℤ)  -- conjectural form
-```
+1. Suppose x = p/q is rational and IsNormalInBase b x. Apply (proved)
+   `rational_digits_eventually_periodic` to get T, N₀ with 0 < T,
+   nthDigit b (n+T) x = nthDigit b n x for n ≥ N₀.
+2. Pick k with bᵏ > T (e.g., k := T + 1 since T < bᵏ for b ≥ 2).
+3. Apply (proved) `periodic_has_missing_ktuple` to get a missing k-tuple s.
+4. Show that the count of n < N where x has tuple s starting at n is
+   bounded by N₀ (the pre-period contribution), since after N₀ no n
+   produces s.
+5. Therefore frequency → 0 as N → ∞, contradicting normality (which
+   requires frequency → b^(-k) > 0).
 
-(Note: the exact statement may need sign-restriction; the natural
-single-step version factors via Layer 3a as
-
-```
-nthDigit b n ((p : ℝ) / q) = (((b : ℤ)^n * p) / q) % (b : ℤ)
-                          = ⟨residue-bridge in ℤ⟩
-```
-
-where the second `=` is what Layer 3b proves.)
-
-Estimated ~30–50 lines. With Layer 3a's `floor_pow_mul_div` as starting
-point, the proof reduces to integer division/modular arithmetic
-(`Int.ediv_add_emod` patterns), bypassing any further `Real` machinery.
-
-After Layer 3b lands, the axiom `rational_digits_eventually_periodic`
-can be replaced by a theorem chaining Layers 1, 2, 3a, 3b — and then
-`normal_imp_irrational` becomes tractable as a follow-up.
+After Session 12, only `e_absolutely_normal` remains axiomatized — and
+that is the genuinely-open conjecture.
 
 ## Attempt Counts
 
-- Total attempts: 5 (Session 1 = entry built 2026-05-04; Session 2 =
+- Total attempts: 6 (Session 1 = entry built 2026-05-04; Session 2 =
   metadata reconciliation 2026-05-07; Session 3 = recipe (2026-05-08);
   Session 8 = Layer 1 (#16993, 2026-05-08); Session 9 = Layer 2
-  (researcher-9, #17016, 2026-05-08); Session 10 = Layer 3a
-  (researcher-11, 2026-05-08)).
-- Current approach attempts: 3 (Layers 1, 2, 3a all closed; Layer 3b
-  remains).
+  (#17016, 2026-05-08); Session 10 = Layer 3a (#17037, 2026-05-08);
+  Session 11 = Layer 3b + axiom discharge (this PR, 2026-05-08)).
+- Current approach attempts: 4 (Layers 1, 2, 3a, 3b all closed; axiom 1
+  discharged).
 
 ## References
 
-- `proofs/Proofs/ETranscendentalOQ02.lean:336` — `rational_digits_eventually_periodic` (axiom)
-- `proofs/Proofs/ETranscendentalOQ02.lean:325` — `floor_pow_mul_div` (Layer 3a, S10)
+- `proofs/Proofs/ETranscendentalOQ02.lean:430+` — `rational_digits_eventually_periodic` (theorem, S11)
+- `proofs/Proofs/ETranscendentalOQ02.lean:395+` — `nthDigit_succ_via_residue` (Layer 3b, S11)
+- `proofs/Proofs/ETranscendentalOQ02.lean:341` — `floor_pow_mul_div` (Layer 3a, S10)
 - `proofs/Proofs/ETranscendentalOQ02.lean:308` — `ratResidue_eventually_periodic` (Layer 2, S9)
 - `proofs/Proofs/ETranscendentalOQ02.lean:243` — `eventually_periodic_iterate` (Layer 1, S8)
 - `src/data/proofs/e-transcendental-oq-02/meta.json` — gallery metadata

@@ -346,22 +346,97 @@ private lemma floor_pow_mul_div (b : ℕ) (p : ℤ) (q : ℕ) (n : ℕ) :
     ring
   rw [hcast, Int.floor_div_natCast, Int.floor_intCast]
 
-/-- **Axiom**: Rational numbers have eventually periodic base-b expansions.
-    Proof sketch: if x = p/q, then bⁿ·(p/q) mod 1 = (bⁿ·p mod q)/q, and
-    bⁿ mod q is periodic (pigeonhole on {0,...,q-1}).
-    The period T divides φ(q) ≤ q.
+/-! ### Layer 3b: residue-bridge for `nthDigit`
 
-    Recipe-status (Session 3 #16976; Layer 1 added Session 8; Layer 2 added
-    Session 9; Layer 3a added Session 10): the orbit-form pigeonhole
-    `eventually_periodic_iterate` plus the residue bridge
-    `ratResidue_eventually_periodic` give the abstract eventual-periodicity
-    ingredient — the residue sequence `q.num · bⁿ mod q.den` is now formally
-    periodic for every `q : ℚ` with `q.den > 0`. Layer 3a
-    (`floor_pow_mul_div`) discharges the `ℝ → ℤ` cast burden, leaving
-    Layer 3b — the integer-arithmetic residue-bridge — as the only piece
-    between this axiom and a discharged theorem. -/
-axiom rational_digits_eventually_periodic (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
-    ∃ (T : ℕ) (N₀ : ℕ), 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
+Layer 3b is the integer-arithmetic step that connects `nthDigit` to the
+ZMod-residue sequence. Given Layer 3a's `floor_pow_mul_div`, the digit at
+position `n+1` is determined by `(q.num · b^n) mod q.den` — the integer-valued
+form of `ratResidue`. Combined with Layer 2's
+`ratResidue_eventually_periodic`, this discharges the previous
+`rational_digits_eventually_periodic` axiom (Session 11).
+-/
+
+/-- Floor of `(b : ℝ)^n · (q : ℝ)` for `q : ℚ` reduces to integer Euclidean
+    division `(q.num · b^n) / q.den`. Combines Layer 3a's `floor_pow_mul_div`
+    with `Rat.cast_def` to lift from `(p : ℤ, q : ℕ)` to `q : ℚ`. -/
+private lemma floor_pow_rat_eq_ediv (b : ℕ) (q : ℚ) (n : ℕ) :
+    ⌊((b : ℝ) ^ n * (q : ℝ))⌋ = (q.num * (b : ℤ) ^ n) / (q.den : ℤ) := by
+  have hcast : (b : ℝ) ^ n * (q : ℝ) =
+      (b : ℝ) ^ n * ((q.num : ℝ) / (q.den : ℝ)) := by
+    push_cast [Rat.cast_def]
+    ring
+  rw [hcast, floor_pow_mul_div]
+  congr 1
+  ring
+
+/-- Integer-arithmetic identity used in Layer 3b: for `m ≠ 0` and integers `a, b`,
+    `(b · a) / m = b · (a / m) + (b · (a % m)) / m`. Decomposes
+    `a = m·(a/m) + (a%m)` and uses `Int.add_mul_ediv_left` to extract the
+    multiple-of-m term cleanly. -/
+private lemma int_mul_ediv_eq (b a m : ℤ) (hm : m ≠ 0) :
+    b * a / m = b * (a / m) + (b * (a % m)) / m := by
+  conv_lhs => rw [← Int.ediv_add_emod a m]
+  rw [show b * (m * (a / m) + a % m) = b * (a % m) + m * (b * (a / m)) from by ring,
+      Int.add_mul_ediv_left _ _ hm,
+      add_comm]
+
+/-- **Layer 3b**: the `(n+1)`-th base-b digit of `(q : ℝ)` is determined by the integer
+    residue `(q.num · b^n) mod q.den`. Specifically:
+    `nthDigit b (n+1) q = (b · ((q.num · b^n) mod q.den) / q.den) mod b`.
+    The outer `mod b` is in fact a no-op (since the inner quotient lies in `[0, b)`),
+    but we keep it for syntactic uniformity with `nthDigit`. -/
+private lemma nthDigit_succ_via_residue (b : ℕ) (q : ℚ) (n : ℕ) :
+    nthDigit b (n + 1) (q : ℝ) =
+      (((b : ℤ) * ((q.num * (b : ℤ) ^ n) % (q.den : ℤ))) / (q.den : ℤ)) % (b : ℤ) := by
+  unfold nthDigit
+  rw [floor_pow_rat_eq_ediv]
+  set m : ℤ := (q.den : ℤ) with hm_def
+  have hm_ne : m ≠ 0 := by
+    rw [hm_def]; exact_mod_cast q.den_pos.ne'
+  set a : ℤ := q.num * (b : ℤ) ^ n with ha_def
+  -- Goal: q.num * b^(n+1) / m % b = (b * (a % m)) / m % b
+  have h_pow : q.num * (b : ℤ) ^ (n + 1) = (b : ℤ) * a := by
+    rw [ha_def, pow_succ]; ring
+  rw [h_pow, int_mul_ediv_eq (b : ℤ) a m hm_ne]
+  -- Goal: (b * (a / m) + (b * (a % m)) / m) % b = (b * (a % m)) / m % b
+  rw [add_comm, Int.add_mul_emod_self_left]
+
+/-- If integer residues match at positions `n` and `m`, the corresponding digits
+    (at positions `n+1` and `m+1`) match. -/
+private lemma nthDigit_succ_eq_of_emod_eq (b : ℕ) (q : ℚ) {n m : ℕ}
+    (h : (q.num * (b : ℤ) ^ n) % (q.den : ℤ) =
+         (q.num * (b : ℤ) ^ m) % (q.den : ℤ)) :
+    nthDigit b (n + 1) (q : ℝ) = nthDigit b (m + 1) (q : ℝ) := by
+  rw [nthDigit_succ_via_residue, nthDigit_succ_via_residue, h]
+
+/-- **Theorem replacing the previous axiom (Session 11)**: rational numbers have
+    eventually periodic base-b expansions. Combines:
+    - **Layer 1** (`eventually_periodic_iterate`, S8): orbits in finite types are eventually periodic.
+    - **Layer 2** (`ratResidue_eventually_periodic`, S9): the residue sequence
+      `(q.num · b^n) mod q.den` is eventually periodic with period `T ≤ q.den` and
+      pre-period `N₀ ≤ q.den`.
+    - **Layer 3a** (`floor_pow_mul_div`, S10): the `ℝ → ℤ` cast bridge.
+    - **Layer 3b** (`nthDigit_succ_via_residue`, this session): the digit at position
+      `n+1` is determined solely by the integer residue at position `n`.
+
+    The digit pre-period is `N₀ + 1` (one more than the residue pre-period, since the
+    digit at position `n+1` corresponds to the residue at position `n`). -/
+theorem rational_digits_eventually_periodic (b : ℕ) (_hb : 2 ≤ b) (q : ℚ) :
+    ∃ (T : ℕ) (N₀ : ℕ), 0 < T ∧
+      ∀ n ≥ N₀, nthDigit b (n + T) (q : ℝ) = nthDigit b n (q : ℝ) := by
+  haveI : NeZero q.den := ⟨q.den_pos.ne'⟩
+  obtain ⟨T, N₀, hT_pos, _, _, hper⟩ := ratResidue_eventually_periodic b q q.den_pos
+  refine ⟨T, N₀ + 1, hT_pos, ?_⟩
+  intro n hn
+  obtain ⟨k, rfl⟩ : ∃ k, n = N₀ + 1 + k := ⟨n - (N₀ + 1), by omega⟩
+  have heq1 : N₀ + 1 + k + T = (N₀ + k + T) + 1 := by omega
+  have heq2 : N₀ + 1 + k = (N₀ + k) + 1 := by omega
+  rw [heq1, heq2]
+  apply nthDigit_succ_eq_of_emod_eq
+  have h_zmod : ratResidue b q (N₀ + k + T) = ratResidue b q (N₀ + k) :=
+    hper (N₀ + k) (Nat.le_add_right _ _)
+  unfold ratResidue at h_zmod
+  exact (ZMod.intCast_eq_intCast_iff' _ _ _).mp h_zmod
 
 /-- In a sequence with period T, at most T distinct k-tuples appear after the period starts.
     If bᵏ > T, some k-tuple never appears.
