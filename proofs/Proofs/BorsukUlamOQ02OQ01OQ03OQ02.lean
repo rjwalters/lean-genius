@@ -630,6 +630,82 @@ theorem symBUDim_prime_combined_lower (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d
   · exact sym_has_cyclic_prime p d p hp le_rfl
   · exact symBUDim_lower_z2 p d hp.two_le hd
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XV: Conjecture-as-Prop and explicit falsification handles
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- The Largest-Prime-Below conjecture, stated as a `Prop` rather than an
+    axiom. Downstream developments that wish to track conjecture-dependence
+    explicitly can take this as a hypothesis instead of using the file's
+    `symBUDim_eq_largestPrime` axiom. -/
+def ConjectureLPB : Prop :=
+  ∀ n d : ℕ, 2 ≤ n → symBUDim n d = buDim (largestPrimeBelow n) d
+
+/-- Hypothesis-form variant of `buDim_largestPrime_lower_z2`: the conjecture
+    (as a `Prop` hypothesis) implies the Z/2 lower bound on the cyclic
+    Yang-Borsuk dimension at the largest prime ≤ n. Same statement as the
+    axiom-using version, but the conjecture-dependence is explicit. -/
+theorem buDim_largestPrime_lower_z2_of (h : ConjectureLPB) (n d : ℕ)
+    (hn : 2 ≤ n) (hd : 0 < d) :
+    d - 1 ≤ buDim (largestPrimeBelow n) d := by
+  rw [← h n d hn]
+  exact symBUDim_lower_z2 n d hn hd
+
+/-- Hypothesis-form variant of `buDim_prime_lower_z2_conditional`. -/
+theorem buDim_prime_lower_z2_of (h : ConjectureLPB) (p d : ℕ)
+    (hp : Nat.Prime p) (hd : 0 < d) :
+    d - 1 ≤ buDim p d := by
+  have hL := buDim_largestPrime_lower_z2_of h p d hp.two_le hd
+  rwa [largestPrimeBelow_self_of_prime p hp] at hL
+
+/-- Hypothesis-form variant of `symBUDim_eq_buDim_at_prime`: at any prime p,
+    the conjecture pins `symBUDim p d = buDim p d` for all d. -/
+theorem symBUDim_eq_buDim_at_prime_of (h : ConjectureLPB) (p d : ℕ)
+    (hp : Nat.Prime p) :
+    symBUDim p d = buDim p d := by
+  have hL := h p d hp.two_le
+  rwa [largestPrimeBelow_self_of_prime p hp] at hL
+
+/-- **Falsification handle (general)**: if for some prime p and some d ≥ 1
+    we ever prove the strict bound `buDim p d < d - 1`, then `ConjectureLPB`
+    is false.
+
+    This is the contrapositive of `buDim_prime_lower_z2_of`. It is the
+    formal restatement of iter-8's remark "any future computation of
+    `buDim p d` at odd d that violates `d − 1 ≤ buDim p d` would FALSIFY
+    `symBUDim_eq_largestPrime` at n = p". -/
+theorem not_conjectureLPB_of_buDim_lt {p d : ℕ} (hp : Nat.Prime p)
+    (hd : 0 < d) (hlt : buDim p d < d - 1) :
+    ¬ ConjectureLPB := by
+  intro h
+  have := buDim_prime_lower_z2_of h p d hp hd
+  omega
+
+/-- **Falsification handle at p = 3, d = 3**: a proof of `buDim 3 3 < 2`
+    would refute the conjecture. Concrete instance most likely amenable
+    to direct equivariant-cohomology computation, since the Yang-Borsuk
+    dimension at p = 3 in odd dimension d = 3 is exactly the simplest
+    case beyond the parent file's even-d axiomatization. -/
+theorem not_conjectureLPB_of_buDim_three_three_lt_two
+    (h : buDim 3 3 < 2) : ¬ ConjectureLPB :=
+  not_conjectureLPB_of_buDim_lt (p := 3) (d := 3) (by decide) (by norm_num)
+    (by simpa using h)
+
+/-- **Falsification handle at p = 5, d = 3**: a proof of `buDim 5 3 < 2`
+    would refute the conjecture. The conjecture's claim here is strictly
+    beyond Yang-Borsuk's even-d axiomatization. -/
+theorem not_conjectureLPB_of_buDim_five_three_lt_two
+    (h : buDim 5 3 < 2) : ¬ ConjectureLPB :=
+  not_conjectureLPB_of_buDim_lt (p := 5) (d := 3) (by decide) (by norm_num)
+    (by simpa using h)
+
+/-- **Falsification handle at p = 3, d = 5**: a proof of `buDim 3 5 < 4`
+    would refute the conjecture. -/
+theorem not_conjectureLPB_of_buDim_three_five_lt_four
+    (h : buDim 3 5 < 4) : ¬ ConjectureLPB :=
+  not_conjectureLPB_of_buDim_lt (p := 3) (d := 5) (by decide) (by norm_num)
+    (by simpa using h)
+
 /-
 ## Summary
 
@@ -735,6 +811,30 @@ theorem symBUDim_prime_combined_lower (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d
   both coincide (`buDim p (2k) = 2k − 1 = d − 1`); at odd d the Z/2
   component dominates.
 
+### Iteration 9 additions (conjecture-as-Prop and falsification handles)
+- `ConjectureLPB : Prop` — the equality conjecture stated as an explicit
+  hypothesis (not an axiom). Lets downstream developments take the
+  conjecture as a hypothesis instead of using `symBUDim_eq_largestPrime`,
+  making conjecture-dependence explicit at the type level.
+- `buDim_largestPrime_lower_z2_of`, `buDim_prime_lower_z2_of`,
+  `symBUDim_eq_buDim_at_prime_of` — hypothesis-form variants of the
+  iter-8 conditional theorems (and `symBUDim_eq_buDim_at_prime` from
+  iter 5). Same statements, but the dependence on the conjecture is
+  encoded via a `ConjectureLPB` hypothesis rather than via the file's
+  axiom.
+- `not_conjectureLPB_of_buDim_lt` — **falsification theorem**: a future
+  proof of `buDim p d < d − 1` at any prime p and any d ≥ 1 refutes
+  `ConjectureLPB`. Formal contrapositive of `buDim_prime_lower_z2_of`.
+  Crystallizes iter-8's "falsification handle" remark as a concrete
+  theorem at the type level.
+- Concrete falsification handles at small (p, d):
+  `not_conjectureLPB_of_buDim_three_three_lt_two`,
+  `not_conjectureLPB_of_buDim_five_three_lt_two`,
+  `not_conjectureLPB_of_buDim_three_five_lt_four` — explicit instances
+  at the simplest odd-d cases beyond the parent's `buDim_prime` axiom
+  (which only fires on even d). These pinpoint exactly where future
+  Yang-Borsuk research could refute the conjecture.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -746,6 +846,10 @@ theorem symBUDim_prime_combined_lower (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d
 - The Bertrand bound shows the cyclic lower bound is within factor 2 of
   optimal; tightening past this would require S_n-specific structure
   (representation-theoretic obstructions, V₄-style non-cyclic factors).
+- Concrete falsification target: compute or bound `buDim 3 3` directly
+  via equivariant cohomology of Z/3 on simple S^2-actions. A proof of
+  `buDim 3 3 < 2` would refute `ConjectureLPB`; a proof of `buDim 3 3 = 2`
+  would tighten its content at the simplest odd-d case.
 -/
 
 #check @symBUDim_eq_largestPrime
@@ -765,5 +869,10 @@ theorem symBUDim_prime_combined_lower (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d
 #check @buDim_largestPrime_lower_z2
 #check @buDim_prime_lower_z2_conditional
 #check @symBUDim_prime_combined_lower
+#check @ConjectureLPB
+#check @buDim_largestPrime_lower_z2_of
+#check @buDim_prime_lower_z2_of
+#check @symBUDim_eq_buDim_at_prime_of
+#check @not_conjectureLPB_of_buDim_lt
 
 end BorsukUlamSymPrime
