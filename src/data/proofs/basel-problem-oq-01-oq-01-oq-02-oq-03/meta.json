@@ -134,6 +134,11 @@
       "targetId": "erdos-1057",
       "relationship": "shares-technique",
       "description": "Erdős Problem #1057 (Carmichael number counting) uses an analogous Finset-induction packaging: `Erdos1057Problem.prod_primes_dvd_of_each_dvd` shows that pairwise-coprime prime divisors of `N` have their product dividing `N`. The helper here (`prod_dvd_of_pairwise_coprime`) generalizes that pattern over an arbitrary `f : ℕ → ℕ` so it can handle prime-power factors `p ↦ p^⌊log_p n⌋` rather than just `p ↦ p` — a small but essential abstraction step toward Chebyshev's exact decomposition."
+    },
+    {
+      "targetId": "chebyshev-bounds-oq-04",
+      "relationship": "supports",
+      "description": "Direct logarithmic reformulation: Hanson's bound `lcmRange n ≤ 3^n` (this entry's `axiom hanson_bound`) is equivalent to $\\psi(n) \\le n \\log 3$, where $\\psi(n) = \\log\\operatorname{lcm}(1, \\ldots, n)$ is Chebyshev's second function (the subject of `chebyshev-bounds-oq-04`). The two entries hold the same content in different units: Hanson's bound is the *exponential* form, $\\psi$-bounds are the *logarithmic* form. A future Mathlib refactoring would establish `lcmRange n = Nat.exp (psi n)` (where `psi` is the Lean version of $\\psi$), making each bound mechanically derivable from the other. Until then, the two entries develop the same machinery (prime-power decomposition, primorial-to-lcm bridge) along parallel tracks."
     }
   ]
 }
