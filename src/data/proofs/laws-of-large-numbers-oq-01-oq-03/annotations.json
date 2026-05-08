@@ -94,5 +94,17 @@
     "significance": "technical",
     "relatedConcepts": ["companion file pattern", "Aristotle proof search", "namespace delegation", "proof facade"],
     "prerequisites": ["Lean 4 namespaces", "module imports", "proof delegation"]
+  },
+  {
+    "id": "ann-006-tsum-divergence",
+    "proofId": "laws-of-large-numbers-oq-01-oq-03",
+    "range": { "startLine": 94, "endLine": 94 },
+    "type": "definition",
+    "title": "ENNReal Divergence Idiom: ∑' n, μ (A n) = ⊤",
+    "content": "The hypothesis `hsum : ∑' n, μ (A n) = ⊤` encodes the divergence Σ P(Aₙ) = ∞ via Mathlib's standard idiom for unconditional sums in the extended non-negative reals. Three pieces deserve unpacking: (1) `∑'` is `tsum`, the unconditional (filter-based) sum that always exists in `ℝ≥0∞` because the space is complete and order-complete; (2) `μ (A n)` lives in `ℝ≥0∞ = ENNReal` since Mathlib's `Measure` valuates measurable sets in the extended non-negative reals; (3) `⊤` is the top element of `ℝ≥0∞`, identified with $+\\infty$. Writing the divergence as equality with `⊤` rather than `¬ Summable` is preferred in Mathlib: it sidesteps the partial-sum predicate and lets the proof reason directly about the value of the tsum.",
+    "mathContext": "Equivalence of formulations:\n$$\\sum_{n} \\mu(A_n) = \\infty \\quad \\Leftrightarrow \\quad (\\sum^{'}_{n} \\mu(A_n) : \\mathbb{R}_{\\geq 0}^{\\infty}) = \\top.$$\nThe `tsum` in `ℝ≥0∞` is monotone in the index set and equals the supremum over finite partial sums. Convergence in the usual real-analysis sense corresponds to `tsum ≠ ⊤`. The choice of $\\mathbb{R}_{\\geq 0}^{\\infty}$ as the value type is essential: it makes `tsum` total (always defined) and lets the divergence assumption be stated as an *equation* rather than a negated convergence predicate. This pattern recurs throughout Mathlib's measure-theoretic library.",
+    "significance": "technical",
+    "relatedConcepts": ["ENNReal", "tsum", "unconditional summability", "measure values", "Mathlib idioms"],
+    "prerequisites": ["extended non-negative reals", "Mathlib Measure type", "tsum vs HasSum"]
   }
 ]
