@@ -99,11 +99,15 @@
       "intersection_isDiophantineDefinition: Σ₁ class is closed under binary intersection over ℚ via the sum-of-squares polynomial witness P(q, x) = (P₁(q, evenProj x))² + (P₂(q, oddProj x))² with even/odd variable packing (iter 12 Path B; combined with iter 9 union closure, Σ₁ over ℚ is closed under finite Boolean combinations using ∪ and ∩ but NOT under complement)",
       "intersection_isUniversalExistentialDefinition: trivial Π₂ corollary of intersection_isDiophantineDefinition via Σ₁ ⊆ Π₂ (iter 12, axiom-free)",
       "union_isCoDiophantineDefinition: Π₁ class is closed under binary union over ℚ — the missing dual of iter 9's Σ₁-union closure. Constructed via the iter 5 Σ₁/Π₁ duality, iter 12's Σ₁ ∩ closure, and the iter 4 Σ₁ class congruence helper, with the underlying polynomial witness identical to iter 12's sum-of-squares construction (the duality is identity on the polynomial family P). The de Morgan bridge ¬S₁∧¬S₂ ↔ ¬(S₁∨S₂) is constructive — no NEW classical reasoning is introduced beyond what iter 5 already required (iter 13 Path B; no new Mathlib lemmas, no new imports)",
-      "union_isExistentialUniversalDefinition: trivial Σ₂ corollary of union_isCoDiophantineDefinition via Π₁ ⊆ Σ₂ (iter 13, axiom-free); together with iter 9 (Σ₁ ∪, Π₁ ∩) and iter 12 (Σ₁ ∩) completes the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over ℚ — neither class is closed under complement (which would collapse Σ₁ = Π₁, equivalent to the OPEN question)"
+      "union_isExistentialUniversalDefinition: trivial Σ₂ corollary of union_isCoDiophantineDefinition via Π₁ ⊆ Σ₂ (iter 13, axiom-free); together with iter 9 (Σ₁ ∪, Π₁ ∩) and iter 12 (Σ₁ ∩) completes the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over ℚ — neither class is closed under complement (which would collapse Σ₁ = Π₁, equivalent to the OPEN question)",
+      "finIntersectionList_isDiophantineDefinition: Σ₁ class is closed under finite list intersection over ℚ — list lift of iter 12's intersection_isDiophantineDefinition by induction on the list, with the empty list giving the universe set (vacuous quantifier ↔ True). No new Mathlib lemmas, no new imports (iter 14 Path B; axiom-free)",
+      "finIntersectionList_isUniversalExistentialDefinition: trivial Π₂ corollary via Σ₁ ⊆ Π₂ (iter 14, axiom-free)",
+      "finUnionList_isCoDiophantineDefinition: Π₁ class is closed under finite list union over ℚ — list lift of iter 13's union_isCoDiophantineDefinition by induction on the list, with the empty list giving the empty set (vacuous existential ↔ False). No new Mathlib lemmas, no new imports (iter 14 Path B; axiom-free)",
+      "finUnionList_isExistentialUniversalDefinition: trivial Σ₂ corollary via Π₁ ⊆ Σ₂ (iter 14, axiom-free); together with iter 14's intersection list lift extends the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over ℚ to arbitrary FINITE-arity intersections (Σ₁) and unions (Π₁) — closure properties strictly bigger than the binary versions in iter 12, 13"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 1610,
+    "lineCount": 1743,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -111,7 +115,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 61,
+    "theoremCount": 65,
     "definitionCount": 15
   },
   "overview": {
@@ -243,9 +247,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 1610,
+    "lineCount": 1743,
     "axiomCount": 1,
-    "theoremCount": 61,
+    "theoremCount": 65,
     "definitionCount": 15,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
