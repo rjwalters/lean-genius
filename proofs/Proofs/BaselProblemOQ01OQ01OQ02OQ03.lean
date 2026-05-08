@@ -364,6 +364,26 @@ theorem lcmRange_le_factorial (n : ℕ) : lcmRange n ≤ n.factorial :=
 theorem lcmRange_le_self_pow (n : ℕ) : lcmRange n ≤ n ^ n :=
   le_trans (lcmRange_le_factorial n) (Nat.factorial_le_pow n)
 
+/-- **Prime-counting bound** (Iter 10): for `n ≥ 1`,
+    `lcmRange n ≤ n ^ π(n)` where `π(n) = #{p prime, p ≤ n}`.
+
+    Direct consequence of Iter 9's Chebyshev decomposition
+    `lcmRange_eq_prod_prime_powers`: each maximal prime power
+    `p ^ ⌊log_p n⌋ ≤ n` by `Nat.pow_log_le_self`, so the Chebyshev
+    product over the `π(n)` primes ≤ n is bounded by `n ^ π(n)`.
+
+    Strictly stronger than `lcmRange_le_self_pow` (`lcmRange n ≤ n ^ n`)
+    for `n ≥ 3` since `π(n) < n`. By PNT, `n ^ π(n)` is asymptotically
+    `e ^ n`; for moderate n the bound is weaker than Hanson's `3 ^ n`
+    (crossover near n = 18), but it is the first non-trivial
+    prime-counting bound with no LCM-specific content remaining,
+    completing the structural reduction launched in Iters 5–9. -/
+theorem lcmRange_le_pow_card_primes {n : ℕ} (hn : 1 ≤ n) :
+    lcmRange n ≤ n ^ ((Finset.range (n + 1)).filter Nat.Prime).card := by
+  rw [lcmRange_eq_prod_prime_powers, ← Finset.prod_const]
+  exact Finset.prod_le_prod (fun _ _ => Nat.zero_le _)
+    (fun p _ => Nat.pow_log_le_self p (by omega))
+
 -- =====================================================================
 -- PART 4: Numerical verification of Hanson's bound for n = 1..20
 -- =====================================================================

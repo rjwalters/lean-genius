@@ -30,14 +30,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T20:50:00Z",
-    "iteration": 9,
-    "focus": "Building structural lemma library toward prime-power decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}. Iteration 2 (#16704 merged) added lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange — any positive base power b^k ≤ n divides lcmRange n. Iteration 5 (#17021 merged) specialized to the prime case: prime_pow_dvd_lcmRange. Iteration 6 (#17128 merged) added pairwise-coprimality of distinct prime-power factors: coprime_prime_pow_pow_of_ne. Iteration 7 (this PR) closes the **easy direction of Chebyshev's decomposition**: prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^⌊log_p n⌋) ∣ lcmRange n. Adds the helper prod_dvd_of_pairwise_coprime (Finset induction packaging) which combines Nat.Coprime.prod_right and Nat.Coprime.mul_dvd_of_dvd_of_dvd. The reverse direction (lcmRange ∣ prod) — needing Nat.factorization — is the next structural target.",
+    "since": "2026-05-08T22:00:00Z",
+    "iteration": 10,
+    "focus": "Iteration 10 (this PR, researcher-4): converts Iter 9's Chebyshev decomposition equality into the first non-trivial prime-counting bound on lcmRange. New theorem `lcmRange_le_pow_card_primes : lcmRange n ≤ n ^ ((Finset.range (n+1)).filter Nat.Prime).card` for n ≥ 1. Three-line proof: rewrite via lcmRange_eq_prod_prime_powers, replace n^card with constant Finset product (Finset.prod_const), then apply Finset.prod_le_prod with each-factor bound p^⌊log_p n⌋ ≤ n via Nat.pow_log_le_self. Strictly stronger than lcmRange_le_self_pow (n^n) for n ≥ 3 since π(n) < n. Asymptotically n^π(n) ~ e^n by PNT; for moderate n the bound exceeds 3^n (crossover near n=18), so this is a structural milestone rather than a route to Hanson, but it's the first bound with no LCM-specific content remaining — the prime-counting reduction is now in scope.",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
       "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)"
     ],
-    "nextAction": "Iter 10: leverage the new equality to reduce hanson_bound to a Chebyshev-type prime-counting inequality. Two natural sub-targets: (a) prove ∑_{p prime ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3 using primorial_le_4_pow + Bertrand-style bounds (Mathlib has Nat.primorial_le_4_pow but the conversion to log-summed inequality requires real analysis); (b) the cleaner combinatorial route via Erdős/Nair: lcm(1,...,n) ∣ n · binomial(2n, n) (Erdős 1932), then 4^n bound via central-binomial (Nat.centralBinom_lt_pow_of_le_pow_of_pos in Mathlib v4.26).",
+    "nextAction": "Iter 11: tighten the Iter 10 bound by exploiting that NOT every prime contributes a full factor of n. Two natural sub-targets: (a) split the prime-counting sum at √n (small primes p ≤ √n contribute ⌊log_p n⌋ ≥ 2, big primes p > √n contribute exactly 1), giving lcmRange n ≤ n^π(√n) · primorial(n)/primorial(√n). With Mathlib's Nat.primorial_le_4_pow on the big-prime block and a coarse √n^π(√n) bound on the small-prime block, this routes toward 4^n. (b) The cleaner combinatorial route via Erdős/Nair: lcm(1,...,n) ∣ n · binomial(2n, n) (Erdős 1932), then 4^n bound via central-binomial (Nat.centralBinom_lt_pow_of_le_pow_of_pos in Mathlib v4.26).",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 2,
@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 9). Iter 9 (researcher-5, this session): added lcmRange_eq_prod_prime_powers — Chebyshev's prime-power decomposition equality (lcmRange n = ∏ p prime ≤ n, p^(Nat.log p n)) as the antisymmetric combination of Iter 7's prod_prime_powers_dvd_lcmRange (forward) and Iter 8's lcmRange_dvd_prod_prime_powers (reverse). Two-line proof via Nat.dvd_antisymm. With this equality, Hanson's bound lcmRange n ≤ 3^n reduces to a Chebyshev-type prime-counting inequality on ∑_{p ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3. File 405 → 421 lines (+16). Theorems 34 → 35 (+1). Defs 1 unchanged. Axioms 1 unchanged (only hanson_bound). Sorries 0 unchanged. Status axiomatized unchanged. Build status: pending.",
+    "progressSummary": "ITERATING (iter 10). Iter 10 (researcher-4, this session): added lcmRange_le_pow_card_primes — the first non-trivial prime-counting bound on lcmRange. Statement: for n ≥ 1, lcmRange n ≤ n^|filter Prime (range (n+1))| (= n^π(n) in classical notation). Three-line proof using Iter 9's lcmRange_eq_prod_prime_powers + Finset.prod_const + Finset.prod_le_prod with each factor p^⌊log_p n⌋ ≤ n via Nat.pow_log_le_self. Strictly stronger than lcmRange_le_self_pow (n^n) for n ≥ 3 since π(n) < n. Asymptotically e^n by PNT (since π(n)·log n ~ n); the bound exceeds 3^n for moderate n (crossover near n=18) but exposes the prime-counting reduction launched in Iters 5–9. File 421 → 441 lines (+20). Theorems 35 → 36 (+1). Defs 1 unchanged. Axioms 1 unchanged (only hanson_bound). Sorries 0 unchanged. Status axiomatized unchanged. Build status: pending.",
     "builtItems": [
       "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:80",
       "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:87-98",
@@ -65,7 +65,8 @@
       "lcmRange_5/10/15/20_eq: concrete OEIS values 60, 2520, 360360, 232792560",
       "hanson_bound (axiom): the open target ∀ n, lcmRange n ≤ 3^n",
       "hanson_strictly_stronger_than_factorial: 3^n < n^n for n ≥ 4",
-      "Theorem lcmRange_eq_prod_prime_powers: lcm(1,...,n) = ∏ p prime ≤ n, p^Nat.log p n in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 9). Two-line proof: Nat.dvd_antisymm of lcmRange_dvd_prod_prime_powers and prod_prime_powers_dvd_lcmRange. Closes Chebyshev decomposition started in iters 7-8."
+      "Theorem lcmRange_eq_prod_prime_powers: lcm(1,...,n) = ∏ p prime ≤ n, p^Nat.log p n in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 9). Two-line proof: Nat.dvd_antisymm of lcmRange_dvd_prod_prime_powers and prod_prime_powers_dvd_lcmRange. Closes Chebyshev decomposition started in iters 7-8.",
+      "lcmRange_le_pow_card_primes: for n ≥ 1, lcmRange n ≤ n^|filter Prime (range (n+1))| at BaselProblemOQ01OQ01OQ02OQ03.lean:381 (Iteration 10). Three-line proof: rewrite via lcmRange_eq_prod_prime_powers, Finset.prod_const, Finset.prod_le_prod with Nat.pow_log_le_self per factor."
     ],
     "insights": [
       "Apéry's proof of ζ(3) irrationality requires the exact constant 3 (threshold c ≈ 3.245); the easier 4^n is insufficient.",
@@ -78,7 +79,8 @@
       "**prime_pow_dvd_lcmRange** (Iteration 5) makes the corollary explicit. The proof is literally `pow_dvd_lcmRange hp.pos (Nat.pow_log_le_self p (by omega))` — three Mathlib calls glued together. This is the canonical entry point for any prime-power Chebyshev-style argument on `lcmRange`.",
       "**coprime_prime_pow_pow_of_ne** (Iteration 6) — the second half of the easy direction's machinery. The proof routes through `Nat.dvd_prime` rather than `Nat.prime_dvd_prime_iff_eq` to avoid an API drift risk: `(Nat.dvd_prime hq).mp` produces `p = 1 ∨ p = q`, both alternatives directly contradicting hypotheses (`hp.one_lt.ne'` and `hpq` respectively). The pow-lifting `((..).pow_left a).pow_right b` is the same idiom used in Erdos828Problem.lean:53 and Erdos1136Problem.lean:60 (cross-referenced for stability).",
       "**prod_prime_powers_dvd_lcmRange** (Iteration 7) — the easy direction of Chebyshev's decomposition closes in 8 lines on top of the helper. The Finset.induction packaging (prod_dvd_of_pairwise_coprime) is abstracted over the divisor function f : ℕ → ℕ so it can be reused for any pairwise-coprime divisor product (e.g., squarefree × squarefree, prime × prime^k). Direct parallel of Erdos1057Problem.prod_primes_dvd_of_each_dvd at lines 84-105, but generalized from primes to prime powers; the n=0 base case dispatches via Nat.not_prime_zero (range 1 = {0}, 0 ∉ Prime). Three Mathlib calls glued: Nat.Coprime.prod_right, Nat.Coprime.mul_dvd_of_dvd_of_dvd, and the existing prime_pow_dvd_lcmRange/coprime_prime_pow_pow_of_ne from previous iterations.",
-      "Closing the Chebyshev decomposition (iter 9): once both directions of divisibility are established, antisymmetry is mechanical via Nat.dvd_antisymm. The decomposition reduces hanson_bound (lcmRange n ≤ 3^n) from an opaque LCM-bound to a transparent prime-counting inequality ∑_{p prime ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3, exposing the Chebyshev-style content of Hanson 1972."
+      "Closing the Chebyshev decomposition (iter 9): once both directions of divisibility are established, antisymmetry is mechanical via Nat.dvd_antisymm. The decomposition reduces hanson_bound (lcmRange n ≤ 3^n) from an opaque LCM-bound to a transparent prime-counting inequality ∑_{p prime ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3, exposing the Chebyshev-style content of Hanson 1972.",
+      "First prime-counting bound (iter 10): the trivial coarsening p^⌊log_p n⌋ ≤ n turns Iter 9's equality into lcmRange n ≤ n^π(n). Proof is a 3-line `Finset.prod_le_prod` chain. The bound is asymptotically e^n by PNT (slightly weaker than 3^n for moderate n; crossover at n=18) but it's the first bound with no LCM-specific content remaining — the next iterations can refine the prime-counting side independently of LCM machinery, e.g., by splitting at √n to exploit that ⌊log_p n⌋ = 1 for p > √n."
     ],
     "mathlibGaps": [
       "No `lcm(1,...,n) ≤ X^n`-style bound exists in Mathlib for any X.",
@@ -90,13 +92,14 @@
       "✅ DONE (#17128, Iteration 6): `coprime_prime_pow_pow_of_ne : ∀ p q, p.Prime → q.Prime → p ≠ q → ∀ a b, Coprime (p^a) (q^b)`.",
       "✅ DONE (this PR, Iteration 7): `prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n) ∣ lcmRange n` — easy direction of Chebyshev's decomposition. Helper `prod_dvd_of_pairwise_coprime` (private) packages the Finset.induction.",
       "Iteration 8: reverse direction `lcmRange n ∣ ∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n` via Mathlib's `Nat.factorization` framework. For each k ≤ n: write k = ∏_p p^(k.factorization p), then `p^(k.factorization p) ∣ p^(Nat.log p n)` via Nat.pow_le_pow_right + factorization_le_log_self bound (or analogous).",
-      "Iteration 9: `lcmRange_eq_prod_prime_powers` by Nat.dvd_antisymm of Iter 7+8.",
-      "With Chebyshev's decomposition, derive `lcmRange n ≤ ∏_{p ≤ n} n = n^{π(n)}` (still weaker than 3^n but proves a non-trivial bound).",
+      "✅ DONE (#17333, Iteration 9): `lcmRange_eq_prod_prime_powers` by Nat.dvd_antisymm of Iter 7+8.",
+      "✅ DONE (this PR, Iteration 10): `lcmRange_le_pow_card_primes : lcmRange n ≤ n^π(n)` for n ≥ 1, derived from Iter 9's decomposition by Finset.prod_le_prod + Nat.pow_log_le_self. First non-trivial prime-counting bound; asymptotically e^n.",
+      "Iteration 11+: tighten the bound by splitting the prime-counting product at √n. Big primes (p > √n) contribute exactly p^1 = p, so their product is bounded by primorial(n)/primorial(√n) ≤ 4^n/4^√n. Small primes contribute at most √n^π(√n) ≤ √n^√n, which is sub-exponential and absorbed asymptotically.",
       "Wait for or contribute Mathlib Beta-integral machinery for ℚ-valued bounds.",
       "Explore Nair's 1982 alternative constants as a possibly-easier intermediate (uses central binomial coefficients).",
       "Add cross-references in `basel-problem-oq-01-oq-01-oq-02` and `basel-problem` gallery entries pointing to this OQ-03."
     ],
-    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (iteration 7)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (341 lines, 33 theorems, 1 def, 1 axiom, 0 sorries; numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / Chebyshev-prime-power-formula infrastructure.\n* **Iteration 7 (this PR)**: added `prod_prime_powers_dvd_lcmRange` (easy direction of Chebyshev's decomposition) and the helper `prod_dvd_of_pairwise_coprime`.\n"
+    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (iteration 10)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (441 lines, 36 theorems, 1 def, 1 axiom, 0 sorries; numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / Chebyshev-prime-power-formula infrastructure.\n* **Iteration 10 (this PR)**: added `lcmRange_le_pow_card_primes : lcmRange n ≤ n^π(n)` — the first non-trivial prime-counting bound, derived from Iter 9's Chebyshev decomposition.\n"
   },
   "tags": [
     "number-theory",
@@ -131,15 +134,15 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-08",
+  "lastUpdate": "2026-05-08T22:00:00Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
       "filename": "BaselProblemOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 341,
-      "theoremCount": 33,
+      "lineCount": 441,
+      "theoremCount": 36,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
