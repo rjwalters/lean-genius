@@ -65,14 +65,16 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "The Chinese Remainder Theorem has two natural formalizations in modern algebra: the constructive approach (given remainders in ℕ, find a natural number solution) and the algebraic approach (ZMod(mn) ≅ ZMod(m) × ZMod(n) as rings). These formulations are mathematically equivalent but live in different worlds in formal proof systems. The constructive approach (parent proof OQ-04) uses Mathlib's `Nat.chineseRemainder`, while the ring-theoretic approach uses `ZMod.chineseRemainder`. This entry makes the equivalence explicit via Lean 4.",
+    "historicalContext": "The Chinese Remainder Theorem, traceable to Sun Zi's *Sunzi Suanjing* (3rd–5th century CE) and re-derived by Qin Jiushao in 1247 (*Mathematical Treatise in Nine Sections*), admits two natural formalizations in modern algebra: the constructive approach (given remainders in ℕ, find a natural-number solution) and the algebraic approach (ZMod(mn) ≅ ZMod(m) × ZMod(n) as rings). The two formulations are mathematically equivalent but live in different worlds in formal proof systems — the first is computational and oriented toward algorithms like Garner's, while the second sits in commutative algebra and generalizes to coprime ideals in arbitrary commutative rings. The constructive approach (parent proof OQ-04) uses Mathlib's `Nat.chineseRemainder`, while the ring-theoretic approach uses `ZMod.chineseRemainder`. Bridging the two has practical importance: results proven in one language transport to the other for free, sparing duplicated effort. This entry makes the equivalence explicit via Lean 4 by exploiting the universal property of nat casts.",
     "problemStatement": "**Unification Question**: Are the list-based CRT (`CRTList.Satisfies x [(a,m),(b,n)]`) and the ring-theoretic CRT (`ZMod.chineseRemainder h (↑x) = ((↑a, ↑b))`) equivalent formulations?\n\n**Answer**: Yes. The main bridge theorem states:\n\n`CRTList.Satisfies x [(a, m), (b, n)] ↔ ZMod.chineseRemainder h (↑x : ZMod(m*n)) = ((↑a : ZMod m), (↑b : ZMod n))`\n\nMoreover, the unique minimal solution from `crt_list_minimal_unique` equals `ZMod.val` of the ring-theoretic preimage.",
     "proofStrategy": "The proof uses three key facts:\n\n1. **`map_natCast`**: Any ring homomorphism `f : R →+* S` satisfies `f(↑n) = ↑n` for `n : ℕ`. For `ZMod.chineseRemainder h`, this gives `ZMod.chineseRemainder h (↑x : ZMod(mn)) = (↑x : ZMod m × ZMod n) = ((↑x : ZMod m), (↑x : ZMod n))` since product NatCast is componentwise.\n\n2. **`ZMod.natCast_eq_natCast_iff`**: `(↑x : ZMod m) = (↑a : ZMod m) ↔ x ≡ a [MOD m]`. This translates ZMod equalities to the modular congruences in `Satisfies`.\n\n3. **Round-trip via symm**: For the canonical solution, `ZMod.natCast_zmod_val` and `RingEquiv.apply_symm_apply` confirm that the ring iso's inverse gives back the target pair.",
     "keyInsights": [
       "**`map_natCast` as the core bridge**: The ring hom property `f(↑n) = ↑n` simultaneously handles both components of the product, reducing the bridge theorem to componentwise ZMod equality via a single application.",
       "**Product NatCast is componentwise**: `(n : α × β) = ((n : α), (n : β))` by the product NatCast instance. This definitional fact means `map_natCast` gives the componentwise form without additional work.",
       "**val-cast round-trip**: `ZMod.natCast_zmod_val w : (ZMod.val w : ZMod n) = w` allows moving between the ℕ representative and the ZMod element, connecting the two sides of the equivalence.",
-      "**Uniqueness as the bridge to canonical form**: The minimal solution uniqueness theorem (`crt_list_minimal_unique`) identifies which ℕ in `[0, m*n)` corresponds to the ring-theoretic preimage, closing the equivalence at the level of canonical representatives."
+      "**Uniqueness as the bridge to canonical form**: The minimal solution uniqueness theorem (`crt_list_minimal_unique`) identifies which ℕ in `[0, m*n)` corresponds to the ring-theoretic preimage, closing the equivalence at the level of canonical representatives.",
+      "**Round-trip recipe via the inverse**: To prove a ZMod-derived witness satisfies a congruence system, compose `ZMod.natCast_zmod_val` (turning `↑(val w)` back into `w`) with `RingEquiv.apply_symm_apply` (the iso eats its inverse). This three-step pattern — `bridge ▸ natCast_zmod_val ▸ apply_symm_apply` — is the canonical idiom for any proof that descends from the ring-theoretic side back to ℕ.",
+      "**No new mathematics, only translation**: The unification adds zero axioms and zero sorries because the ring-theoretic CRT is already a theorem in Mathlib. The work here is entirely in *expressing* the equivalence as a definitional bridge, not in reproving CRT — a model for how unification proofs should look."
     ],
     "prerequisites": [
       "Nat.ModEq (modular congruences in ℕ)",
@@ -109,10 +111,10 @@
     {
       "id": "summary",
       "title": "Summary Theorems",
-      "startLine": 118,
-      "endLine": 160,
-      "summary": "Four summary theorems: crt_exists_via_zmod, crt_unique_two_fold, and example_8_mod3_mod5 with verified computation.",
-      "mathContext": "Existence and uniqueness in [0, m*n) follow from the canonical bridge; example: x≡2 mod 3, x≡3 mod 5 has unique solution 8 in [0,15)"
+      "startLine": 139,
+      "endLine": 180,
+      "summary": "Three summary theorems: crt_exists_via_zmod (existence via the inverse iso), crt_unique_two_fold (uniqueness in [0, m*n)), and example_8_mod3_mod5, a concrete verified computation closing the file with native_decide.",
+      "mathContext": "Existence and uniqueness in $[0, mn)$ follow from the canonical bridge; example: $x \\equiv 2 \\pmod 3$, $x \\equiv 3 \\pmod 5$ has unique solution $8$ in $[0,15)$."
     }
   ],
   "conclusion": {
@@ -120,7 +122,8 @@
     "implications": "This unification has practical significance: algorithms proven correct in the constructive (ℕ-based) setting automatically carry over to the ring-theoretic (ZMod) setting and vice versa. For example, verified implementations of Garner's algorithm (efficient CRT reconstruction) or residue number systems can use whichever formulation is more convenient for each step.",
     "openQuestions": [
       "Can this bridge extend to the k-fold case, connecting CRTList with the k-fold ZMod isomorphism from BezoutIdentityOQ03OQ01OQ01?",
-      "Does the ring-theoretic formulation give a more efficient proof of CRT existence (avoiding the explicit Bezout construction)?"
+      "Does the ring-theoretic formulation give a more efficient proof of CRT existence (avoiding the explicit Bezout construction)?",
+      "Can the same `map_natCast`-driven recipe unify other constructive ↔ ring-theoretic dualities (e.g., quotients of polynomial rings, p-adic completions, localizations)? The technique is essentially universal-property-based and should generalize anywhere a canonical ring map is the only data needed."
     ]
   },
   "leanFile": {
