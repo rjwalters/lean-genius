@@ -1283,6 +1283,109 @@ private lemma dirichletForm_eq_p_of_lt_two_mul
       linarith
   exact multiple_p_eq_p_of_lt_two_mul hp h_pos h_lt h_dvd
 
+/-! ### S10B (2026-05-08): Dirichlet Sublattice as a `Submodule ℤ (Fin 3 → ℤ)`
+
+The geometric component of the eventual `dirichlet_key_lemma` proof needs to
+recognise the predicate `IsInDirichletSublattice` as a (sub)lattice of `ℤ³`,
+in order to apply Mathlib's geometry-of-numbers machinery
+(`ZSpan.volume_fundamentalDomain`, `MeasureTheory.exists_ne_zero_mem_lattice_*`).
+
+This section assembles the **algebraic / arithmetic** kernel of that step at
+the integer level — the closure properties of `IsInDirichletSublattice` and
+the determinant of the basis matrix — without yet lifting to the real lattice
+in `Fin 3 → ℝ`. Both pieces are independent of `MeasureTheory.*` API drift
+and of the latent S5-region build issues, so they compose freely with the
+real-side covolume work to come (S10C / S11).
+
+The basis vectors of the sublattice
+`L_r = {(x, y, z) ∈ ℤ³ : p ∣ (x − r y) ∧ p ∣ z}`
+are the columns of
+
+```
+| p  r  0 |
+| 0  1  0 |
+| 0  0  p |
+```
+
+This matrix is upper triangular with diagonal `(p, 1, p)`, so its determinant
+is `p²` — i.e., the sublattice has index `p²` in `ℤ³`. The covolume of the
+real lift is therefore `p²` (S10C will plumb this through
+`ZSpan.volume_fundamentalDomain`).
+-/
+
+/-- The basis matrix of the Dirichlet sublattice
+`L_r = {(x, y, z) ∈ ℤ³ : p ∣ (x − r y) ∧ p ∣ z}`. The three columns
+`(p, 0, 0)`, `(r, 1, 0)`, `(0, 0, p)` are a ℤ-basis: any `v ∈ L_r`
+decomposes uniquely as `a · (p, 0, 0) + (v 1) · (r, 1, 0) + b · (0, 0, p)`
+with witnesses `a, b ∈ ℤ` from `p ∣ (v 0 − r · v 1)` and `p ∣ v 2`. -/
+def dirichletSublatticeBasisMatrix (p r : ℤ) : Matrix (Fin 3) (Fin 3) ℤ :=
+  !![p, r, 0;
+     0, 1, 0;
+     0, 0, p]
+
+/-- **S10B (arithmetic kernel of covolume)**: The determinant of the Dirichlet
+sublattice basis matrix is `p²`. Direct expansion via `Matrix.det_fin_three`:
+the matrix is upper triangular with diagonal `(p, 1, p)`. -/
+private lemma dirichletSublatticeBasisMatrix_det (p r : ℤ) :
+    (dirichletSublatticeBasisMatrix p r).det = p ^ 2 := by
+  simp [dirichletSublatticeBasisMatrix, Matrix.det_fin_three]
+  ring
+
+/-- The zero vector lies in the Dirichlet sublattice. -/
+private lemma IsInDirichletSublattice_zero (p r : ℤ) :
+    IsInDirichletSublattice p r (0 : Fin 3 → ℤ) := by
+  refine ⟨?_, ?_⟩ <;> simp
+
+/-- The Dirichlet sublattice is closed under addition. -/
+private lemma IsInDirichletSublattice_add {p r : ℤ} {v w : Fin 3 → ℤ}
+    (hv : IsInDirichletSublattice p r v) (hw : IsInDirichletSublattice p r w) :
+    IsInDirichletSublattice p r (v + w) := by
+  obtain ⟨hv1, hv2⟩ := hv
+  obtain ⟨hw1, hw2⟩ := hw
+  refine ⟨?_, ?_⟩
+  · -- p ∣ ((v + w) 0 - r * (v + w) 1) = (v 0 - r * v 1) + (w 0 - r * w 1)
+    have : (v + w) 0 - r * (v + w) 1 = (v 0 - r * v 1) + (w 0 - r * w 1) := by
+      simp [Pi.add_apply]; ring
+    rw [this]
+    exact dvd_add hv1 hw1
+  · -- p ∣ (v + w) 2 = v 2 + w 2
+    have : (v + w) 2 = v 2 + w 2 := by simp [Pi.add_apply]
+    rw [this]
+    exact dvd_add hv2 hw2
+
+/-- The Dirichlet sublattice is closed under integer scalar multiplication. -/
+private lemma IsInDirichletSublattice_smul {p r : ℤ} (c : ℤ) {v : Fin 3 → ℤ}
+    (hv : IsInDirichletSublattice p r v) :
+    IsInDirichletSublattice p r (c • v) := by
+  obtain ⟨hv1, hv2⟩ := hv
+  refine ⟨?_, ?_⟩
+  · -- p ∣ (c • v) 0 - r * (c • v) 1 = c * (v 0 - r * v 1)
+    have : (c • v) 0 - r * (c • v) 1 = c * (v 0 - r * v 1) := by
+      simp [Pi.smul_apply, smul_eq_mul]; ring
+    rw [this]
+    exact Dvd.dvd.mul_left hv1 c
+  · -- p ∣ (c • v) 2 = c * v 2
+    have : (c • v) 2 = c * v 2 := by simp [Pi.smul_apply, smul_eq_mul]
+    rw [this]
+    exact Dvd.dvd.mul_left hv2 c
+
+/-- **S10B (Submodule packaging)**: The Dirichlet sublattice as a
+`Submodule ℤ (Fin 3 → ℤ)`. Closure properties (`zero_mem`, `add_mem`, `smul_mem`)
+are direct from the divisibility-friendly shape of `IsInDirichletSublattice`.
+
+This is the integer-side ℤ-submodule whose lift to `Submodule ℤ (Fin 3 → ℝ)`
+(S10C) will carry the geometry-of-numbers application. The basis matrix
+`dirichletSublatticeBasisMatrix p r` (above) determines its covolume `p²`. -/
+def dirichletSublattice (p r : ℤ) : Submodule ℤ (Fin 3 → ℤ) where
+  carrier := { v | IsInDirichletSublattice p r v }
+  add_mem' := fun hv hw => IsInDirichletSublattice_add hv hw
+  zero_mem' := IsInDirichletSublattice_zero p r
+  smul_mem' := fun c _v hv => IsInDirichletSublattice_smul c hv
+
+/-- Membership in `dirichletSublattice` unfolds to `IsInDirichletSublattice`. -/
+@[simp] private lemma mem_dirichletSublattice {p r : ℤ} {v : Fin 3 → ℤ} :
+    v ∈ dirichletSublattice p r ↔ IsInDirichletSublattice p r v := Iff.rfl
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
