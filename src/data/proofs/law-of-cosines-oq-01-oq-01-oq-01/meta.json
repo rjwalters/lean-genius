@@ -40,7 +40,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "The spherical law of sines, sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c), is one of the three fundamental relations of spherical trigonometry alongside the spherical law of cosines (cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C)) and its dual (cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c)). It is symmetric — both forms (angle-over-side and side-over-angle) are equivalent under the nondegeneracy hypothesis (positive sines), and the side-over-angle form drops out cleanly from the Gram-determinant identity sin²(X)·sin²(y)·sin²(z) = G established in the dual law of cosines. Todhunter (1886) proves the sine rule first via the polar triangle construction; the modern Gram-determinant route (without polar duality) was reformulated in the present project's earlier entries (law-of-cosines-oq-01-oq-01, law-of-cosines-oq-01-oq-02).",
+    "historicalContext": "The spherical law of sines, sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c), is one of the three fundamental relations of spherical trigonometry alongside the spherical law of cosines (cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C)) and its dual (cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c)). The earliest systematic treatment of spherical triangles is Menelaus of Alexandria's *Sphaerica* (c. 100 AD), which establishes Menelaus's theorem on transversals but uses chords rather than sines. The sine rule itself appears explicitly in the Islamic mathematical tradition: Abu al-Wafa' Buzjani (10th century) and Abu Nasr Mansur formulated and proved versions of the spherical sine rule, and Jabir ibn Aflah (Geber, c. 1130) gave a self-contained derivation in his *Islah al-Majisti*, replacing Menelaus's theorem by the sine rule as the foundational relation. Regiomontanus's *De Triangulis Omnimodis* (1464) brought the sine rule into Latin Europe as the cornerstone of spherical astronomy. Todhunter (*Spherical Trigonometry*, 1886) proves the sine rule first via the polar triangle construction, deriving it as a corollary of the cosine law applied to the polar triangle. The modern Gram-determinant route — viewing sin²(X)sin²(y)sin²(z) as a single invariant equal to G = 1 - cos²a - cos²b - cos²c + 2cos(a)cos(b)cos(c) — bypasses polar duality and exposes the sine rule as a symmetry property of the volume form on three vectors of the unit sphere. This determinantal approach is the framework used in the present project's earlier entries (law-of-cosines-oq-01-oq-01 for the dual cosine law, law-of-cosines-oq-01-oq-02 for the side-over-angle sine form), and the current 64-line wrapper closes the trilogy by inverting to the angle-over-side form.",
     "problemStatement": "The parent entry law-of-cosines-oq-01-oq-01 raised the open question: \"Generalize the Gram determinant argument to prove the full sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c).\" This file answers that question affirmatively. The side-over-angle form is proved in law-of-cosines-oq-01-oq-02 as `spherical_law_of_sines_all`; this file derives the angle-over-side equivalent.",
     "text": "Derives the angle-over-side form of the spherical law of sines from the side-over-angle form by algebraic inversion, closing the open question on generalizing the Gram-determinant framework to the full sine rule.",
     "proofStrategy": "Given `spherical_law_of_sines_all` (sin(a)/sin(A) = sin(b)/sin(B) and sin(a)/sin(A) = sin(c)/sin(C), proved in Proofs/LawOfCosinesOQ01OQ02.lean as a consequence of sin²(X)·sin²(y)·sin²(z) = gramDet for each angle-side triple), the angle-over-side form follows by clearing denominators with div_eq_div_iff and rearranging. Both equalities reduce to a single linear_combination once the hypotheses 0 < sin(angle), 0 < sin(side) are in scope. The B/b = C/c part follows by transitivity of the first two equalities (h₁.symm.trans h₂).",
@@ -49,7 +49,9 @@
       "The Gram-determinant identity sin²(X)·sin²(y)·sin²(z) = G (for each cyclic triple (X,y,z)) is the actual content of the sine rule. Once that is in hand from the parent, the inversion to angle-over-side is purely formal — no geometric content beyond what is already in the dual cosine law's framework is needed.",
       "Both directions of the sine rule require positive-sine hypotheses for both sides AND angles. In the side-over-angle form positive angle sines are needed to divide by sin(angle); in the angle-over-side form positive side sines are needed. The full theorem statement in this file takes all six hypotheses, matching the parent.",
       "B/b = C/c follows from A/a = B/b and A/a = C/c by transitivity: (A/a = B/b).symm.trans (A/a = C/c) ⟹ B/b = C/c. The bare minimum is the conjunction A/a = B/b ∧ A/a = C/c, since the C-equality is enough to derive the third.",
-      "This 64-line wrapper is the lightest possible closure of the open question oq-01-oq-01-oq-01: by the time the side-over-angle form (which IS the harder direction, requiring the Gram-determinant nonnegativity argument) is in place, the angle-over-side form is just algebraic bookkeeping."
+      "This 64-line wrapper is the lightest possible closure of the open question oq-01-oq-01-oq-01: by the time the side-over-angle form (which IS the harder direction, requiring the Gram-determinant nonnegativity argument) is in place, the angle-over-side form is just algebraic bookkeeping.",
+      "The two forms (angle/side and side/angle) are not redundant in practice: in spherical astronomy and geodesy, the angle-over-side form is the natural one when angles are measured directly (as observed at a vertex) and side lengths are the unknowns to be solved; the side-over-angle form is natural when sides (great-circle arc lengths) are measured (e.g., from chronometers and bearings) and angles are computed. The Lean formalization preserves this duality by making each direction a separate theorem statement, both proved from the common Gram-determinant identity.",
+      "From a categorical perspective, the symmetry sin(X)/sin(x) ↔ sin(x)/sin(X) is the involution induced by inversion in the multiplicative group of positive reals. The choice of which form to take as primitive is conventional; the Gram-determinant proof produces the symmetric expression sin²(X)·sin²(y)·sin²(z) = G first, and either single-fraction form is then a corollary. This is a small instance of the pattern that homogeneous polynomial identities are more fundamental than affine ratios — algebraic geometers prefer projective invariants over their affine charts for exactly this reason."
     ],
     "prerequisites": [
       "Spherical law of sines, side-over-angle form: spherical_law_of_sines_all in Proofs/LawOfCosinesOQ01OQ02.lean",
@@ -115,6 +117,26 @@
       "id": "law-of-cosines-oq-01",
       "title": "Spherical Law of Cosines (Open Question)",
       "relationship": "Grandparent open question about generalizing the planar law of cosines to the sphere. This entry, together with its siblings, completes the Lean 4 formalization of the three fundamental relations of spherical trigonometry."
+    },
+    {
+      "id": "spherical-law-of-sines",
+      "title": "Spherical Law of Sines",
+      "relationship": "Independent gallery formalization of the spherical sine rule (different proof strategy). This entry's Gram-determinant route via the dual cosine law is an alternative path to the same result, illustrating the multiple natural derivations of this fundamental relation."
+    },
+    {
+      "id": "spherical-law-of-cosines",
+      "title": "Spherical Law of Cosines",
+      "relationship": "The standard form cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C) — first of the three fundamental relations of spherical trigonometry. The dual law (proved in law-of-cosines-oq-01-oq-01) and the sine rule (this entry) complete the trilogy."
+    },
+    {
+      "id": "law-of-cosines",
+      "title": "Law of Cosines (Planar)",
+      "relationship": "Planar progenitor c² = a² + b² - 2ab·cos(C). The spherical sine rule reduces to the planar one, sin(A)/a = sin(B)/b = sin(C)/c, in the small-angle limit (sin(x) ≈ x as x → 0); see law-of-cosines-oq-01-oq-04 for the formal small-angle reduction of the spherical cosine law."
+    },
+    {
+      "id": "law-of-cosines-oq-01-oq-04",
+      "title": "Small-Angle Limit: Spherical Reduces to Euclidean",
+      "relationship": "Sibling: proves that the spherical law of cosines reduces to the planar law in the limit of small triangles. The analogous small-angle reduction sin(a) ≈ a converts the spherical sine rule (this entry) to the planar sine rule sin(A)/a = sin(B)/b = sin(C)/c."
     }
   ],
   "sorries": 0
