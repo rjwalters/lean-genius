@@ -55,6 +55,54 @@ noncomputable def iterDeriv (p : ℝ[X]) : ℕ → ℝ[X]
   | 0 => p
   | k + 1 => derivative (iterDeriv p k)
 
+/-- Iterated derivative at index zero is the polynomial itself (definitional). -/
+@[simp] theorem iterDeriv_zero_eq (p : ℝ[X]) : iterDeriv p 0 = p := rfl
+
+/-- Iterated derivative at successor index unfolds to one more derivative
+    (definitional). -/
+@[simp] theorem iterDeriv_succ (p : ℝ[X]) (k : ℕ) :
+    iterDeriv p (k + 1) = derivative (iterDeriv p k) := rfl
+
+/-- The iterated derivative of the zero polynomial is the zero polynomial. -/
+@[simp] theorem iterDeriv_of_zero (k : ℕ) : iterDeriv (0 : ℝ[X]) k = 0 := by
+  induction k with
+  | zero => rfl
+  | succ n ih => rw [iterDeriv_succ, ih]; exact derivative_zero
+
+/-- Each derivative reduces `natDegree` by at most one, so the k-th iterated
+    derivative satisfies `natDegree ≤ natDegree p - k`.  This is the key
+    structural ingredient for the eventual induction in the Budan upper-bound
+    proof: the k-th derivative cannot have more than `natDegree p - k` roots. -/
+theorem iterDeriv_natDegree_le (p : ℝ[X]) (k : ℕ) :
+    (iterDeriv p k).natDegree ≤ p.natDegree - k := by
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    calc (iterDeriv p (n + 1)).natDegree
+        = (derivative (iterDeriv p n)).natDegree := by rw [iterDeriv_succ]
+      _ ≤ (iterDeriv p n).natDegree - 1 := natDegree_derivative_le _
+      _ ≤ (p.natDegree - n) - 1 := Nat.sub_le_sub_right ih 1
+      _ = p.natDegree - (n + 1) := by omega
+
+/-- Beyond `natDegree p`, all iterated derivatives vanish.  Combined with
+    `iterDeriv_natDegree_le`, this controls the entire derivative tower:
+    only the first `natDegree p + 1` entries can carry information. -/
+theorem iterDeriv_eq_zero_of_natDegree_lt (p : ℝ[X]) (k : ℕ)
+    (h : p.natDegree < k) : iterDeriv p k = 0 := by
+  induction k with
+  | zero => omega
+  | succ n ih =>
+    rw [iterDeriv_succ]
+    by_cases hn : p.natDegree < n
+    · rw [ih hn]; exact derivative_zero
+    · push_neg at hn
+      have heq : p.natDegree = n := by omega
+      have hbnd : (iterDeriv p n).natDegree ≤ 0 :=
+        (iterDeriv_natDegree_le p n).trans (by omega)
+      have hzero : (iterDeriv p n).natDegree = 0 := Nat.le_zero.mp hbnd
+      rw [eq_C_of_natDegree_eq_zero hzero]
+      exact derivative_C
+
 -- ============================================================================
 -- § 1. BUILDING BLOCKS: Degree and Derivative Properties
 -- ============================================================================

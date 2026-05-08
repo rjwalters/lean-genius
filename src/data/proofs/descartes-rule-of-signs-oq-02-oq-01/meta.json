@@ -21,16 +21,16 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 191,
+    "lineCount": 239,
     "dateAdded": "2026-03-28",
-    "assumptions": "0 axioms, 0 sorries. All theorems fully proved including linear_at_most_one_root, rolle_polynomial, and root_of_sign_change.",
+    "assumptions": "0 axioms, 0 sorries. All theorems fully proved including linear_at_most_one_root, rolle_polynomial, root_of_sign_change, and the iterDeriv structural lemmas (degree bound and vanishing beyond natDegree).",
     "relatedProblems": [
       {
         "id": "descartes-rule-of-signs-oq-02",
         "relationship": "Proves the budan_upper_bound_axiom from OQ-02"
       }
     ],
-    "theoremCount": 4,
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
@@ -47,9 +47,9 @@
   },
   "leanFile": {
     "namespace": "BudanUpperBound",
-    "lineCount": 191,
+    "lineCount": 239,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 9,
     "sorries": 0,
     "mainTheorems": [
       {
@@ -73,14 +73,39 @@
         "description": "Linear polynomial has at most one root in interval (proved via card_roots_le_degree counting argument)"
       },
       {
+        "name": "iterDeriv_zero_eq",
+        "type": "proved",
+        "description": "iterDeriv p 0 = p (definitional simp lemma)"
+      },
+      {
+        "name": "iterDeriv_succ",
+        "type": "proved",
+        "description": "iterDeriv p (k+1) = derivative (iterDeriv p k) (definitional simp lemma)"
+      },
+      {
+        "name": "iterDeriv_of_zero",
+        "type": "proved",
+        "description": "Iterated derivative of the zero polynomial is zero at every index"
+      },
+      {
+        "name": "iterDeriv_natDegree_le",
+        "type": "proved",
+        "description": "natDegree of k-th iterated derivative is bounded by natDegree p - k (key structural ingredient for the inductive Budan bound)"
+      },
+      {
+        "name": "iterDeriv_eq_zero_of_natDegree_lt",
+        "type": "proved",
+        "description": "Beyond natDegree p, all iterated derivatives vanish; controls the entire derivative tower"
+      },
+      {
         "name": "sign_changes_factor",
         "type": "placeholder",
-        "description": "Sign-change accounting when factoring out a root (proves True — identifies the gap)"
+        "description": "Sign-change accounting when factoring out a root (documented as comment block — gap remains)"
       },
       {
         "name": "inductive_step_derivative",
         "type": "placeholder",
-        "description": "Inductive step framework (proves True — documents the induction architecture)"
+        "description": "Inductive step framework (documented as comment block — architecture remains)"
       }
     ],
     "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
