@@ -62,7 +62,10 @@
         "relationship": "Root: the main Fourier series formalization"
       }
     ],
-    "definitionCount": 4
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The connection between analyticity and exponential Fourier decay was established by Paley and Wiener (1934) in their foundational work on Fourier transforms in the complex domain. The key insight is that holomorphic extension to a strip allows contour shifting, which introduces an exponential damping factor. This is the periodic analog of the Paley-Wiener theorem for the Fourier transform on the real line. The Paley-Wiener theorem has become a cornerstone of harmonic analysis: it characterizes the class of Fourier transforms of compactly supported or exponentially decaying functions in terms of analytic extension. Carleman (1944) extended the framework to distributions, and the theorem plays central roles in signal processing (bandlimited signals), PDE theory (propagation of analyticity), and spectral theory. The open question in this gallery series concerns the sharp constant in the periodic version and whether exponential decay gives a complete characterization of strip analyticity.",

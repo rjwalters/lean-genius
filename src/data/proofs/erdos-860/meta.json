@@ -59,7 +59,10 @@
     "lineCount": 205,
     "assumptions": "5 axiom(s) and 3 sorries(s). See the Lean source for details.",
     "theoremCount": 3,
-    "definitionCount": 6
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/Erdos860ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Pomerance posed this problem in 1980 in their paper on matching natural numbers with distinct multiples. Given the first $\\pi(n)$ primes $p_1 < p_2 < \\cdots < p_{\\pi(n)}$, the function $h(n)$ measures the minimum interval length guaranteeing that any interval $(m, m+h(n)]$ contains distinct integers $a_1, \\ldots, a_{\\pi(n)}$ with $p_i \\mid a_i$. This is a covering-by-multiples problem that connects prime distribution to combinatorial matching theory. Erdős and Selfridge established the linear lower bound $h(n) > (3-o(1))n$ by analyzing worst-case intervals where large primes (near $n$) have sparse multiples. Ruzsa strengthened this to $h(n)/n \\to \\infty$, showing superlinear growth via the Chinese Remainder Theorem — by constructing starting points $m$ where small primes 'block' many interval elements, forcing longer intervals. For the upper bound, Erdős and Pomerance proved $h(n) \\leq C n^{3/2}/(\\log n)^{1/2}$ using a greedy assignment strategy. The problem appears as B32 in Guy's 'Unsolved Problems in Number Theory.' The gap between superlinear and $n^{3/2}$ remains one of the most natural open questions about the interaction between prime structure and combinatorial covering.",

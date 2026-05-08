@@ -77,7 +77,10 @@
     "lineCount": 414,
     "assumptions": "3 axioms: cambie_lower_bound, van_doorn_upper_bound, brown_rodl_coloring. 0 sorries.",
     "theoremCount": 16,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "additionalFiles": [
+      "Proofs/Erdos302Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Unit Fraction Sum-Free Sets**\n\nErdős Problem #302 concerns the equation $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$, which sits at the intersection of unit fraction theory and extremal combinatorics. The study of unit fraction decompositions traces back to ancient Egypt: the Rhind papyrus (c. 1650 BCE) represents fractions exclusively as sums of distinct unit fractions, and understanding which unit fraction equations have solutions has been a theme in number theory ever since.\n\nThe problem was posed by Erdős and Graham in their 1980 monograph *Old and New Problems and Results in Combinatorial Number Theory* (Monographies de L'Enseignement Mathématique 28). They asked: if $f(N)$ denotes the size of the largest subset $A \\subseteq \\{1, \\ldots, N\\}$ containing no solution to $\\frac{1}{a} = \\frac{1}{b} + \\frac{1}{c}$ with distinct $a, b, c \\in A$, is it true that $f(N) = (\\frac{1}{2} + o(1))N$?\n\n**Historical Development:**\n- **1980 (Erdős-Graham):** Problem posed with the conjecture $f(N) = (\\frac{1}{2}+o(1))N$, motivated by two natural constructions (odd integers and the upper half $[N/2, N]$) both giving density $\\frac{1}{2}$.\n- **1991 (Brown-Rödl):** Solved the related coloring version (Problem #303): $\\{1, \\ldots, N\\}$ can always be 2-colored with no monochromatic solution.\n- **2023 (Cambie):** Disproved the original conjecture by combining odd integers $\\leq N/4$ with the interval $[N/2, N]$, yielding $f(N) \\geq (\\frac{5}{8}+o(1))N$.\n- **2023 (van Doorn):** Established the first non-trivial upper bound $f(N) \\leq (\\frac{9}{10}+o(1))N$ using structural analysis of solution-rich regions.\n\nThe problem remains open: the asymptotic density of $f(N)/N$ is known to lie in $[\\frac{5}{8}, \\frac{9}{10}] = [0.625, 0.9]$, but the exact value is unknown. This wide gap highlights the difficulty of extremal problems for multiplicative equations.",

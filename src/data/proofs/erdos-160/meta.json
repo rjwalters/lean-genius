@@ -26,7 +26,10 @@
     "lineCount": 256,
     "assumptions": "3 axioms (upper_bound_two_thirds, upper_bound_hunter, lower_bound_exp \u2014 deep published results) and 2 sorries (h_sublinear, h_superlog). Former axioms h, h_achievable, h_minimal eliminated via constructive sInf definition.",
     "mathlib_version": "4.26.0",
-    "definitionCount": 6
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/Erdos160ProblemAristotle.lean"
+    ]
   },
   "sections": [
     {

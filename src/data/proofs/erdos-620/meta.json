@@ -58,7 +58,10 @@
       }
     ],
     "theoremCount": 8,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "additionalFiles": [
+      "Proofs/Erdos620ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The Erdős-Rogers problem was posed by Paul Erdős and Claude Ambrose Rogers in their 1962 paper in *Mathematika*. It asks a fundamental question at the intersection of Ramsey theory and extremal graph theory: in $K_4$-free graphs, how does the avoidance of triangles in induced subgraphs trade off against size?\n\n**Timeline of Upper Bounds:**\n- **1962**: Erdős and Rogers pose the problem. The trivial lower bound $f(n) \\ge c\\sqrt{n}$ from independent sets in $K_4$-free graphs was known from the start.\n- **1991**: Béla Bollobás and Hugh Hind prove $f(n) \\ll n^{7/10+o(1)}$, the first non-trivial upper bound, using probabilistic and algebraic constructions of dense $K_4$-free graphs with pervasive triangles.\n- **1994**: Michael Krivelevich improves to $f(n) \\ll n^{2/3}(\\log n)^{1/3}$, reducing the exponent from $0.7$ to $\\approx 0.667$.\n- **2013**: Wolfovitz achieves $f(n) \\ll \\sqrt{n} \\cdot (\\log n)^{120}$, the first bound with optimal base exponent $1/2$, though the logarithmic tower $(\\log n)^{120}$ from iterated regularity applications was far from tight.\n- **2024**: Dhruv Mubayi and Jacques Verstraëte prove $f(n) \\ll \\sqrt{n} \\cdot \\log n$ using a novel graph blowup technique that avoids the Szemerédi regularity lemma, dramatically reducing the logarithmic factor.\n\n**Lower Bounds:** The best lower bound $f(n) \\gg \\sqrt{n} \\cdot \\sqrt{\\log n}/\\log\\log n$ uses Shearer's entropy method and dependent random choice. The gap between bounds is now merely $(\\log n)^{1/2} \\cdot \\log\\log n$ — a slowly growing function — down from $n^{1/5}$ in 1991.\n\n**Connection to Kim's Theorem:** The problem is closely related to $R(3,k) = \\Theta(k^2/\\log k)$, proved by Jeong Han Kim in 1995 using the triangle-free process. Finding large triangle-free induced subgraphs in $K_4$-free graphs generalizes finding large independent sets.",

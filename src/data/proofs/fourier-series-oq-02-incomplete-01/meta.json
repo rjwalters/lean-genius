@@ -83,7 +83,10 @@
     "lineCount": 422,
     "assumptions": "0 axioms, 0 sorries. All theorems fully proved: rpow_interpolation, fourier_lipschitz_bound, summable_norm_fourierCoeff_of_decay, holderWith_of_dist_bound, fourier_holder_bound, decay_implies_regularity'. Uses Mathlib Fourier API (fourierCoeff, hasSum_fourier_series_of_summable) as building blocks.",
     "theoremCount": 10,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/FourierSeriesOQ02Incomplete01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The relationship between smoothness and Fourier decay is one of the oldest themes in harmonic analysis. Bernstein (1914) proved the forward direction: if f is alpha-Holder continuous on the circle, then its Fourier coefficients satisfy ||c_n|| = O(1/|n|^alpha). This was sharpened by Zygmund (1935) in his monumental 'Trigonometric Series', where he systematically developed the theory of smoothness spaces (Lipschitz, Zygmund, Besov) and their Fourier-analytic characterizations. The partial converse -- fast decay implies regularity -- requires a loss of one derivative, reflecting the Sobolev embedding theorem: H^s(T) embeds into C^alpha(T) only when s > alpha + 1/2. The interpolation technique used here has roots in the Riesz-Thorin interpolation theorem (M. Riesz 1926, Thorin 1938), though the specific rpow interpolation lemma is a simpler pointwise version. The condition beta > alpha + 1 (rather than beta > alpha) is sharp: the Sobolev embedding on the circle S^1 requires spending one full derivative -- half for L^2-to-C^0 passage and half for summability margin. This sharpness was understood by the 1950s through the work of Nikolsky and Besov on embedding theorems for function spaces on compact groups.",

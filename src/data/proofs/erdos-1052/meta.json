@@ -62,7 +62,10 @@
     "lineCount": 518,
     "assumptions": "0 axioms, 0 sorries. even_of_isUnitaryPerfect is fully proved via multiplicativity + prime decomposition. Finiteness conjecture not formally stated as axiom — open problem described in closing comment.",
     "theoremCount": 23,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/Erdos1052Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Unitary divisors were introduced by Eckford Cohen in the 1960s as a natural refinement of classical divisor theory. A divisor $d$ of $n$ is **unitary** if $\\gcd(d, n/d) = 1$, meaning $d$ and its complement share no common prime factors. For example, 4 is a divisor of 12 but not a unitary divisor (since $\\gcd(4, 3) = 1$ — actually it is unitary), while 4 is not a unitary divisor of 24 (since $\\gcd(4, 6) = 2 \\neq 1$).\n\nSubbarao and Warren (1966) initiated the study of **unitary perfect numbers** — positive integers equal to the sum of their proper unitary divisors — and found the first four: 6, 60, 90, and 87360. Wall (1972) discovered the fifth: $146361946186458562560000 = 2^{18} \\cdot 3 \\cdot 5^4 \\cdot 7 \\cdot 11 \\cdot 13 \\cdot 19 \\cdot 37 \\cdot 79 \\cdot 109 \\cdot 157 \\cdot 313$, a 24-digit number with 12 distinct prime factors. No sixth has been found despite extensive computation.\n\nErdős conjectured there are only finitely many, contrasting sharply with classical perfect numbers where Euclid's construction $2^{p-1}(2^p - 1)$ yields infinitely many (contingent on the infinitude of Mersenne primes). The key structural difference is the product formula: $\\sigma^*(n) = \\prod(1 + p_i^{a_i})$ for unitary divisors versus $\\sigma(n) = \\prod(1 + p_i + \\cdots + p_i^{a_i})$ for standard divisors. The unitary sum grows much more slowly, making the equation $\\sigma^*(n) = 2n$ increasingly hard to satisfy as $n$ grows.\n\nAll unitary perfect numbers are provably even, by an elegant argument: if $n$ were odd, each factor $1 + p_i^{a_i}$ in the product formula would be even, making $\\sigma^*(n)$ divisible by $2^{\\omega(n)}$ where $\\omega(n)$ is the number of distinct prime factors. But $\\sigma^*(n) = 2n$ allows at most one factor of 2, forcing $\\omega(n) \\leq 1$ — and both cases $\\omega(n) = 0,1$ lead to contradictions.",

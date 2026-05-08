@@ -55,7 +55,10 @@
       "Real arithmetic and polynomial inequalities"
     ],
     "theoremCount": 21,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "additionalFiles": [
+      "Proofs/NewtonInductiveStepOQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Newton's inequalities, first established by Isaac Newton in Arithmetica Universalis (1707), state that the elementary symmetric means ē_k form a log-concave sequence. This is one of the foundational results in the theory of symmetric functions and has deep connections to the AM-GM inequality, Maclaurin's inequality, and the theory of real-rooted polynomials.\n\nThe inequality chain ē₁ ≥ ē₂^{1/2} ≥ ē₃^{1/3} ≥ ... ≥ ēₙ^{1/n} (Maclaurin's inequality) follows from Newton's log-concavity, and the case ē₁ ≥ ēₙ^{1/n} recovers AM-GM.",

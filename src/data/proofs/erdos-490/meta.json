@@ -71,7 +71,10 @@
     "lineCount": 282,
     "assumptions": "2 axiom(s) and 6 sorry(s). See the Lean source for details.",
     "theoremCount": 10,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "additionalFiles": [
+      "Proofs/Erdos490ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #490 at the 1972 Number Theory Conference at the University of Colorado, asking for the maximum of $|A||B|$ when $A, B \\subseteq \\{1,\\ldots,N\\}$ have all products $ab$ distinct. The problem sits at the intersection of multiplicative number theory and extremal combinatorics.\n\nSzemerédi resolved the problem in 1976 in his paper \"On a problem of P. Erdős\" in the Journal of Number Theory, proving that $|A||B| \\ll N^2/\\log N$. His argument is a counting argument based on the divisor function: the total number of divisor pairs $(a,b)$ with $ab \\leq N^2$ is $\\sum_{n \\leq N^2} d(n) \\sim N^2 \\log N$, but the distinct products condition restricts each $n$ to contribute at most one pair, yielding the $\\log N$ savings.\n\nThe bound is sharp. The construction $A = [1, N/2]$ and $B = \\{p \\text{ prime} : N/2 < p \\leq N\\}$ achieves $|A||B| \\sim N^2/(4\\log N)$. The key insight is that primes $p > N/2$ cannot divide any integer $\\leq N/2$ (since $p > N/2 \\geq a$ for $a \\in A$), so $a_1 p_1 = a_2 p_2$ forces $p_1 = p_2$ by unique factorization, and then $a_1 = a_2$. By the prime number theorem, $|B| = \\pi(N) - \\pi(N/2) \\sim N/(2\\log N)$.\n\nErdős also posed the finer question: does $\\lim_{N\\to\\infty} \\max |A||B| \\cdot \\log N / N^2$ exist? Van Doorn observed that if the limit exists, it must be $\\geq 1$. This limit question remains open and connects to deep questions about the distribution of smooth numbers and the multiplicative structure of intervals.",

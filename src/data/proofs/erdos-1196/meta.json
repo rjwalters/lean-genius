@@ -76,7 +76,10 @@
       "Number theory (primitive sets, prime powers, divisibility)"
     ],
     "theoremCount": 5,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/Erdos1196Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Erdos Problem #1196: The Erdos-Sarkozy-Szemeredi Conjecture on Primitive Sets**\n\nA set A of positive integers > 1 is *primitive* if no element divides another. The Erdos sum f(A) = sum_{a in A} 1/(a log a) measures the 'weight' of such a set. Since f(Primes) = 1 (by Mertens' theorem), Erdos, Sarkozy, and Szemeredi conjectured (~1967-68) that for primitive A contained in [x, infinity), f(A) <= 1 + o(1) as x -> infinity.\n\n**Key milestones:**\n- 1967-68: Erdos, Sarkozy, Szemeredi pose the conjecture in 'On divisibility properties of sequences of integers, II' (Acta Arithmetica 14)\n- 2019: Lichtman & Pomerance prove partial results toward the primitive set conjecture (Proc. AMS Ser. B 6)\n- 2023: Lichtman proves the Erdos primitive set conjecture: f(A) <= f(Primes) for ALL primitive A (Forum of Mathematics, Pi 11). This is the global version.\n- April 13, 2026: GPT-5.4 Pro proves the sharper asymptotic ESS conjecture using a novel downward divisibility Markov chain technique.\n\n**The breakthrough technique:** GPT-5.4 Pro introduced a Markov process where n transitions to n/q with probability Lambda(q)/log(n) for prime powers q|n. The identity sum_{d|n} Lambda(d) = log(n) makes this a genuine Markov chain. The key innovation (Lemma 4) is that the adjoint (upward) chain, when truncated to [1,x], is sub-Markov. As Tao observed, this replaces the traditional Mertens' prime product approach with von Mangoldt weights, revealing a deep connection between the anatomy of integers and Markov process theory.",

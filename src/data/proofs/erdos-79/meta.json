@@ -36,7 +36,10 @@
     "assumptions": "4 axioms: ramsey_linear_hereditary, K4_not_linear, K4_subgraphs_linear, wigderson_theorem. 1 sorry.",
     "mathlib_version": "4.26.0",
     "theoremCount": 5,
-    "definitionCount": 12
+    "definitionCount": 12,
+    "additionalFiles": [
+      "Proofs/Erdos79ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Ramsey Size Linearity and Its Origins**\n\nThe concept of Ramsey size linearity emerged from the study of how Ramsey numbers $R(G,H)$ grow as $H$ varies. Frank P. Ramsey proved in 1930 that $R(G,H)$ is always finite, but its growth rate depends subtly on both $G$ and $H$. In 1983, Stefan Burr introduced the notion of a graph being *Ramsey size linear* — meaning $R(G,H) = O(|E(H)|)$ for all $H$ without isolated vertices — and conjectured (with Erdős) that every bounded-degree graph is Ramsey size linear. This celebrated **Burr–Erdős conjecture** was proved by Choongbum Lee in 2017, a landmark result in extremal combinatorics.\n\n**The Mystery of $K_4$**: The complete graph $K_4$ is the simplest graph known to violate Ramsey size linearity. The Ramsey number $R(K_4, K_n) = \\Omega(n^2/\\log n)$, established using probabilistic deletion methods by Ajtai, Komlós, and Szemerédi (1980). Since $|E(K_n)| = \\binom{n}{2} \\sim n^2/2$, the ratio $R(K_4,K_n)/|E(K_n)|$ grows without bound — $K_4$ is superlinear. Yet every proper subgraph of $K_4$ (triangles, paths, matchings, stars with $\\leq 3$ edges) has bounded degree or is $K_3$, and is therefore Ramsey size linear by the Chvátal–Rödl–Szemerédi–Trotter theorem (1983) for triangles or Lee's theorem for general bounded-degree graphs.\n\n**The Question (1993)**: Erdős, Faudree, Rousseau, and Schelp asked whether $K_4$ is the *only* minimally non-Ramsey-size-linear graph, or whether infinitely many exist. For 31 years, no second example was found.\n\n**Resolution (2024)**: Yuval Wigderson proved that infinitely many such graphs exist, using a blend of probabilistic and extremal methods. The proof is fundamentally non-constructive: it derives a contradiction from assuming finitely many minimal obstructions exist, without exhibiting any new one. $K_4$ remains the sole explicit example, making the search for a second one a compelling open problem at the interface of Ramsey theory and constructive mathematics.",

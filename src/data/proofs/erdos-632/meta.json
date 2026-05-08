@@ -54,7 +54,10 @@
     "assumptions": "1 axiom: ert_4_1_to_8_2_false (the (4,1)-choosable to (8,2)-choosable ERT case is false). 5 sorries (supporting conjectures on ERT for intermediate parameter values).",
     "lineCount": 260,
     "theoremCount": 11,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "additionalFiles": [
+      "Proofs/Erdos632ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**List Coloring and the Scaling Question**\n\nList coloring was introduced by Vizing (1976) and independently by Erdős, Rubin, and Taylor (1979/1980). Unlike ordinary vertex coloring where all vertices share the same color palette, list coloring assigns each vertex its own list of available colors — a more realistic model for scheduling and resource allocation problems.\n\nThe concept of $(a,b)$-choosability generalizes list coloring: given lists of size $a$ at each vertex, one must select $b$ colors from each list such that adjacent vertices receive disjoint color sets. The $b = 1$ case recovers the classical list chromatic number $\\chi_L(G)$.\n\n**The Conjecture**: In their foundational 1980 paper, Erdős, Rubin, and Taylor conjectured that choosability scales multiplicatively: if $G$ is $(a,b)$-choosable, then $G$ is $(am, bm)$-choosable for all $m \\geq 1$. This would be a clean structural property connecting choosability at different scales.\n\n**The Disproof**: Nearly 40 years later, Dvořák, Hu, and Sereni (2019) constructed an explicit counterexample: a graph with over 100 vertices that is $(4,1)$-choosable (i.e., $\\chi_L(G) \\leq 4$) but NOT $(8,2)$-choosable. This showed the conjecture fails at the very first non-trivial step ($m = 2$), revealing that integer choosability is fundamentally more rigid than its fractional counterpart.\n\n**Contrast with Fractional**: Alon, Tuza, and Voigt (1997) had shown that *fractional* choosability does scale, making the integer failure all the more surprising. The ratio $a/b$ is preserved under scaling in $\\mathbb{Q}$ but not in the integer lattice.",

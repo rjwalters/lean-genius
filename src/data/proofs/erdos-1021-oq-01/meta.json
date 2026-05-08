@@ -24,7 +24,10 @@
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
-    "definitionCount": 2
+    "definitionCount": 2,
+    "additionalFiles": [
+      "Proofs/Erdos1021OQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős Problem #1021 asks whether ex(n, G_k) ≪ n^{3/2-c_k} for some c_k > 0, where G_k is the bipartite pair graph. OQ-01 focuses on the weaker question: is ex(n, G_k) = o(n^{3/2}) for any k ≥ 4? The k=3 case is settled since G_3 ≅ C_6 and Bondy-Simonovits proved ex(n,C_6) ≪ n^{7/6}. For k ≥ 4, even the weak o(n^{3/2}) form is completely open. The Kővári-Sós-Turán theorem gives a trivial O(n^{3/2}) upper bound (since G_k contains K_{2,C(k,2)}), and the probabilistic method gives ex(n,G_k) ≥ c·n^{3/2-1/(k-1)} as a lower bound. This lower bound exponent approaches 3/2 as k → ∞, making the problem harder for larger k.",

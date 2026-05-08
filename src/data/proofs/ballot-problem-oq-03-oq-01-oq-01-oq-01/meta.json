@@ -26,6 +26,9 @@
     "lineCount": 1266,
     "theoremCount": 31,
     "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
+    ],
     "originalContributions": [
       "jacobiTrudiMatrix: the k×k matrix with entries h_{sh_i + j - i} (or 0 for negative index) — first Lean 4 Jacobi-Trudi matrix definition",
       "schurPolynomial: det(jacobiTrudiMatrix) as the primary definition of Schur polynomials in Lean 4",

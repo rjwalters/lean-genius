@@ -47,7 +47,10 @@
         "module": "Mathlib.RingTheory.Polynomial.Basic"
       }
     ],
-    "definitionCount": 1
+    "definitionCount": 1,
+    "additionalFiles": [
+      "Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean"
+    ]
   },
   "parent": "angle-trisection-oq-02-oq-01-oq-02",
   "openQuestion": "How can the not_constructible_of_bad_degree sorry in the parent Wantzel-Galois formalization be proved?",

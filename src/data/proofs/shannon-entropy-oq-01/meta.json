@@ -23,6 +23,9 @@
     "lineCount": 623,
     "theoremCount": 14,
     "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/ShannonEntropyOQ01Aristotle.lean"
+    ],
     "assumptions": "None. Fully machine-verified from Mathlib. Uses Bochner integral and Gaussian integration.",
     "originalContributions": [
       "kl_divergence_continuous_nonneg: D(f||g) \u2265 0 (continuous KL divergence is non-negative)",

@@ -60,7 +60,10 @@
     ],
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/ShannonChannelCodingOQ03Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Fano's inequality was proved by Robert Fano in 1952 and is one of the most important tools in information theory. It provides a lower bound on the probability of error for any estimator of a random variable X given observations Y. The inequality states that the conditional entropy H(X|Y) is at most h(P_e) + P_e·log(|X|-1), where P_e is the error probability and h is binary entropy.\n\nFano's inequality is the key ingredient in the converse direction of Shannon's channel coding theorem: it shows that any reliable communication at rate above channel capacity is impossible. Without it, we could only prove achievability (good codes exist at rate < C) but not the converse (no codes exist at rate > C).\n\nThe inequality has been refined and generalized many times since 1952, and appears in virtually every proof of impossibility results in information theory and statistical inference.",

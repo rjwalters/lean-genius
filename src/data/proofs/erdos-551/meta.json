@@ -25,7 +25,10 @@
     "assumptions": "No axioms. 22 sorry(s) remain in the formalization.",
     "mathlib_version": "4.26.0",
     "theoremCount": 26,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "additionalFiles": [
+      "Proofs/Erdos551ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The asymmetric Ramsey number R(C_k, K_n) asks for the minimum N such that every 2-coloring of the edges of K_N contains either a red k-cycle or a blue n-clique. Erdős, Faudree, Rousseau, and Schelp conjectured in 1978 that R(C_k, K_n) = (k-1)(n-1) + 1 for all k ≥ n ≥ 3, with a single exception at (k,n) = (3,3) where the formula gives 5 but the actual value is R(K_3, K_3) = 6. The lower bound comes from a beautiful construction: (n-1) disjoint copies of K_{k-1}, which has (k-1)(n-1) vertices, contains no C_k (each component is too small) and its complement contains no K_n (independence number n-1). Bondy and Erdős (1973) proved the formula for k > n² - 2, a quadratic threshold. Nikiforov (2005) dramatically improved this to k ≥ 4n + 2 using spectral graph theory and eigenvalue bounds. Finally, Keevash, Long, and Skokan (2021) achieved the near-optimal threshold k ≥ C log n / log log n using the stability method and extremal graph theory. The special case R(C_k, K_3) = 2k - 1 for k ≥ 4 was proved independently by Faudree-Schelp (1974) and Rosta (1973) using Dirac's theorem. The formalization includes a formally verified proof (by Aristotle) that the KLS threshold improves on Nikiforov's for n ≥ 100, using the bound e < 3.",

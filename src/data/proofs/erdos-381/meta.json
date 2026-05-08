@@ -59,7 +59,10 @@
     "lineCount": 335,
     "assumptions": "2 axioms: erdos_lower_bound, nicolas_upper_bound. 3 sorries.",
     "theoremCount": 12,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "additionalFiles": [
+      "Proofs/Erdos381ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Ramanujan's Foundation (1915)**\n\nSrinivasa Ramanujan initiated the systematic study of highly composite numbers in his 1915 paper \"Highly Composite Numbers,\" one of his most substantial works at 52 pages. He provided a complete characterization of these numbers: if n = 2^{a₁}·3^{a₂}·...·p^{a_k}, then n is highly composite iff the exponents are non-increasing (a₁ ≥ a₂ ≥ ... ≥ a_k ≥ 1). This structural insight remains fundamental.\n\n**Erdős's Counting Question (1944)**\n\nPaul Erdős turned attention to how many highly composite numbers exist up to x. He proved Q(x) ≫ (log x)^{1+c} for some c > 0, showing they are more common than a naive analysis suggests. His 1944 paper \"On highly composite and similar numbers\" posed the natural question: does Q(x) grow faster than ANY fixed power of log x?\n\n**Nicolas's Resolution (1971)**\n\nJean-Louis Nicolas definitively answered NO. In \"Répartition des nombres hautement composés de Ramanujan,\" he proved Q(x) ≪ (log x)^C for an absolute constant C ≈ 1.71. This polynomial upper bound in log x directly contradicts growth faster than all powers, settling Erdős's question in the negative.",

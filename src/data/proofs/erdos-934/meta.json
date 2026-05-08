@@ -59,7 +59,10 @@
     "lineCount": 234,
     "assumptions": "4 axioms: h_1_exact, cgtt_1990, h_3_3, improved_upper_bound. 8 sorries.",
     "theoremCount": 10,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "additionalFiles": [
+      "Proofs/Erdos934ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #934** was posed by Erdős and Nešetřil, studying edge separation in bounded-degree graphs.\n\n**Historical Development:**\n- **1983 (Bermond-Bond-Paoli-Peyrat):** Conjectured h_2(d) ≤ 5d²/4 + 1, with equality for even d.\n- **1988 (Erdős):** Wrote 'This problem seems interesting only if there is a nice expression for h_t(d).'\n- **1990 (Chung-Gyárfás-Tuza-Trotter):** Proved h_2(d) = ⌊5d²/4⌋ + 1 exactly.\n- **2022 (Cambie et al.):** Proved h_3(3) = 23, conjectured h_3(d) ≤ d³-d²+d+2, and established general bounds.\n\nThe problem connects to 2K₂-free graphs and line graph diameter problems.",
