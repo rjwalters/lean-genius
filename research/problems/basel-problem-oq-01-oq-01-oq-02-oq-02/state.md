@@ -2,9 +2,96 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08
-**Iteration**: 8
+**Iteration**: 9
 
-## Session 8 (this session, build pending)
+## Session 9 (this session, planning + tactical analysis)
+
+Documentation-only iteration. No Lean changes; no sorry/axiom delta.
+Work product: a sharper, **operational** plan for the S10 m=3 even-n
+proof, correcting two pessimistic claims in S8's blockers list.
+
+**Headline finding**: BOTH parity-of-`n/2` sub-cases admit a clean
+**coprime decomposition** of `3 · C(n, 3)` into three pairwise-coprime
+factors that each divide `lcmRange n`. The S8 blockers list incorrectly
+suggests `n ≡ 2 mod 4` "probably needs Kummer"; in fact a different
+factorization removes the obstacle.
+
+### Concrete factorizations
+
+Parametrize `n = 2 * m` (`m ≥ 2`). From Part 7
+`two_mul_three_mul_choose_three_eq`, plus `n - 2 = 2 * (m - 1)`:
+
+  `3 * C(2m, 3) = (2m) * (2m - 1) * (m - 1)`     — uniform identity (*)
+
+Equivalently, by re-grouping `(2m) * (m - 1) = m * (2(m - 1)) = m * (2m - 2)`:
+
+  `3 * C(2m, 3) = m * (2m - 1) * (2m - 2)`        — alternative identity (**)
+
+Pairwise-coprime check on the three factors:
+
+| sub-case | parity of `m` | factorization | gcd checks |
+|---|---|---|---|
+| `n ≡ 0 mod 4` | `m` even | (*) `(2m)(2m-1)(m-1)` | gcd(2m, 2m-1)=1; gcd(2m, m-1)=1 (since m-1 odd → gcd | 2 → gcd=1); gcd(2m-1, m-1)=1 (2m-1 = 2(m-1)+1) |
+| `n ≡ 2 mod 4` | `m` odd | (**) `m(2m-1)(2m-2)` | gcd(m, 2m-1)=1 (≡ -1 mod m); gcd(m, 2m-2)=1 (gcd | 2; m odd); gcd(2m-1, 2m-2)=1 (consecutive) |
+
+Each factor `≤ n` and `≥ 1` for `m ≥ 2`, so each divides `lcmRange n`
+via Part 1 `dvd_lcmRange`. Two applications of
+`Nat.Coprime.mul_dvd_of_dvd_of_dvd` (mirroring S8) then give
+`3 · C(n, 3) ∣ lcmRange n`.
+
+### Lean tactical notes for S10
+
+1. **Helper algebraic identity**: prove `(*)` as a private helper
+   `three_mul_choose_three_eq_of_double {m : ℕ} (hm : 2 ≤ m) :
+   3 * Nat.choose (2 * m) 3 = (2 * m) * (2 * m - 1) * (m - 1)`. Proof:
+   `two_mul_three_mul_choose_three_eq` (Part 7) plus `2m - 2 = 2(m-1)`
+   plus `Nat.eq_of_mul_eq_mul_left`. ~10 lines.
+
+2. **Avoid ℕ division**: parametrize via `m` rather than `n`. The
+   sub-case proofs take `m : ℕ` with hypotheses `2 ≤ m` plus
+   `Even m` / `Odd m`; the gallery callers convert `n = 2 * m` via
+   `obtain ⟨m, rfl⟩ := h_n_even`.
+
+3. **Coprime API hiccups** (m even sub-case): `gcd(2m, m-1) = 1` for
+   `m` even is the trickiest gcd; the cleanest tactic is
+   `Nat.Coprime.coprime_dvd_left` after establishing `gcd | 2` from
+   `2m - 2(m-1) = 2`, combined with `m - 1` odd. Alternatively, use
+   `obtain ⟨j, rfl⟩ := h_m_even` to expose `m = 2j` and reduce to
+   `gcd(4j, 2j-1) = 1` via `Nat.coprime_self_add_right` after
+   rewriting `4j = 2(2j-1) + 2`.
+
+4. **Coprime API hiccups** (m odd sub-case): `gcd(m, 2m-2) = 1` for
+   `m` odd reduces to `gcd(m, 2) = 1` since `gcd(m, 2m-2) | 2(m-1)`
+   and `gcd(m, m-1) = 1` (consecutive). Use
+   `(Nat.Coprime.coprime_dvd_right ⟨1, ...⟩).mul_right`.
+
+5. **Sub-case combiner**: `mul_choose_dvd_lcmRange_three_even` takes
+   `n ≥ 4` and `Even n`, then `rcases Nat.even_or_odd m` (where
+   `m = n / 2`) and dispatches to the two sub-case lemmas.
+
+6. **Full theorem combiner**: `mul_choose_dvd_lcmRange_three` takes
+   `n ≥ 3`, then `rcases Nat.even_or_odd n` and dispatches to S8's
+   `mul_choose_dvd_lcmRange_three_odd` or the new
+   `mul_choose_dvd_lcmRange_three_even`.
+
+### Cost estimate (revised)
+
+~30-50 lines per sub-case (was ~50-80). The uniform helper identity
+(*) saves ~15 lines per sub-case, and S8's `mul_choose_dvd_lcmRange_three_odd`
+provides a direct template for the coprime-assembly pattern.
+
+### What this S9 corrects
+
+S8 state.md (lines 96-100, prior version) said "n ≡ 2 mod 4 ...
+Probably Kummer" — based on observing that `n` and `n-2` both have
+`v_2 = 1` and concluding the coprime argument can't close. **This is
+false**: re-grouping the `2` into the `n-2 = 2(m-1)` factor (formula
+(**)) gives a coprime triple `m, 2m-1, 2m-2` with all gcd's equal to
+1 because `m` is odd. No Kummer needed.
+
+**Axiom delta**: 0 (documentation-only).
+
+## Session 8 (PR #17175, merged)
 
 Added two helpers as Part 8 of `BaselProblemOQ01OQ01OQ02OQ02.lean`,
 discharging the **odd-n** case of the m=3 divisibility:
@@ -86,21 +173,17 @@ Two halves of the denominator analysis:
 ## Blockers
 
 For `mul_choose_dvd_lcmRange_three` (full m=3, even-n case):
-- For `n` even, `n` and `(n-1)(n-2)` share the factor 2 (both
-  `n` and `n-2` are even), so the simple coprime argument from
-  Session 8 fails. Need either Kummer's theorem on
-  `v_2(C(n, 3))` or a sub-case split:
-  - n ≡ 0 mod 4: `n(n-1)(n-2)/2 = (n/2)(n-1)(n-2)` with
-    `n/2` even, factor-of-2 absorbed into `n/2`. Coprime
-    arg may still close after re-grouping.
-  - n ≡ 2 mod 4: `n(n-1)(n-2)/2 = n(n-1)(n-2)/2` with both
-    `n` and `n-2` ≡ 2 mod 4, so `(n-2)/2` is odd, but `n/2`
-    is also odd — net `v_2 = 1` on each, total `v_2(...)` = 2.
-    Need to verify `lcmRange n` has at least `v_2 = 2 + ...`.
-    Probably Kummer.
+- **No Kummer needed** (S9 finding). Both parity-of-`m` sub-cases
+  admit a clean coprime decomposition (see S9 §"Concrete
+  factorizations"). The S10 task is purely arithmetic Lean coding
+  (~30-50 lines per sub-case), not an upstream Mathlib gap.
 
 For `mul_choose_dvd_lcmRange` (m ≥ 4):
-- The full general case requires the same Kummer infrastructure.
+- Genuine Kummer-or-double-induction territory. The m=3 trick
+  (parametrize `n = 2m` and re-group the lone `/2`) does **not**
+  generalize to m ≥ 4: the binomial `C(n, m)` has `v_2` controlled
+  by `s_2(m) + s_2(n-m) - s_2(n)` (digit-sum carry count), which
+  cannot be uniformly absorbed by parametrization of `n`.
 
 For the full `denominator_control`:
 - The alternating bilinear summand
@@ -110,26 +193,41 @@ For the full `denominator_control`:
 
 ## Next Action
 
-Session 9: tackle the m=3 even-n case. Two approaches:
+Session 10: implement Approach (A) per S9's tactical plan.
 
-**(A) Sub-case via parity of n/2.** Split `n` even into two
-sub-cases (n ≡ 0 mod 4 vs n ≡ 2 mod 4) and run the corresponding
-coprime/factor-grouping arguments. Pure arithmetic, ~50-80 lines
-per sub-case. Avoids Kummer entirely.
+1. **Add Part 9 helper**: `three_mul_choose_three_eq_of_double` for
+   `m ≥ 2`: `3 * C(2m, 3) = (2m)(2m - 1)(m - 1)`. Proof via Part 7
+   `two_mul_three_mul_choose_three_eq` plus `2m - 2 = 2(m - 1)` plus
+   `Nat.eq_of_mul_eq_mul_left`. ~10 lines.
 
-**(B) Kummer for `v_2(C(n, 3))`.** Use
-`Nat.Prime.multiplicity_choose` and the carry-count of
-`3 + (n - 3)` in base 2. Heavier (~150 lines including the
-generic prime-exponent → divides translation), but generalizes
-to `m = 4, 5, ...`.
+2. **Add Part 10a** `mul_choose_dvd_lcmRange_three_double_even` for
+   `m ≥ 2`, `Even m`: `3 * C(2m, 3) ∣ lcmRange (2m)`. Coprime triple
+   `(2m)(2m-1)(m-1)`. ~30 lines.
 
-Recommendation: try (A) first since it leverages the Session 8
-infrastructure directly; fall back to (B) if (A) gets stuck.
+3. **Add Part 10b** `mul_choose_dvd_lcmRange_three_double_odd` for
+   `m ≥ 2`, `Odd m`: `3 * C(2m, 3) ∣ lcmRange (2m)`. Coprime triple
+   `m(2m-1)(2m-2)` (re-group of (2m)(m-1) = m·2(m-1)). ~30 lines.
+
+4. **Add Part 10c** `mul_choose_dvd_lcmRange_three_even` for `n ≥ 4`,
+   `Even n`: dispatch on parity of `n / 2`. ~10 lines.
+
+5. **Add Part 10d** `mul_choose_dvd_lcmRange_three` for `n ≥ 3`:
+   dispatch on parity of `n` (S8 odd-case + S10 even-case). ~5 lines.
+
+Total: ~85 lines of Lean. Build via Docker wrapper or "build pending"
+per precedent. NO new sorries or axioms.
+
+After S10 closes m=3, the next-action shifts to either:
+- m ≥ 4 via Kummer (~150 lines for the generic prime-power-divides
+  translation), OR
+- bypass via the alternating bilinear summand needing a different
+  divisibility lemma (the precise statement should be derived by
+  re-reading the vdP §6 layout from S5).
 
 ## Attempt Counts
 
-- Total attempts: 6
-- Current approach attempts: 3 (route F, sessions 4-6 each made
-  forward progress)
-- Approaches tried: 2 (recurrence-induction ruled out in session 1;
-  van der Poorten closed form being executed in sessions 2-6+)
+- Total attempts: 7
+- Current approach attempts: 4 (route F: S4, S5, S6, S7 all forward
+  progress; S8 m=3 odd case; S9 m=3 even-n tactical analysis).
+- Approaches tried: 2 (recurrence-induction ruled out in S1;
+  van der Poorten closed form being executed S2-S9+)
