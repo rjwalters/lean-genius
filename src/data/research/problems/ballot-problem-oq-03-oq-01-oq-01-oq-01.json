@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 3,
-    "focus": "Building Jacobi-Trudi determinant formula in Lean 4 using Mathlib hsymm",
+    "iteration": 20,
+    "focus": "ballot_counting_identity (S20 stated): per-fiber cardinality identity, the focused remaining work for jdt_weight_sum b≥2.",
     "blockers": [],
-    "nextAction": "Implement jdt_weight_sum_b_one using documented recipe (Sym.oneEquiv + Sym.cons + Multiset.sort_cons + Multiset.prod_cons).",
+    "nextAction": "S21: Prove ballot_counting_identity via bijection at the multiset level (~150 lines).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 20 (2026-05-07): Removed duplicate `weight_eq_total_multiset` definition introduced by parallel S19 PRs #16637 and #16661 (both merged within 2 minutes, both adding the same lemma — the second occurrence shadowed the first and would prevent the file from compiling once the parent OQ03OQ02 dependency is fixed). Kept the implicit `{n a b}` signature from #16661, promoted the longer S19 expository docstring from #16637 onto it. File 1010 → 992 lines. Session 19: Added weight_eq_total_multiset (cornerstone of the corrected proof path from PR #14891) plus auxiliary ¬ColStrictSym helpers (min_ab_pos_of_not_colStrict, exists_first_violation_idx). The weight identity reduces jdt_weight_sum b≥2 to a per-fiber counting identity. 2 sorries remain (both unchanged).",
+    "progressSummary": "Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count: 3 → 4 (one new clean statement, no work-around closures).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -73,12 +73,14 @@
       "BallotProblemOQ03OQ01OQ01OQ01.lean: jdt_weight_sum dispatches on b = 1 (calls helper) vs b ≥ 2 (original seam bijection sorry).",
       "colStrictSym_a_one_iff_phead_lt_qhead (BallotProblemOQ03OQ01OQ01OQ01.lean:406): characterise ColStrictSym at b=1 as a single inequality (P.sort)[0] < (Q.sort)[0]",
       "not_colStrictSym_a_one_iff_qhead_le_phead (BallotProblemOQ03OQ01OQ01OQ01.lean:421): negation form q ≤ (P.sort)[0] for direct use in the bijection",
-      "jdt_weight_sum_b_one proved at BallotProblemOQ03OQ01OQ01OQ01.lean:474 (S17) — bijection {non-col-strict (a,1) pairs} ≃ Sym (Fin n) (a+1), sorry eliminated"
-    ,
+      "jdt_weight_sum_b_one proved at BallotProblemOQ03OQ01OQ01OQ01.lean:474 (S17) — bijection {non-col-strict (a,1) pairs} ≃ Sym (Fin n) (a+1), sorry eliminated",
       "weight_eq_total_multiset (S19): wt(P)*wt(Q) = wt(P.1+Q.1) — corrected-path cornerstone, 2-line proof",
       "min_ab_pos_of_not_colStrict (S19): ¬ColStrictSym a b P Q → 0 < min a b",
       "exists_first_violation_idx (S19): smallest c : Fin (min a b) with (Q.sort)[c] ≤ (P.sort)[c]; auxiliary (not on primary path)",
-      "S20 cleanup (this PR): removed duplicate `private lemma weight_eq_total_multiset` introduced when parallel S19 PRs #16637 and #16661 merged within 2 minutes of each other, both adding the same lemma. Kept the implicit-argument signature, promoted the longer expository docstring."
+      "S20 cleanup (this PR): removed duplicate `private lemma weight_eq_total_multiset` introduced when parallel S19 PRs #16637 and #16661 merged within 2 minutes of each other, both adding the same lemma. Kept the implicit-argument signature, promoted the longer expository docstring.",
+      "S20: totalSym helper (BallotProblemOQ03OQ01OQ01OQ01.lean): (P : Sym (Fin n) a) (Q : Sym (Fin n) b) ↦ ⟨P.1 + Q.1, _⟩ : Sym (Fin n) (a + b). Plus totalSym_val rfl-simp. Used to fiber both LHS and RHS sums by total multiset.",
+      "S20: totalSym^prime helper: companion to totalSym for the (a+1, b-1) RHS shape; takes hb : 1 ≤ b and produces Sym (Fin n) (a+b) for type-aligned fibering.",
+      "S20: ballot_counting_identity stated (BallotProblemOQ03OQ01OQ01OQ01.lean, ~30 lines incl. docstring) as the focused per-fiber subproblem. Cardinality identity: #{(P,Q) : Sym a × Sym b // ¬CS ∧ P+Q = M.1} = #{(P^prime,Q^prime) : Sym (a+1) × Sym (b-1) // P^prime+Q^prime = M.1}. Sorry remaining (the deep combinatorial work)."
     ],
     "insights": [
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
@@ -127,7 +129,10 @@
       "S18: Correct proof path for b≥2: group LHS by total multiset M, count non-cs splits per fiber via ballot bijection, regroup RHS. Estimated ~100-150 lines standard Lean combinatorics.",
       "S19: weight_eq_total_multiset is a 2-line lemma: rw [Multiset.map_add, Multiset.prod_add]. The hard work is the per-fiber counting identity, not the polynomial reduction.",
       "S19: exists_first_violation_idx (smallest c with (Q.sort)[c] ≤ (P.sort)[c]) is provable via Finset.min' but is NOT the primary tool for the corrected b≥2 proof — the seam-bijection it would parametrise is non-injective (PR #14891). Retained as auxiliary structural lemma.",
-      "S20 race-condition lesson: when two PRs work the same problem in parallel, even when both Lean changes are identical, the merge order can leave a duplicate `private lemma` declaration — invisible until the parent dependency builds (here masked by ongoing OQ03OQ02 API drift). Future sessions: before adding a helper that may be in flight elsewhere, `gh pr list --search '<lemma name>' --state open` is a 5-second guard."
+      "S20 race-condition lesson: when two PRs work the same problem in parallel, even when both Lean changes are identical, the merge order can leave a duplicate `private lemma` declaration — invisible until the parent dependency builds (here masked by ongoing OQ03OQ02 API drift). Future sessions: before adding a helper that may be in flight elsewhere, `gh pr list --search '<lemma name>' --state open` is a 5-second guard.",
+      "S20: Refactored the b≥2 path into a clean black-box reduction. ballot_counting_identity (per-fiber cardinality) is now the focused remaining subproblem, decoupled from the polynomial-algebra setup. The architectural split lets future sessions attack the cardinality identity in isolation, possibly via Aristotle on a small companion file.",
+      "S20: totalSym + totalSym^prime expose the (a+b)-cardinality total multiset as a Sym, so both LHS and RHS sums can fiber over the SAME codomain Sym (Fin n) (a+b). Without this, the type mismatch (a+1)+(b-1) vs a+b would force casts in every fiberwise lemma — totalSym^prime carries hb : 1 ≤ b in its signature so the omega-style equality lives once, in the def, not per-call.",
+      "S20: The remaining b≥2 reduction (steps i-iv in the comment block) is structural: weight_eq_total_multiset rewrites each summand, Finset.sum_fiberwise_of_maps_to regroups by total multiset, ballot_counting_identity equates per-fiber counts, and the chain inverts. Estimated 80-100 lines once ballot_counting_identity is filled."
     ],
     "mathlibGaps": [
       "No Mathlib SchurPolynomial definition — we provide one via Jacobi-Trudi formula",
@@ -135,17 +140,14 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
-      "S19 NEXT: Restructure jdt_weight_sum LHS via weight_eq_total_multiset + Fintype.sum_sigma to fiber over total multiset M : Sym n (a+b)",
-      "S19 NEXT: State and prove ballot_counting_identity — #{non-cs (a,b) splits of M} = #{all (a+1, b-1) splits of M} (~80-130 lines).",
-      "CRITICAL: Do NOT use the insert-violation-element bijection — it is non-injective for b≥2 (S18 counterexample). Use weight-factorization + counting-identity approach instead.",
-      "Implement weight_eq_total_multiset: wt(P)*wt(Q) = ((P.1+Q.1).map X).prod — use jdt_weight_preserved iteratively or direct Multiset.prod lemmas.",
-      "Restructure jdt_weight_sum LHS sum to group by total multiset M : Sym n (a+b). Use Fintype.sum_sigma or equiv to fiber product.",
-      "State and prove ballot_counting_identity: for M : Sym n (a+b), #{non-cs (a,b) splits of M} = C(a+b,a+1). This is the core counting argument — implement as a separate lemma via Fintype.card_congr + ballot bijection.",
-      "For jacobi_trudi_ssyt_eq k≥3: RSK or algebraic LGV remain the only paths. ~300 lines. Consider building BallotProblemOQ03AlgebraicLGV.lean first."
+      "S21: Prove ballot_counting_identity (~150 lines). Strategy: construct a bijection between the two filtered finsets at the multiset level. Approach options — (a) reflection/cycle lemma for distinct elements + multiplicity argument; (b) explicit insert-with-disambiguating-data bijection (the Σ-bundled fix to S18 non-injectivity).",
+      "S22: Wire ballot_counting_identity into jdt_weight_sum b≥2 via the structural reduction (steps i-iv documented). ~80-100 lines using Finset.sum_fiberwise_of_maps_to + weight_eq_total_multiset.",
+      "Optional: extract ballot_counting_identity as a standalone Mathlib contribution candidate — it is a clean, named statement about Sym multisets and column-strict pairs, of independent interest in algebraic combinatorics.",
+      "For jacobi_trudi_ssyt_eq k≥3: RSK or algebraic LGV. ~300 lines. Defer until k=2 (jdt_weight_sum) closes."
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
-    "insightsCount": 39,
-    "builtItemsCount": 41,
+    "insightsCount": 50,
+    "builtItemsCount": 50,
     "nextStepsCount": 4
   },
   "tags": [
@@ -179,7 +181,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-07T22:20:00.000Z",
+  "lastUpdate": "2026-05-08T03:30:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
