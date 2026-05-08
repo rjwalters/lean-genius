@@ -322,15 +322,22 @@ theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : Cofac
   · -- a₀ * M'.α + b₀ * M'.γ = a₀ * M.β + b₀ * M.δ = bhat
     exact h_inv₂
   · -- a₀ * (M.α - q·M.β) + b₀ * (M.γ - q·M.δ) = ahat % bhat
+    -- Modern simp normalizes ↑(ahat/bhat) to ↑ahat / ↑bhat (Int.ediv on coercions),
+    -- so `expand` is stated in that normalized form to match the post-simp goal.
     have expand :
-        a₀ * (M.α - ((ahat / bhat : ℕ) : ℤ) * M.β)
-          + b₀ * (M.γ - ((ahat / bhat : ℕ) : ℤ) * M.δ)
+        a₀ * (M.α - ((ahat : ℤ) / (bhat : ℤ)) * M.β)
+          + b₀ * (M.γ - ((ahat : ℤ) / (bhat : ℤ)) * M.δ)
         = (a₀ * M.α + b₀ * M.γ)
-            - ((ahat / bhat : ℕ) : ℤ) * (a₀ * M.β + b₀ * M.δ) := by ring
+            - ((ahat : ℤ) / (bhat : ℤ)) * (a₀ * M.β + b₀ * M.δ) := by ring
     rw [expand, h_inv₁, h_inv₂]
-    -- Goal: (ahat : ℤ) - ↑(ahat/bhat) * (bhat : ℤ) = ↑(ahat % bhat)
+    -- Goal: (ahat : ℤ) - ↑ahat / ↑bhat * (bhat : ℤ) = ↑(ahat % bhat)
+    -- Bridge between the Nat-division (Nat.div_add_mod) and the post-simp Int form.
+    have hdiv_eq : ((ahat / bhat : ℕ) : ℤ) = ((ahat : ℤ) / (bhat : ℤ)) := by
+      push_cast
+      rfl
     have hdivmod_int :
-        (bhat : ℤ) * ((ahat / bhat : ℕ) : ℤ) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
+        (bhat : ℤ) * ((ahat : ℤ) / (bhat : ℤ)) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
+      rw [← hdiv_eq]
       exact_mod_cast Nat.div_add_mod ahat bhat
     linarith
 
@@ -391,12 +398,12 @@ theorem lehmerInnerStep_residue_le {ahat bhat : ℕ} {M : CofactorMatrix}
     (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
     bhat' < bhat ∧ ahat' = bhat := by
   simp [lehmerInnerStep] at h
-  split at h <;> simp_all
-  split at h <;> simp_all
-  obtain ⟨rfl, rfl, _⟩ := h
+  -- Modern simp produces a 5-conjunct: (bhat ≠ 0, ahat%bhat ≠ 0, bhat = ahat',
+  -- ahat%bhat = bhat', struct = M'). Discard the struct-equality with `_`.
+  obtain ⟨hb, _, rfl, rfl, _⟩ := h
   refine ⟨?_, rfl⟩
-  -- Goal: ahat % bhat < bhat. omega uses bhat ≠ 0 from context.
-  omega
+  -- Goal: ahat % bhat < bhat. From hb : bhat ≠ 0.
+  exact Nat.mod_lt _ (Nat.pos_of_ne_zero hb)
 
 /-- One successful Lehmer inner step does not increase the maximum
     of the pair `(ahat, bhat)`. -/
