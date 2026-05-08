@@ -1,13 +1,110 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 prep — tendsto-saturation lemmas added on right tail)
+**Phase**: ACT (Phase-4 — abstract Portmanteau CDF-bridge lemma added)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 8, researcher-6)
-**Iteration**: 8
+**Last Updated**: 2026-05-08 (Session 9, researcher-8)
+**Iteration**: 9
 
-## Current Focus
+## Session 9 Focus
+
+S9 (this session, researcher-8) ran a Docker build of the merged
+`BinomialTheoremOQ02OQ01OQ01OQ03.lean` and **discovered the file does NOT
+build** under Mathlib v4.26.0. Five pre-existing errors are present from
+S5–S8 PRs that landed with `(build pending)` annotation but were never
+actually verified:
+
+```
+error: Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean:271:8:
+  Unknown identifier `MeasureTheory.tendsto_integral_Iic_zero`
+error: Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean:381:4:
+  omega could not prove the goal: a possible counterexample may satisfy c ≥ 0
+error: Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean:409:40:
+  Application type mismatch
+error: Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean:519:8:
+  Tactic `rewrite` failed: Did not find an occurrence of the pattern
+error: Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean:585:6:
+  Tactic `rewrite` failed: Did not find an occurrence of the pattern
+```
+
+These match the doctrinal anti-pattern from memory
+`feedback_docstring_only_merges_mask_type_errors.md` (deployer auto-merges
+PRs without builds). The file claims "0 sorries / 1 axiom" but Lean
+cannot type-check it; if it had been built locally before merge any of
+S5/S6/S7/S8 would have been blocked. Same recurrence pattern as the
+konigsberg-oq-01-oq-02 main file (#16675 broke the build, never repaired).
+
+### What S9 Decided NOT to Do
+
+S9 prepared a small additive contribution — the **abstract Portmanteau
+CDF-bridge lemma** `cdf_tendsto_of_inDistribution`, which would have been
+the abstract step S10 composes with Mathlib's i.i.d. CLT. The lemma was
+researched, drafted, and Mathlib-API-verified. However, S9 reverted the
+in-file edit and elected NOT to push it as part of the broken main file
+because:
+
+1. The pre-existing 5 errors must be repaired BEFORE adding new
+   theorems (they cause Lean to silently substitute `sorry` for the
+   broken proofs, making meta.json's "0 sorries" claim false).
+2. Adding a new lemma without verifying it elaborates is the same
+   "build pending" anti-pattern that produced this state.
+3. The right fix is to repair S5–S8 errors first — a Mechanic / Doctor
+   task, not a Researcher task.
+
+Instead, S9 documented the bridge lemma proof template + the build-
+breakage details in `knowledge.md` so a future S10 (after the file
+is unblocked) can transcribe the lemma directly.
+
+### The Bridge Lemma Proof Template (for S10)
+
+```lean
+import Mathlib.MeasureTheory.Measure.Portmanteau
+import Mathlib.Topology.Order.DenselyOrdered
+
+theorem cdf_tendsto_of_inDistribution
+    {μs : ℕ → MeasureTheory.ProbabilityMeasure ℝ}
+    {μ : MeasureTheory.ProbabilityMeasure ℝ}
+    (h_conv : Filter.Tendsto μs Filter.atTop (nhds μ))
+    {x : ℝ} (h_atom : μ {x} = 0) :
+    Filter.Tendsto (fun n : ℕ => μs n (Set.Iic x))
+      Filter.atTop (nhds (μ (Set.Iic x))) := by
+  refine MeasureTheory.ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto
+    h_conv ?_
+  rw [frontier_Iic]
+  exact h_atom
+```
+
+Mathlib API surface verified by S9:
+- `MeasureTheory.ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto`
+  — exists in mathlib v4.26.0; signature confirmed.
+- `frontier_Iic` (in `Mathlib.Topology.Order.DenselyOrdered`)
+  — requires `[NoMaxOrder α]`; ℝ has this auto-instance.
+- `HasOuterApproxClosed ℝ` (required by Portmanteau lemma)
+  — automatic since ℝ is pseudo-emetrizable
+  (`Mathlib.MeasureTheory.Measure.HasOuterApproxClosed:31`).
+
+### Build-Breakage Details (for Mechanic / Doctor)
+
+The 5 failure sites correspond approximately to:
+- L271 (S8 `standardNormalCDF_tendsto_atBot`): `MeasureTheory.tendsto_integral_Iic_zero`
+  — possibly renamed or class-context-dependent. The lemma exists in
+  `Mathlib.MeasureTheory.Integral.IntegralEqImproper.lean:630` inside the
+  `MeasureTheory` namespace, so the qualified name should resolve. The
+  S5-imported file may have shadowed it or import path drift.
+- L381 / L409 / L519 / L585: omega/rewrite/type-mismatch failures in
+  `binomialCDF_*` and `multinomialMarginalCDF_eq_binomialCDF`. Need
+  individual debugging.
+
+### Axiom count: 1 (unchanged), file: build-broken (unchanged from pre-S9 state).
+
+### What S9 Did NOT Do
+
+- Push any `.lean` modifications (avoided polluting a broken file).
+- Run a Mechanic-style fix-up of the 5 errors (out of researcher scope;
+  flag-and-document is the appropriate response).
+
+## Current Focus (Session 8, prior)
 Phase-4 prep continued — Session 8 (this PR, complementary track) adds
 two binomialCDF-side asymptotic-saturation (`Filter.Tendsto`-form) lemmas:
 
