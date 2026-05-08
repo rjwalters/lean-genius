@@ -1102,6 +1102,108 @@ example : outerGuardFiringCount 0 32 = 0 := by native_decide
 /-- A narrow sub-threshold band `[60, 64)` has zero firings. -/
 example : outerGuardFiringCount 60 64 = 0 := by native_decide
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XVIII: EMPTY-RANGE STRUCTURAL LEMMAS (Session 26)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Empty-range characterisation
+
+    These lemmas dispatch the **degenerate case** `hi ≤ lo`
+    (empty survey range) without `native_decide` enumeration,
+    complementing S25's `outerGuardFiringCount_below_threshold`
+    which dispatches the sub-threshold case `hi ≤ 64`.
+
+    Together the two closed-form theorems cover every density
+    question whose answer is forced to zero by structural
+    constraints: empty range OR sub-threshold range. The remaining
+    open density question — calibrating
+    `outerGuardFiringCount 64 hi` for `hi > 64` — necessarily
+    requires `native_decide` evaluation since the firing pattern
+    depends on the actual `hgcdSafeApply` recursion.
+
+    The proofs are routine `Finset.mem_filter` + `Finset.mem_Ico`
+    + `omega` unfolding, with no dependence on `hgcdSafeApply`
+    or `schonhageOuterGuardFires`. -/
+
+/-- The parameterised survey range `outerGuardSurveyPairs lo hi`
+    is empty iff `hi ≤ lo`. The forward direction uses the
+    Finset.Ico structure; the backward direction exhibits the
+    canonical witness `(lo, lo)`. -/
+theorem outerGuardSurveyPairs_eq_empty_iff (lo hi : ℕ) :
+    outerGuardSurveyPairs lo hi = ∅ ↔ hi ≤ lo := by
+  unfold outerGuardSurveyPairs
+  refine ⟨?_, ?_⟩
+  · -- Empty filter ⟹ hi ≤ lo: contrapose, exhibit (lo, lo).
+    contrapose!
+    intro hlt hempty
+    have hlo_mem : lo ∈ Finset.Ico lo hi := by
+      rw [Finset.mem_Ico]; exact ⟨le_refl _, hlt⟩
+    have hpair_mem :
+        (lo, lo) ∈ ((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter
+          (fun p => p.2 ≤ p.1) := by
+      rw [Finset.mem_filter, Finset.mem_product]
+      exact ⟨⟨hlo_mem, hlo_mem⟩, le_refl _⟩
+    exact (Finset.not_mem_empty _) (hempty ▸ hpair_mem)
+  · -- hi ≤ lo ⟹ empty: every candidate pair fails the Ico bound.
+    intro h
+    rw [Finset.eq_empty_iff_forall_not_mem]
+    intro p hp
+    rw [Finset.mem_filter, Finset.mem_product,
+        Finset.mem_Ico, Finset.mem_Ico] at hp
+    obtain ⟨⟨⟨hlo_a, ha_hi⟩, _⟩, _⟩ := hp
+    omega
+
+/-- The parameterised survey size is zero iff `hi ≤ lo`. Direct
+    corollary of `outerGuardSurveyPairs_eq_empty_iff` via
+    `Finset.card_eq_zero`. -/
+theorem outerGuardSurveySize_eq_zero_iff (lo hi : ℕ) :
+    outerGuardSurveySize lo hi = 0 ↔ hi ≤ lo := by
+  unfold outerGuardSurveySize
+  rw [Finset.card_eq_zero, outerGuardSurveyPairs_eq_empty_iff]
+
+/-- **Closed-form zero-firing on empty range.** When the survey
+    region is empty (`hi ≤ lo`), the firing count is trivially
+    zero. Direct corollary via the cardinality bound from
+    `outerGuardFiringCount_le_surveySize` plus
+    `outerGuardSurveySize_eq_zero_iff`. -/
+theorem outerGuardFiringCount_eq_zero_of_empty (lo hi : ℕ)
+    (h : hi ≤ lo) : outerGuardFiringCount lo hi = 0 := by
+  have hsize : outerGuardSurveySize lo hi = 0 :=
+    (outerGuardSurveySize_eq_zero_iff lo hi).mpr h
+  have hle := outerGuardFiringCount_le_surveySize lo hi
+  omega
+
+/-- The empty-range zero-firing theorem in iff form: firing count
+    is zero on a degenerate range iff that range is degenerate.
+    Note this is a one-direction iff specialisation; the
+    converse direction "firing count zero ⟹ hi ≤ lo" is FALSE
+    in general (e.g. firing count is also zero on sub-threshold
+    ranges). The companion theorem `outerGuardSurveySize_eq_zero_iff`
+    captures the actual two-way equivalence on the survey side. -/
+theorem outerGuardFiringCount_eq_zero_of_size_zero (lo hi : ℕ)
+    (hsize : outerGuardSurveySize lo hi = 0) :
+    outerGuardFiringCount lo hi = 0 := by
+  have hle := outerGuardFiringCount_le_surveySize lo hi
+  omega
+
+/-! ### Concrete empty-range witnesses
+
+    Sanity checks confirming the empty-range theorems on
+    degenerate inputs. These do not invoke `hgcdSafeApply`, so
+    they evaluate fast. -/
+
+/-- The flat range `[64, 64)` has size zero. -/
+example : outerGuardSurveySize 64 64 = 0 := by
+  rw [outerGuardSurveySize_eq_zero_iff]
+
+/-- The reversed range `[130, 64)` has size zero. -/
+example : outerGuardSurveySize 130 64 = 0 := by
+  rw [outerGuardSurveySize_eq_zero_iff]; omega
+
+/-- The flat range `[64, 64)` has zero firings. -/
+example : outerGuardFiringCount 64 64 = 0 :=
+  outerGuardFiringCount_eq_zero_of_empty 64 64 (le_refl _)
+
 end HGcdSafe
 
 /-! ## Summary
