@@ -50,7 +50,7 @@
       "The critical dimension 2(r-1) is determined by general position: a generic (r-1)-simplex lives in R^{r-1}, and a generic (r-1)-dimensional simplicial complex embeds in R^{2(r-1)+1} but can obstruct embedding in R^{2(r-1)}",
       "The density threshold n^{r-1+ε} is the super-Turán regime: Turán numbers for r-uniform complete subhypergraphs are polynomially smaller than n^{r-1+ε} for large n, so dense hypergraphs force complete sub-hypergraphs as candidates for non-embeddable pieces",
       "The Hypergraph structure uses a Finset-of-Finsets model with a proof-valued uniformity field, allowing the uniformity constraint to be inherited automatically by sub-hypergraphs via the induced definition",
-      "The isEmbeddable definition has a sorry: formalizing it requires geometric realization of simplicial complexes in R^d as a topological space — infrastructure not yet in Mathlib, making the isNonEmbeddable and vanKampen_Flores axiom necessary",
+      "The isEmbeddable definition is concretely formalized via injective vertex maps with the convex-hull intersection condition, so non-embeddability is a concrete (not axiomatic) statement; the vanKampen_Flores axiom is needed because formalizing the deleted-product / Borsuk-Ulam proof is out of scope",
       "K₇^{(3)} has C(7,3) = 35 edges — proved by decide. The analogous K₅ has C(5,2) = 10 edges. The ratio 35/10 shows how much richer 3-uniform hypergraph theory is compared to graphs"
     ],
     "prerequisites": [

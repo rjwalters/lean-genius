@@ -312,7 +312,7 @@ axiom density_exceeds_turan (t r : ℕ) (hr : r ≥ 2) (ht : t > r) :
 
   Axiom count: 4 (vanKampen_Flores, triangle_planar, K4_planar,
   density_exceeds_turan).
-  Sorry count: 2 (isEmbeddable def, turanNumber def).
+  Sorry count: 1 (turanNumber def; isEmbeddable now concretely defined via convex-hull intersection).
 -/
 
 end Erdos1018OQ04
