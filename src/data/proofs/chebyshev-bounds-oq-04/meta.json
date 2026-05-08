@@ -24,6 +24,9 @@
         "lineCount": 386,
         "theoremCount": 14,
         "definitionCount": 2,
+        "additionalFiles": [
+            "Proofs/ChebyshevBoundsOQ04Aristotle.lean"
+        ],
         "originalContributions": [
             "Definition of the second Chebyshev function ψ(n) = Σ_{k ≤ n} Λ(k) using Mathlib's vonMangoldt function",
             "Proof that θ(n) ≤ ψ(n): rewrites log p as vonMangoldt p for primes (chebyshevThetaOQ_eq_sumVonMangoldt), then uses subset sum monotonicity",
