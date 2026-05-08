@@ -1028,32 +1028,79 @@ theorem selmer_padic_solubility_p7_hensel :
     (by decide)
     (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
 
-/-! ## Section 17: Status Summary (post Section 16) -/
+/-! ## Section 17: Iteration 9 — Special primes p ∈ {2, 5} via lift-x
+
+Iteration 9 dispatches the two "non-singular" special primes left in the
+Section 8 roadmap by reusing the parametric `selmer_padic_solubility_lift_x`
+of Section 16. Both Section-9 witnesses for `p = 2` and `p = 5` keep `x₀ = 1`,
+so the lift-x derivative `9·x₀² = 9` is automatically coprime to either prime
+(`gcd(9, 2) = gcd(9, 5) = 1`); the only per-prime arithmetic is the global
+divisibility check.
+
+- `p = 2`, witness `(1, 0, 1)`: `2 ∣ 3·1 + 0 + 5·1 = 8 = 2·4`,
+  `gcd(9·1², 2) = 1`, nontriviality from `z₀ = 1 ≠ 0` via `Or.inr one_ne_zero`.
+- `p = 5`, witness `(1, 2, 0)`: `5 ∣ 3·1 + 4·8 + 0 = 35 = 5·7`,
+  `gcd(9·1², 5) = 1`, nontriviality from `y₀ = 2 ≠ 0` via `Or.inl (by decide)`.
+
+Combined with Sections 11–16, **eleven of the twelve** Section-8 primes
+(`p ∈ {2, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`) now admit axiom-free
+`ℚ_[p]`-solubility proofs. The only prime still missing is `p = 3`, which
+has singular reduction (every coefficient of `selmerPoly`'s Jacobian is
+divisible by 3) and requires the strong-form Hensel lemma on the mod-27
+witness `selmer_witness_p3_mod27 = (0, 1, 4)`. -/
+
+instance : Fact (Nat.Prime 2) := ⟨by decide⟩
+instance : Fact (Nat.Prime 5) := ⟨by decide⟩
+
+/-- ℚ_[2] solubility of the Selmer cubic via the `(1, 0, 1)` witness
+    (cf. `selmer_witness_p2`). Routine corollary of
+    `selmer_padic_solubility_lift_x`; the witness data
+    `2 ∣ 3·1 + 4·0 + 5·1 = 8` and `gcd(9·1², 2) = gcd(9, 2) = 1`
+    are decidable. Nontriviality uses `z₀ = 1 ≠ 0`. -/
+theorem selmer_padic_solubility_p2_hensel :
+    ∃ (x y z : ℚ_[2]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_x 1 0 1
+    (Or.inr one_ne_zero)
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[5] solubility of the Selmer cubic via the `(1, 2, 0)` witness
+    (cf. `selmer_witness_p5`). Routine corollary of
+    `selmer_padic_solubility_lift_x`; the witness data
+    `5 ∣ 3·1 + 4·8 + 5·0 = 35 = 5·7` and `gcd(9·1², 5) = gcd(9, 5) = 1`
+    are decidable. Nontriviality uses `y₀ = 2 ≠ 0`. -/
+theorem selmer_padic_solubility_p5_hensel :
+    ∃ (x y z : ℚ_[5]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_x 1 2 0
+    (Or.inl (by decide))
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-! ## Section 18: Status Summary (post Section 17) -/
 
 /-!
-Section 15 generalizes Section 13's Case-A Hensel lift to a fully parametric
-"lift-z" theorem `selmer_padic_solubility_lift_z`, then dispatches the
-Section-9 Case-B primes with nonzero `z₀` — `p ∈ {13, 19, 31, 37}` — as
-one-line corollaries. The universal axiom `selmer_padic_solubility` remains
-load-bearing, but eight of the twelve primes in the Section 8 roadmap
-(`p ∈ {11, 13, 17, 19, 23, 29, 31, 37}`) now admit axiom-free `ℚ_[p]`-solubility
+Section 17 dispatches the two non-singular special primes `p ∈ {2, 5}` as
+one-line corollaries of `selmer_padic_solubility_lift_x`, leveraging the
+shared `x₀ = 1` choice in both Section-9 witnesses. The universal axiom
+`selmer_padic_solubility` remains load-bearing, but **eleven of the twelve**
+primes in the Section 8 roadmap now admit axiom-free `ℚ_[p]`-solubility
 proofs.
 
-### Updated counts (post Section 16)
-- Theorems: 22 + 1 (`selmer_padic_solubility_lift_z`) + 4 (Case-B z₀ ≠ 0
-  corollaries) + 1 (`selmer_padic_solubility_lift_x`) + 1
-  (`selmer_padic_solubility_p7_hensel`) = 29.
-- Substantive theorems (non-`decide` content): 9 (was 8 post-Section 15).
-- Definitions: 5 + 1 (`HenselLiftZ.G`) + 1 (`HenselLiftX.H`) = 7.
+### Updated counts (post Section 17)
+- Theorems: 29 (post-Section 16) + 2 (`selmer_padic_solubility_p2_hensel`,
+  `selmer_padic_solubility_p5_hensel`) = 31.
+- Substantive theorems (non-`decide` content): 9 (unchanged — both new
+  theorems are one-line corollaries that consume `decide`-verified data).
+- Definitions: 7 (unchanged — both corollaries reuse `HenselLiftX.H`).
 - Sorries: 0 (unchanged).
 - Axioms: 2 (unchanged): `selmer_no_rational_solution` + `selmer_padic_solubility`.
 - Status: still `axiomatized`.
-- New milestone: parametric lift-x theorem + p = 7 corollary closes the last
-  Case-B prime; nine of the twelve Section-8 primes (`p ∈ {7, 11, 13, 17,
-  19, 23, 29, 31, 37}`) now admit axiom-free `ℚ_[p]`-solubility proofs.
-- Remaining: `p = 2, 5` (direct construction; both witnesses already give
-  `selmerPoly = 0` over the relevant ring) and `p = 3` (singular reduction
-  via strong-form Hensel on `selmer_witness_p3_mod27`). -/
+- New milestone: lift-x dispatches the two non-singular special primes
+  `p ∈ {2, 5}`; eleven of the twelve Section-8 primes
+  (`p ∈ {2, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`) now admit axiom-free
+  `ℚ_[p]`-solubility proofs.
+- Remaining: `p = 3` only (singular reduction; requires strong-form Hensel
+  on `selmer_witness_p3_mod27`). -/
 
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
@@ -1074,5 +1121,7 @@ proofs.
 #check @selmer_padic_solubility_p37_hensel
 #check @selmer_padic_solubility_lift_x
 #check @selmer_padic_solubility_p7_hensel
+#check @selmer_padic_solubility_p2_hensel
+#check @selmer_padic_solubility_p5_hensel
 
 end Hilbert11OQ02
