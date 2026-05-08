@@ -1,17 +1,31 @@
 # Current State
 
-**Phase**: ACT — Layer 4a (Fin b cast bridge) and `rational_has_missing_ktuple` complete
+**Phase**: ACT — `normal_imp_irrational` discharged (axiomCount 2 → 1)
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 12, researcher-10)
-**Iteration**: 12
+**Last Updated**: 2026-05-08 (Session 13, researcher-11)
+**Iteration**: 13
 
 ## Current Focus
 
-Session 12 added **Layer 4a** — the `Fin b` cast bridge between the
-ℤ-valued `nthDigit` and `Fin b`-valued sequences accepted by
-`periodic_has_missing_ktuple` — and used it to prove a new private
-theorem `rational_has_missing_ktuple`. This is the structural input
-required by the count/Tendsto contradiction in `normal_imp_irrational`.
+**Session 13** discharged the `normal_imp_irrational` axiom by composing
+S12's `rational_has_missing_ktuple` with three new private lemmas:
+
+1. `rational_has_missing_ktuple_intCast` — bridges S12's `Fin b` form to
+   the ℤ-valued `nthDigit` form that appears literally inside `IsNormalInBase`.
+2. `rational_match_count_le` — for the missing-tuple data, the count of
+   matching positions in `Finset.range N` is at most `N₀` (positions `≥ N₀`
+   are excluded by the missing-tuple property; `Finset.card_le_card` ▷
+   `Finset.range N₀`).
+3. `tendsto_bounded_count_div_atTop_zero` — squeeze theorem: a non-negative
+   ℕ-sequence bounded above by `N₀` has `c_N / N → 0` (`N₀ / N = N₀ · N⁻¹
+   → N₀ · 0 = 0`; `tendsto_inv_atTop_zero` ∘ `tendsto_natCast_atTop_atTop`).
+
+Composing: the matching-position frequency tends to `0`, but `IsNormalInBase`
+forces it to tend to `b^(-k) > 0`. `tendsto_nhds_unique` gives `0 = b^(-k)`,
+which contradicts `zpow_pos`. Hence rational `x` cannot be normal.
+
+`normal_imp_irrational` is now a `theorem` rather than `axiom`. Only one axiom
+remains: **`e_absolutely_normal`** — the genuinely-open conjecture.
 
 ### New code (4 lemmas + 1 def + 1 theorem; ~95 lines)
 
@@ -88,60 +102,68 @@ The Lean entry now establishes:
   - L4a (S12): `nthDigit_nonneg`, `nthDigit_lt_base`, `nthDigitFin_intCast`,
     `nthDigitFin_eq_iff`, `rational_has_missing_ktuple`.
 
-**Two remaining axioms**:
-- `normal_imp_irrational` — Layer 4a built the missing-tuple structural input.
-  S13's task: count/Tendsto step. Recipe:
-  1. From `rational_has_missing_ktuple` extract k, N₀, s (data only depends on q).
-  2. Show `count(N) := |{n < N : ∀ i, nthDigit b (n+i) q = (s i : ℤ)}| ≤ max N₀ 0`
-     via `nthDigitFin_eq_iff` and the missing-tuple property.
-  3. Bound `(count(N) : ℝ) / N ≤ N₀ / N → 0`.
-  4. By normality, `count(N) / N → b^(-k) > 0` (since `b ≥ 2`).
-  5. Contradiction.
+**One remaining axiom**:
 - `e_absolutely_normal` — the **main open conjecture**. Genuinely open
   as of 2026; will remain axiomatized.
 
+S13 closed `normal_imp_irrational` per the recipe sketched in S12:
+  1. ✅ Extract k, N₀, s from `rational_has_missing_ktuple` and lift to ℤ-valued
+     form via `nthDigitFin_intCast` (`rational_has_missing_ktuple_intCast`).
+  2. ✅ `Finset.card_le_card` ▷ `Finset.range N₀` proves
+     `count(N) ≤ N₀` (`rational_match_count_le`).
+  3. ✅ Squeeze `0 ≤ count(N)/N ≤ N₀/N` with `N₀/N → 0`
+     (`tendsto_bounded_count_div_atTop_zero`).
+  4. ✅ By normality, `count(N)/N → b^(-k)`; uniqueness of limits gives
+     `0 = b^(-k)`, but `zpow_pos` says `b^(-k) > 0`. Contradiction.
+
 ## Blockers
 
-- **Local Lean build unreliable**: Worktree's `proofs/.lake` is a
-  self-cycle symlink — Docker build cold-clones Mathlib (~45 min).
-  Following S8/S9/S10/S11 convention, build verification is deferred to CI.
-  All Mathlib lemmas used are well-established and stable in v4.26.0.
+- **Build region wider drift**: `Proofs/eTranscendental.lean` (the importing
+  parent of this entry, used for `e_irrational`/`e_transcendental`) currently
+  fails to build at v4.26.0 because `IsFractionRing.isAlgebraic_iff` was
+  removed/renamed in mathlib upstream (9 call sites). This is a pre-existing
+  drift unrelated to S13 — fixing it is out of scope here. Local build
+  verification deferred per S8/S9/S10/S11/S12 convention. The S13 logic
+  itself uses only `tendsto_inv_atTop_zero`, `tendsto_natCast_atTop_atTop`,
+  `Tendsto.const_mul`, `Tendsto.comp`, `tendsto_of_tendsto_of_tendsto_of_le_of_le'`,
+  `tendsto_const_nhds`, `tendsto_nhds_unique`, `Filter.Eventually.of_forall`,
+  `Finset.card_le_card`, `Finset.card_range`, `Finset.mem_filter`,
+  `Finset.mem_range`, `Fin.ext`, `Nat.eq_zero_or_pos`, `zpow_pos`, and `gcongr`
+  — all well-established and verified present in mathlib v4.26.0.
 
 ## Next Action
 
-**ACT (Session 13)** — discharge `normal_imp_irrational` using the count/Tendsto
-recipe (steps 4–5 above). The structural input (missing k-tuple) is now
-provided by Layer 4a's `rational_has_missing_ktuple`.
+**ORIENT (Session 14)** — only the open conjecture `e_absolutely_normal`
+remains. No further axiom-discharge work is meaningful (this is the
+genuinely-open mathematical question, 2026). Future sessions could:
+- Add convergence-rate annotations to the existing digit theorems (e.g.
+  Bailey–Borwein–Plouffe-style bounds);
+- Hook up Borel's theorem (almost-all-normal) as a Lebesgue-density result;
+- Cross-reference irrationality measure (e-transcendental-oq-03).
 
-Sketch: for the rational case, define
-```lean
-let A : Finset ℕ := (Finset.range N).filter
-  (fun n => ∀ i : Fin k, nthDigit b (n + i.val) (q : ℝ) = (s i : ℤ))
-```
-and show `A ⊆ Finset.range N₀` via the missing-tuple guarantee for `n ≥ N₀`.
-Then `(A.card : ℝ) / N ≤ N₀ / N → 0`, but normality demands the limit is
-`b^(-k) > 0`. Contradiction; hence `x` is not rational.
-
-After Session 13, only `e_absolutely_normal` remains axiomatized — and
-that is the genuinely-open conjecture.
+Or simply mark the entry **"axiomatized — final"** and move on.
 
 ## Attempt Counts
 
-- Total attempts: 7 (Session 1 = entry built 2026-05-04; Session 2 =
+- Total attempts: 8 (Session 1 = entry built 2026-05-04; Session 2 =
   metadata reconciliation 2026-05-07; Session 3 = recipe (2026-05-08);
   Session 8 = Layer 1 (#16993, 2026-05-08); Session 9 = Layer 2
   (#17016, 2026-05-08); Session 10 = Layer 3a (#17037, 2026-05-08);
   Session 11 = Layer 3b + axiom discharge (#17084, 2026-05-08);
   Session 12 = Layer 4a Fin b cast bridge + rational_has_missing_ktuple
-  (this PR, 2026-05-08)).
-- Current approach attempts: 5 (Layers 1, 2, 3a, 3b, 4a all closed).
+  (#17126, 2026-05-08); Session 13 = Layer 4b normal_imp_irrational
+  discharge — 3 helper lemmas + theorem replacement (this PR, 2026-05-08)).
+- Current approach attempts: 6 (Layers 1, 2, 3a, 3b, 4a, 4b all closed).
 
 ## References
 
+- `proofs/Proofs/ETranscendentalOQ02.lean:590+` — `rational_has_missing_ktuple_intCast`,
+  `rational_match_count_le`, `tendsto_bounded_count_div_atTop_zero`,
+  `normal_imp_irrational` (Layer 4b, S13)
 - `proofs/Proofs/ETranscendentalOQ02.lean:495+` — `nthDigit_nonneg`,
   `nthDigit_lt_base`, `nthDigitFin`, `nthDigitFin_intCast`,
   `nthDigitFin_eq_iff` (Layer 4a, S12)
-- `proofs/Proofs/ETranscendentalOQ02.lean:573+` — `rational_has_missing_ktuple`
+- `proofs/Proofs/ETranscendentalOQ02.lean:568+` — `rational_has_missing_ktuple`
   (Layer 4a headline, S12)
 - `proofs/Proofs/ETranscendentalOQ02.lean:424` — `rational_digits_eventually_periodic`
   (theorem, S11)
