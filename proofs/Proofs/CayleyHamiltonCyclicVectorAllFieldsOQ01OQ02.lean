@@ -504,6 +504,87 @@ private lemma aeval_companionMx_p_mulVec_e0_zero
   rw [hsum_at_i]
   ring
 
+/-! ## Session 5: matrix-level `aeval (companionMx p) p = 0`
+
+  Lifts S4's vector-level annihilation at e₀ to the full matrix identity:
+    `aeval (companionMx p) p = 0` for monic `p` of degree `n`.
+
+  Strategy (pointwise on columns):
+    1. `matrix_eq_zero_of_mulVec_basis`: a matrix is zero iff all `Pi.single` columns
+       are zero (since `A.mulVec (Pi.single j 1) i = A i j`).
+    2. `aeval_companionMx_p_mulVec_ek_zero`: `(aeval C p).mulVec e_k = 0` for any
+       `k < n`. Uses `e_k = C^k.mulVec e₀` (S3 `companionMx_pow_e0`), then commutes
+       `aeval C p` past `C^k` (any polynomial in C commutes with C^k via the
+       AlgHom + commutativity of `K[X]`), reducing to S4's e₀ result.
+    3. `aeval_companionMx_p_eq_zero`: combine the two above.
+
+  Once `aeval (companionMx p) p = 0` is in hand, the next session (S6) can package
+  `Matrix.minpoly_companionMatrix : minpoly K (companionMx p) = p` from divisibility
+  (`(minpoly K C) ∣ p` by minimality of S5) plus equality of natDegrees (cyclicity
+  of e₀ + `minpoly_natDegree_of_cyclic` from sibling OQ-01-OQ-01).
+-/
+
+/-- A matrix is zero iff every `Pi.single`-basis column is annihilated by `mulVec`.
+    Used to lift vector-level annihilations to matrix-level identities. -/
+private lemma matrix_eq_zero_of_mulVec_basis
+    (A : Matrix (Fin n) (Fin n) K)
+    (h : ∀ k : Fin n, A.mulVec (Pi.single k (1 : K)) = 0) : A = 0 := by
+  ext i j
+  have h_at_i := congr_fun (h j) i
+  -- A.mulVec (Pi.single j 1) i = ∑ k, A i k * Pi.single j 1 k = A i j.
+  simp only [Matrix.mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero,
+             Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.zero_apply] at h_at_i
+  rw [Matrix.zero_apply]
+  exact h_at_i
+
+/-- `aeval (companionMx p) p` annihilates every standard basis vector `e_k` for
+    `k < n`. The proof reduces to S4's `aeval_companionMx_p_mulVec_e0_zero` via
+    `e_k = C^k.mulVec e₀` (S3 `companionMx_pow_e0`) plus the commutation
+    `(aeval C p) * C^k = C^k * (aeval C p)` from the algebra-hom structure of
+    `aeval C` together with `K[X]` commutativity. -/
+private lemma aeval_companionMx_p_mulVec_ek_zero
+    (p : K[X]) (hp_monic : p.Monic) (hp_deg : p.natDegree = n) (hn : 0 < n)
+    (k : Fin n) :
+    (aeval (companionMx (n := n) p) p).mulVec (Pi.single k (1 : K)) = 0 := by
+  -- Rewrite e_k as C^{k.val}.mulVec e₀.
+  have hek_eq : (Pi.single k (1 : K) : Fin n → K) =
+      ((companionMx (n := n) p) ^ k.val).mulVec (Pi.single (⟨0, hn⟩ : Fin n) 1) := by
+    rw [companionMx_pow_e0 p hn k.val k.isLt]
+    have hkeq : (⟨k.val, k.isLt⟩ : Fin n) = k := Fin.ext rfl
+    rw [hkeq]
+  rw [hek_eq]
+  -- Collapse two consecutive mulVecs into a single matrix product.
+  rw [← Matrix.mulVec_mulVec]
+  -- Commute aeval C p past C^{k.val} via the AlgHom + K[X] commutativity.
+  have hcomm :
+      aeval (companionMx (n := n) p) p * (companionMx (n := n) p) ^ k.val =
+        (companionMx (n := n) p) ^ k.val * aeval (companionMx (n := n) p) p := by
+    have hk_eq_aeval :
+        (companionMx (n := n) p) ^ k.val =
+          aeval (companionMx (n := n) p) (X ^ k.val) := by
+      rw [map_pow, aeval_X]
+    rw [hk_eq_aeval, ← map_mul, ← map_mul, mul_comm p (X ^ k.val)]
+  rw [hcomm, Matrix.mulVec_mulVec,
+      aeval_companionMx_p_mulVec_e0_zero p hp_monic hp_deg hn,
+      Matrix.mulVec_zero]
+
+/-- **Session 5 main result**: for monic `p` of `natDegree = n` (with `n ≥ 1`),
+    the polynomial `p` annihilates the companion matrix `companionMx p`:
+    `aeval (companionMx p) p = 0`.
+
+    This is the matrix-level Cayley-Hamilton identity for the companion matrix,
+    upgrading S4's vector-level result `(aeval C p).mulVec e₀ = 0` to a matrix
+    equation. Combined with the cyclicity of `e₀` for `companionMx p`
+    (S3 `companionMx_isCyclic_e0`) and `minpoly_natDegree_of_cyclic` from sibling
+    OQ-01-OQ-01, this gives the missing-from-Mathlib identity
+    `minpoly K (companionMx p) = p` (deferred to S6). -/
+theorem aeval_companionMx_p_eq_zero
+    (p : K[X]) (hp_monic : p.Monic) (hp_deg : p.natDegree = n) (hn : 0 < n) :
+    aeval (companionMx (n := n) p) p = 0 := by
+  apply matrix_eq_zero_of_mulVec_basis
+  intro k
+  exact aeval_companionMx_p_mulVec_ek_zero p hp_monic hp_deg hn k
+
 end CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
 
 end
