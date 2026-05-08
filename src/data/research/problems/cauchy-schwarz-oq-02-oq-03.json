@@ -1,0 +1,533 @@
+{
+  "slug": "cauchy-schwarz-oq-02-oq-03",
+  "title": "Complex Polarization Identity",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\langle f, g \\rangle_{\\mathbb{C}} = \\frac{1}{4}\\left( \\|f+g\\|^2 - \\|f-g\\|^2 + i\\,(\\|f-ig\\|^2 - \\|f+ig\\|^2) \\right)\\quad\\text{(Mathlib convention)}",
+    "plain": "Complex polarization identity. The slug's stated formula is in physics convention (linear in first argument); Mathlib uses math convention (sesquilinear in first argument). In Mathlib's convention the same physics formula computes ⟪g,f⟫ = conj⟪f,g⟫, NOT ⟪f,g⟫. The corrected Mathlib-convention identity has a sign flip on the imaginary correction.",
+    "whyMatters": [
+      "Polarization is the standard mechanism for recovering an inner product from a norm.",
+      "Together with the parallelogram law it characterizes inner-product spaces (Jordan–von Neumann 1935).",
+      "Underlies operator polarization for self-adjointness: T self-adjoint ⇔ Q(z) := ⟪Tz,z⟫ is real-valued.",
+      "Convention mismatch is a recurring pitfall when porting proofs from physics literature to Mathlib."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Real polarization in parent OQ-02 (`CauchySchwarzOQ02.polarization_identity`)",
+      "Complex norm-add expansion `norm_add_sq` in Mathlib for any RCLike",
+      "`inner_smul_right`, `inner_neg_right`, `inner_conj_symm`, `Complex.re_add_im` available",
+      "Session 1 (researcher-10): Mathlib-convention complex polarization, physics-convention bridge, per-component recovery — 12 theorems, draft PR (build pending)"
+    ],
+    "open": [
+      "Unify with parent OQ-02 via RCLike quantification",
+      "Operator polarization identity: ⟨Tx,y⟩ from quadratic form Q(z) := ⟨Tz,z⟩",
+      "Phase-retrieval connection: uniqueness theorem from {‖x±y‖², ‖x±iy‖²}"
+    ],
+    "goal": "Provide complete, axiom-free, sorry-free Lean formalization of the complex polarization identity in Mathlib's convention, with explicit conversion lemmas to the physics convention and per-component recovery formulas."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-05-08",
+    "iteration": 2,
+    "focus": "Session 1 (researcher-10): drafted full Lean proof at proofs/Proofs/CauchySchwarzOQ02OQ03.lean (218 lines, 12 theorems, 0 sorries, 0 axioms). Created gallery entry at src/data/proofs/cauchy-schwarz-oq-02-oq-03/. Submitted as draft PR — build pending (proofs/.lake self-symlink trap forces ~45 min Docker rebuild).",
+    "blockers": [
+      "Build pending (Docker rebuild ~45 min from cold cache); proof relies on standard Mathlib idioms and structurally analogous to real polarization in CauchySchwarzOQ02"
+    ],
+    "nextAction": "Re-run docker-build with warm Mathlib cache to verify all 12 theorems compile; if any tactic fails, identify and patch the specific simp/linarith invocation. Future sessions: RCLike unification (OQ-01), operator polarization (OQ-02).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Session 1 (researcher-10): drafted full proof of the complex polarization identity in Mathlib's sesquilinear-in-first-argument convention. Documented the convention mismatch with the textbook physics formula (the slug's stated formula computes ⟪y,x⟫ = conj⟪x,y⟫ in Mathlib, not ⟪x,y⟫). 12 theorems organized into 7 sections: norm expansion helpers, real-part recovery, imaginary-part recovery via I-shift, per-component recovery formulas, main theorem (Mathlib convention), physics-convention bridge, algebraic corollaries. Build pending.",
+    "builtItems": [
+      "norm_add_sq_complex: ‖x+y‖² = ‖x‖² + 2 re⟪x,y⟫ + ‖y‖² (restate Mathlib for ℂ)",
+      "norm_sub_sq_complex: ‖x-y‖² = ‖x‖² - 2 re⟪x,y⟫ + ‖y‖² (derive via inner_neg_right)",
+      "norm_add_sq_sub_norm_sub_sq_eq_four_re: ‖x+y‖² - ‖x-y‖² = 4 re⟪x,y⟫_ℂ",
+      "norm_smul_I_sq: ‖I•y‖² = ‖y‖²",
+      "re_I_mul: re(I*z) = -im(z)",
+      "norm_add_smul_I_sq_sub_eq_neg_four_im: ‖x+I•y‖² - ‖x-I•y‖² = -4 im⟪x,y⟫_ℂ (sign flipped from physics)",
+      "re_inner_eq_quarter_norm_diff: re⟪x,y⟫_ℂ = (‖x+y‖² - ‖x-y‖²)/4",
+      "im_inner_eq_quarter_norm_diff: im⟪x,y⟫_ℂ = (‖x-iy‖² - ‖x+iy‖²)/4 (sign flip)",
+      "complex_polarization_mathlib (MAIN): ⟪x,y⟫_ℂ = (‖x+y‖² - ‖x-y‖² + i(‖x-iy‖² - ‖x+iy‖²))/4",
+      "physics_polarization_eq_inner_swap: physics formula = ⟪y,x⟫_ℂ",
+      "physics_polarization_eq_conj: physics formula = conj⟪x,y⟫_ℂ",
+      "mathlib_minus_physics: ⟪x,y⟫_ℂ - ⟪y,x⟫_ℂ = 2i · im⟪x,y⟫_ℂ"
+    ],
+    "insights": [
+      "**Convention mismatch is real**: slug's stated formula is physics convention. In Mathlib (math convention), the same formula computes ⟪y,x⟫ = conj⟪x,y⟫, not ⟪x,y⟫. Stating the identity correctly requires choosing — and documenting — a convention.",
+      "**Sign flip on imaginary correction**: with Mathlib's ⟪c•x, y⟫ = conj(c)·⟪x,y⟫, replacing y with iy gives ⟪x, iy⟫ = i·⟪x,y⟫, whose real part is -im⟪x,y⟫. So ‖x+iy‖² - ‖x-iy‖² = -4 im⟪x,y⟫ — opposite sign from physics convention.",
+      "**Decomposition via Complex.re_add_im is the cleanest proof**: rather than Complex.ext + arithmetic, write z = re(z) + im(z)·i and substitute the per-component formulas, leaving only push_cast; ring to finish.",
+      "**inner_conj_symm is the bridge**: in Mathlib, swapping arguments and conjugating are the same operation, so the physics formula recovers the swapped inner product."
+    ],
+    "mathlibGaps": [
+      "Whether Mathlib 4.26 exposes `inner_eq_sum_norm_sq_div_four` (or similar) for RCLike fields — present file states the identity manually; could be replaced by direct citation if Mathlib lemma exists."
+    ],
+    "nextSteps": [
+      "Verify build (Docker, warm cache).",
+      "Session 2: unify with parent OQ-02 real polarization via [RCLike 𝕜] quantification.",
+      "Session 3: operator polarization identity for bounded linear T : E → E.",
+      "Session 4: phase-retrieval connection — uniqueness from {‖x±y‖², ‖x±iy‖²} four-tuple."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "cauchy-schwarz",
+    "holder-inequality",
+    "l2-spaces",
+    "measure-theory",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-integral",
+    "cauchy-schwarz-integral-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
+    "cauchy-schwarz-integral-oq-01-oq-02",
+    "cauchy-schwarz-integral-oq-01-oq-03",
+    "cauchy-schwarz-integral-oq-01-oq-03-oq-01",
+    "cauchy-schwarz-integral-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-02-oq-02",
+    "cauchy-schwarz-integral-oq-02-oq-02-oq-01",
+    "cauchy-schwarz-integral-oq-03",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-oq-01-oq-01-oq-01",
+    "cauchy-schwarz-oq-01-oq-01-oq-02",
+    "cauchy-schwarz-oq-01-oq-02",
+    "cauchy-schwarz-oq-01-oq-03",
+    "cauchy-schwarz-oq-01-oq-04",
+    "cauchy-schwarz-oq-02",
+    "cauchy-schwarz-oq-02-oq-01",
+    "cauchy-schwarz-oq-02-oq-02",
+    "cauchy-schwarz-oq-03",
+    "cauchy-schwarz-oq-03-oq-01",
+    "cauchy-schwarz-oq-03-oq-02",
+    "cauchy-schwarz-oq-04",
+    "cauchy-schwarz-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-08T03:14:57.607Z",
+  "lastUpdate": "2026-05-08T11:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchySchwarz.lean",
+      "filename": "CauchySchwarz.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarz.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegral.lean",
+      "filename": "CauchySchwarzIntegral.lean",
+      "lineCount": 118,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegral.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01.lean",
+      "lineCount": 229,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01.lean",
+      "lineCount": 154,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01.lean",
+      "lineCount": 184,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 218,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 206,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean",
+      "lineCount": 211,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02.lean",
+      "lineCount": 152,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 1078,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 10,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
+      "lineCount": 209,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 11,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
+      "lineCount": 953,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ02.lean",
+      "lineCount": 601,
+      "theoremCount": 29,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ03.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ03.lean",
+      "lineCount": 210,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ01OQ03OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ02.lean",
+      "lineCount": 264,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ01.lean",
+      "lineCount": 92,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ02.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ02.lean",
+      "lineCount": 407,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ02OQ02OQ01.lean",
+      "filename": "CauchySchwarzIntegralOQ02OQ02OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzIntegralOQ03.lean",
+      "filename": "CauchySchwarzIntegralOQ03.lean",
+      "lineCount": 182,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzIntegralOQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01.lean",
+      "filename": "CauchySchwarzOQ01.lean",
+      "lineCount": 139,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ01.lean",
+      "filename": "CauchySchwarzOQ01OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ01OQ01.lean",
+      "filename": "CauchySchwarzOQ01OQ01OQ01.lean",
+      "lineCount": 227,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ01OQ02.lean",
+      "filename": "CauchySchwarzOQ01OQ01OQ02.lean",
+      "lineCount": 149,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ02.lean",
+      "filename": "CauchySchwarzOQ01OQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ03.lean",
+      "filename": "CauchySchwarzOQ01OQ03.lean",
+      "lineCount": 139,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ04.lean",
+      "filename": "CauchySchwarzOQ01OQ04.lean",
+      "lineCount": 199,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ02.lean",
+      "filename": "CauchySchwarzOQ02.lean",
+      "lineCount": 336,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ02OQ01.lean",
+      "filename": "CauchySchwarzOQ02OQ01.lean",
+      "lineCount": 224,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ02OQ02.lean",
+      "filename": "CauchySchwarzOQ02OQ02.lean",
+      "lineCount": 162,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ03.lean",
+      "filename": "CauchySchwarzOQ03.lean",
+      "lineCount": 245,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ03OQ01.lean",
+      "filename": "CauchySchwarzOQ03OQ01.lean",
+      "lineCount": 836,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ03OQ02.lean",
+      "filename": "CauchySchwarzOQ03OQ02.lean",
+      "lineCount": 258,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ04.lean",
+      "filename": "CauchySchwarzOQ04.lean",
+      "lineCount": 289,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ04.lean"
+    },
+    {
+      "path": "Proofs/CauchySchwarzOQ04OQ01.lean",
+      "filename": "CauchySchwarzOQ04OQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ04OQ01.lean"
+    }
+  ]
+}

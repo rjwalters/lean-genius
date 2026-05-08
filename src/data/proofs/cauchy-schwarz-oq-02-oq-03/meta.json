@@ -1,0 +1,182 @@
+{
+  "id": "cauchy-schwarz-oq-02-oq-03",
+  "title": "Complex Polarization Identity",
+  "slug": "cauchy-schwarz-oq-02-oq-03",
+  "description": "The complex polarization identity recovers the inner product ⟪x,y⟫_ℂ from the norm: ⟪x,y⟫_ℂ = (‖x+y‖² - ‖x-y‖² + i(‖x-iy‖² - ‖x+iy‖²))/4. The classical 'physics convention' formula (with +i(‖x+iy‖² - ‖x-iy‖²)) computes ⟪y,x⟫_ℂ = conj⟪x,y⟫_ℂ in Mathlib's sesquilinear-in-FIRST-argument convention — a documented convention mismatch. 12 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ02OQ03.lean",
+    "tags": [
+      "inner-product-spaces",
+      "complex-analysis",
+      "polarization-identity",
+      "hilbert-spaces",
+      "convention-clarification",
+      "verified"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 218,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "assumptions": "None. All theorems proved from Mathlib's norm_add_sq, inner_smul_right, inner_neg_right, inner_conj_symm, and Complex.re_add_im.",
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_add_sq",
+        "description": "Squared-norm expansion: ‖x+y‖² = ‖x‖² + 2·re⟪x,y⟫ + ‖y‖²",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_smul_right",
+        "description": "Inner product is linear in the second argument: ⟪x, c•y⟫ = c · ⟪x, y⟫",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_neg_right",
+        "description": "Inner product is additive in negation: ⟪x, -y⟫ = -⟪x, y⟫",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_conj_symm",
+        "description": "Conjugate symmetry of complex inner product: ⟪y, x⟫ = conj⟪x, y⟫",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Complex.re_add_im",
+        "description": "Decomposition: ↑z.re + ↑z.im * I = z for z : ℂ",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Explicit proof and statement of the complex polarization identity in Mathlib's sesquilinear-in-FIRST-argument convention — the file documents that the textbook 'physics' formula (linear in first argument) computes ⟪y,x⟫_ℂ = conj⟪x,y⟫_ℂ in Mathlib, not ⟪x,y⟫_ℂ.",
+      "Convention-mismatch theorem `physics_polarization_eq_inner_swap` proving the standard formula recovers the conjugate inner product.",
+      "Per-component recovery formulas `re_inner_eq_quarter_norm_diff` and `im_inner_eq_quarter_norm_diff` exposing the real and imaginary parts separately."
+    ],
+    "dateAdded": "2026-05-08",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The polarization identity, going back to Jordan and von Neumann (1935), characterizes inner product spaces among normed spaces: a norm comes from an inner product iff the parallelogram law holds. In a real space the inner product is recovered as $\\langle x,y \\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$. In a complex space both real and imaginary parts of the inner product must be recovered, giving the four-term polarization identity. The exact form depends on convention: physics texts (Dirac, Hilbert space QM) make the inner product LINEAR in the first argument and conjugate-linear in the second, while mathematicians (Mathlib, Bourbaki) make it conjugate-linear in the first and linear in the second. The two formulas differ by complex conjugation — a routine source of confusion when porting calculations between communities.",
+    "problemStatement": "Formalize the complex polarization identity: for a complex inner product space $E$ and $f, g \\in E$, $\\langle f, g \\rangle = \\frac{1}{4}\\left( \\|f+g\\|^2 - \\|f-g\\|^2 + i \\|f+ig\\|^2 - i \\|f-ig\\|^2 \\right)$. The asked-for slug formula is in physics convention; this file states and proves the corresponding identity in Mathlib's mathematician convention and documents the relationship.",
+    "proofStrategy": "Decompose $\\langle x,y \\rangle$ as $\\mathrm{re}\\,\\langle x,y \\rangle + i \\cdot \\mathrm{im}\\,\\langle x,y \\rangle$ via `Complex.re_add_im`, then recover each part from norms separately. The real-part recovery $\\|x+y\\|^2 - \\|x-y\\|^2 = 4\\,\\mathrm{re}\\,\\langle x,y \\rangle$ is immediate from the squared-norm expansion `norm_add_sq` (and its companion derived by negation). For the imaginary part, replace $y$ with $i\\!\\cdot\\!y$ in `norm_add_sq` and use $\\langle x, i\\!\\cdot\\!y \\rangle = i\\,\\langle x, y \\rangle$ (linearity in second argument): $\\|x \\pm iy\\|^2 = \\|x\\|^2 \\mp 2\\,\\mathrm{im}\\,\\langle x,y \\rangle + \\|y\\|^2$, so $\\|x+iy\\|^2 - \\|x-iy\\|^2 = -4\\,\\mathrm{im}\\,\\langle x,y \\rangle$ — note the SIGN FLIP versus the physics convention. Combining gives the Mathlib-convention identity. The physics-convention formula is then proven to equal $\\langle y, x \\rangle = \\mathrm{conj}\\,\\langle x,y \\rangle$ via `inner_conj_symm`.",
+    "keyInsights": [
+      "**Convention mismatch is real**: the slug's stated formula is the physics-convention polarization. In Mathlib (math convention), the same formula computes $\\langle y, x \\rangle$, not $\\langle x, y \\rangle$. Stating the identity correctly requires choosing — and documenting — a convention.",
+      "**Sign flip on the imaginary correction**: with Mathlib's $\\langle c\\!\\cdot\\!x, y \\rangle = \\overline{c}\\,\\langle x, y \\rangle$, replacing $y$ with $iy$ gives $\\langle x, iy \\rangle = i\\,\\langle x, y \\rangle$, whose real part is $-\\mathrm{im}\\,\\langle x,y \\rangle$. Therefore $\\|x+iy\\|^2 - \\|x-iy\\|^2 = -4\\,\\mathrm{im}\\,\\langle x,y \\rangle$, opposite to the physics convention.",
+      "**Decomposition via `Complex.re_add_im`**: rather than `Complex.ext` + arithmetic, the cleanest proof writes $z = \\mathrm{re}(z) + \\mathrm{im}(z)\\cdot i$ and substitutes the per-component formulas, leaving only `push_cast; ring` to finish.",
+      "**Conjugate symmetry as a connector**: the equation $\\langle y,x \\rangle = \\overline{\\langle x,y \\rangle}$ (`inner_conj_symm`) is exactly the bridge: in Mathlib, swapping arguments and conjugating are the same operation, so the physics formula recovers the swapped inner product.",
+      "**Reduction to the real polarization**: when the inner product happens to be real-valued (e.g. $E$ is a complexified real space and both $x, y$ lie in the real form), the imaginary correction vanishes and the four-term complex identity reduces to the two-term real identity from `CauchySchwarzOQ02.polarization_identity`."
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-norm-expansion",
+      "title": "Squared-norm Expansion (real and subtraction helpers)",
+      "startLine": 47,
+      "endLine": 71,
+      "summary": "`norm_add_sq_complex` and `norm_sub_sq_complex`: the two basic squared-norm expansions ‖x±y‖² = ‖x‖² ± 2 re⟪x,y⟫ + ‖y‖² for complex inner product spaces. The subtraction form is derived from the addition form via `inner_neg_right` and `norm_neg`.",
+      "mathContext": "‖x + y‖² = ‖x‖² + 2 · re ⟪x, y⟫_ℂ + ‖y‖²; ‖x - y‖² = ‖x‖² - 2 · re ⟪x, y⟫_ℂ + ‖y‖²"
+    },
+    {
+      "id": "section-real-part",
+      "title": "Real-part recovery",
+      "startLine": 72,
+      "endLine": 84,
+      "summary": "`norm_add_sq_sub_norm_sub_sq_eq_four_re`: ‖x+y‖² - ‖x-y‖² = 4 · re⟪x,y⟫_ℂ, the real polarization identity multiplied through.",
+      "mathContext": "‖x + y‖² - ‖x - y‖² = 4 · re ⟪x, y⟫_ℂ"
+    },
+    {
+      "id": "section-imag-part",
+      "title": "Imaginary-part recovery via I-shift",
+      "startLine": 85,
+      "endLine": 113,
+      "summary": "`norm_smul_I_sq`, `re_I_mul`, `norm_add_smul_I_sq_sub_eq_neg_four_im`: the analogue with `I•y` substituted for `y`. The key step uses `inner_smul_right` to compute ⟪x, I•y⟫ = I·⟪x,y⟫ and `re_I_mul` to read off the imaginary part. Note the NEGATIVE sign — `‖x+iy‖² - ‖x-iy‖² = -4 · im⟪x,y⟫` in Mathlib's convention.",
+      "mathContext": "‖x + I•y‖² - ‖x - I•y‖² = -4 · im ⟪x, y⟫_ℂ"
+    },
+    {
+      "id": "section-per-component",
+      "title": "Per-component recovery formulas",
+      "startLine": 114,
+      "endLine": 132,
+      "summary": "`re_inner_eq_quarter_norm_diff` and `im_inner_eq_quarter_norm_diff`: explicit formulas for the real and imaginary parts of ⟪x,y⟫_ℂ as quarter-norms. The imaginary part has a SIGN FLIP relative to the physics convention.",
+      "mathContext": "re ⟪x, y⟫_ℂ = (‖x+y‖² - ‖x-y‖²)/4; im ⟪x, y⟫_ℂ = (‖x-iy‖² - ‖x+iy‖²)/4"
+    },
+    {
+      "id": "section-main-mathlib",
+      "title": "Main theorem (Mathlib convention)",
+      "startLine": 133,
+      "endLine": 159,
+      "summary": "`complex_polarization_mathlib`: ⟪x,y⟫_ℂ = (‖x+y‖² - ‖x-y‖² + i(‖x-iy‖² - ‖x+iy‖²))/4. Note the inner i-norm difference has y - iy first (positive sign), matching Mathlib's sesquilinear-in-FIRST convention.",
+      "mathContext": "⟪x, y⟫_ℂ = (‖x+y‖² - ‖x-y‖² + i(‖x-iy‖² - ‖x+iy‖²)) / 4"
+    },
+    {
+      "id": "section-physics-mismatch",
+      "title": "Physics-convention formula computes ⟨y, x⟩",
+      "startLine": 160,
+      "endLine": 199,
+      "summary": "`physics_polarization_eq_inner_swap` and `physics_polarization_eq_conj`: the textbook physics-convention formula (with +i(‖x+iy‖² - ‖x-iy‖²)) does NOT equal ⟪x,y⟫_ℂ in Mathlib. It equals ⟪y,x⟫_ℂ = conj⟪x,y⟫_ℂ. This is the central convention-mismatch observation.",
+      "mathContext": "(‖x+y‖² - ‖x-y‖² + i(‖x+iy‖² - ‖x-iy‖²))/4 = ⟪y, x⟫_ℂ = conj ⟪x, y⟫_ℂ"
+    },
+    {
+      "id": "section-corollaries",
+      "title": "Equivalent algebraic forms",
+      "startLine": 200,
+      "endLine": 218,
+      "summary": "`mathlib_minus_physics`: the difference ⟪x,y⟫_ℂ - ⟪y,x⟫_ℂ equals 2i · im⟪x,y⟫_ℂ — explicitly quantifying the gap between the two conventions in terms of the imaginary part.",
+      "mathContext": "⟪x, y⟫_ℂ - ⟪y, x⟫_ℂ = 2i · (im ⟪x, y⟫_ℂ : ℂ)"
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves the complex polarization identity in Mathlib's mathematician convention and documents the convention mismatch with the textbook physics formula. The identity recovers the complex inner product from norms via four squared-norm evaluations on $\\{x \\pm y, \\, x \\pm iy\\}$. The real-part formula coincides with the real polarization (parent OQ-02), and the imaginary part is recovered by replacing $y$ with $iy$ in the squared-norm expansion. A central observation is that the standard physics-convention formula (linear in the first argument) computes $\\langle y, x \\rangle = \\overline{\\langle x, y \\rangle}$ in Mathlib's convention (linear in the second argument), so the two formulas differ by complex conjugation.",
+    "implications": "Polarization is the mechanism by which all inner-product properties are encoded in the norm structure of a Hilbert space — Cauchy-Schwarz, projections, dual pairings, isometries, and adjoint operators all factor through this identity. In computational settings (numerical linear algebra, signal processing) the polarization identity is the way to reconstruct the complex inner product from absolute-value-only measurements (interferometry, phase retrieval). For Lean formalization, the convention-mismatch documented here is a recurring pitfall when porting proofs from physics or engineering literature to Mathlib: one must mentally swap $\\langle \\cdot,\\cdot \\rangle$ for its conjugate. The file provides explicit lemmas (`physics_polarization_eq_inner_swap`, `physics_polarization_eq_conj`) that make the conversion mechanical.",
+    "openQuestions": [
+      "**Generalize to RCLike**: state the identity for an arbitrary `[RCLike 𝕜] [InnerProductSpace 𝕜 E]`; the real case (𝕜 = ℝ) recovers `CauchySchwarzOQ02.polarization_identity` (with the imaginary correction vacuously zero), and the complex case (𝕜 = ℂ) recovers the present file. Mathlib already has `inner_eq_sum_norm_sq_div_four` in some recent versions — verify and reconcile.",
+      "**Vector-valued versions**: the polarization identity extends to bilinear forms, sesquilinear forms, and more generally to any complex-valued positive-semidefinite kernel. Formalize the kernel polarization identity $K(x,y) = (K(x+y,x+y) - K(x-y,x-y) + iK(x+iy,x+iy) - iK(x-iy,x-iy))/4$ for any positive sesquilinear $K$.",
+      "**Operator polarization**: for a bounded linear operator $T : E \\to E$, the operator polarization identity expresses $\\langle Tx, y \\rangle$ in terms of quadratic forms $\\langle T(x \\pm y), (x \\pm y) \\rangle$. This is the standard tool for showing self-adjointness from real-valuedness of the quadratic form. Formalize and connect to `IsSelfAdjoint`."
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "oq-01",
+      "title": "RCLike unification with parent OQ-02 real polarization",
+      "description": "State the polarization identity for an arbitrary `[RCLike 𝕜]` so that the real case (`CauchySchwarzOQ02.polarization_identity`) and the complex case (this file) become specializations of a single unified theorem. Check whether Mathlib's existing `inner_eq_sum_norm_sq_div_four` (if present in 4.26) can be cited directly.",
+      "difficulty": "easy"
+    },
+    {
+      "id": "oq-02",
+      "title": "Operator polarization identity",
+      "description": "For a bounded linear operator $T : E \\to E$ on a complex inner product space, prove $\\langle Tx, y \\rangle = (Q(x+y) - Q(x-y) + iQ(x+iy) - iQ(x-iy))/4$ where $Q(z) := \\langle Tz, z \\rangle$ is the quadratic form. Use to derive: $T$ is self-adjoint iff $Q$ is real-valued.",
+      "difficulty": "moderate"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "cauchy-schwarz",
+      "relationship": "ancestor",
+      "description": "Cauchy-Schwarz is recovered from polarization + non-negativity of the squared norm"
+    },
+    {
+      "id": "cauchy-schwarz-oq-02",
+      "relationship": "parent",
+      "description": "Real polarization identity (`polarization_identity`): the real specialization of this complex identity, with the imaginary correction term vanishing"
+    },
+    {
+      "id": "cauchy-schwarz-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Bessel's inequality and Parseval's identity — built on the same inner product framework"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/CauchySchwarzOQ02OQ03.lean",
+    "filename": "CauchySchwarzOQ02OQ03.lean",
+    "lineCount": 218,
+    "theoremCount": 12,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ02OQ03.lean"
+  },
+  "sorries": 0
+}
