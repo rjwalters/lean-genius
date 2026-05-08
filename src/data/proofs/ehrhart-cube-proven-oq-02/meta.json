@@ -6,8 +6,8 @@
   "leanFile": {
     "path": "Proofs/EhrhartCrossPolytope.lean",
     "filename": "EhrhartCrossPolytope.lean",
-    "lineCount": 423,
-    "theoremCount": 16,
+    "lineCount": 539,
+    "theoremCount": 19,
     "definitionCount": 2,
     "sorries": 1,
     "axiomCount": 0
@@ -31,7 +31,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 423,
+    "lineCount": 539,
     "assumptions": "1 sorry: crossBall_card d+1 \u2014 Finset slicing decomposition. Foundation helpers cweight_le_iff and cweight_translate added (Session 3) for the eventual fiber bijection. All algebraic/combinatorial theorems are proved including the geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m) and the polynomial identification crossEhrhart_is_poly via descPochhammer \u211a k.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
@@ -47,7 +47,7 @@
       "cweight_translate: bridge identity equating the centered weight at center n with the centered weight at center M (after translation), enabling the bijection between truncated lattice fibers and crossBall d M",
       "Concrete verifications: d=1 (2n+1), d=2 (2n\u00b2+2n+1), d=3 spot checks via native_decide"
     ],
-    "theoremCount": 16,
+    "theoremCount": 19,
     "definitionCount": 2
   },
   "overview": {
