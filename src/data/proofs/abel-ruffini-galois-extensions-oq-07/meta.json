@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 502,
+    "lineCount": 614,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -67,6 +67,41 @@
         "theorem": "Nat.coprime_primes",
         "description": "For primes p, q, Coprime p q ↔ p ≠ q.",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "card_sylow_modEq_one",
+        "description": "Sylow's third theorem: the number of Sylow p-subgroups is ≡ 1 modulo p.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_dvd_index",
+        "description": "The number of Sylow p-subgroups of G divides the index of any Sylow p-subgroup.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_eq_multiplicity",
+        "description": "For finite G, the cardinality of a Sylow p-subgroup is p^(p-adic valuation of |G|).",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.normal_of_subsingleton",
+        "description": "If there is at most one Sylow p-subgroup, then it is normal in G.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Subgroup.card_mul_index",
+        "description": "Lagrange's theorem: |H| · [G : H] = |G|.",
+        "module": "Mathlib.Algebra.Group.Subgroup.Finite"
+      },
+      {
+        "theorem": "Nat.card_eq_one_iff_unique",
+        "description": "Nat.card α = 1 ↔ Subsingleton α ∧ Nonempty α.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Nat.factorization_mul_apply_of_coprime",
+        "description": "For coprime a, b: (a * b).factorization p = a.factorization p + b.factorization p.",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
       }
     ],
     "originalContributions": [
@@ -80,15 +115,18 @@
       "burnside_pq_with_normal_pSylow (Iteration 5): axiom-free reduction tool — if |G| = pᵃ · qᵇ and G admits a normal subgroup of order pᵃ, then G is solvable. Proof: N is a p-group (hence solvable), |G/N| = qᵇ via Lagrange (Subgroup.card_mul_index + cancellation), so G/N is a q-group (hence solvable), and the extension is solvable.",
       "burnside_pq_with_normal_qSylow (Iteration 5): symmetric reduction — a normal subgroup of order qᵇ gives IsSolvable G. Together with burnside_pq_with_normal_pSylow, these two lemmas turn 'exhibit a normal Sylow' into a complete axiom-free discharge of burnside_pq_nontrivial.",
       "Worked example (Iteration 5): |G| = 12 = 2² · 3 with a normal subgroup of order 4 is solvable axiom-free via burnside_pq_with_normal_pSylow — exactly the structure realized by A₄ (whose Klein four-group V₄ ⊂ A₄ is normal of order 4). Demonstrates that the new reduction discharges the previously-axiomatized `2 ≤ a` shape `|G| = p² · q` whenever a normal p-Sylow is exhibited.",
-      "axiom burnside_pq_nontrivial (NARROWED in Iteration 4, unchanged in Iteration 5): the genuinely-open content (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`); the a = b = 1 case is now axiom-free. Iteration 5 leaves the axiom statement unchanged but adds reduction tooling above. Full proof of the residual axiom requires either character theory + algebraic integers (Burnside 1904) or transfer + focal subgroup (Goldschmidt-Matsuyama 1970s) — neither currently in Mathlib at sufficient generality.",
+      "sylow_count_eq_one_of_lt_prime (Iteration 7, private): Sylow-count helper for the `p > q` case of `|G| = p² · q`. Asserts that if n divides a prime q, q < p, and n ≡ 1 [MOD p], then n = 1. Combines Nat.Prime.eq_one_or_self_of_dvd (only divisors of q are 1 and q) with Nat.modEq_iff_dvd' (ruling out n = q since p ≤ q - 1 < p is impossible).",
+      "burnside_p_squared_q_p_gt_q (Iteration 7): axiom-free Burnside for `|G| = p² · q` in the case `p > q`. Sylow's third theorem (card_sylow_modEq_one + Sylow.card_dvd_index) forces n_p ∣ q and n_p ≡ 1 [MOD p]; the helper sylow_count_eq_one_of_lt_prime then forces n_p = 1. The unique Sylow p-subgroup is normal (Sylow.normal_of_subsingleton via Nat.card_eq_one_iff_unique), and burnside_pq_with_normal_pSylow discharges. This is the FIRST of three sub-cases needed to remove `(a, b) = (2, 1)` from the burnside_pq_nontrivial axiom hypothesis. The symmetric `p < q ≠ 3` case (S7.5) and the exceptional `(p, q) = (2, 3), |G| = 12` case (S8) will complete the discharge.",
+      "Worked example (Iteration 7): |G| = 75 = 5² · 3 is solvable axiom-free via burnside_p_squared_q_p_gt_q. Concrete witness for the `p > q` case (p = 5, q = 3).",
+      "axiom burnside_pq_nontrivial (NARROWED in Iteration 4, unchanged in Iterations 5/7): the genuinely-open content (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`); the a = b = 1 case is now axiom-free. Iterations 5 and 7 leave the axiom statement unchanged but add reduction tooling and discharge the `(a, b) = (2, 1)` case for `p > q`. Full proof of the residual axiom requires either character theory + algebraic integers (Burnside 1904) or transfer + focal subgroup (Goldschmidt-Matsuyama 1970s) — neither currently in Mathlib at sufficient generality.",
       "burnside_pq: main theorem combining trivial cases + squarefree case + axiom into the unified statement Nat.card G = p^a · q^b → IsSolvable G.",
-      "Five sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group, |G| = 30 (squarefree three-prime), and |G| = 12 with normal Sylow-2 (A₄-style) — all axiom-free.",
+      "Six sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group, |G| = 30 (squarefree three-prime), |G| = 12 with normal Sylow-2 (A₄-style), and |G| = 75 = 5²·3 (Iteration 7, axiom-free via burnside_p_squared_q_p_gt_q) — all axiom-free.",
       "alternatingGroupFin5_card: axiom-free proof that |A₅| = 2²·3·5, exhibiting the three distinct prime factors that make A₅ a sharpness witness.",
       "alternatingGroupFin5_not_solvable: axiom-free proof that A₅ is not solvable, via reduction to Equiv.Perm.not_solvable (Fin 5) through the short exact sequence A₅ → S₅ → ℤ/2.",
       "burnside_pq_sharp: sharpness witness combining the two above — demonstrates that the analogue of burnside_pq for THREE distinct primes fails (no `burnside_pqr` theorem can hold without further hypotheses; A₅ also defeats the squarefree route since 60 has 2²)."
     ],
-    "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iteration 5): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited; this is a strict shortcut for any future case-by-case Sylow-counting analysis (`|G| = p² · q`, `|G| = p · q²`, …). The axiom statement itself is unchanged: it still isolates the genuinely-open Lean content (orders divisible by `p²` or `q²` for distinct primes); a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
-    "theoremCount": 13,
+    "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iterations 5/7): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited; this is a strict shortcut for any future case-by-case Sylow-counting analysis (`|G| = p² · q`, `|G| = p · q²`, …). Iteration 7 adds the FIRST sub-case discharge of the `(a, b) = (2, 1)` shape: `burnside_p_squared_q_p_gt_q` proves Burnside axiom-free whenever `|G| = p² · q` with `p > q`, by combining Sylow's third theorem (`card_sylow_modEq_one`) with `Sylow.card_dvd_index` to force `n_p = 1`, then plugging into `burnside_pq_with_normal_pSylow`. The symmetric `p < q ≠ 3` case (S7.5) and the exceptional `(p, q) = (2, 3), |G| = 12` case (S8) are the remaining S-iterations needed to remove `(a, b) = (2, 1)` from the axiom hypothesis entirely. The axiom statement itself is unchanged: it still isolates the genuinely-open Lean content (orders divisible by `p²` or `q²` for distinct primes); a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
+    "theoremCount": 15,
     "definitionCount": 0
   },
   "overview": {
@@ -116,56 +154,72 @@
     {
       "id": "p-group-chain",
       "title": "Part I: p-group lemma (axiom-free)",
-      "startLine": 50,
-      "endLine": 60,
+      "startLine": 54,
+      "endLine": 64,
       "summary": "`pGroup_isSolvable`: for any finite group `G` with `IsPGroup p G` (and `Fact p.Prime`), `IsSolvable G`. Single-line proof via `IsPGroup.isNilpotent` + `infer_instance` for `IsNilpotent → IsSolvable`. Axiom-free.",
       "mathContext": "$p$-groups are nilpotent (an inductive consequence of the non-trivial centre), and nilpotent groups are solvable (the lower central series refines the derived series). Both facts are in Mathlib."
     },
     {
       "id": "trivial-cases",
       "title": "Part II: Trivial cases (a = 0, b = 0, p = q)",
-      "startLine": 65,
-      "endLine": 98,
+      "startLine": 66,
+      "endLine": 99,
       "summary": "`burnside_pq_a_zero`: when $a = 0$, $|G| = q^b$ so $G$ is a $q$-group; apply Part I. `burnside_pq_b_zero`: symmetric to $a = 0$. `burnside_pq_same_prime`: when $p = q$, $|G| = p^{a+b}$ so $G$ is a $p$-group of combined exponent. All three axiom-free.",
       "mathContext": "These cases are all instances of $|G| = $ prime power, hence covered by Part I. The arithmetic step is: $p^0 \\cdot q^b = q^b$, $p^a \\cdot q^0 = p^a$, $p^a \\cdot p^b = p^{a+b}$ — each obtained via `simpa` or `pow_add`."
     },
     {
       "id": "squarefree-case",
       "title": "Part II.5: Squarefree-order case (axiom-free, via IsZGroup)",
-      "startLine": 100,
-      "endLine": 152,
+      "startLine": 101,
+      "endLine": 142,
       "summary": "`squarefreeOrder_isSolvable`: bridges `Squarefree (Nat.card G) → IsSolvable G` via Mathlib's `IsZGroup.of_squarefree` + `[IsZGroup G] [Finite G] → IsSolvable G` instance. `burnside_pq_pq_case`: specializes to `a = b = 1` (`|G| = p · q`, `p ≠ q`) using `Nat.coprime_primes` + `Prime.squarefree` + `Nat.squarefree_mul`. Both axiom-free.",
       "mathContext": "A finite group of squarefree order is a Z-group (every Sylow subgroup is cyclic), and Z-groups are solvable. This subsumes the `a = b = 1` Burnside case (`|G| = pq` is squarefree when `p ≠ q` are prime) and extends beyond two primes for squarefree orders (e.g. `|G| = 30 = 2·3·5` is solvable axiom-free). It does NOT extend to `|G| = pᵃqᵇ` with `a ≥ 2` or `b ≥ 2`: `p²` violates squarefreeness, so the `2 ≤ a ∨ 2 ≤ b` case still needs new infrastructure."
     },
     {
       "id": "axiom",
       "title": "Part III: Non-trivial case (axiomatized, narrowed to 2 ≤ a ∨ 2 ≤ b)",
-      "startLine": 154,
-      "endLine": 188,
+      "startLine": 144,
+      "endLine": 176,
       "summary": "`burnside_pq_nontrivial`: axiom asserting Burnside's theorem in the residual case `p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`. The hypothesis was narrowed in Iteration 4: the `a = b = 1` sub-case is now axiom-free (Part II.5). Carries proof sketches for both the character-theoretic (Burnside 1904) and character-free (Goldschmidt-Matsuyama 1970s) routes.",
       "mathContext": "This is the genuinely-open Lean content: orders divisible by `p²` or `q²` for distinct primes. A formalized proof would be a substantial Mathlib upstream contribution (~400-1000 lines depending on route)."
     },
     {
+      "id": "normal-sylow-reductions",
+      "title": "Part III.5: Normal-Sylow reductions (axiom-free, Iteration 5)",
+      "startLine": 178,
+      "endLine": 263,
+      "summary": "`isSolvable_of_normal_quotient_solvable`: solvability is closed under group extensions (repackaging `solvable_of_ker_le_range` against `1 → N → G → G/N → 1`). `burnside_pq_with_normal_pSylow`: if `|G| = pᵃqᵇ` and `G` admits a normal subgroup of order `pᵃ`, then `G` is solvable (axiom-free). `burnside_pq_with_normal_qSylow`: symmetric reduction via a normal subgroup of order `qᵇ`.",
+      "mathContext": "These reductions turn 'exhibit a normal Sylow subgroup' into a complete axiom-free discharge of `burnside_pq_nontrivial`. Combined with Sylow-counting analyses on specific shapes (`|G| = p² · q`, `|G| = p · q²`, …), they enable axiom-free closure of those cases — as concretely realized in Part III.6."
+    },
+    {
+      "id": "p-squared-q",
+      "title": "Part III.6: |G| = p² · q axiom-free, case `p > q` (Iteration 7)",
+      "startLine": 265,
+      "endLine": 354,
+      "summary": "`sylow_count_eq_one_of_lt_prime` (private helper): if `n ∣ q` (q prime), `n ≡ 1 [MOD p]`, and `q < p`, then `n = 1`. `burnside_p_squared_q_p_gt_q`: axiom-free Burnside for `|G| = p² · q` in the case `p > q` — Sylow's third theorem (`card_sylow_modEq_one` + `Sylow.card_dvd_index`) forces `n_p = 1`; the unique Sylow `p`-subgroup is normal (`Sylow.normal_of_subsingleton`); `burnside_pq_with_normal_pSylow` discharges.",
+      "mathContext": "First sub-case of `|G| = p² · q`. By Sylow's third theorem, `n_p ≡ 1 [MOD p]` and `n_p ∣ q`. Since `q` is prime, `n_p ∈ {1, q}`; the case `n_p = q` would require `q ≡ 1 [MOD p]`, i.e. `p ∣ q - 1`, contradicting `q < p`. The remaining sub-cases (`p < q ≠ 3` symmetric, exceptional `(p, q) = (2, 3) |G| = 12`) are tracked for S7.5/S8."
+    },
+    {
       "id": "main-theorem",
       "title": "Part IV: Main theorem",
-      "startLine": 190,
-      "endLine": 231,
+      "startLine": 356,
+      "endLine": 396,
       "summary": "`burnside_pq`: combines the three axiom-free trivial cases with the squarefree-order case (a = b = 1) and the conjectural `burnside_pq_nontrivial` axiom into the unified statement `Nat.card G = p^a · q^b → IsSolvable G`. Case-splits on `a = 0`, `b = 0`, `p = q`, then `a = 1 ∧ b = 1` (axiom-free), with the residue dispatched to the (narrowed) axiom.",
       "mathContext": "The case split is exhaustive: any combination of $(a, b, p, q)$ with $a = 0$ or $b = 0$ or $p = q$ falls into Part II; `a = b = 1` with `p ≠ q` falls into Part II.5; the residue (`p ≠ q`, `2 ≤ a ∨ 2 ≤ b`) is exactly the axiom's hypothesis."
     },
     {
       "id": "sanity-checks",
       "title": "Part V: Sanity checks",
-      "startLine": 233,
-      "endLine": 281,
-      "summary": "Four `example`s that exercise the axiom-free portions of the file at the boundaries: trivial group ($|G| = 1 = 2^0 \\cdot 3^0$), prime-order group ($|G| = p = p^1 \\cdot 2^0$), pure prime-power group ($|G| = p^a = p^a \\cdot 2^0$), and squarefree three-prime group ($|G| = 30 = 2 \\cdot 3 \\cdot 5$). The first three use `burnside_pq` directly; the fourth uses `squarefreeOrder_isSolvable`.",
-      "mathContext": "These examples never invoke the axiom — they confirm that the trivial-case branches handle all degenerate cardinalities sensibly, AND that the squarefree route extends beyond two primes."
+      "startLine": 398,
+      "endLine": 471,
+      "summary": "Six `example`s that exercise the axiom-free portions of the file at the boundaries: trivial group ($|G| = 1 = 2^0 \\cdot 3^0$), prime-order group ($|G| = p = p^1 \\cdot 2^0$), pure prime-power group ($|G| = p^a = p^a \\cdot 2^0$), `|G| = pq` squarefree, three-prime squarefree ($|G| = 30 = 2 \\cdot 3 \\cdot 5$), `|G| = 12` with normal Sylow-2 (A₄-style), and the new Iteration-7 example `|G| = 75 = 5^2 \\cdot 3` axiom-free via `burnside_p_squared_q_p_gt_q`.",
+      "mathContext": "These examples never invoke the axiom — they confirm that the trivial-case branches, the squarefree route, and the new `p² · q` (`p > q`) discharge all handle their respective shapes axiom-free."
     },
     {
       "id": "sharpness",
       "title": "Part VI: Sharpness witness",
-      "startLine": 285,
-      "endLine": 333,
+      "startLine": 473,
+      "endLine": 528,
       "summary": "`alternatingGroupFin5_card`: $|A_5| = 2^2 \\cdot 3 \\cdot 5$ via `Nat.card_eq_fintype_card` + `native_decide`. `alternatingGroupFin5_not_solvable`: A₅ is not solvable, via `solvable_of_ker_le_range (alternatingGroup (Fin 5)).subtype Equiv.Perm.sign` then `Equiv.Perm.not_solvable (Fin 5)`. `burnside_pq_sharp`: conjunction of the two — the canonical sharpness witness.",
       "mathContext": "Burnside permits at most TWO distinct prime factors. $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct primes — exactly one more — and A₅ is the smallest non-solvable group. So `burnside_pq` is sharp: no extension to three distinct primes can hold. A₅ ALSO defeats the squarefree route (`squarefreeOrder_isSolvable` does not apply since 60 has $2^2$). The proof uses the kernel-of-sign + range-of-subtype short exact sequence A₅ → S₅ → ℤ/2 to lift solvability of A₅ to S₅, then contradicts the Mathlib fact `Equiv.Perm.not_solvable` for $n \\geq 5$."
     }
@@ -203,16 +257,17 @@
       "Mathlib.GroupTheory.PGroup",
       "Mathlib.GroupTheory.Solvable",
       "Mathlib.GroupTheory.Nilpotent",
+      "Mathlib.GroupTheory.Sylow",
       "Mathlib.GroupTheory.SpecificGroups.Alternating",
       "Mathlib.GroupTheory.SpecificGroups.ZGroup",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 502,
+    "lineCount": 614,
     "axiomCount": 1,
-    "theoremCount": 13,
-    "substantiveTheoremCount": 13,
+    "theoremCount": 15,
+    "substantiveTheoremCount": 15,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
     "sorries": 0
@@ -248,6 +303,11 @@
       "name": "burnside_pq",
       "statement": "∀ {G : Type*} [Group G] [Finite G] {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}, Nat.card G = p^a · q^b → IsSolvable G",
       "description": "Burnside's pᵃqᵇ theorem. Combines axiom-free trivial cases with the conjectural `burnside_pq_nontrivial` axiom."
+    },
+    {
+      "name": "burnside_p_squared_q_p_gt_q",
+      "statement": "∀ {G : Type*} [Group G] [Finite G] {p q : ℕ} [Fact p.Prime] [Fact q.Prime], q < p → Nat.card G = p^2 · q → IsSolvable G",
+      "description": "Iteration 7 axiom-free discharge: Burnside for `|G| = p² · q` in the case `p > q`. Sylow's third theorem forces n_p = 1 (the only divisor of q that is ≡ 1 [MOD p] is 1, since q < p); the unique Sylow p-subgroup is normal, then `burnside_pq_with_normal_pSylow` discharges. First of three sub-cases needed to remove `(a, b) = (2, 1)` from `burnside_pq_nontrivial`'s hypothesis."
     },
     {
       "name": "burnside_pq_sharp",
