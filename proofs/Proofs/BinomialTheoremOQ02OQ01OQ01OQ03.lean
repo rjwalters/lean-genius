@@ -7,17 +7,20 @@ distribution to N(0,1) for each coordinate as n → ∞?"
 
 ## Status
 
-**Reduction complete.** This file STATES the multinomial marginal CLT
-and reduces it to the classical de Moivre–Laplace (binomial) CLT plus the
-already-proved marginal-PMF identity from `BinomialTheoremOQ02OQ01OQ02`.
-The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` is now fully
-proved (Phase-3 deliverable, this file).
+**Reduction complete + standard-normal opaque eliminated.** This file STATES
+the multinomial marginal CLT and reduces it to the classical de Moivre–Laplace
+(binomial) CLT plus the already-proved marginal-PMF identity from
+`BinomialTheoremOQ02OQ01OQ02`. The reduction lemma
+`multinomialMarginalCDF_eq_binomialCDF` is fully proved (Phase-3 deliverable,
+Session 3).
 
 The de Moivre–Laplace CLT itself is taken as an axiom: a measure-theoretic
 proof from Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is
 non-trivial (CDF ↔ measure-weak-convergence bridge) and is left for a
 follow-up effort. After this file, the single mathematical assumption
-beyond Mathlib is the classical Binomial CLT itself.
+beyond Mathlib is the classical Binomial CLT itself: `standardNormalCDF` is
+no longer `opaque` — it is a `noncomputable def` integrating Mathlib's
+`ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x` (Session 6 contribution).
 
 ## What This File Provides
 
@@ -26,9 +29,13 @@ beyond Mathlib is the classical Binomial CLT itself.
 2. `multinomialMarginalCDF s p n i₀ x` — concrete CDF of the marginal X_{i₀}
    of Multinomial(n, p), defined by summing `multinomialProb` over the
    filtered piAntidiag.
-3. `standardNormalCDF` — opaque marker for the standard normal CDF.
+3. `standardNormalCDF` — concrete `noncomputable def` integrating
+   `ProbabilityTheory.gaussianPDFReal 0 ⟨1, zero_le_one⟩` over `Set.Iic x`.
+   No longer an axiom (was `opaque` in Sessions 2–5).
 4. `binomial_clt_pointwise` — AXIOM: pointwise convergence of standardized
-   binomial CDF to standardNormalCDF.
+   binomial CDF to `standardNormalCDF` — now a substantive mathematical
+   claim about the *defined* normal CDF, not a vacuous statement about an
+   uninterpreted opaque.
 5. `multinomialMarginalCDF_eq_binomialCDF` — reduction lemma, **proved**:
    the marginal CDF of the multinomial equals the binomial CDF with
    parameter p(i₀). Proof regroups `∑ k ∈ s.piAntidiag n` into fibers
@@ -51,8 +58,12 @@ gives the multinomial marginal CLT.
 ## Honest Reporting
 
 - Sorries: 0 (Phase-3 reduction-lemma proof discharges the prior sorry).
-- Axioms: 2 (`binomial_clt_pointwise` + `standardNormalCDF` opaque).
-- Status: axiomatized — not "verified".
+- Axioms: 1 (`binomial_clt_pointwise`). The `standardNormalCDF` opaque
+  was eliminated in Session 6 by replacing it with a `noncomputable def`
+  built from `ProbabilityTheory.gaussianPDFReal`.
+- Status: axiomatized — not "verified". The single remaining axiom is
+  the classical de Moivre–Laplace theorem, a substantive mathematical
+  claim, not a structural placeholder.
 
 The contribution of this file is the *full reduction* of the multinomial
 marginal CLT to the classical Binomial CLT, leaving only the latter as
@@ -78,6 +89,8 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
+import Mathlib.Probability.Distributions.Gaussian.Basic
+import Mathlib.MeasureTheory.Integral.SetIntegral
 import Mathlib.Tactic
 import Proofs.BinomialTheoremOQ02OQ01OQ02
 
@@ -107,14 +120,22 @@ noncomputable def multinomialMarginalCDF
       BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
     else 0
 
-/-! ## Standard normal CDF (opaque) -/
+/-! ## Standard normal CDF (concrete via Mathlib's Gaussian PDF) -/
 
-/-- The standard normal CDF, `Φ(x) = (1/√(2π)) ∫_{-∞}^x e^{-t²/2} dt`.
+/-- The standard normal CDF,
+    `Φ(x) = ∫_{-∞}^x (2π)^{-1/2} · e^{-t²/2} dt`,
+    defined as the Lebesgue integral of `ProbabilityTheory.gaussianPDFReal 0 1`
+    over `Set.Iic x`.
 
-    Declared `opaque` here — Mathlib provides a measure-theoretic standard
-    normal (`Mathlib.Probability.Distributions.Gaussian.Basic`); bridging
-    that measure to a CDF function is left for a Phase-3 effort. -/
-opaque standardNormalCDF : ℝ → ℝ
+    This is a `noncomputable def` (not `opaque`): it carries no axiomatic
+    content, only a concrete bridge to Mathlib's measure-theoretic Gaussian
+    family. The previous `opaque` version implicitly added the existence of
+    a normal CDF as an unverified assumption; this definition discharges
+    that assumption by giving an explicit body in terms of
+    `ProbabilityTheory.gaussianPDFReal 0 ⟨1, zero_le_one⟩`. -/
+noncomputable def standardNormalCDF (x : ℝ) : ℝ :=
+  ∫ t in Set.Iic x,
+    ProbabilityTheory.gaussianPDFReal 0 ⟨(1 : ℝ), zero_le_one⟩ t
 
 /-! ## Axiom: classical de Moivre–Laplace (binomial CLT) -/
 

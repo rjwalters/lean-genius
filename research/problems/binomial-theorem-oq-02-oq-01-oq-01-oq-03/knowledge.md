@@ -516,6 +516,147 @@ This is exactly the input the Portmanteau bridge will need.
 
 ---
 
+## Session 2026-05-08 (Session 6, researcher-8) — ACT (Stretch: opaque → def)
+
+**Mode**: BUILD-ON-PRIOR (Sessions 1–5 produced a sorry-free, two-axiom file
+with the structural-properties library complete; this session executes the
+"Stretch (independent)" step from Sessions 4 and 5: eliminate the
+`standardNormalCDF` opaque).
+
+**Outcome**: replaced the `opaque standardNormalCDF : ℝ → ℝ` with a
+`noncomputable def` integrating `ProbabilityTheory.gaussianPDFReal 0 ⟨1,
+zero_le_one⟩` over `Set.Iic x`. **Axiom count: 2 → 1**. The single
+remaining axiom is `binomial_clt_pointwise` (the substantive de
+Moivre-Laplace claim itself); the previous opaque-marker assumption is
+discharged.
+
+### What Was Built
+
+**Replaced** (line 117):
+```lean
+opaque standardNormalCDF : ℝ → ℝ
+```
+
+**With** (lines 136–138):
+```lean
+noncomputable def standardNormalCDF (x : ℝ) : ℝ :=
+  ∫ t in Set.Iic x,
+    ProbabilityTheory.gaussianPDFReal 0 ⟨(1 : ℝ), zero_le_one⟩ t
+```
+
+This is exactly the classical formulation
+`Φ(x) = ∫_{-∞}^x (2π)^{-1/2} · e^{-t²/2} dt` via Mathlib's standard
+Gaussian-density bridge. The pattern matches `ShannonEntropyOQ01.lean:260–278`
+(same `ProbabilityTheory.gaussianPDFReal μ ⟨σ², sq_nonneg σ⟩` idiom,
+specialized here to `μ = 0`, `σ² = 1`).
+
+**Imports added**:
+- `Mathlib.Probability.Distributions.Gaussian.Basic`
+- `Mathlib.MeasureTheory.Integral.SetIntegral`
+
+(These were already pulled in by `Mathlib.Tactic`/`import Mathlib` in
+ShannonEntropyOQ01; making them explicit here keeps the import graph
+auditable.)
+
+### Why This Is a Real Axiom Reduction (Not Cosmetic)
+
+The Sessions 2–5 file used `opaque standardNormalCDF : ℝ → ℝ`, declaring
+that *some* function of type `ℝ → ℝ` exists and is named `standardNormalCDF`.
+The axiom `binomial_clt_pointwise` then said the standardized binomial CDF
+converges to that opaque target. As a *mathematical claim*, this is
+vacuous: take `standardNormalCDF` to be the pointwise limit (which exists
+by de Moivre-Laplace) and the axiom is automatically satisfied.
+
+After this session, `standardNormalCDF` is the actual standard normal CDF
+(Gaussian-density integrated to `x`). The axiom now claims that the
+standardized binomial CDF converges to *that specific function*. This is
+a genuine mathematical statement — the classical de Moivre-Laplace
+theorem — not a structural placeholder.
+
+Per the project's Axiom Integrity Policy: `opaque` is counted in
+`axiomCount` (it is an unverified assumption-bearing constant). Replacing
+it with a `noncomputable def` whose body is `ProbabilityTheory.gaussianPDFReal`
+genuinely reduces the assumption count by 1.
+
+### What `multinomial_marginal_clt` Now Asserts
+
+Before:
+- "Standardized multinomial marginal CDF converges to *some* function `Φ`,
+  about which we assume nothing."
+
+After (this session):
+- "Standardized multinomial marginal CDF converges to
+  `∫_{-∞}^x ProbabilityTheory.gaussianPDFReal 0 ⟨1, _⟩ t`, the
+  Gaussian-measure CDF."
+
+The proof of `multinomial_marginal_clt` is **unchanged** (uses
+`binomial_clt_pointwise` + `Filter.Tendsto.congr` via the reduction
+lemma); only the *meaning* of the limit symbol is sharpened.
+
+### Status After This Session
+
+* Sorries: 0 (unchanged).
+* Axioms: **1 (was 2)** — only `binomial_clt_pointwise` remains.
+  `standardNormalCDF` is now a definition.
+* Theorems: 7 (unchanged).
+* Definitions: 3 (was 2) — added `standardNormalCDF` as a definition.
+* Substantive theorem count: 6 (unchanged).
+* File length: 351 lines (was 330; +21 for the new def + docstring + 2
+  new explicit imports + updates to the top-of-file docstring).
+* Status: still `axiomatized` (single axiom remains).
+
+### Honest Reporting
+
+* Local Docker build was **not** run (CI is the ground truth, and the
+  worktree's `proofs/.lake` recursive-symlink trap would force a fresh
+  Mathlib clone). The replacement is mechanical: the body uses idioms
+  already exercised in `ShannonEntropyOQ01.lean` (lines 260–278), and
+  the only consumer of `standardNormalCDF` (the `binomial_clt_pointwise`
+  axiom and the `multinomial_marginal_clt` derived theorem) does not
+  unfold it. Confidence is high but not CI-verified at push time.
+
+* This session is **axiom elimination**, not new proof. It does not
+  reduce sorry count (already 0) and does not add new mathematical
+  content; it sharpens the meaning of the existing main theorem by
+  pinning the limit symbol to a defined function. Per the gallery's
+  Axiom Integrity Policy this is genuine progress (axiomCount 2 → 1).
+
+* The `(1 : ℝ)` annotation on the NNReal anonymous constructor is
+  defensive — Lean elaborates `⟨1, zero_le_one⟩` to NNReal in this
+  context but pinning the type avoids ambiguity if the integrand
+  signature ever shifts.
+
+### Files Changed
+
+- UPDATED `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+  (330 → 351 lines; opaque → def; 2 new imports; top-docstring rewrite).
+- UPDATED `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+  (axiomCount 2 → 1, lineCount 330 → 351, definitionCount 2 → 3,
+   imports list, assumptions narrative, originalContributions, sections,
+   keyInsights, conclusion summary/implications).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+  (this entry).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`
+  (Session 6 status; promote remaining-axiom attack to next action).
+- UPDATED `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json`
+  (knowledge fields).
+
+### Next Steps
+
+1. **Session 7 (axiom attack)**: discharge `binomial_clt_pointwise` from
+   `ProbabilityTheory.iid_central_limit_theorem` via the Portmanteau
+   bridge. The four structural lemmas added in Sessions 4–5 — together
+   with the now-defined `standardNormalCDF` — are the prerequisites.
+   Estimated ~150–200 lines of new Lean. Once this lands, the file is
+   fully verified (0 axioms, 0 sorries).
+
+2. **Sibling stretch**: with the standard-normal CDF now defined, prove
+   continuity (`Continuous standardNormalCDF`) by integration-of-a-
+   continuous-function. Continuity is required by the Portmanteau bridge
+   for the upcoming Session 7 work, so this is a natural staging step.
+
+---
+
 ## Dead Ends
 
 - None yet.
