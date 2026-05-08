@@ -552,12 +552,32 @@ build_website() {
     fi
 
     print_info "Running pnpm build..."
-    if pnpm build 2>&1 | tail -5; then
-        print_success "Build completed"
-    else
-        print_error "Build failed"
-        return 1
-    fi
+    # Capture full log so failures aren't masked by `| tail -5` (which forces
+    # the pipe's exit status to tail's, always 0). Cap node heap at 8 GB so
+    # OOMs surface as deterministic exits rather than thrashing the host, and
+    # bound the whole chain at 20 minutes so a hung step can't accumulate
+    # zombie pnpm/vite processes across cycles.
+    local build_log
+    build_log=$(mktemp)
+    local build_status=0
+    NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=8192" \
+        timeout --kill-after=30 20m pnpm build > "$build_log" 2>&1 \
+        || build_status=$?
+    tail -20 "$build_log"
+    case $build_status in
+        0)
+            print_success "Build completed"
+            rm -f "$build_log"
+            ;;
+        124|137)
+            print_error "Build timed out after 20m (status $build_status); see full log at $build_log"
+            return 1
+            ;;
+        *)
+            print_error "Build failed (exit $build_status); see full log at $build_log"
+            return 1
+            ;;
+    esac
 
     # Run quality audit and log results
     print_info "Running quality audit..."
