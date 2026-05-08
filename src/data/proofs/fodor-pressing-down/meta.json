@@ -35,6 +35,16 @@
       "The \u2135\u2081 corollary (fodor_aleph1) is the most commonly used instance: regressive functions on stationary subsets of \u03c9\u2081 are constant on a stationary subset",
       "Regularity of \u03ba is essential for the zipper construction. For singular \u03ba (e.g., \u2135_\u03c9), one can build a regressive function on a stationary set whose fibers are all non-stationary by sending each \u03b1 to its cofinality-class representative \u2014 Fodor's lemma genuinely fails. This is why the lemma is sometimes phrased 'Fodor for regular \u03ba' rather than just 'Fodor', and why the implicit `[h\u03ba : \u03ba.ord.IsRegular]` typeclass argument is load-bearing in the Lean statement",
       "Fodor's lemma is equivalent to the **normality** of the club filter $\\mathcal{C}_\\kappa$ on \u03ba (i.e., closure under diagonal intersections): the club filter is the largest \u03ba-complete normal filter on \u03ba, and Fodor is precisely the statement that no regressive function escapes the filter. This recasts a combinatorial lemma as a structural fact about $\\mathcal{C}_\\kappa$, opening the gateway to applications via the Solovay splitting theorem and the proper forcing axiom"
+    ],
+    "prerequisites": [
+      "Ordinals as a transfinite extension of $\\mathbb{N}$, with the well-order, successor/limit ordinals, and the order-type of well-ordered sets (`Ordinal` in Mathlib)",
+      "Cardinal arithmetic and regular cardinals: $\\mathrm{cof}(\\kappa) = \\kappa$ \u2014 every cofinal sequence in $\\kappa$ has length $\\kappa$ (`Cardinal.IsRegular`)",
+      "Uncountable cardinals: $\\aleph_0 < \\kappa$, with $\\aleph_1$ as the canonical regular-uncountable witness",
+      "Club (closed-and-unbounded) sets in $\\kappa$: the dual notions of cofinality and ordinal limits, and why the intersection of $< \\kappa$ many clubs is a club",
+      "Stationary sets: subsets of $\\kappa$ that meet every club; the dual of the club filter under non-trivial complementation",
+      "Regressive functions: $f : S \\to \\kappa$ with $f(\\alpha) < \\alpha$ \u2014 the ordinal analogue of \"strict decrease\"",
+      "Diagonal intersection $\\Delta_{\\alpha < \\kappa}(C_\\alpha) = \\{\\gamma : \\forall \\alpha < \\gamma,\\ \\gamma \\in C_\\alpha\\}$, and the fact that diagonal intersections of clubs are clubs (the structural backbone of normality)",
+      "The club filter $\\mathcal{C}_\\kappa$ as the largest $\\kappa$-complete normal filter on $\\kappa$, and the equivalence: Fodor $\\iff$ $\\mathcal{C}_\\kappa$ is normal (closed under diagonal intersection)"
     ]
   },
   "sections": [
@@ -87,26 +97,36 @@
     {
       "name": "fodor",
       "type": "core",
+      "statement": "$\\forall \\kappa : \\mathrm{Cardinal}, \\kappa.\\mathrm{IsRegular} \\land \\aleph_0 < \\kappa\\colon \\forall S \\subseteq \\kappa, S.\\mathrm{IsStationaryBelow}\\,\\kappa \\Rightarrow \\forall f : S \\to \\kappa,\\ (\\forall \\alpha \\in S, 0 < \\alpha \\to f(\\alpha) < \\alpha) \\Rightarrow \\exists \\beta < \\kappa, (f^{-1}(\\beta) \\cap S).\\mathrm{IsStationaryBelow}\\,\\kappa$",
+      "significance": "**The headline theorem.** A regressive function on a stationary set must be constant on a stationary subset — equivalently, the club filter $\\mathcal{C}_\\kappa$ is normal. Proof by contradiction: if no fiber is stationary, choose disjoint clubs $C_\\beta$ avoiding each fiber, take $\\Delta_\\beta C_\\beta$, find $\\gamma$ in the stationary domain, derive $\\gamma \\in C_{f(\\gamma)}$ — contradiction.",
       "description": "Main theorem: for regular uncountable κ, any regressive function on a stationary subset of κ is constant on some stationary subset. ∃ β, f⁻¹(β) ∩ S is stationary."
     },
     {
       "name": "fodor_aleph1",
       "type": "core",
+      "statement": "$\\forall S \\subseteq \\omega_1, S.\\mathrm{IsStationaryBelow}\\,\\omega_1 \\Rightarrow \\forall f : S \\to \\omega_1,\\ (\\forall \\alpha \\in S, 0 < \\alpha \\to f(\\alpha) < \\alpha) \\Rightarrow \\exists \\beta < \\omega_1, (f^{-1}(\\beta) \\cap S).\\mathrm{IsStationaryBelow}\\,\\omega_1$",
+      "significance": "Specialization at the canonical regular-uncountable cardinal $\\aleph_1$ — by far the most cited instance, used pervasively in descriptive set theory, forcing arguments around CH, and the analysis of Borel/projective hierarchies on $\\omega_1$.",
       "description": "Specialization to κ = ℵ₁: any regressive function on a stationary subset of ω₁ is constant on a stationary subset. The most commonly cited form of Fodor's lemma."
     },
     {
       "name": "diagInter_isClubBelow",
       "type": "supporting",
+      "statement": "$\\forall \\kappa : \\mathrm{Cardinal}, \\kappa.\\mathrm{IsRegular} \\land \\aleph_0 < \\kappa, \\forall (f : \\mathrm{Ordinal} \\to \\mathrm{Set}\\,\\mathrm{Ordinal})\\colon (\\forall \\alpha < \\kappa, (f\\,\\alpha).\\mathrm{IsClubBelow}\\,\\kappa) \\Rightarrow (\\Delta_{\\alpha<\\kappa} f\\,\\alpha).\\mathrm{IsClubBelow}\\,\\kappa$",
+      "significance": "Diagonal-intersection-of-clubs-is-a-club — the structural backbone of normality. Combines `diagInter_isClosedBelow` (closure inherited from each $f\\,\\alpha$) with `diagInter_isUnboundedBelow` (the zipper construction). Without this, Fodor reduces to a triviality and loses its power.",
       "description": "Key infrastructure: the diagonal intersection of κ-many clubs (for regular uncountable κ) is itself a club. Combines diagInter_isClosedBelow + diagInter_isUnboundedBelow (zipper construction)."
     },
     {
       "name": "diagInter_isUnboundedBelow",
       "type": "supporting",
+      "statement": "$\\forall \\kappa$ regular and uncountable, $\\forall f$ such that each $f\\,\\alpha$ is unbounded below $\\kappa\\colon (\\Delta_{\\alpha<\\kappa} f\\,\\alpha).\\mathrm{IsUnboundedBelow}\\,\\kappa$",
+      "significance": "**The zipper construction**: starting from $\\delta < \\kappa$, build $\\delta < \\gamma_0 < \\gamma_1 < \\cdots$ with $\\gamma_{n+1} \\in f\\,\\gamma_n$; the supremum lies in the diagonal intersection by closure. Regularity of $\\kappa$ is essential — the supremum has cofinality $\\omega < \\kappa$, so it stays below $\\kappa$.",
       "description": "Zipper construction lemma: building δ < γ_0 < γ_1 < ... with γ_{n+1} ∈ f(γ_n) gives a sequence whose limit lies in the diagonal intersection (uses regularity of κ for boundedness)."
     },
     {
       "name": "IsStationaryBelow.nonempty",
       "type": "supporting",
+      "statement": "$\\forall S \\subseteq \\kappa, S.\\mathrm{IsStationaryBelow}\\,\\kappa \\Rightarrow S \\ne \\emptyset$",
+      "significance": "Quality-of-life lemma: a stationary set must meet every club, and clubs are nonempty (containing limit ordinals), so a stationary set is nonempty. Stated for ergonomics in the main proof's `obtain` pattern.",
       "description": "A stationary set is nonempty (immediate from intersection-with-club property, but stated for ergonomics)."
     }
   ],
