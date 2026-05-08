@@ -4,12 +4,87 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Iteration 11, researcher-5)
-**Iteration**: 11
+**Last Updated**: 2026-05-09 (Iteration 12, researcher-10)
+**Iteration**: 12
 
 ## Current Focus
-Iteration 11 (2026-05-08, this PR): reformulates Iter 10's
-prime-counting bound in Mathlib's `Nat.primeCounting` vocabulary —
+Iteration 12 (2026-05-09, this PR): **three independent surgical fixes**
+to unblock the build for iters 5–11 (which all merged with
+`(build pending)` status). Empirically discovered by docker-build of
+iter 11 plus targeted re-investigation: the original "single drift"
+diagnosis from the iter 11 PR was incomplete — only one of the three
+errors is true Mathlib drift; the other two are subtle elaboration
+issues introduced by iter 8 / iter 2 that survived because the file
+has not had a clean build since iter 4.
+
+### Fix 1 (line 118 — `pow_dvd_lcmRange`): true Mathlib drift
+
+`Nat.pos_pow_of_pos` was removed from Mathlib (no longer present in
+v4.26.0; absent from current docs). The replacement `Nat.pow_pos`
+lives in core Lean's `Init.Prelude` with signature
+`{a n : Nat} (h : 0 < a) : 0 < a ^ n`. One-line swap:
+
+```diff
+- dvd_lcmRange (Nat.pos_pow_of_pos k hb) hbkn
++ dvd_lcmRange (Nat.pow_pos hb) hbkn
+```
+
+### Fix 2 (line 262 — `lcmRange_dvd_prod_prime_powers`): `rw` cascade
+
+Inside `have hm_eq : m = ∏ p ∈ P, p ^ m.factorization p`, the proof
+opened with `rw [h1]` where
+`h1 : m = ∏ p ∈ m.primeFactors, p ^ m.factorization p`. Because
+`h1`'s RHS contains `m` itself, `rw [h1]` was rewriting `m` on
+BOTH sides of the goal `m = ∏ p ∈ P, p ^ m.factorization p`,
+mutating the RHS into
+`∏ p ∈ P, p ^ (∏ p ∈ m.primeFactors, p ^ m.factorization p).factorization p`
+— an unprovable nested expression. Targeted fix: rewrite LHS only.
+
+```diff
+-    rw [h1]
++    -- Rewrite only the LHS `m` — `rw [h1]` would also expand `m` inside
++    -- `m.factorization` on the RHS, leaving an unprovable nested goal.
++    conv_lhs => rw [h1]
+```
+
+### Fix 3 (line 376 — `lcmRange_succ` forward direction): elaboration
+
+`Finset.dvd_lcm (Finset.mem_range.mpr hi')` had its function `f`
+inferred ambiguously as `HAdd.hAdd i` (the curried `i + ·`) instead
+of `(· + 1)`, because the goal post-`unfold lcmRange + Finset.lcm_dvd`
+did not pin down `f`. The chain via `Nat.dvd_lcm_left _ _` then failed
+to unify. Routed through the already-established `dvd_lcmRange` lemma
+instead, which has fully-determined types:
+
+```diff
+-  · unfold lcmRange
+-    apply Finset.lcm_dvd
++  · show (Finset.range (n + 1)).lcm (· + 1) ∣ Nat.lcm (lcmRange n) (n + 1)
++    apply Finset.lcm_dvd
+     intro i hi
+     have hi_lt : i < n + 1 := Finset.mem_range.mp hi
+     by_cases hi_eq : i = n
+     · subst hi_eq; exact Nat.dvd_lcm_right _ _
+-    · have hi' : i < n := by omega
+-      exact dvd_trans (Finset.dvd_lcm (Finset.mem_range.mpr hi'))
+-        (Nat.dvd_lcm_left _ _)
++    · have hi' : i + 1 ≤ n := by omega
++      have h_dvd : i + 1 ∣ lcmRange n := dvd_lcmRange (Nat.succ_pos _) hi'
++      exact dvd_trans h_dvd (Nat.dvd_lcm_left _ _)
+```
+
+Reverse direction unchanged.
+
+### Net delta
+
+Three surgical edits totaling ~10 lines changed. No new theorems, no
+new imports, no API redesign. Proof content of iters 5–11 (Chebyshev
+decomposition forward + reverse + equality, prime-counting bound,
+primeCounting reformulation) is preserved verbatim and verified-buildable
+for the first time after iter 12 merges.
+
+Iteration 11 (#17401 merged): reformulates Iter 10's prime-counting
+bound in Mathlib's `Nat.primeCounting` vocabulary —
 the literal published form of the bound:
 
 - `lcmRange_le_pow_primeCounting (n : ℕ) :
@@ -136,7 +211,7 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 11.
+- Total attempts: 12.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
   structural-lemma layer for inductive proofs (iter 2); generic
@@ -151,7 +226,11 @@ Currently blocked on:
   `lcmRange_eq_prod_prime_powers` (iter 9, #17333);
   prime-counting bound `lcmRange_le_pow_card_primes_le` (iter 10,
   #17369); primeCounting reformulation
-  `lcmRange_le_pow_primeCounting` (iter 11, this PR).
+  `lcmRange_le_pow_primeCounting` (iter 11, #17401);
+  three-fix build unblock — Mathlib drift `Nat.pos_pow_of_pos → Nat.pow_pos`
+  (line 118), `rw [h1]` cascade fix `→ conv_lhs => rw [h1]` (line 262),
+  and `lcmRange_succ` forward-chain re-routing through `dvd_lcmRange`
+  (line 376) — iter 12, this PR; restores build for iters 5–11.
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -160,17 +239,18 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 12 candidate**: state and prove the chain
-`lcmRange n ≤ n ^ Nat.primeCounting n ≤ n ^ n` (the second inequality
-holds for n ≥ 1 because `Nat.primeCounting n ≤ n` — primes ≤ n are
-a subset of {2,...,n} hence at most n - 1 ≤ n in cardinality). This
-makes explicit that Iter 10/11 sharpen `lcmRange_le_self_pow`
-(Part 3 of the file). Mathlib has `Nat.primeCounting_le_card`-adjacent
-lemmas; the bound `Nat.primeCounting n ≤ n` should be a one-line
-corollary of `Finset.card_filter_le` plus the fact that primes ≥ 2
-exclude 0 and 1 from the count.
+**Iteration 13 candidate** (was: iter 12 pre-drift-discovery): state
+and prove the chain `lcmRange n ≤ n ^ Nat.primeCounting n ≤ n ^ n`
+(the second inequality holds for n ≥ 1 because `Nat.primeCounting n ≤ n`
+— primes ≤ n are a subset of {2,...,n} hence at most n - 1 ≤ n in
+cardinality). This makes explicit that Iter 10/11 sharpen
+`lcmRange_le_self_pow` (Part 3 of the file). The bound
+`Nat.primeCounting n ≤ n` should be a short proof from
+`Finset.card_filter_le` plus the fact that primes ≥ 2 exclude 0 and
+1 from the count. Deferred from iter 12 because the build was broken;
+once iter 12 (drift fix) merges, iter 13 can land cleanly.
 
-**Iteration 13 candidate**: connect the prime-counting bound to
+**Iteration 14 candidate**: connect the prime-counting bound to
 asymptotic Chebyshev-style improvements. Mathlib has
 `Nat.primeCounting_eq_card_primes` and Bertrand-derived prime-gap
 bounds; a tighter bound like `lcmRange n ≤ n^{n / log n}` (Chebyshev

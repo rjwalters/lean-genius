@@ -115,7 +115,7 @@ theorem dvd_lcmRange {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
     Hanson-style proof. -/
 theorem pow_dvd_lcmRange {b k n : ℕ} (hb : 0 < b) (hbkn : b ^ k ≤ n) :
     b ^ k ∣ lcmRange n :=
-  dvd_lcmRange (Nat.pos_pow_of_pos k hb) hbkn
+  dvd_lcmRange (Nat.pow_pos hb) hbkn
 
 /-- **Maximal prime-power divisibility**: for any prime `p` and `n ≥ 1`,
     `p ^ ⌊log_p n⌋` divides `lcmRange n`.
@@ -258,7 +258,9 @@ theorem lcmRange_dvd_prod_prime_powers (n : ℕ) :
       have hself := Nat.factorization_prod_pow_eq_self hm_ne
       rw [Finsupp.prod, Nat.support_factorization] at hself
       exact hself.symm
-    rw [h1]
+    -- Rewrite only the LHS `m` — `rw [h1]` would also expand `m` inside
+    -- `m.factorization` on the RHS, leaving an unprovable nested goal.
+    conv_lhs => rw [h1]
     apply Finset.prod_subset hsupp_sub
     intro p _ hp_not
     have h_zero : m.factorization p = 0 := by
@@ -365,15 +367,20 @@ theorem lcmRange_le_pow_primeCounting (n : ℕ) :
 theorem lcmRange_succ (n : ℕ) :
     lcmRange (n + 1) = Nat.lcm (lcmRange n) (n + 1) := by
   apply Nat.dvd_antisymm
-  · unfold lcmRange
+  · -- Forward: every divisor of `lcmRange (n+1)` divides
+    -- `Nat.lcm (lcmRange n) (n+1)`. We route through `dvd_lcmRange`
+    -- rather than `unfold lcmRange + Finset.dvd_lcm` to keep the
+    -- function-shape fully determined and avoid the elaborator
+    -- inferring `(HAdd.hAdd i)` for the lcm-indexing function.
+    show (Finset.range (n + 1)).lcm (· + 1) ∣ Nat.lcm (lcmRange n) (n + 1)
     apply Finset.lcm_dvd
     intro i hi
     have hi_lt : i < n + 1 := Finset.mem_range.mp hi
     by_cases hi_eq : i = n
     · subst hi_eq; exact Nat.dvd_lcm_right _ _
-    · have hi' : i < n := by omega
-      exact dvd_trans (Finset.dvd_lcm (Finset.mem_range.mpr hi'))
-        (Nat.dvd_lcm_left _ _)
+    · have hi' : i + 1 ≤ n := by omega
+      have h_dvd : i + 1 ∣ lcmRange n := dvd_lcmRange (Nat.succ_pos _) hi'
+      exact dvd_trans h_dvd (Nat.dvd_lcm_left _ _)
   · apply Nat.lcm_dvd
     · unfold lcmRange
       apply Finset.lcm_dvd
