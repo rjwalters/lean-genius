@@ -1414,6 +1414,14 @@
       "lastAudited": "2026-05-04T04:00:45Z",
       "result": "clean"
     },
+    "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01": {
+      "auditCount": 1,
+      "issues": [
+        "PR #16819: theoremCount drift 9→7 (def IsPermittedValue + structure IsEastonFunction were counted as theorems); narrative + section summaries realigned"
+      ],
+      "lastAudited": "2026-05-08T00:07:19Z",
+      "result": "issues-fixed"
+    },
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03": {
       "auditCount": 2,
       "issues": [],
