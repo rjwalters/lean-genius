@@ -39,8 +39,15 @@ This file is **Session 2 (write Lean stub)** for the problem. It:
 - [x] E(k) > 0 for k² < 1 (proved via lower bound)
 - [x] complModulus defined; (k')² = 1 − k², k' ≥ 0
 - [x] Symmetric Legendre relation derived from the general form
+- [x] **Session 4 (ACT)**: infrastructure for dE/dk:
+      `dIntegrandE`, pointwise chain rule `integrandE_hasDerivAt_in_k`,
+      algebraic split `dIntegrandE_mul_k`, and integral identity
+      `integral_dIntegrandE_eq` (yielding ∫₀^{π/2} ∂_k F dθ = (E−K)/k for 0 < k < 1).
 - [ ] General Legendre relation: axiomatized (deep — proof requires Mathlib
       derivative-under-the-integral plus Legendre ODE Wronskian; future session)
+- [ ] Session 5: assemble `dE_dk : HasDerivAt ellipticE ((E−K)/k) k` by applying
+      `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` to the
+      Session-4 infrastructure (bound construction + integrability of the bound).
 
 ## File Inventory
 
@@ -139,11 +146,15 @@ theorem ellipticE_pos (hk : k ^ 2 < 1) : 0 < ellipticE k := by
       (f := fun _ => Real.sqrt (1 - k ^ 2))
       (g := ellipticIntegrandE k)
       (le_of_lt hπ)
-      (intervalIntegrable_const)
+      ((continuous_const :
+        Continuous (fun _ : ℝ => Real.sqrt (1 - k ^ 2))).intervalIntegrable 0 (π / 2))
       (ellipticE_integrable k)
       (fun θ _ => integrandE_lower_bound hk θ)
-    simpa [ellipticE, intervalIntegral.integral_const, smul_eq_mul,
-      sub_zero] using this
+    have h_int : (π / 2 - 0) * Real.sqrt (1 - k ^ 2) ≤ ellipticE k := by
+      simpa [ellipticE, intervalIntegral.integral_const, smul_eq_mul] using this
+    have : (π / 2 - 0) * Real.sqrt (1 - k ^ 2)
+        = Real.sqrt (1 - k ^ 2) * (π / 2 - 0) := by ring
+    linarith [this, h_int]
   have hpos : 0 < Real.sqrt (1 - k ^ 2) * (π / 2 - 0) := by
     have : 0 < Real.sqrt (1 - k ^ 2) * (π / 2) := mul_pos hsqrt_pos hπ
     simpa [sub_zero] using this
@@ -312,5 +323,151 @@ theorem legendre_relation_symmetric :
   -- h : E(k₀)·K(k₀) + E(k₀)·K(k₀) − K(k₀)·K(k₀) = π/2  where k₀ = 1/√2
   -- goal : 2·K(k₀)·E(k₀) − K(k₀)² = π/2
   linear_combination h
+
+-- ============================================================================
+-- § 8. Partial Derivative ∂_k F_E and the Integral Identity ∫ ∂_k F = (E−K)/k
+-- (Infrastructure for `dE_dk`; see session report S4.)
+-- ============================================================================
+
+/-
+The Legendre-relation programme requires `dE/dk = (E − K)/k`, proved by
+differentiation under the integral sign via
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`. This
+section provides the gallery-side ingredients that feed that lemma:
+
+1. `dIntegrandE`: the partial derivative `∂_k F_E = −k sin²θ / √(1 − k² sin²θ)`.
+2. `dIntegrandE_continuous`, `dIntegrandE_integrable`: regularity for `k² < 1`.
+3. `integrandE_hasDerivAt_in_k`: the pointwise chain-rule fact that, for fixed
+   θ and `k² < 1`, `κ ↦ √(1 − κ² sin²θ)` has derivative `dIntegrandE k θ` at `k`
+   (one of the seven hypotheses of the Mathlib lemma).
+4. `dIntegrandE_mul_k`: the algebraic identity
+   `k · dIntegrandE k θ = ellipticIntegrandE k θ − ellipticIntegrand k θ`,
+   the core split that converts `∫ ∂_k F` to `(E − K)/k`.
+5. `integral_dIntegrandE_eq`: the integral identity itself.
+
+Session 5 will combine (2)–(5) with a uniform bound to invoke the Mathlib lemma
+and conclude `HasDerivAt ellipticE ((ellipticE k − ellipticK k)/k) k`.
+-/
+
+/-- The partial derivative of the E-integrand with respect to k:
+    `∂/∂k √(1 − k² sin²θ) = −k sin²θ / √(1 − k² sin²θ)`. -/
+noncomputable def dIntegrandE (k θ : ℝ) : ℝ :=
+  -(k * Real.sin θ ^ 2) / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+
+/-- For `k² < 1` the partial-derivative integrand is continuous in θ. -/
+lemma dIntegrandE_continuous (hk : k ^ 2 < 1) :
+    Continuous (dIntegrandE k) := by
+  unfold dIntegrandE
+  refine Continuous.div₀ ?_ ?_ ?_
+  · -- numerator: −(k · sin²θ)
+    exact ((continuous_const.mul (continuous_sin.pow 2)).neg)
+  · -- denominator: √(1 − k² sin²θ)
+    refine Real.continuous_sqrt.comp ?_
+    refine Continuous.sub continuous_const ?_
+    exact (continuous_const.mul (continuous_sin.pow 2))
+  · intro θ
+    exact (AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ).ne'
+
+/-- For `k² < 1` the partial-derivative integrand is interval-integrable
+    on `[0, π/2]`. -/
+lemma dIntegrandE_integrable (hk : k ^ 2 < 1) :
+    IntervalIntegrable (dIntegrandE k) MeasureTheory.volume 0 (π / 2) :=
+  (dIntegrandE_continuous hk).intervalIntegrable 0 (π / 2)
+
+/-- **Pointwise chain rule** (one of the 7 hypotheses for the Mathlib
+    differentiation-under-the-integral lemma).
+
+    For fixed θ and `k² < 1`, the map `κ ↦ √(1 − κ² sin²θ)` has derivative
+    `−k sin²θ / √(1 − k² sin²θ) = dIntegrandE k θ` at `k`. -/
+lemma integrandE_hasDerivAt_in_k (hk : k ^ 2 < 1) (θ : ℝ) :
+    HasDerivAt (fun κ : ℝ => ellipticIntegrandE κ θ) (dIntegrandE k θ) k := by
+  have h_pos : (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 :=
+    (AmgmInequalityOQ04OQ01.denom_pos hk θ).ne'
+  have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 :=
+    (AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ).ne'
+  -- Inner function f(κ) = 1 − κ² sin²θ has derivative f'(κ) = −2 κ sin²θ.
+  have h_inner : HasDerivAt (fun κ : ℝ => 1 - κ ^ 2 * Real.sin θ ^ 2)
+      (-(2 * k * Real.sin θ ^ 2)) k := by
+    have h_pow' : HasDerivAt (fun κ : ℝ => κ ^ 2) (2 * k) k := by
+      simpa using hasDerivAt_pow 2 k
+    have h_mul : HasDerivAt (fun κ : ℝ => κ ^ 2 * Real.sin θ ^ 2)
+        (2 * k * Real.sin θ ^ 2) k := h_pow'.mul_const _
+    have h_sub : HasDerivAt (fun κ : ℝ => 1 - κ ^ 2 * Real.sin θ ^ 2)
+        (0 - 2 * k * Real.sin θ ^ 2) k :=
+      (hasDerivAt_const k (1 : ℝ)).sub h_mul
+    simpa using h_sub
+  -- Chain rule for sqrt: HasDerivAt.sqrt requires `f x ≠ 0`.
+  have h_sqrt := h_inner.sqrt h_pos
+  -- h_sqrt : HasDerivAt (fun κ => √(1 − κ²·sin²θ))
+  --                     (−(2 k sin²θ) / (2·√(1 − k²·sin²θ))) k
+  -- Goal after unfolding `ellipticIntegrandE`: same function arg as h_sqrt.
+  show HasDerivAt (fun κ : ℝ => Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2))
+        (dIntegrandE k θ) k
+  -- Reduce the deriv expression to match h_sqrt's deriv.
+  have h_eq_deriv : -(2 * k * Real.sin θ ^ 2)
+        / (2 * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+      = dIntegrandE k θ := by
+    unfold dIntegrandE
+    field_simp
+  rw [← h_eq_deriv]
+  exact h_sqrt
+
+/-- **Algebraic split** (the core of the integral identity).
+
+    For `k² < 1`,
+    `k · dIntegrandE k θ = ellipticIntegrandE k θ − ellipticIntegrand k θ`,
+    where `ellipticIntegrand k θ = 1/√(1 − k² sin²θ)` is the K-integrand and
+    `ellipticIntegrandE k θ = √(1 − k² sin²θ)` is the E-integrand.
+
+    Proof: using `s² = 1 − k² sin²θ` (where `s := √(1 − k² sin²θ) > 0`),
+    multiplying both sides by `s` gives `−k² sin²θ = s² − 1`, which is exactly
+    the Pythagorean identity `s² = 1 − k² sin²θ` rearranged. -/
+lemma dIntegrandE_mul_k (hk : k ^ 2 < 1) (θ : ℝ) :
+    k * dIntegrandE k θ
+      = ellipticIntegrandE k θ - AmgmInequalityOQ04OQ01.ellipticIntegrand k θ := by
+  unfold dIntegrandE ellipticIntegrandE AmgmInequalityOQ04OQ01.ellipticIntegrand
+  have hs_pos : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ
+  have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hs_pos.ne'
+  have hs_sq : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+      * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        = 1 - k ^ 2 * Real.sin θ ^ 2 :=
+    Real.mul_self_sqrt (le_of_lt (AmgmInequalityOQ04OQ01.denom_pos hk θ))
+  field_simp
+  linear_combination -hs_sq
+
+/-- **Integral identity for `dE/dk`** (the post-application target).
+
+    For `0 < k < 1`,
+    `∫₀^{π/2} dIntegrandE k θ dθ = (ellipticE k − ellipticK k) / k`.
+
+    This is the form that the conclusion of
+    `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` must be
+    rewritten into — once the lemma gives
+    `HasDerivAt ellipticE (∫ dIntegrandE k θ dθ) k`, applying this identity
+    yields the stated `dE/dk` formula. -/
+theorem integral_dIntegrandE_eq (hk_pos : 0 < k) (hk_lt : k < 1) :
+    ∫ θ in (0 : ℝ)..π / 2, dIntegrandE k θ
+      = (ellipticE k - ellipticK k) / k := by
+  have hk_sq : k ^ 2 < 1 := by nlinarith
+  have hk_ne : k ≠ 0 := ne_of_gt hk_pos
+  -- Pointwise: dIntegrandE k θ = (E_int − K_int) / k.
+  have h_eq : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      dIntegrandE k θ
+        = (ellipticIntegrandE k θ
+            - AmgmInequalityOQ04OQ01.ellipticIntegrand k θ) / k := by
+    intro θ _
+    have h_mul : k * dIntegrandE k θ
+        = ellipticIntegrandE k θ
+          - AmgmInequalityOQ04OQ01.ellipticIntegrand k θ :=
+      dIntegrandE_mul_k hk_sq θ
+    field_simp
+    linear_combination h_mul
+  rw [intervalIntegral.integral_congr h_eq]
+  rw [intervalIntegral.integral_div]
+  congr 1
+  rw [intervalIntegral.integral_sub (ellipticE_integrable k)
+        (AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq)]
+  rfl
 
 end AmgmInequalityOQ04OQ02

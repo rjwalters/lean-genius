@@ -25,19 +25,15 @@
     "goal": "Prove `legendre_relation : ∀ k ∈ Set.Ioo (0:ℝ) 1, E k * K' k + E' k * K k - K k * K' k = π / 2` (or equivalent phrasing) given suitable Lean definitions of `K`, `E` over `Set.Ioo (-1) 1`."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-08T07:50:00Z",
-    "iteration": 3,
-    "focus": "S3 SURVEY: pinned down the exact Mathlib lemma to use for differentiation-under-the-integral: intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le in Mathlib/Analysis/Calculus/ParametricIntervalIntegral.lean. The dominated-bound form fits because both the E and K integrands and their k-derivatives admit straightforward uniform bounds on any compact subinterval [k0-delta, k0+delta] subset (0,1). Session 4 (ACT) implements dE_dk: HasDerivAt ellipticE ((ellipticE k - ellipticK k)/k) k via this lemma, with the algebraic identity -k^2 sin^2 theta = (1 - k^2 sin^2 theta) - 1 to convert the resulting integral to (E-K)/k. Estimated 75-100 lines.",
-    "blockers": [
-      "(NOT a Mathlib gap — RESOLVED by S3 survey) Mathlib HAS differentiation-under-the-integral via intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le. Plumbing to ellipticK/ellipticE is gallery-side, ~75-100 lines per derivative.",
-      "Need explicit derivatives dK/dk = (E - k'^2 K)/(k k'^2) and dE/dk = (E - K)/k as Lean lemmas — gallery-side ACT work, no Mathlib gap.",
-      "Legendre's second-order ODE for K is NOT needed: the Wronskian closure uses only first derivatives + eq_of_hasDerivAt_eq_zero (Mathlib MVT corollary)."
-    ],
-    "nextAction": "Session 4 (ACT): implement dE_dk in Proofs/AmgmInequalityOQ04OQ02.lean via the lemma pinned in S3. Target signature: theorem dE_dk (k : R) (hk_pos : 0 < k) (hk_lt : k < 1) : HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k. Estimated ~75-100 lines. See research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-05-08-s03-mathlib-survey.md for the full hypothesis-by-hypothesis plan.",
+    "phase": "ACT",
+    "since": "2026-05-08T17:05:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT: added the chain-rule + algebraic-split + integral-identity infrastructure for dE/dk in proofs/Proofs/AmgmInequalityOQ04OQ02.lean (new section 8). Five new declarations: dIntegrandE (def: -k sin^2 theta / sqrt(...)), dIntegrandE_continuous, dIntegrandE_integrable, integrandE_hasDerivAt_in_k (the pointwise chain rule via HasDerivAt.sqrt), dIntegrandE_mul_k (algebraic split k * dIntegrandE = E_int - K_int), integral_dIntegrandE_eq (integral identity: int dIntegrandE = (E - K)/k for 0 < k < 1). With these in place the parametric-integral lemma's conclusion can be rewritten directly to the dE/dk form. ~+148 lines, 0 sorries, 0 axioms added; legendre_relation axiom unchanged. Build verification pending. Next session (S5) discharges the bound construction (h_bound, bound_integrable) and applies intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le.",
+    "blockers": [],
+    "nextAction": "Session 5 (ACT): assemble dE_dk in proofs/Proofs/AmgmInequalityOQ04OQ02.lean via intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le. With S4 infrastructure in place, the remaining work is: (1) choose delta = (1 - k)/2 and Metric.ball k delta; (2) define bound theta = (k + delta) sin^2 theta / sqrt(1 - (k+delta)^2 sin^2 theta); (3) discharge the 7 hypotheses (the chain-rule one is just integrandE_hasDerivAt_in_k); (4) rewrite the integral conclusion via integral_dIntegrandE_eq. Estimated 50-80 lines.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
