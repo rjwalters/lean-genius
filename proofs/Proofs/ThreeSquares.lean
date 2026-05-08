@@ -639,34 +639,48 @@ theorem dirichletEllipsoid_symmetric (d : ℕ) (R : ℝ) :
   simp only [Pi.neg_apply, neg_sq]
   exact hx
 
-/-- **Axiom: Volume of the Dirichlet ellipsoid**: (4π/3) · R^(3/2) / √d.
+/-- **Axiom: Volume of the Dirichlet ellipsoid**: (4π/3) · R^(3/2) / d.
 
 For the standard ellipsoid x²/a² + y²/b² + z²/c² ≤ 1, the volume is (4π/3)abc.
-Our ellipsoid x² + dy² + dz² ≤ R has a = √R, b = c = √(R/d).
-So volume = (4π/3) · √R · √(R/d) · √(R/d) = (4π/3) · R^(3/2) / √d.
+Our ellipsoid `dirichletEllipsoid d R = {v : v₀² + d v₁² + d v₂² ≤ R}` has
+semi-axes `a = √R`, `b = c = √(R/d)`. So
+  volume = (4π/3) · √R · √(R/d) · √(R/d)
+         = (4π/3) · √R · (R/d)
+         = (4π/3) · R^(3/2) / d.
+
+The denominator is `d`, NOT `√d`. (A prior version of this axiom incorrectly
+used `Real.sqrt d`, off by a factor of √d. Verified 2026-05-08 against the
+standard ellipsoid volume formula and a worked-out instance d = 1, R = 1
+where vol(unit ball in ℝ³) = 4π/3 = (4π/3) · 1^(3/2) / 1.)
 
 **Proof status**: This is a standard calculus result. A full Lean proof would require:
 - Defining the ellipsoid as a measurable set
 - Computing its volume via an integral or linear transformation from the unit ball
-- Using MeasureTheory.volume_ball and affine transformation formulas
+- Using `EuclideanSpace.volume_ball` and `MeasureTheory.Measure.addHaar_image_smul`
 
-Mathlib has `MeasureTheory.Complex.volume_ball` for circles in ℂ, but not yet
-the general n-dimensional ellipsoid volume formula. -/
+Concrete strategy: define `T : (Fin 3 → ℝ) →ₗ[ℝ] (Fin 3 → ℝ)` by `T v 0 = √R · v 0`,
+`T v 1 = √(R/d) · v 1`, `T v 2 = √(R/d) · v 2`. Then `dirichletEllipsoid d R = T '' B(0,1)`.
+The Jacobian is `det T = √R · √(R/d) · √(R/d) = R^(3/2) / d`, and Mathlib's
+`MeasureTheory.Measure.addHaar_image_linearMap` gives the volume formula. -/
 axiom dirichletEllipsoid_volume (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
-    MeasureTheory.volume (dirichletEllipsoid d R) = ENNReal.ofReal ((4 * Real.pi / 3) * R ^ (3/2 : ℝ) / Real.sqrt d)
+    MeasureTheory.volume (dirichletEllipsoid d R) =
+      ENNReal.ofReal ((4 * Real.pi / 3) * R ^ (3/2 : ℝ) / d)
 
 /-- **Axiom: Minkowski Application**: When the ellipsoid is large enough, it contains a nonzero integer point.
 
 By Minkowski's convex body theorem, if vol(E) > 2³ · covolume(ℤ³) = 8, then E ∩ ℤ³ ≠ {0}.
 
-For the Dirichlet ellipsoid with vol = (4π/3) · R^(3/2) / √d, the condition 8 < vol gives:
-  R^(3/2) > 6√d / π  ⟺  R > (6√d / π)^(2/3)
+For the Dirichlet ellipsoid with vol = (4π/3) · R^(3/2) / d, the condition 8 < vol gives:
+  R^(3/2) > 6 d / π  ⟺  R > (6 d / π)^(2/3)
 
 The key role this plays:
 - Given n and d with p = dn - 1 prime and -d a QR mod p
 - Choose R appropriately (using n and d) so that volume > 8
 - Minkowski gives integer point (x, y, z) ≠ 0 in ellipsoid
 - The quadratic residue condition allows extracting n = x² + y² + z²
+
+(Threshold corrected 2026-05-08 from `/ √d` to `/ d` to match the corrected
+`dirichletEllipsoid_volume` formula.)
 
 **Proof status**: This follows from Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`
 in `MeasureTheory.Group.GeometryOfNumbers`, applied to:
@@ -682,7 +696,7 @@ The setup requires:
 
 This is mechanical but requires ~100 lines of infrastructure. -/
 axiom minkowski_ellipsoid_has_lattice_point (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R)
-    (hvol : 8 < (4 * Real.pi / 3) * R ^ (3/2 : ℝ) / Real.sqrt d) :
+    (hvol : 8 < (4 * Real.pi / 3) * R ^ (3/2 : ℝ) / d) :
     ∃ v : Fin 3 → ℤ, v ≠ 0 ∧ (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 ≤ R
 
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.

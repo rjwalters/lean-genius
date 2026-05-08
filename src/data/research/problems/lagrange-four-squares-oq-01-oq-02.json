@@ -39,25 +39,28 @@
     "goal": "Formalize the full iff-statement `legendre_three_squares` (ThreeSquares.lean:706) axiom-free. The theorem statement already exists; its forward direction is a real proof and its backward direction unfolds to `not_excluded_form_is_sum_three_sq`, the sufficiency axiom."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-08",
-    "iteration": 2,
-    "focus": "S1 (2026-05-08, researcher-8): inventory of `ThreeSquares.lean` (913 lines, 4 sufficiency axioms + 3 secondary r₃-formula axioms), mapping to Mathlib infrastructure (`MeasureTheory.Group.GeometryOfNumbers`, `LSeries.PrimesInAP`, `Zsqrtd.Basic`), and identification of the four-step axiom-elimination sequence.",
+    "phase": "ORIENT",
+    "since": "2026-05-08T03:30:00.000Z",
+    "iteration": 3,
+    "focus": "S3 (2026-05-08, researcher-3): **CORRECTED a wrong volume formula** in two existing axioms. `dirichletEllipsoid_volume` previously claimed vol = (4π/3) · R^(3/2) / √d; correct value is (4π/3) · R^(3/2) / d (off by factor √d). Same correction applied to `minkowski_ellipsoid_has_lattice_point` threshold. Axiom statements remain (still not proved) but now mathematically correct. Verified via standard ellipsoid volume formula V = (4π/3)abc with a = √R, b = c = √(R/d).",
     "blockers": [
       "Mathlib has Minkowski's theorem (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) but no closed-form ellipsoid-volume lemma — must be derived from `MeasureTheory.Measure.addHaar_smul` and `volume_ball` of the unit ball in ℝ³.",
       "Mathlib has Dirichlet's theorem on primes in AP (`Nat.setOf_prime_and_eq_mod_infinite`) but the integer/quadratic-residue compatibility (legendreSym(-d) = 1 for chosen p = dn-1) requires custom case analysis on n mod 8.",
       "The 4-axiom chain interlocks tightly: removing one in isolation does not reduce the assumption count. The minimal unit of progress is the full Minkowski-application argument."
     ],
-    "nextAction": "(Researcher) ACT phase S2: prove `dirichletEllipsoid_volume` axiom-free. Strategy: define the linear isomorphism T : ℝ³ → ℝ³ by T(x,y,z) = (x, √d·y, √d·z); show {v² ≤ R} = T⁻¹(B(0, √R)); use `MeasureTheory.Measure.addHaar_image_smul` and `volume_ball` (Mathlib's `EuclideanSpace.volume_ball`). Estimated 60–100 lines.",
+    "nextAction": "(Researcher) ACT phase S4: prove the (now-correct) `dirichletEllipsoid_volume` axiom. Strategy: define the linear isomorphism T : ℝ³ → ℝ³ via T = diag(√R, √(R/d), √(R/d)); show `dirichletEllipsoid d R = T '' B(0,1)`; use `MeasureTheory.Measure.addHaar_image_linearMap` with `det T = R^(3/2)/d` and `EuclideanSpace.volume_ball`. Estimated 60–100 lines.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (2026-05-08, researcher-8): completed full inventory of existing infrastructure and gap analysis. The `ThreeSquares.lean` file (913 lines, written prior to this session) already contains all the theorem statements, all the prime-case proofs, the lattice infrastructure, and the ellipsoid convexity/symmetry — but routes the existence half of the proof through 4 unproved axioms (`dirichletEllipsoid_volume`, `minkowski_ellipsoid_has_lattice_point`, `dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`). The forward direction (necessity) is independently formalized in `LagrangeFourSquaresOQ04.lean`. Three additional axioms (`gauss_eisenstein_r3`, `general_r3_formula`, `class_number_positive`) at lines 813, 820, 825 are r₃-counting formulas, not part of the iff statement, so they are out of scope for this sub-problem. The minimal axiom-elimination ordering is: (1) ellipsoid volume → (2) Minkowski lattice point → (3) Dirichlet key lemma → (4) sufficiency. Steps 1 and 2 are pure Mathlib plumbing; step 3 is the QR-extraction argument; step 4 is case analysis on n mod 8 plus Dirichlet PrimesInAP.",
+    "progressSummary": "S3 (researcher-3, 2026-05-08, ORIENT): **Corrected wrong volume formula** in `dirichletEllipsoid_volume` and `minkowski_ellipsoid_has_lattice_point` axioms in `ThreeSquares.lean`. Previously stated `(4π/3) · R^(3/2) / √d`; correct value (verified 2026-05-08 via standard ellipsoid volume `V = (4π/3)abc` with `a = √R, b = c = √(R/d)`) is `(4π/3) · R^(3/2) / d` — off by a factor of √d. The `minkowski_ellipsoid_has_lattice_point` threshold was correspondingly wrong (`8 < ... / √d`); fixed to `8 < ... / d`. Both axioms remain unproved but are now mathematically correct, removing a blocker for future axiom-elimination work. Documented the correction in inline docstrings. Prior session (S1) noted the bug in insights[3] but did not commit a fix; S3 closes that loop.\n\nS1 OBSERVE (2026-05-08, researcher-8): completed full inventory of existing infrastructure and gap analysis. The `ThreeSquares.lean` file (913 lines, written prior to this session) already contains all the theorem statements, all the prime-case proofs, the lattice infrastructure, and the ellipsoid convexity/symmetry — but routes the existence half of the proof through 4 unproved axioms (`dirichletEllipsoid_volume`, `minkowski_ellipsoid_has_lattice_point`, `dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`). The forward direction (necessity) is independently formalized in `LagrangeFourSquaresOQ04.lean`. Three additional axioms (`gauss_eisenstein_r3`, `general_r3_formula`, `class_number_positive`) at lines 813, 820, 825 are r₃-counting formulas, not part of the iff statement, so they are out of scope for this sub-problem. The minimal axiom-elimination ordering is: (1) ellipsoid volume → (2) Minkowski lattice point → (3) Dirichlet key lemma → (4) sufficiency. Steps 1 and 2 are pure Mathlib plumbing; step 3 is the QR-extraction argument; step 4 is case analysis on n mod 8 plus Dirichlet PrimesInAP.",
     "builtItems": [
+      "S3 — Fixed `dirichletEllipsoid_volume` axiom: corrected `/ √d` → `/ d` in the formula `(4π/3) · R^(3/2) / d`. Off by a factor of √d.",
+      "S3 — Fixed `minkowski_ellipsoid_has_lattice_point` threshold: `8 < (4π/3) · R^(3/2) / d` (was `/ √d`). Now consistent with the corrected volume formula.",
+      "S3 — Updated docstrings in both axioms to document the correction and provide the verification.",
       "ThreeSquares.IsExcludedForm (ThreeSquares.lean:66): predicate ∃ a b, n = 4^a(8b+7).",
       "ThreeSquares.excluded_form_not_sum_three_sq (ThreeSquares.lean:182): forward direction, axiom-free.",
       "ThreeSquares.legendre_three_squares (ThreeSquares.lean:706): the full iff statement; backward direction routed through `not_excluded_form_is_sum_three_sq` axiom.",
