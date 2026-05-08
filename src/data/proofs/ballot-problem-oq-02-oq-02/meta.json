@@ -84,9 +84,19 @@
   },
   "crossReferences": [
     {
-      "id": "ballot-problem-oq-02",
-      "title": "Ballot Problem OQ-02",
-      "relationship": "The parent file that this proof eliminates an axiom from, providing the csInf-based characterization."
+      "proofId": "ballot-problem-oq-02",
+      "relationship": "parent",
+      "description": "Parent file (Continuous-Time Ballot Problem via Brownian Motion) that originally axiomatized the set equality {ω | τ(ω) ≤ T} = maxEvent. This entry eliminates that axiom by deriving the conditional biconditional fpt_le_iff_maxEvent under the natural nonemptiness hypothesis, exposing why the unconditional set equality is in fact false in Lean's setting (sInf ∅ = 0 makes paths that never hit level a vacuously satisfy τ ≤ T). The csInf-based proof here is the Mathlib-ready replacement."
+    },
+    {
+      "proofId": "intermediate-value-theorem",
+      "relationship": "uses-shared-tool",
+      "description": "The IVT section (lines 137–185) invokes the Intermediate Value Theorem to provide the nonemptiness witness for crossing paths (B(0,ω) < a ≤ B(T,ω) ⇒ ∃s ∈ (0,T], B(s,ω) ≥ a). Without IVT-derived nonemptiness, the csInf characterization would not apply to typical Brownian paths. This is the same IVT used in classical proofs of the reflection principle and the strong Markov property setup."
+    },
+    {
+      "proofId": "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open-question line in the ballot-problem family. Both entries instantiate the broader research program of eliminating axioms in continuous-time ballot/Brownian formalizations by extracting the precise topological hypotheses (closed hitting set, nonemptiness) needed for csInf and order-theoretic arguments to discharge the original assumptions."
     }
   ],
   "leanFile": {
