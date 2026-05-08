@@ -19,7 +19,7 @@
       "dependent-variables"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 6,
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
     "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) \u2014 the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 3 sorries: (1) nested ciSup of zeros = 0 for independent sequences, (2) i.i.d. Lindeberg condition via dominated convergence for truncated moments, (3) i.i.d. Lyapunov condition via rpow moment decay.",
@@ -169,5 +169,5 @@
       "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; sorry: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
     }
   ],
-  "sorries": 3
+  "sorries": 6
 }
