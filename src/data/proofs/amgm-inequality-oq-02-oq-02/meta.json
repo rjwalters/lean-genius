@@ -59,6 +59,36 @@
       "Binomial coefficients"
     ]
   },
+  "references": [
+    {
+      "authors": "Newton, Isaac",
+      "title": "Arithmetica Universalis",
+      "year": "1707",
+      "venue": "Cambridge",
+      "note": "First statement of Newton's inequalities $e_k^2 \\ge e_{k-1} e_{k+1}$ for symmetric functions of the roots of a polynomial. Newton's argument was terse and did not handle all cases."
+    },
+    {
+      "authors": "Maclaurin, Colin",
+      "title": "A Treatise of Algebra",
+      "year": "1748",
+      "venue": "London (posthumous)",
+      "note": "First complete proof of Newton's inequalities, with the extension to the now-named Maclaurin chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ of normalized means. The chain endpoints AM ($M_1$) and GM ($M_n$) make it a classical route to AM-GM."
+    },
+    {
+      "authors": ["Hardy, G. H.", "Littlewood, J. E.", "Pólya, G."],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Canonical 20th-century treatment. Theorem 51 (page 52) states Newton's inequality and Theorem 52 the Maclaurin chain. Chapter II §2.18 connects Newton-Maclaurin to Muirhead's inequalities and Schur-convexity via the Marshall-Olkin majorization order."
+    },
+    {
+      "authors": ["Niculescu, Constantin P.", "Persson, Lars-Erik"],
+      "title": "Convex Functions and Their Applications: A Contemporary Approach",
+      "year": "2018",
+      "venue": "Springer (CMS Books in Mathematics, 2nd ed.)",
+      "note": "Modern textbook reference. Chapter 1 §1.4 derives Newton-Maclaurin via Schur-concavity of $e_k$ on the non-negative orthant. The proof is short (≈ 5 pages) but assumes the majorization theory developed earlier; this gallery entry takes the longer, self-contained route via direct induction."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "amgm-inequality-oq-02",

@@ -1,5 +1,30 @@
 [
   {
+    "id": "amgm-oq02-oq02-part-i-structure",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 40,
+      "endLine": 153
+    },
+    "title": "Part I: Zero-Tail Property and Cross-Product Lemma",
+    "content": "Two structural lemmas the rest of the file relies on:\n\n• **`elemSymm_zero_implies_higher_zero` (L44)**: For non-negative inputs, if $e_j(x) = 0$ then $e_k(x) = 0$ for all $k \\ge j$. Intuition: in the non-negative orthant, $e_j(x) = 0$ forces enough of the $x_i$ to be zero that no $k$-element product (for $k \\ge j$) can be non-zero. Without the non-negativity hypothesis this fails: signed inputs can give $e_j = 0$ via cancellation while $e_{j+1} \\ne 0$. The lemma is essential for the cleared-denominator step where the case $e_{k-1} = 0$ must be handled.\n\n• **`normESym_*` (L82–110)**: Helper lemmas for the *normalized* elementary symmetric polynomial $a_k = e_k / \\binom{n}{k}$ (used later in `newton_log_concavity_proved`): non-negativity, equal-zero iff, zero-tail extension. These wrap the unnormalized lemmas with the binomial-coefficient denominators.\n\n• **`cross_product_of_log_concave` (L124)**: A pure algebraic lemma — given $a, b, c, d \\ge 0$ with $a \\cdot d \\ge b \\cdot c$ (or vice versa), drives a chain of cross-product inequalities. Used in the inductive step of `elemSymm_log_concave` to combine the IH at degree $k$ ($a_k^2 \\ge a_{k-1} a_{k+1}$) with the IH at degree $k-1$ ($a_{k-1}^2 \\ge a_{k-2} a_k$) into the new inequality $b_k^2 \\ge b_{k-1} b_{k+1}$.\n\n• **`elemSymm_zero_castSucc` (L156, private)**: Trivial special case of the recurrence at $k = 0$, used as a `simp` rewrite during the induction.",
+    "significance": "supporting",
+    "mathContext": "**Zero-tail**: $\\forall x \\ge 0$, $e_j(x) = 0 \\Rightarrow \\forall k \\ge j$, $e_k(x) = 0$. Equivalent to: the *zero count* $\\#\\{i : x_i = 0\\}$ determines the highest non-zero $e_k$. **Cross-product**: $a, b, c, d \\ge 0$ and $ad \\ge bc \\Rightarrow$ algebraic consequences for the products $a^2 + d^2$ vs $b^2 + c^2$ etc, used to combine two log-concavity inequalities at different degrees. The cross-product lemma is the algebraic 'glue' that makes the induction step go through without case-splitting on whether the smaller binomial dominates the larger.",
+    "relatedConcepts": [
+      "zero-tail property",
+      "elementary symmetric polynomial",
+      "log-concavity at degree k vs k-1",
+      "cross-product inequality",
+      "Newton-Girard recurrence base case"
+    ],
+    "prerequisites": [
+      "elementary symmetric polynomials",
+      "non-negativity of products",
+      "induction on n"
+    ]
+  },
+  {
     "id": "amgm-oq02-oq02-unnormalized-newton",
     "proofId": "amgm-inequality-oq-02-oq-02",
     "type": "theorem",
