@@ -2,12 +2,63 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 19 part 3, researcher-8)
-**Iteration**: 19
+**Last Updated**: 2026-05-08 (Iteration 20, researcher-3)
+**Iteration**: 20
 
 ## Current Focus
 
-Session 19 part 3 (this session, build pending): Added the
+Session 20 (PR #17426, build pending): Introduced the
+**saturating-diagonal base set** `satDiagBases N` and its core
+structural results, completing the **count side** of the future
+`_hLastFace` ↔ `face2_path_odd` bijection.
+
+The `_hLastFace` slot of `Triangulation.boundary_doors_odd` counts
+boundary doors `(s, k)` whose remaining vertices all lie on
+geometric face 2 (`b.1+b.2 = N`). By S18.1 + S18.5, these arise
+**only** from saturating-diagonal t1 cells (t2 contributes no
+boundary doors per S18.2; horizontal/vertical t1 boundaries are on
+face 1 / 0 per S18.5). So the cell side of the count is exactly
+`|satDiagBases N| = N`.
+
+New private definitions/lemmas in a new `N2LastFaceBases` section
+appended to `SpernerFreudSimp` (152 lines added to
+`SpernerFreudenthalSimplex.lean`):
+
+* `satDiagBases N : Finset (ℕ × ℕ)` —
+  `(t1Bases N).filter (fun b => b.1 + b.2 + 1 = N)`
+* `satDiagBases_mem_iff` — clean form combining `t1Bases_mem_iff`
+  with the saturating condition.
+* `satDiagBases_subset_t1Bases` — subset relation.
+* `satDiagBases_image_map_injOn` — `k ↦ (k, N-1-k)` injective on
+  `Finset.range N`.
+* `satDiagBases_eq_image_range` — explicit parametrization with
+  `(Finset.range N).image (fun k => (k, N-1-k))`.
+* `satDiagBases_card` — cardinality = N. Matches the
+  `Finset.range N` index set in `face2_path_odd`.
+* `satDiagBases_endpoints_in_range` — diagonal endpoints
+  `(b.1, b.2+1)` and `(b.1+1, b.2)` are in the in-range region
+  `v.1+v.2 ≤ N`.
+* `satDiagBases_endpoints_on_face2` — diagonal endpoints both
+  satisfy `onFaceΔ2_strict N · (2 : Fin 3)`. Exactly the
+  per-vertex content of `_hLastFace`'s condition (3) for the
+  diagonal-cell case.
+* `satDiagBases_t1_in_topSimps2` — convenience alias for feeding
+  saturating-diagonal cells through `Triangulation` consumers.
+
+S20 establishes a clean reusable foundation for S21+ rather than
+attempting the full `_hLastFace` discharge in one commit. Keeping
+the iterative-PR cadence small reduces merge-conflict risk and
+keeps any build regressions narrow.
+
+**S21 (next):** Pin down the matching `vertexEnum` index `k` (via
+the S19.3 case-split pattern on `vertexEnum (t1 b) hS k ∈ t1 b`);
+bridge `IsDoor c (T.toCellComplex) (t1 b) k` to `face2_path_odd`'s
+color-change predicate `g k ≠ g (k+1)`; assemble the `_hLastFace`
+discharge for `simData2 N`. Estimated ~80–100 lines.
+
+## Previous Focus
+
+Session 19 part 3 (PR #17363, merged): Added the
 **concrete `_hBoundaryOnFace_simData2` discharge** plus a
 "two-distinct-containers ⇒ card ≥ 2" helper. This is the actual
 consumer of S16–S19's combinatorial infrastructure: given any
