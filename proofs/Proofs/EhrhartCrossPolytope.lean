@@ -353,6 +353,120 @@ private lemma cweight_translate (n M a : ℕ) (hM : M ≤ n)
     rw [if_neg (not_le.mpr h), if_neg (by push_neg; omega)]
     omega
 
+/-- If the sum of centered weights at center `n` is at most `M`, then each
+    individual term is at most `M`. (Each summand is non-negative.) -/
+private lemma cweight_sum_individual {d n M : ℕ}
+    (y : Fin d → Fin (2 * n + 1))
+    (hsum : ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M)
+    (j : Fin d) :
+    (if (y j).val ≤ n then n - (y j).val else (y j).val - n) ≤ M :=
+  (Finset.single_le_sum
+    (f := fun i => if (y i).val ≤ n then n - (y i).val else (y i).val - n)
+    (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)).trans hsum
+
+/-- Range corollary: a sum-of-cweights bound at center `n` with budget `M ≤ n`
+    forces each `(y j).val` into the interval `[n - M, n + M]`. -/
+private lemma cweight_sum_range {d n M : ℕ} (hM : M ≤ n)
+    (y : Fin d → Fin (2 * n + 1))
+    (hsum : ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M)
+    (j : Fin d) :
+    n - M ≤ (y j).val ∧ (y j).val ≤ n + M :=
+  (cweight_le_iff n (y j).val M).mp (cweight_sum_individual y hsum j)
+
+/-- **Fiber bijection**: when `M ≤ n`, the set of `y : Fin d → Fin (2n+1)` whose
+    centered-weight sum at `n` is at most `M` is in bijection with `crossBall d M`,
+    via the translation `yᵢ ↦ ⟨(yᵢ).val - (n - M), _⟩`.
+
+    This is the key counting lemma for the slicing decomposition: each fiber of
+    `crossBall (d+1) n` over the last coordinate is in bijection with `crossBall d M`
+    for the appropriate `M`. -/
+private lemma fiber_card_eq_crossBall_card (d n M : ℕ) (hM : M ≤ n) :
+    (Finset.univ.filter
+      fun y : Fin d → Fin (2 * n + 1) =>
+        ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M).card =
+    (crossBall d M).card := by
+  apply Finset.card_bij'
+    -- Forward: y ↦ z where z idx := (y idx).val - (n - M).
+    (fun y hy idx =>
+      ⟨(y idx).val - (n - M), by
+        have hsum :
+            ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M := by
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hy
+          exact hy
+        obtain ⟨h_lo, h_hi⟩ := cweight_sum_range hM y hsum idx
+        omega⟩)
+    -- Backward: z ↦ y' where y' idx := (z idx).val + (n - M).
+    (fun z _ idx =>
+      ⟨(z idx).val + (n - M), by
+        have hcoord : (z idx).val < 2 * M + 1 := (z idx).is_lt
+        omega⟩)
+    -- (1) Forward image lies in `crossBall d M`.
+    (by
+      intro y hy
+      have hsum :
+          ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M := by
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hy
+        exact hy
+      simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and]
+      have heq :
+          ∑ i, (if ((y i).val - (n - M)) ≤ M
+                  then M - ((y i).val - (n - M))
+                  else ((y i).val - (n - M)) - M) =
+          ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) := by
+        apply Finset.sum_congr rfl
+        intro i _
+        obtain ⟨h_lo, h_hi⟩ := cweight_sum_range hM y hsum i
+        exact (cweight_translate n M (y i).val hM h_lo h_hi).symm
+      show ∑ i, (if ((y i).val - (n - M)) ≤ M
+                  then M - ((y i).val - (n - M))
+                  else ((y i).val - (n - M)) - M) ≤ M
+      rw [heq]; exact hsum)
+    -- (2) Backward image lies in the filter set.
+    (by
+      intro z hz
+      have hzsum :
+          ∑ i, (if (z i).val ≤ M then M - (z i).val else (z i).val - M) ≤ M := by
+        simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and] at hz
+        exact hz
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      have heq :
+          ∑ i, (if ((z i).val + (n - M)) ≤ n
+                  then n - ((z i).val + (n - M))
+                  else ((z i).val + (n - M)) - n) =
+          ∑ i, (if (z i).val ≤ M then M - (z i).val else (z i).val - M) := by
+        apply Finset.sum_congr rfl
+        intro i _
+        have h_lo : n - M ≤ (z i).val + (n - M) := Nat.le_add_left _ _
+        have h_hi : (z i).val + (n - M) ≤ n + M := by
+          have hzlt : (z i).val < 2 * M + 1 := (z i).is_lt
+          omega
+        have hstep := cweight_translate n M ((z i).val + (n - M)) hM h_lo h_hi
+        have hsubadd : (z i).val + (n - M) - (n - M) = (z i).val := by omega
+        rw [hstep, hsubadd]
+      show ∑ i, (if ((z i).val + (n - M)) ≤ n
+                  then n - ((z i).val + (n - M))
+                  else ((z i).val + (n - M)) - n) ≤ M
+      rw [heq]; exact hzsum)
+    -- (3) Left inverse: backward ∘ forward = id.
+    (by
+      intro y hy
+      have hsum :
+          ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M := by
+        simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hy
+        exact hy
+      funext idx
+      apply Fin.ext
+      show (y idx).val - (n - M) + (n - M) = (y idx).val
+      obtain ⟨h_lo, _⟩ := cweight_sum_range hM y hsum idx
+      omega)
+    -- (4) Right inverse: forward ∘ backward = id.
+    (by
+      intro z _
+      funext idx
+      apply Fin.ext
+      show (z idx).val + (n - M) - (n - M) = (z idx).val
+      omega)
+
 /-- **Main geometric theorem**: the cross-polytope lattice count equals crossEhrhart d n.
 
     Proof sketch (induction on d):
@@ -363,11 +477,13 @@ private lemma cweight_translate (n M a : ℕ) (hM : M ≤ n)
       Pairing j ↔ 2n−j: total card = (crossBall d n).card + 2·Σ_{m<n} (crossBall d m).card.
       By IH (`generalizing n`) and `crossEhrhart_succ_d`, equals `crossEhrhart (d+1) n`.
 
-    Status: weight helpers in place (`cweight_le_iff`, `cweight_translate`).
-    Remaining: (1) fiber bijection helper using `Finset.card_bij` with the
-    map `yᵢ ↦ yᵢ - (n - M)`; (2) slicing via `Finset.card_eq_sum_card_fiberwise`
-    over the last-coordinate projection; (3) j↔(2n−j) pairing to fold the sum
-    into the form of `crossEhrhart_succ_d`'s RHS. -/
+    Status: weight helpers + fiber bijection in place
+    (`cweight_le_iff`, `cweight_translate`, `cweight_sum_individual`,
+    `cweight_sum_range`, `fiber_card_eq_crossBall_card`).
+    Remaining: (1) project `crossBall (d+1) n` onto the last coordinate via
+    `Finset.card_eq_sum_card_fiberwise` and identify each fiber with the
+    filter-set used by `fiber_card_eq_crossBall_card`; (2) j↔(2n−j) pairing
+    to fold the resulting sum into `crossEhrhart_succ_d`'s RHS. -/
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
   induction d with
   | zero =>
