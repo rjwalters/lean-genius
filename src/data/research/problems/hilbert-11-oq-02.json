@@ -42,18 +42,18 @@
   "currentState": {
     "phase": "ITERATING",
     "since": "2026-05-08T08:30:00Z",
-    "iteration": 3,
-    "focus": "Iteration 3 (Hensel-elimination roadmap): added Section 8 to `Proofs/Hilbert11OQ02.lean` (264 → 328 lines, no new declarations) cataloguing the explicit Hensel-lift recipe for `selmer_padic_solubility` prime by prime. Splits primes by residue class mod 3 (Case A: p ≡ 2 mod 3 — cubing bijective, (0,1,z) projection works; Case B: p ≡ 1 mod 3, p ≥ 7 — Hasse-Weil guarantees smooth zeros, alternative projections work) and treats p ∈ {2, 3, 5} separately (p = 3 has singular reduction requiring strong-form Hensel mod 27). Concrete witnesses given for p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}. meta.json line counts and sections updated.",
+    "iteration": 6,
+    "focus": "Iteration 6 (parametric Case-A Hensel lift): added Section 13 to Proofs/Hilbert11OQ02.lean (551 → 699 lines, +1 parametric theorem, +3 per-prime corollaries, +1 definition, +3 primality instances). Theorem `selmer_padic_solubility_caseA` generalizes the Section 11 (PR #17070) prime-specific Hensel argument for p = 11 to every Case-A prime (p ≡ 2 mod 3, p ∉ {2, 5}). The polynomial g(z) = 5z³ + 4 is the same for every prime; only the witness z₀ and the divisibility data change. Three corollaries dispatch p ∈ {17, 23, 29} as one-line invocations with `by decide` on the witness arithmetic. Combined with Section 11, all four Case-A primes from Section 9 (p ∈ {11, 17, 23, 29}) now admit axiom-free ℚ_[p]-solubility proofs. The universal axiom `selmer_padic_solubility` is unchanged — Case B primes and the special primes p ∈ {2, 3, 5} remain to be discharged.",
     "blockers": [],
-    "nextAction": "Iteration 4: split `selmer_padic_solubility` into per-case lemmas `selmer_padic_solubility_eq2_mod3 (p ≡ 2 mod 3)`, `selmer_padic_solubility_eq1_mod3 (p ≡ 1 mod 3, p ≥ 7)`, and three concrete cases for p ∈ {2, 3, 5}. Discharge Case A first since the cube-residue argument is purely formal and Mathlib's Hensel infrastructure for ℚ_p suffices. The witnesses in Section 8 (p = 11 → z₀ = 2; p = 17 → z₀ = 5; etc.) provide explicit lift starting points.",
+    "nextAction": "Iteration 7: parametric Case-B theorem analogous to selmer_padic_solubility_caseA, adapted to the (1, y, z) or (x, y, 0) projections used in Section 9 for primes p ∈ {7, 13, 19, 31, 37}. The witness data is already verified by Section 9; the parametric setup is more involved than Case A because the witness projection differs per prime (e.g. (1, 1, 0) at p = 7 versus (0, 1, 5) at p = 37), so the section may need multiple sub-cases keyed on the witness projection. Stretch: special primes p ∈ {2, 5} via direct Hensel lifts using selmer_witness_p2 = (1, 0, 1) and selmer_witness_p5 = (1, 2, 0).",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
-      "approachesTried": 3
+      "total": 6,
+      "currentApproach": 3,
+      "approachesTried": 6
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 4). Iter 1: created proofs/Proofs/Hilbert11OQ02.lean merged via PR #16808 (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries). Iter 2: gallery promotion (#16933). Iter 3: Section 8 — Hensel-elimination prose roadmap (#16971, 264->328 lines). Iter 4 (this session): Section 9 — converted the prose witness data into 12 named, decide-verified mod-p (or mod-27, for p=3) witness lemmas. Every per-prime witness in the Section 8 roadmap is now machine-checked: Case A (p11/p17/p23/p29 via the (0,1,z0) projection), Case B (p7/p13/p19/p31/p37 via Hasse-Weil smooth zeros), special primes p in {2,5} (direct construction), and the singular-reduction prime p=3 (mod-27 strong-form Hensel input). File grew 328->418 lines, theorems 5->17 (substantive count unchanged at 5), axioms 2->2 (unchanged), sorries 0->0 (unchanged). No axiom elimination yet; the next iteration is the actual Hensel lift for one prime as proof-of-concept.",
+    "progressSummary": "ITERATING (iter 6). Iter 1: created proofs/Proofs/Hilbert11OQ02.lean merged via PR #16808 (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries). Iter 2: gallery promotion (#16933). Iter 3: Section 8 — Hensel-elimination prose roadmap (#16971, 264->328 lines). Iter 4: Section 9 — 12 decide-verified mod-p witness lemmas (#16996, 328->418 lines, theorems 5->17). Iter 5: Section 11 — axiom-free ℚ_[11] solubility via Mathlib's hensels_lemma (#17070, 418->551 lines, theorems 17->18). Iter 6 (this session): Section 13 — parametric Case-A theorem selmer_padic_solubility_caseA generalizing the Section 11 argument, plus three one-line corollaries discharging p ∈ {17, 23, 29}. File 551->699 lines, theorems 18->22, definitions 4->5, axioms unchanged at 2. All four Case-A primes from Section 9 (p ∈ {11, 17, 23, 29}) now have axiom-free ℚ_[p]-solubility proofs. Universal axiom selmer_padic_solubility is unchanged but the gap between universal axiom and concrete provability is shrinking; Case B and special primes p ∈ {2, 3, 5} remain.",
     "builtItems": [
       "selmerPoly definition in Hilbert11OQ02.lean (3x³+4y³+5z³ over CommRing)",
       "selmerCubic_real_solution in Hilbert11OQ02.lean — nontrivial real solution constructed via IVT on g(x)=3x³+4 over [-2,0]",
@@ -69,7 +69,9 @@
       "meta.json updates: lineCount 264 → 328 (in both meta and leanFile blocks); Section 7 endLine 264 → 254; new section entry `padic-roadmap` (Section 8: Roadmap for Eliminating selmer_padic_solubility, lines 256–328) with summary and full mathContext.",
       "Section 9: 12 named decide-verified mod-p witness lemmas in Hilbert11OQ02.lean (Case A: selmer_witness_p11/p17/p23/p29; Case B: selmer_witness_p7/p13/p19/p31/p37; special: selmer_witness_p2/p5; singular-reduction: selmer_witness_p3_mod27)",
       "Added Mathlib.Data.ZMod.Basic import to Hilbert11OQ02.lean for the witness lemmas (Section 9 prerequisite)",
-      "Section 10 status summary: theorems 5->17, substantive count unchanged at 5, axioms unchanged at 2, lineCount 328->418"
+      "Section 10 status summary: theorems 5->17, substantive count unchanged at 5, axioms unchanged at 2, lineCount 328->418",
+      "Section 11 (iter 5, PR #17070): selmer_padic_solubility_p11_hensel — axiom-free ℚ_[11]-solubility of the Selmer cubic via Mathlib's univariate hensels_lemma. Defines Hensel11.Gint = C 4 + C 5·X^3 ∈ ℤ[X], proves the Hensel hypothesis ‖g(2)‖_11 < ‖g'(2)‖_11^2 by (11 : ℤ) ∣ 44 and IsCoprime (60 : ℤ) 11, lifts the witness 2 ∈ ZMod 11 to a unique 2̃ ∈ ℤ_[11] with 5·2̃³ + 4 = 0, casts to ℚ_[11]. File 418 → 551 lines, theorems 17 → 18, defs 3 → 4.",
+      "Section 13 (iter 6, this session): selmer_padic_solubility_caseA — parametric Case-A Hensel lift for every prime p ≡ 2 (mod 3), p ∉ {2, 5}. Inputs are an integer witness z₀, divisibility (p : ℤ) ∣ (4 + 5·z₀³), and coprimality IsCoprime (15·z₀² : ℤ) (p : ℤ); output is a nontrivial ℚ_[p]-zero of selmerPoly via the Section 11 recipe. Three corollaries (selmer_padic_solubility_p17_hensel z₀=5; _p23_hensel z₀=18; _p29_hensel z₀=22) discharge the next three Case-A primes from Section 9 in one line each. New definition HenselCaseA.Gint mirrors Hensel11.Gint at parametric prime. File 551 → 699 lines, theorems 18 → 22, defs 4 → 5."
     ],
     "insights": [
       "Hilbert11_QuadraticForms.lean already AXIOMATIZES the Selmer counterexample (`selmer_curve_no_rational_points`) — OQ-02 should LIFT this axiom into a dedicated entry and frame it as the canonical example of Hasse failure rather than burying it in the quadratic-forms parent",
@@ -88,7 +90,10 @@
       "Each per-prime witness in the Section 8 prose roadmap is decidable in finite time: (selmerPoly a b c : ZMod m) is a closed proposition that decide resolves by direct computation in the finite ring. No hand-arithmetic gap remains between Section 8 prose and the Lean development.",
       "decide on ZMod m for m up to 37 (or 27) is fast at the kernel level; if compile-time reduction is too slow, native_decide is the trivial fallback (compiled native execution at compile time).",
       "The witness lemmas form the input layer of a future per-prime Hensel-lift theorem chain: lemma_selmer_padic_solubility_at_11 := combine(selmer_witness_p11, jacobian_nonvanishing_at_p11, hensels_lemma) in spirit. The next iteration can fill in this template for one Case-A prime as proof-of-concept.",
-      "selmerPoly's CommRing R genericity (Section 1) lets the same expression specialize to ZMod p for the witness lemmas AND to Q, R, Q_p elsewhere — no duplication."
+      "selmerPoly's CommRing R genericity (Section 1) lets the same expression specialize to ZMod p for the witness lemmas AND to Q, R, Q_p elsewhere — no duplication.",
+      "Parametric Case-A insight (iter 6): the polynomial g(z) = 5z³ + 4 ∈ ℤ[X] is the SAME for every prime — only the witness z₀ and per-prime divisibility data change. The Hensel hypothesis ‖g(z₀)‖_p < ‖g'(z₀)‖_p^2 reduces uniformly to (p : ℤ) ∣ (4 + 5·z₀³) and IsCoprime (15·z₀² : ℤ) (p : ℤ); both are decidable for any explicit (p, z₀) pair. This makes every Case-A prime a one-line corollary of a single parametric theorem.",
+      "PadicInt.norm_intCast_lt_one_iff and PadicInt.norm_intCast_eq_one_iff are the workhorses for closing parametric Hensel hypotheses on integer-coefficient polynomials. The first reduces ‖((n : ℤ) : ℤ_[p])‖ < 1 to (p : ℤ) ∣ n; the second reduces ‖((n : ℤ) : ℤ_[p])‖ = 1 to IsCoprime n (p : ℤ). After rewriting via these and using the parametric Gint_aeval lemmas, exact_mod_cast h_div + exact h_coprime closes both bounds.",
+      "Hensel11.Gint and HenselCaseA.Gint are the same definition (C 4 + C 5 · X^3) at different namespaces; the duplication is benign because each is private to its section and they are evaluated against different aeval lemmas (Hensel11 is bound to ℤ_[11]; HenselCaseA is parametric in p). A future cleanup could unify them by promoting the definition to module-level."
     ],
     "mathlibGaps": [
       "No formal definition of Brauer-Manin obstruction in Mathlib (would require Brauer group of a scheme + adelic points)",
@@ -98,10 +103,11 @@
       "`MvPolynomial.IsHomogeneous` exists but there is no specialized theory of 'rational-points predicate' for homogeneous forms over number fields"
     ],
     "nextSteps": [
-      "Next iteration (Hensel lift, single Case-A prime): prove selmer_padic_solubility_at_11 : exists z : Q_[11], selmerPoly 0 1 z = 0 and z != 0 by combining selmer_witness_p11 with Mathlib Polynomial.hensels_lemma. Proof-of-concept exercising the Section 8 to 9 to Hensel chain.",
-      "Stretch (parametric Case A): state selmer_padic_solubility_caseA (p : N) [Fact (Nat.Prime p)] (hp1 : p != 2) (hp2 : p != 5) (hpmod : p mod 3 = 2) (z0 : ZMod p) (hwit : selmerPoly (0 : ZMod p) 1 z0 = 0) (hjac : (15 : ZMod p) * z0^2 != 0) : exists z : Q_[p], selmerPoly (0 : Q_[p]) 1 z = 0 and z != 0 parametrically; derive the four explicit Case-A primes by exact selmer_witness_p11 etc.",
-      "Far stretch: discharge selmer_padic_solubility for every prime by combining Case-A / Case-B / special-prime parametric lemmas. Eliminates one of two axioms; remaining axiom is Selmer 1951 (deep, 3-descent, beyond Mathlib).",
-      "Add Jacobian non-vanishing companion lemmas: (5 * z0^2 * 3 : ZMod p) != 0 for Case A primes, (3 * x0^2 * 3 : ZMod p) != 0 for Case B primes — required Hensel hypothesis. Each closes by decide.",
+      "Iter 7: parametric Case-B theorem analogous to selmer_padic_solubility_caseA, adapted to the (1, y, z) or (x, y, 0) projections used in Section 9 for primes p ∈ {7, 13, 19, 31, 37}. The witness data is already verified by Section 9; the parametric setup is more involved than Case A because the witness projection differs per prime (e.g. (1, 1, 0) at p = 7 versus (0, 1, 5) at p = 37), so the section may need multiple sub-cases keyed on which coordinate is fixed.",
+      "Iter 8: special primes p ∈ {2, 5} via direct Hensel lifts using selmer_witness_p2 = (1, 0, 1) and selmer_witness_p5 = (1, 2, 0). The univariate-in-z (or x) reduction differs from Case A but the Hensel-hypothesis verification follows the same template.",
+      "Iter 9: special prime p = 3 (singular reduction), strong-form Hensel on selmer_witness_p3_mod27. Mathlib has the strong-form lemma; the valuation arithmetic v₃(f) = 3 > 2·v₃(∂_z f) = 2 (Section 8) needs to be discharged.",
+      "Iter 10: combine all Case-A + Case-B + special-prime lemmas into a complete proof of selmer_padic_solubility (∀ p prime, ∃ p-adic root). This eliminates one of the two axioms in the file.",
+      "Far stretch: discharge selmer_no_rational_solution itself via 3-descent infrastructure on the associated elliptic curve E: y² = x³ - 432·15². Requires Selmer-group infrastructure not in Mathlib; multi-thousand-line contribution.",
       "Develop generic IsHigherDegreeForm n predicate over MvPolynomial (Fin k) Q filtered by IsHomogeneous F n; restate Selmer as canonical instance.",
       "Formalize Brauer-Manin obstruction (requires Brauer group of a scheme + adelic points machinery, multi-thousand-line Mathlib contribution).",
       "Add other classical Hasse-failures as parallel *_hasse_principle_fails instances: Cassels-Guy 1966, Iskovskih 1971."
@@ -145,7 +151,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.056Z",
-  "lastUpdate": "2026-05-08T05:50:00Z",
+  "lastUpdate": "2026-05-08T12:30:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -207,10 +213,10 @@
     {
       "path": "Proofs/Hilbert11OQ02.lean",
       "filename": "Hilbert11OQ02.lean",
-      "lineCount": 264,
-      "theoremCount": 5,
+      "lineCount": 708,
+      "theoremCount": 23,
       "axiomCount": 2,
-      "defCount": 3,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ02.lean"
