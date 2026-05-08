@@ -985,6 +985,103 @@ theorem notSingletonPair_isExistentialUniversalDefinition (a b : Rat) :
     (notSingletonPair_isCoDiophantineDefinition a b)
 
 -- ============================================================
+-- Part VIII.10: Finite-list closure (iteration 10, S10.3)
+-- ============================================================
+
+/-- Iter 10, Path B: **every FINITE subset of ℚ is Σ₁-definable**.
+
+    By induction on a list `l : List Rat`, the predicate `q ∈ l` is
+    Σ₁-definable. Base case: empty list, predicate is `False` — covered
+    by `empty_isDiophantineDefinition`. Inductive step: `q ∈ a :: t`
+    unfolds (via `List.mem_cons`) to `q = a ∨ q ∈ t`, which is
+    Σ₁-definable by `union_isDiophantineDefinition` of S8's
+    `singletonOf_isDiophantineDefinition a` and the induction hypothesis.
+
+    The product polynomial witness for the induction step is
+    `P(q, x) = (q - a) · P_t(q, x)` where `P_t` is the inductive witness
+    for `q ∈ t`; existence of a rational solution corresponds (via
+    `mul_eq_zero`) to either `q = a` or `q ∈ t`.
+
+    This makes precise the OPEN/closed-under-finite gap: every FINITE
+    truncation `⋃_{n ∈ [-N, N] ∩ ℤ} {n}` of ℤ ⊂ ℚ is Σ₁-definable for
+    every finite `N`, but a UNIFORM Σ₁ witness for the full countable
+    union `⋃_{n : ℤ} {n}` is the OPEN content of the question. -/
+theorem finUnionList_singletons_isDiophantineDefinition (l : List Rat) :
+    IsDiophantineDefinition (fun q : Rat => q ∈ l) := by
+  induction l with
+  | nil =>
+    -- `q ∈ ([] : List Rat)` reduces to `False` propositionally.
+    have hbridge : ∀ q : Rat, (fun q : Rat => q ∈ ([] : List Rat)) q ↔
+        (fun _ : Rat => False) q := by
+      intro q; simp
+    exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr
+      empty_isDiophantineDefinition
+  | cons a t ih =>
+    -- `q ∈ a :: t  ↔  q = a ∨ q ∈ t`, then close via union closure of S9.
+    have hbridge : ∀ q : Rat, (fun q : Rat => q ∈ (a :: t)) q ↔
+        (fun q : Rat => q = a ∨ q ∈ t) q := by
+      intro q; exact List.mem_cons
+    have h_singleton : IsDiophantineDefinition (fun q : Rat => q = a) :=
+      singletonOf_isDiophantineDefinition a
+    have h_union : IsDiophantineDefinition (fun q : Rat => q = a ∨ q ∈ t) :=
+      union_isDiophantineDefinition h_singleton ih
+    exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr h_union
+
+/-- Iter 10 corollary, Path B: **every complement of a finite subset of ℚ
+    is Π₁-definable**.
+
+    Direct dual of `finUnionList_singletons_isDiophantineDefinition`: the
+    predicate `q ∉ l` is Π₁-definable for every `l : List Rat`. Proved by
+    induction mirroring the Σ₁ case, using
+    `intersection_isCoDiophantineDefinition` (S9 dual) for the inductive
+    step and `notSingletonOf_isCoDiophantineDefinition` for the cons head. -/
+theorem finIntersectionList_complement_singletons_isCoDiophantineDefinition
+    (l : List Rat) :
+    IsCoDiophantineDefinition (fun q : Rat => q ∉ l) := by
+  induction l with
+  | nil =>
+    -- `q ∉ ([] : List Rat)` is `True` propositionally.
+    have hbridge : ∀ q : Rat, (fun q : Rat => q ∉ ([] : List Rat)) q ↔
+        (fun _ : Rat => True) q := by
+      intro q; simp
+    exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr
+      universe_isCoDiophantineDefinition
+  | cons a t ih =>
+    -- `q ∉ a :: t  ↔  q ≠ a ∧ q ∉ t`, then close via intersection closure of S9.
+    have hbridge : ∀ q : Rat, (fun q : Rat => q ∉ (a :: t)) q ↔
+        (fun q : Rat => q ≠ a ∧ q ∉ t) q := by
+      intro q
+      constructor
+      · intro hq
+        refine ⟨fun heq => hq ?_, fun hmem => hq ?_⟩
+        · exact List.mem_cons.mpr (Or.inl heq)
+        · exact List.mem_cons.mpr (Or.inr hmem)
+      · rintro ⟨hne, hnt⟩ hq
+        rcases List.mem_cons.mp hq with h | h
+        · exact hne h
+        · exact hnt h
+    have h_notSingleton : IsCoDiophantineDefinition (fun q : Rat => q ≠ a) :=
+      notSingletonOf_isCoDiophantineDefinition a
+    have h_intersection : IsCoDiophantineDefinition (fun q : Rat => q ≠ a ∧ q ∉ t) :=
+      intersection_isCoDiophantineDefinition h_notSingleton ih
+    exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr h_intersection
+
+/-- Iter 10 corollary, Path B: **every finite subset of ℚ is Π₂-definable**
+    via the trivial inclusion `Σ₁ ⊆ Π₂`. -/
+theorem finUnionList_singletons_isUniversalExistentialDefinition (l : List Rat) :
+    IsUniversalExistentialDefinition (fun q : Rat => q ∈ l) :=
+  diophantine_implies_universal_existential _
+    (finUnionList_singletons_isDiophantineDefinition l)
+
+/-- Iter 10 corollary, Path B: **every complement of a finite subset of ℚ
+    is Σ₂-definable** via the trivial inclusion `Π₁ ⊆ Σ₂`. -/
+theorem finIntersectionList_complement_singletons_isExistentialUniversalDefinition
+    (l : List Rat) :
+    IsExistentialUniversalDefinition (fun q : Rat => q ∉ l) :=
+  codiophantine_implies_existentialUniversal _
+    (finIntersectionList_complement_singletons_isCoDiophantineDefinition l)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
