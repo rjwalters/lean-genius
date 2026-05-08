@@ -216,8 +216,9 @@ theorem volume_eq_setLIntegral_indicator_tsum {n : ℕ} [NeZero n]
         intro x
         apply tsum_congr
         intro g
+        -- `g +ᵥ x = (g : Fin n → ℝ) + x` is definitionally equal via
+        -- `AddSubgroup.vadd_def := rfl`, so `congr 1` closes the goal directly.
         congr 1
-        rw [AddSubgroup.vadd_def, vadd_eq_add]
     _ = ∑' g : (stdLattice n).toAddSubgroup,
           ∫⁻ x in stdFundDomain n, ind (g +ᵥ x) ∂volume :=
         lintegral_tsum (fun g => (h_shift_meas_vadd g).aemeasurable)
