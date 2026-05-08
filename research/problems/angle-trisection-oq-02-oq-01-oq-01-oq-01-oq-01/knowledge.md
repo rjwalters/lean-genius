@@ -198,6 +198,81 @@ steps is independently useful and may have Mathlib-upstream value.
 
 ---
 
+## Session 2026-05-08 (Session 4, researcher-1) — g_factor structural lemmas + f_target coefficients
+
+**Mode**: ACT (RICH knowledge tier, score 27)
+**Outcome**: Added 9 structural lemmas (4 for g_factor, 5 f_target coefficient values).
+Theorem count: 10 → 19. lineCount: 230 → 285. Sorries unchanged at 0; only intentional axiom
+`counterexample_gal_card` remains.
+
+### What I Did
+
+Added 9 small structural lemmas extending the Session 3 scaffolding from f_target to its
+Artin-Schreier inner factor g_factor and to f_target's individual coefficients:
+
+**Group A — g_factor structural facts (mirror f_target's):**
+1. **`g_factor_natDegree`**: `g_factor.natDegree = 2` (compute_degree!).
+2. **`g_factor_degree`**: `g_factor.degree = 2` (compute_degree!).
+3. **`g_factor_ne_zero`**: `g_factor ≠ 0` (corollary of natDegree).
+4. **`g_factor_monic`**: `g_factor.Monic` (leading coeff = 1).
+
+**Group B — f_target coefficient values:**
+5. **`f_target_coeff_zero`**: `f_target.coeff 0 = aGen` — the Artin-Schreier parameter.
+6. **`f_target_coeff_one`**: `f_target.coeff 1 = 0` — no linear term.
+7. **`f_target_coeff_two`**: `f_target.coeff 2 = 1` — the X² coefficient.
+8. **`f_target_coeff_three`**: `f_target.coeff 3 = 0` — no cubic term.
+9. **`f_target_coeff_four`**: `f_target.coeff 4 = 1` — leading coefficient.
+
+### Why These
+
+The two groups attack the next-action plan from different sides:
+
+- **Group A (g_factor)** unlocks any Capelli-style irreducibility argument for
+  `f_target = g_factor.comp (X^2)`: such an argument typically needs (a) `g_factor`
+  irreducible — Artin-Schreier — *and* (b) `aGen` not a square in `base`, with the
+  irreducibility-of-a-composition then following from Mathlib's Capelli-type lemma. Both
+  pieces consume `g_factor.natDegree = 2` and `g_factor.Monic` as inputs (and
+  `g_factor.degree = 2` for `degree`-flavored variants of the API).
+
+- **Group B (coefficients)** unlocks the alternative direct quadratic-factorisation
+  argument: any hypothetical `f_target = (X² + b₁X + c₁)(X² + b₂X + c₂)` produces
+  five linear/quadratic equations from comparing coefficients at X^0..X^4. The
+  five lemmas here supply the right-hand sides of those equations, so the case
+  analysis (`b₁ + b₂ = 0` from coeff 3, `c₁c₂ = aGen` from coeff 0, etc.) can
+  proceed without re-deriving them.
+
+### Files Modified
+
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (+55 lines, +9 lemmas)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/meta.json`
+  (lineCount 230→285, theoremCount 10→19 in both meta and leanFile blocks; sections
+   shifted to reflect new layout; 9 entries added to mainTheorems)
+- `research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/knowledge.md`
+  (this entry)
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  (iteration bumped, builtItems and progressSummary synced through Session 4)
+
+### Build Verification
+
+Pending CI. `compute_degree!` and the `Polynomial.coeff_*` simp set are well-established
+in this codebase (`InverseGaloisA5`, `InverseGaloisD4`, the angle-trisection chain), and
+the new lemmas follow exactly the same pattern as the Session 3 lemmas which compiled.
+Local Docker build was not run from this worktree (`proofs/.lake` self-cycle, see MEMORY.md).
+
+### Path Forward (unchanged from Session 3, narrowed by this session)
+
+The path still requires multiple sessions to discharge `counterexample_gal_card`. With
+this session's lemmas, the closest concrete next step is:
+
+- **Step 1a** — Prove `aGen` is not a square in `base`. This is the prerequisite for the
+  Capelli-style irreducibility of `g_factor.comp (X^2)`.
+- **Step 1b** — Prove `g_factor` is irreducible (Artin-Schreier over F₂(a)).
+- **Step 1c** — Combine via Capelli: irreducibility of `f_target`.
+
+Steps 2–4 (splitting-field characterisation, σ construction, |Gal| ≤ 2) follow.
+
+---
+
 ## Dead Ends
 
 - **"Inseparable irreducible → trivial Galois"**: The obvious approach is FALSE. The case f = g(X^p) with deg(g) ≥ 2 gives counterexample.
