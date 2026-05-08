@@ -24,18 +24,6 @@
     "prerequisites": ["minimal polynomial definition", "polynomial evaluation in algebras", "minpoly.dvd lemma"]
   },
   {
-    "id": "ann-integrality-hypothesis",
-    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
-    "range": { "startLine": 71, "endLine": 73 },
-    "type": "concept",
-    "title": "Why Both `IsIntegral` Hypotheses Matter",
-    "content": "The theorem requires `IsIntegral K a` AND `IsIntegral K (f a)`. Both are necessary: in Mathlib, `minpoly K x` is defined to be 0 (the zero polynomial) whenever x is non-integral, so without integrality the iff degenerates to 0 = 0 ↔ aeval a 0 = 0, which is trivially true and gives no information. For finite-dimensional K-algebras both hypotheses are automatic. Note: `IsIntegral K (f a)` does NOT follow from `IsIntegral K a` for arbitrary algebra maps — although it does follow when B is finite-dimensional over K, or whenever we can pull integrality back through f.",
-    "mathContext": "An element $a \\in A$ is **integral** over $K$ if there exists a monic polynomial $p \\in K[X]$ with $p(a) = 0$. Mathlib's convention: `minpoly K a = 0` iff `¬ IsIntegral K a`, i.e. minpoly returns the zero polynomial for transcendental elements. This makes minpoly a total function (no `Option`), but creates the trap that statements about minpoly equality silently degenerate when integrality fails. The `eq_of_monic_of_associated` step in our proof requires both polynomials to be monic — but `minpoly K (f a)` is monic only when `IsIntegral K (f a)` holds (`minpoly.monic` requires this hypothesis).",
-    "significance": "technical",
-    "relatedConcepts": ["IsIntegral", "transcendental elements", "finite-dimensional algebras", "minpoly.monic", "minpoly.ne_zero"],
-    "prerequisites": ["integral elements over a field", "Mathlib minpoly conventions", "monic polynomials"]
-  },
-  {
     "id": "ann-main-theorem",
     "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
     "range": { "startLine": 57, "endLine": 85 },
@@ -46,6 +34,18 @@
     "significance": "key",
     "relatedConcepts": ["mutual divisibility", "associated elements", "monic polynomials", "minimal polynomial iff criterion"],
     "prerequisites": ["minimal polynomial universal property", "polynomial ring UFD structure", "monic polynomial uniqueness"]
+  },
+  {
+    "id": "ann-integrality-hypothesis",
+    "proofId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "concept",
+    "title": "Why Both `IsIntegral` Hypotheses Matter",
+    "content": "The theorem requires `IsIntegral K a` AND `IsIntegral K (f a)`. Both are necessary: in Mathlib, `minpoly K x` is defined to be 0 (the zero polynomial) whenever x is non-integral, so without integrality the iff degenerates to 0 = 0 ↔ aeval a 0 = 0, which is trivially true and gives no information. For finite-dimensional K-algebras both hypotheses are automatic. Note: `IsIntegral K (f a)` does NOT follow from `IsIntegral K a` for arbitrary algebra maps — although it does follow when B is finite-dimensional over K, or whenever we can pull integrality back through f.",
+    "mathContext": "An element $a \\in A$ is **integral** over $K$ if there exists a monic polynomial $p \\in K[X]$ with $p(a) = 0$. Mathlib's convention: `minpoly K a = 0` iff `¬ IsIntegral K a`, i.e. minpoly returns the zero polynomial for transcendental elements. This makes minpoly a total function (no `Option`), but creates the trap that statements about minpoly equality silently degenerate when integrality fails. The `eq_of_monic_of_associated` step in our proof requires both polynomials to be monic — but `minpoly K (f a)` is monic only when `IsIntegral K (f a)` holds (`minpoly.monic` requires this hypothesis).",
+    "significance": "technical",
+    "relatedConcepts": ["IsIntegral", "transcendental elements", "finite-dimensional algebras", "minpoly.monic", "minpoly.ne_zero"],
+    "prerequisites": ["integral elements over a field", "Mathlib minpoly conventions", "monic polynomials"]
   },
   {
     "id": "ann-isroot-form",

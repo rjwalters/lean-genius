@@ -139,29 +139,29 @@
   },
   "crossReferences": [
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
-      "title": "Minimal Polynomial Generalization to K-Algebras",
-      "relationship": "Parent open question: proves minpoly invariance for INJECTIVE algebra maps. This entry answers the follow-up: what happens for non-injective maps?"
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent open question: proves minpoly invariance for INJECTIVE algebra maps. This entry answers the follow-up: what happens for non-injective maps?"
     },
     {
-      "id": "cayley-hamilton-minpoly",
-      "title": "Cayley-Hamilton and Minimal Polynomial",
-      "relationship": "Foundation: establishes the core Cayley-Hamilton theorem and minimal polynomial theory this entry builds upon."
+      "targetId": "cayley-hamilton-minpoly",
+      "relationship": "depends-on",
+      "description": "Foundation: establishes the core Cayley-Hamilton theorem and minimal polynomial theory this entry builds upon."
     },
     {
-      "id": "cayley-hamilton-minpoly-oq-02",
-      "title": "Cayley-Hamilton Minpoly (OQ-02)",
-      "relationship": "Grandparent open question in the minimal polynomial line of inquiry."
+      "targetId": "cayley-hamilton-minpoly-oq-02",
+      "relationship": "ancestor",
+      "description": "Grandparent open question in the minimal polynomial line of inquiry."
     },
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-      "title": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mₙ(K)",
-      "relationship": "Sibling under OQ-02-OQ-01: applies the injective case to characterize automorphisms of matrix algebras (every automorphism is inner). This entry handles the dual situation — what happens when the algebra map is NOT injective."
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling under OQ-02-OQ-01: applies the injective case to characterize automorphisms of matrix algebras (every automorphism is inner). This entry handles the dual situation — what happens when the algebra map is NOT injective."
     },
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-03",
-      "title": "Rational Canonical Form: Similarity Invariance",
-      "relationship": "Sibling result on minpoly behavior under algebra maps: similarity (conjugation by an invertible matrix, an injective map) preserves minpoly. This entry explains exactly when more general — possibly non-injective — algebra maps preserve minpoly."
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling result on minpoly behavior under algebra maps: similarity (conjugation by an invertible matrix, an injective map) preserves minpoly. This entry explains exactly when more general — possibly non-injective — algebra maps preserve minpoly."
     }
   ],
   "sorries": 0
