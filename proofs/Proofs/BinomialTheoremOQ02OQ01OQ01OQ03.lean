@@ -482,6 +482,44 @@ theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
   refine Finset.sum_congr rfl (fun j _ => ?_)
   ring
 
+/-- **Right-tail asymptote of `binomialCDF`.** As `x → +∞`, the binomial
+    CDF tends to `1` (under `0 ≤ p ≤ 1`).
+
+    Proof: by `binomialCDF_eq_one`, `binomialCDF n p x = 1` for every
+    `x` with `(n : ℝ) ≤ x`; the predicate `(n : ℝ) ≤ x` holds eventually
+    along `Filter.atTop` (`Filter.eventually_ge_atTop`), so the function
+    is *eventually constant equal to `1`* and the limit is `1`.
+
+    Companion to `standardNormalCDF_tendsto_one_atTop`: paired right-tail
+    saturation feeding the Phase-4 Portmanteau bridge. -/
+theorem binomialCDF_tendsto_one_atTop (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    Filter.Tendsto (binomialCDF n p) Filter.atTop (nhds 1) := by
+  have h : Filter.Tendsto (fun _ : ℝ => (1 : ℝ)) Filter.atTop (nhds 1) :=
+    tendsto_const_nhds
+  refine h.congr' ?_
+  filter_upwards [Filter.eventually_ge_atTop (n : ℝ)] with x hx
+  exact (binomialCDF_eq_one n hp0 hp1 hx).symm
+
+/-- **Left-tail asymptote of `binomialCDF`.** As `x → -∞`, the binomial
+    CDF tends to `0`.
+
+    Proof: by `binomialCDF_neg`, `binomialCDF n p x = 0` for every `x < 0`;
+    the predicate `x < 0` holds eventually along `Filter.atBot`
+    (`Filter.eventually_lt_atBot`), so the function is *eventually constant
+    equal to `0`* and the limit is `0`. No constraints on `p` are needed:
+    `binomialCDF_neg` already holds for arbitrary `p`.
+
+    The matching `standardNormalCDF_tendsto_zero_atBot` (Φ's left-tail
+    saturation) is the next structural-CDF prerequisite for the
+    Phase-4 Portmanteau bridge. -/
+theorem binomialCDF_tendsto_zero_atBot (n : ℕ) (p : ℝ) :
+    Filter.Tendsto (binomialCDF n p) Filter.atBot (nhds 0) := by
+  have h : Filter.Tendsto (fun _ : ℝ => (0 : ℝ)) Filter.atBot (nhds 0) :=
+    tendsto_const_nhds
+  refine h.congr' ?_
+  filter_upwards [Filter.eventually_lt_atBot (0 : ℝ)] with x hx
+  exact (binomialCDF_neg n p hx).symm
+
 /-! ## Main theorem: multinomial marginal CLT (derived) -/
 
 /-- **Multinomial marginal CLT** (DERIVED THEOREM, no separate axiom):
