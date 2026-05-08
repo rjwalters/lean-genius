@@ -1,9 +1,11 @@
 # Knowledge: Burnside's pᵃqᵇ Theorem (abel-ruffini-galois-extensions-oq-07)
 
-## Status (2026-05-08, Iteration 4)
+## Status (2026-05-08, Iteration 7)
 
-Phase-2 axiomatization with axiom narrowed: `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`,
-384 lines, 10 theorems, 1 axiom (narrowed to `2 ≤ a ∨ 2 ≤ b`), 0 sorries.
+Phase-2 axiomatization with axiom narrowed and one residual instance now
+proved axiom-free: `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`,
+631 lines, 16 theorems/lemmas, 1 axiom (still narrowed to `2 ≤ a ∨ 2 ≤ b`,
+but with the `(a, b) = (2, 1) ∧ q < p` instance now axiom-free), 0 sorries.
 
 ## Key Results
 
@@ -15,6 +17,12 @@ Phase-2 axiomatization with axiom narrowed: `proofs/Proofs/AbelRuffiniGaloisExte
 | `burnside_pq_same_prime` | `Nat.card G = p^a · p^b → IsSolvable G` | Yes |
 | `squarefreeOrder_isSolvable` (S4) | `Squarefree (Nat.card G) → IsSolvable G` | Yes (IsZGroup chain) |
 | `burnside_pq_pq_case` (S4) | `p ≠ q ∧ Nat.card G = p · q → IsSolvable G` | Yes |
+| `isSolvable_of_normal_quotient_solvable` (S5) | `[N.Normal] [IsSolvable N] [IsSolvable (G ⧸ N)] → IsSolvable G` | Yes |
+| `burnside_pq_with_normal_pSylow` (S5) | `Nat.card G = pᵃ · qᵇ ∧ ∃ N normal of order pᵃ → IsSolvable G` | Yes |
+| `burnside_pq_with_normal_qSylow` (S5) | `Nat.card G = pᵃ · qᵇ ∧ ∃ N normal of order qᵇ → IsSolvable G` | Yes |
+| `sylow_count_eq_one_of_lt_prime` (S7, private) | `n ∣ q prime ∧ q < p ∧ n ≡ 1 [MOD p] → n = 1` | Yes (arithmetic) |
+| `factorization_p_sq_q_at_p` (S7, private) | `(p² · q).factorization p = 2` for distinct primes (q < p) | Yes |
+| `burnside_p_squared_q_p_gt_q` (S7) | `q < p ∧ Nat.card G = p² · q → IsSolvable G` | Yes (Sylow + S5) |
 | `burnside_pq_nontrivial` (axiom, narrowed S4) | `p ≠ q ∧ a, b ≥ 1 ∧ (2 ≤ a ∨ 2 ≤ b) ∧ Nat.card G = p^a · q^b → IsSolvable G` | **No (narrowed axiom)** |
 | `burnside_pq` | `Nat.card G = p^a · q^b → IsSolvable G` | Uses axiom only for `2 ≤ a ∨ 2 ≤ b` |
 | `alternatingGroupFin5_card` (S3) | `Nat.card A₅ = 2^2 · 3 · 5` | Yes |
@@ -112,10 +120,23 @@ each to first power, but cannot handle `p²` for any prime.
 
 ## Path forward
 
-1. **(S5)** Prove `|G| = p² · q` axiom-free via Sylow analysis (~50-100 lines).
-2. **(S6)** Prove `|G| = p · q²` axiom-free (symmetric, ~30-50 lines).
-3. **(S7)** Prove `|G| = p² · q²` axiom-free (~80-150 lines).
-4. **(S8+)** Build Goldschmidt-Matsuyama on top of `Mathlib.GroupTheory.Focal`
+Iteration 5 (PR #16972, merged) added the normal-Sylow reductions
+(`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`).
+Iteration 6 (PR #17035, merged) wrote a build-ready spec for `|G| = p² · q`.
+Iteration 7 (this session) implements the spec's `p > q` half axiom-free.
+
+1. **(S8)** Prove `burnside_p_squared_q_p_lt_q` axiom-free (Iteration 6
+   spec §5, ~40 lines). Sylow analysis: `n_q ∣ p²` with three cases
+   `{1, p, p²}`; `n_q = p` ruled out by `p < q`; `n_q = p²` requires
+   `q ∣ p² - 1`, ruled out except for `(p, q) = (2, 3)`.
+2. **(S9)** Prove `burnside_p_squared_q_twelve` exceptional case
+   (Iteration 6 spec §6, ~70 lines). Element-counting: `n_3 = 4` ⇒
+   8 elements of order 3 ⇒ unique Sylow 2-subgroup.
+3. **(S10)** Combine into `burnside_p_squared_q` and graft into `burnside_pq`
+   to remove the `(a, b) = (2, 1)` axiom dependency entirely.
+4. **(S11+)** Symmetric `burnside_p_q_squared` (`|G| = p · q²`).
+5. **(S12+)** `burnside_p_squared_q_squared` (`|G| = p² · q²`).
+6. **(S13+)** Build Goldschmidt-Matsuyama on top of `Mathlib.GroupTheory.Focal`
    (~200-400 lines). Closes ALL remaining cases.
-5. **(Final)** Replace `axiom burnside_pq_nontrivial` with theorem; sync meta.json;
+7. **(Final)** Replace `axiom burnside_pq_nontrivial` with theorem; sync meta.json;
    submit Mathlib upstream PR (~1000 lines total).

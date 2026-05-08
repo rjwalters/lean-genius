@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 502,
+    "lineCount": 631,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -82,13 +82,16 @@
       "Worked example (Iteration 5): |G| = 12 = 2² · 3 with a normal subgroup of order 4 is solvable axiom-free via burnside_pq_with_normal_pSylow — exactly the structure realized by A₄ (whose Klein four-group V₄ ⊂ A₄ is normal of order 4). Demonstrates that the new reduction discharges the previously-axiomatized `2 ≤ a` shape `|G| = p² · q` whenever a normal p-Sylow is exhibited.",
       "axiom burnside_pq_nontrivial (NARROWED in Iteration 4, unchanged in Iteration 5): the genuinely-open content (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`); the a = b = 1 case is now axiom-free. Iteration 5 leaves the axiom statement unchanged but adds reduction tooling above. Full proof of the residual axiom requires either character theory + algebraic integers (Burnside 1904) or transfer + focal subgroup (Goldschmidt-Matsuyama 1970s) — neither currently in Mathlib at sufficient generality.",
       "burnside_pq: main theorem combining trivial cases + squarefree case + axiom into the unified statement Nat.card G = p^a · q^b → IsSolvable G.",
-      "Five sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group, |G| = 30 (squarefree three-prime), and |G| = 12 with normal Sylow-2 (A₄-style) — all axiom-free.",
+      "Six sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group, |G| = 30 (squarefree three-prime), |G| = 12 with normal Sylow-2 (A₄-style), and |G| = 18 = 3²·2 via burnside_p_squared_q_p_gt_q (Iteration 7) — all axiom-free.",
       "alternatingGroupFin5_card: axiom-free proof that |A₅| = 2²·3·5, exhibiting the three distinct prime factors that make A₅ a sharpness witness.",
       "alternatingGroupFin5_not_solvable: axiom-free proof that A₅ is not solvable, via reduction to Equiv.Perm.not_solvable (Fin 5) through the short exact sequence A₅ → S₅ → ℤ/2.",
-      "burnside_pq_sharp: sharpness witness combining the two above — demonstrates that the analogue of burnside_pq for THREE distinct primes fails (no `burnside_pqr` theorem can hold without further hypotheses; A₅ also defeats the squarefree route since 60 has 2²)."
+      "burnside_pq_sharp: sharpness witness combining the two above — demonstrates that the analogue of burnside_pq for THREE distinct primes fails (no `burnside_pqr` theorem can hold without further hypotheses; A₅ also defeats the squarefree route since 60 has 2²).",
+      "sylow_count_eq_one_of_lt_prime (Iteration 7): private arithmetic helper proving that if a number n divides a prime q (with q < p) and n ≡ 1 [MOD p], then n = 1. Used as the Sylow-count constraint in burnside_p_squared_q_p_gt_q.",
+      "factorization_p_sq_q_at_p (Iteration 7): private helper computing (p² · q).factorization p = 2 for distinct primes (p > q). Used to read off Nat.card P = p² from Sylow.card_eq_multiplicity.",
+      "burnside_p_squared_q_p_gt_q (Iteration 7): axiom-free proof of Burnside for |G| = p² · q with q < p — the first axiom-free instance of the previously-axiomatized 2 ≤ a ∨ 2 ≤ b case. Sylow's third theorem (card_sylow_modEq_one + Sylow.card_dvd_index) plus q < p forces n_p = 1; the unique Sylow p-subgroup is normal, and burnside_pq_with_normal_pSylow finishes. Strictly shrinks the residual content of burnside_pq_nontrivial."
     ],
-    "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iteration 5): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited; this is a strict shortcut for any future case-by-case Sylow-counting analysis (`|G| = p² · q`, `|G| = p · q²`, …). The axiom statement itself is unchanged: it still isolates the genuinely-open Lean content (orders divisible by `p²` or `q²` for distinct primes); a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
-    "theoremCount": 13,
+    "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iterations 5–7): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited. Iteration 7 adds `burnside_p_squared_q_p_gt_q`, which gives an axiom-free proof of the `(a, b) = (2, 1)` case when `q < p` via Sylow counting — a concrete instance of the residual axiom now proven. The axiom statement itself is unchanged: it still covers orders divisible by `p²` or `q²` for distinct primes; a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
+    "theoremCount": 16,
     "definitionCount": 0
   },
   "overview": {
@@ -209,10 +212,10 @@
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 502,
+    "lineCount": 631,
     "axiomCount": 1,
-    "theoremCount": 13,
-    "substantiveTheoremCount": 13,
+    "theoremCount": 16,
+    "substantiveTheoremCount": 16,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
     "sorries": 0

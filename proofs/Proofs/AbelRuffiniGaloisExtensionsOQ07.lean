@@ -262,6 +262,115 @@ theorem burnside_pq_with_normal_qSylow {G : Type*} [Group G] [Finite G]
   exact isSolvable_of_normal_quotient_solvable N
 
 -- ═══════════════════════════════════════════════════════════════════════
+-- PART III.6: |G| = p² · q, case p > q (axiom-free, Iteration 7)
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-! Sylow analysis for `|G| = p² · q` with `p > q`. The Sylow `p`-subgroup
+    has order `p²`; its number `n_p` divides `q` and is `≡ 1 [MOD p]`.
+    With `q < p` the only solutions are `n_p ∈ {1, q}`, and `q ≡ 1 [MOD p]`
+    forces `q ≥ p + 1 > p`, contradiction — so `n_p = 1` and the unique
+    Sylow `p`-subgroup is normal. The result then follows from
+    `burnside_pq_with_normal_pSylow`.
+
+    This eliminates the `(a, b) = (2, 1)` and (after the symmetric `p < q`
+    case in S8) the `(a, b) = (1, 2)` instances of `burnside_pq_nontrivial`
+    axiom-free. -/
+
+/-- **Sylow-count constraint, prime divisor case**: if `n ∣ q` (with `q`
+    prime, `q < p`) and `n ≡ 1 [MOD p]`, then `n = 1`.
+
+    The two divisors of a prime are `1` and itself; if `n = q` then
+    `q ≡ 1 [MOD p]`, i.e. `p ∣ q - 1`, forcing `p ≤ q - 1 < q < p`,
+    contradiction. -/
+private lemma sylow_count_eq_one_of_lt_prime
+    {n p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : q < p)
+    (hmod : n ≡ 1 [MOD p]) (hdvd : n ∣ q) : n = 1 := by
+  rcases (Nat.Prime.eq_one_or_self_of_dvd hq n hdvd) with h1 | hq_eq
+  · exact h1
+  · -- n = q. Then q ≡ 1 [MOD p], i.e. p ∣ q - 1.
+    rw [hq_eq] at hmod
+    have hqpos : 0 < q := hq.pos
+    have hq_ge_one : 1 ≤ q := hqpos
+    have hp_dvd_qm1 : p ∣ q - 1 :=
+      (Nat.modEq_iff_dvd' hq_ge_one).mp hmod.symm
+    have hqm1_pos : 0 < q - 1 := by
+      have : 2 ≤ q := hq.two_le
+      omega
+    have : p ≤ q - 1 := Nat.le_of_dvd hqm1_pos hp_dvd_qm1
+    omega
+
+/-- **`p`-adic factorization of `p² · q` is 2** when `p, q` are distinct
+    primes (here, `q < p`). Used to read off `Nat.card (Sylow p G) = p^2`
+    from `Sylow.card_eq_multiplicity`. -/
+private lemma factorization_p_sq_q_at_p
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : q < p) :
+    ((p : ℕ) ^ 2 * q).factorization p = 2 := by
+  have hp_pos : (p : ℕ) ≠ 0 := hp.pos.ne'
+  have hq_pos : (q : ℕ) ≠ 0 := hq.pos.ne'
+  have hp_ndvd_q : ¬ (p : ℕ) ∣ q := by
+    intro h
+    have : p ≤ q := Nat.le_of_dvd hq.pos h
+    omega
+  rw [Nat.factorization_mul (pow_ne_zero 2 hp_pos) hq_pos,
+      Nat.factorization_pow]
+  rw [Finsupp.add_apply, Finsupp.smul_apply,
+      Nat.Prime.factorization_self hp,
+      Nat.factorization_eq_zero_of_not_dvd hp_ndvd_q]
+  -- Goal: 2 • 1 + 0 = 2
+  simp
+
+/-- **Burnside `p² · q` case, `p > q`** (axiom-free): every finite group of
+    order `p² · q` (with `p, q` distinct primes and `q < p`) is solvable.
+
+    Proof outline:
+    1. Pick a Sylow `p`-subgroup `P`. By `Sylow.card_eq_multiplicity`
+       and the factorization computation `(p² · q).factorization p = 2`,
+       `Nat.card P = p²`.
+    2. By Sylow's third theorem (`card_sylow_modEq_one`), the number of
+       Sylow `p`-subgroups satisfies `n_p ≡ 1 [MOD p]`.
+    3. By `Sylow.card_dvd_index`, `n_p ∣ P.index`. Since `Nat.card G = p² · q`
+       and `Nat.card P = p²`, Lagrange (`Subgroup.card_mul_index`) gives
+       `P.index = q`.
+    4. Apply `sylow_count_eq_one_of_lt_prime` (with `q < p`) to get `n_p = 1`.
+    5. Hence `Subsingleton (Sylow p G)`; `Sylow.normal_of_subsingleton`
+       yields `(P : Subgroup G).Normal`.
+    6. Discharge via `burnside_pq_with_normal_pSylow` (with `a = 2`, `b = 1`,
+       after rewriting `q^1 = q`). -/
+theorem burnside_p_squared_q_p_gt_q
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : q < p) (hcard : Nat.card G = p ^ 2 * q) :
+    IsSolvable G := by
+  -- Step 1: pick a Sylow p-subgroup; compute its order from |G| = p^2 * q.
+  obtain ⟨P⟩ : Nonempty (Sylow p G) := Sylow.nonempty
+  have hP_card : Nat.card (P : Subgroup G) = p ^ 2 := by
+    rw [Sylow.card_eq_multiplicity P, hcard,
+        factorization_p_sq_q_at_p hp.out hq.out hpq]
+  -- Step 2: compute the index of P. Since |P| = p^2 and |G| = p^2 q, index = q.
+  have hp2_pos : 0 < p ^ 2 := pow_pos hp.out.pos 2
+  have hP_index : (P : Subgroup G).index = q := by
+    have h := Subgroup.card_mul_index (P : Subgroup G)
+    rw [hP_card, hcard] at h
+    exact Nat.eq_of_mul_eq_mul_left hp2_pos h
+  -- Step 3: n_p ≡ 1 [MOD p] and n_p ∣ q (via P.index = q).
+  have hnp_mod : Nat.card (Sylow p G) ≡ 1 [MOD p] := card_sylow_modEq_one p G
+  have hnp_dvd : Nat.card (Sylow p G) ∣ q := by
+    have := Sylow.card_dvd_index P
+    rwa [hP_index] at this
+  -- Step 4: apply the helper to get n_p = 1.
+  have hnp_eq_one : Nat.card (Sylow p G) = 1 :=
+    sylow_count_eq_one_of_lt_prime hp.out hq.out hpq hnp_mod hnp_dvd
+  -- Step 5: n_p = 1 ⇒ Subsingleton (Sylow p G) ⇒ P.Normal.
+  haveI hSub : Subsingleton (Sylow p G) := by
+    rw [← Nat.card_le_one_iff_subsingleton]
+    exact hnp_eq_one.le
+  haveI hP_normal : (P : Subgroup G).Normal := P.normal_of_subsingleton
+  -- Step 6: discharge via burnside_pq_with_normal_pSylow.
+  have hcard' : Nat.card G = p ^ 2 * q ^ 1 := by rw [hcard]; ring
+  exact burnside_pq_with_normal_pSylow (a := 2) (b := 1) hcard'
+    (P : Subgroup G) hP_card
+
+-- ═══════════════════════════════════════════════════════════════════════
 -- PART IV: Main theorem
 -- ═══════════════════════════════════════════════════════════════════════
 
@@ -367,6 +476,19 @@ example {G : Type*} [Group G] [Finite G]
   have hN' : Nat.card N = 2 ^ 2 := by rw [hN]; norm_num
   exact burnside_pq_with_normal_pSylow hcard' N hN'
 
+/-- **Group of order `18 = 3² · 2` is solvable**, axiom-free, via the new
+    Iteration-7 lemma `burnside_p_squared_q_p_gt_q`. With `p = 3` and
+    `q = 2`, we have `q < p` and `|G| = p² · q = 9 · 2 = 18`. The Sylow
+    `p`-count argument forces the unique Sylow `3`-subgroup to be normal,
+    and `burnside_pq_with_normal_pSylow` finishes the proof. -/
+example {G : Type*} [Group G] [Finite G] (hcard : Nat.card G = 18) :
+    IsSolvable G := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
+  have hpq : (2 : ℕ) < 3 := by norm_num
+  have hcard' : Nat.card G = 3 ^ 2 * 2 := by rw [hcard]; norm_num
+  exact burnside_p_squared_q_p_gt_q hpq hcard'
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART VI: Sharpness witness
 -- ═══════════════════════════════════════════════════════════════════════
@@ -462,6 +584,13 @@ theorem burnside_pq_sharp :
   not solvable, demonstrating that `burnside_pq` cannot be extended to
   three distinct primes. Note: A₅ defeats the `Squarefree` route too —
   60 has `2²`, so `squarefreeOrder_isSolvable` does not apply.
+- `burnside_p_squared_q_p_gt_q` (Iteration 7) — Burnside for `|G| = p² · q`
+  with `q < p` (axiom-free, no longer using `burnside_pq_nontrivial`).
+  Sylow's third theorem (`card_sylow_modEq_one`, `Sylow.card_dvd_index`)
+  forces `n_p = 1`, the unique Sylow `p`-subgroup is normal, and
+  `burnside_pq_with_normal_pSylow` finishes. The companion `p < q` case
+  (with the `(2, 3)` exception requiring element counting) is left for
+  Iteration 8.
 
 ### Path forward
 - Eliminate the (narrowed) `burnside_pq_nontrivial` by formalizing the
@@ -473,11 +602,10 @@ theorem burnside_pq_sharp :
   `(|G|/χ(1))χ(g) ∈ ℤ̄_K`.
 - Next sub-cases worth axiom-free attempts (in order of accessibility):
   (1) `|G| = p² · q` with `p ≠ q` — classical, ~50-100 lines via Sylow.
-      With Iteration 5 the residual content shrinks to "exhibit a normal
-      Sylow"; the standard Sylow-counting argument (`n_p ∣ q`,
-      `n_p ≡ 1 (mod p)`, `n_q ∣ p²`, `n_q ≡ 1 (mod q)` and an
-      element-count) then composes with `burnside_pq_with_normal_pSylow`
-      / `burnside_pq_with_normal_qSylow` for an axiom-free finish.
+      Iteration 7 covered the `q < p` half axiom-free
+      (`burnside_p_squared_q_p_gt_q`); the symmetric `p < q` case (with
+      the `(p, q) = (2, 3)`, `|G| = 12` exception requiring an element
+      count) is the remaining content for Iteration 8.
   (2) `|G| = p · q²` with `p ≠ q` — symmetric to (1).
   (3) `|G| = p² · q²` — needs more delicate Sylow analysis.
 - Mathlib upstream: a Burnside-pᵃqᵇ proof would be a substantial PR.
@@ -495,6 +623,7 @@ theorem burnside_pq_sharp :
 #check @isSolvable_of_normal_quotient_solvable
 #check @burnside_pq_with_normal_pSylow
 #check @burnside_pq_with_normal_qSylow
+#check @burnside_p_squared_q_p_gt_q
 #check @alternatingGroupFin5_card
 #check @alternatingGroupFin5_not_solvable
 #check @burnside_pq_sharp

@@ -30,15 +30,16 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T07:00:00.000Z",
-    "iteration": 6,
-    "focus": "S6 (researcher-12, 2026-05-08): `|G| = p² · q` axiom-free SPECIFICATION written to `research/problems/abel-ruffini-galois-extensions-oq-07/session-6-p-squared-q-spec.md`. Three sub-cases identified: (1) `p > q` via `n_p = 1` from Sylow's third theorem (`n_p ≡ 1 [MOD p]` + `n_p ∣ q < p`); (2) `p < q ≠ 3` via symmetric `n_q = 1` analysis; (3) exceptional `(p, q) = (2, 3), |G| = 12` via element counting (when `n_3 = 4`, the unique Sylow 2-subgroup V_4 is normal). Mathlib API verified (`Sylow.card_sylow_modEq_one`, `Sylow.card_dvd_index`, `Sylow.normal_of_subsingleton`, `Sylow.card_eq_multiplicity`); the existing S5 helpers `burnside_pq_with_normal_pSylow`/`qSylow` discharge cases (1) and (2) directly. Build-ready Lean 4 skeleton with 4 mechanical `sorry`s (factorization, n_q ≠ p ruled out by p < q, n_q ≠ p² ruled out by exceptional flag, exceptional element counting). Estimated ~150-180 new lines. Lean prototype deferred to S7 pending `.lake` symlink repair. S5 (PR #16972) merged successfully; file now 502 lines / 13 theorems / 1 axiom (narrowed to 2 ≤ a ∨ 2 ≤ b) / 0 sorries.",
+    "iteration": 7,
+    "focus": "S7 (researcher-12, 2026-05-08): IMPLEMENTATION of the spec's `p > q` half. Adds private helpers `sylow_count_eq_one_of_lt_prime` (Sylow-count constraint) and `factorization_p_sq_q_at_p` (computes `(p² · q).factorization p = 2`), plus the main result `burnside_p_squared_q_p_gt_q`: every finite group of order `p² · q` with `q < p` (distinct primes) is solvable, axiom-free. Strategy: Sylow's third theorem (`card_sylow_modEq_one` + `Sylow.card_dvd_index`) restricts `n_p` to divisors of `q` that are `≡ 1 [MOD p]`; with `q < p`, only `n_p = 1` is possible, so the unique Sylow `p`-subgroup is normal and S5's `burnside_pq_with_normal_pSylow` finishes. New sanity-check example: `|G| = 18 = 3² · 2`. File grew 502 → 631 lines, 13 → 16 theorems/lemmas; axiomCount unchanged at 1; 0 sorries. Build status: not run this session (`proofs/.lake` symlink trap). All Mathlib API verified against master in S6 spec §2.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama). Note: Mathlib has `Mathlib.GroupTheory.Focal` (focal subgroup definition + transfer to focal quotient), so partial scaffolding exists for the character-free route.",
-      "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed."
+      "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed.",
+      "Build infrastructure: `proofs/.lake` recursive self-symlink forces every Docker build to a ~30–45 min cold-cache Mathlib clone. S7 ships build-pending; CI is the ground truth."
     ],
-    "nextAction": "S7: prototype `burnside_p_squared_q_p_gt_q` per `session-6-p-squared-q-spec.md` §4 + helper §3. Discharge sorry 1 (factorization). Run Docker build with `LEAN_BUILD_TIMEOUT=60m`. ~50 lines. Then S7.5 adds `burnside_p_squared_q_p_lt_q` (~40 lines) and S8 adds the exceptional `|G| = 12` case (~70 lines). After all three sub-cases land, the axiom hypothesis can be tightened to exclude (a, b) = (2, 1) and (1, 2). Beyond p²·q and p·q²: S9 = `|G| = p² · q²` Sylow analysis (~150 lines); S10+ = Goldschmidt-Matsuyama via `Mathlib.GroupTheory.Focal` for residual `a ≥ 3 ∨ b ≥ 3` cases.",
+    "nextAction": "S8: prototype `burnside_p_squared_q_p_lt_q` per spec §5 (~40 lines). Sylow analysis: `n_q ∣ p²` with three cases `{1, p, p²}`; `n_q = p` ruled out by `p < q`; `n_q = p²` requires `q ∣ p² - 1`, ruled out except for `(p, q) = (2, 3)`. S9 then adds the exceptional `burnside_p_squared_q_twelve` case via element counting (~70 lines). S10 combines into `burnside_p_squared_q` and grafts the `(a, b) = (2, 1)` instance into `burnside_pq` to remove the axiom dependency for that case. S11+ = symmetric `|G| = p · q²`; S12+ = `|G| = p² · q²`; S13+ = Goldschmidt-Matsuyama for residual `a ≥ 3 ∨ b ≥ 3`.",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -67,7 +68,19 @@
       "S4 — Narrowed axiom burnside_pq_nontrivial: now requires 2 ≤ a ∨ 2 ≤ b (the a=b=1 case is axiom-free)",
       "S4 — Updated burnside_pq main theorem dispatch: by_cases h11 : a = 1 ∧ b = 1 added before axiom fallback",
       "S4 — 2 new sanity-check examples: |G| = pq via burnside_pq_pq_case (axiom-free); |G| = 30 via squarefreeOrder_isSolvable (squarefree route beyond two primes)",
-      "S4 — Added import Mathlib.GroupTheory.SpecificGroups.ZGroup"
+      "S4 — Added import Mathlib.GroupTheory.SpecificGroups.ZGroup",
+      "S5 (PR #16972 merged) — proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean Part III.5: Normal-Sylow reductions (384 → 502 lines, +3 theorems)",
+      "S5 — isSolvable_of_normal_quotient_solvable: axiom-free packaging of solvability under group extensions, [N.Normal][IsSolvable N][IsSolvable (G⧸N)] → IsSolvable G",
+      "S5 — burnside_pq_with_normal_pSylow: |G| = pᵃ·qᵇ + ∃ N normal of order pᵃ → IsSolvable G (axiom-free reduction tool)",
+      "S5 — burnside_pq_with_normal_qSylow: symmetric q-Sylow reduction",
+      "S5 — sanity-check example: |G| = 12 with normal Sylow-2 (A₄-style) → IsSolvable",
+      "S6 (PR #17035 merged) — Build-ready specification `research/problems/abel-ruffini-galois-extensions-oq-07/session-6-p-squared-q-spec.md` for `burnside_p_squared_q` covering all three sub-cases. Mathlib API inventory verified against master.",
+      "S7 (this session) — proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean Part III.6: |G| = p² · q axiom-free for q < p (502 → 631 lines, +3 theorems/lemmas)",
+      "S7 — sylow_count_eq_one_of_lt_prime (private): arithmetic helper, `n ∣ q prime ∧ q < p ∧ n ≡ 1 [MOD p] → n = 1` via `Nat.Prime.eq_one_or_self_of_dvd` + `Nat.modEq_iff_dvd'`",
+      "S7 — factorization_p_sq_q_at_p (private): `(p² · q).factorization p = 2` for distinct primes (q < p) via `Nat.factorization_mul` + `Nat.factorization_pow` + `Nat.Prime.factorization_self` + `Nat.factorization_eq_zero_of_not_dvd`",
+      "S7 — burnside_p_squared_q_p_gt_q: axiom-free Sylow proof composing `Sylow.card_eq_multiplicity` + `card_sylow_modEq_one` + `Sylow.card_dvd_index` + helpers + `Subsingleton (Sylow p G)` + `Sylow.normal_of_subsingleton` + `burnside_pq_with_normal_pSylow`",
+      "S7 — sanity-check example: |G| = 18 = 3² · 2 via burnside_p_squared_q_p_gt_q",
+      "S7 — Updated #check block to expose `burnside_p_squared_q_p_gt_q`"
     ],
     "insights": [
       "S2 — The four trivial cases (`a = 0`, `b = 0`, `p = q`, `|G| = 1`) all reduce to G being a p-group for some prime p, which Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain handles axiom-free. So 75% of the cases of Burnside's theorem need NO new mathematical content — only the genuinely two-prime case (p ≠ q, a ≥ 1, b ≥ 1) carries new Lean content.",
@@ -153,7 +166,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.054Z",
-  "lastUpdate": "2026-05-08T10:25:00.000Z",
+  "lastUpdate": "2026-05-08T12:55:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -171,8 +184,8 @@
     {
       "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
       "filename": "AbelRuffiniGaloisExtensionsOQ07.lean",
-      "lineCount": 221,
-      "theoremCount": 5,
+      "lineCount": 631,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
