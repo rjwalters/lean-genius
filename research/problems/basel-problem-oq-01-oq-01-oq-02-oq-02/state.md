@@ -2,7 +2,26 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08
-**Iteration**: 6
+**Iteration**: 7
+
+## Session 7 (this session, build pending)
+
+Added two algebraic identities for the m=3 case as Part 7 of
+`BaselProblemOQ01OQ01OQ02OQ02.lean`:
+
+1. `three_mul_choose_three_eq` (n ≥ 3): `3 · C(n, 3) = n · C(n - 1, 2)`.
+   Direct one-line corollary of `mul_choose_eq_mul_choose_pred`.
+2. `two_mul_three_mul_choose_three_eq` (n ≥ 3):
+   `2 · (3 · C(n, 3)) = n · (n - 1) · (n - 2)`. Combines (1) with the
+   m=2 absorption step `2 · C(n - 1, 2) = (n - 1) · (n - 2)`.
+
+These reduce the m=3 divisibility question
+`3 · C(n, 3) ∣ lcmRange n` to whether `n(n-1)(n-2)/2 ∣ lcmRange n`
+(the `/2` being the substantive obstacle that needs Kummer's theorem
+or a careful coprimality argument). Either route — Kummer or double
+induction — can use these identities as the entry point.
+
+**Axiom delta**: 0 (algebraic identities, no divisibility yet).
 
 ## Current Focus
 

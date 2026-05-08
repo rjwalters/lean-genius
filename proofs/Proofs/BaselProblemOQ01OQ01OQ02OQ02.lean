@@ -454,4 +454,52 @@ theorem mul_choose_dvd_lcmRange_two {n : ℕ} (hn : 2 ≤ n) :
   -- Step 4: n · (n - 1) ∣ lcmRange n via the coprime mul_dvd lemma.
   exact hcop.mul_dvd_of_dvd_of_dvd h_n h_n1
 
+-- =====================================================================
+-- PART 7 (Session 7): Algebraic identities for the m=3 case
+-- =====================================================================
+
+/-! ### Why these identities
+
+Session 6 closed `m = 1, 2` of `mul_choose_dvd_lcmRange`. The next step
+is `m = 3`. The general `mul_choose_dvd_lcmRange` (m ≥ 3) requires
+Kummer's theorem on `v_p(C(n, m))` or a double `(n, m)` induction. As an
+**algebraic foundation** for either route, this section provides two
+short identities that pin down the structure of `3 · C(n, 3)`:
+
+1. `three_mul_choose_three_eq` (one-line, no hypotheses besides `3 ≤ n`):
+   `3 · C(n, 3) = n · C(n - 1, 2)`. Direct corollary of
+   `mul_choose_eq_mul_choose_pred` at `m = 3`.
+
+2. `two_mul_three_mul_choose_three_eq` (algebraic): for `n ≥ 3`,
+   `2 · (3 · C(n, 3)) = n · (n - 1) · (n - 2)`. Reduces the m=3
+   divisibility question to whether `n(n-1)(n-2)/2 ∣ lcmRange n`.
+
+These identities are the entry-point for Session 8's m=3 work,
+independent of which divisibility route is chosen. -/
+
+/-- **m=3 absorption identity**: `3 · C(n, 3) = n · C(n - 1, 2)` for
+    `n ≥ 3`. Direct instantiation of `mul_choose_eq_mul_choose_pred`. -/
+theorem three_mul_choose_three_eq {n : ℕ} (hn : 3 ≤ n) :
+    3 * Nat.choose n 3 = n * Nat.choose (n - 1) 2 :=
+  mul_choose_eq_mul_choose_pred (by decide) hn
+
+/-- **m=3 explicit form**: `2 · (3 · C(n, 3)) = n · (n - 1) · (n - 2)`
+    for `n ≥ 3`. Combines `three_mul_choose_three_eq` with the m=2
+    absorption step `2 · C(n - 1, 2) = (n - 1) · (n - 2)`. The factor
+    of 2 on the LHS captures the "extra `/2`" in the Pascal-style
+    `C(n, 3) = n(n-1)(n-2)/6` formula. -/
+theorem two_mul_three_mul_choose_three_eq {n : ℕ} (hn : 3 ≤ n) :
+    2 * (3 * Nat.choose n 3) = n * ((n - 1) * (n - 2)) := by
+  rw [three_mul_choose_three_eq hn]
+  -- Goal: 2 * (n * C(n - 1, 2)) = n * ((n - 1) * (n - 2))
+  rw [show 2 * (n * Nat.choose (n - 1) 2) =
+        n * (2 * Nat.choose (n - 1) 2) from by ring]
+  -- Apply m=2 absorption to `n - 1`: 2 * C(n-1, 2) = (n-1) * C(n-2, 1).
+  have hnm1 : (2 : ℕ) ≤ n - 1 := by omega
+  rw [mul_choose_eq_mul_choose_pred (by decide : (0:ℕ) < 2) hnm1]
+  -- Goal: n * ((n - 1) * Nat.choose (n - 1 - 1) (2 - 1)) =
+  --       n * ((n - 1) * (n - 2))
+  rw [show ((n - 1 - 1) : ℕ) = n - 2 from by omega,
+      Nat.choose_one_right]
+
 end BaselProblemOQ01OQ01OQ02OQ02
