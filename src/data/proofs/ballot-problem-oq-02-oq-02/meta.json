@@ -41,6 +41,16 @@
       "The hard direction uses `IsClosed.csInf_mem`: in a conditionally complete lattice, the infimum of a nonempty closed bounded-below set belongs to the set. This is the Lean-level version of 'closed sets contain their infima', which requires both closure and nonemptiness.",
       "The IVT section shows that crossing paths (B(0,\u03c9) < a \u2264 B(T,\u03c9)) automatically have nonempty hitting sets: IVT gives a crossing time s \u2208 (0,T] with B(s,\u03c9) \u2265 a, placing s in the hitting set.",
       "The proof pattern \u2014 csInf of a closed nonempty set belongs to that set \u2014 is a reusable template for hitting time theory. It works for any continuous process and any closed threshold set, not just the level-crossing case."
+    ],
+    "prerequisites": [
+      "Real analysis: continuous functions on $\\mathbb{R}$, closed sets, preimage of a closed set under a continuous map is closed",
+      "Conditionally complete lattices and order theory: $\\mathrm{sInf}$ on a bounded-below set; the convention $\\mathrm{sInf}\\,\\emptyset = 0$ in Lean's $\\mathbb{R}$ (`Real.sInf_empty`) versus the classical $+\\infty$",
+      "Mathlib `IsClosed.csInf_mem`: in a conditionally complete linear order, the infimum of a nonempty closed bounded-below set is itself an element of the set",
+      "Intermediate Value Theorem in the form `isPreconnected_Icc.intermediate_value\u2082`: for continuous $f, g$ on a preconnected space with $f(a) \\le g(a)$ and $g(b) \\le f(b)$, there is $s$ with $f(s) = g(s)$",
+      "Brownian motion and stopping times: the first passage time $\\tau_a = \\inf\\{t \\ge 0 : B(t) \\ge a\\}$, the maximum process $M_T = \\sup_{s \\le T} B(s)$, the level-crossing identity $\\{\\tau_a \\le T\\} = \\{M_T \\ge a\\}$ for continuous paths",
+      "Lean idioms for bundled hypotheses: encoding the path-continuity assumption as a `structure` field (`path_continuous : \u2200 \u03c9, Continuous (fun t => W t \u03c9)`) rather than a `variable`-level assumption \u2014 this lets the topological lemmas project the hypothesis on demand from a `BrownianMotion bm` argument",
+      "Measure theory groundwork: `MeasurableSpace`, `Measure`, `IsProbabilityMeasure` typeclasses (used here only at the structure level \u2014 the proofs are pathwise, not measure-theoretic)",
+      "Set algebra: $\\{t : 0 \\le t \\land f(t) \\ge a\\} = [0,\\infty) \\cap f^{-1}([a,\\infty))$, used to derive closedness as the intersection of two closed sets"
     ]
   },
   "sections": [
@@ -86,6 +96,108 @@
       "Can Doob's optional stopping theorem for martingales be formalized in Lean, using this first passage time characterization to verify the stopping time measurability hypothesis?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "hittingSet_isClosed",
+      "type": "theorem",
+      "statement": "$\\forall (bm, a, \\omega)\\colon \\mathrm{IsClosed}\\,\\{t \\in \\mathbb{R} \\mid 0 \\le t \\land bm.W\\,t\\,\\omega \\ge a\\}$",
+      "significance": "The pivotal topological fact: the hitting set is closed because it equals $[0,\\infty) \\cap f^{-1}([a,\\infty))$ where $f = B(\\cdot,\\omega)$ is continuous (path-continuity is a bundled hypothesis on `BrownianMotion`). Without this, `IsClosed.csInf_mem` cannot fire and the hard direction of the characterization breaks.",
+      "description": "The hitting set $H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ is closed in $\\mathbb{R}$. Proof: rewrite as $\\{t : 0 \\le t\\} \\cap (B(\\cdot,\\omega))^{-1}([a,\\infty))$; both pieces are closed (the first by `isClosed_Ici`, the second by `isClosed_Ici.preimage hcont` from path continuity)."
+    },
+    {
+      "name": "csInf_empty_eq_zero",
+      "type": "theorem",
+      "statement": "$\\mathrm{sInf}\\,(\\emptyset : \\mathrm{Set}\\,\\mathbb{R}) = 0$",
+      "significance": "Lean's convention exposed as a one-line lemma so the rest of the file can reference it explicitly. This is exactly why the parent file's `firstPassageTime_eq_maxEvent` axiom is *technically false* without a nonemptiness hypothesis: a path that never reaches level $a$ has empty hitting set, so $\\tau = \\mathrm{sInf}\\,\\emptyset = 0 \\le T$ vacuously even though the path never hits $a$.",
+      "description": "Lean's `sInf` on $\\mathbb{R}$ returns $0$ for the empty set (this is `Real.sInf_empty`), not $+\\infty$ as classical analysis prefers. Surfacing this convention as a named lemma makes the nonemptiness hypothesis on the main theorem self-explanatory."
+    },
+    {
+      "name": "hittingSet_csInf_mem",
+      "type": "theorem",
+      "statement": "$\\forall (bm, a, \\omega)\\colon H_a(\\omega).\\mathrm{Nonempty} \\Rightarrow \\mathrm{sInf}\\,H_a(\\omega) \\in H_a(\\omega)$",
+      "significance": "The mechanical core of the hard direction: combining `hittingSet_isClosed` and `hittingSet_bddBelow` with the nonemptiness hypothesis lets `IsClosed.csInf_mem` give us $\\tau \\in H_a(\\omega)$, which unpacks to $0 \\le \\tau \\land B(\\tau,\\omega) \\ge a$ — exactly the witness needed to populate `maxEvent`.",
+      "description": "When $H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ is nonempty, its infimum belongs to the set itself. One-line proof via Mathlib's `IsClosed.csInf_mem` once closure and bddBelow are discharged."
+    },
+    {
+      "name": "maxEvent_implies_fpt_le",
+      "type": "theorem",
+      "statement": "$\\omega \\in \\mathrm{maxEvent}\\,bm\\,a\\,T \\Rightarrow \\mathrm{firstPassageTime}\\,bm\\,a\\,\\omega \\le T$",
+      "significance": "The easy half. Crucially does NOT require nonemptiness — the maxEvent hypothesis itself supplies a witness $s \\in [0,T]$ in $H_a(\\omega)$, so $H_a(\\omega) \\ne \\emptyset$ is automatic and `csInf_le` closes the goal.",
+      "description": "If $\\omega \\in \\mathrm{maxEvent}$ then $\\exists s \\in [0,T], B(s,\\omega) \\ge a$. Such an $s$ is in $H_a(\\omega)$, so $\\tau = \\mathrm{sInf}\\,H_a(\\omega) \\le s \\le T$ by `csInf_le` (which only needs `BddBelow`)."
+    },
+    {
+      "name": "fpt_le_implies_maxEvent",
+      "type": "theorem",
+      "statement": "$H_a(\\omega).\\mathrm{Nonempty} \\land \\mathrm{firstPassageTime}\\,bm\\,a\\,\\omega \\le T \\Rightarrow \\omega \\in \\mathrm{maxEvent}\\,bm\\,a\\,T$",
+      "significance": "The hard half. Witness construction: `hittingSet_csInf_mem` gives $\\tau = \\mathrm{sInf}\\,H_a(\\omega) \\in H_a(\\omega)$, unpacking to $0 \\le \\tau$ and $B(\\tau,\\omega) \\ge a$; combined with $\\tau \\le T$, the witness $s = \\tau \\in [0,T]$ membership of maxEvent is immediate.",
+      "description": "Given nonemptiness and $\\tau \\le T$, the witness for maxEvent is $s = \\tau$ itself. Proof relies on `hittingSet_csInf_mem` to put $\\tau$ in the hitting set, then the bounds $0 \\le \\tau \\le T$ assemble the Icc-membership."
+    },
+    {
+      "name": "fpt_le_iff_maxEvent",
+      "type": "theorem",
+      "statement": "$H_a(\\omega).\\mathrm{Nonempty} \\Rightarrow \\bigl(\\mathrm{firstPassageTime}\\,bm\\,a\\,\\omega \\le T \\iff \\omega \\in \\mathrm{maxEvent}\\,bm\\,a\\,T\\bigr)$",
+      "significance": "Headline biconditional under the explicit nonemptiness hypothesis. This is the *correct* statement of what the parent file's axiom `firstPassageTime_eq_maxEvent` was trying to assert; the present formulation makes the hidden hypothesis explicit.",
+      "description": "Under nonemptiness of the hitting set, $\\tau \\le T$ iff $\\omega \\in \\mathrm{maxEvent}$. Combines `maxEvent_implies_fpt_le` and `fpt_le_implies_maxEvent`. Proves the parent axiom modulo the missing hypothesis."
+    },
+    {
+      "name": "fpt_le_set_eq_maxEvent",
+      "type": "theorem",
+      "statement": "$\\bigl(\\forall \\omega, H_a(\\omega).\\mathrm{Nonempty}\\bigr) \\Rightarrow \\{\\omega \\mid \\mathrm{firstPassageTime}\\,bm\\,a\\,\\omega \\le T\\} = \\mathrm{maxEvent}\\,bm\\,a\\,T$",
+      "significance": "Set-extensional version of the biconditional, in the form the parent file's axiom would have stated it. Lifting the pointwise iff to set equality requires only `Set.ext`.",
+      "description": "Under universal nonemptiness, the set $\\{\\omega : \\tau(\\omega) \\le T\\}$ equals $\\mathrm{maxEvent}$. This is the form the parent's `firstPassageTime_eq_maxEvent` axiom asserted (without the nonemptiness clause), so this theorem proves the axiom under its missing hypothesis."
+    },
+    {
+      "name": "ivt_first_crossing",
+      "type": "theorem",
+      "statement": "$B(0,\\omega) < a \\le B(T,\\omega) \\Rightarrow \\exists s \\in [0,T], B(s,\\omega) = a \\land 0 < s$",
+      "significance": "The IVT bridge: continuous paths that strictly cross level $a$ over $[0,T]$ have an honest crossing time strictly inside $(0,T]$. Discharges the strictness $0 < s$ from the strict inequality $B(0,\\omega) < a$.",
+      "description": "By IVT applied to $f = B(\\cdot,\\omega)$ and $g = a$ (constant), there is $s \\in [0,T]$ with $B(s,\\omega) = a$. Strict $B(0,\\omega) < a$ rules out $s = 0$, so $s > 0$. Lean uses `isPreconnected_Icc.intermediate_value₂`."
+    },
+    {
+      "name": "fpt_le_T_of_crossing",
+      "type": "theorem",
+      "statement": "$B(0,\\omega) < a \\le B(T,\\omega) \\Rightarrow \\bigl(\\mathrm{firstPassageTime}\\,bm\\,a\\,\\omega \\le T \\land \\omega \\in \\mathrm{maxEvent}\\,bm\\,a\\,T\\bigr)$",
+      "significance": "Capstone corollary: continuous paths that strictly cross level $a$ on $[0,T]$ satisfy *both* conditions of the characterization. Eliminates the nonemptiness side condition for the most natural use case (paths witnessing a crossing).",
+      "description": "Combines `ivt_first_crossing` (gives the crossing time) and `hittingSet_nonempty_of_ivt` (turns crossing into nonemptiness) with `fpt_le_iff_maxEvent` (gives the biconditional). The conclusion is the conjunction of the two characterization conditions, both witnessed by $s = T$ in `maxEvent`."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "André, D. (1887). \"Solution directe du problème résolu par M. Bertrand.\" Comptes Rendus de l'Académie des Sciences, Paris 105, 436–437.",
+      "relevance": "Original reflection-principle calculation of the distribution of the first passage time / running maximum for simple random walks (the precursor of the Brownian-motion result formalized here)."
+    },
+    {
+      "type": "textbook",
+      "citation": "Bachelier, L. (1900). \"Théorie de la spéculation.\" Annales scientifiques de l'École Normale Supérieure, 3rd ser., 17, 21–86.",
+      "relevance": "First continuous-time treatment of Brownian motion (Bachelier's mathematical model of stock prices); contains the continuous-time analog of André's reflection argument and the level-crossing identity $\\{\\tau_a \\le T\\} = \\{\\sup_{s \\le T} B_s \\ge a\\}$ formalized in this file."
+    },
+    {
+      "type": "textbook",
+      "citation": "Lévy, P. (1939). \"Sur certains processus stochastiques homogènes.\" Compositio Mathematica 7, 283–339.",
+      "relevance": "Modern measure-theoretic treatment of Brownian first passage times and the reflection principle; establishes the pathwise level-crossing identity in the form whose continuity hypothesis this Lean formalization isolates."
+    },
+    {
+      "type": "textbook",
+      "citation": "Karatzas, I. & Shreve, S.E. (1991). Brownian Motion and Stochastic Calculus (2nd ed.), §2.6 (First Passage Times). Springer GTM 113.",
+      "relevance": "Standard graduate reference for Brownian first passage times; proves $\\{\\tau_a \\le T\\} = \\{M_T \\ge a\\}$ via path continuity and the supremum formulation, mirroring this file's csInf/IVT structure."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Order.ConditionallyCompleteLattice.Basic — IsClosed.csInf_mem and csInf_le.\" (accessed 2026).",
+      "relevance": "Provides the `IsClosed.csInf_mem` lemma (closed nonempty bounded-below set contains its infimum) and `csInf_le` (which only requires `BddBelow`); both are the exact engines used by `hittingSet_csInf_mem` and `maxEvent_implies_fpt_le` respectively."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Topology.Order.IntermediateValue — isPreconnected_Icc.intermediate_value₂.\" (accessed 2026).",
+      "relevance": "Two-function form of IVT used by `ivt_first_crossing`: continuous $f, g$ on a preconnected interval with $f(a) \\le g(a)$ and $g(b) \\le f(b)$ have a crossing $s$ with $f(s) = g(s)$. Specialized here with $f = B(\\cdot,\\omega)$, $g \\equiv a$."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Analysis.SpecificLimits — Real.sInf_empty.\" (accessed 2026).",
+      "relevance": "Records Lean's convention $\\mathrm{sInf}\\,(\\emptyset : \\mathrm{Set}\\,\\mathbb{R}) = 0$, which the file surfaces as `csInf_empty_eq_zero` to make the parent file's missing nonemptiness hypothesis impossible to overlook."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "ballot-problem-oq-02",
