@@ -1,0 +1,242 @@
+{
+  "id": "hilbert-11-oq-02",
+  "title": "Selmer Cubic & the Hasse Principle Failure (Open Question)",
+  "slug": "hilbert-11-oq-02",
+  "description": "Hasse-Minkowski (1923) shows the local-global principle holds for quadratic forms over ℚ. Selmer (1951) showed it FAILS for the cubic 3x³ + 4y³ + 5z³ = 0: the equation is solvable over ℝ and every ℚₚ but has no nontrivial rational solutions. This entry formalizes (i) the proved real solubility (constructively, via IVT), (ii) the proved easy direction of the Hasse principle (rational ⇒ local) over both ℝ and ℚₚ, (iii) Selmer's 1951 theorem (axiomatized; full proof uses 3-descent on a genus-1 elliptic curve), and (iv) p-adic solubility (axiomatized; provable via Hensel for p ∉ {2,3,5}). The Hasse-principle FAILURE for the Selmer cubic is then proved from the two axioms.",
+  "meta": {
+    "author": "Selmer (1951); formalization 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hasse_principle",
+    "date": "1951",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Hilbert11OQ02.lean",
+    "tags": [
+      "number-theory",
+      "hasse-principle",
+      "local-global",
+      "cubic-forms",
+      "selmer",
+      "brauer-manin",
+      "open-problem",
+      "hilbert-problems"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 2,
+    "lineCount": 264,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "assumptions": "2 axioms: (1) selmer_no_rational_solution — Selmer's 1951 theorem that 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions; the full proof uses 3-descent on the associated elliptic curve y² = x³ - 432·15² and computation of the 3-Selmer group, neither of which is available in Mathlib v4.26.0. (2) selmer_padic_solubility — for every prime p, the Selmer cubic is solvable over ℚₚ; provable via Hensel's lemma on the smooth reduction mod p for p ∉ {2,3,5} and direct construction at the small primes, but requires Hensel infrastructure for ℚₚ. The real solubility (existence of a nontrivial real root) and the easy directions ℚ → ℝ and ℚ → ℚₚ are proved unconditionally from Mathlib's intermediate_value_Icc and the standard ring embeddings.",
+    "dateAdded": "2026-05-08",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "Intermediate Value Theorem on [a,b] — used to prove the existence of a real root of g(x) = 3x³ + 4 in [-2, 0]",
+        "module": "Mathlib.Topology.Algebra.Order.IntermediateValue"
+      },
+      {
+        "theorem": "Rat.cast",
+        "description": "Ring homomorphism ℚ → R for R = ℝ, ℚₚ — used for the easy direction of the Hasse principle",
+        "module": "Mathlib.Data.Rat.Cast.Defs"
+      },
+      {
+        "theorem": "PadicNumbers",
+        "description": "p-adic completion ℚₚ of ℚ — used to state local solubility at every prime p",
+        "module": "Mathlib.NumberTheory.Padics.PadicNumbers"
+      }
+    ],
+    "originalContributions": [
+      "Definition selmerPoly: 3x³ + 4y³ + 5z³ over a generic CommRing R, applicable simultaneously to ℚ, ℝ, and ℚₚ for any prime p.",
+      "Theorem selmerCubic_real_solution: the Selmer cubic has a nontrivial real solution, proved constructively via IVT on g(x) = 3x³ + 4 over [-2, 0] (g(-2) = -20 < 0, g(0) = 4 > 0).",
+      "Theorem selmer_rat_implies_real: easy direction ℚ ⇒ ℝ via Rat.cast embedding (formal push_cast + ring).",
+      "Theorem selmer_rat_implies_padic: easy direction ℚ ⇒ ℚₚ via Rat.cast for any prime p (parametric).",
+      "Definition selmerHassePrinciple: the local-global predicate for the Selmer cubic — rational solubility iff local solubility everywhere.",
+      "Axiom selmer_no_rational_solution: Selmer's 1951 theorem (3-descent, depth ~30 pages mathematically, beyond Mathlib).",
+      "Axiom selmer_padic_solubility: p-adic solubility at every prime (Hensel infrastructure pending in Lean).",
+      "Theorem selmer_locally_soluble_everywhere: local solubility ℝ + every ℚₚ, combining the proved real case with the axiomatized p-adic case.",
+      "Theorem selmer_hasse_principle_fails: the Hasse principle fails for the Selmer cubic — proved from the two axioms in 4 lines.",
+      "Definition colliot_thelene_conjecture: documented placeholder (`Prop := True`) for the Brauer-Manin conjecture, which would require étale cohomology and adelic-points machinery not present in Mathlib."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Hasse-Minkowski theorem (Hasse 1923, building on Minkowski 1890 for ternary quadratic forms) is one of the foundational local-global principles of arithmetic: a quadratic form over ℚ has a nontrivial rational zero if and only if it has a nontrivial zero over ℝ and over every p-adic field ℚₚ. This 'local-global principle' (or 'Hasse principle') is the prototype for the modern adelic perspective on Diophantine equations.\n\nIt was an open question for several decades whether the Hasse principle extended to higher-degree forms. The first definitive answer came in 1951, when Ernst Selmer published an explicit cubic counterexample: the equation 3x³ + 4y³ + 5z³ = 0 has solutions in every local field (ℝ and every ℚₚ) but no nontrivial rational solutions. Selmer's proof used the technique of 3-descent on the associated genus-1 elliptic curve, computing the 3-Selmer group via class field theory of the cyclotomic field ℚ(ζ₃, ∛15).\n\nThe Selmer counterexample opened the modern field of obstruction theory in arithmetic geometry. In 1971, Yuri Manin introduced the **Brauer-Manin obstruction**, providing a uniform framework that explained all then-known failures: a rational point lies in the 'Brauer-Manin set' X(𝔸_K)^{Br(X)} ⊆ X(𝔸_K), and an empty Brauer-Manin set obstructs the Hasse principle. Skorobogatov (1999) showed the Brauer-Manin obstruction is *not* always sufficient (étale-Brauer-Manin is strictly stronger), and Poonen (2010) constructed varieties where even the étale-Brauer-Manin obstruction is insufficient. The general characterization remains a major open problem in modern number theory.",
+    "problemStatement": "**Open Question (hilbert-11-oq-02)**: For which polynomial systems over ℚ does the Hasse principle hold?\n\nFor quadratic forms: ALWAYS (Hasse-Minkowski 1923) — proved at hilbert-11.\n\nFor cubic forms: SOMETIMES — fails for the Selmer cubic 3x³ + 4y³ + 5z³ = 0 (Selmer 1951), formalized here.\n\nIn general (degree ≥ 3): conjecturally controlled by the Brauer-Manin obstruction (Manin 1971) for rationally connected varieties, the étale-Brauer-Manin obstruction (Skorobogatov 1999) for more general classes, but no obstruction theory is known to be sufficient in full generality (Poonen 2010).\n\n**What IS proved here**:\n- Real solubility of 3x³ + 4y³ + 5z³ = 0 (constructively via IVT).\n- Easy directions ℚ ⇒ ℝ and ℚ ⇒ ℚₚ.\n- Hasse-principle FAILURE for the Selmer cubic, given the two axioms.\n\n**What IS axiomatized**:\n- Selmer 1951: no rational solutions (3-descent, deep).\n- p-adic solubility (Hensel, doable but infrastructure-pending).\n\n**What remains OPEN**:\n- Complete characterization of Hasse-principle failure in higher degrees.\n- Brauer-Manin sufficiency for rationally connected varieties (Colliot-Thélène conjecture).\n- Algorithmic decidability of rational solubility for cubic forms.",
+    "text": "Hasse-Minkowski (1923) shows the Hasse principle holds for quadratic forms over ℚ. Selmer (1951) gave the first counterexample in higher degree: 3x³ + 4y³ + 5z³ = 0 has solutions over ℝ and every ℚₚ but no nontrivial rational solutions. This entry formalizes the framework around the Selmer cubic, proving real solubility constructively and the easy directions of the Hasse principle, while axiomatizing Selmer's deep 1951 result and (provisionally) p-adic solubility. From these the Hasse-principle failure follows in 4 lines.",
+    "proofStrategy": "**1. The polynomial.** `selmerPoly x y z = 3·x³ + 4·y³ + 5·z³` is defined over a generic CommRing R, so the same expression specializes to ℚ, ℝ, and ℚₚ for any prime p. This avoids duplicating the polynomial across the three rings and lets the easy-direction proofs reduce to a single `push_cast; ring` step.\n\n**2. Real solubility (constructive).** Set y = 1, z = 0; we need x ∈ ℝ with 3x³ + 4 = 0. Define g(x) = 3x³ + 4 (continuous), evaluate g(-2) = -20 < 0 and g(0) = 4 > 0, then apply `intermediate_value_Icc` to obtain x₀ ∈ [-2, 0] with g(x₀) = 0. The triple (x₀, 1, 0) is then a nontrivial real solution because the second coordinate is 1 ≠ 0. This is the only place where the proof uses any analysis; everything else is purely formal.\n\n**3. Easy directions (formal).** Given a rational solution (x, y, z), the triple (x : ℝ, y : ℝ, z : ℝ) — using the standard ring homomorphism ℚ → ℝ — satisfies the same equation. This reduces to `push_cast; ring` on the cubic identity. The same argument works for ℚ → ℚₚ for any prime p (parametric in p).\n\n**4. Selmer's theorem (axiomatized).** `selmer_no_rational_solution` is stated as an axiom because the proof goes through 3-descent on the elliptic curve y² = x³ - 432·15², requiring computation of the 3-Selmer group via class field theory of ℚ(ζ₃, ∛15). Mathlib v4.26.0 has `EllipticCurve` but no Selmer-group infrastructure or 3-descent machinery.\n\n**5. p-adic solubility (axiomatized).** `selmer_padic_solubility` is provable in principle via Hensel's lemma applied to the smooth mod-p reduction of 3x³ + 4y³ + 5z³ = 0 for p ∉ {2, 3, 5}, with direct construction at the small primes. Mathlib has the basic Hensel framework but the application to homogeneous cubics over ℚₚ is not yet developed; this is the most accessible axiom-elimination path for future work.\n\n**6. Hasse-principle failure.** From the two axioms plus the proved real solubility, a 4-line argument: assume the local-global biconditional, apply mpr to (real ∧ everywhere p-adic), derive a rational solution, contradict the no-rational-solution axiom.",
+    "keyInsights": [
+      "The Selmer cubic 3x³ + 4y³ + 5z³ = 0 is genus 1 over ℚ̄ — it is in fact a principal homogeneous space for the elliptic curve y² = x³ - 432·15², so its rational solubility is governed by the Tate-Shafarevich group Ш(E/ℚ).",
+      "Real solubility has a one-line constructive proof: fix y = 1, z = 0, solve 3x³ + 4 = 0 by IVT on g(x) = 3x³ + 4 over [-2, 0]. This separates the easy real case from the deep arithmetic input cleanly.",
+      "The easy direction of the Hasse principle (rational ⇒ local) is purely formal in Lean: the standard ring embeddings ℚ ↪ ℝ and ℚ ↪ ℚₚ commute with polynomial evaluation, so `push_cast; ring` closes the goal. This pattern generalizes to any homogeneous form over ℚ — a future generic `RatPoint_to_LocalPoint` could replace these two theorems.",
+      "Selmer 1951 is irreducibly axiomatized: 3-descent on a CM elliptic curve is not in Mathlib v4.26.0, and developing the requisite infrastructure (Selmer groups, class field theory of ℚ(ζ₃, ∛15), 3-coverings) would be a multi-thousand-line Mathlib contribution.",
+      "p-adic solubility is the more accessible axiom: the Selmer cubic has smooth mod-p reductions for p ∉ {2, 3, 5}, and Hensel's lemma lifts smooth 𝔽ₚ points to ℚₚ points. The remaining work is glue between Mathlib's Hensel API and the cubic over ℚₚ.",
+      "The Brauer-Manin obstruction (Manin 1971) is the modern uniform framework. For smooth proper geometrically rationally connected varieties over a number field, the Colliot-Thélène conjecture states it is the *only* obstruction to the Hasse principle. This is known for several special families but open in general — and is encoded here as a documented `Prop := True` placeholder, awaiting future étale-cohomology infrastructure in Mathlib.",
+      "Skorobogatov (1999) and Poonen (2010) showed that even the étale-Brauer-Manin obstruction is not always sufficient, so the general characterization of Hasse-principle failure remains a central open problem in arithmetic geometry."
+    ],
+    "prerequisites": [
+      "Number theory: rational, real, and p-adic numbers; Hasse-Minkowski theorem for quadratic forms",
+      "Polynomial equations over rings; ring homomorphisms",
+      "Real analysis: continuity and the Intermediate Value Theorem",
+      "Elliptic curves and the basic outline of descent (for context, not used in the proof)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Open-Question Statement",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports (PadicNumbers, IntermediateValue, Polynomial.Basic, Tactic), context for the Hasse principle (Hasse-Minkowski 1923 holds for quadratics; fails in cubic degree by Selmer 1951), pointer to the Brauer-Manin obstruction and the Colliot-Thélène conjecture, and the namespace declaration.",
+      "mathContext": "**Hasse principle**: for a polynomial equation $F(\\vec x) = 0$ over $\\mathbb{Q}$, rational solubility $\\Leftrightarrow$ solubility over $\\mathbb{R}$ and over every $\\mathbb{Q}_p$. **Hasse-Minkowski 1923**: holds for quadratic forms. **Selmer 1951**: fails for the cubic $3x^3 + 4y^3 + 5z^3 = 0$."
+    },
+    {
+      "id": "selmer-poly",
+      "title": "Section 1: The Selmer Cubic Polynomial",
+      "startLine": 51,
+      "endLine": 56,
+      "summary": "Definition selmerPoly: 3x³ + 4y³ + 5z³ over a generic commutative ring R. The genericity lets the same expression specialize to ℚ, ℝ, and ℚₚ for every prime p, avoiding duplication across the three rings.",
+      "mathContext": "$\\text{selmerPoly}(x, y, z) = 3x^3 + 4y^3 + 5z^3 \\in R$ for any commutative ring $R$."
+    },
+    {
+      "id": "real-solubility",
+      "title": "Section 2: Real Solubility (Proved via IVT)",
+      "startLine": 57,
+      "endLine": 92,
+      "summary": "Theorem selmerCubic_real_solution: ∃ (x y z : ℝ), nontrivial ∧ selmerPoly x y z = 0. Proof: set y = 1, z = 0, define g(x) = 3x³ + 4 (continuous), evaluate g(-2) = -20 < 0 and g(0) = 4 > 0, apply intermediate_value_Icc to get x₀ ∈ [-2, 0] with g(x₀) = 0; the triple (x₀, 1, 0) is then nontrivial.",
+      "mathContext": "Set $y = 1, z = 0$, solve $3x^3 + 4 = 0$ via IVT on $g(x) = 3x^3 + 4$ over $[-2, 0]$ (g(-2) = -20, g(0) = 4)."
+    },
+    {
+      "id": "easy-directions",
+      "title": "Section 3: Easy Directions of the Hasse Principle",
+      "startLine": 93,
+      "endLine": 134,
+      "summary": "Two theorems: selmer_rat_implies_real and selmer_rat_implies_padic. Both follow from the standard ring embeddings ℚ ↪ ℝ and ℚ ↪ ℚₚ, with the polynomial-evaluation step closing via push_cast and ring/norm_num.",
+      "mathContext": "Embeddings $\\mathbb{Q} \\hookrightarrow \\mathbb{R}$ and $\\mathbb{Q} \\hookrightarrow \\mathbb{Q}_p$ are ring homomorphisms, so $F(x, y, z) = 0 \\in \\mathbb{Q}$ implies $F(x, y, z) = 0$ in any of $\\mathbb{R}, \\mathbb{Q}_p$."
+    },
+    {
+      "id": "selmer-axiom",
+      "title": "Section 4: Selmer's Theorem (Axiomatized)",
+      "startLine": 136,
+      "endLine": 156,
+      "summary": "Axiom selmer_no_rational_solution: ¬∃ (x y z : ℚ), nontrivial ∧ selmerPoly x y z = 0. Selmer's 1951 theorem; full proof uses 3-descent on y² = x³ - 432·15², beyond Mathlib v4.26.0.",
+      "mathContext": "Selmer's 1951 theorem proceeds by 3-descent on the associated elliptic curve $E: y^2 = x^3 - 432 \\cdot 15^2$, computing the 3-Selmer group via class field theory of $\\mathbb{Q}(\\zeta_3, \\sqrt[3]{15})$, and exhibiting local non-existence of certain 3-coverings at $p \\in \\{3, 5\\}$."
+    },
+    {
+      "id": "padic-and-hasse",
+      "title": "Section 5: p-adic Solubility and Hasse-Principle Failure",
+      "startLine": 157,
+      "endLine": 204,
+      "summary": "Definition selmerHassePrinciple: rational ↔ (real ∧ ∀ p, p-adic). Axiom selmer_padic_solubility (Hensel for p ∉ {2,3,5}, direct at small primes). Theorem selmer_locally_soluble_everywhere combines the proved real case with the axiomatized p-adic case. Theorem selmer_hasse_principle_fails: 4-line proof from the axioms.",
+      "mathContext": "**Hasse-principle predicate**: $X(\\mathbb{Q}) \\neq \\emptyset \\Leftrightarrow X(\\mathbb{R}) \\neq \\emptyset \\land \\forall p, X(\\mathbb{Q}_p) \\neq \\emptyset$. For the Selmer cubic, both local sides are nonempty but $X(\\mathbb{Q}) = \\emptyset$, so the equivalence fails."
+    },
+    {
+      "id": "open-question",
+      "title": "Section 6: The Open Question",
+      "startLine": 205,
+      "endLine": 233,
+      "summary": "Definition colliot_thelene_conjecture as `Prop := True`, a documented placeholder for the open conjecture that Brauer-Manin is the only obstruction to the Hasse principle for smooth proper geometrically rationally connected varieties over a number field. Listed known and open cases.",
+      "mathContext": "**Colliot-Thélène conjecture**: for smooth proper geometrically rationally connected $X$ over a number field $K$, $X(\\mathbb{A}_K)^{\\text{Br}(X)} \\neq \\emptyset \\Rightarrow X(K) \\neq \\emptyset$ (Brauer-Manin is the only obstruction). Known: conic bundles, del Pezzo of degree $\\geq 5$. Open: cubic surfaces, K3 surfaces, higher-dim Fano."
+    },
+    {
+      "id": "summary",
+      "title": "Section 7: Status Summary and #check",
+      "startLine": 234,
+      "endLine": 264,
+      "summary": "Status table listing each component as PROVED or AXIOMATIZED, axiom count = 2, sorry count = 0, and #check statements for the seven main declarations.",
+      "mathContext": "Final tally: 5 theorems, 3 definitions, 2 axioms, 0 sorries. The two axioms (`selmer_no_rational_solution`, `selmer_padic_solubility`) are documented with mathematical justification."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Selmer cubic 3x³ + 4y³ + 5z³ = 0 — the canonical 1951 counterexample to the Hasse principle for higher-degree forms — is formalized as a 264-line Lean 4 file with 5 theorems, 3 definitions, 2 axioms, 0 sorries. Real solubility is proved constructively via IVT; the easy directions of the Hasse principle (rational ⇒ local) are proved by formal ring-embedding arguments; Selmer's no-rational-solutions theorem and full p-adic solubility are axiomatized; and the Hasse-principle FAILURE for the Selmer cubic is then proved in 4 lines from the two axioms. The result is a clean encoding of the canonical counterexample with all the elementary content proved and all the deep arithmetic content explicitly axiomatized.",
+    "implications": "**Theoretical significance**: Selmer's cubic was the first explicit demonstration that the Hasse principle does not extend from quadratic to cubic forms. It launched the entire modern field of obstruction theory in arithmetic geometry — Manin's Brauer-Manin obstruction (1971), Skorobogatov's étale-Brauer-Manin (1999), Poonen's intermediate failures (2010). Whether the étale-Brauer-Manin obstruction is the only obstruction for rationally connected varieties is a central open question linking number theory to algebraic geometry.\n\n**Formalization significance**: This is one of the first Mathlib-aligned formalizations of a Hasse-principle failure. The two axioms cleanly localize the deep arithmetic content (3-descent, Hensel) without bleeding into the surrounding gallery framework. The genericity of `selmerPoly` over CommRing (rather than ℚ-specific) makes the easy-direction theorems reusable across the three local rings.\n\n**Path to fewer axioms**: `selmer_padic_solubility` is the more accessible axiom — it follows from Mathlib's existing Hensel infrastructure plus a smooth-reduction argument for primes p ∉ {2, 3, 5} and direct construction at p ∈ {2, 3, 5}. Eliminating this axiom would leave only Selmer 1951 itself as an assumption, an honest reflection of the mathematical depth.\n\n**Connection to other gallery entries**: hilbert-11 (parent, Hasse-Minkowski for quadratics — the result that Selmer demonstrates does NOT generalize); hilbert-11-oq-01 (sibling, refined Hasse-Minkowski); e-transcendental-oq-02 (similar pattern: deep open problem with axiomatized headline + proved framework).",
+    "openQuestions": [
+      "Eliminate the `selmer_padic_solubility` axiom by formalizing Hensel's lemma application to smooth cubic reductions. For p ∉ {2, 3, 5} this is direct; the small primes need explicit low-precision lifts.",
+      "Develop a generic predicate `IsHigherDegreeForm n` over `MvPolynomial (Fin k) ℚ` filtered by `IsHomogeneous F n` and restate Selmer as the canonical instance.",
+      "Formalize the Brauer-Manin obstruction. Mathlib has a Brauer group of a field; the Brauer group of a scheme and the adelic-points machinery would be a substantial development.",
+      "Add other classical Hasse-principle failures as parallel `*_hasse_principle_fails` instances: Cassels-Guy 1966 (cubic surface, rank-1), Iskovskih 1971 (del Pezzo of degree 4).",
+      "State the Colliot-Thélène conjecture (`brauer_manin_only_obstruction_for_rationally_connected`) with full algebraic-geometry context once Brauer-group infrastructure exists.",
+      "Is the étale-Brauer-Manin obstruction the only obstruction to the Hasse principle for smooth proper rationally connected varieties? (Open conjecture, Colliot-Thélène-Sansuc style.)",
+      "Sharp Davenport-style threshold: what is the minimum number of variables k(n) such that every cubic form (or degree-n form) in ≥ k(n) variables over ℚ satisfies the Hasse principle?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-11",
+      "relationship": "extends",
+      "description": "Parent gallery entry. hilbert-11 formalizes the Hasse-Minkowski theorem for quadratic forms (the local-global principle holds in degree 2). This entry shows that the Hasse principle FAILS in degree 3 — specifically for the Selmer cubic. Together they sandwich the local-global principle: it works for quadratics but is no longer automatic in higher degree."
+    },
+    {
+      "targetId": "hilbert-11-oq-01",
+      "relationship": "related",
+      "description": "Sibling open-question entry on the refined Hasse-Minkowski theorem. Both files axiomatize a deep arithmetic input on top of the Hasse-principle framework; this entry localizes the OQ to the Selmer cubic counterexample, while OQ-01 sharpens the Hasse-Minkowski statement."
+    },
+    {
+      "targetId": "e-transcendental-oq-02",
+      "relationship": "related",
+      "description": "Same axiomatization pattern: a deep open or classical theorem (Selmer 1951 / e is absolutely normal) is encoded as an axiom, with all the elementary surrounding framework proved unconditionally. Both entries use `Prop := True` as a documented placeholder for an open conjecture whose full statement requires Mathlib infrastructure not yet present."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Padics.PadicNumbers",
+      "Mathlib.Topology.Algebra.Order.IntermediateValue",
+      "Mathlib.Topology.Order.Bornology",
+      "Mathlib.Analysis.Polynomial.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "Hilbert11OQ02",
+    "lineCount": 264,
+    "axiomCount": 2,
+    "theoremCount": 5,
+    "definitionCount": 3,
+    "path": "Proofs/Hilbert11OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Ernst S. Selmer",
+      "title": "The Diophantine equation ax³ + by³ + cz³ = 0",
+      "year": "1951",
+      "venue": "Acta Mathematica 85, 203–362",
+      "note": "First explicit counterexample to the Hasse principle for cubic forms; uses 3-descent on the associated elliptic curve."
+    },
+    {
+      "authors": "Helmut Hasse",
+      "title": "Über die Äquivalenz quadratischer Formen im Körper der rationalen Zahlen",
+      "year": "1923",
+      "venue": "Journal für die reine und angewandte Mathematik 152",
+      "note": "The Hasse-Minkowski theorem: the local-global principle for quadratic forms over ℚ — the result that Selmer (1951) shows does NOT extend to cubics."
+    },
+    {
+      "authors": "Yuri I. Manin",
+      "title": "Le groupe de Brauer-Grothendieck en géométrie diophantienne",
+      "year": "1971",
+      "venue": "Actes du Congrès International des Mathématiciens, Nice",
+      "note": "Introduced the Brauer-Manin obstruction, providing a uniform framework for known Hasse-principle failures."
+    },
+    {
+      "authors": "Alexei N. Skorobogatov",
+      "title": "Beyond the Manin obstruction",
+      "year": "1999",
+      "venue": "Inventiones Mathematicae 135, 399–424",
+      "note": "Showed that the Brauer-Manin obstruction is not the only obstruction; introduced the étale-Brauer-Manin obstruction."
+    },
+    {
+      "authors": "Bjorn Poonen",
+      "title": "Insufficiency of the Brauer-Manin obstruction applied to étale covers",
+      "year": "2010",
+      "venue": "Annals of Mathematics 171, 2157–2169",
+      "note": "Constructed varieties where even the étale-Brauer-Manin obstruction is insufficient — the general characterization of Hasse-principle failure remains open."
+    },
+    {
+      "authors": "Jean-Louis Colliot-Thélène and Jean-Jacques Sansuc",
+      "title": "La descente sur les variétés rationnelles, II",
+      "year": "1980",
+      "venue": "Duke Mathematical Journal 54",
+      "note": "Established the Brauer-Manin sufficiency conjecture for several classes of rational varieties."
+    }
+  ],
+  "sorries": 0
+}
