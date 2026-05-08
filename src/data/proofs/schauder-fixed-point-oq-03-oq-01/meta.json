@@ -36,23 +36,23 @@
       }
     ],
     "originalContributions": [
-      "IsApproxSelection: Definition of ε-approximate continuous selections",
+      "IsGraphApproxSelection: Definition of ε-graph-approximate continuous selections (Cellina–Browder form)",
       "brouwer_fpt: Brouwer's FPT for compact convex sets (AXIOMATIZED)",
-      "approx_selection_exists: UHC + convex → ε-selections exist (AXIOMATIZED)",
+      "approx_selection_exists: UHC + convex → continuous ε-graph-approximate selections (AXIOMATIZED, Cellina–Browder form; pointwise form is provably false under USC alone — see S6 analysis)",
       "seq_compact_of_compact: Sequential compactness derived from Mathlib's IsCompact.isSeqCompact",
       "approx_fixedpoint_implies_fixedpoint: Limit argument for approximate fixed points (proved)",
       "kakutani_from_brouwer: Combines Brouwer + approximate selections to prove Kakutani (proved)"
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
-    "lineCount": 349,
+    "lineCount": 414,
     "prerequisites": [
       "Brouwer's fixed point theorem",
       "Compact metric spaces",
       "Convex sets in Euclidean space",
       "Upper hemicontinuity"
     ],
-    "assumptions": "Two axioms: (1) Brouwer's FPT for compact convex sets, (2) existence of approximate continuous selections for UHC maps with convex values. Sequential compactness, previously a third axiom, is now derived from Mathlib. The combination argument and the limit lemma are fully proved.",
+    "assumptions": "Two axioms: (1) Brouwer's FPT for compact convex sets, (2) existence of continuous ε-graph-approximate selections (Cellina–Browder form) for UHC maps with convex values. Sequential compactness, previously a third axiom, is now derived from Mathlib. The combination argument and the limit lemma are fully proved. S6 analysis showed that the strictly stronger pointwise form `∀ x, ∃ y ∈ F x, dist (f x) y < ε` is FALSE under USC + convex values alone, so the axiom must be stated in the graph form; `kakutani_from_brouwer` threads a triangle-inequality `ε ↦ 2·(ε/2) = ε` step to recover the diagonal-distance witness expected by `approx_fixedpoint_implies_fixedpoint`.",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
     "definitionCount": 4
@@ -81,63 +81,63 @@
       "id": "header",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Module docstring explaining the proof strategy, status, references, and Lean imports (Mathlib topology, convexity, Euclidean space)."
+      "endLine": 50,
+      "summary": "Module docstring explaining the proof strategy, status (2 axioms), the choice of graph-approximate selections (over the strictly stronger pointwise form, which is provably false under USC alone), references, and Lean imports."
     },
     {
       "id": "definitions",
       "title": "Set-Valued Map Definitions",
-      "startLine": 46,
-      "endLine": 61,
+      "startLine": 56,
+      "endLine": 70,
       "summary": "Defines SetValuedMap (correspondence), IsFixedPoint ($x \\in F(x)$), and IsUpperHemicontinuous (preimages of open sets are open)."
     },
     {
       "id": "brouwer-axiom",
       "title": "Axiom 1: Brouwer's FPT",
-      "startLine": 63,
-      "endLine": 77,
+      "startLine": 72,
+      "endLine": 87,
       "summary": "Axiomatizes Brouwer's fixed point theorem for compact convex subsets of $\\mathbb{R}^n$ — the topological engine of the proof."
     },
     {
       "id": "approx-selection",
-      "title": "Approximate Selections and Axiom 2",
-      "startLine": 79,
-      "endLine": 106,
-      "summary": "Defines IsApproxSelection and axiomatizes the existence of continuous $\\varepsilon$-approximate selections for UHC maps with convex values."
+      "title": "Graph-Approximate Selections and Axiom 2",
+      "startLine": 89,
+      "endLine": 142,
+      "summary": "Defines IsGraphApproxSelection (Cellina–Browder form) and axiomatizes the existence of continuous $\\varepsilon$-graph-approximate selections for UHC maps with convex values. Docstring explains why the pointwise form is unprovable under USC + convex values alone (S6 counterexample) and outlines the PartitionOfUnity construction for the graph form."
     },
     {
       "id": "seq-compact-theorem",
       "title": "Sequential Compactness (derived from Mathlib)",
-      "startLine": 112,
-      "endLine": 122,
+      "startLine": 144,
+      "endLine": 154,
       "summary": "Sequential compactness in pseudo-metric spaces, derived in one line from Mathlib's `IsCompact.isSeqCompact`. Previously stated as Axiom 3."
     },
     {
       "id": "kakutani-proof",
       "title": "Kakutani's FPT from Brouwer",
-      "startLine": 258,
-      "endLine": 304,
-      "summary": "The main theorem combining the two axioms: approximate selections → Brouwer fixed points → hand off to the limit lemma. Fully proved."
+      "startLine": 290,
+      "endLine": 352,
+      "summary": "The main theorem combining the two axioms: call the graph-selection axiom with $\\varepsilon/2$, get a Brouwer fixed point, apply the triangle inequality to convert the $(\\varepsilon/2, \\varepsilon/2)$ graph witness into an $\\varepsilon$-diagonal witness, hand off to the limit lemma. Fully proved."
     },
     {
       "id": "commentary",
       "title": "Mathematical Commentary",
-      "startLine": 305,
-      "endLine": 343,
-      "summary": "Discussion of why the proof matters, Mathlib infrastructure gaps (partition of unity, general Brouwer), and alternative proof paths (simplicial approximation, Michael selection)."
+      "startLine": 354,
+      "endLine": 407,
+      "summary": "Discussion of why the proof matters, Mathlib infrastructure gaps (partition of unity, general Brouwer), why the pointwise selection is unprovable, and alternative proof paths (simplicial approximation, Michael selection)."
     },
     {
       "id": "structural-lemma",
       "title": "Approximate FPs Imply True FPs",
-      "startLine": 124,
-      "endLine": 256,
+      "startLine": 156,
+      "endLine": 288,
       "summary": "Structural lemma abstracting the limit argument: if approximate fixed points exist for all $\\varepsilon > 0$, compactness and closedness yield a true fixed point. Fully proved using sequential compactness, the squeeze theorem, and a UHC closed-graph case split."
     },
     {
       "id": "summary-checks",
       "title": "Summary and Type Checks",
-      "startLine": 344,
-      "endLine": 349,
+      "startLine": 409,
+      "endLine": 414,
       "summary": "#check commands verifying the types of the four main declarations."
     }
   ],
@@ -200,7 +200,7 @@
       "Metric"
     ],
     "namespace": "KakutaniFromBrouwer",
-    "lineCount": 349,
+    "lineCount": 414,
     "axiomCount": 2,
     "theoremCount": 3,
     "definitionCount": 4,

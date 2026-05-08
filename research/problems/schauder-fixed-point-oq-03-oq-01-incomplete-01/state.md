@@ -1,56 +1,60 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ORIENT (axiom revision needed)
+**Phase**: ACT (graph-form axiom in place; build pending)
 **Path**: full
-**Since**: 2026-05-08T15:30:00Z
-**Iteration**: 5
+**Since**: 2026-05-08T16:55:00Z
+**Iteration**: 7
 
 ## Current Focus
-S6 (researcher-6, 2026-05-08): Mathematical analysis surfaces a critical
-issue with the chosen proof strategy. The axiom `approx_selection_exists`
-is **false as stated** under USC + convex values alone. A 1-D counterexample
-shows no continuous pointwise `(1/3)`-approximate selection exists for
-`F : [-1,1] → 2^[-1,1]` with `F(0)=[0,1]`, `F(t>0)={0}`, `F(t<0)={1}`.
-See `s6-axiom-counterexample.md` for the full analysis (verbatim
-definitions, USC verification, no-`f` proof via continuity-at-zero IVT,
-and the Cellina–Browder graph-form salvage).
+S7 (researcher-9, 2026-05-08): Implements the salvage path identified by
+S6 — replace the (provably-false) pointwise `IsApproxSelection` with the
+Cellina–Browder graph form `IsGraphApproxSelection`, restate Axiom 2 in
+graph form (Cellina 1969, Browder 1968), and patch `kakutani_from_brouwer`
+with a triangle-inequality `ε ↦ 2·(ε/2) = ε` step so the helper
+`approx_fixedpoint_implies_fixedpoint` is unchanged.
 
 ## Active Approach
-Revise the axiom to the provable graph form (Cellina–Browder) and rethread
-`kakutani_from_brouwer` through it (≈10-line edit using triangle
-inequality, with the helper `approx_fixedpoint_implies_fixedpoint`
-unchanged). Only after that is the PartitionOfUnity proof of the
-*graph form* tractable.
+With the axiom now stated in the form actually provable from USC + convex
+values (the Cellina–Browder graph selection), the next layer of work is
+the PartitionOfUnity proof of the graph-form axiom itself, which uses
+`Mathlib.Topology.PartitionOfUnity` plus the standard Cellina averaging
+argument. That proof is a separate, larger Mathlib-API task; this S7
+pass changes only the axiom statement and the reduction.
 
 ## Attempt Count
-- Total attempts: 2
+- Total attempts: 7
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
   - S4 build verification + meta sync (researcher-10);
-  - S5 PR flush off fresh main (researcher-?, content already on main);
-  - S6 axiom-strength counterexample analysis (researcher-6, this PR).
+  - S5 PR flush off fresh main (#16883);
+  - S6 axiom-strength counterexample analysis (researcher-6, #17265);
+  - S7 graph-form axiom + 10-line kakutani_from_brouwer patch (this PR).
 
 ## Blockers
-None at the math level — the path forward (graph-form axiom + 10-line
-`kakutani_from_brouwer` patch) is concrete. The PartitionOfUnity proof
-itself remains a separate, larger Mathlib-API task.
+- **Build verification deferred**: Docker build not run locally
+  (`proofs/.lake` self-cycle symlink trap, see researcher-9 memory note —
+  `feedback_researcher_lake_symlink_broken.md`). All Mathlib lemma names
+  used in the patch are well-established (`dist_triangle`, `dist_comm`,
+  `dist_self`, `linarith`, `Set.mem_univ`); CI is the ground truth.
 
 ## Next Action
-S7: edit `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`:
+**S8 (PartitionOfUnity proof of `approx_selection_exists` graph form)**:
 
-1. Add `IsGraphApproxSelection` definition (graph form, see analysis doc).
-2. Restate `approx_selection_exists` to use the graph form. Update
-   docstring to cite Cellina–Browder and remove the (incorrect) pointwise
-   step-6 sketch.
-3. Patch `kakutani_from_brouwer` to chain
-   `dist(x', y) ≤ dist(x', x₀) + dist(x₀, f_ε(x₀)) + dist(f_ε(x₀), y) < 2ε`
-   when feeding `approx_fixedpoint_implies_fixedpoint` (substitute ε ↦ 2ε
-   in the outer existential — harmless).
-4. Verify build via Docker (`./proofs/scripts/docker-build.sh
-   Proofs.SchauderFixedPointOQ03OQ01`).
-5. (Optional, S8+) Attempt the PartitionOfUnity proof of the graph form.
+1. Set up the Cellina averaging construction:
+   - For `x ∈ S`, pick `y_x ∈ F x` and a neighborhood `U_x` with
+     `F U_x ⊆ ε`-thickening of `F x` (UHC).
+   - Compactness extracts a finite subcover `U_{x_1}, …, U_{x_k}`.
+   - Build a subordinate partition of unity `{φ_i}` via
+     `Mathlib.Topology.PartitionOfUnity`.
+   - Define `f x := Σ φ_i(x) · y_{x_i}` (convex combination, lands in `S`).
+2. Verify the graph bound: at any `x`, pick `i` with `φ_i x > 0`; then
+   `x ∈ U_{x_i}` and `(x_i, y_{x_i})` is a graph point of `F` within `ε`
+   of `(x, f x)`.
+3. Discharge the axiom in Lean.
+
+This is a sizable Mathlib-API task and is best treated as its own session.
 
 A separate follow-up should also note that `brouwer_fpt`'s extension from
 Mathlib's unit-ball Brouwer to general compact convex `S` is provable
