@@ -29,6 +29,127 @@ the main file.
 
 ---
 
+## Session 2026-05-08 (Session 13) — Recipe Library Complete: Classical.choose templates
+
+**Mode**: REVISIT (Sessions 9–12 built recipe library to 5 of 6 templates;
+S13 closes the gap with the final 2 Classical.choose templates, completing
+the library)
+
+**Outcome**: extended `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` by 125
+lines with two additional bijection templates:
+
+- `walk_source_eq_edge_filter'` (corresponds to broken main-file
+  `walk_source_eq_outDegree` at L175–225). The forward direction
+  (positions → edges) uses the `hsteps` step-witness hypothesis re-formulated
+  as `∃ e ∈ edges, walk[i]? = some e.1 ∧ walk[i+1]? = some e.2`,
+  decoupling the witness-edge from the dependent `walk.get` form.
+  The inverse direction (edges → positions) uses
+  `Classical.choose ((hcov e _).exists)` on the `∃!`-coverage hypothesis.
+  Injectivity uses uniqueness via `Prod.ext` after stripping `some`-wrappers
+  with `Option.some_inj.mp`.
+- `walk_target_eq_edge_filter'` (corresponds to broken main-file
+  `walk_target_eq_inDegree` at L228–266). Identical proof structure to the
+  source template; only difference is which `walk[..]?` projection of the
+  `hspec` (the `Classical.choose_spec` of `(hcov e _).exists`) we use to
+  match `e.2 = v`.
+
+Both templates take a generic `Finset (V × V)` parameter `edges` (decoupled
+from the `DiGraph` structure). The main-file proof transcribes by
+`unfold outDegree` / `unfold inDegree` first, then invokes the template.
+
+This completes **all 6 of 6** distinct bijection-lemma shapes used in the
+broken main file. The Recipe library is now ready as a transcription source
+for Session 14's full in-place refactor pass.
+
+### Why the Hypotheses Are Different from the Broken Version
+
+The broken main-file uses `walk.get ⟨i, by omega⟩` patterns and a step
+hypothesis `(walk.get ⟨i, _⟩, walk.get ⟨i+1, _⟩) ∈ G.edges`. To translate
+to the `walk[i]?` Option-form template:
+
+1. **`hcov`**: every `walk.get ⟨i, _⟩ = e.1` becomes `walk[i]? = some e.1`.
+   The bound proof inside `walk.get` is unnecessary because `walk[i]?` is
+   total (returns `none` outside bounds), so the `some _` form encodes
+   boundedness implicitly.
+
+2. **`hsteps`**: the original directly forms a pair
+   `(walk.get ⟨i, _⟩, walk.get ⟨i+1, _⟩)`, which doesn't translate
+   cleanly to the bracket form (Option doesn't combine into a Prod).
+   The Option-form replacement is
+   `∃ e ∈ edges, walk[i]? = some e.1 ∧ walk[i+1]? = some e.2` — a witness
+   edge plus two `some`-equalities. The main-file refactor pass derives
+   this from the strong-form `HasEulerianCircuit` definition directly.
+
+### Proof Sketch (verbatim from S13 source)
+
+```lean
+lemma walk_source_eq_edge_filter' (walk : List V) (n : ℕ) (v : V)
+    (edges : Finset (V × V))
+    (hcov : ∀ e ∈ edges, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps : ∀ i, i < n → ∃ e ∈ edges,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    ((Finset.range n).filter fun i => walk[i]? = some v).card =
+    (edges.filter fun e => e.1 = v).card := by
+  symm
+  apply Finset.card_bij (fun e he =>
+    Classical.choose ((hcov e (Finset.mem_filter.mp he).1).exists))
+  · -- maps_to: walk[pos(e)]? = some e.1 = some v from hv
+    ...
+  · -- injective: pos(e1) = pos(e2) ⟹ e1 = e2 via Prod.ext + Option.some_inj
+    ...
+  · -- surjective: source-position has corresponding edge via hsteps + uniqueness
+    intro i hi
+    ...
+    obtain ⟨e, he_mem, he_src, he_tgt⟩ := hsteps i hi_lt
+    ...
+    exact (hcov e he_mem).unique hspec hi_spec
+```
+
+### What S14 Should Do
+
+S14 has the **complete** Recipe file as transcription source. Apply Session
+8's line-anchored task list as a single mechanical pass:
+
+1. Add `getElem?_eq_some_iff_of_lt` near top of main file (port from Recipe).
+2. Refactor 6 bijection lemmas — each has a worked Recipe template:
+   - `closed_walk_balance` ← `closed_walk_balance'`
+   - `open_walk_interior_balanced` ← `open_walk_interior_balanced'`
+   - `open_walk_last_target_excess` ← `open_walk_last_target_excess'`
+   - `open_walk_first_source_excess` ← `open_walk_first_source_excess'`
+   - `walk_source_eq_outDegree` ← `walk_source_eq_edge_filter'`
+   - `walk_target_eq_inDegree` ← `walk_target_eq_edge_filter'`
+3. Refactor 2 definitions: `HasEulerianCircuit`, `HasEulerianPath` to
+   produce both `hcov` (∃!-coverage in Option-form) and `hsteps` (∃-edge
+   step-witness in Option-form) directly. The main-file consumer theorems
+   then call the templates without further conversion.
+4. Refactor 3 consumer theorems: `eulerian_circuit_implies_balanced`,
+   `euler_path_implies_degree_balance`, `maxTrail_closed`.
+5. Apply `Finset.sum_ite_eq'` simp fix at L87 and L99.
+6. Run `LEAN_BUILD_TIMEOUT=60m ./proofs/scripts/docker-build.sh
+   Proofs.KonigsbergOQ01OQ02` (single end-of-session build).
+7. On build pass: update `meta.json` (sorries 2 → 1, lineCount), delete
+   `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean`, push PR.
+
+Estimated S14 cost: 2–3 hours mechanical + 1 build (~5–60 min wall-clock).
+
+### Files Modified by S13
+
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (319 → 444 lines, +125)
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (S13 entry)
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (S13 entry — this section)
+
+### Trap Encountered
+
+**Worktree-path trap** (memory `feedback_worktree_traps.md`): initial
+`Edit` calls used the main-repo absolute path
+(`/Users/rwalters/GitHub/lean-genius/proofs/...`) instead of the worktree
+path. This is silent — the edit "succeeds" but lands outside the working
+tree. Caught by `git diff --stat` returning empty. Recovered by `cp` from
+main-repo to worktree, then `git restore` in main repo to clean up.
+
+---
+
 ## Session 2026-05-08 (Session 12) - Recipe Extension: endpoint-excess templates
 
 **Mode**: REVISIT (Sessions 9–11 built and verified the recipe file with

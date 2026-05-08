@@ -316,4 +316,129 @@ lemma open_walk_first_source_excess' (walk : List V) (n : ℕ) (hn : 1 ≤ n)
     simp only [S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range]
     exact ⟨by omega, by omega, hj_w⟩
 
+/-- **Generic walk_source_eq_edge_filter** in the new `walk[i]? = some v` form.
+    Bijects walk source positions of `v` with edges whose first component is `v`,
+    via the `Classical.choose`-based inverse from the unique-coverage hypothesis.
+
+    For a walk of length `n + 1` with `∃!`-coverage of an edge set `edges` and
+    every consecutive pair appearing in `edges`, the count of source-positions
+    `{i < n : walk[i]? = some v}` equals the count of source-incident edges
+    `{e ∈ edges : e.1 = v}`.
+
+    This is the worked-out template Session 13 should transcribe in-place
+    into `KonigsbergOQ01OQ02.lean`'s `walk_source_eq_outDegree`
+    (currently L175–225 of the broken main file).
+
+    Compared to the broken version, the differences are:
+    1. Coverage hypothesis uses `walk[i]? = some e.1` (Option-form, no bound proof).
+    2. Step hypothesis re-formulated as `∃ e ∈ edges, walk[i]? = some e.1 ∧ walk[i+1]? = some e.2`
+       (decouples the witness-edge from the dependent `walk.get` form).
+    3. `outDegree` becomes a generic `(edges.filter fun e => e.1 = v).card`
+       that the main-file proof unfolds via `unfold outDegree` first.
+    4. `Prod.ext` proof of edge-equality uses `Option.some_inj.mp` to strip
+       the `some`-wrapper after combining the two `walk[..]? = some _` facts. -/
+lemma walk_source_eq_edge_filter' (walk : List V) (n : ℕ) (v : V)
+    (edges : Finset (V × V))
+    (hcov : ∀ e ∈ edges, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps : ∀ i, i < n → ∃ e ∈ edges,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    ((Finset.range n).filter fun i => walk[i]? = some v).card =
+    (edges.filter fun e => e.1 = v).card := by
+  symm
+  apply Finset.card_bij (fun e he =>
+    Classical.choose ((hcov e (Finset.mem_filter.mp he).1).exists))
+  · -- maps into the source-position filter
+    intro e he
+    have hmem := (Finset.mem_filter.mp he).1
+    have hv := (Finset.mem_filter.mp he).2
+    have hspec := Classical.choose_spec ((hcov e hmem).exists)
+    -- hspec : pos < n ∧ walk[pos]? = some e.1 ∧ walk[pos+1]? = some e.2
+    simp only [Finset.mem_filter, Finset.mem_range]
+    refine ⟨hspec.1, ?_⟩
+    rw [hspec.2.1, hv]
+  · -- injective: pos(e1) = pos(e2) ⟹ e1 = e2
+    intro e1 he1 e2 he2 heq
+    have hmem1 := (Finset.mem_filter.mp he1).1
+    have hmem2 := (Finset.mem_filter.mp he2).1
+    have hspec1 := Classical.choose_spec ((hcov e1 hmem1).exists)
+    have hspec2 := Classical.choose_spec ((hcov e2 hmem2).exists)
+    rw [← heq] at hspec2
+    -- hspec1: walk[pos1]? = some e1.1 ∧ walk[pos1+1]? = some e1.2
+    -- hspec2 (post-rewrite): walk[pos1]? = some e2.1 ∧ walk[pos1+1]? = some e2.2
+    have h1 : some e1.1 = some e2.1 := hspec1.2.1.symm.trans hspec2.2.1
+    have h2 : some e1.2 = some e2.2 := hspec1.2.2.symm.trans hspec2.2.2
+    exact Prod.ext (Option.some_inj.mp h1) (Option.some_inj.mp h2)
+  · -- surjective: each source-position has a corresponding source-edge
+    intro i hi
+    simp only [Finset.mem_filter, Finset.mem_range] at hi
+    obtain ⟨hi_lt, hi_v⟩ := hi
+    obtain ⟨e, he_mem, he_src, he_tgt⟩ := hsteps i hi_lt
+    have he_eq_v : e.1 = v := by
+      have heq : some v = some e.1 := hi_v.symm.trans he_src
+      exact (Option.some_inj.mp heq).symm
+    refine ⟨e, Finset.mem_filter.mpr ⟨he_mem, he_eq_v⟩, ?_⟩
+    -- the chosen position for e equals i (uniqueness)
+    have hspec := Classical.choose_spec ((hcov e he_mem).exists)
+    have hi_spec : i < n ∧ walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2 :=
+      ⟨hi_lt, he_src, he_tgt⟩
+    exact (hcov e he_mem).unique hspec hi_spec
+
+/-- **Generic walk_target_eq_edge_filter** in the new `walk[i]? = some v` form.
+    Symmetric to `walk_source_eq_edge_filter'`. Bijects walk target positions of
+    `v` (positions `i < n` with `walk[i+1]? = some v`) with edges whose second
+    component is `v`.
+
+    This is the worked-out template Session 13 should transcribe in-place
+    into `KonigsbergOQ01OQ02.lean`'s `walk_target_eq_inDegree`
+    (currently L228–266 of the broken main file).
+
+    Compared to the broken version, the differences are:
+    1. Filter predicate uses `walk[i+1]? = some v` (Option-form).
+    2. Step hypothesis identical to source-template (one shared hypothesis form).
+    3. `Prod.ext` works the same way; the only structural change is which
+       `walk[..]?` projection of `hspec` we use to compare e.2 to v. -/
+lemma walk_target_eq_edge_filter' (walk : List V) (n : ℕ) (v : V)
+    (edges : Finset (V × V))
+    (hcov : ∀ e ∈ edges, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps : ∀ i, i < n → ∃ e ∈ edges,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    ((Finset.range n).filter fun i => walk[i + 1]? = some v).card =
+    (edges.filter fun e => e.2 = v).card := by
+  symm
+  apply Finset.card_bij (fun e he =>
+    Classical.choose ((hcov e (Finset.mem_filter.mp he).1).exists))
+  · -- maps into the target-position filter
+    intro e he
+    have hmem := (Finset.mem_filter.mp he).1
+    have hv := (Finset.mem_filter.mp he).2
+    have hspec := Classical.choose_spec ((hcov e hmem).exists)
+    simp only [Finset.mem_filter, Finset.mem_range]
+    refine ⟨hspec.1, ?_⟩
+    rw [hspec.2.2, hv]
+  · -- injective: identical to source case
+    intro e1 he1 e2 he2 heq
+    have hmem1 := (Finset.mem_filter.mp he1).1
+    have hmem2 := (Finset.mem_filter.mp he2).1
+    have hspec1 := Classical.choose_spec ((hcov e1 hmem1).exists)
+    have hspec2 := Classical.choose_spec ((hcov e2 hmem2).exists)
+    rw [← heq] at hspec2
+    have h1 : some e1.1 = some e2.1 := hspec1.2.1.symm.trans hspec2.2.1
+    have h2 : some e1.2 = some e2.2 := hspec1.2.2.symm.trans hspec2.2.2
+    exact Prod.ext (Option.some_inj.mp h1) (Option.some_inj.mp h2)
+  · -- surjective: each target-position has a corresponding target-edge
+    intro i hi
+    simp only [Finset.mem_filter, Finset.mem_range] at hi
+    obtain ⟨hi_lt, hi_v⟩ := hi
+    obtain ⟨e, he_mem, he_src, he_tgt⟩ := hsteps i hi_lt
+    have he_eq_v : e.2 = v := by
+      have heq : some v = some e.2 := hi_v.symm.trans he_tgt
+      exact (Option.some_inj.mp heq).symm
+    refine ⟨e, Finset.mem_filter.mpr ⟨he_mem, he_eq_v⟩, ?_⟩
+    have hspec := Classical.choose_spec ((hcov e he_mem).exists)
+    have hi_spec : i < n ∧ walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2 :=
+      ⟨hi_lt, he_src, he_tgt⟩
+    exact (hcov e he_mem).unique hspec hi_spec
+
 end KonigsbergOQ01OQ02Recipe
