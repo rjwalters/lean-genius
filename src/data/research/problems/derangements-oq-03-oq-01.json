@@ -1,31 +1,34 @@
 {
   "slug": "derangements-oq-03-oq-01",
   "title": "Second-Order Derangement Convergence Rate",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
+    "formal": "Prove a second-order convergence-rate bound for derangement probability $D_n/n!$ to $1/e$.",
+    "plain": "Strengthen the first-order Derangements convergence rate (|D_n/n! - 1/e| ≤ 1/(n+1)!) to a second-order bound that captures the next term, with a matching lower bound proving tightness of the 1/(n+1)! rate.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Second-order upper bound on |D_n/n! - 1/e| (DerangementsOQ03OQ01.lean, 9 theorems, 243 lines)",
+      "Matching lower bound via reverse triangle inequality, proving tightness of the 1/(n+1)! convergence rate"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Sorry-free, axiom-free, verified-status formalization — achieved on origin/main."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T11:03:20-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-03-30T18:00:00Z",
+    "iteration": 2,
+    "focus": "Closed. proofs/Proofs/DerangementsOQ03OQ01.lean: 243 lines, 9 theorems, 0 axioms, 0 sorries; gallery meta.json status: verified.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — completed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -69,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:27:56.397Z",
-  "lastUpdate": "2026-03-30T19:30:00Z",
+  "lastUpdate": "2026-05-08T17:55:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Derangements.lean",
