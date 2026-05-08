@@ -290,12 +290,61 @@ axiom flat_does_not_imply_ultraflat :
         c₁ * Real.sqrt n ≤ supNorm p ∧ supNorm p ≤ c₂ * Real.sqrt n
 
 /-
-## Rudin-Shapiro Bound
+## Rudin-Shapiro Polynomials
+
+The Rudin-Shapiro construction (Shapiro 1951; Rudin 1959) gives an explicit
+family of Littlewood polynomials with bounded sup-norm-to-√degree ratio.
+The pair `(P_k, Q_k)` is defined recursively by
+
+  P_0 = Q_0 = 1
+  P_{k+1}(z) = P_k(z) + z^{2^k} · Q_k(z)
+  Q_{k+1}(z) = P_k(z) - z^{2^k} · Q_k(z)
+
+By the parallelogram law `|a+b|² + |a-b|² = 2(|a|² + |b|²)` one inductively
+obtains `|P_k(z)|² + |Q_k(z)|² = 2^{k+1}` on the unit circle, hence
+`sup_{|z|=1} |P_k(z)| ≤ √(2^{k+1})`. Combined with `deg P_k = 2^k - 1`
+(for `k ≥ 1`), this yields `supNorm P_k / √(deg P_k) ≤ √2` asymptotically:
+the best known *explicit* bound for Littlewood polynomials.
+
+This section records the recursive definition and its definitional unfolding
+identities, providing the foundation for proving the sup-norm bound (left to
+future iterations; cf. closed PR #7666 for an attempted full proof).
 -/
 
-/-- **Rudin-Shapiro polynomials** give a concrete family with
-    max_{|z|=1} |P(z)| ≤ √(2(n+1)) for degree n.
-    These are Littlewood polynomials with bounded sup norm. -/
+/-- The **Rudin-Shapiro polynomial pair** `(P_k, Q_k)`, defined recursively:
+
+  - `P_0 = Q_0 = 1`
+  - `P_{k+1} = P_k + X^{2^k} · Q_k`
+  - `Q_{k+1} = P_k - X^{2^k} · Q_k`
+
+These are the canonical concrete examples of Littlewood polynomials with
+bounded sup-norm-to-√degree ratio. -/
+noncomputable def rudinShapiroPair : ℕ → Polynomial ℂ × Polynomial ℂ
+  | 0 => (1, 1)
+  | k + 1 =>
+      let prev := rudinShapiroPair k
+      (prev.1 + X ^ (2 ^ k) * prev.2, prev.1 - X ^ (2 ^ k) * prev.2)
+
+/-- The **Rudin-Shapiro `P`-polynomial**: first component of `rudinShapiroPair`. -/
+noncomputable def rudinShapiroP (k : ℕ) : Polynomial ℂ := (rudinShapiroPair k).1
+
+/-- The **Rudin-Shapiro `Q`-polynomial**: second component of `rudinShapiroPair`. -/
+noncomputable def rudinShapiroQ (k : ℕ) : Polynomial ℂ := (rudinShapiroPair k).2
+
+/-- Base case: `P_0 = 1`. -/
+theorem rudinShapiroP_zero : rudinShapiroP 0 = 1 := rfl
+
+/-- Base case: `Q_0 = 1`. -/
+theorem rudinShapiroQ_zero : rudinShapiroQ 0 = 1 := rfl
+
+/-- Recursive identity for `P`: `P_{k+1} = P_k + X^{2^k} · Q_k`. -/
+theorem rudinShapiroP_succ (k : ℕ) :
+    rudinShapiroP (k + 1) = rudinShapiroP k + X ^ (2 ^ k) * rudinShapiroQ k := rfl
+
+/-- Recursive identity for `Q`: `Q_{k+1} = P_k - X^{2^k} · Q_k`. -/
+theorem rudinShapiroQ_succ (k : ℕ) :
+    rudinShapiroQ (k + 1) = rudinShapiroP k - X ^ (2 ^ k) * rudinShapiroQ k := rfl
+
 /-
 ## Summary
 -/

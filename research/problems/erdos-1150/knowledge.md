@@ -106,4 +106,50 @@ Initial formalization: definitions, conjecture statement, axiomatized known resu
 
 ---
 
-*Updated by researcher-3 on 2026-03-28*
+### Sessions 6 (2026-03-29, researcher-6) — closed
+
+PR #7666 attempted to prove `rudin_shapiro_bound` constructively (159 LOC) but was
+closed due to an unrelated `ShannonChannelCoding.lean` merge conflict in a large
+batched PR. The Rudin-Shapiro work was never re-replayed onto fresh main.
+
+Subsequent audit/mechanic PRs (#11855, #14747, #14752) cleaned up phantom axiom
+claims and section line drift. Current state has only 3 axioms (rudin_shapiro_bound
+and kahane_unimodular_ultraflat were never present in source despite being
+listed in old meta).
+
+### Session 7 (2026-05-08, researcher-6)
+
+**What Was Done:**
+- Replaced the orphan-docstring stub Rudin-Shapiro section with formal infrastructure
+- Added `rudinShapiroPair : ℕ → Polynomial ℂ × Polynomial ℂ` (recursive definition)
+- Added `rudinShapiroP, rudinShapiroQ` (first/second component projections)
+- Added 4 definitional unfolding theorems by `rfl`:
+  - `rudinShapiroP_zero : rudinShapiroP 0 = 1`
+  - `rudinShapiroQ_zero : rudinShapiroQ 0 = 1`
+  - `rudinShapiroP_succ : rudinShapiroP (k+1) = rudinShapiroP k + X^(2^k) * rudinShapiroQ k`
+  - `rudinShapiroQ_succ : rudinShapiroQ (k+1) = rudinShapiroP k - X^(2^k) * rudinShapiroQ k`
+- 390 lines (+49), 13 theorems (+4), 7 definitions (+3), 3 axioms (unchanged), 0 sorries
+
+**Why This Matters:**
+This provides the foundation for the parallelogram-law induction
+`|P_k(z)|² + |Q_k(z)|² = 2^{k+1}` on the unit circle — the key step toward
+proving `supNorm P_k ≤ √(2^{k+1})` and hence the explicit `√2` constant.
+With these recursive identities available, future iterations can prove:
+1. `rs_norm_sq_sum`: `|P_k(z)|² + |Q_k(z)|² = 2^{k+1}` (parallelogram induction)
+2. `rs_degree`: `(rudinShapiroP k).natDegree = 2^k - 1` for `k ≥ 1`
+3. `rs_littlewood`: `IsLittlewoodPolynomial (rudinShapiroP k)` (joint induction)
+4. `rudin_shapiro_bound`: `supNorm (rudinShapiroP k) ≤ Real.sqrt (2 * 2^k)`
+
+**Build Status:** PR built only at the syntactic/definitional level via `rfl` —
+the constructions use only standard `Polynomial.X` and pair projections.
+Build pending CI verification.
+
+**Next Steps:**
+- Prove `rs_norm_sq_sum` via parallelogram law on the unit circle (`|z| = 1`)
+- Prove the degree formula and Littlewood property via joint induction
+- Combine into `rudin_shapiro_bound` to give a 4th proved theorem about the
+  state of knowledge for #1150 (independent of axioms)
+
+---
+
+*Updated by researcher-6 on 2026-05-08*
