@@ -90,23 +90,65 @@
   {
     "id": "coefficient-extraction",
     "proofId": "cube-root-3-irrational-oq-02-oq-02",
-    "range": { "startLine": 90, "endLine": 103 },
+    "range": { "startLine": 90, "endLine": 95 },
     "type": "technique",
-    "title": "Coefficient Extraction and Explicit Form",
-    "content": "Once p = 0 is established, the coefficients are extracted: c i = coeff(p, i) is verified by fin_cases i and simp [hp_def] (the polynomial C(c₀) + C(c₁)X + C(c₂)X² has exactly cᵢ at position i). Then coeff(0, i) = 0 by rw [hp0]; simp. The second theorem one_cbrt3_cbrt3_sq_linearIndependent restates the result for the explicit vector ![1, α, α²] via convert + fin_cases + simp, connecting the abstract Fin 3 indexing to the concrete vector notation.",
-    "mathContext": "Coefficient reading for $p = c_0 + c_1 X + c_2 X^2 \\in \\mathbb{Q}[X]$: $[X^i] p = c_i$ for $i \\in \\{0,1,2\\}$. Verified by polynomial arithmetic: $[X^0](c_0 + c_1 X + c_2 X^2) = c_0$, etc. The matrix notation $![1, \\alpha, \\alpha^2] : \\text{Fin } 3 \\to \\mathbb{R}$ is Lean's vector literal; $[\\cdot]_i = \\alpha^i$ is proved by fin_cases and the identities $\\alpha^0 = 1$, $\\alpha^1 = \\alpha$, $\\alpha^2 = \\alpha^2$.",
+    "title": "Coefficient Extraction: c i = coeff(p, i) = 0",
+    "content": "Once p = 0 is established, the coefficients are extracted: c i = coeff(p, i) is verified by fin_cases i and simp [hp_def] (the polynomial C(c₀) + C(c₁)X + C(c₂)X² has exactly cᵢ at position i). Then coeff(0, i) = 0 by rw [hp0]; simp. The two equalities chain: c i = coeff(p, i) = coeff(0, i) = 0. This is the structural inverse of polynomial-construction — having built p from the cᵢ, we now read them back from p's coefficient sequence to confirm they all vanish.",
+    "mathContext": "Coefficient reading for $p = c_0 + c_1 X + c_2 X^2 \\in \\mathbb{Q}[X]$: $[X^i] p = c_i$ for $i \\in \\{0,1,2\\}$. Verified by polynomial arithmetic: $[X^0](c_0 + c_1 X + c_2 X^2) = c_0$, etc. Combining $c_i = [X^i] p$ with $p = 0$ yields $c_i = 0$ — the conclusion of linear independence.",
     "significance": "supporting",
     "relatedConcepts": [
       "Polynomial.coeff",
       "fin_cases tactic",
-      "Matrix.cons notation",
-      "convert tactic",
-      "vector literals in Lean 4"
+      "constructive-destructive duality",
+      "polynomial coefficient reading"
     ],
     "prerequisites": [
       "Polynomial.coeff for explicit polynomials",
-      "Lean 4 fin_cases",
-      "matrix/vector notation"
+      "Lean 4 fin_cases"
+    ]
+  },
+  {
+    "id": "explicit-vector-form",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 97, "endLine": 103 },
+    "type": "theorem",
+    "title": "Explicit Vector Form: ![1, α, α²]",
+    "content": "The second theorem `one_cbrt3_cbrt3_sq_linearIndependent` restates the result for the explicit vector `![1, α, α²] : Fin 3 → ℝ`. The proof is `convert cbrt3_powers_linearIndependent using 1` followed by `ext i; fin_cases i <;> simp [pow_succ]` — this reduces the goal to checking that `![1, α, α²] i = α^(i:ℕ)` for each i ∈ {0, 1, 2}, which is true by `pow_succ` unfolding. This 'explicit form' is the user-facing statement most likely to be cited in downstream proofs, since it matches the textbook phrasing exactly. The abstract `α^i` formulation is structurally cleaner for the proof, but `![1, α, α²]` is what readers (and proof-by-name lookup) expect.",
+    "mathContext": "Two equivalent statements: (1) abstract — $\\{α^0, α^1, α^2\\}$ is $\\mathbb{Q}$-linearly independent; (2) concrete — the vector $(1, α, α^2)$ is $\\mathbb{Q}$-linearly independent. Bridging: $α^0 = 1$, $α^1 = α$, $α^2 = α^2$ (by definition / `pow_succ`). The Lean vector literal `![1, α, α²]` desugars to `Matrix.cons 1 (Matrix.cons α (Matrix.cons (α^2) Matrix.empty))` indexed by `Fin 3`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Matrix.cons notation",
+      "convert tactic",
+      "pow_succ",
+      "vector literal in Lean 4",
+      "user-facing API"
+    ],
+    "prerequisites": [
+      "Matrix vector literal",
+      "convert + ext pattern",
+      "main theorem cbrt3_powers_linearIndependent"
+    ]
+  },
+  {
+    "id": "power-basis-context",
+    "proofId": "cube-root-3-irrational-oq-02-oq-02",
+    "range": { "startLine": 19, "endLine": 30 },
+    "type": "context",
+    "title": "Power-Basis Theorem in Algebraic Number Theory",
+    "content": "This file proves a special case of a foundational power-basis theorem: if α is algebraic over a field K with minimal polynomial of degree n, then {1, α, α², …, αⁿ⁻¹} is K-linearly independent and spans K(α). The argument given here — minpoly divisibility plus a degree count — is exactly the standard textbook proof, instantiated at n = 3 and K = ℚ. Mathlib has the general statement as `PowerBasis` for `Algebra.adjoin` constructions, but it is sometimes useful (and pedagogically clearer) to instantiate the proof directly for small n, as this file does. The same recipe scales unchanged to {1, α, α², α³, α⁴} for any α with degree-5 minimal polynomial — the only thing that changes is the constant 3 in the contradiction step.",
+    "mathContext": "**Theorem (power basis)**: If $[K(\\alpha):K] = n$, then $\\{1, \\alpha, \\ldots, \\alpha^{n-1}\\}$ is a $K$-basis for $K(\\alpha)$. **Proof of independence (this file's strategy)**: any nonzero $K$-polynomial $p$ of degree $< n$ vanishing at $\\alpha$ would have $\\text{minpoly}_K(\\alpha) \\mid p$, contradicting $\\deg(\\text{minpoly}_K(\\alpha)) = n > \\deg(p)$. **Proof of spanning**: $\\alpha^n$ can be expressed as a $K$-combination of lower powers using $\\text{minpoly}_K(\\alpha)(\\alpha) = 0$ (rearranged).",
+    "significance": "context",
+    "relatedConcepts": [
+      "PowerBasis (Mathlib)",
+      "Algebra.adjoin",
+      "field extension basis",
+      "minimal polynomial degree",
+      "general algebraic number theory"
+    ],
+    "prerequisites": [
+      "Field extensions",
+      "Power basis concept",
+      "Linear algebra over fields"
     ]
   }
 ]
