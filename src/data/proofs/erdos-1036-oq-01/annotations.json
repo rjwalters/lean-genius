@@ -62,13 +62,37 @@
   {
     "id": "ann-conjecture",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 143, "endLine": 175 },
+    "range": { "startLine": 139, "endLine": 145 },
     "type": "insight",
-    "title": "The Open Conjecture c'(c) = 1 and the Random Graph Witness",
-    "content": "**optimalConstantTrue_eq_one**: Axiom — ∀ c > 0, optimalConstantTrue c = 1. This is the genuine open conjecture.\n\n**Mathematical witness**: G(n,1/2) is non-Ramsey(c) for c < 2/log 2, AND has numISCTrue G = 2^n a.s. (almost all vertex subsets give non-isomorphic induced subgraphs — related to graph reconstruction). This would put c' = 1 in the set and prove the conjecture.\n\n**optimalConstantTrue_random**: Corollary at c = 2/log 2.\n\nThe summary comment accounts for all 6 axioms: 3 'trivially true' (ISC interface), 2 from parent (Shelah), 1 genuine conjecture.",
-    "mathContext": "Conjecture: $c'(c) = 1$, i.e., non-Ramsey graphs achieve maximal ISC diversity $\\sim 2^n$. Witness: $G(n,1/2)$ has $\\mathrm{numISCTrue}(G(n,1/2)) = 2^n$ a.s.",
+    "title": "The Open Conjecture c'(c) = 1",
+    "content": "**optimalConstantTrue_eq_one**: Axiom — ∀ c > 0, optimalConstantTrue c = 1. This is the genuine open conjecture, the only one of the six axioms that is not 'trivially true' (i.e., eliminable by additional Mathlib infrastructure).\n\n**Mathematical witness**: G(n,1/2) is non-Ramsey(c) for c < 2/log 2 (by the Erdős-Rényi 1959 / Bollobás 2001 estimates on $\\omega, \\alpha$), AND has numISCTrue G(n,1/2) = 2^n a.s. (almost all $2^n$ vertex subsets give pairwise non-isomorphic induced subgraphs — connected to the graph reconstruction conjecture). Establishing both probabilistic statements in Lean would put c' = 1 in the optimality set and prove the conjecture, eliminating the sixth axiom.\n\n**Why this is hard**: the ISC count of $G(n, 1/2)$ being $2^n$ a.s. is a strong rigidity property — it says the random graph has *trivial* induced-subgraph isomorphisms across almost every pair of subsets. This is essentially an asymptotic graph-reconstruction statement; full proofs use moment methods on the number of isomorphism pairs.",
+    "mathContext": "**Conjecture**: $c'(c) = 1$, i.e., non-Ramsey graphs achieve maximal ISC diversity $\\sim 2^n$. **Witness candidate**: $\\mathrm{numISCTrue}(G(n,1/2)) = 2^n - o(2^n)$ a.s. as $n \\to \\infty$.",
     "significance": "key",
-    "relatedConcepts": ["random graph G(n,1/2)", "graph reconstruction conjecture", "optimal constants in extremal graph theory"],
+    "relatedConcepts": ["random graph G(n,1/2)", "graph reconstruction conjecture", "optimal constants in extremal graph theory", "moment method", "asymptotic isomorphism classes"],
     "prerequisites": ["random graph theory", "probabilistic method", "ISC count for random graphs"]
+  },
+  {
+    "id": "ann-random-corollary",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 146, "endLine": 148 },
+    "type": "insight",
+    "title": "Specialization at the Random-Graph Threshold c = 2/log 2",
+    "content": "`optimalConstantTrue_random` is a one-line corollary of the conjecture axiom at the specific value $c = 2/\\log 2$. Why this constant? It is the (Erdős-Rényi 1959) threshold below which the random graph $G(n, 1/2)$ is *almost surely* non-Ramsey$(c)$: with high probability, both its clique number $\\omega(G(n,1/2))$ and independence number $\\alpha(G(n,1/2))$ are at most $2 \\log_2 n = (2/\\log 2) \\cdot \\ln n$. Specializing at this threshold makes the conjecture concretely testable: any *pseudo-random* construction (graph product expanders, Paley graphs, quadratic-residue graphs at certain primes) that achieves $\\mathrm{numISCTrue}(G) = 2^n - o(2^n)$ would witness $c' = 1$ at this threshold and corroborate the full conjecture.",
+    "mathContext": "$c = 2/\\log 2 \\approx 2.885$. At this value, $G(n, 1/2)$ is non-Ramsey$(c)$ a.s.; the conjecture predicts $c'(2/\\log 2) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["random graph thresholds", "Paley graphs", "pseudorandom graphs", "Erdős-Rényi 1959"],
+    "prerequisites": ["log-base conversion", "random graph clique number"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "erdos-1036-oq-01",
+    "range": { "startLine": 150, "endLine": 169 },
+    "type": "context",
+    "title": "Audit Trail: The Six Axioms by Type",
+    "content": "The closing comment block functions as an *audit trail*, classifying each of the six axioms by the level of effort needed to eliminate it:\n\n**Trivially true (3 axioms, ~200 lines of Mathlib quotient infrastructure)**: `numISCTrue`, `numISCTrue_le_pow`, `numISCTrue_pos` are the interface for the ISC count function. Eliminating them requires constructing `Quotient (S : Finset V) (≈)` where `S₁ ≈ S₂ ↔ G.induce S₁ ≅g G.induce S₂`, equipping the quotient with `Fintype`, and proving `Fintype.card ≤ 2^|V|`. This is engineering, not mathematics.\n\n**Inherited from parent (2 axioms)**: `nonRamseyExistsTrue` and `shelah_isc` are imported as-axioms from the parent file `Erdos1036Problem.lean`, where they ultimately trace to Shelah's 1998 theorem and the existence of non-Ramsey graphs. Eliminating these would require formalising Shelah's $\\sim 30$-page proof.\n\n**Genuine open problem (1 axiom)**: `optimalConstantTrue_eq_one` is the only mathematical assumption — the actual Erdős open question this entry encodes. Eliminating it is the OQ.\n\nThis tripartite classification is the entry's main pedagogical contribution: it disambiguates *engineering work* from *mathematical assumption* and makes clear which axiom carries the genuine open content.",
+    "mathContext": "Axiom budget: 3 trivially true (Quotient construction) + 2 inherited (Shelah's machinery) + 1 genuine OQ ($c'(c) = 1$).",
+    "significance": "key",
+    "relatedConcepts": ["axiom audit", "engineering vs. mathematical assumptions", "structure-encoded vs. mathematical axioms"],
+    "prerequisites": ["axiom integrity policy"]
   }
 ]
