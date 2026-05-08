@@ -1,10 +1,60 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T07:00:00Z
-**Iteration**: 7
+**Since**: 2026-05-08T13:00:00Z
+**Iteration**: 8
 
 ## Current Focus
+
+S8 (2026-05-08, researcher-3): **QR square-root extraction helper**. Added
+`private lemma exists_int_sqrt_neg_d_mod_p` to `ThreeSquares.lean`
+(directly after the S6 helpers, before the
+`not_excluded_form_is_sum_three_sq` axiom). The lemma is the **QR side**
+of Dirichlet's Key Lemma:
+
+```lean
+private lemma exists_int_sqrt_neg_d_mod_p
+    {p d : ℕ} [Fact (Nat.Prime p)] (hd_pos : 0 < d) (hd_lt_p : d < p)
+    (hqr : legendreSym p (-d : ℤ) = 1) :
+    ∃ r : ℤ, (p : ℤ) ∣ r ^ 2 + (d : ℤ)
+```
+
+**Proof structure** (~30 lines, faithful adaptation of the QR-lift technique
+from `Proofs/ZsqrtdNegTwo.lean:not_irreducible_of_neg_two_is_qr` used in
+the p ≡ 3 (mod 8) prime-case proof):
+
+1. `(d : ZMod p) ≠ 0` from `0 < d < p` (uses
+   `ZMod.natCast_zmod_eq_zero_iff_dvd`).
+2. `((-d : ℤ) : ZMod p) ≠ 0` follows by `push_cast; neg_ne_zero`.
+3. `legendreSym.eq_one_iff p hneg_d_ne` converts the QR hypothesis into
+   `IsSquare ((-d : ℤ) : ZMod p)`.
+4. Peel off the integer cast: `c * c = -((d : ZMod p))`.
+5. Lift `c.val` (a `ℕ` in `[0, p)`) up to `ℤ` as the integer witness `r'`.
+6. Show `((r' ^ 2 + d : ℤ) : ZMod p) = 0` via `push_cast` + `rw [sq, hmod]`,
+   then `ZMod.intCast_zmod_eq_zero_iff_dvd` produces the divisibility.
+
+**Why this is the right granularity** (small, focused, robust):
+
+- Purely arithmetic — no measure theory, no lattice machinery — so the
+  proof is short and robust to API drift in `MeasureTheory.*`.
+- Exposes the *square-root* extraction independently of the eventual
+  *sublattice* construction (S9+), which is the substantive geometric step.
+- Combined with `minkowski_ellipsoid_has_lattice_point_int` (S6) and a
+  sublattice covolume argument (S9+), it produces the divisibility
+  condition `p ∣ x² + d y² + d z²` on the sublattice — the heart of
+  `dirichlet_key_lemma`.
+
+**Axiom delta**: unchanged (still 2 axioms in `ThreeSquares.lean` after
+S7's honesty pass: `dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`).
+S8 is *infrastructural* — it doesn't eliminate an axiom but provides the
+first building block of the eventual `dirichlet_key_lemma` proof.
+
+**Build status**: pending. The proof closely mirrors a working pattern
+from `ZsqrtdNegTwo.lean`, but the worktree's `proofs/.lake` symlink is
+broken (recursive self-symlink), forcing each Docker build to do a fresh
+Mathlib clone (~45 min). A separate build-fix PR targeting the broken
+S5 region is needed before S8 can produce a green build (see "Build" note
+below from S7).
 
 S7 (2026-05-08, researcher-6): **r₃-count honesty pass — eliminated three
 inconsistent or vacuous axioms in PART II.**
@@ -113,38 +163,36 @@ session.
 
 ## Next Action
 
-**Session 8**: Continue `dirichlet_key_lemma` elimination, building on
-S6's `dirichletForm_pos`, `dirichletForm_real_eq_int_cast`, and
-`minkowski_ellipsoid_has_lattice_point_int`. Concretely:
+**Session 9**: Sublattice construction. With S8 providing the integer `r`
+such that `p ∣ r² + d`, the next geometric step is:
 
-1. **Restrict Minkowski to a sublattice** `L_r ⊂ ℤ³` cut out by
-   `x ≡ r y (mod p) ∧ x ≡ r' z (mod p)` with
-   `r² ≡ r'² ≡ -d (mod p)` (existence guaranteed by
-   `legendreSym p (-d) = 1`).
-2. **Sublattice covolume** is `p²`, so the volume condition becomes
-   `8 p² < (4π/3) R^(3/2) / d`, i.e. `R^(3/2) > 6 d p² / π`.
-3. **Range argument** — pick `R` so that `R < (d-1) p` (or similar),
-   forcing the form value `x² + d y² + d z²` to equal `kp` for a unique
-   `k < d`.
-4. **Identification** — match `kp = k(dn-1)` against `x² + d y² + d z²`
-   and extract a sum-of-three-squares representation of `n`.
+1. **Define the sublattice** `L_r = {(x, y, z) ∈ ℤ³ : x ≡ r·y (mod p)}`
+   (single constraint, covolume `p`) or `L_{r,r'} = {... : x ≡ r y, x ≡ r' z}`
+   (two constraints, covolume `p²`). Both produce
+   `x² + d y² + d z² ≡ 0 (mod p)` on the sublattice.
+2. **Identify `L_r` as a `Submodule ℤ (Fin 3 → ℝ)`** via
+   `Submodule.span ℤ {basis_vectors}` where the basis vectors are the
+   images of ℤ³ basis vectors under a transformation matrix.
+3. **Compute the covolume** of `L_r` using `ZSpan.volume_fundamentalDomain`
+   adapted to the new basis (matrix determinant gives `p` or `p²`).
+4. **Apply Mathlib's Minkowski theorem** (already used in S5) to the new
+   sublattice with adjusted volume condition `volume(L) · 2³ < volume(D)`.
+5. **Identification**: combine the integer Minkowski result with the
+   sublattice divisibility to get `x² + d y² + d z² = kp` for small `k`,
+   then match `kp = k(dn-1)` to extract a sum-of-three-squares for `n`.
 
-Step 1 (sublattice construction + QR-square-root extraction via
-`ZMod.isSquare_of_jacobiSym_eq_one`) is the main remaining S8 effort.
+S8 (this session) delivered the QR square-root extraction (item 0 of
+the chain): `legendreSym p (-d) = 1 ⟹ ∃ r : ℤ, p ∣ r² + d`.
+That `r` is the seed for the sublattice constraint in step 1.
 
-**Estimated**: ~100 lines for sublattice (S8), ~60 lines for the
-divisibility + identification arguments (S9). Full elimination of
-`dirichlet_key_lemma` across S8+S9.
-
-**Note (S7)**: This session did *not* attack `dirichlet_key_lemma` —
-the S6 PR #17082 was already in flight on the bridge helpers when S7
-started. Instead, S7 cleaned up the orthogonal PART II inconsistencies
-(see "Current Focus") so that the file's axiom count honestly reflects
-only the actually-load-bearing assumptions.
+**Estimated**: ~80 lines for sublattice construction + covolume (S9),
+~40 lines for Minkowski-on-sublattice application (S10), ~40 lines for
+the divisibility + identification arguments (S11). Full elimination of
+`dirichlet_key_lemma` across S9+S10+S11.
 
 ## Attempt Counts
 
-- Total attempts: 7 (Sessions 1–7)
+- Total attempts: 8 (Sessions 1–8)
 - Approaches tried:
   - **S1 (researcher-?)**: OBSERVE/scaffolding (PR #16805)
   - **S2 (researcher-?)**: stub + Legendre infra
@@ -187,3 +235,12 @@ only the actually-load-bearing assumptions.
       `dirichlet_key_lemma` and `not_excluded_form_is_sum_three_sq`
       remain). Inconsistency count: 2 → 0. (PR #17099, build pending —
       blocked on pre-existing S5 errors, see "Build" above.)
+  - **S8 (researcher-3, this PR)**: **QR square-root extraction**.
+    Added `private lemma exists_int_sqrt_neg_d_mod_p` between the S6
+    helpers and `not_excluded_form_is_sum_three_sq` axiom. Given prime
+    `p`, `0 < d < p`, and `legendreSym p (-d : ℤ) = 1`, extracts
+    integer `r` with `(p : ℤ) ∣ r² + d`. Proof (~30 lines) faithful
+    adaptation of the QR-lift technique from
+    `ZsqrtdNegTwo.lean:not_irreducible_of_neg_two_is_qr`. Axiom count
+    unchanged at 2 (this is *infrastructure* for the eventual
+    `dirichlet_key_lemma` proof). Build pending.

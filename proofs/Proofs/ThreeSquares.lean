@@ -1033,6 +1033,81 @@ private lemma minkowski_ellipsoid_has_lattice_point_int
     rw [← dirichletForm_real_eq_int_cast]
     exact hbound
 
+/-! ### S8 (2026-05-08): QR Square-Root Extraction
+
+The Dirichlet Key Lemma (axiomatised at line 535) requires two ingredients:
+
+1. **Minkowski step** — already provided by `minkowski_ellipsoid_has_lattice_point_int`
+   (S6, integer side) atop `minkowski_ellipsoid_has_lattice_point` (S5, real side).
+
+2. **QR-divisibility step** — under `legendreSym p (-d) = 1`, the form
+   `x² + d y² + d z²` is divisible by `p` on a sublattice cut out by congruence
+   conditions. The first prerequisite is purely arithmetic: extract an integer
+   `r` with `p ∣ r² + d`. That is the content of `exists_int_sqrt_neg_d_mod_p`
+   below.
+
+This S8 helper isolates the *square-root* extraction from the eventual sublattice
+construction (S9+). It is a faithful adaptation of the technique used in
+`Proofs/ZsqrtdNegTwo.lean` to lift `-2 is a QR mod p` to `p ∣ c² + 2`. The proof
+goes through:
+
+- `legendreSym.eq_one_iff` to get `IsSquare ((-d : ℤ) : ZMod p)`.
+- A `ZMod.natCast_val` lift back to an integer in `[0, p)`.
+- `ZMod.intCast_zmod_eq_zero_iff_dvd` to convert the ZMod-level identity
+  `c² = -d` into the integer divisibility `p ∣ c.val² + d`.
+
+The hypothesis `d < p` rules out the degenerate `(d : ZMod p) = 0` case; it is
+satisfied in the eventual application because Dirichlet's setup chooses
+`p = dn - 1 > d` whenever `n ≥ 2` (and `n = 1` is handled trivially by
+`1 = 1² + 0² + 0²`). -/
+
+/-- **S8**: From `legendreSym p (-d) = 1`, extract an integer square root of `-d`
+modulo `p`. Concretely: if `-d` is a quadratic residue mod the prime `p` (with
+`0 < d < p` to rule out the trivial `(d : ZMod p) = 0` case), there exists an
+integer `r` with `p ∣ r² + d`.
+
+This is the **QR side** of the Dirichlet Key Lemma. Combined with the integer
+Minkowski step (`minkowski_ellipsoid_has_lattice_point_int`, S6) and a
+sublattice covolume argument (S9+), it produces the divisibility condition
+`p ∣ x² + d y² + d z²` on the sublattice — the heart of the eventual
+elimination of `dirichlet_key_lemma`.
+
+The proof faithfully adapts the QR-lift technique from
+`Proofs/ZsqrtdNegTwo.lean:not_irreducible_of_neg_two_is_qr`. -/
+private lemma exists_int_sqrt_neg_d_mod_p
+    {p d : ℕ} [Fact (Nat.Prime p)] (hd_pos : 0 < d) (hd_lt_p : d < p)
+    (hqr : legendreSym p (-d : ℤ) = 1) :
+    ∃ r : ℤ, (p : ℤ) ∣ r ^ 2 + (d : ℤ) := by
+  -- Step 1: (d : ZMod p) ≠ 0 from 0 < d < p (uses primality only via NeZero p).
+  have hd_zmod_ne : (d : ZMod p) ≠ 0 := by
+    intro h
+    rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+    exact absurd (Nat.le_of_dvd hd_pos h) (Nat.not_le.mpr hd_lt_p)
+  -- Step 2: ((-d : ℤ) : ZMod p) ≠ 0 follows by push_cast + neg_ne_zero.
+  have hneg_d_ne : ((-d : ℤ) : ZMod p) ≠ 0 := by
+    push_cast
+    exact neg_ne_zero.mpr hd_zmod_ne
+  -- Step 3: legendreSym.eq_one_iff converts `= 1` into `IsSquare` over ZMod p.
+  obtain ⟨c, hc⟩ : IsSquare ((-d : ℤ) : ZMod p) :=
+    (legendreSym.eq_one_iff p hneg_d_ne).mp hqr
+  -- Step 4: rewrite `((-d : ℤ) : ZMod p)` as `-((d : ZMod p))` to peel off the
+  -- integer cast, giving `c * c = -(d : ZMod p)`.
+  have hmod : c * c = -((d : ZMod p)) := by
+    have heq : ((-d : ℤ) : ZMod p) = -((d : ZMod p)) := by push_cast; ring
+    rw [heq] at hc
+    exact hc.symm
+  -- Step 5: lift c (a `ZMod p` element) to an integer `r' = c.val ∈ [0, p)`.
+  let r' : ℤ := c.val
+  have hr'_mod : (r' : ZMod p) = c := by simp [r', ZMod.natCast_val]
+  refine ⟨r', ?_⟩
+  -- Step 6: show `((r'^2 + d : ℤ) : ZMod p) = 0`, then convert to divisibility
+  -- via `ZMod.intCast_zmod_eq_zero_iff_dvd`.
+  have h1 : ((r' ^ 2 + (d : ℤ) : ℤ) : ZMod p) = 0 := by
+    push_cast
+    rw [hr'_mod, sq, hmod]
+    ring
+  exact (ZMod.intCast_zmod_eq_zero_iff_dvd (r' ^ 2 + (d : ℤ)) p).mp h1
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
