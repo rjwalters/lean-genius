@@ -32,10 +32,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:21:41Z",
-    "iteration": 6,
-    "focus": "Session 6 (2026-05-07): added p_no_triple_n3 — real-number form P(no triple|n=3) = 1 − 1/d² as a corollary of good_count_n3. Concrete base-case sanity check connecting the elementary count (Session 1) to the Lemma C target. Lemma C itself remains the only axiom; its proof requires method-of-factorial-moments → Poisson convergence (≈500 lines, absent from Mathlib 4.26).",
+    "iteration": 7,
+    "focus": "Session 7 (2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple) = expectedTriples 3 d). Together with p_no_triple_n3 (Session 6) these complete the n=3 base-case picture from both sides and explicitly verify that the abstract `expectedTriples` formula equals the actual probability at n=3 (Markov is tight when X_d ≤ 1). Foundational seed for the broader factorial-moment identity needed for Lemma C. Lemma C itself remains the only axiom; ~500 lines of Mathlib infrastructure still required.",
     "blockers": [],
-    "nextAction": "Lemma C requires substantial Mathlib infrastructure (qualitative method-of-factorial-moments → Poisson convergence, ≈500 lines). Either build it locally for this entry, contribute upstream to Mathlib, or accept the entry as axiomatized. Smaller incremental contributions: union bound on triple count (general n), factorial moment definitions, Bonferroni r=1 bound — but each is ≪Lemma C in effect.",
+    "nextAction": "Lemma C requires substantial Mathlib infrastructure (qualitative method-of-factorial-moments → Poisson convergence, ≈500 lines). Either build it locally for this entry, contribute upstream to Mathlib, or accept the entry as axiomatized. Smaller incremental contributions: per-triple coincidence count formula card{f | f i = f j = f k} = d^(n-2) for n ≥ 3 (next building block), union bound on triple count, factorial moment definitions, Bonferroni r=1 bound.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 6, 2026-05-07): added p_no_triple_n3 — real-number form of n=3 base case, P(no triple) = 1 − 1/d² for d ≥ 1. Built directly on good_count_n3 (Session 1, exact triple-free count |good| = d³ − d). Small concrete addition; the principal remaining gap is unchanged: Lemma C (p_no_triple_tendsto axiom) — qualitative Poisson convergence P_no_triple(n_c(d), d) → exp(-c³/6), requiring method-of-factorial-moments infrastructure (~500 lines) absent from Mathlib 4.26. PRIOR (Session 5, PR #16150 merged 2026-05-06): poisson_approx_birthday3 is no longer an axiom — restated as a theorem proved by Filter.Tendsto.sub from Lemma B (exp_lambda_tendsto) and Lemma C (axiom). Lemmas A+B (lambda_tendsto, exp_lambda_tendsto) had been proved in Session 4 (2026-05-03).",
+    "progressSummary": "PROGRESS (Session 7, 2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d). Complements Session 6's p_no_triple_n3 (the negation). Together they cover the n=3 base case from both sides and provide the FIRST explicit identification of `expectedTriples` (analytic formula) with an actual probability — the seed of the broader first-moment identity P(some triple) = E[X_d] needed for any factorial-moment / Bonferroni approach to Lemma C. Markov is tight at n=3 since X_d ≤ 1 (only one possible triple). Lemma C remains axiomatized; the ~500-line Mathlib infrastructure for method-of-factorial-moments → Poisson convergence is unchanged. PRIOR (Session 6): p_no_triple_n3 added. (Session 5, PR #16150) poisson_approx_birthday3 derived from Lemma B + Lemma C.",
     "builtItems": [
       "Corrected JSON `problemStatement.formal` to match actual Lean axiom signature (qualitative Tendsto, not |...| ≤ C·n⁴/d³)",
       "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C",
@@ -55,7 +55,9 @@
       "two_div_rpow23_tendsto_zero: private helper 2/d^(2/3) → 0 (Session 4, line ~380)",
       "Session 5, PR #16150 (2026-05-06): poisson_approx_birthday3 axiom replaced by axiom p_no_triple_tendsto (Lemma C only); original statement is now `theorem poisson_approx_birthday3` derived via `(p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)` + `simpa`",
       "Session 6 (2026-05-07): p_no_triple_n3 in BirthdayProblemOQ03OQ01OQ02.lean (line ~585) — real-number form of n=3 base case: ((|good_n=3|) : ℝ) / (d^3 : ℝ) = 1 − 1/d² for d ≥ 1, proved via good_count_n3, Nat.cast_sub, push_cast, field_simp.",
-      "Session 6 (2026-05-07): repaired 4 Mathlib API drift errors in lambda_tendsto, bad_count_n3, good_count_n3 (introduced upstream after PR #16150 merged on 2026-05-06): tendsto_..._of_le_of_le → primed eventual variant; div_le_div_right → div_le_div_iff_of_pos_right; ← Fintype.card_coe inserted to bridge Finset.card ↔ Fintype.card; explicit predicate passed to filter_card_add_filter_neg_card_eq_card to satisfy DecidablePred synthesis."
+      "Session 6 (2026-05-07): repaired 4 Mathlib API drift errors in lambda_tendsto, bad_count_n3, good_count_n3 (introduced upstream after PR #16150 merged on 2026-05-06): tendsto_..._of_le_of_le → primed eventual variant; div_le_div_right → div_le_div_iff_of_pos_right; ← Fintype.card_coe inserted to bridge Finset.card ↔ Fintype.card; explicit predicate passed to filter_card_add_filter_neg_card_eq_card to satisfy DecidablePred synthesis.",
+      "Session 7 (2026-05-08, researcher-9): p_triple_n3 in BirthdayProblemOQ03OQ01OQ02.lean (line ~601) — real-number form of bad_count_n3: ((|bad_n=3|) : ℝ) / (d^3 : ℝ) = 1 / d² for d ≥ 1, proved via bad_count_n3, Fintype.card_fun, push_cast, field_simp, ring.",
+      "Session 7 (2026-05-08, researcher-9): p_triple_n3_eq_expectedTriples in BirthdayProblemOQ03OQ01OQ02.lean (line ~617) — n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d, proved by p_triple_n3 + simp [expectedTriples, Nat.choose_self]. First explicit connection between `expectedTriples` (analytic) and an actual probability."
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",
@@ -71,7 +73,9 @@
       "squeeze proof works: upper nc^3/(6d^2) and lower (nc-2)^3/(6d^2) both → c^3/6 via hbase.pow 3 + (d^(2/3))^3=d^2 identity",
       "2/d^(2/3) → 0 via tendsto_inv_atTop_zero.comp + const_mul; nc(d)>=2 eventually since c*(2/c)=2 ≤ c*d^(2/3)",
       "Lemma B is a one-liner: Real.continuous_exp.tendsto ∘ lambda_tendsto.neg",
-      "Session 6 sanity check: at n_c(d)=3 (sparse subset of d, where c·d^(2/3) ∈ [3,4)), P_no_triple(3,d) = 1 − 1/d² → 1 as d → ∞, matching exp(-C(3,3)/d²) = exp(-1/d²) → 1 from Lemma B. The base case is consistent with Lemma C's claimed limit but does not bound it."
+      "Session 6 sanity check: at n_c(d)=3 (sparse subset of d, where c·d^(2/3) ∈ [3,4)), P_no_triple(3,d) = 1 − 1/d² → 1 as d → ∞, matching exp(-C(3,3)/d²) = exp(-1/d²) → 1 from Lemma B. The base case is consistent with Lemma C's claimed limit but does not bound it.",
+      "Session 7: at n=3 there is only one possible triple (0,1,2), so the indicator-sum X_d := |{(i,j,k) | i<j<k ∧ f(i)=f(j)=f(k)}| satisfies X_d ∈ {0,1}. Hence P(X_d ≥ 1) = E[X_d], i.e. Markov is tight. In our explicit form: P(triple|n=3) = 1/d² = (3.choose 3 : ℝ)/d² = expectedTriples 3 d. This is a verified instance of the first-moment identity P(some triple) = C(n,3)/d² that any factorial-moments / Bonferroni proof of Lemma C must establish for general n.",
+      "Session 7: `expectedTriples` was previously a purely analytic quantity (a definition with no probability content). p_triple_n3_eq_expectedTriples is the first place in the file where it is identified with an actual probability. The identification is exact at n=3 and gives a one-sided Markov bound P(some triple) ≤ expectedTriples n d for general n (not yet formalized, but a clean next building block)."
     ],
     "mathlibGaps": [
       "Method of factorial moments → Poisson convergence (qualitative form) — not in Mathlib but smaller than Chen-Stein",
