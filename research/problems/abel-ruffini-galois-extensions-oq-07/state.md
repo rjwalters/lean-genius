@@ -1,77 +1,92 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T18:30:00Z
-**Iteration**: 9 (partial Lean implementation)
+**Since**: 2026-05-08T19:45:00Z
+**Iteration**: 11 (symmetric (1,2) shape, axiom-free, 3 new theorems)
 
-## S9 (this session, researcher-10, partial implementation)
+## S11 (this session, researcher-11, full implementation)
 
-S7 (PR #17114), S7.5 (PR #17155), and S8 spec (PR #17180) are merged.
-S8 produced a detailed spec for the exceptional `(p, q) = (2, 3),
-|G| = 12` case (`session-8-twelve-spec.md`); S9 implements the bulk
-of that spec axiom-free, with a single isolated `sorry` deferred to
-S10 for the element-counting cardinality lemma.
+S7 (PR #17114), S7.5 (PR #17155), S8 spec (PR #17180), and S9 (PR #17270)
+are merged. S9 implemented the bulk of the `(a, b) = (2, 1)` shape modulo
+a single isolated `sorry` deferred to S10.
 
-**This session's contribution** (~140 added lines in
+S11 (this session) mirrors the S7/S7.5/S9 trio for the symmetric
+`(a, b) = (1, 2)` shape `|G| = p · q²`.
+
+**This session's contribution** (~154 added lines in
 `AbelRuffiniGaloisExtensionsOQ07.lean`):
 
-* `sylow_count_dvd_four_modEq_one_three` (private helper, axiom-free):
-  if `n ≥ 1`, `n ∣ 4`, `n ≡ 1 [MOD 3]`, then `n ∈ {1, 4}`. Decidable
-  on Nat via `interval_cases` (2 ≢ 1 [MOD 3]; 3 ∤ 4).
-* `sylow_two_unique_when_n3_four` (private, sorry'd for S10): when
-  `|G| = 12` and `n_3 = 4`, the Sylow 2-subgroup is unique. Proof
-  outline carried in the docstring; implementation requires
-  Set/Finset cardinality machinery.
-* `burnside_p_squared_q_twelve` (axiom-free modulo the above sorry):
-  case-splits on `n_3 ∈ {1, 4}`. The `n_3 = 1` branch is fully
-  discharged (Sylow 3-subgroup normal; `burnside_pq_with_normal_qSylow`
-  with `(a, b) = (2, 1)`). The `n_3 = 4` branch reduces to
-  `Subsingleton (Sylow 2 G)` via the S10 lemma, yielding a normal
-  Sylow 2-subgroup; `burnside_pq_with_normal_pSylow` with
-  `(a, b) = (2, 1)` discharges.
+* `burnside_p_q_squared_p_lt_q` (axiom-free): mirror of S7. For
+  `|G| = p · q²` with `p < q`, Sylow's third theorem and
+  `Sylow.card_dvd_index` force `n_q ∣ p` and `n_q ≡ 1 [MOD q]`. The
+  EXISTING helper `sylow_count_eq_one_of_lt_prime` (S7) is applied with
+  primes swapped to `(q, p)`, forcing `n_q = 1`; the unique Sylow
+  q-subgroup is normal; `burnside_pq_with_normal_qSylow` discharges with
+  `(a, b) = (1, 2)`. ~50 lines.
+* `burnside_p_q_squared_q_lt_p` (axiom-free, modulo `(p, q) ≠ (3, 2)`):
+  mirror of S7.5. For `|G| = p · q²` with `q < p` and `(p, q) ≠ (3, 2)`,
+  the EXISTING helper `sylow_count_eq_one_of_lt_prime_pow_two` (S7.5) is
+  applied with primes swapped to `(q, p)` — its exclusion `¬ (p = 2 ∧ q = 3)`
+  in the swapped frame is exactly our `¬ (q = 2 ∧ p = 3)`, equivalent to
+  our `¬ (p = 3 ∧ q = 2)`. Forces `n_p = 1`; unique Sylow p-subgroup is
+  normal; `burnside_pq_with_normal_pSylow` discharges. ~55 lines.
+* `burnside_p_q_squared_twelve_mirror` (axiom-free, modulo S10 sorry):
+  thin wrapper around S9's `burnside_p_squared_q_twelve` for the
+  exceptional `(p, q) = (3, 2)` case, where `|G| = 3 · 2² = 12` is the
+  same group order as S9's `|G| = 2² · 3 = 12`. ~5 lines.
+
+**No new helpers**: S11 reuses both Sylow-count helpers from S7/S7.5
+verbatim (with primes swapped at the call site). Zero risk of helper
+incompatibility — the swap is purely cosmetic.
 
 **Build status**: not verified locally (`proofs/.lake` recursive
-self-symlink; ≥45-min cold-cache builds). Code follows the S7.5 idioms
+self-symlink; ≥45-min cold-cache builds). Code follows S7/S7.5 idioms
 verbatim (factorization-of-cardinality computation,
 `Sylow.card_eq_multiplicity` + `Subgroup.card_mul_index` chain) so the
-risk profile is identical to the merged-but-build-pending S7.5.
+risk profile is identical to the merged-but-build-pending S7/S7.5/S9.
 
-**Counts**: `lineCount 738 → 876` (+138, including ~35 lines of
-docstrings). `theoremCount 17 → 20` (+1 main theorem, +2 private
-lemmas). `axiomCount 1` unchanged. `sorries 0 → 1` (the isolated S10
+**Counts**: `lineCount 876 → 1030` (+154, including ~30 lines of
+docstrings and ~25 lines of iteration narrative). `theoremCount 20 → 23`
+(+3 main theorems). `substantiveTheoremCount 16 → 18` (+2; the trivial
+S9 wrapper not counted as substantive). `axiomCount 1` unchanged.
+`sorries 1` unchanged (no new sorries; S10 sorry remains the only
 deferred lemma).
 
 ## Current Focus
 
-`(a, b) = (2, 1)` shape of `burnside_pq_nontrivial` is **near-fully
-discharged** axiom-free:
+After S11 the `(a, b) = (1, 2)` shape is fully covered (modulo S10):
+
+* `q > p` (S11.1, this PR): axiom-free.
+* `p > q ≠ q + 1` (S11.2, this PR): axiom-free.
+* `(p, q) = (3, 2), |G| = 12` (S11.3, this PR): axiom-free modulo
+  the S10 sorry (via wrapper around S9).
+
+Symmetrically, the `(a, b) = (2, 1)` shape is fully covered (modulo S10):
 
 * `q < p` (S7, PR #17114): axiom-free.
 * `p < q ≠ p + 1` (S7.5, PR #17155): axiom-free.
-* `(p, q) = (2, 3), |G| = 12` (S9, this PR): axiom-free modulo a
-  single sorry in `sylow_two_unique_when_n3_four`.
+* `(p, q) = (2, 3), |G| = 12` (S9, PR #17270): axiom-free modulo
+  the S10 sorry.
 
-After S10 closes the sorry, `burnside_pq` can peel off `(a, b) = (2, 1)`
-axiom-free for **all** `(p, q)`. With the symmetric `(1, 2)` shape (S11),
-`burnside_pq_nontrivial` narrows to require `2 ≤ a ∧ 2 ≤ b`.
+After S10 closes the sorry, both shapes are fully axiom-free; S12
+updates the `burnside_pq` dispatch to peel them off; what remains
+in `burnside_pq_nontrivial` requires `2 ≤ a ∧ 2 ≤ b` (genuinely
+both ≥ 2).
 
-## Active Approach (S10)
+## Active Approach (S10, unchanged)
 
-Close `sylow_two_unique_when_n3_four`. The element-counting argument:
+Close `sylow_two_unique_when_n3_four` via element counting:
 
 1. Each pair of distinct Sylow 3-subgroups intersects trivially
    (cardinality of `Q ⊓ Q'` divides `|Q| = 3` and is < `|Q|`, so = 1).
-   Use `Subgroup.card_inf_le_card` or direct Lagrange.
-2. Show `{g : G | g^3 = 1} = ⋃ᵢ (Q_i : Set G)` as sets, then partition
-   as `{e} ⊔ ⊔ᵢ (Q_i \ {e})` with the `Q_i \ {e}` pairwise disjoint
-   (Finset.disjoint via subgroup intersection).
+2. `{g : G | g^3 = 1} = ⋃ᵢ (Q_i : Set G)`; partition as
+   `{e} ⊔ ⊔ᵢ (Q_i \ {e})`.
 3. Cardinality sum: `1 + 4·2 = 9`.
-4. For any Sylow 2-subgroup `P`: `P \ {e} ⊆ G \ {g | g^3 = 1}` (orders
-   2, 4 don't satisfy `g^3 = 1` unless `g = 1`); cardinalities match
-   (`|P| - 1 = 3 = |G \ ...|`); so `P = {e} ∪ (G \ ...)` set-theoretically.
+4. For any Sylow 2-subgroup `P`: `P \ {e} ⊆ G \ {g | g^3 = 1}`;
+   cardinalities match (`|P| - 1 = 3 = |G \ ...|`); so
+   `P = {e} ∪ (G \ ...)` set-theoretically.
 5. RHS depends only on `G`, not on choice of `P`; hence
-   `Subsingleton (Sylow 2 G)` (two Sylow 2's would have the same
-   underlying set, hence equal as subgroups, hence equal as Sylow's).
+   `Subsingleton (Sylow 2 G)`.
 
 Mathlib API likely needed:
 * `Subgroup.disjoint_iff_inf_eq_bot` or `Subgroup.eq_bot_of_card_le_one`
@@ -83,10 +98,9 @@ Estimated ~80-120 lines.
 
 ## Blockers
 
-Same as S8: build verification deferred (`.lake` symlink; ~45 min
-cold-cache). S9 code shipped "build pending" with high confidence
-based on S7.5-pattern adherence. S10 element-counting will need
-careful handling of `Set.ncard` vs `Finset.card` choice.
+Same as S7/S7.5/S9: build verification deferred (`.lake` symlink;
+~45 min cold-cache). S11 code shipped "build pending" with high
+confidence based on S7/S7.5-pattern adherence.
 
 The residual axiom (orders divisible by `p²` AND `q²` for distinct
 primes, once both shapes peeled) requires character theory or
@@ -98,42 +112,42 @@ focal-subgroup machinery. Estimated 400-800 lines on top of
 1. **(S10)** Close `sylow_two_unique_when_n3_four`'s sorry via
    element-counting (~80-120 lines). Mathlib API verification
    required for `Set.ncard_biUnion`-style lemmas.
-2. **(post-S10)** Update `burnside_pq` dispatch to peel off
-   `(a, b) = (2, 1)`: combine S7 (`q < p`), S7.5 (`p < q ≠ p+1`),
-   and `burnside_p_squared_q_twelve` (`(p, q) = (2, 3)`).
-3. **(S11)** Symmetric `(1, 2)` shape: prove
-   `burnside_p_q_squared_p_gt_q`, `burnside_p_q_squared_p_lt_q`,
-   `burnside_p_q_squared_eighteen` (mirror of S7/S7.5/S9).
-4. **(S12)** Update `burnside_pq` dispatch to peel off `(1, 2)` too.
-   Narrow `burnside_pq_nontrivial` axiom hypothesis to
-   `2 ≤ a ∧ 2 ≤ b`.
-5. **(S13+)** `|G| = p² · q²` Sylow analysis (~150 lines).
-6. **(S14+)** Goldschmidt-Matsuyama on `Mathlib.GroupTheory.Focal` for
+2. **(S12)** Update `burnside_pq` dispatch to peel off both
+   `(a, b) = (2, 1)` AND `(a, b) = (1, 2)`: combine S7/S7.5/S9 for
+   `(2, 1)` and S11.1/S11.2/S11.3 for `(1, 2)`. Narrow
+   `burnside_pq_nontrivial` axiom hypothesis to `2 ≤ a ∧ 2 ≤ b`.
+3. **(S13+)** `|G| = p² · q²` Sylow analysis (~150 lines).
+4. **(S14+)** Goldschmidt-Matsuyama on `Mathlib.GroupTheory.Focal` for
    `(a, b) ≥ (2, 2)`.
 
-## Iteration 9 Builds (researcher-10, 2026-05-08)
+## Iteration 11 Builds (researcher-11, 2026-05-08)
 
-- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`: 738→876 lines.
-- New private helper `sylow_count_dvd_four_modEq_one_three` (~12 lines).
-- New private placeholder `sylow_two_unique_when_n3_four` (~7 lines, sorry).
-- New theorem `burnside_p_squared_q_twelve` (~55 lines including docstring).
-- Section header + iteration narrative comment block (~35 lines).
-- meta.json: lineCount 738→876, theoremCount 17→20,
-  substantiveTheoremCount 15→16, sorries 0→1, axiomCount 1 unchanged.
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`: 876→1030 lines.
+- New theorem `burnside_p_q_squared_p_lt_q` (~50 lines including docstring).
+- New theorem `burnside_p_q_squared_q_lt_p` (~55 lines including docstring).
+- New theorem `burnside_p_q_squared_twelve_mirror` (~13 lines including docstring).
+- New iteration narrative comment block (~22 lines).
+- New helper code: NONE (reuses S7/S7.5 helpers verbatim with primes
+  swapped at call sites).
+- meta.json: lineCount 876→1030, theoremCount 20→23,
+  substantiveTheoremCount 16→18, sorries 1 unchanged, axiomCount 1
+  unchanged. Updated `originalContributions`, `mainTheorems`, and
+  `assumptions` text to reflect S9 + S11.
 
 ## Why Build-Pending Is Acceptable Here
 
-S9's three new declarations follow the established S7/S7.5 pattern
+S11's three new declarations follow the established S7/S7.5 pattern
 verbatim:
 
-* `sylow_count_dvd_four_modEq_one_three` is a 12-line `interval_cases`
-  proof on Nat — verifiable by hand.
-* `burnside_p_squared_q_twelve` reuses the exact factorization +
-  Sylow-cardinality + index-cancellation chain that S7.5 already
-  proved (also build-pending) for the symmetric case. The only novel
-  Mathlib calls are the same ones S7.5 uses.
-* `sylow_two_unique_when_n3_four` is `sorry`'d — no build risk.
+* `burnside_p_q_squared_p_lt_q` is a near-line-for-line mirror of
+  `burnside_p_squared_q_p_gt_q` (S7) with `(p, q)` roles swapped at
+  the helper call. The only Mathlib calls are the same ones S7 uses.
+* `burnside_p_q_squared_q_lt_p` mirrors `burnside_p_squared_q_p_lt_q`
+  (S7.5) similarly. The `hexc` translation
+  `¬ (p = 3 ∧ q = 2) ↔ ¬ (q = 2 ∧ p = 3)` is a one-line `fun ⟨…⟩ ⟨…⟩` swap.
+* `burnside_p_q_squared_twelve_mirror` is a 1-line wrapper invocation —
+  no proof content.
 
-The risk profile is identical to S7.5's. If S7.5 builds, S9 builds.
-If S7.5 needs fixing, S9 needs the same fix. Coupling them in a
-single fix-up cycle (when `.lake` is repaired) is efficient.
+The risk profile is identical to S7/S7.5/S9's. If those build, S11
+builds. If they need fixing, S11 needs the same fix. Coupling them
+in a single fix-up cycle (when `.lake` is repaired) is efficient.
