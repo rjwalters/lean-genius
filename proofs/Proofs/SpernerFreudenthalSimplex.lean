@@ -1860,3 +1860,251 @@ lemma forall_vertex_ne_iff_forall_face_mem
       Finset.mem_erase.mpr ⟨hj_ne, Finset.mem_univ j⟩, rfl⟩
 
 end SimplicialAdjFnHelper
+
+-- ============================================================
+-- (Session 19 part 3) `_hBoundaryOnFace` discharge for `simData2 N`.
+--
+-- Combines S19.1 (`adjFn_eq_none_iff_card_le_one`), S19.2 (the
+-- `forall_vertex_ne_iff_forall_face_mem` bridge + 6 erase
+-- computations), S18.1 (boundary container singletons +
+-- `*_endpoints_on_face*`), S18.2 (interior neighbor existentials),
+-- and S17 (diagonal interior bridge) to discharge the
+-- `_hBoundaryOnFace` hypothesis of `Triangulation.boundary_doors_odd`
+-- for `(simData2 N).toTriangulation`.
+--
+-- Strategy: case-split `S ∈ topSimps2 N` (t1 b vs t2 c) via
+-- `topSimps2_mem_iff`, then case-split on which of the three
+-- vertices is dropped via `vertexEnum_mem`. The S19.2 erase
+-- lemmas identify the resulting edge in each case.
+--
+-- For `t2 c` cells, every edge has ≥ 2 containers via S18 part 2
+-- (`t2_face*_card_ge_two`), contradicting card ≤ 1 (boundary).
+--
+-- For `t1 b` cells, the geometric boundary condition is forced by
+-- contradiction: assuming the interior condition holds, S17/S18.2
+-- supplies a distinct second container, contradicting card ≤ 1.
+-- Once the boundary condition is established, S18.5
+-- (`*_endpoints_on_face*`) supplies the `onFaceΔ2` witnesses.
+-- ============================================================
+
+namespace SpernerFreudSimp
+section N2HBoundaryOnFace
+
+variable (N : ℕ)
+
+/-- Helper: two distinct top-simplices both containing the same
+codim-1 face yield container card ≥ 2. -/
+private lemma containers_two_distinct
+    {f : Finset (ℕ × ℕ)} {S₁ S₂ : Finset (ℕ × ℕ)}
+    (hS₁_in : S₁ ∈ topSimps2 N) (hS₁_sub : f ⊆ S₁)
+    (hS₂_in : S₂ ∈ topSimps2 N) (hS₂_sub : f ⊆ S₂)
+    (h_ne : S₁ ≠ S₂) :
+    2 ≤ ((topSimps2 N).filter (fun s => f ⊆ s)).card := by
+  have h₁_in : S₁ ∈ (topSimps2 N).filter (fun s => f ⊆ s) :=
+    Finset.mem_filter.mpr ⟨hS₁_in, hS₁_sub⟩
+  have h₂_in : S₂ ∈ (topSimps2 N).filter (fun s => f ⊆ s) :=
+    Finset.mem_filter.mpr ⟨hS₂_in, hS₂_sub⟩
+  have h_pair_card : ({S₁, S₂} : Finset (Finset (ℕ × ℕ))).card = 2 := by
+    rw [Finset.card_insert_of_not_mem
+        (by rw [Finset.mem_singleton]; exact h_ne),
+        Finset.card_singleton]
+  have h_pair_sub :
+      ({S₁, S₂} : Finset (Finset (ℕ × ℕ))) ⊆
+        (topSimps2 N).filter (fun s => f ⊆ s) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact h₁_in
+    · exact h₂_in
+  calc 2 = _ := h_pair_card.symm
+    _ ≤ _ := Finset.card_le_card h_pair_sub
+
+/-- The `_hBoundaryOnFace` discharge for `(simData2 N).toTriangulation`:
+every boundary door of the n=2 Type-1/Type-2 triangulation lies on a
+geometric face of Δ². This is the concrete consumer of S16-S19's
+combinatorial infrastructure. -/
+private lemma boundaryOnFace_simData2 :
+    ∀ (s : ((simData2 N).toTriangulation).Cell) (k : Fin 3),
+      ((simData2 N).toTriangulation).adj s k = none →
+      ∃ faceIdx : Fin 3, ∀ j : Fin 3, j ≠ k →
+        onFaceΔ2_strict N (((simData2 N).toTriangulation).vertex s j) faceIdx := by
+  intro ⟨S, hS⟩ k h_adj
+  -- Step 1: Convert adj=none to containers card ≤ 1.
+  have h_card_le :
+      ((simData2 N).containersOf ((simData2 N).faceOf S hS k)).card ≤ 1 :=
+    (SimplicialAdjFnHelper.adjFn_eq_none_iff_card_le_one
+      (simData2 N) ⟨S, hS⟩ k).mp h_adj
+  -- Step 2: In-range constraint on every face vertex.
+  have h_in_range : ∀ v ∈ (simData2 N).faceOf S hS k, v.1 + v.2 ≤ N :=
+    fun v hv =>
+      topSimps2_vertex_in_range N hS ((simData2 N).faceOf_subset S hS k hv)
+  -- Step 3: Convert ∀j≠k goal to ∀v∈face goal via S19.2 bridge.
+  suffices h : ∃ faceIdx : Fin 3,
+      ∀ v ∈ (simData2 N).faceOf S hS k, onFaceΔ2_strict N v faceIdx by
+    obtain ⟨faceIdx, h_face⟩ := h
+    refine ⟨faceIdx, ?_⟩
+    exact (SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem
+      (simData2 N) S hS k _).mpr h_face
+  -- Step 4: Definitional equation for containersOf in this concrete
+  -- triangulation: `(simData2 N).containersOf f = topSimps2 N.filter (f ⊆ ·)`.
+  have h_containers_eq : ∀ (f : Finset (ℕ × ℕ)),
+      (simData2 N).containersOf f =
+        (topSimps2 N).filter (fun s => f ⊆ s) := fun _ => rfl
+  -- Step 5: Case-split on S ∈ topSimps2 N.
+  rcases (topSimps2_mem_iff N S).mp hS with ⟨b, hb, rfl⟩ | ⟨c, hc, rfl⟩
+  · -- S = t1 b: case-split on which vertex is dropped.
+    have h_drop : (simData2 N).vertexEnum (t1 b) hS k ∈ t1 b :=
+      (simData2 N).vertexEnum_mem (t1 b) hS k
+    simp only [t1, Finset.mem_insert, Finset.mem_singleton] at h_drop
+    rcases h_drop with hd | hd | hd
+    · -- (S19.3.1) dropped = (b.1+1, b.2): face = vertical edge {b, (b.1, b.2+1)}.
+      have h_face_eq :
+          (simData2 N).faceOf (t1 b) hS k =
+            ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) := by
+        show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+        rw [hd]; exact t1_erase_first b
+      -- Force boundary condition b.1 = 0 by interior contradiction.
+      have h_b1_zero : b.1 = 0 := by
+        by_contra h_pos
+        have h_b1_pos : 1 ≤ b.1 := Nat.one_le_iff_ne_zero.mpr h_pos
+        obtain ⟨s2, h_s2_in, h_s2_ne, h_s2_sub⟩ :=
+          vertical_neighbor_topSimps2 N hb h_b1_pos
+        have h_t1b_sub :
+            ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
+          intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;>
+            · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+              omega
+        have h_two : 2 ≤ ((simData2 N).containersOf
+            ((simData2 N).faceOf (t1 b) hS k)).card := by
+          rw [h_face_eq, h_containers_eq]
+          exact containers_two_distinct N
+            (t1_in_topSimps2_of_base N hb) h_t1b_sub
+            h_s2_in h_s2_sub h_s2_ne.symm
+        omega
+      -- Boundary case: faceIdx = 0; vertical edge endpoints on face 0.
+      refine ⟨0, ?_⟩
+      intro v hv
+      have h_in_v : v.1 + v.2 ≤ N := h_in_range v hv
+      rw [h_face_eq] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      obtain ⟨h_b_face, h_b'_face⟩ := vertical_endpoints_on_face0 N b h_b1_zero
+      rcases hv with rfl | rfl
+      · exact ⟨h_in_v, h_b_face⟩
+      · exact ⟨h_in_v, h_b'_face⟩
+    · -- (S19.3.2) dropped = (b.1, b.2+1): face = horizontal edge {b, (b.1+1, b.2)}.
+      have h_face_eq :
+          (simData2 N).faceOf (t1 b) hS k =
+            ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
+        show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+        rw [hd]; exact t1_erase_second b
+      have h_b2_zero : b.2 = 0 := by
+        by_contra h_pos
+        have h_b2_pos : 1 ≤ b.2 := Nat.one_le_iff_ne_zero.mpr h_pos
+        obtain ⟨s2, h_s2_in, h_s2_ne, h_s2_sub⟩ :=
+          horizontal_neighbor_topSimps2 N hb h_b2_pos
+        have h_t1b_sub :
+            ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
+          intro x hx
+          simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+          rcases hx with rfl | rfl <;>
+            · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+              omega
+        have h_two : 2 ≤ ((simData2 N).containersOf
+            ((simData2 N).faceOf (t1 b) hS k)).card := by
+          rw [h_face_eq, h_containers_eq]
+          exact containers_two_distinct N
+            (t1_in_topSimps2_of_base N hb) h_t1b_sub
+            h_s2_in h_s2_sub h_s2_ne.symm
+        omega
+      refine ⟨1, ?_⟩
+      intro v hv
+      have h_in_v : v.1 + v.2 ≤ N := h_in_range v hv
+      rw [h_face_eq] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      obtain ⟨h_b_face, h_b'_face⟩ := horizontal_endpoints_on_face1 N b h_b2_zero
+      rcases hv with rfl | rfl
+      · exact ⟨h_in_v, h_b_face⟩
+      · exact ⟨h_in_v, h_b'_face⟩
+    · -- (S19.3.3) dropped = b: face = diagonal edge {(b.1, b.2+1), (b.1+1, b.2)}.
+      have h_face_eq :
+          (simData2 N).faceOf (t1 b) hS k =
+            ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
+        show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+        rw [hd]; exact t1_erase_third b
+      have h_b_diag : N ≤ b.1 + b.2 + 1 := by
+        by_contra h_pos
+        have h_b_lt : b.1 + b.2 + 1 < N := by omega
+        have h_b_in_t2 : b ∈ t2Bases N :=
+          t1Bases_diagonal_neighbor_in_t2Bases N hb h_b_lt
+        have h_t1b_sub :
+            ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 b :=
+          (diagonal_in_t1_iff b b).mpr rfl
+        have h_t2b_sub :
+            ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 b :=
+          (diagonal_in_t2_iff b b).mpr rfl
+        have h_two : 2 ≤ ((simData2 N).containersOf
+            ((simData2 N).faceOf (t1 b) hS k)).card := by
+          rw [h_face_eq, h_containers_eq]
+          exact containers_two_distinct N
+            (t1_in_topSimps2_of_base N hb) h_t1b_sub
+            (t2_in_topSimps2_of_base N h_b_in_t2) h_t2b_sub (t1_ne_t2 b b)
+        omega
+      refine ⟨2, ?_⟩
+      intro v hv
+      have h_in_v : v.1 + v.2 ≤ N := h_in_range v hv
+      rw [h_face_eq] at hv
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+      obtain ⟨h_b_face, h_b'_face⟩ := diagonal_endpoints_on_face2 N hb h_b_diag
+      rcases hv with rfl | rfl
+      · exact ⟨h_in_v, h_b_face⟩
+      · exact ⟨h_in_v, h_b'_face⟩
+  · -- S = t2 c case: every edge has ≥ 2 containers, contradicting card ≤ 1.
+    exfalso
+    have h_drop : (simData2 N).vertexEnum (t2 c) hS k ∈ t2 c :=
+      (simData2 N).vertexEnum_mem (t2 c) hS k
+    simp only [t2, Finset.mem_insert, Finset.mem_singleton] at h_drop
+    rcases h_drop with hd | hd | hd
+    · -- dropped = (c.1+1, c.2+1): face = face2 of t2 c
+      have h_face_eq :
+          (simData2 N).faceOf (t2 c) hS k =
+            ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) := by
+        show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
+        rw [hd]; exact t2_erase_first c
+      have h_two := t2_face2_card_ge_two N hc
+      have h_card : ((simData2 N).containersOf
+          ((simData2 N).faceOf (t2 c) hS k)).card =
+        ((topSimps2 N).filter
+          (fun s => ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) ⊆ s)).card := by
+        rw [h_face_eq, h_containers_eq]
+      omega
+    · -- dropped = (c.1+1, c.2): face = face1 of t2 c
+      have h_face_eq :
+          (simData2 N).faceOf (t2 c) hS k =
+            ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
+        show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
+        rw [hd]; exact t2_erase_second c
+      have h_two := t2_face1_card_ge_two N hc
+      have h_card : ((simData2 N).containersOf
+          ((simData2 N).faceOf (t2 c) hS k)).card =
+        ((topSimps2 N).filter
+          (fun s => ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) ⊆ s)).card := by
+        rw [h_face_eq, h_containers_eq]
+      omega
+    · -- dropped = (c.1, c.2+1): face = face0 of t2 c
+      have h_face_eq :
+          (simData2 N).faceOf (t2 c) hS k =
+            ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
+        show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
+        rw [hd]; exact t2_erase_third c
+      have h_two := t2_face0_card_ge_two N hc
+      have h_card : ((simData2 N).containersOf
+          ((simData2 N).faceOf (t2 c) hS k)).card =
+        ((topSimps2 N).filter
+          (fun s => ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) ⊆ s)).card := by
+        rw [h_face_eq, h_containers_eq]
+      omega
+
+end N2HBoundaryOnFace
+end SpernerFreudSimp
