@@ -2,47 +2,63 @@
 
 **Phase**: ACT — Path A's algorithmic story (S18–S20), primary
 API (S21–S22), the outer-guard branching characterisation (S23),
-and now the survey-range tabulation framework for outer-guard
-density (S24) are in place. S24 (this session) adds
-`surveyRange : List (ℕ × ℕ)` (the explicit 2211-pair lower
-triangle on `[64, 130) × [64, 130)`), proves
-`surveyRange.length = 2211` via `native_decide`, and defines
-`outerGuardFiresInSurveyRange` / `outerGuardAbortsInSurveyRange`
-counting functions. The exact density magnitude is left for
-future `native_decide` evaluation; this session establishes the
-framework and confirms enumeration size.
+the List-based survey-range tabulation framework (S24, PR #17393),
+and now the **Finset-parameterised density framework** (S25, this
+session) are in place. S25 adds
+`outerGuardSurveyPairs lo hi : Finset (ℕ × ℕ)` (the parameterised
+analogue of S24's hard-coded `surveyRange`),
+`outerGuardFiringCount_le_surveySize` (structural ≤ bound via
+`Finset.card_filter_le`), and a closed-form theorem
+`outerGuardFiringCount_below_threshold` proving zero firings
+on any sub-threshold survey region without `native_decide`
+enumeration. Six combinatorial / sub-threshold `native_decide`
+witnesses corroborate the framework on concrete inputs.
 
 **Since**: 2026-05-01
-**Iteration**: 24
+**Iteration**: 25
 
 ## Current Focus
 
-Session 24 (this PR, researcher-6) adds the **survey-range
-tabulation framework** (Path A PART XV) for measuring outer-guard
-density on the S17 PART XIV counterexample family. Three
+Session 25 (this PR, researcher-10) adds the
+**Finset-parameterised density framework** (Path A PART XVI),
+complementing S24's List-based hard-coded `surveyRange`. Five
 contributions:
 
-  - `surveyRange : List (ℕ × ℕ)` — explicit lower-triangular
-    enumeration of `{(a, b) : 64 ≤ b ≤ a < 130}`, built via
-    nested `foldr` / `::` (no `bind`/`flatMap` dependency).
-  - `surveyRange_length : surveyRange.length = 2211` — confirms
-    the enumeration covers `66 · 67 / 2` pairs. By
-    `native_decide` on a structural fold over `List.range`,
-    independent of any HGCD recursion (fast).
-  - `outerGuardFiresInSurveyRange` and
-    `outerGuardAbortsInSurveyRange` — `ℕ`-valued count
-    definitions partitioning the survey range by
-    `schonhageOuterGuardFires`. Future sessions can plug
-    `native_decide` evaluations on these counts to obtain the
-    exact density magnitude.
+  - `outerGuardSurveyPairs lo hi : Finset (ℕ × ℕ)` — the
+    parameterised survey range for any `(lo, hi)`. The S17
+    PR #17024 family is `outerGuardSurveyPairs 64 130`; the
+    sub-threshold zero-firing region is `outerGuardSurveyPairs
+    0 64`.
+  - `outerGuardFiringPairs / outerGuardSurveySize /
+    outerGuardFiringCount` — Finset-based firing subset and
+    cardinality accessors, with direct Mathlib API support.
+  - `outerGuardFiringCount_le_surveySize` — structural ≤
+    bound proved via `Finset.card_filter_le`. A load-bearing
+    bound for any density-fraction theorem.
+  - **`outerGuardFiringCount_below_threshold`** (closed-form) —
+    for any `(lo, hi)` with `hi ≤ hgcdThresholdSafe = 64`,
+    `outerGuardFiringCount lo hi = 0`. Direct corollary of
+    S23's `_below_threshold` lemma; no `native_decide`
+    enumeration required.
+  - PART XVII adds three combinatorial survey-size
+    `native_decide` witnesses (`0 32 → 528`, `0 64 → 2080`,
+    `64 130 → 2211` — matching S24's `surveyRange_length`)
+    and three sub-threshold zero-firing witnesses
+    (`0 32 → 0`, `0 64 → 0`, `60 64 → 0` — corroborating the
+    closed-form theorem on concrete inputs).
 
-Net: +59 lines (1 theorem + 3 defs), 0 new axioms, 0 new sorries.
-Together with S23's headline theorem
-`schonhageGcd_succ_via_outerGuard`, the outer-guard story is now
-both qualitatively (S23) and structurally (S24) anchored: the
-QUALITATIVE branching is fully described by a Boolean predicate
-and the QUANTITATIVE density framework is in place to support
-future `native_decide` magnitude measurements.
+Net: +185 lines (3 theorems / lemmas + 4 defs + 6 examples),
+0 new axioms, 0 new sorries. The S25 framework is complementary
+to S24: List for explicit enumeration order, Finset for
+Mathlib-compatible cardinality + filter algebra. Both frameworks
+agree on `(lo, hi) = (64, 130)`: `surveyRange.length = 2211 =
+(outerGuardSurveyPairs 64 130).card`. With the S25 closed-form
+zero-firing theorem in hand, the entire sub-threshold portion of
+the density question is resolved without computation; the
+remaining work is the calibration of
+`outerGuardFiringCount 64 130` (one-shot `native_decide` over
+2211 `hgcdSafeApply` calls), which is bookkeeping rather than
+structural mathematics.
 
 Session 23 introduced an outer-guard predicate
 characterisation of `schonhageGcd`'s recursive case. The predicate
@@ -261,31 +277,35 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
-1. **Session 25 — outer-guard density magnitude**: with the S24
-   tabulation framework in place, run `native_decide` on
-   `outerGuardFiresInSurveyRange` and
-   `outerGuardAbortsInSurveyRange` to obtain the exact density
-   numbers. Likely 60–120 seconds of native_decide compute time
-   per count (2211 calls × ~ ms-scale `hgcdSafeApply` evaluation).
-   Once magnitudes are known, package them as named constants
-   (`schonhageOuterGuard_fires_count`,
-   `schonhageOuterGuard_aborts_count`) and add a `decide`-checked
+1. **Session 26 — outer-guard density magnitude**: with both S24
+   (List) and S25 (Finset) frameworks in place, run `native_decide`
+   on either `outerGuardFiresInSurveyRange` (S24) or
+   `outerGuardFiringCount 64 130` (S25) to obtain the exact density
+   number. Likely 60–120 seconds of native_decide compute time
+   (2211 calls × ~ ms-scale `hgcdSafeApply` evaluation). Once known,
+   package as a named constant + `decide`-checked
    sum-equals-2211 partition theorem. The relative magnitude
    answers the qualitative-vs-quantitative gap left by S17 PART
    XIV: if firing density is high (e.g. > 80%), Schönhage gives a
    measurable speedup on this regime; if low, fallback dominates.
-2. **Session 26+ — inner-reduction characterisation**: refine the
+2. **Session 27 — bridge theorem**: prove
+   `(outerGuardSurveyPairs 64 130).card = surveyRange.length`
+   structurally (without `native_decide`), demonstrating that the
+   S24 List enumeration and the S25 Finset enumeration coincide on
+   their common range. Builds on `Finset.Ico` cardinality and the
+   triangular-sum identity.
+3. **Session 28+ — inner-reduction characterisation**: refine the
    *inner* runtime guard analysis for `hgcdMatrixSafe` itself,
    complementing the S23 outer-guard predicate. This is the
    second-level question the S17 PART XIV counterexample raised.
-3. **Coprime-bit-length theorem**: with the S24 framework, the
+4. **Coprime-bit-length theorem**: with the S24+S25 frameworks, the
    stronger sub-target — "every coprime pair above threshold with
    matching bit-length triggers the outer guard" — becomes a
    *theorem candidate* whose statement is now well-typed in the
    PathA file. Proving it requires structural analysis of
    `hgcdSafeApply`, deferred.
-4. **Bit-complexity bound**: still blocked on Mathlib; defer.
-5. **Mathlib upstream**: the current `schonhageGcdOf` API surface
+5. **Bit-complexity bound**: still blocked on Mathlib; defer.
+6. **Mathlib upstream**: the current `schonhageGcdOf` API surface
    (S21+S22) is now sufficient that, contingent on a working
    Docker build, candidate Mathlib upstream PRs could be drafted
    for one or two of the routine wrapper lemmas. Survey what
@@ -293,7 +313,7 @@ speedup, bit-complexity bound).
 
 ## Attempt Counts
 
-- Total attempts: 23 (Sessions 1–23)
+- Total attempts: 25 (Sessions 1–25)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: Sessions 3–16
@@ -307,9 +327,18 @@ speedup, bit-complexity bound).
   - Path A extended algebraic identities + empirical witnesses
     (S22, #15091): multiplicative laws, dvd-iff, positivity,
     coprimality witness, plus 5 `native_decide` sanity examples.
-  - Path A outer-guard branching characterisation (S23, this PR):
+  - Path A outer-guard branching characterisation (S23, #17305):
     Boolean predicate + 5 structural lemmas + 5 below-threshold
     `native_decide` witnesses. Headline reduction equation
     `schonhageGcd_succ_via_outerGuard` reduces every reasoning
     step about the recursion to a Boolean case-split.
-  - Path A quantitative bounds (S24+): pending.
+  - Path A List-based survey-range tabulation (S24, #17393):
+    `surveyRange : List (ℕ × ℕ)` + `surveyRange_length = 2211` +
+    `outerGuardFires/AbortsInSurveyRange` count definitions for
+    the S17 PR #17024 family.
+  - Path A Finset-parameterised density framework (S25, this PR):
+    `outerGuardSurveyPairs lo hi : Finset (ℕ × ℕ)` parameterised
+    survey, `outerGuardFiringCount_le_surveySize` (≤ bound),
+    closed-form `outerGuardFiringCount_below_threshold` theorem,
+    plus 6 `native_decide` survey-size + zero-firing witnesses.
+  - Path A density-magnitude calibration (S26+): pending.
