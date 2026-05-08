@@ -1464,3 +1464,84 @@ private lemma t2_face2_neighbor_topSimps2
 
 end N2BoundaryInteriorNeighbors
 end SpernerFreudSimp
+
+-- ============================================================
+-- (Session 19 part 1) Generic `adjFn = none ↔ card ≤ 1` translation.
+--
+-- `AbstractSimplicialData.adjFn` (in `SpernerSimplicialInstance.lean`)
+-- returns `none` precisely when the codim-1 face lies on the boundary
+-- of the triangulation. Its definition uses a nested
+--    if cs.card ≤ 1 then none
+--    else if (cs.erase s).Nonempty then some _ else none
+-- pattern, which is operationally correct but inconvenient for
+-- case-split reasoning in `_hBoundaryOnFace` discharges.
+--
+-- This section provides a single clean iff translation:
+--    `adjFn p k = none ↔ (containersOf (faceOf p.1 p.2 k)).card ≤ 1`
+--
+-- The proof uses `self_mem_containersOf` (so `cs.card ≥ 1` always)
+-- and `card_erase_of_mem` (so `cs.erase p.1` has card `cs.card - 1`)
+-- to show that the second `none`-branch of the inner `if` is
+-- unreachable: `cs.card > 1` forces `cs.erase p.1` nonempty, hence
+-- `adjFn` returns `some`. Equivalently, `adjFn = none ↔ cs.card = 1`
+-- (the corollary below).
+--
+-- This is the abstract-level bridge that the n=2 `_hBoundaryOnFace`
+-- proof (S19 part 2, future) and any other concrete
+-- `Sperner-on-Triangulation` instance will consume to translate
+-- "no adjacent simplex" into "the codim-1 face has only one
+-- container" — exactly the form produced by S16-S18's geometric
+-- container-card analysis (`*_only_container_of_t1_boundary`,
+-- `*_card_eq_one_of_t1_boundary`).
+-- ============================================================
+
+namespace SimplicialAdjFnHelper
+
+variable {V : Type} [DecidableEq V] [LinearOrder V] {n : ℕ}
+
+/-- The generic translation: `adjFn p k = none` iff the container
+set of the codim-1 face has cardinality at most 1.
+
+The right-to-left direction takes the outer `if`-branch of `adjFn`.
+The left-to-right direction proceeds by `split_ifs`: the case where
+`cs.card > 1` and `cs.erase p.1` is empty is impossible, since
+`p.1 ∈ cs` (via `self_mem_containersOf`) gives
+`(cs.erase p.1).card = cs.card - 1 ≥ 1`. -/
+lemma adjFn_eq_none_iff_card_le_one
+    (D : AbstractSimplicialData V n)
+    (p : { s : Finset V // s ∈ D.topSimplices })
+    (k : Fin (n + 1)) :
+    D.adjFn p k = none ↔
+      (D.containersOf (D.faceOf p.1 p.2 k)).card ≤ 1 := by
+  have h_self : p.1 ∈ D.containersOf (D.faceOf p.1 p.2 k) :=
+    D.self_mem_containersOf p.1 p.2 k
+  unfold AbstractSimplicialData.adjFn
+  simp only
+  split_ifs with hc hne
+  · -- Outer `if` taken: cs.card ≤ 1; both sides hold.
+    exact ⟨fun _ => hc, fun _ => rfl⟩
+  · -- Outer skipped, inner taken: returns `some _`. LHS False, RHS False.
+    exact ⟨fun h => Option.noConfusion h, fun h => absurd h hc⟩
+  · -- Outer skipped, inner skipped: contradicts `p.1 ∈ cs` + `cs.card > 1`.
+    exfalso
+    apply hne
+    show ((D.containersOf (D.faceOf p.1 p.2 k)).erase p.1).Nonempty
+    refine Finset.card_pos.mp ?_
+    rw [Finset.card_erase_of_mem h_self]
+    omega
+
+/-- Corollary: `adjFn p k = none` iff the container set has card
+exactly 1. Combines `adjFn_eq_none_iff_card_le_one` with the
+`cs.card ≥ 1` lower bound from `self_mem_containersOf`. -/
+lemma adjFn_eq_none_iff_card_eq_one
+    (D : AbstractSimplicialData V n)
+    (p : { s : Finset V // s ∈ D.topSimplices })
+    (k : Fin (n + 1)) :
+    D.adjFn p k = none ↔
+      (D.containersOf (D.faceOf p.1 p.2 k)).card = 1 := by
+  rw [adjFn_eq_none_iff_card_le_one]
+  have h_pos : 0 < (D.containersOf (D.faceOf p.1 p.2 k)).card :=
+    Finset.card_pos.mpr ⟨p.1, D.self_mem_containersOf p.1 p.2 k⟩
+  omega
+
+end SimplicialAdjFnHelper
