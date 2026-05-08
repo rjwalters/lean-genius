@@ -50,14 +50,15 @@
     ]
   },
   "overview": {
-    "historicalContext": "The Dvoretzky-Motzkin cycle lemma (1947) originally applies to sequences with steps in {+1,-k}. The key algebraic property enabling the exact count |goodRotations| = S is that every integer level in [minPS, minPS+S) is achieved by some prefix sum — a consequence of the {+1,-k} structure. This file investigates which weaker step conditions still give partial cycle lemma analogs.\n\nFor unit-decrement sequences (all steps ≥ -1), the prefix sum can drop by at most 1 per step, giving a **downward IVT**: every level in [minPrefixSum, 0] is achieved. This is exactly the downward half of the discrete IVT used in the {+1,-k} lower bound proof.\n\nFor all-positive sequences (all steps > 0), prefix sums are strictly increasing, so every cyclic rotation trivially maintains positive prefix sums — giving |goodRotations| = l.length, the maximum possible.",
+    "historicalContext": "The cycle lemma traces to Dvoretzky and Motzkin's 1947 *Duke Math. J.* paper, which proved that for any sequence of integers with steps in $\\{+1, -k\\}$ summing to $S > 0$, there are exactly $S$ cyclic rotations with all positive prefix sums. The original motivation was a clean derivation of the ballot problem and Catalan-number identities; the lemma has since become a foundational tool in enumerative combinatorics, with applications to lattice path counting, parking functions, and the Lagrange inversion formula.\n\nThe key algebraic property enabling the exact count $|\\text{goodRotations}| = S$ for $\\{+1,-k\\}$ sequences is that every integer level in $[\\text{minPS}, \\text{minPS}+S)$ is achieved by some prefix sum — a consequence of the highly constrained step alphabet. Beyond $\\{+1,-k\\}$, this exact-count property fails, and it is natural to ask which weaker step conditions still give partial cycle lemma analogs.\n\nFor unit-decrement sequences (all steps $\\geq -1$), the prefix sum can drop by at most 1 per step, giving a **downward IVT**: every level in $[\\text{minPrefixSum}, 0]$ is achieved. This is exactly the downward half of the discrete IVT used in the $\\{+1,-k\\}$ lower bound proof — a structural observation that generalizes the classical lemma's mechanism.\n\nFor all-positive sequences (all steps $> 0$), prefix sums are strictly increasing, so every cyclic rotation trivially maintains positive prefix sums — giving $|\\text{goodRotations}| = |l|$, the maximum possible. The contrast between these regimes ($n$ vs. $S$) shows that the step alphabet, not just the sum, determines the cycle lemma count.",
     "problemStatement": "**Question**: For integer sequences beyond {+1,-k}, what can be said about the set of good cyclic rotations?\n\n**Answer**: (1) For step-≥-1 sequences: every integer level in [minPS, 0] is achieved (downward IVT). (2) For all-positive sequences: |goodRotations| = l.length (all rotations are good).",
     "proofStrategy": "For unit-decrement: fix the leftmost position in (i,j] where the prefix sum first drops to ≤ v. Its predecessor has prefix sum > v, and the step is ≥ -1, so the prefix sum can only drop to exactly v. For all-positive: strict monotonicity of prefix sums makes the non-wrapping part positive directly; the wrapping part is positive because the starting prefix sum is strictly less than the total sum.",
     "keyInsights": [
       "The downward IVT uses a Finset.min' (leftmost crossing) argument rather than induction, giving a cleaner proof than the {+1,-k} case",
       "For unit-decrement sequences, the IVT holds in the downward direction but NOT upward — large positive steps can skip levels going up",
       "For all-positive sequences, the cycle lemma gives count = length (not sum), showing the step alphabet fundamentally changes the count",
-      "The two cases (unit-decrement, all-positive) bracket the {+1,-k} case: the downward IVT is one half of the {+1,-k} lower bound"
+      "The two cases (unit-decrement, all-positive) bracket the {+1,-k} case: the downward IVT is one half of the {+1,-k} lower bound",
+      "The asymmetry between downward and upward IVT for unit-decrement sequences mirrors the classical observation that ℤ-valued discrete IVTs require step bounds in the relevant direction — only the inequality enforced by the alphabet is preserved by the leftmost-crossing argument"
     ]
   },
   "sections": [
@@ -82,9 +83,10 @@
     "summary": "9 theorems prove that the cycle lemma structure depends on the step alphabet: unit-decrement sequences satisfy a downward IVT (explaining the lower bound mechanism for {+1,-k} sequences), while all-positive sequences give |goodRotations| = l.length — the maximum, not the sum.",
     "implications": "The unit-decrement IVT isolates the key property needed for the {+1,-k} lower bound: downward continuity. The all-positive case shows that positive-sum sequences can have much more structure than the cycle lemma predicts — when all steps are positive, every rotation is good, not just sum-many rotations.",
     "openQuestions": [
-      "For step ≥ -m sequences (m > 1), is |goodRotations| ≥ ⌈l.sum / m⌉?",
+      "For step ≥ -m sequences (m > 1), is |goodRotations| ≥ ⌈l.sum / m⌉? (Conjectural lower bound that would interpolate between unit-decrement and {+1,-k}.)",
       "Can the unit-decrement IVT be strengthened to give a lower bound tighter than 1 on |goodRotations|?",
-      "What is the relationship between the step alphabet and the exact count |goodRotations| in general?"
+      "What is the relationship between the step alphabet and the exact count |goodRotations| in general?",
+      "Is there a continuous analog: for absolutely continuous f : [0,1] → ℝ with f' bounded below by -M, does the cycle-lemma analog give |{good shifts}| ≥ μ(f > 0) / M?"
     ]
   },
   "leanFile": {
@@ -110,6 +112,11 @@
       "targetId": "ballot-problem-oq-01",
       "relationship": "related",
       "description": "The generalized ballot problem: the cycle lemma for {+1,-k} sequences gives the exact good rotation count"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "generalizes",
+      "description": "The classical ballot problem (Bertrand 1887): a special case of the {+1,-k} cycle lemma with k = 1 and binary steps"
     }
   ],
   "mainTheorems": [
