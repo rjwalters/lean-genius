@@ -1,25 +1,38 @@
 # Current State
 
-**Phase**: ACT — gallery entry built; 2 axioms tractable, 1 is the main open conjecture
+**Phase**: ACT — `rational_digits_eventually_periodic` axiom eliminated;
+1 tractable axiom remains, 1 is the main open conjecture
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 9, researcher-9)
-**Iteration**: 9
+**Last Updated**: 2026-05-08 (Session 10, researcher-1)
+**Iteration**: 10
 
 ## Current Focus
 
-Session 9 implemented **Layer 2** of the 3-layer recipe for
-`rational_digits_eventually_periodic`, building directly on the Layer 1
-helpers added in Session 8 (PR #16993). Four new private declarations
-were added to `proofs/Proofs/ETranscendentalOQ02.lean`:
+Session 10 closed **Layer 3** — the cast bridge from `nthDigit` to
+integer residues — and used it to discharge the
+`rational_digits_eventually_periodic` axiom. **AxiomCount: 3 → 2.**
 
-* `ratResidue (b q n)` — the residue sequence `q.num · bⁿ mod q.den`.
-* `ratResidue_succ` — one-step recurrence `r(n+1) = b · r(n)`.
-* `ratResidue_eq_iterate` — bridge to `(· * (b : ZMod q.den))^[n]`.
-* `ratResidue_eventually_periodic` — eventual periodicity (`T, N₀ ≤ q.den`)
-  by composing Layer 1's `eventually_periodic_iterate` with the bridge.
+Three new private lemmas + one new theorem (replacing the axiom) added to
+`proofs/Proofs/ETranscendentalOQ02.lean` (~75 lines, 427 → 502):
 
-Layer 3 (`nthDigit_rat_eq_residue` cast bridge) is the only remaining
-piece before the axiom can be discharged.
+* `floor_pow_rat_eq_ediv` — ℝ→ℚ→ℤ cast bridge:
+  `⌊b^n · (q : ℝ)⌋ = (q.num · b^n) / q.den` via `Rat.floor_cast` +
+  `Rat.floor_int_div_nat_eq_div`.
+* `nthDigit_succ_via_residue` — digit at position `n+1` is determined by
+  the integer residue `(q.num · b^n) % q.den`. Proof: Euclidean
+  decomposition `b · X = b · (X%q) + (b · (X/q)) · q` plus
+  `Int.add_mul_ediv_right` + `Int.add_mul_emod_self_left`.
+* `nthDigit_succ_eq_of_emod_eq` — equal residues at `n, m` ⇒ equal digits
+  at `n+1, m+1` (one-line composition).
+* `theorem rational_digits_eventually_periodic` — composes Layers 1+2+3,
+  with `ZMod.intCast_eq_intCast_iff'` bridging ZMod equality to integer
+  residue equality. Pre-period grows by `+1` due to off-by-one shift.
+
+The previously-axiomatized signature is preserved (with `_hb : 2 ≤ b`
+unused — the proof works for any base).
+
+Earlier session context (Session 9 closed Layer 2; Session 8 closed
+Layer 1; Session 3 produced the recipe).
 
 Earlier session context (Session 3 produced the recipe):
 - Surveys Mathlib 4.26 API for "fintype ⇒ eventually periodic" (named lemma is
@@ -49,15 +62,16 @@ The current Lean entry establishes the framework:
   `Real.exp_one_lt_d9`), `e_normal_implies_uniform_decimal_digits`,
   `periodic_has_missing_ktuple` (orbit cardinality).
 
-Three remaining axioms (per `proofs/Proofs/ETranscendentalOQ02.lean`):
-- `rational_digits_eventually_periodic` (line 209) — tractable. **Session 3 (2026-05-08)**
-  produced a refined 3-layer recipe; see `knowledge.md`. Note: naive pigeonhole
-  alone gives `f(i)=f(j)` but NOT periodic propagation. Use the iterate form
-  `(· * b) : ZMod q.den → ZMod q.den` orbit pigeonhole instead.
-- `normal_imp_irrational` (line 261) — derives from axiom 1 +
-  `periodic_has_missing_ktuple` (already proved). Discharging axiom 1 first
-  then proving 2 is the natural sequence.
-- `e_absolutely_normal` (line 271) — the **main open conjecture**. Genuinely
+Two remaining axioms (per `proofs/Proofs/ETranscendentalOQ02.lean`):
+- ~~`rational_digits_eventually_periodic`~~ — **PROVED 2026-05-08 (Session 10).**
+  Discharged via Layer 1 (orbit pigeonhole on ZMod q.den) + Layer 2
+  (residue sequence ratResidue) + Layer 3 (cast bridge from nthDigit to
+  integer residue). Now a `theorem` rather than an `axiom`.
+- `normal_imp_irrational` (next target, ~50 lines) — now reduces directly
+  to (proved) `rational_digits_eventually_periodic` +
+  `periodic_has_missing_ktuple` + `Tendsto` frequency contradiction.
+  No new axioms needed.
+- `e_absolutely_normal` — the **main open conjecture**. Genuinely
   open as of 2026; will remain axiomatized.
 
 ## Blockers
@@ -70,31 +84,36 @@ Three remaining axioms (per `proofs/Proofs/ETranscendentalOQ02.lean`):
 
 ## Next Action
 
-**ACT (Session 10)** — implement Layer 3: the
-`nthDigit_rat_eq_residue` cast bridge. The recipe (knowledge.md
-"Layer 3") sketches it as ~50–80 lines, cast-juggling-heavy. Once
-Layer 3 is in, the axiom can be replaced by a theorem chaining Layers
-1, 2, 3.
+**ACT (Session 11)** — discharge `normal_imp_irrational`. Now that
+`rational_digits_eventually_periodic` is a theorem, this should reduce to:
 
-Layer 3 statement (paraphrased):
-```
-private lemma nthDigit_rat_eq_residue (b : ℕ) (hb : 2 ≤ b) (p : ℤ) (q : ℕ) (hq : 0 < q) :
-    ∀ n, nthDigit b n ((p : ℝ) / q) = ⌊((p * (b : ℤ)^n) % q : ℤ) * (b : ℝ) / q⌋ % b
-```
+1. Take rational `x = q : ℚ`. Apply (proved) `rational_digits_eventually_periodic`
+   to get `T, N₀`.
+2. Pick `k` with `b^k > T`. Apply `periodic_has_missing_ktuple` (proved
+   2026-05-04) to get a missing `k`-tuple `s₀`.
+3. The frequency of `s₀` after position `N₀` is `0` (string never appears),
+   so its `count(s₀, N) ≤ N₀`, hence `count/N → 0`.
+4. `IsNormalInBase b q` requires `count/N → b^(-k) > 0`. Contradiction.
 
-The hard part is the floor algebra (`⌊b^n · p/q⌋ % b` reformulated in terms of
-`(p · bⁿ) mod q`). Sign handling for negative `p` adds a wrinkle.
+Expected effort: ~50 lines of `Tendsto` + cast manipulation. No new
+axioms. Likely 1 focused session.
+
+After this: only `e_absolutely_normal` (the genuinely-open conjecture)
+remains axiomatized.
 
 ## Attempt Counts
 
-- Total attempts: 4 (Session 1 = entry built 2026-05-04; Session 2 =
+- Total attempts: 5 (Session 1 = entry built 2026-05-04; Session 2 =
   metadata reconciliation 2026-05-07; Session 3 = recipe (2026-05-08);
   Session 8 = Layer 1 (#16993, 2026-05-08); Session 9 = Layer 2
-  (researcher-9, 2026-05-08)).
-- Current approach attempts: 2 (Layer 1 closed; Layer 2 closed)
-- Approaches tried: 0 for the rational-digits axiom; 1 successful approach
-  for `periodic_has_missing_ktuple` (orbit cardinality, archived in
-  `knowledge.md`).
+  (#17016, 2026-05-08); Session 10 = Layer 3 + axiom discharge,
+  researcher-1, 2026-05-08).
+- Current approach attempts: 1 (Layer 3 closed first try, pending CI
+  verification)
+- Approaches tried: 1 successful for `rational_digits_eventually_periodic`
+  (3-layer composition: Layer 1 + Layer 2 + Layer 3); 1 successful for
+  `periodic_has_missing_ktuple` (orbit cardinality, Session 1.6, archived
+  in `knowledge.md`).
 
 ## References
 

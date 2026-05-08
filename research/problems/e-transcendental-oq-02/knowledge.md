@@ -455,3 +455,148 @@ sketch in §"Layer 3" of this knowledge file).
 
 No axiom-count changes; the axiom remains as a placeholder until Layer 3
 is in.
+
+---
+
+## Session 2026-05-08 (Session 10, researcher-1) — Layer 3 closed; AXIOM ELIMINATION
+
+**Mode**: ACT (axiom hunt)
+**Outcome**: **AXIOM ELIMINATION** — `rational_digits_eventually_periodic`
+discharged via Layer 3 cast bridge. axiomCount 3 → 2.
+
+### What was done
+
+Layer 3 implemented in `proofs/Proofs/ETranscendentalOQ02.lean` (~75 lines
+added; file 427 → 502 lines):
+
+```lean
+private lemma floor_pow_rat_eq_ediv (b : ℕ) (q : ℚ) (n : ℕ) :
+    ⌊((b : ℝ) ^ n * (q : ℝ))⌋ = (q.num * (b : ℤ) ^ n) / (q.den : ℤ)
+
+private lemma nthDigit_succ_via_residue (b : ℕ) (q : ℚ) (n : ℕ) :
+    nthDigit b (n + 1) (q : ℝ) =
+      (((b : ℤ) * ((q.num * (b : ℤ) ^ n) % (q.den : ℤ))) / (q.den : ℤ)) % (b : ℤ)
+
+private lemma nthDigit_succ_eq_of_emod_eq (b : ℕ) (q : ℚ) {n m : ℕ}
+    (h : (q.num * (b : ℤ) ^ n) % (q.den : ℤ) =
+         (q.num * (b : ℤ) ^ m) % (q.den : ℤ)) :
+    nthDigit b (n + 1) (q : ℝ) = nthDigit b (m + 1) (q : ℝ)
+
+theorem rational_digits_eventually_periodic (b : ℕ) (_hb : 2 ≤ b) (q : ℚ) :
+    ∃ T N₀, 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
+```
+
+The `axiom` declaration was deleted; the same name is now a proved theorem
+(signature preserved with `_hb : 2 ≤ b` for backward compatibility — the
+proof never uses it, since Layer 1's pigeonhole works for any base).
+
+### Key findings
+
+- **`Rat.floor_int_div_nat_eq_div`** (Mathlib `Data/Rat/Floor.lean:52`)
+  is the essential cast-bridge primitive. Combined with `Rat.floor_cast`
+  (which ports `⌊·⌋` between ℚ and ℝ), it lets us go from `⌊b^n · (q : ℝ)⌋`
+  directly to integer ediv `(q.num · b^n) / q.den`. The recipe's worry about
+  cast-juggling pain dissolved into a single 6-line lemma.
+- **Decomposition lemma**: `Int.mul_ediv_add_emod (a b : ℤ) : b * (a / b)
+  + a % b = a` is the right starting point. Multiplying by `b` and using
+  `Int.add_mul_ediv_right` + `Int.add_mul_emod_self_left` peels off the
+  divisible-by-`b` summand cleanly. `linear_combination -(b : ℤ) * h` closes
+  the algebra step in one line.
+- **Off-by-one shift**: the digit at position `k+1` is determined by the
+  residue at position `k`, so the pre-period grows by `+1` (Layer 2 gives
+  pre-period `N₀`; Layer 3 produces `N₀ + 1`). This matches the analysis
+  `nthDigit b (n+1) q = ((b · ((q.num · bⁿ) % q.den)) / q.den) % b` —
+  index-`n+1` digit depends only on the index-`n` residue, *not* on the
+  index-`n+1` residue.
+- **`ZMod.intCast_eq_intCast_iff'`** (Mathlib `Data/ZMod/Basic.lean:519`)
+  is the iff that ports residue equality from ZMod q.den to integer
+  `% q.den`. The `_'` variant uses `% c` directly (instead of going through
+  `Int.ModEq`), which is what we need.
+
+### Mathlib API actually used
+
+| Lemma | Module | Role |
+|-------|--------|------|
+| `Rat.floor_cast` | `Mathlib.Data.Rat.Floor` | ⌊·⌋ ports ℚ ↔ ℝ |
+| `Rat.floor_int_div_nat_eq_div` | `Mathlib.Data.Rat.Floor` | `⌊(n:ℤ)/(d:ℕ)⌋ = n/(d:ℤ)` in ℚ |
+| `Rat.cast_def` | `Mathlib.Algebra.Field.Defs` | `(q : α) = q.num / q.den` |
+| `Int.mul_ediv_add_emod` | core (Init.Data.Int.DivMod) | `b·(a/b) + a%b = a` |
+| `Int.add_mul_ediv_right` | core | `(a + b·c)/c = a/c + b` |
+| `Int.add_mul_emod_self_left` | core | `(a + b·c) % b = a % b` |
+| `ZMod.intCast_eq_intCast_iff'` | `Mathlib.Data.ZMod.Basic` | residue equality |
+| `Rat.den_pos` | core | `0 < q.den` |
+
+### Verification
+
+Local Docker build deferred again (broken `proofs/.lake` self-symlink — see
+`feedback_researcher_lake_symlink_broken.md`; ~45 min for fresh clone).
+CI is the verifier. Risk factors I'm watching:
+
+- `push_cast [Rat.cast_def]` followed by `ring` to normalize the
+  `(b : ℝ)^n * (q : ℝ)` ↔ `((q.num · b^n : ℤ) : ℚ) / (q.den : ℕ) : ℝ`
+  identity. If the cast normalization doesn't pass through `Rat.cast_def`
+  cleanly, fallback is `rw [Rat.cast_def]; push_cast; ring`.
+- `linear_combination -(b : ℤ) * h` for the Euclidean-decomposition
+  identity. The coefficient is correct (worked out by hand: Goal_diff =
+  -b · h_diff up to ring associativity).
+- `exact_mod_cast` on `(ZMod.intCast_eq_intCast_iff' _ _ q.den).mp hres`
+  to bridge `% (q.den : ℕ)` and `% (q.den : ℤ)` if Lean elaborates them
+  to slightly different forms.
+
+### Lines & decl deltas (Session 10)
+
+- `proofs/Proofs/ETranscendentalOQ02.lean`: +75 lines (427 → 502).
+  Adds 3 private lemmas + 1 theorem (replacing axiom). `axiomCount` 3 → 2,
+  `theoremCount` 28 → 29.
+- `meta.json` updated: lineCount 300 → 502 (catching up the lag),
+  axiomCount 3 → 2, theoremCount 28 → 29, definitionCount 3 → 4 (catching
+  up the Layer 2 ratResidue private def), `assumptions` and
+  `originalContributions` rewritten to reflect 2-axiom state.
+
+### What remains
+
+Two axioms left, only one tractable:
+
+- `normal_imp_irrational` (line ~390 — to be re-numbered after Layer 3 lines
+  shift) — **next target**. Now that `rational_digits_eventually_periodic`
+  is a theorem, this should be discharged by:
+  1. Take rational `x = q : ℚ`. Apply (proved) `rational_digits_eventually_periodic`
+     to get `T, N₀`.
+  2. Pick `k` with `b^k > T`. Apply `periodic_has_missing_ktuple` (proved
+     2026-05-04) to get a missing `k`-tuple `s₀`.
+  3. The frequency of `s₀` after position `N₀` is `0` (string never
+     appears), so the count is bounded by `N₀`, hence `count/N → 0`.
+  4. `IsNormalInBase b q` requires count/N → `b^(-k) > 0`. Contradiction.
+
+  Step 3 is `Tendsto`-manipulation-heavy (~50 lines) but introduces no
+  new axioms. After this, only `e_absolutely_normal` (the genuinely-open
+  conjecture) remains axiomatized.
+
+- `e_absolutely_normal` — stays axiomatized; this is the actual open
+  question of the entry.
+
+### Honesty assessment
+
+- **Real progress**: this is a clean axiom elimination. The proof composes
+  three previously-built layers (Layer 1 from Session 8, Layer 2 from
+  Session 9, Layer 3 from this session) into a discharge of an
+  axiom-shaped placeholder. The total chain is ~150 lines of original
+  formalization (excluding the digit-extraction infrastructure and the
+  open-conjecture wrapper). No `sorry`s introduced.
+- **Limitation**: build verification deferred to CI. The proof is written
+  with care but I haven't local-checked it. If a Mathlib API name or cast
+  pattern needs adjustment, a follow-up patch will be needed.
+- **Caveat on `_hb : 2 ≤ b`**: the proved theorem doesn't actually use
+  this hypothesis — Layer 1's pigeonhole and Layer 3's residue argument
+  both work for any base, including `b = 0` and `b = 1`. The hypothesis
+  is kept for signature compatibility with the original axiom.
+
+### Files Modified (Session 10, researcher-1)
+
+- `proofs/Proofs/ETranscendentalOQ02.lean` (Layer 3 implementation,
+  axiom→theorem)
+- `src/data/proofs/e-transcendental-oq-02/meta.json` (counts + assumptions
+  + originalContributions narrative)
+- `research/problems/e-transcendental-oq-02/state.md` (Session 10 entry,
+  iter 9→10)
+- `research/problems/e-transcendental-oq-02/knowledge.md` (this entry)

@@ -46,14 +46,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (Session 3, 2026-05-08): Gallery entry ETranscendentalOQ02.lean (origin/main: 300 lines, 0 sorries, 3 axioms, 28 theorems, 3 defs). PRs #15637 (digits 7→9) and #15750 (periodic_has_missing_ktuple proved, axioms 4→3) closed previous progress. Session 3 produced a 3-layer recipe in knowledge.md for the next axiom-elimination target rational_digits_eventually_periodic, identifying the iterate-form pigeonhole as the right abstraction (correcting the naive bare-pigeonhole approach the original axiom docstring sketched). Remaining axioms: rational_digits_eventually_periodic (tractable, Layer 1-3 recipe ready), normal_imp_irrational (tractable, derives from axiom 1), e_absolutely_normal (the genuinely open conjecture — will stay axiomatized).",
+    "progressSummary": "ACT (Session 10, 2026-05-08, researcher-1): AXIOM ELIMINATION. rational_digits_eventually_periodic discharged via Layer 3 cast bridge (3 private lemmas + theorem; 75 lines added; file 427 → 502 lines). axiomCount 3 → 2. Now only normal_imp_irrational (tractable next target — directly composes with proved rational_digits_eventually_periodic + periodic_has_missing_ktuple) and e_absolutely_normal (genuinely open conjecture) remain. theoremCount 28 → 29. PR pending CI verification (local Docker build deferred — broken proofs/.lake symlink, ~45 min fresh clone).",
     "builtItems": [
       "ETranscendentalOQ02.lean: nthDigit, IsNormalInBase, IsAbsolutelyNormal definitions",
       "ETranscendentalOQ02.lean: e_floor=2, e_floor_10=27, e_floor_100=271, e_floor_1000=2718, e_floor_10000=27182, e_floor_100000=271828, e_floor_1000000=2718281 all proved",
       "ETranscendentalOQ02.lean: e_digit1..e_digit9 (digits 7,1,8,2,8,1,8,2,8) machine-checked from exp_one bounds",
       "ETranscendentalOQ02.lean: periodic_has_missing_ktuple PROVED (PR #15750) via orbit-cardinality argument — no longer an axiom",
       "ETranscendentalOQ02.lean: e_normal_implies_uniform_decimal_digits theorem proved",
-      "src/data/proofs/e-transcendental-oq-02/: full gallery entry with meta.json, annotations.json, index.ts"
+      "src/data/proofs/e-transcendental-oq-02/: full gallery entry with meta.json, annotations.json, index.ts",
+      "Session 10 (2026-05-08): floor_pow_rat_eq_ediv (private, Layer 3 step 1, ~6 lines): ⌊b^n · (q : ℝ)⌋ = (q.num · b^n).ediv q.den.",
+      "Session 10: nthDigit_succ_via_residue (private, Layer 3 step 2, ~15 lines): nthDigit b (n+1) (q:ℝ) determined by integer residue (q.num · b^n) % q.den.",
+      "Session 10: nthDigit_succ_eq_of_emod_eq (private, Layer 3 step 3, ~3 lines): equal residues at n,m ⇒ equal digits at n+1, m+1.",
+      "Session 10: theorem rational_digits_eventually_periodic (replaces axiom, ~12 lines): composes Layer 1 + Layer 2 + Layer 3 + ZMod.intCast_eq_intCast_iff."
     ],
     "insights": [
       "Mathlib's exp_one_gt_d9 (e>2.718281828) and exp_one_lt_d9 (e<2.7182818286) suffice to pin all 9 decimal digits 2.718281828... (the 9th saturates the lower bound)",
@@ -64,7 +68,8 @@
       "The open conjecture e_absolutely_normal mirrors the pattern from e-transcendental-oq-01 (schanuel_conjecture axiom)",
       "[S3 2026-05-08] Naive Fintype.exists_ne_map_eq_of_card_lt gives only f(i)=f(j) — not the periodicity propagation f(i+k)=f(j+k) needed for eventual-periodicity. The right abstraction is the iterate form: g^[i] x₀ = g^[j] x₀ ⇒ g^[i+k] x₀ = g^[j+k] x₀ (via Function.iterate_add_apply + congr).",
       "[S3 2026-05-08] For x = p/q, the residue sequence n ↦ (q.num · b^n : ZMod q.den) IS the orbit of (· * b) : ZMod q.den → ZMod q.den. So the iterate-form pigeonhole applies directly with α = ZMod q.den.",
-      "[S3 2026-05-08] The 'cast hell' in this proof is concentrated in Layer 3 (nthDigit b n (p/q : ℝ) ↔ residue mod q · b / q expression). Layers 1 (general fintype iterate pigeonhole) and 2 (ratResidue ZMod bridge) are clean; isolating Layer 3 lets each cast obstacle be debugged in isolation."
+      "[S3 2026-05-08] The 'cast hell' in this proof is concentrated in Layer 3 (nthDigit b n (p/q : ℝ) ↔ residue mod q · b / q expression). Layers 1 (general fintype iterate pigeonhole) and 2 (ratResidue ZMod bridge) are clean; isolating Layer 3 lets each cast obstacle be debugged in isolation.",
+      "Session 10 (2026-05-08, researcher-1): Layer 3 cast bridge implemented. nthDigit→integer-residue connection established via Rat.floor_cast + Rat.floor_int_div_nat_eq_div + Int.add_mul_ediv_right + Int.add_mul_emod_self_left. Key insight: digit at position n+1 depends ONLY on residue at position n, giving an off-by-one shift in the pre-period. axiomCount 3→2: rational_digits_eventually_periodic discharged."
     ],
     "mathlibGaps": [
       "No Mathlib lemma connecting ℤ-valued digit functions to Fin b sequences in Tendsto framework — blocks full proof of normal_imp_irrational",

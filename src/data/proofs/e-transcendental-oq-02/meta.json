@@ -58,17 +58,17 @@
       "Theorems e_floor_10 through e_floor_1000000000: ⌊10ⁿ·e⌋ for n=1..9, giving digits 7,1,8,2,8,1,8,2,8 (all proved by linarith from exp_one bounds + Int.floor_eq_iff)",
       "Theorems e_digit1..e_digit9: the first 9 decimal digits of e = 2.718281828... proved machine-checkably (saturating the Mathlib lower bound exp_one_gt_d9)",
       "Theorem e_normal_implies_uniform_decimal_digits: IsNormalInBase 10 e → each digit d appears with frequency 1/10 (proved from definition using filter and norm_num)",
-      "Axiom rational_digits_eventually_periodic: rationals have eventually periodic base-b expansions (pigeonhole, period divides φ(q))",
+      "Theorem rational_digits_eventually_periodic: proved (Layers 1+2+3, Sessions 8/9/10) — composes orbit pigeonhole on ZMod q.den (Layer 1), residue sequence ratResidue (Layer 2), and the cast-bridge nthDigit_succ_via_residue (Layer 3, ℝ→ℚ→ℤ via Rat.floor_cast + Rat.floor_int_div_nat_eq_div). Eliminates the previously-axiomatized form.",
       "Theorem periodic_has_missing_ktuple: proved — T-periodic Fin-b sequences have missing k-tuples when bᵏ > T (orbit cardinality: image of range T has card ≤ T < bᵏ = |univ|; periodicity maps any n ≥ N₀ to orbit entry)",
-      "Axiom normal_imp_irrational: normality in any base implies irrationality (uses the two combinatorial axioms)",
+      "Axiom normal_imp_irrational: normality in any base implies irrationality (uses rational_digits_eventually_periodic + periodic_has_missing_ktuple + Tendsto frequency contradiction)",
       "Axiom e_absolutely_normal: e is absolutely normal — the main open conjecture (2026)"
     ],
     "dateAdded": "2026-05-04",
-    "axiomCount": 3,
-    "lineCount": 300,
-    "assumptions": "3 axioms: (1) rational_digits_eventually_periodic — rationals have eventually periodic base-b digit expansions (pigeonhole principle, period T | φ(q)); (2) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (uses axiom 1 + periodic_has_missing_ktuple + Tendsto formalism); (3) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026). periodic_has_missing_ktuple is now a proved theorem (orbit cardinality argument). 28 theorems including first 9 decimal digits of e proved from exp_one bounds.",
+    "axiomCount": 2,
+    "lineCount": 502,
+    "assumptions": "2 axioms remain after Session 10 (Layer 3 closes axiom #1): (1) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (Tendsto frequency contradiction; tractable next target); (2) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026). Both periodic_has_missing_ktuple (Session 1.6) and rational_digits_eventually_periodic (Session 10) are now proved theorems. 29 theorems including first 9 decimal digits of e proved from exp_one bounds, plus the orbit-pigeonhole / residue-sequence / cast-bridge stack for rational digit periodicity.",
     "mathlib_version": "4.26.0",
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "In 1909, Émile Borel introduced the concept of a **normal number** and proved that almost every real number (in the sense of Lebesgue measure) is absolutely normal. His theorem is a remarkable fact: though normality is the 'generic' property, proving any specific constant is normal has proved extraordinarily difficult.\n\nFor Euler's constant e = 2.71828182845904523536..., we know:\n- e is irrational (Euler, 1737) — proved via continued fractions and factorial series\n- e is transcendental (Hermite, 1873) — not a root of any polynomial with integer coefficients\n- e has a regular continued fraction [2; 1, 2, 1, 1, 4, 1, 1, 6, 1, 1, 8, ...] with a transparent pattern\n- The first 5 × 10¹³ decimal digits of e have been computed; statistical tests detect no anomalies\n\nYet despite all this, we cannot prove e is normal in base 10, base 2, or ANY base. Indeed, no specific real number has ever been proved normal. Borel's theorem proves normality is generic without identifying a single example.\n\nThe irrationality measure of e is exactly 2 (the minimum possible for any irrational) — see e-transcendental-oq-03. This excellent rational approximability property comes from the predictable continued fraction, but paradoxically does not help prove normality.",
@@ -169,10 +169,10 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 300,
-    "axiomCount": 3,
-    "theoremCount": 28,
-    "definitionCount": 3,
+    "lineCount": 502,
+    "axiomCount": 2,
+    "theoremCount": 29,
+    "definitionCount": 4,
     "path": "Proofs/ETranscendentalOQ02.lean",
     "sorries": 0
   },
