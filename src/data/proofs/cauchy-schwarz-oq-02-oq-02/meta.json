@@ -52,7 +52,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Bessel's inequality was first stated by Friedrich Bessel in the context of Fourier series (1817). It generalizes to arbitrary inner product spaces: the squared projections of a vector onto an orthonormal system sum to at most the squared norm of the vector. The inequality is tight precisely when the system is complete (a Hilbert basis), in which case equality is Parseval's identity. Together these are fundamental to the theory of Hilbert spaces and Fourier analysis.",
+    "historicalContext": "Bessel's inequality was first stated by Friedrich Bessel in 1817 in his investigations of the Fourier series of an arbitrary periodic function. Bessel proved that for the trigonometric system $\\{1/\\sqrt{2\\pi}, \\cos(nx)/\\sqrt{\\pi}, \\sin(nx)/\\sqrt{\\pi}\\}_{n \\ge 1}$, the sum of squared Fourier coefficients of any square-integrable $f$ on $[-\\pi, \\pi]$ is bounded by $\\|f\\|_2^2$ — the *energy bound* that justifies term-by-term truncation of Fourier series. The result was sharpened to *equality* (now called Parseval's identity) by Marc-Antoine Parseval in his 1799 memoir on series of trigonometric functions, well before Bessel's inequality, but for a more restricted class of functions where convergence of the Fourier series was already known; the equality therefore appeared first historically and the more general inequality came second.\n\nThe abstract formulation in inner product spaces — Bessel and Parseval as facts about *any* orthonormal family in *any* real or complex inner product space — emerged from Hilbert's 1904–1910 papers on integral equations (*Grundzüge einer allgemeinen Theorie der linearen Integralgleichungen*) and was crystallized in von Neumann's 1929 axiomatization of *Hilbert space* (*Allgemeine Eigenwerttheorie Hermitescher Funktionaloperatoren*, Math. Ann. 102). In von Neumann's axiomatization Bessel becomes a one-line consequence of the orthogonal projection: the Fourier-coefficient map $x \\mapsto (\\langle v_i, x \\rangle)_i$ is a non-expansive linear map from $F$ to $\\ell^2(\\iota)$, so its operator norm is $\\le 1$ — and the orthonormal family is *complete* (a Hilbert basis) precisely when this map is a unitary isomorphism, which is exactly Parseval saturation.\n\nIn the Lean/Mathlib ecosystem the inequality has lived in `Mathlib.Analysis.InnerProductSpace.Basic` since the InnerProductSpace API was unified across $\\mathbb{R}$ and $\\mathbb{C}$ via the `RCLike` typeclass (mathlib4#3925, 2023). The `HilbertBasis` typeclass and `tsum_inner_mul_inner` (the bilinear Parseval form) live in `Mathlib.Analysis.InnerProductSpace.l2Space`, building on the $\\ell^2$-completeness machinery contributed by the Mathlib analysis team. This file's contribution is to expose these results in a uniform Lean-readable surface, and to derive the *real-symmetric* form of Parseval (the squared-coefficient identity $\\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$) from the bilinear Mathlib lemma — a one-line collapse over $\\mathbb{R}$ that does not generalize to $\\mathbb{C}$.",
     "problemStatement": "For an orthonormal family $\\{v_i\\}_{i \\in \\iota}$ in a real inner product space $F$ and any $x \\in F$, prove:\n$$\\sum_{i}^{\\infty} \\langle v_i, x \\rangle^2 \\leq \\|x\\|^2$$\nwith equality (Parseval's identity) when $\\{v_i\\}$ is a Hilbert basis.",
     "proofStrategy": "The finite case follows from the **Pythagorean residual formula**: the projection $p = \\sum_{i \\in s} \\langle v_i, x \\rangle v_i$ satisfies $\\|x - p\\|^2 = \\|x\\|^2 - \\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\geq 0$. Summability of the infinite series follows because the partial sums are monotone (all terms non-negative) and bounded above by $\\|x\\|^2$. For Parseval, the Hilbert basis representation $x = \\sum_i \\langle b_i, x \\rangle b_i$ combined with continuity of the inner product gives $\\|x\\|^2 = \\langle x, x \\rangle = \\sum_i \\langle x, b_i \\rangle \\langle b_i, x \\rangle = \\sum_i \\langle b_i, x \\rangle^2$ (the last step using real symmetry).",
     "keyInsights": [
@@ -132,14 +132,138 @@
   ],
   "crossReferences": [
     {
-      "id": "cauchy-schwarz",
+      "proofId": "cauchy-schwarz",
       "relationship": "ancestor",
-      "description": "Cauchy-Schwarz inequality — the single-term Bessel inequality |⟨v, x⟩| ≤ ‖v‖·‖x‖ is a special case"
+      "description": "Cauchy-Schwarz inequality — the single-term Bessel inequality $\\langle v, x \\rangle^2 \\le \\|x\\|^2$ (for unit $v$) is the singleton case. The closing example in this file makes the reduction explicit by indexing on `Fin 1` and noting that off-diagonal orthonormality is vacuous for a single-vector family."
     },
     {
-      "id": "cauchy-schwarz-oq-02",
+      "proofId": "cauchy-schwarz-oq-02",
       "relationship": "parent",
-      "description": "Hölder and L² theory — this file extends the inner product space framework"
+      "description": "Hölder and L² theory — this file extends the inner product space framework, instantiating Bessel/Parseval as the orthonormal-frame energy bound."
+    },
+    {
+      "proofId": "cauchy-schwarz-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling: Parseval's Identity (Energy Conservation in Fourier Analysis). Both entries arrive at Parseval — this one as the saturation of Bessel for any real Hilbert basis, the sibling specifically for the trigonometric Fourier basis on $[-\\pi, \\pi]$."
+    },
+    {
+      "proofId": "fourier-series",
+      "relationship": "supports",
+      "description": "Bessel's inequality is the foundational tool for $L^2$-convergence of Fourier series: the partial sums $S_N f = \\sum_{|n| \\le N} \\hat f(n) e^{inx}$ are the Bessel projections of $f$ onto the trigonometric ONS, and Parseval saturation is the statement that the trigonometric system is complete in $L^2[-\\pi, \\pi]$."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "bessel_finite",
+      "type": "theorem",
+      "statement": "$\\forall \\{v_i\\}_{i \\in \\iota}\\ \\text{orthonormal in real}\\ F,\\ \\forall x \\in F,\\ \\forall s \\subseteq_{\\mathrm{fin}} \\iota\\colon\\ \\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$",
+      "significance": "Finite Bessel inequality. The Pythagorean residual identity packaged for any finite index set; foundation for the infinite case via summability + monotone partial sums.",
+      "description": "Delegates to Mathlib's `Orthonormal.sum_inner_products_le` and rewrites the normalized form $\\|\\cdot\\|^2$ to the squared real coefficient via `Real.norm_eq_abs` and `sq_abs`."
+    },
+    {
+      "name": "bessel_term_nonneg",
+      "type": "lemma",
+      "statement": "$\\forall i,\\ 0 \\le \\langle v_i, x \\rangle^2$",
+      "significance": "Term-wise non-negativity. One-line `sq_nonneg` consequence, but load-bearing — every monotone-convergence and Cauchy-tail argument downstream depends on it.",
+      "description": "$\\langle v_i, x \\rangle^2 \\ge 0$ for any real Fourier coefficient. Used to invoke monotone convergence and to bound tail sums."
+    },
+    {
+      "name": "bessel_summable",
+      "type": "theorem",
+      "statement": "$\\mathrm{Summable}\\ (i \\mapsto \\langle v_i, x \\rangle^2)$",
+      "significance": "The Bessel series converges. Required to invoke `tsum`-based statements without an a-priori summability witness in every downstream caller.",
+      "description": "Proves the indexed family of squared Fourier coefficients is summable. Mathlib's `Orthonormal.inner_products_summable` packages monotone-convergence + finite-Bessel boundedness."
+    },
+    {
+      "name": "bessel_hasSum",
+      "type": "theorem",
+      "statement": "$\\mathrm{HasSum}\\ (i \\mapsto \\langle v_i, x \\rangle^2)\\ \\left(\\sum'_i \\langle v_i, x \\rangle^2\\right)$",
+      "significance": "Convenience corollary of `bessel_summable`. Lets downstream callers chain `HasSum.le_of_sum_le`-style arguments without re-proving summability.",
+      "description": "Identifies the limit of finite partial sums with the tsum. Proof is `bessel_summable.hasSum`."
+    },
+    {
+      "name": "bessel_partial_sums_mono",
+      "type": "lemma",
+      "statement": "$\\forall s \\subseteq t\\ \\text{finite},\\ \\sum_{i \\in s} \\langle v_i, x \\rangle^2 \\le \\sum_{i \\in t} \\langle v_i, x \\rangle^2$",
+      "significance": "Monotonicity of partial sums. Combines with `bessel_finite` to give the bounded-monotone hypothesis for monotone-convergence summability.",
+      "description": "Uses `bessel_term_nonneg` and `Finset.sum_le_sum_of_subset_of_nonneg`. Required hypothesis pattern for $\\mathrm{Summable}$-from-bounds arguments."
+    },
+    {
+      "name": "bessel_inequality",
+      "type": "theorem",
+      "statement": "$\\sum_i^{\\infty} \\langle v_i, x \\rangle^2 \\le \\|x\\|^2$",
+      "significance": "**Headline theorem**: the infinite Bessel inequality for any real orthonormal family. The squared $\\ell^2$-norm of the Fourier-coefficient sequence is bounded by the squared norm of $x$.",
+      "description": "Pass-to-the-limit of `bessel_finite`: for non-negative summable series the tsum is the supremum of finite partial sums, each of which is $\\le \\|x\\|^2$. Delegates to `Orthonormal.tsum_inner_products_le` and rewrites the norm-squared form."
+    },
+    {
+      "name": "bessel_general_finite",
+      "type": "theorem",
+      "statement": "$\\forall \\mathbb{K}\\ \\mathrm{RCLike},\\ \\forall \\text{ortho }v\\ \\text{over}\\ \\mathbb{K},\\ \\sum_{i \\in s} \\|\\langle v_i, x \\rangle_{\\mathbb{K}}\\|^2 \\le \\|x\\|^2$",
+      "significance": "RCLike generalization of `bessel_finite`. Same statement over any of $\\mathbb{R}$ or $\\mathbb{C}$, where the $\\|\\cdot\\|^2$ on Fourier coefficients is necessary because $\\langle v_i, x \\rangle$ is generally complex.",
+      "description": "Direct application of `Orthonormal.sum_inner_products_le` without the `Real.norm_eq_abs` rewrite — Mathlib's normalized form is already correct over $\\mathbb{K}$."
+    },
+    {
+      "name": "bessel_general",
+      "type": "theorem",
+      "statement": "$\\sum_i^{\\infty} \\|\\langle v_i, x \\rangle_{\\mathbb{K}}\\|^2 \\le \\|x\\|^2$ for any RCLike $\\mathbb{K}$",
+      "significance": "RCLike generalization of `bessel_inequality`. The infinite-sum form over any of $\\mathbb{R}$ or $\\mathbb{C}$.",
+      "description": "Direct application of `Orthonormal.tsum_inner_products_le` over RCLike."
+    },
+    {
+      "name": "parseval_real",
+      "type": "theorem",
+      "statement": "$\\forall b \\colon \\mathrm{HilbertBasis}\\ \\iota\\ \\mathbb{R}\\ F,\\ \\sum_i \\langle b_i, x \\rangle^2 = \\|x\\|^2$",
+      "significance": "**Parseval's identity** in the squared-coefficient form, derived from the bilinear Mathlib identity via real symmetry. The saturation case of Bessel: equality holds iff $\\{b_i\\}$ is a Hilbert basis.",
+      "description": "Starts from `b.tsum_inner_mul_inner x x` ($\\sum_i \\langle x, b_i \\rangle \\langle b_i, x \\rangle = \\langle x, x \\rangle$), then rewrites $\\langle x, b_i \\rangle = \\langle b_i, x \\rangle$ via `real_inner_comm` and $\\langle x, x \\rangle = \\|x\\|^2$ via `real_inner_self_eq_norm_sq`."
+    },
+    {
+      "name": "bessel_tight",
+      "type": "theorem",
+      "statement": "$\\forall b\\ \\mathrm{HilbertBasis},\\ (\\sum'_i \\langle b_i, x \\rangle^2) = \\|x\\|^2$",
+      "significance": "Definitional alias of `parseval_real`. Distinct name to emphasize the perspective: Parseval is precisely the case where Bessel becomes tight.",
+      "description": "Same statement as `parseval_real`; the alias lets downstream callers cite the *Bessel-tight* perspective when the goal is to characterize completeness of an ONS rather than to apply Parseval directly."
+    }
+  ],
+  "references": [
+    {
+      "type": "paper",
+      "citation": "Bessel, F. W. (1828). Untersuchung des Theils der planetarischen Störungen, welcher aus der Bewegung der Sonne entsteht. Berlin: Akademie der Wissenschaften.",
+      "relevance": "Bessel's original work on planetary perturbations. The orthogonality argument that became 'Bessel's inequality' was developed in the trigonometric / Fourier-series machinery of this and earlier (1817) papers."
+    },
+    {
+      "type": "paper",
+      "citation": "Parseval des Chênes, M.-A. (1799). \"Mémoire sur les séries et sur l'intégration complète d'une équation aux différences partielles linéaires du second ordre, à coefficients constants.\" Mémoires présentés à l'Institut des Sciences, Lettres et Arts par divers savants 1, 638–648.",
+      "relevance": "First statement of what is now called Parseval's identity (the equality form), historically preceding Bessel's general inequality though for a more restricted convergence regime."
+    },
+    {
+      "type": "paper",
+      "citation": "Hilbert, D. (1904–1910). Grundzüge einer allgemeinen Theorie der linearen Integralgleichungen, six papers in Nachr. Königl. Ges. Wiss. Göttingen.",
+      "relevance": "Introduces the abstract spectral framework in which Bessel's inequality becomes a fact about orthonormal families in an inner product space — the precursor of Hilbert space theory."
+    },
+    {
+      "type": "paper",
+      "citation": "von Neumann, J. (1929). \"Allgemeine Eigenwerttheorie Hermitescher Funktionaloperatoren.\" Mathematische Annalen 102, 49–131.",
+      "relevance": "Axiomatization of Hilbert space; identifies Bessel/Parseval as the operator-norm and isometry properties of the Fourier-coefficient map $F \\to \\ell^2(\\iota)$."
+    },
+    {
+      "type": "textbook",
+      "citation": "Reed, M. and Simon, B. (1980). Methods of Modern Mathematical Physics, Vol. I: Functional Analysis (revised ed.). Academic Press, Theorem II.6.",
+      "relevance": "Standard graduate reference for Bessel/Parseval in Hilbert space; contains the orthogonal-projection proof that the Lean file mirrors via Mathlib's `Orthonormal.sum_inner_products_le`."
+    },
+    {
+      "type": "textbook",
+      "citation": "Rudin, W. (1991). Functional Analysis (2nd ed.). McGraw-Hill, Theorem 4.18.",
+      "relevance": "Crisp Hilbert-space treatment; Theorem 4.18 packages Bessel + Parseval + completeness equivalences in the same form used by Mathlib's `HilbertBasis` API."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Analysis.InnerProductSpace.Basic — `Orthonormal.sum_inner_products_le`, `Orthonormal.tsum_inner_products_le`, `Orthonormal.inner_products_summable`.\" (accessed 2026).",
+      "relevance": "The three Mathlib lemmas this file directly delegates to. Encode the finite Bessel, infinite Bessel, and summability statements in normalized RCLike form."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Analysis.InnerProductSpace.l2Space — `HilbertBasis`, `tsum_inner_mul_inner`.\" (accessed 2026).",
+      "relevance": "The bilinear Parseval identity from which `parseval_real` is derived via real symmetry."
     }
   ],
   "leanFile": {
