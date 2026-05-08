@@ -1221,4 +1221,108 @@ lemma auxFnK_hasDerivAt {k : ℝ} (hk : k ^ 2 < 1) (θ : ℝ) :
       rw [h_eq_intermediate, ← auxFnK_deriv_form_eq hk]]
   exact h_div
 
+-- ============================================================================
+-- § 15. FTC Closure for `auxFnK`: ∫₀^{π/2} (auxFnK k)' dθ = 0  (S9 part 3)
+-- ============================================================================
+
+/-
+With §13 (`auxFnK` + endpoint vanishings) and §14 (pointwise chain rule for
+`auxFnK` in θ) in place, the **fundamental theorem of calculus** yields
+  `∫₀^{π/2} (auxFnK k)' dθ = auxFnK k (π/2) − auxFnK k 0 = 0`.
+Substituting §14's chain-rule decomposition for `(auxFnK k)'`, this becomes
+  `∫₀^{π/2} (cos²θ/√D − (1−k²)·sin²θ/(D·√D)) dθ = 0`,
+where `D = 1 − k² sin²θ`. This is the **K-side IBP boundary identity** —
+the S9 part 3 piece needed for the K-side integral identity. S9 part 4
+will combine this with §12's `integral_cos_sq_div_sqrt_denom` to deliver
+  `∫₀^{π/2} dIntegrandK k θ dθ = (E(k) − (1−k²) K(k)) / (k(1−k²))`.
+
+The proof applies `intervalIntegral.integral_eq_sub_of_hasDerivAt` with
+`f = auxFnK k`, `f' = (the §14 chain-rule RHS)`, using §14's unconditional
+pointwise derivative for the `hderiv` hypothesis and continuity of the
+integrand for `IntervalIntegrable` via `Continuous.intervalIntegrable`.
+-/
+
+/-- **Continuity of the `auxFnK` θ-derivative integrand.**
+
+    The RHS of `auxFnK_hasDerivAt` (i.e., `(d/dθ) auxFnK k θ`) is
+    continuous in θ for any fixed `k` with `k² < 1`. Used to discharge
+    the `IntervalIntegrable` hypothesis of FTC in
+    `integral_auxFnK_deriv_eq_zero`. Mirrors `dIntegrandE_continuous`
+    (§8) and `dIntegrandK_continuous` (§10), with positivity of
+    `D = 1 − k² sin²θ` and `√D` from
+    `AmgmInequalityOQ04OQ01.denom_pos` and `sqrt_denom_pos`. -/
+lemma auxFnK_deriv_continuous (hk : k ^ 2 < 1) :
+    Continuous (fun θ : ℝ =>
+      Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2 /
+          ((1 - k ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))) := by
+  -- Continuous denominator helpers (mirror §8/§10 patterns).
+  have h_denom_cont : Continuous (fun θ : ℝ => 1 - k ^ 2 * Real.sin θ ^ 2) :=
+    Continuous.sub continuous_const
+      (continuous_const.mul (continuous_sin.pow 2))
+  have h_sqrt_cont :
+      Continuous (fun θ : ℝ => Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)) :=
+    Real.continuous_sqrt.comp h_denom_cont
+  refine Continuous.sub ?_ ?_
+  · -- cos²θ / √(1 − k² sin²θ)
+    refine Continuous.div₀ (continuous_cos.pow 2) h_sqrt_cont ?_
+    intro θ
+    exact (AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ).ne'
+  · -- (1 − k²) · sin²θ / [(1 − k² sin²θ) · √(1 − k² sin²θ)]
+    refine Continuous.div₀
+      (continuous_const.mul (continuous_sin.pow 2))
+      (h_denom_cont.mul h_sqrt_cont) ?_
+    intro θ
+    have h1 : (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 :=
+      (AmgmInequalityOQ04OQ01.denom_pos hk θ).ne'
+    have h2 : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 :=
+      (AmgmInequalityOQ04OQ01.sqrt_denom_pos hk θ).ne'
+    exact mul_ne_zero h1 h2
+
+/-- **FTC closure for `auxFnK`.** For `k² < 1`,
+    `∫₀^{π/2} (cos²θ/√D − (1−k²)·sin²θ/(D·√D)) dθ = 0`,
+    where `D = 1 − k² sin²θ`.
+
+    Proof: apply `intervalIntegral.integral_eq_sub_of_hasDerivAt` to
+    `f = auxFnK k`, with §14's `auxFnK_hasDerivAt` (unconditional in θ)
+    discharging the pointwise-derivative hypothesis and
+    `auxFnK_deriv_continuous` discharging integrability via
+    `Continuous.intervalIntegrable`. The boundary
+    `auxFnK k (π/2) − auxFnK k 0` reduces to `0 − 0 = 0` via §13
+    (`auxFnK_pi_div_two` and `auxFnK_zero`).
+
+    This identity is the IBP boundary-vanishing piece of the K-side
+    integral identity (S9 part 4); combined with §12's
+    `integral_cos_sq_div_sqrt_denom`, it pins down the
+    `(1−k²) · ∫ sin²θ/(D·√D) dθ` term and hence
+    `∫ dIntegrandK k θ dθ`. -/
+theorem integral_auxFnK_deriv_eq_zero (hk : k ^ 2 < 1) :
+    ∫ θ in (0 : ℝ)..π / 2,
+      Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2 /
+          ((1 - k ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+      = 0 := by
+  have hderiv : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      HasDerivAt (fun θ' : ℝ => auxFnK k θ')
+        (Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+          - (1 - k ^ 2) * Real.sin θ ^ 2 /
+            ((1 - k ^ 2 * Real.sin θ ^ 2)
+              * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))) θ :=
+    fun θ _ => auxFnK_hasDerivAt hk θ
+  have hint : IntervalIntegrable
+      (fun θ : ℝ =>
+        Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+          - (1 - k ^ 2) * Real.sin θ ^ 2 /
+            ((1 - k ^ 2 * Real.sin θ ^ 2)
+              * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)))
+      MeasureTheory.volume 0 (π / 2) :=
+    (auxFnK_deriv_continuous hk).intervalIntegrable 0 (π / 2)
+  rw [integral_eq_sub_of_hasDerivAt hderiv hint]
+  -- Goal after FTC: `(fun θ' => auxFnK k θ') (π/2) - (fun θ' => auxFnK k θ') 0 = 0`.
+  -- Beta-reduce, then apply §13's endpoint vanishings.
+  show auxFnK k (π / 2) - auxFnK k 0 = 0
+  rw [auxFnK_pi_div_two, auxFnK_zero, sub_zero]
+
 end AmgmInequalityOQ04OQ02
