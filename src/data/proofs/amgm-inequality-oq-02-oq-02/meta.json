@@ -106,6 +106,29 @@
       "description": "Imports `Proofs.NewtonInductiveStep` for the helper lemmas used in the 520-line `newton_cleared_denom_inductive_step` discriminant argument."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "newton_log_concavity_proved",
+      "type": "core",
+      "statement": "$\\forall n \\in \\mathbb{N},\\ \\forall k \\in \\mathbb{N},\\ 1 \\le k,\\ k+1 \\le n,\\ \\forall x : \\mathrm{Fin}\\,n \\to \\mathbb{R},\\ (\\forall i,\\ 0 \\le x_i) \\Rightarrow \\left(\\frac{e_k(x)}{\\binom{n}{k}}\\right)^2 \\ge \\frac{e_{k-1}(x)}{\\binom{n}{k-1}} \\cdot \\frac{e_{k+1}(x)}{\\binom{n}{k+1}}$",
+      "significance": "**The headline theorem of this file.** Newton's normalized log-concavity inequality for elementary symmetric polynomials of non-negative inputs. Replaces the parent file's `newton_log_concavity` axiom with a constructive proof. The 8-part architecture culminates here: `elemSymm_log_concave` (unnormalized) + `binom_log_concave` + `newton_cleared_denom` are assembled into the normalized form via division by binomials.",
+      "description": "The fundamental log-concavity inequality from Newton's *Arithmetica Universalis* (1707) in its normalized (mean-form) version. Together with `maclaurin_step_derived` it completes the elimination of both axioms `newton_log_concavity` and `maclaurin_step` from the parent `AmgmInequalityOQ02.lean`."
+    },
+    {
+      "name": "maclaurin_step_derived",
+      "type": "core",
+      "statement": "$\\forall n \\in \\mathbb{N},\\ \\forall k \\in \\mathbb{N},\\ 0 < k,\\ k+1 \\le n,\\ \\forall x : \\mathrm{Fin}\\,n \\to \\mathbb{R},\\ (\\forall i,\\ 0 \\le x_i) \\Rightarrow \\left(\\frac{e_k(x)}{\\binom{n}{k}}\\right)^{1/k} \\ge \\left(\\frac{e_{k+1}(x)}{\\binom{n}{k+1}}\\right)^{1/(k+1)}$",
+      "significance": "**The atomic Maclaurin step.** With this single-step inequality and transitivity, the parent file derives the full Maclaurin chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$, of which AM ≥ GM is the extreme case $M_1 \\ge M_n$. Eliminates the parent's `maclaurin_step` axiom.",
+      "description": "Takes $k$-th and $(k+1)$-th roots of the cleared-denominator Newton inequality. Uses `power_ineq_of_log_concave` (Nat-power form $a_k^{k+1} \\ge a_{k+1}^k$) followed by `rpow_ineq_of_pow_ineq` to transfer to the real-power (rpow) form."
+    },
+    {
+      "name": "elemSymm_log_concave",
+      "type": "supporting",
+      "statement": "$\\forall n \\in \\mathbb{N},\\ \\forall k \\in \\mathbb{N},\\ 1 \\le k,\\ k+1 \\le n,\\ \\forall x : \\mathrm{Fin}\\,n \\to \\mathbb{R},\\ (\\forall i,\\ 0 \\le x_i) \\Rightarrow e_k(x)^2 \\ge e_{k-1}(x) \\cdot e_{k+1}(x)$",
+      "significance": "**The unnormalized Newton inequality.** Proved by induction on $n$ using the Newton-Girard recurrence $e_k(x, t) = e_k(x) + t \\cdot e_{k-1}(x)$ and `cross_product_of_log_concave`. The base case $n=1$ is trivial; the inductive step expands both sides and reduces to a quadratic-in-$t$ whose discriminant is bounded by the inductive hypothesis. Together with `binom_log_concave` it gives the normalized form `newton_log_concavity_proved`.",
+      "description": "The classical Newton inequality without normalization by binomial coefficients. Direct corollary of the inductive proof in Part II; serves as the building block for the cleared-denominator form in Parts IV–V."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Proofs.AmgmInequalityOQ02",
