@@ -60,6 +60,18 @@
     "prerequisites": ["all_positive_prefixSum_step", "induction on Nat"]
   },
   {
+    "id": "ann-bridge-lemmas",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 170 },
+    "type": "technique",
+    "title": "Bridge Lemmas: Interior Bound and Non-Negativity",
+    "content": "Two short lemmas bridge strict monotonicity to the wrapping rotation case. `all_positive_prefixSum_lt_sum` upgrades strict mono to a strict interior bound by instantiating j = l.length and rewriting via `prefixSum_length`: any interior prefix sum is strictly below the total. `all_positive_prefixSum_nonneg` proves all prefix sums ≥ 0 directly via `List.sum_nonneg`, using `List.take_prefix.subset` to lift the per-element positivity hypothesis to elements of the prefix. These two lemmas are both standalone-useful and exactly the inequalities needed to discharge the wrapping-case linarith in `all_positive_all_rotations_good`.",
+    "mathContext": "Interior bound: $\\forall i < n, \\text{PS}(i) < \\text{sum}(l)$ (instantiate strict mono at $j = n$). Non-negativity: $\\forall i, \\text{PS}(i) \\geq 0$ (sum of non-negatives is non-negative).",
+    "significance": "supporting",
+    "relatedConcepts": ["List.sum_nonneg", "List.take_prefix", "prefixSum_length", "interior bound"],
+    "prerequisites": ["all_positive_prefixSum_strictMono", "List.Sublist.subset"]
+  },
+  {
     "id": "ann-all-rotations-good",
     "proofId": "ballot-problem-oq-01-oq-01-oq-02",
     "range": { "startLine": 172, "endLine": 197 },
