@@ -476,6 +476,144 @@ theorem burnside_p_squared_q_p_lt_q
   have hcard' : Nat.card G = p ^ 2 * q ^ 1 := by rw [pow_one]; exact hcard
   exact burnside_pq_with_normal_qSylow (a := 2) (b := 1) hcard' (Q : Subgroup G) hQ_card
 
+/-! Iteration 9 (S9) — exceptional `(p, q) = (2, 3), |G| = 12` case.
+
+    The S7.5 theorem `burnside_p_squared_q_p_lt_q` explicitly excludes
+    `(p, q) = (2, 3)` via the `hexc : ¬ (p = 2 ∧ q = 3)` hypothesis,
+    because the divisor analysis fails: when `p = 2, q = 3`, we have
+    `q = p + 1`, so `q ∣ p² - 1 = (p - 1)(p + 1)` is consistent with
+    `n_q = p² = 4`. Hence Sylow's third theorem alone does NOT force a
+    normal Sylow 3-subgroup when `|G| = 12`.
+
+    The classical fix is element-counting on Sylow 3-subgroups: when
+    `n_3 = 4`, the four Sylow 3-subgroups each have order `3` and pairwise
+    intersect trivially. The set `{g : G | g^3 = 1}` is the disjoint
+    union `{e} ⊔ ⋃ᵢ (Q_i \ {e})`, of cardinality `1 + 4·2 = 9`. Then
+    `G \ {g | g^3 = 1}` has exactly `12 - 9 = 3` elements. Any Sylow
+    2-subgroup `P` has `P \ {e}` of cardinality `3` consisting of
+    elements of order in `{2, 4}` (none with `g^3 = 1`), so
+    `P \ {e} ⊆ G \ {g | g^3 = 1}`. Cardinalities force equality, fixing
+    `P` as a set independent of choice — so `Subsingleton (Sylow 2 G)`,
+    `P` is normal, and the discharge proceeds via
+    `burnside_pq_with_normal_pSylow`.
+
+    This iteration:
+    - **Adds** `sylow_count_dvd_four_modEq_one_three` (axiom-free helper).
+    - **Adds** `burnside_p_squared_q_twelve` (axiom-free main, modulo
+      `sylow_two_unique_when_n3_four` whose element-counting proof is
+      isolated as a single `sorry` for S10).
+    - **Does NOT** modify `burnside_pq` dispatch — that update waits
+      until S10 closes the sorry, completing the `(a, b) = (2, 1)`
+      shape discharge.
+
+    Together with S7 (`p > q`) and S7.5 (`p < q ≠ p + 1`), this is the
+    final sub-case of the `(a, b) = (2, 1)` shape. After S10 closes the
+    sorry, `burnside_pq` can peel off `(2, 1)` axiom-free; with the
+    symmetric `(1, 2)` shape (S11), `burnside_pq_nontrivial` narrows to
+    require `2 ≤ a ∧ 2 ≤ b` (genuinely both ≥ 2). -/
+
+/-- **Sylow count constraint** (helper for `|G| = 12 = 2² · 3`):
+    if `n ∣ 4` and `n ≡ 1 [MOD 3]` and `n ≥ 1`, then `n = 1 ∨ n = 4`.
+    The four divisors of `4` are `{1, 2, 4}`; only `1` and `4` satisfy
+    `≡ 1 [MOD 3]` (`2 ≡ 2` and `3 ∤ 4`). Decidable on `Nat`. -/
+private lemma sylow_count_dvd_four_modEq_one_three
+    {n : ℕ} (hpos : 0 < n) (hdvd : n ∣ 4) (hmod : n ≡ 1 [MOD 3]) :
+    n = 1 ∨ n = 4 := by
+  have hn_le : n ≤ 4 := Nat.le_of_dvd (by norm_num) hdvd
+  interval_cases n
+  · left; rfl
+  · -- n = 2: 2 ≢ 1 [MOD 3]
+    exact absurd hmod (by decide)
+  · -- n = 3: 3 ∤ 4
+    exact absurd hdvd (by decide)
+  · right; rfl
+
+/-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
+    Sylow 2-subgroup is unique. Proof via element counting:
+    `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
+    intersection of distinct prime-order Sylow 3-subgroups), so
+    `|G \ {g | g^3 = 1}| = 3 = |P| - 1` for any Sylow 2-subgroup `P`,
+    pinning down `P` as `{e} ∪ (G \ {g | g^3 = 1})` independent of choice.
+    The full Lean proof requires set/Finset cardinality machinery;
+    isolated as a single `sorry` for S10. See
+    `research/problems/abel-ruffini-galois-extensions-oq-07/session-8-twelve-spec.md` §6–7. -/
+private lemma sylow_two_unique_when_n3_four
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)] [Fact (Nat.Prime 3)]
+    (hcard : Nat.card G = 12)
+    (hn3 : Nat.card (Sylow 3 G) = 4) :
+    Subsingleton (Sylow 2 G) := by
+  sorry
+
+/-- **Burnside `|G| = 12 = 2² · 3`** (axiom-free, modulo the isolated
+    sorry in `sylow_two_unique_when_n3_four`).
+
+    Sylow's third theorem (`card_sylow_modEq_one`) and `Sylow.card_dvd_index`
+    give `n_3 ≡ 1 [MOD 3]` and `n_3 ∣ 4`, hence `n_3 ∈ {1, 4}` via
+    `sylow_count_dvd_four_modEq_one_three`.
+
+    - **`n_3 = 1`**: the unique Sylow 3-subgroup `Q` is normal
+      (`Sylow.normal_of_subsingleton`); discharge via
+      `burnside_pq_with_normal_qSylow` with `(a, b) = (2, 1)`.
+    - **`n_3 = 4`**: `sylow_two_unique_when_n3_four` (S10) gives
+      `Subsingleton (Sylow 2 G)`; the unique Sylow 2-subgroup `P` is
+      normal with `|P| = 4 = 2²`; discharge via
+      `burnside_pq_with_normal_pSylow` with `(a, b) = (2, 1)`. -/
+theorem burnside_p_squared_q_twelve
+    {G : Type*} [Group G] [Finite G]
+    [hp : Fact (Nat.Prime 2)] [hq : Fact (Nat.Prime 3)]
+    (hcard : Nat.card G = 12) :
+    IsSolvable G := by
+  -- |G| = 12 = 2² · 3¹
+  have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
+  -- Coprimality witness
+  have hcop : Nat.Coprime (2 ^ 2) 3 := by decide
+  -- Step 1: Sylow 3-subgroup Q has |Q| = 3
+  obtain ⟨Q⟩ : Nonempty (Sylow 3 G) := inferInstance
+  have h3_not_dvd_4 : ¬ (3 : ℕ) ∣ 4 := by decide
+  have hQ_card : Nat.card (Q : Subgroup G) = 3 := by
+    have hmult := Sylow.card_eq_multiplicity Q
+    have hfact : Nat.factorization (Nat.card G) 3 = 1 := by
+      rw [hcard']
+      rw [Nat.factorization_mul_apply_of_coprime hcop,
+          Nat.factorization_eq_zero_of_not_dvd h3_not_dvd_4,
+          Nat.Prime.factorization_pow hq.out]
+      simp
+    rw [hfact, pow_one] at hmult
+    exact hmult
+  -- Step 2: Q.index = 4 (Lagrange + cancellation)
+  have h3_pos : 0 < (3 : ℕ) := by norm_num
+  have hQ_index : (Q : Subgroup G).index = 4 := by
+    have h := Subgroup.card_mul_index (Q : Subgroup G)
+    rw [hQ_card, hcard, mul_comm 3 4] at h
+    exact Nat.eq_of_mul_eq_mul_left h3_pos h
+  -- Step 3: n_3 ≡ 1 [MOD 3] and n_3 ∣ 4; helper forces n_3 ∈ {1, 4}.
+  have hn3_mod : Nat.card (Sylow 3 G) ≡ 1 [MOD 3] := card_sylow_modEq_one 3 G
+  have hn3_dvd : Nat.card (Sylow 3 G) ∣ 4 := hQ_index ▸ Sylow.card_dvd_index Q
+  have hn3_pos : 0 < Nat.card (Sylow 3 G) := Nat.card_pos
+  rcases sylow_count_dvd_four_modEq_one_three hn3_pos hn3_dvd hn3_mod with hn3 | hn3
+  · -- Case n_3 = 1: Q is normal; discharge.
+    haveI hSub : Subsingleton (Sylow 3 G) :=
+      (Nat.card_eq_one_iff_unique.mp hn3).1
+    haveI hQ_normal : (Q : Subgroup G).Normal := Sylow.normal_of_subsingleton Q
+    exact burnside_pq_with_normal_qSylow (a := 2) (b := 1) hcard' (Q : Subgroup G) hQ_card
+  · -- Case n_3 = 4: derive Subsingleton (Sylow 2 G) via S10 lemma; discharge.
+    haveI hSub2 : Subsingleton (Sylow 2 G) := sylow_two_unique_when_n3_four hcard hn3
+    obtain ⟨P⟩ : Nonempty (Sylow 2 G) := inferInstance
+    have h2_not_dvd_3 : ¬ (2 : ℕ) ∣ 3 := by decide
+    have hP_card : Nat.card (P : Subgroup G) = 2 ^ 2 := by
+      have hmult := Sylow.card_eq_multiplicity P
+      have hfact : Nat.factorization (Nat.card G) 2 = 2 := by
+        rw [hcard']
+        rw [Nat.factorization_mul_apply_of_coprime hcop,
+            Nat.Prime.factorization_pow hp.out,
+            Nat.factorization_eq_zero_of_not_dvd h2_not_dvd_3]
+        simp
+      rw [hfact] at hmult
+      exact hmult
+    haveI hP_normal : (P : Subgroup G).Normal := Sylow.normal_of_subsingleton P
+    exact burnside_pq_with_normal_pSylow (a := 2) (b := 1) hcard' (P : Subgroup G) hP_card
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART IV: Main theorem
 -- ═══════════════════════════════════════════════════════════════════════
