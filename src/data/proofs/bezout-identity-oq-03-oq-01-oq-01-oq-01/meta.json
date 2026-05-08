@@ -156,7 +156,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the ideal-theoretic CRT with 12 theorems, 0 axioms, 0 sorries. The k-fold CRT R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ is the abstract algebra crown of the Bézout identity chain, generalizing from ℤ/nℤ to arbitrary commutative rings.",
+    "summary": "This formalization proves the ideal-theoretic CRT with 9 theorems, 0 axioms, 0 sorries. The k-fold CRT R/(⨅ Iᵢ) ≅ ∏ R/Iᵢ is the abstract algebra crown of the Bézout identity chain, generalizing from ℤ/nℤ to arbitrary commutative rings.",
     "implications": "**For algebra**: The ideal-theoretic CRT provides the foundation for localization, completion, and sheaf theory on Spec R.\n\n**For number theory**: Specializes to ℤ/nℤ for the classical CRT, and to number fields for applications in algebraic number theory.\n\n**For the gallery**: Answers the open question from the parent file about generalizing to ideals.",
     "openQuestions": [
       "Prove I ∩ J = I · J using Mathlib's lattice theory (without element-level decomposition) — Mathlib may already have this as a direct lemma for coprime ideals in Dedekind domains",

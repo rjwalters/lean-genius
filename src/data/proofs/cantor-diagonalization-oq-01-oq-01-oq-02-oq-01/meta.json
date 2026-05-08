@@ -85,12 +85,12 @@
       "title": "Verification Section",
       "startLine": 234,
       "endLine": 251,
-      "summary": "#check declarations confirm all 9 theorems, 1 definition, 1 structure, and 2 axioms type-check correctly. Closes the namespace CantorDiagOQ01OQ01OQ02OQ01.",
+      "summary": "#check declarations confirm all 7 theorems, 1 definition, 1 structure, and 2 axioms type-check correctly. Closes the namespace CantorDiagOQ01OQ01OQ02OQ01.",
       "mathContext": "Sanity check: every public symbol in the file has its expected type signature."
     }
   ],
   "conclusion": {
-    "summary": "This file establishes the CONVERSE direction to the parent König-exclusion theorem. Object-level: every regular uncountable cardinal is a permitted value of 2^ℵ₀ (9 theorems, 1 def, 0 sorries, 0 axioms in Parts I-II). Meta-level: Easton's 1970 realizability theorem is axiomatized at two granularities (Part III, 2 axioms with True placeholder codomain). Together with the parent file (König exclusion) and OQ-03 sibling (Easton spectrum on aleph indexing), this completes the formalizable picture of the continuum function on regular cardinals modulo class forcing.",
+    "summary": "This file establishes the CONVERSE direction to the parent König-exclusion theorem. Object-level: every regular uncountable cardinal is a permitted value of 2^ℵ₀ (7 theorems, 1 def, 0 sorries, 0 axioms in Parts I-II). Meta-level: Easton's 1970 realizability theorem is axiomatized at two granularities (Part III, 2 axioms with True placeholder codomain). Together with the parent file (König exclusion) and OQ-03 sibling (Easton spectrum on aleph indexing), this completes the formalizable picture of the continuum function on regular cardinals modulo class forcing.",
     "implications": "The cardinal-level (Cardinal → Cardinal) Easton-function structure is a sharper formulation than the aleph-indexed (Ordinal → Cardinal) version in OQ-03: it directly captures the regular-cardinal restriction without requiring auxiliary aleph indexing. This is the right setting for stating the 'continuum function has only Cantor + König constraints' result. Future Phase-3b work can replace the True placeholder with a genuine Consistent predicate — possibly via Gödel-encoded ZFC formulas, possibly via a future Lean port of flypitch's set-forcing infrastructure.",
     "openQuestions": [
       "Can a Lean 4 port of flypitch (Han, Van Doorn 2020 — Cohen forcing for CH) be developed and extended to class-sized partial orders for Easton product forcing? This would give the realizability axioms a real proof.",

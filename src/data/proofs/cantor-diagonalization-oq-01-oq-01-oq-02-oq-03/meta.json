@@ -86,7 +86,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization establishes all necessary Easton conditions on the continuum function: 7 theorems, 0 sorries, 0 axioms. The E1-E3 conditions and their corollary (E4: 2^{ℵ_α} ≠ ℵ_{α+ω}) are fully machine-checked. Easton's consistency theorem is stated with conclusion True — an honest acknowledgment that class forcing is not in Mathlib, not a missing proof. The structure `SatisfiesEastonConditions` provides a clean Lean API for the Easton spectrum.",
+    "summary": "This formalization establishes all necessary Easton conditions on the continuum function: 9 theorems, 0 sorries, 0 axioms. The E1-E3 conditions and their corollary (E4: 2^{ℵ_α} ≠ ℵ_{α+ω}) are fully machine-checked. Easton's consistency theorem is stated with conclusion True — an honest acknowledgment that class forcing is not in Mathlib, not a missing proof. The structure `SatisfiesEastonConditions` provides a clean Lean API for the Easton spectrum.",
     "implications": "Easton's theorem (1970) settled a central question in set theory: the continuum function on regular cardinals is almost completely free — any Easton function is consistent with ZFC. The formalization of the necessary conditions in Lean demonstrates that the bounded part of set-theoretic cardinal arithmetic can be machine-checked. Formalizing the full theorem would require adding forcing to Mathlib, a major open project in formal set theory.",
     "openQuestions": [
       "Can Easton product forcing be formalized in Lean/Mathlib to give the consistency direction a real proof?",

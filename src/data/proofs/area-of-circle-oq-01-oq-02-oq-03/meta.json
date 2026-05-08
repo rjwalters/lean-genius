@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-02-oq-03",
   "title": "Archimedes' Exhaustion Meets the FTC",
   "slug": "area-of-circle-oq-01-oq-02-oq-03",
-  "description": "Formally connects Archimedes' classical method of exhaustion (inscribed n-gon areas converging to πr²) with the modern FTC-based proof (∫₀ʳ 2πρ dρ = πr²). Both limiting processes converge to the same value; by limit uniqueness in ℝ, they are equal. 10 theorems, 0 sorries, 0 axioms.",
+  "description": "Formally connects Archimedes' classical method of exhaustion (inscribed n-gon areas converging to πr²) with the modern FTC-based proof (∫₀ʳ 2πρ dρ = πr²). Both limiting processes converge to the same value; by limit uniqueness in ℝ, they are equal. 14 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Area_of_a_circle#Classical_proofs",
@@ -148,7 +148,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Both Archimedes' exhaustion method and the FTC integration proof converge to πr², and this file formally proves they compute the same value. The connection is `tendsto_nhds_unique` — Hausdorff uniqueness of limits — which formalizes the 2250-year-old implicit assumption that the circle has a unique well-defined area. 10 theorems, 0 sorries, 0 axioms.",
+    "summary": "Both Archimedes' exhaustion method and the FTC integration proof converge to πr², and this file formally proves they compute the same value. The connection is `tendsto_nhds_unique` — Hausdorff uniqueness of limits — which formalizes the 2250-year-old implicit assumption that the circle has a unique well-defined area. 14 theorems, 0 sorries, 0 axioms.",
     "implications": "This formalization shows that Archimedes was implicitly using the Hausdorff property of ℝ. His exhaustion argument shows that the area is simultaneously ≤ πr² (by inscribed polygons) and ≥ πr² (by circumscribed polygons), concluding that it equals πr² by completeness. The modern proof via FTC is more direct but makes the same fundamental use of the limit structure of ℝ. Formally, both are special cases of the general principle that limits in Hausdorff spaces are unique.",
     "openQuestions": [
       "Can the connection be extended to circumscribed polygon approximations, giving a two-sided squeeze theorem that matches Archimedes' original double exhaustion?",

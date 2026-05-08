@@ -2,7 +2,7 @@
   "id": "bezout-identity-oq-03-oq-04",
   "title": "Efficient Verified CRT via Direct Bézout",
   "slug": "bezout-identity-oq-03-oq-04",
-  "description": "Efficient CRT computation using direct Bézout coefficients without modular reduction. Proves correctness and uniqueness. 8 theorems, 0 axioms.",
+  "description": "Efficient CRT computation using direct Bézout coefficients without modular reduction. Proves correctness and uniqueness. 6 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -88,7 +88,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization provides a fully verified (0 sorries, 0 axioms) efficient CRT computation in Lean 4. The direct Bézout approach avoids modular inverses: given s·m + t·n = 1, the formula x = b·s·m + a·t·n satisfies x ≡ a (mod m) and x ≡ b (mod n). All 8 theorems are proved from first principles using Mathlib's integer GCD library.",
+    "summary": "This formalization provides a fully verified (0 sorries, 0 axioms) efficient CRT computation in Lean 4. The direct Bézout approach avoids modular inverses: given s·m + t·n = 1, the formula x = b·s·m + a·t·n satisfies x ≡ a (mod m) and x ≡ b (mod n). All 6 theorems are proved from first principles using Mathlib's integer GCD library.",
     "implications": "The formalization answers the original open question affirmatively: YES, there is an efficient verified CRT without modular reduction. The direct approach is both simpler to verify (ring arithmetic suffices) and more efficient (fewer operations). The folding theorem enables extension to k coprime moduli with O(k) overhead. This provides a verified building block for modular arithmetic algorithms in Lean.",
     "openQuestions": [
       "Can crtDirect be generalized to arbitrary commutative rings (beyond ℤ) where Bézout's identity holds? Lean's type class system should support this via `IsBezout` or `GCDMonoid`.",

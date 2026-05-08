@@ -91,13 +91,13 @@
     {
       "id": "concrete-checks",
       "title": "Part VI: Concrete Verification",
-      "summary": "Three native_decide checks: C(5,2)·2!=20, C(6,3)·3!=120, ∏ i in range 2, (5-i)=20. Summary comment lists all 11 theorems.",
+      "summary": "Three native_decide checks: C(5,2)·2!=20, C(6,3)·3!=120, ∏ i in range 2, (5-i)=20. Summary comment lists all 12 theorems.",
       "startLine": 121,
       "endLine": 169
     }
   ],
   "conclusion": {
-    "summary": "Proved the descending factorial identity C(n,k)·k! = n.descFactorial(k) and 10 consequences. 169 lines, 11 theorems, 0 sorries, 0 axioms. Dual to the ascending factorial identity in ArithmeticSeriesOQ02OQ04.",
+    "summary": "Proved the descending factorial identity C(n,k)·k! = n.descFactorial(k) and 10 consequences. 169 lines, 12 theorems, 0 sorries, 0 axioms. Dual to the ascending factorial identity in ArithmeticSeriesOQ02OQ04.",
     "implications": "Together with the ascending factorial result, this completes the symmetry between rising and falling factorials in the context of arithmetic series and binomial coefficients. Both forms are useful in combinatorics: the descending form appears in falling factorial polynomials (basis for umbral calculus) and the ascending form in rising factorial polynomials (Pochhammer symbols).",
     "openQuestions": [
       "Generalize to multiset coefficients: C(n+k-1, k) * k! = ∏ i in range k, (n + i)?",

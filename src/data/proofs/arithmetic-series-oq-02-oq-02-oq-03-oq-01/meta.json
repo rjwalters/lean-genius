@@ -154,7 +154,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified formalization proving 27 theorems (0 sorries) from 0 axioms. Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n and proved in general via Burnside + cycle structure (from BurnsideCountingOQ03) + totient grouping.",
+    "summary": "Fully verified formalization proving 30 theorems (0 sorries) from 0 axioms. Burnside's lemma is used to count necklaces; the Pólya divisor-sum formula is verified for small n and proved in general via Burnside + cycle structure (from BurnsideCountingOQ03) + totient grouping.",
     "implications": "Pólya's enumeration theorem is the foundational tool for counting combinatorial objects up to symmetry. The formalization demonstrates that Burnside's lemma from Mathlib is powerful enough to count necklaces concretely, and that ZMod-indexed colorings provide a particularly clean Lean 4 approach. The cycle structure theorem (each rotation by r has gcd(r,n) orbits on n positions) is the key missing ingredient for the general theorem — it connects the abstract Burnside sum to the totient-weighted divisor sum. The sequence [2,3,4,6,8,14] (binary necklaces for n=1–6) appears in OEIS A000029 and has applications in chemistry (molecular isomers), music theory (necklace rhythms), and coding theory (cyclic codes).",
     "openQuestions": [
       "Extend to arbitrary finite groups: Pólya's theorem for non-cyclic groups (e.g., dihedral groups $D_n$ for unoriented necklaces) requires the full cycle index formalism beyond the cyclic case formalized here.",

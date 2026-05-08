@@ -101,7 +101,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file axiomatizes Shafarevich's 1954 theorem and formally derives 7 corollaries: cyclic groups, all abelian groups, S₃ and S₄ are realizable over ℚ; the class of realizable solvable groups is closed under subgroups and quotients; and S₅ fails the solvability criterion. All 7 theorems are fully proved from the single axiom using Mathlib's group theory.",
+    "summary": "This file axiomatizes Shafarevich's 1954 theorem and formally derives 7 corollaries: cyclic groups, all abelian groups, S₃ and S₄ are realizable over ℚ; the class of realizable solvable groups is closed under subgroups and quotients; and S₅ fails the solvability criterion. All 9 theorems are fully proved from the single axiom using Mathlib's group theory.",
     "implications": "Together with AbelRuffiniGaloisExtensions.lean, this file completes a formal framework for the solvable inverse Galois problem: a finite group G is the Galois group of a radical extension of ℚ if and only if G is solvable. This is the group-theoretic content of the classical quintic insolvability story. The axiomatization is mathematically honest: it correctly identifies the single deep theorem (Shafarevich's) that requires substantial algebraic number theory, while formalizing all the group-theoretic consequences in full Lean.",
     "openQuestions": [
       "Can Shafarevich's theorem be proved in Lean using Mathlib's developing class field theory? The abelian case (realizing ZMod n via cyclotomic extensions) is within reach; the full proof requires embedding problem theory.",

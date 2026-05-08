@@ -2,7 +2,7 @@
   "id": "brouwer-fixed-point-oq-01-oq-02",
   "title": "No-Retraction Theorem via Singular Homology",
   "slug": "brouwer-fixed-point-oq-01-oq-02",
-  "description": "Proves the No-Retraction Theorem — there is no continuous retraction r : B^n → S^{n-1} — using the singular homology approach. The pure algebraic argument (id : ℤ →+ ℤ cannot factor through Unit) is fully proved with 0 axioms. The singular homology computation is axiomatized with 1 axiom: singular_homology_retraction_split. 11 theorems, 1 axiom.",
+  "description": "Proves the No-Retraction Theorem — there is no continuous retraction r : B^n → S^{n-1} — using the singular homology approach. The pure algebraic argument (id : ℤ →+ ℤ cannot factor through Unit) is fully proved with 0 axioms. The singular homology computation is axiomatized with 1 axiom: singular_homology_retraction_split. 10 theorems, 1 axiom.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
@@ -116,7 +116,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The No-Retraction Theorem is proved via singular homology with a clean two-layer architecture: 11 theorems are fully proved (0 axioms for the algebraic core) and 1 axiom packages the singular homology computations not yet in Mathlib 4.26. The algebraic heart — that id : ℤ →+ ℤ cannot factor through Unit — is proved rigorously in 4 lines.",
+    "summary": "The No-Retraction Theorem is proved via singular homology with a clean two-layer architecture: 10 theorems are fully proved (0 axioms for the algebraic core) and 1 axiom packages the singular homology computations not yet in Mathlib 4.26. The algebraic heart — that id : ℤ →+ ℤ cannot factor through Unit — is proved rigorously in 4 lines.",
     "implications": "This formalization demonstrates that the homological method is fundamentally algebraic: the hard part is computing homology groups, but once that is done, the logical argument is elementary. The refinement over `BrouwerFixedPoint.lean` shows how to responsibly axiomatize: isolate the genuine gaps (singular homology computations) and prove everything else. When Mathlib gains a complete singular homology library (Mayer-Vietoris, excision, sphere computations), the single axiom `singular_homology_retraction_split` can be replaced by a proof, making the formalization fully constructive.",
     "openQuestions": [
       "Can the singular homology axiom be replaced using Mathlib's `Analysis.SpecialFunctions.Complex.Circle` or `Topology.Algebra.Order.LiminfLimsup` infrastructure once a complete simplicial/singular homology library is available in Mathlib?",

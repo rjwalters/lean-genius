@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Proved Rice's theorem as a Lawvere instance: no Bool-valued evaluation structure is point-surjective, which is the abstract essence of Rice's undecidability theorem. Derived 5 concrete results — abstract Rice, induced obstruction, undecidable witness, semantic flip, and no halting model — plus the classical Rice theorem from axiomatized Kleene recursion. 6 theorems, 0 axioms, 275 lines.",
+    "summary": "Proved Rice's theorem as a Lawvere instance: no Bool-valued evaluation structure is point-surjective, which is the abstract essence of Rice's undecidability theorem. Derived 5 concrete results — abstract Rice, induced obstruction, undecidable witness, semantic flip, and no halting model — plus the classical Rice theorem from axiomatized Kleene recursion. 7 theorems, 0 axioms, 275 lines.",
     "implications": "This file completes the Lawvere fixed-point theorem application chain: Cantor (Prop, negation) → Rice (Bool, not) → Gödel (sentences, negation of provability). The key insight is that undecidability results in computability theory are not independent of diagonal arguments in set theory — they all share the same Lawvere fixed-point core. The `classical_rice_abstract` theorem shows that Rice follows from Kleene's recursion theorem, which in turn follows from the same diagonal construction.",
     "openQuestions": [
       "Formalize Kleene's recursion theorem without axiomatization: implement a concrete computation model (e.g., partial recursive functions or a simple lambda calculus) in Lean and prove the s-m-n theorem + universality, deriving Kleene recursion as a proved theorem rather than an axiom",

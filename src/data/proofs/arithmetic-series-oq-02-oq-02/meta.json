@@ -115,12 +115,12 @@
       "title": "Summary",
       "startLine": 132,
       "endLine": 154,
-      "summary": "Recapitulates all 12 theorems with 0 sorries and 0 axioms, highlighting the nested induction strategy and the compositional proof of the 2D identity.",
-      "mathContext": "Summarizes the complete chain: $S_k(n) = \\binom{n+k}{k}$ (definition) $\\to$ Pascal's recurrence $\\to$ 1D hockey stick $\\sum S_k(i) = S_{k+1}(n)$ $\\to$ parallel Vandermonde $\\sum_{i+j=n} S_a(i) S_b(j) = S_{a+b+1}(n)$ $\\to$ 2D hockey stick $\\sum_{i+j \\leq n} S_a(i) S_b(j) = S_{a+b+2}(n)$. All 12 theorems verified with 0 sorries and 0 axioms."
+      "summary": "Recapitulates all 9 theorems with 0 sorries and 0 axioms, highlighting the nested induction strategy and the compositional proof of the 2D identity.",
+      "mathContext": "Summarizes the complete chain: $S_k(n) = \\binom{n+k}{k}$ (definition) $\\to$ Pascal's recurrence $\\to$ 1D hockey stick $\\sum S_k(i) = S_{k+1}(n)$ $\\to$ parallel Vandermonde $\\sum_{i+j=n} S_a(i) S_b(j) = S_{a+b+1}(n)$ $\\to$ 2D hockey stick $\\sum_{i+j \\leq n} S_a(i) S_b(j) = S_{a+b+2}(n)$. All 9 theorems verified with 0 sorries and 0 axioms."
     }
   ],
   "conclusion": {
-    "summary": "12 theorems with 0 sorries and 0 axioms. The parallel Vandermonde convolution identity is the key new result, established by nested induction on b then n using Pascal's recurrence. The 2D hockey stick follows as a two-line composition of parallel Vandermonde with the 1D hockey stick — a clean demonstration of modular proof architecture.",
+    "summary": "9 theorems with 0 sorries and 0 axioms. The parallel Vandermonde convolution identity is the key new result, established by nested induction on b then n using Pascal's recurrence. The 2D hockey stick follows as a two-line composition of parallel Vandermonde with the 1D hockey stick — a clean demonstration of modular proof architecture.",
     "implications": "**Lattice path counting**: The parallel Vandermonde counts monotone lattice paths decomposed by which column they cross a threshold — a technique used in ballot problems and Catalan number theory. **Probability**: The convolution of negative binomial distributions NB(a+1, p) * NB(b+1, p) = NB(a+b+2, p) follows directly from the parallel Vandermonde as a combinatorial identity on probability generating functions. **Combinatorial identities**: Provides a unified framework for deriving hockey stick generalizations to arbitrary dimension, reducing k-dimensional sums to (k-1)-dimensional ones via Vandermonde convolution. **Formal methods**: The nested induction pattern (outer on a parameter, inner on the summation bound) is a reusable template for similar convolution identities in Lean, demonstrating how modular proof composition (2D hockey stick = Vandermonde + 1D hockey stick) keeps proofs short and maintainable.",
     "openQuestions": [
       "Prove the k-dimensional hockey stick identity by induction on dimension, using the 2D case as the inductive step.",

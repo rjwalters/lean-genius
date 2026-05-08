@@ -2,7 +2,7 @@
   "id": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
   "title": "Steiner's Formula: d/dr Vol(B_r^n) = Area(∂B_r^n)",
   "slug": "area-of-circle-oq-01-oq-02-oq-03-oq-03",
-  "description": "Formalizes Steiner's formula for n-dimensional balls: the derivative of the n-ball volume with respect to radius equals the surface area of the (n-1)-sphere. Since Vol(B_r^n) = ω_n r^n is polynomial in r, the power rule yields d/dr[ω_n r^n] = n ω_n r^(n-1) = Area(∂B_r^n). Proved in three equivalent forms: HasDerivAt, the Archimedes shell limit, and the FTC integral. 10 theorems, 0 sorries, 0 axioms.",
+  "description": "Formalizes Steiner's formula for n-dimensional balls: the derivative of the n-ball volume with respect to radius equals the surface area of the (n-1)-sphere. Since Vol(B_r^n) = ω_n r^n is polynomial in r, the power rule yields d/dr[ω_n r^n] = n ω_n r^(n-1) = Area(∂B_r^n). Proved in three equivalent forms: HasDerivAt, the Archimedes shell limit, and the FTC integral. 15 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Ball_(mathematics)#Volume",
@@ -115,7 +115,7 @@
     ]
   },
   "conclusion": {
-    "summary": "10 theorems proved (0 sorries, 0 axioms): Steiner's formula for n-balls in three equivalent forms (HasDerivAt, Archimedes shell limit, FTC integral), plus the annulus formula, special cases for n=2 and n=3, and the surface-to-volume ratio S_n(r)/V_n(r) = n/r.",
+    "summary": "15 theorems proved (0 sorries, 0 axioms): Steiner's formula for n-balls in three equivalent forms (HasDerivAt, Archimedes shell limit, FTC integral), plus the annulus formula, special cases for n=2 and n=3, and the surface-to-volume ratio S_n(r)/V_n(r) = n/r.",
     "implications": "**Geometric significance**: Steiner's formula unifies two classical results — Archimedes' 2D circumference-area duality d(πr²)/dr = 2πr and his 3D sphere surface-volume duality d((4π/3)r³)/dr = 4πr² — as instances of a single power-rule identity in n dimensions. The formalization demonstrates that the general formula is elementary once the volume formula V_n(r) = ω_n r^n is established.\n\n**Infrastructure**: The definitions `unitBallVolume`, `nBallVol`, and `nSphereArea` with their supporting lemmas provide reusable infrastructure for n-dimensional geometry in Lean 4. The pattern of deriving 2D/3D explicit formulas from the general n-dimensional statement illustrates a clean generalization strategy.",
     "openQuestions": [
       "Can the general Steiner formula for convex bodies — Vol(K ⊕ εB^n) = Σ C(n,k) W_k(K) ε^k — be formalized? This requires Minkowski sums, intrinsic volumes, and Alexandrov's mixed volume theory, none of which are currently in Mathlib.",
