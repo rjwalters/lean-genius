@@ -470,4 +470,96 @@ theorem integral_dIntegrandE_eq (hk_pos : 0 < k) (hk_lt : k < 1) :
         (AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq)]
   rfl
 
+-- ============================================================================
+-- § 9. Uniform Bound for `dIntegrandE` (Infrastructure for the Mathlib
+--      differentiation-under-the-integral lemma)
+-- ============================================================================
+
+/-
+The lemma `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+requires an integrable bound on `|F'(κ, θ)|` uniform over a neighborhood of
+the base point `κ = k`. This section provides that bound.
+
+Concretely: pick `M` with `k < M < 1` (so the open interval `(-M, M)` is a
+neighborhood of `k`). On `|κ| ≤ M`,
+
+    |dIntegrandE κ θ|  =  |κ| · sin²θ / √(1 − κ² sin²θ)
+                       ≤  M · sin²θ / √(1 − M² sin²θ)
+                       =: boundDIntegrandE M θ.
+
+The right-hand side is continuous and interval-integrable on `[0, π/2]`,
+giving the `h_bound` and `bound_integrable` ingredients for Session 6.
+-/
+
+/-- The dominating bound for `|dIntegrandE κ θ|` on the band `|κ| ≤ M`:
+    `M · sin²θ / √(1 − M² sin²θ)`.
+
+    Mirrors `dIntegrandE` but with the sign stripped (positive form) and `κ`
+    replaced by `M` everywhere — designed to give a uniform integrable upper
+    bound on `|dIntegrandE κ θ|` for `κ` in a closed band, which is the
+    `h_bound` hypothesis of
+    `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`. -/
+noncomputable def boundDIntegrandE (M θ : ℝ) : ℝ :=
+  M * Real.sin θ ^ 2 / Real.sqrt (1 - M ^ 2 * Real.sin θ ^ 2)
+
+/-- For `M² < 1` the bound function is continuous in `θ`. -/
+lemma boundDIntegrandE_continuous (hM : M ^ 2 < 1) :
+    Continuous (boundDIntegrandE M) := by
+  unfold boundDIntegrandE
+  refine Continuous.div₀ ?_ ?_ ?_
+  · -- numerator: `M · sin²θ`
+    exact continuous_const.mul (continuous_sin.pow 2)
+  · -- denominator: `√(1 − M² sin²θ)`
+    refine Real.continuous_sqrt.comp ?_
+    refine Continuous.sub continuous_const ?_
+    exact continuous_const.mul (continuous_sin.pow 2)
+  · intro θ
+    exact (AmgmInequalityOQ04OQ01.sqrt_denom_pos hM θ).ne'
+
+/-- For `M² < 1` the bound function is interval-integrable on `[0, π/2]`. -/
+lemma boundDIntegrandE_integrable (hM : M ^ 2 < 1) :
+    IntervalIntegrable (boundDIntegrandE M) MeasureTheory.volume 0 (π / 2) :=
+  (boundDIntegrandE_continuous hM).intervalIntegrable 0 (π / 2)
+
+/-- **Uniform bound** on `|dIntegrandE|` over the band `|κ| ≤ M`.
+
+    For `0 ≤ M` with `M² < 1` and any `κ` satisfying `κ² ≤ M²`,
+    `|dIntegrandE κ θ| ≤ boundDIntegrandE M θ` for every `θ`.
+
+    This is the pointwise content of the `h_bound` hypothesis of
+    `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`. The
+    Session-6 task is then to package this together with the `dIntegrandE`
+    facts from §8 (continuity, integrability, pointwise differentiability)
+    and the integrability of `boundDIntegrandE` to apply that lemma at any
+    `0 < k < 1` (e.g. with `M = (k + 1) / 2`), yielding
+    `HasDerivAt ellipticE ((E(k) − K(k)) / k) k`. -/
+lemma dIntegrandE_abs_le_bound
+    (hM : M ^ 2 < 1) (hM_nn : 0 ≤ M) (κ θ : ℝ) (hκ : κ ^ 2 ≤ M ^ 2) :
+    |dIntegrandE κ θ| ≤ boundDIntegrandE M θ := by
+  unfold dIntegrandE boundDIntegrandE
+  have hsin2_nn : 0 ≤ Real.sin θ ^ 2 := sq_nonneg _
+  have hκ_sq_lt : κ ^ 2 < 1 := lt_of_le_of_lt hκ hM
+  have hM_sqrt_pos : 0 < Real.sqrt (1 - M ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hM θ
+  have hκ_sqrt_pos : 0 < Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hκ_sq_lt θ
+  -- |κ| ≤ M from κ² ≤ M² and 0 ≤ M (via `Real.sqrt`).
+  have habs_κ : |κ| ≤ M := by
+    have h1 : Real.sqrt (κ ^ 2) ≤ Real.sqrt (M ^ 2) := Real.sqrt_le_sqrt hκ
+    rwa [Real.sqrt_sq_eq_abs, Real.sqrt_sq hM_nn] at h1
+  -- Compute |·| on the LHS.
+  have h_num : |-(κ * Real.sin θ ^ 2)| = |κ| * Real.sin θ ^ 2 := by
+    rw [abs_neg, abs_mul, abs_of_nonneg hsin2_nn]
+  have h_denom : |Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2)|
+      = Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2) :=
+    abs_of_pos hκ_sqrt_pos
+  rw [abs_div, h_num, h_denom]
+  -- Goal: |κ| · sin²θ / √(1 − κ² sin²θ) ≤ M · sin²θ / √(1 − M² sin²θ).
+  apply div_le_div
+  · exact mul_nonneg hM_nn hsin2_nn
+  · exact mul_le_mul_of_nonneg_right habs_κ hsin2_nn
+  · exact hM_sqrt_pos
+  · apply Real.sqrt_le_sqrt
+    nlinarith [hsin2_nn, hκ]
+
 end AmgmInequalityOQ04OQ02
