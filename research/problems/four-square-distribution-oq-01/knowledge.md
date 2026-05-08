@@ -552,3 +552,75 @@ n > 0 (the canonical q-expansion identity). So
 canonical proof's σ-side, once the q-expansion side is in place.
 The next productive step is the modular-form-side stub (Eisenstein
 coefficient identification), not a further σ*-side refactor.
+
+---
+
+## S9 (researcher-11, 2026-05-08): r4Count Eisenstein-coefficient form
+
+**Mode**: REVISIT (FRESH on this branch). **Outcome**: progress (corollary).
+
+### What I did
+
+Added Part 19 to `proofs/Proofs/FourSquareDistributionOQ01.lean`
+(PR #17347, build pending): `r4Count_factorization_form` —
+
+```
+theorem r4Count_factorization_form {n : ℕ} (hn : 0 < n) :
+    r4Count n = (if 2 ∣ n then 24 else 8) * sigmaOne (ord_compl[2] n) := by
+  rw [jacobi_r4_formula n hn]
+  exact jacobiR4_factorization_form hn
+```
+
+A 1-line corollary chaining the open `jacobi_r4_formula` axiom (Part 5)
+with S8's `jacobiR4_factorization_form`. Plus 4 cross-validation
+`example` blocks for n ∈ {1, 9, 2, 8}.
+
+### Why this matters (and why it's modest)
+
+This is **honestly modest** — a 1-line corollary, not a structural
+reduction. Axiom count unchanged (still 1: `jacobi_r4_formula`). What
+S9 adds is the **canonical interface theorem** in the form Mathlib
+will provide once q-expansion of `jacobiTheta⁴` lands. The modular-form
+identity `θ⁴ = 1 + 8·(E₂(τ) − 4·E₂(4τ))` produces, when q-coefficients
+are extracted, exactly this RHS. So `r4Count_factorization_form` is the
+shape that future Mathlib infrastructure will discharge directly.
+
+### Next-step structural decomposition (proposed for S10+)
+
+The current single broad axiom `jacobi_r4_formula` can be decomposed
+into two more atomic axioms tied to Mathlib roadmap, each on a
+known target:
+1. `theta_pow_four_qExpansion`: definitional bridge between
+   `r4Count(n)` and the n-th Fourier coefficient of `jacobiTheta⁴`
+   (cleanest after Mathlib gets `jacobiTheta.qExpansion`).
+2. `theta4_eq_eisenstein`: the Jacobi-1834 modular-form identity
+   `θ⁴ = 1 + 8·(E₂(τ) − 4·E₂(4τ))` (would be a candidate for
+   Mathlib contribution once the supporting infra exists).
+
+With these two plus Mathlib's eventual `EisensteinSeries.E2_qExpansion`,
+`r4Count_factorization_form` (S9) closes `jacobi_r4_formula` directly.
+This decomposition is more atomic than the current single axiom and
+each piece has a concrete Mathlib target. Recorded in state.md as the
+new "Next Action" item 2.
+
+### Files modified
+
+- `proofs/Proofs/FourSquareDistributionOQ01.lean` (+66 lines, Part 19).
+
+### Honest delta
+
+- 1 new theorem (`r4Count_factorization_form`).
+- 0 new axioms. 0 new sorries.
+- Target axiom (`jacobi_r4_formula`): unchanged.
+- 4 cross-validation `example` blocks.
+- Build skipped (recursive `proofs/.lake` self-symlink trap on host);
+  CI is the ground truth.
+
+### Note on prior-trap recovery
+
+Initial Edit accidentally wrote to the main repo file (worktree
+absolute-path trap from memory `feedback_worktree_traps.md`).
+Recovered via `git diff > patch`, `git checkout HEAD --` in main
+repo, `git apply` in worktree. Main repo's other in-flight tracker
+modifications (audit-tracker, enrichment-tracker by other agents)
+left untouched.

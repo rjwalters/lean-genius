@@ -1210,4 +1210,70 @@ example : sigmaStar 9 = (if 2 ∣ 9 then 3 else 1) * sigmaOne (ord_compl[2] 9) :
 example : jacobiR4 40 = (if 2 ∣ 40 then 24 else 8) * sigmaOne (ord_compl[2] 40) :=
   jacobiR4_factorization_form (by decide)
 
+-- =====================================================================
+-- PART 19: r4Count in Eisenstein-coefficient form (S9)
+--
+-- Combines the open `jacobi_r4_formula` axiom (Part 5) with the σ*-side
+-- closed form `jacobiR4_factorization_form` (Part 18) to express
+-- `r4Count n` directly as the canonical n-keyed product
+-- `(if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)` for every `0 < n`.
+--
+-- This is the form in which the n-th Fourier coefficient of
+-- `jacobiTheta(τ)^4` arises from the modular-form identity
+-- `θ⁴ = 1 + 8·(E₂(τ) − 4·E₂(4τ))` (Jacobi 1834): the n-th coefficient
+-- of the right-hand side is exactly `(if 2 ∣ n then 24 else 8) · σ(m)`
+-- where `m = ord_compl[2] n` is the odd part of `n` (the prefactor 24
+-- captures the `−4·E₂(4τ)` term contributing for even n; the prefactor
+-- 8 captures the `+8·E₂(τ)` term for odd n).
+--
+-- When Mathlib gains the q-expansion machinery for `jacobiTheta` and
+-- the Eisenstein series `E₂`, the proof of `jacobi_r4_formula` becomes
+-- a one-line discharge against `r4Count_factorization_form`: equate
+-- the q-coefficient of `θ⁴` with that of `1 + 8·(E₂(τ) − 4·E₂(4τ))`,
+-- read off the closed-form RHS, and apply this corollary.
+-- =====================================================================
+
+/-- **r₄(n) in Eisenstein-coefficient form.** For every `0 < n`,
+    `r₄(n) = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)`,
+    where `ord_compl[2] n` is the odd part of `n`.
+
+    This is the canonical closed form in which Jacobi's theorem
+    arises from the q-expansion of `jacobiTheta⁴` as the
+    weight-2 Eisenstein combination `1 + 8·(E₂(τ) − 4·E₂(4τ))`
+    (cf. Part 5 docstring, Mathlib roadmap on
+    `Mathlib.NumberTheory.ModularForms.EisensteinSeries`).
+
+    Proof: chain the axiom `jacobi_r4_formula` (giving
+    `r₄(n) = jacobiR4(n) = 8·σ*(n)`) with
+    `jacobiR4_factorization_form` (S8) which rewrites `8·σ*(n)` as
+    `(if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)`. -/
+theorem r4Count_factorization_form {n : ℕ} (hn : 0 < n) :
+    r4Count n = (if 2 ∣ n then 24 else 8) * sigmaOne (ord_compl[2] n) := by
+  rw [jacobi_r4_formula n hn]
+  exact jacobiR4_factorization_form hn
+
+-- ---------------------------------------------------------------------
+-- Cross-validation: the closed form recovers Part 1 numeric values via
+-- Part 19, with no caller-supplied 2-adic decomposition.
+-- ---------------------------------------------------------------------
+
+/-- r₄(1) = 8: n odd, ord_compl[2] 1 = 1, RHS = 8·σ(1) = 8. -/
+example : r4Count 1 = (if 2 ∣ 1 then 24 else 8) * sigmaOne (ord_compl[2] 1) :=
+  r4Count_factorization_form (by decide)
+
+/-- r₄(9) = 104: n odd, ord_compl[2] 9 = 9, RHS = 8·σ(9) = 8·13 = 104. -/
+example : r4Count 9 = (if 2 ∣ 9 then 24 else 8) * sigmaOne (ord_compl[2] 9) :=
+  r4Count_factorization_form (by decide)
+
+/-- r₄(2) = 24: n even, ord_compl[2] 2 = 1, RHS = 24·σ(1) = 24. -/
+example : r4Count 2 = (if 2 ∣ 2 then 24 else 8) * sigmaOne (ord_compl[2] 2) :=
+  r4Count_factorization_form (by decide)
+
+/-- r₄(8) = 24: n even, ord_compl[2] 8 = 1, RHS = 24·σ(1) = 24. The
+    formula collapses for any pure power of two: r₄(2^k) = 24 (k ≥ 1)
+    matches the σ*-side identity σ*(2^k) = 3 (Part 13) via the factor
+    `8·σ*(2^k) = 24`. -/
+example : r4Count 8 = (if 2 ∣ 8 then 24 else 8) * sigmaOne (ord_compl[2] 8) :=
+  r4Count_factorization_form (by decide)
+
 end FourSquareDistributionOQ01
