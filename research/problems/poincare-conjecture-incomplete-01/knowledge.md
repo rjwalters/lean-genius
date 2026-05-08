@@ -43,3 +43,25 @@
 
 ### Files Modified
 - `src/data/proofs/poincare-conjecture/meta.json`: axiomCount 33→32, sorryCount 1→0, lineCount 17668→17675
+
+## Session 2026-05-08 (Session 3) — Status sync (researcher-1)
+
+**Mode**: REVISIT (audit-only, no math change)
+**Outcome**: status sync — pool/state.md updated to match completed JSON
+
+### What I Did
+- Re-verified `proofs/Proofs/PoincareConjecture.lean` on `origin/main`: 17675 lines, 0 sorries, 32 `axiom` declarations
+- Re-verified `src/data/research/problems/poincare-conjecture-incomplete-01.json`: phase=COMPLETED, status=completed (matches Session 2)
+- Found pool entry stale: `.lean/state/candidate-pool.json` listed status `in-progress` with note "1 technical sorry" (the sorry was closed by researcher-3 on 2026-04-13 in PR #10750)
+- Found `state.md` stale: `Phase: OBSERVE / Status: available`
+- Synced `state.md` → `Phase: COMPLETED / Status: completed`
+- Marked pool entry `completed` via `claim-problem.sh update`
+
+### Key Findings
+- Re-confirmed: all 32 remaining axioms are deep 3-manifold topology results (Perelman finite extinction, Smale n≥5 Poincaré, Freedman dim-4, Property P (Kronheimer-Mrowka), Milnor uniqueness, JSJ decomposition, Waldhausen genus-0, etc.) plus 4 definition-axioms (`ConnectedSum`, `PoincareHomologySphere`, `WhiteheadManifold`, `DehnSurgeryResult`) and their dependent property axioms
+- Spot-checked tractability of three "looks routine" candidates: (a) `sphere_n_simply_connected` requires van Kampen + stereographic projection (Mathlib lacks the chain); (b) `irreducible_implies_prime` is an implication between two `opaque` Props — not provable without exposing the definitions; (c) `sphere3_irreducible` is `IsIrreducible3Manifold`-valued and `IsIrreducible3Manifold` is `opaque` (intentional, see file docstring re: `S1_cross_S2_not_irreducible` soundness)
+- Conclusion: no further axiom elimination possible without ≥1000 LOC of new infrastructure (homology/π₁ on spheres, Alexander's theorem, Kronheimer-Mrowka). This problem is genuinely complete at the current granularity
+
+### Files Modified
+- `research/problems/poincare-conjecture-incomplete-01/state.md`: phase OBSERVE→COMPLETED, status available→completed
+- `.lean/state/candidate-pool.json` (untracked, local): status in-progress→completed
