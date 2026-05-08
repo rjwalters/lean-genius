@@ -76,7 +76,8 @@
       "Pairwise independence is strictly weaker than mutual independence, but strictly stronger than uncorrelated-ness. Uncorrelated events (Cov = 0 without the joint independence condition P(A∩B) = P(A)P(B)) can fail BC2: Petrov (2002, §10) constructs events Aₙ with all pairwise correlations zero but P(Aₙ i.o.) = 0 despite Σ P(Aₙ) = ∞. The 'pairwise' level is optimal.",
       "The limsup of a sequence of sets — {ω : ω ∈ Aₙ for infinitely many n} = ∩_{m} ∪_{n≥m} Aₙ — is modeled in Lean via `Filter.limsup A atTop`. The proof that Sₙ → ∞ a.s. is equivalent to μ(limsup Aₙ) = 1 relies on the equivalence: ω is in limsup Aₙ iff 1_{Aₙ}(ω) does not converge to 0, iff Sₙ(ω) = Σ_{k<n} 1_{Aₖ}(ω) is unbounded.",
       "**Etemadi's leverage**: Etemadi's 1981 elementary SLLN proof exploits this lemma at exactly one place — the necessity direction. Given the SLLN $S_n / n \\to \\mu$ a.s., apply the lemma to $A_n = \\{|X_n| > n\\}$. If $E[|X_1|]$ were infinite, then $\\sum_n P(|X_1| > n) = \\sum_n P(A_n) = \\infty$ (this is the layer-cake lemma). Pairwise independence of $X_n$ implies pairwise independence of $A_n$, so BC2 forces $|X_n| > n$ infinitely often a.s., contradicting $S_n/n \\to \\mu$ (since the latter forces $X_n / n \\to 0$). The classical proof needed full mutual independence here; Etemadi's contribution was recognizing pairwise suffices, opening the door to weak-dependence SLLNs.",
-      "**Hypothesis economy as a research principle**: This result is a paradigm case of identifying the *minimal* hypothesis for a probabilistic conclusion. The same paradigm has driven extensions of the SLLN to ergodic stationary processes (Birkhoff 1931), exchangeable sequences (de Finetti), m-dependent and weakly dependent sequences, and martingales — each by relaxing independence to the next-weakest property compatible with variance control. The Chebyshev-variance method is robust enough to apply throughout this hierarchy, making it one of the most reused proof templates in probability theory."
+      "**Hypothesis economy as a research principle**: This result is a paradigm case of identifying the *minimal* hypothesis for a probabilistic conclusion. The same paradigm has driven extensions of the SLLN to ergodic stationary processes (Birkhoff 1931), exchangeable sequences (de Finetti), m-dependent and weakly dependent sequences, and martingales — each by relaxing independence to the next-weakest property compatible with variance control. The Chebyshev-variance method is robust enough to apply throughout this hierarchy, making it one of the most reused proof templates in probability theory.",
+      "**Mathlib readiness and the gap with `measure_limsup_eq_one`**: Mathlib's existing Borel-Cantelli infrastructure (`MeasureTheory.measure_limsup_eq_one`) is stated for *fully* independent events via the `iIndepSet` typeclass. The present theorem upgrades the hypothesis to the strictly weaker `Pairwise IndepSet` (using `IndepSet`, not `iIndepSet`) — which is exactly the API surface that downstream callers like `slln_necessity` actually have access to in practice (e.g., in Etemadi's argument the events $A_n = \\{|X_n| > n\\}$ are pairwise but not necessarily fully independent). Closing this hypothesis gap in Mathlib directly would let users invoke BC2 without first having to upgrade pairwise independence to mutual independence — an upgrade that is sometimes false and is generally proof-heavy when true."
     ],
     "openQuestions": [
       "Can borel_cantelli_pairwise_indep be contributed to Mathlib4 directly? The existing Mathlib theorem measure_limsup_eq_one requires full independence (via limsup_ae_eq_of_forall_ae_eq or similar), so this would be a genuine new contribution.",
@@ -214,6 +215,16 @@
       "proofId": "laws-of-large-numbers-oq-01-oq-02",
       "relationship": "sibling",
       "description": "Sibling: explores pairwise independence in the SLLN context more broadly (Etemadi's theorem). BC2 for pairwise independence (this entry) is a lemma in that proof."
+    },
+    {
+      "proofId": "lovasz-local-lemma",
+      "relationship": "contrasts",
+      "description": "Companion in the opposite direction. BC2 says $\\sum P(A_n) = \\infty + \\text{pairwise indep} \\Rightarrow P(\\limsup A_n) = 1$, i.e., infinitely many bad events occur a.s. The Lovász Local Lemma gives sufficient conditions under which $P(\\bigcap_n A_n^c) > 0$, i.e., zero bad events occur with positive probability — even under sparse dependence rather than independence. Together they bracket the dependent-events landscape between 'almost sure occurrence' (BC2) and 'positive probability of total avoidance' (LLL)."
+    },
+    {
+      "proofId": "laws-of-large-numbers-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling SLLN OQ: extends LLN to ergodic / stationary dependent sequences (Birkhoff 1931). Both entries instantiate the broader research program of replacing full independence in the SLLN with the next-weakest property compatible with variance control — pairwise independence here, ergodicity there."
     }
   ],
   "sorries": 0
