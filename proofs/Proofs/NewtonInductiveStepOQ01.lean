@@ -153,6 +153,186 @@ theorem newton_inequality_binomial (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ
     -- expands to a sum of terms, each bounded using IH and nonneg conditions.
     sorry
 
+/-! ## Sum-of-squares identity (key lemma for k = 1 case)
+
+The expression `e_1² - 2·e_2 + n·t² - 2t·e_1` equals `∑_{i=1}^n (x_i - t)²`,
+which is manifestly nonnegative. This identity drives the inductive proof of
+Newton's inequality at k = 1.
+-/
+
+/-- Sum of squared differences identity in `esymm` form.
+    The expression equals `∑_{i=1}^n (x_i - t)² ≥ 0`. -/
+theorem esymm_sum_sub_sq_nonneg (xs : List ℝ) (t : ℝ) :
+    0 ≤ esymm xs 1 ^ 2 - 2 * esymm xs 2 +
+        (xs.length : ℝ) * t ^ 2 - 2 * t * esymm xs 1 := by
+  induction xs with
+  | nil =>
+    show (0 : ℝ) ≤ esymm ([] : List ℝ) 1 ^ 2 - 2 * esymm ([] : List ℝ) 2 +
+        ((0 : ℕ) : ℝ) * t ^ 2 - 2 * t * esymm ([] : List ℝ) 1
+    simp [esymm_nil_succ]
+  | cons y ys ih =>
+    have h1 : esymm (y :: ys) 1 = esymm ys 1 + y := by
+      show esymm ys 1 + y * esymm ys 0 = esymm ys 1 + y
+      rw [esymm_zero]; ring
+    have h2 : esymm (y :: ys) 2 = esymm ys 2 + y * esymm ys 1 := rfl
+    rw [h1, h2, length_cons]
+    push_cast
+    nlinarith [ih, sq_nonneg (t - y)]
+
+/-! ## Newton's inequality, k = 1 case: fully proved
+
+The k = 1 case of Newton's inequality:
+  C(n, 2) · e_1² ≥ n² · e_2,
+equivalently (n-1)·(∑x_i)² ≥ 2n·∑_{i<j} x_i·x_j, equivalently
+∑_{i<j} (x_i - x_j)² ≥ 0.
+
+This is the foundational case from which Maclaurin's first inequality and the
+AM-GM connection follow without depending on the general inductive case
+(`newton_inequality_binomial`).
+-/
+
+/-- Newton's inequality (binomial form), k = 1 case: for nonneg reals,
+    `C(n, 2) · e_1² ≥ n² · e_2`.
+
+    Equivalent to `(∑x_i / n)² ≥ (∑_{i<j} x_i·x_j) / C(n,2)`,
+    which is the first Maclaurin inequality `ē_1² ≥ ē_2` with cleared denominators. -/
+theorem newton_inequality_binomial_k_one (xs : List ℝ)
+    (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x) (hn : 2 ≤ xs.length) :
+    (Nat.choose xs.length 2 : ℝ) * esymm xs 1 ^ 2 ≥
+    (xs.length : ℝ) ^ 2 * esymm xs 2 := by
+  induction xs with
+  | nil => simp at hn
+  | cons y ys ih =>
+    have hy : 0 ≤ y := hxs y (mem_cons_self y ys)
+    have hys_nn : ∀ z ∈ ys, (0 : ℝ) ≤ z := fun z hz => hxs z (mem_cons_of_mem y hz)
+    have hE1_nn : 0 ≤ esymm ys 1 := esymm_nonneg ys hys_nn 1
+    have hE2_nn : 0 ≤ esymm ys 2 := esymm_nonneg ys hys_nn 2
+    have hlen_ge_one : 1 ≤ ys.length := by
+      have : 2 ≤ ys.length + 1 := by simpa [length_cons] using hn
+      omega
+    -- Recurrences: F_1 = E_1 + y, F_2 = E_2 + y · E_1.
+    have h1 : esymm (y :: ys) 1 = esymm ys 1 + y := by
+      show esymm ys 1 + y * esymm ys 0 = esymm ys 1 + y
+      rw [esymm_zero]; ring
+    have h2 : esymm (y :: ys) 2 = esymm ys 2 + y * esymm ys 1 := rfl
+    rw [h1, h2, length_cons]
+    push_cast
+    -- Absorption identity: `2 · C(m+1, 2) = (m+1) · m`.
+    have hchoose_succ : (Nat.choose (ys.length + 1) 2 : ℝ) * 2 =
+        ((ys.length : ℝ) + 1) * (ys.length : ℝ) := by
+      have hnat : (ys.length + 1).choose 2 * 2 = (ys.length + 1) * ys.length := by
+        have key := Nat.choose_succ_right_eq (ys.length + 1) 1
+        rw [Nat.choose_one_right] at key
+        simpa using key
+      have heq := congr_arg (Nat.cast : ℕ → ℝ) hnat
+      push_cast at heq
+      linarith
+    by_cases hm : 2 ≤ ys.length
+    · -- Inductive case: ys has length ≥ 2.
+      have hih := ih hys_nn hm
+      have hssq := esymm_sum_sub_sq_nonneg ys y
+      -- Absorption identity for the IH: `2 · C(m, 2) = m · (m - 1)`.
+      have hchoose_m : (Nat.choose ys.length 2 : ℝ) * 2 =
+          (ys.length : ℝ) * ((ys.length : ℝ) - 1) := by
+        have hnat_m : ys.length.choose 2 * 2 = ys.length * (ys.length - 1) := by
+          have key := Nat.choose_succ_right_eq ys.length 1
+          rw [Nat.choose_one_right] at key
+          simpa using key
+        have heq := congr_arg (Nat.cast : ℕ → ℝ) hnat_m
+        push_cast at heq
+        rw [show ((ys.length - 1 : ℕ) : ℝ) = (ys.length : ℝ) - 1 from
+            Nat.cast_sub hlen_ge_one] at heq
+        linarith
+      have hm_real : (2 : ℝ) ≤ (ys.length : ℝ) := by exact_mod_cast hm
+      have hm_pos : (0 : ℝ) < (ys.length : ℝ) := by linarith
+      have hm1_pos : (0 : ℝ) < (ys.length : ℝ) + 1 := by linarith
+      have h2m_pos : (0 : ℝ) < 2 * (ys.length : ℝ) := by linarith
+      -- Step 1: Eliminate `Nat.choose` from `hih` via `hchoose_m`.
+      -- Claim: `m·(m-1)·E_1² ≥ 2·m²·E_2`.
+      have h1 : (ys.length : ℝ) * ((ys.length : ℝ) - 1) * esymm ys 1 ^ 2 ≥
+                 2 * (ys.length : ℝ) ^ 2 * esymm ys 2 := by
+        have hih2 : (Nat.choose ys.length 2 : ℝ) * 2 * esymm ys 1 ^ 2 ≥
+                    2 * (ys.length : ℝ) ^ 2 * esymm ys 2 := by linarith
+        rw [hchoose_m] at hih2
+        linarith
+      -- Step 2: Multiply `hssq` by `m` (≥ 0).
+      have h2 : 0 ≤ (ys.length : ℝ) *
+          (esymm ys 1 ^ 2 - 2 * esymm ys 2 +
+            (ys.length : ℝ) * y ^ 2 - 2 * y * esymm ys 1) :=
+        mul_nonneg hm_pos.le hssq
+      -- Step 3: Combine `h1` and `h2` (sum) to get
+      --   `m² · (E_1+y)² ≥ 2·m·(m+1) · (E_2 + y·E_1)`.
+      -- Algebraic identity: `h1 + h2 = m² · (E_1+y)² - 2·m·(m+1) · (E_2+y·E_1)`.
+      have h_combined :
+          (ys.length : ℝ) ^ 2 * (esymm ys 1 + y) ^ 2 ≥
+          2 * (ys.length : ℝ) * ((ys.length : ℝ) + 1) *
+            (esymm ys 2 + y * esymm ys 1) := by
+        nlinarith [h1, h2]
+      -- Step 4: Multiply `h_combined` by `(m+1)` (≥ 0) to land in the binomial form.
+      have hm1_h_combined : 0 ≤ ((ys.length : ℝ) + 1) *
+          ((ys.length : ℝ) ^ 2 * (esymm ys 1 + y) ^ 2 -
+            2 * (ys.length : ℝ) * ((ys.length : ℝ) + 1) *
+              (esymm ys 2 + y * esymm ys 1)) := by
+        apply mul_nonneg hm1_pos.le
+        linarith
+      -- Step 5: Substitute `m·(m+1) = 2·C(m+1, 2)` (from `hchoose_succ`) to reach the goal.
+      -- Compute the polynomial identity:
+      --   (m+1) · [m²·(E_1+y)² - 2m(m+1)·(E_2+y·E_1)]
+      --   = m²·(m+1)·(E_1+y)² - 2m·(m+1)²·(E_2+y·E_1)
+      --   = (using hchoose_succ × m: m²·(m+1) = 2m·C(m+1, 2))
+      --     2m·C(m+1, 2)·(E_1+y)² - 2m·(m+1)²·(E_2+y·E_1)
+      --   = 2m · [C(m+1, 2)·(E_1+y)² - (m+1)²·(E_2+y·E_1)]
+      -- So: 0 ≤ 2m · (LHS_goal - RHS_goal).
+      have hsub : (ys.length : ℝ) ^ 2 * ((ys.length : ℝ) + 1) =
+                  2 * (ys.length : ℝ) * (Nat.choose (ys.length + 1) 2 : ℝ) := by
+        linear_combination -(ys.length : ℝ) * hchoose_succ
+      have h_factored : 0 ≤ 2 * (ys.length : ℝ) *
+          ((Nat.choose (ys.length + 1) 2 : ℝ) * (esymm ys 1 + y) ^ 2 -
+           ((ys.length : ℝ) + 1) ^ 2 * (esymm ys 2 + y * esymm ys 1)) := by
+        have heq : ((ys.length : ℝ) + 1) *
+            ((ys.length : ℝ) ^ 2 * (esymm ys 1 + y) ^ 2 -
+              2 * (ys.length : ℝ) * ((ys.length : ℝ) + 1) *
+                (esymm ys 2 + y * esymm ys 1)) =
+            2 * (ys.length : ℝ) *
+            ((Nat.choose (ys.length + 1) 2 : ℝ) * (esymm ys 1 + y) ^ 2 -
+             ((ys.length : ℝ) + 1) ^ 2 * (esymm ys 2 + y * esymm ys 1)) := by
+          linear_combination (esymm ys 1 + y) ^ 2 * hsub
+        linarith [hm1_h_combined, heq]
+      -- Step 6: Divide by `2m > 0` to obtain the goal.
+      have h_diff_nn : 0 ≤ (Nat.choose (ys.length + 1) 2 : ℝ) * (esymm ys 1 + y) ^ 2 -
+                            ((ys.length : ℝ) + 1) ^ 2 * (esymm ys 2 + y * esymm ys 1) := by
+        have hzero : (2 * (ys.length : ℝ)) * 0 ≤ (2 * (ys.length : ℝ)) *
+            ((Nat.choose (ys.length + 1) 2 : ℝ) * (esymm ys 1 + y) ^ 2 -
+             ((ys.length : ℝ) + 1) ^ 2 * (esymm ys 2 + y * esymm ys 1)) := by
+          rw [mul_zero]; exact h_factored
+        exact le_of_mul_le_mul_left hzero h2m_pos
+      linarith
+    · -- Base case: ys.length = 1, hence ys = [a] for some a ≥ 0.
+      push_neg at hm
+      have hys_eq : ys.length = 1 := by omega
+      -- Decompose ys into a singleton via nested cases.
+      cases ys with
+      | nil => simp at hys_eq
+      | cons a tail =>
+        cases tail with
+        | cons _ _ => simp at hys_eq
+        | nil =>
+          -- ys = [a]
+          have ha : 0 ≤ a := hys_nn a (List.mem_singleton.mpr rfl)
+          have hE1_a : esymm ([a] : List ℝ) 1 = a := by
+            show esymm ([] : List ℝ) 1 + a * esymm ([] : List ℝ) 0 = a
+            simp [esymm_nil_succ, esymm_zero]
+          have hE2_a : esymm ([a] : List ℝ) 2 = 0 := by
+            show esymm ([] : List ℝ) 2 + a * esymm ([] : List ℝ) 1 = 0
+            simp [esymm_nil_succ]
+          rw [hE1_a, hE2_a]
+          have hC : (Nat.choose 2 2 : ℝ) = 1 := by
+            have : (2 : ℕ).choose 2 = 1 := Nat.choose_self 2
+            exact_mod_cast this
+          simp only [show ([a] : List ℝ).length = 1 from rfl, hC]
+          push_cast
+          nlinarith [sq_nonneg (a - y)]
+
 /-! ## Newton's inequality: direct form for nonneg reals
 
 The standard formulation without binomial normalization. -/
@@ -284,14 +464,27 @@ theorem newton_inequality_means (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) �
 
 /-- Maclaurin's inequality (weak form):
     ē₁ ≥ ē₂^{1/2} ≥ ... ≥ ēₙ^{1/n}
-    We prove the first step: ē₁² ≥ ē₂ (since ē₀ = 1). -/
+    We prove the first step: ē₁² ≥ ē₂ (since ē₀ = 1).
+
+    This proof routes through the proven `newton_inequality_binomial_k_one`,
+    so it does not depend on the open `newton_inequality_binomial` sorry. -/
 theorem maclaurin_first_step (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x)
     (hn : 2 ≤ xs.length) :
     esymmMean xs 1 ^ 2 ≥ esymmMean xs 2 := by
-  -- From Newton: ē₁² ≥ ē₀ · ē₂ = 1 · ē₂ = ē₂
-  have h := newton_inequality_means xs hxs 1 le_rfl (by omega)
-  simp only [show 1 - 1 = 0 from rfl, show 1 + 1 = 2 from rfl] at h
-  simp only [esymmMean, esymm_zero, Nat.choose_zero_right, Nat.cast_one, div_one] at h
+  -- Newton's inequality at k = 1: `C(n, 2)·e_1² ≥ n²·e_2`.
+  -- Divide by `n² · C(n, 2)` (both positive) to obtain `e_1²/n² ≥ e_2/C(n, 2)`,
+  -- i.e., `(esymmMean xs 1)² ≥ esymmMean xs 2`.
+  have h := newton_inequality_binomial_k_one xs hxs hn
+  set n := xs.length with hn_def
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by
+    have : 1 ≤ n := by omega
+    exact_mod_cast this
+  have hC2_pos : (0 : ℝ) < (Nat.choose n 2 : ℝ) :=
+    Nat.cast_pos.mpr (Nat.choose_pos hn)
+  unfold esymmMean
+  rw [show Nat.choose n 1 = n from Nat.choose_one_right n]
+  rw [ge_iff_le, div_pow, div_le_div_iff hC2_pos (pow_pos hn_pos 2)]
+  -- Goal: `esymm xs 2 * (n : ℝ)^2 ≤ esymm xs 1 ^ 2 * Nat.choose n 2`
   linarith
 
 /-- AM-GM from Newton: the arithmetic mean squared ≥ the average product of pairs.
@@ -361,18 +554,24 @@ of nonneg reals. Key results:
 
 1. **esymm**: Definition of elementary symmetric polynomials on real lists
 2. **esymm_nonneg**: Nonnegativity for nonneg inputs
-3. **binom_log_concave**: Log-concavity of binomial coefficients C(n,k)² ≥ C(n,k-1)·C(n,k+1)
-4. **binom_ultra_log_concave**: Ultra-log-concavity C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)²
-5. **newton_two/three_k1/three_k2**: Explicit small cases (n=2,3)
-6. **esymm_one_eq_sum**: e₁ equals the sum
-7. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂
+3. **esymm_sum_sub_sq_nonneg**: Sum-of-squares identity
+   `e_1² - 2·e_2 + n·t² - 2t·e_1 ≥ 0` (equivalent to `∑(x_i - t)² ≥ 0`)
+4. **newton_inequality_binomial_k_one**: Newton's inequality at k = 1, fully proved
+5. **binom_log_concave**: Log-concavity of binomial coefficients C(n,k)² ≥ C(n,k-1)·C(n,k+1)
+6. **binom_ultra_log_concave**: Ultra-log-concavity C(n,k)⁴ ≥ C(n,k-1)²·C(n,k+1)²
+7. **newton_two/three_k1/three_k2**: Explicit small cases (n=2,3)
+8. **esymm_one_eq_sum**: e₁ equals the sum
+9. **maclaurin_first_step**: First Maclaurin inequality ē₁² ≥ ē₂ (independent of the sorry)
 
-The full inductive proof (newton_inequality_binomial) is stated with the
-correct standard Newton inequality (C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1}).
-The mean form (newton_inequality_means) is derived from it by clearing fractions.
+The full general inductive proof `newton_inequality_binomial` (k ≥ 2) is stated with the
+correct standard Newton inequality. The mean form (newton_inequality_means) is derived from
+it by clearing fractions.
 
-0 axioms. 1 sorry (newton_inequality_binomial — the inductive Cauchy-Schwarz step).
-binom_ultra_log_concave is proved (0 sorry) as a direct corollary of binom_log_concave.
+0 axioms. 1 sorry remaining (newton_inequality_binomial for general k — the inductive
+Cauchy-Schwarz step at k ≥ 2). The k = 1 case is now fully proved
+(newton_inequality_binomial_k_one) using induction on the list and the sum-of-squares
+identity ∑(x_i - t)² ≥ 0. The downstream consequences `maclaurin_first_step` and
+`amgm_from_newton` no longer depend on the remaining sorry.
 -/
 
 end NewtonInductiveStepOQ01

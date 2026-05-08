@@ -40,19 +40,21 @@
       "Newton's inequality for n=2: (x+y)² ≥ xy from (x-y)² ≥ 0",
       "Newton's inequality for n=3 k=1: (x+y+z)² ≥ 3(xy+xz+yz)",
       "Newton's inequality for n=3 k=2: (xy+xz+yz)² ≥ 3xyz(x+y+z)",
-      "First Maclaurin inequality: ē₁² ≥ ē₂",
-      "AM-GM connection: (Σxᵢ/n)² ≥ (Σᵢ<ⱼ xᵢxⱼ)/C(n,2)",
-      "Newton's inequality in mean form (ē_k² ≥ ē_{k-1}·ē_{k+1}) fully proved, derived from the binomial form"
+      "First Maclaurin inequality: ē₁² ≥ ē₂ (now proved without depending on the open sorry)",
+      "AM-GM connection: (Σxᵢ/n)² ≥ (Σᵢ<ⱼ xᵢxⱼ)/C(n,2) (sorry-free)",
+      "Newton's inequality in mean form (ē_k² ≥ ē_{k-1}·ē_{k+1}) derived from the binomial form (relies on the open sorry for k ≥ 2)",
+      "Sum-of-squares identity esymm_sum_sub_sq_nonneg: e_1² - 2·e_2 + n·t² - 2t·e_1 ≥ 0 (the algebraic content of ∑(x_i - t)² ≥ 0 in elementary-symmetric form)",
+      "Newton's inequality at k = 1 fully proved (newton_inequality_binomial_k_one): C(n,2)·e_1² ≥ n²·e_2 by induction on the list, using the sum-of-squares identity"
     ],
     "axiomCount": 0,
-    "lineCount": 378,
-    "assumptions": "0 axiom declarations. 1 sorry: newton_inequality_binomial (the general inductive Cauchy-Schwarz step). newton_inequality_means is now fully proved (derived from newton_inequality_binomial).",
+    "lineCount": 577,
+    "assumptions": "0 axiom declarations. 1 sorry remaining: newton_inequality_binomial for k ≥ 2 (the general inductive Cauchy-Schwarz step). The k = 1 case is now fully proved (newton_inequality_binomial_k_one), and the downstream consequences maclaurin_first_step and amgm_from_newton no longer depend on the remaining sorry.",
     "prerequisites": [
       "Elementary symmetric polynomials",
       "Binomial coefficients and absorption identities",
       "Real arithmetic and polynomial inequalities"
     ],
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 2
   },
   "overview": {
@@ -116,10 +118,10 @@
     }
   ],
   "conclusion": {
-    "summary": "We formalize Newton's inequality for elementary symmetric polynomials of nonneg reals in Lean 4. The formalization includes the definition of esymm, log-concavity of binomial coefficients, explicit n=2 and n=3 cases, and consequences including the first Maclaurin inequality. 0 axioms, 2 sorries (the general inductive cases).",
-    "implications": "Newton's inequality is a cornerstone of the theory of symmetric functions. Our formalization provides the foundation for a complete Lean 4 proof of the Maclaurin inequality chain and its connection to AM-GM. The esymm definition and basic lemmas serve as reusable infrastructure.",
+    "summary": "We formalize Newton's inequality for elementary symmetric polynomials of nonneg reals in Lean 4. The formalization includes the definition of esymm, log-concavity of binomial coefficients, explicit n=2 and n=3 cases, the sum-of-squares identity ∑(x_i - t)² ≥ 0 in elementary-symmetric form, the fully proved k = 1 case (newton_inequality_binomial_k_one), and the consequences (first Maclaurin inequality, AM-GM connection). 0 axioms, 1 sorry remaining (the general inductive Cauchy-Schwarz step at k ≥ 2).",
+    "implications": "Newton's inequality is a cornerstone of the theory of symmetric functions. Our formalization provides the foundation for a complete Lean 4 proof of the Maclaurin inequality chain and its connection to AM-GM. The k = 1 case proof, via the algebraic identity ∑(x_i - t)² ≥ 0, decouples the foundational consequences (first Maclaurin inequality, AM-GM) from the open general inductive case.",
     "openQuestions": [
-      "Complete the full inductive proof of newton_inequality_binomial",
+      "Complete the full inductive proof of newton_inequality_binomial for k ≥ 2",
       "Derive the full Maclaurin inequality chain ē₁ ≥ ē₂^{1/2} ≥ ... ≥ ēₙ^{1/n}",
       "Prove ultra-log-concavity: C(n,k)·e_k / C(n,0)·e_0 is log-concave",
       "Connect to Schur convexity and majorization theory"
@@ -177,9 +179,9 @@
       "List"
     ],
     "namespace": "NewtonInductiveStepOQ01",
-    "lineCount": 378,
+    "lineCount": 577,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 21,
     "definitionCount": 2,
     "path": "Proofs/NewtonInductiveStepOQ01.lean",
     "sorries": 1,
