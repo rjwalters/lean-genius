@@ -63,6 +63,17 @@
       "**Numerical evidence**: For n = 20, lcm(1,...,20) = 232,792,560 vs 3^20 = 3,486,784,401, a margin of 15×. For n = 50, the ratio grows. This consistent margin gives strong empirical confidence in Hanson's bound.",
       "**Mathlib infrastructure status**: `Mathlib.NumberTheory.Primorial` has `primorial_le_4_pow`. `Mathlib.NumberTheory.Bertrand` has the Bertrand postulate. `Mathlib.Data.Nat.Lcm` has lcm definitions. None give an `lcm(1..n) ≤ X^n` bound directly. The bridge from primorial to lcm is the missing combinatorial step.",
       "**Chebyshev's decomposition — both directions proved (Iter 5–8)**: This file now proves both inclusions of Chebyshev's identity `lcm(1,...,n) = ∏_{p ≤ n, p prime} p^⌊log_p n⌋`. The *forward* half `(∏ p, p^⌊log_p n⌋) ∣ lcmRange n` (`prod_prime_powers_dvd_lcmRange`, Iter 7) was assembled from `pow_dvd_lcmRange` (generic), `prime_pow_dvd_lcmRange` (each factor), `coprime_prime_pow_pow_of_ne` (pairwise coprime), `prod_dvd_of_pairwise_coprime` (Finset induction). The *reverse* half `lcmRange n ∣ ∏ p, p^⌊log_p n⌋` (`lcmRange_dvd_prod_prime_powers`, Iter 8) routes through `Nat.factorization`: write `m = ∏_{p ∈ m.primeFactors} p^(m.factorization p)` via `Nat.factorization_prod_pow_eq_self`, extend the index set to `(range (n+1)).filter Prime` (extra factors are 1), and bound each exponent by `Nat.log p n` using `Nat.le_log_of_pow_le`. Iter 9 will close the antisymmetric identity `lcmRange n = ∏_{p ≤ n} p^⌊log_p n⌋` via `Nat.dvd_antisymm`. After that, applying Beta-integral / primorial-bound estimates to upper-bound the product by `3^n` is the path to discharge `hanson_bound`."
+    ],
+    "prerequisites": [
+      "Elementary number theory: divisibility, $\\gcd$, $\\mathrm{lcm}$ on $\\mathbb{N}$; primality, prime factorization (fundamental theorem of arithmetic), the multiplicative structure of $\\mathbb{N}$",
+      "Lcm/Finset API: $\\mathrm{lcm}(1,\\ldots,n) = \\bigl(\\mathrm{Finset.range}\\,n\\bigr).\\mathrm{lcm}\\,(\\cdot+1)$ in Mathlib; the universal property `Finset.lcm_dvd` (lcm divides any common multiple) and `Finset.dvd_lcm` (every element divides the lcm)",
+      "Factorial bounds: $n! \\le n^n$ (`Nat.factorial_le_pow`) and $k \\mid n!$ for $1 \\le k \\le n$ (`Nat.dvd_factorial`); these are the inputs to the trivial bound chain $\\mathrm{lcm}(1,\\ldots,n) \\le n! \\le n^n$",
+      "Primorial and Bertrand's postulate: the primorial $p\\#$ (product of primes $\\le p$) satisfies $\\mathrm{primorial}(n) \\le 4^n$ (Mathlib `primorial_le_4_pow`, Erdős 1932); this drives the easier $4^n$ bound on lcm via the missing $\\mathrm{lcm}(1,\\ldots,n) \\le n \\cdot \\mathrm{primorial}(n)$ bridge",
+      "Chebyshev psi function: $\\psi(n) = \\log\\,\\mathrm{lcm}(1,\\ldots,n) = \\sum_{p^k \\le n} \\log p$, the prime number theorem $\\psi(n)/n \\to 1$, and the equivalence Hanson $\\iff \\psi(n) \\le n \\log 3$",
+      "Beta-integral / binomial identity: $\\int_0^1 x^k(1-x)^{n-k}\\,dx = \\frac{k!(n-k)!}{(n+1)!} = \\frac{1}{(n+1)\\binom{n}{k}}$ — the key analytic identity in Hanson's original 1972 proof, since $\\mathrm{lcm}(1,\\ldots,n+1) \\cdot \\frac{1}{(n+1)\\binom{n}{k}} \\in \\mathbb{Z}$",
+      "Prime-power decomposition of LCM: $\\mathrm{lcm}(1,\\ldots,n) = \\prod_{p \\le n,\\ p\\text{ prime}} p^{\\lfloor \\log_p n \\rfloor}$ (Chebyshev's identity); proved in this file via `prod_prime_powers_dvd_lcmRange` (Iter 7) and `lcmRange_dvd_prod_prime_powers` (Iter 8) plus `Nat.dvd_antisymm`",
+      "Mathlib `Nat.factorization` API: every nonzero $m$ satisfies $m = \\prod_{p \\in m.\\mathrm{primeFactors}} p^{m.\\mathrm{factorization}\\,p}$ (`Nat.factorization_prod_pow_eq_self`), with `Nat.le_log_of_pow_le` bounding each exponent by `Nat.log p n` — the engine of the reverse-Chebyshev half of the lcm/prime-power decomposition",
+      "Apéry's irrationality of $\\zeta(3)$: the integer-squeeze argument needs $\\mathrm{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$ combined with a linear-form decay rate $|a_n + b_n \\zeta(3)| \\sim c^{-n}$ where $c \\approx 3.245$; Hanson's $3^n$ bound (not the $4^n$ primorial bound) is what makes the squeeze close — the historical motivation for this file"
     ]
   },
   "sections": [
@@ -109,6 +120,115 @@
       "Combine the forward (`prod_prime_powers_dvd_lcmRange`, Iter 7) and reverse (`lcmRange_dvd_prod_prime_powers`, Iter 8) inclusions via `Nat.dvd_antisymm` to obtain the exact Chebyshev identity `lcmRange n = ∏_{p ≤ n} p^⌊log_p n⌋`. From there, the next layer is to bound the product by `3^n` (Hanson) or `4^n` (primorial-bridge) — both are substantial Mathlib-API tasks."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "lcmRange",
+      "type": "definition",
+      "statement": "$\\mathrm{lcmRange}\\,n := (\\mathrm{Finset.range}\\,n).\\mathrm{lcm}\\,(\\cdot + 1)$",
+      "significance": "Anchors the file: every later lemma is about this Mathlib-native definition rather than a custom recursion, so Mathlib's `Finset.lcm_dvd` / `Finset.dvd_lcm` API applies directly. The shift `(·+1)` lifts from `range n = {0,...,n-1}` to the inclusive range $\\{1,\\ldots,n\\}$ (avoiding the `lcm 0 _ = 0` pitfall).",
+      "description": "lcmRange n := (Finset.range n).lcm (fun i => i + 1). The standard $\\mathrm{lcm}(1,\\ldots,n)$ as a Mathlib-native Finset.lcm, so the universal property of lcm is one rewrite away."
+    },
+    {
+      "name": "dvd_lcmRange",
+      "type": "lemma",
+      "statement": "$\\forall k, n\\colon 0 < k \\le n \\Rightarrow k \\mid \\mathrm{lcmRange}\\,n$",
+      "significance": "Half of the universal property (every element divides the lcm). One-line application of `Finset.dvd_lcm` after a Finset.range reindex. Used everywhere downstream — anytime we need the lcm to be a multiple of some specific $k$.",
+      "description": "Every k with 1 ≤ k ≤ n divides lcmRange n. The basic upward-divisibility lemma — the main reason the lcm is interesting at all."
+    },
+    {
+      "name": "pow_dvd_lcmRange",
+      "type": "lemma",
+      "statement": "$\\forall b, k, n\\colon 0 < b \\land b^k \\le n \\Rightarrow b^k \\mid \\mathrm{lcmRange}\\,n$",
+      "significance": "Generic power-divisibility input to the prime-power decomposition. Specialises trivially to `prime_pow_dvd_lcmRange` once $b$ is constrained to be prime, and enables the Chebyshev product `∏_{p ≤ n} p^⌊log_p n⌋ ∣ lcmRange n`.",
+      "description": "Whenever b > 0 and b^k ≤ n, the power b^k divides lcmRange n. This is the lifting step that turns the `i ≤ n ⟹ i ∣ lcmRange n` pattern into divisibility by powers."
+    },
+    {
+      "name": "prime_pow_dvd_lcmRange",
+      "type": "lemma",
+      "statement": "$\\forall p, n\\colon p\\text{ prime} \\land 1 \\le n \\Rightarrow p^{\\lfloor \\log_p n \\rfloor} \\mid \\mathrm{lcmRange}\\,n$",
+      "significance": "Lifts `pow_dvd_lcmRange` to the *maximal* prime-power $p^{\\lfloor \\log_p n \\rfloor}$ that fits under $n$, which is exactly the multiplicity of $p$ in $\\mathrm{lcm}(1,\\ldots,n)$. Combined with `coprime_prime_pow_pow_of_ne`, this fans out into the Chebyshev product decomposition.",
+      "description": "For any prime p, the maximal power $p^{\\lfloor \\log_p n \\rfloor}$ divides lcmRange n. The prime-by-prime piece of the Chebyshev decomposition lcm = ∏ p^⌊log_p n⌋."
+    },
+    {
+      "name": "prod_prime_powers_dvd_lcmRange",
+      "type": "theorem",
+      "statement": "$\\forall n\\colon \\bigl(\\prod_{p \\le n,\\ p\\text{ prime}} p^{\\lfloor \\log_p n \\rfloor}\\bigr) \\mid \\mathrm{lcmRange}\\,n$",
+      "significance": "Forward half of Chebyshev's identity (Iter 7, May 2026). Discharged by Finset induction over `(range (n+1)).filter Prime` using `coprime_prime_pow_pow_of_ne` (pairwise coprimality) and `prod_dvd_of_pairwise_coprime` (Finset coprime-product divisibility). One of the two halves needed before `Nat.dvd_antisymm` can close the antisymmetric identity.",
+      "description": "Forward direction of Chebyshev's lcm/prime-power identity: the product of maximal prime powers up to n divides lcmRange n. Discharges Iter 7 of the OQ-03 research roadmap."
+    },
+    {
+      "name": "lcmRange_dvd_prod_prime_powers",
+      "type": "theorem",
+      "statement": "$\\forall n\\colon \\mathrm{lcmRange}\\,n \\mid \\bigl(\\prod_{p \\le n,\\ p\\text{ prime}} p^{\\lfloor \\log_p n \\rfloor}\\bigr)$",
+      "significance": "Reverse half of Chebyshev's identity (Iter 8, May 2026). Routes through `Nat.factorization`: `m = ∏_{p ∈ m.primeFactors} p^(m.factorization p)` (Mathlib `Nat.factorization_prod_pow_eq_self`), with each exponent bounded by `Nat.log p n` via `Nat.le_log_of_pow_le`. This is the structurally harder half — the forward half could be done by hand but the reverse needs the full factorization API.",
+      "description": "Reverse direction of Chebyshev's lcm/prime-power identity: lcmRange n divides the product of maximal prime powers up to n. Iter 8 deliverable; closes the antisymmetric pair with `prod_prime_powers_dvd_lcmRange`."
+    },
+    {
+      "name": "lcmRange_dvd_factorial",
+      "type": "lemma",
+      "statement": "$\\forall n\\colon \\mathrm{lcmRange}\\,n \\mid n!$",
+      "significance": "Easy half of the elementary bound chain. One-line proof from `Finset.lcm_dvd` + `Nat.dvd_factorial`. Engine for the immediate corollary $\\mathrm{lcmRange}\\,n \\le n!$.",
+      "description": "lcmRange n divides n!. Because every k ∈ {1,...,n} divides n!, and lcm of a Finset divides any common multiple of the Finset (`Finset.lcm_dvd`)."
+    },
+    {
+      "name": "lcmRange_le_self_pow",
+      "type": "lemma",
+      "statement": "$\\forall n\\colon \\mathrm{lcmRange}\\,n \\le n^n$",
+      "significance": "Trivial bound, included as a benchmark to demonstrate that Hanson's $3^n$ is genuinely tighter (formalized as `hanson_strictly_stronger_than_factorial` for $n \\ge 4$). The chain `lcm ≤ n! ≤ n^n` is the easy reference point against which the hard $3^n$ bound is measured.",
+      "description": "lcmRange n ≤ n^n. Trivial corollary of lcmRange ≤ n! and Mathlib's `Nat.factorial_le_pow`."
+    },
+    {
+      "name": "hanson_bound",
+      "type": "axiom",
+      "statement": "$\\forall n\\colon \\mathrm{lcmRange}\\,n \\le 3^n$",
+      "significance": "The file's *one* remaining axiom, deliberately scoped to mirror Hanson 1972's classical theorem. Eliminating it would discharge one of five remaining axioms in `BaselProblemOQ01OQ01OQ02.lean`'s formalization of Apéry's $\\zeta(3)$ irrationality. The proof requires the Beta-integral identity $\\int_0^1 x^k(1-x)^{n-k}\\,dx = 1/[(n+1)\\binom{n}{k}]$ together with prime-power bounds compiled into LCM divisibility — both are substantial Mathlib upstream contributions.",
+      "description": "Hanson's bound (Hanson, Canad. Math. Bull. 1972) as an axiom. Numerically verified for n ≤ 20 in this file via `decide`/`native_decide`. The general statement remains a research target."
+    },
+    {
+      "name": "hanson_strictly_stronger_than_factorial",
+      "type": "theorem",
+      "statement": "$\\forall n \\ge 4\\colon 3^n < n^n$",
+      "significance": "Sharpness check: confirms that $3^n$ is strictly tighter than the trivial $n^n$ bound for $n \\ge 4$. So Hanson is not a derivable corollary of the factorial-route bound — its constant 3 carries genuine arithmetic information about prime distribution that the elementary chain does not capture.",
+      "description": "For all n ≥ 4, 3^n < n^n. Demonstrates that Hanson's constant 3 is genuinely sharper than the trivial n^n bound."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Hanson, D. (1972). \"On the product of the primes.\" Canadian Mathematical Bulletin 15(1), 33–37.",
+      "relevance": "Original publication of Hanson's bound $\\mathrm{lcm}(1,\\ldots,n) \\le 3^n$. The proof combines a Beta-integral identity with Chebyshev-style prime-power estimates. Provides the precise mathematical target this file axiomatizes pending a Lean formalization."
+    },
+    {
+      "type": "textbook",
+      "citation": "Apéry, R. (1979). \"Irrationalité de ζ(2) et ζ(3).\" Astérisque 61, 11–13.",
+      "relevance": "The integer-squeeze argument for $\\zeta(3) \\not\\in \\mathbb{Q}$ requires $\\mathrm{lcm}(1,\\ldots,n)^3 \\cdot a_n \\in \\mathbb{Z}$ combined with a linear-form decay $|a_n + b_n \\zeta(3)| \\sim c^{-n}$ where $c \\approx 3.245$. Hanson's $3^n$ bound is exactly the threshold that makes the squeeze close — strictly weaker bounds (e.g. the easier $4^n$ from primorial) would not suffice."
+    },
+    {
+      "type": "textbook",
+      "citation": "Chebyshev, P.L. (1850). \"Mémoire sur les nombres premiers.\" Mémoires de l'Académie Impériale des Sciences de Saint-Pétersbourg 7, 17–33.",
+      "relevance": "Original asymptotic estimate for $\\psi(n) = \\log \\mathrm{lcm}(1,\\ldots,n)$ giving $A n \\le \\psi(n) \\le B n$ for explicit constants $A, B$. Hanson's bound is the modern non-asymptotic strengthening of Chebyshev's upper estimate to the constant $\\log 3$."
+    },
+    {
+      "type": "textbook",
+      "citation": "Erdős, P. (1932). \"Beweis eines Satzes von Tschebyschef.\" Acta Sci. Math. (Szeged) 5, 194–198.",
+      "relevance": "Erdős's elementary proof of Bertrand's postulate via the primorial bound $\\prod_{p \\le n} p \\le 4^n$, which Mathlib formalizes as `primorial_le_4_pow`. The bridge from primorial to lcm — the unproved $\\mathrm{lcm}(1,\\ldots,n) \\le n \\cdot \\mathrm{primorial}(n)$ step — would yield the easier $4^n$ lcm bound."
+    },
+    {
+      "type": "textbook",
+      "citation": "Mertens, F. (1874). \"Ein Beitrag zur analytischen Zahlentheorie.\" Journal für die reine und angewandte Mathematik 78, 46–62.",
+      "relevance": "Mertens' theorems on the Chebyshev psi/theta functions; together with the prime number theorem ($\\psi(n) \\sim n$) they give the asymptotic Hanson constant $\\log 3 \\approx 1.0986$ as a strict upper bound on $\\liminf \\psi(n)/n = 1$. Provides the asymptotic justification for why Hanson's $3^n$ is a credible non-asymptotic target."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.NumberTheory.Primorial — primorial_le_4_pow.\" (accessed 2026).",
+      "relevance": "Primorial bound $\\prod_{p \\le n} p \\le 4^n$ (the Erdős route to Bertrand). Identifies the missing $\\mathrm{lcm}(1,\\ldots,n) \\le n \\cdot \\mathrm{primorial}(n)$ bridge as the Mathlib-API gap that, if closed, would yield the easier $4^n$ bound on lcm."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Data.Nat.Factorization.Basic — Nat.factorization_prod_pow_eq_self and Nat.le_log_of_pow_le.\" (accessed 2026).",
+      "relevance": "Provides the factorization-product identity and the maximal-prime-power exponent bound `Nat.le_log_of_pow_le`, used in the reverse-Chebyshev half (`lcmRange_dvd_prod_prime_powers`, Iter 8) to express lcmRange via $\\prod_p p^{m.\\mathrm{factorization}\\,p}$ and bound exponents by `Nat.log p n`."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "basel-problem",
