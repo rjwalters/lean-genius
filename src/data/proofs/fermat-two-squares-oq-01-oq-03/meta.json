@@ -15,7 +15,7 @@
     "axiomCount": 1,
     "lineCount": 357,
     "theoremCount": 18,
-    "definitionCount": 9,
+    "definitionCount": 10,
     "assumptions": "hurwitz_euclidean: For any Hurwitz quaternions a and nonzero b, there exist q, r ∈ H with a = b·q + r and N(r) < N(b). This Euclidean property requires the covering radius argument from algebraic topology to prove fully.",
     "originalContributions": [
       "First formalization of HurwitzQuat type in Lean 4 as a substructure of ℍ(ℚ) with the equal-parity constraint",
@@ -32,7 +32,7 @@
     "axiomCount": 1,
     "lineCount": 357,
     "theoremCount": 18,
-    "definitionCount": 9
+    "definitionCount": 10
   },
   "overview": {
     "historicalContext": "Lagrange proved in 1770 that every natural number is a sum of four integer squares, using infinite descent — a tour de force of elementary number theory but lacking algebraic transparency. Euler had earlier discovered the four-square identity (the product of two sums-of-four-squares is again a sum of four squares), which forms the multiplicative backbone of the theorem. The algebraic approach via quaternions began with Hamilton's 1843 invention of the quaternion algebra ℍ. Rudolf Lipschitz in 1886 introduced the Lipschitz integers L = {a+bi+cj+dk : a,b,c,d ∈ ℤ}, a natural quaternionic analogue of Gaussian integers, hoping to prove four squares algebraically. But L has a fatal flaw: it is not a Euclidean domain. The problem is that for some pairs a, b ∈ L, the nearest Lipschitz integer to b⁻¹a has norm exactly 1 (the covering radius of L equals 1), so Euclidean division can fail. Adolf Hurwitz solved this in his 1896 paper 'Über die Zahlentheorie der Quaternionen' by extending L to include half-integer elements. The element ω = ½(1+i+j+k) has norm N(ω) = 1 (a unit!), and together with its 23 conjugates under multiplication, the 24 Hurwitz units form the binary tetrahedral group 2T. Crucially, the Hurwitz integers H have covering radius strictly less than 1: for any rational quaternion x, there is a Hurwitz integer q with N(x−q) < 1, making H a left Euclidean domain. This enables a clean GCD-based proof: every prime p has a Lipschitz Hurwitz element of norm p, giving p = a²+b²+c²+d², and Euler's identity completes the induction.",

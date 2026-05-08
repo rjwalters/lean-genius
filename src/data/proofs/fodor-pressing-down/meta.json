@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "lineCount": 385,
     "theoremCount": 12,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Fodor's Pressing-Down Lemma was proved by G\u00e9za Fodor in 1956, and is sometimes also called the Fodor-Neumer theorem. It is one of the most useful tools in combinatorial and descriptive set theory. The lemma asserts that any regressive function (f(\u03b1) < \u03b1) on a stationary subset of a regular uncountable cardinal \u03ba must be constant on some stationary subset \u2014 the function cannot 'press down' uniformly. The key technique is the **diagonal intersection**: if f\u207b\u00b9(\u03b2) is non-stationary for every \u03b2, we can find clubs C_\u03b2 avoiding each fiber, and their diagonal intersection \u0394_{\u03b2<\u03ba}(C_\u03b2) is still a club (since diagonal intersections of clubs are clubs), contradicting the stationarity of the domain.",
@@ -227,7 +227,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 12,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "imports": [
       "import Mathlib.SetTheory.Cardinal.Ordinal",
       "import Mathlib.SetTheory.Cardinal.Cofinality",
