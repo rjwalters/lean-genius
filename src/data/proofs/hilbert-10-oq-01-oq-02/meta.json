@@ -24,8 +24,23 @@
     "mathlibDependencies": [
       {
         "theorem": "sub_eq_zero",
-        "description": "x - y = 0 ↔ x = y; used in singleton {a} ⊂ ℚ Σ₁-definability via shift polynomial P(q,x) = q - a",
+        "description": "x - y = 0 ↔ x = y; used in singleton {a} ⊂ ℚ Σ₁-definability via shift polynomial P(q,x) = q - a (S8)",
         "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "mul_eq_zero",
+        "description": "a * b = 0 ↔ a = 0 ∨ b = 0 (NoZeroDivisors); ℚ is a field. Used in S9 binary union closure of Σ₁ and binary intersection closure of Π₁ via the product polynomial witness P(q,x) = P₁(q,x)·P₂(q,x).",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "zero_mul",
+        "description": "0 * a = 0 over MulZeroClass; used in the forward direction of S9 union closure (when P₁(q,x) = 0, the product P₁·P₂ vanishes at the same x).",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "mul_zero",
+        "description": "a * 0 = 0 over MulZeroClass; symmetric counterpart of zero_mul, used analogously in S9 union closure when P₂(q,x) = 0.",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
       }
     ],
     "originalContributions": [
@@ -60,11 +75,17 @@
       "notSingletonOf_isCoDiophantineDefinition: every complement ℚ \\ {a} is Π₁-definable for arbitrary a : ℚ via the same shift polynomial (iter 8 Path B, dual of singletonOf)",
       "singletonOf_isUniversalExistentialDefinition: every {a} ⊂ ℚ is Π₂-definable, corollary of Σ₁ membership via Σ₁ ⊆ Π₂ (iter 8 Path B)",
       "notSingletonOf_isExistentialUniversalDefinition: every ℚ \\ {a} is Σ₂-definable, corollary of Π₁ membership via Π₁ ⊆ Σ₂ (iter 8 Path B)",
-      "singletonOf_zero_isDiophantineDefinition: documents that S6's singletonZero is recovered as the a = 0 instance of S8's parametric singletonOf family (iter 8)"
+      "singletonOf_zero_isDiophantineDefinition: documents that S6's singletonZero is recovered as the a = 0 instance of S8's parametric singletonOf family (iter 8)",
+      "union_isDiophantineDefinition: Σ₁ class is closed under binary union — for any two Σ₁-definable subsets S₁, S₂ ⊂ ℚ, the disjunction `fun q => S₁ q ∨ S₂ q` is Σ₁-definable, witnessed by the product polynomial P(q,x) = P₁(q,x)·P₂(q,x) (iter 9 Path B; uses mul_eq_zero from Mathlib.Algebra.GroupWithZero.Basic; no new axioms)",
+      "intersection_isCoDiophantineDefinition: Π₁ class is closed under binary intersection — for any two Π₁-definable subsets S₁, S₂ ⊂ ℚ, the conjunction `fun q => S₁ q ∧ S₂ q` is Π₁-definable, witnessed by the same product polynomial (iter 9 Path B, dual of union closure)",
+      "singletonPair_isDiophantineDefinition: every PAIR {a, b} ⊂ ℚ is Σ₁-definable for arbitrary a, b : ℚ (iter 9 Path B; corollary of union closure applied to two S8 singleton witnesses)",
+      "notSingletonPair_isCoDiophantineDefinition: every complement-of-pair ℚ \\ {a, b} is Π₁-definable for arbitrary a, b : ℚ (iter 9 Path B; corollary of intersection closure)",
+      "singletonPair_isUniversalExistentialDefinition: every PAIR {a, b} ⊂ ℚ is Π₂-definable, corollary via Σ₁ ⊆ Π₂ (iter 9)",
+      "notSingletonPair_isExistentialUniversalDefinition: every complement-of-pair ℚ \\ {a, b} is Σ₂-definable, corollary via Π₁ ⊆ Σ₂ (iter 9)"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 999,
+    "lineCount": 1163,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -72,7 +93,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 44,
+    "theoremCount": 50,
     "definitionCount": 12
   },
   "overview": {
@@ -197,13 +218,14 @@
   "leanFile": {
     "imports": [
       "Proofs.Hilbert10OQ01",
-      "Mathlib.Algebra.Group.Basic"
+      "Mathlib.Algebra.Group.Basic",
+      "Mathlib.Algebra.GroupWithZero.Basic"
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 999,
+    "lineCount": 1163,
     "axiomCount": 1,
-    "theoremCount": 44,
+    "theoremCount": 50,
     "definitionCount": 12,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
@@ -305,6 +327,16 @@
       "name": "koenigsmann_implies_complement_existentialUniversal",
       "type": "theorem",
       "description": "Corollary of Koenigsmann via Σ₂/Π₂ duality: ℚ \\ ℤ is Σ₂-definable in ℚ (no new axiom)"
+    },
+    {
+      "name": "union_isDiophantineDefinition",
+      "type": "theorem",
+      "description": "Σ₁ closed under binary union: if S₁, S₂ are Σ₁-definable, so is `fun q => S₁ q ∨ S₂ q`. Witness: product polynomial P₁(q,x)·P₂(q,x); uses mul_eq_zero (iter 9 Path B)"
+    },
+    {
+      "name": "intersection_isCoDiophantineDefinition",
+      "type": "theorem",
+      "description": "Π₁ closed under binary intersection: if S₁, S₂ are Π₁-definable, so is `fun q => S₁ q ∧ S₂ q`. Same product polynomial witness, dual of union closure (iter 9 Path B)"
     }
   ],
   "sorries": 0

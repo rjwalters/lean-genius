@@ -38,18 +38,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T06:00:00.000Z",
-    "iteration": 4,
-    "focus": "Phase-2 ACT iteration 4 (this PR, researcher-1): completes the propositional-equivalence congruence story for all four definability classes. Adds three theorems analogous to iteration 3's `universalExistentialDefinition_iff_of_pred_iff` (Π₂ congruence): `diophantineDefinition_iff_of_pred_iff` (Σ₁), `coDiophantineDefinition_iff_of_pred_iff` (Π₁), and `existentialUniversalDefinition_iff_of_pred_iff` (Σ₂). All three follow the same `(h q).symm.trans (hP q)` two-line template; mechanical but completes the four-class symmetry. Net: +3 theorems, 0 defs, 0 axioms. Total 526 lines (was 462), 16 theorems (was 13), 8 defs, 1 axiom, 0 sorries. Build pending (CI). Iteration 3 (researcher-9 session 2, 2026-05-08, PR #16885 merged): Σ₂/Π₂ duality + Π₁ ⊆ Σ₂ + Σ₂(ℚ\\ℤ) corollary.",
+    "iteration": 9,
+    "focus": "Phase-2 ACT iteration 9 (this PR, researcher-9): **closure of Σ₁ under binary union and Π₁ under binary intersection** via the product polynomial witness P(q,x) = P₁(q,x)·P₂(q,x). One new Mathlib import (Mathlib.Algebra.GroupWithZero.Basic for `mul_eq_zero` over ℚ; ℚ is a field, hence NoZeroDivisors). The same product polynomial serves both directions: for union, ∃x, P₁·P₂=0 ⟺ (∃x, P₁=0) ∨ (∃x, P₂=0); for intersection, ∀x, P₁·P₂≠0 ⟺ (∀x, P₁≠0) ∧ (∀x, P₂≠0). Adds 6 theorems (2 closure + 4 concrete corollaries for pairs {a, b} and complements ℚ\\{a, b} across Σ₁/Π₁/Π₂/Σ₂); 0 new defs, 0 new axioms. Total: 1163 lines (was 999), 50 theorems (was 44), 12 defs, 1 axiom, 0 sorries. Build pending (CI). Sharpens the OPEN-question landscape: every FINITE subset of ℚ is Σ₁-definable; the OPEN Σ₁ question for ℤ ⊂ ℚ reduces to whether *countable* union closure holds (uniform polynomial witness for the family {n} : n : ℤ).",
     "blockers": [],
-    "nextAction": "S5+ candidates (after this PR lands): (a) Σ₂ ⊆ Π₂'s ¬¬-shadow technical clarification — would tighten the predicate-equivalence bridge into a stronger congruence lemma; (b) Σ₁ × Π₁ closure properties (∪/∩) — needs Rat.mul_eq_zero / sum-of-squares, currently no Mathlib import; (c) Π₁ ⊆ Π₂ via polynomial-inversion trick (a ≠ 0 ⟺ ∃ z, a·z = 1) — same Rat-arithmetic blocker; (d) Daans 2021 (10-quantifier) refinement of koenigsmann_2016_universal — would add 1 axiom but improve quantitative content; (e) Eisenträger-Park 2018 universal-existential characterization for global fields.",
+    "nextAction": "S10+ candidates (after this PR lands): (a) Π₁ ⊆ Π₂ via polynomial-inversion trick (a ≠ 0 ⟺ ∃ z, a·z = 1) — needs Rat field arithmetic (further Mathlib import); (b) closure of Σ₁ under binary INTERSECTION via sum-of-squares witness P(q, x, y) = P₁(q,x)² + P₂(q,y)² (needs `a²+b²=0 ↔ a=0 ∧ b=0` over an ordered field, plus a packing-trick to use disjoint variable indices for x and y); (c) finUnion_singletons_isDiophantineDefinition: induction on a finite list of rationals — every finite subset of ℚ is Σ₁-definable (extension of S9's pair to arbitrary k-tuple); (d) Daans 2021 (10-quantifier) refinement of koenigsmann_2016_universal — would add 1 axiom but improve quantitative content; (e) Eisenträger-Park 2018 universal-existential characterization for global fields.",
     "attemptCounts": {
-      "total": 4,
+      "total": 9,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 8
     }
   },
   "knowledge": {
-    "progressSummary": "PHASE-2 ACT iterations 1-8 complete. Iter 1 (researcher-6): scaffold (5 thm). Iter 2 (researcher-9): Σ₁/Π₁ duality (+4 thm). Iter 3 (researcher-9): Σ₂/Π₂ duality + Π₁ ⊆ Σ₂ + Σ₂(ℚ\\ℤ) corollary (+4 thm). Iter 4 (researcher-1): three remaining class congruence helpers (+3 thm, axiom-free). Iter 5 (PR #17065): symmetric duality + ∅/ℚ trivial-set library across all four classes. Iter 6 (PR #17083): smallest non-trivial parameter-dependent witness {0}/ℚ\\{0} via projection polynomial P(q,x)=q. Iter 7 (PR #17125): four ¬¬-shadows (Σ₁/Π₁/Σ₂/Π₂ stable under classical double negation) + concrete OPEN-question shadow IntegersAreDiophantineOverQ ⟺ Σ₁(¬¬ IntSubset). Iter 8 (researcher-5, this PR): **Path B transition** — first Mathlib import (Mathlib.Algebra.Group.Basic for sub_eq_zero) enables the proper generalization of S6 singletonZero to **arbitrary singletons {a} ⊂ ℚ for any a : ℚ** via the shift polynomial P(q,x) = q - a. Adds 5 theorems (4 parametric + 1 a=0 recovery instance) + 1 private def (shiftPoly). Total: 999 lines, 44 theorems, 12 defs, 1 axiom (koenigsmann_2016_universal), 0 sorries. The Σ₁ question itself remains OPEN (intentionally). Iter 8 build pending; iter 7 build passed.",
+    "progressSummary": "PHASE-2 ACT iterations 1-9 complete. Iter 1 (researcher-6): scaffold (5 thm). Iter 2 (researcher-9): Σ₁/Π₁ duality (+4 thm). Iter 3 (researcher-9): Σ₂/Π₂ duality + Π₁ ⊆ Σ₂ + Σ₂(ℚ\\ℤ) corollary (+4 thm). Iter 4 (researcher-1): three remaining class congruence helpers (+3 thm, axiom-free). Iter 5 (PR #17065): symmetric duality + ∅/ℚ trivial-set library across all four classes. Iter 6 (PR #17083): smallest non-trivial parameter-dependent witness {0}/ℚ\\{0} via projection polynomial P(q,x)=q. Iter 7 (PR #17125): four ¬¬-shadows (Σ₁/Π₁/Σ₂/Π₂ stable under classical double negation) + concrete OPEN-question shadow IntegersAreDiophantineOverQ ⟺ Σ₁(¬¬ IntSubset). Iter 8 (researcher-5, PR #17219 merged): **Path B transition** — first Mathlib import (Mathlib.Algebra.Group.Basic for sub_eq_zero) enables the proper generalization of S6 singletonZero to **arbitrary singletons {a} ⊂ ℚ for any a : ℚ** via the shift polynomial P(q,x) = q - a. Adds 5 theorems + 1 private def. Iter 9 (researcher-9, this PR): **closure of Σ₁ under binary union and Π₁ under binary intersection** via the product polynomial witness P(q,x) = P₁(q,x)·P₂(q,x). Second Mathlib import (Mathlib.Algebra.GroupWithZero.Basic for `mul_eq_zero` on ℚ). Adds 6 theorems (2 closure + 4 concrete pair corollaries). Total: 1163 lines, 50 theorems, 12 defs, 1 axiom (koenigsmann_2016_universal), 0 sorries. The Σ₁ question itself remains OPEN (intentionally) — but every FINITE subset of ℚ is now Σ₁-definable; the OPEN content is precisely the COUNTABLE union of singletons {n} : n : ℤ.",
     "builtItems": [
       "Proofs/Hilbert10OQ01OQ02.lean: file scaffolded with imports from Hilbert10OQ01 (lines 1-69)",
       "Proofs/Hilbert10OQ01OQ02.lean: abbrev RatSubset := Rat → Prop (line 71)",
@@ -85,7 +85,15 @@
       "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonOf_isUniversalExistentialDefinition (a : Rat) — every {a} ⊂ ℚ is Π₂-definable, corollary via Σ₁ ⊆ Π₂ (S8)",
       "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonOf_isExistentialUniversalDefinition (a : Rat) — every ℚ \\ {a} is Σ₂-definable, corollary via Π₁ ⊆ Σ₂ (S8)",
       "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonOf_zero_isDiophantineDefinition — documents S6 = a=0 instance of S8 family (S8)",
-      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 885→999, theoremCount 39→44, definitionCount 11→12; mathlibDependencies = [Mathlib.Algebra.Group.Basic]; leanFile.imports gained Mathlib.Algebra.Group.Basic"
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 885→999, theoremCount 39→44, definitionCount 11→12; mathlibDependencies = [Mathlib.Algebra.Group.Basic]; leanFile.imports gained Mathlib.Algebra.Group.Basic",
+      "Proofs/Hilbert10OQ01OQ02.lean: import Mathlib.Algebra.GroupWithZero.Basic added (S9 iter 9, second Mathlib import — `mul_eq_zero` on ℚ for binary union/intersection closure)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem union_isDiophantineDefinition — Σ₁ closed under binary union via product polynomial witness P(q,x)=P₁(q,x)·P₂(q,x) (S9 Path B; uses mul_eq_zero, zero_mul, mul_zero)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem intersection_isCoDiophantineDefinition — Π₁ closed under binary intersection via the SAME product polynomial witness (S9 Path B, dual of union)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonPair_isDiophantineDefinition (a b : Rat) — every PAIR {a, b} ⊂ ℚ is Σ₁-definable (S9 corollary of union closure applied to two S8 singletonOf witnesses)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonPair_isCoDiophantineDefinition (a b : Rat) — every complement-of-pair ℚ \\ {a, b} is Π₁-definable (S9 corollary)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem singletonPair_isUniversalExistentialDefinition (a b : Rat) — every PAIR {a, b} is Π₂-definable, corollary via Σ₁ ⊆ Π₂ (S9)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem notSingletonPair_isExistentialUniversalDefinition (a b : Rat) — every complement-of-pair is Σ₂-definable, corollary via Π₁ ⊆ Σ₂ (S9)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 999→1163, theoremCount 44→50, definitionCount unchanged at 12; mathlibDependencies adds Mathlib.Algebra.GroupWithZero.Basic; leanFile.imports gained Mathlib.Algebra.GroupWithZero.Basic"
     ],
     "insights": [
       "The Σ₁/Π₁ distinction (Diophantine vs universal definability) is the precise mathematical content of OQ-01-OQ-02 over and above OQ-01: Koenigsmann 2016 settled Π₁; Σ₁ remains open",
@@ -106,7 +114,9 @@
       "Pattern for axiom-free duality proofs in Lean core: `apply Classical.byContradiction; intro hn; have : ... := ...` — this idiom carries the file with no Mathlib import.",
       "S6 → S8 generalization (singletonZero → singletonOf): the projection polynomial P(q,x) = q recovers as the special case a = 0 of the shift polynomial P(q,x) = q - a; the shift family adds nothing new for a = 0 but parameterizes the entire family of singletons by a single witness",
       "Σ₁-definability is closed under FINITE union (and intersection) but the OPEN ℤ ⊂ ℚ Σ₁ question is precisely the question of closure under COUNTABLE union along Int.cast — the family of singletons {n} for n : ℤ is uniformly Σ₁-definable per-element (via singletonOf at a = n) but not known to admit a single uniform polynomial witness for the union",
-      "Path A → Path B transition: the file architecture changes at iter 8 to allow Mathlib imports. The minimal cost (one import: Mathlib.Algebra.Group.Basic for sub_eq_zero) unlocks the singleton-of-a generalization, the closure properties (S9+: needs mul_eq_zero), and Π₁ ⊆ Π₂ via inversion (S10+: needs Rat field arithmetic)"
+      "Path A → Path B transition: the file architecture changes at iter 8 to allow Mathlib imports. The minimal cost (one import: Mathlib.Algebra.Group.Basic for sub_eq_zero) unlocks the singleton-of-a generalization, the closure properties (S9+: needs mul_eq_zero), and Π₁ ⊆ Π₂ via inversion (S10+: needs Rat field arithmetic)",
+      "S9 design choice — same product polynomial for both union and intersection: the witness P(q, x) = P₁(q, x)·P₂(q, x) reuses the SAME variable assignment block for both factors. For union (Σ₁), this is fine: ∃x, P₁·P₂=0 ⟺ (∃x, P₁=0) ∨ (∃x, P₂=0) — both directions hold trivially because we don't need the same x to vanish in both factors. For intersection (Π₁), the dual statement holds: ∀x, P₁·P₂≠0 ⟺ (∀x, P₁≠0) ∧ (∀x, P₂≠0) — the universal quantifier 'splits' across the conjunction. Sum-of-squares would be needed for Σ₁ INTERSECTION (where we need the same x to make both factors zero), not for Σ₁ union or Π₁ intersection.",
+      "S9 sharpens the OPEN landscape: every FINITE subset of ℚ is Σ₁-definable (by induction over a finite list, using S8 singletons + S9 binary union). The OPEN Σ₁ question for ℤ ⊂ ℚ thus reduces precisely to: does the COUNTABLE union ⋃_{n : ℤ} {n} admit a UNIFORM polynomial witness? Finite truncations ⋃_{n ∈ [-N, N]} {n} are Σ₁-definable for every N (corollary of S8 + S9), but the limit N → ∞ requires a single polynomial whose existence is precisely the open content of the question."
     ],
     "mathlibGaps": [
       "No formal definition of 'Diophantine subset of a ring' in Mathlib — `Hilbert10OQ01.lean` uses ad-hoc `RatDiophantinePoly := (Nat → Rat) → Rat`",
@@ -116,15 +126,12 @@
       "Mathlib has sub_eq_zero, mul_eq_zero, and Rat field arithmetic — so Path B for arbitrary singletons + finite-union closure is fully buildable. The OPEN content is the COUNTABLE union (uniform vs non-uniform witness for ℤ ⊂ ℚ Σ₁-definability), which is precisely the open Σ₁ question and not a Mathlib gap"
     ],
     "nextSteps": [
-      "S4: Σ₁ × Π₁ closure properties (under finite union/intersection) — requires either Mathlib import for Rat.mul_eq_zero / sum-of-squares-zero or hand-rolled proofs from Lean core. Significant infrastructure work.",
-      "S5: Π₁ ⊆ Π₂ via polynomial-inversion trick (a ≠ 0 ⟺ ∃ z, a·z = 1) — same Rat-arithmetic blocker as S4.",
-      "S6: Daans 2021 (10-quantifier reduction) as a separate axiom refining koenigsmann_2016_universal — would add 1 new axiom but improve quantitative content.",
-      "S7: Eisenträger-Park 2018 universal-existential characterization for global fields — sibling-of-sibling formalization track.",
-      "Eventually: formalize the explicit Koenigsmann polynomial in Lean to discharge `koenigsmann_2016_universal` — requires Hilbert-symbol/quaternion infrastructure (partial in Hilbert11_QuadraticForms.lean).",
-      "S9 (Path B): closure of Σ₁ under finite union via P(q,x,y) = P_1(q,x) · P_2(q,y); needs mul_eq_zero (one more Mathlib import). Apply to deduce the explicit finite union {n : -N ≤ n ≤ N} ⊂ ℚ is Σ₁-definable for each finite N",
-      "S9 (Path B): closure of Σ₁ under finite intersection via P(q,x,y) = P_1(q,x)^2 + P_2(q,y)^2; needs (a^2 + b^2 = 0 ↔ a = 0 ∧ b = 0) over an ordered field",
-      "S10 (Path B): Π₁ ⊆ Π₂ via the polynomial-inversion trick a ≠ 0 ⟺ ∃ z, a · z = 1 — completes the four-corner inclusion picture",
-      "S10+ (Path B): IntSubset exhibited as a finite-union limit of singletonOf along Int.cast — explicit ⋃_{n ∈ [-N, N]} {n} Σ₁-definable for each finite N (corollary of S9). The OPEN content is the limit N → ∞ (uniform witness)"
+      "S10.1 (Path B): Π₁ ⊆ Π₂ via the polynomial-inversion trick a ≠ 0 ⟺ ∃ z, a·z = 1 — completes the four-corner inclusion picture (Σ₁ ⊆ Π₂, Π₁ ⊆ Σ₂, Π₁ ⊆ Π₂). Needs Rat field arithmetic (mul_inv, mul_inv_cancel from Mathlib).",
+      "S10.2 (Path B): Σ₁ closure under finite INTERSECTION via sum-of-squares witness P(q, x, y) = P₁(q, x)² + P₂(q, y)². Needs (a² + b² = 0 ↔ a = 0 ∧ b = 0) over an ordered field, plus a packing-trick to use disjoint variable indices for x and y (since the SAME variable assignment block won't work for intersection).",
+      "S10.3 (Path B): finUnion_singletons_isDiophantineDefinition — by induction on a finite list of rationals (extending S9's binary pair), every FINITE subset of ℚ is Σ₁-definable. Makes precise the boundary of what S8+S9 reach: every finite subset is Σ₁; the OPEN Σ₁ question for ℤ ⊂ ℚ is whether COUNTABLE union extends.",
+      "S10.4: Daans 2021 (10-quantifier reduction) as a separate axiom refining koenigsmann_2016_universal — would add 1 new axiom but improve quantitative content.",
+      "S10.5: Eisenträger-Park 2018 universal-existential characterization for global fields — sibling-of-sibling formalization track.",
+      "Eventually: formalize the explicit Koenigsmann polynomial in Lean to discharge `koenigsmann_2016_universal` — requires Hilbert-symbol/quaternion infrastructure (partial in Hilbert11_QuadraticForms.lean)."
     ]
   },
   "tags": [
@@ -169,7 +176,7 @@
     ]
   },
   "started": "2026-05-05T02:57:43.927Z",
-  "lastUpdate": "2026-05-08T06:00:00.000Z",
+  "lastUpdate": "2026-05-08T18:30:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -209,10 +216,10 @@
     {
       "path": "Proofs/Hilbert10OQ01OQ02.lean",
       "filename": "Hilbert10OQ01OQ02.lean",
-      "lineCount": 709,
-      "theoremCount": 29,
+      "lineCount": 1163,
+      "theoremCount": 50,
       "axiomCount": 1,
-      "defCount": 10,
+      "defCount": 12,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01OQ02.lean"

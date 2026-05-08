@@ -65,6 +65,10 @@ import Proofs.Hilbert10OQ01
 -- This is the first Mathlib import in this file; iterations 1–7 were
 -- entirely zero-Mathlib (Path A discipline). See state.md for context.
 import Mathlib.Algebra.Group.Basic
+-- S9 (iter 9, Path B): `mul_eq_zero` (and `zero_mul` / `mul_zero`) on ℚ
+-- for closure of Σ₁ under binary union and Π₁ under binary intersection.
+-- ℚ is a field, hence `NoZeroDivisors`, so `mul_eq_zero` applies.
+import Mathlib.Algebra.GroupWithZero.Basic
 
 namespace Hilbert10Rationals
 
@@ -845,6 +849,142 @@ theorem singletonOf_zero_isDiophantineDefinition :
   singletonOf_isDiophantineDefinition 0
 
 -- ============================================================
+-- Part VIII.10 (iter 9, Path B): Σ₁ closed under binary union;
+--                                Π₁ closed under binary intersection
+-- ============================================================
+
+/-- Iter 9, Path B: **the Σ₁ class is closed under binary union**.
+
+    If `S₁` and `S₂` are both Σ₁-definable over ℚ, then so is the
+    pointwise disjunction `fun q => S₁ q ∨ S₂ q`.
+
+    Witness: the product polynomial `P(q, x) = P₁(q, x) · P₂(q, x)`,
+    where `P₁` and `P₂` are the witnesses for `S₁` and `S₂` respectively
+    (both witnesses share the same infinite variable assignment block,
+    which is fine for union — the existential quantifier is OR-ed across
+    which factor vanishes).
+
+    The Σ₁ side uses the fact that a single `x` makes the product zero
+    iff it makes one of the factors zero (`mul_eq_zero` over ℚ;
+    `NoZeroDivisors` from ℚ being a field). Specifically:
+
+    * Forward (`S₁ q ∨ S₂ q → ∃ x, P₁(q,x)·P₂(q,x) = 0`): pick the
+      witness `x` for whichever side holds and use `zero_mul` /
+      `mul_zero` to conclude the product vanishes.
+    * Reverse (`∃ x, P₁(q,x)·P₂(q,x) = 0 → S₁ q ∨ S₂ q`): apply
+      `mul_eq_zero` at the witness to split into `P₁(q,x) = 0` or
+      `P₂(q,x) = 0`, and feed back through `(hP_i q).mpr`.
+
+    Path B (Mathlib): adds `Mathlib.Algebra.GroupWithZero.Basic` for
+    `mul_eq_zero` (no other API surfaces). No new axioms.
+
+    By iterating over a finite list, this lifts to closure under any
+    *finite* union. The OPEN Σ₁ question for ℤ ⊂ ℚ is precisely the
+    question of whether finite-union closure extends to *countable*
+    union along the family of singletons `{n} : n : ℤ` (each of which
+    is Σ₁ by `singletonOf_isDiophantineDefinition` from S8). -/
+theorem union_isDiophantineDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsDiophantineDefinition S₁) (h₂ : IsDiophantineDefinition S₂) :
+    IsDiophantineDefinition (fun q => S₁ q ∨ S₂ q) := by
+  obtain ⟨P₁, hP₁⟩ := h₁
+  obtain ⟨P₂, hP₂⟩ := h₂
+  refine ⟨fun q x => (P₁ q x) * (P₂ q x), fun q => ?_⟩
+  constructor
+  · rintro (hS₁ | hS₂)
+    · obtain ⟨x, hx⟩ := (hP₁ q).mp hS₁
+      exact ⟨x, by rw [hx, zero_mul]⟩
+    · obtain ⟨x, hx⟩ := (hP₂ q).mp hS₂
+      exact ⟨x, by rw [hx, mul_zero]⟩
+  · rintro ⟨x, hx⟩
+    rcases mul_eq_zero.mp hx with hzero | hzero
+    · exact Or.inl ((hP₁ q).mpr ⟨x, hzero⟩)
+    · exact Or.inr ((hP₂ q).mpr ⟨x, hzero⟩)
+
+/-- Iter 9, Path B: **the Π₁ class is closed under binary intersection**.
+
+    If `S₁` and `S₂` are both Π₁-definable over ℚ, then so is the
+    pointwise conjunction `fun q => S₁ q ∧ S₂ q`.
+
+    Direct dual of `union_isDiophantineDefinition`: the same product
+    polynomial `P(q, x) = P₁(q, x) · P₂(q, x)` works as the Π₁ witness,
+    via `mul_eq_zero` (in its contrapositive form: a product is nonzero
+    iff each factor is nonzero, applied at every `x`).
+
+    Concretely:
+
+    * Forward (`S₁ q ∧ S₂ q → ∀ x, P₁(q,x)·P₂(q,x) ≠ 0`): if both `S_i q`
+      hold, then by `(hP_i q).mp`, neither `P_i q` admits a rational
+      solution; for any `x`, if `P₁(q,x)·P₂(q,x) = 0` then by
+      `mul_eq_zero` one factor is zero, contradicting one of the `(hP_i q).mp` hypotheses.
+    * Reverse (`(∀ x, P₁(q,x)·P₂(q,x) ≠ 0) → S₁ q ∧ S₂ q`): if any single
+      factor `P_i q x = 0`, multiplying by zero on the other side gives
+      the product zero, contradicting the universal nonvanishing.
+
+    Path B (Mathlib): same import as union closure. No new axioms.
+
+    By iterating over a finite list, this lifts to closure of Π₁ under
+    any *finite* intersection — the dual statement to finite-union
+    closure of Σ₁. -/
+theorem intersection_isCoDiophantineDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsCoDiophantineDefinition S₁) (h₂ : IsCoDiophantineDefinition S₂) :
+    IsCoDiophantineDefinition (fun q => S₁ q ∧ S₂ q) := by
+  obtain ⟨P₁, hP₁⟩ := h₁
+  obtain ⟨P₂, hP₂⟩ := h₂
+  refine ⟨fun q x => (P₁ q x) * (P₂ q x), fun q => ?_⟩
+  constructor
+  · rintro ⟨hS₁, hS₂⟩ ⟨x, hx⟩
+    rcases mul_eq_zero.mp hx with hzero | hzero
+    · exact ((hP₁ q).mp hS₁) ⟨x, hzero⟩
+    · exact ((hP₂ q).mp hS₂) ⟨x, hzero⟩
+  · intro hnsol
+    refine ⟨?_, ?_⟩
+    · apply (hP₁ q).mpr
+      rintro ⟨x, hx⟩
+      exact hnsol ⟨x, by rw [hx, zero_mul]⟩
+    · apply (hP₂ q).mpr
+      rintro ⟨x, hx⟩
+      exact hnsol ⟨x, by rw [hx, mul_zero]⟩
+
+/-- Iter 9 corollary, Path B: **every pair `{a, b} ⊂ ℚ` is Σ₁-definable**
+    for any `a, b : ℚ`.
+
+    Direct application of `union_isDiophantineDefinition` to the two S8
+    singleton witnesses `singletonOf_isDiophantineDefinition a` and
+    `singletonOf_isDiophantineDefinition b`. -/
+theorem singletonPair_isDiophantineDefinition (a b : Rat) :
+    IsDiophantineDefinition (fun q : Rat => q = a ∨ q = b) :=
+  union_isDiophantineDefinition (singletonOf_isDiophantineDefinition a)
+    (singletonOf_isDiophantineDefinition b)
+
+/-- Iter 9 corollary, Path B: **every "complement-of-a-pair"
+    `ℚ \ {a, b}` is Π₁-definable** for any `a, b : ℚ`.
+
+    Direct application of `intersection_isCoDiophantineDefinition` to
+    the two S8 co-singleton witnesses
+    `notSingletonOf_isCoDiophantineDefinition a` and `... b`. -/
+theorem notSingletonPair_isCoDiophantineDefinition (a b : Rat) :
+    IsCoDiophantineDefinition (fun q : Rat => q ≠ a ∧ q ≠ b) :=
+  intersection_isCoDiophantineDefinition
+    (notSingletonOf_isCoDiophantineDefinition a)
+    (notSingletonOf_isCoDiophantineDefinition b)
+
+/-- Iter 9 corollary, Path B: **every pair `{a, b}` is Π₂-definable**
+    via the trivial inclusion `Σ₁ ⊆ Π₂`. -/
+theorem singletonPair_isUniversalExistentialDefinition (a b : Rat) :
+    IsUniversalExistentialDefinition (fun q : Rat => q = a ∨ q = b) :=
+  diophantine_implies_universal_existential _
+    (singletonPair_isDiophantineDefinition a b)
+
+/-- Iter 9 corollary, Path B: **every complement-of-a-pair `ℚ \ {a, b}`
+    is Σ₂-definable** via the trivial inclusion `Π₁ ⊆ Σ₂`. -/
+theorem notSingletonPair_isExistentialUniversalDefinition (a b : Rat) :
+    IsExistentialUniversalDefinition (fun q : Rat => q ≠ a ∧ q ≠ b) :=
+  codiophantine_implies_existentialUniversal _
+    (notSingletonPair_isCoDiophantineDefinition a b)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -901,6 +1041,18 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   (and finite intersection) but NOT known to be closed under countable
   union (the OPEN Σ₁ question for ℤ is precisely the question of whether
   this particular countable union admits a uniform Σ₁ witness).
+- **Σ₁ is closed under binary union; Π₁ is closed under binary intersection**
+  (iter 9): the same product polynomial witness `P(q, x) = P₁(q, x)·P₂(q, x)`
+  serves both — `mul_eq_zero` over ℚ provides the bridge in both
+  directions. Two concrete corollaries: every PAIR `{a, b} ⊂ ℚ` is
+  Σ₁-definable, every "complement-of-a-pair" `ℚ \ {a, b}` is
+  Π₁-definable, for any `a, b : ℚ`. By an obvious induction on a finite
+  list, finite *unions* of singletons (i.e., any FINITE subset of ℚ) are
+  Σ₁-definable. The OPEN Σ₁ question for ℤ ⊂ ℚ thus reduces precisely
+  to whether the countable union `⋃_{n : ℤ} {n}` admits a *uniform*
+  polynomial witness — finite truncations `⋃_{n : ℤ ∩ [-N, N]} {n}` are
+  Σ₁-definable for every finite `N`, but the limit `N → ∞` requires a
+  single polynomial whose existence is the OPEN content.
 
 ## Axioms in THIS file (1 net new)
 
@@ -912,7 +1064,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (40)
+## Theorems in THIS file (46)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -954,6 +1106,12 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `singletonOf_isUniversalExistentialDefinition a` ({a} is Π₂ for any a : ℚ, iter 8 Path B)
   - `notSingletonOf_isExistentialUniversalDefinition a` (ℚ\{a} is Σ₂ for any a : ℚ, iter 8 Path B)
   - `singletonOf_zero_isDiophantineDefinition` (S6 recovered as a = 0 instance, iter 8)
+  - `union_isDiophantineDefinition` (Σ₁ closed under binary union, iter 9 Path B)
+  - `intersection_isCoDiophantineDefinition` (Π₁ closed under binary intersection, iter 9 Path B)
+  - `singletonPair_isDiophantineDefinition a b` ({a, b} ⊂ ℚ is Σ₁ for any a, b : ℚ, iter 9)
+  - `notSingletonPair_isCoDiophantineDefinition a b` (ℚ\{a, b} is Π₁ for any a, b : ℚ, iter 9)
+  - `singletonPair_isUniversalExistentialDefinition a b` ({a, b} is Π₂, iter 9)
+  - `notSingletonPair_isExistentialUniversalDefinition a b` (ℚ\{a, b} is Σ₂, iter 9)
 -/
 
 #check @IsDiophantineDefinition
@@ -995,5 +1153,11 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @singletonOf_isUniversalExistentialDefinition
 #check @notSingletonOf_isExistentialUniversalDefinition
 #check @singletonOf_zero_isDiophantineDefinition
+#check @union_isDiophantineDefinition
+#check @intersection_isCoDiophantineDefinition
+#check @singletonPair_isDiophantineDefinition
+#check @notSingletonPair_isCoDiophantineDefinition
+#check @singletonPair_isUniversalExistentialDefinition
+#check @notSingletonPair_isExistentialUniversalDefinition
 
 end Hilbert10Rationals
