@@ -5271,6 +5271,29 @@ private lemma hookLength_removeCornerC'_leg_of_c
     rintro ⟨_, h2⟩; omega
   exact hookLength_eq_of_not_arm_leg hc' hsmem hxc' hxarm hxleg
 
+/-- **At the doubly-affected cell `d = (c.1, c'.2)`, the hook length is at least 3.**
+
+For two distinct corners `c, c'` of `μ` with `c.1 < c'.1` (whence `c'.2 < c.2`
+by `corner_col_lt_of_row_lt`), the cell `d = (c.1, c'.2)` lies strictly in
+the arm of `c` (row `c.1`, column `c'.2 < c.2`) and strictly in the leg of
+`c'` (column `c'.2`, row `c.1 < c'.1`).  Algebraically,
+* `armLen μ c.1 c'.2 = rowLen c.1 − c'.2 − 1 = (c.2 + 1) − c'.2 − 1 = c.2 − c'.2 ≥ 1`,
+* `legLen μ c.1 c'.2 = colLen c'.2 − c.1 − 1 = (c'.1 + 1) − c.1 − 1 = c'.1 − c.1 ≥ 1`,
+so `hookLength μ c.1 c'.2 = armLen + legLen + 1 ≥ 3`.
+
+This bound is the geometric prerequisite for working with the rational
+factor `(h_d − 1)² / (h_d (h_d − 2))` that appears in the GNW exchange
+identity: `h_d ≥ 3` ensures `h_d − 1 ≥ 2 > 0` and `h_d − 2 ≥ 1 > 0`, so
+both factors are nonzero in ℚ and ℕ subtraction is well-behaved. -/
+private lemma hookLength_at_d_ge_3 {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hi : c.1 < c'.1) :
+    3 ≤ hookLength μ c.1 c'.2 := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  have hrowLen : μ.rowLen c.1 = c.2 + 1 := rowLen_of_isCorner hc
+  have hcolLen : μ.colLen c'.2 = c'.1 + 1 := colLen_of_isCorner hc'
+  unfold hookLength armLen legLen
+  omega
+
 /-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
 private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
     {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
