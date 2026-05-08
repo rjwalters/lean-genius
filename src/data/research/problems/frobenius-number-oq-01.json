@@ -1,74 +1,112 @@
 {
   "slug": "frobenius-number-oq-01",
-  "title": "[Problem Title]",
+  "title": "Frobenius Number: Count of Non-Representable Integers = (a-1)(b-1)/2",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\forall a, b \\in \\mathbb{Z}_{\\geq 2}\\ \\text{with}\\ \\gcd(a,b)=1,\\ \\big|\\{ k \\in \\{1, \\ldots, g(a,b)\\} : k \\notin \\langle a, b \\rangle_{\\mathbb{N}} \\}\\big| = \\frac{(a-1)(b-1)}{2},\\ \\text{where}\\ g(a,b) = ab - a - b\\ \\text{and}\\ \\langle a,b \\rangle_{\\mathbb{N}} = \\{ax + by : x, y \\in \\mathbb{N}\\}.",
+    "plain": "For coprime positive integers a, b ≥ 2, exactly (a-1)(b-1)/2 of the positive integers in {1, ..., g(a,b)} cannot be represented as a non-negative linear combination of a and b. Here g(a,b) = ab − a − b is the Frobenius number — the largest such non-representable integer. The proof uses the Frobenius Symmetry (sister OQ-02): the involution k ↦ g − k bijects non-representable numbers in {1, ..., g − 1} onto representable numbers in the same range, giving equal counts.",
+    "whyMatters": [
+      "Closed-form count complements the Frobenius number itself: g(a,b) = ab − a − b is the LARGEST non-representable number, while (a-1)(b-1)/2 is the COUNT of non-representable numbers below it.",
+      "Demonstrates the Frobenius Symmetry (Rep(k) iff not Rep(g−k)) as an organizing principle — the same involution underlies many further generalizations (3+ generators, Apéry sets, Sylvester-Frobenius dual basis).",
+      "The integer-valued count requires the elementary parity lemma (a−1)(b−1) is always even for coprime a, b ≥ 2 — a clean case-split exercise that exposes the role of coprimality."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Frobenius (1880s): Closed-form g(a,b) = ab − a − b for two coprime generators.",
+      "Sylvester (1882) / Frobenius: Count of non-representable positive integers = (a-1)(b-1)/2 for coprime a, b ≥ 2.",
+      "Frobenius Symmetry: For 0 < k < g(a,b), Rep(k) iff not Rep(g−k) — the involution k ↦ g−k.",
+      "card_nonrep_eq_rep (this entry): formal Lean proof of the bijection-based count via Finset.card_bij.",
+      "prod_pred_even (this entry): (a-1)(b-1) is always even for coprime a, b ≥ 2, by case-split on parity of a.",
+      "frobenius_count (this entry): main theorem assembling the bijection + parity lemma into the closed-form count."
+    ],
+    "open": [
+      "Generalize to 3+ generators (Frobenius problem with 3 or more generators is NP-hard in general; no closed form known).",
+      "Genus-theoretic / Apéry-set generalizations of the count formula."
+    ],
+    "goal": "Provide a fully verified Lean proof that |{k ∈ {1,...,g(a,b)} : k not representable}| = (a-1)(b-1)/2 for coprime a, b ≥ 2 — DONE (gallery status: verified, badge: original)."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-05-06T16:07:08+03:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Verified gallery proof shipped 2026-05-06 (PR #16258). Status: verified (0 axioms, 0 sorries) with 3 theorems in the OQ-01 file (159 lines). Supporting lemmas in FrobeniusNumber.lean (310 lines, 15 theorems, 3 defs) and FrobeniusNumberOQ02.lean (101 lines, 5 theorems) — Frobenius Symmetry. Reconciliation 2026-05-08 (researcher-6) filled in JSON placeholders that had been left as templates and synced leanFiles lineCount/theoremCount with current main (drift in all 3 files).",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Entry is COMPLETED in the gallery (status: verified, no axioms, no sorries). Possible follow-up open questions: (1) generalize to 3+ generators (open in general — Frobenius with k ≥ 3 generators is NP-hard); (2) connect to Apéry-set / numerical-semigroup theory; (3) extend Frobenius Symmetry to non-coprime or weighted settings.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE 2026-05-06: 6 theorems, 0 sorries, 0 axioms, 159 lines. PR pending.",
+    "progressSummary": "COMPLETE 2026-05-06 (PR #16258 merged): gallery-status verified with 3 theorems (frobenius_count + 2 supporting lemmas in FrobeniusNumberOQ01.lean), 0 sorries, 0 axioms, 159 lines. The proof assembles three layers: (i) FrobeniusNumberOQ02.lean (Frobenius Symmetry) provides Rep(k) ↔ not Rep(g−k); (ii) card_nonrep_eq_rep applies Finset.card_bij with the involution k ↦ g−k to get |nonRep ∩ {1,...,g−1}| = |Rep ∩ {1,...,g−1}|; (iii) prod_pred_even establishes (a−1)(b−1) is even via case-split on parity of a; (iv) frobenius_count combines partition + symmetry + algebra to give count = (g+1)/2 = (a−1)(b−1)/2. Reconciliation 2026-05-08 (researcher-6) corrected JSON placeholders and synced leanFiles counts to match origin/main.",
     "builtItems": [
-      "card_nonrep_eq_rep: Finset.card_bij for |nonRep{1,...,g-1}| = |Rep{1,...,g-1}|",
-      "prod_pred_even: 2 | (a-1)(b-1) for coprime a,b>=2",
-      "frobenius_count: main theorem count = (a-1)(b-1)/2",
-      "FrobeniusNumberOQ02.lean: Frobenius Symmetry Rep(n) iff notRep(g-n), 0 sorries"
+      "FrobeniusNumber.lean (310 lines, 15 theorems, 3 defs, 0 sorries, 0 axioms): foundation file — defines Rep/notRep, frobeniusNumber, basic Frobenius identity g(a,b) = ab−a−b, and supporting arithmetic lemmas.",
+      "FrobeniusNumberOQ02.lean (101 lines, 5 theorems, 0 sorries, 0 axioms): Frobenius Symmetry — Rep(k) iff not Rep(g(a,b)−k) for 0 < k < g(a,b).",
+      "FrobeniusNumberOQ01.lean (159 lines, 3 theorems, 0 sorries, 0 axioms): the count theorem and supporting lemmas.",
+      "card_nonrep_eq_rep: Finset.card_bij applied to k ↦ g−k bijects nonRep ∩ {1,...,g−1} onto Rep ∩ {1,...,g−1}, both of size (g−1)/2.",
+      "prod_pred_even: 2 ∣ (a-1)(b-1) for coprime a, b ≥ 2 (case-split on parity of a; a even forces b odd by gcd=1, then b−1 even; a odd has a−1 even).",
+      "frobenius_count: main theorem |{k ∈ {1,...,g(a,b)} : k not representable}| = (a-1)(b-1)/2, assembled via partition + symmetry + algebra (g+1 = (a-1)(b-1)).",
+      "Mathlib API-drift fixes during enrichment: Nat.eq_or_gt_of_le → Nat.eq_or_lt_of_le; Nat.dvd_sub → direct witness construction (Mathlib 4.26 deprecations)."
     ],
     "insights": [
-      "Rep(k) iff not Rep(g-k) for 0<k<g (OQ-02 symmetry) is the organizing principle for the count proof",
-      "(a-1)(b-1) is always even for coprime a,b>=2: case split on parity of a",
-      "Finset.card_bij with map k \u2192 g-k cleanly formalizes the symmetry bijection",
-      "(g+1)/2 = (a-1)(b-1)/2 from the identity g+1 = (a-1)(b-1)",
-      "Fixed Mathlib API drift in FrobeniusNumber.lean: Nat.eq_or_gt_of_le \u2192 eq_or_lt, Nat.dvd_sub \u2192 direct witness"
+      "Rep(k) iff not Rep(g−k) for 0 < k < g (OQ-02 symmetry) is the organizing principle for the count proof — the involution k ↦ g−k makes the count an invariant of the symmetry group acting on {1,...,g−1}.",
+      "(a-1)(b-1) is always even for coprime a, b ≥ 2: clean case-split on parity of a (a even forces b odd by gcd=1, hence b−1 even; a odd has a−1 even directly). The parity is exactly what makes (a-1)(b-1)/2 an integer.",
+      "Finset.card_bij with the map k ↦ g−k cleanly formalizes the symmetry bijection: well-definedness and bijectivity each follow from one direction of OQ-02's biconditional.",
+      "(g+1)/2 = (a-1)(b-1)/2 follows from the algebraic identity g+1 = (a-1)(b-1) for g = ab − a − b — a one-line `ring` after the partition.",
+      "The proof factors cleanly into three independent pieces: symmetry (OQ-02), parity (prod_pred_even), and assembly (frobenius_count). Each is provable separately and reusable.",
+      "Mathlib API-drift caught during the 2026-05 work: Nat.eq_or_gt_of_le and Nat.dvd_sub were renamed/restructured; the Frobenius proof uses fixes that future researchers building on FrobeniusNumber.lean will inherit."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: frobenius-number-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "mathlibGaps": [
+      "No general Frobenius-symmetry lemma for k ≥ 3 generators (NP-hard in general — no closed form known)."
+    ],
+    "nextSteps": [
+      "Cross-reference: ensure birthday-problem and basel-problem entries that touch lcm-style counting cite this entry's Finset.card_bij usage as a paradigm.",
+      "Extension: formalize Frobenius / Sylvester-Frobenius results for 3+ generators (open territory — no closed form for general k ≥ 3, but special cases like (a, a+1, a+2) are known).",
+      "Apéry-set generalization: the count (a-1)(b-1)/2 is the genus of the numerical semigroup ⟨a, b⟩; extending to general numerical semigroups via Apéry sets connects to gallery entries on numerical semigroups (if any)."
+    ],
+    "markdown": "# Knowledge Base: frobenius-number-oq-01\n\n## Status\n\n* **Phase**: COMPLETED (gallery: verified, badge: original).\n* **Files**: `Proofs/FrobeniusNumberOQ01.lean` (159 lines, 3 theorems, 0 axioms, 0 sorries); supporting `Proofs/FrobeniusNumber.lean` (310 lines) and `Proofs/FrobeniusNumberOQ02.lean` (101 lines, Frobenius Symmetry).\n* **PR history**: #16258 (gallery, merged); #16586 (enrichment, merged); #16306 (additionalFiles fix, merged); #16296 (theoremCount sync, merged).\n\n## Problem\n\nFor coprime $a, b \\geq 2$ with Frobenius number $g(a,b) = ab - a - b$, prove\n$$|\\{k \\in \\{1, \\ldots, g(a,b)\\} : k \\notin \\langle a, b \\rangle_{\\mathbb{N}}\\}| = \\frac{(a-1)(b-1)}{2}.$$\n\n## Proof Architecture\n\n1. **Frobenius Symmetry** (OQ-02 sibling, `FrobeniusNumberOQ02.lean`): `Rep(k) ↔ not Rep(g−k)` for `0 < k < g`.\n2. **Bijection lemma** (`card_nonrep_eq_rep`): Apply `Finset.card_bij` to `k ↦ g − k`. Symmetry gives well-definedness, injectivity, surjectivity.\n3. **Parity lemma** (`prod_pred_even`): `2 ∣ (a-1)(b-1)` for coprime `a, b ≥ 2`. Case-split on parity of `a`.\n4. **Main theorem** (`frobenius_count`): Combine partition `{1,...,g} = nonRep ⊔ Rep ⊔ {g}` with symmetry and the algebraic identity `g + 1 = (a-1)(b-1)`.\n\n## Insights\n\n- The Frobenius Symmetry `k ↦ g − k` is an *involution* on `{1, ..., g−1}` that swaps representable and non-representable. The bijection is exactly `Finset.card_bij` with this map.\n- `(a-1)(b-1)` is always even for coprime `a, b ≥ 2`: if `a` even then `gcd = 1` forces `b` odd so `b−1` even; if `a` odd then `a−1` even.\n- The partition `g + 1 = (a-1)(b-1)` plus the bijection-based equal-count plus 1 (for `g` itself) gives `count = (g+1)/2 = (a-1)(b-1)/2`.\n\n## Open Extensions\n\n- 3+ generators: open in general (Frobenius with `k ≥ 3` generators is NP-hard); special cases like arithmetic-progression generators have closed forms.\n- Apéry sets / numerical semigroups: the count `(a-1)(b-1)/2` is the *genus* of `⟨a, b⟩`; extends via Apéry-set theory.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "number-theory",
+    "frobenius-number",
+    "numerical-semigroups",
+    "combinatorics",
+    "completed-research"
   ],
   "relatedProofs": [
-    "frobenius-number"
+    "frobenius-number",
+    "frobenius-two-coprime"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Sylvester (1882) — On subinvariants, semi-invariants and concomitants",
+      "Frobenius (1880s, lectures) — Coin / Frobenius problem",
+      "Brauer (1942) — On a problem of partitions"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Coin_problem",
+      "https://oeis.org/A005843"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Data.Nat.GCD.Basic"
+    ]
   },
   "started": "2026-05-06T16:07:08+03:00",
+  "lastUpdate": "2026-05-08T03:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FrobeniusNumber.lean",
       "filename": "FrobeniusNumber.lean",
-      "lineCount": 313,
-      "theoremCount": 13,
+      "lineCount": 310,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -78,8 +116,8 @@
     {
       "path": "Proofs/FrobeniusNumberOQ01.lean",
       "filename": "FrobeniusNumberOQ01.lean",
-      "lineCount": 160,
-      "theoremCount": 1,
+      "lineCount": 159,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -89,8 +127,8 @@
     {
       "path": "Proofs/FrobeniusNumberOQ02.lean",
       "filename": "FrobeniusNumberOQ02.lean",
-      "lineCount": 102,
-      "theoremCount": 3,
+      "lineCount": 101,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
