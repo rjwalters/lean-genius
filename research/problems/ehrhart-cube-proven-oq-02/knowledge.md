@@ -217,6 +217,90 @@ fiber_card_eq_crossBall_card  -- ≈80-120 lines, uses cweight_*
 
 ---
 
+## Session 2026-05-08 (Session 4, researcher-9) — fiber bijection lemma
+
+**Mode**: ACT
+**Outcome**: Closed the foundation needed to apply `Finset.card_bij'`
+in the slicing decomposition. Added 3 private lemmas spanning ~95 lines.
+Sorry count unchanged (1). lineCount: 423 → 537.
+
+### What was added
+
+**Two trivial sum-bound corollaries** (under 10 lines each):
+
+1. `cweight_sum_individual {d n M} (y) (hsum) (j)` —
+   `(if (y j).val ≤ n then n - (y j).val else (y j).val - n) ≤ M`,
+   from `hsum : ∑_i cweight(y i, n) ≤ M`. Proof is one line via
+   `Finset.single_le_sum` (each summand is nonneg).
+
+2. `cweight_sum_range {d n M} (hM : M ≤ n) (y) (hsum) (j)` —
+   `n - M ≤ (y j).val ∧ (y j).val ≤ n + M`. Proof is one line via
+   `cweight_le_iff ▸ cweight_sum_individual`.
+
+**The fiber bijection** (≈80 lines):
+
+```lean
+private lemma fiber_card_eq_crossBall_card (d n M : ℕ) (hM : M ≤ n) :
+    (Finset.univ.filter
+      fun y : Fin d → Fin (2 * n + 1) =>
+        ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M).card =
+    (crossBall d M).card
+```
+
+via `Finset.card_bij'` with:
+- forward `y ↦ ⟨(y idx).val - (n - M), _⟩` — bound from
+  `cweight_sum_range` + `omega`.
+- backward `z ↦ ⟨(z idx).val + (n - M), _⟩` — bound from
+  `(z idx).is_lt` + `omega` + `hM`.
+- forward image bound: `cweight_translate` term-by-term reduces
+  the new sum to the old sum, hence `≤ M`.
+- backward image bound: same `cweight_translate` step, with the
+  intermediate `(z i).val + (n - M) - (n - M) = (z i).val` cleanup
+  via `omega`.
+- both inverses: `funext idx; apply Fin.ext`, then a one-line
+  `omega` after unfolding to `(...).val ± (n - M) ∓ (n - M)`.
+
+### Why this is the right factoring
+
+The two-sum-equal step (forward image bound) was the trickiest part
+of the previous session's attempted full slicing proof. Pulling it
+out as `fiber_card_eq_crossBall_card` lets future sessions use it
+as a black box: once the slicing identifies a fiber with
+`{y : Fin d → Fin (2n+1) | sum cweight ≤ M_j}`, this lemma
+collapses to `(crossBall d M_j).card`.
+
+### Build verification
+
+Local build deferred to CI (broken `.lake` symlink — see memory
+note `feedback_researcher_lake_symlink_broken.md`).
+
+### Risks
+
+- `Finset.card_bij'` arity in Mathlib 4.26.0 may differ slightly
+  from the Erdos278Problem.lean usage I patterned after; if the
+  6-argument form rejects, the fix is straightforward.
+- The four `show` statements rewrite the goal in unfolded form; if
+  Lean doesn't reduce `(⟨a, _⟩ : Fin _).val` to `a`, an explicit
+  `simp only [Fin.val_mk]` may be needed.
+- The `(z idx).is_lt` field name (vs `Fin.isLt`) — both forms exist
+  in this codebase; if rejected, switch to `(z idx).2`.
+
+### Path forward (for Session 5)
+
+```
+Use fiber_card_eq_crossBall_card to compute fiber cards
+        ↓
+Slicing via Finset.card_eq_sum_card_fiberwise on last coordinate
+        ↓
+j ↔ 2n−j pairing via Finset.sum_nbij' and range split
+        ↓
+apply IH (induction d generalizing n)
+        ↓
+apply crossEhrhart_succ_d
+```
+
+---
+
 ## Dead Ends
 
 - None yet.
