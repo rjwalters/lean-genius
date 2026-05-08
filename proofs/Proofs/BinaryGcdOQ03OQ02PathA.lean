@@ -901,6 +901,41 @@ example : schonhageOuterGuardFires 63 1 = false := by native_decide
 
 example : schonhageOuterGuardFires 63 63 = false := by native_decide
 
+/-! ### Above-threshold abort witnesses (Session 28a)
+
+    The S17 PR #17024 counterexample family `(130, 89)` and the
+    statistical worst case `(107, 85)` (BinaryGcdOQ03OQ02 PART XIV)
+    refute the naive S28 conjecture that "above-threshold + coprime
+    implies the outer guard fires". On both pairs:
+
+    * `min a b ≥ hgcdThresholdSafe`, so the early-return branch of
+      `schonhageOuterGuardFires` is excluded.
+    * `Nat.Coprime a b` holds (`130 = 2·5·13`, `89` is prime;
+      `107` is prime, `85 = 5·17`).
+    * Yet the outer guard returns `false`: per state.md S20 and
+      `s28-coprime-firing-spec.md` §1, `hgcdMatrixSafe`'s OWN inner
+      guard aborts on each pair, leaving the column-output `(u, v)`
+      with `max u v ≥ max a b`, so `schonhageOuterGuardFires`
+      evaluates the size-reduction predicate to `false`.
+
+    The first witness in each block is the headline algorithm-level
+    `native_decide` evaluation; the supporting `decide` facts
+    contextualise it (coprimality + above-threshold). Together they
+    document the canonical structural counterexample to the naive
+    coprime-firing hypothesis. -/
+
+example : schonhageOuterGuardFires 130 89 = false := by native_decide
+
+example : Nat.Coprime 130 89 := by decide
+
+example : hgcdThresholdSafe ≤ min 130 89 := by decide
+
+example : schonhageOuterGuardFires 107 85 = false := by native_decide
+
+example : Nat.Coprime 107 85 := by decide
+
+example : hgcdThresholdSafe ≤ min 107 85 := by decide
+
 -- ═══════════════════════════════════════════════════════════════
 -- PART XV: SURVEY-RANGE TABULATION FRAMEWORK (Session 24)
 -- ═══════════════════════════════════════════════════════════════
