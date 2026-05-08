@@ -64,20 +64,52 @@
   },
   "sections": [
     {
-      "id": "unit-decrement",
-      "title": "Part I: Unit-Decrement Sequences",
-      "startLine": 30,
-      "endLine": 120,
-      "summary": "Three theorems: unit_decrement_step_bound (prefix sums drop by ≤ 1), unit_decrement_downward_ivt (leftmost-crossing gives exact level achievement), unit_decrement_levels_achieved (every level in [minPS, 0] is achieved via IVT from position 0 to rightmostMinPos).",
-      "mathContext": "For step ≥ -1: if prefixSum l i > v and prefixSum l j ≤ v with i < j, let kstar = leftmost k ∈ (i,j] with prefixSum l k ≤ v. Then prefixSum l (kstar-1) > v by minimality, so prefixSum l kstar = prefixSum l (kstar-1) + l[kstar-1] ≥ (v+1) + (-1) = v. Combined with ≤ v: exact v."
+      "id": "preamble",
+      "title": "Preamble: Imports, Namespace, and File Roadmap",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "File header documenting the two-part structure (unit-decrement IVT + all-positive triviality), import of the parent file BallotProblemOQ01OQ01 (which provides prefixSum, minPrefixSum, rightmostMinPos, isGoodRotation, goodRotations, cyclicRotation_prefixSum), and namespace setup. Establishes the working domain GeneralizedBallot and the local namespace BallotAbstractCycleLemma.",
+      "mathContext": "Inherits the cycle-lemma vocabulary from $\\text{Proofs.BallotProblemOQ01OQ01}$: $\\text{prefixSum}\\,l\\,j = \\sum_{k<j} l_k$, $\\text{minPrefixSum}\\,l = \\min_j \\text{PS}(j)$, $\\text{rightmostMinPos}\\,l = \\max\\{j : \\text{PS}(j) = \\text{minPS}\\}$, $\\text{isGoodRotation}\\,l\\,i$ = all prefix sums of the $i$-rotation are strictly positive."
     },
     {
-      "id": "all-positive",
-      "title": "Part II: All-Positive-Step Sequences",
-      "startLine": 121,
+      "id": "unit-decrement-step-bound",
+      "title": "Part I.A — Unit-Decrement Step Bound",
+      "startLine": 35,
+      "endLine": 47,
+      "summary": "unit_decrement_step_bound: for step-≥-1 sequences, prefixSum l j - 1 ≤ prefixSum l (j+1). The local one-step bound that drives the downward IVT — a prefix sum cannot drop by more than 1 per step. Proved by direct application of List.sum_take_succ + linarith on the per-element bound l[j] ≥ -1.",
+      "mathContext": "$\\text{PS}(j+1) = \\text{PS}(j) + l_j \\geq \\text{PS}(j) - 1\\quad\\text{since } l_j \\geq -1.$"
+    },
+    {
+      "id": "unit-decrement-downward-ivt",
+      "title": "Part I.B — Downward IVT via Leftmost Crossing",
+      "startLine": 49,
+      "endLine": 100,
+      "summary": "unit_decrement_downward_ivt: the core theorem. If prefixSum at i exceeds v but at j > i is ≤ v, some k ∈ (i,j] achieves exactly v. Proof uses a leftmost-crossing argument via Finset.min': let S = {k ∈ (i,j] : PS(k) ≤ v}, kstar = min' S; then PS(kstar-1) > v by minimality, and PS(kstar) ≥ PS(kstar-1) - 1 > v - 1 by the step bound, forcing PS(kstar) = v.",
+      "mathContext": "Let $S = \\{k \\in (i,j] : \\text{PS}(k) \\leq v\\}$, $k^* = \\min' S$. Minimality $\\Rightarrow \\text{PS}(k^*-1) > v$. Step bound $\\Rightarrow \\text{PS}(k^*) \\geq \\text{PS}(k^*-1) - 1 \\geq v$. Membership $\\Rightarrow \\text{PS}(k^*) \\leq v$. Hence $\\text{PS}(k^*) = v$."
+    },
+    {
+      "id": "unit-decrement-levels-achieved",
+      "title": "Part I.C — Every Level in [minPS, 0] Is Achieved",
+      "startLine": 102,
+      "endLine": 126,
+      "summary": "unit_decrement_levels_achieved: applies the local IVT globally. For target level v ∈ [minPrefixSum l, 0]: case v = 0 uses prefixSum_zero (position 0); case v < 0 invokes the IVT between position 0 (where PS = 0 > v) and rightmostMinPos l (where PS = minPS ≤ v), with the side condition that rightmostMinPos > 0 since minPS < 0.",
+      "mathContext": "Apply IVT at $(i, j) = (0, \\text{rightmostMinPos}(l))$: $\\text{PS}(0) = 0 > v$ (when $v<0$) and $\\text{PS}(\\text{rightmostMinPos}(l)) = \\text{minPS}(l) \\leq v$. Result: $\\exists k \\leq |l|$ with $\\text{PS}(k) = v$."
+    },
+    {
+      "id": "all-positive-monotonicity",
+      "title": "Part II.A — Strict Monotonicity and Bridge Lemmas",
+      "startLine": 128,
+      "endLine": 170,
+      "summary": "Four lemmas building the all-positive infrastructure. all_positive_prefixSum_step: per-step strict increase. all_positive_prefixSum_strictMono: global strict mono by induction on j with lt_trans. all_positive_prefixSum_lt_sum: interior bound PS(i) < l.sum (one-line corollary via prefixSum_length). all_positive_prefixSum_nonneg: all prefix sums ≥ 0 via List.sum_nonneg over the positive prefix elements (transferred via List.take_prefix).",
+      "mathContext": "$\\forall x \\in l,\\ 0 < x\\ \\Rightarrow\\ \\text{PS}\\text{ is strictly increasing on } [0, |l|]\\text{, with } \\text{PS}(i) < \\sum l\\text{ for } i < |l|\\text{, and } \\text{PS}(i) \\geq 0\\text{ everywhere.}$"
+    },
+    {
+      "id": "all-positive-rotations",
+      "title": "Part II.B — Every Rotation Good; Cardinality = Length",
+      "startLine": 172,
       "endLine": 211,
-      "summary": "Six theorems: all_positive_prefixSum_step (strict increase per step), all_positive_prefixSum_strictMono (global strict mono by induction), all_positive_prefixSum_lt_sum (interior prefix sums < total sum), all_positive_prefixSum_nonneg (all prefix sums ≥ 0), all_positive_all_rotations_good (both wrapping and non-wrapping cases use mono + bound), all_positive_goodRotations_card (|goodRotations| = l.length via Finset equality).",
-      "mathContext": "For step > 0: prefixSum l i < prefixSum l (i+j) (strict mono) gives non-wrapping case. prefixSum l i < l.sum (interior bound) with (l.take k).sum ≥ 0 (positivity) gives wrapping case."
+      "summary": "Two theorems closing the all-positive case. all_positive_all_rotations_good: every cyclic rotation is good — case-split on wrapping vs non-wrapping prefix; non-wrapping uses strict monotonicity directly; wrapping combines the interior bound (PS(i) < l.sum) with non-negativity of the wrapped prefix. all_positive_goodRotations_card: |goodRotations l| = l.length via Finset extensionality identifying goodRotations with Finset.range l.length, then Finset.card_range. The namespace closer marks the end of the file.",
+      "mathContext": "Non-wrapping ($i+j \\leq n$): $\\text{PS}(i+j) - \\text{PS}(i) > 0$ by strict mono.\nWrapping ($i+j > n$): $\\text{PS}(i+j-n) \\geq 0$ and $\\text{PS}(i) < \\text{sum}(l)$ give $\\text{PS}(i+j-n) + \\text{sum}(l) - \\text{PS}(i) > 0$.\nCardinality: $\\text{goodRotations}(l) = \\text{range}(|l|)$, so $|\\text{goodRotations}(l)| = |l|$."
     }
   ],
   "conclusion": {
