@@ -44,7 +44,7 @@
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 462,
+    "lineCount": 526,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -52,7 +52,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13,
+    "theoremCount": 16,
     "definitionCount": 8
   },
   "overview": {
@@ -180,9 +180,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 462,
+    "lineCount": 526,
     "axiomCount": 1,
-    "theoremCount": 13,
+    "theoremCount": 16,
     "definitionCount": 8,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0

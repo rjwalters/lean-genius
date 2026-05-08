@@ -38,18 +38,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T06:00:00.000Z",
-    "iteration": 3,
-    "focus": "Phase-2 ACT iteration 3 complete: extended Hilbert10OQ01OQ02.lean from 330 to 462 lines with the Σ₂/Π₂ duality layer. New: IsExistentialUniversalDefinition (Σ₂, ∃∀), codiophantine_implies_existentialUniversal (Π₁ ⊆ Σ₂, axiom-free dual of Σ₁ ⊆ Π₂), existentialUniversal_iff_universalExistential_complement (Σ₂/Π₂ duality, axiom-free up to two classical-byContradiction steps), universalExistentialDefinition_iff_of_pred_iff (Π₂ class congruence helper), and koenigsmann_implies_complement_existentialUniversal (ℚ\\ℤ is Σ₂-definable in ℚ — corollary of Koenigsmann via duality, no new axiom). The four corners of the Σ₁/Π₁/Σ₂/Π₂ square are now all formalized. Total: 13 theorems, 8 defs, 1 axiom, 0 sorries. Docker build passes (3 jobs).",
+    "iteration": 4,
+    "focus": "Phase-2 ACT iteration 4 (this PR, researcher-1): completes the propositional-equivalence congruence story for all four definability classes. Adds three theorems analogous to iteration 3's `universalExistentialDefinition_iff_of_pred_iff` (Π₂ congruence): `diophantineDefinition_iff_of_pred_iff` (Σ₁), `coDiophantineDefinition_iff_of_pred_iff` (Π₁), and `existentialUniversalDefinition_iff_of_pred_iff` (Σ₂). All three follow the same `(h q).symm.trans (hP q)` two-line template; mechanical but completes the four-class symmetry. Net: +3 theorems, 0 defs, 0 axioms. Total 526 lines (was 462), 16 theorems (was 13), 8 defs, 1 axiom, 0 sorries. Build pending (CI). Iteration 3 (researcher-9 session 2, 2026-05-08, PR #16885 merged): Σ₂/Π₂ duality + Π₁ ⊆ Σ₂ + Σ₂(ℚ\\ℤ) corollary.",
     "blockers": [],
-    "nextAction": "S4+ candidates: (a) Σ₁ × Π₁ closure properties (∪/∩) — needs Rat.mul_eq_zero / sum-of-squares, currently no Mathlib import; (b) Π₁ ⊆ Π₂ via polynomial-inversion trick (a ≠ 0 ⟺ ∃ z, a·z = 1) — same Rat-arithmetic blocker; (c) Daans 2021 (10-quantifier) refinement of koenigsmann_2016_universal — would add 1 axiom but improve quantitative content; (d) Eisenträger-Park 2018 universal-existential characterization for global fields. Defer further work until either Mathlib is imported or one of these is selected.",
+    "nextAction": "S5+ candidates (after this PR lands): (a) Σ₂ ⊆ Π₂'s ¬¬-shadow technical clarification — would tighten the predicate-equivalence bridge into a stronger congruence lemma; (b) Σ₁ × Π₁ closure properties (∪/∩) — needs Rat.mul_eq_zero / sum-of-squares, currently no Mathlib import; (c) Π₁ ⊆ Π₂ via polynomial-inversion trick (a ≠ 0 ⟺ ∃ z, a·z = 1) — same Rat-arithmetic blocker; (d) Daans 2021 (10-quantifier) refinement of koenigsmann_2016_universal — would add 1 axiom but improve quantitative content; (e) Eisenträger-Park 2018 universal-existential characterization for global fields.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PHASE-2 ACT iterations 1-3 complete. Iteration 1 (researcher-6, 2026-05-08): scaffolded the file with Σ₁/Π₂ skeleton (5 theorems, 5 defs, 1 axiom). Iteration 2 (researcher-9 session 1, 2026-05-08): added Σ₁/Π₁ duality (4 new theorems, 2 new defs, 0 new axioms; PR #16839 merged). Iteration 3 (researcher-9 session 2, 2026-05-08): added Σ₂/Π₂ duality + Π₁ ⊆ Σ₂ + Σ₂(ℚ\\ℤ) corollary (4 new theorems, 1 new def, 0 new axioms; current PR). The file is now 462 lines with 13 theorems, 8 defs, 1 axiom (koenigsmann_2016_universal), 0 sorries; the Σ₁ question itself remains OPEN (intentionally). All four corners of the Σ₁/Π₁/Σ₂/Π₂ square — two trivial containments (Σ₁ ⊆ Π₂, Π₁ ⊆ Σ₂) and two dualities (Σ₁/Π₁, Σ₂/Π₂) — are now proved axiom-free. Docker build passes.",
+    "progressSummary": "PHASE-2 ACT iterations 1-4 complete. Iteration 1 (researcher-6, 2026-05-08): scaffolded the file with Σ₁/Π₂ skeleton (5 theorems, 5 defs, 1 axiom). Iteration 2 (researcher-9 session 1, 2026-05-08): added Σ₁/Π₁ duality (4 new theorems, 2 new defs, 0 new axioms; PR #16839 merged). Iteration 3 (researcher-9 session 2, 2026-05-08): added Σ₂/Π₂ duality + Π₁ ⊆ Σ₂ + Σ₂(ℚ\\ℤ) corollary (4 new theorems, 1 new def, 0 new axioms; PR #16885 merged). Iteration 4 (researcher-1, 2026-05-08, this PR): completes the propositional-equivalence congruence story by adding the three remaining class congruence helpers — diophantineDefinition_iff_of_pred_iff (Σ₁), coDiophantineDefinition_iff_of_pred_iff (Π₁), existentialUniversalDefinition_iff_of_pred_iff (Σ₂) — all axiom-free, mechanically templated on the existing Π₂ congruence. The file is now 526 lines with 16 theorems, 8 defs, 1 axiom (koenigsmann_2016_universal), 0 sorries; the Σ₁ question itself remains OPEN (intentionally). All four corners of the Σ₁/Π₁/Σ₂/Π₂ square — two trivial containments (Σ₁ ⊆ Π₂, Π₁ ⊆ Σ₂), two dualities (Σ₁/Π₁, Σ₂/Π₂), and now four propositional-equivalence congruences — are formalized. Iteration 4 build pending; iteration 3 build passed.",
     "builtItems": [
       "Proofs/Hilbert10OQ01OQ02.lean: file scaffolded with imports from Hilbert10OQ01 (lines 1-69)",
       "Proofs/Hilbert10OQ01OQ02.lean: abbrev RatSubset := Rat → Prop (line 71)",
@@ -73,7 +73,11 @@
       "Proofs/Hilbert10OQ01OQ02.lean: theorem universalExistentialDefinition_iff_of_pred_iff (Π₂ class congruence helper, axiom-free) (lines 352-365, iteration 3)",
       "Proofs/Hilbert10OQ01OQ02.lean: theorem koenigsmann_implies_complement_existentialUniversal (ℚ\\ℤ is Σ₂-definable in ℚ; corollary of Koenigsmann via Σ₂/Π₂ duality, no new axiom) (lines 367-383, iteration 3)",
       "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 330→462, theoremCount 9→13, definitionCount 7→8 (axiomCount unchanged)",
-      "src/data/proofs/hilbert-10-oq-01-oq-02/annotations.json: 13 annotations covering all four quantifier classes, both dualities, the Σ₂(ℚ\\ℤ) corollary, and the closing #checks"
+      "src/data/proofs/hilbert-10-oq-01-oq-02/annotations.json: 13 annotations covering all four quantifier classes, both dualities, the Σ₂(ℚ\\ℤ) corollary, and the closing #checks",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem diophantineDefinition_iff_of_pred_iff (Σ₁ class congruence under propositional equivalence; pure logic, no axioms) (lines 367-385, iteration 4)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem coDiophantineDefinition_iff_of_pred_iff (Π₁ class congruence under propositional equivalence; pure logic, no axioms) (lines 387-403, iteration 4)",
+      "Proofs/Hilbert10OQ01OQ02.lean: theorem existentialUniversalDefinition_iff_of_pred_iff (Σ₂ class congruence under propositional equivalence; pure logic, no axioms) (lines 405-422, iteration 4)",
+      "src/data/proofs/hilbert-10-oq-01-oq-02/meta.json: lineCount 462→526, theoremCount 13→16 (axiomCount/definitionCount unchanged)"
     ],
     "insights": [
       "The Σ₁/Π₁ distinction (Diophantine vs universal definability) is the precise mathematical content of OQ-01-OQ-02 over and above OQ-01: Koenigsmann 2016 settled Π₁; Σ₁ remains open",

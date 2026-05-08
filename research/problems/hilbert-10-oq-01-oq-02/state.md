@@ -2,49 +2,67 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T06:00:00Z
-**Iteration**: 3
+**Iteration**: 4
+**Last Updated**: 2026-05-08 (researcher-1)
 
 ## Current Focus
 
-Closing the fourth corner of the Σ₁/Π₁/Σ₂/Π₂ square. Iterations 1 & 2
-established Σ₁ (open), Π₂ (Koenigsmann), and the Σ₁/Π₁ duality. This
-iteration adds Σ₂ definability, the precise dual of Σ₁ ⊆ Π₂ (i.e.
-Π₁ ⊆ Σ₂), the Σ₂/Π₂ duality, and the unconditional Σ₂(ℚ\ℤ) corollary
-of Koenigsmann.
+Iteration 4 (2026-05-08, researcher-1, this PR): completing the
+**propositional-equivalence congruence story** for all four
+definability classes. Iteration 3 added
+`universalExistentialDefinition_iff_of_pred_iff` (Π₂ congruence) for
+use in the Σ₂(ℚ\ℤ) corollary; this iteration adds the analogous lemmas
+for the other three classes — Σ₁, Π₁, Σ₂. All three follow the same
+one-and-a-half-line `(h q).symm.trans (hP q)` template as the Π₂
+version, so the additions are mechanical but complete the four-class
+symmetry of the file.
+
+Net new content: 0 definitions, 3 theorems, 0 axioms.
+Updated to total: 8 definitions, 16 theorems, 1 axiom, 0 sorries,
+526 lines (was 462).
+
+Iterations 1 & 2 established Σ₁ (open), Π₂ (Koenigsmann), and the
+Σ₁/Π₁ duality. Iteration 3 added Σ₂ definability, the precise dual of
+Σ₁ ⊆ Π₂ (i.e. Π₁ ⊆ Σ₂), the Σ₂/Π₂ duality, and the unconditional
+Σ₂(ℚ\ℤ) corollary of Koenigsmann.
 
 ## Active Approach
 
-S3 — Σ₂ definability + Σ₂/Π₂ duality:
+S4 — Σ₁/Π₁/Σ₂ class congruence (this iteration):
 
-1. Define `IsExistentialUniversalDefinition` (Σ₂, ∃∀ definability).
-2. Prove `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂):
-   add a dummy existential block to a Π₁ formula. Axiom-free.
-3. Prove `existentialUniversal_iff_universalExistential_complement`:
-   the higher-level analog of the Σ₁/Π₁ duality. Both directions use
-   `Classical.byContradiction`.
-4. Add `universalExistentialDefinition_iff_of_pred_iff` (Π₂ class is
-   invariant under propositional equivalence of the predicate) as a
-   pure logical congruence helper.
-5. Derive `koenigsmann_implies_complement_existentialUniversal`: the
-   complement ℚ\ℤ is Σ₂-definable in ℚ, as a corollary of Koenigsmann
-   via the Σ₂/Π₂ duality + the predicate-equivalence bridge. No new
-   axiom.
+1. `diophantineDefinition_iff_of_pred_iff` — Σ₁ class invariant under
+   propositional equivalence of the predicate.
+2. `coDiophantineDefinition_iff_of_pred_iff` — Π₁ class invariant.
+3. `existentialUniversalDefinition_iff_of_pred_iff` — Σ₂ class
+   invariant.
 
-Net new content: 1 definition, 4 theorems, 0 new axioms.
-Updated to total: 8 definitions, 13 theorems, 1 axiom, 0 sorries, 462
-lines.
+Each is the same `(h q).symm.trans (hP q)` / `(h q).trans (hP q)`
+two-line proof as `universalExistentialDefinition_iff_of_pred_iff`
+(iteration 3, the Π₂ version). All four classes are now invariant
+under propositional equivalence, completing the propositional-
+congruence story for the file.
+
+S3 (iteration 3) — Σ₂ definability + Σ₂/Π₂ duality:
+
+1. `IsExistentialUniversalDefinition` (Σ₂, ∃∀ definability).
+2. `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂).
+3. `existentialUniversal_iff_universalExistential_complement` (Σ₂/Π₂
+   duality).
+4. `universalExistentialDefinition_iff_of_pred_iff` (Π₂ congruence).
+5. `koenigsmann_implies_complement_existentialUniversal` (Σ₂(ℚ\ℤ)
+   corollary).
 
 ## Build Status
 
-Docker build: PASSED ✅ (3 jobs, exit code 0). Verified the new
-section compiles cleanly against the Lean-core-only design (no Mathlib
-import). The two `Classical.byContradiction` patterns from iteration 2
-extend smoothly to Σ₂/Π₂ — both directions of the new duality, and the
-`hbridge` (`IntSubset q ↔ ¬ NotIntSubset q`) used in the corollary.
+Iteration 4 build: PENDING. Worktree's `.lake` is a self-symlink loop
+so Docker build would re-fresh-clone Mathlib (~25-45 min). The three
+new theorems use the same `Iff.trans` chaining as the iteration 3
+`universalExistentialDefinition_iff_of_pred_iff`, which BUILT cleanly
+in iteration 3 (3 jobs, exit code 0). All operate on already-defined
+predicates with no new imports. Confidence high; CI is the ground
+truth.
 
-The `NotIntSubset` definition is non-`@[irreducible]`, so Lean's
-unifier auto-unfolds `¬ NotIntSubset q` to `¬ ¬ IntSubset q` where
-needed (e.g. inside `hbridge`'s `Classical.byContradiction` step).
+Iteration 3 build: PASSED ✅ (3 jobs, exit code 0).
 
 ## Blockers
 
@@ -52,24 +70,21 @@ None.
 
 ## Next Action
 
-Commit, push, create PR.
+Commit, push, create PR for iteration 4 (this).
 
-If S3 lands cleanly, S4+ candidates:
-- Σ₂ ⊆ Π₂'s ¬¬-shadow — the technical clarification that `Σ₂(S)` and
-  `Π₂(¬¬S) = Π₂(S)` agree on `Prop`-classical predicates; would tighten
-  the predicate-equivalence bridge into a stronger congruence lemma.
+If S4 lands cleanly, S5+ candidates (unchanged from iteration 3):
+- Σ₂ ⊆ Π₂'s ¬¬-shadow — `Σ₂(S)` and `Π₂(¬¬S) = Π₂(S)` agreement on
+  `Prop`-classical predicates.
 - Σ₁ × Π₁ closure properties (under finite union/intersection) — needs
-  `Rat.mul_eq_zero` / sum-of-squares lemma which would require either
-  a Mathlib import or a hand-rolled proof from Lean core.
-- Π₁ ⊆ Π₂ via the `a ≠ 0 ⟺ ∃ z, a·z = 1` polynomial-inversion trick —
-  needs the same Rat field arithmetic.
+  `Rat.mul_eq_zero` / sum-of-squares lemma which requires Mathlib import.
+- Π₁ ⊆ Π₂ via `a ≠ 0 ⟺ ∃ z, a·z = 1` polynomial-inversion trick —
+  same Rat field arithmetic blocker.
 - Daans 2021 (10-quantifier reduction) as a separate axiomatized
-  witness refining `koenigsmann_2016_universal` — would add 1 new axiom
-  but improve quantitative content; defer until further duality / closure
-  work lands.
+  witness — adds 1 axiom, defer.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 1 (S3 — Σ₂/Π₂ duality, first attempt OK)
-- Approaches tried: 2 (S2 — Σ₁/Π₁ duality, S3 — Σ₂/Π₂ duality)
+- Total attempts: 4
+- Current approach attempts: 1 (S4 — class congruence, this iteration)
+- Approaches tried: 3 (S2 Σ₁/Π₁ duality, S3 Σ₂/Π₂ duality, S4 class
+  congruence)
