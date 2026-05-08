@@ -3,31 +3,34 @@
   "phase": "COMPLETED",
   "status": "completed",
   "problemStatement": {
-    "formal": "∀ n ≥ 1, |(numDerangements n : ℝ) - (n.factorial : ℝ) / rexp 1| < 1/2",
-    "plain": "For all n ≥ 1, D(n) is the nearest integer to n!/e.",
+    "formal": "\u2200 n \u2265 1, |(numDerangements n : \u211d) - (n.factorial : \u211d) / rexp 1| < 1/2",
+    "plain": "For all n \u2265 1, D(n) is the nearest integer to n!/e.",
     "whyMatters": [
       "The rounding formula D(n) = round(n!/e) provides a simple computation rule",
       "The unique nearest integer property characterizes D(n) analytically"
     ]
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 7 theorems proved, 0 sorries, 0 axioms in DerangementsConvergenceOQ01OQ01.lean (nearest integer theorem). Reconciled stale leanFiles drift (DerangementsConvergenceOQ01.lean: sorryCount 4→0, lineCount 153→152) — those 'sorries' were comment mentions, the file actually has 0 real sorries.",
+    "progressSummary": "COMPLETE: 7 theorems proved, 0 sorries, 0 axioms in DerangementsConvergenceOQ01OQ01.lean (nearest integer theorem). Reconciled stale leanFiles drift (DerangementsConvergenceOQ01.lean: sorryCount 4\u21920, lineCount 153\u2192152) \u2014 those 'sorries' were comment mentions, the file actually has 0 real sorries. Session 2 (2026-05-08, researcher-6): documented parity-sign follow-up with full proof sketch using existing public lemmas.",
     "builtItems": [
-      "derangements_rate_scaled: |D(n) - n!/e| ≤ 1/(n+1) for all n",
-      "derangements_nearest_integer: |D(n) - n!/e| < 1/2 for n ≥ 2",
+      "derangements_rate_scaled: |D(n) - n!/e| \u2264 1/(n+1) for all n",
+      "derangements_nearest_integer: |D(n) - n!/e| < 1/2 for n \u2265 2",
       "derangements_nearest_integer_n1: |D(1) - 1/e| < 1/2 via e > 2",
-      "derangements_nearest_all: |D(n) - n!/e| < 1/2 for all n ≥ 1",
+      "derangements_nearest_all: |D(n) - n!/e| < 1/2 for all n \u2265 1",
       "derangements_unique_nearest: D(n) is unique nearest natural to n!/e",
       "derangements_quarter_bound and derangements_parametric_bound"
     ],
     "insights": [
-      "Rate scaling: multiply |D(n)/n! - e⁻¹| ≤ 1/(n+1)! by n! to get |D(n) - n!/e| ≤ 1/(n+1)",
+      "Rate scaling: multiply |D(n)/n! - e\u207b\u00b9| \u2264 1/(n+1)! by n! to get |D(n) - n!/e| \u2264 1/(n+1)",
       "n=1 case uses Real.add_one_lt_exp one_ne_zero for strict e > 2",
-      "Integer gap lemma: omega closes |m-D(n)| < 1 → m = D(n) after Int casting",
-      "macOS sed silently fails on Unicode: use Python for ∑ k in → ∑ k ∈ fixes"
+      "Integer gap lemma: omega closes |m-D(n)| < 1 \u2192 m = D(n) after Int casting",
+      "macOS sed silently fails on Unicode: use Python for \u2211 k in \u2192 \u2211 k \u2208 fixes",
+      "Parity-controlled error sign: (-1)^n * (D(n) - n!/e) \u2265 0 \u2014 proof via alt_partial_sum_nonneg (already public) + tsum tail extraction. Documents precise rounding direction."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize derangements_error_sign theorem: 0 \u2264 (-1)^n * (numDerangements n - n!/e). Proof skeleton in research/problems/derangements-convergence-oq-01-oq-01/knowledge.md (Session 2)."
+    ]
   },
   "leanFiles": [
     {
