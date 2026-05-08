@@ -1,8 +1,126 @@
 # Knowledge Base: cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02
 
 **Problem**: Rational Canonical Form — Mathlib formalization connection (nonderogatory case)
-**Phase**: COMPLETE (axiom-free, biconditional closed, matrix-level companion CH proved); S5 prepares for `Matrix.minpoly_companionMatrix`.
-**Status**: verified (0 axioms, 0 sorries; S2 PR #17039 + S3 PR #17069 + S4 PR #17107 merged)
+**Phase**: COMPLETE — full triangle (S3) + companion-matrix Cayley-Hamilton (S5) + companion-matrix minpoly identity (S6), all axiom-free.
+**Status**: verified (0 axioms, 0 sorries; S2 PR #17039 + S3 PR #17069 + S4 PR #17107 + S5 PR #17157 merged)
+
+---
+
+## Session 6 (2026-05-08) — Companion-matrix minimal polynomial identity
+
+**Mode**: CONTINUE
+**Outcome**: `minpoly K (companionMx p) = p` proved (public theorem). Closes
+the chain begun in S4/S5; resolves `openQuestions[Q2]` fully.
+
+### What I Did
+
+Added the single public theorem `minpoly_companionMx_eq` deriving the
+companion-matrix minimal-polynomial identity:
+
+```
+minpoly_companionMx_eq (p : K[X]) (hp_monic : p.Monic) (hp_deg : p.natDegree = n) (hn : 0 < n) :
+  minpoly K (companionMx (n := n) p) = p
+```
+
+This identity is missing from Mathlib v4.26.0. It says: if you build a
+companion matrix from a monic polynomial of degree n, that polynomial is
+exactly the minimal polynomial of the companion matrix.
+
+### Three-Step Proof
+
+1. **Divisibility** `(minpoly K (companionMx p)) ∣ p`: from S5's
+   `aeval_companionMx_p_eq_zero` (`p` annihilates the matrix) plus
+   `minpoly.dvd K _ ·`.
+
+2. **Degree equality** `(minpoly K (companionMx p)).natDegree = n`: from S3's
+   `companionMx_isCyclic_e0` (e₀ is cyclic for `companionMx p`) plus sibling
+   OQ-01-OQ-01's `minpoly_natDegree_of_cyclic`.
+
+3. **Wrap-up: monic + monic + equal natDegree + dvd ⇒ equal**:
+   - From `hdvd : minpoly ∣ p`, write `p = minpoly · c`.
+   - `c.natDegree = 0`: from `Polynomial.natDegree_mul hmin_ne hc_ne`
+     (`(p * q).natDegree = p.natDegree + q.natDegree` for nonzero p, q),
+     equating `p.natDegree = (minpoly).natDegree + c.natDegree` to get
+     `n = n + c.natDegree`, then `omega`.
+   - `c.leadingCoeff = 1`: from `Polynomial.leadingCoeff_mul`,
+     `p.leadingCoeff = (minpoly).leadingCoeff * c.leadingCoeff`, and the
+     fact that `Monic` *is* `leadingCoeff = 1` (definitional). So
+     `1 = 1 * c.leadingCoeff = c.leadingCoeff`.
+   - `c = 1`: a polynomial of `natDegree = 0` equals `C (c.coeff 0)` by
+     `Polynomial.eq_C_of_natDegree_eq_zero hc_deg`. The constant coeff equals
+     `leadingCoeff = 1` (since `c.leadingCoeff` is defined as
+     `c.coeff c.natDegree = c.coeff 0` here). So `c = C 1 = 1` via
+     `Polynomial.C_1`.
+   - Then `p = (minpoly) · 1 = minpoly`, so `minpoly = p` by `hc.symm`.
+
+### Files Modified (Session 6)
+
+- `proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean` (+98 lines net):
+  Session 6 docstring + the public theorem `minpoly_companionMx_eq`.
+- `src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02/meta.json`:
+  - `meta.lineCount`: 590 → 688
+  - `meta.theoremCount`: 20 → 21
+  - `leanFile.lineCount`: 590 → 688
+  - `leanFile.theoremCount`: 20 → 21
+  - Appended Session 6 to `assumptions`, added the new entry to
+    `originalContributions`, refreshed `openQuestions[Q2]` to mark
+    DONE/fully resolved, and added a new entry to
+    `conclusion.openQuestions` reflecting completion.
+- `research/problems/.../state.md`: bumped to Iteration 6; recorded S6
+  outcome and noted the slug-level work is now closed at the single-block
+  level.
+- `research/problems/.../knowledge.md`: this Session 6 record.
+
+### Result
+
+Status remains `verified` / `original` / 0 axioms / 0 sorries.
+`minpoly_companionMx_eq` is **public** — together with S5's
+`aeval_companionMx_p_eq_zero` and S3's `companionMx_isCyclic_e0`, this gives a
+candidate Mathlib API for `Matrix.minpoly_companionMatrix`.
+
+### Honest Reporting
+
+- **Build was NOT verified locally** — same `.lake` symlink trap. CI is the
+  ground truth.
+- **API drift risk** (S6-specific):
+  - `minpoly.monic`, `minpoly.dvd`, `minpoly.ne_zero`, `Matrix.isIntegral`
+    (all stable Mathlib API for matrices over fields).
+  - `Polynomial.natDegree_mul` — `(p * q).natDegree = p.natDegree + q.natDegree`
+    for nonzero p, q.
+  - `Polynomial.leadingCoeff_mul` — `(p * q).leadingCoeff = p.leadingCoeff * q.leadingCoeff`
+    in any commutative semiring (or `NoZeroDivisors` ring).
+  - `Polynomial.eq_C_of_natDegree_eq_zero` — `p.natDegree = 0 → p = C (p.coeff 0)`.
+  - `Polynomial.C_1` — `C 1 = 1`.
+  - `Polynomial.Monic.ne_zero` — `p.Monic → p ≠ 0`.
+  - The most subtle is `Monic`-as-`leadingCoeff`-equality: in Mathlib4 this is
+    `def Monic (p) : Prop := p.leadingCoeff = 1`, so `hp_monic : p.Monic` can
+    be used directly as `hp_monic : p.leadingCoeff = 1` in `rw`. If this
+    convention has changed, the `rw [hp_monic, hmin_monic, one_mul]` step in
+    `hc_lc` may need an explicit `Monic.def` or coercion.
+  - The `c.leadingCoeff = c.coeff c.natDegree := rfl` step relies on
+    `leadingCoeff` being `def`-defined as `coeff natDegree`. This is stable.
+- **No new helpers** — the proof reuses S5's `aeval_companionMx_p_eq_zero`,
+  S3's `companionMx_isCyclic_e0`, sibling OQ-01-OQ-01's
+  `minpoly_natDegree_of_cyclic`, and ~6 Mathlib lemmas about polynomials.
+
+### Why This Closes the Chain
+
+The four-result chain
+- `aeval_companionMx_p_mulVec_e0_zero` (S4) — vector form at e₀
+- `aeval_companionMx_p_eq_zero` (S5) — matrix form
+- `minpoly_companionMx_eq` (S6) — minpoly identity
+
+establishes the full companion-matrix API for the *minimal* polynomial. The
+analogous *characteristic*-polynomial result (`charpoly (companionMx p) = p`)
+is harder and orthogonal; it would need the determinant formula for the
+companion matrix, which Mathlib v4.26.0 also lacks in this form. That's a
+candidate for a different research thread.
+
+The triangle of equivalences (S1–S3) plus the companion-matrix
+Cayley-Hamilton + minpoly identities (S4–S6) together produce a complete
+single-block RCF API, axiom-free over arbitrary fields. This is the
+deepest a single-entry can go without invoking the K[X]-module structure
+theorem for the multi-block case.
 
 ---
 

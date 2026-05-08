@@ -585,6 +585,104 @@ theorem aeval_companionMx_p_eq_zero
   intro k
   exact aeval_companionMx_p_mulVec_ek_zero p hp_monic hp_deg hn k
 
+/-! ## Session 6: Companion-matrix minimal polynomial — `minpoly K (companionMx p) = p`
+
+  Closes the chain begun in S4/S5: for monic `p` of `natDegree = n` (n ≥ 1),
+  the minimal polynomial of `companionMx p` is exactly `p`. This is the
+  identity `Matrix.minpoly_companionMatrix` missing from Mathlib v4.26.0.
+
+  Three-step argument:
+
+  1. **Divisibility**: `(minpoly K (companionMx p)) ∣ p`. From S5's
+     `aeval_companionMx_p_eq_zero` (`p` annihilates `companionMx p`) plus
+     `minpoly.dvd K _ ·`.
+  2. **Degree equality**: `(minpoly K (companionMx p)).natDegree = n`. From S3's
+     `companionMx_isCyclic_e0` (e₀ is cyclic for the companion) and sibling
+     OQ-01-OQ-01's `minpoly_natDegree_of_cyclic`.
+  3. **Wrap-up**: `(minpoly K (companionMx p))` and `p` are both monic of
+     `natDegree = n` with the first dividing the second; therefore equal.
+
+  The wrap-up (3) is a small ~12-line argument: write `p = minpoly · c`, force
+  `c.natDegree = 0` from the `natDegree`-additivity, force `c.leadingCoeff = 1`
+  from `Polynomial.leadingCoeff_mul` + monicity, then `c = C (c.coeff 0) = C 1 = 1`.
+
+  Together with the triangle of equivalences from Sessions 1–3 and the
+  matrix-level Cayley-Hamilton from S5, this completes the gallery's
+  contribution to the missing-from-Mathlib RCF API: a candidate
+  `Matrix.companionMatrix` definition (`companionMx`), a
+  `Matrix.charpoly_companionMatrix`-shaped result for the *minimal* polynomial
+  (this lemma), and a similarity-to-companion theorem for the nonderogatory
+  case.
+-/
+
+/-- **Companion matrix minimal polynomial identity** — for monic `p` of
+    `natDegree = n` (with `n ≥ 1`), the minimal polynomial of `companionMx p`
+    is exactly `p`:
+
+      `minpoly K (companionMx p) = p`.
+
+    This identity is missing from Mathlib v4.26.0 and closes the
+    `openQuestions[Q2]` (companion-matrix charpoly/minpoly identities) raised
+    in Session 1.
+
+    Proof: `p` annihilates `companionMx p` (S5's `aeval_companionMx_p_eq_zero`),
+    so `(minpoly K (companionMx p)) ∣ p` by minimality. Both polynomials are
+    monic of `natDegree = n` (the minpoly's degree is forced by the cyclicity
+    of `e₀`, S3 + sibling OQ-01-OQ-01's `minpoly_natDegree_of_cyclic`). Two
+    monic polynomials of the same `natDegree` where one divides the other
+    must be equal, by writing the divisor relation as `p = minpoly · c` and
+    showing `c = 1` from `c.natDegree = 0` + `c.leadingCoeff = 1`. -/
+theorem minpoly_companionMx_eq
+    (p : K[X]) (hp_monic : p.Monic) (hp_deg : p.natDegree = n) (hn : 0 < n) :
+    minpoly K (companionMx (n := n) p) = p := by
+  -- Step 1: minpoly's basic facts.
+  have hint : IsIntegral K (companionMx (n := n) p) := Matrix.isIntegral _
+  have hmin_monic : (minpoly K (companionMx (n := n) p)).Monic := minpoly.monic hint
+  -- Step 2: degree of the minpoly = n via cyclicity of e₀.
+  have hcyc : IsCyclicVector (companionMx (n := n) p)
+      (Pi.single (⟨0, hn⟩ : Fin n) (1 : K)) :=
+    companionMx_isCyclic_e0 p hn
+  have hmin_deg : (minpoly K (companionMx (n := n) p)).natDegree = n :=
+    minpoly_natDegree_of_cyclic _ _ hcyc
+  -- Step 3: divisibility from matrix-level annihilation (S5).
+  have hdvd : minpoly K (companionMx (n := n) p) ∣ p :=
+    minpoly.dvd K _ (aeval_companionMx_p_eq_zero p hp_monic hp_deg hn)
+  -- Step 4: monic + monic of equal natDegree + dvd ⇒ equal.
+  obtain ⟨c, hc⟩ := hdvd
+  have hp_ne : p ≠ 0 := hp_monic.ne_zero
+  have hmin_ne : (minpoly K (companionMx (n := n) p)) ≠ 0 := hmin_monic.ne_zero
+  have hc_ne : c ≠ 0 := by
+    rintro rfl
+    rw [mul_zero] at hc
+    exact hp_ne hc
+  -- natDegree p = natDegree minpoly + natDegree c.
+  have hdeg_split :
+      p.natDegree = (minpoly K (companionMx (n := n) p)).natDegree + c.natDegree := by
+    rw [hc]
+    exact Polynomial.natDegree_mul hmin_ne hc_ne
+  rw [hp_deg, hmin_deg] at hdeg_split
+  have hc_deg : c.natDegree = 0 := by omega
+  -- c.leadingCoeff = 1 (from monicity of p and of minpoly, via leadingCoeff_mul).
+  have hc_lc : c.leadingCoeff = 1 := by
+    have hlc_split :
+        p.leadingCoeff =
+          (minpoly K (companionMx (n := n) p)).leadingCoeff * c.leadingCoeff := by
+      rw [hc]; exact Polynomial.leadingCoeff_mul _ _
+    rw [hp_monic.leadingCoeff, hmin_monic.leadingCoeff, one_mul] at hlc_split
+    exact hlc_split.symm
+  -- c = 1: a polynomial of natDegree 0 is its constant coeff (= leadingCoeff = 1).
+  have hc_eq_one : c = 1 := by
+    have heq_C : c = Polynomial.C (c.coeff 0) :=
+      Polynomial.eq_C_of_natDegree_eq_zero hc_deg
+    have hcoeff_zero : c.coeff 0 = 1 := by
+      -- Unfold `leadingCoeff` (which is `coeff natDegree`), then rewrite
+      -- natDegree to 0 — same pattern as line ~139 of this file.
+      have := hc_lc
+      rwa [Polynomial.leadingCoeff, hc_deg] at this
+    rw [heq_C, hcoeff_zero, Polynomial.C_1]
+  rw [hc_eq_one, mul_one] at hc
+  exact hc.symm
+
 end CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
 
 end
