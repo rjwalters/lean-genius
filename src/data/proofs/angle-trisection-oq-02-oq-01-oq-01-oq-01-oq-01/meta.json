@@ -49,20 +49,21 @@
       "Proved the correct theorem: IsPurelyInseparable F f.SplittingField → |Gal(f)| = 1",
       "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents",
       "Replaced parity-case-split sub_pow_char_pow_eq with a one-liner via iterateFrobenius (a ring hom) and map_sub",
-      "Added counterexample-side structural scaffolding: f_target_natDegree (=4), f_target_degree, f_target_ne_zero, f_target_monic — prerequisites for any Artin-Schreier irreducibility or |Gal|=2 argument that wishes to discharge counterexample_gal_card"
+      "Added counterexample-side structural scaffolding: f_target_natDegree (=4), f_target_degree, f_target_ne_zero, f_target_monic — prerequisites for any Artin-Schreier irreducibility or |Gal|=2 argument that wishes to discharge counterexample_gal_card",
+      "Session 4: extended structural library to g_factor (g_factor_natDegree=2, g_factor_degree=2, g_factor_ne_zero, g_factor_monic) — prerequisites for Capelli-style irreducibility of f_target=g_factor(X^2) — and added five f_target coefficient lemmas (coeffs at 0, 1, 2, 3, 4) needed for any Eisenstein-style or quadratic-factorisation argument"
     ],
     "axiomCount": 1,
-    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries). Counterexample-side scaffolding (f_target_natDegree, f_target_degree, f_target_ne_zero, f_target_monic) is proved in this file; these are downstream prerequisites for any future irreducibility / Galois-group computation.",
-    "lineCount": 230,
-    "theoremCount": 10,
+    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries). Counterexample-side scaffolding (f_target_{natDegree, degree, ne_zero, Monic}, g_factor_{natDegree, degree, ne_zero, Monic}, and five f_target coefficient lemmas) is proved in this file; these are downstream prerequisites for any future irreducibility / Galois-group computation.",
+    "lineCount": 285,
+    "theoremCount": 19,
     "definitionCount": 4
   },
   "leanFile": {
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
     "axiomCount": 1,
-    "theoremCount": 10,
+    "theoremCount": 19,
     "definitionCount": 4,
-    "lineCount": 230,
+    "lineCount": 285,
     "sorries": 0
   },
   "overview": {
@@ -93,23 +94,23 @@
       "id": "setup",
       "title": "Counterexample Framework",
       "startLine": 1,
-      "endLine": 112,
-      "summary": "Introduces the base field F₂(a) = FractionRing(F₂[X]). Defines f_target = X⁴+X²+a and g_factor = X²+X+a. Proves f = g ∘ (X²) structurally, f' = 0 in char 2 (inseparability), and structural identities (f_target_natDegree = 4, f_target_degree = 4, f_target_ne_zero, f_target_monic) needed for downstream irreducibility / Galois-group arguments.",
-      "mathContext": "F = F₂(a) = Frac(F₂[X]), g(X) = X²+X+a (Artin-Schreier: irred since a ≠ t²+t for t ∈ F₂(a)), f(X) = g(X²) = X⁴+X²+a. In char 2: f'(X) = 4X³+2X = 0. natDegree(f) = 4, leading coefficient = 1."
+      "endLine": 167,
+      "summary": "Introduces the base field F₂(a) = FractionRing(F₂[X]). Defines f_target = X⁴+X²+a and g_factor = X²+X+a. Proves f = g ∘ (X²) structurally, f' = 0 in char 2 (inseparability), structural identities for both f_target and g_factor (natDegree, degree, ne_zero, Monic), and the five non-trivial coefficient values of f_target (coeffs 0, 1, 2, 3, 4) needed for downstream irreducibility / Galois-group arguments.",
+      "mathContext": "F = F₂(a) = Frac(F₂[X]), g(X) = X²+X+a (Artin-Schreier: irred since a ≠ t²+t for t ∈ F₂(a)), f(X) = g(X²) = X⁴+X²+a. In char 2: f'(X) = 4X³+2X = 0. natDegree(f) = 4, leading coefficient = 1; coefficients of f at X^0, X^2, X^4 are aGen, 1, 1 (all others zero). natDegree(g) = 2, leading coefficient = 1."
     },
     {
       "id": "correct-theorem",
       "title": "The Correct Theorem: Purely Inseparable → Trivial Gal",
-      "startLine": 113,
-      "endLine": 197,
+      "startLine": 168,
+      "endLine": 252,
       "summary": "Proves the correct replacement for insep_gal_trivial: algEquiv_eq_refl_of_isPurelyInseparable shows every automorphism of a purely inseparable extension is the identity. Derives gal_card_one_of_purelyInseparable_splitting as a corollary.",
       "mathContext": "Key: (σ(x)-x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0 by char-p Frobenius. Then σ(x) = x since field has no nilpotents."
     },
     {
       "id": "when-purely-insep",
       "title": "When Is the Splitting Field Purely Inseparable?",
-      "startLine": 198,
-      "endLine": 230,
+      "startLine": 253,
+      "endLine": 285,
       "summary": "States and axiomatizes that f_target has |Gal| = 2 (counterexample_gal_card, pending Artin-Schreier). Uses this to formally refute insep_gal_trivial in the parent.",
       "mathContext": "X^p - a: splitting field = F(a^(1/p)), purely inseparable since (a^(1/p))^p = a ∈ F. But X⁴+X²+a: splitting field = F₂(a)(α^(1/2)), NOT purely inseparable — has nontrivial automorphism."
     }
@@ -183,6 +184,69 @@
       "statement": "$f_{\\mathrm{target}}.\\mathrm{Monic}$",
       "significance": "Leading coefficient is 1. Combined with degree 4, unlocks `SplittingField` / `IsAlgClosed` lemmas and lets the proof avoid spurious unit-of-leading-coefficient bookkeeping.",
       "description": "f_target.Monic — leading coefficient = 1. Combined with degree 4 unlocks SplittingField/IsAlgClosed API."
+    },
+    {
+      "name": "g_factor_natDegree",
+      "type": "lemma",
+      "statement": "$g_{\\mathrm{factor}}.\\mathrm{natDegree} = 2$",
+      "significance": "Anchors the Artin-Schreier inner factor at degree 2. Required for the Capelli-style argument: an irreducibility proof of $f_{\\mathrm{target}} = g_{\\mathrm{factor}}(X^2)$ usually proceeds by showing $g_{\\mathrm{factor}}$ is irreducible and $a$ is not a square; both arguments take $\\deg g = 2$ as input.",
+      "description": "g_factor.natDegree = 2. Discharged by `compute_degree!`. Prerequisite for any Capelli-style irreducibility argument on f_target = g_factor.comp(X^2)."
+    },
+    {
+      "name": "g_factor_degree",
+      "type": "lemma",
+      "statement": "$g_{\\mathrm{factor}}.\\mathrm{degree} = 2$ (in $\\mathrm{WithBot}\\,\\mathbb{N}$)",
+      "significance": "The `WithBot`-valued degree of $g_{\\mathrm{factor}}$, distinguishing zero from positive-degree polynomials. Some Mathlib lemmas (e.g. on the splitting field of degree-2 polynomials) consume `degree`, not `natDegree`.",
+      "description": "g_factor.degree = 2. Companion to g_factor_natDegree, supplying the WithBot ℕ form needed by Mathlib APIs that prefer `degree`."
+    },
+    {
+      "name": "g_factor_ne_zero",
+      "type": "lemma",
+      "statement": "$g_{\\mathrm{factor}} \\ne 0$",
+      "significance": "Immediate corollary of degree 2. Required to invoke any Mathlib lemma about g_factor's roots, splitting field, or irreducibility.",
+      "description": "g_factor ≠ 0. Immediate corollary of g_factor_natDegree = 2."
+    },
+    {
+      "name": "g_factor_monic",
+      "type": "lemma",
+      "statement": "$g_{\\mathrm{factor}}.\\mathrm{Monic}$",
+      "significance": "Leading coefficient of $g_{\\mathrm{factor}}$ is 1. Together with $g_{\\mathrm{factor}}.\\mathrm{degree} = 2$, unlocks Mathlib's monic-irreducibility checks and the universal property of $g_{\\mathrm{factor}}.\\mathrm{SplittingField}$ — needed for any Artin-Schreier-style argument that constructs roots of $g_{\\mathrm{factor}}$.",
+      "description": "g_factor.Monic — leading coefficient = 1. Companion structural fact for g_factor needed by SplittingField API."
+    },
+    {
+      "name": "f_target_coeff_zero",
+      "type": "lemma",
+      "statement": "$(f_{\\mathrm{target}}).\\mathrm{coeff}\\,0 = a_{\\mathrm{Gen}}$",
+      "significance": "Identifies the constant term of f_target as the Artin-Schreier parameter aGen. The constant term is precisely the input that an Eisenstein-style irreducibility argument (or a non-square-of-aGen argument) would test against the prime ideal (aGen) of (ZMod 2)[X].",
+      "description": "f_target.coeff 0 = aGen. The constant term, equal to the Artin-Schreier parameter."
+    },
+    {
+      "name": "f_target_coeff_one",
+      "type": "lemma",
+      "statement": "$(f_{\\mathrm{target}}).\\mathrm{coeff}\\,1 = 0$",
+      "significance": "The polynomial has no linear term. Critical for any quadratic-factorisation argument: the X coefficient of (X²+b₁X+c₁)(X²+b₂X+c₂) is b₁c₂+b₂c₁; setting this to 0 starts the case-split that ultimately rules out a quadratic factorisation.",
+      "description": "f_target.coeff 1 = 0. No linear term — needed for the standard quadratic-factorisation case analysis."
+    },
+    {
+      "name": "f_target_coeff_two",
+      "type": "lemma",
+      "statement": "$(f_{\\mathrm{target}}).\\mathrm{coeff}\\,2 = 1$",
+      "significance": "The X² coefficient. In a hypothetical quadratic factorisation (X²+b₁X+c₁)(X²+b₂X+c₂) the X² coefficient is c₁+c₂+b₁b₂; equating to 1 gives the second case-split equation.",
+      "description": "f_target.coeff 2 = 1. The X² coefficient — feeds the c₁+c₂+b₁b₂=1 equation in any quadratic-factorisation argument."
+    },
+    {
+      "name": "f_target_coeff_three",
+      "type": "lemma",
+      "statement": "$(f_{\\mathrm{target}}).\\mathrm{coeff}\\,3 = 0$",
+      "significance": "The polynomial has no cubic term. In a hypothetical quadratic factorisation, this forces b₁ + b₂ = 0, which in characteristic 2 collapses to b₁ = b₂ — the structural hinge of the irreducibility argument.",
+      "description": "f_target.coeff 3 = 0. No cubic term — forces b₁+b₂=0 in any quadratic factorisation, collapsing in char 2 to b₁=b₂."
+    },
+    {
+      "name": "f_target_coeff_four",
+      "type": "lemma",
+      "statement": "$(f_{\\mathrm{target}}).\\mathrm{coeff}\\,4 = 1$",
+      "significance": "The leading coefficient (degree 4). Recovers monicity from the coefficient API (companion to f_target_monic) and is the input to compute the leading coefficient of any product factorisation X²+b₁X+c₁ · X²+b₂X+c₂.",
+      "description": "f_target.coeff 4 = 1. The leading coefficient — equivalent statement of monicity in coefficient form, needed by quadratic-factorisation comparisons."
     },
     {
       "name": "sub_pow_char_pow_eq",

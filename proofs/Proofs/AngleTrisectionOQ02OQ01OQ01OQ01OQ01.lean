@@ -50,7 +50,7 @@
 
   Axioms: 1 (counterexample_gal_card)
   Sorries: 0
-  Theorems: 10
+  Theorems: 19
 -/
 
 import Mathlib
@@ -107,6 +107,52 @@ lemma f_target_ne_zero : f_target ≠ 0 := by
 /-- f_target is monic (leading coefficient = 1). -/
 lemma f_target_monic : f_target.Monic := by
   rw [Polynomial.Monic, Polynomial.leadingCoeff, f_target_natDegree]
+  unfold f_target
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+
+/-- g_factor = X² + X + aGen has natDegree 2 (the leading X² term dominates). -/
+lemma g_factor_natDegree : g_factor.natDegree = 2 := by
+  unfold g_factor; compute_degree!
+
+/-- g_factor = X² + X + aGen has degree 2. -/
+lemma g_factor_degree : g_factor.degree = 2 := by
+  unfold g_factor; compute_degree!
+
+/-- g_factor is nonzero — immediate from natDegree = 2. -/
+lemma g_factor_ne_zero : g_factor ≠ 0 := by
+  intro h
+  have hd : g_factor.natDegree = 2 := g_factor_natDegree
+  rw [h, Polynomial.natDegree_zero] at hd
+  exact absurd hd (by norm_num)
+
+/-- g_factor is monic (leading coefficient = 1). -/
+lemma g_factor_monic : g_factor.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, g_factor_natDegree]
+  unfold g_factor
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+
+/-- Coefficient of X⁰ in f_target = X⁴ + X² + aGen is aGen. -/
+lemma f_target_coeff_zero : f_target.coeff 0 = aGen := by
+  unfold f_target
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+
+/-- Coefficient of X² in f_target = X⁴ + X² + aGen is 1. -/
+lemma f_target_coeff_two : f_target.coeff 2 = 1 := by
+  unfold f_target
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+
+/-- Coefficient of X⁴ in f_target = X⁴ + X² + aGen is 1. -/
+lemma f_target_coeff_four : f_target.coeff 4 = 1 := by
+  unfold f_target
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+
+/-- Coefficient of X¹ in f_target = X⁴ + X² + aGen is 0 (no linear term). -/
+lemma f_target_coeff_one : f_target.coeff 1 = 0 := by
+  unfold f_target
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+
+/-- Coefficient of X³ in f_target = X⁴ + X² + aGen is 0 (no cubic term). -/
+lemma f_target_coeff_three : f_target.coeff 3 = 0 := by
   unfold f_target
   simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
 
@@ -220,6 +266,15 @@ The false axiom should be replaced in the parent entry.
 | `f_target_degree` | proved (compute_degree!) |
 | `f_target_ne_zero` | proved (corollary of natDegree) |
 | `f_target_monic` | proved (leading coefficient = 1) |
+| `g_factor_natDegree` | proved (compute_degree!) |
+| `g_factor_degree` | proved (compute_degree!) |
+| `g_factor_ne_zero` | proved (corollary of natDegree) |
+| `g_factor_monic` | proved (leading coefficient = 1) |
+| `f_target_coeff_zero` | proved (coeff 0 = aGen) |
+| `f_target_coeff_one` | proved (coeff 1 = 0) |
+| `f_target_coeff_two` | proved (coeff 2 = 1) |
+| `f_target_coeff_three` | proved (coeff 3 = 0) |
+| `f_target_coeff_four` | proved (coeff 4 = 1) |
 | `sub_pow_char_pow_eq` | proved (via `iterateFrobenius` and `map_sub`) |
 | `algEquiv_eq_refl_of_isPurelyInseparable` | proved |
 | `gal_card_one_of_purelyInseparable_splitting` | proved |
