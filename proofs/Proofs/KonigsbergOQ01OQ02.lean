@@ -327,12 +327,17 @@ def IsWeaklyConnected (G : DiGraph V) : Prop :=
 axiom directed_eulerian_iff (G : DiGraph V) (hconn : IsWeaklyConnected G) :
     HasEulerianCircuit G ↔ IsEulerianBalanced G
 
-/-- A directed graph has an Eulerian PATH from s to t (s ≠ t). -/
+/-- A directed graph has an Eulerian PATH from s to t (s ≠ t).
+    Mirrors `HasEulerianCircuit`: each edge is covered by a unique walk position
+    (∃!), and every consecutive pair in the walk is a graph edge. The strong
+    formulation enables the necessity proof via the walk-position bijection. -/
 def HasEulerianPath (G : DiGraph V) (s t : V) : Prop :=
   ∃ (walk : List V), walk.head? = some s ∧ walk.getLast? = some t ∧
     walk.length = G.edges.card + 1 ∧
-    (∀ e ∈ G.edges, ∃ i < walk.length - 1,
-      walk.get ⟨i, by omega⟩ = e.1 ∧ walk.get ⟨i + 1, by omega⟩ = e.2)
+    (∀ e ∈ G.edges, ∃! i : ℕ, i < walk.length - 1 ∧
+      walk.get ⟨i, by omega⟩ = e.1 ∧ walk.get ⟨i + 1, by omega⟩ = e.2) ∧
+    (∀ i (hi : i < walk.length - 1),
+      (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges)
 
 axiom directed_euler_path_iff (G : DiGraph V) (hconn : IsWeaklyConnected G) (s t : V) (hst : s ≠ t) :
     HasEulerianPath G s t ↔
@@ -502,6 +507,56 @@ private lemma open_walk_first_source_excess (walk : List V) (n : ℕ) (hn : 1 �
     refine ⟨j + 1, ?_, by omega⟩
     simp only [S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range]
     exact ⟨by omega, by omega, hj_w⟩
+
+/-- For an OPEN walk where neither endpoint equals an interior vertex `v`,
+    the source-count of `v` equals its target-count.
+    Proof: bijection `i ↦ i - 1` maps source positions to target positions.
+    The endpoint hypotheses ensure `i = 0` is not a source position and
+    `j = n - 1` is not the largest target position, keeping the bijection
+    well-defined on `[0, n-1]`. -/
+private lemma open_walk_interior_balanced (walk : List V) (n : ℕ)
+    (hlen : walk.length = n + 1)
+    (v : V)
+    (hw0 : walk.get ⟨0, by omega⟩ ≠ v)
+    (hwn : walk.get ⟨n, by omega⟩ ≠ v) :
+    ((Finset.range n).filter fun i => walk.get ⟨i, by omega⟩ = v).card =
+    ((Finset.range n).filter fun i => walk.get ⟨i + 1, by omega⟩ = v).card := by
+  -- Bijection: source position i ↦ target position i - 1
+  apply Finset.card_bij (fun i _ => i - 1)
+  · intro i hi
+    simp only [Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_lt, hi_v⟩ := hi
+    -- i ≥ 1: walk[0] ≠ v, so i = 0 contradicts walk[i] = v
+    have hi1 : 1 ≤ i := by
+      by_contra h; push_neg at h
+      have : i = 0 := by omega
+      exact hw0 (this ▸ hi_v)
+    refine ⟨by omega, ?_⟩
+    -- walk[(i-1)+1] = walk[i] = v
+    convert hi_v using 2; omega
+  · -- Injective: i - 1 = j - 1 with i, j ≥ 1 ⟹ i = j
+    intro i hi j hj heq
+    simp only [Finset.mem_filter, Finset.mem_range] at hi hj
+    obtain ⟨_, hi_v⟩ := hi
+    obtain ⟨_, hj_v⟩ := hj
+    have hi1 : 1 ≤ i := by
+      by_contra h; push_neg at h; have : i = 0 := by omega
+      exact hw0 (this ▸ hi_v)
+    have hj1 : 1 ≤ j := by
+      by_contra h; push_neg at h; have : j = 0 := by omega
+      exact hw0 (this ▸ hj_v)
+    omega
+  · -- Surjective: target position j has preimage j + 1 (and j + 1 < n since walk[n] ≠ v)
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range] at hj ⊢
+    obtain ⟨hj_lt, hj_v⟩ := hj
+    have hjn : j + 1 < n := by
+      by_contra h; push_neg at h
+      have : j + 1 = n := by omega
+      exact hwn (this ▸ hj_v)
+    refine ⟨j + 1, ?_, by omega⟩
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, hj_v⟩
 
 /-
   STEP 2: GREEDY MAXIMAL TRAIL
@@ -1062,15 +1117,20 @@ theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G) :
 -/
 
 /-- **Necessity for Eulerian paths**: a graph with an Eulerian path from s to t
-    satisfies the asymmetric degree conditions. -/
+    satisfies the asymmetric degree conditions.
+    Proof: walk-position bijections (`walk_source_eq_outDegree`, `walk_target_eq_inDegree`)
+    convert degree counts to position counts; then `open_walk_first_source_excess`,
+    `open_walk_last_target_excess`, and `open_walk_interior_balanced` give the
+    three required equalities. -/
 theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠ t)
     (hpath : HasEulerianPath G s t) :
     outDegree G s = inDegree G s + 1 ∧
     inDegree G t = outDegree G t + 1 ∧
     ∀ v : V, v ≠ s → v ≠ t → IsBalanced G v := by
-  obtain ⟨walk, hhead, hlast, hwlen, hcov⟩ := hpath
+  obtain ⟨walk, hhead, hlast, hwlen, hcov, hsteps⟩ := hpath
   set n := G.edges.card with hn_def
   have hlen : walk.length = n + 1 := hwlen
+  have hn_eq : walk.length - 1 = n := by omega
   have hn_ge_1 : 1 ≤ n := by
     -- If n = 0, walk has length 1, so head = last, meaning s = t — contradiction.
     by_contra h; push_neg at h
@@ -1095,13 +1155,47 @@ theorem euler_path_implies_degree_balance (G : DiGraph V) (s t : V) (hst : s ≠
       simp only [List.getLast_eq_getElem, List.get_eq_getElem]
       congr 1; omega
     rw [h2] at hlast; exact Option.some.inj hlast
-  -- The degree conditions follow from the open-walk counting lemmas:
-  -- open_walk_first_source_excess → outDeg s = inDeg s + 1
-  -- open_walk_last_target_excess  → inDeg t  = outDeg t + 1
-  -- closed-walk balance at interior vertices → IsBalanced v
-  -- Connecting walk-position counts to graph degrees requires unique coverage,
-  -- which follows from |walk| = |edges| + 1 + surjectivity (pigeonhole).
-  sorry
+  -- Normalize hcov and hsteps to range over `n` instead of `walk.length - 1`
+  have hcov' : ∀ e ∈ G.edges, ∃! i : ℕ, i < n ∧
+      walk.get ⟨i, by omega⟩ = e.1 ∧ walk.get ⟨i + 1, by omega⟩ = e.2 := by
+    intro e he
+    have h := hcov e he
+    rwa [hn_eq] at h
+  have hsteps' : ∀ i (hi : i < n),
+      (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges :=
+    fun i hi => hsteps i (hn_eq ▸ hi)
+  -- Bridge: source-position count = outDegree, target-position count = inDegree.
+  have hsrc_eq_out : ∀ v,
+      ((Finset.range n).filter (fun i => walk.get ⟨i, by omega⟩ = v)).card =
+        outDegree G v :=
+    fun v => walk_source_eq_outDegree G walk n v hlen hcov' hsteps'
+  have htgt_eq_in : ∀ v,
+      ((Finset.range n).filter (fun i => walk.get ⟨i + 1, by omega⟩ = v)).card =
+        inDegree G v :=
+    fun v => walk_target_eq_inDegree G walk n v hlen hcov' hsteps'
+  refine ⟨?_, ?_, ?_⟩
+  · -- outDegree s = inDegree s + 1: open-walk source excess at s.
+    have hns : walk.get ⟨n, by omega⟩ ≠ s := by rw [hget_last]; exact fun h => hst h.symm
+    have hexc :=
+      open_walk_first_source_excess walk n hn_ge_1 hlen s hget_head hns
+    rw [hsrc_eq_out s, htgt_eq_in s] at hexc
+    exact hexc
+  · -- inDegree t = outDegree t + 1: open-walk target excess at t.
+    have h0t : walk.get ⟨0, by omega⟩ ≠ t := by rw [hget_head]; exact hst
+    have hexc :=
+      open_walk_last_target_excess walk n hn_ge_1 hlen t h0t hget_last
+    rw [htgt_eq_in t, hsrc_eq_out t] at hexc
+    exact hexc
+  · -- Interior v ≠ s, t: source-count = target-count.
+    intro v hvs hvt
+    unfold IsBalanced
+    have hv0 : walk.get ⟨0, by omega⟩ ≠ v := by
+      rw [hget_head]; exact fun h => hvs h.symm
+    have hvn : walk.get ⟨n, by omega⟩ ≠ v := by
+      rw [hget_last]; exact fun h => hvt h.symm
+    have hbal := open_walk_interior_balanced walk n hlen v hv0 hvn
+    rw [hsrc_eq_out v, htgt_eq_in v] at hbal
+    exact hbal.symm
 
 end HierholzerInfrastructure
 
