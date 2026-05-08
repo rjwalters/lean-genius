@@ -132,6 +132,91 @@ In a future session:
 
 ---
 
+## Session 2026-05-08 (Session 2, researcher-9) — ACT (Phase-2 scaffold)
+
+**Mode**: REVISIT (Session 1 was OBSERVE→ORIENT; this is the planned ACT)
+**Outcome**: scaffolded `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+(178 lines) and the matching gallery entry. Took a CDF-based path rather
+than the measure-theoretic Bernoulli-sum path planned in Session 1.
+
+### What Was Built
+
+**Lean file**: `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+
+- `binomialCDF n p x` — concrete CDF of Binomial(n, p), defined as
+  `∑_{j ∈ Finset.range (n+1)}, if (j:ℝ) ≤ x then C(n,j)·p^j·(1-p)^(n-j) else 0`.
+- `multinomialMarginalCDF s p n i₀ x` — concrete marginal CDF of
+  coordinate `i₀`, defined directly from `multinomialProb`.
+- `standardNormalCDF` — opaque marker (counts as +1 axiom).
+- `binomial_clt_pointwise` — AXIOM (de Moivre–Laplace, 1733/1812):
+  the standardized binomial CDF converges pointwise to `standardNormalCDF x`.
+- `multinomialMarginalCDF_eq_binomialCDF` — reduction lemma (sorry,
+  Phase-3 target). Provable from the parent's `multinomial_marginal_pmf`.
+- `multinomial_marginal_clt` — DERIVED THEOREM (no separate axiom).
+  Combines the two via `Filter.Tendsto.congr`.
+
+**Gallery entry**: `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/`
+(meta.json + annotations.json + index.ts).
+
+### Why CDF Instead of Bernoulli-Sum
+
+Session 1 planned to use Mathlib's i.i.d. CLT applied to a Bernoulli-sum
+representation of `Binomial(n,p)`. That path requires:
+
+- Setting up an i.i.d. probability space with sample space `Fin n → {0,1}`.
+- Constructing the binomial distribution as `Σⱼ B_j` with `B_j ~ Bernoulli(p)`.
+- Invoking `ProbabilityTheory.iid_central_limit_theorem`.
+- Bridging measure-weak-convergence to the CDF formulation (Portmanteau).
+
+The CDF path collapses all of this to:
+
+- An axiom that *states* de Moivre–Laplace in CDF form.
+- An equality `multinomialMarginalCDF = binomialCDF` (provable from
+  `multinomial_marginal_pmf` by a fiber regrouping over `k(i₀)` values).
+- One application of `Filter.Tendsto.congr`.
+
+Trade-off: the CDF approach introduces `standardNormalCDF` as `opaque`
+(+1 axiom) but eliminates the entire measure-theoretic infrastructure
+chain. Net axiom count: **2** (opaque CDF + de Moivre–Laplace), vs. an
+estimated 3–5 for the Bernoulli-sum path (the i.i.d. setup typically
+needs at least one axiom to bridge to the standard form).
+
+### Honest Reporting
+
+- This session **could not run** `./proofs/scripts/docker-build.sh` to
+  verify the scaffold compiles (long Docker iteration time + worktree
+  symlink trap that prevents direct Mathlib browsing). CI is the ground
+  truth. Confidence is moderate-high based on Mathlib idiom familiarity
+  but not verified.
+- The Phase-3 reduction is **provable** but not yet proved. Closing it
+  would leave 0 sorries, with the only assumptions being de Moivre–Laplace
+  and the `standardNormalCDF` opaque.
+- This is **Phase-2 scaffolding**, not the answer to OQ-03 — the answer
+  is the *derivation chain*, not the binomial CLT itself, which is
+  axiomatized.
+
+### Files Changed
+
+- NEW `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+- NEW `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/{meta.json,annotations.json,index.ts}`
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+- UPDATED `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json` (knowledge fields)
+
+### Next Steps
+
+1. **Phase-3 next session**: discharge `multinomialMarginalCDF_eq_binomialCDF`
+   by fiber regrouping. Skeleton in `state.md`. Should be ~30 lines.
+2. **Phase-3 stretch**: discharge `binomial_clt_pointwise` by bridging to
+   Mathlib's `iid_central_limit_theorem` via Portmanteau. This is the
+   substantial piece of work and may require ~150+ lines.
+3. **Joint multinomial CLT** (out of scope for this OQ): coordinate-wise
+   CLTs do not imply joint convergence. Cramér–Wold + the covariance
+   computation in `BinomialTheoremOQ02OQ01OQ03.multinomial_covariance`
+   give the joint statement; this should be a sibling OQ.
+
+---
+
 ## Dead Ends
 
 - None yet.

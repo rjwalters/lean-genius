@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-binomialcdf-def",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 95 },
+    "type": "definition",
+    "title": "Concrete CDF of Binomial(n, p)",
+    "content": "binomialCDF n p x is defined as the finite sum ∑_{j=0}^n 𝟙_{[j ≤ x]} · C(n,j) · p^j · (1-p)^(n-j). The indicator is implemented as an `if (j : ℝ) ≤ x then ... else 0` guard. No constraints on p are enforced at the definition level — the de Moivre-Laplace axiom then requires 0 < p < 1.",
+    "mathContext": "$$F_{n,p}(x) = \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\binom{n}{j} p^j (1-p)^{n-j}$$ This is the standard CDF of a Binomial(n,p) random variable evaluated at any real x. For x < 0, F = 0; for x ≥ n, F = 1.",
+    "significance": "key",
+    "relatedConcepts": ["binomial distribution", "cumulative distribution function", "Nat.choose"],
+    "prerequisites": ["binomial PMF", "indicator function", "finite sums"]
+  },
+  {
+    "id": "ann-multinomialmarginalcdf-def",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 103 },
+    "type": "definition",
+    "title": "Marginal CDF of Multinomial Coordinate i₀",
+    "content": "multinomialMarginalCDF s p n i₀ x sums multinomialProb s p n k over all compositions k ∈ s.piAntidiag n, gated by the indicator 𝟙_{[k(i₀) ≤ x]}. This is the joint distribution's marginal CDF for coordinate i₀, defined directly without invoking convolution or measure-theoretic marginalization.",
+    "mathContext": "$$F_{X_{i_0}}(x) = P(X_{i_0} \\le x) = \\sum_{k : \\sum k_i = n, k(i_0) \\le x} P(X = k)$$ The reduction lemma below shows this equals binomialCDF n (p i₀) x exactly (not just approximately).",
+    "significance": "key",
+    "relatedConcepts": ["multinomial distribution", "marginal distribution", "Finset.piAntidiag"],
+    "prerequisites": ["multinomialProb", "marginalization"]
+  },
+  {
+    "id": "ann-stdnormalcdf-opaque",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "range": { "startLine": 105, "endLine": 112 },
+    "type": "definition",
+    "title": "Standard Normal CDF (Opaque Marker)",
+    "content": "standardNormalCDF : ℝ → ℝ is declared `opaque`. Lean treats it as an unknown function with no available reductions; we only know its name. The semantic intent is Φ(x) = (1/√(2π)) ∫_{-∞}^x e^{-t²/2} dt, but bridging from Mathlib's measure-theoretic Gaussian to a CDF function is non-trivial and is left as a Phase-3 target. Note: `opaque` declarations count toward the axiom count.",
+    "mathContext": "$$\\Phi(x) = \\frac{1}{\\sqrt{2\\pi}} \\int_{-\\infty}^x e^{-t^2/2}\\, dt$$ The standard normal CDF; smooth, strictly increasing, with $\\Phi(-\\infty) = 0$, $\\Phi(0) = 1/2$, $\\Phi(+\\infty) = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["standard normal distribution", "Gaussian", "opaque declarations"],
+    "prerequisites": ["measure theory", "Lebesgue integration"]
+  },
+  {
+    "id": "ann-binomial-clt-axiom",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "range": { "startLine": 114, "endLine": 131 },
+    "type": "insight",
+    "title": "Axiom: de Moivre-Laplace Theorem",
+    "content": "binomial_clt_pointwise axiomatizes the classical de Moivre-Laplace CLT in CDF form: for 0 < p < 1, the standardized binomial CDF binomialCDF n p (np + x √(np(1-p))) converges pointwise to standardNormalCDF x as n → ∞. Choosing the CDF formulation rather than measure-weak-convergence avoids the measure-theoretic setup needed to use Mathlib's `ProbabilityTheory.iid_central_limit_theorem`. Bridging the two formulations is a Phase-3 task; doing so would discharge this axiom.",
+    "mathContext": "$$F_{n,p}\\!\\left(np + x\\sqrt{np(1-p)}\\right) \\;\\xrightarrow[n\\to\\infty]{}\\; \\Phi(x), \\qquad \\forall x \\in \\mathbb{R},\\ 0 < p < 1.$$ Equivalent to: $(X_n - np) / \\sqrt{np(1-p)} \\Rightarrow \\mathcal{N}(0,1)$ where $X_n \\sim \\text{Binomial}(n,p)$. Historical: de Moivre 1733 (case $p = 1/2$), Laplace 1812 (general $p \\in (0,1)$).",
+    "significance": "key",
+    "relatedConcepts": ["de Moivre-Laplace theorem", "central limit theorem", "convergence in distribution", "Tendsto", "atTop", "nhds"],
+    "prerequisites": ["binomial distribution", "standardization", "convergence of sequences"]
+  },
+  {
+    "id": "ann-reduction-lemma",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "range": { "startLine": 133, "endLine": 149 },
+    "type": "technique",
+    "title": "Reduction Lemma: Marginal CDF = Binomial CDF (sorry, Phase-3)",
+    "content": "multinomialMarginalCDF_eq_binomialCDF asserts that the marginal CDF of the multinomial *equals* (not just approximates) the binomial CDF with parameter p(i₀). The proof (Phase-3 target, currently sorry) regroups the sum over k ∈ s.piAntidiag n into fibers indexed by j = k(i₀) for j = 0, ..., n; on each fiber, BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf provides ∑_{k: k(i₀) = j} multinomialProb s p n k = C(n,j) · p(i₀)^j · (1 - p(i₀))^(n-j). The if-condition (k i₀ : ℝ) ≤ x becomes (j : ℝ) ≤ x, factoring out of the inner sum.",
+    "mathContext": "$$F_{X_{i_0}}(x) \\;=\\; \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\sum_{k: k(i_0) = j} P(X=k) \\;=\\; \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\binom{n}{j} p_{i_0}^j (1 - p_{i_0})^{n-j} \\;=\\; F_{n, p_{i_0}}(x)$$ The middle step uses `multinomial_marginal_pmf`; the outer step is rearranging a sum-of-sums. This is an *equality* of finite sums — no limits, no convergence, just algebraic regrouping.",
+    "significance": "key",
+    "relatedConcepts": ["fiber decomposition", "Finset.sum_partition", "multinomial_marginal_pmf"],
+    "prerequisites": ["BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf", "Finset.piAntidiag"]
+  },
+  {
+    "id": "ann-main-clt-derived",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
+    "range": { "startLine": 151, "endLine": 178 },
+    "type": "insight",
+    "title": "Main Theorem: Multinomial Marginal CLT (Derived, No New Axiom)",
+    "content": "multinomial_marginal_clt is *derived*, not axiomatized. The proof builds a pointwise equality `key : ∀ n, multinomialMarginalCDF (...) = binomialCDF (...)` from the reduction lemma, then applies `Filter.Tendsto.congr` to convert binomial_clt_pointwise into the marginal-CLT statement. Because the reduction is an *equality* (not asymptotic), Tendsto.congr — which only requires pointwise equality of two sequences — is exactly the right tool: it is strictly stronger than needed.",
+    "mathContext": "Schematic: from $F_{X_{i_0}^{(n)}}(\\cdot) = F_{n,p_{i_0}}(\\cdot)$ (reduction) and $F_{n,p_{i_0}}(\\cdot) \\to \\Phi$ (de Moivre-Laplace axiom), conclude $F_{X_{i_0}^{(n)}}(\\cdot) \\to \\Phi$. The proof is one application of `Filter.Tendsto.congr (fun n => (key n).symm)`. The non-degeneracy hypotheses 0 < p(i₀) < 1 are required by the de Moivre-Laplace axiom — without them, the standardization $\\sqrt{np(1-p)}$ vanishes.",
+    "significance": "key",
+    "relatedConcepts": ["Filter.Tendsto.congr", "convergence in distribution", "marginal-binomial reduction"],
+    "prerequisites": ["binomial_clt_pointwise", "multinomialMarginalCDF_eq_binomialCDF", "Filter.Tendsto"]
+  }
+]

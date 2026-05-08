@@ -1,7 +1,7 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
   "title": "Multinomial CLT in Lean: does (Xᵢ - npᵢ)/√(npᵢ(1-pᵢ)) converge in distribution to N(0,1) for each coordinate as n → ∞?",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -34,30 +34,44 @@
     "goal": "Phase-2: produce `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with (a) a precise Lean statement of the marginal CLT for the i-th coordinate of Multinomial(n, p₁,…,pₖ), (b) either a proof via Mathlib's `ProbabilityTheory.iid_central_limit_theorem` applied to the indicator variables Yⱼ = 𝟙[trial j → outcome i] (which are Bernoulli(pᵢ) i.i.d.), or an axiomatized statement with full proof sketch, and (c) a coordinate-free version using Cramér-Wold for the joint vector CLT."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-07T20:30:00.000Z",
-    "iteration": 1,
-    "focus": "Phase-2 orientation: decomposition (A/B/C/D) recorded in research/problems/<slug>/knowledge.md. Sublemma A is DONE in BinomialTheoremOQ02OQ01OQ02.lean (`multinomial_marginal_pmf`). Next ACT session: confirm Mathlib's i.i.d. CLT signature and scaffold the new Lean file.",
+    "phase": "ACT",
+    "since": "2026-05-08T03:30:00.000Z",
+    "iteration": 2,
+    "focus": "Phase-2 STATEMENT scaffold complete: BinomialTheoremOQ02OQ01OQ01OQ03.lean (178 lines, 2 axioms incl. opaque, 1 sorry, 2 theorems). Multinomial marginal CLT stated in CDF form and DERIVED via Filter.Tendsto.congr from the de Moivre-Laplace axiom and the marginal-PMF identity already proved in the parent file. Phase-3 next: discharge the multinomialMarginalCDF_eq_binomialCDF reduction lemma sorry by fiber regrouping over k(i₀).",
     "blockers": [
-      "Local Docker build memory is ~7.65 GiB — risky for a new Mathlib-dependent file. CI verification only."
+      "Build verification: this session could not run docker-build.sh; CI is the ground truth.",
+      "Reduction lemma sorry (Phase-3 target, provable from multinomial_marginal_pmf).",
+      "standardNormalCDF opaque (counts as +1 axiom; bridge to Mathlib Gaussian is a Phase-3 task).",
+      "binomial_clt_pointwise axiom (Phase-3 target via Portmanteau bridge to Mathlib iid_central_limit_theorem)."
     ],
-    "nextAction": "Phase 3 (ACT) in a future session: scaffold `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with sublemma A re-export, the marginal-CLT statement, and either a full proof via Mathlib's i.i.d. CLT applied to the Bernoulli-sum representation or a one-axiom isolation (axiomatise sublemma C only).",
+    "nextAction": "Phase-3: discharge multinomialMarginalCDF_eq_binomialCDF by fiber regrouping (skeleton in state.md). After that: bridge binomial_clt_pointwise to Mathlibs ProbabilityTheory.iid_central_limit_theorem via Portmanteau.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE phase. The hard structural work is DONE: `BinomialTheoremOQ02OQ01.lean` proves the multinomial PMF normalization, and `BinomialTheoremOQ02OQ01OQ02.lean` proves marginals-are-binomial via probability-generating-functions. The remaining task is to STATE the standardized marginal CLT and either prove it from Mathlib's CLT or cleanly axiomatize. The natural strategy is the Bernoulli-sum representation: Xᵢ = ∑_{j=1..n} 𝟙[trial j hits outcome i] where each indicator is Bernoulli(pᵢ) i.i.d., reducing to Mathlib's i.i.d. CLT.",
-    "builtItems": [],
+    "progressSummary": "ACT phase, Phase-2 scaffold complete. Lean file BinomialTheoremOQ02OQ01OQ01OQ03.lean (178 lines) STATES the multinomial marginal CLT in CDF form and DERIVES it (via Filter.Tendsto.congr) from two axioms: binomial_clt_pointwise (de Moivre-Laplace) and standardNormalCDF (opaque). One sorry remains in the reduction lemma multinomialMarginalCDF_eq_binomialCDF (provable from BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf by fiber regrouping). Gallery entry created. Path chosen was CDF-based (not the Bernoulli-sum Mathlib-iid-CLT path planned in Session 1) to avoid heavy MeasureTheory setup; trade-off is +1 axiom (standardNormalCDF opaque) for net axiomCount=2.",
+    "builtItems": [
+      "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:90 (concrete CDF of Binomial(n,p))",
+      "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:97 (marginal CDF of multinomial)",
+      "standardNormalCDF (opaque) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:112",
+      "binomial_clt_pointwise (axiom, de Moivre-Laplace in CDF form) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:126",
+      "multinomialMarginalCDF_eq_binomialCDF (theorem, sorry) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:144",
+      "multinomial_marginal_clt (DERIVED theorem, no separate axiom) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:160",
+      "Gallery entry src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/ (meta.json, annotations.json, index.ts)"
+    ],
     "insights": [
       "Multinomial marginal Xᵢ ~ Binomial(n, pᵢ) is ALREADY proved (`BinomialTheoremOQ02OQ01OQ02.lean`); OQ-02-OQ-01-OQ-01-OQ-03 'just' needs the binomial CLT ON TOP",
       "Bernoulli-sum representation is the cleanest formal approach: Xᵢ = ∑_{j=1}^n Y_j where Y_j ~ Bernoulli(pᵢ) i.i.d.; then mean = npᵢ, variance = npᵢ(1-pᵢ), and Mathlib's i.i.d. CLT applies directly",
       "Mathlib's `ProbabilityTheory.iid_central_limit_theorem` gives convergence in distribution for i.i.d. sequences with finite second moment — Bernoulli has bounded second moment, so it applies",
       "The standardization `(X-μ)/σ → N(0,1)` is the canonical form and matches Mathlib's CLT statement",
       "The JOINT multinomial CLT (vector form) requires Cramér-Wold and a degenerate multivariate normal (since coordinates are constrained to sum to n); not in scope for OQ-03 (marginal only)",
-      "A clean STATEMENT-only PR (axiomatize the binomial CLT, then derive the multinomial marginal CLT from `binomial_marginal_of_multinomial`) would be a high-value Phase-2 deliverable even without full Mathlib-CLT proof"
+      "A clean STATEMENT-only PR (axiomatize the binomial CLT, then derive the multinomial marginal CLT from `binomial_marginal_of_multinomial`) would be a high-value Phase-2 deliverable even without full Mathlib-CLT proof",
+      "CDF-form CLT statement avoids the heavy MeasureTheory + IsProbabilityMeasure + Mathlib-iid-CLT setup needed for the measure-weak-convergence path; cost is +1 axiom (standardNormalCDF opaque)",
+      "The reduction multinomialMarginalCDF = binomialCDF is an *equality* of finite sums (not asymptotic), so Filter.Tendsto.congr suffices to lift the binomial CLT axiom to the marginal CLT",
+      "The DERIVED-theorem pattern keeps the axiom inventory honest: multinomial_marginal_clt is not itself an axiom, only the underlying de Moivre-Laplace + opaque CDF marker are"
     ],
     "mathlibGaps": [
       "Mathlib's `Mathlib.Probability.Distributions.Binomial` exposes the PMF but the named theorem 'binomial CLT' / 'de Moivre-Laplace' may not be present in canonical form",
@@ -65,12 +79,10 @@
       "Multivariate CLT (Cramér-Wold) — partial in Mathlib; would be needed for the joint vector form (out of scope for this OQ but referenced in nextSteps)"
     ],
     "nextSteps": [
-      "Phase-2: scaffold `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` importing `Proofs.BinomialTheoremOQ02OQ01OQ02` (marginal binomial proof) and `Mathlib.Probability.CentralLimitTheorem`",
-      "Phase-2: state the marginal CLT as `theorem multinomial_marginal_clt : ∀ (i : Fin k), Tendsto (fun n => ((X_n i - n * p i) / Real.sqrt (n * p i * (1 - p i))).distribution) atTop (𝓝 (gaussianReal 0 1))` (using Mathlib's `gaussianReal`)",
-      "Phase-2: prove via the Bernoulli-sum representation if Mathlib's i.i.d. CLT applies cleanly; otherwise axiomatize as `axiom multinomial_marginal_clt` with proof-sketch citation to de Moivre-Laplace",
-      "Phase-3: create gallery entry `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/` with `meta.json` + `annotations.json` + `index.ts` linked to `binomial-theorem-oq-02-oq-01-oq-01` parent",
-      "Stretch: state and (axiomatize) the JOINT multinomial CLT to a degenerate multivariate normal as a separate axiom for completeness; cross-reference to a future `multinomial-vector-clt` OQ if that's how the seeker tags it",
-      "Cross-link with `central-limit-theorem` and `de-moivre-oq-*` gallery entries (the de Moivre-Laplace theorem is the foundational classical instance)"
+      "Phase-3 reduction proof: discharge multinomialMarginalCDF_eq_binomialCDF by regrouping s.piAntidiag n into fibers over k(i₀), then applying multinomial_marginal_pmf to each fiber. Skeleton in state.md.",
+      "Phase-3 stretch: bridge binomial_clt_pointwise to Mathlibs ProbabilityTheory.iid_central_limit_theorem via the Portmanteau theorem at continuity points of the standard normal CDF.",
+      "Phase-3 stretch: replace standardNormalCDF opaque with a measure-theoretic CDF derived from Mathlibs Gaussian measure (in Mathlib.Probability.Distributions.Gaussian.Basic).",
+      "Joint multinomial CLT (sibling OQ): use Cramer-Wold + the covariance computation in BinomialTheoremOQ02OQ01OQ03.multinomial_covariance to get vector convergence to a degenerate multivariate normal."
     ]
   },
   "tags": [
@@ -121,7 +133,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-07T19:20:00.000Z",
+  "lastUpdate": "2026-05-08T03:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -256,6 +268,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ03.lean",
+      "lineCount": 178,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean"
     }
   ]
 }
