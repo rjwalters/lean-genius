@@ -2259,4 +2259,111 @@ private lemma satDiagBases_t1_in_topSimps2
 
 end N2LastFaceBases
 
+-- ============================================================
+-- (S21A) Forward extraction for `_hLastFace` (t1-side).
+--
+-- For `b ∈ t1Bases N` and any drop-index `k : Fin 3`, if all
+-- non-`k` vertices of `t1 b` lie on geometric face 2 (the
+-- per-vertex condition that defines membership in the
+-- `_hLastFace` filter of `Triangulation.boundary_doors_odd`),
+-- then the drop must be `b` itself and `b ∈ satDiagBases N`. The
+-- two non-diagonal drop cases are eliminated by inconsistent
+-- face-2 sums (`b.1+b.2 = N ∧ b.1+b.2+1 = N` is impossible);
+-- the diagonal-drop case forces both endpoints to satisfy
+-- `b.1+b.2+1 = N`, exactly the saturating-diagonal condition.
+--
+-- This is the t1-side of the eventual bijection between the
+-- `_hLastFace` filter and `face2_path_odd`'s color-changing
+-- edges. S21B will assemble the full discharge by combining
+-- this with the existing t2-extinction (every t2 face has ≥ 2
+-- containers, so `adj = none ∧ S = t2 c` is impossible — see
+-- `boundaryOnFace_simData2` t2 branch) and an `IsDoor` ↔
+-- `g k ≠ g (k+1)` color-change bridge.
+-- ============================================================
+
+section N2LastFaceExtract
+
+/-- Forward extraction for `_hLastFace` (t1-side): for
+`b ∈ t1Bases N` and `k : Fin 3`, if every non-`k` vertex of
+`t1 b` lies on geometric face 2 (`onFaceΔ2_strict N · 2`), then
+`b ∈ satDiagBases N` and the drop is `b` itself.
+
+Proof: case-split on `vertexEnum (t1 b) hS k ∈ t1 b` (the S19.3
+pattern). The drops `(b.1+1, b.2)` and `(b.1, b.2+1)` each leave
+a face whose two endpoints differ in `b.1+b.2` sum by 1, so they
+cannot simultaneously satisfy `(·).1+(·).2 = N`. The drop `b`
+leaves the diagonal edge whose endpoints both satisfy
+`b.1+b.2+1 = N`, exactly the `satDiagBases_mem_iff` condition. -/
+private lemma t1_lastFace_implies_satDiag
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N)
+    (k : Fin 3)
+    (h_face2 : ∀ j : Fin 3, j ≠ k →
+      onFaceΔ2_strict N
+        ((simData2 N).vertexEnum (t1 b)
+          (t1_in_topSimps2_of_base N hb) j)
+        (2 : Fin 3)) :
+    b ∈ satDiagBases N ∧
+      (simData2 N).vertexEnum (t1 b)
+        (t1_in_topSimps2_of_base N hb) k = b := by
+  set hS := t1_in_topSimps2_of_base N hb with hS_def
+  -- Convert the `∀ j ≠ k`-on-vertexEnum hypothesis to the
+  -- `∀ v ∈ faceOf` form via the S19.2 generic bridge.
+  have h_face_v : ∀ v ∈ (simData2 N).faceOf (t1 b) hS k,
+      onFaceΔ2_strict N v (2 : Fin 3) :=
+    (SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem
+      (simData2 N) (t1 b) hS k _).mp h_face2
+  -- Case-split on which vertex of `t1 b` is dropped (S19.3 pattern).
+  have h_drop : (simData2 N).vertexEnum (t1 b) hS k ∈ t1 b :=
+    (simData2 N).vertexEnum_mem (t1 b) hS k
+  simp only [t1, Finset.mem_insert, Finset.mem_singleton] at h_drop
+  rcases h_drop with hd | hd | hd
+  · -- Drop = `(b.1+1, b.2)`: face = `{b, (b.1, b.2+1)}` (vertical edge).
+    -- Both must be on face 2: forces `b.1+b.2 = N ∧ b.1+(b.2+1) = N`.
+    exfalso
+    have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
+        ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) := by
+      show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+      rw [hd]; exact t1_erase_first b
+    have h_b_on : onFaceΔ2_strict N b (2 : Fin 3) := by
+      apply h_face_v; rw [h_face_eq]; simp
+    have h_v_on : onFaceΔ2_strict N (b.1, b.2+1) (2 : Fin 3) := by
+      apply h_face_v; rw [h_face_eq]; simp
+    have h_b_face := h_b_on.2
+    have h_v_face := h_v_on.2
+    rw [onFaceΔ2_two_iff] at h_b_face h_v_face
+    omega
+  · -- Drop = `(b.1, b.2+1)`: face = `{b, (b.1+1, b.2)}` (horizontal edge).
+    -- Symmetric contradiction via `b.1+b.2 = N ∧ (b.1+1)+b.2 = N`.
+    exfalso
+    have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
+        ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
+      show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+      rw [hd]; exact t1_erase_second b
+    have h_b_on : onFaceΔ2_strict N b (2 : Fin 3) := by
+      apply h_face_v; rw [h_face_eq]; simp
+    have h_v_on : onFaceΔ2_strict N (b.1+1, b.2) (2 : Fin 3) := by
+      apply h_face_v; rw [h_face_eq]; simp
+    have h_b_face := h_b_on.2
+    have h_v_face := h_v_on.2
+    rw [onFaceΔ2_two_iff] at h_b_face h_v_face
+    omega
+  · -- Drop = `b`: face = `{(b.1, b.2+1), (b.1+1, b.2)}` (diagonal edge).
+    -- Endpoint `(b.1, b.2+1)` on face 2 ⟹ `b.1 + b.2 + 1 = N`,
+    -- exactly the `satDiagBases` defining condition.
+    have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
+        ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
+      show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+      rw [hd]; exact t1_erase_third b
+    have h_v_on : onFaceΔ2_strict N (b.1, b.2+1) (2 : Fin 3) := by
+      apply h_face_v; rw [h_face_eq]; simp
+    have h_v_face := h_v_on.2
+    rw [onFaceΔ2_two_iff] at h_v_face
+    rw [t1Bases_mem_iff] at hb
+    have h_sat : b.1 + b.2 + 1 = N := by omega
+    refine ⟨?_, hd⟩
+    rw [satDiagBases_mem_iff]
+    exact ⟨hb.1, hb.2.1, h_sat⟩
+
+end N2LastFaceExtract
+
 end SpernerFreudSimp
