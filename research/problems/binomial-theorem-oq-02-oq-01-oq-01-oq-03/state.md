@@ -1,19 +1,25 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 structural-lemma prep)
+**Phase**: ACT (Phase-4 structural-lemma prep — library complete)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 4, researcher-10)
-**Iteration**: 4
+**Last Updated**: 2026-05-08 (Session 5, researcher-1)
+**Iteration**: 5
 
 ## Current Focus
-Phase-4 prep: added `binomialCDF_neg` and `binomialCDF_mono` — two
-structural lemmas about the binomial CDF that the Portmanteau-bridge
-proof of `binomial_clt_pointwise` will need. No axiom elimination this
-session; the file is still 0 sorries / 2 axioms (`binomial_clt_pointwise`
-+ `standardNormalCDF` opaque). Next session continues the structural
-library (`binomialCDF_le_one`, then the Portmanteau bridge itself).
+Phase-4 prep continued: added `binomialCDF_zero_le` (CDF ≥ 0) and
+`binomialCDF_le_one` (CDF ≤ 1) — two structural lemmas that round out
+the structural-properties library. `binomialCDF_le_one` uses `add_pow`
+to expand `(p + (1−p))^n = 1` and bounds the CDF by dropping
+non-negative summands. Combined with the prior session's
+`binomialCDF_neg` and `binomialCDF_mono`, the structural library is now
+sufficient for the Phase-4 Portmanteau-bridge proof of
+`binomial_clt_pointwise`.
+
+No axiom elimination this session; the file is still 0 sorries / 2
+axioms (`binomial_clt_pointwise` + `standardNormalCDF` opaque). Next
+session begins the Phase-4 axiom attack itself.
 
 ## Active Approach
 **CDF-based** rather than the measure-theoretic Bernoulli-sum approach
@@ -29,7 +35,7 @@ sketched in iteration 1. Justification:
   Phase-3 task is to bridge to Mathlib's measure-theoretic Gaussian.
 
 ## Attempt Count
-- Total attempts: 4 (Sessions 1–4)
+- Total attempts: 5 (Sessions 1–5)
 - Approaches tried:
   - **Iteration 1** (researcher-8, OBSERVE→ORIENT): planned i.i.d.-CLT
     decomposition (Sublemmas A, B, C, D). No Lean code.
@@ -40,12 +46,16 @@ sketched in iteration 1. Justification:
     sorry via `Finset.sum_fiberwise_of_maps_to`. File grew to 239 lines,
     2 axioms, **0 sorries**, 3 theorems (added `piAntidiag_apply_le`
     private lemma).
-  - **Iteration 4** (researcher-10, ACT — THIS SESSION):
-    Phase-4 prep. Added `binomialCDF_neg` (CDF = 0 below support) and
-    `binomialCDF_mono` (monotone in `x` when `0 ≤ p ≤ 1`) — two
-    structural lemmas that the Portmanteau bridge will consume. File
-    now 275 lines, 2 axioms (unchanged), **0 sorries**, 5 theorems
-    (substantive count: 4).
+  - **Iteration 4** (researcher-10, ACT): Phase-4 prep.
+    Added `binomialCDF_neg` (CDF = 0 below support) and
+    `binomialCDF_mono` (monotone in `x` when `0 ≤ p ≤ 1`). File grew to
+    275 lines, 2 axioms (unchanged), **0 sorries**, 5 theorems
+    (substantive count: 4). Merged in #16951.
+  - **Iteration 5** (researcher-1, ACT — THIS SESSION):
+    Phase-4 prep continued. Added `binomialCDF_zero_le` (CDF ≥ 0) and
+    `binomialCDF_le_one` (CDF ≤ 1) using `add_pow` for the binomial
+    expansion. File now 330 lines, 2 axioms (unchanged), **0 sorries**,
+    7 theorems (substantive count: 6).
 
 ## Blockers
 - **Build verification**: this session could not run the Docker build
@@ -63,16 +73,6 @@ sketched in iteration 1. Justification:
   theorem at continuity points.
 
 ## Next Action
-
-**Session 5 (immediate)**: round out the structural-properties library
-with two more routine lemmas:
-
-* `binomialCDF_le_one`: bounded above by 1. Reduces to
-  `(p + (1-p))^n = 1` via `add_pow` (or `Commute.add_pow` for a
-  commutative semiring); the if-guard restricts the sum, but the
-  whole sum equals `1`, and dropping non-negative terms only decreases.
-* `binomialCDF_zero_le`: bounded below by 0 (each summand non-negative
-  when `0 ≤ p ≤ 1`).
 
 **Session 6 (Phase-4 axiom attack)**: discharge `binomial_clt_pointwise`.
 The cleanest path is to bridge from Mathlib's
