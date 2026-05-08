@@ -57,6 +57,12 @@ gives the multinomial marginal CLT.
   opaque was replaced in Session 6 with a concrete `noncomputable def`
   using Mathlib's `gaussianPDFReal`.
 - Status: axiomatized — not "verified".
+- Session 7 (this session) adds two boundary-saturation lemmas
+  `binomialCDF_zero` and `binomialCDF_eq_one`, completing the four-corner
+  characterization of `binomialCDF` (`_neg` left-tail = 0, `_eq_one`
+  right-tail = 1, `_zero_le` lower bound, `_le_one` upper bound). These
+  feed the Phase-4 Portmanteau bridge that aims to discharge
+  `binomial_clt_pointwise`.
 
 The contribution of this file is the *full reduction* of the multinomial
 marginal CLT to the classical Binomial CLT, leaving only the latter as
@@ -419,6 +425,62 @@ theorem binomialCDF_le_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
   · exact le_refl _
   · exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
       (pow_nonneg h1mp _)
+
+/-- At `x = 0`, only the `j = 0` term contributes to `binomialCDF n p`;
+    every other `j ∈ {1, …, n}` has `(j : ℝ) ≥ 1 > 0`, failing the
+    if-guard. The surviving term simplifies to
+    `C(n, 0) · p^0 · (1 − p)^(n − 0) = (1 − p)^n`.
+
+    Useful for the Phase-4 Portmanteau bridge: the boundary value at
+    `x = 0` (i.e., the probability of zero successes) is the only
+    closed-form value of the CDF, and it appears in the standardised
+    threshold `np + x √(np(1−p))` when `x = -√(np/(1-p))`. -/
+theorem binomialCDF_zero (n : ℕ) (p : ℝ) :
+    binomialCDF n p 0 = (1 - p) ^ n := by
+  unfold binomialCDF
+  -- Reduce the sum to its single non-zero term `j = 0`.
+  rw [Finset.sum_eq_single 0]
+  · -- j = 0: if-guard `(0 : ℝ) ≤ 0` holds; the term is `1 · 1 · (1 − p)^n`.
+    simp [Nat.choose_zero_right]
+  · -- For `j ≠ 0` in the range, if-guard `(j : ℝ) ≤ 0` is false.
+    intro j _ hjne
+    have hjpos : 0 < j := Nat.pos_of_ne_zero hjne
+    have hj_not_le : ¬ (j : ℝ) ≤ 0 := by
+      push_neg
+      exact_mod_cast hjpos
+    rw [if_neg hj_not_le]
+  · -- `0 ∈ Finset.range (n+1)` is automatic.
+    intro h
+    exact absurd (Finset.mem_range.mpr (Nat.zero_lt_succ _)) h
+
+/-- For `0 ≤ p ≤ 1` and any `x` with `(n : ℝ) ≤ x`, every if-guard
+    `(j : ℝ) ≤ x` is satisfied (since `j ∈ {0, …, n}` gives
+    `(j : ℝ) ≤ (n : ℝ) ≤ x`). The sum then equals the full binomial
+    expansion `(p + (1 − p))^n = 1`.
+
+    Useful for the Phase-4 Portmanteau bridge: the right-tail
+    saturation `binomialCDF n p x = 1` for `x ≥ n` mirrors
+    `Φ(x) → 1` as `x → ∞` for the standard normal. The companion
+    `binomialCDF_neg` gives the matching left-tail saturation. -/
+theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    {x : ℝ} (hx : (n : ℝ) ≤ x) : binomialCDF n p x = 1 := by
+  unfold binomialCDF
+  -- All if-guards collapse to the true branch.
+  have h_simp : ∀ j ∈ Finset.range (n + 1),
+      (if (j : ℝ) ≤ x then (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) else 0)
+      = (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) := by
+    intro j hj
+    rw [Finset.mem_range, Nat.lt_succ_iff] at hj
+    have hjx : (j : ℝ) ≤ x := le_trans (by exact_mod_cast hj) hx
+    rw [if_pos hjx]
+  rw [Finset.sum_congr rfl h_simp]
+  -- Apply the binomial theorem to identify with `(p + (1 − p))^n = 1`.
+  have hadd := add_pow p (1 - p) n
+  have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
+  rw [hp_eq, one_pow] at hadd
+  rw [← hadd]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  ring
 
 /-! ## Main theorem: multinomial marginal CLT (derived) -/
 
