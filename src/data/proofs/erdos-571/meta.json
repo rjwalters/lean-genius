@@ -150,6 +150,122 @@
     "path": "Proofs/Erdos571Problem.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "IsTuranExponent",
+      "type": "definition",
+      "statement": "$\\mathrm{IsTuranExponent}\\ \\alpha \\iff (1 \\leq \\alpha < 2) \\land \\exists G, V, \\mathrm{ex},\\ \\mathrm{IsBipartite}\\ G \\land \\mathrm{ex} \\asymp n^\\alpha$",
+      "significance": "**The central definition.** Encodes what it means for a rational $\\alpha$ to be 'achieved' as a bipartite Turán exponent: there must exist a vertex type $V$, a bipartite graph $G : \\mathrm{Graph}\\ V$, and an extremal-number function $\\mathrm{ex} : \\mathbb{N} \\to \\mathbb{R}$ satisfying $\\mathrm{ex}(n) \\asymp n^\\alpha$. The interval restriction $1 \\le \\alpha < 2$ encodes the Erdős-Gallai (trees achieve $\\alpha=1$) and Bondy-Simonovits (every bipartite Turán exponent is $< 2$) classical bounds.",
+      "description": "Lean signature: `def IsTuranExponent (α : ℚ) : Prop := (1 ≤ α ∧ α < 2) ∧ ∃ V : Type, ∃ G : Graph V, ∃ ex : ℕ → ℝ, IsBipartite G ∧ AsymptoticEquiv ex (fun n => (n : ℝ) ^ (α : ℝ))`. The custom `AsymptoticEquiv` carries the explicit $c_1, c_2 > 0$ and threshold $N_0$ witnesses."
+    },
+    {
+      "name": "erdos_571_conjecture",
+      "type": "definition",
+      "statement": "$\\forall \\alpha \\in \\mathbb{Q},\\ (1 \\leq \\alpha < 2) \\Rightarrow \\mathrm{IsTuranExponent}\\ \\alpha$",
+      "significance": "**The OPEN problem.** Formalizes the 1984 Erdős-Simonovits conjecture: every rational in $[1,2)$ is realized as a Turán exponent of some single bipartite graph. Phrased as `def : Prop` (not `theorem`) precisely because no proof is known — the file states the problem, not its solution. Bukh-Conlon (2018) settled the family variant; the single-graph version remains open as of 2024.",
+      "description": "Lean signature: `def erdos_571_conjecture : Prop := ∀ α : ℚ, 1 ≤ α → α < 2 → IsTuranExponent α`. Notably uses `def`, not `theorem`, to flag the unproved status — a verified pattern across the Erdős open-problem entries in this gallery."
+    },
+    {
+      "name": "conlon_janzer_lee_exponents",
+      "type": "axiom",
+      "statement": "$\\forall s \\in \\mathbb{N},\\ s \\geq 2 \\Rightarrow \\mathrm{IsTuranExponent}\\bigl(\\tfrac{3}{2} - \\tfrac{1}{2s}\\bigr)$",
+      "significance": "**The Conlon-Janzer-Lee 2021 family.** Axiomatizes a parametric family of achieved exponents accumulating at $3/2$ from below: for $s = 2$ the exponent is $5/4$, for $s=3$ it is $4/3$, for $s=4$ it is $11/8$, $\\ldots \\to 3/2^{-}$. Witnessed by subdivisions of $K_{s,s}$ with carefully chosen lengths; see Conlon-Janzer-Lee, *More on the extremal number of subdivisions*, Combinatorica 41(4) (2021).",
+      "description": "Lean signature: `axiom conlon_janzer_lee_exponents : ∀ s : ℕ, s ≥ 2 → IsTuranExponent (3/2 - 1/(2 * s))`. Stated as an axiom rather than proved because the underlying construction (random-algebraic / subdivision-based bipartite graphs) is far outside the current Mathlib formalization scope."
+    },
+    {
+      "name": "jiang_qiu_low_exponents",
+      "type": "axiom",
+      "statement": "$\\forall a, b \\in \\mathbb{N},\\ a, b \\geq 1 \\land b > a^2 \\Rightarrow \\mathrm{IsTuranExponent}\\bigl(1 + \\tfrac{a}{b}\\bigr)$",
+      "significance": "**The Jiang-Qiu 2023 low-exponent family.** Axiomatizes the difficult near-1 regime: every rational $1 + a/b$ with $b > a^2$ is a Turán exponent. The constraint $b > a^2$ is sharp for the algebraic-graph technique (Jiang-Qiu's 2023 paper uses norm polynomials over finite fields, where the polynomial degree forces the quadratic restriction). Densely covers the lower part of $[1,2)$ but not all rationals there.",
+      "description": "Lean signature: `axiom jiang_qiu_low_exponents : ∀ a b : ℕ, a ≥ 1 → b ≥ 1 → b > a^2 → IsTuranExponent (1 + (a : ℚ) / b)`. The $b > a^2$ guard is essential — relaxing it would require a fundamentally new construction technique."
+    },
+    {
+      "name": "exponent_7_5",
+      "type": "axiom",
+      "statement": "$\\mathrm{IsTuranExponent}(7/5)$",
+      "significance": "**A standalone achieved exponent.** $7/5 = 1.4$ is realized by a specific bipartite graph (a subdivided $K_{4,4}$ in the literature) but is not currently captured by any of the parametric families axiomatized above. Listed separately to flag that the achieved-exponent set is not exactly the union $\\{3/2 - 1/(2s)\\} \\cup \\{1 + a/b : b > a^2\\}$ — there are sporadic additional values.",
+      "description": "Lean signature: `axiom exponent_7_5 : IsTuranExponent (7/5)`. Used by `erdos_571_summary` to demonstrate that the file knows about exponents outside the two main parametric families."
+    },
+    {
+      "name": "erdos_571_summary",
+      "type": "core",
+      "statement": "$\\mathrm{IsTuranExponent}(5/4) \\land \\mathrm{IsTuranExponent}(3/2) \\land \\mathrm{IsTuranExponent}(7/5)$",
+      "significance": "**The summary verification.** Combines the three available axioms into a single theorem demonstrating concrete achievable exponents — $5/4$ from CJL at $s=2$, the limit $3/2$ from CJL as $s \\to \\infty$ (here proved via `jiang_qiu_low_exponents` at $a=1, b=2$), and $7/5$ from `exponent_7_5`. The only `theorem` (not axiom or definition) in the file.",
+      "description": "Lean signature: `theorem erdos_571_summary : IsTuranExponent (5/4) ∧ IsTuranExponent (3/2) ∧ IsTuranExponent (7/5)`. Proof is a direct triple via `⟨..., ..., ...⟩` invoking the three axioms with explicit numeric arguments."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kővári, T., Sós, V. T., Turán, P.",
+      "title": "On a problem of K. Zarankiewicz",
+      "year": "1954",
+      "venue": "Colloquium Mathematicum 3, 50-57",
+      "note": "The classical upper bound $\\mathrm{ex}(n; K_{s,t}) = O(n^{2-1/s})$ for complete bipartite graphs. Together with Bondy-Simonovits, forces every bipartite Turán exponent to lie strictly below 2 — justifying the right endpoint of $[1, 2)$ in `IsTuranExponent`."
+    },
+    {
+      "authors": "Erdős, P., Gallai, T.",
+      "title": "On maximal paths and circuits of graphs",
+      "year": "1959",
+      "venue": "Acta Mathematica Academiae Scientiarum Hungaricae 10, 337-356",
+      "note": "Proves $\\mathrm{ex}(n; T) = \\Theta(n)$ for every tree $T$, establishing exponent $\\alpha = 1$ as achieved (the lower endpoint of `IsTuranExponent`'s allowed interval)."
+    },
+    {
+      "authors": "Bondy, J. A., Simonovits, M.",
+      "title": "Cycles of even length in graphs",
+      "year": "1974",
+      "venue": "Journal of Combinatorial Theory, Series B 16(2), 97-105",
+      "note": "Proves $\\mathrm{ex}(n; C_{2k}) = O(n^{1+1/k})$, giving the second classical upper bound that forces bipartite Turán exponents into $[1, 2)$. Also the source of the meta-claim that *every* bipartite graph has Turán exponent in this interval."
+    },
+    {
+      "authors": "Erdős, P., Simonovits, M.",
+      "title": "Cube-supersaturated graphs and related problems",
+      "year": "1984",
+      "venue": "Progress in Graph Theory (Waterloo, 1982), Academic Press, 203-218",
+      "note": "**Origin of the conjecture.** Formulates the question of whether every rational $\\alpha \\in [1, 2)$ is the Turán exponent of some single bipartite graph. The 'rational Turán exponents' question is item #571 on Erdős's problem list."
+    },
+    {
+      "authors": "Bukh, B., Conlon, D.",
+      "title": "Rational exponents in extremal graph theory",
+      "year": "2018",
+      "venue": "Journal of the European Mathematical Society 20(7), 1747-1757",
+      "note": "**The family-variant breakthrough.** Proves that for *every* rational $\\alpha \\in [1, 2)$ there exists a finite family $\\mathcal{F}$ of bipartite graphs with $\\mathrm{ex}(n; \\mathcal{F}) \\asymp n^\\alpha$. Reduces #571 to the finite-family-vs-single-graph gap that remains open. Construction uses random algebraic varieties over $\\mathbb{F}_q$."
+    },
+    {
+      "authors": "Conlon, D., Janzer, O., Lee, J.",
+      "title": "More on the extremal number of subdivisions",
+      "year": "2021",
+      "venue": "Combinatorica 41(4), 465-494",
+      "note": "Axiomatized in this file as `conlon_janzer_lee_exponents`. Proves that the family $\\{3/2 - 1/(2s) : s \\ge 2\\}$ — accumulating at $3/2$ — consists of Turán exponents, witnessed by carefully length-tuned subdivisions of $K_{s,s}$."
+    },
+    {
+      "authors": "Conlon, D., Janzer, O.",
+      "title": "Rational exponents near two",
+      "year": "2022",
+      "venue": "Advances in Combinatorics 2022:9",
+      "note": "Establishes the near-2 family: every $2 - a/b$ with $b \\ge (a-1)^2$ is a Turán exponent, by random algebraic constructions over $\\mathbb{F}_q$. Documented in the file's Part V docstring but not axiomatized; covers $[7/4, 2)$ densely."
+    },
+    {
+      "authors": "Jiang, T., Qiu, J.",
+      "title": "Turán numbers of bipartite graphs and the structure of low-exponent extremal graphs",
+      "year": "2023",
+      "venue": "arXiv:2306.04007",
+      "note": "Axiomatized in this file as `jiang_qiu_low_exponents`. Proves the near-1 family: every $1 + a/b$ with $b > a^2$ is a Turán exponent, using norm-polynomial bipartite graphs over $\\mathbb{F}_q^k$. Addresses the difficult low-exponent regime."
+    },
+    {
+      "authors": "Jiang, T., Ma, J., Yepremyan, L.",
+      "title": "On Turán exponents of bipartite graphs",
+      "year": "2022",
+      "venue": "Combinatorial Theory 2(1), Paper 6",
+      "note": "Establishes the family $\\{2 - 2/(2b+1) : b \\ge 2\\}$ via a hypergraph-encoding construction: bipartite graph extremal problems are reduced to $(2b+1)$-uniform hypergraph extremal problems. Documented in the file's Part V docstring (not axiomatized)."
+    },
+    {
+      "authors": "Erdős, P. (problem list)",
+      "title": "Problem #571 — Rational Turán exponents",
+      "year": "open",
+      "venue": "https://erdosproblems.com/571",
+      "note": "Authoritative listing of the open problem and its known partial results. The page tracks priority, attribution, and the family-vs-single gap. URL hard-coded as `meta.erdosUrl` for cross-referencing."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "erdos-713",
