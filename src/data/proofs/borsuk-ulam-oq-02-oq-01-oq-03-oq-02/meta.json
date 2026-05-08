@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1006,
+    "lineCount": 1159,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -99,10 +99,14 @@
       "largestPrimeBelow_eq_of_in_plateau (axiom-free, iter 10): prime-anchored packaging — if `p` is prime, `lpb n = p`, and no prime lies in `(n, m]`, then `lpb m = p` too. Convenient form for combining with prime-gap data.",
       "symBUDim_eq_of_lpb_eq (conditional, iter 10): plateau collapse — any two `n, m ≥ 2` with `largestPrimeBelow n = largestPrimeBelow m` have `symBUDim n d = symBUDim m d` at every dimension. Conditional on `symBUDim_eq_largestPrime`.",
       "symBUDim_const_in_no_prime_range (conditional, iter 10): symBUDim plateau on prime-gap intervals — if no prime exists in `(n, m]` and `n ≥ 2`, then `symBUDim n d = symBUDim m d` for all d. Formal expression of the 'plateau collapse' prediction: distinct symmetric groups in any maximal prime-gap interval conjecturally share the equivariant BU dimension at every dimension. Conditional.",
-      "symBUDim_eq_of_lpb_eq_of, symBUDim_const_in_no_prime_range_of (conditional, iter 10): hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument rather than relying on the file's axiom (matches Part XV's pattern)."
+      "symBUDim_eq_of_lpb_eq_of, symBUDim_const_in_no_prime_range_of (conditional, iter 10): hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument rather than relying on the file's axiom (matches Part XV's pattern).",
+      "no_prime_in_eight_to_ten, no_prime_in_fourteen_to_sixteen, no_prime_in_twentyfour_to_twentyeight (axiom-free, iter 11): witnesses that the half-open intervals (8, 10], (13, 16], (23, 28] contain no primes (each proved by `interval_cases` + `decide`). Cover the smallest prime gaps with multiple composites: the dyadic gap (7, 11), (13, 17), and the first gap of size 6 at (23, 29).",
+      "largestPrimeBelow_eight_eq_ten, largestPrimeBelow_thirteen_eq_sixteen, largestPrimeBelow_twentythree_eq_twentyeight (axiom-free, iter 11): concrete LPB plateau collapse instances at the three intervals. One-line specializations of `largestPrimeBelow_const_in_no_prime_range`. The S₂₃ → S₂₈ instance witnesses that the first prime gap of size 6 forces five consecutive `largestPrimeBelow` values to coincide.",
+      "symBUDim_eight_eq_ten, symBUDim_thirteen_eq_sixteen, symBUDim_twentythree_eq_twentyeight (conditional, iter 11): plateau collapse predictions of the conjecture at three intervals. The S₂₃ → S₂₈ instance is the longest plateau collapse below n = 30: under `symBUDim_eq_largestPrime`, six consecutive symmetric groups (n = 23, 24, ..., 28) share equivariant Borsuk-Ulam dimensions at every dimension, despite their qualitatively different subgroup structures.",
+      "symBUDim_eight_eq_ten_of, symBUDim_thirteen_eq_sixteen_of, symBUDim_twentythree_eq_twentyeight_of (conditional, iter 11): hypothesis-form variants of the three plateau-collapse instances, taking `ConjectureLPB` explicitly."
     ],
     "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **At n = 2 the conjecture is now settled axiom-free for ALL dimensions d ≥ 1**: `symBUDim_two_general_unconditional` shows symBUDim 2 d = d − 1 from the parent's `symBUDim_two` axiom + `buDim_two`, and combined with `largestPrimeBelow_two` this matches the conjectured value buDim (largestPrimeBelow 2) d = buDim 2 d = d − 1. So the new axiom is redundant at n = 2 not only on even d (per `symBUDim_eq_largestPrime_two_unconditional`) but on ALL d. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime`, `buDim_two` (counted in the parent gallery entries).",
-    "theoremCount": 65,
+    "theoremCount": 77,
     "definitionCount": 2
   },
   "overview": {
@@ -244,6 +248,14 @@
       "endLine": 806,
       "summary": "**Iteration 10.** Axiom-free engine for the local-constancy structure of $\\text{lpb}$ between consecutive primes. `largestPrimeBelow_succ_of_not_prime`: atomic step — composite successor preserves LPB (direct corollary of Mathlib's `Nat.findGreatest_of_not`). `largestPrimeBelow_const_in_no_prime_range`: general plateau lemma proved by `Nat.le_induction` lifting the atomic step over a prime gap. `largestPrimeBelow_eq_of_in_plateau`: prime-anchored packaging combining a known $\\text{lpb}(n) = p$ with a no-prime-in-$(n, m]$ hypothesis. **Conditional consequences**: `symBUDim_eq_of_lpb_eq` — same LPB ⇒ same symBUDim at every dimension, conditional on `symBUDim_eq_largestPrime`. `symBUDim_const_in_no_prime_range` — formal expression of the 'plateau collapse' prediction: distinct symmetric groups in any maximal prime-gap interval conjecturally share the equivariant BU dimension at every $d$. `symBUDim_eq_of_lpb_eq_of`, `symBUDim_const_in_no_prime_range_of` — hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument.",
       "mathContext": "$\\text{lpb}(n)$ is locally constant on the maximal prime-gap intervals $[p_i, p_{i+1})$ between consecutive primes $p_i < p_{i+1}$ — pinned at $p_i$ throughout. The proof is by induction on $m - n$: each successor jump $k \\to k + 1$ preserves $\\text{lpb}$ when $k + 1$ is composite, via $\\text{Nat.findGreatest}_\\text{of\\_not}$. Combined with the central conjecture, this forces all symmetric groups whose index falls in the same prime gap to have *identical* equivariant Borsuk-Ulam dimensions at every $d$ — a strong, type-level prediction. Concrete instances (e.g., $\\text{lpb}(8) = \\text{lpb}(9) = \\text{lpb}(10) = 7$, hence conjecturally $\\text{symBUDim}(8, d) = \\text{symBUDim}(9, d) = \\text{symBUDim}(10, d)$ for all $d$) follow uniformly from this axiom-free engine plus a single primality decision."
+    },
+    {
+      "id": "plateau-collapse-instances",
+      "title": "Part XVII: Concrete Plateau Collapse Instances",
+      "startLine": 807,
+      "endLine": 932,
+      "summary": "**Iteration 11.** Direct applications of Part XVI's plateau infrastructure to specific prime-gap intervals. Each instance pins a no-prime-in-gap fact via `interval_cases` + `decide`, then derives an axiom-free LPB collapse, a conditional `symBUDim` collapse, and its hypothesis-form variant. Three intervals chosen to cover the smallest prime gaps with multiple composites: $(7, 11)$ (dyadic, gap 4), $(13, 17)$ (gap 4), and $(23, 29)$ (gap 6 — first occurrence of a 5-composite stretch). The S₂₃ → S₂₈ instance forces six consecutive symmetric groups to share equivariant Borsuk-Ulam dimensions at every $d$, despite their qualitatively different subgroup structures.",
+      "mathContext": "Combines the structural Part XVI engine (prime-gap induction over `largestPrimeBelow_succ_of_not_prime`) with concrete primality checks decided by Lean's kernel. The three chosen intervals exhibit the qualitatively different prime-gap regimes: gap 4 at small $n$ (twin-prime adjacent), gap 4 at moderate $n$ (just past 13), and the first gap of size 6 (between 23 and 29 — the first instance where the maximal prime gap exceeds the previously-observed gap-4 ceiling). Each `symBUDim` instance is genuinely new content modulo the conjecture: e.g., `symBUDim 23 d = symBUDim 28 d` is non-trivial because S₂₃ contains a Sylow-2 subgroup of order $2^{19}$ while S₂₈ contains a Sylow-2 of order $2^{25}$, so any 2-equivariant invariant differs between the two — yet the conjecture forces their equivariant BU dimensions to coincide."
     }
   ],
   "crossReferences": [
@@ -287,10 +299,10 @@
       "BorsukUlamOQ02OQ01"
     ],
     "namespace": "BorsukUlamSymPrime",
-    "lineCount": 1006,
+    "lineCount": 1159,
     "axiomCount": 1,
-    "theoremCount": 65,
-    "substantiveTheoremCount": 63,
+    "theoremCount": 77,
+    "substantiveTheoremCount": 75,
     "definitionCount": 2,
     "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
     "sorries": 0
