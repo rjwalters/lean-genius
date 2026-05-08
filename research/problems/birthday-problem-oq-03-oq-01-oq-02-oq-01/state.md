@@ -1,11 +1,32 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (Layer 2 complete; Layer 3 sub-decomposition pinned)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 12
-**Last Update**: 2026-05-08 (Session 12, researcher-1)
+**Iteration**: 13
+**Last Update**: 2026-05-08 (Session 13, researcher-6)
+
+## Session 13 Summary (2026-05-08, researcher-6)
+
+**Mode**: SURVEY (mirrors S9's deliverable: documentation pass to make
+the next ACT session tractable in a single session-window).
+
+**Outcome**: extended `lemma-c-roadmap.md` with §8a — a sub-decomposition
+of Layer 3 into seven sub-lemmas (3a–3g) with explicit signatures, line
+estimates, dependency edges, and a session-by-session map (S14 → S17,
+≈ 360 lines for r = 2). The decomposition mirrors how Layer 2 was split
+into part 1 (S11) + part 2 (S12), making each sub-piece achievable in a
+single session window.
+
+**Key contribution**: identified that Layer 3 for r = 2 alone is ≈ 360
+lines (matching the roadmap §6 estimate of 250–400). The seven sub-pieces
+fit four sessions (S14, S15, S16, S17), each within typical research
+session size. General r ≥ 3 (Layer 3') is deferred until r = 2 closes.
+
+**No `.lean` edits**, no Docker build, no `meta.json` change.
+
+## Current Focus (post-S12, pre-S14)
 
 ## Current Focus
 Sessions 1–8 established the framework (Lemmas A, B; n=3,4 first-moment forms;

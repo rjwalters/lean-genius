@@ -426,6 +426,241 @@ moment but did not yet attack the Poisson limit itself.
 
 ---
 
+## 8a. Layer 3 Sub-Decomposition (S13 Survey)
+
+**Author**: researcher-6, Session 13 (2026-05-08)
+
+After Layer 2 closed at S12 (PRs #16986/#17074/#17120), Layer 3 is the
+genuine combinatorial bottleneck. To make S14+ implementation tractable
+in single-session chunks, this section decomposes Layer 3 (≈ 250–400
+lines per §6) into seven independent sub-pieces with explicit signatures,
+expected line counts, and dependency edges.
+
+### 8a.1 Dependency graph
+
+```
+3a (descFactorial_two def)  ──┐
+3b (tripleCount_descFact_2)  ─┼─→  3d (factorial_moment_2 = sum)
+3c (overlap-pattern bijection)┘                              │
+                                                              ↓
+                                                3e (disjoint contribution)
+                                                3f (non-disjoint contribution)
+                                                              │
+                                                              ↓
+                                              3g (factorial_moment_2 → c³/6 · c³/6)
+
+Generalisation r ≥ 3 forms Layer 3', deferred until r = 2 closes.
+```
+
+### 8a.2 Sub-lemmas
+
+#### Layer 3a — `descFactorial_two` algebra (≈ 30 lines, S14)
+
+Auxiliary identities for the falling factorial at r = 2:
+
+```lean
+/-- `n.descFactorial 2 = n * (n - 1)` (Mathlib `Nat.descFactorial_two`,
+    no work; cite). -/
+
+/-- `(n.descFactorial 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1)` for n : ℕ.
+    Push-cast version; needed because the gallery sums over ℝ. -/
+lemma descFactorial_two_real_eq (n : ℕ) :
+    (n.descFactorial 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := by
+  rw [Nat.descFactorial_two]; push_cast; ring
+```
+
+No fusion-pattern reasoning yet; pure cast/algebra. Independent of any
+other sub-lemma. **Estimated**: 30 lines including 1 import.
+
+#### Layer 3b — `tripleCount_descFact_2_eq_pairs` (≈ 50 lines, S14)
+
+Combinatorial identity expanding `tripleCount d n f * (tripleCount d n f - 1)`
+to a sum over **ordered pairs** of strict triples (with the diagonal removed):
+
+```lean
+/-- For each f, `tripleCount.descFactorial 2` equals the count of ordered
+    pairs of strict triples (T₁, T₂) with T₁ ≠ T₂ such that f trivialises
+    both T₁ and T₂. -/
+lemma tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
+    (tripleCount d n f).descFactorial 2 =
+    ((strictTriples n) ×ˢ (strictTriples n)).card.filter
+      (fun p => p.1 ≠ p.2 ∧
+        f (p.1).1 = f (p.1).2.1 ∧ f (p.1).2.1 = f (p.1).2.2 ∧
+        f (p.2).1 = f (p.2).2.1 ∧ f (p.2).2.1 = f (p.2).2.2)
+```
+
+Proof: standard `Finset.card_descFactorial_eq_card_pairs` with the diagonal
+removed via `(strictTriples n).filter (fun T => f trivialises T)` setup.
+Reuses `tripleCount` from S10 and `card_strict_triples` from S12.
+
+**Risk**: signature requires care with the diagonal-removal — `descFactorial 2`
+counts ordered pairs of distinct elements, not all ordered pairs. **Estimated**:
+50 lines.
+
+#### Layer 3c — overlap-pattern partition (≈ 60 lines, S15)
+
+Partition the diagonal-removed pair-of-triples space by the size of the
+intersection `T₁ ∩ T₂`:
+
+```lean
+/-- Five overlap-pattern Finsets partitioning ordered pairs of distinct
+    strict triples by intersection size. -/
+def overlapPattern (n : ℕ) : Fin 4 → Finset ((Fin n)³ × (Fin n)³)
+  | 0 => -- |T₁ ∩ T₂| = 0  (disjoint, requires n ≥ 6)
+  | 1 => -- |T₁ ∩ T₂| = 1
+  | 2 => -- |T₁ ∩ T₂| = 2
+  | 3 => -- |T₁ ∩ T₂| = 3 (T₁ = T₂ as sets but ordered differently)
+
+lemma overlapPattern_partitions (n : ℕ) :
+    ((strictTriples n) ×ˢ (strictTriples n)).filter (· ≠ ·) =
+    Finset.disjUnion (Finset.range 4) (overlapPattern n) ⟨…⟩
+```
+
+**Note**: the |T₁ ∩ T₂| = 3 case (same set, different ordering) reduces to
+the diagonal — but our pair filter already excludes T₁ = T₂. Since strict
+triples are *ordered* increasing tuples, T₁ ≠ T₂ as ordered tuples already
+forces them to be set-distinct (the canonical ordering is unique). So
+overlap-3 contributes 0 elements. The genuine partition is over
+{0, 1, 2}.
+
+**Estimated**: 60 lines (mostly the `disjUnion` bookkeeping and the
+overlap-3-impossible argument).
+
+#### Layer 3d — `factorial_moment_2_eq_sum_overlapPattern` (≈ 40 lines, S15)
+
+Combine 3a + 3b + 3c:
+
+```lean
+lemma factorial_moment_2_eq_sum_overlapPattern (d n : ℕ) (hd : 1 ≤ d) :
+    (∑ f, ((tripleCount d n f).descFactorial 2 : ℝ)) /
+      Fintype.card (Fin n → Fin d) =
+    ∑ k ∈ Finset.range 3,
+      (∑ p ∈ overlapPattern n k, P_jointCoincidence d p) /
+      Fintype.card (Fin n → Fin d)
+```
+
+The outer-sum-over-f / inner-sum-over-pairs swap is `Finset.sum_comm`;
+the partition-respecting split is `Finset.sum_disjUnion`. **Estimated**:
+40 lines.
+
+#### Layer 3e — disjoint contribution (≈ 70 lines, S16)
+
+The k = 0 (disjoint pairs) overlap-pattern contributes `1/d⁴` per pair:
+
+```lean
+/-- For disjoint strict triples T₁, T₂ (|T₁ ∩ T₂| = 0), the joint
+    coincidence count `f T₁ ∧ f T₂` is `d^(n-4)`, hence probability
+    `1/d⁴` (independent of n once n ≥ 6). -/
+lemma jointCoincidence_disjoint (d n : ℕ) (hn : 6 ≤ n) (T₁ T₂ : (Fin n)³)
+    (hdisj : T₁.toFinset ∩ T₂.toFinset = ∅) :
+    (Finset.univ.filter (fun f =>
+      f T₁.1 = f T₁.2.1 ∧ … ∧ f T₂.1 = f T₂.2.1 ∧ …)).card = d^(n-4)
+```
+
+By independent bijection with `({m // m ∉ T₁.toFinset ∪ T₂.toFinset} → Fin d)`,
+generalising `bad_count_general` from S11. After dividing by `d^n`, get
+`1/d⁴`. **Estimated**: 70 lines (the bijection mirrors S11's structure).
+
+#### Layer 3f — non-disjoint contributions (≈ 80 lines, S16)
+
+Overlaps k = 1, 2 contribute strictly larger probabilities (`1/d³` and
+`1/d²` respectively per pair) but the count of such pairs grows slower
+than disjoint (`O(n^5)` vs `O(n^6)`):
+
+```lean
+/-- Non-disjoint contribution to factorial moment vanishes as d → ∞ when
+    n = ⌊c·d^{2/3}⌋. -/
+lemma nondisjoint_factorial_moment_2_tendsto_zero (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto
+      (fun d : ℕ =>
+        let n := ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊
+        ((∑ k ∈ Finset.range 3 \ {0}, ∑ p ∈ overlapPattern n k,
+            P_jointCoincidence d p) : ℝ) /
+        Fintype.card (Fin n → Fin d))
+      Filter.atTop (nhds 0)
+```
+
+The asymptotic rate is `O(d^{-2/3})` — see roadmap §4c: the overlap-1
+contribution is `O(n^5/d⁵) = O(d^{10/3 - 5}) = O(d^{-5/3})`; the overlap-2
+contribution is `O(n^4/d⁴) = O(d^{8/3 - 4}) = O(d^{-4/3})`. **Estimated**:
+80 lines.
+
+#### Layer 3g — factorial_moment_2 limit (≈ 30 lines, S17)
+
+Combine 3d + 3e + 3f to conclude:
+
+```lean
+lemma factorial_moment_2_tendsto (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto
+      (fun d : ℕ =>
+        let n := ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊
+        (∑ f, ((tripleCount d n f).descFactorial 2 : ℝ)) /
+        Fintype.card (Fin n → Fin d))
+      Filter.atTop (nhds ((c ^ 3 / 6) ^ 2))
+```
+
+The disjoint-pair count is `C(n,3)·(C(n,3) - C(n,3)·O(1/n²))` (overlap
+correction), which is `(c³/6 · d²)² · (1 + o(1))` after dividing by
+`d^n / d^{n-4} = d⁴`. **Estimated**: 30 lines (mostly tendsto algebra).
+
+### 8a.3 Total estimate vs roadmap §6
+
+Roadmap §6 estimated Layer 3 at 250–400 lines. The sub-decomposition
+above sums to:
+
+| Sub-piece | Lines | Session |
+|-----------|------:|---------|
+| 3a descFactorial_two | 30 | S14 |
+| 3b tripleCount_descFact_2 | 50 | S14 |
+| 3c overlap-pattern partition | 60 | S15 |
+| 3d factorial_moment_2 = sum | 40 | S15 |
+| 3e disjoint contribution | 70 | S16 |
+| 3f non-disjoint vanishing | 80 | S16 |
+| 3g factorial_moment_2 limit | 30 | S17 |
+| **Total (r = 2 only)** | **360** | **S14–S17** |
+
+For general r ≥ 3, multiply by ≈ 2× (the algebraic structure repeats).
+The roadmap's 250–400 estimate covers r = 2 only; full Layer 3 (all r)
+requires either an additional ≈ 300 lines or a generic-r abstraction
+that subsumes specific r values. The latter is the cleaner path but
+substantially harder to write — leave as Layer 3' (post-Layer-3-r=2).
+
+### 8a.4 Why r = 2 is the right S14 starting point
+
+Per the Method of Factorial Moments (Layer 4):
+
+> If `E[X·(X-1)·…·(X-r+1)] → λ^r` for all `r ≥ 0`, then `X →ᵈ Poisson(λ)`.
+
+For Lemma C we need `P(X = 0) → e^{-λ}`. The MoFM theorem actually only
+requires the factorial-moment convergence to hold; in practice the
+quantitative bound `|P(X = 0) - e^{-λ}| ≤ Σ_{r ≥ 1} |E[X^{(r)}] - λ^r|/r!`
+(Bonferroni-style) shows that the first few `r` values give explicit
+error bounds. **r = 2 is the simplest non-trivial case** and the
+template for r ≥ 3.
+
+### 8a.5 What this session (S13) did NOT do
+
+- No `.lean` edits. This is a SURVEY pass, mirroring S9's deliverable.
+- No Docker build. Pure documentation.
+- No `meta.json` update — the Lean file is unchanged.
+
+### 8a.6 What S14 should verify first
+
+Before starting 3a/3b, the S14 session should:
+
+1. Confirm `Nat.descFactorial_two` (or `Nat.descFactorial 2`) is in
+   Mathlib v4.26.0. (Likely yes; the gallery's pin includes core
+   `Nat.Factorial` machinery.)
+2. Confirm `Finset.card_descFactorial_eq_card_pairs` (or analogue) is
+   in Mathlib. The naming is fluid — fall back to `Finset.card_filter`
+   or hand-rolled bijection if the named lemma is absent.
+3. Run `./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ03OQ01OQ02`
+   to confirm Layer 2 (S10–S12) is currently building cleanly. Multiple
+   recent PRs landed as "build pending" via deployer auto-merge; a
+   build-status check is prudent before adding 80+ lines on top.
+
+---
+
 ## 9. References
 
 - Arratia, R., Goldstein, L., Gordon, L. (1989). *Two moments suffice for Poisson approximations: The Chen–Stein method.* Annals of Probability **17** (1): 9–25. (Chen–Stein survey, Path D background.)
