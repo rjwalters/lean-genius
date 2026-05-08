@@ -610,6 +610,79 @@ private lemma sylow_prime_order_disjoint_of_ne
     -- Conclusion: Q = Q' as subgroups; Sylow.ext lifts to Sylow p G.
     exact le_antisymm h_Q_le_Q' h_Q'_le_Q
 
+/-- **S13 ingredient (cardinality)**: every Sylow 3-subgroup of a finite
+    group of order 12 has exactly 3 elements.
+
+    Direct application of `Sylow.card_eq_multiplicity` together with the
+    explicit factorization `12 = 2² · 3¹`. Identical proof skeleton to
+    the inline computation at line ~660 of this file inside
+    `burnside_p_squared_q_twelve`, factored out so that the S10
+    element-counting closure of `sylow_two_unique_when_n3_four` and any
+    follow-up `|G| = 12` analyses can refer to it as a single named
+    lemma rather than re-deriving it inline.
+
+    **Second ingredient** for S10's element-counting proof of
+    `sylow_two_unique_when_n3_four`. The first ingredient is
+    `sylow_prime_order_disjoint_of_ne` (S11.5) above, which in this
+    setting reduces to the Sylow 3 case because each Sylow 3-subgroup
+    has prime order 3 by this lemma. With both ingredients at hand the
+    disjoint-union decomposition
+
+        {g : G | g^3 = 1} = {e} ⊔ ⊔_{Q : Sylow 3 G} ((Q : Set G) \ {1})
+
+    has cardinality `1 + 4·(3 - 1) = 9`. The remaining S10 work is the
+    set-theoretic packaging of that count
+    (`Set.ncard_biUnion_disjoint` etc.) plus the symmetric Sylow-2
+    argument, deferred to the next iteration. -/
+private lemma sylow_three_card_eq_three_of_card_twelve
+    {G : Type*} [Group G] [Finite G] [Fact (Nat.Prime 3)]
+    (hcard : Nat.card G = 12) (Q : Sylow 3 G) :
+    Nat.card (Q : Subgroup G) = 3 := by
+  -- |G| = 12 = 2² · 3¹
+  have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
+  have hcop : Nat.Coprime (2 ^ 2) 3 := by decide
+  have h3_not_dvd_4 : ¬ (3 : ℕ) ∣ 4 := by decide
+  have hp3 : Nat.Prime 3 := Fact.out
+  have hmult := Sylow.card_eq_multiplicity Q
+  have hfact : Nat.factorization (Nat.card G) 3 = 1 := by
+    rw [hcard']
+    rw [Nat.factorization_mul_apply_of_coprime hcop,
+        Nat.factorization_eq_zero_of_not_dvd h3_not_dvd_4,
+        Nat.Prime.factorization_pow hp3]
+    simp
+  rw [hfact, pow_one] at hmult
+  exact hmult
+
+/-- **S13 ingredient (cardinality, mirror)**: every Sylow 2-subgroup of
+    a finite group of order 12 has exactly 4 elements.
+
+    Companion to `sylow_three_card_eq_three_of_card_twelve`, packaged
+    for the S10 closure's `P \ {1} ⊆ G \ {g | g^3 = 1}` step where the
+    cardinality `|P| = 4` (hence `|P \ {1}| = 3 = 12 - 9`) is the
+    quantitative driver pinning down `P` independently of choice. Mirror
+    of the inline computation at line ~688 of this file inside
+    `burnside_p_squared_q_twelve`. -/
+private lemma sylow_two_card_eq_four_of_card_twelve
+    {G : Type*} [Group G] [Finite G] [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12) (P : Sylow 2 G) :
+    Nat.card (P : Subgroup G) = 4 := by
+  have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
+  have hcop : Nat.Coprime (2 ^ 2) 3 := by decide
+  have h2_not_dvd_3 : ¬ (2 : ℕ) ∣ 3 := by decide
+  have hp2 : Nat.Prime 2 := Fact.out
+  have hmult := Sylow.card_eq_multiplicity P
+  have hfact : Nat.factorization (Nat.card G) 2 = 2 := by
+    rw [hcard']
+    rw [Nat.factorization_mul_apply_of_coprime hcop,
+        Nat.Prime.factorization_pow hp2,
+        Nat.factorization_eq_zero_of_not_dvd h2_not_dvd_3]
+    simp
+  rw [hfact] at hmult
+  -- hmult : Nat.card (P : Subgroup G) = 2 ^ 2; reduce 2^2 = 4
+  have h_pow_two : (2 : ℕ) ^ 2 = 4 := by norm_num
+  rw [h_pow_two] at hmult
+  exact hmult
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
