@@ -735,6 +735,161 @@ example : schonhageGcdOf 200 175 = 25 := by native_decide
 /-- Far above S17 range, large composite GCD: `gcd(2520, 1980) = 180`. -/
 example : schonhageGcdOf 2520 1980 = 180 := by native_decide
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XIII: OUTER GUARD CHARACTERISATION (Session 23)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Outer-guard predicate for `schonhageGcd`
+
+    The recursive Schönhage GCD (PART VIII) has TWO control-flow
+    forks per fuel step:
+
+      1. **Threshold check** (line 434): below threshold, dispatch
+         to `Nat.gcd`.
+      2. **Outer size-reduction guard** (line 440): above threshold,
+         recurse iff `max p.1.natAbs p.2.natAbs < max a b`, where
+         `p = hgcdSafeApply a b`.
+
+    The OUTER guard is the actual mechanism that handles the S17
+    counterexample family `(130, 89)` etc.: even when the inner
+    `hgcdMatrixSafe`'s matrix-level guard aborts (returning the
+    inner matrix unchanged), the schonhageGcd's outer guard catches
+    the lack of size reduction and falls back to `Nat.gcd`. The
+    correctness of `schonhageGcd_eq_gcd` (S20) is independent of
+    which branch fires; this PART makes the branching predicate
+    explicit and characterises it.
+
+    The headline theorem `schonhageGcd_succ_via_outerGuard` shows
+    that one fuel step of `schonhageGcd` is fully determined by
+    the outer-guard Boolean: when it fires we recurse on the
+    reduced pair, otherwise we dispatch to `Nat.gcd`. -/
+
+/-- Boolean predicate capturing the outer size-reduction guard from
+    `schonhageGcd`'s recursive case (PART VIII line 440).
+
+    Returns `true` iff applying `hgcdSafeApply` strictly reduces
+    `max a b`; returns `false` on below-threshold inputs (where the
+    algorithm has already dispatched to `Nat.gcd`) and on
+    above-threshold inputs where the runtime size-reduction check
+    fails. The predicate is `Decidable` on every input — the
+    underlying inequality reduces to `Nat.decLt` once
+    `hgcdSafeApply a b` is evaluated. -/
+def schonhageOuterGuardFires (a b : ℕ) : Bool :=
+  if max a b < hgcdThresholdSafe then
+    false
+  else
+    decide (max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+              < max a b)
+
+/-- Below threshold, the outer guard does not fire. Vacuously,
+    since the threshold check handles all such inputs by
+    dispatching to `Nat.gcd` before reaching the size-reduction
+    fork. -/
+theorem schonhageOuterGuardFires_below_threshold {a b : ℕ}
+    (h : max a b < hgcdThresholdSafe) :
+    schonhageOuterGuardFires a b = false := by
+  unfold schonhageOuterGuardFires
+  rw [if_pos h]
+
+/-- Iff characterisation: the outer guard fires iff we are above
+    threshold AND the post-application maximum is strictly smaller
+    than the pre-application maximum. Conjunctive form, useful for
+    extracting both facts from a single hypothesis. -/
+theorem schonhageOuterGuardFires_iff {a b : ℕ} :
+    schonhageOuterGuardFires a b = true ↔
+      ¬ max a b < hgcdThresholdSafe ∧
+        max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+          < max a b := by
+  unfold schonhageOuterGuardFires
+  by_cases hsmall : max a b < hgcdThresholdSafe
+  · rw [if_pos hsmall]
+    simp [hsmall]
+  · rw [if_neg hsmall]
+    simp [hsmall]
+
+/-- Strict size-reduction is a direct consequence of the outer
+    guard firing: the recursive call's input has strictly smaller
+    `max` than the current call's. This is the *quantitative*
+    content of the guard: every iteration on which we recurse
+    reduces the working size by at least one. -/
+theorem schonhageOuterGuardFires_strict_decrease {a b : ℕ}
+    (h : schonhageOuterGuardFires a b = true) :
+    max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+      < max a b :=
+  (schonhageOuterGuardFires_iff.mp h).2
+
+/-- One fuel step of `schonhageGcd` is fully described by the
+    outer-guard predicate. **Headline theorem of S23.** When
+    `schonhageOuterGuardFires a b = true`, the recursive case
+    iterates on the reduced pair; otherwise it falls back to
+    `Nat.gcd`. The `Nat.gcd` branch covers BOTH the threshold case
+    AND the above-threshold-no-reduction case, since the predicate
+    returns `false` in both. -/
+theorem schonhageGcd_succ_via_outerGuard (f a b : ℕ) :
+    schonhageGcd (f + 1) a b =
+      (if schonhageOuterGuardFires a b = true then
+        schonhageGcd f (hgcdSafeApply a b).1.natAbs
+                       (hgcdSafeApply a b).2.natAbs
+      else
+        Nat.gcd a b) := by
+  rw [schonhageGcd_succ]
+  by_cases hsmall : max a b < hgcdThresholdSafe
+  · have hfalse : schonhageOuterGuardFires a b = false :=
+      schonhageOuterGuardFires_below_threshold hsmall
+    simp [hsmall, hfalse]
+  · by_cases hg :
+        max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+          < max a b
+    · have htrue : schonhageOuterGuardFires a b = true :=
+        schonhageOuterGuardFires_iff.mpr ⟨hsmall, hg⟩
+      simp [hsmall, hg, htrue]
+    · have hfalse : schonhageOuterGuardFires a b = false := by
+        unfold schonhageOuterGuardFires
+        rw [if_neg hsmall]
+        simp [hg]
+      simp [hsmall, hg, hfalse]
+
+/-- Specialised reduction equation: when the outer guard fires
+    above threshold, `schonhageGcd` recurses. Direct rewrite for
+    proofs that case-split on the predicate. -/
+theorem schonhageGcd_succ_recurse_of_fires (f a b : ℕ)
+    (h : schonhageOuterGuardFires a b = true) :
+    schonhageGcd (f + 1) a b =
+      schonhageGcd f (hgcdSafeApply a b).1.natAbs
+                     (hgcdSafeApply a b).2.natAbs := by
+  rw [schonhageGcd_succ_via_outerGuard, if_pos h]
+
+/-- Specialised reduction equation: when the outer guard does not
+    fire, `schonhageGcd` falls back to `Nat.gcd`. Covers both the
+    below-threshold and the above-threshold-no-reduction cases. -/
+theorem schonhageGcd_succ_fallback_of_aborts (f a b : ℕ)
+    (h : schonhageOuterGuardFires a b = false) :
+    schonhageGcd (f + 1) a b = Nat.gcd a b := by
+  rw [schonhageGcd_succ_via_outerGuard]
+  simp [h]
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART XIV: OUTER GUARD WITNESSES (Session 23)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Below-threshold witnesses
+
+    By `schonhageOuterGuardFires_below_threshold`, the outer guard
+    is uniformly `false` whenever `max a b < hgcdThresholdSafe = 64`.
+    These `native_decide` checks confirm that the closed-form
+    Boolean kernel agrees with the abstract characterisation on
+    concrete sub-threshold inputs. -/
+
+example : schonhageOuterGuardFires 0 0 = false := by native_decide
+
+example : schonhageOuterGuardFires 5 3 = false := by native_decide
+
+example : schonhageOuterGuardFires 12 8 = false := by native_decide
+
+example : schonhageOuterGuardFires 63 1 = false := by native_decide
+
+example : schonhageOuterGuardFires 63 63 = false := by native_decide
+
 end HGcdSafe
 
 /-! ## Summary
