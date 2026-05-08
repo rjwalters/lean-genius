@@ -170,5 +170,37 @@
       "relationship": "ancestor",
       "description": "Top-level Cauchy-Schwarz integral entry. The equality cases for Cauchy-Schwarz and the power-mean inequality both rely on the strict-convexity-plus-nonconstant pattern formalized here."
     }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H., Littlewood, J.E. & Pólya, G. (1934). Inequalities. Cambridge University Press. §2.9 (Power Means).",
+      "relevance": "The classical reference for the power-mean inequality $M_r \\le M_s$ ($r \\le s$). The equality characterization $M_r = M_s \\iff \\text{all } z_i \\text{ equal}$ is stated implicitly via the equality case of Jensen; this Lean entry makes that pairing fully explicit and machine-checked."
+    },
+    {
+      "type": "textbook",
+      "citation": "Beckenbach, E.F. & Bellman, R. (1961). Inequalities. Springer Ergebnisse 30, §I.3 (Means).",
+      "relevance": "Modern standard reference for mean inequalities. Develops the power-mean hierarchy with equality cases as a unified theme; the strict-convexity-plus-nonconstant technique used in this entry's proof is the textbook proof of choice in §I.3."
+    },
+    {
+      "type": "textbook",
+      "citation": "Mitrinović, D.S., Pečarić, J.E. & Fink, A.M. (1993). Classical and New Inequalities in Analysis. Mathematics and Its Applications 61, Kluwer.",
+      "relevance": "Comprehensive treatise on classical inequalities including the full power-mean hierarchy and its equality cases. §3.1 develops the AM/QM equality case as a corollary of the variance identity $\\mathrm{Var}(z) = E[z^2] - E[z]^2 \\ge 0$ — the deterministic analog formalized here as `am_eq_qm_iff_all_eq` and `am_lt_qm_of_not_all_eq`."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Analysis.MeanInequalitiesPow.\" (accessed 2026).",
+      "relevance": "Mathlib's mean-inequalities file. Line 36 of that file explicitly comments: 'each inequality $A \\le B$ should come with a theorem $A = B \\leftrightarrow\\_$'. This entry's `power_mean_eq_iff_all_eq_pos` is exactly that paired-iff theorem for the positive-exponent power mean and is a candidate Mathlib upstream contribution."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Analysis.Convex.Jensen — StrictConvexOn.map_sum_lt.\" (accessed 2026).",
+      "relevance": "The strict Jensen inequality, the workhorse of this entry's forward direction: $f(\\sum w_i p_i) < \\sum w_i f(p_i)$ when $f$ is strictly convex and the $p_i$ are not all equal. Specialized here with $f(x) = x^{t/r}$ ($t/r > 1$) to derive a contradiction from $M_r = M_t$ + non-constant."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Analysis.Convex.SpecificFunctions.Basic — strictConvexOn_rpow.\" (accessed 2026).",
+      "relevance": "Strict convexity of $x \\mapsto x^p$ on $[0, \\infty)$ for $p > 1$, the convexity hypothesis fed to `StrictConvexOn.map_sum_lt`. With $p = t/r > 1$, the resulting strict Jensen contradicts $M_r = M_t$ for non-constant inputs — closing the proof in one application of the convexity API."
+    }
   ]
 }
