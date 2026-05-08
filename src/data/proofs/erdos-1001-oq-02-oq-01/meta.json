@@ -21,7 +21,7 @@
       "open-question"
     ],
     "badge": "axiom",
-    "sorries": 4,
+    "sorries": 8,
     "axiomCount": 4,
     "assumptions": "4 axioms: totient_sum_mertens_error (elementary Mertens O(N log N) error), totient_sum_walfisz_error (Walfisz 1963 O(N(logN)^(2/3)(loglogN)^(4/3))), rangeTotientSum_walfisz_error (Abel summation from Walfisz to range sum), convergence_rate_sharp (EST reduction to range sum with Walfisz bound). 4 sorries: walfisz_rate_isLittleO_mertens_rate, walfisz_full_rate_isLittleO_mertens_rate, sharp_rate_isLittleO_oq02_rate, improvement_factor_tends_to_zero — all real-analysis rpow comparisons, Aristotle candidates.",
     "erdosNumber": 1001,
@@ -164,5 +164,5 @@
       "mathContext": "The main theorem combines: (1) the sharp rate axiom $|S-f| = O(A(\\log N)^{2/3}(\\log\\log N)^{4/3}/N)$, and (2) the comparison $(\\log N)^{2/3}(\\log\\log N)^{4/3}/N = o(\\log N/N)$, via $\\texttt{IsBigO.trans\\_isLittleO}$. This yields $|S-f| = o(A \\log N/N)$ — strictly better convergence than OQ-02's O bound."
     }
   ],
-  "sorries": 4
+  "sorries": 8
 }

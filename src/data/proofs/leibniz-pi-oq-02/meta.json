@@ -18,7 +18,7 @@
     ],
     "proofRepoPath": "Proofs/LeibnizPiOQ02.lean",
     "badge": "axiom",
-    "sorries": 9,
+    "sorries": 14,
     "mathlibDependencies": [
       {
         "theorem": "Real.tendsto_sum_pi_div_four",
@@ -209,5 +209,5 @@
       "leanType": "(s : ℝ) → s > 1 → tsum η = (1-2^{1-s}) * tsum ζ"
     }
   ],
-  "sorries": 9
+  "sorries": 14
 }

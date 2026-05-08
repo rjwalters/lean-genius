@@ -17,7 +17,7 @@
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ03.lean",
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 6,
     "axiomCount": 0,
     "assumptions": "0 axioms. 3 sorries: alternating tail bound, alternating remainder for sin, alternating remainder for cos. Partial sum bounds fully proved by induction on paired terms.",
     "originalContributions": [
@@ -127,5 +127,5 @@
       "Quantitative sharpness: at x = 1, the alternating bound for n = 5 is 1/5040 \u2248 0.0002, while the actual error is much smaller. Is the alternating bound itself tight, or can it be further improved for specific values of x?"
     ]
   },
-  "sorries": 3
+  "sorries": 6
 }

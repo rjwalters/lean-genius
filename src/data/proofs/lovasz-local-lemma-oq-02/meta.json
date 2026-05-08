@@ -17,7 +17,7 @@
       "polynomial-inequalities"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 9,
     "dateAdded": "2026-04-13",
     "axiomCount": 0,
     "assumptions": "1 sorry remains: lllThreshold_strict_maximum equality case — requires the AM-GM equality characterization (all terms equal iff x = 1/(d+1)). Proved: lllThreshold_is_maximum (general d) via Real.geom_mean_le_arith_mean2_weighted + rpow monotonicity (PR #11084).",
@@ -202,5 +202,5 @@
       "leanType": "(d : ℕ) → 0 < d → (p : ℚ) → 0 ≤ p → (∃ x : ℚ, 0 ≤ x ∧ x ≤ 1 ∧ p ≤ x * (1-x)^d) ↔ p ≤ lllThreshold d"
     }
   ],
-  "sorries": 1
+  "sorries": 9
 }
