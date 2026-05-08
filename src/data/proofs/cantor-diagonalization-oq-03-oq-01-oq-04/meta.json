@@ -44,35 +44,43 @@
   "sections": [
     {
       "id": "constructive-surjectivity",
-      "title": "The Constructive Surjectivity Condition",
-      "startLine": 47,
-      "endLine": 75,
-      "summary": "Defines IsPointwiseSurjective using pointwise Iff witnesses instead of function equality. Shows classical surjectivity implies constructive surjectivity via congr_fun.",
+      "title": "Part I: The Constructive Surjectivity Condition",
+      "startLine": 46,
+      "endLine": 65,
+      "summary": "Defines IsPointwiseSurjective using pointwise Iff witnesses instead of function equality. The companion theorem `surjective_implies_pointwise` shows classical surjectivity is strictly stronger via `iff_of_eq ∘ congr_fun`.",
       "mathContext": "Function.Surjective e requires ∀ P, ∃ a, e a = P (function equality). IsPointwiseSurjective only requires ∀ P, ∃ a, ∀ x, e a x ↔ P x (pointwise logical equivalence). The latter never invokes propext."
     },
     {
       "id": "main-theorem",
-      "title": "Constructive Cantor Diagonal Theorem",
-      "startLine": 78,
-      "endLine": 110,
-      "summary": "Proves cantor_constructive: any constructively surjective e : A → A → Prop leads to contradiction, using only intuitionistic logic. The diagonal predicate D(a) = ¬(e a a) yields hdd : e d d ↔ ¬(e d d), which is directly contradictory.",
+      "title": "Part II: Constructive Cantor Diagonal (no propext)",
+      "startLine": 67,
+      "endLine": 109,
+      "summary": "Three theorems: `cantor_constructive` (existence of any IsPointwiseSurjective e ⟹ False, via diagonal predicate D(a) = ¬e a a + iff_not_self); `cantor_no_pointwise_surjection` (negation form); `cantor_recovery_from_constructive` (classical no-surjection follows from the stronger constructive impossibility).",
       "mathContext": "The key step: specializing the witness at x = d gives e d d ↔ ¬(e d d). This is immediately contradictory via iff_not_self without any propext. Compare: in cantor_recovery, the equation ¬b = b requires propext to use for contradiction."
     },
     {
+      "id": "explicit-proof",
+      "title": "Part III: Explicit Term-Mode Proof",
+      "startLine": 111,
+      "endLine": 126,
+      "summary": "`cantor_constructive_explicit` expands `iff_not_self.mp hdd` into pure term mode: `nev := fun h => hdd.mp h h` (self-application) builds ¬(e d d) from the forward direction; `nev (hdd.mpr nev)` produces the contradiction. Makes the Curry-style self-application transparent.",
+      "mathContext": "The term `fun h => hdd.mp h h : e d d → False` has the same structure as the Y-combinator family: a function applied to itself via the bidirectional implication. This is the Lean witness for the Russell/Curry paradox construction."
+    },
+    {
       "id": "propext-analysis",
-      "title": "Why propext Appears in the Classical Proof",
-      "startLine": 131,
-      "endLine": 145,
-      "summary": "Explains precisely where propositional extensionality enters cantor_recovery: the rwa [← hb] step rewrites under hb : ¬b = b, which is a Prop-equality requiring propext to use as an Iff.",
-      "mathContext": "The classical proof gets hb : ¬b = b as a proposition equality from Function.Surjective. Then rwa [← hb] implicitly uses Eq.mpr (propext ...) to convert between b and ¬b. Our constructive version bypasses this by working with Iff from the start."
+      "title": "Parts IV–V: Why propext Appears Classically + Axiom Verification",
+      "startLine": 128,
+      "endLine": 153,
+      "summary": "Part IV (lines 128–142): docstring + placeholder explaining where propext enters `cantor_recovery` — the `rwa [← hb]` step rewrites under `hb : ¬b = b`, which is a Prop-equality requiring `Eq.mpr (propext ...)` to coerce to an Iff. Part V (lines 144–153): two `#print axioms` commands self-certifying that `cantor_constructive` and `cantor_constructive_explicit` depend on no axioms.",
+      "mathContext": "The classical proof gets hb : ¬b = b as a proposition equality from Function.Surjective. Then rwa [← hb] implicitly uses Eq.mpr (propext ...) to convert between b and ¬b. Our constructive version bypasses this by working with Iff from the start. The #print axioms commands provide a machine-checked certificate of axiom-freeness — anyone reading the file can verify the constructivity claim without trusting the prose."
     },
     {
       "id": "instances",
-      "title": "Concrete Instances",
-      "startLine": 148,
-      "endLine": 163,
-      "summary": "Applies cantor_no_pointwise_surjection to equality relation (A → A → Prop), Bool, and ℕ.",
-      "mathContext": "These instantiate the abstract theorem to concrete types, confirming no e : A → A → Prop with any A can be constructively surjective."
+      "title": "Part VI: Concrete Instances (Equality, Bool, ℕ)",
+      "startLine": 155,
+      "endLine": 173,
+      "summary": "Applies cantor_no_pointwise_surjection to (1) the equality relation `(a, b) ↦ (a = b)` on any type, (2) Bool, and (3) ℕ. All three are one-line term-mode wrappings; they demonstrate the theorem is non-vacuous and applies to standard types.",
+      "mathContext": "These instantiate the abstract theorem to concrete types, confirming no e : A → A → Prop with any A can be constructively surjective. The ℕ case implies (decidable) computability cannot enumerate all decidable predicates of ℕ up to logical equivalence."
     }
   ],
   "overview": {
@@ -84,7 +92,8 @@
       "The standard surjectivity condition (function equality) requires propext to USE: rewriting e a = D under rwa implicitly invokes propext. By weakening to pointwise Iff, we never need to rewrite Prop-equalities.",
       "The constructive version is strictly weaker than classical: IsPointwiseSurjective follows from Function.Surjective (via congr_fun + iff_of_eq), but not conversely. So the constructive impossibility result is stronger.",
       "iff_not_self : ¬(p ↔ ¬p) is the sole logical principle needed for the contradiction, and it holds in intuitionistic logic without any axioms.",
-      "The explicit proof (cantor_constructive_explicit) shows: nev := fun h => hdd.mp h h builds ¬(e d d) from the forward direction, then hdd.mpr nev : e d d, giving the contradiction directly."
+      "The explicit proof (cantor_constructive_explicit) shows: nev := fun h => hdd.mp h h builds ¬(e d d) from the forward direction, then hdd.mpr nev : e d d, giving the contradiction directly.",
+      "The proof's axiom-freeness is *self-certifying*: Part V's `#print axioms cantor_constructive` and `#print axioms cantor_constructive_explicit` are part of the formal record. A reader who trusts the Lean kernel does not need to trust the prose — the kernel itself reports 'depends on no axioms', which is what 'constructive' means here. This pattern (machine-checked axiom certification embedded in the proof file) is rare and worth replicating in any entry making constructivity claims."
     ],
     "prerequisites": [
       "Cantor Diagonalization OQ-03-OQ-01 (CantorDiagonalizationOQ03OQ01.lean): parent entry with cantor_recovery",
