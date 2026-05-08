@@ -587,18 +587,94 @@ private theorem rational_has_missing_ktuple (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
   obtain ⟨s, hs⟩ := periodic_has_missing_ktuple b T T hb hT_pos hT_lt f N₀ hper_fin
   exact ⟨T, N₀, s, hT_pos, hs⟩
 
-/-- Normal numbers must be irrational.
-    Proof: if x = p/q is rational, its expansion has period T ≤ q (by rational_digits_eventually_periodic).
-    Choose k with bᵏ > T (exists since b ≥ 2). By periodic_has_missing_ktuple, some k-string s₀
-    never appears in the expansion after position N₀, so its count is bounded by N₀.
-    Hence count(s₀, N)/N → 0 as N → ∞. But normality requires count(s₀, N)/N → 1/bᵏ > 0.
-    Contradiction (the Tendsto codings need cast between Fin b and ℤ-valued nthDigit).
+/-- **Layer 4b bridge (Session 13)**: rational missing-tuple lifted to the
+    ℤ-valued `nthDigit` form that appears literally inside `IsNormalInBase`. -/
+private theorem rational_has_missing_ktuple_intCast (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
+    ∃ (k N₀ : ℕ) (s : Fin k → Fin b),
+      0 < k ∧
+      ∀ n ≥ N₀, ∃ i : Fin k,
+        nthDigit b (n + i.val) (q : ℝ) ≠ (s i : ℤ) := by
+  obtain ⟨k, N₀, s, hk_pos, hs⟩ := rational_has_missing_ktuple b hb q
+  refine ⟨k, N₀, s, hk_pos, ?_⟩
+  intro n hn
+  obtain ⟨i, hi⟩ := hs n hn
+  refine ⟨i, ?_⟩
+  intro hcontra
+  apply hi
+  apply Fin.ext
+  have hbpos : 0 < b := by omega
+  have hcast := nthDigitFin_intCast b hbpos (n + i.val) (q : ℝ)
+  have : ((nthDigitFin b hbpos (n + i.val) (q : ℝ) : ℕ) : ℤ) = (s i : ℤ) := by
+    rw [hcast]; exact hcontra
+  exact_mod_cast this
 
-    **Layer 4a (Session 12)** built the cast bridge and the missing-tuple
-    composite (`rational_has_missing_ktuple`). The remaining work for Session 13
-    is the count/Tendsto step. -/
-axiom normal_imp_irrational (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
-    (hn : IsNormalInBase b x) : Irrational x
+/-- **Count bound (Session 13)**: positions where the digit-tuple matches `s`
+    all lie below `N₀`, so the count over any `Finset.range N` is at most `N₀`. -/
+private lemma rational_match_count_le (b : ℕ) (q : ℚ) (k N₀ : ℕ) (s : Fin k → Fin b)
+    (h : ∀ n ≥ N₀, ∃ i : Fin k,
+        nthDigit b (n + i.val) (q : ℝ) ≠ (s i : ℤ))
+    (N : ℕ) :
+    ((Finset.range N).filter
+      (fun n => ∀ i : Fin k, nthDigit b (n + i.val) (q : ℝ) = (s i : ℤ))).card
+      ≤ N₀ := by
+  refine (Finset.card_le_card (s := _) (t := Finset.range N₀) ?_).trans
+    (Finset.card_range N₀).le
+  intro n hn
+  rw [Finset.mem_filter, Finset.mem_range] at hn
+  obtain ⟨_, hmatch⟩ := hn
+  rw [Finset.mem_range]
+  by_contra hN
+  push_neg at hN
+  obtain ⟨i, hi⟩ := h n hN
+  exact hi (hmatch i)
+
+/-- **Tendsto squeeze (Session 13)**: a sequence bounded above by `N₀` (in `ℕ`)
+    has frequency `count_N / N → 0` as `N → ∞`. -/
+private lemma tendsto_bounded_count_div_atTop_zero (N₀ : ℕ) (c : ℕ → ℕ)
+    (hc : ∀ N, c N ≤ N₀) :
+    Tendsto (fun N : ℕ => (c N : ℝ) / (N : ℝ)) atTop (nhds 0) := by
+  have h_inv : Tendsto (fun N : ℕ => (N : ℝ)⁻¹) atTop (nhds 0) :=
+    tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+  have h_const_div : Tendsto (fun N : ℕ => (N₀ : ℝ) / (N : ℝ)) atTop (nhds 0) := by
+    have : Tendsto (fun N : ℕ => (N₀ : ℝ) * (N : ℝ)⁻¹) atTop (nhds ((N₀ : ℝ) * 0)) :=
+      h_inv.const_mul _
+    simpa [div_eq_mul_inv] using this
+  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' tendsto_const_nhds h_const_div
+    (Filter.Eventually.of_forall fun N => ?_)
+    (Filter.Eventually.of_forall fun N => ?_)
+  · positivity
+  · rcases Nat.eq_zero_or_pos N with hN | hN
+    · simp [hN]
+    · have hNR : (0 : ℝ) < (N : ℝ) := by exact_mod_cast hN
+      have h_le : (c N : ℝ) ≤ (N₀ : ℝ) := by exact_mod_cast hc N
+      gcongr
+
+/-- **Normal numbers are irrational (Session 13).**
+    Proof: if `x = q : ℚ` is rational, the base-`b` expansion has a missing
+    `k`-tuple `s` after some `N₀` (`rational_has_missing_ktuple_intCast`). The
+    matching-position count is then bounded by `N₀`, so its frequency tends to
+    `0`. Normality forces the same frequency to tend to `b^(-k) > 0`, and the
+    uniqueness of limits derives `b^(-k) = 0`, the desired contradiction. -/
+theorem normal_imp_irrational (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) : Irrational x := by
+  rintro ⟨q, hq⟩
+  subst hq
+  obtain ⟨k, N₀, s, hk_pos, hmiss⟩ := rational_has_missing_ktuple_intCast b hb q
+  have h_normal := hn k s
+  have h_count_le := rational_match_count_le b q k N₀ s hmiss
+  have h_zero :
+      Tendsto
+        (fun N : ℕ =>
+          (((Finset.range N).filter
+            (fun n => ∀ i : Fin k, nthDigit b (n + i.val) (q : ℝ) = (s i : ℤ))).card : ℝ)
+            / (N : ℝ))
+        atTop (nhds 0) :=
+    tendsto_bounded_count_div_atTop_zero N₀ _ h_count_le
+  have heq : (0 : ℝ) = (b : ℝ) ^ (-(k : ℤ)) :=
+    tendsto_nhds_unique h_zero h_normal
+  have hbR : (0 : ℝ) < (b : ℝ) := by exact_mod_cast (by omega : 0 < b)
+  have hpos : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := zpow_pos hbR _
+  linarith
 
 -- ============================================================
 -- PART V: OPEN QUESTION
