@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "IN-PROGRESS",
-    "since": "2026-05-08",
-    "iteration": 21,
-    "focus": "Session 21 (doctor, 2026-05-08): Added trig_sum_subsum_log_lb (Step 6c, ~36 lines) — combined log lower bound composing Step 6a (odd_harmonic_sum_shifted_lb) and Step 6b (trig_sum_subsum_lb) via mul_le_mul_of_nonneg_left + Real.sin_nonneg_of_nonneg_of_le_pi. Yields the ready-to-apply n·log(m) lower bound sin(d/2)·(2n/π)·((1/2)·log(m+2)-1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Recovers Step 6c content from PR #17046 after the symmetry helper portion (chebyshev_lebesgue_sum_pi_sub) became redundant with #17050's trig_sum_reindex_symmetry already on main.",
+    "since": "2026-05-09",
+    "iteration": 28,
+    "focus": "Session 28 (researcher-6, 2026-05-09, build pending): Added trig_sum_harmonic_lb_asymp (~50 lines) — extends S26's asymptotic large-n bound from θ ∈ (0, π/2] to the full open interval θ ∈ (0, π) via the WLOG bridge S18 (trig_sum_reindex_symmetry) + S27 (chebyshev_hne_pi_sub). For θ > π/2, sets θ' := π − θ ∈ (0, π/2), uses S27 to lift hne, applies S26 to θ', then uses S18 to rewrite S(θ, n) = S(π − θ, n). With this and S25 (combine helper #17457) merged, the Step 7 closure of trig_sum_harmonic_lb collapses to ~5 caller lines.",
     "blockers": [],
-    "nextAction": "(Researcher) Step 7 closure of trig_sum_harmonic_lb: use trig_sum_reindex_symmetry to WLOG θ ∈ (0, π/2]; choose m = ⌊nθ/(8π)⌋ with d := min(θ, π−θ); verify hm_le and h_interior for j ∈ Fin m; apply trig_sum_subsum_log_lb (Step 6c) for the n·log(m) lower bound; pick N₀(d) for the asymptotic side; finite-set min over 1 ≤ n < N₀ via Finset.min'.",
+    "nextAction": "(Researcher) Final Step 7 closure of trig_sum_harmonic_lb (~5 lines, after S25+S28 merge): apply trig_sum_harmonic_lb_asymp to obtain (N₀, C₁, hlarge), then trig_sum_combine_small_large_const to obtain unified C, conclude.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -146,15 +146,15 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-05-08T11:00:00Z",
+  "lastUpdate": "2026-05-09T03:00:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 2415,
-      "theoremCount": 60,
+      "lineCount": 2528,
+      "theoremCount": 62,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 2,

@@ -2264,6 +2264,67 @@ private lemma trig_sum_harmonic_lb_asymp_le_half_pi
     _ ≤ ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
                      |Real.cos θ - chebyshevNode n k| := hbound_mixedcast
 
+/-- **(Step 7a, general θ) Asymptotic large-`n` lower bound for the trig sum.**
+
+    Extends `trig_sum_harmonic_lb_asymp_le_half_pi` (S26) from
+    `θ ∈ (0, π/2]` to the full open interval `θ ∈ (0, π)` via the WLOG
+    bridge S18 (`trig_sum_reindex_symmetry`) + S27 (`chebyshev_hne_pi_sub`).
+
+    For any `θ ∈ (0, π)` whose cosine avoids all Chebyshev nodes
+    (for every `n ≥ 1`), there exist `N₀ : ℕ` and `C₁ > 0` such that
+    `C₁ · n · log(n+1) ≤ S(θ, n)` for all `n ≥ N₀`.
+
+    **Proof**: split on `θ ≤ π/2`.
+      • If `θ ≤ π/2`, apply S26 directly.
+      • If `θ > π/2`, set `θ' := π − θ ∈ (0, π/2)`. Use S27 to obtain
+        `hne'` for `θ'`, apply S26 to `(θ', hne')` to get
+        `C₁ · n · log(n+1) ≤ S(π − θ, n)`, then rewrite via S18
+        (`S(θ, n) = S(π − θ, n)`) to conclude.
+
+    **Why packaged independently of S25**: S25's combine helper
+    (`trig_sum_combine_small_large_const`, in flight as PR #17457) consumes
+    a `hlarge` hypothesis of exactly this shape but parameterised over the
+    same `θ` it concludes for. By extending S26's reach to all `θ ∈ (0, π)`,
+    this helper closes the angle-domain gap so the final `trig_sum_harmonic_lb`
+    can apply S25 directly without an additional in-line WLOG case split. -/
+private lemma trig_sum_harmonic_lb_asymp
+    (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
+    (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
+    ∃ (N₀ : ℕ) (C₁ : ℝ), 0 < C₁ ∧ ∀ n : ℕ, N₀ ≤ n →
+      C₁ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := by
+  by_cases hcase : θ ≤ Real.pi / 2
+  · -- Branch 1: `θ ≤ π/2`. Direct application of S26.
+    exact trig_sum_harmonic_lb_asymp_le_half_pi θ hθ_pos hcase hne
+  · -- Branch 2: `θ > π/2`. WLOG bridge via `θ' := π − θ ∈ (0, π/2)`.
+    push_neg at hcase
+    -- Build the hypotheses for S26 at `θ' := π − θ`.
+    have hθ'_pos : 0 < Real.pi - θ := by linarith
+    have hθ'_le : Real.pi - θ ≤ Real.pi / 2 := by linarith
+    -- S27 supplies the `hne` side of the bridge for each `n`.
+    have hne' : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n),
+        Real.cos (Real.pi - θ) ≠ chebyshevNode n k := by
+      intro n hn k
+      exact chebyshev_hne_pi_sub n hn θ (hne n hn) k
+    -- Apply S26 to `(π − θ)` to get `(N₀, C₁, hbound')` for the reindexed sum.
+    obtain ⟨N₀, C₁, hC₁_pos, hbound'⟩ :=
+      trig_sum_harmonic_lb_asymp_le_half_pi (Real.pi - θ) hθ'_pos hθ'_le hne'
+    -- Bump `N₀` to `max N₀ 1` so we can apply `trig_sum_reindex_symmetry`
+    -- (which requires `0 < n`). This costs nothing: at `n = 0` the sum is
+    -- empty and the bound is trivially `0 ≤ 0`, so adding a 1-floor only
+    -- prunes the trivial entry.
+    refine ⟨max N₀ 1, C₁, hC₁_pos, ?_⟩
+    intro n hn_max
+    have hN₀_le : N₀ ≤ n := le_of_max_le_left hn_max
+    have hn_pos : 0 < n := by
+      have h1_le : 1 ≤ n := le_of_max_le_right hn_max
+      omega
+    -- S18: `S(θ, n) = S(π − θ, n)`. Rewrite the goal LHS sum.
+    have hsym := trig_sum_reindex_symmetry n hn_pos θ
+    rw [hsym]
+    exact hbound' n hN₀_le
+
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
     ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
