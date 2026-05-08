@@ -254,6 +254,46 @@ theorem thirtyseven_fails : ¬ AvoidsPrimes 37 := by
   intro ⟨_, h⟩
   have := h 2 0; simp only [candidateNumber] at this; norm_num at this
 
+-- m = 41: 2*41+1 = 83 is prime
+theorem fortyone_fails : ¬ AvoidsPrimes 41 := by
+  intro ⟨_, h⟩
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 43: 4*43+1 = 173 is prime
+theorem fortythree_fails : ¬ AvoidsPrimes 43 := by
+  intro ⟨_, h⟩
+  have := h 2 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 47: 6*47+1 = 283 is prime
+theorem fortyseven_fails : ¬ AvoidsPrimes 47 := by
+  intro ⟨_, h⟩
+  have := h 1 1; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 49: 4*49+1 = 197 is prime
+theorem fortynine_fails : ¬ AvoidsPrimes 49 := by
+  intro ⟨_, h⟩
+  have := h 2 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 53: 2*53+1 = 107 is prime
+theorem fiftythree_fails : ¬ AvoidsPrimes 53 := by
+  intro ⟨_, h⟩
+  have := h 1 0; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 55: 6*55+1 = 331 is prime
+theorem fiftyfive_fails : ¬ AvoidsPrimes 55 := by
+  intro ⟨_, h⟩
+  have := h 1 1; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 59: 12*59+1 = 709 is prime
+theorem fiftynine_fails : ¬ AvoidsPrimes 59 := by
+  intro ⟨_, h⟩
+  have := h 2 1; simp only [candidateNumber] at this; norm_num at this
+
+-- m = 61: 6*61+1 = 367 is prime
+theorem sixtyone_fails : ¬ AvoidsPrimes 61 := by
+  intro ⟨_, h⟩
+  have := h 1 1; simp only [candidateNumber] at this; norm_num at this
+
 -- Structural: if m is avoiding primes, then m+1, 2m+1, 3m+1 are all composite
 theorem avoiding_implies_composites (m : ℕ) (h : AvoidsPrimes m) :
     ¬ (m + 1).Prime ∧ ¬ (2 * m + 1).Prime ∧ ¬ (3 * m + 1).Prime := by
