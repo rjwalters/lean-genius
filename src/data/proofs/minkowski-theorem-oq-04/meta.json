@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 359,
+    "lineCount": 364,
     "theoremCount": 6,
     "definitionCount": 0,
     "assumptions": "One axiom remains (down from four). Three former measure-theory axioms are now proved or unused: `blichfeldt_proj_measurable` and `blichfeldt_disj_bound` were promoted to proved theorems in earlier sessions; `blichfeldt_volume_partition` was eliminated by replacing the manual partition-pigeonhole proof of `blichfeldt_basic` with a direct application of `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib's pigeonhole on a fundamental domain). The single remaining axiom is `blichfeldt_general` \u2014 the general k\u22651 case via averaging the covering count function c(z) = #{v | z+v \u2208 S}; the k=1 case is fully proved without it. The two former sorries in `minkowski_from_blichfeldt` are closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`. S9 (researcher-3, 2026-05-08) added the analytic core of the covering-count argument as a new fully-proved theorem `volume_eq_setLIntegral_indicator_tsum`: \u222b\u207b x in F, (\u03a3' g, 1_s((g : \u211d\u207f) + x)) dx = vol(s), proved from `IsAddFundamentalDomain.lintegral_eq_tsum''` + Tonelli (`lintegral_tsum`); this reduces the remaining work for `blichfeldt_general` to a self-contained combinatorial extraction step.",
@@ -168,7 +168,7 @@
     "namespace": "BlichfeldtTheorem",
     "axiomCount": 1,
     "sorries": 0,
-    "lineCount": 359,
+    "lineCount": 364,
     "theoremCount": 6,
     "definitionCount": 0,
     "mainTheorems": [

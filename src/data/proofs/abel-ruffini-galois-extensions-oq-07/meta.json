@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 614,
+    "lineCount": 738,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -126,7 +126,7 @@
       "burnside_pq_sharp: sharpness witness combining the two above — demonstrates that the analogue of burnside_pq for THREE distinct primes fails (no `burnside_pqr` theorem can hold without further hypotheses; A₅ also defeats the squarefree route since 60 has 2²)."
     ],
     "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iterations 5/7): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited; this is a strict shortcut for any future case-by-case Sylow-counting analysis (`|G| = p² · q`, `|G| = p · q²`, …). Iteration 7 adds the FIRST sub-case discharge of the `(a, b) = (2, 1)` shape: `burnside_p_squared_q_p_gt_q` proves Burnside axiom-free whenever `|G| = p² · q` with `p > q`, by combining Sylow's third theorem (`card_sylow_modEq_one`) with `Sylow.card_dvd_index` to force `n_p = 1`, then plugging into `burnside_pq_with_normal_pSylow`. The symmetric `p < q ≠ 3` case (S7.5) and the exceptional `(p, q) = (2, 3), |G| = 12` case (S8) are the remaining S-iterations needed to remove `(a, b) = (2, 1)` from the axiom hypothesis entirely. The axiom statement itself is unchanged: it still isolates the genuinely-open Lean content (orders divisible by `p²` or `q²` for distinct primes); a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
-    "theoremCount": 15,
+    "theoremCount": 17,
     "definitionCount": 0
   },
   "overview": {
@@ -264,9 +264,9 @@
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 614,
+    "lineCount": 738,
     "axiomCount": 1,
-    "theoremCount": 15,
+    "theoremCount": 17,
     "substantiveTheoremCount": 15,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
