@@ -175,6 +175,93 @@ axiom burnside_pq_nontrivial {G : Type*} [Group G] [Finite G]
     (hcard : Nat.card G = p ^ a * q ^ b) : IsSolvable G
 
 -- ═══════════════════════════════════════════════════════════════════════
+-- PART III.5: Normal-Sylow reductions (axiom-free, Iteration 5)
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-! Two reduction lemmas that discharge `burnside_pq_nontrivial` whenever
+    a normal subgroup whose order is the full `p`-part (or `q`-part) of `|G|`
+    can be exhibited. They neither modify nor weaken `burnside_pq_nontrivial`
+    itself, but provide axiom-free shortcuts that any future
+    `|G| = pᵃ · qᵇ` analysis can plug into. -/
+
+/-- **Solvability extension via normal-quotient pair** (Mathlib repackaging):
+    if `N` is a normal subgroup of `G` with both `N` and `G ⧸ N` solvable,
+    then `G` is solvable.
+
+    This is the standard fact that solvability is closed under group
+    extensions. We package it as a named theorem for repeated use below.
+    The proof reuses Mathlib's `solvable_of_ker_le_range` against the
+    canonical short exact sequence `1 → N → G → G ⧸ N → 1`: the kernel of
+    `QuotientGroup.mk' N` is exactly the range of `N.subtype`. -/
+theorem isSolvable_of_normal_quotient_solvable {G : Type*} [Group G]
+    (N : Subgroup G) [N.Normal] [IsSolvable N] [IsSolvable (G ⧸ N)] :
+    IsSolvable G := by
+  apply solvable_of_ker_le_range N.subtype (QuotientGroup.mk' N)
+  intro x hx
+  rw [MonoidHom.mem_ker, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff] at hx
+  exact ⟨⟨x, hx⟩, rfl⟩
+
+/-- **Burnside reduction via a normal `p`-Sylow-sized subgroup** (axiom-free):
+    if `|G| = pᵃ · qᵇ` and `G` admits a normal subgroup `N` with
+    `|N| = pᵃ`, then `G` is solvable.
+
+    Proof outline:
+    - `IsPGroup p N` follows from `IsPGroup.iff_card` and `|N| = pᵃ`,
+      so `pGroup_isSolvable` gives `IsSolvable N`.
+    - Lagrange (`Subgroup.card_mul_index`) plus `|G| = pᵃ · qᵇ` and
+      `pᵃ > 0` yield `Nat.card (G ⧸ N) = qᵇ`.
+    - Then `IsPGroup q (G ⧸ N)` and `pGroup_isSolvable` give
+      `IsSolvable (G ⧸ N)`.
+    - `isSolvable_of_normal_quotient_solvable` closes `G`.
+
+    Strategic value: combined with future Sylow-counting analysis on
+    specific `|G| = pᵃ · qᵇ` shapes (`|G| = p² · q`, `|G| = p · q²`, …),
+    this lemma turns "produce a normal Sylow `p`-subgroup" into a complete
+    axiom-free solvability proof. -/
+theorem burnside_pq_with_normal_pSylow {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [Fact q.Prime] {a b : ℕ}
+    (hcard : Nat.card G = p ^ a * q ^ b)
+    (N : Subgroup G) [N.Normal] (hN_card : Nat.card N = p ^ a) :
+    IsSolvable G := by
+  have hN_pg : IsPGroup p N := IsPGroup.iff_card.mpr ⟨a, hN_card⟩
+  haveI : IsSolvable N := pGroup_isSolvable N hN_pg
+  have hpa_pos : 0 < p ^ a := pow_pos hp.out.pos a
+  have hQ_card : Nat.card (G ⧸ N) = q ^ b := by
+    have h := Subgroup.card_mul_index N
+    rw [hN_card, hcard] at h
+    have hidx : N.index = q ^ b := Nat.eq_of_mul_eq_mul_left hpa_pos h
+    rw [N.index_eq_card] at hidx
+    exact hidx
+  have hQ_pg : IsPGroup q (G ⧸ N) := IsPGroup.iff_card.mpr ⟨b, hQ_card⟩
+  haveI : IsSolvable (G ⧸ N) := pGroup_isSolvable (G ⧸ N) hQ_pg
+  exact isSolvable_of_normal_quotient_solvable N
+
+/-- **Burnside reduction via a normal `q`-Sylow-sized subgroup** (axiom-free,
+    symmetric to `burnside_pq_with_normal_pSylow`): if `|G| = pᵃ · qᵇ` and
+    `G` admits a normal subgroup `N` with `|N| = qᵇ`, then `G` is solvable.
+
+    Proof: dual to the `p`-Sylow case — `N` is a `q`-group (hence solvable),
+    `|G ⧸ N| = pᵃ` (Lagrange + cancellation, after a `mul_comm` rearrangement),
+    so `G ⧸ N` is a `p`-group (hence solvable), and the extension is solvable. -/
+theorem burnside_pq_with_normal_qSylow {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [Fact p.Prime] [hq : Fact q.Prime] {a b : ℕ}
+    (hcard : Nat.card G = p ^ a * q ^ b)
+    (N : Subgroup G) [N.Normal] (hN_card : Nat.card N = q ^ b) :
+    IsSolvable G := by
+  have hN_pg : IsPGroup q N := IsPGroup.iff_card.mpr ⟨b, hN_card⟩
+  haveI : IsSolvable N := pGroup_isSolvable N hN_pg
+  have hqb_pos : 0 < q ^ b := pow_pos hq.out.pos b
+  have hQ_card : Nat.card (G ⧸ N) = p ^ a := by
+    have h := Subgroup.card_mul_index N
+    rw [hN_card, hcard, mul_comm (p ^ a) (q ^ b)] at h
+    have hidx : N.index = p ^ a := Nat.eq_of_mul_eq_mul_left hqb_pos h
+    rw [N.index_eq_card] at hidx
+    exact hidx
+  have hQ_pg : IsPGroup p (G ⧸ N) := IsPGroup.iff_card.mpr ⟨a, hQ_card⟩
+  haveI : IsSolvable (G ⧸ N) := pGroup_isSolvable (G ⧸ N) hQ_pg
+  exact isSolvable_of_normal_quotient_solvable N
+
+-- ═══════════════════════════════════════════════════════════════════════
 -- PART IV: Main theorem
 -- ═══════════════════════════════════════════════════════════════════════
 
@@ -265,6 +352,21 @@ example {G : Type*} [Group G] [Finite G] (hcard : Nat.card G = 30) :
   show Squarefree (30 : ℕ)
   native_decide
 
+/-- **Group of order `12 = 2² · 3` with a normal subgroup of order `4` is
+    solvable**, axiom-free, via `burnside_pq_with_normal_pSylow`. This is
+    exactly the structure realized by `A₄` (the Klein four-group `V₄ ⊆ A₄`
+    is normal of order `4 = 2²`); it shows the new Iteration-5 reduction
+    discharges the previously-axiomatized `2 ≤ a` shape `|G| = p² · q`
+    whenever a normal `p`-Sylow is exhibited. -/
+example {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 12)
+    (N : Subgroup G) [N.Normal] (hN : Nat.card N = 4) : IsSolvable G := by
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
+  have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
+  have hN' : Nat.card N = 2 ^ 2 := by rw [hN]; norm_num
+  exact burnside_pq_with_normal_pSylow hcard' N hN'
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART VI: Sharpness witness
 -- ═══════════════════════════════════════════════════════════════════════
@@ -337,6 +439,19 @@ theorem burnside_pq_sharp :
 - `burnside_pq_pq_case` — Burnside for `a = b = 1` (`|G| = p · q`,
   squarefree order). Reduces to `squarefreeOrder_isSolvable` via
   `Nat.coprime_primes` + `Prime.squarefree` + `Nat.squarefree_mul`.
+- `isSolvable_of_normal_quotient_solvable` (Iteration 5) — solvability is
+  closed under group extensions: `[N.Normal] [IsSolvable N]
+  [IsSolvable (G ⧸ N)] → IsSolvable G`. Repackaging of Mathlib's
+  `solvable_of_ker_le_range` against the canonical sequence
+  `N → G → G ⧸ N`.
+- `burnside_pq_with_normal_pSylow` (Iteration 5) — if `|G| = pᵃ · qᵇ`
+  and `G` admits a normal subgroup of order `pᵃ`, then `G` is solvable.
+  Axiom-free reduction tool: combined with Sylow-counting on specific
+  shapes (`|G| = p² · q`, `|G| = p · q²`, …), discharges
+  `burnside_pq_nontrivial` outright once a normal `p`-Sylow is
+  exhibited.
+- `burnside_pq_with_normal_qSylow` (Iteration 5) — symmetric: a normal
+  subgroup of order `qᵇ` gives `IsSolvable G`.
 - `burnside_pq` — main theorem combining trivial cases + pq case + axiom.
 - `alternatingGroupFin5_card` — `|A₅| = 2² · 3 · 5 = 60` (sharpness witness
   cardinality, three distinct primes).
@@ -357,8 +472,13 @@ theorem burnside_pq_sharp :
   theory still lacks the algebraic-integer hypotheses needed for
   `(|G|/χ(1))χ(g) ∈ ℤ̄_K`.
 - Next sub-cases worth axiom-free attempts (in order of accessibility):
-  (1) `|G| = p² · q` with `p ≠ q` — classical, ~50-100 lines via Sylow,
-  (2) `|G| = p · q²` with `p ≠ q` — symmetric to (1),
+  (1) `|G| = p² · q` with `p ≠ q` — classical, ~50-100 lines via Sylow.
+      With Iteration 5 the residual content shrinks to "exhibit a normal
+      Sylow"; the standard Sylow-counting argument (`n_p ∣ q`,
+      `n_p ≡ 1 (mod p)`, `n_q ∣ p²`, `n_q ≡ 1 (mod q)` and an
+      element-count) then composes with `burnside_pq_with_normal_pSylow`
+      / `burnside_pq_with_normal_qSylow` for an axiom-free finish.
+  (2) `|G| = p · q²` with `p ≠ q` — symmetric to (1).
   (3) `|G| = p² · q²` — needs more delicate Sylow analysis.
 - Mathlib upstream: a Burnside-pᵃqᵇ proof would be a substantial PR.
   Coordinate with Mathlib reviewers before scoping a full formalization.
@@ -372,6 +492,9 @@ theorem burnside_pq_sharp :
 #check @squarefreeOrder_isSolvable
 #check @burnside_pq_pq_case
 #check @pGroup_isSolvable
+#check @isSolvable_of_normal_quotient_solvable
+#check @burnside_pq_with_normal_pSylow
+#check @burnside_pq_with_normal_qSylow
 #check @alternatingGroupFin5_card
 #check @alternatingGroupFin5_not_solvable
 #check @burnside_pq_sharp
