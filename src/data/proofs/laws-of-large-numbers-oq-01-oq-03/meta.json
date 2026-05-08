@@ -85,6 +85,18 @@
       "Can borel_cantelli_pairwise_indep be contributed to Mathlib4 directly? The existing Mathlib theorem measure_limsup_eq_one requires full independence (via limsup_ae_eq_of_forall_ae_eq or similar), so this would be a genuine new contribution.",
       "What is the optimal rate of divergence? If Σ P(Aₙ) diverges faster, does P(limsup Aₙ) = 1 hold with additional quantitative bounds on how often the events occur?",
       "Does the proof generalize to σ-finite (non-probability) measures? The Chebyshev-variance argument is intrinsically tied to a probability measure (it bounds Var(Sₙ) ≤ E[Sₙ] using indicator-variance ≤ probability), but the conclusion μ(limsup Aₙ) = ∞ for σ-finite measures has independent interest in ergodic theory and dynamics."
+    ],
+    "prerequisites": [
+      "Probability theory basics: probability space $(\\Omega, \\mathcal{F}, \\mu)$, σ-algebra of measurable sets, probability measure $\\mu : \\mathcal{F} \\to [0,1]$ with $\\mu(\\Omega) = 1$",
+      "Independence of events: pairwise independence ($\\mu(A_i \\cap A_j) = \\mu(A_i) \\mu(A_j)$ for $i \\ne j$) versus full mutual independence (every finite subfamily is independent); recognize that pairwise is strictly weaker",
+      "Limit superior of a sequence of sets: $\\limsup_n A_n = \\bigcap_m \\bigcup_{n \\ge m} A_n = \\{\\omega : \\omega \\in A_n$ for infinitely many $n\\}$, and its measurability under countable σ-algebra operations",
+      "First Borel-Cantelli lemma (BC1): $\\sum_n \\mu(A_n) < \\infty \\Rightarrow \\mu(\\limsup A_n) = 0$ (no independence required) — the half this theorem complements",
+      "Chebyshev's inequality: $\\mu(|X - E[X]| \\ge a) \\le \\mathrm{Var}(X) / a^2$ for any random variable $X$ with finite variance",
+      "Variance of a sum of indicator random variables: $\\mathrm{Var}\\bigl(\\sum_k \\mathbf{1}_{A_k}\\bigr) = \\sum_k \\mathrm{Var}(\\mathbf{1}_{A_k}) + 2 \\sum_{i<j} \\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j})$ — and $\\mathrm{Var}(\\mathbf{1}_A) = P(A)(1-P(A)) \\le P(A)$",
+      "Covariance of indicators under pairwise independence: $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = \\mu(A_i \\cap A_j) - \\mu(A_i) \\mu(A_j) = 0$ when $A_i, A_j$ are independent",
+      "Extended-real / ENNReal divergence: $\\sum_n \\mu(A_n) = \\infty$ stated in Lean as $\\sum_n \\mu(A_n) = \\top$ in $\\mathbb{R}_{\\ge 0}^\\infty$ (ENNReal); the equivalent finite-form $\\sum_{k<n} \\mu(A_k) \\to \\infty$",
+      "Mathlib API: `Filter.limsup` and `atTop` (the cofinite/eventually filter on $\\mathbb{N}$), `MeasureTheory.MeasurableSet`, `ProbabilityTheory.IndepSet` (independence of two measurable sets), `Pairwise` (the pairwise relation lifted to a sequence), `IsProbabilityMeasure`",
+      "Counterexample machinery: Petrov 2002, §10 — events with $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = 0$ but lacking the joint distributional condition, demonstrating that uncorrelated-ness is strictly weaker than pairwise independence and insufficient for BC2"
     ]
   },
   "sections": [
@@ -93,21 +105,24 @@
       "title": "Module Docstring — Open Question, Theorem Statement, and References",
       "startLine": 1,
       "endLine": 59,
-      "summary": "59-line module-level docstring framing the OQ-03 sub-question: can pairwise-independent BC2 (used inside laws-of-large-numbers-oq-01-oq-01's slln_necessity proof) be extracted as a clean standalone Mathlib-worthy theorem, and is pairwise independence the minimal hypothesis? Records both answers as YES and provides the 5-step Chebyshev-variance proof sketch (divergent expectation → Var ≤ E via covariance cancellation → Chebyshev → monotone limit → equivalence to limsup), the minimality argument (stronger is unnecessary; mere uncorrelated-ness is insufficient — Petrov 2002), the Erdős-Rényi (1959) attribution, and primary references (Erdős-Rényi original Cantor-series paper, Petrov counterexample, Feller II)."
+      "summary": "59-line module-level docstring framing the OQ-03 sub-question: can pairwise-independent BC2 (used inside laws-of-large-numbers-oq-01-oq-01's slln_necessity proof) be extracted as a clean standalone Mathlib-worthy theorem, and is pairwise independence the minimal hypothesis? Records both answers as YES and provides the 5-step Chebyshev-variance proof sketch (divergent expectation → Var ≤ E via covariance cancellation → Chebyshev → monotone limit → equivalence to limsup), the minimality argument (stronger is unnecessary; mere uncorrelated-ness is insufficient — Petrov 2002), the Erdős-Rényi (1959) attribution, and primary references (Erdős-Rényi original Cantor-series paper, Petrov counterexample, Feller II).",
+      "mathContext": "Statement: pairwise independence of $\\{A_n\\}$ + $\\sum_n \\mu(A_n) = \\infty$ ⟹ $\\mu(\\limsup_n A_n) = 1$. Proof skeleton (Chebyshev-variance, Erdős-Rényi 1959): with $S_n = \\sum_{k<n} \\mathbf{1}_{A_k}$, (i) $E[S_n] = \\sum_{k<n} \\mu(A_k) \\to \\infty$; (ii) pairwise independence gives $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = 0$ for $i \\ne j$, hence $\\mathrm{Var}(S_n) = \\sum_{k<n} \\mu(A_k)(1 - \\mu(A_k)) \\le E[S_n]$; (iii) Chebyshev: $\\mu(S_n \\le M) \\le \\mathrm{Var}(S_n)/(E[S_n] - M)^2 \\to 0$; (iv) $S_n$ non-decreasing ⟹ $S_n \\to \\infty$ a.s.; (v) $\\{S_n \\to \\infty\\} = \\{\\omega \\in A_n \\text{ i.o.}\\} = \\limsup_n A_n$. Minimality (Petrov 2002, §10): mere uncorrelated-ness — $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = 0$ without the joint $\\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$ identity — does not suffice."
     },
     {
       "id": "setup",
       "title": "Setup and Imports",
       "startLine": 60,
       "endLine": 66,
-      "summary": "Imports LawsOfLargeNumbersOQ01Aristotle (which contains the underlying Chebyshev-variance proof), opens the relevant namespaces (MeasureTheory, ProbabilityTheory, Filter), and declares the probability space variable."
+      "summary": "Imports LawsOfLargeNumbersOQ01Aristotle (which contains the underlying Chebyshev-variance proof), opens the relevant namespaces (MeasureTheory, ProbabilityTheory, Filter), and declares the probability space variable.",
+      "mathContext": "Working setup: probability space $(\\Omega, \\mathcal{F}, \\mu)$ with `[MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]`. Namespaces opened: `MeasureTheory` for `Measure`/`MeasurableSet`, `ProbabilityTheory` for `IndepSet`/`Pairwise`-independence-of-events, `Filter` for `limsup`/`atTop` (the cofinite-like filter on $\\mathbb{N}$). Single import: `LawsOfLargeNumbersOQ01Aristotle` exposing `borel_cantelli_of_pairwise_independent`, the Chebyshev-variance core proof."
     },
     {
       "id": "main-theorem",
       "title": "Borel-Cantelli for Pairwise Independence",
       "startLine": 68,
       "endLine": 97,
-      "summary": "The main result: borel_cantelli_pairwise_indep states that pairwise independent measurable events with divergent probability sum occur infinitely often a.s. The extensive docstring explains the Chebyshev-variance proof method, the distinction from classical BC2 (full mutual independence → pairwise independence), and the minimality of pairwise independence. The one-line proof delegates to borel_cantelli_of_pairwise_independent in the Aristotle companion."
+      "summary": "The main result: borel_cantelli_pairwise_indep states that pairwise independent measurable events with divergent probability sum occur infinitely often a.s. The extensive docstring explains the Chebyshev-variance proof method, the distinction from classical BC2 (full mutual independence → pairwise independence), and the minimality of pairwise independence. The one-line proof delegates to borel_cantelli_of_pairwise_independent in the Aristotle companion.",
+      "mathContext": "Theorem signature: `borel_cantelli_pairwise_indep : (∀ n, MeasurableSet (A n)) → Pairwise (fun i j => IndepSet (A i) (A j) μ) → (∑' n, μ (A n) = ⊤) → μ (limsup A atTop) = 1`. Note `∑' n, μ (A n) = ⊤` (top of ENNReal) is Lean's idiom for $\\sum_n \\mu(A_n) = \\infty$, and `Pairwise (fun i j => IndepSet (A i) (A j) μ)` says $\\forall i \\ne j, \\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$ — strictly weaker than `iIndepSet` (full mutual independence) which classical BC2 requires. The proof body is a single line delegating to `LawsOfLargeNumbersOQ01.borel_cantelli_of_pairwise_independent hmeas hindep hsum` in the Aristotle companion, where the 5-step Chebyshev-variance argument is carried out."
     }
   ],
   "conclusion": {
