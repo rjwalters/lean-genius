@@ -339,7 +339,7 @@ theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : Cofac
         (bhat : ℤ) * ((ahat : ℤ) / (bhat : ℤ)) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
       rw [← hdiv_eq]
       exact_mod_cast Nat.div_add_mod ahat bhat
-    linarith
+    linear_combination -hdivmod_int
 
 /-- Multi-step matrix-vector invariant for `lehmerCofactors`.
 
