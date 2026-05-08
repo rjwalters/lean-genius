@@ -949,6 +949,148 @@ def outerGuardFiresInSurveyRange : ℕ :=
 def outerGuardAbortsInSurveyRange : ℕ :=
   (surveyRange.filter (fun p => !schonhageOuterGuardFires p.1 p.2)).length
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XVI: GENERALISED FINSET DENSITY FRAMEWORK (Session 25)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Finset-parameterised density framework
+
+    S24 (PART XV) introduced a `List`-based survey range
+    hard-coded to the S17 PR #17024 region
+    `{(a, b) : 64 ≤ b ≤ a < 130}`. This section provides the
+    parallel **Finset-based, range-parameterised** framework,
+    which complements S24 in three ways:
+
+      * `outerGuardSurveyPairs lo hi : Finset (ℕ × ℕ)` is
+        parameterised by `lo, hi` rather than fixed at `(64, 130)`,
+        so the same density question can be asked on
+        sub-threshold (`(0, 64)`), half-threshold (`(0, 32)`),
+        or extended (`(64, 200)`) ranges with the same
+        infrastructure.
+      * `Finset.filter` / `Finset.card` directly support standard
+        Mathlib lemmas — see `outerGuardFiringCount_le_surveySize`
+        (a structural ≤ bound proved by `Finset.card_filter_le`).
+      * A **closed-form below-threshold theorem**
+        `outerGuardFiringCount_below_threshold` discharges the
+        zero-firing question for any sub-threshold survey range
+        without `native_decide` — leveraging S23's
+        `_below_threshold` lemma and the conjunction-of-Ico
+        membership conditions.
+
+    Both frameworks compute the same survey-size on
+    `(lo, hi) = (64, 130)`: `surveyRange_length = 2211 =
+    (outerGuardSurveyPairs 64 130).card`. The S25 framework adds
+    structural lemmas (provable, not just `native_decide`-checked)
+    that scale to a general range.
+
+    All lemmas in this section are unconditional (0 axioms,
+    0 sorries). -/
+
+/-- Finset of survey pairs `(a, b)` with `lo ≤ b ≤ a < hi`.
+    Built as the lower-triangular part of the rectangle
+    `Ico lo hi × Ico lo hi`. The S17 PR #17024 family
+    corresponds to `outerGuardSurveyPairs 64 130`; the entire
+    sub-threshold region to `outerGuardSurveyPairs 0 64`. -/
+def outerGuardSurveyPairs (lo hi : ℕ) : Finset (ℕ × ℕ) :=
+  ((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter (fun p => p.2 ≤ p.1)
+
+/-- The firing subset of the Finset survey: pairs for which the
+    S23 outer guard returns `true`. Companion to S24's
+    `outerGuardFiresInSurveyRange` (the `List`-based,
+    `(64, 130)`-fixed version). -/
+def outerGuardFiringPairs (lo hi : ℕ) : Finset (ℕ × ℕ) :=
+  (outerGuardSurveyPairs lo hi).filter
+    (fun p => schonhageOuterGuardFires p.1 p.2 = true)
+
+/-- Cardinality of the parameterised survey range. Closed form
+    when `lo ≤ hi`: equal to the triangular sum
+    `(hi - lo) · (hi - lo + 1) / 2`. -/
+def outerGuardSurveySize (lo hi : ℕ) : ℕ :=
+  (outerGuardSurveyPairs lo hi).card
+
+/-- Number of pairs in `outerGuardSurveyPairs lo hi` for which
+    the outer guard fires. The density question of interest:
+    how does `outerGuardFiringCount lo hi /
+    outerGuardSurveySize lo hi` behave as `(lo, hi)` varies? -/
+def outerGuardFiringCount (lo hi : ℕ) : ℕ :=
+  (outerGuardFiringPairs lo hi).card
+
+/-- The firing count is bounded above by the survey size.
+    Trivial from `Finset.card_filter_le`: a filtered Finset has
+    cardinality at most that of its parent. -/
+theorem outerGuardFiringCount_le_surveySize (lo hi : ℕ) :
+    outerGuardFiringCount lo hi ≤ outerGuardSurveySize lo hi := by
+  unfold outerGuardFiringCount outerGuardSurveySize
+         outerGuardFiringPairs
+  exact Finset.card_filter_le _ _
+
+/-- **Closed-form zero-firing below threshold.** When the entire
+    survey region sits below `hgcdThresholdSafe = 64`, every
+    pair has `max a b < 64`, so the S23 outer guard returns
+    `false` uniformly and the firing count is zero. Direct
+    corollary of S23's `schonhageOuterGuardFires_below_threshold`,
+    leveraging the Finset structure (no `native_decide`
+    enumeration required). -/
+theorem outerGuardFiringCount_below_threshold (lo hi : ℕ)
+    (h : hi ≤ hgcdThresholdSafe) :
+    outerGuardFiringCount lo hi = 0 := by
+  unfold outerGuardFiringCount outerGuardFiringPairs
+         outerGuardSurveyPairs
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  intro p hp
+  rw [Finset.mem_filter, Finset.mem_product,
+      Finset.mem_Ico, Finset.mem_Ico] at hp
+  obtain ⟨⟨⟨_hlo_a, ha_hi⟩, ⟨_hlo_b, hb_hi⟩⟩, _hba⟩ := hp
+  have ha : p.1 < hgcdThresholdSafe := lt_of_lt_of_le ha_hi h
+  have hb : p.2 < hgcdThresholdSafe := lt_of_lt_of_le hb_hi h
+  have hmax : max p.1 p.2 < hgcdThresholdSafe := max_lt ha hb
+  have := schonhageOuterGuardFires_below_threshold hmax
+  rw [this]
+  decide
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART XVII: NATIVE-DECIDE WITNESSES (Session 25)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Combinatorial survey-size witnesses on multiple ranges
+
+    These checks confirm `outerGuardSurveySize` reproduces the
+    closed-form triangular sum
+    `(hi - lo) · (hi - lo + 1) / 2` on concrete ranges. Pure
+    combinatorics — does not invoke `hgcdSafeApply`, so all
+    three witnesses evaluate fast. -/
+
+/-- Survey size on the S17 PR #17024 family
+    `{(a, b) : 64 ≤ b ≤ a < 130}`: `66 · 67 / 2 = 2211`. Matches
+    S24's `surveyRange_length`. -/
+example : outerGuardSurveySize 64 130 = 2211 := by native_decide
+
+/-- Survey size on the entire below-threshold region
+    `{(a, b) : 0 ≤ b ≤ a < 64}`: `64 · 65 / 2 = 2080`. -/
+example : outerGuardSurveySize 0 64 = 2080 := by native_decide
+
+/-- Survey size on the half-threshold region
+    `{(a, b) : 0 ≤ b ≤ a < 32}`: `32 · 33 / 2 = 528`. -/
+example : outerGuardSurveySize 0 32 = 528 := by native_decide
+
+/-! ### Sub-threshold zero-firing witnesses
+
+    Concrete `native_decide` evaluations of
+    `outerGuardFiringCount` on sub-threshold survey regions.
+    By `outerGuardFiringCount_below_threshold` these MUST be
+    zero; the witnesses corroborate the closed-form theorem
+    end-to-end (Finset filter + S23's Boolean kernel) on
+    concrete inputs. -/
+
+/-- The entire below-threshold region has zero firings. -/
+example : outerGuardFiringCount 0 64 = 0 := by native_decide
+
+/-- The half-threshold region has zero firings. -/
+example : outerGuardFiringCount 0 32 = 0 := by native_decide
+
+/-- A narrow sub-threshold band `[60, 64)` has zero firings. -/
+example : outerGuardFiringCount 60 64 = 0 := by native_decide
+
 end HGcdSafe
 
 /-! ## Summary
@@ -1047,6 +1189,49 @@ reduces every fuel level and confirms the answer against the
 reference GCD. Nothing in S22 is mathematically novel; the
 contribution is the named wrapper plus end-to-end
 computational verification.
+
+**Significance of S23.** S23 extracts the OUTER size-reduction
+guard from `schonhageGcd`'s recursive case as a Boolean
+predicate `schonhageOuterGuardFires`. The headline theorem
+`schonhageGcd_succ_via_outerGuard` reduces every reasoning step
+about the recursion to a Boolean case-split on the predicate.
+
+**Significance of S24.** S24 introduces a `List`-based survey
+range hard-coded to the S17 PR #17024 family `{(a, b) : 64 ≤
+b ≤ a < 130}`, with `surveyRange_length = 2211` confirming the
+enumeration size, plus `outerGuardFiresInSurveyRange` /
+`outerGuardAbortsInSurveyRange` density count definitions
+ready for `native_decide` calibration.
+
+**Significance of S25 (this PR).** S25 introduces the
+**Finset-parameterised** density framework as a complement to
+S24's `List`-based version. Three contributions:
+
+  1. `outerGuardSurveyPairs lo hi : Finset (ℕ × ℕ)` —
+     parameterised survey range, supporting the same density
+     question on sub-threshold (`(0, 64)`), half-threshold
+     (`(0, 32)`), or extended (`(64, 200)`) regions.
+
+  2. `outerGuardFiringCount_le_surveySize` — a structural ≤
+     bound proved via `Finset.card_filter_le`, leveraging the
+     standard Mathlib API.
+
+  3. `outerGuardFiringCount_below_threshold` — a closed-form
+     theorem discharging the zero-firing question for ANY
+     sub-threshold survey range. Direct corollary of S23's
+     `schonhageOuterGuardFires_below_threshold` lemma
+     specialised to all `(a, b)` with `max a b < 64`.
+
+Three combinatorial survey-size witnesses (`outerGuardSurveySize
+0 32 = 528`, `0 64 = 2080`, `64 130 = 2211`) confirm the
+triangular-sum closed form. Three sub-threshold zero-firing
+witnesses (`outerGuardFiringCount 0 32 = 0`, `0 64 = 0`,
+`60 64 = 0`) corroborate the closed-form theorem on concrete
+inputs. The bridge to S24 is direct: both `surveyRange.length`
+and `outerGuardSurveySize 64 130` evaluate to `2211`, so the
+two frameworks describe the same survey range with different
+data structures (List for explicit enumeration order; Finset
+for Mathlib-compatible cardinality + filter algebra).
 
 **Path A roadmap (Session 23+):**
 
