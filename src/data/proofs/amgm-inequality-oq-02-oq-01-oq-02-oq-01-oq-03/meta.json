@@ -43,7 +43,9 @@
       "cancel_sum is the algebraic heart of the argument: the two sums ∑_{j≤k}(-1)^j e(k-j) Yʲ and ∑_{j<k}(-1)^j e(k-1-j) Y^(j+1) together telescope to e(k) because the boundary terms at j=k carry opposite signs ((-1)^k + (-1)^(k-1) = 0)",
       "Applying IH twice — once for degree k+1 (getting the A term) and once for degree k (getting the B' term) — reflects the two different 'roles' of the appended variable Y: contributing to eₖ via Y·eₖ₋₁(x') and contributing to pⱼ via +Yʲ",
       "The proof works over ℝ with concrete Fin n → ℝ tuples (not abstract MvPolynomial), matching the setting of the parent AmgmInequalityOQ02 and providing a more direct route for the gallery's AM-GM family",
-      "powerSum_succ follows in one line from Fin.sum_univ_castSucc, the standard tool for splitting a sum over Fin(n+1) into a sum over Fin n plus the last term"
+      "powerSum_succ follows in one line from Fin.sum_univ_castSucc, the standard tool for splitting a sum over Fin(n+1) into a sum over Fin n plus the last term",
+      "Fin.sum_univ_castSucc is the canonical induction-on-n primitive for symmetric-function identities on Fin n → ℝ tuples: it converts the geometric statement 'append a variable' into the algebraic statement 'add the appropriate term'. Both elemSymm_succ (in the parent file) and powerSum_succ here are one-line consequences of it, and the entire inductive proof of Newton-Girard is built on these two recurrences. Any further inductive proof in this family — Maclaurin's inequalities, Schur's inequality, complete homogeneous symmetric functions — would similarly use Fin.sum_univ_castSucc as the unified primitive.",
+      "**Why this proof matters in the AM-GM family**: Newton-Girard is the algebraic infrastructure underlying Maclaurin's inequality chain $M_1 \\ge M_2^{1/2} \\ge \\cdots \\ge M_n^{1/n}$ (where $M_k = e_k / \\binom{n}{k}$ is the normalized k-th elementary symmetric mean). The endpoints of this chain are AM (k=1) and GM (k=n), so any independent proof of AM-GM via Maclaurin requires Newton-Girard as input. By proving Newton-Girard inductively in the same setting (Fin n → ℝ) used by the parent AmgmInequalityOQ02, this entry keeps the whole chain self-contained — no detour through MvPolynomial."
     ],
     "prerequisites": [
       "elemSymm: definition in AmgmInequalityOQ02 — eₖ(x) = ∑_{|S|=k} ∏_{i∈S} xᵢ for Fin n → ℝ",
@@ -90,8 +92,10 @@
     "summary": "Proves the general Newton-Girard recurrence by induction on n with 0 sorries and 0 axioms. This is an independent formalization not using Mathlib's psum_eq_mul_esymm_sub_sum, working in the concrete setting of Fin n → ℝ tuples.",
     "implications": "**For the AM-GM family**: Newton-Girard is the algebraic engine behind Maclaurin's inequalities. This independent proof stays within the concrete ℝ-tuple setting of AmgmInequalityOQ02, avoiding MvPolynomial abstractions.\n\n**For proof diversity**: Having both an abstract (MvPolynomial) proof (sibling oq-01-oq-01) and a concrete inductive proof (this entry) demonstrates that Newton-Girard can be approached from two very different angles. The abstract proof is shorter and more general; the inductive proof is more elementary and pedagogically transparent.\n\n**For Lean pedagogy**: The cancel_sum auxiliary lemma illustrates the standard technique of 'shift the parameter function in the IH' to handle recurrences where the summand involves both k and j.",
     "openQuestions": [
-      "Does the inductive proof extend to abstract CommRings (not just ℝ), matching the generality of Mathlib's psum_eq_mul_esymm_sub_sum? The key obstacle is that elemSymm and powerSum are defined over ℝ in AmgmInequalityOQ02 — refactoring them to arbitrary CommRings would give a fully general independent proof.",
-      "Can cancel_sum be proved without the shifted-IH trick, using Finset.sum_range_succ and congr lemmas instead? A more automated proof would reduce the size of the key lemma."
+      "Does the inductive proof extend to abstract CommRings (not just ℝ), matching the generality of Mathlib's psum_eq_mul_esymm_sub_sum? The key obstacle is that elemSymm and powerSum are defined over ℝ in AmgmInequalityOQ02 — refactoring them to arbitrary CommRings would give a fully general independent proof. A natural intermediate step is to prove the recurrence over `Fin n → R` for any `CommRing R`, then specialise to `R = ℝ` for the AM-GM applications.",
+      "Can cancel_sum be proved without the shifted-IH trick, using Finset.sum_range_succ and congr lemmas instead? A more automated proof would reduce the size of the key lemma — perhaps via a `Finset.sum_telescope`-style identity over the alternating signs.",
+      "**Characteristic-p analogue**: in characteristic $p > 0$, Newton-Girard fails to express each $e_k$ in terms of $p_1, \\ldots, p_k$ once $k \\ge p$ (the recurrence has a denominator $k$ that becomes 0 in characteristic dividing $k$). Is there a substitute identity that holds in all characteristics — perhaps using divided powers or the Frobenius-twisted symmetric functions of Macdonald 1995, §I.5? Formalising this would extend the gallery's symmetric-function infrastructure beyond ℝ.",
+      "**Connection to Maclaurin's inequalities**: Maclaurin's inequality chain $M_1 \\ge M_2^{1/2} \\ge \\cdots \\ge M_n^{1/n}$ (where $M_k = e_k / \\binom{n}{k}$) follows from Newton-Girard plus a positivity argument on real tuples. Building the Maclaurin chain on top of this inductive Newton-Girard would yield a self-contained AM-GM proof in the gallery (the AM-GM extreme case is $M_1 \\ge M_n^{1/n}$). The required positivity step is a corollary of the Schur-like inequality $e_k \\cdot e_{k+2} \\le e_{k+1}^2$ for non-negative tuples."
     ]
   },
   "crossReferences": [
@@ -147,6 +151,23 @@
       "year": "1629",
       "venue": "Amsterdam",
       "note": "First written record of the Newton-Girard identities for low degrees k=1,2,3,4"
+    },
+    {
+      "authors": "Macdonald, Ian G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford University Press",
+      "volume": "Oxford Mathematical Monographs (2nd ed.)",
+      "note": "The standard modern reference for the algebra of symmetric functions. Chapter I, §2 gives the Newton-Girard identities and §3 develops the Hopf-algebra structure relating elementary symmetric polynomials, power sums, and complete homogeneous symmetric polynomials. The proof in §I.2 uses generating functions; this gallery entry's variable-by-variable induction is the elementary alternative."
+    },
+    {
+      "authors": "Mead, D. G.",
+      "title": "Newton's Identities",
+      "year": "1992",
+      "venue": "American Mathematical Monthly",
+      "volume": "99",
+      "pages": "749-751",
+      "note": "Pedagogical exposition giving the modern combinatorial proof of Newton-Girard via partition counting. Complementary to the inductive proof developed in this gallery entry."
     }
   ],
   "sorries": 0,
