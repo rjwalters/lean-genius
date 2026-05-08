@@ -75,7 +75,17 @@
       "Proof of correct theorem: σ(x)^(p^n) = x^(p^n) (σ fixes F), then (σ(x) - x)^(p^n) = 0 by char-p Frobenius, then σ(x) = x since fields have no nilpotents",
       "Artin-Schreier theory provides the cleanest source of inseparable-but-not-purely-inseparable counterexamples in characteristic p: the polynomial X^p − X − a is separable, but its composition with X^(p^k) (giving (X^(p^k))^p − X^(p^k) − a) is inseparable with a non-trivial Artin-Schreier Galois action — exactly the structure that breaks the false `insep_gal_trivial` axiom. The char-2 example f = X⁴ + X² + a in this file is the smallest non-trivial instance of this construction"
     ],
-    "proofStrategy": "1. **Counterexample construction**: Work over F₂(a) = FractionRing(F₂[X]). Set f = X⁴ + X² + a = g(X²) where g = X² + X + a (Artin-Schreier, irreducible). Show f is inseparable (f' = 0 in char 2) and has a nontrivial automorphism (σ: α^(1/2) ↦ α^(1/2) + 1).\n\n2. **Correct theorem**: For IsPurelyInseparable F K and σ : K ≃ₐ[F] K:\n   - Get n with x^(p^n) ∈ F via IsPurelyInseparable.pow_mem\n   - σ(x^(p^n)) = x^(p^n) since σ fixes F (AlgEquiv.commutes)\n   - So σ(x)^(p^n) = x^(p^n)\n   - Char-p Frobenius: (σ(x) - x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0\n   - Field = no nilpotents: σ(x) = x\n   - Hence σ = id by AlgEquiv.ext\n\n3. **Corollary**: Nat.card f.Gal = 1 when IsPurelyInseparable F f.SplittingField"
+    "proofStrategy": "1. **Counterexample construction**: Work over F₂(a) = FractionRing(F₂[X]). Set f = X⁴ + X² + a = g(X²) where g = X² + X + a (Artin-Schreier, irreducible). Show f is inseparable (f' = 0 in char 2) and has a nontrivial automorphism (σ: α^(1/2) ↦ α^(1/2) + 1).\n\n2. **Correct theorem**: For IsPurelyInseparable F K and σ : K ≃ₐ[F] K:\n   - Get n with x^(p^n) ∈ F via IsPurelyInseparable.pow_mem\n   - σ(x^(p^n)) = x^(p^n) since σ fixes F (AlgEquiv.commutes)\n   - So σ(x)^(p^n) = x^(p^n)\n   - Char-p Frobenius: (σ(x) - x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0\n   - Field = no nilpotents: σ(x) = x\n   - Hence σ = id by AlgEquiv.ext\n\n3. **Corollary**: Nat.card f.Gal = 1 when IsPurelyInseparable F f.SplittingField",
+    "prerequisites": [
+      "Field theory: characteristic of a field, prime characteristic $p$, Frobenius endomorphism $x \\mapsto x^p$ as a ring homomorphism",
+      "Separability: the discriminant of $f$ in $K[X]$, the criterion $f$ separable $\\iff f' \\not\\equiv 0$ (char-0 / char-$p$ asymmetry)",
+      "Purely inseparable extensions: $K/F$ purely inseparable $\\iff \\forall x \\in K, \\exists n, x^{p^n} \\in F$. Mathlib's `IsPurelyInseparable` typeclass",
+      "Polynomial composition and degree arithmetic: $\\deg(g \\circ h) = \\deg(g) \\cdot \\deg(h)$",
+      "Splitting fields: existence and minimality, the F-algebra structure of `Polynomial.SplittingField f`",
+      "Galois groups of polynomials: $f.\\mathrm{Gal} := f.\\mathrm{SplittingField} \\simeq_F f.\\mathrm{SplittingField}$ as F-algebra automorphisms",
+      "Artin-Schreier theory: $X^p - X - a$ over a characteristic-$p$ field, the trace criterion for irreducibility, and the cyclic order-$p$ Galois action",
+      "Iterated Frobenius: $(\\mathrm{Frob}^n)(x) = x^{p^n}$ as a ring hom, hence `map_sub` gives $(a-b)^{p^n} = a^{p^n} - b^{p^n}$ directly"
+    ]
   },
   "sections": [
     {
@@ -124,51 +134,71 @@
     {
       "name": "f_is_g_composed_sq",
       "type": "lemma",
+      "statement": "$f_{\\mathrm{target}} = g_{\\mathrm{factor}} \\circ (X^2)$ in $F_2(a)[X]$",
+      "significance": "Identifies the target polynomial as the Frobenius pullback $g(X^p)$ of an Artin-Schreier $g$ — the structural source of the inseparable-but-not-purely-inseparable phenomenon.",
       "description": "Structural identity: f_target = g_factor.comp(X^2), confirming f(X) = g(X²) where g(X) = X² + X + a is Artin-Schreier."
     },
     {
       "name": "f_derivative_zero",
       "type": "lemma",
+      "statement": "$f_{\\mathrm{target}}'(X) = 0$ in $F_2(a)[X]$",
+      "significance": "Discharges inseparability: in characteristic 2 the derivative of $X^4 + X^2 + a$ is $4X^3 + 2X = 0$. This is exactly the criterion `¬ f.Separable` needed by `insep_gal_trivial_refuted`.",
       "description": "f_target.derivative = 0 in characteristic 2 (all exponents in X⁴ + X² + a are even). Establishes inseparability."
     },
     {
       "name": "f_target_natDegree",
       "type": "lemma",
+      "statement": "$f_{\\mathrm{target}}.\\mathrm{natDegree} = 4$",
+      "significance": "Anchors the polynomial in the degree-4 regime. Discharged by `compute_degree!`. Required by SplittingField API and any Galois-degree counting argument.",
       "description": "f_target.natDegree = 4. Discharged by `compute_degree!`. Prerequisite for any Galois-degree counting."
     },
     {
       "name": "f_target_degree",
       "type": "lemma",
+      "statement": "$f_{\\mathrm{target}}.\\mathrm{degree} = 4$ (in $\\mathrm{WithBot}\\,\\mathbb{N}$)",
+      "significance": "The `WithBot`-valued degree distinguishes the zero polynomial ($\\bot$) from positive-degree polynomials. Several Mathlib lemmas (e.g., on irreducibility of degree-4 polynomials) consume `degree`, not `natDegree`.",
       "description": "f_target.degree = 4. Distinguishes degree (WithBot ℕ) from natDegree (ℕ); both needed by different Mathlib APIs."
     },
     {
       "name": "f_target_ne_zero",
       "type": "lemma",
+      "statement": "$f_{\\mathrm{target}} \\ne 0$",
+      "significance": "Immediate corollary of degree 4. Required to invoke the splitting-field universal property and most polynomial-factorisation lemmas.",
       "description": "f_target ≠ 0. Immediate corollary of f_target_natDegree = 4 (the zero polynomial has natDegree 0)."
     },
     {
       "name": "f_target_monic",
       "type": "lemma",
+      "statement": "$f_{\\mathrm{target}}.\\mathrm{Monic}$",
+      "significance": "Leading coefficient is 1. Combined with degree 4, unlocks `SplittingField` / `IsAlgClosed` lemmas and lets the proof avoid spurious unit-of-leading-coefficient bookkeeping.",
       "description": "f_target.Monic — leading coefficient = 1. Combined with degree 4 unlocks SplittingField/IsAlgClosed API."
     },
     {
       "name": "sub_pow_char_pow_eq",
       "type": "lemma",
+      "statement": "In a commutative ring with $\\mathrm{CharP}\\,K\\,p$ ($p$ prime), $\\forall a, b \\in K, \\forall n \\in \\mathbb{N}\\colon (a - b)^{p^n} = a^{p^n} - b^{p^n}$",
+      "significance": "The algebraic engine of the purely-inseparable Galois-triviality argument. One-line Lean proof: `iterateFrobenius` is a ring hom, so `map_sub` gives the identity for free — replacing what would otherwise be a parity-case-split inductive argument.",
       "description": "(a − b)^(p^n) = a^(p^n) − b^(p^n) in any characteristic-p commutative ring. One-line proof via iterateFrobenius (a ring hom) and map_sub. The algebraic engine of the purely-inseparable Galois-triviality argument."
     },
     {
       "name": "algEquiv_eq_refl_of_isPurelyInseparable",
       "type": "theorem",
+      "statement": "$\\forall F, K\\colon$ Field, $\\mathrm{Algebra}\\,F\\,K$, $\\mathrm{IsPurelyInseparable}\\,F\\,K \\Rightarrow \\forall \\sigma : K \\simeq_{\\mathrm{alg}[F]} K\\colon \\sigma = \\mathrm{AlgEquiv.refl}$",
+      "significance": "Core technical theorem replacing the false `insep_gal_trivial`. Proof skeleton: for $x \\in K$, get $n$ with $x^{p^n} \\in F$ via `IsPurelyInseparable.pow_mem`; then $\\sigma(x)^{p^n} = x^{p^n}$ since $\\sigma$ fixes $F$, so $(\\sigma(x) - x)^{p^n} = 0$ by char-$p$ Frobenius, so $\\sigma(x) = x$ since fields have no nilpotents.",
       "description": "Every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for x ∈ K, get n with x^(p^n) ∈ F; then σ(x)^(p^n) = x^(p^n) since σ commutes with the F-structure, so (σ(x) − x)^(p^n) = 0 by char-p Frobenius, so σ(x) = x since fields have no nilpotents."
     },
     {
       "name": "gal_card_one_of_purelyInseparable_splitting",
       "type": "theorem",
+      "statement": "$\\forall f \\in F[X]\\colon \\mathrm{IsPurelyInseparable}\\,F\\,(f.\\mathrm{SplittingField}) \\Rightarrow \\mathrm{Nat.card}\\,f.\\mathrm{Gal} = 1$",
+      "significance": "Headline corrected statement, the intended replacement for the false `insep_gal_trivial`. The hypothesis is now on the splitting field (purely inseparable over $F$), not on the polynomial (merely inseparable). This is the correct dividing line.",
       "description": "Main correct theorem: if f.SplittingField is purely inseparable over F, then Nat.card f.Gal = 1. The intended replacement for the false axiom `insep_gal_trivial` in the parent entry."
     },
     {
       "name": "insep_gal_trivial_refuted",
       "type": "theorem",
+      "statement": "$\\exists F, \\exists f \\in F[X]\\colon \\neg f.\\mathrm{Separable} \\land \\mathrm{Nat.card}\\,f.\\mathrm{Gal} \\ne 1$",
+      "significance": "Formal refutation of the parent entry's axiom. Witness: $F = F_2(a)$, $f = X^4 + X^2 + a$. Inseparability comes from `f_derivative_zero`; $|\\mathrm{Gal}| = 2 \\ne 1$ comes from `counterexample_gal_card` (the remaining axiom, pending an Artin-Schreier formalisation).",
       "description": "Formal refutation: ∃ f, ¬f.Separable ∧ Nat.card f.Gal ≠ 1. Witness is f_target (X⁴ + X² + a over F₂(a)), with the inseparability discharged from f_derivative_zero and the Galois cardinality 2 from the `counterexample_gal_card` axiom."
     }
   ],
