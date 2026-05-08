@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED 2026-05-08. StirlingExpansion.lean is fully verified (0 axioms, 0 sorries, 819 lines) — the final upper-half exp-Taylor bound was discharged via Real.exp_bound at degree 2. Build verified via Docker (3083 jobs replayed, no errors). Together with the previously-merged StirlingFormula.lean, this gives a complete machine-checked proof of n!/[√(2πn)·(n/e)^n] = 1 + 1/(12n) + O(1/n²) with explicit O(1/n²) constant 2. Prior PRs that built up to this: #16354 (log bounds + step bounds), #16414 (step formula), #16442 (telescoping body + htend_Gn), #16614 + #16677 (JSON sync), and the closing PR (this session).",
+    "progressSummary": "S2 (researcher-12, 2026-05-08): added log_one_plus_le_quintic — fifth-order log upper bound via derivative monotonicity (g'(t) = t⁵/(1+t) ≥ 0). Pure infrastructure for the second-correction follow-up; doesn't change the proven mathematical content (still 0 axioms, 0 sorries) but provides the next-order log-bound flagged as the missing prerequisite. Counts: lineCount 824 → 915, theoremCount 20 → 21, axiomCount 0 (unchanged), sorries 0 (unchanged).\n\nCOMPLETED 2026-05-08. StirlingExpansion.lean is fully verified (0 axioms, 0 sorries, 819 lines) — the final upper-half exp-Taylor bound was discharged via Real.exp_bound at degree 2. Build verified via Docker (3083 jobs replayed, no errors). Together with the previously-merged StirlingFormula.lean, this gives a complete machine-checked proof of n!/[√(2πn)·(n/e)^n] = 1 + 1/(12n) + O(1/n²) with explicit O(1/n²) constant 2. Prior PRs that built up to this: #16354 (log bounds + step bounds), #16414 (step formula), #16442 (telescoping body + htend_Gn), #16614 + #16677 (JSON sync), and the closing PR (this session).",
     "builtItems": [
       "log_one_plus_le_cubic in StirlingExpansion.lean:92 — log(1+x) ≤ x - x²/2 + x³/3 for x > 0",
       "log_one_plus_ge_quartic in StirlingExpansion.lean:158 — log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 for x > 0",
@@ -40,7 +40,8 @@
       "log_stirlingSeq_partial_upper / log_stirlingSeq_partial_lower (PR #16442) — partial-sum bounds for log(stirlingSeq n) - log(stirlingSeq (n+L))",
       "stirling_first_correction (PR #16442) — full telescoping body with htend_Gn discharged via Tendsto.div_atTop on each tail term; one remaining sorry on the exp Taylor remainder bound",
       "stirling_two_term_expansion in StirlingExpansion.lean — proved assuming stirling_first_correction",
-      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula), #16614 (JSON sync)"
+      "PRs merged: #16354 (log bounds + step bounds), #16414 (step formula), #16614 (JSON sync)",
+      "log_one_plus_le_quintic: log(1+x) ≤ x - x²/2 + x³/3 - x⁴/4 + x⁵/5 for x > 0. Proof via derivative monotonicity: g(t) = polynomial - log(1+t), g'(t) = t⁵/(1+t) ≥ 0, g(0) = 0. Fifth-order alternating series upper bound — pairs with the existing fourth-order lower bound log_one_plus_ge_quartic to sandwich log(1+x) between consecutive-order polynomials. This is the next-order log infrastructure flagged in the prior session's nextSteps[0] (\"second correction 1/(288n²): one additional log-bound order needed\")."
     ],
     "insights": [
       "d_k = (k+1/2)·log(1+1/k) - 1 is the exact step formula (proved via stirlingSeq definition + log_div/log_mul/log_sqrt rewrites + linear_combination)",
@@ -48,12 +49,14 @@
       "Telescoping turns Σ_{k≥n} 1/k² into a closed-form bound 1/(n-1), and Σ_{k≥n} 1/k³ into 1/(2(n-1)²)",
       "For tendsto-to-zero of 1/(c·f(M)) when f → ∞, use tendsto_const_nhds.div_atTop on (c·f) → ∞; avoid the multiplicative decomposition (1/c)·(1/f) because ring fails on field-inversion identities like (c·x)⁻¹ = x⁻¹·(1/c)",
       "Filter.Tendsto.atTop_mul_atTop now requires IsOrderedMonoid (fails for ℝ); use Filter.Tendsto.atTop_mul_atTop₀ for groups-with-zero",
-      "Resync onto main needed only conflict resolution in 4 files (StirlingExpansion.lean, knowledge.md, meta.json, this JSON); no new build errors introduced by main's drift"
+      "Resync onto main needed only conflict resolution in 4 files (StirlingExpansion.lean, knowledge.md, meta.json, this JSON); no new build errors introduced by main's drift",
+      "Geometric-series identity: 1 - t + t² - t³ + t⁴ = (1+t⁵)/(1+t). General pattern: Σ_{j=0}^{m-1} (-t)^j = (1 - (-t)^m)/(1+t), so the m-term partial sum's deviation from 1/(1+t) is exactly ±t^m/(1+t). This drives all the log_one_plus_{le,ge}_*ic bounds at every order, and is what powers the infinite tower of Stirling correction terms."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Optional: formalize the second correction term 1/(288n²) using the same scaffolding (one additional log-bound order needed)",
-      "Optional: connect to Mathlib's Gamma function asymptotics for log Γ(z)"
+      "Second correction 1/(288n²): use log_one_plus_le_quintic + a paired sextic lower bound (log(1+x) ≥ x - x²/2 + x³/3 - x⁴/4 + x⁵/5 - x⁶/6) to derive a tighter step bound d_k = (1/(12k²)) + (1/(120k⁴)) + lower-order tails. This gives a two-term partial sum and ultimately |stirlingSeq(n)/√π - (1 + 1/(12n) + 1/(288n²))| ≤ C/n³.",
+      "Optional: connect to Mathlib's Gamma function asymptotics for log Γ(z)",
+      "Optional: prove the corresponding sextic lower bound log_one_plus_ge_sextic to enable the sandwich at the next order"
     ]
   },
   "tags": [
@@ -72,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:18:33.488Z",
-  "lastUpdate": "2026-05-08T01:30:00.000Z",
+  "lastUpdate": "2026-05-08T07:55:00Z",
   "completed": "2026-05-08T01:30:00.000Z",
   "significance": 6,
   "tractability": 6

@@ -212,6 +212,83 @@ theorem log_one_plus_ge_quartic (x : ℝ) (hx : 0 < x) :
     rw [hf0] at h; exact h
   exact hge
 
+/-- For x > 0: log(1+x) ≤ x - x²/2 + x³/3 - x⁴/4 + x⁵/5.
+
+    Proof: Let g(t) = t - t²/2 + t³/3 - t⁴/4 + t⁵/5 - log(1+t).
+    Then g(0) = 0 and g'(t) = 1 - t + t² - t³ + t⁴ - 1/(1+t).
+    Since (1+t)(1 - t + t² - t³ + t⁴) = 1 + t⁵, we have
+    1 - t + t² - t³ + t⁴ = (1 + t⁵)/(1+t), so g'(t) = t⁵/(1+t) ≥ 0 for t > 0.
+    Since g is nondecreasing on [0,∞) with g(0) = 0, we have g(x) ≥ 0 for x > 0.
+
+    This is the fifth-order alternating series upper bound for log.
+    Together with `log_one_plus_ge_quartic`, this sandwiches log(1+x) between
+    polynomials at consecutive orders — the infrastructure for the second
+    Stirling correction term 1/(288n²). -/
+theorem log_one_plus_le_quintic (x : ℝ) (hx : 0 < x) :
+    Real.log (1 + x) ≤ x - x ^ 2 / 2 + x ^ 3 / 3 - x ^ 4 / 4 + x ^ 5 / 5 := by
+  suffices h : 0 ≤ x - x ^ 2 / 2 + x ^ 3 / 3 - x ^ 4 / 4 + x ^ 5 / 5 -
+      Real.log (1 + x) by linarith
+  set g := fun t : ℝ => t - t ^ 2 / 2 + t ^ 3 / 3 - t ^ 4 / 4 + t ^ 5 / 5 -
+    Real.log (1 + t)
+  have hderiv : ∀ t : ℝ, 0 < t → HasDerivAt g (t ^ 5 / (1 + t)) t := by
+    intro t ht
+    have h1t : (1 : ℝ) + t ≠ 0 := by linarith
+    -- Derivative of polynomial part: 1 - t + t² - t³ + t⁴
+    have hpoly : HasDerivAt (fun t => t - t ^ 2 / 2 + t ^ 3 / 3 - t ^ 4 / 4 + t ^ 5 / 5)
+                             (1 - t + t ^ 2 - t ^ 3 + t ^ 4) t := by
+      have h2 : HasDerivAt (fun t => t ^ 2 / 2) t t := by
+        have := (hasDerivAt_pow 2 t).div_const 2; convert this using 1; ring
+      have h3 : HasDerivAt (fun t => t ^ 3 / 3) (t ^ 2) t := by
+        have := (hasDerivAt_pow 3 t).div_const 3; convert this using 1; ring
+      have h4 : HasDerivAt (fun t => t ^ 4 / 4) (t ^ 3) t := by
+        have := (hasDerivAt_pow 4 t).div_const 4; convert this using 1; ring
+      have h5 : HasDerivAt (fun t => t ^ 5 / 5) (t ^ 4) t := by
+        have := (hasDerivAt_pow 5 t).div_const 5; convert this using 1; ring
+      have h := ((((hasDerivAt_id t).sub h2).add h3).sub h4).add h5
+      convert h using 1
+    -- Derivative of log part: 1/(1+t)
+    have hlog : HasDerivAt (fun t => Real.log (1 + t)) (1 + t)⁻¹ t := by
+      have h1 : HasDerivAt (fun t => 1 + t) 1 t := (hasDerivAt_id t).const_add 1
+      have h2 := (Real.hasDerivAt_log h1t).comp t h1
+      simp only [mul_one] at h2
+      exact h2
+    -- Combined derivative: (1 - t + t² - t³ + t⁴) - 1/(1+t) = t⁵/(1+t)
+    have hg : HasDerivAt g ((1 - t + t ^ 2 - t ^ 3 + t ^ 4) - (1 + t)⁻¹) t :=
+      hpoly.sub hlog
+    convert hg using 1
+    field_simp
+    ring
+  have hmono : MonotoneOn g (Set.Ici 0) := by
+    apply monotoneOn_of_deriv_nonneg (convex_Ici 0)
+    · -- Continuity of g = polynomial - log on [0, ∞)
+      show ContinuousOn (fun t : ℝ => t - t ^ 2 / 2 + t ^ 3 / 3 - t ^ 4 / 4 +
+             t ^ 5 / 5 - Real.log (1 + t)) (Set.Ici 0)
+      apply ContinuousOn.sub
+      · exact (((((continuous_id.sub ((continuous_id.pow 2).div_const 2)).add
+                 ((continuous_id.pow 3).div_const 3)).sub
+                 ((continuous_id.pow 4).div_const 4)).add
+                 ((continuous_id.pow 5).div_const 5))).continuousOn
+      · apply ContinuousOn.log (continuous_const.add continuous_id).continuousOn
+        intro t ht
+        have ht' : (0 : ℝ) ≤ t := Set.mem_Ici.mp ht
+        exact (by linarith : (0 : ℝ) < 1 + t).ne'
+    · -- DifferentiableOn on interior (Set.Ici 0) = Set.Ioi 0
+      intro t ht
+      rw [interior_Ici] at ht
+      simp only [Set.mem_Ioi] at ht
+      exact (hderiv t ht).differentiableAt.differentiableWithinAt
+    · intro t ht
+      rw [interior_Ici] at ht
+      simp only [Set.mem_Ioi] at ht
+      have hd : deriv g t = t ^ 5 / (1 + t) := (hderiv t ht).deriv
+      rw [hd]
+      exact div_nonneg (by positivity) (by linarith)
+  have hg0 : g 0 = 0 := by simp [g]
+  have hge : 0 ≤ g x := by
+    have h := hmono (Set.mem_Ici.mpr le_rfl) (Set.mem_Ici.mpr hx.le) hx.le
+    rw [hg0] at h; exact h
+  exact hge
+
 -- ═══════════════════════════════════════════════════
 -- Part IIIb: Step Formula and Bounds
 --
@@ -819,6 +896,20 @@ example : (1 : ℝ) + 1 / 1200 = 1201 / 1200 := by norm_num
 `Real.exp_bound` at degree 2, which yields `|exp L − (1 + L)| ≤ 3·L² / 4`
 under `|L| ≤ 1`. Combined with `L − 1/(12n) ≤ 1/(2n²)` (algebraic) and
 `L² ≤ 1/n²` (from `0 ≤ L ≤ 1/n`), this gives the upper bound `5/(4n²) ≤ 2/n²`.
+
+## Iteration 5 (researcher-12, 2026-05-08)
+
+**Added:** `log_one_plus_le_quintic` — fifth-order log upper bound
+`log(1+x) ≤ x - x²/2 + x³/3 - x⁴/4 + x⁵/5` for `x > 0`. Same derivative-
+monotonicity pattern as the cubic/quartic predecessors, with the algebraic
+identity `1 - t + t² - t³ + t⁴ = (1 + t⁵)/(1+t)` powering `g'(t) = t⁵/(1+t) ≥ 0`.
+
+**Purpose:** infrastructure for the second Stirling correction term `1/(288n²)`.
+Pairs with `log_one_plus_ge_quartic` to sandwich `log(1+x)` between consecutive-
+order polynomials. Doesn't change proven mathematical content (still 0 axioms,
+0 sorries) — it widens the toolkit so a future iteration can derive a refined
+step bound `d_k = 1/(12k²) + 1/(120k⁴) + lower-order` and ultimately a two-
+term expansion `|stirlingSeq(n)/√π − (1 + 1/(12n) + 1/(288n²))| ≤ C/n³`.
 -/
 
 end StirlingExpansion
