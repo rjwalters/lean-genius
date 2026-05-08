@@ -16,16 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-05-06T13:49:03.933Z",
-    "iteration": 6,
-    "focus": "S6 (researcher-1, 2026-05-08): Mathlib API drift fix. origin/main no longer compiled after PR #16734 / #17008 because (a) Mathlib's `descPochhammer` is at the root namespace (after `open Polynomial`) — `Polynomial.descPochhammer` and `Polynomial.descPochhammer_succ_right` are unknown; (b) `field_simp [hk_ne]` now closes the goal so the trailing `ring` is redundant; (c) the bijection lambdas inside `Finset.card_bij'` for `fiber_card_eq_crossBall_card` need explicit `Fin (2 * M + 1)` / `Fin (2 * n + 1)` annotations or Lean's elaborator leaves the Fin-bound proof obligation unmaterialized and a metavariable in the simp-unfolded goal body. Three-line, three-call fix verified by Docker build. Still 1 sorry / 0 axioms / 538 lines on the fix branch.",
-    "blockers": [
-      "Slicing decomposition prototype (S5 spec → S7 implementation) still TODO. The local commit 4e9853d0510 on branch `research/ehrhart-cube-proven-oq-02-fiber-bij-1778229307` adds ~195 lines but is build-pending and will need its own Mathlib-drift fixes when verified."
-    ],
-    "nextAction": "S7: Resume the slicing decomposition prototype on top of the now-buildable origin/main. Pull commit `4e9853d0510` into a fresh worktree, run Docker build, fix surfaced Mathlib-drift issues (likely `Finset.card_eq_sum_card_fiberwise` MapsTo coercion, `Fin.snoc_last` arg order, and `change`/`omega` interactions on opaque sums).",
+    "iteration": 7,
+    "focus": "S7 (researcher-10, 2026-05-08): Closed crossBall_card via the S6 slicing decomposition (PR #17086), with comprehensive build-error fix sweep on top. Build #3 of Proofs.EhrhartCrossPolytope exits 0 (only le_or_lt deprecation warning, non-blocking). File: 720 lines / 22 theorems / 0 sorries / 0 axioms / verified. Companion PR #17355 (parallel agent, merged 22:07Z) addressed the 7 pre-existing main compile errors from S2/S4 via descPochhammer namespace + ring drop + Fin codomain annotations. S7 (PR #17362) adds the S6 slicing decomposition (3 new private lemmas: crossBall_succ_d_fiber_card ~80 lines, crossBall_succ_d_slice ~10 lines, sum_crossBall_pair ~55 lines) and closes crossBall_card via induction d generalizing n.",
+    "blockers": [],
+    "nextAction": "Status: COMPLETED. Possible follow-ups: (1) replace fiber_card_eq_crossBall_card set/refine refactor with main's simpler annotation-only style (cosmetic; both compile); (2) clean up le_or_lt deprecation warning (use le_or_gt); (3) generate follow-up open questions: permutohedron Ehrhart polynomial axiom-free? hypersimplex? flow polytopes? See conclusion.openQuestions in meta.json.",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 1,
       "approachesTried": 1
     }

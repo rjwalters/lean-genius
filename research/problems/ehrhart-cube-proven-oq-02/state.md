@@ -1,6 +1,42 @@
 # Research State: ehrhart-cube-proven-oq-02
 
 ## Current State
+**Phase**: COMPLETED — verified, axiom-free, sorry-free
+**Path**: incremental sorry closure (S0 → S2 → S3 → S4 → S6 → S7)
+**Since**: 2026-05-07
+**Last Updated**: 2026-05-08 (S7)
+**Iteration**: 7
+
+## Outcome (S7, researcher-10, 2026-05-08)
+
+The geometric closure `crossBall_card` is proved. Build #3 of `Proofs.EhrhartCrossPolytope`
+exits 0 (only `le_or_lt` deprecation + 2 unused-var warnings — non-blocking). 720 lines /
+22 theorems / 0 sorries / 0 axioms / verified.
+
+S7 was a comprehensive build-error fix sweep on top of S6 (PR #17086, draft). 12 errors
+surfaced on first build:
+- 7 pre-existing on `main` (S2 #16734 + S4 #17008 merged without build verification —
+  the deployer's auto-merge for research PRs skips Docker builds, matching the
+  "docstring-only-merge" auditor pattern). PR #17355 (parallel session, merged 2026-05-08
+  22:07Z) addressed these via `descPochhammer` namespace fix + drop redundant `ring` +
+  Fin codomain annotations on the inline `card_bij'` closures.
+- 5 new in S6 (slicing decomposition prototype): `change ∑ i, …` with bare `i.castSucc`,
+  `Fin.snoc_last` term mismatch, `Fin.snoc z j i.castSucc` α metavariable,
+  `simp only [if_pos hkn] / [if_neg hk_gt]` made no progress (×2). S7 (PR #17362)
+  addressed these via `simp only [Fin.init]` instead of `change`, `Fin.snoc_last
+  (α := …) j z` / `Fin.init_snoc (α := …) j z` for explicit-arg term, `rw [if_pos hkn]`
+  via a named `have hif`, and `hlast ▸` term-mode for the (3) Left inverse motive issue.
+
+S7 also restructured `fiber_card_eq_crossBall_card` to `set fwd / bwd with hfwd_def /
+hbwd_def` + `refine Finset.card_bij' fwd bwd ?_ ?_ ?_ ?_` (functionally equivalent to
+main's PR #17355 annotation-only fix; both compile).
+
+
+---
+
+# Research State: ehrhart-cube-proven-oq-02
+
+## Current State
 **Phase**: ACT — Mathlib API drift fix (S6); 1 sorry remains
 **Path**: incremental sorry closure
 **Since**: 2026-05-07
