@@ -2,12 +2,67 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T20:30:00Z
-**Iteration**: 10
+**Iteration**: 12
 **Last Updated**: 2026-05-08 (researcher-12)
 
 ## Current Focus
 
-Iteration 10 (2026-05-08, researcher-12, this PR): **finite-list closure
+Iteration 12 (2026-05-08, researcher-12, this PR): **Σ₁ closed under
+binary intersection (S11.2)** — the missing dual of iter 9's union
+closure. Combined with iter 9, Σ₁ over ℚ is now closed under finite
+Boolean combinations using ∪ and ∩ (NOT under complement, which would
+collapse Σ₁ = Π₁).
+
+**Witness** (sum-of-squares with variable packing):
+
+    P(q, x) = (P₁(q, evenProj x))² + (P₂(q, oddProj x))²
+
+where `evenProj x n = x (2*n)` and `oddProj x n = x (2*n+1)`. The two
+polynomial constraints can simultaneously be witnessed by a single
+`x : Nat → Rat` because they "see" disjoint slots of the variable
+assignment. The forward direction interleaves witnesses for `S₁` and
+`S₂` into a single `x = interleave x₁ x₂`; the reverse direction
+splits a vanishing sum-of-squares into two vanishing squares (using
+`mul_self_nonneg` over the LinearOrderedField ℚ + `linarith`) and
+then individually into two zero polynomial values (`mul_eq_zero` over
+ℚ as a NoZeroDivisors structure).
+
+Two new theorems plus three private supporting structures:
+
+1. `intersection_isDiophantineDefinition` — Σ₁ closed under binary
+   intersection (main theorem).
+2. `intersection_isUniversalExistentialDefinition` — corollary via Σ₁ ⊆ Π₂.
+
+Private supporting:
+- `private def evenProj`, `private def oddProj`, `private def interleave`
+  — variable-packing infrastructure on `Nat → Rat` assignments.
+- `private theorem evenProj_interleave`, `private theorem oddProj_interleave`
+  — the section/inverse identities, pure Nat arithmetic via `omega`.
+
+**Mathlib API surface**: 1 new lemma (`mul_self_nonneg`) and 1 new
+tactic (`linarith`). Adds 2 imports:
+- `Mathlib.Algebra.Order.Ring.Lemmas` (for `mul_self_nonneg`)
+- `Mathlib.Tactic.Linarith` (for `linarith`)
+
+**Net new content**: 3 definitions (private), 4 theorems (2 private +
+2 public), 0 axioms, 0 sorries. **Updated total**: 15 definitions,
+59 theorems, 1 axiom, 0 sorries, 1495 lines (was 1321).
+
+## Iteration 11 (2026-05-08, prior researcher-12 PR #17338): **Π₁ ⊆ Π₂
+via polynomial inversion (S11.1)** — closes the last "diagonal"
+containment in the Σ₁/Π₁/Σ₂/Π₂ square not derivable from a
+dummy-block argument.
+
+The Π₂ polynomial witness for a Π₁ subset is
+
+    P'(q, y, x) := P(q, y) · x 0 - 1
+
+where `P` is the Π₁ witness. The inversion trick `a ≠ 0 ⟺ ∃ z, a·z = 1`
+over ℚ makes `∀ y, ∃ x, P(q, y)·x 0 - 1 = 0` equivalent to
+`∀ y, P(q, y) ≠ 0`, i.e., the Π₁ form of `S q`. Path B: uses
+`mul_inv_cancel₀` (already imported for S9) and `sub_eq_zero` (S8).
+
+## Iteration 10 (2026-05-08, prior researcher-12 PR #17307): **finite-list closure
 (S10.3)** — every FINITE subset of ℚ is Σ₁-definable, and every
 complement of a finite subset is Π₁-definable. Direct application of
 S9's binary union/intersection closure to a `List Rat` by induction.
@@ -140,23 +195,36 @@ This is the cleanest restatement of the OPEN Σ₁ question yet:
 
 ## Build Status
 
-Iteration 10 build: PENDING. Worktree's `proofs/.lake` is a recursive
+Iteration 12 build: PENDING. Worktree's `proofs/.lake` is a recursive
 self-symlink (per `feedback_researcher_lake_symlink_broken.md`) so a
-local Docker build would re-fresh-clone Mathlib (~25-45 min). The S10
-content adds zero new imports — uses only Lean-core `List.mem_cons`
-(in the cons case), `simp` (for `q ∈ [] ↔ False`), and previously-used
-helpers (`diophantineDefinition_iff_of_pred_iff`,
-`coDiophantineDefinition_iff_of_pred_iff` from S5;
-`singletonOf_isDiophantineDefinition` /
-`notSingletonOf_isCoDiophantineDefinition` from S8;
-`union_isDiophantineDefinition` /
-`intersection_isCoDiophantineDefinition` from S9; and
-`empty_isDiophantineDefinition` / `universe_isCoDiophantineDefinition`
-from S5). All four `by`-tactic proofs use only `induction l with | nil
-=> … | cons a t ih => …`, `intro`, `simp`, `rintro`, `refine`, `exact`,
-`constructor`, `rcases`, and the bridge lemmas listed. The two
-trivial-corollary proofs are pure term-mode applications of S5
-inclusions. No new axioms. Confidence high; CI is the ground truth.
+local Docker build would re-fresh-clone Mathlib (~45 min). The S11.2
+content adds 2 imports:
+- `Mathlib.Algebra.Order.Ring.Lemmas` (for `mul_self_nonneg : 0 ≤ a*a`
+  in any LinearOrderedRing — ℚ is a LinearOrderedField so the instance
+  applies).
+- `Mathlib.Tactic.Linarith` (for `linarith` to discharge
+  `a*a + b*b = 0 ∧ 0 ≤ a*a ∧ 0 ≤ b*b → a*a = 0 ∧ b*b = 0`).
+
+The proof of `intersection_isDiophantineDefinition` uses:
+- `mul_self_nonneg` (new)
+- `linarith` (new)
+- `mul_eq_zero` (already imported via S9)
+- `ring` (Mathlib core via existing imports)
+- `omega` (Lean core, no Mathlib needed) for the projection lemmas
+  `evenProj_interleave` and `oddProj_interleave`.
+- `if_pos` / `if_neg` (Lean core).
+- `set ... with` (Lean core for variable abbreviation).
+
+The corollary `intersection_isUniversalExistentialDefinition` is pure
+term mode applying `diophantine_implies_universal_existential` to
+`intersection_isDiophantineDefinition`. No new axioms.
+
+**Confidence**: high. The Nat-arithmetic facts `(2*n) % 2 = 0`,
+`(2*n) / 2 = n`, `(2*n+1) % 2 = 1`, `(2*n+1) / 2 = n` are all standard
+and discharged by `omega`. The Mathlib lemma surfaces are a
+one-line use each. CI is the ground truth.
+
+Iteration 10 build: PASSED ✅ (per #17307 / #17338 CI).
 
 Iteration 9 build: PENDING. Worktree's `proofs/.lake` is a recursive
 self-symlink (per `feedback_researcher_lake_symlink_broken.md`) so a
@@ -181,19 +249,23 @@ Iteration 3 build: PASSED ✅ (3 jobs, exit code 0).
 
 ## Blockers
 
-None for the finite-list closure story (S10.3, this iteration). Remaining
-S11+ extensions:
+None for the binary-intersection closure (S11.2, this iteration).
+Remaining S11/12+ extensions:
 
-- **S11.1**: Π₁ ⊆ Π₂ via the polynomial-inversion trick
-  `a ≠ 0 ⟺ ∃ z, a·z = 1` — needs `Rat` field arithmetic (`mul_inv`,
-  `mul_inv_cancel` from Mathlib's field library).
-- **S11.2**: Σ₁ closure under binary INTERSECTION via sum-of-squares
-  witness `P(q, x, y) = P₁(q, x)² + P₂(q, y)²`. Requires:
-  (a) `a² + b² = 0 ↔ a = 0 ∧ b = 0` over an ordered field (Mathlib has
-  this via `add_sq_eq_zero_iff_of_nonneg` and friends);
-  (b) a packing-trick to use disjoint variable indices for `x` and `y`,
-  since the SAME variable assignment block won't work for intersection
-  (where we need both factors to vanish at the SAME polynomial value).
+- **S12.1**: List version of `intersection_isDiophantineDefinition` —
+  the analog of `finUnionList_singletons_isDiophantineDefinition` for
+  finite intersections of arbitrary Σ₁-definable sets (induction on a
+  list, base case `True ↔ universe`, step via S11.2). Direct mirror of
+  S10.3 but for the intersection direction. Useful as a corollary even
+  though no concrete "finite intersection of singletons" is interesting
+  (intersections of distinct singletons are empty).
+- **S12.2**: De Morgan dualization — combine S11.2 with the Σ₁/Π₁
+  duality and classical de Morgan to derive `union_isCoDiophantineDefinition`
+  (Π₁ closed under binary union). Requires `not_and_or` or
+  `Classical.em` reasoning. The witness can also be constructed
+  directly as a sum-of-squares of complement witnesses, making this
+  axiom-free up to classical excluded middle (already in scope from
+  iter 7's `doubleNeg` lemmas).
 - **S11.3**: Daans 2021 (10-quantifier reduction of Koenigsmann) as a
   separate axiomatized witness — adds 1 axiom, documentary value only.
 - **S11.4**: Finset version of `finUnionList_singletons` —
@@ -203,21 +275,25 @@ S11+ extensions:
 
 ## Next Action
 
-Commit, push, create PR for iteration 10 (this).
+Commit, push, create PR for iteration 12 (this).
 
-If S10 lands cleanly, S11+ candidates (in priority order):
+If S11.2 lands cleanly, S12+ candidates (in priority order):
 
-- **S11.1**: Π₁ ⊆ Π₂ via polynomial inversion (`a ≠ 0 ⟺ ∃ z, a·z = 1`).
-- **S11.2**: Σ₁ closure under binary INTERSECTION via sum-of-squares.
+- **S12.1**: List version of `intersection_isDiophantineDefinition`.
+- **S12.2**: De Morgan dualization to derive `union_isCoDiophantineDefinition`
+  (Π₁ closed under binary union).
 - **S11.3**: Daans 2021 (10-quantifier reduction of Koenigsmann) as a
   separate axiomatized witness — adds 1 axiom, documentary value only.
 - **S11.4**: Finset version of `finUnionList_singletons`.
 
 ## Attempt Counts
 
-- Total attempts: 10
-- Current approach attempts: 1 (S10 — finite-list closure)
-- Approaches tried: 9 (S2 Σ₁/Π₁ duality, S3 Σ₂/Π₂ duality, S4 class
+- Total attempts: 12
+- Current approach attempts: 1 (S11.2 — Σ₁ binary intersection closure
+  via sum-of-squares + interleave)
+- Approaches tried: 11 (S2 Σ₁/Π₁ duality, S3 Σ₂/Π₂ duality, S4 class
   congruence, S5 symmetric duality + trivial sets, S6 smallest
   non-trivial subset, S7 ¬¬-shadow, S8 arbitrary singletons, S9 binary
-  union/intersection closure, S10 finite-list closure)
+  union/intersection closure, S10 finite-list closure, S11.1 Π₁ ⊆ Π₂
+  via polynomial inversion, S11.2 Σ₁ binary intersection via
+  sum-of-squares)

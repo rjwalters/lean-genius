@@ -69,6 +69,13 @@ import Mathlib.Algebra.Group.Basic
 -- for closure of Σ₁ under binary union and Π₁ under binary intersection.
 -- ℚ is a field, hence `NoZeroDivisors`, so `mul_eq_zero` applies.
 import Mathlib.Algebra.GroupWithZero.Basic
+-- S12 (iter 12, Path B): `mul_self_nonneg` for the sum-of-squares witness
+-- used in closure of Σ₁ under binary intersection. ℚ is a LinearOrderedField,
+-- so `0 ≤ a*a` for every `a : ℚ`.
+import Mathlib.Algebra.Order.Ring.Lemmas
+-- S12 (iter 12, Path B): `linarith` to discharge the conclusion
+-- `a*a + b*b = 0  ∧  0 ≤ a*a  ∧  0 ≤ b*b  →  a*a = 0  ∧  b*b = 0`.
+import Mathlib.Tactic.Linarith
 
 namespace Hilbert10Rationals
 
@@ -1138,6 +1145,151 @@ theorem coDiophantine_implies_universal_existential
     exact zero_ne_one heq
 
 -- ============================================================
+-- Part VIII.12 (iter 12, Path B): Σ₁ closed under binary intersection
+--                                  (sum-of-squares + interleave packing)
+-- ============================================================
+
+/-- Even-indexed projection of an infinite rational variable assignment.
+    Used in the variable-packing for `intersection_isDiophantineDefinition`
+    to expose the "first half" `x ↦ x (2*n)` of an `x : Nat → Rat` to one
+    of the two argument polynomials. -/
+private def evenProj (x : Nat → Rat) : Nat → Rat := fun n => x (2 * n)
+
+/-- Odd-indexed projection of an infinite rational variable assignment.
+    Used in the variable-packing for `intersection_isDiophantineDefinition`
+    to expose the "second half" `x ↦ x (2*n + 1)` of an `x : Nat → Rat`
+    to the other argument polynomial. -/
+private def oddProj (x : Nat → Rat) : Nat → Rat := fun n => x (2 * n + 1)
+
+/-- Interleave two infinite rational variable assignments into one.
+    `interleave x₁ x₂` puts `x₁ n` at the even index `2*n` and `x₂ n` at
+    the odd index `2*n + 1`. This is the section/inverse of the pair
+    `(evenProj, oddProj)`. -/
+private def interleave (x₁ x₂ : Nat → Rat) : Nat → Rat :=
+  fun n => if n % 2 = 0 then x₁ (n / 2) else x₂ (n / 2)
+
+/-- The even-indexed projection of an interleaved assignment recovers the
+    first input. Pure Nat-arithmetic: `(2*n) % 2 = 0` and `(2*n) / 2 = n`. -/
+private theorem evenProj_interleave (x₁ x₂ : Nat → Rat) :
+    evenProj (interleave x₁ x₂) = x₁ := by
+  funext n
+  show (if (2 * n) % 2 = 0 then x₁ ((2 * n) / 2) else x₂ ((2 * n) / 2)) = x₁ n
+  have h1 : (2 * n) % 2 = 0 := by omega
+  have h2 : (2 * n) / 2 = n := by omega
+  rw [if_pos h1, h2]
+
+/-- The odd-indexed projection of an interleaved assignment recovers the
+    second input. Pure Nat-arithmetic: `(2*n+1) % 2 = 1 ≠ 0` and
+    `(2*n+1) / 2 = n`. -/
+private theorem oddProj_interleave (x₁ x₂ : Nat → Rat) :
+    oddProj (interleave x₁ x₂) = x₂ := by
+  funext n
+  show (if (2 * n + 1) % 2 = 0 then x₁ ((2 * n + 1) / 2) else x₂ ((2 * n + 1) / 2)) = x₂ n
+  have h1 : (2 * n + 1) % 2 ≠ 0 := by omega
+  have h2 : (2 * n + 1) / 2 = n := by omega
+  rw [if_neg h1, h2]
+
+/-- Iter 12, Path B: **the Σ₁ class is closed under binary intersection**.
+
+    If `S₁` and `S₂` are both Σ₁-definable over ℚ, then so is the
+    pointwise conjunction `fun q => S₁ q ∧ S₂ q`.
+
+    **Witness** (sum-of-squares with variable packing): given Σ₁ witnesses
+    `P₁` for `S₁` and `P₂` for `S₂`, the polynomial
+
+        P(q, x) := P₁(q, evenProj x)·P₁(q, evenProj x)
+                 + P₂(q, oddProj x)·P₂(q, oddProj x)
+
+    has a rational solution `x` iff both `P₁(q, ·)` and `P₂(q, ·)` have
+    rational solutions. The variable-packing puts `P₁`'s witness on the
+    even-indexed slots `{2*n : n : ℕ}` of `x` and `P₂`'s witness on the
+    odd-indexed slots `{2*n+1 : n : ℕ}`, so the two witnesses can coexist
+    in a single `x : Nat → Rat`.
+
+    **Forward** (`S₁ q ∧ S₂ q → ∃ x, P(q, x) = 0`): combine `x₁` and `x₂`
+    via `interleave`. The projection lemmas
+    `evenProj_interleave : evenProj (interleave x₁ x₂) = x₁` and
+    `oddProj_interleave : oddProj (interleave x₁ x₂) = x₂` make
+    `P₁(q, evenProj x) = P₁(q, x₁) = 0` and
+    `P₂(q, oddProj x) = P₂(q, x₂) = 0`, so each square term vanishes
+    and the sum is zero.
+
+    **Reverse** (`∃ x, P(q, x) = 0 → S₁ q ∧ S₂ q`): write
+    `a := P₁(q, evenProj x)` and `b := P₂(q, oddProj x)`. The hypothesis
+    is `a*a + b*b = 0`. Over the LinearOrderedField ℚ, both `a*a ≥ 0`
+    and `b*b ≥ 0` (`mul_self_nonneg`), so `linarith` forces `a*a = 0`
+    and `b*b = 0`. By `mul_eq_zero` (NoZeroDivisors over ℚ), `a = 0`
+    and `b = 0`. Feeding back through `(hP_i q).mpr` yields `S₁ q` and
+    `S₂ q`.
+
+    **Path B** (Mathlib): adds `Mathlib.Algebra.Order.Ring.Lemmas` for
+    `mul_self_nonneg` and `Mathlib.Tactic.Linarith` for the
+    `a*a + b*b = 0  ∧  0 ≤ a*a  ∧  0 ≤ b*b  →  a*a = 0` step. The
+    interleave / projection lemmas are pure Nat arithmetic via `omega`.
+    No new axioms.
+
+    **Combined with S9** (`union_isDiophantineDefinition`): the Σ₁ class
+    over ℚ is closed under both binary union AND binary intersection,
+    hence under arbitrary FINITE Boolean combinations using `∪` and `∩`.
+    Σ₁ is NOT (known to be) closed under complement — that would
+    collapse the Σ₁/Π₁ duality and is equivalent to the OPEN question
+    of whether Σ₁ = Π₁ over ℚ.
+
+    By iterating over a finite list, this lifts to closure under any
+    *finite* intersection of Σ₁-definable sets. The OPEN Σ₁ question
+    for ℤ ⊂ ℚ is unaffected: it is precisely the question of whether
+    the *countable* union of singletons admits a uniform Σ₁ witness;
+    intersection closure is "orthogonal" to that question. -/
+theorem intersection_isDiophantineDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsDiophantineDefinition S₁) (h₂ : IsDiophantineDefinition S₂) :
+    IsDiophantineDefinition (fun q => S₁ q ∧ S₂ q) := by
+  obtain ⟨P₁, hP₁⟩ := h₁
+  obtain ⟨P₂, hP₂⟩ := h₂
+  refine ⟨fun q x =>
+    (P₁ q (evenProj x)) * (P₁ q (evenProj x)) +
+    (P₂ q (oddProj x)) * (P₂ q (oddProj x)), fun q => ?_⟩
+  constructor
+  · rintro ⟨hS₁, hS₂⟩
+    obtain ⟨x₁, hx₁⟩ := (hP₁ q).mp hS₁
+    obtain ⟨x₂, hx₂⟩ := (hP₂ q).mp hS₂
+    refine ⟨interleave x₁ x₂, ?_⟩
+    rw [evenProj_interleave, oddProj_interleave, hx₁, hx₂]
+    ring
+  · rintro ⟨x, hx⟩
+    -- `hx : a*a + b*b = 0` where a := P₁ q (evenProj x), b := P₂ q (oddProj x)
+    set a := P₁ q (evenProj x)
+    set b := P₂ q (oddProj x)
+    have haa_nn : (0 : Rat) ≤ a * a := mul_self_nonneg a
+    have hbb_nn : (0 : Rat) ≤ b * b := mul_self_nonneg b
+    have haa_zero : a * a = 0 := by linarith
+    have hbb_zero : b * b = 0 := by linarith
+    have ha : a = 0 := (mul_eq_zero.mp haa_zero).elim id id
+    have hb : b = 0 := (mul_eq_zero.mp hbb_zero).elim id id
+    refine ⟨(hP₁ q).mpr ⟨evenProj x, ha⟩, (hP₂ q).mpr ⟨oddProj x, hb⟩⟩
+
+/-- Iter 12 corollary, Path B: **Π₂ class is closed under binary
+    intersection of Σ₁-definable subsets**.
+
+    Direct application of `intersection_isDiophantineDefinition` followed
+    by `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂). Stated as
+    a transport: if `S₁`, `S₂` are Σ₁-definable, then `S₁ ∩ S₂` is also
+    Π₂-definable.
+
+    This is NOT the strongest possible Π₂-closure statement (which would
+    require a direct Π₂ witness for `S₁ ∩ S₂` when `S₁`, `S₂` are
+    arbitrary Π₂-definable subsets — that's a strictly bigger claim than
+    Σ₁ closure). The stronger Π₂ ∩ Π₂ ⊆ Π₂ closure is left as future
+    work; this file's S11.1 (`coDiophantine_implies_universal_existential`)
+    handles the unary Π₁ ⊆ Π₂ direction without intersection. -/
+theorem intersection_isUniversalExistentialDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsDiophantineDefinition S₁) (h₂ : IsDiophantineDefinition S₂) :
+    IsUniversalExistentialDefinition (fun q => S₁ q ∧ S₂ q) :=
+  diophantine_implies_universal_existential _
+    (intersection_isDiophantineDefinition h₁ h₂)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -1206,6 +1358,19 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   polynomial witness — finite truncations `⋃_{n : ℤ ∩ [-N, N]} {n}` are
   Σ₁-definable for every finite `N`, but the limit `N → ∞` requires a
   single polynomial whose existence is the OPEN content.
+- **Σ₁ is closed under binary intersection** (iter 12): a sum-of-squares
+  witness with variable-packing — `P(q, x) = (P₁(q, evenProj x))² +
+  (P₂(q, oddProj x))²` — serves the role. Over the LinearOrderedField
+  ℚ, both squares are nonneg, so a zero sum forces each square (hence
+  each polynomial value) to vanish individually. The variable-packing
+  via `interleave : (Nat → Rat) → (Nat → Rat) → (Nat → Rat)` puts P₁'s
+  witness on even indices and P₂'s on odd indices, so the two
+  polynomial constraints can be simultaneously witnessed by a single
+  `x : Nat → Rat`. **Combined with iter 9**: Σ₁ over ℚ is closed under
+  finite ∪ AND finite ∩ — hence under arbitrary finite Boolean
+  combinations using ∪ and ∩. Σ₁ is NOT (known to be) closed under
+  complement; that would collapse Σ₁ = Π₁, which is the OPEN question
+  in disguise.
 
 ## Axioms in THIS file (1 net new)
 
@@ -1217,7 +1382,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (46)
+## Theorems in THIS file (selected — see source for the full list)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -1265,6 +1430,13 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `notSingletonPair_isCoDiophantineDefinition a b` (ℚ\{a, b} is Π₁ for any a, b : ℚ, iter 9)
   - `singletonPair_isUniversalExistentialDefinition a b` ({a, b} is Π₂, iter 9)
   - `notSingletonPair_isExistentialUniversalDefinition a b` (ℚ\{a, b} is Σ₂, iter 9)
+  - `finUnionList_singletons_isDiophantineDefinition l` (every finite subset of ℚ is Σ₁, iter 10)
+  - `finIntersectionList_complement_singletons_isCoDiophantineDefinition l` (complement of every finite subset is Π₁, iter 10)
+  - `finUnionList_singletons_isUniversalExistentialDefinition l` (every finite subset is Π₂, iter 10)
+  - `finIntersectionList_complement_singletons_isExistentialUniversalDefinition l` (complement of every finite subset is Σ₂, iter 10)
+  - `coDiophantine_implies_universal_existential` (Π₁ ⊆ Π₂ via inversion, iter 11)
+  - `intersection_isDiophantineDefinition` (Σ₁ closed under binary intersection via sum-of-squares + interleave, iter 12)
+  - `intersection_isUniversalExistentialDefinition` (Σ₁ ∩ Σ₁ ⊆ Π₂ corollary, iter 12)
 -/
 
 #check @IsDiophantineDefinition
@@ -1317,5 +1489,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @finUnionList_singletons_isUniversalExistentialDefinition
 #check @finIntersectionList_complement_singletons_isExistentialUniversalDefinition
 #check @coDiophantine_implies_universal_existential
+#check @intersection_isDiophantineDefinition
+#check @intersection_isUniversalExistentialDefinition
 
 end Hilbert10Rationals
