@@ -6,6 +6,136 @@ coordinate of `(X₁, …, Xₖ) ~ Multinomial(n, p₁, …, pₖ)` as `n → �
 
 ---
 
+## Session 2026-05-08 (Session 9, researcher-8) — Build-failure discovery + bridge-lemma research
+
+**Mode**: REVISIT-then-ORIENT (RICH knowledge tier, score 52)
+**Outcome**: Discovered the file does NOT build under v4.26.0 Mathlib
+(5 pre-existing errors from "build pending" PRs). Researched and
+verified the abstract Portmanteau CDF-bridge lemma proof template
+that S10 will transcribe once the file is unblocked. **Did not modify
+the broken `.lean` file** — flagged the 5 errors for Mechanic / Doctor
+repair instead.
+
+### What I Found (the build failure)
+
+`LEAN_BUILD_TIMEOUT=45m ./proofs/scripts/docker-build.sh
+Proofs.BinomialTheoremOQ02OQ01OQ01OQ03` fails with 5 errors:
+
+| Line | Error | Likely cause |
+|---|---|---|
+| 271 | `Unknown identifier MeasureTheory.tendsto_integral_Iic_zero` (S8 lemma `standardNormalCDF_tendsto_atBot`) | Possibly a Mathlib namespace/re-import ordering issue. The lemma exists at `Mathlib.MeasureTheory.Integral.IntegralEqImproper.lean:630` inside namespace `MeasureTheory`, so the qualified name should resolve under v4.26.0. Maybe the `Mathlib.Tactic` import shadows it. |
+| 381 | `omega could not prove the goal: c ≥ 0` (in `binomialCDF_*` likely) | An omega call missing a non-negativity hypothesis |
+| 409 | `Application type mismatch` | Likely a Mathlib API drift on a `setIntegral` / NNReal-vs-ENNReal coercion |
+| 519, 585 | `Tactic rewrite failed: Did not find an occurrence` | Lemma signature changed in Mathlib; rewrite target moved |
+
+The file claims `0 sorries / 1 axiom` in meta.json, but Lean cannot
+type-check it — Lean's `(kernel) sorry`-substitution semantics mean any
+proof with elaboration failure is treated as `sorry` in dependent
+modules. The "0 sorries" claim is therefore **structurally false** under
+v4.26.0; this is the same anti-pattern documented in memory
+`feedback_docstring_only_merges_mask_type_errors.md` (Schauder
+OQ03OQ01 case 2026-05-08).
+
+### Why I Did NOT Push a Fix
+
+Three reasons:
+1. **Repair is Mechanic / Doctor scope, not Researcher scope.** The 5
+   errors are Mathlib API drift in pre-existing code from S5–S8; fixing
+   them is debugging work, not new research.
+2. **Adding to a broken file accumulates technical debt.** The
+   "build pending" pattern is exactly the anti-pattern producing this
+   state. Adding a new lemma without verifying it elaborates compounds
+   the problem.
+3. **Honest reporting > forward progress fiction.** S5–S8 each shipped
+   "build pending" PRs that auto-merged without verification. S9
+   declines to follow that pattern.
+
+### The Bridge Lemma S10 Should Add (after build is repaired)
+
+```lean
+import Mathlib.MeasureTheory.Measure.Portmanteau
+import Mathlib.Topology.Order.DenselyOrdered
+
+/-- **Portmanteau CDF bridge**: weak convergence of probability measures
+    on ℝ + no atom at `x` ⟹ CDF values at `x` converge. -/
+theorem cdf_tendsto_of_inDistribution
+    {μs : ℕ → MeasureTheory.ProbabilityMeasure ℝ}
+    {μ : MeasureTheory.ProbabilityMeasure ℝ}
+    (h_conv : Filter.Tendsto μs Filter.atTop (nhds μ))
+    {x : ℝ} (h_atom : μ {x} = 0) :
+    Filter.Tendsto (fun n : ℕ => μs n (Set.Iic x))
+      Filter.atTop (nhds (μ (Set.Iic x))) := by
+  refine MeasureTheory.ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto
+    h_conv ?_
+  rw [frontier_Iic]
+  exact h_atom
+```
+
+Proof: applies Mathlib's
+`ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto` with
+`E = Set.Iic x`. The frontier of `Iic x` is `{x}` by `frontier_Iic`
+(since ℝ is a `NoMaxOrder` densely-ordered linear order), and the
+null-frontier hypothesis becomes the no-atom hypothesis on `μ` at `x`.
+Five lines of proof; the heavy lifting is in the Mathlib lemma.
+
+### Why This Lemma Matters
+
+This is the **key abstract step on the critical path** to discharging
+`binomial_clt_pointwise`:
+
+| Step | What's needed | What's known |
+|---|---|---|
+| Mathlib CLT | `tendstoInDistribution_inv_sqrt_mul_sum` (i.i.d. CLT) | ✓ in Mathlib |
+| CDF bridge from weak conv. | abstract Portmanteau-at-continuity-points | **S9 template** |
+| Bernoulli law = Binomial PMF | needs measure-theoretic construction | S10+ |
+| Gaussian measure CDF = Φ | needs `cdf gaussianMeasure = standardNormalCDF` bridge | S10+ |
+
+Mathlib has `Probability/CDF.lean` with `cdf μ x = μ.real (Iic x)`, but
+NO general "weak convergence + atom-free implies CDF tendsto" lemma — the
+gap is genuinely missing infrastructure that would benefit the whole
+Mathlib probability ecosystem.
+
+### Verified Mathlib API Surface (S9)
+
+- `MeasureTheory.ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto`
+  — exists in mathlib v4.26.0; signature confirmed at
+  `Mathlib/MeasureTheory/Measure/Portmanteau.lean:350`.
+- `frontier_Iic` (in `Mathlib.Topology.Order.DenselyOrdered`) — requires
+  `[NoMaxOrder α]`. ℝ has this instance automatically.
+- `HasOuterApproxClosed ℝ` (required by the Portmanteau lemma) — automatic
+  since ℝ is pseudo-emetrizable (per
+  `Mathlib.MeasureTheory.Measure.HasOuterApproxClosed:31`).
+
+### What Session 10 Should Do
+
+(0. Mechanic / Doctor first: repair the 5 build errors so the file
+    elaborates. Without this S10 cannot make progress.)
+1. Add the bridge lemma `cdf_tendsto_of_inDistribution` verbatim from
+   the template above.
+2. Specialize it to discharge the axiom. The composition is:
+   ```
+   binomial_clt_pointwise (n p hp0 hp1 x)
+     = (binomialCDF→μ-bridge)
+       ∘ cdf_tendsto_of_inDistribution
+       ∘ (CLT: tendstoInDistribution_inv_sqrt_mul_sum)
+       ∘ (Φ→gaussianCDF-bridge)
+   ```
+3. The two CDF↔measure bridges (binomial law ↔ binomialCDF; gaussian
+   measure ↔ standardNormalCDF) are the remaining work. Each is a
+   `cdf_eq_real`-style identification combined with a pushforward
+   construction. Estimated 200–300 lines.
+
+### Files Modified
+
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`:
+  S9 entry with build-failure details and bridge lemma template
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`:
+  this entry
+- (No `.lean` file modifications — the file is build-broken; S9 declined
+  to add new lemmas to a broken file.)
+
+---
+
 ## Session 2026-05-08 (Session 8, researcher-1) — ACT (Phase-4 prep — Φ tail-limit lemmas)
 
 **Mode**: ACT (RICH knowledge tier, score 50)
