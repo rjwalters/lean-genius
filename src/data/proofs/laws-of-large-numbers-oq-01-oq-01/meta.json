@@ -70,6 +70,16 @@
       "The biconditional is now complete: combining this entry (necessity) with Mathlib's ProbabilityTheory.strong_law_ae (sufficiency), we have SLLN ⟺ E[|X₀|] < ∞ — a sharp characterization that was fully formalized in Lean 4 for the first time by this work.",
       "The proof exhibits a dual-engine structure: the *probabilistic* engine (BC2 + i.i.d. transfer) drives the lower estimate Σ P(|Xₙ|>n)=∞ → infinitely many exceedances, while the *analytic* engine (Cesàro + a.s. convergence) drives the upper estimate Xₙ/n→0 → eventually no exceedances. The contradiction is precisely that the divergence regime of the tail series cannot coexist with the regularity regime of Cesàro decay.",
       "The result is a tail-event statement under disguise: integrability of X₀ is determined entirely by the asymptotic behaviour of the sequence (Xₙ), so the SLLN convergence acts as a tail-measurable certificate of finite mean. Through Kolmogorov's 0-1 law, the same proof template would lift verbatim to any tail event characterised by a Cesàro-style decay rate, suggesting that Kolmogorov's SLLN biconditional is one of an infinite family of analogous biconditionals indexed by tail decay rates."
+    ],
+    "prerequisites": [
+      "Bochner integrability and the equivalence $\\mathrm{Integrable}\\,X \\iff \\mathrm{Measurable}\\,X \\land E[|X|] < \\infty$ (Mathlib `MeasureTheory.Integrable`)",
+      "Pairwise independence of random variables and the related notion for sets/events (`ProbabilityTheory.IndepFun` / `IndepSet`)",
+      "Identical distribution and the law-pushforward equality $E[f(X)] = E[f(Y)]$ for $X, Y$ identically distributed (`ProbabilityTheory.IdentDistrib`)",
+      "The Borel-Cantelli lemmas: BC1 (Σ P(Aₙ) < ∞ ⇒ P(Aₙ i.o.) = 0, easy half) and BC2 (Σ P(Aₙ) = ∞ + independence assumption ⇒ P(Aₙ i.o.) = 1, harder half)",
+      "The layer-cake identity $E[X] = \\int_0^{\\infty} P(X > t)\\,dt$ for non-negative $X$, especially its discretization $E[|X|] \\sim \\sum_n P(|X| > n)$",
+      "Cesàro's lemma: $a_n = (s_n - s_{n-1})/n$ where $s_n = (1/n) \\sum_{i \\le n} x_i$, giving $a_n \\to 0$ when $s_n$ converges",
+      "Chebyshev's inequality / variance-bound technique (the second-moment method)",
+      "Filter-based asymptotics in Lean: `Filter.Tendsto`, `Filter.atTop`, `Filter.limsup`, and the a.s. modality `∀ᵐ ω ∂μ`"
     ]
   },
   "leanFile": {
@@ -122,20 +132,36 @@
   ],
   "sections": [
     {
-      "id": "preamble",
-      "title": "Proof Blueprint and Imports",
+      "id": "header-docstring",
+      "title": "Header: Question, Strategy, Status",
       "startLine": 1,
-      "endLine": 49,
-      "summary": "Module docstring explains the full 6-step contradiction proof strategy. Imports the Aristotle companion (723 lines of infrastructure). Sets up the probability space variable with IsProbabilityMeasure.",
-      "mathContext": "Proof outline: SLLN $\\Rightarrow X_n/n \\to 0$ a.s. (Cesàro); $E[|X|]=\\infty \\Rightarrow \\sum P(|X_n|>n)=\\infty$ (layer cake + i.i.d.); BC2 under pairwise independence gives $P(|X_n|>n\\text{ i.o.})=1$; contradiction."
+      "endLine": 41,
+      "summary": "Module-level docstring laying out the open question (whether the necessity direction is provable in Mathlib), the six-step contradiction proof strategy, the three pieces of key infrastructure built (layer cake, Cesàro, BC2 for pairwise independence), the status (0 sorries, 0 axioms), and references to Etemadi 1981 and Feller 1971.",
+      "mathContext": "Six-step contradiction: (1) assume SLLN; (2) Cesàro $\\Rightarrow X_n/n \\to 0$ a.s.; (3) suppose $E[|X_0|] = \\infty$; (4) layer cake $\\Rightarrow \\sum_n P(|X_n|>n) = \\infty$; (5) BC2 (pairwise) $\\Rightarrow |X_n|>n$ i.o. a.s.; (6) contradicts (2)."
     },
     {
-      "id": "slln-necessity",
-      "title": "SLLN Necessity Theorem",
+      "id": "imports-and-setup",
+      "title": "Imports, Namespace, and Probability-Space Variable",
+      "startLine": 42,
+      "endLine": 48,
+      "summary": "`import Proofs.LawsOfLargeNumbersOQ01Aristotle` pulls in the 723-line companion file. `namespace LawsOfLargeNumbersOQ01OQ01` plus `open MeasureTheory ProbabilityTheory Filter ENNReal` set up the canonical names. The `variable` line declares the ambient probability space $(Ω, \\mathcal{F}, μ)$ with `[IsProbabilityMeasure μ]`.",
+      "mathContext": "Standard probability-space prelude: $Ω$ a measurable space, $μ$ a probability measure (so $μ(Ω) = 1$). All subsequent statements are quantified over this fixed probability space."
+    },
+    {
+      "id": "slln-necessity-theorem",
+      "title": "Theorem `slln_necessity` (Statement and Wrap)",
       "startLine": 50,
+      "endLine": 72,
+      "summary": "The headline theorem: 13-line documentation followed by the formal Lean signature. Hypotheses: a sequence `X : ℕ → Ω → ℝ`, each `Measurable`, `Pairwise IndepFun`, all `IdentDistrib` to `X 0`, and `∃ c, sample mean → c a.s.`. Conclusion: `Integrable (X 0) μ`. The proof body is a single delegating term referencing the companion's `slln_necessity_statement`.",
+      "mathContext": "Formal statement: $\\forall (X_i)_{i \\in \\mathbb{N}}\\colon$ pairwise-independent, identically-distributed, measurable, with $\\frac{1}{n}\\sum_{i<n} X_i(\\omega) \\to c$ a.s.\\ for some $c\\in\\mathbb{R}$, then $E[|X_0|] < \\infty$."
+    },
+    {
+      "id": "namespace-close",
+      "title": "Namespace Close",
+      "startLine": 73,
       "endLine": 74,
-      "summary": "slln_necessity: if i.i.d. random variables satisfy the SLLN, then X₀ is integrable. Delegates to LawsOfLargeNumbersOQ01Aristotle.slln_necessity_statement via a one-line proof; namespace closes on line 74.",
-      "mathContext": "The full theorem: given pairwise-independent identically-distributed measurable $(X_i)$ with sample mean converging a.s., conclude $\\mathrm{Integrable}(X_0, \\mu)$ i.e. $E[|X_0|] < \\infty$. The Aristotle companion carries all the proof machinery (723 lines)."
+      "summary": "Closes the `LawsOfLargeNumbersOQ01OQ01` namespace. The thinness of this gallery file (74 lines total) is intentional: it states the headline theorem in standard library style and delegates the 723 lines of proof scaffolding to the Aristotle companion.",
+      "mathContext": "Architectural pattern: thin gallery wrapper (statement + delegation) + thick companion (proof). Future Mathlib refactors stay localised to the companion."
     }
   ],
   "crossReferences": [
@@ -249,26 +275,36 @@
     {
       "name": "slln_necessity",
       "type": "core",
+      "statement": "$\\forall (X_i)\\colon$ pairwise IndepFun, IdentDistrib to $X_0$, measurable, $\\exists c, \\frac{1}{n}\\sum_{i<n} X_i \\to c$ a.s. $\\Rightarrow$ $\\mathrm{Integrable}(X_0,\\mu)$",
+      "significance": "Closes the converse of Kolmogorov's biconditional SLLN $\\iff$ $E[|X_0|]<\\infty$. The 74-line gallery file states this headline result and delegates to a 723-line Aristotle companion that supplies the BC2 + layer-cake + Cesàro chain.",
       "description": "If i.i.d. random variables satisfy SLLN (sample mean → c a.s.) under pairwise independence, then X₀ is integrable. Closes the converse of Kolmogorov's biconditional. Wrapped from companion."
     },
     {
       "name": "borel_cantelli_of_pairwise_independent",
       "type": "supporting",
+      "statement": "$\\forall (A_n)\\colon$ pairwise independent, $\\sum_n μ(A_n) = \\infty$ $\\Rightarrow$ $μ(\\limsup_n A_n) = 1$",
+      "significance": "Erdős-Rényi 1959 — the strictly-stronger-than-textbook BC2 that requires only pairwise (not full) independence. The variance-Chebyshev proof passes through `IndepFun → IndepSet → Var(Σ 𝟙_{A_n}) ≤ E[Σ 𝟙_{A_n}]`. Mathlib-contribution candidate.",
       "description": "Companion lemma: BC2 under pairwise independence via variance-Chebyshev. Σ P(Aₙ)=∞ + pairwise indep ⇒ P(Aₙ i.o.)=1. Mathlib-contribution candidate."
     },
     {
       "name": "tsum_prob_norm_gt_eq_top_of_not_integrable",
       "type": "supporting",
+      "statement": "$\\neg \\mathrm{Integrable}(X,\\mu) \\Rightarrow \\sum_{n\\ge 0} μ\\{|X| > n\\} = \\infty$",
+      "significance": "The contrapositive layer-cake bridge that converts non-integrability into a divergent tail series. Mathlib has the integrable direction; this missing contrapositive is the second Mathlib-contribution candidate.",
       "description": "Companion lemma: layer-cake equivalence E[|X|]=∞ ↔ Σ P(|X|>n)=∞ (contrapositive direction). Connects integrability to tail-probability series."
     },
     {
       "name": "tendsto_zero_div_of_tendsto_sum_div",
       "type": "supporting",
+      "statement": "$\\bigl(\\frac{1}{n}\\sum_{i<n} a_i \\to c\\bigr) \\Rightarrow \\bigl(\\frac{a_n}{n} \\to 0\\bigr)$",
+      "significance": "Cesàro-style decay, the analytic engine of the contradiction. Crucially, the conclusion is independent of the limit value $c$; only the existence of a finite limit matters.",
       "description": "Companion lemma: Cesàro decay — sample mean convergent ⇒ Xₙ/n → 0 a.s. The analytic engine of the contradiction."
     },
     {
       "name": "variance_sum_indicator_le",
       "type": "supporting",
+      "statement": "Pairwise IndepSet $A_1,\\ldots,A_N$ $\\Rightarrow$ $\\mathrm{Var}\\bigl(\\sum_{n\\le N} \\mathbf{1}_{A_n}\\bigr) \\le E\\bigl[\\sum_{n\\le N} \\mathbf{1}_{A_n}\\bigr]$",
+      "significance": "The orthogonality-of-indicators variance bound that powers the Chebyshev step. This is exactly where pairwise (not full) independence enters: the cross-term $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = 0$ for $i\\ne j$ uses only $μ(A_i \\cap A_j) = μ(A_i)μ(A_j)$.",
       "description": "Companion lemma: pairwise independence gives Var(Σ 𝟙_Aₙ) ≤ E[Σ 𝟙_Aₙ]; the variance bound that powers the Chebyshev step in BC2."
     }
   ],
