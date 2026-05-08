@@ -61,33 +61,63 @@
       "The double-counting bijection (g,x,g•x=x) ↦ (x,g,g•x=x) has rfl as both left and right inverse — making it a definitional isomorphism, not just a set-theoretic bijection",
       "Stabilizers within the same orbit are conjugate subgroups: Stab(g•x) = g·Stab(x)·g⁻¹, proved via the explicit conjugation bijection h ↦ g⁻¹hg",
       "The orbit-stabilizer theorem is the key bridge: |Stab(x)| = |G|/|Orb(x)| makes each orbit's contribution to Σ_x|Stab(x)| equal exactly |G|",
-      "Burnside's lemma follows from double-counting + orbit partition, with orbit-stabilizer as the essential quantitative link"
+      "Burnside's lemma follows from double-counting + orbit partition, with orbit-stabilizer as the essential quantitative link",
+      "**Misnamed lemma**: 'Burnside's lemma' was proved by Cauchy (1845) and independently by Frobenius (1887); Burnside merely included it (without attribution) in his 1897 textbook *Theory of Groups of Finite Order*. Modern usage 'Cauchy-Frobenius lemma' or 'orbit-counting theorem' is gradually displacing the historical mis-attribution.",
+      "**Sigma type as definitional double-count**: representing $S = \\{(g,x) : g \\cdot x = x\\}$ as `Σ g, fixedBy g` vs.\\ `Σ x, stabilizer x` makes the swap a *definitional* equivalence rather than a constructed bijection. This pattern — encoding a counting identity as a `rfl` Equiv between sigma types — is a reusable technique for formalizing combinatorial proofs.",
+      "**Lagrange → Orbit-Stabilizer → Burnside as a single chain**: Lagrange (1771) provides $|H| \\mid |G|$; orbit-stabilizer specializes this to $|G| = |\\mathrm{Orb}(x)| \\cdot |\\mathrm{Stab}(x)|$; Burnside applies the orbit partition. The `lagrange_orbitstab_burnside_chain` theorem packages all three as a single statement, exposing the algebraic divisibility hierarchy.",
+      "**Application: Pólya enumeration**. Burnside's lemma plus weighted variants gives the cycle-index formula counting equivalence classes of colorings under group symmetry — the engine behind the necklace-counting and chemical-isomer-counting applications."
+    ],
+    "prerequisites": [
+      "Basic group theory: groups, subgroups, cosets, and Lagrange's theorem $|H| \\mid |G|$",
+      "Group actions: `MulAction G X`, the action $g \\cdot x$, and the predicate `g • x = x` (fixed-point relation)",
+      "Orbits: $\\mathrm{Orb}(x) = \\{g \\cdot x : g \\in G\\}$, the orbit equivalence relation, and the partition of $X$ into orbits",
+      "Stabilizers: $\\mathrm{Stab}(x) = \\{g \\in G : g \\cdot x = x\\}$ as a subgroup of $G$",
+      "Orbit-stabilizer theorem: $|G| = |\\mathrm{Orb}(x)| \\cdot |\\mathrm{Stab}(x)|$ (`MulAction.card_orbit_mul_card_stabilizer_eq_card_group`)",
+      "Fixed-point sets: $\\mathrm{Fix}(g) = \\{x \\in X : g \\cdot x = x\\}$ and the dual indexing of the action",
+      "Sigma types and `Equiv`: $\\Sigma_a B(a)$ and how to construct an explicit bijection in Lean 4",
+      "Conjugation in groups: the inner automorphism $h \\mapsto g h g^{-1}$ and the conjugacy of stabilizers within an orbit"
     ]
   },
   "sections": [
     {
+      "id": "header-and-imports",
+      "title": "Header, Imports, and Proof-Chain Diagram",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module docstring states the open question (make the double-counting argument explicit), draws the proof chain $\\mathrm{Lagrange} \\to \\mathrm{Orbit\\text{-}Stabilizer} \\to \\mathrm{Burnside}$ with the central insight (sigma type swap), imports `Mathlib` and the parent `Proofs.LagrangeTheoremOQ02`, opens `MulAction`, `Finset`, `BigOperators`, and enters the `LagrangeTheoremOQ02OQ01` namespace.",
+      "mathContext": "Architectural framing: $S = \\{(g, x) \\in G \\times X : g \\cdot x = x\\}$ counted in two ways. By group element: $\\sum_g |\\mathrm{Fix}(g)|$. By action point: $\\sum_x |\\mathrm{Stab}(x)|$. The sigma-type swap makes the equality definitional."
+    },
+    {
       "id": "double-counting",
-      "title": "The Double-Counting Bijection",
-      "mathContext": "The fundamental observation: both Σ_g|Fix(g)| and Σ_x|Stab(x)| count the cardinality of the set S = {(g,x) ∈ G×X : g•x=x}. The sigma types Σ_g Fix(g) = {(g,x) : g•x=x} and Σ_x Stab(x) = {(x,g) : g•x=x} are bijective via the swap map. In Lean 4, `sigma_fixedBy_equiv_sigma_stabilizer` makes this an explicit `Equiv` with `rfl` proofs for left/right inverses. Applying `Fintype.card_sigma` converts from sigma cardinalities to sums, giving the double-counting identity `sum_card_fixedBy_eq_sum_card_stabilizer`.",
-      "description": "The bijection (g,x,g•x=x) ↦ (x,g,g•x=x) and the derived double-counting identity Σ_g|Fix(g)| = Σ_x|Stab(x)|"
+      "title": "The Double-Counting Bijection (L60–95)",
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "`sigma_fixedBy_equiv_sigma_stabilizer` (L64) is the explicit Equiv between $\\Sigma_g\\,\\mathrm{Fix}(g)$ and $\\Sigma_x\\,\\mathrm{Stab}(x)$ — both inverses are `rfl`. Applying `Fintype.card_sigma` converts the sigma-cardinality identity into the sum identity `sum_card_fixedBy_eq_sum_card_stabilizer` (L78).",
+      "mathContext": "The fundamental observation: both $\\sum_g |\\mathrm{Fix}(g)|$ and $\\sum_x |\\mathrm{Stab}(x)|$ count the cardinality of the set $S = \\{(g, x) \\in G \\times X : g \\cdot x = x\\}$. The sigma types $\\Sigma_g\\,\\mathrm{Fix}(g) = \\{(g, x) : g \\cdot x = x\\}$ and $\\Sigma_x\\,\\mathrm{Stab}(x) = \\{(x, g) : g \\cdot x = x\\}$ are bijective via the swap map."
     },
     {
       "id": "conjugation",
-      "title": "Stabilizer Conjugation Bijection",
-      "mathContext": "All elements in an orbit have stabilizers of equal cardinality, because Stab(g•x) and Stab(x) are conjugate subgroups: h ∈ Stab(g•x) iff g⁻¹hg ∈ Stab(x). The map h ↦ g⁻¹hg is the explicit bijection `stabilizer_smul_equiv` proved in Lean 4. The verification uses: (g⁻¹hg)•x = g⁻¹•(h•(g•x)) = g⁻¹•(g•x) = x when h•(g•x) = g•x. This makes `stabilizer_card_eq_of_orbit` an immediate corollary.",
-      "description": "Stab(g•x) ≃ Stab(x) via h ↦ g⁻¹hg (conjugation), making stabilizer cardinality orbit-invariant"
+      "title": "Stabilizer Conjugation Bijection (L95–130)",
+      "startLine": 95,
+      "endLine": 130,
+      "summary": "`stabilizer_smul_equiv` (L99) constructs the explicit Equiv $\\mathrm{Stab}(g \\cdot x) \\simeq \\mathrm{Stab}(x)$ via $h \\mapsto g^{-1} h g$. The verification uses $(g^{-1} h g) \\cdot x = g^{-1} \\cdot (h \\cdot (g \\cdot x)) = g^{-1} \\cdot (g \\cdot x) = x$. `stabilizer_card_eq_of_orbit` (L116) is the immediate cardinality corollary.",
+      "mathContext": "All elements in an orbit have stabilizers of equal cardinality, because $\\mathrm{Stab}(g \\cdot x)$ and $\\mathrm{Stab}(x)$ are conjugate subgroups: $h \\in \\mathrm{Stab}(g \\cdot x) \\iff g^{-1} h g \\in \\mathrm{Stab}(x)$."
     },
     {
       "id": "orbit-contribution",
-      "title": "Each Orbit Contributes |G|",
-      "mathContext": "Since all y in orbit G(x) have |Stab(y)| = |Stab(x)| (conjugation invariance), the sum over the orbit is |orbit|×|Stab(x)|. By the orbit-stabilizer theorem `card_orbit_mul_card_stabilizer_eq_card_group`, this equals |G|. The theorem `sum_card_stabilizer_orbit` formalizes: Σ_{y ∈ Orb(x)} |Stab(y)| = |G|.",
-      "description": "Via orbit-invariance of |Stab| and orbit-stabilizer: each orbit contributes exactly |G| to Σ_x|Stab(x)|"
+      "title": "Each Orbit Contributes |G| (L130–165)",
+      "startLine": 130,
+      "endLine": 165,
+      "summary": "`sum_card_stabilizer_orbit` (L134) formalizes $\\sum_{y \\in \\mathrm{Orb}(x)} |\\mathrm{Stab}(y)| = |G|$. Combines orbit-invariance of $|\\mathrm{Stab}|$ (from the previous block) with the orbit-stabilizer theorem `MulAction.card_orbit_mul_card_stabilizer_eq_card_group`.",
+      "mathContext": "Since all $y \\in \\mathrm{Orb}(x)$ have $|\\mathrm{Stab}(y)| = |\\mathrm{Stab}(x)|$, the sum over the orbit is $|\\mathrm{Orb}(x)| \\cdot |\\mathrm{Stab}(x)| = |G|$ — each orbit contributes exactly $|G|$."
     },
     {
       "id": "burnside",
-      "title": "Burnside's Counting Lemma",
-      "mathContext": "Combining double-counting with the orbit partition: Σ_g|Fix(g)| = Σ_x|Stab(x)| = Σ_{orbits O} Σ_{x∈O}|Stab(x)| = Σ_{orbits O} |G| = |X/G|·|G|. In Lean 4, `burnside_from_orbit_stabilizer` applies `sum_card_fixedBy_eq_sum_card_stabilizer` to convert LHS to Σ_x|Stab(x)|, then uses the Mathlib orbit partition result (with the same double-counting applied) to complete the proof. The key structural novelty is making step 1 explicit via the sigma type bijection.",
-      "description": "Burnside's lemma Σ_g|Fix(g)| = |X/G|·|G| derived via double-counting + orbit partition"
+      "title": "Burnside's Counting Lemma and the Lagrange-OS-Burnside Chain (L165–226)",
+      "startLine": 165,
+      "endLine": 226,
+      "summary": "`burnside_from_orbit_stabilizer` (L169) is the headline result: $\\sum_g |\\mathrm{Fix}(g)| = |X/G| \\cdot |G|$. Combines `sum_card_fixedBy_eq_sum_card_stabilizer` (LHS → $\\sum_x |\\mathrm{Stab}(x)|$) with the orbit partition. `burnside_divides` (L187): $|G| \\mid \\sum_g |\\mathrm{Fix}(g)|$. `lagrange_orbitstab_burnside_chain` (L210) packages Lagrange → Orbit-Stabilizer → Burnside as a single statement.",
+      "mathContext": "Combining double-counting with the orbit partition: $\\sum_g |\\mathrm{Fix}(g)| = \\sum_x |\\mathrm{Stab}(x)| = \\sum_{O \\in X/G} \\sum_{x \\in O} |\\mathrm{Stab}(x)| = \\sum_{O} |G| = |X/G| \\cdot |G|$."
     }
   ],
   "openQuestions": [
@@ -147,6 +177,108 @@
       "id": "lagrange-theorem",
       "title": "Lagrange's Theorem",
       "relationship": "Grandparent entry. The chain Lagrange → Orbit-Stabilizer → Burnside is formalized in lagrange_orbitstab_burnside_chain, with Lagrange's theorem as the base."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "sigma_fixedBy_equiv_sigma_stabilizer",
+      "type": "core",
+      "statement": "$\\Sigma_g\\,\\mathrm{fixedBy}\\,G\\,X\\,g \\simeq \\Sigma_x\\,\\mathrm{stabilizer}\\,G\\,x$ (an `Equiv`, both inverses `rfl`)",
+      "significance": "**The structural novelty.** Encodes the double-counting identity as a *definitional* isomorphism between sigma types — both inverses are `rfl`. This makes the swap a one-liner in the Lean proof, not a constructed bijection requiring verification.",
+      "description": "Explicit bijection between Σ g, fixedBy g and Σ x, stabilizer x via the swap (g, x, h) ↦ (x, g, h). Both inverses defined by `rfl`, making this a definitional Equiv."
+    },
+    {
+      "name": "sum_card_fixedBy_eq_sum_card_stabilizer",
+      "type": "core",
+      "statement": "$\\sum_{g \\in G} |\\mathrm{fixedBy}\\,G\\,X\\,g| = \\sum_{x \\in X} |\\mathrm{stabilizer}\\,G\\,x|$",
+      "significance": "The double-counting identity as a Lean theorem. Falls out of `Fintype.card_sigma` applied on both sides of the sigma-type Equiv. The most useful form for downstream applications.",
+      "description": "Double-counting identity for the set {(g, x) : g • x = x}: counted by group element (Σ_g |Fix(g)|) equals counted by action point (Σ_x |Stab(x)|)."
+    },
+    {
+      "name": "stabilizer_smul_equiv",
+      "type": "supporting",
+      "statement": "$\\mathrm{stabilizer}\\,G\\,(g \\cdot x) \\simeq \\mathrm{stabilizer}\\,G\\,x$ via $h \\mapsto g^{-1} h g$",
+      "significance": "Stabilizers within an orbit are conjugate subgroups. Explicit conjugation Equiv used to derive cardinality equality on orbits.",
+      "description": "Explicit conjugation bijection between Stab(g•x) and Stab(x), constructed via h ↦ g⁻¹hg with the inverse h' ↦ ghg⁻¹."
+    },
+    {
+      "name": "stabilizer_card_eq_of_orbit",
+      "type": "supporting",
+      "statement": "$\\forall g \\in G, x \\in X\\colon |\\mathrm{stabilizer}\\,G\\,(g \\cdot x)| = |\\mathrm{stabilizer}\\,G\\,x|$",
+      "significance": "Cardinality corollary of the conjugation Equiv. Directly used in `sum_card_stabilizer_orbit` to slot orbit-stabilizer into the proof.",
+      "description": "Stabilizer cardinality is constant across an orbit. Immediate corollary of stabilizer_smul_equiv."
+    },
+    {
+      "name": "sum_card_stabilizer_orbit",
+      "type": "supporting",
+      "statement": "$\\forall x \\in X\\colon \\sum_{y \\in \\mathrm{Orb}(x)} |\\mathrm{stabilizer}\\,G\\,y| = |G|$",
+      "significance": "**Each orbit contributes exactly $|G|$ to $\\sum_x |\\mathrm{Stab}(x)|$.** Combines orbit-invariance of $|\\mathrm{Stab}|$ with orbit-stabilizer's $|\\mathrm{Orb}| \\cdot |\\mathrm{Stab}| = |G|$. The arithmetic engine of Burnside.",
+      "description": "Within a single orbit, the sum of stabilizer cardinalities equals |G|. Combines stabilizer_card_eq_of_orbit (orbit-invariance) with the orbit-stabilizer theorem |Orb| × |Stab| = |G|."
+    },
+    {
+      "name": "burnside_from_orbit_stabilizer",
+      "type": "core",
+      "statement": "$\\sum_{g \\in G} |\\mathrm{fixedBy}\\,G\\,X\\,g| = |X/G| \\cdot |G|$",
+      "significance": "**Burnside's lemma (= Cauchy-Frobenius lemma)**, derived structurally from double-counting + orbit partition. The headline result of this file. Equivalently: the number of orbits is the *average* number of fixed points.",
+      "description": "Burnside's counting lemma: the sum of fixed-point set cardinalities over G equals the number of orbits times |G|. Derived from sum_card_fixedBy_eq_sum_card_stabilizer + orbit partition."
+    },
+    {
+      "name": "burnside_divides",
+      "type": "supporting",
+      "statement": "$|G| \\mid \\sum_g |\\mathrm{fixedBy}\\,G\\,X\\,g|$",
+      "significance": "Divisibility corollary of Burnside: the total fixed-point count is a multiple of $|G|$. The integer-division version of the orbit-counting identity.",
+      "description": "Divisibility corollary of Burnside's lemma: |G| divides the sum of fixed-point set cardinalities."
+    },
+    {
+      "name": "lagrange_orbitstab_burnside_chain",
+      "type": "core",
+      "statement": "Single packaged statement combining Lagrange ($|H| \\mid |G|$), orbit-stabilizer ($|G| = |\\mathrm{Orb}(x)| \\cdot |\\mathrm{Stab}(x)|$), and Burnside ($\\sum_g |\\mathrm{Fix}(g)| = |X/G| \\cdot |G|$)",
+      "significance": "**Pedagogical synthesis** of the algebraic divisibility hierarchy: Lagrange (subgroup orders divide group order) $\\to$ orbit-stabilizer (specialize to stabilizer subgroups) $\\to$ Burnside (apply orbit partition). One theorem exposes the layered structure.",
+      "description": "Single theorem packaging the chain Lagrange → Orbit-Stabilizer → Burnside, exposing how the algebraic divisibility theorem grounds the combinatorial counting formula."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Augustin-Louis Cauchy",
+      "title": "Mémoire sur les arrangements que l'on peut former avec des lettres données",
+      "year": "1845",
+      "venue": "Exercices d'analyse et de physique mathématique 3, 151–252",
+      "note": "First proof of the orbit-counting lemma — predating the textbook attribution by 52 years. Cauchy worked over permutation groups acting on sets of letters."
+    },
+    {
+      "authors": "Ferdinand Georg Frobenius",
+      "title": "Über die Congruenz nach einem aus zwei endlichen Gruppen gebildeten Doppelmodul",
+      "year": "1887",
+      "venue": "Crelle's Journal 101, 273–299",
+      "note": "Independent rediscovery of Cauchy's lemma in the language of group congruences. Modern usage *Cauchy-Frobenius lemma* honours both."
+    },
+    {
+      "authors": "William Burnside",
+      "title": "Theory of Groups of Finite Order (1st ed.)",
+      "year": "1897",
+      "venue": "Cambridge University Press, §145",
+      "note": "Includes the orbit-counting lemma without attribution to Cauchy or Frobenius. The textbook's wide circulation cemented the (mis-)attribution 'Burnside's lemma'."
+    },
+    {
+      "authors": "Joseph-Louis Lagrange",
+      "title": "Réflexions sur la résolution algébrique des équations",
+      "year": "1771",
+      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin",
+      "note": "Proves $|H| \\mid |G|$ for permutation groups acting on the roots of a polynomial — the foundational divisibility result this entry's chain begins from."
+    },
+    {
+      "authors": "George Pólya",
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "year": "1937",
+      "venue": "Acta Mathematica 68, 145–254",
+      "note": "Pólya's enumeration theorem is the natural extension of Burnside to weighted counting (cycle index), with applications to counting necklaces, graphs, and chemical isomers."
+    },
+    {
+      "authors": "Mathlib Contributors",
+      "title": "Mathlib.GroupTheory.GroupAction.Quotient",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Provides `MulAction.card_orbit_mul_card_stabilizer_eq_card_group` (orbit-stabilizer) and `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` (Burnside) — the upstream lemmas this entry's `burnside_from_orbit_stabilizer` decomposes structurally via the explicit sigma-type bijection."
     }
   ],
   "sorries": 0
