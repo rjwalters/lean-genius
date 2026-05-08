@@ -108,8 +108,63 @@
   },
   "crossReferences": [
     {
-      "id": "erdos-1036",
-      "relationship": "parent: Shelah's theorem (1998) with placeholder ISC count — this entry refines with true ISC and asks for the optimal constant"
+      "targetId": "erdos-1036",
+      "relationship": "parent",
+      "description": "Parent gallery entry for Shelah's 1998 theorem. The parent uses a PLACEHOLDER `numInducedSubgraphClasses G = 2^n` (counts all vertex subsets, not isomorphism classes), which makes the optimal constant trivially 1. This OQ-01 entry refines the count to true ISC classes and asks the genuine open question: is the optimal constant still 1 once we count up to isomorphism?"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Background on the Ramsey numbers $R(k,k)$ that bound the clique/independent-set sizes inside `IsNonRamsey c`. Shelah's theorem operates on graphs that lie strictly above the Ramsey threshold (no monochromatic clique of size $\\geq c \\log n$); the OQ asks how 'pseudorandom' such graphs must be in their induced-subgraph spectrum."
+    },
+    {
+      "targetId": "ramseys-theorem-oq-04",
+      "relationship": "related",
+      "description": "Both entries probe the gap between known constants and conjectured optimal constants in Ramsey-type theorems. ramseys-theorem-oq-04 concerns the asymptotics of $R(k,k)^{1/k}$ (Erdős-Szekeres vs. Conlon, Fox, Sudakov); this entry concerns the optimal $c'(c)$ in Shelah's exponential ISC lower bound."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Saharon Shelah",
+      "title": "Erdős and Rényi conjecture",
+      "year": "1998",
+      "venue": "Journal of Combinatorial Theory, Series A 82, 179–185",
+      "note": "Proves that every graph on $n$ vertices with no clique or independent set of size $c \\log n$ has $\\geq 2^{c'(c) \\cdot n}$ distinct induced-subgraph isomorphism classes for some $c'(c) > 0$. The optimal $c'(c)$ is the subject of this OQ."
+    },
+    {
+      "authors": "Paul Erdős and Alfréd Rényi",
+      "title": "On random graphs I",
+      "year": "1959",
+      "venue": "Publicationes Mathematicae Debrecen 6, 290–297",
+      "note": "Foundational paper introducing the random graph model $G(n, p)$. The graph $G(n, 1/2)$ is the conjectured extremal example for $c'(c) = 1$: almost all of its $2^n$ vertex subsets give pairwise non-isomorphic induced subgraphs."
+    },
+    {
+      "authors": "Paul Erdős and András Hajnal",
+      "title": "Ramsey-type theorems",
+      "year": "1989",
+      "venue": "Discrete Applied Mathematics 25, 37–52",
+      "note": "States the Erdős-Hajnal conjecture: graphs with a fixed forbidden induced subgraph $H$ have polynomial-size cliques or independent sets. A different but adjacent line of research; non-Ramsey$(c)$ graphs lack the structural rigidity that forbidden $H$ would impose."
+    },
+    {
+      "authors": "Béla Bollobás",
+      "title": "Random Graphs",
+      "year": "2001",
+      "venue": "Cambridge Studies in Advanced Mathematics 73, Cambridge University Press",
+      "note": "Standard reference on $G(n, 1/2)$. The result $\\omega(G(n,1/2)), \\alpha(G(n,1/2)) \\sim 2 \\log_2 n$ a.s. (Theorem 11.5) gives the witness $c < 2/\\log 2$ for the random graph being non-Ramsey$(c)$."
+    },
+    {
+      "authors": "Noga Alon and Joel H. Spencer",
+      "title": "The Probabilistic Method (4th edition)",
+      "year": "2016",
+      "venue": "Wiley-Interscience",
+      "note": "Modern reference for probabilistic arguments in extremal combinatorics; chapter on random graphs covers the moments of clique and independence numbers needed to establish the random-graph witness."
+    },
+    {
+      "authors": "Maria Chudnovsky and Paul Seymour",
+      "title": "The Erdős-Hajnal conjecture — a survey",
+      "year": "2014",
+      "venue": "Journal of Graph Theory 75, 178–190",
+      "note": "Survey relating the Erdős-Hajnal conjecture to broader extremal questions about induced subgraphs; useful context for situating Shelah's theorem in the modern landscape."
     }
   ],
   "sorries": 0,
