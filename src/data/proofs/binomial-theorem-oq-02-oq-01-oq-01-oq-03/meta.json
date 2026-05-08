@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-08",
     "axiomCount": 2,
-    "lineCount": 275,
+    "lineCount": 330,
     "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. (2) `standardNormalCDF` opaque marker — the standard normal CDF Φ(x) = (1/√(2π)) ∫_{-∞}^x e^{-t²/2} dt, currently opaque pending bridge from Mathlib's measure-theoretic Gaussian. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` is now fully proved (Phase-3 deliverable): it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
     "originalContributions": [
       "binomialCDF: concrete CDF of Binomial(n,p) as a finite sum of binomial PMF terms with a step indicator",
@@ -30,10 +30,12 @@
       "multinomialMarginalCDF_eq_binomialCDF: reduction lemma — proved via Finset.sum_fiberwise_of_maps_to + parent's multinomial_marginal_pmf",
       "multinomial_marginal_clt: derived theorem (no axiom of its own) combining the above via Filter.Tendsto.congr",
       "binomialCDF_neg: for x < 0, binomialCDF n p x = 0 — every j ∈ {0,…,n} has (j : ℝ) ≥ 0 > x so all if-guards are false (Phase-4 prep)",
-      "binomialCDF_mono: binomialCDF n p is monotone in x when 0 ≤ p ≤ 1 — pointwise comparison after case-splitting on the if-guards (Phase-4 Portmanteau prep)"
+      "binomialCDF_mono: binomialCDF n p is monotone in x when 0 ≤ p ≤ 1 — pointwise comparison after case-splitting on the if-guards (Phase-4 Portmanteau prep)",
+      "binomialCDF_zero_le: for 0 ≤ p ≤ 1, 0 ≤ binomialCDF n p x — sum of non-negative summands (Phase-4 Portmanteau prep)",
+      "binomialCDF_le_one: for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 — bounded above by the full binomial expansion (p + (1−p))^n = 1 via add_pow (Phase-4 Portmanteau prep)"
     ],
-    "theoremCount": 5,
-    "substantiveTheoremCount": 4,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 6,
     "definitionCount": 2
   },
   "leanFile": {
@@ -51,10 +53,10 @@
       "BigOperators"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
-    "lineCount": 275,
+    "lineCount": 330,
     "axiomCount": 2,
-    "theoremCount": 5,
-    "substantiveTheoremCount": 4,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 6,
     "duplicateTheorems": 0,
     "definitionCount": 2,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
@@ -108,14 +110,14 @@
       "title": "Structural Properties of binomialCDF (Phase-4 prep)",
       "range": null,
       "startLine": 212,
-      "endLine": 246
+      "endLine": 301
     },
     {
       "id": "sec-main",
       "title": "Main Theorem: Multinomial Marginal CLT (Derived)",
       "range": null,
-      "startLine": 248,
-      "endLine": 275
+      "startLine": 303,
+      "endLine": 330
     }
   ],
   "overview": {

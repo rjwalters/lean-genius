@@ -245,6 +245,61 @@ theorem binomialCDF_mono (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
         (pow_nonneg h1mp _)
     · rw [if_neg hjy]
 
+/-- For `0 ≤ p ≤ 1`, every value of `binomialCDF n p` is non-negative.
+
+    Each summand is either `0` (if-guard false) or the binomial PMF
+    `C(n, j) · p^j · (1 − p)^(n − j)`, which is non-negative since
+    `Nat.choose n j ≥ 0`, `p ≥ 0`, and `1 − p ≥ 0`. The sum of
+    non-negative terms is non-negative.
+
+    Useful for the Phase-4 Portmanteau bridge: weak-convergence
+    arguments for measures often pull back to non-negativity of CDFs. -/
+theorem binomialCDF_zero_le (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (x : ℝ) : 0 ≤ binomialCDF n p x := by
+  have h1mp : 0 ≤ 1 - p := by linarith
+  unfold binomialCDF
+  apply Finset.sum_nonneg
+  intro j _
+  split_ifs with hjx
+  · exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
+      (pow_nonneg h1mp _)
+  · exact le_refl 0
+
+/-- For `0 ≤ p ≤ 1`, every value of `binomialCDF n p` is at most `1`.
+
+    Proof: the full unrestricted sum
+    `∑_{j=0}^{n} C(n, j) · p^j · (1 − p)^(n − j) = (p + (1 − p))^n = 1`
+    by the binomial theorem (`add_pow`). The CDF replaces some summands
+    with `0`; under the hypothesis `0 ≤ p ≤ 1` each summand is
+    non-negative, so dropping terms only decreases the total.
+
+    Useful for the Phase-4 Portmanteau bridge: weak-convergence is
+    typically formulated for sub-probability measures, and bounded
+    CDFs on `[0, 1]` characterize the standard normal in the limit. -/
+theorem binomialCDF_le_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (x : ℝ) : binomialCDF n p x ≤ 1 := by
+  have h1mp : 0 ≤ 1 - p := by linarith
+  -- Step 1: rewrite `1` as the binomial expansion of `(p + (1 − p))^n`.
+  have hexp : ∑ j ∈ Finset.range (n + 1),
+      (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) = 1 := by
+    have hadd := add_pow p (1 - p) n
+    have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
+    rw [hp_eq, one_pow] at hadd
+    -- hadd : (1 : ℝ) = ∑ k, p^k * (1 − p)^(n−k) * (Nat.choose n k : ℝ)
+    rw [← hadd]
+    refine Finset.sum_congr rfl (fun j _ => ?_)
+    ring
+  -- Step 2: replace `1` on the RHS with the equivalent sum.
+  rw [← hexp]
+  -- Step 3: term-by-term comparison.
+  unfold binomialCDF
+  apply Finset.sum_le_sum
+  intro j _
+  split_ifs with hjx
+  · exact le_refl _
+  · exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
+      (pow_nonneg h1mp _)
+
 /-! ## Main theorem: multinomial marginal CLT (derived) -/
 
 /-- **Multinomial marginal CLT** (DERIVED THEOREM, no separate axiom):
