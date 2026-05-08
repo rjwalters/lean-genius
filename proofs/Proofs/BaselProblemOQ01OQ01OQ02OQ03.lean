@@ -3,6 +3,7 @@ import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Tactic
 
 /-
@@ -335,6 +336,26 @@ theorem lcmRange_le_pow_card_primes_le (n : ℕ) :
           exact Nat.pow_log_le_self p hn.ne'
     _ = n ^ ((Finset.range (n + 1)).filter Nat.Prime).card :=
         Finset.prod_const n
+
+/-- **Chebyshev bound, prime-counting form**: `lcmRange n ≤ n ^ π(n)`,
+    stated using Mathlib's `Nat.primeCounting`. The literal published
+    form of the bound; brings the file into PNT-statement vocabulary
+    (cf. `ChebyshevPNTBridgeOQ01.lean` for the analogous
+    `(2n).choose n ≤ (2n) ^ π(2n)` bound on central binomial coefficients).
+
+    A one-line corollary of `lcmRange_le_pow_card_primes_le` plus the
+    standard identification `Nat.primeCounting n =
+    ((Finset.range (n+1)).filter Nat.Prime).card` (via
+    `Nat.count_eq_card_filter_range`). -/
+theorem lcmRange_le_pow_primeCounting (n : ℕ) :
+    lcmRange n ≤ n ^ Nat.primeCounting n := by
+  have h := lcmRange_le_pow_card_primes_le n
+  have hpi : ((Finset.range (n + 1)).filter Nat.Prime).card =
+      Nat.primeCounting n := by
+    unfold Nat.primeCounting Nat.primeCounting'
+    exact (Nat.count_eq_card_filter_range Nat.Prime (n + 1)).symm
+  rw [hpi] at h
+  exact h
 
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
