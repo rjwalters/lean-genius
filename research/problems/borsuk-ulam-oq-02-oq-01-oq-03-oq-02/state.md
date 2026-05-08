@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-08T18:30:00Z
-**Iteration**: 8
+**Since**: 2026-05-08T19:30:00Z
+**Iteration**: 9
 
 ## Current Focus
 
@@ -231,3 +231,56 @@ Mathlib. Stretch goals at small n: prove the n=3 case (next-easiest after
 n=2; would need a `symBUDim_three` base axiom that the parent doesn't
 yet have), prove the n=4 case via V₄ ≤ S₄ structure, or coordinate with
 sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral D_n analog).
+
+## Iteration 9 Builds (researcher-5, 2026-05-08)
+
+Focus: **conjecture-as-Prop reformulation + explicit falsification handles**.
+Crystallizes iter 8's "falsification handle" remark as concrete, well-typed
+theorems and provides a hypothesis-form alternative to the file's axiom.
+
+- `ConjectureLPB : Prop` (axiom-free definition): the equality conjecture
+  stated as a `Prop` rather than via the file's `axiom`. Lets downstream
+  developments take the conjecture as an explicit hypothesis instead of
+  relying on the file's axiom — making conjecture-dependence visible at
+  the type level.
+- `buDim_largestPrime_lower_z2_of`, `buDim_prime_lower_z2_of`,
+  `symBUDim_eq_buDim_at_prime_of` (axiom-free, hypothesis-form):
+  hypothesis-form variants of iter-5/iter-8 conditional theorems
+  (`symBUDim_eq_buDim_at_prime`, `buDim_largestPrime_lower_z2`,
+  `buDim_prime_lower_z2_conditional`). Same statements, but the
+  dependence on the conjecture is encoded via a `ConjectureLPB`
+  hypothesis rather than via the file's axiom. Useful when downstream
+  code wants to track conjecture-dependence in the type signature.
+- `not_conjectureLPB_of_buDim_lt` (axiom-free): the **falsification
+  theorem**. At any prime p with d ≥ 1, a future proof of
+  `buDim p d < d − 1` refutes `ConjectureLPB`. Formal contrapositive
+  of `buDim_prime_lower_z2_of` — turns iter 8's "falsification handle"
+  remark into a concrete theorem.
+- Concrete falsification handles at small (p, d):
+  - `not_conjectureLPB_of_buDim_three_three_lt_two`
+  - `not_conjectureLPB_of_buDim_five_three_lt_two`
+  - `not_conjectureLPB_of_buDim_three_five_lt_four`
+  Each pinpoints the simplest odd-d case at a small prime where the
+  parent's `buDim_prime` axiom is silent (it fires only on even d).
+  These mark exactly where future Yang-Borsuk research could refute
+  the conjecture.
+
+**Counts**: lineCount 769→878 (+109), theoremCount 51→58 (+7,
+substantive 49→56), definitionCount 1→2 (+1 for `ConjectureLPB`),
+axiomCount 1 (unchanged), sorries 0 (unchanged).
+
+**Significance**: the conjecture is now expressible at two levels in
+the file — as the `axiom symBUDim_eq_largestPrime` (used for direct
+derivations of conditional consequences) and as `ConjectureLPB : Prop`
+(used by hypothesis-form variants for explicit dependency tracking).
+The `_of` lemmas mirror their axiom-using counterparts on a one-to-one
+basis, and the falsification theorem is type-level explicit.
+
+**Path forward** (unchanged from iter 8): direct proof of the
+conjecture requires Fadell-Husseini index theory not in Mathlib.
+Concrete next-target: compute or bound `buDim 3 3` directly via
+equivariant cohomology of Z/3 on small spheres. A proof of
+`buDim 3 3 < 2` would refute `ConjectureLPB` via
+`not_conjectureLPB_of_buDim_three_three_lt_two`; a proof of
+`buDim 3 3 = 2` would tighten the conjecture's content at the
+simplest odd-d case beyond Yang-Borsuk.
