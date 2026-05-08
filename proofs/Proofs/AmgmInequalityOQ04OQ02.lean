@@ -34,6 +34,7 @@ This file is **Session 2 (write Lean stub)** for the problem. It:
 
 - [x] ellipticE defined as Mathlib interval integral
 - [x] E(0) = π/2 proved
+- [x] E(1) = 1 proved (boundary value, k = 1)
 - [x] Integrand continuous and integrable for all k
 - [x] E(k) > 0 for k² < 1 (proved via lower bound)
 - [x] complModulus defined; (k')² = 1 − k², k' ≥ 0
@@ -147,6 +148,36 @@ theorem ellipticE_pos (hk : k ^ 2 < 1) : 0 < ellipticE k := by
     have : 0 < Real.sqrt (1 - k ^ 2) * (π / 2) := mul_pos hsqrt_pos hπ
     simpa [sub_zero] using this
   exact lt_of_lt_of_le hpos hlb
+
+/-- **E(1) = 1**: the boundary modulus value.
+
+    For `k = 1` the integrand reduces to `√(cos²θ) = cos θ` on `[0, π/2]`
+    (using `sin²θ + cos²θ = 1` and `cos θ ≥ 0` on this interval).
+    Hence `E(1) = ∫₀^{π/2} cos θ dθ = sin(π/2) − sin 0 = 1`.
+
+    Together with `ellipticE_zero` (E(0) = π/2), this pins down the boundary
+    values of E on the canonical modulus interval [0, 1]. Reference: DLMF §19.6.1. -/
+theorem ellipticE_one : ellipticE 1 = 1 := by
+  unfold ellipticE
+  -- Step 1: rewrite the integrand to `cos θ` on [0, π/2].
+  have h_eq : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      ellipticIntegrandE 1 θ = Real.cos θ := by
+    intro θ hθ
+    rw [Set.uIcc_of_le (by linarith [Real.pi_pos] : (0 : ℝ) ≤ π / 2)] at hθ
+    obtain ⟨hθ0, hθ1⟩ := hθ
+    have h_cos_nn : 0 ≤ Real.cos θ :=
+      Real.cos_nonneg_of_mem_Icc ⟨by linarith [Real.pi_pos], hθ1⟩
+    unfold ellipticIntegrandE
+    have h_id : (1 : ℝ) - 1 ^ 2 * Real.sin θ ^ 2 = Real.cos θ ^ 2 := by
+      linear_combination -Real.sin_sq_add_cos_sq θ
+    rw [h_id, Real.sqrt_sq_eq_abs, abs_of_nonneg h_cos_nn]
+  rw [intervalIntegral.integral_congr h_eq]
+  -- Step 2: apply FTC with antiderivative `sin`.
+  have hderiv : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      HasDerivAt Real.sin (Real.cos θ) θ := fun θ _ => Real.hasDerivAt_sin θ
+  rw [integral_eq_sub_of_hasDerivAt hderiv
+      (continuous_cos.intervalIntegrable _ _)]
+  rw [Real.sin_pi_div_two, Real.sin_zero]; norm_num
 
 -- ============================================================================
 -- § 4. The Complementary Modulus
