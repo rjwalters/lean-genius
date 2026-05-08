@@ -14763,16 +14763,33 @@ private lemma gnwProb_exchange_lt_col_of_F_side
           gnwProb (removeCorner μ c' hc') c
             (hookLength (removeCorner μ c' hc') x.1 x.2) x) * h_S52
 
-/-- **F-side hook-shift identity (parametric, S55a).**
+/-- **F-side hook-shift identity, aligned-domain form (parametric, S56).**
 
-This is the core "F-side" component of the GNW 1979 exchange identity.  It
-quantifies how the F-sum `F(μ,c) := ∑_{x ∈ μ.cells} gnwProb μ c (h_μ x) x`
-changes when one corner `c'` (distinct from `c`) is removed:
+The structural-aligned version of `F_side_identity`: both sums run over
+`(removeCorner μ c' hc').cells`, the **same** finite-cell domain.  The
+LHS integrand is `gnwProb μ c (h_μ x) x` (big-diagram); the RHS is
+`gnwProb (μ\c') c (h_{μ\c'} x) x` (small-diagram).  Equation:
 ```
-F(μ,c) · (h_d − 1)² = F(μ\c',c) · h_d · (h_d − 2)
+[∑ x ∈ (μ\c').cells, gnwProb μ c (h_μ x) x] · (h_d − 1)²
+  = [∑ x ∈ (μ\c').cells, gnwProb (μ\c') c (h_{μ\c'} x) x]
+    · h_d · (h_d − 2)
 ```
-where the doubly-affected cell `d := (min c.1 c'.1, min c.2 c'.2)` is
-the unique cell at the intersection of c's arm/leg with c''s arm/leg.
+where `h_d := h_μ (min c.1 c'.1, min c.2 c'.2)` is the hook length of
+the doubly-affected cell in the **big** diagram μ.
+
+**Why this aligned form is a strictly sharper target than
+`F_side_identity`.**  The previous formulation `F_side_identity` (S55a)
+had the LHS sum over `μ.cells` and the RHS sum over `(μ\c').cells` —
+two different domains differing exactly by the singleton `{c'}`.  The
+existing bridge `sum_gnwProb_eq_removeCorner_cells` (S43) reconciles
+the two domains for the LHS integrand `gnwProb μ c (h_μ x) x` because
+`gnwProb μ c K c' = 0` for any `K` (`gnwProb_at_other_corner`, since
+`c ≠ c'` and `c'` is itself a corner).  Applying that bridge to the
+LHS of `F_side_identity` rewrites it to the LHS of
+`F_side_identity_aligned`.  No further structural manipulation of the
+LHS sum domain is needed; the joint K-induction (S57+) attacks the
+**pointwise** comparison of integrands on the common domain
+`(μ\c').cells`, freed from the cell-wise `c'` excision step.
 
 **Why `min` works for both cases of `distinct_corners_dichotomy`.**  By
 `corner_col_lt_of_row_lt` / `corner_row_lt_of_col_lt`, for distinct corners
@@ -14786,12 +14803,40 @@ In both cases, the doubly-affected cell coordinates collapse to
 `(min c.1 c'.1, min c.2 c'.2)`, so a single parametric statement
 discharges both branches.
 
-**Status.**  Sorry'd.  Target of S55+: joint K-induction on the sum-level
-invariant (cf. session note `2026-05-08-s05.md`, recipe step 2).  The
-combiners `gnwProb_exchange_lt_row_of_F_side` (S53) and
-`gnwProb_exchange_lt_col_of_F_side` (S54) consume this identity through
-the dispatcher `gnwProb_exchange` below — so this is now the **sole open
-sorry** on the GNW route. -/
+**Status.**  Sorry'd.  Target of S57+: joint K-induction on the
+sum-level invariant (cf. session note `2026-05-08-s05.md`, recipe
+step 2).  Now consumed transitively by `gnwProb_exchange` →
+`F_side_identity` → `F_side_identity_aligned`.  This is the **sole
+open sorry** on the GNW route. -/
+private lemma F_side_identity_aligned {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    (∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb μ c (hookLength μ x.1 x.2) x) *
+      ((hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) - 1) ^ 2 =
+    (∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb (removeCorner μ c' hc') c
+          (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
+      (hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) *
+      ((hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) - 2) := by
+  sorry
+
+/-- **F-side hook-shift identity (parametric, S55a — now sorry-free as
+of S56 modulo `F_side_identity_aligned`).**
+
+The "F-side" component of the GNW 1979 exchange identity.  Quantifies
+how the F-sum `F(μ,c) := ∑_{x ∈ μ.cells} gnwProb μ c (h_μ x) x` changes
+when one corner `c'` (distinct from `c`) is removed:
+```
+F(μ,c) · (h_d − 1)² = F(μ\c',c) · h_d · (h_d − 2)
+```
+where the doubly-affected cell `d := (min c.1 c'.1, min c.2 c'.2)` is
+the unique cell at the intersection of c's arm/leg with c''s arm/leg.
+
+**Proof structure (S56).**  Apply `sum_gnwProb_eq_removeCorner_cells`
+(S43 bridge: `gnwProb μ c K c' = 0`, so `c'` contributes 0 to the LHS
+sum) to align the LHS sum domain `μ.cells` with the RHS sum domain
+`(μ\c').cells`.  The resulting common-domain identity is exactly
+`F_side_identity_aligned`. -/
 private lemma F_side_identity {μ : YoungDiagram} {c c' : ℕ × ℕ}
     (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
     (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
@@ -14801,7 +14846,8 @@ private lemma F_side_identity {μ : YoungDiagram} {c c' : ℕ × ℕ}
           (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
       (hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) *
       ((hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) - 2) := by
-  sorry
+  rw [sum_gnwProb_eq_removeCorner_cells hc' hne]
+  exact F_side_identity_aligned hc hc' hne
 
 /-- GNW 1979 exchange identity (core inductive step, product form — no division).
     For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
