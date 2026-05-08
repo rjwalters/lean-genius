@@ -201,16 +201,22 @@
     {
       "name": "spherical_law_of_sines_angle_over_side",
       "type": "core",
+      "statement": "$\\forall t : \\mathrm{SphericalTriangle}, t.\\mathrm{NonDegenerate}\\colon \\frac{\\sin A}{\\sin a} = \\frac{\\sin B}{\\sin b} \\,\\land\\, \\frac{\\sin A}{\\sin a} = \\frac{\\sin C}{\\sin c}$",
+      "significance": "**The headline theorem.** Closes OQ-01-OQ-01-OQ-01 from the parent dual-cosine-law entry. Algebraic inversion of the side-over-angle form via `div_eq_div_iff` + `linear_combination` — a textbook one-line manipulation in Lean once the Gram-determinant identity is in scope.",
       "description": "For a non-degenerate spherical triangle, sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). Closes the open question oq-01-oq-01-oq-01 raised in the parent entry. Proof: algebraic inversion of the side-over-angle form via div_eq_div_iff + linear_combination."
     },
     {
       "name": "spherical_law_of_sines_BC_angle_over_side",
       "type": "supporting",
+      "statement": "$\\forall t : \\mathrm{SphericalTriangle}, t.\\mathrm{NonDegenerate}\\colon \\frac{\\sin B}{\\sin b} = \\frac{\\sin C}{\\sin c}$",
+      "significance": "Direct transitivity corollary — `h1.symm.trans h2` applied to the main theorem's conjunction. Stated separately so downstream callers can pull the $B/b = C/c$ pair without unpacking the conjunction.",
       "description": "B/b = C/c follows from the conjunction in the main theorem by transitivity (h1.symm.trans h2). Stated separately for ease of consumption."
     },
     {
       "name": "spherical_law_of_sines_all",
       "type": "supporting",
+      "statement": "$\\forall t : \\mathrm{SphericalTriangle}, t.\\mathrm{NonDegenerate}\\colon \\frac{\\sin a}{\\sin A} = \\frac{\\sin b}{\\sin B} \\,\\land\\, \\frac{\\sin a}{\\sin A} = \\frac{\\sin c}{\\sin C}$",
+      "significance": "**The Gram-determinant input.** Proved in the sibling file `Proofs/LawOfCosinesOQ01OQ02.lean` via the identity $\\sin^2 X \\cdot \\sin^2 y \\cdot \\sin^2 z = G$ where $G$ is the Gram determinant of perpendicular projections. The side-over-angle form is the *natural* output of the Gram framework; this file's main theorem just inverts it.",
       "description": "Side-over-angle form (proved in parent file Proofs/LawOfCosinesOQ01OQ02.lean): sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C). This entry's algebraic inversion is the formal converse direction, completing the symmetric formulation."
     }
   ],
