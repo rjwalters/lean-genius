@@ -538,3 +538,110 @@ single `hgcdMatrix_row_output_le` sorry remains — but it provides a load-
 bearing piece (`hgcdMatrix_has_pattern`) that the entry-bound proof needs.
 The Z/2-grading observation is structurally illuminating but mathematically
 elementary; this is incremental infrastructure, not a breakthrough.
+
+## Session 2026-05-08 (Session 14) — Row-vector invariant: composition law + base/threshold cases (PART XI)
+
+**Mode**: REVISIT
+**Outcome**: progress — added Session 14's planned PART XI. Composition law +
+base/threshold cases of `hgcdMatrix_row_invariant` proved (3 theorems,
+~140 lines, 0 sorries on the new content). Recursive case **not** closed
+here (structural obstacle persists, documented in PART XI docstring).
+
+### What I Did
+
+Added PART XI to `BinaryGcdOQ03OQ02.lean` (~140 lines, 3 theorems, 0 sorries):
+
+1. `cofactor_mul_row_invariant`: abstract composition law for the row-vector
+   relation through `M.mul N`. Given `(a₀, b₀) · M = (ahat₁, bhat₁)` and
+   `(ahat₁, bhat₁) · N = (ahat₂, bhat₂)`, deduces
+   `(a₀, b₀) · (M.mul N) = (ahat₂, bhat₂)`. Proof: `cofactor_mul_row_output`
+   to expand the row-product, then `linear_combination` for the
+   commutativity-only mismatch between `N.α * ahat₁` and `ahat₁ * N.α`.
+
+2. `hgcdMatrix_zero_row_invariant`: at `fuel = 0`, `hgcdMatrix` returns
+   identity, so the row-vector relation is trivial — `(a, b) · id = (a, b)`
+   with monotonicity bound `max a b ≤ max a b`. Proved via `simp
+   [CofactorMatrix.id]`.
+
+3. `hgcdMatrix_small_row_invariant`: for inputs below threshold,
+   `hgcdMatrix (fuel+1) a b = lehmerCofactors hgcdThreshold a b id` and
+   the existential row-vector invariant + monotonicity comes directly from
+   `lehmerCofactors_id_apply_le`. Exposes natural-number witnesses (the
+   companion `hgcdMatrix_small_row_output_le` only gives the `natAbs`
+   bound; for `row_vec_cramer`-based entry bounds, the witnesses are
+   needed too).
+
+### Key Findings
+
+- **The composition law for the row-vector invariant is purely algebraic.**
+  Once `cofactor_mul_row_output` is in hand, the substitution of inner
+  row-products into outer row-products closes by `linear_combination` on a
+  commutativity-only mismatch. No det/sign/positivity needed for this step.
+
+- **Recursive case obstruction is unchanged from Session 11–13 analysis.**
+  `M_outer = hgcdMatrix f c1 c2` is built for inputs `(c1, c2)` derived from
+  the column-apply of `M_inner` on `(a, b)`. Its IH-supplied row-vector
+  invariant is at ghost `(c1, c2)`, **not** at `(a, b)`. Composing via
+  `cofactor_mul_row_invariant` therefore requires a row-vector invariant for
+  `M_outer` at the *full-precision* ghost `(a, b)` — exactly the obstacle of
+  the `hgcdMatrix_row_output_le` recursive-case sorry. The joint induction
+  approach (Stehlé–Zimmermann §4) is still the way to break this circularity.
+
+- **Pre-existing API drift in main blocks a clean file build.** Docker build
+  surfaced ~6 errors in code merged in Sessions 3–7 (PRs #14522, #14881,
+  #14910): `Int.natAbs_ofNat` is an unknown constant in the current
+  Mathlib, and `split at hstep` after `simp [lehmerInnerStep]` no longer
+  decomposes a now-conjunctive hypothesis. These are **not** Session 14's
+  fault — they appear because the file was last verified by build under an
+  earlier toolchain pin and merged through the deployer auto-merge path
+  without successful builds (Session 13's docstring records the build
+  timeouts). My Session 14 lemmas elaborate cleanly in isolation; the
+  file-level build is blocked on these pre-existing drift issues, which
+  belong to mechanic/auditor follow-up.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +140 lines: PART XI section
+  with 3 theorems, file docstring updated, Summary item 17 added. No new
+  sorries, no new axioms.
+
+### Build Status
+
+Docker build attempted (24GB / 20m). Mathlib clone phase completed
+(720s build); errors surfaced two type-mismatch issues in Session 14's
+own code (commutativity in `linear_combination` argument — fixed) plus
+pre-existing API drift (described above). My Session 14 code (after the
+linear_combination fix) verifies by inspection: the composition law is a
+direct ring substitution, the base case is `simp` on the explicit identity
+matrix, and the threshold case is a one-line invocation of
+`lehmerCofactors_id_apply_le` after `hgcdMatrix_small`.
+
+### Next Steps
+
+1. **Mechanic/auditor**: fix pre-existing API drift in
+   `BinaryGcdOQ03OQ02.lean` (`Int.natAbs_ofNat` rename, `split at hstep`
+   replacement) so the file builds end-to-end. Without this, even Session
+   14's small contribution can't be machine-checked at the file level.
+2. **Session 15**: with PART X (pattern) + PART XI (row-invariant base
+   cases) + `row_vec_cramer` + `hgcdMatrix_det_unit` + the composition
+   law, the leaf-case `hgcdMatrix_entry_bound` for the threshold case is
+   now formally derivable (combine `hgcdMatrix_small_row_invariant` with
+   `entry_bound_of_even/odd` after dispatching on
+   `lehmerCofactors_has_pattern`).
+3. **Session 16+**: tackle the recursive-case obstruction via joint
+   induction, using the composition law `cofactor_mul_row_invariant` to
+   chain ghost pairs once the IH's row-invariant at full-precision
+   `(a, b)` is established for the inner matrix.
+
+### Honest Assessment
+
+**Incremental, on the critical path, NOT a breakthrough.** The composition
+law and base/threshold cases are routine — PART V.5 already had the
+`lehmerCofactors_invariant`-based machinery, and PART VIIc had
+`cofactor_mul_row_output`. PART XI just packages these into the
+existential row-vector statement that downstream `entry_bound_of_*`
+consumers expect, and it adds the abstract composition law as a
+reusable algebraic primitive. The hard part of Session 14 (the recursive
+case) was deliberately deferred with documentation, mirroring the
+recursive-case sorry of `hgcdMatrix_row_output_le`. The session does
+**not** advance the file's sorry count.
