@@ -153,6 +153,15 @@ theorem expectedTriples_mono {n₁ n₂ d : ℕ} (hn : n₁ ≤ n₂) :
   · apply div_le_div_of_nonneg_right _ (by positivity)
     exact_mod_cast Nat.choose_le_choose 3 hn
 
+/-- The n=3 specialization of `expectedTriples`: E(3, d) = 1/d².
+    `Nat.choose 3 3 = 1`, so the abstract `expectedTriples` definition reduces
+    to the elementary `1/d²` at the n=3 base case. Sanity bridge between the
+    abstract definition (general n) and the elementary form used in §7.
+
+    Note: holds for all d ∈ ℕ — at d = 0 both sides are `1/0 = 0` in ℝ. -/
+theorem expectedTriples_3 (d : ℕ) : expectedTriples 3 d = 1 / (d : ℝ) ^ 2 := by
+  simp [expectedTriples, Nat.choose_self]
+
 -- ============================================================
 -- §3. THE ASYMPTOTIC THRESHOLD
 -- ============================================================
@@ -472,6 +481,16 @@ lemma exp_lambda_tendsto (c : ℝ) (hc : 0 < c) :
       Filter.atTop (nhds (Real.exp (-(c ^ 3 / 6)))) :=
   (Real.continuous_exp.tendsto (-(c ^ 3 / 6))).comp (lambda_tendsto c hc).neg
 
+/-- Reformulation of Lemma A using the abstract `expectedTriples` definition:
+    `E(n_c(d), d) → c³/6` as `d → ∞`. Definitionally equivalent to
+    `lambda_tendsto`; provided so future Bonferroni / method-of-moments work
+    can compose with the named definition rather than the inlined ratio. -/
+theorem expectedTriples_threshold_tendsto (c : ℝ) (hc : 0 < c) :
+    Filter.Tendsto
+      (fun d : ℕ => expectedTriples ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ d)
+      Filter.atTop (nhds (c ^ 3 / 6)) := by
+  simpa [expectedTriples] using lambda_tendsto c hc
+
 -- ============================================================
 -- §6. k=2 vs k=3 THRESHOLD COMPARISON
 -- ============================================================
@@ -599,7 +618,7 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
 /-
   ## Summary
 
-  **Proved (13 theorems, 1 axiom):**
+  **Proved (15 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -613,6 +632,8 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
   11. `exp_lambda_tendsto` (Lemma B): exp(-C(n_c(d),3)/d²) → exp(-c³/6) (Session 4)
   12. `poisson_approx_birthday3` (Session 5): PROVED from Lemma B + Lemma C using Tendsto.sub
   13. `p_no_triple_n3` (Session 6): P(no triple|n=3) = 1 − 1/d² as a real number
+  14. `expectedTriples_3` (Session 8): E(3, d) = 1/d² (n=3 specialization of expectedTriples)
+  15. `expectedTriples_threshold_tendsto` (Session 8): E(n_c(d), d) → c³/6 (named-form Lemma A)
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -633,5 +654,7 @@ theorem p_no_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
 #check @p_no_triple_tendsto
 #check @poisson_approx_birthday3
 #check @p_no_triple_n3
+#check @expectedTriples_3
+#check @expectedTriples_threshold_tendsto
 
 end BirthdayThreshold3

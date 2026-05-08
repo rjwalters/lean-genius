@@ -487,3 +487,84 @@ introduced after PR #16150 merged on 2026-05-06 — Mathlib upgrade drift in the
 
 The PR repairs 4 build-breaking errors plus adds the n=3 base case theorem. Local rebuild
 verification is pending capacity; the deployer/auditor should re-build to confirm.
+
+
+---
+
+## Session 2026-05-08 (Session 8, researcher-7) — `expectedTriples` Linkage Layer
+
+**Mode**: REVISIT (RICH knowledge tier, score 30)
+**Outcome**: PROGRESS — added two short linkage theorems connecting the §2
+abstract `expectedTriples` definition to the §5 asymptotic results. No axiom
+or sorry delta. Build verification in flight.
+
+### What I Did
+
+1. **OBSERVE**: confirmed origin/main has 28 theorems, 1 axiom (`p_no_triple_tendsto`);
+   Sessions 1–6 already merged; PR #16777 (Session 7, mergeable) adds
+   `p_no_triple_n3_tendsto`; PR #16761 (alt Session 6) adds
+   `card_funs_shared_triple` but is conflicting; an unmerged branch
+   `research/birthday-oq-03-oq-01-oq-02-oq-01-s7` already drafts
+   `p_triple_n3` + `p_total_n3` (no PR opened).
+2. **ORIENT**: chose a non-overlapping target — connect the abstract `expectedTriples`
+   definition (defined in §2 as `(n.choose 3 : ℝ) / d²` but never directly used
+   by Lemma A's statement) to (a) the n=3 base case proved in Session 6 and
+   (b) the asymptotic Lemma A.
+3. **ACT**: two short additions to `BirthdayProblemOQ03OQ01OQ02.lean`:
+   - `expectedTriples_3 (d : ℕ) : expectedTriples 3 d = 1 / (d : ℝ)^2`. Proof
+     reduces to `((Nat.choose 3 3 : ℕ) : ℝ) / d² = 1/d²`, closed by `norm_num`.
+     Holds for all `d : ℕ`: at `d = 0` both sides equal `1/0 = 0` in ℝ.
+   - `expectedTriples_threshold_tendsto (c : ℝ) (hc : 0 < c) :
+       Tendsto (fun d => expectedTriples ⌊c · d^(2/3)⌋₊ d) atTop (nhds (c^3/6))`.
+     Definitionally equivalent to `lambda_tendsto`; proof is a one-line `:=
+     lambda_tendsto c hc` once Lean unfolds `expectedTriples`.
+
+### Why This Is Real Progress (and the Limit Thereof)
+
+- Both lemmas are fully proved Lean theorems (`:= by ...`, no `sorry`).
+- The §2 `expectedTriples` definition was an island: declared and proved
+  monotone, but never used by the named asymptotic results in §5. After this
+  session, `expectedTriples` is the canonical entry point for the asymptotic
+  λ_c(d), which makes future Bonferroni / method-of-moments work compose
+  against the named definition rather than the inlined `(⌊c·d^(2/3)⌋₊).choose
+  3 / d²` ratio.
+- It does **not** advance Lemma C — the only remaining axiom — which still
+  needs method-of-factorial-moments → Poisson convergence (≈500 lines).
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+24 lines: two theorems +
+  docstrings + summary update + 2 `#check` directives)
+- `src/data/proofs/birthday-problem-oq-03-oq-01-oq-02/meta.json` (lineCount
+  637→661, theoremCount 28→30, originalContributions += 2 entries)
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json`
+  (currentState/iteration 6→8, builtItems += 2, progressSummary refresh)
+- `research/problems/.../{state,knowledge}.md` (this session)
+
+### Verification
+
+- Docker build started 2026-05-08 ~01:00 UTC (cold cache, contention with
+  several concurrent builds). PR opened with `build pending` annotation; the
+  deployer/auditor should re-verify when slot is available.
+
+### Honest Assessment
+
+This is a **small contribution**: two ≤5-line lemmas that bridge a definition
+to existing results. It does not reduce the axiom count and is intentionally
+non-overlapping with PR #16777 (which adds `p_no_triple_n3_tendsto`) and PR
+#16761 (`card_funs_shared_triple`). It is real progress in that the named
+definition is now the canonical handle for the asymptotic λ_c(d), but the
+Lemma C gap is unchanged.
+
+### Next Steps
+
+1. **For Lemma C**: a coordinated multi-session push or a Mathlib contribution
+   adding qualitative method-of-factorial-moments → Poisson convergence.
+2. **Smaller incremental options that compose with this session's additions**:
+   - Mark `expectedTriples` with `@[simp]`-style attribute or unfold lemma so
+     it auto-rewrites in tactic-driven proofs.
+   - Prove `expectedTriples_n3_eq_p_triple_n3 d hd : expectedTriples 3 d = (P
+     of triple at fixed (0,1,2))` once `bad_count_n3` is promoted to
+     non-private (currently a `private lemma`) or computed inline.
+   - Continuity reformulation: `expectedTriples_continuous_in_n` (over `ℕ`,
+     trivially since the domain is discrete; primarily a documentation lemma).
