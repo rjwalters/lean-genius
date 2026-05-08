@@ -1909,6 +1909,79 @@ lemma isDoor_dim_two_iff
       rw [← h1_cast] at hi_color
       exact ⟨i, hi_ne, hi_color⟩
 
+/-- Helper: in `Fin 3`, given two distinct indices `i₁, i₂` both
+differing from a third index `k`, every fourth index `j` differing
+from `k` equals one of `i₁` or `i₂`. Used to convert "every non-`k`
+vertex" into "the two specific non-`k` vertices `i₁` and `i₂`" in the
+proof of `isDoor_dim_two_iff_color_change_of_no_color_two`.
+
+Proved by full enumeration over `Fin 3` with `decide`; all 81 (k, i₁,
+i₂, j)-combinations are eliminated by the four hypotheses. -/
+private lemma fin_three_other_eq :
+    ∀ k i₁ i₂ j : Fin 3, i₁ ≠ k → i₂ ≠ k → i₁ ≠ i₂ → j ≠ k →
+      j = i₁ ∨ j = i₂ := by
+  decide
+
+/-- Sperner-restricted specialization of `isDoor_dim_two_iff`: when
+neither non-`k` vertex of `s` carries color `2` (which the Sperner
+condition automatically forces whenever both lie on geometric face
+`2`), the door condition collapses to "the two non-`k` vertices have
+different colors".
+
+Concretely, for any two distinct non-`k` indices `i₁ ≠ i₂` (which
+together exhaust the non-`k` vertices of a 2-cell), `IsDoor c K s k`
+is equivalent to `c (K.vertex s i₁) ≠ c (K.vertex s i₂)`.
+
+This is the abstract bridge consumed by `_hLastFace` discharges of
+n = 2 Sperner-on-Triangulation instances. The hypothesis `h_no2`
+typically arises by combining `IsSpernerColoring c onFace` with the
+assumption that both non-`k` vertices satisfy `onFace v 2`. The
+conclusion is in the canonical "color-change" shape that matches the
+`g k ≠ g (k + 1)` predicate of the diagonal-path coloring used in
+`face2_path_odd`. -/
+lemma isDoor_dim_two_iff_color_change_of_no_color_two
+    {V : Type*} [DecidableEq V] (K : CellComplex V 2)
+    (c : V → Fin 3) (s : K.Cell) (k : Fin 3)
+    (h_no2 : ∀ i : Fin 3, i ≠ k → c (K.vertex s i) ≠ (2 : Fin 3))
+    {i₁ i₂ : Fin 3} (h_i₁_ne : i₁ ≠ k) (h_i₂_ne : i₂ ≠ k)
+    (h_i_distinct : i₁ ≠ i₂) :
+    CellComplex.IsDoor c K s k ↔
+      c (K.vertex s i₁) ≠ c (K.vertex s i₂) := by
+  rw [isDoor_dim_two_iff]
+  have hc1_no2 : c (K.vertex s i₁) ≠ (2 : Fin 3) := h_no2 i₁ h_i₁_ne
+  have hc2_no2 : c (K.vertex s i₂) ≠ (2 : Fin 3) := h_no2 i₂ h_i₂_ne
+  refine ⟨fun ⟨h0, h1⟩ => ?_, fun h_ne => ?_⟩
+  · -- Forward direction (contrapositive): if `c (vertex s i₁)` and
+    -- `c (vertex s i₂)` were equal, the existence of color-`0` and
+    -- color-`1` witnesses among non-`k` vertices `= {i₁, i₂}` would
+    -- force `0 = 1`, contradicting `decide`.
+    intro h_eq
+    obtain ⟨j₀, hj₀_ne, hj₀_color⟩ := h0
+    obtain ⟨j₁, hj₁_ne, hj₁_color⟩ := h1
+    have hj₀_cases :=
+      fin_three_other_eq k i₁ i₂ j₀ h_i₁_ne h_i₂_ne h_i_distinct hj₀_ne
+    have hj₁_cases :=
+      fin_three_other_eq k i₁ i₂ j₁ h_i₁_ne h_i₂_ne h_i_distinct hj₁_ne
+    have h_j_colors_eq : c (K.vertex s j₀) = c (K.vertex s j₁) := by
+      rcases hj₀_cases with rfl | rfl
+      · rcases hj₁_cases with rfl | rfl
+        · rfl
+        · exact h_eq
+      · rcases hj₁_cases with rfl | rfl
+        · exact h_eq.symm
+        · rfl
+    rw [hj₀_color, hj₁_color] at h_j_colors_eq
+    exact absurd h_j_colors_eq (by decide)
+  · -- Reverse direction: distinct colors `c (vertex s i₁), c (vertex s i₂)`
+    -- with both `≠ 2` forces one to be `0` and the other to be `1`,
+    -- supplying the two existential witnesses required by
+    -- `isDoor_dim_two_iff`. Pure `Fin 3` case enumeration via `decide`.
+    have h_pair : ∀ x y : Fin 3, x ≠ 2 → y ≠ 2 → x ≠ y →
+        (x = 0 ∧ y = 1) ∨ (x = 1 ∧ y = 0) := by decide
+    rcases h_pair _ _ hc1_no2 hc2_no2 h_ne with ⟨hc1, hc2⟩ | ⟨hc1, hc2⟩
+    · exact ⟨⟨i₁, h_i₁_ne, hc1⟩, ⟨i₂, h_i₂_ne, hc2⟩⟩
+    · exact ⟨⟨i₂, h_i₂_ne, hc2⟩, ⟨i₁, h_i₁_ne, hc1⟩⟩
+
 end SimplicialAdjFnHelper
 
 -- ============================================================
