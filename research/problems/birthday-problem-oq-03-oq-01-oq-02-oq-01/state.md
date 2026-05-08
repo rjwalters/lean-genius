@@ -1,11 +1,52 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3e complete; 3f–3g remaining for r = 2)
+**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper complete; 3f–3g remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 16
-**Last Update**: 2026-05-08 (Session 16, researcher-9)
+**Iteration**: 17
+**Last Update**: 2026-05-08 (Session 16b, researcher-10)
+
+## Session 16b Summary (2026-05-08, researcher-10)
+
+**Mode**: ACT (Layer 3 sub-piece 3e specialisation per roadmap §8a, item S16b).
+
+**Outcome**: implemented Layer 3e strict-triple wrapper
+`bad_count_disjoint_strict` in §8 of `BirthdayProblemOQ03OQ01OQ02.lean`
+(≈ 98 lines added; file 1795 → 1893 lines, 49 → 50 theorems / lemmas,
+8 defs unchanged):
+
+- **Layer 3e (specialisation)** `bad_count_disjoint_strict (d n : ℕ)
+  {T₁ T₂} (hp : (T₁, T₂) ∈ overlapPattern n 0)`: per-pair joint-coincidence
+  count for `f : Fin n → Fin d` equals `d^(n - 4)`. Filter predicate is
+  written in the grouped form `(P₁ ∧ P₂) ∧ (Q₁ ∧ Q₂)` matching
+  `tripleCount_descFact_2_eq_overlap_sum`'s k = 0 summand verbatim, so the
+  lemma applies directly at the Layer 3g use site without further
+  reassociation.
+
+  Strategy: from `(T₁, T₂) ∈ overlapPattern n 0` derive (i) strict ordering
+  `a₁ < b₁ < c₁` and `a₂ < b₂ < c₂` via `strictTriples` membership, giving
+  6 within-triple inequalities by `ne_of_lt`; (ii) empty intersection
+  `tripleSet T₁ ∩ tripleSet T₂ = ∅` via `Finset.card_eq_zero`, giving 9
+  cross-triple inequalities by `Finset.mem_inter` against
+  `Finset.notMem_empty`. The 15 derived inequalities are exactly the
+  hypothesis list of S16's `bad_count_disjoint`, which is then invoked
+  verbatim. A short `tauto` reassociation step bridges the grouped vs flat
+  conjunction forms in the filter predicate.
+
+**Build status**: pending (32 GB cgroup limit + recent build-pending PRs
+on this file; following same convention as S10–S16).
+
+**Lemma C axiom unchanged**. Layer 3 sub-pieces 3a–3e + strict-wrapper are
+now complete. Layer 3 will close at S17 after S16c bounds the non-disjoint
+k ∈ {1, 2} strata (≈ 80 lines) and S17 combines 3d/3e/3f to get
+`factorial_moment_2 → (c³/6)²` (≈ 30 lines).
+
+**Note on length**: roadmap §8a estimated this wrapper at ≈ 60 lines.
+Actual implementation is ~98 lines because each of the 9 cross-distinctness
+pairs and 6 tripleSet membership facts is spelled out explicitly (matching
+the shape of S16 which spells out 15 hypotheses verbatim) rather than via
+a higher-level tactic. Subsequent sessions S16c and S17 are unaffected.
 
 ## Session 16 Summary (2026-05-08, researcher-9)
 
@@ -252,14 +293,15 @@ Roadmap layers (Session 9, see `lemma-c-roadmap.md`):
 7. ✅ **Layer 3d (S15, this session)**: `tripleCount_descFact_2_eq_overlap_sum` —
    per-`f` structural identity expressing `tripleCount.descFactorial 2` as a
    sum over overlap strata of f-trivialised counts. DONE pending build.
-8. ✅ **Layer 3e (S16, this session)**: `bad_count_disjoint` + `p_pair_disjoint`
-   — DONE pending build. The raw 6-pairwise-distinct-indices form. The
-   strict-pair specialisation using `overlapPattern n 0` is queued for S16b.
-9. **Layer 3e specialisation (S16b)**: `bad_count_disjoint_strict (T₁ T₂)` —
-   wrap S16's raw form with the 15 distinctness hypotheses derived from
-   `(tripleSet T₁ ∩ tripleSet T₂).card = 0` and the strict-triple ordering.
-   ≈ 60 lines. Sets up Layer 3g to apply directly to the `overlapPattern n 0`
-   summand of `tripleCount_descFact_2_eq_overlap_sum`.
+8. ✅ **Layer 3e (S16)**: `bad_count_disjoint` + `p_pair_disjoint`
+   — DONE on main (#17381). The raw 6-pairwise-distinct-indices form.
+9. ✅ **Layer 3e specialisation (S16b, this session)**:
+   `bad_count_disjoint_strict (T₁ T₂)` — wraps S16's raw form, deriving the
+   15 distinctness hypotheses from `(tripleSet T₁ ∩ tripleSet T₂).card = 0`
+   and the strict-triple ordering. Filter predicate matches the grouped
+   form used by `tripleCount_descFact_2_eq_overlap_sum`'s k=0 summand for
+   direct downstream application. ≈ 98 lines (vs roadmap estimate of 60).
+   DONE pending build.
 10. **Layer 3f (S16c)**: non-disjoint contributions (k = 1, 2 strata) vanish
     at rate `O(d^{-2/3})` per roadmap §4c. ≈ 80 lines.
 11. **Layer 3g (S17)**: combine 3d/3e/3f to get `factorial_moment_2 → (c³/6)²`. ≈ 30 lines.
