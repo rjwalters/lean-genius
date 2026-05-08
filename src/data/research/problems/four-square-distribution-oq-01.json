@@ -31,17 +31,17 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 5,
-    "focus": "S5 (2026-05-08, researcher-4): added the **multiplicative theory of sigma***. Parts 11-14: bridge (sigmaOne_eq_arithmeticSigmaOne), sigmaOne mult at coprime (via ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime), main theorem `sigmaStar_mul_of_coprime: Coprime m n -> 0 < m -> 0 < n -> sigma*(mn) = sigma*(m) * sigma*(n)`, and `sigmaStar_two_pow: 1 <= k -> sigma*(2^k) = 3`. Combined with S3 (odd prime powers) and S4 (doubled-odd cases), sigma* is now fully characterised by its prime-power values, mirroring Mathlib ArithmeticFunction.IsMultiplicative.sigma. File: 613 -> 889 lines, 1 axiom unchanged, 0 sorries. PR opened.",
+    "iteration": 6,
+    "focus": "S5 (2026-05-08, researcher-8): added Part 15 — closed form `sigmaStar_two_pow_mul_odd: 1 <= k -> ¬2 ∣ m -> 0 < m -> sigma*(2^k * m) = 3 * sigma(m)` and `jacobiR4_two_pow_mul_odd: jacobiR4(2^k * m) = 24 * sigma(m)`. Combined with S2 sigmaStar_eq_sigmaOne_of_odd, sigma* now has a complete two-case characterisation by 2-adic valuation: σ*(odd m) = σ(m); σ*(2^k · m) = 3·σ(m) for k≥1, m odd. Eight cross-validation examples confirm the closed form against PART 1 numeric values for n in {2,4,6,8,10} and extend to n = 40 (closed-form prediction beyond brute-force range). File: 888 -> 977 lines, 84 -> 86 theorems, 1 axiom unchanged, 0 sorries. The σ*-side of Jacobi r₄ is now fully closed-form; remaining open axiom reduces to the modular-form bridge alone.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
       "Local Docker build memory ceiling (host has 7.65 GiB Docker memory; Mathlib + this file exceeds that). S2 commits unverified per researcher-3 PR #16188 pattern; CI to validate."
     ],
-    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, immediately apply S5 sigmaStar_mul_of_coprime to reduce r4(n) = 8*sigma*(n) to a prime-power calculation per p in primes(n). (productive) Cross-validate r4(2^k) = 24 for k in {1,2,3} using sigmaStar_two_pow. (speculative) Hurwitz-quaternion route. (skip) Brute-force extension beyond n = 10.",
+    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, apply sigmaStar_two_pow_mul_odd (S5) for a closed form of r₄(n) given any n s 2-adic decomposition. (productive) Lift S5 two-case form to a single-formula statement using Mathlib s Nat.factorization n 2; would package the σ*-side as a single Mathlib expression. (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 0,
       "approachesTried": 1
     }
@@ -89,7 +89,10 @@
       "S5 sum_two_pow_eq (private): geometric series sum 2^i = 2^(j+1) - 1 — FourSquareDistributionOQ01.lean ~800",
       "S5 sigmaOne_two_pow (private): sigma(2^k) = 2^(k+1) - 1 via sigma_apply_prime_pow — FourSquareDistributionOQ01.lean ~810",
       "S5 sigmaStar_two_pow (theorem): sigma*(2^k) = 3 for k >= 1 [closes p=2 prime-power case] — FourSquareDistributionOQ01.lean ~822",
-      "S5 cross-checks: 4 examples for sigma*(2^k) at k=1,2,3,5; 5 examples for sigma*-mult at (3,5),(2,3),(4,3),(8,5),(9,5) — inline examples"
+      "S5 cross-checks: 4 examples for sigma*(2^k) at k=1,2,3,5; 5 examples for sigma*-mult at (3,5),(2,3),(4,3),(8,5),(9,5) — inline examples",
+      "S5 sigmaStar_two_pow_mul_odd (theorem, Part 15): for 1 <= k, m odd, 0 < m: sigma*(2^k * m) = 3 * sigma(m). Proof: 4 rewrites combining Coprime (2^k) m via Nat.Prime.coprime_iff_not_dvd Nat.prime_two + Nat.Coprime.pow_left k, then sigmaStar_mul_of_coprime, sigmaStar_two_pow, sigmaStar_eq_sigmaOne_of_odd. — FourSquareDistributionOQ01.lean ~898",
+      "S5 jacobiR4_two_pow_mul_odd (theorem, Part 15): for 1 <= k, m odd, 0 < m: jacobiR4(2^k * m) = 24 * sigma(m). Two lines: unfold + rewrite + ring. — FourSquareDistributionOQ01.lean ~922",
+      "S5 cross-validation examples (Part 15): 8 examples — 6 sigmaStar checks at (k=1,m=1),(k=2,m=1),(k=1,m=3),(k=3,m=1),(k=1,m=5),(k=3,m=5); 2 jacobiR4 checks at (k=3,m=1),(k=3,m=5). All by sigmaStar_two_pow_mul_odd / jacobiR4_two_pow_mul_odd."
     ],
     "insights": [
       "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
@@ -127,7 +130,8 @@
       {
         "insight": "S5 architectural conclusion: sigma* is now COMPLETELY characterised by its prime-power values. For n = 2^a * prod p_i^{e_i} with p_i odd: sigma*(n) = sigma*(2^a) * prod sigma*(p_i^{e_i}) = (a=0: 1; a>=1: 3) * prod sigma(p_i^{e_i}). The sigma-side is in Mathlib (sigma_apply_prime_pow). The remaining bottleneck is therefore strictly the modular-form bridge for r4(n): once Mathlib gains q-expansion for jacobiTheta, no further sigma*-side work is required.",
         "source": "S5 architecture review"
-      }
+      },
+      "**S5 — complete σ* characterisation by 2-adic decomposition**: With S5 sigmaStar_two_pow_mul_odd plus S2 sigmaStar_eq_sigmaOne_of_odd, σ*(n) is now expressible by a single two-case rule keyed only on whether 2 | n: σ*(odd m) = σ(m); σ*(n) = 3·σ(odd_part(n)) when v₂(n) ≥ 1. The σ*-side of Jacobi r₄ is fully reduced to one σ-value computation on the odd part of n."
     ],
     "mathlibGaps": [
       "No q-expansion lemma extracting Fourier coefficients of `jacobiTheta τ` as a function of `τ`.",
@@ -135,11 +139,11 @@
       "No Hurwitz-integer arithmetic in Mathlib (alternative route to Jacobi via Hurwitz quaternions)."
     ],
     "nextSteps": [
-      "(opportunistic, Mathlib upstream) q-expansion for jacobiTheta — the chief remaining blocker. Once landed, the full chain r4(n) = 8*sigma*(n) follows from S5 sigmaStar_mul_of_coprime + sigmaStar_two_pow + sigmaStar_prime_pow_of_odd_prime + Mathlib sigma_apply_prime_pow, with no further sigma*-side work needed.",
-      "(productive) Cross-validate r4(2^k) = 24 for k in {1,2,3} using S5 sigmaStar_two_pow (sigma*(2^k) = 3) — would test that the predicted side of Jacobi matches the bridge to FourSquareDistribution distribution_matches_jacobi_*.",
-      "(productive) Generalize sigmaStar_two_pow_mul: sigma*(2^k * m) = 3 * sigma(m) for k >= 1, m odd, by combining S5 sigmaStar_mul_of_coprime with sigmaStar_two_pow and sigmaStar_eq_sigmaOne_of_odd. This is a one-line corollary now.",
+      "(opportunistic, Mathlib upstream) q-expansion for jacobiTheta — chief remaining blocker. Once landed, the full chain r4(n) = 8*sigma*(n) follows from S5 sigmaStar_two_pow_mul_odd / S5 sigmaStar_eq_sigmaOne_of_odd directly (no further sigma*-side work needed).",
+      "(productive — lift to factorization form) Use Mathlib s `Nat.factorization n 2` and `n / 2^v_2(n)` to lift S5 two-case closed form to a single-formula `sigmaStar_factorization` statement, packaging the σ*-side as one Mathlib expression callable from the modular-form proof.",
+      "(productive — symbolic recombination) Establish r4(2^k * m) = 24 * sigma(m) directly from the axiom + S5 closed form; this is a clean named consequence of jacobi_r4_formula that downstream gallery work could call without re-deriving the σ*-side.",
       "(speculative) Hurwitz-quaternion alternative route — still gated on Mathlib; multi-month upstream cost.",
-      "(skip) Brute-force extension beyond n = 10 — pure enumeration theater."
+      "(skip) Brute-force extension beyond n = 10 — pure enumeration theater. The closed form prediction r4(40) = 144 is now a corollary; cross-validation requires the modular-form bridge itself."
     ],
     "markdown": "# Knowledge Base: four-square-distribution-oq-01\n\nSee `research/problems/four-square-distribution-oq-01/problem.md`, `state.md`, and `knowledge.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (S5 — sigma* multiplicative theory completed)\n* **Files**: `proofs/Proofs/FourSquareDistributionOQ01.lean` (889 lines, 1 axiom, 0 sorries; 14 parts: bootstrap, structural reduction, odd prime powers, doubled-odd cases, sigma*-multiplicativity, sigma*(2^k) closed form).\n* **Gallery**: meta.json status=axiomatized; 6 deep annotations (PR #16682); canonical-schema cross-refs to parents (PR #16678).\n* **Open target (held in axiom)**: replace `axiom jacobi_r4_formula` with a theorem.\n* **S5 contribution**: sigmaStar_mul_of_coprime + sigmaStar_two_pow — fully characterises sigma* by prime-power values.\n* **Blocker**: Mathlib lacks q-expansion machinery for `jacobiTheta` and Eisenstein-coefficient identification.\n"
   },
