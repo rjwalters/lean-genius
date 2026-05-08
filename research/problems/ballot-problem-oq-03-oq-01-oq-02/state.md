@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT
+**Phase**: ORIENT (S57 plan: K-induction decomposition into (S1)-(S7) sublemmas)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-09
-**Iteration**: 56
+**Iteration**: 57
 
 ## Current Focus
 Close `F_side_identity_aligned` (Helpers, line ~14811) — the
@@ -238,10 +238,40 @@ in place:
   memory ceiling estimate (~15500).  CI will verify the PR.
 
 ## Next Action
-**S57 — prove the common-domain `F_side_identity_aligned`** via joint
-K-induction on the sum-level invariant.  After S56 (this session)
-sharpened the obligation to a same-domain comparison, the open
-statement is:
+**S57.1 — implement sublemma (S1) `gnwProb_invariant_off_strictHook_of_c'`**
+as the smallest-risk first attack on the K-induction
+decomposition planned in S57.0 (session note `2026-05-09-s02.md`).
+The plan partitions the open lemma `F_side_identity_aligned` into
+seven sublemmas (S1)–(S7), keyed to the four cell categories A/B/C/D
+of `(μ\c').cells` (off-spine, off-arm-of-c, arm-of-c', leg-of-c').
+
+S57.0's blueprint (sublemma family — see `2026-05-09-s02.md` for full
+discussion):
+* (S1) `gnwProb_invariant_off_strictHook_of_c'` — pointwise off-spine
+  invariance.  ~30-50 lines, **high** confidence.  ← **S57.1 target**.
+* (S2) `gnwProb_aligned_on_arm_of_c'` — arm-cell pointwise reduction
+  with `δ_arm` correction term.  ~80-150 lines, medium confidence.
+  Hardest piece.  ← S57.2.
+* (S3) `gnwProb_aligned_on_leg_of_c'` — leg-cell mirror via PART XXIV
+  transpose duality.  ~30-60 lines, high.  ← S57.3.
+* (S4)/(S5) arm/leg summands.  ~30-50 each.  ← S57.4/S57.5.
+* (S6) off-spine summand.  ~40-80 lines.  ← S57.6.
+* (S7) assembly.  ~40-80 lines.  ← S57.7.
+
+**Total estimated**: 280-520 lines.  This *will* exceed the 15500-line
+Helpers.lean ceiling, so an extraction is forced before assembly
+lands; S57.0's plan recommends **Option E3** (defer the split until
+empirically needed; only move the F-side proof apparatus into a fresh
+`BallotProblemOQ03OQ01OQ02FsideKind.lean` if the S57.1+ commits push
+past the ceiling).
+
+**Open statement** (target of S57.1+):
+```
+[∑ x ∈ (μ\c').cells, gnwProb μ c (h_μ x) x] · (h_d − 1)²
+  = [∑ x ∈ (μ\c').cells, gnwProb (μ\c') c (h_{μ\c'} x) x]
+    · h_d · (h_d − 2)
+where  h_d = hookLength μ (min c.1 c'.1) (min c.2 c'.2)
+```
 ```
 [∑ x ∈ (μ\c').cells, gnwProb μ c (h_μ x) x] · (h_d − 1)²
   = [∑ x ∈ (μ\c').cells, gnwProb (μ\c') c (h_{μ\c'} x) x]
@@ -340,6 +370,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-08-s09.md` — Session 54: `gnwProb_exchange_lt_col_of_F_side` algebraic combiner (case 2)
 - `sessions/2026-05-08-s10.md` — Session 55a: parametric `F_side_identity` + sorry-free `gnwProb_exchange` dispatcher
 - `sessions/2026-05-09-s01.md` — Session 56: common-domain `F_side_identity_aligned` + sorry-free `F_side_identity`
+- `sessions/2026-05-09-s02.md` — Session 57.0: K-induction strategy + cell-partition + (S1)-(S7) sublemma plan
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
