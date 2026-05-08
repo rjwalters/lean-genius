@@ -826,4 +826,138 @@ lemma dIntegrandK_abs_le_bound
       Real.sqrt_le_sqrt h_inner_le
     exact mul_le_mul h_inner_le h_sqrt_le hM_sqrt_pos.le hκ_pos.le
 
+-- ============================================================================
+-- § 12. K-side Algebraic Identities — Building Blocks for the IBP Step
+-- ============================================================================
+
+/-
+The full K-side integral identity
+  `∫₀^{π/2} dIntegrandK k θ dθ = (E(k) - (1-k²) K(k)) / (k (1-k²))`
+is **not** pointwise (a difference from §8) — it requires integration by
+parts via the auxiliary function `auxFnK k θ := sin θ · cos θ / √(1-k²sin²θ)`,
+whose endpoint values vanish (`auxFnK k 0 = auxFnK k (π/2) = 0`) and whose
+derivative satisfies
+  `(d/dθ) auxFnK k θ = cos²θ / √(1-k²sin²θ)
+       - (1-k²) · sin²θ / [(1-k²sin²θ) · √(1-k²sin²θ)]`.
+
+This section provides the two **integral building blocks** that the IBP
+step will combine with FTC on `auxFnK`:
+
+* `integral_sin_sq_div_sqrt_denom` — the integral of `sin²θ / √(1-k²sin²θ)`
+  expressed in terms of `K(k)` and `E(k)`. This is the **integrated form**
+  of the algebraic split `dIntegrandE_mul_k` (§8).
+* `integral_cos_sq_div_sqrt_denom` — the integral of `cos²θ / √(1-k²sin²θ)`
+  expressed in terms of `E(k)` and `(1-k²) · K(k)`. Follows from the first
+  via `cos²θ = 1 - sin²θ`.
+
+Once the FTC of `auxFnK` is established (deferred to a follow-up session
+because the chain-rule + algebraic-match work is substantial), combining
+it with these two integrals yields the target K-side identity:
+  `(1-k²) · ∫ k sin²θ / [(1-k²sin²θ)·√(1-k²sin²θ)] dθ
+        = ∫ cos²θ / √(1-k²sin²θ) dθ - 0
+        = (E - (1-k²) K) / k`.
+-/
+
+/-- **Building block for the K-side IBP step.**
+
+    For `0 < k < 1`,
+    `∫₀^{π/2} sin²θ / √(1-k²sin²θ) dθ = (K(k) - E(k)) / k²`.
+
+    Proof: The pointwise identity
+    `sin²θ / √(1-k²sin²θ) = (ellipticIntegrand k θ - ellipticIntegrandE k θ) / k²`
+    follows from `dIntegrandE_mul_k` (§8). Integrating both sides over
+    `[0, π/2]` and using linearity (`integral_div`, `integral_sub`) plus
+    the definitions `ellipticK = ∫ ellipticIntegrand` and `ellipticE = ∫ ellipticIntegrandE`
+    yields the stated identity. -/
+lemma integral_sin_sq_div_sqrt_denom (hk_pos : 0 < k) (hk_lt : k < 1) :
+    ∫ θ in (0 : ℝ)..π / 2,
+        Real.sin θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+      = (AmgmInequalityOQ04OQ01.ellipticK k - ellipticE k) / k ^ 2 := by
+  have hk_sq : k ^ 2 < 1 := by nlinarith
+  have hk_ne : k ≠ 0 := ne_of_gt hk_pos
+  have hk_sq_ne : k ^ 2 ≠ 0 := pow_ne_zero 2 hk_ne
+  -- Pointwise identity: sin²θ / √D = (K_int - E_int) / k².
+  have h_pointwise : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      Real.sin θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) =
+      (AmgmInequalityOQ04OQ01.ellipticIntegrand k θ
+        - ellipticIntegrandE k θ) / k ^ 2 := by
+    intro θ _
+    have hs_pos : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+      AmgmInequalityOQ04OQ01.sqrt_denom_pos hk_sq θ
+    have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hs_pos.ne'
+    have hs_sq : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+          = 1 - k ^ 2 * Real.sin θ ^ 2 :=
+      Real.mul_self_sqrt
+        (le_of_lt (AmgmInequalityOQ04OQ01.denom_pos hk_sq θ))
+    unfold AmgmInequalityOQ04OQ01.ellipticIntegrand ellipticIntegrandE
+    field_simp
+    linear_combination hs_sq
+  rw [intervalIntegral.integral_congr h_pointwise]
+  rw [intervalIntegral.integral_div]
+  rw [intervalIntegral.integral_sub
+        (AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq)
+        (ellipticE_integrable k)]
+  rfl
+
+/-- **Building block for the K-side IBP step.**
+
+    For `0 < k < 1`,
+    `∫₀^{π/2} cos²θ / √(1-k²sin²θ) dθ = (E(k) - (1-k²) · K(k)) / k²`.
+
+    Proof: `cos²θ = 1 - sin²θ`, so
+    `cos²θ / √D = 1/√D - sin²θ/√D = ellipticIntegrand - sin²θ/√D`.
+    Integrating gives `K - (K - E)/k² = (k²·K - K + E)/k² = (E - (1-k²)·K)/k²`. -/
+lemma integral_cos_sq_div_sqrt_denom (hk_pos : 0 < k) (hk_lt : k < 1) :
+    ∫ θ in (0 : ℝ)..π / 2,
+        Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+      = (ellipticE k - (1 - k ^ 2) * AmgmInequalityOQ04OQ01.ellipticK k)
+          / k ^ 2 := by
+  have hk_sq : k ^ 2 < 1 := by nlinarith
+  have hk_ne : k ≠ 0 := ne_of_gt hk_pos
+  have hk_sq_ne : k ^ 2 ≠ 0 := pow_ne_zero 2 hk_ne
+  -- Pointwise identity: cos²θ / √D = ellipticIntegrand - sin²θ/√D
+  -- via cos²θ = 1 - sin²θ and ellipticIntegrand = 1/√D.
+  have h_pointwise : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) =
+      AmgmInequalityOQ04OQ01.ellipticIntegrand k θ
+        - Real.sin θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) := by
+    intro θ _
+    have hs_pos : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+      AmgmInequalityOQ04OQ01.sqrt_denom_pos hk_sq θ
+    have hs_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hs_pos.ne'
+    have h_pyth : Real.cos θ ^ 2 = 1 - Real.sin θ ^ 2 := by
+      linear_combination Real.sin_sq_add_cos_sq θ
+    unfold AmgmInequalityOQ04OQ01.ellipticIntegrand
+    rw [h_pyth, sub_div]
+  rw [intervalIntegral.integral_congr h_pointwise]
+  -- ∫ (K_int - sin²/√D) = K - (K - E)/k² = (E - (1-k²) K)/k²
+  have h_sin_sq_int :
+      ∫ θ in (0 : ℝ)..π / 2,
+          Real.sin θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        = (AmgmInequalityOQ04OQ01.ellipticK k - ellipticE k) / k ^ 2 :=
+    integral_sin_sq_div_sqrt_denom hk_pos hk_lt
+  have h_sin_int :
+      IntervalIntegrable
+        (fun θ => Real.sin θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+        MeasureTheory.volume 0 (π / 2) := by
+    apply Continuous.intervalIntegrable
+    refine Continuous.div₀ ((continuous_sin.pow 2)) ?_ ?_
+    · refine Real.continuous_sqrt.comp ?_
+      exact Continuous.sub continuous_const
+        (continuous_const.mul (continuous_sin.pow 2))
+    · intro θ
+      exact (AmgmInequalityOQ04OQ01.sqrt_denom_pos hk_sq θ).ne'
+  rw [intervalIntegral.integral_sub
+        (AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq) h_sin_int]
+  -- ∫ K_int = ellipticK; the sin² integral is given by h_sin_sq_int.
+  show AmgmInequalityOQ04OQ01.ellipticK k
+        - ∫ θ in (0 : ℝ)..π / 2,
+            Real.sin θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+      = (ellipticE k - (1 - k ^ 2) * AmgmInequalityOQ04OQ01.ellipticK k)
+          / k ^ 2
+  rw [h_sin_sq_int]
+  field_simp
+  ring
+
 end AmgmInequalityOQ04OQ02
