@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
   "title": "Rational Canonical Form — Mathlib formalization connection (nonderogatory case)",
-  "phase": "ORIENT",
-  "status": "in-progress",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,25 +16,28 @@
   },
   "knownResults": {
     "proven": [
-      "nonderogatory_similar_to_companion: every nonderogatory matrix M is similar to companionMx (minpoly K M), via the Krylov matrix [v | Mv | ... | M^{n-1}v] for any cyclic vector v",
-      "cyclicMatrix_isUnit: the Krylov matrix is invertible (mulVec injective from cyclicity)",
-      "M_mul_cyclicMatrix: the conjugation identity M·P = P·C(minpoly K M)"
+      "nonderogatory_similar_to_companion (S1): every nonderogatory matrix M is similar to companionMx (minpoly K M), via the Krylov matrix [v | Mv | ... | M^{n-1}v] for any cyclic vector v",
+      "cyclicMatrix_isUnit (S1): the Krylov matrix is invertible (mulVec injective from cyclicity)",
+      "M_mul_cyclicMatrix (S1): the conjugation identity M·P = P·C(minpoly K M)",
+      "hMn_axiom (S2): eliminated — derived from minpoly.aeval + minpoly.monic + local aeval_eq_sum_pow_local. Status moved axiomatized → verified.",
+      "nonderogatory_iff_similar_to_companion (S3): full biconditional — every nonderogatory M is similar to its companion matrix AND every matrix similar to a companion matrix is nonderogatory. Closes the triangle of equivalences with sibling OQ-01-OQ-01.",
+      "aeval_companionMx_p_mulVec_e0_zero (S4): vector-level Cayley-Hamilton for the companion at e₀.",
+      "aeval_companionMx_p_eq_zero (S5): matrix-level Cayley-Hamilton for the companion: aeval (companionMx p) p = 0 for monic p of natDegree n.",
+      "minpoly_companionMx_eq (S6): companion-matrix minimal polynomial identity — minpoly K (companionMx p) = p for monic p of natDegree n. Closes overview.openQuestions[Q2]."
     ],
-    "open": [
-      "hMn_axiom elimination (routine — Mathlib API exists, just needs a careful unwrap of aeval M (minpoly K M) = 0)"
-    ],
-    "goal": "Status `axiomatized` → `verified`: eliminate the single hMn_axiom in Session 2."
+    "open": [],
+    "goal": "ACHIEVED — status `verified`/`original`, 0 sorries, 0 axioms, 0 structure-encoded assumptions, full single-block RCF API for the companion matrix machine-verified over arbitrary fields."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETE",
     "since": "2026-05-08",
-    "iteration": 6,
-    "focus": "Session 6 closes the chain: minpoly K (companionMx p) = p (Matrix.minpoly_companionMatrix). The single-block RCF API is now complete: companionMx + similarity (S1-S3) + matrix Cayley-Hamilton (S5) + minpoly identity (S6), all axiom-free over arbitrary fields.",
+    "iteration": 7,
+    "focus": "S7 (this session): lifecycle close. The single-block RCF API is fully complete (S1–S6, all axiom-free over arbitrary fields). All originally-posed open questions of OQ-01-OQ-02 — companion-similarity biconditional, vector-level Cayley-Hamilton at e₀, matrix-level Cayley-Hamilton, and the companion-matrix minpoly identity — are machine-verified. Status `verified`/`original`, 0 sorries, 0 axioms, 0 structure-encoded assumptions.",
     "blockers": [],
-    "nextAction": "Future direction: write Mathlib PR proposal exposing companionMx + minpoly_companionMx_eq + aeval_companionMx_p_eq_zero + nonderogatory_similar_to_companion as a Matrix.companionMatrix API. Or: generalize to multi-block RCF via K[X]-module structure theorem.",
+    "nextAction": "Out of scope for this slug. Two genuinely larger directions live as separate problems: (a) a Mathlib PR proposal that exposes the four single-block theorems as a `Matrix.companionMatrix` API; (b) the multi-block rational canonical form via the K[X]-module structure theorem (`Module.IsTorsion.isInternal_*` family) — a substantially larger project that should be a fresh gallery entry rather than another iteration here.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 7,
+      "currentApproach": 7,
       "approachesTried": 1
     }
   },
@@ -48,7 +51,7 @@
       "cyclicMatrix_isUnit: cyclicMatrix is invertible — :76",
       "M_mul_cyclicMatrix: conjugation identity M·P = P·C(minpoly) — :86",
       "nonderogatory_similar_to_companion: main theorem (∃ P : IsUnit P ∧ P⁻¹·M·P = companionMx (minpoly K M)) — :132",
-      "hMn_axiom (private): Cayley-Hamilton-style expansion (M^n)·v = -∑ c_k (M^k)·v — :81 (TO ELIMINATE)",
+      "hMn_axiom (S2 — now `private theorem`): Cayley-Hamilton-style expansion (M^n)·v = -∑ c_k (M^k)·v, derived from minpoly.aeval + minpoly.monic + local aeval_eq_sum_pow_local. No longer an axiom.",
       "minpoly_companionMx_eq (S6, public theorem): minpoly K (companionMx p) = p for monic p of natDegree n — proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:638"
     ],
     "insights": [
@@ -68,9 +71,13 @@
       "Full Matrix.rationalCanonicalForm (multi-block, all matrices) — would require generalizing this single-block case via the K[X]-module structure theorem."
     ],
     "nextSteps": [
-      "Session 2: replace `hMn_axiom` with a `theorem hMn` proved from minpoly.aeval + minpoly.monic + Polynomial.aeval_eq_sum_range. Target: 0 axioms.",
-      "Session 3: explore biconditional formalization — IsCyclic v M ↔ ∃ P : IsUnit P ∧ P⁻¹·M·P = companionMx (minpoly K M). Likely easy from existing infrastructure.",
-      "Session 4+: stretch — propose Matrix.companionMatrix to Mathlib, alongside the nonderogatory similarity result."
+      "DONE — S2 (PR #17039): hMn_axiom eliminated; status moved axiomatized → verified.",
+      "DONE — S3 (PR #17069): companion-similarity biconditional `nonderogatory_iff_similar_to_companion`.",
+      "DONE — S4 (PR #17107): vector-level Cayley-Hamilton at e₀ for the companion: `(aeval (companionMx p) p).mulVec e₀ = 0`.",
+      "DONE — S5 (PR #17157): matrix-level Cayley-Hamilton for the companion: `aeval (companionMx p) p = 0`.",
+      "DONE — S6 (PR #17171): companion-matrix minpoly identity `minpoly K (companionMx p) = p` (closes overview.openQuestions[Q2]).",
+      "Out of scope (separate gallery entry): the multi-block rational canonical form via the K[X]-module structure theorem (`Module.IsTorsion.isInternal_*` family) — substantially larger; this entry's `companionMx` and single-block similarity are the natural scaffold.",
+      "Out of scope (separate proposal track): a Mathlib PR exposing `companionMx`, `nonderogatory_similar_to_companion`, `aeval_companionMx_p_eq_zero`, and `minpoly_companionMx_eq` as `Matrix.companionMatrix` + `Matrix.IsSimilar.companionMatrix_of_nonderogatory` + `Matrix.aeval_companionMatrix_self_eq_zero` + `Matrix.minpoly_companionMatrix`."
     ]
   },
   "tags": [
@@ -104,15 +111,16 @@
   },
   "started": "2026-05-08",
   "lastUpdate": "2026-05-08",
+  "completedAt": "2026-05-08",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
       "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
-      "lineCount": 156,
-      "theoremCount": 5,
-      "axiomCount": 1,
+      "lineCount": 688,
+      "theoremCount": 21,
+      "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
