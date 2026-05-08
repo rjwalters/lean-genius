@@ -23,7 +23,7 @@
     "erdosUrl": "https://erdosproblems.com/1150",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-03-11",
-    "dateUpdated": "2026-03-28",
+    "dateUpdated": "2026-05-08",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Definition IsLittlewoodPolynomial, supNorm, IsUltraflat, Erdos1150Conjecture",
@@ -35,15 +35,18 @@
       "Proved conjecture_equiv_no_ultraflat (full iff, both directions proved)",
       "Proved bbmst_upper_bound_exists (sup-norm bound from BBMST pointwise bound via ciSup_le)",
       "Proved erdos_1150_summary (Parseval + BBMST + equivalence combined)",
+      "Definition rudinShapiroPair, rudinShapiroP, rudinShapiroQ (recursive Rudin-Shapiro polynomial pair)",
+      "Proved rudinShapiroP_zero, rudinShapiroQ_zero (base-case identities P_0 = Q_0 = 1)",
+      "Proved rudinShapiroP_succ, rudinShapiroQ_succ (recursive unfolding identities)",
       "Axiom parseval_lower_bound (sup ≥ √(n+1), Parseval/DFT)",
       "Axiom bbmst_flat (flat Littlewood polynomials exist, BBMST 2019)",
       "Axiom flat_does_not_imply_ultraflat (BBMST ratio bounded but not converging to 1)"
     ],
     "axiomCount": 3,
-    "lineCount": 341,
-    "assumptions": "3 axioms: parseval_lower_bound (Littlewood polynomials have sup norm ≥ √(deg+1), via Parseval/DFT), bbmst_flat (flat Littlewood polynomials with bounded sup-to-√n ratio exist, BBMST 2019), flat_does_not_imply_ultraflat (encodes the BBMST bounded-but-not-converging gap as an explicit witness). 0 sorries. Kahane's unimodular ultraflat theorem and the Rudin-Shapiro construction are referenced in docstrings as background but are NOT axiomatized or formalized in this file.",
-    "theoremCount": 9,
-    "definitionCount": 4
+    "lineCount": 390,
+    "assumptions": "3 axioms: parseval_lower_bound (Littlewood polynomials have sup norm ≥ √(deg+1), via Parseval/DFT), bbmst_flat (flat Littlewood polynomials with bounded sup-to-√n ratio exist, BBMST 2019), flat_does_not_imply_ultraflat (encodes the BBMST bounded-but-not-converging gap as an explicit witness). 0 sorries. Kahane's unimodular ultraflat theorem is referenced in docstrings as background but is NOT axiomatized or formalized. The Rudin-Shapiro construction is now formalized at the definition level (rudinShapiroPair, rudinShapiroP/Q) with recursive unfolding identities; the sup-norm bound itself is left for future iterations.",
+    "theoremCount": 13,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős posed Problem #1150 as part of his investigations into extremal properties of polynomials with restricted coefficients. The study of Littlewood polynomials — polynomials with all coefficients ±1 — dates to J.E. Littlewood's 1966 monograph, where he asked about the minimal sup norm on the unit circle. By Parseval's identity, every degree-$n$ Littlewood polynomial satisfies $\\max_{|z|=1}|P(z)| \\ge \\sqrt{n+1}$, since the $L^2$ norm equals $\\sqrt{n+1}$. The question is whether this can be improved by a multiplicative constant. Kahane's 1980 breakthrough showed that for general unimodular coefficients ($|a_k| = 1$, complex phases allowed), ultraflat polynomials exist — the sup norm can be made $(1+o(1))\\sqrt{n}$. This made the ±1 restriction the essential barrier. The problem gained renewed attention after Balister, Bollobás, Morris, Sahasrabudhe, and Tiba (BBMST, 2019) proved flat Littlewood polynomials exist ($c_1\\sqrt{n} \\le |P(z)| \\le c_2\\sqrt{n}$), resolving Erdős Problem #228. But flat is weaker than ultraflat: the gap between 'bounded ratio' and 'ratio converging to 1' is precisely what Problem #1150 asks about. The Rudin-Shapiro polynomials, constructed recursively since the 1950s, provide the best explicit examples with sup norm at most $\\sqrt{2(n+1)}$.",
@@ -115,23 +118,23 @@
     },
     {
       "id": "rudin-shapiro",
-      "title": "Rudin-Shapiro Bound",
+      "title": "Rudin-Shapiro Polynomials",
       "startLine": 292,
-      "endLine": 298,
-      "summary": "Discusses the Rudin-Shapiro construction in a docstring as background context: for each k ≥ 1, a degree-(2^k - 1) Littlewood polynomial with sup norm at most √(2·2^k), the best known explicit upper bound on minimal sup norm. NOT axiomatized or formalized in this file.",
-      "mathContext": "Discusses the Rudin-Shapiro construction in a docstring as background context: for each k $\\geq$ 1, a degree-($2^{k}$ - 1) Littlewood polynomial with sup norm at most √(2·$2^{k}$), the best known explicit upper bound on minimal sup norm. NOT axiomatized or formalized in this file."
+      "endLine": 346,
+      "summary": "Records the recursive Rudin-Shapiro polynomial pair (P_k, Q_k): rudinShapiroPair, rudinShapiroP, rudinShapiroQ, with base cases P_0 = Q_0 = 1 (rudinShapiroP_zero, rudinShapiroQ_zero) and recursive unfolding identities P_{k+1} = P_k + X^{2^k}·Q_k and Q_{k+1} = P_k - X^{2^k}·Q_k (rudinShapiroP_succ, rudinShapiroQ_succ). Provides the foundation for proving the parallelogram identity |P_k|² + |Q_k|² = 2^{k+1} and the resulting sup-norm bound; those proofs are left to future iterations.",
+      "mathContext": "Records the recursive Rudin-Shapiro polynomial pair $(P_k, Q_k)$ with base cases $P_0 = Q_0 = 1$ and recursive unfolding identities $P_{k+1} = P_k + X^{2^{k}} \\cdot Q_k$, $Q_{k+1} = P_k - X^{2^{k}} \\cdot Q_k$. Foundation for the parallelogram identity $|P_k|^2 + |Q_k|^2 = 2^{k+1}$ and the explicit $\\sqrt{2}$ sup-norm-to-$\\sqrt{n}$ ratio."
     },
     {
       "id": "summary",
       "title": "Summary Theorem",
-      "startLine": 299,
-      "endLine": 341,
+      "startLine": 348,
+      "endLine": 390,
       "summary": "Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component.",
       "mathContext": "Axiomatized: Packages Parseval bound + BBMST flat existence + ultraflat equivalence into erdos_1150_summary, proved from axioms. Now includes the equivalence conjecture ↔ ¬ultraflat as a proved component."
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #1150, an open question in extremal polynomial theory. The conjecture asks whether the sup norm of degree-$n$ Littlewood polynomials on the unit circle must exceed $(1+c)\\sqrt{n}$ for some universal $c > 0$ — equivalently, whether ultraflat Littlewood polynomials do not exist. Axioms encoded: Parseval lower bound (parseval_lower_bound), BBMST flat polynomials (bbmst_flat, 2019), and the BBMST bounded-but-not-converging gap (flat_does_not_imply_ultraflat). Key theorems proved: full equivalence conjecture ↔ no ultraflat (both directions), BBMST sup-norm bound, Parseval ratio bound, DFT orthogonality lemmas, and a combined summary. Contains 0 sorries and 3 axioms encoding deep external results. Kahane's unimodular ultraflat theorem and the Rudin-Shapiro construction are referenced in docstrings as background context but are NOT axiomatized or formalized in this file. Uses subsequence-based IsUltraflat definition for mathematical correctness.",
+    "summary": "This formalization captures Erdős Problem #1150, an open question in extremal polynomial theory. The conjecture asks whether the sup norm of degree-$n$ Littlewood polynomials on the unit circle must exceed $(1+c)\\sqrt{n}$ for some universal $c > 0$ — equivalently, whether ultraflat Littlewood polynomials do not exist. Axioms encoded: Parseval lower bound (parseval_lower_bound), BBMST flat polynomials (bbmst_flat, 2019), and the BBMST bounded-but-not-converging gap (flat_does_not_imply_ultraflat). Key theorems proved: full equivalence conjecture ↔ no ultraflat (both directions), BBMST sup-norm bound, Parseval ratio bound, DFT orthogonality lemmas, and a combined summary. The Rudin-Shapiro construction is now formalized at the definition level (rudinShapiroPair, rudinShapiroP, rudinShapiroQ) with recursive unfolding identities, providing the foundation for proving the parallelogram identity $|P_k|^2 + |Q_k|^2 = 2^{k+1}$ and the resulting $\\sqrt{2}$ sup-norm-to-$\\sqrt{n}$ ratio. Contains 0 sorries and 3 axioms encoding deep external results. Kahane's unimodular ultraflat theorem is referenced in docstrings as background context but is NOT axiomatized or formalized. Uses subsequence-based IsUltraflat definition for mathematical correctness.",
     "implications": "**Theoretical Significance**: A positive resolution (confirming the conjecture) would establish that the discrete structure of {-1,+1} coefficients imposes a fundamental rigidity on polynomial behavior on the unit circle — a qualitative separation from the continuous case |$a_k$| = 1.\n\nThis would connect to concentration of measure phenomena and Boolean function analysis. A negative resolution (constructing ultraflat ±1 polynomials) would be equally striking, requiring new techniques beyond BBMST's probabilistic approach.",
     "openQuestions": [
       "Does the conjecture hold: is $\\inf_{P \\in \\mathcal{L}_n} \\|P\\|_\\infty / \\sqrt{n} > 1$ for all large $n$?",
@@ -168,10 +171,10 @@
       "Filter"
     ],
     "namespace": "Erdos1150",
-    "lineCount": 341,
+    "lineCount": 390,
     "axiomCount": 3,
-    "theoremCount": 9,
-    "definitionCount": 4,
+    "theoremCount": 13,
+    "definitionCount": 7,
     "path": "Proofs/Erdos1150Problem.lean",
     "sorries": 0
   },
