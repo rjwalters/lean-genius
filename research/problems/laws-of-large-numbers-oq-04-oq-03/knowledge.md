@@ -40,3 +40,76 @@ formalization (LawsOfLargeNumbersOQ04.lean):
 
 - Docker build verification pending
 - Glivenko-Cantelli axiom 3 (uniform bracketing) remains open — would need CDF continuity point infrastructure
+
+---
+
+## Session 2026-05-08 (Session 2) — Bracketing Decomposition Specification
+
+**Mode**: REVISIT
+**Outcome**: surveyed (pre-formalization specification)
+**Researcher**: researcher-9
+
+### What I Did
+
+Produced `bracketing-decomposition-draft.md` — a pre-formalization specification
+that decomposes the remaining `glivenko_cantelli_uniform` axiom into three named
+pieces and identifies the precise Mathlib gap.
+
+### Key Findings
+
+The classical bracketing argument decomposes orthogonally as:
+
+1. **Grid existence** — analytic, on `F`. For ε > 0, finitely many continuity
+   points `q₀ < ⋯ < q_{k+1}` of `F` cover `[0,1]` with F-jump ≤ ε per cell.
+   **This is the only piece missing from Mathlib 4.26**: the constructive
+   ε-cover induction using `Monotone.countable_setOf_not_continuousAt`.
+2. **Simultaneous pointwise convergence** — provable from
+   `MeasureTheory.ae_all_iff` + the parent file's
+   `empiricalCDF_pointwise_convergence`. ~10–20 lines.
+3. **Uniform sup-bound from grid** — deterministic monotone interpolation.
+   Provable from the parent's `empiricalCDF_mono` and `trueCDF_mono`. ~50
+   lines (case-split on x-position relative to grid; both ends + middle).
+
+Out of ten Mathlib lemmas needed by the decomposition, **nine are already in
+Mathlib 4.26**. The tenth is a single proposed
+`Monotone.exists_increasing_continuity_seq` lemma that is purely
+real-analytic (no probability) and is the natural Mathlib home for the
+bracketing scaffolding.
+
+### Lean Targets (Pre-Formalization Signatures)
+
+- `BracketingGrid (F : ℝ → ℝ) (ε : ℝ)` — structure with `k`,
+  `q : Fin (k+2) → ℝ`, `mono`, `cont`, `step_le`, `left_le`, `right_ge`.
+- `axiom bracketingGrid_exists` (only axiom in target file).
+- `theorem bracketing_simultaneous_pointwise` — finite intersection.
+- `theorem bracketing_uniform_from_grid` — deterministic sup-bound.
+- `theorem glivenko_cantelli_uniform_proved` — composition (§2.5), reduces
+  to single axiom + countable-intersection `ae_iInter_iff` along
+  ε = 1/(m+1).
+
+### Files Modified
+
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/bracketing-decomposition-draft.md` (new, ~370 lines)
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/knowledge.md` (updated — this entry)
+
+### Next Steps
+
+1. **Promote draft to Lean**. Create
+   `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean` per §6
+   checklist. ~150 lines total. Build pending; expect a 45-min cold build
+   due to broken `proofs/.lake` symlink.
+2. **Mathlib upstream PR**. After §2.3 + §2.4 + §2.5 are proved in Lean,
+   draft a Mathlib PR for `Monotone.exists_increasing_continuity_seq`.
+3. **VC-class generalisation**. Once classical GC is axiom-free, the
+   decomposition's §2.2 generalises to a VC-class symmetrization /
+   Sauer–Shelah argument. Independent of §2.4. See
+   `bracketing-decomposition-draft.md` §4.
+
+### Honesty
+
+This session produced **specification only**, no compiled Lean code. The
+gallery entry's `verified`/0-axioms status is unchanged. The Lean signatures
+in the draft have been hand-checked against the parent file's namespacing
+but not run through the elaborator. Nothing in this session reduces axiom
+counts or eliminates sorries; the contribution is a clear roadmap that
+isolates the Mathlib gap for the next session.
