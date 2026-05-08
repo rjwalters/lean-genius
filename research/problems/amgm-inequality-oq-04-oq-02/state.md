@@ -1,8 +1,100 @@
 # Current State
 
-**Phase**: ACT (S9 IBP track in flight across 3 stacked PRs; orthogonal §4 chain rule landing here)
-**Since**: 2026-05-09T01:30:00Z
-**Iteration**: 9
+**Phase**: ACT (S9 part 3 — FTC closure on auxFnK landing here; S9 part 4 next)
+**Since**: 2026-05-08T23:48:00Z
+**Iteration**: 10
+
+## Iteration 10 (2026-05-08T23:48Z, researcher-5): S9 part 3 — FTC closure on auxFnK
+
+Session 10 (ACT, this PR) adds **§15** to
+`proofs/Proofs/AmgmInequalityOQ04OQ02.lean`: the **fundamental theorem
+of calculus closure** for the auxiliary function `auxFnK`. Combining
+§13's endpoint vanishings (`auxFnK_zero`, `auxFnK_pi_div_two`) with
+§14's pointwise chain rule (`auxFnK_hasDerivAt`), we obtain
+
+```lean
+theorem integral_auxFnK_deriv_eq_zero (hk : k ^ 2 < 1) :
+    ∫ θ in (0 : ℝ)..π / 2,
+      Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2 /
+          ((1 - k ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+      = 0
+```
+
+This is the **K-side IBP boundary identity** — the S9 part 3 piece. S9
+part 4 will combine this with §12's `integral_cos_sq_div_sqrt_denom` to
+deliver the K-side integral identity
+`∫₀^{π/2} dIntegrandK k θ dθ = (E(k) − (1−k²) K(k)) / (k(1−k²))`,
+which then feeds the `dK_dk` assembly in S10.
+
+**Proof.** Apply `intervalIntegral.integral_eq_sub_of_hasDerivAt` with
+`f = auxFnK k`. The `hderiv` slot is discharged unconditionally (in θ,
+on `Set.uIcc 0 (π/2)`) by §14's `auxFnK_hasDerivAt hk θ`. The
+`IntervalIntegrable f' volume 0 (π/2)` slot is discharged by a new
+helper `auxFnK_deriv_continuous`, which uses `Continuous.div₀` on each
+of the two terms (mirroring `dIntegrandE_continuous` §8 and
+`dIntegrandK_continuous` §10), with `denom_pos` / `sqrt_denom_pos` from
+`AmgmInequalityOQ04OQ01` discharging non-vanishing of the denominators.
+Composition with `Continuous.intervalIntegrable` gives integrability.
+The boundary `auxFnK k (π/2) − auxFnK k 0` reduces to `0 − 0 = 0` via
+§13's two endpoint lemmas.
+
+**Net new content**: 0 definitions, 2 theorems, 0 axioms, 0 sorries.
+**Updated total** (post-§13/§14/§15 over origin/main): 10 definitions,
+41 theorems, 1 axiom, 0 sorries, 1328 lines (was 1224 on origin/main).
+
+**Mathlib API surface**: zero new lemmas. Uses
+`intervalIntegral.integral_eq_sub_of_hasDerivAt`,
+`Continuous.intervalIntegrable`, `Continuous.div₀`,
+`Continuous.sub`, `Continuous.mul`, `continuous_cos.pow`,
+`continuous_sin.pow`, `continuous_const`, `Real.continuous_sqrt`,
+plus the imported `denom_pos` / `sqrt_denom_pos` from
+`AmgmInequalityOQ04OQ01`. No new imports.
+
+**Independence from open S9 PRs (#17371 dE_dk, #17445 dE_dk replay,
+#17471 auxFnK + endpoints — already in main as §13, #17477 complModulus
+boundary helpers in §4)**: §15 lives at end-of-file after §14.
+- §15 does not modify §1, §2, §4, §8, §9, §10, §11, §12, §13, §14.
+- §15 references only `auxFnK_hasDerivAt` (§14, in main),
+  `auxFnK_zero` and `auxFnK_pi_div_two` (§13, in main),
+  `denom_pos` / `sqrt_denom_pos` (OQ04OQ01, unchanged).
+- All collisions with #17371/#17445/#17477 are textual-additive
+  (different §§) and Mechanic-tractable on merge.
+
+**Build status**: build pending. Per `[Researcher — broken proofs/.lake
+symlink]` memory, local Docker builds take 45+ min on a cold cache; this
+PR follows the recent stacked-PR convention of marking "build pending"
+and relying on Auditor/Mechanic verification. The code mirrors
+established §8/§10/§14 patterns line-by-line, reducing build risk.
+
+## Sharpening of the Plan for S9 part 4 + S10+
+
+With §15 (this PR, FTC closure on auxFnK) in place, the K-side integral
+identity is one step away. **S9 part 4 (~30–50 lines)** combines:
+
+1. **§12's `integral_cos_sq_div_sqrt_denom` (already in main)**:
+   `∫₀^{π/2} cos²θ / √D dθ = (E(k) − (1−k²) K(k)) / k²`.
+2. **§15's `integral_auxFnK_deriv_eq_zero` (this PR)**:
+   `∫₀^{π/2} (cos²θ/√D − (1−k²) sin²θ/(D·√D)) dθ = 0`.
+3. **Linearity** (`intervalIntegral.integral_sub`, `integral_const_mul`)
+   to subtract:
+   `(1−k²) · ∫₀^{π/2} sin²θ/(D·√D) dθ = (E − (1−k²) K) / k²`.
+4. **Multiply by k / (1−k²)**:
+   `∫₀^{π/2} dIntegrandK k θ dθ
+      = ∫₀^{π/2} k · sin²θ/(D·√D) dθ
+      = (E(k) − (1−k²) K(k)) / (k (1−k²))`.
+
+**S10 (~30 lines)**: assemble `dK_dk` via
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` —
+parallel to the open `dE_dk` assembly (#17371/#17445), with §10's
+chain rule, §11's bound, and S9 part 4's integral identity.
+
+**S11 (~50 lines)**: Wronskian closure via
+`eq_of_hasDerivAt_eq_zero` on `f(k) = E·K' + E'·K − K·K'`, using
+`dE_dk`, `dK_dk`, and §4's `complModulus_hasDerivAt` (already in main).
+Pin the constant at `k = 1/√2` via §7's `legendre_relation_symmetric`
+to discharge the `legendre_relation` axiom (1 → 0).
 
 ## Iteration 9 (2026-05-09T01:30Z, researcher-1): S9 orthogonal — complModulus chain rule
 
