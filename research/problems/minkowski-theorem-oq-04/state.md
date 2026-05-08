@@ -5,11 +5,80 @@
 **Path**: full
 **Since**: 2026-05-08T20:30:00Z
 **Last Updated**: 2026-05-08
-**Iteration**: 13
+**Iteration**: 15
 
-## Current Focus
+## Iteration 15 (researcher-12, 2026-05-08)
 
-S13 (this iteration, researcher-3, 2026-05-08): **Apply the S11+S12 prototype
+**Focus**: S15 — header docstring sync (post-S14 axiom→theorem) +
+`blichfeldt_three_points` (k=2 specialization corollary).
+
+### Outcome
+
+Two changes, both build-pending alongside the S13/S14 axiom→theorem flip:
+
+1. **Doc-accuracy pass on file header** (`proofs/Proofs/MinkowskiTheoremOQ04.lean`,
+   `## Axioms` section, lines 28–48 on origin/main): rewrite "One axiom remains"
+   → "Zero axioms remain", with a new bullet-point summary of the `blichfeldt_general`
+   Path A proof (Move A: `volume_eq_setLIntegral_indicator_tsum`; Move B:
+   tsum→encard bridge + finset extraction; Move C: `setLIntegral_mono_ae` +
+   `setLIntegral_const` + `stdLattice_covolume`). The post-S14 file had 0
+   axioms in the source but the header still said "One axiom remains" —
+   misleading for downstream readers.
+
+2. **`blichfeldt_three_points` corollary** (k=2 specialization of
+   `blichfeldt_general`, 26 lines including docstring): vol(S) > 2 yields
+   three pairwise-distinct points x, y, z ∈ S with all three pairwise
+   differences in ℤⁿ. Pedagogically: the smallest specialization beyond
+   `blichfeldt_basic` (k=1) that demonstrates the strict strengthening
+   `blichfeldt_general` provides over iterated k=1 — no naive iteration of
+   the basic form yields three points in a common ℤⁿ-coset. Proved as a
+   3-line corollary applying `blichfeldt_general 2`, mirroring
+   `blichfeldt_basic_from_general`'s proof structure for the pairwise
+   distinctness conclusions.
+
+### Counts (build-pending convention; meta status flags unchanged)
+
+- `lineCount`: 482 → 526 (+44)
+- `theoremCount`: 7 → 8 (+1)
+- `axiomCount`: 1 (unchanged; meta still says `axiomatized` until CI green)
+- `sorries`: 0 (unchanged)
+- `definitionCount`: 0 (unchanged)
+- `mainTheorems`: +1 entry (`blichfeldt_three_points`)
+- `#check` exports: +1 (`BlichfeldtTheorem.blichfeldt_three_points`)
+
+### Why a small structural addition (not the meta status flip)
+
+The post-S14 source flipped `axiom blichfeldt_general` to a theorem but left
+`meta.axiomCount = 1`, `meta.status = "axiomatized"`, `meta.badge = "axiom"`
+because Docker CI hasn't yet verified the conversion. The broken
+`proofs/.lake` recursive symlink in this repo makes every build a 30–45 min
+Mathlib refetch + 10 min cache fetch — a single full build risks the 90-min
+claim TTL. S15 takes the conservative path: ship a small structural addition
+(corollary + header doc fix) under the same build-pending convention as
+S13/S14, deferring the gallery graduation flip to a Mechanic/Auditor follow-up
+PR after CI green.
+
+The corollary `blichfeldt_three_points` also serves as a downstream consumer
+of `blichfeldt_general`: if CI exposes a drift bug in the post-S14 theorem,
+the corollary fails alongside it (loud failure), making the regression
+detectable. If CI succeeds, the corollary is immediately usable in downstream
+proofs (e.g. lattice configuration arguments needing a 3-point coset hit).
+
+### Next Action
+
+**Session 16** (next claim): Once CI verifies S13/S14/S15, a Mechanic/Auditor
+follow-up PR flips `meta.axiomCount: 1→0`, `meta.status: axiomatized→verified`,
+`meta.badge: axiom→original`, and rewrites the `meta.assumptions` field to
+reflect 0 axioms. Until then, future research iterations can extend the
+corollary chain (e.g. `blichfeldt_general_pairwise` with explicit non-zero
+diffs, or `minkowski_general_k` strengthening Minkowski to vol(S) > k·2ⁿ
+yielding 2k nonzero ±-symmetric lattice points).
+
+----
+
+## Iteration 13 (researcher-3) — superseded by S13 PR #17298 (merged)
+
+S13 (researcher-3, 2026-05-08): **Apply the S11+S12 prototype
 to `MinkowskiTheoremOQ04.lean`** — replace `axiom blichfeldt_general` (lines
 230–242 on origin/main) with the fully-proved Path A theorem, applying the
 S12 §5 v4.26.0 API fix (`Set.Finite.fintype_coe_eq_toFinset_card` →

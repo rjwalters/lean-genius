@@ -27,14 +27,28 @@ So ∃ v ≠ w with Sᵥ ∩ Sw ≠ ∅: pick z there to get z+v, z+w ∈ S with
 
 ## Axioms
 
-One axiom remains (down from four in earlier sessions):
+Zero axioms remain (down from four in earlier sessions). Build status of
+the post-S14 axiom→theorem flip is gated on Docker CI; meta.json flags are
+synced in a follow-up `verified` PR.
 
-1. `blichfeldt_general`: the k≥1 covering-count averaging form.
+The k=1 case (`blichfeldt_basic`) is fully proved by applying Mathlib's
+`IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly: the standard
+ℤⁿ-fundamental-domain has covolume 1, so a measurable set with volume > 1
+admits two points x, y with `g +ᵥ x = y` for some `g ≠ 0` in ℤⁿ.
 
-The k=1 case (`blichfeldt_basic`) is now fully proved without any axiom by
-applying Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly:
-the standard ℤⁿ-fundamental-domain has covolume 1, so a measurable set with
-volume > 1 admits two points x, y with `g +ᵥ x = y` for some `g ≠ 0` in ℤⁿ.
+The general k≥0 case (`blichfeldt_general`) is now a proved theorem (S13–S14,
+PRs #17298/#17329). Strategy (Path A contrapose):
+- **Move A**: ∫⁻ z in F, c(z) ∂volume = volume s, where
+  c(z) = ∑' v∈ℤⁿ, 1_S((v:ℝⁿ)+z), via `volume_eq_setLIntegral_indicator_tsum`
+  (S9, PR #16995) — itself proved from `IsAddFundamentalDomain.lintegral_eq_tsum''`
+  + Tonelli.
+- **Move B**: pointwise c(z) ≤ k contrapositively from the conclusion's
+  negation, with the `tsum`-of-indicators rewritten as `T.encard` via
+  `tsum_subtype + ENNReal.tsum_set_one`, then a finset is extracted from
+  the encard bound and turned into `Fin (k+1) → L` via `Set.toFinset_card`
+  + `Fintype.equivFinOfCardEq`.
+- **Move C**: integrate the pointwise bound against the fundamental domain
+  to get `volume s ≤ k`, contradicting the hypothesis `k < volume s`.
 
 Three former measure-theoretic axioms are now proved theorems / unused:
 - `blichfeldt_proj_measurable` (translation continuity → preimage measurability)
@@ -42,7 +56,7 @@ Three former measure-theoretic axioms are now proved theorems / unused:
 - `blichfeldt_volume_partition` is no longer needed (the basic theorem now
   uses Mathlib's pigeonhole directly).
 
-`minkowski_from_blichfeldt` is now sorry-free: the half-scaling T = (1/2)·s is
+`minkowski_from_blichfeldt` is sorry-free: the half-scaling T = (1/2)·s is
 shown measurable by rewriting as the preimage under doubling, and the volume
 identity vol(T) = vol(s)/2ⁿ is closed via `Measure.addHaar_smul`.
 -/
@@ -370,6 +384,35 @@ theorem blichfeldt_basic_from_general {n : ℕ} [NeZero n]
   intro heq
   exact absurd (hinj heq) (by decide)
 
+/-- **Blichfeldt at k = 2**: a measurable set in ℝⁿ with volume > 2 contains
+three pairwise-distinct points whose pairwise differences all lie in ℤⁿ.
+
+This is the smallest specialization of `blichfeldt_general` beyond the k=1
+case (`blichfeldt_basic`); k=1 produces a single ℤⁿ-related pair, while k=2
+forces a *triple* with all three pairwise differences in ℤⁿ — i.e. a single
+lattice coset hits S in at least three points. Pedagogically this is the
+canonical witness that the general Blichfeldt strengthens the basic form:
+no naive iteration of the k=1 case yields three points in a common coset.
+
+Specialization of `blichfeldt_general` at k = 2; introduced in S15
+(researcher-12, 2026-05-08) as a downstream consumer of the post-S14
+axiom→theorem flip. -/
+theorem blichfeldt_three_points {n : ℕ} [NeZero n]
+    (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
+    (h_vol : (2 : ENNReal) < volume s) :
+    ∃ x y z : Fin n → ℝ,
+      x ∈ s ∧ y ∈ s ∧ z ∈ s ∧
+      x ≠ y ∧ y ≠ z ∧ x ≠ z ∧
+      x - y ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      y - z ∈ (stdLattice n : Set (Fin n → ℝ)) ∧
+      x - z ∈ (stdLattice n : Set (Fin n → ℝ)) := by
+  obtain ⟨pts, hinj, hmem, hcong⟩ := blichfeldt_general 2 s h_meas (by exact_mod_cast h_vol)
+  refine ⟨pts 0, pts 1, pts 2, hmem 0, hmem 1, hmem 2,
+    ?_, ?_, ?_, hcong 0 1, hcong 1 2, hcong 0 2⟩
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+
 -- ============================================================
 -- PART 4: Minkowski as a Corollary
 -- ============================================================
@@ -479,4 +522,5 @@ end BlichfeldtTheorem
 
 #check BlichfeldtTheorem.blichfeldt_basic
 #check BlichfeldtTheorem.blichfeldt_general
+#check BlichfeldtTheorem.blichfeldt_three_points
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
