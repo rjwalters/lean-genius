@@ -1,10 +1,64 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T20:40:00Z
-**Iteration**: 3 (S3 — Bracketing scaffold: structure + grid-existence axiom)
+**Since**: 2026-05-08T20:43:00Z
+**Iteration**: 4 (S4 — bracketing_simultaneous_pointwise via ae_all_iff)
 
-## S3 (this session, researcher-12, 2026-05-08) — Bracketing scaffold landed
+## S4 (this session, researcher-4, 2026-05-08) — §2.3 bracketing_simultaneous_pointwise landed
+
+S3 (PR by researcher-12) shipped the typed scaffold:
+`BracketingGrid` structure (§2.1) and `bracketingGrid_exists` axiom (§2.2),
+both in `Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean`. S4 (this session)
+fills in the first of the three remaining theorems from
+`bracketing-decomposition-draft.md` §2.
+
+### What landed
+
+`bracketing_simultaneous_pointwise`: given any `Fin (k+2)`-indexed grid `q`,
+produces a single full-measure set on which the empirical CDF tends to the
+true CDF *simultaneously* at every `q j`. The proof is 3 tactic lines:
+
+```lean
+rw [ae_all_iff]
+intro j
+exact empiricalCDF_pointwise_convergence hX_meas hX_iid hX_ident (q j)
+```
+
+Mathlib API:
+- `MeasureTheory.ae_all_iff` (Mathlib.MeasureTheory.OuterMeasure.AE:95) — the
+  countable conjunction lemma `(∀ᵐ a ∂μ, ∀ i, p a i) ↔ ∀ i, ∀ᵐ a ∂μ, p a i`,
+  applied with `ι := Fin (k+2)` (finite, so countable).
+- `empiricalCDF_pointwise_convergence` (parent file `LawsOfLargeNumbersOQ04`
+  line 144) — supplies the per-grid-point a.s. convergence.
+
+### Counts (no meta.json update needed)
+
+The bracketing companion file is in `leanFile.additionalFiles`; per gallery
+convention `meta.lineCount` / `theoremCount` track the main file only. The
+main file `LawsOfLargeNumbersOQ04OQ03.lean` is unchanged (158 lines, 4
+theorems, 0 sorries, 0 axioms — `verified`/`original`).
+
+The bracketing companion went 120 → 147 lines, 0 → 1 theorem, 1 axiom
+unchanged, 0 sorries unchanged.
+
+### Build status
+
+Pending. The `proofs/.lake` recursive self-symlink remains broken (per memory
+feedback `feedback_researcher_lake_symlink_broken.md`). Type-check confidence
+is high: `ae_all_iff` is in `Mathlib.MeasureTheory.OuterMeasure.AE` and is
+transitively imported by `Mathlib.MeasureTheory.Integral.Bochner.Set` (which
+the parent file already imports); `Fin (k + 2)` has a `Countable` instance
+since it is finite; all referenced names match the parent file's already-built
+declarations.
+
+### Remaining work in §2
+
+- §2.4 (`bracketing_uniform_from_grid`, ~50 lines, deterministic case-split).
+- §2.5 (`glivenko_cantelli_uniform_proved`, ~20 lines, composition).
+- Optional: retire parent's `glivenko_cantelli_uniform` once §2.5 lands.
+- Future Mathlib upstream: `Monotone.exists_increasing_continuity_seq`.
+
+## S3 (researcher-12, 2026-05-08) — Bracketing scaffold landed
 
 S2 (researcher-9) produced `bracketing-decomposition-draft.md`: a five-section
 spec decomposing the parent file's monolithic `glivenko_cantelli_uniform`
