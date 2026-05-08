@@ -64,7 +64,10 @@
       "The CharZero hypothesis is only a proxy for separability: over CharZero every irreducible is separable, but separability is the true structural requirement.",
       "The tower-law argument (Gal.card_of_separable + IntermediateField.adjoin.finrank) is entirely characteristic-free once separability is assumed.",
       "Separability is both sufficient (the theorem holds) and necessary (inseparable counterexamples exist in char p) for the divisibility.",
-      "The 2-group Galois criterion for constructibility extends verbatim to any characteristic, covering e.g. separable cubic trisection obstructions over finite fields."
+      "The 2-group Galois criterion for constructibility extends verbatim to any characteristic, covering e.g. separable cubic trisection obstructions over finite fields.",
+      "**Why $X^p - t$ is the canonical counterexample**: Over $\\mathbb{F}_p(t)$, the polynomial $X^p - t$ is *both* irreducible (Eisenstein at the prime $t$, viewing $\\mathbb{F}_p[t]$ as a UFD) *and* inseparable ($\\frac{d}{dX}(X^p - t) = p X^{p-1} = 0$ in characteristic $p$). Its splitting field $\\mathbb{F}_p(t^{1/p})$ is purely inseparable of degree $p$, and the only $\\mathbb{F}_p(t)$-algebra automorphism fixing $\\mathbb{F}_p(t)$ is the identity (any automorphism must send $t^{1/p}$ to a root of $X^p - t$, but there is only one such root in the splitting field). So $|\\text{Gal}(X^p - t)| = 1$ while $\\text{natDeg}(X^p - t) = p$, giving the cleanest possible witness that separability is necessary.",
+      "**Constructibility connection**: The 2-group Galois criterion (Part III) is the algebraic core of the classical Wantzel 1837 impossibility theorems for compass-and-straightedge constructions: a real number $\\alpha$ is constructible iff its Galois closure has degree $2^k$. By extending the criterion to any characteristic for separable polynomials, this entry makes the constructibility framework available over the rationals' completions ($\\mathbb{Q}_p$), function fields ($\\mathbb{F}_q(t)$), and other classical objects of arithmetic geometry — settings where 'constructibility' has analogues in moduli problems and ruler-compass constructions over local rings.",
+      "**Tower law is characteristic-free**: The proof of `natDegree_dvd_card_gal_of_sep` uses *only* the multiplicativity of the field-extension degree $[E:F] = [E:K][K:F]$ and the identity $[F(\\alpha):F] = \\deg(\\text{minpoly}(F, \\alpha))$. Both are valid in any characteristic without separability. The *only* place separability enters is the rewrite $|\\text{Gal}(p)| = [E:F]$ (where $E$ is the splitting field) — this requires `Gal.card_of_separable` because in the inseparable case $|\\text{Gal}(p)|$ can be strictly less than $[E:F]$. Cleanly isolating this single use of separability is what makes the generalization possible."
     ],
     "proofStrategy": "1. **Rewrite |Gal(p)| via Gal.card_of_separable**: Apply `Gal.card_of_separable p_sep` to convert |Gal(p)| to Module.finrank F (SplittingField p). This is the only step that uses any characteristic information \u2014 it requires p.Separable, not CharZero.\n2. **Pick a root \u03b1**: Obtain \u03b1 : SplittingField p as a root of p (which is nonconstant by irreducibility). Then SplittingField p = F(\u03b1) as intermediate fields.\n3. **Apply the tower law**: [SplittingField p : F] = [SplittingField p : F(\u03b1)] \u00b7 [F(\u03b1) : F]. The factor [F(\u03b1) : F] equals natDegree(minpoly F \u03b1) = natDegree(p) (since p is the minimal polynomial of \u03b1 over F by irreducibility).\n4. **Conclude divisibility**: natDegree(p) | [SplittingField p : F] = |Gal(p)|.\n5. **CharZero corollary**: Over CharZero, `Irreducible.separable` supplies p.Separable for free.\n6. **Counterexample**: Axiomatize that inseparable irreducibles have trivial Galois groups (|Gal| = 1), then natDegree(p) > 1 gives natDegree \u2224 |Gal|."
   },
@@ -116,6 +119,63 @@
       "endLine": 165,
       "summary": "Summary table: 5 theorems proved with 0 sorries, 1 axiom (insep_gal_trivial). Lists all theorems with their hypotheses and conclusions in tabular form.",
       "mathContext": "Complete logical picture: sep $\\Rightarrow$ divisibility (proved); CharZero $\\Rightarrow$ sep (Mathlib); insep $+$ deg $> 1$ $\\Rightarrow$ non-divisibility (proved); 2-group Gal $\\Rightarrow$ deg $= 2^k$ (proved)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves natDegree(p) | |Gal(p)| under a CharZero hypothesis. This entry replaces CharZero with the weaker (and exact) hypothesis of separability, identifying the true structural requirement."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent in the OQ-02-OQ-01 chain: develops the natDegree-divides-Galois-cardinality framework used as the 2-group constructibility obstruction."
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "ancestor",
+      "description": "Root of the OQ-02 line: angle trisection cannot be done with compass-and-straightedge because the resulting field extension has degree not a power of 2. The natDegree | |Gal| theorem is the algebraic backbone of that obstruction."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "ancestor",
+      "description": "Gallery root: the classical impossibility-of-angle-trisection theorem. This entry generalizes the supporting Galois-theoretic infrastructure beyond CharZero, making the trisection obstruction available in any characteristic for separable extensions."
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "child",
+      "description": "Direct child: further sub-question on this entry's separable-extension framework, exploring whether the inseparable axiom can be removed."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lang, Serge",
+      "title": "Algebra",
+      "year": "2002",
+      "venue": "Springer (Graduate Texts in Mathematics 211, 3rd ed.)",
+      "note": "Chapter V (Algebraic Extensions) develops separability and the tower law $[E:F] = [E:K][K:F]$. The natDegree-divides-Galois-cardinality result follows from V.5 (separable extensions) and V.6 (purely inseparable extensions). Lang's treatment makes explicit the role of separability that this entry isolates as the exact necessary and sufficient hypothesis."
+    },
+    {
+      "authors": "Stewart, Ian",
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC (4th ed.)",
+      "note": "Pedagogical reference. Chapter 17 (Algebraic Closure) and Chapter 21 (Solvability and Simplicity) cover the Galois group of a polynomial and its connection to splitting field degrees. Stewart's Theorem 17.13 is the natDegree | |Gal| result in the separable case."
+    },
+    {
+      "authors": ["Dummit, David S.", "Foote, Richard M."],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "Wiley (3rd ed.)",
+      "note": "Standard graduate textbook. §13.5 (Separable and Inseparable Extensions) gives the canonical $X^p - t \\in \\mathbb{F}_p(t)[X]$ example used as the inseparable counterexample in this entry's Part IV. §14.4 (Composite Extensions and Simple Extensions) gives the tower-law framework."
+    },
+    {
+      "authors": "Cox, David A.",
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "Wiley (Pure and Applied Mathematics, 2nd ed.)",
+      "note": "Modern textbook with explicit treatment of the constructibility obstructions. Chapter 10 (Constructibility) connects the 2-group Galois criterion (Part III of this entry) to compass-and-straightedge constructions, including the angle-trisection impossibility that motivates this gallery line."
     }
   ],
   "conclusion": {
