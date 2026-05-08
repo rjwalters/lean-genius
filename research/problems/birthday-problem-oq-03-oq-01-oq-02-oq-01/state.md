@@ -1,11 +1,61 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete; 3f main bounds + 3g remaining for r = 2)
+**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete + S16d main-bound analysis ready-to-port; S16d implementation + S16e per-pair counts + S17 limit remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 18
-**Last Update**: 2026-05-08 (Session 16c, researcher-11)
+**Iteration**: 19
+**Last Update**: 2026-05-09 (Session 16d, researcher-3) — analysis-only
+
+## Session 16d Summary (2026-05-09, researcher-3)
+
+**Mode**: ANALYSIS (no Lean changes; produces a Lean-ready stub for S16d
+implementation).
+
+**Outcome**: produced `s16d-overlap-pattern-bounds.md` — a complete
+specification of the Layer 3f main bounds:
+
+- `card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3) : (overlapPattern n k).card ≤ Nat.choose n (6 - k) * (Nat.choose (6 - k) 3) ^ 2`
+- `card_overlapPattern_le_one (n : ℕ) : (overlapPattern n 1).card ≤ Nat.choose n 5 * 100` (k = 1, asymptotically `O(n⁵)`)
+- `card_overlapPattern_le_two (n : ℕ) : (overlapPattern n 2).card ≤ Nat.choose n 4 * 16` (k = 2, asymptotically `O(n⁴)`)
+
+**Proof shape**: `(T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂, tripleSet T₁,
+tripleSet T₂⟩` is an injection from `overlapPattern n k` into the
+sigma `Σ U ∈ powersetCard (6-k), U.powersetCard 3 ×ˢ U.powersetCard 3`.
+Containment uses `tripleSet_union_card_of_overlap` (S16c) for `|U| =
+6-k` and `Finset.subset_union_left/right` for `tripleSet T_i ⊆ U`.
+Injectivity uses `strict_eq_of_tripleSet_eq` (S12). Cardinality bound
+follows from `Finset.card_image_of_injOn`, `Finset.card_le_card`,
+`Finset.card_sigma`, `Finset.card_product`, and
+`Finset.card_powersetCard`.
+
+**Mathlib API**: all needed names (`Finset.image`,
+`Finset.card_image_of_injOn`, `Finset.powersetCard`,
+`Finset.card_powersetCard`, `Finset.sigma`, `Finset.card_sigma`,
+`Finset.card_product`, `Finset.subset_union_left/right`,
+`Finset.card_le_card`) are present in Mathlib v4.26.0 (the gallery's
+pin) and used elsewhere in this file or its imports. No new imports
+needed.
+
+**Estimated implementation lines**: 60–70 lines added to §9 of
+`BirthdayProblemOQ03OQ01OQ02.lean`, matching roadmap §8a's "60–80
+lines via the union-card embedding" estimate.
+
+**Why analysis-only this session**: `BirthdayProblemOQ03OQ01OQ02.lean`
+has accumulated four "build pending" PRs (S15, S16, S16b, S16c).
+Adding more Lean code on top under current Docker contention adds risk
+without unblocking downstream work, while a precise written
+specification lets the next session (S16d-implement) transcribe and
+test in a single pass with high confidence. This mirrors the
+analysis-only pattern used elsewhere in the project (e.g.
+schauder-fp-oq-03-oq-01-incomplete-01 S8 → S9, four-square-distribution
+S11). The S16d analysis doc closes the only architectural gap between
+S16c (preliminaries) and S16e (per-pair counts).
+
+**Lemma C axiom unchanged**. Layer 3 sub-pieces 3a–3e + strict-wrapper
++ 3f preliminaries (S14–S16c) build the structural inputs; S16d
+analysis (this session) specifies the polynomial bounds; S16e per-pair
+counts (next + 1) and S17 algebraic limit close Layer 3 for r = 2.
 
 ## Session 16c Summary (2026-05-08, researcher-11)
 
@@ -341,9 +391,31 @@ Roadmap layers (Session 9, see `lemma-c-roadmap.md`):
    form used by `tripleCount_descFact_2_eq_overlap_sum`'s k=0 summand for
    direct downstream application. ≈ 98 lines (vs roadmap estimate of 60).
    DONE pending build.
-10. **Layer 3f (S16c)**: non-disjoint contributions (k = 1, 2 strata) vanish
-    at rate `O(d^{-2/3})` per roadmap §4c. ≈ 80 lines.
-11. **Layer 3g (S17)**: combine 3d/3e/3f to get `factorial_moment_2 → (c³/6)²`. ≈ 30 lines.
-12. **Layer 4 (S18+)**: Method of Factorial Moments — local proof or apply Mathlib upstream.
-13. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
+10. ✅ **Layer 3f preliminaries (S16c)**: `tripleSet_union_card_of_overlap`
+    + k=0/1/2 specialisations giving `|tripleSet T₁ ∪ tripleSet T₂| = 6 - k`.
+    DONE on main (#17444).
+11. ✅ **Layer 3f main bound — analysis (S16d, this session)**: produces
+    `s16d-overlap-pattern-bounds.md` with Lean-ready statements + proof
+    skeleton for `card_overlapPattern_le_generic`,
+    `card_overlapPattern_le_one (≤ Nat.choose n 5 · 100)`, and
+    `card_overlapPattern_le_two (≤ Nat.choose n 4 · 16)`. Embedding via
+    `(T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂, tripleSet T₁, tripleSet T₂⟩`
+    into a sigma-target; injectivity via S12's
+    `strict_eq_of_tripleSet_eq`; cardinality via `Finset.card_sigma` +
+    `Finset.card_powersetCard`. ≈ 60–70 implementation lines estimated.
+    DONE (analysis-only).
+12. **Layer 3f main bound — implementation (S16d-implement, next)**:
+    transcribe the generic + specialised bounds from
+    `s16d-overlap-pattern-bounds.md` into §9 of
+    `BirthdayProblemOQ03OQ01OQ02.lean` directly after
+    `tripleSet_union_card_of_overlap_two`. Single-pass implementation
+    expected; build under contention is "build pending"-tolerated per
+    project convention. ≈ 60–70 lines.
+13. **Layer 3f per-pair counts (S16e)**: `bad_count_overlap_one`
+    (count `= d^(n-5)`, ≈ 100 lines, mirrors `bad_count_disjoint`'s
+    structure) + `bad_count_overlap_two` (count `= d^(n-4)`, ≈ 80 lines).
+14. **Layer 3g (S17)**: combine 3d/3e/3f to get
+    `factorial_moment_2 → (c³/6)²`. ≈ 30 lines (mostly tendsto algebra).
+15. **Layer 4 (S18+)**: Method of Factorial Moments — local proof or apply Mathlib upstream.
+16. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
     contribution for Layer 4 in parallel with local Layer 3.
