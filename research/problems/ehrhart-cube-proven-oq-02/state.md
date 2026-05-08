@@ -1,11 +1,11 @@
 # Research State: ehrhart-cube-proven-oq-02
 
 ## Current State
-**Phase**: ACT — fiber bijection helper added; 1 sorry remains
+**Phase**: ACT — Mathlib API drift fix (S6); 1 sorry remains
 **Path**: incremental sorry closure
 **Since**: 2026-05-07
 **Last Updated**: 2026-05-08
-**Iteration**: 4
+**Iteration**: 6
 
 ## Current Focus
 One sorry remains in `proofs/Proofs/EhrhartCrossPolytope.lean`:
@@ -58,7 +58,7 @@ foundation lemmas are now in place:
    `crossEhrhart_succ_d` closes the proof.
 
 ## Attempt Count
-- Total attempts: 4
+- Total attempts: 6
 - Approaches tried:
   - Session 1 (researcher-8, OBSERVE): mapped Mathlib tools for
     `crossEhrhart_is_poly` (descPochhammer-based)
@@ -68,17 +68,52 @@ foundation lemmas are now in place:
   - Session 4 (researcher-9, ACT): added `cweight_sum_individual`,
     `cweight_sum_range`, and `fiber_card_eq_crossBall_card` (via
     `Finset.card_bij'`)
+  - Session 5 (researcher-12, ORIENT): wrote slicing decomposition spec
+    (`session-5-slicing-spec.md`); deferred Lean prototype
+  - Session 6 (researcher-1, ACT): **Mathlib API drift fix**. After
+    deleting the broken `proofs/.lake` self-symlink and running the
+    Docker build, found that origin/main no longer compiles due to
+    Mathlib API drift since PR #16734 / #17008 merged unverified.
+    Three fixes restored buildability:
+    (a) `Polynomial.descPochhammer` → `descPochhammer` (5 refs);
+        `Polynomial.descPochhammer_succ_right` → `descPochhammer_succ_right` (2 refs).
+        `descPochhammer` lives at the root namespace (after `open Polynomial`),
+        not inside `namespace Polynomial`.
+    (b) Removed redundant `ring` after `field_simp [hk_ne]` in
+        `crossEhrhart_is_poly` (field_simp now closes the goal directly).
+    (c) Added explicit `Fin (2 * M + 1)` and `Fin (2 * n + 1)` type
+        annotations to the Forward/Backward bijection lambdas inside
+        `Finset.card_bij'` for `fiber_card_eq_crossBall_card`. Without
+        the annotations, Lean's elaborator failed to fix the lambda's
+        codomain, leaving the Fin-bound proof obligation unmaterialized
+        ("No goals to be solved" at the inner `by` block) and leaving
+        a stray metavariable inside the post-`simp only [crossBall, ...]`
+        sum body ("show tactic failed: pattern not definitionally equal"
+        with `↑?m.56` on the target side).
+    Also bumped `is_lt` → `isLt` (cosmetic; both work).
+    Build verified: `./proofs/scripts/docker-build.sh Proofs.EhrhartCrossPolytope`
+    in worktree `researcher-1`, exit 0, 1 sorry / 0 axioms / 538 lines.
 
 ## Blockers
-- **Local Lean build**: Worktree's `proofs/.lake` symlink is a self-cycle
-  (broken). Docker build is the only verifier; iteration cost is high.
-  PR-driven CI is the ground truth.
+- **Local Lean build**: The recursive self-symlink at
+  `/Users/rwalters/GitHub/lean-genius/proofs/.lake` (and the inherited
+  symlink in fresh worktrees) blocks Docker builds. Workaround:
+  `rm proofs/.lake` in the worktree and let the container clone Mathlib
+  fresh — adds ~10 min for clone + ~5 min for cache get on first use,
+  then incremental builds are ~2 min.
 
 ## Next Action
-**For Session 5**: Use `fiber_card_eq_crossBall_card` to express
-`(crossBall (d+1) n).card = ∑ j ∈ range (2n+1), (crossBall d M_j).card`
-where `M_j = if j ≤ n then j else 2n - j`. The fiber-to-filter
-bijection over `Fin.snoc` is the next chunk; estimate ~80–120 lines.
+**For Session 7**: Resume the slicing decomposition prototype from
+`session-5-slicing-spec.md` §4-6 on top of the now-buildable
+origin/main. The S6 prototype committed to local branch
+`research/ehrhart-cube-proven-oq-02-fiber-bij-1778229307`
+(`4e9853d0510`) adds `crossBall_succ_d_fiber_card` (~80 lines),
+`crossBall_succ_d_slice` (~10 lines), `sum_crossBall_pair` (~55 lines)
+and the `crossBall_card` wire-in (~6 lines). When pulled into a fresh
+build it will surface its own Mathlib-drift issues
+(`Finset.card_eq_sum_card_fiberwise` MapsTo vs `∀ x ∈ s, f x ∈ t`,
+`Fin.snoc_last` arg order, possible `change`/`omega` interactions on
+opaque sums) which will likely need fixes similar to Session 6.
 
 ## References
 - `proofs/Proofs/EhrhartCrossPolytope.lean:336-354` — cweight bridge

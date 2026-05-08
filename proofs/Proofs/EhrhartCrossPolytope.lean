@@ -242,11 +242,11 @@ example : crossEhrhart 3 4 = 129 := by native_decide
 
 -- Helper: natDegree of `descPochhammer ℚ k` is at most `k`.
 private lemma natDegree_descPochhammer_le (k : ℕ) :
-    (Polynomial.descPochhammer ℚ k).natDegree ≤ k := by
+    (descPochhammer ℚ k).natDegree ≤ k := by
   induction k with
   | zero => simp
   | succ k ih =>
-    rw [Polynomial.descPochhammer_succ_right]
+    rw [descPochhammer_succ_right]
     refine le_trans Polynomial.natDegree_mul_le ?_
     have h1 : (Polynomial.X - ((k : ℕ) : Polynomial ℚ)).natDegree ≤ 1 := by
       refine le_trans (Polynomial.natDegree_sub_le _ _) ?_
@@ -255,12 +255,12 @@ private lemma natDegree_descPochhammer_le (k : ℕ) :
 
 -- Helper: `(descPochhammer ℚ k).eval (n : ℚ) = ↑(n.descFactorial k)`.
 private lemma eval_descPochhammer_natCast (k n : ℕ) :
-    (Polynomial.descPochhammer ℚ k).eval ((n : ℕ) : ℚ) =
+    (descPochhammer ℚ k).eval ((n : ℕ) : ℚ) =
       ((n.descFactorial k : ℕ) : ℚ) := by
   induction k with
   | zero => simp
   | succ k ih =>
-    rw [Polynomial.descPochhammer_succ_right]
+    rw [descPochhammer_succ_right]
     simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X,
                Polynomial.eval_natCast, ih]
     rcases le_or_lt k n with hkn | hkn
@@ -301,7 +301,7 @@ theorem crossEhrhart_is_poly (d : ℕ) :
     ∀ n : ℕ, P.eval (n : ℚ) = (crossEhrhart d n : ℚ) := by
   refine ⟨∑ k ∈ range (d + 1),
     Polynomial.C ((2 ^ k : ℚ) * (Nat.choose d k : ℚ) / (k.factorial : ℚ)) *
-      Polynomial.descPochhammer ℚ k, ?_, ?_⟩
+      descPochhammer ℚ k, ?_, ?_⟩
   · -- natDegree ≤ d
     refine le_trans (Polynomial.natDegree_sum_le _ _) ?_
     apply Finset.sup_le
@@ -321,7 +321,6 @@ theorem crossEhrhart_is_poly (d : ℕ) :
       exact_mod_cast Nat.factorial_ne_zero k
     push_cast
     field_simp [hk_ne]
-    ring
 
 -- ============================================================
 -- PART VIII: Connection to Lattice Points
@@ -388,18 +387,18 @@ private lemma fiber_card_eq_crossBall_card (d n M : ℕ) (hM : M ≤ n) :
   apply Finset.card_bij'
     -- Forward: y ↦ z where z idx := (y idx).val - (n - M).
     (fun y hy idx =>
-      ⟨(y idx).val - (n - M), by
+      (⟨(y idx).val - (n - M), by
         have hsum :
             ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M := by
           simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hy
           exact hy
         obtain ⟨h_lo, h_hi⟩ := cweight_sum_range hM y hsum idx
-        omega⟩)
+        omega⟩ : Fin (2 * M + 1)))
     -- Backward: z ↦ y' where y' idx := (z idx).val + (n - M).
     (fun z _ idx =>
-      ⟨(z idx).val + (n - M), by
-        have hcoord : (z idx).val < 2 * M + 1 := (z idx).is_lt
-        omega⟩)
+      (⟨(z idx).val + (n - M), by
+        have hcoord : (z idx).val < 2 * M + 1 := (z idx).isLt
+        omega⟩ : Fin (2 * n + 1)))
     -- (1) Forward image lies in `crossBall d M`.
     (by
       intro y hy

@@ -18,54 +18,56 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:49:03.933Z",
-    "iteration": 5,
-    "focus": "S5 (researcher-12, 2026-05-08): Slicing decomposition specification (research/problems/ehrhart-cube-proven-oq-02/session-5-slicing-spec.md). Three-piece factoring (crossBall_succ_d_slice, sum_crossBall_pair, main wire-in) with verified Mathlib API (Finset.card_eq_sum_card_fiberwise, Fin.snoc / Fin.init / Fin.snoc_init_self / Fin.init_snoc / Fin.snoc_castSucc, Fin.sum_univ_castSucc, Fin.sum_univ_eq_sum_range, Finset.sum_nbij'). Build-ready Lean 4 skeleton with 2 mechanical `sorry`s (each ≤10 lines: cweight + Σ split via Fin.sum_univ_castSucc, both directions). Estimated total new code: ~90 lines. Lean prototype deferred until proofs/.lake symlink repaired. Still 1 sorry / 0 axioms / 539 lines on origin/main.",
+    "iteration": 6,
+    "focus": "S6 (researcher-1, 2026-05-08): Mathlib API drift fix. origin/main no longer compiled after PR #16734 / #17008 because (a) Mathlib's `descPochhammer` is at the root namespace (after `open Polynomial`) — `Polynomial.descPochhammer` and `Polynomial.descPochhammer_succ_right` are unknown; (b) `field_simp [hk_ne]` now closes the goal so the trailing `ring` is redundant; (c) the bijection lambdas inside `Finset.card_bij'` for `fiber_card_eq_crossBall_card` need explicit `Fin (2 * M + 1)` / `Fin (2 * n + 1)` annotations or Lean's elaborator leaves the Fin-bound proof obligation unmaterialized and a metavariable in the simp-unfolded goal body. Three-line, three-call fix verified by Docker build. Still 1 sorry / 0 axioms / 538 lines on the fix branch.",
     "blockers": [
-      "proofs/.lake recursive self-symlink: every Docker build = ~30-45 min Mathlib clone + ~10 min cache fetch. Blocks S6 prototype build verification."
+      "Slicing decomposition prototype (S5 spec → S7 implementation) still TODO. The local commit 4e9853d0510 on branch `research/ehrhart-cube-proven-oq-02-fiber-bij-1778229307` adds ~195 lines but is build-pending and will need its own Mathlib-drift fixes when verified."
     ],
-    "nextAction": "S6: prototype Steps A+B+C per session-5-slicing-spec.md §4-6 once `.lake` symlink is repaired. Two mechanical `sorry`s to discharge (cweight + Σ split via Fin.sum_univ_castSucc, both directions; each ≤10 lines). Then Docker build with `LEAN_BUILD_TIMEOUT=60m`.",
+    "nextAction": "S7: Resume the slicing decomposition prototype on top of the now-buildable origin/main. Pull commit `4e9853d0510` into a fresh worktree, run Docker build, fix surfaced Mathlib-drift issues (likely `Finset.card_eq_sum_card_fiberwise` MapsTo coercion, `Fin.snoc_last` arg order, and `change`/`omega` interactions on opaque sums).",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S5 (2026-05-08, researcher-12): Slicing decomposition specification (`session-5-slicing-spec.md`) factoring the remaining `crossBall_card` succ-d `sorry` into three pieces: (A) `crossBall_succ_d_slice` slicing identity via `Finset.card_eq_sum_card_fiberwise` + `Fin.init`/`Fin.snoc`; (B) `sum_crossBall_pair` j↔2n-j reorganization via `Finset.sum_nbij'`; (C) wire into induction via `crossEhrhart_succ_d`. All Mathlib lemmas verified against `mathlib4` master (file paths + line numbers in spec §3). Build-ready Lean skeleton with 2 mechanical `sorry`s (each ≤10 lines, `omega`-discharable). Estimated ~90 new lines. Lean prototype deferred to S6 pending `.lake` symlink repair. S0 PR #16339 framework + S2 PR #16734 crossEhrhart_is_poly + S3 PR #16842 cweight foundation helpers + S4 PR #17008 fiber_card_eq_crossBall_card all merged. EhrhartCrossPolytope.lean on origin/main: 14 theorems / 1 sorry / 0 axioms / 539 lines (post-PR #17008).",
+    "progressSummary": "S6 (2026-05-08, researcher-1): Mathlib API drift fix restoring origin/main buildability. Three-bug bundle: (1) `Polynomial.descPochhammer` → `descPochhammer` (5 refs) + `Polynomial.descPochhammer_succ_right` → `descPochhammer_succ_right` (2 refs) — Mathlib's `descPochhammer` lives at root namespace after `open Polynomial`, NOT inside `namespace Polynomial`; (2) drop redundant `ring` after `field_simp [hk_ne]` in `crossEhrhart_is_poly` (field_simp now closes); (3) explicit `Fin (2 * M + 1)` / `Fin (2 * n + 1)` annotations on bijection lambdas in `Finset.card_bij'` for `fiber_card_eq_crossBall_card` — without them the elaborator leaves the Fin-bound proof obligation unmaterialized (\"No goals to be solved\" at inner `by`) and a metavariable inside post-`simp only [crossBall, ...]` sum bodies (\"show tactic failed: pattern not definitionally equal\" with `↑?m.56` on target). Build verified via `./proofs/scripts/docker-build.sh Proofs.EhrhartCrossPolytope` after `rm proofs/.lake` (broken self-symlink). Still 1 sorry (`crossBall_card` succ-d) / 0 axioms / 538 lines. S5 slicing spec (`session-5-slicing-spec.md`) and the local-only S6 prototype branch (`4e9853d0510`, ~195 lines) remain valid but deferred — they'll need their own Mathlib-drift fixes when implemented.",
     "builtItems": [
-      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:118",
+      "sum_choose_range: hockey-stick Σ C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:118",
       "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:130",
       "crossEhrhart_expand: Pascal split at EhrhartCrossPolytope.lean:152",
       "crossEhrhart_succ_d: geometric recursion at EhrhartCrossPolytope.lean:205",
       "crossEhrhart_d0/d1/n0: base cases at EhrhartCrossPolytope.lean:63-83",
       "crossEhrhart_pos/mono: structural properties at EhrhartCrossPolytope.lean:95-108",
       "crossEhrhart_d2: proved via induction using recursion (after succ_d) at EhrhartCrossPolytope.lean:223",
-      "crossEhrhart_is_poly: descPochhammer-based polynomial of degree \u2264 d (PR #16734 Session 2) at EhrhartCrossPolytope.lean:299",
+      "crossEhrhart_is_poly: descPochhammer-based polynomial of degree ≤ d (PR #16734 Session 2) at EhrhartCrossPolytope.lean:299",
       "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:332",
       "cweight_le_iff (Session 3): centered-weight bound characterization at EhrhartCrossPolytope.lean:338",
       "cweight_translate (Session 3): translation bridge for fiber bijection at EhrhartCrossPolytope.lean:346"
     ],
     "insights": [
-      "S5 (researcher-12, 2026-05-08): The slicing identity `(crossBall (d+1) n).card = \u2211 j : Fin (2n+1), (crossBall d M_j).card` factors through `Finset.card_eq_sum_card_fiberwise` (project via `fun y => y (Fin.last d)`) + per-fiber bijection `Fin.init`/`Fin.snoc`. M_j := if j.val \u2264 n then j.val else 2n - j.val (= n - cweight(j, n)). \u03a3 over Fin (d+1) splits via `Fin.sum_univ_castSucc`; the last summand is exactly cweight(j, n) since `y (last d) = j` is fixed inside the fiber.",
-      "S5 (researcher-12, 2026-05-08): The j\u21942n-j pairing collapses cleanly: split `range (2n+1) = range n \u222a {n} \u222a Ico (n+1) (2n+1)`; the high half reverses via `Finset.sum_nbij'` with `m \u21a6 2n - m`. This produces `(crossBall d n).card + 2 \u00b7 \u2211 m \u2208 range n, (crossBall d m).card`, matching `crossEhrhart_succ_d` exactly under the IH. All three pieces total ~90 lines.",
-      "S5 (researcher-12, 2026-05-08): `Finset.card_eq_sum_card_fiberwise` (verified at `Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean:979`) needs `(s : Set \u03b9).MapsTo f t`; for the slicing application `s := crossBall (d+1) n`, `f := fun y => y (Fin.last d)`, `t := Finset.univ`, the MapsTo is trivially `Finset.mem_univ _`.",
-      "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*\u03a3 C(d,k+1)C(n,k+1) = \u03a3 C(d,k)C(n,k)",
-      "sum_choose_range (hockey-stick): \u03a3_{m<n} C(m,k) = C(n,k+1) proved by induction with Pascal step",
-      "sum_shift_hockey: \u03a3_k f(k)*C(n,k+1) = \u03a3_{m<n} \u03a3_k f(k)*C(m,k) via \u2190 sum_choose_range + Finset.sum_comm",
+      "S5 (researcher-12, 2026-05-08): The slicing identity `(crossBall (d+1) n).card = ∑ j : Fin (2n+1), (crossBall d M_j).card` factors through `Finset.card_eq_sum_card_fiberwise` (project via `fun y => y (Fin.last d)`) + per-fiber bijection `Fin.init`/`Fin.snoc`. M_j := if j.val ≤ n then j.val else 2n - j.val (= n - cweight(j, n)). Σ over Fin (d+1) splits via `Fin.sum_univ_castSucc`; the last summand is exactly cweight(j, n) since `y (last d) = j` is fixed inside the fiber.",
+      "S5 (researcher-12, 2026-05-08): The j↔2n-j pairing collapses cleanly: split `range (2n+1) = range n ∪ {n} ∪ Ico (n+1) (2n+1)`; the high half reverses via `Finset.sum_nbij'` with `m ↦ 2n - m`. This produces `(crossBall d n).card + 2 · ∑ m ∈ range n, (crossBall d m).card`, matching `crossEhrhart_succ_d` exactly under the IH. All three pieces total ~90 lines.",
+      "S5 (researcher-12, 2026-05-08): `Finset.card_eq_sum_card_fiberwise` (verified at `Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean:979`) needs `(s : Set ι).MapsTo f t`; for the slicing application `s := crossBall (d+1) n`, `f := fun y => y (Fin.last d)`, `t := Finset.univ`, the MapsTo is trivially `Finset.mem_univ _`.",
+      "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*Σ_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*Σ C(d,k+1)C(n,k+1) = Σ C(d,k)C(n,k)",
+      "sum_choose_range (hockey-stick): Σ_{m<n} C(m,k) = C(n,k+1) proved by induction with Pascal step",
+      "sum_shift_hockey: Σ_k f(k)*C(n,k+1) = Σ_{m<n} Σ_k f(k)*C(m,k) via ← sum_choose_range + Finset.sum_comm",
       "crossEhrhart_succ_d: one-step from expand + hshift; proved via linarith after sum_shift_hockey",
-      "Key identity in proof: \u03a3 2^k C(d,k) C(n,k) = 1 + 2*\u03a3 2^k C(d,k+1) C(n,k+1) \u2014 proved by extracting k=0 via sum_range_succ then dropping d+1 term (C(d,d+1)=0)",
-      "Lean 4.26 notation: \u2211 x \u2208 range n not \u2211 x in range n in theorem signatures",
-      "Lean Pascal direction: rw [Nat.choose_succ_succ] not \u2190 to go C(d+1,k+1) \u2192 C(d,k)+C(d,k+1)",
-      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)"
+      "Key identity in proof: Σ 2^k C(d,k) C(n,k) = 1 + 2*Σ 2^k C(d,k+1) C(n,k+1) — proved by extracting k=0 via sum_range_succ then dropping d+1 term (C(d,d+1)=0)",
+      "Lean 4.26 notation: ∑ x ∈ range n not ∑ x in range n in theorem signatures",
+      "Lean Pascal direction: rw [Nat.choose_succ_succ] not ← to go C(d+1,k+1) → C(d,k)+C(d,k+1)",
+      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*Σ → Σ(2*...)",
+      "S6 (researcher-1, 2026-05-08): Mathlib API drift since PR #16734/#17008 — origin/main no longer builds. descPochhammer is at root namespace (after `open Polynomial` in Mathlib/RingTheory/Polynomial/Pochhammer.lean), NOT inside `namespace Polynomial`. Pattern to flag in code review: any `Polynomial.descPochhammer*` reference is wrong; should be just `descPochhammer*`.",
+      "S6 (researcher-1, 2026-05-08): When using `Finset.card_bij'` with anonymous-constructor bijection lambdas like `fun y _ idx => ⟨..., by ...⟩`, give the lambda return type explicit annotation. Without it, Lean infers the lambda codomain weakly; the inner `by` block runs with no Fin-bound goal (\"No goals to be solved\" at the `have` line), and downstream `simp only [crossBall, ...]` leaves stray metavariables in the sum body (target `(∑ x, if ↑?m.56 ≤ M ...) ≤ M` with metavar shared across all three arms).",
+      "S6 (researcher-1, 2026-05-08): The proofs/.lake self-symlink trap is reproducible across worktrees: `.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake`. `rm proofs/.lake` in the worktree before building lets Docker create a fresh `.lake` (mathlib clone ~10 min, cache get ~5 min, EhrhartCrossPolytope compile ~16s after that)."
     ],
     "mathlibGaps": [
       "(Session 2 resolved: descPochhammer + descPochhammer_eval_eq_descFactorial + Nat.descFactorial_eq_factorial_mul_choose suffice for the polynomial identification.)"
     ],
     "nextSteps": [
-      "S6 (recommended): prototype Steps A+B+C per `session-5-slicing-spec.md` \u00a74-6. Discharge the 2 mechanical `sorry`s (each \u226410 lines: cweight + \u03a3 split via `Fin.sum_univ_castSucc`, both directions). Then Docker build with `LEAN_BUILD_TIMEOUT=60m`. Estimated ~90 new lines. Requires healthy `proofs/.lake`.",
-      "S7 (post-build): once `crossBall_card` sorry eliminated, set `sorryCount: 0`, `status: verified`, `badge: original`. Update `meta.json`, `index.ts`, gallery annotations.",
-      "S8 (optional, advanced): connect `crossEhrhart d n` to the central Delannoy numbers `D(d, n) := \u2211 2^k C(d,k) C(n,k)`. Mathlib has no `Delannoy` namespace yet; could be a Mathlib upstream contribution.",
-      "(S0-S4 nextSteps complete; see git log for PRs #16339, #16734, #16842, #17008.)"
+      "S7 (recommended): Resume the slicing decomposition prototype on top of the now-buildable origin/main. Pull commit `4e9853d0510` from local branch `research/ehrhart-cube-proven-oq-02-fiber-bij-1778229307` into a fresh worktree, run Docker build, fix surfaced Mathlib-drift issues (likely `Finset.card_eq_sum_card_fiberwise` MapsTo coercion, `Fin.snoc_last` arg order, `change`/`omega` interactions on opaque sums).",
+      "S8 (post-build): once `crossBall_card` sorry eliminated, set `sorryCount: 0`, `status: verified`, `badge: original`. Update `meta.json`, `index.ts`, gallery annotations.",
+      "S9 (optional, advanced): connect `crossEhrhart d n` to the central Delannoy numbers `D(d, n) := ∑ 2^k C(d,k) C(n,k)`. Mathlib has no `Delannoy` namespace yet; could be a Mathlib upstream contribution."
     ]
   },
   "tags": [
@@ -83,7 +85,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T13:49:03.933Z",
-  "lastUpdate": "2026-05-08T09:50:00.000Z",
+  "lastUpdate": "2026-05-08T21:50:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
