@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "hilbert-11-oq-02-imports",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 1, "endLine": 5 },
+    "type": "context",
+    "title": "Imports: Padic Numbers, IVT, Polynomials",
+    "content": "Five imports underpin the file. `Mathlib.NumberTheory.Padics.PadicNumbers` provides $\\mathbb{Q}_p$ as a normed field for every prime $p$ (the codomain of the parametric easy-direction theorem). `Mathlib.Topology.Algebra.Order.IntermediateValue` provides `intermediate_value_Icc`, the only analytic input — used to obtain a real root of $g(x) = 3x^3 + 4$. `Mathlib.Analysis.Polynomial.Basic` and `Mathlib.Tactic` give `push_cast`, `linear_combination`, and `fun_prop` for the formal polynomial manipulations. Notably absent: any infrastructure for elliptic-curve $L$-functions, Selmer groups, or 3-descent — those would be required to remove the Selmer 1951 axiom and constitute several thousand lines of Mathlib development.",
+    "mathContext": "Imports trace the divide between *elementary* (IVT, ring embeddings) and *deep* (3-descent on $E: y^2 = x^3 - 432 \\cdot 15^2$): the file has the former, axiomatizes the latter.",
+    "significance": "context",
+    "relatedConcepts": ["p-adic completion", "intermediate value theorem", "polynomial rings over CommRing"],
+    "prerequisites": ["Mathlib import structure", "p-adic numbers as a topological field"]
+  },
+  {
+    "id": "hilbert-11-oq-02-selmer-poly",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 53, "endLine": 55 },
+    "type": "definition",
+    "title": "selmerPoly: Polymorphic Cubic Form",
+    "content": "Defining `selmerPoly` over a generic `CommRing R` rather than a single ring is the central engineering decision of this file. The same expression $3x^3 + 4y^3 + 5z^3$ can be specialized to $\\mathbb{Q}$, $\\mathbb{R}$, or $\\mathbb{Q}_p$ (for any prime $p$) without redefinition, which is what lets the easy-direction theorems collapse to a single `push_cast; ring` step. Without this polymorphism the file would need three parallel definitions and three near-identical proofs of the easy direction. The construction generalises any homogeneous form over $\\mathbb{Z}$: a future `Mathlib.NumberTheory.HasseMinkowski` library would benefit from an analogous generic `IsHomogeneousForm` predicate.",
+    "mathContext": "$\\text{selmerPoly}(x, y, z) = 3x^3 + 4y^3 + 5z^3 \\in R$ for any commutative ring $R$. The integer coefficients $(3, 4, 5)$ make sense in every $R$ via the canonical $\\mathbb{Z}\\to R$ ring map.",
+    "significance": "key",
+    "relatedConcepts": ["polymorphic algebraic structures", "homogeneous forms", "ring homomorphism functoriality"],
+    "prerequisites": ["commutative ring with `Nat` cast", "homogeneous polynomials"]
+  },
+  {
+    "id": "hilbert-11-oq-02-real-solubility",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 70, "endLine": 91 },
+    "type": "technique",
+    "title": "Real Solubility via the Intermediate Value Theorem",
+    "content": "Real solubility reduces to a single-variable IVT argument. Setting $y = 1$, $z = 0$ collapses the cubic to $g(x) = 3x^3 + 4$; this is a continuous map $\\mathbb{R}\\to\\mathbb{R}$ with $g(-2) = -20 < 0$ and $g(0) = 4 > 0$, so `intermediate_value_Icc` yields some $x_0 \\in [-2, 0]$ with $g(x_0) = 0$. The triple $(x_0, 1, 0)$ is then a *nontrivial* real solution — nontriviality comes from the second coordinate, which is $1 \\ne 0$. The proof uses `fun_prop` to discharge continuity and `linear_combination` to bridge from $3x_0^3 + 4 = 0$ (the IVT output) to the polynomial equation $3x_0^3 + 4 \\cdot 1^3 + 5 \\cdot 0^3 = 0$ (the goal). This is the only place where any analysis enters the file; all other steps are formal ring manipulations.",
+    "mathContext": "The IVT says: if $f \\colon [a, b] \\to \\mathbb{R}$ is continuous and $y \\in [\\min(f(a), f(b)), \\max(f(a), f(b))]$, there exists $x \\in [a, b]$ with $f(x) = y$. Here $f = g$, $a = -2$, $b = 0$, $y = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "constructive existence proof", "linear_combination tactic", "real cube root"],
+    "prerequisites": ["continuity of polynomials", "IVT on a closed interval"]
+  },
+  {
+    "id": "hilbert-11-oq-02-easy-dir-real",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 98, "endLine": 114 },
+    "type": "technique",
+    "title": "Easy Direction ℚ ⇒ ℝ via Ring Embedding",
+    "content": "The easy direction is purely formal. Given a rational triple $(x, y, z) \\in \\mathbb{Q}^3$ satisfying the cubic, the cast triple $(x : \\mathbb{R}, y : \\mathbb{R}, z : \\mathbb{R})$ satisfies the same equation because $\\mathbb{Q}\\hookrightarrow\\mathbb{R}$ is a ring homomorphism, and ring homomorphisms commute with polynomial evaluation. The proof has two halves: nontriviality (via three `exact_mod_cast` on the disjunction) and the equation (via a single `push_cast; ring` step that rewrites the real expression as a coerced rational expression, then uses the rational hypothesis to close). This pattern works for any homogeneous form over $\\mathbb{Q}$ — a future generic `RatPoint_to_LocalPoint` lemma would replace this proof entirely.",
+    "mathContext": "$\\phi \\colon \\mathbb{Q} \\hookrightarrow \\mathbb{R}$ is a ring homomorphism, so for any $F \\in \\mathbb{Z}[x_1, \\ldots, x_n]$ and any $\\vec a \\in \\mathbb{Q}^n$ with $F(\\vec a) = 0$, we have $F(\\phi(\\vec a)) = \\phi(F(\\vec a)) = \\phi(0) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ring homomorphism", "push_cast tactic", "polynomial functoriality"],
+    "prerequisites": ["ring embedding ℚ ↪ ℝ", "exact_mod_cast tactic"]
+  },
+  {
+    "id": "hilbert-11-oq-02-easy-dir-padic",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 118, "endLine": 134 },
+    "type": "technique",
+    "title": "Easy Direction ℚ ⇒ ℚₚ — Parametric in p",
+    "content": "Identical in structure to the real-case proof, but parametric in the prime $p$. The hypothesis `[Fact (Nat.Prime p)]` is what unlocks Mathlib's $\\mathbb{Q}_p$ machinery — `PadicNumbers` is defined over a generic $p$ but the field structure (`Field (\\mathbb{Q}_p)`, completeness, the $\\mathbb{Q}\\hookrightarrow\\mathbb{Q}_p$ embedding) only fires when $p$ is registered as prime via `Fact`. The same `push_cast; ring` collapses both proofs because Lean's elaborator treats $\\mathbb{R}$ and $\\mathbb{Q}_p$ uniformly as instances of `Field` — they differ only at the topological/normed level, which is irrelevant to the polynomial identity.",
+    "mathContext": "For each prime $p$, the canonical map $\\mathbb{Q}\\hookrightarrow\\mathbb{Q}_p$ is the completion at the $p$-adic absolute value $|x|_p = p^{-v_p(x)}$. This is a ring homomorphism, so the same cast-and-ring argument applies.",
+    "significance": "supporting",
+    "relatedConcepts": ["p-adic completion", "Fact typeclass", "uniform proofs across fields"],
+    "prerequisites": ["p-adic numbers in Mathlib", "Fact typeclass for primes"]
+  },
+  {
+    "id": "hilbert-11-oq-02-selmer-axiom",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 154, "endLine": 155 },
+    "type": "context",
+    "title": "Axiom: Selmer's 1951 Theorem (No Rational Solutions)",
+    "content": "This axiom is the irreducibly deep arithmetic input. Selmer's original proof (Acta Mathematica 1951, ~30 pages) goes by *3-descent* on the associated genus-1 elliptic curve $E: y^2 = x^3 - 432\\cdot 15^2$: one constructs the 3-Selmer group $\\mathrm{Sel}_3(E/\\mathbb{Q})$ via class-field-theoretic computations in the cyclotomic field $\\mathbb{Q}(\\zeta_3, \\sqrt[3]{15})$, then shows the relevant 3-covering classes are locally trivial but globally nontrivial — exactly the obstruction that the Brauer-Manin theory was later built to capture (Manin 1971). Mathlib v4.26.0 has `EllipticCurve` but no Selmer-group infrastructure, no class field theory of cubic extensions, and no 3-descent machinery. Eliminating this axiom would be a multi-thousand-line Mathlib contribution and would constitute a substantial step toward formalizing modern arithmetic geometry.",
+    "mathContext": "**Selmer's theorem (1951)**: $\\nexists (x, y, z) \\in \\mathbb{Q}^3 \\setminus \\{(0,0,0)\\}$ with $3x^3 + 4y^3 + 5z^3 = 0$. Equivalently, the principal homogeneous space $E^{\\flat} = \\{3x^3 + 4y^3 + 5z^3 = 0\\}$ is locally trivial but represents a nontrivial element of the 3-Selmer group $\\mathrm{Sel}_3(E/\\mathbb{Q})$.",
+    "significance": "key",
+    "relatedConcepts": ["3-descent", "elliptic curves with complex multiplication", "Selmer group", "Tate-Shafarevich group", "principal homogeneous space"],
+    "prerequisites": ["arithmetic of elliptic curves", "class field theory", "Galois cohomology"]
+  },
+  {
+    "id": "hilbert-11-oq-02-hasse-predicate",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 169, "endLine": 173 },
+    "type": "definition",
+    "title": "selmerHassePrinciple: Local-Global Biconditional",
+    "content": "The Hasse principle for the Selmer cubic is encoded as an iff: rational solubility ⟺ (real solubility AND p-adic solubility for every prime). The forward direction is the *easy* direction (rational solutions cast to local solutions); the backward direction is the *deep* direction (local solutions everywhere should give a rational solution) — and it is precisely this backward direction that *fails* for the Selmer cubic, demonstrating that the Hasse principle is not automatic in degree $\\ge 3$. The predicate generalises naturally to other cubic forms over $\\mathbb{Q}$: the open question asks for an exact characterisation of which cubics satisfy the analogous biconditional, conjecturally controlled by the Brauer-Manin obstruction (Manin 1971) for rationally connected varieties.",
+    "mathContext": "**Hasse principle** for a polynomial system $F$ over $\\mathbb{Q}$: $F(\\vec x) = 0$ has a nontrivial $\\mathbb{Q}$-solution $\\Leftrightarrow$ $F$ has a nontrivial $\\mathbb{R}$-solution and a nontrivial $\\mathbb{Q}_p$-solution for every prime $p$. Hasse-Minkowski (1923): holds for quadratic $F$. Selmer (1951): fails for $F = 3x^3 + 4y^3 + 5z^3$.",
+    "significance": "key",
+    "relatedConcepts": ["local-global principle", "adelic points", "Brauer-Manin obstruction", "Hasse-Minkowski"],
+    "prerequisites": ["statement of the Hasse principle", "p-adic and real completions of ℚ"]
+  },
+  {
+    "id": "hilbert-11-oq-02-padic-axiom",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 180, "endLine": 181 },
+    "type": "context",
+    "title": "Axiom: p-adic Solubility Everywhere",
+    "content": "This axiom is *strictly weaker* than `selmer_no_rational_solution` and is the more accessible target for future de-axiomatisation. For primes $p \\notin \\{2, 3, 5\\}$ the Selmer cubic has *good reduction*: the projective variety $\\{3X^3 + 4Y^3 + 5Z^3 = 0\\} \\subset \\mathbb{P}^2_{\\mathbb{F}_p}$ is smooth (its discriminant $-2^4 \\cdot 3^3 \\cdot 4 \\cdot 5 \\cdot 15^2$ is invertible mod $p$), so by the Chevalley-Warning theorem (degree 3 ≤ 3 variables) it has an $\\mathbb{F}_p$-point, which Hensel's lemma lifts to a $\\mathbb{Q}_p$-point. The remaining primes $p \\in \\{2, 3, 5\\}$ require explicit low-precision lifts. Mathlib has the basic Hensel framework (`PadicInt.exists_hensel_lift`) but applying it to a homogeneous cubic over $\\mathbb{Q}_p$ is not yet developed; eliminating this axiom is a tractable Mathlib contribution.",
+    "mathContext": "**Hensel's lemma**: if $f \\in \\mathbb{Z}_p[x]$ has $f(\\bar a) \\equiv 0 \\pmod p$ and $f'(\\bar a) \\not\\equiv 0 \\pmod p$ for some $\\bar a \\in \\mathbb{F}_p$, then there exists $a \\in \\mathbb{Z}_p$ with $f(a) = 0$ and $a \\equiv \\bar a \\pmod p$. Combined with Chevalley-Warning over $\\mathbb{F}_p$, this gives $\\mathbb{Q}_p$-solubility for all $p$ of good reduction.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hensel's lemma", "Chevalley-Warning theorem", "smooth reduction mod p", "good reduction of varieties"],
+    "prerequisites": ["p-adic integers ℤ_p", "Hensel lifting", "smooth varieties over finite fields"]
+  },
+  {
+    "id": "hilbert-11-oq-02-failure-proof",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 198, "endLine": 203 },
+    "type": "insight",
+    "title": "The 4-Line Failure Proof",
+    "content": "Once the two axioms are accepted, the Hasse-principle failure follows in four lines: assume the local-global iff (`h`), feed `selmer_locally_soluble_everywhere` (proved real solubility ∧ axiomatized p-adic solubility) through `h.mpr` to extract a rational solution, then feed that rational solution to `selmer_no_rational_solution` for a contradiction. The brevity is structural: all the *content* is in the three earlier facts, and the failure proof just composes them. This pattern is characteristic of obstruction-theoretic results — once the local data and the global non-existence are separately established, the failure of the local-global principle is automatic. The same skeleton would prove failure for any cubic form $F$ once one establishes (i) $F$ has $\\mathbb{R}$ and $\\mathbb{Q}_p$ solutions and (ii) $F$ has no $\\mathbb{Q}$ solutions.",
+    "mathContext": "Logical skeleton: $((\\exists \\text{rat}) \\Leftrightarrow (\\text{real} \\land \\forall p,\\ \\text{p-adic})) \\to \\text{(local everywhere)} \\to (\\exists \\text{rat}) \\to \\bot$. The content is in the three premises; the failure is a one-line modus ponens chain.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "modus ponens chain", "obstruction theory", "Brauer-Manin obstruction"],
+    "prerequisites": ["biconditional elimination", "logical structure of Hasse principle"]
+  },
+  {
+    "id": "hilbert-11-oq-02-colliot-thelene",
+    "proofId": "hilbert-11-oq-02",
+    "range": { "startLine": 207, "endLine": 233 },
+    "type": "context",
+    "title": "Colliot-Thélène Conjecture: The Modern Open Problem",
+    "content": "The `Prop := True` placeholder marks the most ambitious open question in the local-global theory: is the Brauer-Manin obstruction the *only* obstruction to the Hasse principle, at least for smooth proper geometrically rationally connected varieties over a number field? Colliot-Thélène (1980s onward) conjectured yes; the conjecture is known for several special families — Châtelet surfaces (Colliot-Thélène, Sansuc, Swinnerton-Dyer), conic bundles over $\\mathbb{P}^1$ (Salberger), del Pezzo surfaces of degree $\\ge 5$ — but is wide open in general (cubic surfaces, K3 surfaces, higher-dimensional Fanos). Skorobogatov (1999) showed the *étale*-Brauer-Manin obstruction is strictly stronger; Poonen (2010) constructed varieties where even that is not the only obstruction. The full statement requires étale cohomology, the Brauer group of a scheme, and adelic-points machinery — none of which are in Mathlib v4.26.0, hence the placeholder. This is one of the most prominent open problems linking number theory to algebraic geometry.",
+    "mathContext": "**Colliot-Thélène conjecture**: for $X$ smooth proper geometrically rationally connected over a number field $K$, the Brauer-Manin set is nonempty iff $X(K) \\ne \\emptyset$, i.e.\\ $X(\\mathbb{A}_K)^{\\mathrm{Br}(X)} \\ne \\emptyset \\Leftrightarrow X(K) \\ne \\emptyset$.",
+    "significance": "context",
+    "relatedConcepts": ["Brauer-Manin obstruction", "rationally connected variety", "étale-Brauer-Manin obstruction", "Châtelet surface", "del Pezzo surface"],
+    "prerequisites": ["Brauer group of a scheme", "adelic points", "étale cohomology"]
+  }
+]
