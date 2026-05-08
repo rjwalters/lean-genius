@@ -562,6 +562,74 @@ theorem symBUDim_four_five_lower_unconditional : 4 ≤ symBUDim 4 5 := by
   have := symBUDim_odd_lower_unconditional 4 2 (by norm_num)
   simpa using this
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XIV: Conditional consequence — Z/2 bound transfers to cyclic primes
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Conditional on `symBUDim_eq_largestPrime`**: the axiom-free Z/2 lower
+    bound `symBUDim_lower_z2` pulls through the conjectured equality to
+    pin a lower bound on the cyclic Yang-Borsuk dimension at the largest
+    prime ≤ n:
+        `d − 1 ≤ buDim (largestPrimeBelow n) d`   (n ≥ 2, d ≥ 1).
+
+    This is genuinely new content beyond the parent's axiomatization:
+    `buDim_two` (parent) only fixes `buDim 2`; `buDim_prime` only fixes
+    `buDim p (2k)` for prime p and even d. At ODD d, `buDim p d` for
+    p ≥ 3 is unconstrained by parent axioms — the symmetric-group
+    conjecture would PIN a NEW lower bound `d − 1` valid at odd d. -/
+theorem buDim_largestPrime_lower_z2 (n d : ℕ) (hn : 2 ≤ n) (hd : 0 < d) :
+    d - 1 ≤ buDim (largestPrimeBelow n) d := by
+  rw [← symBUDim_eq_largestPrime n d hn]
+  exact symBUDim_lower_z2 n d hn hd
+
+/-- **Conditional on the conjecture, at prime p**: classical Borsuk-Ulam
+    lower bound `d − 1 ≤ buDim p d` extends from p = 2 (parent's `buDim_two`)
+    to ALL primes p and ALL d ≥ 1 (including odd d).
+
+    This is strictly stronger than what `buDim_prime` provides: at odd d
+    the parent's even-d Yang-Borsuk axiom yields nothing about `buDim p d`,
+    while this conditional bound delivers `d − 1` for free.
+
+    Proof: specialize `buDim_largestPrime_lower_z2` at n = p and use
+    `largestPrimeBelow_self_of_prime` to collapse the prime selector. -/
+theorem buDim_prime_lower_z2_conditional (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d) :
+    d - 1 ≤ buDim p d := by
+  have h := buDim_largestPrime_lower_z2 p d hp.two_le hd
+  rwa [largestPrimeBelow_self_of_prime p hp] at h
+
+/-- **Concrete conditional bound at p = 3**: `d − 1 ≤ buDim 3 d` for d ≥ 1.
+    At odd d (e.g., d = 3) this gives `buDim 3 3 ≥ 2`, content beyond
+    parent's even-d Yang-Borsuk axiom. -/
+theorem buDim_three_lower_z2_conditional (d : ℕ) (hd : 0 < d) :
+    d - 1 ≤ buDim 3 d :=
+  buDim_prime_lower_z2_conditional 3 d (by decide) hd
+
+/-- **Concrete conditional bound at p = 5**: `d − 1 ≤ buDim 5 d` for d ≥ 1. -/
+theorem buDim_five_lower_z2_conditional (d : ℕ) (hd : 0 < d) :
+    d - 1 ≤ buDim 5 d :=
+  buDim_prime_lower_z2_conditional 5 d (by decide) hd
+
+/-- **Concrete conditional bound at p = 7**: `d − 1 ≤ buDim 7 d` for d ≥ 1. -/
+theorem buDim_seven_lower_z2_conditional (d : ℕ) (hd : 0 < d) :
+    d - 1 ≤ buDim 7 d :=
+  buDim_prime_lower_z2_conditional 7 d (by decide) hd
+
+/-- **Combined unconditional lower bound at prime p**: at any prime p with
+    d ≥ 1,
+        `max (buDim p d) (d − 1) ≤ symBUDim p d`   (axiom-free).
+
+    Packages the two axiom-free lower bounds at prime n into a single
+    statement: the Z/p subgroup contribution (`buDim p d ≤ symBUDim p d`,
+    parent's `sym_has_cyclic_prime`) and the Z/2 subgroup contribution
+    (`d − 1 ≤ symBUDim p d`, iter-7's `symBUDim_lower_z2`). At even
+    d = 2k the two coincide via `buDim_prime` (both deliver `2k − 1`);
+    at odd d the Z/2 component dominates. -/
+theorem symBUDim_prime_combined_lower (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d) :
+    max (buDim p d) (d - 1) ≤ symBUDim p d := by
+  refine Nat.max_le.mpr ⟨?_, ?_⟩
+  · exact sym_has_cyclic_prime p d p hp le_rfl
+  · exact symBUDim_lower_z2 p d hp.two_le hd
+
 /-
 ## Summary
 
@@ -643,6 +711,30 @@ theorem symBUDim_four_five_lower_unconditional : 4 ≤ symBUDim 4 5 := by
   test case), `_three_five_lower_`, `_four_five_lower_` (extends odd-d
   coverage past n = 3).
 
+### Iteration 8 additions (conditional Z/2 transfer to cyclic primes)
+- `buDim_largestPrime_lower_z2` — **conditional** on
+  `symBUDim_eq_largestPrime`: the axiom-free Z/2 lower bound
+  `symBUDim_lower_z2` pulls through the conjectured equality to
+  `d − 1 ≤ buDim (largestPrimeBelow n) d` for `n ≥ 2`, `d ≥ 1`. Genuinely
+  new content: at odd `d` the parent's `buDim_prime` axiom (which only
+  fires on even d) leaves `buDim p d` unconstrained for primes `p ≥ 3`;
+  the symmetric-group conjecture would PIN a NEW lower bound `d − 1`
+  valid at odd d as well.
+- `buDim_prime_lower_z2_conditional` — at any prime p and d ≥ 1,
+  conditional `d − 1 ≤ buDim p d`. Specializes
+  `buDim_largestPrime_lower_z2` via `largestPrimeBelow_self_of_prime`.
+  **Significance**: at odd d this is content beyond Yang-Borsuk (which
+  only handles even d at primes ≥ 3).
+- `buDim_three_lower_z2_conditional`, `buDim_five_lower_z2_conditional`,
+  `buDim_seven_lower_z2_conditional` — concrete instances at small odd
+  primes (e.g., conditionally `buDim 3 3 ≥ 2`).
+- `symBUDim_prime_combined_lower` — **axiom-free** combined lower bound
+  at any prime p: `max (buDim p d) (d − 1) ≤ symBUDim p d`. Packages
+  the Z/p subgroup contribution (parent's `sym_has_cyclic_prime`) with
+  the Z/2 contribution (iter-7's `symBUDim_lower_z2`). At even `d = 2k`
+  both coincide (`buDim p (2k) = 2k − 1 = d − 1`); at odd d the Z/2
+  component dominates.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -670,5 +762,8 @@ theorem symBUDim_four_five_lower_unconditional : 4 ≤ symBUDim 4 5 := by
 #check @symBUDim_lower_z2
 #check @symBUDim_odd_lower_unconditional
 #check @symBUDim_two_general_unconditional
+#check @buDim_largestPrime_lower_z2
+#check @buDim_prime_lower_z2_conditional
+#check @symBUDim_prime_combined_lower
 
 end BorsukUlamSymPrime

@@ -2,7 +2,7 @@
 
 **Phase**: ORIENT
 **Since**: 2026-05-08T18:30:00Z
-**Iteration**: 7
+**Iteration**: 8
 
 ## Current Focus
 
@@ -186,3 +186,48 @@ parent file `BorsukUlamOQ02OQ01.lean:111`, unrelated to S7 changes).
 **Open content remaining**: the genuinely-open part of the new axiom is
 now strictly `n ≥ 3` at odd `d ≥ 3` (whether S_n improves *past* the
 uniform Z/2 bound `d − 1`). At `n = 2` the conjecture is fully axiom-free.
+
+## Iteration 8 Builds (researcher-1, 2026-05-08)
+
+Focus: **conditional structural consequence** — the axiom-free Z/2 lower
+bound from iter 7 pulls through `symBUDim_eq_largestPrime` to deliver a
+new lower bound on cyclic-prime Yang-Borsuk dimensions at ALL d, including
+odd d (where the parent's `buDim_prime` axiom is silent for primes p ≥ 3).
+
+- `buDim_largestPrime_lower_z2` (conditional, core new theorem): under
+  `symBUDim_eq_largestPrime`, `d − 1 ≤ buDim (largestPrimeBelow n) d` for
+  n ≥ 2, d ≥ 1. One-line proof: rewrite via the new axiom and cite
+  `symBUDim_lower_z2` from iter 7.
+- `buDim_prime_lower_z2_conditional` (conditional): at any prime p with
+  d ≥ 1, `d − 1 ≤ buDim p d`. **Significance**: extends Yang-Borsuk's
+  classical Borsuk-Ulam lower bound from p = 2 (parent's `buDim_two`,
+  valid in any dimension) to ALL primes p ≥ 2 and ALL d ≥ 1. At odd d
+  this is content beyond the parent's even-d-only `buDim_prime` axiom.
+- `buDim_three_lower_z2_conditional`, `buDim_five_lower_z2_conditional`,
+  `buDim_seven_lower_z2_conditional` (conditional corollaries):
+  concrete instances at small odd primes. E.g., conditionally
+  `buDim 3 3 ≥ 2`, `buDim 5 5 ≥ 4`.
+- `symBUDim_prime_combined_lower` (axiom-free): packaged max-bound
+  `max (buDim p d) (d − 1) ≤ symBUDim p d` at any prime p with d ≥ 1.
+  Combines the Z/p contribution (parent's `sym_has_cyclic_prime`) with
+  the Z/2 contribution (iter-7's `symBUDim_lower_z2`). At even d = 2k
+  both terms equal d − 1 (via parent's `buDim_prime`); at odd d the Z/2
+  component dominates.
+
+**Counts**: lineCount 674→768 (+94), theoremCount 45→51 (+6, substantive
+43→49), axiomCount 1 (unchanged), sorries 0 (unchanged).
+
+**Significance**: the conditional consequence is genuinely new structural
+content. Accepting `symBUDim_eq_largestPrime` would PIN a new lower bound
+on Yang-Borsuk dimensions for cyclic primes p ≥ 3 at odd d — content
+beyond the existing axiomatization. Inversely, any future computation of
+`buDim p d` at odd d that violates `d − 1 ≤ buDim p d` would FALSIFY
+`symBUDim_eq_largestPrime` at n = p. The conditional theorem is therefore
+both a positive consequence and a falsification handle.
+
+**Path forward** (unchanged from iter 7): direct proof of
+`symBUDim_eq_largestPrime` requires Fadell-Husseini index theory not in
+Mathlib. Stretch goals at small n: prove the n=3 case (next-easiest after
+n=2; would need a `symBUDim_three` base axiom that the parent doesn't
+yet have), prove the n=4 case via V₄ ≤ S₄ structure, or coordinate with
+sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral D_n analog).
