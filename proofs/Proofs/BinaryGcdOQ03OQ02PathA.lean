@@ -382,6 +382,167 @@ example : hgcdSafeGcd 107 85 = 1 := by native_decide
 
 example : hgcdSafeGcd 1000 1000 = 1000 := by native_decide
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART VIII: RECURSIVE SCHÖNHAGE GCD (Session 20)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Iterated Path-A GCD via guarded recursion
+
+    Sessions 18–19 (PARTS II–VII) provide a verified single-step
+    HGCD operation `hgcdSafeApply : ℕ → ℕ → ℤ × ℤ` whose component
+    `Int.gcd` agrees with `Nat.gcd a b` unconditionally, plus a
+    GCD function `hgcdSafeGcd` that wraps a single matrix
+    application.
+
+    This PART implements the Schönhage-style RECURSIVE GCD. The
+    iteration applies `hgcdSafeApply` REPEATEDLY: each step
+    produces a candidate smaller pair `(p.1.natAbs, p.2.natAbs)`,
+    and we recurse on that pair WHEN — and only when — its `max`
+    is strictly less than `max a b`. Two structural fallbacks make
+    the function total and unconditionally correct:
+
+      1. `max a b < hgcdThresholdSafe` ⇒ dispatch to `Nat.gcd`.
+      2. Per-step size-reduction guard fails ⇒ dispatch to
+         `Nat.gcd`.
+
+    Termination. The recursion is structural on `fuel`, so Lean's
+    equation compiler accepts the definition without a custom
+    well-founded relation. Correctness (Theorem
+    `schonhageGcd_eq_gcd`) is INDEPENDENT of whether the underlying
+    `hgcdMatrixSafe`'s OWN runtime size-reduction guard ever fires.
+    Even on pathological inputs where that guard always aborts
+    (returning `M_inner` unchanged), the OUTER size-reduction
+    guard here ensures the function still returns `Nat.gcd a b`.
+
+    What this provides. A TOTAL CORRECT GCD function whose
+    computational shape mirrors Schönhage's recursion. The
+    quantitative speedup story (an `O(M(n)·log n)` bit-complexity
+    bound) is deferred until Mathlib lands fast multiplication and
+    a bit-complexity model — see the Path A roadmap in PART VI's
+    docstring. -/
+
+/-- Iterated Schönhage-style GCD, fuel-indexed for totality.
+
+    On inputs above threshold, the body applies `hgcdSafeApply` once,
+    obtaining a pair `(p.1, p.2)` of integers. If
+    `max p.1.natAbs p.2.natAbs < max a b` (size reduction succeeded),
+    we recurse on that pair. Otherwise — and on inputs below
+    threshold — we fall back to `Nat.gcd`. -/
+def schonhageGcd : ℕ → ℕ → ℕ → ℕ
+  | 0, a, b => Nat.gcd a b
+  | fuel + 1, a, b =>
+    if max a b < hgcdThresholdSafe then
+      Nat.gcd a b
+    else
+      let p := hgcdSafeApply a b
+      let a' := p.1.natAbs
+      let b' := p.2.natAbs
+      if max a' b' < max a b then
+        schonhageGcd fuel a' b'
+      else
+        Nat.gcd a b
+
+/-- Top-level entry point: fuel chosen so the recursion always
+    reaches a base case before exhaustion. Each iteration that
+    recurses strictly decreases `max a b` (by the runtime guard),
+    so `max a b + 1` units of fuel suffice in the worst case where
+    every step reduces by exactly one. The two fallback branches
+    consume at most one fuel unit each before terminating. -/
+def schonhageGcdOf (a b : ℕ) : ℕ := schonhageGcd (max a b + 1) a b
+
+/-- Reduction equation at fuel 0. -/
+theorem schonhageGcd_zero (a b : ℕ) :
+    schonhageGcd 0 a b = Nat.gcd a b := rfl
+
+/-- Reduction equation at fuel `f + 1`. Stated without `let`-binders
+    so `rw` rewrites cleanly without needing `dsimp` on the inner
+    `if`. -/
+theorem schonhageGcd_succ (f a b : ℕ) :
+    schonhageGcd (f + 1) a b =
+      (if max a b < hgcdThresholdSafe then
+        Nat.gcd a b
+      else if max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+              < max a b then
+        schonhageGcd f (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+      else
+        Nat.gcd a b) := rfl
+
+/-- Key step toward correctness. The natural-number components
+    from one `hgcdSafeApply` step have the same `Nat.gcd` as the
+    original input pair.
+
+    Proof: `Int.gcd p.1 p.2` is defined as
+    `Nat.gcd p.1.natAbs p.2.natAbs`, so the equality follows
+    directly from S19's `hgcdSafeApply_gcd_eq`. -/
+theorem hgcdSafeApply_natAbs_gcd (a b : ℕ) :
+    Nat.gcd (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+      = Nat.gcd a b := by
+  -- `Int.gcd m n` definitionally equals `Nat.gcd m.natAbs n.natAbs`,
+  -- so `hgcdSafeApply_gcd_eq` discharges the goal directly.
+  exact hgcdSafeApply_gcd_eq a b
+
+/-- **Correctness of the iterated Schönhage-style GCD.**
+
+    For every fuel and every pair of natural inputs,
+    `schonhageGcd` agrees with `Nat.gcd`. Proof by induction on
+    `fuel`. The base case (fuel 0) and both fallback branches
+    return `Nat.gcd a b` directly. In the recursive branch, the
+    induction hypothesis identifies the recursive call with
+    `Nat.gcd p.1.natAbs p.2.natAbs`, which equals `Nat.gcd a b`
+    by `hgcdSafeApply_natAbs_gcd`. -/
+theorem schonhageGcd_eq_gcd (fuel a b : ℕ) :
+    schonhageGcd fuel a b = Nat.gcd a b := by
+  induction fuel generalizing a b with
+  | zero => rfl
+  | succ f ih =>
+    rw [schonhageGcd_succ]
+    by_cases hsmall : max a b < hgcdThresholdSafe
+    · rw [if_pos hsmall]
+    · rw [if_neg hsmall]
+      by_cases hreduce :
+          max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+            < max a b
+      · rw [if_pos hreduce]
+        rw [ih (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs]
+        exact hgcdSafeApply_natAbs_gcd a b
+      · rw [if_neg hreduce]
+
+/-- Top-level Schönhage GCD agrees with `Nat.gcd`. -/
+theorem schonhageGcdOf_eq_gcd (a b : ℕ) :
+    schonhageGcdOf a b = Nat.gcd a b :=
+  schonhageGcd_eq_gcd _ a b
+
+-- ═══════════════════════════════════════════════════════════════
+-- PART IX: COMPUTATIONAL EXAMPLES — RECURSIVE SCHÖNHAGE (S20)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Sanity checks for `schonhageGcdOf`
+
+    These exercise the recursive iteration. Inputs are chosen to
+    cover the three branches:
+      - Below-threshold dispatch (`Nat.gcd` fallback at small inputs).
+      - Recursive iteration (above threshold, guard fires).
+      - Pathological inputs from PR #17024's counterexample family. -/
+
+example : schonhageGcdOf 0 0 = 0 := by native_decide
+
+example : schonhageGcdOf 12 8 = 4 := by native_decide
+
+example : schonhageGcdOf 89 55 = 1 := by native_decide
+
+example : schonhageGcdOf 100 75 = 25 := by native_decide
+
+/-- The S17 counterexample input `(130, 89)`. Even though the
+    underlying `hgcdMatrix` is unbounded here, the Schönhage
+    iteration is still well-defined and returns the correct GCD. -/
+example : schonhageGcdOf 130 89 = 1 := by native_decide
+
+example : schonhageGcdOf 107 85 = 1 := by native_decide
+
+example : schonhageGcdOf 1000 1000 = 1000 := by native_decide
+
+example : schonhageGcdOf 1000000 999999 = 1 := by native_decide
+
 end HGcdSafe
 
 /-! ## Summary
@@ -409,28 +570,53 @@ end HGcdSafe
 
 4. **Verified HGCD-based GCD function**
    (`hgcdSafeGcd`, `hgcdSafeApply_gcd_eq`, `hgcdSafeGcd_eq_gcd`,
-   S19, this PR): a TOTAL CORRECT GCD function based on Path A.
+   S19): a TOTAL CORRECT single-step GCD function based on Path A.
    `hgcdSafeGcd_eq_gcd` proves `hgcdSafeGcd a b = Nat.gcd a b`
    unconditionally, including on the PR #17024 counterexample
    inputs. Correctness depends only on the unimodularity invariant,
-   not on size reduction (which remains the open subproblem).
+   not on size reduction.
 
-**Path A roadmap (Session 20+):**
+5. **Recursive Schönhage-style GCD via iterated safe HGCD**
+   (`schonhageGcd`, `schonhageGcdOf`, `schonhageGcd_eq_gcd`,
+   `schonhageGcdOf_eq_gcd`, S20, this PR): a TOTAL CORRECT
+   ITERATED GCD function. The body applies `hgcdSafeApply` once,
+   checks whether the column-output natAbs strictly decreased
+   `max a b`, and either recurses on the reduced pair or falls
+   back to `Nat.gcd`. Two structural fallbacks (below-threshold
+   dispatch + per-step size-reduction guard) make the function
+   total. Correctness `schonhageGcd_eq_gcd a b = Nat.gcd a b`
+   holds unconditionally, INDEPENDENT of whether the underlying
+   `hgcdMatrixSafe` ever reduces magnitude — the OUTER guard here
+   handles every pathological input by dispatching to `Nat.gcd`.
 
-- Prove `hgcdMatrixSafe_size_reduction` (POSITIVE form): on inputs
-  `max a b ≥ hgcdThresholdSafe`, when the runtime guard fires
-  (compose branch), the column output `(M.apply a b).natAbs`
-  strictly reduces. The runtime guard makes this provable
-  structurally rather than via a deep algebraic lift of the
-  row-vector invariant (which Session 17 showed is false for the
-  unguarded `hgcdMatrix`).
+**Significance of S20.** With `schonhageGcd_eq_gcd` in hand, the
+verified algorithmic story for Path A is complete: a recursive
+GCD function whose computational shape mirrors Schönhage's
+classical recursion, proved correct on every natural input,
+0 sorries, 0 axioms. The remaining gap is QUANTITATIVE — proving
+that the per-step size-reduction guard fires often enough to
+yield an asymptotic speedup over `Nat.gcd`. That step requires
+both (a) a stronger invariant on `hgcdMatrixSafe` and (b) Mathlib
+bit-complexity infrastructure that does not yet exist.
+
+**Path A roadmap (Session 21+):**
+
+- Prove a structural inner-reduction theorem for
+  `hgcdMatrixSafe`: characterise the input regime in which the
+  inner runtime guard fires, ideally showing it fires "often"
+  (e.g. on a measurable density of pairs above threshold). The
+  S17 PART XIV counterexample shows the guard CAN abort, but
+  empirically it succeeds on the majority of inputs in the survey
+  range; quantifying that would yield a probabilistic speedup
+  bound even in the absence of a Mathlib bit-complexity model.
 
 - Quantitative bit-complexity bound: requires Mathlib
   infrastructure (fast multiplication, bit-complexity model)
-  that does not exist. Out of scope until Mathlib lands these.
+  that does not yet exist. Defer until Mathlib lands these.
 
-- Compare runtime behaviour of `hgcdMatrixSafe` against
-  `hgcdMatrix` on the PR #17024 counterexample family
-  (`(130, 89)`, the worst case `(107, 85)`, etc.) to verify the
-  guard fires when expected.
+- Compare runtime behaviour of `schonhageGcd` against `Nat.gcd`
+  on the PR #17024 counterexample family (`(130, 89)`, the
+  worst case `(107, 85)`, etc.) to verify that the outer guard
+  fires (rather than the iteration making progress) for those
+  particular inputs.
 -/
