@@ -47,7 +47,7 @@
       "Newton's inequality at k = 1 fully proved (newton_inequality_binomial_k_one): C(n,2)·e_1² ≥ n²·e_2 by induction on the list, using the sum-of-squares identity"
     ],
     "axiomCount": 0,
-    "lineCount": 577,
+    "lineCount": 586,
     "assumptions": "0 axiom declarations. 1 sorry remaining: newton_inequality_binomial for k ≥ 2 (the general inductive Cauchy-Schwarz step). The k = 1 case is now fully proved (newton_inequality_binomial_k_one), and the downstream consequences maclaurin_first_step and amgm_from_newton no longer depend on the remaining sorry.",
     "prerequisites": [
       "Elementary symmetric polynomials",
@@ -179,7 +179,7 @@
       "List"
     ],
     "namespace": "NewtonInductiveStepOQ01",
-    "lineCount": 577,
+    "lineCount": 586,
     "axiomCount": 0,
     "theoremCount": 21,
     "definitionCount": 2,
