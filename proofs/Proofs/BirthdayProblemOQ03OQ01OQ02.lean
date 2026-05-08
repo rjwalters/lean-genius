@@ -621,10 +621,94 @@ theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
   rw [p_triple_n3 d hd]
   simp [expectedTriples, Nat.choose_self]
 
+-- ============================================================
+-- §3. INDICATOR ALGEBRA (Layer 1 of Lemma C roadmap, Session 10)
+-- ============================================================
+
+/-
+  Layer 1 is the foundational step of the four-layer plan in
+  `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/lemma-c-roadmap.md`
+  for discharging `axiom p_no_triple_tendsto` (Lemma C). It introduces the
+  triple-coincidence count `tripleCount d n f` (a Nat-valued sum of indicators
+  over strictly-increasing triples) and proves the two equivalences
+
+    tripleCount d n f = 0 ↔ ∀ i<j<k, ¬(f i = f j = f k)
+                          ↔ ∀ pairwise-distinct i,j,k, ¬(f i = f j = f k)
+
+  The second form matches the predicate inside the axiom, so the axiom's
+  no-triple filter equals the `tripleCount = 0` filter (`noTriple_filter_eq_…`).
+
+  Subsequent layers (queued):
+  - Layer 2: `expectedTripleCount_eq` — first moment, general n (PR #16837 partial).
+  - Layer 3: factorial-moment expansion + fusion-pattern bookkeeping (bottleneck).
+  - Layer 4: Method of Factorial Moments (Mathlib upstream candidate).
+-/
+
+/-- Triple-coincidence count: number of strictly-increasing triples `(i,j,k)`
+    in `Fin n × Fin n × Fin n` for which `f i = f j = f k`. The random variable
+    `X_d := tripleCount d n f` is exactly the sum of indicators
+    `Σ_{i<j<k} 𝟙{f i = f j = f k}` whose factorial moments drive the Method of
+    Factorial Moments approach to Lemma C. -/
+def tripleCount (d n : ℕ) (f : Fin n → Fin d) : ℕ :=
+  (Finset.univ.filter (fun t : Fin n × Fin n × Fin n =>
+    t.1 < t.2.1 ∧ t.2.1 < t.2.2 ∧ f t.1 = f t.2.1 ∧ f t.2.1 = f t.2.2)).card
+
+/-- Strict-inequality form of `tripleCount = 0 ↔ no triple`. Direct from the
+    definition; the only content is the empty-filter ↔ universal-negation
+    correspondence. -/
+lemma tripleCount_eq_zero_iff_strict (d n : ℕ) (f : Fin n → Fin d) :
+    tripleCount d n f = 0 ↔
+      ∀ i j k : Fin n, i < j → j < k → ¬(f i = f j ∧ f j = f k) := by
+  rw [tripleCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  refine ⟨?_, ?_⟩
+  · intro h i j k hij hjk hf
+    exact h (Finset.mem_univ ⟨i, j, k⟩) ⟨hij, hjk, hf.1, hf.2⟩
+  · intro h ⟨i, j, k⟩ _ ⟨hij, hjk, hfij, hfjk⟩
+    exact h i j k hij hjk ⟨hfij, hfjk⟩
+
+/-- Distinct-pairs form of `tripleCount = 0 ↔ no triple`. This is the form
+    matching the axiom `p_no_triple_tendsto`'s no-triple predicate. The
+    forward direction does the case-split sorting `(i, j, k)` into a strictly
+    increasing triple — six orderings, each preserving the symmetric predicate
+    `f a = f b ∧ f b = f c`. -/
+lemma tripleCount_eq_zero_iff_no_triple (d n : ℕ) (f : Fin n → Fin d) :
+    tripleCount d n f = 0 ↔
+      ∀ i j k : Fin n, i ≠ j → j ≠ k → i ≠ k →
+        ¬(f i = f j ∧ f j = f k) := by
+  rw [tripleCount_eq_zero_iff_strict]
+  refine ⟨?_, ?_⟩
+  · intro h i j k hij hjk hik hf
+    have hfik : f i = f k := hf.1.trans hf.2
+    rcases lt_or_gt_of_ne hij with h_ij | h_ij
+    · rcases lt_or_gt_of_ne hjk with h_jk | h_jk
+      · exact h i j k h_ij h_jk hf
+      · rcases lt_or_gt_of_ne hik with h_ik | h_ik
+        · exact h i k j h_ik h_jk ⟨hfik, hf.2.symm⟩
+        · exact h k i j h_ik h_ij ⟨hfik.symm, hf.1⟩
+    · rcases lt_or_gt_of_ne hjk with h_jk | h_jk
+      · rcases lt_or_gt_of_ne hik with h_ik | h_ik
+        · exact h j i k h_ij h_ik ⟨hf.1.symm, hfik⟩
+        · exact h j k i h_jk h_ik ⟨hf.2, hfik.symm⟩
+      · exact h k j i h_jk h_ij ⟨hf.2.symm, hf.1.symm⟩
+  · intro h i j k hij hjk hf
+    have hik : i < k := lt_trans hij hjk
+    exact h i j k (ne_of_lt hij) (ne_of_lt hjk) (ne_of_lt hik) hf
+
+/-- The axiom's no-triple filter equals the `tripleCount = 0` filter on
+    `Fin n → Fin d`. Bridges the axiom statement to the `tripleCount`-indexed
+    factorial-moment framework that Layer 3 will analyse. -/
+lemma noTriple_filter_eq_tripleCount_zero_filter (d n : ℕ) :
+    (Finset.univ.filter (fun f : Fin n → Fin d =>
+      ∀ i j k : Fin n, i ≠ j → j ≠ k → i ≠ k →
+        ¬(f i = f j ∧ f j = f k))) =
+    (Finset.univ.filter (fun f : Fin n → Fin d => tripleCount d n f = 0)) := by
+  ext f
+  simp [tripleCount_eq_zero_iff_no_triple]
+
 /-
   ## Summary
 
-  **Proved (15 theorems, 1 axiom):**
+  **Proved (18 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -641,6 +725,13 @@ theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
   14. `p_triple_n3` (Session 7): P(triple|n=3) = 1/d² as a real number
   15. `p_triple_n3_eq_expectedTriples` (Session 7): n=3 first-moment identity
       P(triple|n=3) = expectedTriples 3 d (Markov is tight at n=3 since X_d ≤ 1)
+  16. `tripleCount_eq_zero_iff_strict` (Session 10, Layer 1): X_d = 0 ↔ no
+      strictly-increasing triple coincidence.
+  17. `tripleCount_eq_zero_iff_no_triple` (Session 10, Layer 1): X_d = 0 ↔ no
+      pairwise-distinct triple coincidence (matches axiom predicate; six-case
+      sorting argument).
+  18. `noTriple_filter_eq_tripleCount_zero_filter` (Session 10, Layer 1): the
+      axiom's no-triple filter equals `{f | tripleCount d n f = 0}`.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -663,5 +754,8 @@ theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
 #check @p_no_triple_n3
 #check @p_triple_n3
 #check @p_triple_n3_eq_expectedTriples
+#check @tripleCount
+#check @tripleCount_eq_zero_iff_no_triple
+#check @noTriple_filter_eq_tripleCount_zero_filter
 
 end BirthdayThreshold3
