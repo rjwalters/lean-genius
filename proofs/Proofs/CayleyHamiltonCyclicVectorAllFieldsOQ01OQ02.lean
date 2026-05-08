@@ -5,7 +5,11 @@
   Every nonderogatory n×n matrix M over K is similar to the companion matrix C(minpoly K M).
   This is the nonderogatory case of the rational canonical form.
 
-  ## Status: 0 sorries, 1 axiom (hMn_axiom)
+  ## Status: 0 sorries, 0 axioms
+
+  The previous `hMn_axiom` (M^n v expressed via lower powers using minpoly coefficients)
+  is now derived from Mathlib: minpoly is monic of degree n, so its `aeval`-expansion at M
+  gives M^n + Σ_{k<n} c_k • M^k = 0; applying `mulVec v` yields the identity directly.
 -/
 import Mathlib
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04
@@ -63,9 +67,11 @@ private lemma cyclicMatrix_ker (M : Matrix (Fin n) (Fin n) K)
   have hq0 : q = 0 := hcyc q hdeg hqv
   -- Extract c j = 0 from coefficient extraction
   funext j
+  show c j = 0
   have hcoeff := congr_arg (fun p => p.coeff j.val) hq0
-  simp only [hq_def, coeff_sum, coeff_C_mul, coeff_X_pow, mul_ite, mul_one, mul_zero,
-             Finset.sum_ite_eq', Finset.mem_univ, if_true, coeff_zero] at hcoeff
+  simp only [hq_def, Polynomial.finset_sum_coeff, coeff_C_mul, coeff_X_pow, mul_ite,
+             mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true,
+             coeff_zero] at hcoeff
   exact hcoeff
 
 theorem cyclicMatrix_injective (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
@@ -77,11 +83,65 @@ theorem cyclicMatrix_isUnit (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
     (hcyc : IsCyclicVector M v) : IsUnit (cyclicMatrix M v) :=
   mulVec_injective_iff_isUnit.mp (cyclicMatrix_injective M v hcyc)
 
-/-- M^n v = -(Σ_{k<n} c_k M^k v). Axiomatized: follows from minpoly(M)v = 0. -/
-private axiom hMn_axiom (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
+/-- mulVec distributes over finite sums of matrices (local helper). -/
+private lemma sum_mulVec_local {ι : Type*} [DecidableEq ι] (s : Finset ι)
+    (f : ι → Matrix (Fin n) (Fin n) K) (v : Fin n → K) :
+    (∑ i ∈ s, f i).mulVec v = ∑ i ∈ s, (f i).mulVec v := by
+  induction s using Finset.induction_on with
+  | empty => simp [Matrix.zero_mulVec]
+  | @insert a s' has ih =>
+      rw [Finset.sum_insert has, Matrix.add_mulVec, ih, Finset.sum_insert has]
+
+/-- aeval expansion: aeval M p = ∑ k ∈ range (n+1), p.coeff k • M^k for natDegree p = n.
+
+    `Polynomial.eval₂_eq_sum` produces `algebraMap _ _ (coeff k) * M^k`; we convert with
+    `← Algebra.smul_def` to `coeff k • M^k`, then extend the support sum to `range (n+1)`
+    using monotonicity of natDegree. -/
+private lemma aeval_eq_sum_pow_local (p : K[X]) (hdeg : p.natDegree = n)
+    (M : Matrix (Fin n) (Fin n) K) :
+    aeval M p = ∑ k ∈ Finset.range (n + 1), p.coeff k • M ^ k := by
+  simp only [aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, ← Algebra.smul_def]
+  apply Finset.sum_subset
+  · intro i hi
+    exact Finset.mem_range.mpr
+      (Nat.lt_succ_of_le (hdeg ▸ Polynomial.le_natDegree_of_mem_supp i hi))
+  · intro i _ hi
+    simp [Polynomial.notMem_support_iff.mp hi]
+
+/-- **M^n v = -Σ_{k<n} c_k • M^k v** where c_k are the coefficients of minpoly K M.
+
+    Proof: minpoly K M is monic of degree n, so
+    aeval M (minpoly K M) = ∑_{k ≤ n} (coeff k) • M^k = (∑_{k<n} c_k • M^k) + M^n.
+    Since `aeval M (minpoly K M) = 0`, we get M^n = -∑_{k<n} c_k • M^k.
+    Apply mulVec v to both sides. -/
+private theorem hMn_axiom (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
     [NeZero n] (hdeg : (minpoly K M).natDegree = n) :
     (M ^ n).mulVec v =
-      -(∑ k ∈ Finset.range n, (minpoly K M).coeff k • (M ^ k).mulVec v)
+      -(∑ k ∈ Finset.range n, (minpoly K M).coeff k • (M ^ k).mulVec v) := by
+  set p := minpoly K M with hp_def
+  -- p is monic and aeval M p = 0
+  have hmon : p.Monic := minpoly.monic (Matrix.isIntegral M)
+  have hcoeff_n : p.coeff n = 1 := by
+    have := hmon.leadingCoeff
+    rwa [Polynomial.leadingCoeff, hdeg] at this
+  -- aeval expansion: aeval M p = ∑_{k<n} c_k • M^k + 1 • M^n = 0
+  have hsum : aeval M p = ∑ k ∈ Finset.range (n + 1), p.coeff k • M ^ k :=
+    aeval_eq_sum_pow_local p hdeg M
+  have haeval : aeval M p = 0 := minpoly.aeval K M
+  rw [Finset.sum_range_succ, hcoeff_n, one_smul, haeval] at hsum
+  -- hsum: 0 = (∑ k<n, c_k • M^k) + M^n  → solve for M^n
+  have hMn : M ^ n = -∑ k ∈ Finset.range n, p.coeff k • M ^ k :=
+    eq_neg_of_add_eq_zero_right hsum.symm
+  -- Apply mulVec v to both sides
+  have key := congr_arg (Matrix.mulVec · v) hMn
+  simp only [Matrix.neg_mulVec, sum_mulVec_local] at key
+  -- key: (M^n).mulVec v = -∑ k<n, ((c_k • M^k).mulVec v)
+  -- Convert (c_k • M^k).mulVec v = c_k • (M^k).mulVec v
+  rw [key]
+  congr 1
+  refine Finset.sum_congr rfl ?_
+  intro k _
+  exact Matrix.smul_mulVec _ _ _
 
 theorem M_mul_cyclicMatrix (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
     (hcyc : IsCyclicVector M v) [NeZero n] :
@@ -89,37 +149,35 @@ theorem M_mul_cyclicMatrix (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
   have hdeg : (minpoly K M).natDegree = n := minpoly_natDegree_of_cyclic M v hcyc
   have hMn := hMn_axiom M v hdeg
   ext i j
-  simp only [mul_apply, cyclicMatrix, companionMx, mulVec, dotProduct]
+  simp only [mul_apply, cyclicMatrix, companionMx]
   by_cases hjlast : j.val + 1 = n
-  · -- Last column
+  · -- Last column: both sides equal (M^n v)_i
     simp only [hjlast, ite_true, neg_mul]
-    -- LHS: (M^n v)_i
+    -- LHS: ∑ k, M i k * (M^j v)_k = (M · (M^j v))_i = (M^n v)_i
     have hLHS : ∑ k : Fin n, M i k * (M ^ j.val).mulVec v k = (M ^ n).mulVec v i := by
       have heq : M.mulVec ((M ^ j.val).mulVec v) = (M ^ n).mulVec v := by
-        rw [← mul_mulVec]
-        congr 1
-        rw [← hjlast, pow_succ']
+        rw [Matrix.mulVec_mulVec, ← pow_succ', hjlast]
       exact congr_fun heq i
-    -- RHS: (M^n v)_i
+    -- RHS: ∑ k, (M^k v)_i * -coeff k = -∑ k<n, coeff k • (M^k v)_i = (M^n v)_i (by hMn)
     have hRHS : ∑ k : Fin n, (M ^ k.val).mulVec v i * -(minpoly K M).coeff k.val =
         (M ^ n).mulVec v i := by
       rw [hMn]
-      simp only [Pi.neg_apply, Pi.smul_apply, smul_eq_mul]
+      simp only [Pi.neg_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
       rw [← Fin.sum_univ_eq_sum_range]
       simp only [mul_neg, ← Finset.sum_neg_distrib]
       congr 1; ext k; ring
     rw [hLHS, hRHS]
-  · -- Non-last column
+  · -- Non-last column: both sides equal (M^{j+1} v)_i
     push_neg at hjlast
     have hj1 : j.val + 1 < n := Nat.lt_of_le_of_ne j.isLt hjlast
     simp only [if_neg hjlast]
-    -- LHS: (M^{j+1} v)_i
+    -- LHS: ∑ k, M i k * (M^j v)_k = (M · (M^j v))_i = (M^{j+1} v)_i
     have hLHS : ∑ k : Fin n, M i k * (M ^ j.val).mulVec v k =
         (M ^ (j.val + 1)).mulVec v i := by
-      have : M.mulVec ((M ^ j.val).mulVec v) = (M ^ (j.val + 1)).mulVec v := by
-        rw [← mul_mulVec, pow_succ']
-      exact congr_fun this i
-    -- RHS: (M^{j+1} v)_i
+      have h0 : M.mulVec ((M ^ j.val).mulVec v) = (M ^ (j.val + 1)).mulVec v := by
+        rw [Matrix.mulVec_mulVec, ← pow_succ']
+      exact congr_fun h0 i
+    -- RHS: ∑ k, (M^k v)_i * (if k=j+1 then 1 else 0) = (M^{j+1} v)_i
     have hRHS : ∑ k : Fin n, (M ^ k.val).mulVec v i *
         (if k.val = j.val + 1 then (1 : K) else 0) = (M ^ (j.val + 1)).mulVec v i := by
       rw [Finset.sum_eq_single ⟨j.val + 1, hj1⟩]

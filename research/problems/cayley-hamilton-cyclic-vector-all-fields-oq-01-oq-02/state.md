@@ -1,75 +1,79 @@
 # Research State: cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02
 
 ## Current State
-**Phase**: ORIENT (file exists; scaffold in progress)
+**Phase**: COMPLETE (axiom-free; CI pending)
 **Path**: full
 **Since**: 2026-05-08
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
 
-The Lean file is already on `origin/main` with the main theorem
-`nonderogatory_similar_to_companion` proved modulo one routine axiom (`hMn_axiom`).
-This session's focus is to (a) register the file with the gallery and (b) plan the
-axiom elimination for the next iteration.
+The entry is now `verified` (0 axioms, 0 sorries) over arbitrary fields. PR #17039
+opens with the Session 2 axiom-elimination work. CI verification pending.
 
-## Active Approach
+## Outcome
 
-Conjugation identity:
-- Build the Krylov matrix `P[i,j] = (M^j v)_i` (column j is `M^j v`)
-- Show `P` is invertible: `mulVec P` is injective because `v` is cyclic — any kernel
-  vector `c` produces a polynomial `q = ∑ c_j X^j` with `deg q < n` and `q(M)v = 0`,
-  forcing `q = 0` and hence `c = 0`
-- Show `M · P = P · C(minpoly)`: column-by-column comparison. For columns `j < n-1`,
-  both sides give `(M^{j+1})·v`. For column `n-1`, both sides give `(M^n)·v`,
-  using the Cayley-Hamilton relation `M^n = -∑ k<n, c_k M^k`
+Session 2 replaced the residual `private axiom hMn_axiom` with a `private theorem
+hMn_axiom` proved from Mathlib's `minpoly.aeval` + `minpoly.monic (Matrix.isIntegral
+M)` and a local helper `aeval_eq_sum_pow_local` that converts `Polynomial.eval₂_eq_sum`'s
+output into the smul form via `← Algebra.smul_def`.
 
-## Attempt Count
-- Total attempts: 1 (existing file landed via PR #16881 side-effect)
-- Approaches tried: Krylov-matrix similarity (current)
+The implemented proof differs slightly from the Session 1 skeleton (which referenced
+`Polynomial.aeval_eq_sum_range`): the actually-shipped version uses the lower-level
+`Polynomial.eval₂_eq_sum` + `Polynomial.sum_def` + `← Algebra.smul_def` chain, with
+`Finset.sum_subset` (and `Polynomial.le_natDegree_of_mem_supp` for the subset
+direction; `Polynomial.notMem_support_iff` for the `f x = 0 outside the support`
+direction) to extend the support sum to `range (n+1)`. Once the smul-form expansion
+is in hand, monicity isolates `1 • M^n`, solving for `M^n` gives the matrix-level
+identity, and `mulVec v` (via local `sum_mulVec_local`) yields the desired vector
+identity.
 
-## Blockers
+## File State
 
-None. The remaining `hMn_axiom` is a routine consequence of `minpoly.aeval = 0` plus
-monicity of `minpoly K M`. Mathlib v4.26.0 has all required API.
+- 214 lines (was 156; +58 net)
+- 8 theorems/lemmas (was 5; +3: `sum_mulVec_local`, `aeval_eq_sum_pow_local`,
+  the `private theorem hMn_axiom`)
+- 2 definitions (`companionMx`, `cyclicMatrix`; unchanged)
+- **0 axioms, 0 sorries**
 
-## Next Action (Session 2)
+## Triangle of Equivalences (now closed)
 
-Eliminate `hMn_axiom`. Target proof structure:
+With OQ-01 (`nonderogatory ⇒ ∃ cyclic v`), OQ-01-OQ-01 (`cyclic ⇒ nonderogatory`),
+and this entry (`nonderogatory ⇒ similar to companion via the Krylov matrix`), the
+full triangle
 
-```lean
-private theorem hMn (M : Matrix (Fin n) (Fin n) K) (v : Fin n → K)
-    [NeZero n] (hdeg : (minpoly K M).natDegree = n) :
-    (M ^ n).mulVec v =
-      -(∑ k ∈ Finset.range n, (minpoly K M).coeff k • (M ^ k).mulVec v) := by
-  -- 1. minpoly annihilates: aeval M (minpoly K M) = 0
-  have h0 : aeval M (minpoly K M) = 0 := minpoly.aeval K M
-  -- 2. Monic of degree n: coeff n = 1
-  have hmonic : (minpoly K M).Monic := minpoly.monic (Matrix.isIntegral M)
-  have hcn : (minpoly K M).coeff n = 1 := hdeg ▸ hmonic
-  -- 3. Expand aeval as a finite sum (Polynomial.aeval_eq_sum_range)
-  have hexp : aeval M (minpoly K M) =
-      ∑ i ∈ Finset.range ((minpoly K M).natDegree + 1),
-        (minpoly K M).coeff i • M ^ i := aeval_eq_sum_range _
-  rw [hdeg, Finset.sum_range_succ, hcn, one_smul] at hexp
-  -- 4. h0 + hexp gives: ∑ i<n, c_i • M^i + M^n = 0 → M^n = -∑ ...
-  have hMn_mat : M ^ n = -(∑ i ∈ Finset.range n, (minpoly K M).coeff i • M ^ i) :=
-    eq_neg_of_add_eq_zero_right (hexp ▸ h0)
-  -- 5. Apply mulVec v
-  rw [hMn_mat, Matrix.neg_mulVec, Matrix.sum_mulVec]
-  congr 1
-  refine Finset.sum_congr rfl (fun k _ => ?_)
-  exact (Matrix.smul_mulVec_assoc _ _ _).symm
-```
+  IsNonderogatory M ↔ ∃ v cyclic ↔ ∃ P invertible, P⁻¹ M P = companionMx (minpoly K M)
 
-**Build risk**: Lean API names may be slightly off (e.g. `aeval_eq_sum_range` vs
-`Polynomial.aeval_eq_sum_range'`). Worth a Docker build to verify.
+is now machine-verified over arbitrary fields with **zero axioms**.
 
-## Stretch Goals (Session 3+)
+## Next Steps (Session 3+, if pursued)
 
-- **Generalize companion**: state and prove `IsCyclic v M ↔ ∃ P, IsUnit P ∧ P⁻¹ * M * P = companionMx (minpoly K M)`
-  (the converse direction is easier: cyclic ↔ similar to a single companion block).
-- **Push toward Mathlib**: extract `Matrix.companionMatrix` and `Matrix.similar_companionMatrix_of_nonderogatory`
-  as the seed of a Mathlib RCF contribution.
-- **Connection to OQ-01-OQ-01**: `cyclic_implies_nonderogatory` from OQ-01-OQ-01 plus this
-  entry give the full equivalence `nonderogatory ↔ similar to single-block companion`.
+1. **Companion-similarity biconditional**: with `cyclic_implies_nonderogatory` from
+   OQ-01-OQ-01, prove the converse `similar to companionMx ⇒ nonderogatory` and
+   package the full biconditional `IsNonderogatory M ↔ ∃ P invertible, P⁻¹ M P =
+   companionMx (minpoly K M)`.
+
+2. **Companion-matrix charpoly/minpoly identities**: Mathlib v4.26.0 lacks
+   `Matrix.charpoly_companionMatrix` and `Matrix.minpoly_companionMatrix`. Adding
+   these (the standard "charpoly = minpoly = p" identities) would let this entry
+   export an even tighter `nonderogatory_companion` corollary.
+
+3. **Mathlib contribution**: with `companionMx` and `nonderogatory_similar_to_companion`
+   axiom-free, this is a candidate seed for adding `Matrix.companionMatrix` and
+   `Matrix.IsSimilar.companionMatrix_of_nonderogatory` to Mathlib. The route to the
+   multi-block RCF would go through the K[X]-module structure theorem.
+
+## Risks
+
+- **Build risk**: not verified locally (worktree `.lake` symlink trap; ~45 min
+  Mathlib re-clone). CI is the ground truth for PR #17039. If CI flags an API drift
+  on one of `Polynomial.eval₂_eq_sum`, `Polynomial.sum_def`, `Algebra.smul_def`,
+  `Polynomial.le_natDegree_of_mem_supp`, `Polynomial.notMem_support_iff`,
+  `Matrix.isIntegral`, `Polynomial.finset_sum_coeff`, `Polynomial.Monic.leadingCoeff`,
+  or `eq_neg_of_add_eq_zero_right`, Session 3 will repair.
+
+## Open Questions (post-completion)
+
+See `meta.json` `overview.openQuestions` — the previously-listed "eliminate
+hMn_axiom" item has been resolved; the remaining items are listed in priority order
+(biconditional, companion identities, Mathlib contribution, K[X]-module connection).
