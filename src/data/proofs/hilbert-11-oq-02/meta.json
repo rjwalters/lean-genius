@@ -22,9 +22,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 418,
-    "theoremCount": 17,
-    "definitionCount": 3,
+    "lineCount": 551,
+    "theoremCount": 18,
+    "definitionCount": 4,
     "assumptions": "2 axioms: (1) selmer_no_rational_solution — Selmer's 1951 theorem that 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions; the full proof uses 3-descent on the associated elliptic curve y² = x³ - 432·15² and computation of the 3-Selmer group, neither of which is available in Mathlib v4.26.0. (2) selmer_padic_solubility — for every prime p, the Selmer cubic is solvable over ℚₚ; provable via Hensel's lemma on the smooth reduction mod p for p ∉ {2,3,5} and direct construction at the small primes, but requires Hensel infrastructure for ℚₚ. The real solubility (existence of a nontrivial real root) and the easy directions ℚ → ℝ and ℚ → ℚₚ are proved unconditionally from Mathlib's intermediate_value_Icc and the standard ring embeddings.",
     "dateAdded": "2026-05-08",
     "mathlib_version": "4.26.0",
@@ -56,7 +56,8 @@
       "Theorem selmer_locally_soluble_everywhere: local solubility ℝ + every ℚₚ, combining the proved real case with the axiomatized p-adic case.",
       "Theorem selmer_hasse_principle_fails: the Hasse principle fails for the Selmer cubic — proved from the two axioms in 4 lines.",
       "Definition colliot_thelene_conjecture: documented placeholder (`Prop := True`) for the Brauer-Manin conjecture, which would require étale cohomology and adelic-points machinery not present in Mathlib.",
-      "Section 9 — twelve `decide`-verified mod-`p` (or mod-27) witness lemmas covering every prime appearing in the Section 8 Hensel-elimination roadmap: selmer_witness_p11, p17, p23, p29 (Case A: p ≡ 2 mod 3, p ∉ {2,5}); selmer_witness_p7, p13, p19, p31, p37 (Case B: p ≡ 1 mod 3, p ≥ 7); selmer_witness_p2, p5 (special primes via direct construction); selmer_witness_p3_mod27 (singular reduction, strong-form Hensel input). Lifts to ℚ_p require Mathlib's Hensel API and are deferred."
+      "Section 9 — twelve `decide`-verified mod-`p` (or mod-27) witness lemmas covering every prime appearing in the Section 8 Hensel-elimination roadmap: selmer_witness_p11, p17, p23, p29 (Case A: p ≡ 2 mod 3, p ∉ {2,5}); selmer_witness_p7, p13, p19, p31, p37 (Case B: p ≡ 1 mod 3, p ≥ 7); selmer_witness_p2, p5 (special primes via direct construction); selmer_witness_p3_mod27 (singular reduction, strong-form Hensel input). Lifts to ℚ_p require Mathlib's Hensel API and are deferred.",
+      "Section 11 — Theorem selmer_padic_solubility_p11_hensel: ℚ_[11]-solubility of the Selmer cubic, proved AXIOM-FREE via Mathlib's univariate Hensel lemma. Defines the auxiliary polynomial Hensel11.Gint = C 4 + C 5 * X^3 ∈ ℤ[X], computes aeval (2 : ℤ_[11]) Gint = (44 : ℤ_[11]) and the derivative-at-2 = (60 : ℤ_[11]), then closes the Hensel hypothesis ‖g(2)‖ < ‖g'(2)‖² via (11:ℤ) ∣ 44 and IsCoprime (60:ℤ) 11 (so ‖44‖₁₁ < 1 and ‖60‖₁₁ = 1). The Hensel lift is then cast from ℤ_[11] to ℚ_[11] and packaged as the witness (0, 1, z̃). Refines but does NOT eliminate the universal axiom selmer_padic_solubility — it demonstrates that the Section 8 roadmap is mechanically realizable for one concrete prime."
     ]
   },
   "overview": {
@@ -164,10 +165,26 @@
     {
       "id": "post-section9-summary",
       "title": "Section 10: Status Summary (post Section 9)",
-      "startLine": 394,
-      "endLine": 418,
+      "startLine": 395,
+      "endLine": 410,
       "summary": "Updated counts after Section 9: 17 theorems (5 substantive + 12 witness lemmas), 3 definitions, 2 axioms, 0 sorries. Status remains `axiomatized`; the witness lemmas are infrastructure for future axiom-elimination, not a reduction in the assumption count.",
       "mathContext": "Section 9 contribution: 12 named theorems, each a `decide`-closed proposition in `ZMod p` (or `ZMod 27`). The substantive (non-`decide`) theorem count is unchanged at 5; the additional witness lemmas are the inputs that future Hensel lifts will consume to discharge `selmer_padic_solubility` per prime."
+    },
+    {
+      "id": "hensel-p11",
+      "title": "Section 11: Hensel-Lifted ℚ_[11] Solubility (Proved, Axiom-Free)",
+      "startLine": 411,
+      "endLine": 523,
+      "summary": "Theorem selmer_padic_solubility_p11_hensel discharges the p = 11 instance of selmer_padic_solubility via Mathlib's univariate Hensel lemma (Mathlib.NumberTheory.Padics.Hensel.hensels_lemma), without invoking the universal axiom. The proof: define Hensel11.Gint : Polynomial ℤ as C 4 + C 5 * X^3 (the univariate restriction of selmerPoly at x = 0, y = 1); compute aeval (2 : ℤ_[11]) Gint = ((44 : ℤ) : ℤ_[11]) and the derivative-at-2 = ((60 : ℤ) : ℤ_[11]); then ‖44‖₁₁ < 1 (via (11 : ℤ) ∣ 44 and PadicInt.norm_intCast_lt_one_iff) and ‖60‖₁₁ = 1 (via IsCoprime (60 : ℤ) 11 and PadicInt.norm_intCast_eq_one_iff). Hensel's lemma yields z̃ ∈ ℤ_[11] with 4 + 5 z̃^3 = 0; casting z̃ → ℚ_[11] and packaging as (0, 1, z̃) finishes via push_cast and linear_combination.",
+      "mathContext": "**Reduction to univariate Hensel.** Fixing $(x, y) = (0, 1)$ in the Selmer cubic produces the univariate $g(z) = 5z^3 + 4 \\in \\mathbb{Z}[z]$. **Hensel hypothesis.** $|g(2)|_{11} = |44|_{11} = 1/11$ and $|g'(2)|_{11} = |60|_{11} = 1$, so $|g(2)|_{11} = 1/11 < 1 = |g'(2)|_{11}^2$. Mathlib's `hensels_lemma` lifts the witness $a = 2 \\in \\mathbb{Z}_{11}$ to a unique root $\\tilde z \\in \\mathbb{Z}_{11}$ of $g$. **Conclusion.** $(0, 1, \\tilde z) \\in \\mathbb{Q}_{11}^3$ is a nontrivial zero of the Selmer cubic — an axiom-free instance of `selmer_padic_solubility` at $p = 11$. The same recipe applies to every Section 9 witness with non-singular reduction; the only exception is $p = 3$, which requires strong-form Hensel on the mod-27 witness."
+    },
+    {
+      "id": "post-section11-summary",
+      "title": "Section 12: Status Summary (post Section 11)",
+      "startLine": 521,
+      "endLine": 551,
+      "summary": "Updated counts after Section 11: 18 theorems (6 substantive + 12 witness lemmas), 4 definitions (selmerPoly, selmerHassePrinciple, colliot_thelene_conjecture, Hensel11.Gint), 2 axioms unchanged, 0 sorries. New milestone: an axiom-free p-adic solubility instance demonstrates the Section 8 roadmap is mechanically realizable.",
+      "mathContext": "The universal axiom `selmer_padic_solubility` quantifies over all primes; eliminating it requires analogous Hensel lifts at every prime in Section 9. Section 11 supplies the first such lift (for $p = 11$), so the assumption count is unchanged but the *concrete* obligation at $p = 11$ is now discharged."
     }
   ],
   "conclusion": {
@@ -203,20 +220,22 @@
   "leanFile": {
     "imports": [
       "Mathlib.NumberTheory.Padics.PadicNumbers",
-      "Mathlib.Topology.Algebra.Order.IntermediateValue",
+      "Mathlib.NumberTheory.Padics.Hensel",
+      "Mathlib.Topology.Order.IntermediateValue",
       "Mathlib.Topology.Order.Bornology",
       "Mathlib.Analysis.Polynomial.Basic",
       "Mathlib.Data.ZMod.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [
-      "Set"
+      "Set",
+      "Polynomial"
     ],
     "namespace": "Hilbert11OQ02",
-    "lineCount": 418,
+    "lineCount": 551,
     "axiomCount": 2,
-    "theoremCount": 17,
-    "definitionCount": 3,
+    "theoremCount": 18,
+    "definitionCount": 4,
     "path": "Proofs/Hilbert11OQ02.lean",
     "sorries": 0
   },

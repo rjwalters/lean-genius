@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.Padics.PadicNumbers
-import Mathlib.Topology.Algebra.Order.IntermediateValue
+import Mathlib.NumberTheory.Padics.Hensel
+import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Topology.Order.Bornology
 import Mathlib.Analysis.Polynomial.Basic
 import Mathlib.Data.ZMod.Basic
@@ -272,7 +273,7 @@ equation z³ = a has a unique solution. Take x = 0, y = 1: the equation
 reduces to 5z³ + 4 ≡ 0, i.e. z³ ≡ -4·5⁻¹ ∈ (ℤ/p)*, with the unique cube
 root in (ℤ/p)*. The derivative ∂_z f = 15z² is nonzero at the root
 (since z ≠ 0 mod p and p ∉ {3, 5}), so single-variable Hensel along z
-lifts to a unique 3-adic z̃ ∈ ℤ_p with selmerPoly 0 1 z̃ = 0 in ℚ_p.
+lifts to a unique 3-adic zt ∈ ℤ_p with selmerPoly 0 1 zt = 0 in ℚ_p.
 **Witness data.** p = 11: take z₀ = 2 (since 2³ = 8 ≡ -4·5⁻¹ ≡ -4·9 ≡ 8
 mod 11, and ∂_z f(0,1,2) = 60 ≡ 5 ≢ 0 mod 11). p = 17: z₀ = 5.
 p = 23: z₀ = 18. p = 29: z₀ = 22.
@@ -293,7 +294,7 @@ nonsingular reduction, and standard univariate Hensel lifts.
 
 **p = 2.** The polynomial reduces to x³ + z³ mod 2, with smooth zero
 (1, 0, 1) (Jacobian (1, 0, 1) mod 2 has rank ≥ 1). Hensel along z lifts
-to a unique 2-adic z̃ ∈ ℤ_2 with selmerPoly 1 0 z̃ = 0 in ℚ_2.
+to a unique 2-adic zt ∈ ℤ_2 with selmerPoly 1 0 zt = 0 in ℚ_2.
 
 **p = 5.** The polynomial reduces to 3x³ + 4y³ mod 5 (the leading 5 in
 the z-coefficient vanishes). Smooth zero (1, 2, 0) since 3 + 4·8 = 35
@@ -307,7 +308,7 @@ strong-form Hensel hypothesis `|f(α)|_p < |f'(α)|_p²` is met. The
 witness (0, 1, 4) mod 27 satisfies `selmerPoly 0 1 4 = 4 + 5·64 = 324 =
 12·27 ≡ 0 (mod 27)` with `∂_z f(0,1,4) = 15·16 = 240`, valuation
 v₃(240) = 1. Since v₃(f) ≥ 3 > 2 · v₃(∂_z f) = 2, strong-form Hensel
-applies and lifts to a unique 3-adic z̃ with v₃(z̃ - 4) ≥ 3.
+applies and lifts to a unique 3-adic zt with v₃(zt - 4) ≥ 3.
 
 ### Status of this roadmap
 
@@ -407,6 +408,137 @@ and any future per-prime Hensel lift can cite them by name.
 - Axioms: 2 (unchanged): `selmer_no_rational_solution` + `selmer_padic_solubility`.
 - Status: still `axiomatized`. -/
 
+/-! ## Section 11: Hensel-Lifted ℚ_[11] Solubility (Proved, axiom-free)
+
+Section 9 records the mod-11 witness `(0, 1, 2)` for the Selmer cubic. Here
+we *lift* the witness to `ℚ_[11]` via Mathlib's univariate Hensel lemma,
+producing a fully proved (axiom-free) instance of the
+`selmer_padic_solubility` shape for `p = 11`. The argument:
+
+1. Let `Gint(z) = 5z³ + 4 ∈ ℤ[z]` (the univariate polynomial obtained from
+   `selmerPoly` by fixing `x = 0, y = 1`).
+2. Compute `aeval (2 : ℤ_[11]) Gint = ((44 : ℤ) : ℤ_[11])` and
+   `aeval (2 : ℤ_[11]) Gint.derivative = ((60 : ℤ) : ℤ_[11])`.
+3. The Hensel hypothesis `‖g(2)‖ < ‖g'(2)‖²` reduces to `1/11 < 1`:
+   `(11 : ℤ) ∣ 44` (so `‖44‖_11 < 1`) and `IsCoprime (60 : ℤ) 11`
+   (so `‖60‖_11 = 1`).
+4. `Mathlib.NumberTheory.Padics.Hensel.hensels_lemma` yields `zt ∈ ℤ_[11]`
+   with `5 zt³ + 4 = 0`. Casting `zt ↦ ((zt : ℤ_[11]) : ℚ_[11])` and packaging
+   with `(x, y) = (0, 1)` gives a nontrivial `ℚ_[11]`-zero of `selmerPoly`.
+
+This section discharges *one* of the (countably many) prime-specific
+obligations encoded in the universal axiom `selmer_padic_solubility` for
+the Selmer cubic. The other primes appearing in Section 9
+(`p ∈ {2, 5, 7, 13, 17, 19, 23, 29, 31, 37}`) are amenable to the same
+recipe with the documented mod-`p` witnesses; the special prime `p = 3`
+needs the strong-form Hensel lemma applied to the mod-27 witness. Future
+iterations can chain the construction. -/
+
+instance : Fact (Nat.Prime 11) := ⟨by decide⟩
+
+namespace Hensel11
+
+open Polynomial
+
+set_option linter.unusedSimpArgs false
+
+/-- Univariate Selmer polynomial in `z` at `(x, y) = (0, 1)`: `g(z) = 5z³ + 4`,
+    over `ℤ` so that `Mathlib.NumberTheory.Padics.Hensel.hensels_lemma` can
+    consume it via the canonical `[Algebra ℤ ℤ_[11]]` instance. -/
+def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
+
+private lemma Gint_aeval (a : ℤ_[11]) :
+    aeval a Gint = (4 : ℤ_[11]) + (5 : ℤ_[11]) * a ^ 3 := by
+  unfold Gint
+  simp [aeval_C, aeval_X_pow] <;> ring
+
+private lemma Gint_derivative_aeval (a : ℤ_[11]) :
+    aeval a Gint.derivative = (15 : ℤ_[11]) * a ^ 2 := by
+  unfold Gint
+  simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
+        aeval_C, aeval_X_pow] <;> ring
+
+private lemma Gint_aeval_at_2 :
+    aeval (2 : ℤ_[11]) Gint = ((44 : ℤ) : ℤ_[11]) := by
+  rw [Gint_aeval]
+  push_cast
+  ring
+
+private lemma Gint_derivative_aeval_at_2 :
+    aeval (2 : ℤ_[11]) Gint.derivative = ((60 : ℤ) : ℤ_[11]) := by
+  rw [Gint_derivative_aeval]
+  push_cast
+  ring
+
+private lemma norm_44_lt_one : ‖((44 : ℤ) : ℤ_[11])‖ < 1 := by
+  rw [PadicInt.norm_intCast_lt_one_iff]
+  norm_num
+
+private lemma norm_60_eq_one : ‖((60 : ℤ) : ℤ_[11])‖ = 1 := by
+  rw [PadicInt.norm_intCast_eq_one_iff]
+  exact Int.isCoprime_iff_gcd_eq_one.mpr (by decide)
+
+/-- The Hensel hypothesis `‖g(2)‖ < ‖g'(2)‖²` for `Gint = 5z³ + 4` at `a = 2`,
+    over `ℤ_[11]`. Reduces to `1/11 < 1` after `‖44‖ < 1` and `‖60‖ = 1`. -/
+lemma hensel_hypothesis :
+    ‖aeval (2 : ℤ_[11]) Gint‖ < ‖aeval (2 : ℤ_[11]) Gint.derivative‖ ^ 2 := by
+  rw [Gint_aeval_at_2, Gint_derivative_aeval_at_2, norm_60_eq_one, one_pow]
+  exact norm_44_lt_one
+
+end Hensel11
+
+/-- **Hensel-lifted `ℚ_[11]` solubility (proved, axiom-free)**.
+
+    The Selmer cubic `3x³ + 4y³ + 5z³ = 0` has a nontrivial solution in
+    `ℚ_[11]`, obtained by fixing `(x, y) = (0, 1)` and Hensel-lifting the
+    mod-11 witness `z ≡ 2 (mod 11)` (cf. `selmer_witness_p11`) to
+    `zt ∈ ℤ_[11] ⊂ ℚ_[11]`.
+
+    This proof uses *only* `Mathlib.NumberTheory.Padics.Hensel.hensels_lemma`
+    and the explicit divisibilities `(11 : ℤ) ∣ 44` and `IsCoprime (60 : ℤ) 11`.
+    It does NOT depend on the universal axiom `selmer_padic_solubility` and
+    so demonstrates that the latter is, in principle, derivable for each
+    specific prime appearing in Section 9. -/
+theorem selmer_padic_solubility_p11_hensel :
+    ∃ (x y z : ℚ_[11]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 := by
+  obtain ⟨zt, hz_root, _, _, _⟩ := hensels_lemma Hensel11.hensel_hypothesis
+  -- hz_root : aeval zt Hensel11.Gint = 0 in ℤ_[11]
+  have hz_int : (4 : ℤ_[11]) + 5 * zt ^ 3 = 0 := by
+    have heval := Hensel11.Gint_aeval zt
+    rw [heval] at hz_root
+    exact hz_root
+  refine ⟨0, 1, (zt : ℚ_[11]), Or.inr (Or.inl one_ne_zero), ?_⟩
+  -- Goal: selmerPoly (0 : ℚ_[11]) 1 (zt : ℚ_[11]) = 0,
+  -- i.e., 3·0³ + 4·1³ + 5·((zt : ℚ_[11]))³ = 0.
+  have hcast : (4 : ℚ_[11]) + 5 * (zt : ℚ_[11]) ^ 3 = 0 := by
+    have h := congrArg (fun w : ℤ_[11] => (w : ℚ_[11])) hz_int
+    push_cast at h
+    exact h
+  show (3 : ℚ_[11]) * (0 : ℚ_[11]) ^ 3 + 4 * (1 : ℚ_[11]) ^ 3 +
+        5 * (zt : ℚ_[11]) ^ 3 = 0
+  linear_combination hcast
+
+/-! ## Section 12: Status Summary (post Section 11) -/
+
+/-!
+Section 11 lifts the mod-11 witness `(0, 1, 2)` to `ℚ_[11]` via Mathlib's
+univariate Hensel lemma, producing a fully proved (axiom-free) instance of
+the `selmer_padic_solubility` shape for `p = 11`. The general universal
+axiom `selmer_padic_solubility` is unchanged — its full elimination would
+require analogous Hensel lifts at every prime — but the p = 11 instance is
+now derivable without invoking it.
+
+### Updated counts
+- Theorems: 17 + 1 (`selmer_padic_solubility_p11_hensel`) = 18.
+- Substantive theorems (non-`decide` content): 6.
+- Definitions: 2 (`selmerPoly`, `selmerHassePrinciple` + `colliot_thelene_conjecture`)
+  plus 1 helper definition `Hensel11.Gint`.
+- Sorries: 0 (unchanged).
+- Axioms: 2 (unchanged): `selmer_no_rational_solution` + `selmer_padic_solubility`.
+- Status: still `axiomatized`.
+- New milestone: an axiom-free p-adic solubility instance demonstrates the
+  Section 8 roadmap is mechanically realizable. -/
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -414,5 +546,6 @@ and any future per-prime Hensel lift can cite them by name.
 #check @selmer_padic_solubility
 #check @selmer_locally_soluble_everywhere
 #check @selmer_hasse_principle_fails
+#check @selmer_padic_solubility_p11_hensel
 
 end Hilbert11OQ02
