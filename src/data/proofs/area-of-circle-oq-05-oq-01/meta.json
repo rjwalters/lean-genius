@@ -7,7 +7,7 @@
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_integral#Polar_coordinates",
     "date": "Classical result, formalized 2026",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "analysis",
       "integration",
@@ -17,10 +17,10 @@
       "measure-theory"
     ],
     "proofRepoPath": "Proofs/AreaOfCircleOQ05OQ01.lean",
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "axiomCount": 0,
-    "assumptions": "None. All 10 theorems fully verified with 0 sorries and 0 axioms. The polar_integral_factorization sorry was resolved via Measure.restrict_prod_eq_prod_restrict + integral_prod + Integrable.comp_fst.",
+    "assumptions": "Main file (AreaOfCircleOQ05OQ01.lean): 0 sorries, 0 axioms — all 10 theorems including polar_integral_factorization fully proved via Measure.restrict_prod_eq_prod_restrict + integral_prod + Integrable.comp_fst. Aristotle companion (AreaOfCircleOQ05OQ01Aristotle.lean): 2 open sorries — gaussian_product_integrable and radial_product_integrable (both routine product-measure integrability lemmas, proved inline in the main file but exposed as separate Aristotle targets).",
     "originalContributions": [
       "Named theorem for each step of the polar-coordinate proof: Fubini, change of variables, separation, radial, angular",
       "polar_sum_sq lemma: (r\u00b7cos \u03b8)\u00b2 + (r\u00b7sin \u03b8)\u00b2 = r\u00b2 (compiled, 0 sorry)",
@@ -153,5 +153,5 @@
       "Connect to a formal statement that \u03c0 = area of unit disk via this polar decomposition"
     ]
   },
-  "sorries": 0
+  "sorries": 2
 }
