@@ -1554,6 +1554,104 @@ private lemma trig_sum_subsum_log_lb (n : ℕ) (hn : 0 < n)
     _ ≤ ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
                      |Real.cos θ - chebyshevNode n k| := h6b
 
+/-- **Step 7a (h_interior verifier).**
+
+    Bridges the abstract `h_interior` hypothesis of `trig_sum_subsum_lb` and
+    `trig_sum_subsum_log_lb` to a concrete pair of inputs:
+
+      • the standard nearest-node closeness `|θ - φ_{k₀}| ≤ π/(2n)`, and
+      • a single upper-cap on the largest sub-sum index, namely
+        `φ_{k₀+m} ≤ π - θ/2`.
+
+    With these, the full `h_interior` (with `d = θ`) holds for every `j : Fin m`:
+
+      • Lower bound `θ/2 ≤ φ_{k₀+j+1}`: from `φ_{k₀} ≥ θ - π/(2n)` plus
+        `(j+1)·π/n ≥ π/n = 2·(π/(2n))`, giving `φ_{k₀+j+1} ≥ θ + π/(2n) ≥ θ/2`
+        (using `θ > 0`).
+      • Upper bound `φ_{k₀+j+1} ≤ π - θ/2`: monotone in the index, since
+        `j.val + 1 ≤ m` implies `φ_{k₀+j+1} ≤ φ_{k₀+m}`, and the cap is the
+        latter.
+
+    This packages the routine arithmetic shared by all subsequent specific
+    choices of `m` (e.g. `m = ⌊nθ/(4π)⌋`-style choices used to close
+    `trig_sum_harmonic_lb` in the θ ∈ (0, π/2] branch). -/
+private lemma chebyshev_h_interior_of_close_and_max_index_cap
+    (n : ℕ) (hn : 0 < n) (θ : ℝ) (hθ_pos : 0 < θ)
+    (k₀ : Fin n)
+    (hk₀_close : |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n))
+    (m : ℕ)
+    (hcap_max :
+      (2 * ((k₀.val + m : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - θ / 2) :
+    ∀ j : Fin m,
+      θ / 2 ≤ (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ∧
+      (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ≤
+        Real.pi - θ / 2 := by
+  intro j
+  have hpi_pos := Real.pi_pos
+  have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+  -- Casts of the natural-number index expressions
+  have hcast_idx :
+      ((k₀.val + j.val + 1 : ℕ) : ℝ) = (k₀.val : ℝ) + (j.val : ℝ) + 1 := by
+    push_cast; ring
+  have hcast_max :
+      ((k₀.val + m : ℕ) : ℝ) = (k₀.val : ℝ) + (m : ℝ) := by
+    push_cast; ring
+  -- Algebraic decomposition: φ_{k₀+j+1} = φ_{k₀} + (j+1)·π/n
+  have hφ_idx_eq :
+      (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) =
+        (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n) +
+        ((j.val : ℝ) + 1) * Real.pi / n := by
+    rw [hcast_idx]; field_simp; ring
+  -- Algebraic decomposition: φ_{k₀+m} = φ_{k₀} + m·π/n
+  have hφ_max_eq :
+      (2 * ((k₀.val + m : ℕ) : ℝ) + 1) * Real.pi / (2 * n) =
+        (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n) +
+        (m : ℝ) * Real.pi / n := by
+    rw [hcast_max]; field_simp; ring
+  -- From hk₀_close: φ_{k₀} ≥ θ - π/(2n).
+  -- abs_le splits |θ - φ_{k₀}| ≤ π/(2n) into:
+  --   -π/(2n) ≤ θ - φ_{k₀}  (giving φ_{k₀} ≤ θ + π/(2n))
+  --   θ - φ_{k₀} ≤ π/(2n)   (giving φ_{k₀} ≥ θ - π/(2n)) — this one
+  have hφk₀_ge :
+      θ - Real.pi / (2 * n) ≤ (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n) := by
+    have := (abs_le.mp hk₀_close).2
+    linarith
+  -- π/n = 2·(π/(2n)) — used to bridge the section-spacing bound to π/(2n) units
+  have hpi_n_eq : Real.pi / n = 2 * (Real.pi / (2 * n)) := by
+    field_simp; ring
+  refine ⟨?_, ?_⟩
+  · -- Lower bound: θ/2 ≤ φ_{k₀+j+1}
+    rw [hφ_idx_eq]
+    have hjval_nn : (0 : ℝ) ≤ (j.val : ℝ) := Nat.cast_nonneg _
+    have hπn_nn : 0 ≤ Real.pi / n := (div_pos hpi_pos hn_pos).le
+    -- (j+1)·π/n ≥ π/n (since j ≥ 0, so j+1 ≥ 1)
+    have h_section_lb : Real.pi / n ≤ ((j.val : ℝ) + 1) * Real.pi / n := by
+      have h1le : (1 : ℝ) ≤ (j.val : ℝ) + 1 := by linarith
+      calc Real.pi / n
+          = 1 * (Real.pi / n) := by ring
+        _ ≤ ((j.val : ℝ) + 1) * (Real.pi / n) :=
+            mul_le_mul_of_nonneg_right h1le hπn_nn
+        _ = ((j.val : ℝ) + 1) * Real.pi / n := by ring
+    -- Combine: φ_{k₀+j+1} ≥ (θ - π/(2n)) + π/n = θ + π/(2n) ≥ θ ≥ θ/2
+    linarith
+  · -- Upper bound: φ_{k₀+j+1} ≤ π - θ/2
+    rw [hφ_idx_eq]
+    rw [hφ_max_eq] at hcap_max
+    -- (j+1)·π/n ≤ m·π/n, since j.val + 1 ≤ m (j : Fin m)
+    have hj_le : (j.val : ℝ) + 1 ≤ (m : ℝ) := by
+      have : j.val + 1 ≤ m := j.isLt
+      exact_mod_cast this
+    have hπn_nn : 0 ≤ Real.pi / n := (div_pos hpi_pos hn_pos).le
+    have h_section_le :
+        ((j.val : ℝ) + 1) * Real.pi / n ≤ (m : ℝ) * Real.pi / n := by
+      calc ((j.val : ℝ) + 1) * Real.pi / n
+          = ((j.val : ℝ) + 1) * (Real.pi / n) := by ring
+        _ ≤ (m : ℝ) * (Real.pi / n) :=
+            mul_le_mul_of_nonneg_right hj_le hπn_nn
+        _ = (m : ℝ) * Real.pi / n := by ring
+    linarith
+
 /-- **Reindex symmetry of the Chebyshev-Lebesgue trig sum: θ ↔ π - θ.**
 
     Under the involution `σ : Fin n ≃ Fin n`, `k ↦ n - 1 - k`:
