@@ -97,10 +97,16 @@ strong-induction proof of `denominator_control`.
 * sorries: 0
 * lemmas: 4 reusable + 6 numerical witnesses + Part 4 adds
   `harmonicCubed` (the cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3)
-  with base values, non-negativity, and monotonicity (4 lemmas).
-  The main divisibility theorem `harmonicCubed_lcm_clear` is deferred
-  to a follow-up session (per-term `Nat.cast_div` proof exceeded
-  available Docker build time in this session).
+  with base values, non-negativity, monotonicity (4 lemmas), the
+  `harmonicCubed_succ` recurrence, and the numerical witness
+  `harmonicCubed_two = 9/8`.
+* Part 5 (session 4) adds the **per-term integrality bridge**:
+  `lcmRange_pow_eq_mul`, `term_lcm_clear_nat`, `term_lcm_clear_cube_nat`,
+  `term_lcm_clear_int` — the precise per-term identity that bypasses
+  the `Nat.cast_div`/`push_cast` issue that exceeded session 3's
+  Docker build time. Together these scaffold the main divisibility
+  theorem `harmonicCubed_lcm_clear` for a follow-up session via
+  induction on `n` using `harmonicCubed_succ` + the per-term lemmas.
 -/
 
 namespace BaselProblemOQ01OQ01OQ02OQ02
@@ -223,13 +229,86 @@ theorem harmonicCubed_mono {m n : ℕ} (h : m ≤ n) :
   intro k _ _
   positivity
 
+/-- **Recurrence**: `H_{n+1}^{(3)} = H_n^{(3)} + 1/(n+1)^3`.
+
+    This is the inductive-step identity for any proof of
+    `harmonicCubed_lcm_clear` by induction on `n`: the new contribution
+    `1/(n+1)^3` is exactly cleared by the new factor in `lcmRange (n+1)^3`
+    via `succ_cube_dvd_lcmRange_succ_cube`. -/
+theorem harmonicCubed_succ (n : ℕ) :
+    harmonicCubed (n + 1) = harmonicCubed n + (1 : ℚ) / (n + 1) ^ 3 := by
+  unfold harmonicCubed
+  rw [Finset.sum_range_succ]
+
+/-- `H_2^{(3)} = 1 + 1/8 = 9/8`. -/
+theorem harmonicCubed_two : harmonicCubed 2 = 9 / 8 := by
+  rw [show (2 : ℕ) = 1 + 1 from rfl, harmonicCubed_succ, harmonicCubed_one]
+  norm_num
+
+-- =====================================================================
+-- PART 5: Per-term integrality (the bridge to harmonicCubed_lcm_clear)
+-- =====================================================================
+
+/-- **Per-term integrality (Nat-witness form)**: `0 < k`, `k ≤ n` ⇒
+    `∃ m : ℕ, (lcmRange n)^p = m * k^p`.
+
+    This is just `pow_dvd_lcmRange_pow` repackaged with the witness `m`
+    extracted explicitly and the multiplication on the *outside* of `k^p`,
+    which is the orientation needed for the per-term rational identity
+    below. -/
+theorem lcmRange_pow_eq_mul {k n p : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
+    ∃ m : ℕ, (lcmRange n) ^ p = m * k ^ p := by
+  obtain ⟨m, hm⟩ := pow_dvd_lcmRange_pow (p := p) hk hkn
+  exact ⟨m, by rw [hm]; ring⟩
+
+/-- **Per-term rational integrality**: `0 < k`, `k ≤ n` ⇒
+    `(lcmRange n : ℚ)^p / (k : ℚ)^p ∈ ℕ`.
+
+    This is *exactly* the per-term identity that the next session needs
+    to compose `harmonicCubed_lcm_clear` from `Finset.sum_div` (or by
+    induction via `harmonicCubed_succ` + this lemma). It bypasses the
+    `Nat.cast_div`/`push_cast` issue documented in session 3 by working
+    directly with the multiplicative form `(lcmRange n)^p = m * k^p` and
+    casting through `Nat → ℚ` (avoiding the `ℕ → ℤ → ℚ` chain that
+    `push_cast` aggressively rewrites via `Int.ofNat_div`). -/
+theorem term_lcm_clear_nat {k n p : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
+    ∃ m : ℕ, (lcmRange n : ℚ) ^ p / (k : ℚ) ^ p = (m : ℚ) := by
+  obtain ⟨m, hm⟩ := lcmRange_pow_eq_mul (p := p) hk hkn
+  refine ⟨m, ?_⟩
+  have hkne : (k : ℚ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hk)
+  have hkpne : (k : ℚ) ^ p ≠ 0 := pow_ne_zero _ hkne
+  have hQ : (lcmRange n : ℚ) ^ p = (m : ℚ) * (k : ℚ) ^ p := by
+    have := congrArg (fun x : ℕ => (x : ℚ)) hm
+    push_cast at this
+    exact this
+  rw [hQ, mul_div_assoc, div_self hkpne, mul_one]
+
+/-- **Per-term rational integrality (cube form)**: the `p = 3` specialization
+    used in `harmonicCubed_lcm_clear`. -/
+theorem term_lcm_clear_cube_nat {k n : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
+    ∃ m : ℕ, (lcmRange n : ℚ) ^ 3 / (k : ℚ) ^ 3 = (m : ℚ) :=
+  term_lcm_clear_nat hk hkn
+
+/-- **Per-term integrality, integer-witness form** for direct combination
+    with the `∃ m : ℤ, …` shape used in the parent's
+    `denominator_control_factorial`. -/
+theorem term_lcm_clear_int {k n p : ℕ} (hk : 0 < k) (hkn : k ≤ n) :
+    ∃ m : ℤ, (lcmRange n : ℚ) ^ p / (k : ℚ) ^ p = (m : ℚ) := by
+  obtain ⟨m, hm⟩ := term_lcm_clear_nat (p := p) hk hkn
+  exact ⟨(m : ℤ), by rw [hm]; push_cast; rfl⟩
+
 /- **Next session target**: prove
-   `∃ m : ℤ, (lcmRange n : ℚ)^3 * harmonicCubed n = m`. The integer
-   witness is `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3` (each term is
-   integral via `pow_dvd_lcmRange_pow`), but the per-term identity
-   `(lcmRange n : ℚ)^3 * (1/(k+1)^3) = ((lcmRange n)^3 / (k+1)^3 : ℕ→ℚ)`
-   requires careful `Nat.cast_div` handling that ran out of Docker
-   build time in this session.
+   `∃ m : ℤ, (lcmRange n : ℚ)^3 * harmonicCubed n = m`. With
+   `term_lcm_clear_cube_nat` now available, the proof is a clean
+   induction on `n`:
+   - Base `n = 0`: `(lcmRange 0 : ℚ)^3 * harmonicCubed 0 = 1 * 0 = 0`.
+   - Step `n → n+1`: use `harmonicCubed_succ` and the structural
+     divisibility `lcmRange n ∣ lcmRange (n+1)` (sibling file
+     `BaselProblemOQ01OQ01OQ02OQ03.lcmRange_dvd_lcmRange_of_le`, or
+     prove a local copy) to lift the IH `(lcmRange n)^3 * harmonicCubed n
+     = m` to `(lcmRange (n+1))^3 * harmonicCubed n = q^3 · m` (an
+     integer multiple), then add the new term
+     `(lcmRange (n+1))^3 / (n+1)^3 = m₂` from `term_lcm_clear_cube_nat`.
 
    This is the H_n^{(3)} half of the van der Poorten denominator
    analysis for `denominator_control` (route F). Combined with a
