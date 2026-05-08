@@ -94,7 +94,8 @@
         "implications": "**Stronger than irrationality**: ∛3 ∉ ℚ says the degree-1 polynomial X - ∛3 has no ℚ coefficients. Linear independence says no nonzero degree-≤2 polynomial over ℚ has ∛3 as a root. This is equivalent to minpoly ℚ (∛3) having degree exactly 3.\n\n**Basis for the degree-3 extension**: Together with (∛3)³ = 3 ∈ ℚ, linear independence shows {1, ∛3, (∛3)²} spans ℚ(∛3) over ℚ. So {1, ∛3, (∛3)²} is a ℚ-basis for ℚ(∛3), giving an alternative proof of [ℚ(∛3):ℚ] = 3.\n\n**Generalizes**: The same minpoly divisibility argument works for any α with natDegree(minpoly ℚ α) = n: the set {1, α, ..., α^(n-1)} is ℚ-linearly independent.",
         "openQuestions": [
             "Can the same argument prove {1, ∛m, (∛m)²} is linearly independent for any m with a squarefree prime factor? (Yes: minpoly_nthRoot_natDegree from CubeRoot2IrrationalOQ03 gives the same degree-3 bound.)",
-            "Is {1, α, ..., α^(n-1)} linearly independent whenever natDegree(minpoly ℚ α) = n? (Yes, by the same argument — this is essentially the definition of having degree-n minimal polynomial.)"
+            "Is {1, α, ..., α^(n-1)} linearly independent whenever natDegree(minpoly ℚ α) = n? (Yes, by the same argument — this is essentially the definition of having degree-n minimal polynomial.)",
+            "Could a Mathlib-contributable lemma `linearIndependent_powers_of_minpoly_natDegree`, packaging the degree-comparison argument generically over field K and n : ℕ, replace this special-case proof? Such a lemma would specialize trivially to ∛3 here and to every analogous power-basis instance in the gallery."
         ]
     },
     "leanFile": {
