@@ -14,7 +14,7 @@
   {
     "id": "ann-frobenius-key-lemma",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 122, "endLine": 124 },
+    "range": { "startLine": 117, "endLine": 124 },
     "type": "technique",
     "title": "Char-p Frobenius: (σ(x)−x)^(p^n) = 0",
     "content": "The key technical lemma sub_pow_char_pow_eq: in a characteristic-p ring, (a − b)^(p^n) = a^(p^n) − b^(p^n). This is the additive Frobenius endomorphism: the map x ↦ x^p is a ring homomorphism in char p. The proof uses CharP.add_pow_char_pow repeatedly. This lemma is the algebraic engine of the purely-inseparable Galois triviality proof.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 133, "endLine": 157 },
+    "range": { "startLine": 126, "endLine": 157 },
     "type": "technique",
     "title": "Purely Inseparable Extension → Trivial Galois Group",
     "content": "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for any σ : K ≃ₐ[F] K and x ∈ K, get n with x^(p^n) ∈ F (IsPurelyInseparable.pow_mem). Then σ(x)^(p^n) = x^(p^n) (σ fixes F), so (σ(x)−x)^(p^n) = 0 (Frobenius lemma). Fields have no nonzero nilpotents, so σ(x) = x. Since x is arbitrary, σ = id.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-gal-card-corollary",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 162, "endLine": 169 },
+    "range": { "startLine": 159, "endLine": 169 },
     "type": "insight",
     "title": "Corollary: |Gal(f)| = 1 for Purely Inseparable Splitting Field",
     "content": "gal_card_one_of_purelyInseparable_splitting: if f.SplittingField is a purely inseparable extension of F, then Nat.card f.Gal = 1. Follows from algEquiv_eq_refl_of_isPurelyInseparable: every element of Gal(f) is the identity, so |Gal(f)| = 1. The counterexample_gal_card axiom provides the concrete Gal cardinality for the char-2 counterexample (|Gal(f_target)| = 2), which is used to formally refute the original insep_gal_trivial claim.",
@@ -62,10 +62,10 @@
   {
     "id": "ann-formal-refutation",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 179, "endLine": 196 },
+    "range": { "startLine": 175, "endLine": 196 },
     "type": "insight",
     "title": "Formal Refutation: ∃ f, ¬Separable ∧ |Gal| ≠ 1",
-    "content": "insep_gal_trivial_refuted packages the entire counterexample chain into a single existential statement. The witness is f_target. The first conjunct (¬f_target.Separable) is discharged from f_derivative_zero (separable polynomials have nonzero derivative). The second conjunct (Nat.card f_target.Gal ≠ 1) is discharged from the counterexample_gal_card axiom (which states |Gal| = 2). The Lean theorem is exactly the negation of the false axiom in the parent file, making the refutation machine-checkable.",
+    "content": "The block opens with the documented `counterexample_gal_card` axiom (|Gal(f_target)| = 2 — the only axiom in the file, intentional pending Artin-Schreier formalization). `insep_gal_trivial_refuted` then packages the entire counterexample chain into a single existential statement. The witness is f_target. The first conjunct (¬f_target.Separable) is discharged from f_derivative_zero (separable polynomials have nonzero derivative). The second conjunct (Nat.card f_target.Gal ≠ 1) is discharged from the counterexample_gal_card axiom. The Lean theorem is exactly the negation of the false axiom in the parent file, making the refutation machine-checkable.",
     "mathContext": "The contrapositive of the original (false) axiom: $\\neg \\forall f, (\\neg \\text{Separable}(f) \\to |\\text{Gal}(f)| = 1) \\equiv \\exists f, (\\neg \\text{Separable}(f) \\land |\\text{Gal}(f)| \\neq 1)$. The proof of $\\neg f.\\text{Separable}$ exploits Mathlib's definition: $\\text{Separable}(f) := \\text{IsCoprime}(f, f')$. Since $f' = 0$ in char 2, $\\text{IsCoprime}(f, 0) \\Leftrightarrow \\text{IsUnit}(f)$, but $\\text{natDegree}(f) = 4 > 0$ so $f$ is not a unit. The Galois cardinality witness comes from `counterexample_gal_card`, the only axiom in the file.",
     "significance": "key",
     "relatedConcepts": ["formal counterexample", "Polynomial.Separable", "Galois group cardinality", "axiom refutation"],
