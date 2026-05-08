@@ -2107,4 +2107,156 @@ private lemma boundaryOnFace_simData2 :
       omega
 
 end N2HBoundaryOnFace
+
+-- ============================================================
+-- (S20) Saturating-diagonal base set for `_hLastFace`.
+--
+-- The `_hLastFace` slot of `Triangulation.boundary_doors_odd`
+-- requires the count of boundary doors `(s, k)` whose remaining
+-- vertices all lie on geometric face 2 (`b.1 + b.2 = N`) to be
+-- odd. By S18.1 + S18.5, the only boundary doors that can lie on
+-- face 2 come from `t1 b` cells with the **saturating diagonal**
+-- condition `b.1 + b.2 + 1 = N` (the cell's diagonal edge becomes
+-- the boundary). T2 cells contribute no boundary doors (S18.2),
+-- and the horizontal/vertical t1-boundary edges are on face 1 / 0
+-- respectively (S18.5 `*_endpoints_on_face*`).
+--
+-- This section introduces `satDiagBases N` — the t1 bases meeting
+-- the saturating-diagonal condition — and proves the basic
+-- structural results that S21 will compose with `face2_path_odd`
+-- to produce the bijection door ↔ color-changing diagonal edge.
+--
+-- Concretely, this section delivers:
+-- * `satDiagBases N` definition + `satDiagBases_mem_iff`
+-- * `satDiagBases_eq_image_range`: explicit equality with
+--   `(Finset.range N).image (fun k => (k, N-1-k))`
+-- * `satDiagBases_card`: cardinality = N
+-- * `satDiagBases_subset_t1Bases`: subset relation
+-- * `satDiagBases_endpoints_on_face2`: both diagonal endpoints
+--   satisfy `onFaceΔ2_strict N · (2 : Fin 3)` (strict = in-range +
+--   geometric face), supplying both halves of `_hLastFace`'s
+--   condition (3) for the diagonal-cell case.
+--
+-- S21 will pin down the matching `vertexEnum` index `k` (via the
+-- existing `vertexEnum (t1 b) hS k ∈ t1 b` 3-way case-split
+-- pattern from S19.3), then bridge `IsDoor` to `face2_path_odd`'s
+-- color-change predicate to discharge `_hLastFace`.
+-- ============================================================
+
+section N2LastFaceBases
+
+/-- Saturating-diagonal t1 bases: `b ∈ t1Bases N` whose diagonal
+edge sits exactly on the simplex's boundary (i.e., the diagonal
+endpoints satisfy `v.1 + v.2 = N`). Equivalently
+`b.1 + b.2 + 1 = N`, since the diagonal endpoints are
+`(b.1+1, b.2)` and `(b.1, b.2+1)`. -/
+private def satDiagBases (N : ℕ) : Finset (ℕ × ℕ) :=
+  (t1Bases N).filter (fun b => b.1 + b.2 + 1 = N)
+
+/-- Membership iff: clean form combining `t1Bases_mem_iff` with
+the saturating-diagonal condition. The `b.1 < N ∧ b.2 < N` clauses
+follow from `b.1 + b.2 + 1 = N` (since both summands are `≥ 0`),
+but we keep them explicit so the iff matches the standard
+`t1Bases_mem_iff` shape. -/
+private lemma satDiagBases_mem_iff (N : ℕ) (b : ℕ × ℕ) :
+    b ∈ satDiagBases N ↔
+      b.1 < N ∧ b.2 < N ∧ b.1 + b.2 + 1 = N := by
+  unfold satDiagBases
+  rw [Finset.mem_filter, t1Bases_mem_iff]
+  constructor
+  · rintro ⟨⟨h1, h2, _⟩, hsat⟩; exact ⟨h1, h2, hsat⟩
+  · rintro ⟨h1, h2, hsat⟩
+    refine ⟨⟨h1, h2, ?_⟩, hsat⟩
+    omega
+
+/-- Saturating diagonal bases are a subset of `t1Bases`. -/
+private lemma satDiagBases_subset_t1Bases (N : ℕ) :
+    satDiagBases N ⊆ t1Bases N := by
+  intro b hb
+  exact (Finset.mem_filter.mp hb).1
+
+/-- The map `k ↦ (k, N-1-k)` is injective on `Finset.range N`. -/
+private lemma satDiagBases_image_map_injOn (N : ℕ) :
+    Set.InjOn (fun k => ((k, N - 1 - k) : ℕ × ℕ))
+      (↑(Finset.range N) : Set ℕ) := by
+  intro k₁ _ k₂ _ hkeq
+  -- `congrArg Prod.fst` extracts the first-component equality from
+  -- the pair equality `(k₁, N-1-k₁) = (k₂, N-1-k₂)`.
+  exact congrArg Prod.fst hkeq
+
+/-- The image of `Finset.range N` under `k ↦ (k, N-1-k)` is
+exactly `satDiagBases N`. This is the explicit parametrization
+that drives the cardinality computation and the future bijection
+with `face2_path_odd`'s color-changing edges. -/
+private lemma satDiagBases_eq_image_range (N : ℕ) :
+    satDiagBases N =
+      (Finset.range N).image (fun k => (k, N - 1 - k)) := by
+  ext ⟨b1, b2⟩
+  rw [satDiagBases_mem_iff, Finset.mem_image]
+  refine ⟨?_, ?_⟩
+  · rintro ⟨h1, _h2, hsat⟩
+    refine ⟨b1, Finset.mem_range.mpr h1, ?_⟩
+    -- snd-component: `N - 1 - b1 = b2` from `b1 + b2 + 1 = N`.
+    have hsnd : N - 1 - b1 = b2 := by omega
+    exact (Prod.mk.injEq _ _ _ _).mpr ⟨rfl, hsnd⟩
+  · rintro ⟨k, hk, hk_eq⟩
+    rw [Finset.mem_range] at hk
+    -- `(k, N - 1 - k) = (b1, b2)` ⟹ `b1 = k ∧ b2 = N - 1 - k`.
+    have hfst : k = b1 := congrArg Prod.fst hk_eq
+    have hsnd : N - 1 - k = b2 := congrArg Prod.snd hk_eq
+    refine ⟨?_, ?_, ?_⟩ <;> omega
+
+/-- The cardinality of `satDiagBases N` is exactly `N`. This is
+the count side of the future `_hLastFace` bijection: there are
+exactly `N` saturating-diagonal cells, matching the `N` edges of
+`face2_path_odd`'s `Finset.range N` index set. -/
+private lemma satDiagBases_card (N : ℕ) : (satDiagBases N).card = N := by
+  rw [satDiagBases_eq_image_range,
+      Finset.card_image_of_injOn (satDiagBases_image_map_injOn N),
+      Finset.card_range]
+
+/-- For `b ∈ satDiagBases N`, the diagonal endpoints
+`(b.1, b.2+1)` and `(b.1+1, b.2)` lie in the in-range region
+`v.1 + v.2 ≤ N`. (In fact they saturate, with equality.) This is
+the in-range half of `onFaceΔ2_strict`. -/
+private lemma satDiagBases_endpoints_in_range
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    (b.1 + (b.2 + 1) ≤ N) ∧ ((b.1 + 1) + b.2 ≤ N) := by
+  rw [satDiagBases_mem_iff] at hb
+  obtain ⟨_, _, hsat⟩ := hb
+  refine ⟨?_, ?_⟩ <;> omega
+
+/-- For `b ∈ satDiagBases N`, the diagonal endpoints both satisfy
+the strict face-2 predicate `onFaceΔ2_strict N · (2 : Fin 3)`
+(strict = in-range conjuncted with the geometric `b.1 + b.2 = N`
+condition).
+
+This is exactly the per-vertex content of the
+`∀ j ≠ k, onFaceΔ2_strict N (T.vertex s j) (2 : Fin 3)` clause in
+`_hLastFace` for the `s = t1 b, k = (the index dropping b)` case.
+S21 will compose this with the `vertexEnum (t1 b) hs k ∈ t1 b`
+3-way case-split (per the S19.3 pattern) to identify the unique
+`k` that makes the dropped vertex equal `b`. -/
+private lemma satDiagBases_endpoints_on_face2
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    onFaceΔ2_strict N (b.1, b.2 + 1) (2 : Fin 3) ∧
+      onFaceΔ2_strict N (b.1 + 1, b.2) (2 : Fin 3) := by
+  have hbt1 : b ∈ t1Bases N := satDiagBases_subset_t1Bases N hb
+  have hsat : N ≤ b.1 + b.2 + 1 := by
+    rw [satDiagBases_mem_iff] at hb
+    omega
+  have hgeom := diagonal_endpoints_on_face2 N hbt1 hsat
+  have hrange := satDiagBases_endpoints_in_range N hb
+  exact ⟨⟨hrange.1, hgeom.1⟩, ⟨hrange.2, hgeom.2⟩⟩
+
+/-- `t1 b ∈ topSimps2 N` for `b ∈ satDiagBases N`. Convenience
+alias used by S21 to feed the saturating-diagonal cells through
+the `Triangulation.boundary_doors_odd` consumers. -/
+private lemma satDiagBases_t1_in_topSimps2
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    t1 b ∈ topSimps2 N :=
+  t1_in_topSimps2_of_base N (satDiagBases_subset_t1Bases N hb)
+
+end N2LastFaceBases
+
 end SpernerFreudSimp
