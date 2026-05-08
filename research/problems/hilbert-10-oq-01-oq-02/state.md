@@ -2,12 +2,78 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T22:00:00Z
-**Iteration**: 13
-**Last Updated**: 2026-05-08 (researcher-12)
+**Iteration**: 16
+**Last Updated**: 2026-05-08 (researcher-11)
 
 ## Current Focus
 
-Iteration 13 (2026-05-08, researcher-12, this PR): **Π₁ closed under
+Iteration 16 (2026-05-08, researcher-11, this PR): **Π₂ closed under
+binary intersection AND Σ₂ closed under binary union — direct, with
+arbitrary Π₂/Σ₂ inputs**. Closes both "left as future work" gaps
+explicitly flagged in iter 12 (`intersection_isUniversalExistentialDefinition`)
+and iter 13 (`union_isExistentialUniversalDefinition`), each of which
+only handled the corresponding Σ₁/Π₁ inputs.
+
+Two new theorems:
+
+1. `pi2_intersection_isUniversalExistentialDefinition` — Π₂ ∩ Π₂ ⊆ Π₂.
+   Direct sum-of-squares + interleave witness on the existential
+   block, with the universal block `y` shared between both inputs:
+
+       Q(q, y, x) := P₁(q, y, evenProj x)² + P₂(q, y, oddProj x)²
+
+   Same shape as iter 12's `intersection_isDiophantineDefinition`,
+   lifted by re-using the same `mul_self_nonneg` + `linarith` +
+   `mul_eq_zero` argument inside the universal block per `y`.
+
+2. `sigma2_union_isExistentialUniversalDefinition` — Σ₂ ∪ Σ₂ ⊆ Σ₂.
+   Symmetric corollary via the iter 5 Σ₂/Π₂ duality, iter 16's
+   Π₂ ∩ closure, and the iter 4 Π₂ class congruence helper —
+   structurally identical to iter 13's construction of
+   `union_isCoDiophantineDefinition` from
+   `intersection_isDiophantineDefinition`:
+
+       Σ₂(S₁), Σ₂(S₂)
+         →[iter 5 dual] Π₂(¬S₁), Π₂(¬S₂)
+         →[iter 16 ∩]   Π₂(¬S₁ ∧ ¬S₂)
+         →[iter 4 cong] Π₂(¬(S₁ ∨ S₂))
+         →[iter 5 dual] Σ₂(S₁ ∨ S₂)
+
+**Strictly stronger than iter 12/13's transports**: those only handled
+Σ₁ (resp. Π₁) inputs and lifted to Π₂ (resp. Σ₂) outputs via the
+trivial Σ₁ ⊆ Π₂ / Π₁ ⊆ Σ₂ inclusions; iter 16 handles arbitrary Π₂
+(resp. Σ₂) inputs directly.
+
+**Combined with iter 12's Σ₁ ∩ ⊆ Π₂ and iter 13's Π₁ ∪ ⊆ Σ₂
+transports**, this populates the binary 2×2 Boolean closure grid for
+the SECOND level (Σ₂/Π₂) over ℚ:
+
+    | Class | binary ∪          | binary ∩          |
+    |-------|-------------------|-------------------|
+    | Σ₂    | iter 16 (∪)       | open at this level |
+    | Π₂    | open at this level | iter 16 (∩)       |
+
+The "open at this level" cells (Σ₂ ∩ and Π₂ ∪) are NOT settled —
+their direct witnesses run into the standard quantifier-flip
+obstruction that distinguishes Σ₂ from Σ₁ — and are deferred as a
+genuine future-work gap.
+
+**Mathlib API surface**: ZERO new lemmas, ZERO new imports. Pure
+logical bridging on top of iter 12 (sum-of-squares + interleave),
+iter 5 (Σ₂/Π₂ duality), iter 4 (Π₂ class congruence). The only new
+infrastructure used inside iter 16 is iteration of the iter-12
+`evenProj_interleave` / `oddProj_interleave` lemmas across the
+universal block `y`.
+
+**Net new content**: 0 definitions, 2 theorems, 0 axioms, 0 sorries.
+**Updated total**: 15 definitions, 71 theorems, 1 axiom, 0 sorries,
+2103 lines (was 1904).
+
+## Iteration 15 (2026-05-08, prior researcher-?, PR #17435): **complete the 2×2 closure grid at finite-list arity for arbitrary Σ₁/Π₁ subsets**. Two list-arity theorems — `finUnionList_isDiophantineDefinition` (Σ₁ ∪ list, arbitrary Σ₁ subsets) and `finIntersectionList_isCoDiophantineDefinition` (Π₁ ∩ list, arbitrary Π₁ subsets) — plus their two trivial Π₂/Σ₂ corollaries (4 thms total, +161 lines). Generalizes iter 10's singleton-only versions and pairs with iter 14's Σ₁ list ∩ / Π₁ list ∪ to fully populate the 2×2 grid at finite-list arity for arbitrary subsets.
+
+## Iteration 14 (2026-05-08, prior researcher-?, PR #17423): **list versions of Σ₁ ∩ and Π₁ ∪ closures** (4 thms, +148 lines). Sum-of-squares + interleave list-induction skeleton, mirroring iter 13's binary ∪ via iter 12's binary ∩.
+
+## Iteration 13 (2026-05-08, prior researcher-12, PR #17387): **Π₁ closed under
 binary union (S12.2)** — the missing dual of iter 9's Σ₁-union
 closure. Combined with iter 9 (Σ₁ ∪, Π₁ ∩) and iter 12 (Σ₁ ∩), the
 **2×2 finite Boolean closure grid** for Σ₁ and Π₁ over ℚ is now

@@ -1676,6 +1676,175 @@ theorem finIntersectionList_isExistentialUniversalDefinition
     (finIntersectionList_isCoDiophantineDefinition l h)
 
 -- ============================================================
+-- Part VIII.18 (iter 16, Path B): direct Π₂ ∩ Π₂ ⊆ Π₂ closure
+--                                  and Σ₂ ∪ Σ₂ ⊆ Σ₂ corollary
+-- ============================================================
+
+/-- Iter 16, Path B: **the Π₂ class is closed under binary intersection
+    of Π₂-definable subsets** (direct, not transported from Σ₁ ∩).
+
+    Closes the gap explicitly flagged by iter 12's
+    `intersection_isUniversalExistentialDefinition` ("the stronger
+    Π₂ ∩ Π₂ ⊆ Π₂ closure is left as future work"): if `S₁` and `S₂` are
+    both Π₂-definable over ℚ, then so is `fun q => S₁ q ∧ S₂ q`. The
+    direct statement is strictly stronger than iter 12's corollary,
+    which only handled Σ₁ inputs.
+
+    **Witness** (sum-of-squares with variable packing on the existential
+    block; universal block shared): given Π₂ witnesses `P_i (q, y, x)`
+    for `S_i`, the polynomial
+
+        Q(q, y, x) := P₁(q, y, evenProj x)·P₁(q, y, evenProj x)
+                    + P₂(q, y, oddProj x)·P₂(q, y, oddProj x)
+
+    has, for every `y`, a rational solution `x` iff for that `y` both
+    `P₁(q, y, ·)` and `P₂(q, y, ·)` have rational solutions. The
+    universal block `y : Nat → Rat` is the SAME for both conjuncts —
+    there is no need to interleave `y`, only the existential `x`.
+
+    **Forward** (`(S₁ q ∧ S₂ q) → ∀ y, ∃ x, Q(q, y, x) = 0`): for each
+    `y`, peel off `x_i` from `(hP_i q).mp hS_i y` and combine via
+    `interleave`, just as in iter 12. The projection lemmas
+    `evenProj_interleave` and `oddProj_interleave` make
+    `P₁(q, y, evenProj x) = P₁(q, y, x₁) = 0` and
+    `P₂(q, y, oddProj x) = P₂(q, y, x₂) = 0`, so each square term
+    vanishes and the sum is zero.
+
+    **Reverse** (`(∀ y, ∃ x, Q = 0) → S₁ q ∧ S₂ q`): for each `y`, peel
+    off the witness `x` of the sum-of-squares hypothesis, then by the
+    same `mul_self_nonneg` + `linarith` + `mul_eq_zero` argument as
+    iter 12, both square factors vanish individually. Feed `evenProj x`
+    back through `(hP₁ q).mpr` (with the universal `y`) to get the Π₂
+    witness for `S₁`, and `oddProj x` through `(hP₂ q).mpr` for `S₂`.
+
+    **Path B** (Mathlib): no new imports — reuses `mul_self_nonneg`
+    (`Mathlib.Algebra.Order.Ring.Lemmas`), `linarith`
+    (`Mathlib.Tactic.Linarith`), `mul_eq_zero`
+    (`Mathlib.Algebra.GroupWithZero.Basic`), and the iter 12 packing
+    helpers `evenProj`, `oddProj`, `interleave`, `evenProj_interleave`,
+    `oddProj_interleave`. No new axioms.
+
+    **Strictly bigger than iter 12's transport**: iter 12's
+    `intersection_isUniversalExistentialDefinition` only delivers Π₂
+    closure when both inputs are Σ₁; iter 16 delivers Π₂ closure even
+    when the inputs are properly Π₂ (e.g., `IntSubset` itself, via the
+    iter 4 axiom `koenigsmann_2016_universal`). In particular, iter 16
+    yields:
+
+        koenigsmann_2016_universal ∧ koenigsmann_2016_universal
+          → IsUniversalExistentialDefinition (fun q => IntSubset q ∧ IntSubset q)
+
+    (the Π₂-definability of `ℤ ∩ ℤ = ℤ`, a tautology in this case but a
+    genuinely new closure step in cases where the two Π₂ inputs are not
+    identical).
+
+    **Dual to come** (iter 16's second lemma below): Σ₂ closed under
+    binary union, via the Σ₂/Π₂ duality applied to this lemma. -/
+theorem pi2_intersection_isUniversalExistentialDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsUniversalExistentialDefinition S₁)
+    (h₂ : IsUniversalExistentialDefinition S₂) :
+    IsUniversalExistentialDefinition (fun q => S₁ q ∧ S₂ q) := by
+  obtain ⟨P₁, hP₁⟩ := h₁
+  obtain ⟨P₂, hP₂⟩ := h₂
+  refine ⟨fun q y x =>
+    (P₁ q y (evenProj x)) * (P₁ q y (evenProj x)) +
+    (P₂ q y (oddProj x)) * (P₂ q y (oddProj x)), fun q => ?_⟩
+  constructor
+  · rintro ⟨hS₁, hS₂⟩ y
+    obtain ⟨x₁, hx₁⟩ := (hP₁ q).mp hS₁ y
+    obtain ⟨x₂, hx₂⟩ := (hP₂ q).mp hS₂ y
+    refine ⟨interleave x₁ x₂, ?_⟩
+    show P₁ q y (evenProj (interleave x₁ x₂)) *
+          P₁ q y (evenProj (interleave x₁ x₂)) +
+        P₂ q y (oddProj (interleave x₁ x₂)) *
+          P₂ q y (oddProj (interleave x₁ x₂)) = 0
+    rw [evenProj_interleave, oddProj_interleave, hx₁, hx₂]
+    ring
+  · intro hAll
+    refine ⟨(hP₁ q).mpr ?_, (hP₂ q).mpr ?_⟩
+    · intro y
+      obtain ⟨x, hx⟩ := hAll y
+      set a := P₁ q y (evenProj x)
+      set b := P₂ q y (oddProj x)
+      have haa_nn : (0 : Rat) ≤ a * a := mul_self_nonneg a
+      have hbb_nn : (0 : Rat) ≤ b * b := mul_self_nonneg b
+      have haa_zero : a * a = 0 := by linarith
+      have ha : a = 0 := (mul_eq_zero.mp haa_zero).elim id id
+      exact ⟨evenProj x, ha⟩
+    · intro y
+      obtain ⟨x, hx⟩ := hAll y
+      set a := P₁ q y (evenProj x)
+      set b := P₂ q y (oddProj x)
+      have haa_nn : (0 : Rat) ≤ a * a := mul_self_nonneg a
+      have hbb_nn : (0 : Rat) ≤ b * b := mul_self_nonneg b
+      have hbb_zero : b * b = 0 := by linarith
+      have hb : b = 0 := (mul_eq_zero.mp hbb_zero).elim id id
+      exact ⟨oddProj x, hb⟩
+
+/-- Iter 16, Path B: **the Σ₂ class is closed under binary union of
+    Σ₂-definable subsets** (corollary via Σ₂/Π₂ duality).
+
+    Closes the gap explicitly flagged by iter 13's
+    `union_isExistentialUniversalDefinition` ("the stronger Σ₂ ∪ Σ₂ ⊆ Σ₂
+    closure is left as future work"). Direct dual of iter 16's
+    `pi2_intersection_isUniversalExistentialDefinition` via the iter 5
+    Σ₂/Π₂ duality `existentialUniversal_iff_universalExistential_complement`,
+    iter 16's Π₂ ∩ closure, and the iter 4 Π₂-class congruence helper —
+    structurally identical to iter 13's construction of
+    `union_isCoDiophantineDefinition` from `intersection_isDiophantineDefinition`.
+
+      Σ₂(S₁), Σ₂(S₂)
+        →[iter 5 existentialUniversal_iff_universalExistential_complement]
+                                                       Π₂(¬S₁), Π₂(¬S₂)
+        →[iter 16 pi2_intersection_isUniversalExistentialDefinition]
+                                                       Π₂(¬S₁ ∧ ¬S₂)
+        →[iter 4 universalExistentialDefinition_iff_of_pred_iff
+           via constructive de Morgan ¬S₁ ∧ ¬S₂ ↔ ¬(S₁ ∨ S₂)]
+                                                       Π₂(¬(S₁ ∨ S₂))
+        →[iter 5 existentialUniversal_iff_universalExistential_complement]
+                                                       Σ₂(S₁ ∨ S₂)
+
+    The de Morgan bridge is **constructive** (no LEM beyond what the
+    iter 5 duality already uses internally — two `Classical.byContradiction`
+    invocations, the same as iter 5).
+
+    **Strictly bigger than iter 13's transport**: iter 13's
+    `union_isExistentialUniversalDefinition` only delivers Σ₂ closure
+    when both inputs are Π₁; iter 16 delivers Σ₂ closure even when the
+    inputs are properly Σ₂.
+
+    Path B (Mathlib): no new imports beyond what iter 16's Π₂ ∩ closure
+    already requires. No new axioms. -/
+theorem sigma2_union_isExistentialUniversalDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsExistentialUniversalDefinition S₁)
+    (h₂ : IsExistentialUniversalDefinition S₂) :
+    IsExistentialUniversalDefinition (fun q => S₁ q ∨ S₂ q) := by
+  -- Step 1: dualize each Σ₂ to Π₂ on the complement (iter 5 duality).
+  have hd₁ : IsUniversalExistentialDefinition (fun q => ¬ S₁ q) :=
+    (existentialUniversal_iff_universalExistential_complement S₁).mp h₁
+  have hd₂ : IsUniversalExistentialDefinition (fun q => ¬ S₂ q) :=
+    (existentialUniversal_iff_universalExistential_complement S₂).mp h₂
+  -- Step 2: Π₂ closed under binary intersection (iter 16, main lemma).
+  have hcap : IsUniversalExistentialDefinition (fun q => ¬ S₁ q ∧ ¬ S₂ q) :=
+    pi2_intersection_isUniversalExistentialDefinition hd₁ hd₂
+  -- Step 3: bridge via constructive de Morgan
+  --     `¬ S₁ q ∧ ¬ S₂ q ↔ ¬ (S₁ q ∨ S₂ q)`.
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ¬ S₁ q ∧ ¬ S₂ q) q ↔
+        (fun q : Rat => ¬ (S₁ q ∨ S₂ q)) q := by
+    intro q
+    refine ⟨fun ⟨hn₁, hn₂⟩ hor => hor.elim hn₁ hn₂,
+            fun hnor => ⟨fun h₁q => hnor (Or.inl h₁q),
+                          fun h₂q => hnor (Or.inr h₂q)⟩⟩
+  have hd : IsUniversalExistentialDefinition (fun q : Rat => ¬ (S₁ q ∨ S₂ q)) :=
+    (universalExistentialDefinition_iff_of_pred_iff hbridge).mp hcap
+  -- Step 4: Π₂(¬T) → Σ₂(T) via duality (iter 5), with T = S₁ ∪ S₂.
+  exact (existentialUniversal_iff_universalExistential_complement
+    (fun q => S₁ q ∨ S₂ q)).mpr hd
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -1768,6 +1937,32 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   (resp. Π₁-definable) subsets of ℚ remains in the same class. Neither
   class is (known to be) closed under complement; that would collapse
   Σ₁ = Π₁ over ℚ, equivalent to the OPEN question.
+- **Π₂ is closed under binary intersection; Σ₂ is closed under binary
+  union** (iter 16): closes the two "future work" gaps explicitly
+  flagged in iter 12 (`intersection_isUniversalExistentialDefinition`)
+  and iter 13 (`union_isExistentialUniversalDefinition`), where each
+  iter could only handle the corresponding Σ₁/Π₁ inputs. The Π₂ ∩
+  closure has a direct sum-of-squares + interleave witness on the
+  existential block (universal block shared); the Σ₂ ∪ closure is the
+  symmetric corollary via the Σ₂/Π₂ duality. **Combined with iter 12's
+  Σ₁ ∩ ⊆ Π₂ and iter 13's Π₁ ∪ ⊆ Σ₂ transports**, this populates the
+  binary 2×2 Boolean closure grid for the SECOND level (Σ₂/Π₂) over ℚ
+  with arbitrary Σ₂/Π₂ inputs — strictly stronger than the iter 12/13
+  transports.
+
+  | Class | binary ∪          | binary ∩          |
+  |-------|-------------------|-------------------|
+  | Σ₂    | iter 16 (∪)       | open at this level |
+  | Π₂    | open at this level | iter 16 (∩)       |
+
+  The "open at this level" cells (Σ₂ ∩ and Π₂ ∪) are NOT settled by
+  iter 16 — their direct witnesses run into the same flip-of-quantifier
+  obstruction that distinguishes Σ₂ from Σ₁; they remain genuinely
+  harder closure properties. The two cells iter 16 fills are precisely
+  those where the universal block (Π₂) or existential block (Σ₂) is
+  shared between the two inputs and the OTHER block (existential for
+  Π₂, universal for Σ₂) admits the same sum-of-squares / dual-product
+  construction as iter 12/13.
 
 ## Axioms in THIS file (1 net new)
 
@@ -1836,6 +2031,8 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `intersection_isUniversalExistentialDefinition` (Σ₁ ∩ Σ₁ ⊆ Π₂ corollary, iter 12)
   - `union_isCoDiophantineDefinition` (Π₁ closed under binary union via iter 5 duality + iter 12 Σ₁ ∩ closure, iter 13)
   - `union_isExistentialUniversalDefinition` (Π₁ ∪ Π₁ ⊆ Σ₂ corollary, iter 13)
+  - `pi2_intersection_isUniversalExistentialDefinition` (Π₂ closed under binary intersection of Π₂ inputs, direct sum-of-squares + interleave on the existential block; closes iter 12's "future work" gap, iter 16)
+  - `sigma2_union_isExistentialUniversalDefinition` (Σ₂ closed under binary union of Σ₂ inputs, iter 5 duality + iter 16 Π₂ ∩ closure + iter 4 Π₂ class congruence; closes iter 13's "future work" gap, iter 16)
 -/
 
 #check @IsDiophantineDefinition
@@ -1900,5 +2097,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @finUnionList_isUniversalExistentialDefinition
 #check @finIntersectionList_isCoDiophantineDefinition
 #check @finIntersectionList_isExistentialUniversalDefinition
+#check @pi2_intersection_isUniversalExistentialDefinition
+#check @sigma2_union_isExistentialUniversalDefinition
 
 end Hilbert10Rationals
