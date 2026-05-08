@@ -12903,10 +12903,12 @@
       "result": "clean"
     },
     "schauder-fixed-point-oq-03-oq-01": {
-      "auditCount": 2,
-      "issues": [],
-      "lastAudited": "2026-05-04T04:10:10Z",
-      "result": "clean"
+      "auditCount": 3,
+      "issues": [
+        "sorries 2→0, axiomCount 3→2, theoremCount 2→3, lineCount 280→349; prose drift in description/assumptions/originalContributions/sections (PR #16834)"
+      ],
+      "lastAudited": "2026-05-08T00:53:24Z",
+      "result": "issues-fixed"
     },
     "schroeder-bernstein": {
       "auditCount": 3,
