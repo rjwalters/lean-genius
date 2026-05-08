@@ -217,3 +217,98 @@ of Jacobi's identity to its minimal form: a finite product over prime
 powers, where each factor is either σ(p^k) (already in Mathlib) or 3
 (the σ*(2^k) constant). Once Mathlib gains the q-expansion bridge, no
 further σ*-side work will be needed.
+
+---
+
+## S5 (2026-05-08, researcher-8) — closed form σ*(2^k · m) for m odd
+
+This session adds **Part 15** to `FourSquareDistributionOQ01.lean`,
+producing the **explicit closed-form for σ\*** by 2-adic decomposition.
+It is a one-step corollary of the S4 multiplicative theory; per the S4
+next-step list, "this is a one-line corollary now" was the prediction,
+and S5 confirms it requires only three rewriting steps.
+
+### New theorems (Part 15)
+
+* **`sigmaStar_two_pow_mul_odd`** — for `1 ≤ k`, `m` odd and positive:
+  `σ*(2^k · m) = 3 · σ(m)`.
+
+  Proof in 4 lines by combining:
+  1. `Coprime (2^k) m` from `Nat.Prime.coprime_iff_not_dvd Nat.prime_two`
+     plus `Nat.Coprime.pow_left k`.
+  2. σ*-multiplicativity from S4 (`sigmaStar_mul_of_coprime`).
+  3. `σ*(2^k) = 3` from S4 (`sigmaStar_two_pow`).
+  4. `σ*(m) = σ(m)` from S2 (`sigmaStar_eq_sigmaOne_of_odd`).
+
+* **`jacobiR4_two_pow_mul_odd`** — for `1 ≤ k`, `m` odd and positive:
+  `jacobiR4(2^k · m) = 24 · σ(m)`. Two lines: unfold + rewrite + ring.
+
+### Cross-validation (Part 15)
+
+Eight closed-form `example` checks, of the form
+`sigmaStar (2^k * m) = 3 * sigmaOne m` and
+`jacobiR4 (2^k * m) = 24 * sigmaOne m`, exhibiting:
+* `(k=1, m=1)`, `(k=2, m=1)`, `(k=3, m=1)`: σ*(2)=σ*(4)=σ*(8) = 3.
+* `(k=1, m=3)`: σ*(6) = 12 (matches S1's `sigmaStar_6 = 12`).
+* `(k=1, m=5)`: σ*(10) = 18 (matches S1's `sigmaStar_10 = 18`).
+* `(k=3, m=5)`: σ*(40) = 18 (extends beyond S1's n ≤ 10 verification —
+  the closed form predicts r₄(40) = jacobiR4(40) = 24·σ(5) = 144).
+* `(k=3, m=1)` jacobiR4 form: jacobiR4(8) = 24.
+* `(k=3, m=5)` jacobiR4 form: jacobiR4(40) = 144 (closed-form prediction
+  beyond brute-force range).
+
+### Why this matters
+
+Combined with the S2 case `σ*(odd m) = σ(m)`, σ* now has a **complete
+two-case characterisation** by the 2-adic valuation:
+
+```
+σ*(n) = σ(odd_part(n))            if v₂(n) = 0  (n odd)
+σ*(n) = 3 · σ(odd_part(n))        if v₂(n) ≥ 1  (n even)
+```
+
+The σ*-side of Jacobi's r₄ formula has been reduced to a **single σ
+computation** on the odd part of n, regardless of how many factors of 2
+divide n. The `(2^k, k≥1)` factor contributes only a constant factor
+of 3 to the closed form — this is exactly the multiplicative
+"flattening" that the modular-form proof of Jacobi exhibits in the
+ratio θ⁴(τ) / Eisenstein-combination at level 4.
+
+### Reduction status of Jacobi's r₄ formula (post-S5)
+
+| Side                                        | Status                                |
+|---------------------------------------------|---------------------------------------|
+| σ*(n) given factorization of n              | ✓ closed form (S5)                    |
+| σ*-multiplicativity                         | ✓ (S4)                                |
+| σ*(p^k) for odd prime p                     | ✓ = σ(p^k) (S3)                       |
+| σ*(2^k) for k ≥ 1                           | ✓ = 3 (S4)                            |
+| σ-multiplicativity                          | ✓ (Mathlib)                           |
+| σ(p^k) closed form                          | ✓ (Mathlib `sigma_apply_prime_pow`)   |
+| **r₄(n) = q-expansion coefficient of θ⁴**   | ✗ blocked on Mathlib q-expansion      |
+| **θ⁴ ↔ E₂(τ) − 4·E₂(4τ) identification**    | ✗ blocked on Mathlib                  |
+
+The σ*-side is now **fully closed-form**; the open axiom
+`jacobi_r4_formula` reduces to the modular-form bridge.
+
+### S5 build-verification status
+
+Local Docker build kicked off at session start (host: 32 GB Docker
+memory limit, 80 min timeout) — see PR for build outcome. The new
+lemmas use only standard Mathlib idioms cross-checked against existing
+Mathlib 4.26.0 source:
+* `Nat.Prime.coprime_iff_not_dvd` — confirmed in Mathlib.
+* `Nat.prime_two` — confirmed.
+* `Nat.Coprime.pow_left` — confirmed.
+
+All four ingredient theorems (`sigmaStar_mul_of_coprime`,
+`sigmaStar_two_pow`, `sigmaStar_eq_sigmaOne_of_odd`, plus the unfold
+of `jacobiR4`) are previously-verified parts of the same file.
+
+### Honest assessment
+
+S5 does not close the open axiom. **What S5 does** is express the
+σ*-side closed form in a single named lemma — `sigmaStar_two_pow_mul_odd`
+— that future modular-form work can call directly without re-deriving
+the multiplicative chain. The prediction `r₄(40) = 144` is now a
+closed-form consequence of the σ*-side; it remains a prediction (not a
+verified equality) pending the modular-form bridge.

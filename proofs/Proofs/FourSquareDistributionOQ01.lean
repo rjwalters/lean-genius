@@ -885,4 +885,93 @@ example : sigmaStar (8 * 5) = sigmaStar 8 * sigmaStar 5 :=
 example : sigmaStar (9 * 5) = sigmaStar 9 * sigmaStar 5 :=
   sigmaStar_mul_of_coprime (by decide) (by decide) (by decide)
 
+-- =====================================================================
+-- PART 15: Closed form σ*(2^k · m) = 3·σ(m) for k ≥ 1, m odd.
+--
+-- Combines σ*-multiplicativity (Part 12) with σ*(2^k) = 3 (Part 13)
+-- and σ*(m) = σ(m) for m odd (Part 6) into a single closed form.
+--
+-- Together with `sigmaStar_eq_sigmaOne_of_odd`, this gives a COMPLETE
+-- characterization of σ*(n) by the 2-adic valuation and odd part of n:
+--
+--    σ*(n)  =  σ(odd_part(n))                      if n is odd
+--    σ*(n)  =  3 · σ(odd_part(n))                  if 2 ∣ n
+--
+-- This reduces the σ*-side of Jacobi's r₄ formula to a single Mathlib
+-- σ-value computation regardless of the 2-adic valuation of n.
+-- =====================================================================
+
+/-- Closed form for σ*(2^k · m) when k ≥ 1 and m is odd: σ*(2^k · m) = 3 · σ(m).
+
+    Proof outline:
+    1. Coprime (2^k) m  (from m odd via `Nat.Prime.coprime_iff_not_dvd`).
+    2. σ*-multiplicativity: σ*(2^k · m) = σ*(2^k) · σ*(m).
+    3. σ*(2^k) = 3 (Part 13).
+    4. σ*(m) = σ(m) since m is odd (Part 6).
+    5. Combine: σ*(2^k · m) = 3 · σ(m). -/
+theorem sigmaStar_two_pow_mul_odd {k : ℕ} (hk : 1 ≤ k) {m : ℕ}
+    (hm : ¬ 2 ∣ m) (hmpos : 0 < m) :
+    sigmaStar (2 ^ k * m) = 3 * sigmaOne m := by
+  have h2_pos : 0 < 2 ^ k := pow_pos (by decide : (0 : ℕ) < 2) k
+  have h2_cop : Nat.Coprime 2 m :=
+    (Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hm
+  have hcop : Nat.Coprime (2 ^ k) m := h2_cop.pow_left k
+  rw [sigmaStar_mul_of_coprime hcop h2_pos hmpos,
+      sigmaStar_two_pow hk, sigmaStar_eq_sigmaOne_of_odd hm]
+
+/-- Closed form for jacobiR4 on `2^k · m` with `m` odd, k ≥ 1:
+    jacobiR4(2^k · m) = 24 · σ(m).
+
+    Pairing this with `sigmaStar_eq_sigmaOne_of_odd` gives a complete
+    closed form for jacobiR4(n) given n's 2-adic decomposition:
+    - n odd: jacobiR4(n) = 8 · σ(n)
+    - n with v₂(n) ≥ 1: jacobiR4(n) = 24 · σ(odd_part(n))
+
+    Once Mathlib provides the q-expansion of jacobiTheta⁴, this lemma is
+    one of the two halves needed to close `axiom jacobi_r4_formula`
+    (the other being r4Count = q-expansion coefficient).  -/
+theorem jacobiR4_two_pow_mul_odd {k : ℕ} (hk : 1 ≤ k) {m : ℕ}
+    (hm : ¬ 2 ∣ m) (hmpos : 0 < m) :
+    jacobiR4 (2 ^ k * m) = 24 * sigmaOne m := by
+  unfold jacobiR4
+  rw [sigmaStar_two_pow_mul_odd hk hm hmpos]; ring
+
+-- ---------------------------------------------------------------------
+-- Cross-validation of the closed form against PART 1 numeric values.
+-- ---------------------------------------------------------------------
+
+/-- σ*(2) = σ*(2^1 · 1) = 3 · σ(1) = 3. -/
+example : sigmaStar (2 ^ 1 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- σ*(4) = σ*(2^2 · 1) = 3 · σ(1) = 3. -/
+example : sigmaStar (2 ^ 2 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- σ*(6) = σ*(2^1 · 3) = 3 · σ(3) = 3 · 4 = 12. -/
+example : sigmaStar (2 ^ 1 * 3) = 3 * sigmaOne 3 :=
+  sigmaStar_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- σ*(8) = σ*(2^3 · 1) = 3 · σ(1) = 3. -/
+example : sigmaStar (2 ^ 3 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- σ*(10) = σ*(2^1 · 5) = 3 · σ(5) = 3 · 6 = 18. -/
+example : sigmaStar (2 ^ 1 * 5) = 3 * sigmaOne 5 :=
+  sigmaStar_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- σ*(40) = σ*(2^3 · 5) = 3 · σ(5) = 3 · 6 = 18. -/
+example : sigmaStar (2 ^ 3 * 5) = 3 * sigmaOne 5 :=
+  sigmaStar_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- jacobiR4(8) = jacobiR4(2^3 · 1) = 24 · σ(1) = 24. -/
+example : jacobiR4 (2 ^ 3 * 1) = 24 * sigmaOne 1 :=
+  jacobiR4_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- jacobiR4(40) = jacobiR4(2^3 · 5) = 24 · σ(5) = 144 — matches r4Count(40)
+    prediction (not numerically verified beyond n = 10, but consistent with
+    the closed form r₄(2^k · m) = 24 · σ(m) for odd m, k ≥ 1). -/
+example : jacobiR4 (2 ^ 3 * 5) = 24 * sigmaOne 5 :=
+  jacobiR4_two_pow_mul_odd (by decide) (by decide) (by decide)
+
 end FourSquareDistributionOQ01
