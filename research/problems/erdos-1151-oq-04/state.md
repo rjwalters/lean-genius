@@ -4,10 +4,50 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 24
-**Last Updated**: 2026-05-08
+**Iteration**: 26
+**Last Updated**: 2026-05-09
 
-## Session 24 (researcher-4, this session, build pending)
+## Session 26 (researcher-12, this session, build pending)
+
+Added the **Step 7a/asymptotic side packaging** as a new private helper
+`trig_sum_harmonic_lb_asymp_le_half_pi` (~120 lines). For any
+`θ ∈ (0, π/2]` whose cosine avoids all Chebyshev nodes:
+
+```
+∃ N₀ : ℕ, ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ n ≥ N₀,
+  C₁ · n · log(n+1) ≤ S(θ, n)
+```
+
+with `C₁ = sin(θ/2) / (2π)` and `N₀ = max N₀_log 4` (where `N₀_log` comes
+from S24's `chebyshev_quarter_floor_log_asymp_lb`, and `4` is S23's hyp).
+
+**Composition** (purely from already-merged helpers):
+
+  1. `exists_nearest_chebyshev_angle` → `k₀ : Fin n` with closeness.
+  2. `m := ⌊n·θ/(4π)⌋` via `Nat.floor_le` + `Nat.lt_floor_add_one`.
+  3. S23 `chebyshev_quarter_floor_hm_le_and_cap_max` → `hm_le` + `hcap_max`.
+  4. S22 `chebyshev_h_interior_of_close_and_max_index_cap` → `h_interior` (d := θ).
+  5. S21 `trig_sum_subsum_log_lb` → `sin(θ/2)·(2n/π)·((1/2)·log(m+2)−1) ≤ S(θ,n)`.
+  6. S24 `chebyshev_quarter_floor_log_asymp_lb` → `(1/4)·log(n+1) ≤ (1/2)·log(m+2)−1`.
+  7. Multiply by nonneg `sin(θ/2)·(2n/π)`, algebraically rearrange to
+     `(sin(θ/2)/(2π))·n·log(n+1) ≤ S(θ,n)`.
+  8. Cast bridge mixed-cast → outer-cast sum form via
+     `Finset.sum_congr` + `push_cast` + `ring`.
+
+**Why this matters**: this is **exactly** the `hlarge` hypothesis consumed
+by `trig_sum_combine_small_large_const` (Step 7c, in flight as PR #17457).
+Once that PR merges, the `θ ∈ (0, π/2]` branch of `trig_sum_harmonic_lb`
+closes in ~10 lines: pass S26 helper's output (`N₀`, `C₁`, `hlarge`) to
+S25's combine helper. The general `θ ∈ (0, π)` branch then follows in ~20
+lines via `trig_sum_reindex_symmetry` (S18, merged): `S(θ, n) = S(π−θ, n)`,
+and `π−θ ∈ (0, π/2)` when `θ ∈ [π/2, π)`.
+
+**No conflict with PR #17457**: this S26 helper inserts AT THE SAME
+POSITION as #17457's combine helper (between S24 and `trig_sum_harmonic_lb`),
+but the two helpers are independent. Whichever lands first triggers a
+trivial rebase in the other.
+
+## Session 24 (researcher-4, build pending, merged via #17438)
 
 Added the **Step 7a residue (asymptotic log lower bound)** as a new private
 helper `chebyshev_quarter_floor_log_asymp_lb` (~80 lines). For any `θ > 0`:
@@ -265,19 +305,34 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
   — m-choice + arithmetic packager that, for `θ ∈ (0, π/2]`, `n ≥ 4`, and any
   `m : ℕ` with `(m : ℝ) ≤ n·θ/(4π)`, produces both `hm_le` and `hcap_max`
   inputs simultaneously. Merged via #17396.
-- 2026-05-08: Session 24 (researcher-4, this session): `chebyshev_quarter_floor_log_asymp_lb`
+- 2026-05-08: Session 24 (researcher-4): `chebyshev_quarter_floor_log_asymp_lb`
   — asymptotic log lower bound `(1/4)·log(n+1) ≤ (1/2)·log(m+2) − 1` for
   `n ≥ N₀(θ)` and `(m : ℝ) ≥ n·θ/(4π) − 1`. The genuinely-asymptotic step
   flagged in PR #17386's body; with this and the open combine helper merged,
   the only remaining work for `trig_sum_harmonic_lb` is the WLOG/m-choice glue.
+  Merged via #17438.
+- 2026-05-08: Session 25 (researcher-1, in flight): `trig_sum_combine_small_large_const`
+  — Step 7c min-of-two-constants closure, replay of stale PR #17386 onto
+  fresh `origin/main`. Open as PR #17457.
+- 2026-05-09: Session 26 (researcher-12, this session): `trig_sum_harmonic_lb_asymp_le_half_pi`
+  — asymptotic large-`n` packaging for `θ ∈ (0, π/2]`. Composes
+  `exists_nearest_chebyshev_angle` (S14), `chebyshev_quarter_floor_hm_le_and_cap_max`
+  (S23), `chebyshev_h_interior_of_close_and_max_index_cap` (S22),
+  `trig_sum_subsum_log_lb` (S21), and `chebyshev_quarter_floor_log_asymp_lb`
+  (S24) into the single `hlarge` hypothesis consumed by S25's
+  combine helper. PR pending.
 
 ## Open PRs
 
-- (this session) PR pending — `chebyshev_quarter_floor_log_asymp_lb` (~80 lines, build TBD)
-- PR #17386 (researcher-3, S23 follow-up) — `trig_sum_combine_small_large_const`
+- (this session, S26) PR pending — `trig_sum_harmonic_lb_asymp_le_half_pi`
+  (~140 lines, build TBD) — packages the asymptotic large-`n` side for
+  `θ ∈ (0, π/2]`; exactly the `hlarge` hypothesis #17457's combine
+  helper expects.
+- PR #17457 (researcher-1, S25 replay of stale PR #17386) —
+  `trig_sum_combine_small_large_const` Step 7c min-of-two-constants closure.
 
-## File Stats (after Session 24 added chebyshev_quarter_floor_log_asymp_lb)
+## File Stats (after Session 26 added trig_sum_harmonic_lb_asymp_le_half_pi)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 2288 lines, 2 sorries (was 2180 lines on origin/main)
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2415 lines, 2 sorries (was 2288 on origin/main)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement
