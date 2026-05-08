@@ -4,11 +4,35 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Iteration 7, researcher-11)
-**Iteration**: 7
+**Last Updated**: 2026-05-08 (Iteration 8, researcher-9)
+**Iteration**: 8
 
 ## Current Focus
-Iteration 7 (2026-05-08, this PR): closes the **easy direction of
+Iteration 8 (2026-05-08, this PR): closes the **reverse direction of
+Chebyshev's decomposition**, complementing Iter 7's forward direction:
+
+- `lcmRange_dvd_prod_prime_powers (n : ℕ) :
+   lcmRange n ∣ ∏ p ∈ (Finset.range (n+1)).filter Nat.Prime, p ^ Nat.log p n`
+
+The proof routes through `Nat.factorization`:
+
+1. By `Finset.lcm_dvd_iff` it suffices to show every `m ∈ {1,…,n}`
+   divides the product `N`.
+2. Rewrite `m = ∏_{p ∈ m.primeFactors} p^(m.factorization p)` via
+   `Nat.factorization_prod_pow_eq_self`.
+3. Extend the index set from `m.primeFactors` to
+   `(Finset.range (n+1)).filter Nat.Prime` via `Finset.prod_subset`
+   (the extra factors contribute `p^0 = 1`).
+4. Pointwise divisibility on the resulting two products: each
+   `m.factorization p ≤ Nat.log p n` since
+   `p^(m.factorization p) ∣ m ≤ n` and `Nat.le_log_of_pow_le` lifts
+   the `p^k ≤ n` inequality into the exponent bound (using
+   `hp_prime.one_lt`).
+
+Combining Iter 7 and Iter 8 via `Nat.dvd_antisymm` gives the exact
+Chebyshev identity (Iter 9 candidate).
+
+Iteration 7 (#17166 merged): closes the **easy direction of
 Chebyshev's decomposition**, the major structural milestone of the
 last six iterations:
 
@@ -75,7 +99,7 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 7.
+- Total attempts: 8.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
   structural-lemma layer for inductive proofs (iter 2); generic
@@ -84,7 +108,9 @@ Currently blocked on:
   prime-power specialization `prime_pow_dvd_lcmRange` (iter 5, #17021);
   coprime distinct prime powers `coprime_prime_pow_pow_of_ne` (iter 6,
   #17128); easy direction of Chebyshev's decomposition
-  `prod_prime_powers_dvd_lcmRange` (iter 7, this PR).
+  `prod_prime_powers_dvd_lcmRange` (iter 7, #17166); reverse
+  direction `lcmRange_dvd_prod_prime_powers` via `Nat.factorization`
+  (iter 8, this PR).
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -93,30 +119,15 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 8 candidate**: the **reverse direction** of Chebyshev's
-decomposition,
-
-  `lcmRange n ∣ ∏ p ∈ filter Prime (range (n+1)), p ^ Nat.log p n`.
-
-Strategy: route through Mathlib's `Nat.factorization` framework. For
-each `k ∈ {1,...,n}`:
-1. Write `k = ∏_p p^(k.factorization p)` via
-   `Nat.factorization_prod_pow_factorization` (or
-   `Nat.eq_prod_pow_factorization`).
-2. Bound each exponent: `k.factorization p ≤ Nat.log p n` since
-   `p^(k.factorization p) ∣ k ≤ n` and `Nat.log` is the maximal exponent
-   such that `p^a ≤ n`. The Mathlib API for this is
-   `Nat.factorization_le_log_of_dvd` (if it exists) or hand-derived
-   via `Nat.pow_le_iff_le_log` + `Nat.dvd_iff_le_pow_factorization`.
-3. Therefore `k ∣ ∏ p ∈ filter Prime (range (n+1)), p^(Nat.log p n)`.
-4. By `Finset.lcm_dvd`, `lcmRange n ∣ that product`.
-
-Once Iter 8 lands, **Iteration 9** is the antisymmetric closure:
+**Iteration 9 candidate**: the **antisymmetric closure** —
+combining Iter 7 and Iter 8 to produce the exact Chebyshev identity:
 
   `lcmRange_eq_prod_prime_powers : lcmRange n =
      ∏ p ∈ filter Prime (range (n+1)), p ^ Nat.log p n`
 
-via `Nat.dvd_antisymm` from Iter 7 + Iter 8.
+This is a one-line `Nat.dvd_antisymm` proof from
+`prod_prime_powers_dvd_lcmRange` (Iter 7) and
+`lcmRange_dvd_prod_prime_powers` (Iter 8).
 
 After this, the Chebyshev product gives an explicit prime-power
 form for `lcmRange n`, and the bound

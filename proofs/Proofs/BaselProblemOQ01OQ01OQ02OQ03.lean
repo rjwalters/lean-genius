@@ -2,6 +2,7 @@ import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Nat.Prime.Basic
+import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.Tactic
 
 /-
@@ -216,6 +217,69 @@ theorem prod_prime_powers_dvd_lcmRange (n : ℕ) :
   · intro p hp q hq hpq
     exact coprime_prime_pow_pow_of_ne (Finset.mem_filter.mp hp).2
       (Finset.mem_filter.mp hq).2 hpq _ _
+
+/-- **Reverse direction of Chebyshev's decomposition**: `lcmRange n` divides
+    the product of maximal prime powers `p ^ ⌊log_p n⌋` over primes `p ≤ n`.
+
+    Combined with `prod_prime_powers_dvd_lcmRange` (the forward direction),
+    this gives Chebyshev's full prime-power formula
+    `lcmRange n = ∏ p ∈ filter Prime (range (n+1)), p ^ ⌊log_p n⌋`
+    via `Nat.dvd_antisymm` (next iteration).
+
+    Strategy: it suffices to show every `m ∈ {1,…,n}` divides the product.
+    For each such `m`, write `m = ∏_{p ∈ m.primeFactors} p ^ m.factorization p`
+    via `Nat.factorization_prod_pow_eq_self`, extend the index set to all of
+    `(Finset.range (n+1)).filter Nat.Prime` (the extra factors are 1 since
+    `m.factorization p = 0` outside `m.primeFactors`), and bound each
+    exponent by `Nat.log p n` using `Nat.le_log_of_pow_le`. -/
+theorem lcmRange_dvd_prod_prime_powers (n : ℕ) :
+    lcmRange n ∣ ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, p ^ Nat.log p n := by
+  unfold lcmRange
+  rw [Finset.lcm_dvd_iff]
+  intro k hk
+  rw [Finset.mem_range] at hk
+  set m := k + 1 with hm_def
+  have hm_pos : 0 < m := Nat.succ_pos _
+  have hm_ne : m ≠ 0 := hm_pos.ne'
+  have hm_le : m ≤ n := by omega
+  set P : Finset ℕ := (Finset.range (n + 1)).filter Nat.Prime with hP_def
+  -- Subset relation: every prime factor of `m` is ≤ `m ≤ n`, so it lies in `P`.
+  have hsupp_sub : m.primeFactors ⊆ P := by
+    intro p hp
+    rw [Nat.mem_primeFactors] at hp
+    rw [hP_def, Finset.mem_filter, Finset.mem_range]
+    refine ⟨?_, hp.1⟩
+    have hp_le : p ≤ m := Nat.le_of_dvd hm_pos hp.2.1
+    omega
+  -- Reformulate `m` as a product over `P` (extending by 1's outside `m.primeFactors`).
+  have hm_eq : m = ∏ p ∈ P, p ^ m.factorization p := by
+    have h1 : m = ∏ p ∈ m.primeFactors, p ^ m.factorization p := by
+      have hself := Nat.factorization_prod_pow_eq_self hm_ne
+      rw [Finsupp.prod, Nat.support_factorization] at hself
+      exact hself.symm
+    rw [h1]
+    apply Finset.prod_subset hsupp_sub
+    intro p _ hp_not
+    have h_zero : m.factorization p = 0 := by
+      rw [← Nat.support_factorization] at hp_not
+      exact Finsupp.not_mem_support_iff.mp hp_not
+    rw [h_zero, pow_zero]
+  rw [hm_eq]
+  -- Pointwise divisibility of factors over `P`.
+  apply Finset.prod_dvd_prod_of_dvd
+  intro p hp
+  rw [hP_def, Finset.mem_filter, Finset.mem_range] at hp
+  obtain ⟨hp_lt, hp_prime⟩ := hp
+  apply pow_dvd_pow
+  -- `m.factorization p ≤ Nat.log p n`: trivial when factorization is 0,
+  -- and otherwise `p ^ (m.factorization p) ∣ m ≤ n` ⇒ `… ≤ Nat.log p n`.
+  by_cases hf : m.factorization p = 0
+  · rw [hf]; exact Nat.zero_le _
+  · have hpow_dvd : p ^ m.factorization p ∣ m :=
+      (Nat.Prime.pow_dvd_iff_le_factorization hp_prime hm_ne).mpr le_rfl
+    have hpow_le_n : p ^ m.factorization p ≤ n :=
+      le_trans (Nat.le_of_dvd hm_pos hpow_dvd) hm_le
+    exact Nat.le_log_of_pow_le hp_prime.one_lt hpow_le_n
 
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
