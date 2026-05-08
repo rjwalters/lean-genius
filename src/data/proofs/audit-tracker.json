@@ -13855,14 +13855,11 @@
       "issues": []
     },
     "four-square-distribution-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-07T22:30:00Z",
-      "result": "issues-found",
-      "issues": [
-        "meta.theoremCount=33 vs actual 51",
-        "meta.lineCount=210 vs actual 209"
-      ],
-      "notes": "stale theoremCount and lineCount in legacy meta sub-object; lf block absent so find-targets misses. See issue #16708."
+      "auditCount": 2,
+      "lastAudited": "2026-05-08T03:30:00Z",
+      "result": "issues-fixed",
+      "issues": [],
+      "notes": "Original drift fixed via #16716, then file grew to 888 lines / 84 theorems via #16804/#16860/#16893; meta.lineCount and meta.theoremCount now match origin/main."
     },
     "inverse-galois-d4": {
       "auditCount": 1,
