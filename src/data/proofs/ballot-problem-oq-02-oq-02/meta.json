@@ -89,12 +89,20 @@
       "mathContext": "**Easy direction** ($\\omega \\in \\mathrm{maxEvent} \\Rightarrow \\tau \\le T$): pick $s \\in [0,T]$ with $B(s,\\omega) \\ge a$ from the maxEvent witness; then $s \\in H_a(\\omega)$, so $\\tau = \\inf H_a(\\omega) \\le s \\le T$ by `csInf_le` (which only needs `BddBelow`). **Hard direction** ($\\tau \\le T \\Rightarrow \\omega \\in \\mathrm{maxEvent}$, given $H_a(\\omega) \\ne \\emptyset$): by `hittingSet_csInf_mem`, $\\tau = \\inf H_a(\\omega) \\in H_a(\\omega)$, so $0 \\le \\tau$ and $B(\\tau,\\omega) \\ge a$. Combined with $\\tau \\le T$ from the hypothesis, the witness is $s = \\tau \\in [0,T]$ with $B(s,\\omega) \\ge a$. The biconditional `fpt_le_iff_maxEvent` and the extensional set equality `fpt_le_set_eq_maxEvent` follow."
     },
     {
-      "id": "ivt-nonemptiness",
-      "title": "IVT-Based Nonemptiness for Crossing Paths",
+      "id": "ivt-first-crossing",
+      "title": "Intermediate Value Theorem: First Crossing Time",
       "startLine": 137,
+      "endLine": 160,
+      "summary": "Part VII. `ivt_first_crossing` extracts a witness $s \\in [0,T]$ with $B(s,\\omega) = a$ (hence $\\ge a$) whenever $B(0,\\omega) < a \\le B(T,\\omega)$. Uses `isPreconnected_Icc.intermediate_value\u2082` against the constant function $g \\equiv a$. The strict initial inequality $B(0,\\omega) < a$ is then leveraged to upgrade $s \\ge 0$ to $s > 0$ (since $B(0,\\omega) \\ne a$).",
+      "mathContext": "The Lean step: `isPreconnected_Icc.intermediate_value\u2082 h01 hT1 hcont continuousOn_const (le_of_lt hstart) hend`, where the two functions are $f(t) = B(t,\\omega)$ and $g(t) = a$ (constant). IVT gives $s \\in [0,T]$ with $f(s) = g(s) = a$. The strict inequality $B(0,\\omega) < a$ then forces $s > 0$ (otherwise $B(0,\\omega) = a$, contradicting `hstart`). Note the use of `intermediate_value\u2082` rather than the simpler `intermediate_value_Icc`: the two-function form lets us cross a *constant* level $a$ rather than restrict to specific endpoint values, which is the more natural shape for hitting-time arguments and avoids the boilerplate of forming the auxiliary function $f - a$."
+    },
+    {
+      "id": "crossing-fpt-bound",
+      "title": "Discharging Nonemptiness: Crossing Paths Imply $\\tau \\le T$",
+      "startLine": 162,
       "endLine": 185,
-      "summary": "Parts VII-VIII. ivt_first_crossing (IVT gives s \u2208 [0,T] with B(s,\u03c9) = a, hence \u2265 a, when B(0,\u03c9) < a \u2264 B(T,\u03c9); also $s > 0$ since $B(0,\\omega) < a = B(s,\\omega)$), hittingSet_nonempty_of_ivt (crossing paths have nonempty hitting sets), fpt_le_T_of_crossing (for crossing paths, \u03c4 \u2264 T and \u03c9 \u2208 maxEvent both hold).",
-      "mathContext": "The Lean step: `isPreconnected_Icc.intermediate_value\u2082 h01 hT1 hcont continuousOn_const (le_of_lt hstart) hend`, where the two functions are $f(t) = B(t,\\omega)$ and $g(t) = a$ (constant). IVT gives $s \\in [0,T]$ with $f(s) = g(s) = a$. The strict inequality $B(0,\\omega) < a$ then forces $s > 0$ (otherwise $B(0,\\omega) = a$, contradicting `hstart`). Crossing paths therefore satisfy the nonemptiness hypothesis of `fpt_le_iff_maxEvent`, closing the loop: continuity + crossing $\\Rightarrow$ both directions of the characterization hold."
+      "summary": "Part VIII. Two corollaries that close the loop on the conditional characterization. `hittingSet_nonempty_of_ivt` packages the IVT witness from Part VII as a nonemptiness proof for $H_a(\\omega)$. `fpt_le_T_of_crossing` is the capstone: for crossing paths ($B(0,\\omega) < a \\le B(T,\\omega)$), it produces both $\\tau \\le T$ *and* $\\omega \\in \\mathrm{maxEvent}$, automatically discharging the nonemptiness side condition that `fpt_le_iff_maxEvent` required.",
+      "mathContext": "`hittingSet_nonempty_of_ivt`: the IVT witness $s \\in [0,T]$ with $B(s,\\omega) = a$ also satisfies $0 \\le s$ (from the IVT interval) and $B(s,\\omega) \\ge a$ (rewriting the equality), so $s \\in H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$, witnessing nonemptiness. `fpt_le_T_of_crossing`: combining `hittingSet_nonempty_of_ivt` with `fpt_le_iff_maxEvent` yields $\\tau \\le T \\iff \\omega \\in \\mathrm{maxEvent}$, and the right side is witnessed directly by $T \\in [0,T]$ (with $B(T,\\omega) \\ge a$ from `hend`). The capstone is the user-facing identity: continuity of paths + level-crossing endpoints imply *both* directions of the level-crossing characterization, with no remaining nonemptiness obligation on the caller."
     }
   ],
   "conclusion": {
