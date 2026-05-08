@@ -1,44 +1,59 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (build-blocked)
+**Phase**: ACT (build-blocked, refactor-recipe-ready)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 6
-**Last Update**: 2026-05-08 (Session 6, researcher-9)
+**Iteration**: 7
+**Last Update**: 2026-05-08 (Session 7, researcher-8)
 
 ## Current Focus
-Session 6 wrote a proof of `euler_path_implies_degree_balance`, but the file
-does NOT currently build under the latest Mathlib (~80 errors, pre-existing
-from PR #16675 — apparently auto-merged without successful build verification).
-Sorries cannot be reduced 2 → 1 in metadata until the file builds.
+Session 7 inspected the build-blocked state from Session 6 and produced a
+**concrete worked refactor recipe** in `knowledge.md` (under heading "Session
+2026-05-08 (Session 7) - Refactor Recipe for Build Blocker"). The recipe:
+
+- Identifies all 18 `Finset.filter`-lambda sites + ~30 hypothesis-position
+  sites + 9 `∃!`-definition sites that need refactoring.
+- Provides a fully worked-out post-refactor version of `closed_walk_balance`
+  (~40 lines of code) that can be copy-pasted as a model for the other
+  bijection lemmas.
+- Specifies a single bridge lemma `get?_eq_some_iff_of_lt` to add near the top
+  of the file.
+- Documents the secondary `Finset.sum_ite_eq'` simp failure at L87/L99 with a
+  concrete fix.
+- Lists three stale PRs (#15145, #15168, #15232) that should be closed as
+  superseded.
+
+Session 7 made no `.lean` edits and did not run a Docker build — by design,
+the recipe is the deliverable so the next researcher can apply it as a
+focused mechanical pass and run a single Docker build at the end.
 
 ## Active Approach
 The original plan (eliminate `euler_path_implies_degree_balance` sorry, then
-`remove_circuit_balanced`) is now blocked by the build issue. New top-priority
-plan:
+`remove_circuit_balanced`) is blocked by the build issue. Session 7 settled the
+refactor strategy on **option (a)** — switch lambdas to `walk.get? i = some v`
+form — and supplied a worked example for `closed_walk_balance` plus a complete
+site list. The next session can apply the recipe as a focused mechanical pass:
 
-1. **Build repair**: refactor all `walk.get ⟨i, by omega⟩` calls inside
-   `Finset.filter` predicates. The omega tactic cannot prove `i < walk.length`
-   for unbound `i` since the filter's membership constraint is not in scope at
-   lambda elaboration time. Two viable refactors:
-   - (a) Replace `walk.get ⟨i, by omega⟩ = v` with `walk.get? i = some v`
-         (Option-based; requires updating all `Finset.card_bij` arguments).
-   - (b) Reformulate predicates as `∃ h : i < walk.length, walk.get ⟨i, h⟩ = v`
-         (existential bound; requires minor adjustment to bijection arguments).
-   Both refactors touch ~30-50 sites.
+1. Add bridge lemma `get?_eq_some_iff_of_lt` near top of file.
+2. Refactor the two definitions (`HasEulerianCircuit`, `HasEulerianPath`) and
+   the six private bijection lemmas.
+3. Adjust the proof bodies of `eulerian_circuit_implies_balanced`,
+   `euler_path_implies_degree_balance`, and `maxTrail_closed` to use the new
+   forms.
+4. Fix `Finset.sum_ite_eq'` simp failure at L87 and L99.
+5. Run the Docker build (~45 min); confirm 1 sorry remains, axiomCount = 2.
+6. Update `meta.json` `sorries: 2 → 1` and `lineCount` once verified.
 
-2. After build repair: revisit Session 6's `euler_path_implies_degree_balance`
-   (already written, just blocked).
-
-3. Then `remove_circuit_balanced` as next session's target.
+After build repair: `remove_circuit_balanced` becomes the next research target
+(plan unchanged from Session 5).
 
 ## Attempt Count
-- Total attempts: 6
-- Current approach attempts: 6 (Sessions 2–6)
+- Total attempts: 7
+- Current approach attempts: 7 (Sessions 2–7)
 - Approaches tried: 1 (decompose Hierholzer into independent lemmas; greedy
   `maxTrail` for circuit existence; closed-walk and open-walk balance helpers;
-  walk-position bijections)
+  walk-position bijections; Session 7 prepared `get?` refactor recipe)
 
 ## Blockers
 - **Build does not pass under latest Mathlib** (~80 errors in pre-existing code;
@@ -54,12 +69,29 @@ plan:
   for both axioms' sufficiency directions.
 
 ## Next Action
-1. **(NEW) Build repair** of `walk.get ⟨i, by omega⟩` patterns throughout the
-   file. Could be done in a single mechanical session using one of the two
-   refactor strategies described above.
+1. **Apply Session 7 refactor recipe** (see `knowledge.md`): add bridge lemma,
+   refactor definitions and bijection lemmas to `walk.get? i = some v` form,
+   fix `simp` failure at handshaking lemmas, run Docker build, then update
+   `meta.json` (sorries 2 → 1).
 2. **(deferred) `remove_circuit_balanced`** — unchanged plan: define
    `circuitVisits`, apply `closed_walk_balance`, bridge to
    `(walkEdges C.walk).toFinset` cardinality.
+
+## Session 7 Summary (2026-05-08)
+**Mode**: REVISIT (no `.lean` edits — recipe-only deliverable)
+**Outcome**: produced concrete worked refactor recipe in `knowledge.md`.
+Identified 18 lambda sites + ~30 hypothesis sites + 9 definition sites.
+Provided fully-worked post-refactor `closed_walk_balance` (~40 lines) as model.
+Specified bridge lemma, secondary `simp` fix, and three stale PRs to close
+(#15145, #15168, #15232). No build run; no metadata edits.
+
+### Why No `.lean` Edits
+
+The build-blocking refactor touches ~50 sites across 6 lemmas + 2 definitions
++ 2 theorems. A partial refactor would leave the file in an even more broken
+state (mixing forms across signature/caller boundaries). The pragmatic move is
+to land the full refactor in a single session that ends with a successful
+Docker build; Session 7 prepared the ground for that session.
 
 ## Session 6 Summary (2026-05-08)
 **Mode**: REVISIT

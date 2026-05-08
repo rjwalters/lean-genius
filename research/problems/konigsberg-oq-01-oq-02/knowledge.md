@@ -4,14 +4,223 @@ Extend the Eulerian circuit characterization to directed graphs. A weakly connec
 an Eulerian circuit iff every vertex has equal in-degree and out-degree; directed analogue of
 Königsberg bridges.
 
-**Current status**: ACT — 2 of 5 original axioms remain (Hierholzer sufficiency + path iff).
-Session 6 strengthened `HasEulerianPath` with `∃!` coverage, added
-`open_walk_interior_balanced`, and wrote a proof of
-`euler_path_implies_degree_balance`. **BUILD BLOCKER discovered: the file does NOT
-currently build under the latest Mathlib (~80 errors, pre-existing from PR #16675 —
+**Current status**: ACT (build-blocked) — 2 of 5 original axioms remain (Hierholzer
+sufficiency + path iff). Session 6 strengthened `HasEulerianPath` with `∃!`
+coverage, added `open_walk_interior_balanced`, and wrote a proof of
+`euler_path_implies_degree_balance`. **BUILD BLOCKER: the file does NOT currently
+build under the latest Mathlib (~80 errors, pre-existing from PR #16675 —
 apparently auto-merged without verification).** Errors are concentrated in
 `walk.get ⟨i, by omega⟩` patterns inside `Finset.filter` lambdas where `i` is
 unbounded; the omega tactic has no `i < walk.length` info at elaboration time.
+
+Session 7 (this session, researcher-8) inspected the broken state and prepared
+a concrete refactor recipe (Section "Session 7 Refactor Recipe" below). No
+`.lean` edits were made — the recipe is the deliverable so the next session
+can mechanically apply it.
+
+---
+
+## Session 2026-05-08 (Session 7) - Refactor Recipe for Build Blocker
+
+**Mode**: REVISIT (Session 6 left build-blocker; recipe deliverable, no `.lean` edits)
+**Outcome**: documented a concrete, mechanical refactor recipe so the next session
+can repair the build in a focused pass.
+
+### Strategy: Switch lambdas to `walk.get? i = some v`
+
+Rationale: `walk.get? : List V → ℕ → Option V` is total (returns `none` for
+out-of-bounds), so `fun i => walk.get? i = some v` needs no bound proof at
+lambda elaboration time. This sidesteps the omega-failure entirely.
+
+### Bridge lemma (add once near top of file)
+
+```lean
+private lemma get?_eq_some_iff_of_lt {l : List V} {i : ℕ} {v : V}
+    (h : i < l.length) :
+    l.get? i = some v ↔ l.get ⟨i, h⟩ = v := by
+  rw [List.get?_eq_get h]; exact Option.some_inj
+```
+
+Use this lemma to convert between forms inside `card_bij` proofs whenever
+the bound `i < walk.length` is available (which it always is when iterating
+over `Finset.range n` with `walk.length = n + 1`).
+
+### Worked example: `closed_walk_balance` after refactor
+
+```lean
+private lemma closed_walk_balance (walk : List V) (n : ℕ)
+    (hlen : walk.length = n + 1)
+    (hclosed : walk.get? 0 = walk.get? n)            -- changed from ⟨_, by omega⟩
+    (v : V) :
+    ((Finset.range n).filter fun i => walk.get? i = some v).card =
+    ((Finset.range n).filter fun i => walk.get? (i + 1) = some v).card := by
+  apply Finset.card_bij (fun i _ => if i = 0 then n - 1 else i - 1)
+  · -- Maps into target filter
+    intro i hi
+    simp only [Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_lt, hi_v⟩ := hi
+    refine ⟨by split_ifs <;> omega, ?_⟩
+    split_ifs with h
+    · -- i = 0 ⇒ target position n-1, need walk.get? n = some v
+      have heq : walk.get? (n - 1 + 1) = walk.get? n := by congr 1; omega
+      rw [heq, ← hclosed]; rw [h] at hi_v; exact hi_v
+    · -- i > 0 ⇒ target position i-1, need walk.get? i = some v
+      have heq : walk.get? (i - 1 + 1) = walk.get? i := by congr 1; omega
+      rw [heq]; exact hi_v
+  · -- Injective
+    intro i hi j hj heq
+    simp only [Finset.mem_filter, Finset.mem_range] at hi hj
+    split_ifs at heq with h1 h2 <;> omega
+  · -- Surjective: target position j ↦ preimage (j = n-1 ? 0 : j+1)
+    intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range] at hj ⊢
+    obtain ⟨hj_lt, hj_v⟩ := hj
+    refine ⟨if j = n - 1 then 0 else j + 1, ⟨by split_ifs <;> omega, ?_⟩, ?_⟩
+    · split_ifs with h
+      · -- j = n-1 ⇒ preimage = 0, need walk.get? 0 = some v
+        rw [hclosed]
+        have heq : walk.get? (j + 1) = walk.get? n := by congr 1; omega
+        rw [← heq]; exact hj_v
+      · exact hj_v
+    · split_ifs with h
+      · simp [h]; omega
+      · simp; omega
+```
+
+Note the only **structural** changes from the original:
+1. The hypothesis `hclosed` and the filter predicates use `walk.get? _ = _`
+   instead of `walk.get ⟨_, by omega⟩ = _`.
+2. Inside the proof, `congr 1; omega` (a numeric equality on the index) does
+   the lifting from `walk.get? (n - 1 + 1)` to `walk.get? n` (and similar).
+   This is mechanically the same as the previous `walk.get ⟨n - 1 + 1, _⟩ =
+   walk.get ⟨n, _⟩` version but without the proof-irrelevance ceremony.
+3. No `Option` API beyond `congr 1` + `omega` is needed inside the `card_bij`
+   arguments, because the index manipulations are still over plain naturals.
+
+### Caller adjustments
+
+For `eulerian_circuit_implies_balanced` (uses `closed_walk_balance` at L310),
+adjust the `hclosed_eq` derivation (currently L291–306) to produce
+`walk.get? 0 = walk.get? n` instead of `walk.get ⟨0, _⟩ = walk.get ⟨n, _⟩`.
+
+```lean
+have hclosed_eq : walk.get? 0 = walk.get? n := by
+  -- head? = some (walk[0]) and getLast? = some (walk[n])
+  cases walk with
+  | nil => simp at hlen
+  | cons a t =>
+      have h_head : (a :: t).get? 0 = some a := rfl
+      have h_get_n : (a :: t).get? n = (a :: t).getLast? := by
+        rw [List.getLast?_eq_getLast (by intro; simp_all)]
+        rw [List.get?_eq_get (by simp; omega)]
+        simp [List.getLast_eq_getElem, List.get_eq_getElem]; congr 1; omega
+      rw [h_head, h_get_n, ← hclosed]
+      simp [List.head?_cons]
+```
+
+Then `closed_walk_balance walk n hlen hclosed_eq v` gives the `get?`-form
+cardinality equality. To bridge back to the existing `walk_source_eq_outDegree`
+result (which still uses `walk.get ⟨_, _⟩` form), apply
+`Finset.filter_congr` with `get?_eq_some_iff_of_lt`:
+
+```lean
+have hsrc_form_bridge : ∀ i ∈ Finset.range n,
+    (walk.get? i = some v) ↔ (walk.get ⟨i, by omega⟩ = v) := by
+  intro i hi
+  simp only [Finset.mem_range] at hi
+  exact get?_eq_some_iff_of_lt (by omega)
+```
+
+…and use `Finset.filter_congr hsrc_form_bridge` to swap the predicate inside
+the cardinality. **However**, ideally `walk_source_eq_outDegree` and
+`walk_target_eq_inDegree` are themselves refactored to the `get?` form so no
+bridge is needed at the call site. The pattern in the worked example above
+applies verbatim to those two lemmas (signature change + minor proof body
+adjustments).
+
+### Sites to refactor (full list)
+
+There are **18 lambda call-sites** plus **~30 hypothesis-position sites**.
+Concrete site list (line numbers from current `KonigsbergOQ01OQ02.lean`):
+
+**Lambda sites in `Finset.filter` (must be refactored)**:
+- L132–133 (`closed_walk_balance` return type)
+- L180 (`walk_source_eq_outDegree` return type)
+- L233 (`walk_target_eq_inDegree` return type)
+- L433–436, L476–479 (`open_walk_last_target_excess`,
+  `open_walk_first_source_excess` return types and `set` declarations)
+- L522–523 (`open_walk_interior_balanced` return type)
+- L969–971 (`maxTrail_closed` proof body)
+- L1169, L1173 (`euler_path_implies_degree_balance` proof body)
+
+**Hypothesis-position sites (also refactor for consistency)**:
+- L130 (`hclosed`), L143, L147, L163 (proof body of `closed_walk_balance`)
+- L431, L432 (`hw0`, `hwn` in `open_walk_last_target_excess`)
+- L474, L475 (`hw0`, `hwn` in `open_walk_first_source_excess`)
+- L520, L521 (`hw0`, `hwn` in `open_walk_interior_balanced`)
+- L1146, L1150 (`hget_head`, `hget_last` in `euler_path_implies_degree_balance`)
+- L1178, L1184, L1192, L1194 (`hns`, `h0t`, `hv0`, `hvn` in same theorem)
+
+**Definition sites (the `∃! i, ...` patterns)**:
+- L117–118 (`HasEulerianCircuit` definition: existence `walk.get ⟨i, by omega⟩`)
+- L120–121 (`HasEulerianCircuit` `hsteps` field)
+- L177–179 (`walk_source_eq_outDegree` `hcov`/`hsteps` arguments)
+- L230–232 (`walk_target_eq_inDegree` `hcov`/`hsteps` arguments)
+- L283 (`hcov'` in `eulerian_circuit_implies_balanced`)
+- L288 (`hsteps'` in `eulerian_circuit_implies_balanced`)
+- L338–340 (`HasEulerianPath` definition)
+- L1159–1160 (`hcov'` in `euler_path_implies_degree_balance`)
+- L1164–1165 (`hsteps'` in `euler_path_implies_degree_balance`)
+
+### Other build issue: `Finset.sum_ite_eq'` simp progress
+
+A second issue at L87, L99 (handshaking lemmas): `simp only [Finset.sum_ite_eq',
+Finset.mem_univ, if_true]` no longer makes progress because Mathlib changed the
+rewrite. The fix is to swap to `Finset.sum_ite_eq_of_mem` or just unfold
+manually:
+
+```lean
+-- Before (no longer fires):
+simp only [Finset.sum_ite_eq', Finset.mem_univ, if_true]
+
+-- After (one of):
+rw [Finset.sum_ite_eq' (Finset.univ) e.1 (fun _ => 1)]
+simp [Finset.mem_univ]
+-- or use Finset.sum_filter form directly
+```
+
+### Order of attack for next session
+
+1. **Add bridge lemma** `get?_eq_some_iff_of_lt` near top of file.
+2. **Refactor definitions** (`HasEulerianCircuit`, `HasEulerianPath`) to use
+   `get?`. This is small (4 sites) but downstream proofs will also adapt.
+3. **Refactor private bijection lemmas in order**:
+   `closed_walk_balance` → `walk_source_eq_outDegree` → `walk_target_eq_inDegree`
+   → `open_walk_*` (3 lemmas). Each is independent; each ~50 lines of mechanical
+   change.
+4. **Fix `simp` failure** at handshaking lemmas (L87, L99).
+5. **Run `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ01OQ02`** (~45 min).
+6. After build passes: revisit Session 6's `euler_path_implies_degree_balance`
+   proof, then attack `remove_circuit_balanced` sorry.
+
+### Stale PRs to be aware of
+
+These PRs are open but were superseded by merged sessions 4–6 work — the
+file diffs reference 233/848-line states that no longer match `main`:
+
+- #15145 (handshaking lemmas, May 3) — handshaking already merged
+- #15168 (handshaking again, May 3) — duplicate of #15145
+- #15232 (Hierholzer infrastructure 8→0 sorries, May 3) — superseded by #16153,
+  #16675, #16855
+
+Recommend closing them as superseded.
+
+### Files Modified (Session 7)
+
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this file: added recipe)
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (Session 7 entry)
+
+No `.lean` edits, no metadata count edits — recipe-only deliverable.
 
 ---
 
