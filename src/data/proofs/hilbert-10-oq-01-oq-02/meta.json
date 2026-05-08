@@ -51,6 +51,11 @@
         "theorem": "linarith",
         "description": "Linear arithmetic tactic; used in S12 to discharge `a*a + b*b = 0  ∧  0 ≤ a*a  ∧  0 ≤ b*b  →  a*a = 0  ∧  b*b = 0`.",
         "module": "Mathlib.Tactic.Linarith"
+      },
+      {
+        "theorem": "Finset.mem_toList",
+        "description": "a ∈ s.toList ↔ a ∈ s for s : Finset α; used in iter 17 (Path B) to transport iter 10's list-indexed singletons closure and iter 14/15's list-indexed arbitrary-subset closures to the Finset-indexed analogs via the iter 4 class congruence helpers (Σ₁/Π₁/Π₂/Σ₂). No new polynomial witnesses; the underlying construction is unchanged from the List versions.",
+        "module": "Mathlib.Data.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -107,11 +112,19 @@
       "finUnionList_isDiophantineDefinition: Σ₁ class is closed under finite list union of arbitrary Σ₁-definable subsets of ℚ — list lift of iter 9's union_isDiophantineDefinition by induction on the list, with the empty list giving the empty set (vacuous existential ↔ False). Generalizes iter 10's finUnionList_singletons_isDiophantineDefinition (which restricted to SINGLETONS) to arbitrary Σ₁ subsets. Underlying polynomial witness is iter 9's product polynomial P₁·P₂ via mul_eq_zero (no sum-of-squares needed). No new Mathlib lemmas, no new imports (iter 15 Path B; axiom-free)",
       "finUnionList_isUniversalExistentialDefinition: trivial Π₂ corollary of finUnionList_isDiophantineDefinition via Σ₁ ⊆ Π₂ (iter 15, axiom-free)",
       "finIntersectionList_isCoDiophantineDefinition: Π₁ class is closed under finite list intersection of arbitrary Π₁-definable subsets of ℚ — list lift of iter 9's intersection_isCoDiophantineDefinition by induction on the list, with the empty list giving the universe set (vacuous quantifier ↔ True). Generalizes iter 10's finIntersectionList_complement_singletons_isCoDiophantineDefinition (which restricted to COMPLEMENTS-OF-SINGLETONS) to arbitrary Π₁ subsets. Underlying polynomial witness is iter 9's product polynomial P₁·P₂ via the contrapositive of mul_eq_zero (no sum-of-squares needed). No new Mathlib lemmas, no new imports (iter 15 Path B; axiom-free)",
-      "finIntersectionList_isExistentialUniversalDefinition: trivial Σ₂ corollary of finIntersectionList_isCoDiophantineDefinition via Π₁ ⊆ Σ₂ (iter 15, axiom-free); together with iter 15's union list lift and iter 14's two list closures fully populates the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over ℚ at arbitrary finite-list arity for ARBITRARY Σ₁/Π₁-definable subsets (not just singletons)"
+      "finIntersectionList_isExistentialUniversalDefinition: trivial Σ₂ corollary of finIntersectionList_isCoDiophantineDefinition via Π₁ ⊆ Σ₂ (iter 15, axiom-free); together with iter 15's union list lift and iter 14's two list closures fully populates the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over ℚ at arbitrary finite-list arity for ARBITRARY Σ₁/Π₁-definable subsets (not just singletons)",
+      "finUnionFinset_singletons_isDiophantineDefinition: every `Finset Rat`-indexed finite subset of ℚ is Σ₁-definable — Finset transport of iter 10's list-indexed singletons closure via Mathlib's `Finset.mem_toList : a ∈ s.toList ↔ a ∈ s` and the iter 4 Σ₁ class congruence helper. Polynomial witness unchanged from iter 10 (inductive product polynomial on `s.toList`). Completes iter-13's S11.4 priority. Iter 17 Path B; axiom-free.",
+      "finIntersectionFinset_complement_singletons_isCoDiophantineDefinition: every complement of a `Finset Rat`-indexed finite subset of ℚ is Π₁-definable — Finset dual of iter 17's singletons closure, routed through `not_congr Finset.mem_toList` + iter 4 Π₁ class congruence (iter 17 Path B; axiom-free)",
+      "finUnionFinset_singletons_isUniversalExistentialDefinition: every `Finset Rat`-indexed finite subset of ℚ is Π₂-definable — trivial Π₂ corollary via Σ₁ ⊆ Π₂ (iter 17 Path B; axiom-free)",
+      "finIntersectionFinset_complement_singletons_isExistentialUniversalDefinition: every complement of a `Finset Rat`-indexed finite subset of ℚ is Σ₂-definable — trivial Σ₂ corollary via Π₁ ⊆ Σ₂ (iter 17 Path B; axiom-free)",
+      "finIntersectionFinset_isDiophantineDefinition: Σ₁ class is closed under `Finset RatSubset`-indexed intersection of arbitrary Σ₁-definable subsets — Finset analog of iter 14's `finIntersectionList_isDiophantineDefinition`, transported via `Finset.mem_toList` and iter 4 class congruence (iter 17 Path B; axiom-free)",
+      "finUnionFinset_isCoDiophantineDefinition: Π₁ class is closed under `Finset RatSubset`-indexed union of arbitrary Π₁-definable subsets — Finset analog of iter 14's `finUnionList_isCoDiophantineDefinition` (iter 17 Path B; axiom-free)",
+      "finUnionFinset_isDiophantineDefinition: Σ₁ class is closed under `Finset RatSubset`-indexed union of arbitrary Σ₁-definable subsets — Finset analog of iter 15's `finUnionList_isDiophantineDefinition`, completing the Finset-indexed parity with iter 14/15's list-indexed 2×2 grid (iter 17 Path B; axiom-free)",
+      "finIntersectionFinset_isCoDiophantineDefinition: Π₁ class is closed under `Finset RatSubset`-indexed intersection of arbitrary Π₁-definable subsets — Finset analog of iter 15's `finIntersectionList_isCoDiophantineDefinition`. Together with the other three Finset closures and the four singletons-only Finset transports, the 2×2 finite Boolean closure grid for Σ₁/Π₁ over ℚ is now populated at three arities: BINARY (iter 9, 12, 13), LIST (iter 14, 15), and FINSET (iter 17). The OPEN question — countably-infinite ⋃_{n : ℤ} {n} — is unchanged: iter 17 only extends the FINITE side (iter 17 Path B; axiom-free)"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 1904,
+    "lineCount": 2059,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -119,7 +132,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 69,
+    "theoremCount": 77,
     "definitionCount": 15
   },
   "overview": {
@@ -247,13 +260,14 @@
       "Mathlib.Algebra.Group.Basic",
       "Mathlib.Algebra.GroupWithZero.Basic",
       "Mathlib.Algebra.Order.Ring.Lemmas",
-      "Mathlib.Tactic.Linarith"
+      "Mathlib.Tactic.Linarith",
+      "Mathlib.Data.Finset.Basic"
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 1904,
+    "lineCount": 2059,
     "axiomCount": 1,
-    "theoremCount": 69,
+    "theoremCount": 77,
     "definitionCount": 15,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0

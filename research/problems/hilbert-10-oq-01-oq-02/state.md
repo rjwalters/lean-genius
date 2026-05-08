@@ -2,12 +2,82 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T22:00:00Z
-**Iteration**: 13
-**Last Updated**: 2026-05-08 (researcher-12)
+**Iteration**: 17
+**Last Updated**: 2026-05-08 (researcher-11)
 
 ## Current Focus
 
-Iteration 13 (2026-05-08, researcher-12, this PR): **Π₁ closed under
+Iteration 17 (2026-05-08, researcher-11, this PR): **Finset transport
+of the list-indexed Σ₁/Π₁ closures (S11.4 + arbitrary-subset Finset
+analogs)**.
+
+Eight new theorems in two clean blocks (Part VIII.19 + Part VIII.20),
+all axiom-free and using a single new Mathlib lemma
+(`Finset.mem_toList`):
+
+**Part VIII.19 — Finset transport of iter 10's singletons-list
+closure (S11.4)**:
+
+- `finUnionFinset_singletons_isDiophantineDefinition (s : Finset Rat)`
+  — every `Finset Rat`-indexed finite subset of ℚ is Σ₁-definable,
+  via `Finset.mem_toList.symm` + iter 4 congruence + iter 10.
+- `finIntersectionFinset_complement_singletons_isCoDiophantineDefinition`
+  — Π₁ dual via `not_congr Finset.mem_toList`.
+- Two trivial Π₂/Σ₂ corollaries via Σ₁ ⊆ Π₂ and Π₁ ⊆ Σ₂.
+
+**Part VIII.20 — Finset transport of iter 14/15's arbitrary-subset
+list closures**:
+
+- `finIntersectionFinset_isDiophantineDefinition` — Σ₁ ∩ over Finset.
+- `finUnionFinset_isCoDiophantineDefinition` — Π₁ ∪ over Finset.
+- `finUnionFinset_isDiophantineDefinition` — Σ₁ ∪ over Finset.
+- `finIntersectionFinset_isCoDiophantineDefinition` — Π₁ ∩ over Finset.
+
+All four arbitrary-subset Finset closures route the iter 14/15 list
+witnesses through the membership bridge `∀/∃ S ∈ s, S q ↔ ∀/∃ S ∈
+s.toList, S q` (proved via `Finset.mem_toList.mp/mpr`) and the iter 4
+class congruence helper.
+
+**Significance**: completes the iter-13 "S11.4" priority and lifts
+iter 14/15's list-arity 2×2 closure grid to Finset-arity. The
+underlying polynomial witnesses are unchanged from iter 9/12/13/14/15
+— only the indexing structure is promoted from `List` to `Finset`.
+The 2×2 finite Boolean closure grid for Σ₁/Π₁ over ℚ is now populated
+at three arities:
+
+    | Class | binary    | list      | Finset    |
+    |-------|-----------|-----------|-----------|
+    | Σ₁ ∪ ∩ | iter 9, 12 | iter 14,15| iter 17 |
+    | Π₁ ∪ ∩ | iter 13, 9 | iter 14,15| iter 17 |
+
+The OPEN content remains unchanged: it is still the COUNTABLY-INFINITE
+union ⋃_{n : ℤ} {n} that requires a UNIFORM Σ₁ witness; iter 17 only
+extends the FINITE side.
+
+**File status**: 1904 → 2059 lines (+155). Theorems 69 → 77 (+8).
+Definitions 15 (unchanged). Axioms 1 (unchanged). Sorries 0
+(unchanged). One new import: `Mathlib.Data.Finset.Basic` for
+`Finset.mem_toList`.
+
+**Build risk**: low. `Finset.mem_toList` is a standard Mathlib lemma
+(used elsewhere in this repo, e.g., `Hilbert3ScissorsCongruence.lean`).
+The 8 new theorems use only `Finset.mem_toList.mp`/`.mpr`/`.symm` plus
+`not_congr` (Mathlib core); no new tactics. Worktree's `proofs/.lake`
+is a recursive self-symlink (per
+`feedback_researcher_lake_symlink_broken.md`), so a local Docker
+build would re-fresh-clone Mathlib (~30-45 min). CI is the ground
+truth, per the slug's iter 14/15/16 build-pending pattern.
+
+---
+
+(Historical iteration 13 narrative below preserved for context. Iter
+14, 15, 16 PRs landed but did not advance the state.md iteration
+counter; iter 17 is the next user-visible state advancement after
+iter 13's record.)
+
+## Iteration 13 historical record
+
+Iteration 13 (2026-05-08, researcher-12): **Π₁ closed under
 binary union (S12.2)** — the missing dual of iter 9's Σ₁-union
 closure. Combined with iter 9 (Σ₁ ∪, Π₁ ∩) and iter 12 (Σ₁ ∩), the
 **2×2 finite Boolean closure grid** for Σ₁ and Π₁ over ℚ is now
@@ -453,24 +523,39 @@ With iter 13 the 2×2 finite Boolean closure grid for Σ₁ and Π₁ over
 
 ## Next Action
 
-Commit, push, create PR for iteration 13 (this).
+Commit, push, create PR for iteration 17 (this).
 
-If S12.2 lands cleanly, S12+ candidates (in priority order):
+After iter 17 the FINITE-arity Boolean closure grid is fully populated
+for Σ₁/Π₁ over ℚ at three arities (binary, list, Finset). Remaining
+S11+/S13+ candidates:
 
-- **S12.1**: List version of `intersection_isDiophantineDefinition`.
-- **S12.3**: List version of `union_isCoDiophantineDefinition`.
 - **S11.3**: Daans 2021 (10-quantifier reduction of Koenigsmann) as a
   separate axiomatized witness — adds 1 axiom, documentary value only.
-- **S11.4**: Finset version of `finUnionList_singletons`.
+  Anti-axiom-policy: deferred.
+- **S13+ list arity for level 2** (after iter 16 PR #17456 lands):
+  list versions of iter 16's `pi2_intersection_isUniversalExistentialDefinition`
+  (Π₂ list ∩) and `sigma2_union_isExistentialUniversalDefinition`
+  (Σ₂ list ∪). Direct list lifts via the same iter 14/15 induction
+  template.
+- **S13+ finset arity for level 2** (after the S13+ list versions
+  land): Finset transports of the level-2 list closures, mirroring
+  iter 17's Σ₁/Π₁ Finset transports.
+- **S13+ open cells**: Σ₂ ∩ and Π₂ ∪ (the genuine quantifier-flip
+  obstruction at level 2). Iter 16's PR description flags these as
+  "deferred as a genuine future-work gap" — they are not derivable
+  from the existing closures and would require non-trivial new
+  argument (potentially axiomatized).
 
 ## Attempt Counts
 
-- Total attempts: 13
-- Current approach attempts: 1 (S12.2 — Π₁ binary union closure via
-  iter 5 duality + iter 12 Σ₁ ∩ closure + iter 4 congruence)
-- Approaches tried: 12 (S2 Σ₁/Π₁ duality, S3 Σ₂/Π₂ duality, S4 class
+- Total attempts: 17
+- Current approach attempts: 1 (S11.4 — Finset transport via
+  `Finset.mem_toList`)
+- Approaches tried: 16 (S2 Σ₁/Π₁ duality, S3 Σ₂/Π₂ duality, S4 class
   congruence, S5 symmetric duality + trivial sets, S6 smallest
   non-trivial subset, S7 ¬¬-shadow, S8 arbitrary singletons, S9 binary
   union/intersection closure, S10 finite-list closure, S11.1 Π₁ ⊆ Π₂
   via polynomial inversion, S11.2 Σ₁ binary intersection via
-  sum-of-squares, S12.2 Π₁ binary union via duality bridging)
+  sum-of-squares, S12.2 Π₁ binary union via duality bridging, S12.1
+  Σ₁ list ∩, S12.3 Π₁ list ∪, S12.4 Σ₁ list ∪ + Π₁ list ∩, iter 16
+  level-2 binary closures, S11.4 Finset transport)
