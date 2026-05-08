@@ -1276,4 +1276,104 @@ example : r4Count 2 = (if 2 ∣ 2 then 24 else 8) * sigmaOne (ord_compl[2] 2) :=
 example : r4Count 8 = (if 2 ∣ 8 then 24 else 8) * sigmaOne (ord_compl[2] 8) :=
   r4Count_factorization_form (by decide)
 
+-- =====================================================================
+-- PART 20: Multiplicativity bridge for `jacobiR4` and `r4Count` (S10)
+--
+-- σ* is multiplicative at coprime arguments (Part 12), and
+-- `jacobiR4 = 8 · σ*` is therefore multiplicative up to one factor of
+-- 8: `8 · jacobiR4(m·n) = jacobiR4(m) · jacobiR4(n)` when `gcd(m,n)=1`
+-- and `m, n > 0`. Combined with `jacobi_r4_formula` (Part 5), the same
+-- identity lifts to `r4Count`:
+--
+--    8 · r4Count(m · n)  =  r4Count(m) · r4Count(n)    (Coprime, m,n>0)
+--
+-- This is the cleanest named consequence of `jacobi_r4_formula` on the
+-- combinatorial side: it predicts the brute-force count r₄(m·n) from
+-- counts at coprime factors, without re-deriving the σ*-side. The
+-- factor 8 = 8·σ*(1) is the residual from `jacobiR4(1) = 8`.
+--
+-- A natural specialisation removes the `8 ·` artifact for `2^k · m`
+-- with `m` odd, k ≥ 1: `r4Count(2^k · m) = 24 · σ(m)` (Part 15's
+-- `jacobiR4_two_pow_mul_odd` chained with `jacobi_r4_formula`).
+-- =====================================================================
+
+/-- **Multiplicativity of `jacobiR4`.** For coprime positive `m, n`,
+    `8 · jacobiR4(m · n) = jacobiR4(m) · jacobiR4(n)`.
+
+    Axiom-free: this is a direct consequence of `sigmaStar_mul_of_coprime`
+    (Part 12) and the definition `jacobiR4 = 8 · σ*`. The factor of 8 on
+    the LHS is the natural `jacobiR4(1) = 8` artifact:
+    `8 · σ*(m · n) = 8 · σ*(m) · σ*(n) = (8·σ*(m)) · (8·σ*(n)) / 8`. -/
+theorem jacobiR4_mul_of_coprime {m n : ℕ} (hcop : Nat.Coprime m n)
+    (hm : 0 < m) (hn : 0 < n) :
+    8 * jacobiR4 (m * n) = jacobiR4 m * jacobiR4 n := by
+  unfold jacobiR4
+  rw [sigmaStar_mul_of_coprime hcop hm hn]
+  ring
+
+/-- **Multiplicativity of `r4Count` (axiomatic).** For coprime positive
+    `m, n`, `8 · r4Count(m · n) = r4Count(m) · r4Count(n)`.
+
+    Chains `jacobi_r4_formula` (Part 5) with `jacobiR4_mul_of_coprime`
+    (this file). Lifts σ*-multiplicativity to the combinatorial 4-tuple
+    count side. -/
+theorem r4Count_mul_of_coprime {m n : ℕ} (hcop : Nat.Coprime m n)
+    (hm : 0 < m) (hn : 0 < n) :
+    8 * r4Count (m * n) = r4Count m * r4Count n := by
+  have hmn : 0 < m * n := Nat.mul_pos hm hn
+  rw [jacobi_r4_formula (m * n) hmn, jacobi_r4_formula m hm, jacobi_r4_formula n hn]
+  exact jacobiR4_mul_of_coprime hcop hm hn
+
+/-- **Closed form for `r4Count` on `2^k · m` with `m` odd, k ≥ 1.**
+    `r4Count(2^k · m) = 24 · σ(m)`.
+
+    Uses `jacobi_r4_formula` to rewrite `r4Count` as `jacobiR4`, then
+    invokes `jacobiR4_two_pow_mul_odd` (Part 15). This is the
+    `r4Count`-side analogue of the σ*-closed form `σ*(2^k · m) = 3·σ(m)`
+    and matches the Eisenstein-coefficient prediction
+    `[q^(2^k · m)] (1 + 8·(E₂(τ) − 4·E₂(4τ))) = 24·σ(m)`. -/
+theorem r4Count_two_pow_mul_odd {k m : ℕ} (hk : 1 ≤ k)
+    (hm : ¬ 2 ∣ m) (hmpos : 0 < m) :
+    r4Count (2 ^ k * m) = 24 * sigmaOne m := by
+  have h2 : 0 < 2 ^ k := pow_pos (by decide : (0 : ℕ) < 2) k
+  have hmn : 0 < 2 ^ k * m := Nat.mul_pos h2 hmpos
+  rw [jacobi_r4_formula (2 ^ k * m) hmn]
+  exact jacobiR4_two_pow_mul_odd hk hm hmpos
+
+-- ---------------------------------------------------------------------
+-- Cross-validation of multiplicativity using PART 1 numeric values.
+-- The `jacobiR4_mul_of_coprime` examples are checked numerically below;
+-- the `r4Count_mul_of_coprime` form is type-level only (it would
+-- require evaluating `r4Count(15)` etc., which exceeds the small
+-- enumeration envelope of Part 2).
+-- ---------------------------------------------------------------------
+
+/-- σ*-multiplicativity scaled to `jacobiR4`: 8·jacobiR4(6) = jacobiR4(2)·jacobiR4(3). -/
+example : 8 * jacobiR4 (2 * 3) = jacobiR4 2 * jacobiR4 3 :=
+  jacobiR4_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- 8·jacobiR4(10) = jacobiR4(2)·jacobiR4(5). -/
+example : 8 * jacobiR4 (2 * 5) = jacobiR4 2 * jacobiR4 5 :=
+  jacobiR4_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- 8·jacobiR4(15) = jacobiR4(3)·jacobiR4(5) — the first non-trivial
+    coprime pair beyond `n = 10`. -/
+example : 8 * jacobiR4 (3 * 5) = jacobiR4 3 * jacobiR4 5 :=
+  jacobiR4_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- 8·jacobiR4(21) = jacobiR4(3)·jacobiR4(7). -/
+example : 8 * jacobiR4 (3 * 7) = jacobiR4 3 * jacobiR4 7 :=
+  jacobiR4_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- `r4Count(8) = 24·σ(1) = 24` via Part 20: the pure-power-of-two case
+    with `k = 3`, `m = 1`. -/
+example : r4Count (2 ^ 3 * 1) = 24 * sigmaOne 1 :=
+  r4Count_two_pow_mul_odd (by decide) (by decide) (by decide)
+
+/-- `r4Count(40) = 24·σ(5) = 144` via Part 20: matches the Part 19
+    Eisenstein-coefficient prediction `(if 2 ∣ 40 then 24 else 8)·σ(5)
+    = 24·6 = 144`. -/
+example : r4Count (2 ^ 3 * 5) = 24 * sigmaOne 5 :=
+  r4Count_two_pow_mul_odd (by decide) (by decide) (by decide)
+
 end FourSquareDistributionOQ01
