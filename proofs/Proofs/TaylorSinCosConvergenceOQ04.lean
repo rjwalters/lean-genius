@@ -21,7 +21,7 @@ for all x ∈ ℝ, with remainder bound C · |x|^{n+1} / n!.
 ## Key Results
 - General Taylor partial sum definition (generalizing sinPartialSum/cosPartialSum)
 - Remainder bound for x > 0 (fully proved via Mathlib's taylor_mean_remainder_bound)
-- General remainder bound (1 axiom for the x < 0 case)
+- General remainder bound for all x ∈ ℝ (x < 0 case proved via reflection)
 - Convergence theorem: taylorPartialSum f n x → f(x)
 - Taylor value at zero: taylorPartialSum f n 0 = f(0)
 - Sin and cos as special cases with C = 1
