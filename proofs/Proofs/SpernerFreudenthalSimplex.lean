@@ -842,3 +842,173 @@ lemma sperner_lowerDim_card_even
   exact ⟨0, rfl⟩
 
 end SpernerLowerDimHelper
+
+-- ============================================================
+-- SECTION VIII: Boundary-edge characterization for the n=2
+-- Type-1/Type-2 triangulation
+-- (Session 16 — infrastructure for `_hBoundaryOnFace`)
+-- ============================================================
+
+/-! ## Boundary-Edge Characterization
+
+For the `simData2` triangulation of Δ² (Type-1 + Type-2 simplices),
+a codim-1 face (edge) lies on the boundary precisely when it is
+contained in only one top simplex. Each Type-1 simplex `t1 b` has
+three edges (the codim-1 faces, i.e., 2-element subsets):
+
+* **Diagonal**: `{(b.1, b.2+1), (b.1+1, b.2)}` — opposite the
+  smallest vertex `b`.
+* **Horizontal**: `{b, (b.1+1, b.2)}` — opposite `(b.1, b.2+1)`.
+* **Vertical**: `{b, (b.1, b.2+1)}` — opposite `(b.1+1, b.2)`.
+
+The lemmas here characterize, for each edge type, the unique base
+of the *other* simplex that could contain it (a Type-2 base in
+each case). When the resulting base is invalid for `t2Bases`, the
+edge lies on the boundary of Δ². -/
+
+namespace SpernerFreudSimp
+section N2BoundaryAnalysis
+
+-- Each t1 base is distinct from any t2 cell (`t1 b` always contains
+-- the smallest vertex `b`, which `t2 c` never contains).
+private lemma t1_ne_t2 (b c : ℕ × ℕ) : t1 b ≠ t2 c := by
+  intro h
+  have hb_in_t1 : b ∈ t1 b := by
+    simp [t1]
+  rw [h] at hb_in_t1
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb_in_t1
+  omega
+
+-- For two distinct vertices u, v, if both are in t1(b) ∩ t2(c), the
+-- bases b, c are forced. Combined with `t1_unique_base` and
+-- `t2_unique_base`, this gives full container characterization.
+private lemma diagonal_in_t1_iff (b c : ℕ × ℕ) :
+    ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 c ↔ c = b := by
+  refine ⟨fun h => ?_, ?_⟩
+  · -- Forward: if both diagonal vertices are in t1(c), unique-base gives c = b.
+    have hne : ((b.1, b.2+1) : ℕ × ℕ) ≠ (b.1+1, b.2) := by
+      intro heq; simp [Prod.mk.injEq] at heq
+    -- Both vertices of t1(b) and of t1(c)
+    have hb_diag : ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
+      intro x hx
+      simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl <;>
+        · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+          omega
+    -- t1_unique_base gives `c = b` directly.
+    exact t1_unique_base hne h hb_diag
+  · rintro rfl
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;>
+      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+        omega
+
+-- The "diagonal" edge of t1(b) is contained in t2(c) iff c = b.
+private lemma diagonal_in_t2_iff (b c : ℕ × ℕ) :
+    ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 c ↔ c = b := by
+  refine ⟨fun h => ?_, ?_⟩
+  · have hu : (b.1, b.2+1) ∈ t2 c := h (by simp)
+    have hv : (b.1+1, b.2) ∈ t2 c := h (by simp)
+    -- t2 c = {(c.1+1, c.2+1), (c.1+1, c.2), (c.1, c.2+1)}; both vertices match
+    -- forces c.1 = b.1 and c.2 = b.2.
+    simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hu hv
+    -- u = (b.1, b.2+1) and v = (b.1+1, b.2). Each ∈ {3 vertices}.
+    rcases hu with hu | hu | hu <;> rcases hv with hv | hv | hv <;>
+      first
+        | (exact Prod.ext_iff.mpr ⟨by omega, by omega⟩)
+        | (exfalso; omega)
+  · rintro rfl
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> simp [t2]
+
+-- The "horizontal" edge `{b, (b.1+1, b.2)}` of t1(b) is contained
+-- in t2(c) iff c = (b.1, b.2 - 1) and b.2 ≥ 1. (For b.2 = 0 the
+-- edge lies on the y=0 boundary of Δ² and no t2 contains it.)
+private lemma horizontal_in_t2_pos (b : ℕ × ℕ) (hb2 : 1 ≤ b.2) :
+    ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 (b.1, b.2 - 1) := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+-- The "vertical" edge `{b, (b.1, b.2+1)}` of t1(b) is contained
+-- in t2(c) iff c = (b.1 - 1, b.2) and b.1 ≥ 1.
+private lemma vertical_in_t2_pos (b : ℕ × ℕ) (hb1 : 1 ≤ b.1) :
+    ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t2 (b.1 - 1, b.2) := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+-- When b.2 = 0, no t2 cell contains the horizontal edge `{b, (b.1+1, b.2)}`.
+private lemma horizontal_not_in_t2_at_y0 (b : ℕ × ℕ) (hb2 : b.2 = 0) (c : ℕ × ℕ) :
+    ¬ (({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 c) := by
+  intro h
+  -- Both b and (b.1+1, b.2) are in t2 c = {(c.1+1, c.2+1), (c.1+1, c.2), (c.1, c.2+1)}.
+  -- Each of these three vertices has its second coordinate ≥ 1 except (c.1+1, c.2)
+  -- and (c.1, c.2+1)'s second coordinate equals c.2 or c.2+1.
+  -- Actually: (c.1+1, c.2+1).2 = c.2 + 1 ≥ 1; (c.1+1, c.2).2 = c.2; (c.1, c.2+1).2 = c.2 + 1 ≥ 1.
+  -- So the only vertex with second coord = 0 is (c.1+1, 0), forcing c.2 = 0. Then
+  -- t2 c = {(c.1+1, 1), (c.1+1, 0), (c.1, 1)}. Exactly one vertex with second coord 0.
+  -- But we need TWO vertices with second coord 0 (b and (b.1+1, 0)). Contradiction.
+  have hb_mem : b ∈ t2 c := h (by simp)
+  have hbp_mem : (b.1+1, b.2) ∈ t2 c := h (by simp)
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb_mem hbp_mem
+  -- b.2 = 0 forces b coordinates; b.1+1 differs from b.1
+  rcases hb_mem with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+    rcases hbp_mem with ⟨h3, h4⟩ | ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
+    omega
+
+-- When b.1 = 0, no t2 cell contains the vertical edge `{b, (b.1, b.2+1)}`.
+private lemma vertical_not_in_t2_at_x0 (b : ℕ × ℕ) (hb1 : b.1 = 0) (c : ℕ × ℕ) :
+    ¬ (({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t2 c) := by
+  intro h
+  have hb_mem : b ∈ t2 c := h (by simp)
+  have hbp_mem : (b.1, b.2+1) ∈ t2 c := h (by simp)
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq] at hb_mem hbp_mem
+  rcases hb_mem with ⟨h1, h2⟩ | ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+    rcases hbp_mem with ⟨h3, h4⟩ | ⟨h3, h4⟩ | ⟨h3, h4⟩ <;>
+    omega
+
+-- ============================================================
+-- t2 face containment: every face of every t2 cell is shared
+-- with a t1 cell, so t2 cells contribute no boundary doors.
+-- ============================================================
+
+-- The "right side" edge of t2(b): the vertices v_1, v_2.
+-- Equivalently: {(b.1+1, b.2), (b.1+1, b.2+1)}. Shared with t1(b.1+1, b.2).
+private lemma t2_face0_in_t1 (b : ℕ × ℕ) :
+    ({(b.1+1, b.2), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t1 (b.1+1, b.2) := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+-- The "top side" edge of t2(b): vertices v_0, v_2.
+-- Equivalently: {(b.1, b.2+1), (b.1+1, b.2+1)}. Shared with t1(b.1, b.2+1).
+private lemma t2_face1_in_t1 (b : ℕ × ℕ) :
+    ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t1 (b.1, b.2+1) := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+-- The "diagonal" edge of t2(b): vertices v_0, v_1.
+-- Equivalently: {(b.1, b.2+1), (b.1+1, b.2)} = the diagonal of t1(b) too.
+-- Shared with t1(b).
+private lemma t2_face2_in_t1 (b : ℕ × ℕ) :
+    ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+end N2BoundaryAnalysis
+end SpernerFreudSimp

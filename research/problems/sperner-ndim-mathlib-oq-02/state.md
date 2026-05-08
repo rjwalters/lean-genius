@@ -2,21 +2,26 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Iteration**: 15
+**Iteration**: 16
 
 ## Current Focus
 
-Session 15: Added a generic `_hLowerDim` discharge helper
-(`SpernerLowerDimHelper.sperner_lowerDim_card_even`) outside the
+Session 16: Added boundary-edge characterization scaffolding for the
+n=2 Type-1/Type-2 triangulation in a new `N2BoundaryAnalysis` section
+inside `SpernerFreudSimp`. Proves the eight building-block lemmas
+needed by the eventual `_hBoundaryOnFace` discharge: `t1_ne_t2`,
+`diagonal_in_t{1,2}_iff`, `horizontal_in_t2_pos`, `vertical_in_t2_pos`,
+`horizontal_not_in_t2_at_y0`, `vertical_not_in_t2_at_x0`, plus
+`t2_face{0,1,2}_in_t1` (every t2 face shared with a t1 cell, so t2
+contributes no boundary doors).
+
+Session 15 (PR #17015, merged): added a generic `_hLowerDim` discharge
+helper (`SpernerLowerDimHelper.sperner_lowerDim_card_even`) outside the
 `SpernerFreudSimp` namespace, proving that for any
 `Triangulation V n` + `IsSpernerColoring`, the boundary-door filter on
 any face with `faceIdx.val < n` is empty (hence Even cardinality 0).
-This collapses the `_hLowerDim` line item (~30 lines) of the
-sperner_panchromatic_two roadmap to a single application — and the same
-helper applies to every future concrete Sperner-on-Triangulation
-instantiation (n=2, n≥3 generalization, alternative triangulations).
 
-Session 14 (PR #17004, build pending): added `cN2_total` total wrapper
+Session 14 (PR #17004, merged): added `cN2_total` total wrapper
 + `cN2_total_isSpernerColoring` lifted Sperner condition + vertex-range
 bridge `topSimps2_vertex_in_range`.
 
@@ -48,23 +53,30 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
 - Type-1/Type-2 triangulation `simData2` + pseudomanifold: PROVED (S11)
 - XOR parity + grid coloring + face2_path_odd + onFace infrastructure:
   PROVED (S12, S13)
-- `cN2_total` wrapper + `cN2_total_isSpernerColoring`: in PR #17004 (S14)
-- `SpernerLowerDimHelper.sperner_lowerDim_card_even`: PROVED in this
-  session, generic discharge of `_hLowerDim` for any
+- `cN2_total` wrapper + `cN2_total_isSpernerColoring`: PR #17004 merged (S14)
+- `SpernerLowerDimHelper.sperner_lowerDim_card_even`: PR #17015 merged,
+  generic discharge of `_hLowerDim` for any
   Sperner-on-Triangulation (S15)
+- `N2BoundaryAnalysis` building blocks (S16, this session, build pending):
+  `t1_ne_t2`, `diagonal_in_t{1,2}_iff`, `horizontal_in_t2_pos`,
+  `vertical_in_t2_pos`, `horizontal_not_in_t2_at_y0`,
+  `vertical_not_in_t2_at_x0`, `t2_face{0,1,2}_in_t1`
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
-## Path Forward for n≥2 (post-S15)
+## Path Forward for n≥2 (post-S16)
 
 `Triangulation.boundary_doors_odd` requires four hypotheses:
 1. `_hSperner` — done generically by S14 wrapper (cN2_total_isSpernerColoring)
-2. `_hBoundaryOnFace` — TODO (~80 lines, t1/t2 face-by-face geometry)
+2. `_hBoundaryOnFace` — building blocks in S16; remaining work is to
+   characterize `simData2.toTriangulation.adj s k = none` in terms of
+   boundary conditions on `b` and to assemble the existential (~50 lines)
 3. `_hLowerDim` — done generically by S15 helper
 4. `_hLastFace` — TODO (~150 lines, bijection with face2_path_odd via S12)
 
 Then apply `Triangulation.sperner` (~50 lines for diameter bound + real
-coordinates). Total estimated remaining: ~280 lines across 3 sessions.
+coordinates). Total estimated remaining: ~250 lines across 2-3 sessions
+(S16 cuts ~30 from the S15 estimate of 280).
 
 ## Gallery Status
 
