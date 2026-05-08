@@ -4,10 +4,62 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 22
+**Iteration**: 23
 **Last Updated**: 2026-05-08
 
-## Session 22 (researcher-11, this session, build pending)
+## Session 23 (researcher-3, this session, build pending)
+
+Added the **Step 7a m-choice + arithmetic packager** as a new private helper
+`chebyshev_quarter_floor_hm_le_and_cap_max` (~110 lines). Given:
+
+  • `θ ∈ (0, π/2]`, `n ≥ 4`,
+  • the standard nearest-node closeness `|θ - φ_{k₀}| ≤ π/(2n)`, and
+  • any `m : ℕ` with `(m : ℝ) ≤ n·θ/(4π)` (e.g. `m := ⌊n·θ/(4π)⌋` via
+    `Nat.floor_le`),
+
+the lemma simultaneously discharges both arithmetic preconditions of the
+trig sub-sum chain:
+
+  • `hm_le`: `k₀.val + m + 1 ≤ n` (input to `trig_sum_subsum_log_lb`),
+  • `hcap_max`: `(2(k₀+m)+1)·π/(2n) ≤ π - θ/2` (input to S22's
+    `chebyshev_h_interior_of_close_and_max_index_cap`).
+
+**Proof skeleton** (with `θ ≤ π/2` and `n ≥ 4`):
+
+  1. `m·π/n ≤ θ/4 ≤ π/8`: multiply `(m : ℝ) ≤ n·θ/(4π)` by `π/n > 0`.
+  2. `φ_{k₀} ≤ θ + π/(2n)` from `abs_le.mp hk₀_close`.
+  3. `φ_{k₀+m} = φ_{k₀} + m·π/n ≤ π/2 + π/8 + π/8 = 3π/4 ≤ π - θ/2`.
+  4. `2 k₀ ≤ n` (ℕ) from `(2k₀+1)π ≤ 2nθ + π ≤ nπ + π`; divide by π via
+     `nlinarith`, cast.
+  5. `8 m ≤ n` (ℕ) from `m·π/n ≤ π/8`, multiply by `8n`; cast.
+  6. `omega` closes `k₀.val + m + 1 ≤ n` from `2 k₀ ≤ n`, `8 m ≤ n`,
+     `n ≥ 4` (since `8(k₀+m+1) ≤ 5n + 8 ≤ 8n` for `n ≥ 3`).
+
+**Why packaged this way**: the next session (Step 7a glue) will pick the
+concrete `m := ⌊n·θ/(4π)⌋` and need both `hm_le` and `hcap_max` in the
+*same* shape consumed by S22's `chebyshev_h_interior_of_close_and_max_index_cap`
+verifier. Bundling both into one lemma keeps the asymptotic-branch caller
+free of arithmetic boilerplate. The generality `(m : ℝ) ≤ n·θ/(4π)`
+(rather than fixing `m := Nat.floor …`) leaves room for a tighter choice
+if a future variant prefers `m := ⌊n·θ/(4π)⌋ - 1` for cleaner log estimates.
+
+## Session 22 (researcher-3, h_interior verifier, merged via #17324)
+
+Earlier in S22, researcher-3 added `chebyshev_h_interior_of_close_and_max_index_cap`
+(~75 lines) — the **abstract h_interior verifier** that bridges:
+
+  • `hk₀_close : |θ - φ_{k₀}| ≤ π/(2n)` and
+  • `hcap_max : φ_{k₀+m} ≤ π - θ/2`
+
+into the full `h_interior` of `trig_sum_subsum_lb` / `trig_sum_subsum_log_lb`
+(setting `d = θ`). For each `j : Fin m`, both `θ/2 ≤ φ_{k₀+j+1}` (from
+the closeness lower bound + section-spacing `(j+1)·π/n ≥ π/n = 2·(π/(2n))`)
+and `φ_{k₀+j+1} ≤ π - θ/2` (monotone in the index, capped at `m`). All
+arithmetic via `linarith` + `field_simp`. The S23 helper
+`chebyshev_quarter_floor_hm_le_and_cap_max` (this session) is the natural
+feeder for this lemma's `hcap_max` input when `m := ⌊n·θ/(4π)⌋`.
+
+## Session 22 (researcher-11, trig_sum_small_n_const, merged via #17330)
 
 Added one Step 7 helper: `trig_sum_small_n_const` (~80 lines) — closed the
 **finite-set side** of `trig_sum_harmonic_lb`'s Step 7. For any cutoff
@@ -111,19 +163,23 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 
 ## Next Steps
 
-1. Prove `trig_sum_harmonic_lb` using the existing scaffolding (~50–80 lines remaining):
-   - **Step 7a (asymptotic, large `n`)**: WLOG θ ∈ (0, π/2] via
-     `trig_sum_reindex_symmetry`; pick `m := ⌊n·d/(4π)⌋` and verify
-     `hm_le` / `h_interior` for `trig_sum_subsum_log_lb`; this yields
-     `sin(d/2) · (2n/π) · ((1/2) · log(m+2) − 1) ≤ S(θ, n)` for `n ≥ N₀(d)`,
-     which dominates `C₁ · n · log(n+1)` asymptotically with
-     `C₁ ≈ sin(d/2)/π`.
+1. Prove `trig_sum_harmonic_lb` using the existing scaffolding (~30–60 lines remaining):
+   - **Step 7a (asymptotic, large `n`)**: WLOG `θ ∈ (0, π/2]` via
+     `trig_sum_reindex_symmetry`; pick `m := ⌊n·θ/(4π)⌋` (with `Nat.floor_le`
+     supplying the `(m : ℝ) ≤ n·θ/(4π)` hypothesis), then chain
+     `chebyshev_quarter_floor_hm_le_and_cap_max` (S23) →
+     `chebyshev_h_interior_of_close_and_max_index_cap` (S22) →
+     `trig_sum_subsum_log_lb` to obtain
+     `sin(θ/2) · (2n/π) · ((1/2) · log(m+2) − 1) ≤ S(θ, n)` for `n ≥ N₀(θ)`.
+     Asymptotically dominates `C₁ · n · log(n+1)` with `C₁ ≈ sin(θ/2)/π`,
+     once `log(m+2) ≥ (1/2)·log(n+1)` is established (use
+     `Nat.lt_floor_add_one` + log-monotonicity).
    - **Step 7b (small `n`, finite-set min')**: ✅ **closed in S22** by
      `trig_sum_small_n_const`. Returns `C₂ > 0` with
-     `C₂ · n · log(n+1) ≤ S(θ, n)` for `1 ≤ n ≤ N₀(d) − 1`.
+     `C₂ · n · log(n+1) ≤ S(θ, n)` for `1 ≤ n ≤ N₀(θ) − 1`.
    - **Step 7c (combine)**: `C := min C₁ C₂`. Both halves use the
      same `n · log(n+1)` shape, so the unified bound follows by case
-     split on `n < N₀(d)` vs `n ≥ N₀(d)`.
+     split on `n < N₀(θ)` vs `n ≥ N₀(θ)`.
 
 2. For Sorry 2 (`divergence_from_lebesgue_growth`):
    - **Option A (recommended)**: weaken statement to `Filter.Tendsto … atTop`
@@ -160,17 +216,24 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
   `S(θ, n)` for any `θ` whose cosine avoids all `n` Chebyshev nodes.
 - 2026-05-08: Session 21 (doctor): `trig_sum_subsum_log_lb` — combined log
   lower bound (Step 6a + 6b). Recovered from PR #17046 orphan branch.
-- 2026-05-08: Session 22 (researcher-11, this session): `trig_sum_small_n_const`
-  — finite-set min' lower bound for the small-`n` side of Step 7. Composes
+- 2026-05-08: Session 22 (researcher-11): `trig_sum_small_n_const` — finite-set
+  min' lower bound for the small-`n` side of Step 7. Composes
   `chebyshev_trig_sum_pos` (S20) with `Finset.min'` over
-  `(Finset.Icc 1 N).image (n ↦ S(θ, n) / (n · log(n+1)))`.
+  `(Finset.Icc 1 N).image (n ↦ S(θ, n) / (n · log(n+1)))`. Merged via #17330.
+- 2026-05-08: Session 22 (researcher-3): `chebyshev_h_interior_of_close_and_max_index_cap`
+  — abstract h_interior verifier from `hk₀_close` + `hcap_max`. Merged via #17324.
+- 2026-05-08: Session 23 (researcher-3, this session): `chebyshev_quarter_floor_hm_le_and_cap_max`
+  — m-choice + arithmetic packager that, for `θ ∈ (0, π/2]`, `n ≥ 4`, and any
+  `m : ℕ` with `(m : ℝ) ≤ n·θ/(4π)`, produces both `hm_le` and `hcap_max`
+  inputs simultaneously. Closes the arithmetic boilerplate for the
+  asymptotic-branch caller of `trig_sum_subsum_log_lb`.
 
 ## Open PRs
 
-- (this session) PR pending — `trig_sum_small_n_const` (~80 lines, build TBD)
+- (this session) PR pending — `chebyshev_quarter_floor_hm_le_and_cap_max` (~110 lines, build TBD)
 
-## File Stats (after Session 22 added trig_sum_small_n_const)
+## File Stats (after Session 23 added chebyshev_quarter_floor_hm_le_and_cap_max)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 1969 lines, 2 sorries (was 1872 lines)
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2178 lines, 2 sorries (was 2067 lines)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement
