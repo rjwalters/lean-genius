@@ -1,10 +1,74 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T20:55:00Z
-**Iteration**: 11
+**Since**: 2026-05-08T22:50:00Z
+**Iteration**: 12
+**Last Updated**: 2026-05-08 (researcher-4)
 
 ## Current Focus
+
+S10E (2026-05-08, researcher-4, this PR): **Excluded-form `4`-multiplication
+iff**. Added a single public lemma to `ThreeSquares.lean` between
+`not_excluded_of_sq_mul_not_excluded` (line 351) and
+`prime_one_mod_four_is_sum_three_sq` (now line ~387):
+
+```lean
+lemma excluded_form_four_mul_iff {n : ℕ} :
+    IsExcludedForm (4 * n) ↔ IsExcludedForm n
+```
+
+**Proof structure** (~30 lines including docstring, ~20 tactic lines):
+
+* **Forward** `IsExcludedForm n → IsExcludedForm (4 * n)`: bump the `4 ^ a`
+  exponent by one. Closed by `pow_succ; rw [h]; ring`.
+* **Reverse** `IsExcludedForm (4 * n) → IsExcludedForm n`: case-split on the
+  `4 ^ a` exponent.
+  * `a = 0`: `4 * n = 8 * b + 7` is impossible since LHS is even and RHS
+    is odd. Closed by `simp only [pow_zero, one_mul] at h; omega`.
+  * `a = a' + 1`: rewrite `4 ^ (a' + 1) = 4 * 4 ^ a'` and cancel the
+    leading `4` via `Nat.eq_of_mul_eq_mul_left`.
+
+**Why this granularity**:
+
+* **Pure arithmetic** — uses only `pow_succ`, `pow_zero`, `one_mul`, `omega`,
+  `ring`, `Nat.eq_of_mul_eq_mul_left`. No measure theory, no lattice
+  machinery, immune to the latent S5-region build issues
+  (`Matrix.det_toLin'`, `EuclideanSpace.real_norm_sq_eq` API drift) noted
+  in earlier sessions.
+* **Edit-zone non-conflict**: insert at lines 352–384, far from S10C's
+  edit zone (`mem_dirichletSublattice`/axiom boundary at ~line 1387 in
+  PR #17374) and far from S10aux's edit zone (lines 247–303 in PR #17385).
+  Compatible with both in-flight PRs.
+* **Composes with S10aux**: combined with `four_mul_sum_three_sq` and
+  `sum_three_sq_of_four_mul` (S10aux, PR #17385), the case analysis driving
+  `not_excluded_form_is_sum_three_sq` can WLOG assume `4 ∤ n`. Concretely,
+  if `4 ∣ n` and `¬ IsExcludedForm n`, write `n = 4 * n'`; then by
+  `excluded_form_four_mul_iff` we get `¬ IsExcludedForm n'`, and by
+  `sum_three_sq_iff_four_mul` proving SOS for `n` reduces to proving SOS
+  for `n'`. Iterating produces a representation `n = 4 ^ k * m` with
+  `4 ∤ m` and `¬ IsExcludedForm m`, reducing the case analysis to
+  `m % 8 ∈ {1, 2, 3, 5, 6}` (the residue classes parameterised by
+  `dirichlet_key_lemma` at `d ∈ {1, 2}`).
+* **Symmetry with existing infrastructure**: completes a natural triplet
+  with `excluded_form_of_odd_sq_mul` (handles odd squared multipliers) and
+  `excluded_form_of_sq_mul` (handles general squared multipliers). The
+  literal-`4` case is the *base case* of that family — it is the smallest
+  multiplier that interacts non-trivially with the `4 ^ a` exponent in
+  `IsExcludedForm`'s decomposition.
+
+**Net new content**: 0 definitions, 1 lemma, 0 axioms.
+
+**Axiom delta**: unchanged at 2 (`dirichlet_key_lemma`,
+`not_excluded_form_is_sum_three_sq`). S10E is *infrastructure* — it does
+not discharge an axiom but supplies the integer-arithmetic side of the
+WLOG-`4 ∤ n` reduction kernel for the sufficiency proof.
+
+**Build status**: pending. The new tactic uses (`refine ⟨..., ...⟩`,
+`rintro`, `cases ... with | zero | succ`, `simp only`, `omega`, `pow_succ`,
+`ring`, `Nat.eq_of_mul_eq_mul_left`) compile against Mathlib 4.26 — all
+patterns are standard. The recursive `proofs/.lake` self-symlink trap
+(memory: `feedback_researcher_lake_symlink_broken.md`) prevents local
+Docker verification; CI / Auditor will catch any issues.
 
 S10C (2026-05-08, researcher-5): **Real-side lift of the Dirichlet sublattice
 basis**. Added the real-valued infrastructure to `ThreeSquares.lean` between

@@ -350,6 +350,38 @@ lemma not_excluded_of_sq_mul_not_excluded {m k : ℕ} (hk : k ≠ 0)
   intro hm
   exact h (excluded_form_of_sq_mul hm hk)
 
+/-- `IsExcludedForm` is preserved *and reflected* by multiplication by `4`:
+`4 * n` is in excluded form iff `n` is.
+
+The forward direction just bumps the `4 ^ a` exponent by one. The reverse
+direction is the WLOG-`4 ∤ n` reduction kernel for the sufficiency direction
+of Legendre's three-square theorem: starting from `4 * n = 4 ^ a * (8 * b + 7)`,
+the `a = 0` case is impossible (RHS is odd, LHS is even), so `a ≥ 1` and we
+cancel the leading `4` to get `n = 4 ^ (a - 1) * (8 * b + 7)`. Combined with
+`four_mul_sum_three_sq` and `sum_three_sq_of_four_mul`, the case analysis
+driving `not_excluded_form_is_sum_three_sq` can therefore restrict to `n` not
+divisible by `4`. -/
+lemma excluded_form_four_mul_iff {n : ℕ} :
+    IsExcludedForm (4 * n) ↔ IsExcludedForm n := by
+  refine ⟨fun ⟨a, b, h⟩ => ?_, fun ⟨a, b, h⟩ => ?_⟩
+  · -- Reverse direction. Case-split on `a = 0` (impossible) vs `a = a' + 1`.
+    cases a with
+    | zero =>
+        -- `4 * n = 8 * b + 7` contradicts evenness of `4 * n`.
+        simp only [pow_zero, one_mul] at h
+        omega
+    | succ a' =>
+        refine ⟨a', b, ?_⟩
+        -- `4 * n = 4 ^ (a' + 1) * (8 * b + 7) = 4 * (4 ^ a' * (8 * b + 7))`,
+        -- then cancel the leading `4`.
+        have hpow : (4 : ℕ) ^ (a' + 1) * (8 * b + 7) = 4 * (4 ^ a' * (8 * b + 7)) := by
+          rw [pow_succ]; ring
+        rw [hpow] at h
+        exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 4) h
+  · -- Forward direction: bump the `4 ^ a` exponent by one.
+    refine ⟨a + 1, b, ?_⟩
+    rw [pow_succ, h]; ring
+
 /-- Primes ≡ 1 (mod 4) are sums of 3 squares.
 This follows from Fermat's two-squares theorem (they're sums of 2 squares). -/
 lemma prime_one_mod_four_is_sum_three_sq {p : ℕ} (hp : Nat.Prime p) (hmod : p % 4 = 1) :
