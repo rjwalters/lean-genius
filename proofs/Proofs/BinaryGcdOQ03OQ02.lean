@@ -310,16 +310,19 @@ theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : Cofac
   · -- a₀ * M'.α + b₀ * M'.γ = a₀ * M.β + b₀ * M.δ = bhat
     exact h_inv₂
   · -- a₀ * (M.α - q·M.β) + b₀ * (M.γ - q·M.δ) = ahat % bhat
+    -- Modern simp normalizes nat-cast division to int division of casts.
     have expand :
-        a₀ * (M.α - ((ahat / bhat : ℕ) : ℤ) * M.β)
-          + b₀ * (M.γ - ((ahat / bhat : ℕ) : ℤ) * M.δ)
+        a₀ * (M.α - ((ahat : ℤ) / (bhat : ℤ)) * M.β)
+          + b₀ * (M.γ - ((ahat : ℤ) / (bhat : ℤ)) * M.δ)
         = (a₀ * M.α + b₀ * M.γ)
-            - ((ahat / bhat : ℕ) : ℤ) * (a₀ * M.β + b₀ * M.δ) := by ring
+            - ((ahat : ℤ) / (bhat : ℤ)) * (a₀ * M.β + b₀ * M.δ) := by ring
     rw [expand, h_inv₁, h_inv₂]
-    -- Goal: (ahat : ℤ) - ↑(ahat/bhat) * (bhat : ℤ) = ↑(ahat % bhat)
+    -- Goal: (ahat : ℤ) - (↑ahat / ↑bhat) * (bhat : ℤ) = ↑(ahat % bhat)
+    -- Use Nat.div_add_mod cast to ℤ; push_cast normalizes ↑(ahat/bhat) to ↑ahat/↑bhat.
     have hdivmod_int :
         (bhat : ℤ) * ((ahat / bhat : ℕ) : ℤ) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
       exact_mod_cast Nat.div_add_mod ahat bhat
+    push_cast at hdivmod_int
     linarith
 
 /-- Multi-step matrix-vector invariant for `lehmerCofactors`.
@@ -379,14 +382,14 @@ theorem lehmerInnerStep_residue_le {ahat bhat : ℕ} {M : CofactorMatrix}
     (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
     bhat' < bhat ∧ ahat' = bhat := by
   simp [lehmerInnerStep] at h
-  -- Modern simp reduces the some-equation directly to a 5-conjunct;
-  -- destructure with `rfl` on positions 3 and 4 to substitute ahat', bhat'.
-  -- Keep the `bhat ≠ 0` hypothesis (first conjunct) so `omega` can close
-  -- the residue inequality.
-  obtain ⟨hbhat_ne, _, rfl, rfl, _⟩ := h
-  refine ⟨?_, rfl⟩
-  -- Goal: ahat % bhat < bhat (with bhat ≠ 0 in context as hbhat_ne).
-  omega
+  -- Modern simp reduces the some-equation directly to a 5-conjunct
+  -- (bhat ≠ 0, r ≠ 0, bhat = ahat', r = bhat', struct = M'). Destructure
+  -- explicitly so we have named hypotheses for both pieces of the conclusion.
+  obtain ⟨hbhat_ne, _, hahat_eq, hbhat_eq, _⟩ := h
+  refine ⟨?_, hahat_eq.symm⟩
+  -- bhat' < bhat: substitute bhat' = ahat % bhat, then Nat.mod_lt.
+  rw [← hbhat_eq]
+  exact Nat.mod_lt _ (Nat.pos_of_ne_zero hbhat_ne)
 
 /-- One successful Lehmer inner step does not increase the maximum
     of the pair `(ahat, bhat)`. -/
@@ -504,9 +507,10 @@ theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := heven
   simp only [OddPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.natCast_nonneg _
-  -- Hints help nlinarith after modern-simp normalization of `M.mul ⟨0,1,1,-q⟩`:
-  -- `q · (-M.β) ≥ 0` (since q ≥ 0 and -M.β ≥ 0) and `q · (-M.δ) ≥ 0`.
+  -- Modern simp normalizes `((ahat / bhat : ℕ) : ℤ)` to `(ahat : ℤ) / (bhat : ℤ)`
+  -- (Int.ediv form). Provide hq in the matching syntactic form so the nlinarith
+  -- hints (`mul_nonneg hq …`) actually fire on the goal's terms.
+  have hq : (0 : ℤ) ≤ (ahat : ℤ) / (bhat : ℤ) := by positivity
   refine ⟨hβ, ?_, hδ, ?_⟩
   · nlinarith [mul_nonneg hq (neg_nonneg.mpr hβ), mul_nonneg hq hα]
   · nlinarith [mul_nonneg hq (neg_nonneg.mpr hβ), mul_nonneg hq hδ]
@@ -521,7 +525,8 @@ theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
   simp only [EvenPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.natCast_nonneg _
+  -- Modern simp normalizes `((ahat / bhat : ℕ) : ℤ)` to `(ahat : ℤ) / (bhat : ℤ)`.
+  have hq : (0 : ℤ) ≤ (ahat : ℤ) / (bhat : ℤ) := by positivity
   -- M' = [[M.β, M.α - q·M.β], [M.δ, M.γ - q·M.δ]]
   -- EvenPattern: M'.α = M.β ≥ 0, M'.β = M.α - q·M.β ≤ 0, M'.γ = M.δ ≤ 0, M'.δ = M.γ - q·M.δ ≥ 0
   refine ⟨hβ, ?_, hδ, ?_⟩
