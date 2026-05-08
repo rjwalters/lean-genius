@@ -61,7 +61,8 @@
       "**Bound hierarchy**: Three nested bounds illustrate the difficulty gradient. (i) Trivial: lcm ≤ n! ≤ n^n, proved by elementary divisibility. (ii) Easy from primorial: lcm ≤ 4^n, which Mathlib's `primorial_le_4_pow` plus the unproved bridge `lcm ≤ n · primorial` would give. (iii) Hard (Hanson): lcm ≤ 3^n, requires the Beta-integral identity.",
       "**Chebyshev-function reformulation**: Hanson's bound is equivalent to ψ(n) ≤ n · ln 3 for ψ(n) = log lcm(1,...,n). The PNT gives ψ(n)/n → 1 < ln 3, so Hanson is consistent with PNT — but Hanson's non-asymptotic constant is what's needed for explicit applications like Apéry.",
       "**Numerical evidence**: For n = 20, lcm(1,...,20) = 232,792,560 vs 3^20 = 3,486,784,401, a margin of 15×. For n = 50, the ratio grows. This consistent margin gives strong empirical confidence in Hanson's bound.",
-      "**Mathlib infrastructure status**: `Mathlib.NumberTheory.Primorial` has `primorial_le_4_pow`. `Mathlib.NumberTheory.Bertrand` has the Bertrand postulate. `Mathlib.Data.Nat.Lcm` has lcm definitions. None give an `lcm(1..n) ≤ X^n` bound directly. The bridge from primorial to lcm is the missing combinatorial step."
+      "**Mathlib infrastructure status**: `Mathlib.NumberTheory.Primorial` has `primorial_le_4_pow`. `Mathlib.NumberTheory.Bertrand` has the Bertrand postulate. `Mathlib.Data.Nat.Lcm` has lcm definitions. None give an `lcm(1..n) ≤ X^n` bound directly. The bridge from primorial to lcm is the missing combinatorial step.",
+      "**Chebyshev's decomposition — easy direction proved (Iter 5–7)**: This file now proves `(∏_{p ≤ n, p prime} p^⌊log_p n⌋) ∣ lcmRange n`, the *forward* half of Chebyshev's identity `lcm(1,...,n) = ∏_{p ≤ n} p^⌊log_p n⌋`. Built incrementally: `pow_dvd_lcmRange` (generic), `prime_pow_dvd_lcmRange` (each prime-power factor), `coprime_prime_pow_pow_of_ne` (pairwise coprimality), `prod_dvd_of_pairwise_coprime` (Finset induction packaging), then `prod_prime_powers_dvd_lcmRange` assembles them. The reverse direction `lcmRange n ∣ ∏ p^⌊log_p n⌋` (the *hard half*) routes through `Nat.factorization` extracting the maximal exponent per prime — the next structural milestone before applying Beta-integral / primorial-bound estimates to upper-bound the product by `3^n` and discharge `hanson_bound`."
     ]
   },
   "sections": [
@@ -104,7 +105,8 @@
     "openQuestions": [
       "Replace `axiom hanson_bound` with a Lean theorem using the Beta-integral approach.",
       "Prove the intermediate bound lcm(1,...,n) ≤ 4^n via a primorial bridge — easier than Hanson's 3^n but still nontrivial.",
-      "Strengthen to non-asymptotic forms of the prime number theorem: ψ(n)/n approaches 1 from below."
+      "Strengthen to non-asymptotic forms of the prime number theorem: ψ(n)/n approaches 1 from below.",
+      "Close the *reverse direction* of Chebyshev's decomposition: prove `lcmRange n ∣ ∏_{p ≤ n} p^⌊log_p n⌋` via `Nat.factorization` to upgrade the forward divisibility (`prod_prime_powers_dvd_lcmRange`) into the exact identity `lcmRange n = ∏_{p ≤ n} p^⌊log_p n⌋`."
     ]
   },
   "crossReferences": [
@@ -117,6 +119,21 @@
       "targetId": "basel-problem-oq-01-oq-01-oq-02",
       "relationship": "extends",
       "description": "Direct parent: Apéry's ζ(3) irrationality formalization. The `hanson_bound` axiom in this file is the precise lcm bound used by the parent's integer-squeeze argument to establish ζ(3) ∉ ℚ; eliminating this axiom would discharge one of five remaining axioms in that file."
+    },
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "shares-technique",
+      "description": "Chebyshev's prime-counting estimates θ(x) and ψ(x) provide the asymptotic framework for analyzing lcm(1,...,n). Hanson's bound `lcmRange n ≤ 3^n` is equivalent to ψ(n) ≤ n·log 3 — a non-asymptotic strengthening of the Chebyshev estimates. The prime-power decomposition machinery built here (`prime_pow_dvd_lcmRange`, `prod_prime_powers_dvd_lcmRange`) is the same combinatorial scaffold used to derive Chebyshev-style bounds."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "shares-technique",
+      "description": "Bertrand's postulate (Chebyshev 1850, Erdős 1932) is the prototypical primorial-bound argument: the proof shows `primorial(n) ≤ 4^n`, which Mathlib provides as `primorial_le_4_pow`. The combinatorial bridge from `primorial` to `lcm(1,...,n)` (specifically `lcm(1..n) ≤ n · primorial(n)`) is the missing intermediate step needed for a primorial-route proof of `lcm(1..n) ≤ 4^n`, which Hanson's 3^n strictly improves upon."
+    },
+    {
+      "targetId": "erdos-1057",
+      "relationship": "shares-technique",
+      "description": "Erdős Problem #1057 (Carmichael number counting) uses an analogous Finset-induction packaging: `Erdos1057Problem.prod_primes_dvd_of_each_dvd` shows that pairwise-coprime prime divisors of `N` have their product dividing `N`. The helper here (`prod_dvd_of_pairwise_coprime`) generalizes that pattern over an arbitrary `f : ℕ → ℕ` so it can handle prime-power factors `p ↦ p^⌊log_p n⌋` rather than just `p ↦ p` — a small but essential abstraction step toward Chebyshev's exact decomposition."
     }
   ]
 }
