@@ -52,7 +52,9 @@
       "**Curvature determines topology**: The three cases partition closed surfaces: ∫K > 0 ⟺ genus 0 (sphere); ∫K = 0 ⟺ genus 1 (torus); ∫K < 0 ⟺ genus ≥ 2 (hyperbolic). All three follow immediately from the Gauss-Bonnet axiom and χ = 2 - 2g.",
       "**Girard's formula as one-liner**: `gauss_bonnet_triangle : K * area = α + β + γ - π` immediately gives `girard_formula`: Area = (α + β + γ - π) / K. The spherical excess theorem (Euclid's parallel postulate failure quantified) follows in 2 lines.",
       "**Poincaré-Hopf connects dynamics to topology**: The index sum of any vector field equals χ. For the sphere (χ=2), every vector field must have total index 2 (e.g., the 'hairy ball theorem': no zero-free vector field exists). This is proved from the `poincare_hopf` structure axiom.",
-      "**Morse inequalities as consequence**: The Morse inequalities β_k ≤ c_k (Betti numbers bounded by critical point counts) and their alternating sum formula Σ(-1)^k c_k = χ are proved from the `morse_inequalities` structure field."
+      "**Morse inequalities as consequence**: The Morse inequalities β_k ≤ c_k (Betti numbers bounded by critical point counts) and their alternating sum formula Σ(-1)^k c_k = χ are proved from the `morse_inequalities` structure field.",
+      "**Chern's intrinsic proof (1944) is the right axiomatization target**: Bonnet's original 1848 proof was *extrinsic* — it depended on an embedding $M \\hookrightarrow \\mathbb{R}^3$ and Stokes' theorem applied to the boundary 1-form. Chern's 1944 proof reformulated Gauss-Bonnet as a statement about the Pfaffian of the curvature 2-form on the orthonormal frame bundle, making the result entirely *intrinsic* (independent of any embedding) and generalizable to all even-dimensional manifolds (Chern-Gauss-Bonnet). This file's `gauss_bonnet : totalCurvature = 2π·χ` axiom is intrinsic by construction and matches Chern's framing — the eventual de-axiomatization in Mathlib will track Chern's argument, not Bonnet's.",
+      "**Total-curvature integrality**: Gauss-Bonnet is a *quantization theorem* — $\\frac{1}{2\\pi} \\int_M K\\,dA \\in \\mathbb{Z}$ holds for every compact orientable surface, even though $K$ varies continuously. This integrality is the deep content: the integer is $\\chi(M) = 2 - 2g$, and small metric perturbations cannot change it. The same phenomenon (continuous local data → integer global invariant) recurs throughout index theory and is the prototype for the Atiyah-Singer index theorem."
     ],
     "prerequisites": [
       "Euler characteristic and genus classification",
@@ -66,6 +68,44 @@
       "targetId": "euler-polyhedral-formula-oq-02",
       "relationship": "extends",
       "description": "Parent OQ-02 entry for Euler polyhedral formula; this OQ-02-OQ-01 develops the smooth Gauss-Bonnet extension"
+    },
+    {
+      "targetId": "euler-polyhedral",
+      "relationship": "context",
+      "description": "Discrete Euler polyhedral formula V−E+F=2; the smooth Gauss-Bonnet ∫K dA = 2πχ is its differential-geometric refinement, recovering V−E+F as 2 - 2·genus when the polyhedron is interpreted as a piecewise-linear surface with curvature concentrated at vertices"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "context",
+      "description": "The Four Color Theorem rests on χ(S²)=2 (planar dual of a sphere); Gauss-Bonnet is the deepest statement of why the sphere has this Euler characteristic, distinguishing it topologically from the torus (where 7 colors suffice — Heawood's formula)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones generales circa superficies curvas",
+      "year": "1827",
+      "note": "The Theorema Egregium and the local Gauss-Bonnet for geodesic triangles (K·Area = angular excess) — the seed of all curvature-topology dualities"
+    },
+    {
+      "authors": "Pierre Ossian Bonnet",
+      "title": "Mémoire sur la théorie générale des surfaces",
+      "year": "1848",
+      "venue": "Journal de l'École Polytechnique",
+      "note": "Global Gauss-Bonnet for compact surfaces with boundary; extrinsic proof using embeddings into ℝ³"
+    },
+    {
+      "authors": "Shiing-Shen Chern",
+      "title": "A simple intrinsic proof of the Gauss-Bonnet formula for closed Riemannian manifolds",
+      "year": "1944",
+      "venue": "Annals of Mathematics 45(4), 747-752",
+      "note": "Intrinsic proof via the Pfaffian on the orthonormal frame bundle; generalizes to Chern-Gauss-Bonnet for all even-dimensional manifolds"
+    },
+    {
+      "authors": "Henri Poincaré",
+      "title": "Sur les courbes définies par les équations différentielles",
+      "year": "1885",
+      "note": "Original index theorem for vector fields on the 2-sphere, generalized later by Hopf to all dimensions — the Poincaré-Hopf theorem axiomatized in this file"
     }
   ],
   "leanFile": {
