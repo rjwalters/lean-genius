@@ -215,12 +215,17 @@ theorem hanson_n10 : lcmRange 10 ≤ 3 ^ 10 := by decide
 theorem hanson_n12 : lcmRange 12 ≤ 3 ^ 12 := by decide
 theorem hanson_n15 : lcmRange 15 ≤ 3 ^ 15 := by native_decide
 theorem hanson_n20 : lcmRange 20 ≤ 3 ^ 20 := by native_decide
+theorem hanson_n25 : lcmRange 25 ≤ 3 ^ 25 := by native_decide
+theorem hanson_n30 : lcmRange 30 ≤ 3 ^ 30 := by native_decide
+theorem hanson_n50 : lcmRange 50 ≤ 3 ^ 50 := by native_decide
 
 -- Concrete lcm values (sanity checks, expected from OEIS A003418):
 theorem lcmRange_5_eq  : lcmRange 5  = 60        := by decide
 theorem lcmRange_10_eq : lcmRange 10 = 2520      := by decide
 theorem lcmRange_15_eq : lcmRange 15 = 360360    := by native_decide
 theorem lcmRange_20_eq : lcmRange 20 = 232792560 := by native_decide
+theorem lcmRange_25_eq : lcmRange 25 = 26771144400 := by native_decide
+theorem lcmRange_30_eq : lcmRange 30 = 2329089562800 := by native_decide
 
 -- =====================================================================
 -- PART 5: Hanson's general bound (open conjecture, axiomatized)
