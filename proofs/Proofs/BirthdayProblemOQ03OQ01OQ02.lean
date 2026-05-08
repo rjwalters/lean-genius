@@ -1662,10 +1662,99 @@ theorem p_pair_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
   have hpow_ne : (d : ℝ) ^ (n - 4) ≠ 0 := pow_ne_zero _ hd_ne
   field_simp
 
+/-- **Layer 3e (specialisation, S16b).** For any pair `(T₁, T₂)` in the
+    disjoint overlap stratum `overlapPattern n 0`, the per-pair joint-
+    coincidence count for `f : Fin n → Fin d` is exactly `d^(n - 4)`.
+
+    This is the strict-triple wrapper around `bad_count_disjoint`. Membership
+    in `overlapPattern n 0` packages strict-ordering and disjointness
+    (`(tripleSet T₁ ∩ tripleSet T₂).card = 0`) into a single hypothesis from
+    which the 15 pairwise-distinctness inputs of `bad_count_disjoint` are
+    derived: 6 within-triple inequalities via `ne_of_lt` on the strict
+    ordering, plus 9 cross-triple inequalities via `Finset.mem_inter` against
+    the empty intersection.
+
+    The filter predicate is written in the `(P₁ ∧ P₂) ∧ (Q₁ ∧ Q₂)` grouping
+    used by `tripleCount_descFact_2_eq_overlap_sum` (Layer 3d, S15) so this
+    lemma applies directly to each summand of the `k = 0` term, allowing
+    Layer 3g (S17) to evaluate the disjoint contribution to
+    `factorial_moment_2` as `(overlapPattern n 0).card * d^(n - 4)`. -/
+theorem bad_count_disjoint_strict (d n : ℕ)
+    {T₁ T₂ : Fin n × Fin n × Fin n} (hp : (T₁, T₂) ∈ overlapPattern n 0) :
+    (Finset.univ.filter (fun f : Fin n → Fin d =>
+      (f T₁.1 = f T₁.2.1 ∧ f T₁.2.1 = f T₁.2.2) ∧
+      (f T₂.1 = f T₂.2.1 ∧ f T₂.2.1 = f T₂.2.2))).card =
+      d ^ (n - 4) := by
+  classical
+  -- Unpack overlapPattern n 0 membership: strict triples + disjointness.
+  simp only [overlapPattern, Finset.mem_filter, Finset.mem_product] at hp
+  obtain ⟨⟨⟨hT₁, hT₂⟩, _hne⟩, hk0⟩ := hp
+  -- Convert strictTriples membership to strict inequalities.
+  unfold strictTriples at hT₁ hT₂
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hT₁ hT₂
+  -- Destructure the triples.
+  obtain ⟨a₁, b₁, c₁⟩ := T₁
+  obtain ⟨a₂, b₂, c₂⟩ := T₂
+  -- Within-triple distinctness (6 inequalities) from a < b < c.
+  have h₁₂ : a₁ ≠ b₁ := ne_of_lt hT₁.1
+  have h₂₃ : b₁ ≠ c₁ := ne_of_lt hT₁.2
+  have h₁₃ : a₁ ≠ c₁ := ne_of_lt (lt_trans hT₁.1 hT₁.2)
+  have h₄₅ : a₂ ≠ b₂ := ne_of_lt hT₂.1
+  have h₅₆ : b₂ ≠ c₂ := ne_of_lt hT₂.2
+  have h₄₆ : a₂ ≠ c₂ := ne_of_lt (lt_trans hT₂.1 hT₂.2)
+  -- Cross-triple distinctness (9 inequalities) from empty intersection.
+  have hempty : tripleSet ((a₁, b₁, c₁) : Fin n × Fin n × Fin n) ∩
+                tripleSet ((a₂, b₂, c₂) : Fin n × Fin n × Fin n) = ∅ :=
+    Finset.card_eq_zero.mp hk0
+  have hcross : ∀ x ∈ tripleSet ((a₁, b₁, c₁) : Fin n × Fin n × Fin n),
+                 ∀ y ∈ tripleSet ((a₂, b₂, c₂) : Fin n × Fin n × Fin n),
+                 x ≠ y := by
+    intro x hx y hy heq
+    have hmem : x ∈ tripleSet ((a₁, b₁, c₁) : Fin n × Fin n × Fin n) ∩
+                    tripleSet ((a₂, b₂, c₂) : Fin n × Fin n × Fin n) :=
+      Finset.mem_inter.mpr ⟨hx, heq ▸ hy⟩
+    rw [hempty] at hmem
+    exact (Finset.notMem_empty _) hmem
+  -- The six entries lie in their respective tripleSets.
+  have ha₁_mem : a₁ ∈ tripleSet ((a₁, b₁, c₁) : Fin n × Fin n × Fin n) := by
+    simp [tripleSet]
+  have hb₁_mem : b₁ ∈ tripleSet ((a₁, b₁, c₁) : Fin n × Fin n × Fin n) := by
+    simp [tripleSet]
+  have hc₁_mem : c₁ ∈ tripleSet ((a₁, b₁, c₁) : Fin n × Fin n × Fin n) := by
+    simp [tripleSet]
+  have ha₂_mem : a₂ ∈ tripleSet ((a₂, b₂, c₂) : Fin n × Fin n × Fin n) := by
+    simp [tripleSet]
+  have hb₂_mem : b₂ ∈ tripleSet ((a₂, b₂, c₂) : Fin n × Fin n × Fin n) := by
+    simp [tripleSet]
+  have hc₂_mem : c₂ ∈ tripleSet ((a₂, b₂, c₂) : Fin n × Fin n × Fin n) := by
+    simp [tripleSet]
+  have h₁₄ : a₁ ≠ a₂ := hcross a₁ ha₁_mem a₂ ha₂_mem
+  have h₁₅ : a₁ ≠ b₂ := hcross a₁ ha₁_mem b₂ hb₂_mem
+  have h₁₆ : a₁ ≠ c₂ := hcross a₁ ha₁_mem c₂ hc₂_mem
+  have h₂₄ : b₁ ≠ a₂ := hcross b₁ hb₁_mem a₂ ha₂_mem
+  have h₂₅ : b₁ ≠ b₂ := hcross b₁ hb₁_mem b₂ hb₂_mem
+  have h₂₆ : b₁ ≠ c₂ := hcross b₁ hb₁_mem c₂ hc₂_mem
+  have h₃₄ : c₁ ≠ a₂ := hcross c₁ hc₁_mem a₂ ha₂_mem
+  have h₃₅ : c₁ ≠ b₂ := hcross c₁ hc₁_mem b₂ hb₂_mem
+  have h₃₆ : c₁ ≠ c₂ := hcross c₁ hc₁_mem c₂ hc₂_mem
+  -- Reassociate the conjunction in the filter predicate, then apply
+  -- bad_count_disjoint with the 15 derived hypotheses.
+  have hfilter_eq : (Finset.univ.filter (fun f : Fin n → Fin d =>
+        (f a₁ = f b₁ ∧ f b₁ = f c₁) ∧ (f a₂ = f b₂ ∧ f b₂ = f c₂))) =
+        Finset.univ.filter (fun f : Fin n → Fin d =>
+          f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f a₂ = f b₂ ∧ f b₂ = f c₂) := by
+    ext f
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    tauto
+  rw [hfilter_eq]
+  exact bad_count_disjoint d n a₁ b₁ c₁ a₂ b₂ c₂
+    h₁₂ h₂₃ h₁₃ h₄₅ h₅₆ h₄₆
+    h₁₄ h₁₅ h₁₆ h₂₄ h₂₅ h₂₆ h₃₄ h₃₅ h₃₆
+
 /-
   ## Summary
 
-  **Proved (35 theorems / lemmas, 1 axiom):**
+  **Proved (36 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -1751,6 +1840,14 @@ theorem p_pair_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
       `n ≥ 4`, `d ≥ 1`, the joint disjoint-pair probability is exactly
       `1/d⁴`, independent of n. This is the per-disjoint-pair quantitative
       content used by Layer 3g (S17) to extract the limit `(c³/6)²`.
+  36. `bad_count_disjoint_strict` (Session 16b, Layer 3e specialisation):
+      strict-triple wrapper for `bad_count_disjoint`. For any pair
+      `(T₁, T₂) ∈ overlapPattern n 0` (distinct strict triples with empty
+      tripleSet intersection), the per-pair joint-coincidence count for
+      `f : Fin n → Fin d` equals `d^(n - 4)`. Derives the 15 pairwise-
+      distinctness inputs from the strict ordering (6) and disjoint
+      intersection (9). Filter predicate is grouped `(P₁∧P₂) ∧ (Q₁∧Q₂)` to
+      align with `tripleCount_descFact_2_eq_overlap_sum`.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -1791,5 +1888,6 @@ theorem p_pair_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
 #check @tripleCount_descFact_2_eq_overlap_sum
 #check @bad_count_disjoint
 #check @p_pair_disjoint
+#check @bad_count_disjoint_strict
 
 end BirthdayThreshold3
