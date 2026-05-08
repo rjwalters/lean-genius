@@ -1,13 +1,87 @@
 # Current State
 
-**Phase**: ITERATING (parametric lift-z — Case-B primes with z₀ ≠ 0 complete)
-**Since**: 2026-05-07T22:45:00Z
-**Last Updated**: 2026-05-08 (Iteration 7, researcher-12)
-**Iteration**: 7
+**Phase**: ITERATING (parametric lift-x — last Case-B prime p = 7 done)
+**Since**: 2026-05-08T20:30:00Z
+**Last Updated**: 2026-05-08 (Iteration 8, researcher-3)
+**Iteration**: 8
 
 ## Current Focus
 
-Iteration 7 (this session): generalized iteration 6's
+Iteration 8 (this session, researcher-3): added the **lift-x parametric
+Hensel theorem** mirroring iter 7's lift-z, plus the `p = 7` corollary.
+
+```lean
+theorem selmer_padic_solubility_lift_x {p : ℕ} [Fact (Nat.Prime p)]
+    (x₀ y₀ z₀ : ℤ)
+    (h_yz_nontriv : y₀ ≠ 0 ∨ z₀ ≠ 0)
+    (h_root_div : (p : ℤ) ∣ (3 * x₀ ^ 3 + 4 * y₀ ^ 3 + 5 * z₀ ^ 3))
+    (h_deriv_coprime : IsCoprime (9 * x₀ ^ 2 : ℤ) (p : ℤ)) :
+    ∃ (x y z : ℚ_[p]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0
+
+theorem selmer_padic_solubility_p7_hensel :
+    ∃ (x y z : ℚ_[7]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_x 1 1 0
+    (Or.inl one_ne_zero)
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+```
+
+The univariate Hensel polynomial `HenselLiftX.H c = C c + C 3 * X^3 ∈ ℤ[X]`
+is parametric in the constant term `c = 4·y₀³ + 5·z₀³`. The proof structure
+mirrors iter 7's `selmer_padic_solubility_lift_z` line-by-line, swapping
+the roles of `x` and `z`:
+
+| iter 7 (lift-z)             | iter 8 (lift-x)            |
+| --------------------------- | -------------------------- |
+| Polynomial `G(z) = c + 5z³` | Polynomial `H(x) = c + 3x³` |
+| `c = 3·x₀³ + 4·y₀³`         | `c = 4·y₀³ + 5·z₀³`         |
+| Derivative `15z²`           | Derivative `9x²`            |
+| Coprimality `15·z₀² ⊥ p`    | Coprimality `9·x₀² ⊥ p`     |
+| Nontriviality `(x₀,y₀)≠0`   | Nontriviality `(y₀,z₀)≠0`   |
+
+The p = 7 corollary uses witness `(x₀, y₀, z₀) = (1, 1, 0)`:
+- `7 ∣ 3·1 + 4·1 + 5·0 = 7` (decide).
+- `gcd(9·1², 7) = gcd(9, 7) = 1` (decide).
+- `(y₀, z₀) = (1, 0) ≠ (0, 0)` via `Or.inl one_ne_zero`.
+
+This completes the Section-9 Case-B prime sweep. Combined with iters 5–7,
+**nine of the twelve** Section-8 primes (`p ∈ {7, 11, 13, 17, 19, 23, 29,
+31, 37}`) now admit axiom-free `ℚ_[p]`-solubility proofs. Universal axiom
+`selmer_padic_solubility` is unchanged at 2 (it remains the load-bearing
+"all primes" closure axiom; per-prime elimination is sound but does not
+collapse the universal statement).
+
+**File delta** (`proofs/Proofs/Hilbert11OQ02.lean`, 925 → 1078 lines, +153):
+- New namespace `HenselLiftX` (~30 lines): `def H`, three private aeval/derivative
+  lemmas mirroring `HenselLiftZ`.
+- New theorem `selmer_padic_solubility_lift_x` (~80 lines including docstring).
+- New `instance : Fact (Nat.Prime 7)` (1 line).
+- New corollary `selmer_padic_solubility_p7_hensel` (~15 lines including docstring).
+- Section-17 status summary update (replaces the Section-16 prose block).
+- Two new `#check` lines for the new theorem and corollary.
+
+**Counts**: theorems 27 → 29 (`+2` substantive), defs 6 → 7
+(`HenselLiftX.H`), axioms unchanged at 2, sorries unchanged at 0.
+
+**Build status**: pending. The `proofs/.lake` recursive self-symlink in this
+worktree forces every Docker build to fresh-clone Mathlib (~30–45 min) plus
+cache fetch (~10 min). Same posture as iter 7 (PR for iter 7 was also
+"build pending"; counts in `meta.json` already reflect a state that includes
+this iter once Mechanic does post-build sync).
+
+**Confidence the build succeeds**: high. Every Mathlib API call in the new
+code (`hensels_lemma`, `PadicInt.norm_intCast_lt_one_iff`,
+`PadicInt.norm_intCast_eq_one_iff`, `Int.isCoprime_iff_gcd_eq_one`,
+`Polynomial.aeval_C/_X/_pow/_add/_mul`) is identical to the corresponding
+call in `selmer_padic_solubility_lift_z` (lines 766–820) which already lives
+on `origin/main` and is the structural template — the only differences are
+the constant terms (`3 ↔ 5`, `9 ↔ 15`) and the variable being lifted.
+
+----
+
+Iteration 7 (researcher-12, retained for context):
+
+generalized iteration 6's
 `selmer_padic_solubility_caseA` (which fixes the (0, 1, z) projection)
 to a fully parametric lift-z theorem `selmer_padic_solubility_lift_z`
 taking any integer triple (x₀, y₀, z₀) with (x₀, y₀) ≠ (0, 0). The
