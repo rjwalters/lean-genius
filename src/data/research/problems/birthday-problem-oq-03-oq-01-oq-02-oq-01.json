@@ -32,10 +32,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:21:41Z",
-    "iteration": 9,
-    "focus": "Session 9 (2026-05-08, researcher-6): added lemma-c-roadmap.md, a 4-layer plan for discharging the Lemma C axiom: (1) indicator algebra ~50 lines, (2) general-n first moment ~160 lines, (3) factorial moments via fusion-pattern decomposition ~300 lines, (4) Method of Factorial Moments theorem ~200 lines (or upstream Mathlib). Total ~600 lines local, or ~360 if Layer 4 lands upstream. Inventoried Mathlib 4.26 (only Poisson PMF/measure constructors) vs master (PoissonLimitThm.lean by Yi Yuan, 2026-03-08, post-pin; binomial→Poisson but does NOT cover dependent indicators). Recommended Path C: upstream contribution for Layer 4 + local Layers 1–3.",
+    "iteration": 10,
+    "focus": "Session 10 (2026-05-08, researcher-11): implemented Layer 1 of the lemma-c-roadmap (~95 lines added to BirthdayProblemOQ03OQ01OQ02.lean, line 624 onward, before Summary block). New definition `tripleCount d n f` (sum-of-indicators count over strictly-increasing triples), plus three lemmas: `tripleCount_eq_zero_iff_strict` (basic Finset.filter form), `tripleCount_eq_zero_iff_no_triple` (axiom-matching distinct-pairs form, six-case sort over linear order of (i,j,k) using lt_or_gt_of_ne), and `noTriple_filter_eq_tripleCount_zero_filter` (filter equality bridging axiom predicate to tripleCount=0). Lean file: 667→761 lines, 30→33 theorems, 3→4 defs. Build status: pending (cold-cache Docker build queued; risk: 32 GB cgroup limit per memory feedback). Layer 2 (general-n first moment, S11) is unblocked by this layer.",
     "blockers": [],
-    "nextAction": "S10: implement Layer 1 (tripleCount + zero-iff-no-triple, ~50 lines). S11: Layer 2 part 1 (bad_count_general, per-triple count d^(n-2) for distinct i,j,k). S12: Layer 2 part 2 (expectedTripleCount_eq, general-n first-moment identity). S13–15: Layer 3 (factorial-moment expansion + fusion-pattern bookkeeping). S16–17: Layer 4 (MoFM theorem — local or upstream-applied). Parallel: Mathlib upstream PR drafting Mathlib/Probability/MomentsConvergence.lean.",
+    "nextAction": "S11: Layer 2 part 1 (bad_count_general — per-triple count d^(n-2) for distinct i,j,k; ≈ 80 lines). Use Finset.card_eq_pow + an explicit bijection between `{f | f i = f j = f k}` and `Fin n → Fin d` restricted to the (n-2) free indices. S12: Layer 2 part 2 (expectedTripleCount_eq — general-n first-moment identity Σ tripleCount / |Fin n → Fin d| = C(n,3)/d²). S13–15: Layer 3 (factorial-moment expansion + fusion-pattern bookkeeping). S16–17: Layer 4 (MoFM theorem — local or upstream-applied). Parallel: Mathlib upstream PR drafting Mathlib/Probability/MomentsConvergence.lean.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
@@ -58,7 +58,8 @@
       "Session 6 (2026-05-07): repaired 4 Mathlib API drift errors in lambda_tendsto, bad_count_n3, good_count_n3 (introduced upstream after PR #16150 merged on 2026-05-06): tendsto_..._of_le_of_le → primed eventual variant; div_le_div_right → div_le_div_iff_of_pos_right; ← Fintype.card_coe inserted to bridge Finset.card ↔ Fintype.card; explicit predicate passed to filter_card_add_filter_neg_card_eq_card to satisfy DecidablePred synthesis.",
       "Session 7 (2026-05-08, researcher-9): p_triple_n3 in BirthdayProblemOQ03OQ01OQ02.lean (line ~601) — real-number form of bad_count_n3: ((|bad_n=3|) : ℝ) / (d^3 : ℝ) = 1 / d² for d ≥ 1, proved via bad_count_n3, Fintype.card_fun, push_cast, field_simp, ring.",
       "Session 7 (2026-05-08, researcher-9): p_triple_n3_eq_expectedTriples in BirthdayProblemOQ03OQ01OQ02.lean (line ~617) — n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d, proved by p_triple_n3 + simp [expectedTriples, Nat.choose_self]. First explicit connection between `expectedTriples` (analytic) and an actual probability.",
-      "Session 9 (2026-05-08, researcher-6): research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/lemma-c-roadmap.md (~320 lines, 9 sections): axiom statement; why direct binomial→Poisson does not apply (dependent indicators, sharing one index between two triples creates positive correlation); Mathlib 4.26 inventory (only Poisson PMF/measure constructors) vs master (PoissonLimitThm.lean by Yi Yuan, post-v4.26.0; binomial→Poisson convergence); method-of-factorial-moments approach with fusion-pattern decomposition; 4-layer Lean sub-lemma plan with line estimates (Layer 1 ~50, Layer 2 ~160, Layer 3 ~300, Layer 4 ~200); 4 candidate paths A/B/C/D; session sequence S10–S17."
+      "Session 9 (2026-05-08, researcher-6): research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/lemma-c-roadmap.md (~320 lines, 9 sections): axiom statement; why direct binomial→Poisson does not apply (dependent indicators, sharing one index between two triples creates positive correlation); Mathlib 4.26 inventory (only Poisson PMF/measure constructors) vs master (PoissonLimitThm.lean by Yi Yuan, post-v4.26.0; binomial→Poisson convergence); method-of-factorial-moments approach with fusion-pattern decomposition; 4-layer Lean sub-lemma plan with line estimates (Layer 1 ~50, Layer 2 ~160, Layer 3 ~300, Layer 4 ~200); 4 candidate paths A/B/C/D; session sequence S10–S17.",
+      "Session 10 (2026-05-08, researcher-11): Layer 1 implemented in BirthdayProblemOQ03OQ01OQ02.lean §3 (line ~624 onward, before Summary block, ~95 lines). New `def tripleCount (d n : ℕ) (f : Fin n → Fin d) : ℕ` = `Finset.univ.filter (fun t : Fin n × Fin n × Fin n => t.1 < t.2.1 ∧ t.2.1 < t.2.2 ∧ f t.1 = f t.2.1 ∧ f t.2.1 = f t.2.2).card`. Three lemmas: (1) `tripleCount_eq_zero_iff_strict` — i<j<k form, direct from Finset.card_eq_zero + Finset.filter_eq_empty_iff; (2) `tripleCount_eq_zero_iff_no_triple` — pairwise-distinct form (matches axiom predicate), six-case sort using lt_or_gt_of_ne on each of (i,j), (j,k), (i,k); (3) `noTriple_filter_eq_tripleCount_zero_filter` — ext + simp using the previous lemma. File: 667 → 761 lines, 30 → 33 theorems, 3 → 4 defs. Build status: pending (cold-cache Docker queued)."
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",
@@ -79,7 +80,9 @@
       "Session 7: `expectedTriples` was previously a purely analytic quantity (a definition with no probability content). p_triple_n3_eq_expectedTriples is the first place in the file where it is identified with an actual probability. The identification is exact at n=3 and gives a one-sided Markov bound P(some triple) ≤ expectedTriples n d for general n (not yet formalized, but a clean next building block).",
       "Session 9: PoissonLimitThm.lean (master Mathlib, post-v4.26.0) does NOT discharge Lemma C — it requires independent Bernoulli trials, but the triple-coincidence indicators B_{ijk} are positively correlated (sharing one index between (i,j,k) and (i',j',k') forces both triples to either occur or not, with probability 1/d^4 vs the independence value 1/d^4 — actually equal in this case but the joint moments differ for sharing-2 patterns: 1/d^3 vs 1/d^4 = independence). The binomial limit cannot bridge this gap.",
       "Session 9: fusion-pattern scaling rule. For an ordered r-tuple of distinct triples in [n], let m = |union of indices|, q = number of connected components in the triple-overlap graph. Then the contribution to the r-th factorial moment is O(n^m / d^(m-q)). With n_c(d) ~ c·d^(2/3), this scales as d^(q - m/3). Disjoint pattern (m=3r, q=r): exponent 0, contribution → λ^r. Any pattern with ≥ 1 shared index: q ≤ r-1, m ≤ 3r-1, exponent ≤ -2/3. Non-disjoint patterns vanish at rate O(d^(-2/3)), the disjoint pattern dominates and gives the Poisson limit.",
-      "Session 9: the Method of Factorial Moments theorem (Bollobás §I.3, Janson–Łuczak–Ruciński §6.1) is absent from Mathlib in any form. It is a project-independent, generally-useful lemma (random-graph triangle counts, Erdős–Rényi subgraph counts, hash collisions). Recommended upstream contribution at Mathlib/Probability/MomentsConvergence.lean. ~150–250 lines once descFactorial arithmetic is in place; would benefit many downstream consumers."
+      "Session 9: the Method of Factorial Moments theorem (Bollobás §I.3, Janson–Łuczak–Ruciński §6.1) is absent from Mathlib in any form. It is a project-independent, generally-useful lemma (random-graph triangle counts, Erdős–Rényi subgraph counts, hash collisions). Recommended upstream contribution at Mathlib/Probability/MomentsConvergence.lean. ~150–250 lines once descFactorial arithmetic is in place; would benefit many downstream consumers.",
+      "Session 10: the strict→distinct bridge `tripleCount_eq_zero_iff_no_triple` admits a clean six-case proof: for any pairwise-distinct (i,j,k), `lt_or_gt_of_ne` on each of the three pairs gives 2 × 2 × 2 = 8 cases, of which 2 are inconsistent (e.g. i<j ∧ j<k ∧ k<i is cyclic) and 6 give a strictly-increasing triple after at most one swap. The predicate `f a = f b ∧ f b = f c` is symmetric under permutations of {a,b,c}, so each strictly-increasing rearrangement preserves it after the right .symm/.trans rewrites. Total proof ≈ 25 lines.",
+      "Session 10: `tripleCount` connects directly to the axiom statement: `noTriple_filter_eq_tripleCount_zero_filter` is `ext + simp [tripleCount_eq_zero_iff_no_triple]`. The axiom's count-of-no-triple-functions can be replaced by `Finset.univ.filter (fun f => tripleCount d n f = 0).card`, opening the door to factorial-moment analysis: `(Σ f, [tripleCount = 0]) / |Fin n → Fin d|` is what Layer 4 (Method of Factorial Moments) computes. Layer 2 is now unblocked: with `tripleCount` defined, `expectedTripleCount_eq` is the natural next step (Σ f, tripleCount = C(n,3) · d^(n-2), so dividing by d^n gives C(n,3)/d²)."
     ],
     "mathlibGaps": [
       "Method of factorial moments → Poisson convergence (qualitative form) — not in Mathlib but smaller than Chen-Stein",
@@ -128,7 +131,7 @@
     ]
   },
   "started": "2026-04-21T06:38:17Z",
-  "lastUpdate": "2026-05-08T09:55:00Z",
+  "lastUpdate": "2026-05-08T10:30:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -223,10 +226,10 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 588,
-      "theoremCount": 26,
+      "lineCount": 761,
+      "theoremCount": 33,
       "axiomCount": 1,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
