@@ -98,11 +98,11 @@ theorem esymm_nonneg (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) ≤ x) (k : 
     | k + 1 => simp
   | cons x xs ih =>
     match k with
-    | 0 => rw [esymm_cons_zero]; exact ih (fun y hy => hxs y (mem_cons_of_mem x hy)) 0
+    | 0 => rw [esymm_cons_zero]; exact ih (fun y hy => hxs y (List.mem_cons_of_mem x hy)) 0
     | k + 1 =>
       rw [esymm_cons_succ]
-      have hx : 0 ≤ x := hxs x (mem_cons_self x xs)
-      have hmem : ∀ y ∈ xs, (0 : ℝ) ≤ y := fun y hy => hxs y (mem_cons_of_mem x hy)
+      have hx : 0 ≤ x := hxs x List.mem_cons_self
+      have hmem : ∀ y ∈ xs, (0 : ℝ) ≤ y := fun y hy => hxs y (List.mem_cons_of_mem x hy)
       exact add_nonneg (ih hmem (k + 1)) (mul_nonneg hx (ih hmem k))
 
 /-! ## Newton's inequality for the single-element base case -/
@@ -203,8 +203,8 @@ theorem newton_inequality_binomial_k_one (xs : List ℝ)
   induction xs with
   | nil => simp at hn
   | cons y ys ih =>
-    have hy : 0 ≤ y := hxs y (mem_cons_self y ys)
-    have hys_nn : ∀ z ∈ ys, (0 : ℝ) ≤ z := fun z hz => hxs z (mem_cons_of_mem y hz)
+    have hy : 0 ≤ y := hxs y List.mem_cons_self
+    have hys_nn : ∀ z ∈ ys, (0 : ℝ) ≤ z := fun z hz => hxs z (List.mem_cons_of_mem y hz)
     have hE1_nn : 0 ≤ esymm ys 1 := esymm_nonneg ys hys_nn 1
     have hE2_nn : 0 ≤ esymm ys 2 := esymm_nonneg ys hys_nn 2
     have hlen_ge_one : 1 ≤ ys.length := by
@@ -346,7 +346,7 @@ theorem binom_log_concave (n k : ℕ) (hk : 1 ≤ k) (hkn : k + 1 ≤ n) :
   -- So C(n,k-1)·C(n,k+1) = [k·C(n,k)/(n-k+1)] · [(n-k)·C(n,k)/(k+1)]
   --    = k(n-k) / ((n-k+1)(k+1)) · C(n,k)²
   -- Since k(n-k) ≤ (n-k+1)(k+1) ⟺ 0 ≤ n+1 (always true), we're done.
-  have hk_pos : (0 : ℝ) < k := by exact_mod_cast Nat.lt_of_lt_pred (by omega)
+  have hk_pos : (0 : ℝ) < k := by exact_mod_cast (show 0 < k by omega)
   have hk1_pos : (0 : ℝ) < k + 1 := by linarith
   have hnk_pos : (0 : ℝ) < n - k + 1 := by
     have : k ≤ n := by omega
@@ -453,10 +453,19 @@ theorem newton_inequality_means (xs : List ℝ) (hxs : ∀ x ∈ xs, (0 : ℝ) �
     Nat.cast_pos.mpr (Nat.choose_pos (by omega))
   have hckp : (0 : ℝ) < Nat.choose n (k + 1) :=
     Nat.cast_pos.mpr (Nat.choose_pos (by omega))
-  -- Unfold and clear fractions
+  -- Unfold and clear fractions via the equivalence after multiplying by positive denominators.
   unfold esymmMean
-  rw [ge_iff_le, div_pow, div_mul_div_comm,
-      div_le_div_iff (mul_pos hckm hckp) (pow_pos hck 2)]
+  have hckm_ne : (Nat.choose n (k - 1) : ℝ) ≠ 0 := ne_of_gt hckm
+  have hck_ne : (Nat.choose n k : ℝ) ≠ 0 := ne_of_gt hck
+  have hckp_ne : (Nat.choose n (k + 1) : ℝ) ≠ 0 := ne_of_gt hckp
+  rw [ge_iff_le, div_pow]
+  -- Manually combine `a / b * (c / d) = (a * c) / (b * d)` to bypass `div_mul_div_comm` overload.
+  have hcomb : esymm xs (k - 1) / (Nat.choose n (k - 1) : ℝ) *
+                 (esymm xs (k + 1) / (Nat.choose n (k + 1) : ℝ)) =
+               esymm xs (k - 1) * esymm xs (k + 1) /
+                 ((Nat.choose n (k - 1) : ℝ) * (Nat.choose n (k + 1) : ℝ)) := by
+    field_simp
+  rw [hcomb, div_le_div_iff (mul_pos hckm hckp) (pow_pos hck 2)]
   -- Goal: esymm (k-1) * esymm (k+1) * C(n,k)^2 ≤ esymm k^2 * (C(n,k-1) * C(n,k+1))
   linarith
 
