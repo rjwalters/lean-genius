@@ -1,0 +1,124 @@
+{
+  "slug": "sperner-ndim-mathlib-oq-01",
+  "title": "Concrete CellComplex Instances for Sperner's Lemma",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "Which concrete structures instantiate the abstract \\textsf{SpernerAbstract.CellComplex} to recover the standard n-dimensional Sperner's lemma?",
+    "plain": "Which concrete structures instantiate the abstract CellComplex to recover the standard n-dimensional Sperner's lemma? Two answers: (1) every SpernerTriangulation is a CellComplex via a bridge theorem, and (2) the Freudenthal triangulation of [0,1]^n provides a concrete CellComplex on permutation simplices.",
+    "whyMatters": [
+      "Validates the abstract CellComplex API: showing that real triangulations and the canonical Freudenthal triangulation both fit the abstract interface confirms the abstraction captures the right notion.",
+      "Provides the concrete instance needed to apply the abstract Sperner theorem to actual geometric data, which is what most consumers (Brouwer fixed-point, market-equilibrium proofs) need.",
+      "The Freudenthal CellComplex is a candidate Mathlib contribution — it gives a fully-proved n-dim Sperner with 0 axioms over a canonical simplicial structure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "toAbstractCellComplex: bridge from SpernerTriangulation to CellComplex (fully proved, 0 axioms)",
+      "sperner_from_triangulation: the abstract Sperner theorem applies to every SpernerTriangulation",
+      "boundary_doors_agree: for Sperner colorings, abstract and concrete boundary conditions coincide (Finset.congr on filter + boundary_door_is_last_face)",
+      "FreudSimplex: subtype of nodup lists of Fin n with length n (permutation simplices)",
+      "swapAdj: adjacent transposition (swap positions k-1 and k) with swapAdj_invol involution lemma",
+      "swapAdj_perm: swapAdj produces a List.Perm of the original (via take/drop split + List.Perm.swap)",
+      "Freudenthal CellComplex instance with 0 axioms (originally 4 axioms, all eliminated as theorems)"
+    ],
+    "open": [
+      "Wire the Freudenthal CellComplex into the Mathlib n-dim Sperner contribution (project_mathlib_sperner_ndim).",
+      "Generalize from [0,1]^n to general convex polytopes (covered by sperner-ndim-mathlib-oq-03 follow-up if any).",
+      "Computational consequences: how do these CellComplex instances interact with `Decidable` instances for the underlying coloring map?"
+    ],
+    "goal": "Two concrete CellComplex instances (SpernerTriangulation bridge + Freudenthal) both 0-axiom, fully verified, demonstrating that the abstract API captures real triangulations."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-07T22:00:00.000Z",
+    "iteration": 2,
+    "focus": "Slug fully verified (#16188 WIP eliminate axioms; #16737 reconcile meta with 0-axiom state). 14 theorems, 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "None on this slug. Sister slug sperner-ndim-mathlib-oq-02 (Brouwer-via-Sperner) is active in researcher-5 worktree.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 14 theorems + several supporting lemmas, 0 sorries, 0 axioms (verified-original) across 377 lines. Two concrete CellComplex instances delivered: (1) SpernerTriangulation→CellComplex bridge with sperner_from_triangulation and boundary_doors_agree corollaries; (2) full Freudenthal CellComplex on permutation simplices with FreudSimplex, swapAdj, swapAdj_perm. All four originally axiomatized Freudenthal facts eliminated as theorems via PR #16188; meta reconciled to 0-axiom state in PR #16737.",
+    "builtItems": [
+      "Proofs/SpernerNDimMathlibOQ01.lean — toAbstractCellComplex: SpernerTriangulation → CellComplex bridge (record projection)",
+      "Proofs/SpernerNDimMathlibOQ01.lean — sperner_from_triangulation: abstract Sperner subsumes SpernerTriangulation",
+      "Proofs/SpernerNDimMathlibOQ01.lean — boundary_doors_agree: abstract/concrete boundary equivalence under Sperner coloring",
+      "Proofs/SpernerNDimMathlibOQ01.lean — FreudSimplex: nodup lists of Fin n with length n (subtype, permutation realization)",
+      "Proofs/SpernerNDimMathlibOQ01.lean — swapAdj: adjacent-transposition adjacency with swapAdj_invol",
+      "Proofs/SpernerNDimMathlibOQ01.lean — swapAdj_perm: take/drop split + List.Perm.swap for adjacency-preserving permutation",
+      "Proofs/SpernerNDimMathlibOQ01.lean — Freudenthal CellComplex instance (0 axioms, all 4 originally-axiomatized facts proved)",
+      "src/data/proofs/sperner-ndim-mathlib-oq-01/meta.json — gallery entry, status=verified, badge=original"
+    ],
+    "insights": [
+      "Two concrete instances suffice to validate the abstract CellComplex API: a bridge from existing structures (SpernerTriangulation) and a from-scratch construction (Freudenthal). The first ensures backward compatibility; the second demonstrates the abstraction is constructive.",
+      "boundary_doors_agree exemplifies the typical bridge-lemma pattern: Finset.congr to align filters, then simp using the bridge equalities + a parent-level structural lemma (boundary_door_is_last_face). This is the standard machinery for connecting abstract interfaces to concrete ones.",
+      "The Freudenthal axioms could all be eliminated (#16188 4→0 axioms): adjacency-preservation requires careful list-permutation reasoning (swapAdj_perm via take/drop split), but the proofs are mechanical given the right lemmas. Originally axiomatizing them was a scope-management call, not a fundamental obstruction.",
+      "Choosing nodup lists (subtype) over Finset for FreudSimplex preserves the order needed to realize the simplex as a permutation, which in turn defines the prefix-set vertex map (σ.take k).toFinset. Going via Finset would lose the canonical orientation.",
+      "swapAdj_invol (involution: swapAdj∘swapAdj = id) is the algebraic core of the Freudenthal CellComplex's symmetric door structure. It provides the geometric intuition for why interior k-faces have exactly two parents (the two adjacent permutations)."
+    ],
+    "mathlibGaps": [
+      "Freudenthal CellComplex instance is a candidate Mathlib contribution (see project_mathlib_sperner_ndim memory)."
+    ],
+    "nextSteps": [
+      "Wire Freudenthal CellComplex into the Mathlib n-dim Sperner contribution (project_mathlib_sperner_ndim).",
+      "Sister slug sperner-ndim-mathlib-oq-02 (Brouwer-via-Sperner) is active in researcher-5 worktree — coordinate via the abstract Sperner theorem.",
+      "Computational consequences with Decidable instances for the coloring map (how does abstract Sperner compute when the coloring is Decidable?)."
+    ],
+    "markdown": "# Knowledge Base: sperner-ndim-mathlib-oq-01\n\n## Status\n\nVerified-original. 14 theorems + supporting lemmas, 0 sorries, 0 axioms, 377 lines. PR #16188 eliminated 4 Freudenthal axioms; PR #16737 reconciled meta with the 0-axiom state.\n\n## Two Concrete CellComplex Instances\n\n1. **SpernerTriangulation → CellComplex bridge** (Part I): record projection + boundary_doors_agree.\n2. **Freudenthal CellComplex** (Part II): FreudSimplex permutation simplices + swapAdj adjacency + 0-axiom proof of the four Freudenthal facts.\n\n## Key Technique\n\n**Take/drop list split for adjacency permutation.** `swapAdj_perm` (the swap-adjacent-positions-is-a-Perm lemma) is proved by splitting at position k via `List.take`/`List.drop`, then applying `List.Perm.swap` on the local 2-element prefix.\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "sperner",
+    "cell-complex",
+    "freudenthal",
+    "topology",
+    "verified",
+    "mathlib-candidate"
+  ],
+  "relatedProofs": [
+    "sperner-ndim-mathlib",
+    "sperner-ndim-mathlib-oq-01",
+    "sperner-ndim-mathlib-oq-02",
+    "sperner-ndim-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+      "https://en.wikipedia.org/wiki/Freudenthal_triangulation",
+      "https://github.com/rjwalters/lean-genius/pull/16188",
+      "https://github.com/rjwalters/lean-genius/pull/16737"
+    ],
+    "mathlib": [
+      "List.Perm",
+      "List.take",
+      "List.drop",
+      "Finset.congr"
+    ]
+  },
+  "started": "2026-05-04T00:00:00.000Z",
+  "lastUpdate": "2026-05-08T07:25:00.000Z",
+  "completed": "2026-05-07T22:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerNDimMathlibOQ01.lean",
+      "filename": "SpernerNDimMathlibOQ01.lean",
+      "lineCount": 377,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimMathlibOQ01.lean"
+    }
+  ]
+}
