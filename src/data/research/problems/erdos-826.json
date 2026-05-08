@@ -16,33 +16,44 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "OBSERVE",
     "since": "2026-01-15T09:39:18.200Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 3,
+    "focus": "Library lemmas about linearBoundCondition and goodStartingPoints. Conjecture itself is OPEN and considered hard by Tao; no partial result known. This iteration adds monotonicity in C and reconciles state.md drift with the JSON / Lean state.",
+    "blockers": [
+      "Conjecture is OPEN at the research-mathematics frontier. No known partial result; routine library techniques cannot advance it. Future sessions should be honest about this and limit themselves to pedagogical/structural additions."
+    ],
+    "nextAction": "No further substantive proof work recommended. Future enrichment: optional small library lemmas like tau_prime_power = a + 1 (mathematically trivial via Mathlib), but they are pedagogy / infrastructure, not progress on the conjecture.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated all 4 axioms (4→0). erdos_826_statement proved by unfolding. prime_satisfies_bound proved from Mathlib. average_order_tau and max_order_tau converted to propositions.",
+    "progressSummary": "Session 3 (2026-05-08): added two small monotonicity lemmas to Erdos826Problem.lean Part 3 — linearBoundCondition_mono and goodStartingPoints_mono — plus reconciled state.md drift. The conjecture remains OPEN. | Prior: PR #1084 (initial enhance, 320 lines), PR #7037 (axiom elimination 4→0: erdos_826_statement by rfl after unfold; prime_satisfies_bound from Mathlib; average_order_tau and max_order_tau converted to def Prop), PR #8241 (axiom integrity).",
     "builtItems": [
-      "Proved erdos_826_statement as theorem via unfold + rfl",
-      "Proved prime_satisfies_bound as theorem via sigma_apply + Prime.divisors",
-      "Converted average_order_tau from axiom to def Prop",
-      "Converted max_order_tau from axiom to def Prop"
+      "Proved erdos_826_statement as theorem via unfold + rfl (PR #7037)",
+      "Proved prime_satisfies_bound as theorem via sigma_apply + Prime.divisors (PR #7037)",
+      "Converted average_order_tau from axiom to def Prop (PR #7037)",
+      "Converted max_order_tau from axiom to def Prop (PR #7037)",
+      "Erdos826Problem.lean Part 3 (Session 3): linearBoundCondition_mono — if linearBoundCondition n C and C ≤ C', then linearBoundCondition n C'. Proved by mul_le_mul_of_nonneg_right after Nat.zero_le k cast.",
+      "Erdos826Problem.lean Part 3 (Session 3): goodStartingPoints_mono — if C ≤ C' then goodStartingPoints C ⊆ goodStartingPoints C'. Direct corollary."
     ],
     "insights": [
       "All 4 axioms eliminated: erdos_826_statement proved by rfl after unfolding, prime_satisfies_bound proved from Mathlib, average_order_tau and max_order_tau converted to def Prop",
       "σ 0 p = 2 for prime p: unfold sigma_apply to sum over divisors, use Prime.divisors to get {1,p}, simplify",
-      "average_order_tau and max_order_tau are unused by any theorem — safe to convert from axiom to proposition"
+      "average_order_tau and max_order_tau are unused by any theorem — safe to convert from axiom to proposition",
+      "Session 3: Tao notes this is hard — no known partial result. The natural research strategy is library expansion, not direct proof. The honest assessment is that no routine technique advances this conjecture.",
+      "Session 3: state.md drift is a recurring issue. This session reconciles state.md (was Phase: NEW iter 1) to OBSERVE iter 3, matching the merged axiom-elimination work and this session's library additions. Similar to the frobenius-number-oq-01 reconcile (PR #16851 lineage)."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "No Mathlib infrastructure for divisor-count smoothing in short intervals at infinitely many starting points. Building such infrastructure (smooth-number distribution, sieve methods) is a substantial multi-thousand-line foundational project, not routine."
+    ],
+    "nextSteps": [
+      "Optional: add tau_prime_power = a + 1 from Mathlib's Nat.divisors_prime_pow (pedagogical, not progress on conjecture).",
+      "Avoid: enumeration theater (proving the linear bound for specific small n) — would not advance the conjecture and qualifies as busywork."
+    ],
     "markdown": "# Erdős #826 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that, for all $k\\geq 1$,\\[\\tau(n+k)\\ll k?\\]\n\n\n\nA stronger form of [248].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #248\n- Problem #825\n- Problem #827\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er74b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [

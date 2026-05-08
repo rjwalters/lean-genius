@@ -119,6 +119,29 @@ These are starting points where divisor growth is well-controlled.
 def goodStartingPoints (C : ℝ) : Set ℕ :=
   { n | linearBoundCondition n C }
 
+/--
+**Monotonicity of `linearBoundCondition` in C.**
+
+If the linear bound holds with constant `C`, it holds with any larger
+constant `C'`. Trivial corollary of the inequality definition; useful
+when reducing to a normalised constant. -/
+theorem linearBoundCondition_mono {n : ℕ} {C C' : ℝ}
+    (hCC' : C ≤ C') (h : linearBoundCondition n C) :
+    linearBoundCondition n C' := by
+  intro k hk
+  have hk0 : (0 : ℝ) ≤ (k : ℝ) := by exact_mod_cast Nat.zero_le k
+  calc (σ 0 (n + k) : ℝ)
+      ≤ C * k := h k hk
+    _ ≤ C' * k := mul_le_mul_of_nonneg_right hCC' hk0
+
+/--
+**Monotonicity of `goodStartingPoints` in C.**
+
+The set of "good" starting points is monotone in `C`. -/
+theorem goodStartingPoints_mono {C C' : ℝ} (hCC' : C ≤ C') :
+    goodStartingPoints C ⊆ goodStartingPoints C' :=
+  fun _ hn => linearBoundCondition_mono hCC' hn
+
 /-
 # Part 4: The Erdős Conjecture
 
