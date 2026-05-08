@@ -21,7 +21,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "mathlibDependencies": [],
+    "mathlibDependencies": [
+      "Mathlib.Algebra.Group.Basic"
+    ],
     "originalContributions": [
       "IsDiophantineDefinition: Σ₁ (purely existential) definability of subsets of ℚ",
       "IsUniversalExistentialDefinition: Π₂ (∀∃, universal-existential) definability of subsets of ℚ",
@@ -49,11 +51,16 @@
       "coDiophantineDefinition_doubleNeg_iff: Π₁ class is invariant under classical double-negation — Π₁(¬¬ S) ⟺ Π₁(S) (iter 7, axiom-free)",
       "universalExistentialDefinition_doubleNeg_iff: Π₂ class is invariant under classical double-negation — Π₂(¬¬ S) ⟺ Π₂(S) (iter 7, axiom-free)",
       "existentialUniversalDefinition_doubleNeg_iff: Σ₂ class is invariant under classical double-negation — Σ₂(¬¬ S) ⟺ Σ₂(S) (iter 7, axiom-free; completes the four-class ¬¬-shadow story)",
-      "integers_diophantine_iff_doubleNeg: the OPEN Σ₁ question for ℤ ⊂ ℚ is equivalent to its ¬¬-shadow — IntegersAreDiophantineOverQ ⟺ Σ₁(fun q => ¬¬ IntSubset q) (iter 7, axiom-free, refutation-ergonomic reformulation)"
+      "integers_diophantine_iff_doubleNeg: the OPEN Σ₁ question for ℤ ⊂ ℚ is equivalent to its ¬¬-shadow — IntegersAreDiophantineOverQ ⟺ Σ₁(fun q => ¬¬ IntSubset q) (iter 7, axiom-free, refutation-ergonomic reformulation)",
+      "singletonOf_isDiophantineDefinition: every singleton {a} ⊂ ℚ is Σ₁-definable for arbitrary a : ℚ via the shift polynomial P(q,x) = q - a (iter 8 Path B, generalizes S6's a = 0 instance; first Mathlib import — uses sub_eq_zero from Mathlib.Algebra.Group.Basic; no new axioms)",
+      "notSingletonOf_isCoDiophantineDefinition: every complement ℚ \\ {a} is Π₁-definable for arbitrary a : ℚ via the same shift polynomial (iter 8 Path B, dual of singletonOf)",
+      "singletonOf_isUniversalExistentialDefinition: every {a} ⊂ ℚ is Π₂-definable, corollary of Σ₁ membership via Σ₁ ⊆ Π₂ (iter 8 Path B)",
+      "notSingletonOf_isExistentialUniversalDefinition: every ℚ \\ {a} is Σ₂-definable, corollary of Π₁ membership via Π₁ ⊆ Σ₂ (iter 8 Path B)",
+      "singletonOf_zero_isDiophantineDefinition: documents that S6's singletonZero is recovered as the a = 0 instance of S8's parametric singletonOf family (iter 8)"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 885,
+    "lineCount": 999,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -61,8 +68,8 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 39,
-    "definitionCount": 11
+    "theoremCount": 44,
+    "definitionCount": 12
   },
   "overview": {
     "historicalContext": "After MRDP (1970) settled H10/$\\mathbb{Z}$ negatively, attention turned to H10/$\\mathbb{Q}$ — open since at least Robinson 1949. The companion file `hilbert-10-oq-01` surveys the broad landscape; this file (OQ-01-OQ-02) zooms in on the precise model-theoretic content separating the OPEN question from Koenigsmann's celebrated 2016 Annals theorem.\n\nThe distinction is between two layers of the arithmetic hierarchy over $\\mathbb{Q}$:\n\n- **$\\Sigma_1$ (Diophantine, purely existential):** $\\mathbb{Z}$ is the projection of a rational-solution set of one polynomial equation. Equivalently, there exists $P \\in \\mathbb{Q}[t, x_1, \\ldots, x_k]$ with $t \\in \\mathbb{Z} \\iff \\exists x \\in \\mathbb{Q}^k, P(t,x) = 0$. **OPEN.**\n- **$\\Pi_2$ (universal-existential, $\\forall\\exists$):** there exists $P$ with $t \\in \\mathbb{Z} \\iff \\forall y \\in \\mathbb{Q}^n, \\exists z \\in \\mathbb{Q}^m, P(t,y,z) = 0$. **PROVED by Koenigsmann (2016).**\n\nThe Σ₁ direction is the substantive open question because it is precisely Σ₁ definability that yields the implication 'ℤ Diophantine over ℚ ⟹ H10/ℚ undecidable' (via MRDP). Π₂ definability does not carry this implication, so Koenigsmann's theorem leaves H10/ℚ untouched.\n\nMazur's conjecture (1992), a topological constraint on rational-point sets, would refute the $\\Sigma_1$ definition of $\\mathbb{Z}$ in $\\mathbb{Q}$ but is consistent with $\\Pi_2$.",
@@ -185,14 +192,15 @@
   },
   "leanFile": {
     "imports": [
-      "Proofs.Hilbert10OQ01"
+      "Proofs.Hilbert10OQ01",
+      "Mathlib.Algebra.Group.Basic"
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 885,
+    "lineCount": 999,
     "axiomCount": 1,
-    "theoremCount": 39,
-    "definitionCount": 11,
+    "theoremCount": 44,
+    "definitionCount": 12,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
   },

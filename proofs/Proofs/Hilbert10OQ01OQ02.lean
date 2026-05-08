@@ -60,6 +60,11 @@ expose the equivalent statement `IsDiophantineDefinition (Set.range Int)`.
 -/
 
 import Proofs.Hilbert10OQ01
+-- S8 (iter 8, Path B): one Mathlib import for `sub_eq_zero` on ℚ, used to
+-- generalize `singletonZero` (S6) to arbitrary singletons `{a}` for `a : ℚ`.
+-- This is the first Mathlib import in this file; iterations 1–7 were
+-- entirely zero-Mathlib (Path A discipline). See state.md for context.
+import Mathlib.Algebra.Group.Basic
 
 namespace Hilbert10Rationals
 
@@ -751,6 +756,95 @@ theorem integers_diophantine_iff_doubleNeg :
   (diophantineDefinition_doubleNeg_iff IntSubset).symm
 
 -- ============================================================
+-- Part VIII.9 (iter 8, Path B): Arbitrary singletons {a} for a : ℚ
+-- ============================================================
+
+/-- "Shift" parametric polynomial witness: for each `a : ℚ`, the polynomial
+    that ignores its variable assignment and returns `q - a`. This generalizes
+    iteration 6's `parameterPoly` (the constant-zero shift) to an arbitrary
+    rational shift `a`.
+
+    Concretely, `shiftPoly a = fun q _ => q - a`. The polynomial is constant
+    in the variable assignment; its zero set in `q` is exactly `{a}`. Used
+    to place every singleton `{a} ⊂ ℚ` (and its complement `ℚ \ {a}`) into
+    the Σ₁ class (resp. Π₁ class).
+
+    Path B (Mathlib): the proofs use `sub_eq_zero` from `Mathlib.Algebra.Group.Basic`
+    to bridge `q - a = 0 ↔ q = a`. -/
+private def shiftPoly (a : Rat) : Rat → RatDiophantinePoly := fun q _ => q - a
+
+/-- Iter 8, Path B: **the singleton `{a} ⊂ ℚ` is Σ₁-definable** for every
+    `a : ℚ`.
+
+    Witness: `shiftPoly a`, i.e., `P(q, x) = q - a`. Then
+    `hasRationalSolution (P q) ⟺ ∃ x, q - a = 0 ⟺ q - a = 0 ⟺ q = a`.
+    The first iff is trivial (the polynomial does not depend on `x`); the
+    second is `sub_eq_zero` from Mathlib's additive-group library.
+
+    This is the proper generalization of S6's `singletonZero_isDiophantineDefinition`
+    (the special case `a = 0`, modulo `sub_zero`) to arbitrary `a : ℚ`. The
+    OPEN Σ₁ question for ℤ ⊂ ℚ is genuinely harder: ℤ is the union of the
+    family of singletons `{n}` for `n : ℤ ⊂ ℚ`, but Σ₁-definability is NOT
+    known to be closed under countable union (unlike finite union — see
+    closure properties to be added in S9+).
+
+    Path B (Mathlib import): adds `Mathlib.Algebra.Group.Basic`. No new
+    axioms. -/
+theorem singletonOf_isDiophantineDefinition (a : Rat) :
+    IsDiophantineDefinition (fun q : Rat => q = a) := by
+  refine ⟨shiftPoly a, fun q => ?_⟩
+  exact ⟨fun hq => ⟨fun _ => 0, sub_eq_zero.mpr hq⟩,
+          fun ⟨_, hP⟩ => sub_eq_zero.mp hP⟩
+
+/-- Iter 8, Path B: **the complement `ℚ \ {a}` is Π₁-definable** for every
+    `a : ℚ`.
+
+    Witness: the same `shiftPoly a`, i.e., `P(q, x) = q - a`. Then
+    `¬ hasRationalSolution (P q) ⟺ ¬ ∃ x, q - a = 0 ⟺ q - a ≠ 0 ⟺ q ≠ a`.
+
+    Direct dual of `singletonOf_isDiophantineDefinition`, generalizing S6's
+    `notZero_isCoDiophantineDefinition` (the special case `a = 0`) to
+    arbitrary `a : ℚ`. -/
+theorem notSingletonOf_isCoDiophantineDefinition (a : Rat) :
+    IsCoDiophantineDefinition (fun q : Rat => q ≠ a) := by
+  refine ⟨shiftPoly a, fun q => ?_⟩
+  exact ⟨fun hq ⟨_, hP⟩ => hq (sub_eq_zero.mp hP),
+          fun hnsol hq => hnsol ⟨fun _ => 0, sub_eq_zero.mpr hq⟩⟩
+
+/-- Iter 8, Path B: **the singleton `{a}` is Π₂-definable** for every
+    `a : ℚ`.
+
+    Corollary of `singletonOf_isDiophantineDefinition` via the trivial
+    inclusion `Σ₁ ⊆ Π₂` (`diophantine_implies_universal_existential`).
+    Generalizes S6's `singletonZero_isUniversalExistentialDefinition`. -/
+theorem singletonOf_isUniversalExistentialDefinition (a : Rat) :
+    IsUniversalExistentialDefinition (fun q : Rat => q = a) :=
+  diophantine_implies_universal_existential _ (singletonOf_isDiophantineDefinition a)
+
+/-- Iter 8, Path B: **the complement `ℚ \ {a}` is Σ₂-definable** for every
+    `a : ℚ`.
+
+    Corollary of `notSingletonOf_isCoDiophantineDefinition` via the trivial
+    inclusion `Π₁ ⊆ Σ₂` (`codiophantine_implies_existentialUniversal`).
+    Generalizes S6's `notZero_isExistentialUniversalDefinition`. -/
+theorem notSingletonOf_isExistentialUniversalDefinition (a : Rat) :
+    IsExistentialUniversalDefinition (fun q : Rat => q ≠ a) :=
+  codiophantine_implies_existentialUniversal _ (notSingletonOf_isCoDiophantineDefinition a)
+
+/-- Iter 8, Path B: **S6 recovered as the special case `a = 0`** of S8.
+
+    The S8 family `singletonOf_isDiophantineDefinition` evaluated at `a = 0`
+    yields a Σ₁-definability proof of `{q | q = 0}`, the same predicate as
+    S6's `singletonZero_isDiophantineDefinition`. This concrete instance
+    documents that S8 properly generalizes S6 (NOT replaces it: the S6
+    polynomial witness `parameterPoly = fun _ => q` is leaner than the S8
+    witness `shiftPoly 0 = fun _ => q - 0`, so S6 remains the preferred
+    Path A witness for `{0}` specifically). -/
+theorem singletonOf_zero_isDiophantineDefinition :
+    IsDiophantineDefinition (fun q : Rat => q = 0) :=
+  singletonOf_isDiophantineDefinition 0
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -797,6 +891,16 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   ¬¬-shadow `Σ₁(¬¬ IntSubset)`, which is occasionally a more tractable
   reformulation when a refutation argument naturally produces a `¬¬`
   layer (e.g., a classical decomposition of a Π₁ counter-witness).
+- **Every singleton `{a} ⊂ ℚ` is Σ₁-definable** for `a : ℚ` (iter 8): the
+  shift polynomial `P(q, x) = q - a` places `{a}` (resp. `ℚ \ {a}`) into
+  Σ₁ (resp. Π₁), and hence into Π₂ (resp. Σ₂) via the trivial inclusions.
+  This properly generalizes S6's special case `a = 0` to arbitrary
+  `a : ℚ`, recovering S6 as `singletonOf_zero_isDiophantineDefinition`.
+  ℤ as a *family* of singletons `{n} : n : ℤ` does NOT immediately yield
+  Σ₁-definability of ℤ ⊂ ℚ: Σ₁-definability is closed under finite union
+  (and finite intersection) but NOT known to be closed under countable
+  union (the OPEN Σ₁ question for ℤ is precisely the question of whether
+  this particular countable union admits a uniform Σ₁ witness).
 
 ## Axioms in THIS file (1 net new)
 
@@ -808,7 +912,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (35)
+## Theorems in THIS file (40)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -845,6 +949,11 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `universalExistentialDefinition_doubleNeg_iff` (Π₂ ¬¬-shadow, iter 7)
   - `existentialUniversalDefinition_doubleNeg_iff` (Σ₂ ¬¬-shadow, iter 7)
   - `integers_diophantine_iff_doubleNeg` (OPEN Σ₁ question ⟺ its ¬¬-shadow, iter 7)
+  - `singletonOf_isDiophantineDefinition a` ({a} ⊂ ℚ is Σ₁ for any a : ℚ, iter 8 Path B)
+  - `notSingletonOf_isCoDiophantineDefinition a` (ℚ\{a} is Π₁ for any a : ℚ, iter 8 Path B)
+  - `singletonOf_isUniversalExistentialDefinition a` ({a} is Π₂ for any a : ℚ, iter 8 Path B)
+  - `notSingletonOf_isExistentialUniversalDefinition a` (ℚ\{a} is Σ₂ for any a : ℚ, iter 8 Path B)
+  - `singletonOf_zero_isDiophantineDefinition` (S6 recovered as a = 0 instance, iter 8)
 -/
 
 #check @IsDiophantineDefinition
@@ -881,5 +990,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @universalExistentialDefinition_doubleNeg_iff
 #check @existentialUniversalDefinition_doubleNeg_iff
 #check @integers_diophantine_iff_doubleNeg
+#check @singletonOf_isDiophantineDefinition
+#check @notSingletonOf_isCoDiophantineDefinition
+#check @singletonOf_isUniversalExistentialDefinition
+#check @notSingletonOf_isExistentialUniversalDefinition
+#check @singletonOf_zero_isDiophantineDefinition
 
 end Hilbert10Rationals
