@@ -240,3 +240,7 @@ make status                   # Show all agent claim status
 **Labels out of sync**: `gh label sync --file .github/labels.yml`
 
 **Manual worktree cleanup**: `git worktree list`, then `git worktree remove <path> --force` and `git worktree prune`.
+
+<!-- BEGIN LOOM ORCHESTRATION -->
+This repository uses [Loom](https://github.com/rjwalters/loom) for AI-powered development orchestration. See `.loom/CLAUDE.md` for the full guide (roles, labels, worktrees, configuration).
+<!-- END LOOM ORCHESTRATION -->

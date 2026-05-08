@@ -97,7 +97,7 @@ ${BOLD}TRACKED FILE LOCATIONS:${NC}
     .loom/roles/*.md, *.json       Role definitions
     .loom/scripts/*, cli/*         Helper scripts
     .loom/docs/*                   Documentation
-    .claude/commands/*.md          Slash commands
+    .claude/commands/loom/*.md     Slash commands
     .claude/agents/*.md            Agent definitions
     .claude/settings.json          Claude settings
     .github/labels.yml             Label definitions
@@ -105,7 +105,6 @@ ${BOLD}TRACKED FILE LOCATIONS:${NC}
     .github/workflows/*.yml        GitHub workflows
     CLAUDE.md                       Top-level docs
     .loom/CLAUDE.md, .loom/README.md
-    .codex/config.toml             Codex configuration
     loom                           CLI wrapper
 
 ${BOLD}NOT TRACKED (runtime/user files):${NC}
@@ -156,10 +155,10 @@ collect_tracked_files() {
         files+=("${f#$root/}")
     done < <(find "$root/.loom/docs" -type f -print0 2>/dev/null || true)
 
-    # .claude/commands/*.md
+    # .claude/commands/loom/*.md
     while IFS= read -r -d '' f; do
         files+=("${f#$root/}")
-    done < <(find "$root/.claude/commands" -maxdepth 1 -type f -name "*.md" -print0 2>/dev/null || true)
+    done < <(find "$root/.claude/commands/loom" -maxdepth 1 -type f -name "*.md" -print0 2>/dev/null || true)
 
     # .claude/agents/*.md
     while IFS= read -r -d '' f; do
@@ -181,10 +180,8 @@ collect_tracked_files() {
         files+=("${f#$root/}")
     done < <(find "$root/.github/ISSUE_TEMPLATE" -type f -print0 2>/dev/null || true)
 
-    # .github/workflows/*.yml (only loom-managed ones)
-    if [[ -f "$root/.github/workflows/label-external-issues.yml" ]]; then
-        files+=(".github/workflows/label-external-issues.yml")
-    fi
+    # .github/workflows/ - no workflows installed by default
+    # (label-external-issues.yml moved to optional in #3098)
 
     # Top-level docs
     if [[ -f "$root/CLAUDE.md" ]]; then
@@ -195,11 +192,6 @@ collect_tracked_files() {
     fi
     if [[ -f "$root/.loom/README.md" ]]; then
         files+=(".loom/README.md")
-    fi
-
-    # .codex/config.toml
-    if [[ -f "$root/.codex/config.toml" ]]; then
-        files+=(".codex/config.toml")
     fi
 
     # CLI wrapper

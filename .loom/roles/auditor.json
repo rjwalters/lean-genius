@@ -1,9 +1,9 @@
 {
   "name": "Auditor",
-  "description": "Verifies claims made by other agents against runtime reality by building/testing software AND auditing proof gallery for overstated claims (True stubs, sorry mismatches, Mathlib wrapper framing)",
+  "description": "Verifies claims made by other agents against runtime reality by building and testing software",
   "suggestedModel": "sonnet",
   "defaultInterval": 600000,
-  "defaultIntervalPrompt": "REMINDER: Follow your system prompt - you are an Auditor. TWO RESPONSIBILITIES: (1) Check `gh pr list --label=\"loom:pr\"` for PRs awaiting audit — checkout, build, verify, label as loom:audited or loom:audit-failed. (2) Run gallery integrity checks: scan for True stubs claimed as verified, sorry count mismatches, and Mathlib wrappers presented as original proofs. Create urgent issues for any CRITICAL mismatches found.",
+  "defaultIntervalPrompt": "REMINDER: Follow your system prompt - you are an Auditor. Check `gh pr list --label=\"loom:pr\"` for PRs awaiting audit. For each PR: checkout the branch, build the project, run the software, and verify it works as claimed. If the build/runtime succeeds, add `loom:audited` label and comment with audit results. If issues are found, add `loom:audit-failed` label and create a bug issue with reproduction steps.",
   "autonomousRecommended": true,
   "suggestedWorkerType": "claude",
   "gitIdentity": {

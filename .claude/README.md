@@ -115,6 +115,7 @@ The `commands/` directory contains slash commands that define Loom roles. Each c
 | `/doctor` | Doctor | Addresses PR feedback and resolves conflicts |
 | `/guide` | Guide | Triages issues and applies `loom:urgent` to top 3 |
 | `/champion` | Champion | Auto-merges approved PRs with `loom:pr` label |
+| `/loom help` | Help | Comprehensive help guide with sub-topics (roles, workflow, commands, etc.) |
 
 ### How Slash Commands Work
 
@@ -122,6 +123,7 @@ The `commands/` directory contains slash commands that define Loom roles. Each c
 ```bash
 /builder    # Assume Builder role, find and implement a loom:issue
 /judge      # Assume Judge role, review a PR with loom:review-requested
+/loom help  # Show comprehensive Loom help guide
 ```
 
 Each slash command contains the complete role definition, including:
@@ -147,11 +149,11 @@ The roles work together following the label-based workflow:
 
 To create a custom slash command:
 
-1. Create `.claude/commands/your-command.md` with the complete role definition
+1. Create `.claude/commands/your-command.md` (or `.claude/commands/your-namespace/command.md`) with the complete role definition
 2. Include role purpose, workflow guidelines, and iteration instructions
-3. Use it with `/your-command`
+3. Use it with `/your-command` (or `/your-namespace/command`)
 
-**Note**: `.loom/roles/` contains symlinks to `.claude/commands/` for Tauri App compatibility. The single source of truth for all role definitions is `.claude/commands/`.
+**Note**: `.loom/roles/` contains symlinks to `.claude/commands/loom/` for Tauri App compatibility. The single source of truth for all Loom role definitions is `.claude/commands/loom/`.
 
 ## Custom Subagents
 
