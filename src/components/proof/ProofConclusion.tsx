@@ -195,9 +195,9 @@ export function ProofConclusion({ proof }: ProofConclusionProps) {
                         <ArrowRight className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground group-hover:text-annotation transition-colors" />
                         <div>
                           <span className="font-medium text-annotation group-hover:underline">{refSlug}</span>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {ref.description ?? ref.relationship}
-                          </p>
+                          <MarkdownMathInline className="text-xs text-muted-foreground mt-0.5 block">
+                            {ref.description ?? ref.relationship ?? ''}
+                          </MarkdownMathInline>
                         </div>
                       </Link>
                     </li>
