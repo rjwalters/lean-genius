@@ -30,7 +30,10 @@
     "assumptions": "1 axiom: erdos_1056_conjecture (main conjecture — for every k ≥ 2 there exists a solution). k=2 (p=11) and k=3 (p=17) cases fully proved by native_decide. Wilson constraint proved via Mathlib.",
     "mathlib_version": "4.26.0",
     "theoremCount": 15,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/Erdos1056Aristotle.lean"
+    ]
   },
   "sections": [
     {

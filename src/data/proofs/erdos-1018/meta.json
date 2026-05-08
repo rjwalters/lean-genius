@@ -30,7 +30,10 @@
     "assumptions": "7 axioms: K5_nonplanar (K₅ is non-planar), K33_nonplanar (K₃,₃ is non-planar), kuratowski_theorem (non-planar iff contains K₅ or K₃,₃ subdivision), kostochka_pyber (ε-dense graphs contain K₅ subdivisions on ≤ C(ε) vertices, 1988), constant_grows (C(ε) → ∞ as ε → 0), planar_linear_bound (planar graphs have ≤ 3n−6 edges), kostochka_pyber_explicit (polynomial bound in 1/ε). 7 sorries (incomplete topological and density definitions).",
     "mathlib_version": "4.26.0",
     "theoremCount": 4,
-    "definitionCount": 15
+    "definitionCount": 15,
+    "additionalFiles": [
+      "Proofs/Erdos1018Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Planarity, Density, and Topological Obstructions**\n\nThe study of planar graphs has deep roots: Euler's formula (1752) implies that planar graphs on $n \\ge 3$ vertices have at most $3n - 6$ edges—a linear bound. Kuratowski (1930) characterized non-planarity: a graph is non-planar if and only if it contains a subdivision of $K_5$ or $K_{3,3}$. Wagner (1937) proved the equivalent minor characterization.\n\nErdős asked a quantitative refinement: if a graph has $n^{1+\\varepsilon}$ edges (super-linear density), must non-planarity be concentrated in a *small* subgraph? Specifically, does there exist a constant $C_\\varepsilon$, depending only on $\\varepsilon$ and not on $n$, such that every such graph contains a non-planar subgraph on at most $C_\\varepsilon$ vertices?\n\n**Kostochka and Pyber (1988)** resolved this affirmatively, proving that graphs with $n^{1+\\varepsilon}$ edges contain $K_5$ subdivisions on $O_\\varepsilon(1)$ vertices. Their proof uses the probabilistic method combined with extremal graph theory. Mader (1967) had earlier shown that the Turán number for $K_t$ subdivisions is $O(t\\sqrt{\\log t} \\cdot n)$, establishing a linear threshold for topological containment. The Kostochka-Pyber result goes further by bounding the *size* of the subdivision found.\n\nErdős also observed that $C_\\varepsilon \\to \\infty$ as $\\varepsilon \\to 0$: as the density approaches linear, non-planarity becomes more diffuse and cannot be localized to a small subgraph. This tradeoff between density and obstruction size is a recurring theme in extremal graph theory.",

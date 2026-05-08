@@ -34,7 +34,10 @@
             "Proof of chebyshevPsi_doubling_le: chains psi_doubling_le_log_centralBinom with log C(2n,n) ≤ 2n·log 2 via Nat.centralBinom_le_four_pow + Real.log_pow",
             "Proof of psi_odd_le_log_choose: ψ(2m+1)−ψ(m+1) ≤ log C(2m+1,m) via Hermite floor inequality — for d ∈ (m+1,2m+1], ⌊(2m+1)/d⌋=1 and ⌊m/d⌋=⌊(m+1)/d⌋=0",
             "Proof of chebyshevPsi_upper_bound: strong induction with even case via chebyshevPsi_doubling_le and odd case via Nat.choose_middle_le_pow (C(2m+1,m) ≤ 4^m) — axiomCount 3→2"
-        ]
+        ],
+      "additionalFiles": [
+        "Proofs/ChebyshevBoundsOQ04Aristotle.lean"
+      ]
     },
     "overview": {
         "historicalContext": "The second Chebyshev function ψ(x) = Σ_{p^k ≤ x} log p was introduced by Chebyshev alongside θ(x) = Σ_{p ≤ x} log p. While θ counts primes with logarithmic weight, ψ also counts prime powers, making it analytic ally more tractable: ψ(x) = Σ_p ⌊log_p(x)⌋ · log p, which connects to the logarithmic derivative of the Riemann zeta function via ψ(x) = -Σ_ρ x^ρ/ρ + x - log(2π) - ½log(1 - x^{-2}) (Riemann's explicit formula). The Prime Number Theorem — proved independently by Hadamard and de la Vallée Poussin in 1896 — is equivalent to ψ(x) ~ x.",
