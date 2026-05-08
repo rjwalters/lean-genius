@@ -481,3 +481,74 @@ verbatim. Form 3 is more concrete but requires Mathlib's
 `Nat.factorization` API and a few lemmas on `ord_proj`/`ord_compl`.
 Both are pure σ*-side improvements; the modular-form bridge for
 `jacobi_r4_formula` is independent of which form is chosen.
+
+## S8 (researcher-10, 2026-05-08): constructive Form 3 closed
+
+### Result
+
+Part 18 of `FourSquareDistributionOQ01.lean` adds the constructive
+factorization-keyed identities:
+
+* `sigmaStar_factorization_form` : for `0 < n`,
+  `σ*(n) = (if 2 ∣ n then 3 else 1) · σ(ord_compl[2] n)`.
+* `jacobiR4_factorization_form` : for `0 < n`,
+  `jacobiR4(n) = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)`.
+
+`ord_compl[2] n` is Mathlib's notation for `n / 2 ^ n.factorization 2`
+(the odd part of `n`).
+
+### Proof outline
+
+1. From `0 < n` get `n ≠ 0` and use
+   `Nat.ord_proj_mul_ord_compl_eq_self n 2`:
+   `2 ^ n.factorization 2 · ord_compl[2] n = n`.
+2. `Nat.ord_compl_pos 2 hne` gives `0 < ord_compl[2] n`.
+3. `Nat.not_dvd_ord_compl Nat.prime_two hne` gives
+   `¬ 2 ∣ ord_compl[2] n`.
+4. Rewrite `n` and apply S6 `sigmaStar_decomp` to reduce the goal to
+   `(if k = 0 then 1 else 3) · σ(m) = (if 2 ∣ n then 3 else 1) · σ(m)`.
+5. `congr 1`; case-split `2 ∣ n`. In each branch, use
+   `Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne` to
+   identify `0 < n.factorization 2 ↔ 2 ∣ n`, and discharge with
+   `if_pos`/`if_neg`.
+
+### Cross-validation
+
+Four `example` checks at n ∈ {1, 9, 40} demonstrate σ*(1) = 1,
+σ*(9) = 13, σ*(40) = 18, and jacobiR4(40) = 144 directly from the
+constructive form.
+
+### File metrics
+
+1125 → 1213 lines, 90 → 92 theorems, 1 axiom unchanged, 0 sorries.
+
+### Build status
+
+Build pending under the S6/S7 precedent (proofs/.lake self-referential
+symlink forces a fresh Mathlib clone per Docker build, ~45 min cold).
+The Mathlib lemmas invoked — `ord_proj_mul_ord_compl_eq_self`,
+`ord_compl_pos`, `not_dvd_ord_compl`, `Prime.dvd_iff_one_le_factorization`
+— are all in `Mathlib.Data.Nat.Factorization.Basic` (Mathlib 4.26),
+verified by grep against the local Mathlib clone before authoring.
+Auditor pipeline carries the build outcome.
+
+### Honest assessment
+
+S8 is a **packaging refinement** like S6 and S7, not a new mathematical
+result. It removes the existential extraction friction from S7, yielding
+a form that matches the canonical Eisenstein-coefficient shape.
+The mathematical content remains S5's closed form; S8 just chooses the
+most caller-friendly presentation. The open axiom `jacobi_r4_formula`
+is unchanged. After S8, the σ*-side is fully closed in three
+complementary forms (k-keyed, n-keyed existential, n-keyed constructive);
+the modular-form bridge remains the only open frontier.
+
+### What this enables for the modular-form side
+
+The shape `(if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)` is precisely
+the Fourier coefficient of `E₂(τ) − 4·E₂(4τ)` evaluated at q^n for
+n > 0 (the canonical q-expansion identity). So
+`jacobiR4_factorization_form` is now one rewrite away from the
+canonical proof's σ-side, once the q-expansion side is in place.
+The next productive step is the modular-form-side stub (Eisenstein
+coefficient identification), not a further σ*-side refactor.
