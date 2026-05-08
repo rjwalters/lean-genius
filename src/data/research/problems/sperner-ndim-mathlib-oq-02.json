@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "STATE (2026-05-08, session 13): n=0,1 fully proved; n=2 has triangulation + pseudomanifold + XOR parity + grid coloring + 3 forced corner colors. Session 13 added onFaceΔ2 predicate + 6 connection lemmas + cN2_ne_of_onFace (matches IsSpernerColoring shape required by Triangulation.boundary_doors_odd). Companion file 583→673 lines. Remaining gap for sperner_panchromatic_two: wrap cN2 to total function + prove _hBoundaryOnFace + _hLowerDim + _hLastFace (~350 lines, 3-4 sessions). Main file SpernerNDimMathlibOQ02.lean unchanged at 1 axiom.",
+    "progressSummary": "STATE (2026-05-08, session 15): n=0,1 fully proved; n=2 has triangulation + pseudomanifold + XOR parity + grid coloring + 3 forced corner colors + onFace predicate + Sperner-condition wrapper. S14 PR #17004 (build pending) adds cN2_total wrapper + cN2_total_isSpernerColoring + topSimps2_vertex_in_range. S15 (this session) adds SpernerLowerDimHelper outside SpernerFreudSimp namespace, providing sperner_lowerDim_filter_empty + sperner_lowerDim_card_even — generic helpers that discharge the _hLowerDim hypothesis of Triangulation.boundary_doors_odd for any concrete Sperner-on-Triangulation, collapsing ~30 lines per call site. Remaining for sperner_panchromatic_two: _hBoundaryOnFace (~80 lines) + _hLastFace (~150 lines) + apply Triangulation.sperner with diameter bound (~50 lines). Main file SpernerNDimMathlibOQ02.lean unchanged at 1 axiom.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -57,7 +57,9 @@
       "cN2_origin_corner: corner (0,0) has forced color 2 (on face 0 ∧ face 1) — completes trio of forced corner colors (SpernerFreudenthalSimplex.lean, session 13)",
       "onFaceΔ2 N b j: arithmetic predicate for grid vertex on geometric face j of Δ² (j=0: b₀=0; j=1: b₂=0; j=2: b₀+b₁=N) with Decidable instance (SpernerFreudenthalSimplex.lean, session 13)",
       "onFaceΔ2_<j>_iff and onFaceΔ2_<j>_iff_gridPt_zero: 6 wrapper lemmas connecting onFace predicate to gridPt zero (SpernerFreudenthalSimplex.lean, session 13)",
-      "cN2_ne_of_onFace: face-form Sperner condition matching IsSpernerColoring shape required by Triangulation.boundary_doors_odd (SpernerFreudenthalSimplex.lean, session 13)"
+      "cN2_ne_of_onFace: face-form Sperner condition matching IsSpernerColoring shape required by Triangulation.boundary_doors_odd (SpernerFreudenthalSimplex.lean, session 13)",
+      "SpernerLowerDimHelper.sperner_lowerDim_filter_empty: for any Triangulation V n + IsSpernerColoring + faceIdx.val<n, the filter `IsDoor ∧ adj=none ∧ ∀j≠k: onFace (vertex s j) faceIdx` is empty by Sperner contradiction (SpernerFreudenthalSimplex.lean, session 15, generic — outside SpernerFreudSimp namespace)",
+      "SpernerLowerDimHelper.sperner_lowerDim_card_even: corollary giving the Even-cardinality form expected as _hLowerDim by Triangulation.boundary_doors_odd; ready to plug into the n=2 case AND any future n≥3 instantiation (SpernerFreudenthalSimplex.lean, session 15)"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -80,19 +82,22 @@
       "gridPt uses real subtraction (N:ℝ)-b.1-b.2 for 3rd coord; field_simp+ring proves sum=1 as ring identity",
       "Key gap: connecting face2_path_odd to abstract Triangulation boundary doors requires adjFn=none characterization via containersOf analysis (~150-200 lines)",
       "Triangulation.boundary_doors_odd hookup pattern: onFace : V → Fin (n+1) → Prop must be a pure arithmetic predicate (no dependency on f); IsSpernerColoring c onFace = (∀ v k, onFace v k → c v ≠ k) is the wrapper around cN2_ne_of_zero — completed for n=2 in session 13",
-      "Three forced corner colors of Δ²: (N,0)→0, (0,N)→1, (0,0)→2. Each corner is on two geometric faces, so its color is uniquely forced regardless of f — non-trivial Sperner coloring witness"
+      "Three forced corner colors of Δ²: (N,0)→0, (0,N)→1, (0,0)→2. Each corner is on two geometric faces, so its color is uniquely forced regardless of f — non-trivial Sperner coloring witness",
+      "_hLowerDim is a redundant API hypothesis of Triangulation.boundary_doors_odd: the proof of boundary_doors_odd does not consume _hLowerDim — it shows S=S_n directly via the same Sperner contradiction. The hypothesis can be discharged generically, collapsing ~30 lines of boilerplate per call site",
+      "S15 helper extracts the Sperner contradiction from inside boundary_doors_odd's proof body (lines 226-244 of SpernerSimplicialInstance.lean): IsDoor at color Fin.castSucc ⟨faceIdx.val, hlt⟩ = faceIdx contradicts IsSpernerColoring on the witnessed non-k vertex on face faceIdx",
+      "Placement choice for S15: putting SpernerLowerDimHelper outside SpernerFreudSimp namespace makes it accessible to other concrete Sperner instantiations (e.g., a future SpernerNDim.lean rewrite) without awkward cross-namespace qualification, AND avoids any conflict with PR #17004's additions inside SpernerFreudSimp"
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
       "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "Wrap cN2 to total function cN2_total : (ℕ × ℕ) → Fin 3 (default 0 outside b₀+b₁≤N region) — ~10 lines",
-      "Prove cN2_total_ne_of_onFace by lifting cN2_ne_of_onFace through wrapper — requires every t1/t2 vertex satisfies b₀+b₁≤N (~30 lines)",
-      "Prove _hBoundaryOnFace: each adjFn=none cell-face pair (s,k) is on some geometric face of Δ² (~80 lines)",
-      "Prove _hLowerDim for j=0,1: by Sperner, no IsDoor exists on these faces — filter set is empty (cardinality 0, even, ~30 lines)",
-      "Prove _hLastFace (j=2): bijection between IsDoors at face 2 and color-changing edges of face2_path_odd (~150 lines)",
-      "Apply Triangulation.sperner to get panchromatic triangle, convert grid (b₀,b₁) to real (b₀/N, b₁/N, (N-b₀-b₁)/N), verify diameter ≤ 2/N (~50 lines)"
+      "DONE in PR #17004 (S14, build pending): cN2_total total wrapper + cN2_total_isSpernerColoring lifted Sperner condition + topSimps2_vertex_in_range vertex-range bridge",
+      "DONE in this session (S15): generic SpernerLowerDimHelper.sperner_lowerDim_card_even that discharges _hLowerDim for any Sperner-on-Triangulation",
+      "Prove _hBoundaryOnFace: each adjFn=none cell-face pair (s,k) is on some geometric face of Δ² — case-analysis on t1/t2 base, identify which boundary edge (b₀=0, b₁=0, or b₀+b₁=N) the simplex sits on (~80 lines)",
+      "Prove _hLastFace (j=2): bijection between IsDoors at face 2 and color-changing edges of face2_path_odd (the proved binary parity lemma from S12) — connect cell-face IsDoor structure to grid edge colors (~150 lines)",
+      "Apply Triangulation.sperner to get panchromatic triangle, convert grid (b₀,b₁) to real (b₀/N, b₁/N, (N-b₀-b₁)/N), verify diameter ≤ 2/N (~50 lines)",
+      "Generalize to n≥3: extend Type-1/Type-2 to Type-1/.../Type-n triangulation of Δⁿ, OR prove via induction on n using the same boundary_doors_odd machinery (multi-session)"
     ]
   },
   "tags": [
@@ -112,7 +117,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-08T05:30:00.000Z",
+  "lastUpdate": "2026-05-08T09:05:00.000Z",
   "significance": 7,
   "tractability": 5
 }
