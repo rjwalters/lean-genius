@@ -34,23 +34,26 @@
     "originalContributions": [
       "integrationCLM_sf: integration CLM on Lp(μ) for purely sigma-finite μ — proves IsFiniteMeasure was never needed for the CLM construction (Hölder only)",
       "integral_representation_sf: Step C density extension proved — Lp.induction is valid for SigmaFinite without IsFiniteMeasure, completing the missing piece from the parent entry",
-      "riesz_lp_surjective_sigma_finite: main theorem assembled with Step C proved — only localization (Step A) remains as sorry",
-      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: reduces 3 sorries to 2 with clean proof",
-      "lp_truncation_tendsto_zero: Step B proved via Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) — |f - f·1_{Sₙ}| ≤ |f| pointwise enables unifIntegrable_const + unifTight_const, giving eLpNorm(f - f·1_{Sₙ}) → 0"
+      "riesz_lp_surjective_sigma_finite: main theorem fully assembled — all three steps (A localization, B truncation convergence, C density extension) machine-checked for any SigmaFinite measure",
+      "Identification that the parent 3-sorry structure was correct but IsFiniteMeasure was superfluous for Steps C and the CLM: drove the chain from 3 sorries to 0",
+      "lp_truncation_tendsto_zero: Step B proved via Vitali convergence theorem (tendsto_Lp_of_tendsto_ae) — |f - f·1_{Sₙ}| ≤ |f| pointwise enables unifIntegrable_const + unifTight_const, giving eLpNorm(f - f·1_{Sₙ}) → 0",
+      "localization_existence: Step A proved without an Lp restriction map — extByZeroCLM (extension-by-zero from Lp(μ.restrict Sₙ) to Lp(μ)) plus the Hölder-extremizer norm bound (g_seq truncations + MCT) plus ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for cross-level consistency suffice; the global g is glued via Nat.find on the spanning-set cover and shown MemLp by lintegral_iSup over Sₙ ↑ univ"
     ],
     "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Lp Riesz representation theorem — identifying (Lp(μ))* with Lq(μ) for 1/p + 1/q = 1 — is a central result in functional analysis. The sigma-finite generalization (dropping the IsFiniteMeasure hypothesis) requires additional work to construct the representing element g ∈ Lq(μ). The classical proof strategy (Folland §6.2) localizes via the sigma-finite exhaustion, applies the finite-measure result on each piece, and glues via MCT. This entry resolves the density extension step (Step C), showing it requires only sigma-finiteness, not finite total measure.",
     "problemStatement": "Can the density extension step (Step C) of the sigma-finite Lp Riesz representation be proved using Lp.induction without requiring IsFiniteMeasure? Answer: yes — Lp.induction holds for any SigmaFinite measure, and integrationCLM requires only Hölder's inequality.",
-    "proofStrategy": "Step C constructs the integration CLM Λ(f) = ∫ fg and shows φ = Λ via Lp.induction: (1) on indicators c·1_s with μ(s) < ∞, φ(c·1_s) = c·∫_s g = Λ(c·1_s) by hypothesis; (2) additivity; (3) the set {f | φf = Λf} is closed. All three steps work for SigmaFinite μ. The key observation: integrationCLM only uses Hölder's inequality (lintegral_mul_le_sf), not finiteness of the total measure.",
+    "proofStrategy": "Step C constructs the integration CLM Λ(f) = ∫ fg and shows φ = Λ via Lp.induction: (1) on indicators c·1_s with μ(s) < ∞, φ(c·1_s) = c·∫_s g = Λ(c·1_s) by hypothesis; (2) additivity; (3) the set {f | φf = Λf} is closed. All three steps work for SigmaFinite μ. The key observation: integrationCLM only uses Hölder's inequality (lintegral_mul_le_sf), not finiteness of the total measure. Step A (localization_existence) builds the representing g without an Lp-restriction-map: extByZeroCLM transports each finite-measure Riesz solution gₙ ∈ Lq(μ.restrict Sₙ) to a representation φ(1_E^Lp(μ)) = ∫_E gₙ dμ for E ⊆ Sₙ; cross-level uniqueness via ae_eq_of_forall_setIntegral_eq_of_sigmaFinite gives gₘ =ᵐ gₙ on Sₘ for m ≤ n; the global g(a) := g_seq(idx a)(a) (idx = Nat.find on the spanning-set cover) lies in Lq(μ) by an MCT/iSup argument over Sₙ ↑ univ; indicator agreement on arbitrary finite-measure E follows from the Step B truncation convergence + CLM continuity.",
     "keyInsights": [
       "IsFiniteMeasure was unnecessary for integrationCLM: the CLM construction uses only Hölder's inequality (f ∈ Lp, g ∈ Lq → fg ∈ L1), which holds for any measure.",
       "Lp.induction in Mathlib is valid for sigma-finite measures, not just finite ones. Simple functions with finite-measure support are dense in Lp(μ) for any SigmaFinite μ.",
       "The density extension (Step C) depends only on: (a) indicator agreement on μ-finite sets, and (b) density of indicators in Lp. Both hold for SigmaFinite μ.",
-      "The 3-sorry → 1-sorry reduction confirms the parent entry was on the right track: of three HARD sorries, two (Steps B and C) were provable with the right Mathlib API; only localization (Step A) requires genuinely missing infrastructure.",
-      "Remaining gap: Step A (localization_existence, ~150 lines) requires constructing the Lp restriction map Lp(μ) → Lp(μ.restrict S). This is the genuine Lean infrastructure gap for sigma-finite Riesz.",
-      "Step B proof: Vitali's theorem (tendsto_Lp_of_tendsto_ae) is the key. The domination condition |f - f·1_{Sₙ}| ≤ |f| ∈ L^p enables unifIntegrable_const and unifTight_const to propagate to the difference sequence."
+      "The 3-sorry → 0-sorry reduction confirms the parent entry was on the right track: all three HARD sorries (Steps A, B, C) were eventually provable with the right Mathlib API plus the extByZeroCLM construction — no missing Lean infrastructure was actually required for sigma-finite Riesz.",
+      "Step A's `Lp.restrict_comap` (the isometric Lp restriction map Lp(μ.restrict S) →L[ℝ] Lp(μ)) was bypassed entirely: extByZeroCLM (extension-by-zero) goes the other direction Lp(μ.restrict S) →L[ℝ] Lp(μ) and is built directly via memLp_indicator_of_restrict_loc + LinearMap.mkContinuous, sidestepping the Mathlib gap originally identified.",
+      "Step B proof: Vitali's theorem (tendsto_Lp_of_tendsto_ae) is the key. The domination condition |f - f·1_{Sₙ}| ≤ |f| ∈ L^p enables unifIntegrable_const and unifTight_const to propagate to the difference sequence.",
+      "Step A norm bound (‖g_seq n‖_{Lq(μₙ)} ≤ ‖φ‖) uses the Hölder extremizer h_k := sign(g_k) · |g_k|^{q-1} with truncation g_k := clamp(g, -k, k); pairing gives ∫ h_k g_k = ‖g_k‖_q^q and ‖h_k‖_p = ‖g_k‖_q^{q/p}, then ‖g_k‖_q ≤ ‖φ ∘ extByZeroCLM‖ ≤ ‖φ‖, and lintegral_iSup over k → ∞ extends to ‖g‖_q.",
+      "Cross-level consistency g_seq m =ᵐ g_seq n on Sₘ (m ≤ n) follows from ae_eq_of_forall_setIntegral_eq_of_sigmaFinite: ∫_{s ∩ Sₘ} g_seq m = φ(1_{s∩Sₘ}) = ∫_{s ∩ Sₘ} g_seq n for all measurable s, so the gₙ's are mutually a.e.-compatible and a global g exists by selecting g(a) := g_seq(Nat.find_first_n)(a)."
     ]
   },
   "sections": [
@@ -95,20 +98,20 @@
       "mathContext": "unifIntegrable_const + unifTight_const + tendsto_Lp_of_tendsto_ae. Domination |f - f·1_{Sₙ}| ≤ |f| propagates UI/UT from the constant-f sequence."
     },
     {
-      "id": "step-a-sorry",
-      "title": "Step A: Localization (HARD sorry)",
-      "startLine": 301,
-      "endLine": 327,
-      "summary": "localization_existence: constructs g ∈ Lq(μ) with indicator agreement. ~150 lines.",
-      "mathContext": "Classical Folland §6.2 proof. Requires Lp restriction map infrastructure."
+      "id": "step-a-localization",
+      "title": "Step A: Localization (Proved)",
+      "startLine": 318,
+      "endLine": 928,
+      "summary": "localization_existence: constructs g ∈ Lq(μ) with indicator agreement on every finite-measure set. ~600 lines, fully proved without an Lp restriction map.",
+      "mathContext": "Classical Folland §6.2 proof, but the standard Lp.restrict_comap path was bypassed: extByZeroCLM (Lp(μ.restrict Sₙ) →L[ℝ] Lp(μ)) plus the Hölder-extremizer norm bound (truncation + lintegral_iSup MCT) plus ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for cross-level consistency suffice. Global g built via Nat.find on the spanning-set cover; MemLp g via lintegral_iSup over Sₙ ↑ univ; indicator agreement extended from E ⊆ Sₙ to general E via Step B truncation + CLM continuity."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem (Assembled)",
-      "startLine": 328,
-      "endLine": 386,
-      "summary": "riesz_lp_surjective_sigma_finite: full Riesz Lp for sigma-finite, assembled from Steps A, B, and C.",
-      "mathContext": "Steps B and C (proved) + Step A (sorry) give the full theorem."
+      "startLine": 929,
+      "endLine": 952,
+      "summary": "riesz_lp_surjective_sigma_finite: full Riesz Lp for sigma-finite, assembled from Steps A, B, and C — all three proved in this file.",
+      "mathContext": "Steps A (localization_existence), B (lp_truncation_tendsto_zero / pointwise_mul_indicator_tendsto), and C (integral_representation_sf) compose directly. The main theorem is sorry- and axiom-free."
     }
   ],
   "openQuestions": [
@@ -116,7 +119,8 @@
       "id": "oq-01",
       "question": "Can Step A (localization_existence, ~150 lines) be proved by constructing the Lp restriction map Lp(μ) → Lp(μ.restrict S) as an isometric embedding and using the finite-measure Riesz theorem on each spanning set?",
       "difficulty": "hard",
-      "prerequisite": "Lp restriction map infrastructure in Mathlib"
+      "prerequisite": "Lp restriction map infrastructure in Mathlib",
+      "answer": "YES — but the Lp restriction map turned out to be unnecessary. PR #15581 proves localization_existence (~600 lines) in this file via a different route: extByZeroCLM (Lp(μ.restrict Sₙ) →L[ℝ] Lp(μ)), the Hölder-extremizer norm bound ‖g_seq n‖_{Lq(μₙ)} ≤ ‖φ ∘ extByZeroCLM‖ ≤ ‖φ‖ (truncation g_k := clamp(g, -k, k) + sign-test function h_k := sign(g_k) · |g_k|^{q-1} + lintegral_iSup MCT), cross-level consistency g_seq m =ᵐ g_seq n on Sₘ via ae_eq_of_forall_setIntegral_eq_of_sigmaFinite, and global g built by Nat.find on the spanning-set cover. Indicator agreement on arbitrary finite-measure E follows from Step B truncation + φ.continuous via tendsto_setIntegral_of_monotone."
     },
     {
       "id": "oq-02",
@@ -127,12 +131,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Reduces the sorry count for the sigma-finite Lp Riesz representation theorem from 3 to 1 across two sessions. Session 1 proved Step C (density extension via Lp.induction, showing IsFiniteMeasure was never needed for the CLM construction or the induction — SigmaFinite suffices). Session 2 proved Step B (Lp truncation convergence via tendsto_lintegral_of_dominated_convergence, using pointwise domination |f - f·1_{Sₙ}|^p ≤ |f|^p). Only Step A (localization_existence: constructing g ∈ Lq via the Lp restriction map Lp(μ) → Lp(μ.restrict S)) remains as a sorry, identified as the genuine Lean infrastructure gap.",
-    "implications": "This formalization isolates exactly which part of the sigma-finite Riesz theorem requires genuinely missing Lean infrastructure. Steps B (dominated convergence) and C (Lp.induction density extension) are now machine-verified for any SigmaFinite measure without IsFiniteMeasure. The remaining Step A gap is precisely the missing `Lp.restrict_comap` isometric embedding in Mathlib — a focused, well-defined infrastructure contribution that would close this sorry. The 3→1 sorry reduction demonstrates that the classical Folland §6.2 proof architecture is formalization-correct, with only one genuinely hard step.",
+    "summary": "Eliminates all sorries from the sigma-finite Lp Riesz representation theorem across a 4-PR chain (#15278 → #15462 → #15485 → #15581). Session 1 (#15278) proved Step C (density extension via Lp.induction, showing IsFiniteMeasure was never needed for the CLM construction or the induction — SigmaFinite suffices), reducing 3→2. Session 2 proved Step B (Lp truncation convergence via tendsto_Lp_of_tendsto_ae / Vitali, using pointwise domination |f - f·1_{Sₙ}| ≤ |f|), reducing 2→1. Sessions 3 (#15462, #15485) and 4 (#15581) eliminated Step A (localization_existence) without the Lp restriction map originally identified as a Mathlib infrastructure gap: extByZeroCLM, the Hölder-extremizer norm bound, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite consistency, Nat.find global gluing, and lintegral_iSup MCT together suffice — reducing 1→0. The proof is sorry- and axiom-free.",
+    "implications": "This formalization establishes that the classical Folland §6.2 proof of sigma-finite Lp Riesz can be carried out in Lean without expanding Mathlib's Lp infrastructure: in particular, no `Lp.restrict_comap` (isometric Lp restriction map Lp(μ.restrict S) →L[𝕜] Lp(μ)) is required. The dual map `extByZeroCLM` (extension-by-zero in the other direction) is enough, since Riesz only needs to express finite-measure functionals back as global integrals. All three steps (A localization, B dominated convergence, C Lp.induction density extension) are now machine-verified for any SigmaFinite measure without IsFiniteMeasure. The 3→0 sorry reduction across 4 PRs demonstrates that what initially looked like a genuine infrastructure gap was an artifact of the chosen proof path; once the path was changed (extByZero + Hölder extremizer instead of restriction map + finite-measure Riesz), the gap dissolved.",
     "openQuestions": [
-      "Can Step A (localization_existence) be completed by formalizing the Lp restriction map Lp(μ) → Lp(μ.restrict S) as an isometric embedding, applying the finite-measure Riesz theorem on each spanning set Sₙ, and gluing via monotone convergence?",
-      "Could an alternative approach via the Radon-Nikodym derivative (Halmos-Savage representation) avoid the Lp restriction map entirely, giving a direct construction of g ∈ Lq without localizing?",
-      "Would a Mathlib lemma `Lp.restrict_comap : Lp p (μ.restrict S) →L[𝕜] Lp p μ` (the isometric Lp restriction map) be accepted as a standalone Mathlib contribution, resolving the only remaining sorry in this file?"
+      "Would an `Lp.restrict_comap : Lp p (μ.restrict S) →L[𝕜] Lp p μ` lemma still be a worthwhile Mathlib contribution? It would shorten this file by replacing the bespoke Hölder-extremizer + lintegral_iSup norm-bound argument (~150 lines) with a one-line application of finite-measure Riesz on each spanning set, but is no longer load-bearing for sigma-finite Riesz itself.",
+      "Could the same extByZeroCLM + Hölder-extremizer + Nat.find-global pattern be reused to remove IsFiniteMeasure hypotheses elsewhere in Mathlib's measure-theoretic functional analysis (e.g., for Lp duality in more general settings, or for sigma-finite Radon-Nikodym variants)?",
+      "Could an alternative approach via the Radon-Nikodym derivative (Halmos-Savage representation) give a shorter proof of localization_existence than the current ~600-line direct construction?"
     ]
   },
   "sorries": 0
