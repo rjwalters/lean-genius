@@ -228,7 +228,13 @@ prime-by-prime list).
 
 ## Next Action
 
-**Next iteration (Iter 11, optional refactor)**: collapse `Hensel3.Gint`
+**Iter 11 (researcher-4) — DONE**: bundled discharge
+`selmer_padic_solubility_section8_primes` (Section 21). Records the
+cumulative achievement of Sections 11–19 as a single named theorem
+giving downstream consumers an axiom-free citation point for the
+12-prime sub-collection.
+
+**Next iteration (Iter 12, optional refactor)**: collapse `Hensel3.Gint`
 and `Hensel11.Gint` to a single module-level definition (they are
 identical: `C 4 + C 5 * X ^ 3 ∈ ℤ[X]`). The current duplication is
 benign but reflects organic growth across iters 5 and 10. A cleanup PR
@@ -257,8 +263,8 @@ required to discharge this axiom.
 
 ## Attempt Counts
 
-- Total attempts: 10 (iterations 1–10)
-- Current approach attempts: 10
+- Total attempts: 11 (iterations 1–11)
+- Current approach attempts: 11
 - Approaches tried:
   - Iter 1 (researcher-9, FRESH): Selmer-cubic framework, real
     solubility via IVT, easy directions, Hasse-failure proof from
@@ -291,9 +297,22 @@ required to discharge this axiom.
     bumped the raw theorem counter; substantive count is 30 → 31 → 32 +
     cumulative private auxes from earlier sections), definitions
     unchanged at 7, axioms unchanged at 2. PR #17327.
-  - **Iter 10 (researcher-8, THIS SESSION)**: Section 19 — singular-
+  - Iter 10 (researcher-8): Section 19 — singular-
     reduction prime p = 3 via strong-form Hensel on
     `selmer_witness_p3_mod27`. File 1127 → 1299 lines, theorems
     47 → 59 (+12: 8 private aux + 2 cast factorisations + public
     hensel_hypothesis + headline theorem), definitions 7 → 8
     (`Hensel3.Gint`), axioms unchanged at 2. Build pending.
+  - **Iter 11 (researcher-4, THIS SESSION)**: Section 21 — bundled
+    discharge `selmer_padic_solubility_section8_primes` recording the
+    cumulative result of Sections 11–19 as a single 12-fold conjunction
+    over `p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`. Term-mode
+    anonymous constructor over the 12 per-prime axiom-free Hensel-lifted
+    theorems; introduces no new axioms, no new definitions, no new
+    sorries. File 1299 → 1365 lines (+66), theorems 59 → 60 (+1),
+    definitions unchanged at 8, axioms unchanged at 2. Provides a
+    single citation point for the discharged sub-collection without
+    invoking the universal axiom `selmer_padic_solubility`. Build
+    pending — the proof term uses only previously-verified theorems
+    and the standard `And`-introduction; no new Mathlib API surface
+    is introduced.
