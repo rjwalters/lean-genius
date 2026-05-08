@@ -27,16 +27,20 @@ So ∃ v ≠ w with Sᵥ ∩ Sw ≠ ∅: pick z there to get z+v, z+w ∈ S with
 
 ## Axioms
 
-Two axioms remain (down from four in earlier sessions):
+One axiom remains (down from four in earlier sessions):
 
-1. `blichfeldt_volume_partition`: vol(S) = ∑' g : ℤⁿ, vol(Sᵍ)
-   → Apply `IsAddFundamentalDomain.lintegral_eq_tsum` with f = 1_S.
+1. `blichfeldt_general`: the k≥1 covering-count averaging form.
 
-2. `blichfeldt_general`: the k≥1 covering-count averaging form.
+The k=1 case (`blichfeldt_basic`) is now fully proved without any axiom by
+applying Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly:
+the standard ℤⁿ-fundamental-domain has covolume 1, so a measurable set with
+volume > 1 admits two points x, y with `g +ᵥ x = y` for some `g ≠ 0` in ℤⁿ.
 
-The two former measure-theoretic axioms are now proved theorems:
+Three former measure-theoretic axioms are now proved theorems / unused:
 - `blichfeldt_proj_measurable` (translation continuity → preimage measurability)
 - `blichfeldt_disj_bound` (sigma-additivity + monotonicity against vol(F)=1)
+- `blichfeldt_volume_partition` is no longer needed (the basic theorem now
+  uses Mathlib's pigeonhole directly).
 
 `minkowski_from_blichfeldt` is now sorry-free: the half-scaling T = (1/2)·s is
 shown measurable by rewriting as the preimage under doubling, and the volume
@@ -48,18 +52,17 @@ open MeasureTheory Set MinkowskiProved Pointwise
 namespace BlichfeldtTheorem
 
 -- ============================================================
--- PART 1: Measure-Theory Infrastructure Axioms
+-- PART 1: Measure-Theory Infrastructure (proved theorems)
 -- ============================================================
 
-/-- **Axiom 1** (Fundamental Domain Partition):
-    vol(S) = ∑' v : ℤⁿ, vol({z ∈ F | z + v ∈ S}).
-
-    Proof path: Apply `(stdLattice_isAddFundamentalDomain n).lintegral_eq_tsum`
-    to f = Set.indicator s 1. Then ∫⁻_F 1_S(v + z) dz = vol({z ∈ F | z + v ∈ S}). -/
-axiom blichfeldt_volume_partition {n : ℕ} [NeZero n]
-    (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s) :
-    volume s = ∑' g : (stdLattice n).toAddSubgroup,
-      volume {z ∈ stdFundDomain n | z + (g : Fin n → ℝ) ∈ s}
+/-!
+The two helper theorems below were used by an earlier version of `blichfeldt_basic`
+that built up the pigeonhole from the fundamental-domain partition formula. The
+current proof of `blichfeldt_basic` uses Mathlib's
+`IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly, so these theorems are
+now self-contained pieces of infrastructure (kept as reusable building blocks
+for the still-open `blichfeldt_general`).
+-/
 
 /-- **Lemma** (Projection Measurability):
     For measurable s and lattice element v, the set {z ∈ F | z + v ∈ s} is measurable.
@@ -105,49 +108,47 @@ theorem blichfeldt_disj_bound {n : ℕ} [NeZero n]
 
 /-- **Blichfeldt's Basic Theorem** (1914):
     If a measurable set S ⊆ ℝⁿ has vol(S) > 1, then S contains two distinct points
-    x, y with x − y ∈ ℤⁿ (i.e., they are ℤⁿ-congruent). -/
+    x, y with x − y ∈ ℤⁿ (i.e., they are ℤⁿ-congruent).
+
+    Proved directly from `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq`
+    (the additive form of `exists_ne_one_smul_eq`): the standard ℤⁿ-fundamental-domain
+    has covolume 1, so a measurable set of volume > 1 cannot avoid all lattice
+    translates and we get two points x, y in s with `g +ᵥ x = y` for some `g ≠ 0`. -/
 theorem blichfeldt_basic {n : ℕ} [NeZero n]
     (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
     (h_vol : (1 : ENNReal) < volume s) :
     ∃ x y : Fin n → ℝ, x ∈ s ∧ y ∈ s ∧ x ≠ y ∧
     x - y ∈ (stdLattice n : Set (Fin n → ℝ)) := by
-  -- Assume for contradiction that no two distinct points in s are ℤⁿ-congruent
-  by_contra h_no_pair
-  push_neg at h_no_pair
-  -- After push_neg: h_no_pair : ∀ x y, x ∈ s → y ∈ s → x ≠ y → x - y ∉ stdLattice n
-  -- Define the fundamental-domain projections Sᵥ = {z ∈ F | z + v ∈ s}
-  let proj := fun v : (stdLattice n).toAddSubgroup =>
-    {z ∈ stdFundDomain n | z + (v : Fin n → ℝ) ∈ s}
-  -- Step 1: The projections are pairwise disjoint
-  have h_disj : Pairwise fun v w => Disjoint (proj v) (proj w) := by
-    intro v w hvw
-    rw [disjoint_left]
-    intro z hzv hzw
-    -- z + v ∈ s (from z ∈ proj v) and z + w ∈ s (from z ∈ proj w)
-    have hxs : z + (v : Fin n → ℝ) ∈ s := hzv.2
-    have hys : z + (w : Fin n → ℝ) ∈ s := hzw.2
-    -- z + v ≠ z + w since v ≠ w
-    have hne : z + (v : Fin n → ℝ) ≠ z + (w : Fin n → ℝ) := by
-      intro heq
-      exact hvw (Subtype.ext (add_left_cancel heq))
-    -- (z + v) − (z + w) = v − w ∈ ℤⁿ (lattice closed under subtraction)
-    have hdiff : z + (v : Fin n → ℝ) - (z + (w : Fin n → ℝ)) ∈ (stdLattice n : Set (Fin n → ℝ)) := by
-      have heq : z + (v : Fin n → ℝ) - (z + (w : Fin n → ℝ)) = (v : Fin n → ℝ) - w := by ring
-      rw [heq]
-      exact (stdLattice n).toAddSubgroup.sub_mem v.2 w.2
-    -- h_no_pair says this contradicts ℤⁿ-non-congruence
-    exact h_no_pair _ _ hxs hys hne hdiff
-  -- Step 2: ∑ vol(proj v) ≤ vol(F) = 1 by pairwise-disjoint subsets bound
-  have h_bound : ∑' v, volume (proj v) ≤ 1 :=
-    blichfeldt_disj_bound proj
-      (fun v => blichfeldt_proj_measurable s h_meas v)
-      (fun _ z hz => hz.1)
-      h_disj
-  -- Step 3: But ∑ vol(proj v) = vol(s) > 1 by the partition formula
-  have h_eq : volume s = ∑' v, volume (proj v) :=
-    blichfeldt_volume_partition s h_meas
-  -- Contradiction: vol(s) > 1 but ≤ 1
-  exact absurd h_vol (not_lt.mpr (h_eq ▸ h_bound))
+  haveI : Countable (stdLattice n).toAddSubgroup := by
+    unfold stdLattice
+    change Countable (Submodule.span ℤ (Set.range (stdBasis n)))
+    infer_instance
+  -- F has volume 1 (`stdLattice_covolume`), so volume F < volume s
+  have h_vol_lt : volume (stdFundDomain n) < volume s := by
+    rw [stdLattice_covolume]; exact h_vol
+  -- Mathlib's pigeonhole on a fundamental domain: ∃ x ∈ s, ∃ y ∈ s, ∃ g ≠ 0, g +ᵥ x = y
+  obtain ⟨x, hx, y, hy, g, hg, hgxy⟩ :=
+    (stdLattice_isAddFundamentalDomain n).exists_ne_zero_vadd_eq
+      h_meas.nullMeasurableSet h_vol_lt
+  -- Unfold the AddSubgroup action: g +ᵥ x = (g : ℝⁿ) + x
+  have hg_eq : (g : Fin n → ℝ) + x = y := by
+    have h := hgxy
+    rw [AddSubgroup.vadd_def, vadd_eq_add] at h
+    exact h
+  refine ⟨y, x, hy, hx, ?_, ?_⟩
+  · -- y ≠ x: from `(g : ℝⁿ) + x = y` and `g ≠ 0`, equality y = x would force g = 0
+    intro hyx
+    apply hg
+    have hg_val : (g : Fin n → ℝ) = 0 := by
+      have h1 : (g : Fin n → ℝ) + x = (0 : Fin n → ℝ) + x := by
+        rw [zero_add, hg_eq]; exact hyx
+      exact add_right_cancel h1
+    exact Subtype.ext hg_val
+  · -- y - x = (g : ℝⁿ) ∈ stdLattice
+    show y - x ∈ (stdLattice n : Set (Fin n → ℝ))
+    have h_diff : y - x = (g : Fin n → ℝ) := by rw [← hg_eq]; ring
+    rw [h_diff]
+    exact g.2
 
 -- ============================================================
 -- PART 3: The General k + 1 Version
@@ -237,9 +238,11 @@ theorem minkowski_from_blichfeldt {n : ℕ} [NeZero n]
   -- Volume identity: vol(T) = (1/2)^n · vol(s) > 1 since vol(s) > 2^n
   have h_vol_T : (1 : ENNReal) < volume T := by
     rw [h_T_eq, MeasureTheory.Measure.addHaar_smul volume ((2 : ℝ)⁻¹) s]
-    -- Goal: 1 < ENNReal.ofReal |(2:ℝ)⁻¹| ^ finrank ℝ (Fin n → ℝ) * volume s
-    rw [Module.finrank_fin_fun]
-    -- Goal: 1 < ENNReal.ofReal |(2:ℝ)⁻¹| ^ n * volume s
+    -- Goal: 1 < ENNReal.ofReal |(2:ℝ)⁻¹ ^ finrank ℝ (Fin n → ℝ)| * volume s
+    rw [Module.finrank_fin_fun, abs_pow]
+    -- Goal: 1 < ENNReal.ofReal (|(2:ℝ)⁻¹| ^ n) * volume s
+    rw [ENNReal.ofReal_pow (abs_nonneg _)]
+    -- Goal: 1 < (ENNReal.ofReal |(2:ℝ)⁻¹|) ^ n * volume s
     have h_abs : |((2 : ℝ)⁻¹)| = (2 : ℝ)⁻¹ := by norm_num
     rw [h_abs]
     -- Convert ENNReal.ofReal (2:ℝ)⁻¹ to (2 : ENNReal)⁻¹
