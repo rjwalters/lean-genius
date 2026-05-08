@@ -431,6 +431,103 @@ theorem lcmRange_le_pow_self_via_primeCounting (n : ℕ) :
   exact le_trans (lcmRange_le_pow_primeCounting n)
     (pow_primeCounting_le_pow_self n hn)
 
+/-- **Sharpened trivial bound on the prime-counting function**:
+    `π(n) ≤ n - 1` (with `Nat` truncated subtraction).
+
+    Sharper than `primeCounting_le_self` (Iter 13): exploits that *both*
+    `0` and `1` are non-prime, so the prime filter on `Finset.range (n+1)`
+    sits inside `((Finset.range (n+1)).erase 0).erase 1`, whose
+    cardinality is `n - 1` (with the `Nat` convention `0 - 1 = 0`
+    handling the boundary cases `n = 0, 1` correctly).
+
+    Used in Iter 14 to chain `lcmRange n ≤ n ^ π(n) ≤ n ^ (n-1)`,
+    a strict improvement over the Iter 13 chain `≤ n ^ n` that saves one
+    factor of `n` in the exponent — the same factor by which the
+    `n · primorial(n)` route to `lcm(1..n) ≤ 4^n` would save over the
+    raw primorial bound, but obtained here via prime-counting alone. -/
+theorem primeCounting_le_pred (n : ℕ) :
+    Nat.primeCounting n ≤ n - 1 := by
+  have hpi : ((Finset.range (n + 1)).filter Nat.Prime).card =
+      Nat.primeCounting n := by
+    unfold Nat.primeCounting Nat.primeCounting'
+    exact (Nat.count_eq_card_filter_range Nat.Prime (n + 1)).symm
+  rw [← hpi]
+  rcases Nat.lt_or_ge n 1 with hn | hn
+  · -- n = 0: filter is empty, card 0 ≤ 0 - 1 = 0.
+    interval_cases n
+    simp [Finset.range_one, Finset.filter_singleton, Nat.not_prime_zero]
+  -- n ≥ 1: filter ⊆ ((range (n+1)).erase 0).erase 1, card = n - 1.
+  have h_subset :
+      (Finset.range (n + 1)).filter Nat.Prime ⊆
+        ((Finset.range (n + 1)).erase 0).erase 1 := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_range,
+      Finset.mem_erase] at hp ⊢
+    refine ⟨?_, ?_, hp.1⟩
+    · -- p ≠ 1 since 1 isn't prime
+      intro h1
+      rw [h1] at hp
+      exact Nat.not_prime_one hp.2
+    · -- p ≠ 0 since 0 isn't prime
+      intro h0
+      rw [h0] at hp
+      exact Nat.not_prime_zero hp.2
+  have h_card :
+      (((Finset.range (n + 1)).erase 0).erase 1).card = n - 1 := by
+    have h0_mem : (0 : ℕ) ∈ Finset.range (n + 1) :=
+      Finset.mem_range.mpr (Nat.succ_pos n)
+    have h1_mem : (1 : ℕ) ∈ (Finset.range (n + 1)).erase 0 := by
+      simp only [Finset.mem_erase, Finset.mem_range]
+      exact ⟨one_ne_zero, by omega⟩
+    rw [Finset.card_erase_of_mem h1_mem,
+        Finset.card_erase_of_mem h0_mem, Finset.card_range]
+    omega
+  calc ((Finset.range (n + 1)).filter Nat.Prime).card
+      ≤ (((Finset.range (n + 1)).erase 0).erase 1).card :=
+        Finset.card_le_card h_subset
+    _ = n - 1 := h_card
+
+/-- **Monotone exponent (sharpened)**: `n ^ π(n) ≤ n ^ (n - 1)` for
+    `n ≥ 1`.
+
+    The Iter 14 analogue of `pow_primeCounting_le_pow_self`, packaged as
+    a named lemma so the chain `lcmRange n ≤ n ^ π(n) ≤ n ^ (n - 1)`
+    reads cleanly. The exponent `n - 1` is `0` at `n = 1` (matches
+    `π(1) = 0`) and is strictly smaller than `n` for `n ≥ 1`. -/
+theorem pow_primeCounting_le_pow_pred (n : ℕ) (hn : 1 ≤ n) :
+    n ^ Nat.primeCounting n ≤ n ^ (n - 1) :=
+  Nat.pow_le_pow_right hn (primeCounting_le_pred n)
+
+/-- **Sharpened bound `lcmRange n ≤ n ^ (n - 1)`** via the prime-counting
+    chain `lcmRange n ≤ n ^ π(n) ≤ n ^ (n - 1)`.
+
+    A strict improvement over the Iter 13 bound
+    `lcmRange_le_pow_self_via_primeCounting` (`lcmRange n ≤ n ^ n`):
+    saves a factor of `n` in the exponent by tightening
+    `primeCounting_le_self` (Iter 13) to `primeCounting_le_pred`
+    (Iter 14, this iteration). The boundary case `n = 0` is handled
+    directly by `lcmRange_zero` since `0 ^ (0 - 1) = 0 ^ 0 = 1`.
+
+    Concrete numerics:
+    | n   | lcmRange n | n^(n-1) | Hanson 3^n |
+    | --- | ---------- | ------- | ---------- |
+    | 1   | 1          | 1       | 3          |
+    | 2   | 2          | 2       | 9          |
+    | 3   | 6          | 9       | 27         |
+    | 4   | 12         | 64      | 81         |
+    | 10  | 2520       | 10⁹     | 59049      |
+
+    Still asymptotically much weaker than Hanson's `3 ^ n` (since
+    `n ^ (n-1)` grows super-exponentially), but a strict improvement
+    over the trivial route through Part 3's `lcmRange_le_self_pow`. -/
+theorem lcmRange_le_pow_pred (n : ℕ) :
+    lcmRange n ≤ n ^ (n - 1) := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: lcmRange 0 = 1 = 0 ^ 0 = 0 ^ (0 - 1).
+    simp [lcmRange_zero]
+  exact le_trans (lcmRange_le_pow_primeCounting n)
+    (pow_primeCounting_le_pow_pred n hn)
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
