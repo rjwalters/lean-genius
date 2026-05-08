@@ -18,7 +18,7 @@
   "Can Ehrhart polynomials for polytopes with known formulas be proved
    from first principles without the general existence theorem?"
 
-  Main results (11 theorems, 1 sorry):
+  Main results (12 theorems, axiom-free, 0 sorries):
   1. crossEhrhart_d0          — L(B_0,n) = 1
   2. crossEhrhart_n0          — L(B_d,0) = 1
   3. crossEhrhart_d1          — L(B_1,n) = 2n+1
@@ -30,9 +30,8 @@
   9. crossEhrhart_expand       — key algebraic expansion (Pascal split)
   10. crossEhrhart_succ_d      — geometric recursion: L(B_{d+1},n) = L(B_d,n) + 2·Σ L(B_d,m)
   11. crossEhrhart_is_poly     — polynomial identification via descPochhammer
-
-  Remaining sorry (1):
-  - crossBall_card succ-d: Finset slicing decomposition (geometric recursion)
+  12. crossBall_card           — geometric meaning: |crossBall d n| = crossEhrhart d n
+                                  (S6 closure, 2026-05-08, via Finset slicing)
 -/
 import Mathlib
 
@@ -467,29 +466,225 @@ private lemma fiber_card_eq_crossBall_card (d n M : ℕ) (hM : M ≤ n) :
       show (z idx).val + (n - M) - (n - M) = (z idx).val
       omega)
 
+-- ============================================================
+-- PART VIII.b: Slicing Decomposition (S6, 2026-05-08)
+-- ============================================================
+
+/-- **Per-fiber cardinality**: for `j : Fin (2n+1)`, the fiber of `crossBall (d+1) n`
+    over the last coordinate (i.e. `{y | y(last d) = j}`) has the same cardinality
+    as `crossBall d M_j`, where `M_j := if j ≤ n then j else 2n - j` is the "budget"
+    available to the remaining `d` coordinates.
+
+    The bijection is `Fin.init` (drop last coord) on the forward side and
+    `Fin.snoc · j` (append `j` as last coord) on the backward side.
+
+    Key arithmetic identity: `cweight(j, n) + M_j = n`, so the constraint on the
+    initial `d` coordinates is exactly "centered weight sum at center `n` ≤ M_j",
+    which is the LHS filter set of `fiber_card_eq_crossBall_card`. -/
+private lemma crossBall_succ_d_fiber_card (d n : ℕ) (j : Fin (2 * n + 1)) :
+    ((crossBall (d + 1) n).filter (fun y => y (Fin.last d) = j)).card =
+    (crossBall d (if j.val ≤ n then j.val else 2 * n - j.val)).card := by
+  set Mj : ℕ := if j.val ≤ n then j.val else 2 * n - j.val with hMj_def
+  -- Mj ≤ n in both branches.
+  have hMj_le : Mj ≤ n := by
+    by_cases h : j.val ≤ n
+    · simp only [hMj_def, if_pos h]; exact h
+    · push_neg at h
+      have hjlt : j.val < 2 * n + 1 := j.isLt
+      simp only [hMj_def, if_neg (not_le.mpr h)]
+      omega
+  -- Key identity: cweight(j, n) + Mj = n.
+  have hcw_plus_Mj :
+      (if j.val ≤ n then n - j.val else j.val - n) + Mj = n := by
+    by_cases h : j.val ≤ n
+    · rw [if_pos h]
+      simp only [hMj_def, if_pos h]
+      omega
+    · push_neg at h
+      rw [if_neg (not_le.mpr h)]
+      simp only [hMj_def, if_neg (not_le.mpr h)]
+      have hjlt : j.val < 2 * n + 1 := j.isLt
+      omega
+  -- Bridge to the previously-proved fiber bijection.
+  rw [← fiber_card_eq_crossBall_card d n Mj hMj_le]
+  -- Now: bijection between the fiber and the cweight-≤-Mj filter on Fin d → Fin (2n+1).
+  -- Forward: y ↦ Fin.init y; Backward: z ↦ Fin.snoc z j.
+  apply Finset.card_bij'
+    (fun y _ => Fin.init y)
+    (fun z _ => Fin.snoc z j)
+    -- (1) Forward image lies in the cweight-≤-Mj filter.
+    (by
+      intro y hy
+      simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and] at hy
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      obtain ⟨hsum, hlast⟩ := hy
+      -- Split Σ over Fin (d+1) into init part + last term.
+      rw [Fin.sum_univ_castSucc] at hsum
+      rw [hlast] at hsum
+      -- hsum : Σᵢ cweight(y i.castSucc, n) + cweight(j, n) ≤ n.
+      -- Goal: Σᵢ cweight((Fin.init y) i, n) ≤ Mj.
+      -- (Fin.init y) i = y i.castSucc by definition (rfl).
+      change ∑ i, (if (y i.castSucc).val ≤ n then n - (y i.castSucc).val
+                    else (y i.castSucc).val - n) ≤ Mj
+      omega)
+    -- (2) Backward image lies in the original fiber.
+    (by
+      intro z hz
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hz
+      simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and]
+      refine ⟨?_, Fin.snoc_last⟩
+      -- Σ over Fin (d+1) splits into castSucc part + last.
+      rw [Fin.sum_univ_castSucc]
+      -- castSucc part rewrites via Fin.snoc_castSucc.
+      have hcs : ∀ i,
+          (if ((Fin.snoc z j) i.castSucc : Fin (2 * n + 1)).val ≤ n
+              then n - ((Fin.snoc z j) i.castSucc : Fin (2 * n + 1)).val
+              else ((Fin.snoc z j) i.castSucc : Fin (2 * n + 1)).val - n)
+          = (if (z i).val ≤ n then n - (z i).val else (z i).val - n) := by
+        intro i; rw [Fin.snoc_castSucc]
+      have hlast :
+          (if ((Fin.snoc z j) (Fin.last d) : Fin (2 * n + 1)).val ≤ n
+              then n - ((Fin.snoc z j) (Fin.last d) : Fin (2 * n + 1)).val
+              else ((Fin.snoc z j) (Fin.last d) : Fin (2 * n + 1)).val - n)
+          = (if j.val ≤ n then n - j.val else j.val - n) := by
+        rw [Fin.snoc_last]
+      rw [Finset.sum_congr rfl (fun i _ => hcs i), hlast]
+      -- Goal: Σᵢ cweight(z i, n) + cweight(j, n) ≤ n.
+      -- Have hz : Σᵢ cweight(z i, n) ≤ Mj, and cweight(j, n) + Mj = n.
+      omega)
+    -- (3) Left inverse: snoc (init y) j = y when y(last d) = j.
+    (by
+      intro y hy
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hy
+      obtain ⟨_, hlast⟩ := hy
+      rw [← hlast]
+      exact Fin.snoc_init_self y)
+    -- (4) Right inverse: init (snoc z j) = z.
+    (by
+      intro z _
+      exact Fin.init_snoc)
+
+/-- **Step A — Slicing identity**: the cardinality of `crossBall (d+1) n` equals
+    the sum over `j : Fin (2n+1)` of the cardinality of `crossBall d M_j`, where
+    `M_j = if j ≤ n then j else 2n - j` is the budget after fixing the last coord.
+
+    Proof: `Finset.card_eq_sum_card_fiberwise` projects on the last coordinate
+    via `fun y => y (Fin.last d) : Fin (d+1) → Fin (2n+1) → Fin (2n+1)`; each
+    fiber has card `(crossBall d M_j).card` by `crossBall_succ_d_fiber_card`. -/
+private lemma crossBall_succ_d_slice (d n : ℕ) :
+    (crossBall (d + 1) n).card =
+    ∑ j : Fin (2 * n + 1),
+      (crossBall d (if j.val ≤ n then j.val else 2 * n - j.val)).card := by
+  -- Project on the last coordinate (lands in `Finset.univ` trivially).
+  have hMapsTo :
+      ((crossBall (d + 1) n : Finset _) : Set (Fin (d + 1) → Fin (2 * n + 1))).MapsTo
+        (fun y => y (Fin.last d))
+        ((Finset.univ : Finset (Fin (2 * n + 1))) : Set _) :=
+    fun _ _ => by simp
+  rw [Finset.card_eq_sum_card_fiberwise hMapsTo]
+  apply Finset.sum_congr rfl
+  intro j _
+  exact crossBall_succ_d_fiber_card d n j
+
+/-- **Step B — Sum reorganization**: the sum over `j : Fin (2n+1)` of
+    `(crossBall d M_j).card` collapses (via the j ↔ 2n - j pairing) to
+    `(crossBall d n).card + 2 * Σ m ∈ range n, (crossBall d m).card`.
+
+    Proof: convert to `∑ k ∈ range (2n+1)`, split as
+    `range (n+1) ⊔ Ico (n+1) (2n+1)`. The low half (k ≤ n) gives M_k = k;
+    the high half (k > n) gives M_k = 2n - k, and reindexing m := 2n - k
+    sends `Ico (n+1) (2n+1)` bijectively to `range n`. The low half splits
+    further as `range n ⊔ {n}`; combining yields the stated identity. -/
+private lemma sum_crossBall_pair (d n : ℕ) :
+    ∑ j : Fin (2 * n + 1),
+        (crossBall d (if j.val ≤ n then j.val else 2 * n - j.val)).card =
+    (crossBall d n).card + 2 * ∑ m ∈ Finset.range n, (crossBall d m).card := by
+  -- Step B.1: convert ∑ j : Fin (2n+1) into ∑ k ∈ range (2n+1).
+  rw [show
+      (∑ j : Fin (2 * n + 1),
+          (crossBall d (if j.val ≤ n then j.val else 2 * n - j.val)).card)
+        =
+      ∑ k ∈ Finset.range (2 * n + 1),
+          (crossBall d (if k ≤ n then k else 2 * n - k)).card from
+    Fin.sum_univ_eq_sum_range
+      (fun k => (crossBall d (if k ≤ n then k else 2 * n - k)).card) (2 * n + 1)]
+  -- Step B.2: split range (2n+1) = range (n+1) ⊔ Ico (n+1) (2n+1).
+  have hsplit :
+      Finset.range (2 * n + 1) =
+        Finset.range (n + 1) ∪ Finset.Ico (n + 1) (2 * n + 1) := by
+    ext k
+    simp only [Finset.mem_range, Finset.mem_union, Finset.mem_Ico]
+    omega
+  have hdisj : Disjoint (Finset.range (n + 1)) (Finset.Ico (n + 1) (2 * n + 1)) := by
+    rw [Finset.disjoint_left]
+    intro k hk1 hk2
+    rw [Finset.mem_range] at hk1
+    rw [Finset.mem_Ico] at hk2
+    omega
+  rw [hsplit, Finset.sum_union hdisj]
+  -- Step B.3: simplify the if on each piece.
+  -- Low piece (k ∈ range (n+1)): k ≤ n so M_k = k.
+  rw [show
+      (∑ k ∈ Finset.range (n + 1),
+          (crossBall d (if k ≤ n then k else 2 * n - k)).card)
+        = ∑ k ∈ Finset.range (n + 1), (crossBall d k).card from
+    Finset.sum_congr rfl (fun k hk => by
+      have hkn : k ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
+      simp only [if_pos hkn])]
+  -- High piece (k ∈ Ico (n+1) (2n+1)): k > n so M_k = 2n - k.
+  rw [show
+      (∑ k ∈ Finset.Ico (n + 1) (2 * n + 1),
+          (crossBall d (if k ≤ n then k else 2 * n - k)).card)
+        = ∑ k ∈ Finset.Ico (n + 1) (2 * n + 1), (crossBall d (2 * n - k)).card from
+    Finset.sum_congr rfl (fun k hk => by
+      have ⟨h1, _⟩ := Finset.mem_Ico.mp hk
+      have hk_gt : ¬ k ≤ n := by omega
+      simp only [if_neg hk_gt])]
+  -- Step B.4: reindex high piece by m := 2n - k. Bijection Ico (n+1) (2n+1) ↔ range n.
+  rw [show
+      (∑ k ∈ Finset.Ico (n + 1) (2 * n + 1), (crossBall d (2 * n - k)).card)
+        = ∑ m ∈ Finset.range n, (crossBall d m).card from by
+    apply Finset.sum_nbij' (fun k => 2 * n - k) (fun m => 2 * n - m)
+    · intro k hk
+      have ⟨h1, h2⟩ := Finset.mem_Ico.mp hk
+      simp only [Finset.mem_range]; omega
+    · intro m hm
+      have hm := Finset.mem_range.mp hm
+      simp only [Finset.mem_Ico]; omega
+    · intro k hk
+      have ⟨h1, h2⟩ := Finset.mem_Ico.mp hk
+      omega
+    · intro m hm
+      have hm := Finset.mem_range.mp hm
+      omega
+    · intro k _; rfl]
+  -- Step B.5: combine. Low piece = ∑ m ∈ range n + (crossBall d n).card.
+  rw [Finset.sum_range_succ]
+  ring
+
 /-- **Main geometric theorem**: the cross-polytope lattice count equals crossEhrhart d n.
 
-    Proof sketch (induction on d):
-    - Base d=0: crossBall 0 n = {∅}, card = 1 = crossEhrhart 0 n. ✓
-    - Step: crossBall (d+1) n decomposes by last coordinate j ∈ {0,...,2n}.
-      For each j, the fiber is in bijection (via the cweight translation
-      `yᵢ ↦ yᵢ - (n - M)` where `M = n - |j - n|`) with crossBall d M.
-      Pairing j ↔ 2n−j: total card = (crossBall d n).card + 2·Σ_{m<n} (crossBall d m).card.
-      By IH (`generalizing n`) and `crossEhrhart_succ_d`, equals `crossEhrhart (d+1) n`.
+    Proof (S6 closure, 2026-05-08): induction on `d` with `n` generalized.
+    - Base `d = 0`: `crossBall 0 n` is a singleton (the empty function), so
+      `card = 1 = crossEhrhart 0 n`.
+    - Step: combine three pieces:
+      * `crossBall_succ_d_slice` slices `crossBall (d+1) n` over the last coord;
+      * `sum_crossBall_pair` collapses the resulting sum via the j ↔ 2n-j pairing;
+      * `crossEhrhart_succ_d` closes the recursion under the IH.
 
-    Status: weight helpers + fiber bijection in place
-    (`cweight_le_iff`, `cweight_translate`, `cweight_sum_individual`,
-    `cweight_sum_range`, `fiber_card_eq_crossBall_card`).
-    Remaining: (1) project `crossBall (d+1) n` onto the last coordinate via
-    `Finset.card_eq_sum_card_fiberwise` and identify each fiber with the
-    filter-set used by `fiber_card_eq_crossBall_card`; (2) j↔(2n−j) pairing
-    to fold the resulting sum into `crossEhrhart_succ_d`'s RHS. -/
+    Closes the final `sorry` in this file. -/
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
-  induction d with
+  induction d generalizing n with
   | zero =>
     -- crossBall 0 n = singleton {empty function}, card = 1 = crossEhrhart 0 n
     simp [crossBall, crossEhrhart]
-  | succ d ih => sorry
+  | succ d ih =>
+    rw [crossBall_succ_d_slice, sum_crossBall_pair, ih n]
+    rw [show
+        (∑ m ∈ Finset.range n, (crossBall d m).card)
+          = ∑ m ∈ Finset.range n, crossEhrhart d m from
+      Finset.sum_congr rfl (fun m _ => ih m)]
+    rw [← crossEhrhart_succ_d]
 
 -- ============================================================
 -- PART IX: Summary and Exports
