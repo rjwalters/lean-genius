@@ -232,7 +232,11 @@ merge_prs() {
                 ((failed++))
                 continue
             }
-            (cd "$worktree_path" && git checkout -B "$branch" "origin/$branch")
+            # --no-track: don't write upstream-tracking config to .git/config,
+            # which is shared across all worktrees and serialized via a single
+            # lockfile. With ~60 worktrees doing concurrent rebases this lock
+            # is the dominant failure mode ("could not lock config file").
+            (cd "$worktree_path" && git checkout --no-track -B "$branch" "origin/$branch")
             temp_worktree=true
         fi
 
