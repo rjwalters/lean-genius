@@ -4,8 +4,8 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S21 — researcher-12)
-**Iteration**: 21
+**Last Updated**: 2026-05-08 (S24 — researcher-5)
+**Iteration**: 24
 
 ## Current Focus
 
@@ -54,6 +54,49 @@ For `jdt_weight_sum` (b ≥ 2), the b≥2 branch is now closed modulo
 The deep remaining work is the bijection inside `ballot_counting_identity`
 itself (~150 lines, reflection / cycle lemma over multisets).
 
+## This session (S24) — strategy decomposition
+
+Research-only iteration, no code change. See
+`sessions/2026-05-08-s24.md` for the full write-up.
+
+Key finding: the ~150-line bijection target decomposes into three named
+sub-lemmas with sharply different difficulty profiles:
+
+1. **`submultiset_count_via_powersetCard`** (~20 lines, mechanical):
+   for any `k`, the count of `(P, Q) : Sym k × Sym (a+b−k)` with
+   `P + Q = M` equals `(M.1.powersetCard k).card`. Forward:
+   `PQ ↦ PQ.1.1`; inverse: `P ↦ (P, M.1 − P)` via `Multiset.sub_add_cancel`.
+
+2. **`colStrict_count_eq_card_diff`** (~80–100 lines, deep): the count of
+   col-strict (a, b)-splits of `M` equals
+   `(M.1.powersetCard a).card − (M.1.powersetCard (a + 1)).card`. Heart of
+   the bijective ballot argument; needs the Cycle Lemma for multisets,
+   which is **not** in Mathlib (gap audited 2026-05-08).
+
+3. **`symPair_list_iso`** (~30–40 lines, technical glue): bridges
+   `Sym (Fin n) k`-pairs with `P + Q = M` and `(pl, ql) : List (Fin n)
+   × List (Fin n)` weakly-increasing pairs of lengths (a, b) summing to
+   `M.1.sort`. Lifts `ColStrictSym` to a list-level predicate matching
+   classical ballot.
+
+`ballot_counting_identity` itself becomes a 5–10 line one-liner combining
+sub-lemmas 1 (twice, at `k = a` and `k = a + 1`) and 2 via algebraic
+manipulation.
+
+This decomposition does **not** change the file's sorry count (still 2).
+Each future session can target a single sub-lemma without affecting the
+auditor/mechanic counters.
+
+### Why the obvious forward map still fails (re-confirmed)
+
+Re-verified PR #14891 / S18: the `(P, Q) ↦ swap-at-first-violation`
+forward map is non-injective for `b ≥ 2` and tagging the codomain with
+the violation column does **not** restore injectivity (one (P, Q) with
+multiple violations contributes multiple tagged sources mapping to a
+common (P', Q')). The recommended difference-identity route avoids
+this trap by replacing the bijection with a cardinality identity over
+`Multiset.powersetCard`.
+
 ## This session (S21)
 
 Completed:
@@ -83,7 +126,7 @@ Completed:
 
 ## Attempt Count
 
-- Total iterations: 21 (sessions 1-21).
+- Total iterations: 24 (sessions 1-24).
 - Approaches tried:
   1. SSYT infrastructure (sessions 1-14).
   2. Decompose `jdt_weight_sum` (S15).
@@ -96,7 +139,9 @@ Completed:
   9. `jdt_weight_lhs_fibered` / `jdt_weight_rhs_fibered` — close b≥2 branch
      of `jdt_weight_sum` modulo `ballot_counting_identity` (S23) ✓.
  10. Identify missing `b ≤ a` hypothesis on `ballot_counting_identity` +
-     correct signature + propagate at call site (S21, this session) ✓.
+     correct signature + propagate at call site (S21) ✓.
+ 11. Decompose `ballot_counting_identity` proof into three named
+     sub-lemmas via difference-identity route (S24, this session) ✓.
 
 ## Blockers
 
@@ -106,20 +151,28 @@ None for current approach. The ballot bijection inside
 
 ## Next Action
 
-1. **S22-next**: Prove `ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b)
-   (hba : b ≤ a) (M : Sym (Fin n) (a + b))` — bijection at the multiset level
-   between non-col-strict (a,b) splits of M and arbitrary (a+1, b-1) splits.
-   ~150 lines. Strategy: adapt the cycle / ballot principle for multisets,
-   using the "first column violation" `c ∈ Fin b` (well-defined now that
-   `b ≤ a` so `min a b = b`).
-2. **Future**: After `jdt_weight_sum` fully closes, `jacobi_trudi_ssyt_eq`
+1. **S25**: Prove **Sub-lemma 1** (`submultiset_count_via_powersetCard`)
+   — mechanical Mathlib `Finset.card_bij` argument, ~20 lines. Real code
+   contribution; sorry count unchanged. See `sessions/2026-05-08-s24.md`
+   for the precise signature.
+
+2. **S26+**: State **Sub-lemma 2** (`colStrict_count_eq_card_diff`) with
+   `sorry`. Replace `ballot_counting_identity` body with a one-liner
+   combining Sub-lemmas 1 and 2. Net sorry count: unchanged (one
+   `sorry` replaces another, with cleaner provenance).
+
+3. **S27+**: Attack **Sub-lemma 2** proof via the Cycle Lemma route.
+   ~80–100 lines; the dominant cost. Requires either a small Mathlib
+   contribution (Cycle Lemma for sorted multiset prefixes) or an
+   inline proof.
+
+4. **Future**: After `jdt_weight_sum` fully closes, `jacobi_trudi_ssyt_eq`
    k ≥ 3 (RSK / algebraic LGV, ~300 lines).
 
 ## File Status
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1242 → 1266 lines (+24
-  this session, all in the `ballot_counting_identity` docstring + signature
-  + the one-token call-site update).
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1266 lines (unchanged
+  this session — research-only iteration).
 - Sorry count: 2 (`ballot_counting_identity`, `jacobi_trudi_ssyt_eq` k≥3).
 - 0 axioms.
 - Theorems: 31 (unchanged).
