@@ -30,7 +30,7 @@
         ]
     },
     "overview": {
-        "historicalContext": "Linear independence of {1, ∛3, (∛3)²} over ℚ is a classical consequence of algebraic number theory. It expresses that ∛3 has degree exactly 3 over ℚ — meaning ∛3 satisfies no polynomial equation over ℚ of degree less than 3. This was known in principle from Galois theory (Eisenstein, 1850s), though the explicit linear independence statement became a standard exercise once field extension theory was systematized by Dedekind and Kronecker in the latter half of the 19th century.",
+        "historicalContext": "Linear independence of {1, ∛3, (∛3)²} over ℚ is a classical consequence of algebraic number theory. It expresses that ∛3 has degree exactly 3 over ℚ — meaning ∛3 satisfies no polynomial equation over ℚ of degree less than 3. The underlying tools trace to Eisenstein's irreducibility criterion (Crelle, 1850), which gives the irreducibility of $X^3-3$ over ℚ, and to Galois's general framework (1830s) connecting irreducibility of the minimal polynomial to the dimension of the field extension. The explicit linear independence statement became a standard exercise once field extension theory was systematized by Dedekind and Kronecker in the latter half of the 19th century, culminating in the modern statement that $\\{1, \\alpha, \\ldots, \\alpha^{n-1}\\}$ is a $K$-basis of $K(\\alpha)$ when $\\alpha$ has degree $n$ over $K$ — the **power basis theorem**.\n\nIn the Mathlib formalization library, the general power basis is captured by the `PowerBasis` structure on `Algebra.adjoin K {α}`, but explicit small-$n$ instantiations (as in this file) remain pedagogically valuable: they expose the underlying minpoly-divisibility argument in concrete form, decoupled from the abstract `PowerBasis` API. The same recipe scales unchanged to any $\\alpha$ algebraic of degree $n$.",
         "problemStatement": "**Open Question OQ-02 from cube-root-3-irrational-oq-02:**\n\nThe parent entry proves ∛3 is irrational via Eisenstein's irreducibility criterion: X³-3 is irreducible over ℚ, so it has no rational roots. The natural follow-up: can we prove the stronger statement that {1, ∛3, (∛3)²} is linearly independent over ℚ?\n\n**This file answers yes.** The key is that linear independence of {α^0, α^1, α^2} is equivalent to: the only ℚ-polynomial of degree ≤ 2 with α as a root is the zero polynomial. This follows immediately from minpoly ℚ α having degree 3.",
         "proofStrategy": "**Core argument** (by contradiction):\n\nSuppose Σᵢ cᵢ · αⁱ = 0 for c₀, c₁, c₂ : ℚ. Define p = C(c₀) + C(c₁)X + C(c₂)X² ∈ ℚ[X]. Then:\n\n1. **aeval α p = 0** (by unfolding the polynomial evaluation).\n2. **minpoly ℚ α ∣ p** (by `minpoly.dvd`, since aeval α p = 0).\n3. **natDegree(minpoly ℚ α) = 3** (from `minpoly_nthRoot_natDegree 3 3 3`, Eisenstein at p=3).\n4. **natDegree(p) ≤ 2** (p has terms at positions 0, 1, 2 only).\n5. If p ≠ 0: `natDegree_le_of_dvd` gives 3 = natDegree(minpoly) ≤ natDegree(p) ≤ 2. Contradiction.\n6. So p = 0, hence c₀ = coeff(p, 0) = 0, c₁ = coeff(p, 1) = 0, c₂ = coeff(p, 2) = 0.",
         "keyInsights": [
@@ -38,7 +38,8 @@
             "The degree bound natDegree(p) ≤ 2 uses natDegree_add_le + natDegree_mul_le + natDegree_C = 0 + natDegree_X_pow = n iteratively",
             "natDegree_le_of_dvd gives the critical inequality: if q | p and p ≠ 0 then natDegree q ≤ natDegree p",
             "The coefficient extraction coeff(p, i) = cᵢ is verified by fin_cases + simp: the polynomial C(c₀) + C(c₁)X + C(c₂)X² has exactly cᵢ at position i for i ∈ {0,1,2}",
-            "Fintype.linearIndependent_iff reformulates the goal as: ∀ c : Fin 3 → ℚ, (Σ cᵢ • αⁱ = 0) → (∀ i, cᵢ = 0), cleanly separating construction from extraction"
+            "Fintype.linearIndependent_iff reformulates the goal as: ∀ c : Fin 3 → ℚ, (Σ cᵢ • αⁱ = 0) → (∀ i, cᵢ = 0), cleanly separating construction from extraction",
+            "The proof exhibits a constructive-destructive duality: cᵢ are first packaged into a polynomial p (constructive step using Polynomial.C and X), then read back from p's coefficients (destructive step using Polynomial.coeff). The minpoly divisibility argument lives between these two transformations and forces p = 0 by a degree count"
         ],
         "prerequisites": [
             "CubeRoot2IrrationalOQ03.lean: minpoly_nthRoot_natDegree (Eisenstein → degree = n)",
@@ -59,15 +60,15 @@
             "id": "sec-main-proof",
             "title": "Main Theorem: Linear Independence",
             "startLine": 50,
-            "endLine": 86,
+            "endLine": 95,
             "summary": "cbrt3_powers_linearIndependent proves LinearIndependent ℚ (fun i : Fin 3 => α^i). Uses Fintype.linearIndependent_iff, builds polynomial p from coefficients c, shows aeval α p = 0 via ring, deduces minpoly ℚ α | p, proves p = 0 by degree comparison (3 > 2), extracts cᵢ = 0 via coefficient computation.",
             "mathContext": "Key chain: aeval α p = 0 (ring) → minpoly ℚ α | p (minpoly.dvd) → natDeg(minpoly) ≤ natDeg(p) if p≠0 (natDegree_le_of_dvd) → 3 ≤ 2 (contradiction). Coefficient extraction: coeff(C(c₀) + C(c₁)X + C(c₂)X², i) = cᵢ by polynomial arithmetic."
         },
         {
             "id": "sec-explicit",
             "title": "Explicit Form: ![1, α, α²]",
-            "startLine": 88,
-            "endLine": 96,
+            "startLine": 97,
+            "endLine": 103,
             "summary": "one_cbrt3_cbrt3_sq_linearIndependent gives the same result for the explicit vector ![1, α, α²] : Fin 3 → ℝ. Proved by convert + fin_cases + simp from the main theorem.",
             "mathContext": "![1, α, α²] i = α^(i:ℕ) for i ∈ {0,1,2}: at i=0, α^0=1; at i=1, α^1=α; at i=2, α^2. The convert step rewrites the goal using this equality."
         }
@@ -87,6 +88,16 @@
             "targetId": "cube-root-2-irrational-oq-03",
             "relationship": "depends",
             "description": "Source of minpoly_nthRoot_natDegree, the key lemma giving natDegree(minpoly ℚ α) = 3."
+        },
+        {
+            "targetId": "sqrt2-minpoly",
+            "relationship": "related",
+            "description": "Analogous result for √2: the minimal polynomial of √2 over ℚ is X² - 2 (degree 2). The same minpoly-divisibility argument applied here would prove {1, √2} is ℚ-linearly independent."
+        },
+        {
+            "targetId": "nth-root-irrational",
+            "relationship": "related",
+            "description": "General nth-root irrationality framework: the broader pattern this file specializes — for any n ≥ 2 and squarefree m, ⁿ√m has minimal polynomial X^n - m of degree n over ℚ."
         }
     ],
     "conclusion": {
