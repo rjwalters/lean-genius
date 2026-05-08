@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified. Depends on GCDAlgorithmOQ01 (euclideanSteps, decimalDigits, lame_step_bound).",
     "lineCount": 280,
-    "theoremCount": 27,
+    "theoremCount": 22,
     "definitionCount": 2,
     "originalContributions": [
       "lame_five_digit_bound_general: euclideanSteps(a,b) ≤ 5·decimalDigits(b) for ALL b > 0",
@@ -62,7 +62,7 @@
     "namespace": "GCDAlgorithmOQ01OQ03",
     "lineCount": 280,
     "axiomCount": 0,
-    "theoremCount": 27,
+    "theoremCount": 22,
     "definitionCount": 2,
     "path": "Proofs/GCDAlgorithmOQ01OQ03.lean",
     "sorries": 0
