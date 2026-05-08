@@ -116,6 +116,32 @@
     ]
   },
   {
+    "id": "amgm-oq02-oq02-power-rpow-transfer",
+    "proofId": "amgm-inequality-oq-02-oq-02",
+    "type": "technique",
+    "range": {
+      "startLine": 849,
+      "endLine": 923
+    },
+    "title": "Power Inequality and rpow Transfer (Parts VI-VII)",
+    "content": "Two bridge lemmas converting log-concavity into the form needed for the Maclaurin step.\n\n**`power_ineq_of_log_concave` (L849)**: Given log-concavity $a_k^2 \\ge a_{k-1} \\cdot a_{k+1}$ for the *normalized* values $a_j = e_j / \\binom{n}{j}$, derive the power inequality $a_k^{k+1} \\ge a_{k+1}^k$. The proof telescopes log-concavity over $j = 1, 2, \\ldots, k$ to get $a_1^k \\ge a_k^1 \\cdot a_0^{k-1}$ and so on, eventually arriving at $a_k^{k+1} \\ge a_{k+1}^k$. This is a *natural-power* statement (exponents in $\\mathbb{N}$) — kept in `Nat.pow` form because Lean's natural-power lemmas (`pow_mul`, `pow_le_pow_left`) are cleaner type-theoretically than `Real.rpow`.\n\n**`rpow_ineq_of_pow_ineq` (L900)**: A general lifting lemma: if $a, b \\ge 0$ and $a^p \\ge b^q$ for $p, q \\in \\mathbb{N}$ with $0 < p, q$, then $a^{1/q} \\ge b^{1/p}$ as real-power (`Real.rpow`) inequality. The proof takes the $(pq)$-th root via `Real.rpow_natCast` (so $a^p = a^{(p : \\mathbb{R})}$) and `Real.rpow_le_rpow` monotonicity. After reindexing $p = k+1, q = k$, this gives $a_k^{1/k} \\ge a_{k+1}^{1/(k+1)}$ — exactly the Maclaurin step form.\n\n**Why a separate `Nat`/`rpow` split**: Lean's `Real.rpow` typeclass machinery has more side conditions (e.g., `0 ≤ a` for monotonicity, special casing $0^0 = 1$) than the natural-power `^ : ℝ → ℕ → ℝ`. By proving in `Nat.pow` first and transferring once, the bulk of the algebraic work (telescoping log-concavity) avoids those side conditions.",
+    "significance": "key",
+    "mathContext": "**Power form**: $a_k^{k+1} \\ge a_{k+1}^k$ for the normalized $a_j = e_j / \\binom{n}{j}$, derived from $a_k^2 \\ge a_{k-1} a_{k+1}$ by telescoping. This is the AM-GM-of-the-mean form: the $k$-th root of $a_k$ dominates the $(k+1)$-th root of $a_{k+1}$.\n\n**rpow lift**: $a^p \\ge b^q$ with $p, q \\in \\mathbb{N}^+$ and $a, b \\ge 0$ $\\Rightarrow$ $a^{1/q} \\ge b^{1/p}$ as `Real.rpow`. Mathlib provides `Real.rpow_natCast` (matches `^` on `ℕ`) and `Real.rpow_le_rpow_left` (monotonicity).\n\n**Maclaurin step assembly**: Apply rpow lift with $p = k+1$, $q = k$, $a = a_k$, $b = a_{k+1}$ to get $a_k^{1/k} \\ge a_{k+1}^{1/(k+1)}$, i.e., $M_k \\ge M_{k+1}$.",
+    "relatedConcepts": [
+      "telescoping log-concavity",
+      "Real.rpow vs Nat pow",
+      "Real.rpow_natCast",
+      "Real.rpow_le_rpow",
+      "type-theoretic side conditions"
+    ],
+    "prerequisites": [
+      "newton_log_concavity_proved",
+      "Real.rpow",
+      "pow_mul, pow_le_pow_left",
+      "rpow monotonicity"
+    ]
+  },
+  {
     "id": "amgm-oq02-oq02-maclaurin-step",
     "proofId": "amgm-inequality-oq-02-oq-02",
     "type": "theorem",
