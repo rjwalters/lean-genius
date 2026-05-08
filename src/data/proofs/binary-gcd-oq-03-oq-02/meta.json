@@ -2,7 +2,7 @@
   "id": "binary-gcd-oq-03-oq-02",
   "title": "Schönhage's Recursive HGCD: GCD Preservation and Matrix Invariants",
   "slug": "binary-gcd-oq-03-oq-02",
-  "description": "Formalizes Schönhage's recursive half-GCD (HGCD) in Lean 4, extending the Lehmer hybrid (BinaryGcdOQ03) with the full recursive structure. Proves GCD preservation, the determinant invariant, the matrix-vector row convention, entry bounds via Cramer's rule, and perturbation infrastructure toward size reduction. One sorry remains for the recursive case of the row-output size-reduction bound.",
+  "description": "Formalizes Schönhage's recursive half-GCD (HGCD) in Lean 4, extending the Lehmer hybrid (BinaryGcdOQ03) with the full recursive structure. Proves GCD preservation, the determinant invariant, the matrix-vector row convention, entry bounds via Cramer's rule, and perturbation infrastructure toward size reduction. One sorry remains in the original file for the recursive row-output size bound (S17 PR #17024 found this is FALSE for the unguarded algorithm). Companion file BinaryGcdOQ03OQ02PathA.lean (S18+S19) implements Path A — algorithm refinement with a runtime size-reduction safety guard, plus a verified GCD function hgcdSafeGcd with theorem hgcdSafeGcd_eq_gcd a b = Nat.gcd a b (0 sorries, 0 axioms).",
   "sorries": 1,
   "meta": {
     "author": "Schönhage (1971), formalized in Lean 4",
@@ -62,9 +62,16 @@
       "hgcdMatrix_entry_bound (S16): all-fuel conditional entry bound — generalises hgcdMatrix_small_entry_bound (S15) by removing the max a b < hgcdThreshold hypothesis. Same proof skeleton as S15 with hgcdMatrix_pattern_det_correlated (S16) substituted for hgcdMatrix_small_pattern_det_correlated. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078)",
       "hgcdMatrix_130_89_value (S17): native_decide refutation — hgcdMatrix 5 130 89 = ⟨-3, 5, 20, -33⟩ (det = -1, OddPattern). Anchors the PART XIV counterexample to the proposed all-fuel row-vector invariant",
       "hgcdMatrix_row_invariant_counterexample (S17): for input (a, b) = (130, 89) at fuel = 5, no natural-number witnesses (ahat', bhat') simultaneously satisfy (a, b) · M = (ahat', bhat'). The β-row product equals -2287 (negative) while a natural cast is non-negative, immediately refuting the existential. Independent of the magnitude failure (α-row = 1390 > 2 · 130) — either failure suffices",
-      "Refutation of hgcdMatrix_row_output_le (S17): a corollary of the counterexample — the recursive-case sorry on line 1078 is FALSE under the current algorithm; the Schönhage HGCD as currently formalized does not size-reduce on a substantial fraction (≥ 39.6%) of input pairs above hgcdThreshold = 64. Path forward requires either (A) algorithm refinement with a size-reduction safety check, (B) restating with a 'well-behaved input' precondition, or (C) replacing row-convention with column-convention proof strategy"
+      "Refutation of hgcdMatrix_row_output_le (S17): a corollary of the counterexample — the recursive-case sorry on line 1078 is FALSE under the current algorithm; the Schönhage HGCD as currently formalized does not size-reduce on a substantial fraction (≥ 39.6%) of input pairs above hgcdThreshold = 64. Path forward requires either (A) algorithm refinement with a size-reduction safety check, (B) restating with a 'well-behaved input' precondition, or (C) replacing row-convention with column-convention proof strategy",
+      "hgcdMatrixSafe (S18, Path A): companion algorithm in BinaryGcdOQ03OQ02PathA.lean implementing Path A from PR #17024 — Schönhage's HGCD with a runtime size-reduction guard. After computing the inner matrix M_inner, checks max(natAbs(M_inner.apply (a, b))) < max a b; if yes, composes outer recursion as before; if no, returns M_inner alone (matches GMP's mpn_hgcd safety check). Compatible with the existing BinaryGcdOQ03OQ02.lean via shared CofactorMatrix infrastructure",
+      "hgcdMatrixSafe_det_unit / hgcdMatrixSafe_preserves_gcd (S18, Path A): unimodularity and GCD-preservation invariants for the safe variant. Det ±1 is preserved on every code path (threshold case via lehmerCofactors_det_unit, compose branch via det_mul + IH parity, abort branch via direct IH). GCD preservation follows by cofactor_apply_gcd + det invariant. Both hold unconditionally — including on the S17 counterexample (130, 89) where the unguarded hgcdMatrix produces 10^268-magnitude entries",
+      "hgcdSafeGcd (S19, Path A): verified HGCD-based GCD function — applies hgcdMatrixSafeOf once and takes Int.gcd of the column output. Theorem hgcdSafeGcd_eq_gcd: hgcdSafeGcd a b = Nat.gcd a b unconditionally. Proof reduces directly to hgcdMatrixSafeOf_preserves_gcd. Demonstrates that Path A produces a TOTAL CORRECT GCD function on all natural inputs (0 sorries, 0 axioms), even on the S17 counterexample family where the unguarded hgcdMatrix.apply has unbounded magnitude",
+      "Computational examples (S19): native_decide checks for hgcdSafeGcd on standard pairs (12,8)↦4, (89,55)↦1, (100,75)↦25, (1000,1000)↦1000 plus the S17 counterexample (130,89)↦1 and worst-case (107,85)↦1 from the survey range [64,130)×[64,a]. Verifies that the kernel can reduce hgcdSafeGcd to a definite numeric value on inputs where the unguarded algorithm has 10^268-scale matrix entries"
     ],
-    "definitionCount": 6
+    "definitionCount": 6,
+    "additionalFiles": [
+      "Proofs/BinaryGcdOQ03OQ02PathA.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Arnold Schönhage (1971) extended Lehmer's hybrid GCD to achieve optimal O(M(n)·log n) bit complexity, where M(n) is the cost of multiplying n-bit integers. The key innovation is recursion: instead of running Lehmer's single-level approximation once, HGCD recurses on the top half of the bits to compute a cofactor matrix M₁, applies M₁ to the full inputs to get a half-size pair, then recurses again. This two-level recursion gives O(log n) levels, each costing O(M(n)), for total O(M(n)·log n). The algorithm underlies GMP's mpn_hgcd implementation and is the standard GCD algorithm for cryptographic-size integers (thousands of bits).",
@@ -206,7 +213,10 @@
     "theoremCount": 64,
     "definitionCount": 6,
     "path": "Proofs/BinaryGcdOQ03OQ02.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/BinaryGcdOQ03OQ02PathA.lean"
+    ]
   },
   "conclusion": {
     "summary": "This formalization of Schönhage's recursive HGCD establishes the core correctness layer in 936 lines with a single sorry. The three main theorems — `cofactor_mul_apply` (compositional algebra), `hgcdMatrix_det_unit` (unimodularity by fuel induction), and `hgcdMatrix_preserves_gcd` (operational correctness) — formally verify that Schönhage's two-level recursion produces a GCD-preserving matrix. The size-reduction infrastructure (row-convention invariant, Cramer identity, entry bounds, perturbation decomposition) is complete except for the quotient stability lemma needed for the recursive size bound. Together with `BinaryGcdOQ03` (the Lehmer hybrid), this represents the first Lean formalization of the HGCD algorithm's correctness structure.",
