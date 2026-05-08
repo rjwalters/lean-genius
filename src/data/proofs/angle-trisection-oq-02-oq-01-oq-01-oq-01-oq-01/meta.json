@@ -71,7 +71,8 @@
       "Inseparable ≠ purely inseparable splitting field: f = g(X^p) with deg(g) ≥ 2 is inseparable but has non-purely-inseparable splitting field",
       "The splitting field of g(X^p) (g separable irreducible) is isomorphic to g.SplittingField, and Gal(g(X^p)) ≅ Gal(g) — non-trivial when deg(g) ≥ 2",
       "The correct hypothesis is IsPurelyInseparable F f.SplittingField, which holds exactly when f has only ONE distinct root (f = c·(X - r)^(p^e))",
-      "Proof of correct theorem: σ(x)^(p^n) = x^(p^n) (σ fixes F), then (σ(x) - x)^(p^n) = 0 by char-p Frobenius, then σ(x) = x since fields have no nilpotents"
+      "Proof of correct theorem: σ(x)^(p^n) = x^(p^n) (σ fixes F), then (σ(x) - x)^(p^n) = 0 by char-p Frobenius, then σ(x) = x since fields have no nilpotents",
+      "Artin-Schreier theory provides the cleanest source of inseparable-but-not-purely-inseparable counterexamples in characteristic p: the polynomial X^p − X − a is separable, but its composition with X^(p^k) (giving (X^(p^k))^p − X^(p^k) − a) is inseparable with a non-trivial Artin-Schreier Galois action — exactly the structure that breaks the false `insep_gal_trivial` axiom. The char-2 example f = X⁴ + X² + a in this file is the smallest non-trivial instance of this construction"
     ],
     "proofStrategy": "1. **Counterexample construction**: Work over F₂(a) = FractionRing(F₂[X]). Set f = X⁴ + X² + a = g(X²) where g = X² + X + a (Artin-Schreier, irreducible). Show f is inseparable (f' = 0 in char 2) and has a nontrivial automorphism (σ: α^(1/2) ↦ α^(1/2) + 1).\n\n2. **Correct theorem**: For IsPurelyInseparable F K and σ : K ≃ₐ[F] K:\n   - Get n with x^(p^n) ∈ F via IsPurelyInseparable.pow_mem\n   - σ(x^(p^n)) = x^(p^n) since σ fixes F (AlgEquiv.commutes)\n   - So σ(x)^(p^n) = x^(p^n)\n   - Char-p Frobenius: (σ(x) - x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0\n   - Field = no nilpotents: σ(x) = x\n   - Hence σ = id by AlgEquiv.ext\n\n3. **Corollary**: Nat.card f.Gal = 1 when IsPurelyInseparable F f.SplittingField"
   },
@@ -99,6 +100,23 @@
       "endLine": 230,
       "summary": "States and axiomatizes that f = X^p - a (irreducible) has purely inseparable splitting field. Also uses counterexample_gal_card axiom for the counterexample. Proves insep_gal_trivial_is_false formally.",
       "mathContext": "X^p - a: splitting field = F(a^(1/p)), purely inseparable since (a^(1/p))^p = a ∈ F. But X⁴+X²+a: splitting field = F₂(a)(α^(1/2)), NOT purely inseparable — has nontrivial automorphism."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry that introduced the (false) `insep_gal_trivial` axiom this file disproves. The correct replacement (purely-inseparable splitting field ⟹ trivial Gal) is established here."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "context",
+      "description": "Abel-Ruffini and the angle-trisection chain both rely on Galois groups of polynomial extensions; understanding |Gal(f)| in inseparable situations is essential for any constructive impossibility argument that takes characteristic p seriously."
+    },
+    {
+      "targetId": "angle-trisection",
+      "relationship": "context",
+      "description": "Top-level angle-trisection entry. The whole OQ chain leading here drills down on the Galois-theoretic inputs needed to make the impossibility argument fully rigorous in arbitrary characteristic."
     }
   ],
   "conclusion": {
