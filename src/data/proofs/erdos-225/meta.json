@@ -27,7 +27,10 @@
     "assumptions": "1 axiom: erdos_225. 3 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/Erdos225Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős studied $L^1$ norms of trigonometric polynomials from the 1940s onward, publishing related results in 1940, 1957, and 1961. The specific conjecture — that $\\|f\\|_1 \\leq 4$ when all roots lie on the unit circle and $\\|f\\|_\\infty = 1$ — was listed by W.K. Hayman as Problem 4.20 in his influential 1974 survey *Research Problems in Function Theory*. The problem was solved independently: Saff and Sheil-Small (1973) proved it for polynomials with complex coefficients, and Kristiansen (1974) for real coefficients. The bound 4 is sharp. Notably, the automated proof search tool Aristotle discovered a formalization bug in this entry: constant polynomials vacuously satisfy the 'all roots on the unit circle' condition (having no roots), but have $L^1$ norm $2\\pi > 4$, contradicting the formalized statement. The mathematical theorem implicitly requires degree $\\geq 1$.",

@@ -27,7 +27,10 @@
     "erdosProblemStatus": "open",
     "lineCount": 269,
     "theoremCount": 8,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "additionalFiles": [
+      "Proofs/Erdos117OQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Pinning Down the Exponential Base**\n\nErdős introduced the abelian covering number h(n) as part of his investigation of commutativity in finite groups. A group G has the n-commuting property if among any n+2 elements, at least two commute — or equivalently, G cannot be partitioned into n+1 pairwise non-commuting pairs. The covering number h(n) asks: what is the minimum size of a cover by abelian subgroups that works for all groups with this property?\n\nThe first exponential lower bound was proved by Isaacs in earlier work. Pyber's landmark 1987 paper established both exponential bounds c₁ⁿ ≤ h(n) ≤ c₂ⁿ with explicit constants satisfying c₂ > c₁ > 1. This settled the 'polynomial vs exponential' question but opened a new one: do the bounds converge to a single exponential base? Knowing the precise base c would give h(n) = Θ(cⁿ) — a clean asymptotic characterization.\n\nThe connection to Fekete's lemma (1923) provides a natural structural approach. Fekete's theorem states that subadditive functions f (with f(m+n) ≤ f(m)+f(n)) satisfy lim f(n)/n = inf f(n)/n. If h is submultiplicative (h(m+n) ≤ h(m)·h(n)), then log h is subadditive and the limit exists. The question of submultiplicativity of h is thus a key open structural problem.",

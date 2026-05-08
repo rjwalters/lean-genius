@@ -37,7 +37,10 @@
         "module": "Mathlib.FieldTheory.IntermediateField.Adjoin.Basic"
       }
     ],
-    "definitionCount": 3
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/AngleTrisectionOQ02OQ01OQ02Aristotle.lean"
+    ]
   },
   "parent": "angle-trisection-oq-02-oq-01",
   "openQuestion": "Can the Wantzel-Galois constructibility criterion be proved or applied using Mathlib's Galois theory infrastructure?",

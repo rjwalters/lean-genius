@@ -48,7 +48,10 @@
     ],
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Robert Fano derived his inequality in 1952 as a lecture handout at MIT — later published in his 1961 textbook 'Transmission of Information'. Fano was searching for a lower bound on the probability of decoding error given an observed channel output Y, and his key insight was to connect error probability P_e to conditional entropy H(X|Y): the channel decoder cannot recover X reliably if H(X|Y) is large, and quantifying this intuition precisely requires bounding H(X|Y) from above in terms of P_e. The resulting inequality H(X|Y) ≤ h(P_e) + P_e·log(|X|−1) became the standard tool for proving impossibility (converse) results: to show that no code with rate R > C achieves vanishing error, one invokes Fano to lower-bound P_e in terms of H(X|Y), then lower-bounds H(X|Y) in terms of R−C.\n\nShannon's 1948 paper established C = max_p I(X;Y) without a fully rigorous converse; Fano's inequality provided the missing piece. Wolfowitz (1957) and Gallager (1965) standardized the converse proof using Fano, and it now appears in every information theory textbook (Cover & Thomas, Csiszár & Körner, Gallager). The inequality is also central to rate-distortion theory, channel coding with feedback, and hypothesis testing.\n\nThis Lean formalization bridges two components: the self-contained OQ-03 Fano proof (using a private conditional entropy definition to avoid a dependency bug) and the project's standard definition. The bridge confirms definitional equality by `rfl`, enabling OQ-03's machine-verified result to flow into the channel coding converse chain.",

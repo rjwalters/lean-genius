@@ -50,7 +50,10 @@
             "Factorization bridge: monic_factored_form proved via UniqueFactorizationMonoid (0 sorry)"
         ],
         "dateAdded": "2026-04-26",
-        "definitionCount": 2
+        "definitionCount": 2,
+        "additionalFiles": [
+          "Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean"
+        ]
     },
     "overview": {
         "historicalContext": "The cyclic vector theorem lies at the intersection of two major 19th-century programs: the canonical form theory for linear operators and the module theory of rings. **Camille Jordan** (1870) established the Jordan normal form, decomposing complex matrices into Jordan blocks — a decomposition that requires all eigenvalues to lie in the base field. Jordan's theory was restricted to algebraically closed fields like $\\mathbb{C}$. **Ferdinand Georg Frobenius** (1878), in his landmark paper *Über lineare Substitutionen und bilineare Formen*, overcame this restriction by introducing the **rational canonical form** (now also called Frobenius normal form): every matrix over an arbitrary field is similar to a block-diagonal matrix of companion matrices $\\mathrm{diag}(C(d_1), \\ldots, C(d_r))$, where $d_1 \\mid \\cdots \\mid d_r$ are the **invariant factors** — computed from the matrix's characteristic polynomial via the PID $K[X]$ without reference to eigenvalues. This makes the theory valid over $\\mathbb{Q}$, $\\mathbb{F}_p$, and any field.\n\nA matrix $M \\in M_n(K)$ is **nonderogatory** when its minimal polynomial equals its characteristic polynomial; a vector $v$ is **cyclic** for $M$ when $\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis. The cyclic vector theorem — nonderogatory $\\Rightarrow$ cyclic — holds over ALL fields. The modern module-theoretic proof, developed through **Emmy Noether's** 1929 work on the structure theorem for finitely generated modules over PIDs, shows that nonderogatory forces $K^n \\cong K[X]/(\\mathrm{minpoly}\\, M)$ as a $K[X]$-module, making cyclicity immediate. **H.J.S. Smith** (1861) gave the first constructive approach via Smith normal form for polynomial matrices, providing an algorithm for computing invariant factors. This formalization captures the theory via an explicit axiom for the PID structure theorem — the single Mathlib gap — and fully verifies the main theorem from it.",

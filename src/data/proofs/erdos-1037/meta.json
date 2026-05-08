@@ -64,7 +64,10 @@
       "generalMultiplicityBound: formula k/(k+1) for max distinct degrees with multiplicity ≤ k"
     ],
     "theoremCount": 12,
-    "definitionCount": 20
+    "definitionCount": 20,
+    "additionalFiles": [
+      "Proofs/Erdos1037Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Chen and Erdős posed this question as part of a broader program investigating how degree sequence structure constrains Ramsey-type properties of graphs. By Ramsey's theorem (1930), every n-vertex graph contains a clique or independent set of size at least (1/2) log₂ n, and Erdős (1947) showed via the probabilistic method that random graphs G(n,1/2) essentially achieve this bound. The Chen-Erdős conjecture asked whether imposing degree diversity — specifically, requiring that each degree appears at most twice and that the number of distinct degrees exceeds (1/2 + ε)n — forces significantly larger trivial (complete or empty) subgraphs. This would have provided a deterministic condition implying non-random-like Ramsey behavior. The conjecture remained open for decades until Cambie, Chan, and Hunter (2025) disproved it by constructing explicit graphs with at least 3n/4 distinct degrees (each appearing at most twice) in which the largest clique or independent set has size only O(log n). Their construction shows that degree diversity is fundamentally independent of Ramsey structure: one can have maximally diverse degree sequences while maintaining the same trivial subgraph size as random graphs. The fraction 3/4 appears to be essentially optimal for multiplicity-2 constraints, connecting this to extremal questions about degree sequence realizability.",

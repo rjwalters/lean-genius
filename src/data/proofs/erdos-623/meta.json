@@ -54,7 +54,10 @@
     "assumptions": "1 axiom declaration: erdos_hajnal_below_aleph_omega (for |X| < aleph_omega, exists free f with no infinite independent set)",
     "lineCount": 272,
     "theoremCount": 13,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "additionalFiles": [
+      "Proofs/Erdos623ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős and Hajnal introduced this problem in their landmark 1958 paper on partition relations for cardinal numbers, which laid the foundations of infinitary combinatorics. The central question asks whether every 'free' function $f: [X]^{<\\omega} \\to X$ on a set of cardinality $\\aleph_\\omega$ must admit an infinite independent set.\n\nThe Erdős-Hajnal theorem (1958) provides a complete negative answer for all cardinals below $\\aleph_\\omega$: for each $\\aleph_n$ with $n < \\omega$, one can construct a free function with no infinite independent set. The construction uses transfinite induction along the ordinal $\\omega_n$, building a 'defeating' function level by level. This makes $\\aleph_\\omega$ the precise threshold where the question transitions from resolved to open.\n\nThe significance of $\\aleph_\\omega$ lies in its being the first singular cardinal—its cofinality is $\\omega$ (countable), yet its cardinality is uncountable. Saharon Shelah's PCF theory (1978–1994) revealed deep structural properties of singular cardinals, showing that products $\\prod_{n<\\omega} \\aleph_n$ can be analyzed through 'possible cofinalities.' Silver's theorem (1974) showed that if GCH holds below a singular cardinal of uncountable cofinality, it holds at that cardinal too—but $\\aleph_\\omega$ has countable cofinality, so Silver's theorem does not apply.\n\nIn 1999, Erdős himself suggested this problem is 'perhaps undecidable,' meaning its truth might depend on set-theoretic axioms beyond ZFC. This connects to the broader phenomenon that combinatorial problems at singular cardinals—including Shelah's celebrated work on the singular cardinals hypothesis—often exhibit independence from standard axioms. The Proper Forcing Axiom (PFA) and large cardinal hypotheses could potentially determine the answer.",

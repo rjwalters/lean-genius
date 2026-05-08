@@ -51,7 +51,10 @@
     "lineCount": 257,
     "assumptions": "1 axiom: graham_result. 2 sorries.",
     "theoremCount": 3,
-    "definitionCount": 9
+    "definitionCount": 9,
+    "additionalFiles": [
+      "Proofs/Erdos876ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "**Erdős Problem #876: Sum-Free Sets and Gap Growth**\n\nA **sum-free set** in Erdős's sense is an infinite set $A = \\{a_1 < a_2 < \\cdots\\} \\subset \\mathbb{N}$ where no element equals a sum of distinct smaller elements from $A$. This is strictly stronger than the classical sum-free condition (no $a + b = c$), as it forbids all subset sums, not just pairs.\n\nPaul Erdős proved in 1962 that such sets must have asymptotic density zero, establishing a fundamental sparsity constraint. The natural follow-up question — how sparse must they be? — was pursued through several key developments:\n\n- **Erdős (1962):** Proved density zero and the crude reciprocal sum bound $\\sum_{a \\in A} 1/a < 100$.\n- **Ronald Graham (c. 1998):** Showed that for any $\\varepsilon > 0$, there exists a sum-free set with gaps $a_{n+1} - a_n < n^{1+\\varepsilon}$ for large $n$. This is the best positive result toward the linear gap question.\n- **Jean-Marc Deshouillers, Erdős, and Giuseppe Melfi (1999):** Constructed a sum-free set with $a_n \\sim n^{3+o(1)}$, establishing the cubic growth rate as achievable.\n- **Tomasz Łuczak and Tomasz Schoen (2000):** Proved tight bounds on the counting function: $|A \\cap [1,N]| = O(\\sqrt{N \\log N})$ for any sum-free $A$, and there exists $B$ with $|B \\cap [1,N]| \\gg \\sqrt{N/(\\log N)^{1/2+o(1)}}$.\n- **Steven Sullivan:** Improved Erdős's reciprocal sum bound to $\\sum 1/a < 4$ and conjectured the supremum is slightly above 2.\n\nThe central open question remains: **can the gaps be made linear**, i.e., is $a_{n+1} - a_n < n$ achievable? Graham's result shows we can get arbitrarily close to linear ($n^{1+\\varepsilon}$), suggesting the answer might be yes, but the problem has resisted resolution for over two decades.",

@@ -23,7 +23,10 @@
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/BoundedPrimeGapsOQ04OQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The Pólya-Vinogradov inequality was proved independently in 1918 by George Pólya (Göttingen, in the Göttinger Nachrichten) and Ivan Vinogradov (Russia), making it one of the first major results in analytic number theory obtained simultaneously by two researchers working independently. Their common insight was to apply the Fourier expansion of Dirichlet characters via Gauss sums to reduce a character sum to a sum of exponential terms, each controlled by geometric series. The result is essentially tight: the √q factor comes from the Gauss sum normalization and cannot be improved, while Montgomery and Vaughan showed in 1977 that (under GRH) the log(q) can be replaced by log(log(q)). The unconditional improvement to √q·log(log(q)) for primitive characters (in an averaged sense) remains an active area. The inequality is the single most useful tool in the analytic theory of Dirichlet characters and underpins the quantitative equidistribution of primes in arithmetic progressions.",

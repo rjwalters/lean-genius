@@ -25,7 +25,10 @@
     "assumptions": "0 axiom(s) and 23 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
     "theoremCount": 23,
-    "definitionCount": 8
+    "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/Erdos977ProblemAristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Erdős posed this problem around 1965, asking whether the greatest prime factor of $2^n - 1$ grows faster than linearly. The first major progress came from Andrzej Schinzel in 1962, who proved $P(2^n - 1) > 2n$ for all $n > 12$ using algebraic factorization properties of cyclotomic polynomials. Cameron Stewart made further conditional progress in 1974, and finally settled the problem unconditionally in 2013 with the quantitative bound $P(2^n - 1) \\ge n^{1 + 1/(104 \\log\\log n)}$. Stewart's proof combines deep techniques from transcendental number theory (Baker's theory of linear forms in logarithms) with the arithmetic of cyclotomic fields.\n\nThe problem sits in a rich tradition connecting prime factorization to exponential sequences. Zsygmondy's theorem (1892) guarantees that $2^n - 1$ has a *primitive* prime factor for $n > 6$ — a prime not dividing $2^k - 1$ for any $k < n$. Such primes satisfy $p \\equiv 1 \\pmod{n}$, immediately giving $P(2^n - 1) \\ge n + 1$, but this falls short of the $n^{1+\\varepsilon}$ growth Erdős sought. The connection to Mersenne primes ($2^p - 1$ when prime) adds number-theoretic interest: for the 51 known Mersenne primes, $P(M_p) = M_p = 2^p - 1 \\gg 2^p$, far exceeding any polynomial bound. A related open problem asks whether $P(n! + 1)/n \\to \\infty$, where Lai (2021) proved the partial result $\\limsup P(n!+1)/n \\ge 1 + 9\\log 2 \\approx 7.238$.",
