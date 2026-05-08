@@ -184,4 +184,136 @@ lemma open_walk_interior_balanced' (walk : List V) (n : ℕ)
     -- walk[j + 1]? = some v (direct from hypothesis)
     exact hj_v
 
+/-- **Generic open_walk_last_target_excess** in the new `walk[i]? = some v` form.
+    For an OPEN walk where `walk[0]? ≠ some w` and `walk[n]? = some w`,
+    the target-count of `w` (positions where `walk[i+1]? = some w`) exceeds
+    its source-count by exactly 1.
+
+    Proof: position `n - 1` is in the target-filter (since `walk[n]? = some w`).
+    Removing it leaves a bijection `i ↦ i + 1` with the source-filter, since
+    the only source position with `walk[i]? = some w` requires `i ≥ 1` (as
+    `walk[0]? ≠ some w`).
+
+    This is the worked-out template Session 13 should transcribe in-place
+    into `KonigsbergOQ01OQ02.lean`'s `open_walk_last_target_excess`
+    (currently L428–467 of the broken main file).
+
+    Compared to the broken version, the differences are:
+    1. Endpoint hypotheses use `walk[0]? ≠ some w` and `walk[n]? = some w`
+       (Option-form, no bound proof needed).
+    2. Filter predicates use `walk[i]? = some w` and `walk[i+1]? = some w`.
+    3. The `congr 1; omega` index-shift pattern ports verbatim — no semantic
+       difference from the original `walk.get` form. -/
+lemma open_walk_last_target_excess' (walk : List V) (n : ℕ) (hn : 1 ≤ n)
+    (hlen : walk.length = n + 1)
+    (w : V)
+    (hw0 : walk[0]? ≠ some w)
+    (hwn : walk[n]? = some w) :
+    ((Finset.range n).filter fun i => walk[i + 1]? = some w).card =
+    ((Finset.range n).filter fun i => walk[i]? = some w).card + 1 := by
+  set T := (Finset.range n).filter (fun i => walk[i + 1]? = some w)
+  set S := (Finset.range n).filter (fun i => walk[i]? = some w)
+  -- n - 1 ∈ T: walk[(n-1)+1]? = walk[n]? = some w
+  have hn1_in_T : n - 1 ∈ T := by
+    simp only [T, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, ?_⟩
+    have hidx : n - 1 + 1 = n := by omega
+    rw [hidx]
+    exact hwn
+  rw [show T.card = (T.erase (n - 1)).card + 1 from by
+    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    simp [Finset.insert_erase hn1_in_T]]
+  congr 1
+  -- Bijection: (T \ {n - 1}) → S via i ↦ i + 1
+  apply Finset.card_bij (fun i _ => i + 1)
+  · -- maps into source filter
+    intro i hi
+    simp only [T, S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_ne, hi_lt, hi_w⟩ := hi
+    refine ⟨by omega, ?_⟩
+    exact hi_w
+  · -- injective: i + 1 = j + 1 ⟹ i = j
+    intro i1 _ i2 _ heq
+    omega
+  · -- surjective: source position j ≥ 1 has preimage j - 1 in T \ {n - 1}
+    intro j hj
+    simp only [S, Finset.mem_filter, Finset.mem_range] at hj
+    obtain ⟨hj_lt, hj_w⟩ := hj
+    -- j ≥ 1: walk[0]? ≠ some w but walk[j]? = some w
+    have hj1 : 1 ≤ j := by
+      by_contra h
+      push_neg at h
+      have hj0 : j = 0 := by omega
+      exact hw0 (hj0 ▸ hj_w)
+    refine ⟨j - 1, ?_, by omega⟩
+    simp only [T, Finset.mem_erase, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, by omega, ?_⟩
+    have hidx : j - 1 + 1 = j := by omega
+    rw [hidx]
+    exact hj_w
+
+/-- **Generic open_walk_first_source_excess** in the new `walk[i]? = some v` form.
+    Symmetric to `open_walk_last_target_excess'`. For an OPEN walk where
+    `walk[0]? = some w` and `walk[n]? ≠ some w`, the source-count of `w`
+    exceeds its target-count by exactly 1.
+
+    Proof: position `0` is in the source-filter. Removing it leaves a
+    bijection `i ↦ i - 1` with the target-filter; surjectivity uses that
+    `walk[n]? ≠ some w` to exclude the largest target position.
+
+    This is the worked-out template Session 13 should transcribe in-place
+    into `KonigsbergOQ01OQ02.lean`'s `open_walk_first_source_excess`
+    (currently L471–509 of the broken main file).
+
+    Compared to the broken version, the differences are:
+    1. Endpoint hypotheses use `walk[0]? = some w` and `walk[n]? ≠ some w`
+       (Option-form).
+    2. Filter predicates use `walk[i]? = some w` and `walk[i+1]? = some w`.
+    3. Surjectivity contradiction `j + 1 = n` ports verbatim. -/
+lemma open_walk_first_source_excess' (walk : List V) (n : ℕ) (hn : 1 ≤ n)
+    (hlen : walk.length = n + 1)
+    (w : V)
+    (hw0 : walk[0]? = some w)
+    (hwn : walk[n]? ≠ some w) :
+    ((Finset.range n).filter fun i => walk[i]? = some w).card =
+    ((Finset.range n).filter fun i => walk[i + 1]? = some w).card + 1 := by
+  set S := (Finset.range n).filter (fun i => walk[i]? = some w)
+  set T := (Finset.range n).filter (fun i => walk[i + 1]? = some w)
+  -- 0 ∈ S: walk[0]? = some w
+  have h0_in_S : 0 ∈ S := by
+    simp only [S, Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, hw0⟩
+  rw [show S.card = (S.erase 0).card + 1 from by
+    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    simp [Finset.insert_erase h0_in_S]]
+  congr 1
+  -- Bijection: (S \ {0}) → T via i ↦ i - 1
+  apply Finset.card_bij (fun i _ => i - 1)
+  · -- maps into target filter
+    intro i hi
+    simp only [S, T, Finset.mem_erase, Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_ne, hi_lt, hi_w⟩ := hi
+    have hi1 : 1 ≤ i := by omega
+    refine ⟨by omega, ?_⟩
+    have hidx : i - 1 + 1 = i := by omega
+    rw [hidx]
+    exact hi_w
+  · -- injective: i - 1 = j - 1 with i, j ≥ 1 ⟹ i = j
+    intro i1 hi1 i2 hi2 heq
+    simp only [S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range] at hi1 hi2
+    omega
+  · -- surjective: target position j has preimage j + 1
+    intro j hj
+    simp only [T, Finset.mem_filter, Finset.mem_range] at hj
+    obtain ⟨hj_lt, hj_w⟩ := hj
+    -- j + 1 < n: walk[n]? ≠ some w would forbid j + 1 = n
+    have hjn : j + 1 < n := by
+      by_contra h
+      push_neg at h
+      have hjn_eq : j + 1 = n := by omega
+      exact hwn (hjn_eq ▸ hj_w)
+    refine ⟨j + 1, ?_, by omega⟩
+    simp only [S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, by omega, hj_w⟩
+
 end KonigsbergOQ01OQ02Recipe
