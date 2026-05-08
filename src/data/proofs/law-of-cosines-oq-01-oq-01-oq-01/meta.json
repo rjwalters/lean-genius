@@ -55,9 +55,11 @@
     ],
     "prerequisites": [
       "Spherical law of sines, side-over-angle form: spherical_law_of_sines_all in Proofs/LawOfCosinesOQ01OQ02.lean",
-      "div_eq_div_iff: a/b = c/d ↔ a·d = c·b for b, d nonzero (Mathlib)",
+      "div_eq_div_iff: a/b = c/d ↔ a·d = c·b for b, d nonzero (Mathlib.Tactic.FieldSimp / Mathlib.Algebra.Order.Field.Basic)",
       "linear_combination tactic: closes goals reducible to linear combinations of given hypotheses over a commutative ring (Mathlib.Tactic.LinearCombination)",
-      "Eq.symm and Eq.trans for transitivity of equalities"
+      "ne_of_gt: 0 < x → x ≠ 0 — converts the positive-sine hypotheses into the nonzero side-conditions of div_eq_div_iff",
+      "Eq.symm and Eq.trans for transitivity of equalities (Lean 4 core)",
+      "SphericalTriangle structure and its angleA/angleB/angleC, sideA/sideB/sideC projections (defined upstream in Proofs.SphericalLawOfCosines and extended in Proofs.LawOfCosinesOQ01OQ02)"
     ],
     "openQuestions": [
       "Does the sine rule extend to degenerate spherical triangles (some sides 0 or π, equivalently some sides have sin = 0)? In that case some divisions are not defined; the right reformulation may be the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a) (which holds even when both factors are zero).",
@@ -66,25 +68,36 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Header and Imports",
+      "id": "docstring",
+      "title": "Module Docstring: Question and Answer",
       "startLine": 1,
+      "endLine": 25,
+      "summary": "Literal posing and resolution of the open question raised in law-of-cosines-oq-01-oq-01: `Generalize to prove the full spherical sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c) using the Gram-determinant framework`. The answer is yes; this file derives the angle-over-side form by algebraic inversion of the side-over-angle form proved in law-of-cosines-oq-01-oq-02. Axiom and sorry counts are recorded inline.",
+      "mathContext": "The Gram-determinant identity $\\sin^2(X)\\sin^2(y)\\sin^2(z) = G$ (where $G = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a \\cos b \\cos c$) is the actual content of the sine rule; this file's job is purely formal."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports, Open Namespaces, Namespace Reopen",
+      "startLine": 27,
       "endLine": 33,
-      "summary": "Module docstring stating the open question (`Generalize to prove the full spherical sine rule sin(A)/sin(a)=sin(B)/sin(b)=sin(C)/sin(c) using the Gram determinant framework`) and the answer (yes, by algebraic inversion of the side-over-angle form). Imports Proofs.LawOfCosinesOQ01OQ02 to inherit the side-over-angle theorem and dot notation for SphericalTriangle's angleA/angleB."
+      "summary": "Single import `Proofs.LawOfCosinesOQ01OQ02` brings in `spherical_law_of_sines_all` (the side-over-angle conjunction) and the `SphericalTriangle` definition. `open SphericalLawOfCosines Real` exposes `Real.sin` (for the trig functions in the theorem statement) and the parent SphericalLawOfCosines namespace. `namespace LawOfCosinesOQ01OQ02` is *reopened* (not declared) so dot notation `t.angleA`, `t.angleB`, `t.angleC` resolves to projections defined in the parent file.",
+      "mathContext": "Lean 4 dot-notation lookup: `x.foo` desugars to `<HeadType>.foo x`, with fallback via the open-namespace stack. Reopening the parent namespace places `angleA`/`angleB`/`angleC` into the lookup path used during elaboration of the theorem statement below."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Angle-over-Side Form",
       "startLine": 34,
       "endLine": 54,
-      "summary": "spherical_law_of_sines_angle_over_side: sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). Proof obtains the side-over-angle conjunction from spherical_law_of_sines_all, then for each part rewrites both sides via div_eq_div_iff to clear denominators, and closes with linear_combination -h."
+      "summary": "spherical_law_of_sines_angle_over_side: sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). Proof obtains the side-over-angle conjunction from `spherical_law_of_sines_all`, then for each part rewrites both goal and hypothesis via `div_eq_div_iff` (using positive-sine ⇒ nonzero) to clear denominators, and closes with `linear_combination -h`.",
+      "mathContext": "$\\frac{a}{b} = \\frac{c}{d} \\iff a \\cdot d = c \\cdot b$ (when $b, d \\ne 0$). After clearing denominators on both sides of the equation, the goal becomes a polynomial identity of degree 1 in the hypothesis, closed by `linear_combination -h` (verifies $0 = \\mathrm{LHS} - \\mathrm{RHS} - (-1) \\cdot h$ as a polynomial identity)."
     },
     {
       "id": "transitivity-corollary",
       "title": "Transitivity Corollary: B/b = C/c",
       "startLine": 56,
       "endLine": 64,
-      "summary": "spherical_law_of_sines_BC_angle_over_side: sin(B)/sin(b) = sin(C)/sin(c). Trivially follows from the conjunction in the main theorem via h1.symm.trans h2."
+      "summary": "spherical_law_of_sines_BC_angle_over_side: sin(B)/sin(b) = sin(C)/sin(c). Trivially follows from the conjunction in the main theorem via `h1.symm.trans h2`.",
+      "mathContext": "Pure equational reasoning: from $A/a = B/b$ (h1) and $A/a = C/c$ (h2), `h1.symm.trans h2` gives $B/b = A/a$ then $A/a = C/c$, hence $B/b = C/c$. No further geometric content is invoked. Stated as a separate theorem so callers can pull the $B/b = C/c$ pair without manually destructuring the main conjunction."
     }
   ],
   "conclusion": {
