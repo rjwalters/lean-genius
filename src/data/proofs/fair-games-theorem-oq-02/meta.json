@@ -93,11 +93,11 @@
       "title": "Summary",
       "startLine": 138,
       "endLine": 159,
-      "summary": "Documents Part I (2 game instances, 0 sorries), Part II (doubling strategy, 0 sorries), Part III (expected value, 0 sorries). Total: 0 sorries, 0 axioms, all 10 theorems fully verified."
+      "summary": "Documents Part I (2 game instances, 0 sorries), Part II (doubling strategy, 0 sorries), Part III (expected value, 0 sorries). Total: 0 sorries, 0 axioms, all 9 theorems fully verified."
     }
   ],
   "conclusion": {
-    "summary": "All 10 theorems are fully machine-verified with 0 sorries and 0 axioms. The file provides concrete numerical checks of the Optional Stopping Theorem: P(win) = k/N and E[T] = k(N-k) for Gambler's Ruin, and E[gain] = 0 for the doubling strategy. The proofs are short (1-4 lines each) because the mathematical content was established in the parent file.",
+    "summary": "All 9 theorems are fully machine-verified with 0 sorries and 0 axioms. The file provides concrete numerical checks of the Optional Stopping Theorem: P(win) = k/N and E[T] = k(N-k) for Gambler's Ruin, and E[gain] = 0 for the doubling strategy. The proofs are short (1-4 lines each) because the mathematical content was established in the parent file.",
     "implications": "The concrete examples demonstrate a key principle of probability theory: in any fair game, no betting strategy can improve the expected outcome. This is the mathematical reason casinos have a positive edge — they enforce a slight asymmetry (house edge) that makes the game unfair. The doubling strategy fails not because of mathematical subtlety but because of the exponential growth of required capital (2^n) versus the linear growth of the win (always $1). This exponential-linear gap is precisely captured by `maxDoublings`.",
     "openQuestions": [
       "Can the Optional Stopping Theorem itself (not just the Gambler's Ruin formulas) be formalized in Lean 4? Doob's theorem requires a filtered probability space and integrability conditions — is Mathlib's probability library sufficient?",

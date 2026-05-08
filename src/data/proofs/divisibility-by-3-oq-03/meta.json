@@ -97,7 +97,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The digital root is fully formalized in Lean 4 with 15 theorems, 0 axioms, and 0 sorries. The closed-form O(1) formula, idempotency, divisibility characterizations by 3 and 9, and the additive/multiplicative homomorphism properties are all proved. The `Nat.modEq_nine_digits_sum` Mathlib lemma provides the foundational congruence.",
+    "summary": "The digital root is fully formalized in Lean 4 with 21 theorems, 0 axioms, and 0 sorries. The closed-form O(1) formula, idempotency, divisibility characterizations by 3 and 9, and the additive/multiplicative homomorphism properties are all proved. The `Nat.modEq_nine_digits_sum` Mathlib lemma provides the foundational congruence.",
     "implications": "The multiplicative homomorphism `dr(a·b) = dr(dr(a)·dr(b))` is the formal basis of 'casting out nines': to check if a multiplication $a \\times b = c$ is correct, compute $dr(a) \\times dr(b)$ and compare to $dr(c)$ — any discrepancy reveals an error. This was a standard pre-calculator arithmetic check for centuries. The formalization provides a verified foundation for understanding why this works (the mod 9 ring structure) and its limitations (it cannot detect errors that preserve the mod 9 value, e.g., transposing digits that sum to the same value).",
     "openQuestions": [
       "Can the proof be extended to show that digitalRoot is a ring homomorphism from ℤ/9ℤ to {1,...,9}? The additive and multiplicative homomorphism properties are proved, but the formal ring homomorphism statement would require setting up the appropriate ring structure on the 9-element set.",

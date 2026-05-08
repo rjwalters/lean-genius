@@ -87,7 +87,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proved $D(4)=8$: every admissible 4-tuple has diameter $\\geq 8$, witnessed by $\\{0,2,6,8\\}$. The proof uses the parity constraint + forced AP structure argument, reducing to the non-admissible triple result proved in the parent file. 187 lines, 5 theorems, 0 sorries, 0 axioms. Also repaired pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
+    "summary": "Proved $D(4)=8$: every admissible 4-tuple has diameter $\\geq 8$, witnessed by $\\{0,2,6,8\\}$. The proof uses the parity constraint + forced AP structure argument, reducing to the non-admissible triple result proved in the parent file. 187 lines, 7 theorems, 0 sorries, 0 axioms. Also repaired pre-existing Mathlib API issues in BoundedPrimeGapsOQ03OQ01.",
     "implications": "With $D(2)=2$, $D(3)=6$, $D(4)=8$ now all machine-verified, the smallest prime constellation diameters are formally established in Lean 4. The proof infrastructure — parity filtration, subset contamination, forced-AP structure — is reusable for $D(5)=12$ and beyond. Under the Elliott–Halberstam conjecture, these $D(k)$ values give exact predicted gaps for prime $k$-tuples: the prime quadruple conjecture predicts infinitely many $n$ with $n,n+2,n+6,n+8$ all prime.",
     "openQuestions": [
       "Prove $D(5)=12$ by the same layered approach: $\\{0,2,6,8,12\\}$ is admissible and the lower bound argument adds a mod-5 obstruction on top of the mod-2 and mod-3 ones used here.",

@@ -135,7 +135,7 @@
     ]
   },
   "conclusion": {
-    "summary": "This formalization establishes the Erdős–Sárközy conjecture in Lean 4, connecting it to both the Erdős–Turán conjecture (Problem #28) as a special case and to Ruzsa's counterexample (Problem #331) showing the ratio condition is necessary. All 21 theorems are proved with 0 sorries. Only the main open conjecture is axiomatized.",
+    "summary": "This formalization establishes the Erdős–Sárközy conjecture in Lean 4, connecting it to both the Erdős–Turán conjecture (Problem #28) as a special case and to Ruzsa's counterexample (Problem #331) showing the ratio condition is necessary. All 39 theorems are proved with 0 sorries. Only the main open conjecture is axiomatized.",
     "implications": "A proof of this conjecture would simultaneously resolve the Erdős–Turán conjecture ($500 bounty), since it is strictly stronger. The formalization makes precise exactly what condition distinguishes the true conjecture from its false generalization.",
     "openQuestions": [
       "Can the asymptotic ratio condition aₙ/bₙ → 1 be weakened while preserving the conjecture?",

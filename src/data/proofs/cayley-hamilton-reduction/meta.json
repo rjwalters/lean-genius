@@ -131,7 +131,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization proves the polynomial reduction theorem: any polynomial function of an n×n matrix A equals the evaluation of its remainder modulo the characteristic polynomial. All 17 theorems are fully proved (0 sorries), establishing the algebraic foundation for matrix function computation.",
+    "summary": "This formalization proves the polynomial reduction theorem: any polynomial function of an n×n matrix A equals the evaluation of its remainder modulo the characteristic polynomial. All 20 theorems are fully proved (0 sorries), establishing the algebraic foundation for matrix function computation.",
     "implications": "**Control Theory**: The matrix exponential exp(tA) reduces to n coefficients, enabling efficient computation of linear system responses.\n\n**Numerical Methods**: Instead of computing A^k by repeated multiplication, reduce X^k mod charpoly to a low-degree polynomial.\n\n**Signal Processing**: Transfer functions and z-transforms of matrix systems simplify via this reduction.\n\n**Abstract Algebra**: The evaluation map factors through R[X]/(charpoly), an n-dimensional quotient ring.",
     "openQuestions": [
       "Can this reduction be made computationally efficient for sparse matrices?",

@@ -181,7 +181,7 @@
     "quartic-equations"
   ],
   "conclusion": {
-    "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6. 9 theorems, 0 sorries, 0 axioms. Completes the quartic-cubic-Cardano solution chain.",
+    "summary": "Complete proof that Ferrari's resolvent cubic reduces to Cardano's depressed form via m = t - 5p/6. 8 theorems, 0 sorries, 0 axioms. Completes the quartic-cubic-Cardano solution chain.",
     "implications": "Every quartic equation over C is solvable in radicals: the full chain quartic -> depressed quartic -> resolvent cubic -> depressed cubic -> Cardano is now formally connected.",
     "openQuestions": [
       "Can the Ferrari factorization axioms in GeneralQuartic.lean be proved?",

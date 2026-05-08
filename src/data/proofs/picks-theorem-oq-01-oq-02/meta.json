@@ -99,7 +99,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The 2D Ehrhart polynomial L(P,t) = A·t² + (B/2)·t + 1 is machine-verified via three independent proof routes: combinatorial (rectangles and triangles via Finset), algebraic (from Pick's theorem and scaling axioms). The interior count formula and h*-vector non-negativity are derived as immediate consequences. 21 theorems, 7 definitions, 309 lines.",
+    "summary": "The 2D Ehrhart polynomial L(P,t) = A·t² + (B/2)·t + 1 is machine-verified via three independent proof routes: combinatorial (rectangles and triangles via Finset), algebraic (from Pick's theorem and scaling axioms). The interior count formula and h*-vector non-negativity are derived as immediate consequences. 24 theorems, 7 definitions, 309 lines.",
     "implications": "This formalization establishes the 2D Ehrhart polynomial as a direct corollary of Pick's theorem when combined with the geometric scaling laws. The cross-framework consistency result (rectangle_frameworks_agree) validates that the axiomatic and combinatorial approaches agree. The h*-vector formulation opens the path to Stanley's non-negativity theorem in higher dimensions.",
     "openQuestions": [
       "Prove the Ehrhart-Macdonald reciprocity law in full generality: L(P°,-t) = (-1)^d · i(P,t) where P° is the interior of P",

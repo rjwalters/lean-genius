@@ -138,7 +138,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization fully answers OQ-02-OQ-02: YES, the spherical Ceva theorem generalizes from triangles to arbitrary convex n-gons. The concurrency condition ∏αᵢ = ∏βᵢ (where αᵢ, βᵢ are weight parameters for cevian points on each side) is a clean algebraic criterion. All 11 theorems are proved with 0 sorries.",
+    "summary": "This formalization fully answers OQ-02-OQ-02: YES, the spherical Ceva theorem generalizes from triangles to arbitrary convex n-gons. The concurrency condition ∏αᵢ = ∏βᵢ (where αᵢ, βᵢ are weight parameters for cevian points on each side) is a clean algebraic criterion. All 17 theorems are proved with 0 sorries.",
     "implications": "**Mathematical Significance**:\n\n**1. New Quadrilateral Ceva**: The condition α₁α₂α₃α₄ = β₁β₂β₃β₄ for spherical quadrilateral concurrency is a concrete new result not commonly found in textbooks.\n\n**2. Unified Framework**: The PolygonCevaConfig structure and Fin n indexing provide a single framework for all polygon sizes, avoiding case-by-case arguments.\n\n**3. Scaling Invariance**: The proof that the Ceva condition depends only on weight ratios (not absolute values) shows the underlying projective nature of the concurrency condition.\n\n**4. Polygon Menelaus Duality**: The sign-flip theorem extends the classical Ceva-Menelaus duality to polygons, with the Menelaus sign being (-1)ⁿ.",
     "openQuestions": [
       "Can the polygon Ceva condition be connected to the theory of tropical geometry or Newton polytopes?",

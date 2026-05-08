@@ -114,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "All 7 theorems proved with 0 sorries and 0 axioms. The main result derangements_nearest_all shows D(n) = round(n!/e) for all n ≥ 1, completing the rounding interpretation of the classical approximation D(n) ≈ n!/e. The uniqueness theorem confirms D(n) is the unique integer achieving this approximation.",
+    "summary": "All 8 theorems proved with 0 sorries and 0 axioms. The main result derangements_nearest_all shows D(n) = round(n!/e) for all n ≥ 1, completing the rounding interpretation of the classical approximation D(n) ≈ n!/e. The uniqueness theorem confirms D(n) is the unique integer achieving this approximation.",
     "implications": "**Algorithmic interpretation**: D(n) = round(n!/e) provides a simple computation recipe: compute n! (exact integer arithmetic), divide by e (floating point), and round. For n ≥ 2, rounding always gives the exact derangement count.\n\n**Error decay**: The parametric bound |D(n) - n!/e| ≤ 1/k for k ≤ n+1 shows the error decays like 1/n. For n=10, the error is at most 1/11 < 0.1; for n=100, at most 1/101 < 0.01.\n\n**Connection to fix**: This file required fixing DerangementsConvergence.lean (replacing deprecated ∑ k in notation with ∑ k ∈) to enable importing derangements_convergence_rate.",
     "openQuestions": [
       "Prove the analogous result for k-cycles: P(σ has exactly m k-cycles) → Pois(1/k)^m (derangements-convergence-oq-01-oq-02)",

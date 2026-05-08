@@ -2,7 +2,7 @@
   "id": "erdos-14-unique-sums",
   "title": "Erdős #14: Unique Representation Sums",
   "slug": "erdos-14-unique-sums",
-  "description": "Formalizes Erdős Problem #14: estimate the count U(N) of integers not uniquely representable as a sum of two elements from A ⊆ ℕ. Introduces repCount, uniqueSums, nonUniqueCount predicates. Axiomatizes Erdős's construction (U(N) << N^{1/2+ε}), Erdős-Freud finite bound, and the lower bound holding infinitely often. Proves Sidon sets have all sums unique and are sparse. 6 theorems, 13 definitions, 3 axioms.",
+  "description": "Formalizes Erdős Problem #14: estimate the count U(N) of integers not uniquely representable as a sum of two elements from A ⊆ ℕ. Introduces repCount, uniqueSums, nonUniqueCount predicates. Axiomatizes Erdős's construction (U(N) << N^{1/2+ε}), Erdős-Freud finite bound, and the lower bound holding infinitely often. Proves Sidon sets have all sums unique and are sparse. 8 theorems, 13 definitions, 3 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős #14 infrastructure formalized: repCount/uniqueSums/nonUniqueCount predicates, Sidon characterization, Erdős construction and Freud bound axiomatized. 6 theorems, 443 lines, 3 axioms.",
+    "summary": "Erdős #14 infrastructure formalized: repCount/uniqueSums/nonUniqueCount predicates, Sidon characterization, Erdős construction and Freud bound axiomatized. 8 theorems, 443 lines, 3 axioms.",
     "implications": "The unique sum problem connects to Sidon sets and additive bases. Improvements would require formalizing probabilistic construction methods. The problem remains open for the exact growth rate of the optimal U(N).",
     "openQuestions": [
       "Prove Erdős's upper construction without axioms using probabilistic methods",

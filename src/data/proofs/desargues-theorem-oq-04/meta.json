@@ -189,7 +189,7 @@
     "problemStatement": "See the description field for the problem statement."
   },
   "conclusion": {
-    "summary": "We formalize the self-duality of Desargues's theorem with 28 theorems and 0 sorries. The key results — collinear = concurrent and dual(perspFromPoint) = perspFromLine — are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
+    "summary": "We formalize the self-duality of Desargues's theorem with 23 theorems and 0 sorries. The key results — collinear = concurrent and dual(perspFromPoint) = perspFromLine — are both proved by rfl, showing that self-duality is a definitional consequence of working in homogeneous coordinates.",
     "implications": "**Theoretical Significance**: This formalization shows that projective duality, far from being a mysterious principle, is a trivial consequence of the representation choice.\n\nIn homogeneous coordinates, points and lines are the same type and the fundamental predicates are identical. The 'deep' content is not the duality but the Desargues identity itself — an algebraic identity in 18 variables that holds over any commutative ring.",
     "openQuestions": [
       "Can axiomatic projective planes be formalized in Lean 4, distinguishing Desarguesian from non-Desarguesian planes?",

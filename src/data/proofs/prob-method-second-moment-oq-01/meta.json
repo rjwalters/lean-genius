@@ -105,7 +105,7 @@
     }
   ],
   "conclusion": {
-    "summary": "A complete Lean 4 formalization of the quantitative Paley-Zygmund inequality over finite sets, with 3 theorems and 0 axioms. The proof is elementary: above/below decomposition, Cauchy-Schwarz on the above set, and filter-subset monotonicity.",
+    "summary": "A complete Lean 4 formalization of the quantitative Paley-Zygmund inequality over finite sets, with 4 theorems and 0 axioms. The proof is elementary: above/below decomposition, Cauchy-Schwarz on the above set, and filter-subset monotonicity.",
     "implications": "Provides the quantitative backbone for the second moment method in the gallery. Applications include lower bounds on clique numbers in random graphs, independent sets, and Ramsey numbers. The three-formulation design covers combinatorial (counting), probabilistic (ratio), and qualitative uses.",
     "openQuestions": [
       "Can this be generalized to the measure-theoretic MeasureTheory.Lp setting?",

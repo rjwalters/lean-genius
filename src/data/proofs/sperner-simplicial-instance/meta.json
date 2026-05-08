@@ -2,7 +2,7 @@
   "id": "sperner-simplicial-instance",
   "title": "Sperner's Lemma: SimplicialComplex to CellComplex Bridge",
   "slug": "sperner-simplicial-instance",
-  "description": "Bridges the abstract CellComplex framework (from SpernerMathlib4) to concrete simplicial complexes via the Triangulation structure. Proves Sperner's lemma for any triangulation satisfying the pseudomanifold condition, and constructs a fully verified 1-dimensional interval triangulation as a concrete example. All 24 theorems verified with 0 sorries and 0 axioms.",
+  "description": "Bridges the abstract CellComplex framework (from SpernerMathlib4) to concrete simplicial complexes via the Triangulation structure. Proves Sperner's lemma for any triangulation satisfying the pseudomanifold condition, and constructs a fully verified 1-dimensional interval triangulation as a concrete example. All 28 theorems verified with 0 sorries and 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
@@ -25,7 +25,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All 24 theorems verified with 0 sorries and 0 axioms. Imports SpernerMathlib4.lean (also 0 axioms).",
+    "assumptions": "None. All 28 theorems verified with 0 sorries and 0 axioms. Imports SpernerMathlib4.lean (also 0 axioms).",
     "originalContributions": [
       "Triangulation V n: structure for finite pure simplicial complexes with pseudomanifold property",
       "Triangulation.toCellComplex: bridge from Triangulation to abstract CellComplex",

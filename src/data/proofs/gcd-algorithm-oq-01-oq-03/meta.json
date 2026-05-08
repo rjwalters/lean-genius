@@ -2,7 +2,7 @@
   "id": "gcd-algorithm-oq-01-oq-03",
   "title": "Binet's Formula and Lamé's 5-Digit Bound",
   "slug": "gcd-algorithm-oq-01-oq-03",
-  "description": "Proves Lamé's 5-digit bound without restriction (euclideanSteps(a,b) ≤ 5·decimalDigits(b) for all b > 0) and Binet's formula fib(n) = (φⁿ - ψⁿ)/√5. Part I: the five-step Fibonacci identity fib(5k+7) ≥ 10·fib(5k+2) implies fib(5k+2) ≥ 10^k. Part II: Binet's formula via paired induction, with φ⁵ > 10 explaining why 5 digits correspond to one Euclidean step. 21 theorems, 2 definitions, 0 axioms.",
+  "description": "Proves Lamé's 5-digit bound without restriction (euclideanSteps(a,b) ≤ 5·decimalDigits(b) for all b > 0) and Binet's formula fib(n) = (φⁿ - ψⁿ)/√5. Part I: the five-step Fibonacci identity fib(5k+7) ≥ 10·fib(5k+2) implies fib(5k+2) ≥ 10^k. Part II: Binet's formula via paired induction, with φ⁵ > 10 explaining why 5 digits correspond to one Euclidean step. 22 theorems, 2 definitions, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -50,7 +50,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Machine-verifies both the unrestricted Lamé 5-digit bound ($\\text{euclideanSteps}(a,b) \\leq 5 \\cdot \\text{decimalDigits}(b)$ for all $b > 0$) and Binet's formula ($F_n = (\\varphi^n - \\psi^n)/\\sqrt{5}$), with the key insight $\\varphi^5 > 10$ connecting them. 21 theorems, 2 definitions, 0 axioms, 280 lines.",
+    "summary": "Machine-verifies both the unrestricted Lamé 5-digit bound ($\\text{euclideanSteps}(a,b) \\leq 5 \\cdot \\text{decimalDigits}(b)$ for all $b > 0$) and Binet's formula ($F_n = (\\varphi^n - \\psi^n)/\\sqrt{5}$), with the key insight $\\varphi^5 > 10$ connecting them. 22 theorems, 2 definitions, 0 axioms, 280 lines.",
     "implications": "This proof sits at the intersection of three deep ideas: algorithm complexity analysis, the Fibonacci sequence, and the golden ratio. The fact that Lamé's 1844 complexity bound can be explained both elementarily (five-step growth identity) and via transcendental algebra (Binet's formula) illustrates a recurrent theme in mathematics: elementary arguments often have deeper structural explanations. The golden ratio $\\varphi$ appears here as the spectral radius of the Fibonacci recurrence matrix $\\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}$, whose eigenvalues are precisely $\\varphi$ and $\\psi$. The formalization demonstrates that both views — discrete induction and continuous exponential analysis — can coexist rigorously in Lean 4.",
     "openQuestions": [
       "Can the tight worst case be formalized: the Euclidean algorithm on $(F_{n+1}, F_n)$ requires exactly $n-1$ steps, showing Lamé's bound is sharp?",

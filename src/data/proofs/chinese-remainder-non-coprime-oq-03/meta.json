@@ -2,7 +2,7 @@
   "id": "chinese-remainder-non-coprime-oq-03",
   "title": "Chinese Remainder Theorem for Three Non-Coprime Moduli",
   "slug": "chinese-remainder-non-coprime-oq-03",
-  "description": "Extends the non-coprime CRT from 2 to 3 moduli in any Euclidean domain: the system m\u2081\u2223(x-a\u2081), m\u2082\u2223(x-a\u2082), m\u2083\u2223(x-a\u2083) has a solution iff gcd(m\u1d62,m\u2c7c)\u2223(a\u1d62-a\u2c7c) for all pairs. Proves necessity (inherited), sufficiency via iterated 2-moduli reduction, and solution uniqueness modulo lcm(m\u2081,lcm(m\u2082,m\u2083)). 7 theorems, 0 axioms.",
+  "description": "Extends the non-coprime CRT from 2 to 3 moduli in any Euclidean domain: the system m\u2081\u2223(x-a\u2081), m\u2082\u2223(x-a\u2082), m\u2083\u2223(x-a\u2083) has a solution iff gcd(m\u1d62,m\u2c7c)\u2223(a\u1d62-a\u2c7c) for all pairs. Proves necessity (inherited), sufficiency via iterated 2-moduli reduction, and solution uniqueness modulo lcm(m\u2081,lcm(m\u2082,m\u2083)). 13 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -53,7 +53,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The 3-moduli non-coprime CRT is fully verified: solution exists iff pairwise GCD conditions hold, and is unique modulo lcm(m\u2081, lcm(m\u2082, m\u2083)). The GCD-LCM distributive law is proved by a 185-line direct B\u00e9zout decomposition with nested coprime factoring. 7 theorems, 391 lines, 0 axioms. Previously required 1 axiom, now axiom-free.",
+    "summary": "The 3-moduli non-coprime CRT is fully verified: solution exists iff pairwise GCD conditions hold, and is unique modulo lcm(m\u2081, lcm(m\u2082, m\u2083)). The GCD-LCM distributive law is proved by a 185-line direct B\u00e9zout decomposition with nested coprime factoring. 13 theorems, 391 lines, 0 axioms. Previously required 1 axiom, now axiom-free.",
     "implications": "This completes the non-coprime CRT hierarchy: 2-moduli (OQ02) and 3-moduli (OQ03) cases are both verified for all Euclidean domains. The proof technique \u2014 iterated 2-moduli reduction + GCD-LCM distributive law \u2014 generalizes to n moduli by induction. The distributive law proof also contributes independently: it verifies a classical lattice identity in the divisibility poset of Euclidean domains.",
     "openQuestions": [
       "Generalize to n moduli by induction: solvable iff all pairwise GCD conditions hold, unique mod lcm(m\u2081,...,m\u2099)",
