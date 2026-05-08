@@ -1,40 +1,52 @@
 # Current State
 
-**Phase**: REFLECT — Session 17 surfaced a foundational counterexample;
-the Session 17+ target stated in S16 was IMPOSSIBLE. The proof program
-now needs an architectural redirect (algorithm refinement, restricted
-target, or column-convention strategy).
+**Phase**: ACT — Path A chosen post-S17. S18 laid the foundation
+(`hgcdMatrixSafe` with runtime safety guard, det+gcd preserved);
+S19 wraps Path A as a verified GCD function `hgcdSafeGcd` with
+correctness `hgcdSafeGcd a b = Nat.gcd a b`.
 
 **Since**: 2026-05-01
-**Iteration**: 17
+**Iteration**: 19
 
 ## Current Focus
 
-PART XIV (Session 17, this session) introduces a `native_decide`-checked
-**counterexample** to the proposed all-fuel row-vector invariant.
+Session 19 wraps the Path A foundation (S18 — `hgcdMatrixSafe`) into
+an end-to-end verified GCD function `hgcdSafeGcd : ℕ → ℕ → ℕ` with
+correctness theorem `hgcdSafeGcd_eq_gcd a b = Nat.gcd a b` (0 sorries,
+0 axioms).
 
-The decided witness is at `(a, b) = (130, 89)` and `fuel = 5`:
-  * `hgcdMatrix 5 130 89 = ⟨-3, 5, 20, -33⟩` (det = -1, OddPattern).
-  * Row output at the input pair: `(1390, -2287)`.
-  * α-row magnitude `1390 > 2 · max 130 89 = 260`, AND β-row product
-    `-2287 < 0` (no natural-number witness possible).
+The construction is direct: apply `hgcdMatrixSafeOf a b` to `(a, b)`
+and take the `Int.gcd` of the column-output pair. Correctness reduces
+to `hgcdMatrixSafeOf_preserves_gcd` (S18) by unfolding `apply` and
+matching against the existing GCD-preservation theorem.
 
-This refutes both the Session 17+ target `hgcdMatrix_row_invariant`
-and (as a corollary) the recursive case of `hgcdMatrix_row_output_le`
-(line 1078). A computational survey on `(a, b) ∈ [64, 130) × [64, a]`
-finds 875/2211 ≈ 39.6% of pairs above threshold violate the row-output
-bound, with the worst case `(107, 85)` producing matrix entries on
-the order of `10^268` — catastrophic non-reduction. The Schönhage HGCD
-**as currently formalized** does not size-reduce on a substantial
-fraction of inputs above threshold.
+This closes the operational correctness story for Path A: even where
+the unguarded `hgcdMatrix` produces magnitude blowup (S17 PART XIV
+showed entries of order 10^268 at `(107, 85)`), the safer variant
+returns a unimodular matrix whose column-output GCD agrees with
+`Nat.gcd a b`. The runtime size-reduction guard does not need to
+fire correctly for THIS theorem to hold.
 
-PARTS XI–XIII (Sessions 14–16) remain mathematically valid: their
-theorems are unconditional truths, and `hgcdMatrix_entry_bound`
-(PART XIII) is correctly stated as conditional on row-vector
-witnesses — witnesses which this counterexample shows do not exist
-for general recursive inputs.
+Path A roadmap remaining (S20+):
 
-Status of the proof plan (Sessions 1–17):
+1. **S20 — `hgcdMatrixSafe_size_reduction` (positive form)**: prove
+   that on inputs `max a b ≥ hgcdThresholdSafe`, when the runtime
+   guard fires (compose branch), the column output strictly reduces.
+   The guard makes this provable structurally rather than via the
+   row-vector invariant lift (which S17 showed is FALSE for the
+   unguarded algorithm).
+
+2. **S21+ — recursive Schönhage-style GCD via iteration**: instead
+   of a single matrix application, iterate `hgcdMatrixSafe` on the
+   reduced pair until below threshold, then dispatch to `Nat.gcd`.
+   Termination needs the S20 size-reduction in the compose branch
+   plus a fallback handler for the abort branch.
+
+3. **Bit-complexity bound** (`O(M(n)·log n)`): genuinely blocked on
+   Mathlib (no fast multiplication, no bit-complexity model).
+   Documented; defer until Mathlib lands these.
+
+Status of the proof plan (Sessions 1–19):
 
 1. **Step 1** ✅ (S3, PR #14522): row-vector invariant for
    `lehmerCofactors`. PART V.5.
@@ -60,87 +72,85 @@ Status of the proof plan (Sessions 1–17):
    `entry_bound_of_pattern_det_natAbs`,
    `hgcdMatrix_small_entry_bound`. PART XII.
 9. **All-fuel pattern-det invariant + entry bound** ✅
-   (S16): `cofactor_mul_pattern_det_correlated`,
+   (S16, PR #17009): `cofactor_mul_pattern_det_correlated`,
    `hgcdMatrix_pattern_det_correlated`,
    `hgcdMatrixOf_pattern_det_correlated`,
    `hgcdMatrix_entry_bound`. PART XIII.
 10. **Counterexample to all-fuel row-vector invariant** ✅
-    (S17, this session): `hgcdMatrix_130_89_value`,
+    (S17, PR #17024): `hgcdMatrix_130_89_value`,
     `hgcdMatrix_130_89_row_alpha`,
     `hgcdMatrix_130_89_row_beta`,
     `hgcdMatrix_row_alpha_exceeds_max`,
     `hgcdMatrix_row_beta_negative`,
     `hgcdMatrix_row_invariant_counterexample`. PART XIV. The
     proposed Session 17+ target is FALSE under the current algorithm.
+11. **Path A foundation** ✅ (S18, PR #17042):
+    `hgcdMatrixSafe`, `hgcdMatrixSafeOf`, `hgcdMatrixSafe_det_unit`,
+    `hgcdMatrixSafe_preserves_gcd`,
+    `hgcdMatrixSafeOf_det_unit`,
+    `hgcdMatrixSafeOf_preserves_gcd`. New file
+    `BinaryGcdOQ03OQ02PathA.lean`. Algorithm refinement with
+    runtime size-reduction guard.
+12. **Path A verified GCD function** ✅ (S19, this session):
+    `hgcdSafeApply`, `hgcdSafeApply_gcd_eq`, `hgcdSafeGcd`,
+    `hgcdSafeGcd_eq_gcd`. Computational examples on the S17
+    counterexample family `(130, 89)` and worst-case `(107, 85)`.
+    PART VI–VII of `BinaryGcdOQ03OQ02PathA.lean`.
 
 **Open / Refuted**:
 - **Recursive case of `hgcdMatrix_row_output_le`** ❌ (line 1078,
-  sole remaining sorry): the statement is FALSE for `(a, b) =
-  (130, 89)`, where the α-row magnitude is `1390 > 130`. The
-  `sorry` cannot be discharged with the current algorithm
-  definition. Path forward (A/B/C) detailed below.
+  sole sorry in `BinaryGcdOQ03OQ02.lean`): refuted by S17 PART XIV
+  for the unguarded algorithm. Will not be closed; the path forward
+  is via Path A's `hgcdMatrixSafe` (now in `…PathA.lean`), where
+  size reduction holds by the runtime guard rather than by an
+  algebraic lift.
 
 Concurrently: bit-complexity claim O(M(n)·log n) remains genuinely
 blocked on Mathlib (no fast multiplication, no bit-complexity model).
 
 ## Active Approach
 
-**Three candidate paths** (Session 18+ requires choosing one):
+**Path A** (S18+ chosen direction). The algorithm `hgcdMatrixSafe`
+with a runtime size-reduction guard is the new implementation
+target. Operational correctness is now complete: S18 proved
+`hgcdMatrixSafe` is unimodular and preserves GCD; S19 wraps these
+into a total correct GCD function `hgcdSafeGcd` with theorem
+`hgcdSafeGcd a b = Nat.gcd a b`.
 
-**(A) Algorithm refinement.** Modify `hgcdMatrix` to add a
-size-reduction safety check: after computing `(u, v) =
-(M_inner.apply (a, b)).natAbs`, abort the recursive branch (return
-`M_inner` alone, or fall back to direct Lehmer accumulation) when
-`max u v ≥ max a b`. This matches GMP's `mpn_hgcd` and similar
-production HGCD implementations. Cost: re-prove `hgcdMatrix_det_unit`,
-`hgcdMatrix_preserves_gcd`, and the threshold infrastructure for the
-new definition. The row-vector invariant should then hold by
-construction (the safety check enforces residue monotonicity).
-
-**(B) Restricted size-reduction theorem.** Reformulate the size
-reduction to apply only on a "well-behaved" subset (e.g., Fibonacci-
-like quotient sequences where the algorithm naturally reduces).
-Document the restriction explicitly in the theorem hypotheses. Cost:
-formalize the "well-behaved" predicate; show how representative the
-restricted class is for cryptographic-sized inputs.
-
-**(C) Column-convention strategy.** Pursue size reduction directly
-via the column action `M.apply (a, b)`, sidestepping the row-vector
-invariant. The natural inductive structure
-`(M_outer.mul M_inner).apply (a, b) = M_outer.apply (M_inner.apply (a, b))`
-matches the algorithm's own dataflow: M_outer's natural inputs ARE
-the column-output of M_inner. Cost: re-derive entry bounds in column
-convention; the existing PART VI/VII infrastructure largely transfers.
+Remaining work for Path A:
+- (S20) Positive size-reduction: when guard fires (compose branch),
+  the column output strictly reduces.
+- (S21+) Iterate to obtain a recursive GCD with HGCD-style structure.
 
 ## Blockers
 
 * **Bit complexity (C)**: genuinely blocked on Mathlib infrastructure.
   Documented in `BinaryGcdOQ03OQ02.lean` PART VII; not a blocker on
-  (A) correctness or (B) size reduction.
+  Path A correctness or size reduction.
 
-* **Row-vector invariant** ❌ FALSE under current algorithm: refuted
-  by S17 PART XIV `hgcdMatrix_row_invariant_counterexample`. Cannot
-  be proved without changing the algorithm or restricting the input.
+* **Row-vector invariant for unguarded `hgcdMatrix`** ❌ FALSE under
+  the unguarded algorithm: refuted by S17 PART XIV. This sorry on
+  line 1078 will not be closed; Path A supersedes the row-vector
+  approach.
 
 ## Next Action
 
-1. **Session 18 — choice of path**: select among (A) algorithm
-   refinement, (B) restricted theorem, or (C) column-convention.
-   Recommendation: **(C) column-convention** is the cleanest given
-   that S15-S16 entry bounds already use natAbs; and the
-   `cofactor_mul_apply` chaining naturally handles the M_outer/M_inner
-   composition with M_outer's IH at its own inputs (u, v).
-2. **Session 19+ — execute selected path**: develop the column-
-   convention size-reduction proof (or the algorithm refinement, if
-   (A) is chosen).
+1. **Session 20 — positive size-reduction for compose branch**:
+   prove that when `hgcdMatrixSafe`'s runtime guard fires, the
+   resulting matrix's column output strictly reduces `max a b`.
+2. **Session 21+ — iterative HGCD-based GCD**: define a recursive
+   GCD function that iterates `hgcdMatrixSafe` until below threshold,
+   then dispatches to `Nat.gcd` for the base case.
 3. **Bit-complexity bound**: still blocked on Mathlib; defer.
 
 ## Attempt Counts
 
-- Total attempts: 17 (Sessions 1–17)
+- Total attempts: 19 (Sessions 1–19)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: Sessions 3–16
     proven correct as building blocks; the all-fuel row-vector
     invariant target was REFUTED by Session 17.
-  - Path forward (after S17 redirect): one of (A)/(B)/(C) above.
+  - Path A algorithm refinement (S18, S19): GCD-preservation
+    foundation laid (S18), verified GCD function (S19, this PR).
+  - Path A size reduction (S20+): not yet started.
