@@ -817,3 +817,112 @@ case AND any future n≥3 concrete triangulation.
 
 Total estimated remaining for `sperner_panchromatic_two`:
 ~280 lines across 3 sessions (S15 cuts ~30 from the S13 estimate of 350).
+
+
+## Session 2026-05-08 (Session 16) — Boundary-edge characterization scaffolding
+
+**Mode**: REVISIT (continuing axiom elimination work — phase REFINE)
+**Outcome**: progress — proved eight building-block lemmas for the
+`_hBoundaryOnFace` discharge of `Triangulation.boundary_doors_odd`
+
+### What I Did
+
+- Added a new `N2BoundaryAnalysis` section inside `SpernerFreudSimp`
+  (placed after `end SpernerLowerDimHelper`, the file's tail) with the
+  combinatorial scaffolding for boundary-edge analysis of the
+  Type-1/Type-2 simData2 triangulation.
+- Proved `t1_ne_t2`: for any `b c : ℕ × ℕ`, `t1 b ≠ t2 c` (because
+  `t1 b` always contains the smallest vertex `b`, while `t2 c` does
+  not). This is the key lemma that lets us count `containersOf`
+  cardinalities without overcounting.
+- Proved `diagonal_in_t1_iff (b c)`: the diagonal edge
+  `{(b.1, b.2+1), (b.1+1, b.2)}` is contained in `t1 c` iff `c = b`
+  (forward via `t1_unique_base`; reverse by direct unfold).
+- Proved `diagonal_in_t2_iff (b c)`: the same diagonal edge is
+  contained in `t2 c` iff `c = b` (case bash on the 9 vertex
+  matchings, omega closes each case).
+- Proved `horizontal_in_t2_pos b`: when `1 ≤ b.2`, the horizontal
+  edge `{b, (b.1+1, b.2)}` is in `t2 (b.1, b.2-1)` (the explicit
+  witness of which `t2` cell shares this edge).
+- Proved `vertical_in_t2_pos b`: when `1 ≤ b.1`, the vertical edge
+  `{b, (b.1, b.2+1)}` is in `t2 (b.1-1, b.2)`.
+- Proved `horizontal_not_in_t2_at_y0`: when `b.2 = 0`, no `t2 c`
+  contains the horizontal edge `{b, (b.1+1, b.2)}` (i.e., this edge
+  lies on the y=0 boundary of Δ²).
+- Proved `vertical_not_in_t2_at_x0`: dual of the above for `b.1 = 0`.
+- Proved `t2_face{0,1,2}_in_t1 b`: each of the three faces of `t2 b`
+  is contained in some `t1` cell — explicitly `t1 (b.1+1, b.2)`,
+  `t1 (b.1, b.2+1)`, and `t1 b` for faces 0, 1, 2 respectively. This
+  closes the question "do t2 cells contribute boundary doors?" with
+  a definitive *no*.
+
+### Key Mathematical Findings
+
+- **t1/t2 boundary asymmetry**: every face of every `t2 b` cell is
+  shared with a `t1` cell. So all `adj = none` boundary doors come
+  from `t1 b` cells. This dramatically simplifies `_hBoundaryOnFace`:
+  the case analysis reduces to t1 cells alone (3 face indices
+  × 3 boundary conditions = 9 sub-cases, of which only 3 produce
+  `adj = none`).
+- **Face-to-Δ²-face mapping for t1 boundary doors** (assembled from
+  the eight S16 lemmas, ready for the S17 `_hBoundaryOnFace` proof):
+  - t1(b), face 0 (drops smallest vertex `b`): `adj = none` iff
+    `b.1 + b.2 + 1 ≥ N` (i.e., `b ∉ t2Bases`). Boundary face index
+    in Δ² is **2** (kept vertices have b₀+b₁ summing to N, so third
+    barycentric coord = 0).
+  - t1(b), face 1 (drops middle vertex `(b.1, b.2+1)`): `adj = none`
+    iff `b.2 = 0`. Boundary face index in Δ² is **1**.
+  - t1(b), face 2 (drops largest vertex `(b.1+1, b.2)`): `adj = none`
+    iff `b.1 = 0`. Boundary face index in Δ² is **0**.
+
+  Note the index-flip: simplex-face 0 → Δ²-face 2, simplex-face 2
+  → Δ²-face 0. This is because lex-sorting puts `b` first, but the
+  geometric "third barycentric coordinate is zero" condition holds
+  on the *opposite* face (which removes `b`).
+
+- **`diagonal_in_t1_iff` vs `t1_unique_base`**: the existing
+  `t1_unique_base` requires both `{u,v} ⊆ t1 b` and
+  `{u,v} ⊆ t1 c` as inputs and gives `b = c`. My new lemma is the
+  iff form against a *fixed* diagonal, exposing the easier
+  characterization: `c = b` directly. The proof first builds the
+  membership `{(b.1, b.2+1), (b.1+1, b.2)} ⊆ t1 b` for the
+  fixed-diagonal side, then applies `t1_unique_base`.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean`
+  (+~170 lines at end of file, after `end SpernerLowerDimHelper`)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (iter 16)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+
+### Build Status
+
+Docker build not run this session: same `.lake` recursive-symlink
+constraint as S14/S15 (~25–45 min fresh-clone of Mathlib + cache).
+Additions are mechanical case-bash + omega: each lemma is either
+direct unfold + `simp only [Finset.mem_insert, Finset.mem_singleton,
+Prod.mk.injEq]` + `omega`, or a 9-case `rcases` with `omega`. The
+patterns mirror `t1_unique_base` / `t2_unique_base` (already merged
+in S11 and confirmed compiling). CI is the ground truth for the PR.
+
+### Next Steps (Session 17+)
+
+1. **Complete `_hBoundaryOnFace` for the n=2 case** using the S16
+   building blocks:
+   - Express `simData2.toTriangulation.adj ⟨t1 b, _⟩ k = none` in
+     terms of `(simData2 N).containersOf` cardinality = 1.
+   - For each face-index k ∈ {0,1,2}, determine the boundary
+     condition on b and the corresponding Δ²-face index. Use the
+     S16 lemmas to enumerate possible containers and rule out the
+     non-self ones in the boundary case.
+   - Assemble the existential
+     `∃ faceIdx, ∀ j ≠ k → onFaceΔ2_strict (vertex s j) faceIdx`.
+   ~50–80 lines.
+2. **Prove `_hLastFace`** (face 2 boundary doors, hardest piece):
+   bijection with `face2_path_odd`'s color-changing edges. ~150 lines.
+3. **Apply `Triangulation.sperner`** and extract real-coordinate
+   witnesses with diameter ≤ 2/N. ~50 lines.
+
+Total estimated remaining for `sperner_panchromatic_two`:
+~250 lines across 2-3 sessions (S16 cuts ~30 from the S15 estimate
+of 280).
