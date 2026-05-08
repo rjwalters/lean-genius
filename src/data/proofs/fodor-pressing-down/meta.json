@@ -49,25 +49,60 @@
   },
   "sections": [
     {
-      "id": "club-sets",
-      "title": "Club and Stationary Set Infrastructure",
-      "startLine": 39,
-      "endLine": 86,
-      "summary": "Defines IsUnboundedBelow (cofinal below o), IsClubBelow (structure: closed and unbounded), IsStationaryBelow (meets every club). Basic lemmas: IsClubBelow.mem_lt, mem_of_isAcc, isClubBelow_Iio_of_isSuccLimit. These are missing from Mathlib."
+      "id": "header-docstring",
+      "title": "Header: Mathematical Context, References, and Proof Strategy",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring stating Fodor's lemma (regressive functions on stationary sets of regular uncountable \u03ba are constant on a stationary subset), citing Fodor (1956), Jech (2003) Theorem 8.7, and Kunen (2011) Theorem II.6.15, listing the new infrastructure built (IsUnboundedBelow / IsClubBelow / IsStationaryBelow / diagInter / fodor), and sketching the diagonal-intersection proof strategy."
     },
     {
-      "id": "diagonal-intersection",
-      "title": "Diagonal Intersection Definition and Properties",
-      "startLine": 87,
-      "endLine": 258,
-      "summary": "Defines diagInter f o = {\u03b3 < o | \u2200 \u03b1 < \u03b3, \u03b3 \u2208 f \u03b1}. Lemmas: mem_diagInter (iff characterization), diagInter_subset_Iio (stays below o), diagInter_isClosedBelow (closure from closedness of each f \u03b1), diagInter_isUnboundedBelow (zipper construction), diagInter_isClubBelow (main: diagonal intersection of clubs is a club)."
+      "id": "part-i-club",
+      "title": "Part I: Club and Stationary Set Infrastructure",
+      "startLine": 43,
+      "endLine": 80,
+      "summary": "Defines IsUnboundedBelow (cofinal below o), the structure IsClubBelow with three fields (subset_Iio, closed, unbounded), and IsStationaryBelow (meets every club). Helper lemmas: IsClubBelow.mem_lt, IsClubBelow.mem_of_isAcc, isClubBelow_Iio_of_isSuccLimit. None of these are in Mathlib as of 2026-04."
     },
     {
-      "id": "fodors-lemma",
-      "title": "Fodor's Pressing-Down Lemma",
-      "startLine": 259,
-      "endLine": 386,
-      "summary": "fodor: main theorem for regular uncountable \u03ba. fodor_aleph1: corollary for \u03ba = \u2135\u2081. Additional lemmas: IsStationaryBelow.nonempty, IsStationaryBelow.of_subset."
+      "id": "part-ii-diaginter",
+      "title": "Part II: Diagonal Intersection Definition",
+      "startLine": 82,
+      "endLine": 96,
+      "summary": "Defines diagInter f o = {\u03b3 | \u03b3 < o \u2227 \u2200 \u03b2 < \u03b3, \u03b3 \u2208 f \u03b2}. Provides the iff-characterization mem_diagInter (tagged @[simp]) and the obvious subset lemma diagInter_subset_Iio. The asymmetric quantifier over \u03b2 < \u03b3 (rather than all \u03b2 < o) is what distinguishes diagonal from ordinary intersection."
+    },
+    {
+      "id": "part-iii-club-club",
+      "title": "Part III: Diagonal Intersection of Clubs Is a Club",
+      "startLine": 98,
+      "endLine": 247,
+      "summary": "The technical heart of the proof. diagInter_isClosedBelow shows closure (\u03b3 an acc point of the diagonal intersection \u27f9 \u03b3 \u2208 f \u03b2 for each \u03b2 < \u03b3 via accumulation through f \u03b2). diagInter_isUnboundedBelow uses the zipper construction (build a strictly increasing \u03c9-sequence with seq(n+1) inside f(seq(n)); regularity of \u03ba keeps it bounded; the limit lies in every f(\u03b2) below it). diagInter_isClubBelow combines them."
+    },
+    {
+      "id": "part-iv-fodor",
+      "title": "Part IV: Fodor's Pressing-Down Lemma",
+      "startLine": 249,
+      "endLine": 313,
+      "summary": "fodor: for regular uncountable \u03ba, stationary S \u2286 \u03ba.ord, regressive f : Ordinal \u2192 Ordinal with f(\u03b1) < \u03b1 and f(\u03b1) < \u03ba.ord on S, \u2203 c < \u03ba.ord with S \u2229 f\u207b\u00b9{c} stationary. Proof by contradiction: if no fiber is stationary, choose clubs C_\u03b2 avoiding each S \u2229 f\u207b\u00b9{\u03b2}, form D = \u0394(C_\u03b2), find \u03b3 \u2208 S \u2229 D, derive \u03b3 \u2208 C_{f(\u03b3)} from membership in D, contradict the choice of C_{f(\u03b3)}."
+    },
+    {
+      "id": "part-v-aleph1",
+      "title": "Part V: Specialization to \u2135\u2081",
+      "startLine": 316,
+      "endLine": 327,
+      "summary": "fodor_aleph1: the canonical \u2135\u2081 instance of Fodor \u2014 every regressive f on a stationary subset of \u03c9\u2081 = (\u2135\u2081).ord is constant on a stationary subset. Discharged by applying `fodor` to `isRegular_aleph_one` and `aleph0_lt_aleph_one`."
+    },
+    {
+      "id": "part-vi-helpers",
+      "title": "Part VI: Subsidiary Stationary-Set Lemmas",
+      "startLine": 329,
+      "endLine": 348,
+      "summary": "IsStationaryBelow.nonempty: stationary sets are nonempty (intersect with the club Iio o at limit ordinals). IsStationaryBelow.of_subset: stationarity transfers to a subset T \u2286 S provided every club meeting S also meets T. These are utility lemmas for downstream applications."
+    },
+    {
+      "id": "summary-docstring",
+      "title": "Trailing Summary: Infrastructure Inventory and Parent Connection",
+      "startLine": 350,
+      "endLine": 385,
+      "summary": "Final docstring inventorying the new infrastructure (IsClubBelow / IsStationaryBelow / diagInter and the four key results), confirming 0 sorries, and stating the connection to the parent CantorDiagonalizationOQ02OQ03 (the parent's no-enumeration result follows from Fodor: any sub-\u03ba enumeration of \u03ba.ord ordinals would yield an injective regressive function, which Fodor blocks)."
     }
   ],
   "conclusion": {
@@ -82,6 +117,11 @@
     ]
   },
   "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Direct parent: the trailing docstring of FodorPressingDown.lean explicitly identifies CantorDiagonalizationOQ02OQ03 as the entry whose no-enumeration result Fodor's lemma supplies. Any sub-κ enumeration of ordinals < κ.ord would be an injective regressive function on a stationary set, which Fodor's lemma prevents."
+    },
     {
       "targetId": "continuum-hypothesis",
       "relationship": "related",
@@ -165,6 +205,20 @@
       "title": "Mathlib.SetTheory.Ordinal.Topology",
       "venue": "Mathlib4",
       "note": "The closest existing Mathlib analogue to this entry's club/stationary/diagInter infrastructure. A direct upstream contribution would extend this module."
+    },
+    {
+      "author": "Kunen, K.",
+      "year": 2011,
+      "title": "Set Theory",
+      "venue": "Studies in Logic and the Foundations of Mathematics, College Publications, Theorem II.6.15",
+      "note": "Self-contained graduate text whose Theorem II.6.15 is precisely Fodor's pressing-down lemma; the proof structure (diagonal intersection of fiber-avoiding clubs, then derive contradiction at any γ in the diagonal) matches this entry verbatim. Cited explicitly in the file's header docstring."
+    },
+    {
+      "author": "Shelah, S.",
+      "year": 1998,
+      "title": "Proper and Improper Forcing",
+      "venue": "Perspectives in Logic, Springer, 2nd ed., Chapter III",
+      "note": "Foundational reference for proper-forcing arguments where Fodor's lemma is wielded routinely (proper forcing preserves stationary subsets of ω₁). The 'normality of the club filter' framing in keyInsights[6] traces back to the perspective on Fodor used throughout this monograph."
     }
   ],
   "leanFile": {

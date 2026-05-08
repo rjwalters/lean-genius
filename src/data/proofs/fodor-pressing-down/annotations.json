@@ -2,10 +2,10 @@
   {
     "id": "ann-club",
     "proofId": "fodor-pressing-down",
-    "range": { "startLine": 39, "endLine": 86 },
+    "range": { "startLine": 43, "endLine": 80 },
     "type": "definition",
     "title": "Club and Stationary Sets: Set-Theoretic Infrastructure",
-    "content": "IsClubBelow S o is a structure with two fields: mem_lt (S ⊆ Iio o — bounded below o) and mem_of_isAcc (S is closed: every accumulation point of S below o is in S). IsUnboundedBelow S o says S is cofinal below o. IsClubBelow requires both closedness AND unboundedness. IsStationaryBelow S o says S meets every club below o. These definitions formalize concepts missing from Mathlib's set theory library.",
+    "content": "IsUnboundedBelow S o says S is cofinal below o. IsClubBelow S o is a `structure` with three fields — `subset_Iio : S ⊆ Iio o`, `closed : IsClosedBelow S o`, and `unbounded : IsUnboundedBelow S o` — i.e. a club is bounded below o, closed under accumulation points, and cofinal. The helper theorems IsClubBelow.mem_lt (membership ⟹ < o, derived from subset_Iio) and IsClubBelow.mem_of_isAcc (an accumulation point in Iio o is in S, derived from closed) reproduce the conventional 'closed unbounded' API. IsStationaryBelow S o says S meets every club below o. The standalone lemma isClubBelow_Iio_of_isSuccLimit witnesses that `Iio o` is itself a club whenever o is a successor-limit (used by IsStationaryBelow.nonempty in Part VI).",
     "mathContext": "$S$ is a **club** (closed unbounded set) below $o$ if: (1) $S \\subseteq \\{\\alpha < o\\}$, (2) every limit ordinal $\\gamma < o$ with $\\sup(S \\cap \\gamma) = \\gamma$ satisfies $\\gamma \\in S$, (3) $S$ is cofinal in $o$. $S$ is **stationary** below $o$ if $S \\cap C \\neq \\emptyset$ for every club $C$ below $o$.",
     "significance": "key",
     "relatedConcepts": ["club filter", "stationary set", "closed unbounded", "ordinal accumulation point"],
@@ -14,7 +14,7 @@
   {
     "id": "ann-diag-inter",
     "proofId": "fodor-pressing-down",
-    "range": { "startLine": 87, "endLine": 107 },
+    "range": { "startLine": 82, "endLine": 96 },
     "type": "definition",
     "title": "Diagonal Intersection: The Key Tool",
     "content": "diagInter f o = {γ ∈ Iio o | ∀ α < γ, γ ∈ f α}. Unlike ordinary intersection which requires γ ∈ f(α) for ALL α, the diagonal intersection only requires γ ∈ f(α) for those α BELOW γ — this respects the ordinal order. Intuitively, γ 'knows' about f(α) only for α that came before it. The iff characterization mem_diagInter and the subset lemma diagInter_subset_Iio are proved first.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-diag-club",
     "proofId": "fodor-pressing-down",
-    "range": { "startLine": 108, "endLine": 258 },
+    "range": { "startLine": 98, "endLine": 247 },
     "type": "technique",
     "title": "Diagonal Intersection of Clubs Is a Club: Zipper Construction",
     "content": "diagInter_isClubBelow proves the key set-theoretic fact: if f(α) is a club below κ for every α < κ (κ regular uncountable), then diagInter f κ is a club. Two-part proof: (1) diagInter_isClosedBelow: if γ is an accumulation point of Δ(f) below κ, then for each α < γ, γ is also an accumulation point of f(α), so γ ∈ f(α) by closedness of f(α). (2) diagInter_isUnboundedBelow: the 'zipper' argument — given any δ < κ, build an increasing sequence δ < γ_0 < γ_1 < ... where γ_{n+1} is the least element of f(γ_n) above γ_n. By regularity of κ, this sequence is bounded, and the supremum γ_ω lies in every f(α) for α < γ_ω.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-fodor",
     "proofId": "fodor-pressing-down",
-    "range": { "startLine": 259, "endLine": 333 },
+    "range": { "startLine": 249, "endLine": 313 },
     "type": "insight",
     "title": "Fodor's Lemma: Proof by Diagonal Intersection",
     "content": "fodor proves: for regular uncountable κ, stationary S ⊆ κ.ord, and regressive f (f(α) < α for α ∈ S): ∃ β, f⁻¹(β) ∩ S is stationary. By contradiction: if no f⁻¹(β) ∩ S is stationary, choose clubs C_β with C_β ∩ f⁻¹(β) ∩ S = ∅. Form D = Δ_{β<κ}(C_β) (a club by diagInter_isClubBelow). Take γ ∈ S ∩ D (nonempty since S is stationary and D is a club). Since f is regressive, β = f(γ) < γ, so γ ∈ C_β (because γ ∈ D = Δ C and β < γ). But then f(γ) = β ∈ C_β ∩ f⁻¹(β) ∩ S — contradiction.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-aleph1",
     "proofId": "fodor-pressing-down",
-    "range": { "startLine": 320, "endLine": 333 },
+    "range": { "startLine": 316, "endLine": 327 },
     "type": "context",
     "title": "Fodor's Lemma for ℵ₁: The Canonical Application",
     "content": "fodor_aleph1 specializes to κ = ℵ₁: any regressive function on a stationary subset of ω₁ is constant on some stationary subset. This is the most commonly used instance in descriptive set theory, forcing arguments, and the study of ω₁-trees. The ℵ₁ corollary is what most textbooks call 'Fodor's Lemma' without qualification.",
