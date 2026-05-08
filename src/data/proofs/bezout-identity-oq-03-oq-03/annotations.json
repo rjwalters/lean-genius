@@ -4,7 +4,7 @@
     "proofId": "bezout-identity-oq-03-oq-03",
     "range": {
       "startLine": 1,
-      "endLine": 37
+      "endLine": 30
     },
     "type": "context",
     "title": "Header, Imports, and the Multi-Variable Solvability Goal",
@@ -27,8 +27,8 @@
     "id": "bzoq03oq03-ann-02",
     "proofId": "bezout-identity-oq-03-oq-03",
     "range": {
-      "startLine": 38,
-      "endLine": 56
+      "startLine": 32,
+      "endLine": 50
     },
     "type": "definition",
     "title": "gcdFin: The Recursive GCD of a Finite Family",
@@ -51,8 +51,8 @@
     "id": "bzoq03oq03-ann-03",
     "proofId": "bezout-identity-oq-03-oq-03",
     "range": {
-      "startLine": 57,
-      "endLine": 89
+      "startLine": 52,
+      "endLine": 79
     },
     "type": "technique",
     "title": "gcdFin_dvd: GCD Divides Each Element",
@@ -76,8 +76,8 @@
     "id": "bzoq03oq03-ann-04",
     "proofId": "bezout-identity-oq-03-oq-03",
     "range": {
-      "startLine": 90,
-      "endLine": 138
+      "startLine": 81,
+      "endLine": 125
     },
     "type": "technique",
     "title": "bezout_multivar: Existential Witness via Two-Variable Bézout",
@@ -101,8 +101,8 @@
     "id": "bzoq03oq03-ann-05",
     "proofId": "bezout-identity-oq-03-oq-03",
     "range": {
-      "startLine": 139,
-      "endLine": 161
+      "startLine": 127,
+      "endLine": 169
     },
     "type": "insight",
     "title": "diophantine_criterion: The Main Theorem",
@@ -120,6 +120,30 @@
       "gcdFin_dvd, bezout_multivar (this file)",
       "Finset.sum properties",
       "ℤ as a PID"
+    ]
+  },
+  {
+    "id": "bzoq03oq03-ann-06",
+    "proofId": "bezout-identity-oq-03-oq-03",
+    "range": {
+      "startLine": 171,
+      "endLine": 185
+    },
+    "type": "context",
+    "title": "Three Worked Examples — solvable, unsolvable, parametric",
+    "content": "Three machine-checked illustrations of the criterion. **Example 1** ($4x + 6y + 9z = 1$): solvable because $\\gcd(4,6,9) = \\gcd(\\gcd(4,6),9) = \\gcd(2,9) = 1$ and $1 \\mid 1$; the witness $(x,y,z) = (1,-1,1)$ is checked by `ring`. The header comment's parenthetical 'has no solution… wait, yes it does!' is intentional — it dramatizes the contrast with Example 2. **Example 2** ($4x + 6y = 5$): unsolvable because $\\gcd(4,6) = 2 \\nmid 5$. The proof is a single `omega` call: from any candidate solution Lean derives $5 = 4x + 6y = 2(2x + 3y)$, hence $2 \\mid 5$, contradiction. This is a textbook demonstration that the criterion's necessary direction has algorithmic content (just check $\\gcd \\mid d$). **Example 3** ($6x + 10y + 15z = d$): solvable for *every* $d \\in \\mathbb{Z}$ because $\\gcd(6,10,15) = 1$. The witness exhibits the explicit Bézout combination $6 \\cdot 16 + 10 \\cdot (-8) + 15 \\cdot (-1) = 1$ scaled by $d$ — a concrete instance of the ⟸ direction's `xᵢ = yᵢ · k` construction. Together these three cases span the diagnostic landscape of the criterion: trivial solvability, structural unsolvability, and universal solvability via Bézout-coefficient scaling.",
+    "mathContext": "Diagnostic uses of the criterion: (1) solvable for d=1 ⟺ $\\gcd = 1$ (the equation generates the whole ideal $\\mathbb{Z}$); (2) unsolvable when $\\gcd \\nmid d$; (3) universally solvable (every $d$) ⟺ $\\gcd = 1$, with the explicit witness obtained by scaling a primitive Bézout combination.",
+    "significance": "context",
+    "relatedConcepts": [
+      "omega tactic for ℤ-linear divisibility",
+      "Bézout coefficients (4·1 + 6·(-1) + 9·1 = 1, 6·16 + 10·(-8) + 15·(-1) = 1)",
+      "ideal coprimality (gcd = 1 ⟺ universal solvability)",
+      "algorithmic content of necessity"
+    ],
+    "prerequisites": [
+      "ring tactic (witness verification)",
+      "omega tactic (linear arithmetic over ℤ)",
+      "diophantine_criterion (this file)"
     ]
   }
 ]

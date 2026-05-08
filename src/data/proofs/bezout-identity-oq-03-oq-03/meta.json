@@ -24,44 +24,52 @@
         "assumptions": ""
     },
     "overview": {
-        "historicalContext": "Bézout's identity states that for any integers $a$ and $b$, there exist integers $x$ and $y$ with $ax + by = \\gcd(a,b)$. This was extended to multiple variables by 19th century number theorists: for integers $a_1,\\ldots,a_n$, there exist $x_1,\\ldots,x_n$ with $\\sum a_i x_i = \\gcd(a_1,\\ldots,a_n)$. The solvability criterion then says $\\sum a_i x_i = d$ has integer solutions if and only if $\\gcd(a_1,\\ldots,a_n) \\mid d$. This generalizes the two-variable case proved in bezout-identity-oq-03 using the CRT structure.",
+        "historicalContext": "The two-variable identity $ax + by = \\gcd(a,b)$ appears in Claude-Gaspard Bachet de Méziriac's 1624 *Problèmes plaisans et délectables* (in connection with weighing problems and Diophantine games), which is why the result is sometimes called the Bachet–Bézout identity. Étienne Bézout's 1779 *Théorie générale des équations algébriques* extended the underlying linear-combination viewpoint and is the source of the modern attribution. The multi-variable form $\\sum_i a_i x_i = \\gcd(a_1,\\ldots,a_n)$ is a routine induction from the binary case but did not receive its own published statement until the abstract ideal-theoretic reformulation (Dedekind, Kronecker, late 19th c.): in modern language it is the statement that $\\langle a_1, \\ldots, a_n \\rangle = \\gcd(a_1,\\ldots,a_n) \\cdot \\mathbb{Z}$, i.e. $\\mathbb{Z}$ is a principal ideal domain *constructively*. The solvability criterion ($\\sum a_i x_i = d$ has integer solutions iff $\\gcd(a_1,\\ldots,a_n) \\mid d$) is the standard textbook conclusion drawn from the multi-variable identity. This entry's contribution is a from-scratch Lean 4 formalization that builds the n-variable identity by explicit induction on $n$, calling Mathlib's two-variable `Int.gcd_eq_gcd_ab` at each step — directly mirroring the textbook argument and making the constructive content (the algorithm for the Bézout coefficients) plain in the proof term.",
         "problemStatement": "For integers $a_1,\\ldots,a_n$ and $d$, the linear Diophantine equation $a_1 x_1 + a_2 x_2 + \\cdots + a_n x_n = d$ has integer solutions $(x_1,\\ldots,x_n)$ if and only if $\\gcd(a_1,\\ldots,a_n) \\mid d$.",
         "proofStrategy": "Define `gcdFin : (Fin n → ℤ) → ℕ` by induction: `gcdFin(a) = Nat.gcd(gcdFin(a ∘ castSucc), a(last n).natAbs)`. Then: (1) Show `gcdFin` divides each element by induction. (2) Prove multi-variable Bézout: ∃ x with ∑ aᵢxᵢ = gcdFin(a), by induction: the IH gives y with ∑ aᵢyᵢ = g, then two-variable Bézout gives g·u + aₙ·v = gcdFin(a), so xᵢ = yᵢ·u and xₙ = v works. (3) The solvability criterion: ⟹ gcd divides each aᵢ hence any linear combination; ⟸ scale the Bézout combination by k where d = gcd·k.",
         "keyInsights": [
             "The inductive structure of gcdFin mirrors the binary operation structure: gcd(a₁,...,aₙ) = gcd(gcd(a₁,...,aₙ₋₁), aₙ), allowing the two-variable Int.gcd_eq_gcd_ab to be applied at each step.",
             "The key step in the induction: if ∑ᵢ<n aᵢyᵢ = g (by IH) and g·u + aₙ·v = gcd(g,aₙ) (by two-variable Bézout), then ∑ᵢ<n aᵢ(yᵢ·u) + aₙ·v = g·u + aₙ·v = gcd(a₁,...,aₙ).",
             "This is the same CRT structure used in bezout-identity-oq-03-oq-01-oq-01 for the ring isomorphism ℤ/(m₁···mₙ)ℤ ≅ ∏ ℤ/mᵢℤ — both decompose a multi-way structure into binary steps.",
-            "The ℕ/ℤ conversion in gcdFin requires care: (↑g : ℤ).natAbs = g for g : ℕ (by Int.natAbs_ofNat), bridging the gap between Nat.gcd and Int.gcd."
+            "The ℕ/ℤ conversion in gcdFin requires care: (↑g : ℤ).natAbs = g for g : ℕ (by Int.natAbs_ofNat), bridging the gap between Nat.gcd and Int.gcd.",
+            "The proof's term content is exactly the standard textbook algorithm: iterating the two-variable extended Euclidean algorithm n−1 times produces the n-variable Bézout coefficients. The recursion in `bezout_multivar` is structurally identical to the one in `Fin.sum_univ_castSucc`, which is what makes the verification step a single `linarith` after `Finset.sum_mul`. In other words, the existence proof here is a (noncomputable but content-faithful) refinement of an extended-GCD program."
         ]
     },
     "sections": [
         {
             "id": "gcd-definition",
-            "title": "gcdFin: GCD of a Finite Family",
-            "startLine": 38,
-            "endLine": 53,
-            "summary": "Defines `gcdFin : (Fin n → ℤ) → ℕ` by induction on n: gcdFin([]) = 0, gcdFin(a :: rest) = Nat.gcd(gcdFin(rest), a.natAbs). Helper `gcdFin_eq_int_gcd` connects this to `Int.gcd` via `Int.natAbs_ofNat`."
+            "title": "Part 1: gcdFin — GCD of a Finite Family",
+            "startLine": 32,
+            "endLine": 50,
+            "summary": "Defines `gcdFin : (Fin n → ℤ) → ℕ` by induction on n: gcdFin([]) = 0 (via `Fin.elim0`), gcdFin(a) = Nat.gcd(gcdFin(a ∘ castSucc), (a (last n)).natAbs). Helper lemmas: `gcdFin_zero` and `gcdFin_succ` (rfl-unfoldings) and `gcdFin_eq_int_gcd` connecting to Mathlib's `Int.gcd` via `Int.natAbs_ofNat`."
         },
         {
             "id": "gcd-divides",
-            "title": "gcdFin_dvd: GCD Divides Each Element",
-            "startLine": 59,
-            "endLine": 82,
-            "summary": "By induction: for last element, case split on sign of aₙ and use Nat.gcd_dvd_right. For earlier elements, use Nat.gcd_dvd_left and the induction hypothesis. Handles ℕ → ℤ conversion by sign case split."
+            "title": "Part 2: gcdFin_dvd — GCD Divides Each Element",
+            "startLine": 52,
+            "endLine": 79,
+            "summary": "By induction on n with `Fin.lastCases` split on i. **Last element**: `Nat.gcd_dvd_right` gives gcdFin ∣ |aₙ| in ℕ; cast back to ℤ by sign case split (`Int.natAbs_eq`) on aₙ. **Earlier elements**: `Nat.gcd_dvd_left` gives gcdFin ∣ gcdFin(a ∘ castSucc); transitivity with the induction hypothesis closes the goal."
         },
         {
             "id": "bezout-multivar",
-            "title": "bezout_multivar: Multi-Variable Bézout",
-            "startLine": 88,
-            "endLine": 128,
-            "summary": "By induction: IH gives y with ∑ a(castSucc i) * y i = g. Two-variable Bézout (Int.gcd_eq_gcd_ab) gives u, v with g*u + aₙ*v = gcd(g, aₙ) = gcdFin(a). Solution: x(castSucc i) = y i * u, x(last) = v. Verification uses Fin.sum_univ_castSucc and Finset.sum_mul."
+            "title": "Part 3: bezout_multivar — Multi-Variable Bézout",
+            "startLine": 81,
+            "endLine": 125,
+            "summary": "Existential witness for ∑ aᵢxᵢ = gcdFin(a). By induction: IH gives y with ∑ a(castSucc i) · y i = g (= gcdFin of first n elements). Two-variable Bézout (`Int.gcd_eq_gcd_ab`) gives u, v with g·u + aₙ·v = Int.gcd(g, aₙ) = gcdFin(a). Solution constructed via `Fin.lastCases v (fun i => y i * u)`. Verification uses `Fin.sum_univ_castSucc` (split last element off the sum) and `Finset.sum_mul` (factor u out of the sum)."
         },
         {
             "id": "diophantine-criterion",
-            "title": "diophantine_criterion: Main Theorem",
-            "startLine": 134,
-            "endLine": 158,
-            "summary": "⟹: gcd ∣ each aᵢ (by gcdFin_dvd), so gcd ∣ ∑ aᵢxᵢ = d by dvd_sum and dvd_mul. ⟸: d = gcd·k, take xᵢ = yᵢ·k where y is the Bézout combination. Verification: ∑ aᵢ(yᵢ·k) = (∑ aᵢyᵢ)·k = gcd·k = d."
+            "title": "Part 4: diophantine_criterion — Main Theorem",
+            "startLine": 127,
+            "endLine": 155,
+            "summary": "Biconditional ∃ x, ∑ aᵢxᵢ = d  ⟺  gcdFin(a) ∣ d. ⟹: gcdFin ∣ each aᵢ (by `gcdFin_dvd`), so gcdFin ∣ ∑ aᵢxᵢ = d via `dvd_sum` + `dvd_mul_of_dvd_left`. ⟸: write d = gcdFin · k; scale the Bézout combination y to xᵢ = yᵢ · k; verify ∑ aᵢ(yᵢ·k) = (∑ aᵢyᵢ)·k = gcdFin·k = d."
+        },
+        {
+            "id": "corollaries-examples",
+            "title": "Part 5: Corollaries and Worked Examples",
+            "startLine": 157,
+            "endLine": 185,
+            "summary": "Two corollaries (`gcd_dvd_of_solvable`, `solvable_of_gcd_dvd`) extract the two directions of the biconditional for clients that need only one half. Three machine-checked worked examples illustrate the criterion: (1) 4x+6y+9z=1 is solvable since gcd(4,6,9)=1 (witness 1,−1,1); (2) 4x+6y=5 has no integer solution since gcd(4,6)=2∤5 (proven by `omega`); (3) 6x+10y+15z=d is universally solvable since gcd(6,10,15)=1 (witness scales the identity 6·16+10·(−8)+15·(−1)=1 by d)."
         }
     ],
     "conclusion": {
@@ -74,22 +82,22 @@
     },
     "crossReferences": [
         {
-            "id": "bezout-identity-oq-03",
+            "targetId": "bezout-identity-oq-03",
             "relationship": "parent",
             "description": "BezoutIdentityOQ03 proves the two-variable CRT via Bézout; this entry generalizes to n variables by repeatedly invoking the two-variable Int.gcd_eq_gcd_ab."
         },
         {
-            "id": "bezout-identity-oq-03-oq-01-oq-01",
+            "targetId": "bezout-identity-oq-03-oq-01-oq-01",
             "relationship": "sibling",
             "description": "BezoutIdentityOQ03OQ01OQ01 proves the k-fold CRT ring isomorphism; same inductive binary-decomposition pattern from two-variable to n-variable."
         },
         {
-            "id": "bezout-identity",
+            "targetId": "bezout-identity",
             "relationship": "ancestor",
             "description": "Root Bézout identity entry. The general principle that ℤ is a PID, made constructive and computable, originates here."
         },
         {
-            "id": "gcd-algorithm",
+            "targetId": "gcd-algorithm",
             "relationship": "related",
             "description": "Euclidean / extended-Euclidean GCD computation. The Bézout coefficients (u, v) used in the inductive step come from this constructive algorithm."
         }
