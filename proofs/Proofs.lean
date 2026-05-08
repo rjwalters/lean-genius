@@ -10,6 +10,7 @@ import Proofs.AbelRuffiniGaloisExtensions
 import Proofs.AbelRuffiniGaloisExtensionsOQ04
 import Proofs.AbelRuffiniGaloisExtensionsOQ05
 import Proofs.AbelRuffiniGaloisExtensionsOQ05OQ01
+import Proofs.AbelRuffiniGaloisExtensionsOQ07
 import Proofs.AbelRuffiniOQ10
 import Proofs.AbelRuffiniOQ04
 import Proofs.AbelRuffiniOQ04OQ01
