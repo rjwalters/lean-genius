@@ -22,7 +22,7 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 12,
+    "sorries": 14,
     "erdosNumber": 628,
     "erdosUrl": "https://erdosproblems.com/628",
     "erdosProblemStatus": "open",
@@ -55,7 +55,7 @@
     ],
     "axiomCount": 4,
     "lineCount": 246,
-    "assumptions": "4 axioms and 12 sorries (2 sorry-typed parameters on line 209, 10 theorem/proof sorries). The 2 type-annotation sorries on line 209 (hC₁_cycle : sorry) (hC₂_cycle : sorry) were previously miscounted as 1.",
+    "assumptions": "4 axioms and 14 sorries (aggregate): 12 in main file (2 sorry-typed parameters on line 209, 10 theorem/proof sorries) + 2 in Erdos628ProblemAristotle.lean. The 2 type-annotation sorries on line 209 (hC₁_cycle : sorry) (hC₂_cycle : sorry) were previously miscounted as 1.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 12
@@ -229,5 +229,5 @@
       "Proofs/GraphCore.lean"
     ]
   },
-  "sorries": 12
+  "sorries": 14
 }
