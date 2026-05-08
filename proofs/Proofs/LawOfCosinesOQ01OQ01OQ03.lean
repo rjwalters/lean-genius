@@ -513,4 +513,34 @@ theorem dual_spherical_law_of_cosines (A B C : Fin 3 → ℝ)
   -- γ' = dihedralAngle(C', A', B') = π - arcLen A B
   · exact polar_angle_eq A B C hA hB hC hBC hCA hAB hpBC hpCA hBC_p hCA_p
 
+/-- **Dual Spherical Law of Cosines (reduced hypotheses)**.
+
+    Corollary of `dual_spherical_law_of_cosines` that drops four redundant
+    `projPerp` non-degeneracy hypotheses. Each `normSq (projPerp · ·) ≠ 0`
+    condition follows from a cross-product non-degeneracy via
+    `normSq_cross_eq_projperp` / `normSq_cross_CA`. The two polar-triangle
+    non-degeneracies (`hBC_p`, `hCA_p`) remain genuinely independent — they
+    encode that `tripleProduct A B C ≠ 0`, which is not implied by pairwise
+    cross-product non-degeneracy alone (consider three coplanar but pairwise
+    non-parallel unit vectors). -/
+theorem dual_spherical_law_of_cosines' (A B C : Fin 3 → ℝ)
+    (hA : IsUnit3 A) (hB : IsUnit3 B) (hC : IsUnit3 C)
+    (hBC : 0 < normSq (B ×₃ C)) (hCA : 0 < normSq (C ×₃ A)) (hAB : 0 < normSq (A ×₃ B))
+    (hBC_p : normSq (projPerp (normalize3 (B ×₃ C)) (normalize3 (A ×₃ B))) ≠ 0)
+    (hCA_p : normSq (projPerp (normalize3 (C ×₃ A)) (normalize3 (A ×₃ B))) ≠ 0) :
+    Real.cos (dihedralAngle C A B) =
+      -Real.cos (dihedralAngle A B C) * Real.cos (dihedralAngle B A C) +
+        Real.sin (dihedralAngle A B C) * Real.sin (dihedralAngle B A C) *
+          Real.cos (arcLen A B) := by
+  have hpBC : normSq (projPerp B C) ≠ 0 := by
+    rw [← normSq_cross_eq_projperp B C hB hC]; exact hBC.ne'
+  have hpAC : normSq (projPerp A C) ≠ 0 := by
+    rw [← normSq_cross_CA A C hA hC]; exact hCA.ne'
+  have hpCA : normSq (projPerp C A) ≠ 0 := by
+    rw [← normSq_cross_eq_projperp C A hC hA]; exact hCA.ne'
+  have hpBA : normSq (projPerp B A) ≠ 0 := by
+    rw [← normSq_cross_CA B A hB hA]; exact hAB.ne'
+  exact dual_spherical_law_of_cosines A B C hA hB hC hBC hCA hAB
+    hpBC hpAC hpCA hpBA hBC_p hCA_p
+
 end PolarSphericalLaw

@@ -39,19 +39,20 @@
       "Proves projperp_dot_sinsincos: dot(projPerp A C, projPerp B C) = sin(arcLen A C)·sin(arcLen B C)·cos(dihedralAngle C A B), via Cauchy-Schwarz (Lagrange identity) and Real.cos_arccos",
       "Derives the dual spherical law of cosines via polar triangle substitution",
       "Proves the cross-of-crosses BAC-CAB identities (C×A)×(A×B) = tripleProduct(A,B,C)·A and (A×B)×(B×C) = tripleProduct(A,B,C)·B (Session 4) — the BAC-CAB rule specialized to cyclic cross products on the polar triangle",
-      "Proves the polar dihedral-angle formula (Session 4): dihedralAngle(C',A',B') = π − arcLen(A,B), eliminating the final axiom of the entry. The proof reduces to polar_side_eq_pi_minus_angle applied to (A',B',C') after showing dot(normalize(B'×C'), normalize(C'×A')) = dot(A,B), via the cross-cross identities and a sign analysis using tripleProduct ≠ 0 (which is forced by the non-degeneracy hypothesis)"
+      "Proves the polar dihedral-angle formula (Session 4): dihedralAngle(C',A',B') = π − arcLen(A,B), eliminating the final axiom of the entry. The proof reduces to polar_side_eq_pi_minus_angle applied to (A',B',C') after showing dot(normalize(B'×C'), normalize(C'×A')) = dot(A,B), via the cross-cross identities and a sign analysis using tripleProduct ≠ 0 (which is forced by the non-degeneracy hypothesis)",
+      "Provides a clean corollary `dual_spherical_law_of_cosines'` (Session 5) with reduced hypotheses: drops four redundant projPerp non-degeneracies that follow from the cross-product non-degeneracies via normSq_cross_eq_projperp / normSq_cross_CA. Hypothesis count drops 12 → 8, with the two polar-triangle non-degeneracies retained as genuinely independent"
     ],
     "axiomCount": 0,
     "assumptions": "No axioms remain. Sessions 3 and 4 eliminated both original axioms (projperp_dot_sinsincos via Lagrange/Cauchy-Schwarz, polar_angle_eq via the polar-of-polar reduction).",
-    "lineCount": 516,
-    "theoremCount": 16,
+    "lineCount": 546,
+    "theoremCount": 17,
     "definitionCount": 1
   },
   "leanFile": {
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 17,
     "definitionCount": 1,
-    "lineCount": 516,
+    "lineCount": 546,
     "sorries": 0,
     "path": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean"
   },
@@ -113,9 +114,9 @@
       "id": "dual-law",
       "title": "Dual Law via Polar Substitution",
       "startLine": 441,
-      "endLine": 516,
-      "summary": "Applies the standard spherical law to the polar triangle. After substituting the supplementary side/angle relationships (c' = π-γ, a' = π-α, b' = π-β, γ' = π-c), the dual law follows by pure trigonometric algebra via dual_trig_identity using cos(π-x) = -cos(x) and sin(π-x) = sin(x).",
-      "mathContext": "The standard law cos(c') = cos(a')cos(b') + sin(a')sin(b')cos(γ') becomes -cos(γ) = cos(α)cos(β) - sin(α)sin(β)cos(c) after substitution, giving cos(γ) = -cos(α)cos(β) + sin(α)sin(β)cos(c)."
+      "endLine": 546,
+      "summary": "Applies the standard spherical law to the polar triangle. After substituting the supplementary side/angle relationships (c' = π-γ, a' = π-α, b' = π-β, γ' = π-c), the dual law follows by pure trigonometric algebra via dual_trig_identity using cos(π-x) = -cos(x) and sin(π-x) = sin(x). Closes with `dual_spherical_law_of_cosines'`, a clean-hypothesis corollary that drops four redundant projPerp non-degeneracies derivable from the cross-product non-degeneracies.",
+      "mathContext": "The standard law cos(c') = cos(a')cos(b') + sin(a')sin(b')cos(γ') becomes -cos(γ) = cos(α)cos(β) - sin(α)sin(β)cos(c) after substitution, giving cos(γ) = -cos(α)cos(β) + sin(α)sin(β)cos(c). The clean-hypothesis form retains only 8 hypotheses (3 unit + 3 cross non-deg + 2 polar non-deg) versus 12 in the original — the two polar non-degeneracies remain because tripleProduct ≠ 0 is not implied by pairwise cross non-deg alone."
     }
   ],
   "conclusion": {
