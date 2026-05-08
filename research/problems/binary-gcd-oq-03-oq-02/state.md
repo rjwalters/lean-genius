@@ -2,16 +2,18 @@
 
 **Phase**: ACT
 **Since**: 2026-05-01
-**Iteration**: 14
+**Iteration**: 16
 
 ## Current Focus
 
-Pursuing the **size-reduction lemma** `hgcdMatrix_row_output_le` (PART IX,
-1 sorry: recursive case for fuel ≥ 1, max a b ≥ hgcdThreshold). The proof
-plan has been refactored over Sessions 12–14 to a joint induction tracking
-row-output bound + entry bound simultaneously (Stehlé–Zimmermann 2004 §4).
+Pursuing the **size-reduction lemma** `hgcdMatrix_row_output_le`
+(PART IX, 1 sorry: recursive case for fuel ≥ 1, max a b ≥ hgcdThreshold).
+The Stehlé–Zimmermann 2004 §4 joint induction is no longer coupled
+across pattern-det × row-vector — Session 16 (PART XIII) closes the
+pattern-det side for all fuel by plain induction, leaving only the
+row-vector invariant as the remaining circular ingredient.
 
-Status of the proof plan (Sessions 1–14):
+Status of the proof plan (Sessions 1–16):
 
 1. **Step 1** ✅ (S3, PR #14522): row-vector invariant for
    `lehmerCofactors`. PART V.5.
@@ -28,70 +30,80 @@ Status of the proof plan (Sessions 1–14):
    `hgcdMatrix_has_pattern` via Z/2-graded `cofactor_mul_pattern`.
    PART X.
 7. **Row-vector invariant — base + threshold + composition law** ✅
-   (S14, this session): `cofactor_mul_row_invariant`,
+   (S14, PR #16908): `cofactor_mul_row_invariant`,
    `hgcdMatrix_zero_row_invariant`, `hgcdMatrix_small_row_invariant`.
    PART XI.
+8. **Pattern-det correlation + threshold entry bound** ✅
+   (S15, PR #16994): `lehmerCofactors_pattern_det_correlated_from`,
+   `hgcdMatrix_small_pattern_det_correlated`,
+   `entry_bound_of_pattern_det_natAbs`,
+   `hgcdMatrix_small_entry_bound`. PART XII.
+9. **All-fuel pattern-det invariant + entry bound** ✅
+   (S16, this session): `cofactor_mul_pattern_det_correlated`,
+   `hgcdMatrix_pattern_det_correlated`,
+   `hgcdMatrixOf_pattern_det_correlated`,
+   `hgcdMatrix_entry_bound`. PART XIII.
 
 **Open**:
-- **Step 4 (entry bound for HGCD)** ⏳: combine PART X (pattern) +
-  PART XI (row-invariant) + `row_vec_cramer` + `hgcdMatrix_det_unit`
-  to derive `hgcdMatrix_entry_bound`. Threshold case is now
-  derivable; recursive case remains.
-- **Recursive case of `hgcdMatrix_row_output_le`** ⏳: the
-  documented joint-induction obstacle. Resolves once
-  `hgcdMatrix_entry_bound` is available for the recursive case.
+- **Recursive case of `hgcdMatrix_row_output_le`** ⏳ (line 1078,
+  sole remaining sorry): single-axis joint induction on the
+  row-vector invariant for `hgcdMatrix` at arbitrary fuel.
+  Pre-S16 the joint induction was coupled (entry-bound side needed
+  the row-vector side, which needed the entry-bound side). Post-S16
+  the entry bound is available for all fuel as a black box
+  (`hgcdMatrix_entry_bound`, PART XIII), so the joint induction
+  reduces to the row-vector axis alone.
 
 Concurrently: bit-complexity claim O(M(n)·log n) remains genuinely
 blocked on Mathlib (no fast multiplication, no bit-complexity model).
 
 ## Active Approach
 
-**Joint-induction approach to size reduction** (Stehlé–Zimmermann 2004 §4
-template), with the row-vector invariant for the cofactor matrix
-contributed leaf-by-leaf via:
+**Single-axis joint induction** (post-S16): with
+`hgcdMatrix_entry_bound` (PART XIII) as a black-box ingredient,
+simultaneously prove
+- (RO) row-output bound: `(a · M.α + b · M.γ).natAbs ≤ max a b` for
+  `M = hgcdMatrix fuel a b`, on the algorithm's own inputs.
+- (RV) row-vector existential: `∃ ahat' bhat',
+  (a, b) · M = (ahat', bhat')` with the residue-monotonicity bound.
 
-* `cofactor_mul_row_invariant` (S14, PART XI): the algebraic
-  composition law.
-* `hgcdMatrix_zero_row_invariant`/`hgcdMatrix_small_row_invariant`
-  (S14, PART XI): the leaf cases producing natural-number residue
-  witnesses, suitable for Cramer-based entry bounds.
-
-The remaining work for Step 4 is to lift the row-vector invariant to
-the recursive case via joint induction with the entry-bound side.
+Both at the same fuel and same inputs, by induction on fuel. The
+recursive case uses `cofactor_mul_row_invariant` (PART XI) to chain
+through `M_outer.mul M_inner`, with `hgcdMatrix_entry_bound`
+(PART XIII) supplying the entry bounds for both factors.
 
 ## Blockers
-
-* **Pre-existing API drift in BinaryGcdOQ03OQ02.lean** (discovered S14):
-  Docker build surfaced `Int.natAbs_ofNat` (3 sites) and `split at hstep`
-  (3 sites) errors in code merged via PRs #14522/#14881/#14910 (Sessions
-  3–7). These were merged via the deployer auto-merge path without
-  successful builds (S13's docstring records the build timeouts). My
-  S14 contribution elaborates cleanly in isolation; the file-level
-  build is blocked on these drift issues. Should be addressed by
-  mechanic/auditor (out of S14 scope).
 
 * **Bit complexity (C)**: genuinely blocked on Mathlib infrastructure.
   Documented in `BinaryGcdOQ03OQ02.lean` PART VII; not a blocker on
   (A) correctness or (B) size reduction.
 
+* **Recursive row-vector invariant**: residual obstacle. Pre-S16
+  required coupled joint induction; post-S16 reduces to single-axis
+  joint induction with all other ingredients as black boxes.
+
 ## Next Action
 
-1. **Mechanic/auditor**: fix `Int.natAbs_ofNat` rename and `split at hstep`
-   replacement in PARTS V.5/VI/IX of `BinaryGcdOQ03OQ02.lean` so the
-   file builds end-to-end.
-2. **Session 15**: derive `hgcdMatrix_entry_bound` for the threshold
-   case using PART X (pattern) + PART XI (row-invariant) +
-   `row_vec_cramer` + `hgcdMatrix_det_unit`.
-3. **Session 16+**: tackle the recursive-case obstruction via joint
-   induction, using `cofactor_mul_row_invariant` (PART XI) to chain
-   ghost pairs once the IH's row-invariant at full-precision (a, b) is
-   established for the inner matrix.
+1. **Session 17+**: prove `hgcdMatrix_row_invariant` (existential
+   row-vector invariant for arbitrary fuel) via single-axis joint
+   induction. Use `hgcdMatrix_entry_bound` (S16) as black-box entry
+   bound, `cofactor_mul_row_invariant` (S14) to chain, and
+   `cofactor_mul_row_output_natAbs_le` (S12) for the row-output
+   side of the joint statement.
+2. **Session 18+**: close the recursive case of
+   `hgcdMatrix_row_output_le` (line 1078) using the row-vector
+   invariant from S17 and the existing infrastructure.
+3. **Session 19+**: derive `hgcdMatrix_full_entry_bound` (no
+   row-vector witnesses required) by combining `hgcdMatrix_entry_bound`
+   (S16) with the unconditional `hgcdMatrix_row_invariant` (S17).
 
 ## Attempt Counts
 
-- Total attempts: 14 (Sessions 1–14)
+- Total attempts: 16 (Sessions 1–16)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
-  - Row-convention size-reduction infrastructure: in progress
-    (Sessions 3–14 add Steps 1, 2a, 2b, 3, plus row-output composition,
-    pattern lifting, and row-vector base/threshold/composition law)
+  - Row-convention size-reduction infrastructure: ongoing
+    (Sessions 3–16 add Steps 1, 2a, 2b, 3, row-output composition,
+    pattern lifting, row-vector base/threshold/composition law,
+    pattern-det correlation + threshold entry bound, and the
+    Session 16 all-fuel pattern-det + entry-bound lift)

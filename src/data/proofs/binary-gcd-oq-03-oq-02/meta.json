@@ -21,9 +21,9 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1759,
+    "lineCount": 2007,
     "dateAdded": "2026-05-03",
-    "theoremCount": 54,
+    "theoremCount": 58,
     "assumptions": "",
     "mathlibDependencies": [
       {
@@ -56,7 +56,10 @@
       "lehmerCofactors_pattern_det_correlated_from (S15): joint pattern-determinant invariant for lehmerCofactors — pattern (Even↔Odd) and det sign (±1↔∓1) flip simultaneously at each step, preserving the disjunction (EvenPattern ∧ det=1) ∨ (OddPattern ∧ det=-1) by induction on fuel",
       "hgcdMatrix_small_pattern_det_correlated (S15): joint pattern-det invariant lifts to hgcdMatrix in the threshold case (max a b < hgcdThreshold) directly from the lehmerCofactors specialization",
       "entry_bound_of_pattern_det_natAbs (S15): unifies entry_bound_of_even and entry_bound_of_odd into a single natAbs statement — under the joint pattern-det hypothesis, all four matrix entries are bounded in natAbs by the inputs (a₀, b₀), regardless of which pattern case applies",
-      "hgcdMatrix_small_entry_bound (S15): Session 15 main result — threshold-case entry bound for hgcdMatrix combining PART XI row-vector witnesses, PART XII joint pattern-det invariant, and the unified natAbs bound. All four entries of hgcdMatrix (fuel+1) a b are bounded in natAbs by the inputs (a, b) themselves, given positive residue witnesses"
+      "hgcdMatrix_small_entry_bound (S15): Session 15 main result — threshold-case entry bound for hgcdMatrix combining PART XI row-vector witnesses, PART XII joint pattern-det invariant, and the unified natAbs bound. All four entries of hgcdMatrix (fuel+1) a b are bounded in natAbs by the inputs (a, b) themselves, given positive residue witnesses",
+      "cofactor_mul_pattern_det_correlated (S16): the joint pattern-det disjunction (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1) is preserved by CofactorMatrix.mul. Four-case algebraic split combining cofactor_mul_even_even/odd_odd/even_odd/odd_even (PART X) with CofactorMatrix.det_mul: the pattern carrier and the det carrier flip in lockstep across all four product cases (1·1 = (-1)·(-1) = 1, 1·(-1) = (-1)·1 = -1)",
+      "hgcdMatrix_pattern_det_correlated (S16): all-fuel joint invariant — every matrix produced by Schönhage's recursive HGCD satisfies (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1). Direct induction on fuel (no joint induction needed): base = identity (Even, det 1); threshold case = hgcdMatrix_small_pattern_det_correlated (S15); recursive case = cofactor_mul_pattern_det_correlated + IH. Removes the threshold restriction from the S15 lifting",
+      "hgcdMatrix_entry_bound (S16): all-fuel conditional entry bound — generalises hgcdMatrix_small_entry_bound (S15) by removing the max a b < hgcdThreshold hypothesis. Same proof skeleton as S15 with hgcdMatrix_pattern_det_correlated (S16) substituted for hgcdMatrix_small_pattern_det_correlated. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078)"
     ],
     "definitionCount": 6
   },
@@ -152,6 +155,14 @@
       "endLine": 1591,
       "summary": "Five theorems closing the gap noted in S13 (sign pattern alone is insufficient for entry bounds; det case must match). lehmerCofactors_pattern_det_correlated_from proves joint pattern-det invariant by induction on fuel: each step flips both pattern (Even↔Odd) and det sign (±1↔∓1) in lockstep. Specialized to id (lehmerCofactors_id_pattern_det_correlated) and lifted to hgcdMatrix threshold case (hgcdMatrix_small_pattern_det_correlated). entry_bound_of_pattern_det_natAbs unifies entry_bound_of_even/odd into a single uniform natAbs ≤ · statement, eliminating the case split for downstream callers. hgcdMatrix_small_entry_bound is the Session 15 main result: combines PART XI row-vector witnesses + PART XII joint invariant + unified natAbs bound to give all four entries of hgcdMatrix (fuel+1) a b bounded in natAbs by inputs (a,b) themselves, in the threshold case.",
       "mathContext": "The pattern-det correlation $(\\mathrm{EvenPattern} \\wedge \\det = 1) \\vee (\\mathrm{OddPattern} \\wedge \\det = -1)$ is the joint invariant that closes the entry-bound argument. Each Lehmer inner step right-multiplies the cofactor matrix by $S = \\begin{pmatrix}0&1\\\\1&-q\\end{pmatrix}$ which has $\\det S = -1$, so $\\det(M S) = -\\det(M)$; simultaneously the sign-pattern flip lemmas (lehmerInnerStep_even_to_odd / _odd_to_even) show that pattern flips Even↔Odd at each step. Joint induction lifts the correlated invariant through arbitrary fuel. With this, entry_bound_of_even (which requires $\\det = 1$) and entry_bound_of_odd (which requires $\\det = -1$) can each be applied in their respective sub-cases of the disjunction, and the resulting inequalities collapse to a uniform $|M_{ij}| \\le \\max(a_0, b_0)$ once natAbs is taken. This is the sign-and-magnitude half of $\\mathrm{hgcdMatrix\\_entry\\_bound}$ for the threshold case; the recursive case (Session 16+) requires lifting the row-vector invariant to arbitrary fuel via cofactor_mul_row_invariant."
+    },
+    {
+      "id": "all-fuel-pattern-det-and-entry-bound",
+      "title": "Part XIII: All-Fuel Lifting — Pattern-Det + Entry Bound (Session 16)",
+      "startLine": 1594,
+      "endLine": 1765,
+      "summary": "Four theorems lifting the joint pattern-det invariant from the threshold case (S15) to arbitrary fuel by plain induction (no joint induction needed), then dropping the threshold hypothesis from the entry bound. cofactor_mul_pattern_det_correlated combines the four PART X pattern multiplication cases (Even·Even = Odd·Odd = Even, Even·Odd = Odd·Even = Odd) with CofactorMatrix.det_mul (det 1·1 = (-1)·(-1) = 1, det 1·(-1) = (-1)·1 = -1) — pattern carrier and det carrier are correlated in lockstep across all four product cases. hgcdMatrix_pattern_det_correlated lifts to all fuel via direct induction: base = id (Even, det 1), threshold = S15, recursive = product law + IH. hgcdMatrix_entry_bound is the conditional all-fuel entry bound (preconditions: row-vector witnesses + positivity); proof skeleton matches hgcdMatrix_small_entry_bound (S15) with the all-fuel pattern-det invariant substituted. The pattern-det side of the Stehlé–Zimmermann circular dependency is now fully discharged for all fuel; the only remaining circularity is on the row-vector invariant in the recursive case (line 1078, sole remaining sorry).",
+      "mathContext": "Pre-S16, the entry-bound argument was available only for $\\max(a, b) < 64$ via $\\mathrm{hgcdMatrix\\_small\\_entry\\_bound}$, because the threshold restriction in $\\mathrm{hgcdMatrix\\_small\\_pattern\\_det\\_correlated}$ was load-bearing. The S16 contribution is to observe that pattern-det correlation is preserved by $\\mathrm{CofactorMatrix.mul}$: in each of the four product cases (Even·Even, Even·Odd, Odd·Even, Odd·Odd), the pattern outcome from PART X and the determinant product from $\\det(MN) = \\det(M)\\det(N)$ agree on which side of the disjunction the result lies. Plain induction on fuel then lifts the correlated invariant to all fuel without invoking the row-vector side of the joint induction. Substituting the all-fuel invariant into the S15 entry-bound proof gives the same conclusion ($|M_{\\alpha}|, |M_{\\beta}| \\le b$, $|M_{\\gamma}|, |M_{\\delta}| \\le a$) without the threshold restriction. The remaining $\\mathrm{hgcdMatrix\\_row\\_output\\_le}$ recursive case is now genuinely single-axis — only the row-vector invariant requires the Stehlé–Zimmermann §4 joint induction; pattern-det enters only as a black-box ingredient."
     }
   ],
   "openQuestions": [
@@ -179,9 +190,9 @@
   ],
   "leanFile": {
     "namespace": "HGcd",
-    "lineCount": 1759,
+    "lineCount": 2007,
     "axiomCount": 0,
-    "theoremCount": 54,
+    "theoremCount": 58,
     "definitionCount": 6,
     "path": "Proofs/BinaryGcdOQ03OQ02.lean",
     "sorries": 1

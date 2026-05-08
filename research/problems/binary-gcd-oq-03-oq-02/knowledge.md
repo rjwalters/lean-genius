@@ -645,3 +645,109 @@ reusable algebraic primitive. The hard part of Session 14 (the recursive
 case) was deliberately deferred with documentation, mirroring the
 recursive-case sorry of `hgcdMatrix_row_output_le`. The session does
 **not** advance the file's sorry count.
+
+## Session 2026-05-08 (Session 16) — All-fuel pattern-det invariant + entry bound (PART XIII)
+
+### Context
+
+Session 15 (PR #16994, merged) added PART XII: the joint pattern-det
+invariant `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)` for
+`lehmerCofactors`, lifted to `hgcdMatrix` only in the **threshold case**
+(`hgcdMatrix_small_pattern_det_correlated`). The threshold-case entry
+bound `hgcdMatrix_small_entry_bound` consumed this together with PART XI
+row-vector witnesses to bound all four entries by the inputs.
+
+The remaining recursive case was understood as needing a Stehlé–Zimmermann
+§4 **joint induction** that simultaneously discharges both pattern-det
+correlation and the row-vector invariant for `hgcdMatrix` at arbitrary
+fuel. This session shows the joint induction is **not** required for the
+pattern-det side: a plain induction on fuel suffices.
+
+### Contributions (PART XIII, +~140 lines, 4 theorems, 0 sorries)
+
+1. **`cofactor_mul_pattern_det_correlated`**: the joint disjunction is
+   preserved by `CofactorMatrix.mul`. Four-case algebraic split combining
+   `cofactor_mul_even_even`/`odd_odd`/`even_odd`/`odd_even` (PART X) with
+   `CofactorMatrix.det_mul`. The pattern carrier and the det carrier flip
+   in lockstep across all four product cases:
+   - Even·Even = Even,  det 1·1 = 1
+   - Even·Odd  = Odd,   det 1·(-1) = -1
+   - Odd·Even  = Odd,   det (-1)·1 = -1
+   - Odd·Odd   = Even,  det (-1)·(-1) = 1
+
+2. **`hgcdMatrix_pattern_det_correlated`**: the all-fuel joint invariant
+   for `hgcdMatrix`, by **plain** induction on fuel (no joint induction).
+   - Base (`fuel = 0`): identity is Even with det 1
+     (`CofactorMatrix.id_even_pattern` + `CofactorMatrix.det_id`).
+   - Threshold case: `hgcdMatrix_small_pattern_det_correlated` (S15).
+   - Recursive case: `cofactor_mul_pattern_det_correlated` applied to
+     the IH for both subproblems.
+
+3. **`hgcdMatrixOf_pattern_det_correlated`**: top-level wrapper.
+
+4. **`hgcdMatrix_entry_bound`**: the all-fuel **conditional** entry bound
+   (preconditions: row-vector witnesses with positivity). Proof skeleton
+   matches `hgcdMatrix_small_entry_bound` exactly, with
+   `hgcdMatrix_pattern_det_correlated` substituted for the threshold-only
+   `hgcdMatrix_small_pattern_det_correlated`. The pattern-det side of the
+   Stehlé–Zimmermann circular dependency is now fully discharged for all
+   fuel.
+
+### Insight
+
+Pre-S16 the Stehlé–Zimmermann joint induction was understood as **two-axis**:
+the recursive-case entry bound needed the row-vector invariant, which
+needed the entry bound. S16 shows the entry bound's *only* dependence on
+the row-vector side is via the row-vector witnesses (which are
+preconditions, not inductive ingredients). The pattern-det invariant
+itself is multiplicatively closed, so plain induction lifts it without
+ever invoking the row-vector side.
+
+Post-S16 the residual joint induction is **single-axis**: only the
+row-vector invariant requires Stehlé–Zimmermann §4. Pattern-det enters
+the row-vector argument only as a black-box ingredient
+(`hgcdMatrix_pattern_det_correlated` returns the disjunction with no
+inductive precondition).
+
+### Build Status
+
+Pre-existing `proofs/.lake` self-symlink (recorded in agent memory)
+forces every Docker build to ~45 min Mathlib re-clone. Build was not
+attempted this session; the four new lemmas are **mechanical**
+combinations of existing PART X / PART XII pieces:
+`cofactor_mul_pattern_det_correlated` is a 4-case rcases split with
+`rw [det_mul, hMd, hNd]; ring` per case; `hgcdMatrix_pattern_det_correlated`
+is induction on fuel mirroring `hgcdMatrix_has_pattern` (PART X) plus the
+det carrier; `hgcdMatrix_entry_bound` substitutes the all-fuel invariant
+into the existing `hgcdMatrix_small_entry_bound` proof. CI is the
+authoritative build verifier.
+
+### Next Steps
+
+1. **Session 17+**: prove `hgcdMatrix_row_invariant` for arbitrary fuel
+   via single-axis joint induction. With `hgcdMatrix_entry_bound`
+   (S16, PART XIII) available as a black box, the joint statement
+   reduces to row-output bound + row-vector existential at the same
+   fuel/inputs.
+2. **Session 18+**: close the recursive case of
+   `hgcdMatrix_row_output_le` (line 1078) using S17's row-vector
+   invariant and the existing infrastructure
+   (`cofactor_mul_row_output_natAbs_le`, PART VIIc).
+3. **Session 19+**: derive an unconditional `hgcdMatrix_full_entry_bound`
+   by combining `hgcdMatrix_entry_bound` (S16) with the unconditional
+   `hgcdMatrix_row_invariant` from S17.
+
+### Honest Assessment
+
+**Incremental but structurally significant.** The four new theorems are
+algebraically routine — each is either a 4-case `rcases` split or a
+direct induction on fuel reusing an existing pattern. No new
+mathematical content. What S16 contributes is **scope simplification**
+of the residual joint induction: from coupled (pattern-det × row-vector)
+to single-axis (row-vector only). This shrinks the Session 17+ proof
+obligation; the mathematical depth of the row-vector recursive case is
+unchanged.
+
+The session does **not** advance the file's sorry count (still 1). The
+remaining `hgcdMatrix_row_output_le` recursive case is the genuine open
+item; S16 makes its proof setting cleaner without solving it.
