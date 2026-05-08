@@ -45,7 +45,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The Chung-Feller theorem (1949) states that among all balanced lattice paths of length 2n (equal steps up and down), the paths with exactly k 'upsteps above the axis' are counted by the Catalan number Cₙ = C(2n,n)/(n+1), independently of k ∈ {0,1,...,n}. This gives a combinatorial proof that Cₙ = C(2n,n)/(n+1) by counting all (n+1)·Cₙ balanced paths.\n\nThe bijection proceeds by 'good rotation': given a balanced path l, prepend 1 to get (1::l), then cyclically rotate by the position of the rightmost minimum. The rotation starts with 1 (always) and its tail is a Dyck path. The rotation index encodes the 'type' of l — how many upsteps cross the axis.\n\nThis formalization answers OQ-01 of ballot-problem-oq-01-oq-04: 'Can we prove the bijection explicitly?' with a complete, verified proof.",
+    "historicalContext": "The combinatorial setting traces to W. A. Whitworth's *Choice and Chance* (1879) and Joseph Bertrand's classical 1887 ballot problem: in how many ways can the votes for two candidates be counted so that one always leads? Désiré André's 1887 reflection-principle proof (the same year as Bertrand's note in *Comptes Rendus*) gave the modern $\\binom{2n}{n} - \\binom{2n}{n-1}$ formula. The *cycle lemma* — that exactly one cyclic rotation of any sequence with positive sum has all positive prefix sums — was first stated explicitly by Aryeh Dvoretzky and Theodore Motzkin in 1947 (\"A problem of arrangements\", *Duke Math. J.*) and is the structural backbone of every modern Catalan / ballot-style enumeration. The Chung-Feller theorem appeared in K. L. Chung and W. Feller's 1949 paper \"On fluctuations in coin-tossing\" (*Proc. Nat. Acad. Sci.*), strengthening the ballot result: among all balanced ±1 paths of length $2n$, those with exactly $k$ upsteps above the axis are *equinumerous* for every $k \\in \\{0,1,\\ldots,n\\}$, each class containing exactly $C_n = \\binom{2n}{n}/(n+1)$ paths. This gives a *combinatorial* — not just generating-function — proof that $|{\\text{Dyck paths}}| = C_n$, by counting balanced paths in two ways. The proof presented here mechanizes the explicit bijection (used by Stanley in *Catalan Numbers* §1.6.1; called the \"second proof\" on Wikipedia): prepend 1 to a balanced path $l$, rotate by the *rightmost minimum* position, take the tail. The rightmost-minimum choice is the unique rotation making the tail a Dyck path — exactly the cycle-lemma content. This entry answers OQ-01 of `ballot-problem-oq-01-oq-04` (\"Can we prove the bijection explicitly?\") with a complete, verified construction, eliminating the `chung_feller_uniform` axiom that the parent entry previously used.",
     "problemStatement": "**Chung-Feller theorem**: For any n ≥ 1 and any j, k ∈ {0,...,n}:\n|{balanced paths of length 2n and type j}| = |{balanced paths of length 2n and type k}|\n(where 'type j' means the path has exactly j upsteps above the horizontal axis).\n\nFormalized as: `chung_feller_uniform'`.",
     "text": "A 1164-line explicit construction of the Chung-Feller bijection. The proof establishes: (1) the good rotation produces a Dyck path as its tail, (2) paths in the same rotation orbit share the same Dyck image, (3) the bijection chungFellerMap is injective (via inversion) and surjective, (4) uniform distribution follows by type-swapping through the bijection.",
     "proofStrategy": "**Definitions**: `chungFellerRot l = cyclicRotation (1::l) (rightmostMinPos (1::l))` — cyclic rotation of (1::l) by the position of the rightmost minimum. `chungFellerMap n hn l = (tail of chungFellerRot l, upstepsAboveAxis l)`.\n\n**Step 1 (good rotation is Dyck)**: `chungFellerRot_tail_is_dyck` — the tail D of the good rotation satisfies IsDyckPath D n. Proof: D has all non-negative prefix sums (since the rightmostMinPos rotation ensures this) and upstepsAboveAxis D = n.\n\n**Step 2 (orbit invariance)**: `orbit_same_dyck` — if l₂ is a cyclic rotation of l₁ by r, then chungFellerRot l₁ = chungFellerRot l₂ (they map to the same Dyck path). The good rotation is orbit-canonical.\n\n**Step 3 (bijectivity)**: `chung_feller_bijection_exists` — injectivity: if two balanced paths have the same (Dyck, type) pair, they must be the same path (reconstruct from D and type). Surjectivity: every (D, k) pair comes from some balanced path (the k-th rotation of (1::D)).\n\n**Step 4 (uniformity)**: `chung_feller_uniform'` — apply `Set.ncard_congr` with the type-swapping map: send a type-j path l to the unique type-k preimage sharing the same Dyck path. This map is well-defined and bijective via the bijection e.",
@@ -53,7 +53,10 @@
       "**Rightmost minimum rotation**: The key insight is that among all cyclic rotations of (1::l), exactly one starts with 1 and has all subsequent prefix sums ≥ 1 (the 'good rotation'). Taking the rightmost minimum position ensures uniqueness. This is the cycle lemma in disguise.",
       "**Orbit-canonical Dyck path**: All n+1 balanced paths in the same rotation orbit (the orbit of 1::D under cyclic rotation) share the same Dyck path D as their chungFellerRot tail. This is the structural key: the bijection sends each orbit to a single Dyck path, with the path type encoding which element of the orbit the path is.",
       "**Type-swapping surjection for uniformity**: `chung_feller_uniform'` avoids recomputing cardinalities by using `Set.ncard_congr`. The type-swapping map l ↦ e.symm((e(l).1, ⟨k, ...⟩)) replaces the type index j with k while keeping the Dyck path. This is a bijection between type-j and type-k paths.",
-      "**Injectivity via reconstruction**: To show injectivity of chungFellerMap, given (D, type₁) = (D, type₂), reconstruct the original paths as specific rotations of (1::D). The reconstruction uses cyclicRotation_get?_zero and the inverse rotation formula."
+      "**Injectivity via reconstruction**: To show injectivity of chungFellerMap, given (D, type₁) = (D, type₂), reconstruct the original paths as specific rotations of (1::D). The reconstruction uses cyclicRotation_get?_zero and the inverse rotation formula.",
+      "**Cycle lemma packaged geometrically**: The Dvoretzky-Motzkin cycle lemma (1947) — \"exactly one cyclic rotation of a positive-sum sequence has all positive prefix sums\" — is what makes `chungFellerRot` well-defined. The choice of *rightmost* minimum (rather than leftmost) ensures that the augmented `(1::l)` rotation, once shifted, has all *strict* prefix sums ≥ 1, and so the *tail* (after dropping the leading 1) has prefix sums ≥ 0 — i.e., is a Dyck path. The rightmost-vs-leftmost asymmetry is necessary because of the prepended 1.",
+      "**Two-way counting reveals C_n = (1/(n+1))·(2n choose n)**: Total balanced paths of length 2n = $\\binom{2n}{n}$. The bijection partitions them into $n+1$ classes by type, each of equal size = $C_n$. Therefore $\\binom{2n}{n} = (n+1) \\cdot C_n$, giving the closed form $C_n = \\frac{1}{n+1}\\binom{2n}{n}$ as a *combinatorial corollary* — no Catalan recurrence or generating function needed. This is the Chung-Feller proof's distinguishing virtue.",
+      "**Reflection-principle complement**: For the original Bertrand ballot problem, the standard proof is André's reflection (1887). The Chung-Feller bijection is its sibling for the *symmetric* counting variant: while reflection gives a non-bijective inclusion-exclusion, Chung-Feller gives a clean bijection — a useful pedagogical contrast available in this gallery via the cross-references below."
     ],
     "prerequisites": [
       "Dyck paths and Catalan numbers",
@@ -72,6 +75,16 @@
       "targetId": "ballot-problem-oq-01",
       "relationship": "related",
       "description": "Parent ballot problem formalization; this proves the uniform distribution subcase"
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "Original Bertrand-1887 ballot problem entry; uses André's reflection principle (1887). This entry's bijective Chung-Feller approach is the structural complement to reflection — both prove ballot-style equalities, with bijection winning when one needs an explicit *witness* for each class."
+    },
+    {
+      "targetId": "catalan-numbers",
+      "relationship": "applies-to",
+      "description": "The Chung-Feller bijection gives a self-contained combinatorial proof that the n-th Catalan number is $\\binom{2n}{n}/(n+1)$ via two-way counting of balanced paths."
     }
   ],
   "leanFile": {
@@ -137,7 +150,9 @@
     "openQuestions": [
       "Generalize to k-balanced paths (paths with p ups and q downs, gcd(p,q)=1) — the generalized ballot problem",
       "Connect to the Lindström-Gessel-Viennot lemma for multi-path generalizations",
-      "Prove the Chung-Feller theorem using the kernel method (generating function approach) for a second proof"
+      "Prove the Chung-Feller theorem using the kernel method (generating function approach) for a second proof",
+      "Extract a *computable* bijection: as currently formalized `chungFellerMap` and its inverse should be definitionally computable (no choice principles used) — confirm and demonstrate by `#eval`-ing on small n.",
+      "Lift the file to `Mathlib.Combinatorics.Catalan` as a contribution: the Chung-Feller bijection complements `Mathlib`'s existing Catalan API (recursion-based) with an explicit combinatorial route."
     ]
   },
   "sorries": 0

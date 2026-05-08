@@ -24,6 +24,31 @@
     ]
   },
   {
+    "id": "cf-good-rotation-properties",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 75,
+      "endLine": 331
+    },
+    "title": "Good Rotation Properties (L75–331)",
+    "content": "The ~250-line block proving four invariants of `chungFellerRot l`:\n\n• `chungFellerRot_head_eq_one`: the good rotation always begins with `+1`. Reason: `1 :: l` has at least one entry equal to 1 (the prepended head), and rotating to put the rightmost minimum *position* at the front lands a 1 at the head.\n• `chungFellerRot_tail_nonneg_prefixSum`: dropping the leading 1 yields a sequence whose every prefix sum is ≥ 0. Reason: after rotation, all prefix sums of `chungFellerRot l` are ≥ 1 (since we rotated past the minimum); subtracting the leading 1 shifts these down by 1, giving prefix sums ≥ 0 — the Dyck condition.\n• `chungFellerRot_tail_upsteps_all_above`: every upstep in the tail crosses the *axis* (i.e., is one of the upsteps of a Dyck path). Used in the type-counting argument.\n• `chungFellerRot_tail_type_eq_n`: the tail's `upstepsAboveAxis` equals exactly $n$ — i.e., the tail is a *Type-n* path. Combined with the prefix-sum bound, this is what makes the tail a Dyck path.\n\nThese four invariants together give `chungFellerRot_tail_is_dyck` (lemma below) — the cornerstone of the bijection: every balanced path's good rotation has a Dyck-path tail.",
+    "significance": "critical",
+    "mathContext": "The Dvoretzky-Motzkin cycle lemma in concrete form: among the $|l|+1$ cyclic rotations of $1\\!::\\!l$, the rotation by `rightmostMinPos(1::l)` is the *unique* rotation whose tail satisfies $\\sum_{i \\leq k} t_i \\geq 0$ for all $k$. This invariant is what the four lemmas in L75–331 establish in machine-checkable detail.",
+    "relatedConcepts": [
+      "cycle lemma",
+      "Dvoretzky-Motzkin",
+      "rightmostMinPos",
+      "prefix sum invariants",
+      "upstepsAboveAxis"
+    ],
+    "prerequisites": [
+      "cyclicRotation API",
+      "rightmostMinPos lemmas",
+      "prefix-sum manipulation"
+    ]
+  },
+  {
     "id": "cf-tail-is-dyck",
     "proofId": "ballot-problem-oq-01-oq-04-oq-01",
     "type": "theorem",
@@ -68,6 +93,32 @@
       "chungFellerRot definition",
       "cyclicRotation_compose_wrap",
       "rightmostMinPos uniqueness"
+    ]
+  },
+  {
+    "id": "cf-chung-feller-map",
+    "proofId": "ballot-problem-oq-01-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 456,
+      "endLine": 781
+    },
+    "title": "chungFellerMap and Reconstruction Lemmas (L456–781)",
+    "content": "`chungFellerMap n hn l` (around L456) is defined as the pair $(D, t)$ where $D$ is the *tail* of `chungFellerRot l` (a Dyck path of semi-length $n$) and $t$ is the path `type` index — `upstepsAboveAxis l : Fin (n+1)`. This is the candidate bijection whose injectivity and surjectivity are established later (L782–1023).\n\nThe ~325 lines following the definition build the *reconstruction* infrastructure needed for the bijectivity proof:\n• Inverse-rotation lemmas: given a Dyck path $D$ and a type $k$, recover the unique balanced path $l$ whose `chungFellerRot` has tail $D$ and whose `upstepsAboveAxis = k`. The inverse is `cyclicRotation` of `1::D` by `n+1-k` (mod) followed by tail extraction.\n• `cyclicRotation_get?_zero` and friends: characterize the entry of a rotated list at position 0, used to relate $l$'s head to the rotation amount.\n• Type-index transport lemmas: show that `upstepsAboveAxis` is invariant under the bijection in the controlled way the bijectivity proof needs (it equals the rotation index, which is the type).\n\nThe payoff is `chung_feller_bijection_exists` (next annotation): both injectivity (via reconstruction) and surjectivity (via building $l$ from $(D, k)$) become one-line applications.",
+    "significance": "critical",
+    "mathContext": "$\\text{chungFellerMap}: \\{\\text{balanced paths of length }2n\\} \\to \\{\\text{Dyck paths of semi-length }n\\} \\times \\{0,1,\\ldots,n\\}$. The map is the *combinatorial heart* of Chung-Feller: it canonicalises each rotation orbit (yielding the Dyck representative) and exposes the rotation index (the type) as a structurally meaningful coordinate. Inverting the map: given $(D, k)$, the preimage is the $k$-th rotation of $1\\!::\\!D$ (with the leading 1 removed), which has exactly $k$ upsteps above the axis.",
+    "relatedConcepts": [
+      "bijection construction",
+      "cyclicRotation_get?_zero",
+      "inverse rotation",
+      "type index",
+      "orbit canonicalisation"
+    ],
+    "prerequisites": [
+      "chungFellerRot tail-is-Dyck",
+      "cyclicRotation API",
+      "Fin arithmetic",
+      "upstepsAboveAxis"
     ]
   },
   {
