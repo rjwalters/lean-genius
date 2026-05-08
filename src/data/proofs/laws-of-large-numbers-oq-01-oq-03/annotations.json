@@ -132,6 +132,18 @@
     "prerequisites": ["Mathlib probability typeclasses", "pairwise vs mutual independence", "set-indexed independence"]
   },
   {
+    "id": "ann-status-certificate",
+    "proofId": "laws-of-large-numbers-oq-01-oq-03",
+    "range": { "startLine": 46, "endLine": 50 },
+    "type": "context",
+    "title": "Verification Certificate — 0 Axioms, 0 Sorries, Aristotle-Proved Engine",
+    "content": "The 'Status' subsection of the docstring records the formal-verification certificate: zero axioms beyond Mathlib's foundation, zero `sorry` placeholders, and the proof body is a one-line term-mode delegation to `LawsOfLargeNumbersOQ01.borel_cantelli_of_pairwise_independent` in the Aristotle companion. This is meaningful in two distinct ways. (1) **Logical**: the gallery theorem stands or falls with Mathlib + the companion. The companion is itself axiom-free (uses only `MeasureTheory.variance`, `ProbabilityTheory.IndepSet`, Chebyshev, and standard ENNReal arithmetic), so the chain composition is a fully checked proof in Lean 4 with no assumption-bearing structures or postulates. (2) **Methodological**: the proof was produced by *automated* search (Aristotle), not hand-written. The Chebyshev-variance argument has 5 steps (divergent expectation → variance bound → Chebyshev → monotone limit → limsup equivalence), and Aristotle discovered the right Mathlib lemma chain for each step. The gallery file's role is to expose this Aristotle-proved engine under a clean, Mathlib-API-friendly signature — `Pairwise IndepSet` rather than the `iIndepSet` used by `MeasureTheory.measure_limsup_eq_one`. This separation of concerns (search-produced engine + curated facade) is the canonical companion-file pattern used throughout the gallery for non-trivial probability theorems.",
+    "mathContext": "**Verification chain**:\n- This file: 0 sorries, 0 `axiom` declarations, 0 assumption-carrying structure fields.\n- Companion `LawsOfLargeNumbersOQ01Aristotle.lean`: same — 0 sorries, 0 axioms.\n- Mathlib dependencies are axiom-free (modulo Mathlib's own foundational axioms: classical choice + propositional extensionality + quotients, all standard).\n- Status: `verified` with badge `original` per gallery axiom-integrity policy. The `originalContributions` list two genuinely new items beyond Mathlib's existing API: (a) the `Pairwise IndepSet` hypothesis form (vs Mathlib's `iIndepSet`), and (b) the explicit minimality framing.\n\n**Companion-file pattern**: gallery file ↔ Aristotle file split. Gallery file: clean signature, mathematical narrative, Mathlib-style facade. Aristotle file: the proof body, term mode, sometimes longer / less idiomatic since the proof was discovered automatically. Other gallery entries using the same pattern: `LawsOfLargeNumbersOQ01OQ01` (SLLN necessity), parent `LawsOfLargeNumbersOQ01`, `BinaryGcd` family.",
+    "significance": "supporting",
+    "relatedConcepts": ["axiom integrity", "verification certificate", "Aristotle proof search", "companion-file pattern", "Mathlib foundational axioms", "term-mode delegation"],
+    "prerequisites": ["Lean 4 axiom system", "Mathlib foundations", "automated theorem proving", "gallery quality classifications"]
+  },
+  {
     "id": "ann-006-tsum-divergence",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
     "range": { "startLine": 94, "endLine": 94 },
