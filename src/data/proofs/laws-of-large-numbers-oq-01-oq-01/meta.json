@@ -133,8 +133,8 @@
       "id": "slln-necessity",
       "title": "SLLN Necessity Theorem",
       "startLine": 50,
-      "endLine": 73,
-      "summary": "slln_necessity: if i.i.d. random variables satisfy the SLLN, then X₀ is integrable. Delegates to LawsOfLargeNumbersOQ01Aristotle.slln_necessity_statement via a one-line proof.",
+      "endLine": 74,
+      "summary": "slln_necessity: if i.i.d. random variables satisfy the SLLN, then X₀ is integrable. Delegates to LawsOfLargeNumbersOQ01Aristotle.slln_necessity_statement via a one-line proof; namespace closes on line 74.",
       "mathContext": "The full theorem: given pairwise-independent identically-distributed measurable $(X_i)$ with sample mean converging a.s., conclude $\\mathrm{Integrable}(X_0, \\mu)$ i.e. $E[|X_0|] < \\infty$. The Aristotle companion carries all the proof machinery (723 lines)."
     }
   ],
@@ -158,6 +158,16 @@
       "proofId": "laws-of-large-numbers-oq-01-oq-02",
       "relationship": "related",
       "description": "Sibling entry on the Marcinkiewicz-Zygmund rate of convergence for heavy-tailed distributions (E[X²] = ∞). Where this entry establishes when SLLN holds, oq-01-oq-02 quantifies how slowly the sample mean converges in the regime where finite mean exists but the variance is infinite."
+    },
+    {
+      "proofId": "laws-of-large-numbers-oq-04-oq-03",
+      "relationship": "related",
+      "description": "Sister Glivenko-Cantelli formalization (uniform SLLN over the class of half-line indicator functions). Both rely on the same 'i.i.d. + indicator + integrability' substrate from Mathlib's Bochner integration; reading them together highlights how the same machinery either characterizes integrability (this entry) or upgrades pointwise SLLN to uniform SLLN over a Donsker class (oq-04-oq-03)."
+    },
+    {
+      "proofId": "prob-method-expectation",
+      "relationship": "related",
+      "description": "Foundational first-moment lemma 'E[X] > t implies some outcome exceeds t'. The contrapositive used here is parallel: 'almost-sure boundedness Xₙ/n → 0 forces a finite-mean tail estimate'. Both proofs hinge on the same Markov/Chebyshev quantitative core, in different guises (probabilistic method vs. necessity contradiction)."
     }
   ],
   "conclusion": {
