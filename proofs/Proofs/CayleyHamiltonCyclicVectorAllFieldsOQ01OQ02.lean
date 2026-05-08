@@ -401,6 +401,109 @@ theorem nonderogatory_iff_similar_to_companion
   rintro ⟨P, hP, hsim⟩
   exact similar_to_companion_implies_nonderogatory M hP hsim hn
 
+/-! ## Session 4: companionMx satisfies its polynomial — vector form at e₀
+
+  Stepping stone toward `aeval (companionMx p) p = 0` for monic `p` of degree `n`,
+  which would give `minpoly K (companionMx p) = p` (Q2 of the openQuestions list).
+
+  Strategy:
+    - `companionMx_mulVec_eNm1`: action of `companionMx p` on e_{n-1} returns the
+      last column = `(-(p.coeff i))_{i<n}` (by the def of companionMx).
+    - `companionMx_pow_n_eq_lastCol_e0`: combining `companionMx_pow_e0` (k = n-1)
+      with the last-column action, `(companionMx p)^n e₀ = -∑ p.coeff i • e_i`.
+    - `aeval_companionMx_p_mulVec_e0_zero`: monicity (`p.coeff n = 1`) cancels the
+      `1 • C^n e₀` term against `∑_{k<n} p.coeff k • C^k e₀ = ∑_{k<n} p.coeff k • e_k`.
+
+  The matrix-level identity `aeval (companionMx p) p = 0` follows from cyclicity of
+  e₀ (Session 3's `companionMx_isCyclic_e0` extended just past `natDegree < n`)
+  but needs a small additional step and is deferred to Session 5.
+-/
+
+/-- Action of `companionMx p` on `e_{n-1}`: it returns the last column of the matrix,
+    which by the definition of `companionMx` is the vector `(-(p.coeff i))_{i<n}`. -/
+private lemma companionMx_mulVec_eNm1 (p : K[X]) (hn : 0 < n) :
+    (companionMx (n := n) p).mulVec
+        (Pi.single (⟨n - 1, Nat.sub_lt hn one_pos⟩ : Fin n) (1 : K)) =
+      fun i : Fin n => -(p.coeff i.val) := by
+  funext i
+  simp only [Matrix.mulVec, dotProduct]
+  rw [Finset.sum_eq_single (⟨n - 1, Nat.sub_lt hn one_pos⟩ : Fin n)]
+  · -- Main term: companionMx p i ⟨n-1, _⟩ * 1 = -(p.coeff i.val).
+    -- The first if-condition `j.val + 1 = n` triggers for j = ⟨n-1, _⟩.
+    simp only [Pi.single_eq_same, mul_one, companionMx]
+    have hnstep : (n - 1 : ℕ) + 1 = n := Nat.sub_add_cancel hn
+    rw [if_pos hnstep]
+  · -- Off-diagonal: Pi.single is zero away from ⟨n-1, _⟩.
+    intro j _ hjne
+    have hpsi : (Pi.single (⟨n - 1, Nat.sub_lt hn one_pos⟩ : Fin n) (1 : K)) j = 0 := by
+      simp only [Pi.single_apply, if_neg hjne]
+    rw [hpsi, mul_zero]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- For `n ≥ 1`, `(companionMx p)^n` applied to `e₀` returns the last-column
+    vector `(-(p.coeff i))_{i<n}`. Combines `companionMx_pow_e0` (k = n-1) with
+    `companionMx_mulVec_eNm1`. -/
+private lemma companionMx_pow_n_eq_lastCol_e0 (p : K[X]) (hn : 0 < n) :
+    ((companionMx (n := n) p) ^ n).mulVec (Pi.single (⟨0, hn⟩ : Fin n) (1 : K)) =
+      fun i : Fin n => -(p.coeff i.val) := by
+  have hnn1 : n - 1 < n := Nat.sub_lt hn one_pos
+  -- Rewrite the exponent n as (n-1) + 1 (via congr 1 + omega), then apply pow_succ'.
+  have hpow_eq : (companionMx (n := n) p) ^ n =
+      (companionMx (n := n) p) ^ (n - 1 + 1) := by
+    congr 1; omega
+  rw [hpow_eq, pow_succ', Matrix.mul_mulVec,
+      companionMx_pow_e0 p hn (n - 1) hnn1]
+  exact companionMx_mulVec_eNm1 p hn
+
+/-- For monic `p` of degree `n` (with `n ≥ 1`), the polynomial `p` annihilates
+    `companionMx p` *applied to* the standard basis vector `e₀`. This is the
+    main computational step toward the matrix-level identity
+    `aeval (companionMx p) p = 0` (which together with cyclicity of `e₀` would
+    yield `minpoly K (companionMx p) = p`). -/
+private lemma aeval_companionMx_p_mulVec_e0_zero
+    (p : K[X]) (hp_monic : p.Monic) (hp_deg : p.natDegree = n) (hn : 0 < n) :
+    (aeval (companionMx (n := n) p) p).mulVec
+        (Pi.single (⟨0, hn⟩ : Fin n) (1 : K)) = 0 := by
+  -- Expand aeval as a finite sum and apply mulVec termwise.
+  rw [aeval_eq_sum_range_natDegree p (companionMx (n := n) p), sum_mulVec_local, hp_deg]
+  -- Peel off the k = n top term.
+  rw [Finset.sum_range_succ]
+  -- Monic + natDegree = n: p.coeff n = 1.
+  have hcn : p.coeff n = 1 := by
+    have hlc := hp_monic.leadingCoeff
+    rwa [Polynomial.leadingCoeff, hp_deg] at hlc
+  rw [hcn, one_smul]
+  -- Apply C^n e₀ = (-(p.coeff i))_{i<n}.
+  rw [companionMx_pow_n_eq_lastCol_e0 p hn]
+  funext i
+  simp only [Pi.add_apply, Finset.sum_apply, Pi.zero_apply]
+  -- The sum over k < n of (p.coeff k • C^k.mulVec e₀) at i picks out k = i.val,
+  -- giving p.coeff i.val. The C^n term contributes -(p.coeff i.val); they cancel.
+  have hsum_at_i :
+      ∑ k ∈ Finset.range n,
+          (p.coeff k • (companionMx (n := n) p) ^ k).mulVec
+            (Pi.single (⟨0, hn⟩ : Fin n) 1) i = p.coeff i.val := by
+    rw [Finset.sum_eq_single i.val]
+    · -- Main term: k = i.val.
+      rw [Matrix.smul_mulVec, companionMx_pow_e0 p hn i.val i.isLt]
+      simp only [Pi.smul_apply, smul_eq_mul]
+      have hieq : (⟨i.val, i.isLt⟩ : Fin n) = i := Fin.ext rfl
+      rw [hieq, Pi.single_eq_same, mul_one]
+    · -- Off-diagonal: k ∈ range n, k ≠ i.val.
+      intro k hk hkne
+      have hk_lt_n : k < n := Finset.mem_range.mp hk
+      rw [Matrix.smul_mulVec, companionMx_pow_e0 p hn k hk_lt_n]
+      simp only [Pi.smul_apply, smul_eq_mul]
+      have hne : i ≠ (⟨k, hk_lt_n⟩ : Fin n) := by
+        intro heq; exact hkne (congrArg Fin.val heq).symm
+      have hpsi : (Pi.single (⟨k, hk_lt_n⟩ : Fin n) (1 : K)) i = 0 := by
+        rw [Pi.single_apply, if_neg hne]
+      rw [hpsi, mul_zero]
+    · -- Vacuous: i.val ∈ range n always.
+      intro h; exact absurd (Finset.mem_range.mpr i.isLt) h
+  rw [hsum_at_i]
+  ring
+
 end CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
 
 end

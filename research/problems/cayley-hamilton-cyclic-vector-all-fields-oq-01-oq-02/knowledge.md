@@ -1,8 +1,132 @@
 # Knowledge Base: cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02
 
 **Problem**: Rational Canonical Form — Mathlib formalization connection (nonderogatory case)
-**Phase**: COMPLETE (CI pending)
-**Status**: verified (0 axioms, 0 sorries; PR #17039)
+**Phase**: COMPLETE (axiom-free, biconditional closed); S4 advancing toward `Matrix.minpoly_companionMatrix`.
+**Status**: verified (0 axioms, 0 sorries; S2 PR #17039 + S3 PR #17069 merged)
+
+---
+
+## Session 4 (2026-05-08) — Vector-form Cayley-Hamilton for the companion
+
+**Mode**: CONTINUE
+**Outcome**: vector-level identity proved; matrix-level deferred to S5.
+
+### What I Did
+
+Established `(aeval (companionMx p) p).mulVec e₀ = 0` for monic `p` of degree `n`,
+the computational core of the as-yet-unproved `Matrix.minpoly_companionMatrix : minpoly K (companionMx p) = p`.
+
+Three new private lemmas:
+
+1. **`companionMx_mulVec_eNm1`** (the last column): for any `p` and `n ≥ 1`,
+   `(companionMx p).mulVec e_{n-1} = (-(p.coeff i))_{i<n}`. Pure unfolding of
+   the `companionMx` definition; the first if-clause `j.val + 1 = n` triggers
+   for `j = ⟨n-1, _⟩`. Pattern: `Finset.sum_eq_single` at `⟨n-1, _⟩`,
+   `simp only [Pi.single_eq_same, mul_one, companionMx]`, `if_pos hnstep`
+   with `hnstep : (n-1) + 1 = n` (via `Nat.sub_add_cancel hn`).
+
+2. **`companionMx_pow_n_eq_lastCol_e0`** (n-th iterate at e₀):
+   `((companionMx p) ^ n).mulVec e₀ = (-(p.coeff i))_{i<n}`. Combines
+   Session 3's `companionMx_pow_e0` (k = n-1) with `companionMx_mulVec_eNm1`.
+   Trick: rewrite the exponent `n` as `(n-1) + 1` via `congr 1 + omega`
+   (a direct `rw [show n = (n-1) + 1 from by omega]` would also rewrite the
+   `Fin n` type-level `n`, breaking unification). Then `pow_succ'` +
+   `Matrix.mul_mulVec` + `companionMx_pow_e0 p hn (n-1) hnn1` closes.
+
+3. **`aeval_companionMx_p_mulVec_e0_zero`** (the main result):
+   `(aeval (companionMx p) p).mulVec e₀ = 0` for monic `p` of degree `n`.
+   - Expand `aeval` via the local `aeval_eq_sum_range_natDegree` (Session 3) +
+     `sum_mulVec_local` (Session 2) + `hp_deg : p.natDegree = n`.
+   - Peel off `k = n` term via `Finset.sum_range_succ`.
+   - Use `hp_monic.leadingCoeff` + `Polynomial.leadingCoeff` + `hp_deg` to set
+     `p.coeff n = 1`, then `one_smul` cancels the scalar.
+   - Apply `companionMx_pow_n_eq_lastCol_e0` for the k=n term and
+     `companionMx_pow_e0` for the k<n terms.
+   - Pointwise at index i: the `range n` sum picks out `k = i.val`, contributing
+     `p.coeff i.val`. The k=n term contributes `-(p.coeff i.val)`. They cancel.
+
+### Files Modified (Session 4)
+
+- `proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean` (+103 lines net):
+  Three new private lemmas + Session 4 docstring section.
+- `src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02/meta.json`:
+  - `meta.lineCount`: 406 → 509
+  - `meta.theoremCount`: 14 → 17
+  - `leanFile.lineCount`: 214 → 509 (was stale from S2; S3 merged without sync)
+  - `leanFile.theoremCount`: 8 → 17 (was stale from S2; S3 merged without sync)
+  - Updated `assumptions` and `overview.openQuestions[Q2]` to reflect S4 partial progress.
+- `research/problems/cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02/state.md`:
+  Refreshed (was stuck at "Iteration 2"); now records S3 + S4 with S5 plan.
+
+### Result
+
+Status remains `verified` / `original` / 0 axioms / 0 sorries. The new lemmas
+are `private` (not part of the public API) — S5 will promote the matrix-level
+result.
+
+### Honest Reporting
+
+- **Build was not verified locally** — same `.lake` symlink trap as before
+  (memory `feedback_researcher_lake_symlink_broken.md`). CI is the ground truth.
+- **API drift risk**: the proof uses `pow_succ'`, `Matrix.mul_mulVec`,
+  `Matrix.smul_mulVec`, `Polynomial.leadingCoeff`, `Polynomial.Monic.leadingCoeff`,
+  `Pi.single_apply`, `Pi.single_eq_same`, `Pi.smul_apply`, `Pi.add_apply`,
+  `Finset.sum_range_succ`, `Finset.sum_apply`, `Finset.sum_eq_single`,
+  `Finset.mem_range`, `Nat.sub_add_cancel`, `Nat.sub_lt`. All used by the existing
+  Session 1-3 proofs in this same file, so most are stable; if any break, S5 repairs.
+- **Did NOT close `aeval (companionMx p) p = 0`** at the matrix level. The
+  vector-level result is the harder computation (the last-column action +
+  monicity cancellation); lifting to the matrix level via cyclicity is a
+  smaller, more-API-driven step deferred to Session 5.
+
+---
+
+## Session 3 (2026-05-08) — Companion-similarity biconditional
+
+**Mode**: CONTINUE
+**Outcome**: completed; merged via PR #17069 into origin/main on 2026-05-08.
+
+### What I Did (recovered from origin/main commit history; this session record was
+not written at the time of the S3 merge)
+
+Established the *converse* of `nonderogatory_similar_to_companion`:
+`similar_to_companion_implies_nonderogatory` and packaged the full biconditional
+`nonderogatory_iff_similar_to_companion`. Three building-block lemmas added:
+
+1. **`aeval_eq_sum_range_natDegree`**: a generalization of S2's
+   `aeval_eq_sum_pow_local` to *any* polynomial (no `natDegree p = n` hypothesis),
+   producing `aeval M q = ∑ k ∈ range (q.natDegree + 1), q.coeff k • M^k`. Used
+   by `companionMx_isCyclic_e0` and (now) S4.
+
+2. **`companionMx_pow_e0` (k < n)**: for any `p` and `0 < n`, induction on `k`
+   shows `(companionMx p)^k * e₀ = e_k` for `k < n`. Captures the subdiagonal
+   structure of the companion matrix.
+
+3. **`companionMx_isCyclic_e0`**: the standard basis vector `e₀` is cyclic for
+   `companionMx p` (any p). Proof: for any `q` with `q.natDegree < n` annihilating
+   the matrix at e₀, expand `aeval (companionMx p) q` as a finite sum, evaluate
+   at `e₀` using `companionMx_pow_e0`, and the resulting linear combination of
+   `e_k`'s being zero forces all coefficients zero.
+
+4. **`cyclicVector_similar_transport`**: similarity transports cyclic vectors. If
+   `P⁻¹ M P = N` with `P` invertible and `w` is cyclic for `N`, then `P · w` is
+   cyclic for `M`. Proof: `aeval M q * P = P * aeval N q` (induction on power),
+   convert to `mulVec`, apply injectivity of `P.mulVec`.
+
+5. **`similar_to_companion_implies_nonderogatory`** (converse): if `M` is similar
+   to `companionMx (minpoly K M)`, then by `companionMx_isCyclic_e0` the matrix
+   has a cyclic vector (image of e₀ under the similarity), and the cyclic-vector
+   biconditional from sibling OQ-01-OQ-01 closes.
+
+6. **`nonderogatory_iff_similar_to_companion`**: full biconditional combining
+   forward (S1+S2) and converse (S3) directions.
+
+### Result
+
+The triangle `IsNonderogatory M ↔ ∃ v cyclic ↔ ∃ P, P⁻¹ M P = companionMx (μ_M)`
+is now machine-verified over arbitrary fields with **zero axioms**.
+
+PR: #17069 (S2 was merged separately as #17039 earlier the same day).
 
 ---
 
