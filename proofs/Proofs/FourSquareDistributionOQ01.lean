@@ -1376,4 +1376,187 @@ example : r4Count (2 ^ 3 * 1) = 24 * sigmaOne 1 :=
 example : r4Count (2 ^ 3 * 5) = 24 * sigmaOne 5 :=
   r4Count_two_pow_mul_odd (by decide) (by decide) (by decide)
 
+-- =====================================================================
+-- PART 21: Lower bounds, 8-divisibility, and the odd-prime corollary.
+--
+-- Pins basic structural information about σ*, jacobiR4, and r4Count:
+-- positivity (σ*(n) ≥ 1 for n > 0), the universal factor of 8 in
+-- jacobiR4 / r4Count, and the closed form r₄(p) = 8·(p+1) for odd
+-- primes. The σ*-side and jacobiR4-side results are axiom-free; the
+-- r4Count-side results derive from `jacobi_r4_formula` (Part 5).
+--
+-- Net effect: factors out the "trivial" structural content of Jacobi's
+-- formula (positivity, 8-divisibility, odd-prime closed form) so that
+-- downstream callers can quote these without re-deriving them. The
+-- 8-divisibility of r₄(n) recovers a structural fact known classically:
+-- the four-square representation count is always a multiple of 8 (the
+-- order of the sign-flip group acting on a generic four-tuple).
+-- =====================================================================
+
+/-- **σ*(n) ≥ 1 for n > 0** (axiom-free).
+
+    The divisor `1` is always in `n.divisors` when `n > 0`, and `4 ∤ 1`,
+    so the sum has at least the term `1`. -/
+theorem sigmaStar_pos {n : ℕ} (hn : 0 < n) : 0 < sigmaStar n := by
+  have h1_mem : 1 ∈ n.divisors := Nat.one_mem_divisors.mpr hn.ne'
+  have h_le : (1 : ℕ) ≤ sigmaStar n := by
+    unfold sigmaStar
+    have h_term : (if (4 : ℕ) ∣ (1 : ℕ) then 0 else (1 : ℕ)) = 1 := by decide
+    calc (1 : ℕ)
+        = (if (4 : ℕ) ∣ (1 : ℕ) then 0 else (1 : ℕ)) := h_term.symm
+      _ ≤ ∑ d ∈ n.divisors, if (4 : ℕ) ∣ d then 0 else d :=
+          Finset.single_le_sum
+            (f := fun d => if (4 : ℕ) ∣ d then 0 else d)
+            (fun i _ => by split_ifs <;> exact Nat.zero_le _)
+            h1_mem
+  omega
+
+/-- **σ*(n) ≥ 1 for n > 0** — restated form of `sigmaStar_pos`. -/
+theorem sigmaStar_one_le {n : ℕ} (hn : 0 < n) : 1 ≤ sigmaStar n :=
+  sigmaStar_pos hn
+
+/-- **8 ∣ jacobiR4(n)** for all `n` (axiom-free, definitional). -/
+theorem eight_dvd_jacobiR4 (n : ℕ) : 8 ∣ jacobiR4 n := by
+  unfold jacobiR4
+  exact dvd_mul_right 8 _
+
+/-- **jacobiR4(n) ≥ 8 for n > 0** (axiom-free).
+
+    Combines `sigmaStar_pos` with the definition `jacobiR4 = 8·σ*`. -/
+theorem jacobiR4_eight_le {n : ℕ} (hn : 0 < n) : 8 ≤ jacobiR4 n := by
+  unfold jacobiR4
+  have h := sigmaStar_pos hn
+  omega
+
+/-- **jacobiR4(n) > 0 for n > 0** (axiom-free). -/
+theorem jacobiR4_pos {n : ℕ} (hn : 0 < n) : 0 < jacobiR4 n :=
+  lt_of_lt_of_le (by decide : (0 : ℕ) < 8) (jacobiR4_eight_le hn)
+
+/-- **r4Count(n) ≥ 8 for n > 0** (uses `jacobi_r4_formula`).
+
+    Combines `jacobi_r4_formula` (Part 5) with the axiom-free
+    `jacobiR4_eight_le`. -/
+theorem r4Count_eight_le {n : ℕ} (hn : 0 < n) : 8 ≤ r4Count n := by
+  rw [jacobi_r4_formula n hn]
+  exact jacobiR4_eight_le hn
+
+/-- **r4Count(n) > 0 for n > 0** (uses `jacobi_r4_formula`).
+
+    The "Jacobi corollary" form of Lagrange's four-square theorem: every
+    positive `n` has at least one representation as a sum of four signed
+    integer squares. (The classical Lagrange theorem is logically
+    independent of `jacobi_r4_formula`; this corollary recovers it from
+    Jacobi's stronger formula.) -/
+theorem r4Count_pos {n : ℕ} (hn : 0 < n) : 0 < r4Count n := by
+  rw [jacobi_r4_formula n hn]
+  exact jacobiR4_pos hn
+
+/-- **8 ∣ r4Count(n) for n > 0** (uses `jacobi_r4_formula`).
+
+    The number of four-square representations of any positive `n` is a
+    multiple of 8. Sign-flip symmetry on a single nonzero coordinate
+    explains the factor of 2; combined with permutation symmetry on a
+    generic distinct-coordinate tuple, the action of the wreath product
+    accounts for the factor of 8 in Jacobi's formula. -/
+theorem eight_dvd_r4Count {n : ℕ} (hn : 0 < n) : 8 ∣ r4Count n := by
+  rw [jacobi_r4_formula n hn]
+  exact eight_dvd_jacobiR4 n
+
+/-- **σ*(p) = p + 1 for odd prime p** (axiom-free).
+
+    For an odd prime `p`, the divisors of `p` are `{1, p}`, and neither
+    is divisible by 4 (the case `p = 2` is excluded by `h2`). Hence
+    σ*(p) = 1 + p = p + 1. -/
+theorem sigmaStar_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) :
+    sigmaStar p = p + 1 := by
+  have h4_p : ¬ (4 : ℕ) ∣ p := by
+    intro h
+    have h2_dvd : (2 : ℕ) ∣ p := dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h
+    rcases hp.eq_one_or_self_of_dvd 2 h2_dvd with h1 | h2_eq
+    · exact absurd h1 (by decide)
+    · exact h2 h2_eq.symm
+  have h4_1 : ¬ (4 : ℕ) ∣ (1 : ℕ) := by decide
+  have h1_ne_p : (1 : ℕ) ≠ p := hp.one_lt.ne
+  unfold sigmaStar
+  rw [Nat.divisors_prime hp]
+  have h1_not_mem : (1 : ℕ) ∉ ({p} : Finset ℕ) := by
+    rw [Finset.mem_singleton]; exact h1_ne_p
+  rw [show ({1, p} : Finset ℕ) = insert (1 : ℕ) {p} from rfl,
+      Finset.sum_insert h1_not_mem,
+      Finset.sum_singleton,
+      if_neg h4_1, if_neg h4_p]
+  ring
+
+/-- **jacobiR4(p) = 8·(p+1) for odd prime p** (axiom-free).
+
+    Direct corollary of `sigmaStar_odd_prime` and the definition
+    `jacobiR4 = 8·σ*`. -/
+theorem jacobiR4_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) :
+    jacobiR4 p = 8 * (p + 1) := by
+  unfold jacobiR4
+  rw [sigmaStar_odd_prime hp h2]
+
+/-- **r4Count(p) = 8·(p+1) for odd prime p** (uses `jacobi_r4_formula`).
+
+    The closed form for r₄ on an odd-prime argument: chains
+    `jacobi_r4_formula` with `jacobiR4_odd_prime`. Pins the prime case
+    of Jacobi's formula as a named theorem, eliminating the need for
+    callers to numerically check `r₄(p) = 8(p+1)` for each prime. -/
+theorem r4Count_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2) :
+    r4Count p = 8 * (p + 1) := by
+  rw [jacobi_r4_formula p hp.pos]
+  exact jacobiR4_odd_prime hp h2
+
+-- ---------------------------------------------------------------------
+-- Cross-validation with PART 1 numerical values.
+-- ---------------------------------------------------------------------
+
+/-- σ*(1) > 0 — smallest positive case. -/
+example : 0 < sigmaStar 1 := sigmaStar_pos (by decide)
+
+/-- σ*(8) ≥ 1 even though σ*(8) = 3 hits the smallest non-trivial value
+    on a high-2-power argument. -/
+example : 1 ≤ sigmaStar 8 := sigmaStar_one_le (by decide)
+
+/-- jacobiR4(8) = 24, so 8 ≤ jacobiR4(8). -/
+example : 8 ≤ jacobiR4 8 := jacobiR4_eight_le (by decide)
+
+/-- 8 ∣ jacobiR4(7) = 64. -/
+example : 8 ∣ jacobiR4 7 := eight_dvd_jacobiR4 7
+
+/-- σ*(3) = 3 + 1 = 4 — first odd prime case. -/
+example : sigmaStar 3 = 3 + 1 :=
+  sigmaStar_odd_prime (by decide) (by decide)
+
+/-- σ*(5) = 5 + 1 = 6. -/
+example : sigmaStar 5 = 5 + 1 :=
+  sigmaStar_odd_prime (by decide) (by decide)
+
+/-- σ*(7) = 7 + 1 = 8. -/
+example : sigmaStar 7 = 7 + 1 :=
+  sigmaStar_odd_prime (by decide) (by decide)
+
+/-- jacobiR4(3) = 32 = 8·(3+1) — the Part 1 numerical value matches the
+    Part 21 closed form. -/
+example : jacobiR4 3 = 8 * (3 + 1) :=
+  jacobiR4_odd_prime (by decide) (by decide)
+
+/-- jacobiR4(5) = 48 = 8·(5+1). -/
+example : jacobiR4 5 = 8 * (5 + 1) :=
+  jacobiR4_odd_prime (by decide) (by decide)
+
+/-- jacobiR4(7) = 64 = 8·(7+1). -/
+example : jacobiR4 7 = 8 * (7 + 1) :=
+  jacobiR4_odd_prime (by decide) (by decide)
+
+/-- jacobiR4(11) = 8·(11+1) = 96 — the first prime beyond Part 1's
+    n ≤ 10 numerical envelope. The Part 21 closed form predicts the
+    value without needing to extend the brute-force enumeration. -/
+example : jacobiR4 11 = 8 * (11 + 1) :=
+  jacobiR4_odd_prime (by decide) (by decide)
+
+/-- jacobiR4(13) = 8·(13+1) = 112. -/
+example : jacobiR4 13 = 8 * (13 + 1) :=
+  jacobiR4_odd_prime (by decide) (by decide)
+
 end FourSquareDistributionOQ01
