@@ -60,7 +60,7 @@
   },
   "overview": {
     "text": "Proves the exact characterization of minpoly invariance under non-injective K-algebra maps: minpoly K (f a) = minpoly K a iff aeval a (minpoly K (f a)) = 0. The universal direction (minpoly(f a) divides minpoly(a)) holds always; equality requires the mutual divisibility which is equivalent to the testable aeval criterion.",
-    "historicalContext": "The minimal polynomial theory for algebra homomorphisms was developed alongside the Cayley-Hamilton theorem. Mathlib's minpoly.algHom_eq (requiring injectivity) covers the classical case. The non-injective case provides the exact threshold condition.",
+    "historicalContext": "Cayley introduced the minimal polynomial of a matrix in his 1858 \"Memoir on the Theory of Matrices\" alongside the characteristic polynomial, observing the now-classical Cayley-Hamilton identity. Frobenius (1878) gave the first complete proof of Cayley-Hamilton and developed the systematic theory of minimal polynomials over arbitrary fields. The abstraction to minimal polynomials of elements in arbitrary K-algebras (rather than just matrix algebras) is part of the 20th-century reorganization of algebra by Noether, van der Waerden, and Bourbaki — placing minpoly inside the universal-property framework of integral closure (\"the smallest monic polynomial annihilating an element\"). The standard textbook treatment (Lang, Bourbaki Chapter V) restricts to integral domain extensions where injectivity is automatic; the non-injective case has historically received less attention because in classical Galois theory and field theory, all algebra maps of interest are injective. Mathlib's `minpoly.algHom_eq` (added 2019, refined through 2023) formalizes the injective case via the universal divisibility property; this entry isolates the precise iff condition under which the equality continues to hold without injectivity, completing the API for general K-algebras (rings) where the zero map and other collapsing morphisms are first-class citizens.",
     "problemStatement": "Open Question (OQ-02-OQ-01-OQ-02): Can we characterize exactly when minpoly is invariant under non-injective K-algebra homomorphisms?\n\nAnswer: YES. minpoly K (f a) = minpoly K a iff Polynomial.aeval a (minpoly K (f a)) = 0.",
     "proofStrategy": "The key is mutual divisibility of monic polynomials:\n1. Always: minpoly(f a) | minpoly(a) [from minpoly.aeval_algHom + minpoly.dvd]\n2. If additionally: minpoly(a) | minpoly(f a) [from aeval a = 0 + minpoly.dvd]\n3. Both monic → equal [associated_of_dvd_dvd + eq_of_monic_of_associated]",
     "keyInsights": [
@@ -68,7 +68,9 @@
       "Non-injective maps can only shrink the minimal polynomial degree (never increase it), so the characterization asks whether the degree stays at its maximum possible value.",
       "The injective case (minpoly.algHom_eq) is a special case: for injective f, the criterion automatically holds because f maps the vanishing ideal of a injectively.",
       "Failure mode: the zero map sends f(a) = 0 for all a, so minpoly K (0) = X and aeval a X = a ≠ 0 for nonzero a. The characterization correctly predicts that minpoly is NOT preserved.",
-      "The proof uses only Mathlib's minpoly.dvd, minpoly.aeval_algHom, associated_of_dvd_dvd, and eq_of_monic_of_associated — all available in Mathlib without additional infrastructure."
+      "The proof uses only Mathlib's minpoly.dvd, minpoly.aeval_algHom, associated_of_dvd_dvd, and eq_of_monic_of_associated — all available in Mathlib without additional infrastructure.",
+      "The integrality hypotheses (`IsIntegral K a` and `IsIntegral K (f a)`) are essential, not cosmetic: minpoly is defined to be 0 when the element is non-integral, so without integrality the iff becomes the trivial 0 = 0 ↔ aeval a 0 = 0 and gives no information. For finite-dimensional A, both hypotheses hold automatically; for infinite-dimensional algebras they must be checked. Note that `IsIntegral K (f a)` does NOT follow automatically from `IsIntegral K a` for non-injective f (the image f(a) might satisfy an even shorter polynomial relation that need not stay integral over the codomain's structure), though it does hold whenever B is a finite-dimensional K-algebra.",
+      "Categorically, the result describes when the natural transformation `minpoly K (–)` from the forgetful functor (K-algebras with integral elements → polynomials) respects morphisms. The iff condition picks out exactly the non-degenerate morphisms in this category: those for which the algebraic data of the source is faithfully transported to the target."
     ],
     "prerequisites": [
       "Minimal polynomial theory (minpoly in Mathlib)",
@@ -78,11 +80,15 @@
     ]
   },
   "knownResults": [
-    "minpoly_dvd_algHom: minpoly K (f a) divides minpoly K a for any algebra map f",
-    "minpoly_eq_iff_aeval_zero: the complete characterization (main theorem)",
-    "minpoly_eq_iff_isRoot: equivalent form using IsRoot predicate",
-    "minpoly_ne_iff_not_aeval_zero: the failure mode characterization",
-    "minpoly_natDegree_le: degree inequality (non-injective maps can only shrink minpoly)"
+    "minpoly_dvd_algHom: minpoly K (f a) divides minpoly K a for any algebra map f (universal direction, no hypotheses on f)",
+    "minpoly_eq_iff_aeval_zero: the complete characterization (main theorem) — minpoly K (f a) = minpoly K a ↔ aeval a (minpoly K (f a)) = 0",
+    "minpoly_eq_iff_isRoot: equivalent form using IsRoot predicate — phrased as (minpoly K (f a)).IsRoot a",
+    "minpoly_ne_iff_not_aeval_zero: the failure-mode characterization (negation of the main iff)",
+    "injective_implies_criterion_holds: any injective f automatically satisfies the aeval criterion",
+    "injective_iff_implies_criterion_always: meta-equivalence — \"injective ⇒ minpoly equality\" iff \"injective ⇒ aeval criterion holds\"",
+    "minpoly_natDegree_le: degree inequality — natDegree(minpoly(f a)) ≤ natDegree(minpoly(a)) (non-injective maps can only shrink minpoly degree)",
+    "minpoly_eq_implies_degree_eq: minpoly equality forces degree equality (trivially, but stated for completeness)",
+    "complete_characterization: re-export of the main theorem with a docstring summarising the full picture (universal divisibility + degree inequality + iff criterion)"
   ],
   "sections": [
     {
@@ -127,7 +133,8 @@
     "openQuestions": [
       "Can the characterization be extended to non-integral elements, using some notion of approximate or formal minimal polynomial?",
       "What is the algebraic structure of the set of algebra maps f for which a fixed element a has its minpoly preserved — is it closed under composition?",
-      "Does the characterization generalize to commutative rings (rather than fields K) for the coefficient domain?"
+      "Does the characterization generalize to commutative rings (rather than fields K) for the coefficient domain? (When K is only a commutative ring, minpoly is no longer well-behaved without further hypotheses such as Noether's normalization or the element being integral over K.)",
+      "Is there a categorical formulation: do the algebra maps f for which `aeval a (minpoly K (f a)) = 0` form a wide subcategory of the K-algebra category, and how does it relate to the subcategory of injective maps?"
     ]
   },
   "crossReferences": [
@@ -145,6 +152,16 @@
       "id": "cayley-hamilton-minpoly-oq-02",
       "title": "Cayley-Hamilton Minpoly (OQ-02)",
       "relationship": "Grandparent open question in the minimal polynomial line of inquiry."
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
+      "title": "Skolem-Noether Theorem: K-Algebra Automorphisms of Mₙ(K)",
+      "relationship": "Sibling under OQ-02-OQ-01: applies the injective case to characterize automorphisms of matrix algebras (every automorphism is inner). This entry handles the dual situation — what happens when the algebra map is NOT injective."
+    },
+    {
+      "id": "cayley-hamilton-minpoly-oq-02-oq-03",
+      "title": "Rational Canonical Form: Similarity Invariance",
+      "relationship": "Sibling result on minpoly behavior under algebra maps: similarity (conjugation by an invertible matrix, an injective map) preserves minpoly. This entry explains exactly when more general — possibly non-injective — algebra maps preserve minpoly."
     }
   ],
   "sorries": 0
