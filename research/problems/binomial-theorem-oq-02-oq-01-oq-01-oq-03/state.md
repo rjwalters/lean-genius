@@ -1,25 +1,26 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 structural-lemma prep — library complete)
+**Phase**: ACT (Phase-4 axiom elimination — opaque marker removed)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 5, researcher-1)
-**Iteration**: 5
+**Last Updated**: 2026-05-08 (Session 6, researcher-1)
+**Iteration**: 6
 
 ## Current Focus
-Phase-4 prep continued: added `binomialCDF_zero_le` (CDF ≥ 0) and
-`binomialCDF_le_one` (CDF ≤ 1) — two structural lemmas that round out
-the structural-properties library. `binomialCDF_le_one` uses `add_pow`
-to expand `(p + (1−p))^n = 1` and bounds the CDF by dropping
-non-negative summands. Combined with the prior session's
-`binomialCDF_neg` and `binomialCDF_mono`, the structural library is now
-sufficient for the Phase-4 Portmanteau-bridge proof of
-`binomial_clt_pointwise`.
+Phase-4 axiom elimination — Session 5's "Stretch (independent)" goal.
+Replaced `opaque standardNormalCDF : ℝ → ℝ` with a concrete
+`noncomputable def standardNormalCDF (x : ℝ) : ℝ :=
+∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t`. Added three
+elementary structural lemmas — `standardNormalCDF_nonneg`,
+`standardNormalCDF_le_one`, `standardNormalCDF_mono` — that sit on the
+critical path for the Phase-4 Portmanteau bridge. Imported
+`Mathlib.Probability.Distributions.Gaussian.Real` to access the
+Gaussian PDF API.
 
-No axiom elimination this session; the file is still 0 sorries / 2
-axioms (`binomial_clt_pointwise` + `standardNormalCDF` opaque). Next
-session begins the Phase-4 axiom attack itself.
+**Axiom count: 2 → 1.** The file is now 0 sorries / 1 axiom
+(`binomial_clt_pointwise` only). Next session is the de Moivre-Laplace
+discharge itself.
 
 ## Active Approach
 **CDF-based** rather than the measure-theoretic Bernoulli-sum approach
@@ -31,11 +32,14 @@ sketched in iteration 1. Justification:
 - Keeps the reduction step transparent: the marginal CDF *equals* the
   binomial CDF (not just converges to it), so `Filter.Tendsto.congr` does
   the job.
-- Cost: introduces `standardNormalCDF` as `opaque` (counts as +1 axiom);
-  Phase-3 task is to bridge to Mathlib's measure-theoretic Gaussian.
+- Cost (since Session 2 — RESOLVED Session 6): the original scaffold
+  introduced `standardNormalCDF` as `opaque` (counted as +1 axiom);
+  Session 6 replaced it with a concrete `noncomputable def`
+  integrating Mathlib's `gaussianPDFReal 0 1` over `Set.Iic x`,
+  removing that assumption.
 
 ## Attempt Count
-- Total attempts: 5 (Sessions 1–5)
+- Total attempts: 6 (Sessions 1–6)
 - Approaches tried:
   - **Iteration 1** (researcher-8, OBSERVE→ORIENT): planned i.i.d.-CLT
     decomposition (Sublemmas A, B, C, D). No Lean code.
@@ -51,11 +55,18 @@ sketched in iteration 1. Justification:
     `binomialCDF_mono` (monotone in `x` when `0 ≤ p ≤ 1`). File grew to
     275 lines, 2 axioms (unchanged), **0 sorries**, 5 theorems
     (substantive count: 4). Merged in #16951.
-  - **Iteration 5** (researcher-1, ACT — THIS SESSION):
-    Phase-4 prep continued. Added `binomialCDF_zero_le` (CDF ≥ 0) and
-    `binomialCDF_le_one` (CDF ≤ 1) using `add_pow` for the binomial
-    expansion. File now 330 lines, 2 axioms (unchanged), **0 sorries**,
-    7 theorems (substantive count: 6).
+  - **Iteration 5** (researcher-1, ACT): Phase-4 prep continued.
+    Added `binomialCDF_zero_le` (CDF ≥ 0) and `binomialCDF_le_one`
+    (CDF ≤ 1) using `add_pow` for the binomial expansion. File grew to
+    330 lines, 2 axioms (unchanged), **0 sorries**, 7 theorems
+    (substantive count: 6). Merged in #16992.
+  - **Iteration 6** (researcher-1, ACT — THIS SESSION): Phase-4 axiom
+    elimination. Replaced `opaque standardNormalCDF` with a concrete
+    `noncomputable def` integrating `ProbabilityTheory.gaussianPDFReal 0 1`
+    over `Set.Iic x`; added three structural lemmas
+    (`standardNormalCDF_nonneg`, `_le_one`, `_mono`). File now 369 lines,
+    **1 axiom** (was 2), 0 sorries, 10 theorems
+    (substantive count: 9).
 
 ## Blockers
 - **Build verification**: this session could not run the Docker build
@@ -66,30 +77,36 @@ sketched in iteration 1. Justification:
 - **Reduction lemma sorry**: the proof of
   `multinomialMarginalCDF_eq_binomialCDF` is a routine fiber-regrouping
   + application of the parent's `multinomial_marginal_pmf`. Phase-3 target.
-- **`standardNormalCDF` opaque**: counts as +1 axiom; Phase-3 should
-  bridge to Mathlib's Gaussian measure.
-- **`binomial_clt_pointwise` axiom**: Phase-3 should derive from
+- **`standardNormalCDF` opaque** (RESOLVED in Session 6): replaced
+  with a concrete `noncomputable def` integrating Mathlib's
+  `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; axiom
+  count dropped 2 → 1.
+- **`binomial_clt_pointwise` axiom** (the only remaining axiom):
+  next-session target. The cleanest path is to derive from
   `ProbabilityTheory.iid_central_limit_theorem` via the Portmanteau
-  theorem at continuity points.
+  theorem at continuity points of the standard normal CDF (every
+  point — Φ is continuous).
 
 ## Next Action
 
-**Session 6 (Phase-4 axiom attack)**: discharge `binomial_clt_pointwise`.
-The cleanest path is to bridge from Mathlib's
+**Session 7 (Phase-4 axiom attack — sole remaining axiom)**: discharge
+`binomial_clt_pointwise`. The cleanest path is to bridge from Mathlib's
 `ProbabilityTheory.iid_central_limit_theorem` applied to a Bernoulli($p$)
 i.i.d. sequence; this requires a Portmanteau-style CDF-from-measure-
-weak-convergence step. The structural lemmas added in Sessions 4–5
+weak-convergence step. The structural lemmas added in Sessions 4–6
 (`binomialCDF_neg`, `binomialCDF_mono`, `binomialCDF_le_one`,
-`binomialCDF_zero_le`) are prerequisites for the bridge. Alternative
-path: Stirling's formula for a direct asymptotic-analysis proof.
+`binomialCDF_zero_le`, `standardNormalCDF_nonneg`,
+`standardNormalCDF_le_one`, `standardNormalCDF_mono`) are now in place
+for the bridge. Alternative path: Stirling's formula for a direct
+asymptotic-analysis proof.
 
-**Stretch (independent)**: replace `standardNormalCDF` opaque with
-a `noncomputable def` integrating `gaussianPDFReal 0 ⟨1, _⟩` over
-`Set.Iic x`. ShannonEntropyOQ01.lean already uses
-`ProbabilityTheory.gaussianPDFReal μ ⟨σ², sq_nonneg σ⟩` so the
-API is precedented; the bridge to a CDF function is one
-`MeasureTheory.integral` definition. Removes the opaque assumption
-entirely (axiom count 2 → 1).
+The Portmanteau bridge requires showing that for the standardized
+Bernoulli-sum law $\mu_n$ on $\mathbb{R}$, $\mu_n \to \mathcal{N}(0,1)$
+weakly implies pointwise CDF convergence at all continuity points of the
+limit CDF. Since $\Phi$ is continuous everywhere, every point is a
+continuity point, so the convergence is universal. Mathlib's
+`ProbabilityTheory.tendsto_measure_Iic_of_tendsto_in_distribution` (or
+its Mathlib equivalent — name TBD) is the direct hook.
 
 ---
 
