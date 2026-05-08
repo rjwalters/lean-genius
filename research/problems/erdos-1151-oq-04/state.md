@@ -4,10 +4,49 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 23
+**Iteration**: 24
 **Last Updated**: 2026-05-08
 
-## Session 23 (researcher-3, this session, build pending)
+## Session 24 (researcher-4, this session, build pending)
+
+Added the **Step 7a residue (asymptotic log lower bound)** as a new private
+helper `chebyshev_quarter_floor_log_asymp_lb` (~80 lines). For any `θ > 0`:
+
+```
+∃ N₀ : ℕ, ∀ n ≥ N₀, ∀ m : ℕ,
+  (n : ℝ) * θ / (4π) - 1 ≤ (m : ℝ) →
+  (1/4) * log((n : ℝ) + 1) ≤ (1/2) * log((m : ℝ) + 2) - 1.
+```
+
+The standard Step 7a caller-side choice `m := ⌊n·θ/(4π)⌋ : ℕ` satisfies
+the input hypothesis via `Nat.lt_floor_add_one`. Composed with the merged
+S21 helper `trig_sum_subsum_log_lb` (whose RHS factor is exactly
+`(1/2) · log((m : ℝ) + 2) − 1`), this yields an asymptotic
+`(sin(θ/2) / (2π)) · n · log(n+1)` lower bound for the trig sum, ready
+for `trig_sum_combine_small_large_const` (open: PR #17386).
+
+**Witness**: `N₀ = ⌈16π² · e⁴ / θ²⌉` (provided by `exists_nat_gt(K + 1)`),
+`c = 1/4`. The proof reduces
+
+  `(1/2) · log(m+2) − 1 ≥ (1/4) · log(n+1)`  ⟺  `(m+2)² ≥ (n+1) · e⁴`
+
+via `Real.log_le_log` + `Real.log_mul` + `Real.log_exp` + `Real.log_pow`.
+From the hypothesis `m + 2 ≥ n·θ/(4π)`, `(m+2)² ≥ n²·θ²/(16π²)`. The
+remaining `n²·θ²/(16π²) ≥ (n+1)·e⁴` ⟺ `n² ≥ K·(n+1)` where
+`K := 16π²·e⁴/θ²`, which holds when `n ≥ K + 1`:
+
+  `n² = n·n ≥ (K+1)·n ≥ K·n + n ≥ K·n + K = K·(n+1)`.
+
+**Why this matters**: this is the **genuinely-asymptotic step** flagged
+in PR #17386's body as "Step 4 (the genuinely-mathematical residue)".
+With S21 (subsum_log_lb) + S22 (h_interior + small_n_const) + S23
+(quarter_floor_hm_le_and_cap_max) + S24 (this session) merged, the only
+remaining work for `trig_sum_harmonic_lb` is the **mechanical glue**:
+WLOG-reduce to `θ ∈ (0, π/2]` via `trig_sum_reindex_symmetry` (S18),
+pick `m := ⌊n·θ/(4π)⌋`, chain the merged helpers, and feed the result
+to `trig_sum_combine_small_large_const`. No further inequality residue.
+
+## Session 23 (researcher-3, build pending, merged via #17396)
 
 Added the **Step 7a m-choice + arithmetic packager** as a new private helper
 `chebyshev_quarter_floor_hm_le_and_cap_max` (~110 lines). Given:
@@ -222,18 +261,23 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
   `(Finset.Icc 1 N).image (n ↦ S(θ, n) / (n · log(n+1)))`. Merged via #17330.
 - 2026-05-08: Session 22 (researcher-3): `chebyshev_h_interior_of_close_and_max_index_cap`
   — abstract h_interior verifier from `hk₀_close` + `hcap_max`. Merged via #17324.
-- 2026-05-08: Session 23 (researcher-3, this session): `chebyshev_quarter_floor_hm_le_and_cap_max`
+- 2026-05-08: Session 23 (researcher-3): `chebyshev_quarter_floor_hm_le_and_cap_max`
   — m-choice + arithmetic packager that, for `θ ∈ (0, π/2]`, `n ≥ 4`, and any
   `m : ℕ` with `(m : ℝ) ≤ n·θ/(4π)`, produces both `hm_le` and `hcap_max`
-  inputs simultaneously. Closes the arithmetic boilerplate for the
-  asymptotic-branch caller of `trig_sum_subsum_log_lb`.
+  inputs simultaneously. Merged via #17396.
+- 2026-05-08: Session 24 (researcher-4, this session): `chebyshev_quarter_floor_log_asymp_lb`
+  — asymptotic log lower bound `(1/4)·log(n+1) ≤ (1/2)·log(m+2) − 1` for
+  `n ≥ N₀(θ)` and `(m : ℝ) ≥ n·θ/(4π) − 1`. The genuinely-asymptotic step
+  flagged in PR #17386's body; with this and the open combine helper merged,
+  the only remaining work for `trig_sum_harmonic_lb` is the WLOG/m-choice glue.
 
 ## Open PRs
 
-- (this session) PR pending — `chebyshev_quarter_floor_hm_le_and_cap_max` (~110 lines, build TBD)
+- (this session) PR pending — `chebyshev_quarter_floor_log_asymp_lb` (~80 lines, build TBD)
+- PR #17386 (researcher-3, S23 follow-up) — `trig_sum_combine_small_large_const`
 
-## File Stats (after Session 23 added chebyshev_quarter_floor_hm_le_and_cap_max)
+## File Stats (after Session 24 added chebyshev_quarter_floor_log_asymp_lb)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 2178 lines, 2 sorries (was 2067 lines)
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2288 lines, 2 sorries (was 2180 lines on origin/main)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement

@@ -46,6 +46,8 @@ The non-sorry results proved here:
   - `trig_sum_subsum_log_lb`: Step 6c — combined log lower bound (S6a ∘ S6b) [Session 21]
   - `trig_sum_reindex_symmetry`: S(θ,n) = S(π−θ,n) via involution σ k = ⟨n−1−k, _⟩ [Session 18]
   - `chebyshev_trig_sum_pos`: strict positivity of S(θ,n) per term [Session 20]
+  - `chebyshev_quarter_floor_log_asymp_lb`: (1/4)·log(n+1) ≤ (1/2)·log(m+2)−1
+    for `n ≥ N₀(θ)` and `(m : ℝ) ≥ n·θ/(4π) − 1` (Step 7a residue) [Session 24]
 
 ## Sorry 1: trig_sum_harmonic_lb (was: chebyshev_trig_sum_lb Case 2)
 Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
@@ -1976,6 +1978,112 @@ private lemma trig_sum_small_n_const (θ : ℝ)
         ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) := rfl
     rw [hr_unfold] at hC_le
     rwa [le_div_iff hd_pos] at hC_le
+
+/-- **(Step 7a residue) Asymptotic log lower bound for the quarter-floor input.**
+
+    For any `θ > 0`, there exists `N₀ : ℕ` such that for every `n ≥ N₀` and
+    every `m : ℕ` satisfying `(m : ℝ) ≥ n·θ/(4π) − 1`:
+
+      `(1/4) · log((n : ℝ) + 1) ≤ (1/2) · log((m : ℝ) + 2) − 1`.
+
+    The standard Step 7a caller-side choice `m := ⌊n·θ/(4π)⌋ : ℕ` satisfies
+    the hypothesis via `Nat.lt_floor_add_one` (since
+    `((⌊x⌋₊ : ℕ) : ℝ) > x − 1` for nonneg `x`). Combined with
+    `trig_sum_subsum_log_lb` (whose RHS factor is exactly
+    `(1/2) · log((m : ℝ) + 2) − 1`), this yields an asymptotic
+    `(sin(θ/2) / (2π)) · n · log(n+1)` lower bound for the trig sum,
+    which is then ready for `trig_sum_combine_small_large_const`.
+
+    **Witness**: `N₀ = ⌈16π² · e⁴ / θ²⌉ + 2` (provided by `exists_nat_gt`),
+    `c = 1/4`. The proof reduces
+
+      `(1/2) · log(m+2) − 1 ≥ (1/4) · log(n+1)`
+        ⟺  `2 · log(m+2) − 4 ≥ log(n+1)`
+        ⟺  `log((m+2)²) ≥ log((n+1) · e⁴)`
+        ⟺  `(m+2)² ≥ (n+1) · e⁴`.
+
+    From `m + 2 ≥ n · θ/(4π)`, we have `(m+2)² ≥ n² · θ² / (16π²)`. The
+    remaining `n² · θ² / (16π²) ≥ (n+1) · e⁴` simplifies to `n² ≥ K·(n+1)`
+    where `K := 16π² · e⁴ / θ²`, which holds whenever `n ≥ K + 1`:
+    `n² = n·n ≥ (K+1)·n ≥ K·n + n ≥ K·n + K = K·(n+1)`. -/
+private lemma chebyshev_quarter_floor_log_asymp_lb
+    (θ : ℝ) (hθ_pos : 0 < θ) :
+    ∃ N₀ : ℕ, ∀ n : ℕ, N₀ ≤ n → ∀ m : ℕ,
+      (n : ℝ) * θ / (4 * Real.pi) - 1 ≤ (m : ℝ) →
+      (1 : ℝ) / 4 * Real.log ((n : ℝ) + 1) ≤
+        (1 : ℝ) / 2 * Real.log ((m : ℝ) + 2) - 1 := by
+  have hπ_pos := Real.pi_pos
+  have hπ_sq_pos : (0 : ℝ) < Real.pi ^ 2 := pow_pos hπ_pos 2
+  have hθ_sq_pos : (0 : ℝ) < θ ^ 2 := pow_pos hθ_pos 2
+  have hexp4_pos : (0 : ℝ) < Real.exp 4 := Real.exp_pos 4
+  -- K := 16π²·e⁴/θ² > 0
+  set K : ℝ := (16 : ℝ) * Real.pi ^ 2 * Real.exp 4 / θ ^ 2 with hK_def
+  have hK_pos : 0 < K := by
+    rw [hK_def]; positivity
+  -- Pick `N₀` strictly greater than `K + 1` (Archimedean).
+  obtain ⟨N₀, hN₀⟩ := exists_nat_gt (K + 1)
+  refine ⟨N₀, ?_⟩
+  intro n hn m hm
+  -- From `N₀ ≤ n`: `K + 1 < (n : ℝ)`, hence `K ≤ n − 1`, `n ≥ 1`.
+  have hN₀_real : (N₀ : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have h_n_gt_K1 : K + 1 < (n : ℝ) := lt_of_lt_of_le hN₀ hN₀_real
+  have hn_pos : (0 : ℝ) < (n : ℝ) := by linarith
+  have hn1_pos : (0 : ℝ) < (n : ℝ) + 1 := by linarith
+  have h_n_ge_K : K ≤ (n : ℝ) := by linarith
+  -- `m + 2 > 0` and `(m + 2) ≥ n·θ/(4π)` (the latter from `hm + 2 ≥ 1`).
+  have hm_real_nn : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
+  have hm_2_pos : (0 : ℝ) < (m : ℝ) + 2 := by linarith
+  have h_4π_pos : (0 : ℝ) < 4 * Real.pi := by linarith
+  have hnθ_4π_pos : (0 : ℝ) < (n : ℝ) * θ / (4 * Real.pi) :=
+    div_pos (mul_pos hn_pos hθ_pos) h_4π_pos
+  have hm_2_lb : (n : ℝ) * θ / (4 * Real.pi) ≤ (m : ℝ) + 2 := by linarith
+  -- `(m + 2)² ≥ (n·θ/(4π))² = n²·θ²/(16π²)`.
+  have hsq_lb : ((n : ℝ) * θ / (4 * Real.pi)) ^ 2 ≤ ((m : ℝ) + 2) ^ 2 := by
+    have h_self := mul_self_le_mul_self hnθ_4π_pos.le hm_2_lb
+    have heq1 : ((n : ℝ) * θ / (4 * Real.pi)) ^ 2 =
+                ((n : ℝ) * θ / (4 * Real.pi)) * ((n : ℝ) * θ / (4 * Real.pi)) := by ring
+    have heq2 : ((m : ℝ) + 2) ^ 2 = ((m : ℝ) + 2) * ((m : ℝ) + 2) := by ring
+    linarith [h_self, heq1, heq2]
+  have hsq_simp : ((n : ℝ) * θ / (4 * Real.pi)) ^ 2 =
+      (n : ℝ) ^ 2 * θ ^ 2 / (16 * Real.pi ^ 2) := by
+    field_simp
+    ring
+  rw [hsq_simp] at hsq_lb
+  -- `n² ≥ K · (n + 1)`: from `n ≥ K + 1`, `n·n ≥ (K+1)·n = K·n + n ≥ K·n + K`.
+  have h_n_sq_ge : K * ((n : ℝ) + 1) ≤ (n : ℝ) ^ 2 := by
+    have h1 : K + 1 ≤ (n : ℝ) := by linarith
+    have h_pow : (n : ℝ) ^ 2 = (n : ℝ) * (n : ℝ) := by ring
+    rw [h_pow]
+    nlinarith [h1, hn_pos, h_n_ge_K]
+  -- Multiply by the positive factor `θ²/(16π²)` and simplify.
+  have h_factor_nn : (0 : ℝ) ≤ θ ^ 2 / (16 * Real.pi ^ 2) := by positivity
+  have h_main_step :
+      K * ((n : ℝ) + 1) * (θ ^ 2 / (16 * Real.pi ^ 2)) ≤
+        (n : ℝ) ^ 2 * (θ ^ 2 / (16 * Real.pi ^ 2)) :=
+    mul_le_mul_of_nonneg_right h_n_sq_ge h_factor_nn
+  -- `K · (θ²/(16π²)) = e⁴` (definition of `K`).
+  have hK_simp : K * ((n : ℝ) + 1) * (θ ^ 2 / (16 * Real.pi ^ 2)) =
+      ((n : ℝ) + 1) * Real.exp 4 := by
+    rw [hK_def]
+    field_simp
+    ring
+  have h_rhs_simp : (n : ℝ) ^ 2 * (θ ^ 2 / (16 * Real.pi ^ 2)) =
+      (n : ℝ) ^ 2 * θ ^ 2 / (16 * Real.pi ^ 2) := by
+    ring
+  rw [hK_simp, h_rhs_simp] at h_main_step
+  -- Combine: `(n + 1)·e⁴ ≤ n²·θ²/(16π²) ≤ (m + 2)²`.
+  have h_combine : ((n : ℝ) + 1) * Real.exp 4 ≤ ((m : ℝ) + 2) ^ 2 :=
+    le_trans h_main_step hsq_lb
+  -- Take `Real.log` of both sides; both are positive.
+  have hLHS_pos : (0 : ℝ) < ((n : ℝ) + 1) * Real.exp 4 := mul_pos hn1_pos hexp4_pos
+  have h_log_ineq : Real.log (((n : ℝ) + 1) * Real.exp 4) ≤ Real.log (((m : ℝ) + 2) ^ 2) :=
+    Real.log_le_log hLHS_pos h_combine
+  rw [Real.log_mul hn1_pos.ne' hexp4_pos.ne', Real.log_exp,
+      Real.log_pow] at h_log_ineq
+  -- `h_log_ineq : log (n + 1) + 4 ≤ ↑(2 : ℕ) * log (m + 2)`
+  -- After Nat-cast normalization, becomes `log (n + 1) + 4 ≤ 2 * log (m + 2)`.
+  push_cast at h_log_ineq
+  linarith
 
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
