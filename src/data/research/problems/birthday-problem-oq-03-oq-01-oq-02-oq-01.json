@@ -32,18 +32,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:21:41Z",
-    "iteration": 7,
-    "focus": "Session 7 (2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple) = expectedTriples 3 d). Together with p_no_triple_n3 (Session 6) these complete the n=3 base-case picture from both sides and explicitly verify that the abstract `expectedTriples` formula equals the actual probability at n=3 (Markov is tight when X_d ≤ 1). Foundational seed for the broader factorial-moment identity needed for Lemma C. Lemma C itself remains the only axiom; ~500 lines of Mathlib infrastructure still required.",
+    "iteration": 9,
+    "focus": "Session 9 (2026-05-08, researcher-6): added lemma-c-roadmap.md, a 4-layer plan for discharging the Lemma C axiom: (1) indicator algebra ~50 lines, (2) general-n first moment ~160 lines, (3) factorial moments via fusion-pattern decomposition ~300 lines, (4) Method of Factorial Moments theorem ~200 lines (or upstream Mathlib). Total ~600 lines local, or ~360 if Layer 4 lands upstream. Inventoried Mathlib 4.26 (only Poisson PMF/measure constructors) vs master (PoissonLimitThm.lean by Yi Yuan, 2026-03-08, post-pin; binomial→Poisson but does NOT cover dependent indicators). Recommended Path C: upstream contribution for Layer 4 + local Layers 1–3.",
     "blockers": [],
-    "nextAction": "Lemma C requires substantial Mathlib infrastructure (qualitative method-of-factorial-moments → Poisson convergence, ≈500 lines). Either build it locally for this entry, contribute upstream to Mathlib, or accept the entry as axiomatized. Smaller incremental contributions: per-triple coincidence count formula card{f | f i = f j = f k} = d^(n-2) for n ≥ 3 (next building block), union bound on triple count, factorial moment definitions, Bonferroni r=1 bound.",
+    "nextAction": "S10: implement Layer 1 (tripleCount + zero-iff-no-triple, ~50 lines). S11: Layer 2 part 1 (bad_count_general, per-triple count d^(n-2) for distinct i,j,k). S12: Layer 2 part 2 (expectedTripleCount_eq, general-n first-moment identity). S13–15: Layer 3 (factorial-moment expansion + fusion-pattern bookkeeping). S16–17: Layer 4 (MoFM theorem — local or upstream-applied). Parallel: Mathlib upstream PR drafting Mathlib/Probability/MomentsConvergence.lean.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 7, 2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d). Complements Session 6's p_no_triple_n3 (the negation). Together they cover the n=3 base case from both sides and provide the FIRST explicit identification of `expectedTriples` (analytic formula) with an actual probability — the seed of the broader first-moment identity P(some triple) = E[X_d] needed for any factorial-moment / Bonferroni approach to Lemma C. Markov is tight at n=3 since X_d ≤ 1 (only one possible triple). Lemma C remains axiomatized; the ~500-line Mathlib infrastructure for method-of-factorial-moments → Poisson convergence is unchanged. PRIOR (Session 6): p_no_triple_n3 added. (Session 5, PR #16150) poisson_approx_birthday3 derived from Lemma B + Lemma C.",
+    "progressSummary": "PROGRESS (Session 9, 2026-05-08, researcher-6): added research/problems/<slug>/lemma-c-roadmap.md, a 4-layer plan for discharging the Lemma C axiom. Identified PoissonLimitThm.lean (Yi Yuan, 2026-03-08) as a master-only Mathlib resource that does NOT directly apply (binomial limit needs independence; our triple indicators are dependent). The genuine missing infrastructure is the Method of Factorial Moments theorem — a textbook lemma absent from Mathlib in any form, good candidate for upstream contribution. Fusion-pattern bookkeeping (Section 4c) is the combinatorial bottleneck; non-disjoint patterns vanish at rate O(d^{-2/3}). No Lean changes (intentional, given 4 open build-pending PRs already touching the file). | PROGRESS (Session 7, 2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d). Complements Session 6's p_no_triple_n3 (the negation). Together they cover the n=3 base case from both sides and provide the FIRST explicit identification of `expectedTriples` (analytic formula) with an actual probability — the seed of the broader first-moment identity P(some triple) = E[X_d] needed for any factorial-moment / Bonferroni approach to Lemma C. Markov is tight at n=3 since X_d ≤ 1 (only one possible triple). Lemma C remains axiomatized; the ~500-line Mathlib infrastructure for method-of-factorial-moments → Poisson convergence is unchanged. PRIOR (Session 6): p_no_triple_n3 added. (Session 5, PR #16150) poisson_approx_birthday3 derived from Lemma B + Lemma C.",
     "builtItems": [
       "Corrected JSON `problemStatement.formal` to match actual Lean axiom signature (qualitative Tendsto, not |...| ≤ C·n⁴/d³)",
       "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C",
@@ -57,7 +57,8 @@
       "Session 6 (2026-05-07): p_no_triple_n3 in BirthdayProblemOQ03OQ01OQ02.lean (line ~585) — real-number form of n=3 base case: ((|good_n=3|) : ℝ) / (d^3 : ℝ) = 1 − 1/d² for d ≥ 1, proved via good_count_n3, Nat.cast_sub, push_cast, field_simp.",
       "Session 6 (2026-05-07): repaired 4 Mathlib API drift errors in lambda_tendsto, bad_count_n3, good_count_n3 (introduced upstream after PR #16150 merged on 2026-05-06): tendsto_..._of_le_of_le → primed eventual variant; div_le_div_right → div_le_div_iff_of_pos_right; ← Fintype.card_coe inserted to bridge Finset.card ↔ Fintype.card; explicit predicate passed to filter_card_add_filter_neg_card_eq_card to satisfy DecidablePred synthesis.",
       "Session 7 (2026-05-08, researcher-9): p_triple_n3 in BirthdayProblemOQ03OQ01OQ02.lean (line ~601) — real-number form of bad_count_n3: ((|bad_n=3|) : ℝ) / (d^3 : ℝ) = 1 / d² for d ≥ 1, proved via bad_count_n3, Fintype.card_fun, push_cast, field_simp, ring.",
-      "Session 7 (2026-05-08, researcher-9): p_triple_n3_eq_expectedTriples in BirthdayProblemOQ03OQ01OQ02.lean (line ~617) — n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d, proved by p_triple_n3 + simp [expectedTriples, Nat.choose_self]. First explicit connection between `expectedTriples` (analytic) and an actual probability."
+      "Session 7 (2026-05-08, researcher-9): p_triple_n3_eq_expectedTriples in BirthdayProblemOQ03OQ01OQ02.lean (line ~617) — n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d, proved by p_triple_n3 + simp [expectedTriples, Nat.choose_self]. First explicit connection between `expectedTriples` (analytic) and an actual probability.",
+      "Session 9 (2026-05-08, researcher-6): research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/lemma-c-roadmap.md (~320 lines, 9 sections): axiom statement; why direct binomial→Poisson does not apply (dependent indicators, sharing one index between two triples creates positive correlation); Mathlib 4.26 inventory (only Poisson PMF/measure constructors) vs master (PoissonLimitThm.lean by Yi Yuan, post-v4.26.0; binomial→Poisson convergence); method-of-factorial-moments approach with fusion-pattern decomposition; 4-layer Lean sub-lemma plan with line estimates (Layer 1 ~50, Layer 2 ~160, Layer 3 ~300, Layer 4 ~200); 4 candidate paths A/B/C/D; session sequence S10–S17."
     ],
     "insights": [
       "JSON `formal` field drifted from actual Lean axiom: JSON claimed quantitative |triple_prob − (1−exp(−λ))| ≤ C·n⁴/d³, but the Lean axiom is qualitative Tendsto along the threshold scaling — discrepancy was the cause of Session 1's BLOCKED conclusion",
@@ -75,16 +76,25 @@
       "Lemma B is a one-liner: Real.continuous_exp.tendsto ∘ lambda_tendsto.neg",
       "Session 6 sanity check: at n_c(d)=3 (sparse subset of d, where c·d^(2/3) ∈ [3,4)), P_no_triple(3,d) = 1 − 1/d² → 1 as d → ∞, matching exp(-C(3,3)/d²) = exp(-1/d²) → 1 from Lemma B. The base case is consistent with Lemma C's claimed limit but does not bound it.",
       "Session 7: at n=3 there is only one possible triple (0,1,2), so the indicator-sum X_d := |{(i,j,k) | i<j<k ∧ f(i)=f(j)=f(k)}| satisfies X_d ∈ {0,1}. Hence P(X_d ≥ 1) = E[X_d], i.e. Markov is tight. In our explicit form: P(triple|n=3) = 1/d² = (3.choose 3 : ℝ)/d² = expectedTriples 3 d. This is a verified instance of the first-moment identity P(some triple) = C(n,3)/d² that any factorial-moments / Bonferroni proof of Lemma C must establish for general n.",
-      "Session 7: `expectedTriples` was previously a purely analytic quantity (a definition with no probability content). p_triple_n3_eq_expectedTriples is the first place in the file where it is identified with an actual probability. The identification is exact at n=3 and gives a one-sided Markov bound P(some triple) ≤ expectedTriples n d for general n (not yet formalized, but a clean next building block)."
+      "Session 7: `expectedTriples` was previously a purely analytic quantity (a definition with no probability content). p_triple_n3_eq_expectedTriples is the first place in the file where it is identified with an actual probability. The identification is exact at n=3 and gives a one-sided Markov bound P(some triple) ≤ expectedTriples n d for general n (not yet formalized, but a clean next building block).",
+      "Session 9: PoissonLimitThm.lean (master Mathlib, post-v4.26.0) does NOT discharge Lemma C — it requires independent Bernoulli trials, but the triple-coincidence indicators B_{ijk} are positively correlated (sharing one index between (i,j,k) and (i',j',k') forces both triples to either occur or not, with probability 1/d^4 vs the independence value 1/d^4 — actually equal in this case but the joint moments differ for sharing-2 patterns: 1/d^3 vs 1/d^4 = independence). The binomial limit cannot bridge this gap.",
+      "Session 9: fusion-pattern scaling rule. For an ordered r-tuple of distinct triples in [n], let m = |union of indices|, q = number of connected components in the triple-overlap graph. Then the contribution to the r-th factorial moment is O(n^m / d^(m-q)). With n_c(d) ~ c·d^(2/3), this scales as d^(q - m/3). Disjoint pattern (m=3r, q=r): exponent 0, contribution → λ^r. Any pattern with ≥ 1 shared index: q ≤ r-1, m ≤ 3r-1, exponent ≤ -2/3. Non-disjoint patterns vanish at rate O(d^(-2/3)), the disjoint pattern dominates and gives the Poisson limit.",
+      "Session 9: the Method of Factorial Moments theorem (Bollobás §I.3, Janson–Łuczak–Ruciński §6.1) is absent from Mathlib in any form. It is a project-independent, generally-useful lemma (random-graph triangle counts, Erdős–Rényi subgraph counts, hash collisions). Recommended upstream contribution at Mathlib/Probability/MomentsConvergence.lean. ~150–250 lines once descFactorial arithmetic is in place; would benefit many downstream consumers."
     ],
     "mathlibGaps": [
       "Method of factorial moments → Poisson convergence (qualitative form) — not in Mathlib but smaller than Chen-Stein",
       "Coupling distance / total variation between dependent and independent indicator sums",
-      "(Quantitative) Chen-Stein bound — NOT NEEDED for the actual qualitative axiom; was only needed for the misframed quantitative bound"
+      "(Quantitative) Chen-Stein bound — NOT NEEDED for the actual qualitative axiom; was only needed for the misframed quantitative bound",
+      "Method of Factorial Moments theorem: convergence of factorial moments E[X^{(r)}] → λ^r for all r implies X →d Poisson(λ). NOT in Mathlib. Strong candidate for upstream contribution at Mathlib/Probability/MomentsConvergence.lean — generally useful (random-graph subgraph counts, hash collisions, Erdős–Rényi triangle counts). Estimated 150–250 lines once descFactorial arithmetic is in place.",
+      "Bonferroni inequalities for inclusion-exclusion truncation, in the dependent-indicator form. Mathlib has Finset.inclusion_exclusion (independent / measure-theoretic) but not the truncation bounds. Layer 3 alternative entry point if Method of Factorial Moments is not pursued."
     ],
     "nextSteps": [
-      "Lemma C (open): prove p_no_triple_tendsto in Lean — P_no_triple(n_c(d), d) → exp(-c³/6) — via the qualitative method-of-factorial-moments → Poisson convergence (≈500 lines, not in Mathlib 4.26).",
-      "Alternative: contribute method-of-factorial-moments → Poisson convergence upstream to Mathlib (Mathlib.Probability.Distributions.Poisson currently exposes only PMF/measure constructors, no convergence theorems)."
+      "S10 (Layer 1): define tripleCount d n f via Finset.filter over strictly-increasing triples in Fin n; prove tripleCount = 0 ↔ ∀ i j k distinct, ¬(f i = f j ∧ f j = f k). ~50 lines, foundational.",
+      "S11 (Layer 2 part 1): bad_count_general — per-triple count card{f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n-2) for distinct i,j,k. ~80 lines via explicit Equiv with Fin d × (Fin (n-3) → Fin d). Original state.md Next Action #1.",
+      "S12 (Layer 2 part 2): expectedTripleCount_eq — global form of S7's n=3 first-moment identity. ~80 lines.",
+      "S13–S15 (Layer 3): factorial-moment expansion + fusion-pattern bookkeeping. ~300 lines / 3 sessions. The combinatorial bottleneck.",
+      "S16–S17 (Layer 4): Method of Factorial Moments theorem. Local ~200 lines, OR apply upstream lemma if a Mathlib pin upgrade has landed.",
+      "Parallel: Mathlib upstream contribution drafting (Mathlib/Probability/MomentsConvergence.lean) — generally-useful Method of Factorial Moments lemma; 1–3 month review cycle but doesn't block local work."
     ]
   },
   "tags": [
@@ -118,7 +128,7 @@
     ]
   },
   "started": "2026-04-21T06:38:17Z",
-  "lastUpdate": "2026-05-07T22:55:00Z",
+  "lastUpdate": "2026-05-08T09:55:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

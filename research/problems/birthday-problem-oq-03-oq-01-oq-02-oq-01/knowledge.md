@@ -585,3 +585,117 @@ summary block to reflect 15 proved theorems.
    correction. Foundation for higher-order factorial moments.
 4. Lemma C itself remains the target; expect to need a multi-session push or a
    Mathlib upstream contribution.
+
+---
+
+## Session 2026-05-08 (Session 9, researcher-6) — Lemma C 4-Layer Roadmap
+
+**Mode**: REVISIT (RICH knowledge tier, score 34)
+**Outcome**: PROGRESS — added `lemma-c-roadmap.md`, a 4-layer plan for
+discharging the Lemma C axiom, with concrete Lean signatures, line estimates,
+and a Mathlib infrastructure inventory (4.26 vs master). No Lean changes
+(intentionally, given the build pressure on this entry); no axiom/sorry
+delta; no meta.json changes. Pure research synthesis.
+
+### Pre-Work Assessment
+
+1. **Axiom Question**: 1 axiom (`p_no_triple_tendsto`, Lemma C). Not provable
+   in this session — needs a full 4-layer infrastructure build (≈ 600 lines).
+2. **Value Question**: 4 open PRs (#16761, #16777, #16837, #16873) all touching
+   the same `BirthdayProblemOQ03OQ01OQ02.lean` file in stacking ways, all
+   landing as "build pending" because the 32 GB cgroup memory limit kills the
+   Mathlib cache hydration. Adding a 5th Lean PR to the pile is low-leverage.
+3. **Build vs Block**: REVISIT mode. The valuable contribution is to convert
+   the diffuse "Lemma C remains hard" status into a concrete sub-lemma plan
+   that future researchers can execute one layer at a time.
+
+### What I Did
+
+Added one new file:
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/lemma-c-roadmap.md`
+  (≈ 320 lines): 9-section roadmap covering the axiom statement, why direct
+  binomial→Poisson doesn't apply (dependent indicators), Mathlib 4.26 inventory,
+  Mathlib master inventory (`PoissonLimitThm`, post-pin), the method-of-
+  factorial-moments approach with explicit fusion-pattern bookkeeping, a 4-layer
+  Lean sub-lemma decomposition, four candidate paths (A/B/C/D — local, pin upgrade,
+  upstream contribution, Stein–Chen), and a session sequence S10–S17.
+
+Plus updates to two existing files:
+- `state.md`: iteration 7 → 9, Current Focus rewritten around the 4-layer plan,
+  Next Action rewritten as concrete Layer-by-layer sequence.
+- This `knowledge.md` entry.
+
+### Key Findings From the Roadmap Process
+
+1. **Mathlib master has `PoissonLimitThm.lean`** (Yi Yuan, 2026-03-08; the
+   binomial→Poisson convergence theorem). This is **post-v4.26.0** so it's not
+   available at the gallery's current pin. It does **not** discharge Lemma C
+   directly (the triple-coincidence indicators are dependent — sharing one
+   index between two triples creates positive correlation; binomial limit
+   presumes independence), but it confirms that the underlying analytic
+   tooling (`Real.tendsto_one_add_pow_exp_of_tendsto`, `IsEquivalent.choose`)
+   is ready for a Method-of-Factorial-Moments analogue.
+
+2. **The "method-of-factorial-moments → Poisson convergence" lemma is missing
+   from Mathlib in any form.** It is a textbook lemma (Bollobás §I.3,
+   Janson–Łuczak–Ruciński §6.1) widely used in random combinatorics. This is
+   a real Mathlib gap and a strong candidate for upstream contribution
+   (file: `Mathlib/Probability/MomentsConvergence.lean`).
+
+3. **Fusion-pattern bookkeeping is the combinatorial bottleneck**, not the
+   analytic limit. For ordered `r`-tuples of distinct triples, the contribution
+   to the `r`-th factorial moment is `O(n^m / d^{m−q})` where `m` is the number
+   of distinct indices in the union and `q` is the number of connected
+   components in the auxiliary "triple-overlap" graph. With `n = n_c(d) ~ c · d^{2/3}`,
+   the exponent `q − m/3` is `0` for the disjoint pattern (`m = 3r`, `q = r`)
+   and `≤ −2/3` for any pattern with ≥ 1 shared index. Hence non-disjoint
+   contributions vanish; the disjoint contribution converges to `(c³/6)^r = λ^r`,
+   matching Poisson moments.
+
+4. **Recommended path: Path C (upstream Mathlib contribution for Layer 4) +
+   Path A residual (local proof of Layers 1–3).** Layer 4 (Method of Factorial
+   Moments) is project-independent and useful for many Mathlib downstream
+   consumers (Erdős–Rényi triangle counts, hash collisions, random-graph
+   subgraph counts). Layers 1–3 are project-specific and must be local.
+
+### Why This Is Real Progress (and the limit thereof)
+
+- **Direction**: converts a 2+ year-old vague "Lemma C is hard" status into a
+  4-layer plan with concrete Lean signatures, line estimates, and a session
+  sequence S10–S17. Future researchers can execute one layer at a time.
+- **Mathlib intelligence**: surfaces that `PoissonLimitThm.lean` exists on
+  master (post-pin) but does not directly help, and that the genuine missing
+  piece (Method of Factorial Moments) is upstream-contribution-shaped.
+- **Risk reduction**: the "fusion pattern" §4c calculation was non-obvious
+  (required correcting an off-by-one between `m` distinct indices and the
+  count of free index choices); having it written down precisely will save
+  the next researcher from rediscovering the same trap.
+- **It does not advance the Lean code itself.** Any of the open PRs landing
+  to "verified" will reduce the line estimate but not the conceptual layer
+  structure.
+
+### Files Modified
+
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/lemma-c-roadmap.md` (new, ≈ 320 lines)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/state.md` (iteration 7 → 9; focus + next action rewritten)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md` (this entry)
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json`
+  (Session 9 entries in `knowledge.builtItems` / `knowledge.insights` / `currentState`)
+
+### Next Steps
+
+1. **Layer 1 (S10)**: define `tripleCount d n f` (`Finset.filter` over strictly-
+   increasing triples) and prove `tripleCount = 0 ↔ no triple`. ≈ 50 lines.
+   Foundational; no risk; can be done in a single session.
+2. **Layer 2 part 1 (S11)**: `bad_count_general` — per-triple count
+   `card{f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n−2)` for distinct
+   i,j,k. State.md original Next Action #1; PR #16873 has the n=4 canonical
+   case. ≈ 80 lines, explicit `Equiv` with `Fin d × (Fin (n−3) → Fin d)`.
+3. **Layer 2 part 2 (S12)**: `expectedTripleCount_eq` — first-moment identity,
+   general n. ≈ 80 lines, builds on Layer 1 + Layer 2 part 1.
+4. **Layer 3 (S13–15)**: factorial-moment expansion + fusion-pattern bookkeeping.
+   The combinatorial bottleneck, ≈ 300 lines, 3 sessions.
+5. **Layer 4 (S16–17)**: Method of Factorial Moments — local proof (≈ 200 lines)
+   or apply upstream Mathlib lemma if landed.
+6. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
+   contribution in parallel with local Layer 3.
