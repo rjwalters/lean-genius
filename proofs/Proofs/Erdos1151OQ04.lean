@@ -1351,6 +1351,150 @@ private lemma chebyshev_term_lb_at_node
     _ ≤ Real.sin φ / |Real.cos θ - Real.cos φ| := by
         gcongr
 
+/-- **Step 6a (shifted odd harmonic sum lower bound).**
+
+    The shifted sub-harmonic sum `∑ⱼ₌₀^{m-1} 1/(2(j+1)+1) = ∑ⱼ₌₀^{m-1} 1/(2j+3)` is
+    bounded below by `(1/2)·log(m+2) - 1`.
+
+    Derivation: applying `odd_harmonic_sum_lb` at `m+1` gives
+    `(1/2)·log(m+2) ≤ ∑ⱼ₌₀^m 1/(2j+1)`. Splitting off the `j=0` term
+    (`1/(2·0+1) = 1`) leaves `∑ⱼ₌₀^{m-1} 1/(2(j+1)+1) ≥ (1/2)·log(m+2) - 1`. -/
+private lemma odd_harmonic_sum_shifted_lb (m : ℕ) :
+    (1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 2) - 1 ≤
+      ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * ((↑j : ℝ) + 1) + 1) := by
+  -- Split ∑_{j=0}^{m} 1/(2j+1) = 1 + ∑_{j=0}^{m-1} 1/(2(j+1)+1)
+  have hsplit : ∑ j ∈ Finset.range (m + 1), (1 : ℝ) / (2 * (↑j : ℝ) + 1) =
+      1 + ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * ((↑j : ℝ) + 1) + 1) := by
+    rw [Finset.sum_range_succ' (fun k => (1 : ℝ) / (2 * (↑k : ℝ) + 1)) m]
+    push_cast
+    ring
+  -- Apply odd_harmonic_sum_lb at m+1
+  have hle : (1 : ℝ) / 2 * Real.log (((m + 1 : ℕ) : ℝ) + 1) ≤
+      ∑ j ∈ Finset.range (m + 1), (1 : ℝ) / (2 * (↑j : ℝ) + 1) :=
+    odd_harmonic_sum_lb (m + 1) (Nat.succ_pos m)
+  have hcast : ((m + 1 : ℕ) : ℝ) + 1 = (↑m : ℝ) + 2 := by push_cast; ring
+  rw [hcast] at hle
+  linarith
+
+/-- **Step 6b (sub-sum lower bound via per-term bound).**
+
+    Summing the per-term lower bound `chebyshev_term_lb_at_node` over indices
+    `k = k₀ + j + 1` for `j ∈ Fin m` produces a harmonic-style sub-sum lower
+    bound for the full chebyshev Lebesgue trig sum.
+
+    Hypotheses:
+    - `k₀.val + m + 1 ≤ n`: the range `[k₀+1, k₀+m]` fits inside `Fin n`
+    - For each `j : Fin m`, the midpoint `φ_{k₀+j+1} ∈ [d/2, π - d/2]`
+
+    Result: `sin(d/2) · (2n / π) · ∑ⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|`.
+
+    Combined with `odd_harmonic_sum_shifted_lb` this yields a `n · log(m)`-style
+    lower bound on the full trig sum (when `m` grows linearly with `n`). -/
+private lemma trig_sum_subsum_lb (n : ℕ) (hn : 0 < n)
+    (θ : ℝ)
+    (d : ℝ) (hd_pos : 0 < d)
+    (hne : ∀ k : Fin n, Real.cos θ ≠ chebyshevNode n k)
+    (k₀ : Fin n)
+    (hk₀_close : |θ - (2 * (k₀.val : ℝ) + 1) * Real.pi / (2 * n)| ≤ Real.pi / (2 * n))
+    (m : ℕ) (hm_le : k₀.val + m + 1 ≤ n)
+    (h_interior : ∀ j : Fin m,
+      d / 2 ≤ (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ∧
+      (2 * ((k₀.val + j.val + 1 : ℕ) : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - d / 2) :
+    Real.sin (d / 2) * (2 * (n : ℝ)) / Real.pi *
+        ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * ((↑j : ℝ) + 1) + 1) ≤
+      ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                   |Real.cos θ - chebyshevNode n k| := by
+  have hpi_pos := Real.pi_pos
+  have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+  -- Index injection φ : Fin m → Fin n via j ↦ k₀ + j + 1
+  let φ : Fin m → Fin n := fun j => ⟨k₀.val + j.val + 1, by
+    have := j.isLt; omega⟩
+  -- Each chebyshev term is nonneg
+  have hterm_nn : ∀ k : Fin n,
+      0 ≤ Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+          |Real.cos θ - chebyshevNode n k| :=
+    fun k => div_nonneg (le_of_lt (chebyshevAngle_sin_pos n hn k)) (abs_nonneg _)
+  -- φ is injective
+  have hφ_inj : Function.Injective φ := by
+    intro j₁ j₂ heq
+    simp only [φ, Fin.mk.injEq] at heq
+    exact Fin.ext (by omega)
+  -- The image is a subset of Finset.univ
+  have himg_sub :
+      (Finset.univ : Finset (Fin m)).image φ ⊆ (Finset.univ : Finset (Fin n)) :=
+    fun k _ => Finset.mem_univ k
+  -- (φ j).val = k₀.val + j.val + 1 (definitional)
+  have hφ_val : ∀ j : Fin m, (φ j).val = k₀.val + j.val + 1 := fun j => rfl
+  -- Per-term lower bound at each j : Fin m
+  have hsubterm : ∀ j : Fin m,
+      Real.sin (d / 2) * (2 * (n : ℝ)) /
+          ((2 * ((↑j.val : ℝ) + 1) + 1) * Real.pi) ≤
+        Real.sin ((2 * ((φ j).val : ℝ) + 1) * Real.pi / (2 * n)) /
+          |Real.cos θ - chebyshevNode n (φ j)| := by
+    intro j
+    obtain ⟨h_lower, h_upper⟩ := h_interior j
+    have hne_φ : Real.cos θ ≠ chebyshevNode n (φ j) := hne _
+    -- Convert the cast `((k₀.val + j.val + 1 : ℕ) : ℝ)` to `((φ j).val : ℝ)`
+    have hval_eq : ((φ j).val : ℝ) = ((k₀.val + j.val + 1 : ℕ) : ℝ) := by
+      rw [hφ_val]
+    have h_lower' : d / 2 ≤ (2 * ((φ j).val : ℝ) + 1) * Real.pi / (2 * n) := by
+      rw [hval_eq]; exact h_lower
+    have h_upper' : (2 * ((φ j).val : ℝ) + 1) * Real.pi / (2 * n) ≤ Real.pi - d / 2 := by
+      rw [hval_eq]; exact h_upper
+    have hbound := chebyshev_term_lb_at_node n hn k₀ (φ j) θ d hd_pos
+      hk₀_close h_lower' h_upper' hne_φ
+    -- Translate |(φ j).val - k₀.val| = j.val + 1
+    have hkk₀ : (((φ j).val : ℝ) - (k₀.val : ℝ)) = (↑j.val : ℝ) + 1 := by
+      rw [hφ_val]
+      push_cast
+      ring
+    have hkk₀_abs : |((φ j).val : ℝ) - (k₀.val : ℝ)| = (↑j.val : ℝ) + 1 := by
+      rw [hkk₀]; exact abs_of_nonneg (by positivity)
+    rw [hkk₀_abs] at hbound
+    exact hbound
+  -- Sub-sum (over Fin m) lower bound
+  have hsub_sum_lb :
+      ∑ j : Fin m,
+          Real.sin (d / 2) * (2 * (n : ℝ)) /
+              ((2 * ((↑j.val : ℝ) + 1) + 1) * Real.pi) ≤
+        ∑ j : Fin m,
+          Real.sin ((2 * ((φ j).val : ℝ) + 1) * Real.pi / (2 * n)) /
+            |Real.cos θ - chebyshevNode n (φ j)| :=
+    Finset.sum_le_sum (fun j _ => hsubterm j)
+  -- Convert sub-sum to image-set sum
+  have hsub_eq_image :
+      ∑ j : Fin m,
+          Real.sin ((2 * ((φ j).val : ℝ) + 1) * Real.pi / (2 * n)) /
+            |Real.cos θ - chebyshevNode n (φ j)| =
+        ∑ k ∈ (Finset.univ : Finset (Fin m)).image φ,
+          Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+            |Real.cos θ - chebyshevNode n k| := by
+    rw [Finset.sum_image (fun j₁ _ j₂ _ heq => hφ_inj heq)]
+  -- Image sum ≤ universe sum
+  have himg_le_full :
+      ∑ k ∈ (Finset.univ : Finset (Fin m)).image φ,
+          Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+            |Real.cos θ - chebyshevNode n k| ≤
+        ∑ k : Fin n,
+          Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+            |Real.cos θ - chebyshevNode n k| :=
+    Finset.sum_le_sum_of_subset_of_nonneg himg_sub (fun k _ _ => hterm_nn k)
+  -- Convert LHS sub-sum to sub-sum form
+  have hLHS_eq :
+      Real.sin (d / 2) * (2 * (n : ℝ)) / Real.pi *
+          ∑ j ∈ Finset.range m, (1 : ℝ) / (2 * ((↑j : ℝ) + 1) + 1) =
+        ∑ j : Fin m,
+          Real.sin (d / 2) * (2 * (n : ℝ)) /
+              ((2 * ((↑j.val : ℝ) + 1) + 1) * Real.pi) := by
+    rw [Fin.sum_univ_eq_sum_range
+      (fun j => Real.sin (d / 2) * (2 * (n : ℝ)) /
+        ((2 * ((↑j : ℝ) + 1) + 1) * Real.pi)) m]
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro j _
+    ring
+  linarith [hLHS_eq, hsub_sum_lb, hsub_eq_image, himg_le_full]
+
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
     For any θ ∈ (0, π) with cos θ not a Chebyshev node for any n, the sum
