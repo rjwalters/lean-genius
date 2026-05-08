@@ -221,6 +221,89 @@ This is the cleanest restatement of the OPEN Σ₁ question yet:
 * The **uniform** Σ₁-definability of all of ℤ is the OPEN question:
   no single polynomial is known to witness `t ∈ ℤ` for all `t : ℚ`.
 
+## Iteration 15 Builds (researcher-12, 2026-05-08)
+
+Focus: **complete the 2×2 closure grid at finite-list arity** by
+filling the two remaining cells (Σ₁ list ∪ and Π₁ list ∩) for
+ARBITRARY Σ₁/Π₁-definable subsets, paired with the iter 14 cells.
+
+### Part VIII.16 / .17 additions (axiom-free)
+
+- `finUnionList_isDiophantineDefinition (l : List RatSubset)
+  (h : ∀ S ∈ l, IsDiophantineDefinition S) :
+  IsDiophantineDefinition (fun q => ∃ S ∈ l, S q)` — Σ₁ list ∪ of
+  ARBITRARY Σ₁-definable subsets (generalizes iter 10's singleton-only
+  `finUnionList_singletons_isDiophantineDefinition`). Empty list:
+  `∃ S ∈ [], S q ↔ False`, dispatched to `empty_isDiophantineDefinition`.
+  Cons step: peel head via iter-9 `union_isDiophantineDefinition` and
+  bridge `∃ S ∈ a :: t, S q ↔ a q ∨ ∃ S ∈ t, S q` via constructive
+  `List.mem_cons` case analysis + iter-4
+  `diophantineDefinition_iff_of_pred_iff`. Underlying polynomial
+  witness: iter 9's product polynomial `P₁(q,x)·P₂(q,x)` via
+  `mul_eq_zero` (no sum-of-squares needed — cheaper than iter 14's
+  Σ₁ list ∩).
+- `finUnionList_isUniversalExistentialDefinition` — Π₂ corollary via
+  the trivial Σ₁ ⊆ Π₂ inclusion.
+- `finIntersectionList_isCoDiophantineDefinition (l : List RatSubset)
+  (h : ∀ S ∈ l, IsCoDiophantineDefinition S) :
+  IsCoDiophantineDefinition (fun q => ∀ S ∈ l, S q)` — Π₁ list ∩ of
+  ARBITRARY Π₁-definable subsets (generalizes iter 10's
+  complement-of-singleton-only
+  `finIntersectionList_complement_singletons_isCoDiophantineDefinition`).
+  Empty list: `∀ S ∈ [], S q ↔ True`, dispatched to
+  `universe_isCoDiophantineDefinition`. Cons step: peel head via iter-9
+  `intersection_isCoDiophantineDefinition` and bridge
+  `∀ S ∈ a :: t, S q ↔ a q ∧ ∀ S ∈ t, S q` via constructive
+  `List.mem_cons` case analysis + iter-4
+  `coDiophantineDefinition_iff_of_pred_iff`.
+- `finIntersectionList_isExistentialUniversalDefinition` — Σ₂
+  corollary via the trivial Π₁ ⊆ Σ₂ inclusion.
+
+**Counts**: lineCount 1743→1904 (+161), theoremCount 65→69 (+4),
+definitionCount 15 (unchanged), axiomCount 1 (unchanged), sorries 0
+(unchanged). No new imports.
+
+**Significance**: with iter 15 the 2×2 Boolean closure grid for
+Σ₁ and Π₁ over ℚ is fully populated at FINITE-list arity for arbitrary
+Σ₁/Π₁ subsets:
+
+```
+| Class | binary ∪  | binary ∩  | list ∪    | list ∩    |
+|-------|-----------|-----------|-----------|-----------|
+| Σ₁    | iter 9    | iter 12   | iter 15   | iter 14   |
+| Π₁    | iter 13   | iter 9    | iter 14   | iter 15   |
+```
+
+Combined with iter-10's singleton specializations
+(`finUnionList_singletons_*`), the closure picture for finite Boolean
+combinations of Σ₁/Π₁-definable subsets of ℚ is now complete: every
+finite ∪/∩ combination of arbitrary Σ₁/Π₁ subsets stays in the same
+class. Neither class is (known to be) closed under complement; that
+would collapse Σ₁ = Π₁ over ℚ, equivalent to the OPEN question.
+
+The OPEN content of the question is unchanged: it remains the
+COUNTABLY-INFINITE union ⋃_{n : ℤ} {n} that requires a uniform Σ₁
+witness. Iter 15 makes the gap between FINITE list closure (settled
+across all four cells, all subsets) and the COUNTABLE supremum (open)
+maximally explicit.
+
+**Mathlib API surface**: ZERO new lemmas, ZERO new imports. Pure
+constructive list induction on top of iter 9 (binary ∪/∩, with iter
+9's `mul_eq_zero` polynomial witness), iter 5 trivial subsets (∅ / ℚ),
+and iter 4 Σ₁/Π₁ class congruence. Uses only Lean-core
+`List.mem_cons`, `List.mem_cons_self`, `List.mem_cons_of_mem`, and the
+standard `simp` for vacuous empty-list quantifier reductions.
+
+**Confidence**: high. All ingredients (iter 9 binary closures, iter 5
+trivial subsets, iter 4 class congruence) are in-file and either
+CI-verified (iter 9: PR #16099 ✅; iter 5: PR #17065 ✅; iter 4: PR
+#17026 ✅) or build-pending. The list-induction pattern is structurally
+identical to iter 14's `finIntersectionList_isDiophantineDefinition`
+(same skeleton: `induction l with | nil => ... | cons a t ih => ...`,
+same `List.mem_cons` cons-step reductions, same iter-4 congruence
+bridge). Iter 15 just substitutes iter-9 binary witnesses for iter
+12/13's. CI is the ground truth.
+
 ## Iteration 14 Builds (researcher-6, 2026-05-08)
 
 Focus: **list versions of iter-12 (Σ₁ ∩) and iter-13 (Π₁ ∪) closure**
