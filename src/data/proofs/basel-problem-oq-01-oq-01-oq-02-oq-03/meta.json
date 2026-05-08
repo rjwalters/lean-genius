@@ -88,36 +88,52 @@
   },
   "sections": [
     {
-      "id": "definition",
-      "title": "Part 1-2: Definition and Basic Properties",
-      "startLine": 73,
-      "endLine": 411,
-      "summary": "Defines lcmRange n = lcm{1,...,n} (matching the parent file's lcmUpTo), establishes lcmRange_zero, lcmRange_one, lcmRange_pos, dvd_lcmRange, pow_dvd_lcmRange (any positive base power b^k ≤ n divides lcmRange n — the building block for prime-power decompositions), prime_pow_dvd_lcmRange (specialization to the maximal prime-power p^⌊log_p n⌋ — the prime-power half of Chebyshev's decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^⌊log_p n⌋), coprime_prime_pow_pow_of_ne (distinct prime powers are coprime), the helper prod_dvd_of_pairwise_coprime (Finset induction packaging), prod_prime_powers_dvd_lcmRange (forward direction of Chebyshev's decomposition: ∏_p p^⌊log_p n⌋ ∣ lcmRange n), lcmRange_dvd_prod_prime_powers (reverse direction: lcmRange n ∣ ∏_p p^⌊log_p n⌋, via Nat.factorization), and the structural lemmas lcmRange_succ (recursion), lcmRange_dvd_lcmRange_of_le (divisibility monotonicity), lcmRange_monotone.",
-      "mathContext": "$\\operatorname{lcmRange}(n) = \\operatorname{lcm}\\{1, 2, \\ldots, n\\}$ encoded as a `Finset.lcm` over `Finset.range n` mapped through (·+1)."
+      "id": "header-and-definition",
+      "title": "Header, Imports, and Part 1: Definition of lcmRange",
+      "startLine": 1,
+      "endLine": 84,
+      "summary": "Module docstring (lines 9-67) frames the open question (eliminate the parent's `lcm_hanson_bound` axiom), lists the three layers of progress (provable easier bounds, numerical verification, axiomatized general statement), and surveys Mathlib infrastructure status. Imports (1-7) bring in `Finset.lcm`, `Nat.factorization`, `Nat.PrimeCounting`, and `Mathlib.Tactic`. Namespace and opens (69-72). Part 1 (74-83): `def lcmRange (n : ℕ) := (Finset.range n).lcm (· + 1)` — the workhorse definition matching the parent file's `lcmUpTo`.",
+      "mathContext": "$\\operatorname{lcmRange}(n) := \\operatorname{lcm}\\{1, 2, \\ldots, n\\}$ encoded as a `Finset.lcm` over `Finset.range n` mapped through $i \\mapsto i + 1$, so the indexing produces the natural set $\\{1, \\ldots, n\\}$ rather than $\\{0, \\ldots, n-1\\}$. The boundary $\\operatorname{lcmRange}(0) = 1$ (lcm of empty set) is consistent with both Mathlib's `Finset.lcm_empty` and the convention $\\operatorname{lcm}(\\emptyset) = 1$."
     },
     {
-      "id": "elementary-bounds",
-      "title": "Part 3: Provable Elementary Bounds",
-      "startLine": 413,
-      "endLine": 432,
-      "summary": "Proves the three elementary bounds with no axioms: lcmRange_dvd_factorial, lcmRange_le_factorial, lcmRange_le_self_pow. The chain lcm ≤ n! ≤ n^n is the trivial bound that Hanson's 3^n strictly improves upon.",
-      "mathContext": "$\\operatorname{lcm}(1, \\ldots, n) \\mid n!$ via `Nat.dvd_factorial`, then $\\operatorname{lcm}(1, \\ldots, n) \\leq n! \\leq n^n$ via `Nat.factorial_le_pow`."
+      "id": "basic-properties-and-chebyshev",
+      "title": "Part 2a: Basic Properties + Chebyshev's Decomposition",
+      "startLine": 86,
+      "endLine": 282,
+      "summary": "Foundational lemmas (lcmRange_zero, lcmRange_one, lcmRange_pos), divisibility (dvd_lcmRange: 1 ≤ k ≤ n ⇒ k ∣ lcmRange n), generic power divisibility (pow_dvd_lcmRange: 0 < b ∧ bᵏ ≤ n ⇒ bᵏ ∣ lcmRange n), and the prime-power specialization prime_pow_dvd_lcmRange (the maximal prime-power p^⌊log_p n⌋ divides lcmRange n). Then both directions of Chebyshev's decomposition: prod_prime_powers_dvd_lcmRange (forward, by Finset induction over the prime support) using coprime_prime_pow_pow_of_ne (distinct prime powers are coprime) and the helper prod_dvd_of_pairwise_coprime; and lcmRange_dvd_prod_prime_powers (reverse, Iter 8) routed through `Nat.factorization`.",
+      "mathContext": "Chebyshev's identity: $\\operatorname{lcm}(1, \\ldots, n) = \\prod_{p \\le n,\\ p\\ \\text{prime}} p^{\\lfloor \\log_p n \\rfloor}$. The forward half $\\prod \\mid \\operatorname{lcm}$ uses pairwise coprimality of distinct prime powers. The reverse half $\\operatorname{lcm} \\mid \\prod$ goes through `Nat.factorization`: every $k \\in \\{1, \\ldots, n\\}$ factors as $\\prod_{p \\mid k} p^{v_p(k)}$ with $v_p(k) \\le \\lfloor \\log_p n \\rfloor$, so $k$ divides the right-hand product, and lcm divides any common multiple."
     },
     {
-      "id": "numerical",
-      "title": "Part 4: Numerical Verification of Hanson",
-      "startLine": 434,
-      "endLine": 456,
-      "summary": "Verifies lcmRange n ≤ 3^n for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Includes lcmRange exact values lcmRange 5 = 60, lcmRange 10 = 2520, lcmRange 15 = 360360, lcmRange 20 = 232792560 (matches OEIS A003418).",
-      "mathContext": "Concrete: $\\operatorname{lcm}(1, \\ldots, 20) = 232\\,792\\,560$ vs $3^{20} = 3\\,486\\,784\\,401$, ratio $\\approx 15$."
+      "id": "prime-counting-chain",
+      "title": "Part 2b: Prime-Counting Chains (Iter 11/13/14) and Recursive Structure",
+      "startLine": 287,
+      "endLine": 580,
+      "summary": "Builds the bound `lcmRange n ≤ n^π(n) ≤ n^(n-1)` via three successive sharpenings. Iter 11: lcmRange_eq_prod_prime_powers (Chebyshev equality), lcmRange_le_pow_card_primes_le, lcmRange_le_pow_primeCounting (= n^π(n)). Iter 13: primeCounting_le_self (π(n) ≤ n), pow_primeCounting_le_pow_self, lcmRange_le_pow_self_via_primeCounting (re-derives the trivial Part 3 bound n^n through the Chebyshev route). Iter 14: primeCounting_le_pred (sharper π(n) ≤ n-1, via filter ⊆ ((range (n+1)).erase 0).erase 1), pow_primeCounting_le_pow_pred, lcmRange_le_pow_pred (= n^(n-1)) — strict improvement over Iter 13. Closes with structural lemmas: lcmRange_succ (recursion), lcmRange_dvd_lcmRange_of_le, lcmRange_monotone.",
+      "mathContext": "The chain $\\operatorname{lcmRange}(n) \\le n^{\\pi(n)} \\le n^{n-1}$ uses Chebyshev's decomposition (each $p^{\\lfloor \\log_p n \\rfloor} \\le n$) followed by a counting bound on $\\pi(n)$. The Iter 14 sharpening to $\\pi(n) \\le n - 1$ exploits that *neither* $0$ nor $1$ is prime, so $\\{p \\le n : p\\ \\text{prime}\\} \\subseteq \\{2, \\ldots, n\\}$ has cardinality at most $n - 1$. The recursion `lcmRange_succ` $\\operatorname{lcmRange}(n+1) = \\operatorname{lcm}(\\operatorname{lcmRange}(n), n+1)$ is the inductive-step lemma for any future inductive Hanson proof."
     },
     {
-      "id": "axiom",
-      "title": "Part 5: Hanson's Bound (Axiom)",
-      "startLine": 458,
-      "endLine": 488,
-      "summary": "States `axiom hanson_bound : ∀ n, lcmRange n ≤ 3^n` — Hanson's classical 1972 theorem. Includes hanson_strictly_stronger_than_factorial showing the constant 3 is genuinely tighter than the trivial n^n bound for n ≥ 4.",
-      "mathContext": "Hanson 1972: $\\operatorname{lcm}(1, \\ldots, n) \\leq 3^n$. Original proof uses Beta-integral identity $\\int_0^1 x^k(1-x)^{n-k} dx = \\frac{1}{(n+1)\\binom{n}{k}}$ combined with prime-power bounds."
+      "id": "provable-elementary-bounds",
+      "title": "Part 3: Provable Elementary Bounds (No Axioms)",
+      "startLine": 583,
+      "endLine": 601,
+      "summary": "The three trivial bounds with no axioms: lcmRange_dvd_factorial (every k ∈ {1,...,n} divides both lcmRange and n!), lcmRange_le_factorial (lcm ≤ n! by `Nat.le_of_dvd`), lcmRange_le_self_pow (n^n via `Nat.factorial_le_pow`). The chain lcm ∣ n! ≤ n^n is the trivial baseline that Hanson's 3^n strictly improves; Part 2b's prime-counting route already subordinates this with the strict improvement n^(n-1).",
+      "mathContext": "$\\operatorname{lcm}(1, \\ldots, n) \\mid n!$ via `Nat.dvd_factorial`, then $\\operatorname{lcm}(1, \\ldots, n) \\le n! \\le n^n$ via `Nat.factorial_le_pow`. Numerically: $20! \\approx 2.4 \\times 10^{18}$, $20^{20} \\approx 10^{26}$, $3^{20} \\approx 3.5 \\times 10^9$, $\\operatorname{lcmRange}(20) \\approx 2.3 \\times 10^8$ — Hanson's $3^n$ is roughly 10 orders of magnitude tighter than $n^n$ at $n = 20$."
+    },
+    {
+      "id": "numerical-verification",
+      "title": "Part 4: Numerical Verification of Hanson for n ≤ 20",
+      "startLine": 604,
+      "endLine": 625,
+      "summary": "Verifies lcmRange n ≤ 3^n for n ∈ {1..10, 12, 15, 20} via decide / native_decide — kernel-checked witnesses, not inductive arguments. Concrete lcmRange equalities (lcmRange 5 = 60, lcmRange 10 = 2520, lcmRange 15 = 360360, lcmRange 20 = 232792560) match OEIS A003418 and serve as sanity checks for the definition. The split between `decide` (small n) and `native_decide` (n = 15, 20) reflects native compilation's faster handling of large multiplication chains.",
+      "mathContext": "Concrete: $\\operatorname{lcm}(1, \\ldots, 20) = 232\\,792\\,560$ vs $3^{20} = 3\\,486\\,784\\,401$, ratio $\\approx 15$. Numerical theorems are proof-irrelevant kernel reductions: each `hanson_nN` is a closed term whose normal form is `True`, so they survive any future axiom revision unchanged."
+    },
+    {
+      "id": "hanson-axiom",
+      "title": "Part 5: Hanson's Bound (Axiom + Sharpness Check)",
+      "startLine": 627,
+      "endLine": 657,
+      "summary": "`axiom hanson_bound : ∀ n, lcmRange n ≤ 3^n` is the precise open Lean target — Hanson's classical 1972 theorem. The docstring documents the two known strategies: Hanson's original integral identity (Beta integrals + Chebyshev-style prime-power bounds) and Erdős's / Nair's combinatorial identities. `hanson_strictly_stronger_than_factorial` (3^n < n^n for n ≥ 4) is the sharpness check: the axiomatized constant 3 is genuinely tighter than the trivial Part 3 bound n^n, justifying why the axiom is non-redundant.",
+      "mathContext": "Hanson 1972: $\\operatorname{lcm}(1, \\ldots, n) \\le 3^n$. Original proof (Hanson, *Canad. Math. Bull.* 15) uses the integer-valued integral identity $\\operatorname{lcm}(1, \\ldots, n) \\cdot \\int_0^1 x^k (1-x)^{n-k}\\,\\mathrm{d}x = \\frac{\\operatorname{lcm}(1, \\ldots, n)}{(n+1)\\binom{n}{k}} \\in \\mathbb{Z}$ combined with Chebyshev-style upper bounds on prime-power contributions. The constant $3$ sits between the asymptotic $e \\approx 2.718$ (PNT-implied) and Apéry's irrationality threshold $\\approx 3.245$ — hence 'smallest constant with an elementary proof'."
     }
   ],
   "conclusion": {
