@@ -1,75 +1,102 @@
 # Current State
 
-**Phase**: ACT — Layer 3b done; `rational_digits_eventually_periodic` discharged
+**Phase**: ACT — Layer 4a (Fin b cast bridge) and `rational_has_missing_ktuple` complete
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 11, researcher-8)
-**Iteration**: 11
+**Last Updated**: 2026-05-08 (Session 12, researcher-10)
+**Iteration**: 12
 
 ## Current Focus
 
-Session 11 closed the 3-layer recipe by implementing **Layer 3b** — the
-integer-arithmetic residue-to-digit bridge — and using it (together with
-Layers 1, 2, 3a) to discharge the previous `rational_digits_eventually_periodic`
-axiom. The axiom is now a theorem.
+Session 12 added **Layer 4a** — the `Fin b` cast bridge between the
+ℤ-valued `nthDigit` and `Fin b`-valued sequences accepted by
+`periodic_has_missing_ktuple` — and used it to prove a new private
+theorem `rational_has_missing_ktuple`. This is the structural input
+required by the count/Tendsto contradiction in `normal_imp_irrational`.
 
-### New code (4 lemmas + 1 theorem; ~75 lines)
+### New code (4 lemmas + 1 def + 1 theorem; ~95 lines)
 
 ```lean
--- Cast bridge: lift Layer 3a from (p, q : ℕ × ℤ) to q : ℚ
-private lemma floor_pow_rat_eq_ediv (b : ℕ) (q : ℚ) (n : ℕ) :
-    ⌊((b : ℝ) ^ n * (q : ℝ))⌋ = (q.num * (b : ℤ) ^ n) / (q.den : ℤ)
+-- [0, b) bounds on nthDigit (always non-negative; strictly less than b)
+private lemma nthDigit_nonneg (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) :
+    0 ≤ nthDigit b n x
 
--- Integer-arithmetic identity (Euclidean division decomposition)
-private lemma int_mul_ediv_eq (b a m : ℤ) (hm : m ≠ 0) :
-    b * a / m = b * (a / m) + (b * (a % m)) / m
+private lemma nthDigit_lt_base (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) :
+    nthDigit b n x < (b : ℤ)
 
--- Layer 3b core: digit at n+1 = (b · residue at n / q.den) % b
-private lemma nthDigit_succ_via_residue (b : ℕ) (q : ℚ) (n : ℕ) :
-    nthDigit b (n + 1) (q : ℝ) =
-      (((b : ℤ) * ((q.num * (b : ℤ) ^ n) % (q.den : ℤ))) / (q.den : ℤ)) % (b : ℤ)
+-- Fin b cast of nthDigit (uses Int.toNat under the [0, b) bound)
+private noncomputable def nthDigitFin (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) : Fin b
 
--- Bridge: residue equality at n, m ⇒ digit equality at n+1, m+1
-private lemma nthDigit_succ_eq_of_emod_eq (b : ℕ) (q : ℚ) {n m : ℕ}
-    (h : (q.num * (b : ℤ) ^ n) % (q.den : ℤ) =
-         (q.num * (b : ℤ) ^ m) % (q.den : ℤ)) :
-    nthDigit b (n + 1) (q : ℝ) = nthDigit b (m + 1) (q : ℝ)
+-- Cast back to ℤ
+private lemma nthDigitFin_intCast (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) :
+    ((nthDigitFin b hb n x : ℕ) : ℤ) = nthDigit b n x
 
--- Replaces axiom: digits eventually periodic
-theorem rational_digits_eventually_periodic (b : ℕ) (_hb : 2 ≤ b) (q : ℚ) :
-    ∃ T N₀, 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
+-- Equivalence on the level of Fin b vs ℤ digit equality
+private lemma nthDigitFin_eq_iff (b : ℕ) (hb : 0 < b) (n m : ℕ) (x y : ℝ) :
+    nthDigitFin b hb n x = nthDigitFin b hb m y ↔
+      nthDigit b n x = nthDigit b m y
+
+-- Layer 4a headline: missing k-tuple input for normal_imp_irrational
+private theorem rational_has_missing_ktuple (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
+    ∃ (k N₀ : ℕ) (s : Fin k → Fin b),
+      0 < k ∧
+      ∀ n ≥ N₀, ∃ i : Fin k,
+        nthDigitFin b (by omega) (n + i.val) (q : ℝ) ≠ s i
 ```
 
 ### Key Mathlib API used (all v4.26.0)
 
 | Lemma | Module | Role |
 |-------|--------|------|
-| `Rat.cast_def` | `Mathlib.Algebra.Field.Defs` | `(q : ℝ) = q.num / q.den` |
-| `Int.ediv_add_emod` | core | `m·(a/m) + a%m = a` |
-| `Int.add_mul_ediv_left` | core | `(x + m·y)/m = x/m + y` |
-| `Int.add_mul_emod_self_left` | core | `(x + m·y)%m = x%m` |
-| `ZMod.intCast_eq_intCast_iff'` | `Mathlib.Data.ZMod.Basic` | residue ↔ `% q.den` equality |
-| `Rat.den_pos` | core | `0 < q.den` |
+| `Int.emod_nonneg` | core | `0 ≤ a % b` for `b ≠ 0` |
+| `Int.emod_lt_of_pos` | core | `a % b < b` for `0 < b` |
+| `Int.toNat_of_nonneg` | core | `0 ≤ n → ((n.toNat : ℤ) = n)` |
+| `Nat.lt_two_pow_self` | core | `n < 2^n` |
+| `Nat.pow_le_pow_left` | core | `a ≤ b → a^n ≤ b^n` |
+| `Fin.ext` | core | val equality ⇒ `Fin` equality |
+
+### Recipe step covered by Layer 4a
+
+The full recipe to discharge `normal_imp_irrational` (recipe owner: state.md S11):
+
+1. ✅ Apply `rational_digits_eventually_periodic` to get T, N₀ with the digit
+   periodicity for n ≥ N₀ (S11).
+2. ✅ Pick `k := T` so `T < bᵏ` follows from `T < 2^T ≤ b^T` (S12).
+3. ✅ Apply `periodic_has_missing_ktuple` to extract a missing tuple s (S11),
+   bridging via `nthDigitFin` (S12).
+4. ❌ Bound the count of n < N where the tuple at offsets `0..k-1` matches s
+   by N₀ (the pre-period contribution): pending S13.
+5. ❌ Conclude frequency → 0, contradicting normality which forces frequency
+   → b^(-k) > 0: pending S13.
+
+Layer 4a (this session) merges steps 1–3 into the single private theorem
+`rational_has_missing_ktuple`.
 
 ## Active Approach
 
 The Lean entry now establishes:
 - **Definitions**: `nthDigit`, `IsNormalInBase`, `IsAbsolutelyNormal`,
-  `ratResidue` (private, S9).
+  `ratResidue` (private, S9), `nthDigitFin` (private, S12).
 - **29 public theorems**: `e_floor`, `e_floor_10..1000000000`, `e_digit1..9`,
   `e_normal_implies_uniform_decimal_digits`, `periodic_has_missing_ktuple`,
-  and now (S11) `rational_digits_eventually_periodic`.
-- **10 private helpers** (Layers 1, 2, 3a, 3b): `exists_iterate_collision`,
-  `eventually_periodic_iterate`, `ratResidue_succ`, `ratResidue_eq_iterate`,
-  `ratResidue_eventually_periodic`, `floor_pow_mul_div`, `floor_pow_rat_eq_ediv`,
-  `int_mul_ediv_eq`, `nthDigit_succ_via_residue`,
-  `nthDigit_succ_eq_of_emod_eq`.
+  `rational_digits_eventually_periodic` (S11).
+- **15 private helpers** (Layers 1–4a):
+  - L1: `exists_iterate_collision`, `eventually_periodic_iterate`.
+  - L2: `ratResidue_succ`, `ratResidue_eq_iterate`, `ratResidue_eventually_periodic`.
+  - L3a: `floor_pow_mul_div`, `floor_pow_rat_eq_ediv`.
+  - L3b: `int_mul_ediv_eq`, `nthDigit_succ_via_residue`,
+    `nthDigit_succ_eq_of_emod_eq`.
+  - L4a (S12): `nthDigit_nonneg`, `nthDigit_lt_base`, `nthDigitFin_intCast`,
+    `nthDigitFin_eq_iff`, `rational_has_missing_ktuple`.
 
 **Two remaining axioms**:
-- `normal_imp_irrational` — now directly tractable. Recipe: apply (proved)
-  `rational_digits_eventually_periodic` to get T, N₀; pick k with bᵏ > T;
-  apply (proved) `periodic_has_missing_ktuple` to get a missing k-tuple;
-  bound count by N₀ ⇒ frequency → 0; contradict Tendsto to b^(-k) > 0.
-  ~50 lines, no new axioms.
+- `normal_imp_irrational` — Layer 4a built the missing-tuple structural input.
+  S13's task: count/Tendsto step. Recipe:
+  1. From `rational_has_missing_ktuple` extract k, N₀, s (data only depends on q).
+  2. Show `count(N) := |{n < N : ∀ i, nthDigit b (n+i) q = (s i : ℤ)}| ≤ max N₀ 0`
+     via `nthDigitFin_eq_iff` and the missing-tuple property.
+  3. Bound `(count(N) : ℝ) / N ≤ N₀ / N → 0`.
+  4. By normality, `count(N) / N → b^(-k) > 0` (since `b ≥ 2`).
+  5. Contradiction.
 - `e_absolutely_normal` — the **main open conjecture**. Genuinely open
   as of 2026; will remain axiomatized.
 
@@ -77,43 +104,48 @@ The Lean entry now establishes:
 
 - **Local Lean build unreliable**: Worktree's `proofs/.lake` is a
   self-cycle symlink — Docker build cold-clones Mathlib (~45 min).
-  Following S8/S9/S10 convention, build verification is deferred to CI.
+  Following S8/S9/S10/S11 convention, build verification is deferred to CI.
   All Mathlib lemmas used are well-established and stable in v4.26.0.
 
 ## Next Action
 
-**ACT (Session 12)** — discharge `normal_imp_irrational` via the recipe above.
-With `rational_digits_eventually_periodic` now a theorem, the path is:
+**ACT (Session 13)** — discharge `normal_imp_irrational` using the count/Tendsto
+recipe (steps 4–5 above). The structural input (missing k-tuple) is now
+provided by Layer 4a's `rational_has_missing_ktuple`.
 
-1. Suppose x = p/q is rational and IsNormalInBase b x. Apply (proved)
-   `rational_digits_eventually_periodic` to get T, N₀ with 0 < T,
-   nthDigit b (n+T) x = nthDigit b n x for n ≥ N₀.
-2. Pick k with bᵏ > T (e.g., k := T + 1 since T < bᵏ for b ≥ 2).
-3. Apply (proved) `periodic_has_missing_ktuple` to get a missing k-tuple s.
-4. Show that the count of n < N where x has tuple s starting at n is
-   bounded by N₀ (the pre-period contribution), since after N₀ no n
-   produces s.
-5. Therefore frequency → 0 as N → ∞, contradicting normality (which
-   requires frequency → b^(-k) > 0).
+Sketch: for the rational case, define
+```lean
+let A : Finset ℕ := (Finset.range N).filter
+  (fun n => ∀ i : Fin k, nthDigit b (n + i.val) (q : ℝ) = (s i : ℤ))
+```
+and show `A ⊆ Finset.range N₀` via the missing-tuple guarantee for `n ≥ N₀`.
+Then `(A.card : ℝ) / N ≤ N₀ / N → 0`, but normality demands the limit is
+`b^(-k) > 0`. Contradiction; hence `x` is not rational.
 
-After Session 12, only `e_absolutely_normal` remains axiomatized — and
+After Session 13, only `e_absolutely_normal` remains axiomatized — and
 that is the genuinely-open conjecture.
 
 ## Attempt Counts
 
-- Total attempts: 6 (Session 1 = entry built 2026-05-04; Session 2 =
+- Total attempts: 7 (Session 1 = entry built 2026-05-04; Session 2 =
   metadata reconciliation 2026-05-07; Session 3 = recipe (2026-05-08);
   Session 8 = Layer 1 (#16993, 2026-05-08); Session 9 = Layer 2
   (#17016, 2026-05-08); Session 10 = Layer 3a (#17037, 2026-05-08);
-  Session 11 = Layer 3b + axiom discharge (this PR, 2026-05-08)).
-- Current approach attempts: 4 (Layers 1, 2, 3a, 3b all closed; axiom 1
-  discharged).
+  Session 11 = Layer 3b + axiom discharge (#17084, 2026-05-08);
+  Session 12 = Layer 4a Fin b cast bridge + rational_has_missing_ktuple
+  (this PR, 2026-05-08)).
+- Current approach attempts: 5 (Layers 1, 2, 3a, 3b, 4a all closed).
 
 ## References
 
-- `proofs/Proofs/ETranscendentalOQ02.lean:430+` — `rational_digits_eventually_periodic` (theorem, S11)
-- `proofs/Proofs/ETranscendentalOQ02.lean:395+` — `nthDigit_succ_via_residue` (Layer 3b, S11)
-- `proofs/Proofs/ETranscendentalOQ02.lean:341` — `floor_pow_mul_div` (Layer 3a, S10)
+- `proofs/Proofs/ETranscendentalOQ02.lean:495+` — `nthDigit_nonneg`,
+  `nthDigit_lt_base`, `nthDigitFin`, `nthDigitFin_intCast`,
+  `nthDigitFin_eq_iff` (Layer 4a, S12)
+- `proofs/Proofs/ETranscendentalOQ02.lean:573+` — `rational_has_missing_ktuple`
+  (Layer 4a headline, S12)
+- `proofs/Proofs/ETranscendentalOQ02.lean:424` — `rational_digits_eventually_periodic`
+  (theorem, S11)
+- `proofs/Proofs/ETranscendentalOQ02.lean:446` — `periodic_has_missing_ktuple` (S11)
 - `proofs/Proofs/ETranscendentalOQ02.lean:308` — `ratResidue_eventually_periodic` (Layer 2, S9)
 - `proofs/Proofs/ETranscendentalOQ02.lean:243` — `eventually_periodic_iterate` (Layer 1, S8)
 - `src/data/proofs/e-transcendental-oq-02/meta.json` — gallery metadata

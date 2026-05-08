@@ -481,12 +481,122 @@ theorem periodic_has_missing_ktuple (b T k : ℕ) (hb : 2 ≤ b) (hT : 0 < T)
     exact hs (Finset.mem_image.mpr ⟨(n - N₀) % T, Finset.mem_range.mpr (Nat.mod_lt _ hT),
       funext fun i => (hfn_eq i).symm.trans (hall i)⟩)⟩
 
+-- ============================================================
+-- PART IV.5: LAYER 4a — Fin b cast bridge (Session 12)
+-- ============================================================
+
+/-!
+## Layer 4a: bridging `nthDigit` (ℤ-valued) to `Fin b`
+
+The previous `periodic_has_missing_ktuple` works with `f : ℕ → Fin b`, but
+`nthDigit` returns `ℤ` (always in `[0, b)` when `b ≥ 1`). Layer 4a builds
+the cast bridge: `nthDigitFin b n x : Fin b` together with the lemma
+`nthDigitFin_intCast` showing `((nthDigitFin b n x : ℕ) : ℤ) = nthDigit b n x`.
+
+The headline lemma `rational_has_missing_ktuple` then composes Layers 1–3
+(via `rational_digits_eventually_periodic`) with `periodic_has_missing_ktuple`
+to assert that for any rational `q`, some `k`-tuple never appears in `(q : ℝ)`'s
+base-b expansion past a finite cutoff. This is the structural input for the
+full count/Tendsto contradiction argument that closes `normal_imp_irrational`
+(slated for Session 13).
+-/
+
+/-- The n-th base-b digit is non-negative (it is a `% b` of an integer). -/
+private lemma nthDigit_nonneg (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) :
+    0 ≤ nthDigit b n x := by
+  unfold nthDigit
+  exact Int.emod_nonneg _ (by exact_mod_cast hb.ne')
+
+/-- The n-th base-b digit is strictly less than `b`. -/
+private lemma nthDigit_lt_base (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) :
+    nthDigit b n x < (b : ℤ) := by
+  unfold nthDigit
+  exact Int.emod_lt_of_pos _ (by exact_mod_cast hb)
+
+/-- The `Fin b` form of `nthDigit`: extract the integer-valued digit and pack
+    it with its `[0, b)` bound into `Fin b`. -/
+private noncomputable def nthDigitFin (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) : Fin b :=
+  ⟨(nthDigit b n x).toNat, by
+    have hge : 0 ≤ nthDigit b n x := nthDigit_nonneg b hb n x
+    have hlt : nthDigit b n x < (b : ℤ) := nthDigit_lt_base b hb n x
+    have : ((nthDigit b n x).toNat : ℤ) = nthDigit b n x := Int.toNat_of_nonneg hge
+    omega⟩
+
+/-- The `Fin b` digit casts back to the original ℤ-valued `nthDigit`. -/
+private lemma nthDigitFin_intCast (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ) :
+    ((nthDigitFin b hb n x : ℕ) : ℤ) = nthDigit b n x := by
+  unfold nthDigitFin
+  simp only [Fin.val_mk]
+  exact Int.toNat_of_nonneg (nthDigit_nonneg b hb n x)
+
+/-- Equality of `Fin b` digits is equivalent to equality of the underlying ℤ digits. -/
+private lemma nthDigitFin_eq_iff (b : ℕ) (hb : 0 < b) (n m : ℕ) (x y : ℝ) :
+    nthDigitFin b hb n x = nthDigitFin b hb m y ↔
+      nthDigit b n x = nthDigit b m y := by
+  constructor
+  · intro h
+    have h1 := nthDigitFin_intCast b hb n x
+    have h2 := nthDigitFin_intCast b hb m y
+    have hval : (nthDigitFin b hb n x).val = (nthDigitFin b hb m y).val :=
+      congrArg Fin.val h
+    have hint : ((nthDigitFin b hb n x : ℕ) : ℤ) = ((nthDigitFin b hb m y : ℕ) : ℤ) := by
+      exact_mod_cast hval
+    linarith [h1, h2, hint]
+  · intro h
+    apply Fin.ext
+    have h1 := nthDigitFin_intCast b hb n x
+    have h2 := nthDigitFin_intCast b hb m y
+    exact_mod_cast h1.trans (h.trans h2.symm)
+
+/-- **Layer 4a (Session 12)**: For any rational `q : ℚ` and base `b ≥ 2`, the
+    base-b expansion of `(q : ℝ)` has a missing `k`-tuple after position `N₀`,
+    where `k` and `N₀` are explicit (k = T, N₀ = pre-period from Layer 3).
+
+    Combines:
+    - Layer 3 (`rational_digits_eventually_periodic`, S11): periodicity of digits
+      with period `T` and pre-period `N₀`.
+    - `periodic_has_missing_ktuple` (S11): `T < bᵏ` ⇒ some k-tuple never appears.
+    - Layer 4a (this session): cast bridge `nthDigit ↔ nthDigitFin`.
+
+    Choosing `k := T` makes `T < bᵏ` follow from `T < 2^T ≤ b^T` (`Nat.lt_two_pow_self`
+    plus `Nat.pow_le_pow_left`).
+
+    This is the structural input for `normal_imp_irrational`: given a missing
+    tuple `s`, the count of starting positions in `[0, N)` where the digit
+    sequence at offsets `0, …, k-1` matches `s` is bounded by `N₀`, so the
+    frequency `→ 0`, contradicting normality which forces frequency `→ b^(-k) > 0`. -/
+private theorem rational_has_missing_ktuple (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
+    ∃ (k N₀ : ℕ) (s : Fin k → Fin b),
+      0 < k ∧
+      ∀ n ≥ N₀, ∃ i : Fin k,
+        nthDigitFin b (by omega) (n + i.val) (q : ℝ) ≠ s i := by
+  have hbpos : 0 < b := by omega
+  -- Step 1: Get period T and pre-period N₀ from Layer 3.
+  obtain ⟨T, N₀, hT_pos, hper⟩ := rational_digits_eventually_periodic b hb q
+  -- Step 2: Bridge to a `Fin b`-valued sequence.
+  let f : ℕ → Fin b := fun n => nthDigitFin b hbpos n (q : ℝ)
+  have hper_fin : ∀ n ≥ N₀, f (n + T) = f n := by
+    intro n hn
+    show nthDigitFin b hbpos (n + T) (q : ℝ) = nthDigitFin b hbpos n (q : ℝ)
+    exact (nthDigitFin_eq_iff b hbpos _ _ _ _).mpr (hper n hn)
+  -- Step 3: Choose k = T; the bound `T < bᵏ` follows from `T < 2^T ≤ b^T`.
+  have hT_lt : T < b ^ T := by
+    calc T < 2 ^ T := Nat.lt_two_pow_self
+      _ ≤ b ^ T := Nat.pow_le_pow_left (by omega) T
+  -- Step 4: Apply `periodic_has_missing_ktuple`.
+  obtain ⟨s, hs⟩ := periodic_has_missing_ktuple b T T hb hT_pos hT_lt f N₀ hper_fin
+  exact ⟨T, N₀, s, hT_pos, hs⟩
+
 /-- Normal numbers must be irrational.
     Proof: if x = p/q is rational, its expansion has period T ≤ q (by rational_digits_eventually_periodic).
     Choose k with bᵏ > T (exists since b ≥ 2). By periodic_has_missing_ktuple, some k-string s₀
     never appears in the expansion after position N₀, so its count is bounded by N₀.
     Hence count(s₀, N)/N → 0 as N → ∞. But normality requires count(s₀, N)/N → 1/bᵏ > 0.
-    Contradiction (the Tendsto codings need cast between Fin b and ℤ-valued nthDigit). -/
+    Contradiction (the Tendsto codings need cast between Fin b and ℤ-valued nthDigit).
+
+    **Layer 4a (Session 12)** built the cast bridge and the missing-tuple
+    composite (`rational_has_missing_ktuple`). The remaining work for Session 13
+    is the count/Tendsto step. -/
 axiom normal_imp_irrational (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
     (hn : IsNormalInBase b x) : Irrational x
 
