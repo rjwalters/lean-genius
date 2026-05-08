@@ -1,13 +1,14 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S9: r4Count-side Eisenstein-coefficient closed form
+**Phase**: ACT
+**Phase note**: S9: r4Count-side Eisenstein-coefficient closed form
 `r₄(n) = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)` for `0 < n` —
 the canonical n-keyed product matching the q-coefficient of
-`jacobiTheta⁴`). Closure of `jacobi_r4_formula` still requires
+`jacobiTheta⁴`. Closure of `jacobi_r4_formula` still requires
 Mathlib q-expansion of `jacobiTheta` / `E₂`.
 **Path**: full
-**Since**: 2026-05-07
+**Since**: 2026-05-08T21:33:45+03:00
 **Last Updated**: 2026-05-08 (S9, researcher-11; PR #17347 build pending)
 **Iteration**: 9
 
