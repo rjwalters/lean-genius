@@ -502,4 +502,94 @@ theorem two_mul_three_mul_choose_three_eq {n : ℕ} (hn : 3 ≤ n) :
   rw [show ((n - 1 - 1) : ℕ) = n - 2 from by omega,
       Nat.choose_one_right]
 
+-- =====================================================================
+-- PART 8 (Session 8): m=3 divisibility — odd-n case
+-- =====================================================================
+
+/-! ### Why this case isolates cleanly
+
+The full m=3 case `3 · C(n, 3) ∣ lcmRange n` requires Kummer's
+theorem on `v_2(C(n, 3))` because of the `/2` in
+`C(n, 3) = n(n-1)(n-2)/6`. However, when `n` is **odd**, the
+analysis collapses to a pure coprime argument:
+
+For `n` odd and `n ≥ 3`:
+- `n` and `(n-1)(n-2)` are coprime: `gcd(n, n-1) = 1` always
+  (consecutive integers), and `gcd(n, n-2) = 1` because
+  `n - (n-2) = 2`, but `n` is odd so the gcd cannot be 2.
+- `n ∣ lcmRange n` (Part 1 `dvd_lcmRange`).
+- `(n-1)(n-2) = 2 · C(n-1, 2) ∣ lcmRange (n-1) ∣ lcmRange n`
+  (Part 6 `mul_choose_dvd_lcmRange_two` + Part 8a monotonicity).
+- Coprime `mul_dvd_of_dvd_of_dvd` gives
+  `n · (n-1)(n-2) ∣ lcmRange n`.
+- By Part 7's `two_mul_three_mul_choose_three_eq`,
+  `n · (n-1)(n-2) = 2 · (3 · C(n, 3))`.
+- Hence `3 · C(n, 3) ∣ 2 · (3 · C(n, 3)) ∣ lcmRange n`.
+
+The even-n case (Sessions 9+) needs the carry analysis.
+
+This section also ships the standalone `lcmRange_dvd_of_le`
+monotonicity helper, used in the proof and reusable in any
+chain-of-`lcmRange` argument. -/
+
+/-- **(Part 8a) `lcmRange` monotonicity**: `m ≤ n → lcmRange m ∣ lcmRange n`. -/
+theorem lcmRange_dvd_of_le {m n : ℕ} (hmn : m ≤ n) :
+    lcmRange m ∣ lcmRange n := by
+  unfold lcmRange
+  apply Finset.lcm_dvd
+  intro b hb
+  exact Finset.dvd_lcm (Finset.mem_of_subset (Finset.range_subset.mpr hmn) hb)
+
+/-- **(Part 8b) m=3 divisibility, odd-n case**: for `n ≥ 3` odd,
+    `3 · C(n, 3) ∣ lcmRange n`.
+
+    Coprime assembly: `n` and `(n-1)(n-2)` are coprime (the only
+    common factor could be 2, but `n` is odd), and both divide
+    `lcmRange n`, so `n · (n-1)(n-2) ∣ lcmRange n`. By Part 7,
+    `n · (n-1)(n-2) = 2 · (3 · C(n, 3))`, and any factor divides
+    its multiple. -/
+theorem mul_choose_dvd_lcmRange_three_odd {n : ℕ} (hn : 3 ≤ n) (hodd : Odd n) :
+    3 * Nat.choose n 3 ∣ lcmRange n := by
+  -- Step 1: n ∣ lcmRange n
+  have hn_pos : 0 < n := by omega
+  have h_n : n ∣ lcmRange n := dvd_lcmRange hn_pos (le_refl n)
+  -- Step 2: 2 · C(n-1, 2) ∣ lcmRange (n-1) ∣ lcmRange n
+  have hn1_ge : (2 : ℕ) ≤ n - 1 := by omega
+  have h2C : 2 * Nat.choose (n - 1) 2 ∣ lcmRange (n - 1) :=
+    mul_choose_dvd_lcmRange_two hn1_ge
+  have hmono : lcmRange (n - 1) ∣ lcmRange n :=
+    lcmRange_dvd_of_le (Nat.sub_le n 1)
+  -- Rewrite 2 · C(n-1, 2) = (n-1)(n-2) using the absorption identity
+  have h2C_eq : 2 * Nat.choose (n - 1) 2 = (n - 1) * (n - 2) := by
+    rw [mul_choose_eq_mul_choose_pred (by decide : (0:ℕ) < 2) hn1_ge,
+        show ((n - 1 - 1) : ℕ) = n - 2 from by omega,
+        Nat.choose_one_right]
+  have h_n1n2 : (n - 1) * (n - 2) ∣ lcmRange n := by
+    rw [← h2C_eq]; exact h2C.trans hmono
+  -- Step 3: n is coprime to (n-1) and to (n-2), hence to their product
+  have hcop_n_n1 : Nat.Coprime n (n - 1) := by
+    have hrewrite : n = (n - 1) + 1 := by omega
+    rw [hrewrite]
+    exact (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right _)).symm
+  have hcop_n_n2 : Nat.Coprime n (n - 2) := by
+    have hrewrite : n = (n - 2) + 2 := by omega
+    rw [hrewrite]
+    refine (Nat.coprime_self_add_right.mpr ?_).symm
+    refine Nat.Coprime.symm ?_
+    rw [Nat.Prime.coprime_iff_not_dvd Nat.prime_two]
+    intro h2dvd
+    rcases hodd with ⟨k, hk⟩
+    rcases h2dvd with ⟨m, hm⟩
+    omega
+  have hcop_prod : Nat.Coprime n ((n - 1) * (n - 2)) :=
+    hcop_n_n1.mul_right hcop_n_n2
+  -- Step 4: n · (n-1)(n-2) ∣ lcmRange n by coprime mul-dvd
+  have h_prod : n * ((n - 1) * (n - 2)) ∣ lcmRange n :=
+    hcop_prod.mul_dvd_of_dvd_of_dvd h_n h_n1n2
+  -- Step 5: rewrite n · (n-1)(n-2) = 2 · (3 · C(n, 3)) (Part 7)
+  rw [← two_mul_three_mul_choose_three_eq hn] at h_prod
+  -- h_prod : 2 * (3 * C(n, 3)) ∣ lcmRange n
+  -- Step 6: 3 · C(n, 3) divides its own multiple by 2
+  exact (dvd_mul_left (3 * Nat.choose n 3) 2).trans h_prod
+
 end BaselProblemOQ01OQ01OQ02OQ02
