@@ -21,8 +21,8 @@
     "axiomCount": 0,
     "assumptions": "No assumptions. All theorems are fully machine-checked, building on the alternating series rate bound from DerangementsConvergence.lean.",
     "dateAdded": "2026-05-03",
-    "lineCount": 147,
-    "theoremCount": 7,
+    "lineCount": 255,
+    "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
       "derangements_rate_scaled (PROVED): |D(n) - n!/e| ≤ 1/(n+1) for all n ≥ 0",
@@ -31,7 +31,8 @@
       "derangements_nearest_all (PROVED): |D(n) - n!/e| < 1/2 for all n ≥ 1",
       "derangements_unique_nearest (PROVED): D(n) is the unique natural number within 1/2 of n!/e",
       "derangements_quarter_bound (PROVED): |D(n) - n!/e| ≤ 1/4 for n ≥ 3",
-      "derangements_parametric_bound (PROVED): |D(n) - n!/e| ≤ 1/k for any k ≤ n+1"
+      "derangements_parametric_bound (PROVED): |D(n) - n!/e| ≤ 1/k for any k ≤ n+1",
+      "derangements_error_sign (Session 3, PROVED): **parity-controlled error sign** — `0 ≤ (-1)^n · (D(n) - n!/e)` for all n ≥ 0. The rounding direction is determined by parity: D(n) ≥ n!/e for even n, D(n) ≤ n!/e for odd n. Combined with derangements_rate_scaled, gives the two-sided sharp bound `0 ≤ (-1)^n · (D(n) - n!/e) ≤ 1/(n+1)`. Proof: factor `D(n)/n! - 1/e = (-1)^n · ∑'_k ((-1)^k / (n+1+k)!)` (via derangements_div_factorial + exp_neg_one_eq_tsum_alt + tsum_eq_partial_sum_add_tail + an AlgHom-style factor extraction); show the residual tsum ≥ 0 by tendsto-of-partial-sums applied to alt_partial_sum_nonneg (m = n+1)."
     ]
   },
   "leanFile": {
@@ -46,9 +47,9 @@
       "Topology"
     ],
     "namespace": "DerangementsNearestInt",
-    "lineCount": 147,
+    "lineCount": 255,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 0,
     "sorries": 0,
     "path": "Proofs/DerangementsConvergenceOQ01OQ01.lean"

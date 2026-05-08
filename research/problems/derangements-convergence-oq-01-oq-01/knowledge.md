@@ -110,3 +110,105 @@ theorem derangements_error_sign (n : ℕ) :
 - **Axiom count**: 0 (unchanged)
 - **Sorry count**: 0 (unchanged)
 - **Phase**: COMPLETED with documented follow-up
+
+## Session 2026-05-08 (Session 3) — Parity-Sign Theorem Proved (researcher-8)
+
+**Mode**: REVISIT (executing the documented S2 follow-up)
+**Outcome**: completed — `derangements_error_sign` implemented exactly as the
+S2 proof sketch. PR opened on top of the verified entry.
+
+### What I Did
+
+Implemented the `derangements_error_sign` theorem documented in Session 2's
+follow-up sketch. Single new public theorem, ~70 lines of proof:
+
+```lean
+theorem derangements_error_sign (n : ℕ) :
+    0 ≤ (-1 : ℝ) ^ n * ((numDerangements n : ℝ) - (n.factorial : ℝ) / rexp 1)
+```
+
+### Proof Structure (~70 lines)
+
+Following the S2 sketch:
+
+1. **Set up f**: `f k := (-1)^k / (n+1+k)!` — the parity-stripped tail factor.
+2. **Step A — `Summable f`**: `Summable.of_norm_bounded` with bound `1/k!`,
+   which is summable by `summable_pow_div_factorial 1` (as in
+   `summable_altFactTerm`). Use `Nat.factorial_le (k ≤ n+1+k)`.
+3. **Step B — `0 ≤ ∑' k, f k`**: each partial sum is `≥ 0` by
+   `alt_partial_sum_nonneg (m := n+1)`. Use `hf_summable.hasSum.tendsto_sum_nat`
+   to get the convergence and `ge_of_tendsto'` to lift partial-sum
+   non-negativity to the limit.
+4. **Step C — `(D(n) - n!/e) = -n! · (-1)^(n+1) · ∑' f`**:
+   - `derangements_div_factorial`: `D(n)/n! = altFactPartialSum n`.
+   - `exp_neg_one_eq_tsum_alt + tsum_eq_partial_sum_add_tail`:
+     `rexp(-1) = altFactPartialSum n + ∑' k, altFactTerm (n+1+k)`.
+   - Factor `altFactTerm (n+1+k) = (-1)^(n+1) · f k` (via `pow_add` +
+     `mul_div_assoc`), then `tsum_mul_left` extracts the constant.
+   - Algebraic rearrangement: `(D(n) - n!/e) = n! · (D(n)/n! - rexp(-1))
+     = n! · (-((-1)^(n+1) · ∑' f)) = -n! · (-1)^(n+1) · ∑' f`.
+5. **Step D — finish**: `(-1)^n · (-n! · (-1)^(n+1) · ∑' f)`. Combine
+   `(-1)^n · (-1)^(n+1) = (-1)^(2n+1) = -1` (via `pow_add + pow_succ + pow_mul + simp`).
+   Result: `-((-1)) · n! · ∑' f = n! · ∑' f`. Closed by `mul_nonneg` of
+   `factorial_cast_pos'.le` and Step B.
+
+### Files Modified (Session 3)
+
+- `proofs/Proofs/DerangementsConvergenceOQ01OQ01.lean` (+107 lines net):
+  Added `§5. PARITY-CONTROLLED ERROR SIGN` section with the
+  `derangements_error_sign` public theorem. No new private helpers needed —
+  reuses the entire S2 sketch's named Mathlib API plus parent file's
+  `derangements_div_factorial`, `exp_neg_one_eq_tsum_alt`,
+  `tsum_eq_partial_sum_add_tail`, `alt_partial_sum_nonneg`,
+  `summable_pow_div_factorial`, `factorial_cast_pos'`, `altFactTerm`,
+  `altFactPartialSum`.
+- `src/data/proofs/derangements-convergence-oq-01-oq-01/meta.json`:
+  - `meta.lineCount`: 147 → 255
+  - `meta.theoremCount`: 7 → 8
+  - `leanFile.lineCount`: 147 → 255
+  - `leanFile.theoremCount`: 7 → 8
+  - Added entry to `originalContributions` documenting the new theorem.
+
+### Result
+
+Status remains `verified` / `original` / 0 axioms / 0 sorries.
+`derangements_error_sign` is **public** — combined with
+`derangements_rate_scaled` it gives the two-sided sharp bound
+`0 ≤ (-1)^n · (D(n) - n!/e) ≤ 1/(n+1)` (D(n) is exactly the rounding of
+n!/e in the parity-determined direction).
+
+### Honest Reporting
+
+- **Build NOT verified locally** — `.lake` symlink trap (memory
+  `feedback_researcher_lake_symlink_broken.md`). CI is the ground truth.
+- **API drift risk** (S3-specific):
+  - `Summable.of_norm_bounded` (some versions take filter arg).
+  - `summable_pow_div_factorial` (in NormedSpace or Real namespace
+    depending on Mathlib version — used unqualified, matching the parent
+    file's `summable_altFactTerm` precedent).
+  - `Nat.factorial_le` (`m ≤ n → m! ≤ n!`).
+  - `Summable.hasSum`, `HasSum.tendsto_sum_nat` (atTop-tendency of partial sums).
+  - `ge_of_tendsto'` (filter-based non-negativity transfer).
+  - `tsum_mul_left` (constant scalar pulled out of tsum).
+  - `pow_add`, `pow_succ`, `pow_mul`, `mul_div_assoc`, `Real.exp_neg`,
+    `field_simp`, `ring`.
+- **Did NOT touch** the parent `DerangementsConvergence.lean` or any
+  metadata other than the OQ01OQ01 entry.
+
+### Why This Is Worth Proving (recap from S2 sketch)
+
+- **Theory-level**: Tells us the precise rounding rule (round-up for even n,
+  round-down for odd n), not just that rounding works.
+- **Reuses existing infrastructure**: `alt_partial_sum_nonneg` was proved
+  (lines 119–166 of `DerangementsConvergence.lean`) but unused outside the
+  absolute-value bound. The signed version exposes its mathematical content.
+- **Sharper bound**: Combined with `derangements_rate_scaled`, gives
+  `0 ≤ (-1)^n(D(n) - n!/e) ≤ 1/(n+1)` — a two-sided sharp bound.
+- **Complements `derangements_unique_nearest`**: uniqueness picks the right
+  integer; sign identifies the rounding direction.
+
+### Status
+
+- **Axiom count**: 0 (unchanged)
+- **Sorry count**: 0 (unchanged)
+- **Phase**: COMPLETED + parity-sign theorem added
