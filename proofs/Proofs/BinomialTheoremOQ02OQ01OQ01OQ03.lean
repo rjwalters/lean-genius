@@ -242,38 +242,6 @@ theorem standardNormalCDF_continuous : Continuous standardNormalCDF := by
   exact continuous_const.add
     ((ProbabilityTheory.integrable_gaussianPDFReal 0 1).continuous_primitive 0)
 
-/-- **Right-tail saturation of Φ.** As `x → +∞`, the standard normal CDF
-    tends to `1`.
-
-    Proof: the family `(Set.Iic x)_{x : ℝ}` is an `AECover` for `volume`
-    along `Filter.atTop` (`MeasureTheory.aecover_Iic Filter.tendsto_id`);
-    applying `MeasureTheory.AECover.integral_tendsto_of_countably_generated`
-    to the integrable density `ProbabilityTheory.gaussianPDFReal 0 1`
-    gives convergence of `∫ t in Iic x, gaussianPDFReal 0 1 t` to the total
-    integral, which equals `1` by
-    `ProbabilityTheory.integral_gaussianPDFReal_eq_one`.
-
-    On the **Phase-4 Portmanteau-bridge critical path**: paired with the
-    binomialCDF right-tail saturation `binomialCDF_tendsto_one_atTop`,
-    this is one of the two asymptotic identities the Portmanteau direction
-    at `+∞` consumes (and ditto at `-∞`, via the matching `_atBot` lemmas
-    once added). With Φ's continuity (`standardNormalCDF_continuous`)
-    and these tail saturations together, the Portmanteau bridge applies
-    universally to discharge `binomial_clt_pointwise`. -/
-theorem standardNormalCDF_tendsto_one_atTop :
-    Filter.Tendsto standardNormalCDF Filter.atTop (nhds 1) := by
-  unfold standardNormalCDF
-  have hcov : MeasureTheory.AECover (MeasureTheory.volume : MeasureTheory.Measure ℝ)
-      Filter.atTop (fun x : ℝ => Set.Iic x) :=
-    MeasureTheory.aecover_Iic Filter.tendsto_id
-  have hint : MeasureTheory.Integrable (ProbabilityTheory.gaussianPDFReal 0 1) :=
-    ProbabilityTheory.integrable_gaussianPDFReal 0 1
-  have h := hcov.integral_tendsto_of_countably_generated hint
-  have htotal : ∫ t, ProbabilityTheory.gaussianPDFReal 0 1 t = 1 :=
-    ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero
-  rw [htotal] at h
-  exact h
-
 /-! ## Axiom: classical de Moivre–Laplace (binomial CLT) -/
 
 /-- **AXIOM** (de Moivre–Laplace, 1733/1812): the standardized binomial CDF

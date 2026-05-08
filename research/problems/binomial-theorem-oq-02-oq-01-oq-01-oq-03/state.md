@@ -8,16 +8,9 @@
 **Iteration**: 8
 
 ## Current Focus
-Phase-4 prep continued — Session 8 adds three asymptotic-saturation
-(`Filter.Tendsto`-form) lemmas covering the right-tail of both Φ and the
-binomial CDF, plus the left-tail of the binomial CDF:
+Phase-4 prep continued — Session 8 (this PR, complementary track) adds
+two binomialCDF-side asymptotic-saturation (`Filter.Tendsto`-form) lemmas:
 
-- `standardNormalCDF_tendsto_one_atTop`: `Tendsto Φ atTop (𝓝 1)`. Proof
-  uses `MeasureTheory.aecover_Iic Filter.tendsto_id` to get the AECover
-  for `volume` along `atTop`, then
-  `AECover.integral_tendsto_of_countably_generated` on the integrable
-  `gaussianPDFReal 0 1`, with the total integral identified as 1 by
-  `ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero`.
 - `binomialCDF_tendsto_one_atTop` (under `0 ≤ p ≤ 1`): eventually
   constant via `binomialCDF_eq_one`, packaged with `Tendsto.congr'` and
   `Filter.eventually_ge_atTop (n : ℝ)`.
@@ -25,20 +18,25 @@ binomial CDF, plus the left-tail of the binomial CDF:
   `binomialCDF_neg`, packaged with `Tendsto.congr'` and
   `Filter.eventually_lt_atBot (0 : ℝ)`. No `p` constraint required.
 
-These three lemmas convert the boundary-value information from
-Sessions 4–7 into the `Filter.Tendsto` form Mathlib's Portmanteau
-direction at `±∞` consumes. Together with `standardNormalCDF_continuous`
-(Session 7) and the four-corner `binomialCDF_*` lemmas (Sessions 4–7),
-all the right-tail prerequisites are in place. The matching
-`standardNormalCDF_tendsto_zero_atBot` (Φ left tail) is the remaining
-structural-CDF prerequisite: the proof needs the `Antitone` direction
-(`Antitone.tendsto_setIntegral` on `(fun y => Iic (-y))` composed with
-`Filter.tendsto_neg_atBot_atTop`) since `aecover_Iic` only cares about
-covers expanding to the whole space, not contracting to `∅`.
+The matching standardNormalCDF tail-limit lemmas (Φ → 1 at +∞ and
+Φ → 0 at -∞) are added in the parallel S8 PR #17233 (researcher-1, opened
+3 minutes earlier). To avoid lemma-statement collisions on a hot file,
+this PR was narrowed to the binomialCDF side only — the original draft
+also included `standardNormalCDF_tendsto_one_atTop` but that lemma is
+already in #17233 under name `standardNormalCDF_tendsto_atTop` with the
+same proof technique (AECover + integral_gaussianPDFReal_eq_one), so
+keeping it here would have produced a merge conflict.
 
-**Axiom count: 1 (unchanged).** The file is now 0 sorries / 1 axiom
-(`binomial_clt_pointwise` only), 17 theorems (substantive count: 13),
-582 lines.
+Together, the two PRs convert the boundary-value information from
+Sessions 4–7 into the `Filter.Tendsto` form Mathlib's Portmanteau
+direction at `±∞` consumes. With `standardNormalCDF_continuous`
+(Session 7) and the four-corner `binomialCDF_*` lemmas (Sessions 4–7),
+all the structural-CDF prerequisites for the Portmanteau bridge are
+now in place after both S8 PRs land.
+
+**Axiom count: 1 (unchanged).** After this PR alone: 0 sorries / 1 axiom
+(`binomial_clt_pointwise` only), 16 theorems (substantive count: 12),
+550 lines.
 
 **Build verification.** Session 8 was conducted under the broken
 `/Users/rwalters/GitHub/lean-genius/proofs/.lake` self-symlink trap
