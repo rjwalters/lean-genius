@@ -62,7 +62,9 @@
       "**Upper bound is tight**: The random graph G(n,1/2) achieves numISCTrue ≈ 2^n, showing c' = 1 is the best possible upper bound.",
       "**Shelah vs. optimal**: Shelah gives SOME c' > 0 (possibly small). The OQ asks whether the optimal c' = 1 (largest possible).",
       "**Quotient complexity**: Formalizing numISCTrue requires `Quotient` with a `Setoid` on induced subgraph pairs, plus a `Fintype` instance on the quotient — about 200 lines to eliminate axioms 1-3.",
-      "**Connection to Erdős-Hajnal**: The Erdős-Hajnal conjecture says graphs with forbidden induced subgraph H have polynomial clique/independent sets. Non-Ramsey(c) graphs lack such structure — c'(c)=1 would say they are 'maximally pseudorandom' despite their Ramsey constraints."
+      "**Connection to Erdős-Hajnal**: The Erdős-Hajnal conjecture says graphs with forbidden induced subgraph H have polynomial clique/independent sets. Non-Ramsey(c) graphs lack such structure — c'(c)=1 would say they are 'maximally pseudorandom' despite their Ramsey constraints.",
+      "**Reconstruction-flavored statement**: Asserting numISCTrue G(n,1/2) = 2^n a.s. says the random graph is 'reconstructable from any subset' in the limit — every pair of distinct vertex subsets gives non-isomorphic induced subgraphs with high probability. This is closely related to the (open) graph reconstruction conjecture and is typically proved via a moment estimate on the expected number of isomorphism pairs $\\binom{2^n}{2} \\cdot \\Pr[G[S] \\cong G[T]]$, which decays super-polynomially.",
+      "**Why the c = 2/log 2 specialization matters**: This is the Erdős-Rényi 1959 / Bollobás 2001 a.s. threshold for $G(n,1/2)$ being non-Ramsey($c$). The corollary `optimalConstantTrue_random` is a one-line specialization of the conjecture axiom at this value — concretely, any explicit pseudorandom graph (Paley graphs at primes $p \\equiv 1 \\pmod 4$, quadratic-residue graphs, certain Cayley expanders) achieving numISCTrue → 2^n would witness the conjecture at this threshold even before the random-graph proof goes through."
     ],
     "prerequisites": [
       "Shelah's theorem (Erdos1036Problem.lean, axiom shelah_1998)",
@@ -73,28 +75,87 @@
   },
   "sections": [
     {
-      "id": "interface",
-      "title": "ISC Count Interface",
-      "startLine": 42,
-      "endLine": 62,
-      "summary": "Axiomatizes numISCTrue with three key properties: it exists, is bounded by 2^n, and is positive. These replace the parent's placeholder definition.",
-      "mathContext": "The true ISC count counts non-isomorphic induced subgraphs: the quotient of {S : Finset V} by the equivalence S ~ T ↔ G.induce(S) ≅g G.induce(T). Requires Quotient and Fintype instances on the quotient type (~200 lines)."
+      "id": "preamble",
+      "title": "Imports and Header Docstring",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Imports `SimpleGraph.Basic`, `SimpleGraph.Clique`, `Real.Basic`, `Log.Basic`, and `Mathlib.Tactic`. The header docstring states the OQ-01 question, summarises Shelah 1998, and explains why a separate file is needed: the parent uses a placeholder $2^n$ count of all subsets rather than isomorphism classes.",
+      "mathContext": "The header makes the central distinction explicit: parent counts $|\\{S : \\mathrm{Finset}\\, V\\}| = 2^n$ (labeled); this file counts $|\\{S\\} / {\\cong}|$ (unlabeled), which can be strictly smaller."
+    },
+    {
+      "id": "isc-interface",
+      "title": "ISC Count Interface (axioms 1–3)",
+      "startLine": 39,
+      "endLine": 53,
+      "summary": "Axiomatizes `numISCTrue : SimpleGraph V → ℕ` plus two structural properties: `numISCTrue_le_pow` (≤ 2^n) and `numISCTrue_pos` (> 0). These three axioms stand in for a full Quotient construction (~200 lines) and let the rest of the file proceed on the correct, unlabeled count.",
+      "mathContext": "$\\mathrm{numISCTrue}(G) = |\\mathrm{Finset}\\, V / {\\sim}|$ where $S_1 \\sim S_2 \\iff G.\\mathrm{induce}(S_1) \\cong_g G.\\mathrm{induce}(S_2)$. Bounds: $1 \\le \\mathrm{numISCTrue}(G) \\le 2^{|V|}$."
+    },
+    {
+      "id": "non-ramsey-shelah",
+      "title": "Non-Ramsey Graphs and Shelah's Bound (axioms 4–5)",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "Defines `IsNonRamsey G c` (clique-free of size ⌈c·log n⌉ in both `G` and `Gᶜ`). Adds `nonRamseyExistsTrue` (arbitrarily large non-Ramsey(c) graphs exist) and `shelah_isc` (Shelah 1998 lower bound: ∃ c'>0 with numISCTrue G ≥ 2^{c'n}).",
+      "mathContext": "Non-Ramsey$(c)$: $\\omega(G), \\alpha(G) \\le c\\log n$. Shelah $1998$: $\\forall c>0, \\exists c'>0, \\forall G$ non-Ramsey$(c)$, $\\mathrm{numISCTrue}(G) \\ge 2^{c'n}$."
     },
     {
       "id": "optimal-constant",
-      "title": "Optimal Constant Definition and Bounds",
-      "startLine": 78,
-      "endLine": 140,
-      "summary": "Defines optimalConstantTrue as sSup of valid exponents. Proves it lies in (0,1]: upper bound from numISCTrue ≤ 2^n, lower bound from Shelah.",
-      "mathContext": "The optimal constant is the supremum of all c' such that every non-Ramsey(c) graph has ≥ 2^{c'n} ISC classes. The key proof: if c' > 1, then 2^{c'n} > 2^n ≥ numISCTrue, contradiction."
+      "title": "Optimal Constant Definition",
+      "startLine": 74,
+      "endLine": 79,
+      "summary": "Defines `optimalConstantTrue c := sSup { c' | ∀ G non-Ramsey(c): numISCTrue G ≥ 2^{c'n} }` as a conditionally-complete-lattice supremum over the optimality set.",
+      "mathContext": "$c'(c) := \\sup \\{c' \\in \\mathbb{R} \\mid \\forall G$ non-Ramsey$(c)\\colon \\mathrm{numISCTrue}(G) \\ge 2^{c' \\cdot |V|}\\}$. Uses `noncomputable def` because real `sSup` is non-constructive."
     },
     {
-      "id": "conjecture",
-      "title": "Main Conjecture: c'(c) = 1",
-      "startLine": 143,
-      "endLine": 160,
-      "summary": "States the main open conjecture as an axiom: optimalConstantTrue(c) = 1 for all c > 0.",
-      "mathContext": "This asserts that non-Ramsey graphs are 'pseudorandom' enough to maximize ISC diversity. Random graphs G(n,1/2) are the witness: they are non-Ramsey and achieve 2^n ISC classes a.s."
+      "id": "key-bounds",
+      "title": "Two-sided Bounds: $c'(c) \\in (0,1]$",
+      "startLine": 81,
+      "endLine": 135,
+      "summary": "Two private lemmas (`optimalSet_nonempty` via numISCTrue_pos, `optimalSet_le_one` via Real.rpow_lt_rpow_of_exponent_lt) feed three public theorems: `optimalConstantTrue_le_one` (csSup_le), `optimalConstantTrue_pos` (le_csSup applied to Shelah's c''), and `optimalConstantTrue_bounds` (the conjunction).",
+      "mathContext": "$c'(c) \\le 1$: if $c' > 1$ then $2^{c'n} > 2^n \\ge \\mathrm{numISCTrue}(G)$, contradiction. $c'(c) > 0$: Shelah's $c''$ is in the optimality set, and $\\mathrm{le\\_csSup}$ gives $0 < c'' \\le c'(c)$."
+    },
+    {
+      "id": "main-conjecture",
+      "title": "Main Conjecture: $c'(c) = 1$ (axiom 6)",
+      "startLine": 137,
+      "endLine": 148,
+      "summary": "States the open conjecture as `axiom optimalConstantTrue_eq_one : ∀ c>0, optimalConstantTrue c = 1`. The corollary `optimalConstantTrue_random` is a one-line specialization at $c = 2/\\log 2$, the Erdős-Rényi a.s. threshold for $G(n,1/2)$ being non-Ramsey$(c)$.",
+      "mathContext": "$\\forall c > 0, c'(c) = 1$. Witness candidate: $G(n,1/2)$ is non-Ramsey$(c)$ for $c < 2/\\log 2 \\approx 2.885$ (Bollobás), and $\\mathrm{numISCTrue}(G(n,1/2)) = 2^n - o(2^n)$ a.s."
+    },
+    {
+      "id": "summary-audit",
+      "title": "Summary: Axiom Audit and Parent Contrast",
+      "startLine": 150,
+      "endLine": 167,
+      "summary": "Closing docstring tabulates the proved theorems, classifies the six axioms by elimination cost (3 trivially-true Quotient interface, 2 inherited from parent, 1 genuine OQ), and contrasts with the parent file where optimalConstant = 1 holds trivially via the placeholder count.",
+      "mathContext": "Axiom budget: 3 (Quotient interface, ~200 lines to eliminate) + 2 (Shelah / non-Ramsey existence, inherited) + 1 (the genuine open question $c'(c) = 1$) = 6."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "optimalConstantTrue_le_one",
+      "statement": "$\\forall c > 0\\colon$ optimalConstantTrue $c \\le 1$",
+      "significance": "Upper bound — the random-graph extremal $2^n$ is the ceiling. Proof uses csSup_le with the optimality set bounded above via Real.rpow_lt_rpow_of_exponent_lt."
+    },
+    {
+      "name": "optimalConstantTrue_pos",
+      "statement": "$\\forall c > 0\\colon$ optimalConstantTrue $c > 0$",
+      "significance": "Lower bound — Shelah's theorem (axiom shelah_isc) supplies some $c'' > 0$ in the optimality set; le_csSup then gives $0 < c'' \\le c'(c)$."
+    },
+    {
+      "name": "optimalConstantTrue_bounds",
+      "statement": "$\\forall c > 0\\colon 0 < $ optimalConstantTrue $c \\le 1$",
+      "significance": "Clean two-sided summary theorem combining the above; this is the machine-checked headline result of the file."
+    },
+    {
+      "name": "optimalConstantTrue_random",
+      "statement": "optimalConstantTrue $(2 / \\log 2) = 1$",
+      "significance": "Specialization of the conjecture axiom at the Erdős-Rényi a.s. threshold for $G(n,1/2)$ being non-Ramsey. Concretely testable: any explicit pseudorandom witness at this $c$ would corroborate the conjecture."
+    },
+    {
+      "name": "optimalConstantTrue_eq_one",
+      "statement": "**Axiom (open)**: $\\forall c > 0\\colon$ optimalConstantTrue $c = 1$",
+      "significance": "The genuine Erdős open problem this entry encodes. Eliminated by proving (i) $G(n,1/2)$ is non-Ramsey$(c)$ a.s., and (ii) numISCTrue $G(n,1/2) = 2^n - o(2^n)$ a.s."
     }
   ],
   "conclusion": {
