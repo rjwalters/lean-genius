@@ -97,7 +97,9 @@
     "openQuestions": [
       "Can the Kronecker QR axiom be proved in Lean using genus theory for binary quadratic forms? The Gauss genus theory provides an elementary (if lengthy) proof of (D₁/|D₂|) = (D₂/|D₁|) for discriminants.",
       "Is Artin reciprocity for quadratic extensions available in Mathlib? That would allow removing the kronecker_qr_fundamental axiom entirely.",
-      "Can the Kronecker symbol (D/·) be formalized as a Dirichlet character of conductor |D| in Lean? This would connect the QR law to the theory of L-functions."
+      "Can the Kronecker symbol (D/·) be formalized as a Dirichlet character of conductor |D| in Lean? This would connect the QR law to the theory of L-functions.",
+      "Does the Kronecker QR generalize to the Hilbert symbol over global fields via the product formula? Mathlib formalization of the Hilbert symbol over ℚ would unify all Eisenstein-style supplementary laws.",
+      "What is the minimal set of additional axioms — beyond Mathlib's Jacobi QR — sufficient to discharge `kronecker_qr_even_fundamental` constructively?"
     ],
     "lineCount": 404,
     "theoremCount": 25,
@@ -170,11 +172,13 @@
   ],
   "conclusion": {
     "summary": "Generalizes the Kronecker symbol's quadratic reciprocity to fundamental discriminants with the correct sign: ε=1 when at most one discriminant is negative, ε=-1 when both negative. Two cases proved from Mathlib's Jacobi QR; the general case axiomatized (class field theory). Numerical verification of the both-negative sign flip distinguishes this from the naïvely stated (and false) unconditional equality.",
-    "implications": "The Kronecker QR law is the quadratic case of Artin's general reciprocity law. It states that the primitive character χ_D₁ of conductor |D₁| evaluates the same value at D₂ as χ_D₂ evaluates at D₁ — a deep symmetry connecting different quadratic fields. In practice, this allows computing (D₁/n)_K by switching the roles of discriminant and argument, which is essential for prime splitting calculations in quadratic number fields.",
+    "implications": "The Kronecker QR law is the quadratic case of Artin's general reciprocity law. It states that the primitive character χ_D₁ of conductor |D₁| evaluates the same value at D₂ as χ_D₂ evaluates at D₁ — a deep symmetry connecting different quadratic fields. In practice, this allows computing (D₁/n)_K by switching the roles of discriminant and argument, which is essential for prime splitting calculations in quadratic number fields. From a higher-level vantage point, the symmetry is the explicit (and most elementary nontrivial) instance of Langlands functoriality: the L-function of the quadratic field $\\mathbb{Q}(\\sqrt{D})$ factors through the Dirichlet L-function $L(s, \\chi_D)$, and the QR symmetry is the analytic continuation / functional-equation manifestation of class field theory.",
     "openQuestions": [
-      "Can the Kronecker QR axiom be proved from genus theory for quadratic forms (elementary but lengthy)?",
-      "Is Artin reciprocity for quadratic extensions available in Lean/Mathlib?",
-      "Can (D/·)_K be formalized as a Dirichlet character of conductor |D|?"
+      "Can the Kronecker QR axiom be proved in Mathlib from genus theory for binary quadratic forms? Gauss's elementary (but lengthy) approach via composition of forms and the principal genus theorem is in principle formalizable, but no Lean infrastructure for binary quadratic forms over ℤ currently exists.",
+      "Is Artin reciprocity for quadratic extensions available in Lean/Mathlib? Mathlib has the abstract framework of Galois representations and ray class groups, but the explicit quadratic-extension case (Hecke characters of conductor |D|) has not been formalized.",
+      "Can the Kronecker symbol (D/·)_K be formalized as a primitive Dirichlet character of conductor |D| in Lean, with its conductor and oddness properties established? This would unify the gallery's QR proofs under the L-function framework and make the analytic / functional-equation proofs of QR (Hecke 1918) accessible.",
+      "Does the Kronecker symbol's QR generalize to the *Hilbert symbol* over global fields, where the product formula $\\prod_v (a,b)_v = 1$ subsumes all Eisenstein-style supplementary laws? Mathlib formalization of the Hilbert symbol over ℚ would be a natural successor target.",
+      "What is the smallest closed system of axioms (beyond Mathlib's existing Jacobi QR) needed to discharge `kronecker_qr_even_fundamental`? A careful reduction would show whether one needs full class field theory or merely a finite collection of elementary mod-8 / mod-16 case analyses."
     ]
   },
   "overview": {
@@ -183,9 +187,11 @@
     "keyInsights": [
       "When D₁ ≡ 1 (mod 4), the Jacobi QR factor (-1)^{(D₁-1)/2·(D₂-1)/2} equals 1 (since (D₁-1)/2 is even), giving exact symmetry J(D₁,D₂) = J(D₂,D₁).",
       "When both D₁ ≡ D₂ ≡ 3 (mod 4), the QR factor is (-1)^{odd·odd} = -1, giving a sign flip: J(D₁,D₂) = -J(D₂,D₁).",
-      "The Kronecker symbol (D/n) agrees with the Jacobi symbol for odd positive n, so the Jacobi QR directly implies the Kronecker QR for positive odd discriminants."
+      "The Kronecker symbol (D/n) agrees with the Jacobi symbol for odd positive n, so the Jacobi QR directly implies the Kronecker QR for positive odd discriminants.",
+      "The ε sign correction for both-negative fundamental discriminants is not a quirk of notation but is forced by the *odd character* property: for D < 0, χ_D(-1) = -1, so writing D = (-1)·|D| picks up a sign from the first supplement, $\\left(\\frac{-1}{n}\\right) = (-1)^{(n-1)/2}$. The naïve formulation (D₁/|D₂|) = (D₂/|D₁|) without ε is *literally false* on integers ≡ 1 mod 4 with negative sign — numerically refuted by (-7/3) = -1 ≠ 1 = (-3/7).",
+      "Conceptually, the Kronecker symbol (D/·)_K is the unique real primitive Dirichlet character of conductor |D|, and the QR law is the *Frobenius reciprocity* / Artin self-duality of these characters: χ_{D₁}(D₂) = χ_{D₂}(D₁). The sign correction reflects how this Hecke-theoretic statement specializes to the integer-valued symbol after passing through the absolute-value normalization."
     ],
-    "historicalContext": "The quadratic reciprocity law for the Kronecker symbol was established by Kronecker (1885) as part of his theory of quadratic forms and class field theory. It generalizes Gauss's original QR (for the Legendre symbol) and Jacobi's generalization (for products of Legendre symbols) to discriminants of arbitrary quadratic fields, including imaginary ones (negative discriminants) and those of even conductor (even discriminants).",
+    "historicalContext": "Quadratic reciprocity has the deepest history of any law in number theory. Euler conjectured the cases for primes (1742-1744) but never proved them. Legendre (1798) introduced his symbol and gave a partial proof. Gauss provided the first complete proof in 1801 (Disquisitiones Arithmeticae §V), calling it the 'fundamental theorem' (theorema fundamentale) and ultimately publishing eight different proofs over his lifetime. Jacobi (1837) extended the law to his eponymous symbol for products of odd primes, and Eisenstein gave several more proofs in the 1840s. Kronecker (1885, in Crelle's Journal) extended Jacobi's symbol to a real primitive character of arbitrary integer conductor, including the 2-adic case via the Kronecker symbol (D/2). Hilbert (1897, Zahlbericht §70) reformulated QR via the Hilbert symbol and product formula ∏_v (a,b)_v = 1, paving the way for Artin's general reciprocity law (1927) and Tate's thesis (1950). The case for *fundamental discriminants* — discriminants of quadratic number fields — is the precise quadratic case of Artin reciprocity: it states that the Kronecker symbol (D₁/D₂)_K depends symmetrically on the two discriminants (modulo the sign from oddness), realizing the self-duality of the corresponding ray class characters. Gauss already discovered this symmetry implicitly through his 1801 genus theory of binary quadratic forms.",
     "problemStatement": "Does the Kronecker symbol satisfy generalized quadratic reciprocity for fundamental discriminants? Specifically: for coprime fundamental discriminants D₁, D₂, does (D₁/|D₂|)_K = (D₂/|D₁|)_K when at most one is negative, and (D₁/|D₂|)_K = -(D₂/|D₁|)_K when both are negative?"
   },
   "references": [
