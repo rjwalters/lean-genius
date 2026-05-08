@@ -916,6 +916,77 @@ private lemma colStrict_pair_count_eq_subSym_filtered_count {n a b : ℕ}
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
     exact ⟨hCS, hPQ⟩
 
+/-- **Canonical complement cardinality** (S29 — bridge infrastructure for
+    Sub-lemma 2B's cycle-lemma proof).
+
+    For `M : Sym (Fin n) (a + b)` and `P : Sym (Fin n) a` with `P.1 ≤ M.1`,
+    the multiset difference `M.1 − P.1` has cardinality `b`. Used to package
+    `M.1 − P.1` as a `Sym (Fin n) b` (the canonical complement of `P` in `M`)
+    inside Sub-lemma 2B and downstream cycle-lemma arguments — once `Q` is
+    pinned to be the canonical complement, the col-strict predicate becomes
+    a function of `P` alone (and `M`), exposing rotation-equivariance. -/
+private lemma comp_card_eq {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P : Sym (Fin n) a) (hP : P.1 ≤ M.1) :
+    (M.1 - P.1).card = b := by
+  rw [Multiset.card_sub hP, M.2, P.2, Nat.add_sub_cancel_left]
+
+/-- **Canonical complement decomposition** (S29 — bridge infrastructure).
+
+    For `M : Sym (Fin n) (a + b)` and `P : Sym (Fin n) a` with `P.1 ≤ M.1`,
+    the underlying multiset `M.1` decomposes as `P.1 + (M.1 − P.1)`. Pair to
+    `comp_card_eq` to package `M.1 − P.1` as the canonical `Sym (Fin n) b`-
+    complement of `P` in `M`. -/
+private lemma comp_add_eq {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P : Sym (Fin n) a) (hP : P.1 ≤ M.1) :
+    P.1 + (M.1 - P.1) = M.1 := by
+  rw [add_comm]
+  exact tsub_add_cancel_of_le hP
+
+/-- **No col-strict complement ↔ canonical complement is not col-strict**
+    (S29 — bridge between the existential and canonical forms of the
+    "bad `P`" predicate used in Sub-lemma 2B).
+
+    For `P : Sym (Fin n) a` with `P.1 ≤ M.1`, the predicate "no col-strict
+    `Sym b`-complement exists" is equivalent to "the canonical complement
+    `⟨M.1 − P.1, _⟩ : Sym (Fin n) b` is not col-strict with `P`":
+
+      `(¬ ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)
+       ↔ ¬ ColStrictSym a b P ⟨M.1 − P.1, _⟩`
+
+    The forward direction packages `Q := canonical complement`. The reverse
+    direction uses `add_left_cancel` on `P.1 + Q.1 = P.1 + (M.1 − P.1)` to
+    force `Q.1 = M.1 − P.1` (whence `Q = ⟨M.1 − P.1, _⟩` by `Subtype.ext`),
+    making `Q` the canonical complement.
+
+    ### Use site for Sub-lemma 2B
+
+    Sub-lemma 2B is currently stated on the existential form (matching the
+    natural use site in Sub-lemma 2's `Finset.filter_filter` partition).
+    This bridge makes the canonical-complement form available without
+    restating Sub-lemma 2B: future cycle-lemma proof steps can reformulate
+    the LHS predicate via `Finset.filter_congr` + this iff, then attack
+    the rotation-invariant form directly. The deferred cycle-lemma sorry
+    in Sub-lemma 2B can therefore be discharged on whichever predicate
+    form is technically more convenient, without affecting the public
+    statement of Sub-lemma 2B itself. -/
+private lemma noColStrict_iff_canonicalComp {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P : Sym (Fin n) a) (hP : P.1 ≤ M.1) :
+    (¬ ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q) ↔
+    ¬ ColStrictSym a b P ⟨M.1 - P.1, comp_card_eq M P hP⟩ := by
+  constructor
+  · intro h hCS
+    apply h
+    exact ⟨⟨M.1 - P.1, comp_card_eq M P hP⟩, comp_add_eq M P hP, hCS⟩
+  · intro h hExists
+    apply h
+    obtain ⟨Q, hPQ, hCS⟩ := hExists
+    have hSum : P.1 + Q.1 = P.1 + (M.1 - P.1) := by
+      rw [hPQ]; exact (comp_add_eq M P hP).symm
+    have hQval : Q.1 = M.1 - P.1 := add_left_cancel hSum
+    have hQeq : Q = ⟨M.1 - P.1, comp_card_eq M P hP⟩ := Subtype.ext hQval
+    rw [hQeq] at hCS
+    exact hCS
+
 /-- **Sub-lemma 2B of `ballot_counting_identity`** (S28 — single-Sym form of
     the cycle-lemma core, isolated via Sub-lemma 2A from the pair form;
     sorry-deferred to S29+).
@@ -962,7 +1033,18 @@ private lemma colStrict_pair_count_eq_subSym_filtered_count {n a b : ℕ}
     The `sorry` previously at Sub-lemma 2 (S26, line 973) migrates to
     Sub-lemma 2B with cleaner provenance: pair-encoding is gone, the
     cycle-lemma input is isolated to a single ¬∃ predicate over `Sym a`
-    elements with `P.1 ≤ M.1`. Net file sorry count unchanged at 2. -/
+    elements with `P.1 ≤ M.1`. Net file sorry count unchanged at 2.
+
+    ### S29 — canonical-complement bridge available
+
+    `noColStrict_iff_canonicalComp` (S29, above) converts the `(¬∃ Q, …)`
+    LHS predicate into the equivalent canonical-complement form
+    `¬ ColStrictSym a b P ⟨M.1 − P.1, _⟩`, isolating the single
+    `Q := canonical complement` and exposing the rotation-equivariance
+    of the predicate. Future sessions attempting the cycle-lemma proof
+    can apply `Finset.filter_congr` + this iff to reformulate the LHS
+    on whichever predicate form (existential vs. canonical) is more
+    technically convenient before attacking the rotation argument. -/
 private lemma noColStrict_subSym_a_count_eq_subSym_le_aplus1_count {n a b : ℕ}
     (_hb : 2 ≤ b) (_hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
     ((Finset.univ : Finset (Sym (Fin n) a)).filter
