@@ -96,18 +96,26 @@
     {
       "id": "gcd-char",
       "title": "GCD Characterization: 1×2 Case",
-      "startLine": 83,
-      "endLine": 140,
+      "startLine": 82,
+      "endLine": 154,
       "summary": "Main theorem: the 1×2 invariant factor is associated to gcd(a,b) in any GCDMonoid. New vs. parent: uses unit.inv_val cancellation instead of ±1 case split.",
       "mathContext": "For [a, b] = U·D·V with U 1×1 unimodular and V 2×2 unimodular, extracting entries gives a = u·d·v₀₀ and b = u·d·v₀₁ where u = U[0,0] is a unit. Then d|a and d|b so d|gcd. For the reverse: a·v₁₁ - b·v₁₀ = u·d·det(V), and u·det(V) is a unit, so cancellation gives gcd|d."
     },
     {
+      "id": "axioms",
+      "title": "Existence and Solvability Axioms",
+      "startLine": 156,
+      "endLine": 171,
+      "summary": "Two axioms encode the genuine ring-theoretic↔matrix-theoretic gap in current Mathlib: snf_pid_exists (every matrix over a PID has an SNF) and snf_pid_solvability (Ax = b is solvable iff invariant factors satisfy a divisibility/zero-row criterion).",
+      "mathContext": "Mathlib has `Submodule.smithNormalForm` (LinearAlgebra.FreeModule.PID) for finitely generated submodules of free modules over PIDs, but bridging it to the matrix-theoretic `SmithNormalFormPID` structure requires picking bases and translating between $A : R^n \\to R^m$ and the image submodule $A(R^n) \\subseteq R^m$. The two axioms here are exactly the assumptions needed to use SNF as a black box, deferring this bridge as future work."
+    },
+    {
       "id": "bezout",
-      "title": "Bezout in GCDMonoid",
-      "startLine": 148,
-      "endLine": 165,
-      "summary": "Forward direction ax+by=c → gcd|c in any GCDMonoid. Backward direction for ℤ via Bezout coefficients.",
-      "mathContext": "The forward direction is purely algebraic and holds in any GCDMonoid. The backward direction requires Bezout coefficients (the existence of which is equivalent to the Bezout domain property, holding in any PID). Over ℤ, Int.gcdA and Int.gcdB provide these coefficients explicitly."
+      "title": "Bezout in GCDMonoid and the k[X] Instance",
+      "startLine": 172,
+      "endLine": 191,
+      "summary": "Forward direction ax+by=c → gcd|c in any GCDMonoid. Backward direction for ℤ via Bezout coefficients. Single-line k[X] is a PID instance via Mathlib inference.",
+      "mathContext": "The forward direction is purely algebraic and holds in any GCDMonoid. The backward direction requires Bezout coefficients (the existence of which is equivalent to the Bezout domain property, holding in any PID). Over ℤ, Int.gcdA and Int.gcdB provide these coefficients explicitly. The k[X] PID instance unlocks the entire SNF apparatus for polynomial matrices — the algebraic backbone of rational canonical form."
     }
   ],
   "conclusion": {
@@ -116,7 +124,9 @@
     "openQuestions": [
       "Prove snf_pid_exists by bridging Mathlib's Submodule.smithNormalForm (module-theoretic, in LinearAlgebra.FreeModule.PID) to the matrix-theoretic SmithNormalFormPID structure here",
       "Derive the structure theorem for finitely generated R-modules from snf_pid_exists + snf_pid_solvability: M ≅ R/d₁ ⊕ ... ⊕ R/dₖ ⊕ Rˡ with d₁|d₂|...|dₖ",
-      "Formalize rational canonical form for k[X]: the SNF of the matrix (tI - A) ∈ M_n(k[X]) gives the rational canonical form of the linear map A : k^n → k^n"
+      "Formalize rational canonical form for k[X]: the SNF of the matrix (tI - A) ∈ M_n(k[X]) gives the rational canonical form of the linear map A : k^n → k^n",
+      "Generalize snf_1x2_invariant_factor_pid to the m × 2 (and ultimately m × n) case: the first invariant factor d₁ should equal gcd of all entries; the k-th invariant factor d_k equals gcd of all k × k minors divided by gcd of (k-1) × (k-1) minors (Smith's classical formula)",
+      "Extend the unit.inv_val cancellation pattern to a reusable Mathlib lemma: in any commutative monoid, divisibility c ∣ u·d with u a unit collapses to c ∣ d — this is currently re-derived ad hoc in many places"
     ]
   },
   "crossReferences": [
