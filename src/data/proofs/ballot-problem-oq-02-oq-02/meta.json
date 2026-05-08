@@ -29,6 +29,14 @@
       "Mathlib.Topology.Order.IntermediateValue",
       "Mathlib.Order.ConditionallyCompleteLattice.Basic",
       "Mathlib.Tactic"
+    ],
+    "originalContributions": [
+      "Eliminates the parent file's `firstPassageTime_eq_maxEvent` axiom by deriving the conditional biconditional `fpt_le_iff_maxEvent` (under hitting-set nonemptiness) from `path_continuous` alone — no axioms in this file or its imports beyond Mathlib's standard foundations.",
+      "Surfaces the `Real.sInf_empty = 0` (rather than $+\\infty$) convention as a one-line lemma `csInf_empty_eq_zero`, making the parent axiom's hidden nonemptiness hypothesis impossible to overlook. The constant path $B \\equiv 0$ with $a = 1$, $T = 1$ is an explicit counter-witness to the parent's unconditional set equality.",
+      "Provides a reusable Lean template for first-hitting-time arguments in stochastic analysis: (i) `hittingSet_isClosed` via continuity + `isClosed_Ici.preimage`; (ii) `hittingSet_bddBelow` via the $0 \\le t$ conjunct; (iii) `hittingSet_csInf_mem` via Mathlib's `IsClosed.csInf_mem`; (iv) IVT-based nonemptiness witness via `isPreconnected_Icc.intermediate_value₂`. The four-step recipe applies verbatim to any continuous process and any closed threshold set.",
+      "Bundles `path_continuous : ∀ ω, Continuous (fun t => W t ω)` as a *structure field* of `BrownianMotion` (rather than a free `variable` or a `[Fact ...]` instance), so every theorem signature receives the continuity hypothesis automatically via `bm.path_continuous` — closer to the mathematician's notion of 'a Brownian motion is a value-with-property'.",
+      "Capstone corollary `fpt_le_T_of_crossing` discharges the nonemptiness side condition automatically for the most natural Brownian use case (paths satisfying $B(0,\\omega) < a \\le B(T,\\omega)$), so end users of the level-crossing identity do not have to manually verify nonemptiness in practice.",
+      "Methodological pattern of *axiom elimination by hypothesis surfacing*: rather than proving a parent axiom verbatim, identify the implicit hypothesis the axiom was assuming, prove the conditional theorem, and supply a natural side condition that discharges the hypothesis. Applies broadly to other axiomatized convenience identities in measure theory and stochastic analysis."
     ]
   },
   "overview": {
