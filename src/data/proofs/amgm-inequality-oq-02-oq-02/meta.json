@@ -87,6 +87,13 @@
       "year": "2018",
       "venue": "Springer (CMS Books in Mathematics, 2nd ed.)",
       "note": "Modern textbook reference. Chapter 1 §1.4 derives Newton-Maclaurin via Schur-concavity of $e_k$ on the non-negative orthant. The proof is short (≈ 5 pages) but assumes the majorization theory developed earlier; this gallery entry takes the longer, self-contained route via direct induction."
+    },
+    {
+      "authors": "Brändén, Petter",
+      "title": "Unimodality, log-concavity, real-rootedness and beyond",
+      "year": "2015",
+      "venue": "Handbook of Enumerative Combinatorics (CRC Press), Chapter 7",
+      "note": "Survey of log-concavity in combinatorics. §7.4 places Newton's inequality $e_k^2 \\ge e_{k-1} e_{k+1}$ in the broader landscape of *real-rooted* polynomial sequences: any real-rooted polynomial $\\prod (x - x_i)$ has log-concave coefficient sequence by Newton's inequality, and this is the prototypical example of the connection between real-rootedness and log-concavity. The handbook also surveys the Stanley/Brenti positivity techniques (§7.6) and the Lorentzian polynomials of Anari-Liu-Oveis Gharan-Vinzant / Brändén-Huh (§7.10), which give modern matroid-theoretic generalizations of Newton's log-concavity beyond elementary symmetric polynomials."
     }
   ],
   "crossReferences": [
@@ -104,6 +111,16 @@
       "targetId": "newton-inductive-step",
       "relationship": "uses",
       "description": "Imports `Proofs.NewtonInductiveStep` for the helper lemmas used in the 520-line `newton_cleared_denom_inductive_step` discriminant argument."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-01-oq-02-oq-01-oq-03",
+      "relationship": "shares-technique",
+      "description": "Both proofs depend on the Newton-Girard recurrence $e_k(x_1,\\ldots,x_{n+1}) = e_k(x_1,\\ldots,x_n) + x_{n+1} \\cdot e_{k-1}(x_1,\\ldots,x_n)$ as the inductive scaffold. This entry uses it to set up the discriminant argument for log-concavity; the sibling entry (oq-01-oq-02-oq-01-oq-03) gives a parallel inductive proof of Newton-Girard itself (independent of Mathlib's `MvPolynomial.psum_eq_mul_esymm_sub_sum`). Together they show that the same `induction n` + `elemSymm_succ` template handles both Newton-Girard and Newton's log-concavity."
+    },
+    {
+      "targetId": "amgm-inequality-oq-02-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling sub-question of OQ-02 (Maclaurin's inequalities). This entry's `newton_log_concavity_proved` and `maclaurin_step_derived` discharge two of the parent file's axioms; OQ-03 addresses an orthogonal axiom or strengthening in the same Maclaurin formalization."
     }
   ],
   "mainTheorems": [
