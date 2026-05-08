@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW exchange-step framework + diagram commutativity; corner-distinctness coordinate lemmas added; Aristotle Target 3 closed via dispatcher)
+**Phase**: ACT (GNW exchange-step framework + diagram commutativity; corner-distinctness coordinate lemmas added; Aristotle Target 3 closed via dispatcher; double-removal hookLength shift characterization complete)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
 **Last Updated**: 2026-05-08
-**Iteration**: 47
+**Iteration**: 48
 
 ## Current Focus
 Close `gnwProb_exchange` (Helpers, line 14143) — the GNW 1979 exchange identity
@@ -31,9 +31,9 @@ in place:
    (L-shape, (3,1)).
 
 ## Attempt Count
-- Total attempts: 43 (sessions 1–43; sessions 1–4 archived to
-  `sessions/`; sessions 5–43 in `knowledge.md`)
-- Current approach attempts: 7 (sessions 37–43 on GNW)
+- Total attempts: 48 (sessions 1–48; sessions 1–4 archived to
+  `sessions/`; sessions 5–48 in `knowledge.md` + `sessions/`)
+- Current approach attempts: 12 (sessions 37–48 on GNW)
 - Approaches tried:
   1. LGV-determinant via `lgv_lemma_rxr` + Jacobi–Trudi (sessions 1–10) —
      dead scaffolding deleted in session 32.
@@ -84,6 +84,20 @@ in place:
      `rw` corollary.  Together they let the upcoming `gnwProb_exchange`
      proof rewrite `H((μ\c')\c)` ↔ `H((μ\c)\c')` freely, avoiding
      iteration-order bookkeeping at every algebraic step.
+ 11. Double-removal hookLength shift characterization (session 48) — added
+     six lemmas after `hookLength_eq_of_not_arm_leg` (line ~5005) covering
+     every case of how `hookLength` shifts when both `c` and `c'` are removed:
+     `hookLength_doubleRemove_doubly_affected` (cell `(c.1, c'.2)` shifts by
+     2), the four single-shift lemmas
+     `_arm_of_c_off_d`, `_leg_of_c`, `_arm_of_c'`, `_leg_of_c'_off_d`
+     (each shifts by 1 with explicit "no shift from the other corner"
+     side-conditions), and `_other` (cells outside both arm/leg sets are
+     unchanged).  The block is iteration-order `(μ\c)\c'` (convert with
+     `removeCorner_swap` if needed) and uses only existing primitives:
+     `hookLength_removeCorner_arm/_leg/_eq_of_not_arm_leg`,
+     `corner_col_lt_of_row_lt`, `isCorner_removeCorner_of_ne`,
+     `mem_removeCorner`.  All proofs close with 1–2 lines of
+     `omega` / `rw`+`exact`.
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
@@ -127,11 +141,18 @@ exchange step entirely (count weighted walks of every length, divide by
 - `knowledge.md` §Session 45 — corner-distinctness coordinate lemmas
 - `sessions/2026-05-08-s01.md` — Session 46: Aristotle Target 3 closed via dispatcher
 - `sessions/2026-05-08-s02.md` — Session 47: `removeCorner_swap` + `hookProd_removeCorner_swap`
+- `sessions/2026-05-08-s03.md` — Session 48: double-removal hookLength shift lemmas
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14173` — `gnwProb_exchange`
-  (sorry'd, target of next session — line shifted by +30 from session 47 additions)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14198` — `gnwProb_key`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5057` — `hookLength_doubleRemove_arm_of_c_off_d` (S48)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5092` — `hookLength_doubleRemove_leg_of_c` (S48)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5122` — `hookLength_doubleRemove_arm_of_c'` (S48)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5156` — `hookLength_doubleRemove_leg_of_c'_off_d` (S48)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5186` — `hookLength_doubleRemove_other` (S48)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14374` — `gnwProb_exchange`
+  (sorry'd, target of next session — line shifted by +201 from session 48 additions)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14399` — `gnwProb_key`
   (proved modulo `gnwProb_exchange`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14407` — `hook_walk_identity_gnw`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14608` — `hook_walk_identity_gnw`
   (sorry-free dispatcher, transitive on `gnwProb_exchange`)

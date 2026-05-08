@@ -33,21 +33,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 5,
-    "focus": "Post-modularization (Session 35): file split into Main (398 lines, 0 sorries, 16 theorems, 1 def) + Helpers (14050 lines, 1 sorry on gnwProb_key, 476 theorems, 38 defs). Sole remaining sorry is gnwProb_key (GNW 1979 KEY theorem) in Helpers. Aristotle companion has 3 sorries reserved for proof-search candidates.",
+    "iteration": 48,
+    "focus": "Sole remaining sorry is `gnwProb_exchange` (Helpers, line 14374; GNW 1979 hook-weight shift identity in product form). Session 48 added six double-removal hookLength characterization lemmas (Helpers, lines 5035–5186) covering all seven cell-type cases under double corner removal; combined with S43-S47 infrastructure this is sufficient for the per-cell algebra of the exchange identity. Next sessions should chain the per-cell shifts through the gnwProb walk recursion to close gnwProb_exchange.",
     "blockers": [
-      "gnwProb_key: GNW 1979 KEY theorem (~200-300 lines via exchange argument); the sole non-Aristotle sorry blocking full HLF",
-      "LGV well-formedness obstruction: requires transpose-duality case split for tall shapes (alternative path)"
+      "gnwProb_exchange: GNW 1979 hook-weight shift identity in product form (~100 lines of careful arm/leg case analysis); the sole remaining sorry. Per-cell hookLength shifts are now fully characterized (S48); remaining work is the gnwProb walk-probability factor pairing."
     ],
-    "nextAction": "Prove gnwProb_key — formalize GNW 1979 exchange argument (rectangle case follows from gnwProb_sum_corners + hook_walk_identity_rectYD; non-rectangle case needs induction on |μ|). RSK/Fomin (~600 lines) is an alternative independent path.",
+    "nextAction": "Prove gnwProb_exchange using S48's six double-removal hookLength lemmas to match per-cell hook factors, plus gnwProb_step / gnwProb_stable / sum_gnwProb_strictHookCells_eq_removeCorner to descend the walk recursion in lockstep on (μ, c) and (μ\\c', c). Decompose μ.cells via the dichotomy from S45 (corners c, c' with c.1 < c'.1); apply the seven-case partition.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 48,
+      "currentApproach": 12,
+      "approachesTried": 11
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS session 43: GNW exchange-step framework complete. gnwProb_key multi-corner case now PROVED via well-founded recursion on μ.card (termination_by μ.card; decreasing_by removeCorner_card). Sole remaining sorry: gnwProb_exchange (GNW 1979 hook-weight shift identity in product form, ~100 lines). hook_walk_identity_gnw → gnwProb_key → gnwProb_exchange chain is structurally complete.",
+    "progressSummary": "PROGRESS session 48: Double-removal hookLength shift characterization complete. Six lemmas (BallotProblemOQ03OQ01OQ02Helpers.lean:5035-5186) cover the seven cell-type cases under double corner removal: (1) doubly-affected cell shifts by 2; (2-5) arm/leg of c, arm/leg of c' (each excluding the doubly-affected cell where applicable) shift by 1; (6) cells outside both arm/leg sets unchanged. Sole remaining sorry: gnwProb_exchange (~100 lines, walk-probability factor pairing remains).",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -143,7 +142,13 @@
       "hook_walk_identity_gnw proved in BallotProblemOQ03OQ01OQ02Helpers.lean:13877-13896 (uses gnwProb_key which is sorry)",
       "strictHookCells_card proved: cardinality = hookLength - 1, using Finset.Ico image + disjointness argument (PR #15288)",
       "Cherry-picked exchange framework (isCorner_removeCorner_of_ne, gnwProb_exchange, multi-corner proof skeleton) from origin/fix/ballot-gnw-key onto research/ballot-gnw-strong-induction.",
-      "Closed IH sorry in gnwProb_key by replacing 'have h_IH := by sorry' with 'have h_IH := gnwProb_key (removeCorner μ c' hc') hc_in_rc'' + termination_by μ.card / decreasing_by clause."
+      "Closed IH sorry in gnwProb_key by replacing 'have h_IH := by sorry' with 'have h_IH := gnwProb_key (removeCorner μ c' hc') hc_in_rc'' + termination_by μ.card / decreasing_by clause.",
+      "hookLength_doubleRemove_doubly_affected proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5035 — at the doubly-affected cell (c.1, c'.2), hookLength shifts by 2 under double corner removal (S48)",
+      "hookLength_doubleRemove_arm_of_c_off_d proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5057 — for arm-of-c cells off the doubly-affected cell, hookLength shifts by 1 (S48)",
+      "hookLength_doubleRemove_leg_of_c proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5092 — for leg-of-c cells, hookLength shifts by 1 (S48)",
+      "hookLength_doubleRemove_arm_of_c' proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5122 — for arm-of-c' cells, hookLength shifts by 1 (S48)",
+      "hookLength_doubleRemove_leg_of_c'_off_d proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5156 — for leg-of-c' cells off the doubly-affected cell, hookLength shifts by 1 (S48)",
+      "hookLength_doubleRemove_other proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5186 — for cells outside arm/leg of either corner, hookLength is unchanged under double removal (S48)"
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -236,7 +241,9 @@
       "Exchange identity attempt disproved: gnwProb_mu(c,K,x) != gnwProb_{mu\\c'}(c,K,x) in general -- counterexample on {(0,0),(0,1),(1,0)} with c=(1,0),c'=(0,1): mu gives 1/2, mu\\c' gives 1",
       "gnwProb_key multi-corner case reduces to gnwProb_exchange + IH on μ\\c'; well-founded recursion via termination_by μ.card matches the hook_length_formula_Q pattern in the main file.",
       "gnwProb_exchange product form F(μ,c)·H(μ\\c)·H(μ\\c') = F(μ\\c',c)·H((μ\\c')\\c)·H(μ) avoids division and probability theory imports; provable by arm/leg decomposition + hook-length shift.",
-      "Cherry-picking origin/fix/ballot-gnw-key (commit 6590609fa80) gives the structural framework; the IH sorry then closes via direct recursive call once termination_by μ.card is added."
+      "Cherry-picking origin/fix/ballot-gnw-key (commit 6590609fa80) gives the structural framework; the IH sorry then closes via direct recursive call once termination_by μ.card is added.",
+      "The doubly-affected cell (c.1, c'.2) (when c.1 < c'.1, hence c'.2 < c.2 by corner anti-monotonicity) is the unique cell where hookLength shifts by 2 under double removal: it is in arm of c AND leg of c'. All six other cell-types shift by at most 1, and most are unchanged.",
+      "GNW exchange identity asymmetry localizes entirely at the doubly-affected cell d: hookProd μ · hookProd ((μ\\c)\\c') / [hookProd (μ\\c) · hookProd (μ\\c')] = h_d (h_d - 2) / (h_d - 1)². Every other cell contributes ratio 1 (cancellation between the two single-removal shifts)."
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -244,9 +251,10 @@
       "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
-      "Prove gnwProb_exchange (Helpers line 13871): GNW 1979 hook-weight shift identity. ~100 lines via arm/leg decomposition + hookProd product-form analysis.",
-      "Verify Docker build on the modular file structure (Helpers at 14126 lines, was 14022 pre-modularization at OOM threshold). CI on the session-43 PR will confirm buildability.",
-      "Consider deterministic weighted-walk recasting (~400 lines self-contained) as alternative to gnwProb_exchange if direct proof is intractable."
+      "Prove gnwProb_exchange using S48 hookLength shift lemmas to match per-cell hook factors",
+      "Pair gnwProb factors via gnwProb_step / gnwProb_stable / sum_gnwProb_strictHookCells_eq_removeCorner",
+      "Decompose μ.cells into seven cases using distinct_corners_dichotomy (S45)",
+      "Close via Finset.sum_attach + Finset.prod_congr over the case-decomposition"
     ]
   },
   "tags": [
@@ -287,7 +295,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-05-07T17:05:00.000Z",
+  "lastUpdate": "2026-05-08T06:30:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
