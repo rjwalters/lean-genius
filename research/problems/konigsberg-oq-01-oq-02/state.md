@@ -1,16 +1,25 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (build-blocked, refactor-recipe-ready)
+**Phase**: ACT (build-blocked, refactor recipe validated)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 7
-**Last Update**: 2026-05-08 (Session 7, researcher-8)
+**Iteration**: 9
+**Last Update**: 2026-05-08 (Session 9, researcher-1)
 
 ## Current Focus
-Session 7 inspected the build-blocked state from Session 6 and produced a
-**concrete worked refactor recipe** in `knowledge.md` (under heading "Session
-2026-05-08 (Session 7) - Refactor Recipe for Build Blocker"). The recipe:
+Session 9 (this session, researcher-1) **validated the Session 7+8 refactor
+recipe** by creating a separate companion file
+`proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` containing the bridge lemma
+`get?_eq_some_iff_of_lt` and a fully worked-out generic `closed_walk_balance'`
+in the new `walk.get? = some v` form. The file builds cleanly under Mathlib
+v4.26.0, verifying the recipe's correctness ahead of in-place application.
+
+Session 10 should transcribe these validated lemmas into the broken main file
+following Session 8's line-anchored task list.
+
+Session 7 (researcher-8) produced the original refactor recipe; Session 8
+(researcher-12) added a complete site list with line numbers. The recipe:
 
 - Identifies all 18 `Finset.filter`-lambda sites + ~30 hypothesis-position
   sites + 9 `∃!`-definition sites that need refactoring.
@@ -49,8 +58,8 @@ After build repair: `remove_circuit_balanced` becomes the next research target
 (plan unchanged from Session 5).
 
 ## Attempt Count
-- Total attempts: 7
-- Current approach attempts: 7 (Sessions 2–7)
+- Total attempts: 9
+- Current approach attempts: 9 (Sessions 2–9)
 - Approaches tried: 1 (decompose Hierholzer into independent lemmas; greedy
   `maxTrail` for circuit existence; closed-walk and open-walk balance helpers;
   walk-position bijections; Session 7 prepared `get?` refactor recipe)
@@ -69,13 +78,36 @@ After build repair: `remove_circuit_balanced` becomes the next research target
   for both axioms' sufficiency directions.
 
 ## Next Action
-1. **Apply Session 7 refactor recipe** (see `knowledge.md`): add bridge lemma,
-   refactor definitions and bijection lemmas to `walk.get? i = some v` form,
-   fix `simp` failure at handshaking lemmas, run Docker build, then update
-   `meta.json` (sorries 2 → 1).
+1. **Session 10**: Apply the Session 7+8 refactor recipe (now validated by
+   Session 9) in-place to `KonigsbergOQ01OQ02.lean`. Use the bridge lemma
+   `get?_eq_some_iff_of_lt` and worked `closed_walk_balance'` from
+   `KonigsbergOQ01OQ02Recipe.lean` as the template. Refactor the 6 bijection
+   lemmas, 2 definitions, and 3 consumer theorems. Apply
+   `Finset.sum_ite_eq'` simp fix at L87, L99. Run Docker build, then update
+   `meta.json` (sorries 2 → 1) and delete the recipe-validation file.
 2. **(deferred) `remove_circuit_balanced`** — unchanged plan: define
    `circuitVisits`, apply `closed_walk_balance`, bridge to
    `(walkEdges C.walk).toFinset` cardinality.
+
+## Session 9 Summary (2026-05-08)
+**Mode**: REVISIT (Session 7+8 prepared recipe; Session 9 validates it)
+**Outcome**: created `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (~110 lines)
+containing the bridge lemma `get?_eq_some_iff_of_lt` and a fully worked-out
+generic `closed_walk_balance'` in `walk.get? = some v` form. File builds
+cleanly under v4.26.0 Mathlib, validating that the Session 7+8 refactor
+strategy compiles. Did NOT modify the broken main file — Session 10 will
+transcribe these validated lemmas in-place.
+
+### Why a Separate Validation File
+
+Sessions 7 and 8 explicitly chose recipe-only deliverables on the rationale
+that a partial in-place refactor would leave the main file in a worse state
+(mixing forms across signature boundaries). Session 9 took a third path:
+validate the recipe in a *separate* file that builds independently of the
+broken main file. This unblocks Session 10 with confidence that the recipe
+compiles, while not committing to a single-shot multi-hour in-place
+refactor mid-session. Session 10 has a verified template + Session 8's
+line-anchored task list and can execute the recipe deterministically.
 
 ## Session 7 Summary (2026-05-08)
 **Mode**: REVISIT (no `.lean` edits — recipe-only deliverable)
