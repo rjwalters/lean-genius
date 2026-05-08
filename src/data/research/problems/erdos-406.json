@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-13T02:35:40.573Z",
-    "iteration": 3,
-    "focus": "Exhaustive small-case classification and bridge theorems",
+    "since": "2026-05-08T05:10:00Z",
+    "iteration": 4,
+    "focus": "Strengthen Kummer bridge: digit-level no-carry doubling lemma",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Promote no-carry lemma to a quantitative Kummer statement (e.g. v₃(Nat.choose (2*n) n) = 0 for n in ternarySparse) using Mathlib's Nat.Prime.multiplicity_choose; or add the {1,2} variant analogue showing carries DO occur (digits 1→2 OK, but digit 2→4 = 1+carry).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added exhaustive small-case classification (n≤15) for both variants, bridge theorems combining with Saye computation, and Kummer connection. File: 12T/1A/0S.",
+    "progressSummary": "PROGRESS: Strengthened Kummer bridge with digits01_double_digits02 — the digit-level no-carry statement that HasOnlyDigits01Base3 n implies all base-3 digits of 2n are in {0,2}. Proved via strong induction on n with key step 2n/3 = 2(n/3) when n%3 ∈ {0,1}. File: 18T/1A/0S, 310 lines.",
     "builtItems": [
       "PROVED zero_hasOnlyDigits01 (6A→5A)",
       "PROVED one_in_ternarySparse: ⟨0, rfl, by native_decide⟩ (5A→4A)",
@@ -40,7 +40,8 @@
       "sparse_classification_known_range: complete known-range classification",
       "dense_complete_to_15: variant classification for n ≤ 15",
       "variant_classification_known_range: 2^15 is largest in verified range",
-      "kummer_connection_forward: structural connection to sum of distinct powers"
+      "kummer_connection_forward: structural connection to sum of distinct powers",
+      "PROVED digits01_double_digits02 (Erdos406Problem.lean:181): HasOnlyDigits01Base3 n → ∀ d ∈ Nat.digits 3 (2*n), d=0 ∨ d=2. Strong induction with 2n/3 = 2(n/3) when n%3 ∈ {0,1}; reuses Nat.digits_def' and existing membership lemmas."
     ],
     "insights": [
       "Proved zero_hasOnlyDigits01 (Nat.digits 3 0 = [], vacuously true). 6A→5A.",
@@ -51,10 +52,18 @@
       "native_decide with Decidable instances cleanly handles all 16 small cases",
       "Bridge theorem sparse_classification_known_range gives complete classification up to 5.9×10^21",
       "Variant classification: digits {1,2} examples at n∈{1,3,5,7,15} — interesting that all are odd except 0 is excluded",
-      "Kummer connection formalizes the implication: ternarySparse → sum of distinct powers of 3 → no carries in base-3 addition"
+      "Kummer connection formalizes the implication: ternarySparse → sum of distinct powers of 3 → no carries in base-3 addition",
+      "digits01_double_digits02 promotes the Kummer connection from existence-of-Finset-witness to a digit-level no-carry statement: doubling each digit 0→0 or 1→2 keeps every digit < 3, so adding n+n in base 3 has zero carries. omega handles the divmod arithmetic (2n/3 = 2(n/3), 2n%3 ∈ {0,2}) given n%3 ∈ {0,1}.",
+      "The {1,2} digit variant breaks this symmetry: doubling digit 2 gives 4 = 1·3 + 1, so a {1,2}-sparse number does NOT have a clean doubling — carries always occur. This asymmetry mirrors the gap between the two conjectures."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Kummer's theorem in the form padicValNat 3 (Nat.choose (2*n) n) = (carry count of n+n in base 3): Mathlib has multiplicity_choose machinery but a clean digit-counting Kummer statement may need a small bridge lemma."
+    ],
+    "nextSteps": [
+      "Bridge digits01_double_digits02 to v₃(C(2n,n)) = 0 via Mathlib's multiplicity_choose machinery — completes the quantitative Kummer link mentioned in the docstring.",
+      "Add a converse: ∀ d ∈ Nat.digits 3 (2*n), d ∈ {0,2} → HasOnlyDigits01Base3 n (proves the iff, gives a decidable characterization of sparseness via digits of 2n).",
+      "{1,2}-variant analogue: prove digit 2 in n forces a carry in 2n at that position, formalizing why the variant is harder."
+    ],
     "markdown": "# Erdős #406 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that there are only finitely many powers of $2$ which have only the digits $0$ and $1$ when written in base $3$?\n\n\n\nThe only examples seem to be $1$, $4=1+3$, and $256=1+3+3^2+3^5$. If we only allow the digits $1$ and $2$ then $2^{15}$ seems to be the largest such power of $2$.\n\nThis would imply via Kummer's theorem that\\[3\\mid \\binom{2^{k+1}}{2^k}\\]for all large $k$.\n\nSaye \\cite{Sa22} has computed that $2^n$ contains every possible ternary digit for $16\\leq n \\leq 5.9\\times 10^{21}$.\n\nThis is mentioned in problem B33 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Sa22] Saye, Robert I., On two conjectures concerning the ternary digits of powers of\ntwo. J. Integer Seq. (2022), Art. 22.3.4, 9.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #405\n- Problem #407\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Sa22\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -78,8 +87,8 @@
     {
       "path": "Proofs/Erdos406Problem.lean",
       "filename": "Erdos406Problem.lean",
-      "lineCount": 273,
-      "theoremCount": 14,
+      "lineCount": 310,
+      "theoremCount": 18,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,

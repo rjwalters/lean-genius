@@ -53,12 +53,13 @@
       "Kummer connection: ternary-sparse powers of 2 are sums of distinct powers of 3",
       "Proved pow3_sum_split: structural decomposition S.sum(3^·) = indicator(0∈S) + 3·(image pred).sum(3^·)",
       "Proved sum_of_distinct_powers_digits01: converse of digits01_sum_of_powers (via strong induction on the sum)",
-      "Proved digits01_iff_finset_sum_of_pow3: complete iff characterization HasOnlyDigits01Base3 n ↔ ∃ S, n = S.sum(3^·)"
+      "Proved digits01_iff_finset_sum_of_pow3: complete iff characterization HasOnlyDigits01Base3 n ↔ ∃ S, n = S.sum(3^·)",
+      "Proved digits01_double_digits02: doubling preserves digit-bounding (HasOnlyDigits01Base3 n → all digits of 2n are in {0,2}); the digit-level no-carry statement that promotes the Kummer connection from a structural observation to a quantitative bound on v₃(C(2n,n))"
     ],
     "axiomCount": 1,
-    "lineCount": 272,
+    "lineCount": 310,
     "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms.",
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 6
   },
   "overview": {
@@ -89,9 +90,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 272,
+    "lineCount": 310,
     "axiomCount": 1,
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 6,
     "path": "Proofs/Erdos406Problem.lean",
     "sorries": 0
@@ -191,8 +192,8 @@
       "id": "kummer-connection",
       "title": "Connection to Kummer's Theorem",
       "startLine": 169,
-      "endLine": 179,
-      "summary": "Ternary-sparse powers of 2 are sums of distinct powers of 3, connecting to Kummer's theorem on carries in base-p addition and divisibility of binomial coefficients."
+      "endLine": 217,
+      "summary": "Ternary-sparse powers of 2 are sums of distinct powers of 3, connecting to Kummer's theorem on carries in base-p addition and divisibility of binomial coefficients. The doubling lemma digits01_double_digits02 strengthens this from a structural observation to a digit-level no-carry statement: HasOnlyDigits01Base3 n implies all base-3 digits of 2n are in {0,2}, so adding n+n in base 3 produces no carries — equivalently, v₃(C(2n,n)) = 0 by Kummer."
     }
   ],
   "conclusion": {

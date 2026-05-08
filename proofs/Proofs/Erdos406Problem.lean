@@ -178,6 +178,44 @@ theorem kummer_connection_forward (k : ℕ) (h : 2 ^ k ∈ ternarySparse) :
   obtain ⟨k', hk', hdigits⟩ := h
   exact digits01_sum_of_powers (2 ^ k) hdigits
 
+/-- Doubling preserves digit-bounding: if `n` has only base-3 digits in {0,1}, then
+`2 * n` has only base-3 digits in {0,2}. This is the digit-level statement that
+adding `n + n` in base 3 produces no carries when `n` is ternary-sparse — the
+structural foundation of the Kummer connection (Kummer's theorem identifies the
+3-adic valuation of `C(2n, n)` with the carry count of `n + n` in base 3, so
+this lemma gives `v₃(C(2n, n)) = 0` whenever `n ∈ ternarySparse`). -/
+theorem digits01_double_digits02 (n : ℕ) (h : HasOnlyDigits01Base3 n) :
+    ∀ d ∈ Nat.digits 3 (2 * n), d = 0 ∨ d = 2 := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    intro d hd
+    by_cases hn : n = 0
+    · simp [hn] at hd
+    · have hpos : 0 < n := by omega
+      have h2pos : 0 < 2 * n := by omega
+      have hn_mod : n % 3 = 0 ∨ n % 3 = 1 := by
+        apply h
+        rw [Nat.digits_def' (by norm_num : 1 < 3) hpos]
+        exact List.mem_cons_self _ _
+      rw [Nat.digits_def' (by norm_num : 1 < 3) h2pos] at hd
+      simp only [List.mem_cons] at hd
+      rcases hd with rfl | hd
+      · rcases hn_mod with h0 | h1
+        · left; omega
+        · right; omega
+      · have key : 2 * n / 3 = 2 * (n / 3) := by
+          rcases hn_mod with h0 | h1
+          · omega
+          · omega
+        rw [key] at hd
+        have hn3_lt : n / 3 < n := Nat.div_lt_self hpos (by norm_num)
+        have hn3_d01 : HasOnlyDigits01Base3 (n / 3) := by
+          intro x hx
+          apply h
+          rw [Nat.digits_def' (by norm_num : 1 < 3) hpos]
+          exact List.mem_cons_of_mem _ hx
+        exact ih (n / 3) hn3_lt hn3_d01 d hd
+
 /- ## Converse: sum of distinct powers of 3 has only digits 0 and 1 -/
 
 /-- Key structural identity: `S.sum (3^·)` equals the zero-indicator plus
