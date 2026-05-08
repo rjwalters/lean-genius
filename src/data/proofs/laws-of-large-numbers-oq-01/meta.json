@@ -62,7 +62,10 @@
     "assumptions": "1 axiom: slln_necessity. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0",
     "theoremCount": 13,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The Law of Large Numbers has two classical forms: the Weak LLN (sample mean converges in probability) and the Strong LLN (sample mean converges almost surely). The earliest proofs used Chebyshev's inequality, requiring finite variance E[X²] < ∞. This created a misconception: that infinite variance implies LLN failure.\n\nIn 1930, Kolmogorov proved the definitive characterization: for i.i.d. random variables, the SLLN holds if and only if E[|X|] < ∞. This is Kolmogorov's classical theorem, now formalized in Mathlib as `ProbabilityTheory.strong_law_ae`.\n\nThe 'open question' is pedagogically important: many textbooks teach Chebyshev's WLLN as THE law of large numbers, leaving students to believe heavy-tailed distributions (where Chebyshev fails) violate the LLN. This formalization corrects that misconception rigorously.",
