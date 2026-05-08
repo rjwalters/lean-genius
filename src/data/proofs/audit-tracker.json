@@ -12510,10 +12510,11 @@
       "result": "clean"
     },
     "partition-theorem-oq-01-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-04-23T18:43:29Z",
-      "result": "clean"
+      "lastAudited": "2026-05-08T00:00:00Z",
+      "result": "clean",
+      "notes": "Re-audit: structural counts (lineCount 71, theoremCount 19, sorries 0, axioms 0) all match Lean source; no True stubs; description accurately scoped to native_decide for n≤8 (no overclaiming general identity)."
     },
     "partition-theorem-oq-03": {
       "auditCount": 3,
