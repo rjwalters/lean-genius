@@ -1,1 +1,134 @@
-[]
+[
+  {
+    "id": "ann-in-simplex",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 74, "endLine": 76 },
+    "type": "definition",
+    "title": "Standard n-Simplex",
+    "content": "Defines membership in the standard n-simplex as the conjunction of two affine constraints: every coordinate is nonnegative, and the coordinates sum to one. This represents the convex hull of the n+1 unit basis vectors in ℝⁿ⁺¹, viewed as functions Fin (n+1) → ℝ. Encoding `Δⁿ` as a predicate on `Fin (n+1) → ℝ` (rather than a Subtype) keeps the function space ambient and lets Mathlib's continuity, pi-topology, and Finset.sum machinery apply directly without a layer of subtype lifts.",
+    "mathContext": "$\\Delta^n = \\{x \\in \\mathbb{R}^{n+1} \\mid x_i \\ge 0 \\text{ for all } i,\\ \\sum_{i=0}^{n} x_i = 1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["convex hull", "barycentric coordinates", "probability simplex", "topological simplex"],
+    "prerequisites": ["finite-dimensional convexity", "Finset.sum"]
+  },
+  {
+    "id": "ann-supp",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 78, "endLine": 89 },
+    "type": "definition",
+    "title": "Support of a Simplex Point",
+    "content": "The support records exactly which faces v lies on: i ∈ supp(v) iff vᵢ > 0, equivalently i ∉ supp(v) iff vᵢ = 0 (since coordinates are nonnegative — the auxiliary lemma supp_le packages this). Geometrically, supp(v) is the index set of the smallest face containing v in its relative interior. This is the central data structure that makes the Sperner coloring well-typed: we restrict the candidate color of v to lie in supp(v), automatically inheriting the Sperner boundary condition from a structural fact about face containment.",
+    "mathContext": "$\\operatorname{supp}(v) = \\{i \\in \\{0, \\dots, n\\} \\mid v_i > 0\\}$ — the carrier of the smallest face containing $v$ in its interior",
+    "significance": "key",
+    "relatedConcepts": ["face lattice", "carrier (simplicial complex)", "open star", "barycentric subdivision"],
+    "prerequisites": ["face of a simplex", "Finset.filter"]
+  },
+  {
+    "id": "ann-supp-nonempty",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 91, "endLine": 98 },
+    "type": "insight",
+    "title": "Support is Always Nonempty",
+    "content": "A simplex point cannot have zero support: if all coordinates were zero, their sum would be zero, contradicting Σvᵢ = 1. This trivial-looking lemma is what guarantees the Sperner coloring is total — every vertex receives a color drawn from a nonempty index set. The proof uses Finset.sum_eq_zero applied pointwise (each coordinate is zero by supp_le applied with the empty hypothesis), then linarith against the simplex sum constraint.",
+    "mathContext": "$v \\in \\Delta^n \\implies \\operatorname{supp}(v) \\ne \\emptyset$, because $\\sum_i v_i = 1 > 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["pigeonhole principle", "totality of partial functions"],
+    "prerequisites": ["proof by contradiction", "Finset.sum_eq_zero"]
+  },
+  {
+    "id": "ann-key-lemma",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 104, "endLine": 123 },
+    "type": "insight",
+    "title": "Key Coloring Lemma — Heart of the Proof",
+    "content": "The mathematical core of the entire Sperner-Brouwer route. For any simplex self-map of Δⁿ, at every vertex v there exists at least one supported coordinate i where f does not strictly increase: fᵢ(v) ≤ vᵢ. Proof is by contradiction: if f strictly increased on every supported coordinate, and f ≥ 0 = v on every unsupported coordinate, then Σf > Σv would follow from Finset.sum_lt_sum, contradicting Σf = 1 = Σv. This is a pure pigeonhole-by-summation argument — no continuity, no compactness, no topology — proving that the Sperner coloring is well-defined for ANY simplex self-map, not just continuous ones. The witness for the strict inequality in Finset.sum_lt_sum is precisely the (nonempty) supp(v).",
+    "mathContext": "$v, f(v) \\in \\Delta^n \\implies \\exists i \\in \\operatorname{supp}(v),\\ f(v)_i \\le v_i$. Proof: $\\sum_i f(v)_i = 1 = \\sum_i v_i$ forbids strict majorization on supp$(v)$ when $v \\equiv 0$ on the complement.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "majorization", "sum-preserving inequalities", "Finset.sum_lt_sum"],
+    "prerequisites": ["Finset sum manipulation", "case split by support membership"]
+  },
+  {
+    "id": "ann-color-set",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 129, "endLine": 146 },
+    "type": "definition",
+    "title": "Sperner Candidate Color Set",
+    "content": "The candidate color set for vertex v is the intersection of two conditions: the coordinate must be in supp(v), AND f must not strictly increase there. The previous key lemma exactly says this intersection is nonempty for any v, fv ∈ Δⁿ. By construction, colorSet ⊆ supp, so any color drawn from this set automatically satisfies the Sperner boundary condition. This two-stage construction (candidate set, then minimum) is a clean way to package the coloring as a deterministic function of (v, fv), avoiding any reliance on classical choice for the witness.",
+    "mathContext": "$\\operatorname{colorSet}(v, fv) = \\{i \\in \\operatorname{supp}(v) \\mid fv_i \\le v_i\\} \\subseteq \\operatorname{supp}(v)$",
+    "significance": "key",
+    "relatedConcepts": ["filter operation on Finset", "subset-preserving constructions", "deterministic coloring"],
+    "prerequisites": ["Finset.filter", "min' for nonempty Finsets"]
+  },
+  {
+    "id": "ann-sperner-color",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 148, "endLine": 190 },
+    "type": "technique",
+    "title": "The Sperner Coloring c(v) = min colorSet",
+    "content": "The Sperner color is defined as the MINIMUM index in the candidate set (any extremal selection would work; the minimum keeps the function deterministic without invoking choice). Three properties drop out automatically: (1) c(v) ∈ supp(v) since colorSet ⊆ supp (spernerColor_in_supp); (2) f(v)_{c(v)} ≤ v_{c(v)} by membership (spernerColor_le); (3) the BOUNDARY CONDITION — if vⱼ = 0 then j ∉ supp(v), so c(v) ≠ j (spernerColor_ne_of_zero). Property (3) is precisely the input that abstract Sperner's lemma demands of an admissible coloring on a triangulation of Δⁿ. The wrapped form spernerColorMap and its boundary lemma spernerColorMap_boundary repackage this with the input shape required by the abstract Sperner machinery.",
+    "mathContext": "$c(v) := \\min\\,\\{i \\in \\operatorname{supp}(v) \\mid f(v)_i \\le v_i\\}$. Boundary condition: $v_j = 0 \\implies c(v) \\ne j$ (vertex on face $j$ is not colored $j$).",
+    "significance": "key",
+    "relatedConcepts": ["Sperner labeling", "KKM coloring", "admissible coloring on a triangulation", "Finset.min'"],
+    "prerequisites": ["abstract Sperner's lemma input shape", "Finset.min'_mem"]
+  },
+  {
+    "id": "ann-sperner-axiom",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 196, "endLine": 216 },
+    "type": "context",
+    "title": "Axiom: Grid Sperner → Panchromatic Tuple",
+    "content": "The single remaining axiom packages three independently-formalized pieces: (a) the Nth Freudenthal grid triangulation of Δⁿ from sperner-ndim-mathlib-oq-01; (b) the proved Sperner boundary condition spernerColorMap_boundary; (c) the abstract Sperner's lemma from sperner-ndim-mathlib (0 axioms). Crucially, the AXIOM IS PANCHROMATIC, NOT NEAR-FIXED-POINT: it returns n+1 distinct grid vertices, one per color, with the per-color inequality at each, plus a coordinatewise diameter bound n/N. That choice eliminates a spurious Lipschitz hypothesis from the downstream argument: a near-fixed-point '∀ i, |f(x)ᵢ - xᵢ| ≤ ε' would force a Lipschitz factor when comparing f(x) to f(vᵢ) at each color-i vertex, while the panchromatic form never compares f at two distinct points.",
+    "mathContext": "$\\forall N>0,\\ \\exists v_0, \\dots, v_n \\in \\Delta^n: f(v_i)_i \\le (v_i)_i\\ \\text{ and }\\ |v_i^l - v_j^l| \\le \\tfrac{n}{N}\\ \\forall i,j,l$",
+    "significance": "key",
+    "relatedConcepts": ["Freudenthal triangulation", "abstract Sperner's lemma", "panchromatic simplex", "grid mesh"],
+    "prerequisites": ["abstract Sperner (sperner-ndim-mathlib)", "Freudenthal grid (sperner-ndim-mathlib-oq-01)"]
+  },
+  {
+    "id": "ann-compactness",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 234, "endLine": 247 },
+    "type": "technique",
+    "title": "Δⁿ is Compact (closed subset of [0,1]ⁿ⁺¹)",
+    "content": "Compactness of the standard simplex is built explicitly via IsCompact.of_isClosed_subset rather than appealing to a packaged lemma. Δⁿ is rewritten as the intersection of n+1 closed half-spaces {v | vᵢ ≥ 0} and one closed hyperplane {v | Σvᵢ = 1}, each closed because they are level sets of continuous functions (continuous_apply, continuous_finset_sum). The ambient [0,1]ⁿ⁺¹ is compact by isCompact_univ_pi + isCompact_Icc. The bound vᵢ ≤ 1 follows from Finset.single_le_sum: every coordinate is bounded by the sum, which equals 1. This self-contained proof of compactness avoids importing convex-polyhedron theory and exposes the elementary geometry directly.",
+    "mathContext": "$\\Delta^n = \\bigl(\\bigcap_i \\{v : v_i \\ge 0\\}\\bigr) \\cap \\{v : \\textstyle\\sum_i v_i = 1\\} \\subseteq [0,1]^{n+1}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Heine-Borel", "Tychonoff for finite products", "closed level sets of continuous maps"],
+    "prerequisites": ["IsCompact.of_isClosed_subset", "isCompact_univ_pi", "isClosed_iInter"]
+  },
+  {
+    "id": "ann-subseq-extraction",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 248, "endLine": 307 },
+    "type": "technique",
+    "title": "Subsequence Extraction + Diameter Squeeze",
+    "content": "The classical Bolzano-Weierstrass extraction is performed via IsCompact.tendsto_subseq on the FIRST vertices uₙ := vdata(N, 0). This gives a strictly monotone φ : ℕ → ℕ and a limit x* ∈ Δⁿ with v(φk, 0) → x*. The diameter bound n/(φ(k)+1) → 0 (since φ is monotone unbounded and the divisor → ∞) lets us SQUEEZE every other vertex v(φ(k), i) toward the same limit: |v(φk, i)_l - v(φk, 0)_l| ≤ n/(φk+1) → 0, so via squeeze_zero_norm and the triangle inequality v(φk, i)_l → x*_l pointwise. The trick `(h_diff.add_const (x l))` then rewrites v⁰ - x* + x* = v⁰ to combine the difference convergence with a constant. This is the part of the proof that absolutely requires panchromatic tuples — a single-near-fixed-point input would lose the per-vertex structure here.",
+    "mathContext": "$v_{\\varphi(k)}^0 \\to x^* \\text{ and } |v_{\\varphi(k)}^i - v_{\\varphi(k)}^0| \\to 0 \\implies v_{\\varphi(k)}^i \\to x^* \\text{ for every } i$",
+    "significance": "key",
+    "relatedConcepts": ["Bolzano-Weierstrass", "sequential compactness", "squeeze theorem", "tendsto_pi_nhds"],
+    "prerequisites": ["IsCompact.tendsto_subseq", "squeeze_zero_norm", "Filter.Tendsto.add"]
+  },
+  {
+    "id": "ann-sum-trick",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 308, "endLine": 330 },
+    "type": "insight",
+    "title": "Sum-Forcing: Inequalities → Equalities",
+    "content": "The endgame is the most elegant step. By continuity, each per-color inequality f(v(φk, i))ᵢ ≤ v(φk, i)ᵢ passes to the limit via ge_of_tendsto (applied to the nonnegative gap vᵢᵢ - f(vᵢ)ᵢ), giving f(x*)ᵢ ≤ x*ᵢ for every i. Then the SUM TRICK forces pointwise equality: by contradiction assume strict inequality at some i; Finset.sum_lt_sum then gives Σf(x*) < Σx*, but both equal 1 (since x*, f(x*) ∈ Δⁿ) — contradiction. So all inequalities are equalities — f(x*) = x*. This sum-forcing replaces a squeeze-on-difference argument that the near-fixed-point formulation would require, and it is precisely WHY no Lipschitz hypothesis is needed. The technique is reusable: any time you have one-sided pointwise inequalities and a known sum equality, tightness is automatic.",
+    "mathContext": "$f(x^*)_i \\le x^*_i \\text{ for all } i,\\ \\sum_i f(x^*)_i = \\sum_i x^*_i = 1 \\implies f(x^*)_i = x^*_i \\text{ for all } i$",
+    "significance": "key",
+    "relatedConcepts": ["sum-forcing", "tightness from boundary equality", "ge_of_tendsto", "Finset.sum_lt_sum (contrapositive)"],
+    "prerequisites": ["continuity of f", "limit-of-inequality", "majorization tightness"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 336, "endLine": 344 },
+    "type": "concept",
+    "title": "Brouwer's Fixed-Point Theorem on Δⁿ",
+    "content": "The main theorem is a one-line composition: feed the panchromatic tuple axiom into the proved fixed-point extraction. This makes the dependency graph crystal clear — the entire result rests on exactly ONE axiom (sperner_panchromatic) plus the abstract Sperner machinery and the proved coloring construction. Compare with the algebraic-topology route in brouwer-fixed-point: that approach axiomatizes Singular Homology, here we axiomatize a concrete combinatorial fact about a grid coloring. Both are real assumptions, but the Sperner route reduces the assumption to a single combinatorial axiom about the Freudenthal triangulation rather than an abstract category-theoretic edifice.",
+    "mathContext": "$f : \\Delta^n \\to \\Delta^n \\text{ continuous} \\implies \\exists x \\in \\Delta^n,\\ f(x) = x$",
+    "significance": "key",
+    "relatedConcepts": ["Brouwer's fixed-point theorem", "KKM lemma", "Knaster-Kuratowski-Mazurkiewicz", "Schauder fixed-point theorem"],
+    "prerequisites": ["all preceding lemmas", "panchromatic axiom"]
+  }
+]
