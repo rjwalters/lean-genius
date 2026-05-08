@@ -115,6 +115,85 @@
       "The Lovász Local Lemma (LLL) gives conditions under which P(∩ Aₙᶜ) > 0 — the opposite of BC2. Can the Lean 4 infrastructure here be extended to formalize the LLL in its symmetric or general form?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "borel_cantelli_pairwise_indep",
+      "type": "core",
+      "statement": "$\\forall \\{A_n\\} \\subseteq \\mathcal{F},\\ (\\forall n,\\ \\mathrm{MeasurableSet}(A_n)) \\land (\\forall i \\neq j,\\ \\mathrm{IndepSet}(A_i, A_j, \\mu)) \\land \\sum_n \\mu(A_n) = +\\infty \\Rightarrow \\mu(\\limsup_{n\\to\\infty} A_n) = 1$",
+      "significance": "**The headline theorem.** Erdős-Rényi (1959): pairwise independence — strictly weaker than the full mutual independence required by classical BC2 — is sufficient for the conclusion of the second Borel-Cantelli lemma. The lemma is the engine of Etemadi's elementary SLLN proof and the canonical tool for showing random constructions exhibit their expected almost-sure behavior in probabilistic combinatorics.",
+      "description": "If measurable events {A_n} are pairwise independent and Σ μ(A_n) diverges, then almost every ω lies in infinitely many A_n. The Lean statement uses Mathlib's `IndepSet` (which unfolds to μ(A_i ∩ A_j) = μ(A_i)·μ(A_j)) and the ENNReal idiom `∑' n, μ (A n) = ⊤` for the divergence hypothesis. Proof delegates in one line to `LawsOfLargeNumbersOQ01.borel_cantelli_of_pairwise_independent` (Chebyshev-variance method, proved in the Aristotle companion file)."
+    },
+    {
+      "name": "borel_cantelli_of_pairwise_independent",
+      "type": "supporting",
+      "statement": "$\\forall \\{A_n\\} \\subseteq \\mathcal{F},\\ (\\forall n,\\ \\mathrm{MeasurableSet}(A_n)) \\land (\\forall i \\neq j,\\ \\mathrm{IndepSet}(A_i, A_j, \\mu)) \\land \\sum_n \\mu(A_n) = +\\infty \\Rightarrow \\mu(\\limsup_{n\\to\\infty} A_n) = 1$",
+      "significance": "**The Aristotle-proved engine.** Lives in the companion file `Proofs/LawsOfLargeNumbersOQ01Aristotle.lean`. Implements the 5-step Chebyshev-variance argument: divergent expectation → variance ≤ expectation via covariance cancellation → Chebyshev → monotone limit → equivalence to limsup. The current file's main theorem is the cleaned-up gallery facade for this companion lemma.",
+      "description": "Same statement as `borel_cantelli_pairwise_indep` but proved directly via Chebyshev variance bounds. Used internally by `slln_necessity` in `LawsOfLargeNumbersOQ01OQ01` for the SLLN necessity direction."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Borel, É.",
+      "title": "Les probabilités dénombrables et leurs applications arithmétiques",
+      "year": "1909",
+      "venue": "Rendiconti del Circolo Matematico di Palermo 27, 247–271",
+      "note": "Original BC1 in connection with normal numbers — foundational for the entire Borel-Cantelli line."
+    },
+    {
+      "authors": "Cantelli, F.P.",
+      "title": "Sulla probabilità come limite della frequenza",
+      "year": "1917",
+      "venue": "Atti R. Accad. Naz. Lincei 26, 39–45",
+      "note": "Modern measure-theoretic form of BC1."
+    },
+    {
+      "authors": "Chung, K.L. and Erdős, P.",
+      "title": "On the application of the Borel-Cantelli lemma",
+      "year": "1952",
+      "venue": "Trans. Amer. Math. Soc. 72, 179–186",
+      "note": "Introduced the second-moment / variance method that Erdős-Rényi 1959 specialised to pairwise independence."
+    },
+    {
+      "authors": "Erdős, P. and Rényi, A.",
+      "title": "On Cantor's series with convergent Σ 1/qₙ",
+      "year": "1959",
+      "venue": "Annales Univ. Sci. Budapest. Eötvös Sect. Math. 2, 93–109",
+      "note": "Original publication of the pairwise-independent BC2 theorem; introduced as an enabling lemma for a number-theoretic question about Cantor expansions."
+    },
+    {
+      "authors": "Etemadi, N.",
+      "title": "An elementary proof of the strong law of large numbers",
+      "year": "1981",
+      "venue": "Z. Wahrscheinlichkeitstheorie verw. Gebiete 55, 119–122",
+      "note": "Celebrated short proof of the SLLN that uses pairwise-independent BC2 in the necessity direction. The first to recognise pairwise independence as the natural hypothesis class for the SLLN itself."
+    },
+    {
+      "authors": "Feller, W.",
+      "title": "An Introduction to Probability Theory and Its Applications, Vol. II",
+      "year": "1971",
+      "venue": "Wiley, Ch. VIII",
+      "note": "Standard textbook treatment of the Borel-Cantelli lemmas; abstracts the Erdős-Rényi result as a standalone lemma."
+    },
+    {
+      "authors": "Petrov, V.V.",
+      "title": "A generalization of the Borel-Cantelli lemma",
+      "year": "2002",
+      "venue": "Statistics & Probability Letters 67(3), 233–239",
+      "note": "Constructs counterexamples below the pairwise-independence threshold (zero pairwise covariance but P(A_n i.o.) < 1), confirming that pairwise independence — not mere uncorrelated-ness for arbitrary functions — is the correct minimal threshold."
+    },
+    {
+      "authors": "Mathlib Contributors",
+      "title": "Mathlib.Probability.Independence.Basic",
+      "year": "2024",
+      "note": "`ProbabilityTheory.IndepSet`, `Pairwise`, and the abstract probability-space setup used in the Lean statement."
+    },
+    {
+      "authors": "Mathlib Contributors",
+      "title": "Mathlib.Probability.Variance",
+      "year": "2024",
+      "note": "`MeasureTheory.variance`, `ProbabilityTheory.covariance` — the Chebyshev-variance ingredients used by the Aristotle-proved companion."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "laws-of-large-numbers-oq-01-oq-01",
