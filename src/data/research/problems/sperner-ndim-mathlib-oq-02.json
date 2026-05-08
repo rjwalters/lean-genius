@@ -1,7 +1,7 @@
 {
   "slug": "sperner-ndim-mathlib-oq-02",
   "title": "Use Sperner's lemma to prove Brouwer's fixed-point theorem in Lean 4",
-  "phase": "REFINE",
+  "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "REFINE",
-    "since": "2026-05-07T17:30:00.000Z",
-    "iteration": 2,
-    "focus": "Axiom alignment: replace Lipschitz-requiring near-fixed-point axiom with the panchromatic-tuple formulation that matches what Sperner's lemma actually provides.",
+    "phase": "NEW",
+    "since": "2026-05-06T11:50:53.576Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
     "blockers": [],
-    "nextAction": "Either (a) review/merge open PR #16308 by researcher-11 first, then (b) build grid CellComplex for Δⁿ to eliminate sperner_panchromatic axiom (~200 lines of triangulation infrastructure, see knowledge.nextSteps for plan).",
+    "nextAction": "Begin problem exploration.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 2
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "STATE (2026-05-07): SpernerNDimMathlibOQ02.lean has 0 sorries and 1 axiom (sperner_panchromatic) in 356 lines. SpernerNDimMathlibOQ01.lean has 0 sorries and 0 axioms in 369 lines (the four originally-axiomatized facts — swapAdj_nodup, swapAdj_prefixSet_eq, swapAdj_ne_self, freud_simplex_fintype — were all eliminated as theorems). The single remaining axiom (sperner_panchromatic) is the one mathematically-meaningful gap: it asserts that the Nth grid triangulation of Δⁿ produces a panchromatic top-simplex with diameter ≤ (n+1)/(N+1). Eliminating it requires building the grid CellComplex for Δⁿ as a Mathlib-style triangulation and applying the abstract Sperner lemma already in SpernerNDimMathlib.lean — estimated ~200 lines. Earlier session correctly aligned the axiom statement with what Sperner actually provides (panchromatic tuples, not single near-fixed-points), removing the implicit Lipschitz dependency that the original sperner_near_fixed_point formulation had.",
+    "progressSummary": "PROGRESS: n=0,1 proved; n=2 triangulation+pseudomanifold+XOR parity+coloring done; gap: adjFn=none characterization for boundary_doors",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -37,27 +37,54 @@
       "spernerColor/colorSet: the Sperner coloring construction (proved, 0 sorry)",
       "spernerColor_in_supp: color lies in support — the Sperner boundary condition (proved)",
       "spernerColor_ne_of_zero: coloring avoids faces (proved, the key Sperner condition)",
-      "brouwer_fixed_point_simplex: Brouwer for Δⁿ from 1 axiom (proved, 0 sorry)",
-      "brouwer_from_panchromatic: Lipschitz-free fixed-point extraction from panchromatic tuples (compactness + diameter bound + one-sided limit passage + sum equality) in SpernerNDimMathlibOQ02.lean:248-340"
+      "brouwer_fixed_point_simplex: Brouwer for Δⁿ from 2 axioms (proved, 0 sorry)",
+      "fixed_point_from_approx: proved compactness convergence theorem (IsCompact.tendsto_subseq + squeeze_zero_norm + tendsto_nhds_unique) in SpernerNDimMathlibOQ02.lean:204-293",
+      "Fixed perm_preimage_lt_card sorry: proved |{j<k}|=k.val via Fin.castLE bijection + Fintype.card_fin",
+      "sperner_panchromatic_zero: n=0 case proved (trivial), 0 sorries, SpernerFreudenthalSimplex.lean",
+      "sperner_panchromatic_one: n=1 case proved via discrete IVT (Finset.max' transition), 0 sorries, SpernerFreudenthalSimplex.lean",
+      "n=2 Type-1/Type-2 triangulation AbstractSimplicialData: topSimps2 N, t1_card, t2_card, topSimps2_card_eq (SpernerFreudenthalSimplex.lean)",
+      "t1_unique_base, t2_unique_base: uniqueness of base from edge determines triangulation membership (SpernerFreudenthalSimplex.lean)",
+      "topSimps2_pseudomanifold: every edge {u,v} in Δ² grid is in at most 1 Type-1 + 1 Type-2 simplex = at most 2 total (SpernerFreudenthalSimplex.lean)",
+      "simData2: AbstractSimplicialData instance for n=2 Nth subdivision (pseudomanifold proved, adj axioms from SpernerSimplicialInstance)",
+      "changes_parity_mod2: XOR parity lemma — #{k<n:g(k)≠g(k+1)} has parity of (g(0)≠g(n)) (SpernerFreudenthalSimplex.lean)",
+      "odd_changes: binary sequence with g(0)=1,g(n)=0 has odd change count (SpernerFreudenthalSimplex.lean)",
+      "gridPt N b: real embedding of grid vertex (b₀,b₁) as (b₀/N,b₁/N,(N-b₀-b₁)/N) in Δ² (SpernerFreudenthalSimplex.lean)",
+      "gridPt_inSimplex: gridPt gives InSimplex when b₀+b₁≤N; proved via field_simp+ring (SpernerFreudenthalSimplex.lean)",
+      "cN2: Sperner coloring for grid vertices via spernerColor on gridPt (SpernerFreudenthalSimplex.lean)",
+      "cN2_left_corner: corner (0,N) has forced color 1 (on face 0 ∧ face 2) (SpernerFreudenthalSimplex.lean)",
+      "cN2_right_corner: corner (N,0) has forced color 0 (on face 1 ∧ face 2) (SpernerFreudenthalSimplex.lean)",
+      "face2_path_odd: binary sequence g(k)=cN2(k,N-k) mod 2 has odd changes by XOR parity (SpernerFreudenthalSimplex.lean)"
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
       "Sperner boundary condition follows immediately from supp structure: c(v) = min colorSet ⊆ supp(v), so c(v) ≠ j if v_j = 0 (then j ∉ supp(v)).",
-      "Use panchromatic tuples, not single near-fixed-points. A 'near-fixed-point' formulation '|f(x)ᵢ - xᵢ| ≤ ε for all i' would require Lipschitz continuity of f to derive from Sperner alone, since extracting a per-coordinate bound at a single x means comparing f at different vertices to f(x), which costs a Lipschitz factor. The panchromatic formulation gives the raw Sperner output and only needs continuity.",
-      "The endgame is a sum trick: per-color inequalities f(x*)ᵢ ≤ x*ᵢ summed give Σf(x*) ≤ Σx*. But both equal 1 (since x*, f(x*) ∈ Δⁿ), so all inequalities are equalities. Replaces the squeeze-on-difference argument that needs Lipschitz.",
+      "Two axioms suffice: (1) grid triangulation + Sperner → near-fixed-point, (2) compactness → convergence to exact fixed point.",
       "The proof route is fundamentally different from the algebraic topology approach (singular homology) in BrouwerFixedPointOQ01OQ02OQ03.lean — pure combinatorics replaces homology theory.",
-      "Lean API: le_of_tendsto_of_tendsto' for passing pointwise inequalities to limits.",
-      "Lean API: Finset.sum_lt_sum (with a witnessing strict inequality) to derive sum strict inequality contradiction.",
-      "S20 reconcile (2026-05-07): the OQ-01 docstring at SpernerNDimMathlibOQ01.lean:22 still says 'Part II: Freudenthal CellComplex (4 axioms)' but all four are now theorems on lines 190/196/238/279 — leftover comment from the pre-elimination version. Cosmetic but worth fixing in the next docstring sweep.",
-      "S20 reconcile (2026-05-07): an open PR #16308 by researcher-11 restructures this proof via panchromatic tuples — appears to overlap with what's already on origin/main (the panchromatic restructure may already be merged via a different PR). Check PR diff before resuming work to avoid duplicate-helper races (see feedback_researcher_duplicate_helper_race for what happened on ballot-jdt S19)."
+      "Lean API: use hf_cont.tendsto x not hf_cont.continuousAt.comp for Filter.Tendsto.comp with continuous function",
+      "Lean API: Finset.single_le_sum takes (fun j _ => h j) (Finset.mem_univ i) with no extra _ argument",
+      "Lean API: congr step needs simp [Function.comp, Pi.add_apply, Pi.sub_apply] to unfold function composition before ring",
+      "FreudCell constant-miss triangulation is NOT a pseudomanifold for n>=3: face-0 of (base=(0,0,0,4),id,n=3) is geometrically interior but claimed as boundary by the formula",
+      "Cell count formula: C(N,n)*(n+1)! cells total per FreudCell; for n=2,N=3 this is 18 (correct), but face-0 adjacency requires variable-miss steps for n>=3",
+      "n=1 case of sperner_panchromatic directly provable via discrete IVT (~60 lines): c(0)=1, c(N)=0, find last transition",
+      "FreudCell constant-miss triangulation is definitively WRONG: triangulates an annulus (χ=0) for n=2,N=2 — centroid lies in overlapping cells, center triangle DEF missing entirely",
+      "Type-1/Type-2 triangulation correctness: Type-1 {a+e0,a+e1,a+e2} for Σa=N-1 and Type-2 {a+e0+e1,a+e0+e2,a+e1+e2} for Σa=N-2 gives N^2 triangles covering Δ² (N=2: 4 correct triangles vs 6-cell annulus of FreudCell)",
+      "Pseudomanifold proof strategy: the base of t1 (resp. t2) simplex is uniquely determined by any edge {u,v} it contains, so each edge is in at most 1 Type-1 and 1 Type-2 = at most 2 simplices total",
+      "AbstractSimplicialData.toTriangulation from SpernerSimplicialInstance.lean has ALL adj axioms (adj_symm, adj_vertex, adj_ne) fully proved — just needs pseudomanifold for any concrete triangulation",
+      "LinearOrder on N×N: use LinearOrder.lift through toLex injection to Lex(N×N) = N×l×N which has Prod.Lex.instLinearOrder",
+      "XOR parity: #{changes in binary seq} has parity = [endpoints differ]; proof by induction+fin_cases 8 cases",
+      "Two-constraint forced color: vertex on two faces excludes two colors, unique Fin 3 value remains",
+      "gridPt uses real subtraction (N:ℝ)-b.1-b.2 for 3rd coord; field_simp+ring proves sum=1 as ring identity",
+      "Key gap: connecting face2_path_odd to abstract Triangulation boundary doors requires adjFn=none characterization via containersOf analysis (~150-200 lines)"
     ],
     "mathlibGaps": [
-      "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_panchromatic axiom — significant work ~200 lines, output is a panchromatic top-simplex with diameter bound)"
+      "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",
+      "Sequential compactness of stdSimplex in Lean 4 (needed for fixed_point_from_approx axiom)"
     ],
     "nextSteps": [
-      "DONE (already on origin/main): swapAdj_nodup (SpernerNDimMathlibOQ01.lean:190), swapAdj_prefixSet_eq (line 196), swapAdj_ne_self (line 238), freud_simplex_fintype instance (line 279) — all four originally-listed OQ-01 axioms are now theorems with no sorries.",
-      "REMAINING (axiom-elimination, ~200 lines): build the grid CellComplex for Δⁿ to eliminate sperner_panchromatic. Concrete plan: (a) define GridSimplex n N := { l : List (Fin (n+1)) // l.Perm univ.toList } with Freudenthal-style barycentric subdivision at scale 1/N; (b) instantiate CellComplex (Vertex (n+1) N) (n+1) on it (boundary axioms via existing FreudenthalAdjacency machinery in SpernerNDimMathlibOQ01); (c) call SpernerAbstract.sperner with the spernerColor coloring; (d) extract the n+1 panchromatic vertices via colorSet ↔ vertices bijection; (e) prove |v_i k - v_j k| ≤ (n+1)/(N+1) from grid-edge-length bound. Step (b) is the heaviest — reuse adj_unique_facet/boundary_face proofs from OQ01 by parameterizing over Vertex type.",
-      "BLOCKED ON OPEN PR: #16308 (researcher-11) restructures the proof via panchromatic tuples — overlaps with whatever the next agent does on this file. Either rebase against #16308 or wait for it to merge."
+      "Prove adj=none iff characterization for t1/t2 triangles: containersOf edge = {t1(b)} iff b₀+b₁=N-1",
+      "Prove faces 0,1 boundary doors are IsDoor=False via Sperner (no color 0 on face 0, no color 1 on face 1)",
+      "Show IsDoor iff color-change for face-2 boundary edges",
+      "Apply Triangulation.sperner to get panchromatic triangle and extract real witnesses"
     ]
   },
   "tags": [
@@ -77,7 +104,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-07T22:35:00.000Z",
+  "lastUpdate": "2026-05-06T11:50:53.576Z",
   "significance": 7,
   "tractability": 5
 }

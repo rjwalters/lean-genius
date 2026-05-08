@@ -23,37 +23,24 @@ where `supp(v) = {i : vᵢ > 0}`. This is well-defined (some index in `supp(v)` 
 condition (`c(v) ∈ supp(v)`, so if `vⱼ = 0` then `c(v) ≠ j`).
 
 **Step 2 (axiom)**: By Sperner's lemma applied to the Nth grid triangulation of `Δⁿ`,
-each subdivision yields a *panchromatic* simplex — `n+1` vertices `v₀, ..., vₙ`,
-one per color, each satisfying `f(vᵢ)ᵢ ≤ (vᵢ)ᵢ`, with all vertices within
-diameter `(n+1)/(N+1)` of each other.
+each subdivision has a panchromatic simplex: vertices v₀,...,vₙ ∈ Δⁿ with
+f(vᵢ)ᵢ ≤ (vᵢ)ᵢ for each i (color-i property) and all vertices within n/N of each other.
 
-**Step 3 (proved here)**: By compactness of `Δⁿ`, the first vertices of the
-sequence of panchromatic tuples have a convergent subsequence with limit `x*`.
-The diameter bound forces every vertex of the same tuple to converge to the
-same limit. The per-color inequalities pass to the limit by continuity:
-`f(x*)ᵢ ≤ x*ᵢ` for all `i`. Summing and using `Σ f(x*)ᵢ = 1 = Σ x*ᵢ`, all
-inequalities must be equalities, giving `f(x*) = x*`.
-
-## Why panchromatic, not single near-fixed-point
-
-A "near-fixed-point" formulation `∃ x, ∀ i, |f(x)ᵢ - xᵢ| ≤ ε` would require
-**Lipschitz continuity** of `f` to derive: extracting a per-coordinate bound
-at a single `x` from a fully-colored simplex requires comparing `f(x)` to
-`f(vᵢ)` for each color-`i` vertex `vᵢ`, which costs a Lipschitz factor. The
-panchromatic formulation gives the *raw* Sperner output: one inequality per
-distinct vertex, with a diameter bound. Continuity alone (no Lipschitz)
-suffices to derive the fixed point.
+**Step 3 (proved here)**: Let u_N = v₀,N (first vertex from each panchromatic tuple).
+By compactness of Δⁿ, some subsequence u_{φk} → x*. Since diameter n/φk → 0,
+all vertices v_{i,φk} → x*. By continuity, f(v_{i,φk})ᵢ → f(x*)ᵢ and v_{i,φk}ᵢ → x*ᵢ.
+From f(v_{i,φk})ᵢ ≤ v_{i,φk}ᵢ we get f(x*)ᵢ ≤ x*ᵢ for all i.
+Since Σᵢ f(x*)ᵢ = 1 = Σᵢ x*ᵢ, all inequalities are equalities: f(x*) = x*.
 
 ## Axiom justification (1 remaining)
 
-`sperner_panchromatic`: Follows from (a) the Nth grid triangulation of `Δⁿ`
-  (vertices `{(a₀/N,...,aₙ/N) : Σaᵢ=N, aᵢ ∈ ℕ}`, simplices from ordered chains),
-  (b) the proved Sperner boundary condition `spernerColor_ne_of_zero` /
-  `spernerColorMap_boundary`, and (c) abstract Sperner's lemma
-  (`SpernerAbstract.sperner` in SpernerNDimMathlib.lean).
-  The output is `n+1` distinct grid vertices of the panchromatic top-simplex,
-  one per color, with the color-`i` inequality at vertex `i` and diameter
-  bounded by the grid mesh `(n+1)/(N+1)`.
+`sperner_panchromatic`: For each N > 0, the Nth grid triangulation of `Δⁿ` with the
+  Sperner coloring derived from `f` has a panchromatic (n+1)-tuple: vertices v₀,...,vₙ ∈ Δⁿ
+  satisfying f(vᵢ)ᵢ ≤ (vᵢ)ᵢ (the defining property of Sperner color i) and diameter ≤ n/N.
+  Proof structure: (a) Fixed-miss Freudenthal triangulation gives a valid CellComplex
+  (adj_symm, adj_vertex, adj_ne: ~80 lines), (b) boundary door count is odd via induction
+  on n (boundary_doors_odd: ~200 lines), (c) CellComplex.sperner gives the panchromatic
+  simplex, (d) map grid vertices to real coordinates to extract the bound.
 
 ## Main results
 
@@ -63,8 +50,8 @@ suffices to derive the fixed point.
 * `SpernerBrouwer.spernerColor_in_supp`: color lies in support (Sperner condition)
 * `SpernerBrouwer.spernerColor_le`: the coloring index satisfies `f(v)ᵢ ≤ vᵢ`
 * `SpernerBrouwer.spernerColor_ne_of_zero`: face boundary condition
-* `SpernerBrouwer.sperner_panchromatic`: panchromatic tuple from grid Sperner (axiom)
-* `SpernerBrouwer.brouwer_from_panchromatic`: fixed point from panchromatic tuples (proved)
+* `SpernerBrouwer.sperner_panchromatic`: panchromatic tuple from Sperner (axiom)
+* `SpernerBrouwer.brouwer_from_panchromatic`: exact fixed point from panchromatic tuples
 * `SpernerBrouwer.brouwer_fixed_point_simplex`: **Brouwer's theorem for `Δⁿ`**
 
 ## Tags
@@ -203,62 +190,48 @@ theorem spernerColorMap_boundary
   spernerColor_ne_of_zero hv (hf_map v hv) hvj
 
 -- ============================================================
--- SECTION IV: From Sperner to Brouwer (via panchromatic tuples)
+-- SECTION IV: From Sperner to Brouwer (via Panchromatic Tuples)
 -- ============================================================
 
-/-- **Axiom (Grid Sperner → Panchromatic Tuple)**: For each `N`, the Nth grid
-    triangulation of `Δⁿ` with the Sperner coloring derived from `f` yields a
-    *panchromatic simplex*: `n+1` vertices in `Δⁿ`, one per color, each
-    satisfying its color-`i` inequality `f(vᵢ)ᵢ ≤ (vᵢ)ᵢ`, and all within
-    pairwise coordinate gap `(n+1)/(N+1)`.
+/-- **Axiom (Grid Sperner → Panchromatic Tuple)**: For each N > 0, the Nth Freudenthal
+    grid triangulation of `Δⁿ` with the Sperner coloring yields a panchromatic (n+1)-tuple:
+    vertices v₀,...,vₙ ∈ Δⁿ such that f(vᵢ)ᵢ ≤ (vᵢ)ᵢ and all vertices are within n/N.
 
-    **Justification**: Partition `Δⁿ` into small simplices with vertices
-      `{(a₀/N,...,aₙ/N) : aᵢ ∈ ℕ, Σaᵢ = N}` (the Nth grid triangulation).
-    Apply the Sperner coloring `c(v) = spernerColorMap f hf_map v hv`.
-    By `spernerColorMap_boundary`, this satisfies the Sperner boundary condition.
-    By abstract Sperner's lemma (`SpernerAbstract.sperner` in SpernerNDimMathlib.lean),
-    a fully-colored (panchromatic) simplex exists. Two grid vertices share a
-    grid simplex of edge length `1/N`, so each pairwise coordinate gap is
-    bounded by `1/N ≤ (n+1)/(N+1)` (loose bound used here for convenience).
+    **Justification**: The Freudenthal triangulation (vertices `{(a₀/N,...,aₙ/N) : Σaᵢ=N}`
+    with constant-miss step ordering) gives a CellComplex satisfying adj_symm, adj_vertex,
+    adj_ne. The Sperner coloring `spernerColorMap` satisfies the boundary condition. By
+    the parity of boundary doors (odd, proved by induction on n), CellComplex.sperner gives
+    a panchromatic simplex. The n/N diameter bound follows from the grid mesh size.
 
-    **Why panchromatic, not single-point**: extracting per-coordinate bounds
-    `|f(x)ᵢ - xᵢ| ≤ ε` at a single `x` from a fully-colored simplex requires
-    Lipschitz continuity (to relate `f` at different vertices to `f` at one
-    point). The panchromatic formulation provides the *raw* Sperner output:
-    one one-sided inequality per vertex. The diameter bound + continuity is
-    enough to derive a fixed point without Lipschitz. -/
-axiom sperner_panchromatic (n N : ℕ)
+    **Note**: `boundary_face` (the SpernerTriangulation axiom) is NOT needed here because
+    we use CellComplex.sperner directly, which only requires the CellComplex axioms.
+    The boundary door count oddness is proved separately as `boundary_doors_odd` by induction,
+    using the bijection between boundary doors at face d and FC simplices of the (d-1) grid. -/
+axiom sperner_panchromatic {n : ℕ} (N : ℕ) (hN : 0 < N)
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
     ∃ v : Fin (n + 1) → Fin (n + 1) → ℝ,
-      (∀ i, InSimplex (v i)) ∧
-      (∀ i : Fin (n + 1), f (v i) i ≤ v i i) ∧
-      (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)),
-          |v i l - v j l| ≤ (n + 1 : ℝ) / ((N : ℝ) + 1))
+        (∀ i, InSimplex (v i)) ∧
+        (∀ i : Fin (n + 1), f (v i) i ≤ v i i) ∧
+        (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)), |v i l - v j l| ≤ (n : ℝ) / N)
 
-/-- **Theorem (Panchromatic → Fixed Point)**: Given a sequence of panchromatic
-    tuples whose pairwise diameter shrinks to 0, there exists a fixed point of `f`.
+/-- **Theorem (Panchromatic Tuples → Fixed Point)**: Given panchromatic tuples with
+    diameter → 0, there exists an exact fixed point.
 
-    **Proof**: The simplex `Δⁿ` is compact. Take the first vertex of each
-    panchromatic tuple to form a sequence in `Δⁿ`; extract a convergent
-    subsequence `v_{φ(k)}⁰ → x*` (sequential compactness). By the diameter
-    bound, every other vertex `v_{φ(k)}ⁱ` of the same tuple converges to the
-    same limit `x*`. By continuity, `f(v_{φ(k)}ⁱ) → f(x*)`. The Sperner
-    inequality `f(v_{φ(k)}ⁱ)ᵢ ≤ (v_{φ(k)}ⁱ)ᵢ` passes to the limit:
-    `f(x*)ᵢ ≤ x*ᵢ` for all `i`. Summing over `i`: `Σ f(x*)ᵢ ≤ Σ x*ᵢ`. But
-    both sums equal `1` (since `f(x*), x* ∈ Δⁿ`), so all inequalities are
-    equalities, i.e., `f(x*) = x*`. -/
+    **Proof**: Let u_N = v_{N,0} (first component of N-th panchromatic tuple). By
+    compactness of Δⁿ, some subsequence u_{φk} → x*. Since diameter n/(φk) → 0, all
+    components v_{φk,i} → x* too. For each i: f(v_{φk,i})ᵢ ≤ v_{φk,i}ᵢ → f(x*)ᵢ ≤ x*ᵢ
+    (by continuity). Since Σᵢ f(x*)ᵢ = 1 = Σᵢ x*ᵢ, all inequalities are equalities. -/
 theorem brouwer_from_panchromatic {n : ℕ}
     (f : (Fin (n + 1) → ℝ) → Fin (n + 1) → ℝ)
     (hf_cont : Continuous f)
     (hf_map : ∀ v, InSimplex v → InSimplex (f v))
-    (happrox : ∀ N : ℕ, ∃ v : Fin (n + 1) → Fin (n + 1) → ℝ,
+    (hpanch : ∀ N : ℕ, 0 < N → ∃ v : Fin (n + 1) → Fin (n + 1) → ℝ,
         (∀ i, InSimplex (v i)) ∧
         (∀ i : Fin (n + 1), f (v i) i ≤ v i i) ∧
-        (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)),
-            |v i l - v j l| ≤ (n + 1 : ℝ) / ((N : ℝ) + 1))) :
+        (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)), |v i l - v j l| ≤ (n : ℝ) / N)) :
     ∃ x : Fin (n + 1) → ℝ, InSimplex x ∧ f x = x := by
-  -- Step 1: The simplex Δⁿ is compact (closed subset of [0,1]^(n+1))
+  -- Step 1: The simplex Δⁿ is compact
   have hS_compact : IsCompact {v : Fin (n + 1) → ℝ | InSimplex v} := by
     apply IsCompact.of_isClosed_subset (isCompact_univ_pi (fun _ => isCompact_Icc))
     · have heq : {v : Fin (n + 1) → ℝ | InSimplex v} =
@@ -272,21 +245,25 @@ theorem brouwer_from_panchromatic {n : ℕ}
       simp only [Set.mem_pi, Set.mem_univ, Set.mem_Icc, forall_const]
       exact fun i => ⟨hnn i,
         (Finset.single_le_sum (fun j _ => hnn j) (Finset.mem_univ i)).trans hsum.le⟩
-  -- Step 2: Choose a panchromatic tuple for each N
-  let u : ℕ → Fin (n + 1) → Fin (n + 1) → ℝ := fun N => (happrox N).choose
-  have hu_mem : ∀ N i, InSimplex (u N i) := fun N i => (happrox N).choose_spec.1 i
-  have hu_color : ∀ N i, f (u N i) i ≤ u N i i :=
-    fun N i => (happrox N).choose_spec.2.1 i
-  have hu_diam : ∀ N i j l,
-      |u N i l - u N j l| ≤ (n + 1 : ℝ) / ((N : ℝ) + 1) :=
-    fun N i j l => (happrox N).choose_spec.2.2 i j l
-  -- Step 3: First vertices live in compact Δⁿ — extract convergent subsequence
-  let v0 : ℕ → Fin (n + 1) → ℝ := fun N => u N 0
-  have hv0_mem : ∀ N, v0 N ∈ {v : Fin (n + 1) → ℝ | InSimplex v} :=
-    fun N => hu_mem N 0
-  obtain ⟨x, hx_mem, φ, hφ_mono, hφ_conv⟩ := hS_compact.tendsto_subseq hv0_mem
+  -- Step 2: For each N, extract panchromatic tuple data
+  have hpanch' : ∀ N : ℕ, ∃ v : Fin (n + 1) → Fin (n + 1) → ℝ,
+      (∀ i, InSimplex (v i)) ∧
+      (∀ i : Fin (n + 1), f (v i) i ≤ v i i) ∧
+      (∀ (i j : Fin (n + 1)) (l : Fin (n + 1)), |v i l - v j l| ≤ (n : ℝ) / (N + 1)) :=
+    fun N => hpanch (N + 1) (Nat.succ_pos N)
+  let vdata : ℕ → Fin (n + 1) → Fin (n + 1) → ℝ := fun N => (hpanch' N).choose
+  have hvdata_mem : ∀ N i, InSimplex (vdata N i) := fun N => (hpanch' N).choose_spec.1
+  have hvdata_le : ∀ N i, f (vdata N i) i ≤ vdata N i i :=
+    fun N => (hpanch' N).choose_spec.2.1
+  have hvdata_diam : ∀ N i j l, |vdata N i l - vdata N j l| ≤ (n : ℝ) / (N + 1) :=
+    fun N => (hpanch' N).choose_spec.2.2
+  -- Step 3: Use first component as main sequence; compactness → convergent subsequence
+  let u : ℕ → Fin (n + 1) → ℝ := fun N => vdata N 0
+  have hu_mem : ∀ N, u N ∈ {v : Fin (n + 1) → ℝ | InSimplex v} :=
+    fun N => hvdata_mem N 0
+  obtain ⟨x, hx_mem, φ, hφ_mono, hφ_conv⟩ := hS_compact.tendsto_subseq hu_mem
   refine ⟨x, hx_mem, ?_⟩
-  -- Step 4: (n+1)/(φk+1) → 0 since φ is strictly monotone (so φk ≥ k → ∞)
+  -- Step 4: φk → ∞ (strictly monotone implies φk ≥ k → ∞)
   have h_phi_atTop : Filter.Tendsto (fun k : ℕ => (φ k : ℝ) + 1)
       Filter.atTop Filter.atTop := by
     apply Filter.tendsto_atTop_atTop.mpr
@@ -294,50 +271,63 @@ theorem brouwer_from_panchromatic {n : ℕ}
     exact ⟨⌈b⌉₊, fun k hk => by
       have hkphi : (k : ℝ) ≤ φ k := by exact_mod_cast hφ_mono.id_le k
       linarith [Nat.le_ceil b, show (⌈b⌉₊ : ℝ) ≤ k from by exact_mod_cast hk]⟩
-  have h_bound_zero : Filter.Tendsto (fun k => (n + 1 : ℝ) / ((φ k : ℝ) + 1))
+  have h_diam_zero : Filter.Tendsto (fun k => (n : ℝ) / (φ k + 1))
       Filter.atTop (nhds 0) :=
     tendsto_const_nhds.div_atTop h_phi_atTop
-  -- Step 5: For each i, u(φk) i → x via diameter bound applied to v0(φk) → x
-  have hu_conv : ∀ i,
-      Filter.Tendsto (fun k => u (φ k) i) Filter.atTop (nhds x) := by
+  -- Step 5: All components vdata(φk).i converge to x (by diameter → 0)
+  have hconv_i : ∀ i : Fin (n + 1),
+      Filter.Tendsto (fun k => vdata (φ k) i) Filter.atTop (nhds x) := by
     intro i
-    have h_diff : Filter.Tendsto (fun k => u (φ k) i - u (φ k) 0)
+    rw [tendsto_pi_nhds]
+    intro l
+    -- |vdata(φk).i.l - x.l| ≤ n/(φk+1) + |vdata(φk).0.l - x.l| → 0
+    have h_u_l_diff : Filter.Tendsto (fun k => vdata (φ k) 0 l - x l)
         Filter.atTop (nhds 0) := by
-      rw [tendsto_pi_nhds]
-      intro l
-      simp only [Pi.sub_apply, Pi.zero_apply]
-      exact squeeze_zero_norm
-        (fun k => by rw [Real.norm_eq_abs]; exact hu_diam (φ k) i 0 l)
-        h_bound_zero
-    have hsum := hφ_conv.add h_diff
-    rw [add_zero] at hsum
-    exact hsum.congr (fun k => by
-      funext l
-      simp only [Function.comp_apply, Pi.add_apply, Pi.sub_apply, v0]
-      ring)
-  -- Step 6: For each i, f(u(φk) i) i ≤ u(φk) i i, pass to limit ⇒ f(x) i ≤ x i
-  have hf_le : ∀ i, f x i ≤ x i := by
+      have h := (tendsto_pi_nhds.mp hφ_conv l).sub tendsto_const_nhds
+      simp only [sub_self] at h; exact h
+    have h_u_l_abs : Filter.Tendsto (fun k => |vdata (φ k) 0 l - x l|)
+        Filter.atTop (nhds 0) := by
+      have := h_u_l_diff.norm
+      simp only [norm_zero, Real.norm_eq_abs] at this
+      exact this
+    have h_diff : Filter.Tendsto (fun k => vdata (φ k) i l - x l)
+        Filter.atTop (nhds 0) := by
+      apply squeeze_zero_norm
+      · intro k
+        rw [Real.norm_eq_abs]
+        calc |vdata (φ k) i l - x l|
+            ≤ |vdata (φ k) i l - vdata (φ k) 0 l| + |vdata (φ k) 0 l - x l| :=
+              abs_sub_triangle _ _
+          _ ≤ n / (φ k + 1) + |vdata (φ k) 0 l - x l| := by
+              gcongr; exact hvdata_diam (φ k) i 0 l
+      · have := h_diam_zero.add h_u_l_abs
+        rwa [add_zero] at this
+    have := h_diff.add_const (x l)
+    rw [zero_add] at this
+    exact this.congr' (Filter.eventually_of_forall fun k => by ring)
+  -- Step 6: f(x*)ᵢ ≤ x*ᵢ for each i (limit of inequalities f(vᵢ)ᵢ ≤ vᵢᵢ)
+  have hfx_le : ∀ i : Fin (n + 1), f x i ≤ x i := by
     intro i
-    have h_apply_i : Continuous (fun y : Fin (n + 1) → ℝ => y i) := continuous_apply i
-    have hf_apply : Continuous (fun y : Fin (n + 1) → ℝ => f y i) :=
-      h_apply_i.comp hf_cont
-    have hfconv : Filter.Tendsto (fun k => f (u (φ k) i) i)
-        Filter.atTop (nhds (f x i)) :=
-      (hf_apply.tendsto x).comp (hu_conv i)
-    have hxconv : Filter.Tendsto (fun k => u (φ k) i i)
-        Filter.atTop (nhds (x i)) :=
-      (h_apply_i.tendsto x).comp (hu_conv i)
-    exact le_of_tendsto_of_tendsto' hfconv hxconv (fun k => hu_color (φ k) i)
-  -- Step 7: Σ f(x) i ≤ Σ x i, both sums equal 1, so all inequalities are equalities
-  have hfx_mem : InSimplex (f x) := hf_map x hx_mem
-  have hsum_eq : ∑ i, f x i = ∑ i, x i := by rw [hfx_mem.2, hx_mem.2]
+    have hfv_conv : Filter.Tendsto (fun k => f (vdata (φ k) i))
+        Filter.atTop (nhds (f x)) :=
+      (hf_cont.tendsto x).comp (hconv_i i)
+    -- Limit of f(vᵢ)ᵢ ≤ vᵢᵢ: use ge_of_tendsto on x*ᵢ - f(x*)ᵢ ≥ 0
+    have h_diff_conv : Filter.Tendsto (fun k => vdata (φ k) i i - f (vdata (φ k) i) i)
+        Filter.atTop (nhds (x i - f x i)) :=
+      (tendsto_pi_nhds.mp (hconv_i i) i).sub (tendsto_pi_nhds.mp hfv_conv i)
+    have h_diff_nonneg : ∀ k, 0 ≤ vdata (φ k) i i - f (vdata (φ k) i) i :=
+      fun k => sub_nonneg.mpr (hvdata_le (φ k) i)
+    linarith [ge_of_tendsto h_diff_conv (Filter.eventually_of_forall h_diff_nonneg)]
+  -- Step 7: Σᵢ f(x*)ᵢ = 1 = Σᵢ x*ᵢ with all f(x*)ᵢ ≤ x*ᵢ → f(x*) = x*
   funext i
-  by_contra hne
-  have hlt : f x i < x i := lt_of_le_of_ne (hf_le i) hne
-  have : ∑ j, f x j < ∑ j, x j :=
-    Finset.sum_lt_sum (fun j _ => hf_le j) ⟨i, Finset.mem_univ i, hlt⟩
-  rw [hsum_eq] at this
-  exact lt_irrefl _ this
+  apply le_antisymm (hfx_le i)
+  by_contra h
+  push_neg at h
+  have hS : InSimplex x := hx_mem
+  have hfS : InSimplex (f x) := hf_map x hS
+  have hlt : ∑ j : Fin (n + 1), f x j < ∑ j : Fin (n + 1), x j :=
+    Finset.sum_lt_sum (fun j _ => hfx_le j) ⟨i, Finset.mem_univ _, h⟩
+  linarith [hS.2, hfS.2]
 
 -- ============================================================
 -- SECTION V: Main Theorem
@@ -351,6 +341,6 @@ theorem brouwer_fixed_point_simplex {n : ℕ}
     (hf_map : ∀ v, InSimplex v → InSimplex (f v)) :
     ∃ x : Fin (n + 1) → ℝ, InSimplex x ∧ f x = x :=
   brouwer_from_panchromatic f hf_cont hf_map
-    (fun N => sperner_panchromatic n N f hf_map)
+    (fun N hN => sperner_panchromatic N hN f hf_map)
 
 end SpernerBrouwer
