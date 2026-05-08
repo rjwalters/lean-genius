@@ -1,9 +1,9 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S52 — `hookProd_doubleRemove_factor` proved.  The algebraic "easy half" of the GNW 1979 exchange identity is now closed: H(μ)·H((μ\c)\c')·(h_d-1)² = H(μ\c)·H(μ\c')·h_d·(h_d-2).  Step 1 of 3 in the s05 recipe complete; remaining steps are F-side joint K-induction (S53) + final combine (S54+).)
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-21T20:08:44+02:00
+**Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-08
 **Iteration**: 52
 
@@ -31,9 +31,9 @@ in place:
    (L-shape, (3,1)).
 
 ## Attempt Count
-- Total attempts: 51 (sessions 1–51; sessions 1–4 archived to
-  `sessions/`; sessions 5–51 in `knowledge.md` + `sessions/`)
-- Current approach attempts: 15 (sessions 37–51 on GNW)
+- Total attempts: 52 (sessions 1–52; sessions 1–4 archived to
+  `sessions/`; sessions 5–52 in `knowledge.md` + `sessions/`)
+- Current approach attempts: 16 (sessions 37–52 on GNW)
 - Approaches tried:
   1. LGV-determinant via `lgv_lemma_rxr` + Jacobi–Trudi (sessions 1–10) —
      dead scaffolding deleted in session 32.
@@ -123,6 +123,22 @@ in place:
      `(h_d − 1)² / (h_d (h_d − 2))` is well-formed and ℕ-subtraction
      truncation is benign.  No build risk: identical proof shape to existing
      `hookLength_pos` and the `*_of_isCorner` rewrites are 1-step.
+ 14. Algebraic "easy half" of GNW exchange (session 52) — proved
+     `private lemma hookProd_doubleRemove_factor` (~line 5297, +133 lines
+     including 38-line docstring):
+     `H(μ) · H((μ\c)\c') · (h_d - 1)² = H(μ\c) · H(μ\c') · h_d · (h_d - 2)`
+     where `h_d = hookLength μ c.1 c'.2`.  Proof: apply `hookProd_ratio_formula`
+     twice (corner `c` on `μ`, corner `c` on `μ\c'` via
+     `isCorner_removeCorner_of_ne hc' hc hne.symm`); use `Finset.mul_prod_erase`
+     to extract the `d`-factor on each side (`h_d/(h_d-1)` for R₁,
+     `(h_d-1)/(h_d-2)` for R₂ after `h_d_in_ν : hookLength (μ\c') c.1 c'.2 = h_d - 1`
+     from `hookLength_removeCorner_leg hc' hi`); pointwise equality off `d` by
+     S50 bridges (`Finset.prod_congr`); `div_eq_iff` to clear LHS hookProd
+     ratios; `← h_swap` to align with `H((μ\c)\c')`; final
+     `rw [hR1, hR2]; field_simp; ring`.  ℚ-cast safety from S51
+     `hookLength_at_d_ge_3` via `linarith`.  Closes step 1 of 3 in the s05
+     recipe; step 2 (F-side joint K-induction) is S53, step 3 (combine) is
+     S54+.  Sorry count unchanged (1).
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
