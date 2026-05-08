@@ -1,10 +1,94 @@
 # Knowledge Base: LGV Lemma → Jacobi-Trudi Identity
 
 **Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01
-**Last Updated**: 2026-05-07
-**Knowledge Items**: 41
+**Last Updated**: 2026-05-08
+**Knowledge Items**: 44
 
 Insights accumulated during research on this problem.
+
+---
+
+## Session 2026-05-08 (Session 20) — Architectural refactor: extract `ballot_counting_identity`
+
+**Mode**: REVISIT (RICH knowledge tier, score 104)
+**Outcome**: progress — architectural; cleaner black-box separation between
+the polynomial-algebra reduction and the deep combinatorial step.
+
+### What I Did
+
+1. **Added `totalSym` / `totalSym_val`**
+   (`BallotProblemOQ03OQ01OQ01OQ01.lean`):
+   `(P : Sym (Fin n) a) (Q : Sym (Fin n) b) ↦ ⟨P.1 + Q.1, _⟩ : Sym (Fin n) (a + b)`.
+   `totalSym_val` is a `@[simp]` rfl lemma exposing the underlying multiset.
+   ~7 lines including docstring.
+
+2. **Added `totalSym'` / `totalSym'_val`**: companion for the `(a+1, b-1)` RHS
+   shape, taking `hb : 1 ≤ b` so the cardinality fact `(a+1) + (b-1) = a + b`
+   lives once (in the def, via `omega`) instead of per-call. ~10 lines.
+
+3. **Stated `ballot_counting_identity`**: the focused per-fiber cardinality
+   subproblem extracted from the b≥2 sorry —
+
+       `#{(P, Q) // ¬ColStrictSym a b P Q ∧ P.1 + Q.1 = M.1}
+        = #{(P', Q') // P'.1 + Q'.1 = M.1, |P'| = a+1, |Q'| = b-1}`
+
+   for `M : Sym (Fin n) (a + b)` and `b ≥ 2`. ~25 lines incl. docstring,
+   sorry on the proof (the deep ~150-line ballot bijection).
+
+4. **Updated `jdt_weight_sum` b≥2 comment block** to reference the new helpers
+   and document the structural reduction as steps (i)-(iv): weight
+   factorisation → fibering by total multiset → ballot_counting_identity →
+   recombine. The b≥2 sorry itself is unchanged this session — that's
+   step (i)+(ii)+(iv), ~80-100 lines, deferred to S22.
+
+### Key Findings
+
+- **The b≥2 path now decomposes cleanly into two independent parts:**
+  the polynomial-algebra reduction (step (ii) regrouping + step (iv) recombine,
+  using `Finset.sum_fiberwise_of_maps_to` + `weight_eq_total_multiset`) and
+  the deep combinatorial heart (`ballot_counting_identity`, ~150 lines).
+  Each is independently attackable; the latter could even be a Mathlib
+  contribution candidate as a self-contained statement about `Sym`/multiset
+  splits and column-strict pairs.
+
+- **`totalSym'` carries `hb : 1 ≤ b` in its signature** so the cardinality
+  arithmetic `(a+1) + (b-1) = a + b` lives once. Without this, every
+  fiberwise lemma using the RHS sum would need to re-prove or `cast` the
+  type-level equality. With `totalSym'`, both LHS and RHS sums fiber over
+  the same `Sym (Fin n) (a + b)` codomain.
+
+- **Sorry accounting:** 3 → 4 this session. The new sorry
+  (`ballot_counting_identity`) is a clean named statement, not a hidden
+  obstruction inside an existing proof. Net architectural value > sorry-count
+  cost.
+
+### Files Modified
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (992 → ~1050 lines)
+  - Added: `totalSym` / `totalSym_val` (proved, simp lemma)
+  - Added: `totalSym'` / `totalSym'_val` (proved, simp lemma)
+  - Added: `ballot_counting_identity` (stated, sorry)
+  - Modified: `jdt_weight_sum` b≥2 comment block (steps (i)-(iv) updated)
+- `research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/{knowledge.md, state.md}`
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json`
+
+### Next Steps
+
+1. **S21**: Prove `ballot_counting_identity` (~150 lines). Strategy options:
+   - (a) reflection / cycle lemma for distinct elements + multiplicity argument;
+   - (b) explicit insert-with-disambiguating-data bijection (a Σ-bundled fix
+     to the S18 non-injectivity counterexample).
+
+2. **S22**: Wire `ballot_counting_identity` into `jdt_weight_sum` b≥2 via the
+   structural reduction (steps i-iv). ~80-100 lines using
+   `Finset.sum_fiberwise_of_maps_to` + `weight_eq_total_multiset`.
+
+3. **Optional**: extract `ballot_counting_identity` as a Mathlib contribution
+   candidate. It's a clean statement about `Sym` multisets and column-strict
+   pairs of independent interest in algebraic combinatorics.
+
+4. **For `jacobi_trudi_ssyt_eq` k≥3**: defer until k=2 closes; RSK or
+   algebraic LGV remain the only paths (~300 lines).
 
 ---
 

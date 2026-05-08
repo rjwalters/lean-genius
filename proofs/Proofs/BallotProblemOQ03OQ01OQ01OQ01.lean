@@ -692,6 +692,62 @@ private lemma exists_first_violation_idx {n a b : ℕ}
     have hcle_val : (V.min' hVnonempty).val ≤ j.val := hcle
     omega
 
+/-- **Total multiset of a Sym pair (as a `Sym`).**
+
+    The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
+    `Sym (Fin n) (a + b)`. Used to fiber the JDT weight sum by the underlying
+    total multiset, which is the cornerstone of the corrected proof path
+    (Session 19, PR #14891). -/
+private def totalSym {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) : Sym (Fin n) (a + b) :=
+  ⟨P.1 + Q.1, by simp [P.2, Q.2]⟩
+
+@[simp] private lemma totalSym_val {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (totalSym P Q).1 = P.1 + Q.1 := rfl
+
+/-- **Total multiset of an `(a+1, b-1)` Sym pair (as a `Sym (a + b)`).**
+
+    Specialised variant for the RHS of the JDT identity (b ≥ 1 needed for the
+    cardinality `(a+1) + (b-1) = a + b`). Pairs with `totalSym` to give a
+    common `Sym (Fin n) (a + b)` codomain for the LHS and RHS fiberings. -/
+private def totalSym' {n a b : ℕ} (hb : 1 ≤ b)
+    (P' : Sym (Fin n) (a + 1)) (Q' : Sym (Fin n) (b - 1)) :
+    Sym (Fin n) (a + b) :=
+  ⟨P'.1 + Q'.1, by
+    rw [Multiset.card_add, P'.2, Q'.2]
+    omega⟩
+
+@[simp] private lemma totalSym'_val {n a b : ℕ} (hb : 1 ≤ b)
+    (P' : Sym (Fin n) (a + 1)) (Q' : Sym (Fin n) (b - 1)) :
+    (totalSym' hb P' Q').1 = P'.1 + Q'.1 := rfl
+
+/-- **Ballot counting identity (per total multiset).**
+
+    For `b ≥ 2` and any total multiset `M : Sym (Fin n) (a + b)`, the number
+    of `(a, b)`-splits of `M` that are NOT column-strict equals the number of
+    arbitrary `(a+1, b-1)`-splits of `M`:
+
+      `#{(P, Q) // ¬ColStrictSym a b P Q ∧ P.1 + Q.1 = M.1}
+       = #{(P', Q') // P'.1 + Q'.1 = M.1, |P'| = a+1, |Q'| = b-1}`
+
+    This is the per-fiber heart of `jdt_weight_sum` (b ≥ 2): the weight
+    factorisation `weight_eq_total_multiset` reduces the polynomial sum
+    identity to this counting statement (see `jdt_weight_sum_b_ge_two_via_count`).
+
+    **Proof strategy (TODO).** Reflection / ballot principle: for `M` with all
+    distinct elements, both cardinalities equal `C(a+b, a+1)`; the multiplicity
+    case generalises by the same argument. Estimated ~150 lines remaining work,
+    Session 21+. The b = 1 analogue (where `b - 1 = 0` and `Q' = ∅`) is the
+    unique-existence statement in `jdt_weight_sum_b_one` / Aristotle. -/
+private theorem ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b)
+    (M : Sym (Fin n) (a + b)) :
+    ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+      (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card =
+    ((Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
+      (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).card := by
+  sorry
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
@@ -724,26 +780,24 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- two distinct non-col-strict (P,Q) pairs can produce the same (P',Q') because
       -- the seam index c is not recoverable from (P',Q') without extra data.
       --
-      -- **S19 strategy** (current): factor weights through the total multiset
-      -- `M : Sym (Fin n) (a + b)`, then apply a ballot counting identity on splits.
+      -- **S19/S20 strategy**: factor weights through the total multiset
+      -- `M : Sym (Fin n) (a + b)`, then apply `ballot_counting_identity` (S20).
       --
-      -- Step (i)  weight factorization: by `weight_eq_total_multiset` (above),
-      --             prod(P)*prod(Q) = prod(P+Q) and prod(P')*prod(Q') = prod(P'+Q').
-      -- Step (ii) regroup both sides by total multiset M = P+Q = P'+Q' : Sym n (a+b)
-      --             (using `Finset.sum_sigma`/`Fintype.sum_equiv` to fiber the sums).
-      -- Step (iii) ballot counting identity (per multiset M):
-      --              #{(P,Q) // ¬ColStrictSym a b ∧ P+Q = M.1}
-      --              = #{(P',Q') // P'.1 + Q'.1 = M.1, |P'|=a+1, |Q'|=b-1}
-      --            For M with all distinct elements, both counts equal C(a+b, a+1)
-      --            by the classical ballot/cycle lemma; the multiplicity case
-      --            generalizes via the same reflection-style argument.
-      -- Step (iv) combine: ∑_M [count] * prod(M) = ∑_M [count] * prod(M)
-      --             since the counts agree per M.
+      -- Step (i)   `weight_eq_total_multiset`: prod(P)*prod(Q) = prod(P.1 + Q.1).
+      -- Step (ii)  regroup both sides by total multiset
+      --              `M = P+Q = P'+Q' : Sym (Fin n) (a+b)` via `totalSym`/`totalSym'`
+      --              (Finset.sum_fiberwise_of_maps_to).
+      -- Step (iii) per-fiber count equality: `ballot_counting_identity` (S20, sorry).
+      -- Step (iv)  combine fiberings: ∑_M [count_LHS] • prod(M) = ∑_M [count_RHS] • prod(M).
       --
       -- The b = 1 case has `b - 1 = 0`, hence a unique `Q' = ∅`, so step (iii)
       -- collapses to **unique-existence per M** — that's why b=1 admits a direct
       -- bijection (cf. `jdt_weight_sum_b_one` and the Aristotle companion).
-      -- Estimated remaining work: ~150-200 lines, dominated by step (iii).
+      --
+      -- Remaining work for jdt_weight_sum b≥2:
+      --   * the per-fiber bijection inside `ballot_counting_identity` (~150 lines, S21+).
+      --   * the structural reduction (steps (i)-(iv) above) using `ballot_counting_identity`
+      --     as a black box (~80-100 lines, separate session).
       sorry
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
