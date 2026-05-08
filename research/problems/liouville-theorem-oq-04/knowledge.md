@@ -230,3 +230,102 @@ Estimated 80-150 lines of additional Lean for the case split + Finset min infras
    `axiomCount: 1 → 0`.
 3. Generate follow-up open questions: e.g., function-field version (`F_q(t)`), Roth-style sharpening
    from `H^d` to `H^(2+ε)`, multi-place generalization.
+
+---
+
+## Session 2026-05-08 (Session 13) — Algebraic Case of the Bridge (Part IV.10, researcher-3)
+
+**Mode**: REVISIT
+**Outcome**: progress (algebraic case of bridge axiom is now a proved theorem)
+
+### What I Did
+
+Added Part IV.10 to `LiouvilleTheoremOQ04.lean` (~173 lines):
+
+**New theorem** `padic_liouville_bridge_algebraic_case` — discharges the **algebraic
+case** of the bridge axiom: when `f.eval(r/s) ≠ 0` over ℚ, the bound
+  `1/(intPolyL1 f · coeffNormSum p g) / max(|r|,|s|)^(2 · f.natDegree) ≤ ‖α - (r:ℚ_[p])/s‖`
+holds.
+
+**Hypotheses** (all naturally arising from the bridge context):
+- `f ≠ 0`, `g ≠ 0` (g is the cofactor, automatically nonzero from `hf_ne` + `heval`)
+- `g.natDegree + 1 ≤ f.natDegree` (degree relation from `f.map alg = (X - C α) · g`)
+- `heval : ∀ x, (f.map alg).eval x = (x - α) · g.eval x`
+- `s ≠ 0`, `α ≠ (r:ℚ_[p])/s` (bridge preconditions)
+- `f.eval(r/s) ≠ 0` over ℚ (the algebraic case assumption)
+
+**Proof structure** (10-step chain, no new axioms):
+1. `(f.map alg).eval ((r:ℚ_[p])/s) = ((f.map alg').eval ((r:ℚ)/s) : ℚ_[p])` via Part IV.5.
+2. `‖(f.map alg).eval ((r:ℚ_[p])/s)‖ = padicNorm p ((f.map alg').eval ((r:ℚ)/s))` via Part IV.6.
+3. `(f.map alg).eval ((r:ℚ_[p])/s) ≠ 0` (cast injectivity).
+4. `g.eval ((r:ℚ_[p])/s) ≠ 0` from heval + α ≠ r/s.
+5. `‖α - r/s‖ = ‖f(r/s)‖_p / ‖g(r/s)‖_p` via heval + `norm_neg` + `norm_mul` + `mul_div_assoc`.
+6. `‖f(r/s)‖_p ≥ 1/(L · H^d)` via Part IV.9, with ℚ → ℝ cast.
+7. `‖g(r/s)‖_p ≤ M · H^(g.natDegree)` via Part IV.8.
+8. Compose with `div_le_div_iff` to get `‖α - r/s‖ ≥ 1/(L·H^d) / (M·H^dg)`.
+9. Simplify: `1/(L·H^d) / (M·H^dg) = 1/(L·M·H^(d+dg))`.
+10. Weaken `H^(d+dg) ≤ H^(2d)` (uses `hg_deg_le` and `H ≥ 1`).
+
+File builds clean (Docker, lean 4.26.0, post-build verified): 1 axiom, 0 sorries,
+~1102 lines, 33 theorems, 6 defs.
+
+### Key Findings
+
+- **The bridge axiom decomposes cleanly into algebraic + rational-roots cases**.
+  Part IV.10 nails down the algebraic case as a stand-alone theorem. Future work
+  is now isolated to the rational-roots case (purely a finite-set δ argument).
+
+- **`padicNorm` lives in ℚ; the goal lives in ℝ**. The Part IV.9 lemma's output
+  is `padicNorm p (·) : ℚ`, while our target involves `‖·‖ : ℝ`. The cast is
+  done via `Rat.cast_le` + `exact_mod_cast`/`push_cast` patterns. The trick is
+  to do the cast on a separate `have hcast_le` step rather than inlining, so
+  Lean can clearly see the ℚ ≤ ℚ inequality first.
+
+- **Division identity for the bound**: `‖α - r/s‖ = ‖f(r/s)‖_p / ‖g(r/s)‖_p`
+  is proved cleanly by:
+  1. `α - r/s = -(r/s - α)` (one-line `ring`)
+  2. `norm_neg` to remove the sign
+  3. `heval` to expand `f(r/s) = (r/s - α) · g(r/s)`
+  4. `norm_mul` to factor norms
+  5. `mul_div_assoc` + `div_self h_g_norm_pos.ne'` + `mul_one` to cancel.
+
+- **Weakening exponents harmlessly**: The bound chain naturally produces the
+  exponent `d + g.natDegree`, but the bridge target has `2 * d`. Since
+  `g.natDegree + 1 ≤ d` and `H ≥ 1`, the weakening
+  `1/(L·M·H^(d+dg)) ≥ 1/(L·M·H^(2d))` is via `pow_le_pow_right₀` on the
+  exponent and `one_div_le_one_div_of_le` on the inverse.
+
+### Pending — Bridge Discharge (unchanged but isolated)
+
+With Part IV.10 in place, the bridge axiom can now be discharged by adding
+ONE more lemma — the rational-roots case:
+
+```
+lemma padic_liouville_bridge_rational_roots_case
+    (α : ℚ_[p]) (f : ℤ[X]) (hf_ne : f ≠ 0) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ q : ℚ,
+      (f.map (algebraMap ℤ ℚ)).eval q = 0 → (↑q : ℚ_[p]) ≠ α →
+      δ ≤ ‖α - (↑q : ℚ_[p])‖
+```
+
+Then `padic_liouville_norm_bridge` becomes a theorem combining IV.10 + this.
+The proof of the rational-roots lemma uses `(f.map alg').roots.toFinset`
+(or `aroots`) and `Finset.inf'` over a filtered, nonempty Finset (or `δ = 1` if
+the filtered set is empty).
+
+### Next Steps
+
+1. (Highest value) Add `padic_liouville_bridge_rational_roots_case` as a proved
+   lemma using `Polynomial.aroots ℚ` + `Multiset.toFinset` + `Finset.inf'`.
+2. Combine IV.10 + rational-roots-case into a proved version of
+   `padic_liouville_norm_bridge`. Drop the `axiom` keyword.
+3. Update meta.json: `status: "axiomatized" → "verified"`, `badge: "axiom" → "original"`,
+   `axiomCount: 1 → 0`.
+
+### Files Modified
+
+- `proofs/Proofs/LiouvilleTheoremOQ04.lean` (914 → 1102 lines, +173)
+- `research/problems/liouville-theorem-oq-04/state.md` (Session 13 update)
+- `research/problems/liouville-theorem-oq-04/knowledge.md` (this entry)
+- `src/data/research/problems/liouville-theorem-oq-04.json` (knowledge update)
+- `src/data/proofs/liouville-theorem-oq-04/meta.json` (lineCount, theoremCount sync)

@@ -464,8 +464,8 @@ theorem intPolyL1_pos {f : ℤ[X]} (hf : f ≠ 0) : 0 < intPolyL1 f := by
   have hcoeff : f.coeff i ≠ 0 := Polynomial.mem_support_iff.mp hi
   have hpos : 0 < (f.coeff i).natAbs := Int.natAbs_pos.mpr hcoeff
   refine lt_of_lt_of_le hpos ?_
-  exact Finset.single_le_sum (f := fun j => (f.coeff j).natAbs)
-    (h := fun _ _ => Nat.zero_le _) hi
+  -- Lean 4.26: use fully positional args (named `(f := ...)` may shadow local `f : ℤ[X]`)
+  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi
 
 /-- "Homogenized integer evaluation": `intPolyHomogEval f r s = ∑ aᵢ · r^i · s^(d-i)`
     over `i ∈ f.support`, where d = f.natDegree. By construction,
@@ -476,6 +476,7 @@ def intPolyHomogEval (f : ℤ[X]) (r s : ℤ) : ℤ :=
 /-- Helper: `(∑ aᵢ).natAbs ≤ ∑ aᵢ.natAbs` for integer-valued sums over a Finset. -/
 private theorem natAbs_finset_sum_le {α : Type*} (s : Finset α) (φ : α → ℤ) :
     (∑ i ∈ s, φ i).natAbs ≤ ∑ i ∈ s, (φ i).natAbs := by
+  classical
   induction s using Finset.induction_on with
   | empty => simp
   | @insert a s ha ih =>
@@ -503,6 +504,8 @@ theorem intPolyHomogEval_cast_eq (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0) :
     rw [← pow_add, Nat.sub_add_cancel hi_le]
   rw [hpow_split, div_pow]
   have hsi_ne : ((s : ℚ))^i ≠ 0 := pow_ne_zero _ hs_q
+  -- Lean 4.26: `(algebraMap ℤ ℚ) z` is not definitionally `↑z`; reduce explicitly.
+  simp only [Int.algebraMap_eq_intCast]
   field_simp
   ring
 
@@ -616,7 +619,195 @@ theorem padicNorm_int_poly_eval_uniform_lb
     rw [show (1 : ℚ) / ((L : ℚ) * (H : ℚ)^d) = ((L : ℚ) * (H : ℚ)^d)⁻¹ from one_div _,
         ← one_div, ← one_div]
     exact one_div_le_one_div_of_le hN_natAbs_pos_q hN_natAbs_le_q
-  exact le_trans h_inv_le h_combined
+  -- Lean 4.26: `(max r.natAbs s.natAbs : ℚ)` may elaborate as `max ↑r.natAbs ↑s.natAbs`,
+  -- breaking direct `set H` substitution. Bridge via `Nat.cast_max`.
+  have h_inv_le' : (1 : ℚ) /
+      ((L : ℚ) * (max (r.natAbs : ℚ) (s.natAbs : ℚ))^d) ≤ ((N.natAbs : ℚ))⁻¹ := by
+    have heq : ((H : ℕ) : ℚ) = max (r.natAbs : ℚ) (s.natAbs : ℚ) := by
+      rw [hH_def]; push_cast; rfl
+    rw [← heq]
+    exact h_inv_le
+  exact le_trans h_inv_le' h_combined
+
+/-! ═══════════════════════════════════════════════════════════════════════════
+PART IV.10: ALGEBRAIC CASE OF THE BRIDGE
+For nonzero f : ℤ[X], cofactor g over ℚ_[p] with `f(x) = (x - α) · g(x)`, and
+a rational `r/s` with `f(r/s) ≠ 0` over ℚ, the chain
+  ‖α - r/s‖_p = ‖f(r/s)‖_p / ‖g(r/s)‖_p ≥ (1/(L·H^d)) / (M·H^(d-1))
+discharges the bridge bound for the algebraic case. The remaining case
+`f(r/s) = 0 ∧ r/s ≠ α` (rational roots of f distinct from α) is handled
+separately and is the only remaining obstruction to a sorry/axiom-free proof.
+═══════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Algebraic case of the p-adic Liouville bridge** (Session 13, Part IV.10).
+
+    Hypotheses:
+    - `f ≠ 0` : the integer polynomial under consideration is nonzero.
+    - `g : Polynomial ℚ_[p]` with `g ≠ 0` : the cofactor.
+    - `g.natDegree + 1 ≤ f.natDegree` : the natural degree relation arising
+      from `f.map alg = (X - C α) · g` over ℚ_[p].
+    - `heval` : the evaluation identity `(f.map alg).eval x = (x - α) · g.eval x`.
+    - `s ≠ 0`, `α ≠ (r:ℚ_[p])/s` : the bridge's r, s preconditions.
+    - `f.eval (r/s) ≠ 0 over ℚ` : the **algebraic case** assumption.
+
+    Conclusion:
+      `1 / (intPolyL1 f · coeffNormSum p g) / max(|r|,|s|)^(2 · f.natDegree) ≤
+        ‖α - (r:ℚ_[p])/s‖`.
+
+    Proof chain (all ingredients are now in-file, no axioms used):
+    1. `(f.map alg).eval ((r:ℚ_[p])/s) = ((f.map alg').eval ((r:ℚ)/s) : ℚ_[p])`
+       via `padic_eval_int_poly_cast` (Part IV.5).
+    2. `‖(f.map alg).eval ((r:ℚ_[p])/s)‖ = padicNorm p ((f.map alg').eval ((r:ℚ)/s))`
+       via `norm_rat_eq_padicNorm` (Part IV.5).
+    3. `(f.map alg).eval ((r:ℚ_[p])/s) ≠ 0` (rational eval lifts via injectivity).
+    4. `g.eval ((r:ℚ_[p])/s) ≠ 0` from `heval` and `α ≠ r/s`.
+    5. `‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖` from `heval` + `norm_mul` + `norm_neg`.
+    6. `‖f(r/s)‖ ≥ 1/(L · H^d)` via Part IV.9 (`padicNorm_int_poly_eval_uniform_lb`).
+    7. `‖g(r/s)‖ ≤ M · H^(g.natDegree)` via Part IV.8
+       (`padic_polynomial_eval_norm_bound`).
+    8. Combine: `‖α - r/s‖ ≥ 1/(L · M · H^(d + g.natDegree))`.
+    9. Weaken: `H^(d + g.natDegree) ≤ H^(2d)` since `H ≥ 1` and
+       `d + g.natDegree ≤ 2d` (from `hg_deg_le`). -/
+theorem padic_liouville_bridge_algebraic_case
+    (α : ℚ_[p]) (f : ℤ[X]) (hf_ne : f ≠ 0)
+    (g : Polynomial ℚ_[p]) (hg_ne : g ≠ 0)
+    (hg_deg_le : g.natDegree + 1 ≤ f.natDegree)
+    (heval : ∀ x : ℚ_[p],
+      (f.map (algebraMap ℤ ℚ_[p])).eval x = (x - α) * g.eval x)
+    (r s : ℤ) (hs : s ≠ 0)
+    (hαne : α ≠ (r : ℚ_[p]) / s)
+    (hf_eval_ne_q : (f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) ≠ 0) :
+    1 / ((intPolyL1 f : ℝ) * coeffNormSum p g) /
+        (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤
+      ‖α - (r : ℚ_[p]) / s‖ := by
+  set d := f.natDegree with hd_def
+  set H : ℝ := (max r.natAbs s.natAbs : ℝ) with hH_def
+  set L : ℝ := (intPolyL1 f : ℝ) with hL_def
+  set M : ℝ := coeffNormSum p g with hM_def
+  -- L > 0
+  have hL_pos_n : 0 < intPolyL1 f := intPolyL1_pos hf_ne
+  have hL_pos : 0 < L := by rw [hL_def]; exact_mod_cast hL_pos_n
+  -- M > 0 (from g ≠ 0 + nonneg sum of norms with at least one nonzero coeff)
+  have hM_pos : 0 < M := by
+    rw [hM_def, coeffNormSum]
+    refine Finset.sum_pos (fun i hi => ?_) (Polynomial.support_nonempty.mpr hg_ne)
+    rw [norm_pos_iff]
+    exact Polynomial.mem_support_iff.mp hi
+  -- H ≥ 1 from s ≠ 0 (so s.natAbs ≥ 1, hence max ≥ 1)
+  have hs_natAbs_pos : 0 < s.natAbs := Int.natAbs_pos.mpr hs
+  have hH_n_ge_one : 1 ≤ max r.natAbs s.natAbs :=
+    le_trans hs_natAbs_pos (Nat.le_max_right _ _)
+  have hH_one : (1 : ℝ) ≤ H := by rw [hH_def]; exact_mod_cast hH_n_ge_one
+  have hH_pos : 0 < H := lt_of_lt_of_le zero_lt_one hH_one
+  -- Power positivity
+  have hHpow_d_pos : 0 < H ^ d := pow_pos hH_pos _
+  have hHpow_2d_pos : 0 < H ^ (2 * d) := pow_pos hH_pos _
+  have hHpow_dg_pos : 0 < H ^ g.natDegree := pow_pos hH_pos _
+  have hLM_pos : 0 < L * M := mul_pos hL_pos hM_pos
+  have hLM_pow_d_pos : 0 < L * H ^ d := mul_pos hL_pos hHpow_d_pos
+  -- Step 1: Evaluation identity ℚ → ℚ_[p]
+  have h_eval_rat :
+      (f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s) =
+        (((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) : ℚ) : ℚ_[p]) := by
+    have hcast : ((r : ℚ_[p]) / s) = ((((r : ℚ) / s : ℚ) : ℚ_[p])) := by
+      push_cast; rfl
+    rw [hcast]
+    exact padic_eval_int_poly_cast p f ((r : ℚ) / s)
+  -- Step 2: Norm of ℚ_[p] eval = padicNorm of ℚ eval
+  have h_norm_eval :
+      ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ =
+        padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s)) := by
+    rw [h_eval_rat]
+    exact norm_rat_eq_padicNorm p _
+  -- Step 3: f(r/s) ≠ 0 in ℚ_[p]
+  have h_eval_ne_p : (f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s) ≠ 0 := by
+    intro h
+    rw [h_eval_rat] at h
+    have h_q : ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) : ℚ) = 0 := by
+      exact_mod_cast h
+    exact hf_eval_ne_q h_q
+  -- Step 4: g(r/s) ≠ 0 in ℚ_[p] (uses heval and α ≠ r/s)
+  have h_g_eval_ne : g.eval ((r : ℚ_[p]) / s) ≠ 0 := by
+    intro hg0
+    have hev := heval ((r : ℚ_[p]) / s)
+    rw [hg0, mul_zero] at hev
+    exact h_eval_ne_p hev
+  have h_g_norm_pos : 0 < ‖g.eval ((r : ℚ_[p]) / s)‖ := norm_pos_iff.mpr h_g_eval_ne
+  -- Step 5: ‖α - r/s‖ = ‖f(r/s)‖ / ‖g(r/s)‖
+  have h_div_eq : ‖α - (r : ℚ_[p]) / s‖ =
+      ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ /
+        ‖g.eval ((r : ℚ_[p]) / s)‖ := by
+    have h_neg : α - (r : ℚ_[p]) / s = -((r : ℚ_[p]) / s - α) := by ring
+    have heval_at := heval ((r : ℚ_[p]) / s)
+    rw [h_neg, norm_neg, heval_at, norm_mul, mul_div_assoc,
+        div_self h_g_norm_pos.ne', mul_one]
+  -- Step 6: ‖f(r/s)‖ ≥ 1/(L · H^d) (Part IV.9)
+  have h_lb_q : (1 : ℚ) /
+        ((intPolyL1 f : ℚ) * (max r.natAbs s.natAbs : ℚ) ^ d) ≤
+      padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s)) :=
+    padicNorm_int_poly_eval_uniform_lb p f hf_ne r s hs hf_eval_ne_q
+  have h_lb_r : 1 / (L * H ^ d) ≤
+      ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ := by
+    rw [h_norm_eval]
+    have hcast_le :
+        (((1 : ℚ) /
+            ((intPolyL1 f : ℚ) * (max r.natAbs s.natAbs : ℚ) ^ d) : ℚ) : ℝ) ≤
+        ((padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s)) : ℚ) : ℝ) := by
+      exact_mod_cast h_lb_q
+    have h_lhs_eq :
+        (((1 : ℚ) /
+            ((intPolyL1 f : ℚ) * (max r.natAbs s.natAbs : ℚ) ^ d) : ℚ) : ℝ) =
+          1 / (L * H ^ d) := by
+      rw [hL_def, hH_def]; push_cast; ring
+    rw [h_lhs_eq] at hcast_le
+    exact_mod_cast hcast_le
+  -- Step 7: ‖g(r/s)‖ ≤ M · H^(g.natDegree) (Part IV.8)
+  have h_g_ub : ‖g.eval ((r : ℚ_[p]) / s)‖ ≤ M * H ^ g.natDegree := by
+    have hxH : ‖((r : ℚ_[p]) / s)‖ ≤ H := padic_norm_int_div_le_height p r s hs
+    exact padic_polynomial_eval_norm_bound p g ((r : ℚ_[p]) / s) H hH_one hxH
+  -- Step 8: Combine to get ‖α - r/s‖ ≥ 1/(L·M·H^(d + g.natDegree))
+  -- (Lean 4.26: avoid `div_le_div_iff` — use `div_le_iff₀` instead.)
+  have h_M_pos_dg : 0 < M * H ^ g.natDegree := mul_pos hM_pos hHpow_dg_pos
+  have h_α_nn : 0 ≤ ‖α - (r : ℚ_[p]) / s‖ := norm_nonneg _
+  -- Identity from Step 5: ‖α - r/s‖ · ‖g(r/s)‖ = ‖f(r/s)‖
+  have h_eq_mul : ‖α - (r : ℚ_[p]) / s‖ * ‖g.eval ((r : ℚ_[p]) / s)‖ =
+      ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ := by
+    rw [h_div_eq, div_mul_cancel₀ _ h_g_norm_pos.ne']
+  -- Cross-multiplied bound: 1/(L·H^d) ≤ ‖α - r/s‖ · (M·H^dg)
+  have h_cross : 1 / (L * H ^ d) ≤ ‖α - (r : ℚ_[p]) / s‖ * (M * H ^ g.natDegree) := by
+    calc 1 / (L * H ^ d)
+        ≤ ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ := h_lb_r
+      _ = ‖α - (r : ℚ_[p]) / s‖ * ‖g.eval ((r : ℚ_[p]) / s)‖ := h_eq_mul.symm
+      _ ≤ ‖α - (r : ℚ_[p]) / s‖ * (M * H ^ g.natDegree) :=
+          mul_le_mul_of_nonneg_left h_g_ub h_α_nn
+  -- Convert to the divided form via `div_le_iff₀`.
+  have h_intermediate : 1 / (L * H ^ d) / (M * H ^ g.natDegree) ≤
+      ‖α - (r : ℚ_[p]) / s‖ :=
+    (div_le_iff₀ h_M_pos_dg).mpr h_cross
+  -- Step 9: Simplify (1/(L·H^d)) / (M·H^dg) = 1/(L·M·H^(d+dg))
+  have h_simp_lhs : 1 / (L * H ^ d) / (M * H ^ g.natDegree) =
+      1 / (L * M * H ^ (d + g.natDegree)) := by
+    rw [div_div, pow_add]
+    ring_nf
+  rw [h_simp_lhs] at h_intermediate
+  -- Step 10: weaken H^(d+dg) ≤ H^(2d) (since d + dg ≤ 2d, H ≥ 1)
+  have h_dg_2d : d + g.natDegree ≤ 2 * d := by omega
+  have h_pow_le : H ^ (d + g.natDegree) ≤ H ^ (2 * d) :=
+    pow_le_pow_right₀ hH_one h_dg_2d
+  have h_pow_d_dg_pos : 0 < H ^ (d + g.natDegree) := pow_pos hH_pos _
+  have h_LM_pow_d_dg_pos : 0 < L * M * H ^ (d + g.natDegree) :=
+    mul_pos hLM_pos h_pow_d_dg_pos
+  have h_LM_pow_le : L * M * H ^ (d + g.natDegree) ≤ L * M * H ^ (2 * d) :=
+    mul_le_mul_of_nonneg_left h_pow_le hLM_pos.le
+  have h_inv_le : 1 / (L * M * H ^ (2 * d)) ≤ 1 / (L * M * H ^ (d + g.natDegree)) :=
+    one_div_le_one_div_of_le h_LM_pow_d_dg_pos h_LM_pow_le
+  have h_final : 1 / (L * M * H ^ (2 * d)) ≤ ‖α - (r : ℚ_[p]) / s‖ :=
+    le_trans h_inv_le h_intermediate
+  -- Match the goal: 1/(L·M) / H^(2d) = 1/(L·M·H^(2d))
+  have h_goal_simp : 1 / (L * M) / H ^ (2 * d) = 1 / (L * M * H ^ (2 * d)) := by
+    rw [div_div]
+  rw [h_goal_simp]
+  exact h_final
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
