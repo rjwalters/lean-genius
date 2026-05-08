@@ -281,6 +281,22 @@ theorem lcmRange_dvd_prod_prime_powers (n : ℕ) :
       le_trans (Nat.le_of_dvd hm_pos hpow_dvd) hm_le
     exact Nat.le_log_of_pow_le hp_prime.one_lt hpow_le_n
 
+/-- **Chebyshev's prime-power decomposition** (full equality):
+    `lcm(1,...,n) = ∏_{p prime ≤ n} p^⌊log_p n⌋`.
+
+    Antisymmetric combination of the two divisibility theorems:
+    - `prod_prime_powers_dvd_lcmRange` (forward direction; Iter 7),
+    - `lcmRange_dvd_prod_prime_powers` (reverse direction; Iter 8).
+
+    With this equality in hand, bounding `lcmRange n` reduces to bounding
+    each maximal prime power `p ^ ⌊log_p n⌋` and summing logarithmically:
+    Hanson's bound `lcmRange n ≤ 3 ^ n` becomes the Chebyshev-type
+    prime-counting inequality `∑_{p ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3`. -/
+theorem lcmRange_eq_prod_prime_powers (n : ℕ) :
+    lcmRange n = ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, p ^ Nat.log p n :=
+  Nat.dvd_antisymm (lcmRange_dvd_prod_prime_powers n)
+    (prod_prime_powers_dvd_lcmRange n)
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
