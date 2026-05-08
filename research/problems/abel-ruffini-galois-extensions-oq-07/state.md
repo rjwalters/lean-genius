@@ -2,9 +2,58 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T19:45:00Z
-**Iteration**: 11 (symmetric (1,2) shape, axiom-free, 3 new theorems)
+**Iteration**: 11.5 (S10 disjointness ingredient; 1 new private helper lemma)
 
-## S11 (this session, researcher-11, full implementation)
+## S11.5 (this session, researcher-3, S10 disjointness ingredient)
+
+S11 (PR #17313) merged. The lone outstanding sorry is `sylow_two_unique_when_n3_four`
+in S10's element-counting closure.
+
+S11.5 (this session) extracts the **first ingredient** of the S10 element-count
+as a self-contained private helper, advancing the proof toward closure without
+touching the S10 sorry itself:
+
+* `sylow_prime_order_disjoint_of_ne` (~30 lines, no new sorries):
+  for any prime `p` and any pair of Sylow `p`-subgroups `Q ≠ Q'` of a finite
+  group `G` with `|Q| = |Q'| = p`, the intersection `Q ⊓ Q'` is the trivial
+  subgroup `⊥`. Proof:
+
+    1. `|Q ⊓ Q'| ∣ |Q| = p` (prime), so card is `1` or `p`
+       (`Subgroup.card_dvd_card_of_le` + `Nat.Prime.eq_one_or_self_of_dvd`).
+    2. Case `card = 1`: `Q ⊓ Q' = ⊥` directly
+       (`Subgroup.card_eq_one_iff_eq_bot`).
+    3. Case `card = p`: `Q ⊓ Q' = Q` (`Subgroup.eq_of_le_of_card_le` with
+       `inf_le_left` + the cardinality coincidence). Then `Q ≤ Q'` (via
+       `inf_le_right`), and since `|Q| = |Q'|`, also `Q = Q'` as subgroups,
+       which lifts to `Sylow.ext`-equality at the `Sylow` level — contradicting
+       `hne`.
+
+This is the ingredient required for S10's set-theoretic decomposition
+`{g : G | g^3 = 1} = {e} ⊔ ⊔ᵢ (Qᵢ \ {e})`. With four distinct Sylow
+3-subgroups (`n_3 = 4` in `|G| = 12`), pairwise applications of
+`sylow_prime_order_disjoint_of_ne` give the disjointness needed for the
+cardinality identity `|union| = 1 + 4·2 = 9`. The remaining S10 work is:
+
+* element-set partition lemma (~25–35 lines): the union of Sylow 3-subgroups
+  equals `{g : G | g^3 = 1}` (containment via `g^3 = 1 → ⟨g⟩ ≤ Sylow 3`,
+  containment via `g ∈ Sylow 3 → g^3 = 1`).
+* `Set.ncard_biUnion_disjoint` to convert pairwise-disjoint to total card.
+* Sylow-2 nontrivials = `G \ {g^3 = 1}` (similar set-equality + card-3 lemma).
+* Conclude `Subsingleton (Sylow 2 G)` via uniqueness of the complement.
+
+**Counts**: lineCount `1030 → 1077` (+47, including ~17 lines of docstring),
+theoremCount `23 → 24` (+1: the new private lemma), substantiveTheoremCount
+unchanged (helper, not a Burnside case). Sorries unchanged at 1. Axioms
+unchanged at 1.
+
+**Build status**: pending. The proof uses standard Mathlib API
+(`Subgroup.card_dvd_card_of_le`, `Subgroup.card_eq_one_iff_eq_bot`,
+`Subgroup.eq_of_le_of_card_le`, `Sylow.ext`, `Nat.Prime.eq_one_or_self_of_dvd`)
+already exercised elsewhere in the file. If any specific name has drifted
+in current Mathlib (these are stable lemmas, but recent reorganizations
+sometimes rename), the doctor or next session can patch.
+
+## S11 (researcher-11, merged via PR #17313)
 
 S7 (PR #17114), S7.5 (PR #17155), S8 spec (PR #17180), and S9 (PR #17270)
 are merged. S9 implemented the bulk of the `(a, b) = (2, 1)` shape modulo
