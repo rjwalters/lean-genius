@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 387,
+    "lineCount": 464,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -73,10 +73,13 @@
       "symBUDim_two_four_unconditional: concrete axiom-free instance symBUDim 2 4 = 3",
       "largestPrimeBelow_eq_self_iff_prime: fixed-point characterization (n ≥ 2): largestPrimeBelow n = n ↔ Nat.Prime n. Forward direction uses largestPrimeBelow_isPrime; backward is largestPrimeBelow_self_of_prime",
       "largestPrimeBelow_lt_of_not_prime: strict bound for composite n (corollary of the iff): when n ≥ 2 is not prime, largestPrimeBelow n < n",
-      "symBUDim_{six,seven,eight}_lower_unconditional: axiom-free Yang-Borsuk lower bounds 2k - 1 ≤ symBUDim n (2k) for n ∈ {6,7,8} via direct application of symBUDim_even_lower"
+      "symBUDim_{six,seven,eight}_lower_unconditional: axiom-free Yang-Borsuk lower bounds 2k - 1 ≤ symBUDim n (2k) for n ∈ {6,7,8} via direct application of symBUDim_even_lower",
+      "largestPrimeBelow_mono: monotonicity of the prime selector — n ≤ m → largestPrimeBelow n ≤ largestPrimeBelow m. Structural prerequisite for compatibility of the symBUDim_eq_largestPrime axiom with the parent's sym_has_smaller_sym monotonicity (stretch goal in the research roadmap). Handles n < 2 case via the fact that findGreatest returns 0 when no prime ≤ 1 exists",
+      "largestPrimeBelow_eight_le_eleven: concrete monotonicity instance",
+      "symBUDim_{nine,ten,eleven,twelve}_lower_unconditional: extended axiom-free lower bounds 2k - 1 ≤ symBUDim n (2k) for n ∈ {9,10,11,12}, covering both prime (n=11) and composite (n=9=3², n=10, n=12) cases"
     ],
     "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **The n=2 instance of this axiom is redundant** — `symBUDim_eq_largestPrime_two_unconditional` proves it axiom-free from the parent's `symBUDim_two` axiom + `largestPrimeBelow_two`. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime` (counted in the parent gallery entries).",
-    "theoremCount": 21,
+    "theoremCount": 27,
     "definitionCount": 1
   },
   "overview": {
@@ -200,10 +203,10 @@
       "BorsukUlamOQ02OQ01"
     ],
     "namespace": "BorsukUlamSymPrime",
-    "lineCount": 387,
+    "lineCount": 464,
     "axiomCount": 1,
-    "theoremCount": 23,
-    "substantiveTheoremCount": 21,
+    "theoremCount": 29,
+    "substantiveTheoremCount": 27,
     "definitionCount": 1,
     "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
     "sorries": 0

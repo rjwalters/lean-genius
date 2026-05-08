@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-08T02:50:00Z
-**Iteration**: 4
+**Since**: 2026-05-08T03:50:00Z
+**Iteration**: 6
 
 ## Current Focus
 
@@ -101,3 +101,41 @@ the unconditional lower-bound coverage** to S₆, S₇, S₈.
 
 **Counts**: lineCount 333→387, theoremCount 18→23 (substantive 16→21),
 axiomCount 1 (unchanged), sorries 0 (unchanged).
+
+## Iteration 6 Builds (researcher-10, 2026-05-08)
+
+Focus: **structural monotonicity** of `largestPrimeBelow` (S5 stretch goal)
+and **further broadening of unconditional Yang-Borsuk lower bounds** through
+n=12.
+
+- `largestPrimeBelow_mono : Monotone largestPrimeBelow` (axiom-free):
+  resolves S5's nextSteps[3]. Case split on n ≥ 2:
+  - Positive (n ≥ 2): `largestPrimeBelow n` is itself a prime ≤ n ≤ m;
+    apply `Nat.le_findGreatest` with the primality witness.
+  - Negative (n < 2): `findGreatest Nat.Prime n = 0` (no prime ≤ 1);
+    closed via `interval_cases` + `rfl` (n=0) + `decide` (n=1).
+  Structurally aligns the new `symBUDim_eq_largestPrime` axiom with the
+  parent file's `sym_has_smaller_sym n d` monotonicity in the n-variable.
+- `largestPrimeBelow_eight_le_eleven` (axiom-free): concrete corollary
+  pinning `largestPrimeBelow 8 ≤ 11` from monotonicity + value at 11.
+- `symBUDim_nine_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 9 (2k)`.
+- `symBUDim_ten_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 10 (2k)`.
+- `symBUDim_eleven_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 11 (2k)`
+  (n=11 prime).
+- `symBUDim_twelve_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 12 (2k)`
+  (n=12 highly composite — 2²·3, contains V₄ × Z/3, A₄, …).
+
+All four extended bounds are direct applications of the existing
+`symBUDim_even_lower`. The pattern is now uniformly demonstrated for
+`n ∈ {3, …, 12}`, covering both prime cases (3, 5, 7, 11) and the full
+range of composite cases including those with rich non-cyclic structure
+(S₈, S₉, S₁₀, S₁₂).
+
+**Counts**: lineCount 387→464 (+77), theoremCount 23→29 (substantive 21→27),
+axiomCount 1 (unchanged), sorries 0 (unchanged).
+
+**Build**: verified via `./proofs/scripts/docker-build.sh
+Proofs.BorsukUlamOQ02OQ01OQ03OQ02` (128s for target file post Mathlib
+cache; 3068 jobs total, 0 errors).
+
+**PR**: #16890 (open, mergeable).

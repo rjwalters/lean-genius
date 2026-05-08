@@ -204,6 +204,49 @@ theorem largestPrimeBelow_in_bertrand_window (n : ℕ) (hn : 2 ≤ n) :
     n / 2 < largestPrimeBelow n ∧ largestPrimeBelow n ≤ n :=
   ⟨n_div_two_lt_largestPrimeBelow n hn, largestPrimeBelow_le n⟩
 
+/-- **Monotonicity of `largestPrimeBelow`**: if `n ≤ m`, then
+    `largestPrimeBelow n ≤ largestPrimeBelow m`.
+
+    Proof: case split on `n ≥ 2`.
+    - If `n ≥ 2`: `largestPrimeBelow n` is prime (by `largestPrimeBelow_isPrime`)
+      and ≤ `n` ≤ `m`, so `largestPrimeBelow n ≤ findGreatest Nat.Prime m`
+      by maximality of `findGreatest`.
+    - If `n < 2`: `findGreatest Nat.Prime n = 0` since no prime is ≤ 1, so
+      the bound is trivial.
+
+    This lemma is the structural prerequisite for compatibility of the
+    `symBUDim_eq_largestPrime` axiom with the parent's
+    `sym_has_smaller_sym n d` monotonicity (stretch goal in `nextSteps[3]`
+    of the project file). -/
+theorem largestPrimeBelow_mono : Monotone largestPrimeBelow := by
+  intro n m hnm
+  by_cases hn : 2 ≤ n
+  · -- n ≥ 2: largestPrimeBelow n is itself a prime ≤ m
+    have hp_prime : Nat.Prime (largestPrimeBelow n) := largestPrimeBelow_isPrime n hn
+    have hp_le_m : largestPrimeBelow n ≤ m := (largestPrimeBelow_le n).trans hnm
+    unfold largestPrimeBelow
+    exact Nat.le_findGreatest hp_le_m hp_prime
+  · -- n < 2: largestPrimeBelow n = 0, hence the bound is trivial
+    push_neg at hn
+    have h_eq_zero : largestPrimeBelow n = 0 := by
+      unfold largestPrimeBelow
+      interval_cases n
+      · rfl
+      · -- n = 1: only candidate k ≤ 1 is k ∈ {0,1}, neither prime
+        decide
+    rw [h_eq_zero]
+    exact Nat.zero_le _
+
+/-- **Concrete monotonicity instance**: `largestPrimeBelow 8 ≤ largestPrimeBelow 11`.
+
+    Together with `largestPrimeBelow_seven : largestPrimeBelow 7 = 7` and
+    `largestPrimeBelow 11 = 11` (since 11 is prime), this confirms the
+    monotone progression `_ 7 = 7, _ 8 = 7, _ 9 = 7, _ 10 = 7, _ 11 = 11`
+    over the dyadic Bertrand window from 7 to 11. -/
+theorem largestPrimeBelow_eight_le_eleven :
+    largestPrimeBelow 8 ≤ largestPrimeBelow 11 :=
+  largestPrimeBelow_mono (by norm_num : (8 : ℕ) ≤ 11)
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART VII: Axiom-free consistency at n = 2 (and at any prime n)
 -- ═══════════════════════════════════════════════════════════════════════
@@ -316,6 +359,33 @@ theorem symBUDim_eight_lower_unconditional (k : ℕ) (hk : 0 < k) :
     2 * k - 1 ≤ symBUDim 8 (2 * k) :=
   symBUDim_even_lower 8 k (by norm_num) hk
 
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 9 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=9 (composite, 3²).
+    Note: `largestPrimeBelow 9 = 7`. -/
+theorem symBUDim_nine_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 9 (2 * k) :=
+  symBUDim_even_lower 9 k (by norm_num) hk
+
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 10 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=10.
+    Note: `largestPrimeBelow 10 = 7`. -/
+theorem symBUDim_ten_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 10 (2 * k) :=
+  symBUDim_even_lower 10 k (by norm_num) hk
+
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 11 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=11 (prime). -/
+theorem symBUDim_eleven_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 11 (2 * k) :=
+  symBUDim_even_lower 11 k (by norm_num) hk
+
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 12 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=12.
+    Note: `largestPrimeBelow 12 = 11`. -/
+theorem symBUDim_twelve_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 12 (2 * k) :=
+  symBUDim_even_lower 12 k (by norm_num) hk
+
 /-
 ## Summary
 
@@ -352,6 +422,10 @@ theorem symBUDim_eight_lower_unconditional (k : ℕ) (hk : 0 < k) :
   `(n/2, n]` regardless of how composite n is.
 - `largestPrimeBelow_in_bertrand_window` — packages the Bertrand lower
   bound with the trivial upper bound `≤ n`.
+- `largestPrimeBelow_mono` — monotonicity in n: `n ≤ m → lpb n ≤ lpb m`.
+  Structural prerequisite for compatibility with parent's
+  `sym_has_smaller_sym` monotonicity.
+- `largestPrimeBelow_eight_le_eleven` — concrete monotonicity instance.
 
 ### Theorems requiring `symBUDim_eq_largestPrime` axiom
 - `symBUDim_even_formula` — closed form on even d.
@@ -360,7 +434,9 @@ theorem symBUDim_eight_lower_unconditional (k : ℕ) (hk : 0 < k) :
 ### Concrete instances (axiom-free)
 - `symBUDim_five_lower_unconditional`, `symBUDim_two_four_unconditional`,
   `symBUDim_six_lower_unconditional`, `symBUDim_seven_lower_unconditional`,
-  `symBUDim_eight_lower_unconditional`.
+  `symBUDim_eight_lower_unconditional`,
+  `symBUDim_nine_lower_unconditional`, `symBUDim_ten_lower_unconditional`,
+  `symBUDim_eleven_lower_unconditional`, `symBUDim_twelve_lower_unconditional`.
 
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
@@ -382,6 +458,7 @@ theorem symBUDim_eight_lower_unconditional (k : ℕ) (hk : 0 < k) :
 #check @largestPrimeBelow_self_of_prime
 #check @largestPrimeBelow_eq_self_iff_prime
 #check @largestPrimeBelow_lt_of_not_prime
+#check @largestPrimeBelow_mono
 #check @symBUDim_eq_largestPrime_two_unconditional
 
 end BorsukUlamSymPrime
