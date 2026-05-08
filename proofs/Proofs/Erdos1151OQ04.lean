@@ -2085,6 +2085,143 @@ private lemma chebyshev_quarter_floor_log_asymp_lb
   push_cast at h_log_ineq
   linarith
 
+/-- **(Step 7a/asymptotic side) Large-`n` harmonic lower bound for `θ ∈ (0, π/2]`.**
+
+    Composes the Step 7 helpers into a clean asymptotic bound: for any
+    `θ ∈ (0, π/2]` whose cosine avoids all Chebyshev nodes,
+
+      `∃ N₀, ∀ n ≥ N₀,  C₁ · n · log(n+1) ≤ S(θ, n)`
+
+    with `C₁ = sin(θ/2) / (2π)`. This is the **`hlarge` hypothesis** consumed
+    by `trig_sum_combine_small_large_const` (Step 7c, in flight as PR #17457):
+    feeding this lemma to that helper yields the unified
+    `C · n · log(n+1) ≤ S(θ, n)` for all `n ≥ 1`, closing the asymptotic side
+    of `trig_sum_harmonic_lb`'s θ ∈ (0, π/2] branch. The general
+    `θ ∈ (0, π)` branch reduces to this case via `trig_sum_reindex_symmetry`
+    (S18, merged): `S(θ, n) = S(π - θ, n)`, and `π - θ ∈ (0, π/2)` when
+    `θ ∈ [π/2, π)`.
+
+    **Proof sketch** (composing already-merged helpers):
+
+    1. `exists_nearest_chebyshev_angle` → `k₀ : Fin n` with
+       `|θ - φ_{k₀}| ≤ π/(2n)`.
+    2. `m := ⌊n·θ/(4π)⌋` satisfies `(m : ℝ) ≤ n·θ/(4π)` (`Nat.floor_le`)
+       and `n·θ/(4π) - 1 ≤ (m : ℝ)` (`Nat.lt_floor_add_one`).
+    3. `chebyshev_quarter_floor_hm_le_and_cap_max` (S23) → both `hm_le`
+       and `hcap_max` simultaneously.
+    4. `chebyshev_h_interior_of_close_and_max_index_cap` (S22) → `h_interior`
+       (with `d := θ`) from `hk₀_close` + `hcap_max`.
+    5. `trig_sum_subsum_log_lb` (S21) →
+       `sin(θ/2) · (2n/π) · ((1/2)·log(m+2) − 1) ≤ S(θ, n)` (mixed-cast form).
+    6. `chebyshev_quarter_floor_log_asymp_lb` (S24) →
+       `(1/4)·log(n+1) ≤ (1/2)·log(m+2) − 1` for `n ≥ N₀_log`.
+    7. Multiply by the nonnegative factor `sin(θ/2) · (2n/π)`:
+       `sin(θ/2) · (2n/π) · (1/4)·log(n+1) ≤ S(θ, n)`.
+    8. Algebra: LHS `= (sin(θ/2)/(2π)) · n · log(n+1)`. Take
+       `C₁ := sin(θ/2)/(2π)` and `N₀ := max N₀_log 4` (the `4` for S23's
+       `n ≥ 4` hypothesis).
+    9. Cast bridge from mixed `(2 * (k.val : ℝ) + 1)` to outer
+       `(2 * k.val + 1 : ℝ)` form via `Finset.sum_congr` + `push_cast` + `ring`
+       (matches `trig_sum_small_n_const` (S22) and `trig_sum_harmonic_lb`
+       targets exactly).
+
+    Positivity: `sin(θ/2) > 0` since `θ/2 ∈ (0, π/4] ⊂ (0, π)`; `2π > 0`. -/
+private lemma trig_sum_harmonic_lb_asymp_le_half_pi
+    (θ : ℝ) (hθ_pos : 0 < θ) (hθ_le : θ ≤ Real.pi / 2)
+    (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
+    ∃ (N₀ : ℕ) (C₁ : ℝ), 0 < C₁ ∧ ∀ n : ℕ, N₀ ≤ n →
+      C₁ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := by
+  have hπ_pos := Real.pi_pos
+  have hθ_lt_pi : θ < Real.pi := by linarith
+  have hθ_le_pi : θ ≤ Real.pi := by linarith
+  -- Positivity of `sin(θ/2)` since `θ/2 ∈ (0, π/4] ⊂ (0, π)`.
+  have hsin_pos : 0 < Real.sin (θ / 2) := by
+    apply Real.sin_pos_of_pos_of_lt_pi
+    · linarith
+    · linarith
+  -- `C₁ := sin(θ/2) / (2π) > 0`.
+  set C₁ : ℝ := Real.sin (θ / 2) / (2 * Real.pi) with hC₁_def
+  have hC₁_pos : 0 < C₁ := by
+    rw [hC₁_def]; exact div_pos hsin_pos (by linarith)
+  -- Get `N₀_log` from S24.
+  obtain ⟨N₀_log, hN₀_log⟩ := chebyshev_quarter_floor_log_asymp_lb θ hθ_pos
+  -- `N₀ := max N₀_log 4` (the `4` for S23's `n ≥ 4` hypothesis).
+  refine ⟨max N₀_log 4, C₁, hC₁_pos, ?_⟩
+  intro n hn
+  have hn_log : N₀_log ≤ n := le_of_max_le_left hn
+  have hn_4 : 4 ≤ n := le_of_max_le_right hn
+  have hn_pos : 0 < n := by omega
+  have hn_real_pos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn_pos
+  -- Step 1: nearest-node closeness.
+  obtain ⟨k₀, hk₀_close⟩ := exists_nearest_chebyshev_angle n hn_pos hθ_pos hθ_lt_pi
+  -- Step 2: `m := ⌊n·θ/(4π)⌋ : ℕ`. `Nat.floor_le` and `Nat.lt_floor_add_one`
+  -- bracket `m` between `n·θ/(4π) − 1` (S24's hypothesis) and `n·θ/(4π)`
+  -- (S23's hypothesis).
+  have h4π_pos : (0 : ℝ) < 4 * Real.pi := by linarith
+  have hy_pos : (0 : ℝ) < (n : ℝ) * θ / (4 * Real.pi) :=
+    div_pos (mul_pos hn_real_pos hθ_pos) h4π_pos
+  set m : ℕ := ⌊(n : ℝ) * θ / (4 * Real.pi)⌋₊ with hm_def
+  have hm_real_le : (m : ℝ) ≤ (n : ℝ) * θ / (4 * Real.pi) := Nat.floor_le hy_pos.le
+  have hm_lt_succ : (n : ℝ) * θ / (4 * Real.pi) < (m : ℝ) + 1 :=
+    Nat.lt_floor_add_one ((n : ℝ) * θ / (4 * Real.pi))
+  have hm_real_ge : (n : ℝ) * θ / (4 * Real.pi) - 1 ≤ (m : ℝ) := by linarith
+  -- Step 3: apply S23 to obtain `hm_le` and `hcap_max` simultaneously.
+  obtain ⟨hm_le, hcap_max⟩ :=
+    chebyshev_quarter_floor_hm_le_and_cap_max n hn_4 θ hθ_pos hθ_le k₀ hk₀_close m
+      hm_real_le
+  -- Step 4: apply S22 to obtain `h_interior` (with `d := θ`).
+  have h_interior :=
+    chebyshev_h_interior_of_close_and_max_index_cap n hn_pos θ hθ_pos k₀ hk₀_close m
+      hcap_max
+  -- Step 5: apply S21 to obtain the log lower bound (mixed-cast sum form).
+  have hbound_mixedcast :
+      Real.sin (θ / 2) * (2 * (n : ℝ)) / Real.pi *
+        ((1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 2) - 1) ≤
+      ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                   |Real.cos θ - chebyshevNode n k| :=
+    trig_sum_subsum_log_lb n hn_pos θ θ hθ_pos hθ_le_pi (hne n hn_pos) k₀ hk₀_close m
+      hm_le h_interior
+  -- Step 6: apply S24 to convert `(1/2)·log(m+2) − 1 ≥ (1/4)·log(n+1)`.
+  have hlog_le : (1 : ℝ) / 4 * Real.log ((n : ℝ) + 1) ≤
+                 (1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 2) - 1 :=
+    hN₀_log n hn_log m hm_real_ge
+  -- Step 7: multiply by the nonneg factor `sin(θ/2)·(2n/π) ≥ 0`.
+  have hpref_nn : 0 ≤ Real.sin (θ / 2) * (2 * (n : ℝ)) / Real.pi := by
+    apply div_nonneg
+    · exact mul_nonneg hsin_pos.le (by linarith)
+    · linarith
+  -- Step 8: algebraic identity `C₁ · n · log(n+1) = sin(θ/2)·(2n/π)·(1/4)·log(n+1)`.
+  have hC₁_eq :
+      C₁ * ((n : ℝ) * Real.log ((n : ℝ) + 1)) =
+      Real.sin (θ / 2) * (2 * (n : ℝ)) / Real.pi *
+        ((1 : ℝ) / 4 * Real.log ((n : ℝ) + 1)) := by
+    rw [hC₁_def]
+    field_simp
+    ring
+  -- Step 9: cast bridge mixed → outer.
+  have hcast :
+      (∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                    |Real.cos θ - chebyshevNode n k|) =
+      (∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                    |Real.cos θ - chebyshevNode n k|) := by
+    refine Finset.sum_congr rfl fun k _ => ?_
+    congr 2
+    push_cast
+    ring
+  -- Final calc chain.
+  calc C₁ * ((n : ℝ) * Real.log ((n : ℝ) + 1))
+      = Real.sin (θ / 2) * (2 * (n : ℝ)) / Real.pi *
+          ((1 : ℝ) / 4 * Real.log ((n : ℝ) + 1)) := hC₁_eq
+    _ ≤ Real.sin (θ / 2) * (2 * (n : ℝ)) / Real.pi *
+          ((1 : ℝ) / 2 * Real.log ((↑m : ℝ) + 2) - 1) :=
+        mul_le_mul_of_nonneg_left hlog_le hpref_nn
+    _ ≤ ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := hbound_mixedcast
+    _ = ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := hcast
+
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
     ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
