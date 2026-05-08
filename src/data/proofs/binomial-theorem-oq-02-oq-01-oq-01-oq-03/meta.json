@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 445,
+    "lineCount": 512,
     "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. The Session-2 `standardNormalCDF` opaque marker has been replaced (Session 6) by a concrete `noncomputable def` integrating Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; this removes that declaration from the assumption count and adds four elementary structural lemmas (`standardNormalCDF_nonneg`, `standardNormalCDF_le_one`, `standardNormalCDF_mono`, `standardNormalCDF_continuous` [Session 7]) that together establish Φ is a *bona fide* continuous CDF on ℝ — every point is a continuity point, so the Portmanteau bridge that next session will build to discharge the axiom applies universally. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` was proved in Phase-3: it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
     "originalContributions": [
       "binomialCDF: concrete CDF of Binomial(n,p) as a finite sum of binomial PMF terms with a step indicator",
@@ -40,7 +40,7 @@
       "standardNormalCDF_eq_zero_plus_intervalIntegral (private, Session 7): bridge lemma — standardNormalCDF x = standardNormalCDF 0 + ∫ t in (0:ℝ)..x, gaussianPDFReal 0 1 t. Both ∫ Iic x and ∫ Iic 0 are limits of ∫ a..x and ∫ a..0 as a → atBot via MeasureTheory.intervalIntegral_tendsto_integral_Iic; for each a, ∫ a..x = ∫ a..0 + ∫ 0..x by intervalIntegral.integral_add_adjacent_intervals; uniqueness of limits (tendsto_nhds_unique) closes the equation",
       "standardNormalCDF_continuous (Session 7): Continuous standardNormalCDF — rewrite as standardNormalCDF 0 + intervalIntegral 0..x then apply MeasureTheory.Integrable.continuous_primitive (NoAtoms volume on ℝ). Final input to the Phase-4 Portmanteau bridge: every x ∈ ℝ is a continuity point of Φ, so weak convergence implies pointwise CDF convergence universally"
     ],
-    "theoremCount": 12,
+    "theoremCount": 14,
     "substantiveTheoremCount": 10,
     "definitionCount": 3
   },
@@ -62,9 +62,9 @@
       "BigOperators"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
-    "lineCount": 445,
+    "lineCount": 512,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "substantiveTheoremCount": 10,
     "duplicateTheorems": 0,
     "definitionCount": 3,
