@@ -692,6 +692,218 @@ axiom less load-bearing in practice.
   single-line corollaries; the four Case-A primes from Section 9
   (`p ∈ {11, 17, 23, 29}`) all admit axiom-free `ℚ_[p]`-solubility proofs. -/
 
+/-! ## Section 15: General Lift-z Hensel Theorem (Case-B subset)
+
+Section 13's `selmer_padic_solubility_caseA` lifts the `(0, 1, z)` projection of
+the Selmer cubic, covering primes whose Section 9 witness has the `(0, 1, z₀)`
+shape (`p ∈ {11, 17, 23, 29}`). Several Case-B primes
+(`p ≡ 1 (mod 3)`, `p ≥ 7`) admit different witness shapes, but for many of them
+the *same kind* of lift — fixing `(x, y) = (x₀, y₀) ∈ ℤ²` and Hensel-lifting `z`
+— still works, with a coefficient `c = 3·x₀³ + 4·y₀³` substituting for the bare
+constant `4` of Section 13.
+
+This section states the fully general lift-z theorem
+`selmer_padic_solubility_lift_z` and discharges the Case-B primes
+`p ∈ {13, 19, 31, 37}` as one-line corollaries. The remaining Case-B prime
+`p = 7` has Section-9 witness `(1, 1, 0)` with `z₀ = 0`, so the
+`IsCoprime (15·0² : ℤ) (7 : ℤ) = IsCoprime 0 7` hypothesis fails: lift-z is
+unavailable at `p = 7` and a complementary lift-x parametric theorem is needed
+in a later iteration. -/
+
+namespace HenselLiftZ
+
+open Polynomial
+
+/-- The univariate polynomial `G(z) = c + 5z³ ∈ ℤ[z]`, parametric in the
+    constant term `c`. Specialized to `c = 3·x₀³ + 4·y₀³` it becomes the
+    Selmer cubic with the `(x, y) = (x₀, y₀)` projection.
+    `Section 13.HenselCaseA.Gint` is exactly `G 4` (the `(0, 1, z)` slice). -/
+def G (c : ℤ) : Polynomial ℤ := C c + C 5 * X ^ 3
+
+private lemma G_derivative_eq (c : ℤ) : (G c).derivative = C 15 * X ^ 2 := by
+  unfold G
+  rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
+      derivative_X_pow]
+  push_cast
+  ring
+
+private lemma G_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
+    aeval a (G c) = (c : ℤ_[p]) + (5 : ℤ_[p]) * a ^ 3 := by
+  unfold G
+  rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  push_cast
+  ring
+
+private lemma G_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
+    aeval a (G c).derivative = (15 : ℤ_[p]) * a ^ 2 := by
+  rw [G_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  push_cast
+  ring
+
+end HenselLiftZ
+
+/-- **General lift-z Hensel theorem for the Selmer cubic.**
+
+    For any prime `p`, integer triple `(x₀, y₀, z₀)` with `(x₀, y₀) ≠ (0, 0)`,
+    and divisibility hypotheses
+    * `(p : ℤ) ∣ (3·x₀³ + 4·y₀³ + 5·z₀³)` — `(x₀, y₀, z₀)` is a mod-`p` zero
+      of the Selmer cubic,
+    * `IsCoprime (15·z₀² : ℤ) (p : ℤ)` — the `z`-derivative
+      `∂_z(3x³+4y³+5z³) = 15z²` is invertible mod `p` at `z₀`,
+
+    Mathlib's univariate Hensel lemma applied to
+    `HenselLiftZ.G (3·x₀³ + 4·y₀³)` lifts `z₀` to `zt ∈ ℤ_[p]` satisfying
+    `(3·x₀³ + 4·y₀³) + 5·zt³ = 0`. The triple
+    `((x₀ : ℚ_[p]), (y₀ : ℚ_[p]), (zt : ℚ_[p]))` is then a nontrivial
+    `ℚ_[p]`-zero of the Selmer cubic.
+
+    This generalizes Section 13's `selmer_padic_solubility_caseA` (which fixes
+    `x₀ = 0, y₀ = 1`) to any integer projection that fixes the `z`-coordinate
+    last. It dispatches Section 9's Case-B primes whose witness has nonzero
+    `z₀`: `p ∈ {13, 19, 31, 37}`. The Case-B prime `p = 7` has `z₀ = 0` and
+    is *not* covered (the coprimality hypothesis fails); a complementary
+    lift-x theorem is left for a future iteration. -/
+theorem selmer_padic_solubility_lift_z {p : ℕ} [Fact (Nat.Prime p)]
+    (x₀ y₀ z₀ : ℤ)
+    (h_xy_nontriv : x₀ ≠ 0 ∨ y₀ ≠ 0)
+    (h_root_div : (p : ℤ) ∣ (3 * x₀ ^ 3 + 4 * y₀ ^ 3 + 5 * z₀ ^ 3))
+    (h_deriv_coprime : IsCoprime (15 * z₀ ^ 2 : ℤ) (p : ℤ)) :
+    ∃ (x y z : ℚ_[p]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 := by
+  set c : ℤ := 3 * x₀ ^ 3 + 4 * y₀ ^ 3 with hc_def
+  have h_c_plus : c + 5 * z₀ ^ 3 = 3 * x₀ ^ 3 + 4 * y₀ ^ 3 + 5 * z₀ ^ 3 := by
+    rw [hc_def]
+  have h_div_total : (p : ℤ) ∣ (c + 5 * z₀ ^ 3) := by
+    rw [h_c_plus]; exact h_root_div
+  have h_aeval :
+      aeval ((z₀ : ℤ_[p])) (HenselLiftZ.G c) =
+        (((c + 5 * z₀ ^ 3 : ℤ)) : ℤ_[p]) := by
+    rw [HenselLiftZ.G_aeval]
+    push_cast
+    ring
+  have h_deriv :
+      aeval ((z₀ : ℤ_[p])) (HenselLiftZ.G c).derivative =
+        (((15 * z₀ ^ 2 : ℤ)) : ℤ_[p]) := by
+    rw [HenselLiftZ.G_derivative_aeval]
+    push_cast
+    ring
+  have h_norm_root :
+      ‖aeval ((z₀ : ℤ_[p])) (HenselLiftZ.G c)‖ < 1 := by
+    rw [h_aeval, PadicInt.norm_intCast_lt_one_iff]
+    exact_mod_cast h_div_total
+  have h_norm_deriv :
+      ‖aeval ((z₀ : ℤ_[p])) (HenselLiftZ.G c).derivative‖ = 1 := by
+    rw [h_deriv, PadicInt.norm_intCast_eq_one_iff]
+    exact h_deriv_coprime
+  have h_hensel :
+      ‖aeval ((z₀ : ℤ_[p])) (HenselLiftZ.G c)‖ <
+        ‖aeval ((z₀ : ℤ_[p])) (HenselLiftZ.G c).derivative‖ ^ 2 := by
+    rw [h_norm_deriv, one_pow]
+    exact h_norm_root
+  obtain ⟨zt, hz_root, _, _, _⟩ := hensels_lemma h_hensel
+  have hz_int : (c : ℤ_[p]) + 5 * zt ^ 3 = 0 := by
+    have heval := HenselLiftZ.G_aeval c zt
+    rw [heval] at hz_root
+    exact hz_root
+  refine ⟨(x₀ : ℚ_[p]), (y₀ : ℚ_[p]), (zt : ℚ_[p]), ?_, ?_⟩
+  · -- Nontriviality from `(x₀, y₀) ≠ (0, 0)` (using injectivity of ℤ → ℚ_[p]).
+    rcases h_xy_nontriv with hx | hy
+    · left
+      exact_mod_cast hx
+    · right; left
+      exact_mod_cast hy
+  · -- selmerPoly value: 3·x₀³ + 4·y₀³ + 5·zt³ = c + 5·zt³ = 0.
+    have hcast_zint : (c : ℚ_[p]) + 5 * (zt : ℚ_[p]) ^ 3 = 0 := by
+      have h := congrArg (fun w : ℤ_[p] => (w : ℚ_[p])) hz_int
+      push_cast at h
+      exact h
+    have h_c_cast :
+        ((c : ℤ) : ℚ_[p]) =
+          (3 : ℚ_[p]) * (x₀ : ℚ_[p]) ^ 3 + 4 * (y₀ : ℚ_[p]) ^ 3 := by
+      rw [hc_def]
+      push_cast
+      ring
+    show (3 : ℚ_[p]) * (x₀ : ℚ_[p]) ^ 3 + 4 * (y₀ : ℚ_[p]) ^ 3 +
+          5 * (zt : ℚ_[p]) ^ 3 = 0
+    linear_combination hcast_zint - h_c_cast
+
+instance : Fact (Nat.Prime 13) := ⟨by decide⟩
+instance : Fact (Nat.Prime 19) := ⟨by decide⟩
+instance : Fact (Nat.Prime 31) := ⟨by decide⟩
+instance : Fact (Nat.Prime 37) := ⟨by decide⟩
+
+/-- ℚ_[13] solubility of the Selmer cubic via the `(1, 4, 2)` Case-B witness
+    (cf. `selmer_witness_p13`). Routine corollary of
+    `selmer_padic_solubility_lift_z`; the witness data
+    `13 ∣ 3·1 + 4·4³ + 5·2³ = 299 = 13·23` and
+    `gcd(15·2², 13) = gcd(60, 13) = 1` are decidable. -/
+theorem selmer_padic_solubility_p13_hensel :
+    ∃ (x y z : ℚ_[13]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_z 1 4 2
+    (Or.inl one_ne_zero)
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[19] solubility of the Selmer cubic via the `(1, 0, 4)` Case-B witness
+    (cf. `selmer_witness_p19`). Witness data:
+    `19 ∣ 3·1 + 0 + 5·4³ = 323 = 19·17` and
+    `gcd(15·4², 19) = gcd(240, 19) = 1`. -/
+theorem selmer_padic_solubility_p19_hensel :
+    ∃ (x y z : ℚ_[19]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_z 1 0 4
+    (Or.inl one_ne_zero)
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[31] solubility of the Selmer cubic via the `(1, 3, 17)` Case-B witness
+    (cf. `selmer_witness_p31`). Witness data:
+    `31 ∣ 3·1 + 4·3³ + 5·17³ = 24676 = 31·796` and
+    `gcd(15·17², 31) = gcd(4335, 31) = 1`. -/
+theorem selmer_padic_solubility_p31_hensel :
+    ∃ (x y z : ℚ_[31]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_z 1 3 17
+    (Or.inl one_ne_zero)
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[37] solubility of the Selmer cubic via the `(0, 1, 5)` Case-B witness
+    (cf. `selmer_witness_p37`). Although `p = 37` belongs nominally to Case B
+    (`37 ≡ 1 mod 3`), its Section-9 witness has the same `(0, 1, z₀)` shape as
+    the Case-A primes, so `selmer_padic_solubility_caseA 5` would also work.
+    Stating it through `selmer_padic_solubility_lift_z` keeps the dispatch
+    table uniform across `p ∈ {13, 19, 31, 37}`. Witness data:
+    `37 ∣ 0 + 4 + 5·5³ = 629 = 37·17` and
+    `gcd(15·5², 37) = gcd(375, 37) = 1`. -/
+theorem selmer_padic_solubility_p37_hensel :
+    ∃ (x y z : ℚ_[37]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_lift_z 0 1 5
+    (Or.inr one_ne_zero)
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-! ## Section 16: Status Summary (post Section 15) -/
+
+/-!
+Section 15 generalizes Section 13's Case-A Hensel lift to a fully parametric
+"lift-z" theorem `selmer_padic_solubility_lift_z`, then dispatches the
+Section-9 Case-B primes with nonzero `z₀` — `p ∈ {13, 19, 31, 37}` — as
+one-line corollaries. The universal axiom `selmer_padic_solubility` remains
+load-bearing, but eight of the twelve primes in the Section 8 roadmap
+(`p ∈ {11, 13, 17, 19, 23, 29, 31, 37}`) now admit axiom-free `ℚ_[p]`-solubility
+proofs.
+
+### Updated counts
+- Theorems: 22 + 1 (`selmer_padic_solubility_lift_z`) + 4 (per-prime
+  corollaries) = 27.
+- Substantive theorems (non-`decide` content): 8 (was 7).
+- Definitions: 5 + 1 (`HenselLiftZ.G`) = 6.
+- Sorries: 0 (unchanged).
+- Axioms: 2 (unchanged): `selmer_no_rational_solution` + `selmer_padic_solubility`.
+- Status: still `axiomatized`.
+- New milestone: parametric lift-z theorem + four new Case-B Hensel lifts;
+  the only remaining primes from Section 9 are `p = 7` (needs lift-x) and
+  the special primes `p ∈ {2, 3, 5}` (direct construction + strong-form
+  Hensel for the singular reduction at `p = 3`). -/
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -704,5 +916,10 @@ axiom less load-bearing in practice.
 #check @selmer_padic_solubility_p17_hensel
 #check @selmer_padic_solubility_p23_hensel
 #check @selmer_padic_solubility_p29_hensel
+#check @selmer_padic_solubility_lift_z
+#check @selmer_padic_solubility_p13_hensel
+#check @selmer_padic_solubility_p19_hensel
+#check @selmer_padic_solubility_p31_hensel
+#check @selmer_padic_solubility_p37_hensel
 
 end Hilbert11OQ02
