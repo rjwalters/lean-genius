@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-001",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "range": { "startLine": 25, "endLine": 35 },
+    "type": "definition",
+    "title": "Companion Matrix and Krylov Matrix — The Two Key Definitions",
+    "content": "companionMx p is the companion matrix of a polynomial p, indexed by Fin n. The pattern: zero everywhere except for the subdiagonal (which is 1) and the last column (which holds -p.coeff i). The if-then-else structure exposes the column-by-column form used in the conjugation identity proof. cyclicMatrix M v is the Krylov matrix: column j is M^j v. Both definitions are noncomputable but elementary — no Mathlib companion-matrix API is invoked because none exists in v4.26.0.",
+    "mathContext": "The companion matrix of $p = X^n + c_{n-1} X^{n-1} + \\cdots + c_0$ is\n$$C(p) = \\begin{pmatrix} 0 & 0 & \\cdots & 0 & -c_0 \\\\ 1 & 0 & \\cdots & 0 & -c_1 \\\\ 0 & 1 & \\cdots & 0 & -c_2 \\\\ \\vdots & & \\ddots & & \\vdots \\\\ 0 & 0 & \\cdots & 1 & -c_{n-1} \\end{pmatrix}$$\nIts characteristic and minimal polynomials both equal $p$. The Krylov matrix $P = [v \\mid Mv \\mid M^2 v \\mid \\cdots \\mid M^{n-1} v]$ is the change-of-basis from the basis $\\{v, Mv, \\ldots, M^{n-1} v\\}$ (when $v$ is cyclic for $M$) to the standard basis. In the cyclic basis, $M$ acts as $C(\\mu_M)$ — that is the content of the conjugation identity $M \\cdot P = P \\cdot C(\\mu_M)$.",
+    "significance": "context",
+    "relatedConcepts": ["companion matrix", "Krylov subspace", "rational canonical form", "change of basis"],
+    "prerequisites": ["matrix-vector multiplication", "polynomial coefficients", "minimal polynomial of a matrix"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "range": { "startLine": 37, "endLine": 69 },
+    "type": "technique",
+    "title": "Cyclicity Forces the Krylov Matrix to be Invertible",
+    "content": "cyclicMatrix_ker proves: if (cyclicMatrix M v) · c = 0 then c = 0. The clever step: form the polynomial q = ∑ C(c_j)·X^j (degree < n), and rewrite (q applied to M) acting on v as exactly the matrix-vector product. Cyclicity says no such q ≠ 0 exists, hence q = 0, hence each c_j = 0 (by coefficient extraction with simp + sum_ite_eq'). The simp set uses ← Algebra.smul_def to bridge between scalar multiplication and algebra evaluation.",
+    "mathContext": "The kernel argument is the algebraic content of cyclicity. If $c \\in \\ker(P\\cdot)$ with $P$ the Krylov matrix, then $\\sum_j c_j (M^j v) = 0$, equivalently $q(M)v = 0$ where $q(X) = \\sum_j c_j X^j$ has $\\deg q < n$. The cyclicity of $v$ — defined as 'no nonzero polynomial of degree $< n$ annihilates both $M$ and $v$' — directly forces $q = 0$. Then coefficient extraction $q = 0 \\Rightarrow c_j = 0$ uses the standard fact that polynomials are determined by their coefficient sequence.",
+    "significance": "key",
+    "relatedConcepts": ["cyclic vector", "polynomial annihilation", "Krylov subspace", "linear independence"],
+    "prerequisites": ["polynomial evaluation on matrices", "coefficient extraction", "Fin-indexed sums"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "range": { "startLine": 71, "endLine": 78 },
+    "type": "technique",
+    "title": "From Injective MulVec to IsUnit via Mathlib",
+    "content": "cyclicMatrix_isUnit converts injectivity of mulVec into invertibility (IsUnit) of the matrix using Matrix.mulVec_injective_iff_isUnit — a Mathlib lemma encapsulating the rank-nullity theorem for finite square matrices over a field. This is the only place in the proof where a deep Mathlib lemma is consumed; everything else is direct linear-algebra calculation.",
+    "mathContext": "For a square matrix $A$ over a field, the following are equivalent: (a) $A$ is invertible (`IsUnit A`); (b) $A$'s mulVec is injective; (c) $A$'s mulVec is surjective; (d) $\\det(A) \\neq 0$. Mathlib's `Matrix.mulVec_injective_iff_isUnit` packages (a) ⇔ (b). Combined with `cyclicMatrix_injective`, this yields invertibility of the Krylov matrix.",
+    "significance": "supporting",
+    "relatedConcepts": ["matrix invertibility", "rank-nullity", "mulVec"],
+    "prerequisites": ["linear maps and matrix multiplication", "Mathlib's matrix API"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "definition",
+    "title": "hMn_axiom — The Cayley-Hamilton Expansion (To Eliminate)",
+    "content": "Currently a private axiom, hMn_axiom states the matrix-vector form of Cayley-Hamilton at the level of the minimal polynomial: when (minpoly K M).natDegree = n, (M^n).mulVec v = -∑_{k<n} (minpoly K M).coeff k • (M^k).mulVec v. This is routinely derivable from minpoly.aeval = 0 (Mathlib: minpoly.aeval) plus monicity giving (minpoly K M).coeff n = 1 (Mathlib: minpoly.monic + Polynomial.Monic.coeff_natDegree). The ~20-line proof is planned for the next iteration; the axiom is private and used in only one place (the last column case of M_mul_cyclicMatrix).",
+    "mathContext": "The Cayley-Hamilton theorem says $\\mu_M(M) = 0$ as a matrix identity. Expanded: $M^n + \\sum_{k=0}^{n-1} c_k M^k = 0$ where $c_k = (\\mu_M).\\text{coeff}\\ k$ and the leading coefficient is $1$ (monicity). Rearranging: $M^n = -\\sum_{k=0}^{n-1} c_k M^k$. Applying both sides as matrices to $v$: $M^n v = -\\sum_{k=0}^{n-1} c_k (M^k v)$, which is `hMn_axiom`. The Mathlib path: `minpoly.aeval K M : aeval M (minpoly K M) = 0`; expand via `Polynomial.aeval_eq_sum_range`; isolate the $k=n$ term using `Finset.sum_range_succ` and monicity.",
+    "significance": "key",
+    "relatedConcepts": ["Cayley-Hamilton theorem", "minimal polynomial", "monic polynomial", "axiom elimination"],
+    "prerequisites": ["minpoly.aeval", "Polynomial.aeval_eq_sum_range", "Polynomial.Monic"]
+  },
+  {
+    "id": "ann-005",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "range": { "startLine": 86, "endLine": 129 },
+    "type": "technique",
+    "title": "Conjugation Identity — Column-by-Column",
+    "content": "M_mul_cyclicMatrix proves M · cyclicMatrix M v = cyclicMatrix M v · companionMx (minpoly K M). The proof is by cases on which column j is being computed. For j < n-1 (non-last columns), the if-then-else in companionMx evaluates to '1 if i = j+1 else 0', so P·(column j) = column j+1 of P = M^{j+1} v. The LHS is M·(column j of P) = M·(M^j v) = M^{j+1} v. Equality holds. For j = n-1 (last column), the if-then-else evaluates to '-(p.coeff i)', so P·(column n-1) = ∑_k (M^k v) · (-c_k) = -∑ c_k (M^k v). The LHS is M·(M^{n-1} v) = M^n v. Equality reduces to hMn_axiom.",
+    "mathContext": "The conjugation identity $M \\cdot P = P \\cdot C(\\mu_M)$ is the algebraic statement that the basis $\\{v, Mv, \\ldots, M^{n-1} v\\}$ diagonalizes (in the RCF sense) the action of $M$. Column-by-column: column $j$ of the LHS is $M \\cdot (j\\text{th column of } P) = M \\cdot M^j v = M^{j+1} v$. Column $j$ of the RHS is $P \\cdot (j\\text{th column of } C(\\mu_M))$. For $j < n-1$, that column of $C(\\mu_M)$ is the standard basis vector $e_{j+1}$ (subdiagonal pattern), so $P \\cdot e_{j+1} = (j+1)\\text{th column of } P = M^{j+1} v$. ✓. For $j = n-1$, that column of $C(\\mu_M)$ is the negative-coefficient column $(-c_0, -c_1, \\ldots, -c_{n-1})^\\top$, so $P \\cdot (\\text{that}) = -\\sum_k c_k M^k v$. The LHS $M^n v$ equals this by Cayley-Hamilton (hMn_axiom).",
+    "significance": "key",
+    "relatedConcepts": ["matrix conjugation", "rational canonical form", "Krylov basis", "Cayley-Hamilton"],
+    "prerequisites": ["matrix multiplication entry-by-entry", "if-then-else simp", "polynomial evaluation as a sum"]
+  },
+  {
+    "id": "ann-006",
+    "proofId": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "range": { "startLine": 131, "endLine": 153 },
+    "type": "technique",
+    "title": "Main Theorem — Nonderogatory Implies Similar to Companion",
+    "content": "nonderogatory_similar_to_companion: every nonderogatory matrix M is similar to companionMx (minpoly K M). The proof: (1) parent OQ-01 gives a cyclic vector v; (2) cyclicMatrix_isUnit gives invertibility of P = cyclicMatrix M v; (3) M_mul_cyclicMatrix gives the conjugation identity M·P = P·C(minpoly K M); (4) algebra: P⁻¹ · M · P = P⁻¹ · (M · P) = P⁻¹ · (P · C) = (P⁻¹ · P) · C = 1 · C = C, using Matrix.nonsing_inv_mul.",
+    "mathContext": "This is the nonderogatory case of the rational canonical form, given as an explicit similarity rather than an existence statement. The witness $P$ is the Krylov matrix for any cyclic vector — there is no canonical choice, but for any choice the conjugation $P^{-1} M P$ recovers $C(\\mu_M)$. The proof's structure mirrors the classical textbook proof (Gantmacher 1959, Curtis-Reiner 1962): (a) extract a cyclic vector, (b) form the cyclic basis, (c) compute the matrix of $M$ in that basis. Steps (a)-(b) are subtle (cyclicity must be guaranteed); step (c) is mechanical, but in formalization the mechanical step requires the Cayley-Hamilton expansion — which is hMn_axiom in this entry.",
+    "significance": "key",
+    "relatedConcepts": ["rational canonical form", "matrix similarity", "companion matrix", "Cayley-Hamilton", "cyclic vector"],
+    "prerequisites": ["nonderogatory_has_cyclic_vector (parent OQ-01)", "Matrix.nonsing_inv_mul", "associativity of matrix multiplication"]
+  }
+]

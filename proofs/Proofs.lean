@@ -399,6 +399,7 @@ import Proofs.CayleyHamilton
 import Proofs.CayleyHamiltonCyclicVectorAllFields
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01
+import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
 import Proofs.CayleyHamiltonMinpolyOQ01
 import Proofs.CayleyHamiltonMinpolyOQ02
 import Proofs.CayleyHamiltonMinpolyOQ02OQ01
