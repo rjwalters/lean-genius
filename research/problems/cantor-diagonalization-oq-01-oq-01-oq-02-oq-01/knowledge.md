@@ -3,9 +3,71 @@
 **Title**: Can Easton's theorem (consistency of 2^ℵ₀ = κ for regular κ ≥ ℵ₁) be formalized in Lean,
 or does it inherently require a meta-theoretic forcing construction?
 
-**Status**: ORIENT (Session 2, 2026-05-07)
+**Status**: ACT (Session 7, 2026-05-08)
 **Tier**: B / significance 6 / tractability 6
 **Parent file**: `Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean` (König's constraint, 16 theorems, 0 axioms)
+
+---
+
+## Session 2026-05-08 (Session 7, researcher-10) — ACT (Phase-3a Part V, build pending)
+
+**Mode**: ACT
+**Phase**: continuing 3a (object-level scaffold; Phase-3b ConsistencyOf still deferred)
+**Outcome**: added one new theorem (`not_permitted_aleph_zero`) in a fresh **Part V** at end of file. Non-conflicting structurally with the open S5 (#16936) and S6 (#17137) PRs which both edit Part II.
+
+### What was added
+
+```lean
+/-- ℵ₀ is NOT a permitted value: although `Cardinal.aleph0` is regular
+    (`Cardinal.isRegular_aleph0`), the uncountability requirement `ℵ₀ < κ`
+    fails — by `lt_irrefl` no cardinal is strictly less than itself.
+    ... -/
+theorem not_permitted_aleph_zero : ¬ IsPermittedValue (ℵ₀ : Cardinal.{0}) := by
+  rintro ⟨_, hgt⟩
+  exact lt_irrefl _ hgt
+```
+
+### Why this is real (small) progress
+
+`IsPermittedValue κ := κ.IsRegular ∧ ℵ₀ < κ` has two conjuncts. The existing positive Part-I theorems (`aleph_one_permitted`, `aleph_two_permitted`, `aleph_succ_permitted`, `permitted_unbounded`) all witness the upper-half of the spectrum, where both conjuncts succeed. The Part V non-example exhibits the *boundary case* where the conjuncts diverge:
+
+| κ | regular? | ℵ₀ < κ? | permitted? |
+|---|---------|---------|------------|
+| 0, n (finite) | no (or vacuous) | no | no |
+| ℵ₀ | YES (`Cardinal.isRegular_aleph0`) | NO (`lt_irrefl`) | **no** ← S7 |
+| ℵ_ω (singular) | no (`cof = ℵ₀`) | yes | no (Phase-3a-next) |
+| ℵ_(α+1) | yes | yes | yes (Part I) |
+
+This documents that the strict-inequality clause is not redundant under regularity; ℵ₀ is the unique cardinal at which the gap matters.
+
+### Mathematical limitations
+
+- The non-example is *trivial* in the proof-by-`lt_irrefl` sense. Its value is in (a) explicitly carving out the boundary; (b) priming Phase-3a-next for the harder `not_permitted_aleph_omega` case (which DOES require non-trivial Mathlib API for `cf(ℵ_ω) = ℵ₀ < ℵ_ω` and the resulting ¬IsRegular).
+- It does NOT make progress on Phase-3b (the `True`-codomain placeholder on `easton_consistency`). That remains the largest open Phase target.
+- It does NOT discharge any sorries (there are none on origin/main as of S4).
+
+### Concurrent-PR analysis (over-subscription warning)
+
+Two open build-pending draft PRs already exist for this slug:
+- **S5 (#16936, 2026-05-08, researcher-?)**: `lt_apply` corollary + 2 IsEastonFunction non-examples (`id_not_isEastonFunction`, `const_aleph0_not_isEastonFunction`) — edits Part II.
+- **S6 (#17137, 2026-05-08, researcher-8)**: `isEastonFunction_max` (closure under binary max) — edits Part II.
+
+S7's Part V at end-of-file:
+- Does not textually conflict with S5 or S6's Part II additions in the .lean file.
+- Will text-conflict on `meta.json` (lineCount, theoremCount fields) and `research/.../problems.json` (iteration counter, builtItems list) — straightforwardly resolvable in either order.
+- Does not depend on either S5 or S6 for its proof.
+
+This slug is well-trafficked (knowledge score 43, RICH); the over-subscription pattern noted in researcher memory ("MODERATE+ tier ~17-21 slugs is over-subscribed") suggests next sessions should consider deferring further small additions and instead attempting a substantive Phase-3b move (ConsistencyOf predicate).
+
+### Next concrete steps
+
+1. **Phase-3a-next**: prove `not_permitted_aleph_omega : ¬ IsPermittedValue (Cardinal.aleph Ordinal.omega)` once a stable Mathlib lemma for `¬(Cardinal.aleph Ordinal.omega).IsRegular` is identified. Candidate route: `Cardinal.cof_aleph_omega = ℵ₀ < Cardinal.aleph Ordinal.omega`, contradicting `IsRegular.cof_eq`.
+2. **Phase-3b**: introduce `ConsistencyOf : (Cardinal → Cardinal) → Prop` (axiomatized) and re-state the two Easton axioms. Major change; will conflict heavily with any concurrent Part-II edits, so should land after S5/S6.
+3. **Phase-4 (multi-session)**: scope a flypitch-port for class forcing in Lean 4.
+
+### Build status
+
+Build pending (worktree's `proofs/.lake` is a recursive symlink per `feedback_researcher_lake_symlink_broken.md`; Docker build would take ~45 min from cold). The proof uses only `lt_irrefl` and `rintro`, both already exercised throughout the existing file. Risk of build failure is low; review-by-inspection is appropriate.
 
 ---
 

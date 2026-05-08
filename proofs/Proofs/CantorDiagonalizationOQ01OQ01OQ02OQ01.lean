@@ -254,4 +254,35 @@ PART IV: VERIFICATION
 #check @easton_permitted_realizable
 #check @easton_consistency
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART V: PERMITTED-VALUE NON-EXAMPLES (S7, Phase-3a)
+═══════════════════════════════════════════════════════════════════════════════
+
+Part I gives positive examples of permitted values (ℵ₁, ℵ₂, every successor
+aleph). The constraint set `IsPermittedValue` is purely object-level —
+`IsRegular ∧ ℵ₀ < κ` — so non-examples come from the failure of EITHER
+conjunct: a non-regular cardinal (e.g., ℵ_ω, cofinality ℵ₀), or a regular
+cardinal that fails uncountability (i.e., ℵ₀ itself).
+
+The latter is the only "boundary case": ℵ₀ is regular (`Cardinal.isRegular_aleph0`),
+and yet not permitted, witnessing that Cantor's theorem (2^ℵ₀ > ℵ₀) is a
+genuine constraint distinct from the regularity constraint Part I encodes.
+The non-example reified below clarifies that the "ℵ₀ <" half of
+`IsPermittedValue` is not redundant under regularity. -/
+
+/-- ℵ₀ is NOT a permitted value: although `Cardinal.aleph0` is regular
+    (`Cardinal.isRegular_aleph0`), the uncountability requirement `ℵ₀ < κ`
+    fails — by `lt_irrefl` no cardinal is strictly less than itself.
+
+    Mathematically, this is exactly Cantor's theorem 2^ℵ₀ > ℵ₀ enforced at
+    the object level: even though ℵ₀ is regular (so the regularity half of
+    `IsPermittedValue` succeeds), the strict-inequality clause `ℵ₀ < κ`
+    excludes ℵ₀ — capturing the fact that the continuum cannot equal ℵ₀. -/
+theorem not_permitted_aleph_zero : ¬ IsPermittedValue (ℵ₀ : Cardinal.{0}) := by
+  rintro ⟨_, hgt⟩
+  exact lt_irrefl _ hgt
+
+#check @not_permitted_aleph_zero
+
 end CantorDiagOQ01OQ01OQ02OQ01
