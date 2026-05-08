@@ -24,6 +24,9 @@
     "lineCount": 1202,
     "theoremCount": 26,
     "definitionCount": 13,
+    "additionalFiles": [
+      "Proofs/KonigsbergOQ01OQ02Recipe.lean"
+    ],
     "originalContributions": [
       "sum_outDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.1=v}| = |E| by double-counting via Finset.sum_comm + Finset.sum_ite_eq'",
       "sum_inDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.2=v}| = |E| by same double-counting argument",
