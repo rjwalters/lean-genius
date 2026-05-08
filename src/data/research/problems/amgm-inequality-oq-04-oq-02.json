@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-04-oq-02",
   "title": "Legendre's Relation for Complete Elliptic Integrals: E(k)·K'(k) + E'(k)·K(k) − K(k)·K'(k) = π/2",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -25,25 +25,38 @@
     "goal": "Prove `legendre_relation : ∀ k ∈ Set.Ioo (0:ℝ) 1, E k * K' k + E' k * K k - K k * K' k = π / 2` (or equivalent phrasing) given suitable Lean definitions of `K`, `E` over `Set.Ioo (-1) 1`."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T20:00:00.000Z",
-    "iteration": 1,
-    "focus": "Survey Mathlib infrastructure; identify definition strategy for K(k), E(k); document proof strategies; estimate scope.",
+    "phase": "ORIENT",
+    "since": "2026-05-08T02:30:00.000Z",
+    "iteration": 2,
+    "focus": "Stub written and building. ellipticE rigorously defined; complementary modulus and K', E' wired up; symmetric Legendre at k=1/√2 derived from the general axiom. Next focus: prove the general legendre_relation by differentiation under the integral.",
     "blockers": [
-      "Mathlib lacks definitions of `K : ℝ → ℝ`, `E : ℝ → ℝ` (complete elliptic integrals).",
-      "Mathlib lacks integrability lemmas for `(1 - k²·sin²θ)^(±1/2)` over `[0, π/2]`.",
-      "No prior gallery-internal definitions to import (existing AmgmInequalityOQ04*.lean files cover AGM analysis, not elliptic integrals)."
+      "Mathlib has differentiation-under-the-integral lemmas but they are not yet wired up to ellipticK.",
+      "Need explicit derivatives dK/dk = (E - k'²K)/(k·k'²) and dE/dk = (E - K)/k as Lean lemmas.",
+      "Need the Legendre ODE for K(k) (k(1-k²)y'' + (1-3k²)y' - ky = 0) — currently no Mathlib infrastructure for second-order ODEs of this form."
     ],
-    "nextAction": "Session 2: Write a stub `Proofs/AmgmInequalityOQ04OQ02.lean` declaring `noncomputable def K (k : ℝ) : ℝ := ∫ θ in 0..π/2, 1 / Real.sqrt (1 - k^2 * Real.sin θ^2)` and `noncomputable def E (k : ℝ) : ℝ := ∫ θ in 0..π/2, Real.sqrt (1 - k^2 * Real.sin θ^2)`, and state `legendre_relation` as a sorry'd theorem. Verify the file compiles against current Mathlib (no missing imports, definitions type-check).",
+    "nextAction": "Session 3: Prove dE/dk = (E - K)/k via differentiation under the integral. This is the simpler of the two derivative formulas and is the entry point to the Wronskian argument.",
     "attemptCounts": {
       "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Session 1 (2026-05-07, OBSERVE): Verified Mathlib has Weierstrass ℘ (period-pair API in Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass) but no complete elliptic integrals. Confirmed Mathlib has the building blocks: `intervalIntegral`, `Real.sqrt`, `Real.sin`, `Real.pi`, and AGM (`NNReal.agm`). Documented two proof strategies (ODE/Wronskian vs AGM-Brent-Salamin). Identified that the formal statement in the original problem entry was incomplete/incorrect — the standard Legendre relation is `E·K' + E'·K − K·K' = π/2`, not `K·K' + K(k')·K'(k')`. Updated to canonical form.",
-    "builtItems": [],
+    "progressSummary": "Session 2 (2026-05-08, ORIENT): Stub written and Docker-building. Created Proofs/AmgmInequalityOQ04OQ02.lean (285 lines, 5 defs, 21 theorems/lemmas, 1 axiom, 0 sorries). Reused AmgmInequalityOQ04OQ01.ellipticK (rigorous Mathlib intervalIntegral) — Session 1 missed this; no need to define K from scratch. Defined ellipticE rigorously as ∫₀^{π/2} √(1-k²sin²θ) dθ; proved E(0) = π/2 and E(k) > 0 for k² < 1 via the lower bound √(1-k²). Defined complementary modulus k' = √(1-k²), showed (k')² = 1-k² and k'' = k for k ∈ [0,1]. Defined K'(k) := K(k') and E'(k) := E(k') with positivity lemmas. Axiomatized the general Legendre relation E·K' + E'·K - K·K' = π/2 for 0<k<1. DERIVED the symmetric special case 2KE - K² = π/2 at k = 1/√2 from the general axiom + complModulus_symmetric (k' = k at k = 1/√2). This theorem matches the form axiomatized in AmgmInequalityOQ04OQ05.legendre_relation, so this file provides infrastructure to discharge that axiom in a future session. Side-fix: also patched AmgmInequalityOQ04OQ01.ellipticK_pos for Mathlib v4.26.0 API drift in intervalIntegral.integral_mono (now requires hab : 0 ≤ b first).",
+    "builtItems": [
+      "ellipticIntegrandE (def, k θ ↦ √(1-k²sin²θ)) in AmgmInequalityOQ04OQ02.lean:68",
+      "ellipticE (def, complete elliptic integral of 2nd kind via intervalIntegral) in AmgmInequalityOQ04OQ02.lean:74",
+      "integrandE_nonneg, integrandE_le_one, integrandE_zero_eq_one, integrandE_lower_bound, integrandE_continuous, ellipticE_integrable (E-integrand basic properties) in AmgmInequalityOQ04OQ02.lean:82-117",
+      "ellipticE_zero (theorem, E(0) = π/2) in AmgmInequalityOQ04OQ02.lean:124",
+      "ellipticE_pos (theorem, 0 < E(k) for k²<1) in AmgmInequalityOQ04OQ02.lean:130",
+      "complModulus (def, k ↦ √(1-k²)), and 5 properties (complModulus_nonneg, complModulus_pos, complModulus_sq, complModulus_sq_lt_one, complModulus_complModulus) in AmgmInequalityOQ04OQ02.lean:156-184",
+      "ellipticK' (def, k ↦ K(k')), ellipticE' (def, k ↦ E(k')), and positivity lemmas in AmgmInequalityOQ04OQ02.lean:188-200",
+      "axiom legendre_relation (general form, 0<k<1) in AmgmInequalityOQ04OQ02.lean:240",
+      "complModulus_symmetric (theorem, complModulus(1/√2) = 1/√2) in AmgmInequalityOQ04OQ02.lean:261",
+      "legendre_relation_symmetric (theorem, 2KE - K² = π/2 at k=1/√2; derived from the general axiom) in AmgmInequalityOQ04OQ02.lean:274",
+      "API drift fix: AmgmInequalityOQ04OQ01.ellipticK_pos updated for intervalIntegral.integral_mono signature",
+      "Gallery entry: src/data/proofs/amgm-inequality-oq-04-oq-02/ (meta.json, index.ts, annotations.json with 8 annotations)"
+    ],
     "insights": [
       "Mathlib `Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass` provides `PeriodPair.weierstrassP`, `derivWeierstrassP`, etc. — the lattice/`g₂`/`g₃` formulation, NOT the modulus-based `K(k)`/`E(k)`. These are mathematically equivalent (via the connection k² = e₁−e₃ / e₁−e₂ or similar), but the API does not expose K, E directly.",
       "Mathlib `Mathlib.Analysis.SpecialFunctions.ArithmeticGeometricMean` defines `NNReal.agm` (Tan, 2025) — important because the Brent–Salamin / AGM proof of Legendre's relation uses K(k) = π/(2·agm(1, k')) (Gauss). If we adopt this as the **definition** of K, then E, K', E' come from corresponding AGM-style limits. Pro: direct Mathlib hookup; Con: the integral definition is more standard and required for any later derivative arguments.",
@@ -53,20 +66,29 @@
       "Whittaker-Watson §22.41 (1927) gives the textbook ODE/Wronskian proof: K, K' both satisfy Legendre's ODE k(1-k²)y'' + (1-3k²)y' - k·y = 0, so the Wronskian K·K' is conserved up to a known function. With E and the relations dE/dk, dK/dk, the algebra reduces to π/2.",
       "Brent-Salamin (1976) AGM proof: K(k) = π/(2·M(1, k')) where M is AGM. The Legendre relation falls out of the recurrence M(1, k) = M((1+k)/2, √k) plus a parallel E identity. Concretely Lean-friendly because Mathlib HAS `NNReal.agm` already.",
       "Mathlib lacks: (1) interval-integrability lemma for `(1 - k²·sin²θ)^(±1/2)` on `[0, π/2]`; (2) the formula d/dk K(k) = (E(k) − k'²·K(k)) / (k·k'²) (key for Wronskian computation); (3) the complete elliptic integral E in any form.",
-      "Connection to AGM gallery: The problem is in the `amgm-inequality` family precisely because of Gauss's formula K(k) = π/(2 · AGM(1, k')). A successful proof here likely uses or extends `NNReal.agm` infrastructure — the pipeline AGM → K → E → Legendre's relation is the most Lean-amenable path."
+      "Connection to AGM gallery: The problem is in the `amgm-inequality` family precisely because of Gauss's formula K(k) = π/(2 · AGM(1, k')). A successful proof here likely uses or extends `NNReal.agm` infrastructure — the pipeline AGM → K → E → Legendre's relation is the most Lean-amenable path.",
+      "AmgmInequalityOQ04OQ01 ALREADY DEFINES ellipticK rigorously via intervalIntegral. Session 1 missed this — the K(k) infrastructure is reusable directly. Importing OQ04OQ01 gives ellipticK plus continuity, integrability, K(0)=π/2, K(k)>0 for k²<1, monotonicity in k². No need to redefine K.",
+      "ellipticE is symmetrically simpler than ellipticK: the integrand √(1-k²sin²θ) is bounded above by 1 and continuous on all of ℝ × ℝ (no |k|<1 restriction needed for integrability). Continuity proof is a 4-line composition: Real.continuous_sqrt ∘ (continuous_const.sub (continuous_const.mul (continuous_sin.pow 2))).",
+      "ellipticE_pos for |k|<1 follows from a cute lower bound: 1-k² ≤ 1-k²sin²θ implies √(1-k²) ≤ ellipticIntegrandE k θ; then intervalIntegral.integral_mono_on against the constant function √(1-k²) gives E(k) ≥ √(1-k²)·(π/2) > 0.",
+      "Symmetric Legendre at k=1/√2 requires complModulus_symmetric : √(1-(1/√2)²) = 1/√2. Proof technique: rewrite 1 - 1/2 = (1/√2)² (so the inner subtraction becomes a square), then apply Real.sqrt_sq with positivity. ~3 lines.",
+      "linear_combination tactic closes the gap between the general Legendre form 'E·K + E·K - K·K = π/2' (after specializing to k = k' = 1/√2) and the goal '2·K·E - K² = π/2'. ring-equivalent, but `linear_combination h` with h being the unfolded form is cleanest.",
+      "The general Legendre relation axiom is the only deep assumption in this file; it is honestly comparable in depth to OQ04OQ01.agm_ellipticK_connection (Gauss's 200-page result). The proof requires Mathlib's intervalIntegral.deriv_* (DOES exist) plus explicit Lean derivations of dK/dk and dE/dk (do not yet exist for ellipticK).",
+      "Mathlib v4.26.0 API drift: intervalIntegral.integral_mono now takes hab : a ≤ b as the first explicit argument (was implicit/internal in older versions). Existing OQ04OQ01.ellipticK_pos used the old order; fixed in the same PR by inserting `(by linarith [Real.pi_pos] : (0:ℝ) ≤ π / 2)` before the integrability arguments."
     ],
     "mathlibGaps": [
-      "No `Mathlib.Analysis.SpecialFunctions.Elliptic.Complete` (or similar) — complete elliptic integrals K(k), E(k) of first and second kind over real moduli are not formalized.",
-      "No `Mathlib.Analysis.SpecialFunctions.Elliptic.Legendre` — the Legendre relation itself is not in Mathlib.",
-      "AGM ↔ K identity (Gauss): `K(k) = π/(2 · agm(1, sqrt(1-k²)))` is not in Mathlib despite both `K` (missing) and `agm` (present) being natural neighbors.",
-      "Differentiability/derivative of K(k), E(k) under the integral sign — needed for any ODE-based proof; would use `intervalIntegral.differentiableOn` style results."
+      "No Mathlib.Analysis.SpecialFunctions.Elliptic.Complete — complete elliptic integrals K(k), E(k) of first and second kind over real moduli are not formalized. (This file fills part of this gap: rigorous E(k); K(k) was already filled by OQ04OQ01.)",
+      "No Mathlib.Analysis.SpecialFunctions.Elliptic.Legendre — the Legendre relation itself is not in Mathlib. (This file axiomatizes it pending a constructive proof.)",
+      "AGM ↔ K identity (Gauss): K(k) = π/(2 · agm(1, sqrt(1-k²))) is not in Mathlib (axiomatized in OQ04OQ01).",
+      "Differentiability/derivative of K(k), E(k) under the integral sign — needed for any ODE-based proof; would use intervalIntegral.differentiableOn style results. Mathlib HAS the underlying machinery; the connector lemmas are missing.",
+      "Explicit derivatives: dK/dk = (E - k'²K)/(k·k'²) and dE/dk = (E - K)/k — these are the key Wronskian inputs. Both reachable from Mathlib but require work."
     ],
     "nextSteps": [
-      "Session 2 (write Lean stub): Create `Proofs/AmgmInequalityOQ04OQ02.lean` with `noncomputable def K`, `noncomputable def E`, `noncomputable def K' := K ∘ (fun k => Real.sqrt (1 - k^2))`, and a `theorem legendre_relation : ... := by sorry`. Add to lakefile via the standard pattern. Validate with Docker build. Sorry count: 1.",
-      "Session 3 (integrability): Prove `K_eq_intervalIntegral`, `E_eq_intervalIntegral` and the integrability hypotheses. Use `IntervalIntegrable.continuousOn` + `Real.continuous_sqrt` + `Continuous.div`. Estimate ~80 lines.",
-      "Session 4 (boundary values): K(0) = π/2, E(0) = π/2, E(1) = 1, K(1) diverges. So at k → 0⁺: K'(k) = K(√(1-k²)) → K(1) = ∞, but E(k)·K'(k) − K(k)·K'(k) = (E(k) − K(k))·K'(k) → 0·∞ — must take a careful limit to pin down π/2; alternative: pick an interior value like k = 1/√2 (self-complementary, k = k') where the relation symmetrizes. These boundary checks pin the constant in the Wronskian argument.",
-      "Session 5+ (proof body): Choose strategy — (A) ODE/Wronskian, (B) AGM/Brent-Salamin. Strategy (B) is preferable because Mathlib's `NNReal.agm` is a ready-made hook; build the connector lemma `K_eq_pi_div_two_agm` first.",
-      "Strategy (B) decomposition: (i) define `agm_1_kprime := agm 1 (Real.sqrt (1-k^2))` ; (ii) define a `K_via_agm : ℝ → ℝ` ; (iii) prove `K_via_agm = K` via Landen's transformation + AGM convergence ; (iv) similar for E ; (v) Legendre's relation from AGM identity + boundary."
+      "Session 3 (E derivative): Prove dE/dk = (E(k) - K(k))/k for 0 < k < 1. Strategy: differentiate under the integral using `MeasureTheory.intervalIntegral.deriv_integral_*`. The integrand's k-derivative is `-k·sin²θ / √(1-k²sin²θ)`, and ∫₀^{π/2} of this rearranges to (E - K)/k. ~80 lines.",
+      "Session 4 (K derivative): Prove dK/dk = (E(k) - (k')²·K(k))/(k·(k')²) for 0 < k < 1. Significantly harder: requires manipulating ∫ k·sin²θ / (1-k²sin²θ)^{3/2} dθ via Legendre's ODE or direct integration by parts. ~150 lines.",
+      "Session 5 (Wronskian-vanishing): Define f(k) := E·K' + E'·K - K·K' for 0 < k < 1 and show f'(k) = 0 using the derivatives from Sessions 3-4. ~100 lines of algebraic manipulation.",
+      "Session 6 (boundary value): Compute lim_{k→1/√2} f(k) = 2KE - K² (use legendre_relation_symmetric from this session if symmetric form is what we settle on, or take the limit k → 0⁺). ~50 lines.",
+      "Session 7 (axiom elimination cleanup): Update AmgmInequalityOQ04OQ05 to import this file and discharge its `legendre_relation` (symmetric) axiom by `legendre_relation_symmetric`. Re-verify Brent-Salamin formula proof. Small follow-up PR.",
+      "Future Mathlib contribution: After all sessions complete and the file is sorry-free + axiom-free, propose `Mathlib.Analysis.SpecialFunctions.Elliptic.Complete` containing K, E, and Legendre's relation. Targets a Mathlib PR similar to NNReal.agm (Tan 2025)."
     ]
   },
   "tags": [
@@ -117,8 +139,17 @@
     ]
   },
   "started": "2026-05-06T14:45:58.507Z",
-  "lastUpdate": "2026-05-07T20:00:00.000Z",
+  "lastUpdate": "2026-05-08T02:30:00.000Z",
   "significance": 6,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ02.lean",
+      "lineCount": 285,
+      "sorries": 0,
+      "axiomCount": 1,
+      "theoremCount": 21,
+      "definitionCount": 5
+    }
+  ]
 }

@@ -1,0 +1,190 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "concept",
+    "title": "Module Preamble: Goals, Plan, and Status Checklist",
+    "content": "The module docstring establishes the seven-step formalization plan: (1) reuse `AmgmInequalityOQ04OQ01.ellipticK` (already a rigorous Mathlib intervalIntegral), (2) define `ellipticE` analogously, (3) define the complementary modulus `complModulus k = √(1-k²)`, (4) define `ellipticK'`, `ellipticE'` at the complementary modulus, (5) prove basic properties (E(0) = π/2, positivity, integrability), (6) **axiomatize** the general Legendre relation (as a deep classical analytic identity whose proof requires differentiation under the integral sign), and (7) **derive** the symmetric special case at k = 1/√2 as a theorem. The status checklist (lines 36-48) tracks which steps are proved vs axiomatized — 1 axiom and 0 sorries. The preamble explicitly states that this file unblocks an axiom elimination in `AmgmInequalityOQ04OQ05` (Brent-Salamin), where the symmetric Legendre relation is currently itself an axiom.",
+    "mathContext": "Legendre's relation (NIST DLMF §19.7.1, Whittaker–Watson 1927 §22.41): for $0 < k < 1$, $$E(k) K(k') + E(k') K(k) - K(k) K(k') = \\pi/2$$ where $k' = \\sqrt{1-k^2}$ is the complementary modulus. The relation is a classical Wronskian identity arising from the Legendre ODE for $K$. Pinning down the constant $\\pi/2$ at any boundary value (e.g. $k = 1/\\sqrt{2}$ where the relation becomes $2KE - K^2 = \\pi/2$, or the limit $k \\to 0^+$ via $K \\to \\pi/2$, $E \\to \\pi/2$, etc.) gives the closed form.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complete elliptic integrals K(k) and E(k)",
+      "complementary modulus",
+      "Legendre's relation (classical Wronskian identity)",
+      "axiom elimination via reduction to a stronger result"
+    ],
+    "prerequisites": [
+      "Mathlib intervalIntegral",
+      "Real.sqrt and basic identities",
+      "AmgmInequalityOQ04OQ01.ellipticK"
+    ]
+  },
+  {
+    "id": "ann-ellipticE-def",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 62,
+      "endLine": 76
+    },
+    "type": "definition",
+    "title": "ellipticIntegrandE and ellipticE: Mathlib intervalIntegral Definition",
+    "content": "Two `noncomputable def`s: (1) `ellipticIntegrandE k θ := Real.sqrt (1 - k^2 * Real.sin θ ^ 2)` — the integrand $\\sqrt{1 - k^2 \\sin^2 \\theta}$ defined for all real $k, \\theta$ via `Real.sqrt`'s convention; (2) `ellipticE k := ∫ θ in 0..π/2, ellipticIntegrandE k θ` — the complete elliptic integral of the second kind, computed as a Mathlib `intervalIntegral`. **Why `noncomputable`?** Because `Real.sqrt` and `MeasureTheory.integral` are noncomputable (they rely on classical choice). **Why use `Real.sqrt` instead of conditional definition?** Because `Real.sqrt`'s convention `sqrt x = 0` for `x < 0` makes the integrand definable on all of ℝ × ℝ without case-splitting; for $|k| \\leq 1$ the sub-zero branch never triggers since $1 - k^2 \\sin^2 \\theta \\geq 1 - k^2 \\geq 0$.",
+    "mathContext": "$E(k) = \\int_0^{\\pi/2} \\sqrt{1 - k^2 \\sin^2 \\theta} \\, d\\theta$ is the standard NIST DLMF §19.2.8 definition. Unlike $K(k)$ where the integrand $1/\\sqrt{1 - k^2 \\sin^2 \\theta}$ blows up at $\\theta = \\pi/2$ when $|k| = 1$, $E(k)$'s integrand is bounded and continuous on $\\mathbb{R} \\times \\mathbb{R}$ for $|k| \\leq 1$. This makes the Mathlib formalization simpler: integrability holds without any modulus restriction.",
+    "significance": "central",
+    "relatedConcepts": [
+      "complete elliptic integral of the second kind E(k)",
+      "intervalIntegral",
+      "noncomputable definitions in Lean",
+      "Real.sqrt convention"
+    ],
+    "prerequisites": [
+      "MeasureTheory.intervalIntegral",
+      "Real.sqrt",
+      "Real.sin"
+    ]
+  },
+  {
+    "id": "ann-integrand-properties",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 117
+    },
+    "type": "technique",
+    "title": "Integrand Properties: Continuity, Integrability, and the √(1-k²) Lower Bound",
+    "content": "Six lemmas establishing the basic analytic properties of `ellipticIntegrandE`. The most important is `integrandE_lower_bound`: for $k^2 < 1$ and any $\\theta$, $\\sqrt{1-k^2} \\leq \\sqrt{1 - k^2 \\sin^2 \\theta}$. **Proof technique**: apply `Real.sqrt_le_sqrt` to the underlying inequality $1 - k^2 \\leq 1 - k^2 \\sin^2 \\theta$, which reduces to $k^2 \\sin^2 \\theta \\leq k^2$ via `Real.sin_sq_le_one`. Combined with `intervalIntegral.integral_mono_on` against the constant function `√(1-k²)`, this gives the positivity bound `√(1-k²) · (π/2) ≤ E(k)`. **Continuity** is a direct composition: `Real.continuous_sqrt.comp ((continuous_const.sub (continuous_const.mul (continuous_sin.pow 2))))` — sqrt of (constant - constant·sin²) is continuous. **Integrability** then follows from `Continuous.intervalIntegrable`.",
+    "mathContext": "The lower bound $\\sqrt{1-k^2}$ is sharp (achieved at $\\theta = \\pi/2$) and is the key fact behind the integral lower bound. For the integral $\\int_0^{\\pi/2} \\sqrt{1 - k^2 \\sin^2\\theta} \\, d\\theta \\geq \\int_0^{\\pi/2} \\sqrt{1 - k^2} \\, d\\theta = \\sqrt{1-k^2} \\cdot \\frac{\\pi}{2}$, which is positive iff $k^2 < 1$. **Why this matters**: it gives a *constructive* positivity bound $E(k) > 0$, not just an existence claim. Future sessions can sharpen this — the actual value $E(0) = \\pi/2$ at $k=0$ versus the lower bound $1 \\cdot \\pi/2 = \\pi/2$ matches; for $k = 1/\\sqrt{2}$ the lower bound gives $E(1/\\sqrt{2}) \\geq \\sqrt{1/2} \\cdot \\pi/2 \\approx 1.111$, while the actual value is $\\approx 1.351$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interval integral monotonicity",
+      "Real.sqrt_le_sqrt",
+      "Real.sin_sq_le_one",
+      "constructive positivity bounds"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_mono_on",
+      "Continuous.intervalIntegrable"
+    ]
+  },
+  {
+    "id": "ann-key-values",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 153
+    },
+    "type": "theorem",
+    "title": "ellipticE_zero (E(0) = π/2) and ellipticE_pos (E(k) > 0 for |k| < 1)",
+    "content": "Two key theorems. **`ellipticE_zero`**: at $k = 0$ the integrand collapses to $\\sqrt{1} = 1$, so $E(0) = \\int_0^{\\pi/2} 1 \\, d\\theta = \\pi/2$. The Lean proof is three lines: unfold `ellipticE`; `simp_rw integrandE_zero_eq_one`; close with `intervalIntegral.integral_const, smul_eq_mul, mul_one, sub_zero`. **`ellipticE_pos`**: for $k^2 < 1$, $E(k) > 0$. The proof chains `intervalIntegral.integral_mono_on` (to bound $E(k)$ below by $\\sqrt{1-k^2} \\cdot (\\pi/2 - 0)$) with `mul_pos` (since both $\\sqrt{1-k^2} > 0$ and $\\pi/2 > 0$). The cumulative `simpa` invocation with `[ellipticE, intervalIntegral.integral_const, smul_eq_mul, sub_zero]` reduces the bound's LHS to the desired form.",
+    "mathContext": "At $k = 0$: the integrand is identically 1, giving $E(0) = \\pi/2$. This matches the value $K(0) = \\pi/2$ (proved in OQ04OQ01.ellipticK_zero), reflecting the fact that $E$ and $K$ agree at the degenerate point $k = 0$ (the integrals collapse to the same constant). For $k^2 < 1$: $E(k) \\geq \\sqrt{1-k^2} \\cdot \\frac{\\pi}{2} > 0$. The bound $\\sqrt{1-k^2} \\cdot \\frac{\\pi}{2}$ is the *minimum* value of $E$ on $|k| < 1$ achieved as $|k| \\to 1$ where it tends to 0 — but $E(1) = 1$ actually (the integrand at $k = 1$ is $|\\cos\\theta|$ on $[0, \\pi/2]$ which integrates to 1).",
+    "significance": "central",
+    "relatedConcepts": [
+      "boundary values of complete elliptic integrals",
+      "ellipticK_zero in OQ04OQ01",
+      "integral_mono_on application"
+    ],
+    "prerequisites": [
+      "ellipticE_integrable",
+      "integrandE_lower_bound",
+      "intervalIntegral.integral_const"
+    ]
+  },
+  {
+    "id": "ann-complmodulus",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 155,
+      "endLine": 184
+    },
+    "type": "definition",
+    "title": "complModulus: The Complementary Modulus k' = √(1-k²)",
+    "content": "Defines `complModulus k := Real.sqrt (1 - k^2)` plus five basic lemmas: (1) `complModulus_nonneg` (Real.sqrt is nonneg); (2) `complModulus_pos` (positive when $k^2 < 1$); (3) `complModulus_sq` — Pythagorean identity $(k')^2 = 1 - k^2$ for $k^2 \\leq 1$, proved via `Real.mul_self_sqrt`; (4) `complModulus_sq_lt_one` (when $0 < k^2 < 1$ then $(k')^2 < 1$); (5) `complModulus_complModulus` — involutive on $[0, 1]$: $k'' = k$, proved via `Real.sqrt_sq` after simplifying $\\sqrt{1 - (\\sqrt{1-k^2})^2} = \\sqrt{1 - (1-k^2)} = \\sqrt{k^2} = k$.",
+    "mathContext": "The complementary modulus $k' = \\sqrt{1 - k^2}$ is the standard notation in elliptic-integral theory: the pair $(k, k')$ with $k^2 + (k')^2 = 1$ parametrizes the unit circle's first quadrant. The involutive property $k'' = k$ on $[0, 1]$ is what makes the complementary-modulus operation a useful symmetry: e.g. it lets us turn $K(k') + K(k)$ into the symmetric pair $K(k') + K(k'')$ at the symmetric point $k = 1/\\sqrt{2}$ where $k = k'$. The Lean proof of `complModulus_complModulus` uses the chain `Real.mul_self_sqrt` (to flatten the inner square root) then `sub_sub_cancel` then `Real.sqrt_sq` (which requires $0 \\leq k$).",
+    "significance": "central",
+    "relatedConcepts": [
+      "complementary modulus in elliptic integrals",
+      "Real.sqrt_sq",
+      "Real.mul_self_sqrt",
+      "involutive operations"
+    ],
+    "prerequisites": [
+      "Real.sqrt",
+      "sub_sub_cancel"
+    ]
+  },
+  {
+    "id": "ann-Kprime-Eprime",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 186,
+      "endLine": 200
+    },
+    "type": "definition",
+    "title": "ellipticK' and ellipticE' at the Complementary Modulus",
+    "content": "Two `noncomputable def`s: `ellipticK' k := ellipticK (complModulus k)` and `ellipticE' k := ellipticE (complModulus k)`. These are the *complementary* elliptic integrals, satisfying $K'(k) = K(k')$ and $E'(k) = E(k')$. Two positivity lemmas: `ellipticK'_pos` and `ellipticE'_pos` for $0 < k^2 < 1$ (which guarantees the complementary modulus also satisfies $0 < (k')^2 < 1$). The proofs delegate to `AmgmInequalityOQ04OQ01.ellipticK_pos` and `ellipticE_pos` respectively, with the hypothesis `complModulus_sq_lt_one`.",
+    "mathContext": "**Notation warning**: $K'$ is overloaded in elliptic-function literature. Some authors use $K'(k)$ for the derivative $\\frac{dK}{dk}$, others (and we, following NIST DLMF) use $K'(k) = K(k')$. Lurking in the textbook proofs of Legendre's relation is the *other* $K'$ — the derivative — which appears in the Wronskian. The Lean code's `ellipticK'` is unambiguous: it's `K(complModulus k)`, the value of $K$ at the complementary modulus. The positivity lemmas are workhorse results: any time we need $K'(k) > 0$ for some computation in the Legendre relation, we just invoke `ellipticK'_pos`.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complementary elliptic integrals",
+      "notation conventions for K' in the literature",
+      "delegation to existing positivity lemmas"
+    ],
+    "prerequisites": [
+      "ellipticK_pos",
+      "ellipticE_pos",
+      "complModulus_sq_lt_one"
+    ]
+  },
+  {
+    "id": "ann-legendre-axiom",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 202,
+      "endLine": 244
+    },
+    "type": "axiom",
+    "title": "axiom legendre_relation: The General Legendre Identity (Axiomatized)",
+    "content": "**This is the file's only axiom**. States: for all $k$ with $0 < k < 1$, $$\\text{ellipticE}(k) \\cdot \\text{ellipticK}'(k) + \\text{ellipticE}'(k) \\cdot \\text{ellipticK}(k) - \\text{ellipticK}(k) \\cdot \\text{ellipticK}'(k) = \\pi/2.$$ The comment block (lines 204-220) explains the proof strategy: (1) the **Legendre ODE** $k(1-k^2) y'' + (1 - 3k^2) y' - k y = 0$ is satisfied by both $K$ and $K'$; (2) the **Wronskian** of these two solutions, viewed as a function of $k$, is constant up to a known normalizing factor; (3) explicit boundary evaluation pins the constant. **Mathlib status**: all ingredients exist (`MeasureTheory.intervalIntegral.deriv_*` for differentiation under the integral, `Real.deriv_sqrt`, the chain rule), but they are not yet wired up to `ellipticK`. **Future session goal**: replace this axiom with a constructive proof, reducing this file's axiom count to 0.",
+    "mathContext": "The standard textbook proof (Whittaker–Watson 1927 §22.41): Define $f(k) = E K' + E' K - K K'$. Compute $\\frac{df}{dk}$ using the explicit derivatives $\\frac{dK}{dk} = \\frac{E - (k')^2 K}{k (k')^2}$ (derivable from the Legendre ODE) and $\\frac{dE}{dk} = \\frac{E - K}{k}$ (derivable by differentiating under the integral). After substituting and collecting terms, $\\frac{df}{dk} = 0$ identically on $(0, 1)$, so $f$ is constant. The constant is determined by any boundary value: at $k = 1/\\sqrt{2}$ (the lemniscate case), $k' = k$ so $f = 2EK - K^2$; computing this analytically (or via the Brent-Salamin AGM machinery) gives $\\pi/2$. **Honesty assessment**: the axiom encodes a substantial mathematical fact. The Lean proof is reachable but requires ~200-500 lines of Mathlib plumbing — the kind of foundational work this gallery is built to reward.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Legendre ODE for K(k)",
+      "Wronskian-vanishing arguments",
+      "differentiation under the integral sign",
+      "axiom elimination roadmap"
+    ],
+    "prerequisites": [
+      "complete elliptic integrals K(k), E(k)",
+      "complementary modulus",
+      "ODEs over ℝ"
+    ]
+  },
+  {
+    "id": "ann-symmetric-corollary",
+    "proofId": "amgm-inequality-oq-04-oq-02",
+    "range": {
+      "startLine": 246,
+      "endLine": 285
+    },
+    "type": "theorem",
+    "title": "complModulus_symmetric and legendre_relation_symmetric: The Lemniscate Case k = 1/√2",
+    "content": "**Two main theorems**, derived from the general axiom. (1) `complModulus_symmetric : complModulus(1/√2) = 1/√2`: at $k = 1/\\sqrt{2}$ the complementary modulus equals the modulus. **Proof**: $\\sqrt{1 - (1/\\sqrt{2})^2} = \\sqrt{1 - 1/2} = \\sqrt{1/2}$. The clean Lean proof uses `Real.sqrt_sq`: rewrite $1 - 1/2 = (1/\\sqrt{2})^2$ (via `one_div_sqrt_two_sq` and `norm_num`), then apply `Real.sqrt_sq` to the resulting $\\sqrt{(1/\\sqrt{2})^2} = 1/\\sqrt{2}$ (with positivity hypothesis). (2) `legendre_relation_symmetric : 2·K(1/√2)·E(1/√2) − K(1/√2)² = π/2`. **Proof**: specialize the general `legendre_relation` axiom at $k = 1/\\sqrt{2}$, then `unfold ellipticK' ellipticE'` and `rw complModulus_symmetric` to collapse $K(k')$ to $K(k)$ and $E(k')$ to $E(k)$. The hypothesis $E·K + E·K - K·K = \\pi/2$ then differs from the goal $2KE - K^2 = \\pi/2$ only by ring-arithmetic; `linear_combination h` closes the gap.",
+    "mathContext": "**The lemniscate condition**: $k = k' = 1/\\sqrt{2}$ satisfies $k^2 + (k')^2 = 1/2 + 1/2 = 1$, the only point in $(0, 1)$ where the modulus equals its complement. At this point, the elliptic integrals $K(k)$, $E(k)$ have closed-form expressions in terms of $\\Gamma(1/4)$ (the lemniscate constant): $K(1/\\sqrt{2}) = \\frac{\\Gamma(1/4)^2}{4\\sqrt{\\pi}}$. **Why this corollary matters**: the form $2KE - K^2 = \\pi/2$ is exactly what `AmgmInequalityOQ04OQ05` (the Brent-Salamin proof) takes as an axiom (its `legendre_relation`). By providing this as a *theorem* derivable from a single more-general axiom, this file lays groundwork for a cleaner dependency chain: future PR can `import AmgmInequalityOQ04OQ02` in OQ04OQ05 and discharge the symmetric-Legendre axiom there.",
+    "significance": "central",
+    "relatedConcepts": [
+      "lemniscate constant",
+      "Brent-Salamin algorithm",
+      "axiom reduction chain",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "axiom legendre_relation",
+      "complModulus",
+      "Real.sqrt_sq"
+    ]
+  }
+]
