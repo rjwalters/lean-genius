@@ -1192,6 +1192,97 @@ private lemma exists_dirichletSublattice_dvd_form
   obtain ⟨r, hr⟩ := exists_int_sqrt_neg_d_mod_p hd_pos hd_lt_p hqr
   exact ⟨r, fun v hv => dirichletForm_dvd_of_in_sublattice hr v hv⟩
 
+/-! ### S10A (2026-05-08): Multiple-of-p Identification under Bounded Range
+
+The eventual `dirichlet_key_lemma` proof — combining the integer Minkowski step
+on the Dirichlet sublattice (S10/S11, geometric work) with the divisibility
+content `p ∣ form(v)` (S9, just above) — needs an *arithmetic* identification
+step: from `0 < form(v) < 2 * p` and `p ∣ form(v)`, conclude `form(v) = p`.
+
+This is purely arithmetic at the `ℤ` level (no measure theory, no lattice
+machinery), so it is independent of the latent S5-region build issues and of
+any Mathlib geometry-of-numbers API drift. Once the geometric Minkowski step
+on the sublattice (S10 covolume + S11 application) lands, S10A is the
+plug-in lemma that finishes the form-value identification.
+
+The single inequality `N < 2 * p` with `0 < N` and `p ∣ N` forces `N = p`,
+because the only positive multiple of `p` strictly below `2 * p` is `p` itself.
+-/
+
+/-- **S10A**: If a positive integer `N` is divisible by `p > 0` and bounded
+strictly below `2 * p`, then `N = p` exactly.
+
+This is the arithmetic core of the form-value identification step in the
+Dirichlet Key Lemma proof: once the geometric Minkowski step on the Dirichlet
+sublattice produces a non-zero point `v` with `0 < form(v) < 2 * p` (from a
+suitable choice of ellipsoid radius `R`) and `p ∣ form(v)` (from S9's
+`exists_dirichletSublattice_dvd_form`), this lemma forces `form(v) = p`.
+
+Combined with `p = d * n - 1`, the equality `form(v) = p` is the integer-side
+input to the descent that extracts a sum-of-three-squares representation
+of `n`. -/
+private lemma multiple_p_eq_p_of_lt_two_mul
+    {N p : ℤ} (hp : 0 < p) (h_pos : 0 < N) (h_lt : N < 2 * p)
+    (h_dvd : p ∣ N) : N = p := by
+  obtain ⟨k, hk⟩ := h_dvd
+  -- After substitution: 0 < p * k < 2 * p with 0 < p, hence k = 1.
+  have h_pos' : 0 < p * k := hk ▸ h_pos
+  have h_lt' : p * k < 2 * p := hk ▸ h_lt
+  have hk_pos : 0 < k := by
+    rcases le_or_lt k 0 with hk_le | hk_gt
+    · exfalso
+      have : p * k ≤ 0 := mul_nonpos_iff.mpr (Or.inl ⟨hp.le, hk_le⟩)
+      linarith
+    · exact hk_gt
+  have hk_lt2 : k < 2 := by
+    by_contra hk_ge
+    push_neg at hk_ge
+    have : 2 * p ≤ p * k := by nlinarith
+    linarith
+  have hk_eq : k = 1 := by omega
+  rw [hk, hk_eq, mul_one]
+
+/-- **S10A (corollary)**: Specialised to the Dirichlet quadratic form. If
+`v ∈ ℤ³` is non-zero, has form value strictly below `2 * p`, and `p` divides
+the form value, then the form value equals `p` exactly.
+
+This is the direct application of `multiple_p_eq_p_of_lt_two_mul` together
+with the strict positivity helper `dirichletForm_pos` (S6) — packaged as a
+single existential matching the shape of the eventual S11 application. -/
+private lemma dirichletForm_eq_p_of_lt_two_mul
+    {p d : ℤ} (hp : 0 < p) (hd : 0 < d) (v : Fin 3 → ℤ) (hv : v ≠ 0)
+    (h_lt : v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2 < 2 * p)
+    (h_dvd : p ∣ v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2) :
+    v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2 = p := by
+  -- Strict positivity of the form on non-zero integer triples (variant of S6's
+  -- `dirichletForm_pos`, inlined here to keep the lemma self-contained on the
+  -- integer side).
+  have h_pos : 0 < v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2 := by
+    -- v ≠ 0 forces some coordinate to be non-zero; that coordinate's squared
+    -- contribution is strictly positive, the others are non-negative.
+    have h_ne : ∃ i : Fin 3, v i ≠ 0 := by
+      by_contra h_all
+      push_neg at h_all
+      apply hv
+      funext i
+      exact h_all i
+    obtain ⟨i, hi⟩ := h_ne
+    have h0 : 0 ≤ v 0 ^ 2 := sq_nonneg _
+    have h1 : 0 ≤ v 1 ^ 2 := sq_nonneg _
+    have h2 : 0 ≤ v 2 ^ 2 := sq_nonneg _
+    have hd1 : 0 ≤ d * v 1 ^ 2 := mul_nonneg hd.le h1
+    have hd2 : 0 ≤ d * v 2 ^ 2 := mul_nonneg hd.le h2
+    fin_cases i
+    · have hi0 : 0 < v 0 ^ 2 := by positivity
+      linarith
+    · have hi1 : 0 < v 1 ^ 2 := by positivity
+      have : 0 < d * v 1 ^ 2 := mul_pos hd hi1
+      linarith
+    · have hi2 : 0 < v 2 ^ 2 := by positivity
+      have : 0 < d * v 2 ^ 2 := mul_pos hd hi2
+      linarith
+  exact multiple_p_eq_p_of_lt_two_mul hp h_pos h_lt h_dvd
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
