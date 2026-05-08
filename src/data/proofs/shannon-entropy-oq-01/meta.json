@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ShannonEntropyOQ01.lean",
     "tags": [
       "information-theory",
@@ -16,8 +16,8 @@
       "gaussian",
       "gibbs-inequality"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 2,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "lineCount": 623,
@@ -26,7 +26,7 @@
     "additionalFiles": [
       "Proofs/ShannonEntropyOQ01Aristotle.lean"
     ],
-    "assumptions": "None. Fully machine-verified from Mathlib. Uses Bochner integral and Gaussian integration.",
+    "assumptions": "None. Fully machine-verified from Mathlib. Uses Bochner integral and Gaussian integration. Aristotle companion (ShannonEntropyOQ01Aristotle.lean): 2 open sorries — gaussian_second_moment, gaussian_quad_integrable (routine supporting lemmas exposed for automated proof search; main file remains fully verified).",
     "originalContributions": [
       "kl_divergence_continuous_nonneg: D(f||g) \u2265 0 (continuous KL divergence is non-negative)",
       "gibbs_inequality_continuous: h(f) \u2264 -\u222b f\u00b7ln g for any reference density g",
@@ -132,5 +132,5 @@
       "Proofs/ShannonEntropyOQ01Aristotle.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 2
 }

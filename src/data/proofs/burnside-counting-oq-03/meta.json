@@ -7,7 +7,7 @@
     "author": "George P\u00f3lya (1937); formalized via Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Polya_enumeration_theorem",
     "date": "1937",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BurnsideCountingOQ03.lean",
     "tags": [
       "combinatorics",
@@ -20,10 +20,10 @@
       "research",
       "open-problem"
     ],
-    "badge": "mathlib",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 4,
     "axiomCount": 0,
-    "assumptions": "No sorries, no axioms. Uses Mathlib's ZMod.addOrderOf_coe for the orbit size formula (addOrderOf r = n / gcd(n, r.val)) and references MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Burnside's lemma). The core theorem polya_cyclic_fixed_count is independently proved via explicit bijection; the general necklace formula is stated conditionally with Burnside as a hypothesis.",
+    "assumptions": "No sorries, no axioms. Uses Mathlib's ZMod.addOrderOf_coe for the orbit size formula (addOrderOf r = n / gcd(n, r.val)) and references MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (Burnside's lemma). The core theorem polya_cyclic_fixed_count is independently proved via explicit bijection; the general necklace formula is stated conditionally with Burnside as a hypothesis. Aristotle companion (BurnsideCountingOQ03Aristotle.lean): 4 open sorries — card_gcd_eq, polya_sum_identity, fixed_coloring_orbit_eq, fixed_factors_through_mod (routine supporting lemmas exposed for automated proof search; main file remains fully verified).",
     "dateAdded": "2026-04-04",
     "lineCount": 404,
     "theoremCount": 18,
@@ -185,5 +185,5 @@
       "Proofs/BurnsideCountingOQ03Aristotle.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 4
 }

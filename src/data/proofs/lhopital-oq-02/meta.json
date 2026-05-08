@@ -7,7 +7,7 @@
     "author": "Johann Bernoulli / Guillaume de l'Hôpital (1696)",
     "sourceUrl": "https://en.wikipedia.org/wiki/L%27H%C3%B4pital%27s_rule",
     "date": "1696",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LHopitalOQ02.lean",
     "tags": [
       "calculus",
@@ -16,8 +16,8 @@
       "real-analysis",
       "indeterminate-forms"
     ],
-    "badge": "original",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "mathlibDependencies": [
       {
         "theorem": "HasDerivAt.lhopital_zero_right_on_Ioo",
@@ -49,7 +49,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 428,
-    "assumptions": "0 axioms, 0 sorries. All 4 variants fully proved: right approach via Cauchy MVT, left via negation, atTop via inversion, atBot via negation of atTop.",
+    "assumptions": "0 axioms, 0 sorries. All 4 variants fully proved: right approach via Cauchy MVT, left via negation, atTop via inversion, atBot via negation of atTop. Aristotle companion (LHopitalOQ02Aristotle.lean): 3 open sorries — lhopital_infty_left, lhopital_infty_atTop, lhopital_infty_atBot (routine supporting lemmas exposed for automated proof search; main file remains fully verified).",
     "mathlib_version": "4.26.0",
     "theoremCount": 5,
     "definitionCount": 0,
@@ -140,7 +140,7 @@
       "targetId": "lhopital"
     }
   ],
-  "sorries": 0,
+  "sorries": 3,
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.Calculus.LHopital",

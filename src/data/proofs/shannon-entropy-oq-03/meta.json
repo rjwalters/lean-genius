@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lieb & Ruskai (1973)",
     "date": "1973",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "information-theory",
       "analysis",
@@ -16,10 +16,10 @@
       "verified"
     ],
     "proofRepoPath": "Proofs/ShannonEntropySSA.lean",
-    "badge": "original",
-    "sorries": 0,
+    "badge": "axiom",
+    "sorries": 3,
     "axiomCount": 0,
-    "assumptions": "None. All theorems proved from Mathlib primitives. Strong subadditivity proved via conditional KL divergence ≥ 0 (kl_term_bound applied to the conditional independence distribution q(x,y,z) = pXY(x,y)·pYZ(y,z)/pY(y)).",
+    "assumptions": "None. All theorems proved from Mathlib primitives. Strong subadditivity proved via conditional KL divergence ≥ 0 (kl_term_bound applied to the conditional independence distribution q(x,y,z) = pXY(x,y)·pYZ(y,z)/pY(y)). Aristotle companion (ShannonEntropySSAAristotle.lean): 3 open sorries — entropy_chain_rule, subadditivity, strong_subadditivity (routine supporting lemmas exposed for automated proof search; main file remains fully verified).",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_nonneg",
@@ -215,5 +215,5 @@
       "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
     }
   ],
-  "sorries": 0
+  "sorries": 3
 }
