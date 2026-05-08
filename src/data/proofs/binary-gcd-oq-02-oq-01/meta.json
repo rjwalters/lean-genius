@@ -134,16 +134,24 @@
   "sorries": 0,
   "crossReferences": [
     {
-      "id": "gcd-algorithm",
-      "relationship": "related: the standard Euclidean GCD algorithm, providing the Mathlib Nat.gcd that binaryGcdBit is proved equal to"
+      "proofId": "gcd-algorithm",
+      "relationship": "related",
+      "description": "The standard Euclidean GCD algorithm, which provides the Mathlib `Nat.gcd` function that this entry's `binaryGcdBit` is proved equal to. Together they bracket the GCD landscape: Euclid uses modular reduction (one `mod` per step, fewer steps), while Stein/binary uses bit operations (more steps, each $O(1)$ on hardware). Both compute the same mathematical function — and now that's machine-checked at the bit level."
     },
     {
-      "id": "binary-gcd-oq-02",
-      "relationship": "parent: provides binaryGcd (arithmetic formulation) that binaryGcdBit is structurally modeled on"
+      "proofId": "binary-gcd-oq-02",
+      "relationship": "parent",
+      "description": "Parent file providing `binaryGcd` (arithmetic formulation using `% 2` and `/ 2`) and its correctness proof. This entry replaces the arithmetic primitives with hardware-level `testBit 0` / `>>> 1` and reuses the same 7-case structural induction (`binaryGcd.induct`), keeping mathematical content identical and translating only at the bit/arithmetic interface."
     },
     {
-      "id": "binary-gcd",
-      "relationship": "grandparent: Stein's binary GCD algorithm baseline, with full verification of correctness"
+      "proofId": "binary-gcd",
+      "relationship": "grandparent",
+      "description": "Root entry for Stein's binary GCD algorithm. Establishes the baseline correctness statement that `binaryGcd a b = Nat.gcd a b`. This OQ-02-OQ-01 entry extends that result down to the hardware-bit-operation level used by GMP-style bignum implementations, closing the gap between abstract specification and hardware-efficient code."
+    },
+    {
+      "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling entry on Stein's binary GCD: this entry proves correctness of the bit-level formulation, while bezout-identity-oq-01-oq-01-oq-01 proves the $O(\\log^2 n)$ bit-complexity bound. Together they constitute a complete formal verification of binary GCD: the algorithm computes the right answer (this entry) with the expected asymptotic cost (the sibling)."
     }
   ]
 }
