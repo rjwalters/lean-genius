@@ -693,5 +693,137 @@ lemma integrandK_hasDerivAt_in_k (hk : k ^ 2 < 1) (θ : ℝ) :
   unfold AmgmInequalityOQ04OQ01.ellipticIntegrand
   exact h_div
 
+-- ============================================================================
+-- § 11. Uniform Bound for `dIntegrandK` (K-side analog of §9)
+-- ============================================================================
+
+/-
+The K-side counterpart of §9. To apply
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` for
+`ellipticK` we need an integrable function `boundDIntegrandK M θ` that
+majorizes `|dIntegrandK κ θ|` uniformly for `|κ| ≤ M`. This section
+provides exactly that infrastructure, mirroring §9 line for line.
+
+The bound is
+
+    boundDIntegrandK M θ
+      :=  M · sin²θ / [(1 − M² sin²θ) · √(1 − M² sin²θ)],
+
+obtained from `dIntegrandK κ θ = κ sin²θ / [(1 − κ²sin²θ) √(1 − κ²sin²θ)]`
+by replacing every `κ` with `M`. For `|κ| ≤ M < 1`:
+
+* numerator  `|κ| · sin²θ ≤ M · sin²θ`  (since `|κ| ≤ M`, `sin²θ ≥ 0`);
+* denominator factor `(1 − M² sin²θ) ≤ (1 − κ² sin²θ)` (from `κ² ≤ M²`);
+* so `√(1 − M² sin²θ) ≤ √(1 − κ² sin²θ)`, and hence the product
+  `(1 − M² sin²θ) · √(1 − M² sin²θ) ≤ (1 − κ² sin²θ) · √(1 − κ² sin²θ)`.
+
+The two displayed inequalities feed `div_le_div`. The denominator on the
+M-side is positive (we only use the bound for `M² < 1`), so the quotient
+inequality is well-formed.
+
+This section is the K-side precondition for the future `dK_dk` assembly,
+which will follow the same template as the (still-open) `dE_dk` work in
+§10/PR #17371. Once the K-side algebraic split + integral identity (the
+non-pointwise IBP step) is also in place, `dK_dk` can be assembled in a
+parallel session.
+-/
+
+/-- Dominating bound for `|dIntegrandK κ θ|` on the band `|κ| ≤ M`:
+    `M · sin²θ / [(1 − M² sin²θ) · √(1 − M² sin²θ)]`.
+
+    Mirrors `dIntegrandK` with `κ` replaced by `M` everywhere — designed
+    to give a uniform integrable upper bound on `|dIntegrandK κ θ|` for
+    `κ` in a closed band. The denominator is the same `(1 − u) · √(1 − u)`
+    form as `dIntegrandK` itself (§10), so the two pieces compose
+    naturally in `dIntegrandK_abs_le_bound`. -/
+noncomputable def boundDIntegrandK (M θ : ℝ) : ℝ :=
+  M * Real.sin θ ^ 2 /
+    ((1 - M ^ 2 * Real.sin θ ^ 2) * Real.sqrt (1 - M ^ 2 * Real.sin θ ^ 2))
+
+/-- For `M² < 1` the K-side bound function is continuous in `θ`. -/
+lemma boundDIntegrandK_continuous (hM : M ^ 2 < 1) :
+    Continuous (boundDIntegrandK M) := by
+  unfold boundDIntegrandK
+  refine Continuous.div₀ ?_ ?_ ?_
+  · -- numerator: `M · sin²θ`
+    exact continuous_const.mul (continuous_sin.pow 2)
+  · -- denominator: `(1 − M² sin²θ) · √(1 − M² sin²θ)`
+    have h_inner : Continuous (fun θ : ℝ => 1 - M ^ 2 * Real.sin θ ^ 2) :=
+      Continuous.sub continuous_const
+        (continuous_const.mul (continuous_sin.pow 2))
+    exact h_inner.mul (Real.continuous_sqrt.comp h_inner)
+  · intro θ
+    have hp : 0 < 1 - M ^ 2 * Real.sin θ ^ 2 :=
+      AmgmInequalityOQ04OQ01.denom_pos hM θ
+    have hsp : 0 < Real.sqrt (1 - M ^ 2 * Real.sin θ ^ 2) :=
+      AmgmInequalityOQ04OQ01.sqrt_denom_pos hM θ
+    exact (mul_pos hp hsp).ne'
+
+/-- For `M² < 1` the K-side bound is interval-integrable on `[0, π/2]`. -/
+lemma boundDIntegrandK_integrable (hM : M ^ 2 < 1) :
+    IntervalIntegrable (boundDIntegrandK M) MeasureTheory.volume 0 (π / 2) :=
+  (boundDIntegrandK_continuous hM).intervalIntegrable 0 (π / 2)
+
+/-- **Uniform bound** on `|dIntegrandK|` over the band `|κ| ≤ M`.
+
+    For `0 ≤ M` with `M² < 1` and any `κ` with `κ² ≤ M²`,
+    `|dIntegrandK κ θ| ≤ boundDIntegrandK M θ` for every `θ`.
+
+    This is the pointwise content of the `h_bound` hypothesis of
+    `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+    on the K-side, the analog of `dIntegrandE_abs_le_bound` (§9). -/
+lemma dIntegrandK_abs_le_bound
+    (hM : M ^ 2 < 1) (hM_nn : 0 ≤ M) (κ θ : ℝ) (hκ : κ ^ 2 ≤ M ^ 2) :
+    |dIntegrandK κ θ| ≤ boundDIntegrandK M θ := by
+  unfold dIntegrandK boundDIntegrandK
+  have hsin2_nn : 0 ≤ Real.sin θ ^ 2 := sq_nonneg _
+  have hκ_sq_lt : κ ^ 2 < 1 := lt_of_le_of_lt hκ hM
+  have hM_pos : 0 < 1 - M ^ 2 * Real.sin θ ^ 2 :=
+    AmgmInequalityOQ04OQ01.denom_pos hM θ
+  have hM_sqrt_pos : 0 < Real.sqrt (1 - M ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hM θ
+  have hκ_pos : 0 < 1 - κ ^ 2 * Real.sin θ ^ 2 :=
+    AmgmInequalityOQ04OQ01.denom_pos hκ_sq_lt θ
+  have hκ_sqrt_pos : 0 < Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2) :=
+    AmgmInequalityOQ04OQ01.sqrt_denom_pos hκ_sq_lt θ
+  -- |κ| ≤ M from κ² ≤ M² and 0 ≤ M (via `Real.sqrt`).
+  have habs_κ : |κ| ≤ M := by
+    have h1 : Real.sqrt (κ ^ 2) ≤ Real.sqrt (M ^ 2) := Real.sqrt_le_sqrt hκ
+    rwa [Real.sqrt_sq_eq_abs, Real.sqrt_sq hM_nn] at h1
+  -- Compute |·| on the LHS. Numerator = κ · sin²θ (no sign here, unlike §9).
+  have h_num : |κ * Real.sin θ ^ 2| = |κ| * Real.sin θ ^ 2 := by
+    rw [abs_mul, abs_of_nonneg hsin2_nn]
+  have h_denom_pos :
+      0 < (1 - κ ^ 2 * Real.sin θ ^ 2)
+        * Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2) :=
+    mul_pos hκ_pos hκ_sqrt_pos
+  have h_denom :
+      |(1 - κ ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2)|
+          = (1 - κ ^ 2 * Real.sin θ ^ 2)
+              * Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2) :=
+    abs_of_pos h_denom_pos
+  rw [abs_div, h_num, h_denom]
+  -- Goal:
+  --   |κ| · sin²θ / [(1 − κ²sin²θ)·√(1 − κ²sin²θ)]
+  --     ≤ M · sin²θ / [(1 − M²sin²θ)·√(1 − M²sin²θ)].
+  apply div_le_div
+  · -- 0 ≤ numerator on RHS
+    exact mul_nonneg hM_nn hsin2_nn
+  · -- numerator inequality: |κ|·sin²θ ≤ M·sin²θ
+    exact mul_le_mul_of_nonneg_right habs_κ hsin2_nn
+  · -- 0 < denominator on RHS
+    exact mul_pos hM_pos hM_sqrt_pos
+  · -- denominator inequality:
+    -- (1 − M²sin²θ) · √(1 − M²sin²θ) ≤ (1 − κ²sin²θ) · √(1 − κ²sin²θ).
+    have h_inner_le : 1 - M ^ 2 * Real.sin θ ^ 2 ≤ 1 - κ ^ 2 * Real.sin θ ^ 2 := by
+      have hmono : κ ^ 2 * Real.sin θ ^ 2 ≤ M ^ 2 * Real.sin θ ^ 2 :=
+        mul_le_mul_of_nonneg_right hκ hsin2_nn
+      linarith
+    have h_sqrt_le :
+        Real.sqrt (1 - M ^ 2 * Real.sin θ ^ 2)
+          ≤ Real.sqrt (1 - κ ^ 2 * Real.sin θ ^ 2) :=
+      Real.sqrt_le_sqrt h_inner_le
+    exact mul_le_mul h_inner_le h_sqrt_le hM_sqrt_pos.le hκ_pos.le
 
 end AmgmInequalityOQ04OQ02
