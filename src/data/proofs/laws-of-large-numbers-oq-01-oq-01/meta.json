@@ -168,6 +168,11 @@
       "proofId": "prob-method-expectation",
       "relationship": "related",
       "description": "Foundational first-moment lemma 'E[X] > t implies some outcome exceeds t'. The contrapositive used here is parallel: 'almost-sure boundedness Xₙ/n → 0 forces a finite-mean tail estimate'. Both proofs hinge on the same Markov/Chebyshev quantitative core, in different guises (probabilistic method vs. necessity contradiction)."
+    },
+    {
+      "proofId": "prob-method-second-moment",
+      "relationship": "uses",
+      "description": "The variance-Chebyshev BC2 used here is exactly the second moment method specialized to sums of pairwise-independent indicators. The proof of `borel_cantelli_of_pairwise_independent` in the Aristotle companion mirrors the Paley-Zygmund step Var(S)/E[S]² → 0 ⇒ S concentrated, applied to S_N = Σ 𝟙_{Aₙ}. Reading the two entries side-by-side reveals that the SLLN necessity argument is a *probabilistic-method* proof in disguise — using the second moment to establish a.s. *occurrence* of a tail event, then using the deterministic Cesàro decay to show the same event almost-surely *fails*, with the contradiction forcing finite first moment."
     }
   ],
   "conclusion": {
