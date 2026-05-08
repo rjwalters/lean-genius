@@ -2,10 +2,71 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T22:00:00Z
-**Iteration**: 13 (S13 — Sylow cardinality helpers for S10 closure)
-**Last Updated**: 2026-05-08 (researcher-5)
+**Iteration**: 14 (S14 — first of five ingredients for S10 element-counting closure)
+**Last Updated**: 2026-05-09 (researcher-13)
 
-## S13 (researcher-5, 2026-05-08, this PR)
+## S14 (researcher-13, 2026-05-09, this PR)
+
+First of five ingredients for closing S10's
+`sylow_two_unique_when_n3_four` sorry, per
+`session-13-s10-element-count-spec.md` §1:
+
+* `g_pow_three_iff_mem_some_sylow_three` (private, axiom-free):
+  for finite G with `Nat.card G = 12`,
+  `g^3 = 1 ↔ ∃ Q : Sylow 3 G, g ∈ (Q : Subgroup G)`.
+
+  Forward: `orderOf g ∣ 3` (`orderOf_dvd_of_pow_eq_one`), so
+  `orderOf g ∈ {1, 3} = {3⁰, 3¹}`. By `Nat.card_zpowers`,
+  `Subgroup.zpowers g` has cardinality `orderOf g`, so it's a 3-subgroup
+  via `IsPGroup.of_card`. Apply `IsPGroup.exists_le_sylow` to get a
+  Sylow 3-subgroup containing `Subgroup.zpowers g`, hence containing `g`.
+
+  Backward: from S13's `sylow_three_card_eq_three_of_card_twelve`,
+  `Nat.card Q = 3`. Apply `pow_card_eq_one'` inside `(Q : Subgroup G)`
+  to get `(⟨g, hg⟩ : Q)^3 = 1`. Push to G via `Subgroup.coe_pow` and
+  `Subgroup.coe_one` (both `rfl`).
+
+The lemma is positioned immediately before the S10 placeholder
+`sylow_two_unique_when_n3_four`, and the placeholder's docstring is
+updated to reference the new helper. The four-Sylow-3 hypothesis is
+not used here — `g_pow_three_iff_mem_some_sylow_three` is a pointwise
+characterization that holds for any `|G| = 12`. The exact-four count
+enters S15 ingredients 2-3 (cardinality of the disjoint union).
+
+### Counts
+
+* `lineCount`: 1186 → 1248 (+62, including ~22 lines of docstring +
+  ~30 lines of proof body)
+* `theoremCount`: 26 → 27 (+1 private lemma)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four`'s S10
+  sorry is still the lone deferred lemma; S14 prepares it without
+  closing it)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S13: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The new lemma uses only
+Mathlib API verified against a local `mathlib4_main` checkout:
+
+| API | Module | Notes |
+|---|---|---|
+| `orderOf_dvd_of_pow_eq_one` | `Mathlib.GroupTheory.OrderOfElement:270` | x^n = 1 → orderOf x ∣ n |
+| `Nat.Prime.eq_one_or_self_of_dvd` | `Mathlib.Data.Nat.Prime.Basic` | divisors of prime are 1 or self |
+| `Nat.card_zpowers` | `Mathlib.Data.ZMod.QuotientGroup:161` | used in PGroup.lean L91 |
+| `IsPGroup.of_card` | `Mathlib.GroupTheory.PGroup:40` | Nat.card G = p^n → IsPGroup p G |
+| `IsPGroup.exists_le_sylow` | `Mathlib.GroupTheory.Sylow:163` | Sylow's first theorem |
+| `Subgroup.mem_zpowers` | `Mathlib.Algebra.Group.Subgroup.ZPowers.Basic:37` | g ∈ zpowers g |
+| `pow_card_eq_one'` | `Mathlib.GroupTheory.OrderOfElement:1175` | x ^ Nat.card G = 1 (Nat.card variant) |
+| `Subgroup.coe_pow` | `Mathlib.Algebra.Group.Subgroup.Defs:540` | rfl, simp/norm_cast |
+| `Subgroup.coe_one` | `Mathlib.Algebra.Group.Subgroup.Defs:524` | rfl, simp/norm_cast |
+
+No new imports — all of the above are transitively imported via
+`Mathlib.GroupTheory.Sylow` (which is already imported and itself
+imports `Mathlib.GroupTheory.PGroup`). Risk profile: identical to S13.
+
+## S13 (researcher-5, 2026-05-08, PR #17472)
 
 Two private cardinality helpers, inserted between S11.5's
 `sylow_prime_order_disjoint_of_ne` and the
@@ -248,15 +309,30 @@ focal-subgroup machinery. Estimated 400-800 lines on top of
 
 ## Next Action
 
-1. **(S10)** Close `sylow_two_unique_when_n3_four`'s sorry via
-   element-counting (~80-120 lines). Mathlib API verification
-   required for `Set.ncard_biUnion`-style lemmas.
-2. **(S12)** Update `burnside_pq` dispatch to peel off both
+1. **(S15)** Continue S10 closure with the next ingredient from
+   `session-13-s10-element-count-spec.md` §2:
+   `cube_id_set_eq_disjoint_union` — set-equality
+   `{g : G | g^3 = 1} = {1} ∪ ⋃ (Q : Sylow 3 G), ((Q : Set G) \ {1})`
+   with pairwise-disjoint union (uses S11.5's
+   `sylow_prime_order_disjoint_of_ne` instantiated with S13's
+   `sylow_three_card_eq_three_of_card_twelve`). Forward direction
+   uses S14's new `g_pow_three_iff_mem_some_sylow_three`. Estimated
+   ~30-40 lines.
+2. **(S16)** `cube_id_card_eq_nine` — cardinality count
+   `Nat.card {g : G | g^3 = 1} = 9` via `Set.ncard_biUnion_disjoint`
+   (or `Finset.card_disjUnion` bridges). Principal S15+ Mathlib API
+   risk: verifying the exact signature of `Set.ncard_biUnion_disjoint`
+   and any `Set.Finite` side conditions for a `Sylow p G` index type.
+3. **(S17)** `complement_in_sylow_two` and the closure of
+   `sylow_two_unique_when_n3_four` (uses S13's
+   `sylow_two_card_eq_four_of_card_twelve`). Estimated ~30-50 lines on
+   top of (1)-(2).
+4. **(S18)** Update `burnside_pq` dispatch to peel off both
    `(a, b) = (2, 1)` AND `(a, b) = (1, 2)`: combine S7/S7.5/S9 for
    `(2, 1)` and S11.1/S11.2/S11.3 for `(1, 2)`. Narrow
    `burnside_pq_nontrivial` axiom hypothesis to `2 ≤ a ∧ 2 ≤ b`.
-3. **(S13+)** `|G| = p² · q²` Sylow analysis (~150 lines).
-4. **(S14+)** Goldschmidt-Matsuyama on `Mathlib.GroupTheory.Focal` for
+5. **(S19+)** `|G| = p² · q²` Sylow analysis (~150 lines).
+6. **(S20+)** Goldschmidt-Matsuyama on `Mathlib.GroupTheory.Focal` for
    `(a, b) ≥ (2, 2)`.
 
 ## Iteration 11 Builds (researcher-11, 2026-05-08)

@@ -683,6 +683,63 @@ private lemma sylow_two_card_eq_four_of_card_twelve
   rw [h_pow_two] at hmult
   exact hmult
 
+/-- **S14 ingredient (first of five)**: in a finite group of order 12, an
+    element satisfies `g ^ 3 = 1` iff it lies in some Sylow 3-subgroup.
+
+    *Forward*: `g ^ 3 = 1` gives `orderOf g ∣ 3`, so `orderOf g ∈ {1, 3}`.
+    The cyclic subgroup `Subgroup.zpowers g` has cardinality
+    `Nat.card (Subgroup.zpowers g) = orderOf g ∈ {3⁰, 3¹}` (`Nat.card_zpowers`),
+    hence is a 3-subgroup via `IsPGroup.of_card`. By
+    `IsPGroup.exists_le_sylow` it embeds in some Sylow 3-subgroup `Q`, and
+    `g ∈ Subgroup.zpowers g ≤ Q`.
+
+    *Backward*: if `g ∈ (Q : Subgroup G)` for some `Q : Sylow 3 G`, then by
+    `sylow_three_card_eq_three_of_card_twelve` the subgroup `Q` has
+    cardinality 3, so `pow_card_eq_one'` applied inside `(Q : Subgroup G)`
+    forces `(⟨g, hg⟩ : (Q : Subgroup G)) ^ 3 = 1`. Pushing through the
+    inclusion via `Subgroup.coe_pow` / `Subgroup.coe_one` gives `g ^ 3 = 1`.
+
+    **First ingredient** of S10's element-counting closure of
+    `sylow_two_unique_when_n3_four` (per
+    `research/problems/abel-ruffini-galois-extensions-oq-07/session-13-s10-element-count-spec.md`
+    §1). The four-Sylow-3 hypothesis is not used here; this is a
+    pointwise membership characterization that holds for any `|G| = 12`
+    regardless of `n_3`. The exact-four count enters S14 ingredient 3
+    (cardinality of the disjoint union). -/
+private lemma g_pow_three_iff_mem_some_sylow_three
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 3)]
+    (hcard : Nat.card G = 12) (g : G) :
+    g ^ 3 = 1 ↔ ∃ Q : Sylow 3 G, g ∈ (Q : Subgroup G) := by
+  refine ⟨fun h => ?_, ?_⟩
+  · -- Forward: zpowers g is a 3-subgroup, hence contained in some Sylow 3.
+    have hp3 : Nat.Prime 3 := Fact.out
+    have horder_dvd : orderOf g ∣ 3 := orderOf_dvd_of_pow_eq_one h
+    -- orderOf g ∈ {1, 3} = {3^0, 3^1}; package as ∃ n, orderOf g = 3^n.
+    have hord_pow : ∃ n : ℕ, orderOf g = 3 ^ n := by
+      rcases hp3.eq_one_or_self_of_dvd _ horder_dvd with h_one | h_three
+      · exact ⟨0, by rw [h_one, pow_zero]⟩
+      · exact ⟨1, by rw [h_three, pow_one]⟩
+    obtain ⟨n, hn⟩ := hord_pow
+    have hpg : IsPGroup 3 ((Subgroup.zpowers g) : Subgroup G) :=
+      IsPGroup.of_card (n := n) (by rw [Nat.card_zpowers, hn])
+    obtain ⟨Q, hQle⟩ := hpg.exists_le_sylow
+    exact ⟨Q, hQle (Subgroup.mem_zpowers g)⟩
+  · -- Backward: |Q| = 3 ⇒ g^Nat.card Q = 1 ⇒ g^3 = 1 after pushing through ↑.
+    rintro ⟨Q, hg⟩
+    have hQ_card : Nat.card ((Q : Subgroup G)) = 3 :=
+      sylow_three_card_eq_three_of_card_twelve hcard Q
+    have h_pow_in_Q :
+        (⟨g, hg⟩ : (Q : Subgroup G)) ^ Nat.card ((Q : Subgroup G)) = 1 :=
+      pow_card_eq_one'
+    rw [hQ_card] at h_pow_in_Q
+    -- h_pow_in_Q : (⟨g, hg⟩ : (Q : Subgroup G)) ^ 3 = 1.
+    -- Push to G via Subgroup.coe_pow + Subgroup.coe_one (both rfl on coerce).
+    calc g ^ 3
+        = (((⟨g, hg⟩ : (Q : Subgroup G)) ^ 3 : (Q : Subgroup G)) : G) := rfl
+      _ = ((1 : (Q : Subgroup G)) : G) := by rw [h_pow_in_Q]
+      _ = 1 := rfl
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
@@ -691,8 +748,13 @@ private lemma sylow_two_card_eq_four_of_card_twelve
     `|G \ {g | g^3 = 1}| = 3 = |P| - 1` for any Sylow 2-subgroup `P`,
     pinning down `P` as `{e} ∪ (G \ {g | g^3 = 1})` independent of choice.
     The full Lean proof requires set/Finset cardinality machinery;
-    isolated as a single `sorry` for S10. See
-    `research/problems/abel-ruffini-galois-extensions-oq-07/session-8-twelve-spec.md` §6–7. -/
+    isolated as a single `sorry` for S10. The pointwise membership
+    characterization `g^3 = 1 ↔ ∃ Q, g ∈ Q` is now provided by
+    `g_pow_three_iff_mem_some_sylow_three` (S14 ingredient 1, above).
+    See
+    `research/problems/abel-ruffini-galois-extensions-oq-07/session-8-twelve-spec.md` §6–7
+    and the S14 closure spec in
+    `research/problems/abel-ruffini-galois-extensions-oq-07/session-13-s10-element-count-spec.md`. -/
 private lemma sylow_two_unique_when_n3_four
     {G : Type*} [Group G] [Finite G]
     [Fact (Nat.Prime 2)] [Fact (Nat.Prime 3)]
