@@ -242,6 +242,38 @@ theorem standardNormalCDF_continuous : Continuous standardNormalCDF := by
   exact continuous_const.add
     ((ProbabilityTheory.integrable_gaussianPDFReal 0 1).continuous_primitive 0)
 
+/-- **Right-tail saturation of Φ.** As `x → +∞`, the standard normal CDF
+    tends to `1`.
+
+    Proof: the family `(Set.Iic x)_{x : ℝ}` is an `AECover` for `volume`
+    along `Filter.atTop` (`MeasureTheory.aecover_Iic Filter.tendsto_id`);
+    applying `MeasureTheory.AECover.integral_tendsto_of_countably_generated`
+    to the integrable density `ProbabilityTheory.gaussianPDFReal 0 1`
+    gives convergence of `∫ t in Iic x, gaussianPDFReal 0 1 t` to the total
+    integral, which equals `1` by
+    `ProbabilityTheory.integral_gaussianPDFReal_eq_one`.
+
+    On the **Phase-4 Portmanteau-bridge critical path**: paired with the
+    binomialCDF right-tail saturation `binomialCDF_tendsto_one_atTop`,
+    this is one of the two asymptotic identities the Portmanteau direction
+    at `+∞` consumes (and ditto at `-∞`, via the matching `_atBot` lemmas
+    once added). With Φ's continuity (`standardNormalCDF_continuous`)
+    and these tail saturations together, the Portmanteau bridge applies
+    universally to discharge `binomial_clt_pointwise`. -/
+theorem standardNormalCDF_tendsto_one_atTop :
+    Filter.Tendsto standardNormalCDF Filter.atTop (nhds 1) := by
+  unfold standardNormalCDF
+  have hcov : MeasureTheory.AECover (MeasureTheory.volume : MeasureTheory.Measure ℝ)
+      Filter.atTop (fun x : ℝ => Set.Iic x) :=
+    MeasureTheory.aecover_Iic Filter.tendsto_id
+  have hint : MeasureTheory.Integrable (ProbabilityTheory.gaussianPDFReal 0 1) :=
+    ProbabilityTheory.integrable_gaussianPDFReal 0 1
+  have h := hcov.integral_tendsto_of_countably_generated hint
+  have htotal : ∫ t, ProbabilityTheory.gaussianPDFReal 0 1 t = 1 :=
+    ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero
+  rw [htotal] at h
+  exact h
+
 /-! ## Axiom: classical de Moivre–Laplace (binomial CLT) -/
 
 /-- **AXIOM** (de Moivre–Laplace, 1733/1812): the standardized binomial CDF
@@ -481,6 +513,44 @@ theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
   rw [← hadd]
   refine Finset.sum_congr rfl (fun j _ => ?_)
   ring
+
+/-- **Right-tail asymptote of `binomialCDF`.** As `x → +∞`, the binomial
+    CDF tends to `1` (under `0 ≤ p ≤ 1`).
+
+    Proof: by `binomialCDF_eq_one`, `binomialCDF n p x = 1` for every
+    `x` with `(n : ℝ) ≤ x`; the predicate `(n : ℝ) ≤ x` holds eventually
+    along `Filter.atTop` (`Filter.eventually_ge_atTop`), so the function
+    is *eventually constant equal to `1`* and the limit is `1`.
+
+    Companion to `standardNormalCDF_tendsto_one_atTop`: paired right-tail
+    saturation feeding the Phase-4 Portmanteau bridge. -/
+theorem binomialCDF_tendsto_one_atTop (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    Filter.Tendsto (binomialCDF n p) Filter.atTop (nhds 1) := by
+  have h : Filter.Tendsto (fun _ : ℝ => (1 : ℝ)) Filter.atTop (nhds 1) :=
+    tendsto_const_nhds
+  refine h.congr' ?_
+  filter_upwards [Filter.eventually_ge_atTop (n : ℝ)] with x hx
+  exact (binomialCDF_eq_one n hp0 hp1 hx).symm
+
+/-- **Left-tail asymptote of `binomialCDF`.** As `x → -∞`, the binomial
+    CDF tends to `0`.
+
+    Proof: by `binomialCDF_neg`, `binomialCDF n p x = 0` for every `x < 0`;
+    the predicate `x < 0` holds eventually along `Filter.atBot`
+    (`Filter.eventually_lt_atBot`), so the function is *eventually constant
+    equal to `0`* and the limit is `0`. No constraints on `p` are needed:
+    `binomialCDF_neg` already holds for arbitrary `p`.
+
+    The matching `standardNormalCDF_tendsto_zero_atBot` (Φ's left-tail
+    saturation) is the next structural-CDF prerequisite for the
+    Phase-4 Portmanteau bridge. -/
+theorem binomialCDF_tendsto_zero_atBot (n : ℕ) (p : ℝ) :
+    Filter.Tendsto (binomialCDF n p) Filter.atBot (nhds 0) := by
+  have h : Filter.Tendsto (fun _ : ℝ => (0 : ℝ)) Filter.atBot (nhds 0) :=
+    tendsto_const_nhds
+  refine h.congr' ?_
+  filter_upwards [Filter.eventually_lt_atBot (0 : ℝ)] with x hx
+  exact (binomialCDF_neg n p hx).symm
 
 /-! ## Main theorem: multinomial marginal CLT (derived) -/
 

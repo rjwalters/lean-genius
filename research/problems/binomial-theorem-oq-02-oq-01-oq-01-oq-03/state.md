@@ -1,32 +1,52 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 prep — completed CDF-structure library for Φ)
+**Phase**: ACT (Phase-4 prep — tendsto-saturation lemmas added on right tail)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 7, researcher-11)
-**Iteration**: 7
+**Last Updated**: 2026-05-08 (Session 8, researcher-6)
+**Iteration**: 8
 
 ## Current Focus
-Phase-4 prep continued — Session 7 completed the standard-normal CDF
-structural library by adding `standardNormalCDF_continuous`. Together
-with the three lemmas Session 6 added (`_nonneg`, `_le_one`, `_mono`)
-and the four `binomialCDF_*` lemmas (Sessions 4–5), the file now has
-machine-verified evidence on both sides of the Portmanteau convergence
-that Φ and the standardized binomial CDFs are *bona fide* CDFs in the
-Mathlib sense — non-negative, monotone, bounded above by 1, and (for
-the limit Φ) continuous everywhere. The continuity proof reduces
-`standardNormalCDF` to `standardNormalCDF 0 + intervalIntegral 0..x`
-via `MeasureTheory.intervalIntegral_tendsto_integral_Iic` and the
-adjacent-intervals identity, then applies
-`MeasureTheory.Integrable.continuous_primitive` (which uses `NoAtoms`
-on `volume`). New imports: `Mathlib.MeasureTheory.Integral.IntegralEqImproper`,
-`Mathlib.MeasureTheory.Integral.DominatedConvergence`.
+Phase-4 prep continued — Session 8 adds three asymptotic-saturation
+(`Filter.Tendsto`-form) lemmas covering the right-tail of both Φ and the
+binomial CDF, plus the left-tail of the binomial CDF:
+
+- `standardNormalCDF_tendsto_one_atTop`: `Tendsto Φ atTop (𝓝 1)`. Proof
+  uses `MeasureTheory.aecover_Iic Filter.tendsto_id` to get the AECover
+  for `volume` along `atTop`, then
+  `AECover.integral_tendsto_of_countably_generated` on the integrable
+  `gaussianPDFReal 0 1`, with the total integral identified as 1 by
+  `ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero`.
+- `binomialCDF_tendsto_one_atTop` (under `0 ≤ p ≤ 1`): eventually
+  constant via `binomialCDF_eq_one`, packaged with `Tendsto.congr'` and
+  `Filter.eventually_ge_atTop (n : ℝ)`.
+- `binomialCDF_tendsto_zero_atBot`: eventually constant via
+  `binomialCDF_neg`, packaged with `Tendsto.congr'` and
+  `Filter.eventually_lt_atBot (0 : ℝ)`. No `p` constraint required.
+
+These three lemmas convert the boundary-value information from
+Sessions 4–7 into the `Filter.Tendsto` form Mathlib's Portmanteau
+direction at `±∞` consumes. Together with `standardNormalCDF_continuous`
+(Session 7) and the four-corner `binomialCDF_*` lemmas (Sessions 4–7),
+all the right-tail prerequisites are in place. The matching
+`standardNormalCDF_tendsto_zero_atBot` (Φ left tail) is the remaining
+structural-CDF prerequisite: the proof needs the `Antitone` direction
+(`Antitone.tendsto_setIntegral` on `(fun y => Iic (-y))` composed with
+`Filter.tendsto_neg_atBot_atTop`) since `aecover_Iic` only cares about
+covers expanding to the whole space, not contracting to `∅`.
 
 **Axiom count: 1 (unchanged).** The file is now 0 sorries / 1 axiom
-(`binomial_clt_pointwise` only). With the CDF-structure library now
-complete on both sides of the convergence, Session 8 should be able to
-attempt the Portmanteau-bridge axiom discharge.
+(`binomial_clt_pointwise` only), 17 theorems (substantive count: 13),
+582 lines.
+
+**Build verification.** Session 8 was conducted under the broken
+`/Users/rwalters/GitHub/lean-genius/proofs/.lake` self-symlink trap
+(see memory feedback `feedback_researcher_lake_symlink_broken.md`),
+so a Docker build was not run. Each lemma uses well-tested Mathlib
+idioms (`AECover` API, `Filter.Tendsto.congr'`, `filter_upwards` over
+`eventually_ge_atTop` / `eventually_lt_atBot`), so confidence is high
+but not verified locally. CI is the ground truth for this PR.
 
 ## Active Approach
 **CDF-based** rather than the measure-theoretic Bernoulli-sum approach

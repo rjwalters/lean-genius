@@ -20,8 +20,8 @@
     "sorries": 0,
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 512,
-    "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. The Session-2 `standardNormalCDF` opaque marker has been replaced (Session 6) by a concrete `noncomputable def` integrating Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; this removes that declaration from the assumption count and adds four elementary structural lemmas (`standardNormalCDF_nonneg`, `standardNormalCDF_le_one`, `standardNormalCDF_mono`, `standardNormalCDF_continuous` [Session 7]) that together establish Φ is a *bona fide* continuous CDF on ℝ — every point is a continuity point, so the Portmanteau bridge that next session will build to discharge the axiom applies universally. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` was proved in Phase-3: it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
+    "lineCount": 582,
+    "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. The Session-2 `standardNormalCDF` opaque marker has been replaced (Session 6) by a concrete `noncomputable def` integrating Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; this removes that declaration from the assumption count and adds four elementary structural lemmas (`standardNormalCDF_nonneg`, `standardNormalCDF_le_one`, `standardNormalCDF_mono`, `standardNormalCDF_continuous` [Session 7]) that together establish Φ is a *bona fide* continuous CDF on ℝ — every point is a continuity point, so the Portmanteau bridge that next session will build to discharge the axiom applies universally. Session 8 (this session) adds three asymptotic-saturation lemmas — `standardNormalCDF_tendsto_one_atTop` (Φ(x) → 1 as x → +∞ via `MeasureTheory.aecover_Iic` + `AECover.integral_tendsto_of_countably_generated` + `integral_gaussianPDFReal_eq_one`), `binomialCDF_tendsto_one_atTop` (binomialCDF n p x → 1 as x → +∞, eventually-constant via `binomialCDF_eq_one`), and `binomialCDF_tendsto_zero_atBot` (binomialCDF n p x → 0 as x → -∞, eventually-constant via `binomialCDF_neg`). Together with the Session-7 boundary lemmas, these complete the right-tail tendsto saturation on both sides of the Portmanteau convergence; the matching `standardNormalCDF_tendsto_zero_atBot` (left tail of Φ via `Antitone.tendsto_setIntegral`) is the next prerequisite. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` was proved in Phase-3: it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
     "originalContributions": [
       "binomialCDF: concrete CDF of Binomial(n,p) as a finite sum of binomial PMF terms with a step indicator",
       "multinomialMarginalCDF: marginal CDF of coordinate i₀ of Multinomial(n,p), defined directly from multinomialProb",
@@ -38,10 +38,13 @@
       "standardNormalCDF_le_one: standardNormalCDF x ≤ 1 — bounded above by the total integral, which equals 1 by integral_gaussianPDFReal_eq_one (Session 6)",
       "standardNormalCDF_mono: Monotone standardNormalCDF — Iic monotonicity + nonneg integrand via setIntegral_mono_set (Session 6)",
       "standardNormalCDF_eq_zero_plus_intervalIntegral (private, Session 7): bridge lemma — standardNormalCDF x = standardNormalCDF 0 + ∫ t in (0:ℝ)..x, gaussianPDFReal 0 1 t. Both ∫ Iic x and ∫ Iic 0 are limits of ∫ a..x and ∫ a..0 as a → atBot via MeasureTheory.intervalIntegral_tendsto_integral_Iic; for each a, ∫ a..x = ∫ a..0 + ∫ 0..x by intervalIntegral.integral_add_adjacent_intervals; uniqueness of limits (tendsto_nhds_unique) closes the equation",
-      "standardNormalCDF_continuous (Session 7): Continuous standardNormalCDF — rewrite as standardNormalCDF 0 + intervalIntegral 0..x then apply MeasureTheory.Integrable.continuous_primitive (NoAtoms volume on ℝ). Final input to the Phase-4 Portmanteau bridge: every x ∈ ℝ is a continuity point of Φ, so weak convergence implies pointwise CDF convergence universally"
+      "standardNormalCDF_continuous (Session 7): Continuous standardNormalCDF — rewrite as standardNormalCDF 0 + intervalIntegral 0..x then apply MeasureTheory.Integrable.continuous_primitive (NoAtoms volume on ℝ). Final input to the Phase-4 Portmanteau bridge: every x ∈ ℝ is a continuity point of Φ, so weak convergence implies pointwise CDF convergence universally",
+      "standardNormalCDF_tendsto_one_atTop (Session 8): Filter.Tendsto standardNormalCDF Filter.atTop (nhds 1) — `Iic` is an AECover for `volume` along `atTop` (`MeasureTheory.aecover_Iic Filter.tendsto_id`), so `AECover.integral_tendsto_of_countably_generated` gives ∫ Iic x, gauss → ∫ ℝ, gauss = 1 via `ProbabilityTheory.integral_gaussianPDFReal_eq_one`. Right-tail saturation prerequisite for Phase-4 Portmanteau bridge",
+      "binomialCDF_tendsto_one_atTop (Session 8): Filter.Tendsto (binomialCDF n p) Filter.atTop (nhds 1) under 0 ≤ p ≤ 1 — eventually-constant wrapper around `binomialCDF_eq_one` via `Filter.eventually_ge_atTop (n : ℝ)` and `Tendsto.congr'`. Companion to standardNormalCDF_tendsto_one_atTop on the binomial side",
+      "binomialCDF_tendsto_zero_atBot (Session 8): Filter.Tendsto (binomialCDF n p) Filter.atBot (nhds 0) — eventually-constant wrapper around `binomialCDF_neg` via `Filter.eventually_lt_atBot (0 : ℝ)`. Left-tail saturation; no constraint on p needed since `binomialCDF_neg` holds for arbitrary p"
     ],
-    "theoremCount": 14,
-    "substantiveTheoremCount": 10,
+    "theoremCount": 17,
+    "substantiveTheoremCount": 13,
     "definitionCount": 3
   },
   "leanFile": {
@@ -62,10 +65,10 @@
       "BigOperators"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
-    "lineCount": 512,
+    "lineCount": 582,
     "axiomCount": 1,
-    "theoremCount": 14,
-    "substantiveTheoremCount": 10,
+    "theoremCount": 17,
+    "substantiveTheoremCount": 13,
     "duplicateTheorems": 0,
     "definitionCount": 3,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
