@@ -610,4 +610,279 @@ example : sigmaStar (4 * 3) = 3 * sigmaOne 3 :=
 example : sigmaStar (4 * 5) = 3 * sigmaOne 5 :=
   sigmaStar_four_mul_of_odd (by decide) (by decide)
 
+-- =====================================================================
+-- PART 11: σ-multiplicativity at coprime arguments via Mathlib bridge.
+-- =====================================================================
+
+/-- Bridge: our locally-defined `sigmaOne` equals Mathlib's
+    `ArithmeticFunction.sigma 1`. -/
+theorem sigmaOne_eq_arithmeticSigmaOne (n : ℕ) :
+    sigmaOne n = ArithmeticFunction.sigma 1 n := by
+  simp [sigmaOne, ArithmeticFunction.sigma_apply, pow_one]
+
+/-- σ-multiplicativity at coprime arguments: σ(mn) = σ(m)·σ(n) when
+    `gcd(m, n) = 1`. Pulled back through the Mathlib bridge. -/
+theorem sigmaOne_mul_of_coprime {m n : ℕ} (h : Nat.Coprime m n) :
+    sigmaOne (m * n) = sigmaOne m * sigmaOne n := by
+  rw [sigmaOne_eq_arithmeticSigmaOne, sigmaOne_eq_arithmeticSigmaOne,
+      sigmaOne_eq_arithmeticSigmaOne]
+  exact ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime h
+
+-- =====================================================================
+-- PART 12: σ*-multiplicativity at coprime arguments.
+--
+-- **Goal**: σ*(mn) = σ*(m)·σ*(n) whenever gcd(m,n) = 1, m, n > 0.
+--
+-- This is the high-value structural property of Jacobi's σ*: combined
+-- with closed forms for σ* on prime powers (`sigmaStar_prime_pow_of_odd_prime`
+-- in Part 8 and `sigmaStar_two_pow` in Part 13), it reduces the open
+-- Jacobi target r₄(n) = 8·σ*(n) to a prime-power calculation.
+--
+-- Proof strategy: case split on `4 ∣ m` vs `4 ∣ n`, which by coprimality
+-- cannot both hold. When neither holds, σ* = σ on each side and σ-mult
+-- closes the goal. When one (say m) is divisible by 4, the structural
+-- identity from Part 6 expresses σ*(·) as σ(·) − 4·σ(·/4) on m and on
+-- mn; σ-mult on each piece + algebra closes the goal.
+-- =====================================================================
+
+private theorem not_two_dvd_of_coprime_two_dvd_left {m n : ℕ}
+    (h : Nat.Coprime m n) (h2m : 2 ∣ m) : ¬ 2 ∣ n := by
+  intro h2n
+  have hgcd : (2 : ℕ) ∣ Nat.gcd m n := Nat.dvd_gcd h2m h2n
+  rw [Nat.Coprime] at h
+  rw [h] at hgcd
+  exact absurd hgcd (by decide)
+
+private theorem coprime_four_of_not_two_dvd {n : ℕ} (hn : ¬ 2 ∣ n) :
+    Nat.Coprime 4 n := by
+  have hc2 : Nat.Coprime 2 n :=
+    (Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hn
+  have h4eq : (4 : ℕ) = 2 ^ 2 := by norm_num
+  rw [h4eq]
+  exact hc2.pow_left 2
+
+private theorem not_four_dvd_mul_of_coprime
+    {m n : ℕ} (h : Nat.Coprime m n) (h4m : ¬ 4 ∣ m) (h4n : ¬ 4 ∣ n) :
+    ¬ 4 ∣ m * n := by
+  intro h4mn
+  by_cases h2m : 2 ∣ m
+  · have h2n : ¬ 2 ∣ n := not_two_dvd_of_coprime_two_dvd_left h h2m
+    have hcop4n : Nat.Coprime 4 n := coprime_four_of_not_two_dvd h2n
+    exact h4m (hcop4n.dvd_of_dvd_mul_right h4mn)
+  · by_cases h2n : 2 ∣ n
+    · have hcop4m : Nat.Coprime 4 m := coprime_four_of_not_two_dvd h2m
+      exact h4n (hcop4m.dvd_of_dvd_mul_left h4mn)
+    · have h2mn : ¬ 2 ∣ m * n := by
+        intro h2mn'
+        rcases Nat.prime_two.dvd_mul.mp h2mn' with h | h
+        · exact h2m h
+        · exact h2n h
+      exact h2mn (dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h4mn)
+
+private theorem coprime_div_four_of_dvd_left
+    {m n : ℕ} (h : Nat.Coprime m n) (h4m : 4 ∣ m) :
+    Nat.Coprime (m / 4) n :=
+  h.coprime_dvd_left (Nat.div_dvd_of_dvd h4m)
+
+private theorem coprime_div_four_of_dvd_right
+    {m n : ℕ} (h : Nat.Coprime m n) (h4n : 4 ∣ n) :
+    Nat.Coprime m (n / 4) :=
+  h.coprime_dvd_right (Nat.div_dvd_of_dvd h4n)
+
+/-- **σ*-multiplicativity at coprime arguments** (main theorem of S4).
+
+    For all positive `m, n` with `gcd(m, n) = 1`:
+    $$ \sigma^*(m \cdot n) = \sigma^*(m) \cdot \sigma^*(n). $$
+
+    Together with the closed forms σ*(p^k) on prime powers (Part 8 for
+    odd `p`, Part 13 for `p = 2`), this fully determines σ* by its
+    values on prime-power arguments, mirroring the standard
+    multiplicative theory of σ in Mathlib's
+    `ArithmeticFunction.IsMultiplicative.sigma`. -/
+theorem sigmaStar_mul_of_coprime {m n : ℕ}
+    (h : Nat.Coprime m n) (hm : 0 < m) (hn : 0 < n) :
+    sigmaStar (m * n) = sigmaStar m * sigmaStar n := by
+  by_cases h4m : 4 ∣ m
+  · -- Case A: 4 ∣ m. Coprimality ⇒ 2 ∤ n ⇒ 4 ∤ n; also 4 ∣ mn.
+    have h2m : (2 : ℕ) ∣ m := dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h4m
+    have h2n : ¬ 2 ∣ n := not_two_dvd_of_coprime_two_dvd_left h h2m
+    have h4n : ¬ 4 ∣ n := fun h4n_dvd =>
+      h2n (dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h4n_dvd)
+    have h4mn : 4 ∣ m * n := h4m.mul_right n
+    have hmn_pos : 0 < m * n := Nat.mul_pos hm hn
+    have struct_m : sigmaStar m + 4 * sigmaOne (m / 4) = sigmaOne m :=
+      sigmaStar_of_four_dvd h4m hm
+    have struct_mn :
+        sigmaStar (m * n) + 4 * sigmaOne ((m * n) / 4) = sigmaOne (m * n) :=
+      sigmaStar_of_four_dvd h4mn hmn_pos
+    have h_mn_div4 : (m * n) / 4 = (m / 4) * n := by
+      rw [mul_comm m n, Nat.mul_div_assoc n h4m, mul_comm]
+    have h_cop_div : Nat.Coprime (m / 4) n :=
+      coprime_div_four_of_dvd_left h h4m
+    have h_mult : sigmaOne (m * n) = sigmaOne m * sigmaOne n :=
+      sigmaOne_mul_of_coprime h
+    have h_mult_div : sigmaOne ((m / 4) * n) = sigmaOne (m / 4) * sigmaOne n :=
+      sigmaOne_mul_of_coprime h_cop_div
+    have h_n_eq : sigmaStar n = sigmaOne n :=
+      sigmaStar_eq_sigmaOne_of_not_four_dvd h4n
+    rw [h_n_eq]
+    have struct_mn' :
+        sigmaStar (m * n) + 4 * sigmaOne (m / 4) * sigmaOne n
+          = sigmaOne m * sigmaOne n := by
+      have hh := struct_mn
+      rw [h_mn_div4, h_mult_div, h_mult] at hh
+      linarith [hh, mul_assoc (4 : ℕ) (sigmaOne (m / 4)) (sigmaOne n)]
+    have h1 :
+        sigmaStar m * sigmaOne n + 4 * sigmaOne (m / 4) * sigmaOne n
+          = sigmaOne m * sigmaOne n := by
+      calc sigmaStar m * sigmaOne n + 4 * sigmaOne (m / 4) * sigmaOne n
+          = (sigmaStar m + 4 * sigmaOne (m / 4)) * sigmaOne n := by ring
+        _ = sigmaOne m * sigmaOne n := by rw [struct_m]
+    have hkey : sigmaStar (m * n) + 4 * sigmaOne (m / 4) * sigmaOne n
+              = sigmaStar m * sigmaOne n + 4 * sigmaOne (m / 4) * sigmaOne n :=
+      struct_mn'.trans h1.symm
+    exact Nat.add_right_cancel hkey
+  · by_cases h4n : 4 ∣ n
+    · -- Case B: 4 ∤ m, 4 ∣ n. Symmetric.
+      have h2n : (2 : ℕ) ∣ n := dvd_trans (by norm_num : (2 : ℕ) ∣ 4) h4n
+      have h2m : ¬ 2 ∣ m := not_two_dvd_of_coprime_two_dvd_left h.symm h2n
+      have h4mn : 4 ∣ m * n := h4n.mul_left m
+      have hmn_pos : 0 < m * n := Nat.mul_pos hm hn
+      have struct_n : sigmaStar n + 4 * sigmaOne (n / 4) = sigmaOne n :=
+        sigmaStar_of_four_dvd h4n hn
+      have struct_mn :
+          sigmaStar (m * n) + 4 * sigmaOne ((m * n) / 4) = sigmaOne (m * n) :=
+        sigmaStar_of_four_dvd h4mn hmn_pos
+      have h_mn_div4 : (m * n) / 4 = m * (n / 4) :=
+        Nat.mul_div_assoc m h4n
+      have h_cop_div : Nat.Coprime m (n / 4) :=
+        coprime_div_four_of_dvd_right h h4n
+      have h_mult : sigmaOne (m * n) = sigmaOne m * sigmaOne n :=
+        sigmaOne_mul_of_coprime h
+      have h_mult_div : sigmaOne (m * (n / 4)) = sigmaOne m * sigmaOne (n / 4) :=
+        sigmaOne_mul_of_coprime h_cop_div
+      have h_m_eq : sigmaStar m = sigmaOne m :=
+        sigmaStar_eq_sigmaOne_of_not_four_dvd h4m
+      rw [h_m_eq]
+      have struct_mn' :
+          sigmaStar (m * n) + 4 * sigmaOne m * sigmaOne (n / 4)
+            = sigmaOne m * sigmaOne n := by
+        have hh := struct_mn
+        rw [h_mn_div4, h_mult_div, h_mult] at hh
+        linarith [hh, mul_assoc (4 : ℕ) (sigmaOne m) (sigmaOne (n / 4))]
+      have h1 :
+          sigmaOne m * sigmaStar n + 4 * sigmaOne m * sigmaOne (n / 4)
+            = sigmaOne m * sigmaOne n := by
+        calc sigmaOne m * sigmaStar n + 4 * sigmaOne m * sigmaOne (n / 4)
+            = sigmaOne m * (sigmaStar n + 4 * sigmaOne (n / 4)) := by ring
+          _ = sigmaOne m * sigmaOne n := by rw [struct_n]
+      have hkey :
+          sigmaStar (m * n) + 4 * sigmaOne m * sigmaOne (n / 4)
+            = sigmaOne m * sigmaStar n + 4 * sigmaOne m * sigmaOne (n / 4) :=
+        struct_mn'.trans h1.symm
+      exact Nat.add_right_cancel hkey
+    · -- Case C: neither 4 ∣ m nor 4 ∣ n. Then 4 ∤ mn, so σ* = σ throughout.
+      have h4mn : ¬ 4 ∣ m * n := not_four_dvd_mul_of_coprime h h4m h4n
+      rw [sigmaStar_eq_sigmaOne_of_not_four_dvd h4mn,
+          sigmaStar_eq_sigmaOne_of_not_four_dvd h4m,
+          sigmaStar_eq_sigmaOne_of_not_four_dvd h4n]
+      exact sigmaOne_mul_of_coprime h
+
+-- =====================================================================
+-- PART 13: σ* on pure powers of 2 — closed form σ*(2^k) = 3 for k ≥ 1.
+--
+-- The divisors of 2^k are {1, 2, 4, ..., 2^k}. Of these, only 1 and 2
+-- are not divisible by 4 (for k ≥ 1). So σ*(2^k) = 1 + 2 = 3 for any
+-- k ≥ 1, and σ*(2^0) = σ*(1) = 1.
+-- =====================================================================
+
+/-- Geometric series sum on ℕ: ∑_{i=0}^{j} 2^i = 2^{j+1} - 1. -/
+private theorem sum_two_pow_eq (j : ℕ) :
+    ∑ i ∈ Finset.range (j + 1), (2 : ℕ) ^ i = 2 ^ (j + 1) - 1 := by
+  induction j with
+  | zero => simp
+  | succ j ih =>
+    rw [Finset.sum_range_succ, ih]
+    have hpow_pos : 1 ≤ (2 : ℕ) ^ (j + 1) := Nat.one_le_pow _ _ (by decide)
+    omega
+
+/-- σ(2^k) = 2^(k+1) - 1, the closed form for σ on a 2-power argument. -/
+private theorem sigmaOne_two_pow (k : ℕ) : sigmaOne (2 ^ k) = 2 ^ (k + 1) - 1 := by
+  rw [sigmaOne_eq_arithmeticSigmaOne,
+      ArithmeticFunction.sigma_apply_prime_pow Nat.prime_two]
+  simp only [mul_one]
+  exact sum_two_pow_eq k
+
+/-- **Closed form for σ* on pure powers of 2**: σ*(2^k) = 3 for k ≥ 1.
+
+    Proof: σ(2^k) = 2^(k+1) - 1, σ*(2^k) + (sum over 4∣d|2^k of d) = σ(2^k),
+    and the latter sum is 4·σ(2^(k-2)) = 2^(k+1) - 4 by the Part 6
+    structural identity. So σ*(2^k) = (2^(k+1) - 1) - (2^(k+1) - 4) = 3. -/
+theorem sigmaStar_two_pow {k : ℕ} (hk : 1 ≤ k) : sigmaStar (2 ^ k) = 3 := by
+  have hpos : 0 < 2 ^ k := pow_pos (by decide : (0:ℕ) < 2) k
+  have hsum_partition :
+      sigmaStar (2 ^ k) + sigmaFourDvd (2 ^ k) = sigmaOne (2 ^ k) :=
+    sigmaStar_add_sigmaFourDvd (2 ^ k)
+  have hsigma : sigmaOne (2 ^ k) = 2 ^ (k + 1) - 1 := sigmaOne_two_pow k
+  have hfourdvd : sigmaFourDvd (2 ^ k) = 2 ^ (k + 1) - 4 := by
+    rcases Nat.lt_or_ge k 2 with hk2 | hk2
+    · -- k = 1 (only case since hk : 1 ≤ k, hk2 : k < 2)
+      interval_cases k
+      unfold sigmaFourDvd; native_decide
+    · have h4_dvd : 4 ∣ 2 ^ k := by
+        have hdvd : (2 : ℕ) ^ 2 ∣ 2 ^ k := Nat.pow_dvd_pow 2 hk2
+        have h4eq : (4 : ℕ) = 2 ^ 2 := by norm_num
+        rw [h4eq]; exact hdvd
+      rw [sigmaFourDvd_of_four_dvd h4_dvd hpos]
+      have hkdiv : (2 ^ k) / 4 = 2 ^ (k - 2) := by
+        have h4eq : (4 : ℕ) = 2 ^ 2 := by norm_num
+        rw [h4eq, Nat.pow_div hk2 (by decide : (0:ℕ) < 2)]
+      rw [hkdiv, sigmaOne_two_pow]
+      have hsucc : k - 2 + 1 = k - 1 := by omega
+      rw [hsucc]
+      have hpow_pos : 1 ≤ (2 : ℕ) ^ (k - 1) := Nat.one_le_pow _ _ (by decide)
+      have hpow_eq : (2 : ℕ) ^ (k + 1) = 4 * 2 ^ (k - 1) := by
+        have hkk : k + 1 = 2 + (k - 1) := by omega
+        rw [hkk, pow_add]; ring
+      rw [hpow_eq]
+      have hge4 : (4 : ℕ) ≤ 4 * 2 ^ (k - 1) := by
+        calc (4 : ℕ) = 4 * 1 := by ring
+          _ ≤ 4 * 2 ^ (k - 1) := Nat.mul_le_mul_left 4 hpow_pos
+      omega
+  rw [hsigma, hfourdvd] at hsum_partition
+  have hpow4 : (4 : ℕ) ≤ 2 ^ (k + 1) := by
+    have h2 : (2 : ℕ) ^ 2 ≤ 2 ^ (k + 1) := Nat.pow_le_pow_right (by decide) (by omega)
+    have h4eq : (4 : ℕ) = 2 ^ 2 := by norm_num
+    rw [h4eq]; exact h2
+  omega
+
+-- =====================================================================
+-- PART 14: Cross-validation of σ*-multiplicativity and σ*(2^k) = 3.
+-- =====================================================================
+
+example : sigmaStar (2 ^ 1) = 3 := sigmaStar_two_pow (by decide)
+example : sigmaStar (2 ^ 2) = 3 := sigmaStar_two_pow (by decide)
+example : sigmaStar (2 ^ 3) = 3 := sigmaStar_two_pow (by decide)
+example : sigmaStar (2 ^ 5) = 3 := sigmaStar_two_pow (by decide)
+
+/-- σ*(15) = σ*(3) · σ*(5) = 4 · 6 = 24. -/
+example : sigmaStar (3 * 5) = sigmaStar 3 * sigmaStar 5 :=
+  sigmaStar_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- σ*(6) = σ*(2) · σ*(3) = 3 · 4 = 12. -/
+example : sigmaStar (2 * 3) = sigmaStar 2 * sigmaStar 3 :=
+  sigmaStar_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- σ*(12) = σ*(4) · σ*(3) = 3 · 4 = 12. -/
+example : sigmaStar (4 * 3) = sigmaStar 4 * sigmaStar 3 :=
+  sigmaStar_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- σ*(40) = σ*(8) · σ*(5) = 3 · 6 = 18. -/
+example : sigmaStar (8 * 5) = sigmaStar 8 * sigmaStar 5 :=
+  sigmaStar_mul_of_coprime (by decide) (by decide) (by decide)
+
+/-- σ*(45) = σ*(9) · σ*(5) = 13 · 6 = 78. -/
+example : sigmaStar (9 * 5) = sigmaStar 9 * sigmaStar 5 :=
+  sigmaStar_mul_of_coprime (by decide) (by decide) (by decide)
+
 end FourSquareDistributionOQ01

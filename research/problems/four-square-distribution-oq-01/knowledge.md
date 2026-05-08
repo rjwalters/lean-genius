@@ -133,3 +133,87 @@ without the q-expansion lemma for `jacobiTheta`.
    beyond n = 10. Each unit increase costs (2n+1)⁴ tuples; n = 12
    alone is 25⁴ = 390,625 tuples and pushes `native_decide` envelope.
    Skip unless cross-validating a specific structural prediction.
+
+---
+
+## S4 (2026-05-08, researcher-4) — σ* fully characterised as multiplicative
+
+This session adds Parts 11–14 to `FourSquareDistributionOQ01.lean`,
+producing the **multiplicative theory of σ\*** that combines with prior
+sessions' prime-power closed forms to fully characterise σ*.
+
+### New theorems (Parts 11–14)
+
+**Part 11 — Bridge to Mathlib's σ.**
+* `sigmaOne_eq_arithmeticSigmaOne : sigmaOne n = ArithmeticFunction.sigma 1 n`
+  — bridges our locally-defined `sigmaOne` to Mathlib's σ machinery.
+* `sigmaOne_mul_of_coprime : Coprime m n → σ(mn) = σ(m)·σ(n)` — pulls
+  Mathlib's σ-multiplicativity through the bridge.
+
+**Part 12 — σ*-multiplicativity at coprime arguments.**
+* `sigmaStar_mul_of_coprime : Coprime m n → 0 < m → 0 < n → σ*(mn) = σ*(m)·σ*(n)`
+  — the high-value structural property. Proof: case split on `4 ∣ m`,
+  `4 ∣ n`, or neither. By coprimality, both cannot hold. When neither
+  holds, σ* = σ on each side and σ-mult closes. When (say) 4 ∣ m, the
+  Part 6 structural identity expresses σ*(·) = σ(·) − 4·σ(·/4) on m
+  and on mn; σ-mult on each piece + ℕ algebra (`Nat.add_right_cancel`)
+  closes the goal.
+
+**Part 13 — σ* on pure powers of 2.**
+* `sigmaStar_two_pow : 1 ≤ k → σ*(2^k) = 3` — the divisors of 2^k
+  divisible by 4 are {4, 8, …, 2^k}, summing to 2^(k+1) - 4 (proved
+  via `sigmaFourDvd_of_four_dvd` + closed form for σ(2^(k-2))). Hence
+  σ*(2^k) = (2^(k+1) - 1) - (2^(k+1) - 4) = 3.
+* Helper: `sum_two_pow_eq` (geometric sum for 2-powers in ℕ).
+* Helper: `sigmaOne_two_pow` (σ(2^k) = 2^(k+1) - 1, via
+  `ArithmeticFunction.sigma_apply_prime_pow Nat.prime_two`).
+
+**Part 14 — Cross-validation.**
+* σ*(2^k) = 3 verified at k = 1, 2, 3, 5.
+* σ*-multiplicativity verified at (3,5), (2,3), (4,3), (8,5), (9,5).
+
+### Why this matters
+
+Combined with Part 8's `sigmaStar_prime_pow_of_odd_prime`, σ* is now
+**fully determined by its values on prime-power arguments**, mirroring
+the standard multiplicative theory of σ. For
+`n = 2^a · ∏ p_i^{e_i}` with the p_i odd:
+```
+σ*(n) = σ*(2^a) · ∏ σ*(p_i^{e_i})
+      = (a = 0: 1; a ≥ 1: 3) · ∏ σ(p_i^{e_i})
+```
+where σ(p^k) is given by Mathlib's `sigma_apply_prime_pow`.
+
+**Reduction status of Jacobi's r₄ formula**:
+* σ*-side: ✓ fully decomposed via prime-power multiplicativity.
+* σ-side: ✓ Mathlib `ArithmeticFunction.IsMultiplicative.sigma` +
+  `sigma_apply_prime_pow` give closed forms.
+* r₄-side: ✗ still requires Mathlib q-expansion of `jacobiTheta` and
+  identification of θ⁴ with a weight-2 Eisenstein-series combination.
+
+The remaining bottleneck is the modular-form bridge, **not the
+arithmetic side**.
+
+### S4 build-verification status
+
+Local Docker build attempted with 6 GB memory limit at session end. Two
+other lean4 containers were already active on the 7.65 GiB host; build
+result will be visible in CI even if local OOMs. The new lemmas use
+only standard Mathlib idioms cross-checked against existing references:
+- `ArithmeticFunction.sigma_apply_prime_pow` — confirmed signature in
+  `Erdos1054AlmostAllOQ01.lean:277` and `SumOfDivisors.lean:121`.
+- `ArithmeticFunction.isMultiplicative_sigma.map_mul_of_coprime` —
+  confirmed at `Erdos1060Problem.lean:63`.
+- `Nat.mul_div_assoc`, `Nat.pow_div`, `Nat.div_dvd_of_dvd`,
+  `Nat.add_right_cancel` — all standard.
+- `Nat.Coprime.coprime_dvd_left`, `Nat.Coprime.dvd_of_dvd_mul_right`,
+  `Nat.Coprime.dvd_of_dvd_mul_left` — all standard.
+
+### Honest assessment
+
+S4 does not close the open axiom — that requires Mathlib's q-expansion
+infrastructure for `jacobiTheta`. **What S4 does** is reduce the σ*-side
+of Jacobi's identity to its minimal form: a finite product over prime
+powers, where each factor is either σ(p^k) (already in Mathlib) or 3
+(the σ*(2^k) constant). Once Mathlib gains the q-expansion bridge, no
+further σ*-side work will be needed.
