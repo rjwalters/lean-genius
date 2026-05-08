@@ -7,7 +7,7 @@
     "author": "Fubini (1907), extended to n-dim 2026",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
     "date": "1907",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
     "tags": [
       "analysis",
@@ -15,12 +15,13 @@
       "fubini",
       "integration",
       "n-dimensional",
-      "greens-theorem"
+      "greens-theorem",
+      "axiom-elimination"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: iteratedIntervalIntegral_order_independent (n-dimensional order independence for continuous functions). The 2D and 3D cases are fully proved. The general case is sound by induction but requires Fin-n type infrastructure not yet formalized.",
+    "axiomCount": 0,
+    "assumptions": "None. 0 sorries, 0 axioms. The 2D and 3D cases are proved here directly; n-dimensional order independence (iteratedIntervalIntegral_order_independent) is proved as a real theorem in the subsidiary module Proofs.GreensTheoremOQ01OQ01OQ01OQ01 via Equiv.Perm.swap_induction_on plus the adjacent-swap Fubini lemma.",
     "dateAdded": "2026-05-06",
     "mathlibDependencies": [
       {
@@ -49,9 +50,9 @@
       "Triple Fubini theorem: all 3 key orderings of ∫∫∫ equal each other for continuous f",
       "2D and 3D swap theorems proved sorry-free using integral_integral_swap",
       "Key technique: Integrable.integral_prod_right avoids separate measurability lemmas",
-      "Axiomatized general n-dim order independence for arbitrary permutations"
+      "Retired the previous iteratedIntervalIntegral_order_independent axiom — a first-principles proof for arbitrary n now lives in Proofs.GreensTheoremOQ01OQ01OQ01OQ01"
     ],
-    "lineCount": 266,
+    "lineCount": 260,
     "theoremCount": 10,
     "definitionCount": 1,
     "mathlib_version": "4.26.0"
@@ -69,8 +70,8 @@
       "Topology"
     ],
     "namespace": "GreensTheoremOQ01OQ01OQ01",
-    "lineCount": 266,
-    "axiomCount": 1,
+    "lineCount": 260,
+    "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 1,
     "path": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
@@ -81,7 +82,7 @@
     "historicalContext": "Fubini's theorem (1907) established that iterated integrals can be computed in any order for absolutely integrable functions. The n-dimensional generalization via product measures is foundational to modern measure theory. Mathlib formalizes the 2D case via `MeasureTheory.integral_integral_swap`, and the n-dimensional case via `Mathlib.MeasureTheory.Integral.Marginal` (lmarginal). The concrete bridge from abstract measure theory to Lean's `intervalIntegral` API (∫ x in a..b, f x) is non-trivial and requires careful handling of measure restrictions and null sets.",
     "problemStatement": "Answer to greens-theorem-oq-01-oq-01: Can the 2D Fubini bridge be generalized to n dimensions? YES, via the iteratedIntervalIntegral definition and product measure connection.",
     "text": "Defines the n-fold iterated interval integral and proves its key properties, including order independence for continuous functions.",
-    "proofStrategy": "The proof proceeds in layers: (1) For 3D, a 3-step transposition using integral_integral_swap and the 2D swap from the parent entry; (2) For general n, `iteratedIntervalIntegral` is defined by induction and order independence is axiomatized (proved for n≤3, general case follows the same inductive pattern). The key technical innovation is using `Integrable.integral_prod_right` to derive integrability of parametric integrals from 3D integrability, avoiding the need for separate measurability arguments.",
+    "proofStrategy": "The proof proceeds in layers: (1) For 3D, a 3-step transposition using integral_integral_swap and the 2D swap from the parent entry; (2) For general n, `iteratedIntervalIntegral` is defined by induction; arbitrary-permutation order independence is established as a real theorem in the subsidiary module Proofs.GreensTheoremOQ01OQ01OQ01OQ01 (Equiv.Perm.swap_induction_on plus an adjacent-swap Fubini lemma). The key technical innovation is using `Integrable.integral_prod_right` to derive integrability of parametric integrals from 3D integrability, avoiding the need for separate measurability arguments.",
     "keyInsights": [
       "iteratedIntervalIntegral defined by Fin-n induction: ∫ x₀, iteratedIntervalIntegral tail...",
       "Integrable.integral_prod_right: if G(z,x,y) is integrable on 3D product, then (z,x)↦∫y G is integrable on 2D product",
@@ -109,15 +110,15 @@
       "id": "n-dimensional",
       "title": "N-Dimensional Iterated Integral",
       "startLine": 204,
-      "endLine": 255,
-      "summary": "Defines iteratedIntervalIntegral by Fin-n recursion: base f(∅), inductive ∫_{a₀}^{b₀} iteratedIntervalIntegral(tail). Proves n=0,1,2 cases explicitly. Axiomatizes the general order independence for permutations σ ∈ Sₙ — the 2D and 3D cases establish the inductive pattern."
+      "endLine": 248,
+      "summary": "Defines iteratedIntervalIntegral by Fin-n recursion: base f(∅), inductive ∫_{a₀}^{b₀} iteratedIntervalIntegral(tail). Proves n=0,1,2 cases explicitly. The general order independence for permutations σ ∈ Sₙ is delegated to the subsidiary module Proofs.GreensTheoremOQ01OQ01OQ01OQ01, where it is proved as a real theorem; this file no longer carries an axiom."
     }
   ],
   "conclusion": {
-    "summary": "YES: The Fubini bridge generalizes to n dimensions. The 3D case is fully proved (0 sorries) using integral_integral_swap applied twice. The general n-dimensional definition is provided via iteratedIntervalIntegral, with order independence axiomatized for now.",
-    "implications": "This result enables n-dimensional Green's theorem and Stokes' theorem formalizations to use concrete iterated interval integrals rather than abstract product measure integrals. The `iteratedIntervalIntegral` definition provides the right interface for higher-dimensional calculus proofs.",
+    "summary": "YES: The Fubini bridge generalizes to n dimensions. The 3D case is fully proved (0 sorries) using integral_integral_swap applied twice. The general n-dimensional iteratedIntervalIntegral is defined here, and arbitrary-permutation order independence is now proved as a real theorem in the subsidiary module Proofs.GreensTheoremOQ01OQ01OQ01OQ01 — eliminating the previously-stated axiom from this file.",
+    "implications": "This result enables n-dimensional Green's theorem and Stokes' theorem formalizations to use concrete iterated interval integrals rather than abstract product measure integrals. The `iteratedIntervalIntegral` definition provides the right interface for higher-dimensional calculus proofs, and the proof chain is now axiom-free for continuous integrands.",
     "openQuestions": [
-      "Can iteratedIntervalIntegral_order_independent be proved without the axiom, using Mathlib.MeasureTheory.Integral.Marginal.lmarginal_union?",
+      "Can iteratedIntervalIntegral_order_independent be derived directly from Mathlib's Mathlib.MeasureTheory.Integral.Marginal (lmarginal_union / lmarginal_univ) for a shorter proof?",
       "Can the n-dimensional result connect to Mathlib's Measure.pi via the lmarginal_univ theorem?"
     ]
   },

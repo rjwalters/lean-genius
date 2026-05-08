@@ -21,7 +21,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. 0 sorries, 0 axiom declarations. All theorems follow from Mathlib's Fubini theorem (MeasureTheory.integral_integral_swap) and standard measure theory. The parent module Proofs.GreensTheoremOQ01OQ01OQ01 still declares iteratedIntervalIntegral_order_independent as an axiom, but that declaration is not used by any theorem in this file — all results here are proved independently.",
+    "assumptions": "None. 0 sorries, 0 axiom declarations. All theorems follow from Mathlib's Fubini theorem (MeasureTheory.integral_integral_swap) and standard measure theory. The parent module Proofs.GreensTheoremOQ01OQ01OQ01 previously declared iteratedIntervalIntegral_order_independent as an axiom; that declaration has now been retired (it was unused in the parent), since this file proves the same statement as a real theorem from first principles.",
     "dateAdded": "2026-05-06",
     "openQuestions": [
       {

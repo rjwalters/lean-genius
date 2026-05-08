@@ -34,8 +34,12 @@
   Key insight: Integrable.integral_prod_right derives integrability of the
   parameterized integral from 3D compactness, avoiding separate measurability proofs.
 
-  ## Axioms: 1 (iteratedIntervalIntegral_order_independent for general n)
+  ## Axioms: 0
   ## Sorries: 0
+
+  Note: the formerly-axiomatized n-D order independence has been retired here.
+  A first-principles proof for arbitrary `n` lives in the subsidiary module
+  `Proofs.GreensTheoremOQ01OQ01OQ01OQ01`.
 -/
 
 import Mathlib
@@ -231,26 +235,12 @@ lemma iteratedIntervalIntegral_two {a b : Fin 2 → ℝ} {f : (Fin 2 → ℝ) �
   simp only [iteratedIntervalIntegral_succ, iteratedIntervalIntegral_zero, Fin.tail,
              show (Fin.succ (0 : Fin 1) : Fin 2) = 1 from rfl]
 
-/-- **N-Dimensional Order Independence** (axiomatized for n ≥ 4).
-
-    For continuous f, any permutation of integration variables preserves the value.
-    The 2D case: proved by `fubini_n2`.
-    The 3D case: proved by `triple_fubini_of_continuous`.
-    General n: axiomatized here. The inductive proof follows the 3D strategy:
-    peel off the outermost variable, apply IH inside, use integral_integral_swap +
-    integral_prod_right for the outer swap. -/
-axiom iteratedIntervalIntegral_order_independent {n : ℕ} {a b : Fin n → ℝ}
-    (hab : ∀ i, a i ≤ b i) {f : (Fin n → ℝ) → ℝ} (hf : Continuous f)
-    (σ : Equiv.Perm (Fin n)) :
-    iteratedIntervalIntegral a b f =
-    iteratedIntervalIntegral (a ∘ σ) (b ∘ σ) (fun x => f (fun i => x (σ.symm i)))
-
 /-
 ## Research Outcome
 
 **Answer**: YES, the 2D Fubini bridge from GreensTheoremOQ01OQ01 generalizes to n-D.
 
-**Main proved theorems** (0 sorries):
+**Main proved theorems** (0 sorries, 0 axioms):
 - `triple_fubini_of_continuous`: ∫z∫y∫x f = ∫x∫y∫z f for continuous f on 3D box
 - `triple_fubini_yxz_eq_xyz`: (y,x,z) ordering equals (x,y,z)
 - `triple_fubini_all_equal`: collects 3 key orderings
@@ -259,8 +249,12 @@ axiom iteratedIntervalIntegral_order_independent {n : ℕ} {a b : Fin n → ℝ}
 parameterized integral from 3D compactness + continuity, avoiding any need for
 separate measurability lemmas or continuity of parameterized integrals.
 
-**Axiom** (1): `iteratedIntervalIntegral_order_independent` for general n.
-The 2D and 3D fully-proved cases establish the inductive pattern.
+**N-D Order Independence**: a real proof of
+`iteratedIntervalIntegral_order_independent` for arbitrary `n` is provided in the
+subsidiary file `Proofs.GreensTheoremOQ01OQ01OQ01OQ01` (Equiv.Perm.swap_induction_on
++ adjacent-swap Fubini). The previously-stated axiom in this file has been
+removed: it was unused locally, and a real theorem of the same statement now
+exists downstream.
 -/
 
 end GreensTheoremOQ01OQ01OQ01
