@@ -14,7 +14,7 @@
   {
     "id": "ann-ftc-oq01-header",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 23, "endLine": 35 },
+    "range": { "startLine": 23, "endLine": 32 },
     "type": "context",
     "title": "Module Setup: AC → BV in Lean 4",
     "content": "The module imports:\n1. `Proofs.FundamentalTheoremCalculusLebesgue` — the parent file containing `AbsolutelyContinuousOn` (ε-δ definition) and the Lebesgue FTC statement\n2. `Mathlib.Analysis.BoundedVariation` — provides `eVariationOn`, `BoundedVariationOn`, and `eVariationOn.Icc_add_Icc`\n3. `Mathlib.Topology.EMetricSpace.BoundedVariation` — extended metric space version for `edist`\n\nThe `open` declarations bring into scope: `FTCLebesgue` (parent namespace), `Set` (for `Icc`, `mem_Icc`), `ENNReal` (for `ofReal`, arithmetic), `Finset` (for sums). The `maxHeartbeats 800000` setting is needed for the longer proofs in this file — the default heartbeat limit would time out.\n\nThis file answers OQ-01 from `fundamental-theorem-calculus-oq-01`: the implication Absolutely Continuous → Bounded Variation can indeed be proved from scratch using Mathlib's `eVariationOn` infrastructure.",
@@ -36,7 +36,7 @@
   {
     "id": "ann-ftc-oq01-edist",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 36, "endLine": 52 },
+    "range": { "startLine": 34, "endLine": 49 },
     "type": "technique",
     "title": "Lemma 1 & 2: edist Identity and eVariationOn Upper Bound Criterion",
     "content": "**`edist_real_ofReal`**: On ℝ, `edist x y = ENNReal.ofReal |x - y|`. Proof: `edist_dist + Real.dist_eq` — combining the fact that edist on ℝ equals its distance function, and the distance function is |x-y|. This bridging lemma converts between edist (extended metric space) and ENNReal.ofReal (which handles real-valued absolute differences).\n\n**`eVariationOn_le_of_forall`**: The key upper-bound criterion: if for every monotone sequence `u` in `s`, the partition sum `∑ edist(f(u(i+1)), f(u(i)))` is ≤ C, then `eVariationOn f s ≤ C`. Proof: unfold `eVariationOn` as a supremum over pairs (n, u), then apply `iSup_le` — to bound a supremum, it suffices to bound every value it takes.\n\nThis lemma encapsulates the universal quantifier hidden in the `iSup`: instead of directly manipulating `iSup`, callers can provide a universal bound and let `iSup_le` do the work. It is the technical heart of how local AC bounds propagate to global variation bounds.",
@@ -58,7 +58,7 @@
   {
     "id": "ann-ftc-oq01-telescoping",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 53, "endLine": 63 },
+    "range": { "startLine": 51, "endLine": 60 },
     "type": "technique",
     "title": "Lemma 3: Telescoping Sum for Fin n",
     "content": "`fin_telescoping`: $\\sum_{k < n} (u(k+1) - u(k)) = u(n) - u(0)$ for any $u : \\mathbb{N} \\to \\mathbb{R}$.\n\nThe proof is by induction on `n`:\n- Base (`n=0`): empty sum = 0 = u(0) - u(0), by `simp`.\n- Step (`n = m+1`): Use `Fin.sum_univ_castSucc` to peel off the last term `(u(m+1) - u(m))`, then the IH gives the sum over `Fin m` equals `u(m) - u(0)`. Adding: `(u(m) - u(0)) + (u(m+1) - u(m)) = u(m+1) - u(0)` by `linarith`.\n\nThe telescoping sum is used in `eVariationOn_le_one_of_short`: the total length of a partition `[u(0), u(1)], ..., [u(n-1), u(n)]` equals `∑ (u(k+1) - u(k)) = u(n) - u(0) ≤ d - c < δ`. This single inequality is what allows applying the AC condition to the whole partition.",
@@ -80,7 +80,7 @@
   {
     "id": "ann-ftc-oq01-short-interval",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 64, "endLine": 93 },
+    "range": { "startLine": 62, "endLine": 91 },
     "type": "insight",
     "title": "Key Lemma: Short Intervals Have Variation ≤ 1",
     "content": "**`eVariationOn_le_one_of_short`**: If `[c,d]` has length `d-c < δ` (the AC modulus), then `eVariationOn F (Icc c d) ≤ 1`.\n\nThis is the central lemma — it converts the AC condition on short intervals into a variation bound. The proof applies `eVariationOn_le_of_forall`, reducing to: for every monotone sequence `u` in `[c,d]` of length `n`, the partition sum `∑ edist(F(u(i+1)), F(u(i))) ≤ 1`.\n\n**The AC application**: given the AC condition `hac` (with parameter δ), we construct the intervals `[u(k), u(k+1)]` for k < n as disjoint intervals in `[a,b]`. Their total length is `∑(u(k+1)-u(k)) = u(n)-u(0) ≤ d-c < δ` (telescoping sum). The AC condition then gives `∑|F(u(k+1))-F(u(k))| < 1`.\n\n**The ENNReal conversion**: The sum `∑ edist(F(u(i+1)), F(u(i)))` is in `ℝ≥0∞`. Using `edist_real_ofReal` to convert each edist, then `ENNReal.ofReal_sum_of_nonneg` to convert the sum, and `ENNReal.ofReal_le_ofReal` to convert the inequality, we reduce to the real-valued bound from AC.\n\nNote the disjointness condition: `∀ j k, j ≠ k → bs j ≤ as k ∨ bs k ≤ as j` — this encodes that the intervals `[u(k), u(k+1)]` are disjoint (as `[as k, bs k]` pairs). Since `u` is monotone, consecutive intervals are disjoint: `u(k+1) ≤ u(k+1)` trivially gives `bs j = u(j+1) ≤ u(k) = as k` when `j < k`.",
@@ -103,7 +103,7 @@
   {
     "id": "ann-ftc-oq01-inductive",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 95, "endLine": 133 },
+    "range": { "startLine": 93, "endLine": 124 },
     "type": "technique",
     "title": "Lemma 5: Inductive Splitting via Icc_add_Icc",
     "content": "**`eVariationOn_le_n`**: If each of the `n` pieces `[a+k*step, a+(k+1)*step]` has variation ≤ 1, then `eVariationOn F (Icc a (a+n*step)) ≤ n`.\n\nProof by induction on `n`:\n- **Base** (`n=0`): interval `[a,a]` is a point. `eVariationOn.eq_zero_iff` shows variation = 0 (any two points in a singleton are equal, so all edists are 0). `0 ≤ 0 = n`.\n- **Step** (`n = m+1`): Use `eVariationOn.Icc_add_Icc F hm_le hmid` to split:\n  `eVar[a, a+m*step] + eVar[a+m*step, a+(m+1)*step] = eVar[a, a+(m+1)*step]`\n  By IH: left piece ≤ m; by `hpieces`: right piece ≤ 1; total ≤ m+1.\n\nThe key Mathlib lemma `eVariationOn.Icc_add_Icc` says: if `a ≤ b ≤ c`, then `eVar[a,b] + eVar[b,c] = eVar[a,c]`. This additivity of variation over adjacent intervals is what enables the inductive decomposition.",
@@ -125,7 +125,7 @@
   {
     "id": "ann-ftc-oq01-main",
     "proofId": "fundamental-theorem-calculus-oq-01-oq-01",
-    "range": { "startLine": 135, "endLine": 185 },
+    "range": { "startLine": 126, "endLine": 185 },
     "type": "insight",
     "title": "Main Theorem: AC → BV from the ε-δ Definition",
     "content": "**`ac_implies_bv`**: If `F` is absolutely continuous on `[a,b]`, then `F` has bounded variation on `[a,b]`.\n\n**The degenerate case** `a = b`: the interval `[a,a]` is a point, variation = 0 ≠ ⊤. Handled by `eVariationOn.eq_zero_iff` and `ENNReal.zero_ne_top`.\n\n**The main case** `a < b`:\n1. **Get δ**: Apply `hF 1 one_pos` to get `δ > 0` and the AC bound `hac` (for `∑ lengths < δ → ∑ oscillations < 1`).\n2. **Choose n**: `n = ⌈(b-a)/δ⌉₊ + 1` ensures `step = (b-a)/n < δ`. The `+1` makes the ceiling strict. Proved by `nlinarith` using the ceiling inequality.\n3. **Exact cover**: `a + n * step = b` — the `n` pieces exactly cover `[a,b]`. Proved by `mul_div_cancel₀`.\n4. **Piece bounds**: Each `[a+k*step, a+(k+1)*step]` has variation ≤ 1, by applying `eVariationOn_le_one_of_short` with the AC condition.\n5. **Global bound**: `eVariationOn_le_n` gives `eVariationOn F (Icc a b) ≤ n`. Since `n : ℕ`, `ENNReal.natCast_ne_top` gives `n ≠ ⊤`, so the variation is bounded.\n\nThe final `ne_top_of_le_ne_top` concludes: `eVariationOn F (Icc a b) ≠ ⊤`, which is the definition of `BoundedVariationOn`.",
