@@ -864,10 +864,245 @@ theorem p_triple_general (d n : ℕ) (i j k : Fin n)
   have hpow_ne : (d : ℝ) ^ (n - 2) ≠ 0 := pow_ne_zero _ hd_ne
   field_simp
 
+-- ============================================================
+-- §5. FIRST-MOMENT IDENTITY (Layer 2 part 2 of Lemma C roadmap, Session 12)
+-- ============================================================
+
+/-
+  Layer 2 part 2 of the four-layer plan: the first-moment identity for general n.
+
+    E[tripleCount] = (∑ f, tripleCount d n f) / d^n = C(n,3) / d² = expectedTriples n d
+
+  Two ingredients:
+
+  (i) `card_strict_triples` — combinatorial bridge
+        # strictly-increasing 3-tuples (i,j,k) in Fin n × Fin n × Fin n = C(n,3)
+      via the bijection (i,j,k) ↔ {i,j,k} ∈ powersetCard 3 univ.
+      Forward: (i,j,k) ↦ {i,j,k}; inverse: orderEmbOfFin extracts sorted triple.
+
+  (ii) `tripleCount_sum_eq` — structural identity (sum-comm + bad_count_general)
+        ∑ f, tripleCount d n f = C(n,3) · d^(n-2)
+      For n < 3 both sides are 0 (no strict triples; C(n,3) = 0).
+
+  Combined and divided by d^n = d^(n-2) · d^2, gives `expectedTripleCount_eq`:
+        (∑ f, tripleCount d n f) / d^n = C(n,3)/d² = expectedTriples n d.
+
+  Layers queued:
+  - Layer 3 (S13–15): factorial-moment expansion + fusion-pattern bookkeeping
+    (E[X^(r)] for r ≥ 2 — Layer 2 covers only r = 1).
+  - Layer 4 (S16–17): Method of Factorial Moments.
+-/
+
+/-- Cardinality of strictly-increasing 3-tuples in `Fin n × Fin n × Fin n` is `C(n, 3)`.
+    Bridge from the index space of `tripleCount` (ordered triples) to the standard
+    Mathlib formulation via `Finset.powersetCard 3`. The forward map is
+    `(i, j, k) ↦ {i, j, k}`; the inverse is `Finset.orderEmbOfFin` extracting the
+    sorted triple from a 3-element subset. Uses `Finset.image_orderEmbOfFin_univ`
+    and `Finset.orderEmbOfFin_unique`. -/
+lemma card_strict_triples (n : ℕ) :
+    (Finset.univ.filter (fun t : Fin n × Fin n × Fin n =>
+      t.1 < t.2.1 ∧ t.2.1 < t.2.2)).card = Nat.choose n 3 := by
+  classical
+  rw [show (Nat.choose n 3 : ℕ) = ((Finset.univ : Finset (Fin n)).powersetCard 3).card from
+        by rw [Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]]
+  -- Bijection: strict triple (i, j, k) ↔ 3-element subset {i, j, k}.
+  refine Finset.card_bij'
+    (fun (t : Fin n × Fin n × Fin n) (_ : t ∈ _) =>
+      ({t.1, t.2.1, t.2.2} : Finset (Fin n)))
+    (fun (s : Finset (Fin n)) (hs : s ∈ _) =>
+      let hcard : s.card = 3 := (Finset.mem_powersetCard.mp hs).2
+      (s.orderEmbOfFin hcard ⟨0, by norm_num⟩,
+       s.orderEmbOfFin hcard ⟨1, by norm_num⟩,
+       s.orderEmbOfFin hcard ⟨2, by norm_num⟩))
+    ?_ ?_ ?_ ?_
+  -- (i) forward maps to powersetCard 3 (the 3-element subsets)
+  · rintro ⟨i, j, k⟩ ht
+    rcases Finset.mem_filter.mp ht with ⟨_, hij, hjk⟩
+    have hij' : i ≠ j := hij.ne
+    have hik' : i ≠ k := (hij.trans hjk).ne
+    have hjk' : j ≠ k := hjk.ne
+    simp only [Finset.mem_powersetCard, Finset.subset_univ, true_and]
+    rw [show ({i, j, k} : Finset (Fin n)) = insert i (insert j {k}) from rfl,
+        Finset.card_insert_of_not_mem (by simp [hij', hik']),
+        Finset.card_insert_of_not_mem (by simp [hjk']),
+        Finset.card_singleton]
+  -- (ii) inverse maps 3-element subsets to strict triples
+  · intro s hs
+    have hcard : s.card = 3 := (Finset.mem_powersetCard.mp hs).2
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    have h_mono := (s.orderEmbOfFin hcard).strictMono
+    refine ⟨?_, ?_⟩
+    · exact h_mono (show (⟨0, by norm_num⟩ : Fin 3) < ⟨1, by norm_num⟩ from by decide)
+    · exact h_mono (show (⟨1, by norm_num⟩ : Fin 3) < ⟨2, by norm_num⟩ from by decide)
+  -- (iii) left_inv: starting from strict (i, j, k), forward gives {i, j, k};
+  -- orderEmbOfFin {i,j,k} hcard at indices 0/1/2 gives back i/j/k by uniqueness.
+  · rintro ⟨i, j, k⟩ ht
+    rcases Finset.mem_filter.mp ht with ⟨_, hij, hjk⟩
+    have hij' : i ≠ j := hij.ne
+    have hik' : i ≠ k := (hij.trans hjk).ne
+    have hjk' : j ≠ k := hjk.ne
+    have hcard : ({i, j, k} : Finset (Fin n)).card = 3 := by
+      rw [show ({i, j, k} : Finset (Fin n)) = insert i (insert j {k}) from rfl,
+          Finset.card_insert_of_not_mem (by simp [hij', hik']),
+          Finset.card_insert_of_not_mem (by simp [hjk']),
+          Finset.card_singleton]
+    -- Build the canonical strict-mono enumeration f : Fin 3 → Fin n via case-split on `m.val`.
+    let f : Fin 3 → Fin n := fun m =>
+      if m.val = 0 then i else if m.val = 1 then j else k
+    have hf_mem : ∀ x : Fin 3, f x ∈ ({i, j, k} : Finset (Fin n)) := by
+      intro ⟨v, hv⟩
+      simp only [f]
+      interval_cases v <;> simp
+    have hf_mono : StrictMono f := by
+      intro ⟨a, ha⟩ ⟨b, hb⟩ hab
+      simp only [Fin.mk_lt_mk] at hab
+      simp only [f]
+      interval_cases a <;> interval_cases b
+      all_goals first | omega | exact hij | exact hjk | exact hij.trans hjk
+    have h_unique : ∀ m : Fin 3,
+        ({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard m = f m := by
+      intro m
+      exact Finset.orderEmbOfFin_unique hf_mem hf_mono m
+    -- Conclude: the inverse of {i,j,k} returns (i, j, k).
+    show (({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard ⟨0, by norm_num⟩,
+          ({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard ⟨1, by norm_num⟩,
+          ({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard ⟨2, by norm_num⟩) = (i, j, k)
+    rw [h_unique ⟨0, by norm_num⟩, h_unique ⟨1, by norm_num⟩, h_unique ⟨2, by norm_num⟩]
+    rfl
+  -- (iv) right_inv: starting from a 3-element subset s, forward of (emb 0, emb 1, emb 2)
+  -- gives {emb 0, emb 1, emb 2} = image emb univ = s by image_orderEmbOfFin_univ.
+  · intro s hs
+    have hcard : s.card = 3 := (Finset.mem_powersetCard.mp hs).2
+    show ({s.orderEmbOfFin hcard ⟨0, by norm_num⟩,
+            s.orderEmbOfFin hcard ⟨1, by norm_num⟩,
+            s.orderEmbOfFin hcard ⟨2, by norm_num⟩} : Finset (Fin n)) = s
+    have hrewrite :
+        ({s.orderEmbOfFin hcard ⟨0, by norm_num⟩,
+           s.orderEmbOfFin hcard ⟨1, by norm_num⟩,
+           s.orderEmbOfFin hcard ⟨2, by norm_num⟩} : Finset (Fin n)) =
+        Finset.image (s.orderEmbOfFin hcard) (Finset.univ : Finset (Fin 3)) := by
+      ext x
+      simp only [Finset.mem_insert, Finset.mem_singleton, Finset.mem_image, Finset.mem_univ,
+                 true_and]
+      constructor
+      · rintro (h | h | h)
+        · exact ⟨⟨0, by norm_num⟩, h.symm⟩
+        · exact ⟨⟨1, by norm_num⟩, h.symm⟩
+        · exact ⟨⟨2, by norm_num⟩, h.symm⟩
+      · rintro ⟨⟨v, hv⟩, hvx⟩
+        interval_cases v
+        · left; exact hvx.symm
+        · right; left; exact hvx.symm
+        · right; right; exact hvx.symm
+    rw [hrewrite, Finset.image_orderEmbOfFin_univ]
+
+/-- First-moment numerator (Nat form): summing `tripleCount` over all functions
+    `Fin n → Fin d` equals `C(n, 3) · d^(n - 2)`. The proof combines sum-swap with
+    `bad_count_general` (per-triple count `d^(n-2)`) and `card_strict_triples`
+    (`# strict triples = C(n, 3)`). For `n < 3` both sides are zero (no strict
+    triples; `Nat.choose n 3 = 0`). -/
+theorem tripleCount_sum_eq (d n : ℕ) :
+    ∑ f : Fin n → Fin d, tripleCount d n f =
+      Nat.choose n 3 * d ^ (n - 2) := by
+  classical
+  rcases Nat.lt_or_ge n 3 with hn | hn
+  · -- n < 3: both sides are 0 since no strict triple (i, j, k) fits in `Fin n × Fin n × Fin n`.
+    have h_no_triple : ∀ (i j k : Fin n), ¬ (i < j ∧ j < k) := by
+      intro i j k ⟨hij, hjk⟩
+      have h2 : 2 < n := by
+        calc 2 = 0 + 1 + 1 := by norm_num
+          _ ≤ i.val + 1 + 1 := by omega
+          _ ≤ j.val + 1 := by omega
+          _ ≤ k.val := by omega
+          _ < n := k.isLt
+      omega
+    have h_lhs : ∑ f : Fin n → Fin d, tripleCount d n f = 0 := by
+      apply Finset.sum_eq_zero
+      intro f _
+      rw [tripleCount, Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+      rintro ⟨i, j, k⟩ _ ⟨hij, hjk, _⟩
+      exact h_no_triple i j k ⟨hij, hjk⟩
+    rw [h_lhs, Nat.choose_eq_zero_of_lt hn]
+    ring
+  · -- n ≥ 3 case: sum-comm + bad_count_general + card_strict_triples
+    have h_tripleCount_sum : ∀ f : Fin n → Fin d,
+        tripleCount d n f =
+          ∑ t : Fin n × Fin n × Fin n,
+            (if t.1 < t.2.1 ∧ t.2.1 < t.2.2 ∧ f t.1 = f t.2.1 ∧ f t.2.1 = f t.2.2
+             then (1 : ℕ) else 0) := by
+      intro f
+      rw [tripleCount, Finset.card_filter]
+    simp_rw [h_tripleCount_sum]
+    rw [Finset.sum_comm]
+    -- Now: ∑_t (∑_f indicator). Reduce per t = (i, j, k):
+    -- if i < j < k: inner = (filter coincide).card = bad_count_general = d^(n-2)
+    -- else: inner = 0
+    have h_inner_eq : ∀ t : Fin n × Fin n × Fin n,
+        (∑ f : Fin n → Fin d,
+          (if t.1 < t.2.1 ∧ t.2.1 < t.2.2 ∧ f t.1 = f t.2.1 ∧ f t.2.1 = f t.2.2
+           then (1 : ℕ) else 0)) =
+        (if t.1 < t.2.1 ∧ t.2.1 < t.2.2 then d ^ (n - 2) else 0) := by
+      rintro ⟨i, j, k⟩
+      by_cases h_strict : i < j ∧ j < k
+      · -- strict t: pull out outer if and apply bad_count_general
+        have h_eq : ∀ f : Fin n → Fin d,
+            (if i < j ∧ j < k ∧ f i = f j ∧ f j = f k then (1 : ℕ) else 0) =
+            (if f i = f j ∧ f j = f k then 1 else 0) := by
+          intro f; simp [h_strict.1, h_strict.2]
+        simp_rw [h_eq]
+        rw [show (∑ f : Fin n → Fin d, (if f i = f j ∧ f j = f k then (1 : ℕ) else 0)) =
+              (Finset.univ.filter
+                (fun f : Fin n → Fin d => f i = f j ∧ f j = f k)).card from
+              (Finset.card_filter _ _).symm]
+        rw [bad_count_general d n i j k h_strict.1.ne h_strict.2.ne
+              (h_strict.1.trans h_strict.2).ne]
+        simp [h_strict.1, h_strict.2]
+      · -- non-strict t: inner sum is 0
+        have h_eq : ∀ f : Fin n → Fin d,
+            (if i < j ∧ j < k ∧ f i = f j ∧ f j = f k then (1 : ℕ) else 0) = 0 := by
+          intro f
+          push_neg at h_strict
+          by_cases hij : i < j
+          · simp [hij, h_strict hij]
+          · simp [hij]
+        simp_rw [h_eq, Finset.sum_const_zero]
+        simp [h_strict]
+    simp_rw [h_inner_eq]
+    -- Now ∑_t (if strict t then d^(n-2) else 0) = (# strict t) * d^(n-2)
+    rw [show
+      (∑ t : Fin n × Fin n × Fin n,
+          (if t.1 < t.2.1 ∧ t.2.1 < t.2.2 then d ^ (n - 2) else 0)) =
+      (Finset.univ.filter
+        (fun t : Fin n × Fin n × Fin n => t.1 < t.2.1 ∧ t.2.1 < t.2.2)).card * d ^ (n - 2) from ?_]
+    · rw [card_strict_triples]
+    · rw [← Finset.sum_filter, Finset.sum_const]
+      ring
+
+/-- First-moment identity (real form): `E[tripleCount] = expectedTriples n d`.
+    The expected value of `tripleCount d n f` over uniform `f : Fin n → Fin d` equals
+    the closed-form `C(n, 3) / d²`. Generalises `p_triple_n3_eq_expectedTriples` from
+    `n = 3` (where `tripleCount ∈ {0, 1}`, so Markov is tight) to all `n ≥ 3`. -/
+theorem expectedTripleCount_eq (d n : ℕ) (hd : 1 ≤ d) (hn : 3 ≤ n) :
+    ((∑ f : Fin n → Fin d, tripleCount d n f : ℕ) : ℝ) /
+    (Fintype.card (Fin n → Fin d) : ℝ) = expectedTriples n d := by
+  rw [tripleCount_sum_eq]
+  unfold expectedTriples
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have hcard_nat : Fintype.card (Fin n → Fin d) = d ^ n := by simp [Fintype.card_fun]
+  have hge : n - 2 + 2 = n := Nat.sub_add_cancel (le_trans (by norm_num) hn)
+  have hpow_split : (d : ℕ) ^ n = d ^ (n - 2) * d ^ 2 := by
+    conv_lhs => rw [← hge]
+    rw [pow_add]
+  rw [hcard_nat, hpow_split]
+  push_cast
+  have hpow_ne : (d : ℝ) ^ (n - 2) ≠ 0 := pow_ne_zero _ hd_ne
+  field_simp
+
 /-
   ## Summary
 
-  **Proved (20 theorems / lemmas, 1 axiom):**
+  **Proved (23 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -898,6 +1133,16 @@ theorem p_triple_general (d n : ℕ) (i j k : Fin n)
       complement function space `({m // m ≠ j ∧ m ≠ k} → Fin d)`.
   20. `p_triple_general` (Session 11, Layer 2): real-number per-triple
       probability = 1/d² for distinct i,j,k (n ≥ 3, d ≥ 1). Independent of n.
+  21. `card_strict_triples` (Session 12, Layer 2 part 2): cardinality of
+      strictly-increasing 3-tuples in `Fin n × Fin n × Fin n` equals `C(n,3)`.
+      Bijection (i,j,k) ↔ {i,j,k} ∈ `powersetCard 3 univ` via `orderEmbOfFin`.
+  22. `tripleCount_sum_eq` (Session 12, Layer 2 part 2): first-moment numerator
+      `∑ f, tripleCount d n f = C(n,3) · d^(n-2)` (Nat form). Combines sum-swap
+      with `bad_count_general` and `card_strict_triples`. Vacuous for n < 3.
+  23. `expectedTripleCount_eq` (Session 12, Layer 2 part 2): first-moment
+      identity (real form) `E[tripleCount] = C(n,3)/d² = expectedTriples n d`
+      for n ≥ 3, d ≥ 1. Generalises `p_triple_n3_eq_expectedTriples` from
+      n = 3 (where Markov is tight) to all n ≥ 3.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -925,5 +1170,8 @@ theorem p_triple_general (d n : ℕ) (i j k : Fin n)
 #check @noTriple_filter_eq_tripleCount_zero_filter
 #check @bad_count_general
 #check @p_triple_general
+#check @card_strict_triples
+#check @tripleCount_sum_eq
+#check @expectedTripleCount_eq
 
 end BirthdayThreshold3
