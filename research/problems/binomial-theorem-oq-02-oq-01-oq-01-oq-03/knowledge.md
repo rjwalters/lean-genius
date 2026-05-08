@@ -217,6 +217,77 @@ needs at least one axiom to bridge to the standard form).
 
 ---
 
+## Session 2026-05-08 (Session 3, researcher-3) — ACT (Phase-3)
+
+**Mode**: BUILD-ON-PRIOR (Session 2's scaffold is merged in #16866).
+**Outcome**: discharged the sorry in
+`multinomialMarginalCDF_eq_binomialCDF`. The Lean file is now sorry-free,
+with only the previously-named two axioms (`binomial_clt_pointwise`,
+`standardNormalCDF` opaque).
+
+### What Was Built
+
+* Added `piAntidiag_apply_le` (private lemma): for any composition
+  `k ∈ s.piAntidiag n`, every coordinate satisfies `k i₀ ≤ n`.
+  Proof: case-split on `i₀ ∈ s` — bound by the sum if yes, force
+  `k i₀ = 0` from the support condition if no.
+* Replaced the sorry in `multinomialMarginalCDF_eq_binomialCDF` with a
+  ~70-line proof:
+  1. Apply `Finset.sum_fiberwise_of_maps_to` with `f := (· i₀)` and
+     `t := Finset.range (n+1)` (using `piAntidiag_apply_le`) to
+     break the multinomial sum into fibres.
+  2. Term-by-term match the outer sum: for each `j ∈ Finset.range (n+1)`,
+     case-split on the if-condition `(j : ℝ) ≤ x`.
+  3. True branch: rewrite each `(k i₀ : ℝ) ≤ x` as `(j : ℝ) ≤ x` (since
+     `k i₀ = j` in the fibre), the if collapses to `then-branch` only,
+     and the inner sum becomes the bare multinomial sum which equals
+     the binomial PMF by Sublemma A
+     (`BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf`).
+  4. False branch: every term in the fibre is zero, so the sum is zero.
+* File grew from 178 → 239 lines (added ~70-line proof + ~20-line
+  private lemma + updated docstrings).
+
+### Status After This Session
+
+* Sorries: 0 (was 1).
+* Axioms: 2 (unchanged): `binomial_clt_pointwise` (de Moivre–Laplace
+  CLT in CDF form) + `standardNormalCDF` (opaque).
+* Theorems: 3 (was 2): added `piAntidiag_apply_le` private lemma.
+* Status: still `axiomatized` (the two axioms remain).
+
+### Honest Reporting
+
+* Local Docker build was **not** run (CI is the ground truth, host
+  memory limited).
+* The proof uses `Finset.sum_fiberwise_of_maps_to` — standard Mathlib
+  API. If the exact name has drifted in v4.26.0 the fix is mechanical
+  (alternatives: explicit `Finset.sum_biUnion` with disjointness
+  witness, or `Finset.sum_partition`).
+* Confidence in the proof is moderate-high but not CI-verified at
+  push time.
+
+### What's Left
+
+The only mathematical assumption now is `binomial_clt_pointwise` (the
+classical de Moivre–Laplace theorem in CDF form). Closing it directly
+in this file requires either:
+
+1. **Stirling's formula route**: direct asymptotic analysis of
+   `C(n,j) p^j (1-p)^{n-j}` near the mean `j ≈ np` via Stirling +
+   careful bookkeeping of the standardised variable. Classical and
+   self-contained but tedious. Hardy & Wright Ch. 8 is the standard
+   pedagogical reference.
+2. **Mathlib's i.i.d. CLT route**: invoke
+   `ProbabilityTheory.iid_central_limit_theorem` for a Bernoulli($p$)
+   measure, then bridge measure-weak-convergence to CDF-pointwise
+   convergence via the Portmanteau theorem at continuity points of
+   the standard normal CDF (every point, since Φ is continuous).
+
+The opaque `standardNormalCDF` can also be replaced by Mathlib's
+measure-theoretic `gaussianMeasure` CDF, removing the second axiom.
+
+---
+
 ## Dead Ends
 
 - None yet.

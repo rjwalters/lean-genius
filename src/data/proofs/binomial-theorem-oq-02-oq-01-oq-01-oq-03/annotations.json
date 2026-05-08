@@ -50,19 +50,19 @@
   {
     "id": "ann-reduction-lemma",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
-    "range": { "startLine": 133, "endLine": 149 },
+    "range": { "startLine": 138, "endLine": 210 },
     "type": "technique",
-    "title": "Reduction Lemma: Marginal CDF = Binomial CDF (sorry, Phase-3)",
-    "content": "multinomialMarginalCDF_eq_binomialCDF asserts that the marginal CDF of the multinomial *equals* (not just approximates) the binomial CDF with parameter p(i₀). The proof (Phase-3 target, currently sorry) regroups the sum over k ∈ s.piAntidiag n into fibers indexed by j = k(i₀) for j = 0, ..., n; on each fiber, BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf provides ∑_{k: k(i₀) = j} multinomialProb s p n k = C(n,j) · p(i₀)^j · (1 - p(i₀))^(n-j). The if-condition (k i₀ : ℝ) ≤ x becomes (j : ℝ) ≤ x, factoring out of the inner sum.",
-    "mathContext": "$$F_{X_{i_0}}(x) \\;=\\; \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\sum_{k: k(i_0) = j} P(X=k) \\;=\\; \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\binom{n}{j} p_{i_0}^j (1 - p_{i_0})^{n-j} \\;=\\; F_{n, p_{i_0}}(x)$$ The middle step uses `multinomial_marginal_pmf`; the outer step is rearranging a sum-of-sums. This is an *equality* of finite sums — no limits, no convergence, just algebraic regrouping.",
+    "title": "Reduction Lemma: Marginal CDF = Binomial CDF (proved)",
+    "content": "multinomialMarginalCDF_eq_binomialCDF asserts that the marginal CDF of the multinomial *equals* (not just approximates) the binomial CDF with parameter p(i₀). Now fully proved: the proof uses Finset.sum_fiberwise_of_maps_to to regroup the sum over k ∈ s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1); the if-condition ((k i₀ : ℕ) : ℝ) ≤ x simplifies to (j : ℝ) ≤ x on each fibre (so it factors out as a uniform indicator), and on the resulting all-true fibre BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf collapses the inner sum to C(n,j) · p(i₀)^j · (1 - p(i₀))^(n-j).",
+    "mathContext": "$$F_{X_{i_0}}(x) \\;=\\; \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\sum_{k: k(i_0) = j} P(X=k) \\;=\\; \\sum_{j=0}^n \\mathbf{1}_{[j \\le x]} \\binom{n}{j} p_{i_0}^j (1 - p_{i_0})^{n-j} \\;=\\; F_{n, p_{i_0}}(x)$$ The middle step uses `multinomial_marginal_pmf`; the outer step is fibre-decomposition via `Finset.sum_fiberwise_of_maps_to`. This is an *equality* of finite sums — no limits, no convergence, just algebraic regrouping.",
     "significance": "key",
-    "relatedConcepts": ["fiber decomposition", "Finset.sum_partition", "multinomial_marginal_pmf"],
-    "prerequisites": ["BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf", "Finset.piAntidiag"]
+    "relatedConcepts": ["fibre decomposition", "Finset.sum_fiberwise_of_maps_to", "multinomial_marginal_pmf"],
+    "prerequisites": ["BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf", "Finset.piAntidiag", "Finset.sum_fiberwise_of_maps_to"]
   },
   {
     "id": "ann-main-clt-derived",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
-    "range": { "startLine": 151, "endLine": 178 },
+    "range": { "startLine": 212, "endLine": 239 },
     "type": "insight",
     "title": "Main Theorem: Multinomial Marginal CLT (Derived, No New Axiom)",
     "content": "multinomial_marginal_clt is *derived*, not axiomatized. The proof builds a pointwise equality `key : ∀ n, multinomialMarginalCDF (...) = binomialCDF (...)` from the reduction lemma, then applies `Filter.Tendsto.congr` to convert binomial_clt_pointwise into the marginal-CLT statement. Because the reduction is an *equality* (not asymptotic), Tendsto.congr — which only requires pointwise equality of two sequences — is exactly the right tool: it is strictly stronger than needed.",
