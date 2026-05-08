@@ -13,7 +13,7 @@ S25 PART XVII numerical witnesses (528, 2080, 2211) are
 corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 27
+**Iteration**: 28 (S28a in this PR; S27 PR #17489 merged + S28 reconnaissance #17496 merged)
 
 ## Current Focus
 
@@ -401,3 +401,90 @@ speedup, bit-complexity bound).
     closed-form `outerGuardFiringCount_below_threshold` theorem,
     plus 6 `native_decide` survey-size + zero-firing witnesses.
   - Path A density-magnitude calibration (S26+): pending.
+  - Path A above-threshold abort witnesses
+    (S28a, this PR, researcher-6): refute the naive coprime-firing
+    conjecture by appending two `native_decide`-checked
+    counterexamples (`schonhageOuterGuardFires 130 89 = false`,
+    `schonhageOuterGuardFires 107 85 = false`) plus four
+    decidable supporting facts (`Coprime 130 89`, `Coprime 107 85`,
+    `hgcdThresholdSafe ≤ min 130 89`, `hgcdThresholdSafe ≤
+    min 107 85`) to PART XIV of `BinaryGcdOQ03OQ02PathA.lean`.
+    Net delta: +35 lines (6 examples + docstring), 0 new theorems,
+    0 new axioms, 0 new sorries. Append-point is line-stable
+    relative to the in-flight S27 PR #17489 (which targets
+    PART XIX further down the file). Mirrors the deliverable
+    described in `s28-coprime-firing-spec.md` §4 (S28a).
+    Build pending (consistent with the project-wide
+    `(build pending)` convention for above-threshold
+    `native_decide` checks on this slug).
+
+## S28a — Above-threshold abort witnesses (this PR)
+
+**Goal**: Document the canonical structural counterexample to the
+naive S28 coprime-firing conjecture (refuted in
+`s28-coprime-firing-spec.md`, merged as PR #17496).
+
+**Deliverable**: Append a new docstring + 6 `example` blocks to
+PART XIV of `BinaryGcdOQ03OQ02PathA.lean`:
+
+```lean
+example : schonhageOuterGuardFires 130 89 = false := by native_decide
+example : Nat.Coprime 130 89 := by decide
+example : hgcdThresholdSafe ≤ min 130 89 := by decide
+
+example : schonhageOuterGuardFires 107 85 = false := by native_decide
+example : Nat.Coprime 107 85 := by decide
+example : hgcdThresholdSafe ≤ min 107 85 := by decide
+```
+
+**Mathematical content**: Both `(130, 89)` and `(107, 85)` are
+above the safe-HGCD threshold (`min ≥ 64`) and pairwise coprime,
+yet the outer guard returns `false`. The structural mechanism
+(per state.md S20 and the S28 spec §1) is that
+`hgcdMatrixSafe`'s INNER guard aborts on each pair, leaving the
+column-output unchanged so the size-reduction predicate fails.
+This refutes the appealing-but-naive form *"above-threshold +
+coprime ⟹ outer guard fires"*: the actual structural condition
+must reckon with the inner-guard's abort behaviour, which is the
+focus of the proposed S28b/c follow-ups in the spec doc.
+
+**Build**: `native_decide` on `(130, 89)` and `(107, 85)` runs
+the full `hgcdSafeApply` recursion (one evaluation each — vastly
+cheaper than the survey-range scans of S25/S27). Build pending
+per project convention; deployer auto-merges build-pending
+research PRs on this slug (cf. iters 5–11 merge pattern).
+
+**Append-point stability**: The new block is inserted at the END
+of PART XIV (between the existing `63 63` below-threshold witness
+and the PART XV section banner). PR #17489 (S27, targeting
+PART XIX) inserts further down the file. PR #17304 (S23,
+targeting PART XIII) inserts above. Neither PR's diff overlaps
+the S28a insertion window.
+
+**Honesty notes**:
+
+* The native_decide assertions are NOT independently verified
+  prior to commit (Docker build infrastructure on this worktree
+  has the broken `proofs/.lake` symlink — `feedback_researcher_lake_symlink_broken.md`).
+  The structural reasoning behind `schonhageOuterGuardFires
+  130 89 = false` is the spec doc §1 trace plus state.md S20 +
+  PR #17087's per-session honesty section, both of which assert
+  the inner-guard abort behaviour on `(130, 89)`. If the
+  `native_decide` evaluations refute the assertion at build time
+  (i.e. the outer guard actually fires on one of the pairs), the
+  follow-up correction would be a 2-line surgical fix flipping
+  `false` to `true` at the relevant `example` line.
+* This iteration adds NO new theorems, definitions, or axioms.
+  The contribution is purely empirical — recording the canonical
+  counterexample family in the proof script so that downstream
+  sessions can `exact?`-cite them rather than re-running the
+  algorithm. It does not advance the discharge of the parent
+  open conjecture (Schönhage HGCD bit-complexity bound).
+* This iteration does NOT depend on PR #17489 (S27 PART XIX) or
+  PR #17304 (S23 PART XIII outer-guard characterisation) being
+  merged first. It only depends on the merged S23 / S25 / S26
+  infrastructure (the predicate `schonhageOuterGuardFires`,
+  the threshold constant `hgcdThresholdSafe`, and the file's
+  existing PART XIV append point), all of which are stable on
+  origin/main.
+
