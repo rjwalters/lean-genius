@@ -494,4 +494,69 @@ lemma circuit_edge_balance' (walk : List V) (n : ℕ) (v : V)
       ← walk_target_eq_edge_filter' walk n v edges hcov hsteps]
   exact closed_walk_balance' walk n hlen hclosed v
 
+/-- **toFinset bridge for `circuit_edge_balance'` hypotheses**.
+
+    Convert List-level coverage and step-witness hypotheses to the
+    Finset-level forms required by `circuit_edge_balance'`. The key
+    observation: `e ∈ L.toFinset ↔ e ∈ L` (under `[DecidableEq V]`),
+    so both directions follow by rewriting through `List.mem_toFinset`.
+
+    Note: this lemma does NOT require `L.Nodup`. The Finset-level `hcov`
+    only asks "for each Finset member, there exists a unique position".
+    Duplicates in `L` collapse in `toFinset` — they do not create
+    additional Finset members — so uniqueness for `L`'s distinct elements
+    is exactly uniqueness for `L.toFinset`'s members. (The forward
+    direction merely uses `List.mem_toFinset.mp`; the backward direction
+    uses `List.mem_toFinset.mpr`. No distinctness assumption enters.)
+
+    This is the missing bridge between concrete `walkEdges`-style `List`
+    constructions (where edges are produced by walking through positions)
+    and the Finset-level `circuit_edge_balance'` template.
+
+    Used by S15+ in-place transcription of `remove_circuit_balanced`
+    (currently L1103, the broken main file's last `sorry`). -/
+lemma toFinset_balance' (walk : List V) (n : ℕ) (L : List (V × V))
+    (hcov_list : ∀ e ∈ L, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps_list : ∀ i, i < n → ∃ e ∈ L,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    (∀ e ∈ L.toFinset, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) ∧
+    (∀ i, i < n → ∃ e ∈ L.toFinset,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) := by
+  refine ⟨?_, ?_⟩
+  · intro e he
+    exact hcov_list e (List.mem_toFinset.mp he)
+  · intro i hi
+    obtain ⟨e, heL, h⟩ := hsteps_list i hi
+    exact ⟨e, List.mem_toFinset.mpr heL, h⟩
+
+/-- **List-level circuit edge balance**: direct corollary of
+    `circuit_edge_balance'` for an edge-Finset built from a `List`.
+
+    For closed walks, the `toFinset` of any `List (V × V)` satisfying
+    coverage and step-witness hypotheses (in their List forms) has equal
+    source and target counts at every vertex.
+
+    This is the most useful form for `remove_circuit_balanced`, where
+    `S = (walkEdges C.walk).toFinset` is built from a `List (V × V)`
+    via `toFinset`. The user is left only with proving the two
+    List-level hypotheses, which decompose naturally over `walkEdges`'s
+    `filterMap` structure (each list element is `(walk.get ⟨i, _⟩,
+    walk.get ⟨i + 1, _⟩)` for `i < walk.length - 1`).
+
+    Proof: compose `toFinset_balance'` with `circuit_edge_balance'`. -/
+lemma circuit_edge_balance_list' (walk : List V) (n : ℕ) (v : V)
+    (L : List (V × V))
+    (hlen : walk.length = n + 1)
+    (hclosed : walk[0]? = walk[n]?)
+    (hcov_list : ∀ e ∈ L, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps_list : ∀ i, i < n → ∃ e ∈ L,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    (L.toFinset.filter fun e => e.1 = v).card =
+    (L.toFinset.filter fun e => e.2 = v).card := by
+  obtain ⟨hcov, hsteps⟩ := toFinset_balance' walk n L hcov_list hsteps_list
+  exact circuit_edge_balance' walk n v L.toFinset hlen hclosed hcov hsteps
+
 end KonigsbergOQ01OQ02Recipe
