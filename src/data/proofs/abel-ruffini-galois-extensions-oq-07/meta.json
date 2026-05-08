@@ -1,0 +1,207 @@
+{
+  "id": "abel-ruffini-galois-extensions-oq-07",
+  "title": "Burnside's pᵃqᵇ Theorem (Phase-2 Axiomatization)",
+  "slug": "abel-ruffini-galois-extensions-oq-07",
+  "description": "Phase-2 formalization of Burnside's pᵃqᵇ theorem (1904): every finite group of order p^a · q^b (for primes p, q and naturals a, b) is solvable. The trivial cases (a = 0, b = 0, p = q) reduce axiom-free to Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain. The non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`) is axiomatized as `burnside_pq_nontrivial` — the genuinely-open Lean content, requiring either character theory + algebraic-integer hypotheses (Burnside 1904) or transfer + focal-subgroup theory (Goldschmidt-Matsuyama 1970s). The bound is sharp: |A₅| = 60 = 2² · 3 · 5 has three distinct primes and A₅ is not solvable.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Burnside_theorem",
+    "date": "2026-05-08",
+    "status": "axiomatized",
+    "tags": [
+      "group-theory",
+      "solvability",
+      "burnside",
+      "character-theory",
+      "open-problem",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 221,
+    "dateAdded": "2026-05-08",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsPGroup",
+        "description": "A group whose every element has order a power of p.",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "IsPGroup.iff_card",
+        "description": "For finite G, IsPGroup p G ↔ ∃ n, Nat.card G = p^n.",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "IsPGroup.isNilpotent",
+        "description": "Every finite p-group is nilpotent.",
+        "module": "Mathlib.GroupTheory.Nilpotent"
+      },
+      {
+        "theorem": "IsSolvable",
+        "description": "A group whose derived series eventually terminates at the trivial subgroup.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "IsNilpotent → IsSolvable (instance)",
+        "description": "Mathlib's typeclass instance: every nilpotent group is solvable.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
+    "originalContributions": [
+      "pGroup_isSolvable: explicit packaging of Mathlib's IsPGroup → IsNilpotent → IsSolvable chain (axiom-free).",
+      "burnside_pq_a_zero: axiom-free proof of Burnside for `a = 0` (G is a q-group).",
+      "burnside_pq_b_zero: axiom-free proof of Burnside for `b = 0` (G is a p-group).",
+      "burnside_pq_same_prime: axiom-free proof of Burnside for `p = q` (G is a p-group of order p^(a+b)).",
+      "axiom burnside_pq_nontrivial: the genuinely-open content (`p ≠ q`, `a ≥ 1`, `b ≥ 1`) isolated as a single named axiom; full proof requires either character theory + algebraic integers (Burnside 1904) or transfer + focal subgroup (Goldschmidt-Matsuyama 1970s) — neither currently in Mathlib at sufficient generality.",
+      "burnside_pq: main theorem combining trivial cases + axiom into the unified statement Nat.card G = p^a · q^b → IsSolvable G.",
+      "Three sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group — all axiom-free."
+    ],
+    "assumptions": "1 axiom: `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`). The trivial cases (`a = 0`, `b = 0`, `p = q`) are theorems, all reducing to Mathlib's existing `IsPGroup → IsNilpotent → IsSolvable` chain. The axiom isolates the genuinely-open Lean content; a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Burnside's pᵃqᵇ theorem (1904) was one of the earliest applications of character theory to pure group theory. It states that every finite group whose order is divisible by at most TWO distinct primes is solvable. The bound is sharp: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct primes, and $A_5$ is the smallest non-solvable group.\n\nBurnside's original 1904 proof used the orthogonality relations of irreducible characters together with algebraic-integer arithmetic in cyclotomic rings $\\mathbb{Z}[\\zeta_n]$. For roughly 70 years this was the only known proof. Goldschmidt (1970) and Matsuyama (1973) gave a 'character-free' proof using the focal subgroup theorem and transfer homomorphisms — completing a long-standing open question on whether Burnside's theorem could be derived without character theory.\n\nMathlib has substantial group-theory infrastructure (`IsSolvable`, `IsPGroup`, `IsNilpotent`, Sylow theory, character theory `char_orthonormal`) but does NOT have Burnside's pᵃqᵇ theorem. A full formalization would be a substantial upstream contribution.",
+    "problemStatement": "**Burnside's $p^a q^b$ theorem**: For every finite group $G$ and primes $p, q$ with $|G| = p^a q^b$ (some $a, b \\geq 0$), $G$ is solvable.\n\nThis Phase-2 formalization (a) proves the trivial cases (`a = 0`, `b = 0`, `p = q`) axiom-free via Mathlib's existing $\\text{IsPGroup} \\to \\text{IsNilpotent} \\to \\text{IsSolvable}$ chain, (b) axiomatizes the non-trivial case (`p ≠ q`, `a, b \\geq 1`) as a single named axiom, and (c) combines them into the unified theorem `burnside_pq`.",
+    "text": "All four trivial cases (one of $a, b$ is zero, or $p = q$, or $|G| = 1$) reduce to G being a p-group for some prime p. The Mathlib instance chain `IsPGroup p G → IsNilpotent G → IsSolvable G` then closes them axiom-free. Only the non-degenerate case (two genuinely distinct primes, both with positive exponent) is axiomatized — that is exactly the content of Burnside's 1904 theorem.",
+    "proofStrategy": "**Step 1 (Mathlib chain, axiom-free):** Package `IsPGroup → IsNilpotent → IsSolvable` as `pGroup_isSolvable`. Single line: `haveI := hG.isNilpotent; infer_instance`.\n\n**Step 2 (Trivial case `a = 0`, axiom-free):** Simplify $p^0 \\cdot q^b = q^b$, derive `IsPGroup q G` from cardinality via `IsPGroup.iff_card.mpr ⟨b, ·⟩`, and apply Step 1.\n\n**Step 3 (Trivial case `b = 0`, axiom-free):** Symmetric to Step 2.\n\n**Step 4 (Trivial case `p = q`, axiom-free):** Combine $p^a \\cdot p^b = p^{a+b}$ via `pow_add`, derive `IsPGroup p G`, and apply Step 1.\n\n**Step 5 (Non-trivial case, AXIOMATIZED):** `burnside_pq_nontrivial` for `p ≠ q`, `a ≥ 1`, `b ≥ 1`. The axiom captures the entirety of the open Lean content; either Burnside 1904 (character theory) or Goldschmidt-Matsuyama 1970s (transfer + focal subgroup) would discharge it.\n\n**Step 6 (Combined theorem):** `burnside_pq` case-splits on `a = 0`, `b = 0`, `p = q` (in this order) using `Nat.eq_zero_or_pos` and `eq_or_ne`, dispatching trivial cases to Steps 2-4 and the residual case to the axiom.",
+    "keyInsights": [
+      "**The bound `pᵃqᵇ` is sharp at $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$.** Three distinct primes is exactly one more than Burnside's theorem permits, and $A_5$ is the smallest non-solvable group. So Burnside's theorem doesn't just bound solvability — it pinpoints the *exact* prime-multiplicity threshold.",
+      "**Three of four cases are free (no new content needed).** Whenever `a = 0`, `b = 0`, or `p = q`, the group has prime-power order, and the Mathlib chain `IsPGroup → IsNilpotent → IsSolvable` immediately gives solvability. Only the genuinely two-prime case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`) carries new mathematical content.",
+      "**Two distinct proof routes exist, with different Mathlib prerequisites.** (i) Burnside 1904 — character theory + algebraic integers in cyclotomic rings. Mathlib has character orthogonality (`char_orthonormal`) but lacks the algebraic-integer hypotheses for $|G|/\\chi(1) \\in \\bar{\\mathbb{Z}}_K$. (ii) Goldschmidt-Matsuyama 1970s — focal subgroup theorem + transfer. Mathlib has transfer (`Mathlib.GroupTheory.Transfer`) but the focal subgroup theorem may need extension. The character-free route is preferable for Mathlib since it avoids cyclotomic algebraic-integer machinery.",
+      "**`Nat.card G = p^a · q^b` is the natural cardinality predicate.** Using `Nat.card` (rather than `Fintype.card`) is canonical for finite-group statements in modern Mathlib because it doesn't require an explicit `Fintype` instance, just `Finite`.",
+      "**The axiom captures exactly the open Lean content.** The trivial-cases reduction means we don't 'over-axiomatize': only the genuinely-open Burnside content is assumed, with the remaining 75% of cases proved unconditionally. Replacing the axiom by a theorem would automatically close the entire result without further work.",
+      "**Sanity-checks via examples.** Three `example`s validate the API at the boundaries: trivial group ($|G| = 1$ as $2^0 \\cdot 3^0$), prime-order group ($|G| = p$ as $p^1 \\cdot 2^0$), and pure prime-power group ($|G| = p^a$ as $p^a \\cdot 2^0$) — each fed through the unified `burnside_pq` and proven axiom-free."
+    ],
+    "prerequisites": [
+      "Mathlib.GroupTheory.PGroup (IsPGroup, IsPGroup.iff_card)",
+      "Mathlib.GroupTheory.Solvable (IsSolvable)",
+      "Mathlib.GroupTheory.Nilpotent (IsPGroup.isNilpotent, IsNilpotent → IsSolvable instance)",
+      "AbelRuffiniGaloisExtensions.lean (parent gallery entry: |S_n| ≤ 4 ↔ S_n solvable, A₅ simple)",
+      "Knowledge of the Sylow theorems and basic group-theoretic decomposition arguments"
+    ]
+  },
+  "sections": [
+    {
+      "id": "p-group-chain",
+      "title": "Part I: p-group lemma (axiom-free)",
+      "startLine": 50,
+      "endLine": 60,
+      "summary": "`pGroup_isSolvable`: for any finite group `G` with `IsPGroup p G` (and `Fact p.Prime`), `IsSolvable G`. Single-line proof via `IsPGroup.isNilpotent` + `infer_instance` for `IsNilpotent → IsSolvable`. Axiom-free.",
+      "mathContext": "$p$-groups are nilpotent (an inductive consequence of the non-trivial centre), and nilpotent groups are solvable (the lower central series refines the derived series). Both facts are in Mathlib."
+    },
+    {
+      "id": "trivial-cases",
+      "title": "Part II: Trivial cases (a = 0, b = 0, p = q)",
+      "startLine": 62,
+      "endLine": 89,
+      "summary": "`burnside_pq_a_zero`: when $a = 0$, $|G| = q^b$ so $G$ is a $q$-group; apply Part I. `burnside_pq_b_zero`: symmetric to $a = 0$. `burnside_pq_same_prime`: when $p = q$, $|G| = p^{a+b}$ so $G$ is a $p$-group of combined exponent. All three axiom-free.",
+      "mathContext": "These cases are all instances of $|G| = $ prime power, hence covered by Part I. The arithmetic step is: $p^0 \\cdot q^b = q^b$, $p^a \\cdot q^0 = p^a$, $p^a \\cdot p^b = p^{a+b}$ — each obtained via `simpa` or `pow_add`."
+    },
+    {
+      "id": "axiom",
+      "title": "Part III: Non-trivial case (axiomatized)",
+      "startLine": 91,
+      "endLine": 124,
+      "summary": "`burnside_pq_nontrivial`: axiom asserting Burnside's theorem in the residual case `p ≠ q`, `a ≥ 1`, `b ≥ 1`. Carries proof sketches for both the character-theoretic (Burnside 1904) and character-free (Goldschmidt-Matsuyama 1970s) routes.",
+      "mathContext": "This is the genuinely-open Lean content. A formalized proof would be a substantial Mathlib upstream contribution (~400-1000 lines depending on route)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part IV: Main theorem",
+      "startLine": 126,
+      "endLine": 153,
+      "summary": "`burnside_pq`: combines the three axiom-free trivial cases with the conjectural `burnside_pq_nontrivial` axiom into the unified statement `Nat.card G = p^a · q^b → IsSolvable G`. Case-splits on `a = 0`, `b = 0`, `p = q` (in that order) using `Nat.eq_zero_or_pos` and `eq_or_ne`.",
+      "mathContext": "The case split is exhaustive: any combination of $(a, b, p, q)$ with $a = 0$ or $b = 0$ or $p = q$ falls into Part II; the residue is exactly the axiom's hypothesis."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Part V: Sanity checks",
+      "startLine": 155,
+      "endLine": 178,
+      "summary": "Three `example`s that exercise `burnside_pq` axiom-free at the boundaries: trivial group ($|G| = 1 = 2^0 \\cdot 3^0$), prime-order group ($|G| = p = p^1 \\cdot 2^0$), and pure prime-power group ($|G| = p^a = p^a \\cdot 2^0$). Each picks $q = 2$ as a witness so the example doesn't need an additional prime hypothesis.",
+      "mathContext": "These examples never invoke the axiom — they confirm that the trivial-case branches handle all degenerate cardinalities sensibly. The final `example` is the most general (any prime power)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "extends",
+      "description": "Parent gallery entry. Burnside's theorem is question 7 of its open-questions list. The parent proves the *complementary* direction: A₅ (the smallest counterexample to Burnside-style bounds at three primes) is non-solvable. Together they pin the prime-multiplicity threshold for solvability at exactly 2."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "uses",
+      "description": "Reuses the `IsPGroup → IsNilpotent → IsSolvable` chain (`pGroup_isSolvable`-style packaging) established in this gallery entry, which classifies finite groups of order < 60 as solvable."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "depends-on",
+      "description": "The original Abel-Ruffini theorem motivates studying solvability of finite groups arising as Galois groups; Burnside's theorem is a structural classification on the side of the Galois group."
+    }
+  ],
+  "conclusion": {
+    "summary": "Phase-2 axiomatization of Burnside's pᵃqᵇ theorem. The trivial cases (`a = 0`, `b = 0`, `p = q`) are proved axiom-free via Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain — no new content needed. The non-trivial case (two distinct primes, both with positive exponent) is captured as a single axiom `burnside_pq_nontrivial`. The combined theorem `burnside_pq` covers all $(a, b, p, q)$.",
+    "implications": "This file exposes the open Lean content cleanly. The 75% of cases that don't need new content are resolved unconditionally; only the central two-prime case awaits a Mathlib upstream contribution. The axiom isolates exactly what is needed: replacing `axiom burnside_pq_nontrivial` by a theorem would automatically close all of `burnside_pq` (and the main theorem) without any further work in this file. The path forward is therefore concrete: build the focal subgroup theorem in Mathlib, then formalize Goldschmidt-Matsuyama.",
+    "openQuestions": [
+      "Eliminate `burnside_pq_nontrivial` via the Goldschmidt-Matsuyama 1970s character-free proof. Concrete plan: extend Mathlib's transfer infrastructure with the focal subgroup theorem, then apply transfer on a Sylow p-subgroup of a minimal counterexample G to derive that P ∩ G' < P (contradicting G = G' for non-abelian simple G). Estimated ~400-800 lines.",
+      "Alternative: eliminate `burnside_pq_nontrivial` via Burnside's original 1904 character-theoretic proof. Requires building the algebraic-integer hypothesis `(|G|/χ(1))χ(g) ∈ ℤ̄_K` in Mathlib's character theory framework (~100-200 additional lines on top of `Mathlib.RepresentationTheory.Character.char_orthonormal`).",
+      "Connect to the parent gallery entry's A₅ non-solvability proof to formalize sharpness: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has exactly three distinct primes, one more than Burnside permits, and $A_5$ is non-solvable. Together with `burnside_pq` this gives the exact threshold.",
+      "Coordinate with Mathlib reviewers about scoping a full Burnside formalization for upstream — would be a substantial PR (~1000 lines).",
+      "Investigate whether the theorem holds for infinite groups whose orders are 'morally' p^a q^b in some profinite sense — a possible extension question."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.PGroup",
+      "Mathlib.GroupTheory.Solvable",
+      "Mathlib.GroupTheory.Nilpotent",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BurnsidePQ",
+    "lineCount": 221,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Burnside, W.",
+      "title": "On groups of order pᵃqᵇ",
+      "year": "1904",
+      "note": "Proc. London Math. Soc. (2) 1, 388–392. The original character-theoretic proof."
+    },
+    {
+      "authors": "Goldschmidt, D. M.",
+      "title": "A group theoretic proof of the pᵃqᵇ theorem for odd primes",
+      "year": "1970",
+      "note": "Math. Z. 113, 373–375. First character-free proof; covers odd primes."
+    },
+    {
+      "authors": "Matsuyama, H.",
+      "title": "Solvability of groups of order 2ᵃ pᵇ",
+      "year": "1973",
+      "note": "Osaka J. Math. 10, 375–378. Character-free proof for the remaining 2ᵃpᵇ case."
+    },
+    {
+      "authors": "Isaacs, I. M.",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "note": "AMS GSM 92, §3F. Modern textbook treatment of both routes."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "burnside_pq",
+      "statement": "∀ {G : Type*} [Group G] [Finite G] {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}, Nat.card G = p^a · q^b → IsSolvable G",
+      "description": "Burnside's pᵃqᵇ theorem. Combines axiom-free trivial cases with the conjectural `burnside_pq_nontrivial` axiom."
+    }
+  ],
+  "sorries": 0
+}
