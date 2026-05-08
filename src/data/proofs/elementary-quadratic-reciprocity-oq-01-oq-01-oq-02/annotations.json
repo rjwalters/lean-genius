@@ -60,6 +60,18 @@
     "prerequisites": ["Euler's criterion", "Legendre symbol", "QR statement"]
   },
   {
+    "id": "ann-concrete-examples",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
+    "range": { "startLine": 172, "endLine": 201 },
+    "type": "insight",
+    "title": "Worked Examples: (5,3), (7,5), (11,7)",
+    "content": "Three `example` declarations exhibit the abstract theorems on concrete prime pairs:\n\n• **(p=5, q=3)** in any char-3 field: τ^3 = χ₅(3)·τ. Discharged by `frobenius_step χ hχ ψ (by norm_num)` — `norm_num` certifies the side-condition `5 ≠ 3`.\n• **(p=7, q=5)** in any char-5 field: τ^5 = χ₇(5)·τ. Same shape.\n• **(p=11, q=7)** in ZMod 7: (χ₁₁(-1)·11)^3 = χ₁₁(7). The QR cross-check: 11 ≡ 4 (mod 7) makes (11/7)=1; 11 ≡ 3 (mod 4) makes (-1/11)=-1; QR predicts (11/7)·(7/11) = (-1)^{((11-1)/2)·((7-1)/2)} = (-1)^{5·3} = -1, matching (-1)·(7/11) = (7/11) = ?... resolvable to -1.\n\nFour `private instance factPrime{3,5,7,11}` declarations (lines 172-175) supply the `[Fact p.Prime]` instances that the variable block depends on; `decide` is enough since the primes are concrete numerals.",
+    "mathContext": "QR check tables for the three pairs:\n\\begin{array}{c|c|c|c}\n(p,q) & (p/q) & (q/p) & (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}} \\\\\\\\ \\hline\n(5,3) & (5/3)=(2/3)=-1 & (3/5)=-1 & (-1)^{2\\cdot 1}=1 \\\\\\\\\n(7,5) & (7/5)=(2/5)=-1 & (5/7)=-1 & (-1)^{3\\cdot 2}=1 \\\\\\\\\n(11,7)& (11/7)=(4/7)=1 & (7/11)=-1 & (-1)^{5\\cdot 3}=-1 \\\\\\\\\n\\end{array}\nIn each case $(p/q)(q/p) = (-1)^{\\frac{p-1}{2}\\cdot\\frac{q-1}{2}}$, as QR demands.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete QR verification", "norm_num", "Fact.Prime instances", "Legendre symbol values"],
+    "prerequisites": ["QR statement", "Legendre symbol computation", "decide tactic"]
+  },
+  {
     "id": "ann-pathway",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-02",
     "range": { "startLine": 156, "endLine": 175 },

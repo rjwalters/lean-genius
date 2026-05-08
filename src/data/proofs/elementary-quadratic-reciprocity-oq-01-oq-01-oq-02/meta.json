@@ -112,7 +112,7 @@
     }
   ],
   "overview": {
-    "historicalContext": "The Law of Quadratic Reciprocity was conjectured by Euler (1744) and first proved by Gauss at age 18 (1796). Gauss found six distinct proofs over his lifetime. The seventh proof — using Gauss sums — was sketched by Gauss and completed by Eisenstein in 1844. The key step is τ^q = (q/p)·τ, which follows from the Frobenius automorphism in characteristic q. Mathlib’s algebraic formalization makes this generalization from ℂ to any char-q field explicit.",
+    "historicalContext": "The Law of Quadratic Reciprocity was conjectured by Euler (1744, in his correspondence with Goldbach) and Legendre (1785, in *Recherches d'analyse indéterminée*). Gauss gave the first complete proof at age 18 (1796) using induction on the smaller prime; he was so taken with the result that he called it the *aureum theorema* (\"golden theorem\") and produced six distinct proofs over his lifetime, published from the *Disquisitiones Arithmeticae* (1801) onward. The seventh proof — and the conceptual cornerstone of modern number theory — uses Gauss sums τ = Σχ(a)e^{2πia/p}: the identity τ² = χ(-1)·p (in ℂ) was proved by Gauss in 1811 (`Summatio quarundam serierum singularium`), and the Frobenius step τ^q = χ(q)·τ was first explicitly used by Eisenstein in 1844 to give a streamlined proof. The key conceptual leap, due to Hilbert, Hecke, and Artin in the early 20th century, was reinterpreting the Gauss sum proof inside the cyclotomic field ℚ(ζ_p): the Frobenius element of Gal(ℚ(ζ_p)/ℚ) over q acts on τ as multiplication by χ(q), making QR an instance of Artin reciprocity for the cyclotomic extension. Mathlib's `gaussSum_frob` and `Char.card_pow_card` formalize the algebraic core of this argument — abstracting away from ℂ and from cyclotomic embeddings — so that the same proof works in *any* characteristic-q field, exactly as Eisenstein's original argument did once divorced from the analytic origins. This entry uses these APIs to discharge the four-step pathway with 0 sorries and 0 axioms.",
     "problemStatement": "**Open Question**: Formalize Step 3 of the Gauss sum QR proof: τ^q = χ(q)·τ in any field F of characteristic q, and derive the full QR identity. **Answer**: YES — `MulChar.IsQuadratic.gaussSum_frob` proves Step 3; `Char.card_pow_card` assembles QR. 0 sorries, 0 axioms.",
     "proofStrategy": "**Auxiliary**: q_isUnit_in_ZMod_p (q invertible mod p, needed for reparametrization). **Part I** (frobenius_step): Frobenius φ: x↦x^q is a ring hom in char q; τ^q = Σ_a χ(a)ψ(qa) = χ(q)·τ (reparametrize b=qa). **Part II**: Combine with τ²=χ(-1)·p via Char.card_pow_char_pow. **Part III**: Full QR in ZMod q via Char.card_pow_card.",
     "keyInsights": [
@@ -120,7 +120,9 @@
       "**χ^q = χ in char q**: Since χ(a) ∈ {0,±1} and (-1)^q = -1 in char q, χ(a)^q = χ(a) — quadratic characters are fixed by Frobenius.",
       "**Reparametrization by q is a bijection**: b=qa is a bijection on ZMod p (q a unit mod p), allowing Σ_a χ(a)ψ(qa) = χ(q)·Σ_b χ(b)ψ(b) by change of variables.",
       "**Euler’s criterion encodes QR**: The identity (χ(-1)·p)^{(q-1)/2} = χ(q) in ZMod q encodes (-1/p)·(p/q) = (q/p), i.e., QR, via Euler’s criterion a^{(q-1)/2} ≡ (a/q) mod q.",
-      "**Algebraic generality**: The classical proof uses ψ(a) = e^{2πia/p} in ℂ. Mathlib’s MulChar/AddChar typeclasses generalize to any field F of characteristic q — the same argument works with no changes."
+      "**Algebraic generality**: The classical proof uses ψ(a) = e^{2πia/p} in ℂ. Mathlib’s MulChar/AddChar typeclasses generalize to any field F of characteristic q — the same argument works with no changes.",
+      "**Class-field-theoretic interpretation**: τ^q = χ(q)·τ is a shadow of Artin reciprocity for the cyclotomic field ℚ(ζ_p) — the Frobenius element Frob_q ∈ Gal(ℚ(ζ_p)/ℚ) acts on the Gauss sum by χ(q), exactly as it acts on χ as a Hecke character. Reading QR through this lens (Hilbert, Hecke, Artin) is what made Gauss's seventh proof the prototype for higher reciprocity laws and ultimately the Langlands program.",
+      "**Why characteristic q matters operationally**: Working in a field F of characteristic q rather than in ℤ/qℤ embedded in ℂ lets the freshman's dream (a+b)^q = a^q + b^q hold *strictly* (not just modulo q), so τ^q can be computed term-by-term without auxiliary congruence bookkeeping. Mathlib's `CharP F q` typeclass packages this so the proof is genuinely a one-liner once the right API exists."
     ],
     "prerequisites": [
       "Multiplicative characters (MulChar): ZMod p → F, Legendre symbol as algebra",
@@ -136,25 +138,31 @@
     "openQuestions": [
       "Can the four steps be assembled into a single self-contained proof of the Law of Quadratic Reciprocity without referencing OQ01OQ01OQ01?",
       "Extend to cubic reciprocity: formalize τ^q = J(χ,χ)·τ for cubic characters using Jacobi sums",
-      "Can the Gauss sum approach yield QR for function fields 𝔽_q[t]?"
+      "Can the Gauss sum approach yield QR for function fields 𝔽_q[t]?",
+      "Can `MulChar.IsQuadratic.gaussSum_frob` be repackaged as the Frobenius action on a cyclotomic Gauss sum, exposing the Artin-reciprocity content as an explicit Lean theorem `Frob_q · τ = χ(q) · τ` over Gal(ℚ(ζ_p)/ℚ)?",
+      "Is there a Mathlib-level statement of QR for arbitrary global fields (number fields and function fields) that the Gauss sum proof can be adapted to discharge?"
     ]
   },
   "crossReferences": [
     {
       "id": "elementary-quadratic-reciprocity-oq-01-oq-01",
-      "relationship": "parent — outlines the full four-step Gauss sum pathway for QR"
+      "title": "Gauss Sum QR Pathway (Four-Step Outline)",
+      "relationship": "parent — outlines the full four-step Gauss sum pathway for QR; this entry discharges Step 3 (τ^q = χ(q)·τ)."
     },
     {
       "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01",
-      "relationship": "sibling — proves Step 2 (τ² = χ(-1)·p) which this file's qr_via_frobenius assumes"
+      "title": "Gauss Sum Squared: τ² = χ(-1)·p",
+      "relationship": "sibling — proves Step 2 (τ² = χ(-1)·p) which this file's qr_via_frobenius takes as a hypothesis."
     },
     {
       "id": "elementary-quadratic-reciprocity",
-      "relationship": "root — the Eisenstein lattice-point proof of QR"
+      "title": "Quadratic Reciprocity (Eisenstein Lattice-Point Proof)",
+      "relationship": "root — the Eisenstein lattice-point proof of QR; semantically distinct path that the Gauss-sum argument formalized here can replace once Step 4 is assembled."
     },
     {
       "id": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-03",
-      "relationship": "sibling — extends to higher-power reciprocity using Jacobi sums"
+      "title": "Higher-Power Reciprocity via Jacobi Sums",
+      "relationship": "sibling — extends to higher-power reciprocity using Jacobi sums; the analogue τ^q = J(χ,χ)·τ for cubic χ is the natural successor."
     }
   ],
   "sorries": 0,
