@@ -98,22 +98,22 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   -- quadCharC p = quadraticChar.ringHomComp f, and f = Int.cast is injective
   -- If quadCharC p = 1, then f ∘ quadraticChar = 1, so quadraticChar = 1 by injectivity
   ext a
-  have ha := congr_fun (congr_arg MulChar.toFun heq) a
-  -- ha : quadCharC p a = (1 : MulChar (ZMod p) ℂ) a
-  -- i.e., Int.cast (quadraticChar (ZMod p) a) = (1 : MulChar (ZMod p) ℂ) a
-  have happ : quadCharC p a = (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) := rfl
-  rw [happ] at ha
-  -- ha : Int.cast (quadraticChar (ZMod p) a) = (1 : MulChar (ZMod p) ℂ) a
-  -- (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 = Int.cast ((1 : MulChar (ZMod p) ℤ) a)
-  have h1 : (1 : MulChar (ZMod p) ℤ) a = if IsUnit a then 1 else 0 := by
-    simp [MulChar.one_apply]
-  have h1C : (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 := by
-    simp [MulChar.one_apply]
-  rw [h1]
-  apply Int.cast_injective
-  simp only [Int.cast_ite, Int.cast_one, Int.cast_zero]
-  rw [← h1C]
-  exact ha
+  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
+    show quadCharC p a = _; rw [heq]
+  rw [MulChar.one_apply] at ha
+  rw [MulChar.one_apply]
+  rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
+  · rw [hv] at ha; norm_cast at ha
+    split_ifs at ha ⊢ with hu
+    · exact absurd ha one_ne_zero.symm
+    · exact hv
+  · rw [hv] at ha; norm_cast at ha
+    split_ifs at ha ⊢ with hu
+    · exact hv
+    · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
+  · rw [hv] at ha; push_cast at ha
+    exfalso
+    split_ifs at ha with hu <;> norm_num at ha
 
 -- ============================================================================
 -- The Main Theorem
