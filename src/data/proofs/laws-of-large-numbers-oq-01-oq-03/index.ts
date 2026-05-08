@@ -1,6 +1,7 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import sourceRaw from '../../../../proofs/Proofs/LawsOfLargeNumbersOQ01OQ03.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -14,31 +15,24 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/LawsOfLargeNumbersOQ01OQ03.lean?raw')
-
-export const proof: Proof = {
+export const lawsOfLargeNumbersOQ01OQ03Proof: Proof = {
   id: meta.id,
   title: meta.title,
   slug: meta.slug,
   description: meta.description,
   meta: meta.meta,
-  sections: [],
-  source: '',
+  sections: meta.sections ?? [],
+  source: sourceRaw,
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,
 }
 
-export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const lawsOfLargeNumbersOQ01OQ03Annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
-export const proofData: ProofData = {
-  proof,
-  annotations,
+export const lawsOfLargeNumbersOQ01OQ03Data: ProofData = {
+  proof: lawsOfLargeNumbersOQ01OQ03Proof,
+  annotations: lawsOfLargeNumbersOQ01OQ03Annotations,
 }
 
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
-}
-
-export default proofData
+export default lawsOfLargeNumbersOQ01OQ03Data
