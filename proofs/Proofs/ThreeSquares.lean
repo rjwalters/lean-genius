@@ -1386,6 +1386,129 @@ def dirichletSublattice (p r : ℤ) : Submodule ℤ (Fin 3 → ℤ) where
 @[simp] private lemma mem_dirichletSublattice {p r : ℤ} {v : Fin 3 → ℤ} :
     v ∈ dirichletSublattice p r ↔ IsInDirichletSublattice p r v := Iff.rfl
 
+/-! ### S10C: Real-side lift of the Dirichlet sublattice basis
+
+The integer Dirichlet sublattice (S10B) has the column-basis
+`(p, 0, 0), (r, 1, 0), (0, 0, p)` in `ℤ³`, with integer-side determinant `p²`.
+To apply Mathlib's geometry-of-numbers theorem
+(`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`),
+we need the same lattice expressed as a `Submodule ℤ (Fin 3 → ℝ)` whose covolume
+can be computed via `ZSpan.volume_fundamentalDomain`. This S10C section provides:
+
+1. The **real-side basis matrix** with entries cast to `ℝ`, and its determinant
+   `(p : ℝ)²` (purely arithmetic, mirrors S10B `dirichletSublatticeBasisMatrix_det`).
+2. The **real basis vectors** (rows of the real matrix) viewed as a function
+   `Fin 3 → (Fin 3 → ℝ)`.
+3. The **real ℤ-Submodule** `dirichletSublatticeReal p r : Submodule ℤ (Fin 3 → ℝ)`
+   defined as `Submodule.span ℤ (Set.range basisVecs)`.
+4. The **cast bridge**: any integer point of `dirichletSublattice p r` casts
+   coordinatewise to an element of `dirichletSublatticeReal p r` (via the explicit
+   ℤ-linear combination given by the divisibility witnesses). This is the integer
+   side of the eventual S10D `Module.Basis` construction.
+
+S10C is *infrastructure* — purely arithmetic content (no measure theory, no
+geometry of numbers); the construction of a `Module.Basis` and the application
+of `ZSpan.volume_fundamentalDomain` to obtain `volume(F) = (p : ℝ)²` are deferred
+to S10D. -/
+
+/-- **S10C (real lift of S10B basis matrix)**: The real-valued matrix whose
+rows are the basis vectors `(p, 0, 0), (r, 1, 0), (0, 0, p)` of the Dirichlet
+sublattice (viewed in `ℝ³`). This is the transpose of S10B's
+`dirichletSublatticeBasisMatrix` (which has these vectors as *columns*); the
+transpose matters for the `Matrix.of` row convention used by
+`ZSpan.volume_fundamentalDomain` downstream. The determinant is invariant under
+transpose, so both versions give `p²`. -/
+noncomputable def dirichletSublatticeRealBasisMatrix (p r : ℤ) :
+    Matrix (Fin 3) (Fin 3) ℝ :=
+  !![(p : ℝ), 0, 0;
+     (r : ℝ), 1, 0;
+     0, 0, (p : ℝ)]
+
+/-- **S10C (covolume kernel — real side)**: The determinant of the real-valued
+Dirichlet sublattice basis matrix is `(p : ℝ)²`. Direct expansion via
+`Matrix.det_fin_three` (lower triangular with diagonal `(p, 1, p)`). -/
+private lemma dirichletSublatticeRealBasisMatrix_det (p r : ℤ) :
+    (dirichletSublatticeRealBasisMatrix p r).det = (p : ℝ) ^ 2 := by
+  simp [dirichletSublatticeRealBasisMatrix, Matrix.det_fin_three]
+  ring
+
+/-- **S10C (real basis vectors)**: The Dirichlet sublattice basis vectors with
+real coordinates, expressed as a function `Fin 3 → (Fin 3 → ℝ)`. The `i`-th
+basis vector is row `i` of `dirichletSublatticeRealBasisMatrix p r`. -/
+noncomputable def dirichletSublatticeRealBasisVec (p r : ℤ) (i : Fin 3) :
+    Fin 3 → ℝ :=
+  dirichletSublatticeRealBasisMatrix p r i
+
+/-- **S10C (real ℤ-Submodule lift)**: The real ℤ-submodule of `Fin 3 → ℝ`
+spanned by the three basis vectors. Any integer point of the integer
+`dirichletSublattice p r` casts (coordinate-wise) to an element of this
+submodule (see `cast_int_mem_dirichletSublatticeReal` below). -/
+noncomputable def dirichletSublatticeReal (p r : ℤ) : Submodule ℤ (Fin 3 → ℝ) :=
+  Submodule.span ℤ (Set.range (dirichletSublatticeRealBasisVec p r))
+
+/-- **S10C (cast bridge — integer side)**: Any integer point `v` of the integer
+`dirichletSublattice p r` casts coordinate-wise to an element of
+`dirichletSublatticeReal p r`.
+
+The cast is realised as the explicit ℤ-linear combination
+`a · (p, 0, 0) + (v 1) · (r, 1, 0) + b · (0, 0, p)`, where the witnesses
+`a, b : ℤ` come from `p ∣ (v 0 − r · v 1)` and `p ∣ v 2` (the integer-side
+membership predicate `IsInDirichletSublattice`). -/
+private lemma cast_int_mem_dirichletSublatticeReal
+    {p r : ℤ} {v : Fin 3 → ℤ}
+    (hv : IsInDirichletSublattice p r v) :
+    (fun i => ((v i : ℤ) : ℝ)) ∈ dirichletSublatticeReal p r := by
+  obtain ⟨a, ha⟩ : (p : ℤ) ∣ v 0 - r * v 1 := hv.1
+  obtain ⟨b, hb⟩ : (p : ℤ) ∣ v 2 := hv.2
+  -- Real-valued versions of the witness equations.
+  have ha_real : (v 0 : ℝ) = (a : ℝ) * (p : ℝ) + (v 1 : ℝ) * (r : ℝ) := by
+    have hcast : ((v 0 - r * v 1 : ℤ) : ℝ) = ((p * a : ℤ) : ℝ) := by
+      exact_mod_cast ha
+    push_cast at hcast
+    linarith
+  have hb_real : (v 2 : ℝ) = (b : ℝ) * (p : ℝ) := by
+    have hcast : ((v 2 : ℤ) : ℝ) = ((p * b : ℤ) : ℝ) := by
+      exact_mod_cast hb
+    push_cast at hcast
+    linarith
+  -- Build membership directly from the three basis-vector memberships and closure.
+  have hmem0 : dirichletSublatticeRealBasisVec p r 0 ∈ dirichletSublatticeReal p r := by
+    rw [dirichletSublatticeReal]; exact Submodule.subset_span ⟨0, rfl⟩
+  have hmem1 : dirichletSublatticeRealBasisVec p r 1 ∈ dirichletSublatticeReal p r := by
+    rw [dirichletSublatticeReal]; exact Submodule.subset_span ⟨1, rfl⟩
+  have hmem2 : dirichletSublatticeRealBasisVec p r 2 ∈ dirichletSublatticeReal p r := by
+    rw [dirichletSublatticeReal]; exact Submodule.subset_span ⟨2, rfl⟩
+  have hsum :
+      (a • dirichletSublatticeRealBasisVec p r 0 +
+        (v 1 : ℤ) • dirichletSublatticeRealBasisVec p r 1 +
+        b • dirichletSublatticeRealBasisVec p r 2) ∈ dirichletSublatticeReal p r :=
+    Submodule.add_mem _
+      (Submodule.add_mem _
+        (Submodule.smul_mem _ a hmem0)
+        (Submodule.smul_mem _ (v 1) hmem1))
+      (Submodule.smul_mem _ b hmem2)
+  -- Show the cast vector equals the linear combination, coordinate by coordinate.
+  have hkey :
+      (fun i => ((v i : ℤ) : ℝ)) =
+        a • dirichletSublatticeRealBasisVec p r 0 +
+          (v 1 : ℤ) • dirichletSublatticeRealBasisVec p r 1 +
+          b • dirichletSublatticeRealBasisVec p r 2 := by
+    funext j
+    fin_cases j
+    · -- j = 0: cast(v 0) = a * p + (v 1) * r + b * 0
+      simp [dirichletSublatticeRealBasisVec, dirichletSublatticeRealBasisMatrix,
+            Pi.add_apply, Pi.smul_apply, zsmul_eq_mul]
+      linarith
+    · -- j = 1: cast(v 1) = a * 0 + (v 1) * 1 + b * 0
+      simp [dirichletSublatticeRealBasisVec, dirichletSublatticeRealBasisMatrix,
+            Pi.add_apply, Pi.smul_apply, zsmul_eq_mul]
+    · -- j = 2: cast(v 2) = a * 0 + (v 1) * 0 + b * p
+      simp [dirichletSublatticeRealBasisVec, dirichletSublatticeRealBasisMatrix,
+            Pi.add_apply, Pi.smul_apply, zsmul_eq_mul]
+      linarith
+  rw [hkey]
+  exact hsum
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
