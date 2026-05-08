@@ -448,6 +448,49 @@ theorem blichfeldt_four_points {n : ℕ} [NeZero n]
   · intro heq; exact absurd (hinj heq) (by decide)
   · intro heq; exact absurd (hinj heq) (by decide)
 
+/-- **Blichfeldt's General Theorem in Finset form**: a measurable set S ⊆ ℝⁿ
+with `volume S > k` contains a `Finset` of cardinality `k + 1` whose pairwise
+differences all lie in `stdLattice n`.
+
+This is a direct transport from the indexed `Fin (k+1) → ℝⁿ` family form
+`blichfeldt_general` to a Finset-shaped statement, parallel to how
+`blichfeldt_three_points` (k = 2) and `blichfeldt_four_points` (k = 3)
+extract concrete-named points. Where the concrete-points corollaries scale
+linearly in C(k+1, 2) inequality goals (3 for k = 2, 6 for k = 3, …),
+the Finset form is `k`-uniform: a single statement covers all `k ≥ 0`
+without per-arity case explosion.
+
+Pedagogically this expresses the pigeonhole content of Blichfeldt directly
+in coset language: ℤⁿ partitions ℝⁿ into countably many cosets, and the
+finset returned here is a `(k + 1)`-element subset of S all sharing a
+single ℤⁿ-coset (since pairwise differences lie in `stdLattice n`). The
+"abstract finset" form is the natural one for downstream applications that
+prefer Finset reasoning over the indexed form (e.g. counting / pigeonhole
+arguments where `Finset.card` is the working currency rather than
+`Fintype.card (Fin (k+1))`).
+
+No new Mathlib API beyond `blichfeldt_general` itself: the proof is a
+two-line transport via `Finset.image` of the indexed family, using only
+`Finset.card_image_of_injective` and `Finset.mem_image`. -/
+theorem blichfeldt_general_finset {n : ℕ} [NeZero n] (k : ℕ)
+    (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
+    (h_vol : (k : ENNReal) < volume s) :
+    ∃ F : Finset (Fin n → ℝ),
+      F.card = k + 1 ∧
+      (↑F : Set (Fin n → ℝ)) ⊆ s ∧
+      ∀ x ∈ F, ∀ y ∈ F, x - y ∈ (stdLattice n : Set (Fin n → ℝ)) := by
+  obtain ⟨pts, hinj, hmem, hcong⟩ := blichfeldt_general k s h_meas h_vol
+  refine ⟨(Finset.univ : Finset (Fin (k+1))).image pts, ?_, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]
+  · intro x hx
+    rw [Finset.mem_coe] at hx
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+    exact hmem i
+  · intro x hx y hy
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+    obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hy
+    exact hcong i j
+
 -- ============================================================
 -- PART 4: Minkowski as a Corollary
 -- ============================================================
@@ -559,4 +602,5 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.blichfeldt_general
 #check BlichfeldtTheorem.blichfeldt_three_points
 #check BlichfeldtTheorem.blichfeldt_four_points
+#check BlichfeldtTheorem.blichfeldt_general_finset
 #check BlichfeldtTheorem.minkowski_from_blichfeldt

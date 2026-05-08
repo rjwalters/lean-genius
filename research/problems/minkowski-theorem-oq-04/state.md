@@ -3,9 +3,76 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-05-09T01:50:00Z
+**Since**: 2026-05-09T02:30:00Z
 **Last Updated**: 2026-05-09
-**Iteration**: 16 (corollary chain extension)
+**Iteration**: 17 (Finset transport of general theorem)
+
+## Iteration 17 (researcher-13, 2026-05-09)
+
+**Focus**: S17 — `blichfeldt_general_finset`, a uniform Finset-form
+restatement of `blichfeldt_general` parallel to the indexed family form.
+
+### Outcome
+
+One small structural addition (build-pending convention, like S13–S16):
+
+* `blichfeldt_general_finset` (40 lines including docstring): vol(s) > k
+  yields a `Finset (Fin n → ℝ)` of cardinality `k + 1` with `↑F ⊆ s` and
+  all pairwise differences in `stdLattice n`. Proved as a 9-line transport
+  from `blichfeldt_general k` via `Finset.univ.image pts`, using only
+  `Finset.card_image_of_injective`, `Finset.card_univ`, `Fintype.card_fin`,
+  `Finset.mem_coe`, and `Finset.mem_image`.
+
+### Why this scope
+
+S16's "Next Action" listed `blichfeldt_general_pairwise` (~10 lines) as a
+candidate. The Finset form is the more uniform alternative: where the
+concrete-points corollaries (`blichfeldt_three_points` at k = 2,
+`blichfeldt_four_points` at k = 3) scale with C(k+1, 2) inequality goals
+(3 → 6 → 10 → …) and one `(by decide)` discharge per goal, the Finset
+form is `k`-uniform and obviates per-arity case explosion. A single
+statement covers all k ≥ 0 with a fixed-size proof.
+
+Pedagogical value: the Finset shape makes the lattice-coset content of
+Blichfeldt's pigeonhole explicit. The returned finset is exactly a
+(k + 1)-element subset of S all sharing a single ℤⁿ-coset, which is the
+natural input for downstream counting / pigeonhole arguments where
+`Finset.card` is the working currency.
+
+API stability: the proof uses only well-established Mathlib basics
+(`Finset.image`, `Finset.card_image_of_injective`, `Finset.mem_image`,
+`Finset.mem_coe`, `Fintype.card_fin`), all stable across Mathlib versions
+and present verbatim in v4.26.0. Zero new imports.
+
+### Counts (build-pending convention)
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **562 → 606** lines (+44):
+  * +43 lines for `blichfeldt_general_finset` body + docstring.
+  * +1 line: `#check BlichfeldtTheorem.blichfeldt_general_finset` in the
+    Export check section.
+* `theoremCount`: 9 → 10 (+1; mechanic to sync).
+* `axiomCount`: 0 (unchanged).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, following the S15/S16
+convention to avoid line-conflict with mechanic sync PRs. The next
+mechanic pass naturally bumps to lineCount 606 / theoremCount 10 after
+this PR and the post-S16 mechanic sync both merge.
+
+### Next Action
+
+**Session 18**: any of:
+* `minkowski_general_k` (the still-deferred harder extension from S16's
+  next-action list; ~50–80 lines): vol(S) > k·2ⁿ for convex symmetric S
+  yields 2k nonzero ±-symmetric lattice points in S. Requires careful
+  reasoning about which pairwise differences land in shared vs distinct
+  ℤⁿ-cosets.
+* `blichfeldt_general_pairwise` (~10 lines): explicit-nonzero-diffs
+  wrapper of `blichfeldt_general` via `sub_eq_zero` + `Function.Injective`.
+* Once Docker CI verifies S13–S17, Mechanic/Auditor flips
+  `meta.status: axiomatized → verified`, `meta.badge: axiom → original`.
+
+----
 
 ## Iteration 16 (researcher-5, 2026-05-09)
 
