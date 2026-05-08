@@ -6,6 +6,78 @@ coordinate of `(X₁, …, Xₖ) ~ Multinomial(n, p₁, …, pₖ)` as `n → �
 
 ---
 
+## Session 2026-05-08 (Session 7, researcher-8) — ACT (Phase-4 prep)
+
+**Mode**: REVISIT (RICH knowledge score 41; prior sessions completed
+Phase-3 reduction + Phase-4 opaque elimination).
+**Outcome**: Added two boundary-saturation lemmas to complete the
+four-corner characterization of `binomialCDF` for the Portmanteau
+bridge. Axiom count unchanged at 1; theoremCount 10 → 12.
+
+### What was added
+
+```lean
+theorem binomialCDF_zero (n : ℕ) (p : ℝ) :
+    binomialCDF n p 0 = (1 - p) ^ n
+```
+Isolates the j = 0 term via `Finset.sum_eq_single`. Every j ≥ 1 has
+`(j : ℝ) ≥ 1 > 0`, so the if-guard fails and the term is 0; only
+`C(n, 0) · p^0 · (1 − p)^n = (1 − p)^n` survives.
+
+```lean
+theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    {x : ℝ} (hx : (n : ℝ) ≤ x) : binomialCDF n p x = 1
+```
+For x ≥ n, every j ∈ {0, …, n} has `(j : ℝ) ≤ (n : ℝ) ≤ x`, so all
+if-guards collapse to the true branch. The sum then equals the full
+binomial expansion `(p + (1 − p))^n = 1` via `add_pow`.
+
+### Why these matter for Phase-4
+
+The Portmanteau bridge (the heavy lift that would discharge
+`binomial_clt_pointwise`) relies on the standardised binomial CDF
+matching the CDF of its underlying probability measure on ℝ. CDFs of
+probability measures satisfy four boundary conditions:
+
+| Side | Standard normal Φ | binomialCDF n p (proved here) |
+|------|-------------------|-------------------------------|
+| Left limit | Φ(−∞) = 0 | `binomialCDF_neg`: x < 0 ⇒ CDF = 0 |
+| Right limit | Φ(+∞) = 1 | `binomialCDF_eq_one`: x ≥ n ⇒ CDF = 1 |
+| Range | 0 ≤ Φ(x) ≤ 1 | `binomialCDF_zero_le`, `binomialCDF_le_one` |
+| Monotone | Φ is monotone | `binomialCDF_mono` |
+
+The two new lemmas (`binomialCDF_zero` and `binomialCDF_eq_one`) plus
+the existing four are exactly the algebraic data the Portmanteau
+bridge consumes. The discrete `binomialCDF` is now characterised at
+the same level of detail as `standardNormalCDF`, so all that's left
+is the *limit* (de Moivre-Laplace) — which is the axiom.
+
+### Next session — `Continuous standardNormalCDF`
+
+Recommended approach: DCT on the indicator-rewritten form
+`∫ t in Set.Iic x, f = ∫ t, (Set.Iic x).indicator f t`. Sequence
+`x_n → x` ⇒ indicator converges pointwise except at the single point
+`t = x` (Lebesgue measure 0); bounded uniformly by f itself; f is
+integrable; DCT closes.
+
+Once `Continuous standardNormalCDF` is proved, Session 9 can bridge to
+`ProbabilityTheory.iid_central_limit_theorem` via Portmanteau —
+heavy but the LAST step.
+
+### Honest reporting
+
+- Build verification not run locally: worktree's `.lake` symlink trap
+  forces a fresh Mathlib clone (~25-30 min). The two new proofs use
+  only patterns already typechecked in this file (`Finset.sum_eq_single`,
+  `Finset.sum_congr rfl`, `add_pow`, `if_pos`/`if_neg`,
+  `Nat.pos_of_ne_zero`, `exact_mod_cast`). High confidence in
+  typecheck; CI is the ground truth.
+- This session is *infrastructure*, not *axiom elimination*. AxiomCount
+  stays at 1. Real progress measure: theorem count 10 → 12, line count
+  369 → 429.
+
+---
+
 ## Session 2026-05-07 (Session 1, researcher-8) — OBSERVE → ORIENT
 
 **Mode**: FRESH (no prior research dir; the problem JSON exists)
