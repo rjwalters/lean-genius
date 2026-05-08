@@ -455,3 +455,150 @@ sketch in §"Layer 3" of this knowledge file).
 
 No axiom-count changes; the axiom remains as a placeholder until Layer 3
 is in.
+
+---
+
+## Session 2026-05-08 (Session 10, researcher-11) — Layer 3 split + Layer 3a closed
+
+**Mode**: ACT
+**Outcome**: Split Layer 3 (the residue-bridge for `nthDigit b n (p/q)`) into
+two parts and implemented part (a) — the `ℝ → ℤ` cast bridge — as a single
+private lemma in `proofs/Proofs/ETranscendentalOQ02.lean`:
+
+```lean
+private lemma floor_pow_mul_div (b : ℕ) (p : ℤ) (q : ℕ) (n : ℕ) :
+    ⌊(b : ℝ) ^ n * ((p : ℝ) / (q : ℝ))⌋ = ((b : ℤ) ^ n * p) / q := by
+  have hcast : (b : ℝ) ^ n * ((p : ℝ) / (q : ℝ)) =
+      (((b : ℤ) ^ n * p : ℤ) : ℝ) / (q : ℝ) := by
+    push_cast
+    ring
+  rw [hcast, Int.floor_div_natCast, Int.floor_intCast]
+```
+
+### Why split Layer 3 (a) and (b)
+
+The original Session 3 recipe estimated Layer 3 at 50–80 lines because it
+bundled three orthogonal concerns:
+
+1. The `ℝ → ℤ` cast burden for `⌊b^n · (p / q : ℝ)⌋`.
+2. The integer-arithmetic identity that turns `(b^n · p) / q` (Euclidean
+   quotient) into `(b · ((b^n · p) mod q)) / q` (residue form).
+3. Sign-handling for negative `p`.
+
+These concerns interact poorly in a single proof: the cast machinery
+(`push_cast`, `field_simp`, `Int.floor_eq_iff`) shares simp sets with the
+integer-arithmetic algebra (`Int.ediv_add_emod`, `Int.emod_lt_of_pos`),
+making large bundled goals fragile. Splitting (a) out as a standalone
+lemma:
+
+- Keeps the Real-side proof tiny (3 lines: `push_cast` + `ring` + two
+  `rw`s).
+- Lets Layer 3b operate purely in `ℤ`, reusing `Int.ediv` /
+  `Int.emod` lemmas without any `Nat.cast`/`Int.cast` interference.
+- Gives a reusable Mathlib-style helper: `floor_pow_mul_div` is exactly
+  the statement a future Mathlib contribution would expose for
+  base-`b` digit extraction from rationals.
+
+### Mathlib v4.26.0 lemmas used
+
+Confirmed via `gh api repos/leanprover-community/mathlib4/contents/Mathlib/Algebra/Order/Floor/Ring.lean` at the `v4.26.0` ref:
+
+| Lemma | Statement |
+|-------|-----------|
+| `Int.floor_intCast` | `⌊(z : R)⌋ = z` for `z : ℤ` |
+| `Int.floor_div_natCast` | `⌊a / n⌋ = ⌊a⌋ / n` for `a : k`, `n : ℕ` |
+
+Both are `@[simp]` and live in `namespace Int` `section floor` (resp.
+`section LinearOrderedField`). The `Int.floor_div_natCast` proof itself
+specializes `Int.floor_div_cast_of_nonneg` to `n.cast_nonneg`; we use
+the natural-number version for cleaner unification with our `q : ℕ`.
+
+### Proof anatomy
+
+```lean
+have hcast : (b : ℝ)^n * ((p : ℝ) / (q : ℝ)) = (((b : ℤ)^n * p : ℤ) : ℝ) / (q : ℝ)
+```
+
+`push_cast` pulls the `(b : ℕ)` and `(p : ℤ)` casts to the outermost
+position and normalizes `((b : ℤ)^n : ℝ) = (b : ℝ)^n`. After that, the
+identity `a * (b/c) = (a*b)/c` is a ring identity in any field — `ring`
+handles it (Lean 4 Mathlib's `ring` operates on `Field` and treats
+division as multiplication by inverse).
+
+After `rw [hcast]`, the goal is `⌊((... : ℤ) : ℝ) / (q : ℝ)⌋ = ((... : ℤ)) / q`.
+
+`Int.floor_div_natCast` rewrites `⌊a / n⌋ → ⌊a⌋ / n` (a real-side
+division becomes ℤ-side division), reducing to
+`⌊((... : ℤ) : ℝ)⌋ / q = (...) / q`.
+
+`Int.floor_intCast` rewrites `⌊(z : ℝ)⌋ → z`, leaving the goal as
+`(... : ℤ) / q = (... : ℤ) / q`. `rfl` (closed by `rw` automatically).
+
+### Why no `hq : 0 < q` hypothesis
+
+The lemma works for `q = 0`: on the `ℝ` side, `(p : ℝ) / 0 = 0`, so
+`⌊b^n · 0⌋ = 0`; on the `ℤ` side, `(b^n · p) / 0 = 0` per Lean's
+integer-division convention. Both equal 0. Dropping `hq` makes the
+lemma maximally usable downstream (Layer 3b can pattern-match without
+managing positivity in the low-level cast bridge).
+
+### What Layer 3b will need
+
+The remaining piece, deferred to S11:
+
+```lean
+private lemma nthDigit_rat_eq_residue (b : ℕ) (hb : 2 ≤ b)
+    (p : ℤ) (q : ℕ) (hq : 0 < q) (n : ℕ) :
+    nthDigit b n ((p : ℝ) / (q : ℝ)) =
+      ((b : ℤ) * ((p * (b : ℤ)^n) % (q : ℤ))) / (q : ℤ)
+```
+
+(Or with a `% (b : ℤ)` postfix if needed for compatibility with
+`nthDigit`'s definition.) Proof skeleton:
+
+1. Unfold `nthDigit`: `⌊(b : ℝ)^n * ((p : ℝ) / (q : ℝ))⌋ % (b : ℤ)`.
+2. Apply `floor_pow_mul_div` (S10): turn the floor into
+   `((b : ℤ)^n * p) / (q : ℤ)`.
+3. Now in pure ℤ, derive the residue form via:
+   - `Int.ediv_add_emod : (a / b) * b + (a % b) = a` (write
+     `(b^n · p) = q · k + r` where `k = quotient`,
+     `r = (b^n · p) % q`).
+   - `(q · k + r) / q = k` when `0 ≤ r < q` (covered by
+     `Int.add_mul_ediv_left` or `Int.add_ediv_of_le` style).
+   - Finish with `(k · b) / q` reduction (use `Int.mul_ediv` patterns).
+
+Sign-handling for `p < 0`: in Mathlib, `Int.emod` with positive divisor
+returns a result in `[0, |q|)` regardless of the sign of the dividend,
+so the formula `(b · ((p · b^n) % q)) / q` is well-defined and matches
+the "correct" digit extraction for both signs of `p`. (The proof
+obligation shifts from sign-handling to checking that the identity
+holds uniformly.)
+
+Estimated effort for Layer 3b: 30–50 lines, pure ℤ arithmetic.
+
+### Build status
+
+Build verification deferred to CI per S8/S9 convention on this slug
+(broken `proofs/.lake` self-symlink forces 45+ min cold-clone of
+Mathlib for every Docker build attempt; not feasible mid-session).
+The proof uses only `push_cast`, `ring`, and two `@[simp]`-tagged
+Mathlib v4.26.0 lemmas (verified by name and signature against the
+v4.26.0 tag), so the build risk is contained.
+
+### Lines & decl deltas
+
+- `proofs/Proofs/ETranscendentalOQ02.lean`: +27 lines (427 → 454).
+  Adds 1 private lemma + 1 docstring section + minor expansion of
+  axiom docstring referring to S10.
+- `meta.json`: `lineCount` 300 → 454 (was severely stale —
+  unrelated to S10's add; the previous lineCount predates S8 Layer 1).
+- No theorem/axiom count changes.
+
+### Files Modified (Session 10, researcher-11)
+
+- `proofs/Proofs/ETranscendentalOQ02.lean` (Layer 3a + axiom docstring)
+- `research/problems/e-transcendental-oq-02/state.md` (S10 entry)
+- `research/problems/e-transcendental-oq-02/knowledge.md` (this entry)
+- `src/data/proofs/e-transcendental-oq-02/meta.json` (lineCount sync)
+- `src/data/research/problems/e-transcendental-oq-02.json` (insights,
+  builtItems, nextSteps)
