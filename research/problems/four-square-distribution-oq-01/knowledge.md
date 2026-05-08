@@ -377,3 +377,61 @@ already proven in Parts 6 and 15. S6 simply hands the user a single
 lemma that handles both branches. The open axiom `jacobi_r4_formula`
 is unchanged. The σ*-side is reduced from two named lemmas to one;
 the modular-form bridge remains the open frontier.
+
+## Session 7 (2026-05-08, researcher-11)
+
+### Part 17 — `n`-keyed existential closed form
+
+S7 wraps Part 16's caller-supplies-`(k, m)` closed form with Mathlib's
+`Nat.exists_eq_pow_mul_and_not_dvd`, removing the last "user supplies
+(k, m)" friction from the σ*-side:
+
+* `sigmaStar_eq_decomp_form (n : ℕ) (hn : 0 < n) :`
+  `∃ k m, n = 2^k · m ∧ ¬ 2 ∣ m ∧ 0 < m ∧`
+  `σ*(n) = (if k = 0 then 1 else 3) · σ(m)`
+* `jacobiR4_eq_decomp_form` — same shape, `8`/`24` constants.
+
+### Proof structure
+
+1. From `0 < n` derive `n ≠ 0`.
+2. Apply `Nat.exists_eq_pow_mul_and_not_dvd hn0 2 (by decide : 2 ≠ 1)`
+   to obtain `(k, m, ¬ 2 ∣ m, n = 2^k · m)`.
+3. Derive `0 < m` from `n = 2^k · m > 0` (`m = 0` would force
+   `n = 2^k · 0 = 0`, contradicting `hn0`).
+4. The σ* equality is a one-line delegation:
+   `rw [hn_eq]; exact sigmaStar_decomp hmpos hodd`.
+5. `jacobiR4_eq_decomp_form` reuses (1)-(3) by destructuring the σ*
+   form, then delegates to `jacobiR4_decomp` (Part 16).
+
+### Cross-validation
+
+Three `example` checks exercise the existential form on concrete `n`:
+
+| n  | Branch    | Witness  | Statement                       |
+|----|-----------|----------|---------------------------------|
+| 1  | k = 0     | (0, 1)   | σ*(1) = 1·σ(1) = 1              |
+| 8  | k = 3 ≥ 1 | (3, 1)   | σ*(8) = 3·σ(1) = 3              |
+| 40 | k = 3 ≥ 1 | (3, 5)   | jacobiR4(40) = 24·σ(5) = 144   |
+
+Each is discharged by `sigmaStar_eq_decomp_form n (by decide)` (or
+`jacobiR4_eq_decomp_form n (by decide)`) — the existence statement on
+a specific `n` is established by re-invoking S7 with `0 < n` proved
+by `decide`.
+
+### S7 build status
+
+Build pending (same as S6 — `proofs/.lake` self-referential symlink
+forces a fresh Mathlib clone per Docker build). The new theorems are
+short delegations: `Nat.exists_eq_pow_mul_and_not_dvd` provides the
+decomposition, the σ* equality delegates to Part 16. Auditor pipeline
+carries the build outcome on the PR.
+
+### Honest assessment
+
+S7 is another **packaging refinement** — a one-step convenience wrap
+on top of S6. It does not extend the mathematical content; it just
+removes the caller-side burden of producing `(k, m)`. The σ*-side is
+now reduced to a single `Nat.sigma 1` lookup (the odd part's σ-value),
+parameterized by `n` alone. The open axiom `jacobi_r4_formula` is
+unchanged. Mathlib's q-expansion of `jacobiTheta` remains the gating
+blocker on the modular-form side.

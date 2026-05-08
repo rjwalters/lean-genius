@@ -1049,4 +1049,83 @@ example : jacobiR4 (2 ^ 0 * 3) = 8 * sigmaOne 3 :=
 example : jacobiR4 (2 ^ 3 * 5) = 24 * sigmaOne 5 :=
   jacobiR4_decomp (by decide) (by decide)
 
+-- =====================================================================
+-- PART 17: n-keyed σ* closed form (no caller-supplied decomposition).
+--
+-- Wraps Part 16's `sigmaStar_decomp` with Mathlib's
+-- `Nat.exists_eq_pow_mul_and_not_dvd` so that callers get a fully
+-- `n`-driven existential statement: for any positive `n` there exist
+-- `k m` realizing the 2-adic decomposition `n = 2^k · m` (with `m`
+-- odd and positive) together with the unified `if`-form for `σ*(n)`.
+--
+-- Compared to Part 16, this drops the friction of having the caller
+-- supply `(k, m)`. Mathlib's `exists_eq_pow_mul_and_not_dvd` guarantees
+-- the decomposition exists for every nonzero `n`; positivity of `m`
+-- follows from `n = 2^k · m > 0`.
+-- =====================================================================
+
+/-- Existential `n`-keyed closed form for σ*. For every `n > 0` there
+    exist `k m : ℕ` such that
+      * `n = 2 ^ k * m`,
+      * `m` is odd (i.e. `¬ 2 ∣ m`),
+      * `m > 0`,
+      * `σ*(n) = (if k = 0 then 1 else 3) * σ(m)`.
+
+    This packages Parts 6, 15, and 16 together with Mathlib's
+    `Nat.exists_eq_pow_mul_and_not_dvd` so that no caller-supplied
+    `(k, m)` decomposition is required: the σ*-side of Jacobi's r₄
+    formula is reduced to a single `Nat.sigma 1 m` call once the
+    decomposition is extracted. -/
+theorem sigmaStar_eq_decomp_form (n : ℕ) (hn : 0 < n) :
+    ∃ (k m : ℕ), n = 2 ^ k * m ∧ ¬ 2 ∣ m ∧ 0 < m ∧
+      sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m := by
+  have hn0 : n ≠ 0 := hn.ne'
+  obtain ⟨k, m, hodd, hn_eq⟩ :=
+    Nat.exists_eq_pow_mul_and_not_dvd hn0 2 (by decide)
+  have hmpos : 0 < m := by
+    rcases Nat.eq_zero_or_pos m with hm0 | hm0
+    · exfalso
+      apply hn0
+      rw [hn_eq, hm0, Nat.mul_zero]
+    · exact hm0
+  refine ⟨k, m, hn_eq, hodd, hmpos, ?_⟩
+  rw [hn_eq]
+  exact sigmaStar_decomp hmpos hodd
+
+/-- Existential `n`-keyed closed form for `jacobiR4`. For every `n > 0`
+    there exist `k m : ℕ` with `n = 2^k · m`, `m` odd and positive, and
+    `jacobiR4(n) = (if k = 0 then 8 else 24) · σ(m)`.
+
+    Companion to `sigmaStar_eq_decomp_form`: the same `(k, m)`
+    decomposition fixes both σ* and `jacobiR4 = 8·σ*`. -/
+theorem jacobiR4_eq_decomp_form (n : ℕ) (hn : 0 < n) :
+    ∃ (k m : ℕ), n = 2 ^ k * m ∧ ¬ 2 ∣ m ∧ 0 < m ∧
+      jacobiR4 n = (if k = 0 then 8 else 24) * sigmaOne m := by
+  obtain ⟨k, m, hn_eq, hodd, hmpos, _⟩ := sigmaStar_eq_decomp_form n hn
+  refine ⟨k, m, hn_eq, hodd, hmpos, ?_⟩
+  rw [hn_eq]
+  exact jacobiR4_decomp hmpos hodd
+
+-- ---------------------------------------------------------------------
+-- Cross-validation: existence form applied to specific n.
+-- ---------------------------------------------------------------------
+
+/-- Existence form on n = 1 (odd): produces some k, m with σ*(1)
+    expressed via the unified `if`-form. -/
+example : ∃ (k m : ℕ), (1 : ℕ) = 2 ^ k * m ∧ ¬ 2 ∣ m ∧ 0 < m ∧
+    sigmaStar 1 = (if k = 0 then 1 else 3) * sigmaOne m :=
+  sigmaStar_eq_decomp_form 1 (by decide)
+
+/-- Existence form on n = 8 (= 2^3 · 1, even): yields the σ*(8) closed
+    form via Part 17 without supplying `(k, m)`. -/
+example : ∃ (k m : ℕ), (8 : ℕ) = 2 ^ k * m ∧ ¬ 2 ∣ m ∧ 0 < m ∧
+    sigmaStar 8 = (if k = 0 then 1 else 3) * sigmaOne m :=
+  sigmaStar_eq_decomp_form 8 (by decide)
+
+/-- Existence form on n = 40 (= 2^3 · 5, even): yields the jacobiR4(40)
+    closed form (= 144) via Part 17 without supplying `(k, m)`. -/
+example : ∃ (k m : ℕ), (40 : ℕ) = 2 ^ k * m ∧ ¬ 2 ∣ m ∧ 0 < m ∧
+    jacobiR4 40 = (if k = 0 then 8 else 24) * sigmaOne m :=
+  jacobiR4_eq_decomp_form 40 (by decide)
+
 end FourSquareDistributionOQ01
