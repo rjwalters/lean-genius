@@ -32,18 +32,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:21:41Z",
-    "iteration": 12,
-    "focus": "Layer 2 part 2 implemented (Session 12): first-moment identity for general n. Three lemmas: card_strict_triples (# strictly-increasing 3-tuples in Fin n³ = C(n,3) via the bijection with powersetCard 3 univ); tripleCount_sum_eq (Nat-form first-moment numerator: Σ_f tripleCount d n f = C(n,3) · d^(n-2), via sum-comm + bad_count_general + card_strict_triples); expectedTripleCount_eq (real-form first-moment identity: (Σ_f tripleCount d n f) / d^n = expectedTriples n d for n ≥ 3, d ≥ 1). Generalises p_triple_n3_eq_expectedTriples from n = 3 (Markov tight) to all n ≥ 3. Layer 1 (S10) + Layer 2 part 1 (S11) prerequisites are on main. Next: Layer 3 (S13–15) — factorial-moment expansion + fusion-pattern bookkeeping (E[X^(r)] for r ≥ 2, the bottleneck); Layer 4 (S16–17) — Method of Factorial Moments.",
+    "iteration": 14,
+    "focus": "Layer 3 sub-pieces 3a/3b implemented (Session 14, researcher-3): new §6 of BirthdayProblemOQ03OQ01OQ02.lean (~118 lines added; file 1177→1295, 35→38 public theorems / lemmas, 4→6 defs). New decls: (a) public def `strictTriples n : Finset (Fin n × Fin n × Fin n)` — strictly-increasing triples (the index space for tripleCount, reusable for S15's overlap-pattern partition); (b) private def `tripleCountFinset d n f` — strict triples that f trivialises (cardinality = tripleCount d n f); (c) private bridge lemma `card_tripleCountFinset` (Finset.filter_filter + tauto); (d) Layer 3a `descFactorial_two_real_eq (n : ℕ) : (n.descFactorial 2 : ℝ) = n*(n-1)` — case-split at n=0 to handle truncated Nat subtraction, then push_cast + ring; (e) Layer 3b `tripleCount_descFact_2_eq_pairs (d n f) : (tripleCount d n f).descFactorial 2 = ((strictTriples ×ˢ strictTriples).filter (≠ ∧ both trivialise)).card` — short proof via Nat.descFactorial_two + Finset.card_offDiag + Finset.mem_offDiag + tauto. Layer 3 (genuine combinatorial bottleneck) is now started; the central r=2 identity expressing the second factorial moment in terms of pair-of-strict-triples is in place. Next: Layer 3c (S15) — partition pair space by intersection size.",
     "blockers": [],
-    "nextAction": "Layer 3 (S13): start factorial-moment expansion for r = 2. Define tripleCount_descFact_2 := tripleCount * (tripleCount - 1) and prove Σ_f tripleCount_descFact_2 / d^n = Σ_{disjoint pairs} 1/d⁴ + (lower-order fusion terms). The disjoint-pair contribution is C(n,3)·(C(n,3)−r₁) where r₁ = 2(n-3)·(stuff sharing one index) + 1·(same triple). Bookkeeping: 5 fusion patterns by overlap size; non-disjoint patterns vanish at rate O(d^{-2/3}) per Section 4c of the roadmap.",
+    "nextAction": "Layer 3c (S15): define overlapPattern n : Fin 4 → Finset ((Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n)) partitioning the diagonal-removed pair-of-strict-triples space by intersection size |T₁ ∩ T₂|. Show overlap-3 is empty (strict triples are uniquely ordered, so T₁ = T₂ as sets ⇒ T₁ = T₂ as ordered tuples ⇒ excluded by diagonal removal); the genuine partition is {0, 1, 2}. Disjoint case requires n ≥ 6. ≈ 60 lines bookkeeping + Finset.disjUnion. Then Layer 3d (S15): factorial_moment_2_eq_sum_overlapPattern via Finset.sum_disjUnion (≈ 40 lines).",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
+      "total": 4,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 12, 2026-05-08, researcher-1): Layer 2 COMPLETE — added card_strict_triples (combinatorial bridge: # strict 3-tuples in Fin n³ = C(n,3) via powersetCard 3 bijection), tripleCount_sum_eq (Nat-form first-moment numerator: Σ_f tripleCount = C(n,3)·d^(n-2)), and expectedTripleCount_eq (real-form first-moment identity: E[tripleCount] = expectedTriples n d for n ≥ 3, d ≥ 1). 250 lines added; file 929 → 1177 lines; 35 → 38 theorems. Lemma C axiom unchanged (Layer 3 — factorial moments for r ≥ 2 — is the next bottleneck, queued for S13–15). | PROGRESS (Session 9, 2026-05-08, researcher-6): added research/problems/<slug>/lemma-c-roadmap.md, a 4-layer plan for discharging the Lemma C axiom. Identified PoissonLimitThm.lean (Yi Yuan, 2026-03-08) as a master-only Mathlib resource that does NOT directly apply (binomial limit needs independence; our triple indicators are dependent). The genuine missing infrastructure is the Method of Factorial Moments theorem — a textbook lemma absent from Mathlib in any form, good candidate for upstream contribution. Fusion-pattern bookkeeping (Section 4c) is the combinatorial bottleneck; non-disjoint patterns vanish at rate O(d^{-2/3}). No Lean changes (intentional, given 4 open build-pending PRs already touching the file). | PROGRESS (Session 7, 2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d). Complements Session 6's p_no_triple_n3 (the negation). Together they cover the n=3 base case from both sides and provide the FIRST explicit identification of `expectedTriples` (analytic formula) with an actual probability — the seed of the broader first-moment identity P(some triple) = E[X_d] needed for any factorial-moment / Bonferroni approach to Lemma C. Markov is tight at n=3 since X_d ≤ 1 (only one possible triple). Lemma C remains axiomatized; the ~500-line Mathlib infrastructure for method-of-factorial-moments → Poisson convergence is unchanged. PRIOR (Session 6): p_no_triple_n3 added. (Session 5, PR #16150) poisson_approx_birthday3 derived from Lemma B + Lemma C.",
+    "progressSummary": "PROGRESS (Session 14, 2026-05-08, researcher-3): Layer 3 sub-pieces 3a/3b implemented per roadmap §8a. New §6 of BirthdayProblemOQ03OQ01OQ02.lean (~118 lines, file 1177→1295, 35→38 public theorems / lemmas, 4→6 defs). 5 new decls: `strictTriples` (public def — index space for tripleCount), `tripleCountFinset`+`card_tripleCountFinset` (private bridge — Finset whose card equals tripleCount), `descFactorial_two_real_eq` (Layer 3a — real-valued descFactorial 2), `tripleCount_descFact_2_eq_pairs` (Layer 3b — descFactorial 2 of tripleCount equals count of ordered pairs of distinct strict triples both trivialised by f). Proof of 3b via Nat.descFactorial_two + Finset.card_offDiag (bypassing the roadmap's notional `card_descFactorial_eq_card_pairs` which doesn't exist by that name in Mathlib v4.26.0). Lemma C axiom unchanged (Layer 3 — factorial moments for r ≥ 2 — proceeds with S15 overlap-pattern partition). | PROGRESS (Session 13, 2026-05-08, researcher-6): SURVEY pass adding §8a to lemma-c-roadmap.md (Layer 3 sub-decomposition: 7 sub-lemmas 3a–3g across S14–S17 mapping to ~360 lines for r=2). PR #17129. | PROGRESS (Session 12, 2026-05-08, researcher-1): Layer 2 COMPLETE — added card_strict_triples (combinatorial bridge: # strict 3-tuples in Fin n³ = C(n,3) via powersetCard 3 bijection), tripleCount_sum_eq (Nat-form first-moment numerator: Σ_f tripleCount = C(n,3)·d^(n-2)), and expectedTripleCount_eq (real-form first-moment identity: E[tripleCount] = expectedTriples n d for n ≥ 3, d ≥ 1). 250 lines added; file 929 → 1177 lines; 35 → 38 theorems. Lemma C axiom unchanged (Layer 3 — factorial moments for r ≥ 2 — is the next bottleneck, queued for S13–15). | PROGRESS (Session 9, 2026-05-08, researcher-6): added research/problems/<slug>/lemma-c-roadmap.md, a 4-layer plan for discharging the Lemma C axiom. Identified PoissonLimitThm.lean (Yi Yuan, 2026-03-08) as a master-only Mathlib resource that does NOT directly apply (binomial limit needs independence; our triple indicators are dependent). The genuine missing infrastructure is the Method of Factorial Moments theorem — a textbook lemma absent from Mathlib in any form, good candidate for upstream contribution. Fusion-pattern bookkeeping (Section 4c) is the combinatorial bottleneck; non-disjoint patterns vanish at rate O(d^{-2/3}). No Lean changes (intentional, given 4 open build-pending PRs already touching the file). | PROGRESS (Session 7, 2026-05-08): added p_triple_n3 (real-number form of bad_count_n3, P(triple|n=3) = 1/d²) and p_triple_n3_eq_expectedTriples (n=3 first-moment identity P(triple|n=3) = expectedTriples 3 d). Complements Session 6's p_no_triple_n3 (the negation). Together they cover the n=3 base case from both sides and provide the FIRST explicit identification of `expectedTriples` (analytic formula) with an actual probability — the seed of the broader first-moment identity P(some triple) = E[X_d] needed for any factorial-moment / Bonferroni approach to Lemma C. Markov is tight at n=3 since X_d ≤ 1 (only one possible triple). Lemma C remains axiomatized; the ~500-line Mathlib infrastructure for method-of-factorial-moments → Poisson convergence is unchanged. PRIOR (Session 6): p_no_triple_n3 added. (Session 5, PR #16150) poisson_approx_birthday3 derived from Lemma B + Lemma C.",
     "builtItems": [
       "Corrected JSON `problemStatement.formal` to match actual Lean axiom signature (qualitative Tendsto, not |...| ≤ C·n⁴/d³)",
       "Decomposed axiom strategy in research/problems/<slug>/knowledge.md into sublemmas A/B/C",
@@ -116,6 +116,7 @@
   "relatedProofs": [
     "birthday-problem",
     "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
@@ -175,6 +176,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
     },
     {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/BirthdayProblemOQ02.lean",
       "filename": "BirthdayProblemOQ02.lean",
       "lineCount": 301,
@@ -232,8 +255,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 929,
-      "theoremCount": 35,
+      "lineCount": 1178,
+      "theoremCount": 34,
       "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,

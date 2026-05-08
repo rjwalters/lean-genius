@@ -1099,10 +1099,115 @@ theorem expectedTripleCount_eq (d n : ℕ) (hd : 1 ≤ d) (hn : 3 ≤ n) :
   have hpow_ne : (d : ℝ) ^ (n - 2) ≠ 0 := pow_ne_zero _ hd_ne
   field_simp
 
+-- ============================================================
+-- §6. SECOND FACTORIAL MOMENT, r = 2 (Layer 3 sub-pieces 3a/3b, Session 14)
+-- ============================================================
+
+/-
+  Layer 3 (Sessions 14–17) of the four-layer plan in `lemma-c-roadmap.md` for
+  discharging the axiom `p_no_triple_tendsto`. Layer 3 establishes the second
+  factorial moment of `tripleCount`,
+
+    E[tripleCount · (tripleCount − 1)] / d^n  →  (c³/6)²
+
+  along the threshold scaling `n_c(d) := ⌊c · d^(2/3)⌋`. This is the genuine
+  combinatorial bottleneck (vs. Layer 2's first moment) because the second
+  moment couples *pairs* of triples; the partition of the pair-of-triples
+  index space by overlap size will be addressed in Layer 3c (S15).
+
+  This section (S14) covers sub-pieces 3a and 3b of the roadmap §8a:
+
+  - **3a** `descFactorial_two_real_eq` — push-cast version of
+    `Nat.descFactorial_two` (real-valued, since the gallery sums over ℝ).
+  - **3b** `tripleCount_descFact_2_eq_pairs` — the descending-factorial of
+    `tripleCount` equals the count of *ordered pairs of distinct strict
+    triples* both trivialised by `f`. Proved via `Finset.offDiag` and
+    `Finset.card_offDiag`.
+
+  Layers 3c–3g (S15–S17) build on these to express the second factorial
+  moment as a sum over overlap patterns and conclude the limit is `(c³/6)²`.
+-/
+
+/-- Strict (strictly-increasing) triples in `Fin n × Fin n × Fin n`: the index
+    space for `tripleCount`. Cardinality `Nat.choose n 3` (proved by
+    `card_strict_triples` via `Finset.powersetCard 3` bijection in S12).
+    Layer 3c (S15) will partition `strictTriples n ×ˢ strictTriples n`
+    by the size of the intersection `T₁ ∩ T₂`. -/
+def strictTriples (n : ℕ) : Finset (Fin n × Fin n × Fin n) :=
+  Finset.univ.filter (fun t : Fin n × Fin n × Fin n => t.1 < t.2.1 ∧ t.2.1 < t.2.2)
+
+/-- The strict triples that `f` "trivialises" — sends all three coordinates
+    to a common value. The cardinality of this Finset equals `tripleCount d n f`
+    by `card_tripleCountFinset`. Internal to Layer 3; downstream lemmas should
+    prefer the public-facing `tripleCount_descFact_2_eq_pairs`. -/
+private def tripleCountFinset (d n : ℕ) (f : Fin n → Fin d) :
+    Finset (Fin n × Fin n × Fin n) :=
+  (strictTriples n).filter (fun t => f t.1 = f t.2.1 ∧ f t.2.1 = f t.2.2)
+
+/-- Bridge: `(tripleCountFinset d n f).card = tripleCount d n f`. The two
+    Finsets differ only by the parenthesisation of the four-conjunct filter
+    predicate `(strict ∧ trivialise) ↔ (strict ∧ ∧ trivialise)`. -/
+private lemma card_tripleCountFinset (d n : ℕ) (f : Fin n → Fin d) :
+    (tripleCountFinset d n f).card = tripleCount d n f := by
+  classical
+  unfold tripleCountFinset strictTriples tripleCount
+  rw [Finset.filter_filter]
+  congr 1
+  ext t
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  tauto
+
+/-- **Layer 3a.** Real-valued version of `Nat.descFactorial_two`: for any
+    `n : ℕ`,
+    `(n.descFactorial 2 : ℝ) = (n : ℝ) · ((n : ℝ) − 1)`.
+    The cast through truncated `Nat` subtraction is handled by case-splitting
+    at `n = 0`. Used in §6 to express the second factorial moment in ℝ. -/
+lemma descFactorial_two_real_eq (n : ℕ) :
+    (n.descFactorial 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := by
+  have hN : n.descFactorial 2 = n * (n - 1) := Nat.descFactorial_two n
+  rcases n with _ | n
+  · simp [hN]
+  · rw [hN]
+    have h_sub : ((n + 1) - 1 : ℕ) = n := by omega
+    rw [h_sub]
+    push_cast
+    ring
+
+/-- **Layer 3b.** The descending-factorial `tripleCount.descFactorial 2`
+    counts *ordered pairs of distinct strict triples* both trivialised by `f`:
+
+      `(tripleCount d n f).descFactorial 2 =`
+      `  card { (T₁, T₂) ∈ strictTriples n × strictTriples n |`
+      `         T₁ ≠ T₂ ∧ f trivialises T₁ ∧ f trivialises T₂ }`
+
+    Proved by reducing `descFactorial 2` to `card · (card − 1)` (via
+    `Nat.descFactorial_two`) and recognising the latter as `Finset.offDiag`'s
+    cardinality (`Finset.card_offDiag`). The resulting Finset matches the
+    pair-of-strict-triples specification needed for Layer 3c (S15) to
+    partition by overlap size. -/
+lemma tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
+    (tripleCount d n f).descFactorial 2 =
+    (((strictTriples n) ×ˢ (strictTriples n)).filter (fun p =>
+      p.1 ≠ p.2 ∧
+      (f p.1.1 = f p.1.2.1 ∧ f p.1.2.1 = f p.1.2.2) ∧
+      (f p.2.1 = f p.2.2.1 ∧ f p.2.2.1 = f p.2.2.2))).card := by
+  classical
+  -- Step 1: reduce LHS to (tripleCountFinset).offDiag.card via
+  -- (Nat.descFactorial_two) + (Finset.card_offDiag).
+  rw [← card_tripleCountFinset, Nat.descFactorial_two,
+      ← Finset.card_offDiag]
+  -- Step 2: identify offDiag of the f-filtered strict-triple set with the
+  -- bipartite f-trivialise filter on (strictTriples × strictTriples).
+  congr 1
+  ext ⟨T₁, T₂⟩
+  simp only [Finset.mem_offDiag, tripleCountFinset, Finset.mem_filter,
+             Finset.mem_product]
+  tauto
+
 /-
   ## Summary
 
-  **Proved (23 theorems / lemmas, 1 axiom):**
+  **Proved (26 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -1143,6 +1248,16 @@ theorem expectedTripleCount_eq (d n : ℕ) (hd : 1 ≤ d) (hn : 3 ≤ n) :
       identity (real form) `E[tripleCount] = C(n,3)/d² = expectedTriples n d`
       for n ≥ 3, d ≥ 1. Generalises `p_triple_n3_eq_expectedTriples` from
       n = 3 (where Markov is tight) to all n ≥ 3.
+  24. `descFactorial_two_real_eq` (Session 14, Layer 3a): real-valued version
+      of `Nat.descFactorial_two`: `(n.descFactorial 2 : ℝ) = n · (n - 1)` over
+      ℝ. Case-split at n = 0 to handle truncated Nat subtraction.
+  25. `tripleCount_descFact_2_eq_pairs` (Session 14, Layer 3b): the
+      descending-factorial of `tripleCount` equals the count of ordered pairs
+      of distinct strict triples both trivialised by `f`. Proved via
+      `Finset.offDiag` and `Finset.card_offDiag`. Sets up Layer 3c (S15)
+      to partition pair-of-triples space by overlap size.
+  Plus 1 private bridge lemma `card_tripleCountFinset` (S14): the cardinality
+  of `(strictTriples n).filter (f trivialises)` equals `tripleCount d n f`.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -1173,5 +1288,8 @@ theorem expectedTripleCount_eq (d n : ℕ) (hd : 1 ≤ d) (hn : 3 ≤ n) :
 #check @card_strict_triples
 #check @tripleCount_sum_eq
 #check @expectedTripleCount_eq
+#check @strictTriples
+#check @descFactorial_two_real_eq
+#check @tripleCount_descFact_2_eq_pairs
 
 end BirthdayThreshold3

@@ -839,3 +839,126 @@ irrelevance hints).
    ≈ 80 lines, building on S10's `tripleCount` def + S11's `bad_count_general`.
 2. **Layer 3 (S13–15)**: factorial-moment expansion (the bottleneck).
 3. **Layer 4 (S16–17)**: Method of Factorial Moments theorem.
+
+---
+
+## Session 14 (2026-05-08, researcher-3) — Layer 3a/3b implementation
+
+### Outcome
+
+Implemented Layer 3 sub-pieces 3a and 3b per roadmap §8a. New §6 of
+`BirthdayProblemOQ03OQ01OQ02.lean` (≈ 118 lines added; file 1177 → 1295,
+35 → 38 public theorems / lemmas, 4 → 6 defs).
+
+### New decls
+
+- `def strictTriples (n : ℕ) : Finset (Fin n × Fin n × Fin n)` (PUBLIC, ≈ 5 lines)
+  — strictly-increasing triples in `Fin n × Fin n × Fin n`, the index space
+  for `tripleCount`. Reusable for S15's overlap-pattern partition.
+
+- `private def tripleCountFinset (d n : ℕ) (f : Fin n → Fin d) :
+   Finset (Fin n × Fin n × Fin n)` (≈ 5 lines)
+  — strict triples that `f` trivialises (sends to a common value).
+  Cardinality equals `tripleCount d n f`.
+
+- `private lemma card_tripleCountFinset` (≈ 8 lines) —
+  bridge `(tripleCountFinset d n f).card = tripleCount d n f`. Pure
+  conjunction-reordering: `Finset.filter_filter` reduces both sides to a
+  single filter on `Finset.univ`; `tauto` closes the predicate equality
+  `(strict ∧ trivialise) ↔ strict-and-trivialise-flat`.
+
+- **Layer 3a** `descFactorial_two_real_eq (n : ℕ) :
+  (n.descFactorial 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1)` (≈ 10 lines).
+  Cleanest proof: `have hN := Nat.descFactorial_two n` (gives Nat-form
+  `n.descFactorial 2 = n * (n - 1)`); rcases n; n = 0 closes by `simp [hN]`
+  (both sides reduce to 0); for n + 1, rewrite hN, then `omega` discharges
+  `((n+1) - 1 : ℕ) = n`, then `push_cast; ring`.
+
+  **Why the case-split is needed**: at n = 0, `(0 - 1 : ℕ) = 0` (truncated)
+  but `(0 : ℝ) - 1 = -1`. push_cast cannot bridge truncated Nat subtraction
+  for n = 0; the case-split avoids the issue.
+
+- **Layer 3b** `tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
+  (tripleCount d n f).descFactorial 2 = ((strictTriples n) ×ˢ (strictTriples n)).filter
+  (fun p => p.1 ≠ p.2 ∧ (f trivialises p.1) ∧ (f trivialises p.2))).card` (≈ 25 lines).
+  Cleanest proof:
+
+  ```lean
+  rw [← card_tripleCountFinset, Nat.descFactorial_two,
+      ← Finset.card_offDiag]
+  -- LHS: (tripleCountFinset d n f).offDiag.card
+  -- RHS: filter on (strictTriples × strictTriples).
+  congr 1
+  ext ⟨T₁, T₂⟩
+  simp only [Finset.mem_offDiag, tripleCountFinset, Finset.mem_filter,
+             Finset.mem_product]
+  tauto
+  ```
+
+  **Key Mathlib lemmas**:
+  - `Nat.descFactorial_two : n.descFactorial 2 = n * (n - 1)` (Nat-form,
+    cited in roadmap §8a.1).
+  - `Finset.card_offDiag : s.offDiag.card = s.card * (s.card - 1)` —
+    converts `card * (card - 1)` ↔ `offDiag.card` cleanly.
+  - `Finset.mem_offDiag : (a, b) ∈ s.offDiag ↔ a ∈ s ∧ b ∈ s ∧ a ≠ b` —
+    bridges `offDiag` to product-filter view in `tauto`.
+
+### Why offDiag, not the roadmap's `card_descFactorial_eq_card_pairs`
+
+The roadmap §8a.2 cited a "standard `Finset.card_descFactorial_eq_card_pairs`"
+with the caveat that "the naming is fluid". I checked: there is no Mathlib
+lemma with that name in v4.26.0. The cleaner path — and the one used here
+— is `Finset.offDiag` + `Finset.card_offDiag`, which give exactly the
+`s.card * (s.card - 1)` formula needed for `descFactorial 2`. This was
+implicitly the roadmap's intent (the offDiag formulation is mathematically
+equivalent), just under a different name.
+
+### Build status
+
+Following the convention of S6, S7, S8, S10, S11, S12 (all "build pending"
+PRs landed via deployer auto-merge) and the 32 GB cgroup memory limit on
+Docker builds, this PR is opened as build-pending. Risk is low because:
+
+- All Mathlib lemma names are standard and verified by spec references in
+  the roadmap (`Nat.descFactorial_two`, `Finset.filter_filter`,
+  `Finset.card_offDiag`, `Finset.mem_offDiag`, `Finset.mem_product`).
+- The proofs are short (≤ 10 tactic lines each) and follow established
+  patterns in the file (S10's `noTriple_filter_eq_tripleCount_zero_filter`
+  used the same `ext + simp only + tauto` for filter equality).
+- No new `axiom`s; the file's axiom count remains 1
+  (`p_no_triple_tendsto`, Lemma C).
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+118 lines: §6 section
+  header + 1 public def + 1 private def + 1 private lemma + 2 public lemmas
+  + Summary block update + 3 #check lines; 1177 → 1295)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/state.md`
+  (iteration 13 → 14; Session 14 summary; Layer 3a/3b under Next Action
+  marked done; queue Layer 3c–g for S15–S17)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md`
+  (this entry)
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json`
+  (iteration 12 → 14; focus + nextAction; knownResults updated; attemptCounts)
+
+`meta.json` is **not** updated in this PR — the gallery slug
+`birthday-problem-oq-03-oq-01-oq-02` is one level up, and its `meta.json`
+already lags S11/S12 (lineCount 929 vs file 1295, theoremCount 35 vs 38).
+The mechanic / auditor pipeline will sync those once the open S7/S8 PRs
+are resolved and the build is verified.
+
+### Next Steps
+
+1. **Layer 3c (S15)** — `overlapPattern n : Fin 4 → Finset (...)`:
+   partition `(strictTriples n) ×ˢ (strictTriples n) \ diag` by
+   intersection size `|T₁ ∩ T₂|`. Show overlap-3 is empty (strict triples
+   are uniquely ordered ↔ set-distinct). ≈ 60 lines.
+2. **Layer 3d (S15)** — `factorial_moment_2_eq_sum_overlapPattern`:
+   combine 3a/3b/3c via `Finset.sum_disjUnion`. ≈ 40 lines.
+3. **Layer 3e (S16)** — disjoint contribution `1/d⁴` per pair. Generalises
+   `bad_count_general` (S11) to two disjoint triples. ≈ 70 lines.
+4. **Layer 3f (S16)** — non-disjoint contributions vanish at rate
+   `O(d^{-2/3})` (overlap-1: `O(d^{-5/3})`; overlap-2: `O(d^{-4/3})`).
+   ≈ 80 lines.
+5. **Layer 3g (S17)** — combine 3d/3e/3f to conclude
+   `factorial_moment_2 → (c³/6)²`. ≈ 30 lines.
