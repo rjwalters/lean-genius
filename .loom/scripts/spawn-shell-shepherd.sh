@@ -52,11 +52,11 @@ fi
 
 # ─── Helpers ──────────────────────────────────────────────────────────────────
 
-log_info() { echo -e "${BLUE}[$(date '+%H:%M:%S')]${NC} $*" >&2; }
-log_success() { echo -e "${GREEN}[$(date '+%H:%M:%S')] ✓${NC} $*" >&2; }
+log_info() { echo -e "${BLUE}[$(date -u '+%Y-%m-%dT%H:%M:%SZ')]${NC} $*" >&2; }
+log_success() { echo -e "${GREEN}[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] ✓${NC} $*" >&2; }
 # shellcheck disable=SC2329  # Standard logging helper, may be used in future
-log_warn() { echo -e "${YELLOW}[$(date '+%H:%M:%S')] ⚠${NC} $*" >&2; }
-log_error() { echo -e "${RED}[$(date '+%H:%M:%S')] ✗${NC} $*" >&2; }
+log_warn() { echo -e "${YELLOW}[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] ⚠${NC} $*" >&2; }
+log_error() { echo -e "${RED}[$(date -u '+%Y-%m-%dT%H:%M:%SZ')] ✗${NC} $*" >&2; }
 
 # Find the repository root (works from any subdirectory including worktrees)
 find_repo_root() {
@@ -289,6 +289,11 @@ tmux -L "$TMUX_SOCKET" set-environment -t "$FULL_SESSION_NAME" LOOM_WORKSPACE "$
 tmux -L "$TMUX_SOCKET" set-environment -t "$FULL_SESSION_NAME" LOOM_ROLE "shepherd-sh"
 tmux -L "$TMUX_SOCKET" set-environment -t "$FULL_SESSION_NAME" LOOM_ISSUE "$ISSUE"
 tmux -L "$TMUX_SOCKET" set-environment -t "$FULL_SESSION_NAME" LOOM_ON_DEMAND "true"
+# Clear CLAUDECODE to prevent nested session guard from blocking worker
+# sessions.  If the tmux server was started from a Claude Code session,
+# CLAUDECODE would leak into the shepherd and its worker subprocesses,
+# potentially triggering the nested-session guard.  See issue #3208.
+tmux -L "$TMUX_SOCKET" set-environment -t "$FULL_SESSION_NAME" CLAUDECODE ""
 
 # Send the shepherd command to the session
 tmux -L "$TMUX_SOCKET" send-keys -t "$FULL_SESSION_NAME" "$SHEPHERD_CMD" C-m
