@@ -108,12 +108,80 @@
     {
       "targetId": "ballot-problem-oq-01-oq-01",
       "relationship": "extends",
-      "description": "Parent entry: the Dvoretzky-Motzkin cycle lemma for {+1,-k} sequences via IVT and rightmost position"
+      "description": "Parent entry: the Dvoretzky-Motzkin cycle lemma for $\\{+1,-k\\}$ sequences via IVT and rightmost position. This entry isolates the *downward-IVT* half of the parent's argument and shows it survives in the larger alphabet $\\{x \\in \\mathbb{Z} : x \\geq -1\\}$."
     },
     {
       "targetId": "ballot-problem-oq-01",
       "relationship": "related",
-      "description": "The generalized ballot problem: the cycle lemma for {+1,-k} sequences gives the exact good rotation count"
+      "description": "The generalized ballot problem: the cycle lemma for $\\{+1,-k\\}$ sequences gives the exact good-rotation count. The present entry brackets that classical case from below (unit-decrement) and above (all-positive)."
+    },
+    {
+      "targetId": "ballot-problem",
+      "relationship": "ancestor",
+      "description": "Bertrand's 1887 ballot problem — the historical origin of all cycle-lemma counting. The present entry is two generalization steps removed (Bertrand $\\to$ Dvoretzky-Motzkin $\\to$ unit-decrement / all-positive) and shows which structural ingredients of Bertrand's original argument survive each step."
+    },
+    {
+      "targetId": "ballot-problem-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "Parallel OQ-02 sibling exploring a different generalization axis of the cycle lemma. Together with this entry they cover the multi-dimensional landscape of step-alphabet variations on Dvoretzky-Motzkin."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Joseph Bertrand",
+      "title": "Solution d'un problème",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, 105, 369",
+      "note": "The original 1887 ballot problem: probability that candidate $A$ leads throughout the count is $(a-b)/(a+b)$. Source of the entire cycle-lemma research line; the present file's downward IVT is a third-generation generalization."
+    },
+    {
+      "authors": "Désiré André",
+      "title": "Solution directe du problème résolu par M. Bertrand",
+      "year": "1887",
+      "venue": "Comptes Rendus de l'Académie des Sciences, Paris, 105, 436–437",
+      "note": "Reflection-principle proof of Bertrand's ballot result; the modern reflection argument descends from this paper. Complements the cycle-lemma approach: reflection counts bad sequences, cycle lemma counts good rotations."
+    },
+    {
+      "authors": "Aryeh Dvoretzky and Theodore S. Motzkin",
+      "title": "A problem of arrangements",
+      "year": "1947",
+      "venue": "Duke Mathematical Journal 14, 305–313",
+      "note": "Introduces the cycle lemma for $\\{+1, -k\\}$ sequences, proving $|\\text{goodRotations}| = S$ when $S = \\sum l > 0$. The unit-decrement IVT in this gallery file isolates the *lower-bound* mechanism of their argument."
+    },
+    {
+      "authors": "George N. Raney",
+      "title": "Functional composition patterns and power series reversion",
+      "year": "1960",
+      "venue": "Transactions of the American Mathematical Society 94, 441–451",
+      "note": "Reformulates the cycle lemma using the rightmost-minimum position trick, simplifying Dvoretzky-Motzkin's original argument. The standard modern statement of the cycle lemma is usually attributed to Raney."
+    },
+    {
+      "authors": "Sri Gopal Mohanty",
+      "title": "Lattice Path Counting and Applications",
+      "year": "1979",
+      "venue": "Academic Press, Probability and Mathematical Statistics series",
+      "note": "Comprehensive treatment of the *generalized* cycle lemma for multi-step alphabets such as $\\{+a, -b\\}$ with $\\gcd(a,b) = 1$. Indicates the natural next-step generalization beyond unit-decrement: see openQuestion #4."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Enumerative Combinatorics, Volume I (2nd edition)",
+      "year": "2011",
+      "venue": "Cambridge Studies in Advanced Mathematics 49, Cambridge University Press",
+      "note": "Standard reference on lattice paths and cycle-lemma applications (§1.5). Stanley's exposition motivates the 'how far can this go?' question that this gallery entry formally addresses."
+    },
+    {
+      "authors": "Philippe Flajolet and Robert Sedgewick",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press, p. 71",
+      "note": "Treats the cycle lemma as a key bijection in the analytic-combinatorics framework; the question of which step alphabets admit cycle-lemma analogs (formally answered here for unit-decrement / all-positive) is left as an exercise in their textbook treatment."
+    },
+    {
+      "authors": "Nicholas H. Bingham",
+      "title": "Fluctuation theory in continuous time",
+      "year": "1975",
+      "venue": "Advances in Applied Probability 7, 705–766",
+      "note": "Continuous-time fluctuation theory for spectrally-positive Lévy processes — the conjectured continuous analog of the leftmost-crossing primitive isolated here (see openQuestion #5)."
     }
   ],
   "mainTheorems": [
