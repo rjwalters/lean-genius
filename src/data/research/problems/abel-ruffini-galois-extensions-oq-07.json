@@ -30,21 +30,21 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T15:30:00.000Z",
-    "iteration": 7,
-    "focus": "S7 (researcher-5, 2026-05-08): **`|G| = p² · q`, case `p > q` axiom-free COMMITTED**. Added Part III.6 to AbelRuffiniGaloisExtensionsOQ07.lean (502→614 lines, 13→15 theorems, 1 axiom unchanged, 0 sorries). Two new theorems: `sylow_count_eq_one_of_lt_prime` (private helper, ~12 lines: if n ∣ q (q prime), q < p, n ≡ 1 [MOD p], then n = 1) and `burnside_p_squared_q_p_gt_q` (~50 lines, axiom-free): pick a Sylow p-subgroup P with |P| = p² via `Sylow.card_eq_multiplicity` + factorization (discharge of S6 spec sorry 1 inline); compute its index q via `Subgroup.card_mul_index`; combine `card_sylow_modEq_one` + `Sylow.card_dvd_index` + helper to get n_p = 1; promote to `Subsingleton (Sylow p G)` via `Nat.card_eq_one_iff_unique`; close via `Sylow.normal_of_subsingleton` + `burnside_pq_with_normal_pSylow`. Added Mathlib.GroupTheory.Sylow import. New sanity-check example: |G| = 75 = 5²·3 axiom-free.",
+    "iteration": 8,
+    "focus": "S8 (researcher-1, 2026-05-08): **|G| = 12 spec-only iteration**. S7 (PR #17114) and S7.5 (PR #17155) merged; (a,b)=(2,1) shape discharged axiom-free for all (p,q) except the exceptional (p,q)=(2,3), |G|=12 case (which S7.5's hexc hypothesis explicitly excludes). This iteration produced session-8-twelve-spec.md containing the detailed mathematical argument (n_3=4 ⇒ n_2=1 by element-counting on the union of 4 Sylow 3-subgroups, each of prime order 3 with pairwise trivial intersection, forcing the remaining 3 elements + identity to coincide with the unique Sylow 2-subgroup) and a Lean 4 skeleton for 5 helper lemmas + main theorem (~180 lines estimated). No Lean code added: proofs/.lake recursive self-symlink on this host forces ≥45 min Mathlib re-clones; deferring implementation keeps a clean build-pending audit trail. Future iteration on a host with intact .lake can implement the spec directly.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama). Note: Mathlib has `Mathlib.GroupTheory.Focal` (focal subgroup definition + transfer to focal quotient), so partial scaffolding exists for the character-free route.",
       "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed."
     ],
     "nextAction": "S7.5: prototype `burnside_p_squared_q_p_lt_q` per `session-6-p-squared-q-spec.md` §5 (~40 lines, two `sorry`s in the spec to discharge). Then S8: add the exceptional `(p, q) = (2, 3), |G| = 12` case per §6 (~70 lines, element counting). After S7+S7.5+S8, the `(a, b) = (2, 1)` and `(1, 2)` shapes can be peeled off `burnside_pq_nontrivial` axiom-free; the main theorem `burnside_pq` can then be augmented to peel them off before invoking the axiom. Beyond p²·q and p·q²: S9 = `|G| = p² · q²` Sylow analysis (~150 lines); S10+ = Goldschmidt-Matsuyama via `Mathlib.GroupTheory.Focal` for residual `a ≥ 3 ∨ b ≥ 3` cases.",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (researcher-1, 2026-05-08, ACT): **Squarefree-order axiom-narrowing COMMITTED**. Added Part II.5 to AbelRuffiniGaloisExtensionsOQ07.lean (277→384 lines, 8→10 theorems, 1 axiom narrowed, 0 sorries). Two new theorems: `squarefreeOrder_isSolvable` (Squarefree |G| → IsSolvable G via Mathlib's IsZGroup.of_squarefree + the [Finite][IsZGroup]→IsSolvable instance), `burnside_pq_pq_case` (axiom-free a=b=1 case for |G|=p·q via Nat.coprime_primes + Prime.squarefree + Nat.squarefree_mul). The axiom `burnside_pq_nontrivial` now requires `2 ≤ a ∨ 2 ≤ b`; the `a = b = 1` sub-case is no longer axiom-dependent. The main theorem `burnside_pq` now dispatches axiom-free to the pq case before falling back to the (narrowed) axiom. Two new sanity-check examples added: |G|=pq via burnside_pq_pq_case; |G|=30 via squarefreeOrder_isSolvable (showing the squarefree route extends beyond two primes). Added import Mathlib.GroupTheory.SpecificGroups.ZGroup.\n\nS3 (researcher-8, 2026-05-08, ACT): Sharpness witness COMMITTED. Added Part VI (3 axiom-free theorems demonstrating |A₅| = 2²·3·5 is non-solvable). 221→277 lines, 5→8 theorems.\n\nS2 (researcher-3, 2026-05-08, ORIENT): Phase-2 scaffold COMMITTED. Created `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` (221 lines, 5 theorems, 1 axiom, 0 sorries). Trivial cases (a=0, b=0, p=q) proved AXIOM-FREE via Mathlib IsPGroup → IsNilpotent → IsSolvable. Non-trivial case isolated as axiom `burnside_pq_nontrivial`.\n\nS1 (2026-05-07, OBSERVE): Identified the seed open question as #7 of the parent gallery. Documented two proof strategies (character-theoretic vs Goldschmidt-Matsuyama character-free) and their tradeoffs.",
+    "progressSummary": "S8 (researcher-1, 2026-05-08, ACT spec-only): Detailed S8 spec for |G|=12 element-counting argument (session-8-twelve-spec.md, ~250 lines of LaTeX/spec covering math core, Lean skeleton, Mathlib API inventory, alternative paths). State.md and knowledge.md updated. No Lean changes (build infrastructure trap on this host).\n\nS4 (researcher-1, 2026-05-08, ACT): **Squarefree-order axiom-narrowing COMMITTED**. Added Part II.5 to AbelRuffiniGaloisExtensionsOQ07.lean (277→384 lines, 8→10 theorems, 1 axiom narrowed, 0 sorries). Two new theorems: `squarefreeOrder_isSolvable` (Squarefree |G| → IsSolvable G via Mathlib's IsZGroup.of_squarefree + the [Finite][IsZGroup]→IsSolvable instance), `burnside_pq_pq_case` (axiom-free a=b=1 case for |G|=p·q via Nat.coprime_primes + Prime.squarefree + Nat.squarefree_mul). The axiom `burnside_pq_nontrivial` now requires `2 ≤ a ∨ 2 ≤ b`; the `a = b = 1` sub-case is no longer axiom-dependent. The main theorem `burnside_pq` now dispatches axiom-free to the pq case before falling back to the (narrowed) axiom. Two new sanity-check examples added: |G|=pq via burnside_pq_pq_case; |G|=30 via squarefreeOrder_isSolvable (showing the squarefree route extends beyond two primes). Added import Mathlib.GroupTheory.SpecificGroups.ZGroup.\n\nS3 (researcher-8, 2026-05-08, ACT): Sharpness witness COMMITTED. Added Part VI (3 axiom-free theorems demonstrating |A₅| = 2²·3·5 is non-solvable). 221→277 lines, 5→8 theorems.\n\nS2 (researcher-3, 2026-05-08, ORIENT): Phase-2 scaffold COMMITTED. Created `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` (221 lines, 5 theorems, 1 axiom, 0 sorries). Trivial cases (a=0, b=0, p=q) proved AXIOM-FREE via Mathlib IsPGroup → IsNilpotent → IsSolvable. Non-trivial case isolated as axiom `burnside_pq_nontrivial`.\n\nS1 (2026-05-07, OBSERVE): Identified the seed open question as #7 of the parent gallery. Documented two proof strategies (character-theoretic vs Goldschmidt-Matsuyama character-free) and their tradeoffs.",
     "builtItems": [
       "S2 — proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean (221 lines, 5 theorems, 1 axiom)",
       "S2 — pGroup_isSolvable: explicit packaging of Mathlib's IsPGroup → IsNilpotent → IsSolvable chain (axiom-free)",
@@ -67,7 +67,10 @@
       "S4 — Narrowed axiom burnside_pq_nontrivial: now requires 2 ≤ a ∨ 2 ≤ b (the a=b=1 case is axiom-free)",
       "S4 — Updated burnside_pq main theorem dispatch: by_cases h11 : a = 1 ∧ b = 1 added before axiom fallback",
       "S4 — 2 new sanity-check examples: |G| = pq via burnside_pq_pq_case (axiom-free); |G| = 30 via squarefreeOrder_isSolvable (squarefree route beyond two primes)",
-      "S4 — Added import Mathlib.GroupTheory.SpecificGroups.ZGroup"
+      "S4 — Added import Mathlib.GroupTheory.SpecificGroups.ZGroup",
+      "S8 — research/problems/abel-ruffini-galois-extensions-oq-07/session-8-twelve-spec.md (detailed |G|=12 argument + Lean skeleton)",
+      "S8 — Updated state.md (S7.5 merged, S8 plan)",
+      "S8 — Updated knowledge.md (S8 element-counting insight, generalization caveat)"
     ],
     "insights": [
       "S2 — The four trivial cases (`a = 0`, `b = 0`, `p = q`, `|G| = 1`) all reduce to G being a p-group for some prime p, which Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain handles axiom-free. So 75% of the cases of Burnside's theorem need NO new mathematical content — only the genuinely two-prime case (p ≠ q, a ≥ 1, b ≥ 1) carries new Lean content.",
@@ -98,7 +101,10 @@
       "S4 — Dispatch pattern in `burnside_pq` for the narrowed axiom: `by_cases h11 : a = 1 ∧ b = 1` to peel off the squarefree case axiom-free, then `by_contra h ; push_neg at h ; obtain ⟨ha2, hb2⟩ := h ; exact h11 ⟨by omega, by omega⟩` to derive `2 ≤ a ∨ 2 ≤ b` for the axiom invocation. Clean and minimal.",
       "S4 — Sanity check: `decide` does NOT work for `Squarefree 30` (`Nat.instDecidablePredSquarefree 30` doesn't reduce); use `native_decide` instead. Useful for any concrete-cardinality squarefreeness sanity check.",
       "S4 — Squarefree-order route is broader than just `pq`: `squarefreeOrder_isSolvable` proves solvability for ANY finite group of squarefree order (e.g. |G| = 30 = 2·3·5, |G| = 105 = 3·5·7, etc.) — but does NOT extend to `pᵃqᵇ` with `a ≥ 2` or `b ≥ 2` since `p²` is not squarefree. The genuine gap is exactly orders divisible by `p²` for some prime.",
-      "S4 — Path forward narrows: the next sub-cases are `|G| = p²q` (~50-100 lines via Sylow analysis), `|G| = pq²` (symmetric), and `|G| = p²q²` (more delicate). Each subsumes a specific instance of `burnside_pq_nontrivial` axiom-free. The Goldschmidt-Matsuyama route (~200-400 lines on top of `Mathlib.GroupTheory.Focal`) closes ALL remaining cases at once."
+      "S4 — Path forward narrows: the next sub-cases are `|G| = p²q` (~50-100 lines via Sylow analysis), `|G| = pq²` (symmetric), and `|G| = p²q²` (more delicate). Each subsumes a specific instance of `burnside_pq_nontrivial` axiom-free. The Goldschmidt-Matsuyama route (~200-400 lines on top of `Mathlib.GroupTheory.Focal`) closes ALL remaining cases at once.",
+      "S8 (2026-05-08): The `|G| = 12` case is uniquely exceptional among `|G| = p²·q` because `(2, 3)` are the *only* consecutive primes — and `q = p + 1` is the precise condition under which Sylow's third theorem alone fails to force a normal Sylow.",
+      "S8 (2026-05-08): When `n_3 = 4` in `|G| = 12`: pairwise trivial intersection of the 4 Sylow 3-subgroups (each cyclic of prime order 3) gives `1 + 4·2 = 9` elements satisfying `g^3 = 1`. The remaining 3 elements (with identity) form a 4-element set that must coincide with any Sylow 2-subgroup (each P has |P\\{1}| = 3 elements of order ≠ 3), forcing `n_2 = 1`. This is the classical `A₄` argument: `n_3 = 4` is the actual Sylow count for A₄, and the unique Sylow 2-subgroup is `V₄` (Klein four-group).",
+      "S8 (2026-05-08): Element-counting in Lean 4 will require ~180 lines (originally estimated ~70), because `Set.ncard_biUnion` / `Finset.card_biUnion` with disjointness side-conditions, plus `{g : g^3 = 1}` as a Finset, takes substantial setup. Alternative: use `Subgroup.normalCore` of the Sylow 3-subgroup as a kernel of the action `G →* Equiv.Perm (G ⧸ Q)`, requiring `IsSolvable (Equiv.Perm (Fin 4))` from Mathlib (name verification needed)."
     ],
     "mathlibGaps": [
       "No `theorem Group.burnside_pq` — Burnside's p^a q^b theorem.",
@@ -107,14 +113,12 @@
       "No 'minimal counterexample' tactic infrastructure for finite-group induction proofs — would be a useful methodological add."
     ],
     "nextSteps": [
-      "S2 DONE: Phase-2 scaffold committed. proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean created with 5 axiom-free theorems + 1 axiom. Trivial cases proved. Gallery entry created.",
-      "S3 DONE: Sharpness witness committed. burnside_pq_sharp formalizes |A₅| = 60 = 2²·3·5 non-solvable.",
-      "S4 DONE: Squarefree-order axiom-narrowing committed. squarefreeOrder_isSolvable + burnside_pq_pq_case prove the a=b=1 case axiom-free; axiom narrowed to require 2 ≤ a ∨ 2 ≤ b.",
-      "Session 5 (next sub-case): Prove `|G| = p² · q` axiom-free via Sylow analysis. The classical argument: count Sylow p-subgroups and Sylow q-subgroups via Sylow's third theorem; one of them must be normal (trivially or via cardinality bounds), giving an abelian-by-abelian extension. Estimated ~50-100 lines. After this, narrow the axiom further to `3 ≤ a ∨ 3 ≤ b` (excluding p²q and pq²).",
-      "Session 6 (next sub-case, symmetric): Prove `|G| = p · q²` axiom-free. Symmetric to Session 5; ~30-50 lines if structured well.",
-      "Session 7 (next sub-case): Prove `|G| = p² · q²` axiom-free. More delicate Sylow analysis; ~80-150 lines. After this, narrow further.",
-      "Session 8+ (Goldschmidt-Matsuyama): Build focal subgroup theorem on top of `Mathlib.GroupTheory.Focal` (some scaffolding already exists), apply transfer to a Sylow p-subgroup, derive P ∩ G' < P contradicting G = G'. ~200-400 lines. Closes ALL remaining cases of `burnside_pq_nontrivial`.",
-      "Final session: replace `axiom burnside_pq_nontrivial` with theorem; sync meta.json; submit Mathlib upstream PR (estimated ~1000 lines total)."
+      "(S8) Implement burnside_p_squared_q_twelve per session-8-twelve-spec.md (~180 lines).",
+      "(post-S8) Augment burnside_pq dispatch to peel off (a,b)=(2,1) axiom-free.",
+      "(S8') Symmetric (1,2) shape: burnside_p_q_squared_*.",
+      "(S9) |G| = p²·q² Sylow analysis (~150 lines).",
+      "(S10+) Goldschmidt-Matsuyama on Mathlib.GroupTheory.Focal.",
+      "(Final) Replace burnside_pq_nontrivial axiom; submit Mathlib upstream PR."
     ]
   },
   "tags": [

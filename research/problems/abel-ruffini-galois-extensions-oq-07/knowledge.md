@@ -112,10 +112,44 @@ each to first power, but cannot handle `p²` for any prime.
 
 ## Path forward
 
-1. **(S5)** Prove `|G| = p² · q` axiom-free via Sylow analysis (~50-100 lines).
-2. **(S6)** Prove `|G| = p · q²` axiom-free (symmetric, ~30-50 lines).
-3. **(S7)** Prove `|G| = p² · q²` axiom-free (~80-150 lines).
-4. **(S8+)** Build Goldschmidt-Matsuyama on top of `Mathlib.GroupTheory.Focal`
+1. **(S5, PR #16972, merged)** `burnside_pq_with_normal_pSylow` and `_qSylow`
+   reduction lemmas: `|G| = p^a · q^b` + normal Sylow ⇒ solvable.
+2. **(S7, PR #17114, merged)** `burnside_p_squared_q_p_gt_q`: `|G| = p²·q`
+   with `q < p` is solvable axiom-free (Sylow's third theorem forces `n_p = 1`).
+3. **(S7.5, PR #17155, merged)** `burnside_p_squared_q_p_lt_q`: `|G| = p²·q`
+   with `p < q` and `(p, q) ≠ (2, 3)` is solvable axiom-free.
+4. **(S8, in progress, this session)** `|G| = 12` exceptional case via
+   element counting (`n_3 = 4 ⇒ n_2 = 1` by Sylow-3 union cardinality).
+   Spec: `session-8-twelve-spec.md`. Estimated ~180 lines, deferred to
+   next session (`.lake` symlink trap on this host).
+5. **(S8')** Symmetric `(1, 2)` shape: `burnside_p_q_squared_*` mirroring
+   S7/S7.5/S8.
+6. **(S9)** `|G| = p²·q²` Sylow analysis (~150 lines).
+7. **(S10+)** Goldschmidt-Matsuyama on top of `Mathlib.GroupTheory.Focal`
    (~200-400 lines). Closes ALL remaining cases.
-5. **(Final)** Replace `axiom burnside_pq_nontrivial` with theorem; sync meta.json;
-   submit Mathlib upstream PR (~1000 lines total).
+8. **(Final)** Replace `axiom burnside_pq_nontrivial` with theorem; sync
+   meta.json; submit Mathlib upstream PR (~1000 lines total).
+
+## Insight (S8): Why `|G| = 12` requires element counting, not Sylow alone
+
+For `|G| = p²·q` with `p ≠ q`, Sylow's third theorem gives `n_p ∈ {divisors of q}`
+and `n_q ∈ {divisors of p²}`, each `≡ 1` modulo the corresponding prime. The
+constraint `n_q ≡ 1 [MOD q]` for `n_q ∈ {1, p, p²}` rules out `n_q = p` whenever
+`p < q` (since `q ∣ p − 1` is impossible) and rules out `n_q = p²` whenever
+`q ∤ p² − 1 = (p − 1)(p + 1)`. The latter fails only when `q ∣ p + 1` AND
+`q ∤ p − 1`, which forces `q = p + 1`. The only consecutive primes are
+`(2, 3)` — hence the exceptional case `|G| = 12`.
+
+In this exceptional case `n_3 = 4` is genuinely possible (realized by `A₄`).
+Sylow's third theorem alone cannot rule it out; one must count elements:
+distinct Sylow 3-subgroups intersect trivially (prime order), so 4 such
+subgroups contain `1 + 4·2 = 9` elements (with `g^3 = 1`). The remaining
+`12 − 9 = 3` elements together with the identity form a unique 4-element
+set that necessarily coincides with any Sylow 2-subgroup, forcing `n_2 = 1`.
+
+**Generalization caveat**: This element-counting trick is specific to `|G| = 12`.
+For `|G| = 18 = 2·3²` (the symmetric `(1, 2)` exceptional case with
+`(p, q) = (2, 3)`), an analogous count gives `9 + 9 = 18`, leaving `0`
+slots — meaning the Sylow 2 and Sylow 3 unions exactly partition `G`. The
+proof structure is similar but the bound is tighter (must rule out triple
+overlaps explicitly).
