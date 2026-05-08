@@ -1,31 +1,38 @@
 {
   "slug": "puiseux-theorem-oq-02",
   "title": "puiseux-theorem-oq-02",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
+    "formal": "Multivariate generalization of Puiseux's theorem: develop multi-variable Puiseux series infrastructure (MultiHahnSeries) and the `IsMultiPuiseuxSeries` predicate, with closure properties.",
+    "plain": "Generalize the univariate Puiseux series construction to multivariate case via iterated HahnSeries, and prove basic closure properties of the IsMultiPuiseuxSeries predicate.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "MultiHahnSeries (n-variable Hahn series via recursion on n)",
+      "Zero and CommRing instances for MultiHahnSeries (by induction on depth)",
+      "IsMultiPuiseuxSeries predicate (recursive common-denominator condition)",
+      "isMultiPuiseux_base: base-field elements are trivially multi-Puiseux",
+      "isMultiPuiseux_zero: zero is multi-Puiseux at every level",
+      "single_variable_is_univariate: 1-variable case agrees with univariate Puiseux"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Verified, axiom-free formalization of multivariate Puiseux infrastructure — achieved on origin/main."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-29T19:03:48-07:00",
-    "iteration": 3,
-    "focus": "Added isMultiPuiseux_zero closure property",
+    "phase": "COMPLETED",
+    "since": "2026-05-04T10:36:10Z",
+    "iteration": 4,
+    "focus": "Closed. proofs/Proofs/PuiseuxTheoremOQ02.lean: 238 lines, 6 theorems, 0 axioms, 0 sorries. Gallery meta.json status: verified.",
     "blockers": [],
-    "nextAction": "Docker build to verify compilation, then strengthen axiom",
+    "nextAction": "None — completed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -68,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T02:13:21.213Z",
-  "lastUpdate": "2026-04-27T23:30:00Z",
+  "lastUpdate": "2026-05-08T18:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/PuiseuxTheorem.lean",
