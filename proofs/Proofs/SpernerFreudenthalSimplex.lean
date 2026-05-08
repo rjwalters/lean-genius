@@ -538,6 +538,12 @@ private lemma gridPt_N0_coord2 : gridPt N (N, 0) 2 = 0 := by
              show ¬(2:ℕ)=0 from by omega, show ¬(2:ℕ)=1 from by omega, ↓reduceIte]
   push_cast; ring
 
+private lemma gridPt_00_coord0 : gridPt N (0, 0) 0 = 0 := by
+  simp [gridPt, show (0:Fin 3).val=0 from rfl]
+
+private lemma gridPt_00_coord1 : gridPt N (0, 0) 1 = 0 := by
+  simp [gridPt, show (1:Fin 3).val=1 from rfl, show ¬(1:ℕ)=0 from by omega]
+
 /-- Corner (0, N) has forced color 1: on face 0 (coord 0 = 0) and face 2 (coord 2 = 0). -/
 private lemma cN2_left_corner :
     cN2 N hN f hf_map (0, N) (by omega) = 1 := by
@@ -551,6 +557,90 @@ private lemma cN2_right_corner :
   have h1 := cN2_ne_of_zero N hN f hf_map (N, 0) (by omega) 1 (gridPt_N0_coord1 N)
   have h2 := cN2_ne_of_zero N hN f hf_map (N, 0) (by omega) 2 (gridPt_N0_coord2 N)
   fin_cases (cN2 N hN f hf_map (N, 0) (by omega)) <;> simp_all
+
+/-- Corner (0, 0) has forced color 2: on face 0 (coord 0 = 0) and face 1 (coord 1 = 0). -/
+private lemma cN2_origin_corner :
+    cN2 N hN f hf_map (0, 0) (by omega) = 2 := by
+  have h0 := cN2_ne_of_zero N hN f hf_map (0, 0) (by omega) 0 (gridPt_00_coord0 N)
+  have h1 := cN2_ne_of_zero N hN f hf_map (0, 0) (by omega) 1 (gridPt_00_coord1 N)
+  fin_cases (cN2 N hN f hf_map (0, 0) (by omega)) <;> simp_all
+
+/-- Geometric face predicate for grid vertices.
+A vertex `b = (b.1, b.2)` (representing `(b.1/N, b.2/N, (N-b.1-b.2)/N)` in Δ²)
+is on face j iff its j-th coordinate is zero. -/
+private def onFaceΔ2 (N : ℕ) (b : ℕ × ℕ) (j : Fin 3) : Prop :=
+  if j.val = 0 then b.1 = 0
+  else if j.val = 1 then b.2 = 0
+  else b.1 + b.2 = N
+
+private instance onFaceΔ2_decidable (N : ℕ) (b : ℕ × ℕ) (j : Fin 3) :
+    Decidable (onFaceΔ2 N b j) := by
+  unfold onFaceΔ2; split_ifs <;> infer_instance
+
+private lemma onFaceΔ2_zero_iff (b : ℕ × ℕ) :
+    onFaceΔ2 N b 0 ↔ b.1 = 0 := by
+  simp [onFaceΔ2, show (0:Fin 3).val = 0 from rfl]
+
+private lemma onFaceΔ2_one_iff (b : ℕ × ℕ) :
+    onFaceΔ2 N b 1 ↔ b.2 = 0 := by
+  simp [onFaceΔ2, show (1:Fin 3).val = 1 from rfl]
+
+private lemma onFaceΔ2_two_iff (b : ℕ × ℕ) :
+    onFaceΔ2 N b 2 ↔ b.1 + b.2 = N := by
+  simp [onFaceΔ2, show (2:Fin 3).val = 2 from rfl, show ¬(2:ℕ)=0 from by omega,
+        show ¬(2:ℕ)=1 from by omega]
+
+private lemma onFaceΔ2_zero_iff_gridPt_zero (b : ℕ × ℕ) :
+    onFaceΔ2 N b 0 ↔ gridPt N b 0 = 0 := by
+  have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
+  rw [onFaceΔ2_zero_iff]
+  simp only [gridPt, show (0:Fin 3).val = 0 from rfl, ↓reduceIte]
+  rw [div_eq_zero_iff]
+  constructor
+  · intro h; left; exact_mod_cast h
+  · rintro (h | h)
+    · exact_mod_cast h
+    · exact absurd h hNne
+
+private lemma onFaceΔ2_one_iff_gridPt_zero (b : ℕ × ℕ) :
+    onFaceΔ2 N b 1 ↔ gridPt N b 1 = 0 := by
+  have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
+  rw [onFaceΔ2_one_iff]
+  simp only [gridPt, show (1:Fin 3).val = 1 from rfl,
+             show ¬(1:ℕ)=0 from by omega, ↓reduceIte]
+  rw [div_eq_zero_iff]
+  constructor
+  · intro h; left; exact_mod_cast h
+  · rintro (h | h)
+    · exact_mod_cast h
+    · exact absurd h hNne
+
+private lemma onFaceΔ2_two_iff_gridPt_zero (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) :
+    onFaceΔ2 N b 2 ↔ gridPt N b 2 = 0 := by
+  have hNne : (N : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hN)
+  rw [onFaceΔ2_two_iff]
+  simp only [gridPt, show (2:Fin 3).val = 2 from rfl,
+             show ¬(2:ℕ)=0 from by omega, show ¬(2:ℕ)=1 from by omega, ↓reduceIte]
+  rw [div_eq_zero_iff]
+  constructor
+  · intro h
+    left
+    have hb12 : (b.1 : ℝ) + b.2 = N := by exact_mod_cast h
+    linarith
+  · rintro (h | h)
+    · have : (b.1 : ℝ) + b.2 = N := by linarith
+      exact_mod_cast this
+    · exact absurd h hNne
+
+/-- Sperner condition (face form): if vertex b is on face j of Δ², its color is not j. -/
+private lemma cN2_ne_of_onFace (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) (j : Fin 3)
+    (hface : onFaceΔ2 N b j) : cN2 N hN f hf_map b hb ≠ j := by
+  have hzero : gridPt N b j = 0 := by
+    fin_cases j
+    · exact (onFaceΔ2_zero_iff_gridPt_zero N hN b).mp hface
+    · exact (onFaceΔ2_one_iff_gridPt_zero N hN b).mp hface
+    · exact (onFaceΔ2_two_iff_gridPt_zero N hN b hb).mp hface
+  exact cN2_ne_of_zero N hN f hf_map b hb j hzero
 
 /-- Face 2 diagonal: the coloring g(k) = (cN2(k, N-k) mod 2) has g(0)=1, g(N)=0,
     so by XOR parity there are an odd number of color-changing edges on face 2.
