@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-namespace-and-imports",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 65 },
+    "type": "context",
+    "title": "Mathlib Import + Parent File Re-Use + `Polynomial` Namespace",
+    "content": "Three small but consequential setup lines. `import Mathlib` pulls the whole library — required because the proof spans three distant Mathlib areas (`FieldTheory.PurelyInseparable`, `Algebra.CharP.Frobenius`, `FieldTheory.SplittingField`) and singling them out would just delay future API drift. `import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01` re-uses the parent file's environment so the refutation theorem here references the *same* `Polynomial.Gal` and `IsPurelyInseparable` API that the false `insep_gal_trivial` axiom was stated against — the refutation is rigorous because the ambient definitions match. `open Polynomial` lets the rest of the file write `X`, `C`, `degree`, `Gal`, `Separable` without the `Polynomial.` prefix. Wrapping everything in `namespace AngleTrisectionInsepGalCorrect` keeps the local definitions (`base`, `aGen`, `f_target`, `g_factor`) from polluting the global namespace and signals that this file's deliverable is a *correction* (Insep-Gal-**Correct**) of the parent's claim.",
+    "mathContext": "The two-import discipline matters for axiomatic integrity: importing `Mathlib` gives access to the corrected machinery; importing `Proofs.AngleTrisectionOQ02OQ01OQ01OQ01` makes the refutation refer to the parent's axiom by name. Without the parent import, `insep_gal_trivial_refuted` would only contradict a paraphrase of the false axiom — with it, the contradiction is at the level of Lean's typechecker.",
+    "significance": "context",
+    "relatedConcepts": ["Lean module imports", "namespace hygiene", "axiomatic integrity", "refutation against named axiom"],
+    "prerequisites": ["Lean 4 module system", "`open` declarations", "namespace conventions"]
+  },
+  {
     "id": "ann-base-field-construction",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 67, "endLine": 78 },
