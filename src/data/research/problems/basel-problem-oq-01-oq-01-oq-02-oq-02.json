@@ -26,19 +26,18 @@
     "goal": "Replace `axiom denominator_control` with a `theorem denominator_control` (or `lemma`), or prove it in a companion file `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` that re-exports the result, eliminating one of the 5 Apéry axioms."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-08T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "Defined harmonicCubed (H_n^{(3)}) infrastructure (4 lemmas: base values, non-negativity, monotonicity) — the first half of the van der Poorten denominator analysis for route (F). The main divisibility theorem `harmonicCubed_lcm_clear` is deferred to a follow-up session due to Docker build timeout from concurrent agent contention.",
+    "phase": "ACT",
+    "since": "2026-05-08T04:30:00.000Z",
+    "iteration": 4,
+    "focus": "Discharged the H_n^{(3)} half of the van der Poorten denominator analysis (route F). Proved `harmonicCubed_lcm_clear_nat` (explicit ℕ-witness identity) and `harmonicCubed_lcm_clear` (existential `∃ m : ℤ, …` form matching the parent's `denominator_control` axiom shape). Integer witness: `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3 : ℕ`, exact-divisible per term via `pow_dvd_lcmRange_pow` (Part 2). Build verified (PR #16898 merged 2026-05-08T03:57:56Z). Remaining blockers shifted to the alternating-bilinear half + closed-form expansion of `aperyA n`.",
     "blockers": [
-      "The main divisibility theorem `harmonicCubed_lcm_clear : ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m` requires careful `Nat.cast_div`/`field_simp` handling — `push_cast` aggressively pushes through `Nat.div` via `Int.ofNat_div`, creating an `Int.div` that doesn't match the per-term identity. Workaround: use `harmonicCubed_term_eq` private lemma + `Int.cast_natCast` + `Nat.cast_sum` — proved correct on paper, but local Docker build (cold cache + concurrent agents) exceeded 30-minute timeout in 2 attempts during session 3.",
-      "The alternating bilinear summand ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) needs binomial-coefficient denominator analysis — concretely: C(n,m) and C(n+m,m) have denominators that, after multiplying by lcm(1..n)^3, leave integers. Classical telescoping identity (van der Poorten 1979 §6) handles this but is non-trivial to port.",
-      "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo. Stating `aperyA_explicit_formula` as a sorry-axiom is a future session.",
-      "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'."
+      "The alternating bilinear summand ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) needs binomial-coefficient denominator analysis — concretely: C(n,m) and C(n+m,m) have denominators that, after multiplying by lcm(1..n)^3, leave integers. Classical telescoping identity (van der Poorten 1979 §6) handles this but is non-trivial to port. Estimated ~200 lines.",
+      "Current `aperyA` is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo. Stating `aperyA_explicit_formula` as a sorried theorem and validating numerically at small n is a future session.",
+      "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'. The H_n^{(3)} clearing now in BaselProblemOQ01OQ01OQ02OQ02.lean is the first such instance and could potentially be upstreamed."
     ],
-    "nextAction": "Session 4: Re-attempt `harmonicCubed_lcm_clear` (proof scaffolded in Session 3 but Docker build timed out) — once verified, advance to `vdpAlternatingSum_lcm_clear`.",
+    "nextAction": "Session 5: stub `vdpAlternatingSum_lcm_clear` with the classical denominator telescoping identity (van der Poorten 1979 §6). Begin with the binomial-denominator divisibility lemma `m · Nat.choose n m ∣ lcmRange n` for `0 < m ≤ n`, derived from the identity `m · C(n, m) = n · C(n-1, m-1)`. This packages the absorbtion of the binomial-coefficient denominators in the alternating sum.",
     "attemptCounts": {
-      "total": 2,
+      "total": 4,
       "currentApproach": 2,
       "approachesTried": 1
     }
