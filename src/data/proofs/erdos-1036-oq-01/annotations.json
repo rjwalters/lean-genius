@@ -14,7 +14,7 @@
   {
     "id": "ann-isc-interface",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 42, "endLine": 62 },
+    "range": { "startLine": 39, "endLine": 53 },
     "type": "technique",
     "title": "Axiomatizing numISCTrue: Three Properties Without Full Quotient",
     "content": "Rather than constructing the Quotient type (~200 lines), three axioms capture what's needed:\n\n**numISCTrue**: The function exists (maps SimpleGraph V → ℕ). Full construction: Fintype.card(Quotient ≈) where S ≈ T ↔ G.induce S ≅g G.induce T.\n\n**numISCTrue_le_pow**: numISCTrue G ≤ 2^n (ISC classes ≤ vertex subsets).\n\n**numISCTrue_pos**: numISCTrue G > 0 (∅ gives one ISC class).\n\nThese are 'trivially true' axioms (not genuine assumptions) that could be eliminated with a Fintype quotient construction.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-non-ramsey",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 63, "endLine": 90 },
+    "range": { "startLine": 55, "endLine": 72 },
     "type": "concept",
     "title": "Non-Ramsey Graphs and Shelah's Theorem",
     "content": "**IsNonRamsey**: Both G and G^c are clique-free of size ⌈c·log n⌉. Non-Ramsey(c) graphs have no clique or independent set of size c·log n.\n\n**nonRamseyExistsTrue**: Axiom — non-Ramsey(c) graphs exist on all large vertex sets. Witness: G(n,1/2) for c < 2/log 2 (both ω(G) and α(G) are ~ 2log₂n a.s.).\n\n**shelah_isc**: Axiom — for c > 0, ∃ c' > 0 such that every non-Ramsey(c) graph has ≥ 2^{c'n} ISC classes. This is Shelah's 1998 theorem — the mathematical content.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-optimal-def",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 91, "endLine": 120 },
+    "range": { "startLine": 74, "endLine": 114 },
     "type": "technique",
     "title": "Optimal Constant as Supremum + Auxiliary Setup",
     "content": "**optimalConstantTrue c = sSup { c' | ∀ G non-Ramsey(c): numISCTrue G ≥ 2^{c'n} }** — the optimal exponent as a conditionally complete lattice supremum.\n\n**optimalSet_nonempty**: c' = 0 ∈ S since 2^0 = 1 ≤ numISCTrue (by numISCTrue_pos).\n\n**optimalSet_le_one**: Every c' ∈ S satisfies c' ≤ 1. Proof by contradiction: if c' > 1, get G with n≥1 vertices and numISCTrue G ≥ 2^{c'n} > 2^n ≥ numISCTrue G — contradiction via `Real.rpow_lt_rpow_of_exponent_lt`.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-bounds",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 121, "endLine": 142 },
+    "range": { "startLine": 116, "endLine": 135 },
     "type": "insight",
     "title": "c'(c) ∈ (0,1]: Two-Sided Bound via csSup API",
     "content": "Three theorems:\n\n**optimalConstantTrue_le_one**: `csSup_le ⟨0, nonempty⟩ bound_fn` — sSup ≤ 1.\n\n**optimalConstantTrue_pos**: From shelah_isc get c'' > 0. Show c'' ∈ S. Use `le_csSup ⟨1,bound⟩ hmem` to get c'' ≤ sSup. Chain: 0 < c'' ≤ optimalConstantTrue.\n\n**optimalConstantTrue_bounds**: Conjunction ⟨pos, le_one⟩.",
@@ -62,7 +62,7 @@
   {
     "id": "ann-conjecture",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 139, "endLine": 145 },
+    "range": { "startLine": 137, "endLine": 144 },
     "type": "insight",
     "title": "The Open Conjecture c'(c) = 1",
     "content": "**optimalConstantTrue_eq_one**: Axiom — ∀ c > 0, optimalConstantTrue c = 1. This is the genuine open conjecture, the only one of the six axioms that is not 'trivially true' (i.e., eliminable by additional Mathlib infrastructure).\n\n**Mathematical witness**: G(n,1/2) is non-Ramsey(c) for c < 2/log 2 (by the Erdős-Rényi 1959 / Bollobás 2001 estimates on $\\omega, \\alpha$), AND has numISCTrue G(n,1/2) = 2^n a.s. (almost all $2^n$ vertex subsets give pairwise non-isomorphic induced subgraphs — connected to the graph reconstruction conjecture). Establishing both probabilistic statements in Lean would put c' = 1 in the optimality set and prove the conjecture, eliminating the sixth axiom.\n\n**Why this is hard**: the ISC count of $G(n, 1/2)$ being $2^n$ a.s. is a strong rigidity property — it says the random graph has *trivial* induced-subgraph isomorphisms across almost every pair of subsets. This is essentially an asymptotic graph-reconstruction statement; full proofs use moment methods on the number of isomorphism pairs.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-summary",
     "proofId": "erdos-1036-oq-01",
-    "range": { "startLine": 150, "endLine": 169 },
+    "range": { "startLine": 150, "endLine": 167 },
     "type": "context",
     "title": "Audit Trail: The Six Axioms by Type",
     "content": "The closing comment block functions as an *audit trail*, classifying each of the six axioms by the level of effort needed to eliminate it:\n\n**Trivially true (3 axioms, ~200 lines of Mathlib quotient infrastructure)**: `numISCTrue`, `numISCTrue_le_pow`, `numISCTrue_pos` are the interface for the ISC count function. Eliminating them requires constructing `Quotient (S : Finset V) (≈)` where `S₁ ≈ S₂ ↔ G.induce S₁ ≅g G.induce S₂`, equipping the quotient with `Fintype`, and proving `Fintype.card ≤ 2^|V|`. This is engineering, not mathematics.\n\n**Inherited from parent (2 axioms)**: `nonRamseyExistsTrue` and `shelah_isc` are imported as-axioms from the parent file `Erdos1036Problem.lean`, where they ultimately trace to Shelah's 1998 theorem and the existence of non-Ramsey graphs. Eliminating these would require formalising Shelah's $\\sim 30$-page proof.\n\n**Genuine open problem (1 axiom)**: `optimalConstantTrue_eq_one` is the only mathematical assumption — the actual Erdős open question this entry encodes. Eliminating it is the OQ.\n\nThis tripartite classification is the entry's main pedagogical contribution: it disambiguates *engineering work* from *mathematical assumption* and makes clear which axiom carries the genuine open content.",
