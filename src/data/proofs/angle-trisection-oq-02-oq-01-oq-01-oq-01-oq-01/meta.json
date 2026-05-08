@@ -48,20 +48,21 @@
       "Counterexample: f = X^4 + X^2 + a over F₂(a) is inseparable, irreducible, but |Gal(f)| = 2",
       "Proved the correct theorem: IsPurelyInseparable F f.SplittingField → |Gal(f)| = 1",
       "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents",
-      "Replaced parity-case-split sub_pow_char_pow_eq with a one-liner via iterateFrobenius (a ring hom) and map_sub"
+      "Replaced parity-case-split sub_pow_char_pow_eq with a one-liner via iterateFrobenius (a ring hom) and map_sub",
+      "Added counterexample-side structural scaffolding: f_target_natDegree (=4), f_target_degree, f_target_ne_zero, f_target_monic — prerequisites for any Artin-Schreier irreducibility or |Gal|=2 argument that wishes to discharge counterexample_gal_card"
     ],
     "axiomCount": 1,
-    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries).",
-    "lineCount": 205,
-    "theoremCount": 6,
+    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries). Counterexample-side scaffolding (f_target_natDegree, f_target_degree, f_target_ne_zero, f_target_monic) is proved in this file; these are downstream prerequisites for any future irreducibility / Galois-group computation.",
+    "lineCount": 230,
+    "theoremCount": 10,
     "definitionCount": 4
   },
   "leanFile": {
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
     "axiomCount": 1,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 4,
-    "lineCount": 205,
+    "lineCount": 230,
     "sorries": 0
   },
   "overview": {
@@ -81,24 +82,24 @@
       "id": "setup",
       "title": "Counterexample Framework",
       "startLine": 1,
-      "endLine": 80,
-      "summary": "Introduces the base field F₂(a) = FractionRing(F₂[X]). Defines f_target = X⁴+X²+a and g_factor = X²+X+a. Proves f = g ∘ (X²) structurally and f' = 0 in char 2 (inseparability).",
-      "mathContext": "F = F₂(a) = Frac(F₂[X]), g(X) = X²+X+a (Artin-Schreier: irred since a ≠ t²+t for t ∈ F₂(a)), f(X) = g(X²) = X⁴+X²+a. In char 2: f'(X) = 4X³+2X = 0."
+      "endLine": 112,
+      "summary": "Introduces the base field F₂(a) = FractionRing(F₂[X]). Defines f_target = X⁴+X²+a and g_factor = X²+X+a. Proves f = g ∘ (X²) structurally, f' = 0 in char 2 (inseparability), and structural identities (f_target_natDegree = 4, f_target_degree = 4, f_target_ne_zero, f_target_monic) needed for downstream irreducibility / Galois-group arguments.",
+      "mathContext": "F = F₂(a) = Frac(F₂[X]), g(X) = X²+X+a (Artin-Schreier: irred since a ≠ t²+t for t ∈ F₂(a)), f(X) = g(X²) = X⁴+X²+a. In char 2: f'(X) = 4X³+2X = 0. natDegree(f) = 4, leading coefficient = 1."
     },
     {
       "id": "correct-theorem",
       "title": "The Correct Theorem: Purely Inseparable → Trivial Gal",
-      "startLine": 81,
-      "endLine": 180,
+      "startLine": 113,
+      "endLine": 197,
       "summary": "Proves the correct replacement for insep_gal_trivial: algEquiv_eq_refl_of_isPurelyInseparable shows every automorphism of a purely inseparable extension is the identity. Derives gal_card_one_of_purelyInseparable_splitting as a corollary.",
       "mathContext": "Key: (σ(x)-x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0 by char-p Frobenius. Then σ(x) = x since field has no nilpotents."
     },
     {
       "id": "when-purely-insep",
       "title": "When Is the Splitting Field Purely Inseparable?",
-      "startLine": 181,
+      "startLine": 198,
       "endLine": 230,
-      "summary": "States and axiomatizes that f = X^p - a (irreducible) has purely inseparable splitting field. Also uses counterexample_gal_card axiom for the counterexample. Proves insep_gal_trivial_is_false formally.",
+      "summary": "States and axiomatizes that f_target has |Gal| = 2 (counterexample_gal_card, pending Artin-Schreier). Uses this to formally refute insep_gal_trivial in the parent.",
       "mathContext": "X^p - a: splitting field = F(a^(1/p)), purely inseparable since (a^(1/p))^p = a ∈ F. But X⁴+X²+a: splitting field = F₂(a)(α^(1/2)), NOT purely inseparable — has nontrivial automorphism."
     }
   ],

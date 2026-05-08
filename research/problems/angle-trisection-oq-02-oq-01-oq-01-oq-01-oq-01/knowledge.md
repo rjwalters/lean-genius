@@ -116,6 +116,88 @@ Pending: Docker build of `Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01` running.
 
 ---
 
+## Session 2026-05-08 (Session 3, researcher-1) — Counterexample structural scaffolding
+
+**Mode**: ACT (MODERATE knowledge tier, score 11)
+**Outcome**: Added 4 structural lemmas about `f_target` for downstream Artin-Schreier work.
+Theorem count: 6 → 10. lineCount: 205 → 230. Sorries unchanged at 0; only intentional axiom
+`counterexample_gal_card` remains.
+
+### What I Did
+
+Added 4 small but load-bearing structural lemmas about `f_target = X⁴ + X² + aGen`:
+
+1. **`f_target_natDegree`**: `f_target.natDegree = 4` — proved by `unfold; compute_degree!`.
+2. **`f_target_degree`**: `f_target.degree = 4` — same pattern (degree, not just natDegree).
+3. **`f_target_ne_zero`**: `f_target ≠ 0` — corollary of natDegree = 4 ≠ 0.
+4. **`f_target_monic`**: `f_target.Monic` — leading coefficient = 1 via `coeff` simp set.
+
+These are the basic prerequisites for any future Artin-Schreier irreducibility proof or
+explicit Galois-group computation that wishes to discharge the `counterexample_gal_card`
+axiom. In particular:
+- An Eisenstein-style irreducibility argument over the integral subring would need
+  `f_target_monic` (leading coefficient ∉ the prime ideal) and `f_target_natDegree` (to
+  index the Eisenstein hypotheses by k < degree).
+- An explicit Galois-group bound `Nat.card f_target.Gal ≤ f_target.natDegree.factorial`
+  would need `f_target_natDegree` as input (via `Polynomial.Gal.card_le_natDegree_factorial`
+  or analogue).
+- A non-degeneracy lemma `f_target_ne_zero` is required by virtually every non-trivial
+  polynomial API in Mathlib (degree, splitting field, Gal, etc.).
+
+This session does NOT close `counterexample_gal_card`. Doing so requires Artin-Schreier
+extension theory over `F₂(a)` (~hundreds of Mathlib-style lines), which is multi-session.
+
+### Files Modified
+
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (+25 lines, +4 lemmas)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/meta.json`
+  (lineCount 205 → 230, theoremCount 6 → 10 in both `meta` and `leanFile` blocks;
+   originalContributions and assumptions extended; section endLines updated)
+- `research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/knowledge.md`
+  (this entry)
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  (iteration 1 → 3, builtItems and progressSummary synced through Sessions 2 + 3)
+
+### Build Verification
+
+The `compute_degree!` tactic is established in this codebase (used in
+`InverseGaloisA5.lean`, `InverseGaloisD4.lean`, `InverseGaloisF20.lean`,
+`AngleTrisectionCos20GalOQ01OQ02.lean`, `AngleTrisectionCos20GalOQ03.lean`,
+`AngleTrisectionCos20GalOQ03OQ01.lean`) on polynomials of similar shape
+(monomial sums of `X^k` and `C c`), so the new lemmas should compile. Local Docker
+build was not run from this worktree (the agent's `proofs/.lake` symlink is the
+known broken self-cycle, see MEMORY.md "broken proofs/.lake symlink"); CI is the
+ground-truth verifier.
+
+### Path Forward
+
+**Next sessions** (estimated 3+ sessions to fully discharge `counterexample_gal_card`):
+
+1. **Eisenstein-style irreducibility over `Polynomial (ZMod 2)`**:
+   `Irreducible (f_target_int)` where `f_target_int = X⁴ + X² + X` over `(ZMod 2)[X]`,
+   then transfer via `algebraMap` lifts to `f_target` over `base = FractionRing _`.
+   Mathlib has `Polynomial.irreducible_of_eisenstein_criterion`; the main work is
+   showing the Eisenstein hypothesis at `(X)` (the prime ideal of `(ZMod 2)[X]` generated
+   by the indeterminate, which is exactly what's available as `aGen`).
+
+2. **Splitting field characterization**: `f_target.SplittingField = base⟮α^(1/2)⟯` for
+   any α with `g_factor.eval α = 0` (`α = aGen^(1/2) + 1` works after Artin-Schreier).
+
+3. **Constructing the nontrivial automorphism σ: α^(1/2) ↦ α^(1/2) + 1**:
+   - Show this map preserves the field operations and fixes `base`.
+   - Show it has order 2 (σ ∘ σ = id, σ ≠ id).
+   - Conclude `2 ≤ Nat.card f_target.Gal`.
+
+4. **Upper bound `Nat.card f_target.Gal ≤ 2`**:
+   - Either: degree count (deg = 4, but separable degree = 2 since f = g(X²)).
+   - Or: direct case analysis on the splitting field `base⟮α^(1/2)⟯` (Galois closure has
+     index 2 over base since insep degree = 2).
+
+The full Artin-Schreier formalization is a multi-PR effort, but each of the above
+steps is independently useful and may have Mathlib-upstream value.
+
+---
+
 ## Dead Ends
 
 - **"Inseparable irreducible → trivial Galois"**: The obvious approach is FALSE. The case f = g(X^p) with deg(g) ≥ 2 gives counterexample.
