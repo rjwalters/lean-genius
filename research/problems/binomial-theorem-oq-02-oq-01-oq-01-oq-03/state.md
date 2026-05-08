@@ -1,19 +1,19 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-3 reduction-lemma proof complete)
+**Phase**: ACT (Phase-4 structural-lemma prep)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 3, researcher-3)
-**Iteration**: 3
+**Last Updated**: 2026-05-08 (Session 4, researcher-10)
+**Iteration**: 4
 
 ## Current Focus
-Phase-3 deliverable: discharge the sorry on
-`multinomialMarginalCDF_eq_binomialCDF`. Proof completed via
-`Finset.sum_fiberwise_of_maps_to` + the parent file's
-`multinomial_marginal_pmf`. The Lean file is now sorry-free; the only
-explicit assumptions are the two axioms that were already named
-(`binomial_clt_pointwise` and the opaque `standardNormalCDF`).
+Phase-4 prep: added `binomialCDF_neg` and `binomialCDF_mono` — two
+structural lemmas about the binomial CDF that the Portmanteau-bridge
+proof of `binomial_clt_pointwise` will need. No axiom elimination this
+session; the file is still 0 sorries / 2 axioms (`binomial_clt_pointwise`
++ `standardNormalCDF` opaque). Next session continues the structural
+library (`binomialCDF_le_one`, then the Portmanteau bridge itself).
 
 ## Active Approach
 **CDF-based** rather than the measure-theoretic Bernoulli-sum approach
@@ -29,18 +29,23 @@ sketched in iteration 1. Justification:
   Phase-3 task is to bridge to Mathlib's measure-theoretic Gaussian.
 
 ## Attempt Count
-- Total attempts: 3 (Sessions 1–3)
+- Total attempts: 4 (Sessions 1–4)
 - Approaches tried:
   - **Iteration 1** (researcher-8, OBSERVE→ORIENT): planned i.i.d.-CLT
     decomposition (Sublemmas A, B, C, D). No Lean code.
   - **Iteration 2** (researcher-9, ACT): CDF-based scaffold.
     `BinomialTheoremOQ02OQ01OQ01OQ03.lean` (178 lines, 2 axioms incl.
     opaque, 1 sorry, 2 theorems). Merged in #16866.
-  - **Iteration 3** (researcher-3, ACT — THIS SESSION):
-    discharged the reduction-lemma sorry via
-    `Finset.sum_fiberwise_of_maps_to`. File now 239 lines, 2 axioms,
-    **0 sorries**, 3 theorems (added `piAntidiag_apply_le` private
-    lemma).
+  - **Iteration 3** (researcher-3, ACT): discharged the reduction-lemma
+    sorry via `Finset.sum_fiberwise_of_maps_to`. File grew to 239 lines,
+    2 axioms, **0 sorries**, 3 theorems (added `piAntidiag_apply_le`
+    private lemma).
+  - **Iteration 4** (researcher-10, ACT — THIS SESSION):
+    Phase-4 prep. Added `binomialCDF_neg` (CDF = 0 below support) and
+    `binomialCDF_mono` (monotone in `x` when `0 ≤ p ≤ 1`) — two
+    structural lemmas that the Portmanteau bridge will consume. File
+    now 275 lines, 2 axioms (unchanged), **0 sorries**, 5 theorems
+    (substantive count: 4).
 
 ## Blockers
 - **Build verification**: this session could not run the Docker build
@@ -59,18 +64,36 @@ sketched in iteration 1. Justification:
 
 ## Next Action
 
-**Phase-4 (next session)**: discharge the `binomial_clt_pointwise` axiom.
+**Session 5 (immediate)**: round out the structural-properties library
+with two more routine lemmas:
+
+* `binomialCDF_le_one`: bounded above by 1. Reduces to
+  `(p + (1-p))^n = 1` via `add_pow` (or `Commute.add_pow` for a
+  commutative semiring); the if-guard restricts the sum, but the
+  whole sum equals `1`, and dropping non-negative terms only decreases.
+* `binomialCDF_zero_le`: bounded below by 0 (each summand non-negative
+  when `0 ≤ p ≤ 1`).
+
+**Session 6 (Phase-4 axiom attack)**: discharge `binomial_clt_pointwise`.
 The cleanest path is to bridge from Mathlib's
-`ProbabilityTheory.iid_central_limit_theorem` applied to a
-`Bernoulli(p)` measure on ℝ; this requires a Portmanteau-style
-CDF-from-measure-weak-convergence step. Alternatively, Stirling's
-formula gives a direct asymptotic-analysis proof.
+`ProbabilityTheory.iid_central_limit_theorem` applied to a Bernoulli($p$)
+i.i.d. sequence; this requires a Portmanteau-style CDF-from-measure-
+weak-convergence step. The structural lemmas added in Sessions 4–5
+(`binomialCDF_neg`, `binomialCDF_mono`, `binomialCDF_le_one`,
+`binomialCDF_zero_le`) are prerequisites for the bridge. Alternative
+path: Stirling's formula for a direct asymptotic-analysis proof.
 
-A separate stretch task: bridge `standardNormalCDF` to Mathlib's
-measure-theoretic standard Gaussian (its CDF), removing the opaque
-declaration entirely.
+**Stretch (independent)**: replace `standardNormalCDF` opaque with
+a `noncomputable def` integrating `gaussianPDFReal 0 ⟨1, _⟩` over
+`Set.Iic x`. ShannonEntropyOQ01.lean already uses
+`ProbabilityTheory.gaussianPDFReal μ ⟨σ², sq_nonneg σ⟩` so the
+API is precedented; the bridge to a CDF function is one
+`MeasureTheory.integral` definition. Removes the opaque assumption
+entirely (axiom count 2 → 1).
 
-**Phase-3 (this session)**: discharged the reduction-lemma sorry. Proof
+---
+
+**Phase-3 (Session 3)**: discharged the reduction-lemma sorry. Proof
 sketch (follows the actual file):
 
 ```lean
