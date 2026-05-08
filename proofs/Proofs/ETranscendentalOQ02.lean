@@ -202,10 +202,68 @@ theorem e_digit9 : (⌊(1000000000 : ℝ) * Real.exp 1⌋ : ℤ) % 10 = 8 := by
 -- PART IV: NORMAL IMPLIES IRRATIONAL
 -- ============================================================
 
+/-! ### Layer 1: orbit pigeonhole on a finite type
+
+Preparatory lemmas for the (deferred) elimination of
+`rational_digits_eventually_periodic`. The orbit of any endomap on a finite
+type is eventually periodic: pigeonhole on `Fin (Fintype.card α + 1) → α`
+yields a collision `g^[i] x₀ = g^[j] x₀`, and the period propagates by
+`Function.iterate_add_apply`.
+
+This is the orbit-form abstraction (option α in the Session 3 recipe) — the
+naive "pigeonhole on `f i = f j`" form does NOT propagate because
+`f(i+k) = f(j+k)` is not implied. The orbit form sidesteps that by leveraging
+that `g^[n+T] x₀ = g^[T] (g^[n] x₀)`.
+-/
+
+/-- Pigeonhole on `Fin (Fintype.card α + 1) → α` produces a non-trivial
+    iterate-collision: there exist `i < j ≤ Fintype.card α` with
+    `g^[i] x₀ = g^[j] x₀`. -/
+private lemma exists_iterate_collision {α : Type*} [Fintype α] [DecidableEq α]
+    (g : α → α) (x₀ : α) :
+    ∃ (i j : ℕ), i < j ∧ j ≤ Fintype.card α ∧ g^[i] x₀ = g^[j] x₀ := by
+  have hgt : Fintype.card α < Fintype.card (Fin (Fintype.card α + 1)) := by
+    rw [Fintype.card_fin]; exact Nat.lt_succ_self _
+  obtain ⟨a, b, hab, hf⟩ :=
+    Fintype.exists_ne_map_eq_of_card_lt
+      (fun n : Fin (Fintype.card α + 1) => g^[n.val] x₀) hgt
+  rcases lt_or_gt_of_ne (Fin.val_injective.ne hab) with h | h
+  · exact ⟨a.val, b.val, h, Nat.lt_succ_iff.mp b.isLt, hf⟩
+  · exact ⟨b.val, a.val, h, Nat.lt_succ_iff.mp a.isLt, hf.symm⟩
+
+/-- The orbit of `g : α → α` starting at `x₀` is eventually periodic when `α`
+    is finite. There exist `T > 0` and `N₀ ≤ Fintype.card α` (with
+    `T ≤ Fintype.card α`) such that `g^[n + T] x₀ = g^[n] x₀` for all
+    `n ≥ N₀`.
+
+    Proof: pigeonhole gives `g^[i] x₀ = g^[j] x₀` for some `i < j`; set
+    `T := j - i`, `N₀ := i`. For any `n = i + k`, the period propagates via
+    `g^[(i+k)+(j-i)] x₀ = g^[k+j] x₀ = g^[k] (g^[j] x₀) = g^[k] (g^[i] x₀)
+     = g^[k+i] x₀ = g^[i+k] x₀` by `Function.iterate_add_apply`. -/
+private lemma eventually_periodic_iterate {α : Type*} [Fintype α] [DecidableEq α]
+    (g : α → α) (x₀ : α) :
+    ∃ (T N₀ : ℕ), 0 < T ∧ N₀ ≤ Fintype.card α ∧ T ≤ Fintype.card α ∧
+      ∀ n ≥ N₀, g^[n + T] x₀ = g^[n] x₀ := by
+  obtain ⟨i, j, hij, hj_le, hf_eq⟩ := exists_iterate_collision g x₀
+  refine ⟨j - i, i, by omega, by omega, by omega, ?_⟩
+  intro n hn
+  obtain ⟨k, rfl⟩ : ∃ k, n = i + k := ⟨n - i, by omega⟩
+  -- Goal: g^[(i + k) + (j - i)] x₀ = g^[i + k] x₀
+  have hT_rewrite : (i + k) + (j - i) = k + j := by omega
+  have hi_rewrite : i + k = k + i := by omega
+  rw [hT_rewrite, hi_rewrite,
+      Function.iterate_add_apply g k j, Function.iterate_add_apply g k i,
+      hf_eq]
+
 /-- **Axiom**: Rational numbers have eventually periodic base-b expansions.
     Proof sketch: if x = p/q, then bⁿ·(p/q) mod 1 = (bⁿ·p mod q)/q, and
     bⁿ mod q is periodic (pigeonhole on {0,...,q-1}).
-    The period T divides φ(q) ≤ q. -/
+    The period T divides φ(q) ≤ q.
+
+    Recipe-status (Session 3 #16976; Layer 1 added Session 8): the orbit-form
+    pigeonhole `eventually_periodic_iterate` above provides the abstract
+    eventual-periodicity ingredient. Layers 2 (ZMod q.den residue bridge) and
+    3 (`nthDigit_rat_eq_residue` cast bridge) remain. -/
 axiom rational_digits_eventually_periodic (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
     ∃ (T : ℕ) (N₀ : ℕ), 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
 
