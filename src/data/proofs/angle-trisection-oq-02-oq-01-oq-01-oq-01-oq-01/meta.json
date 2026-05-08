@@ -66,7 +66,7 @@
     "sorries": 0
   },
   "overview": {
-    "historicalContext": "The parent entry `angle-trisection-oq-02-oq-01-oq-01-oq-01` axiomatized `insep_gal_trivial`: for inseparable irreducible polynomials over characteristic-p fields, the Galois group has cardinality 1. This axiom was stated as a 'documented counterexample to natDegree | |Gal|' with a comment that a full proof requires 'building the function field F_p(t), proving irreducibility via Eisenstein's criterion, and computing the automorphism group of a purely inseparable extension.' This entry shows the axiom is mathematically incorrect in its general form.",
+    "historicalContext": "The parent entry `angle-trisection-oq-02-oq-01-oq-01-oq-01` axiomatized `insep_gal_trivial`: for inseparable irreducible polynomials over characteristic-p fields, the Galois group has cardinality 1. This axiom was stated as a 'documented counterexample to natDegree | |Gal|' with a comment that a full proof requires 'building the function field F_p(t), proving irreducibility via Eisenstein's criterion, and computing the automorphism group of a purely inseparable extension.' This entry shows the axiom is mathematically incorrect in its general form.\n\nThe distinction between *inseparable* (f' = 0) and *purely inseparable splitting field* (f = c·(X−r)^(p^e)) was clarified by Steinitz in his 1910 *Algebraische Theorie der Körper*, which axiomatized field theory and introduced separable/inseparable degree as separate invariants. Artin-Schreier theory (Artin & Schreier, *Eine Kennzeichnung der reell abgeschlossenen Körper*, 1927) gave the clean structural source of inseparable-but-not-purely-inseparable counterexamples in characteristic p: composition g(X^p) of a separable irreducible g with the Frobenius polynomial X^p produces an inseparable irreducible polynomial whose splitting field carries the original Galois action of g, hence is generally non-trivial. The char-2 instance f = X⁴ + X² + a from this entry is the smallest non-degenerate Artin-Schreier counterexample. Mathlib's `IsPurelyInseparable` typeclass (Mathlib.FieldTheory.PurelyInseparable, contributed by the Mathlib field-theory team in 2023-2024) finally provided the abstract API needed to state and prove the correct theorem in 200 lines, replacing what would have been a much longer ad-hoc construction over F_p(t).",
     "problemStatement": "**Question**: Can `insep_gal_trivial` be proved using Mathlib's purely inseparable extension infrastructure?\n\n**Answer**: No — the axiom is MATHEMATICALLY FALSE in general.\n\n**Counterexample**: Over F₂(a) (characteristic 2), the polynomial f(X) = X⁴ + X² + a satisfies:\n- f is irreducible (any quadratic factoring requires roots of X² + X + a, which is irreducible over F₂(a) by Artin-Schreier theory)\n- f is inseparable (f'(X) = 4X³ + 2X = 0 in characteristic 2)\n- |Gal(f)| = 2, NOT 1 (the automorphism α^(1/2) ↦ α^(1/2) + 1 has order 2)\n\n**Correct theorem**: If `IsPurelyInseparable F f.SplittingField` then `|Gal(f)| = 1`.",
     "keyInsights": [
       "Inseparable ≠ purely inseparable splitting field: f = g(X^p) with deg(g) ≥ 2 is inseparable but has non-purely-inseparable splitting field",
@@ -120,13 +120,98 @@
       "description": "Top-level angle-trisection entry. The whole OQ chain leading here drills down on the Galois-theoretic inputs needed to make the impossibility argument fully rigorous in arbitrary characteristic."
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "f_is_g_composed_sq",
+      "type": "lemma",
+      "description": "Structural identity: f_target = g_factor.comp(X^2), confirming f(X) = g(X²) where g(X) = X² + X + a is Artin-Schreier."
+    },
+    {
+      "name": "f_derivative_zero",
+      "type": "lemma",
+      "description": "f_target.derivative = 0 in characteristic 2 (all exponents in X⁴ + X² + a are even). Establishes inseparability."
+    },
+    {
+      "name": "f_target_natDegree",
+      "type": "lemma",
+      "description": "f_target.natDegree = 4. Discharged by `compute_degree!`. Prerequisite for any Galois-degree counting."
+    },
+    {
+      "name": "f_target_degree",
+      "type": "lemma",
+      "description": "f_target.degree = 4. Distinguishes degree (WithBot ℕ) from natDegree (ℕ); both needed by different Mathlib APIs."
+    },
+    {
+      "name": "f_target_ne_zero",
+      "type": "lemma",
+      "description": "f_target ≠ 0. Immediate corollary of f_target_natDegree = 4 (the zero polynomial has natDegree 0)."
+    },
+    {
+      "name": "f_target_monic",
+      "type": "lemma",
+      "description": "f_target.Monic — leading coefficient = 1. Combined with degree 4 unlocks SplittingField/IsAlgClosed API."
+    },
+    {
+      "name": "sub_pow_char_pow_eq",
+      "type": "lemma",
+      "description": "(a − b)^(p^n) = a^(p^n) − b^(p^n) in any characteristic-p commutative ring. One-line proof via iterateFrobenius (a ring hom) and map_sub. The algebraic engine of the purely-inseparable Galois-triviality argument."
+    },
+    {
+      "name": "algEquiv_eq_refl_of_isPurelyInseparable",
+      "type": "theorem",
+      "description": "Every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for x ∈ K, get n with x^(p^n) ∈ F; then σ(x)^(p^n) = x^(p^n) since σ commutes with the F-structure, so (σ(x) − x)^(p^n) = 0 by char-p Frobenius, so σ(x) = x since fields have no nilpotents."
+    },
+    {
+      "name": "gal_card_one_of_purelyInseparable_splitting",
+      "type": "theorem",
+      "description": "Main correct theorem: if f.SplittingField is purely inseparable over F, then Nat.card f.Gal = 1. The intended replacement for the false axiom `insep_gal_trivial` in the parent entry."
+    },
+    {
+      "name": "insep_gal_trivial_refuted",
+      "type": "theorem",
+      "description": "Formal refutation: ∃ f, ¬f.Separable ∧ Nat.card f.Gal ≠ 1. Witness is f_target (X⁴ + X² + a over F₂(a)), with the inseparability discharged from f_derivative_zero and the Galois cardinality 2 from the `counterexample_gal_card` axiom."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Steinitz, E. (1910). \"Algebraische Theorie der Körper.\" Journal für die reine und angewandte Mathematik 137:167-309.",
+      "relevance": "First axiomatic treatment of field theory; introduces separable/inseparable degree as distinct invariants and identifies the role of characteristic p in inseparable phenomena."
+    },
+    {
+      "type": "textbook",
+      "citation": "Artin, E. & Schreier, O. (1927). \"Eine Kennzeichnung der reell abgeschlossenen Körper.\" Abh. Math. Sem. Univ. Hamburg 5:225-231.",
+      "relevance": "Origin of Artin-Schreier polynomials X^p − X − a; the structural source of the irreducible-but-inseparable counterexamples used here when composed with Frobenius."
+    },
+    {
+      "type": "textbook",
+      "citation": "Lang, S. (2002). Algebra (3rd ed.), Chapter V (Algebraic Extensions), §6 (Inseparable Extensions). Springer GTM 211.",
+      "relevance": "Standard graduate reference for the precise definitions of inseparable, separable closure, and purely inseparable; explains why purely-inseparable splitting (not mere inseparability) is the right hypothesis for trivial Galois group."
+    },
+    {
+      "type": "textbook",
+      "citation": "Bourbaki, N. (1981). Algèbre, Chapitres IV-V (Polynômes, fractions rationnelles; Corps commutatifs). Masson.",
+      "relevance": "Treats purely inseparable extensions (extensions radicielles) systematically; the (σ(x) − x)^(p^n) = 0 argument used in algEquiv_eq_refl_of_isPurelyInseparable is the standard Bourbaki-style proof."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.FieldTheory.PurelyInseparable.\" (accessed 2026).",
+      "relevance": "Provides the `IsPurelyInseparable` typeclass and the key lemma `IsPurelyInseparable.pow_mem` (∃ n, x^(p^n) ∈ algebraMap F K-range) on which the main theorem rests."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Algebra.CharP.Frobenius — iterateFrobenius and iterateFrobenius_def.\" (accessed 2026).",
+      "relevance": "The iterated-Frobenius ring homomorphism whose `map_sub` instance gives the one-line proof of sub_pow_char_pow_eq, replacing what would otherwise be a parity-case-split inductive argument."
+    }
+  ],
   "conclusion": {
     "summary": "The axiom insep_gal_trivial is mathematically incorrect. The correct theorem requires the splitting field to be purely inseparable, not just the polynomial to be inseparable.",
-    "implications": "The parent entry's axiom should be replaced with the weaker (and correct) claim for purely inseparable polynomials only (f = X^(p^e) - c type). The general inseparable case has |Gal(f)| = |Gal(g)| where g is the separable part of f.",
+    "implications": "The parent entry's axiom should be replaced with the weaker (and correct) claim for purely inseparable polynomials only (f = X^(p^e) - c type). The general inseparable case has |Gal(f)| = |Gal(g)| where g is the separable part of f. More broadly, this result clarifies that 'natDegree | |Gal|' fails in characteristic p exactly because of separability: the standard divisibility holds for the *separable degree*, not the full degree. Any constructibility/impossibility argument that takes characteristic-p coefficient fields seriously (Abel-Ruffini in characteristic p, transcendence bases over F_p, finite-field algebraic geometry) must therefore distinguish between inseparable and purely inseparable hypotheses.",
     "openQuestions": [
       "Can xPow_sub_of_irreducible_isPurelyInseparable be proved directly from Mathlib's SplittingField API?",
       "Does Mathlib have a direct theorem Subsingleton (K ≃ₐ[F] K) when IsPurelyInseparable F K?",
-      "Can `counterexample_gal_card` be replaced with a real proof of |Gal(X⁴+X²+a over F₂(a))| = 2 via Artin-Schreier theory?"
+      "Can `counterexample_gal_card` be replaced with a real proof of |Gal(X⁴+X²+a over F₂(a))| = 2 via Artin-Schreier theory?",
+      "Is there an analogous mistake-correction needed for `Nat.card f.Gal ∣ f.natDegree` in characteristic p? The standard divisibility theorem assumes separability; an enrichment of `gal_card_one_of_purelyInseparable_splitting` to a divisibility theorem `Nat.card f.Gal ∣ f.separableDegree` would close the loop."
     ]
   },
   "sorries": 0

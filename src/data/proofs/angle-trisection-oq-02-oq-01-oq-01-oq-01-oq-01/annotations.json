@@ -2,7 +2,7 @@
   {
     "id": "ann-counterexample-setup",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 62, "endLine": 90 },
+    "range": { "startLine": 67, "endLine": 90 },
     "type": "definition",
     "title": "The Counterexample: F₂(a), f = X⁴+X²+a",
     "content": "The base field is F₂(a) = FractionRing(F₂[X]) — the rational function field over F₂ with formal variable a (represented as the image of X in the fraction field). f_target = X⁴+X²+a (the inseparable irreducible polynomial) and g_factor = X²+X+a (the Artin-Schreier factor). Key lemmas: f_is_g_composed_sq (f = g∘X²) and f_derivative_zero (f' = 0 in char 2, proving inseparability).",
@@ -14,7 +14,7 @@
   {
     "id": "ann-frobenius-key-lemma",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 99, "endLine": 112 },
+    "range": { "startLine": 122, "endLine": 124 },
     "type": "technique",
     "title": "Char-p Frobenius: (σ(x)−x)^(p^n) = 0",
     "content": "The key technical lemma sub_pow_char_pow_eq: in a characteristic-p ring, (a − b)^(p^n) = a^(p^n) − b^(p^n). This is the additive Frobenius endomorphism: the map x ↦ x^p is a ring homomorphism in char p. The proof uses CharP.add_pow_char_pow repeatedly. This lemma is the algebraic engine of the purely-inseparable Galois triviality proof.",
@@ -26,7 +26,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 114, "endLine": 158 },
+    "range": { "startLine": 133, "endLine": 157 },
     "type": "technique",
     "title": "Purely Inseparable Extension → Trivial Galois Group",
     "content": "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for any σ : K ≃ₐ[F] K and x ∈ K, get n with x^(p^n) ∈ F (IsPurelyInseparable.pow_mem). Then σ(x)^(p^n) = x^(p^n) (σ fixes F), so (σ(x)−x)^(p^n) = 0 (Frobenius lemma). Fields have no nonzero nilpotents, so σ(x) = x. Since x is arbitrary, σ = id.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-gal-card-corollary",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 143, "endLine": 162 },
+    "range": { "startLine": 162, "endLine": 169 },
     "type": "insight",
     "title": "Corollary: |Gal(f)| = 1 for Purely Inseparable Splitting Field",
     "content": "gal_card_one_of_purelyInseparable_splitting: if f.SplittingField is a purely inseparable extension of F, then Nat.card f.Gal = 1. Follows from algEquiv_eq_refl_of_isPurelyInseparable: every element of Gal(f) is the identity, so |Gal(f)| = 1. The counterexample_gal_card axiom provides the concrete Gal cardinality for the char-2 counterexample (|Gal(f_target)| = 2), which is used to formally refute the original insep_gal_trivial claim.",
@@ -48,9 +48,33 @@
     "prerequisites": ["Galois group definition", "gal_card_one_of_purelyInseparable_splitting", "counterexample_gal_card axiom"]
   },
   {
+    "id": "ann-structural-scaffolding",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 111 },
+    "type": "technique",
+    "title": "Structural Scaffolding: natDegree, degree, ne_zero, Monic",
+    "content": "Four structural lemmas about f_target: f_target_natDegree (=4 via compute_degree!), f_target_degree (=4 in WithBot ℕ), f_target_ne_zero (corollary of natDegree=4), and f_target_monic (leading coefficient = 1). These are not deep results — each is a one-line tactic proof — but they are the prerequisite vocabulary that any future Artin-Schreier / Galois-cardinality proof must speak. Without `Monic` and a known degree, Mathlib's `Polynomial.SplittingField` API and its irreducibility theorems cannot be invoked. Discharging them up-front turns the file's `counterexample_gal_card` axiom into a single-statement assumption rather than a stack of unstated structural prerequisites.",
+    "mathContext": "$\\deg(X^4 + X^2 + a) = 4$, $\\text{natDegree} = 4$, $\\text{leadingCoeff} = 1$. These are computable invariants: `compute_degree!` discharges natDegree/degree by pattern-matching on $X^n$ terms; `Monic` follows from $\\text{coeff}_4 = 1$. The polynomial is nonzero because its degree is positive — formally, $f = 0 \\Rightarrow \\text{natDegree}(f) = 0$, contradicting natDegree = 4.",
+    "significance": "supporting",
+    "relatedConcepts": ["compute_degree tactic", "Polynomial.Monic", "Polynomial.natDegree", "leading coefficient"],
+    "prerequisites": ["polynomial degree", "Polynomial.coeff", "compute_degree! tactic"]
+  },
+  {
+    "id": "ann-formal-refutation",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 179, "endLine": 196 },
+    "type": "insight",
+    "title": "Formal Refutation: ∃ f, ¬Separable ∧ |Gal| ≠ 1",
+    "content": "insep_gal_trivial_refuted packages the entire counterexample chain into a single existential statement. The witness is f_target. The first conjunct (¬f_target.Separable) is discharged from f_derivative_zero (separable polynomials have nonzero derivative). The second conjunct (Nat.card f_target.Gal ≠ 1) is discharged from the counterexample_gal_card axiom (which states |Gal| = 2). The Lean theorem is exactly the negation of the false axiom in the parent file, making the refutation machine-checkable.",
+    "mathContext": "The contrapositive of the original (false) axiom: $\\neg \\forall f, (\\neg \\text{Separable}(f) \\to |\\text{Gal}(f)| = 1) \\equiv \\exists f, (\\neg \\text{Separable}(f) \\land |\\text{Gal}(f)| \\neq 1)$. The proof of $\\neg f.\\text{Separable}$ exploits Mathlib's definition: $\\text{Separable}(f) := \\text{IsCoprime}(f, f')$. Since $f' = 0$ in char 2, $\\text{IsCoprime}(f, 0) \\Leftrightarrow \\text{IsUnit}(f)$, but $\\text{natDegree}(f) = 4 > 0$ so $f$ is not a unit. The Galois cardinality witness comes from `counterexample_gal_card`, the only axiom in the file.",
+    "significance": "key",
+    "relatedConcepts": ["formal counterexample", "Polynomial.Separable", "Galois group cardinality", "axiom refutation"],
+    "prerequisites": ["Polynomial.Separable definition", "IsCoprime", "existential statements in Lean"]
+  },
+  {
     "id": "ann-insep-vs-purely-insep",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 1, "endLine": 62 },
+    "range": { "startLine": 1, "endLine": 53 },
     "type": "insight",
     "title": "Inseparable ≠ Purely Inseparable Splitting Field",
     "content": "The core conceptual contribution: being inseparable (f'=0) is a weaker condition than having a purely inseparable splitting field. An inseparable polynomial f = g(X^p) with g separable irreducible has splitting field ≅ g.SplittingField, which is separable. The Galois group is Gal(g), which is trivial only when deg(g) = 1. The original axiom confused 'f is inseparable' with 'the splitting field extension is purely inseparable' — two very different conditions.",
