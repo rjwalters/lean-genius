@@ -333,6 +333,6 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 
 ## File Stats (after Session 26 added trig_sum_harmonic_lb_asymp_le_half_pi)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 2425 lines, 2 sorries (was 2288 on origin/main)
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2415 lines, 2 sorries (was 2288 on origin/main)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement

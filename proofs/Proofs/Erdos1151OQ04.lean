@@ -2200,17 +2200,9 @@ private lemma trig_sum_harmonic_lb_asymp_le_half_pi
     rw [hC₁_def]
     field_simp
     ring
-  -- Step 9: cast bridge mixed → outer.
-  have hcast :
-      (∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
-                    |Real.cos θ - chebyshevNode n k|) =
-      (∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
-                    |Real.cos θ - chebyshevNode n k|) := by
-    refine Finset.sum_congr rfl fun k _ => ?_
-    congr 2
-    push_cast
-    ring
-  -- Final calc chain.
+  -- Step 9: final calc chain. The mixed-cast form `(2 * (k.val : ℝ) + 1)`
+  -- and outer-cast form `(2 * k.val + 1 : ℝ)` are definitionally equal,
+  -- so no bridge is needed (Lean unifies via rfl on the calc terminus).
   calc C₁ * ((n : ℝ) * Real.log ((n : ℝ) + 1))
       = Real.sin (θ / 2) * (2 * (n : ℝ)) / Real.pi *
           ((1 : ℝ) / 4 * Real.log ((n : ℝ) + 1)) := hC₁_eq
@@ -2219,8 +2211,6 @@ private lemma trig_sum_harmonic_lb_asymp_le_half_pi
         mul_le_mul_of_nonneg_left hlog_le hpref_nn
     _ ≤ ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
                      |Real.cos θ - chebyshevNode n k| := hbound_mixedcast
-    _ = ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
-                     |Real.cos θ - chebyshevNode n k| := hcast
 
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
