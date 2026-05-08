@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header-imports-namespace",
+      "title": "Header, Imports, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Module docstring (1-28) frames the open question as the *table-completion* gap: the parent `BoundedPrimeGapsOQ01` published a diameter table for k ∈ {2, 3, 5, 50} but left the k=50 entry as ≤ 246 (upper bound only). This file closes the row by importing the Engelsma tuple from `BoundedPrimeGapsOQ03` and showing the diameter is exactly 246, with the 1-axiom dependency `engelsma_lower_bound` declared upfront. Imports (30-34) bring in `Nat.Prime.Basic`, `Mathlib.Tactic`, and the three parent files (`BoundedPrimeGaps`, `OQ01`, `OQ03`). Namespace + opens (36-38) expose `BoundedPrimeGaps`, `OQ01`, `OQ03`, `Nat`, and `Finset` so the four-row diameter table reads as plain Lean prose without qualification noise.",
+      "mathContext": "**The narrative gap**: the OQ-01 table had three exact entries (k = 2, 3, 5 with diameters 2, 6, 12 respectively) and one inequality (k = 50 with diameter ≤ 246). The exact value at k = 50 was open *within OQ-01's framework* because the lower bound 246 ≤ minDiameter(50) was proved separately in OQ-03 and never re-imported. This file performs the import: it lifts OQ-03's `engelsma_lower_bound` axiom into the OQ-01 namespace and substitutes 246 for the upper bound, completing the table.\n\n**Polymath 8b context**: $H \\le 246$ is the unconditional Polymath bound from 2014 (Tao, Maynard, et al.). Engelsma's 2005 lower bound shows that 246 is the *minimum diameter for $k = 50$*, so 246 is sieve-tight: no admissible 50-tuple has smaller diameter, and no smaller-diameter admissible tuple of any size $k \\le 50$ exists. Beating 246 unconditionally requires a sieve with $k < 50$ — directly motivating Part III's sieve-size connection."
+    },
+    {
       "id": "diameter-table",
       "title": "Part I: Completing the Minimum Diameter Table at k=50",
       "startLine": 40,
