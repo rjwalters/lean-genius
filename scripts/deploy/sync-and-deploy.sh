@@ -249,7 +249,7 @@ merge_prs() {
 
             if git rebase origin/main 2>/dev/null; then
                 # Rebase succeeded cleanly
-                git push --force-with-lease origin "$branch" 2>/dev/null || true
+                git -c push.autoSetupRemote=false push --force-with-lease origin "$branch" 2>/dev/null || true
             else
                 # Handle conflicts intelligently
                 resolve_conflicts() {
@@ -317,7 +317,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
                             # If continue fails, try once more after resolving any new conflicts
                             resolve_conflicts && GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort 2>/dev/null || true
                         }
-                        git push --force-with-lease origin "$branch" 2>/dev/null || true
+                        git -c push.autoSetupRemote=false push --force-with-lease origin "$branch" 2>/dev/null || true
                     fi
                 else
                     print_warning "  Could not auto-resolve all conflicts"
