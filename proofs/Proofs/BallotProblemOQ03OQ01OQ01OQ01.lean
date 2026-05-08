@@ -916,7 +916,64 @@ private lemma colStrict_pair_count_eq_subSym_filtered_count {n a b : ℕ}
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
     exact ⟨hCS, hPQ⟩
 
-/-- **Sub-lemma 2 of `ballot_counting_identity`** (S26, deferred proof to S27+).
+/-- **Sub-lemma 2B of `ballot_counting_identity`** (S28 — single-Sym form of
+    the cycle-lemma core, isolated via Sub-lemma 2A from the pair form;
+    sorry-deferred to S29+).
+
+    For `b ≥ 2` and `b ≤ a`, the count of size-`a` submultisets of `M.1` for
+    which NO column-strict size-`b` complement exists equals the count of
+    distinct size-`(a+1)` submultisets of `M.1`:
+
+      `#{P : Sym (Fin n) a // P.1 ≤ M.1
+                              ∧ ¬ ∃ Q : Sym (Fin n) b,
+                                    P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q}
+       = #{P' : Sym (Fin n) (a + 1) // P'.1 ≤ M.1}`
+
+    This is the SHARP form of Sub-lemma 2 — the deep cycle-lemma argument
+    operates here on a single-Sym side, without the redundant `Q = M − P`
+    pair encoding that obscures the rotation-invariance of the predicate.
+
+    ### Why this is the cycle-lemma's natural target
+
+    The classical Cycle Lemma (Lyndon / Dvoretzky-Motzkin) asserts that
+    among all length-`(a+b)` sequences with `a` ones and `b` zeros, exactly
+    `a − b` of the `a + b` cyclic rotations have ones strictly leading
+    zeros at every prefix. Generalised to multisets: among sorted-list
+    representatives of size-`(a+b)` submultisets `M.1`, the col-strict
+    `(P, Q)`-splits correspond to a specific orbit-rotation count.
+
+    The "no col-strict complement" predicate on `P : Sym a` with `P ≤ M.1`
+    depends only on the sorted representative of `P` (rotation-invariant);
+    the "shift one element from `Q` to `P`" map yields a `Sym (a+1)`-
+    representative bijectively. Mathlib does not yet have the Cycle Lemma
+    for multisets — implementing it is a small contribution candidate
+    independent of this proof.
+
+    ### Composition with Sub-lemma 2A
+
+    Sub-lemma 2A converts Sub-lemma 2's pair-form first term to the
+    single-Sym form `#{P // ∃ Q col-strict complement}`. Combined with the
+    `Finset.filter_card_add_filter_neg_card_eq_card` partition over
+    `subSym_le_a M` by the "has col-strict complement" predicate, Sub-lemma 2
+    reduces to Sub-lemma 2B.
+
+    ### Sorry migration
+
+    The `sorry` previously at Sub-lemma 2 (S26, line 973) migrates to
+    Sub-lemma 2B with cleaner provenance: pair-encoding is gone, the
+    cycle-lemma input is isolated to a single ¬∃ predicate over `Sym a`
+    elements with `P.1 ≤ M.1`. Net file sorry count unchanged at 2. -/
+private lemma noColStrict_subSym_a_count_eq_subSym_le_aplus1_count {n a b : ℕ}
+    (_hb : 2 ≤ b) (_hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
+    ((Finset.univ : Finset (Sym (Fin n) a)).filter
+      (fun P => P.1 ≤ M.1 ∧ ¬ ∃ Q : Sym (Fin n) b,
+                  P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)).card =
+    ((Finset.univ : Finset (Sym (Fin n) (a + 1))).filter
+      (fun P => P.1 ≤ M.1)).card := by
+  sorry
+
+/-- **Sub-lemma 2 of `ballot_counting_identity`** (S26 stub, S27 pair-form bridge,
+    S28 closed via Sub-lemma 2A + Sub-lemma 2B + partition).
 
     For `b ≥ 2` and `b ≤ a`, the count of column-strict `(a, b)`-splits of
     a multiset `M : Sym (Fin n) (a + b)` plus the count of distinct size-`(a+1)`
@@ -941,36 +998,74 @@ private lemma colStrict_pair_count_eq_subSym_filtered_count {n a b : ℕ}
     canonical `(a+1, b-1)`-split), leaving exactly the col-strict count
     for the remainder.
 
-    ### Proof strategy (~80–100 lines, deferred to S27+)
+    ### Proof structure (S28 — closed via 2A + 2B + partition)
 
-    See `sessions/2026-05-08-s24.md` for the full plan:
-    1. Lift `(P, Q) ↔ pl ++ ql = M.1.sort` (sorted list pairs) via a
-       `Sym × Sym → List × List` translation (Sub-lemma 3 in the S24 plan).
-    2. Apply the Cycle Lemma for sorted multiset prefixes — not yet in
-       Mathlib, a small contribution candidate independent of this proof.
-       The Lyndon / Dvoretzky-Motzkin Cycle Lemma for ballot sequences
-       generalises to multisets via positional rotation.
-    3. Multiplicity correction: when `M.1` has repeated elements, cycle
-       classes have non-trivial stabilisers; the col-strict condition is
-       rotation-equivariant and the count divides cleanly orbit-by-orbit.
+    The body invokes:
+    1. **Sub-lemma 2A** (`colStrict_pair_count_eq_subSym_filtered_count`):
+       converts the LHS pair count to the single-Sym filtered count
+       `#{P : Sym a // ∃ Q, P+Q=M ∧ CS(P,Q)}`.
+    2. A pivot step: the "has col-strict complement" predicate on `Sym a`
+       implies `P.1 ≤ M.1` (via `Q`'s existence and `le_self_add`), so
+       `filter has-CS on univ = filter has-CS on (filter (· ≤ M) on univ)`.
+    3. `Finset.filter_card_add_filter_neg_card_eq_card`: partitions
+       `subSym_le_a M` by the "has col-strict complement" predicate.
+    4. **Sub-lemma 2B** (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`):
+       the ¬-filter card equals the size-`(a+1)` submultiset count — this
+       is where the cycle-lemma input is now packaged (sorry-deferred S29+).
+    5. `omega` over the three resulting `.card` terms closes the goal.
 
-    ### Use site
-
-    `ballot_counting_identity` (S26 refactor): combine with
-    `split_count_eq_subSym_le_count` (Sub-lemma 1) at `(p, q) := (a, b)`
-    and `(p, q) := (a + 1, b - 1)`, plus
-    `Finset.filter_card_add_filter_neg_card_eq_card` for the
-    col-strict / ¬col-strict partition, then discharge the resulting
-    linear arithmetic over four `.card` terms via `omega`. -/
+    The deep mathematical input is fully encapsulated in Sub-lemma 2B,
+    whose statement no longer mentions the pair encoding. -/
 private lemma colStrict_count_add_eq_subSym_le_count {n a b : ℕ}
-    (_hb : 2 ≤ b) (_hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
+    (hb : 2 ≤ b) (hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
     ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
       (fun PQ => ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card +
     ((Finset.univ : Finset (Sym (Fin n) (a + 1))).filter
       (fun P => P.1 ≤ M.1)).card =
     ((Finset.univ : Finset (Sym (Fin n) a)).filter
       (fun P => P.1 ≤ M.1)).card := by
-  sorry
+  classical
+  -- Step 1 (Sub-lemma 2A): pair count → single-Sym filtered count.
+  rw [colStrict_pair_count_eq_subSym_filtered_count M.1 M.2]
+  -- Step 2: "has col-strict complement" implies P.1 ≤ M.1 (since Q's existence forces it).
+  have h_hasCS_imp_le :
+      ∀ P : Sym (Fin n) a,
+        (∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q) →
+        P.1 ≤ M.1 := by
+    intro P hP
+    obtain ⟨Q, hPQ, _⟩ := hP
+    calc P.1 ≤ P.1 + Q.1 := le_self_add
+      _ = M.1 := hPQ
+  -- Step 3: rewrite "filter has-CS on univ" as "filter has-CS on subSym_le_a M".
+  have h_pivot :
+      ((Finset.univ : Finset (Sym (Fin n) a)).filter
+        (fun P => ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)) =
+      ((Finset.univ : Finset (Sym (Fin n) a)).filter
+        (fun P => P.1 ≤ M.1)).filter
+        (fun P => ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q) := by
+    ext P
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    refine ⟨fun h => ⟨h_hasCS_imp_le P h, h⟩, fun h => h.2⟩
+  rw [h_pivot]
+  -- Step 4: partition subSym_le_a M by "has col-strict complement".
+  have h_part :=
+    Finset.filter_card_add_filter_neg_card_eq_card
+      (s := ((Finset.univ : Finset (Sym (Fin n) a)).filter (fun P => P.1 ≤ M.1)))
+      (p := fun P : Sym (Fin n) a =>
+        ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)
+  -- Step 5: collapse the nested ¬-filter to a single filter (matches Sub-lemma 2B's LHS).
+  have h_neg :
+      (((Finset.univ : Finset (Sym (Fin n) a)).filter (fun P => P.1 ≤ M.1)).filter
+        (fun P => ¬ ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)) =
+      ((Finset.univ : Finset (Sym (Fin n) a)).filter
+        (fun P => P.1 ≤ M.1 ∧ ¬ ∃ Q : Sym (Fin n) b,
+                    P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)) := by
+    rw [Finset.filter_filter]
+  rw [h_neg] at h_part
+  -- Step 6 (Sub-lemma 2B): substitute the ¬-filter card by the (a+1)-submultiset count.
+  rw [noColStrict_subSym_a_count_eq_subSym_le_aplus1_count hb hba M] at h_part
+  -- Step 7: omega closes the linear arithmetic over the three card values.
+  omega
 
 /-- **Ballot counting identity (per total multiset).**
 
