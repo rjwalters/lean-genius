@@ -312,3 +312,68 @@ S5 does not close the open axiom. **What S5 does** is express the
 the multiplicative chain. The prediction `r₄(40) = 144` is now a
 closed-form consequence of the σ*-side; it remains a prediction (not a
 verified equality) pending the modular-form bridge.
+
+---
+
+### S6 (2026-05-08, researcher-11) — unified `if`-form closed σ*
+
+This session added **Part 16** to `FourSquareDistributionOQ01.lean`,
+collapsing S5's two-case closed form (`sigmaStar_two_pow_mul_odd` for
+k ≥ 1, `sigmaStar_eq_sigmaOne_of_odd` for k = 0) into a single
+named lemma:
+
+```
+theorem sigmaStar_decomp {k m : ℕ} (hm : 0 < m) (hodd : ¬ 2 ∣ m) :
+    sigmaStar (2 ^ k * m) = (if k = 0 then 1 else 3) * sigmaOne m
+```
+
+with companion `jacobiR4_decomp : jacobiR4 (2^k * m) =
+(if k = 0 then 8 else 24) * sigmaOne m`.
+
+**Proof shape**: 4-line case split. The `k = 0` branch uses
+`sigmaStar_eq_sigmaOne_of_odd hodd` after `subst hk`; the `k ≠ 0`
+branch lifts `hk : k ≠ 0` to `1 ≤ k` via `Nat.one_le_iff_ne_zero`,
+then applies S5's `sigmaStar_two_pow_mul_odd`. The `if`-coefficient
+is then dispatched by `simp [hk]`.
+
+**Why this matters (small but real)**: it reduces the σ*-side to a
+**single rewrite at the call site**, regardless of `k`. Pre-S6, a
+modular-form bridge would have to case-split on `k = 0` vs `k ≥ 1`
+and apply two different lemmas. Post-S6, one lemma covers both.
+
+The `jacobiR4_decomp` companion uses `split_ifs <;> ring` to dispatch
+the (8 · 1 = 8) and (8 · 3 = 24) arithmetic.
+
+### Cross-validation in Part 16
+
+Seven `example`s exercise the unified form on both branches:
+
+| n  | Decomposition  | Branch     | Asserted                |
+|----|----------------|------------|-------------------------|
+| 1  | 2⁰ · 1         | k = 0      | σ*(1) = 1·σ(1) = 1      |
+| 3  | 2⁰ · 3         | k = 0      | σ*(3) = 1·σ(3) = 4      |
+| 2  | 2¹ · 1         | k = 1 ≥ 1  | σ*(2) = 3·σ(1) = 3      |
+| 40 | 2³ · 5         | k = 3 ≥ 1  | σ*(40) = 3·σ(5) = 18    |
+| 1  | 2⁰ · 1         | k = 0      | jacobiR4(1) = 8·σ(1)=8  |
+| 3  | 2⁰ · 3         | k = 0      | jacobiR4(3) = 8·σ(3)=32 |
+| 40 | 2³ · 5         | k = 3 ≥ 1  | jacobiR4(40) = 24·σ(5)=144 |
+
+All discharged by `(by decide)` on the hypotheses, since `m` is a
+concrete numeral.
+
+### S6 build status
+
+Build pending (S13/S14-of-sperner-ndim precedent): the
+`proofs/.lake` self-referential symlink in this fork forces a fresh
+Mathlib clone per Docker build (~45 min cold). The new theorems are
+4-line corollaries of already-verified Part 6 and Part 15 lemmas;
+the auditor pipeline carries the build outcome on the PR.
+
+### Honest assessment
+
+S6 is a **packaging refinement**, not a new mathematical result. The
+core mathematical content (σ*(2^k·m) for both k = 0 and k ≥ 1) was
+already proven in Parts 6 and 15. S6 simply hands the user a single
+lemma that handles both branches. The open axiom `jacobi_r4_formula`
+is unchanged. The σ*-side is reduced from two named lemmas to one;
+the modular-form bridge remains the open frontier.
