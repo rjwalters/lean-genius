@@ -5,133 +5,87 @@
 **Path**: full
 **Since**: 2026-05-07T20:08:05Z
 **Last Updated**: 2026-05-08
-**Iteration**: 5
+**Iteration**: 9
 
 ## Current Focus
 
-**Both `minkowski_from_blichfeldt` sorries are CLOSED** (PR #16744,
-Session 4). The previous state.md text "Closing the two sorries" was
-stale — verification via
-`grep -nE "(^|[ \t]):= by sorry|[ \t]sorry$" proofs/Proofs/MinkowskiTheoremOQ04.lean`
-returns 0 actual sorry tokens (the only "sorry" hit is the file
-docstring's "sorry-free" claim).
+**1 axiom remains** (`blichfeldt_general`, the k≥1 covering-count form). 0 sorries.
+S4 closed both `minkowski_from_blichfeldt` sorries. S8 eliminated
+`blichfeldt_volume_partition` by rewriting `blichfeldt_basic` to call Mathlib's
+`IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly. PR #16874 (S8) merged
+2026-05-08; current `axiomCount: 1`, `theoremCount: 5`, `lineCount: 296`.
 
-Remaining work: **eliminate the two measure-theory axioms**:
-- `blichfeldt_volume_partition` — provable via Mathlib's
-  `IsAddFundamentalDomain.lintegral_eq_tsum''` applied to
-  `Set.indicator s (fun _ => (1 : ℝ≥0∞))`. Estimated 50-80 lines.
-- `blichfeldt_general` — covering-count averaging argument;
-  substantially harder. Estimated 150-300 lines.
+S9 (this iteration, researcher-6, 2026-05-08): full pre-formalization
+specification for the last axiom written to
+`research/problems/minkowski-theorem-oq-04/blichfeldt-general-roadmap.md`.
+Maps every step to Mathlib `v4.26.0` API references verified via `gh api`,
+identifies the hardest sub-step (tsum-of-indicator → `Set.ncard`), and proposes
+a `contrapose!` shortcut alternative that mirrors Mathlib's own
+`exists_pair_mem_lattice_not_disjoint_vadd` proof structure.
 
 ## Active Approach (next session)
 
-### Proof template for `blichfeldt_volume_partition`
+### Recommended Session 10 plan
 
-Mathlib API reference (verified in
-`proofs/.lake/packages/mathlib/Mathlib/MeasureTheory/Group/FundamentalDomain.lean:241`):
+**Path A (preferred)**: prototype the `contrapose!`-based proof of
+`blichfeldt_general` mirroring Mathlib's `exists_pair_mem_lattice_not_disjoint_vadd`
+(see roadmap §5 "Open question"). Estimated ~120 lines, no explicit covering-count
+function needed.
 
-```
-@[to_additive] lemma IsFundamentalDomain.lintegral_eq_tsum''
-    (h : IsFundamentalDomain G s μ) (f : α → ℝ≥0∞) :
-    ∫⁻ x, f x ∂μ = ∑' g : G, ∫⁻ x in s, f (g • x) ∂μ
-```
+**Path B (fallback)**: execute the explicit covering-count proof per the skeleton
+in roadmap §4. Estimated ~195 lines. Hardest sub-step is the
+tsum-of-indicator → `Set.ncard` bridge (~35 lines, roadmap §5 Risk #3).
 
-Via `to_additive`, `IsAddFundamentalDomain.lintegral_eq_tsum''` gives
-`∑' g : G, ∫⁻ x in s, f (g +ᵥ x) ∂μ`.
-
-Sketch:
-1. `Countable (stdLattice n).toAddSubgroup` instance (already done in
-   `blichfeldt_disj_bound` lines 93-96 — copy verbatim).
-2. Apply `(stdLattice_isAddFundamentalDomain n).lintegral_eq_tsum''` to
-   `f = s.indicator (fun _ => (1 : ℝ≥0∞))`.
-3. LHS reduces to `volume s` via `MeasureTheory.lintegral_indicator h_meas`
-   plus the trivial `∫⁻ x, (1 : ℝ≥0∞) ∂(volume.restrict s) = volume s`.
-4. For each summand, the integrand `s.indicator 1 (g +ᵥ x)` equals
-   `((g +ᵥ ·) ⁻¹' s).indicator 1 x` (case-split on `g +ᵥ x ∈ s`;
-   uses `Set.mem_preimage` and the if-then-else unfolding of
-   `Set.indicator`).
-5. `∫⁻ x in F, A.indicator 1 x ∂μ = volume (F ∩ A)` via
-   `MeasureTheory.lintegral_indicator h_pre_meas`.
-   Get `h_pre_meas := h_g_meas h_meas` where
-   `h_g_meas := (measurable_const_vadd g : Measurable (g +ᵥ ·))`
-   (Mathlib has `MeasurableVAdd L.toAddSubgroup E` for ℤ-lattices
-   per `Mathlib/Algebra/Module/ZLattice/Covolume.lean:85`).
-6. Show `F ∩ ((g +ᵥ ·) ⁻¹' s) = {z ∈ F | z + (g : Fin n → ℝ) ∈ s}` by
-   `Set.ext` plus `add_comm` (since `g +ᵥ z = (g : ...) + z` and
-   `(g : ...) + z = z + (g : ...)` for ℝⁿ).
-
-Risk points:
-- Step 4: definitional unfolding of `(g +ᵥ x ∈ s)` may need explicit
-  `show`; the indicator composition is definitionally clean but Lean's
-  elaborator may need help.
-- Step 6: depending on the AddSubgroup vadd instance, `g +ᵥ z` vs
-  `(g : Fin n → ℝ) + z` may or may not be `rfl`. Spot-check
-  `(g +ᵥ z : Fin n → ℝ) = (g : Fin n → ℝ) + z` is provable before
-  relying on it. If not `rfl`, look for `AddSubmonoidClass.coe_vadd`
-  or instance unfolding.
-
-### Proof sketch for `blichfeldt_general`
-
-For vol(S) > k, the covering count `c(z) := #{v ∈ ℤⁿ | z + v ∈ S}`
-satisfies ∫_F c dz = vol(S) > k. By averaging (`∫_F c ≥ (k+1) · vol(F)`
-contradiction with ∫_F c ≤ k · vol(F) if c(z) ≤ k for all z), ∃ z ∈ F
-with c(z) ≥ k+1. Yields k+1 lattice elements v₁,...,v_{k+1} with
-z + vᵢ ∈ S, giving k+1 ℤⁿ-congruent points.
-
-Mathlib infrastructure needed:
-- `tsum_eq_lintegral_of_indicator` (or similar) to express c(z) as a
-  tsum of indicators.
-- `MeasureTheory.lintegral_const_mul` for the constant-multiple
-  averaging step.
-- A "support of c is non-empty above k" argument — may need hand-rolled
-  lemma if not in Mathlib.
+Either path requires healthy `proofs/.lake` — current self-symlink causes
+~30–45 min Mathlib clone per build (memory note
+`feedback_researcher_lake_symlink_broken`). Recommend deferring Lean work to a
+session with repaired build infra, or budget 60 min for build verification.
 
 ## Attempt Count
-- Total attempts: 5
+- Total attempts: 9
 - Current approach attempts: 1
 - Approaches tried:
-  - S1-S3 (Phase scaffolding, 2026-05-06/07)
-  - S4 (researcher-?): closed both sorries via preimage-rewrite +
-    addHaar_smul (PR #16744)
-  - S5 (researcher-11, 2026-05-08): state.md reconciliation,
-    Mathlib-API mapping for the two remaining axioms
+  - S1-S3 (initial scaffolding, 4 axioms + 2 sorries)
+  - S4 (PR #16744): closed both `minkowski_from_blichfeldt` sorries
+  - S5 (PR #16851, researcher-11): state.md reconciliation, Mathlib API mapping
+  - S6-S7: in-flight Lean work (not committed; superseded by S8)
+  - S8 (PR #16874): eliminated `blichfeldt_volume_partition` axiom via
+    `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` direct call.
+  - S9 (this iteration, researcher-6): pre-formalization spec for the final axiom
+    `blichfeldt_general`. No Lean change. Two design paths documented + risks.
 
 ## Blockers
 
-None for `blichfeldt_volume_partition` — the path is well-mapped above
-and the Mathlib infrastructure (`MeasurableVAdd`,
-`IsAddFundamentalDomain.lintegral_eq_tsum''`) is verified to exist.
-
-`blichfeldt_general` is substantially harder; the averaging argument
-requires several measure-theoretic identities that may need hand-rolled
-lemmas if not in Mathlib.
+None for the proof itself — Mathlib `v4.26.0` infrastructure is sufficient
+(`lintegral_eq_tsum''`, `measure_eq_tsum`, `lintegral_tsum`, `setLIntegral_const`,
+`tsum_eq_iSup_sum_of_nonneg`, `Set.ncard`, `MeasurableVAdd L.toAddSubgroup E`).
+Implementation is bottlenecked only by build infrastructure (broken
+`proofs/.lake` symlink) and the natural cost of the formalization (~120–195
+lines depending on path).
 
 ## Next Action
 
-**Session 6**: Eliminate `blichfeldt_volume_partition` axiom following
-the template above. ~50-80 lines. The cleanup of stale state.md text
-was done in Session 5 (this iteration); the actual axiom-elimination
-work remains.
+**Session 10**: Per roadmap §6, attempt Path A (contrapose route). If it lands,
+graduate entry to `verified`/`badge: original`. If it fails, fall back to Path B.
 
-## Iteration 5 Builds (researcher-11, 2026-05-08)
+## Iteration 9 Builds (researcher-6, 2026-05-08)
 
-Focus: state-of-the-world reconciliation + Mathlib API mapping for
-the remaining axioms.
+Focus: pre-formalization specification for the final remaining axiom.
 
-Verified the previous state.md text was stale: `minkowski_from_blichfeldt`
-sorries were closed by PR #16744 (S4), but state.md still said "Closing
-the two sorries". Updated:
-- Phase: kept ACT
-- Iteration: 4 → 5
-- Current focus: now reflects "0 sorries, 2 axioms remain"
-- Active approach: detailed proof template for
-  `blichfeldt_volume_partition` with verified Mathlib API references
-  (`IsAddFundamentalDomain.lintegral_eq_tsum''`,
-  `MeasurableVAdd L.toAddSubgroup E`)
-- Risk points / spot-check guidance documented for the next session
+Output: `blichfeldt-general-roadmap.md`, containing:
+- The exact axiom statement and three-step proof strategy.
+- 11-row Mathlib API inventory with file paths and line numbers, all verified
+  in `v4.26.0` via `gh api`.
+- Full Lean 4 proof skeleton (~110 lines with placeholder `sorry`s tagged with
+  per-step difficulty and line estimates).
+- Three risk callouts (translation invariance, L-invariance of `c`,
+  tsum-of-indicator → `ncard` bridge).
+- Two design alternatives (`contrapose!` shortcut, induction on `k`) with
+  recommendation to try the `contrapose!` route first.
+- Build infrastructure caveat re: `proofs/.lake` symlink.
 
-No new theorems added in this iteration. The substantive work is
-deferred to S6 (and beyond) per the documented plan.
+No Lean source touched. The deliverable is the spec; PR #16744 (S4) and
+PR #16874 (S8) remain the substantive Lean contributions.
 
-**Counts**: lineCount 293, theoremCount 5, axiomCount 2, sorries 0
-(all unchanged from PR #16744).
+**Counts**: lineCount 296, theoremCount 5, axiomCount 1, sorries 0
+(all unchanged from PR #16874).
