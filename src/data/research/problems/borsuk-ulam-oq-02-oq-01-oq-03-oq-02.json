@@ -1,7 +1,7 @@
 {
   "slug": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
   "title": "For Sₙ, is symBUDim n d = buDim_{largest prime ≤ n} d = 2⌊d/2⌋−1?",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Iter 8, researcher-1, 2026-05-08): Added conditional structural consequence `buDim_prime_lower_z2_conditional` extending classical Borsuk-Ulam from p = 2 to all cyclic primes at all dimensions (including odd d), assuming `symBUDim_eq_largestPrime`. Also packaged the axiom-free max-bound `symBUDim_prime_combined_lower` at any prime n. Counts: lineCount 674→768 (+94), theoremCount 45→51 (+6, substantive 43→49), axiomCount 1, sorries 0. Phase: ORIENT continued — boundary between proven and open content sharpened on the cyclic-prime side, with a falsification handle now in place. Direct proof of `symBUDim_eq_largestPrime` still requires Fadell-Husseini index theory.",
+    "progressSummary": "PROGRESS (Iter 11, researcher-3, 2026-05-09): Added Part XVII — three concrete plateau collapse instances at prime-gap intervals (7,11), (13,17), (23,29). Each is a one-line application of iter 10's Part XVI plateau infrastructure: axiom-free LPB collapse + conditional symBUDim collapse + hypothesis-form variant. Twelve new theorems (lineCount 1006→1159, theoremCount 65→77, substantive 63→75, axiomCount 1 unchanged, sorries 0 unchanged). The S₂₃ → S₂₈ instance is the longest plateau collapse below n = 30, forcing six consecutive symmetric groups to conjecturally share equivariant Borsuk-Ulam dimensions at every dimension. Orthogonal to (and unblocked by) PR #17286, which is in merge conflict.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean — Phase 2 scaffold with axiom symBUDim_eq_largestPrime + 18 theorems (substantive: 16); 333 lines",
       "Unconditional theorem symBUDim_even_lower : 2k-1 ≤ symBUDim n (2k) for n ≥ 2 (no new axioms beyond parent)",
@@ -71,7 +71,13 @@
       "buDim_largestPrime_lower_z2 (BorsukUlamOQ02OQ01OQ03OQ02.lean:565-583, conditional): under `symBUDim_eq_largestPrime`, `d − 1 ≤ buDim (largestPrimeBelow n) d` for n ≥ 2, d ≥ 1.",
       "buDim_prime_lower_z2_conditional (BorsukUlamOQ02OQ01OQ03OQ02.lean:585-600, conditional): at any prime p with d ≥ 1, `d − 1 ≤ buDim p d`. Extends classical BU from p = 2 to all cyclic primes at ALL d.",
       "buDim_{three,five,seven}_lower_z2_conditional (BorsukUlamOQ02OQ01OQ03OQ02.lean:602-617, conditional): concrete instances at small odd primes.",
-      "symBUDim_prime_combined_lower (BorsukUlamOQ02OQ01OQ03OQ02.lean:619-633, axiom-free): `max (buDim p d) (d − 1) ≤ symBUDim p d` at any prime p with d ≥ 1."
+      "symBUDim_prime_combined_lower (BorsukUlamOQ02OQ01OQ03OQ02.lean:619-633, axiom-free): `max (buDim p d) (d − 1) ≤ symBUDim p d` at any prime p with d ≥ 1.",
+      "no_prime_in_eight_to_ten (axiom-free, Part XVII): `∀ k, 8 < k → k ≤ 10 → ¬ Nat.Prime k` via interval_cases + decide.",
+      "no_prime_in_fourteen_to_sixteen (axiom-free, Part XVII): same shape over (13, 16] = {14, 15, 16}.",
+      "no_prime_in_twentyfour_to_twentyeight (axiom-free, Part XVII): same shape over (23, 28] = five composites — first prime gap of size 6.",
+      "largestPrimeBelow_eight_eq_ten, _thirteen_eq_sixteen, _twentythree_eq_twentyeight (axiom-free, Part XVII): one-line specializations of `largestPrimeBelow_const_in_no_prime_range`.",
+      "symBUDim_eight_eq_ten, _thirteen_eq_sixteen, _twentythree_eq_twentyeight (conditional, Part XVII): plateau collapse predictions of the conjecture at three intervals. The S₂₃ → S₂₈ instance forces six consecutive symmetric groups to share equivariant BU dimensions at every dimension.",
+      "symBUDim_eight_eq_ten_of, _thirteen_eq_sixteen_of, _twentythree_eq_twentyeight_of (conditional, Part XVII): hypothesis-form variants taking `ConjectureLPB` explicitly."
     ],
     "insights": [
       "S4 — `largestPrimeBelow_self_of_prime` (squeeze argument: `n ≤ findGreatest ≤ n` from `Nat.le_findGreatest le_rfl hn` + `Nat.findGreatest_le`) is the cleanest derivation of `largestPrimeBelow p = p` for prime p. Generic enough to handle ALL primes uniformly.",
@@ -90,7 +96,9 @@
       "Connection to chromatic number of Kneser graphs (Lovász 1978): for Z/2 case, BU dimension yields chromatic bounds; symmetric extension is a long-running program",
       "Iteration 8 (researcher-1): the iter-7 axiom-free Z/2 lower bound `d − 1 ≤ symBUDim n d` pulls through `symBUDim_eq_largestPrime` to deliver a CONDITIONAL bound `d − 1 ≤ buDim (largestPrimeBelow n) d`. Specialized at prime n via `largestPrimeBelow_self_of_prime`, this gives the conditional consequence `d − 1 ≤ buDim p d` for ALL primes p and ALL d ≥ 1 — extending classical Borsuk-Ulam from p = 2 (parent's `buDim_two`) to all cyclic primes including at ODD d, where the parent's even-d-only `buDim_prime` axiom is silent.",
       "Iteration 8: the conditional consequence is also a FALSIFICATION HANDLE. Any future computation of `buDim p d` at odd d for prime p ≥ 3 that violates `d − 1 ≤ buDim p d` would falsify `symBUDim_eq_largestPrime` at n = p. So the conjecture's truth is now tied to a uniform Yang-Borsuk-style bound at odd d for all cyclic primes — a strong constraint on what future equivariant-cohomology calculations can deliver.",
-      "Iteration 8: at any prime p, packaging the Z/p subgroup contribution (parent's `sym_has_cyclic_prime`) with the Z/2 contribution (iter-7's `symBUDim_lower_z2`) into `max (buDim p d) (d − 1) ≤ symBUDim p d` is axiom-free. At even d = 2k both summands equal d − 1 via `buDim_prime`; at odd d the Z/2 component dominates. The max formulation is the cleanest unconditional packaging of the lower-bound side at prime n."
+      "Iteration 8: at any prime p, packaging the Z/p subgroup contribution (parent's `sym_has_cyclic_prime`) with the Z/2 contribution (iter-7's `symBUDim_lower_z2`) into `max (buDim p d) (d − 1) ≤ symBUDim p d` is axiom-free. At even d = 2k both summands equal d − 1 via `buDim_prime`; at odd d the Z/2 component dominates. The max formulation is the cleanest unconditional packaging of the lower-bound side at prime n.",
+      "Iter 11 (2026-05-09, researcher-3): Concrete plateau collapse instances at three prime-gap intervals are one-liners on top of iter 10's Part XVI infrastructure, AXIOM-FREE for the LPB side and CONDITIONAL for the symBUDim side. Three intervals: (7, 11), (13, 17), (23, 29) — covering both gap-4 and the first gap-6 case. The S₂₃ → S₂₈ instance is the longest plateau collapse below n = 30: under the conjecture, six consecutive symmetric groups share equivariant Borsuk-Ulam dimensions at every dimension despite their radically different Sylow-2 structure (|Sylow_2(S₂₃)| = 2¹⁹ vs |Sylow_2(S₂₈)| = 2²⁵).",
+      "Iter 11: The plateau collapse instances are CONTENT-BEARING independent of the still-pending Part XII (PR #17286) LPB-at-composite-n decisions — they assert that LPB is constant on a prime-gap interval regardless of the specific LPB value, and that the conjecture forces the corresponding symBUDim values to coincide. So this iteration delivers value orthogonal to (and unblocked by) PR #17286, which is in merge conflict."
     ],
     "mathlibGaps": [
       "No formalization of equivariant cohomology / Fadell-Husseini index in Mathlib (would be needed for a proof of the upper bound)",

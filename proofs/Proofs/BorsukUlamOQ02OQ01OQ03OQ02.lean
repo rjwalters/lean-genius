@@ -804,6 +804,127 @@ theorem symBUDim_const_in_no_prime_range_of (h_conj : ConjectureLPB)
   exact symBUDim_eq_of_lpb_eq_of h_conj n m d hn hm
     (largestPrimeBelow_const_in_no_prime_range n m hnm h_no_prime).symm
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XVII: Concrete plateau collapse instances
+-- ═══════════════════════════════════════════════════════════════════════
+-- Direct applications of PART XVI's plateau infrastructure to specific
+-- prime-gap intervals.  Each instance pins a no-prime-in-gap fact via
+-- `interval_cases` + `decide`, then derives:
+--   1. Axiom-free LPB collapse: `largestPrimeBelow m = largestPrimeBelow n`.
+--   2. Conditional `symBUDim` collapse: `symBUDim n d = symBUDim m d`,
+--      depending on `symBUDim_eq_largestPrime`.
+--   3. Hypothesis-form variant taking `ConjectureLPB` explicitly.
+--
+-- Chosen intervals are the smallest prime gaps with multiple composite
+-- numbers between consecutive primes:
+--   - (7, 11):   {8, 9, 10}                 — gap 4, dyadic gap
+--   - (13, 17):  {14, 15, 16}               — gap 4
+--   - (23, 29):  {24, 25, 26, 27, 28}       — gap 6 (first occurrence)
+--
+-- The conditional consequences are notable: distinct symmetric groups
+-- with qualitatively different subgroup structures (e.g., S₈ ⊃ V₄·A₄
+-- vs S₁₀ ⊃ A₅×A₅; or S₂₃ vs S₂₈ ⊃ S₄×S₂₄/?) conjecturally share the
+-- *same* equivariant Borsuk-Ulam dimension at every dimension.
+
+/-- **No prime in (8, 10]**: each of 9, 10 is composite. Witness for
+    the dyadic prime gap (7, 11). -/
+theorem no_prime_in_eight_to_ten :
+    ∀ k, 8 < k → k ≤ 10 → ¬ Nat.Prime k := by
+  intro k hk1 hk2
+  interval_cases k <;> decide
+
+/-- **LPB plateau across the dyadic gap (7, 11)**: `largestPrimeBelow 10 =
+    largestPrimeBelow 8`, axiom-free.  Combined with `largestPrimeBelow 8
+    = largestPrimeBelow 7 = 7` (which would follow from the still-pending
+    PART XII concrete-LPB computations), this would witness the
+    three-step plateau `lpb 8 = lpb 9 = lpb 10`.  Independent of those
+    concrete values, the equality `lpb 10 = lpb 8` is a direct corollary
+    of PART XVI's `largestPrimeBelow_const_in_no_prime_range`. -/
+theorem largestPrimeBelow_eight_eq_ten :
+    largestPrimeBelow 10 = largestPrimeBelow 8 :=
+  largestPrimeBelow_const_in_no_prime_range 8 10 (by norm_num)
+    no_prime_in_eight_to_ten
+
+/-- **Conjectural plateau collapse at S₈ → S₁₀**: under
+    `symBUDim_eq_largestPrime`, `symBUDim 8 d = symBUDim 10 d` for every
+    `d`.  Witnesses the most concrete plateau-collapse content of the
+    conjecture: two distinct symmetric groups (S₈ with rich V₄·A₄ subgroup
+    structure, S₁₀ with A₅×A₅) conjecturally share equivariant Borsuk-Ulam
+    dimensions at every dimension. -/
+theorem symBUDim_eight_eq_ten (d : ℕ) :
+    symBUDim 8 d = symBUDim 10 d :=
+  symBUDim_const_in_no_prime_range 8 10 d (by norm_num) (by norm_num)
+    no_prime_in_eight_to_ten
+
+/-- **Hypothesis-form** of `symBUDim_eight_eq_ten` — uses explicit
+    `ConjectureLPB` hypothesis instead of the file's axiom. -/
+theorem symBUDim_eight_eq_ten_of (h_conj : ConjectureLPB) (d : ℕ) :
+    symBUDim 8 d = symBUDim 10 d :=
+  symBUDim_const_in_no_prime_range_of h_conj 8 10 d (by norm_num) (by norm_num)
+    no_prime_in_eight_to_ten
+
+/-- **No prime in (13, 16]**: each of 14, 15, 16 is composite.  Witness
+    for the prime gap (13, 17). -/
+theorem no_prime_in_fourteen_to_sixteen :
+    ∀ k, 13 < k → k ≤ 16 → ¬ Nat.Prime k := by
+  intro k hk1 hk2
+  interval_cases k <;> decide
+
+/-- **LPB plateau across the gap (13, 17)**: `largestPrimeBelow 16 =
+    largestPrimeBelow 13`, axiom-free. -/
+theorem largestPrimeBelow_thirteen_eq_sixteen :
+    largestPrimeBelow 16 = largestPrimeBelow 13 :=
+  largestPrimeBelow_const_in_no_prime_range 13 16 (by norm_num)
+    no_prime_in_fourteen_to_sixteen
+
+/-- **Conjectural plateau collapse at S₁₃ → S₁₆**: under
+    `symBUDim_eq_largestPrime`, `symBUDim 13 d = symBUDim 16 d` for every
+    `d`. -/
+theorem symBUDim_thirteen_eq_sixteen (d : ℕ) :
+    symBUDim 13 d = symBUDim 16 d :=
+  symBUDim_const_in_no_prime_range 13 16 d (by norm_num) (by norm_num)
+    no_prime_in_fourteen_to_sixteen
+
+/-- **Hypothesis-form** of `symBUDim_thirteen_eq_sixteen`. -/
+theorem symBUDim_thirteen_eq_sixteen_of (h_conj : ConjectureLPB) (d : ℕ) :
+    symBUDim 13 d = symBUDim 16 d :=
+  symBUDim_const_in_no_prime_range_of h_conj 13 16 d (by norm_num) (by norm_num)
+    no_prime_in_fourteen_to_sixteen
+
+/-- **No prime in (23, 28]**: each of 24, 25, 26, 27, 28 is composite.
+    Witness for the prime gap (23, 29) — the first prime gap of size 6,
+    five consecutive composites. -/
+theorem no_prime_in_twentyfour_to_twentyeight :
+    ∀ k, 23 < k → k ≤ 28 → ¬ Nat.Prime k := by
+  intro k hk1 hk2
+  interval_cases k <;> decide
+
+/-- **LPB plateau across the gap (23, 29)**: `largestPrimeBelow 28 =
+    largestPrimeBelow 23`, axiom-free.  The first prime gap of size 6
+    in ℕ — five consecutive composites all share the same
+    `largestPrimeBelow`. -/
+theorem largestPrimeBelow_twentythree_eq_twentyeight :
+    largestPrimeBelow 28 = largestPrimeBelow 23 :=
+  largestPrimeBelow_const_in_no_prime_range 23 28 (by norm_num)
+    no_prime_in_twentyfour_to_twentyeight
+
+/-- **Conjectural plateau collapse at S₂₃ → S₂₈**: under
+    `symBUDim_eq_largestPrime`, `symBUDim 23 d = symBUDim 28 d` for every
+    `d`.  The conjecture forces equivariant BU dimensions at all six
+    consecutive ranks `n ∈ {23, 24, …, 28}` to coincide — the longest
+    plateau collapse delivered by a prime-6 gap below n = 30. -/
+theorem symBUDim_twentythree_eq_twentyeight (d : ℕ) :
+    symBUDim 23 d = symBUDim 28 d :=
+  symBUDim_const_in_no_prime_range 23 28 d (by norm_num) (by norm_num)
+    no_prime_in_twentyfour_to_twentyeight
+
+/-- **Hypothesis-form** of `symBUDim_twentythree_eq_twentyeight`. -/
+theorem symBUDim_twentythree_eq_twentyeight_of
+    (h_conj : ConjectureLPB) (d : ℕ) :
+    symBUDim 23 d = symBUDim 28 d :=
+  symBUDim_const_in_no_prime_range_of h_conj 23 28 d
+    (by norm_num) (by norm_num) no_prime_in_twentyfour_to_twentyeight
+
 /-
 ## Summary
 
@@ -956,6 +1077,29 @@ theorem symBUDim_const_in_no_prime_range_of (h_conj : ConjectureLPB)
   hypothesis-form variants taking `ConjectureLPB` as a `Prop` argument
   rather than relying on the file's axiom (matches Part XV's pattern).
 
+### Iteration 11 additions (concrete plateau collapse instances)
+- `no_prime_in_eight_to_ten`, `no_prime_in_fourteen_to_sixteen`,
+  `no_prime_in_twentyfour_to_twentyeight` — **axiom-free** witnesses that
+  the half-open intervals `(8, 10]`, `(13, 16]`, `(23, 28]` contain no
+  primes (each proved by `interval_cases` + `decide`).  Selected to
+  cover the smallest prime gaps with multiple composites in between:
+  the dyadic gap (7, 11), the gap (13, 17), and the first gap of size 6
+  at (23, 29).
+- `largestPrimeBelow_eight_eq_ten`, `largestPrimeBelow_thirteen_eq_sixteen`,
+  `largestPrimeBelow_twentythree_eq_twentyeight` — **axiom-free** LPB
+  collapse instances at the three intervals.  Direct applications of
+  `largestPrimeBelow_const_in_no_prime_range` from PART XVI.
+- `symBUDim_eight_eq_ten`, `symBUDim_thirteen_eq_sixteen`,
+  `symBUDim_twentythree_eq_twentyeight` — **conditional** plateau collapse
+  at the three intervals.  Each is a one-liner specialization of PART
+  XVI's `symBUDim_const_in_no_prime_range`.  The S₂₃ → S₂₈ instance is
+  the longest plateau collapse below n = 30 — six consecutive symmetric
+  groups conjecturally share equivariant Borsuk-Ulam dimensions at every
+  dimension.
+- `symBUDim_eight_eq_ten_of`, `symBUDim_thirteen_eq_sixteen_of`,
+  `symBUDim_twentythree_eq_twentyeight_of` — hypothesis-form variants
+  taking `ConjectureLPB` explicitly.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -1003,4 +1147,13 @@ theorem symBUDim_const_in_no_prime_range_of (h_conj : ConjectureLPB)
 #check @symBUDim_const_in_no_prime_range
 #check @symBUDim_eq_of_lpb_eq_of
 #check @symBUDim_const_in_no_prime_range_of
+
+#check @no_prime_in_eight_to_ten
+#check @largestPrimeBelow_eight_eq_ten
+#check @symBUDim_eight_eq_ten
+#check @symBUDim_eight_eq_ten_of
+#check @no_prime_in_fourteen_to_sixteen
+#check @symBUDim_thirteen_eq_sixteen
+#check @no_prime_in_twentyfour_to_twentyeight
+#check @symBUDim_twentythree_eq_twentyeight
 end BorsukUlamSymPrime

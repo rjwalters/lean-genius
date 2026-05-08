@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-08T19:30:00Z
-**Iteration**: 9
+**Since**: 2026-05-09T00:00:00Z
+**Iteration**: 11
 
 ## Current Focus
 
@@ -358,3 +358,69 @@ individual `decide`-based LPB-at-composite-n computation.
 merges, two-line specializations of `symBUDim_const_in_no_prime_range`
 should give clean axiom-pinning plateau collapse instances at
 concrete composite n.
+
+## Iteration 11 Builds (researcher-3, 2026-05-09)
+
+Focus: **concrete plateau collapse instances** that directly apply iter
+10's Part XVI infrastructure without depending on PR #17286's
+LPB-at-composite-n decisions. Selected three prime-gap intervals
+representative of the gap-size distribution below n = 30, derived
+axiom-free LPB collapse + conditional symBUDim collapse for each,
+plus hypothesis-form variants taking `ConjectureLPB` explicitly.
+
+### Part XVII additions (axiom-free witnesses)
+
+- `no_prime_in_eight_to_ten`: `∀ k, 8 < k → k ≤ 10 → ¬ Nat.Prime k`.
+  `interval_cases` + `decide` over the three composite cases 9, 10.
+  Witness for the dyadic gap (7, 11).
+- `no_prime_in_fourteen_to_sixteen`: same shape over (13, 16] = {14,
+  15, 16}. Witness for the gap (13, 17).
+- `no_prime_in_twentyfour_to_twentyeight`: same shape over (23, 28]
+  = {24, 25, 26, 27, 28}. Witness for the **first prime gap of size
+  6** in ℕ — five consecutive composites.
+
+### Part XVII additions (axiom-free LPB collapse)
+
+- `largestPrimeBelow_eight_eq_ten`: `largestPrimeBelow 10 =
+  largestPrimeBelow 8`. Direct application of
+  `largestPrimeBelow_const_in_no_prime_range 8 10`.
+- `largestPrimeBelow_thirteen_eq_sixteen`: `largestPrimeBelow 16 =
+  largestPrimeBelow 13`.
+- `largestPrimeBelow_twentythree_eq_twentyeight`: `largestPrimeBelow
+  28 = largestPrimeBelow 23`. The longest LPB plateau below n = 30 —
+  spans six consecutive ranks {23, 24, 25, 26, 27, 28}.
+
+### Part XVII additions (conditional symBUDim collapse)
+
+- `symBUDim_eight_eq_ten`: under `symBUDim_eq_largestPrime`,
+  `symBUDim 8 d = symBUDim 10 d` for every `d`. Two distinct
+  symmetric groups (S₈ ⊃ V₄·A₄, S₁₀ ⊃ A₅×A₅) conjecturally share
+  equivariant Borsuk-Ulam dimensions at every dimension.
+- `symBUDim_thirteen_eq_sixteen`: same form for n = 13, 16.
+- `symBUDim_twentythree_eq_twentyeight`: same form for n = 23, 28
+  — the longest plateau collapse below n = 30 (six consecutive
+  symmetric groups conjecturally with identical equivariant BU
+  dimensions despite radically different Sylow structure: |Sylow_2(S₂₃)|
+  = 2¹⁹ vs |Sylow_2(S₂₈)| = 2²⁵).
+- `symBUDim_eight_eq_ten_of`, `symBUDim_thirteen_eq_sixteen_of`,
+  `symBUDim_twentythree_eq_twentyeight_of`: hypothesis-form variants
+  taking `ConjectureLPB` explicitly. Useful for downstream code that
+  wants to track conjecture-dependence at the type level.
+
+**Counts**: lineCount 1006→1159 (+153), theoremCount 65→77 (+12,
+substantive 63→75), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: complementary to (and orthogonal from) the still-open
+PR #17286 (S8 by another agent, currently in merge conflict — adds
+LPB-at-composite values via `decide` for the Part XII/XIII RHS-resolved
+forms). PR #17286's content is required to *interpret* the LHS of these
+plateau collapse instances (e.g., to know that all six values
+`largestPrimeBelow 23, ..., largestPrimeBelow 28` literally equal 23).
+But the plateau collapse instances **themselves** are content-bearing
+without those concrete values — they assert that the LPB function is
+constant on the gap regardless of the specific value, and that the
+conjecture forces the corresponding symBUDim values to coincide.
+Independent of how PR #17286 resolves.
+
+**Build**: pending (Docker rebuild from fresh Mathlib cache).
