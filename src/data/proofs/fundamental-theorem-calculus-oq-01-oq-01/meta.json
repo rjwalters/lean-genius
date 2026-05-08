@@ -77,6 +77,16 @@
       "targetId": "fundamental-theorem-calculus-oq-01",
       "relationship": "extends",
       "description": "Parent entry proving the Lebesgue FTC. This file resolves OQ-01 by proving the AC → BV step that the parent axiomatizes."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Sibling OQ-01-OQ-04 entry: extends the AC ⇒ BV implication to vector-valued $F : \\mathbb{R} \\to E$ in a normed space. The same ε-δ partition bound carries over verbatim once `edist` is replaced with the normed-space distance, so the proof skeleton in this entry is the natural template."
+    },
+    {
+      "targetId": "fundamental-theorem-calculus-oq-02",
+      "relationship": "related",
+      "description": "Sibling FTC OQ-02 entry on the converse (BV + a.e. derivative formula ⇒ Lebesgue-integrable). Together with this entry, they bracket the AC ⟺ Lebesgue-integrable-derivative biconditional that is the headline of the Lebesgue FTC."
     }
   ],
   "conclusion": {
@@ -87,6 +97,50 @@
       "Does Mathlib have `BoundedVariationOn.jordanDecomposition` or similar, enabling a shorter path to the Lebesgue FTC?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "ac_implies_bv",
+      "type": "core",
+      "statement": "$\\forall F : \\mathbb{R} \\to \\mathbb{R}, \\forall a, b \\in \\mathbb{R}, a \\le b\\colon \\mathrm{AbsolutelyContinuousOn}\\,F\\,a\\,b \\Rightarrow \\mathrm{BoundedVariationOn}\\,F\\,(\\mathrm{Icc}\\,a\\,b)$",
+      "significance": "**The headline theorem.** Closes the first step of the AC → BV → Jordan → a.e.-differentiable → Lebesgue-FTC chain. Removes one of the axioms in the parent `fundamental-theorem-calculus-oq-01` entry.",
+      "description": "Main theorem: every absolutely continuous function on [a,b] has bounded variation. Proof: AC with ε=1 gives δ; partition [a,b] into ⌈(b-a)/δ⌉+1 pieces of length < δ; each piece contributes variation ≤ 1 by AC; total ≤ n < ⊤."
+    },
+    {
+      "name": "eVariationOn_le_one_of_short",
+      "type": "supporting",
+      "statement": "$\\forall F, a, b, c, d, \\delta\\colon \\mathrm{AbsolutelyContinuousOn}\\,F\\,a\\,b \\land \\mathrm{Icc}\\,c\\,d \\subseteq \\mathrm{Icc}\\,a\\,b \\land d - c < \\delta \\Rightarrow \\mathrm{eVariationOn}\\,F\\,(\\mathrm{Icc}\\,c\\,d) \\le 1$",
+      "significance": "**The short-interval engine.** Within a single $\\delta$-window the partition-sum bound from AC translates directly into an eVariationOn ceiling of $1$. Reduces the global bound to a covering count.",
+      "description": "Short-interval lemma: on an interval of length < δ, the eVariationOn of F is bounded by 1, using the AC ε-δ condition with ε = 1. Telescoping sum + ofReal_sum_of_nonneg bridge real arithmetic to ENNReal."
+    },
+    {
+      "name": "eVariationOn_le_n",
+      "type": "supporting",
+      "statement": "$\\forall F, a, \\mathrm{step} > 0, n\\colon (\\forall m < n, \\mathrm{eVariationOn}\\,F\\,(\\mathrm{Icc}\\,(a + m\\cdot\\mathrm{step})\\,(a + (m+1)\\cdot\\mathrm{step})) \\le 1) \\Rightarrow \\mathrm{eVariationOn}\\,F\\,(\\mathrm{Icc}\\,a\\,(a + n\\cdot\\mathrm{step})) \\le n$",
+      "significance": "**Inductive splitting**. Iterates `eVariationOn.Icc_add_Icc` $n - 1$ times to glue local bounds into a global one. Why $n$ pieces and not just one — the proof's covering count.",
+      "description": "Inductive splitting: eVariationOn over n consecutive equal pieces is bounded by n times the per-piece bound. Built up by induction on n with `eVariationOn.Icc_add_Icc` at each step."
+    },
+    {
+      "name": "eVariationOn_le_of_forall",
+      "type": "supporting",
+      "statement": "$\\forall f, s, C\\colon (\\forall (n : \\mathbb{N}) (u : \\mathbb{N} \\to \\mathbb{R}), \\mathrm{Monotone}\\,u \\land (\\forall i, u\\,i \\in s) \\Rightarrow \\sum_{i < n} \\mathrm{edist}\\,(f\\,(u(i+1)))\\,(f\\,(u\\,i)) \\le C) \\Rightarrow \\mathrm{eVariationOn}\\,f\\,s \\le C$",
+      "significance": "**Upper-bound criterion**. Unfolds eVariationOn as a supremum and reduces a global ceiling claim to a per-partition-sum bound. The structural reason `iSup_le` is the right tool to attack the whole problem.",
+      "description": "Upper-bound criterion: to show eVariationOn ≤ C it suffices to show every partition sum ≤ C. Direct application of iSup_le inside the eVariationOn definition."
+    },
+    {
+      "name": "fin_telescoping",
+      "type": "supporting",
+      "statement": "$\\forall n, \\forall u : \\mathbb{N} \\to \\mathbb{R}\\colon \\sum_{k < n}(u(k+1) - u\\,k) = u\\,n - u\\,0$",
+      "significance": "**Telescoping identity** that reduces the AC partition-length budget on a monotone $u$ to the single quantity $u(n) - u(0) \\le d - c < \\delta$ — the key arithmetic step inside `eVariationOn_le_one_of_short`.",
+      "description": "Telescoping sum identity for Fin n: ∑(u(k+1) - u(k)) = u(n) - u(0). Used to bound the total interval length from a partition's incremental lengths."
+    },
+    {
+      "name": "edist_real_ofReal",
+      "type": "supporting",
+      "statement": "$\\forall x, y \\in \\mathbb{R}\\colon \\mathrm{edist}\\,x\\,y = \\mathrm{ENNReal.ofReal}\\,|x - y|$",
+      "significance": "Bridges the metric-space `edist` (in ENNReal) with the real-valued absolute difference $|x - y|$. Tiny but pervasive — every transition between the AC condition (real arithmetic) and the eVariationOn definition (ENNReal arithmetic) goes through it.",
+      "description": "edist on ℝ as ENNReal.ofReal of the real distance. The bridge between real-valued absolute differences (in the AC condition) and ENNReal eVariationOn sums."
+    }
+  ],
   "leanFile": {
     "lineCount": 185,
     "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
@@ -101,6 +155,34 @@
       "title": "Sulle funzioni integrali",
       "year": "1905",
       "note": "Original proof that absolutely continuous functions have bounded variation"
+    },
+    {
+      "authors": "Henri Lebesgue",
+      "title": "Sur l'intégration des fonctions discontinues",
+      "year": "1910",
+      "venue": "Annales scientifiques de l'École Normale Supérieure 27, 361–450",
+      "note": "Lebesgue's foundational paper establishing that AC functions on a bounded interval are exactly the indefinite integrals of $L^1$ functions — the headline Fundamental Theorem of Calculus that this entry's AC → BV step opens the path to."
+    },
+    {
+      "authors": "Camille Jordan",
+      "title": "Sur la série de Fourier",
+      "year": "1881",
+      "venue": "Comptes Rendus 92, 228–230",
+      "note": "Origin of bounded variation as a precise notion. The Jordan decomposition $F = F^+ - F^-$ for BV functions is the next step downstream of `ac_implies_bv`, leading to a.e. differentiability via the monotone-function theory."
+    },
+    {
+      "authors": "Constantin Carathéodory",
+      "title": "Vorlesungen über reelle Funktionen",
+      "year": "1918",
+      "venue": "Teubner",
+      "note": "Standard early reference for the modern AC framework, including the equivalence between Vitali's ε-δ definition and the measure-theoretic characterization $\\mu_F \\ll \\mathrm{Lebesgue}$."
+    },
+    {
+      "authors": "Walter Rudin",
+      "title": "Real and Complex Analysis (3rd ed.)",
+      "year": "1987",
+      "venue": "McGraw-Hill, Chapter 7",
+      "note": "Modern textbook treatment of AC ⇒ BV ⇒ a.e.-differentiable ⇒ Lebesgue FTC, matching the proof skeleton this Lean formalization follows."
     },
     {
       "authors": "Mathlib Contributors",
