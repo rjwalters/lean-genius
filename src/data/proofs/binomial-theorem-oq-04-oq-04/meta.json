@@ -27,46 +27,38 @@
   "sections": [
     {
       "id": "lgv-path-matrix",
-      "title": "LGV Path Matrix Entry",
-      "description": "lgvE m a b = C(m+(b-a), m): the number of lattice paths from y=a to y=b in exactly m East steps. lgvE_zero_source: e(m,0,k) = C(m+k, m). lgvE_same: e(m,a,a) = 1 (only the flat path). lgvDet2: 2\u00d72 LGV determinant e(A\u2081,B\u2081)\u00b7e(A\u2082,B\u2082) - e(A\u2081,B\u2082)\u00b7e(A\u2082,B\u2081). lgvDet2_when_no_cross_path: when sources above targets, cross term uses saturated subtraction.",
-      "theorems": [
-        "lgvE",
-        "lgvDet2",
-        "lgvE_zero_source",
-        "lgvE_same",
-        "lgvDet2_when_no_cross_path"
-      ]
+      "title": "Part I \u2014 LGV Path Matrix Entry",
+      "startLine": 47,
+      "endLine": 74,
+      "summary": "Defines the LGV e-function lgvE m a b = C(m+(b-a), m) (the (i,j) entry of the path matrix counting lattice paths from height a to height b in m East steps), proves the specializations lgvE_zero_source: e(m,0,k) = C(m+k,m) and lgvE_same: e(m,a,a) = 1, defines the 2\u00d72 LGV determinant lgvDet2 = e(A\u2081,B\u2081)\u00b7e(A\u2082,B\u2082) - e(A\u2081,B\u2082)\u00b7e(A\u2082,B\u2081), and proves lgvDet2_when_no_cross_path showing the cross term uses saturated subtraction when sources lie above targets. Theorems: lgvE, lgvDet2, lgvE_zero_source, lgvE_same, lgvDet2_when_no_cross_path."
     },
     {
       "id": "vandermonde-combinatorial",
-      "title": "Vandermonde Identity \u2014 Combinatorial Proof",
-      "description": "vandermonde: C(m+n,r) = \u03a3_k C(m,k)\u00b7C(n,r-k), proved via Mathlib's polynomial framework. vandermonde_via_powersetCard: each r-element subset of {0,...,m+n-1} is partitioned by intersection with the first m elements \u2014 the LGV non-crossing partition. vandermonde_term_combinatorial: each summand C(m,k)\u00b7C(n,r-k) counts k-subsets \u00d7 (r-k)-subsets in disjoint segments.",
-      "theorems": [
-        "vandermonde",
-        "vandermonde_via_powersetCard",
-        "vandermonde_term_combinatorial"
-      ]
+      "title": "Part II \u2014 Vandermonde Identity (Combinatorial Proof via powersetCard)",
+      "startLine": 75,
+      "endLine": 113,
+      "summary": "Proves the Vandermonde convolution C(m+n,r) = \u03a3_k C(m,k)\u00b7C(n,r-k) by three coordinated routes: vandermonde via Mathlib's polynomial framework (algebraic baseline), vandermonde_via_powersetCard partitioning each r-subset of {0,\u2026,m+n-1} by its intersection size k with the first m elements (the LGV non-crossing decomposition), and vandermonde_term_combinatorial showing each summand C(m,k)\u00b7C(n,r-k) is the cardinality of (k-subsets of [0,m)) \u00d7 ((r-k)-subsets of [m,m+n))."
     },
     {
       "id": "lgv-connection",
-      "title": "LGV Single-Path Connection to Vandermonde",
-      "description": "lgv_path_count_identity: lgvE m 0 r = C(m+r, m). vandermonde_sequential_lgv_principle: the degenerate 1\u00d71 LGV \u2014 segments are non-crossing by construction so no involution is needed. lgvDet2_staircase: for sources {0,1} and targets {r,r+1}, the 2\u00d72 LGV determinant gives a Vandermonde-Chu type identity. vandermonde_sum_via_card and vandermonde_as_lgv_row_expansion: row expansion of the 1\u00d71 LGV matrix.",
-      "theorems": [
-        "lgv_path_count_identity",
-        "vandermonde_sequential_lgv_principle",
-        "lgvDet2_staircase",
-        "vandermonde_sum_via_card",
-        "vandermonde_as_lgv_row_expansion"
-      ]
+      "title": "Part III \u2014 LGV Single-Path Connection to Vandermonde",
+      "startLine": 114,
+      "endLine": 185,
+      "summary": "Establishes the bridge to LGV: lgv_path_count_identity confirms lgvE m 0 r = C(m+r,m); vandermonde_sequential_lgv_principle shows that the single path from y=0 to y=r decomposes at column m into prefix and suffix segments with no involution required (the degenerate 1\u00d71 LGV); lgvDet2_staircase computes the 2\u00d72 determinant for sources {0,1} and targets {r,r+1} as C(m+r,m)\u00b2 - C(m+r+1,m)\u00b7C(m+r-1,m); and vandermonde_sum_via_card / vandermonde_as_lgv_row_expansion give the row-expansion view of the 1\u00d71 LGV matrix as a Vandermonde sum."
     },
     {
       "id": "vandermonde-chu",
-      "title": "Vandermonde\u2013Chu Identity and Summary",
-      "description": "vandermonde_chu_from_lgv: sequential multiplication of two 1\u00d71 LGV matrices gives \u03a3 C(m\u2081+k,m\u2081)\u00b7C(m\u2082+r-k,m\u2082), the Chu-Vandermonde variant (NOT standard Vandermonde, since lgvE \u2260 binomial). vandermonde_lgv_connection_summary: the master result tying LGV to Vandermonde.",
-      "theorems": [
-        "vandermonde_chu_from_lgv",
-        "vandermonde_lgv_connection_summary"
-      ]
+      "title": "Part IV \u2014 Vandermonde\u2013Chu Identity (Sequential LGV's Actual Output)",
+      "startLine": 186,
+      "endLine": 202,
+      "summary": "vandermonde_chu_from_lgv shows that sequential multiplication of two 1\u00d71 LGV matrices produces \u03a3_k C(m\u2081+k,m\u2081)\u00b7C(m\u2082+r-k,m\u2082) \u2014 the Chu\u2013Vandermonde variant, not standard Vandermonde, because lgvE(m,0,k) = C(m+k,m) rather than C(m,k). This pinpoints the precise identity that emerges from the LGV machinery and explains why the powerset partition and the path-product give superficially different (but mathematically equivalent) formulas."
+    },
+    {
+      "id": "summary-master-result",
+      "title": "Part V \u2014 Summary: Vandermonde as the 1\u00d71 LGV Theorem",
+      "startLine": 203,
+      "endLine": 228,
+      "summary": "vandermonde_lgv_connection_summary packages the master result: the Vandermonde identity C(m+n,r) = \u03a3_k C(m,k)\u00b7C(n,r-k) is the 1\u00d71 degenerate case of the LGV lemma. The general r\u00d7r LGV signed-count specializes to a positive identity here because a 1\u00d71 determinant has only the identity-permutation term with sign +1, eliminating the Lindstr\u00f6m involution machinery."
     }
   ],
   "overview": {
@@ -94,14 +86,14 @@
   },
   "crossReferences": [
     {
-      "id": "binomial-theorem-oq-04",
-      "title": "Binomial Theorem OQ-04",
-      "relationship": "Parent entry that posed the question of connecting LGV to Vandermonde. This entry provides the answer."
+      "proofId": "binomial-theorem-oq-04",
+      "relationship": "parent",
+      "description": "Parent entry that posed the question of connecting LGV to Vandermonde. This entry provides the answer."
     },
     {
-      "id": "ballot-problem-oq-03",
-      "title": "Ballot Problem",
-      "relationship": "The staircase lgvDet2 configuration connects to non-intersecting path counting in the ballot problem. Both use the LGV principle for path pairs."
+      "proofId": "ballot-problem-oq-03",
+      "relationship": "uses-shared-tool",
+      "description": "The staircase lgvDet2 configuration C(m+r,m)² - C(m+r+1,m)·C(m+r-1,m) computes non-intersecting path-pair counts that are equivalent to the ballot-problem reflection bijection — both invoke the LGV non-crossing principle for path pairs over a 2-source, 2-target configuration."
     }
   ],
   "leanFile": {
