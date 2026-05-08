@@ -180,6 +180,33 @@ private lemma leastNonDivisor_le_of_ndvd {m j : ℕ} (hj_pos : j > 0) (hj_ndvd :
     apply Nat.find_min'
     exact ⟨hj_pos, hj_ndvd⟩
 
+/-- For nonzero `m`, the least non-divisor of `m` is at least 2 — since 1 always
+    divides `m`, the least non-divisor cannot be 1, and 0 is excluded by the
+    `> 0` condition in `leastNonDivisor`. -/
+theorem leastNonDivisor_ge_two {m : ℕ} (hm : m ≠ 0) : 2 ≤ leastNonDivisor m := by
+  unfold leastNonDivisor
+  rw [dif_neg hm, Nat.le_find_iff]
+  rintro k hk2 ⟨hk_pos, hk_ndvd⟩
+  interval_cases k
+  exact hk_ndvd (one_dvd m)
+
+/-- The least non-divisor of `C(2n, n)` is at least 2, since `centralBinom n > 0`. -/
+theorem leastNonDivCentral_ge_two (n : ℕ) : 2 ≤ leastNonDivCentral n :=
+  leastNonDivisor_ge_two (centralBinom_pos n).ne'
+
+/-- `leastNonDivisor 1 = 2`: the smallest positive integer not dividing 1 is 2.
+    Verified concrete value used to anchor `leastNonDivCentral 0`. -/
+theorem leastNonDivisor_one : leastNonDivisor 1 = 2 := by
+  apply le_antisymm
+  · exact leastNonDivisor_le_of_ndvd (by omega : (2 : ℕ) > 0) (by decide : ¬((2 : ℕ) ∣ 1))
+  · exact leastNonDivisor_ge_two one_ne_zero
+
+/-- `leastNonDivCentral 0 = 2`: since `C(0, 0) = 1` and `leastNonDivisor 1 = 2`. -/
+theorem leastNonDivCentral_zero : leastNonDivCentral 0 = 2 := by
+  unfold leastNonDivCentral
+  rw [centralBinom_zero]
+  exact leastNonDivisor_one
+
 
 /-- Upper bound: leastNonDivCentral n ≤ 2n+1 for all n ≥ 1.
     By contradiction: if all m ∈ {1,...,2n+1} divide C(2n,n), then
