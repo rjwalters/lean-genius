@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-09T01:00:00Z
-**Iteration**: 12
+**Since**: 2026-05-09T02:00:00Z
+**Iteration**: 13
 
 ## Current Focus
 
@@ -488,3 +488,92 @@ Concrete falsification target: compute or bound `buDim 3 3` directly
 via equivariant cohomology of Z/3 on simple S²-actions.
 
 **Build**: pending (Docker rebuild from fresh Mathlib cache).
+
+## Iteration 13 Builds (researcher-1, 2026-05-09)
+
+Focus: **structural converse to the plateau lemma** — break out of the
+iter 11/12 enumeration pattern (concrete gap-N instances) by adding the
+converse direction and packaging both directions as a single
+biconditional. The biconditional subsumes the entire "first prime gap of
+size N" enumeration template that iter 11/12 grew along.
+
+### Part XIX additions (axiom-free)
+
+- `largestPrimeBelow_lt_of_prime_in_range`: the structural converse of
+  PART XVI. If a prime `p` lies in the half-open interval `(n, m]`,
+  then `largestPrimeBelow n < largestPrimeBelow m`. Three-line proof
+  via `Nat.le_findGreatest` (witness `p ≤ largestPrimeBelow m` from
+  primality) and `largestPrimeBelow_le` (bound `largestPrimeBelow n
+  ≤ n < p`). The `2 ≤ n` hypothesis is *not* required — the
+  inequality chain is unconditional.
+- `largestPrimeBelow_eq_iff_no_prime_in_range`: the **biconditional
+  packaging**. For `n ≤ m`, `largestPrimeBelow n = largestPrimeBelow
+  m` iff no prime lies in `(n, m]`. Forward direction is PART XVI;
+  reverse is the contrapositive of the new strict-monotonicity lemma.
+  Together they give a tight characterization: LPB plateaus
+  correspond *exactly* to prime-gap intervals. Every Part XVII–XVIII
+  concrete-gap LPB-equality instance is now a corollary of one
+  biconditional.
+- `largestPrimeBelow_strict_mono_at_prime`: clean specialization at
+  `m = p` prime. `n < p` implies `largestPrimeBelow n <
+  largestPrimeBelow p`. One-liner reduction to the general converse.
+
+### Part XIX additions — concrete plateau-edge witnesses (axiom-free)
+
+- `largestPrimeBelow_eight_lt_eleven`,
+  `largestPrimeBelow_thirteen_lt_seventeen`,
+  `largestPrimeBelow_twentythree_lt_twentynine`,
+  `largestPrimeBelow_eightynine_lt_ninetyseven`: strict-mono witnesses
+  at each plateau's right endpoint. Together with the existing
+  `largestPrimeBelow_eight_eq_ten`, `_thirteen_eq_sixteen`,
+  `_twentythree_eq_twentyeight`, `_eightynine_eq_ninetysix` from
+  Parts XVII–XVIII, these pin each plateau as a *maximal* level set
+  of `largestPrimeBelow` (rather than a cluster that might extend
+  further). The plateau `{89, …, 96}` is now formally maximal: every
+  rank in the plateau has `largestPrimeBelow = 89`, and any rank
+  `≥ 97` strictly exceeds 89 in `largestPrimeBelow`.
+
+**Counts**: lineCount 1242→1376 (+134), theoremCount 81→88 (+7,
+substantive 79→86), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: this iteration is a deliberate departure from iter
+11/12's enumeration pattern. Part XVII (gap 4 at three intervals) +
+Part XVIII (first gap of size 8) was a productive enumeration but
+risked degenerating into "first gap of size N for each N" busywork.
+The converse direction `largestPrimeBelow_lt_of_prime_in_range` — and
+especially the biconditional `largestPrimeBelow_eq_iff_no_prime_in_range`
+— packages the entire enumeration template as a single content-bearing
+structural result. Future "first gap of size N" instances are now
+two-line corollaries of the iff applied to a no-prime-in-range
+witness; the structural content lives at PART XIX, not in repeated
+PART XVII-style sections.
+
+The plateau-edge witnesses (`_lt_` instances at 11, 17, 29, 97) tighten
+the existing eq-instances by formally pinning each plateau as
+*maximal*. Iter 11/12 showed the plateaus *exist*; iter 13 shows they
+do not extend.
+
+**Build**: pending (Docker rebuild from fresh Mathlib cache —
+worktree's proofs/.lake recursive self-symlink forces ≥45-min cold-cache
+builds per `feedback_researcher_lake_symlink_broken.md`). All new
+content uses only Mathlib API exercised by earlier iterations
+(`Nat.le_findGreatest`, `Nat.findGreatest_le`, `lt_of_le_of_lt`,
+`lt_of_lt_of_le`, `ne_of_lt`, `absurd`, `decide`, `norm_num`); CI is
+the ground truth.
+
+**Path forward** (revised post-iter-13):
+1. **Symmetric biconditional** (1-line follow-up): drop the `n ≤ m`
+   hypothesis from the iff by symmetrizing — `largestPrimeBelow n =
+   largestPrimeBelow m ↔ no prime in (min n m, max n m]`. Routine
+   case-split.
+2. **symBUDim-side iff** (conditional on conjecture): characterize when
+   `symBUDim n d = symBUDim m d` for all `d` in terms of the LPB iff.
+   Note: only the forward direction lifts cleanly; the reverse needs
+   `symBUDim_cyc` injectivity-across-primes which is not currently
+   axiomatized.
+3. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
+   axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure (would settle the
+   conjecture for many small-n applications).
+4. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.

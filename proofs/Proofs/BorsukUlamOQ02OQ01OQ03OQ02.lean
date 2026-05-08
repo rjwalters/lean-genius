@@ -983,6 +983,107 @@ theorem symBUDim_eightynine_eq_ninetysix_of
   symBUDim_const_in_no_prime_range_of h_conj 89 96 d
     (by norm_num) (by norm_num) no_prime_in_ninety_to_ninetysix
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XIX: Structural converse — strict monotonicity across primes
+-- ═══════════════════════════════════════════════════════════════════════
+-- Iterations 11–12 enumerated concrete LPB plateaus across specific
+-- prime gaps (sizes 4, 6, 8) by applying the forward direction
+-- `largestPrimeBelow_const_in_no_prime_range`.  This section provides
+-- the **converse** — strict monotonicity of `largestPrimeBelow`
+-- whenever a prime falls in the range — together with the resulting
+-- biconditional packaging.
+--
+-- The biconditional `largestPrimeBelow_eq_iff_no_prime_in_range`
+-- subsumes the entire "first prime gap of size N" enumeration template:
+-- LPB plateau across an interval is *exactly* characterized by absence
+-- of primes in that interval, with no further case analysis needed.
+-- All Part XVII–XVIII concrete equalities are now corollaries of one
+-- structural iff.
+
+/-- **Strict monotonicity of `largestPrimeBelow` across primes**: if a
+    prime `p` lies in the half-open interval `(n, m]`, then
+    `largestPrimeBelow n < largestPrimeBelow m`.  This is the structural
+    converse of `largestPrimeBelow_const_in_no_prime_range`: presence of
+    a prime in the gap forces strict growth, absence forces equality.
+
+    Axiom-free; relies only on `Nat.le_findGreatest` (witness for the RHS)
+    and `largestPrimeBelow_le` (bound for the LHS).  The `2 ≤ n`
+    hypothesis is *not* required — the chain
+    `largestPrimeBelow n ≤ n < p ≤ largestPrimeBelow m` is unconditional. -/
+theorem largestPrimeBelow_lt_of_prime_in_range
+    (n m p : ℕ) (hp : Nat.Prime p) (hnp : n < p) (hpm : p ≤ m) :
+    largestPrimeBelow n < largestPrimeBelow m := by
+  have h_le : p ≤ largestPrimeBelow m := by
+    unfold largestPrimeBelow
+    exact Nat.le_findGreatest hpm hp
+  exact lt_of_le_of_lt (largestPrimeBelow_le n) (lt_of_lt_of_le hnp h_le)
+
+/-- **Plateau characterization (biconditional)**: for `n ≤ m`,
+    `largestPrimeBelow n = largestPrimeBelow m` iff no prime exists in
+    the half-open interval `(n, m]`.
+
+    The forward direction is `largestPrimeBelow_const_in_no_prime_range`
+    (PART XVI); the reverse direction is the contrapositive of
+    `largestPrimeBelow_lt_of_prime_in_range`.  Combining the two gives
+    a tight structural characterization: LPB plateaus correspond
+    *exactly* to prime-gap intervals.  Axiom-free. -/
+theorem largestPrimeBelow_eq_iff_no_prime_in_range
+    (n m : ℕ) (hnm : n ≤ m) :
+    largestPrimeBelow n = largestPrimeBelow m ↔
+      (∀ k, n < k → k ≤ m → ¬ Nat.Prime k) := by
+  refine ⟨?_, fun h => (largestPrimeBelow_const_in_no_prime_range n m hnm h).symm⟩
+  intro h_eq k hk1 hk2 hk_prime
+  exact absurd h_eq
+    (ne_of_lt (largestPrimeBelow_lt_of_prime_in_range n m k hk_prime hk1 hk2))
+
+/-- **Strict monotonicity at a prime endpoint**: if `n < p` and `p` is
+    prime, then `largestPrimeBelow n < largestPrimeBelow p` — equivalently,
+    the LPB plateau ending below `p` strictly precedes `largestPrimeBelow
+    p = p`.  One-line specialization of
+    `largestPrimeBelow_lt_of_prime_in_range` at `m = p`. -/
+theorem largestPrimeBelow_strict_mono_at_prime
+    (n p : ℕ) (hp : Nat.Prime p) (hnp : n < p) :
+    largestPrimeBelow n < largestPrimeBelow p :=
+  largestPrimeBelow_lt_of_prime_in_range n p p hp hnp le_rfl
+
+-- ─────────────────────────────────────────────────────────────────────
+-- Concrete plateau-edge witnesses (corollaries of the iff)
+-- ─────────────────────────────────────────────────────────────────────
+-- Each Part XVII–XVIII plateau (`lpb 8 = lpb 10`, `lpb 13 = lpb 16`,
+-- `lpb 23 = lpb 28`, `lpb 89 = lpb 96`) ends at the next prime
+-- (11, 17, 29, 97 respectively).  The strict-mono converse witnesses
+-- the *boundary*: at the next prime, LPB strictly exceeds the plateau
+-- value.  Together with the eq instances, these pin each plateau as
+-- a *maximal* level set of `largestPrimeBelow`.
+
+/-- **Plateau-edge at the dyadic gap (7, 11)**: `largestPrimeBelow 8 <
+    largestPrimeBelow 11`.  Combined with `largestPrimeBelow_eight_eq_ten`,
+    the plateau `{8, 9, 10}` is exactly the level set of `largestPrimeBelow`
+    above 7 and below 11. -/
+theorem largestPrimeBelow_eight_lt_eleven :
+    largestPrimeBelow 8 < largestPrimeBelow 11 :=
+  largestPrimeBelow_strict_mono_at_prime 8 11 (by decide) (by norm_num)
+
+/-- **Plateau-edge at the gap (13, 17)**: `largestPrimeBelow 13 <
+    largestPrimeBelow 17`. -/
+theorem largestPrimeBelow_thirteen_lt_seventeen :
+    largestPrimeBelow 13 < largestPrimeBelow 17 :=
+  largestPrimeBelow_strict_mono_at_prime 13 17 (by decide) (by norm_num)
+
+/-- **Plateau-edge at the gap of size 6 (23, 29)**: `largestPrimeBelow 23
+    < largestPrimeBelow 29`.  Witnesses the right boundary of the
+    longest plateau `{23, …, 28}` below n = 30. -/
+theorem largestPrimeBelow_twentythree_lt_twentynine :
+    largestPrimeBelow 23 < largestPrimeBelow 29 :=
+  largestPrimeBelow_strict_mono_at_prime 23 29 (by decide) (by norm_num)
+
+/-- **Plateau-edge at the first gap of size 8 (89, 97)**:
+    `largestPrimeBelow 89 < largestPrimeBelow 97`.  Witnesses the right
+    boundary of the longest plateau `{89, …, 96}` below n = 100. -/
+theorem largestPrimeBelow_eightynine_lt_ninetyseven :
+    largestPrimeBelow 89 < largestPrimeBelow 97 :=
+  largestPrimeBelow_strict_mono_at_prime 89 97 (by decide) (by norm_num)
+
 /-
 ## Summary
 
@@ -1178,6 +1279,31 @@ theorem symBUDim_eightynine_eq_ninetysix_of
 - `symBUDim_eightynine_eq_ninetysix_of` — hypothesis-form variant
   taking `ConjectureLPB` explicitly.
 
+### Iteration 13 additions (structural converse — Part XIX)
+- `largestPrimeBelow_lt_of_prime_in_range` — **axiom-free** structural
+  converse of `largestPrimeBelow_const_in_no_prime_range`: if a prime
+  `p` lies in the half-open interval `(n, m]`, then `largestPrimeBelow
+  n < largestPrimeBelow m`.  Three-line proof via Mathlib's
+  `Nat.le_findGreatest` (witness for the RHS) and `largestPrimeBelow_le`
+  (bound for the LHS).
+- `largestPrimeBelow_eq_iff_no_prime_in_range` — **axiom-free
+  biconditional**: for `n ≤ m`, `largestPrimeBelow n = largestPrimeBelow
+  m` iff no prime exists in `(n, m]`.  Combines the forward direction
+  (PART XVI) with the new converse to give a tight characterization:
+  LPB plateaus correspond *exactly* to prime-gap intervals.  Subsumes
+  the entire Part XVII–XVIII concrete-gap enumeration template — every
+  "no prime in (a, b] ⇒ lpb a = lpb b" instance is now an iff-corollary.
+- `largestPrimeBelow_strict_mono_at_prime` — **axiom-free** clean
+  specialization at `m = p` prime: `largestPrimeBelow n < largestPrimeBelow
+  p` whenever `n < p`.  Tight at the right endpoint of every prime gap.
+- `largestPrimeBelow_eight_lt_eleven`, `largestPrimeBelow_thirteen_lt_seventeen`,
+  `largestPrimeBelow_twentythree_lt_twentynine`,
+  `largestPrimeBelow_eightynine_lt_ninetyseven` — **axiom-free**
+  plateau-edge witnesses at the four prime-gap intervals from Parts
+  XVII–XVIII.  Together with the corresponding eq-instances, these pin
+  each plateau as a *maximal* level set of `largestPrimeBelow` (rather
+  than a possibly-extendable equal-LPB cluster).
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -1239,4 +1365,12 @@ theorem symBUDim_eightynine_eq_ninetysix_of
 #check @largestPrimeBelow_eightynine_eq_ninetysix
 #check @symBUDim_eightynine_eq_ninetysix
 #check @symBUDim_eightynine_eq_ninetysix_of
+
+#check @largestPrimeBelow_lt_of_prime_in_range
+#check @largestPrimeBelow_eq_iff_no_prime_in_range
+#check @largestPrimeBelow_strict_mono_at_prime
+#check @largestPrimeBelow_eight_lt_eleven
+#check @largestPrimeBelow_thirteen_lt_seventeen
+#check @largestPrimeBelow_twentythree_lt_twentynine
+#check @largestPrimeBelow_eightynine_lt_ninetyseven
 end BorsukUlamSymPrime
