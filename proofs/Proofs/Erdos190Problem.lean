@@ -345,4 +345,55 @@ theorem erdos_190_summary :
 -- The main conjecture (OPEN): H(k)^{1/k}/k → ∞, i.e., H(k) grows
 -- faster than k^k. This remains unresolved.
 
+/- ## Part XI: Subset Helpers and Conjecture Strength -/
+
+/-- Monochromaticity is preserved under subsets: if every element of `s` has
+    the same color under `χ`, then so does every element of any subset `s'`. -/
+theorem isMonochromatic_subset {ι Cα : Type*} {χ : ι → Cα}
+    {s s' : Finset ι} (hsub : s' ⊆ s) (h : isMonochromatic χ s) :
+    isMonochromatic χ s' := by
+  obtain ⟨c, hc⟩ := h
+  exact ⟨c, fun x hx => hc x (hsub hx)⟩
+
+/-- Rainbowness is preserved under subsets: if `χ` is injective on `s`
+    (witnessed by `(s.image χ).card = s.card`), then it is also injective on
+    any subset `s'`, hence the rainbow condition transfers. -/
+theorem isRainbow_subset {ι Cα : Type*} [DecidableEq Cα] {χ : ι → Cα}
+    {s s' : Finset ι} (hsub : s' ⊆ s) (h : isRainbow χ s) :
+    isRainbow χ s' := by
+  unfold isRainbow at *
+  -- From h : s.card = (s.image χ).card, derive Set.InjOn χ s.
+  have hInj : Set.InjOn χ (↑s : Set ι) := by
+    have : (s.image χ).card = s.card := h.symm
+    rwa [Finset.card_image_iff] at this
+  -- Restrict injectivity to s' and conclude.
+  have hInj' : Set.InjOn χ (↑s' : Set ι) :=
+    hInj.mono (by exact_mod_cast hsub)
+  rw [Finset.card_image_of_injOn hInj']
+
+/-- The Erdős #190 conjecture `H(k)^{1/k}/k → ∞` is strictly stronger than
+    the known result `H(k)^{1/k} → ∞`: any threshold function `K(M)` for the
+    conjecture also works for the known result, since
+    `H(k)^{1/k} ≥ H(k)^{1/k}/k · k > M · k ≥ M` once `k ≥ max(K(M), 1)`. -/
+theorem erdos190Conjecture_implies_root_to_infinity (h : erdos190Conjecture) :
+    ∀ M : ℕ, ∃ K : ℕ, ∀ k ≥ K, (H k : ℝ) ^ (1 / k : ℝ) > M := by
+  intro M
+  obtain ⟨K, hK⟩ := h M
+  refine ⟨max K 1, fun k hk => ?_⟩
+  have hkK : k ≥ K := le_trans (le_max_left _ _) hk
+  have hk1 : k ≥ 1 := le_trans (le_max_right _ _) hk
+  have hk_pos : (0 : ℝ) < k := by exact_mod_cast hk1
+  have hbound := hK k hkK
+  -- hbound : (H k : ℝ) ^ (1 / k : ℝ) / k > M
+  -- Multiply both sides by k > 0 to get (H k)^{1/k} > M·k.
+  have hMk : (M : ℝ) * k < (H k : ℝ) ^ (1 / k : ℝ) := by
+    have := (div_lt_iff₀ hk_pos).mp hbound
+    linarith
+  -- Then M·k ≥ M·1 = M since M ≥ 0 and k ≥ 1.
+  have hMle : (M : ℝ) ≤ M * k := by
+    have hM_nn : (0 : ℝ) ≤ M := by exact_mod_cast Nat.zero_le _
+    have hk_ge_one : (1 : ℝ) ≤ k := by exact_mod_cast hk1
+    nlinarith
+  linarith
+
 end Erdos190
