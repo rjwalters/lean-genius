@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "lineCount": 256,
     "theoremCount": 14,
-    "definitionCount": 1
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Wiedijk #82 — 'A cube cannot be cut into a finite number of distinct smaller cubes' — appears on the canonical 'Formalizing 100 Theorems' list of mathematical landmarks. The 3D non-dissection result is the cube-analogue of the squared-square problem: while Duijvestijn's 1978 'simple perfect squared square of order 21' shows the 2D case admits such tilings, the 3D analogue is impossible. Littlewood's *A Mathematician's Miscellany* (1953) records the infinite-descent argument that bridges from any candidate dissection to a strictly smaller one, leading to contradiction. The base Wiedijk #82 formalization in this gallery records the structural skeleton (cubes contained in $[0,1]^3$ with disjoint interiors) but uses `covers_unit_cube : True` as a placeholder — it doesn't enforce that the cubes actually fill the unit cube. OQ-01 proved every nonempty such dissection has a collision pair (same-size distinct cubes); OQ-01-OQ-03 takes the next step by adding the necessary volumetric condition $\\sum c.\\text{side}^3 = 1$ to the structure, narrowing the gap between the formalized object and a genuine geometric tiling.",
@@ -131,7 +131,7 @@
     "lineCount": 256,
     "axiomCount": 0,
     "theoremCount": 14,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
     "sorries": 0
   },
