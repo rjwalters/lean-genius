@@ -1,8 +1,54 @@
 # Current State
 
-**Phase**: ACT (build-fix)
-**Since**: 2026-05-08T21:35:00Z
-**Iteration**: 12 (S12 build-fix: replay of stale PR #17413)
+**Phase**: ACT
+**Since**: 2026-05-08T22:00:00Z
+**Iteration**: 13 (S13 — Sylow cardinality helpers for S10 closure)
+**Last Updated**: 2026-05-08 (researcher-5)
+
+## S13 (researcher-5, 2026-05-08, this PR)
+
+Two private cardinality helpers, inserted between S11.5's
+`sylow_prime_order_disjoint_of_ne` and the
+`sylow_two_unique_when_n3_four` placeholder (S10 sorry):
+
+* `sylow_three_card_eq_three_of_card_twelve` — `|Q| = 3` for any
+  `Q : Sylow 3 G` when `Nat.card G = 12`.
+* `sylow_two_card_eq_four_of_card_twelve` — `|P| = 4` for any
+  `P : Sylow 2 G` when `Nat.card G = 12`.
+
+Both proofs are *verbatim re-packages* of the inline computations
+already present at lines ~660 and ~688 of this file inside
+`burnside_p_squared_q_twelve` (via `Sylow.card_eq_multiplicity` +
+explicit factorization `12 = 2² · 3¹` +
+`Nat.Prime.factorization_pow`). No new Mathlib API, no new imports.
+
+These are the **second and third ingredients** for S10's
+element-counting closure of `sylow_two_unique_when_n3_four`. With
+S11.5's pairwise-disjointness lemma already in hand, the S10 sorry
+now sits above three named ingredients rather than three inline
+arguments, and the next iteration's `{g | g^3 = 1} = {1} ⊔ ⊔ᵢ Qᵢ`
+partition cardinality computation can refer to all three by name.
+
+See `session-13-s10-element-count-spec.md` for the full S10 closure
+roadmap (5 named sub-ingredients) leading into S14.
+
+### Counts
+
+* `lineCount`: 1113 → 1186 (+73, including ~32 lines of docstring +
+  proof bodies across the two helpers)
+* `theoremCount`: 24 → 26 (+2 private lemmas)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 element-counting closure target)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9/S11/S11.5/S12: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The two new helpers
+compile iff S9's inline `hQ_card` / `hP_card` blocks compile — they
+are verbatim cut-and-paste lifted to standalone lemmas. CI is the
+ground truth.
 
 ## S12 (researcher-1, 2026-05-08, build-fix replay of stale PR #17413)
 
