@@ -2,11 +2,11 @@
   "id": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
   "title": "Nonderogatory Matrices Are Similar to Their Companion Matrix",
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
-  "description": "Formalizes the nonderogatory case of the rational canonical form: every nonderogatory n×n matrix M over an arbitrary field K is similar to the companion matrix of its minimal polynomial. The change-of-basis is the Krylov matrix [v | Mv | M²v | … | M^{n-1}v] for any cyclic vector v (existence of which is supplied by the parent entry). One residual axiom: the Cayley-Hamilton-style relation M^n v = -∑ c_k M^k v, routinely derivable from minpoly.aeval = 0 and monicity.",
+  "description": "Formalizes the nonderogatory case of the rational canonical form: every nonderogatory n×n matrix M over an arbitrary field K is similar to the companion matrix of its minimal polynomial. The change-of-basis is the Krylov matrix [v | Mv | M²v | … | M^{n-1}v] for any cyclic vector v (existence of which is supplied by the parent entry). Fully machine-verified: the Cayley-Hamilton-style relation M^n v = -∑ c_k M^k v is now derived from minpoly.aeval = 0 + monicity (Polynomial.eval₂_eq_sum), eliminating the previous residual axiom.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-08",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
     "additionalFiles": [
       "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
@@ -26,24 +26,26 @@
       "open-question",
       "mathlib-gap"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 156,
-    "theoremCount": 5,
+    "axiomCount": 0,
+    "lineCount": 214,
+    "theoremCount": 8,
     "definitionCount": 2,
-    "assumptions": "One axiom: hMn_axiom. Asserts the Cayley-Hamilton-style relation (M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v whenever (minpoly K M).natDegree = n. This is a routine consequence of minpoly.aeval = 0 (Mathlib: minpoly.aeval) plus monicity (Mathlib: minpoly.monic + Polynomial.aeval_eq_sum_range), expected to be eliminated in the next iteration.",
+    "assumptions": "0 assumptions. Fully machine-verified. The previous hMn_axiom is now `private theorem hMn_axiom`, derived from `minpoly.aeval K M : aeval M (minpoly K M) = 0`, `minpoly.monic (Matrix.isIntegral M)` (giving the leading coefficient is 1), and a local lemma `aeval_eq_sum_pow_local` that expands aeval via `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`. Applying mulVec v to both sides of M^n = -∑_{k<n} c_k • M^k yields the desired identity.",
     "dateAdded": "2026-05-08",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "companionMx: explicit Fin n × Fin n companion-matrix definition for a polynomial (zeros above the subdiagonal, ones on the subdiagonal, last column = -coefficients).",
       "cyclicMatrix M v: the Krylov / cycle matrix whose j-th column is M^j v. The change-of-basis matrix for the nonderogatory RCF.",
       "cyclicMatrix_isUnit: proves the Krylov matrix is invertible by showing mulVec is injective — the kernel of mulVec corresponds to polynomials of degree < n annihilating v, which are zero by cyclicity.",
+      "aeval_eq_sum_pow_local: local lemma converting Polynomial.eval₂_eq_sum (which produces algebraMap (coeff k) * M^k) into the smul form (coeff k) • M^k, extending the support sum to range (n+1) via natDegree monotonicity. Used to expand aeval M (minpoly K M) into a finite range sum.",
+      "hMn_axiom (now machine-verified): the Cayley-Hamilton-style relation (M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v when (minpoly K M).natDegree = n. Derived from minpoly.aeval + minpoly.monic (Matrix.isIntegral M) + aeval_eq_sum_pow_local; the residual axiom from Session 1 has been eliminated.",
       "M_mul_cyclicMatrix: the conjugation identity M · cyclicMatrix M v = cyclicMatrix M v · companionMx (minpoly K M), proved by column-by-column comparison.",
-      "nonderogatory_similar_to_companion: the main result. Combines the parent entry's existence of a cyclic vector with the Krylov-matrix construction to produce an explicit similarity P with P⁻¹ · M · P = companionMx (minpoly K M)."
+      "nonderogatory_similar_to_companion: the main result. Combines the parent entry's existence of a cyclic vector with the Krylov-matrix construction to produce an explicit similarity P with P⁻¹ · M · P = companionMx (minpoly K M). Now fully axiom-free over arbitrary fields."
     ],
     "historicalContext": "The rational canonical form (RCF) of a matrix over a field K is the analogue of the Jordan canonical form that does not require K to be algebraically closed. For a general matrix M, the RCF is a block-diagonal matrix whose blocks are companion matrices of the invariant factors of M (i.e., the divisors d_1 | d_2 | ... | d_r of the K[X]-module K^n viewed as K[X]/⟨χ_M⟩). The result goes back to Frobenius (Crelle 1879) and was systematized by Krull (Math. Annalen 1928); the matrix-form statement appears in Hermann Weyl's *The Classical Groups* (1939) and Felix Gantmacher's *Theory of Matrices* (1959).\n\nThe **nonderogatory case** — when the minimal polynomial equals the characteristic polynomial — is the simplest: the K[X]-module is cyclic (generated by one element), so the RCF is a single block, namely the companion matrix of μ_M. This is the case formalized here.\n\nMathlib v4.26.0 has Smith Normal Form for matrices over PIDs and the structure theorem for finitely generated modules over a PID, but **no Matrix.rationalCanonicalForm and no general Matrix.companionMatrix API**. This entry produces the nonderogatory case as a stand-alone theorem, providing both a candidate companion-matrix definition and a candidate similarity theorem for a future Mathlib contribution.",
-    "proofStrategy": "1. Pick a cyclic vector v for M (provided by parent OQ-01's nonderogatory_has_cyclic_vector). 2. Form the Krylov matrix P[i,j] = (M^j v)_i. 3. Show P is invertible: mulVec P is injective because any kernel element c yields a polynomial q = ∑ c_j X^j with deg q < n and q(M)v = 0; by cyclicity, q = 0, hence c = 0. 4. Show M · P = P · C(minpoly K M): column j (j < n-1) gives M^{j+1}v = M · (M^j v) on both sides. Column n-1 reduces to M^n v = -∑ c_k M^k v (the Cayley-Hamilton expansion, currently axiomatized as hMn_axiom). 5. Therefore P⁻¹ · M · P = C(minpoly K M), establishing similarity."
+    "proofStrategy": "1. Pick a cyclic vector v for M (provided by parent OQ-01's nonderogatory_has_cyclic_vector). 2. Form the Krylov matrix P[i,j] = (M^j v)_i. 3. Show P is invertible: mulVec P is injective because any kernel element c yields a polynomial q = ∑ c_j X^j with deg q < n and q(M)v = 0; by cyclicity, q = 0, hence c = 0. 4. Show M · P = P · C(minpoly K M): column j (j < n-1) gives M^{j+1}v = M · (M^j v) on both sides. Column n-1 reduces to M^n v = -∑ c_k M^k v (the Cayley-Hamilton expansion, now machine-verified via minpoly.aeval + minpoly.monic + aeval_eq_sum_pow_local). 5. Therefore P⁻¹ · M · P = C(minpoly K M), establishing similarity. The proof is now fully axiom-free over arbitrary fields."
   },
   "overview": {
     "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields-oq-01** (overview.openQuestions[2]):\n\n> Is there a Mathlib formalization of the rational canonical form (RCF) that could simplify this proof further? The RCF directly gives a cyclic-vector decomposition for any matrix, and the nonderogatory case is a single-block special case.\n\nOperationally re-read: As of Mathlib v4.26.0 the answer is **no — there is no general Matrix.rationalCanonicalForm and no Matrix.companionMatrix API**. The constructive version of this open question is therefore: *formalize the nonderogatory case of RCF stand-alone*. This entry does that. Concretely:\n\n$$\\forall K \\text{ field}, \\forall n, \\forall M \\in M_n(K),\\ \\text{IsNonderogatory}(M) \\Rightarrow \\exists P \\in GL_n(K),\\ P^{-1} M P = C(\\mu_M)$$\n\nwhere $C(\\mu_M)$ is the companion matrix of the minimal polynomial of $M$.",
@@ -51,12 +53,12 @@
     "keyInsights": [
       "**Krylov matrix as similarity witness**: $P = [v \\mid Mv \\mid M^2 v \\mid \\cdots \\mid M^{n-1} v]$ is the natural change-of-basis matrix for the cyclic case. Its invertibility is **literally** the cyclicity of $v$ recast in matrix terms — `cyclicMatrix_isUnit` is proved by showing `mulVec` is injective, and that injectivity is exactly: `c ∈ ker(P·_) ⇒ q = ∑ c_j X^j satisfies q(M)v = 0 ⇒ q = 0`.",
       "**Conjugation identity decomposes column-by-column**: $M \\cdot P = P \\cdot C(\\mu_M)$ becomes, column-by-column, two cases. For column $j < n-1$, both sides reduce to $M^{j+1} v$ (the trivial case). For the last column, both sides reduce to $M^n v$, but the right-hand side passes through the companion matrix's last column, which holds the polynomial coefficients. This is the only place the Cayley-Hamilton expansion enters.",
-      "**Cayley-Hamilton expansion as the residual ingredient**: The single piece of arithmetic the proof relies on, beyond the cyclic-vector existence theorem, is the relation $M^n v = -\\sum_{k=0}^{n-1} c_k \\cdot (M^k v)$ when $\\mu_M$ has degree $n$ and coefficients $c_k$. This is `aeval M (\\mu_M) = 0` rewritten in coordinate form. Currently axiomatized as `hMn_axiom`, but routinely provable.",
+      "**Cayley-Hamilton expansion as the residual ingredient (now eliminated)**: The single piece of arithmetic the proof relies on, beyond the cyclic-vector existence theorem, is the relation $M^n v = -\\sum_{k=0}^{n-1} c_k \\cdot (M^k v)$ when $\\mu_M$ has degree $n$ and coefficients $c_k$. This is `aeval M (\\mu_M) = 0` rewritten in coordinate form. **Session 2** eliminates the previous `hMn_axiom`: the proof unfolds `aeval M (minpoly K M)` via `Polynomial.eval₂_eq_sum`, uses monicity of `minpoly` (via `Matrix.isIntegral M`) to isolate the leading $1 \\cdot M^n$, and reads off the desired identity. Now machine-verified.",
       "**Independence from field size**: The proof never invokes $|K| > n$. It uses only the existence of a cyclic vector (which the parent OQ-01 establishes via primary decomposition, also field-size-independent), the invertibility of the Krylov matrix (linear algebra), and the Cayley-Hamilton expansion (a property of $\\mu_M$, not of $K$).",
       "**Mathlib RCF gap**: There is no `Matrix.companionMatrix` in Mathlib v4.26.0, and no similarity-to-companion theorem in any form. The structure-theorem machinery (Smith normal form for PIDs, $\\text{IsTorsion}$-style decompositions) exists, but has not been packaged into matrix-form RCF. This entry's `companionMx` and `nonderogatory_similar_to_companion` could seed such a contribution.",
-      "**Connection to the cyclic-vector biconditional**: With OQ-01 (`nonderogatory ⇒ ∃ cyclic vector`), OQ-01-OQ-01 (`cyclic vector ⇒ nonderogatory`), and this entry (`nonderogatory ⇒ similar to companion via the Krylov matrix`), the full triangle\n\n$$\\text{IsNonderogatory}(M) \\iff \\exists v,\\ \\text{IsCyclicVector}(M, v) \\iff \\exists P \\in GL_n(K),\\ P^{-1} M P = C(\\mu_M)$$\n\nis fully verified over arbitrary fields, modulo the single residual `hMn_axiom`."
+      "**Connection to the cyclic-vector biconditional**: With OQ-01 (`nonderogatory ⇒ ∃ cyclic vector`), OQ-01-OQ-01 (`cyclic vector ⇒ nonderogatory`), and this entry (`nonderogatory ⇒ similar to companion via the Krylov matrix`), the full triangle\n\n$$\\text{IsNonderogatory}(M) \\iff \\exists v,\\ \\text{IsCyclicVector}(M, v) \\iff \\exists P \\in GL_n(K),\\ P^{-1} M P = C(\\mu_M)$$\n\nis now **fully machine-verified over arbitrary fields with zero axioms** — the residual `hMn_axiom` from Session 1 has been eliminated."
     ],
-    "proofStrategy": "Step 1 (companionMx): Define the companion matrix `companionMx p : Matrix (Fin n) (Fin n) K` directly: `[i,j] = -(p.coeff i)` if `j+1 = n` (last column = negative coefficients), `1` if `i = j+1` (subdiagonal), `0` otherwise.\n\nStep 2 (cyclicMatrix): Define the Krylov matrix `cyclicMatrix M v : Matrix (Fin n) (Fin n) K` by `[i,j] = (M^j).mulVec v i`.\n\nStep 3 (cyclicMatrix_ker): Show that if `cyclicMatrix M v · c = 0`, then `c = 0`. The proof: form `q = ∑ C(c_j) · X^j`, observe `q(M).mulVec v = (cyclicMatrix M v · c) = 0`, note `deg q < n`, and apply `IsCyclicVector` to conclude `q = 0`. Coefficient-extract to get `c = 0`.\n\nStep 4 (cyclicMatrix_isUnit): mulVec_injective_iff_isUnit converts injective mulVec into IsUnit.\n\nStep 5 (M_mul_cyclicMatrix): Column-by-column comparison of `M · P` and `P · C(minpoly K M)`. Non-last columns: both sides give `(M^{j+1}).mulVec v`. Last column: LHS = `(M^n).mulVec v`, RHS rewrites via `companionMx`'s last-column coefficients. Equality reduces to `hMn_axiom`.\n\nStep 6 (nonderogatory_similar_to_companion): Combine: pick `v` cyclic (parent OQ-01), set `P = cyclicMatrix M v`, conclude `P⁻¹ · M · P = companionMx (minpoly K M)` via the conjugation identity and `cyclicMatrix_isUnit`.",
+    "proofStrategy": "Step 1 (companionMx): Define the companion matrix `companionMx p : Matrix (Fin n) (Fin n) K` directly: `[i,j] = -(p.coeff i)` if `j+1 = n` (last column = negative coefficients), `1` if `i = j+1` (subdiagonal), `0` otherwise.\n\nStep 2 (cyclicMatrix): Define the Krylov matrix `cyclicMatrix M v : Matrix (Fin n) (Fin n) K` by `[i,j] = (M^j).mulVec v i`.\n\nStep 3 (cyclicMatrix_ker): Show that if `cyclicMatrix M v · c = 0`, then `c = 0`. The proof: form `q = ∑ C(c_j) · X^j`, observe `q(M).mulVec v = (cyclicMatrix M v · c) = 0`, note `deg q < n`, and apply `IsCyclicVector` to conclude `q = 0`. Coefficient-extract to get `c = 0`.\n\nStep 4 (cyclicMatrix_isUnit): mulVec_injective_iff_isUnit converts injective mulVec into IsUnit.\n\nStep 5a (aeval_eq_sum_pow_local): Local helper expanding `aeval M p` via `Polynomial.eval₂_eq_sum` and `Algebra.smul_def` into `∑ k ∈ range (natDegree p + 1), p.coeff k • M^k`. Step 5b (hMn_axiom, now a private theorem): Apply 5a with `p = minpoly K M` (which is monic of degree n via `minpoly.monic (Matrix.isIntegral M)`), use `minpoly.aeval = 0` to get `0 = (∑ k<n, c_k • M^k) + 1 • M^n`, solve for `M^n`, and apply `mulVec v`.\n\nStep 6 (M_mul_cyclicMatrix): Column-by-column comparison of `M · P` and `P · C(minpoly K M)`. Non-last columns: both sides give `(M^{j+1}).mulVec v`. Last column: LHS = `(M^n).mulVec v`, RHS rewrites via `companionMx`'s last-column coefficients. Equality reduces to `hMn_axiom` (now machine-verified).\n\nStep 7 (nonderogatory_similar_to_companion): Combine: pick `v` cyclic (parent OQ-01), set `P = cyclicMatrix M v`, conclude `P⁻¹ · M · P = companionMx (minpoly K M)` via the conjugation identity and `cyclicMatrix_isUnit`.",
     "prerequisites": [
       "CayleyHamiltonCyclicVectorAllFields.nonderogatory_has_cyclic_vector: parent OQ-01's existence of a cyclic vector",
       "CyclicVectorBiconditional.minpoly_natDegree_of_cyclic: from sibling OQ-01-OQ-01, gives (minpoly K M).natDegree = n when v is cyclic",
@@ -67,11 +69,11 @@
       "minpoly.aeval, minpoly.monic, Polynomial.aeval_eq_sum_range: needed for hMn_axiom elimination (Session 2)"
     ],
     "openQuestions": [
-      "**Eliminate hMn_axiom**: The single residual axiom is `(M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v` when `(minpoly K M).natDegree = n`. This is routinely provable from `minpoly.aeval` (gives `aeval M (minpoly K M) = 0`), `minpoly.monic` (gives `(minpoly K M).coeff n = 1`), and `Polynomial.aeval_eq_sum_range` (expands aeval into a finite sum). Estimated 20-30 lines. Target: status `verified`, axiomCount `0`.",
       "**Companion-similarity biconditional**: With `cyclic_implies_nonderogatory` from OQ-01-OQ-01, can one prove the converse direction *similar-to-companion ⇒ nonderogatory* and package the full biconditional `IsNonderogatory M ↔ ∃ P : IsUnit P ∧ P⁻¹ · M · P = companionMx (minpoly K M)`? This would give a clean RCF-style characterization for the single-block case.",
       "**Companion-matrix charpoly/minpoly identities**: Mathlib lacks `Matrix.charpoly_companionMatrix` and `Matrix.minpoly_companionMatrix` for the `companionMx` defined here. These are standard results (`charpoly = minpoly = p` for the companion of `p`) and would let the gallery entry export an even tighter `nonderogatory_companion` corollary asserting the companion is the unique nonderogatory representative in its similarity class.",
-      "**Mathlib contribution**: With `companionMx` and `nonderogatory_similar_to_companion` axiom-free, this entry is a candidate seed for a Mathlib contribution adding `Matrix.companionMatrix` and `Matrix.IsSimilar.companionMatrix_of_nonderogatory`. The route to the multi-block RCF would then go through the K[X]-module structure theorem (`Module.IsTorsion.exists_isInternal`-style) — a much larger project but with this single-block result as a natural scaffold.",
-      "**Functor between cyclic representations and cyclic-module-style RCF**: The K[X]-module given by M acting on K^n is cyclic (single-generator) iff M is nonderogatory. Can the existing `Module.IsTorsion`-style results be specialized cleanly to recover this entry's similarity? Doing so would unify the matrix-form proof with the module-theoretic proof and clarify which direction is more economical for Mathlib."
+      "**Mathlib contribution**: With `companionMx` and `nonderogatory_similar_to_companion` now axiom-free, this entry is a candidate seed for a Mathlib contribution adding `Matrix.companionMatrix` and `Matrix.IsSimilar.companionMatrix_of_nonderogatory`. The route to the multi-block RCF would then go through the K[X]-module structure theorem (`Module.IsTorsion.exists_isInternal`-style) — a much larger project but with this single-block result as a natural scaffold.",
+      "**Functor between cyclic representations and cyclic-module-style RCF**: The K[X]-module given by M acting on K^n is cyclic (single-generator) iff M is nonderogatory. Can the existing `Module.IsTorsion`-style results be specialized cleanly to recover this entry's similarity? Doing so would unify the matrix-form proof with the module-theoretic proof and clarify which direction is more economical for Mathlib.",
+      "**Eliminate hMn_axiom (Session 2 — DONE)**: ✅ Resolved. The previous residual axiom `(M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v` is now derived as `private theorem hMn_axiom` from `minpoly.aeval`, `minpoly.monic (Matrix.isIntegral M)`, and a local `aeval_eq_sum_pow_local` lemma (which uses `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`)."
     ]
   },
   "leanFile": {
@@ -82,9 +84,9 @@
       "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01"
     ],
     "namespace": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02",
-    "lineCount": 156,
-    "axiomCount": 1,
-    "theoremCount": 5,
+    "lineCount": 214,
+    "axiomCount": 0,
+    "theoremCount": 8,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
     "sorries": 0,
@@ -99,41 +101,41 @@
     {
       "id": "sec-companion",
       "title": "Companion Matrix and Krylov Matrix Definitions",
-      "startLine": 25,
-      "endLine": 35,
+      "startLine": 29,
+      "endLine": 39,
       "summary": "companionMx: Fin n × Fin n companion matrix of a polynomial — last column holds the negative coefficients, subdiagonal is 1, everything else 0. cyclicMatrix M v: the Krylov matrix [v | Mv | M²v | … | M^{n-1}v].",
       "mathContext": "The companion matrix C(p) of a monic polynomial p = X^n + c_{n-1}X^{n-1} + … + c_0 is the matrix whose characteristic and minimal polynomial both equal p. The Krylov matrix P = [v | Mv | … | M^{n-1}v] is the change-of-basis from the basis {v, Mv, …, M^{n-1}v} (when v is cyclic) to the standard basis."
     },
     {
       "id": "sec-cyclicmatrix-invertibility",
       "title": "Krylov Matrix is Invertible from Cyclicity",
-      "startLine": 37,
-      "endLine": 78,
+      "startLine": 41,
+      "endLine": 84,
       "summary": "cyclicMatrix_ker (private): if cyclicMatrix · c = 0 then c = 0. Form q = ∑ C(c_j)·X^j, observe q(M).mulVec v = cyclicMatrix · c = 0, deg q < n; cyclicity forces q = 0; coefficient extraction gives c = 0. cyclicMatrix_injective: mulVec is injective. cyclicMatrix_isUnit: the matrix is invertible.",
       "mathContext": "The Krylov matrix is invertible exactly when v is cyclic. The proof is the algebraic statement: if c is in the kernel of mulVec, then ∑_j c_j (M^j v) = 0, i.e., the polynomial q(X) = ∑_j c_j X^j satisfies q(M)v = 0 with deg q < n. Cyclicity says the only such polynomial is zero, forcing all c_j = 0. The conversion from injective mulVec to IsUnit goes through Mathlib's mulVec_injective_iff_isUnit."
     },
     {
-      "id": "sec-axiom",
-      "title": "Cayley-Hamilton Expansion (Axiom — to eliminate)",
-      "startLine": 80,
-      "endLine": 84,
-      "summary": "hMn_axiom: when (minpoly K M).natDegree = n, (M^n).mulVec v = -∑_{k<n} (minpoly K M).coeff k • (M^k).mulVec v. Routinely provable from minpoly.aeval = 0 + monicity + Polynomial.aeval_eq_sum_range; planned for elimination in next iteration.",
-      "mathContext": "This is the matrix-vector form of the Cayley-Hamilton statement μ_M(M) = 0, with the M^n term isolated using monicity. Concretely, μ_M(M) = M^n + ∑_{k<n} c_k M^k = 0 (since the coefficient of X^n is 1), so M^n = -∑_{k<n} c_k M^k; applying both sides to v gives the displayed identity. The Mathlib API needed is minpoly.aeval (giving aeval M (minpoly K M) = 0) and minpoly.monic (giving the leading coefficient is 1)."
+      "id": "sec-cayley-hamilton-expansion",
+      "title": "Cayley-Hamilton Expansion (Now Machine-Verified)",
+      "startLine": 86,
+      "endLine": 144,
+      "summary": "Three private declarations replacing the previous `hMn_axiom`: (1) `sum_mulVec_local`: linearity of mulVec over a finset sum, by Finset induction. (2) `aeval_eq_sum_pow_local`: expands `aeval M p` (for p with natDegree = n) into `∑ k ∈ range (n+1), p.coeff k • M^k`, via `Polynomial.eval₂_eq_sum` + `Algebra.smul_def`. (3) `hMn_axiom` (private theorem): the Cayley-Hamilton-style relation `(M^n).mulVec v = -∑ k<n, (minpoly K M).coeff k • (M^k).mulVec v` when `(minpoly K M).natDegree = n`. Proof: expand `aeval M (minpoly K M)` via (2), use `minpoly.monic (Matrix.isIntegral M)` to identify the leading coefficient as 1, isolate `1 • M^n`, use `minpoly.aeval = 0` to solve for `M^n`, and apply `mulVec v` via (1).",
+      "mathContext": "This is the matrix-vector form of the Cayley-Hamilton statement μ_M(M) = 0, with the M^n term isolated using monicity. Concretely, μ_M(M) = M^n + ∑_{k<n} c_k M^k = 0 (since the coefficient of X^n is 1), so M^n = -∑_{k<n} c_k M^k; applying both sides to v gives the displayed identity. The Mathlib API used: `minpoly.aeval K M : aeval M (minpoly K M) = 0`, `minpoly.monic : (minpoly K M).Monic` (which requires `IsIntegral K M`, supplied by `Matrix.isIntegral M`), and `Polynomial.eval₂_eq_sum` to convert the abstract `aeval` into a concrete `Finset.sum`. The conversion from `algebraMap (coeff k) * M^k` to `coeff k • M^k` uses `Algebra.smul_def` (which holds in any K-algebra)."
     },
     {
       "id": "sec-conjugation-identity",
       "title": "Conjugation Identity M · P = P · C(minpoly)",
-      "startLine": 86,
-      "endLine": 129,
-      "summary": "M_mul_cyclicMatrix: M · cyclicMatrix M v = cyclicMatrix M v · companionMx (minpoly K M). Proved column-by-column: non-last columns give the trivial M·(M^j v) = M^{j+1}v identity; the last column reduces to (M^n).mulVec v = -∑ c_k (M^k).mulVec v, which is exactly hMn_axiom.",
+      "startLine": 146,
+      "endLine": 187,
+      "summary": "M_mul_cyclicMatrix: M · cyclicMatrix M v = cyclicMatrix M v · companionMx (minpoly K M). Proved column-by-column: non-last columns give the trivial M·(M^j v) = M^{j+1}v identity; the last column reduces to (M^n).mulVec v = -∑ c_k (M^k).mulVec v, which is the now-machine-verified hMn_axiom.",
       "mathContext": "The conjugation identity is the matrix expression of 'M acts as the companion matrix of μ_M in the basis {v, Mv, …, M^{n-1}v}'. Column j of M·P is M·(M^j v) = M^{j+1}v. Column j of P·C(μ_M) is P times column j of C(μ_M). For j < n-1, column j of C(μ_M) is the standard basis vector e_{j+1}, so P·e_{j+1} = column j+1 of P = M^{j+1}v. For j = n-1, column n-1 of C(μ_M) is the column of negative coefficients, so P·(column n-1) = ∑ -c_k (column k of P) = -∑ c_k M^k v, which equals M^n v by Cayley-Hamilton."
     },
     {
       "id": "sec-main-theorem",
       "title": "Main Theorem: Nonderogatory ⇒ Similar to Companion",
-      "startLine": 131,
-      "endLine": 153,
-      "summary": "nonderogatory_similar_to_companion: every nonderogatory M (with n > 0) is similar to companionMx (minpoly K M). The witness P is cyclicMatrix M v, where v is a cyclic vector from parent OQ-01.",
+      "startLine": 189,
+      "endLine": 210,
+      "summary": "nonderogatory_similar_to_companion: every nonderogatory M (with n > 0) is similar to companionMx (minpoly K M). The witness P is cyclicMatrix M v, where v is a cyclic vector from parent OQ-01. Now fully axiom-free.",
       "mathContext": "The main theorem of this entry — the nonderogatory case of the rational canonical form. Combines: (a) parent OQ-01's nonderogatory_has_cyclic_vector to obtain v, (b) cyclicMatrix_isUnit to invert P = cyclicMatrix M v, (c) M_mul_cyclicMatrix (the conjugation identity) to compute P⁻¹ · M · P. The final calculation chain rearranges P⁻¹ · M · P = P⁻¹ · (P · C(μ_M)) = (P⁻¹ · P) · C(μ_M) = 1 · C(μ_M) = C(μ_M) using nonsing_inv_mul."
     }
   ],
@@ -156,14 +158,14 @@
     {
       "targetId": "cayley-hamilton",
       "relationship": "ancestor",
-      "description": "Foundational: every matrix M satisfies its characteristic polynomial χ_M(M) = 0. The Cayley-Hamilton-style relation hMn_axiom is the per-vector form of this for the minimal polynomial in the nonderogatory case (μ_M = χ_M)."
+      "description": "Foundational: every matrix M satisfies its characteristic polynomial χ_M(M) = 0. The Cayley-Hamilton-style relation `hMn_axiom` (now a machine-verified private theorem) is the per-vector form of this for the minimal polynomial in the nonderogatory case (μ_M = χ_M); derived locally from `minpoly.aeval` + `minpoly.monic` rather than from the gallery's main Cayley-Hamilton entry, since this entry only needs the minimal-polynomial form."
     }
   ],
   "conclusion": {
-    "summary": "Every nonderogatory matrix over an arbitrary field K is similar to the companion matrix of its minimal polynomial, with the explicit similarity provided by the Krylov matrix [v | Mv | … | M^{n-1}v] for any cyclic vector v. The proof relies on parent OQ-01's existence of a cyclic vector (axiom-free) plus one residual axiom — hMn_axiom, the Cayley-Hamilton-style relation M^n v = -∑ c_k M^k v — which is routinely derivable from minpoly.aeval and minpoly.monic.",
-    "implications": "This is the nonderogatory case of the rational canonical form, formalized as a stand-alone theorem because Mathlib v4.26.0 does not have a matrix-form RCF or a Matrix.companionMatrix API. The entry produces both a candidate companion-matrix definition (companionMx) and a candidate similarity theorem (nonderogatory_similar_to_companion), seeding a future Mathlib contribution. Combined with sibling OQ-01-OQ-01 (cyclic ⇒ nonderogatory), this completes a triangle of equivalences: IsNonderogatory M ↔ ∃ v, IsCyclicVector M v ↔ ∃ P ∈ GL_n(K), P⁻¹ · M · P = C(μ_M).",
+    "summary": "Every nonderogatory matrix over an arbitrary field K is similar to the companion matrix of its minimal polynomial, with the explicit similarity provided by the Krylov matrix [v | Mv | … | M^{n-1}v] for any cyclic vector v. The proof relies on parent OQ-01's existence of a cyclic vector and is now **fully machine-verified with zero axioms**: the previous residual `hMn_axiom` (the Cayley-Hamilton-style relation M^n v = -∑ c_k M^k v) has been eliminated by deriving it locally from `minpoly.aeval`, `minpoly.monic (Matrix.isIntegral M)`, and an `aeval_eq_sum_pow_local` lemma that expands `aeval` via `Polynomial.eval₂_eq_sum`.",
+    "implications": "This is the nonderogatory case of the rational canonical form, formalized as a stand-alone theorem because Mathlib v4.26.0 does not have a matrix-form RCF or a Matrix.companionMatrix API. The entry produces both a candidate companion-matrix definition (companionMx) and a candidate similarity theorem (nonderogatory_similar_to_companion), now axiom-free, seeding a future Mathlib contribution. Combined with sibling OQ-01-OQ-01 (cyclic ⇒ nonderogatory), this completes a triangle of equivalences fully verified with zero axioms: IsNonderogatory M ↔ ∃ v, IsCyclicVector M v ↔ ∃ P ∈ GL_n(K), P⁻¹ · M · P = C(μ_M).",
     "openQuestions": [
-      "Eliminate hMn_axiom (routine — minpoly.aeval + minpoly.monic + Polynomial.aeval_eq_sum_range, ~20-30 lines).",
+      "Eliminate hMn_axiom — DONE (Session 2): derived from minpoly.aeval + minpoly.monic + local aeval_eq_sum_pow_local helper.",
       "Prove the companion-similarity biconditional: IsNonderogatory M ↔ ∃ P ∈ GL_n(K), P⁻¹ · M · P = C(μ_M).",
       "Generalize to multi-block RCF via the K[X]-module structure theorem — a substantially larger Mathlib contribution but with the single-block case as scaffold."
     ]
@@ -182,7 +184,17 @@
     {
       "title": "Mathlib4: Polynomial.minpoly",
       "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/Minpoly/Field.html",
-      "description": "minpoly.aeval and minpoly.monic, the Mathlib API needed to eliminate hMn_axiom."
+      "description": "minpoly.aeval and minpoly.monic — the Mathlib API used (in Session 2) to eliminate the previous hMn_axiom and derive the Cayley-Hamilton-style relation as a private theorem."
+    },
+    {
+      "title": "Mathlib4: Polynomial.eval₂_eq_sum",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Eval/Defs.html",
+      "description": "Expands eval₂ f x p as p.sum (fun n a => f a * x^n) — the key lemma in the local `aeval_eq_sum_pow_local` helper, which converts `aeval M (minpoly K M)` into a finite Finset.sum with `coeff k • M^k` terms via `Algebra.smul_def`."
+    },
+    {
+      "title": "Mathlib4: Matrix.isIntegral",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Basic.html",
+      "description": "Every square matrix over a field is integral over the field — the IsIntegral hypothesis required by `minpoly.monic` to conclude monicity of the minimal polynomial of a matrix."
     },
     {
       "title": "Mathlib4: Matrix.SmithNormalForm",
