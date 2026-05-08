@@ -767,6 +767,55 @@ private lemma weight_eq_totalSym' {n a b : ℕ} (hb : 1 ≤ b)
     ((totalSym' hb P' Q').1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
   rw [totalSym'_val]; exact weight_eq_total_multiset P' Q'
 
+/-- **Sub-lemma 1 of `ballot_counting_identity`** (S25, see
+    `sessions/2026-05-08-s24.md` §"Recommended strategy"): the count of
+    ordered `Sym`-splits `(P, Q) : Sym (Fin n) p × Sym (Fin n) q` with
+    `P.1 + Q.1 = M` (as multisets) equals the count of submultisets of `M`
+    of size `p`. The forward bijection `(P, Q) ↦ P.1` lands in
+    `M.powersetCard p`; the inverse sends `P' ∈ M.powersetCard p` to
+    `(⟨P', _⟩, ⟨M − P', _⟩)`. The hypothesis `hM : M.card = p + q` ensures
+    the codomain `Q` size is well-defined.
+
+    Used by `ballot_counting_identity` (S26+) with two instantiations:
+    `(p, q) := (a, b)` for the LHS filter (after stripping `¬ColStrictSym`)
+    and `(p, q) := (a + 1, b - 1)` for the RHS, reducing the cardinality
+    identity to a difference identity over `M.powersetCard a` strata. -/
+private lemma split_count_eq_powersetCard_card {n p q : ℕ}
+    (M : Multiset (Fin n)) (hM : M.card = p + q) :
+    ((Finset.univ : Finset (Sym (Fin n) p × Sym (Fin n) q)).filter
+      (fun PQ => PQ.1.1 + PQ.2.1 = M)).card =
+    (M.powersetCard p).card := by
+  classical
+  apply Finset.card_bij (fun (PQ : Sym (Fin n) p × Sym (Fin n) q) _ => PQ.1.1)
+  · -- Map lands in M.powersetCard p
+    intro PQ hPQ
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ
+    rw [Multiset.mem_powersetCard]
+    refine ⟨?_, PQ.1.2⟩
+    calc PQ.1.1 ≤ PQ.1.1 + PQ.2.1 := le_self_add
+      _ = M := hPQ
+  · -- Injective: PQ₁.1.1 = PQ₂.1.1 implies PQ₁ = PQ₂
+    intro PQ₁ hPQ₁ PQ₂ hPQ₂ heq
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ₁ hPQ₂
+    have hP : PQ₁.1 = PQ₂.1 := Subtype.ext heq
+    have hQval : PQ₁.2.1 = PQ₂.2.1 := by
+      have hadd : PQ₁.1.1 + PQ₁.2.1 = PQ₁.1.1 + PQ₂.2.1 := by
+        rw [hPQ₁, ← hPQ₂, heq]
+      exact add_left_cancel hadd
+    have hQ : PQ₁.2 = PQ₂.2 := Subtype.ext hQval
+    exact Prod.ext hP hQ
+  · -- Surjective
+    intro P' hP'
+    rw [Multiset.mem_powersetCard] at hP'
+    obtain ⟨hP'_le, hP'_card⟩ := hP'
+    have hQcard : (M - P').card = q := by
+      rw [Multiset.card_sub hP'_le, hM, hP'_card, Nat.add_sub_cancel_left]
+    refine ⟨(⟨P', hP'_card⟩, ⟨M - P', hQcard⟩), ?_, rfl⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    -- Need: P' + (M - P') = M; via tsub: (M - P') + P' = M, then add_comm.
+    rw [add_comm]
+    exact tsub_add_cancel_of_le hP'_le
+
 /-- **Ballot counting identity (per total multiset).**
 
     For `b ≥ 2` and any total multiset `M : Sym (Fin n) (a + b)`, the number

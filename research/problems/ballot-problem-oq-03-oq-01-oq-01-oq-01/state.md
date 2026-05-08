@@ -4,8 +4,58 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S24 — researcher-5)
-**Iteration**: 24
+**Last Updated**: 2026-05-08 (S25 — researcher-10)
+**Iteration**: 25
+
+## S25 Summary (2026-05-08, researcher-10)
+
+**Mode**: ACT (Sub-lemma 1 implementation per S24's strategy decomposition).
+
+**Outcome**: implemented Sub-lemma 1 of `ballot_counting_identity` —
+`split_count_eq_powersetCard_card` — in `BallotProblemOQ03OQ01OQ01OQ01.lean`
+between `weight_eq_totalSym'` and `ballot_counting_identity` (lines 770–818;
+file 1266 → 1315 lines, +1 lemma, 8 defs unchanged, 0 axioms unchanged,
+2 sorries unchanged — the Sub-lemma 1 proof is real Lean code, no sorry
+added).
+
+**Lemma signature** (generic in `(p, q)`):
+
+```lean
+private lemma split_count_eq_powersetCard_card {n p q : ℕ}
+    (M : Multiset (Fin n)) (hM : M.card = p + q) :
+    ((Finset.univ : Finset (Sym (Fin n) p × Sym (Fin n) q)).filter
+      (fun PQ => PQ.1.1 + PQ.2.1 = M)).card =
+    (M.powersetCard p).card
+```
+
+**Proof**: `Finset.card_bij` with forward map `(P, Q) ↦ P.1` and inverse
+`P' ↦ (⟨P', _⟩, ⟨M − P', _⟩)`. Three obligations:
+
+1. **Maps to codomain**: `(P, Q) ↦ P.1 ∈ M.powersetCard p` follows from
+   `P.1 ≤ P.1 + Q.1 = M` (via `le_self_add`) and `P.1.card = p` (by `P.2`).
+2. **Injective**: `PQ₁.1.1 = PQ₂.1.1` forces `PQ₁.1 = PQ₂.1` (`Subtype.ext`);
+   then `PQ₁.2.1 = PQ₂.2.1` by `add_left_cancel` on
+   `PQ₁.1.1 + PQ₁.2.1 = PQ₁.1.1 + PQ₂.2.1`; then `Prod.ext`.
+3. **Surjective**: given `P' ∈ M.powersetCard p`, set `Q' := M - P'`; check
+   `Q'.card = q` via `Multiset.card_sub` + `hM` + `Nat.add_sub_cancel_left`;
+   check `P' + (M - P') = M` via `add_comm` + `tsub_add_cancel_of_le`.
+
+**Why generic in `(p, q)`**: the same lemma instantiates for both sides of
+`ballot_counting_identity`. With `(p, q) := (a, b)` and `hM := M.2`, it
+converts the LHS to `(M.1.powersetCard a).card`. With `(p, q) := (a+1, b-1)`
+(under `b ≥ 1`), it converts the RHS to `(M.1.powersetCard (a+1)).card`.
+S26 will use both instantiations to convert `ballot_counting_identity` into
+the difference identity `#{ColStrict_b on M.1.powersetCard a}
+ = #(M.1.powersetCard a) - #(M.1.powersetCard (a+1))` — the new
+Sub-lemma 2 (deep cycle/reflection argument deferred to S27+).
+
+**Build status**: pending (32 GB cgroup convention; following S10–S24).
+
+**Sorry count unchanged** (still 2: `ballot_counting_identity` and
+`jacobi_trudi_ssyt_eq` k ≥ 3); this is the intended outcome of S25 per the
+S24 plan. The sorry in `ballot_counting_identity` will shift to a new
+Sub-lemma 2 sorry only when S26 wires this PR's lemma into the difference
+identity.
 
 ## Current Focus
 
@@ -126,7 +176,7 @@ Completed:
 
 ## Attempt Count
 
-- Total iterations: 24 (sessions 1-24).
+- Total iterations: 25 (sessions 1-25).
 - Approaches tried:
   1. SSYT infrastructure (sessions 1-14).
   2. Decompose `jdt_weight_sum` (S15).
@@ -141,7 +191,10 @@ Completed:
  10. Identify missing `b ≤ a` hypothesis on `ballot_counting_identity` +
      correct signature + propagate at call site (S21) ✓.
  11. Decompose `ballot_counting_identity` proof into three named
-     sub-lemmas via difference-identity route (S24, this session) ✓.
+     sub-lemmas via difference-identity route (S24) ✓.
+ 12. Implement Sub-lemma 1 `split_count_eq_powersetCard_card` —
+     `Finset.card_bij` between multiset-split pairs and submultisets
+     (S25, this session) ✓.
 
 ## Blockers
 
@@ -151,15 +204,27 @@ None for current approach. The ballot bijection inside
 
 ## Next Action
 
-1. **S25**: Prove **Sub-lemma 1** (`submultiset_count_via_powersetCard`)
-   — mechanical Mathlib `Finset.card_bij` argument, ~20 lines. Real code
-   contribution; sorry count unchanged. See `sessions/2026-05-08-s24.md`
-   for the precise signature.
+1. ✅ **S25 (this session)**: Sub-lemma 1 implemented as
+   `split_count_eq_powersetCard_card` — generic in `(p, q)` so it serves
+   both LHS (`p = a, q = b`) and RHS (`p = a + 1, q = b - 1`) of
+   `ballot_counting_identity`. ~49 lines including docstring.
 
-2. **S26+**: State **Sub-lemma 2** (`colStrict_count_eq_card_diff`) with
-   `sorry`. Replace `ballot_counting_identity` body with a one-liner
-   combining Sub-lemmas 1 and 2. Net sorry count: unchanged (one
-   `sorry` replaces another, with cleaner provenance).
+2. **S26**: State **Sub-lemma 2** (`colStrict_count_eq_card_diff`) with
+   `sorry`. The signature is the difference identity:
+
+   ```lean
+   private lemma colStrict_count_eq_card_diff {n a b : ℕ}
+       (hb : 2 ≤ b) (hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
+       ((M.1.powersetCard a).filter
+         (fun P => /- ColStrict_b on (P.toSym, (M.1 - P).toSym) -/)).card =
+       (M.1.powersetCard a).card - (M.1.powersetCard (a + 1)).card
+   ```
+
+   Then replace the body of `ballot_counting_identity` with a one-liner
+   combining Sub-lemma 1 (twice — for `p = a, b` and `p = a + 1, b - 1`)
+   with Sub-lemma 2 to convert both sides to `M.powersetCard`-cardinality
+   arithmetic. Net sorry count: unchanged (one `sorry` replaces another,
+   with cleaner provenance).
 
 3. **S27+**: Attack **Sub-lemma 2** proof via the Cycle Lemma route.
    ~80–100 lines; the dominant cost. Requires either a small Mathlib
@@ -171,9 +236,10 @@ None for current approach. The ballot bijection inside
 
 ## File Status
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1266 lines (unchanged
-  this session — research-only iteration).
-- Sorry count: 2 (`ballot_counting_identity`, `jacobi_trudi_ssyt_eq` k≥3).
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1266 → 1315 lines
+  (+49 this session: Sub-lemma 1 + docstring).
+- Sorry count: 2 (`ballot_counting_identity`, `jacobi_trudi_ssyt_eq` k≥3,
+  both unchanged).
 - 0 axioms.
-- Theorems: 31 (unchanged).
+- Theorems / lemmas: +1 (`split_count_eq_powersetCard_card`).
 - Definitions: 8 (unchanged).
