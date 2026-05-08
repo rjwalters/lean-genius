@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-07T20:08:05Z",
-    "iteration": 5,
-    "focus": "S8 (2026-05-08): Eliminated `blichfeldt_volume_partition` axiom by replacing manual partition-pigeonhole proof of `blichfeldt_basic` with direct application of Mathlib `IsAddFundamentalDomain.exists_ne_zero_vadd_eq`. 1 axiom remains (`blichfeldt_general`).",
+    "iteration": 9,
+    "focus": "S9 (researcher-6, 2026-05-08): Pre-formalization specification for the final axiom `blichfeldt_general` written to `research/problems/minkowski-theorem-oq-04/blichfeldt-general-roadmap.md`. 11-row Mathlib v4.26.0 API inventory verified via `gh api`; full Lean 4 proof skeleton; two design paths (A: `contrapose!` ~120 lines mirroring Mathlib's `exists_pair_mem_lattice_not_disjoint_vadd`, B: explicit covering-count ~195 lines). 1 axiom remains; 0 sorries.",
     "blockers": [],
-    "nextAction": "Eliminate `blichfeldt_general` (the general k\u22651 case) via the covering-count averaging argument c(z) = #{v \u2208 \u2124\u207f | z+v \u2208 S}; \u222b_F c dz = vol(S) > k means c attains \u2265 k+1 on a positive-measure set. Mathlib analog: `IsAddFundamentalDomain.essSup_measure_restrict` / measure-theoretic counting on a fundamental domain.",
+    "nextAction": "S10: prototype Path A (contrapose route per roadmap \u00a75) for `blichfeldt_general`. If it lands, graduate entry to verified/original. Requires healthy `proofs/.lake` (currently a recursive self-symlink \u2192 ~30\u201345 min Mathlib clone per build).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,6 +40,8 @@
       "h_vol_T (line 235 of edited file): 1 < volume T via Measure.addHaar_smul + ENNReal.mul_lt_mul_left + (2\u207b\u00b9)^n \u00b7 2^n = 1 (~30 lines)."
     ],
     "insights": [
+      "S9 (researcher-6, 2026-05-08): Mathlib's own `MeasureTheory.exists_pair_mem_lattice_not_disjoint_vadd` (in `MeasureTheory/Group/GeometryOfNumbers.lean:52`) is the abstract-subgroup form of Blichfeldt's k=1 theorem and uses a 6-line `contrapose!` proof structure (`fund.measure_eq_tsum` \u2192 `measure_iUnion\u2080` \u2192 `measure_mono`); mirroring this for the k+1 case avoids the explicit covering-count function and could drop the formalization cost from \u2248195 to \u2248120 lines. Recommended approach for S10.",
+      "S9 (researcher-6, 2026-05-08): The hardest sub-step of the explicit covering-count route is bridging tsum-of-indicator to `Set.ncard` \u2014 specifically, `\u2211' v : L, T.indicator 1 v = (T.ncard : \u211d\u22650\u221e)` (with \u22a4 if T infinite). Likely route: `tsum_eq_iSup_sum_of_nonneg` for `\u211d\u22650\u221e` plus Finset.card-of-support reasoning. Estimated 35 lines.",
       "`IsAddFundamentalDomain.exists_ne_zero_vadd_eq` is a one-line proof of Blichfeldt's basic theorem given the standard \u2124\u207f-fundamental-domain has volume 1; eliminates the manual partition-pigeonhole pattern and the `blichfeldt_volume_partition` axiom (S8, 2026-05-08).",
             "Proof uses fundamental domain pigeonhole: if projections {Sv} are disjoint, sum of volumes <= 1 < vol(S)",
       "Three axioms capture measure-theory facts provable from IsAddFundamentalDomain.lintegral_eq_tsum",
@@ -60,9 +62,9 @@
       "ENNReal.div arithmetic for volume scaling vol(S/2) = vol(S)/2^n"
     ],
     "nextSteps": [
-      "Eliminate blichfeldt_volume_partition: apply (stdLattice_isAddFundamentalDomain n).lintegral_eq_tsum to f = Set.indicator s (fun _ => 1). Each \u222b\u207b z in F, 1_S(z+g) dz reduces to volume of the projection.",
-      "Eliminate blichfeldt_general: covering-count averaging argument c(z) = #{v | z+v \u2208 S}; \u222b_F c dz = vol(s) > k means c attains \u2265 k+1 on positive-measure set.",
-      "Once both axioms gone: graduate from axiomatized \u2192 verified (badge 'original')."
+      "S10 Path A (preferred): contrapose route mirroring Mathlib's `exists_pair_mem_lattice_not_disjoint_vadd` in `MeasureTheory/Group/GeometryOfNumbers.lean:52`. Avoids the explicit covering-count function. ~120 lines.",
+      "S10 Path B (fallback): explicit covering-count proof per the skeleton in `research/problems/minkowski-theorem-oq-04/blichfeldt-general-roadmap.md` \u00a74. ~195 lines.",
+      "Once `blichfeldt_general` axiom eliminated: graduate from `axiomatized` \u2192 `verified` (badge `original`)."
     ],
     "markdown": "# Knowledge Base: minkowski-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -120,5 +122,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
     }
   ],
-  "lastUpdate": "2026-05-08T01:00:00Z"
+  "lastUpdate": "2026-05-08T07:50:00Z"
 }
