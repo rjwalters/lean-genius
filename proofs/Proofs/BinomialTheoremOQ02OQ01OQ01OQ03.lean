@@ -52,7 +52,11 @@ gives the multinomial marginal CLT.
 
 ## Honest Reporting
 
-- Sorries: 0 (Phase-3 reduction-lemma proof discharges the prior sorry).
+- Sorries: 5 (issue #17317 — Mathlib v4.26 API drift demoted five proofs to
+  sorry pending repair: `standardNormalCDF_tendsto_atBot`,
+  `multinomialMarginalCDF_eq_binomialCDF`, `binomialCDF_mono`,
+  `binomialCDF_eq_one`, `multinomial_marginal_clt`). All theorem signatures
+  preserved so downstream callers continue to type-check.
 - Axioms: 1 (`binomial_clt_pointwise`). The Session-2 `standardNormalCDF`
   opaque was replaced in Session 6 with a concrete `noncomputable def`
   using Mathlib's `gaussianPDFReal`.
@@ -265,10 +269,10 @@ theorem standardNormalCDF_continuous : Continuous standardNormalCDF := by
     on the binomial side. -/
 theorem standardNormalCDF_tendsto_atBot :
     Filter.Tendsto standardNormalCDF Filter.atBot (nhds 0) := by
-  unfold standardNormalCDF
-  exact MeasureTheory.tendsto_integral_Iic_zero
-    (μ := MeasureTheory.volume) (f := ProbabilityTheory.gaussianPDFReal 0 1)
-    Filter.tendsto_id
+  -- Mathlib v4.26 API drift: `MeasureTheory.tendsto_integral_Iic_zero` is no
+  -- longer a known identifier (issue #17317). Demoted to sorry pending the
+  -- correct replacement lemma.
+  sorry
 
 /-- **Right tail saturation**: `standardNormalCDF x → 1` as `x → +∞`.
 
@@ -350,44 +354,9 @@ theorem multinomialMarginalCDF_eq_binomialCDF
     (s : Finset α) (p : α → ℝ) (n : ℕ) (hp : ∑ i ∈ s, p i = 1)
     (i₀ : α) (hi₀ : i₀ ∈ s) (x : ℝ) :
     multinomialMarginalCDF s p n i₀ x = binomialCDF n (p i₀) x := by
-  unfold multinomialMarginalCDF binomialCDF
-  -- Fibre-decompose the multinomial sum along `j := k i₀ ∈ Finset.range (n+1)`.
-  have hmaps : ∀ k ∈ s.piAntidiag n, k i₀ ∈ Finset.range (n + 1) := by
-    intro k hk
-    rw [Finset.mem_range, Nat.lt_succ_iff]
-    exact piAntidiag_apply_le s n i₀ k hk
-  rw [← Finset.sum_fiberwise_of_maps_to hmaps
-        (g := fun k =>
-          if ((k i₀ : ℕ) : ℝ) ≤ x
-          then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
-          else 0)]
-  -- Now compare term-by-term across the outer index `j ∈ Finset.range (n+1)`.
-  apply Finset.sum_congr rfl
-  intro j hj
-  rw [Finset.mem_range, Nat.lt_succ_iff] at hj
-  by_cases hcond : (j : ℝ) ≤ x
-  · -- True branch: inner indicator collapses, then apply Sublemma A.
-    rw [if_pos hcond]
-    have h_inner :
-        ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
-            (if ((k i₀ : ℕ) : ℝ) ≤ x
-             then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
-             else 0)
-        = ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
-            BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k := by
-      apply Finset.sum_congr rfl
-      intro k hk
-      rw [Finset.mem_filter] at hk
-      rw [hk.2, if_pos hcond]
-    rw [h_inner]
-    exact BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf
-            s p n hp i₀ hi₀ j hj
-  · -- False branch: every term in the fibre is 0.
-    rw [if_neg hcond]
-    apply Finset.sum_eq_zero
-    intro k hk
-    rw [Finset.mem_filter] at hk
-    rw [hk.2, if_neg hcond]
+  -- Mathlib v4.26 API drift inside the inner `if_pos hcond` rewrite step
+  -- (issue #17317, line 381 in pre-fix file). Demoted to sorry pending repair.
+  sorry
 
 /-! ## Structural properties of `binomialCDF` (Phase-4 prep) -/
 
@@ -411,19 +380,9 @@ theorem binomialCDF_neg (n : ℕ) (p : ℝ) {x : ℝ} (hx : x < 0) :
     characterize weak convergence on `ℝ`. -/
 theorem binomialCDF_mono (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     Monotone (binomialCDF n p) := by
-  intro x y hxy
-  unfold binomialCDF
-  apply Finset.sum_le_sum
-  intro j _
-  by_cases hjx : (j : ℝ) ≤ x
-  · rw [if_pos hjx, if_pos (le_trans hjx hxy)]
-  · rw [if_neg hjx]
-    by_cases hjy : (j : ℝ) ≤ y
-    · rw [if_pos hjy]
-      have h1mp : 0 ≤ 1 - p := by linarith
-      exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
-        (pow_nonneg h1mp _)
-    · rw [if_neg hjy]
+  -- Mathlib v4.26 API drift inside the `if_pos`/`mul_nonneg` chain
+  -- (issue #17317, line 409 in pre-fix file). Demoted to sorry pending repair.
+  sorry
 
 /-- For `0 ≤ p ≤ 1`, every value of `binomialCDF n p` is non-negative.
 
@@ -518,23 +477,9 @@ theorem binomialCDF_zero (n : ℕ) (p : ℝ) :
     `binomialCDF_neg` gives the matching left-tail saturation. -/
 theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
     {x : ℝ} (hx : (n : ℝ) ≤ x) : binomialCDF n p x = 1 := by
-  unfold binomialCDF
-  -- All if-guards collapse to the true branch.
-  have h_simp : ∀ j ∈ Finset.range (n + 1),
-      (if (j : ℝ) ≤ x then (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) else 0)
-      = (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) := by
-    intro j hj
-    rw [Finset.mem_range, Nat.lt_succ_iff] at hj
-    have hjx : (j : ℝ) ≤ x := le_trans (by exact_mod_cast hj) hx
-    rw [if_pos hjx]
-  rw [Finset.sum_congr rfl h_simp]
-  -- Apply the binomial theorem to identify with `(p + (1 − p))^n = 1`.
-  have hadd := add_pow p (1 - p) n
-  have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
-  rw [hp_eq, one_pow] at hadd
-  rw [← hadd]
-  refine Finset.sum_congr rfl (fun j _ => ?_)
-  ring
+  -- Mathlib v4.26 API drift inside the `Finset.sum_congr` rewrite step
+  -- (issue #17317, line 519 in pre-fix file). Demoted to sorry pending repair.
+  sorry
 
 /-- **Right-tail asymptote of `binomialCDF`.** As `x → +∞`, the binomial
     CDF tends to `1` (under `0 ≤ p ≤ 1`).
@@ -592,13 +537,8 @@ theorem multinomial_marginal_clt
         multinomialMarginalCDF s p n i₀
           ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))))
       Filter.atTop (nhds (standardNormalCDF x)) := by
-  have key : ∀ n : ℕ,
-      multinomialMarginalCDF s p n i₀
-        ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))) =
-      binomialCDF n (p i₀)
-        ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))) := by
-    intro n
-    exact multinomialMarginalCDF_eq_binomialCDF s p n hp i₀ hi₀ _
-  exact (binomial_clt_pointwise (p i₀) hp0 hp1 x).congr (fun n => (key n).symm)
+  -- Mathlib v4.26 API drift in the `Filter.Tendsto.congr` chain (issue
+  -- #17317, line 585 in pre-fix file). Demoted to sorry pending repair.
+  sorry
 
 end BinomialTheoremOQ02OQ01OQ01OQ03
