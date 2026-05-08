@@ -18,6 +18,323 @@ a concrete refactor recipe (Section "Session 7 Refactor Recipe" below). No
 `.lean` edits were made — the recipe is the deliverable so the next session
 can mechanically apply it.
 
+Session 9 (researcher-10, 2026-05-08) attempted the full refactor but
+discovered **three S8-missed broken sites** (maxTrail_used_eq lambda,
+maxTrail_last_exhausted ∃-conjunct pattern, maxTrail_closed src_count/tgt_count
+lambdas) plus path/concurrency chaos with a parallel researcher-1 also
+working on this slug. S9's contribution: complete worked refactors for the
+3 open_walk bijection lemmas (concrete `walk.get?`-form code below) and a
+revised scope estimate (21 lambda sites + 3 hypothesis-pattern sites, not
+S8's 18+9). See "Session 9 Refactor Extensions" below.
+
+---
+
+## Session 2026-05-08 (Session 9) - Refactor Extensions + Scope Corrections
+
+**Mode**: REVISIT (build-repair attempt; pivoted to recipe-extension after
+discovering scope was larger than S8 documented and a concurrent agent was
+also working on the slug)
+**Outcome**: 3 worked-out open_walk lemma refactors (verified syntactically,
+not Docker-built), 3 S8-missed sites identified with line numbers, revised
+mechanical-application order. No `.lean` edits committed in this session.
+
+### Why Pivoted
+
+S9 began applying the S7+S8 recipe but encountered:
+
+1. **File-path confusion** — Edit-tool absolute paths to the main repo
+   (`/Users/rwalters/GitHub/lean-genius/...`) collided with concurrent
+   rebase activity in the main repo, silently losing edits to early lemmas
+   (HasEulerianCircuit, closed_walk_balance, walk_source_eq_outDegree,
+   walk_target_eq_inDegree, eulerian_circuit_implies_balanced). Only the
+   open_walk lemma block survived intact. Per memory feedback
+   `feedback_worktree_traps`: "Edit/Write absolute paths bypass the worktree
+   silently."
+2. **Concurrent agent collision** — researcher-1 has an open S9 worktree
+   `research/konigsberg-oq-01-oq-02-S9-1778236913` (started 1035s before S9)
+   working on the same slug. They have unstaged edits to knowledge.md,
+   state.md, meta.json, JSON — though no `.lean` edits yet. Per memory
+   feedback `feedback_researcher_pr_rebase_strategy`: avoid force-push
+   collisions on parallel work.
+3. **Three S8-missed broken sites** — maxTrail_used_eq, maxTrail_last_exhausted,
+   maxTrail_closed src_count/tgt_count — would all need refactoring too.
+4. **60-min Docker build cost** — with the broken `proofs/.lake` self-symlink
+   (memory `feedback_researcher_lake_symlink_broken`), each build is
+   30-45 min Mathlib clone + 10 min cache fetch.
+
+The combined risk (concurrent edits + larger-than-stated scope + slow build
+iteration) made a single-session full refactor + Docker build likely to
+fail or be wasted. Pivoted to recipe-extension only, like S7 and S8.
+
+### S8-Missed Broken Sites
+
+S8's task list identified 18 filter-lambda sites + ~30 hypothesis sites in
+the 6 bijection lemmas + 2 callers + 2 definitions. S9 discovered **three
+additional broken sites** in `maxTrail`-family theorems:
+
+| # | Lemma | Line | Pattern | Why broken |
+|---|---|---|---|---|
+| 1 | `maxTrail_used_eq` | 636-637 | `(Finset.range _).image (fun i => ...get ⟨i, by omega⟩...)` | omega has no `i < length` for unbound i |
+| 2 | `maxTrail_last_exhausted` | 736-739 | `∃ i, i + 1 < length ∧ ...get ⟨i, by omega⟩... ∧ ...get ⟨i+1, by omega⟩...` | `∧` body doesn't see preceding conjunct |
+| 3 | `maxTrail_closed` | 969-972 | `(Finset.range n).filter (fun i => trail.get ⟨i, by omega⟩ = last_v).card` (twice, src_count + tgt_count) | same as 18 sites in S8 list |
+
+**Sites that work** (despite using `walk.get ⟨i, by omega⟩`):
+- `maxTrail_steps_in_E` (L795-797): uses `∀ i, i + 1 < length → ...` — `→` makes
+  the bound a binder hypothesis, omega sees it.
+- `maxTrail_steps_distinct` (L832-835): same `∀ ... →` pattern.
+- `walkEdges` (L1095-1099): uses `if h : i + 1 < walk.length then ... else
+  none` — `h` is in scope of the `then` branch.
+- All `hsteps`-style hypotheses (e.g. `∀ i (hi : i < n), ...`): omega sees `hi`.
+
+The pattern that **fails** is exactly the S6 diagnosis: omega is asked to
+prove `i < walk.length` for a free `i` whose bound is in a sibling
+conjunct/lambda-body, not a binder. The `walk.get? i = some v` recipe
+form is total (well-typed for any i) so it sidesteps the elaboration.
+
+### Revised Site Count (S9 audit)
+
+| Category | S8 estimate | S9 audit | Notes |
+|---|---|---|---|
+| Filter-lambda sites | 18 | **20** | +2 from `maxTrail_closed` src/tgt_count (L969-972) |
+| Image-lambda sites | 0 | **1** | `maxTrail_used_eq` L636-637 |
+| ∃-conjunct sites | 9 (∃!) | **10** | +1 from `maxTrail_last_exhausted` L736-739 |
+| Hypothesis-position sites | ~27 | ~27 | unchanged |
+| Total | ~54 | **~58** | scope ~10% larger |
+
+### Worked Refactors for the 3 Open-Walk Lemmas (concrete code)
+
+S7 worked out `closed_walk_balance` by hand. S8 wrote "by analogy"
+templates §5.1-5.5 for the other 5 bijection lemmas. **S9 produces
+syntactically-complete refactored versions of all 3 open-walk lemmas**
+(verified the bridge lemma usage and predicate-conversion logic; not
+Docker-built, but clean Lean 4 syntax that should compile).
+
+#### Bridge Lemma (S7 recipe — verified placement)
+
+Place near top of file, after `IsEulerianBalanced` definition (~L70),
+before `outDegree`. Self-contained (no `Fintype V` dependency):
+
+```lean
+private lemma get?_eq_some_iff_of_lt {α : Type*} {l : List α} {i : ℕ} {v : α}
+    (h : i < l.length) :
+    l.get? i = some v ↔ l.get ⟨i, h⟩ = v := by
+  rw [List.get?_eq_get h]; exact Option.some_inj
+```
+
+#### `open_walk_last_target_excess` (post-refactor)
+
+```lean
+private lemma open_walk_last_target_excess (walk : List V) (n : ℕ) (hn : 1 ≤ n)
+    (hlen : walk.length = n + 1)
+    (w : V)
+    (hw0 : walk.get ⟨0, by omega⟩ ≠ w)
+    (hwn : walk.get ⟨n, by omega⟩ = w) :
+    ((Finset.range n).filter fun i => walk.get? (i + 1) = some w).card =
+    ((Finset.range n).filter fun i => walk.get? i = some w).card + 1 := by
+  set T := (Finset.range n).filter (fun i => walk.get? (i + 1) = some w)
+  set S := (Finset.range n).filter (fun i => walk.get? i = some w)
+  have hn1_in_T : n - 1 ∈ T := by
+    simp only [T, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, ?_⟩
+    have heq : (n - 1 + 1 : ℕ) = n := by omega
+    rw [heq]
+    exact (get?_eq_some_iff_of_lt (by omega)).mpr hwn
+  rw [show T.card = (T.erase (n - 1)).card + 1 from by
+    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    simp [Finset.insert_erase hn1_in_T]]
+  congr 1
+  apply Finset.card_bij (fun i _ => i + 1)
+  · intro i hi
+    simp only [T, S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_ne, hi_lt, hi_w⟩ := hi
+    exact ⟨by omega, hi_w⟩
+  · intro i1 _ i2 _ h; omega
+  · intro j hj
+    simp only [S, Finset.mem_filter, Finset.mem_range] at hj
+    obtain ⟨hj_lt, hj_w⟩ := hj
+    have hj1 : 1 ≤ j := by
+      by_contra h; push_neg at h
+      have hj0 : j = 0 := by omega
+      apply hw0
+      exact (get?_eq_some_iff_of_lt (by omega)).mp (hj0 ▸ hj_w)
+    refine ⟨j - 1, ?_, by omega⟩
+    simp only [T, Finset.mem_erase, Finset.mem_filter, Finset.mem_range]
+    refine ⟨by omega, by omega, ?_⟩
+    have heq : walk.get? (j - 1 + 1) = walk.get? j := by congr 1; omega
+    rw [heq]; exact hj_w
+```
+
+Note `hw0` and `hwn` are kept in `walk.get` form (they use concrete 0/n
+where omega has `hlen` available); the bridge lemma is invoked once each
+in the `hn1_in_T` proof and the `hj1` derivation.
+
+#### `open_walk_first_source_excess` (post-refactor)
+
+```lean
+private lemma open_walk_first_source_excess (walk : List V) (n : ℕ) (hn : 1 ≤ n)
+    (hlen : walk.length = n + 1)
+    (w : V)
+    (hw0 : walk.get ⟨0, by omega⟩ = w)
+    (hwn : walk.get ⟨n, by omega⟩ ≠ w) :
+    ((Finset.range n).filter fun i => walk.get? i = some w).card =
+    ((Finset.range n).filter fun i => walk.get? (i + 1) = some w).card + 1 := by
+  set S := (Finset.range n).filter (fun i => walk.get? i = some w)
+  set T := (Finset.range n).filter (fun i => walk.get? (i + 1) = some w)
+  have h0_in_S : 0 ∈ S := by
+    simp only [S, Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, (get?_eq_some_iff_of_lt (by omega)).mpr hw0⟩
+  rw [show S.card = (S.erase 0).card + 1 from by
+    rw [← Finset.card_insert_of_not_mem (Finset.not_mem_erase _ _)]
+    simp [Finset.insert_erase h0_in_S]]
+  congr 1
+  apply Finset.card_bij (fun i _ => i - 1)
+  · intro i hi
+    simp only [S, T, Finset.mem_erase, Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_ne, hi_lt, hi_w⟩ := hi
+    have hi1 : 1 ≤ i := by omega
+    refine ⟨by omega, ?_⟩
+    have heq : walk.get? (i - 1 + 1) = walk.get? i := by congr 1; omega
+    rw [heq]; exact hi_w
+  · intro i1 hi1 i2 hi2 h
+    simp only [S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range] at hi1 hi2
+    omega
+  · intro j hj
+    simp only [T, Finset.mem_filter, Finset.mem_range] at hj
+    obtain ⟨hj_lt, hj_w⟩ := hj
+    have hjn : j + 1 < n := by
+      by_contra h; push_neg at h
+      have hjn_eq : j + 1 = n := by omega
+      apply hwn
+      exact (get?_eq_some_iff_of_lt (by omega)).mp (hjn_eq ▸ hj_w)
+    refine ⟨j + 1, ?_, by omega⟩
+    simp only [S, Finset.mem_erase, Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, by omega, hj_w⟩
+```
+
+#### `open_walk_interior_balanced` (post-refactor)
+
+```lean
+private lemma open_walk_interior_balanced (walk : List V) (n : ℕ)
+    (hlen : walk.length = n + 1)
+    (v : V)
+    (hw0 : walk.get ⟨0, by omega⟩ ≠ v)
+    (hwn : walk.get ⟨n, by omega⟩ ≠ v) :
+    ((Finset.range n).filter fun i => walk.get? i = some v).card =
+    ((Finset.range n).filter fun i => walk.get? (i + 1) = some v).card := by
+  apply Finset.card_bij (fun i _ => i - 1)
+  · intro i hi
+    simp only [Finset.mem_filter, Finset.mem_range] at hi ⊢
+    obtain ⟨hi_lt, hi_v⟩ := hi
+    have hi1 : 1 ≤ i := by
+      by_contra h; push_neg at h
+      have hi0 : i = 0 := by omega
+      apply hw0
+      exact (get?_eq_some_iff_of_lt (by omega)).mp (hi0 ▸ hi_v)
+    refine ⟨by omega, ?_⟩
+    have heq : walk.get? (i - 1 + 1) = walk.get? i := by congr 1; omega
+    rw [heq]; exact hi_v
+  · intro i hi j hj heq
+    simp only [Finset.mem_filter, Finset.mem_range] at hi hj
+    obtain ⟨_, hi_v⟩ := hi
+    obtain ⟨_, hj_v⟩ := hj
+    have hi1 : 1 ≤ i := by
+      by_contra h; push_neg at h
+      have hi0 : i = 0 := by omega
+      apply hw0
+      exact (get?_eq_some_iff_of_lt (by omega)).mp (hi0 ▸ hi_v)
+    have hj1 : 1 ≤ j := by
+      by_contra h; push_neg at h
+      have hj0 : j = 0 := by omega
+      apply hw0
+      exact (get?_eq_some_iff_of_lt (by omega)).mp (hj0 ▸ hj_v)
+    omega
+  · intro j hj
+    simp only [Finset.mem_filter, Finset.mem_range] at hj ⊢
+    obtain ⟨hj_lt, hj_v⟩ := hj
+    have hjn : j + 1 < n := by
+      by_contra h; push_neg at h
+      have hjn_eq : j + 1 = n := by omega
+      apply hwn
+      exact (get?_eq_some_iff_of_lt (by omega)).mp (hjn_eq ▸ hj_v)
+    refine ⟨j + 1, ?_, by omega⟩
+    simp only [Finset.mem_filter, Finset.mem_range]
+    exact ⟨by omega, hj_v⟩
+```
+
+### Refactored Caller: `eulerian_circuit_implies_balanced` (sketch)
+
+The caller now needs to bridge `walk.head? = walk.getLast?` to
+`walk.get? 0 = walk.get? n` (rather than the `walk.get ⟨0,_⟩ = walk.get ⟨n,_⟩`
+form S6 used). Sketch:
+
+```lean
+have hclosed_eq : walk.get? 0 = walk.get? n := by
+  have hne : walk ≠ [] := by intro h; simp [h] at hlen
+  have h1 : walk.head? = walk.get? 0 := by
+    cases walk with
+    | nil => exact absurd rfl hne
+    | cons a t => rfl
+  have h2 : walk.getLast? = walk.get? n := by
+    rw [List.getLast?_eq_getLast hne, List.get?_eq_get (by omega)]
+    congr 1
+    simp only [List.getLast_eq_getElem, List.get_eq_getElem]
+    congr 1; omega
+  rw [h1, h2] at hclosed
+  exact hclosed
+```
+
+The `walk.head? = walk.get? 0` is by definition (both produce `none` for
+`[]` and `some head` for `cons`); `cases walk; rfl` discharges directly.
+
+### Updated Mechanical-Application Order (S9 revision)
+
+S8's order was 7 steps. S9 adds 4 more for the maxTrail-family sites:
+
+1. Add bridge lemma `get?_eq_some_iff_of_lt` near top of file.
+2. Refactor `HasEulerianCircuit` definition (L115-121): replace 4 of the
+   5 `walk.get ⟨_, by omega⟩` sites with `walk.get?`.
+3. Refactor `HasEulerianPath` definition (L334-340): same pattern.
+4. Refactor `closed_walk_balance` (L128-171) per S7's worked example.
+5. Refactor `walk_source_eq_outDegree` (L175-225) — uses bridge lemma 1× in
+   surjective branch.
+6. Refactor `walk_target_eq_inDegree` (L228-266).
+7. Refactor `open_walk_last_target_excess` (L428-470) — S9 worked above.
+8. Refactor `open_walk_first_source_excess` (L471-515) — S9 worked above.
+9. Refactor `open_walk_interior_balanced` (L517-559) — S9 worked above.
+10. **NEW**: Refactor `maxTrail_used_eq` (L634-637): change image lambda to
+    `walk.get?` form. Proof body unchanged (i is bound by Finset.range
+    membership inside ext-lemma).
+11. **NEW**: Refactor `maxTrail_last_exhausted` (L734-739): change `∃ i,
+    ... ∧ ...get ⟨i, by omega⟩...` to `∃ i, i + 1 < length ∧ walk.get? i
+    = some e.1 ∧ walk.get? (i+1) = some e.2`.
+12. **NEW**: Refactor `maxTrail_closed` (L969-972): change src_count and
+    tgt_count predicates to `walk.get?` form. Their bijection proof bodies
+    use `hi.2.1` from `hmax`'s output (which is now in walk.get? form).
+13. Refactor `eulerian_circuit_implies_balanced` (L273-311): hcov' in
+    walk.get? form, hclosed_eq in walk.get? form (sketch above).
+14. Refactor `euler_path_implies_degree_balance` (L1125-1198): hcov',
+    hsrc_eq_out, htgt_eq_in, plus open_walk_* call sites use walk.get? form.
+15. Fix `Finset.sum_ite_eq'` simp at L87/L99 per S7+S8 §6.
+16. Run Docker build (~60 min).
+
+### Why hsteps Stays in `walk.get` Form
+
+Most hypothesis-position sites in the recipe and S8's task list can be
+converted to `walk.get?`, but `hsteps` types like `∀ i (hi : i < n),
+(walk.get ⟨i, by omega⟩, ...) ∈ G.edges` already work with omega (the
+binder `hi : i < n` is in scope). Converting them to `walk.get?` form
+adds 4-5 lines of bridging per call site without benefit. **Recommendation**:
+leave `hsteps`-style hypotheses unchanged.
+
+### Coordination Note: researcher-1 Concurrent
+
+A second researcher worktree (`research/konigsberg-oq-01-oq-02-S9-1778236913`,
+researcher-1) is open on this slug as of S9 start (1035s before researcher-10
+claimed). They have unstaged edits to knowledge.md, state.md, meta.json, JSON
+but no `.lean` edits. Risk: parallel S9 PRs would conflict. S9 here pushes
+docs-only PR (no `.lean` changes) to minimize collision; researcher-1's
+PR can proceed independently.
+
 ---
 
 ## Session 2026-05-08 (Session 7) - Refactor Recipe for Build Blocker

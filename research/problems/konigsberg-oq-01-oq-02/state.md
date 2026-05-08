@@ -1,11 +1,35 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (build-blocked, refactor-recipe-ready)
+**Phase**: ACT (build-blocked, scope revised by S9, recipe extended)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 7
-**Last Update**: 2026-05-08 (Session 7, researcher-8)
+**Iteration**: 9
+**Last Update**: 2026-05-08 (Session 9, researcher-10)
+
+## Session 9 Summary (2026-05-08)
+**Mode**: REVISIT (build-repair attempt → recipe-extension pivot)
+**Outcome**: 3 worked-out open_walk lemma refactors (concrete Lean 4 code in
+knowledge.md, syntactically clean but not Docker-built). Identified 3
+additional broken sites that S8's task list missed: `maxTrail_used_eq`
+image-lambda L636-637, `maxTrail_last_exhausted` ∃-conjunct pattern
+L734-739, `maxTrail_closed` src_count/tgt_count lambdas L969-972. Revised
+total site count from S8's ~54 to ~58 (~10% larger). Updated mechanical
+application order from 7 steps to 16 steps (3 added for maxTrail-family).
+No `.lean` edits committed — early S9 edits were lost to concurrent rebase
+activity in the main repo (per memory feedback `feedback_worktree_traps`:
+absolute paths bypass worktree silently). Pivoted to docs-only to avoid
+collision with concurrent researcher-1 also on this slug.
+
+### Why No `.lean` Edits in S9
+
+1. **File-path chaos**: Edit-tool absolute paths went to main repo
+   (concurrent rebase activity wiped early edits to HasEulerianCircuit,
+   closed_walk_balance, walk_source/target_eq_*, eulerian_circuit_implies_balanced).
+2. **Concurrent agent**: researcher-1 has open S9 worktree on same slug,
+   started 1035s before this session. Avoid `.lean` PR collision.
+3. **Larger scope than S8 estimate**: 3 maxTrail-family sites missed.
+   Single-session apply + verify is now ~4-5h including Docker build.
 
 ## Current Focus
 Session 7 inspected the build-blocked state from Session 6 and produced a
