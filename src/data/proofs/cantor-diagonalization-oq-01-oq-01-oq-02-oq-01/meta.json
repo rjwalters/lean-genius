@@ -25,7 +25,7 @@
     "assumptions": "2 axiom declarations (easton_permitted_realizable and easton_consistency) state the realizability direction of Easton's 1970 theorem: every regular κ > ℵ₀ is realizable as 2^ℵ₀, and every Easton function is realizable as the continuum function on regular cardinals. Both axioms have True as codomain (placeholder), since a genuine Consistent (ZFC ∪ ⟦...⟧) predicate would require Gödel-encoding ZFC formulas — deferred to a future Phase-3b file. All 7 supporting theorems are now fully machine-checked from Mathlib (axiom-free): IsPermittedValue scaffold, aleph_one_permitted, aleph_two_permitted, aleph_succ_permitted, permitted_satisfies_konig, permitted_unbounded, IsEastonFunction structure, isEastonFunction_continuum, isEastonFunction_nonempty. The previous Phase-3a sorries (aleph_succ_permitted, isEastonFunction_continuum.monotone) were closed in Phase-3a-fix: the ℵ₀ < ℵ_(succ α) step uses ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) (via Cardinal.aleph_zero, Cardinal.aleph_le_aleph, Order.lt_succ); the monotone field uses Cardinal.power_le_power_right (the previous comment claiming it varies the base was incorrect — confirmed exponent-monotonic in current Mathlib via the sibling OQ-02-OQ-03 file).",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
-    "definitionCount": 1
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "Easton's 1970 theorem (PhD thesis, Annals of Math. Logic 1) is one of the most striking results in set-theoretic cardinal arithmetic. It completely answers the question 'how arbitrary can the continuum function 2^κ be on regular cardinals?' — by showing that ALL functions F : Reg → Card satisfying three minimal constraints (F(κ) ≥ κ⁺, monotonicity, cf(F(κ)) > κ) are realizable in some forcing extension of ZFC. The constraints are necessary (provable from Mathlib's lt_cof_power and power_le_power_right) but the realizability direction requires class-sized partial orders — Easton product forcing — which extends Cohen's 1963 set-forcing technique to violate GCH simultaneously at every regular cardinal. This file formalizes the converse to OQ-01-OQ-01-OQ-02 (which lists EXCLUDED values): instead of enumerating what 2^ℵ₀ cannot be, it characterizes what 2^ℵ₀ CAN be.",
@@ -110,7 +110,7 @@
     "lineCount": 257,
     "axiomCount": 2,
     "theoremCount": 7,
-    "definitionCount": 1,
+    "definitionCount": 2,
     "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean",
     "sorries": 0
   },
