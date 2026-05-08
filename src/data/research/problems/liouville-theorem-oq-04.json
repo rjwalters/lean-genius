@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "REFINE",
+    "phase": "COMPLETE",
     "since": "2026-05-08T11:00:00.000Z",
     "iteration": 15,
-    "focus": "Session 15 (this) — `padic_liouville_norm_bridge` rewritten from `axiom` to `theorem`. Composes Part IV.10 (`padic_liouville_bridge_algebraic_case`, Session 13) and Part IV.11 (`padic_liouville_bridge_rational_roots_case`, Session 14): C' := min(1/(L·M), δ) with case split on (f.map alg').eval ((r:ℚ)/s) ?= 0 over ℚ. Degree bookkeeping (g.natDegree + 1 ≤ f.natDegree) comes from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le`. f ≠ 0 derived from hf_deg; g ≠ 0 from the factorization; algebraMap ℤ ℚ_[p] injectivity via integer-cast → ratCast composition. Lean file: 1216 → 1333 lines, 34 → 35 theorems, 1 → 0 axioms (build pending; meta.json status update deferred to a post-build follow-up PR).",
+    "focus": "Session 15 (DONE, build verified) — `padic_liouville_norm_bridge` rewritten from `axiom` to `theorem`, composing Part IV.10 (`padic_liouville_bridge_algebraic_case`, Session 13) with Part IV.11 (`padic_liouville_bridge_rational_roots_case`, Session 14): C' := min(1/(L·M), δ) with case split on (f.map alg').eval ((r:ℚ)/s) ?= 0 over ℚ. The session also fixed three pre-existing build errors that the slug's 'build pending' convention had hidden: (a) `Finset.single_le_sum` type-inference failure in `intPolyL1_pos` (fixed via `show` + named `(f := ...)`), (b) `Int.algebraMap_eq_intCast` removed in Mathlib 4.26 (replaced with `eq_intCast`), (c) `simp [hfQ_def] at h0` then `rw [Polynomial.map_zero, h0]` mismatch caused by simp folding `algebraMap` into `Int.castRingHom` (replaced with `rw [Polynomial.map_zero, ← hfQ_def]; exact h0`). Final polish: `field_simp; ring` → `field_simp <;> ring` in `intPolyHomogEval_cast_eq`. **Build verified 2026-05-08 14:23Z** (3063 jobs, 0 errors; only 2 unused-variable warnings — `hαne` at L686 in Part IV.10 and `hf_root` at L937 in the new bridge — both retained for API consistency). File state: 1333 lines, 35 theorems, 6 defs, 0 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Session 16 (next, if build verifies): update meta.json status `axiomatized` → `verified`, badge `axiom` → `original`, axiomCount 1 → 0, lineCount 1216 → 1333, theoremCount 34 → 35; refresh assumptions/conclusion narratives. If the build fails: triage Mathlib 4.26 API drift in the new theorem (`Polynomial.natDegree_map_le`, `div_le_div_iff_of_pos_right`, `set`+`rw` round-trip) and push corrective commits.",
+    "nextAction": "None — entry is fully verified. Future work should target the follow-up open questions in meta.json's `conclusion.openQuestions`: function-field analog over F_q(t), Roth-style sharpening from H^(2d) to H^(2+ε), or simultaneous multi-place generalization.",
     "attemptCounts": {
       "total": 14,
       "currentApproach": 7,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 15, 2026-05-08): `padic_liouville_norm_bridge` rewritten from `axiom` to fully-proved `theorem` by composing the two Session 13/14 ingredients. Witness: C' := min(1/(L·M), δ) where L = intPolyL1 f, M = coeffNormSum p g, δ from Part IV.11. Case split on (f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s) ?= 0 over ℚ — nonzero branch dispatches to Part IV.10 (`padic_liouville_bridge_algebraic_case`); zero branch dispatches to Part IV.11 (`padic_liouville_bridge_rational_roots_case`) with `push_cast; rfl` to bridge the cast `((r:ℚ)/s : ℚ_[p]) = (r:ℚ_[p])/s`. Bookkeeping: f ≠ 0 from hf_deg ≥ 1; algebraMap ℤ ℚ_[p] injective via the integer-cast → ratCast factoring with `simpa [eq_intCast]` + `exact_mod_cast`; f.map alg ≠ 0 by `Polynomial.map_injective`; g ≠ 0 from the factorization; degree relation `g.natDegree + 1 ≤ f.natDegree` from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le` (no injectivity needed for the natDegree_map step). The new theorem occupies ~120 lines (894–1042) and is 0-sorry, 0-axiom. After the proof, padic_liouville_estimate (and through it padic_algebraic_not_liouville) become axiom-free as well: the entire file is 0 axioms, 0 sorries — pending build verification (cold-cache Docker ~45 min). Status accounting (post-build): axiomCount 1 → 0, theoremCount 34 → 35, lineCount 1216 → 1333. meta.json status update from `axiomatized` to `verified` deferred to a follow-up PR after the build finishes (per slug convention).",
+    "progressSummary": "VERIFIED (Session 15, 2026-05-08, build verified 14:23Z): `padic_liouville_norm_bridge` rewritten from `axiom` to fully-proved `theorem` by composing the Session 13/14 ingredients. Witness: C' := min(1/(L·M), δ) where L = intPolyL1 f, M = coeffNormSum p g, δ from Part IV.11. Case split on (f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s) ?= 0 over ℚ — nonzero branch dispatches to Part IV.10 (`padic_liouville_bridge_algebraic_case`); zero branch dispatches to Part IV.11 (`padic_liouville_bridge_rational_roots_case`) with `push_cast; rfl` to bridge the cast `((r:ℚ)/s : ℚ_[p]) = (r:ℚ_[p])/s`. Bookkeeping: f ≠ 0 from hf_deg ≥ 1; algebraMap ℤ ℚ_[p] injective via the integer-cast → ratCast factoring with `simpa [eq_intCast]` + `exact_mod_cast`; f.map alg ≠ 0 by `Polynomial.map_injective`; g ≠ 0 from the factorization; degree relation `g.natDegree + 1 ≤ f.natDegree` from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le` (no injectivity needed for the natDegree_map step). The new theorem occupies ~120 lines (894–1042) and is 0-sorry, 0-axiom. As a side benefit, this session also caught and fixed THREE pre-existing build errors that the slug's 'build pending' convention had hidden across Sessions 11–14: (a) `Finset.single_le_sum` type-inference shadowing in `intPolyL1_pos`, (b) `Int.algebraMap_eq_intCast` removal in Mathlib 4.26 (replaced with `eq_intCast`), (c) `simp [hfQ_def]` → `algebraMap`-fold mismatch with subsequent `rw` in `padic_liouville_bridge_rational_roots_case`. Final tweak: `field_simp; ring` → `field_simp <;> ring` for robustness against future Mathlib bumps. **Final state (verified)**: 1333 lines, 35 theorems, 6 defs, 0 axioms, 0 sorries. The whole file (Archimedean Complement Lemma + bridge + main theorem `padic_algebraic_not_liouville`) is now machine-verified end-to-end against Mathlib 4.26.",
     "builtItems": [
       "IsPadicLiouville (LiouvilleTheoremOQ04.lean): definition with strict positivity 0 < ‖β - r/s‖ and height bound 2 ≤ max r.natAbs s.natAbs",
       "padic_liouville_estimate: proved via factorization + bridge axiom — exposes the standard (C/H^(2d)) lower bound",
@@ -81,9 +81,9 @@
       "Polynomial evaluation norm bound `‖g.eval x‖ ≤ M · max(1, ‖x‖)^(deg g)` for normed semirings (we proved padic_polynomial_eval_norm_bound directly via norm_sum_le)"
     ],
     "nextSteps": [
-      "S16 (post-build): update meta.json status `axiomatized` → `verified`, badge `axiom` → `original`, axiomCount 1 → 0, lineCount 1216 → 1333, theoremCount 34 → 35; refresh `assumptions`, `description`, and `conclusion` narratives to drop the bridge-axiom language; update candidate-pool status `in-progress` → `completed`.",
-      "Follow-up OQ candidates (after verified): (a) function-field analog over F_q(t) with t-adic absolute value (mirrors Mahler's framework — would need a Mathlib `LaurentSeries` p-adic analog); (b) Roth-style sharpening from H^(2d) to H^(2+ε) (much harder — Roth's theorem is the classical analog and required Fields Medal-level techniques); (c) multi-place generalization (∀ primes p simultaneously, the same algebraic α has μ_p ≤ d) — corresponds to Mahler's classification refined per-place.",
-      "If build fails: triage Mathlib 4.26 API drift (`Polynomial.natDegree_map_le` arg form, `div_le_div_iff_of_pos_right` availability, `set L := ... with hL_def` + `rw [hL_def]` round-trip) and push corrective commits to the same PR."
+      "Follow-up OQ candidates: (a) function-field analog over F_q(t) with t-adic absolute value (mirrors Mahler's framework — would need a Mathlib `LaurentSeries` p-adic analog); (b) Roth-style sharpening from H^(2d) to H^(2+ε) (much harder — Roth's theorem is the classical analog and required Fields Medal-level techniques); (c) multi-place generalization (∀ primes p simultaneously, the same algebraic α has μ_p ≤ d) — corresponds to Mahler's classification refined per-place.",
+      "Once the auditor has re-run on the verified state, this entry can serve as a clean reference for other p-adic-formalization slugs (Hensel's lemma, Strassmann's theorem, Newton-polygon ultrametric).",
+      "Cross-promote `padic_liouville_norm_bridge` to upstream Mathlib (`Mathlib/NumberTheory/Padics/Liouville.lean`) — the lemma is general (any α : ℚ_[p] algebraic over ℚ, any f ∈ ℤ[X] with f.natDegree ≥ 1) and not specific to this gallery's framing."
     ]
   },
   "tags": [
@@ -121,9 +121,9 @@
     {
       "path": "Proofs/LiouvilleTheoremOQ04.lean",
       "filename": "LiouvilleTheoremOQ04.lean",
-      "lineCount": 1216,
-      "theoremCount": 34,
-      "axiomCount": 1,
+      "lineCount": 1333,
+      "theoremCount": 35,
+      "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,

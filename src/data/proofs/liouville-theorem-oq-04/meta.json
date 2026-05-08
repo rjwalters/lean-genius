@@ -2,12 +2,12 @@
   "id": "liouville-theorem-oq-04",
   "title": "P-adic Liouville Theorem: The Archimedean Complement Lemma",
   "slug": "liouville-theorem-oq-04",
-  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. 1 axiom (padic_liouville_norm_bridge: structural ingredients AND both case-analysis pieces formally proved — discharge to theorem requires only one combine-and-case-split session), 0 sorries.",
+  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the Archimedean Complement Lemma (padicNorm p n ≥ 1/n for nonzero naturals), defines p-adic Liouville numbers using height max(|r|,|s|), and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. **Fully verified**: 0 axioms, 0 sorries — the bridge theorem `padic_liouville_norm_bridge` was discharged in Session 15 by composing Part IV.10 (algebraic case) with Part IV.11 (rational-roots case) via `C' := min(1/(L·M), δ)` and a case split on `(f.map alg').eval ((r:ℚ)/s) ?= 0` over ℚ.",
   "meta": {
     "author": "lean-genius research agent",
     "sourceUrl": "https://mathworld.wolfram.com/p-adicNumber.html",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LiouvilleTheoremOQ04.lean",
     "tags": [
       "number-theory",
@@ -18,10 +18,10 @@
       "liouville",
       "ultrametric"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. All FOUR structural ingredients now formally proved as uniform bounds: (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q (Part IV.5, norm_rat_eq_padicNorm/padic_norm_int_poly_eval), (2a) height bound padicNorm p (r/s) ≤ max(|r|,|s|) (Part IV.7, padic_norm_int_div_le_height), (2b) cofactor evaluation upper bound ‖g.eval(r/s)‖_p ≤ M·H^(deg g) with M depending only on g (Part IV.8, padic_polynomial_eval_norm_bound + padic_cofactor_bound_rat), (3) UNIFORM polynomial lower bound padicNorm p (f.eval(r/s)) ≥ 1/(intPolyL1 f · H^d) with constant depending only on f (Part IV.9, padicNorm_int_poly_eval_uniform_lb). Both case-analysis pieces also formally proved: (4a) algebraic case ‖α - r/s‖ ≥ 1/(L·M·H^(2d)) when f(r/s)≠0 (Part IV.10, padic_liouville_bridge_algebraic_case, Session 13); (4b) rational-roots case δ > 0 with δ ≤ ‖α - q‖ for every rational root q with (q:ℚ_[p]) ≠ α (Part IV.11 NEW, padic_liouville_bridge_rational_roots_case, Session 14). Discharging the bridge axiom is now a single combine-and-case-split session: take C := min((1/(L·M)), δ) and case-split on (f.map alg').eval (r/s) ?= 0.",
+    "axiomCount": 0,
+    "assumptions": "0 axioms — fully verified by Lean 4.26 / Mathlib (Session 15 discharge of the former bridge axiom). The chain of theorems behind the main result `padic_algebraic_not_liouville`: (1) Part I — `padicNorm_nat_ge_inv` (Archimedean Complement Lemma); (2) Part IV.5 — `norm_rat_eq_padicNorm` + `padic_norm_int_poly_eval` (norm compatibility ℚ → ℚ_[p] for polynomial evaluation); (3) Part IV.7 — `padic_norm_int_div_le_height` (height bound `‖(r:ℚ_[p])/s‖ ≤ max(|r|,|s|)`); (4) Part IV.8 — `padic_polynomial_eval_norm_bound` + `padic_cofactor_bound_rat` (uniform cofactor upper bound); (5) Part IV.9 — `padicNorm_int_poly_eval_uniform_lb` (uniform integer-polynomial lower bound `1/(intPolyL1 f · H^d)`); (6) Part IV.10 — `padic_liouville_bridge_algebraic_case` (Session 13, the `f(r/s) ≠ 0` over ℚ branch); (7) Part IV.11 — `padic_liouville_bridge_rational_roots_case` (Session 14, the rational-roots δ > 0 separation); (8) **Part V — `padic_liouville_norm_bridge` (Session 15, NEW, theorem)** combines Parts IV.10 and IV.11 via `C' := min((1/(L·M)), δ)` with case split on `(f.map alg').eval ((r:ℚ)/s) ?= 0` over ℚ; (9) `padic_liouville_estimate` and `padic_algebraic_not_liouville` follow.",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -59,8 +59,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 1216,
-    "theoremCount": 34,
+    "lineCount": 1333,
+    "theoremCount": 35,
     "definitionCount": 6
   },
   "overview": {
@@ -179,11 +179,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The Archimedean Complement Lemma padicNorm p n ≥ 1/n is proved in Lean 4 without sorry. The IsPadicLiouville definition has been fixed with strict positivity (0 < ‖β - r/s‖). The main theorem padic_algebraic_not_liouville is fully proved. One HARD sorry remains: padic_liouville_estimate, requiring polynomial factorization and norm bounds in ℚ_[p].",
-    "implications": "The p-adic Liouville theorem belongs to a family of results showing that the ultrametric property of p-adic norms does not fundamentally change the transcendence theory — algebraic numbers remain resistant to efficient rational approximation. The height function appears naturally because the p-adic norm of a ratio r/s depends symmetrically on both numerator and denominator. In Mahler's classification of transcendental numbers (1932), Liouville numbers occupy the U-class ('universal') — approximable super-polynomially by rationals at every metric place simultaneously. The p-adic irrationality measure $\\mu_p(\\alpha) \\leq d$ for algebraic $\\alpha$ of degree $d$ (shown here with axiom) is the p-adic analog of Roth's theorem (1955, Fields Medal), and together they establish that the Mahler classification is uniform across all places of $\\mathbb{Q}$: an algebraic number of degree $d$ satisfies $\\mu_v \\leq d$ at every place $v$ (Archimedean or p-adic).",
+    "summary": "**Fully verified Lean 4.26 / Mathlib formalization** (Session 15 — bridge axiom discharged): the Archimedean Complement Lemma `padicNorm p n ≥ 1/n`, the IsPadicLiouville definition with strict positivity `0 < ‖β - r/s‖`, the bridge theorem `padic_liouville_norm_bridge` (formerly the only axiom — discharged 2026-05-08 by composing Parts IV.10 and IV.11), the key estimate `padic_liouville_estimate`, and the main theorem `padic_algebraic_not_liouville` are all proved with 0 sorries and 0 axioms.",
+    "implications": "The p-adic Liouville theorem belongs to a family of results showing that the ultrametric property of p-adic norms does not fundamentally change the transcendence theory — algebraic numbers remain resistant to efficient rational approximation. The height function appears naturally because the p-adic norm of a ratio r/s depends symmetrically on both numerator and denominator. In Mahler's classification of transcendental numbers (1932), Liouville numbers occupy the U-class ('universal') — approximable super-polynomially by rationals at every metric place simultaneously. The p-adic irrationality measure $\\mu_p(\\alpha) \\leq d$ for algebraic $\\alpha$ of degree $d$ (shown here, fully verified) is the p-adic analog of Roth's theorem (1955, Fields Medal), and together they establish that the Mahler classification is uniform across all places of $\\mathbb{Q}$: an algebraic number of degree $d$ satisfies $\\mu_v \\leq d$ at every place $v$ (Archimedean or p-adic).",
     "openQuestions": [
-      "Can the padic_liouville_estimate axiom be proved? This requires: Taylor factorization f(x) = (x-α)·g(x,α) over ℚ_[p], continuity bounds for g in the ultrametric topology.",
-      "Is there a purely p-adic proof avoiding the Archimedean Complement Lemma (i.e., working entirely within ℚ_[p] without comparing to |·|)?"
+      "Function-field analog over $\\mathbb{F}_q(t)$ with the $t$-adic absolute value (mirrors Mahler's framework — would need a Mathlib `LaurentSeries` $t$-adic analog).",
+      "Roth-style sharpening: can the height exponent in `padic_liouville_estimate` be improved from $H^{2d}$ to $H^{2+\\varepsilon}$? Classical Roth (1955) achieves this for the Archimedean place; the p-adic analog (Ridout 1957) is harder to formalize and is not in current Mathlib.",
+      "Multi-place generalization: a single algebraic $\\alpha$ of degree $d$ satisfies $\\mu_v(\\alpha) \\leq d$ at every place $v$ of $\\mathbb{Q}$ simultaneously. This entry handles one $v = p$-adic place at a time; the simultaneous statement is a natural successor.",
+      "Is there a purely p-adic proof avoiding the Archimedean Complement Lemma (i.e., working entirely within ℚ_[p] without comparing to $|\\cdot|_{\\infty}$)?"
     ]
   },
   "leanFile": {
@@ -200,9 +202,9 @@
       "Polynomial"
     ],
     "namespace": "LiouvilleTheoremOQ04",
-    "lineCount": 1216,
-    "axiomCount": 1,
-    "theoremCount": 34,
+    "lineCount": 1333,
+    "axiomCount": 0,
+    "theoremCount": 35,
     "definitionCount": 6,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
     "sorries": 0
