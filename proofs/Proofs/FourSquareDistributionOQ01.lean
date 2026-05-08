@@ -974,4 +974,79 @@ example : jacobiR4 (2 ^ 3 * 1) = 24 * sigmaOne 1 :=
 example : jacobiR4 (2 ^ 3 * 5) = 24 * sigmaOne 5 :=
   jacobiR4_two_pow_mul_odd (by decide) (by decide) (by decide)
 
+-- =====================================================================
+-- PART 16: Unified σ* via 2-adic decomposition.
+--
+-- Combines Part 6 (`sigmaStar_eq_sigmaOne_of_odd`) and Part 15
+-- (`sigmaStar_two_pow_mul_odd`) into a single closed form that takes
+-- the 2-adic decomposition n = 2^k · m (with m odd) and returns σ*(n)
+-- as an `if`-form on `k`. Compared to Part 15, this drops the `1 ≤ k`
+-- hypothesis: the k = 0 (n odd) case is absorbed into the same formula.
+--
+-- Pairing this with `Nat.exists_eq_pow_mul_and_not_dvd` (or hand-written
+-- decomposition) yields a complete σ*-side closed form for any n > 0.
+-- The σ-multiplicative structure can then be matched against the
+-- Eisenstein-series q-coefficient on the modular-form side once that
+-- is in Mathlib.
+-- =====================================================================
+
+/-- Unified closed form: given the 2-adic decomposition `n = 2^k · m`
+    with `m` odd and positive, `σ*(n)` is determined by `k` and `σ(m)`:
+
+    * `k = 0` (n odd):   σ*(n) = σ(m).
+    * `k ≥ 1` (n even):  σ*(n) = 3 · σ(m).
+
+    This packages Parts 6 and 15 into one statement with no
+    `1 ≤ k` side condition. -/
+theorem sigmaStar_decomp {k m : ℕ} (hm : 0 < m) (hodd : ¬ 2 ∣ m) :
+    sigmaStar (2 ^ k * m) = (if k = 0 then 1 else 3) * sigmaOne m := by
+  by_cases hk : k = 0
+  · subst hk
+    simp [sigmaStar_eq_sigmaOne_of_odd hodd]
+  · have hk' : 1 ≤ k := Nat.one_le_iff_ne_zero.mpr hk
+    rw [sigmaStar_two_pow_mul_odd hk' hodd hm]
+    simp [hk]
+
+/-- Unified closed form for `jacobiR4` from the 2-adic decomposition:
+
+    * `k = 0` (n odd):   jacobiR4(n) = 8 · σ(m).
+    * `k ≥ 1` (n even):  jacobiR4(n) = 24 · σ(m). -/
+theorem jacobiR4_decomp {k m : ℕ} (hm : 0 < m) (hodd : ¬ 2 ∣ m) :
+    jacobiR4 (2 ^ k * m) = (if k = 0 then 8 else 24) * sigmaOne m := by
+  unfold jacobiR4
+  rw [sigmaStar_decomp hm hodd]
+  split_ifs <;> ring
+
+-- ---------------------------------------------------------------------
+-- Cross-validation: the unified form recovers Part 1 numeric values.
+-- ---------------------------------------------------------------------
+
+/-- σ*(1) = σ*(2^0 · 1) = 1 · σ(1) = 1. -/
+example : sigmaStar (2 ^ 0 * 1) = 1 * sigmaOne 1 :=
+  sigmaStar_decomp (by decide) (by decide)
+
+/-- σ*(3) = σ*(2^0 · 3) = 1 · σ(3) = 4. -/
+example : sigmaStar (2 ^ 0 * 3) = 1 * sigmaOne 3 :=
+  sigmaStar_decomp (by decide) (by decide)
+
+/-- σ*(2) = σ*(2^1 · 1) = 3 · σ(1) = 3. -/
+example : sigmaStar (2 ^ 1 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_decomp (by decide) (by decide)
+
+/-- σ*(40) = σ*(2^3 · 5) = 3 · σ(5) = 18. -/
+example : sigmaStar (2 ^ 3 * 5) = 3 * sigmaOne 5 :=
+  sigmaStar_decomp (by decide) (by decide)
+
+/-- jacobiR4(1) = jacobiR4(2^0 · 1) = 8 · σ(1) = 8. -/
+example : jacobiR4 (2 ^ 0 * 1) = 8 * sigmaOne 1 :=
+  jacobiR4_decomp (by decide) (by decide)
+
+/-- jacobiR4(3) = jacobiR4(2^0 · 3) = 8 · σ(3) = 32. -/
+example : jacobiR4 (2 ^ 0 * 3) = 8 * sigmaOne 3 :=
+  jacobiR4_decomp (by decide) (by decide)
+
+/-- jacobiR4(40) = jacobiR4(2^3 · 5) = 24 · σ(5) = 144. -/
+example : jacobiR4 (2 ^ 3 * 5) = 24 * sigmaOne 5 :=
+  jacobiR4_decomp (by decide) (by decide)
+
 end FourSquareDistributionOQ01

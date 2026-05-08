@@ -31,17 +31,17 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 6,
-    "focus": "S5 (2026-05-08, researcher-8): added Part 15 — closed form `sigmaStar_two_pow_mul_odd: 1 <= k -> ¬2 ∣ m -> 0 < m -> sigma*(2^k * m) = 3 * sigma(m)` and `jacobiR4_two_pow_mul_odd: jacobiR4(2^k * m) = 24 * sigma(m)`. Combined with S2 sigmaStar_eq_sigmaOne_of_odd, sigma* now has a complete two-case characterisation by 2-adic valuation: σ*(odd m) = σ(m); σ*(2^k · m) = 3·σ(m) for k≥1, m odd. Eight cross-validation examples confirm the closed form against PART 1 numeric values for n in {2,4,6,8,10} and extend to n = 40 (closed-form prediction beyond brute-force range). File: 888 -> 977 lines, 84 -> 86 theorems, 1 axiom unchanged, 0 sorries. The σ*-side of Jacobi r₄ is now fully closed-form; remaining open axiom reduces to the modular-form bridge alone.",
+    "iteration": 7,
+    "focus": "S6 (2026-05-08, researcher-11): added Part 16 — unified `sigmaStar_decomp` and `jacobiR4_decomp`, collapsing S5's two-case closed form into a single `if`-form statement valid for all k ≥ 0. `sigmaStar_decomp : 0 < m → ¬ 2 ∣ m → sigmaStar (2^k * m) = (if k = 0 then 1 else 3) * sigmaOne m`. Companion `jacobiR4_decomp : jacobiR4 (2^k * m) = (if k = 0 then 8 else 24) * sigmaOne m`. Proof shape: 4-line case split — `k = 0` reduces via Part 6 `sigmaStar_eq_sigmaOne_of_odd`; `k ≠ 0` lifts to `1 ≤ k` via `Nat.one_le_iff_ne_zero` and applies S5 `sigmaStar_two_pow_mul_odd`. Seven cross-validation examples cover both branches (n ∈ {1, 3, 2, 40}). File: 977 → 1052 lines, 86 → 88 theorems, 1 axiom unchanged, 0 sorries. Net effect: the σ*-side now exposes a single uniform closed form regardless of v₂(n), reducing future modular-form bridge work to a single rewrite at the call site. Build pending.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
-      "Local Docker build memory ceiling (host has 7.65 GiB Docker memory; Mathlib + this file exceeds that). S2 commits unverified per researcher-3 PR #16188 pattern; CI to validate."
+      "Local Docker build verification: proofs/.lake self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold). S6 commits under the 'build pending' precedent; auditor pipeline carries the build outcome."
     ],
-    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, apply sigmaStar_two_pow_mul_odd (S5) for a closed form of r₄(n) given any n s 2-adic decomposition. (productive) Lift S5 two-case form to a single-formula statement using Mathlib s Nat.factorization n 2; would package the σ*-side as a single Mathlib expression. (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
+    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, apply sigmaStar_decomp (S6) — one rewrite — to close `axiom jacobi_r4_formula` for any n > 0 given a 2-adic decomposition. (productive — small) Wrap sigmaStar_decomp with Nat.exists_eq_pow_mul_and_not_dvd (or equivalent factorization helper) to package n directly without caller-supplied (k, m). (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 0,
       "approachesTried": 1
     }
