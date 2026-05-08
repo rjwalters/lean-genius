@@ -119,7 +119,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Archimedes' 2,300-year-old bounds on π in Lean 4, fully verified with 0 axioms and 0 sorries. Both core bounds are proved from Mathlib's pi_gt_d4/pi_lt_d4, and all derived results (6 theorems) and the general polygon bound are also fully proved. The inscribed polygon theorem n·sin(π/n) < π formalizes the geometric principle underlying the method of exhaustion.",
+    "summary": "This formalization captures Archimedes' 2,300-year-old bounds on π in Lean 4, fully verified with 0 axioms and 0 sorries. Both core bounds are proved from Mathlib's pi_gt_d4/pi_lt_d4, and all derived results (10 theorems) and the general polygon bound are also fully proved. The inscribed polygon theorem n·sin(π/n) < π formalizes the geometric principle underlying the method of exhaustion.",
     "implications": "Demonstrates the power of Lean 4 + Mathlib for classical computational number theory. Mathlib's 4-decimal pi bounds (pi_gt_d4/pi_lt_d4) are sufficient for Archimedes' classical 3-decimal bounds, making the proof surprisingly simple once the right Mathlib lemmas are identified.",
     "openQuestions": [
       "Can Archimedes' original half-angle doubling method (computing polygon side lengths via √((1-cos)/2)) be formalized as a constructive proof?",

@@ -96,7 +96,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization extends Faulhaber's formula to p=4,5,6 and demonstrates the structural insight behind it: odd-power sums factor through the triangular number T(n)^2. The uniform proof pattern (induction + push_cast + linarith) scales cleanly to higher powers. All 18 theorems are fully proved with 0 sorries and 0 axioms.",
+    "summary": "This formalization extends Faulhaber's formula to p=4,5,6 and demonstrates the structural insight behind it: odd-power sums factor through the triangular number T(n)^2. The uniform proof pattern (induction + push_cast + linarith) scales cleanly to higher powers. All 19 theorems are fully proved with 0 sorries and 0 axioms.",
     "implications": "Faulhaber's triangular number structure reveals a hidden simplicity in power sums that the Bernoulli number formula obscures. The pattern T(n)^2 * (polynomial in T(n)) for odd p suggests a deeper algebraic explanation, possibly related to the umbral calculus or the representation theory of symmetric polynomials. The even-power common factor n(n+1)(2n+1) connects to the Bernoulli polynomial factorization.",
     "openQuestions": [
       "Can we prove Faulhaber's general structural theorem: for all odd p >= 1, sum k^p is a polynomial in T(n)?",

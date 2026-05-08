@@ -135,12 +135,12 @@
       "title": "Summary and Verification",
       "startLine": 246,
       "endLine": 303,
-      "summary": "Summary comment recapping all results: 14 theorems, 6 definitions, 0 axioms, 0 sorries. Proof architecture overview: EvalStructure → lawvere_abstract → type recovery → instances → categorical → topos. Final #check commands verify type signatures of the main theorems.",
+      "summary": "Summary comment recapping all results: 11 theorems, 6 definitions, 0 axioms, 0 sorries. Proof architecture overview: EvalStructure → lawvere_abstract → type recovery → instances → categorical → topos. Final #check commands verify type signatures of the main theorems.",
       "mathContext": "The proof architecture is a stratified refinement: `EvalStructure` $\\to$ `lawvere_abstract` (2-line diagonal proof) $\\to$ `typeEval_surjective_iff` (bridge via `funext`) $\\to$ `lawvere_type_recovery` $\\to$ `cantor_recovery` (Prop, fixed-point-free $\\lnot$) $\\to$ `CategoricalEval`/`lawvere_categorical` (global-element CCC) $\\to$ `topos_proxy_cantor`. Each layer is a strict generalization of the previous. The `#check` commands at the end verify that the type signatures match expectations, serving as lightweight regression tests for the statement correctness."
     }
   ],
   "conclusion": {
-    "summary": "The abstract evaluation structure captures the essential content of Lawvere's 1969 theorem without requiring full CCC machinery. 14 theorems, 6 definitions, 0 axioms, 0 sorries. lawvere_categorical is proved by adding e_pt : Pt A → Pt (exp A B) as a parameter and reducing to lawvere_abstract. The type-theoretic version is recovered, three concrete instances are verified, and the topos connection is sketched.",
+    "summary": "The abstract evaluation structure captures the essential content of Lawvere's 1969 theorem without requiring full CCC machinery. 11 theorems, 6 definitions, 0 axioms, 0 sorries. lawvere_categorical is proved by adding e_pt : Pt A → Pt (exp A B) as a parameter and reducing to lawvere_abstract. The type-theoretic version is recovered, three concrete instances are verified, and the topos connection is sketched.",
     "implications": "All diagonal arguments in mathematics — Cantor's uncountability, Russell's paradox, Gödel's incompleteness, Turing's halting problem — are instances of a single 2-line proof: find a diagonal code, evaluate it at itself, get a fixed point of any endomorphism. This formalization demonstrates that categorical abstraction, even when only partially formalized, reveals deep structural unity across apparently disconnected results.",
     "openQuestions": [
       "The categorical bridge is now complete: lawvere_categorical is proved. The next step is the topos-theoretic setting — formalize topos-level Cantor using Mathlib's category theory once a topos typeclass with subobject classifier Ω is available.",

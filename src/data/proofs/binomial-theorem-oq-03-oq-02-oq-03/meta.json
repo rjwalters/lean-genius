@@ -88,7 +88,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Proves strict monotonicity of (1+1/n)^n with 0 axioms, 0 sorries, 11 theorems in 208 lines. The main result is one_plus_inv_pow_strictMono: for 1 \u2264 m < n, (1+1/m)^m < (1+1/n)^n. Also proves StrictMono on \u2115, bounds 2 < (1+1/n)^n < 3, and a summary theorem.",
+    "summary": "Proves strict monotonicity of (1+1/n)^n with 0 axioms, 0 sorries, 12 theorems in 208 lines. The main result is one_plus_inv_pow_strictMono: for 1 \u2264 m < n, (1+1/m)^m < (1+1/n)^n. Also proves StrictMono on \u2115, bounds 2 < (1+1/n)^n < 3, and a summary theorem.",
     "implications": "This result fills a gap noted in the parent proof BinomialTheoremOQ03OQ02: the bounded monotone convergence proof of Euler's number now has all three ingredients \u2014 monotonicity (this file), upper bound < 3 (this file), and the limit = e (parent file). Together they give a complete, non-circular proof of e's existence.",
     "openQuestions": [
       "Prove the sharper upper bound: (1+1/n)^n < e for all n (rather than just < 3)",

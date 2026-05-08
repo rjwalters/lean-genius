@@ -144,7 +144,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The n-dimensional Buffon noodle formula is formalized with 20 theorems, 0 sorries, and 0 axioms. The crossing factor recurrence α_{n+2} = (n/(n+1))·αₙ provides a clean characterization of how expected hyperplane crossings depend on dimension. The strict decrease and specific value computations extend the 2D and 3D results to arbitrary dimension.",
+    "summary": "The n-dimensional Buffon noodle formula is formalized with 23 theorems, 0 sorries, and 0 axioms. The crossing factor recurrence α_{n+2} = (n/(n+1))·αₙ provides a clean characterization of how expected hyperplane crossings depend on dimension. The strict decrease and specific value computations extend the 2D and 3D results to arbitrary dimension.",
     "implications": "**Mathematical Significance**:\n\n**1. Dimension-Parametric Formula**\nThe recurrence captures the full family of crossing factors without requiring explicit Gamma function computations.\n\n**2. Even/Odd Dichotomy**\nEven dimensions involve π (transcendental factors) while odd dimensions are purely rational. This is a formal consequence of Γ(n) being rational for integers and involving √π for half-integers.\n\n**3. Infrastructure for Integral Geometry**\nThe buffonNd framework with proved additivity, scaling, and monotonicity provides infrastructure for Cauchy-Crofton type formulas in arbitrary dimension.\n\n**4. Asymptotic Vanishing**\nThe proved limit αₙ → 0 captures the concentration of measure phenomenon: in high dimensions, most of a unit vector's length is spread across many coordinates.",
     "openQuestions": [
       "Explicit closed form for αₙ via Gamma function",

@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "lineCount": 328,
     "theoremCount": 55,
-    "assumptions": "None. All 54 theorems proved. Pierpont prime verification via native_decide.",
+    "assumptions": "None. All 55 theorems proved. Pierpont prime verification via native_decide.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.Prime",
@@ -90,7 +90,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The number-theoretic component of the Pierpont prime criterion is fully formalized: 54 theorems, 0 sorries, 0 axioms. 12 Pierpont primes and 4 non-examples verified, plus 3-smooth totient verification for 7 specific polygons. The geometric connection (n-gon is neusis-constructible iff φ(n) is 3-smooth) requires Galois theory and is stated but not proved in Lean.",
+    "summary": "The number-theoretic component of the Pierpont prime criterion is fully formalized: 55 theorems, 0 sorries, 0 axioms. 12 Pierpont primes and 4 non-examples verified, plus 3-smooth totient verification for 7 specific polygons. The geometric connection (n-gon is neusis-constructible iff φ(n) is 3-smooth) requires Galois theory and is stated but not proved in Lean.",
     "implications": "Pierpont primes are the neusis analog of Fermat primes. This formalization demonstrates that extending compass-and-straightedge constructibility to neusis is captured by a simple number-theoretic condition on the prime factorization.",
     "openQuestions": [
       "Are there infinitely many Pierpont primes? (Open — similar to Fermat primes problem)",
