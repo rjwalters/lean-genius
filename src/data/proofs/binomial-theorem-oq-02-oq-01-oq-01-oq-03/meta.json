@@ -2,7 +2,7 @@
   "id": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
   "title": "Multinomial Marginal Central Limit Theorem",
-  "description": "Reduces the multinomial marginal CLT (CDF-pointwise convergence to the standard normal) to the classical de Moivre-Laplace theorem. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` is fully proved by partitioning the multinomial sum along k(i₀) via Finset.sum_fiberwise_of_maps_to and applying the marginal-PMF identity from BinomialTheoremOQ02OQ01OQ02. Session 6 (2026-05-08) replaced the Session-2 `standardNormalCDF` opaque with a concrete `noncomputable def` integrating Mathlib's `gaussianPDFReal 0 1` over `Set.Iic x`, dropping the axiom count from 2 to 1 and adding three structural lemmas (`_nonneg`, `_le_one`, `_mono`) for the Phase-4 Portmanteau bridge.",
+  "description": "Reduces the multinomial marginal CLT (CDF-pointwise convergence to the standard normal) to the classical de Moivre-Laplace theorem. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` is fully proved by partitioning the multinomial sum along k(i₀) via Finset.sum_fiberwise_of_maps_to and applying the marginal-PMF identity from BinomialTheoremOQ02OQ01OQ02. Session 6 (2026-05-08) replaced the Session-2 `standardNormalCDF` opaque with a concrete `noncomputable def` integrating Mathlib's `gaussianPDFReal 0 1` over `Set.Iic x`, dropping the axiom count from 2 to 1 and adding three structural lemmas (`_nonneg`, `_le_one`, `_mono`) for the Phase-4 Portmanteau bridge. Session 7 (2026-05-08) adds `standardNormalCDF_continuous` (the fourth structural-CDF lemma — continuity of Φ on ℝ): the Portmanteau theorem upgrades measure-weak-convergence to pointwise CDF convergence at every continuity point of the limit CDF, so universal continuity of Φ makes the bridge applicable at every x ∈ ℝ. Proof reduces standardNormalCDF to standardNormalCDF 0 + intervalIntegral 0..x via MeasureTheory.intervalIntegral_tendsto_integral_Iic + adjacent-intervals decomposition, then applies MeasureTheory.Integrable.continuous_primitive (NoAtoms volume on ℝ).",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "date": "2026-05-08",
@@ -20,8 +20,8 @@
     "sorries": 0,
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 369,
-    "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. The Session-2 `standardNormalCDF` opaque marker has been replaced (Session 6) by a concrete `noncomputable def` integrating Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; this removes that declaration from the assumption count and adds three elementary structural lemmas (`standardNormalCDF_nonneg`, `standardNormalCDF_le_one`, `standardNormalCDF_mono`) on the critical path for the Phase-4 Portmanteau bridge. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` was proved in Phase-3: it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
+    "lineCount": 445,
+    "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. The Session-2 `standardNormalCDF` opaque marker has been replaced (Session 6) by a concrete `noncomputable def` integrating Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; this removes that declaration from the assumption count and adds four elementary structural lemmas (`standardNormalCDF_nonneg`, `standardNormalCDF_le_one`, `standardNormalCDF_mono`, `standardNormalCDF_continuous` [Session 7]) that together establish Φ is a *bona fide* continuous CDF on ℝ — every point is a continuity point, so the Portmanteau bridge that next session will build to discharge the axiom applies universally. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` was proved in Phase-3: it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
     "originalContributions": [
       "binomialCDF: concrete CDF of Binomial(n,p) as a finite sum of binomial PMF terms with a step indicator",
       "multinomialMarginalCDF: marginal CDF of coordinate i₀ of Multinomial(n,p), defined directly from multinomialProb",
@@ -36,10 +36,12 @@
       "binomialCDF_le_one: for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 — bounded above by the full binomial expansion (p + (1−p))^n = 1 via add_pow (Phase-4 Portmanteau prep)",
       "standardNormalCDF_nonneg: 0 ≤ standardNormalCDF x — integral of nonneg gaussian PDF over Iic x (Session 6)",
       "standardNormalCDF_le_one: standardNormalCDF x ≤ 1 — bounded above by the total integral, which equals 1 by integral_gaussianPDFReal_eq_one (Session 6)",
-      "standardNormalCDF_mono: Monotone standardNormalCDF — Iic monotonicity + nonneg integrand via setIntegral_mono_set (Session 6)"
+      "standardNormalCDF_mono: Monotone standardNormalCDF — Iic monotonicity + nonneg integrand via setIntegral_mono_set (Session 6)",
+      "standardNormalCDF_eq_zero_plus_intervalIntegral (private, Session 7): bridge lemma — standardNormalCDF x = standardNormalCDF 0 + ∫ t in (0:ℝ)..x, gaussianPDFReal 0 1 t. Both ∫ Iic x and ∫ Iic 0 are limits of ∫ a..x and ∫ a..0 as a → atBot via MeasureTheory.intervalIntegral_tendsto_integral_Iic; for each a, ∫ a..x = ∫ a..0 + ∫ 0..x by intervalIntegral.integral_add_adjacent_intervals; uniqueness of limits (tendsto_nhds_unique) closes the equation",
+      "standardNormalCDF_continuous (Session 7): Continuous standardNormalCDF — rewrite as standardNormalCDF 0 + intervalIntegral 0..x then apply MeasureTheory.Integrable.continuous_primitive (NoAtoms volume on ℝ). Final input to the Phase-4 Portmanteau bridge: every x ∈ ℝ is a continuity point of Φ, so weak convergence implies pointwise CDF convergence universally"
     ],
-    "theoremCount": 10,
-    "substantiveTheoremCount": 9,
+    "theoremCount": 12,
+    "substantiveTheoremCount": 10,
     "definitionCount": 3
   },
   "leanFile": {
@@ -50,6 +52,8 @@
       "Mathlib.Analysis.SpecialFunctions.Sqrt",
       "Mathlib.Topology.Algebra.Order.LiminfLimsup",
       "Mathlib.Probability.Distributions.Gaussian.Real",
+      "Mathlib.MeasureTheory.Integral.IntegralEqImproper",
+      "Mathlib.MeasureTheory.Integral.DominatedConvergence",
       "Mathlib.Tactic",
       "Proofs.BinomialTheoremOQ02OQ01OQ02"
     ],
@@ -58,10 +62,10 @@
       "BigOperators"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
-    "lineCount": 369,
+    "lineCount": 445,
     "axiomCount": 1,
-    "theoremCount": 10,
-    "substantiveTheoremCount": 9,
+    "theoremCount": 12,
+    "substantiveTheoremCount": 10,
     "duplicateTheorems": 0,
     "definitionCount": 3,
     "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
@@ -86,43 +90,43 @@
       "id": "sec-cdf-defs",
       "title": "CDF Definitions: Binomial and Multinomial Marginal",
       "range": null,
-      "startLine": 93,
-      "endLine": 113
+      "startLine": 95,
+      "endLine": 115
     },
     {
       "id": "sec-stdnormal",
-      "title": "Standard Normal CDF (concrete def + structural lemmas)",
+      "title": "Standard Normal CDF (concrete def + structural lemmas, incl. continuity)",
       "range": null,
-      "startLine": 115,
-      "endLine": 154
+      "startLine": 117,
+      "endLine": 232
     },
     {
       "id": "sec-binomial-clt-axiom",
       "title": "Axiom: Classical de Moivre-Laplace (Binomial CLT)",
       "range": null,
-      "startLine": 156,
-      "endLine": 173
+      "startLine": 234,
+      "endLine": 251
     },
     {
       "id": "sec-reduction",
       "title": "Reduction Lemma: Multinomial Marginal CDF = Binomial CDF",
       "range": null,
-      "startLine": 175,
-      "endLine": 247
+      "startLine": 253,
+      "endLine": 325
     },
     {
       "id": "sec-structural",
       "title": "Structural Properties of binomialCDF (Phase-4 prep)",
       "range": null,
-      "startLine": 249,
-      "endLine": 338
+      "startLine": 327,
+      "endLine": 416
     },
     {
       "id": "sec-main",
       "title": "Main Theorem: Multinomial Marginal CLT (Derived)",
       "range": null,
-      "startLine": 340,
-      "endLine": 366
+      "startLine": 418,
+      "endLine": 444
     }
   ],
   "overview": {
@@ -133,7 +137,7 @@
     "keyInsights": [
       "The marginal-PMF identity from `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf` does the heavy lifting: once it's established that $\\sum_{k: k(i_0) = j} P(X=k) = \\binom{n}{j} p_{i_0}^j (1-p_{i_0})^{n-j}$, the multinomial marginal CDF *equals* the binomial CDF (not just converges to it), so the CLT for the marginal is exactly the CLT for the binomial.",
       "Stating the CLT in CDF form (`Filter.Tendsto` of `binomialCDF`) avoids the measure-theoretic setup needed to instantiate Mathlib's `iid_central_limit_theorem`. The CDF form matches the classical de Moivre-Laplace presentation and keeps the reduction transparent.",
-      "Defining `standardNormalCDF x := ∫_{Set.Iic x} ProbabilityTheory.gaussianPDFReal 0 1 t` makes the limit point of de Moivre-Laplace concrete (Session 6, replacing the Session-2 opaque marker). Three elementary structural lemmas — `_nonneg`, `_le_one`, `_mono` — sit on the critical path for the Phase-4 Portmanteau bridge.",
+      "Defining `standardNormalCDF x := ∫_{Set.Iic x} ProbabilityTheory.gaussianPDFReal 0 1 t` makes the limit point of de Moivre-Laplace concrete (Session 6, replacing the Session-2 opaque marker). Four elementary structural lemmas — `_nonneg`, `_le_one`, `_mono` (Session 6) and `_continuous` (Session 7) — establish that Φ is a *bona fide* continuous CDF on ℝ, the input the Phase-4 Portmanteau bridge needs at every continuity point of the limit (and Φ is continuous everywhere, so the bridge applies universally).",
       "The DERIVED theorem `multinomial_marginal_clt` is not an axiom: it follows from the de Moivre-Laplace axiom plus the reduction lemma via `Filter.Tendsto.congr`. The reduction itself is provable (from already-proved Mathlib + parent-file lemmas), so closing the sorry would shift the only assumption to de Moivre-Laplace.",
       "The non-degeneracy hypothesis $0 < p_{i_0} < 1$ is essential: $p_{i_0} = 0$ gives $X_{i_0} = 0$ a.s. (degenerate), and $p_{i_0} = 1$ gives $X_{i_0} = n$ a.s. (degenerate); the standardization $\\sqrt{np_{i_0}(1-p_{i_0})}$ vanishes in both cases.",
       "The joint multinomial CLT (vector convergence to a degenerate multivariate normal supported on the hyperplane $\\sum y_i = 0$) is *not* derivable from coordinate-wise marginal CLTs — Cramér-Wold is required — and is out of scope here."
@@ -146,8 +150,8 @@
     ]
   },
   "conclusion": {
-    "summary": "The multinomial marginal CLT can be stated cleanly in CDF form and *derived* (not axiomatized separately) from one axiom: the classical de Moivre-Laplace theorem on standardized binomial CDFs. The standard-normal target is now a concrete `noncomputable def` integrating Mathlib's `gaussianPDFReal 0 1` over `Set.Iic x` (Session 6 replaced the Session-2 opaque marker). The derivation uses the marginal-PMF identity already proved in the parent file (`BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf`). The reduction lemma is fully proved by partitioning `s.piAntidiag n` along $k(i_0)$ via `Finset.sum_fiberwise_of_maps_to` and applying the parent identity to each fibre.",
-    "implications": "The reduction-based scaffold demonstrates that multinomial marginal CLT does not require new probabilistic machinery beyond what is already proved for the binomial case. With Session-6's concrete `standardNormalCDF` and three structural lemmas (`_nonneg`, `_le_one`, `_mono`), the file is one Portmanteau bridge away from zero axioms — once Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is connected to CDF-pointwise convergence at the continuity points of the standard normal, the `binomial_clt_pointwise` axiom is derivable.",
+    "summary": "The multinomial marginal CLT can be stated cleanly in CDF form and *derived* (not axiomatized separately) from one axiom: the classical de Moivre-Laplace theorem on standardized binomial CDFs. The standard-normal target is now a concrete `noncomputable def` integrating Mathlib's `gaussianPDFReal 0 1` over `Set.Iic x` (Session 6 replaced the Session-2 opaque marker). The derivation uses the marginal-PMF identity already proved in the parent file (`BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf`). The reduction lemma is fully proved by partitioning `s.piAntidiag n` along $k(i_0)$ via `Finset.sum_fiberwise_of_maps_to` and applying the parent identity to each fibre. With Session 7's `standardNormalCDF_continuous`, the four structural lemmas about Φ now establish that it is a continuous CDF on ℝ — the input the Phase-4 Portmanteau bridge needs at every continuity point of the limit (every x ∈ ℝ).",
+    "implications": "The reduction-based scaffold demonstrates that multinomial marginal CLT does not require new probabilistic machinery beyond what is already proved for the binomial case. With Sessions 6–7's concrete `standardNormalCDF` and four structural lemmas (`_nonneg`, `_le_one`, `_mono`, `_continuous`), the file is one Portmanteau bridge away from zero axioms — once Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is connected to CDF-pointwise convergence at the continuity points of the standard normal (every point, since Φ is now machine-verified continuous everywhere), the `binomial_clt_pointwise` axiom is derivable.",
     "openQuestions": [
       "Can the reduction lemma `multinomialMarginalCDF_eq_binomialCDF` be proved by fiber-grouping over $k(i_0)$ values? The proof should regroup $\\sum_{k \\in \\pi(s,n)}$ into $\\sum_{j=0}^n \\sum_{k: k(i_0) = j}$ and apply `multinomial_marginal_pmf`.",
       "Can `binomial_clt_pointwise` be discharged from Mathlib's `ProbabilityTheory.iid_central_limit_theorem`? Bridging a measure-weak-convergence statement to a CDF-pointwise-convergence statement requires the Portmanteau theorem at continuity points of the limit CDF.",

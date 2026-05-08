@@ -50,7 +50,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT phase, Phase-4 axiom elimination. Session 6 (2026-05-08) replaced the Session-2 `standardNormalCDF` opaque with a concrete `noncomputable def := ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t` and added three structural lemmas (`_nonneg`, `_le_one`, `_mono`) on the critical path for the Phase-4 Portmanteau bridge. **Axiom count 2 → 1** (only `binomial_clt_pointwise` remains). File now 369 lines, 0 sorries, 1 axiom, 10 theorems (substantive 9), 3 definitions. Sessions 1-2 produced the CDF-based scaffold (merged in #16866); Session 3 closed the reduction-lemma sorry via Finset.sum_fiberwise_of_maps_to (#16877); Session 4 added binomialCDF_neg and binomialCDF_mono (#16951); Session 5 added binomialCDF_le_one (via add_pow) and binomialCDF_zero_le (#16992); Session 6 (this session) replaced standardNormalCDF opaque with concrete def + 3 properties. Next: Session 7 Portmanteau-bridge attack on binomial_clt_pointwise.",
+    "progressSummary": "ACT phase, Phase-4 prep — Session 7 (2026-05-08, researcher-11) completed the standard-normal CDF structural library by adding `standardNormalCDF_continuous` (Φ is continuous on ℝ) plus a private bridge lemma `standardNormalCDF_eq_zero_plus_intervalIntegral`. Together with Sessions 4–6 lemmas, the file now has machine-verified evidence on both sides of the Portmanteau convergence that Φ and the standardized binomial CDFs are bona fide CDFs in the Mathlib sense — non-negative, monotone, bounded above by 1, and (for Φ) continuous everywhere. **Axiom count: 1 (unchanged)**. File now 445 lines, 0 sorries, 1 axiom, 12 theorems (substantive 10), 3 definitions, +2 imports (IntegralEqImproper, DominatedConvergence). History: Sessions 1-2 produced the CDF-based scaffold (#16866); Session 3 closed the reduction-lemma sorry (#16877); Session 4 added binomialCDF_neg/mono (#16951); Session 5 added binomialCDF_le_one/zero_le (#16992); Session 6 replaced standardNormalCDF opaque + added _nonneg/_le_one/_mono (#17014). Next: Session 8 Lemma A — Bernoulli→Binomial measure bridge (foundational for Mathlib CLT application).",
     "builtItems": [
       "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:100 (concrete CDF of Binomial(n,p))",
       "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:107 (marginal CDF of multinomial)",
@@ -65,7 +65,9 @@
       "binomialCDF_neg in BinomialTheoremOQ02OQ01OQ01OQ03.lean:253 — for x < 0, binomialCDF n p x = 0 (Phase-4 prep, Session 4)",
       "binomialCDF_mono in BinomialTheoremOQ02OQ01OQ01OQ03.lean:269 — Monotone (binomialCDF n p) when 0 ≤ p ≤ 1 (Phase-4 Portmanteau prep, Session 4)",
       "binomialCDF_zero_le in BinomialTheoremOQ02OQ01OQ01OQ03.lean:294 — for 0 ≤ p ≤ 1, 0 ≤ binomialCDF n p x (Phase-4 Portmanteau prep, Session 5)",
-      "binomialCDF_le_one in BinomialTheoremOQ02OQ01OQ01OQ03.lean:316 — for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 via add_pow / (p+(1-p))^n=1 (Phase-4 Portmanteau prep, Session 5)"
+      "binomialCDF_le_one in BinomialTheoremOQ02OQ01OQ01OQ03.lean:316 — for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 via add_pow / (p+(1-p))^n=1 (Phase-4 Portmanteau prep, Session 5)",
+      "standardNormalCDF_eq_zero_plus_intervalIntegral (private lemma) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:170 — Φ x = Φ 0 + ∫_{0..x} gaussianPDFReal 0 1 t, via intervalIntegral_tendsto_integral_Iic + adjacent-intervals + tendsto_nhds_unique (Session 7)",
+      "standardNormalCDF_continuous in BinomialTheoremOQ02OQ01OQ01OQ03.lean:225 — Continuous standardNormalCDF, via Integrable.continuous_primitive on the bridge-lemma form (Session 7)"
     ],
     "insights": [
       "Multinomial marginal Xᵢ ~ Binomial(n, pᵢ) is ALREADY proved (`BinomialTheoremOQ02OQ01OQ02.lean`); OQ-02-OQ-01-OQ-01-OQ-03 'just' needs the binomial CLT ON TOP",
@@ -89,7 +91,12 @@
       "Session 6 — standardNormalCDF_le_one via rewrite ∫ over univ = 1 (integral_gaussianPDFReal_eq_one 0 one_ne_zero) then setIntegral_le_integral + nonneg integrand. ~7 lines.",
       "Session 6 — standardNormalCDF_mono via setIntegral_mono_set on Iic x ⊆ Iic y, lifted from Set.Iic_subset_Iic.mpr through HasSubset.Subset.eventuallyLE. ~7 lines.",
       "Session 6 — `(integrable_gaussianPDFReal 0 1).integrableOn` provides IntegrableOn for any Iic via Integrable.integrableOn (= Integrable.restrict). One-shot conversion.",
-      "Session 6 — axiom-elimination milestone: 2 → 1 axiom by replacing opaque marker with concrete Mathlib-Gaussian-based definition. The remaining axiom (binomial_clt_pointwise) is the substantive open result; the structural-CDF library (7 lemmas: 4 binomialCDF_* + 3 standardNormalCDF_*) is now complete on the Portmanteau-bridge critical path."
+      "Session 6 — axiom-elimination milestone: 2 → 1 axiom by replacing opaque marker with concrete Mathlib-Gaussian-based definition. The remaining axiom (binomial_clt_pointwise) is the substantive open result; the structural-CDF library (7 lemmas: 4 binomialCDF_* + 3 standardNormalCDF_*) is now complete on the Portmanteau-bridge critical path.",
+      "Session 7 Mathlib survey: there is NO single `iid_central_limit_theorem` in Mathlib. The closest is `ProbabilityTheory.tendstoInDistribution_inv_sqrt_mul_sum` (centered + unit-variance + i.i.d. + identically-distributed; concludes random-variable convergence-in-distribution, not pointwise CDF convergence).",
+      "Session 7 Mathlib survey: there is NO Mathlib lemma stating 'the law of (X₁ + ... + Xₙ) for i.i.d. Bernoulli(p) X₁,...,Xₙ equals Binomial(n,p)'. `PMF.binomial` and `binomial_one_eq_bernoulli` exist but the bridge is missing — it must be built manually using product measures and pushforward (Session 8 target, ~150–250 lines).",
+      "Session 7 Mathlib survey: `Mathlib/MeasureTheory/Measure/Portmanteau.lean` provides T/C/O/B characterizations and the (B)-direction lemma `tendsto_measure_of_null_frontier` is the direct hook for `Set.Iic x` — it concludes `μₙ(B) → μ(B)` whenever `μ(∂B) = 0`, which for `B = Iic x` reduces to continuity of the CDF at x.",
+      "Session 7 Mathlib survey: `Mathlib` does NOT prove `Continuous Φ` for the standard normal CDF — Session 7 fills this gap with `standardNormalCDF_continuous`, a key prerequisite for the Portmanteau bridge that next sessions will assemble.",
+      "Session 7 realistic estimate: full discharge of `binomial_clt_pointwise` is ~300–500 lines across 2+ sessions, NOT feasible in one session. Decomposition: Lemma A (Bernoulli→Binomial measure bridge, ~150–250 lines, Session 8) + Lemma C (Portmanteau bridge: weak conv + continuous CDF ⟹ pointwise CDF conv, ~80–120 lines, Session 9) + final assembly (~50–100 lines, Session 10)."
     ],
     "mathlibGaps": [
       "Mathlib's `Mathlib.Probability.Distributions.Binomial` exposes the PMF but the named theorem 'binomial CLT' / 'de Moivre-Laplace' may not be present in canonical form",
@@ -97,8 +104,10 @@
       "Multivariate CLT (Cramér-Wold) — partial in Mathlib; would be needed for the joint vector form (out of scope for this OQ but referenced in nextSteps)"
     ],
     "nextSteps": [
-      "Session 7 (Phase-4 axiom attack — sole remaining axiom): discharge binomial_clt_pointwise from ProbabilityTheory.iid_central_limit_theorem applied to a Bernoulli(p) i.i.d. sequence, via the Portmanteau theorem at continuity points of the standard normal CDF (every point, since Φ is continuous). The seven structural CDF properties (4 binomialCDF_* from Sessions 4-5 + 3 standardNormalCDF_* from Session 6) are the prerequisites.",
-      "Future OQ (Cramér-Wold + multinomial covariance): joint multinomial CLT via vector convergence to a degenerate multivariate normal supported on the hyperplane sum y_i = 0; out of scope here but BinomialTheoremOQ02OQ01OQ03.multinomial_covariance is the covariance ingredient."
+      "Session 8 (Lemma A — Bernoulli→Binomial measure bridge): prove that for n i.i.d. Bernoulli(p) random variables X₁, ..., Xₙ on a finite product probability space, the pushforward of the product measure under (ω ↦ Σ Xᵢ(ω)) has law equal to Binomial(n, p) (PMF matching binomialCDF's summand). Foundational bridge that lets Mathlib's tendstoInDistribution_inv_sqrt_mul_sum apply at our PMF.",
+      "Session 9 (Lemma C — Portmanteau bridge): prove the abstract bridge 'convergence in distribution + continuous limit CDF ⟹ pointwise CDF convergence' combining Mathlib's Portmanteau lemmas with standardNormalCDF_continuous.",
+      "Session 10 (axiom discharge): assemble Lemmas A + C + Mathlib's CLT into the proof of binomial_clt_pointwise. Convert axiom → theorem; status promotes to 'verified' (axiomCount 1 → 0).",
+      "Stretch (out of scope for this OQ): joint multinomial CLT — coordinate-wise CLTs do not imply joint convergence; Cramér-Wold + the covariance computation in BinomialTheoremOQ02OQ01OQ03.multinomial_covariance give the joint statement; sibling OQ."
     ]
   },
   "tags": [

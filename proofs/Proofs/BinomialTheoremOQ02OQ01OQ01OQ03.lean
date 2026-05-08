@@ -83,6 +83,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Probability.Distributions.Gaussian.Real
+import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.Tactic
 import Proofs.BinomialTheoremOQ02OQ01OQ02
 
@@ -152,6 +154,87 @@ theorem standardNormalCDF_mono : Monotone standardNormalCDF := by
     ((ProbabilityTheory.integrable_gaussianPDFReal 0 1).integrableOn)
     (Filter.Eventually.of_forall (ProbabilityTheory.gaussianPDFReal_nonneg 0 1))
     (Set.Iic_subset_Iic.mpr hxy).eventuallyLE
+
+/-- The standard normal CDF, evaluated at `x`, equals the constant
+    `standardNormalCDF 0` plus the (interval-)integral of the standard normal
+    PDF from `0` to `x`. This bridge lemma is the input to the continuity
+    proof: the LHS is a `setIntegral` over `Iic x`; the RHS is decomposed as a
+    constant plus an `intervalIntegral` whose primitive form is continuous via
+    `MeasureTheory.Integrable.continuous_primitive`.
+
+    Proof: both `∫ Iic x` and `∫ Iic 0` are limits of `∫ a..x` and `∫ a..0`
+    as `a → -∞` (`MeasureTheory.intervalIntegral_tendsto_integral_Iic`). For
+    each `a`, the adjacent-intervals identity
+    `∫ a..x = ∫ a..0 + ∫ 0..x` holds. Taking limits and using `tendsto_nhds_unique`
+    closes the equation. -/
+private lemma standardNormalCDF_eq_zero_plus_intervalIntegral (x : ℝ) :
+    standardNormalCDF x = standardNormalCDF 0
+      + ∫ t in (0 : ℝ)..x, ProbabilityTheory.gaussianPDFReal 0 1 t := by
+  have hf_int : MeasureTheory.Integrable (ProbabilityTheory.gaussianPDFReal 0 1) :=
+    ProbabilityTheory.integrable_gaussianPDFReal 0 1
+  -- The function `y ↦ ∫ t in y..x, f t` tends to `standardNormalCDF x` at `atBot`.
+  have h_lim_x : Filter.Tendsto
+      (fun y : ℝ => ∫ t in y..x, ProbabilityTheory.gaussianPDFReal 0 1 t)
+      Filter.atBot (nhds (standardNormalCDF x)) := by
+    unfold standardNormalCDF
+    exact MeasureTheory.intervalIntegral_tendsto_integral_Iic x
+      hf_int.integrableOn Filter.tendsto_id
+  -- The function `y ↦ ∫ t in y..0, f t` tends to `standardNormalCDF 0` at `atBot`.
+  have h_lim_0 : Filter.Tendsto
+      (fun y : ℝ => ∫ t in y..(0 : ℝ), ProbabilityTheory.gaussianPDFReal 0 1 t)
+      Filter.atBot (nhds (standardNormalCDF 0)) := by
+    unfold standardNormalCDF
+    exact MeasureTheory.intervalIntegral_tendsto_integral_Iic 0
+      hf_int.integrableOn Filter.tendsto_id
+  -- Adjacent-intervals identity: rewrite `∫ y..x` as `∫ y..0 + ∫ 0..x`.
+  have hfn_eq : (fun y : ℝ => ∫ t in y..x, ProbabilityTheory.gaussianPDFReal 0 1 t) =
+      fun y : ℝ => (∫ t in y..(0 : ℝ), ProbabilityTheory.gaussianPDFReal 0 1 t)
+        + ∫ t in (0 : ℝ)..x, ProbabilityTheory.gaussianPDFReal 0 1 t := by
+    funext y
+    have hab : IntervalIntegrable
+        (ProbabilityTheory.gaussianPDFReal 0 1) MeasureTheory.volume y 0 :=
+      hf_int.intervalIntegrable
+    have hbc : IntervalIntegrable
+        (ProbabilityTheory.gaussianPDFReal 0 1) MeasureTheory.volume 0 x :=
+      hf_int.intervalIntegrable
+    exact (intervalIntegral.integral_add_adjacent_intervals hab hbc).symm
+  rw [hfn_eq] at h_lim_x
+  -- The rewritten LHS is a sum-of-tendsto: the first summand → standardNormalCDF 0,
+  -- and the second is constant. So the limit is standardNormalCDF 0 + ∫ 0..x.
+  have h_lim_rhs : Filter.Tendsto
+      (fun y : ℝ => (∫ t in y..(0 : ℝ), ProbabilityTheory.gaussianPDFReal 0 1 t)
+        + ∫ t in (0 : ℝ)..x, ProbabilityTheory.gaussianPDFReal 0 1 t)
+      Filter.atBot
+      (nhds (standardNormalCDF 0
+        + ∫ t in (0 : ℝ)..x, ProbabilityTheory.gaussianPDFReal 0 1 t)) :=
+    h_lim_0.add_const _
+  exact tendsto_nhds_unique h_lim_x h_lim_rhs
+
+/-- **The standard normal CDF is continuous on `ℝ`.**
+
+    Strategy: rewrite `standardNormalCDF` as `standardNormalCDF 0 +
+    intervalIntegral 0..x` (`standardNormalCDF_eq_zero_plus_intervalIntegral`),
+    then apply `MeasureTheory.Integrable.continuous_primitive` to the
+    interval-primitive piece. The `NoAtoms volume` instance on `ℝ` is the
+    measure-theoretic input that makes the primitive continuous.
+
+    On the **Portmanteau-bridge critical path** for Phase-4 axiom elimination:
+    Portmanteau converts measure-weak-convergence into pointwise convergence
+    of CDFs at every continuity point of the limit CDF. Since `Φ` is
+    continuous everywhere, every `x ∈ ℝ` is a continuity point, so the
+    convergence is universal. Combined with the four `binomialCDF_*` lemmas
+    (Sessions 4–5) and the three `standardNormalCDF_{nonneg,le_one,mono}`
+    lemmas (Session 6), this completes the structural-properties library
+    for the Phase-4 Portmanteau bridge that next session will build to
+    discharge `binomial_clt_pointwise`. -/
+theorem standardNormalCDF_continuous : Continuous standardNormalCDF := by
+  have hfeq : standardNormalCDF = fun x : ℝ => standardNormalCDF 0
+      + ∫ t in (0 : ℝ)..x, ProbabilityTheory.gaussianPDFReal 0 1 t := by
+    funext x
+    exact standardNormalCDF_eq_zero_plus_intervalIntegral x
+  rw [hfeq]
+  exact continuous_const.add
+    ((ProbabilityTheory.integrable_gaussianPDFReal 0 1).continuous_primitive 0)
 
 /-! ## Axiom: classical de Moivre–Laplace (binomial CLT) -/
 
