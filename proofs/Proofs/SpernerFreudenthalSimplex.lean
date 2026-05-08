@@ -668,7 +668,83 @@ private lemma face2_path_odd :
     have hcol := cN2_right_corner N hN f hf_map
     simp [hcol]
 
+-- ============================================================
+-- SECTION VI: Total wrapper of cN2 + IsSpernerColoring lift
+-- (Session 14 — bridges concrete coloring to Triangulation API)
+-- ============================================================
+
+/-- Total wrapper of `cN2` to a function on all of `ℕ × ℕ`.
+    Default to color `0` outside the `b₀+b₁≤N` region; this wrapping is
+    irrelevant since only in-range vertices appear in `topSimps2 N`. -/
+private noncomputable def cN2_total : (ℕ × ℕ) → Fin 3 :=
+  fun b => if h : b.1 + b.2 ≤ N then cN2 N hN f hf_map b h else 0
+
+/-- On the in-range region, the wrapper agrees with `cN2`. -/
+private lemma cN2_total_eq (b : ℕ × ℕ) (hb : b.1 + b.2 ≤ N) :
+    cN2_total N hN f hf_map b = cN2 N hN f hf_map b hb := by
+  unfold cN2_total
+  exact dif_pos hb
+
+/-- Strict face predicate: combines the geometric `onFaceΔ2` predicate with the
+    in-range constraint `b.1+b.2 ≤ N`. The conjunction makes the Sperner
+    condition liftable to a total function on `ℕ × ℕ` — exactly the form
+    required by `Triangulation.IsSpernerColoring`. -/
+private def onFaceΔ2_strict (N : ℕ) (b : ℕ × ℕ) (j : Fin 3) : Prop :=
+  b.1 + b.2 ≤ N ∧ onFaceΔ2 N b j
+
+private instance onFaceΔ2_strict_decidable (N : ℕ) (b : ℕ × ℕ) (j : Fin 3) :
+    Decidable (onFaceΔ2_strict N b j) := by
+  unfold onFaceΔ2_strict; infer_instance
+
+/-- **Lifted Sperner condition**: `cN2_total` satisfies `IsSpernerColoring`
+    with respect to the strict face predicate. This is precisely the
+    `_hSperner` hypothesis of `Triangulation.boundary_doors_odd`. -/
+private lemma cN2_total_isSpernerColoring :
+    Triangulation.IsSpernerColoring (cN2_total N hN f hf_map) (onFaceΔ2_strict N) := by
+  intro b j hstrict
+  obtain ⟨hb, hface⟩ := hstrict
+  rw [cN2_total_eq N hN f hf_map b hb]
+  exact cN2_ne_of_onFace N hN f hf_map b hb j hface
+
 end N2Grid
+
+-- ============================================================
+-- SECTION VII: Vertex range bound for topSimps2
+-- (f-independent; useful for downstream wrapper lifts)
+-- ============================================================
+
+section N2VertexRange
+
+/-- All three vertices of `t1 b` are bounded by the base `b`'s sum + 1. -/
+private lemma t1_vertex_sum_le (b : ℕ × ℕ) (v : ℕ × ℕ) (hv : v ∈ t1 b) :
+    v.1 + v.2 ≤ b.1 + b.2 + 1 := by
+  simp only [t1, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- All three vertices of `t2 b` are bounded by the base `b`'s sum + 2. -/
+private lemma t2_vertex_sum_le (b : ℕ × ℕ) (v : ℕ × ℕ) (hv : v ∈ t2 b) :
+    v.1 + v.2 ≤ b.1 + b.2 + 2 := by
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- Every vertex of every top simplex in `topSimps2 N` satisfies
+    `v.1 + v.2 ≤ N`. This is the in-range condition used by `cN2_total_eq`
+    to switch from the wrapper to the underlying `cN2`. -/
+private lemma topSimps2_vertex_in_range (N : ℕ) {s : Finset (ℕ × ℕ)}
+    (hs : s ∈ topSimps2 N) {v : ℕ × ℕ} (hv : v ∈ s) :
+    v.1 + v.2 ≤ N := by
+  simp only [topSimps2, Finset.mem_union, Finset.mem_image] at hs
+  rcases hs with ⟨b, hb, rfl⟩ | ⟨b, hb, rfl⟩
+  · -- Type-1: base in t1Bases means b.1+b.2 < N, vertices ≤ b.1+b.2+1 ≤ N
+    simp only [t1Bases, Finset.mem_filter] at hb
+    have h1 := t1_vertex_sum_le b v hv
+    omega
+  · -- Type-2: base in t2Bases means b.1+b.2+1 < N, vertices ≤ b.1+b.2+2 ≤ N
+    simp only [t2Bases, Finset.mem_filter] at hb
+    have h1 := t2_vertex_sum_le b v hv
+    omega
+
+end N2VertexRange
 
 end SpernerFreudSimp
 
