@@ -1523,6 +1523,159 @@ theorem finUnionList_isExistentialUniversalDefinition
     (finUnionList_isCoDiophantineDefinition l h)
 
 -- ============================================================
+-- Part VIII.16 (iter 15, Path B): list version of Σ₁ ∪ closure
+-- ============================================================
+
+/-- Iter 15, Path B: **the Σ₁ class is closed under finite list union of
+    arbitrary Σ₁-definable subsets**.
+
+    If every set in a list `l : List RatSubset` is Σ₁-definable, then so
+    is the pointwise existential predicate `fun q => ∃ S ∈ l, S q`.
+    Direct list lift of iter 9's `union_isDiophantineDefinition` by
+    induction on the list, with the empty list giving the empty set
+    (vacuous existential ↔ False).
+
+    **Strategy** (no new Mathlib lemmas, no new imports): induction on
+    `l`, base case via `empty_isDiophantineDefinition` + iter-4
+    congruence bridge, step case via iter-9 `union_isDiophantineDefinition`
+    applied to the head and the inductive hypothesis on the tail. Same
+    structural template as iter 14's
+    `finUnionList_isCoDiophantineDefinition` (Π₁ list ∪), but with the
+    iter 9 binary witness (product polynomial `P₁·P₂` via `mul_eq_zero`)
+    instead of iter 13's sum-of-squares — hence cheaper, with one fewer
+    even/odd interleaving per cons step.
+
+    **Significance**: generalizes iter 10's
+    `finUnionList_singletons_isDiophantineDefinition` (which restricted
+    to SINGLETONS) to ARBITRARY Σ₁-definable subsets. Pairs with iter 14
+    `finIntersectionList_isDiophantineDefinition` (Σ₁ list ∩) and iter
+    14 `finUnionList_isCoDiophantineDefinition` (Π₁ list ∪) to fully
+    populate the 2×2 closure grid at finite-list arity for arbitrary
+    Σ₁/Π₁ subsets:
+
+        | Class | binary ∪  | binary ∩  | list ∪    | list ∩    |
+        |-------|-----------|-----------|-----------|-----------|
+        | Σ₁    | iter 9    | iter 12   | iter 15   | iter 14   |
+        | Π₁    | iter 13   | iter 9    | iter 14   | iter 15   |
+
+    Neither class is (known to be) closed under complement; that would
+    collapse Σ₁ = Π₁, equivalent to the OPEN question. -/
+theorem finUnionList_isDiophantineDefinition
+    (l : List RatSubset) (h : ∀ S ∈ l, IsDiophantineDefinition S) :
+    IsDiophantineDefinition (fun q : Rat => ∃ S ∈ l, S q) := by
+  induction l with
+  | nil =>
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∃ S ∈ ([] : List RatSubset), S q) q ↔
+        (fun _ : Rat => False) q := by
+      intro q; simp
+    exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr
+      empty_isDiophantineDefinition
+  | cons a t ih =>
+    have h_head : IsDiophantineDefinition a :=
+      h a (List.mem_cons_self a t)
+    have h_tail : ∀ S ∈ t, IsDiophantineDefinition S :=
+      fun S hS => h S (List.mem_cons_of_mem a hS)
+    have ih_def : IsDiophantineDefinition (fun q : Rat => ∃ S ∈ t, S q) :=
+      ih h_tail
+    have h_union : IsDiophantineDefinition
+        (fun q : Rat => a q ∨ (∃ S ∈ t, S q)) :=
+      union_isDiophantineDefinition h_head ih_def
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∃ S ∈ (a :: t), S q) q ↔
+        (fun q : Rat => a q ∨ (∃ S ∈ t, S q)) q := by
+      intro q
+      constructor
+      · rintro ⟨S, hSmem, hSq⟩
+        rcases List.mem_cons.mp hSmem with rfl | hSt
+        · exact Or.inl hSq
+        · exact Or.inr ⟨S, hSt, hSq⟩
+      · rintro (ha | ⟨S, hSt, hSq⟩)
+        · exact ⟨a, List.mem_cons_self a t, ha⟩
+        · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
+    exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr h_union
+
+/-- Iter 15 corollary, Path B: **list union of Σ₁-definable subsets is
+    Π₂-definable** via the trivial inclusion `Σ₁ ⊆ Π₂`. -/
+theorem finUnionList_isUniversalExistentialDefinition
+    (l : List RatSubset) (h : ∀ S ∈ l, IsDiophantineDefinition S) :
+    IsUniversalExistentialDefinition (fun q : Rat => ∃ S ∈ l, S q) :=
+  diophantine_implies_universal_existential _
+    (finUnionList_isDiophantineDefinition l h)
+
+-- ============================================================
+-- Part VIII.17 (iter 15, Path B): list version of Π₁ ∩ closure
+-- ============================================================
+
+/-- Iter 15, Path B: **the Π₁ class is closed under finite list
+    intersection of arbitrary Π₁-definable subsets**.
+
+    If every set in a list `l : List RatSubset` is Π₁-definable, then so
+    is the pointwise universal predicate `fun q => ∀ S ∈ l, S q`. Direct
+    list lift of iter 9's `intersection_isCoDiophantineDefinition` by
+    induction on the list, with the empty list giving the universe set
+    (vacuous quantifier ↔ True).
+
+    **Strategy** (no new Mathlib lemmas, no new imports): induction on
+    `l`, base case via `universe_isCoDiophantineDefinition` + iter-4
+    congruence bridge, step case via iter-9
+    `intersection_isCoDiophantineDefinition` applied to the head and the
+    inductive hypothesis on the tail. Same structural template as iter
+    14's `finIntersectionList_isDiophantineDefinition` (Σ₁ list ∩), but
+    with the iter 9 binary witness (product polynomial `P₁·P₂` via the
+    contrapositive of `mul_eq_zero`) instead of iter 12's sum-of-squares.
+
+    **Significance**: generalizes iter 10's
+    `finIntersectionList_complement_singletons_isCoDiophantineDefinition`
+    (which restricted to COMPLEMENTS-OF-SINGLETONS) to ARBITRARY
+    Π₁-definable subsets. Together with iter 15's
+    `finUnionList_isDiophantineDefinition` (the Σ₁ dual, this same PR)
+    and iter 14's two list closures, the 2×2 closure grid is fully
+    populated at finite-list arity for arbitrary Σ₁/Π₁ subsets. -/
+theorem finIntersectionList_isCoDiophantineDefinition
+    (l : List RatSubset) (h : ∀ S ∈ l, IsCoDiophantineDefinition S) :
+    IsCoDiophantineDefinition (fun q : Rat => ∀ S ∈ l, S q) := by
+  induction l with
+  | nil =>
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∀ S ∈ ([] : List RatSubset), S q) q ↔
+        (fun _ : Rat => True) q := by
+      intro q; simp
+    exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr
+      universe_isCoDiophantineDefinition
+  | cons a t ih =>
+    have h_head : IsCoDiophantineDefinition a :=
+      h a (List.mem_cons_self a t)
+    have h_tail : ∀ S ∈ t, IsCoDiophantineDefinition S :=
+      fun S hS => h S (List.mem_cons_of_mem a hS)
+    have ih_def : IsCoDiophantineDefinition (fun q : Rat => ∀ S ∈ t, S q) :=
+      ih h_tail
+    have h_inter : IsCoDiophantineDefinition
+        (fun q : Rat => a q ∧ (∀ S ∈ t, S q)) :=
+      intersection_isCoDiophantineDefinition h_head ih_def
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∀ S ∈ (a :: t), S q) q ↔
+        (fun q : Rat => a q ∧ (∀ S ∈ t, S q)) q := by
+      intro q
+      constructor
+      · intro hall
+        refine ⟨hall a (List.mem_cons_self a t),
+          fun S hS => hall S (List.mem_cons_of_mem a hS)⟩
+      · rintro ⟨ha, htail⟩ S hS
+        rcases List.mem_cons.mp hS with rfl | hSt
+        · exact ha
+        · exact htail S hSt
+    exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr h_inter
+
+/-- Iter 15 corollary, Path B: **list intersection of Π₁-definable
+    subsets is Σ₂-definable** via the trivial inclusion `Π₁ ⊆ Σ₂`. -/
+theorem finIntersectionList_isExistentialUniversalDefinition
+    (l : List RatSubset) (h : ∀ S ∈ l, IsCoDiophantineDefinition S) :
+    IsExistentialUniversalDefinition (fun q : Rat => ∀ S ∈ l, S q) :=
+  codiophantine_implies_existentialUniversal _
+    (finIntersectionList_isCoDiophantineDefinition l h)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -1739,5 +1892,13 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @intersection_isUniversalExistentialDefinition
 #check @union_isCoDiophantineDefinition
 #check @union_isExistentialUniversalDefinition
+#check @finIntersectionList_isDiophantineDefinition
+#check @finIntersectionList_isUniversalExistentialDefinition
+#check @finUnionList_isCoDiophantineDefinition
+#check @finUnionList_isExistentialUniversalDefinition
+#check @finUnionList_isDiophantineDefinition
+#check @finUnionList_isUniversalExistentialDefinition
+#check @finIntersectionList_isCoDiophantineDefinition
+#check @finIntersectionList_isExistentialUniversalDefinition
 
 end Hilbert10Rationals
