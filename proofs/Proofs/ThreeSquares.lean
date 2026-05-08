@@ -1212,9 +1212,9 @@ The problem "which numbers are sums of k squares?" generalizes:
 - k≥5: all numbers ≥ 1 (trivially, since k≥4 suffices)
 -/
 
+open Classical in
 /-- The maximum number of squares needed to represent n. Noncomputable because
 the decidability of `∃ a : ℕ, a^2 = n` and similar is provided via `Classical`. -/
-open Classical in
 noncomputable def squaresNeeded (n : ℕ) : ℕ :=
   if n = 0 then 0
   else if ∃ a : ℕ, a ^ 2 = n then 1
@@ -1224,8 +1224,8 @@ noncomputable def squaresNeeded (n : ℕ) : ℕ :=
 
 /-- Every number needs at most 4 squares -/
 theorem squares_needed_le_four (n : ℕ) : squaresNeeded n ≤ 4 := by
-  simp [squaresNeeded]
-  split <;> omega
+  unfold squaresNeeded
+  split_ifs <;> omega
 
 /-- Numbers needing exactly 4 squares are exactly those of excluded form -/
 theorem needs_four_iff_excluded (n : ℕ) (hn : n ≥ 1) :
