@@ -19,13 +19,13 @@
       "ssyt"
     ],
     "badge": "wip",
-    "sorries": 2,
+    "sorries": 3,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "2 sorries remain: (1) jdt_weight_sum b≥2 — strategy refined in S19 to weight factorization + ballot counting identity (S18 diagnosed naive insert-violation bijection as non-injective for b≥2); (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). S19 added weight_eq_total_multiset helper: prod(P)*prod(Q) = prod(P+Q) via Multiset.map_add+prod_add. jdt_weight_sum_b_one proved (S17): b=1 bijection via Sym.cons/erase + Multiset.sort_cons (~100 lines). ssytSchurFin_two_row and ssytFin_two_row_eq_sum_colstrict proved. k=0,1,2 proved.",
-    "lineCount": 992,
-    "theoremCount": 22,
-    "definitionCount": 6,
+    "lineCount": 1046,
+    "theoremCount": 25,
+    "definitionCount": 8,
     "originalContributions": [
       "jacobiTrudiMatrix: the k×k matrix with entries h_{sh_i + j - i} (or 0 for negative index) — first Lean 4 Jacobi-Trudi matrix definition",
       "schurPolynomial: det(jacobiTrudiMatrix) as the primary definition of Schur polynomials in Lean 4",
@@ -78,12 +78,12 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 992,
+    "lineCount": 1046,
     "axiomCount": 0,
-    "theoremCount": 22,
-    "definitionCount": 6,
+    "theoremCount": 25,
+    "definitionCount": 8,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 2,
+    "sorries": 3,
     "additionalFiles": [
       "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
     ]
@@ -173,5 +173,5 @@
       "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k≥3)."
     }
   ],
-  "sorries": 2
+  "sorries": 3
 }
