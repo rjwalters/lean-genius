@@ -44,6 +44,7 @@
 import Mathlib.GroupTheory.PGroup
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.Nilpotent
+import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.Tactic
 
 namespace BurnsidePQ
@@ -178,6 +179,51 @@ example {G : Type*} [Group G] [Finite G]
   have h : Nat.card G = p ^ a * 2 ^ 0 := by simp [hcard]
   exact burnside_pq h
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART VI: Sharpness witness
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-! Burnside's bound on the number of distinct prime factors is sharp.
+    The smallest non-solvable group is A₅, of order 60 = 2² · 3 · 5 — exactly
+    THREE distinct primes, one more than Burnside permits.
+
+    These two theorems establish A₅ as the canonical sharpness witness:
+    a finite group whose order has three distinct prime factors and that is
+    not solvable. Hence the conclusion of `burnside_pq` cannot in general
+    be extended from two distinct primes to three. -/
+
+/-- The cardinality of A₅ in `2² · 3 · 5` form, exposing the three distinct
+    prime factors that make A₅ a witness to sharpness. Axiom-free. -/
+theorem alternatingGroupFin5_card :
+    Nat.card (alternatingGroup (Fin 5) : Type _) = 2 ^ 2 * 3 * 5 := by
+  rw [Nat.card_eq_fintype_card]
+  decide
+
+/-- A₅ is not solvable. Reduces to `Equiv.Perm.not_solvable (Fin 5)` via the
+    short exact sequence A₅ → S₅ → ℤ/2 (kernel of `Equiv.Perm.sign` is
+    contained in the range of the inclusion `alternatingGroup → Equiv.Perm`).
+    Axiom-free. -/
+theorem alternatingGroupFin5_not_solvable :
+    ¬ IsSolvable (alternatingGroup (Fin 5)) := by
+  intro h
+  have hS5 : IsSolvable (Equiv.Perm (Fin 5)) := by
+    apply solvable_of_ker_le_range
+      (alternatingGroup (Fin 5)).subtype
+      Equiv.Perm.sign
+    intro x hx
+    rw [MonoidHom.mem_ker] at hx
+    exact ⟨⟨x, Equiv.Perm.mem_alternatingGroup.mpr hx⟩, rfl⟩
+  exact Equiv.Perm.not_solvable (Fin 5) (by simp) hS5
+
+/-- **Burnside's bound is sharp**. There exists a finite group of order
+    `2² · 3 · 5` (three distinct prime factors) that is NOT solvable —
+    namely A₅. So the analogue of `burnside_pq` for THREE distinct primes
+    fails: no `burnside_pqr` theorem can hold without further hypotheses. -/
+theorem burnside_pq_sharp :
+    Nat.card (alternatingGroup (Fin 5)) = 2 ^ 2 * 3 * 5 ∧
+      ¬ IsSolvable (alternatingGroup (Fin 5)) :=
+  ⟨alternatingGroupFin5_card, alternatingGroupFin5_not_solvable⟩
+
 /-
 ## Summary
 
@@ -196,6 +242,14 @@ example {G : Type*} [Group G] [Finite G]
 - `burnside_pq_same_prime` — Burnside for `p = q` (`G` is a `p`-group of
   order `p^(a+b)`).
 - `burnside_pq` — main theorem combining trivial cases + axiom.
+- `alternatingGroupFin5_card` — `|A₅| = 2² · 3 · 5 = 60` (sharpness witness
+  cardinality, three distinct primes).
+- `alternatingGroupFin5_not_solvable` — `¬ IsSolvable (A₅)` via reduction to
+  `Equiv.Perm.not_solvable (Fin 5)` through the short exact sequence
+  `A₅ → S₅ → ℤ/2`.
+- `burnside_pq_sharp` — sharpness witness: `|A₅| = 2² · 3 · 5` AND `A₅` is
+  not solvable, demonstrating that `burnside_pq` cannot be extended to
+  three distinct primes.
 
 ### Path forward
 - Eliminate `burnside_pq_nontrivial` by formalizing the
@@ -217,5 +271,8 @@ example {G : Type*} [Group G] [Finite G]
 #check @burnside_pq_b_zero
 #check @burnside_pq_same_prime
 #check @pGroup_isSolvable
+#check @alternatingGroupFin5_card
+#check @alternatingGroupFin5_not_solvable
+#check @burnside_pq_sharp
 
 end BurnsidePQ

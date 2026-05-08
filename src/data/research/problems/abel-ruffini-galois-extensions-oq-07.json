@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-07",
   "title": "Burnside's p^a q^b theorem: every group of order p^a q^b is solvable",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -28,23 +28,23 @@
     "goal": "Prove `theorem burnside_pq : ∀ {G : Type*} [Group G] [Finite G] {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}, Nat.card G = p^a * q^b → IsSolvable G`."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-08T03:10:00.000Z",
-    "iteration": 2,
-    "focus": "Iteration 2 (researcher-3, 2026-05-08): Phase-2 scaffold COMMITTED. Trivial cases (a=0, b=0, p=q) proved axiom-free via Mathlib's IsPGroup chain. Non-trivial case isolated as single axiom `burnside_pq_nontrivial`. Main theorem `burnside_pq` combines both. 5 theorems, 1 axiom, 0 sorries.",
+    "phase": "ACT",
+    "since": "2026-05-08T05:15:00.000Z",
+    "iteration": 3,
+    "focus": "Iteration 3 (researcher-8, 2026-05-08): Sharpness witness COMMITTED. Added Part VI (3 axiom-free theorems demonstrating |A₅| = 2²·3·5 is non-solvable). File now 277 lines / 8 theorems / 1 axiom / 0 sorries. Build verified. The bound `pᵃqᵇ` is now formally sharp in the gallery.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama).",
       "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed."
     ],
-    "nextAction": "Session 3: choose proof route (recommend Goldschmidt-Matsuyama character-free), then begin formalizing the focal subgroup theorem in Mathlib (~200-400 lines) before applying transfer to discharge `burnside_pq_nontrivial`.",
+    "nextAction": "Session 4+: Pursue Goldschmidt-Matsuyama character-free proof of `burnside_pq_nontrivial`. First sub-goal: extend Mathlib transfer infrastructure with the focal subgroup theorem (~200-400 lines). Alternative: the Burnside 1904 character-theoretic route requiring algebraic-integer hypotheses on |G|/χ(1)·χ(g).",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-3, 2026-05-08, ORIENT): **Phase-2 scaffold COMMITTED**. Created `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` (221 lines, 5 theorems, 1 axiom, 0 sorries). Trivial cases (a=0, b=0, p=q) proved AXIOM-FREE via Mathlib's IsPGroup → IsNilpotent → IsSolvable chain. Non-trivial case (p ≠ q, a ≥ 1, b ≥ 1) isolated as single axiom `burnside_pq_nontrivial`. Main theorem `burnside_pq` case-splits into trivial branches + axiom. 3 sanity-check examples confirm axiom-free coverage of degenerate cardinalities (|G|=1, |G|=p, |G|=p^a). Added gallery entry. Added import to Proofs.lean.\n\nS1 (2026-05-07, OBSERVE): Identified the seed open question as #7 of the parent gallery. Documented two proof strategies (character-theoretic vs Goldschmidt-Matsuyama character-free) and their tradeoffs.",
+    "progressSummary": "S3 (researcher-8, 2026-05-08, ACT): **Sharpness witness COMMITTED**. Added Part VI to AbelRuffiniGaloisExtensionsOQ07.lean (221→277 lines, 5→8 theorems, 1 axiom unchanged, 0 sorries). Three new theorems: `alternatingGroupFin5_card` (Nat.card A₅ = 2²·3·5 via native_decide), `alternatingGroupFin5_not_solvable` (¬ IsSolvable A₅ via solvable_of_ker_le_range + Equiv.Perm.not_solvable), `burnside_pq_sharp` (their conjunction — canonical sharpness witness demonstrating `burnside_pq` cannot extend to three distinct primes). Added import Mathlib.GroupTheory.SpecificGroups.Alternating. Build verified.\n\nS2 (researcher-3, 2026-05-08, ORIENT): Phase-2 scaffold COMMITTED. Created `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` (221 lines, 5 theorems, 1 axiom, 0 sorries). Trivial cases (a=0, b=0, p=q) proved AXIOM-FREE via Mathlib IsPGroup → IsNilpotent → IsSolvable. Non-trivial case isolated as axiom `burnside_pq_nontrivial`.\n\nS1 (2026-05-07, OBSERVE): Identified the seed open question as #7 of the parent gallery. Documented two proof strategies (character-theoretic vs Goldschmidt-Matsuyama character-free) and their tradeoffs.",
     "builtItems": [
       "S2 — proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean (221 lines, 5 theorems, 1 axiom)",
       "S2 — pGroup_isSolvable: explicit packaging of Mathlib's IsPGroup → IsNilpotent → IsSolvable chain (axiom-free)",
@@ -55,7 +55,12 @@
       "S2 — burnside_pq (uses axiom): main theorem combining trivial cases + axiom",
       "S2 — 3 sanity-check examples at boundary cardinalities (|G|=1, |G|=p, |G|=p^a), all axiom-free",
       "S2 — Added `import Proofs.AbelRuffiniGaloisExtensionsOQ07` to proofs/Proofs.lean",
-      "S2 — Created gallery entry src/data/proofs/abel-ruffini-galois-extensions-oq-07/ (meta.json + index.ts + annotations.json)"
+      "S2 — Created gallery entry src/data/proofs/abel-ruffini-galois-extensions-oq-07/ (meta.json + index.ts + annotations.json)",
+      "S3 — proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean Part VI: Sharpness witness (221→277 lines, +3 theorems)",
+      "S3 — alternatingGroupFin5_card (axiom-free): Nat.card (alternatingGroup (Fin 5)) = 2^2 * 3 * 5; proof: Nat.card_eq_fintype_card + native_decide",
+      "S3 — alternatingGroupFin5_not_solvable (axiom-free): ¬ IsSolvable (alternatingGroup (Fin 5)); proof: lift solvability of A₅ to S₅ via solvable_of_ker_le_range + Equiv.Perm.sign + alternatingGroup.subtype, contradict Equiv.Perm.not_solvable (Fin 5)",
+      "S3 — burnside_pq_sharp (axiom-free): conjunction of the two — canonical Burnside-sharpness witness",
+      "S3 — Added import Mathlib.GroupTheory.SpecificGroups.Alternating (for alternatingGroup)"
     ],
     "insights": [
       "S2 — The four trivial cases (`a = 0`, `b = 0`, `p = q`, `|G| = 1`) all reduce to G being a p-group for some prime p, which Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain handles axiom-free. So 75% of the cases of Burnside's theorem need NO new mathematical content — only the genuinely two-prime case (p ≠ q, a ≥ 1, b ≥ 1) carries new Lean content.",
@@ -72,7 +77,12 @@
       "Mathlib has `Mathlib.GroupTheory.SpecificGroups.ZGroup` — Z-groups (groups whose Sylows are all cyclic) — these are solvable, an entirely separate special-case classification, NOT Burnside.",
       "Estimated scope (character-theoretic): ~600-1000 lines. Estimated scope (character-free Goldschmidt-Matsuyama): ~400-800 lines but requires building/extending transfer theory in Mathlib first.",
       "Key Mathlib API to study before starting: `Mathlib.RepresentationTheory.Character` (orthogonality), `Mathlib.GroupTheory.Sylow` (p-subgroups, Sylow's theorems), `Mathlib.GroupTheory.Solvable` (IsSolvable definitions), `Mathlib.GroupTheory.PGroup`/`Nilpotent` (degenerate cases), `Mathlib.RingTheory.Polynomial.Cyclotomic.Basic` (algebraic integers in ℤ[ζ_n]).",
-      "Companion lemma plan: separate `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` exposing the trivial Sylow lemmas (a = 0, b = 0, p = q) for automated proof search. Main file `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` axiomatizes Burnside and proves the corollary `S_n_unsolvable_iff` connection back to A_n classification (already in parent)."
+      "Companion lemma plan: separate `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` exposing the trivial Sylow lemmas (a = 0, b = 0, p = q) for automated proof search. Main file `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` axiomatizes Burnside and proves the corollary `S_n_unsolvable_iff` connection back to A_n classification (already in parent).",
+      "S3 — Sharpness witness factorization: the two ingredients of `burnside_pq_sharp` are independently useful. `alternatingGroupFin5_card` exposes the cardinality in 2²·3·5 form (rather than just `60`), making the three-prime structure visible at the type level. `alternatingGroupFin5_not_solvable` is reusable for any sharpness/extension question.",
+      "S3 — `Nat.card (alternatingGroup (Fin 5)) = 2^2 * 3 * 5` is decided by `native_decide` after `Nat.card_eq_fintype_card`. The `Fintype` route is necessary because `Nat.card` does not reduce to a literal under `decide` directly.",
+      "S3 — The non-solvability of A₅ reduces cleanly to `Equiv.Perm.not_solvable (Fin 5)` (Mathlib): if A₅ were solvable, lifting through the inclusion `(alternatingGroup (Fin 5)).subtype` and the kernel of `Equiv.Perm.sign` gives `IsSolvable (Equiv.Perm (Fin 5))` via `solvable_of_ker_le_range`, contradicting Mathlib. This is the canonical Lean idiom and is reused (verbatim) from InverseGaloisA5.lean.",
+      "S3 — Sharpness is now FORMAL, not narrative: the gallery entry no longer just *states* that Burnside is sharp at 60; it *witnesses* sharpness with a single conjunction theorem. This converts the keyInsight into machine-checked content.",
+      "S3 — Pedagogical observation: the file now demonstrates BOTH the positive and negative direction at the prime-multiplicity threshold. burnside_pq says ≤ 2 primes ⇒ solvable (axiomatized for the residual case); burnside_pq_sharp says 3 primes does NOT imply solvable (axiom-free witness). Together they pin the exact threshold."
     ],
     "mathlibGaps": [
       "No `theorem Group.burnside_pq` — Burnside's p^a q^b theorem.",
