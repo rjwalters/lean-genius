@@ -1,7 +1,7 @@
 {
   "slug": "erdos-831",
   "title": "Erdős #831",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,25 +11,36 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "h_upper_bound: h(n) ≤ C(n,3) for all n",
+      "h_three: h(3) = 1 (any 3-point GP config has exactly one circumradius)",
+      "h(4) = 1 docstring/correction: equilateral + circumcenter shows all 4 circumradii can coincide (correcting the previously axiomatized h(4) ≥ 2 which was false; PR #15646 merged 2026-05-04)",
+      "circumradiusOf S₃ permutation invariance (perm12, cycle, perm23, perm13)",
+      "regular_polygon_not_general: regular polygons are not in general position (4 vertices concyclic)"
+    ],
+    "open": [
+      "Erdős's original question h(n) → ∞ as n → ∞ (axiomatized as erdos_831_growing on Erdos831Problem.lean:344)",
+      "Quantitative lower bound for h(n) (the actual estimate Erdős asked for)"
+    ],
+    "goal": "Sorry-free formalization with the open conjecture cleanly axiomatized — achieved on origin/main as of #15625 (2026-05-04)."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T09:46:19.704Z",
-    "iteration": 7,
-    "focus": "All sorries eliminated. h_upper_bound proved via powersetCard 3 factoring.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-04T11:20:13Z",
+    "iteration": 8,
+    "focus": "Formalization complete: 0 sorries, 1 axiom (erdos_831_growing = the open conjecture). Remaining work is exclusively at the level of the open mathematical problem.",
+    "blockers": [
+      "The Erdős conjecture h(n) → ∞ is genuinely OPEN — no Mathlib path to a proof"
+    ],
+    "nextAction": "Out of scope for this slug. Tractable extensions (e.g. proving h(n) = 0 for n ≤ 2 as concrete base cases, or formalizing the equilateral+circumcenter construction to upgrade the h(4) docstring into a theorem) are candidate follow-ups but require careful Lean work; current bookkeeping reflects the formalization is at the axiomatized state.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 8,
+      "currentApproach": 1,
+      "approachesTried": 8
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 4→0 sorries. h_three fully proved. h_upper_bound proved via tripleCircumradius on S.powersetCard 3, using circumradiusOf_eq_of_mem_triple for S₃ invariance. Only axiom: h_four_lower.",
+    "progressSummary": "AXIOMATIZED: 0 sorries; 1 axiom (erdos_831_growing) which is the open Erdős conjecture itself. h_upper_bound (≤ C(n,3)) and h_three (=1) proved. h(4)=1 corrected from prior false h(4)≥2 (PR #15646). meta.json status: axiomatized, badge: axiom.",
     "builtItems": [
       "Proved regular_polygon_not_general via Finset.exists_smaller_set + card_eq_succ extraction",
       "Proved circumradiusOf_perm12: swap first two args preserves circumradius (signed area negates, |area| preserved)",
@@ -78,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T09:46:19.704Z",
-  "lastUpdate": "2026-03-29T13:00:00.000Z",
+  "lastUpdate": "2026-05-08T17:50:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
