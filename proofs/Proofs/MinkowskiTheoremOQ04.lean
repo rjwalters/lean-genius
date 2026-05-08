@@ -227,6 +227,45 @@ theorem volume_eq_setLIntegral_indicator_tsum {n : ℕ} [NeZero n]
     _ = volume s := by
         rw [h_ind_def, lintegral_indicator_const h_meas, one_mul]
 
+/-- **tsum-of-indicators-equals-encard bridge** (S13, structural helper for
+    `blichfeldt_general`). For a measurable set `s ⊆ ℝⁿ` and a translate `z`,
+    the tsum of `s.indicator 1` over the lattice equals the `encard` of the
+    "lattice points whose translate by `z` lands in `s`" set.
+
+    Concretely, with `T := {v ∈ stdLattice | (v : ℝⁿ) + z ∈ s}`,
+
+      ∑' v : stdLattice, s.indicator 1 ((v : ℝⁿ) + z) = T.encard
+
+    Proof: each summand equals `T.indicator 1 v` (case split on
+    `(v : ℝⁿ) + z ∈ s`), then `← tsum_subtype` converts to `∑' v : T, 1`,
+    then `ENNReal.tsum_set_one` evaluates this as `T.encard`.
+
+    Extracted from the S11 prototype's Move B (`blichfeldt_general` Path A,
+    the contrapose route). All API names — `tsum_subtype` and
+    `ENNReal.tsum_set_one` — verified against the v4.26.0 pin in
+    `research/problems/minkowski-theorem-oq-04/s12-api-verification.md` §1
+    rows 8 and 12 (now actually 7 and 8 of the verification table).
+
+    This helper isolates the only piece of S11 Move B that does not depend on
+    the more API-fragile finset-extraction step (S11 §3 Sorry 3, S12 §2 drift
+    fix), so it can be built independently of the full prototype. -/
+private theorem tsum_indicator_translate_eq_encard {n : ℕ} [NeZero n]
+    (s : Set (Fin n → ℝ)) (z : Fin n → ℝ) :
+    ∑' v : (stdLattice n).toAddSubgroup,
+        s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
+      = (({v : (stdLattice n).toAddSubgroup |
+            (v : Fin n → ℝ) + z ∈ s}).encard : ℝ≥0∞) := by
+  have h_summand_eq : ∀ v : (stdLattice n).toAddSubgroup,
+      s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
+        = ({v : (stdLattice n).toAddSubgroup |
+              (v : Fin n → ℝ) + z ∈ s}).indicator
+            (fun _ => (1 : ENNReal)) v := by
+    intro v
+    by_cases hv : (v : Fin n → ℝ) + z ∈ s
+    · simp [Set.indicator, hv, Set.mem_setOf_eq]
+    · simp [Set.indicator, hv, Set.mem_setOf_eq]
+  rw [tsum_congr h_summand_eq, ← tsum_subtype, ENNReal.tsum_set_one]
+
 /-- **Blichfeldt's General Theorem**: vol(S) > k implies k+1 ℤⁿ-congruent points in S.
 
     (The k=1 case is proved above; the general case uses an averaging argument

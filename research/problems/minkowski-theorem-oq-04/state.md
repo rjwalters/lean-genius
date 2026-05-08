@@ -5,13 +5,34 @@
 **Path**: full
 **Since**: 2026-05-07T20:08:05Z
 **Last Updated**: 2026-05-08
-**Iteration**: 12
+**Iteration**: 13
 
 ## Current Focus
 
 **1 axiom remains** (`blichfeldt_general`, the k≥1 covering-count form). 0 sorries.
-Current Lean source on origin/main: `axiomCount: 1`, `theoremCount: 6`, `lineCount: 364`,
-`sorries: 0` (post-PR #16995 S9 covering-count infrastructure + PR #17028 S10 spec).
+Current Lean source on origin/main: `axiomCount: 1`, `theoremCount: 7`, `lineCount: 403`,
+`sorries: 0` (post-S13 tsum-encard bridge — this PR).
+
+S13 (this iteration, researcher-11, 2026-05-08): extracted the `tsum`-of-indicators
+↦ `encard` bridge from the S11 prototype as a standalone `private theorem`:
+
+- `tsum_indicator_translate_eq_encard {n} [NeZero n]
+   (s : Set (Fin n → ℝ)) (z : Fin n → ℝ) :
+   ∑' v : (stdLattice n).toAddSubgroup,
+       s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
+     = (({v | (v : Fin n → ℝ) + z ∈ s}).encard : ℝ≥0∞)`
+
+This is the only piece of S11 Move B that does **not** depend on the more
+API-fragile finset-extraction step (S11 §3 Sorry 3, S12 §2 drift fix), so it
+can be built independently of the full prototype. All API names — `tsum_subtype`
+and `ENNReal.tsum_set_one` — are S12-verified against the v4.26.0 pin
+(verification table rows 7 and 8). The proof is 18 lines: case-split each
+summand into a `T.indicator` form, then `← tsum_subtype` + `ENNReal.tsum_set_one`.
+
+This advances S12's source-only verification into actual Lean source, while
+isolating the build risk: if v4.26.0's simp set fails to normalize the
+`Set.indicator`-membership-iff path, the failure is local to this 18-line block
+and recoverable without touching the rest of the file.
 
 S12 (this iteration, researcher-11, 2026-05-08): produced
 `research/problems/minkowski-theorem-oq-04/s12-api-verification.md` — re-verifies
@@ -34,13 +55,16 @@ blocked by `proofs/.lake` self-symlink).
 
 ## Active Approach (next session)
 
-### Recommended Session 13 plan
+### Recommended Session 14 plan
 
-**S13 build verification**: Apply the `s12-api-verification.md` §5 edit to the
-S11 prototype, drop into `MinkowskiTheoremOQ04.lean` replacing
-`axiom blichfeldt_general` (lines 230–242), run
-`./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04` (budget 60 min
-for Mathlib refetch).
+**S14 prototype integration**: With S13's bridge helper in place,
+the next step is integrating the **finset-extraction step** of S11's prototype
+(the part that uses S12's drift fix `← Set.toFinset_card; simp [hF₀_card]`) and
+the **Move C integration step** (`setLIntegral_mono_ae` + `setLIntegral_const`
++ `stdLattice_covolume`). Both can also be extracted as private helpers, or
+the full prototype can be assembled in place replacing `axiom blichfeldt_general`
+(lines 230–242, post-S13 numbering). Build: `./proofs/scripts/docker-build.sh
+Proofs.MinkowskiTheoremOQ04` (budget 60 min for Mathlib refetch).
 
 If build succeeds: update `meta.json` (axiomCount 1→0, status `axiomatized`→`verified`,
 badge `axiom`→`original`, sync lineCount/theoremCount), then update state.md/JSON.
@@ -54,8 +78,8 @@ issue has a ≤10-line fix) — split into a separate `private lemma`, prove
 standalone, reassemble.
 
 ## Attempt Count
-- Total attempts: 12
-- Current approach attempts: 3
+- Total attempts: 13
+- Current approach attempts: 4
 - Approaches tried:
   - S1-S3 (initial scaffolding, 4 axioms + 2 sorries)
   - S4 (PR #16744): closed both `minkowski_from_blichfeldt` sorries
@@ -72,11 +96,16 @@ standalone, reassemble.
     Three mechanical sorries identified. Total ~110 lines.
   - S11 (researcher-3): build-ready prototype with all three sorries resolved
     against verified Mathlib master `aac6750`. Risk table for S12.
-  - S12 (this iteration, researcher-11): re-verified each S11 API reference
+  - S12 (PR #17148, researcher-11): re-verified each S11 API reference
     against the v4.26.0 pin (`2df2f01`); identified 1 missing name out of 12
     (`Set.Finite.fintype_coe_eq_toFinset_card`); produced 2-line drift fix
     using only verified v4.26.0 names. Five other S11 §4 risks confirmed
     discharged.
+  - S13 (this iteration, researcher-11): extracted the `tsum`-of-indicators
+    ↦ `encard` bridge from the S11 prototype as a standalone `private theorem`
+    `tsum_indicator_translate_eq_encard` (18 lines). lineCount 364→403,
+    theoremCount 6→7. Build pending. Localizes any v4.26.0 simp-set
+    drift to a small block; full prototype integration deferred to S14.
 
 ## Blockers
 
@@ -86,10 +115,19 @@ Repair is a mechanic task; until then, S13 must budget 60 min build timeout.
 
 ## Next Action
 
-**Session 13**: Build verification. Apply the `s12-api-verification.md` §5 edit
-to S11's prototype, drop into `MinkowskiTheoremOQ04.lean`, run
-`./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04`. Once green,
-axiomCount 1→0, gallery graduation to verified.
+**Session 14**: Continue prototype integration. The S13 helper
+`tsum_indicator_translate_eq_encard` covers Move B's bridge step. Remaining
+prototype pieces to integrate:
+1. **Finset extraction** (S11 §3 Sorry 3 + S12 §2 fix): the
+   `Fintype.equivFinOfCardEq`-on-coerced-set step. Can be extracted as another
+   private helper (input: `F₀ : Finset L`, `hF₀_card : F₀.card = k+1`; output:
+   `vs : Fin (k+1) → L`, injective, range = ↑F₀).
+2. **Move C integration**: `setLIntegral_mono_ae` + `setLIntegral_const` +
+   `stdLattice_covolume` to derive `volume s ≤ k`.
+3. Then assemble: replace `axiom blichfeldt_general` with the full theorem.
+
+Once all pieces are in place and the build is green, axiomCount 1→0, gallery
+graduation to `verified` / `original`.
 
 ## Iteration 12 Builds (researcher-11, 2026-05-08)
 
