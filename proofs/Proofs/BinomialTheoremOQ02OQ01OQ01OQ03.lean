@@ -26,7 +26,9 @@ beyond Mathlib is the classical Binomial CLT itself.
 2. `multinomialMarginalCDF s p n i₀ x` — concrete CDF of the marginal X_{i₀}
    of Multinomial(n, p), defined by summing `multinomialProb` over the
    filtered piAntidiag.
-3. `standardNormalCDF` — opaque marker for the standard normal CDF.
+3. `standardNormalCDF` — concrete `noncomputable def` integrating
+   Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`,
+   plus the elementary properties `_nonneg`, `_le_one`, `_mono`.
 4. `binomial_clt_pointwise` — AXIOM: pointwise convergence of standardized
    binomial CDF to standardNormalCDF.
 5. `multinomialMarginalCDF_eq_binomialCDF` — reduction lemma, **proved**:
@@ -51,7 +53,9 @@ gives the multinomial marginal CLT.
 ## Honest Reporting
 
 - Sorries: 0 (Phase-3 reduction-lemma proof discharges the prior sorry).
-- Axioms: 2 (`binomial_clt_pointwise` + `standardNormalCDF` opaque).
+- Axioms: 1 (`binomial_clt_pointwise`). The Session-2 `standardNormalCDF`
+  opaque was replaced in Session 6 with a concrete `noncomputable def`
+  using Mathlib's `gaussianPDFReal`.
 - Status: axiomatized — not "verified".
 
 The contribution of this file is the *full reduction* of the multinomial
@@ -78,6 +82,7 @@ import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
+import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Tactic
 import Proofs.BinomialTheoremOQ02OQ01OQ02
 
@@ -107,14 +112,46 @@ noncomputable def multinomialMarginalCDF
       BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
     else 0
 
-/-! ## Standard normal CDF (opaque) -/
+/-! ## Standard normal CDF -/
 
-/-- The standard normal CDF, `Φ(x) = (1/√(2π)) ∫_{-∞}^x e^{-t²/2} dt`.
+/-- The standard normal CDF,
+    `Φ(x) = ∫_{-∞}^x (1/√(2π)) · exp(-t²/2) dt`.
 
-    Declared `opaque` here — Mathlib provides a measure-theoretic standard
-    normal (`Mathlib.Probability.Distributions.Gaussian.Basic`); bridging
-    that measure to a CDF function is left for a Phase-3 effort. -/
-opaque standardNormalCDF : ℝ → ℝ
+    Defined concretely as the Lebesgue integral of Mathlib's
+    `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`. Replaces
+    the Session-2 `opaque standardNormalCDF` marker; this removes that
+    declaration from the file's assumption count. -/
+noncomputable def standardNormalCDF (x : ℝ) : ℝ :=
+  ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t
+
+/-- The standard normal CDF is non-negative — the integral of a
+    non-negative density over a measurable set is non-negative. -/
+theorem standardNormalCDF_nonneg (x : ℝ) : 0 ≤ standardNormalCDF x := by
+  unfold standardNormalCDF
+  exact MeasureTheory.setIntegral_nonneg_of_ae
+    (Filter.Eventually.of_forall (ProbabilityTheory.gaussianPDFReal_nonneg 0 1))
+
+/-- The standard normal CDF is at most `1` — the integral over `(−∞, x]`
+    is bounded above by the total integral, which equals `1` by
+    `ProbabilityTheory.integral_gaussianPDFReal_eq_one`. -/
+theorem standardNormalCDF_le_one (x : ℝ) : standardNormalCDF x ≤ 1 := by
+  have h_total : ∫ t, ProbabilityTheory.gaussianPDFReal 0 1 t = 1 :=
+    ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero
+  unfold standardNormalCDF
+  rw [← h_total]
+  exact MeasureTheory.setIntegral_le_integral
+    (ProbabilityTheory.integrable_gaussianPDFReal 0 1)
+    (Filter.Eventually.of_forall (ProbabilityTheory.gaussianPDFReal_nonneg 0 1))
+
+/-- The standard normal CDF is monotone in `x` — the integrand is
+    non-negative and `Set.Iic x ⊆ Set.Iic y` whenever `x ≤ y`. -/
+theorem standardNormalCDF_mono : Monotone standardNormalCDF := by
+  intro x y hxy
+  unfold standardNormalCDF
+  exact MeasureTheory.setIntegral_mono_set
+    ((ProbabilityTheory.integrable_gaussianPDFReal 0 1).integrableOn)
+    (Filter.Eventually.of_forall (ProbabilityTheory.gaussianPDFReal_nonneg 0 1))
+    (Set.Iic_subset_Iic.mpr hxy).eventuallyLE
 
 /-! ## Axiom: classical de Moivre–Laplace (binomial CLT) -/
 

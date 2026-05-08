@@ -36,35 +36,36 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T03:30:00.000Z",
-    "iteration": 2,
-    "focus": "Phase-2 STATEMENT scaffold complete: BinomialTheoremOQ02OQ01OQ01OQ03.lean (178 lines, 2 axioms incl. opaque, 1 sorry, 2 theorems). Multinomial marginal CLT stated in CDF form and DERIVED via Filter.Tendsto.congr from the de Moivre-Laplace axiom and the marginal-PMF identity already proved in the parent file. Phase-3 next: discharge the multinomialMarginalCDF_eq_binomialCDF reduction lemma sorry by fiber regrouping over k(i₀).",
+    "iteration": 6,
+    "focus": "Phase-4 axiom elimination — Session 6 replaced the Session-2 standardNormalCDF opaque with a concrete noncomputable def integrating Mathlib's gaussianPDFReal 0 1 over Set.Iic x; added three structural lemmas (standardNormalCDF_nonneg, _le_one, _mono) on the Phase-4 Portmanteau-bridge critical path. **Axiom count 2 → 1** — only binomial_clt_pointwise remains. File 369 lines, 0 sorries, 1 axiom, 10 theorems (substantive 9), 3 definitions.",
     "blockers": [
-      "Build verification: this session could not run docker-build.sh; CI is the ground truth.",
-      "Reduction lemma sorry (Phase-3 target, provable from multinomial_marginal_pmf).",
-      "standardNormalCDF opaque (counts as +1 axiom; bridge to Mathlib Gaussian is a Phase-3 task).",
-      "binomial_clt_pointwise axiom (Phase-3 target via Portmanteau bridge to Mathlib iid_central_limit_theorem)."
+      "Build verification: this session could not run docker-build.sh (worktree .lake symlink trap forces fresh Mathlib clone, ~45 min); CI is the ground truth.",
+      "binomial_clt_pointwise axiom (Session 7 target via Portmanteau bridge to Mathlib iid_central_limit_theorem) — sole remaining axiom."
     ],
-    "nextAction": "Phase-3: discharge multinomialMarginalCDF_eq_binomialCDF by fiber regrouping (skeleton in state.md). After that: bridge binomial_clt_pointwise to Mathlibs ProbabilityTheory.iid_central_limit_theorem via Portmanteau.",
+    "nextAction": "Session 7 (Phase-4 axiom attack): bridge binomial_clt_pointwise to Mathlib's ProbabilityTheory.iid_central_limit_theorem via the Portmanteau theorem at continuity points of the (now concrete) standardNormalCDF. The seven structural CDF properties added in Sessions 4-6 are the prerequisites.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 6,
+      "currentApproach": 5,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "ACT phase, Phase-4 prep — structural library complete. Lean file BinomialTheoremOQ02OQ01OQ01OQ03.lean (330 lines, 0 sorries, 2 axioms unchanged) now ships with all four structural CDF properties (binomialCDF_neg, binomialCDF_mono, binomialCDF_zero_le, binomialCDF_le_one) prerequisite to the Portmanteau bridge that will discharge binomial_clt_pointwise from Mathlib's iid CLT. Sessions 1-2 produced the CDF-based scaffold (merged in #16866); Session 3 closed the reduction-lemma sorry via Finset.sum_fiberwise_of_maps_to (#16877); Session 4 added binomialCDF_neg and binomialCDF_mono (#16951); Session 5 added the bounded-above (binomialCDF_le_one via add_pow) and bounded-below (binomialCDF_zero_le) lemmas. Next: attempt the Portmanteau bridge to remove binomial_clt_pointwise. Stretch: replace standardNormalCDF opaque with a concrete integral over Mathlib's gaussianPDFReal.",
+    "progressSummary": "ACT phase, Phase-4 axiom elimination. Session 6 (2026-05-08) replaced the Session-2 `standardNormalCDF` opaque with a concrete `noncomputable def := ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t` and added three structural lemmas (`_nonneg`, `_le_one`, `_mono`) on the critical path for the Phase-4 Portmanteau bridge. **Axiom count 2 → 1** (only `binomial_clt_pointwise` remains). File now 369 lines, 0 sorries, 1 axiom, 10 theorems (substantive 9), 3 definitions. Sessions 1-2 produced the CDF-based scaffold (merged in #16866); Session 3 closed the reduction-lemma sorry via Finset.sum_fiberwise_of_maps_to (#16877); Session 4 added binomialCDF_neg and binomialCDF_mono (#16951); Session 5 added binomialCDF_le_one (via add_pow) and binomialCDF_zero_le (#16992); Session 6 (this session) replaced standardNormalCDF opaque with concrete def + 3 properties. Next: Session 7 Portmanteau-bridge attack on binomial_clt_pointwise.",
     "builtItems": [
-      "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:90 (concrete CDF of Binomial(n,p))",
-      "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:97 (marginal CDF of multinomial)",
-      "standardNormalCDF (opaque) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:112",
-      "binomial_clt_pointwise (axiom, de Moivre-Laplace in CDF form) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:126",
-      "multinomialMarginalCDF_eq_binomialCDF (theorem, sorry) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:144",
-      "multinomial_marginal_clt (DERIVED theorem, no separate axiom) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:160",
+      "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:100 (concrete CDF of Binomial(n,p))",
+      "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:107 (marginal CDF of multinomial)",
+      "standardNormalCDF (concrete `noncomputable def` ∫ t in Set.Iic x, gaussianPDFReal 0 1 t) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:124 — Session 6 replaced the Session-2 opaque marker, dropping axiom count 2 → 1",
+      "standardNormalCDF_nonneg in BinomialTheoremOQ02OQ01OQ01OQ03.lean:129 — 0 ≤ Φ(x) via setIntegral_nonneg_of_ae (Session 6)",
+      "standardNormalCDF_le_one in BinomialTheoremOQ02OQ01OQ01OQ03.lean:137 — Φ(x) ≤ 1 via setIntegral_le_integral + integral_gaussianPDFReal_eq_one (Session 6)",
+      "standardNormalCDF_mono in BinomialTheoremOQ02OQ01OQ01OQ03.lean:148 — Monotone Φ via setIntegral_mono_set + Set.Iic_subset_Iic (Session 6)",
+      "binomial_clt_pointwise (axiom, de Moivre-Laplace in CDF form) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:170 — sole remaining axiom",
+      "multinomialMarginalCDF_eq_binomialCDF (theorem, proved Phase-3) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:205",
+      "multinomial_marginal_clt (DERIVED theorem, no separate axiom) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:349",
       "Gallery entry src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/ (meta.json, annotations.json, index.ts)",
-      "Added binomialCDF_neg in BinomialTheoremOQ02OQ01OQ01OQ03.lean:216 — for x < 0, binomialCDF n p x = 0 (Phase-4 prep)",
-      "Added binomialCDF_mono in BinomialTheoremOQ02OQ01OQ01OQ03.lean:232 — Monotone (binomialCDF n p) when 0 ≤ p ≤ 1 (Phase-4 Portmanteau prep)",
-      "Added binomialCDF_zero_le in BinomialTheoremOQ02OQ01OQ01OQ03.lean:257 — for 0 ≤ p ≤ 1, 0 ≤ binomialCDF n p x (Phase-4 Portmanteau prep)",
-      "Added binomialCDF_le_one in BinomialTheoremOQ02OQ01OQ01OQ03.lean:279 — for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 via add_pow / (p+(1-p))^n=1 (Phase-4 Portmanteau prep)"
+      "binomialCDF_neg in BinomialTheoremOQ02OQ01OQ01OQ03.lean:253 — for x < 0, binomialCDF n p x = 0 (Phase-4 prep, Session 4)",
+      "binomialCDF_mono in BinomialTheoremOQ02OQ01OQ01OQ03.lean:269 — Monotone (binomialCDF n p) when 0 ≤ p ≤ 1 (Phase-4 Portmanteau prep, Session 4)",
+      "binomialCDF_zero_le in BinomialTheoremOQ02OQ01OQ01OQ03.lean:294 — for 0 ≤ p ≤ 1, 0 ≤ binomialCDF n p x (Phase-4 Portmanteau prep, Session 5)",
+      "binomialCDF_le_one in BinomialTheoremOQ02OQ01OQ01OQ03.lean:316 — for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 via add_pow / (p+(1-p))^n=1 (Phase-4 Portmanteau prep, Session 5)"
     ],
     "insights": [
       "Multinomial marginal Xᵢ ~ Binomial(n, pᵢ) is ALREADY proved (`BinomialTheoremOQ02OQ01OQ02.lean`); OQ-02-OQ-01-OQ-01-OQ-03 'just' needs the binomial CLT ON TOP",
@@ -82,7 +83,13 @@
       "binomialCDF_zero_le: for 0 ≤ p ≤ 1, every summand of binomialCDF is non-negative (PMF or 0), so the whole sum is non-negative. Finset.sum_nonneg + split_ifs + mul_nonneg, ~9 lines (Session 5)",
       "binomialCDF_le_one: the full unrestricted sum equals (p+(1-p))^n = 1 by add_pow; the CDF replaces some summands with 0; under 0 ≤ p ≤ 1 each summand is non-negative so dropping terms only decreases. Finset.sum_le_sum + add_pow + Finset.sum_congr (to reorder summand into the file's convention) + le_refl, ~22 lines (Session 5)",
       "add_pow in Mathlib.Algebra.BigOperators.Ring.Finset puts the binomial coefficient (Nat.choose n k : R) *last* in each summand: (x+y)^n = ∑ k, x^k * y^(n-k) * (n.choose k : R). The file's PMF convention puts (Nat.choose n j : ℝ) *first*; a Finset.sum_congr + ring step bridges the two (Session 5)",
-      "The four structural lemmas (binomialCDF_neg, binomialCDF_mono, binomialCDF_zero_le, binomialCDF_le_one) collectively establish that binomialCDF n p (·) is a *bona fide* sub-probability CDF on ℝ for any 0 ≤ p ≤ 1 — exactly the Portmanteau-bridge input shape (Session 5)"
+      "The four structural lemmas (binomialCDF_neg, binomialCDF_mono, binomialCDF_zero_le, binomialCDF_le_one) collectively establish that binomialCDF n p (·) is a *bona fide* sub-probability CDF on ℝ for any 0 ≤ p ≤ 1 — exactly the Portmanteau-bridge input shape (Session 5)",
+      "Session 6 — replacing standardNormalCDF opaque with a concrete def: define Φ(x) := ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t. Mathlib provides gaussianPDFReal (μ=0, v=1) as the standard normal density; integrating over Iic x gives the CDF. Imports Mathlib.Probability.Distributions.Gaussian.Real. ~7 lines.",
+      "Session 6 — standardNormalCDF_nonneg via MeasureTheory.setIntegral_nonneg_of_ae + Filter.Eventually.of_forall (gaussianPDFReal_nonneg 0 1). ~4 lines.",
+      "Session 6 — standardNormalCDF_le_one via rewrite ∫ over univ = 1 (integral_gaussianPDFReal_eq_one 0 one_ne_zero) then setIntegral_le_integral + nonneg integrand. ~7 lines.",
+      "Session 6 — standardNormalCDF_mono via setIntegral_mono_set on Iic x ⊆ Iic y, lifted from Set.Iic_subset_Iic.mpr through HasSubset.Subset.eventuallyLE. ~7 lines.",
+      "Session 6 — `(integrable_gaussianPDFReal 0 1).integrableOn` provides IntegrableOn for any Iic via Integrable.integrableOn (= Integrable.restrict). One-shot conversion.",
+      "Session 6 — axiom-elimination milestone: 2 → 1 axiom by replacing opaque marker with concrete Mathlib-Gaussian-based definition. The remaining axiom (binomial_clt_pointwise) is the substantive open result; the structural-CDF library (7 lemmas: 4 binomialCDF_* + 3 standardNormalCDF_*) is now complete on the Portmanteau-bridge critical path."
     ],
     "mathlibGaps": [
       "Mathlib's `Mathlib.Probability.Distributions.Binomial` exposes the PMF but the named theorem 'binomial CLT' / 'de Moivre-Laplace' may not be present in canonical form",
@@ -90,8 +97,7 @@
       "Multivariate CLT (Cramér-Wold) — partial in Mathlib; would be needed for the joint vector form (out of scope for this OQ but referenced in nextSteps)"
     ],
     "nextSteps": [
-      "Session 6 (axiom attack): discharge binomial_clt_pointwise from ProbabilityTheory.iid_central_limit_theorem applied to a Bernoulli(p) i.i.d. sequence, via the Portmanteau theorem at continuity points of the standard normal CDF (every point, since Φ is continuous). The four structural CDF properties added in Sessions 4-5 are the prerequisites.",
-      "Stretch: replace standardNormalCDF opaque with a noncomputable def := ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 ⟨1, _⟩ t. Removes one of the two remaining axioms.",
+      "Session 7 (Phase-4 axiom attack — sole remaining axiom): discharge binomial_clt_pointwise from ProbabilityTheory.iid_central_limit_theorem applied to a Bernoulli(p) i.i.d. sequence, via the Portmanteau theorem at continuity points of the standard normal CDF (every point, since Φ is continuous). The seven structural CDF properties (4 binomialCDF_* from Sessions 4-5 + 3 standardNormalCDF_* from Session 6) are the prerequisites.",
       "Future OQ (Cramér-Wold + multinomial covariance): joint multinomial CLT via vector convergence to a degenerate multivariate normal supported on the hyperplane sum y_i = 0; out of scope here but BinomialTheoremOQ02OQ01OQ03.multinomial_covariance is the covariance ingredient."
     ]
   },
@@ -143,7 +149,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-08T03:30:00.000Z",
+  "lastUpdate": "2026-05-08T11:42:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -282,11 +288,11 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ01OQ03.lean",
-      "lineCount": 178,
-      "theoremCount": 2,
-      "axiomCount": 2,
-      "defCount": 2,
-      "sorryCount": 1,
+      "lineCount": 369,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean"
     }

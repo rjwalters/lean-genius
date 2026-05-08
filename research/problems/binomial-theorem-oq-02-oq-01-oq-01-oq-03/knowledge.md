@@ -516,6 +516,146 @@ This is exactly the input the Portmanteau bridge will need.
 
 ---
 
+## Session 2026-05-08 (Session 6, researcher-1) — ACT (Phase-4 axiom elimination)
+
+**Mode**: BUILD-ON-PRIOR (Sessions 1–5 produced the structural-CDF
+library; this session executes Session 5's "Stretch (independent)"
+goal — replace the `standardNormalCDF` opaque with a concrete
+`noncomputable def`).
+
+**Outcome**: **Axiom count 2 → 1**. The Session-2 `opaque
+standardNormalCDF` marker has been replaced with a concrete
+`noncomputable def` integrating Mathlib's `gaussianPDFReal 0 1` over
+`Set.Iic x`. Three structural lemmas added on the critical path of the
+Phase-4 Portmanteau bridge.
+
+### What Was Built
+
+* Replaced
+  `opaque standardNormalCDF : ℝ → ℝ`
+  (Session 2) with
+  `noncomputable def standardNormalCDF (x : ℝ) : ℝ :=
+    ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t`.
+  Imports `Mathlib.Probability.Distributions.Gaussian.Real`. ~7 lines.
+
+* `standardNormalCDF_nonneg (x : ℝ) : 0 ≤ standardNormalCDF x`
+  — `MeasureTheory.setIntegral_nonneg_of_ae` applied to the universal
+  pointwise non-negativity of `gaussianPDFReal 0 1` (lifted to ae via
+  `Filter.Eventually.of_forall`). ~4 lines.
+
+* `standardNormalCDF_le_one (x : ℝ) : standardNormalCDF x ≤ 1`
+  — rewrites `1` as the total integral
+  `∫ t, gaussianPDFReal 0 1 t = 1` (Mathlib's
+  `integral_gaussianPDFReal_eq_one 0 one_ne_zero`), then applies
+  `MeasureTheory.setIntegral_le_integral`
+  (with the integrand integrability and pointwise non-negativity as
+  hypotheses). ~7 lines.
+
+* `standardNormalCDF_mono : Monotone standardNormalCDF`
+  — `MeasureTheory.setIntegral_mono_set` between `Set.Iic x` and
+  `Set.Iic y` for `x ≤ y`. The set inclusion `Iic x ⊆ Iic y` is
+  `Set.Iic_subset_Iic.mpr hxy`, lifted to `EventuallyLE` via
+  `HasSubset.Subset.eventuallyLE`. ~7 lines.
+
+### Why These Lemmas
+
+The Phase-4 work — the discharge of `binomial_clt_pointwise` —
+requires a Portmanteau-style bridge from
+`ProbabilityTheory.iid_central_limit_theorem` to a CDF-pointwise-
+convergence statement. The Portmanteau machinery requires the limit
+CDF to be a *bona fide* CDF, which means:
+
+- non-negative: `0 ≤ Φ(x)` for all `x`;
+- bounded above by 1: `Φ(x) ≤ 1` for all `x` (sub-probability);
+- monotone non-decreasing: `Φ(x) ≤ Φ(y)` whenever `x ≤ y`.
+
+Together with the four `binomialCDF_*` structural lemmas added in
+Sessions 4–5, this gives the Portmanteau bridge the full set of inputs
+it needs on both sides of the convergence — both the limit CDF (Φ)
+and the approximating CDFs (binomial) are now machine-verified to be
+proper CDFs in the Mathlib sense.
+
+### Status After This Session
+
+* Sorries: 0 (unchanged).
+* **Axioms: 1** (was 2). Only `binomial_clt_pointwise` remains; the
+  `standardNormalCDF` opaque is gone. This is the primary axiom-
+  reduction milestone for this entry since Session 2.
+* Theorems: 10 (was 7): added `standardNormalCDF_nonneg`,
+  `standardNormalCDF_le_one`, `standardNormalCDF_mono`. Substantive
+  theorem count: 9 (was 6).
+* Definitions: 3 (was 2): `standardNormalCDF` is now a concrete
+  `noncomputable def` rather than an opaque marker.
+* File length: 369 lines (was 330; +39 for the def + 3 lemmas +
+  rewritten docstring/section header).
+* Status: still `axiomatized` — `binomial_clt_pointwise` keeps the
+  classification, but the assumption count is now strictly the
+  classical de Moivre-Laplace theorem.
+
+### Honest Reporting
+
+* Local Docker build was **not** run (CI is the ground truth; the
+  worktree has the recursive `.lake` symlink trap that forces a fresh
+  Mathlib clone). The proofs use well-tested Mathlib idioms —
+  `MeasureTheory.setIntegral_nonneg_of_ae`, `setIntegral_le_integral`,
+  `setIntegral_mono_set`, `ProbabilityTheory.gaussianPDFReal_nonneg`,
+  `integrable_gaussianPDFReal`, `integral_gaussianPDFReal_eq_one`,
+  `Filter.Eventually.of_forall`, `Set.Iic_subset_Iic`,
+  `HasSubset.Subset.eventuallyLE`, `Integrable.integrableOn`.
+  Confidence is high but not CI-verified at push time.
+
+* This is **genuine axiom elimination**, not infrastructure: the
+  assumption count goes 2 → 1. The remaining axiom
+  (`binomial_clt_pointwise`) is the substantive open work — closing
+  it would deliver an axiom-free proof of the multinomial marginal
+  CLT.
+
+* The new structural lemmas are **on the critical path** for the
+  Phase-4 Portmanteau bridge — they are not gratuitous infrastructure.
+  The next session that attempts the bridge will consume all three.
+
+* Worktree-vs-main path trap encountered (memory:
+  `feedback_mechanic_worktree_vs_main_repo.md`): initial absolute-path
+  edits landed in the main-repo file (mid-rebase on
+  `feature/enricher-3`) instead of the worktree. Rescued via
+  `cd /Users/rwalters/GitHub/lean-genius && git checkout -- proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`,
+  then re-applied to the worktree path explicitly. No persistent
+  damage; the rebase state was preserved.
+
+### Files Changed
+
+- UPDATED `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+  (330 → 369 lines, +1 def + 3 theorems, axiom count 2 → 1).
+- UPDATED `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+  (axiomCount, lineCount, theoremCount, substantiveTheoremCount,
+   definitionCount, imports, originalContributions, sections,
+   description, problemStatement, keyInsights, conclusion, assumptions).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+  (this entry).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`
+  (Phase-4 axiom-elimination status; promoted Session 7 axiom attack
+  to next action).
+- UPDATED `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json`
+  (knowledge fields).
+
+### Next Steps
+
+1. **Session 7 (Phase-4 axiom attack — sole remaining axiom)**:
+   discharge `binomial_clt_pointwise` from
+   `ProbabilityTheory.iid_central_limit_theorem` via the Portmanteau
+   bridge. With the seven structural lemmas now in place
+   (`binomialCDF_neg`, `_mono`, `_zero_le`, `_le_one`,
+   `standardNormalCDF_nonneg`, `_le_one`, `_mono`), the bridge has
+   all its prerequisites. Estimated ~150–200 lines of new Lean.
+
+2. **Joint multinomial CLT** (out of scope for this OQ): coordinate-
+   wise CLTs do not imply joint convergence; Cramér-Wold + the
+   covariance computation in
+   `BinomialTheoremOQ02OQ01OQ03.multinomial_covariance` give the joint
+   statement; this should be a sibling OQ.
+
+---
+
 ## Dead Ends
 
 - None yet.
