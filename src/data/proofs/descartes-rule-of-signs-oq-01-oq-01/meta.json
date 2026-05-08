@@ -21,11 +21,26 @@
     "theoremCount": 9,
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
-      "Polynomial.IsAlgClosed.degree_eq_card_roots",
-      "Polynomial.aeval_conj",
-      "Complex.conj_ofReal",
-      "Polynomial.eval_map",
-      "Complex.normSq_apply"
+      {
+        "theorem": "Polynomial.IsAlgClosed.degree_eq_card_roots",
+        "description": "Over an algebraically closed field, degree equals the cardinality of the multiset of roots"
+      },
+      {
+        "theorem": "Polynomial.aeval_conj",
+        "description": "Compatibility of algebra evaluation with complex conjugation"
+      },
+      {
+        "theorem": "Complex.conj_ofReal",
+        "description": "Conjugation fixes real numbers embedded in ℂ"
+      },
+      {
+        "theorem": "Polynomial.eval_map",
+        "description": "Evaluation of a polynomial mapped through a ring hom"
+      },
+      {
+        "theorem": "Complex.normSq_apply",
+        "description": "Squared norm formula for ℂ"
+      }
     ],
     "definitionCount": 0
   },

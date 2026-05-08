@@ -35,7 +35,11 @@
       "Concrete verification examples via native_decide"
     ],
     "mathlibDependencies": [
-      "Archive.Wiedijk100Theorems.BallotProblem (Ballot.ballot_problem)"
+      {
+        "theorem": "Ballot.ballot_problem",
+        "description": "Wiedijk #100 ballot problem formalization",
+        "module": "Archive.Wiedijk100Theorems.BallotProblem"
+      }
     ]
   },
   "overview": {

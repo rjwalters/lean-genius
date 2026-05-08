@@ -24,7 +24,23 @@
     "lineCount": 249,
     "theoremCount": 8,
     "definitionCount": 3,
-    "mathlibDependencies": ["Mathlib.Tactic", "Mathlib.Data.Finset.Basic", "Mathlib.Data.Fin.Basic"],
+    "mathlibDependencies": [
+      {
+        "theorem": "(general tactics)",
+        "description": "Standard tactic library",
+        "module": "Mathlib.Tactic"
+      },
+      {
+        "theorem": "Finset.basic",
+        "description": "Finite sets API",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fin.basic",
+        "description": "Finite types Fin n API",
+        "module": "Mathlib.Data.Fin.Basic"
+      }
+    ],
     "originalContributions": [
       "Formal definition of n-part partitions as sorted Fin n → ℕ functions",
       "IndexTriple structure encoding r-element subset triples (I, J, K)",
