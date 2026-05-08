@@ -1,8 +1,70 @@
 # Current State
 
-**Phase**: ACT (S8 partial: K-side integral building blocks landed; S9 = IBP step)
-**Since**: 2026-05-09T00:30:00Z
-**Iteration**: 8
+**Phase**: ACT (S9 IBP track in flight across 3 stacked PRs; orthogonal §4 chain rule landing here)
+**Since**: 2026-05-09T01:30:00Z
+**Iteration**: 9
+
+## Iteration 9 (2026-05-09T01:30Z, researcher-1): S9 orthogonal — complModulus chain rule
+
+Session 9 (ACT, this PR) adds the **chain rule for the complementary
+modulus** to §4 of `proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+
+```lean
+lemma complModulus_hasDerivAt (hk : k ^ 2 < 1) :
+    HasDerivAt complModulus (-k / complModulus k) k
+```
+
+This is the K-side ingredient (alongside the eventually-assembled
+`dE_dk` and `dK_dk`) for the S11 Wronskian closure. The complementary
+elliptic integrals `K(k') = ellipticK (complModulus k)` and `E(k') =
+ellipticE (complModulus k)` then differentiate by composition: e.g.
+`(d/dk) ellipticK' k = (d/dk') ellipticK k' · (-k / k')`. Without this
+lemma, the Wronskian closure cannot proceed because we cannot compute
+`(d/dk) ellipticE'` or `(d/dk) ellipticK'`.
+
+**Proof.** Mirrors `integrandE_hasDerivAt_in_k` (§8, with the `θ`
+parameter dropped). Chain rule on the inner polynomial `1 − k²` (using
+`hasDerivAt_pow 2` plus `(hasDerivAt_const k 1).sub`), giving derivative
+`−2k`. `HasDerivAt.sqrt` uses `1 − k² ≠ 0` (from `k² < 1`). The native
+quotient `−(2k) / (2 · √(1 − k²))` is reduced to `−k / k'` by
+`field_simp` (using `Real.sqrt (1 − k²) ≠ 0`). 25 lines including
+docstring.
+
+**Net new content**: 0 definitions, 1 theorem, 0 axioms, 0 sorries.
+**Updated total**: 9 definitions, 39 theorems, 1 axiom, 0 sorries,
+1002 lines (was 963 on origin/main).
+
+**Independence from open S9 PRs (#17371, #17445, #17471, #17477,
+#17482)**: this PR touches §4 only (between `complModulus_complModulus`
+and the §5 separator). It does not modify §1, §8, §9, §10, §11, §12, or
+the §4 lemmas that PR #17477 adds (`complModulus_zero`,
+`complModulus_one`, `complModulus_le_one`, `complModulus_neg`). All
+collisions are textual (additive) and Mechanic-tractable should #17477
+land first.
+
+**Mathlib API surface**: zero new lemmas. Uses `hasDerivAt_pow`,
+`hasDerivAt_const`, `HasDerivAt.sub`, `HasDerivAt.sqrt`, `Real.sqrt_pos`,
+plus `field_simp`, `linarith`. No new imports.
+
+## Sharpening of the Plan for S10+
+
+With this PR (chain rule for `k'`) in place, S10 (or a later "S11
+prep") only needs to assemble:
+
+```lean
+lemma ellipticK'_hasDerivAt (hk : 0 < k) (hk1 : k^2 < 1) :
+    HasDerivAt ellipticK'
+      (((ellipticE (complModulus k) - (1 - (complModulus k)^2) *
+          ellipticK (complModulus k)) /
+         (complModulus k * (1 - (complModulus k)^2)))
+        * (-k / complModulus k)) k
+```
+
+— i.e., `dK_dk` (S9 IBP track endgame) composed with this PR's chain rule
+via `HasDerivAt.comp`, plus algebraic simplification of `1 − (k')² = k²`
+via `complModulus_sq`. Same template for `ellipticE'_hasDerivAt`. Then
+S11 Wronskian closure via `eq_of_hasDerivAt_eq_zero` on
+`f(k) = E·K' + E'·K − K·K'`.
 
 ## Iteration 8 (2026-05-09T00:30Z, researcher-9): S8 partial — integral building blocks
 
