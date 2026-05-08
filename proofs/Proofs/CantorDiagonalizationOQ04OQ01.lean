@@ -34,6 +34,9 @@ the original theorem exactly.
 5. `cannot_code_endomorphisms_bool_setoid` — Bool cannot code its endomorphisms
 6. `cantor_setoid_no_surjection` — Cantor diagonal in setoid setting
 7. `cannot_code_endomorphisms_nat_parity` — ℕ cannot code endomorphisms up to parity
+8. `trivial_setoid_codes_endomorphisms` — every inhabited Y codes under the trivial (one-class) setoid
+9. `bool_trivial_setoid_codes_endomorphisms` — Bool codes under trivial setoid (contrast with #5)
+10. `coding_descends_to_coarser` — coding under a finer setoid descends to any coarser setoid
 
 ## Proof Technique
 Diagonal construction: g(y) = f(decode(y)(y)).
@@ -162,5 +165,57 @@ theorem succ_no_parity_fixpoint : ∀ n : ℕ, ¬ paritySetoidN.r (n + 1) n := b
 theorem cannot_code_endomorphisms_nat_parity :
     CodesEndomorphismsSetoid ℕ paritySetoidN → False :=
   no_coding_setoid_if_fixpoint_free paritySetoidN (fun n : ℕ => n + 1) succ_no_parity_fixpoint
+
+-- ============================================================
+-- Part VIII: Trivial Setoid — Coding Always Possible
+-- ============================================================
+
+/-- The trivial setoid: every pair is equivalent. Collapses Y to a single class. -/
+def trivialSetoid (Y : Type*) : Setoid Y where
+  r := fun _ _ => True
+  iseqv := ⟨fun _ => trivial, fun _ => trivial, fun _ _ => trivial⟩
+
+/-- **Setoid-choice sensitivity**: under the trivial (one-class) setoid, every
+    inhabited type codes its endomorphisms vacuously. The retraction holds because
+    `s.r a b = True` for all `a, b`. Together with `cannot_code_endomorphisms_bool_setoid`
+    this shows that coding-feasibility depends genuinely on the setoid structure,
+    not just on the underlying type. -/
+theorem trivial_setoid_codes_endomorphisms (Y : Type*) [Inhabited Y] :
+    CodesEndomorphismsSetoid Y (trivialSetoid Y) where
+  encode := fun _ => default
+  decode := fun _ => id
+  retract := fun _ _ => trivial
+
+/-- Bool DOES code its endomorphisms under the trivial setoid, even though it
+    fails under the discrete setoid (cf. `cannot_code_endomorphisms_bool_setoid`).
+    Witnesses that the impossibility result for Bool is setoid-specific. -/
+theorem bool_trivial_setoid_codes_endomorphisms :
+    CodesEndomorphismsSetoid Bool (trivialSetoid Bool) :=
+  trivial_setoid_codes_endomorphisms Bool
+
+-- ============================================================
+-- Part IX: Refinement Lemma — Coding Descends to Coarser Setoids
+-- ============================================================
+
+/-- A setoid `s` **refines** `t` when `s`-equivalence implies `t`-equivalence
+    (equivalently, `t` is coarser than `s`). The discrete setoid refines every
+    setoid; every setoid refines the trivial setoid. -/
+def IsRefinement {Y : Type*} (s t : Setoid Y) : Prop :=
+  ∀ a b : Y, s.r a b → t.r a b
+
+/-- **Refinement-descent**: if `Y` codes its endomorphisms under a finer setoid `s`,
+    the same encode/decode also code under any coarser setoid `t`. The retraction
+    transports along refinement because `t`-equivalence is weaker than `s`-equivalence. -/
+theorem coding_descends_to_coarser {Y : Type*} {s t : Setoid Y}
+    (hst : IsRefinement s t) (c : CodesEndomorphismsSetoid Y s) :
+    CodesEndomorphismsSetoid Y t where
+  encode := c.encode
+  decode := c.decode
+  retract := fun g y => hst _ _ (c.retract g y)
+
+/-- Every setoid is a refinement of the trivial setoid (vacuously: the trivial relation
+    is `True`). This is the canonical "top" of the refinement order on `Setoid Y`. -/
+theorem refines_trivial {Y : Type*} (s : Setoid Y) : IsRefinement s (trivialSetoid Y) :=
+  fun _ _ _ => trivial
 
 end CantorDiagonalizationOQ04OQ01
