@@ -18,11 +18,11 @@
       "erdos"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 1,
     "axiomCount": 1,
     "theoremCount": 11,
-    "lineCount": 335,
-    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 3 sorries in this file (geometric edge-crossing verifications).",
+    "lineCount": 737,
+    "assumptions": "1 axiom: kostochka_pyber_r2 (the r=2 graph case of Kostochka-Pyber theorem, proven 1988). 1 sorry in this file: planar_graphs_edge_bound (Euler's formula |E| ≤ 3|V| - 6, not yet in Lean Mathlib). K₃ and K₄ planarity proved with explicit coordinates and linear-functional convex hull arguments.",
     "dateAdded": "2026-04-03",
     "mathlib_version": "4.26.0",
     "definitionCount": 1
@@ -125,19 +125,21 @@
     "imports": [
       "Mathlib.Tactic",
       "Mathlib.Analysis.InnerProductSpace.EuclideanDist",
+      "Mathlib.Topology.Algebra.Module.FiniteDimension",
       "Mathlib.Analysis.Convex.Hull",
+      "Mathlib.Analysis.Convex.Combination",
       "Proofs.Erdos1018OQ04"
     ],
     "namespace": "Erdos1018OQ04Completion",
-    "lineCount": 335,
+    "lineCount": 737,
     "axiomCount": 1,
     "theoremCount": 11,
     "path": "Proofs/Erdos1018OQ04Incomplete01.lean",
-    "sorries": 3,
+    "sorries": 1,
     "definitionCount": 1,
     "additionalFiles": [
       "Proofs/Erdos1018OQ04Incomplete01Aristotle.lean"
     ]
   },
-  "sorries": 3
+  "sorries": 1
 }
