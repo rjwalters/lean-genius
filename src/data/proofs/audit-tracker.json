@@ -3240,13 +3240,10 @@
       "result": "clean"
     },
     "erdos-1039": {
-      "agentId": "auditor-loom-2026-05-08",
       "auditCount": 4,
-      "lastAudited": "2026-05-08T05:13:00Z",
-      "result": "issues-found",
-      "issues": [
-        "sorries 2→3 mismatch (clustered_implies_large_disc proof reverted in working tree); fix in flight via PR #16926"
-      ]
+      "issues": [],
+      "lastAudited": "2026-05-08T06:11:15Z",
+      "result": "issues-fixed"
     },
     "erdos-104": {
       "auditCount": 3,
