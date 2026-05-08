@@ -10,6 +10,20 @@
   The previous `hMn_axiom` (M^n v expressed via lower powers using minpoly coefficients)
   is now derived from Mathlib: minpoly is monic of degree n, so its `aeval`-expansion at M
   gives M^n + Σ_{k<n} c_k • M^k = 0; applying `mulVec v` yields the identity directly.
+
+  ## Session 3: Companion-similarity biconditional
+
+  This session establishes the *converse* of `nonderogatory_similar_to_companion`:
+  if M is similar to `companionMx (minpoly K M)`, then M is nonderogatory. Combined
+  with the existing forward direction, this yields the full biconditional
+  `nonderogatory_iff_similar_to_companion`. The argument:
+
+    1. The standard basis vector e₀ is a cyclic vector for `companionMx p` for any p
+       (since C^k e₀ = e_k for k < n by the subdiagonal structure).
+    2. Similarity transports cyclic vectors: if P⁻¹ M P = N and w is cyclic for N,
+       then P · w is cyclic for M (because q(M)(P w) = P (q(N) w) and P is invertible).
+    3. The biconditional `IsNonderogatory M ↔ ∃ v, IsCyclicVector M v` from OQ-01-OQ-01
+       then closes the converse: M has a cyclic vector ⇒ M is nonderogatory.
 -/
 import Mathlib
 import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04
@@ -208,6 +222,184 @@ theorem nonderogatory_similar_to_companion
           (mul_assoc _ _ _).symm
       _ = 1 * companionMx (minpoly K M) := by rw [hPI]
       _ = companionMx (minpoly K M) := one_mul _⟩
+
+/-! ## Session 3: Converse direction — companion-similarity biconditional -/
+
+/-- aeval expansion to a finite sum (general polynomial, no degree assumption). -/
+private lemma aeval_eq_sum_range_natDegree (q : K[X])
+    (M : Matrix (Fin n) (Fin n) K) :
+    aeval M q = ∑ k ∈ Finset.range (q.natDegree + 1), q.coeff k • M ^ k := by
+  simp only [aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, ← Algebra.smul_def]
+  apply Finset.sum_subset
+  · intro i hi
+    exact Finset.mem_range.mpr
+      (Nat.lt_succ_of_le (Polynomial.le_natDegree_of_mem_supp i hi))
+  · intro i _ hi
+    simp [Polynomial.notMem_support_iff.mp hi]
+
+/-- For C = companionMx p (any p), C^k applied to the standard basis vector e₀
+    equals e_k, for k < n. Reflects the subdiagonal structure of C. -/
+private lemma companionMx_pow_e0 (p : K[X]) (hn : 0 < n) :
+    ∀ (k : ℕ) (hk : k < n),
+      ((companionMx (n := n) p) ^ k).mulVec (Pi.single (⟨0, hn⟩ : Fin n) (1 : K)) =
+        Pi.single (⟨k, hk⟩ : Fin n) 1 := by
+  intro k
+  induction k with
+  | zero =>
+    intro _
+    simp [pow_zero, Matrix.one_mulVec]
+  | succ k ih =>
+    intro hk
+    have hk' : k < n := Nat.lt_of_succ_lt hk
+    -- A^(k+1) = A * A^k via pow_succ', so (A^(k+1)).mulVec v = A.mulVec (A^k.mulVec v).
+    rw [pow_succ', Matrix.mul_mulVec, ih hk']
+    funext i
+    simp only [Matrix.mulVec, dotProduct]
+    rw [Finset.sum_eq_single (⟨k, hk'⟩ : Fin n)]
+    · -- Main term: companionMx p i ⟨k, hk'⟩ * (Pi.single ⟨k, hk'⟩ 1) ⟨k, hk'⟩
+      simp only [Pi.single_eq_same, mul_one, companionMx]
+      have hk1ne : k + 1 ≠ n := Nat.ne_of_lt hk
+      rw [if_neg hk1ne]
+      -- Goal: (if i.val = k + 1 then (1:K) else 0) = Pi.single ⟨k+1, hk⟩ 1 i
+      simp only [Pi.single_apply]
+      by_cases hi : i.val = k + 1
+      · have hieq : (i : Fin n) = ⟨k + 1, hk⟩ := Fin.ext hi
+        rw [if_pos hi, if_pos hieq]
+      · have hineq : (i : Fin n) ≠ ⟨k + 1, hk⟩ := fun h => hi (by rw [h])
+        rw [if_neg hi, if_neg hineq]
+    · -- Off-diagonal term vanishes via Pi.single
+      intro j _ hjne
+      have hpi : (Pi.single (⟨k, hk'⟩ : Fin n) (1 : K)) j = 0 := by
+        simp only [Pi.single_apply, if_neg hjne]
+      rw [hpi, mul_zero]
+    · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- For any polynomial p, the standard basis vector e₀ is a cyclic vector
+    for `companionMx p`. -/
+private theorem companionMx_isCyclic_e0 (p : K[X]) (hn : 0 < n) :
+    IsCyclicVector (companionMx (n := n) p) (Pi.single (⟨0, hn⟩ : Fin n) (1 : K)) := by
+  intro q hq_deg hann
+  -- Show q.coeff k = 0 for all k by examining hann at position k.
+  ext k
+  rw [Polynomial.coeff_zero]
+  rcases lt_or_ge k n with hk | hk
+  · -- Case k < n: extract from hann at position ⟨k, hk⟩.
+    have h_at_k := congr_fun hann ⟨k, hk⟩
+    simp only [Pi.zero_apply] at h_at_k
+    rw [aeval_eq_sum_range_natDegree q (companionMx p), sum_mulVec_local,
+        Finset.sum_apply] at h_at_k
+    -- h_at_k : ∑ j ∈ range (deg q + 1), (q.coeff j • C^j).mulVec e0 ⟨k, hk⟩ = 0
+    rcases le_or_lt k q.natDegree with hkd | hkd
+    · -- Case k ≤ deg q: isolate j = k in the sum.
+      have hk_in : k ∈ Finset.range (q.natDegree + 1) :=
+        Finset.mem_range.mpr (Nat.lt_succ_of_le hkd)
+      have term_at_k :
+          (q.coeff k • (companionMx (n := n) p) ^ k).mulVec
+            (Pi.single (⟨0, hn⟩ : Fin n) 1) ⟨k, hk⟩ = q.coeff k := by
+        rw [Matrix.smul_mulVec, companionMx_pow_e0 p hn k hk]
+        simp [Pi.single_eq_same]
+      have other_terms_zero : ∀ j ∈ Finset.range (q.natDegree + 1), j ≠ k →
+          (q.coeff j • (companionMx (n := n) p) ^ j).mulVec
+            (Pi.single (⟨0, hn⟩ : Fin n) 1) ⟨k, hk⟩ = 0 := by
+        intro j hj_mem hj_ne
+        have hj_lt_n : j < n := by
+          have h1 : j < q.natDegree + 1 := Finset.mem_range.mp hj_mem
+          omega
+        rw [Matrix.smul_mulVec, companionMx_pow_e0 p hn j hj_lt_n]
+        simp only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]
+        rw [if_neg]
+        · exact mul_zero _
+        · intro h
+          -- h : (⟨k, hk⟩ : Fin n) = ⟨j, hj_lt_n⟩; extract k = j and contradict hj_ne.
+          exact hj_ne (congrArg Fin.val h.symm)
+      rw [Finset.sum_eq_single k other_terms_zero (fun h => absurd hk_in h)] at h_at_k
+      rw [term_at_k] at h_at_k
+      exact h_at_k
+    · -- Case k > deg q: q.coeff k = 0 by definition of natDegree.
+      exact Polynomial.coeff_eq_zero_of_natDegree_lt hkd
+  · -- Case k ≥ n: q.coeff k = 0 since deg q < n ≤ k.
+    exact Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le hq_deg hk)
+
+/-- **Similarity transports cyclic vectors**: if P⁻¹ M P = N with P invertible
+    and w is cyclic for N, then P · w is cyclic for M. -/
+private theorem cyclicVector_similar_transport
+    (M N : Matrix (Fin n) (Fin n) K) (P : Matrix (Fin n) (Fin n) K) (hP : IsUnit P)
+    (hsim : P⁻¹ * M * P = N) (w : Fin n → K) (hw : IsCyclicVector N w) :
+    IsCyclicVector M (P.mulVec w) := by
+  intro q hq_deg hann
+  -- Apply hw at q with the goal (aeval N q).mulVec w = 0.
+  apply hw q hq_deg
+  -- M * P = P * N (multiply hsim by P on the left and use P * P⁻¹ = 1).
+  have hPunit_det : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
+  have hPP_inv : P * P⁻¹ = 1 := Matrix.mul_nonsing_inv P hPunit_det
+  have hMP : M * P = P * N := by
+    have h1 : P * (P⁻¹ * M * P) = P * N := by rw [hsim]
+    have h2 : P * (P⁻¹ * M * P) = M * P := by
+      -- P * ((P⁻¹ * M) * P) → (P * (P⁻¹ * M)) * P → ((P * P⁻¹) * M) * P → (1 * M) * P → M * P
+      rw [← mul_assoc P (P⁻¹ * M) P, ← mul_assoc P P⁻¹ M, hPP_inv, one_mul]
+    exact h2.symm.trans h1
+  -- Show M^j * P = P * N^j by induction on j.
+  have hsemi : ∀ j : ℕ, M ^ j * P = P * N ^ j := by
+    intro j
+    induction j with
+    | zero => simp
+    | succ j ih =>
+      calc M ^ (j + 1) * P
+          = M * (M ^ j * P) := by rw [pow_succ', mul_assoc]
+        _ = M * (P * N ^ j) := by rw [ih]
+        _ = (M * P) * N ^ j := by rw [mul_assoc]
+        _ = (P * N) * N ^ j := by rw [hMP]
+        _ = P * N ^ (j + 1) := by rw [mul_assoc, ← pow_succ']
+  -- Lift to aeval: aeval M q * P = P * aeval N q.
+  have hac : aeval M q * P = P * aeval N q := by
+    rw [aeval_eq_sum_range_natDegree q M, aeval_eq_sum_range_natDegree q N,
+        Finset.sum_mul, Finset.mul_sum]
+    refine Finset.sum_congr rfl (fun j _ => ?_)
+    -- (q.coeff j • M^j) * P → q.coeff j • (M^j * P) → q.coeff j • (P * N^j)
+    -- mul_smul_comm: rewrites a * (c • b) to c • (a * b), giving P * (q.coeff j • N^j) on RHS.
+    rw [smul_mul_assoc, hsemi, mul_smul_comm]
+  -- Convert to mulVec form and apply injectivity of P.mulVec.
+  have hmv : (aeval M q * P).mulVec w = (P * aeval N q).mulVec w := by rw [hac]
+  -- (A * B).mulVec v = A.mulVec (B.mulVec v) via ← Matrix.mulVec_mulVec.
+  rw [← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hann] at hmv
+  -- hmv : 0 = P.mulVec ((aeval N q).mulVec w)
+  have hPmv : P.mulVec ((aeval N q).mulVec w) = 0 := hmv.symm
+  have hPinj : Function.Injective P.mulVec :=
+    Matrix.mulVec_injective_iff_isUnit.mpr hP
+  exact hPinj (by rw [hPmv, Matrix.mulVec_zero])
+
+/-- **Converse direction**: if M is similar to `companionMx (minpoly K M)`, then
+    M is nonderogatory. -/
+theorem similar_to_companion_implies_nonderogatory
+    (M : Matrix (Fin n) (Fin n) K)
+    {P : Matrix (Fin n) (Fin n) K} (hP : IsUnit P)
+    (hsim : P⁻¹ * M * P = companionMx (minpoly K M)) (hn : 0 < n) :
+    GeneralCyclicVector.IsNonderogatory M := by
+  have h_e0_cyc :
+      IsCyclicVector (companionMx (n := n) (minpoly K M))
+        (Pi.single (⟨0, hn⟩ : Fin n) (1 : K)) :=
+    companionMx_isCyclic_e0 _ hn
+  have h_Pe0_cyc : IsCyclicVector M (P.mulVec (Pi.single (⟨0, hn⟩ : Fin n) 1)) :=
+    cyclicVector_similar_transport M (companionMx (minpoly K M)) P hP hsim _ h_e0_cyc
+  exact (CyclicVectorBiconditional.nonderogatory_iff_has_cyclic_vector M).mpr
+    ⟨_, h_Pe0_cyc⟩
+
+/-- **Companion-similarity biconditional**: M is nonderogatory iff M is similar
+    to the companion matrix of its minimal polynomial.
+
+    The forward direction is `nonderogatory_similar_to_companion` (Session 1+2).
+    The backward direction is `similar_to_companion_implies_nonderogatory`
+    (Session 3), proved via cyclic-vector transport: e₀ is cyclic for the
+    companion matrix, so P · e₀ is cyclic for M, so M is nonderogatory by
+    the cyclic-vector biconditional from OQ-01-OQ-01. -/
+theorem nonderogatory_iff_similar_to_companion
+    (M : Matrix (Fin n) (Fin n) K) (hn : 0 < n) :
+    GeneralCyclicVector.IsNonderogatory M ↔
+      ∃ P : Matrix (Fin n) (Fin n) K, IsUnit P ∧
+        P⁻¹ * M * P = companionMx (minpoly K M) := by
+  refine ⟨fun h => nonderogatory_similar_to_companion M h hn, ?_⟩
+  rintro ⟨P, hP, hsim⟩
+  exact similar_to_companion_implies_nonderogatory M hP hsim hn
 
 end CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
 
