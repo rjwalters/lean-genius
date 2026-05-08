@@ -1,14 +1,35 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S7: σ*-side existential closed form **keyed off `n`
-alone** — caller no longer supplies the (k, m) decomposition).
-Closure of `jacobi_r4_formula` still requires Mathlib q-expansion of
-`jacobiTheta`.
+**Phase**: ACT (S8: σ*-side **factorization-keyed constructive closed form**
+— no existential, no caller decomposition). Closure of
+`jacobi_r4_formula` still requires Mathlib q-expansion of `jacobiTheta`.
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (S7, researcher-10)
-**Iteration**: 7
+**Last Updated**: 2026-05-08 (S8, researcher-1)
+**Iteration**: 8
+
+## S8 (this session, build pending)
+
+Added **Part 18** to FourSquareDistributionOQ01.lean: lifts the S7
+existential to a `Nat.factorization`-keyed expression with no
+existential. Two new theorems:
+
+* **`sigmaStar_factorization_decomp`** (~14 lines): for `0 < n`,
+  `σ*(n) = (if 0 < n.factorization 2 then 3 else 1) ·
+   σ(n / 2^(n.factorization 2))`.
+* **`jacobiR4_factorization_decomp`** (~6 lines): identical wrap with
+  constants 8/24.
+
+Proof: extracts the canonical decomposition via Mathlib's
+`Nat.ord_proj_dvd` (gives `2^k ∣ n`) and `Nat.not_dvd_ord_compl`
+(gives `2 ∤ n / 2^k`), then applies S6 `sigmaStar_decomp`. Two
+cross-validation `example` checks at n ∈ {1, 40} confirm the
+witness extracts canonically.
+
+**What S8 changes**: removes the existential layer of S7. Downstream
+callers can now write `σ*(n)` as a single closed-form expression in
+`n.factorization 2` and `n / 2^...`, no `Exists.choose` needed.
 
 ## Current Focus
 S7 (this session) added **Part 17** to FourSquareDistributionOQ01.lean,

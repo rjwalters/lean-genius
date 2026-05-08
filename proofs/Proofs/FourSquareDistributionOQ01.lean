@@ -1122,4 +1122,77 @@ example : ∃ k m : ℕ, 0 < m ∧ ¬ 2 ∣ m ∧ (40 : ℕ) = 2 ^ k * m ∧
     jacobiR4 40 = (if k = 0 then 8 else 24) * sigmaOne m :=
   jacobiR4_exists_decomp_of_pos (by decide)
 
+-- ---------------------------------------------------------------------
+-- Part 18 (S?): Factorization-keyed (constructive) closed form.
+--
+-- Lifts the S7 existential to a `Nat.factorization`-keyed expression
+-- with no existential and no caller-supplied decomposition. The witness
+-- extracts canonically as `k = n.factorization 2`, `m = n / 2^k` via
+-- the standard 2-adic projection / complement.
+-- ---------------------------------------------------------------------
+
+/-- **Constructive (factorization-keyed) closed form for σ*(n).**
+
+    For any positive `n`, `σ*(n)` is the constant `1` or `3` (according
+    to whether `n` is odd or even, respectively) times `σ(n / 2^v₂(n))`
+    where `v₂(n) = n.factorization 2` is the 2-adic valuation of `n`.
+
+    No existential, no caller-supplied decomposition: the canonical
+    witness is `k := n.factorization 2`, `m := n / 2^k`. -/
+theorem sigmaStar_factorization_decomp {n : ℕ} (hn : 0 < n) :
+    sigmaStar n =
+      (if 0 < n.factorization 2 then 3 else 1) *
+        sigmaOne (n / 2 ^ n.factorization 2) := by
+  -- Set the canonical (k, m).
+  set k := n.factorization 2 with hk_def
+  set m := n / 2 ^ k with hm_def
+  -- 2^k ∣ n (by definition of the 2-adic projection).
+  have hpow_dvd : 2 ^ k ∣ n := Nat.ord_proj_dvd n 2
+  -- 2^k > 0.
+  have hpow_pos : 0 < 2 ^ k := Nat.pow_pos (by decide) k
+  -- m > 0 since 2^k ≤ n.
+  have hm_pos : 0 < m :=
+    Nat.div_pos (Nat.le_of_dvd hn hpow_dvd) hpow_pos
+  -- m is odd: 2 ∤ ord_compl 2 n.
+  have hm_odd : ¬ 2 ∣ m :=
+    Nat.not_dvd_ord_compl Nat.prime_two hn.ne'
+  -- n = 2^k * m via the projection / complement decomposition.
+  have hn_eq : n = 2 ^ k * m := by
+    rw [hm_def, Nat.mul_div_cancel' hpow_dvd]
+  -- Apply S6's structural decomposition with the canonical (k, m).
+  rw [hn_eq, sigmaStar_decomp hm_pos hm_odd]
+  -- Translate the boolean `if`-condition: `0 < k ↔ ¬ k = 0`.
+  congr 1
+  by_cases h : k = 0
+  · simp [h]
+  · simp [h, Nat.pos_of_ne_zero h]
+
+/-- **Constructive (factorization-keyed) closed form for jacobiR4(n).**
+
+    For any positive `n`, `jacobiR4(n) = (8 if n odd, 24 if n even) ·
+    σ(n / 2^v₂(n))`. -/
+theorem jacobiR4_factorization_decomp {n : ℕ} (hn : 0 < n) :
+    jacobiR4 n =
+      (if 0 < n.factorization 2 then 24 else 8) *
+        sigmaOne (n / 2 ^ n.factorization 2) := by
+  show 8 * sigmaStar n = _
+  rw [sigmaStar_factorization_decomp hn]
+  split_ifs <;> ring
+
+-- ---------------------------------------------------------------------
+-- Cross-validation for the constructive form.
+-- ---------------------------------------------------------------------
+
+/-- σ*(1) = 1·σ(1) = 1 via the factorization form. -/
+example : sigmaStar 1 =
+    (if 0 < (1 : ℕ).factorization 2 then 3 else 1) *
+      sigmaOne (1 / 2 ^ (1 : ℕ).factorization 2) :=
+  sigmaStar_factorization_decomp (by decide)
+
+/-- σ*(40) = 3·σ(5) = 18 via the factorization form. -/
+example : sigmaStar 40 =
+    (if 0 < (40 : ℕ).factorization 2 then 3 else 1) *
+      sigmaOne (40 / 2 ^ (40 : ℕ).factorization 2) :=
+  sigmaStar_factorization_decomp (by decide)
+
 end FourSquareDistributionOQ01
