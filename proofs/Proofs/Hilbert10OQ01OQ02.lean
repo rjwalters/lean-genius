@@ -185,20 +185,102 @@ theorem mazur_implies_not_sigma1_definable :
   exact mazur_implies_not_diophantine hMazur (integers_diophantine_iff.mp hSigma1)
 
 -- ============================================================
--- Part VII: The landscape, sharpened
+-- Part VII: Π₁ (universal) Definability and the Σ₁/Π₁ Duality
+-- ============================================================
+
+/-- A subset S ⊆ ℚ is **Π₁-definable** ("co-Diophantine", purely universal)
+    if there exists a parametric polynomial family `P_q` such that
+
+        q ∈ S  ⟺  ∀ x ∈ ℚᵏ : P_q(x) ≠ 0,
+
+    i.e., q ∈ S iff the equation `P_q(x) = 0` has NO rational solution.
+
+    Equivalently, the complement of a Π₁ subset is Σ₁ (Diophantine);
+    see `diophantine_iff_codiophantine_complement` below. -/
+def IsCoDiophantineDefinition (S : RatSubset) : Prop :=
+  ∃ P : Rat → RatDiophantinePoly,
+    ∀ q : Rat, S q ↔ ¬ hasRationalSolution (P q)
+
+/-- The complement of `IntSubset` in ℚ: the rationals that are NOT integers. -/
+def NotIntSubset : RatSubset := fun q => ¬ IntSubset q
+
+/-- **Σ₁ / Π₁ duality** (general):
+
+    A subset S ⊆ ℚ is Σ₁-definable iff its complement is Π₁-definable.
+
+    Formally proves the narrative claim "Σ₁ ⟺ ¬(Π₁ for the complement)"
+    asserted in the introduction of this file. The proof uses one
+    classical excluded-middle step (`Classical.byContradiction`) for the
+    direction Π₁(¬S) → Σ₁(S), reflecting the well-known fact that
+    complementing is classical. -/
+theorem diophantine_iff_codiophantine_complement (S : RatSubset) :
+    IsDiophantineDefinition S ↔ IsCoDiophantineDefinition (fun q => ¬ S q) := by
+  constructor
+  · intro h
+    obtain ⟨P, hP⟩ := h
+    refine ⟨P, fun q => ?_⟩
+    refine ⟨fun hnSq hsol => hnSq ((hP q).mpr hsol),
+            fun hnsol hSq => hnsol ((hP q).mp hSq)⟩
+  · intro h
+    obtain ⟨P, hP⟩ := h
+    refine ⟨P, fun q => ?_⟩
+    refine ⟨fun hSq => ?_, fun hsol => ?_⟩
+    · apply Classical.byContradiction
+      intro hnsol
+      have hnSq : ¬ S q := (hP q).mpr hnsol
+      exact hnSq hSq
+    · apply Classical.byContradiction
+      intro hnSq
+      have hnsol : ¬ hasRationalSolution (P q) := (hP q).mp hnSq
+      exact hnsol hsol
+
+/-- **Specialization to ℤ ⊂ ℚ**:
+
+    ℤ is Σ₁-definable in ℚ (the OPEN question OQ-01-OQ-02) iff its
+    complement ℚ \ ℤ is Π₁-definable in ℚ. -/
+theorem integers_diophantine_iff_complement_codiophantine :
+    IntegersAreDiophantineOverQ ↔ IsCoDiophantineDefinition NotIntSubset :=
+  diophantine_iff_codiophantine_complement IntSubset
+
+/-- Π₁-definability of ℚ \ ℤ in ℚ implies H10/ℚ undecidable.
+
+    Pure logical consequence of `integers_diophantine_iff_complement_codiophantine`
+    composed with `integers_diophantine_sigma1_implies_h10_q_undecidable`;
+    NOT a new axiom. Witnesses that the OPEN question can equivalently be
+    stated in Π₁ form on the complement. -/
+theorem codiophantine_complement_implies_h10_q_undecidable :
+    IsCoDiophantineDefinition NotIntSubset → ¬H10_Rational_Decidable := by
+  intro hCodiop
+  exact integers_diophantine_sigma1_implies_h10_q_undecidable
+    (integers_diophantine_iff_complement_codiophantine.mpr hCodiop)
+
+/-- Mazur's conjecture rules out Π₁-definability of ℚ \ ℤ in ℚ.
+
+    Pure logical consequence of `integers_diophantine_iff_complement_codiophantine`
+    composed with `mazur_implies_not_sigma1_definable`; NOT a new axiom. -/
+theorem mazur_implies_not_codiophantine_complement :
+    MazurConjecture → ¬IsCoDiophantineDefinition NotIntSubset := by
+  intro hMazur hCodiop
+  exact mazur_implies_not_sigma1_definable hMazur
+    (integers_diophantine_iff_complement_codiophantine.mpr hCodiop)
+
+-- ============================================================
+-- Part VIII: The landscape, sharpened
 -- ============================================================
 
 /-
-## Σ₁ vs Π₂: the precise gap
+## Σ₁ vs Π₁ vs Π₂: the precise gap
 
 | Class | Statement on ℤ ⊂ ℚ | Status (2026) |
 |-------|--------------------|----------------|
-| Σ₁ (∃) | ℤ Diophantine over ℚ | **OPEN** (THIS PROBLEM) |
-| Π₁ (∀, in the negated form) | ℚ \ ℤ Diophantine over ℚ | **OPEN** (equivalent to Σ₁) |
-| Π₂ (∀∃) | ℤ universally-definable in ℚ | **PROVED** (Koenigsmann 2016) |
+| Σ₁ (∃)            | ℤ Diophantine over ℚ                  | **OPEN** (THIS PROBLEM) |
+| Π₁ (∀, complement) | ℚ \ ℤ Π₁-definable over ℚ              | **OPEN** (equivalent to Σ₁ via duality) |
+| Π₂ (∀∃)           | ℤ universally-existentially def. in ℚ | **PROVED** (Koenigsmann 2016) |
 
-Note: Σ₁ ⟺ ¬(Π₁ for the complement) at this level, by basic logic; the
-non-trivial gap is Σ₁ vs Π₂.
+The Σ₁ ⟺ Π₁(complement) equivalence is now proved in this file as
+`diophantine_iff_codiophantine_complement` (and its specialization
+`integers_diophantine_iff_complement_codiophantine`), formalizing the
+narrative claim. The non-trivial open gap is Σ₁ vs Π₂.
 
 ## Why this distinction matters
 
@@ -209,6 +291,9 @@ non-trivial gap is Σ₁ vs Π₂.
 - A positive Σ₁ answer would be a constructive polynomial witness; a
   negative answer would likely come from a structural theorem on the
   topological / Brauer–Manin geometry of ℚ-points.
+- The Π₁(complement) reformulation is sometimes more tractable for a
+  putative refutation: a Π₁ definition of ℚ \ ℤ would mean a polynomial
+  P(q, x) such that q ∉ ℤ ⟺ ∃ x rational with P(q,x) = 0.
 
 ## Axioms in THIS file (1 net new)
 
@@ -216,24 +301,30 @@ non-trivial gap is Σ₁ vs Π₂.
      (proved in Koenigsmann 2016; axiomatized pending Lean formalization
      of the explicit Hilbert-symbol polynomial witness).
 
-The two `theorem`s `integers_diophantine_sigma1_implies_h10_q_undecidable`
-and `mazur_implies_not_sigma1_definable` are NOT new axioms — they are
-logical consequences of the OQ-01 axioms and the Σ₁ ↔ existing-formulation
-equivalence proved here.
+All other declared `theorem`s are NOT new axioms — they are logical
+consequences of the OQ-01 axioms and the Σ₁ ↔ existing-formulation /
+Σ₁ ↔ Π₁(complement) equivalences proved here.
 
-## Theorems in THIS file (4)
+## Theorems in THIS file (8)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
   - `integers_diophantine_strengthens_koenigsmann` (positive answer ⟹ Π₂)
   - `integers_diophantine_sigma1_implies_h10_q_undecidable` (re-export)
   - `mazur_implies_not_sigma1_definable` (re-export)
+  - `diophantine_iff_codiophantine_complement` (Σ₁/Π₁ duality, general)
+  - `integers_diophantine_iff_complement_codiophantine` (specialization to ℤ)
+  - `codiophantine_complement_implies_h10_q_undecidable` (Π₁(ℚ\ℤ) re-export)
+  - `mazur_implies_not_codiophantine_complement` (Π₁(ℚ\ℤ) re-export)
 -/
 
 #check @IsDiophantineDefinition
 #check @IsUniversalExistentialDefinition
+#check @IsCoDiophantineDefinition
 #check @koenigsmann_2016_universal
 #check @integers_diophantine_iff
 #check @diophantine_implies_universal_existential
+#check @diophantine_iff_codiophantine_complement
+#check @integers_diophantine_iff_complement_codiophantine
 
 end Hilbert10Rationals
