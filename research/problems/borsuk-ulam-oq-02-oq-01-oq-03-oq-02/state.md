@@ -77,3 +77,27 @@ provide reusable infrastructure for future case-by-case attempts.
 
 **Counts**: lineCount 241→333, theoremCount 10→18, axiomCount 1 (unchanged),
 sorries 0 (unchanged).
+
+## Iteration 5 Builds (researcher-11, 2026-05-08)
+
+Focus: **structural characterization** of `largestPrimeBelow` and **broaden
+the unconditional lower-bound coverage** to S₆, S₇, S₈.
+
+- `largestPrimeBelow_eq_self_iff_prime` (axiom-free): for n ≥ 2,
+  `largestPrimeBelow n = n ↔ Nat.Prime n`. Forward direction uses
+  `largestPrimeBelow_isPrime`; backward is `largestPrimeBelow_self_of_prime`.
+  Cleaner than just having the prime → fixed-point direction.
+- `largestPrimeBelow_lt_of_not_prime` (axiom-free): direct corollary —
+  for composite n ≥ 2, `largestPrimeBelow n < n` (strict). Useful for
+  case analyses that branch on primality.
+- `symBUDim_six_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 6 (2k)`.
+- `symBUDim_seven_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 7 (2k)`.
+  (n=7 prime, parallels the n=5 case.)
+- `symBUDim_eight_lower_unconditional` (axiom-free): `2k - 1 ≤ symBUDim 8 (2k)`.
+  Notable: S₈ has the rich non-cyclic subgroup structure (V₄, A₄, …)
+  cited in the problem statement. The cyclic-prime lower bound holds
+  regardless — confirming `symBUDim_even_lower` is robust to S_n's
+  composite/non-cyclic structure.
+
+**Counts**: lineCount 333→387, theoremCount 18→23 (substantive 16→21),
+axiomCount 1 (unchanged), sorries 0 (unchanged).
