@@ -144,6 +144,13 @@
       "statement": "$\\forall n \\in \\mathbb{N},\\ \\forall k \\in \\mathbb{N},\\ 1 \\le k,\\ k+1 \\le n,\\ \\forall x : \\mathrm{Fin}\\,n \\to \\mathbb{R},\\ (\\forall i,\\ 0 \\le x_i) \\Rightarrow e_k(x)^2 \\ge e_{k-1}(x) \\cdot e_{k+1}(x)$",
       "significance": "**The unnormalized Newton inequality.** Proved by induction on $n$ using the Newton-Girard recurrence $e_k(x, t) = e_k(x) + t \\cdot e_{k-1}(x)$ and `cross_product_of_log_concave`. The base case $n=1$ is trivial; the inductive step expands both sides and reduces to a quadratic-in-$t$ whose discriminant is bounded by the inductive hypothesis. Together with `binom_log_concave` it gives the normalized form `newton_log_concavity_proved`.",
       "description": "The classical Newton inequality without normalization by binomial coefficients. Direct corollary of the inductive proof in Part II; serves as the building block for the cleared-denominator form in Parts IV–V."
+    },
+    {
+      "name": "binom_log_concave",
+      "type": "supporting",
+      "statement": "$\\forall n, k \\in \\mathbb{N},\\ 1 \\le k,\\ k+1 \\le n \\Rightarrow \\binom{n}{k}^2 \\ge \\binom{n}{k-1} \\cdot \\binom{n}{k+1}$",
+      "significance": "**Log-concavity of binomial coefficients.** A discrete log-concavity lemma needed to convert the unnormalized Newton inequality $e_k^2 \\ge e_{k-1} e_{k+1}$ into the normalized form $(e_k/\\binom{n}{k})^2 \\ge (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. Proved via the two recurrences `choose_mul_succ` and `choose_mul_pred` and the identity $(k+1)(n-k+1) = k(n-k) + (n+1)$.",
+      "description": "Part III standalone result. While the binomial log-concavity is folklore, packaging it as its own theorem keeps the cleared-denominator argument in Parts IV–V modular and re-usable for any future formalization that needs $\\binom{n}{k}^2 \\ge \\binom{n}{k-1}\\binom{n}{k+1}$."
     }
   ],
   "leanFile": {
@@ -161,36 +168,52 @@
   },
   "sections": [
     {
-      "id": "sec-amgm-oq02-oq02-structure",
-      "title": "Parts I–II: Structural Properties and Unnormalized Newton",
-      "startLine": 44,
-      "endLine": 165,
-      "summary": "elemSymm_zero_implies_higher_zero: zero-tail property for elementary symmetric polynomials. elemSymm_log_concave: eₖ² ≥ eₖ₋₁·eₖ₊₁ proved by induction on n using the recurrence eₖ(x,t) = eₖ(x) + t·eₖ₋₁(x).",
-      "mathContext": "Newton's inequality (unnormalized): $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ for elementary symmetric polynomials of non-negative reals."
+      "id": "sec-amgm-oq02-oq02-header",
+      "title": "Module Docstring, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "27-line module docstring laying out the 8-part architecture (Parts I–VIII), the two axioms eliminated (newton_log_concavity, maclaurin_step), and historical references (Hardy-Littlewood-Pólya 1934 §2.22, Newton 1707, Maclaurin 1729). Imports `Proofs.AmgmInequalityOQ02` (parent) and `Proofs.NewtonInductiveStep` (helper). Opens `Finset Real` and declares `namespace NewtonLogConcavity`.",
+      "mathContext": "Header context: this file replaces the parent's two axioms with proofs, completing the AM-GM via Maclaurin chain end-to-end. The 8-part decomposition is reflected in the section headers below."
+    },
+    {
+      "id": "sec-amgm-oq02-oq02-part-i",
+      "title": "Part I: Structural Properties (Zero-Tail, normESym, Cross-Product)",
+      "startLine": 40,
+      "endLine": 159,
+      "summary": "Four lemmas the rest of the file relies on: `elemSymm_zero_implies_higher_zero` (zero-tail property for non-negative inputs); `normESym` definition (the normalized polynomial $a_k = e_k / \\binom{n}{k}$) plus `normESym_nonneg`, `normESym_eq_zero_iff`, `normESym_zero_implies_higher_zero` wrappers; `cross_product_of_log_concave` (algebraic glue used to combine IH at degrees $k$ and $k-1$ in Part II); private helper `elemSymm_zero_castSucc` for the recurrence base case.",
+      "mathContext": "Zero-tail: $\\forall x \\ge 0,\\ e_j(x) = 0 \\Rightarrow \\forall k \\ge j,\\ e_k(x) = 0$. Cross-product: $a, b, c, d \\ge 0$ and $ad \\ge bc$ drive a chain of cross-product consequences used to combine two log-concavity IHs at adjacent degrees into the next."
+    },
+    {
+      "id": "sec-amgm-oq02-oq02-part-ii",
+      "title": "Part II: Unnormalized Newton (elemSymm_log_concave Induction)",
+      "startLine": 160,
+      "endLine": 271,
+      "summary": "`elemSymm_log_concave`: $e_k(x)^2 \\ge e_{k-1}(x) \\cdot e_{k+1}(x)$ for non-negative $x : \\mathrm{Fin}\\,n \\to \\mathbb{R}$, proved by induction on $n$. The inductive step adds variable $t = x_{n+1} \\ge 0$, expands both sides via the recurrence $e_k(x, t) = e_k(x) + t \\cdot e_{k-1}(x)$, and groups by powers of $t$. The IH at degrees $k$ and $k-1$ together with `cross_product_of_log_concave` close each $t$-power group.",
+      "mathContext": "Unnormalized Newton: $e_k^2 \\ge e_{k-1} \\cdot e_{k+1}$ for $x \\ge 0$. Stronger than the normalized form (no binomial denominators yet). The induction structure is the prototype for the cleared-denominator induction in Parts IV–V."
     },
     {
       "id": "sec-amgm-oq02-oq02-binomial",
       "title": "Part III: Binomial Log-Concavity",
-      "startLine": 301,
-      "endLine": 395,
-      "summary": "binom_log_concave: C(n,k)² ≥ C(n,k-1)·C(n,k+1). Proved via the identity C(n,k)² - C(n,k-1)·C(n,k+1) = C(n,k)² · k(n-k)/((k-1)(n-k-1)·...).",
-      "mathContext": "$\\binom{n}{k}^2 \\geq \\binom{n}{k-1} \\binom{n}{k+1}$ — binomial coefficients are log-concave in $k$."
+      "startLine": 273,
+      "endLine": 394,
+      "summary": "`choose_mul_succ` and `choose_mul_pred` (private): two recurrences relating $(k+1)\\binom{n}{k+1} = (n-k)\\binom{n}{k}$ and $k \\binom{n}{k} = (n-k+1)\\binom{n}{k-1}$. `binom_log_concave`: $\\binom{n}{k}^2 \\ge \\binom{n}{k-1}\\binom{n}{k+1}$, proved by cross-multiplying with $(k+1)(n-k+1)$ and using the two recurrences to reduce to $(k+1)(n-k+1) = k(n-k) + (n+1)$.",
+      "mathContext": "$\\binom{n}{k}^2 \\ge \\binom{n}{k-1}\\binom{n}{k+1}$ — binomial coefficients are log-concave in $k$. Together with Part II's unnormalized Newton, this gives the normalized form: dividing by $\\binom{n}{k-1}\\binom{n}{k+1}$ on both sides of $e_k^2 \\ge e_{k-1} e_{k+1}$ and applying binomial log-concavity to compensate yields $(e_k/\\binom{n}{k})^2 \\ge (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$."
     },
     {
       "id": "sec-amgm-oq02-oq02-cleared",
       "title": "Parts IV–V: Cleared-Denominator Induction",
       "startLine": 395,
       "endLine": 810,
-      "summary": "newton_cleared_denom_inductive_step: the key inductive step (520-line proof) via absorption + discriminant argument. newton_cleared_denom: full cleared-denominator Newton inequality by induction on n.",
-      "mathContext": "Cleared-denominator form: $C(n,k-1)\\cdot C(n,k+1) \\cdot e_k^2 \\geq C(n,k)^2 \\cdot e_{k-1} \\cdot e_{k+1}$. This is equivalent to the normalized Newton inequality without divisions."
+      "summary": "`newton_cleared_denom_inductive_step`: the key inductive step (520-line proof) via absorption + discriminant argument. `newton_cleared_denom`: full cleared-denominator Newton inequality by induction on $n$.",
+      "mathContext": "Cleared-denominator form: $\\binom{n}{k-1}\\binom{n}{k+1} \\cdot e_k^2 \\ge \\binom{n}{k}^2 \\cdot e_{k-1} \\cdot e_{k+1}$. This is equivalent to the normalized Newton inequality without divisions."
     },
     {
       "id": "sec-amgm-oq02-oq02-normalized",
       "title": "Parts VI–VIII: Normalized Newton and Maclaurin Step",
       "startLine": 811,
       "endLine": 959,
-      "summary": "newton_log_concavity_proved: normalized Newton (eₖ/C(n,k))² ≥ (eₖ₋₁/C(n,k-1))·(eₖ₊₁/C(n,k+1)). power_ineq_of_log_concave and rpow_ineq_of_pow_ineq: transfer to real exponents. maclaurin_step_derived: Mₖ ≥ Mₖ₊₁.",
-      "mathContext": "Maclaurin's step: $M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\geq M_{k+1}$. The decreasing chain $M_1 \\geq M_2 \\geq \\cdots \\geq M_n$ connects AM to GM."
+      "summary": "`newton_log_concavity_proved`: normalized Newton $(e_k/\\binom{n}{k})^2 \\ge (e_{k-1}/\\binom{n}{k-1})(e_{k+1}/\\binom{n}{k+1})$. `power_ineq_of_log_concave` and `rpow_ineq_of_pow_ineq`: transfer to real exponents. `maclaurin_step_derived`: $M_k \\ge M_{k+1}$.",
+      "mathContext": "Maclaurin's step: $M_k = \\left(\\frac{e_k}{\\binom{n}{k}}\\right)^{1/k} \\ge M_{k+1}$. The decreasing chain $M_1 \\ge M_2 \\ge \\cdots \\ge M_n$ connects AM to GM."
     }
   ],
   "conclusion": {
