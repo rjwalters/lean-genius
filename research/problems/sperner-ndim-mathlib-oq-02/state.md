@@ -2,12 +2,51 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 18, researcher-1)
+**Last Updated**: 2026-05-08 (Iteration 18 part 2, researcher-5)
 **Iteration**: 18
 
 ## Current Focus
 
-Session 18 part 1 (this session, build pending): Promoted S16/S17 edge
+Session 18 part 2 (this session, build pending): Added 5 new
+`private` existential lemmas in a new `N2BoundaryInteriorNeighbors`
+section (appended after `N2BoundaryAnalysis` at end of file) that
+complement S18 part 1 (PR #17133, merged) by covering the
+**interior** side of `_hBoundaryOnFace`:
+
+1. `horizontal_neighbor_topSimps2`: for `b ∈ t1Bases N` with
+   `b.2 ≥ 1`, the horizontal edge is contained in
+   `t2 (b.1, b.2 - 1) ≠ t1 b` of `topSimps2 N`.
+2. `vertical_neighbor_topSimps2`: analogous for `b.1 ≥ 1`,
+   witness `t2 (b.1 - 1, b.2)`.
+3. `t2_face0_neighbor_topSimps2`: for `c ∈ t2Bases N`, t2 face0
+   ("right side") is contained in `t1 (c.1+1, c.2) ≠ t2 c`.
+4. `t2_face1_neighbor_topSimps2`: face1 ("top side"), witness
+   `t1 (c.1, c.2+1)`.
+5. `t2_face2_neighbor_topSimps2`: face2 ("diagonal"), witness
+   `t1 c` itself.
+
+Each is a 4-tuple term-mode proof matching the pattern of S17's
+`diagonal_neighbor_topSimps2` reverse direction, using S16/S17
+building blocks.
+
+**Building-block coverage table** for `_hBoundaryOnFace`
+(now complete):
+
+| cell | edge | boundary case | interior case |
+|------|------|----------------|----------------|
+| t1   | diagonal   | S18.1 `diagonal_only_container_of_t1_boundary` | S17 `diagonal_neighbor_topSimps2` |
+| t1   | horizontal | S18.1 `horizontal_only_container_of_t1_boundary` | S18.2.1 `horizontal_neighbor_topSimps2` |
+| t1   | vertical   | S18.1 `vertical_only_container_of_t1_boundary` | S18.2.2 `vertical_neighbor_topSimps2` |
+| t2   | face0      | (impossible, no boundary) | S18.2.3 `t2_face0_neighbor_topSimps2` |
+| t2   | face1      | (impossible, no boundary) | S18.2.4 `t2_face1_neighbor_topSimps2` |
+| t2   | face2      | (impossible, no boundary) | S18.2.5 `t2_face2_neighbor_topSimps2` |
+
+Remaining S19 work is **abstract-level bridge**: translate
+`T.adj s k = none` ↔ `(containers ...).card ≤ 1` and case-split
+through the 11 building blocks above (~80 lines, mostly
+case-splitting).
+
+Session 18 part 1 (PR #17133, merged): Promoted S16/S17 edge
 building blocks into the **boundary-edge container singletons**: for
 each of the three edge types of a `t1 b` cell, we prove that under
 the matching geometric boundary condition the container set inside
@@ -136,24 +175,24 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
-## Path Forward for n≥2 (post-S17)
+## Path Forward for n≥2 (post-S18)
 
 `Triangulation.boundary_doors_odd` requires four hypotheses:
 1. `_hSperner` — done generically by S14 wrapper (cN2_total_isSpernerColoring)
-2. `_hBoundaryOnFace` — S16 supplies edge-containment building blocks;
-   S17 supplies the base ↔ topSimps2 bridge (membership iffs +
-   neighbor classification). **S18 next**: walk through the abstract
+2. `_hBoundaryOnFace` — S16/S17/S18.1/S18.2 now supply ALL six
+   face/edge × cell-type combinations as `private lemma`s (see
+   coverage table above). **S19 next**: walk through the abstract
    `adjFn` in `simData2.toTriangulation` to translate
-   `adjFn s k = none` ↔ `containersOf (faceOf s k) = {s}` ↔ (by S17
-   `topSimps2_mem_iff` case split + S16 edge lemmas) the concrete
-   boundary conditions on (b, k); then assemble the existential
-   `∃ faceIdx, ...` using the existing `onFaceΔ2` predicate (~80 lines).
+   `adjFn s k = none` ↔ `(containersOf (faceOf s k)).card ≤ 1`,
+   then case-split through the 6+6 building blocks above to assemble
+   the existential `∃ faceIdx, ...` for the boundary cases and
+   produce a `False.elim` for the t2-cell cases (~80 lines, mostly
+   case-splitting; arithmetic content is in S16-S18).
 3. `_hLowerDim` — done generically by S15 helper
 4. `_hLastFace` — TODO (~120 lines, bijection with face2_path_odd via S12)
 
 Then apply `Triangulation.sperner` (~50 lines for diameter bound + real
-coordinates). Total estimated remaining: ~200 lines across 2 sessions
-(S17 cuts ~30 from the post-S16 estimate of 250).
+coordinates). Total estimated remaining: ~200 lines across 2 sessions.
 
 ## Gallery Status
 
