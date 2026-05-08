@@ -20,9 +20,9 @@
     "sorries": 2,
     "dateAdded": "2026-05-03",
     "axiomCount": 2,
-    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, necessity, concrete examples, consequences) are proved from first principles.",
-    "lineCount": 1108,
-    "theoremCount": 25,
+    "assumptions": "2 axioms: directed_eulerian_iff (Hierholzer's algorithm for directed graph Eulerian circuit — requires graph connectivity infrastructure) and directed_euler_path_iff (Eulerian path degree characterization). All other results (handshaking, concrete examples, consequences) are proved from first principles. NOTE 2026-05-08: file currently does not build under the latest Mathlib (omega tactic API drift on `walk.get ⟨i, by omega⟩` patterns inside Finset.filter expressions, pre-existing from PR #16675). Session 6 strengthened HasEulerianPath def and added a proof of euler_path_implies_degree_balance, but build verification is blocked until the file's omega calls are restructured.",
+    "lineCount": 1202,
+    "theoremCount": 26,
     "definitionCount": 13,
     "originalContributions": [
       "sum_outDegree_eq_edgeCount: proved from first principles — ∑_v |{e: e.1=v}| = |E| by double-counting via Finset.sum_comm + Finset.sum_ite_eq'",
