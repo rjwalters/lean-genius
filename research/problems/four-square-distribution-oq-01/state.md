@@ -2,19 +2,53 @@
 
 ## Current State
 **Phase**: ACT
-**Phase note**: S9: r4Count-side Eisenstein-coefficient closed form
-`r₄(n) = (if 2 ∣ n then 24 else 8) · σ(ord_compl[2] n)` for `0 < n` —
-the canonical n-keyed product matching the q-coefficient of
-`jacobiTheta⁴`. Closure of `jacobi_r4_formula` still requires
-Mathlib q-expansion of `jacobiTheta` / `E₂`.
+**Phase note**: S12: Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
+`r4Count(p^k) = 8·σ(p^k)` for odd prime `p` and arbitrary `k ≥ 0`.
+Generalizes Part 21's `jacobiR4_odd_prime` / `r4Count_odd_prime`
+(k = 1 case) by inlining Part 8's `sigmaStar_prime_pow_of_odd_prime`.
+With Part 15's pure 2-power closed form and Part 12's σ*-multiplicativity,
+this pins jacobiR4(n) explicitly on every prime power. Closure of
+`jacobi_r4_formula` still requires the multiplicative bridge from
+r4Count to jacobiR4 (atomic-axiom route — see S11) or Mathlib
+q-expansion of `jacobiTheta` / `E₂`.
 **Path**: full
 **Since**: 2026-05-08T21:33:45+03:00
-**Last Updated**: 2026-05-08 (S9, researcher-11; PR #17347 build pending)
-**Iteration**: 9
+**Last Updated**: 2026-05-08 (S12, researcher-11; build pending)
+**Iteration**: 12
 
 ## Current Focus
-S9 (this session) added **Part 19** (`r4Count_factorization_form`) to
-FourSquareDistributionOQ01.lean, exposing `r4Count n` directly in the
+S12 (this session) adds **Part 22** to FourSquareDistributionOQ01.lean:
+the odd-prime-POWER closed forms
+
+* **`jacobiR4_prime_pow_of_odd_prime`**: for odd prime `p` and `k ≥ 0`,
+  `jacobiR4(p^k) = 8·σ(p^k)` (axiom-free).
+* **`r4Count_prime_pow_of_odd_prime`**: for odd prime `p` and `k ≥ 0`,
+  `r4Count(p^k) = 8·σ(p^k)` (uses `jacobi_r4_formula`).
+
+Plus four explicit `sigmaOne_*` numerical theorems (σ(9), σ(25), σ(27),
+σ(49)) and seven `example`-form cross-validations including the n = 9
+match against Part 1's `jacobiR4_9 = 104`, n = 27 (first odd-prime
+cube), and n ∈ {25, 49} extending beyond Part 1's brute-force envelope
+n ≤ 10. Net: +91 lines, +6 named theorems, 0 new axioms, 0 sorries.
+
+Coverage: Part 22 generalizes Part 21's k = 1 odd-prime case
+(`jacobiR4_odd_prime`) by chaining through Part 8
+(`sigmaStar_prime_pow_of_odd_prime`) and the definition
+`jacobiR4 = 8·σ*`. Combined with Part 15's pure 2-power closed form
+(`jacobiR4_two_pow_mul_odd`) and Part 12's σ*-multiplicativity, this
+pins `jacobiR4(n)` explicitly on every prime power. The general case
+n = ∏ pᵢ^{kᵢ} reduces to a chain via multiplicativity.
+
+S11 had two parallel branches (Part 21 = `r4Count_eight_le` /
+`r4Count_pos` / `eight_dvd_r4Count` / `sigmaStar_odd_prime` /
+`jacobiR4_odd_prime` / `r4Count_odd_prime` lower-bound cluster, merged
+in PR #17395; an atomic-axiom decomposition `jacobi_r4_formula_from_atomic`
+proposed in PR #17388, build pending). S10 (researcher-10) had landed
+the multiplicativity bridge `jacobiR4_mul_of_coprime` /
+`r4Count_mul_of_coprime` / `r4Count_two_pow_mul_odd` (PR #17359).
+
+S9 (researcher-11) had added **Part 19** (`r4Count_factorization_form`)
+to FourSquareDistributionOQ01.lean, exposing `r4Count n` directly in the
 Eisenstein-coefficient closed form that the modular-form derivation
 of Jacobi's theorem produces. Combines `jacobi_r4_formula` (Part 5)
 with `jacobiR4_factorization_form` (S8) in a 1-line `rw`. PR #17347
@@ -74,7 +108,7 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Attempt Count
 
-- Total attempts: 9.
+- Total attempts: 12.
 - S1 (researcher-?): OBSERVE/ORIENT bootstrap (axiomatize, n = 1..10).
 - S2 (researcher-10): ACT — σ*(n) = σ(n) − 4·σ(n/4)·[4∣n] structural.
 - S3 (researcher-?): σ* on odd prime powers, σ*(2n)/σ*(4n) = 3·σ(n).
@@ -92,6 +126,25 @@ Currently still blocked on Mathlib infrastructure:
   `r4Count_factorization_form` (r4Count side Eisenstein-coefficient
   closed form `(if 2 ∣ n then 24 else 8)·σ(ord_compl[2] n)`,
   1-line corollary of `jacobi_r4_formula` + S8).
+- S10 (researcher-?, 2026-05-08, PR #17359): Part 20 —
+  `jacobiR4_mul_of_coprime` / `r4Count_mul_of_coprime` /
+  `r4Count_two_pow_mul_odd` (multiplicativity bridge for `jacobiR4`
+  and `r4Count` at coprime arguments, deriving from
+  `sigmaStar_mul_of_coprime` and `jacobi_r4_formula`).
+- S11 (researcher-?, 2026-05-08, PR #17395): Part 21 —
+  `sigmaStar_pos` / `sigmaStar_one_le` / `eight_dvd_jacobiR4` /
+  `jacobiR4_eight_le` / `jacobiR4_pos` / `r4Count_eight_le` /
+  `r4Count_pos` / `eight_dvd_r4Count` / `sigmaStar_odd_prime` /
+  `jacobiR4_odd_prime` / `r4Count_odd_prime` (positivity,
+  8-divisibility, and odd-prime k = 1 closed forms).
+- S11.alt (researcher-?, 2026-05-08, PR #17388 build pending):
+  alternative Part 21 — `jacobi_r4_formula_from_atomic` (axiom-free
+  reduction of Jacobi's formula to three elementary `r4Count` facts:
+  odd case, pure-2-power case, coprime multiplicativity).
+- S12 (researcher-11, 2026-05-08): Part 22 —
+  `jacobiR4_prime_pow_of_odd_prime` / `r4Count_prime_pow_of_odd_prime`
+  (closed form on odd prime POWERS for arbitrary `k ≥ 0`,
+  generalizing S11's k = 1 case).
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -139,14 +192,17 @@ Currently still blocked on Mathlib infrastructure:
 
 ## References
 
-- `proofs/Proofs/FourSquareDistributionOQ01.lean` — Parts 1-19:
+- `proofs/Proofs/FourSquareDistributionOQ01.lean` — Parts 1-22:
   bootstrap (1-5), structural σ* ↔ σ (6-7), σ* on odd prime powers (8),
   σ*(2n) = σ*(4n) = 3·σ(n) for odd n (9-10), σ-multiplicativity bridge
   (11), σ*-multiplicativity (12), σ*(2^k) closed form (13),
   cross-validation (14), σ*(2^k · m) closed form (15, S5),
   unified `if`-form (16, S6), n-keyed existential decomp (17, S7),
   constructive `ord_compl[2]`-keyed closed form (18, S8),
-  r4Count Eisenstein-coefficient form (19, S9).
+  r4Count Eisenstein-coefficient form (19, S9), multiplicativity
+  bridge for jacobiR4 / r4Count (20, S10), positivity / 8-divisibility
+  / odd-prime corollary (21, S11), odd-prime-power closed form
+  (22, S12).
 - `proofs/Proofs/FourSquareDistribution.lean` — parent file with
   type-decomposition theorems used as cross-checks.
 - `src/data/proofs/four-square-distribution-oq-01/meta.json` —
