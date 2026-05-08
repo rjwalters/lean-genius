@@ -23,7 +23,7 @@
     "assumptions": "3 structure-encoded assumptions in RiemannianVolumeData: vol_pos (geodesic ball volumes are positive), vol_mono (monotonicity), bishop_gromov (Bishop-Gromov volume ratio monotonicity). These encode the properties of a complete Riemannian manifold with Ric >= 0, which cannot be defined in Mathlib (no Riemannian metric or curvature yet).",
     "lineCount": 272,
     "theoremCount": 18,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "originalContributions": [
       "omegaN: definition of volume coefficient omega_n = pi^(n/2) / Gamma(n/2+1)",
       "euclideanModelVolume: V_0^n(r) = omega_n * r^n",
@@ -104,7 +104,7 @@
     "lineCount": 272,
     "axiomCount": 0,
     "theoremCount": 18,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/AreaOfCircleOQ02OQ04.lean",
     "sorries": 0
   },
