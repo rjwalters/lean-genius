@@ -767,54 +767,137 @@ private lemma weight_eq_totalSym' {n a b : ℕ} (hb : 1 ≤ b)
     ((totalSym' hb P' Q').1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
   rw [totalSym'_val]; exact weight_eq_total_multiset P' Q'
 
-/-- **Sub-lemma 1 of `ballot_counting_identity`** (S25, see
-    `sessions/2026-05-08-s24.md` §"Recommended strategy"): the count of
-    ordered `Sym`-splits `(P, Q) : Sym (Fin n) p × Sym (Fin n) q` with
-    `P.1 + Q.1 = M` (as multisets) equals the count of submultisets of `M`
-    of size `p`. The forward bijection `(P, Q) ↦ P.1` lands in
-    `M.powersetCard p`; the inverse sends `P' ∈ M.powersetCard p` to
-    `(⟨P', _⟩, ⟨M − P', _⟩)`. The hypothesis `hM : M.card = p + q` ensures
-    the codomain `Q` size is well-defined.
+/-- **Sub-lemma 1 of `ballot_counting_identity`** (S25 statement, S26 corrected).
 
-    Used by `ballot_counting_identity` (S26+) with two instantiations:
-    `(p, q) := (a, b)` for the LHS filter (after stripping `¬ColStrictSym`)
-    and `(p, q) := (a + 1, b - 1)` for the RHS, reducing the cardinality
-    identity to a difference identity over `M.powersetCard a` strata. -/
-private lemma split_count_eq_powersetCard_card {n p q : ℕ}
+    For `M : Multiset (Fin n)` with `M.card = p + q`, the count of ordered
+    `Sym`-splits `(P, Q) : Sym (Fin n) p × Sym (Fin n) q` with
+    `P.1 + Q.1 = M` (as multisets) equals the count of `P : Sym (Fin n) p`
+    with `P.1 ≤ M` (sub-multiset relation). The forward bijection is
+    `(P, Q) ↦ P` (drop the second component, since `Q := M − P` is forced
+    by `Multiset.sub_add_cancel`); the inverse sends `P` with `P.1 ≤ M` to
+    the pair `(P, ⟨M − P.1, _⟩)`.
+
+    ### S26 correction note
+
+    The original S25 formulation in PR #17334
+    (`split_count_eq_powersetCard_card`) stated the RHS as
+    `(M.powersetCard p).card`, which is mathematically **false** for `M`
+    with repeated elements. Mathlib's `Multiset.powersetCard p M` returns
+    a `Multiset (Multiset α)` that counts positional submultisets with
+    multiplicity (`card_powersetCard`: `(M.powersetCard p).card =
+    Nat.choose M.card p`), whereas the LHS counts distinct `Sym (Fin n) p`
+    objects (multisets up to permutation, with `Sym` collapsing duplicates).
+
+    Concrete falsifying instance: `n = 1`, `p = q = 2`,
+    `M = ({0, 0, 0, 0} : Multiset (Fin 1))`. LHS: `Sym (Fin 1) 2` is a
+    singleton (only `{0, 0}`), so the unique pair `(⟨{0,0}, _⟩, ⟨{0,0}, _⟩)`
+    sums to `M`, giving LHS = 1. RHS: `(M.powersetCard 2).card =
+    Nat.choose 4 2 = 6`. Hence `1 = 6` would be required, falsifying the
+    identity. PR #17334 was merged with `(build pending)` status by the
+    deployer (no CI verification) — this S26 PR fixes the bug at point
+    of first downstream use.
+
+    The corrected RHS uses the natural Finset of distinct submultisets of
+    `M` of size `p`, viewed via `Sym (Fin n) p` plus the `≤ M` filter.
+    This makes the bijection a true `Finset → Finset` correspondence,
+    not a `Finset → Multiset` correspondence.
+
+    ### Use site
+
+    Used by `ballot_counting_identity` (S26 refactor) with two
+    instantiations: `(p, q) := (a, b)` for total `(a, b)`-splits and
+    `(p, q) := (a + 1, b - 1)` for the RHS `(a + 1, b - 1)`-splits,
+    reducing the cardinality identity to a difference identity over the
+    count of `Sym (Fin n) k` objects with underlying multiset `≤ M.1`. -/
+private lemma split_count_eq_subSym_le_count {n p q : ℕ}
     (M : Multiset (Fin n)) (hM : M.card = p + q) :
     ((Finset.univ : Finset (Sym (Fin n) p × Sym (Fin n) q)).filter
       (fun PQ => PQ.1.1 + PQ.2.1 = M)).card =
-    (M.powersetCard p).card := by
+    ((Finset.univ : Finset (Sym (Fin n) p)).filter
+      (fun P => P.1 ≤ M)).card := by
   classical
-  apply Finset.card_bij (fun (PQ : Sym (Fin n) p × Sym (Fin n) q) _ => PQ.1.1)
-  · -- Map lands in M.powersetCard p
+  apply Finset.card_bij (fun (PQ : Sym (Fin n) p × Sym (Fin n) q) _ => PQ.1)
+  · -- Map lands in {P : Sym (Fin n) p // P.1 ≤ M}.
     intro PQ hPQ
-    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ
-    rw [Multiset.mem_powersetCard]
-    refine ⟨?_, PQ.1.2⟩
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ ⊢
     calc PQ.1.1 ≤ PQ.1.1 + PQ.2.1 := le_self_add
       _ = M := hPQ
-  · -- Injective: PQ₁.1.1 = PQ₂.1.1 implies PQ₁ = PQ₂
+  · -- Injective: PQ₁.1 = PQ₂.1 (as Sym) implies PQ₁ = PQ₂ (as pair).
     intro PQ₁ hPQ₁ PQ₂ hPQ₂ heq
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hPQ₁ hPQ₂
-    have hP : PQ₁.1 = PQ₂.1 := Subtype.ext heq
+    have hP_val : PQ₁.1.1 = PQ₂.1.1 := congrArg Subtype.val heq
     have hQval : PQ₁.2.1 = PQ₂.2.1 := by
       have hadd : PQ₁.1.1 + PQ₁.2.1 = PQ₁.1.1 + PQ₂.2.1 := by
-        rw [hPQ₁, ← hPQ₂, heq]
+        rw [hPQ₁, ← hPQ₂, hP_val]
       exact add_left_cancel hadd
     have hQ : PQ₁.2 = PQ₂.2 := Subtype.ext hQval
-    exact Prod.ext hP hQ
-  · -- Surjective
-    intro P' hP'
-    rw [Multiset.mem_powersetCard] at hP'
-    obtain ⟨hP'_le, hP'_card⟩ := hP'
-    have hQcard : (M - P').card = q := by
-      rw [Multiset.card_sub hP'_le, hM, hP'_card, Nat.add_sub_cancel_left]
-    refine ⟨(⟨P', hP'_card⟩, ⟨M - P', hQcard⟩), ?_, rfl⟩
+    exact Prod.ext heq hQ
+  · -- Surjective: for P with P.1 ≤ M, take Q := M - P.1.
+    intro P hP
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hP
+    have hQcard : (M - P.1).card = q := by
+      rw [Multiset.card_sub hP, hM, P.2, Nat.add_sub_cancel_left]
+    refine ⟨(P, ⟨M - P.1, hQcard⟩), ?_, rfl⟩
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-    -- Need: P' + (M - P') = M; via tsub: (M - P') + P' = M, then add_comm.
+    -- Need: P.1 + (M - P.1) = M; via tsub: (M - P.1) + P.1 = M, then add_comm.
     rw [add_comm]
-    exact tsub_add_cancel_of_le hP'_le
+    exact tsub_add_cancel_of_le hP
+
+/-- **Sub-lemma 2 of `ballot_counting_identity`** (S26, deferred proof to S27+).
+
+    For `b ≥ 2` and `b ≤ a`, the count of column-strict `(a, b)`-splits of
+    a multiset `M : Sym (Fin n) (a + b)` plus the count of distinct size-`(a+1)`
+    submultisets of `M.1` equals the count of distinct size-`a` submultisets
+    of `M.1` (additive form, to avoid truncated `Nat` subtraction):
+
+      `#{(P, Q) // ColStrictSym a b P Q ∧ P.1 + Q.1 = M.1}
+       + #{P' : Sym (Fin n) (a+1) // P'.1 ≤ M.1}
+       = #{P : Sym (Fin n) a // P.1 ≤ M.1}`
+
+    Equivalently, `# ¬col-strict (a,b)-splits = # distinct (a+1)-submultisets
+    of M`, which is exactly the cardinality identity that
+    `ballot_counting_identity` reduces to (after applying Sub-lemma 1 to
+    both sides to express the split-count via `≤ M.1` Sym counts).
+
+    ### Heart of the ballot reflection / cycle-lemma argument
+
+    Among the `#{P : Sym (Fin n) a // P.1 ≤ M.1}` distinct size-`a`
+    submultisets of `M.1` (with `Q := M.1 − P.1` determined), exactly the
+    `#{P' : Sym (Fin n) (a+1) // P'.1 ≤ M.1}` correspond to non-col-strict
+    `(P, Q)` pairs (the "bad" ones where the JDT slide can produce a
+    canonical `(a+1, b-1)`-split), leaving exactly the col-strict count
+    for the remainder.
+
+    ### Proof strategy (~80–100 lines, deferred to S27+)
+
+    See `sessions/2026-05-08-s24.md` for the full plan:
+    1. Lift `(P, Q) ↔ pl ++ ql = M.1.sort` (sorted list pairs) via a
+       `Sym × Sym → List × List` translation (Sub-lemma 3 in the S24 plan).
+    2. Apply the Cycle Lemma for sorted multiset prefixes — not yet in
+       Mathlib, a small contribution candidate independent of this proof.
+       The Lyndon / Dvoretzky-Motzkin Cycle Lemma for ballot sequences
+       generalises to multisets via positional rotation.
+    3. Multiplicity correction: when `M.1` has repeated elements, cycle
+       classes have non-trivial stabilisers; the col-strict condition is
+       rotation-equivariant and the count divides cleanly orbit-by-orbit.
+
+    ### Use site
+
+    `ballot_counting_identity` (S26 refactor): combine with
+    `split_count_eq_subSym_le_count` (Sub-lemma 1) at `(p, q) := (a, b)`
+    and `(p, q) := (a + 1, b - 1)`, plus
+    `Finset.filter_card_add_filter_neg_card_eq_card` for the
+    col-strict / ¬col-strict partition, then discharge the resulting
+    linear arithmetic over four `.card` terms via `omega`. -/
+private lemma colStrict_count_add_eq_subSym_le_count {n a b : ℕ}
+    (_hb : 2 ≤ b) (_hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
+    ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+      (fun PQ => ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card +
+    ((Finset.univ : Finset (Sym (Fin n) (a + 1))).filter
+      (fun P => P.1 ≤ M.1)).card =
+    ((Finset.univ : Finset (Sym (Fin n) a)).filter
+      (fun P => P.1 ≤ M.1)).card := by
+  sorry
 
 /-- **Ballot counting identity (per total multiset).**
 
@@ -856,13 +939,29 @@ private lemma split_count_eq_powersetCard_card {n p q : ℕ}
     Estimated ~80–100 lines of structural Finset manipulation, with the only
     deep mathematical input being `ballot_counting_identity` itself.
 
-    ### Proof strategy for `ballot_counting_identity` (this lemma — `sorry`)
+    ### Proof strategy for `ballot_counting_identity` (S26 — DAG completed)
 
-    Reflection / ballot principle: for `M` with all distinct elements, both
-    cardinalities equal `C(a + b, a + 1)`; the multiplicity case generalises by
-    the same argument. Estimated ~150 lines remaining work, Session 23+. The
-    b = 1 analogue (where `b - 1 = 0` and `Q' = ∅`) is the unique-existence
-    statement in `jdt_weight_sum_b_one` / Aristotle.
+    The proof body now invokes the two named sub-lemmas (S24 plan):
+
+    * `split_count_eq_subSym_le_count` (Sub-lemma 1, S25/S26-corrected) at
+      `(p, q) := (a, b)` and `(p, q) := (a + 1, b - 1)` — converts both
+      sides' filter cards to counts of distinct submultisets of `M.1`
+      (`Sym` objects with underlying multiset `≤ M.1`).
+    * `colStrict_count_add_eq_subSym_le_count` (Sub-lemma 2, S26 — `sorry`,
+      deferred to S27+) — encodes the difference identity at the heart of
+      the cycle-lemma / reflection argument.
+    * `Finset.filter_card_add_filter_neg_card_eq_card` — partitions the
+      `(a, b)`-splits with `P + Q = M.1` by `ColStrictSym a b P Q`.
+
+    Combine via `omega` over four `.card` terms: total `(a, b)`-splits,
+    col-strict count, ¬col-strict count, and `(a + 1)`-submultiset count.
+
+    The deep mathematical input — the cycle-lemma argument generalised to
+    multisets — has now been **packaged into Sub-lemma 2** and isolated
+    from `ballot_counting_identity`. Sorry count for the file is unchanged
+    (the `sorry` previously here at line 896 / S20 has migrated to
+    Sub-lemma 2 itself, with cleaner provenance and a tighter remaining
+    estimate of ~80–100 lines for the cycle-lemma proof).
 
     ### Why the hypothesis `b ≤ a` is necessary (S21)
 
@@ -893,7 +992,48 @@ private theorem ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b) (hba : b �
       (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card =
     ((Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
       (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).card := by
-  sorry
+  classical
+  have hM_a : M.1.card = a + b := M.2
+  have hM_succ : M.1.card = (a + 1) + (b - 1) := by rw [hM_a]; omega
+  -- Sub-lemma 1 applied to RHS: (a+1, b-1)-split count = subSym_le count for (a+1).
+  have hRHS := split_count_eq_subSym_le_count
+    (n := n) (p := a + 1) (q := b - 1) M.1 hM_succ
+  -- Sub-lemma 1 applied to total (a, b)-splits: count = subSym_le count for a.
+  have hTotal := split_count_eq_subSym_le_count
+    (n := n) (p := a) (q := b) M.1 hM_a
+  -- Sub-lemma 2 (additive form, sorry-deferred): col-strict count + subSym_le_(a+1)
+  -- = subSym_le_a.
+  have hCS := colStrict_count_add_eq_subSym_le_count
+    (n := n) (a := a) (b := b) hb hba M
+  -- Partition (a, b)-splits with `P + Q = M.1` by ColStrictSym (yes / no).
+  have hPart :
+      ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+        (fun PQ => ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card +
+      ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+        (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card =
+      ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+        (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).card := by
+    -- Rewrite both predicate-conjunction filters as `.filter (P+Q=M.1) |>.filter cs?`.
+    have h_yes :
+        ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)) =
+        ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+            (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).filter
+          (fun PQ => ColStrictSym a b PQ.1 PQ.2) := by
+      rw [Finset.filter_filter]
+      exact Finset.filter_congr (fun _ _ => and_comm)
+    have h_not :
+        ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)) =
+        ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+            (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2) := by
+      rw [Finset.filter_filter]
+      exact Finset.filter_congr (fun _ _ => and_comm)
+    rw [h_yes, h_not]
+    exact Finset.filter_card_add_filter_neg_card_eq_card _
+  -- Linear arithmetic over four `.card` values closes the goal.
+  omega
 
 /-- **LHS fibered form** for the b≥2 case of `jdt_weight_sum`.
 

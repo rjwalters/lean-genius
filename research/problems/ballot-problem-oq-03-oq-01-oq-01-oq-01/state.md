@@ -4,8 +4,65 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S25 — researcher-10)
-**Iteration**: 25
+**Last Updated**: 2026-05-08 (S26 — researcher-11)
+**Iteration**: 26
+
+## S26 Summary (2026-05-08, researcher-11)
+
+**Mode**: ACT (S25 Sub-lemma 1 correction + S26 Sub-lemma 2 stub + S26
+`ballot_counting_identity` body refactor — three deliverables in one
+session; net sorry count unchanged at 2).
+
+**Outcome**:
+
+1. **Sub-lemma 1 correction** (`split_count_eq_powersetCard_card`
+   → `split_count_eq_subSym_le_count`). The S25 statement merged in
+   PR #17334 was mathematically **false** for `M` with repeated elements:
+   the original RHS `(M.powersetCard p).card` counts positional
+   submultisets with multiplicity (`Multiset.card_powersetCard`:
+   `(M.powersetCard p).card = Nat.choose M.card p`), while the LHS counts
+   distinct `Sym (Fin n) p` objects (multisets up to permutation). At
+   `n = 1`, `p = q = 2`, `M = {0,0,0,0}`, LHS = 1 (the unique pair
+   `({0,0}, {0,0})`) ≠ RHS = `C(4,2) = 6`. PR #17334 was merged by the
+   deployer with `(build pending)` status — no CI verification — exactly
+   the documented anti-pattern. The corrected RHS uses
+   `((Finset.univ : Finset (Sym (Fin n) p)).filter (fun P => P.1 ≤ M)).card`,
+   which is the natural count of distinct submultisets. Forward bijection
+   `(P, Q) ↦ P` (Sym, not multiset); inverse `P ↦ (P, ⟨M − P.1, _⟩)`. Full
+   proof retained.
+
+2. **Sub-lemma 2 stub** (`colStrict_count_add_eq_subSym_le_count`):
+   additive form to avoid truncated `Nat` subtraction:
+
+   ```
+   #{(P, Q) // ColStrictSym a b P Q ∧ P.1 + Q.1 = M.1}
+   + #{P' : Sym (Fin n) (a+1) // P'.1 ≤ M.1}
+   = #{P : Sym (Fin n) a // P.1 ≤ M.1}
+   ```
+
+   Body is `sorry`. Proof strategy (S27+): cycle-lemma over sorted
+   multiset prefixes (not in Mathlib — small contribution candidate).
+
+3. **`ballot_counting_identity` body refactor**: replaced the `sorry`
+   body with a 30-line proof composing Sub-lemma 1 (twice, at `p ∈ {a, a+1}`)
+   + Sub-lemma 2 + `Finset.filter_card_add_filter_neg_card_eq_card`
+   for the col-strict / ¬col-strict partition + `omega` for the linear
+   arithmetic over four `.card` terms. The DAG outlined in S24 is now
+   realised in code.
+
+**Net sorry count**: 2 → 2. The single `sorry` previously at
+`ballot_counting_identity` (S20, line 896) has migrated to
+`colStrict_count_add_eq_subSym_le_count` with cleaner provenance and a
+tighter remaining estimate (~80–100 lines for the cycle-lemma proof,
+versus the prior ~150 estimate for the unfactored bijection).
+
+**Files modified**:
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (+180/−40 lines).
+- `src/data/proofs/.../meta.json` (lineCount 1315→1455, theoremCount
+  32→33; description, assumptions, originalContributions updated for S26).
+- `research/problems/.../state.md` (this file: iteration 25→26, S26 summary).
+
+**Build**: pending (CI is the ground truth on PR).
 
 ## S25 Summary (2026-05-08, researcher-10)
 
@@ -176,7 +233,7 @@ Completed:
 
 ## Attempt Count
 
-- Total iterations: 25 (sessions 1-25).
+- Total iterations: 26 (sessions 1-26).
 - Approaches tried:
   1. SSYT infrastructure (sessions 1-14).
   2. Decompose `jdt_weight_sum` (S15).
@@ -192,9 +249,15 @@ Completed:
      correct signature + propagate at call site (S21) ✓.
  11. Decompose `ballot_counting_identity` proof into three named
      sub-lemmas via difference-identity route (S24) ✓.
- 12. Implement Sub-lemma 1 `split_count_eq_powersetCard_card` —
-     `Finset.card_bij` between multiset-split pairs and submultisets
-     (S25, this session) ✓.
+ 12. Implement Sub-lemma 1 `split_count_eq_powersetCard_card` (S25,
+     PR #17334 — but lemma was mathematically false as stated; merged with
+     `(build pending)` status by deployer-no-build auto-merge anti-pattern).
+ 13. Correct Sub-lemma 1 statement → `split_count_eq_subSym_le_count`
+     (RHS now uses `Sym (Fin n) p`-count of distinct submultisets, not
+     `Multiset.powersetCard p`'s positional count); add Sub-lemma 2 stub
+     `colStrict_count_add_eq_subSym_le_count` (sorry, deferred S27+);
+     refactor `ballot_counting_identity` body to use Sub-lemmas 1+2 +
+     Finset.filter_card_add + omega (S26, this session) ✓.
 
 ## Blockers
 
