@@ -4,8 +4,22 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 18
+**Iteration**: 20
 **Last Updated**: 2026-05-08
+
+## Session 20 (this session, build pending)
+
+Added one Step 6/7 helper: `chebyshev_trig_sum_pos` — strict positivity of
+the Chebyshev-Lebesgue trig sum `S(θ, n) = Σₖ sin(φₖ)/|cos θ − cos φₖ|`
+for any θ avoiding all chebyshev nodes. This is the building block for the
+finite-set `min'` argument in `trig_sum_harmonic_lb` Step 6/7: for the
+finitely many small `n` (`1 ≤ n < N₀(d)`), the ratio `S(θ, n)/(n·log(n+1))`
+is well-defined and positive, so its `Finset.min'` exists and is positive,
+yielding the small-n constant.
+
+Proof: every term has `sin > 0` (via `chebyshevAngle_sin_pos`) and
+`|cos θ − cos φₖ| > 0` (via the `hne` hypothesis). Apply `Finset.sum_pos`
+with the nonempty witness `k = 0` (`Fin n` nonempty since `n ≥ 1`).
 
 ## Current Focus
 2 sorries remain in `proofs/Proofs/Erdos1151OQ04.lean` (1567 lines, on `main`):

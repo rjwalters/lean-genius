@@ -1583,6 +1583,30 @@ private lemma trig_sum_reindex_symmetry (n : ℕ) (hn : 0 < n) (θ : ℝ) :
         -(Real.cos θ - chebyshevNode n k) from by ring,
       abs_neg]
 
+/-- **(Step 6/7 helper) Strict positivity of the Chebyshev-Lebesgue trig sum.**
+
+    For any `θ` whose cosine avoids all `n` Chebyshev nodes, the trig sum
+    `S(θ, n) = Σₖ sin(φₖ)/|cos θ − cos φₖ|` is strictly positive (every term
+    has positive numerator by `chebyshevAngle_sin_pos`, positive denominator
+    by `hne`).
+
+    This is the building block for the **finite-set min'** argument in the
+    `trig_sum_harmonic_lb` proof: for `1 ≤ n < N₀(d)`, the ratio
+    `S(θ, n) / (n · log(n+1))` is well-defined and strictly positive, so its
+    minimum over the finite set `{1, …, N₀−1}` exists and is positive,
+    yielding the small-`n` constant in `trig_sum_harmonic_lb`. -/
+private lemma chebyshev_trig_sum_pos (n : ℕ) (hn : 0 < n) (θ : ℝ)
+    (hne : ∀ k : Fin n, Real.cos θ ≠ chebyshevNode n k) :
+    0 < ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := by
+  -- Each term is strictly positive: sin > 0 by chebyshevAngle_sin_pos, denominator
+  -- > 0 by hne k. Apply Finset.sum_pos with the nonempty witness k = 0.
+  apply Finset.sum_pos
+  · intro k _
+    exact div_pos (chebyshevAngle_sin_pos n hn k)
+      (abs_pos.mpr (sub_ne_zero.mpr (hne k)))
+  · exact ⟨⟨0, hn⟩, Finset.mem_univ _⟩
+
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
     For any θ ∈ (0, π) with cos θ not a Chebyshev node for any n, the sum
