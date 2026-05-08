@@ -43,6 +43,35 @@ def IsPrimeAP (k N : ℕ) : Prop :=
 noncomputable def longestPrimeAP (N : ℕ) : ℕ :=
   sSup {k : ℕ | IsPrimeAP k N}
 
+/-- The set `{k | IsPrimeAP k N}` is bounded above by `N + 1`.
+    Reason: an AP of length k ≥ 1 with common difference d ≥ 1 has last term
+    `a + (k-1)·d ≥ k - 1`, so being ≤ N forces k ≤ N + 1. -/
+private lemma bddAbove_isPrimeAP (N : ℕ) :
+    BddAbove {k : ℕ | IsPrimeAP k N} := by
+  refine ⟨N + 1, ?_⟩
+  rintro k ⟨a, d, hd, _, hle⟩
+  rcases k with _ | k
+  · omega
+  · have hbound := hle k (by omega)
+    have hkd := Nat.le_mul_of_pos_right k hd
+    omega
+
+/-- The set `{k | IsPrimeAP k N}` is nonempty: `k = 0` is always a member
+    (the universally-quantified premises are vacuous for `i < 0`). -/
+private lemma nonempty_isPrimeAP (N : ℕ) :
+    ({k : ℕ | IsPrimeAP k N}).Nonempty :=
+  ⟨0, 1, 1, Nat.one_pos,
+    fun _ hi => (Nat.not_lt_zero _ hi).elim,
+    fun _ hi => (Nat.not_lt_zero _ hi).elim⟩
+
+/-- Monotonicity of `longestPrimeAP`: if `N ≤ N'`, then any prime AP of length k
+    in {1,...,N} is also a prime AP in {1,...,N'}, so the supremum is monotone. -/
+theorem longest_prime_ap_monotone {N N' : ℕ} (h : N ≤ N') :
+    longestPrimeAP N ≤ longestPrimeAP N' := by
+  apply csSup_le_csSup (bddAbove_isPrimeAP N') (nonempty_isPrimeAP N)
+  rintro k ⟨a, d, hd, hp, hle⟩
+  exact ⟨a, d, hd, hp, fun i hi => le_trans (hle i hi) h⟩
+
 /- ## Upper Bound from PNT -/
 
 /- The Prime Number Theorem implies: any AP of primes in {1,...,N}
@@ -174,14 +203,27 @@ theorem ap_difference_primorial (k : ℕ) (_hk : k ≥ 3) :
 
 /- ## Gap Between Green–Tao and Erdős #200 -/
 
-/-- The PNT upper bound and Green–Tao together bracket longestPrimeAP:
-    for any ε > 0 and large N, M ≤ longestPrimeAP N ≤ (1+ε)·log N
-    for all M (since AP length is unbounded). The open problem is
-    whether the lower growth rate is sublogarithmic. -/
+/-- The PNT upper bound and Green–Tao together bracket `longestPrimeAP`:
+    for every target length `M` and every `ε > 0`, there is a threshold `N₀`
+    such that for all `N ≥ N₀`,
+    `M ≤ longestPrimeAP N ≤ (1+ε)·log N`.
+
+    The lower bound `M ≤ longestPrimeAP N` uses Green–Tao together with
+    monotonicity of `longestPrimeAP` in `N`; the upper bound is the PNT
+    axiom. The open problem is whether the lower growth rate is
+    sublogarithmic — i.e., whether `M` may be taken proportional to `log N`
+    or strictly less. -/
 theorem pnt_green_tao_bracket :
-    ∀ ε : ℝ, ε > 0 →
+    ∀ ε : ℝ, ε > 0 → ∀ M : ℕ,
     ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →
-      ∃ M : ℕ, M ≤ longestPrimeAP N ∧ (longestPrimeAP N : ℝ) ≤ (1 + ε) * Real.log N := by
-  intro ε hε
-  obtain ⟨N₀, hub⟩ := prime_ap_pnt_upper ε hε
-  exact ⟨N₀, fun N hN => ⟨0, Nat.zero_le _, hub N hN⟩⟩
+      M ≤ longestPrimeAP N ∧ (longestPrimeAP N : ℝ) ≤ (1 + ε) * Real.log N := by
+  intro ε hε M
+  obtain ⟨N₁, hub⟩ := prime_ap_pnt_upper ε hε
+  obtain ⟨N_M, hpa⟩ := green_tao M
+  refine ⟨max N₁ N_M, fun N hN => ?_⟩
+  have hN₁ : N₁ ≤ N := le_trans (le_max_left _ _) hN
+  have hN_M : N_M ≤ N := le_trans (le_max_right _ _) hN
+  refine ⟨?_, hub N hN₁⟩
+  have hM_at_N_M : M ≤ longestPrimeAP N_M :=
+    le_csSup (bddAbove_isPrimeAP N_M) hpa
+  exact le_trans hM_at_N_M (longest_prime_ap_monotone hN_M)

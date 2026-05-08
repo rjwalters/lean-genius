@@ -65,13 +65,16 @@
       "exists_dvd_in_ap: Helper lemma — ZMod witness for divisibility in APs",
       "ap_difference_primorial: PROVED (was false axiom) — primorial divisibility with corrected hypothesis",
       "prime_ap_3, prime_ap_5, prime_ap_6: PROVED via native_decide — concrete prime AP examples",
-      "pnt_green_tao_bracket: PROVED — combines prime_ap_pnt_upper and Green-Tao to bracket longestPrimeAP between ω(1) and (1+ε)·log N",
-      "prime_ap_7: 7-term prime AP {7, 157, 307, 457, 607, 757, 907} with d=150"
+      "pnt_green_tao_bracket: PROVED (strengthened) — for every M, ε>0, there exists N₀ such that for all N≥N₀, M ≤ longestPrimeAP(N) ≤ (1+ε)·log N. The lower bound is now uniform in N (uses Green-Tao + monotonicity)",
+      "prime_ap_7: 7-term prime AP {7, 157, 307, 457, 607, 757, 907} with d=150",
+      "bddAbove_isPrimeAP: PROVED — the set {k | IsPrimeAP k N} is bounded above by N+1 (factored from inline proof)",
+      "nonempty_isPrimeAP: PROVED — the set {k | IsPrimeAP k N} is nonempty (k=0 is vacuously a member)",
+      "longest_prime_ap_monotone: PROVED — longestPrimeAP is monotone in N, so any prime AP of length k in {1,...,N} extends to {1,...,N'} for N≤N'"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 3,
-    "theoremCount": 8,
-    "lineCount": 187,
+    "theoremCount": 11,
+    "lineCount": 229,
     "assumptions": "3 axioms: prime_ap_pnt_upper (PNT upper bound), green_tao (Green-Tao 2008), erdos_200 (open conjecture). 0 sorries.",
     "mathlib_version": "4.26.0",
     "definitionCount": 3
