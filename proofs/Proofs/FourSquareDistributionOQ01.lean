@@ -1559,4 +1559,95 @@ example : jacobiR4 11 = 8 * (11 + 1) :=
 example : jacobiR4 13 = 8 * (13 + 1) :=
   jacobiR4_odd_prime (by decide) (by decide)
 
+-- =====================================================================
+-- PART 22: σ*, jacobiR4, and r4Count on odd PRIME POWERS (S12).
+--
+-- Generalizes Part 21's `jacobiR4_odd_prime` / `r4Count_odd_prime`
+-- (the k = 1 special case) to arbitrary k ≥ 0. Reuses Part 8's
+-- `sigmaStar_prime_pow_of_odd_prime` (which states σ*(p^k) = σ(p^k)
+-- for odd prime p) and the definition `jacobiR4 = 8·σ*`. The r4Count
+-- side derives from `jacobi_r4_formula` (Part 5).
+--
+-- Coverage map: combined with Part 15's `jacobiR4_two_pow_mul_odd`
+-- (the pure 2-power and 2^k·m closed forms) and Part 12's
+-- `sigmaStar_mul_of_coprime` (multiplicativity at coprime arguments),
+-- this pins jacobiR4(n) explicitly on every prime power. The general
+-- case n = ∏ p_i^{k_i} reduces to a chain of these via
+-- multiplicativity, so the only remaining gap to closing
+-- `jacobi_r4_formula` is the multiplicative bridge from r4Count to
+-- jacobiR4 — addressed by the atomic-axiom decomposition route.
+-- =====================================================================
+
+/-- **jacobiR4(p^k) = 8·σ(p^k) for odd prime p and any k ≥ 0**
+    (axiom-free).
+
+    Direct corollary of Part 8's `sigmaStar_prime_pow_of_odd_prime` and
+    the definition `jacobiR4 = 8·σ*`. Generalizes Part 21's
+    `jacobiR4_odd_prime` (the k = 1 special case
+    `jacobiR4(p) = 8·(p+1) = 8·σ(p)`). For k = 0, recovers
+    `jacobiR4(1) = 8 = 8·σ(1)` since σ(1) = 1. -/
+theorem jacobiR4_prime_pow_of_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2)
+    (k : ℕ) : jacobiR4 (p ^ k) = 8 * sigmaOne (p ^ k) := by
+  unfold jacobiR4
+  rw [sigmaStar_prime_pow_of_odd_prime hp h2 k]
+
+/-- **r4Count(p^k) = 8·σ(p^k) for odd prime p and any k ≥ 0** (uses
+    `jacobi_r4_formula`).
+
+    Closed form for r₄ on an odd-prime-power argument. Generalizes
+    Part 21's `r4Count_odd_prime` (the k = 1 special case
+    `r4Count(p) = 8·(p+1)`). For k = 0, recovers `r4Count(1) = 8`. -/
+theorem r4Count_prime_pow_of_odd_prime {p : ℕ} (hp : p.Prime) (h2 : p ≠ 2)
+    (k : ℕ) : r4Count (p ^ k) = 8 * sigmaOne (p ^ k) := by
+  rw [jacobi_r4_formula (p ^ k) (pow_pos hp.pos k)]
+  exact jacobiR4_prime_pow_of_odd_prime hp h2 k
+
+-- ---------------------------------------------------------------------
+-- Cross-validation: Part 22 closed forms match the Part 1 / Part 3
+-- numerical envelope, then extend beyond it.
+-- ---------------------------------------------------------------------
+
+/-- σ(9) = 1 + 3 + 9 = 13 — explicit value of σ on the smallest
+    odd-prime square. Used by the cross-checks below. -/
+theorem sigmaOne_9 : sigmaOne 9 = 13 := by native_decide
+
+/-- σ(25) = 1 + 5 + 25 = 31. -/
+theorem sigmaOne_25 : sigmaOne 25 = 31 := by native_decide
+
+/-- σ(27) = 1 + 3 + 9 + 27 = 40. -/
+theorem sigmaOne_27 : sigmaOne 27 = 40 := by native_decide
+
+/-- σ(49) = 1 + 7 + 49 = 57. -/
+theorem sigmaOne_49 : sigmaOne 49 = 57 := by native_decide
+
+/-- jacobiR4(9) = 8·σ(9) = 104 — matches Part 1's `jacobiR4_9`. -/
+example : jacobiR4 (3 ^ 2) = 8 * sigmaOne (3 ^ 2) :=
+  jacobiR4_prime_pow_of_odd_prime (by decide) (by decide) 2
+
+/-- r4Count(9) = 8·σ(9) = 104 — matches Part 3's `r4Count_9`. -/
+example : r4Count (3 ^ 2) = 8 * sigmaOne (3 ^ 2) :=
+  r4Count_prime_pow_of_odd_prime (by decide) (by decide) 2
+
+/-- jacobiR4(25) = 8·σ(25) = 248 — first odd-prime square beyond
+    Part 1's n ≤ 10 numerical envelope. -/
+example : jacobiR4 (5 ^ 2) = 8 * sigmaOne (5 ^ 2) :=
+  jacobiR4_prime_pow_of_odd_prime (by decide) (by decide) 2
+
+/-- jacobiR4(27) = 8·σ(27) = 320 — first odd-prime cube. -/
+example : jacobiR4 (3 ^ 3) = 8 * sigmaOne (3 ^ 3) :=
+  jacobiR4_prime_pow_of_odd_prime (by decide) (by decide) 3
+
+/-- r4Count(27) = 8·σ(27) = 320 — odd-prime cube via
+    `jacobi_r4_formula`. -/
+example : r4Count (3 ^ 3) = 8 * sigmaOne (3 ^ 3) :=
+  r4Count_prime_pow_of_odd_prime (by decide) (by decide) 3
+
+/-- r4Count(49) = 8·σ(49) = 456 — second odd-prime square. -/
+example : r4Count (7 ^ 2) = 8 * sigmaOne (7 ^ 2) :=
+  r4Count_prime_pow_of_odd_prime (by decide) (by decide) 2
+
+/-- jacobiR4(p^0) = jacobiR4(1) = 8 = 8·σ(1) — vacuous k = 0 case. -/
+example : jacobiR4 (3 ^ 0) = 8 * sigmaOne (3 ^ 0) :=
+  jacobiR4_prime_pow_of_odd_prime (by decide) (by decide) 0
+
 end FourSquareDistributionOQ01
