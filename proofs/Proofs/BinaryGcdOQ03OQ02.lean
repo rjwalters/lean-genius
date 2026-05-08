@@ -45,6 +45,18 @@
   These are the inputs needed by `row_vec_cramer` to derive entry
   bounds at the leaf of the recursion.
 
+  Toward size reduction (PART XII, Session 15):
+  We prove `hgcdMatrix_pattern_det_coupled`, the conjoint invariant
+  `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)` for every matrix
+  produced by HGCD. This couples the PART III determinant bound with
+  the PART X sign-pattern lifting; with this coupling, `entry_bound_of_even`
+  (which requires `det = 1`) and `entry_bound_of_odd` (which requires
+  `det = -1`) can be applied without a four-way case split. Proof:
+  the coupling holds for `lehmerInnerStep` (each step flips both
+  pattern and det sign), hence inductively for `lehmerCofactors`;
+  it is preserved by matrix multiplication via the Z/2-grading of
+  patterns matching the multiplicativity of det.
+
   Out of scope (deferred):
   The bit-complexity claim O(M(n)·log n) requires a Mathlib model of
   fast multiplication and bit operations that does not yet exist.
@@ -1329,6 +1341,176 @@ theorem hgcdMatrix_small_row_invariant (fuel a b : ℕ)
   rw [hgcdMatrix_small fuel a b h]
   exact lehmerCofactors_id_apply_le hgcdThreshold a b
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XII: PATTERN-DET COUPLING (Session 15)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Conjoint sign-pattern × determinant invariant
+
+PART X (`hgcdMatrix_has_pattern`) proved that every matrix produced by
+`hgcdMatrix` has `EvenPattern` or `OddPattern`. Independently, PART III
+(`hgcdMatrix_det_unit`) proved that every such matrix has det ±1. This
+subsection proves the **conjoint** invariant — pattern and determinant
+are *coupled*:
+
+    EvenPattern  ↔  det = 1,
+    OddPattern   ↔  det = -1
+
+(restricted to matrices produced by Lehmer or HGCD reductions starting
+from the identity).
+
+The coupling is a strict prerequisite for the entry-bound result.
+`entry_bound_of_even` requires `det = 1`; `entry_bound_of_odd` requires
+`det = -1`. Without the coupling, applying the right entry-bound lemma
+in a downstream proof would require a four-way case split
+(Even+1, Even+(-1), Odd+1, Odd+(-1)); two of those four cases never
+occur, but ruling them out *is* this coupling.
+
+Structure:
+  * `lehmerInnerStep_pattern_det_coupled`: each `lehmerInnerStep`
+    preserves the `(Even ∧ +1) ∨ (Odd ∧ -1)` disjunction.
+  * `lehmerCofactors_pattern_det_coupled_from`: by induction on fuel,
+    the coupling propagates through `lehmerCofactors`.
+  * `lehmerCofactors_pattern_det_coupled`: specialisation to the
+    identity matrix (the form HGCD's threshold case uses).
+  * `cofactor_mul_pattern_det_coupled`: for products `M.mul N`, the
+    Z/2-grading of the patterns coincides with the multiplicativity of
+    the determinant, so the coupling is preserved.
+  * `hgcdMatrix_pattern_det_coupled`: the conjoint invariant for HGCD,
+    by induction on fuel.
+
+This is one of the two prerequisites for `hgcdMatrix_entry_bound` (the
+other being a row-vector invariant for the recursive case, which the
+Stehlé–Zimmermann joint induction is designed to break). -/
+
+/-- Each Lehmer step preserves the conjoint pattern-det invariant.
+
+    Proof: combine `lehmerInnerStep_even_to_odd`/`lehmerInnerStep_odd_to_even`
+    (PART VI) with `lehmerInnerStep_det` (BinaryGcdOQ03 PART IV), which
+    flips the sign of the determinant. -/
+theorem lehmerInnerStep_pattern_det_coupled
+    {ahat bhat : ℕ} {M M' : CofactorMatrix} {ahat' bhat' : ℕ}
+    (hstep : lehmerInnerStep ahat bhat M = some (ahat', bhat', M'))
+    (h : (EvenPattern M ∧ M.det = 1) ∨ (OddPattern M ∧ M.det = -1)) :
+    (EvenPattern M' ∧ M'.det = 1) ∨ (OddPattern M' ∧ M'.det = -1) := by
+  have hflip : M'.det = -M.det := lehmerInnerStep_det hstep
+  rcases h with ⟨heven, hdet⟩ | ⟨hodd, hdet⟩
+  · -- (Even, +1) → (Odd, -1)
+    refine Or.inr ⟨lehmerInnerStep_even_to_odd hstep heven, ?_⟩
+    rw [hflip, hdet]
+  · -- (Odd, -1) → (Even, +1)
+    refine Or.inl ⟨lehmerInnerStep_odd_to_even hstep hodd, ?_⟩
+    rw [hflip, hdet]; ring
+
+/-- `lehmerCofactors` preserves the conjoint pattern-det invariant.
+
+    Induction on fuel: each successful step flips both the pattern
+    (`EvenPattern ↔ OddPattern`) and the determinant sign
+    (`+1 ↔ -1`); termination (`none` branch) returns the input
+    unchanged. -/
+theorem lehmerCofactors_pattern_det_coupled_from
+    (fuel ahat bhat : ℕ) (M₀ : CofactorMatrix)
+    (h₀ : (EvenPattern M₀ ∧ M₀.det = 1) ∨ (OddPattern M₀ ∧ M₀.det = -1)) :
+    (EvenPattern (lehmerCofactors fuel ahat bhat M₀)
+        ∧ (lehmerCofactors fuel ahat bhat M₀).det = 1) ∨
+    (OddPattern (lehmerCofactors fuel ahat bhat M₀)
+        ∧ (lehmerCofactors fuel ahat bhat M₀).det = -1) := by
+  induction fuel generalizing ahat bhat M₀ with
+  | zero => simp [lehmerCofactors]; exact h₀
+  | succ n ih =>
+    simp only [lehmerCofactors]
+    match hstep : lehmerInnerStep ahat bhat M₀ with
+    | none => exact h₀
+    | some (ahat', bhat', M') =>
+      exact ih ahat' bhat' M' (lehmerInnerStep_pattern_det_coupled hstep h₀)
+
+/-- Specialisation to `M₀ = id`: the identity matrix has `EvenPattern`
+    and `det = 1`, so any `lehmerCofactors fuel ahat bhat id` satisfies
+    the conjoint invariant. This is the form used by HGCD's threshold
+    case. -/
+theorem lehmerCofactors_pattern_det_coupled (fuel ahat bhat : ℕ) :
+    (EvenPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id)
+        ∧ (lehmerCofactors fuel ahat bhat CofactorMatrix.id).det = 1) ∨
+    (OddPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id)
+        ∧ (lehmerCofactors fuel ahat bhat CofactorMatrix.id).det = -1) :=
+  lehmerCofactors_pattern_det_coupled_from fuel ahat bhat CofactorMatrix.id
+    (Or.inl ⟨CofactorMatrix.id_even_pattern, CofactorMatrix.det_id⟩)
+
+/-- The conjoint pattern-det invariant is preserved by matrix
+    multiplication: the Z/2-grading on patterns matches the
+    multiplicativity of the determinant.
+
+      (Even, +1) · (Even, +1) = (Even, +1·+1 = +1)
+      (Even, +1) · (Odd,  -1) = (Odd,  +1·-1 = -1)
+      (Odd,  -1) · (Even, +1) = (Odd,  -1·+1 = -1)
+      (Odd,  -1) · (Odd,  -1) = (Even, -1·-1 = +1)
+
+    Pattern part by `cofactor_mul_even_even`/`cofactor_mul_even_odd`/
+    `cofactor_mul_odd_even`/`cofactor_mul_odd_odd` (PART X);
+    determinant part by `CofactorMatrix.det_mul` and arithmetic. -/
+theorem cofactor_mul_pattern_det_coupled {M N : CofactorMatrix}
+    (hM : (EvenPattern M ∧ M.det = 1) ∨ (OddPattern M ∧ M.det = -1))
+    (hN : (EvenPattern N ∧ N.det = 1) ∨ (OddPattern N ∧ N.det = -1)) :
+    (EvenPattern (M.mul N) ∧ (M.mul N).det = 1) ∨
+    (OddPattern (M.mul N) ∧ (M.mul N).det = -1) := by
+  rw [CofactorMatrix.det_mul]
+  rcases hM with ⟨hMpat, hMdet⟩ | ⟨hMpat, hMdet⟩ <;>
+    rcases hN with ⟨hNpat, hNdet⟩ | ⟨hNpat, hNdet⟩
+  · -- Even · Even = Even, det = 1·1 = 1
+    refine Or.inl ⟨cofactor_mul_even_even hMpat hNpat, ?_⟩
+    rw [hMdet, hNdet]; norm_num
+  · -- Even · Odd = Odd, det = 1·(-1) = -1
+    refine Or.inr ⟨cofactor_mul_even_odd hMpat hNpat, ?_⟩
+    rw [hMdet, hNdet]; ring
+  · -- Odd · Even = Odd, det = (-1)·1 = -1
+    refine Or.inr ⟨cofactor_mul_odd_even hMpat hNpat, ?_⟩
+    rw [hMdet, hNdet]; ring
+  · -- Odd · Odd = Even, det = (-1)·(-1) = 1
+    refine Or.inl ⟨cofactor_mul_odd_odd hMpat hNpat, ?_⟩
+    rw [hMdet, hNdet]; norm_num
+
+/-- The conjoint pattern-det invariant for `hgcdMatrix`: every matrix
+    produced by Schönhage's recursive HGCD satisfies one of:
+
+      `EvenPattern ∧ det = 1`   or   `OddPattern ∧ det = -1`.
+
+    Proof: induction on fuel.
+    - Base (`fuel = 0`): identity is `(Even, det = 1)`.
+    - Threshold case: `lehmerCofactors_pattern_det_coupled` applies
+      directly.
+    - Recursive case: the result is `M_outer.mul M_inner`; both factors
+      satisfy the invariant by IH, and `cofactor_mul_pattern_det_coupled`
+      lifts to the product.
+
+    This is the Z/2-grading half of `hgcdMatrix_entry_bound`; combined
+    with PART XI's row-vector invariant + `row_vec_cramer` +
+    `entry_bound_of_even`/`entry_bound_of_odd`, it eliminates the
+    spurious (Even ∧ -1) and (Odd ∧ +1) cases that would otherwise
+    block applying the entry bound. -/
+theorem hgcdMatrix_pattern_det_coupled (fuel a b : ℕ) :
+    (EvenPattern (hgcdMatrix fuel a b)
+        ∧ (hgcdMatrix fuel a b).det = 1) ∨
+    (OddPattern (hgcdMatrix fuel a b)
+        ∧ (hgcdMatrix fuel a b).det = -1) := by
+  induction fuel generalizing a b with
+  | zero =>
+    rw [hgcdMatrix_zero]
+    exact Or.inl ⟨CofactorMatrix.id_even_pattern, CofactorMatrix.det_id⟩
+  | succ f ih =>
+    rw [hgcdMatrix_succ]
+    by_cases hsmall : max a b < hgcdThreshold
+    · rw [if_pos hsmall]
+      exact lehmerCofactors_pattern_det_coupled hgcdThreshold a b
+    · rw [if_neg hsmall]
+      exact cofactor_mul_pattern_det_coupled
+        (ih _ _) (ih (a / 2 ^ hgcdShift a b) (b / 2 ^ hgcdShift a b))
+
+/-- Top-level HGCD satisfies the conjoint pattern-det invariant. -/
+theorem hgcdMatrixOf_pattern_det_coupled (a b : ℕ) :
+    (EvenPattern (hgcdMatrixOf a b) ∧ (hgcdMatrixOf a b).det = 1) ∨
+    (OddPattern (hgcdMatrixOf a b) ∧ (hgcdMatrixOf a b).det = -1) :=
+  hgcdMatrix_pattern_det_coupled _ a b
+
 /-! ## Summary
 
 **Proved (0 axioms, 0 sorries):**
@@ -1472,6 +1654,34 @@ theorem hgcdMatrix_small_row_invariant (fuel a b : ℕ)
     sorry, which the joint induction (Stehlé–Zimmermann §4) is designed
     to break.
 
+18. **Pattern-det coupling for `hgcdMatrix`** (PART XII, Session 15):
+    - `lehmerInnerStep_pattern_det_coupled`: a single Lehmer step
+      preserves the conjoint invariant
+      `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)`. Pattern flips
+      via the PART VI alternation lemmas; det flips by
+      `lehmerInnerStep_det`.
+    - `lehmerCofactors_pattern_det_coupled_from`/
+      `lehmerCofactors_pattern_det_coupled`: the conjoint invariant
+      propagates through `lehmerCofactors`; the specialised form starts
+      from `(EvenPattern id, det id = 1)`.
+    - `cofactor_mul_pattern_det_coupled`: the Z/2-grading on patterns
+      coincides with the multiplicativity of the determinant — products
+      preserve the coupling. Combines the four PART X mul rules with
+      `CofactorMatrix.det_mul`.
+    - `hgcdMatrix_pattern_det_coupled`/`hgcdMatrixOf_pattern_det_coupled`:
+      the conjoint invariant for HGCD by induction on fuel
+      (base = identity, threshold via Lehmer coupling, recursive via
+      `cofactor_mul_pattern_det_coupled`).
+
+    This eliminates the spurious `(Even ∧ -1)` and `(Odd ∧ +1)` cases
+    that would otherwise force a four-way split in any downstream
+    entry-bound argument: with the coupling in hand, `det = 1` *forces*
+    `EvenPattern`, so `entry_bound_of_even` applies directly (and
+    symmetrically for odd/-1). This is the second prerequisite for
+    `hgcdMatrix_entry_bound` (the first being the row-vector invariant
+    at the recursive case, which still requires the
+    Stehlé–Zimmermann joint induction).
+
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
   Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
@@ -1481,9 +1691,10 @@ theorem hgcdMatrix_small_row_invariant (fuel a b : ℕ)
   `lehmerCofactors_has_pattern` + `entry_bound_of_even/odd`, lifted to
   arbitrary fuel) rather than via its row-output bound at the wrong inputs.
   The remaining gap is a `hgcdMatrix_entry_bound` lemma (analogue of
-  `entry_bound_of_even/odd` for HGCD); Session 13 (PART X) supplies the
-  sign-pattern half of this lemma. The entry magnitude half (combining
-  pattern + det + row-vector invariant + Cramer) remains future work.
+  `entry_bound_of_even/odd` for HGCD); Sessions 13–15 supply two of the
+  three ingredients (sign pattern + pattern-det coupling); the row-vector
+  invariant at the recursive case (PART XI Session 14 base/threshold +
+  joint induction for the recursive case) remains future work.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
