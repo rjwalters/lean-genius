@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 221,
+    "lineCount": 278,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -56,10 +56,13 @@
       "burnside_pq_same_prime: axiom-free proof of Burnside for `p = q` (G is a p-group of order p^(a+b)).",
       "axiom burnside_pq_nontrivial: the genuinely-open content (`p ≠ q`, `a ≥ 1`, `b ≥ 1`) isolated as a single named axiom; full proof requires either character theory + algebraic integers (Burnside 1904) or transfer + focal subgroup (Goldschmidt-Matsuyama 1970s) — neither currently in Mathlib at sufficient generality.",
       "burnside_pq: main theorem combining trivial cases + axiom into the unified statement Nat.card G = p^a · q^b → IsSolvable G.",
-      "Three sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group — all axiom-free."
+      "Three sanity-check examples: trivial group (|G|=1), prime-order group, prime-power group — all axiom-free.",
+      "alternatingGroupFin5_card: axiom-free proof that |A₅| = 2²·3·5, exhibiting the three distinct prime factors that make A₅ a sharpness witness.",
+      "alternatingGroupFin5_not_solvable: axiom-free proof that A₅ is not solvable, via reduction to Equiv.Perm.not_solvable (Fin 5) through the short exact sequence A₅ → S₅ → ℤ/2.",
+      "burnside_pq_sharp: sharpness witness combining the two above — demonstrates that the analogue of burnside_pq for THREE distinct primes fails (no `burnside_pqr` theorem can hold without further hypotheses)."
     ],
     "assumptions": "1 axiom: `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`). The trivial cases (`a = 0`, `b = 0`, `p = q`) are theorems, all reducing to Mathlib's existing `IsPGroup → IsNilpotent → IsSolvable` chain. The axiom isolates the genuinely-open Lean content; a full proof would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route).",
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 0
   },
   "overview": {
@@ -123,6 +126,14 @@
       "endLine": 178,
       "summary": "Three `example`s that exercise `burnside_pq` axiom-free at the boundaries: trivial group ($|G| = 1 = 2^0 \\cdot 3^0$), prime-order group ($|G| = p = p^1 \\cdot 2^0$), and pure prime-power group ($|G| = p^a = p^a \\cdot 2^0$). Each picks $q = 2$ as a witness so the example doesn't need an additional prime hypothesis.",
       "mathContext": "These examples never invoke the axiom — they confirm that the trivial-case branches handle all degenerate cardinalities sensibly. The final `example` is the most general (any prime power)."
+    },
+    {
+      "id": "sharpness",
+      "title": "Part VI: Sharpness witness",
+      "startLine": 182,
+      "endLine": 225,
+      "summary": "`alternatingGroupFin5_card`: $|A_5| = 2^2 \\cdot 3 \\cdot 5$ via `Nat.card_eq_fintype_card` + `native_decide`. `alternatingGroupFin5_not_solvable`: A₅ is not solvable, via `solvable_of_ker_le_range (alternatingGroup (Fin 5)).subtype Equiv.Perm.sign` then `Equiv.Perm.not_solvable (Fin 5)`. `burnside_pq_sharp`: conjunction of the two — the canonical sharpness witness.",
+      "mathContext": "Burnside permits at most TWO distinct prime factors. $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct primes — exactly one more — and A₅ is the smallest non-solvable group. So `burnside_pq` is sharp: no extension to three distinct primes can hold. The proof uses the kernel-of-sign + range-of-subtype short exact sequence A₅ → S₅ → ℤ/2 to lift solvability of A₅ to S₅, then contradicts the Mathlib fact `Equiv.Perm.not_solvable` for $n \\geq 5$."
     }
   ],
   "crossReferences": [
@@ -148,7 +159,7 @@
     "openQuestions": [
       "Eliminate `burnside_pq_nontrivial` via the Goldschmidt-Matsuyama 1970s character-free proof. Concrete plan: extend Mathlib's transfer infrastructure with the focal subgroup theorem, then apply transfer on a Sylow p-subgroup of a minimal counterexample G to derive that P ∩ G' < P (contradicting G = G' for non-abelian simple G). Estimated ~400-800 lines.",
       "Alternative: eliminate `burnside_pq_nontrivial` via Burnside's original 1904 character-theoretic proof. Requires building the algebraic-integer hypothesis `(|G|/χ(1))χ(g) ∈ ℤ̄_K` in Mathlib's character theory framework (~100-200 additional lines on top of `Mathlib.RepresentationTheory.Character.char_orthonormal`).",
-      "Connect to the parent gallery entry's A₅ non-solvability proof to formalize sharpness: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has exactly three distinct primes, one more than Burnside permits, and $A_5$ is non-solvable. Together with `burnside_pq` this gives the exact threshold.",
+      "Sharpness witness: addressed in Part VI. `alternatingGroupFin5_card` + `alternatingGroupFin5_not_solvable` + `burnside_pq_sharp` formalize that |A₅| = 2²·3·5 is non-solvable, demonstrating that the analogue of `burnside_pq` for THREE distinct primes fails.",
       "Coordinate with Mathlib reviewers about scoping a full Burnside formalization for upstream — would be a substantial PR (~1000 lines).",
       "Investigate whether the theorem holds for infinite groups whose orders are 'morally' p^a q^b in some profinite sense — a possible extension question."
     ]
@@ -158,14 +169,15 @@
       "Mathlib.GroupTheory.PGroup",
       "Mathlib.GroupTheory.Solvable",
       "Mathlib.GroupTheory.Nilpotent",
+      "Mathlib.GroupTheory.SpecificGroups.Alternating",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 221,
+    "lineCount": 278,
     "axiomCount": 1,
-    "theoremCount": 5,
-    "substantiveTheoremCount": 5,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
     "sorries": 0
@@ -201,6 +213,11 @@
       "name": "burnside_pq",
       "statement": "∀ {G : Type*} [Group G] [Finite G] {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}, Nat.card G = p^a · q^b → IsSolvable G",
       "description": "Burnside's pᵃqᵇ theorem. Combines axiom-free trivial cases with the conjectural `burnside_pq_nontrivial` axiom."
+    },
+    {
+      "name": "burnside_pq_sharp",
+      "statement": "Nat.card (alternatingGroup (Fin 5)) = 2^2 · 3 · 5 ∧ ¬ IsSolvable (alternatingGroup (Fin 5))",
+      "description": "Sharpness witness: A₅ has order 60 = 2²·3·5 (three distinct primes) and is non-solvable. Demonstrates that `burnside_pq` cannot be extended to three distinct primes. Axiom-free."
     }
   ],
   "sorries": 0
