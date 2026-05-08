@@ -359,6 +359,78 @@ theorem lcmRange_le_pow_primeCounting (n : ℕ) :
   rw [hpi] at h
   exact h
 
+/-- **Trivial bound on the prime-counting function**: `π(n) ≤ n`.
+
+    Holds for every `n` because the count of primes in `{0, 1, …, n}`
+    excludes `0` (which is not prime), so the prime filter is a subset
+    of `(Finset.range (n+1)).erase 0`, whose cardinality is `n`.
+
+    Used in Iter 13 to chain `lcmRange n ≤ n^π(n) ≤ n^n`, making
+    explicit that the prime-counting bound from Iter 11
+    (`lcmRange_le_pow_primeCounting`) is at least as strong as the
+    factorial-derived `lcmRange_le_self_pow` (Part 3). -/
+theorem primeCounting_le_self (n : ℕ) : Nat.primeCounting n ≤ n := by
+  have hpi : ((Finset.range (n + 1)).filter Nat.Prime).card =
+      Nat.primeCounting n := by
+    unfold Nat.primeCounting Nat.primeCounting'
+    exact (Nat.count_eq_card_filter_range Nat.Prime (n + 1)).symm
+  rw [← hpi]
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: range 1 = {0}, 0 isn't prime, so the filter is empty,
+    -- card = 0 ≤ 0.
+    simp [Finset.range_one, Finset.filter_singleton, Nat.not_prime_zero]
+  -- n ≥ 1: filter ⊆ (range (n+1)).erase 0, card erase = n.
+  have h_subset :
+      (Finset.range (n + 1)).filter Nat.Prime ⊆
+        (Finset.range (n + 1)).erase 0 := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_erase] at hp ⊢
+    refine ⟨?_, hp.1⟩
+    intro h0
+    rw [h0] at hp
+    exact Nat.not_prime_zero hp.2
+  have h_card : ((Finset.range (n + 1)).erase 0).card = n := by
+    rw [Finset.card_erase_of_mem (Finset.mem_range.mpr (Nat.succ_pos n))]
+    simp
+  calc ((Finset.range (n + 1)).filter Nat.Prime).card
+      ≤ ((Finset.range (n + 1)).erase 0).card :=
+        Finset.card_le_card h_subset
+    _ = n := h_card
+
+/-- **Monotone exponent**: `n^π(n) ≤ n^n` for `n ≥ 1`.
+
+    A one-line consequence of `Nat.pow_le_pow_right` applied to
+    `primeCounting_le_self`. Packaged as a named lemma so the Iter 13
+    chain `lcmRange n ≤ n^π(n) ≤ n^n` reads cleanly. -/
+theorem pow_primeCounting_le_pow_self (n : ℕ) (hn : 1 ≤ n) :
+    n ^ Nat.primeCounting n ≤ n ^ n :=
+  Nat.pow_le_pow_right hn (primeCounting_le_self n)
+
+/-- **Re-derivation of `lcmRange_le_self_pow` via the prime-counting
+    route**: `lcmRange n ≤ n^n` proved through the chain
+    `lcmRange n ≤ n^π(n) ≤ n^n`.
+
+    Documents that the Iter 10/11 prime-counting bound subordinates
+    the trivial Part 3 bound: every value reachable by
+    `lcmRange_le_pow_primeCounting` is also covered by
+    `lcmRange_le_self_pow`. The chain makes the dependency
+    `Iter 11 ⟹ Iter 13 ⟹ Part 3` explicit:
+
+    ```
+    lcmRange n  ≤  n ^ π(n)        -- Iter 11 (Chebyshev decomposition)
+                ≤  n ^ n            -- Iter 13 (since π(n) ≤ n)
+    ```
+
+    The `n = 0` boundary case (`lcmRange 0 = 1 = 0^0`) is handled
+    directly by `lcmRange_zero` because `Nat.pow_le_pow_right`
+    requires the base to be `≥ 1`. -/
+theorem lcmRange_le_pow_self_via_primeCounting (n : ℕ) :
+    lcmRange n ≤ n ^ n := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp [lcmRange_zero]
+  exact le_trans (lcmRange_le_pow_primeCounting n)
+    (pow_primeCounting_le_pow_self n hn)
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound

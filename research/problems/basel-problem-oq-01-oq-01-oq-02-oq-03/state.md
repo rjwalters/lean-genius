@@ -4,18 +4,33 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-09 (Iteration 12, researcher-10)
-**Iteration**: 12
+**Last Updated**: 2026-05-09 (Iteration 13, researcher-10)
+**Iteration**: 13
 
 ## Current Focus
-Iteration 12 (2026-05-09, this PR): **three independent surgical fixes**
-to unblock the build for iters 5–11 (which all merged with
-`(build pending)` status). Empirically discovered by docker-build of
-iter 11 plus targeted re-investigation: the original "single drift"
-diagnosis from the iter 11 PR was incomplete — only one of the three
-errors is true Mathlib drift; the other two are subtle elaboration
-issues introduced by iter 8 / iter 2 that survived because the file
-has not had a clean build since iter 4.
+Iteration 13 (2026-05-09, this PR): **prime-counting subordination
+chain**. Three new theorems make the dependency
+`Iter 11 ⟹ Iter 13 ⟹ Part 3` explicit by establishing the chain
+`lcmRange n ≤ n^π(n) ≤ n^n`. The middle step is the trivial
+`π(n) ≤ n` bound (`primeCounting_le_self`), proved by observing
+that the prime filter on `Finset.range (n+1)` excludes `0` and so
+fits inside `(Finset.range (n+1)).erase 0`, which has `n` elements.
+Build pending; proof bodies use only Mathlib API already exercised
+by earlier iters (`Nat.count_eq_card_filter_range`,
+`Finset.card_erase_of_mem`, `Nat.pow_le_pow_right`). File 488 → 560
+lines (+72), theorems 37 → 40 (+3), definitions/sorries/axiomCount
+unchanged.
+
+----
+
+Iteration 12 (2026-05-09, retained for context): **three independent
+surgical fixes** to unblock the build for iters 5–11 (which all
+merged with `(build pending)` status). Empirically discovered by
+docker-build of iter 11 plus targeted re-investigation: the original
+"single drift" diagnosis from the iter 11 PR was incomplete — only
+one of the three errors is true Mathlib drift; the other two are
+subtle elaboration issues introduced by iter 8 / iter 2 that survived
+because the file has not had a clean build since iter 4.
 
 ### Fix 1 (line 118 — `pow_dvd_lcmRange`): true Mathlib drift
 
@@ -211,7 +226,7 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 12.
+- Total attempts: 13.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
   structural-lemma layer for inductive proofs (iter 2); generic
@@ -230,7 +245,12 @@ Currently blocked on:
   three-fix build unblock — Mathlib drift `Nat.pos_pow_of_pos → Nat.pow_pos`
   (line 118), `rw [h1]` cascade fix `→ conv_lhs => rw [h1]` (line 262),
   and `lcmRange_succ` forward-chain re-routing through `dvd_lcmRange`
-  (line 376) — iter 12, this PR; restores build for iters 5–11.
+  (line 376) — iter 12, #17448; restores build for iters 5–11;
+  prime-counting subordination chain `primeCounting_le_self`,
+  `pow_primeCounting_le_pow_self`, `lcmRange_le_pow_self_via_primeCounting`
+  (iter 13, this PR, build pending) — makes explicit that Iter 11's
+  `lcmRange ≤ n^π(n)` subordinates Part 3's `lcmRange ≤ n^n` via
+  the trivial `π(n) ≤ n` bound.
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -239,16 +259,28 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 13 candidate** (was: iter 12 pre-drift-discovery): state
-and prove the chain `lcmRange n ≤ n ^ Nat.primeCounting n ≤ n ^ n`
-(the second inequality holds for n ≥ 1 because `Nat.primeCounting n ≤ n`
-— primes ≤ n are a subset of {2,...,n} hence at most n - 1 ≤ n in
-cardinality). This makes explicit that Iter 10/11 sharpen
-`lcmRange_le_self_pow` (Part 3 of the file). The bound
-`Nat.primeCounting n ≤ n` should be a short proof from
-`Finset.card_filter_le` plus the fact that primes ≥ 2 exclude 0 and
-1 from the count. Deferred from iter 12 because the build was broken;
-once iter 12 (drift fix) merges, iter 13 can land cleanly.
+**Iteration 13 (this PR, build pending)**: prime-counting subordination
+chain. Three new theorems realise the explicit chain
+`lcmRange n ≤ n^π(n) ≤ n^n`:
+
+* `primeCounting_le_self (n : ℕ) : Nat.primeCounting n ≤ n` — the prime
+  filter on `(Finset.range (n+1))` is a subset of the (n+1)-element
+  range with `0` removed (since `0` is not prime), giving cardinality
+  `≤ n`.
+* `pow_primeCounting_le_pow_self (n : ℕ) (hn : 1 ≤ n) :
+  n ^ Nat.primeCounting n ≤ n ^ n` — one-line via
+  `Nat.pow_le_pow_right`.
+* `lcmRange_le_pow_self_via_primeCounting (n : ℕ) :
+  lcmRange n ≤ n ^ n` — re-derives the trivial Part 3 bound by
+  routing through `lcmRange_le_pow_primeCounting` (Iter 11) and the
+  new `pow_primeCounting_le_pow_self`. Documents that the Iter 10/11
+  prime-counting bound subordinates Part 3.
+
+**File delta**: +72 lines (488 → 560), +3 theorems (37 → 40),
+definitions/sorries/axiomCount unchanged. Build pending — proof bodies
+use only standard Mathlib API already exercised by Iter 7/8/9/11
+(`Nat.count_eq_card_filter_range`, `Finset.card_erase_of_mem`,
+`Nat.pow_le_pow_right`).
 
 **Iteration 14 candidate**: connect the prime-counting bound to
 asymptotic Chebyshev-style improvements. Mathlib has
