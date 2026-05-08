@@ -1142,36 +1142,111 @@ where H(n) is the Hurwitz class number of binary quadratic forms
 of discriminant -4n.
 -/
 
+/-- The bounding box `[-n, n] × [-n, n] × [-n, n] ⊂ ℤ³` used to define `r3_count`.
+    Any solution `(a, b, c)` of `a² + b² + c² = n` satisfies `a² ≤ n`, hence
+    `|a| ≤ n` (and likewise for `b`, `c`), so this box is large enough to
+    contain every representation. -/
+private def r3_box (n : ℕ) : Finset (ℤ × ℤ × ℤ) :=
+  (Finset.Icc (-(n : ℤ)) n) ×ˢ (Finset.Icc (-(n : ℤ)) n) ×ˢ (Finset.Icc (-(n : ℤ)) n)
+
 /-- r₃(n): the number of ordered representations of n as a sum of 3 integer squares.
-    Counts tuples (a,b,c) ∈ ℤ³ with a² + b² + c² = n. -/
+    Counts tuples (a,b,c) ∈ ℤ³ with a² + b² + c² = n.
+
+    Defined as the cardinality of the (decidable) filter of `r3_box n` selecting
+    triples whose squared sum is `n`. The bounding box is justified by the
+    inequality `a² ≤ a² + b² + c² = n` (and likewise for `b`, `c`), which
+    forces `|a|, |b|, |c| ≤ n`. -/
 def r3_count (n : ℕ) : ℕ :=
-  -- Placeholder; actual computation would enumerate all tuples
-  0
+  ((r3_box n).filter (fun p => p.1 ^ 2 + p.2.1 ^ 2 + p.2.2 ^ 2 = (n : ℤ))).card
 
 /-- The Hurwitz class number H(n): counts equivalence classes of primitive
     positive definite binary quadratic forms of discriminant -4n, weighted
     by 1/|Aut|. For n > 0 not a perfect square, H(n) = h(-4n) is the
-    ordinary class number. -/
+    ordinary class number.
+
+    **Status: placeholder.** The full definition requires the theory of
+    binary quadratic forms (genera, automorphism groups, Hurwitz weighting),
+    which is not yet developed in this file. Statements about `hurwitzClassNumber`
+    therefore cannot currently be discharged; previously this file carried
+    inconsistent axioms (`class_number_positive`, `gauss_eisenstein_r3`) that
+    asserted properties of the placeholder value `0`. Those axioms have been
+    removed; the genuine class-number positivity result will be reinstated
+    once `hurwitzClassNumber` has a real definition. -/
 def hurwitzClassNumber (n : ℕ) : ℕ :=
-  -- The Hurwitz-Kronecker class number
-  0 -- placeholder
+  -- The Hurwitz-Kronecker class number (placeholder).
+  0
 
-/-- Gauss-Eisenstein formula: for n ≡ 3 (mod 8) and square-free,
-    r₃(n) = 12 · h(-4n) where h is the class number -/
-axiom gauss_eisenstein_r3 (n : ℕ) (hn : n ≥ 1) (hmod : n % 8 = 3)
-    (hsf : Squarefree n) :
-    r3_count n = 12 * hurwitzClassNumber n
+/-- If `a^2 ≤ (n : ℤ)` for some `n : ℕ`, then `-(n : ℤ) ≤ a ≤ (n : ℤ)`.
 
-/-- General formula: for arbitrary n not of excluded form,
-    r₃(n) = 12 · Σ_{d²|n} μ(d) · H(n/d²)
-    where the sum is over square divisors and μ is the Möbius function -/
-axiom general_r3_formula (n : ℕ) (hn : n ≥ 1) (hne : ¬IsExcludedForm n) :
-    r3_count n > 0
+    Proof: `|a| ≤ |a|^2 = a^2` whenever `|a| ≥ 1`, and the case `a = 0` is immediate.
+-/
+private lemma abs_le_of_sq_le_natCast (a : ℤ) (n : ℕ) (h : a ^ 2 ≤ (n : ℤ)) :
+    -(n : ℤ) ≤ a ∧ a ≤ (n : ℤ) := by
+  have habs : |a| ≤ (n : ℤ) := by
+    rcases eq_or_ne a 0 with rfl | hne
+    · simp only [abs_zero]; exact_mod_cast Nat.zero_le n
+    · have h1 : (1 : ℤ) ≤ |a| := Int.one_le_abs hne
+      have hsq : |a| ^ 2 = a ^ 2 := sq_abs a
+      -- For |a| ≥ 1 we have |a| ≤ |a|^2 = a^2 ≤ n.
+      nlinarith [sq_nonneg (|a| - 1), hsq, h, h1]
+  exact ⟨neg_le_of_abs_le habs, le_of_abs_le habs⟩
 
-/-- The class number h(-d) > 0 for all d > 0 (Minkowski bound).
-    This is why r₃(n) > 0 for non-excluded n: the class number is always positive. -/
-axiom class_number_positive (d : ℕ) (hd : d > 0) :
-    hurwitzClassNumber d > 0
+/-- Each square in a sum-of-three-squares representation is bounded by the
+    represented number. -/
+private lemma sq_le_of_sum_three_sq {n : ℕ} {a b c : ℤ}
+    (h : a ^ 2 + b ^ 2 + c ^ 2 = (n : ℤ)) :
+    a ^ 2 ≤ (n : ℤ) ∧ b ^ 2 ≤ (n : ℤ) ∧ c ^ 2 ≤ (n : ℤ) := by
+  refine ⟨?_, ?_, ?_⟩ <;>
+    nlinarith [sq_nonneg a, sq_nonneg b, sq_nonneg c]
+
+/-- `r3_count n > 0` is equivalent to the existence of a sum-of-three-squares
+    representation of `n`.
+
+    The forward direction extracts a triple from the nonempty filter; the
+    reverse direction places the triple into the bounding box `r3_box n`,
+    using `sq_le_of_sum_three_sq` and `abs_le_of_sq_le_natCast`. -/
+theorem r3_count_pos_iff (n : ℕ) :
+    0 < r3_count n ↔ ∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = (n : ℤ) := by
+  unfold r3_count
+  constructor
+  · intro hpos
+    obtain ⟨⟨a, b, c⟩, hmem⟩ := Finset.card_pos.mp hpos
+    rw [Finset.mem_filter] at hmem
+    exact ⟨a, b, c, hmem.2⟩
+  · rintro ⟨a, b, c, habc⟩
+    apply Finset.card_pos.mpr
+    refine ⟨⟨a, b, c⟩, ?_⟩
+    have ⟨ha2, hb2, hc2⟩ := sq_le_of_sum_three_sq habc
+    have ⟨ha_lo, ha_hi⟩ := abs_le_of_sq_le_natCast a n ha2
+    have ⟨hb_lo, hb_hi⟩ := abs_le_of_sq_le_natCast b n hb2
+    have ⟨hc_lo, hc_hi⟩ := abs_le_of_sq_le_natCast c n hc2
+    rw [Finset.mem_filter]
+    refine ⟨?_, habc⟩
+    unfold r3_box
+    rw [Finset.mem_product, Finset.mem_product]
+    exact ⟨Finset.mem_Icc.mpr ⟨ha_lo, ha_hi⟩,
+           Finset.mem_Icc.mpr ⟨hb_lo, hb_hi⟩,
+           Finset.mem_Icc.mpr ⟨hc_lo, hc_hi⟩⟩
+
+/-- For natural number `n`, sum-of-three-squares of `n : ℤ` and of `(n : ℤ)`
+    coincide as existence statements. -/
+private lemma exists_sum_three_sq_int_iff_nat (n : ℕ) :
+    (∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = (n : ℤ)) ↔
+    (∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = n) := by
+  constructor <;> rintro ⟨a, b, c, h⟩ <;> exact ⟨a, b, c, by exact_mod_cast h⟩
+
+/-- **General representation count**: for any `n ≥ 1` not of excluded form,
+    `r₃(n) > 0`.
+
+    This was previously an axiom (`general_r3_formula`) that, under the
+    placeholder definition `r3_count := 0`, asserted `0 > 0` and was
+    therefore inconsistent. With the honest `Finset.card`-based definition
+    above, the statement becomes a routine consequence of
+    `not_excluded_form_is_sum_three_sq` via `r3_count_pos_iff`. -/
+theorem general_r3_formula {n : ℕ} (_hn : n ≥ 1) (hne : ¬IsExcludedForm n) :
+    r3_count n > 0 := by
+  rw [r3_count_pos_iff, exists_sum_three_sq_int_iff_nat]
+  exact not_excluded_form_is_sum_three_sq hne
 
 /-- Class number formula: h(-d) = (√d / π) · L(1, χ_d)
     where χ_d is the Kronecker symbol modulo d and L(1, χ_d) is a Dirichlet L-value -/
@@ -1249,10 +1324,9 @@ theorem most_numbers_are_three_squares :
 -- ═════════════════════════════════════════════════════════════════════════
 
 #check r3_count
+#check r3_count_pos_iff
 #check hurwitzClassNumber
-#check gauss_eisenstein_r3
 #check general_r3_formula
-#check class_number_positive
 #check class_number_formula
 #check theta_function_r3
 #check smith_minkowski_siegel_mass_formula
