@@ -29,6 +29,143 @@ the main file.
 
 ---
 
+## Session 2026-05-08 (Session 14) — Circuit-Edge Balance Helper for `remove_circuit_balanced`
+
+**Mode**: REVISIT (Sessions 9–13 completed the bijection-template library;
+S14 adds the connective lemma for the deferred `remove_circuit_balanced`
+theorem, continuing the recipe-extension pattern.)
+
+**Outcome**: extended `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` by ~55
+lines with the new lemma `circuit_edge_balance'`. This is **build-verified**
+under v4.26.0 Mathlib (Docker target `Proofs.KonigsbergOQ01OQ02Recipe`,
+the same build Sessions 11–13 verified).
+
+### Statement
+
+```lean
+lemma circuit_edge_balance' (walk : List V) (n : ℕ) (v : V)
+    (edges : Finset (V × V))
+    (hlen : walk.length = n + 1)
+    (hclosed : walk[0]? = walk[n]?)
+    (hcov : ∀ e ∈ edges, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps : ∀ i, i < n → ∃ e ∈ edges,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    (edges.filter fun e => e.1 = v).card =
+    (edges.filter fun e => e.2 = v).card
+```
+
+### Proof Architecture (3 lines)
+
+The proof is a **strict composition** of the three previously-built
+templates — no new tactical work, no new hypotheses:
+
+```lean
+rw [← walk_source_eq_edge_filter' walk n v edges hcov hsteps,
+    ← walk_target_eq_edge_filter' walk n v edges hcov hsteps]
+exact closed_walk_balance' walk n hlen hclosed v
+```
+
+Step-by-step:
+
+1. `walk_source_eq_edge_filter'` rewrites
+   `(edges.filter fun e => e.1 = v).card` as
+   `((Finset.range n).filter fun i => walk[i]? = some v).card`
+   (source-incident edges ↔ walk source-positions).
+2. `walk_target_eq_edge_filter'` rewrites
+   `(edges.filter fun e => e.2 = v).card` as
+   `((Finset.range n).filter fun i => walk[i + 1]? = some v).card`
+   (walk target-positions ↔ target-incident edges).
+3. `closed_walk_balance'` discharges the resulting goal: closed walks
+   have equal source/target position counts.
+
+### Why this matters: connective lemma for `remove_circuit_balanced`
+
+The deferred main-file theorem `remove_circuit_balanced` (L1103, the
+file's last `sorry`) claims that removing a directed circuit's edge set
+from a balanced graph leaves a balanced graph. The proof reduces (via
+`Finset.card_sdiff` on edge sets, already in Mathlib) to showing that
+the removed edge set itself contributes equally to in- and out-degree
+at every vertex `v`. With `edges := (walkEdges C.walk).toFinset` and the
+closed-walk hypotheses on `C.walk`, `circuit_edge_balance'` provides
+exactly that equality — closing the only conceptual gap in the original
+plan.
+
+### Hypothesis count: zero new constraints
+
+`circuit_edge_balance'` introduces NO hypothesis beyond the union of its
+three component templates' inputs:
+- `hlen`, `hclosed` from `closed_walk_balance'`
+- `hcov`, `hsteps` from both edge-filter templates (shared form)
+
+The composition is mathematically tight: any circuit covered by the
+existing recipe templates also satisfies `circuit_edge_balance'` without
+re-deriving any new closure or bijection facts.
+
+### Open question for S15+: edge-distinctness of `walkEdges C.walk`
+
+The existing `DirectedCircuit` structure (L1052) does NOT require
+edge-distinctness:
+
+```lean
+structure DirectedCircuit (G : DiGraph V) where
+  walk : List V
+  head_eq_last : walk.head? = walk.getLast?
+  length_ge_2  : 2 ≤ walk.length
+  steps_in_G   : ∀ i (h : i + 1 < walk.length),
+    (walk.get ⟨i, by omega⟩, walk.get ⟨i + 1, by omega⟩) ∈ G.edges
+```
+
+The `hcov` hypothesis of `circuit_edge_balance'` requires that each edge
+in the `Finset` corresponds to a UNIQUE walk position. For
+`walkEdges C.walk` with potential duplicates, the `.toFinset` collapses
+duplicates, so the unique-position hypothesis fails when the walk
+revisits an edge.
+
+**Resolution options for S15+** (both compatible with
+`circuit_edge_balance'`):
+
+(a) Strengthen `DirectedCircuit` with an `edges_distinct : (walkEdges
+    walk).Nodup` field. Hierholzer's construction in the eventual
+    sufficiency-direction proof produces distinct-edge circuits anyway,
+    so the strengthening is non-restrictive.
+
+(b) Restrict `remove_circuit_balanced` to circuits with distinct edges
+    via an explicit hypothesis, deferring the strengthening to a later
+    session.
+
+In both cases, the toFinset bijection becomes trivial (multiset → finset
+is identity for distinct edges), so the `hcov` hypothesis derives
+directly from the walk's `steps_in_G` plus distinctness.
+
+### What I Did NOT Do
+
+- The in-place refactor of `KonigsbergOQ01OQ02.lean` — by design (Sessions
+  7–13 standing rationale). S14 continues the recipe-extension pattern.
+- Modify `proofs/Proofs/KonigsbergOQ01OQ02.lean` (still build-broken).
+- Modify `meta.json` counts (the Recipe file is meant to be deleted
+  post-S15-transcription, so its line/theorem counts don't go into
+  meta.json).
+
+### What S15 Should Do
+
+S15 has the maximum-confidence starting point: 7 build-verified bijection
+templates plus the connective `circuit_edge_balance'` lemma — every piece
+of mathematical infrastructure needed for both the main-file refactor
+and the post-refactor `remove_circuit_balanced` proof is now type-checked
+and Mathlib-API-validated. Apply Session 8's line-anchored task list as a
+focused mechanical pass.
+
+### Files Modified
+
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (444 → 497 lines, +53):
+  one new lemma `circuit_edge_balance'` with extensive docstring.
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (S14 entry,
+  iteration 13 → 14, Next Action renumbered to S15+).
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this entry).
+
+---
+
 ## Session 2026-05-08 (Session 13) — Recipe Library Complete: Classical.choose templates
 
 **Mode**: REVISIT (Sessions 9–12 built recipe library to 5 of 6 templates;

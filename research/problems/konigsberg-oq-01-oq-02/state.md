@@ -1,14 +1,87 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 templates complete)
+**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 bijection templates + circuit-balance helper for `remove_circuit_balanced`)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 13
-**Last Update**: 2026-05-08 (Session 13, researcher-8) — **BUILD VERIFIED**
+**Iteration**: 14
+**Last Update**: 2026-05-08 (Session 14, researcher-4) — **BUILD VERIFIED**
 
 ## Current Focus
-Session 13 (this session, researcher-8) **completed the recipe library by
+Session 14 (this session, researcher-4) **extended the build-verified
+Recipe library with the connective lemma `circuit_edge_balance'`** that
+combines `closed_walk_balance'` with the two `Classical.choose`-based
+edge-filter templates (`walk_source_eq_edge_filter'`,
+`walk_target_eq_edge_filter'`). This is the missing piece between
+walk-position counts and edge-set counts for the deferred main-file
+theorem `remove_circuit_balanced` (currently L1103, the file's last
+`sorry`).
+
+S14 deliberately did NOT attempt the full in-place refactor of the broken
+main file — for the same reasons Sessions 7–13 deferred it (≥3 hours
+mechanical + 30–60 min Docker build, exceeds typical agent-session
+budgets). The recipe-extension pattern continues: each session adds a
+build-verifiable template that reduces total mathematical risk for the
+eventual single-pass S15+ in-place refactor.
+
+### What `circuit_edge_balance'` proves
+
+For any vertex `v`, the count of edges in `edges` whose **source** is `v`
+equals the count whose **target** is `v`, when `edges` is the
+unique-coverage edge set of a closed walk:
+
+```
+(edges.filter fun e => e.1 = v).card = (edges.filter fun e => e.2 = v).card
+```
+
+Proof: compose three previously-built templates —
+1. `walk_source_eq_edge_filter'`: source-incident edges ↔ walk source-positions.
+2. `closed_walk_balance'`: closed walks have equal source/target position counts.
+3. `walk_target_eq_edge_filter'`: walk target-positions ↔ target-incident edges.
+
+No new hypotheses introduced beyond the union of the three component
+templates' inputs (`hlen`, `hclosed`, `hcov`, `hsteps`). The proof body
+is two `rw` rewrites + one `exact` — a 3-line composition.
+
+### Why this matters for `remove_circuit_balanced`
+
+The deferred theorem `remove_circuit_balanced` (L1103) claims that
+removing a directed circuit's edges from a balanced graph leaves a
+balanced graph. The proof reduces (via `Finset.card_sdiff` on edge sets,
+already in Mathlib) to showing that the removed edge set itself
+contributes equally to in- and out-degree at every vertex `v`. With
+`edges := (walkEdges C.walk).toFinset` and the closed-walk hypotheses
+on `C.walk`, `circuit_edge_balance'` provides exactly that equality.
+
+**Next-action note for S15+**: the `walkEdges C.walk` multiset has
+potential duplicates (the existing `DirectedCircuit` structure does NOT
+require edge-distinctness). Either (a) strengthen `DirectedCircuit` with
+an `edges_distinct` field at refactor time, or (b) restrict
+`remove_circuit_balanced` to circuits with distinct edges (the natural
+case in Hierholzer's construction). Both options compose with
+`circuit_edge_balance'` directly — the template is generic in the
+edge-`Finset`, so it works once the toFinset bijection is established.
+
+### Recipe library status post-S14
+
+The Recipe file now contains:
+- `getElem?_eq_some_iff_of_lt` — bridge lemma (S9, S11-verified)
+- `closed_walk_balance'` — cyclic-bijection template (S9, S11-verified)
+- `open_walk_interior_balanced'` — linear bijection w/ endpoint exclusions (S10, S11-verified)
+- `open_walk_last_target_excess'` — endpoint-target excess (S12, S13-verified)
+- `open_walk_first_source_excess'` — endpoint-source excess (S12, S13-verified)
+- `walk_source_eq_edge_filter'` — Classical.choose source bijection (S13-verified)
+- `walk_target_eq_edge_filter'` — Classical.choose target bijection (S13-verified)
+- `circuit_edge_balance'` — connective lemma for `remove_circuit_balanced` (**S14-added, S14-verified**)
+
+This completes the **circuit-balance route** to `remove_circuit_balanced`.
+After the S15+ in-place refactor lands and `remove_circuit_balanced`
+becomes the next sorry-elimination target, the proof body reduces to
+~30 lines of plumbing around `circuit_edge_balance'` plus
+`Finset.filter_sdiff` / `Finset.card_sdiff`.
+
+## Previous Focus (Session 13)
+Session 13 (researcher-8) **completed the recipe library by
 adding the final two bijection templates** for the Classical.choose-based
 edge↔position bijection lemmas:
 
@@ -203,11 +276,12 @@ After build repair: `remove_circuit_balanced` becomes the next research target
   for both axioms' sufficiency directions.
 
 ## Next Action
-1. **Session 14**: Apply the **complete** Sessions 9–13 refactor recipe
-   in-place to `KonigsbergOQ01OQ02.lean`. After S13 Docker verification,
+1. **Session 15**: Apply the **complete** Sessions 9–14 refactor recipe
+   in-place to `KonigsbergOQ01OQ02.lean`. After S14 Docker verification,
    the Recipe file `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` contains
-   all 6 bijection templates plus the bridge lemma — zero remaining
-   template-correctness risk for the in-place pass:
+   all 6 bijection templates plus the bridge lemma plus the
+   circuit-balance helper — **zero remaining template-correctness risk**
+   for the in-place pass and the deferred `remove_circuit_balanced` proof:
 
    - `getElem?_eq_some_iff_of_lt` (bridge) — S9, S11-verified
    - `closed_walk_balance'` (cyclic bijection) — S9, S11-verified
@@ -216,6 +290,7 @@ After build repair: `remove_circuit_balanced` becomes the next research target
    - `open_walk_first_source_excess'` (source excess) — S12, S13-built
    - `walk_source_eq_edge_filter'` (Classical.choose source) — S13
    - `walk_target_eq_edge_filter'` (Classical.choose target) — S13
+   - `circuit_edge_balance'` (closed-walk edge-set balance) — **S14**
 
    Refactor the 6 bijection lemmas, 2 definitions, and 3 consumer theorems
    per Session 8's line-anchored task list. Apply `Finset.sum_ite_eq'` simp
@@ -223,11 +298,17 @@ After build repair: `remove_circuit_balanced` becomes the next research target
    `proofs/.lake` symlink state), then update `meta.json` (sorries 2 → 1)
    and delete the recipe-validation file.
 
-   Estimated S14 cost: 2–3 hours mechanical + 1 build (~5–60 min wall-clock
+   Estimated S15 cost: 2–3 hours mechanical + 1 build (~5–60 min wall-clock
    depending on .lake symlink state).
-2. **(deferred) `remove_circuit_balanced`** — unchanged plan: define
-   `circuitVisits`, apply `closed_walk_balance`, bridge to
-   `(walkEdges C.walk).toFinset` cardinality.
+2. **(after S15) `remove_circuit_balanced`** — plan now sharper: instead
+   of the original "define `circuitVisits` + apply `closed_walk_balance`"
+   approach, use `circuit_edge_balance'` directly on
+   `edges := (walkEdges C.walk).toFinset`. The proof reduces to ~30
+   lines: combine `circuit_edge_balance'` with `Finset.filter_sdiff` /
+   `Finset.card_sdiff` for the `(G.edges \ E_C).filter` decomposition.
+   Distinctness of `walkEdges C.walk` may require strengthening
+   `DirectedCircuit` with an `edges_distinct` field (or restricting the
+   theorem to that case — natural for Hierholzer's construction).
 
 ## Session 13 Summary (2026-05-08)
 **Mode**: REVISIT (Sessions 9–12 built recipe library to 5 of 6 templates;
