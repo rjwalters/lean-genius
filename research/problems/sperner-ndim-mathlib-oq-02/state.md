@@ -2,12 +2,56 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 18 part 2, researcher-5)
-**Iteration**: 18
+**Last Updated**: 2026-05-08 (Iteration 19 part 1, researcher-12)
+**Iteration**: 19
 
 ## Current Focus
 
-Session 18 part 2 (this session, build pending): Added 5 new
+Session 19 part 1 (this session, build pending): Added the
+**generic abstract `adjFn = none ↔ card ≤ 1` translation** in a
+new `SimplicialAdjFnHelper` namespace, appended after
+`end SpernerFreudSimp`. This is the abstract-level bridge that
+S16-S18's geometric container-card analysis feeds into, completing
+the framework needed to discharge `_hBoundaryOnFace` of
+`Triangulation.boundary_doors_odd`.
+
+Two new generic lemmas (work for any `AbstractSimplicialData V n`,
+not just the n=2 Type-1/Type-2 triangulation):
+
+1. `adjFn_eq_none_iff_card_le_one`: the main iff,
+       `D.adjFn p k = none ↔
+         (D.containersOf (D.faceOf p.1 p.2 k)).card ≤ 1`
+   The proof unfolds `adjFn` and `split_ifs` over the outer
+   `card ≤ 1` and inner `(cs.erase p.1).Nonempty` decisions. The
+   `(cs.card > 1, erase empty)` branch is shown impossible:
+   `p.1 ∈ cs` (via `self_mem_containersOf`) forces
+   `(cs.erase p.1).card = cs.card - 1 ≥ 1`.
+
+2. `adjFn_eq_none_iff_card_eq_one`: corollary using
+   `self_mem_containersOf` for `cs.card ≥ 1`, strengthening
+   "≤ 1" to "= 1".
+
+These connect the *operational* definition of `adjFn` (a nested
+`dite`) to the *static* container-cardinality form that S18.1's
+`*_only_container_of_t1_boundary` lemmas produce
+(`filter = {t1 b}`, hence card = 1). With
+`topSimps2_pseudomanifold` already giving the upper bound
+`card ≤ 2`, the building blocks now cover both implications:
+
+* boundary case (S18.1) → `card = 1` → `adjFn = none` (via S19.1)
+* interior case (S17 + S18.2) → `card ≥ 2` → `adjFn = some _`
+  (via the contrapositive of S19.1)
+
+**S19 part 2 (next):** Concrete `_hBoundaryOnFace` proof for
+`simData2 N`, case-splitting on `s ∈ topSimps2 N` (six (s, k)
+combinations: t1 × {0,1,2} and t2 × {0,1,2}). Invoke S19.1 to
+reduce `adjFn s k = none` to `cs.card ≤ 1`. Combine with S17 +
+S18.2 (interior witnesses, which contradict the `card ≤ 1`
+hypothesis for non-boundary cases) and S18.1 (boundary
+singletons, which provide the `onFaceΔ2 faceIdx` witness via
+`*_endpoints_on_face*`). Estimated ~80 lines.
+
+Session 18 part 2 (PR #17149, merged): Added 5 new
 `private` existential lemmas in a new `N2BoundaryInteriorNeighbors`
 section (appended after `N2BoundaryAnalysis` at end of file) that
 complement S18 part 1 (PR #17133, merged) by covering the
@@ -167,27 +211,35 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
   `t1_ne_t2`, `diagonal_in_t{1,2}_iff`, `horizontal_in_t2_pos`,
   `vertical_in_t2_pos`, `horizontal_not_in_t2_at_y0`,
   `vertical_not_in_t2_at_x0`, `t2_face{0,1,2}_in_t1`
-- `N2BoundaryAnalysis` base ↔ topSimps2 bridge (S17, this session,
-  build pending): 13 new lemmas converting base membership to
-  topSimps2 containment, plus the missing diagonal-boundary case
+- `N2BoundaryAnalysis` base ↔ topSimps2 bridge (S17, PR #17101 merged):
+  13 new lemmas converting base membership to topSimps2 containment,
+  plus the missing diagonal-boundary case
   `diagonal_not_in_t2_at_diagonal` and the top-level classification
   `diagonal_neighbor_topSimps2`.
+- `N2BoundaryAnalysis` t1-boundary container singletons + onFaceΔ2
+  endpoint witnesses (S18 part 1, PR #17133 merged): 9 new lemmas.
+- `N2BoundaryInteriorNeighbors` interior witnesses (S18 part 2,
+  PR #17149 merged): 5 new existential lemmas covering t1-interior
+  and t2-cell faces, completing the geometric coverage table.
+- `SimplicialAdjFnHelper` generic `adjFn = none ↔ card ≤ 1`
+  translation (S19 part 1, this session, build pending): 2 generic
+  lemmas wiring the abstract `Triangulation.adj` adjacency to the
+  geometric container-cardinality form.
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
-## Path Forward for n≥2 (post-S18)
+## Path Forward for n≥2 (post-S19.1)
 
 `Triangulation.boundary_doors_odd` requires four hypotheses:
 1. `_hSperner` — done generically by S14 wrapper (cN2_total_isSpernerColoring)
-2. `_hBoundaryOnFace` — S16/S17/S18.1/S18.2 now supply ALL six
+2. `_hBoundaryOnFace` — S16/S17/S18.1/S18.2 supply ALL six
    face/edge × cell-type combinations as `private lemma`s (see
-   coverage table above). **S19 next**: walk through the abstract
-   `adjFn` in `simData2.toTriangulation` to translate
-   `adjFn s k = none` ↔ `(containersOf (faceOf s k)).card ≤ 1`,
-   then case-split through the 6+6 building blocks above to assemble
-   the existential `∃ faceIdx, ...` for the boundary cases and
-   produce a `False.elim` for the t2-cell cases (~80 lines, mostly
-   case-splitting; arithmetic content is in S16-S18).
+   coverage table above). S19.1 (this session) supplies the
+   generic `adjFn = none ↔ (containers).card ≤ 1` translation.
+   **S19 part 2 next**: case-split through the 6+6 building
+   blocks to assemble `∃ faceIdx, ...` for boundary cases and
+   `False.elim` (via interior witnesses contradicting `card ≤ 1`)
+   for the rest (~80 lines, mostly case-splitting).
 3. `_hLowerDim` — done generically by S15 helper
 4. `_hLastFace` — TODO (~120 lines, bijection with face2_path_odd via S12)
 
