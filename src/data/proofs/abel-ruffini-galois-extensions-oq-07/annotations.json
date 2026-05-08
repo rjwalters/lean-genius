@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "ann-overview-burnside-1904",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "context",
+    "title": "Burnside's pᵃqᵇ theorem (1904): the prime-multiplicity threshold for solvability",
+    "content": "Burnside's 1904 theorem says every finite group whose order is divisible by AT MOST TWO distinct primes is solvable. The result is sharp: |A₅| = 60 = 2²·3·5 has three primes and A₅ is the smallest non-solvable group. This file formalizes the result in 'phase-2' style — trivial cases proved unconditionally, the genuinely two-prime case isolated as a single named axiom that captures all of the open Lean content. Two routes to discharge the axiom are documented: Burnside's original 1904 character-theoretic proof (orthogonality + algebraic integers in ℤ[ζ_n]) and the Goldschmidt-Matsuyama 1970-73 character-free proof (transfer + focal subgroup). The character-free route is preferable for Mathlib because it avoids cyclotomic algebraic-integer machinery that Mathlib does not yet have at sufficient generality.",
+    "mathContext": "Theorem (Burnside 1904): $|G| = p^a q^b \\Rightarrow G \\text{ solvable}$ for finite $G$ and primes $p, q$. Sharpness: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has three distinct primes and $A_5$ is non-solvable. Phase-2 axiomatization splits the cases: $\\{a = 0\\} \\cup \\{b = 0\\} \\cup \\{p = q\\}$ are theorems (reduce to $p$-group $\\Rightarrow$ nilpotent $\\Rightarrow$ solvable); the residue $\\{p \\neq q \\land a \\geq 1 \\land b \\geq 1\\}$ is the named axiom.",
+    "significance": "key",
+    "relatedConcepts": ["solvable group", "character theory", "transfer homomorphism", "focal subgroup", "Goldschmidt-Matsuyama", "alternating group A₅"],
+    "prerequisites": ["finite group theory", "Sylow theorems", "p-groups", "nilpotent groups", "history of character theory"]
+  },
+  {
+    "id": "ann-imports-mathlib-chain",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 44, "endLine": 47 },
+    "type": "technique",
+    "title": "Three Mathlib modules supplying the IsPGroup → IsNilpotent → IsSolvable chain",
+    "content": "Three Mathlib modules supply the entire infrastructure needed for the trivial cases: `Mathlib.GroupTheory.PGroup` provides `IsPGroup p G` and the cardinality criterion `IsPGroup.iff_card`. `Mathlib.GroupTheory.Nilpotent` provides `IsPGroup.isNilpotent` (the lemma that every finite p-group is nilpotent — a non-trivial inductive consequence of the non-trivial centre lemma) and the typeclass instance `IsNilpotent → IsSolvable` (since the lower central series refines the derived series). `Mathlib.GroupTheory.Solvable` provides `IsSolvable`. These three modules give the complete chain free of charge — the file's only `theorem pGroup_isSolvable` is just a one-line repackage.",
+    "mathContext": "The Mathlib chain: $\\mathsf{IsPGroup}(p, G) \\overset{\\text{Mathlib}}{\\Longrightarrow} \\mathsf{IsNilpotent}(G) \\overset{\\text{Mathlib instance}}{\\Longrightarrow} \\mathsf{IsSolvable}(G)$. The first step is `IsPGroup.isNilpotent`, requiring `Fact (Nat.Prime p)` and `Finite G`. The second is a typeclass instance synthesized via `infer_instance`.",
+    "significance": "technical",
+    "relatedConcepts": ["IsPGroup", "IsNilpotent", "IsSolvable", "Mathlib instance synthesis", "lower central series", "derived series"],
+    "prerequisites": ["Mathlib group theory module organization", "typeclass instances"]
+  },
+  {
+    "id": "ann-pgroup-issolvable",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "theorem",
+    "title": "pGroup_isSolvable: one-line packaging of the Mathlib chain",
+    "content": "Repackages Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain as a single named theorem for use in the trivial cases. The proof is two tactics: `haveI := hG.isNilpotent` introduces the nilpotency instance, and `infer_instance` then resolves the `IsSolvable` goal via the Mathlib typeclass instance for `IsNilpotent → IsSolvable`. This is the foundational lemma that makes ALL three trivial cases (a=0, b=0, p=q) free — every prime-power-order group is solvable for free.",
+    "mathContext": "$\\forall G\\,\\text{Group}\\,\\text{Finite}, p\\,\\text{prime},\\ \\mathsf{IsPGroup}(p, G) \\Rightarrow \\mathsf{IsSolvable}(G)$. Proof: $\\mathsf{IsPGroup}(p, G) \\Rightarrow \\mathsf{IsNilpotent}(G)$ via $\\mathsf{IsPGroup.isNilpotent}$; then $\\mathsf{IsSolvable}(G)$ by typeclass synthesis.",
+    "significance": "key",
+    "relatedConcepts": ["p-group", "nilpotent group", "instance synthesis", "haveI tactic"],
+    "prerequisites": ["IsPGroup", "Mathlib typeclass machinery"]
+  },
+  {
+    "id": "ann-burnside-a-zero",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 69, "endLine": 76 },
+    "type": "theorem",
+    "title": "burnside_pq_a_zero: a=0 reduces to q-group + IsPGroup.iff_card",
+    "content": "When a=0, the cardinality p^0·q^b = q^b makes G a q-group. The proof simplifies p^0·q^b to q^b via simpa, then uses Mathlib's bidirectional cardinality criterion `IsPGroup.iff_card.mpr` to derive `IsPGroup q G` from the existence of an exponent witness ⟨b, hcard'⟩, then applies pGroup_isSolvable. Axiom-free. The technique generalizes immediately: any time a finite group's cardinality reduces to a single prime power, IsPGroup.iff_card.mpr ⟨n, _⟩ is the canonical bridge to the IsPGroup → IsSolvable chain.",
+    "mathContext": "$\\mathsf{Nat.card}(G) = p^0 \\cdot q^b = q^b$. From $\\mathsf{Nat.card}(G) = q^b$ and $\\mathsf{IsPGroup.iff\\_card}: \\mathsf{IsPGroup}(q, G) \\iff \\exists n, \\mathsf{Nat.card}(G) = q^n$, we extract $\\mathsf{IsPGroup}(q, G)$ via the witness $\\langle b, h\\mathrm{card}'\\rangle$.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsPGroup.iff_card", "simpa tactic", "cardinality criterion"],
+    "prerequisites": ["Nat.card", "IsPGroup", "exponent witness"]
+  },
+  {
+    "id": "ann-burnside-same-prime",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "theorem",
+    "title": "burnside_pq_same_prime: p=q via pow_add to combined exponent",
+    "content": "When p = q, the cardinality p^a · p^b combines to p^(a+b) via the basic identity `pow_add`. After this normalization, G is a p-group of combined exponent and the proof closes via the IsPGroup chain. The technique is structurally identical to the a=0 and b=0 cases: detect that the cardinality is a single prime power, derive IsPGroup, apply pGroup_isSolvable. The case ordering in the main theorem (a=0, then b=0, then p=q) ensures these three cases are dispatched cleanly before the residue (p≠q, a≥1, b≥1) reaches the axiom.",
+    "mathContext": "$\\mathsf{Nat.card}(G) = p^a \\cdot p^b = p^{a+b}$ via $\\mathsf{pow\\_add}$. Then $\\mathsf{IsPGroup}(p, G)$ from $\\mathsf{IsPGroup.iff\\_card.mpr}\\,\\langle a + b, \\cdot\\rangle$, and solvability from $\\mathsf{pGroup\\_isSolvable}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["pow_add", "exponent combining", "case ordering"],
+    "prerequisites": ["IsPGroup", "Nat.pow lemmas"]
+  },
+  {
+    "id": "ann-axiom-burnside-nontrivial",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 121, "endLine": 124 },
+    "type": "context",
+    "title": "burnside_pq_nontrivial: the single axiom capturing all open Lean content",
+    "content": "Isolates the genuinely-open mathematical content as a single named axiom. Hypotheses (p ≠ q, a ≥ 1, b ≥ 1) carve out the residual case after the three trivial reductions; conclusion IsSolvable G is the target. Two route sketches accompany the axiom. (i) Burnside 1904: minimal counterexample G is non-abelian simple; pick a Sylow p-subgroup P, take g ∈ Z(P) of prime order, then conjugacy class size |G:C_G(g)| is a power of q; column orthogonality of characters Σ χ(1)χ(g) = 0 combined with cyclotomic algebraic-integer arithmetic forces a contradiction. (ii) Goldschmidt-Matsuyama 1970-73: use the focal subgroup theorem and transfer on a Sylow p-subgroup of a minimal counterexample to derive that P ∩ G' is a proper subgroup of P, contradicting G = G' for non-abelian simple G. The character-free route (ii) is preferable for Mathlib because it avoids the algebraic-integer machinery that Mathlib lacks at the required generality. Estimated formalization cost: 400-800 lines for route (ii).",
+    "mathContext": "$\\forall G,\\ |G| = p^a q^b,\\ p \\neq q,\\ a \\geq 1,\\ b \\geq 1 \\Rightarrow \\mathsf{IsSolvable}(G)$. The axiom hypotheses are exactly the residue after the trivial-case reductions. Discharging it is the entire 1904 theorem; replacing $\\mathsf{axiom}$ by $\\mathsf{theorem}$ would auto-close the entire file without any further work.",
+    "significance": "key",
+    "relatedConcepts": ["minimal counterexample", "non-abelian simple group", "Sylow subgroup centre", "column orthogonality", "cyclotomic algebraic integers", "focal subgroup theorem", "transfer homomorphism"],
+    "prerequisites": ["Sylow theory", "character theory", "algebraic integers in cyclotomic rings", "transfer theory"]
+  },
+  {
+    "id": "ann-burnside-pq-main",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 136, "endLine": 152 },
+    "type": "theorem",
+    "title": "burnside_pq: case split a=0, b=0, p=q (in that order), then axiom",
+    "content": "Combines the three trivial-case theorems with the axiom into the unified Burnside statement. Case split ordering matters: rcases on `Nat.eq_zero_or_pos a` gives the a=0 branch (with no constraint on b); the second rcases on `Nat.eq_zero_or_pos b` then takes a≥1 as inherited and gives the b=0 branch with that strengthened context; the third rcases on `eq_or_ne p q` finally takes both a≥1 and b≥1 as inherited, and the residue (p ≠ q, a ≥ 1, b ≥ 1) is exactly the axiom's hypothesis pattern. The cascading inheritance of inequalities is a clean Lean-style proof of completeness — every (a, b, p, q) tuple lands in exactly one branch.",
+    "mathContext": "Case split: $a = 0 \\Rightarrow$ trivial; $a \\geq 1 \\land b = 0 \\Rightarrow$ trivial; $a \\geq 1 \\land b \\geq 1 \\land p = q \\Rightarrow$ trivial; $a \\geq 1 \\land b \\geq 1 \\land p \\neq q \\Rightarrow$ axiom. Coverage: all $(a, b, p, q)$ exhausted in 4 disjoint cases.",
+    "significance": "key",
+    "relatedConcepts": ["case split", "Nat.eq_zero_or_pos", "eq_or_ne", "rcases tactic", "exhaustive case analysis"],
+    "prerequisites": ["Lean 4 rcases", "case-split idioms"]
+  },
+  {
+    "id": "ann-sanity-checks",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 158, "endLine": 179 },
+    "type": "technique",
+    "title": "Three sanity-check examples exercising burnside_pq axiom-free at boundaries",
+    "content": "Three `example`s validate the API at the trivial-case boundaries, each proven AXIOM-FREE because they all fall into the trivial branches. (1) Trivial group: |G| = 1 = 2^0 · 3^0 hits the a=0 branch. (2) Prime-order group: |G| = p = p^1 · 2^0 hits the b=0 branch (after the `Fact (Nat.Prime 2)` instance is introduced as a witness for q). (3) Pure prime-power group: |G| = p^a = p^a · 2^0 also hits the b=0 branch. The ubiquitous choice q = 2 is convenient: 2 is the canonical prime witness, and `Fact (Nat.Prime 2)` is the simplest auxiliary instance to introduce. These examples confirm that the trivial-case reductions handle the degenerate cardinalities sensibly without invoking the axiom — a useful API smoke test.",
+    "mathContext": "(1) $|G| = 1 = 2^0 \\cdot 3^0$. (2) $|G| = p = p^1 \\cdot 2^0$ for prime $p$. (3) $|G| = p^a = p^a \\cdot 2^0$ for prime $p$. All three are degenerate $(a, b)$ patterns hitting one of the trivial branches in $\\mathsf{burnside\\_pq}$.",
+    "significance": "technical",
+    "relatedConcepts": ["sanity check", "axiom-free corollary", "Fact (Nat.Prime 2)", "API exercise"],
+    "prerequisites": ["example syntax", "instance witnesses"]
+  },
+  {
+    "id": "ann-sharpness-a5",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 11, "endLine": 14 },
+    "type": "insight",
+    "title": "Sharpness: |A₅| = 60 = 2²·3·5 forces three primes",
+    "content": "Burnside's theorem doesn't just bound the prime count for solvability — it pinpoints the EXACT threshold. With at most two primes the group is solvable; with three primes the smallest example A₅ already fails (because A₅ is the smallest non-solvable group). |A₅| = 60 = 2²·3·5 — exactly one prime more than Burnside permits. Mathlib's `Equiv.Perm.fin_5_not_solvable` (or its A₅ variant) provides the non-solvability witness; combined with this file's burnside_pq, the threshold is mathematically pinned. The sharpness claim is itself an interesting structural fact: simple-group classification depends critically on the number of distinct prime divisors, and Burnside's bound at 2 is the canonical entry point to the more elaborate classification (Feit-Thompson 1963 odd-order theorem extends this further).",
+    "mathContext": "Sharpness: $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ (three distinct primes) and $A_5$ is non-solvable. Burnside permits at most two primes; A₅ has three; A₅ is non-solvable. So the prime-count bound at $\\leq 2$ is tight. Bridge: Mathlib's $\\mathsf{Equiv.Perm.fin\\_5\\_not\\_solvable}$ supplies the negative direction.",
+    "significance": "key",
+    "relatedConcepts": ["A₅ simple", "Feit-Thompson odd-order theorem", "classification of finite simple groups", "smallest non-solvable group"],
+    "prerequisites": ["alternating group structure", "non-solvability of A₅"]
+  },
+  {
+    "id": "ann-mathlib-upstream",
+    "proofId": "abel-ruffini-galois-extensions-oq-07",
+    "range": { "startLine": 28, "endLine": 33 },
+    "type": "context",
+    "title": "Mathlib has the prerequisites but not Burnside itself",
+    "content": "Mathlib provides substantial group-theoretic infrastructure (`IsSolvable`, `IsPGroup`, `IsNilpotent`, full Sylow theory, character orthogonality `char_orthonormal`, transfer in `Mathlib.GroupTheory.Transfer`) but does NOT contain Burnside's pᵃqᵇ theorem itself. A full upstream formalization is estimated at ~600-1000 lines. The character-free route (Goldschmidt-Matsuyama) is the better target because Mathlib's character theory still lacks the algebraic-integer hypotheses needed for the 1904 argument: specifically, the assertion `(|G|/χ(1))χ(g) ∈ ℤ̄_K` requires algebraic-integer machinery in cyclotomic rings ℤ[ζ_n] that is only partially developed in Mathlib's `RingTheory.Polynomial.Cyclotomic` and `NumberTheory.NumberField` modules. The character-free route, by contrast, only needs the focal subgroup theorem (likely a single Mathlib PR-extension on top of `Mathlib.GroupTheory.Transfer`).",
+    "mathContext": "Available in Mathlib: $\\mathsf{IsSolvable}, \\mathsf{IsPGroup}, \\mathsf{IsNilpotent}, \\mathsf{Sylow}\\,p, \\mathsf{char\\_orthonormal}, \\mathsf{Mathlib.GroupTheory.Transfer}$. NOT in Mathlib: Burnside's theorem itself; algebraic-integer hypothesis $|G|/\\chi(1) \\cdot \\chi(g) \\in \\bar{\\mathbb{Z}}_K$; full focal subgroup theorem in transfer-friendly form.",
+    "significance": "key",
+    "relatedConcepts": ["Mathlib upstream", "focal subgroup theorem", "Mathlib.GroupTheory.Transfer", "cyclotomic algebraic integers", "PR estimation"],
+    "prerequisites": ["Mathlib module organization", "Mathlib contribution workflow"]
+  }
+]
