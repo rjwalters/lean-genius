@@ -705,10 +705,169 @@ lemma noTriple_filter_eq_tripleCount_zero_filter (d n : ℕ) :
   ext f
   simp [tripleCount_eq_zero_iff_no_triple]
 
+-- ============================================================
+-- §4. PER-TRIPLE COUNT, GENERAL n (Layer 2 of Lemma C roadmap, Session 11)
+-- ============================================================
+
+/-
+  Layer 2 of the four-layer plan in `lemma-c-roadmap.md` for discharging the
+  axiom `p_no_triple_tendsto`. This section establishes the per-triple
+  coincidence count
+
+    card {f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n − 2)
+
+  for any pairwise-distinct i, j, k in Fin n (vacuous for n < 3, since three
+  distinct elements force n ≥ 3). It is the building block of the first moment
+  of `tripleCount`: summing the per-triple count over the C(n,3)
+  strictly-increasing triples gives
+
+    Σ_f tripleCount d n f = C(n,3) · d^(n − 2),
+
+  and dividing by |Fin n → Fin d| = d^n yields E[X_d] = C(n,3) / d² (the
+  expected-triples formula).
+
+  Generalises `bad_count_n3` (n = 3, exponent 1) and `bad_count_n4_canonical`
+  (n = 4, exponent 2, canonical triple — PR #16873). The general proof factors
+  through an explicit bijection between the constrained subtype and the
+  function space on the (n − 2)-element complement {m : Fin n // m ≠ j ∧ m ≠ k}.
+
+  Layers queued:
+  - Layer 2 part 2 (S12): `expectedTripleCount_eq` — first-moment identity, general n.
+  - Layer 3: factorial-moment expansion (bottleneck, ≈ 300 lines).
+  - Layer 4: Method of Factorial Moments (Mathlib upstream candidate).
+-/
+
+/-- Per-triple coincidence count, general n. With i, j, k pairwise-distinct in
+    `Fin n`, the number of `f : Fin n → Fin d` satisfying `f i = f j ∧ f j = f k`
+    is exactly `d^(n-2)`. The cases `n < 3` are vacuous (three pairwise-distinct
+    elements force `n ≥ 3`).
+
+    Strategy: build an explicit bijection
+    `{f // f i = f j ∧ f j = f k}  ≃  ({m : Fin n // m ≠ j ∧ m ≠ k} → Fin d)`
+    via restriction to the (n − 2)-element complement of `{j, k}`. The inverse
+    extends a function `g` on the complement by `f m = g i` for `m ∈ {j, k}`
+    (well-defined since `i ≠ j` and `i ≠ k`) and `f m = g m` otherwise. The
+    target type has cardinality `d^(n-2)` since the complement of `{j, k}` in
+    `Fin n` has `n - 2` elements (using `j ≠ k`). -/
+theorem bad_count_general (d n : ℕ) (i j k : Fin n)
+    (hij : i ≠ j) (hjk : j ≠ k) (hik : i ≠ k) :
+    (Finset.univ.filter (fun f : Fin n → Fin d =>
+      f i = f j ∧ f j = f k)).card = d ^ (n - 2) := by
+  classical
+  -- Step 1: cardinality of the complement {m : Fin n // m ≠ j ∧ m ≠ k} = n - 2.
+  have hcompl_card : Fintype.card {m : Fin n // m ≠ j ∧ m ≠ k} = n - 2 := by
+    rw [Fintype.card_subtype]
+    have heq : (Finset.univ.filter (fun m : Fin n => m ≠ j ∧ m ≠ k)) =
+               Finset.univ \ ({j, k} : Finset (Fin n)) := by
+      ext m
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+                 Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or]
+    have hpair_card : ({j, k} : Finset (Fin n)).card = 2 := by
+      rw [Finset.card_insert_of_not_mem (by simp [hjk]), Finset.card_singleton]
+    rw [heq, Finset.card_sdiff (Finset.subset_univ _),
+        Finset.card_univ, Fintype.card_fin, hpair_card]
+  -- Step 2: target function space has cardinality d^(n-2).
+  have hcard_target :
+      Fintype.card ({m : Fin n // m ≠ j ∧ m ≠ k} → Fin d) = d ^ (n - 2) := by
+    rw [Fintype.card_fun, Fintype.card_fin, hcompl_card]
+  -- Step 3: rewrite Finset.card via the Fintype.card of the constrained subtype.
+  rw [show (d ^ (n - 2) : ℕ) =
+        Fintype.card ({m : Fin n // m ≠ j ∧ m ≠ k} → Fin d) from hcard_target.symm,
+      ← Fintype.card_coe]
+  -- Step 4: build the bijection.
+  apply Fintype.card_congr
+  refine {
+    toFun := fun f m => f.val m.val
+    invFun := fun g =>
+      ⟨fun m =>
+        if hj : m = j then g ⟨i, hij, hik⟩
+        else if hk : m = k then g ⟨i, hij, hik⟩
+        else g ⟨m, hj, hk⟩,
+       Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
+    left_inv := ?_
+    right_inv := ?_ }
+  · -- Membership: the extended function satisfies f i = f j ∧ f j = f k.
+    refine ⟨?_, ?_⟩
+    · -- f i = f j: LHS reduces to g ⟨i, hij, hik⟩ via dif_neg hij/dif_neg hik;
+      -- RHS reduces to g ⟨i, hij, hik⟩ via dif_pos rfl. They match.
+      show (if hj : i = j then g ⟨i, hij, hik⟩
+            else if hk : i = k then g ⟨i, hij, hik⟩
+            else g ⟨i, hj, hk⟩) =
+           (if hj : j = j then g ⟨i, hij, hik⟩
+            else if hk : j = k then g ⟨i, hij, hik⟩
+            else g ⟨j, hj, hk⟩)
+      rw [dif_neg hij, dif_neg hik, dif_pos rfl]
+    · -- f j = f k: both reduce to g ⟨i, hij, hik⟩.
+      show (if hj : j = j then g ⟨i, hij, hik⟩
+            else if hk : j = k then g ⟨i, hij, hik⟩
+            else g ⟨j, hj, hk⟩) =
+           (if hj : k = j then g ⟨i, hij, hik⟩
+            else if hk : k = k then g ⟨i, hij, hik⟩
+            else g ⟨k, hj, hk⟩)
+      rw [dif_pos rfl, dif_neg (Ne.symm hjk), dif_pos rfl]
+  · -- left_inv: invFun (toFun ⟨f, hf⟩) = ⟨f, hf⟩.
+    rintro ⟨f, hf⟩
+    apply Subtype.ext
+    have h := (Finset.mem_filter.mp hf).2
+    funext m
+    by_cases hmj : m = j
+    · subst hmj
+      show (if hj : m = j then f i
+            else if hk : m = k then f i
+            else f m) = f m
+      rw [dif_pos rfl]
+      exact h.1
+    · by_cases hmk : m = k
+      · subst hmk
+        show (if hj : m = j then f i
+              else if hk : m = k then f i
+              else f m) = f m
+        rw [dif_neg hmj, dif_pos rfl]
+        exact h.1.trans h.2
+      · show (if hj : m = j then f i
+              else if hk : m = k then f i
+              else f m) = f m
+        rw [dif_neg hmj, dif_neg hmk]
+  · -- right_inv: toFun (invFun g) = g.
+    intro g
+    funext m
+    obtain ⟨m, hmj, hmk⟩ := m
+    show (if hj : m = j then g ⟨i, hij, hik⟩
+          else if hk : m = k then g ⟨i, hij, hik⟩
+          else g ⟨m, hj, hk⟩) = g ⟨m, hmj, hmk⟩
+    rw [dif_neg hmj, dif_neg hmk]
+
+/-- Real-number per-triple probability, general n. With i, j, k pairwise-distinct
+    in `Fin n` (forcing `n ≥ 3`) and `d ≥ 1`, the probability that a uniformly
+    random `f : Fin n → Fin d` satisfies `f i = f j ∧ f j = f k` is exactly
+    `1/d²`, independent of n. This is the per-triple incidence probability that
+    multiplies the C(n,3) triple count to give E[X_d] = C(n,3)/d² (Layer 2 part 2,
+    `expectedTripleCount_eq`, queued for S12). Specialises to `p_triple_n3`
+    (n=3) and `p_canonical_triple_n4` (n=4, canonical triple). -/
+theorem p_triple_general (d n : ℕ) (i j k : Fin n)
+    (hij : i ≠ j) (hjk : j ≠ k) (hik : i ≠ k) (hd : 1 ≤ d) (hn : 3 ≤ n) :
+    ((Finset.univ.filter (fun f : Fin n → Fin d =>
+      f i = f j ∧ f j = f k)).card : ℝ) /
+    (Fintype.card (Fin n → Fin d) : ℝ) = 1 / (d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have hcard_nat : Fintype.card (Fin n → Fin d) = d ^ n := by simp [Fintype.card_fun]
+  rw [bad_count_general d n i j k hij hjk hik, hcard_nat]
+  -- Goal: ↑(d^(n-2)) / ↑(d^n) = 1 / d²
+  -- Use d^n = d^(n-2) * d^2 (since n ≥ 2).
+  have hge : n - 2 + 2 = n := Nat.sub_add_cancel (le_trans (by norm_num) hn)
+  have hpow_split : d ^ n = d ^ (n - 2) * d ^ 2 := by
+    conv_lhs => rw [← hge]
+    rw [pow_add]
+  rw [hpow_split]
+  push_cast
+  have hpow_ne : (d : ℝ) ^ (n - 2) ≠ 0 := pow_ne_zero _ hd_ne
+  field_simp
+
 /-
   ## Summary
 
-  **Proved (18 theorems / lemmas, 1 axiom):**
+  **Proved (20 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -732,6 +891,13 @@ lemma noTriple_filter_eq_tripleCount_zero_filter (d n : ℕ) :
       sorting argument).
   18. `noTriple_filter_eq_tripleCount_zero_filter` (Session 10, Layer 1): the
       axiom's no-triple filter equals `{f | tripleCount d n f = 0}`.
+  19. `bad_count_general` (Session 11, Layer 2): per-triple count
+      `card {f | f i = f j ∧ f j = f k} = d^(n-2)` for distinct i,j,k. The
+      general form of `bad_count_n3` (n=3) and `bad_count_n4_canonical`
+      (n=4 canonical). Builds an explicit bijection with the (n-2)-element
+      complement function space `({m // m ≠ j ∧ m ≠ k} → Fin d)`.
+  20. `p_triple_general` (Session 11, Layer 2): real-number per-triple
+      probability = 1/d² for distinct i,j,k (n ≥ 3, d ≥ 1). Independent of n.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -757,5 +923,7 @@ lemma noTriple_filter_eq_tripleCount_zero_filter (d n : ℕ) :
 #check @tripleCount
 #check @tripleCount_eq_zero_iff_no_triple
 #check @noTriple_filter_eq_tripleCount_zero_filter
+#check @bad_count_general
+#check @p_triple_general
 
 end BirthdayThreshold3
