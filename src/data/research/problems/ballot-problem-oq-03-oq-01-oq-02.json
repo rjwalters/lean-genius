@@ -33,15 +33,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 51,
-    "focus": "S51 (this session, partial) — added `hookLength_at_d_ge_3` (BallotProblemOQ03OQ01OQ02Helpers.lean:5288), the geometric prerequisite establishing `hookLength μ c.1 c'.2 ≥ 3` at the doubly-affected cell `d = (c.1, c'.2)` for distinct corners c, c' with c.1 < c'.1. Proof: `armLen = c.2 - c'.2 ≥ 1` and `legLen = c'.1 - c.1 ≥ 1` from `rowLen_of_isCorner` + `colLen_of_isCorner` + `corner_col_lt_of_row_lt`, so hookLength ≥ 3 by omega. This bound ensures `h_d - 1 ≥ 2 > 0` and `h_d - 2 ≥ 1 > 0`, allowing the rational factor `(h_d - 1)² / (h_d (h_d - 2))` in the GNW exchange identity to be manipulated cleanly in ℚ. Sorry count unchanged (1). The main `hookProd_doubleRemove_factor` proof (~80-120 lines) is deferred to S52 to keep blast radius small under the ≥45-min build cycle.",
+    "iteration": 52,
+    "focus": "S52 (this session) — proved `hookProd_doubleRemove_factor` (BallotProblemOQ03OQ01OQ02Helpers.lean:5297, ~133 lines including 38-line docstring). This is the algebraic 'easy half' of the GNW exchange identity: H(μ)·H((μ\\c)\\c')·(h_d-1)² = H(μ\\c)·H(μ\\c')·h_d·(h_d-2) where h_d = hookLength μ c.1 c'.2. Proof applies hookProd_ratio_formula twice (to corner c on μ and on μ\\c'), uses S50 single-removal bridges to show pointwise equality off the doubly-affected cell d, uses Finset.mul_prod_erase to extract the differing d-factors (h_d/(h_d-1) in R₁ vs (h_d-1)/(h_d-2) in R₂), then closes by `rw [hR1, hR2]; field_simp; ring` after applying h_swap. S51 `hookLength_at_d_ge_3` provides the ℚ-cast safety. This closes step 1 of 3 in the s05 recipe; remaining: S53 F-side joint K-induction (~100-200 lines), S54+ combine. Sorry count unchanged (1).",
     "blockers": [
-      "gnwProb_exchange: GNW 1979 hook-weight shift identity in product form. S49-S51 refined and prepped the attack: split into algebraic `hookProd_doubleRemove_factor` (easy half, ~80-120 lines via two `hookProd_ratio_formula` applications + S50 single-removal bridges + `hookProd_removeCorner_swap` + S51 `hookLength_at_d_ge_3` for ℚ-cast safety) and F-side joint-K-induction (hard half, ~100-200 lines). Cell-wise gnwProb invariance was shown to fail in S49 (counterexample in s04.md); the F-side proof must use sum-level invariance via `gnwProb_step` and the S43 sum-bridges."
+      "gnwProb_exchange: GNW 1979 hook-weight shift identity in product form. S52 (this session) closed the algebraic easy half (`hookProd_doubleRemove_factor`, sorry-free). Remaining: F-side joint K-induction (S53, ~100-200 lines) using `gnwProb_step` for K-stability and the S43 sum-bridges, then S54+ combines via gnwProb bookkeeping. File-size approaches Docker 32GB ceiling at 14852 lines; extraction into a `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` sub-file should be a blocking prerequisite for S53."
     ],
-    "nextAction": "S52: prove `hookProd_doubleRemove_factor` using the S50 bridge lemmas + S51 `hookLength_at_d_ge_3` + `hookProd_ratio_formula` (twice) + `hookProd_removeCorner_swap`. Lean recipe in `sessions/2026-05-08-s05.md`. ~80-120 lines. Then in S53+ tackle the F-side joint-K-induction. Confidence: high for S52 (now mechanically reduced to algebra and `Finset.mul_prod_erase` bookkeeping with all geometric prerequisites in place), medium for S53+.",
+    "nextAction": "S53: prove the F-side joint K-induction on the sum-level invariant `(∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\\c') c K) · (h_d − 1)²` using `gnwProb_step` for K-stability and the S43 sum-bridges (`sum_gnwProb_eq_removeCorner_cells`, `sum_gnwProb_strictHookCells_eq_removeCorner`). Likely needs file extraction first (Helpers.lean is at 14852 lines, Docker ceiling ~15500). Confidence: medium — joint K-induction may bifurcate at K=0 base case requiring a separate lemma. Then S54+ combines with S52's hookProd_doubleRemove_factor to close gnwProb_exchange.",
     "attemptCounts": {
-      "total": 51,
-      "currentApproach": 15,
+      "total": 52,
+      "currentApproach": 16,
       "approachesTried": 12
     }
   },
@@ -151,7 +151,8 @@
       "hookLength_doubleRemove_other proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5186 — for cells outside arm/leg of either corner, hookLength is unchanged under double removal (S48)",
       "hookLength_removeCornerC'_arm_of_c_off_d proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5232 — at arm-of-c cells off d, removing c' alone preserves hookLength (S50; dual chain to S48)",
       "hookLength_removeCornerC'_leg_of_c proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5258 — at leg-of-c cells, removing c' alone preserves hookLength (S50; dual chain to S48)",
-      "hookLength_at_d_ge_3 proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5288 — at the doubly-affected cell d = (c.1, c'.2) for distinct corners c, c' with c.1 < c'.1, hookLength μ c.1 c'.2 ≥ 3 (armLen ≥ 1 from c.2 - c'.2, legLen ≥ 1 from c'.1 - c.1). Geometric prerequisite for ℚ-cast safety in hookProd_doubleRemove_factor: ensures h_d - 1 ≥ 2 > 0 and h_d - 2 ≥ 1 > 0 (S51)"
+      "hookLength_at_d_ge_3 proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5288 — at the doubly-affected cell d = (c.1, c'.2) for distinct corners c, c' with c.1 < c'.1, hookLength μ c.1 c'.2 ≥ 3 (armLen ≥ 1 from c.2 - c'.2, legLen ≥ 1 from c'.1 - c.1). Geometric prerequisite for ℚ-cast safety in hookProd_doubleRemove_factor: ensures h_d - 1 ≥ 2 > 0 and h_d - 2 ≥ 1 > 0 (S51)",
+      "hookProd_doubleRemove_factor proved in BallotProblemOQ03OQ01OQ02Helpers.lean:5297 — H(μ)·H((μ\\c)\\c')·(h_d-1)² = H(μ\\c)·H(μ\\c')·h_d·(h_d-2). The algebraic 'easy half' of the GNW exchange identity (S52). Proof: two hookProd_ratio_formula applications + S50 single-removal bridges + Finset.mul_prod_erase + hookProd_removeCorner_swap + hookLength_at_d_ge_3 ℚ-cast safety, closed by `rw [hR1, hR2]; field_simp; ring` after substituting decomps. ~95 proof lines + 38 docstring."
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -246,7 +247,8 @@
       "gnwProb_exchange product form F(μ,c)·H(μ\\c)·H(μ\\c') = F(μ\\c',c)·H((μ\\c')\\c)·H(μ) avoids division and probability theory imports; provable by arm/leg decomposition + hook-length shift.",
       "Cherry-picking origin/fix/ballot-gnw-key (commit 6590609fa80) gives the structural framework; the IH sorry then closes via direct recursive call once termination_by μ.card is added.",
       "The doubly-affected cell (c.1, c'.2) (when c.1 < c'.1, hence c'.2 < c.2 by corner anti-monotonicity) is the unique cell where hookLength shifts by 2 under double removal: it is in arm of c AND leg of c'. All six other cell-types shift by at most 1, and most are unchanged.",
-      "GNW exchange identity asymmetry localizes entirely at the doubly-affected cell d: hookProd μ · hookProd ((μ\\c)\\c') / [hookProd (μ\\c) · hookProd (μ\\c')] = h_d (h_d - 2) / (h_d - 1)². Every other cell contributes ratio 1 (cancellation between the two single-removal shifts)."
+      "GNW exchange identity asymmetry localizes entirely at the doubly-affected cell d: hookProd μ · hookProd ((μ\\c)\\c') / [hookProd (μ\\c) · hookProd (μ\\c')] = h_d (h_d - 2) / (h_d - 1)². Every other cell contributes ratio 1 (cancellation between the two single-removal shifts).",
+      "S52: the dual-chain S50 bridges combined with Finset.mul_prod_erase reduce the GNW exchange 'easy half' to a single polynomial identity. Substituting both ratio formulas (hR1 for corner c on μ, hR2 for corner c on μ\\c') into the goal — after applying hookProd_removeCorner_swap and clearing the LHS divisions via div_eq_iff — leaves Lean to verify a polynomial in (H(μ), H(μ\\c), H(μ\\c'), H((μ\\c')\\c), h_d, P_erase, L_leg). `field_simp; ring` closes it without needing explicit linear_combination coefficients."
     ],
     "mathlibGaps": [
       "hookLength may not be defined in Mathlib.Combinatorics.YoungDiagram — check arm/leg availability",
@@ -254,10 +256,10 @@
       "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
-      "Prove gnwProb_exchange using S48 hookLength shift lemmas to match per-cell hook factors",
-      "Pair gnwProb factors via gnwProb_step / gnwProb_stable / sum_gnwProb_strictHookCells_eq_removeCorner",
-      "Decompose μ.cells into seven cases using distinct_corners_dichotomy (S45)",
-      "Close via Finset.sum_attach + Finset.prod_congr over the case-decomposition"
+      "S53: prove F-side joint K-induction — (∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\\c') c K) · (h_d − 1)² — using gnwProb_step for K-stability and the S43 sum-bridges",
+      "S53 prerequisite (consider): extract Helpers.lean module BallotProblemOQ03OQ01OQ02DoubleRemove.lean to free Docker memory headroom (current 14852 lines, ~15500 ceiling)",
+      "S54+: combine S52 hookProd_doubleRemove_factor with S53 F-side identity to close gnwProb_exchange (~50 lines algebraic rearrangement)",
+      "Promote entry to verified once gnwProb_exchange is sorry-free"
     ]
   },
   "tags": [

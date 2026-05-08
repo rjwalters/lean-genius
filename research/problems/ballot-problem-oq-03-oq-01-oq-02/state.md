@@ -1,14 +1,14 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S51 — `hookLength_at_d_ge_3` geometric prerequisite added; ensures ℚ-cast safety for the rational factor `(h_d − 1)² / (h_d (h_d − 2))` in the upcoming `hookProd_doubleRemove_factor` proof)
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-21T20:08:44+02:00
+**Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-08
-**Iteration**: 51
+**Iteration**: 52
 
 ## Current Focus
-Close `gnwProb_exchange` (Helpers, line ~14441 after S50) — the GNW 1979 exchange identity
+Close `gnwProb_exchange` (Helpers, line 14597 after S52) — the GNW 1979 exchange identity
 in product form. This is now the SOLE remaining sorry-bearing lemma; the
 `hook_length_formula_general` dispatcher is sorry-free, and `gnwProb_key` for the
 multi-corner case is now structurally proved by well-founded recursion on
@@ -31,9 +31,9 @@ in place:
    (L-shape, (3,1)).
 
 ## Attempt Count
-- Total attempts: 51 (sessions 1–51; sessions 1–4 archived to
-  `sessions/`; sessions 5–51 in `knowledge.md` + `sessions/`)
-- Current approach attempts: 15 (sessions 37–51 on GNW)
+- Total attempts: 52 (sessions 1–52; sessions 1–4 archived to
+  `sessions/`; sessions 5–52 in `knowledge.md` + `sessions/`)
+- Current approach attempts: 16 (sessions 37–52 on GNW)
 - Approaches tried:
   1. LGV-determinant via `lgv_lemma_rxr` + Jacobi–Trudi (sessions 1–10) —
      dead scaffolding deleted in session 32.
@@ -123,6 +123,22 @@ in place:
      `(h_d − 1)² / (h_d (h_d − 2))` is well-formed and ℕ-subtraction
      truncation is benign.  No build risk: identical proof shape to existing
      `hookLength_pos` and the `*_of_isCorner` rewrites are 1-step.
+ 14. Algebraic "easy half" of GNW exchange (session 52) — proved
+     `private lemma hookProd_doubleRemove_factor` (~line 5297, +133 lines
+     including 38-line docstring):
+     `H(μ) · H((μ\c)\c') · (h_d - 1)² = H(μ\c) · H(μ\c') · h_d · (h_d - 2)`
+     where `h_d = hookLength μ c.1 c'.2`.  Proof: apply `hookProd_ratio_formula`
+     twice (corner `c` on `μ`, corner `c` on `μ\c'` via
+     `isCorner_removeCorner_of_ne hc' hc hne.symm`); use `Finset.mul_prod_erase`
+     to extract the `d`-factor on each side (`h_d/(h_d-1)` for R₁,
+     `(h_d-1)/(h_d-2)` for R₂ after `h_d_in_ν : hookLength (μ\c') c.1 c'.2 = h_d - 1`
+     from `hookLength_removeCorner_leg hc' hi`); pointwise equality off `d` by
+     S50 bridges (`Finset.prod_congr`); `div_eq_iff` to clear LHS hookProd
+     ratios; `← h_swap` to align with `H((μ\c)\c')`; final
+     `rw [hR1, hR2]; field_simp; ring`.  ℚ-cast safety from S51
+     `hookLength_at_d_ge_3` via `linarith`.  Closes step 1 of 3 in the s05
+     recipe; step 2 (F-side joint K-induction) is S53, step 3 (combine) is
+     S54+.  Sorry count unchanged (1).
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
@@ -135,60 +151,52 @@ in place:
   CI will verify the PR.
 
 ## Next Action
-**S52 — prove `hookProd_doubleRemove_factor`** using the S50 single-removal
-bridges + S51 `hookLength_at_d_ge_3` + `hookProd_ratio_formula` (twice) +
-`hookProd_removeCorner_swap`.
+**S53 — prove the F-side "hard half" of `gnwProb_exchange`** via joint
+K-induction on the sum-level invariant
+```
+(∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\c') c K) · (h_d − 1)²
+```
+using `gnwProb_step` for K-stability and the S43 sum-bridges
+(`sum_gnwProb_eq_removeCorner_cells`,
+`sum_gnwProb_strictHookCells_eq_removeCorner`).
 
-S50 added the two single-removal bridge lemmas
-(`hookLength_removeCornerC'_arm_of_c_off_d`, `hookLength_removeCornerC'_leg_of_c`)
-that establish the dual chain `μ → μ\c' → (μ\c')\c`.  S51 (this session)
-added the geometric prerequisite `hookLength_at_d_ge_3` that ensures
-`h_d ≥ 3` at the doubly-affected cell, so the rational factor
-`(h_d − 1)² / (h_d (h_d − 2))` is well-formed in ℚ.  Combined with
-`hookLength_removeCorner_leg hc' hi` for the doubly-affected cell, these are
-exactly the pointwise hookLength facts needed when comparing the two
-`hookProd_ratio_formula` applications: one for corner `c` on `μ`, one for
-corner `c` on `μ\c'`.
+S52 (this session) closed step 1 of 3 from the s05 recipe: the algebraic
+"easy half" `hookProd_doubleRemove_factor`.  The proof applies
+`hookProd_ratio_formula` to corner `c` on `μ` and (via
+`isCorner_removeCorner_of_ne hc' hc hne.symm`) to corner `c` on `μ\c'`.
+Off the doubly-affected cell `d = (c.1, c'.2)` the integrands agree by
+the S50 bridges; at `d` the arm factors `h_d/(h_d-1)` (in `R₁`) and
+`(h_d-1)/(h_d-2)` (in `R₂`, after substituting
+`hookLength (μ\c') c.1 c'.2 = h_d - 1`) differ by exactly the rational
+factor required.  After clearing the LHS divisions with
+`div_eq_iff`, applying `hookProd_removeCorner_swap` to identify
+`H((μ\c')\c) = H((μ\c)\c')`, and substituting both ratio formulas into
+the goal, `field_simp; ring` closes the polynomial identity.  ~95 proof
+lines + 38 docstring lines.
 
-The refined attack still splits `gnwProb_exchange` into:
+Remaining steps in the s05 recipe:
 
-1. **Algebraic "easy half" — `hookProd_doubleRemove_factor`** (~80-120 lines).
-   Pure hookProd identity using `hookProd_ratio_formula` (twice) plus the
-   S50 bridge lemmas + `hookLength_removeCorner_leg hc' hi` (single-shift at
-   `d`) + `hookProd_removeCorner_swap` (to identify `(μ\c')\c` with `(μ\c)\c'`)
-   + S51 `hookLength_at_d_ge_3` (ℚ-cast safety; `h_d ≥ 3`).
-   States that
-   `H(μ) · H((μ\c)\c') · (h_d − 1)² = H(μ\c) · H(μ\c') · h_d · (h_d − 2)`
-   where `d = (c.1, c'.2)`.  Confidence: high — all geometric prerequisites
-   are now in place.  See `sessions/2026-05-08-s05.md` for the Lean-skeleton
-   recipe and `sessions/2026-05-08-s06.md` for the S51 prerequisite note.
+1. ✓ **Algebraic "easy half" — `hookProd_doubleRemove_factor`** (S52,
+   this session, sorry-free).
 
-2. **F-side "hard half"** (~100-200 lines).  Joint K-induction on the
-   sum-level invariant
-   `(∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\c') c K) · (h_d − 1)²`,
-   using `gnwProb_step` for K-stability and the S43 sum-bridges
-   (`sum_gnwProb_eq_removeCorner_cells`,
-   `sum_gnwProb_strictHookCells_eq_removeCorner`).  Confidence: medium.
+2. **F-side "hard half"** (~100-200 lines, S53 next action).  Joint
+   K-induction on the sum-level invariant.  Confidence: medium.  May
+   require S53.5 to extract the K=0 base case as a separate lemma if
+   the induction step is too large for one PR.
 
 3. **Combine** to close `gnwProb_exchange` (~50 lines algebraic
-   rearrangement).
+   rearrangement, S54+).
 
-Practical sequencing for S52: complete step 1 (the easy half).  This will
-either succeed cleanly via the dual-chain S50 bridges + S51 `_ge_3` bound,
-or surface specific Mathlib `Finset.mul_prod_erase`/`Finset.prod_congr`
-quirks that the next session can patch.
-
-**File-size**: Helpers.lean is at 14719 lines after S51 (+15 from 14704
-after S50, for the new lemma + its docstring).  S52's algebraic proof
-adds another ~80-120 lines.  Approaching 14900 — still below the practical
-Docker 32GB-memory ceiling but extraction into
-`BallotProblemOQ03OQ01OQ02DoubleRemove.lean` should be on the radar by S53
-to forestall the wall.
+**File-size**: Helpers.lean is at 14852 lines after S52 (+133 from 14719
+after S51).  Approaching the Docker 32GB-memory ceiling estimate (~15500
+lines).  S53 will likely push us close to or over 15000 — extraction into
+`BallotProblemOQ03OQ01OQ02DoubleRemove.lean` should now be a *blocking
+prerequisite* for S53 (or S53 should target the extracted file directly).
 
 Alternative (deferred): a deterministic weighted-path recasting of GNW
 that avoids the exchange step entirely (count weighted walks of every
 length, divide by `μ.card · ∏ |strict hook|`); ~400 lines self-contained.
-Fallback if S52-S54 stall.
+Fallback if S53-S54 stall.
 
 ## References
 
@@ -206,6 +214,7 @@ Fallback if S52-S54 stall.
 - `sessions/2026-05-08-s04.md` — Session 49: refined attack plan; cell-wise → sum-level pivot
 - `sessions/2026-05-08-s05.md` — Session 50: single-removal bridges + S51 Lean recipe
 - `sessions/2026-05-08-s06.md` — Session 51: `hookLength_at_d_ge_3` geometric prerequisite for ℚ-cast safety
+- `sessions/2026-05-08-s07.md` — Session 52: `hookProd_doubleRemove_factor` algebraic "easy half"
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -217,8 +226,13 @@ Fallback if S52-S54 stall.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5232` — `hookLength_removeCornerC'_arm_of_c_off_d` (S50)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5258` — `hookLength_removeCornerC'_leg_of_c` (S50)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5288` — `hookLength_at_d_ge_3` (S51)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14464` — `gnwProb_exchange`
-  (sorry'd, target of S52-S53 — line shifted by +23 from S51 additions)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5297` — `hookProd_doubleRemove_factor` (S52)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14597` — `gnwProb_exchange`
+  (sorry'd, target of S53-S54 — line shifted by +133 from S52 additions)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14622` — `gnwProb_key`
+  (proved modulo `gnwProb_exchange` and `isCorner_removeCorner_of_ne`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14831` — `hook_walk_identity_gnw`
+  (sorry-free dispatcher, transitive on `gnwProb_exchange`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14489` — `gnwProb_key`
   (proved modulo `gnwProb_exchange`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14698` — `hook_walk_identity_gnw`

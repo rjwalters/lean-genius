@@ -5294,6 +5294,139 @@ private lemma hookLength_at_d_ge_3 {μ : YoungDiagram} {c c' : ℕ × ℕ}
   unfold hookLength armLen legLen
   omega
 
+/-- **The algebraic "easy half" of the GNW exchange identity (S52).**
+
+For two distinct corners `c, c'` of `μ` with `c.1 < c'.1` (whence `c'.2 < c.2`
+by `corner_col_lt_of_row_lt`), the four hook products satisfy
+```
+H(μ) · H((μ\c)\c') · (h_d - 1)² = H(μ\c) · H(μ\c') · h_d · (h_d - 2)
+```
+where `h_d = hookLength μ c.1 c'.2` is the hook length at the doubly-affected
+cell `d = (c.1, c'.2)` (the unique cell in `arm(c) ∩ leg(c')`).
+
+This is the multiplicative-only half of the GNW 1979 exchange identity for
+`gnwProb_exchange`; the F-side "hard half" (joint K-induction on the
+`gnwProb` sum) is deferred to S53+.
+
+**Proof strategy.**  Apply `hookProd_ratio_formula` twice — to corner `c` on
+`μ` and (via `isCorner_removeCorner_of_ne hc' hc hne.symm`) to corner `c`
+on `μ\c'`.  The two ratio expressions share the same arm-of-`c` and
+leg-of-`c` index sets `Finset.range c.2`, `Finset.range c.1` (since `c` has
+the same `rowLen`/`colLen` in `μ` and `μ\c'`).  They agree pointwise off
+the doubly-affected cell `d` by the S50 single-removal bridges
+(`hookLength_removeCornerC'_arm_of_c_off_d`,
+`hookLength_removeCornerC'_leg_of_c`).  At cell `d` itself the two arm
+factors differ: `R₁`'s factor is `h_d / (h_d - 1)` while `R₂`'s factor is
+`(h_d - 1) / (h_d - 2)` (using `hookLength (μ\c') c.1 c'.2 = h_d - 1` from
+`hookLength_removeCorner_leg hc' hi`, since the cell lies in the leg of
+`c'`).  Substituting both ratio formulas into the goal and clearing the
+two non-zero d-factor denominators `(h_d - 1)`, `(h_d - 2)` (justified by
+`h_d ≥ 3` from `hookLength_at_d_ge_3`) reduces the identity to a
+polynomial equation discharged by `ring`.  `hookProd_removeCorner_swap`
+identifies `H((μ\c')\c) = H((μ\c)\c')`. -/
+private lemma hookProd_doubleRemove_factor
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1) :
+    (hookProd μ : ℚ) *
+      (hookProd (removeCorner (removeCorner μ c hc) c'
+          (isCorner_removeCorner_of_ne hc hc' hne)) : ℚ) *
+      ((hookLength μ c.1 c'.2 : ℚ) - 1) ^ 2 =
+    (hookProd (removeCorner μ c hc) : ℚ) *
+      (hookProd (removeCorner μ c' hc') : ℚ) *
+      (hookLength μ c.1 c'.2 : ℚ) * ((hookLength μ c.1 c'.2 : ℚ) - 2) := by
+  -- Geometric setup
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  have hc_in_ν₂ : isCorner (removeCorner μ c' hc') c :=
+    isCorner_removeCorner_of_ne hc' hc hne.symm
+  have hd_ge_3 : 3 ≤ hookLength μ c.1 c'.2 := hookLength_at_d_ge_3 hc hc' hi
+  have hd_ge_3_Q : (3 : ℚ) ≤ (hookLength μ c.1 c'.2 : ℚ) := by exact_mod_cast hd_ge_3
+  -- Non-zero side conditions in ℚ for the d-cell factors
+  have hd_sub1_ne : (hookLength μ c.1 c'.2 : ℚ) - 1 ≠ 0 := by linarith
+  have hd_sub2_ne : (hookLength μ c.1 c'.2 : ℚ) - 2 ≠ 0 := by linarith
+  -- Hook products are non-zero (positive, cast to ℚ)
+  have hHνc_ne : (hookProd (removeCorner μ c hc) : ℚ) ≠ 0 := hookProdQ_ne_zero _
+  have hHνc'c_ne :
+      (hookProd (removeCorner (removeCorner μ c' hc') c hc_in_ν₂) : ℚ) ≠ 0 :=
+    hookProdQ_ne_zero _
+  -- The two ratio formulas (corner c on μ, and corner c on μ\c')
+  have hR1 := hookProd_ratio_formula hc
+  have hR2 := hookProd_ratio_formula hc_in_ν₂
+  -- removeCorner_swap: H((μ\c')\c) = H((μ\c)\c')
+  have h_swap :
+      hookProd (removeCorner (removeCorner μ c' hc') c hc_in_ν₂) =
+      hookProd (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) :=
+    (hookProd_removeCorner_swap hc hc' hne).symm
+  -- d ∈ Finset.range c.2 (used by Finset.mul_prod_erase below)
+  have hd_mem : c'.2 ∈ Finset.range c.2 := Finset.mem_range.mpr h_col_lt
+  -- hookLength of d in μ\c' equals h_d - 1 (cell is in leg of c' since c.1 < c'.1)
+  have h_d_in_ν : (hookLength (removeCorner μ c' hc') c.1 c'.2 : ℚ) =
+      (hookLength μ c.1 c'.2 : ℚ) - 1 := by
+    have h := hookLength_removeCorner_leg hc' hi
+    have hQ : (hookLength (removeCorner μ c' hc') c.1 c'.2 : ℚ) + 1 =
+        (hookLength μ c.1 c'.2 : ℚ) := by exact_mod_cast h
+    linarith
+  -- Pointwise: leg-of-c product is identical in μ vs μ\c' (S50 bridge)
+  have h_leg_eq :
+      (∏ r ∈ Finset.range c.1,
+        (hookLength (removeCorner μ c' hc') r c.2 : ℚ) /
+        ((hookLength (removeCorner μ c' hc') r c.2 : ℚ) - 1)) =
+      (∏ r ∈ Finset.range c.1,
+        (hookLength μ r c.2 : ℚ) / ((hookLength μ r c.2 : ℚ) - 1)) := by
+    refine Finset.prod_congr rfl (fun r hr => ?_)
+    rw [hookLength_removeCornerC'_leg_of_c hc hc' hi (Finset.mem_range.mp hr)]
+  -- Pointwise: arm-of-c product over (range c.2).erase c'.2 is identical (S50 bridge)
+  have h_arm_off_d_eq :
+      (∏ s ∈ (Finset.range c.2).erase c'.2,
+        (hookLength (removeCorner μ c' hc') c.1 s : ℚ) /
+        ((hookLength (removeCorner μ c' hc') c.1 s : ℚ) - 1)) =
+      (∏ s ∈ (Finset.range c.2).erase c'.2,
+        (hookLength μ c.1 s : ℚ) / ((hookLength μ c.1 s : ℚ) - 1)) := by
+    refine Finset.prod_congr rfl (fun s hs => ?_)
+    obtain ⟨hs_ne, hs_lt⟩ := Finset.mem_erase.mp hs
+    have hslt_c2 : s < c.2 := Finset.mem_range.mp hs_lt
+    rw [hookLength_removeCornerC'_arm_of_c_off_d hc hc' hi hslt_c2 hs_ne]
+  -- Decompose μ-arm product: extract d-factor h_d/(h_d-1)
+  have h_arm_decomp_μ :
+      (∏ s ∈ Finset.range c.2,
+        (hookLength μ c.1 s : ℚ) / ((hookLength μ c.1 s : ℚ) - 1)) =
+      ((hookLength μ c.1 c'.2 : ℚ) / ((hookLength μ c.1 c'.2 : ℚ) - 1)) *
+      (∏ s ∈ (Finset.range c.2).erase c'.2,
+        (hookLength μ c.1 s : ℚ) / ((hookLength μ c.1 s : ℚ) - 1)) :=
+    (Finset.mul_prod_erase _ _ hd_mem).symm
+  -- Decompose ν-arm product: extract d-factor (h_d-1)/(h_d-2)
+  have h_arm_decomp_ν :
+      (∏ s ∈ Finset.range c.2,
+        (hookLength (removeCorner μ c' hc') c.1 s : ℚ) /
+        ((hookLength (removeCorner μ c' hc') c.1 s : ℚ) - 1)) =
+      (((hookLength μ c.1 c'.2 : ℚ) - 1) / ((hookLength μ c.1 c'.2 : ℚ) - 2)) *
+      (∏ s ∈ (Finset.range c.2).erase c'.2,
+        (hookLength μ c.1 s : ℚ) / ((hookLength μ c.1 s : ℚ) - 1)) := by
+    have h0 :
+        (∏ s ∈ Finset.range c.2,
+          (hookLength (removeCorner μ c' hc') c.1 s : ℚ) /
+          ((hookLength (removeCorner μ c' hc') c.1 s : ℚ) - 1)) =
+        ((hookLength (removeCorner μ c' hc') c.1 c'.2 : ℚ) /
+          ((hookLength (removeCorner μ c' hc') c.1 c'.2 : ℚ) - 1)) *
+        (∏ s ∈ (Finset.range c.2).erase c'.2,
+          (hookLength (removeCorner μ c' hc') c.1 s : ℚ) /
+          ((hookLength (removeCorner μ c' hc') c.1 s : ℚ) - 1)) :=
+      (Finset.mul_prod_erase _ _ hd_mem).symm
+    rw [h0, h_d_in_ν, h_arm_off_d_eq]
+    ring
+  -- Substitute decompositions and h_leg_eq into hR1 and hR2
+  rw [h_arm_decomp_μ] at hR1
+  rw [h_arm_decomp_ν, h_leg_eq] at hR2
+  -- Clear LHS divisions (hookProd ratios)
+  rw [div_eq_iff hHνc_ne] at hR1
+  rw [div_eq_iff hHνc'c_ne] at hR2
+  -- Apply h_swap to make goal use H((μ\c')\c) instead of H((μ\c)\c')
+  rw [← h_swap]
+  -- Substitute hR1 and hR2 into the goal, then clear d-factor denominators
+  rw [hR1, hR2]
+  field_simp
+  ring
+
 /-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
 private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
     {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
