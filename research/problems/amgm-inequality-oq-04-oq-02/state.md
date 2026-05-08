@@ -1,8 +1,73 @@
 # Current State
 
-**Phase**: ACT (S7: K-side bound infra landed; S8 = K-side IBP integral identity)
-**Since**: 2026-05-08T23:30:00Z
-**Iteration**: 7
+**Phase**: ACT (S8 partial: K-side integral building blocks landed; S9 = IBP step)
+**Since**: 2026-05-09T00:30:00Z
+**Iteration**: 8
+
+## Iteration 8 (2026-05-09T00:30Z, researcher-9): S8 partial — integral building blocks
+
+Session 8 (ACT, this PR) added the **two integral building blocks** that
+the IBP step will combine with FTC on the auxiliary function
+`auxFnK k θ := sin θ · cos θ / √(1-k²sin²θ)` to discharge the K-side
+integral identity. New §12 in `proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+
+1. `integral_sin_sq_div_sqrt_denom` (~30 lines, S8): for `0 < k < 1`,
+   `∫₀^{π/2} sin²θ / √(1-k²sin²θ) dθ = (K(k) - E(k)) / k²`. Proof:
+   the pointwise identity `sin²θ / √D = (ellipticIntegrand - ellipticIntegrandE) / k²`
+   follows from `dIntegrandE_mul_k` (§8) by multiplying both sides by
+   `√D` and dividing by `k²`. Integrating uses
+   `intervalIntegral.integral_div` and `intervalIntegral.integral_sub`
+   plus the definitions `ellipticK = ∫ ellipticIntegrand` and
+   `ellipticE = ∫ ellipticIntegrandE`.
+2. `integral_cos_sq_div_sqrt_denom` (~50 lines, S8): for `0 < k < 1`,
+   `∫₀^{π/2} cos²θ / √(1-k²sin²θ) dθ = (E(k) - (1-k²) · K(k)) / k²`.
+   Proof: use `cos²θ = 1 - sin²θ` (from `Real.sin_sq_add_cos_sq`) to
+   reduce to `∫ (1/√D - sin²θ/√D) = K - (K-E)/k² = (E - (1-k²)K)/k²`.
+
+**Mathlib API surface**: zero new lemmas. Uses `intervalIntegral.integral_congr`,
+`intervalIntegral.integral_div`, `intervalIntegral.integral_sub`, `linear_combination`,
+`field_simp`, `Real.sin_sq_add_cos_sq`, `Continuous.div₀`,
+`Continuous.intervalIntegrable`. No new imports.
+
+**Net new content**: 0 definitions, 2 theorems, 0 axioms, 0 sorries.
+**Updated total**: 9 definitions, 38 theorems, 1 axiom, 0 sorries,
+964 lines (was 829).
+
+**Independence from open PR #17371 (E-side `dE_dk`)**: §12 uses §8's
+`dIntegrandE_mul_k` (already merged) and the `ellipticK_integrable` /
+`ellipticE_integrable` facts. It does not modify §1/§8/§9. No conflict.
+
+## Sharpening of the Plan for S9+
+
+With §12 (this PR, integral building blocks) in place, the remaining work
+to discharge the K-side integral identity is:
+
+1. **Auxiliary function definition + endpoint values** (~15 lines, S9 part 1).
+   `auxFnK k θ := sin θ · cos θ / √(1-k²sin²θ)`. Endpoint computation:
+   `auxFnK k 0 = 0` (sin 0 = 0); `auxFnK k (π/2) = 0` (cos(π/2) = 0).
+2. **`auxFnK` chain rule** (~50 lines, S9 part 2). Compute
+   `(d/dθ) auxFnK k θ` via `HasDerivAt.mul` on `sin θ · cos θ` and
+   `HasDerivAt.div` on the result, then algebraically reduce to the
+   integrating form
+   `cos²θ / √D - (1-k²) · sin²θ / [(1-k²sin²θ) · √D]`.
+   The reduction uses
+   `cos²θ - sin²θ + k²sin²θ cos²θ / D² = cos²θ - (1-k²) sin²θ / D²`
+   (verified algebraically: both sides equal `(cos²θ - sin²θ + k²sin⁴θ)/D²`).
+3. **FTC on `auxFnK`** (~15 lines, S9 part 3).
+   `∫₀^{π/2} (auxFnK k)' dθ = auxFnK k (π/2) - auxFnK k 0 = 0`
+   via `intervalIntegral.integral_eq_sub_of_hasDerivAt`.
+4. **Combine** (~15 lines, S9 part 4). The IBP identity
+   `∫ cos²θ/√D - (1-k²) ∫ sin²θ/((1-k²sin²θ)·√D) = 0` combined with
+   §12's `integral_cos_sq_div_sqrt_denom` yields
+   `(1-k²) · ∫ sin²θ/((1-k²sin²θ)·√D) dθ = (E - (1-k²)K)/k²`,
+   hence `∫ k sin²θ/((1-k²sin²θ)·√D) dθ = ∫ dIntegrandK k θ dθ
+        = (E - (1-k²) K) / (k(1-k²))`.
+
+Total S9 estimate: ~95 lines. After S9, S10 becomes the `dK_dk` assembly
+(~30 lines, parallel to dE_dk template, see line 65 of this state.md
+under "S8+ Plan"), then S11 the Wronskian closure (~50 lines).
+
+## Iteration 7 (2026-05-08T23:30Z, researcher-9): K-side uniform bound
 
 ## Iteration 7 (2026-05-08T23:30Z, researcher-9): K-side uniform bound
 
