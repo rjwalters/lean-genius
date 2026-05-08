@@ -2,7 +2,7 @@
   "id": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
   "title": "Symmetric Group Borsuk-Ulam: The Largest-Prime-Below Conjecture",
   "slug": "borsuk-ulam-oq-02-oq-01-oq-03-oq-02",
-  "description": "Phase-2 formalization of the open question: For S_n, is symBUDim n d = buDim p* d = 2⌊d/2⌋ − 1, where p* is the largest prime ≤ n? The lower bound symBUDim n (2k) ≥ 2k − 1 is proved unconditionally (axiom-free, modulo parent infrastructure); the matching upper bound is the conjectural equality, axiomatized as `symBUDim_eq_largestPrime`. From the conjecture we derive the explicit closed form symBUDim n (2k) = 2k − 1. Adds the quantitative Bertrand-Chebyshev bound `n/2 < largestPrimeBelow n` (axiom-free, via Mathlib's `Nat.bertrand`), pinning p* in the dyadic window (n/2, n] and showing the cyclic lower bound is within factor 2 of optimal.",
+  "description": "Phase-2 formalization of the open question: For S_n, is symBUDim n d = buDim p* d = 2⌊d/2⌋ − 1, where p* is the largest prime ≤ n? The lower bound symBUDim n (2k) ≥ 2k − 1 is proved unconditionally (axiom-free, modulo parent infrastructure); the matching upper bound is the conjectural equality, axiomatized as `symBUDim_eq_largestPrime`. From the conjecture we derive the explicit closed form symBUDim n (2k) = 2k − 1. Adds the quantitative Bertrand-Chebyshev bound `n/2 < largestPrimeBelow n` (axiom-free, via Mathlib's `Nat.bertrand`), pinning p* in the dyadic window (n/2, n] and showing the cyclic lower bound is within factor 2 of optimal. Iteration 6: extends the unconditional lower bound from even-d to ALL d via the Z/2 subgroup route (`symBUDim_lower_z2 : d − 1 ≤ symBUDim n d` for d ≥ 1, axiom-free), strictly tighter than the largestPrimeBelow route at odd dimensions; settles the conjecture axiom-free at n=2 for ALL d (`symBUDim_two_general_unconditional : symBUDim 2 d = d − 1`); and adds the structural monotonicity `largestPrimeBelow_mono`.",
   "meta": {
     "author": "Formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Borsuk%E2%80%93Ulam_theorem",
@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 387,
+    "lineCount": 547,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -73,10 +73,16 @@
       "symBUDim_two_four_unconditional: concrete axiom-free instance symBUDim 2 4 = 3",
       "largestPrimeBelow_eq_self_iff_prime: fixed-point characterization (n ≥ 2): largestPrimeBelow n = n ↔ Nat.Prime n. Forward direction uses largestPrimeBelow_isPrime; backward is largestPrimeBelow_self_of_prime",
       "largestPrimeBelow_lt_of_not_prime: strict bound for composite n (corollary of the iff): when n ≥ 2 is not prime, largestPrimeBelow n < n",
-      "symBUDim_{six,seven,eight}_lower_unconditional: axiom-free Yang-Borsuk lower bounds 2k - 1 ≤ symBUDim n (2k) for n ∈ {6,7,8} via direct application of symBUDim_even_lower"
+      "symBUDim_{six,seven,eight}_lower_unconditional: axiom-free Yang-Borsuk lower bounds 2k - 1 ≤ symBUDim n (2k) for n ∈ {6,7,8} via direct application of symBUDim_even_lower",
+      "symBUDim_lower_z2 (S6): UNIFORM unconditional lower bound d - 1 ≤ symBUDim n d for ALL n ≥ 2, d ≥ 1 (axiom-free, via Z/2 subgroup + parent's symBUDim_two + buDim_two). Strictly stronger than symBUDim_even_lower at odd dimension",
+      "symBUDim_odd_lower_unconditional (S6): odd-dimension corollary 2k ≤ symBUDim n (2k+1) for n ≥ 2 (axiom-free); strictly tighter (by 1) than the floor-rounded largestPrimeBelow route at odd d",
+      "symBUDim_two_general_unconditional (S6): axiom-free closed form symBUDim 2 d = d - 1 for ALL d ≥ 1, generalizing symBUDim_two_even_formula_unconditional past the even-d restriction",
+      "symBUDim_two_three_unconditional, symBUDim_two_five_unconditional, symBUDim_two_seven_unconditional (S6): concrete axiom-free instances symBUDim 2 3 = 2, symBUDim 2 5 = 4, symBUDim 2 7 = 6",
+      "symBUDim_three_three_lower_unconditional, symBUDim_four_three_lower_unconditional, symBUDim_three_five_lower_unconditional (S6): concrete axiom-free odd-d lower bounds at S₃ and S₄ — the n=4 case is notable since S₄ has the V₄ Klein-4 subgroup cited as the canonical test case",
+      "largestPrimeBelow_mono (S6): structural monotonicity of the prime-selector for m ≥ 2: m ≤ n → largestPrimeBelow m ≤ largestPrimeBelow n (axiom-free, via Nat.le_findGreatest). Useful for case-bound arguments comparing p* across different n"
     ],
     "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **The n=2 instance of this axiom is redundant** — `symBUDim_eq_largestPrime_two_unconditional` proves it axiom-free from the parent's `symBUDim_two` axiom + `largestPrimeBelow_two`. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime` (counted in the parent gallery entries).",
-    "theoremCount": 21,
+    "theoremCount": 33,
     "definitionCount": 1
   },
   "overview": {
@@ -92,7 +98,8 @@
       "**Failure modes for the conjecture.** If the conjecture fails at some $n$, the failure must come from $S_n$-specific structure: Klein-4 $V_4 \\leq S_4$ (non-cyclic of order 4), representation-theoretic obstructions from non-trivial irreducibles, or higher-cohomology classes in the Fadell-Husseini index. Natural test cases: $n = 4$ ($p^* = 3$, but $V_4 \\leq S_4$) and $n = 8$ ($p^* = 7$, but $S_8$ has rich subgroup structure including $A_4 \\times A_4$, etc.).",
       "**Concrete computations are immediate.** `symBUDim_three_four = 3` and `symBUDim_four_six = 5` follow from the closed-form formula; the unconditional `symBUDim_five_lower_unconditional` is axiom-free up to parent. These serve as both regression tests and Lean-verified instances of the conjecture's predictions.",
       "**Bertrand-Chebyshev makes the factor-2 gap formal.** The unconditional cyclic lower bound `2k − 1 ≤ symBUDim n (2k)` matches the conjectural upper bound exactly modulo the open axiom — but it's also worth showing that the prime witness $p^*$ is genuinely close to $n$, not just some small prime. `n_div_two_lt_largestPrimeBelow` formalizes this: for any $n \\geq 2$, $p^* > n/2$, axiom-free via Mathlib's `Nat.exists_prime_lt_and_le_two_mul`. The prime witness is in the dyadic window $(n/2, n]$, so any improvement beyond the cyclic lower bound must come from $S_n$-specific (non-cyclic) structure.",
-      "**The n=2 instance of the conjecture is provable, axiom-free.** `symBUDim_eq_largestPrime_two_unconditional` shows that the conjectured equality $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ at $n=2$ is *not* an independent axiom: it follows from the parent file's pre-existing `symBUDim_two` axiom and the squeeze-argument `largestPrimeBelow_self_of_prime` (instantiated at $n = p = 2$). This is a non-trivial *consistency check* — the new axiom `symBUDim_eq_largestPrime` is compatible with prior axiomatization, and its true open content is for $n \\geq 3$. (For larger primes $n$, the analogous derivation would require a $\\text{symBUDim}_p$ base axiom that the gallery does not yet have.)"
+      "**The n=2 instance of the conjecture is provable, axiom-free.** `symBUDim_eq_largestPrime_two_unconditional` shows that the conjectured equality $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ at $n=2$ is *not* an independent axiom: it follows from the parent file's pre-existing `symBUDim_two` axiom and the squeeze-argument `largestPrimeBelow_self_of_prime` (instantiated at $n = p = 2$). This is a non-trivial *consistency check* — the new axiom `symBUDim_eq_largestPrime` is compatible with prior axiomatization, and its true open content is for $n \\geq 3$. (For larger primes $n$, the analogous derivation would require a $\\text{symBUDim}_p$ base axiom that the gallery does not yet have.)",
+      "**The Z/2 subgroup gives a unified lower bound at ALL dimensions, including odd.** Routing through the classical Borsuk-Ulam (parent's `buDim_two : buDim 2 (n+1) = n`) and the Z/2 ≤ S_n inclusion (parent's `symBUDim_two` + `symBUDim_le_of_le`) yields the axiom-free uniform bound $d - 1 \\leq \\text{symBUDim}(n, d)$ for all $n \\geq 2, d \\geq 1$ — see `symBUDim_lower_z2`. At odd $d = 2k + 1$ this is *strictly stronger* than the largestPrimeBelow route, which only delivers $2 \\lfloor d / 2 \\rfloor - 1 = 2k - 1$ via the even-d Yang-Borsuk axiom; the Z/2 route gives $2k$ instead. The conjecture predicts $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ — at $p^* \\geq 3$ this would have to handle odd $d$ via some yet-unaxiomatized cyclic-prime odd-d formula; at $n = 2$ (where $p^* = 2$), the Z/2 closed form `symBUDim_two_general_unconditional` ($\\text{symBUDim}(2, d) = d - 1$ for all $d \\geq 1$) settles the conjecture axiom-free at all dimensions."
     ],
     "prerequisites": [
       "BorsukUlamOQ02OQ01.lean (cyclic-group buDim, buDim_two, buDim_prime, buDim_mono)",
@@ -154,9 +161,41 @@
       "id": "n2-consistency",
       "title": "Part VII: Axiom-free Consistency at n=2",
       "startLine": 207,
-      "endLine": 271,
-      "summary": "`largestPrimeBelow_self_of_prime` (general, axiom-free): for prime $n$, $\\text{largestPrimeBelow}(n) = n$ via squeeze. Concrete corollaries `largestPrimeBelow_two/_three/_five/_seven`. `symBUDim_eq_largestPrime_two_unconditional` (axiom-free): the n=2 case of the conjectured equality is provable from parent's `symBUDim_two` + `largestPrimeBelow_two`, *without* invoking the new `symBUDim_eq_largestPrime` axiom — a non-trivial consistency check. `symBUDim_two_even_formula_unconditional`, `symBUDim_two_four_unconditional`: axiom-free closed form and concrete instance at n=2.",
+      "endLine": 318,
+      "summary": "`largestPrimeBelow_self_of_prime` (general, axiom-free): for prime $n$, $\\text{largestPrimeBelow}(n) = n$ via squeeze. Concrete corollaries `largestPrimeBelow_two/_three/_five/_seven`. `symBUDim_eq_largestPrime_two_unconditional` (axiom-free): the n=2 case of the conjectured equality is provable from parent's `symBUDim_two` + `largestPrimeBelow_two`, *without* invoking the new `symBUDim_eq_largestPrime` axiom — a non-trivial consistency check. `symBUDim_two_even_formula_unconditional`, `symBUDim_two_four_unconditional`: axiom-free closed form and concrete instance at n=2. Also includes the structural iff `largestPrimeBelow_eq_self_iff_prime` and the strict-bound corollary `largestPrimeBelow_lt_of_not_prime` for composite n, plus axiom-free Yang-Borsuk lower bounds at $n \\in \\{6, 7, 8\\}$.",
       "mathContext": "The squeeze argument: $n \\leq \\text{findGreatest}(\\text{Prime}, n)$ from `Nat.le_findGreatest le_rfl hn`, and $\\text{findGreatest}(\\text{Prime}, n) \\leq n$ from `Nat.findGreatest_le`, hence equality when $n$ is prime. At n=2 this reduces the conjecture to the parent's pre-existing `symBUDim_two` axiom — showing the new axiom is consistent with prior axiomatization and contributes new content only for $n \\geq 3$."
+    },
+    {
+      "id": "uniform-z2-lower",
+      "title": "Part VIII: Uniform Z/2 Lower Bound (All Dimensions, Including Odd)",
+      "startLine": 320,
+      "endLine": 376,
+      "summary": "`symBUDim_lower_z2` (axiom-free): unified lower bound $d - 1 \\leq \\text{symBUDim}(n, d)$ for all $n \\geq 2$, $d \\geq 1$, derived by routing through the Z/2 subgroup. Strictly stronger than `symBUDim_even_lower` at odd $d$. Corollary `symBUDim_odd_lower_unconditional`: $2k \\leq \\text{symBUDim}(n, 2k+1)$ for $n \\geq 2$, axiom-free.",
+      "mathContext": "$\\text{buDim}(2, d) \\stackrel{\\text{classical BU}}{=} d - 1$ (parent's `buDim_two`). $\\text{symBUDim}(2, d) \\stackrel{\\text{parent}}{=} \\text{buDim}(2, d)$. $\\text{symBUDim}(2, d) \\leq \\text{symBUDim}(n, d)$ by parent's $\\text{symBUDim}$-monotonicity in $n$ (`symBUDim_le_of_le`). Composing gives the uniform bound. At odd dimension $d = 2k+1$, this gives $2k \\leq \\text{symBUDim}(n, d)$, strictly tighter than the floor-rounded $2 \\lfloor (2k+1)/2 \\rfloor - 1 = 2k - 1$ from the even-d Yang-Borsuk route."
+    },
+    {
+      "id": "n2-general-d",
+      "title": "Part IX: Axiom-free Closed Form at n=2 for All Dimensions",
+      "startLine": 378,
+      "endLine": 416,
+      "summary": "`symBUDim_two_general_unconditional` (axiom-free): $\\text{symBUDim}(2, d) = d - 1$ for ALL $d \\geq 1$. Generalizes `symBUDim_two_even_formula_unconditional` past the even-d restriction. Concrete instances: `symBUDim_two_three_unconditional` ($= 2$), `symBUDim_two_five_unconditional` ($= 4$), `symBUDim_two_seven_unconditional` ($= 6$).",
+      "mathContext": "Parent's `symBUDim_two : symBUDim 2 d = buDim 2 d` plus `buDim_two : buDim 2 (n+1) = n` immediately gives the closed form for all $d \\geq 1$. This *fully settles* the conjecture at $n = 2$ — for all dimensions, not just even."
+    },
+    {
+      "id": "odd-d-concrete",
+      "title": "Part X: Concrete Odd-d Lower Bounds at n ≥ 3",
+      "startLine": 418,
+      "endLine": 444,
+      "summary": "Axiom-free odd-dimension lower bounds: `symBUDim_three_three_lower_unconditional` ($2 \\leq \\text{symBUDim}(3, 3)$), `symBUDim_four_three_lower_unconditional` ($2 \\leq \\text{symBUDim}(4, 3)$), `symBUDim_three_five_lower_unconditional` ($4 \\leq \\text{symBUDim}(3, 5)$). Direct applications of `symBUDim_odd_lower_unconditional`. The $n = 4$ case is notable since $S_4$ has the $V_4$ Klein-4 subgroup cited in the problem statement.",
+      "mathContext": "At odd $d$, the Z/2 route gives a strictly stronger bound than the largestPrimeBelow route. For $S_4$: $p^* = 3$, but the Z/2 subgroup yields $d - 1$ unconditionally — and the conjecture's prediction at odd $d \\geq 3$ for $n \\geq 4$ has no canonical even-d Yang-Borsuk witness without an odd-d cyclic-prime axiom."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Part XI: Monotonicity of largestPrimeBelow",
+      "startLine": 446,
+      "endLine": 470,
+      "summary": "`largestPrimeBelow_mono` (axiom-free): for $m \\geq 2$ and $m \\leq n$, $\\text{largestPrimeBelow}(m) \\leq \\text{largestPrimeBelow}(n)$. Structural lemma about the prime-selector function — useful for any case-bound argument that compares $p^*$ across different $n$.",
+      "mathContext": "Let $q = \\text{largestPrimeBelow}(m)$. Since $m \\geq 2$, $q$ is prime and $q \\leq m \\leq n$. By `Nat.le_findGreatest`, $q \\leq \\text{findGreatest}(\\text{Prime}, n) = \\text{largestPrimeBelow}(n)$."
     }
   ],
   "crossReferences": [
@@ -200,10 +239,10 @@
       "BorsukUlamOQ02OQ01"
     ],
     "namespace": "BorsukUlamSymPrime",
-    "lineCount": 387,
+    "lineCount": 547,
     "axiomCount": 1,
-    "theoremCount": 23,
-    "substantiveTheoremCount": 21,
+    "theoremCount": 33,
+    "substantiveTheoremCount": 25,
     "definitionCount": 1,
     "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
     "sorries": 0
@@ -276,6 +315,24 @@
       "type": "core",
       "description": "Bertrand-Chebyshev bound (axiom-free): for n ≥ 2, n/2 < largestPrimeBelow n. Pins p* in the dyadic window (n/2, n] regardless of how composite n is.",
       "leanType": "(n : ℕ) → 2 ≤ n → n / 2 < largestPrimeBelow n"
+    },
+    {
+      "name": "symBUDim_lower_z2",
+      "type": "core",
+      "description": "Uniform unconditional lower bound (axiom-free) at ALL dimensions including odd: d - 1 ≤ symBUDim n d for n ≥ 2, d ≥ 1. Strictly stronger than symBUDim_even_lower at odd d.",
+      "leanType": "(n d : ℕ) → 2 ≤ n → 0 < d → d - 1 ≤ symBUDim n d"
+    },
+    {
+      "name": "symBUDim_two_general_unconditional",
+      "type": "core",
+      "description": "Axiom-free closed form at n = 2 for ALL d ≥ 1: symBUDim 2 d = d - 1. Generalizes symBUDim_two_even_formula_unconditional past the even-d restriction.",
+      "leanType": "(d : ℕ) → 0 < d → symBUDim 2 d = d - 1"
+    },
+    {
+      "name": "largestPrimeBelow_mono",
+      "type": "supporting",
+      "description": "Monotonicity of largestPrimeBelow for m ≥ 2: m ≤ n → largestPrimeBelow m ≤ largestPrimeBelow n. Structural prime-selector lemma.",
+      "leanType": "{m n : ℕ} → 2 ≤ m → m ≤ n → largestPrimeBelow m ≤ largestPrimeBelow n"
     }
   ],
   "sorries": 0

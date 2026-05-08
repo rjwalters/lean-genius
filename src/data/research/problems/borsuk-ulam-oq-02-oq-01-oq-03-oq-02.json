@@ -37,18 +37,18 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-05-08T02:50:00Z",
-    "iteration": 5,
-    "focus": "Iteration 5 (researcher-11): added structural fixed-point characterization largestPrimeBelow n = n ↔ Nat.Prime n (n ≥ 2) and its corollary largestPrimeBelow_lt_of_not_prime; added concrete unconditional Yang-Borsuk lower bounds for S₆, S₇, S₈ as direct applications of symBUDim_even_lower.",
+    "iteration": 6,
+    "focus": "Iteration 6 (researcher-11): extended the unconditional lower-bound coverage from even-d to ALL d via the Z/2 subgroup route. New core result `symBUDim_lower_z2 : d − 1 ≤ symBUDim n d` (axiom-free, n ≥ 2, d ≥ 1) is strictly tighter than `symBUDim_even_lower` at odd dimensions. Added axiom-free closed form at n=2 for ALL d (`symBUDim_two_general_unconditional : symBUDim 2 d = d − 1`), generalizing past the even-d restriction. Added structural monotonicity `largestPrimeBelow_mono` and 6 concrete instances (3 closed-form at n=2 odd-d, 3 odd-d lower bounds at S₃/S₄).",
     "blockers": [],
-    "nextAction": "Stretch: prove n=3 case (would need a symBUDim_three base axiom in parent, since n=3 is not redundant). Or attempt n=4 by hand (V_4 ≤ S_4 case). Or coordinate with sister dihedral question OQ-02-OQ-01-OQ-03-OQ-01.",
+    "nextAction": "Stretch: investigate odd-d prime-cyclic Yang-Borsuk axiom (would let us extend the symBUDim_eq_largestPrime closed form to odd d). Stretch: prove n=3 case (still needs symBUDim_three base axiom in parent). Stretch: V_4 ≤ S_4 explicit calculation. Coordinate with sister dihedral question OQ-02-OQ-01-OQ-03-OQ-01.",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "S5 (researcher-11, 2026-05-08): added structural iff `largestPrimeBelow n = n ↔ Nat.Prime n` (n ≥ 2) and its corollary `largestPrimeBelow_lt_of_not_prime`. Added 3 concrete unconditional Yang-Borsuk lower bounds at n ∈ {6, 7, 8} via direct applications of `symBUDim_even_lower`. n=8 is the canonical test case for non-cyclic structure (V₄, A₄ ≤ S₈) — the axiom-free lower bound holds regardless. Counts: lineCount 387, theoremCount 23 (substantive 21), axiomCount 1, sorries 0.\n\nS4 (researcher-3, 2026-05-08): **Proved the n=2 case of the conjectured equality AXIOM-FREE** — `symBUDim_eq_largestPrime_two_unconditional` shows the n=2 instance of the new axiom `symBUDim_eq_largestPrime` is *redundant*: it follows from the parent's pre-existing `symBUDim_two` axiom + a general squeeze lemma `largestPrimeBelow_self_of_prime` (instantiated at n=p=2). Non-trivial consistency check between this file and the parent.\n\nS3 (researcher-9, 2026-05-08): added Bertrand-Chebyshev quantitative bound `n/2 < largestPrimeBelow n` (axiom-free).\n\nS2 (researcher-3, 2026-05-07): Phase 2 scaffold committed.",
+    "progressSummary": "S6 (researcher-11, 2026-05-08): extended the unconditional lower-bound coverage from even-d to ALL d (including odd) via the Z/2 subgroup route. Core new theorem `symBUDim_lower_z2 : d − 1 ≤ symBUDim n d` for n ≥ 2, d ≥ 1 — axiom-free, strictly tighter than `symBUDim_even_lower` at odd d (gives 2k vs floor-rounded 2k−1 at d = 2k+1). Axiom-free closed form at n=2 for ALL d (`symBUDim_two_general_unconditional : symBUDim 2 d = d − 1`), generalizing past the even-d restriction (settles the conjecture axiom-free at n=2 across all dimensions). Plus `largestPrimeBelow_mono` (structural monotonicity for m ≥ 2) and 6 concrete axiom-free instances (`symBUDim_two_three/_five/_seven_unconditional`, `symBUDim_three_three/_four_three/_three_five_lower_unconditional`). Counts: lineCount 387 → 547, theoremCount 23 → 33 (substantive 21 → 25), axiomCount 1, sorries 0.\n\nS5 (researcher-11, 2026-05-08): added structural iff `largestPrimeBelow n = n ↔ Nat.Prime n` (n ≥ 2) and its corollary `largestPrimeBelow_lt_of_not_prime`. Added 3 concrete unconditional Yang-Borsuk lower bounds at n ∈ {6, 7, 8} via direct applications of `symBUDim_even_lower`.\n\nS4 (researcher-3, 2026-05-08): **Proved the n=2 case of the conjectured equality AXIOM-FREE** — `symBUDim_eq_largestPrime_two_unconditional` shows the n=2 instance of the new axiom `symBUDim_eq_largestPrime` is *redundant*: it follows from the parent's pre-existing `symBUDim_two` axiom + a general squeeze lemma `largestPrimeBelow_self_of_prime` (instantiated at n=p=2).\n\nS3 (researcher-9, 2026-05-08): added Bertrand-Chebyshev quantitative bound `n/2 < largestPrimeBelow n` (axiom-free).\n\nS2 (researcher-3, 2026-05-07): Phase 2 scaffold committed.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean — Phase 2 scaffold with axiom symBUDim_eq_largestPrime + 18 theorems (substantive: 16); 333 lines",
       "Unconditional theorem symBUDim_even_lower : 2k-1 ≤ symBUDim n (2k) for n ≥ 2 (no new axioms beyond parent)",
@@ -62,11 +62,19 @@
       "S4 — Added `import Proofs.BorsukUlamOQ02OQ01OQ03OQ02` to proofs/Proofs.lean (gallery build hookup)",
       "S5 — largestPrimeBelow_eq_self_iff_prime: structural iff for n ≥ 2",
       "S5 — largestPrimeBelow_lt_of_not_prime: strict bound for composite n (corollary of the iff)",
-      "S5 — symBUDim_six_lower_unconditional, symBUDim_seven_lower_unconditional, symBUDim_eight_lower_unconditional: axiom-free Yang-Borsuk lower bounds at n ∈ {6, 7, 8}"
+      "S5 — symBUDim_six_lower_unconditional, symBUDim_seven_lower_unconditional, symBUDim_eight_lower_unconditional: axiom-free Yang-Borsuk lower bounds at n ∈ {6, 7, 8}",
+      "S6 — symBUDim_lower_z2 : d − 1 ≤ symBUDim n d for n ≥ 2, d ≥ 1 (axiom-free uniform lower bound, valid at ALL dimensions including odd)",
+      "S6 — symBUDim_odd_lower_unconditional : 2k ≤ symBUDim n (2k+1) for n ≥ 2 (axiom-free odd-d corollary)",
+      "S6 — symBUDim_two_general_unconditional : symBUDim 2 d = d − 1 for all d ≥ 1 (axiom-free closed form at n=2, generalizing past even d)",
+      "S6 — symBUDim_two_three_unconditional / _five / _seven : concrete axiom-free instances at odd d",
+      "S6 — symBUDim_three_three / _four_three / _three_five _lower_unconditional : concrete axiom-free odd-d lower bounds (n=4 case notable for V_4 ≤ S_4)",
+      "S6 — largestPrimeBelow_mono : structural monotonicity of the prime-selector for m ≥ 2"
     ],
     "insights": [
       "S4 — `largestPrimeBelow_self_of_prime` (squeeze argument: `n ≤ findGreatest ≤ n` from `Nat.le_findGreatest le_rfl hn` + `Nat.findGreatest_le`) is the cleanest derivation of `largestPrimeBelow p = p` for prime p. Generic enough to handle ALL primes uniformly.",
       "S4 — The n=2 case of the new axiom `symBUDim_eq_largestPrime` is *redundant*: it's provable from the parent's `symBUDim_two` axiom + `largestPrimeBelow_two`. This is a non-trivial consistency check between the two files. For n = 3 and other primes, the analogous derivation would require parent-side base axioms (`symBUDim_three` etc.) that the gallery does not yet have, so the redundancy is specifically a 'parent already has the n=2 base case' phenomenon.",
+      "S6 — The Z/2 subgroup is the right route to a *uniform* unconditional lower bound across all dimensions. Parent's `symBUDim_two : symBUDim 2 d = buDim 2 d` + `buDim_two : buDim 2 (n+1) = n` gives the axiom-free closed form `symBUDim 2 d = d − 1` for all d ≥ 1; combined with parent's monotonicity `symBUDim_le_of_le 2 n d` this yields `d − 1 ≤ symBUDim n d` for all n ≥ 2. At odd d this is strictly tighter than the largestPrimeBelow route, which only delivers the floor-rounded `2⌊d/2⌋ − 1 = d − 2`.",
+      "S6 — At n=2, the conjecture is now SETTLED axiom-free for ALL dimensions (not just even). `symBUDim_two_general_unconditional` gives `symBUDim 2 d = d − 1`. The conjecture's `n ≥ 3` content remains genuinely open and tied to odd-d cyclic-prime Yang-Borsuk axiom (which is missing from the parent for primes p ≥ 3 — only the even-d formula `buDim_prime p (2*k) = 2k − 1` is axiomatized).",
       "S4 — Adding the import to Proofs.lean is structurally important: without it, the file isn't part of the gallery's main build target, and any drift goes uncaught.",
       "Nat.findGreatest Nat.Prime n is a clean Mathlib idiom for largestPrimeBelow — Nat.Prime is DecidablePred so findGreatest is computable. Lemmas: Nat.findGreatest_spec / Nat.findGreatest_le / Nat.le_findGreatest.",
       "The unconditional Yang-Borsuk lower bound `2k-1 ≤ symBUDim n (2k)` for n ≥ 2 follows from just (a) Nat.Prime 2 + 2 ≤ n giving largestPrimeBelow ≥ 2, (b) parent's `buDim_prime` (cyclic Yang-Borsuk), and (c) parent's `sym_has_cyclic_prime` (subgroup monotonicity). NO new axioms.",

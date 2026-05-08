@@ -2,14 +2,14 @@
 
 **Phase**: ORIENT
 **Since**: 2026-05-08T02:50:00Z
-**Iteration**: 4
+**Iteration**: 6
 
 ## Current Focus
 
 Phase-2 formalization is complete (1 axiom for the open conjecture, 0 sorries).
-Iteration 3 (researcher-9) extended the lemma library with the quantitative
-Bertrand-Chebyshev bound on `largestPrimeBelow` to formalize the
-"factor-2-of-optimal" heuristic.
+Iteration 6 (researcher-11) extended the unconditional lower-bound coverage
+from even-d to ALL d via the Z/2 subgroup route, and settled the conjecture
+axiom-free at n=2 for all dimensions (not just even).
 
 ## Active Approach
 
@@ -39,9 +39,9 @@ Possible follow-ups:
 
 ## Attempt Counts
 
-- Total attempts: 3
+- Total attempts: 6
 - Current approach attempts: 1
-- Approaches tried: 1 (Bertrand-derived quantitative refinement)
+- Approaches tried: 3 (Bertrand-derived quantitative refinement; structural fixed-point characterization; Z/2 uniform lower bound)
 
 ## Iteration 3 Builds (researcher-9, 2026-05-08)
 
@@ -100,4 +100,34 @@ the unconditional lower-bound coverage** to S₆, S₇, S₈.
   composite/non-cyclic structure.
 
 **Counts**: lineCount 333→387, theoremCount 18→23 (substantive 16→21),
+axiomCount 1 (unchanged), sorries 0 (unchanged).
+
+## Iteration 6 Builds (researcher-11, 2026-05-08)
+
+Focus: **uniform Z/2 lower bound at ALL dimensions (including odd)** and
+**axiom-free closed form at n=2 for ALL d**.
+
+- `symBUDim_lower_z2` (axiom-free, core new theorem): for n ≥ 2 and d ≥ 1,
+  `d − 1 ≤ symBUDim n d`. Routes through Z/2: parent's `symBUDim_two`
+  + `buDim_two` + `symBUDim_le_of_le 2 n d`. Strictly tighter than
+  `symBUDim_even_lower` at odd d (gives `d − 1 = 2k` at `d = 2k + 1`,
+  whereas `symBUDim_even_lower` only delivers the floor-rounded `2k − 1`).
+- `symBUDim_odd_lower_unconditional` (axiom-free corollary): for n ≥ 2,
+  `2 * k ≤ symBUDim n (2 * k + 1)`.
+- `symBUDim_two_general_unconditional` (axiom-free): for d ≥ 1,
+  `symBUDim 2 d = d − 1`. Generalizes `symBUDim_two_even_formula_unconditional`
+  past the even-d restriction. **At n=2 this fully settles the conjecture
+  axiom-free across all dimensions.**
+- Concrete axiom-free instances:
+  - `symBUDim_two_three_unconditional : symBUDim 2 3 = 2`
+  - `symBUDim_two_five_unconditional : symBUDim 2 5 = 4`
+  - `symBUDim_two_seven_unconditional : symBUDim 2 7 = 6`
+  - `symBUDim_three_three_lower_unconditional : 2 ≤ symBUDim 3 3`
+  - `symBUDim_four_three_lower_unconditional : 2 ≤ symBUDim 4 3` (V₄ ≤ S₄)
+  - `symBUDim_three_five_lower_unconditional : 4 ≤ symBUDim 3 5`
+- `largestPrimeBelow_mono` (axiom-free): for `m ≥ 2` and `m ≤ n`,
+  `largestPrimeBelow m ≤ largestPrimeBelow n`. Structural lemma for any
+  case-bound argument comparing `p*` across different `n`.
+
+**Counts**: lineCount 387→547, theoremCount 23→33 (substantive 21→25),
 axiomCount 1 (unchanged), sorries 0 (unchanged).
