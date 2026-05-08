@@ -1,11 +1,23 @@
 [
   {
+    "id": "ann-base-field-construction",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 78 },
+    "type": "definition",
+    "title": "Building $\\mathbb{F}_2(a)$ from `FractionRing` and `Polynomial.X`",
+    "content": "The base field is constructed as `FractionRing (Polynomial (ZMod 2))` — Mathlib's localization of the polynomial ring $\\mathbb{F}_2[X]$ at all nonzero elements, which is canonically the rational function field $\\mathbb{F}_2(X)$. The transcendental generator `aGen` is then the image of `Polynomial.X` under `algebraMap (Polynomial (ZMod 2)) base`. The polynomials `f_target = X^4 + X^2 + C aGen` and `g_factor = X^2 + X + C aGen` are then formed in `base[X]`, the *outer* polynomial ring whose variable is again called `X` (Lean disambiguates by namespace). This two-level polynomial setup — outer indeterminate `X` over the inner-indeterminate field $\\mathbb{F}_2(a)$ — is the standard way to write 'a polynomial whose coefficient field is itself a function field' in Mathlib.",
+    "mathContext": "$\\mathbb{F}_2(a) := \\mathrm{Frac}(\\mathbb{F}_2[a])$ — the field of rational functions in one variable over $\\mathbb{F}_2$. Concretely an element is a quotient $p(a)/q(a)$ with $q \\ne 0$. The polynomial ring $\\mathbb{F}_2(a)[X]$ contains $f(X) = X^4 + X^2 + a$, where the $a$ is a constant (a transcendental element of the coefficient field), not a polynomial variable. This distinction matters: in $\\mathbb{F}_2[X, a]$ (a UFD with two indeterminates) the polynomial $X^4 + X^2 + a$ is irreducible by a Gauss-style argument, but the relevant arena for Galois theory is the *univariate* $\\mathbb{F}_2(a)[X]$ where $a$ is a scalar.",
+    "significance": "supporting",
+    "relatedConcepts": ["FractionRing", "Polynomial.algebraMap", "transcendental generator", "function field", "two-level polynomial rings"],
+    "prerequisites": ["fraction rings of integral domains", "Polynomial.algebraMap", "Mathlib namespace `Polynomial`", "ZMod p as a field for prime p"]
+  },
+  {
     "id": "ann-counterexample-setup",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 67, "endLine": 90 },
-    "type": "definition",
-    "title": "The Counterexample: F₂(a), f = X⁴+X²+a",
-    "content": "The base field is F₂(a) = FractionRing(F₂[X]) — the rational function field over F₂ with formal variable a (represented as the image of X in the fraction field). f_target = X⁴+X²+a (the inseparable irreducible polynomial) and g_factor = X²+X+a (the Artin-Schreier factor). Key lemmas: f_is_g_composed_sq (f = g∘X²) and f_derivative_zero (f' = 0 in char 2, proving inseparability).",
+    "range": { "startLine": 80, "endLine": 90 },
+    "type": "technique",
+    "title": "Two Structural Lemmas: $f = g(X^2)$ and $f' = 0$",
+    "content": "Two short lemmas that pin down the structural identity and the inseparability signature. `f_is_g_composed_sq` proves $f_{\\mathrm{target}} = g_{\\mathrm{factor}}.\\mathrm{comp}(X^2)$ by unfolding `Polynomial.comp` in terms of `eval₂` and closing with `ring` — making the Frobenius-pullback structure visible to downstream tactics. `f_derivative_zero` proves $f' = 0$ by `simp` using `derivative_add`, `derivative_pow`, `derivative_X_pow` and finishing with `ring`; the key arithmetic is that `4 * X^3 + 2 * X = 0` in any char-2 ring. Together these lemmas anchor the Artin-Schreier identification (used by future irreducibility arguments) and discharge inseparability (used directly by `insep_gal_trivial_refuted`).",
     "mathContext": "In characteristic 2: $f'(X) = 4X^3 + 2X = 0$, so $f$ is inseparable. The factoring structure $f(X) = g(X^2)$ where $g(X) = X^2 + X + a$ (Artin-Schreier polynomial) shows $f$ splits via the square root of a root of $g$. Since $g$ is irreducible over $\\mathbb{F}_2(a)$ (Artin-Schreier: $a \\neq t^2 + t$ for any $t \\in \\mathbb{F}_2(a)$), the splitting field $\\mathbb{F}_2(a)(\\alpha^{1/2})$ has non-trivial automorphism $\\alpha^{1/2} \\mapsto \\alpha^{1/2} + 1$.",
     "significance": "key",
     "relatedConcepts": ["Artin-Schreier polynomial", "characteristic 2", "inseparable polynomial", "fraction field"],
@@ -20,8 +32,8 @@
     "content": "The key technical lemma sub_pow_char_pow_eq: in a characteristic-p ring, (a − b)^(p^n) = a^(p^n) − b^(p^n). This is the additive Frobenius endomorphism: the map x ↦ x^p is a ring homomorphism in char p. The proof uses CharP.add_pow_char_pow repeatedly. This lemma is the algebraic engine of the purely-inseparable Galois triviality proof.",
     "mathContext": "In characteristic $p$: $(a - b)^p = a^p - b^p$ (since all binomial coefficients $\\binom{p}{k}$ for $0 < k < p$ are divisible by $p$). By induction: $(a-b)^{p^n} = a^{p^n} - b^{p^n}$. Applied to $\\sigma(x) - x$: $(\\sigma(x) - x)^{p^n} = \\sigma(x)^{p^n} - x^{p^n}$. If $x^{p^n} \\in F$ (purely inseparable condition), then $\\sigma(x^{p^n}) = x^{p^n}$ (since $\\sigma$ fixes $F$), so $(\\sigma(x) - x)^{p^n} = 0$.",
     "significance": "key",
-    "relatedConcepts": ["Frobenius endomorphism", "characteristic p", "binomial theorem in char p", "nilpotent elements"],
-    "prerequisites": ["characteristic p rings", "Frobenius endomorphism", "binomial coefficients mod p"]
+    "relatedConcepts": ["Frobenius endomorphism", "iterateFrobenius", "characteristic p", "binomial theorem in char p", "nilpotent elements", "RingHom.map_sub"],
+    "prerequisites": ["characteristic p rings", "Frobenius endomorphism", "binomial coefficients mod p", "Mathlib `iterateFrobenius` API"]
   },
   {
     "id": "ann-main-theorem",
