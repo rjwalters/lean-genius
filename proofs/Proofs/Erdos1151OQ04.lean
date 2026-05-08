@@ -1672,6 +1672,100 @@ private lemma chebyshev_trig_sum_pos (n : ℕ) (hn : 0 < n) (θ : ℝ)
     7. Take C₂ = min of the large-n constant and the finite-set minimum.
 
     NOTE: `trig_sum_reindex_symmetry` lets the proof WLOG assume θ ∈ (0, π/2]. -/
+
+/-- **(Step 7 helper) Small-n lower bound via finite-set minimum.**
+
+    For any `θ` whose cosine avoids all Chebyshev nodes for every `n ≥ 1`, and
+    any cutoff `N ≥ 1`, there is a positive constant `C` (depending on `θ` and
+    `N`) such that for every `1 ≤ n ≤ N`,
+    `C · n · log(n+1) ≤ S(θ, n)`.
+
+    This is the **finite-set side** of `trig_sum_harmonic_lb`'s Step 7
+    (combined with an asymptotic large-`n` bound from `trig_sum_subsum_log_lb`,
+    the unified `n · log(n+1)` lower bound follows by taking the minimum of
+    the two constants).
+
+    Proof: The ratio `r(n) := S(θ, n) / (n · log(n+1))` is strictly positive
+    for every `1 ≤ n ≤ N` because
+    - the numerator `S(θ, n)` is positive by `chebyshev_trig_sum_pos`, and
+    - the denominator is positive since `n ≥ 1` ⇒ `log(n+1) ≥ log 2 > 0`.
+    Take `C := Finset.min'` over the finite image `(Finset.Icc 1 N).image r`
+    and use `Finset.min'_le` to invert the division. -/
+private lemma trig_sum_small_n_const (θ : ℝ)
+    (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k)
+    (N : ℕ) (hN : 1 ≤ N) :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n → n ≤ N →
+      C * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := by
+  -- Define r(n) = S(θ, n) / (n · log(n+1)); take the min over s = {1, …, N}.
+  let r : ℕ → ℝ := fun n =>
+    (∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                  |Real.cos θ - chebyshevNode n k|) /
+    ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+  let s : Finset ℕ := Finset.Icc 1 N
+  have hs_ne : s.Nonempty :=
+    ⟨1, by simp only [s, Finset.mem_Icc]; exact ⟨le_refl 1, hN⟩⟩
+  have him_ne : (s.image r).Nonempty := hs_ne.image r
+  -- Each r(n) for n ∈ s is positive: numerator > 0 (chebyshev_trig_sum_pos),
+  -- denominator > 0 (n ≥ 1 ⇒ log(n+1) ≥ log 2 > 0).
+  have hr_pos : ∀ n ∈ s, 0 < r n := by
+    intro n hn_in
+    rw [Finset.mem_Icc] at hn_in
+    obtain ⟨hn_pos, _⟩ := hn_in
+    show 0 < (∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                  |Real.cos θ - chebyshevNode n k|) /
+              ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+    apply div_pos
+    · -- Numerator positivity via chebyshev_trig_sum_pos. The pointwise
+      -- summand `(2 * k.val + 1 : ℝ)` (Nat-cast) and `(2 * (k.val : ℝ) + 1)`
+      -- (mixed) are equal after `push_cast`/`ring`, so a `congr 2`-style
+      -- bridge transports the existing positivity to the Nat-cast form.
+      have hpos := chebyshev_trig_sum_pos n hn_pos θ (hne n hn_pos)
+      have hcast :
+          (∑ k : Fin n,
+              Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                |Real.cos θ - chebyshevNode n k|) =
+          (∑ k : Fin n,
+              Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                |Real.cos θ - chebyshevNode n k|) := by
+        refine Finset.sum_congr rfl fun k _ => ?_
+        congr 2
+        push_cast
+        ring
+      linarith
+    · -- Denominator positivity: n ≥ 1 and log(n+1) ≥ log 2 > 0.
+      apply mul_pos
+      · exact_mod_cast hn_pos
+      · apply Real.log_pos
+        have hn_real : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn_pos
+        linarith
+  refine ⟨(s.image r).min' him_ne, ?_, ?_⟩
+  · -- min' > 0: every element of the image is positive.
+    rw [Finset.lt_min'_iff]
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨n, hn_in, rfl⟩ := hx
+    exact hr_pos n hn_in
+  · intro n hn₁ hnN
+    have hn_in : n ∈ s := by rw [Finset.mem_Icc]; exact ⟨hn₁, hnN⟩
+    have hr_in : r n ∈ s.image r := Finset.mem_image_of_mem r hn_in
+    have hC_le : (s.image r).min' him_ne ≤ r n :=
+      Finset.min'_le _ _ hr_in
+    have hd_pos : 0 < (↑n : ℝ) * Real.log ((↑n : ℝ) + 1) := by
+      apply mul_pos
+      · exact_mod_cast hn₁
+      · apply Real.log_pos
+        have hn_real : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn₁
+        linarith
+    -- Unfold r n and invert the division: C ≤ S/D ⟺ C·D ≤ S (D > 0).
+    have hr_unfold : r n =
+        (∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                      |Real.cos θ - chebyshevNode n k|) /
+        ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) := rfl
+    rw [hr_unfold] at hC_le
+    rwa [le_div_iff hd_pos] at hC_le
+
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
     ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
@@ -1679,7 +1773,10 @@ private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < 
         ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
                      |Real.cos θ - chebyshevNode n k| := by
   -- Core technical lemma: Lipschitz + harmonic sum over near-nodes + finite minimum.
-  -- See docstring for full proof sketch.
+  -- The small-`n` finite-set portion is now factored out as
+  -- `trig_sum_small_n_const`; the remaining work is the asymptotic
+  -- (large-`n`) bound via `trig_sum_subsum_log_lb` plus a min-of-two-constants
+  -- combination. See docstring for the full proof sketch.
   sorry
 
 /-! ## Key Lemmas with Sorry -/

@@ -329,6 +329,59 @@ takes ~30-45 min. PR opened pending build.
    (each `φ_{k₀+j+1} ∈ [θ/2, π-θ/2]` — lower bound trivial since
    `φ_{k₀+j+1} ≥ θ ≥ θ/2`; upper bound from `(2j+3)π/(2n) ≤ π - 3θ/2`).
 2. **(Researcher)** Step 7b — finite-n closure via `Finset.min'` over
-   `{1, ..., N₀(θ) - 1}`.
+   `{1, ..., N₀(θ) - 1}`. ✅ **Closed in S22** by `trig_sum_small_n_const`.
 3. **(Researcher)** Step 7c — combine cases via `trig_sum_reindex_symmetry`
    to handle θ ∈ (π/2, π).
+
+## Session 22 (2026-05-08, researcher-11) — Step 7b finite-set min' helper
+
+**Outcome**: progress (helper lemma added); sorries unchanged at 2.
+
+### What I Did
+
+Added `trig_sum_small_n_const` (~80 lines) right before `trig_sum_harmonic_lb`
+in `Erdos1151OQ04.lean` (line ~1675).
+
+**Statement**:
+```
+∀ (θ : ℝ) (hne : ∀ n hn k, cos θ ≠ chebyshevNode n k) (N : ℕ) (hN : 1 ≤ N),
+∃ C > 0, ∀ n, 1 ≤ n → n ≤ N →
+  C · n · log(n+1) ≤ S(θ, n)
+```
+
+**Proof structure**:
+1. Define `r(n) := S(θ, n) / (n · log(n+1))` and `s := Finset.Icc 1 N`.
+2. Show `s` and `s.image r` are nonempty (using `hN ≥ 1`).
+3. Show every `r(n)` for `n ∈ s` is positive: numerator > 0 by
+   `chebyshev_trig_sum_pos n hn θ (hne n hn)`, denominator > 0 since
+   `n ≥ 1 ⇒ log(n+1) ≥ log 2 > 0` (`Real.log_pos`).
+4. Take `C := (s.image r).min'` and apply `Finset.lt_min'_iff` to get
+   `0 < C` from positivity of every image element.
+5. For each `n ∈ s`, `Finset.min'_le` gives `C ≤ r n = S/D`; then
+   `le_div_iff hd_pos` inverts to `C · D ≤ S`.
+
+### Form-Bridging Note
+
+The existing `chebyshev_trig_sum_pos` (S20) uses `(2 * (k.val : ℝ) + 1)`
+(mixed Nat-cast), while `trig_sum_harmonic_lb` and the surrounding gallery
+target use `(2 * k.val + 1 : ℝ)` (outer cast). My helper matches the
+**outer-cast** form (so the user of `trig_sum_small_n_const` does not have
+to bridge). The proof handles the bridge once internally via
+`Finset.sum_congr rfl (fun k _ => congr 2; push_cast; ring)`.
+
+### What's Left for Step 7
+
+- **Step 7a (asymptotic)**: pick `m := ⌊n·d/(4π)⌋`, verify `hm_le` and
+  `h_interior` for `trig_sum_subsum_log_lb`, extract C₁ ≈ sin(d/2)/π.
+- **Step 7c (combine)**: case split `n < N₀(d)` (use S22) vs
+  `n ≥ N₀(d)` (use 7a); `C := min C₁ C₂`.
+
+### Build Verification
+
+Docker build skipped due to recursive `proofs/.lake` self-symlink trap
+(see `feedback_researcher_lake_symlink_broken.md`). All Mathlib lemmas
+used (`Finset.Icc`, `Finset.image_nonempty`, `Finset.min'`,
+`Finset.lt_min'_iff`, `Finset.min'_le`, `Real.log_pos`, `le_div_iff`,
+`div_pos`, `mul_pos`, `Real.log_pos`, `exact_mod_cast`, `linarith`,
+`push_cast`) are well-established at v4.26.0. PR submitted as
+"build pending" — CI is the ground truth.

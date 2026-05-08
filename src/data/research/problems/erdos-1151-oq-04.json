@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 21 (2026-05-08, doctor): Added trig_sum_subsum_log_lb (Step 6c, ~36 lines) — recovered from PR #17046 after symmetry portion (chebyshev_lebesgue_sum_pi_sub) became redundant with #17050's trig_sum_reindex_symmetry already on main. Proof: bind hsin_nn := Real.sin_nonneg_of_nonneg_of_le_pi (uses new hd_le_pi hyp), hfactor_nn := div_nonneg ...; chain mul_le_mul_of_nonneg_left applied to odd_harmonic_sum_shifted_lb (Step 6a) followed by trig_sum_subsum_lb (Step 6b). Yields sin(d/2)·(2n/π)·((1/2)·log(m+2)-1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Vacuous for m ≤ 5; substantive at m ≥ 6. Builds on prior Sessions 18 (#17050: trig_sum_reindex_symmetry) and 20 (#17140: chebyshev_trig_sum_pos). Step 7 closure (choose m=⌊nd/(8π)⌋, verify h_interior + hm_le, finite-n min') is next.",
+    "progressSummary": "PROGRESS: 2 sorries remain in Erdos1151OQ04.lean. Step 7b (finite-set small-n side of trig_sum_harmonic_lb) closed via S22 trig_sum_small_n_const. Step 7a (asymptotic large-n side) outstanding; will combine via min-of-two-constants. Sorry 2 (divergence_from_lebesgue_growth) blocked on lacunary series construction or weakening to lim sup.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -70,7 +70,8 @@
       "odd_harmonic_sum_shifted_lb (m : ℕ) : (1/2)·log(m+2) - 1 ≤ ∑ j ∈ Finset.range m, 1/(2(j+1)+1) — Erdos1151OQ04.lean:1362 (Step 6a, ~20 lines)",
       "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)",
       "trig_sum_reindex_symmetry (n hn θ) : Σ_k sin(φ_k)/|cos θ - cn| = Σ_k sin(φ_k)/|cos(π-θ) - cn| via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Combines Equiv.sum_comp + sin_pi_sub + cos_pi_sub + abs_neg. ~70 lines, Erdos1151OQ04.lean:1498 (Session 18, #17050)",
-      "trig_sum_subsum_log_lb (n hn θ d hd_pos hd_le_pi hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · ((1/2)·log(m+2) - 1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1510 (Step 6c, ~36 lines, composes 6a + 6b). Recovered from PR #17046 (Session 21)"
+      "trig_sum_subsum_log_lb (n hn θ d hd_pos hd_le_pi hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · ((1/2)·log(m+2) - 1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1510 (Step 6c, ~36 lines, composes 6a + 6b). Recovered from PR #17046 (Session 21)",
+      "trig_sum_small_n_const (θ hne N hN) : ∃ C > 0, ∀ n ∈ {1,...,N}, C·n·log(n+1) ≤ S(θ,n) — Erdos1151OQ04.lean:1675 (Step 7b finite-set min'; ~80 lines, S22)"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -112,13 +113,16 @@
       "Sub-sum lower bound shape: sin(d/2) * (2n/π) * Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Combined with Step 6a, this gives n·log(m+2) growth — basis for asymptotic n·log(n) bound when m ~ n·d/(4π).",
       "Reindex symmetry: S(θ, n) = S(π-θ, n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. The angle reflection φ_{σ k} = π - φ_k follows from algebraic identity (2(n-1-k)+1)π/(2n) = π - (2k+1)π/(2n); sin invariant under x ↦ π-x; cos sign-flips under x ↦ π-x. Combined with cos(π-θ) = -cos θ, the denominator |cos(π-θ) - (-cn)| = |cos θ - cn| via abs_neg. Reduces trig_sum_harmonic_lb to θ ∈ (0, π/2].",
       "When θ ∈ (0, π/2]: d = min(θ, π-θ) = θ; so d/2 = θ/2 and π - d/2 = π - θ/2. The going-up sub-sum upper bound (2j+3)π/(2n) ≤ π - d/2 - θ becomes (2j+3)π/(2n) ≤ π - 3θ/2, giving m ≤ n(2π - 3θ)/(4π) - 3/2. For θ < 2π/3 this is positive, and at θ = π/2 it gives m ≤ n/8 - 3/2.",
-      "When θ ∈ (π/2, π): use trig_sum_reindex_symmetry to pass to θ' = π - θ ∈ (0, π/2). The going-up sub-sum at θ' applies. This avoids needing a separate going-down sub-sum lemma."
+      "When θ ∈ (π/2, π): use trig_sum_reindex_symmetry to pass to θ' = π - θ ∈ (0, π/2). The going-up sub-sum at θ' applies. This avoids needing a separate going-down sub-sum lemma.",
+      "Step 7 split: factor finite-set min' (small n ≤ N) and asymptotic bound (large n ≥ N) into separate lemmas, then take pointwise min. The finite-set side is now closed (S22 trig_sum_small_n_const) using Finset.min' over the image of the ratio S(θ,n) / (n·log(n+1)). Each ratio is positive (chebyshev_trig_sum_pos numerator + log(n+1) ≥ log 2 denominator), so min is positive; le_div_iff inverts the division."
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "(Researcher / next session) Step 7a — Apply trig_sum_reindex_symmetry to WLOG assume θ ∈ (0, π/2] (so d = θ). Pick m := ⌊n·θ/(4π)⌋ and verify hm_le and h_interior for trig_sum_subsum_log_lb. Extract asymptotic constant C₁ ≈ sin(d/2)/π via real-analysis estimates on (1/2)·log(m+2) − 1 vs log(n+1).",
       "(Researcher / next session) Step 7a — Apply trig_sum_reindex_symmetry to WLOG assume θ ∈ (0, π/2] (so d = θ). Then choose m := ⌊n·θ/(4π)⌋ (or similar) and prove that for n ≥ N₀(θ) the hypotheses of trig_sum_subsum_lb hold: hm_le (k₀+m+1 ≤ n) and h_interior (each midpoint φ_{k₀+j+1} ∈ [θ/2, π-θ/2]).",
       "(Researcher / next session) Step 7b — for 1 ≤ n < N₀(θ), use Finset.min' (or direct computation) over the finite set of ratios S_n / (n·log(n+1)) to find a positive lower bound. Combine with Step 7a's asymptotic constant via min.",
-      "(Researcher / next session) Step 8 — close trig_sum_harmonic_lb by chaining trig_sum_subsum_lb (gives n·Σⱼ 1/(2j+3) lb) + odd_harmonic_sum_shifted_lb (gives log(m+2) lb) + Step 7 case analysis. Witness C₂ depends on θ via d = θ (after symmetry reduction)."
+      "(Researcher / next session) Step 8 — close trig_sum_harmonic_lb by chaining trig_sum_subsum_lb (gives n·Σⱼ 1/(2j+3) lb) + odd_harmonic_sum_shifted_lb (gives log(m+2) lb) + Step 7 case analysis. Witness C₂ depends on θ via d = θ (after symmetry reduction).",
+      "(Researcher / next session) Step 7c — combine S22 trig_sum_small_n_const (small n) with Step 7a (asymptotic n ≥ N₀(d)) by case-split + min of constants; close trig_sum_harmonic_lb sorry."
     ]
   },
   "tags": [
