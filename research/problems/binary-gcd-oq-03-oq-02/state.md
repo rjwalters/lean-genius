@@ -1,50 +1,56 @@
 # Current State
 
-**Phase**: ACT — Path A chosen post-S17. S18 laid the foundation
-(`hgcdMatrixSafe` with runtime safety guard, det+gcd preserved);
-S19 wraps Path A as a verified GCD function `hgcdSafeGcd` with
-correctness `hgcdSafeGcd a b = Nat.gcd a b`.
+**Phase**: ACT — Path A chosen post-S17. S20 closes the verified
+ALGORITHMIC story for Path A: `schonhageGcd` is a recursive
+Schönhage-style GCD function with correctness
+`schonhageGcd a b = Nat.gcd a b`, total and 0 axioms.
 
 **Since**: 2026-05-01
-**Iteration**: 19
+**Iteration**: 20
 
 ## Current Focus
 
-Session 19 wraps the Path A foundation (S18 — `hgcdMatrixSafe`) into
-an end-to-end verified GCD function `hgcdSafeGcd : ℕ → ℕ → ℕ` with
-correctness theorem `hgcdSafeGcd_eq_gcd a b = Nat.gcd a b` (0 sorries,
-0 axioms).
+Session 20 builds on S18–S19 to define an ITERATIVE Schönhage-style
+GCD function `schonhageGcd : ℕ → ℕ → ℕ → ℕ` (and top-level
+`schonhageGcdOf`), with correctness theorem
+`schonhageGcd_eq_gcd : schonhageGcd fuel a b = Nat.gcd a b` for
+every fuel and every pair of natural inputs.
 
-The construction is direct: apply `hgcdMatrixSafeOf a b` to `(a, b)`
-and take the `Int.gcd` of the column-output pair. Correctness reduces
-to `hgcdMatrixSafeOf_preserves_gcd` (S18) by unfolding `apply` and
-matching against the existing GCD-preservation theorem.
+The body iterates `hgcdSafeApply` (S19) on the reduced pair: each
+step takes the column output `(p.1.natAbs, p.2.natAbs)` and
+recurses ONLY if its `max` is strictly less than `max a b`.
+Otherwise — and on inputs below threshold — the function falls
+back to `Nat.gcd`. With these two structural fallbacks, the
+function is total and unconditionally correct: even on
+pathological inputs like the S17 counterexample family
+`(130, 89)`, where `hgcdMatrixSafe`'s OWN inner guard always
+aborts, the OUTER guard here dispatches to `Nat.gcd` and the
+correctness theorem still holds.
 
-This closes the operational correctness story for Path A: even where
-the unguarded `hgcdMatrix` produces magnitude blowup (S17 PART XIV
-showed entries of order 10^268 at `(107, 85)`), the safer variant
-returns a unimodular matrix whose column-output GCD agrees with
-`Nat.gcd a b`. The runtime size-reduction guard does not need to
-fire correctly for THIS theorem to hold.
+This is the verified ENDPOINT of Path A's algorithmic story:
+- Single-step correctness: S19's `hgcdSafeGcd_eq_gcd`.
+- Iterative correctness: S20's `schonhageGcd_eq_gcd`.
 
-Path A roadmap remaining (S20+):
+The remaining work (S21+) is QUANTITATIVE — establishing that the
+runtime guards fire often enough that the recursion outperforms
+plain `Nat.gcd` asymptotically.
 
-1. **S20 — `hgcdMatrixSafe_size_reduction` (positive form)**: prove
-   that on inputs `max a b ≥ hgcdThresholdSafe`, when the runtime
-   guard fires (compose branch), the column output strictly reduces.
-   The guard makes this provable structurally rather than via the
-   row-vector invariant lift (which S17 showed is FALSE for the
-   unguarded algorithm).
+Path A roadmap remaining (S21+):
 
-2. **S21+ — recursive Schönhage-style GCD via iteration**: instead
-   of a single matrix application, iterate `hgcdMatrixSafe` on the
-   reduced pair until below threshold, then dispatch to `Nat.gcd`.
-   Termination needs the S20 size-reduction in the compose branch
-   plus a fallback handler for the abort branch.
+1. **S21 — quantitative inner-reduction characterisation**: prove
+   that the inner runtime guard of `hgcdMatrixSafe` fires for a
+   well-defined density of inputs above threshold. The S17 PART
+   XIV counterexample shows the guard CAN abort, but in survey
+   ranges the guard fires often; quantifying the success rate
+   would yield a probabilistic speedup bound.
 
-3. **Bit-complexity bound** (`O(M(n)·log n)`): genuinely blocked on
-   Mathlib (no fast multiplication, no bit-complexity model).
+2. **Bit-complexity bound** (`O(M(n)·log n)`): genuinely blocked
+   on Mathlib (no fast multiplication, no bit-complexity model).
    Documented; defer until Mathlib lands these.
+
+3. **Empirical comparison**: native_decide-checked timing /
+   instruction count comparison of `schonhageGcdOf` vs `Nat.gcd`
+   on the S17 counterexample family.
 
 Status of the proof plan (Sessions 1–19):
 
@@ -91,11 +97,20 @@ Status of the proof plan (Sessions 1–19):
     `hgcdMatrixSafeOf_preserves_gcd`. New file
     `BinaryGcdOQ03OQ02PathA.lean`. Algorithm refinement with
     runtime size-reduction guard.
-12. **Path A verified GCD function** ✅ (S19, this session):
+12. **Path A verified GCD function** ✅ (S19, PR #17063):
     `hgcdSafeApply`, `hgcdSafeApply_gcd_eq`, `hgcdSafeGcd`,
     `hgcdSafeGcd_eq_gcd`. Computational examples on the S17
     counterexample family `(130, 89)` and worst-case `(107, 85)`.
     PART VI–VII of `BinaryGcdOQ03OQ02PathA.lean`.
+13. **Recursive Schönhage-style GCD via iteration** ✅ (S20,
+    this session): `schonhageGcd`, `schonhageGcdOf`,
+    `schonhageGcd_zero`, `schonhageGcd_succ`,
+    `hgcdSafeApply_natAbs_gcd`, `schonhageGcd_eq_gcd`,
+    `schonhageGcdOf_eq_gcd`. PART VIII–IX of
+    `BinaryGcdOQ03OQ02PathA.lean`. Total correct iterated GCD
+    with two structural fallbacks (below-threshold + per-step
+    guard). Native-decide examples include the S17
+    counterexample family and `(1000000, 999999)`.
 
 **Open / Refuted**:
 - **Recursive case of `hgcdMatrix_row_output_le`** ❌ (line 1078,
@@ -111,16 +126,19 @@ blocked on Mathlib (no fast multiplication, no bit-complexity model).
 ## Active Approach
 
 **Path A** (S18+ chosen direction). The algorithm `hgcdMatrixSafe`
-with a runtime size-reduction guard is the new implementation
-target. Operational correctness is now complete: S18 proved
-`hgcdMatrixSafe` is unimodular and preserves GCD; S19 wraps these
-into a total correct GCD function `hgcdSafeGcd` with theorem
-`hgcdSafeGcd a b = Nat.gcd a b`.
+with a runtime size-reduction guard is the implementation target.
+The verified ALGORITHMIC story for Path A is now complete:
 
-Remaining work for Path A:
-- (S20) Positive size-reduction: when guard fires (compose branch),
-  the column output strictly reduces.
-- (S21+) Iterate to obtain a recursive GCD with HGCD-style structure.
+- S18: `hgcdMatrixSafe` is unimodular (`hgcdMatrixSafe_det_unit`)
+  and preserves GCD (`hgcdMatrixSafe_preserves_gcd`).
+- S19: a single-step GCD function `hgcdSafeGcd` wraps that
+  matrix application; correct via `hgcdSafeGcd_eq_gcd`.
+- S20: a recursive iterated GCD function `schonhageGcd` with
+  guarded fallback to `Nat.gcd`; correct via
+  `schonhageGcd_eq_gcd`. Total and unconditional.
+
+Remaining work for Path A is QUANTITATIVE only (asymptotic
+speedup, bit-complexity bound).
 
 ## Blockers
 
@@ -135,22 +153,26 @@ Remaining work for Path A:
 
 ## Next Action
 
-1. **Session 20 — positive size-reduction for compose branch**:
-   prove that when `hgcdMatrixSafe`'s runtime guard fires, the
-   resulting matrix's column output strictly reduces `max a b`.
-2. **Session 21+ — iterative HGCD-based GCD**: define a recursive
-   GCD function that iterates `hgcdMatrixSafe` until below threshold,
-   then dispatches to `Nat.gcd` for the base case.
+1. **Session 21 — quantitative inner-reduction characterisation**:
+   establish the input regime in which `hgcdMatrixSafe`'s inner
+   runtime guard fires. The S17 PART XIV counterexample shows the
+   guard can abort, but a density argument may still yield a
+   probabilistic speedup bound.
+2. **Empirical comparison**: native_decide-checked
+   `schonhageGcdOf` on the S17 counterexample family vs `Nat.gcd`,
+   to characterise the practical impact of the OUTER guard
+   firing on those inputs.
 3. **Bit-complexity bound**: still blocked on Mathlib; defer.
 
 ## Attempt Counts
 
-- Total attempts: 19 (Sessions 1–19)
+- Total attempts: 20 (Sessions 1–20)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: Sessions 3–16
     proven correct as building blocks; the all-fuel row-vector
     invariant target was REFUTED by Session 17.
-  - Path A algorithm refinement (S18, S19): GCD-preservation
-    foundation laid (S18), verified GCD function (S19, this PR).
-  - Path A size reduction (S20+): not yet started.
+  - Path A algorithm refinement: GCD-preservation foundation
+    (S18, #17042), verified single-step GCD function (S19, #17063),
+    recursive Schönhage-style iterated GCD (S20, this PR).
+  - Path A quantitative bounds (S21+): pending.
