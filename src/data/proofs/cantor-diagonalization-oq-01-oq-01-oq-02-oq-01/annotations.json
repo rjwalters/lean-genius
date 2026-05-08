@@ -1,1 +1,243 @@
-[]
+[
+  {
+    "id": "ann-overview-converse",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 7,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "The Converse Direction: Permitted vs Excluded Values",
+    "content": "The parent file (`OQ-01-OQ-01-OQ-02`) attacks the continuum from the negative side: it ENUMERATES which cardinals 2^ℵ₀ cannot equal. By König's theorem, cf(2^ℵ₀) > ℵ₀, so any cardinal of cofinality ℵ₀ — singular cardinals like ℵ_ω — is excluded. This file flips the question: which values ARE consistent? The answer (Easton 1970) is striking: every regular uncountable cardinal κ is permitted, with no further restrictions. The two ZFC-provable constraints — Cantor's lower bound and König's cofinality bound — are exactly the binding constraints; nothing else is forced by the axioms. The proof of realizability requires class forcing (a class-sized variant of Cohen's 1963 technique), which is not yet formalized in Lean. This file therefore separates the *object-level scaffold* (provable from Mathlib) from the *meta-level realizability claim* (axiomatized).",
+    "mathContext": "Two-direction framing. Excluded: $\\{\\kappa : \\mathrm{cf}(\\kappa) \\leq \\aleph_0\\}$ — singular cardinals like $\\aleph_\\omega$, $\\aleph_{\\omega \\cdot 2}$, $\\aleph_{\\omega^2}$. Permitted: $\\{\\kappa : \\kappa \\text{ regular} \\land \\kappa > \\aleph_0\\}$ — successor alephs $\\aleph_1, \\aleph_2, \\ldots$ and weakly inaccessibles. Easton's 1970 theorem says: for every permitted $\\kappa$, $\\mathrm{Con}(\\mathsf{ZFC}) \\Rightarrow \\mathrm{Con}(\\mathsf{ZFC} + 2^{\\aleph_0} = \\kappa)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Easton's theorem",
+      "König's theorem",
+      "Cantor's theorem",
+      "class forcing",
+      "continuum hypothesis",
+      "regular vs singular cardinals"
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic",
+      "Cofinality",
+      "Continuum hypothesis context",
+      "Forcing (informal)"
+    ]
+  },
+  {
+    "id": "ann-imports-mathlib",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 6
+    },
+    "type": "technique",
+    "title": "Mathlib Foundation for Cardinal Arithmetic",
+    "content": "Three Mathlib modules supply the cardinal-arithmetic infrastructure: `Cardinal.Basic` for the cardinal type and basic operations; `Cardinal.Ordinal` for the aleph hierarchy and `Cardinal.cantor` (the lower bound κ < 2^κ); and `Cardinal.Cofinality` for the König theorem `Cardinal.lt_cof_power` and the regular-cardinal API (`IsRegular`, `isRegular_aleph_succ`). `Order.SuccPred.Basic` brings in `Order.succ`/`Order.lt_succ`, used pervasively in this file because the aleph hierarchy is most cleanly indexed via successor ordinals. `Mathlib.Tactic` covers the meta-tactics (`norm_num`, `linarith`, etc.).",
+    "mathContext": "The Mathlib Cardinal API is built on top of Ordinal and uses `Cardinal.{0}` (universe-polymorphic with universe 0 chosen) as the canonical cardinal type. Cofinality is the function `Ordinal.cof : Ordinal → Cardinal`, and a cardinal is regular iff `κ.ord.cof = κ`.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Mathlib.SetTheory.Cardinal",
+      "Order.SuccPred",
+      "universe polymorphism"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Cardinal/Ordinal API"
+    ]
+  },
+  {
+    "id": "ann-permitted-value-def",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "IsPermittedValue: Regular and Uncountable",
+    "content": "The definition is deliberately minimal: `IsPermittedValue κ := κ.IsRegular ∧ ℵ₀ < κ`. Only two conditions appear because they fully capture the ZFC-provable constraints: `IsRegular` packages cf(κ) = κ, and `ℵ₀ < κ` rules out the countable case. König's constraint cf(κ) > ℵ₀ is then a *consequence* (proved in `permitted_satisfies_konig`), not a separate clause — collapsing the four-clause raw constraint set to two. This compactness mirrors the original Easton paper, which formulates the conditions on regular cardinals rather than dragging cofinality into the definition.",
+    "mathContext": "$\\mathsf{IsPermittedValue}(\\kappa) \\iff \\kappa\\text{ regular} \\land \\aleph_0 < \\kappa$. From regularity we get $\\mathrm{cf}(\\kappa) = \\kappa$ (`IsRegular.cof_eq`), so the König condition $\\mathrm{cf}(\\kappa) > \\aleph_0$ follows for free from $\\kappa > \\aleph_0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.IsRegular",
+      "ℵ₀ (aleph_0)",
+      "minimal axiomatization"
+    ],
+    "prerequisites": [
+      "Regular cardinals",
+      "Cardinal.IsRegular API"
+    ]
+  },
+  {
+    "id": "ann-konig-derivation",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 90
+    },
+    "type": "theorem",
+    "title": "permitted_satisfies_konig: Cofinality Constraint Free of Charge",
+    "content": "The theorem `permitted_satisfies_konig` shows the König constraint cf(κ) > ℵ₀ falls out of the two-clause definition. The proof is two lines: rewrite cf(κ) = κ via `IsRegular.cof_eq` (regularity), then the second clause ℵ₀ < κ is the goal. This is the structural justification for the minimal definition: it correctly sits underneath the König constraint without redundancy. The lemma is itself a useful interface theorem for downstream proofs that need cf-bounds rather than regularity directly.",
+    "mathContext": "$\\mathsf{IsPermittedValue}(\\kappa) \\Rightarrow \\mathrm{cf}(\\kappa) > \\aleph_0$. Proof: $\\mathrm{cf}(\\kappa) = \\kappa$ since $\\kappa$ is regular, and $\\kappa > \\aleph_0$ by hypothesis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsRegular.cof_eq",
+      "König's theorem",
+      "cofinality"
+    ],
+    "prerequisites": [
+      "Cofinality API",
+      "Regular-cardinal cof equation"
+    ]
+  },
+  {
+    "id": "ann-aleph-1-2-permitted",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 109
+    },
+    "type": "technique",
+    "title": "Concrete Witnesses: ℵ₁ (CH) and ℵ₂ (PFA)",
+    "content": "Two concrete permitted-value theorems anchor the abstract definition to landmark cardinals from independence theory. `aleph_one_permitted` certifies ℵ₁ (the value of 2^ℵ₀ under the Continuum Hypothesis) — proved by chaining `aleph_succ` with `aleph_zero` to reduce ℵ₁ = succ(ℵ₀), then `Order.lt_succ`. `aleph_two_permitted` certifies ℵ₂ (the value of 2^ℵ₀ under PFA, the Proper Forcing Axiom) — proved by an analogous double-successor chain. These two witnesses connect the abstract theory to specific axiom systems that mathematicians actually consider, and serve as a sanity check that the definition admits the expected examples.",
+    "mathContext": "Under CH: $2^{\\aleph_0} = \\aleph_1$; under PFA (Baumgartner 1984, Foreman-Magidor-Shelah 1988): $2^{\\aleph_0} = \\aleph_2$. The proof technique unfolds $\\aleph_1 = \\aleph_{\\mathrm{succ}\\,0} = \\mathrm{succ}\\,\\aleph_0$ via `Cardinal.aleph_succ` then closes with $\\mathrm{succ}$-monotonicity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Continuum Hypothesis",
+      "Proper Forcing Axiom",
+      "Cardinal.aleph_succ",
+      "Order.lt_succ"
+    ],
+    "prerequisites": [
+      "aleph hierarchy",
+      "Order.succ API",
+      "CH and PFA context"
+    ]
+  },
+  {
+    "id": "ann-aleph-succ-permitted",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 119
+    },
+    "type": "theorem",
+    "title": "aleph_succ_permitted: The Inexhaustible Supply (1 sorry)",
+    "content": "The general statement: every successor aleph ℵ_{α+1} is permitted. Regularity is immediate from `Cardinal.isRegular_aleph_succ`. The remaining goal — ℵ₀ < ℵ_{succ α} — is mathematically immediate (succ α > 0 ⇒ ℵ_{succ α} > ℵ_0) but blocked by Mathlib API drift: the lemma `aleph0_lt_aleph_iff` was renamed in Mathlib 4.26.0 and the precise current spelling needs verification (Phase-3a). The sorry here is purely an API-name issue, not a mathematical gap — once the correct lemma name is identified, this closes immediately. This is the source of the file's `axiomatized` status only at the formal level: mathematically the result is settled.",
+    "mathContext": "Goal: $\\forall \\alpha,\\; \\aleph_{\\mathrm{succ}\\,\\alpha} > \\aleph_0$. Equivalent to $\\mathrm{succ}\\,\\alpha > 0$, since the aleph function is strictly monotone. The blocking lemma is the strict-monotonicity statement `aleph0_lt_aleph_iff α : ℵ_α > ℵ_0 ↔ α > 0` (or its current-Mathlib equivalent).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.isRegular_aleph_succ",
+      "aleph0_lt_aleph_iff",
+      "API drift",
+      "successor aleph"
+    ],
+    "prerequisites": [
+      "aleph monotonicity",
+      "Mathlib version pinning",
+      "Lean 4 sorry"
+    ]
+  },
+  {
+    "id": "ann-permitted-unbounded",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 133
+    },
+    "type": "theorem",
+    "title": "permitted_unbounded: No Upper Bound on the Continuum",
+    "content": "For every ordinal α, there is a permitted value strictly above ℵ_α — namely ℵ_{α+1}, witnessed by `aleph_succ_permitted` and `aleph_succ` (the equation ℵ_{succ α} = succ(ℵ_α)). This is a proper-class statement: the permitted values are not bounded by any cardinal. The conceptual significance is sharp: it rules out the possibility of a 'large cardinal upper bound' on 2^ℵ₀. By Easton, 2^ℵ₀ can take arbitrarily large permitted values, so no fixed cardinal is the supremum of consistent values for the continuum.",
+    "mathContext": "$\\forall \\alpha\\,\\exists \\kappa\\,(\\aleph_\\alpha < \\kappa \\land \\mathsf{IsPermittedValue}(\\kappa))$. Witness: $\\kappa = \\aleph_{\\alpha+1} = \\mathrm{succ}(\\aleph_\\alpha) > \\aleph_\\alpha$. The permitted-value class is therefore unbounded in the cardinal hierarchy.",
+    "significance": "key",
+    "relatedConcepts": [
+      "proper class",
+      "Cardinal.aleph_succ",
+      "Easton spectrum",
+      "unboundedness"
+    ],
+    "prerequisites": [
+      "aleph_succ equation",
+      "Order.lt_succ",
+      "proper-class concept"
+    ]
+  },
+  {
+    "id": "ann-easton-function-structure",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 159
+    },
+    "type": "definition",
+    "title": "IsEastonFunction: Three Constraints in a Lean Structure",
+    "content": "The structure `IsEastonFunction F` packages the three Easton constraints as fields: `succ_le` (F(κ) ≥ κ⁺, the Cantor-style strict bound), `monotone` (κ ≤ ν ⇒ F(κ) ≤ F(ν), monotonicity restricted to regular infinite cardinals), and `konig_pointwise` (κ < cf(F κ), the König constraint). All three are quantified over regular κ ≥ ℵ₀ — exactly the domain on which Easton's theorem governs the continuum function. Using a `structure` rather than a Π-type bundle gives named fields and dot-notation access (`hF.succ_le`, `hF.monotone`), which the downstream witness theorem exploits.",
+    "mathContext": "$\\mathsf{IsEastonFunction}(F) \\iff $ for all regular $\\kappa, \\nu \\geq \\aleph_0$: (E1) $F(\\kappa) \\geq \\kappa^+$, (E2) $\\kappa \\leq \\nu \\Rightarrow F(\\kappa) \\leq F(\\nu)$, (E3) $\\mathrm{cf}(F(\\kappa)) > \\kappa$. Easton 1970: these conditions are exactly the necessary AND sufficient constraints for $F$ to be realizable as $\\kappa \\mapsto 2^\\kappa$ on regular cardinals in some forcing extension.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Easton function",
+      "Cardinal.IsRegular",
+      "Lean 4 structure",
+      "ofstanding cofinality bound"
+    ],
+    "prerequisites": [
+      "Lean 4 structure syntax",
+      "Easton's theorem statement",
+      "Regular-cardinal restriction"
+    ]
+  },
+  {
+    "id": "ann-easton-continuum-witness",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 185
+    },
+    "type": "theorem",
+    "title": "isEastonFunction_continuum: 2^· is the Canonical Witness",
+    "content": "The actual continuum function κ ↦ 2^κ satisfies all three Easton constraints, so the constraint set is non-vacuous. `succ_le` is `Order.succ_le_of_lt (Cardinal.cantor κ)` — Cantor's strict inequality 2^κ > κ becomes succ(κ) ≤ 2^κ. `konig_pointwise` is `Cardinal.lt_cof_power` applied with base 2 — directly König's theorem cf(2^κ) > κ. The `monotone` field is currently a sorry: in Mathlib 4.26.0, the lemma `Cardinal.power_le_power_right` now varies the BASE (not the exponent), so the exponent-monotone direction needs a different lemma name. This is the second of the file's two sorries — both are API-naming issues, not mathematical gaps. The witness theorem is structurally important: it confirms the constraint set is the right one (forced by the actual continuum function), making the realizability axiom non-vacuous.",
+    "mathContext": "Witness: $F(\\kappa) = 2^\\kappa$. Cantor: $\\kappa < 2^\\kappa \\Rightarrow \\mathrm{succ}(\\kappa) \\leq 2^\\kappa$. König: $\\mathrm{cf}(2^\\kappa) > \\kappa$. Monotonicity of $\\kappa \\mapsto 2^\\kappa$ requires the exponent-monotone lemma whose Mathlib spelling has drifted.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cardinal.cantor",
+      "Cardinal.lt_cof_power",
+      "Cardinal.power_le_power_right",
+      "API drift",
+      "non-vacuity"
+    ],
+    "prerequisites": [
+      "Cantor's theorem in Mathlib",
+      "König's theorem in Mathlib",
+      "Cardinal exponentiation"
+    ]
+  },
+  {
+    "id": "ann-easton-axioms",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 187,
+      "endLine": 232
+    },
+    "type": "context",
+    "title": "Realizability Axioms: Why Class Forcing Is Needed",
+    "content": "The two axioms `easton_permitted_realizable` (pointwise) and `easton_consistency` (function-level) state Easton's 1970 realizability claim. They cannot currently be proved in Lean because the proof technique — class-sized forcing — requires three pieces of meta-mathematical infrastructure that Mathlib does not yet have: (1) class-sized partial orders as forcing notions; (2) generic filter constructions on proper classes; (3) forcing-language semantics for ZFC's class-comprehension schema. The closest existing work is the `flypitch` project (Han, Van Doorn 2020), which formalized Cohen's *set* forcing for CH-independence in Lean 3 — but Easton's result requires *class* forcing, a strictly stronger construction (Easton's original poset is a proper class). The codomain `True` is a temporary placeholder. A future Phase-3b file will introduce a `ConsistencyOf : (Cardinal → Cardinal) → Prop` predicate (via Gödel-encoded ZFC formulas) and replace the placeholder with the genuine consistency claim. The honest framing: 'mathematically what is being claimed' is cleanly separated from 'how to express it formally once the meta-theoretic infrastructure exists'.",
+    "mathContext": "$\\mathsf{Easton}\\,(1970)$: assuming $\\mathrm{Con}(\\mathsf{ZFC})$, for every Easton function $F$, $\\mathrm{Con}(\\mathsf{ZFC} + \\forall \\kappa\\,\\mathrm{regular} \\geq \\aleph_0:\\, 2^\\kappa = F(\\kappa))$. The proof constructs an Easton-product forcing extension $V[G]$ where the continuum function on regulars is exactly $F$. Class-sized: the forcing notion is itself a proper class, requiring the class-comprehension schema to even state.",
+    "significance": "context",
+    "relatedConcepts": [
+      "class forcing",
+      "Easton product",
+      "Cohen forcing",
+      "flypitch",
+      "Gödel encoding",
+      "Consistency predicate"
+    ],
+    "prerequisites": [
+      "Forcing (informal)",
+      "Set vs class distinction",
+      "Cohen 1963 independence proof",
+      "ZFC schema"
+    ]
+  }
+]
