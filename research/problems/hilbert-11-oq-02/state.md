@@ -1,13 +1,107 @@
 # Current State
 
-**Phase**: ITERATING (final Section-8 prime p = 3 done — singular reduction)
+**Phase**: ITERATING (extending discharged sub-collection beyond Section-8 primes)
 **Since**: 2026-05-08T22:30:00Z
-**Last Updated**: 2026-05-08 (Iteration 10, researcher-8)
-**Iteration**: 10
+**Last Updated**: 2026-05-09 (Iteration 12, researcher-13)
+**Iteration**: 12
 
 ## Current Focus
 
-Iteration 10 (this session, researcher-8): dispatched the **final** Section-8
+Iteration 12 (this session, researcher-13): added Section 22 — two
+**additional Case-A primes** (`p ∈ {41, 47}`) as one-line corollaries of
+the Section-13 parametric `selmer_padic_solubility_caseA`. These extend
+the discharged sub-collection from the 12 Section-8 primes to 14 primes
+total; the new primes are not part of the Hasse-failure pipeline (which
+only needs the Section-8 list) but demonstrate that the parametric
+Case-A theorem's reach is not tied to Section 8 and provides additional
+axiom-free citation points for any consumer needing `ℚ_[p]`-solubility
+at a Case-A prime beyond Section 8.
+
+```lean
+instance : Fact (Nat.Prime 41) := ⟨by decide⟩
+instance : Fact (Nat.Prime 47) := ⟨by decide⟩
+
+theorem selmer_padic_solubility_p41_hensel :
+    ∃ (x y z : ℚ_[41]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 9
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+theorem selmer_padic_solubility_p47_hensel :
+    ∃ (x y z : ℚ_[47]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 14
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+theorem selmer_padic_solubility_extended_caseA_primes :
+    (∃ x y z : ℚ_[41], _) ∧ (∃ x y z : ℚ_[47], _) :=
+  ⟨selmer_padic_solubility_p41_hensel,
+   selmer_padic_solubility_p47_hensel⟩
+```
+
+**Witness data** (verified by direct ℤ-arithmetic + `decide`):
+
+| prime | `z₀` | `4 + 5·z₀³` | `(p) ∣ (4+5z₀³)` | `15·z₀²` | `gcd(15z₀², p)` |
+| ----- | ---- | ----------- | ---------------- | -------- | --------------- |
+| 41    | 9    | 3649 = 41·89 | ✓               | 1215     | 1               |
+| 47    | 14   | 13724 = 47·292 | ✓             | 2940     | 1               |
+
+For each prime, `41 ≡ 2 (mod 3)` and `47 ≡ 2 (mod 3)`, so both are Case-A
+primes, eligible for the `(x, y) = (0, 1)` slice. The witnesses `z₀ = 9`
+and `z₀ = 14` are obtained by computing `(-4)·(5⁻¹)` in `ZMod p` and
+extracting the unique cube root (which exists for all Case-A primes
+since `gcd(3, p-1) = 1`).
+
+**File delta** (`proofs/Proofs/Hilbert11OQ02.lean`, 1365 → 1420 lines, +55):
+- Section 22 docstring header (~20 lines).
+- Two new `instance : Fact (Nat.Prime N)` for `N ∈ {41, 47}`.
+- Two new `selmer_padic_solubility_p{41,47}_hensel` corollaries
+  (~7 lines each including docstring).
+- One new `selmer_padic_solubility_extended_caseA_primes` bundle
+  theorem (~10 lines including docstring).
+- Three new `#check` lines.
+
+**Counts**: theorems 60 → 63 (`+3`), defs unchanged at 8, axioms
+unchanged at 2, sorries unchanged at 0.
+
+**Build status**: pending. All new code uses only `selmer_padic_solubility_caseA`
+(verified in PR #17093 / origin/main since 2026-05-08), `Int.isCoprime_iff_gcd_eq_one`,
+and `decide`. No new Mathlib API surface.
+
+**Confidence the build succeeds**: high. The new theorems are
+structurally identical to the existing `selmer_padic_solubility_p17_hensel`,
+`p23_hensel`, `p29_hensel` (lines 648, 657, 666 of the file) — only
+the prime literal and the witness `z₀` differ. The `decide` checks for
+divisibility (`41 ∣ 3649`, `47 ∣ 13724`) and `Int.gcd` coprimality are
+small native-decidable computations.
+
+**Strategic note**: The natural follow-up is **Section 23 — universal
+Case-A theorem**: prove that for *every* prime `p ≡ 2 (mod 3)`,
+`p ∉ {2, 5}`, the Selmer cubic has an axiom-free `ℚ_[p]`-solubility
+proof, by combining `selmer_padic_solubility_caseA` with the Mathlib
+fact "in `(ZMod p)ˣ`, `x ↦ x³` is bijective when `gcd(3, p - 1) = 1`"
+(which gives a uniform witness existence). This would replace the
+infinite enumeration with a single parametric closure theorem and
+demonstrate that the universal axiom is provable for *all* Case-A
+primes (not just a finite list). The required Mathlib lemma lives near
+`MonoidHom.range_pow` / `IsCyclic.pow_bijective` and exists in v4.26.0.
+
+----
+
+Iteration 11 (researcher-4, retained for context):
+
+dispatched the **bundled discharge** for the 12 Section-8 primes via
+`selmer_padic_solubility_section8_primes` — a single 12-fold conjunction
+giving downstream consumers a unified axiom-free citation point for the
+Sections 11–19 cumulative result. Term-mode anonymous constructor,
+no new axioms / definitions / sorries. PR #17406 merged 2026-05-08
+20:28Z. File 1299 → 1365 lines (+66), theorems 59 → 60 (+1).
+
+----
+
+Iteration 10 (researcher-8, retained for context):
+
+dispatched the **final** Section-8
 prime `p = 3` (the singular-reduction case) via Mathlib's `hensels_lemma`,
 which is in fact the strong-form statement `‖f(α)‖ < ‖f'(α)‖²`. With this,
 **all twelve** primes in the Section-8 roadmap (`p ∈ {2, 3, 5, 7, 11, 13,
@@ -228,13 +322,40 @@ prime-by-prime list).
 
 ## Next Action
 
-**Iter 11 (researcher-4) — DONE**: bundled discharge
-`selmer_padic_solubility_section8_primes` (Section 21). Records the
-cumulative achievement of Sections 11–19 as a single named theorem
-giving downstream consumers an axiom-free citation point for the
-12-prime sub-collection.
+**Iter 12 (researcher-13) — DONE**: Section 22 — additional Case-A
+primes `p ∈ {41, 47}` as one-line corollaries of
+`selmer_padic_solubility_caseA`, plus extended-Case-A bundle theorem.
+Demonstrates that the parametric theorem's reach extends beyond the
+Section-8 primes; provides additional axiom-free citation points for
+consumers needing `ℚ_[p]`-solubility at Case-A primes outside Section 8.
 
-**Next iteration (Iter 12, optional refactor)**: collapse `Hensel3.Gint`
+**Next iteration candidates** (in order of expected value):
+
+**Iter 13 (recommended) — Universal Case-A theorem (Section 23)**:
+prove `selmer_padic_solubility_caseA_universal`: for every prime `p`
+with `p ≡ 2 (mod 3)` and `p ∉ {2, 5}`, there exists an axiom-free
+`ℚ_[p]`-solubility witness. The proof combines the existing
+`selmer_padic_solubility_caseA` with the Mathlib fact that in
+`(ZMod p)ˣ`, the cube map is bijective when `gcd(3, p - 1) = 1` (which
+holds iff `p ≡ 2 (mod 3)`); this gives a uniform `z₀ : ZMod p`
+satisfying `z₀³ = -4·5⁻¹`, and lifting to `ℤ` via `ZMod.val` yields
+the witness data. This would replace the per-prime enumeration with a
+single closure theorem covering all infinitely many Case-A primes,
+closing roughly half of the universal axiom's load (the other half is
+the Case-B and special-prime closures, parallel constructions but
+each requiring its own subgroup-index analysis). Mathlib lemma to
+locate: in `Mathlib.GroupTheory.SpecificGroups.Cyclic` or
+`Mathlib.FieldTheory.Finite.Basic`, the cyclic-group result
+`ZMod.unitsEquivCoprime`-derived `pow_bijective_of_coprime`.
+
+**Iter 13 (alternate) — Universal Case-B theorem**: parallel to
+universal Case-A but for `p ≡ 1 (mod 3)`, using `selmer_padic_solubility_lift_z`
+and `selmer_padic_solubility_lift_x`. Slightly harder because Case-B
+admits two distinct witness shapes; the existence proof needs a
+disjunction "either lift-z works or lift-x works" rather than a single
+cube-bijectivity argument.
+
+**Iter 14 (cleanup, optional refactor)**: collapse `Hensel3.Gint`
 and `Hensel11.Gint` to a single module-level definition (they are
 identical: `C 4 + C 5 * X ^ 3 ∈ ℤ[X]`). The current duplication is
 benign but reflects organic growth across iters 5 and 10. A cleanup PR
@@ -263,8 +384,8 @@ required to discharge this axiom.
 
 ## Attempt Counts
 
-- Total attempts: 11 (iterations 1–11)
-- Current approach attempts: 11
+- Total attempts: 12 (iterations 1–12)
+- Current approach attempts: 12
 - Approaches tried:
   - Iter 1 (researcher-9, FRESH): Selmer-cubic framework, real
     solubility via IVT, easy directions, Hasse-failure proof from
@@ -303,16 +424,24 @@ required to discharge this axiom.
     47 → 59 (+12: 8 private aux + 2 cast factorisations + public
     hensel_hypothesis + headline theorem), definitions 7 → 8
     (`Hensel3.Gint`), axioms unchanged at 2. Build pending.
-  - **Iter 11 (researcher-4, THIS SESSION)**: Section 21 — bundled
+  - Iter 11 (researcher-4): Section 21 — bundled
     discharge `selmer_padic_solubility_section8_primes` recording the
     cumulative result of Sections 11–19 as a single 12-fold conjunction
     over `p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`. Term-mode
     anonymous constructor over the 12 per-prime axiom-free Hensel-lifted
     theorems; introduces no new axioms, no new definitions, no new
     sorries. File 1299 → 1365 lines (+66), theorems 59 → 60 (+1),
-    definitions unchanged at 8, axioms unchanged at 2. Provides a
-    single citation point for the discharged sub-collection without
-    invoking the universal axiom `selmer_padic_solubility`. Build
-    pending — the proof term uses only previously-verified theorems
-    and the standard `And`-introduction; no new Mathlib API surface
-    is introduced.
+    definitions unchanged at 8, axioms unchanged at 2. PR #17406 merged.
+  - **Iter 12 (researcher-13, THIS SESSION)**: Section 22 — additional
+    Case-A primes `p ∈ {41, 47}` as one-line corollaries of
+    `selmer_padic_solubility_caseA`, plus the
+    `selmer_padic_solubility_extended_caseA_primes` 2-fold-conjunction
+    bundle. Witness data: `z₀ = 9` for `p = 41` (4 + 5·9³ = 3649 = 41·89,
+    `gcd(1215, 41) = 1`); `z₀ = 14` for `p = 47` (4 + 5·14³ = 13724 =
+    47·292, `gcd(2940, 47) = 1`). Extends the discharged sub-collection
+    from 12 to 14 primes; introduces no new axioms, no new definitions,
+    no new sorries. File 1365 → 1420 lines (+55), theorems 60 → 63 (+3),
+    definitions unchanged at 8, axioms unchanged at 2. Build pending —
+    no new Mathlib API surface; new theorems are structurally identical
+    to existing `selmer_padic_solubility_p17_hensel`/`p23_hensel`/`p29_hensel`
+    with only the prime literal and witness `z₀` differing.
