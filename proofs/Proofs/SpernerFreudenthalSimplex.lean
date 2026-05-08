@@ -1184,5 +1184,172 @@ private lemma diagonal_neighbor_topSimps2 (N : ℕ) {b : ℕ × ℕ}
     · exact (t1_ne_t2 b b).symm
     · rw [diagonal_in_t2_iff]
 
+-- ----------------------------------------------------------------
+-- (S18) Boundary-edge container singletons + onFaceΔ2 witnesses.
+--
+-- These lemmas connect S16/S17's edge-membership building blocks to
+-- the `_hBoundaryOnFace` hypothesis of `Triangulation.boundary_doors_odd`.
+--
+-- For each of the three edge types of a Type-1 cell `t1 b`, we prove:
+--   (a) The boundary case: when the geometric boundary condition holds,
+--       no other top simplex of `topSimps2 N` contains the edge — the
+--       container set is exactly `{t1 b}`.
+--   (b) The geometric witness: the two endpoints of the boundary edge
+--       both satisfy the matching `onFaceΔ2 N · j` predicate, supplying
+--       the `faceIdx` required by the existential in `_hBoundaryOnFace`.
+--
+-- Together with the t1 interior cases (covered by S17 and the symmetric
+-- horizontal/vertical analogues) and the t2 face-share lemmas (S16 +
+-- S17 base translations, future S18.b), these reduce `_hBoundaryOnFace`
+-- for the n=2 triangulation to a straightforward case-split.
+-- ----------------------------------------------------------------
+
+-- (S18.1) Boundary diagonal: only t1 b contains the diagonal of t1 b
+-- when b saturates the diag-boundary `N ≤ b.1 + b.2 + 1`.
+private lemma diagonal_only_container_of_t1_boundary
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N)
+    (hbd : N ≤ b.1 + b.2 + 1) :
+    (topSimps2 N).filter
+        (fun s => ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s) =
+      ({t1 b} : Finset (Finset (ℕ × ℕ))) := by
+  ext s
+  simp only [Finset.mem_filter, Finset.mem_singleton]
+  refine ⟨fun ⟨hs_mem, hs_sub⟩ => ?_, ?_⟩
+  · rw [topSimps2_mem_iff] at hs_mem
+    rcases hs_mem with ⟨c, _, rfl⟩ | ⟨c, hc, rfl⟩
+    · -- s = t1 c : diagonal forces c = b
+      rw [diagonal_in_t1_iff] at hs_sub
+      exact congrArg t1 hs_sub
+    · -- s = t2 c with c ∈ t2Bases : diagonal forces c = b, but
+      -- c ∈ t2Bases means c.1 + c.2 + 1 < N, contradicting hbd.
+      exfalso
+      rw [diagonal_in_t2_iff] at hs_sub
+      subst hs_sub
+      rw [t2Bases_mem_iff] at hc
+      omega
+  · rintro rfl
+    exact ⟨t1_in_topSimps2_of_base N hb,
+           (diagonal_in_t1_iff b b).mpr rfl⟩
+
+-- (S18.2) Boundary horizontal: only t1 b contains its horizontal edge
+-- when `b.2 = 0`.
+private lemma horizontal_only_container_of_t1_boundary
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb2 : b.2 = 0) :
+    (topSimps2 N).filter
+        (fun s => ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s) =
+      ({t1 b} : Finset (Finset (ℕ × ℕ))) := by
+  ext s
+  simp only [Finset.mem_filter, Finset.mem_singleton]
+  refine ⟨fun ⟨hs_mem, hs_sub⟩ => ?_, ?_⟩
+  · rw [topSimps2_mem_iff] at hs_mem
+    rcases hs_mem with ⟨c, _, rfl⟩ | ⟨c, _, rfl⟩
+    · -- s = t1 c : horizontal {b, (b.1+1, b.2)} ⊆ t1 c forces c = b
+      -- via t1_unique_base (the two vertices are distinct since they
+      -- differ in the first coordinate).
+      have hne : (b : ℕ × ℕ) ≠ (b.1+1, b.2) := fun heq =>
+        absurd (congrArg Prod.fst heq) (by omega)
+      have hb_in_t1b : ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl <;>
+          · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+            omega
+      exact congrArg t1 (t1_unique_base hne hb_in_t1b hs_sub).symm
+    · -- s = t2 c : excluded by horizontal_not_in_t2_at_y0 (b.2 = 0).
+      exfalso
+      exact horizontal_not_in_t2_at_y0 b hb2 c hs_sub
+  · rintro rfl
+    refine ⟨t1_in_topSimps2_of_base N hb, ?_⟩
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;>
+      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+        omega
+
+-- (S18.3) Boundary vertical: only t1 b contains its vertical edge
+-- when `b.1 = 0`.
+private lemma vertical_only_container_of_t1_boundary
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb1 : b.1 = 0) :
+    (topSimps2 N).filter
+        (fun s => ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) =
+      ({t1 b} : Finset (Finset (ℕ × ℕ))) := by
+  ext s
+  simp only [Finset.mem_filter, Finset.mem_singleton]
+  refine ⟨fun ⟨hs_mem, hs_sub⟩ => ?_, ?_⟩
+  · rw [topSimps2_mem_iff] at hs_mem
+    rcases hs_mem with ⟨c, _, rfl⟩ | ⟨c, _, rfl⟩
+    · have hne : (b : ℕ × ℕ) ≠ (b.1, b.2+1) := fun heq =>
+        absurd (congrArg Prod.snd heq) (by omega)
+      have hb_in_t1b : ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t1 b := by
+        intro x hx
+        simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+        rcases hx with rfl | rfl <;>
+          · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+            omega
+      exact congrArg t1 (t1_unique_base hne hb_in_t1b hs_sub).symm
+    · exfalso
+      exact vertical_not_in_t2_at_x0 b hb1 c hs_sub
+  · rintro rfl
+    refine ⟨t1_in_topSimps2_of_base N hb, ?_⟩
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;>
+      · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+        omega
+
+-- (S18.4) Cardinality corollaries: the three boundary cases above all
+-- have container-card = 1, ready to feed `_hBoundaryOnFace` analysis.
+
+private lemma diagonal_card_eq_one_of_t1_boundary
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N)
+    (hbd : N ≤ b.1 + b.2 + 1) :
+    ((topSimps2 N).filter
+        (fun s => ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s)).card = 1 := by
+  rw [diagonal_only_container_of_t1_boundary N hb hbd, Finset.card_singleton]
+
+private lemma horizontal_card_eq_one_of_t1_boundary
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb2 : b.2 = 0) :
+    ((topSimps2 N).filter
+        (fun s => ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s)).card = 1 := by
+  rw [horizontal_only_container_of_t1_boundary N hb hb2, Finset.card_singleton]
+
+private lemma vertical_card_eq_one_of_t1_boundary
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb1 : b.1 = 0) :
+    ((topSimps2 N).filter
+        (fun s => ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s)).card = 1 := by
+  rw [vertical_only_container_of_t1_boundary N hb hb1, Finset.card_singleton]
+
+-- ----------------------------------------------------------------
+-- (S18.5) onFaceΔ2 witnesses for boundary t1 edges.
+--
+-- For each boundary case, the two endpoints of the edge both satisfy
+-- the appropriate `onFaceΔ2` predicate. These will supply the
+-- `faceIdx` and the `∀ j ≠ k, ...` clause in the existential of
+-- `_hBoundaryOnFace`.
+-- ----------------------------------------------------------------
+
+private lemma diagonal_endpoints_on_face2
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N)
+    (hbd : N ≤ b.1 + b.2 + 1) :
+    onFaceΔ2 N (b.1, b.2+1) 2 ∧ onFaceΔ2 N (b.1+1, b.2) 2 := by
+  rw [t1Bases_mem_iff] at hb
+  refine ⟨?_, ?_⟩
+  · rw [onFaceΔ2_two_iff]; omega
+  · rw [onFaceΔ2_two_iff]; omega
+
+private lemma horizontal_endpoints_on_face1
+    (N : ℕ) (b : ℕ × ℕ) (hb2 : b.2 = 0) :
+    onFaceΔ2 N b 1 ∧ onFaceΔ2 N (b.1+1, b.2) 1 := by
+  refine ⟨?_, ?_⟩
+  · rw [onFaceΔ2_one_iff]; exact hb2
+  · rw [onFaceΔ2_one_iff]; exact hb2
+
+private lemma vertical_endpoints_on_face0
+    (N : ℕ) (b : ℕ × ℕ) (hb1 : b.1 = 0) :
+    onFaceΔ2 N b 0 ∧ onFaceΔ2 N (b.1, b.2+1) 0 := by
+  refine ⟨?_, ?_⟩
+  · rw [onFaceΔ2_zero_iff]; exact hb1
+  · rw [onFaceΔ2_zero_iff]; exact hb1
+
 end N2BoundaryAnalysis
 end SpernerFreudSimp

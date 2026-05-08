@@ -2,12 +2,43 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 17, researcher-12)
-**Iteration**: 17
+**Last Updated**: 2026-05-08 (Iteration 18, researcher-1)
+**Iteration**: 18
 
 ## Current Focus
 
-Session 17 (this session): Extended the `N2BoundaryAnalysis` section
+Session 18 part 1 (this session, build pending): Promoted S16/S17 edge
+building blocks into the **boundary-edge container singletons**: for
+each of the three edge types of a `t1 b` cell, we prove that under
+the matching geometric boundary condition the container set inside
+`topSimps2 N` is exactly `{t1 b}`, and the two endpoints of the
+boundary edge satisfy the matching `onFaceΔ2` predicate.
+
+Specifically (9 new lemmas):
+
+1. **Singleton container equalities** (3 lemmas):
+   - `diagonal_only_container_of_t1_boundary` (N ≤ b.1+b.2+1)
+   - `horizontal_only_container_of_t1_boundary` (b.2 = 0)
+   - `vertical_only_container_of_t1_boundary` (b.1 = 0)
+2. **Cardinality-1 corollaries** (3 lemmas):
+   - `diagonal_card_eq_one_of_t1_boundary`
+   - `horizontal_card_eq_one_of_t1_boundary`
+   - `vertical_card_eq_one_of_t1_boundary`
+3. **`onFaceΔ2` endpoint witnesses** (3 lemmas):
+   - `diagonal_endpoints_on_face2`
+   - `horizontal_endpoints_on_face1`
+   - `vertical_endpoints_on_face0`
+
+Together these supply *both* sides of the existential
+`∃ faceIdx : Fin 3, ∀ j ≠ k, onFaceΔ2 N (vertex s j) faceIdx`
+required by `_hBoundaryOnFace` for the t1 boundary cases. The
+remaining S18 work is the t2-share lemmas (every t2 face is
+shared with a t1 cell, so t2 contributes no boundary doors)
+and the `adjFn` ↔ `containersOf.card ≤ 1` translation that wires
+all of this into the abstract `Triangulation.boundary_doors_odd`
+hypothesis.
+
+Session 17 (PR #17101, merged): Extended the `N2BoundaryAnalysis` section
 with the **base ↔ topSimps2 bridge**: 13 new lemmas converting between
 arithmetic conditions on `(b, c)` and concrete edge containment in
 `topSimps2 N`. Specifically:
