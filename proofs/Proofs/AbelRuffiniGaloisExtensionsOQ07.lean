@@ -45,6 +45,7 @@ import Mathlib.GroupTheory.PGroup
 import Mathlib.GroupTheory.Solvable
 import Mathlib.GroupTheory.Nilpotent
 import Mathlib.GroupTheory.SpecificGroups.Alternating
+import Mathlib.GroupTheory.SpecificGroups.ZGroup
 import Mathlib.Tactic
 
 namespace BurnsidePQ
@@ -97,12 +98,60 @@ theorem burnside_pq_same_prime {G : Type*} [Group G] [Finite G]
   exact pGroup_isSolvable G hpg
 
 -- ═══════════════════════════════════════════════════════════════════════
--- PART III: The non-trivial case (AXIOMATIZED)
+-- PART II.5: Squarefree-order case (axiom-free, via IsZGroup)
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Squarefree-order ⇒ solvable** (axiom-free, two Mathlib lemmas).
+
+    Bridges `Squarefree (Nat.card G)` to `IsSolvable G` via Mathlib's
+    `IsZGroup.of_squarefree` (a finite group of squarefree order is a
+    Z-group — every Sylow subgroup is cyclic) and the `[Finite G]
+    [IsZGroup G]` instance giving `IsSolvable G`.
+
+    This subsumes the `a = b = 1` case of Burnside (`p ≠ q`, `|G| = pq`)
+    via `burnside_pq_pq_case` below — extending it axiom-free to ANY
+    finite group of squarefree order, e.g. `|G| = 30 = 2·3·5`,
+    `|G| = 105 = 3·5·7`, etc.
+
+    Note: this does NOT extend to `|G| = pᵃqᵇ` with `a ≥ 2` or `b ≥ 2` —
+    such orders fail the squarefreeness test (`p²` is not squarefree).
+    The genuine non-trivial case of Burnside (with prime-power factors)
+    still requires character theory or transfer + focal subgroup. -/
+theorem squarefreeOrder_isSolvable {G : Type*} [Group G] [Finite G]
+    (hsf : Squarefree (Nat.card G)) : IsSolvable G := by
+  haveI : IsZGroup G := IsZGroup.of_squarefree hsf
+  infer_instance
+
+/-- **Burnside `pq` case** (axiom-free, `a = b = 1`): every finite group
+    of order `p · q` (for distinct primes `p, q`) is solvable.
+
+    Proof: `p` and `q` are coprime (`Nat.coprime_primes`), each is
+    squarefree (`Nat.Prime.prime` + `Prime.squarefree`), so `p · q` is
+    squarefree (`Nat.squarefree_mul`). Apply `squarefreeOrder_isSolvable`.
+
+    This eliminates the `a = b = 1` sub-case of `burnside_pq_nontrivial`
+    axiom-free; the axiom is then narrowed to `2 ≤ a ∨ 2 ≤ b`. -/
+theorem burnside_pq_pq_case {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p ≠ q) (hcard : Nat.card G = p * q) : IsSolvable G := by
+  apply squarefreeOrder_isSolvable
+  rw [hcard]
+  have hcop : Nat.Coprime p q := (Nat.coprime_primes hp.out hq.out).mpr hpq
+  rw [Nat.squarefree_mul hcop]
+  exact ⟨hp.out.prime.squarefree, hq.out.prime.squarefree⟩
+
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART III: The non-trivial case (AXIOMATIZED, narrowed to 2 ≤ a ∨ 2 ≤ b)
 -- ═══════════════════════════════════════════════════════════════════════
 
 /-- **AXIOM (Burnside's pᵃqᵇ theorem, non-trivial case)**: every finite
     group of order `p^a · q^b` is solvable, when `p` and `q` are distinct
-    primes and `a, b ≥ 1`.
+    primes, `a, b ≥ 1`, AND at least one of `a, b` is ≥ 2.
+
+    The hypothesis `2 ≤ a ∨ 2 ≤ b` narrows the axiom: the `a = b = 1`
+    sub-case (`|G| = p · q` squarefree) is now proved axiom-free via
+    `burnside_pq_pq_case`. The genuinely-open content is `|G|` divisible
+    by `p²` or `q²` for distinct primes.
 
     Proof sketch (NOT in Mathlib, character-theoretic, Burnside 1904):
     Suppose for contradiction `G` is a minimal counterexample. Then `G` is
@@ -118,10 +167,11 @@ theorem burnside_pq_same_prime {G : Type*} [Group G] [Finite G]
     Use the transfer homomorphism on a Sylow `p`-subgroup combined with
     the focal subgroup theorem to show that `P ∩ G'` is a proper subgroup
     of `P`, contradicting `G = G'` (which holds in any non-abelian simple
-    group). -/
+    group). Mathlib's `Mathlib.GroupTheory.Focal` (focal subgroup, transfer)
+    is a starting point for the character-free route. -/
 axiom burnside_pq_nontrivial {G : Type*} [Group G] [Finite G]
     {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}
-    (hpq : p ≠ q) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hpq : p ≠ q) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 2 ≤ a ∨ 2 ≤ b)
     (hcard : Nat.card G = p ^ a * q ^ b) : IsSolvable G
 
 -- ═══════════════════════════════════════════════════════════════════════
@@ -132,8 +182,10 @@ axiom burnside_pq_nontrivial {G : Type*} [Group G] [Finite G]
     (for primes `p, q` and naturals `a, b`) is solvable.
 
     Combines:
-    - the three axiom-free trivial cases (`a = 0`, `b = 0`, `p = q`), and
-    - the conjectural non-trivial case (`burnside_pq_nontrivial`). -/
+    - the three axiom-free trivial cases (`a = 0`, `b = 0`, `p = q`),
+    - the axiom-free squarefree-order case (`a = b = 1`, `p ≠ q`), and
+    - the conjectural non-trivial case (`burnside_pq_nontrivial`,
+      `2 ≤ a ∨ 2 ≤ b`). -/
 theorem burnside_pq {G : Type*} [Group G] [Finite G]
     {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}
     (hcard : Nat.card G = p ^ a * q ^ b) : IsSolvable G := by
@@ -149,8 +201,21 @@ theorem burnside_pq {G : Type*} [Group G] [Finite G]
   · -- p = q (with a ≥ 1, b ≥ 1)
     subst hpq
     exact burnside_pq_same_prime hcard
-  · -- p ≠ q, a ≥ 1, b ≥ 1: use axiom
-    exact burnside_pq_nontrivial hpq ha hb hcard
+  · -- p ≠ q, a ≥ 1, b ≥ 1
+    by_cases h11 : a = 1 ∧ b = 1
+    · -- a = b = 1: |G| = p · q (squarefree); axiom-free
+      obtain ⟨ha1, hb1⟩ := h11
+      subst ha1
+      subst hb1
+      have hcard' : Nat.card G = p * q := by simpa [pow_one] using hcard
+      exact burnside_pq_pq_case hpq hcard'
+    · -- 2 ≤ a ∨ 2 ≤ b: use the (narrowed) axiom
+      have hab : 2 ≤ a ∨ 2 ≤ b := by
+        by_contra h
+        push_neg at h
+        obtain ⟨ha2, hb2⟩ := h
+        exact h11 ⟨by omega, by omega⟩
+      exact burnside_pq_nontrivial hpq ha hb hab hcard
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART V: Sanity checks
@@ -178,6 +243,27 @@ example {G : Type*} [Group G] [Finite G]
   haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   have h : Nat.card G = p ^ a * 2 ^ 0 := by simp [hcard]
   exact burnside_pq h
+
+/-- **Group of order `pq` is solvable** (`p ≠ q`, both prime). Axiom-free,
+    invokes only `burnside_pq_pq_case` via the `a = b = 1` dispatch in
+    `burnside_pq`. Concrete witness: groups of order 6, 10, 14, 15, 21,
+    22, 33, 35, … are all solvable. -/
+example {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hpq : p ≠ q)
+    (hcard : Nat.card G = p * q) : IsSolvable G :=
+  burnside_pq_pq_case hpq hcard
+
+/-- **Group of order 30 = 2·3·5 is solvable**. Axiom-free squarefree-order
+    case (three distinct primes, each to first power). Demonstrates that
+    `squarefreeOrder_isSolvable` extends beyond Burnside's two-prime
+    bound when each prime appears to the first power only — but cannot
+    rescue A₅ (|A₅| = 60 = 2² · 3 · 5 has `2²` and is not squarefree). -/
+example {G : Type*} [Group G] [Finite G] (hcard : Nat.card G = 30) :
+    IsSolvable G := by
+  apply squarefreeOrder_isSolvable
+  rw [hcard]
+  show Squarefree (30 : ℕ)
+  native_decide
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART VI: Sharpness witness
@@ -227,10 +313,14 @@ theorem burnside_pq_sharp :
 /-
 ## Summary
 
-### Axioms added (1)
+### Axioms added (1, narrowed in Iteration 4)
 - `burnside_pq_nontrivial` : the non-trivial case of Burnside's pᵃqᵇ
-  theorem (`p ≠ q`, `a ≥ 1`, `b ≥ 1`). The genuinely-open Lean content;
-  a full proof requires substantial new infrastructure (character theory
+  theorem (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The
+  hypothesis `2 ≤ a ∨ 2 ≤ b` was added in Iteration 4: the `a = b = 1`
+  sub-case (`|G| = p · q`, squarefree order) is now proved axiom-free
+  via `burnside_pq_pq_case`. The genuinely-open Lean content is now
+  exactly: `|G|` divisible by `p²` or `q²` for distinct primes.
+  A full proof requires substantial new infrastructure (character theory
   + algebraic integers, OR transfer + focal subgroup) not currently in
   Mathlib.
 
@@ -241,7 +331,13 @@ theorem burnside_pq_sharp :
 - `burnside_pq_b_zero` — Burnside for `b = 0` (`G` is a `p`-group).
 - `burnside_pq_same_prime` — Burnside for `p = q` (`G` is a `p`-group of
   order `p^(a+b)`).
-- `burnside_pq` — main theorem combining trivial cases + axiom.
+- `squarefreeOrder_isSolvable` — `Squarefree (Nat.card G) → IsSolvable G`
+  via Mathlib's `IsZGroup.of_squarefree` + the `[IsZGroup G] [Finite G]`
+  → `IsSolvable G` instance. Subsumes the `a = b = 1` Burnside case.
+- `burnside_pq_pq_case` — Burnside for `a = b = 1` (`|G| = p · q`,
+  squarefree order). Reduces to `squarefreeOrder_isSolvable` via
+  `Nat.coprime_primes` + `Prime.squarefree` + `Nat.squarefree_mul`.
+- `burnside_pq` — main theorem combining trivial cases + pq case + axiom.
 - `alternatingGroupFin5_card` — `|A₅| = 2² · 3 · 5 = 60` (sharpness witness
   cardinality, three distinct primes).
 - `alternatingGroupFin5_not_solvable` — `¬ IsSolvable (A₅)` via reduction to
@@ -249,18 +345,21 @@ theorem burnside_pq_sharp :
   `A₅ → S₅ → ℤ/2`.
 - `burnside_pq_sharp` — sharpness witness: `|A₅| = 2² · 3 · 5` AND `A₅` is
   not solvable, demonstrating that `burnside_pq` cannot be extended to
-  three distinct primes.
+  three distinct primes. Note: A₅ defeats the `Squarefree` route too —
+  60 has `2²`, so `squarefreeOrder_isSolvable` does not apply.
 
 ### Path forward
-- Eliminate `burnside_pq_nontrivial` by formalizing the
+- Eliminate the (narrowed) `burnside_pq_nontrivial` by formalizing the
   Goldschmidt-Matsuyama proof (estimated ~400-800 lines): build the
-  focal subgroup theorem in Mathlib, then apply transfer to a Sylow.
-  This is preferable to the character-theoretic route because Mathlib's
-  character theory still lacks the algebraic-integer hypotheses needed
-  for `(|G|/χ(1))χ(g) ∈ ℤ̄_K`.
-- Sharpness check: prove `¬ IsSolvable (Equiv.Perm (Fin 5))` (already in
-  Mathlib via `Equiv.Perm.fin_5_not_solvable`) and observe `|A₅| = 60`
-  has three primes — confirms the bound is tight.
+  focal subgroup theorem in Mathlib (some scaffolding now exists in
+  `Mathlib.GroupTheory.Focal`), then apply transfer to a Sylow. This is
+  preferable to the character-theoretic route because Mathlib's character
+  theory still lacks the algebraic-integer hypotheses needed for
+  `(|G|/χ(1))χ(g) ∈ ℤ̄_K`.
+- Next sub-cases worth axiom-free attempts (in order of accessibility):
+  (1) `|G| = p² · q` with `p ≠ q` — classical, ~50-100 lines via Sylow,
+  (2) `|G| = p · q²` with `p ≠ q` — symmetric to (1),
+  (3) `|G| = p² · q²` — needs more delicate Sylow analysis.
 - Mathlib upstream: a Burnside-pᵃqᵇ proof would be a substantial PR.
   Coordinate with Mathlib reviewers before scoping a full formalization.
 -/
@@ -270,6 +369,8 @@ theorem burnside_pq_sharp :
 #check @burnside_pq_a_zero
 #check @burnside_pq_b_zero
 #check @burnside_pq_same_prime
+#check @squarefreeOrder_isSolvable
+#check @burnside_pq_pq_case
 #check @pGroup_isSolvable
 #check @alternatingGroupFin5_card
 #check @alternatingGroupFin5_not_solvable
