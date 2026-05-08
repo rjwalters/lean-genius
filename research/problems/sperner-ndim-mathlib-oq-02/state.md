@@ -2,12 +2,68 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 19 part 1, researcher-12)
+**Last Updated**: 2026-05-08 (Iteration 19 part 2, researcher-6)
 **Iteration**: 19
 
 ## Current Focus
 
-Session 19 part 1 (this session, build pending): Added the
+Session 19 part 2 (this session, build pending): Added the
+**vertex-vs-face universal-quantifier bridge** in
+`SimplicialAdjFnHelper`, plus six concrete **face-erase
+computations** for `t1 b` and `t2 c` of `simData2 N`. Together
+with S19 part 1's `adjFn_eq_none_iff_card_le_one`, these complete
+the infrastructure needed for a clean case-split assembly of
+`_hBoundaryOnFace` for `simData2 N` (deferred to S19 part 3).
+
+New generic lemma in `SimplicialAdjFnHelper` (this session):
+
+* `forall_vertex_ne_iff_forall_face_mem`: converts
+  `∀ j ≠ k, P (D.vertexEnum s hs j)` to
+  `∀ v ∈ D.faceOf s hs k, P v`. This is the universal-quantifier
+  shape required by the `_hBoundaryOnFace` hypothesis, restated in
+  face-content terms suitable for case-splitting on `faceOf`.
+  Direct reformulation via `vertexEnum_image_erase`.
+
+Six new concrete lemmas in `SpernerFreudSimp.N2FaceErase`:
+
+* `t1_erase_first b`: `(t1 b).erase (b.1+1, b.2)` = vertical edge
+  `{b, (b.1, b.2+1)}`
+* `t1_erase_second b`: `(t1 b).erase (b.1, b.2+1)` = horizontal
+  edge `{b, (b.1+1, b.2)}`
+* `t1_erase_third b`: `(t1 b).erase b` = diagonal edge
+  `{(b.1, b.2+1), (b.1+1, b.2)}`
+* `t2_erase_first c`: `(t2 c).erase (c.1+1, c.2+1)` = face2
+  `{(c.1, c.2+1), (c.1+1, c.2)}`
+* `t2_erase_second c`: `(t2 c).erase (c.1+1, c.2)` = face1
+  `{(c.1, c.2+1), (c.1+1, c.2+1)}`
+* `t2_erase_third c`: `(t2 c).erase (c.1, c.2+1)` = face0
+  `{(c.1+1, c.2), (c.1+1, c.2+1)}`
+
+Each is a 2-direction Finset.ext + Prod.ext_iff + omega proof.
+
+**S19 part 3 (next):** Concrete `_hBoundaryOnFace_simData2`
+discharge. With S19.1 + this session's bridge + 6 erase
+computations, the assembly is now a pure case-split:
+
+1. Apply `adjFn_eq_none_iff_card_le_one` to convert hypothesis to
+   `(containersOf face).card ≤ 1`.
+2. Apply `forall_vertex_ne_iff_forall_face_mem` to convert the
+   `∀ j ≠ k` goal to `∀ v ∈ faceOf, P v`.
+3. Case-split on `s.1 ∈ topSimps2 N` via `topSimps2_mem_iff`:
+   t1 b vs t2 c.
+4. For t1 b: case-split on `vertexEnum (t1 b) hs k ∈ t1 b` via
+   `vertexEnum_mem`, identifying which of three vertices is
+   removed (the t1_erase lemmas above). Then for each edge,
+   contradiction with interior witnesses (S17/S18.2.1/S18.2.2)
+   yields the geometric boundary condition, and S18.5 supplies
+   the `onFaceΔ2` witnesses.
+5. For t2 c: every face has ≥ 2 containers (S18 part 2
+   `t2_face*_card_ge_two`), contradicting card ≤ 1. (No t2
+   contributions to boundary doors.)
+
+Estimated S19.3 size: ~80 lines of pure case work.
+
+Session 19 part 1 (PR #17162, merged): Added the
 **generic abstract `adjFn = none ↔ card ≤ 1` translation** in a
 new `SimplicialAdjFnHelper` namespace, appended after
 `end SpernerFreudSimp`. This is the abstract-level bridge that
@@ -222,24 +278,33 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
   PR #17149 merged): 5 new existential lemmas covering t1-interior
   and t2-cell faces, completing the geometric coverage table.
 - `SimplicialAdjFnHelper` generic `adjFn = none ↔ card ≤ 1`
-  translation (S19 part 1, this session, build pending): 2 generic
+  translation (S19 part 1, PR #17162, merged): 2 generic
   lemmas wiring the abstract `Triangulation.adj` adjacency to the
   geometric container-cardinality form.
+- `SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem`
+  (S19 part 2, this session, build pending): generic vertex/face
+  bridge converting the `∀ j ≠ k` quantifier to `∀ v ∈ faceOf`.
+- `N2FaceErase` t1/t2 erase computations (S19 part 2, this
+  session, build pending): 6 explicit Finset.erase equalities for
+  the three vertex removals of `t1 b` and `t2 c`.
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
-## Path Forward for n≥2 (post-S19.1)
+## Path Forward for n≥2 (post-S19.2)
 
 `Triangulation.boundary_doors_odd` requires four hypotheses:
 1. `_hSperner` — done generically by S14 wrapper (cN2_total_isSpernerColoring)
 2. `_hBoundaryOnFace` — S16/S17/S18.1/S18.2 supply ALL six
-   face/edge × cell-type combinations as `private lemma`s (see
-   coverage table above). S19.1 (this session) supplies the
-   generic `adjFn = none ↔ (containers).card ≤ 1` translation.
-   **S19 part 2 next**: case-split through the 6+6 building
-   blocks to assemble `∃ faceIdx, ...` for boundary cases and
-   `False.elim` (via interior witnesses contradicting `card ≤ 1`)
-   for the rest (~80 lines, mostly case-splitting).
+   face/edge × cell-type combinations as `private lemma`s.
+   S19.1 supplies the generic `adjFn = none ↔ (containers).card
+   ≤ 1` translation. S19.2 (this session) supplies the generic
+   ∀-quantifier face bridge + 6 concrete erase computations.
+   **S19 part 3 next**: assemble `_hBoundaryOnFace_simData2` by
+   case-splitting on `vertexEnum ∈ {3 vertices}` per cell type,
+   using the 6 erase lemmas to identify which edge is the codim-1
+   face, then either contradicting interior witnesses (for non-
+   boundary cells) or invoking S18.5 endpoint witnesses (for
+   boundary t1 cells). ~80 lines of pure case work.
 3. `_hLowerDim` — done generically by S15 helper
 4. `_hLastFace` — TODO (~120 lines, bijection with face2_path_odd via S12)
 

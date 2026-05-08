@@ -1601,6 +1601,155 @@ private lemma t2_face2_neighbor_topSimps2
    t2_face2_in_t1 c⟩
 
 end N2BoundaryInteriorNeighbors
+
+-- ============================================================
+-- (Session 19 part 2) Concrete face computations for `simData2 N`.
+--
+-- For the `_hBoundaryOnFace` discharge of `simData2 N`, we need to
+-- compute `(simData2 N).faceOf s hs k` once we know which vertex
+-- of `s` is the `vertexEnum`-th. The S19.1 generic translation
+-- `adjFn = none ↔ container card ≤ 1` plus the
+-- `forall_vertex_ne_iff_forall_face_mem` bridge reduce
+-- `_hBoundaryOnFace` to a pure case-split on the codim-1 face.
+--
+-- Since `vertexEnum (t1 b) hs k ∈ t1 b`, the removed vertex is one
+-- of {b, (b.1, b.2+1), (b.1+1, b.2)} — in each case we compute
+-- the resulting face explicitly. The same for `t2 c` with the
+-- three vertices {(c.1+1, c.2), (c.1, c.2+1), (c.1+1, c.2+1)}.
+--
+-- These are 6 erase computations: pure Finset.ext + omega.
+-- ============================================================
+
+section N2FaceErase
+
+-- ----------------------------------------------------------------
+-- (S19.2.1) t1 b erases: removing each of the three vertices of
+-- `t1 b` gives one of the three edges (vertical, horizontal,
+-- diagonal). All three Finset equalities are pure ext+omega.
+-- ----------------------------------------------------------------
+
+/-- Removing `(b.1+1, b.2)` from `t1 b` gives the vertical edge. -/
+private lemma t1_erase_first (b : ℕ × ℕ) :
+    (t1 b).erase (b.1+1, b.2) = ({b, (b.1, b.2+1)} : Finset (ℕ × ℕ)) := by
+  ext x
+  simp only [Finset.mem_erase, t1, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hne, h | h | h⟩
+    · exact absurd h hne
+    · right; exact h
+    · left; exact h
+  · rintro (rfl | rfl)
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).1 (by omega)
+      · right; right; rfl
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).2 (by omega)
+      · right; left; rfl
+
+/-- Removing `(b.1, b.2+1)` from `t1 b` gives the horizontal edge. -/
+private lemma t1_erase_second (b : ℕ × ℕ) :
+    (t1 b).erase (b.1, b.2+1) = ({b, (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
+  ext x
+  simp only [Finset.mem_erase, t1, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hne, h | h | h⟩
+    · right; exact h
+    · exact absurd h hne
+    · left; exact h
+  · rintro (rfl | rfl)
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).2 (by omega)
+      · right; right; rfl
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).1 (by omega)
+      · left; rfl
+
+/-- Removing `b` from `t1 b` gives the diagonal edge. -/
+private lemma t1_erase_third (b : ℕ × ℕ) :
+    (t1 b).erase b = ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) := by
+  ext x
+  simp only [Finset.mem_erase, t1, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hne, h | h | h⟩
+    · right; exact h
+    · left; exact h
+    · exact absurd h hne
+  · rintro (rfl | rfl)
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).2 (by omega)
+      · right; left; rfl
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).1 (by omega)
+      · left; rfl
+
+-- ----------------------------------------------------------------
+-- (S19.2.2) t2 c erases: removing each of the three vertices of
+-- `t2 c` gives one of the three edges (face0/face1/face2 in
+-- the `t2_face*_in_t2` sense).
+-- ----------------------------------------------------------------
+
+/-- Removing `(c.1+1, c.2+1)` from `t2 c` gives face2 (the diagonal
+edge of the t2 cell, which is also the diagonal edge of t1 c). -/
+private lemma t2_erase_first (c : ℕ × ℕ) :
+    (t2 c).erase (c.1+1, c.2+1) =
+      ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) := by
+  ext x
+  simp only [Finset.mem_erase, t2, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hne, h | h | h⟩
+    · exact absurd h hne
+    · right; exact h
+    · left; exact h
+  · rintro (rfl | rfl)
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).1 (by omega)
+      · right; right; rfl
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).2 (by omega)
+      · right; left; rfl
+
+/-- Removing `(c.1+1, c.2)` from `t2 c` gives face1 (the "top"
+edge of the t2 cell). -/
+private lemma t2_erase_second (c : ℕ × ℕ) :
+    (t2 c).erase (c.1+1, c.2) =
+      ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
+  ext x
+  simp only [Finset.mem_erase, t2, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hne, h | h | h⟩
+    · right; exact h
+    · exact absurd h hne
+    · left; exact h
+  · rintro (rfl | rfl)
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).2 (by omega)
+      · right; right; rfl
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).2 (by omega)
+      · left; rfl
+
+/-- Removing `(c.1, c.2+1)` from `t2 c` gives face0 (the "right"
+edge of the t2 cell). -/
+private lemma t2_erase_third (c : ℕ × ℕ) :
+    (t2 c).erase (c.1, c.2+1) =
+      ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
+  ext x
+  simp only [Finset.mem_erase, t2, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨hne, h | h | h⟩
+    · right; exact h
+    · left; exact h
+    · exact absurd h hne
+  · rintro (rfl | rfl)
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).1 (by omega)
+      · right; left; rfl
+    · refine ⟨fun h => ?_, ?_⟩
+      · exact absurd (Prod.ext_iff.mp h).1 (by omega)
+      · left; rfl
+
+end N2FaceErase
+
 end SpernerFreudSimp
 
 -- ============================================================
@@ -1681,5 +1830,33 @@ lemma adjFn_eq_none_iff_card_eq_one
   have h_pos : 0 < (D.containersOf (D.faceOf p.1 p.2 k)).card :=
     Finset.card_pos.mpr ⟨p.1, D.self_mem_containersOf p.1 p.2 k⟩
   omega
+
+/-- Generic vertex-vs-face bridge: a predicate `P` holds for every
+`vertexEnum s hs j` with `j ≠ k` iff it holds for every element of
+the codim-1 face `faceOf s hs k`. The codim-1 face is exactly the
+image of `Finset.univ.erase k` under `vertexEnum`, so this is a
+direct reformulation via `vertexEnum_image_erase`.
+
+This is the universal-quantifier shape that `_hBoundaryOnFace`
+hypothesis of `Triangulation.boundary_doors_odd` requires —
+`∀ j ≠ k, onFace (vertexEnum s hs j) faceIdx` — restated in
+"face-content" terms suitable for case-splitting on `faceOf`. -/
+lemma forall_vertex_ne_iff_forall_face_mem
+    (D : AbstractSimplicialData V n)
+    (s : Finset V) (hs : s ∈ D.topSimplices) (k : Fin (n + 1))
+    (P : V → Prop) :
+    (∀ j : Fin (n + 1), j ≠ k → P (D.vertexEnum s hs j)) ↔
+    (∀ v ∈ D.faceOf s hs k, P v) := by
+  constructor
+  · intro h v hv
+    rw [← D.vertexEnum_image_erase s hs k] at hv
+    obtain ⟨j, hj_mem, rfl⟩ := Finset.mem_image.mp hv
+    rw [Finset.mem_erase] at hj_mem
+    exact h j hj_mem.1
+  · intro h j hj_ne
+    apply h
+    rw [← D.vertexEnum_image_erase s hs k]
+    exact Finset.mem_image.mpr ⟨j,
+      Finset.mem_erase.mpr ⟨hj_ne, Finset.mem_univ j⟩, rfl⟩
 
 end SimplicialAdjFnHelper
