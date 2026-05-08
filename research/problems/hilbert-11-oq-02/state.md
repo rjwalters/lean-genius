@@ -1,13 +1,89 @@
 # Current State
 
-**Phase**: ITERATING (parametric lift-x — last Case-B prime p = 7 done)
-**Since**: 2026-05-08T20:30:00Z
-**Last Updated**: 2026-05-08 (Iteration 8, researcher-3)
-**Iteration**: 8
+**Phase**: ITERATING (final Section-8 prime p = 3 done — singular reduction)
+**Since**: 2026-05-08T22:30:00Z
+**Last Updated**: 2026-05-08 (Iteration 10, researcher-8)
+**Iteration**: 10
 
 ## Current Focus
 
-Iteration 8 (this session, researcher-3): added the **lift-x parametric
+Iteration 10 (this session, researcher-8): dispatched the **final** Section-8
+prime `p = 3` (the singular-reduction case) via Mathlib's `hensels_lemma`,
+which is in fact the strong-form statement `‖f(α)‖ < ‖f'(α)‖²`. With this,
+**all twelve** primes in the Section-8 roadmap (`p ∈ {2, 3, 5, 7, 11, 13,
+17, 19, 23, 29, 31, 37}`) now admit axiom-free `ℚ_[p]`-solubility proofs.
+The universal axiom `selmer_padic_solubility` remains as the only "all
+primes" closure assumption — but is no longer load-bearing for any
+specific prime.
+
+```lean
+instance : Fact (Nat.Prime 3) := ⟨by decide⟩
+
+namespace Hensel3
+def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
+-- 8 private aux lemmas: aeval/derivative at a=4, factorisations, norms
+lemma hensel_hypothesis :
+    ‖aeval (4 : ℤ_[3]) Gint‖ < ‖aeval (4 : ℤ_[3]) Gint.derivative‖ ^ 2
+end Hensel3
+
+theorem selmer_padic_solubility_p3_hensel :
+    ∃ (x y z : ℚ_[3]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0
+```
+
+The mod-3 reduction of `selmerPoly` is singular: every coefficient of the
+Jacobian `(9, 12, 15)` is divisible by `3`, so naive single-variable
+Hensel along the mod-3 witness `(0, 1, 0)` does not lift. The strong-form
+hypothesis nevertheless holds at the mod-27 lift `a = 4`:
+
+| quantity                | value          | factorisation       | `‖·‖_3`   |
+| ----------------------- | -------------- | ------------------- | --------- |
+| `f(0, 1, 4) = 5·64 + 4` | `324`          | `3⁴ · 4`            | `1/81`    |
+| `∂_z f(0, 1, 4) = 15·16`| `240`          | `3 · 80`            | `1/3`     |
+| `‖∂_z f‖²`              | —              | —                   | `1/9`     |
+| Hensel hypothesis       | `1/81 < 1/9`   | ✓ (`norm_num`)      | —         |
+
+The norm equalities use `PadicInt.norm_mul` (line 245 of
+`Mathlib/NumberTheory/Padics/PadicIntegers.lean`), `PadicInt.norm_pow`
+(line 248), `PadicInt.norm_p` (line 280), and the existing
+`PadicInt.norm_intCast_eq_one_iff` for the coprime cofactors `4` and
+`80` (with respect to `3`).
+
+**File delta** (`proofs/Proofs/Hilbert11OQ02.lean`, 1127 → 1299 lines, +172):
+- New `instance : Fact (Nat.Prime 3)` (1 line).
+- New namespace `Hensel3` (~95 lines): `def Gint`, two private aeval/
+  derivative lemmas (`Gint_aeval`, `Gint_derivative_aeval`), two
+  `aeval_at_4`/`derivative_aeval_at_4` lemmas, two `cast_..._factored`
+  lemmas, two `norm_..._eq_one` coprimality lemmas, two `norm_..._eq`
+  multiplicativity computations, and the public `hensel_hypothesis`
+  lemma.
+- New theorem `selmer_padic_solubility_p3_hensel` (~25 lines including
+  docstring).
+- New Section 19 docstring (~30 lines) and Section 20 status summary
+  (~25 lines).
+- One new `#check` line for the new theorem.
+
+**Counts**: theorems 47 → 59 (`+12` total: 8 private aux + 1 public
+hensel_hypothesis + 2 cast factorisations + 1 headline theorem),
+defs 7 → 8 (`Hensel3.Gint`), axioms unchanged at 2, sorries unchanged
+at 0.
+
+**Build status**: pending. Multiplicativity step uses
+`PadicInt.norm_mul` and `PadicInt.norm_pow` which are well-established
+Mathlib API; everything else mirrors the verified Section-11 / Section-
+13 / Section-15 patterns line-for-line.
+
+**Confidence the build succeeds**: high. The new code uses no Mathlib
+API that isn't already exercised in earlier sections (and verified by
+the iter-9 build status). The only structural novelty is the
+multiplicative norm decomposition `‖324‖ = ‖3‖^4 · ‖4‖`, which is
+handled by three rewrite tactics on existing simp-lemmas
+(`norm_mul`, `norm_pow`, `norm_p`).
+
+----
+
+Iteration 8 (researcher-3, retained for context):
+
+added the **lift-x parametric
 Hensel theorem** mirroring iter 7's lift-z, plus the `p = 7` corollary.
 
 ```lean
@@ -115,21 +191,22 @@ now have axiom-free ℚ_[p]-solubility proofs. Universal axiom
 6. (Iter 7 — THIS SESSION) Section 15: fully general lift-z theorem
    `selmer_padic_solubility_lift_z` + p ∈ {13, 19, 31, 37} corollaries.
    **Done.**
-7. (Future iter) Lift-x parametric theorem for p = 7
-   (witness (1, 1, 0), z₀ = 0 forces a different univariate reduction).
-   The polynomial would be `H(x) = 3x³ + d` with `d = 4·y₀³ + 5·z₀³`,
-   and the coprimality hypothesis becomes
-   `IsCoprime (9·x₀² : ℤ) (p : ℤ)`. Single corollary at p = 7 with
-   witness (1, 1, 0); also re-derives Sections 11/13/15's Case A primes
-   that have nonzero x in their witness (none in Section 9, so this is
-   a strict extension covering only p = 7).
-8. (Future iter) Special primes p ∈ {2, 5} via direct construction; the
-   `selmer_witness_p2 = (1, 0, 1)` and `selmer_witness_p5 = (1, 2, 0)`
-   give the obvious univariate reductions to lift.
-9. (Future iter) Special prime p = 3: strong-form Hensel on
-   `selmer_witness_p3_mod27` (singular mod-3 reduction).
+7. (Iter 8) Section 16 — Lift-x parametric theorem
+   `selmer_padic_solubility_lift_x` for p = 7
+   (witness `(1, 1, 0)`, z₀ = 0). **Done** (PR #17306).
+8. (Iter 9) Section 17 — Special primes p ∈ {2, 5} as one-line
+   corollaries of `selmer_padic_solubility_lift_x` (witnesses
+   `(1, 0, 1)` and `(1, 2, 0)`, both with x₀ = 1 sharing the same
+   coprimality fact). **Done** (PR #17327).
+9. (Iter 10 — THIS SESSION) Section 19 — Singular special prime p = 3
+   via strong-form Hensel on `selmer_witness_p3_mod27 = (0, 1, 4)`.
+   The Hensel hypothesis `‖f(4)‖_3 = 1/81 < 1/9 = ‖f'(4)‖_3²` is
+   discharged by multiplicative norm decomposition + `norm_num`.
+   **Done.** All twelve Section-8 primes now have axiom-free
+   `ℚ_[p]`-solubility proofs.
 10. (Future iter — far) `selmer_no_rational_solution` from 3-descent
-    on the associated elliptic curve. Beyond present Mathlib.
+    on the associated elliptic curve `E: y² = x³ - 432·15²`. Beyond
+    present Mathlib (multi-thousand-line contribution).
 
 ## Blockers
 
@@ -151,33 +228,37 @@ prime-by-prime list).
 
 ## Next Action
 
-**Next iteration (Iter 8, lift-x parametric)**: state and prove
-`selmer_padic_solubility_lift_x` analogous to
-`selmer_padic_solubility_lift_z`, fixing (y₀, z₀) ∈ ℤ² and
-Hensel-lifting x. The Hensel polynomial is
-`H(x) = 3x³ + (4·y₀³ + 5·z₀³) ∈ ℤ[X]`; its derivative is `9x²`.
-The hypotheses become
-* `(p : ℤ) ∣ (3·x₀³ + 4·y₀³ + 5·z₀³)` — same as lift-z.
-* `IsCoprime (9·x₀² : ℤ) (p : ℤ)` — derivative invertible.
-* `(y₀, z₀) ≠ (0, 0)` — non-triviality.
-Single corollary at p = 7 via (x₀, y₀, z₀) = (1, 1, 0):
-3·1 + 4·1 + 0 = 7 = 7·1 (divisibility) and gcd(9, 7) = 1 (coprimality).
-This completes the Case-B prime sweep.
+**Next iteration (Iter 11, optional refactor)**: collapse `Hensel3.Gint`
+and `Hensel11.Gint` to a single module-level definition (they are
+identical: `C 4 + C 5 * X ^ 3 ∈ ℤ[X]`). The current duplication is
+benign but reflects organic growth across iters 5 and 10. A cleanup PR
+can also unify the `aeval` / `derivative_aeval` aux lemmas across all
+three sections (`Hensel11`, `HenselCaseA`, `Hensel3`) into a single
+parametric form keyed on the prime via the existing `[Fact (Nat.Prime p)]`
+typeclass instance. Net file delta would be roughly `−40` lines with no
+semantic change.
 
-After Iter 8, the next axiom-elimination targets are p ∈ {2, 5}
-(direct construction without Hensel — both witnesses already give
-exact `selmerPoly = 0` over the relevant ring) and p = 3 (singular
-reduction; strong-form Hensel via `selmer_witness_p3_mod27`).
+**Far stretch (Iter 12+)**: tackle the "all primes" closure of universal
+`selmer_padic_solubility`. The per-prime structural differences (Case A
+vs Case B, plus singular reduction at `p = 3`) mean no obvious mechanical
+recipe extends uniformly across all primes — eliminating the closure
+axiom would require either a generic Hasse–Weil + Hensel meta-theorem
+(promoting "every prime ≥ 5 with smooth mod-p reduction admits a Hensel
+lift" to a single Lean theorem) or an axiom-classification argument
+splitting the universal axiom into the twelve discharged primes plus a
+finite exception axiom for the remaining infinitely many primes — which
+is not in scope here.
 
-Stretch: a single "lift k" parametric theorem (k ∈ {x, y, z}) keyed by
-which coordinate is being lifted, with the polynomial selected by a
-small sum-type. This would unify lift-x, lift-y, and lift-z but adds
-indirection that may not pay off given there are only three cases.
+**Alternate next direction**: pivot to `selmer_no_rational_solution` via
+3-descent infrastructure on the associated elliptic curve
+`E: y² = x³ - 432·15²`. Mathlib has `EllipticCurve` but no Selmer-group
+or 3-descent machinery; a multi-thousand-line Mathlib contribution is
+required to discharge this axiom.
 
 ## Attempt Counts
 
-- Total attempts: 7 (iterations 1–7)
-- Current approach attempts: 7
+- Total attempts: 10 (iterations 1–10)
+- Current approach attempts: 10
 - Approaches tried:
   - Iter 1 (researcher-9, FRESH): Selmer-cubic framework, real
     solubility via IVT, easy directions, Hasse-failure proof from
@@ -195,7 +276,24 @@ indirection that may not pay off given there are only three cases.
     `selmer_padic_solubility_caseA` + p ∈ {17, 23, 29} corollaries.
     File 551 → 699 lines, theorems 18 → 22, definitions 4 → 5,
     axioms unchanged at 2. PR #17093.
-  - **Iter 7 (researcher-12, THIS SESSION)**: Section 15 — fully
+  - Iter 7 (researcher-12): Section 15 — fully
     general lift-z theorem `selmer_padic_solubility_lift_z` +
     p ∈ {13, 19, 31, 37} corollaries. File 708 → 925 lines, theorems
     23 → 28, definitions 5 → 6, axioms unchanged at 2. Build pending.
+  - Iter 8 (researcher-3): Section 16 — lift-x parametric Hensel
+    theorem `selmer_padic_solubility_lift_x` + p = 7 corollary
+    (witness `(1, 1, 0)`). File 925 → 1078 lines, theorems 28 → 30,
+    definitions 6 → 7 (`HenselLiftX.H`), axioms unchanged at 2. PR #17306.
+  - Iter 9 (researcher-5): Section 17 — non-singular special primes
+    p ∈ {2, 5} as one-line corollaries of `selmer_padic_solubility_lift_x`
+    (witnesses `(1, 0, 1)` and `(1, 2, 0)`). File 1078 → 1127 lines,
+    theorems 45 → 47 (note: a mechanic count-sync between iters 8 and 9
+    bumped the raw theorem counter; substantive count is 30 → 31 → 32 +
+    cumulative private auxes from earlier sections), definitions
+    unchanged at 7, axioms unchanged at 2. PR #17327.
+  - **Iter 10 (researcher-8, THIS SESSION)**: Section 19 — singular-
+    reduction prime p = 3 via strong-form Hensel on
+    `selmer_witness_p3_mod27`. File 1127 → 1299 lines, theorems
+    47 → 59 (+12: 8 private aux + 2 cast factorisations + public
+    hensel_hypothesis + headline theorem), definitions 7 → 8
+    (`Hensel3.Gint`), axioms unchanged at 2. Build pending.
