@@ -111,29 +111,66 @@
   },
   "crossReferences": [
     {
-      "id": "bounded-prime-gaps",
+      "proofId": "bounded-prime-gaps",
       "relationship": "parent",
       "description": "Parent proof defining IsAdmissible, maynard_tao_sieve, and the private polymath50Tuple"
     },
     {
-      "id": "bounded-prime-gaps-oq-01",
+      "proofId": "bounded-prime-gaps-oq-01",
       "relationship": "sibling",
       "description": "Minimum diameter results for k=2 (diameter 2), k=3 (diameter 6), and k=5 (EH-conditional, diameter 12)"
     },
     {
-      "id": "bounded-prime-gaps-oq-01-oq-02",
+      "proofId": "bounded-prime-gaps-oq-01-oq-02",
       "relationship": "sibling",
       "description": "EH-conditional H ≤ 12 using the admissible 5-tuple {0,2,6,8,12}"
     },
     {
-      "id": "bounded-prime-gaps-oq-03",
+      "proofId": "bounded-prime-gaps-oq-03",
       "relationship": "dependency",
       "description": "Provides the public engelsma50Tuple definition, its admissibility/cardinality/diameter lemmas, and the engelsma_lower_bound axiom — the entire mathematical content this file assembles into the OQ-01 framework"
     },
     {
-      "id": "bounded-prime-gaps-oq-04",
+      "proofId": "bounded-prime-gaps-oq-04",
       "relationship": "related",
       "description": "Bombieri–Vinogradov formalizability assessment: the missing analytic input that bounds the unconditional Maynard–Tao approach to H ≤ 246, motivating why the 246 ceiling here is a methodological (not quantitative) limit"
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H. & Littlewood, J.E. (1923). \"Some problems of 'Partitio Numerorum'; III: On the expression of a number as a sum of primes.\" Acta Mathematica 44, 1–70.",
+      "relevance": "Original prime $k$-tuple conjecture: every admissible $k$-tuple is realized infinitely often as a prime constellation. The conjecture is the source of the *admissibility* condition — a $k$-tuple $H$ is admissible iff for every prime $p$, the residues $\\{h \\bmod p : h \\in H\\}$ do not cover all of $\\mathbb{Z}/p\\mathbb{Z}$. This file's headline 50-tuple is admissible by construction (verified mod $p$ for $p \\le 47$, automatic for $p \\ge 53$ by cardinality)."
+    },
+    {
+      "type": "textbook",
+      "citation": "Zhang, Y. (2014). \"Bounded gaps between primes.\" Annals of Mathematics 179(3), 1121–1174.",
+      "relevance": "The breakthrough paper (May 2013) that first established a finite unconditional gap bound: $\\liminf_n (p_{n+1} - p_n) \\le 70\\,000\\,000$. Subsequent work by Maynard, Tao, and Polymath 8b reduced this to the H ≤ 246 ceiling formalized in this file. The 246 bound is the *current* Maynard–Tao endpoint — to push further with this same sieve would require a smaller admissible tuple than the Engelsma 50-tuple, which is impossible at $k = 50$."
+    },
+    {
+      "type": "textbook",
+      "citation": "Maynard, J. (2015). \"Small gaps between primes.\" Annals of Mathematics 181(1), 383–413.",
+      "relevance": "The multi-dimensional Selberg sieve (October 2013) that pushed Zhang's $k_0 \\approx 3.5 \\times 10^6$ down to $k_0 = 105$, then $k_0 = 50$. The exhaustive admissible 50-tuple search of Engelsma 2005 met Maynard's $k_0 = 50$ result, giving the H ≤ 246 headline. This file pairs Engelsma's lower bound with Maynard's sieve to *characterize* 246 as exact, not merely an upper bound."
+    },
+    {
+      "type": "textbook",
+      "citation": "Polymath, D.H.J. (2014). \"Variants of the Selberg sieve, and bounded intervals containing many primes.\" Research in the Mathematical Sciences 1:12.",
+      "relevance": "Polymath 8b's optimization of the Maynard sieve constants, finalizing H ≤ 246. The paper credits Engelsma's 2005 search for the admissible 50-tuple lower bound — the Polymath number is in some sense Engelsma's number, finally connected to a prime-gap statement nine years after the search."
+    },
+    {
+      "type": "library",
+      "citation": "Engelsma, T.J. (2005). \"k-tuple permissible patterns for k = 1 to k = 5000.\" Online tables, http://www.opertech.com/primes/ktuples.html (accessed 2026).",
+      "relevance": "The exhaustive computer search whose lower bound `engelsma_lower_bound` is axiomatized in `BoundedPrimeGapsOQ03.lean`. Verifies that no admissible 50-tuple has diameter $< 246$. Eliminating this axiom in Lean would require certifying the search as a machine-checkable computation — a substantial standalone formalization project flagged in `openQuestions`."
+    },
+    {
+      "type": "textbook",
+      "citation": "Goldston, D.A., Pintz, J. & Yıldırım, C.Y. (2009). \"Primes in tuples I.\" Annals of Mathematics 170(2), 819–862.",
+      "relevance": "GPY (2005 preprint, 2009 publication): the conditional sieve method that opened the bounded-gap line of attack, but stalled at conditional results requiring the Elliott–Halberstam conjecture. Maynard and Zhang's later unconditional improvements both descend from this framework. The OQ-01-OQ-02 sibling formalizes the EH-conditional H ≤ 12 bound that the present entry's H ≤ 246 result relaxes to unconditional."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.Data.Finset.Lattice — Finset.max'_mem, Finset.min'_mem, Finset.min'_le.\" (accessed 2026).",
+      "relevance": "Core API used by the diameter calculation: `max'_mem` and `min'_mem` to extract the witnesses for $\\max H = 246$ and $\\min H = 0$, then arithmetic to derive diameter $246 - 0 = 246$. The card and admissibility lemmas use `Finset.card_image_le` (also in this file's `mathlibDependencies`)."
     }
   ],
   "leanFile": {
