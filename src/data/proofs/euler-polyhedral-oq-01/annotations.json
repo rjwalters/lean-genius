@@ -33,11 +33,12 @@
     "title": "euler_spanning: V − E + F = 2 by Structural Induction",
     "content": "`theorem euler_spanning (g : SpanningBuild) : g.eulerChar = 2`\n\nProof by structural induction on `SpanningBuild`:\n- `single`: 1 − 0 + 1 = 2 ✓ (by `simp`)\n- `addTreeEdge g ih`: (V+1) − (E+1) + F = V − E + F = 2 (by `push_cast; linarith`)\n- `addCycleEdge g ih`: V − (E+1) + (F+1) = V − E + F = 2 (by `push_cast; linarith`)\n\nEach constructor preserves the Euler characteristic. The proof is 8 lines.",
     "significance": "critical",
-    "mathContext": "The structural induction proof directly mirrors the topological argument: adding a tree edge extends the spanning tree (one vertex and edge added, no new face), while adding a cycle edge creates a new face. Both preserve $V - E + F = 2$.",
+    "mathContext": "The structural induction proof directly mirrors the topological argument: adding a tree edge extends the spanning tree (one vertex and edge added, no new face), while adding a cycle edge creates a new face. Both preserve $V - E + F = 2$. This is the Lean 4 manifestation of the constructive proof recorded by Cauchy (1813) and refined by Listing (1862) for general planar graphs.",
     "relatedConcepts": [
       "Euler characteristic",
       "structural induction",
-      "planar graph invariant"
+      "planar graph invariant",
+      "Cauchy's algebraic proof"
     ],
     "prerequisites": [
       "SpanningBuild definition",
@@ -53,14 +54,15 @@
       "endLine": 383
     },
     "title": "exists_low_degree_vertex: Every Planar Graph Has a Degree-≤5 Vertex",
-    "content": "`theorem exists_low_degree_vertex (G : SimpleGraph V) [DecidableRel G.Adj] (hV : 3 ≤ Fintype.card V) (h_planar : (G.edgeFinset.card : ℤ) ≤ 3 * Fintype.card V - 6) : ∃ v : V, G.degree v ≤ 5`\n\nProof: By contradiction. Assume all vertices have degree ≥ 6.\n1. `hsum_lower`: ∑ G.degree v ≥ 6 * Fintype.card V (by `sum_le_sum` applied to the assumption)\n2. `G.sum_degrees_eq_twice_card_edges`: 2 * G.edgeFinset.card = ∑ G.degree v\n3. Combine: 6V ≤ 2E, i.e., 3V ≤ E, contradicting E ≤ 3V − 6.\n\nThe key Mathlib lemma `sum_degrees_eq_twice_card_edges` is the handshaking lemma.",
+    "content": "`theorem exists_low_degree_vertex (G : SimpleGraph V) [DecidableRel G.Adj] (hV : 3 ≤ Fintype.card V) (h_planar : (G.edgeFinset.card : ℤ) ≤ 3 * Fintype.card V - 6) : ∃ v : V, G.degree v ≤ 5`\n\nProof: By contradiction. Assume all vertices have degree ≥ 6.\n1. `hsum_lower`: ∑ G.degree v ≥ 6 * Fintype.card V (by `sum_le_sum` applied to the assumption)\n2. `G.sum_degrees_eq_twice_card_edges`: 2 * G.edgeFinset.card = ∑ G.degree v\n3. Combine: 6V ≤ 2E, i.e., 3V ≤ E, contradicting E ≤ 3V − 6.\n\nThe key Mathlib lemma `sum_degrees_eq_twice_card_edges` is the handshaking lemma.\n\nThe variant `exists_low_degree_vertex'` (lines 374-383) handles V < 3 separately via `G.degree_lt_card_verts`, giving a unified statement with only `Nonempty V`.",
     "significance": "critical",
     "mathContext": "This is the key step in both the Five and Six Color Theorems for planar graphs. The handshaking lemma $\\sum_v \\deg(v) = 2|E|$ combined with $|E| \\leq 3|V|-6$ gives $\\sum_v \\deg(v) \\leq 6|V|-12 < 6|V|$, so the average degree is less than 6, forcing some vertex to have degree $\\leq 5$.",
     "relatedConcepts": [
       "handshaking lemma",
       "graph degeneracy",
       "planar graph",
-      "6-colorability"
+      "6-colorability",
+      "averaging argument"
     ],
     "prerequisites": [
       "Mathlib SimpleGraph.DegreeSum",
@@ -76,18 +78,166 @@
       "endLine": 431
     },
     "title": "face_edge_double_count: General Face-Edge Double Counting",
-    "content": "`theorem face_edge_double_count (d V E F : ℕ) (h_euler : (V : ℤ) - E + F = 2) (h_face_bound : d * (F : ℤ) ≤ 2 * E) : (d - 2) * (E : ℤ) ≤ d * (V - 2)`\n\nProof: From Euler's formula, F = E − V + 2. Substitute into d·F ≤ 2E:\n  d·(E − V + 2) ≤ 2E\n  d·E − d·V + 2d ≤ 2E\n  (d − 2)·E ≤ d·V − 2d = d·(V − 2)\n\nSpecializations:\n- d=3: E ≤ 3V−6 (planar, `edge_bound_simple`)\n- d=4: E ≤ 2V−4 (bipartite planar, `edge_bound_bipartite`)\n- d=6: 2E ≤ 3V−6 (girth-6 planar, `edge_bound_girth6`)\n- d=5: 3E ≤ 5V−10 (girth-5 planar)\n\nNon-planarity certificates: K₅ has E=10 > 9=3·5−6, K₃,₃ has E=9 > 8=2·6−4.",
+    "content": "`theorem face_edge_double_count (d V E F : ℕ) (h_euler : (V : ℤ) - E + F = 2) (h_face_bound : d * (F : ℤ) ≤ 2 * E) : (d - 2) * (E : ℤ) ≤ d * (V - 2)`\n\nProof: From Euler's formula, F = E − V + 2. Substitute into d·F ≤ 2E:\n  d·(E − V + 2) ≤ 2E\n  d·E − d·V + 2d ≤ 2E\n  (d − 2)·E ≤ d·V − 2d = d·(V − 2)\n\nSpecializations (provided as named theorems):\n- d=3: E ≤ 3V−6 (planar, `edge_bound_simple`)\n- d=4: E ≤ 2V−4 (bipartite planar, `edge_bound_bipartite`)\n- d=6: 2E ≤ 3V−6 (girth-6 planar, `edge_bound_girth6`)\n\nNon-planarity certificates: K₅ has E=10 > 9=3·5−6, K₃,₃ has E=9 > 8=2·6−4.",
     "significance": "key",
     "mathContext": "Double counting on face-edge incidences: each edge borders at most 2 faces, so $\\sum_{f} |\\partial f| \\leq 2E$. If every face has $\\geq d$ boundary edges, then $dF \\leq 2E$. Combined with Euler's formula, this gives the general inequality $(d-2)E \\leq d(V-2)$, encompassing all classical edge bounds for planar graphs.",
     "relatedConcepts": [
       "double counting",
       "face-edge incidence",
       "girth",
-      "edge bounds"
+      "edge bounds",
+      "Grötzsch's theorem"
     ],
     "prerequisites": [
       "Euler's polyhedral formula",
       "face girth lower bound"
+    ]
+  },
+  {
+    "id": "ep-non-planarity-certificates",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 437,
+      "endLine": 461
+    },
+    "title": "Non-Planarity Certificates: K₅, K₃,₃, Petersen",
+    "content": "Three Kuratowski-style witnesses, each derived from edge-bound contradictions:\n\n- `k5_not_planar` (line 438): For V=5, E=10 with face-girth ≥ 3, the bound E ≤ 3V−6 = 9 fails.\n- `k33_not_planar` (line 446): For V=6, E=9 with face-girth ≥ 4 (bipartite), the bound E ≤ 2V−4 = 8 fails.\n- `petersen_not_planar` (line 455): For V=10, E=15 with girth 5, Euler gives F = E−V+2 = 7, but 5F = 35 > 30 = 2E.\n\nAll three are proved with `omega` after `subst` substitutes the numerical values, completely automating the contradiction once the Euler hypothesis and face-girth hypothesis are unfolded.",
+    "significance": "supporting",
+    "mathContext": "These are the classical non-planarity certificates. By **Kuratowski's theorem** (1930), a graph is non-planar iff it contains K₅ or K₃,₃ as a topological minor; the present file gives the edge-bound witnesses but not the converse direction. The Petersen graph $P$ has the additional structural significance of being the smallest 3-regular graph with crossing number 2, edge-chromatic number 4, and no Hamilton cycle — it serves as the canonical small counterexample in many graph-theoretic conjectures.",
+    "relatedConcepts": [
+      "Kuratowski's theorem",
+      "Wagner's theorem",
+      "topological minor",
+      "Petersen graph",
+      "complete bipartite graph"
+    ],
+    "prerequisites": [
+      "edge_bound_simple",
+      "edge_bound_bipartite",
+      "girth-5 face-edge bound"
+    ]
+  },
+  {
+    "id": "ep-genus-theory",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 467,
+      "endLine": 500
+    },
+    "title": "Genus Bounds: Euler Characteristic on Surfaces",
+    "content": "Generalizing Euler's formula to genus-g surfaces: V − E + F = 2 − 2g.\n\n- `genus_edge_bound` (line 470): combining with 3F ≤ 2E gives E ≤ 3(V + 2g) − 6.\n- `min_genus` (line 477): rearranging, 6g ≥ E − 3V + 6, the **Heawood lower bound** on genus.\n- `k5_min_genus` (line 485): K₅ requires g ≥ 1 (toroidal embedding).\n- `k7_min_genus` (line 494): K₇ has E = 21 = 3·7 = 3V, so 6g ≥ 21 − 21 + 6 = 6, hence g ≥ 1 (the torus is exactly tight — K₇ embeds on the torus).\n\nThe pattern V − E + F = 2 − 2g is the **Euler characteristic** χ(Σ_g) of an orientable surface of genus g, related to the Gauss-Bonnet theorem ∫_Σ K dA = 2πχ(Σ).",
+    "significance": "key",
+    "mathContext": "The Euler characteristic of a closed orientable surface $\\Sigma_g$ of genus $g$ is $\\chi(\\Sigma_g) = 2 - 2g$. For a graph cellularly embedded on $\\Sigma_g$: $V - E + F = \\chi(\\Sigma_g)$. Combined with $3F \\leq 2E$ (assuming each face is bounded by ≥3 edges), this yields $E \\leq 3(V + 2g - 2)$ — the **Euler-genus inequality**. It implies the Heawood number $H(g) = \\lfloor (7 + \\sqrt{1 + 48g})/2 \\rfloor$ as an upper bound on chromatic number, established for $g \\geq 1$ by **Ringel and Youngs (1968)**.",
+    "relatedConcepts": [
+      "Euler characteristic",
+      "Gauss-Bonnet theorem",
+      "Heawood number",
+      "Ringel-Youngs theorem",
+      "orientable surfaces",
+      "cellular embedding"
+    ],
+    "prerequisites": [
+      "Euler's formula on surfaces",
+      "double counting",
+      "genus of a graph"
+    ]
+  },
+  {
+    "id": "ep-heawood-torus",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 518,
+      "endLine": 534
+    },
+    "title": "Heawood Bound on the Torus",
+    "content": "Specialization to genus 1 (torus): V − E + F = 0.\n\n- `heawood_torus_bound` (line 518): from V − E + F = 0 and 3F ≤ 2E, derive E ≤ 3V.\n- `torus_seven_degenerate` (line 530): 2E ≤ 6V, so the average degree is at most 6 — by handshaking, some vertex has degree ≤ 6.\n\nGreedy coloring in degeneracy order then gives 7-colorability for toroidal graphs. Heawood's 1890 paper conjectured **H(g) = ⌊(7+√(1+48g))/2⌋** as the chromatic number for all surfaces of genus g ≥ 1; for the torus, H(1) = 7. The Heawood map color theorem (Ringel-Youngs 1968) proved this bound is tight by constructing K_{H(g)} embeddings on Σ_g.",
+    "significance": "supporting",
+    "mathContext": "On the torus: $V - E + F = 0$ and $3F \\leq 2E$ give $E \\leq 3V$, hence average degree $\\leq 6$. **Heawood's conjecture** (proved 1968): the chromatic number of a graph embeddable on a surface of genus $g \\geq 1$ is at most $H(g) = \\lfloor (7 + \\sqrt{1+48g})/2 \\rfloor$. For $g = 1$ (torus), $H(1) = 7$; the bound is tight via $K_7 \\hookrightarrow $ torus.",
+    "relatedConcepts": [
+      "Heawood map color theorem",
+      "torus embedding",
+      "K₇ on torus",
+      "average degree argument"
+    ],
+    "prerequisites": [
+      "Euler characteristic on torus",
+      "double counting"
+    ]
+  },
+  {
+    "id": "ep-connectivity",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 547,
+      "endLine": 564
+    },
+    "title": "Disconnected Graphs: V − E + F = 1 + c",
+    "content": "Three lemmas extending Euler's formula to disconnected graphs with c components:\n\n- `euler_disconnected` (line 547): a graph with c components satisfies V − E + F = 1 + c. Specializing c = 1 recovers V − E + F = 2.\n- `euler_bridge_edge` (line 554): adding an edge between two components (a **bridge**) preserves V and F but increments E and decrements c, reducing 1 + c to 1 + (c−1).\n- `euler_cycle_edge` (line 561): adding an edge within a component (a **cycle edge**) leaves V and c fixed but increments both E and F by 1, preserving the formula.\n\nThis decomposition is the foundation of the Cayley-style enumeration of spanning forests and gives the topological interpretation of c as the rank of the **0-th homology** $H_0(G; \\mathbb{Z})$.",
+    "significance": "supporting",
+    "mathContext": "For a planar graph with $c$ connected components: $V - E + F = 1 + c$. This generalizes Euler's formula via the topological identity $V - E + F = \\chi(G) + 1$, where $\\chi(G) = c - r(G)$ is the **circuit rank** ($r(G)$ = cyclomatic number = $E - V + c$). The case $c = 1$ recovers the standard formula. The two edge-addition rules (bridge: c↓1, F unchanged; cycle: c unchanged, F↑1) correspond to whether the new edge belongs to a spanning tree.",
+    "relatedConcepts": [
+      "connected components",
+      "spanning forest",
+      "cyclomatic number",
+      "circuit rank",
+      "0-th homology"
+    ],
+    "prerequisites": [
+      "connected components in graphs",
+      "Euler's formula for connected planar graphs"
+    ]
+  },
+  {
+    "id": "ep-degeneracy-build",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 656,
+      "endLine": 693
+    },
+    "title": "DegeneracyBuild: Greedy Construction in Degeneracy Order",
+    "content": "`inductive DegeneracyBuild (k : ℕ) : Type`\n  - `empty`: the 0-vertex graph\n  - `addVertex g d (h : d ≤ k)`: append a vertex with d ≤ k back-edges to the existing graph\n\nThis is the **reverse** of the vertex-deletion sequence defining k-degeneracy: a graph is k-degenerate iff every subgraph has minimum degree ≤ k, equivalently, iff vertices can be totally ordered v₁, …, v_n with each v_i having ≤ k neighbors in v_{i+1}, …, v_n.\n\nField functions track `vertexCount` and `edgeCount`. The supporting lemmas `colorable_of_degenerate` and `chromatic_bound` express that a k-degenerate graph admits a greedy (k+1)-coloring: process vertices in degeneracy order, and each new vertex sees ≤ k already-colored neighbors, leaving ≥1 of the k+1 palette colors free.",
+    "significance": "key",
+    "mathContext": "**k-degeneracy**: a graph G is k-degenerate iff every subgraph H ⊆ G has $\\delta(H) \\leq k$. Equivalently, vertices admit an ordering $v_1, \\ldots, v_n$ with $|N(v_i) \\cap \\{v_1, \\ldots, v_{i-1}\\}| \\leq k$ for all i. Greedy coloring in this ordering uses at most $k + 1$ colors: when coloring $v_i$, at most $k$ of the $k+1$ palette colors are blocked by colored neighbors.\n\nFor planar graphs, $k = 5$ (proved earlier in this file via the handshaking argument), giving 6-colorability. The same argument with $k = 4$ would give the Five Color Theorem, but $k = 4$ does not hold for planar graphs in general — only **Kempe chain** arguments push the bound from 6 to 5 colors.",
+    "relatedConcepts": [
+      "graph degeneracy",
+      "greedy coloring",
+      "vertex ordering",
+      "back-edge",
+      "Erdős-Gallai sequence"
+    ],
+    "prerequisites": [
+      "graph coloring fundamentals",
+      "minimum degree"
+    ]
+  },
+  {
+    "id": "ep-local-planar-embedding",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 727,
+      "endLine": 794
+    },
+    "title": "LocalPlanarEmbedding and the Six Color Theorem",
+    "content": "`structure LocalPlanarEmbedding (G : SimpleGraph V) [DecidableRel G.Adj]` carries:\n  - `faceCount : ℕ`\n  - `face_pos : 1 ≤ faceCount`\n  - `euler : (Fintype.card V : ℤ) − G.edgeFinset.card + faceCount = 2`\n\nKey theorems built on this structure:\n- `local_edge_bound_planar` (line 736): from the embedding axiom and 3F ≤ 2E, derives E ≤ 3V − 6.\n- `local_k5_not_planar` (line 744): K₅ has no LocalPlanarEmbedding (omega contradiction with V=5, E=10).\n- `local_exists_low_degree` (line 753): combines the edge bound with the handshaking lemma to find a vertex of degree ≤ 5.\n- `six_colorable_small` (line 776): graphs on ≤ 6 vertices are 6-colorable via `SimpleGraph.Coloring.mk` mapping each vertex to its `Fintype.equivFin` index.\n- `planar_has_low_degree` (line 787): unifies V ≥ 3 (via `local_exists_low_degree`) and V < 3 (via `degree_lt_card_verts`).\n\nThe `LocalPlanarEmbedding` structure is **encoded as an axiom field**: the Euler equation V − E + F = 2 is not derived from a topological embedding here — it is asserted as a hypothesis. This is a deliberate axiom-level abstraction that lets the file remain self-contained without depending on the more elaborate planarity machinery in `EulerPolyhedralFormula.lean`.",
+    "significance": "key",
+    "mathContext": "The Six Color Theorem (Heawood 1890) states every planar graph is 6-colorable. The proof: by 5-degeneracy (planar ⟹ exists vertex of degree ≤ 5), greedy coloring in degeneracy order uses at most 6 colors. The Mathlib formal statement is `G.Colorable 6`, defined via `SimpleGraph.Coloring.mk : (V → Fin n) → ... → Coloring G n`. The local embedding structure is the standard trick to expose the Euler axiom inside a self-contained Lean module.",
+    "relatedConcepts": [
+      "Six Color Theorem",
+      "planar embedding",
+      "Mathlib SimpleGraph.Colorable",
+      "Heawood 1890",
+      "axiom-as-structure-field"
+    ],
+    "prerequisites": [
+      "Mathlib SimpleGraph.Coloring",
+      "Fintype.equivFin",
+      "structure with proof field"
     ]
   },
   {
@@ -112,6 +262,55 @@
       "Mathlib SimpleGraph.Coloring",
       "LocalPlanarEmbedding",
       "planar_has_low_degree"
+    ]
+  },
+  {
+    "id": "ep-kempe-prerequisite",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 824,
+      "endLine": 837
+    },
+    "title": "Kempe Chain Prerequisites: K₅ Non-Planarity in a Neighborhood",
+    "content": "Two lemmas needed for the **Five Color Theorem** upgrade:\n\n- `kempe_prerequisite` (line 824): if a planar graph contains a K₅ subgraph (V=5, E=10), it has no `LocalPlanarEmbedding` — i.e., the neighborhood of a degree-5 vertex cannot be a complete graph.\n- `neighborhood_not_complete` (line 835): for d ≤ 5, $\\binom{d}{2} \\leq 10$, but a planar embedding on the d neighbors plus the central vertex would need E ≤ 3(d+1) − 6 edges, which is incompatible with d=5 if the neighborhood is K₅.\n\nThese feed into Kempe's 1879 argument: in a planar graph with a degree-5 vertex v, two of v's five neighbors are non-adjacent. The 4-coloring of G − v then leaves at most 4 distinct colors among v's neighbors, so a fifth color (or a Kempe chain swap) frees a color for v.",
+    "significance": "supporting",
+    "mathContext": "**Kempe's chain argument** (Kempe 1879, completed by Heawood 1890 for 5 colors): given a planar graph $G$ and a vertex $v$ with $\\deg(v) \\leq 5$, by induction $G - v$ is 5-colorable. If v's 5 neighbors use only 4 colors, color v with the missing one. Otherwise, v has 5 distinct-colored neighbors $u_1, \\ldots, u_5$. By non-planarity of K₅, two of them, say $u_1$ and $u_3$, are not adjacent — hence the bichromatic chain $C_{c_1, c_3}$ from $u_1$ does not reach $u_3$, allowing a color swap that frees color $c_1$ for $v$.\n\nKempe's original 1879 argument purported to prove the Four Color Theorem, but Heawood (1890) found a flaw and salvaged the Five Color Theorem from it. The Four Color Theorem required computer assistance (Appel-Haken 1976; Robertson-Sanders-Seymour-Thomas 1997; Gonthier's Coq formalization 2005).",
+    "relatedConcepts": [
+      "Kempe chain",
+      "Five Color Theorem",
+      "Four Color Theorem",
+      "Kempe's 1879 argument",
+      "Heawood 1890",
+      "Appel-Haken proof"
+    ],
+    "prerequisites": [
+      "K₅ non-planarity",
+      "graph coloring induction"
+    ]
+  },
+  {
+    "id": "ep-special-graph-families",
+    "proofId": "euler-polyhedral-oq-01",
+    "type": "theorem",
+    "range": {
+      "startLine": 843,
+      "endLine": 869
+    },
+    "title": "Coloring Bounds for Special Graph Families",
+    "content": "Four bounds for restricted graph classes, all derived from average-degree arguments via the handshaking lemma:\n\n- `outerplanar_four_degenerate` (line 844): outerplanar (E ≤ 2V−3) ⟹ 2E < 4V, hence avg degree < 4 ⟹ 4-colorable. Tight: every outerplanar graph is 4-colorable.\n- `series_parallel_degenerate` (line 850): series-parallel (also E ≤ 2V−3) ⟹ 2E ≤ 4V−6, hence 2-degenerate ⟹ 3-colorable.\n- `toroidal_seven_degenerate` (line 858): toroidal (E ≤ 3V) ⟹ 2E ≤ 6V ⟹ 6-degenerate ⟹ 7-colorable (Heawood for genus 1).\n- `genus_degeneracy_bound` (line 866): for genus g, E ≤ 3V + 6g − 6 ⟹ 2E ≤ 6V + 12g − 12, recovering the asymptotic Heawood bound H(g) ≈ √(48g)/2.\n\nAll four are linarith-trivial once the edge bound is given as a hypothesis. The proofs do **not** establish chromatic number bounds inside Mathlib's `Colorable` framework — they only verify the underlying edge inequalities.",
+    "significance": "supporting",
+    "mathContext": "**Outerplanar graphs** (all vertices on the outer face) satisfy $E \\leq 2V - 3$ and are 3-colorable (tight, since they may contain triangles). **Series-parallel graphs** (no $K_4$ minor) are 2-degenerate and 3-colorable. **Toroidal graphs** (genus 1) embed on the torus: $E \\leq 3V$, 6-degenerate, 7-colorable (Heawood 1890 / Ringel-Youngs 1968). **Genus-g graphs** have asymptotic chromatic number $H(g) = \\Theta(\\sqrt{g})$.",
+    "relatedConcepts": [
+      "outerplanar graph",
+      "series-parallel graph",
+      "toroidal graph",
+      "Heawood number",
+      "minor-closed graph classes"
+    ],
+    "prerequisites": [
+      "edge bounds for restricted classes",
+      "degeneracy → coloring"
     ]
   }
 ]
