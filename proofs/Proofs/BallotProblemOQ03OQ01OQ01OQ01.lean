@@ -722,6 +722,51 @@ private def totalSym' {n a b : ℕ} (hb : 1 ≤ b)
     (P' : Sym (Fin n) (a + 1)) (Q' : Sym (Fin n) (b - 1)) :
     (totalSym' hb P' Q').1 = P'.1 + Q'.1 := rfl
 
+/-- **`totalSym` membership in a fiber.** A `Sym` pair `(P, Q)` lies in the fiber
+    of `totalSym` over `M : Sym (Fin n) (a + b)` iff its underlying multisets sum
+    to `M.1`. Used to translate filter predicates between the multiset-equation
+    form (used inside `ballot_counting_identity`) and the `totalSym`-equation form
+    (used by `Finset.sum_fiberwise_of_maps_to` over the map `(P, Q) ↦ totalSym P Q`). -/
+private lemma totalSym_eq_iff {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) (M : Sym (Fin n) (a + b)) :
+    totalSym P Q = M ↔ P.1 + Q.1 = M.1 := by
+  constructor
+  · intro h; rw [← totalSym_val P Q, h]
+  · intro h; exact Subtype.ext (by rw [totalSym_val]; exact h)
+
+/-- **`totalSym'` membership in a fiber.** Companion to `totalSym_eq_iff` for the
+    `(a + 1, b - 1)`-split side of `ballot_counting_identity`. -/
+private lemma totalSym'_eq_iff {n a b : ℕ} (hb : 1 ≤ b)
+    (P' : Sym (Fin n) (a + 1)) (Q' : Sym (Fin n) (b - 1))
+    (M : Sym (Fin n) (a + b)) :
+    totalSym' hb P' Q' = M ↔ P'.1 + Q'.1 = M.1 := by
+  constructor
+  · intro h; rw [← totalSym'_val hb P' Q', h]
+  · intro h; exact Subtype.ext (by rw [totalSym'_val]; exact h)
+
+/-- **Pair-weight factorisation through `totalSym`** — Sym-wrapped form of
+    `weight_eq_total_multiset`. The product of weights of a pair `(P, Q)` equals
+    the weight of the total multiset packaged as `totalSym P Q : Sym (Fin n) (a + b)`.
+
+    This is the cleanest form for chaining with `Finset.sum_fiberwise_of_maps_to`
+    over the map `(P, Q) ↦ totalSym P Q`, since the inner expression then depends
+    only on the fiber index. -/
+private lemma weight_eq_totalSym {n a b : ℕ}
+    (P : Sym (Fin n) a) (Q : Sym (Fin n) b) :
+    (P.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((totalSym P Q).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [totalSym_val]; exact weight_eq_total_multiset P Q
+
+/-- **Pair-weight factorisation through `totalSym'`** — companion to
+    `weight_eq_totalSym` for the `(a + 1, b - 1)`-split side. -/
+private lemma weight_eq_totalSym' {n a b : ℕ} (hb : 1 ≤ b)
+    (P' : Sym (Fin n) (a + 1)) (Q' : Sym (Fin n) (b - 1)) :
+    (P'.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (Q'.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod =
+    ((totalSym' hb P' Q').1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  rw [totalSym'_val]; exact weight_eq_total_multiset P' Q'
+
 /-- **Ballot counting identity (per total multiset).**
 
     For `b ≥ 2` and any total multiset `M : Sym (Fin n) (a + b)`, the number
@@ -733,13 +778,42 @@ private def totalSym' {n a b : ℕ} (hb : 1 ≤ b)
 
     This is the per-fiber heart of `jdt_weight_sum` (b ≥ 2): the weight
     factorisation `weight_eq_total_multiset` reduces the polynomial sum
-    identity to this counting statement (see `jdt_weight_sum_b_ge_two_via_count`).
+    identity to this counting statement.
 
-    **Proof strategy (TODO).** Reflection / ballot principle: for `M` with all
-    distinct elements, both cardinalities equal `C(a+b, a+1)`; the multiplicity
-    case generalises by the same argument. Estimated ~150 lines remaining work,
-    Session 21+. The b = 1 analogue (where `b - 1 = 0` and `Q' = ∅`) is the
-    unique-existence statement in `jdt_weight_sum_b_one` / Aristotle. -/
+    ### Structural reduction `jdt_weight_sum (b ≥ 2)` ⟸ `ballot_counting_identity`
+
+    The Session 22 helper lemmas (`totalSym_eq_iff`, `totalSym'_eq_iff`,
+    `weight_eq_totalSym`, `weight_eq_totalSym'`) make the connection mechanical:
+
+    1. **LHS rewrite** (predicate-filtered subtype sum → fiber-card sum):
+       Convert `∑ PQ : { PQ // ¬ColStrictSym a b PQ.1 PQ.2 }, prod * prod`
+       to a sum over `M : Sym (Fin n) (a + b)`. Uses
+       `Fintype.sum_subtype_eq_sum_filter` to land in `Finset.univ.filter (¬cs)`,
+       then `weight_eq_totalSym` to express the inner product as
+       `prod((totalSym P Q).1.map X)`. Apply `Finset.sum_fiberwise_of_maps_to`
+       (Mathlib `Algebra.BigOperators.Group.Finset.Basic`) with
+       `g := fun PQ => totalSym PQ.1 PQ.2 : (Sym a × Sym b) → Sym (a + b)`
+       and target `Finset.univ : Finset (Sym (a + b))`. By `totalSym_eq_iff`
+       the inner condition `g PQ = M` is `P.1 + Q.1 = M.1`, matching the
+       `ballot_counting_identity` LHS filter.
+
+    2. **RHS rewrite** (full pair sum → fiber-card sum): same pattern with
+       `weight_eq_totalSym'` and `totalSym'_eq_iff` on `(a + 1, b - 1)`-pairs.
+
+    3. **Per-fiber counting**: `ballot_counting_identity` gives the equality
+       of fiber cardinalities; `Finset.sum_congr` over `M : Sym (a + b)` closes
+       the goal.
+
+    Estimated ~80–100 lines of structural Finset manipulation, with the only
+    deep mathematical input being `ballot_counting_identity` itself.
+
+    ### Proof strategy for `ballot_counting_identity` (this lemma — `sorry`)
+
+    Reflection / ballot principle: for `M` with all distinct elements, both
+    cardinalities equal `C(a + b, a + 1)`; the multiplicity case generalises by
+    the same argument. Estimated ~150 lines remaining work, Session 23+. The
+    b = 1 analogue (where `b - 1 = 0` and `Q' = ∅`) is the unique-existence
+    statement in `jdt_weight_sum_b_one` / Aristotle. -/
 private theorem ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b)
     (M : Sym (Fin n) (a + b)) :
     ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
@@ -783,10 +857,13 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- **S19/S20 strategy**: factor weights through the total multiset
       -- `M : Sym (Fin n) (a + b)`, then apply `ballot_counting_identity` (S20).
       --
-      -- Step (i)   `weight_eq_total_multiset`: prod(P)*prod(Q) = prod(P.1 + Q.1).
+      -- Step (i)   `weight_eq_totalSym` (S22): prod(P)*prod(Q) = prod((totalSym P Q).1).
+      --              (Sym-wrapped form of `weight_eq_total_multiset`.)
       -- Step (ii)  regroup both sides by total multiset
-      --              `M = P+Q = P'+Q' : Sym (Fin n) (a+b)` via `totalSym`/`totalSym'`
-      --              (Finset.sum_fiberwise_of_maps_to).
+      --              `M : Sym (Fin n) (a+b)` via `Finset.sum_fiberwise_of_maps_to`
+      --              with map `(P, Q) ↦ totalSym P Q` (LHS) and `(P', Q') ↦ totalSym' hb P' Q'` (RHS).
+      --              The fiber predicate `g PQ = M` matches `ballot_counting_identity`'s
+      --              filter `P.1 + Q.1 = M.1` via `totalSym_eq_iff` / `totalSym'_eq_iff` (S22).
       -- Step (iii) per-fiber count equality: `ballot_counting_identity` (S20, sorry).
       -- Step (iv)  combine fiberings: ∑_M [count_LHS] • prod(M) = ∑_M [count_RHS] • prod(M).
       --
