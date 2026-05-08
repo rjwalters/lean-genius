@@ -687,11 +687,15 @@ theorem schonhageGcdOf_pos_of_pos_right (a : ℕ) {b : ℕ} (h : 0 < b) :
   exact Nat.gcd_pos_of_pos_right a h
 
 /-- Two consecutive naturals are coprime under `schonhageGcdOf`,
-    inherited from `Nat.coprime_succ_self`. -/
+    inherited from `Nat.coprime_succ_self_right` (Mathlib v4.26
+    renamed the older `Nat.coprime_succ_self` to the `_right`
+    variant). Reduces via `schonhageGcdOf_eq_gcd` to
+    `Nat.gcd (n + 1) n = 1`, then `Nat.gcd_comm` flips arguments
+    to match the Mathlib lemma's `Coprime n (n + 1)` form. -/
 theorem schonhageGcdOf_succ_self (n : ℕ) :
     schonhageGcdOf (n + 1) n = 1 := by
-  rw [schonhageGcdOf_eq_gcd]
-  exact Nat.coprime_succ_self n
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_comm]
+  exact Nat.coprime_succ_self_right
 
 -- ═══════════════════════════════════════════════════════════════
 -- PART XII: EMPIRICAL COMPARISON WITNESSES (S22)
