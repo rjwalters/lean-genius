@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-ballot-header-axiom-elimination",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 26 },
+    "type": "context",
+    "title": "Research Frame — Eliminating the Parent's First-Passage-Time Axiom",
+    "content": "The header docstring poses the research question that defines this entire file: the parent `BallotProblemOQ02.lean` postulates `axiom firstPassageTime_eq_maxEvent : {ω | firstPassageTime bm a ω ≤ T} = maxEvent bm a T` *without* any nonemptiness hypothesis. This file's mission is to discharge that axiom from `path_continuous` alone — and in doing so, it discovers that **the unconditional axiom is in fact false in Lean's setting**. The mechanism is the `sInf ∅ = 0` convention: a path that never reaches level $a$ has empty hitting set $H_a(\\omega) = \\emptyset$, so $\\tau(\\omega) = \\mathrm{sInf}\\,\\emptyset = 0 \\le T$ vacuously, even though $\\omega \\notin \\mathrm{maxEvent}$ (the path doesn't witness the level). Classical analysis hides this by defining $\\inf \\emptyset = +\\infty$, but Lean's order-theoretic conventions force the issue into the open. The five-point research plan in the docstring (lines 20-25) — closure of the hitting set, easy direction always holds, hard direction needs nonemptiness, IVT supplies nonemptiness for crossings, axiom holds conditionally — is exactly the proof architecture realized in Parts II-VIII of the file. This is a **paradigm of axiom elimination via hypothesis surfacing**: rather than proving the parent axiom verbatim, the formalization exposes the precise topological/non-emptiness hypothesis the axiom was implicitly assuming, and provides Mathlib-ready substitutes (`fpt_le_iff_maxEvent` under nonemptiness; `fpt_le_T_of_crossing` for the natural Brownian use case).",
+    "mathContext": "**Setup of the parent axiom** (informal): for a Brownian motion $B$ with continuous paths, define $\\tau_a(\\omega) = \\inf\\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ and $M_T = \\{\\omega : \\exists s \\in [0,T], B(s,\\omega) \\ge a\\}$. The classical level-crossing identity is $\\{\\tau_a \\le T\\} = M_T$ — *if* one uses $\\inf \\emptyset = +\\infty$. \n\n**Lean's reality**: with `Real.sInf_empty : sInf (∅ : Set ℝ) = 0`, the LHS of the parent axiom incorrectly contains every path with empty hitting set, including paths that never reach level $a$. Concrete counter-witness: the constant path $B(t,\\omega) \\equiv 0$ for all $t$, with $a = 1$, $T = 1$. Then $H_1(\\omega) = \\emptyset$, so $\\tau_1(\\omega) = 0 \\le 1 = T$, but $\\omega \\notin M_T$ since $B(s,\\omega) = 0 < 1 = a$ for all $s$.\n\n**Repair**: state the equivalence under nonemptiness (`fpt_le_iff_maxEvent`), or under the IVT-witnessed crossing condition (`fpt_le_T_of_crossing`). Both are theorems in this file and replace the parent axiom for all use cases that arise in practice (a 'reaches level $a$' assumption is implicit in any application of the level-crossing identity).",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom elimination",
+      "hypothesis surfacing",
+      "sInf empty convention",
+      "level-crossing identity",
+      "first passage time",
+      "Lean vs classical conventions"
+    ],
+    "prerequisites": [
+      "Real.sInf_empty",
+      "first passage time τ_a",
+      "running maximum M_T",
+      "axiomatic style in Lean"
+    ]
+  },
+  {
     "id": "ann-ballot-brownian-def",
     "proofId": "ballot-problem-oq-02-oq-02",
     "range": { "startLine": 44, "endLine": 53 },
