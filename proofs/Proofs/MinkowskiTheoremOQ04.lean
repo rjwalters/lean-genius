@@ -292,7 +292,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     have h_bridge :
         ∑' v : (stdLattice n).toAddSubgroup,
             s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
-          = (T.encard : ℝ≥0∞) := by
+          = (T.encard : ENNReal) := by
       rw [tsum_congr h_summand_eq, ← tsum_subtype, ENNReal.tsum_set_one]
     rw [h_bridge]
     -- Bound encard ≤ k via contrapositive of h_neg.
@@ -301,7 +301,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     -- h_too_many : (k : ℝ≥0∞) < (T.encard : ℝ≥0∞)
     have h_le_encard : ((k + 1 : ℕ) : ℕ∞) ≤ T.encard := by
       have h_lt_enat : (k : ℕ∞) < T.encard := by
-        have h_cast : ((k : ℕ∞) : ℝ≥0∞) < ((T.encard : ℝ≥0∞)) := by exact_mod_cast h_too_many
+        have h_cast : ((k : ℕ∞) : ENNReal) < ((T.encard : ENNReal)) := by exact_mod_cast h_too_many
         exact_mod_cast h_cast
       have h_succ : (k : ℕ∞) + 1 ≤ T.encard :=
         (ENat.add_one_le_iff (ENat.coe_ne_top k)).mpr h_lt_enat
