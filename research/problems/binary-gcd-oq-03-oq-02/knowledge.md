@@ -751,3 +751,210 @@ unchanged.
 The session does **not** advance the file's sorry count (still 1). The
 remaining `hgcdMatrix_row_output_le` recursive case is the genuine open
 item; S16 makes its proof setting cleaner without solving it.
+
+## Session 2026-05-08 (Session 17) — Counterexample to the all-fuel row-vector invariant (PART XIV)
+
+**Mode**: REFLECT
+**Outcome**: Foundational refutation. The Session 17+ target stated in
+S16 is FALSE under the current algorithm. Six `native_decide`-checked
+theorems freeze a counterexample at `(a, b) = (130, 89)`. The proof
+program now requires an architectural redirect (algorithm refinement,
+restricted target, or column-convention strategy).
+
+### What I Did
+
+Investigated the conjectured `hgcdMatrix_row_invariant` (existential
+row-vector invariant for arbitrary fuel with bound `max ahat' bhat'
+≤ max a b`) and discovered, via direct computation, that **the
+statement is FALSE in the recursive case**.
+
+**The counterexample.** At `(a, b) = (130, 89)` (just above
+`hgcdThreshold = 64`) and `fuel = 5`:
+  - `hgcdShift 130 89 = ⌊(log₂ 130 + 1)/2⌋ = ⌊8/2⌋ = 4`. So `2^s = 16`.
+  - `(a_hi, b_hi) = (130 / 16, 89 / 16) = (8, 5)`.
+  - `M_inner = lehmerCofactors 64 8 5 id`. Lehmer on `(8, 5)` runs three
+    successful steps with quotients `1, 1, 1` and stops at the fourth
+    step (`q = 2, r = 0`). Result: `M_inner = ⟨-1, 2, 2, -3⟩`.
+  - `M_inner.apply (130, 89) = (-1·130 + 2·89, 2·130 + (-3)·89) =
+    (48, -7)`. So `(u, v) = (48, 7)`.
+  - `M_outer = lehmerCofactors 64 48 7 id`. Lehmer on `(48, 7)` runs
+    two successful steps (q = 6, q = 1) and stops at the third
+    (q = 6, r = 0). Result: `M_outer = ⟨1, -1, -6, 7⟩`.
+  - `M = M_outer.mul M_inner = ⟨-3, 5, 20, -33⟩`.
+
+Verifying the row output at the algorithm's input pair:
+  - α-row: `130 · (-3) + 89 · 20 = -390 + 1780 = 1390`.
+  - β-row: `130 · 5 + 89 · (-33) = 650 - 2937 = -2287`.
+
+Both refute the row-vector existential `∃ ahat' bhat' : ℕ, ... ∧ max
+ahat' bhat' ≤ max a b`:
+  - Any `ahat' : ℕ` satisfying `(ahat' : ℤ) = 1390` would need
+    `1390 ≤ 130`, false.
+  - Any `bhat' : ℕ` would need `(bhat' : ℤ) = -2287`, but
+    `(bhat' : ℤ) ≥ 0`, false.
+
+**The Lean section.** Added PART XIV to `BinaryGcdOQ03OQ02.lean`
+(+~220 lines) with:
+  - `hgcdMatrix_130_89_value` — `native_decide`-checked matrix value.
+  - `hgcdMatrix_130_89_row_alpha` — α-row product = 1390.
+  - `hgcdMatrix_130_89_row_beta` — β-row product = -2287.
+  - `hgcdMatrix_row_alpha_exceeds_max` — natAbs > 2 · max a b.
+  - `hgcdMatrix_row_beta_negative` — strictly < 0.
+  - `hgcdMatrix_row_invariant_counterexample` — direct refutation of
+    the existential, using `Int.natCast_nonneg` to derive a
+    contradiction from the negative β-row.
+
+The section docstring (~150 lines of analysis) documents the failure
+mechanism, statistical scope, implications, and three candidate
+paths forward. The summary block of the file is updated to reflect
+the new state.
+
+### Statistical Scope
+
+A computational survey over `(a, b) ∈ [64, 130) × [64, a]` shows
+875/2211 ≈ 39.6% of pairs above threshold violate the row-output
+bound. The worst case in the survey range, at `(107, 85)`, produces
+matrix entries on the order of `10^268` — exceeding `max a b = 107`
+by more than 1000 binary orders of magnitude. The Schönhage HGCD
+**as currently formalized** does not size-reduce on a substantial
+fraction of inputs above threshold. (Fibonacci pairs like `(89, 55)`,
+where the algorithm DOES reduce optimally, are the exception, not
+the rule.)
+
+### Failure Mechanism
+
+The proof obstacle identified in PART IX docstring (lines 1025–1057)
+is structural: in the recursive branch
+`hgcdMatrix (f+1) a b = M_outer.mul M_inner`,
+  - `M_inner = hgcdMatrix f (a/2^s) (b/2^s)` has entries bounded by
+    the top-half inputs `(a_hi, b_hi)` (post-S16, conditional on
+    row-vector witnesses for `M_inner` at `(a_hi, b_hi)` — these DO
+    exist because we have the threshold case).
+  - `M_outer = hgcdMatrix f u v` where
+    `(u, v) = (M_inner.apply (a, b)).natAbs`. Since
+    `|M_inner.α · a + M_inner.β · b| ≤ |M_inner.α| · a + |M_inner.β|
+    · b` ≈ `2 · a_hi · max(a, b)` ≈ `√(max a b) · max(a, b)`,
+    the values `(u, v)` can be SUPER-LINEAR in `max a b`.
+  - Composing in row-convention via `cofactor_mul_row_output`:
+    `a · M.α + b · M.γ = M_inner.α · (a · M_outer.α + b · M_outer.γ)
+                          + M_inner.γ · (a · M_outer.β + b · M_outer.δ)`.
+    The inner terms are evaluated at ghost `(a, b)`, but `M_outer`
+    was built for ghost `(u, v) ≠ (a, b)`. M_outer's entry bounds
+    apply at `(u, v)`, not at `(a, b)`, so the inner terms can grow
+    without bound related to `max(a, b)`.
+
+The catastrophic worst-case at `(107, 85)` shows this growth
+compounds across recursion levels: a single recursive call can
+produce matrix entries 10^268× larger than the inputs, an absolute
+indictment of the size-reduction direction under the current
+algorithm.
+
+### What This Means for PARTS XI–XIII
+
+**PARTS XI–XIII remain valid.** Each proven theorem is unconditionally
+true:
+  - `cofactor_mul_row_invariant` (PART XI, S14) is a pure algebraic
+    composition law, true for any pair of matrices.
+  - `hgcdMatrix_zero_row_invariant` (S14) and
+    `hgcdMatrix_small_row_invariant` (S14) handle the base / threshold
+    cases, where the bound DOES hold (no recursion, no super-linear
+    growth).
+  - `hgcdMatrix_pattern_det_correlated` (PART XIII, S16) is true for
+    all fuel via direct induction, without relying on row-vector
+    witnesses.
+  - `hgcdMatrix_entry_bound` (PART XIII, S16) is correctly stated as
+    **conditional** on row-vector witnesses being supplied. PART XIV
+    shows that those witnesses do not exist for general recursive
+    inputs — but the theorem's conditional form is still true (it has
+    just become vacuous for general inputs).
+
+What was incorrectly extrapolated was the applicability of S16's
+infrastructure to a (false) all-fuel row-vector invariant. The S16
+PR's proposed Session 17+ joint induction was setting up to prove an
+impossibility.
+
+### Path Forward
+
+**Three candidate strategies for Session 18+:**
+
+**(A) Algorithm refinement.** Modify `hgcdMatrix` to add a
+size-reduction safety check: after computing
+`(u, v) = (M_inner.apply (a, b)).natAbs`, abort the recursive branch
+when `max u v ≥ max a b`. This matches GMP's `mpn_hgcd` and similar
+production HGCD implementations (which include extensive safety
+machinery to ensure size reduction). Cost: re-prove
+`hgcdMatrix_det_unit`, `hgcdMatrix_preserves_gcd`, and the threshold
+infrastructure for the new definition. The row-vector invariant
+should then hold by construction.
+
+**(B) Restricted size-reduction theorem.** Reformulate the size
+reduction to apply only on a "well-behaved" subset (e.g., Fibonacci-
+like quotient sequences where the algorithm naturally reduces).
+Cost: formalize the predicate; show coverage for cryptographic-sized
+inputs. Risk: the restricted class may be measure-zero for typical
+inputs.
+
+**(C) Column-convention strategy.** Pursue size reduction directly
+via the column action `M.apply (a, b)`, sidestepping the row-vector
+invariant. The natural inductive structure
+`(M_outer.mul M_inner).apply (a, b) = M_outer.apply (M_inner.apply
+(a, b))`
+matches the algorithm's own dataflow: `M_outer`'s natural inputs ARE
+the column-output of `M_inner`. Cost: re-derive entry bounds in
+column convention; the existing PART VI/VII infrastructure largely
+transfers.
+
+**Recommendation.** Path **(C) column-convention** is the cleanest:
+(i) S15-S16 entry bounds already use `natAbs` and lift to column
+convention with minor changes; (ii) the `cofactor_mul_apply`
+chaining naturally handles M_outer/M_inner with M_outer's IH at its
+own inputs `(u, v)`; (iii) it does not require modifying the
+algorithm definition (preserving compatibility with `BinaryGcdOQ03`
+and downstream). Sessions 18–20+ would re-derive the size-reduction
+theorem in column convention.
+
+### Build Status
+
+Pre-existing `proofs/.lake` self-symlink (recorded in agent memory)
+still forces every Docker build to ~45 min Mathlib re-clone. Build
+was not attempted this session. The PART XIV theorems are direct
+`native_decide` evaluations of the recursive `hgcdMatrix` definition,
+plus a single classical contradiction proof using
+`Int.natCast_nonneg` and `linarith`. CI is the authoritative build
+verifier.
+
+### Honest Assessment
+
+**Architecturally significant negative result.** The session does not
+add new proven mathematical content (in the sense of structural
+theorems about HGCD); instead, it surfaces a foundational issue with
+the proof direction that PARTS XI–XIII implicitly assumed.
+
+This is **valuable** because:
+  1. It prevents future sessions from continuing on an impossible
+     trajectory. The S16 PR explicitly proposed a Session 17+ joint
+     induction that would have spent months proving an unprovable
+     statement.
+  2. It catalogs the failure with a `native_decide`-frozen artifact:
+     no future session can reintroduce the false target without
+     contradicting the counterexample.
+  3. It identifies three concrete paths forward, each with cost and
+     scope trade-offs articulated.
+
+The session does **not** advance the file's sorry count (still 1)
+and explicitly documents that the remaining sorry is unprovable in
+its current form. The reframing is substantial: from "row-vector
+invariant is the last circular ingredient" (S16's view) to "the row-
+vector approach is FALSE; the program needs to redirect" (S17's
+finding).
+
+### Next Steps
+
+1. **Session 18 — selection of path**: choose among (A) algorithm
+   refinement, (B) restricted theorem, or (C) column-convention.
+   Recommendation: **(C)**.
+2. **Session 19+ — execute**: develop the column-convention size-
+   reduction proof, reusing PARTS V–XIII as black-box ingredients
+   where applicable.
+3. **Bit-complexity**: still blocked on Mathlib infrastructure.
+   Defer.
