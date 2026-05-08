@@ -26,12 +26,12 @@
     "goal": "Status `axiomatized` → `verified`: eliminate the single hMn_axiom in Session 2."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 1,
-    "focus": "Scaffold the existing file (added inadvertently via PR #16881) into the gallery, register in the build, and document the axiom-elimination path.",
+    "iteration": 6,
+    "focus": "Session 6 closes the chain: minpoly K (companionMx p) = p (Matrix.minpoly_companionMatrix). The single-block RCF API is now complete: companionMx + similarity (S1-S3) + matrix Cayley-Hamilton (S5) + minpoly identity (S6), all axiom-free over arbitrary fields.",
     "blockers": [],
-    "nextAction": "Session 2: prove hMn_axiom from minpoly.aeval + minpoly.monic + Polynomial.aeval_eq_sum_range. Verify with Docker build.",
+    "nextAction": "Future direction: write Mathlib PR proposal exposing companionMx + minpoly_companionMx_eq + aeval_companionMx_p_eq_zero + nonderogatory_similar_to_companion as a Matrix.companionMatrix API. Or: generalize to multi-block RCF via K[X]-module structure theorem.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SCAFFOLDED: Lean file (156 lines, 1 axiom hMn_axiom, 0 sorries) already on origin/main; gallery entry, build registration, and research scaffold added in Session 1. Axiom elimination deferred to Session 2 (routine — needs Docker build for verification).",
+    "progressSummary": "COMPLETE (S6): Single-block RCF API is fully closed at the level of companion-matrix theory. minpoly_companionMx_eq proves minpoly K (companionMx p) = p for monic p of natDegree n, completing the chain S4 (vector annihilation) → S5 (matrix annihilation) → S6 (minpoly identity). File: 688 lines, 21 theorems, 2 defs, 0 sorries, 0 axioms. Future: Mathlib PR proposal or multi-block RCF via K[X]-module structure theorem.",
     "builtItems": [
       "companionMx: companion matrix of a polynomial (Fin n indexed) — proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:26",
       "cyclicMatrix: Krylov matrix [v | Mv | ... | M^{n-1}v] — :33",
@@ -48,7 +48,8 @@
       "cyclicMatrix_isUnit: cyclicMatrix is invertible — :76",
       "M_mul_cyclicMatrix: conjugation identity M·P = P·C(minpoly) — :86",
       "nonderogatory_similar_to_companion: main theorem (∃ P : IsUnit P ∧ P⁻¹·M·P = companionMx (minpoly K M)) — :132",
-      "hMn_axiom (private): Cayley-Hamilton-style expansion (M^n)·v = -∑ c_k (M^k)·v — :81 (TO ELIMINATE)"
+      "hMn_axiom (private): Cayley-Hamilton-style expansion (M^n)·v = -∑ c_k (M^k)·v — :81 (TO ELIMINATE)",
+      "minpoly_companionMx_eq (S6, public theorem): minpoly K (companionMx p) = p for monic p of natDegree n — proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:638"
     ],
     "insights": [
       "Mathlib v4.26.0 has SmithNormalForm and module-structure theorems but NO matrix-form RCF or companionMatrix API. This entry's companionMx + nonderogatory_similar_to_companion seeds a future contribution.",
@@ -56,7 +57,10 @@
       "The conjugation identity M·P = P·C(minpoly) decomposes column-by-column. Non-last columns give the trivial M·(M^j v) = M^{j+1} v. The last column reduces to the Cayley-Hamilton relation M^n v = -∑ c_k M^k v.",
       "hMn_axiom is NOT a deep statement — it is routine: aeval M (minpoly K M) = 0 plus monicity gives M^n + ∑ c_k M^k = 0, hence M^n = -∑ c_k M^k. Applying mulVec v finishes.",
       "The file imports CayleyHamiltonCyclicVectorAllFields (parent, gives existence of v) and CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01 (gives minpoly_natDegree_of_cyclic which establishes natDegree = n).",
-      "Honest reading of the slug 'Rational canonical form Mathlib formalization connection': the answer to 'is RCF in Mathlib?' is no. The productive operationalization is to formalize the nonderogatory case as a stand-alone theorem, which the file does."
+      "Honest reading of the slug 'Rational canonical form Mathlib formalization connection': the answer to 'is RCF in Mathlib?' is no. The productive operationalization is to formalize the nonderogatory case as a stand-alone theorem, which the file does.",
+      "Session 6: monic + monic + equal natDegree + dvd ⇒ equal — write `b = a · c`, force `c.natDegree = 0` from natDegree-additivity, force `c.leadingCoeff = 1` from leadingCoeff-multiplicativity + monicity, conclude `c = 1`. About 12 lines of Mathlib API plumbing.",
+      "Session 6: `Polynomial.Monic` is definitionally `p.leadingCoeff = 1`, so `hp_monic : p.Monic` can be used as a `rw` rule against `p.leadingCoeff` directly. No `Monic.def.mp` needed.",
+      "Session 6: With S5's `aeval_companionMx_p_eq_zero` + S3's `companionMx_isCyclic_e0` + sibling OQ-01-OQ-01's `minpoly_natDegree_of_cyclic`, the minpoly identity falls out in 3 self-evident steps. The hardest part of the OQ-01-OQ-02 chain was the matrix-level Cayley-Hamilton (S5)."
     ],
     "mathlibGaps": [
       "Matrix.companionMatrix — not in Mathlib v4.26.0. This entry's companionMx is a candidate definition.",
