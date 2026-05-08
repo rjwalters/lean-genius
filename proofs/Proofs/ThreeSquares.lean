@@ -1041,8 +1041,10 @@ The problem "which numbers are sums of k squares?" generalizes:
 - k≥5: all numbers ≥ 1 (trivially, since k≥4 suffices)
 -/
 
-/-- The maximum number of squares needed to represent n -/
-def squaresNeeded (n : ℕ) : ℕ :=
+/-- The maximum number of squares needed to represent n. Noncomputable because
+the decidability of `∃ a : ℕ, a^2 = n` and similar is provided via `Classical`. -/
+open Classical in
+noncomputable def squaresNeeded (n : ℕ) : ℕ :=
   if n = 0 then 0
   else if ∃ a : ℕ, a ^ 2 = n then 1
   else if ∃ a b : ℕ, a ^ 2 + b ^ 2 = n then 2
