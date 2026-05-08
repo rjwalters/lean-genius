@@ -95,12 +95,22 @@ strong-induction proof of `denominator_control`.
 ## File Status
 * axioms: 0
 * sorries: 0
-* lemmas: 4 reusable + 6 numerical witnesses + Part 4 adds
+* lemmas: 4 reusable lcm/cube + 6 numerical witnesses + Part 4 adds
   `harmonicCubed` (the cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3)
-  with base values, non-negativity, and monotonicity (4 lemmas).
-  The main divisibility theorem `harmonicCubed_lcm_clear` is deferred
-  to a follow-up session (per-term `Nat.cast_div` proof exceeded
-  available Docker build time in this session).
+  with base values, non-negativity, and monotonicity (4 lemmas), plus
+  the **main divisibility theorem** `harmonicCubed_lcm_clear`:
+      `∃ m : ℤ, (lcmRange n : ℚ)^3 * H_n^{(3)} = m`,
+  with strengthened natural-number-witness variant
+  `harmonicCubed_lcm_clear_nat`. The proof reduces termwise via the
+  exactness of `(k+1)^3 ∣ (lcmRange n)^3` (`pow_dvd_lcmRange_pow`)
+  combined with `Nat.cast_div`, so the rational division
+  `(lcmRange n)^3 / (k+1)^3` lifts to a single natural-number quotient.
+
+  This closes the H_n^{(3)} half of the van der Poorten denominator
+  analysis for `denominator_control` (route F). The remaining work is
+  the alternating-bilinear "second summand"
+      `Cnk = ∑_{j=1}^{k} (-1)^(j+1) / (2 j^3 · C(n,j)^2 · C(n+j,j)^2)`,
+  which is deferred to a follow-up session.
 -/
 
 namespace BaselProblemOQ01OQ01OQ02OQ02
@@ -223,17 +233,50 @@ theorem harmonicCubed_mono {m n : ℕ} (h : m ≤ n) :
   intro k _ _
   positivity
 
-/- **Next session target**: prove
-   `∃ m : ℤ, (lcmRange n : ℚ)^3 * harmonicCubed n = m`. The integer
-   witness is `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3` (each term is
-   integral via `pow_dvd_lcmRange_pow`), but the per-term identity
-   `(lcmRange n : ℚ)^3 * (1/(k+1)^3) = ((lcmRange n)^3 / (k+1)^3 : ℕ→ℚ)`
-   requires careful `Nat.cast_div` handling that ran out of Docker
-   build time in this session.
+/-- **Explicit denominator-cleared form**:
+    `(lcmRange n)^3 · H_n^{(3)}` equals the cast of an explicit `ℕ`,
+    namely `∑ k ∈ Finset.range n, (lcmRange n)^3 / (k + 1)^3`.
 
-   This is the H_n^{(3)} half of the van der Poorten denominator
-   analysis for `denominator_control` (route F). Combined with a
-   separate alternating-bilinear lemma it discharges the `denominator_control`
-   axiom in `Proofs/BaselProblemOQ01OQ01OQ02.lean` (line 385). -/
+    This is the workhorse equation: each summand `(lcmRange n)^3 / (k+1)^3`
+    is an *exact* natural-number division because
+    `pow_dvd_lcmRange_pow` (Part 2) gives `(k+1)^3 ∣ (lcmRange n)^3` for
+    `k + 1 ≤ n`. Hence `Nat.cast_div` lifts the integer witness without loss. -/
+theorem harmonicCubed_lcm_clear_nat (n : ℕ) :
+    ((lcmRange n : ℕ) : ℚ)^3 * harmonicCubed n =
+      ((∑ k ∈ Finset.range n, (lcmRange n)^3 / (k + 1)^3 : ℕ) : ℚ) := by
+  unfold harmonicCubed
+  rw [Finset.mul_sum, Nat.cast_sum]
+  refine Finset.sum_congr rfl fun k hk => ?_
+  have hk_le : k + 1 ≤ n := by
+    rw [Finset.mem_range] at hk; omega
+  have hk_pos : 0 < k + 1 := Nat.succ_pos k
+  have hdvd : (k + 1)^3 ∣ (lcmRange n)^3 := pow_dvd_lcmRange_pow hk_pos hk_le
+  have hk1ne : (((k + 1)^3 : ℕ) : ℚ) ≠ 0 := by
+    have h1 : ((k + 1 : ℕ) : ℚ) ≠ 0 := by exact_mod_cast Nat.succ_ne_zero k
+    push_cast
+    positivity
+  rw [Nat.cast_div hdvd hk1ne, mul_one_div]
+  push_cast
+  ring
+
+/-- **Denominator clearing for the cubed-harmonic sum**:
+    `(lcmRange n)^3 · H_n^{(3)} ∈ ℤ`.
+
+    This is the H_n^{(3)} half of the van der Poorten denominator
+    analysis for `denominator_control` (route F). The integer witness
+    is the explicit sum
+      `∑ k ∈ Finset.range n, (lcmRange n)^3 / (k + 1)^3 : ℕ`,
+    each term being integral via `pow_dvd_lcmRange_pow`.
+
+    Combined with a separate alternating-bilinear lemma (the second
+    summand of the vdP closed form, deferred to a future session)
+    this would discharge the `denominator_control` axiom in
+    `Proofs/BaselProblemOQ01OQ01OQ02.lean` (line 385). -/
+theorem harmonicCubed_lcm_clear (n : ℕ) :
+    ∃ m : ℤ, ((lcmRange n : ℕ) : ℚ)^3 * harmonicCubed n = m := by
+  refine ⟨((∑ k ∈ Finset.range n, (lcmRange n)^3 / (k + 1)^3 : ℕ) : ℤ), ?_⟩
+  rw [harmonicCubed_lcm_clear_nat]
+  push_cast
+  rfl
 
 end BaselProblemOQ01OQ01OQ02OQ02
