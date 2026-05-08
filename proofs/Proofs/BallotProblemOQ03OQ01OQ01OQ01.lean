@@ -813,8 +813,32 @@ private lemma weight_eq_totalSym' {n a b : ℕ} (hb : 1 ≤ b)
     cardinalities equal `C(a + b, a + 1)`; the multiplicity case generalises by
     the same argument. Estimated ~150 lines remaining work, Session 23+. The
     b = 1 analogue (where `b - 1 = 0` and `Q' = ∅`) is the unique-existence
-    statement in `jdt_weight_sum_b_one` / Aristotle. -/
-private theorem ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b)
+    statement in `jdt_weight_sum_b_one` / Aristotle.
+
+    ### Why the hypothesis `b ≤ a` is necessary (S21)
+
+    The JDT slide bijection is asymmetric: it removes one element from `Q`
+    (size `b`) and adds it to `P` (size `a`), yielding `(P', Q')` of sizes
+    `(a+1, b-1)`. The "first column violation" `c := min{j < min a b : P[j] ≥
+    Q[j]}` only ranges over `Fin (min a b)`. When `b > a`, `min a b = a`
+    and `ColStrictSym a b P Q` quantifies only over `Fin a`, leaving
+    positions `j ∈ [a, b)` of `Q` unconstrained — the predicate becomes
+    *weaker*, not stronger, for the cardinality identity to balance.
+
+    **Concrete counter-example without `b ≤ a`** (n = 1, a = 0, b = 2):
+    `M = {0, 0}` is the unique element of `Sym (Fin 1) 2`. On the LHS,
+    `P : Sym (Fin 1) 0 = {∅}` and `Q : Sym (Fin 1) 2 = {{0,0}}` give the
+    single split `(∅, {0,0})`. `ColStrictSym 0 2 P Q = ∀ j : Fin 0, _`
+    is vacuously *true*, so `¬ColStrictSym` is *false* and the LHS filter
+    is empty — LHS cardinality = 0. On the RHS, `(P', Q') = ({0}, {0})`
+    is the unique split — RHS cardinality = 1. So `0 = 1` would be
+    required, falsifying the identity.
+
+    With `b ≤ a`, `min a b = b ≥ 2` and `ColStrictSym` is a genuine
+    strictness condition on the first `b` columns, restoring the
+    bijection. The call from `jdt_weight_sum` carries `hba : b ≤ a`
+    directly. -/
+private theorem ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b) (hba : b ≤ a)
     (M : Sym (Fin n) (a + b)) :
     ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
       (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card =
@@ -994,7 +1018,7 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
           jdt_weight_lhs_fibered (R := R),
           jdt_weight_rhs_fibered (R := R) hb]
       refine Finset.sum_congr rfl fun M _ => ?_
-      rw [ballot_counting_identity n a b hb2 M]
+      rw [ballot_counting_identity n a b hb2 hba M]
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
     push_neg at hb

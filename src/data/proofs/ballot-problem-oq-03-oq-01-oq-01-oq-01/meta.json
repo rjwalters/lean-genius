@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
     "assumptions": "2 sorries remain: (1) ballot_counting_identity (~150 lines) — per-fiber count equality C(a+b, a+1) for the b≥2 reflection step; (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). S23 closed the b≥2 case of jdt_weight_sum (was sorry, now proved) by adding the structural fiber-bridge helpers jdt_weight_lhs_fibered and jdt_weight_rhs_fibered: each re-expresses one side of the polynomial identity as a fiber-card sum indexed by the total multiset M : Sym (Fin n) (a+b), with the integrand reduced to constant wt(M.1) on each fiber. Proof recipe: Finset.sum_bij for subtype→filter conversion (LHS), weight_eq_totalSym/weight_eq_totalSym' for weight factorisation, Finset.sum_fiberwise_of_maps_to for the fibering, totalSym_eq_iff/totalSym'_eq_iff to bridge filter predicates; ballot_counting_identity then equates the per-fiber cardinalities, closed by Finset.sum_congr. S22 added the totalSym/totalSym' bridge family. S19 added weight_eq_total_multiset. jdt_weight_sum_b_one proved (S17). ssytSchurFin_two_row and ssytFin_two_row_eq_sum_colstrict proved. k=0,1,2 proved.",
-    "lineCount": 1242,
+    "lineCount": 1266,
     "theoremCount": 31,
     "definitionCount": 8,
     "originalContributions": [
@@ -40,7 +40,8 @@
       "totalSym/totalSym' — Sym-wrapper for the total multiset of a (Sym a × Sym b) or (Sym (a+1) × Sym (b-1)) pair, packaged as Sym (a+b) (S19/S22)",
       "weight_eq_totalSym / weight_eq_totalSym' (S22): Sym-wrapped weight factorisation `prod(P)*prod(Q) = prod((totalSym P Q).1)` and its (a+1, b-1) companion — the cleanest form for chaining with Finset.sum_fiberwise_of_maps_to in the b≥2 structural reduction",
       "totalSym_eq_iff / totalSym'_eq_iff (S22): bridges the fiber-membership predicate `g PQ = M` (used by Finset.sum_fiberwise_of_maps_to) to `P.1 + Q.1 = M.1` (used by ballot_counting_identity), via Subtype extensionality",
-      "jdt_weight_lhs_fibered / jdt_weight_rhs_fibered (S23): re-expresses each side of the b≥2 jdt_weight_sum polynomial identity as a fiber-card sum indexed by the total multiset M : Sym (Fin n) (a+b), with constant-on-fiber integrand wt(M.1). Closes the b≥2 branch of jdt_weight_sum modulo ballot_counting_identity via a single `Finset.sum_congr rfl` line — the structural reduction outlined in the S22 strategy comment is now realised as named lemmas and the b≥2 sorry is eliminated"
+      "jdt_weight_lhs_fibered / jdt_weight_rhs_fibered (S23): re-expresses each side of the b≥2 jdt_weight_sum polynomial identity as a fiber-card sum indexed by the total multiset M : Sym (Fin n) (a+b), with constant-on-fiber integrand wt(M.1). Closes the b≥2 branch of jdt_weight_sum modulo ballot_counting_identity via a single `Finset.sum_congr rfl` line — the structural reduction outlined in the S22 strategy comment is now realised as named lemmas and the b≥2 sorry is eliminated",
+      "ballot_counting_identity hypothesis correction (S21, this session): identified that the S20 statement of ballot_counting_identity was missing the `b ≤ a` hypothesis and would have been formally false as stated. Concrete counter-example: at n = 1, a = 0, b = 2 the unique multiset M = {0, 0} : Sym (Fin 1) 2 gives LHS card = 0 (because ColStrictSym 0 2 P Q quantifies over Fin (min 0 2) = Fin 0 and is vacuously true, so ¬ColStrictSym filters out the only candidate split (∅, M)) but RHS card = 1 (the unique split P' = Q' = {0}). With `hba : b ≤ a` added to the lemma signature, `min a b = b ≥ 2` so ColStrictSym becomes a genuine first-b-columns strictness condition and the JDT slide bijection is well-defined. The call from jdt_weight_sum already has hba in scope (`(n a b : ℕ) (hba : b ≤ a)`) so the only required propagation is at the rewrite site (`rw [ballot_counting_identity n a b hb2 hba M]`)"
     ]
   },
   "overview": {
@@ -82,7 +83,7 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 1242,
+    "lineCount": 1266,
     "axiomCount": 0,
     "theoremCount": 31,
     "definitionCount": 8,
