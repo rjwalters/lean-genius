@@ -108,6 +108,124 @@
     "path": "Proofs/AreaOfCircleOQ02.lean",
     "sorries": 0
   },
+  "prerequisites": [
+    "Real analysis: real exponents (`Real.rpow`), square roots, continuous functions on $\\mathbb{R}$, and basic limit/positivity reasoning",
+    "Lebesgue measure theory: `MeasureTheory.volume`, `Metric.ball`, the `ENNReal` extended-non-negative-real arithmetic used for measure values, and the volumes of intervals/disks in $\\mathbb{R}$ and $\\mathbb{C}$",
+    "The Gamma function: the recursion $\\Gamma(x+1) = x\\,\\Gamma(x)$ and the special values $\\Gamma(1)=1$, $\\Gamma(2)=1$, $\\Gamma(1/2)=\\sqrt{\\pi}$, $\\Gamma(3/2)=\\sqrt{\\pi}/2$ (all available in Mathlib as `Real.Gamma_add_one`, `Gamma_one`, `Gamma_two`, `Gamma_one_half_eq`)",
+    "Euclidean space and `PiLp`: `EuclideanSpace ℝ (Fin n)` as a finite-dimensional inner product space, and an awareness that its Lebesgue measure is *not definitionally* the product measure on `Fin n → ℝ` — bridging the two requires the Mathlib `PiLp.toEuclideanSpace` / `MeasurePreserving` infrastructure",
+    "Mathlib API for ball volumes: `Real.volume_ball` (1D, length $2r$), `Complex.volume_ball` (2D, $\\pi r^2$), and the more general `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls` machinery",
+    "Comfort with axiomatized formalization: this entry takes the geometric scaling law `nball_volume_scaling` as a stated axiom rather than proving it from EuclideanSpace measure isomorphisms (see `area-of-circle-oq-02-oq-01` for the discharge)",
+    "Lean tactics for Gamma/Real arithmetic: `field_simp`, `ring`, `push_cast` for `Nat`/`Real` coercions, `linarith` with `pow_pos pi_pos` for $\\pi$-positivity, and `Real.rpow_add`/`rpow_one` for exponent manipulation"
+  ],
+  "mainTheorems": [
+    {
+      "name": "unitBallVolume",
+      "type": "definition",
+      "statement": "$\\mathrm{unitBallVolume}\\ n = \\pi^{n/2} / \\Gamma(n/2 + 1)$",
+      "significance": "**The closed-form formula.** Defines the unit $n$-ball volume noncomputably as $\\pi^{n/2}/\\Gamma(n/2+1)$ for any $n : \\mathbb{N}$, encoded via `Real.rpow` and `Real.Gamma`. This is the single object that unifies the special cases $n=0,1,2,3,4,5$ and from which the recurrence $V_n = V_{n-2} \\cdot 2\\pi/n$ is derived.",
+      "description": "Lean signature: `noncomputable def unitBallVolume (n : ℕ) : ℝ := π ^ ((n : ℝ) / 2) / Gamma ((n : ℝ) / 2 + 1)`. Companion lemma `unitBallVolume_nonneg` certifies non-negativity using `Gamma_pos_of_pos` and `rpow_nonneg`."
+    },
+    {
+      "name": "unitBallVolume_recurrence",
+      "type": "core",
+      "statement": "$\\forall n \\geq 2,\\ V_n = V_{n-2} \\cdot \\frac{2\\pi}{n}$",
+      "significance": "**The dimension-jump recurrence.** Reduces the entire chain $V_0, V_1, V_2, \\ldots$ to two seeds ($V_0=1$ and $V_1=2$) plus a single multiplicative step. It is the engine that produces $V_3, V_4, V_5$ from $V_1, V_2, V_3$, sidesteps reasoning about $\\Gamma$ at half-integers, and exhibits the multiplicative factor $2\\pi/n$ that drives the eventual decay $V_n \\to 0$.",
+      "description": "Proof rewrites the exponent $n/2 = (n-2)/2 + 1$, applies `Real.rpow_add` and `Gamma_add_one` to extract one $\\pi$ and one factor of $n/2$, then `field_simp` + `ring` collapses the algebraic identity. Requires `(n : ℝ) ≠ 0` (from `hn : 2 ≤ n` via `omega`) and `push_cast` for `Nat`-to-`Real` arithmetic."
+    },
+    {
+      "name": "unitBallVolume_chain",
+      "type": "supporting",
+      "statement": "$V_0 = 1 \\land V_1 = 2 \\land V_2 = \\pi \\land V_3 = 4\\pi/3 \\land V_4 = \\pi^2/2$",
+      "significance": "**The headline conjunction.** Packages the five small-$n$ values into a single statement, including the celebrated case $V_2 = \\pi$ that recovers Archimedes' $A = \\pi r^2$. This is the point of contact between the Mathlib lemmas `Gamma_one`, `gamma_three_div_two`, `Gamma_two` and the recurrence; later entries can `rcases unitBallVolume_chain` to extract any of the five values.",
+      "description": "Constructed as `⟨unitBallVolume_zero, unitBallVolume_one, unitBallVolume_two, unitBallVolume_three, unitBallVolume_four⟩`. The first three are direct Mathlib computations; $V_3, V_4$ are derived through `unitBallVolume_recurrence`."
+    },
+    {
+      "name": "nball_volume_scaling",
+      "type": "axiom",
+      "statement": "$\\forall n\\ \\forall r \\geq 0,\\ \\mathrm{volume}(B_n(r)) = r^n \\cdot V_n$ (as `ENNReal`)",
+      "significance": "**The single axiom.** Encodes the geometric fact that translating-and-scaling a ball in `EuclideanSpace ℝ (Fin n)` multiplies its Lebesgue measure by $r^n$. Mathematically obvious, but technically expensive in Lean because `EuclideanSpace ℝ (Fin n) = PiLp 2 (fun _ : Fin n => ℝ)` and bridging its measure to the product measure on `Fin n → ℝ` requires `MeasurePreserving` plumbing. The companion entry `area-of-circle-oq-02-oq-01` is dedicated to discharging this axiom.",
+      "description": "Stated as `axiom nball_volume_scaling (n : ℕ) (r : ℝ) (hr : 0 ≤ r) : volume (ball (0 : EuclideanSpace ℝ (Fin n)) r) = ENNReal.ofReal (r ^ n * unitBallVolume n)`. The `axiomCount: 1` and `status: \"axiomatized\"` in this file's metadata reflect this single declaration."
+    },
+    {
+      "name": "area_scaling_2d",
+      "type": "supporting",
+      "statement": "$\\forall r \\geq 0,\\ \\mathrm{volume}(B_2(2r)) = 4 \\cdot \\mathrm{volume}(B_2(r))$",
+      "significance": "**A self-checking specialization.** Combines `nball_volume_scaling` with `unitBallVolume_two` to verify the elementary geometric prediction that doubling the radius of a disk quadruples its area. Serves as a sanity-check that the axiom interacts correctly with the special-case formulas, before the user invests in the full PiLp axiom discharge.",
+      "description": "Proof applies `nball_volume_scaling` at radii $2r$ and $r$, simplifies via `unitBallVolume_two`, expands $(2r)^2 = 4r^2$, and folds the `ENNReal.ofReal_mul` / `ofReal_ofNat` boilerplate."
+    },
+    {
+      "name": "vol_B5_gt_vol_B4",
+      "type": "core",
+      "statement": "$V_4 < V_5$",
+      "significance": "**The volume-peak inequality.** Encodes the surprising classical fact — popularized by Hamming in 1980 — that unit-ball volume is **not monotone** in dimension. The volume continues to grow up to $n=5$ ($V_5 = 8\\pi^2/15 \\approx 5.264$), peaks there, and then strictly decreases for $n \\geq 6$. This file proves the last increase $V_4 < V_5$; the matching decrease $V_5 > V_6$ and the asymptotic $V_n \\to 0$ are in the child entries.",
+      "description": "Computes $V_5 = 8\\pi^2/15$ via `unitBallVolume_recurrence 5` and `unitBallVolume_three`, then closes the inequality $\\pi^2/2 < 8\\pi^2/15$ by `linarith` using `pow_pos pi_pos 2` to provide the strict positivity of $\\pi^2$."
+    },
+    {
+      "name": "nball_generalizes_area_of_circle",
+      "type": "supporting",
+      "statement": "$\\mathrm{unitBallVolume}\\ 2 = \\pi$",
+      "significance": "**The headline equality.** Phrased as a separate, named theorem to make the bridge to the classical area-of-circle gallery entry explicit: A=πr² is *literally* the $n=2$ specialization of $V_n r^n = (\\pi^{n/2}/\\Gamma(n/2+1)) r^n$. Definitionally identical to `unitBallVolume_two`; the duplication is a deliberate API exposure for cross-references.",
+      "description": "Stated as `theorem nball_generalizes_area_of_circle : unitBallVolume 2 = π := unitBallVolume_two`."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Archimedes",
+      "title": "On the Measurement of the Circle",
+      "year": "c. 250 BCE",
+      "venue": "Surviving Greek manuscript tradition; English translation in Heath, *The Works of Archimedes* (Cambridge, 1897)",
+      "note": "Original determination of $\\pi$ as the ratio of circumference to diameter and the area $A = \\pi r^2$. The $n=2$ entry of `unitBallVolume_chain` is a direct echo of Proposition 1."
+    },
+    {
+      "authors": "Legendre, A.-M.",
+      "title": "Exercices de calcul intégral",
+      "year": "1811",
+      "venue": "Paris (3 vols., 1811-1817)",
+      "note": "Among the earliest systematic treatments of the Gamma function $\\Gamma(x) = \\int_0^\\infty t^{x-1} e^{-t}\\,dt$ and its functional equation $\\Gamma(x+1) = x\\,\\Gamma(x)$. The notation $\\Gamma$ itself is Legendre's."
+    },
+    {
+      "authors": "Liouville, J.",
+      "title": "Sur le calcul des intégrales définies",
+      "year": "1839",
+      "venue": "Journal de Mathématiques Pures et Appliquées 1, 421-426",
+      "note": "Mid-19th-century reference for the closed-form $V_n = \\pi^{n/2}/\\Gamma(n/2+1)$. The formula is folklore by then; Liouville's work is one of the earliest unified statements."
+    },
+    {
+      "authors": "Hamming, R. W.",
+      "title": "Coding and Information Theory",
+      "year": "1980",
+      "venue": "Prentice-Hall, Englewood Cliffs, NJ",
+      "note": "Popularized the dimension-volume paradox $V_5 > V_4 > \\cdots > V_1$ but $V_5 > V_6 > \\cdots \\to 0$. Hamming's exposition is the standard reference for the 'curse of dimensionality' framing in computer science and machine learning."
+    },
+    {
+      "authors": "Wiedijk, F.",
+      "title": "Formalizing 100 Theorems",
+      "year": "2008-",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "Tracks proof-assistant formalizations of 100 classical theorems. Item #9 is 'Area of a Circle' ($A = \\pi r^2$), formalized in Mathlib via `Complex.volume_ball`. This entry exposes that result as the $n=2$ case of the general formula."
+    },
+    {
+      "authors": "The mathlib Community",
+      "title": "Mathlib4: MeasureTheory.Measure.Lebesgue.VolumeOfBalls",
+      "year": "2024",
+      "venue": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Measure/Lebesgue/VolumeOfBalls.html",
+      "note": "Contains the general $n$-ball volume in `EuclideanSpace ℝ (Fin n)` and the supporting `MeasurePreserving` lemmas. The single axiom `nball_volume_scaling` in this file states a special case of the API exposed there; bridging it requires `PiLp.measurableEquivPi` / `volume_pi`."
+    },
+    {
+      "authors": "Vershynin, R.",
+      "title": "High-Dimensional Probability: An Introduction with Applications in Data Science",
+      "year": "2018",
+      "venue": "Cambridge Series in Statistical and Probabilistic Mathematics, vol. 47",
+      "note": "Modern reference for the consequences of $V_n/2^n \\to 0$ in high dimensions: concentration of measure, Johnson-Lindenstrauss, and the geometric foundations of compressed sensing. Section 3.1 derives the unit-ball asymptotics $V_n \\sim (2\\pi e/n)^{n/2}/\\sqrt{\\pi n}$ via Stirling."
+    },
+    {
+      "authors": "Wikipedia",
+      "title": "Volume of an n-ball",
+      "year": "accessed 2026",
+      "venue": "https://en.wikipedia.org/wiki/Volume_of_an_n-ball",
+      "note": "Modern survey listing both the closed-form $V_n = \\pi^{n/2}/\\Gamma(n/2+1)$ and the recurrence $V_n = V_{n-2} \\cdot 2\\pi/n$, which is the form proved in `unitBallVolume_recurrence` here."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "area-of-circle",
