@@ -30,20 +30,23 @@
     "goal": "Prove IsAbsolutelyNormal (Real.exp 1) — genuinely open as of 2026"
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-05-04T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Gallery entry created with rigorous definitions, machine-checked digit lemmas, and axiomatized open conjecture.",
-    "blockers": [],
-    "nextAction": "Proof is axiomatized — the open question remains open in mathematics.",
+    "iteration": 3,
+    "focus": "Recipe-only progress (Session 3, researcher-11, 2026-05-08): refined 3-layer recipe in knowledge.md for discharging the next tractable axiom (rational_digits_eventually_periodic). Mathlib gap survey + iterate-form pigeonhole abstraction selected over naive collision pigeonhole.",
+    "blockers": [
+      "No named Mathlib lemma 'eventually_periodic_of_fintype'; must assemble from Fintype.exists_ne_map_eq_of_card_lt + Function.iterate_add_apply.",
+      "No Mathlib bridge connecting nthDigit b n (p/q : ℝ) to the (p · b^n) mod q residue sequence — must write manually (cast-juggling-heavy)."
+    ],
+    "nextAction": "Apply Session 3 recipe Layer 1: prove eventually_periodic_iterate (~30-40 lines, fully self-contained orbit-pigeonhole lemma). Layer 2 (ratResidue ZMod bridge) and Layer 3 (nthDigit cast bridge) are sketched but deferred to follow-up sessions.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Gallery entry ETranscendentalOQ02.lean (origin/main 2026-05-07: 300 lines, 0 sorries, 3 axioms, 28 theorems, 3 defs). #15637 extended decimal digit proofs to 9 digits. #15750 proved periodic_has_missing_ktuple (axioms 4→3). Remaining axioms: rational_digits_eventually_periodic, normal_imp_irrational, e_absolutely_normal (the open conjecture). Key achievements: rigorous normality definitions, machine-verified first 9 decimal digits of e, and axiomatized e_absolutely_normal.",
+    "progressSummary": "ACT (Session 3, 2026-05-08): Gallery entry ETranscendentalOQ02.lean (origin/main: 300 lines, 0 sorries, 3 axioms, 28 theorems, 3 defs). PRs #15637 (digits 7→9) and #15750 (periodic_has_missing_ktuple proved, axioms 4→3) closed previous progress. Session 3 produced a 3-layer recipe in knowledge.md for the next axiom-elimination target rational_digits_eventually_periodic, identifying the iterate-form pigeonhole as the right abstraction (correcting the naive bare-pigeonhole approach the original axiom docstring sketched). Remaining axioms: rational_digits_eventually_periodic (tractable, Layer 1-3 recipe ready), normal_imp_irrational (tractable, derives from axiom 1), e_absolutely_normal (the genuinely open conjecture — will stay axiomatized).",
     "builtItems": [
       "ETranscendentalOQ02.lean: nthDigit, IsNormalInBase, IsAbsolutelyNormal definitions",
       "ETranscendentalOQ02.lean: e_floor=2, e_floor_10=27, e_floor_100=271, e_floor_1000=2718, e_floor_10000=27182, e_floor_100000=271828, e_floor_1000000=2718281 all proved",
@@ -58,15 +61,22 @@
       "IsNormalInBase uses Tendsto with (b:ℝ)^(-(k:ℤ)) for the 1/bᵏ target — integer exponents handle negative powers",
       "nthDigit uses ℤ return type to avoid subtraction issues; Fin b is used in string patterns",
       "periodic_has_missing_ktuple is now PROVED (orbit cardinality + iterated periodicity reduction); normal_imp_irrational remains axiomatized due to ℤ↔Fin b casting complexity in the Tendsto setting",
-      "The open conjecture e_absolutely_normal mirrors the pattern from e-transcendental-oq-01 (schanuel_conjecture axiom)"
+      "The open conjecture e_absolutely_normal mirrors the pattern from e-transcendental-oq-01 (schanuel_conjecture axiom)",
+      "[S3 2026-05-08] Naive Fintype.exists_ne_map_eq_of_card_lt gives only f(i)=f(j) — not the periodicity propagation f(i+k)=f(j+k) needed for eventual-periodicity. The right abstraction is the iterate form: g^[i] x₀ = g^[j] x₀ ⇒ g^[i+k] x₀ = g^[j+k] x₀ (via Function.iterate_add_apply + congr).",
+      "[S3 2026-05-08] For x = p/q, the residue sequence n ↦ (q.num · b^n : ZMod q.den) IS the orbit of (· * b) : ZMod q.den → ZMod q.den. So the iterate-form pigeonhole applies directly with α = ZMod q.den.",
+      "[S3 2026-05-08] The 'cast hell' in this proof is concentrated in Layer 3 (nthDigit b n (p/q : ℝ) ↔ residue mod q · b / q expression). Layers 1 (general fintype iterate pigeonhole) and 2 (ratResidue ZMod bridge) are clean; isolating Layer 3 lets each cast obstacle be debugged in isolation."
     ],
     "mathlibGaps": [
       "No Mathlib lemma connecting ℤ-valued digit functions to Fin b sequences in Tendsto framework — blocks full proof of normal_imp_irrational",
-      "No Mathlib formalization of Borel's 1909 normality theorem"
+      "No Mathlib formalization of Borel's 1909 normality theorem",
+      "[S3 2026-05-08] No named lemma 'eventually_periodic_of_fintype : (f : ℕ → α) [Fintype α] → ∃ N T, 0 < T ∧ ∀ n ≥ N, f (n + T) = f n'. Must be assembled from Fintype.exists_ne_map_eq_of_card_lt + Function.iterate_add_apply. This is a clean Mathlib contribution candidate.",
+      "[S3 2026-05-08] No named lemma bridging ⌊b^n · (p/q)⌋ % b to (b^n · p mod q) digit-extraction. Must be written manually — combination of Int.emod, Int.floor, Rat.cast_div casts."
     ],
     "nextSteps": [
-      "Consider proving rational_digits_eventually_periodic (the remaining structural axiom) via the b^n mod q pigeonhole argument",
-      "Consider proving normal_imp_irrational fully by adding a bridge lemma connecting nthDigit ℤ values to Fin b"
+      "[S3 priority] Apply recipe Layer 1: prove eventually_periodic_iterate (~30-40 lines) as a self-contained orbit-pigeonhole lemma. Most reusable artifact; clean Mathlib contribution candidate.",
+      "[S3 priority] After Layer 1: apply Layer 2 (ratResidue ZMod q.den bridge, ~30-50 lines).",
+      "[S3 priority] After Layer 2: apply Layer 3 (nthDigit cast-bridge, ~50-80 lines, the cast-juggling-heavy step).",
+      "After axiomCount 3 → 2: discharge normal_imp_irrational via axiom 1 (now theorem) + periodic_has_missing_ktuple (already theorem) + Tendsto-frequency-zero-vs-positive contradiction (~50 lines)."
     ]
   },
   "tags": [

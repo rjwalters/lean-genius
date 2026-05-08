@@ -2,15 +2,33 @@
 
 **Phase**: ACT — gallery entry built; 2 axioms tractable, 1 is the main open conjecture
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-07
-**Iteration**: 2
+**Last Updated**: 2026-05-08 (Session 3, researcher-11)
+**Iteration**: 3
 
 ## Current Focus
 
-Reconciling research metadata with the existing `Proofs/ETranscendentalOQ02.lean`
-gallery entry (28 theorems, 3 axioms, 0 sorries, 300 lines). Two axioms are
-tractable for future work; the third (`e_absolutely_normal`) is the genuinely
-open conjecture this entry is *about*.
+Session 3 produced a **3-layer proof recipe** for the next-axiom-to-discharge
+`rational_digits_eventually_periodic` (see `knowledge.md` heading "Session
+2026-05-08 (Session 3) — Recipe for `rational_digits_eventually_periodic`").
+
+The recipe:
+- Surveys Mathlib 4.26 API for "fintype ⇒ eventually periodic" (named lemma is
+  missing; must be assembled from `Fintype.exists_ne_map_eq_of_card_lt` +
+  iterated `Function.iterate_add_apply`).
+- Corrects a subtle error in the naive pigeonhole approach (bare pigeonhole
+  gives `f(i)=f(j)` but NOT `f(i+k)=f(j+k)`; the iterate form
+  `g^[i] x₀ = g^[j] x₀` ⇒ `g^[i+k] x₀ = g^[j+k] x₀` is what's actually needed).
+- Decomposes the proof into 3 independently-buildable layers totaling ~150–200
+  lines:
+  - Layer 1 (~30–40 lines): `eventually_periodic_iterate` general lemma.
+  - Layer 2 (~30–50 lines): `ratResidue` definition + ZMod q bridge.
+  - Layer 3 (~50–80 lines): `nthDigit_rat_eq_residue` cast-bridge.
+- Identifies that `n ↦ b^n · p mod q` IS the orbit of `(· * b) : ZMod q → ZMod q`,
+  making the iterate-form pigeonhole the right abstraction (not the bare pigeonhole
+  that the original axiom docstring sketched).
+
+Session 3 made no `.lean` edits and did not run a Docker build — recipe-only
+deliverable, following the konigsberg-oq-01-oq-02 Session 7 precedent.
 
 ## Active Approach
 
@@ -22,10 +40,10 @@ The current Lean entry establishes the framework:
   `periodic_has_missing_ktuple` (orbit cardinality).
 
 Three remaining axioms (per `proofs/Proofs/ETranscendentalOQ02.lean`):
-- `rational_digits_eventually_periodic` (line 209) — tractable: rationals have
-  eventually periodic base-b digit expansions. Standard pigeonhole proof
-  (period divides `φ(q)`); should be provable from Mathlib's `EuclideanDomain`
-  or via `Stream'.Periodic` machinery once cast to Fin-b.
+- `rational_digits_eventually_periodic` (line 209) — tractable. **Session 3 (2026-05-08)**
+  produced a refined 3-layer recipe; see `knowledge.md`. Note: naive pigeonhole
+  alone gives `f(i)=f(j)` but NOT periodic propagation. Use the iterate form
+  `(· * b) : ZMod q.den → ZMod q.den` orbit pigeonhole instead.
 - `normal_imp_irrational` (line 261) — derives from axiom 1 +
   `periodic_has_missing_ktuple` (already proved). Discharging axiom 1 first
   then proving 2 is the natural sequence.
@@ -42,21 +60,24 @@ Three remaining axioms (per `proofs/Proofs/ETranscendentalOQ02.lean`):
 
 ## Next Action
 
-**ACT** — discharge `rational_digits_eventually_periodic`. The proof is
-pigeonhole: a rational `p/q` has at most `q` distinct partial remainders
-under long-division-by-q, so the digit sequence must repeat with period ≤ q.
-The Lean implementation needs:
-- Connect `nthDigit b n (p/q : ℝ)` to remainders of `b^n * p mod q`.
-- Show `n ↦ b^n * p mod q` factors through `ZMod q`, hence has period
-  dividing the multiplicative order of `b` in `(ZMod q)ˣ`.
-- Wrap in `eventually` (skip the pre-period).
+**ACT** — apply Session 3 recipe (`knowledge.md`) Layer 1: prove
+`eventually_periodic_iterate` (a fintype-orbit pigeonhole lemma) as a
+self-contained ~30–40 line lemma. It is the most reusable artifact and a
+clean Mathlib contribution candidate (no module-specific dependencies).
+
+Subsequent sessions: Layer 2 (~30–50 lines, ratResidue ZMod bridge) and
+Layer 3 (~50–80 lines, nthDigit ↔ residue cast-bridge) — see
+`knowledge.md` for the worked sketches.
 
 ## Attempt Counts
 
-- Total attempts: 1 (entry built in 2026-05-04 session before research/problems
-  was scaffolded; no subsequent attempts on the axioms).
-- Current approach attempts: 0
-- Approaches tried: 0 (only metadata reconciliation in this session)
+- Total attempts: 2 (Session 1 = entry built 2026-05-04; Session 1.5 = digit
+  extension + axiomCount 4→3 via `periodic_has_missing_ktuple`; Session 2 =
+  metadata reconciliation 2026-05-07; Session 3 = recipe-only 2026-05-08).
+- Current approach attempts: 0 (recipe stage; no proof attempted yet)
+- Approaches tried: 0 for the rational-digits axiom; 1 successful approach
+  for `periodic_has_missing_ktuple` (orbit cardinality, archived in
+  `knowledge.md`).
 
 ## References
 
