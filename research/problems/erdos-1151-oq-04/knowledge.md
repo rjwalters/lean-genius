@@ -267,3 +267,68 @@ The daemon (or a concurrent agent) reset the main repo files. This is the
 `feedback_worktree_traps.md` and `feedback_mechanic_worktree_vs_main_repo.md` trap. Re-applied
 edits using worktree paths. Commits go through the worktree branch, so PR #16745 carries
 the corrected versions.
+
+## Session 18 (2026-05-08, researcher-10) — Reindex symmetry helper
+
+**Outcome**: progress (helper lemma added); sorries unchanged at 2.
+
+### What I Did
+
+Added the **reindex-symmetry helper** `trig_sum_reindex_symmetry` (~70 lines) right
+before `trig_sum_harmonic_lb` in `Erdos1151OQ04.lean` (line 1498).
+
+**Statement**:
+```
+∑ k : Fin n, sin(φₖ) / |cos θ - chebyshevNode n k| =
+∑ k : Fin n, sin(φₖ) / |cos(π - θ) - chebyshevNode n k|
+```
+
+**Proof structure**:
+1. Define `σ : Fin n ≃ Fin n` via `k ↦ n - 1 - k` (an involution, both `toFun` and
+   `invFun` are the same map; `left_inv` and `right_inv` discharged by `omega`).
+2. Reindex the RHS by `σ` via `(Equiv.sum_comp σ _).symm`.
+3. Show termwise equality: at each `k : Fin n`,
+   - `((σ k).val : ℝ) = (n - 1 - k.val : ℝ)` via `Nat.cast_sub` (twice, with
+     `k.val ≤ n - 1` and `1 ≤ n` from `hn`).
+   - `(2(σk)+1)π/(2n) = π - (2k+1)π/(2n)` via `field_simp + ring`.
+   - `sin(φ_{σk}) = sin(φ_k)` via `Real.sin_pi_sub`.
+   - `chebyshevNode n (σ k) = -chebyshevNode n k` via `Real.cos_pi_sub`.
+4. After `rw [hsin_eq, hnode_eq, Real.cos_pi_sub]`, goal becomes
+   `sin(φ_k)/|cos θ - cn k| = sin(φ_k)/|-cos θ - -cn k|`. The denominators are
+   equal: `-(cos θ - cn k) = -cos θ - -cn k`, then `abs_neg`. Close with `congr 1`.
+
+### Why This Matters for Step 7
+
+The going-up sub-sum from `trig_sum_subsum_lb` (k = k₀ + j + 1) requires the
+midpoints `φ_{k₀+j+1}` to lie in `[d/2, π - d/2]`. For θ close to π (so d = π - θ
+is small), the going-up direction has very little room. The going-down direction
+would be needed — but rather than proving a parallel "going-down" sub-sum lemma,
+we can use this symmetry: at θ ∈ (π/2, π), pass to θ' = π - θ ∈ (0, π/2) where
+the going-up sub-sum has plenty of room.
+
+Concrete reduction:
+- For `trig_sum_harmonic_lb θ hθ_pos hθ_lt hne`:
+  - If `θ ≤ π/2`: apply the going-up sub-sum directly with `d = θ`.
+  - If `θ > π/2`: apply `trig_sum_reindex_symmetry` to convert to `S(π - θ, n)`,
+    where `π - θ ∈ (0, π/2)`. Use the going-up case at `π - θ`. The hypothesis
+    `cos θ ≠ chebyshevNode n k` transfers to `cos(π - θ) ≠ chebyshevNode n k`
+    via `chebyshevNode n (σ k) = -chebyshevNode n k` and `cos(π - θ) = -cos θ`
+    (so `cos(π - θ) = chebyshevNode n k ↔ cos θ = chebyshevNode n (σ k)`, false
+    by hypothesis).
+
+### Build Verification
+
+Docker build in progress (researcher-10 background task). Per memory note
+`feedback_researcher_lake_symlink_broken.md`, full Mathlib clone + cache
+takes ~30-45 min. PR opened pending build.
+
+### Next Steps
+
+1. **(Researcher, next session)** Step 7a — handle θ ∈ (0, π/2] case:
+   choose `m = ⌊nθ/(4π)⌋`; verify `hm_le` (k₀+m+1 ≤ n) and `h_interior`
+   (each `φ_{k₀+j+1} ∈ [θ/2, π-θ/2]` — lower bound trivial since
+   `φ_{k₀+j+1} ≥ θ ≥ θ/2`; upper bound from `(2j+3)π/(2n) ≤ π - 3θ/2`).
+2. **(Researcher)** Step 7b — finite-n closure via `Finset.min'` over
+   `{1, ..., N₀(θ) - 1}`.
+3. **(Researcher)** Step 7c — combine cases via `trig_sum_reindex_symmetry`
+   to handle θ ∈ (π/2, π).
