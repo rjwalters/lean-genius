@@ -890,6 +890,65 @@ example : schonhageOuterGuardFires 63 1 = false := by native_decide
 
 example : schonhageOuterGuardFires 63 63 = false := by native_decide
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XV: SURVEY-RANGE TABULATION FRAMEWORK (Session 24)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Outer-guard density framework on the S17 counterexample range
+
+    The S17 PART XIV counterexample family `(130, 89)` (BinaryGcd
+    OQ03OQ02 PART XIV) sits inside a survey range
+      `S = {(a, b) : 64 ≤ b ≤ a < 130}`.
+    On `S` the row-vector invariant fails on a positive-density
+    subset (PART XIV); the S23 outer guard `schonhageOuterGuardFires`
+    catches every such pair and dispatches to `Nat.gcd`.
+
+    This section provides the QUANTITATIVE infrastructure to measure
+    outer-guard firing density on `S`:
+
+      * `surveyRange`: the explicit list of all 2211 pairs
+        (lower-triangular `[64, 130) × [64, 130)`).
+      * `outerGuardFiresInSurveyRange`: count of pairs where the
+        outer guard fires (`schonhageGcd` recurses on a strictly
+        smaller pair).
+      * `outerGuardAbortsInSurveyRange`: count of pairs where the
+        outer guard aborts (`schonhageGcd` falls back to `Nat.gcd`).
+
+    The exact numerical density is left as a future `native_decide`
+    evaluation (each of the 2211 calls runs a full safe-HGCD
+    recursion). This session establishes the data structure and
+    the enumeration size; downstream callers can plug specific
+    `native_decide` checks against the count definitions. -/
+
+/-- Explicit enumeration of pairs `(a, b)` with `64 ≤ b ≤ a < 130`,
+    constructed via nested `foldr` (no `bind` / `flatMap`
+    dependency). The result is the lower-triangular set on
+    `[64, 130) × [64, 130)`. -/
+def surveyRange : List (ℕ × ℕ) :=
+  (List.range 66).foldr
+    (fun i acc =>
+      (List.range (i + 1)).foldr
+        (fun j acc' => (64 + i, 64 + j) :: acc') acc)
+    []
+
+/-- The survey range has exactly `2211 = 66 · 67 / 2` pairs.
+    Verified by `native_decide` on a structural fold over `List.range`,
+    independent of any `hgcdSafeApply` recursion. -/
+theorem surveyRange_length : surveyRange.length = 2211 := by native_decide
+
+/-- Count of pairs `(a, b)` in `surveyRange` for which the outer
+    guard fires — equivalently, on which `schonhageGcd` recurses
+    rather than falling back to `Nat.gcd`. -/
+def outerGuardFiresInSurveyRange : ℕ :=
+  (surveyRange.filter (fun p => schonhageOuterGuardFires p.1 p.2)).length
+
+/-- Count of pairs `(a, b)` in `surveyRange` for which the outer
+    guard aborts — equivalently, on which `schonhageGcd` falls back
+    to `Nat.gcd` (whether because of below-threshold dispatch or
+    because `hgcdSafeApply` did not strictly reduce `max a b`). -/
+def outerGuardAbortsInSurveyRange : ℕ :=
+  (surveyRange.filter (fun p => !schonhageOuterGuardFires p.1 p.2)).length
+
 end HGcdSafe
 
 /-! ## Summary
