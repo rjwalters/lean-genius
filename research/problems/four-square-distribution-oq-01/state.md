@@ -2,27 +2,35 @@
 
 ## Current State
 **Phase**: ACT
-**Phase note**: S13 (analysis-only): modular-form atomic decomposition
-**spec** for `jacobi_r4_formula`, complementary to S11.alt's elementary
-3-hypothesis decomposition (PR #17388). Documents two atomic axioms
-on the modular-form route — (Hθ4Coef) q-coefficient bridge and
-(Hθ4Eis) `θ⁴ = 1 + 8·(E₂ − 4·E₂(4·)`) modular-form identification
-— a closure proof skeleton via S9 `r4Count_factorization_form`,
-Mathlib API gaps, and a 9-month upstream contribution sequence.
-The spec is decoupled from `FourSquareDistributionOQ01.lean` (no
-Lean changes) to avoid contention with the 4–5 build-pending PRs
-on the file. S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) =
-8·σ(p^k)` and `r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any
-`k ≥ 0`. With Part 15's pure 2-power closed form and Part 12's
-σ*-multiplicativity, jacobiR4(n) is now explicitly pinned on every
-prime power. Closure of `jacobi_r4_formula` still requires either
-the elementary route (S11.alt #17388 — three combinatorial
-hypotheses) or the modular-form route (S13 spec — two analytic
-axioms).
+**Phase note**: S14 (this PR, researcher-6) implements S13's spec
+deliverable AXIOM-FREE: Part 23 in `FourSquareDistributionOQ01.lean`
+states `jacobi_r4_formula_from_modular_form` as a 2-hypothesis
+implication theorem (no new axioms, no sorries) plus 3
+cross-validation `example`s. Departing from S13 spec §4.1 (which
+proposed adding 2 NEW axioms), the implementation abstracts the
+q-coefficient extractor as a parameter `QC : ℕ → ℕ` so the
+hypotheses are stated as `∀`-quantified equations on `r4Count` and
+`jacobiR4` only — pure arithmetic, no modular-form symbols, no
+upstream Mathlib dependence at the file level. Closing the two
+hypotheses (which encode `(Hθ4Coef)` q-coefficient bridge and the
+combined `(Hθ4Eis)` + `E2_qExpansion` Eisenstein-coefficient
+identity, parallel to PR #17388's S11.alt elementary route)
+discharges `jacobi_r4_formula`. axiomCount stays at 1 (only the
+original `jacobi_r4_formula` axiom). Net delta: +121 lines
+(1653 → 1774), +1 theorem (106 → 107), 0 new axioms, 0 new sorries.
+S13 (PR #17515, merged): analysis-only modular-form decomposition
+**spec** complementary to S11.alt's elementary 3-hypothesis
+decomposition (PR #17388). Documents the (Hθ4Coef) q-coefficient
+bridge + (Hθ4Eis) modular-form identification + 9-month Mathlib
+upstream contribution sequence. The spec was decoupled from the
+Lean file to avoid contention with build-pending PRs; this PR is
+the implementation transcription, specialised to be axiom-free.
+S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
+`r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any `k ≥ 0`.
 **Path**: full
 **Since**: 2026-05-08T21:33:45+03:00
-**Last Updated**: 2026-05-09 (S13, researcher-3; analysis-only, no Lean changes)
-**Iteration**: 13
+**Last Updated**: 2026-05-09 (S14, researcher-6; Part 23 implementation)
+**Iteration**: 14
 
 ## Current Focus
 S13 (this session, analysis-only) adds
