@@ -731,7 +731,7 @@ theorem sigmaStar_mul_of_coprime {m n : ℕ}
           = sigmaOne m * sigmaOne n := by
       have hh := struct_mn
       rw [h_mn_div4, h_mult_div, h_mult] at hh
-      linarith [hh]
+      linarith [hh, mul_assoc (4 : ℕ) (sigmaOne (m / 4)) (sigmaOne n)]
     have h1 :
         sigmaStar m * sigmaOne n + 4 * sigmaOne (m / 4) * sigmaOne n
           = sigmaOne m * sigmaOne n := by
@@ -769,7 +769,7 @@ theorem sigmaStar_mul_of_coprime {m n : ℕ}
             = sigmaOne m * sigmaOne n := by
         have hh := struct_mn
         rw [h_mn_div4, h_mult_div, h_mult] at hh
-        linarith [hh]
+        linarith [hh, mul_assoc (4 : ℕ) (sigmaOne m) (sigmaOne (n / 4))]
       have h1 :
           sigmaOne m * sigmaStar n + 4 * sigmaOne m * sigmaOne (n / 4)
             = sigmaOne m * sigmaOne n := by
