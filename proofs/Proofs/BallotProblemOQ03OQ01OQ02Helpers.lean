@@ -14619,13 +14619,14 @@ on the (3,1) shape with target c = (0,2) and other corner c' = (1,0):
 * `F(μ\c',c) = 3` (single-row μ\c' = [3])
 * Identity: `(8/3) · (4 − 1)² = 24 = 3 · 4 · (4 − 2)` ✓
 
-**Why this lemma matters.**  S53 (the F-side joint K-induction) is the
-single remaining open piece of `gnwProb_exchange`.  This combiner makes
-that target precise: any future proof of the F-side identity (in the form
-above) immediately closes `gnwProb_exchange` for the `c.1 < c'.1` case via
-this lemma.  The case `c'.1 < c.1` is symmetric (apply with c, c' swapped
-in the underlying applications of `hookProd_doubleRemove_factor` and S50);
-its companion combiner is deferred to a follow-up session. -/
+**Why this lemma matters.**  After S55a, the F-side identity (now stated
+parametrically in `F_side_identity` below) is the single remaining open
+piece of `gnwProb_exchange`.  This combiner makes that target precise:
+any future proof of the F-side identity (in the form above) immediately
+closes `gnwProb_exchange` for the `c.1 < c'.1` case via this lemma.  The
+case `c'.1 < c.1` is symmetric (apply with c, c' swapped in the underlying
+applications of `hookProd_doubleRemove_factor` and S50); its companion
+combiner `gnwProb_exchange_lt_col_of_F_side` (S54) is below. -/
 private lemma gnwProb_exchange_lt_row_of_F_side
     {μ : YoungDiagram} {c c' : ℕ × ℕ}
     (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1)
@@ -14762,13 +14763,60 @@ private lemma gnwProb_exchange_lt_col_of_F_side
           gnwProb (removeCorner μ c' hc') c
             (hookLength (removeCorner μ c' hc') x.1 x.2) x) * h_S52
 
+/-- **F-side hook-shift identity (parametric, S55a).**
+
+This is the core "F-side" component of the GNW 1979 exchange identity.  It
+quantifies how the F-sum `F(μ,c) := ∑_{x ∈ μ.cells} gnwProb μ c (h_μ x) x`
+changes when one corner `c'` (distinct from `c`) is removed:
+```
+F(μ,c) · (h_d − 1)² = F(μ\c',c) · h_d · (h_d − 2)
+```
+where the doubly-affected cell `d := (min c.1 c'.1, min c.2 c'.2)` is
+the unique cell at the intersection of c's arm/leg with c''s arm/leg.
+
+**Why `min` works for both cases of `distinct_corners_dichotomy`.**  By
+`corner_col_lt_of_row_lt` / `corner_row_lt_of_col_lt`, for distinct corners
+`c, c'` of `μ`:
+* If `c.1 < c'.1` (case 1) then `c'.2 < c.2`, so `min c.1 c'.1 = c.1`
+  and `min c.2 c'.2 = c'.2`.  The doubly-affected cell is `(c.1, c'.2)`.
+* If `c'.1 < c.1` (case 2) then `c.2 < c'.2`, so `min c.1 c'.1 = c'.1`
+  and `min c.2 c'.2 = c.2`.  The doubly-affected cell is `(c'.1, c.2)`.
+
+In both cases, the doubly-affected cell coordinates collapse to
+`(min c.1 c'.1, min c.2 c'.2)`, so a single parametric statement
+discharges both branches.
+
+**Status.**  Sorry'd.  Target of S55+: joint K-induction on the sum-level
+invariant (cf. session note `2026-05-08-s05.md`, recipe step 2).  The
+combiners `gnwProb_exchange_lt_row_of_F_side` (S53) and
+`gnwProb_exchange_lt_col_of_F_side` (S54) consume this identity through
+the dispatcher `gnwProb_exchange` below — so this is now the **sole open
+sorry** on the GNW route. -/
+private lemma F_side_identity {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
+    (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
+      ((hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) - 1) ^ 2 =
+    (∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb (removeCorner μ c' hc') c
+          (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
+      (hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) *
+      ((hookLength μ (min c.1 c'.1) (min c.2 c'.2) : ℚ) - 2) := by
+  sorry
+
 /-- GNW 1979 exchange identity (core inductive step, product form — no division).
     For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
       F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
     where F(ν,d) = Σ_{x∈ν} gnwProb(ν,d,h(x),x) and H = hookProd.
     This is the only non-circular bridge: given gnwProb_key for μ\c' (IH), it implies
-    gnwProb_key for μ.  Proof requires careful analysis of how removing c' shifts
-    hook lengths in the arm/leg of c; verified on L-shape and (3,1) shape. -/
+    gnwProb_key for μ.
+
+    **Proof structure (S55a).** Dispatch via `distinct_corners_dichotomy`
+    onto the two algebraic combiners `gnwProb_exchange_lt_row_of_F_side`
+    (S53) and `gnwProb_exchange_lt_col_of_F_side` (S54), feeding each with
+    the case-specialized form of `F_side_identity` (S55a) — obtained by
+    rewriting `min c.1 c'.1` and `min c.2 c'.2` to the appropriate
+    coordinates in each branch.  The combiners discharge the hookProd-side
+    algebra; only the F-side identity remains open. -/
 private lemma gnwProb_exchange (μ : YoungDiagram) {c c' : ℕ × ℕ}
     (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') :
     (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
@@ -14780,7 +14828,20 @@ private lemma gnwProb_exchange (μ : YoungDiagram) {c c' : ℕ × ℕ}
       (hookProd (removeCorner (removeCorner μ c' hc') c
           (isCorner_removeCorner_of_ne hc' hc hne.symm)) : ℚ) *
       (hookProd μ : ℚ) := by
-  sorry
+  have h_F := F_side_identity hc hc' hne
+  rcases distinct_corners_dichotomy hc hc' hne with ⟨hi, hj⟩ | ⟨hi, hj⟩
+  · -- Case 1: c.1 < c'.1 (and c'.2 < c.2 by `corner_col_lt_of_row_lt`).
+    -- Specialize `min` rewrites: `min c.1 c'.1 = c.1`, `min c.2 c'.2 = c'.2`.
+    have h_min1 : min c.1 c'.1 = c.1 := min_eq_left hi.le
+    have h_min2 : min c.2 c'.2 = c'.2 := min_eq_right hj.le
+    rw [h_min1, h_min2] at h_F
+    exact gnwProb_exchange_lt_row_of_F_side hc hc' hne hi h_F
+  · -- Case 2: c'.1 < c.1 (and c.2 < c'.2 by `corner_col_lt_of_row_lt`).
+    -- Specialize `min` rewrites: `min c.1 c'.1 = c'.1`, `min c.2 c'.2 = c.2`.
+    have h_min1 : min c.1 c'.1 = c'.1 := min_eq_right hi.le
+    have h_min2 : min c.2 c'.2 = c.2 := min_eq_left hj.le
+    rw [h_min1, h_min2] at h_F
+    exact gnwProb_exchange_lt_col_of_F_side hc hc' hne hi h_F
 
 /-- GNW KEY theorem (Greene-Nijenhuis-Wilf 1979):
     The sum of GNW walk probabilities over all cells in μ equals the hookProd ratio.
@@ -14945,10 +15006,12 @@ private lemma gnwProb_key (μ : YoungDiagram) {c : ℕ × ℕ} (hc : isCorner μ
       push_cast [h_card]; ring
     rw [h_sum_card, h_ratio_card]
   · -- Multi-corner case (|corners μ| ≥ 2), using gnwProb_exchange + strong induction.
-    -- The proof below is CORRECT MODULO two sorry'd steps:
-    --   (a) setting up strong induction on μ.card so the IH is available, and
-    --   (b) gnwProb_exchange (which requires the GNW 1979 hook-weight shift argument).
-    -- Once both are proved, the remaining algebraic steps close immediately.
+    -- The proof is CORRECT MODULO `gnwProb_exchange` (which now reduces, via
+    -- S55a's dispatcher, to the parametric `F_side_identity` — the sole
+    -- open sorry on the GNW route).  Strong induction on `μ.card` is
+    -- supplied by Lean's `termination_by μ.card` / `decreasing_by` clauses
+    -- below, so the IH `gnwProb_key (μ\c') hc_in_rc'` is automatically
+    -- available without manual well-founded recursion setup.
     --
     -- Pick a second corner c' ≠ c.
     have h_card_ge2 : 2 ≤ (corners μ).card := by
