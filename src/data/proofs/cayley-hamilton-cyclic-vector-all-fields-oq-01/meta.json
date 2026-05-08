@@ -139,16 +139,78 @@
       "Is there a Mathlib formalization of the rational canonical form that could simplify this proof further?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "monic_irreducible_multiset_factorization",
+      "type": "lemma",
+      "description": "Every monic polynomial μ of positive degree over a field factors as μ = prod of a multiset of monic irreducibles. Wraps `UniqueFactorizationMonoid.exists_prime_factors`, then re-monicizes each prime factor via leadingCoeff⁻¹·p. The multiset (rather than Finset) form preserves the multiplicity structure that the downstream prime-power grouping needs."
+    },
+    {
+      "name": "coprime_of_distinct_monic_irreducible",
+      "type": "lemma",
+      "description": "Two distinct monic irreducible polynomials over a field are coprime. Proof: distinct monic irreducibles cannot divide each other (a unit-multiple would coincide once both are monic), and `Irreducible.coprime_iff_not_dvd` closes the deal."
+    },
+    {
+      "name": "coprime_pow_of_coprime_irreducible",
+      "type": "lemma",
+      "description": "If p, q are coprime, then p^m, q^n are coprime — direct application of `IsCoprime.pow`. Used to lift the irreducible-coprime conclusion to the prime-power factorization in the main bridge."
+    },
+    {
+      "name": "finset_factorization_from_multiset",
+      "type": "lemma",
+      "description": "Multiset-to-`Fin k` induction: from a non-empty multiset of monic irreducibles, extract a list of *distinct* irreducibles indexed by `Fin k` together with positive exponents. Proof induct on the multiset; on each step, either merge with an existing index (incrementing its exponent) or append a new index. This is the workhorse step that converts the unordered factorization into an indexed product, avoiding heavy Finset infrastructure."
+    },
+    {
+      "name": "monic_factored_form",
+      "type": "lemma",
+      "description": "**The factorization bridge.** Every monic polynomial μ of positive degree factors as μ = ∏ᵢ pᵢ^{eᵢ} with the pᵢ distinct monic irreducibles, eᵢ > 0, and the prime powers pairwise coprime. Composes the three preceding private lemmas: factorize → re-index by Fin → upgrade pairwise-distinct-irreducible to pairwise-coprime via `IsCoprime.pow`. This is the structural input the WIP04 primary-decomposition theorem consumes."
+    },
+    {
+      "name": "nonderogatory_has_cyclic_vector",
+      "type": "theorem",
+      "description": "**Main theorem**: every nonderogatory matrix M over any field K (finite or infinite, any size) has a cyclic vector. Proof: factor minpoly K M via `monic_factored_form`, then invoke `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector` from WIP04 to extract the cyclic vector via primary decomposition + Bezout/CRT. The n = 0 case is dispatched separately."
+    },
+    {
+      "name": "nonderogatory_has_cyclic_vector_finite",
+      "type": "theorem",
+      "description": "**Corollary** for finite fields F_q: holds even when q ≤ n (the regime where classical union-avoidance proofs break down). Direct corollary of the main theorem — no extra hypotheses needed because the primary-decomposition pathway never invokes |K| > n."
+    },
+    {
+      "name": "cyclic_iff_not_killed_below_degree",
+      "type": "theorem",
+      "description": "**Characterization**: for nonderogatory M, a vector v is cyclic iff no nonzero polynomial of degree < n annihilates v under aeval M. Useful for downstream existence-of-witness arguments and for connecting to the linear-independence formulation of cyclicity."
+    }
+  ],
   "references": [
     {
       "title": "Gantmacher, Theory of Matrices, Vol. 1 (1959)",
       "url": "",
-      "description": "Classical source for cyclic vector and nonderogatory matrix theory"
+      "description": "Classical source for cyclic vector and nonderogatory matrix theory; chapters VI-VII develop minimum/characteristic polynomials and the rational canonical form over arbitrary fields, including the role of the cyclic vector in similarity classification."
     },
     {
       "title": "UniqueFactorizationMonoid in Mathlib",
       "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/UniqueFactorizationDomain.html",
-      "description": "UFD structure of polynomial rings used for factorization"
+      "description": "UFD structure of polynomial rings used for factorization. The `exists_prime_factors` lemma is the entry point for `monic_irreducible_multiset_factorization`."
+    },
+    {
+      "title": "Hoffman, K. & Kunze, R. (1971). Linear Algebra (2nd ed.), Chapter 7 (Rational and Jordan Forms). Prentice-Hall.",
+      "url": "",
+      "description": "Standard graduate exposition of the cyclic vector theorem, the rational canonical form, and the relationship between minimum polynomial, invariant factors, and similarity. The §7.1-7.3 union-avoidance argument is exactly the proof that fails over finite F_q with q ≤ n — the obstruction this entry's primary-decomposition pathway sidesteps."
+    },
+    {
+      "title": "Bourbaki, N. (1958). Algèbre, Chapitre VII (Modules sur les anneaux principaux). Hermann.",
+      "url": "",
+      "description": "Module-theoretic treatment of the structure theorem for finitely-generated modules over a PID, of which the cyclic vector theorem is a corollary (V as K[X]-module via the M-action). The primary-decomposition approach used here mirrors the §7.4 Bourbaki proof."
+    },
+    {
+      "title": "IsCoprime in Mathlib",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Coprime/Basic.html",
+      "description": "Provides `IsCoprime.pow` (used in `coprime_pow_of_coprime_irreducible`) and `Irreducible.coprime_iff_not_dvd` (used in `coprime_of_distinct_monic_irreducible`) — the two API endpoints that turn the multiset factorization into the coprime prime-power form."
+    },
+    {
+      "title": "Polynomial.Monic in Mathlib",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Monic.html",
+      "description": "Monic-polynomial API used throughout the factorization bridge: leadingCoeff manipulation, monic-product structure, and the leadingCoeff⁻¹ re-monicization trick at the heart of `monic_irreducible_multiset_factorization`."
     }
   ]
 }
