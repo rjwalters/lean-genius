@@ -30,7 +30,7 @@
       "startLine": 42,
       "endLine": 88
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Paired Induction: Q(m) = P(m) ∧ P(m-1) with Successor Step",
     "content": "The Chebyshev recurrence T_{m+2} = 2X·T_{m+1} - T_m is second-order in m, so the induction step for P(m+1) needs both P(m) and P(m-1). The standard solution is to carry a conjunction Q(m) = P(m) ∧ P(m-1) and prove Q by Int.induction_on. The Q_zero base case proves both P(0) (trivial: 2·1·U_n = 2U_n) and P(-1) (using T_{-1} = X and two_X_U). The Q_succ successor step receives Q(m) = ⟨P(m), P(m-1)⟩ and must return Q(m+1) = ⟨P(m+1), P(m)⟩; the second component is free (just P(m) from the hypothesis), and P(m+1) is closed by linear_combination using T_add_two and two applications of two_X_U.",
     "mathContext": "Successor step: $2T_{m+1} \\cdot U_n \\stackrel{T_{m+1}=2X T_m - T_{m-1}}{=} 2X(2T_m U_n) - (2T_{m-1}U_n) \\stackrel{\\text{IH}}{=} 2X(U_{m+n}+U_{n-m}) - (U_{m-1+n}+U_{n-m+1})$. Apply two\\_X\\_U to each term: $= (U_{m+n+1}+U_{m+n-1}) + (U_{n-m+1}+U_{n-m-1}) - U_{m-1+n} - U_{n-m+1} = U_{m+1+n} + U_{n-m-1}$ ✓.",
@@ -80,7 +80,7 @@
       "startLine": 89,
       "endLine": 112
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Q_pred: Backward Induction Step via T_{m-2} = 2X·T_{m-1} - T_m",
     "content": "The predecessor step is the symmetric counterpart to Q_succ. Given Q(m) = ⟨P(m), P(m-1)⟩, Q_pred must produce Q(m-1) = ⟨P(m-1), P(m-2)⟩. The first component P(m-1) is free from the hypothesis. For P(m-2), use T_add_two at (m-2) rearranged as T_{m-2} = 2X·T_{m-1} - T_m. Then 2T_{m-2}·U_n = 2X·(2T_{m-1}·U_n) - (2T_m·U_n), and apply P(m-1) and P(m) from the IH, then two_X_U twice, with linear_combination closing the resulting algebraic identity. This symmetric structure — needing both a successor and predecessor step for integer induction — is what makes the paired conjunction Q the right carrier.",
     "mathContext": "Predecessor step: $2T_{m-2} \\cdot U_n \\stackrel{T_{m-2}=2X T_{m-1}-T_m}{=} 2X(2T_{m-1}U_n) - (2T_mU_n)$. By IH: $= 2X(U_{m-1+n}+U_{n-m+1}) - (U_{m+n}+U_{n-m})$. By two\\_X\\_U: $= (U_{m+n}+U_{m-2+n}) + (U_{n-m+2}+U_{n-m}) - U_{m+n} - U_{n-m} = U_{m-2+n} + U_{n-m+2}$ ✓.",
@@ -155,11 +155,11 @@
       "startLine": 174,
       "endLine": 182
     },
-    "type": "concept",
+    "type": "context",
     "title": "Summary Theorem: Cross-Product and Recurrence Together",
     "content": "The demoivre_oq02oq02_summary theorem packages the two main results as a conjunction for easy export: the full cross-product formula at arbitrary (m, n, θ) and the m=1 recurrence corollary. As a trivial conjunction proof, it serves as a single import point for downstream use. It also signals the boundary of the namespace — everything provable here about T×U mixed products has been captured. The pattern of a summary theorem as a ∧-conjunction of the key results, proved by ⟨theorem1, theorem2⟩, is a clean documentation idiom in Lean formalization.",
     "mathContext": "Summary: $(\\forall m, n, \\theta)\\; 2T_m(\\cos\\theta)U_n(\\cos\\theta) = U_{m+n}(\\cos\\theta) + U_{n-m}(\\cos\\theta)$ $\\;\\land\\;$ $(\\forall n, \\theta)\\; 2\\cos\\theta \\cdot U_n(\\cos\\theta) = U_{n+1}(\\cos\\theta) + U_{n-1}(\\cos\\theta)$.",
-    "significance": "supporting",
+    "significance": "context",
     "relatedConcepts": [
       "conjunction proof pattern",
       "namespace boundary",
