@@ -48,29 +48,33 @@
       "id": "setup",
       "title": "Setup: BrownianMotion and First Passage Time",
       "startLine": 1,
-      "endLine": 58,
-      "summary": "Imports, namespace, and the core definitions: BrownianMotion structure (\u03a9 \u2192 \u211d process with continuous paths hypothesis), firstPassageTime (sInf of hitting set), maxEvent (the event {\u2203 s \u2208 [0,T], W(s,\u03c9) \u2265 a})."
+      "endLine": 54,
+      "summary": "Module docstring (1-26) explaining the parent axiom and the sInf \u2205 = 0 subtlety, imports (28-31), the maxHeartbeats option (33), namespace + opens (35-37), and the Part I definitions: BrownianMotion structure (\u03a9 \u2192 \u211d process bundled with continuous-paths hypothesis), firstPassageTime (sInf of hitting set), maxEvent (the event {\u2203 s \u2208 [0,T], W(s,\u03c9) \u2265 a}).",
+      "mathContext": "Two key conventions are baked in here. First, the BrownianMotion structure carries `path_continuous : \\forall \\omega, \\mathrm{Continuous}(fun t => W t \\omega)` as a *bundled hypothesis* rather than as a separate axiom \u2014 this is what unlocks the topological argument later. Second, `firstPassageTime bm a \\omega := \\mathrm{sInf}\\{t \\mid 0 \\le t \\land W(t,\\omega) \\ge a\\}` uses Lean's $\\mathrm{sInf}$, which returns $0$ for the empty set (`Real.sInf_empty`) rather than $+\\infty$ as classical analysis prefers \u2014 the entire reason the parent axiom needs a nonemptiness hypothesis."
     },
     {
       "id": "hitting-set-topology",
       "title": "Topology and csInf Properties of the Hitting Set",
       "startLine": 55,
-      "endLine": 91,
-      "summary": "Proves hittingSet_isClosed (preimage of [a,\u221e) under continuous path), hittingSet_bddBelow (bounded below by 0), csInf_empty_eq_zero (Lean's convention: sInf \u2205 = 0 in \u211d), and hittingSet_csInf_mem (when nonempty, sInf is in the closed set)."
+      "endLine": 86,
+      "summary": "Parts II-III. Proves hittingSet_isClosed (preimage of [a,\u221e) under continuous path is closed; intersected with [0,\u221e)), hittingSet_bddBelow (bounded below by 0 via the $0 \\le t$ conjunct), csInf_empty_eq_zero (Lean's convention: sInf \u2205 = 0 in \u211d, just `Real.sInf_empty`), and hittingSet_csInf_mem (when nonempty, sInf is in the closed set, via Mathlib's `IsClosed.csInf_mem`).",
+      "mathContext": "$H_a(\\omega) := \\{t \\ge 0 : B(t,\\omega) \\ge a\\} = [0,\\infty) \\cap f^{-1}([a,\\infty))$ where $f(t) = B(t,\\omega)$. Closure follows from `isClosed_Ici.preimage hcont` (preimage of closed set under continuous map is closed) intersected with `isClosed_Ici`. Bounded below by 0 by the conjunct. `IsClosed.csInf_mem` then gives $\\inf H_a(\\omega) \\in H_a(\\omega)$ when $H_a(\\omega) \\ne \\emptyset$ \u2014 the key step that turns 'sInf \u2264 T' into a witness $s = \\inf H_a(\\omega)$ for membership in maxEvent."
     },
     {
       "id": "characterization",
       "title": "First Passage Time Characterization (Both Directions)",
       "startLine": 88,
       "endLine": 135,
-      "summary": "maxEvent_implies_fpt_le (easy: witness gives \u03c4 \u2264 T), fpt_le_implies_maxEvent (hard: closed hitting set \u220b \u03c4 gives witness), fpt_le_iff_maxEvent (the full biconditional under nonemptiness), fpt_le_set_eq_maxEvent (set equality when nonemptiness holds for all \u03c9)."
+      "summary": "Parts IV-VI. maxEvent_implies_fpt_le (easy: witness gives \u03c4 \u2264 T), fpt_le_implies_maxEvent (hard: closed hitting set \u220b \u03c4 gives witness), fpt_le_iff_maxEvent (the full biconditional under nonemptiness), fpt_le_set_eq_maxEvent (set equality when nonemptiness holds for all \u03c9).",
+      "mathContext": "**Easy direction** ($\\omega \\in \\mathrm{maxEvent} \\Rightarrow \\tau \\le T$): pick $s \\in [0,T]$ with $B(s,\\omega) \\ge a$ from the maxEvent witness; then $s \\in H_a(\\omega)$, so $\\tau = \\inf H_a(\\omega) \\le s \\le T$ by `csInf_le` (which only needs `BddBelow`). **Hard direction** ($\\tau \\le T \\Rightarrow \\omega \\in \\mathrm{maxEvent}$, given $H_a(\\omega) \\ne \\emptyset$): by `hittingSet_csInf_mem`, $\\tau = \\inf H_a(\\omega) \\in H_a(\\omega)$, so $0 \\le \\tau$ and $B(\\tau,\\omega) \\ge a$. Combined with $\\tau \\le T$ from the hypothesis, the witness is $s = \\tau \\in [0,T]$ with $B(s,\\omega) \\ge a$. The biconditional `fpt_le_iff_maxEvent` and the extensional set equality `fpt_le_set_eq_maxEvent` follow."
     },
     {
       "id": "ivt-nonemptiness",
       "title": "IVT-Based Nonemptiness for Crossing Paths",
       "startLine": 137,
       "endLine": 185,
-      "summary": "ivt_first_crossing (IVT gives s \u2208 (0,T] with B(s,\u03c9) \u2265 a when B(0,\u03c9) < a \u2264 B(T,\u03c9)), hittingSet_nonempty_of_ivt (crossing paths have nonempty hitting sets), fpt_le_T_of_crossing (for crossing paths, \u03c4 \u2264 T and \u03c9 \u2208 maxEvent both hold)."
+      "summary": "Parts VII-VIII. ivt_first_crossing (IVT gives s \u2208 [0,T] with B(s,\u03c9) = a, hence \u2265 a, when B(0,\u03c9) < a \u2264 B(T,\u03c9); also $s > 0$ since $B(0,\\omega) < a = B(s,\\omega)$), hittingSet_nonempty_of_ivt (crossing paths have nonempty hitting sets), fpt_le_T_of_crossing (for crossing paths, \u03c4 \u2264 T and \u03c9 \u2208 maxEvent both hold).",
+      "mathContext": "The Lean step: `isPreconnected_Icc.intermediate_value\u2082 h01 hT1 hcont continuousOn_const (le_of_lt hstart) hend`, where the two functions are $f(t) = B(t,\\omega)$ and $g(t) = a$ (constant). IVT gives $s \\in [0,T]$ with $f(s) = g(s) = a$. The strict inequality $B(0,\\omega) < a$ then forces $s > 0$ (otherwise $B(0,\\omega) = a$, contradicting `hstart`). Crossing paths therefore satisfy the nonemptiness hypothesis of `fpt_le_iff_maxEvent`, closing the loop: continuity + crossing $\\Rightarrow$ both directions of the characterization hold."
     }
   ],
   "conclusion": {
