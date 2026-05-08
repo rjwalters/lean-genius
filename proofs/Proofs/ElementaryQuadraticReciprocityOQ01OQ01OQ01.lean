@@ -76,16 +76,23 @@ theorem quadCharC_ne_one (hodd : p ≠ 2) : quadCharC p ≠ 1 := by
   intro heq
   apply hqc_ne
   ext a
-  have ha := congr_fun (congr_arg MulChar.toFun heq) a
-  have happ : quadCharC p a = (Int.cast : ℤ → ℂ) (quadraticChar (ZMod p) a) := rfl
-  rw [happ] at ha
-  have h1C : (1 : MulChar (ZMod p) ℂ) a = if IsUnit a then 1 else 0 := by
-    simp [MulChar.one_apply]
-  rw [show (1 : MulChar (ZMod p) ℤ) a = if IsUnit a then 1 else 0 from by
-    simp [MulChar.one_apply]]
-  apply Int.cast_injective
-  simp only [Int.cast_ite, Int.cast_one, Int.cast_zero]
-  rw [← h1C]; exact ha
+  -- MulChar.one_apply : (1:MulChar R M) a = if IsUnit a then 1 else 0
+  have ha : (Int.cast (quadraticChar (ZMod p) a) : ℂ) = (1 : MulChar (ZMod p) ℂ) a := by
+    show quadCharC p a = _; rw [heq]
+  rw [MulChar.one_apply] at ha  -- ha: Int.cast(quadraticChar a) = if IsUnit a then 1 else 0
+  rw [MulChar.one_apply]        -- goal: quadraticChar a = if IsUnit a then 1 else 0
+  rcases quadraticChar_isQuadratic (ZMod p) a with hv | hv | hv
+  · rw [hv] at ha; norm_cast at ha  -- ha: (0:ℂ) = if IsUnit a then 1 else 0
+    split_ifs at ha ⊢ with hu
+    · exact absurd ha one_ne_zero.symm   -- IsUnit: ha:(0:ℂ)=1 → False
+    · exact hv                           -- ¬IsUnit: goal quadraticChar a = 0, hv: = 0
+  · rw [hv] at ha; norm_cast at ha  -- ha: (1:ℂ) = if IsUnit a then 1 else 0
+    split_ifs at ha ⊢ with hu
+    · exact hv                           -- IsUnit: goal quadraticChar a = 1, hv: = 1
+    · exact absurd ha one_ne_zero  -- ha : 1=0, one_ne_zero : 1≠0
+  · rw [hv] at ha; push_cast at ha  -- ha: (-1:ℂ) = if IsUnit a then 1 else 0
+    exfalso
+    split_ifs at ha with hu <;> norm_num at ha
 
 -- ============================================================================
 -- The Classical Gauss Sum
