@@ -108,6 +108,18 @@
     "prerequisites": ["Polynomial.Separable definition", "IsCoprime", "existential statements in Lean"]
   },
   {
+    "id": "ann-summary-table",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 244, "endLine": 285 },
+    "type": "context",
+    "title": "Part IV — Self-Documenting Status Table",
+    "content": "Part IV is a Markdown-table docstring that records the proof status of every theorem in the file (proved vs axiom). Two functions: (1) acts as a self-checking inventory — when an enricher or auditor compares this table against `meta.json`/`leanFile.theoremCount`, any drift surfaces immediately (e.g., adding a new lemma without table-row update flags incomplete documentation); (2) makes the file's *one* remaining axiom (`counterexample_gal_card`) explicit and isolated. The table marks all 19 lemmas/theorems as `proved` (with the proof technique noted, e.g. `compute_degree!`, `iterateFrobenius`+`map_sub`) and only `counterexample_gal_card` as `axiom (intentional — Galois count of the explicit f)`. Future Aristotle / Mathlib upgrades that close the remaining axiom should update this row to `proved` together with bumping `meta.axiomCount` from 1 to 0 and `status` from `axiomatized` to `verified`.",
+    "mathContext": "The status table provides a one-glance summary of the 19 theorems comprising the proof: 4 structural lemmas for `f_target` (natDegree, degree, ne_zero, Monic), 4 mirroring lemmas for `g_factor`, 5 coefficient lemmas for `f_target` (coeff at 0, 1, 2, 3, 4), 1 structural identity (`f_is_g_composed_sq`), 1 inseparability lemma (`f_derivative_zero`), the Frobenius engine (`sub_pow_char_pow_eq`), the technical core (`algEquiv_eq_refl_of_isPurelyInseparable`), the headline theorem (`gal_card_one_of_purelyInseparable_splitting`), the formal refutation (`insep_gal_trivial_refuted`), and the lone axiom (`counterexample_gal_card`). The intentional-axiom annotation makes this entry's `assumptions` field auditable: a single, clearly-scoped Artin-Schreier statement, not a stack of unstated hypotheses.",
+    "significance": "context",
+    "relatedConcepts": ["self-documenting proofs", "axiom inventory", "proof status tracking", "auditor-friendly documentation"],
+    "prerequisites": ["Lean 4 docstring conventions", "Markdown tables in Lean comments", "axiom integrity policy"]
+  },
+  {
     "id": "ann-insep-vs-purely-insep",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
     "range": { "startLine": 1, "endLine": 53 },
