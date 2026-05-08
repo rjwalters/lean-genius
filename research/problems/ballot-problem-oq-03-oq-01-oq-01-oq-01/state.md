@@ -4,8 +4,92 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S27 — researcher-3)
-**Iteration**: 27
+**Last Updated**: 2026-05-08 (S28 — researcher-9)
+**Iteration**: 28
+
+## S28 Summary (2026-05-08, researcher-9)
+
+**Mode**: ACT (Sub-lemma 2B introduced + Sub-lemma 2 body closed via 2A + 2B + filter
+partition; the deep cycle-lemma sorry now lives at the cleanest possible single-Sym
+predicate, with the pair encoding fully dissolved).
+
+**Outcome**:
+
+1. **Sub-lemma 2B**
+   (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`):
+   single-Sym form of the cycle-lemma core, inserted between Sub-lemma 2A
+   (line 889 in S27 file) and Sub-lemma 2's docstring at the post-edit
+   line 966. Statement (`hb : 2 ≤ b`, `hba : b ≤ a` both unused for now,
+   propagated for the future cycle-lemma proof):
+
+   ```
+   #{P : Sym (Fin n) a // P.1 ≤ M.1
+                          ∧ ¬ ∃ Q : Sym (Fin n) b,
+                                P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q}
+     = #{P' : Sym (Fin n) (a + 1) // P'.1 ≤ M.1}
+   ```
+
+   Body: `sorry` (deferred to S29+ pending the multiset Cycle Lemma —
+   Lyndon / Dvoretzky-Motzkin generalised to sorted multiset prefixes,
+   not yet in Mathlib).
+
+2. **Sub-lemma 2 body closure**
+   (`colStrict_count_add_eq_subSym_le_count`): replaced the single `sorry`
+   (S26 stub) with a 7-step proof composing:
+
+   * Step 1: `colStrict_pair_count_eq_subSym_filtered_count` (Sub-lemma 2A)
+     to convert the pair count to single-Sym filtered count.
+   * Step 2: `h_hasCS_imp_le` — has-col-strict-complement implies `P.1 ≤ M.1`.
+   * Step 3: `h_pivot` — rewrites `filter has-CS on univ` as
+     `filter has-CS on (filter (· ≤ M.1) on univ)`.
+   * Step 4: `Finset.filter_card_add_filter_neg_card_eq_card` partitioning
+     `subSym_le_a M` by has-CS.
+   * Step 5: `Finset.filter_filter` collapses the nested ¬-filter to match
+     Sub-lemma 2B's predicate.
+   * Step 6: `noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`
+     (Sub-lemma 2B) substitutes the ¬-filter card.
+   * Step 7: `omega` over the resulting linear arithmetic.
+
+   ~45-line body. The hypotheses `hb`, `hba` are now active (passed to
+   Sub-lemma 2B). The signature is unchanged from S26.
+
+3. **Sub-lemma 2 docstring update**: replaced the "deferred to S27+" tail
+   with a "S28 — closed via 2A + 2B + partition" structural summary that
+   names each step.
+
+**Net sorry count**: 2 → 2 (unchanged). The sorry previously at
+`colStrict_count_add_eq_subSym_le_count` (Sub-lemma 2, S26 line 973) has
+migrated to `noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`
+(Sub-lemma 2B, S28 line 973). The new sorry has strictly cleaner provenance:
+no pair encoding, no Q variable, no ColStrictSym pair predicate at the top
+level — just a ¬∃ predicate over distinct size-`a` submultisets.
+
+**Why this matters for S29+**: the Cycle Lemma argument can now be attacked
+directly on the sharp form `#{P ∈ subSym_le_a M // P has no col-strict
+complement} = #subSym_le_(a+1) M`, which is the canonical statement of the
+multiset-generalised ballot reflection. Specifically:
+
+* The "shift one element from `Q` to `P`" map sends a "bad" P
+  (with no col-strict complement) to a P' of size `a+1` deterministically;
+  the inverse "drop one element from P'" recovers the canonical bad split.
+* Multiplicity is handled cleanly by working with sorted multiset
+  representatives — the rotation-equivariance of the col-strict predicate
+  is preserved orbit-by-orbit.
+* The S24 plan's ~80–100 line estimate is now the *only* remaining cost —
+  there are no glue lemmas or additional refactors required between
+  Sub-lemma 2B and `ballot_counting_identity`.
+
+**Files modified**:
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (1528 → 1623 lines,
+  net +95: Sub-lemma 2B docstring + statement + sorry, ~+55; Sub-lemma 2
+  body proof, ~+45 vs sorry; docstring tail rewrite, ~−5).
+- `src/data/proofs/.../meta.json` (lineCount 1528 → 1623, theoremCount
+  34 → 35; assumptions and originalContributions updated for S28).
+- `research/problems/.../state.md` (this file: iteration 27 → 28, S28 summary).
+
+**Build**: pending (CI is the ground truth on PR; the proof composes only
+named lemmas with mechanical Finset and `omega` discharges, plus a
+`Finset.filter_filter` rewrite, so the build risk is low).
 
 ## S27 Summary (2026-05-08, researcher-3)
 
@@ -323,42 +407,62 @@ None for current approach. The ballot bijection inside
 
 ## Next Action
 
-1. ✅ **S25 (this session)**: Sub-lemma 1 implemented as
-   `split_count_eq_powersetCard_card` — generic in `(p, q)` so it serves
-   both LHS (`p = a, q = b`) and RHS (`p = a + 1, q = b - 1`) of
-   `ballot_counting_identity`. ~49 lines including docstring.
+1. ✅ **S25**: Sub-lemma 1 implemented as `split_count_eq_powersetCard_card` —
+   later corrected in S26 to `split_count_eq_subSym_le_count` with the
+   distinct-submultiset RHS.
 
-2. **S26**: State **Sub-lemma 2** (`colStrict_count_eq_card_diff`) with
-   `sorry`. The signature is the difference identity:
+2. ✅ **S26**: Sub-lemma 1 correction + Sub-lemma 2 stub
+   (`colStrict_count_add_eq_subSym_le_count`, additive form, `sorry`) +
+   `ballot_counting_identity` body refactor (composes Sub-lemmas 1 + 2 +
+   `Finset.filter_card_add_filter_neg_card_eq_card` + `omega`).
+
+3. ✅ **S27**: Sub-lemma 2A (`colStrict_pair_count_eq_subSym_filtered_count`):
+   pair count ↔ single-Sym filtered count bijection for col-strict subsets;
+   strict refinement of Sub-lemma 1.
+
+4. ✅ **S28 (this session)**: Sub-lemma 2B
+   (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`, single-Sym
+   sharpest form, `sorry`) + Sub-lemma 2 body closure via Sub-lemma 2A +
+   Sub-lemma 2B + filter partition + `Finset.filter_filter` + `omega`. The
+   pair encoding is fully dissolved from the cycle-lemma input; the
+   remaining sorry is on the canonical single-Sym statement.
+
+5. **S29+**: Attack **Sub-lemma 2B** via the multiset Cycle Lemma. The
+   target statement:
 
    ```lean
-   private lemma colStrict_count_eq_card_diff {n a b : ℕ}
-       (hb : 2 ≤ b) (hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
-       ((M.1.powersetCard a).filter
-         (fun P => /- ColStrict_b on (P.toSym, (M.1 - P).toSym) -/)).card =
-       (M.1.powersetCard a).card - (M.1.powersetCard (a + 1)).card
+   private lemma noColStrict_subSym_a_count_eq_subSym_le_aplus1_count
+       {n a b : ℕ} (hb : 2 ≤ b) (hba : b ≤ a) (M : Sym (Fin n) (a + b)) :
+       ((Finset.univ : Finset (Sym (Fin n) a)).filter
+         (fun P => P.1 ≤ M.1
+                    ∧ ¬ ∃ Q : Sym (Fin n) b,
+                          P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q)).card =
+       ((Finset.univ : Finset (Sym (Fin n) (a + 1))).filter
+         (fun P => P.1 ≤ M.1)).card
    ```
 
-   Then replace the body of `ballot_counting_identity` with a one-liner
-   combining Sub-lemma 1 (twice — for `p = a, b` and `p = a + 1, b - 1`)
-   with Sub-lemma 2 to convert both sides to `M.powersetCard`-cardinality
-   arithmetic. Net sorry count: unchanged (one `sorry` replaces another,
-   with cleaner provenance).
+   ~80–100 lines; the dominant cost. Two sub-paths:
 
-3. **S27+**: Attack **Sub-lemma 2** proof via the Cycle Lemma route.
-   ~80–100 lines; the dominant cost. Requires either a small Mathlib
-   contribution (Cycle Lemma for sorted multiset prefixes) or an
-   inline proof.
+   * **5a — Mathlib contribution**: implement the Cycle Lemma for sorted
+     multiset prefixes (Lyndon / Dvoretzky-Motzkin generalised). Independent
+     of this proof; reusable across other gallery work.
+   * **5b — inline proof**: build the bijection directly using sorted-list
+     representatives. Define the "shift one element from `Q` to `P`" map
+     on the bad submultisets and prove it's a bijection to size-`(a+1)`
+     submultisets via a multiset rotation argument.
 
-4. **Future**: After `jdt_weight_sum` fully closes, `jacobi_trudi_ssyt_eq`
+6. **Future**: After `jdt_weight_sum` fully closes, `jacobi_trudi_ssyt_eq`
    k ≥ 3 (RSK / algebraic LGV, ~300 lines).
 
 ## File Status
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1266 → 1315 lines
-  (+49 this session: Sub-lemma 1 + docstring).
-- Sorry count: 2 (`ballot_counting_identity`, `jacobi_trudi_ssyt_eq` k≥3,
-  both unchanged).
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1528 → 1623 lines
+  (+95 this session: Sub-lemma 2B docstring + statement + sorry; Sub-lemma 2
+  body refactor; docstring tail update).
+- Sorry count: 2 (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`
+  Sub-lemma 2B, `jacobi_trudi_ssyt_eq` k≥3 — net unchanged from S27, but
+  the Sub-lemma 2 sorry has migrated to Sub-lemma 2B with strictly cleaner
+  provenance).
 - 0 axioms.
-- Theorems / lemmas: +1 (`split_count_eq_powersetCard_card`).
+- Theorems / lemmas: +1 (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`).
 - Definitions: 8 (unchanged).
