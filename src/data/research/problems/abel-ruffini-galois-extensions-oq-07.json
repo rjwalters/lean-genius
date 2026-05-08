@@ -29,14 +29,14 @@
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-05-07T20:25:00.000Z",
-    "iteration": 1,
-    "focus": "Survey Mathlib group-theory infrastructure; choose between character-theoretic and character-free proof; estimate scope.",
+    "since": "2026-05-07T22:55:00.000Z",
+    "iteration": 2,
+    "focus": "File scaffold complete: trivial reductions (p = q, a = 0, b = 0) proved via IsPGroup.isNilpotent + IsNilpotent.to_isSolvable. Main theorem `burnside_pq` is stated and remains as `sorry`. Ready for Session 3 strategy choice.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama).",
       "Mathlib's character theory needs algebraically-closed-field hypotheses; concretizing for ℂ-valued characters requires `Complex` ↔ `IsAlgClosed` bridge already in Mathlib but care needed."
     ],
-    "nextAction": "Session 2: Prototype the *Sylow-theoretic preliminary* `burnside_pq_p_eq_q` (when p = q, group is a p-group, hence nilpotent, hence solvable — trivially follows from existing Mathlib `IsPGroup.isSolvable`). Establish the file structure `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` with the main statement as `sorry` and the easy degenerate cases proved.",
+    "nextAction": "Session 3: Choose between character-theoretic (Burnside 1904) and Goldschmidt-Matsuyama character-free routes. Inspect Mathlib's `Mathlib.GroupTheory.Transfer` and `Mathlib.RepresentationTheory.Character` for available infrastructure. Document the choice and begin reducing the main `sorry` to a chain of well-defined intermediate axioms.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -44,8 +44,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 1 (2026-05-07, OBSERVE): Replaced placeholder title `[Problem Title]` and tags artifact (`number-theory  # or: ...`) with proper content. Identified the seed open question as #7 of the parent gallery (`abel-ruffini-galois-extensions`): Burnside's p^a q^b theorem. Confirmed Mathlib has IsSolvable + Sylow + character theory but no Burnside. Documented two proof strategies (character-theoretic vs Goldschmidt-Matsuyama character-free) and their tradeoffs.",
-    "builtItems": [],
+    "progressSummary": "Session 2 (2026-05-07, OBSERVE): Created file scaffold `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` (119 lines, 5 theorems, 1 sorry) and Aristotle companion `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` (57 lines, 4 theorems, 0 sorries). Trivial cases (p = q, a = 0, b = 0) are proved via the chain `IsPGroup.of_card → IsPGroup.isNilpotent → IsNilpotent.to_isSolvable` (instance, priority 100). Verified Docker build compiles. Main `burnside_pq` theorem stated and left as `sorry`.",
+    "builtItems": [
+      "burnside_pq_eq_prime: |G| = p^a · p^b ⟹ IsSolvable G (single-prime collapse case)",
+      "burnside_pq_a_zero: |G| = p^0 · q^b ⟹ IsSolvable G (q-power case)",
+      "burnside_pq_b_zero: |G| = p^a · q^0 ⟹ IsSolvable G (p-power case)",
+      "isSolvable_of_card_eq_prime_pow: |G| = p^n ⟹ IsSolvable G (general prime-power bridge)",
+      "burnside_pq: main statement, currently `sorry` (the open content of Burnside 1904)",
+      "Aristotle companion: card_pq_pow_pos, p_pow_dvd_card_pq, q_pow_dvd_card_pq, prime_pow_solvable"
+    ],
     "insights": [
       "Sharpness of bound: |A₅| = 60 = 2²·3·5 is the smallest non-solvable order; it has three distinct prime factors, exactly one more than Burnside's two. Burnside's theorem is therefore sharp at exactly this point.",
       "Trivial cases for Lean: (1) p = q reduces to a p-group, which is nilpotent and hence solvable (Mathlib `IsPGroup.isSolvable` exists); (2) a = 0 or b = 0 also reduces to a p-group; (3) |G| = 1 is solvable trivially. The non-trivial content is when both a ≥ 1, b ≥ 1, p ≠ q.",
@@ -56,7 +63,11 @@
       "Mathlib has `Mathlib.GroupTheory.SpecificGroups.ZGroup` — Z-groups (groups whose Sylows are all cyclic) — these are solvable, an entirely separate special-case classification, NOT Burnside.",
       "Estimated scope (character-theoretic): ~600-1000 lines. Estimated scope (character-free Goldschmidt-Matsuyama): ~400-800 lines but requires building/extending transfer theory in Mathlib first.",
       "Key Mathlib API to study before starting: `Mathlib.RepresentationTheory.Character` (orthogonality), `Mathlib.GroupTheory.Sylow` (p-subgroups, Sylow's theorems), `Mathlib.GroupTheory.Solvable` (IsSolvable definitions), `Mathlib.GroupTheory.PGroup`/`Nilpotent` (degenerate cases), `Mathlib.RingTheory.Polynomial.Cyclotomic.Basic` (algebraic integers in ℤ[ζ_n]).",
-      "Companion lemma plan: separate `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` exposing the trivial Sylow lemmas (a = 0, b = 0, p = q) for automated proof search. Main file `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` axiomatizes Burnside and proves the corollary `S_n_unsolvable_iff` connection back to A_n classification (already in parent)."
+      "Companion lemma plan: separate `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` exposing the trivial Sylow lemmas (a = 0, b = 0, p = q) for automated proof search. Main file `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` axiomatizes Burnside and proves the corollary `S_n_unsolvable_iff` connection back to A_n classification (already in parent).",
+      "Mathlib API correction (Session 2): the trivial-case bridge is **not** a single lemma `IsPGroup.isSolvable`; the actual chain is `IsPGroup.isNilpotent` (GroupTheory/Nilpotent.lean line 904, requires `[Finite G]` and `[Fact p.Prime]`) followed by the priority-100 instance `IsNilpotent.to_isSolvable` (line 861). Earlier Session 1 wording was slightly imprecise.",
+      "Mathlib namespace gotcha: `IsNilpotent` for **groups** lives in the `Group` namespace (`Group.IsNilpotent`); the unprefixed `IsNilpotent` refers to ring elements (Mathlib.RingTheory.Nilpotent). Without `open Group`, `haveI : IsNilpotent G := ...` produces an unhelpful 'Unknown identifier' error in v4.26 because the ring version is not imported transitively from the group imports. Fix: `open Group` inside the namespace.",
+      "Trivial-case structure: all three single-prime degenerate cases (p = q, a = 0, b = 0) collapse to the same prime-power → solvable bridge. They are proved by rewriting the cardinality factorization, building IsPGroup.of_card, then deriving Group.IsNilpotent and letting type-class inference close the goal.",
+      "Estimated complexity downgrade: trivial cases were ~5 lines each, not the 20-line block estimated in Session 1. The full scaffold (main file + Aristotle companion) came in at 176 lines, vs. the 80-100 line estimate. Most of the extra weight is documentation; the executable Lean is ~50 lines."
     ],
     "mathlibGaps": [
       "No `theorem Group.burnside_pq` — Burnside's p^a q^b theorem.",
@@ -65,11 +76,10 @@
       "No 'minimal counterexample' tactic infrastructure for finite-group induction proofs — would be a useful methodological add."
     ],
     "nextSteps": [
-      "Session 2 (file scaffold + trivial cases): Create `Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` and `Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean` with: (i) main theorem statement as `sorry`, (ii) trivial cases p = q, a = 0, b = 0 proved via `IsPGroup.isSolvable`, (iii) decomposition lemma `card_eq_pq_pow → existence of Sylow subgroups`. Estimated 80-100 lines.",
-      "Session 3 (literature review): Choose between character-theoretic and Goldschmidt-Matsuyama. Recommend Goldschmidt-Matsuyama (character-free) given Mathlib's character-theory algebraic-integer gap; if Mathlib's transfer infrastructure is incomplete, fall back to character-theoretic. Document the choice in the JSON.",
-      "Session 4 (Sylow setup): Prove that a minimal counterexample is non-abelian simple with no normal Sylow subgroup. Use `Mathlib.GroupTheory.Sylow` and `IsSolvable_of_normalSubgroup_solvable`-style reductions.",
-      "Session 5+ (main argument): chosen-strategy execution. Many sub-sessions expected.",
-      "Final session: replace `axiom burnside_pq` (if scaffolded) with theorem; sync meta.json; consider Mathlib upstream PR."
+      "Session 3 (strategy choice): Audit `Mathlib.GroupTheory.Transfer` (`transferSylow`?) and `Mathlib.RepresentationTheory.Character` (`char_orthonormal`) to compare the actual API surface available for the two proof routes. Goldschmidt-Matsuyama transfer route preferred a priori; pivot to character-theoretic if transfer infrastructure is incomplete.",
+      "Session 4 (minimal-counterexample reduction): Prove the standard structural lemma — a minimal counterexample to Burnside is a non-abelian simple group of order p^a · q^b (a, b ≥ 1, p ≠ q) with no proper non-trivial normal subgroup. This factors out the inductive-on-|G| step.",
+      "Session 5+: Execute the chosen strategy. For Goldschmidt-Matsuyama: build the focal-subgroup transfer argument and a contradiction from the existence of a transfer-derived normal subgroup in a minimal counterexample. For character-theoretic: the algebraic-integer lemma `(|G|/χ(1)) χ(g) ∈ ℤ̄` for non-trivial irreducible χ, then column orthogonality at a non-trivial conjugacy class.",
+      "Final session: replace `sorry` with theorem proper, sync meta.json, consider Mathlib upstream PR (this would be a substantial new addition to Mathlib.GroupTheory)."
     ]
   },
   "tags": [
@@ -108,7 +118,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.054Z",
-  "lastUpdate": "2026-05-07T20:25:00.000Z",
+  "lastUpdate": "2026-05-07T22:55:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
@@ -153,6 +163,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ07.lean",
+      "lineCount": 119,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ07Aristotle.lean",
+      "lineCount": 57,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07Aristotle.lean"
     }
   ]
 }
