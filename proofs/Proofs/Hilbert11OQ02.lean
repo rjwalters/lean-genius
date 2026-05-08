@@ -1102,6 +1102,179 @@ proofs.
 - Remaining: `p = 3` only (singular reduction; requires strong-form Hensel
   on `selmer_witness_p3_mod27`). -/
 
+/-! ## Section 19: Iteration 10 — Special prime `p = 3` via strong-form Hensel
+
+Iteration 10 dispatches the **last** Section-8 prime — the singular case
+`p = 3` — by feeding the mod-27 witness `selmer_witness_p3_mod27 = (0, 1, 4)`
+to Mathlib's `hensels_lemma`. Although the mod-3 reduction of `selmerPoly`
+is singular (every coefficient `9, 12, 15` of the Jacobian is divisible by
+`3`), `Mathlib.NumberTheory.Padics.Hensel.hensels_lemma` is in fact the
+*strong-form* statement `‖f(α)‖ < ‖f'(α)‖²`, and the strong-form
+hypothesis is satisfied at the mod-27 lift `a = 4 ∈ ℤ_[3]`.
+
+The univariate polynomial is the same as Section 11: `Gint(z) = 5z³ + 4`,
+matching the projection `(x, y) = (0, 1)`.
+
+- `Gint(4) = 5·64 + 4 = 324 = 3⁴ · 4`, so `‖Gint(4)‖_3 = (1/3)⁴ = 1/81`.
+- `Gint'(4) = 15·16 = 240 = 3 · 80`, so `‖Gint'(4)‖_3 = 1/3` and
+  `‖Gint'(4)‖_3² = 1/9`.
+- `1/81 < 1/9` ✓ — the strong-form Hensel hypothesis holds.
+
+This dispatches the **twelfth and final** Section-8 prime. All twelve
+primes (`p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`) now admit
+axiom-free `ℚ_[p]`-solubility proofs. The universal axiom
+`selmer_padic_solubility` remains as the only "all primes" closure
+assumption — but it is no longer load-bearing for *any* specific prime
+in the Section-8 roadmap, only for the meta-claim that the per-prime
+recipe extends uniformly over the (countably infinite) set of all
+primes. -/
+
+instance : Fact (Nat.Prime 3) := ⟨by decide⟩
+
+namespace Hensel3
+
+open Polynomial
+
+set_option linter.unusedSimpArgs false
+
+/-- Univariate Selmer polynomial in `z` at `(x, y) = (0, 1)`: `g(z) = 5z³ + 4`,
+    over `ℤ` (same polynomial as `Hensel11.Gint`). -/
+def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
+
+private lemma Gint_aeval (a : ℤ_[3]) :
+    aeval a Gint = (4 : ℤ_[3]) + (5 : ℤ_[3]) * a ^ 3 := by
+  unfold Gint
+  simp [aeval_C, aeval_X_pow] <;> ring
+
+private lemma Gint_derivative_aeval (a : ℤ_[3]) :
+    aeval a Gint.derivative = (15 : ℤ_[3]) * a ^ 2 := by
+  unfold Gint
+  simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
+        aeval_C, aeval_X_pow] <;> ring
+
+private lemma Gint_aeval_at_4 :
+    aeval (4 : ℤ_[3]) Gint = ((324 : ℤ) : ℤ_[3]) := by
+  rw [Gint_aeval]
+  push_cast
+  ring
+
+private lemma Gint_derivative_aeval_at_4 :
+    aeval (4 : ℤ_[3]) Gint.derivative = ((240 : ℤ) : ℤ_[3]) := by
+  rw [Gint_derivative_aeval]
+  push_cast
+  ring
+
+/-- Multiplicative factorization `324 = 3⁴ · 4` in `ℤ_[3]`. -/
+private lemma cast_324_factored :
+    ((324 : ℤ) : ℤ_[3]) = ((3 : ℕ) : ℤ_[3]) ^ 4 * ((4 : ℤ) : ℤ_[3]) := by
+  push_cast
+  ring
+
+/-- Multiplicative factorization `240 = 3 · 80` in `ℤ_[3]`. -/
+private lemma cast_240_factored :
+    ((240 : ℤ) : ℤ_[3]) = ((3 : ℕ) : ℤ_[3]) * ((80 : ℤ) : ℤ_[3]) := by
+  push_cast
+  ring
+
+private lemma norm_4_eq_one : ‖((4 : ℤ) : ℤ_[3])‖ = 1 := by
+  rw [PadicInt.norm_intCast_eq_one_iff]
+  exact Int.isCoprime_iff_gcd_eq_one.mpr (by decide)
+
+private lemma norm_80_eq_one : ‖((80 : ℤ) : ℤ_[3])‖ = 1 := by
+  rw [PadicInt.norm_intCast_eq_one_iff]
+  exact Int.isCoprime_iff_gcd_eq_one.mpr (by decide)
+
+/-- `‖324‖_3 = (1/3)⁴ = 1/81`. -/
+private lemma norm_324_eq :
+    ‖((324 : ℤ) : ℤ_[3])‖ = ((3 : ℕ) : ℝ)⁻¹ ^ 4 := by
+  rw [cast_324_factored, PadicInt.norm_mul, PadicInt.norm_pow,
+      PadicInt.norm_p, norm_4_eq_one, mul_one]
+
+/-- `‖240‖_3 = 1/3`. -/
+private lemma norm_240_eq :
+    ‖((240 : ℤ) : ℤ_[3])‖ = ((3 : ℕ) : ℝ)⁻¹ := by
+  rw [cast_240_factored, PadicInt.norm_mul, PadicInt.norm_p,
+      norm_80_eq_one, mul_one]
+
+/-- The strong-form Hensel hypothesis `‖g(4)‖ < ‖g'(4)‖²` for
+    `Gint = 5z³ + 4` at `a = 4`, over `ℤ_[3]`. Reduces to
+    `(1/3)⁴ < (1/3)²`, i.e., `1/81 < 1/9`. -/
+lemma hensel_hypothesis :
+    ‖aeval (4 : ℤ_[3]) Gint‖ < ‖aeval (4 : ℤ_[3]) Gint.derivative‖ ^ 2 := by
+  rw [Gint_aeval_at_4, Gint_derivative_aeval_at_4, norm_324_eq, norm_240_eq]
+  norm_num
+
+end Hensel3
+
+/-- **Hensel-lifted `ℚ_[3]` solubility (proved, axiom-free, strong-form Hensel).**
+
+    The Selmer cubic `3x³ + 4y³ + 5z³ = 0` has a nontrivial solution in
+    `ℚ_[3]`, obtained by fixing `(x, y) = (0, 1)` and Hensel-lifting the
+    mod-27 witness `z ≡ 4 (mod 27)` (cf. `selmer_witness_p3_mod27`) via
+    the strong-form Hensel statement `‖f(α)‖ < ‖f'(α)‖²`.
+
+    The mod-3 reduction is singular: every coefficient of the Jacobian
+    `(9, 12, 15)` is divisible by `3`, so naive single-variable Hensel
+    along the mod-3 witness `(0, 1, 0)` does *not* lift. The strong-form
+    hypothesis nevertheless holds at the mod-27 lift `a = 4`:
+    - `f(4) = 5·64 + 4 = 324 = 3⁴ · 4`, so `‖f(4)‖_3 = 1/81`.
+    - `f'(4) = 15·16 = 240 = 3 · 80`, so `‖f'(4)‖_3 = 1/3` and
+      `‖f'(4)‖_3² = 1/9`.
+    - `1/81 < 1/9` ✓.
+
+    This proof uses *only* `Mathlib.NumberTheory.Padics.Hensel.hensels_lemma`,
+    `PadicInt.norm_p`, `PadicInt.norm_intCast_eq_one_iff`, and the
+    multiplicativity of the `ℤ_[p]` norm. It does NOT depend on the
+    universal axiom `selmer_padic_solubility`. With Sections 11–18 it
+    completes the per-prime axiom-elimination for **all twelve** primes
+    in the Section-8 roadmap. -/
+theorem selmer_padic_solubility_p3_hensel :
+    ∃ (x y z : ℚ_[3]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 := by
+  obtain ⟨zt, hz_root, _, _, _⟩ := hensels_lemma Hensel3.hensel_hypothesis
+  -- hz_root : aeval zt Hensel3.Gint = 0 in ℤ_[3]
+  have hz_int : (4 : ℤ_[3]) + 5 * zt ^ 3 = 0 := by
+    have heval := Hensel3.Gint_aeval zt
+    rw [heval] at hz_root
+    exact hz_root
+  refine ⟨0, 1, (zt : ℚ_[3]), Or.inr (Or.inl one_ne_zero), ?_⟩
+  -- Goal: selmerPoly (0 : ℚ_[3]) 1 (zt : ℚ_[3]) = 0,
+  -- i.e., 3·0³ + 4·1³ + 5·((zt : ℚ_[3]))³ = 0.
+  have hcast : (4 : ℚ_[3]) + 5 * (zt : ℚ_[3]) ^ 3 = 0 := by
+    have h := congrArg (fun w : ℤ_[3] => (w : ℚ_[3])) hz_int
+    push_cast at h
+    exact h
+  show (3 : ℚ_[3]) * (0 : ℚ_[3]) ^ 3 + 4 * (1 : ℚ_[3]) ^ 3 +
+        5 * (zt : ℚ_[3]) ^ 3 = 0
+  linear_combination hcast
+
+/-! ## Section 20: Status Summary (post Section 19) -/
+
+/-!
+Section 19 dispatches the singular special prime `p = 3` via strong-form
+Hensel on the mod-27 witness `selmer_witness_p3_mod27 = (0, 1, 4)`. This
+completes the axiom-free per-prime sweep: **all twelve** primes in the
+Section-8 roadmap now admit axiom-free `ℚ_[p]`-solubility proofs.
+
+### Updated counts (post Section 19)
+- Theorems: 31 (post-Section 17) + 1 (`selmer_padic_solubility_p3_hensel`) = 32
+  (substantive); the eight private aux lemmas in `Hensel3` add 8 to the raw
+  counter.
+- Definitions: 7 + 1 (`Hensel3.Gint`) = 8.
+- Sorries: 0 (unchanged).
+- Axioms: 2 (unchanged): `selmer_no_rational_solution` + universal
+  `selmer_padic_solubility`.
+- Status: still `axiomatized` — the universal axiom remains as the
+  "all primes" closure, but it is no longer load-bearing for any specific
+  Section-8 prime.
+- New milestone: strong-form Hensel dispatches `p = 3`. **All twelve**
+  primes (`p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}`) now admit
+  axiom-free `ℚ_[p]`-solubility proofs.
+- Remaining (out of scope here): full Colliot-Thélène conjecture
+  requires Brauer-Manin / scheme-theoretic infrastructure not present
+  in Mathlib, plus 3-descent on the associated elliptic curve to pin
+  down `selmer_no_rational_solution`. Both are far beyond present
+  Mathlib. -/
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -1123,5 +1296,6 @@ proofs.
 #check @selmer_padic_solubility_p7_hensel
 #check @selmer_padic_solubility_p2_hensel
 #check @selmer_padic_solubility_p5_hensel
+#check @selmer_padic_solubility_p3_hensel
 
 end Hilbert11OQ02
