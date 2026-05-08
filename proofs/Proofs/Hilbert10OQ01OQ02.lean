@@ -604,6 +604,71 @@ theorem universe_isExistentialUniversalDefinition :
     (fun _ : Rat => True)).mpr hPi2
 
 -- ============================================================
+-- Part VIII.7 (iter 6): Singleton {0} and complement ℚ\{0} definability
+-- ============================================================
+
+/-- The "projection" parametric polynomial: for each `q : ℚ`, the polynomial
+    that ignores its variable assignment and returns the constant `q`.
+
+    Concretely, `parameterPoly q = fun _ => q`. This is the simplest
+    `q`-dependent polynomial witness in the file, used to place the
+    smallest non-trivial subset `{0} ⊂ ℚ` (and its complement) into the
+    Σ₁ and Π₁ classes respectively.
+
+    Beyond the iteration-5 trivial-set witnesses (`zeroPoly`, `onePoly`),
+    which are constant in *both* the parameter and the variable, this
+    polynomial is constant only in the variable. -/
+private def parameterPoly : Rat → RatDiophantinePoly := fun q _ => q
+
+/-- The singleton `{0} ⊂ ℚ` is Σ₁-definable.
+
+    Witness: the projection polynomial `P(q, x) = q`. Then
+    `hasRationalSolution (P q) ⟺ ∃ x, q = 0 ⟺ q = 0` (the polynomial
+    is constant in `x`, so existence of a rational solution reduces to
+    the constant value being `0`).
+
+    This is the smallest non-trivial Σ₁ subset of ℚ — beyond the trivial
+    `∅` and `ℚ` cases of iteration 5, here the polynomial genuinely
+    depends on the parameter `q`. No new axioms; no Mathlib import. -/
+theorem singletonZero_isDiophantineDefinition :
+    IsDiophantineDefinition (fun q : Rat => q = 0) := by
+  refine ⟨parameterPoly, fun q => ?_⟩
+  exact ⟨fun hq => ⟨fun _ => 0, hq⟩, fun ⟨_, hP⟩ => hP⟩
+
+/-- The complement `ℚ \ {0}` is Π₁-definable.
+
+    Witness: the same projection polynomial `P(q, x) = q`. Then
+    `¬ hasRationalSolution (P q) ⟺ ∀ x, q ≠ 0 ⟺ q ≠ 0` (since the
+    polynomial value does not depend on `x`).
+
+    Direct dual of `singletonZero_isDiophantineDefinition`, obtained from
+    the same polynomial witness by negating the equivalence. -/
+theorem notZero_isCoDiophantineDefinition :
+    IsCoDiophantineDefinition (fun q : Rat => q ≠ 0) := by
+  refine ⟨parameterPoly, fun q => ?_⟩
+  exact ⟨fun hq ⟨_, hP⟩ => hq hP, fun hnsol hq => hnsol ⟨fun _ => 0, hq⟩⟩
+
+/-- The singleton `{0}` is Π₂-definable.
+
+    Corollary of `singletonZero_isDiophantineDefinition` via the trivial
+    inclusion `Σ₁ ⊆ Π₂` (`diophantine_implies_universal_existential`).
+    The Π₂ witness is the projection polynomial padded with a dummy
+    universal block, in line with iteration 4's congruence story. -/
+theorem singletonZero_isUniversalExistentialDefinition :
+    IsUniversalExistentialDefinition (fun q : Rat => q = 0) :=
+  diophantine_implies_universal_existential _ singletonZero_isDiophantineDefinition
+
+/-- The complement `ℚ \ {0}` is Σ₂-definable.
+
+    Corollary of `notZero_isCoDiophantineDefinition` via the trivial
+    inclusion `Π₁ ⊆ Σ₂` (`codiophantine_implies_existentialUniversal`).
+    Together with `singletonZero_isUniversalExistentialDefinition`, this
+    completes the four-class placement of `{0}` and `ℚ \ {0}`. -/
+theorem notZero_isExistentialUniversalDefinition :
+    IsExistentialUniversalDefinition (fun q : Rat => q ≠ 0) :=
+  codiophantine_implies_existentialUniversal _ notZero_isCoDiophantineDefinition
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -639,6 +704,11 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
 - The Σ₂(complement) corollary places `ℚ \ ℤ` on the second level of the
   arithmetic hierarchy unconditionally, sharpening the "what is known"
   side of the picture.
+- The smallest *non-trivial* parameter-dependent witness is the projection
+  polynomial `P(q, x) = q`, which places `{0} ⊂ ℚ` (resp. `ℚ \ {0}`) into
+  Σ₁ (resp. Π₁); these in turn place them into Π₂ and Σ₂ via the trivial
+  inclusions `Σ₁ ⊆ Π₂` and `Π₁ ⊆ Σ₂`. This sharpens the iteration-5
+  trivial-set library (∅, ℚ) to the smallest non-degenerate subset.
 
 ## Axioms in THIS file (1 net new)
 
@@ -650,7 +720,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (26)
+## Theorems in THIS file (30)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -678,6 +748,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `universe_isUniversalExistentialDefinition` (ℚ is Π₂, iter 5)
   - `empty_isExistentialUniversalDefinition` (∅ is Σ₂, iter 5)
   - `universe_isExistentialUniversalDefinition` (ℚ is Σ₂, iter 5)
+  - `singletonZero_isDiophantineDefinition` ({0} is Σ₁, iter 6)
+  - `notZero_isCoDiophantineDefinition` (ℚ\{0} is Π₁, iter 6)
+  - `singletonZero_isUniversalExistentialDefinition` ({0} is Π₂, iter 6)
+  - `notZero_isExistentialUniversalDefinition` (ℚ\{0} is Σ₂, iter 6)
 -/
 
 #check @IsDiophantineDefinition
@@ -705,5 +779,9 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @universe_isUniversalExistentialDefinition
 #check @empty_isExistentialUniversalDefinition
 #check @universe_isExistentialUniversalDefinition
+#check @singletonZero_isDiophantineDefinition
+#check @notZero_isCoDiophantineDefinition
+#check @singletonZero_isUniversalExistentialDefinition
+#check @notZero_isExistentialUniversalDefinition
 
 end Hilbert10Rationals
