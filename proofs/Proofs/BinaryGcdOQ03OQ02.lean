@@ -379,11 +379,13 @@ theorem lehmerInnerStep_residue_le {ahat bhat : ℕ} {M : CofactorMatrix}
     (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
     bhat' < bhat ∧ ahat' = bhat := by
   simp [lehmerInnerStep] at h
-  split at h <;> simp_all
-  split at h <;> simp_all
-  obtain ⟨rfl, rfl, _⟩ := h
+  -- Modern simp reduces the some-equation directly to a 5-conjunct;
+  -- destructure with `rfl` on positions 3 and 4 to substitute ahat', bhat'.
+  -- Keep the `bhat ≠ 0` hypothesis (first conjunct) so `omega` can close
+  -- the residue inequality.
+  obtain ⟨hbhat_ne, _, rfl, rfl, _⟩ := h
   refine ⟨?_, rfl⟩
-  -- Goal: ahat % bhat < bhat. omega uses bhat ≠ 0 from context.
+  -- Goal: ahat % bhat < bhat (with bhat ≠ 0 in context as hbhat_ne).
   omega
 
 /-- One successful Lehmer inner step does not increase the maximum
@@ -502,10 +504,12 @@ theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := heven
   simp only [OddPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.natCast_nonneg _
+  -- Hints help nlinarith after modern-simp normalization of `M.mul ⟨0,1,1,-q⟩`:
+  -- `q · (-M.β) ≥ 0` (since q ≥ 0 and -M.β ≥ 0) and `q · (-M.δ) ≥ 0`.
   refine ⟨hβ, ?_, hδ, ?_⟩
-  · nlinarith
-  · nlinarith
+  · nlinarith [mul_nonneg hq (neg_nonneg.mpr hβ), mul_nonneg hq hα]
+  · nlinarith [mul_nonneg hq (neg_nonneg.mpr hβ), mul_nonneg hq hδ]
 
 /-- One successful `lehmerInnerStep` takes OddPattern to EvenPattern. -/
 theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
@@ -517,14 +521,14 @@ theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
   simp only [EvenPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.natCast_nonneg _
   -- M' = [[M.β, M.α - q·M.β], [M.δ, M.γ - q·M.δ]]
   -- EvenPattern: M'.α = M.β ≥ 0, M'.β = M.α - q·M.β ≤ 0, M'.γ = M.δ ≤ 0, M'.δ = M.γ - q·M.δ ≥ 0
   refine ⟨hβ, ?_, hδ, ?_⟩
-  · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0
-    nlinarith
+  · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0 (q ≥ 0, M.β ≥ 0)
+    nlinarith [mul_nonneg hq hβ]
   · -- 0 ≤ M.γ - q*M.δ: M.γ ≥ 0, -q*M.δ ≥ 0 (since M.δ ≤ 0)
-    nlinarith
+    nlinarith [mul_nonneg hq (neg_nonneg.mpr hδ)]
 
 /-- `lehmerCofactors` preserves the EvenPattern/OddPattern disjunction
     from any starting matrix that has one.
@@ -1057,8 +1061,12 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
   induction fuel generalizing a b with
   | zero =>
     rw [hgcdMatrix_zero]
+    -- simp [CofactorMatrix.id, Int.natAbs_natCast] reduces to
+    -- `a ≤ max a b ∧ b ≤ max a b`; modern simp closes this directly via
+    -- `le_max_left`/`le_max_right`. Older Mathlib needed the explicit
+    -- witnesses, hence the `try`.
     simp [CofactorMatrix.id, Int.natAbs_natCast]
-    exact ⟨le_max_left a b, le_max_right a b⟩
+    try exact ⟨le_max_left a b, le_max_right a b⟩
   | succ f ih =>
     by_cases hsmall : max a b < hgcdThreshold
     · exact hgcdMatrix_small_row_output_le f a b hsmall
@@ -1385,11 +1393,11 @@ theorem lehmerCofactors_pattern_det_correlated_from
       · -- Even+1 → Odd+(-1): pattern flips Even→Odd, det flips 1→-1
         right
         refine ⟨lehmerInnerStep_even_to_odd hstep heven, ?_⟩
-        rw [hd, hd₀]; ring
+        linarith
       · -- Odd+(-1) → Even+1: pattern flips Odd→Even, det flips -1→1
         left
         refine ⟨lehmerInnerStep_odd_to_even hstep hodd, ?_⟩
-        rw [hd, hd₀]; ring
+        linarith
 
 /-- Specialization of `lehmerCofactors_pattern_det_correlated_from` to the
     standard starting matrix `CofactorMatrix.id` (EvenPattern, det = 1).
@@ -1450,57 +1458,81 @@ theorem entry_bound_of_pattern_det_natAbs
     M.β.natAbs ≤ b₀.natAbs ∧
     M.γ.natAbs ≤ a₀.natAbs ∧
     M.δ.natAbs ≤ a₀.natAbs := by
+  -- Helper: a ≤-bound on integers (with sign info on both) lifts to a
+  -- ≤-bound on natAbs values. We prove `(·.natAbs : ℤ) ≤ (·.natAbs : ℤ)`
+  -- using `Int.natAbs_of_nonneg` to reduce both sides to their integer
+  -- forms, then `exact_mod_cast` lifts back to ℕ. For non-positive `a`,
+  -- we use `Int.natAbs_neg` + `Int.natAbs_of_nonneg` (with `0 ≤ -a`) to
+  -- avoid relying on `Int.natAbs_of_nonpos` which is not consistently
+  -- available across Mathlib versions.
+  have natAbs_int_nonpos : ∀ {x : ℤ}, x ≤ 0 → (x.natAbs : ℤ) = -x := by
+    intro x hx
+    have h_nn : 0 ≤ -x := by linarith
+    rw [show x.natAbs = (-x).natAbs from (Int.natAbs_neg x).symm]
+    exact Int.natAbs_of_nonneg h_nn
   rcases hpd with ⟨heven, hdet⟩ | ⟨hodd, hdet⟩
   · -- EvenPattern: M.α ≥ 0, M.β ≤ 0, M.γ ≤ 0, M.δ ≥ 0; det = 1
-    obtain ⟨hα_pos, hβ_neg, hγ_neg, hδ_pos⟩ := heven
     obtain ⟨hδ_le, hγ_ge, hα_le, hβ_ge⟩ :=
       entry_bound_of_even h₁ h₂ hdet heven ha₀ hb₀ hahat' hbhat'
     -- hδ_le : M.δ ≤ a₀
     -- hγ_ge : -a₀ ≤ M.γ
     -- hα_le : M.α ≤ b₀
     -- hβ_ge : -b₀ ≤ M.β
+    obtain ⟨hα_pos, hβ_neg, hγ_neg, hδ_pos⟩ := heven
     have hbnn : 0 ≤ b₀ := le_of_lt hb₀
     have hann : 0 ≤ a₀ := le_of_lt ha₀
     refine ⟨?_, ?_, ?_, ?_⟩
     · -- M.α.natAbs ≤ b₀.natAbs (M.α ≥ 0, M.α ≤ b₀)
-      rw [Int.natAbs_of_nonneg hα_pos, Int.natAbs_of_nonneg hbnn]
-      exact_mod_cast hα_le
+      have h_int : (M.α.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hα_pos, Int.natAbs_of_nonneg hbnn]
+        exact hα_le
+      exact_mod_cast h_int
     · -- M.β.natAbs ≤ b₀.natAbs (M.β ≤ 0, -b₀ ≤ M.β)
-      rw [Int.natAbs_of_nonpos hβ_neg, Int.natAbs_of_nonneg hbnn]
-      have h1 : -M.β ≤ b₀ := by linarith
-      exact_mod_cast h1
+      have h_int : (M.β.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hβ_neg, Int.natAbs_of_nonneg hbnn]
+        linarith
+      exact_mod_cast h_int
     · -- M.γ.natAbs ≤ a₀.natAbs (M.γ ≤ 0, -a₀ ≤ M.γ)
-      rw [Int.natAbs_of_nonpos hγ_neg, Int.natAbs_of_nonneg hann]
-      have h1 : -M.γ ≤ a₀ := by linarith
-      exact_mod_cast h1
+      have h_int : (M.γ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hγ_neg, Int.natAbs_of_nonneg hann]
+        linarith
+      exact_mod_cast h_int
     · -- M.δ.natAbs ≤ a₀.natAbs (M.δ ≥ 0, M.δ ≤ a₀)
-      rw [Int.natAbs_of_nonneg hδ_pos, Int.natAbs_of_nonneg hann]
-      exact_mod_cast hδ_le
+      have h_int : (M.δ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hδ_pos, Int.natAbs_of_nonneg hann]
+        exact hδ_le
+      exact_mod_cast h_int
   · -- OddPattern: M.α ≤ 0, M.β ≥ 0, M.γ ≥ 0, M.δ ≤ 0; det = -1
-    obtain ⟨hα_neg, hβ_pos, hγ_pos, hδ_neg⟩ := hodd
     obtain ⟨hδ_ge, hγ_le, hα_ge, hβ_le⟩ :=
       entry_bound_of_odd h₁ h₂ hdet hodd ha₀ hb₀ hahat' hbhat'
     -- hδ_ge : -a₀ ≤ M.δ
     -- hγ_le : M.γ ≤ a₀
     -- hα_ge : -b₀ ≤ M.α
     -- hβ_le : M.β ≤ b₀
+    obtain ⟨hα_neg, hβ_pos, hγ_pos, hδ_neg⟩ := hodd
     have hbnn : 0 ≤ b₀ := le_of_lt hb₀
     have hann : 0 ≤ a₀ := le_of_lt ha₀
     refine ⟨?_, ?_, ?_, ?_⟩
     · -- M.α.natAbs ≤ b₀.natAbs (M.α ≤ 0, -b₀ ≤ M.α)
-      rw [Int.natAbs_of_nonpos hα_neg, Int.natAbs_of_nonneg hbnn]
-      have h1 : -M.α ≤ b₀ := by linarith
-      exact_mod_cast h1
+      have h_int : (M.α.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hα_neg, Int.natAbs_of_nonneg hbnn]
+        linarith
+      exact_mod_cast h_int
     · -- M.β.natAbs ≤ b₀.natAbs (M.β ≥ 0, M.β ≤ b₀)
-      rw [Int.natAbs_of_nonneg hβ_pos, Int.natAbs_of_nonneg hbnn]
-      exact_mod_cast hβ_le
+      have h_int : (M.β.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hβ_pos, Int.natAbs_of_nonneg hbnn]
+        exact hβ_le
+      exact_mod_cast h_int
     · -- M.γ.natAbs ≤ a₀.natAbs (M.γ ≥ 0, M.γ ≤ a₀)
-      rw [Int.natAbs_of_nonneg hγ_pos, Int.natAbs_of_nonneg hann]
-      exact_mod_cast hγ_le
+      have h_int : (M.γ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hγ_pos, Int.natAbs_of_nonneg hann]
+        exact hγ_le
+      exact_mod_cast h_int
     · -- M.δ.natAbs ≤ a₀.natAbs (M.δ ≤ 0, -a₀ ≤ M.δ)
-      rw [Int.natAbs_of_nonpos hδ_neg, Int.natAbs_of_nonneg hann]
-      have h1 : -M.δ ≤ a₀ := by linarith
-      exact_mod_cast h1
+      have h_int : (M.δ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hδ_neg, Int.natAbs_of_nonneg hann]
+        linarith
+      exact_mod_cast h_int
 
 /-! ### Threshold-case entry bound for `hgcdMatrix`
 
