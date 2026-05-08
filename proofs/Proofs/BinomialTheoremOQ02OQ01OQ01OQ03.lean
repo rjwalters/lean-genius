@@ -1,5 +1,5 @@
 /-
-# Multinomial Marginal Central Limit Theorem (Phase-2 scaffold)
+# Multinomial Marginal Central Limit Theorem
 
 **Open Question** (binomial-theorem-oq-02-oq-01-oq-01-oq-03):
 "Multinomial marginal CLT in Lean: does (Xᵢ - npᵢ) / √(npᵢ(1-pᵢ)) converge in
@@ -7,13 +7,17 @@ distribution to N(0,1) for each coordinate as n → ∞?"
 
 ## Status
 
-**Phase-2 STATEMENT scaffold.** This file STATES the multinomial marginal CLT
+**Reduction complete.** This file STATES the multinomial marginal CLT
 and reduces it to the classical de Moivre–Laplace (binomial) CLT plus the
 already-proved marginal-PMF identity from `BinomialTheoremOQ02OQ01OQ02`.
+The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` is now fully
+proved (Phase-3 deliverable, this file).
 
-The de Moivre–Laplace CLT is taken as an axiom: a measure-theoretic proof from
-Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is non-trivial (CDF
-↔ measure-weak-convergence bridge) and is left for a Phase-3 effort.
+The de Moivre–Laplace CLT itself is taken as an axiom: a measure-theoretic
+proof from Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is
+non-trivial (CDF ↔ measure-weak-convergence bridge) and is left for a
+follow-up effort. After this file, the single mathematical assumption
+beyond Mathlib is the classical Binomial CLT itself.
 
 ## What This File Provides
 
@@ -25,11 +29,11 @@ Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is non-trivial (CDF
 3. `standardNormalCDF` — opaque marker for the standard normal CDF.
 4. `binomial_clt_pointwise` — AXIOM: pointwise convergence of standardized
    binomial CDF to standardNormalCDF.
-5. `multinomialMarginalCDF_eq_binomialCDF` — reduction lemma. The marginal
-   CDF of the multinomial equals the binomial CDF with parameter p(i₀).
-   Provable from `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf` by
-   regrouping the sum over k into fibers over k(i₀); the reduction is
-   recorded as a sorry-marked lemma (Phase-3 target).
+5. `multinomialMarginalCDF_eq_binomialCDF` — reduction lemma, **proved**:
+   the marginal CDF of the multinomial equals the binomial CDF with
+   parameter p(i₀). Proof regroups `∑ k ∈ s.piAntidiag n` into fibers
+   over `j = k(i₀)` via `Finset.sum_fiberwise_of_maps_to`, then applies
+   `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf`.
 6. `multinomial_marginal_clt` — DERIVED THEOREM (no axiom of its own).
    Combines (4) and (5) via `Filter.Tendsto.congr`.
 
@@ -46,12 +50,13 @@ gives the multinomial marginal CLT.
 
 ## Honest Reporting
 
-- Sorries: 1 (the cdf-equality reduction, provable from existing lemmas).
+- Sorries: 0 (Phase-3 reduction-lemma proof discharges the prior sorry).
 - Axioms: 2 (`binomial_clt_pointwise` + `standardNormalCDF` opaque).
 - Status: axiomatized — not "verified".
 
-The contribution of this file is the *statement and reduction structure*, not
-the CLT itself.
+The contribution of this file is the *full reduction* of the multinomial
+marginal CLT to the classical Binomial CLT, leaving only the latter as
+an explicit named assumption.
 
 ## Why CDF formulation
 
@@ -132,21 +137,77 @@ axiom binomial_clt_pointwise
 
 /-! ## Reduction lemma -/
 
+/-- For any composition `k ∈ s.piAntidiag n`, every coordinate is at most `n`. -/
+private lemma piAntidiag_apply_le {α : Type*} [DecidableEq α]
+    (s : Finset α) (n : ℕ) (i₀ : α) :
+    ∀ k ∈ s.piAntidiag n, k i₀ ≤ n := by
+  intro k hk
+  rw [Finset.mem_piAntidiag] at hk
+  obtain ⟨hksum, hksup⟩ := hk
+  by_cases h : i₀ ∈ s
+  · -- i₀ ∈ s: bound by the sum.
+    have hle : k i₀ ≤ ∑ i ∈ s, k i :=
+      Finset.single_le_sum (s := s) (f := k) (fun i _ => Nat.zero_le _) h
+    omega
+  · -- i₀ ∉ s: support condition forces k i₀ = 0.
+    by_contra hne
+    push_neg at hne
+    have h1 : k i₀ ≠ 0 := by omega
+    exact h (hksup i₀ h1)
+
 /-- **Reduction lemma**: the marginal CDF of the multinomial equals the
     binomial CDF with parameter `p(i₀)`.
 
-    Proof sketch (Phase-3): regroup `∑ k ∈ s.piAntidiag n` into fibers over
-    the value `j = k i₀` for `j ∈ {0, ..., n}`; on each fiber, apply
-    `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf` to collapse the
-    inner sum to `C(n, j) · p(i₀)^j · (1 − p(i₀))^(n − j)`. The if-condition
-    `(k i₀ : ℝ) ≤ x` becomes `(j : ℝ) ≤ x`, which factors out of the inner
-    sum since `j` is fixed on each fiber. -/
+    Proof: regroup `∑ k ∈ s.piAntidiag n` into fibers over the value
+    `j = k i₀` for `j ∈ {0, ..., n}` via `Finset.sum_fiberwise_of_maps_to`;
+    on each fiber, the `if`-guard `((k i₀ : ℕ) : ℝ) ≤ x` simplifies to
+    `(j : ℝ) ≤ x` (since `k i₀ = j` is the fiber predicate), which is
+    constant in `k` and so factors out; the inner fiber-sum then collapses
+    to `C(n, j) · p(i₀)^j · (1 − p(i₀))^(n − j)` by
+    `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf` (Sublemma A). -/
 theorem multinomialMarginalCDF_eq_binomialCDF
     {α : Type*} [DecidableEq α]
     (s : Finset α) (p : α → ℝ) (n : ℕ) (hp : ∑ i ∈ s, p i = 1)
     (i₀ : α) (hi₀ : i₀ ∈ s) (x : ℝ) :
     multinomialMarginalCDF s p n i₀ x = binomialCDF n (p i₀) x := by
-  sorry
+  unfold multinomialMarginalCDF binomialCDF
+  -- Fibre-decompose the multinomial sum along `j := k i₀ ∈ Finset.range (n+1)`.
+  have hmaps : ∀ k ∈ s.piAntidiag n, k i₀ ∈ Finset.range (n + 1) := by
+    intro k hk
+    rw [Finset.mem_range, Nat.lt_succ_iff]
+    exact piAntidiag_apply_le s n i₀ k hk
+  rw [← Finset.sum_fiberwise_of_maps_to hmaps
+        (g := fun k =>
+          if ((k i₀ : ℕ) : ℝ) ≤ x
+          then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
+          else 0)]
+  -- Now compare term-by-term across the outer index `j ∈ Finset.range (n+1)`.
+  apply Finset.sum_congr rfl
+  intro j hj
+  rw [Finset.mem_range, Nat.lt_succ_iff] at hj
+  by_cases hcond : (j : ℝ) ≤ x
+  · -- True branch: inner indicator collapses, then apply Sublemma A.
+    rw [if_pos hcond]
+    have h_inner :
+        ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
+            (if ((k i₀ : ℕ) : ℝ) ≤ x
+             then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
+             else 0)
+        = ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
+            BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k := by
+      apply Finset.sum_congr rfl
+      intro k hk
+      rw [Finset.mem_filter] at hk
+      rw [hk.2, if_pos hcond]
+    rw [h_inner]
+    exact BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf
+            s p n hp i₀ hi₀ j hj
+  · -- False branch: every term in the fibre is 0.
+    rw [if_neg hcond]
+    apply Finset.sum_eq_zero
+    intro k hk
+    rw [Finset.mem_filter] at hk
+    rw [hk.2, if_neg hcond]
 
 /-! ## Main theorem: multinomial marginal CLT (derived) -/
 
