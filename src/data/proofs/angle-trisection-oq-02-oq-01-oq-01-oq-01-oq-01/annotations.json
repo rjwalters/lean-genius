@@ -24,9 +24,33 @@
     "prerequisites": ["characteristic p fields", "Artin-Schreier theory", "inseparability (derivative = 0)", "fraction rings"]
   },
   {
+    "id": "ann-g-factor-scaffolding",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 113, "endLine": 132 },
+    "type": "technique",
+    "title": "g_factor Structural Scaffolding (Capelli-Style Inputs)",
+    "content": "Four short lemmas mirroring the f_target scaffolding, but for the Artin-Schreier inner factor g_factor = X² + X + aGen: g_factor_natDegree (=2 via compute_degree!), g_factor_degree (=2 in WithBot ℕ), g_factor_ne_zero (corollary of natDegree=2), and g_factor_monic (leading coefficient = 1). These structural facts about g are the standard inputs to a **Capelli-style irreducibility argument** for the composition f_target = g_factor.comp(X^2): one shows (i) g_factor is irreducible over F₂(a) via Artin-Schreier (a is not of the form t² + t), and (ii) the inner polynomial X² is 'totally inseparable' over F (specifically, a generator of g_factor.SplittingField is not a square in that field). Step (i) consumes g_factor_monic + g_factor_degree + an Artin-Schreier irreducibility lemma; step (ii) is what `counterexample_gal_card` currently axiomatizes. Discharging these structural prerequisites up front turns the file's single remaining axiom into a clean, single-statement assumption rather than a stack of unstated structural facts.",
+    "mathContext": "**Capelli's theorem** (the standard tool for irreducibility of composition $g(X^n)$): if $g \\in F[X]$ is irreducible with root $\\alpha$ in some extension, then $g(X^n) \\in F[X]$ is irreducible iff $X^n - \\alpha$ is irreducible over $F(\\alpha)$. Specialized to $n = 2$ over a characteristic-$\\ne 2$ field: $g(X^2)$ is irreducible iff $\\alpha$ is not a square in $F(\\alpha)$. In characteristic 2 the situation is more delicate (Frobenius takes squares to squares), but the same template applies: one needs $\\alpha \\notin F(\\alpha)^2$ in the appropriate sense. The g_factor structural lemmas are the prerequisite vocabulary that any future formalization of this argument must speak — `compute_degree!` discharges them in two tactic invocations, but Mathlib's irreducibility / SplittingField APIs require them as explicit hypotheses, not as derivable side facts.",
+    "significance": "supporting",
+    "relatedConcepts": ["Capelli's theorem", "irreducibility of composition", "Artin-Schreier polynomials", "compute_degree tactic", "Polynomial.Monic"],
+    "prerequisites": ["polynomial degree", "Polynomial.coeff", "compute_degree! tactic", "irreducibility of polynomial compositions"]
+  },
+  {
+    "id": "ann-coefficient-lemmas",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 134, "endLine": 157 },
+    "type": "technique",
+    "title": "f_target Coefficient Lemmas — Quadratic Factorisation Inputs",
+    "content": "Five short coefficient lemmas pinning down every nonzero entry of f_target = X⁴ + X² + aGen: coeff 0 = aGen, coeff 1 = 0, coeff 2 = 1, coeff 3 = 0, coeff 4 = 1. They look trivial — each is a one-line `simp` over the polynomial-coefficient API — but they are the *exact* inputs to a Mathlib-style quadratic-factorisation argument that would discharge `counterexample_gal_card`. The argument in the header docstring runs as follows: assume f_target = (X² + b₁X + c₁)(X² + b₂X + c₂); expanding and comparing coefficients gives a system in (b₁, b₂, c₁, c₂); the X³ coefficient = 0 yields b₁ + b₂ = 0 (in char 2: b₁ = b₂); the X¹ coefficient = 0 then yields b₁(c₂ + c₁) = 0; the X² coefficient = 1 and X⁰ coefficient = aGen close out the system, ultimately forcing c₁, c₂ to be roots of X² + X + aGen — which is irreducible over F₂(a) by Artin-Schreier. So the coefficient lemmas don't *prove* irreducibility, but they are the *only* hooks any irreducibility tactic can latch onto when confronted with f_target stated symbolically.",
+    "mathContext": "Coefficient comparison for $(X^2 + b_1 X + c_1)(X^2 + b_2 X + c_2) = X^4 + (b_1 + b_2)X^3 + (c_1 + c_2 + b_1 b_2) X^2 + (b_1 c_2 + b_2 c_1) X + c_1 c_2$.\n\nMatching against $f_{\\text{target}} = X^4 + 0 \\cdot X^3 + 1 \\cdot X^2 + 0 \\cdot X + a$:\n\n1. $b_1 + b_2 = 0 \\Rightarrow b_2 = -b_1 = b_1$ (char 2).\n2. $b_1 c_2 + b_2 c_1 = b_1(c_1 + c_2) = 0$ (using $b_1 = b_2$).\n3. **Case $b_1 = 0$**: $c_1 + c_2 = 1$ and $c_1 c_2 = a$, so $c_1, c_2$ are roots of $T^2 + T + a$ — irreducible over $\\mathbb{F}_2(a)$ (Artin-Schreier: $a$ is not of the form $t^2 + t$ for any $t \\in \\mathbb{F}_2(a)$, since $\\mathbb{F}_2(a)/\\mathbb{F}_2(a^2 + a) = \\mathbb{F}_2(a)$ has no Artin-Schreier solutions to $T^2 + T = a$ inside itself).\n4. **Case $b_1 \\ne 0$**: $c_1 + c_2 = 0$ from step 2, so $c_2 = c_1$; then $c_1 + c_2 + b_1 b_2 = 0 + b_1^2 = 1$, giving $b_1^2 = 1$ so $b_1 = 1$; and $c_1 c_2 = c_1^2 = a$, but $a$ is not a square in $\\mathbb{F}_2(a)$, contradiction.\n\nBoth cases fail, so f_target is irreducible.",
+    "significance": "supporting",
+    "relatedConcepts": ["coefficient comparison", "polynomial irreducibility over function fields", "Artin-Schreier theory", "quadratic factorisation in char 2", "Polynomial.coeff"],
+    "prerequisites": ["polynomial coefficient API", "Polynomial.coeff_add", "Polynomial.coeff_X_pow", "Polynomial.coeff_C", "Artin-Schreier irreducibility"]
+  },
+  {
     "id": "ann-frobenius-key-lemma",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 117, "endLine": 124 },
+    "range": { "startLine": 163, "endLine": 170 },
     "type": "technique",
     "title": "Char-p Frobenius: (σ(x)−x)^(p^n) = 0",
     "content": "The key technical lemma sub_pow_char_pow_eq: in a characteristic-p ring, (a − b)^(p^n) = a^(p^n) − b^(p^n). This is the additive Frobenius endomorphism: the map x ↦ x^p is a ring homomorphism in char p. The proof uses CharP.add_pow_char_pow repeatedly. This lemma is the algebraic engine of the purely-inseparable Galois triviality proof.",
@@ -38,7 +62,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 126, "endLine": 157 },
+    "range": { "startLine": 172, "endLine": 203 },
     "type": "technique",
     "title": "Purely Inseparable Extension → Trivial Galois Group",
     "content": "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension K/F is the identity. Proof: for any σ : K ≃ₐ[F] K and x ∈ K, get n with x^(p^n) ∈ F (IsPurelyInseparable.pow_mem). Then σ(x)^(p^n) = x^(p^n) (σ fixes F), so (σ(x)−x)^(p^n) = 0 (Frobenius lemma). Fields have no nonzero nilpotents, so σ(x) = x. Since x is arbitrary, σ = id.",
@@ -50,7 +74,7 @@
   {
     "id": "ann-gal-card-corollary",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 159, "endLine": 169 },
+    "range": { "startLine": 205, "endLine": 215 },
     "type": "insight",
     "title": "Corollary: |Gal(f)| = 1 for Purely Inseparable Splitting Field",
     "content": "gal_card_one_of_purelyInseparable_splitting: if f.SplittingField is a purely inseparable extension of F, then Nat.card f.Gal = 1. Follows from algEquiv_eq_refl_of_isPurelyInseparable: every element of Gal(f) is the identity, so |Gal(f)| = 1. The counterexample_gal_card axiom provides the concrete Gal cardinality for the char-2 counterexample (|Gal(f_target)| = 2), which is used to formally refute the original insep_gal_trivial claim.",
@@ -74,7 +98,7 @@
   {
     "id": "ann-formal-refutation",
     "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
-    "range": { "startLine": 175, "endLine": 196 },
+    "range": { "startLine": 221, "endLine": 242 },
     "type": "insight",
     "title": "Formal Refutation: ∃ f, ¬Separable ∧ |Gal| ≠ 1",
     "content": "The block opens with the documented `counterexample_gal_card` axiom (|Gal(f_target)| = 2 — the only axiom in the file, intentional pending Artin-Schreier formalization). `insep_gal_trivial_refuted` then packages the entire counterexample chain into a single existential statement. The witness is f_target. The first conjunct (¬f_target.Separable) is discharged from f_derivative_zero (separable polynomials have nonzero derivative). The second conjunct (Nat.card f_target.Gal ≠ 1) is discharged from the counterexample_gal_card axiom. The Lean theorem is exactly the negation of the false axiom in the parent file, making the refutation machine-checkable.",
