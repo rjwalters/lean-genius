@@ -28,16 +28,16 @@
     "goal": "Fill 2 sorries using Mathlib's partition of unity machinery"
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-08T20:12:16Z",
-    "iteration": 9,
-    "focus": "S9 (researcher-5, 2026-05-08): Pre-lift Mathlib reconnaissance for the brouwer_fpt elimination. Confirmed LOOKUP-1 = Bornology.IsBounded.subset_closedBall_lt (one-line invocation). Expanded LOOKUP-2 scope: Mathlib gives only existence/uniqueness via exists_norm_eq_iInf_of_complete_convex; a continuous projection function with idempotency on S is NOT packaged and is its own ~30-80-line lemma using the variational inequality. Flagged LOOKUP-3: the verified Mathlib copy is v4.10 (lacks Brouwer FPT), pinned project Mathlib is v4.26 (presence cannot be verified from this worktree due to broken proofs/.lake symlink). Refined S10/S11 plan splits the work into (S10.A) Mathlib version probe, (S10.B) ~30-80-line continuous projection lemma, (S11) the final lift.",
+    "phase": "ACT",
+    "since": "2026-05-09T00:00:00Z",
+    "iteration": 11,
+    "focus": "S11 (researcher-6, 2026-05-09): S11.A *light* — landed two sorry-free helpers in proofs/Proofs/SchauderFixedPointOQ03OQ01.lean that stage the S12/S13 retraction-reduction direction without changing the axiom count (still 2): (1) `compact_subset_closedBall_pos` is the LOOKUP-1 step (any compact set in EuclideanSpace ℝ (Fin n) sits inside `Metric.closedBall 0 R` for some `0 < R`), a direct invocation of `Bornology.IsBounded.subset_closedBall_lt`; (2) `brouwer_unit_ball` is the closed-ball special case of `axiom brouwer_fpt`, derived by specializing to `S = closedBall 0 1`. Both names were GitHub-API verified against the pinned mathlib4 rev. The S12/S13 lift will INVERT the dependency direction by replacing `axiom brouwer_fpt` with `axiom brouwer_unit_ball` (strictly weaker) and re-deriving the general form via the retraction reduction.",
     "blockers": [],
-    "nextAction": "S10.A: probe Mathlib v4.26 for closed-ball Brouwer FPT (requires proofs/.lake repaired or v4.26 copy on disk). If present, record name; if absent, decide between strictly weaker axiom or in-house Brouwer proof. S10.B: prove exists_continuous_proj_convex (~30-80-line helper lemma using exists_norm_eq_iInf_of_complete_convex + variational inequality + dist_self for idempotency). S11: lift the S8 stub once both prerequisites are in place; substitute LOOKUP-1 with subset_closedBall_lt invocation, LOOKUP-2 with exists_continuous_proj_convex, LOOKUP-3 with verified Brouwer name. Docker-verify; sync meta.json axiomCount 2 → 1.",
+    "nextAction": "S11.B (~30-80 Lean lines): prove `exists_continuous_proj_convex S hS_ne hS_compact hS_convex` — for compact convex nonempty S in EuclideanSpace ℝ (Fin n), there is a continuous nearest-point projection r : E → ↥S that is the identity on ↥S. Existence/uniqueness from `exists_norm_eq_iInf_of_complete_convex`; continuity from the variational-inequality form (`norm_eq_iInf_iff_real_inner_le_zero` family in Mathlib.Analysis.InnerProductSpace.Projection); idempotency from `dist_self` + uniqueness. Once S11.B lands, S11.C/S12 collapses to ~10-20 lines wrapping the S8 stub: replace `axiom brouwer_fpt` with `axiom brouwer_unit_ball`, prove the general form via LOOKUP-1 (the helper just landed) + LOOKUP-2 (S11.B) + LOOKUP-3 (the new axiom).",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 2,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {

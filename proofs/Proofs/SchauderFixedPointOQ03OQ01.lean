@@ -162,6 +162,59 @@ theorem seq_compact_of_compact {X : Type*} [PseudoMetricSpace X]
   exact ⟨a, φ, ha, hφ_mono, hφ_tend⟩
 
 -- ============================================================
+-- Part II.5: Brouwer infrastructure for the S11.B/C lift
+-- ============================================================
+-- These two declarations stage the retraction-reduction direction
+-- from the S8/S9/S10 plan (`s8-brouwer-extension-via-projection.md`,
+-- `s10-mathlib-v426-lookup3-resolved.md`). They are sorry-free and do
+-- NOT change the axiom count. The next iteration (S12/S13) is expected
+-- to weaken `axiom brouwer_fpt` to a closed-ball-only `axiom
+-- brouwer_unit_ball`, then re-derive the general form via a continuous
+-- nearest-point projection retraction. At that point this `theorem
+-- brouwer_unit_ball` becomes redundant (replaced by the new axiom of
+-- the same name), and `compact_subset_closedBall_pos` is the LOOKUP-1
+-- step of the retraction reduction.
+
+/-- **LOOKUP-1 helper (S9 verified)**: a compact set in Euclidean space
+    sits inside some open closed ball around the origin.
+
+    This is `Bornology.IsBounded.subset_closedBall_lt` applied with
+    lower bound `a := 0` and center `c := 0`, plus the standard
+    `IsCompact.isBounded` upgrade. The output `0 < R` is essential for
+    the S12/S13 retraction reduction (needs to invert `Homeomorph.smul`
+    by `R⁻¹` to rescale to the unit ball). -/
+lemma compact_subset_closedBall_pos {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (hS_compact : IsCompact S) :
+    ∃ R : ℝ, 0 < R ∧ S ⊆ Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R :=
+  hS_compact.isBounded.subset_closedBall_lt 0 0
+
+/-- **Closed-ball special case of `brouwer_fpt`** (S11.A staging).
+
+    This is the form that is actually proved in Mathlib4 v4.10 (and was
+    expected to be in v4.26.0 — but the S10 GitHub-API audit
+    (`s10-mathlib-v426-lookup3-resolved.md`) confirmed it is ABSENT
+    even from the unit-ball form). We derive it here as a `theorem`
+    from the existing general `axiom brouwer_fpt`. The S12/S13 lift
+    will INVERT this dependency: `axiom brouwer_unit_ball` will replace
+    `axiom brouwer_fpt`, and the general `brouwer_fpt` will become a
+    `theorem` proved from the (strictly weaker) `axiom
+    brouwer_unit_ball` plus the retraction reduction sketched in
+    `s8-brouwer-extension-via-projection.md`. The axiom-count is
+    unchanged by that lift (still 2); the *axiom strength* on the
+    Brouwer side strictly decreases (general compact convex → closed
+    unit ball).
+
+    For now this theorem only documents the S11.A target shape. -/
+theorem brouwer_unit_ball {n : ℕ}
+    (f : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)
+       → ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))
+    (hf : Continuous f) :
+    ∃ x, f x = x := by
+  refine brouwer_fpt (Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)
+    ⟨0, Metric.mem_closedBall_self zero_le_one⟩
+    (isCompact_closedBall _ _) (convex_closedBall _ _) f hf
+
+-- ============================================================
 -- Part III: Limit Argument (Helper Lemma)
 -- ============================================================
 
@@ -403,19 +456,34 @@ infrastructure can produce via the Cellina averaging argument.
 ### Theorems (proved)
 - `seq_compact_of_compact` - Sequential compactness in compact metric spaces
   (was an axiom; now derived from Mathlib)
+- `compact_subset_closedBall_pos` - LOOKUP-1 helper for the S12/S13
+  retraction reduction (any compact set in `EuclideanSpace ℝ (Fin n)`
+  sits inside `closedBall 0 R` for some `0 < R`)
+- `brouwer_unit_ball` - Closed-ball special case of `brouwer_fpt`
+  (S11.A staging; the S12/S13 lift will invert this dependency)
 - `approx_fixedpoint_implies_fixedpoint` - Limit argument for approximate fixed points
 - `kakutani_from_brouwer` - The main reduction: Kakutani from the two axioms
   (uses the graph form via a triangle-inequality `ε ↦ 2·(ε/2) = ε` step)
 
 ### Path to Full Verification
-1. Prove `approx_selection_exists` (graph form) using `PartitionOfUnity`
-   plus the Cellina averaging argument
-2. Verify `brouwer_fpt` against Mathlib's existing Brouwer formalization
-   for the unit ball, extended to compact convex sets via a retraction
+1. **S11.B**: prove `exists_continuous_proj_convex` (~30-80-line helper)
+   using `exists_norm_eq_iInf_of_complete_convex` + variational
+   inequality; this is the LOOKUP-2 obligation refined in S9.
+2. **S11.C / S12 (Brouwer-side)**: replace `axiom brouwer_fpt` with
+   `axiom brouwer_unit_ball`, prove the general `brouwer_fpt` as a
+   theorem via the S8 retraction reduction (LOOKUP-1 = the helper
+   above; LOOKUP-2 = S11.B; LOOKUP-3 = the new axiom). Net axiom
+   count unchanged; axiom *strength* on the Brouwer side strictly
+   decreases.
+3. **S13+ (selection-side)**: prove `approx_selection_exists` (graph
+   form) using `PartitionOfUnity` plus the Cellina averaging
+   argument; this is the harder of the two open axioms.
 -/
 
 #check @brouwer_fpt
 #check @approx_selection_exists
+#check @compact_subset_closedBall_pos
+#check @brouwer_unit_ball
 #check @approx_fixedpoint_implies_fixedpoint
 #check @kakutani_from_brouwer
 

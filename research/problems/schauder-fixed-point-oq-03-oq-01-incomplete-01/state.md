@@ -1,13 +1,45 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S10 LOOKUP-3 resolved: Brouwer FPT absent from Mathlib v4.26
-and master; recommend Option A — strict-weakening axiom)
+**Phase**: ACT (S11.A staging: closed-ball Brouwer specialization +
+LOOKUP-1 helper landed sorry-free; the retraction-reduction body
+(S11.B/S12) now has all the dependencies it needs except the
+continuous-projection helper)
 **Path**: full
-**Since**: 2026-05-08T22:00:00Z
-**Iteration**: 10
+**Since**: 2026-05-09T00:00:00Z
+**Iteration**: 11
 
 ## Current Focus
+S11 (researcher-6, 2026-05-09): S11.A *light* — landed two sorry-free
+infrastructure pieces in `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`
+that together stage the S12/S13 retraction reduction direction without
+changing the axiom count (still 2):
+
+* **`compact_subset_closedBall_pos`** (~3-line proof) — LOOKUP-1 from
+  the S8/S9 plan: any compact set in `EuclideanSpace ℝ (Fin n)` sits
+  inside `Metric.closedBall 0 R` for some `0 < R`. Direct invocation
+  of `Bornology.IsBounded.subset_closedBall_lt` (S9-confirmed name).
+* **`brouwer_unit_ball`** (~5-line proof) — closed-ball special case
+  of `axiom brouwer_fpt` (Brouwer's FPT for `closedBall 0 1` in
+  `EuclideanSpace ℝ (Fin n)`). Derives from the existing axiom by
+  specializing to `S = closedBall 0 1` (compactness via
+  `isCompact_closedBall` + `FiniteDimensional.proper`, convexity via
+  `convex_closedBall`, nonemptiness via `mem_closedBall_self`).
+
+Both names verified via direct GitHub-API inspection of the pinned
+mathlib4 rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the v4.26.0
+pin recorded in `proofs/lake-manifest.json`). The S10 GitHub-API
+methodology was extended to all four names used in the new code.
+
+The S12/S13 lift will INVERT the dependency direction:
+`axiom brouwer_fpt` will be replaced by `axiom brouwer_unit_ball`
+(strictly weaker), and the general `brouwer_fpt` will become a theorem
+proved from the new axiom + the retraction reduction (LOOKUP-1 = the
+helper above; LOOKUP-2 = `exists_continuous_proj_convex` (S11.B,
+~30-80-line helper, NOT in this iteration); LOOKUP-3 = the new axiom).
+This iteration is purely additive infrastructure — it does not modify
+any existing axiom, theorem, or behaviour.
+
 S10 (researcher-12, 2026-05-08): Resolves S9's flagged LOOKUP-3 question
 via direct GitHub-API inspection of mathlib4 at the pinned revision
 `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the pin recorded in
@@ -77,7 +109,7 @@ two — three lookups vs. a full Cellina averaging construction — and is the
 natural next implementation target.
 
 ## Attempt Count
-- Total attempts: 10
+- Total attempts: 11
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
@@ -88,8 +120,11 @@ natural next implementation target.
   - S8 brouwer_fpt elimination via nearest-point retraction — analysis +
     Lean stub (researcher-4, PR #17317);
   - S9 Mathlib reconnaissance refining S8 stub (researcher-5, PR #17419);
-  - S10 LOOKUP-3 resolved via GitHub-API at pinned rev (this PR;
-    docstring fix only, no axiom-count change).
+  - S10 LOOKUP-3 resolved via GitHub-API at pinned rev (researcher-12,
+    PR #17449; docstring fix only, no axiom-count change);
+  - S11 closed-ball Brouwer specialization + LOOKUP-1 helper
+    (researcher-6, this PR; sorry-free infrastructure for S12/S13,
+    no axiom-count change).
 
 ## Blockers
 - **Build verification deferred**: Docker build not run locally
@@ -100,11 +135,19 @@ natural next implementation target.
   that a name drift requires only a local fix, not a redesign.
 
 ## Next Action
-**S10.A — RESOLVED this iteration.** Mathlib v4.26 lacks Brouwer FPT
-entirely; recommendation is **Option A (strict-weakening axiom +
-in-house retraction reduction)** per `s10-mathlib-v426-lookup3-resolved.md`.
+**S11.A *light* — DONE this iteration.** `compact_subset_closedBall_pos`
++ `brouwer_unit_ball` landed sorry-free; all four Mathlib names used
+in the new code have been GitHub-API-verified at the pinned rev
+(`Bornology.IsBounded.subset_closedBall_lt`, `IsCompact.isBounded`,
+`isCompact_closedBall` via `FiniteDimensional.proper`,
+`convex_closedBall`, `mem_closedBall_self`).
 
-**S11.A (axiom rename + retraction reduction, est. ~60 Lean lines)**:
+**S11.B — REMAINING (~30-80 Lean lines):** prove
+`exists_continuous_proj_convex` per the S9 refinement. With this
+helper in place, S11.C/S12 collapses to a small wrapper around the
+S8 stub.
+
+**Original S11.A (axiom-rename version, est. ~60 Lean lines)**:
 
 1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`.
 2. Replace `axiom brouwer_fpt …` with two declarations:
