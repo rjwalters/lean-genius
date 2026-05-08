@@ -4,8 +4,71 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 24
+**Iteration**: 25 (S25 — combine helper, replay of stale PR #17386)
 **Last Updated**: 2026-05-08
+
+## Session 25 (researcher-1, 2026-05-08, replay of stale PR #17386)
+
+S23 (PR #17386) added `trig_sum_combine_small_large_const` (~58 lines) at
+2026-05-08T19:37Z, but went CONFLICTING after S22 (#17324, #17330) and S24
+(#17438) merged on top of its base. It was never rebased — sat stale for
+~3 hours.
+
+Per memory pattern `feedback_researcher_pr_rebase_strategy.md`, this PR
+opens a fresh branch off current `origin/main` and inserts the S23 helper
+between the now-merged S24 helper (`chebyshev_quarter_floor_log_asymp_lb`)
+and `trig_sum_harmonic_lb`. The proof body transfers verbatim; only the
+docstring is augmented to reference S24's now-available companion.
+
+The helper signature:
+
+```lean
+private lemma trig_sum_combine_small_large_const
+    (θ : ℝ) (hne : ∀ n > 0, ∀ k : Fin n, cos θ ≠ chebyshevNode n k)
+    (N₀ : ℕ) {C₁ : ℝ} (hC₁_pos : 0 < C₁)
+    (hlarge : ∀ n ≥ N₀, C₁ · n · log(n+1) ≤ S(θ, n)) :
+    ∃ C, 0 < C ∧ ∀ n ≥ 1, C · n · log(n+1) ≤ S(θ, n)
+```
+
+**Proof**: case-split on `n ≤ max N₀ 1`. Small-n branch uses
+`trig_sum_small_n_const θ hne (max N₀ 1) (by omega)` to get C₂; then
+`min C₁ C₂ ≤ C₂` plus `n·log(n+1) ≥ 0` gives the bound. Large-n branch
+uses user's `hlarge` directly with `min C₁ C₂ ≤ C₁`.
+
+### Step 7 closure picture (after S25)
+
+| Step | Helper | Status |
+|------|--------|--------|
+| 6c   | `trig_sum_subsum_log_lb`         | merged (S21, PR #17046) |
+| 7a   | `chebyshev_quarter_floor_log_asymp_lb` | merged (S24, PR #17438) |
+| 7b   | `trig_sum_small_n_const`         | merged (S22, PR #17330) |
+| 7b   | `chebyshev_h_interior_of_close_and_max_index_cap` | merged (S22, PR #17324) |
+| 7c   | `trig_sum_combine_small_large_const` | **this PR** (S25 replay) |
+
+With all five helpers in place, the only remaining work in
+`trig_sum_harmonic_lb` is **caller-side glue** that:
+
+1. WLOG `θ ∈ (0, π/2]` via `trig_sum_reindex_symmetry` (S18, merged).
+2. Picks `m := ⌊n·θ/(4π)⌋ : ℕ` — satisfies `(m : ℝ) ≥ n·θ/(4π) − 1` via `Nat.lt_floor_add_one`.
+3. Applies S22's `h_interior` verifier + S21's `trig_sum_subsum_log_lb` to get
+   `(sin(θ/2)/(2π)) · ((1/2)·log(m+2) − 1) ≤ S(θ, n)`.
+4. Applies S24's `chebyshev_quarter_floor_log_asymp_lb` to convert the
+   `(1/2)·log(m+2) − 1` factor to `(1/4)·log(n+1)` for `n ≥ N₀(θ)`.
+5. Hands `C₁ := sin(θ/2)/(2π) · 1/4` and the resulting `hlarge` to S25's
+   `trig_sum_combine_small_large_const` to produce the unified `C·n·log(n+1)`.
+
+### Counts
+
+- `lineCount`: 2288 → 2349 (+61, includes augmented docstring referencing S24)
+- `theoremCount`: 59 → 60 (+1: trig_sum_combine_small_large_const)
+- `axiomCount`: 1 (unchanged: `erdos_1151` — open conjecture)
+- `sorries`: 2 (unchanged: `trig_sum_harmonic_lb` and `divergence_from_lebesgue_growth`)
+
+### Build status
+
+**[BUILD UNVERIFIED]** — Docker build queued. Proof body is verbatim from
+PR #17386's working theorem; only the docstring was augmented to mention
+S24's `chebyshev_quarter_floor_log_asymp_lb`.
 
 ## Session 24 (researcher-4, this session, build pending)
 

@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 sorries remain in Erdos1151OQ04.lean. Step 7b (finite-set small-n side of trig_sum_harmonic_lb) closed via S22 trig_sum_small_n_const. Step 7a (asymptotic large-n side) outstanding; will combine via min-of-two-constants. Sorry 2 (divergence_from_lebesgue_growth) blocked on lacunary series construction or weakening to lim sup.",
+    "progressSummary": "S25 (researcher-1, 2026-05-08, ACT, replay): adds trig_sum_combine_small_large_const (~58 lines) — the **min-of-two-constants closure** of Step 7. Replays stale PR #17386 (researcher-N, S23, CONFLICTING ~3 hours after S22+S24 merged on top of its base) onto fresh origin/main. Per memory pattern feedback_researcher_pr_rebase_strategy.md. Helper signature: given C₁·n·log(n+1) ≤ S(θ,n) for n≥N₀ (user's hlarge), composes with trig_sum_small_n_const (S22) to give a unified C·n·log(n+1) bound for all n≥1 with C := min C₁ C₂ via case-split on n ≤ max N₀ 1. Inserted between chebyshev_quarter_floor_log_asymp_lb (S24, just merged) and trig_sum_harmonic_lb. With S25 (combine), S24 (Step 7a asymp lb), S22 (small-n const), S22 (h_interior), and S21 (Step 6c log lb), the only remaining work in trig_sum_harmonic_lb is the asymptotic-side caller-glue: WLOG θ ∈ (0,π/2] via S18, pick m := ⌊nθ/(4π)⌋, apply S22 h_interior + S21 to get the asymptotic side, hand off to S25. +61 lines, +1 thm (combine helper), 0 axioms changed (still 1: erdos_1151), 1 sorry unchanged (trig_sum_harmonic_lb itself). Total: 2349 lines, 60 thms in this file. Build pending. Previous: PROGRESS: 2 sorries remain in Erdos1151OQ04.lean. Step 7b (finite-set small-n side of trig_sum_harmonic_lb) closed via S22 trig_sum_small_n_const. Step 7a (asymptotic large-n side) outstanding; will combine via min-of-two-constants. Sorry 2 (divergence_from_lebesgue_growth) blocked on lacunary series construction or weakening to lim sup.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -71,7 +71,8 @@
       "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)",
       "trig_sum_reindex_symmetry (n hn θ) : Σ_k sin(φ_k)/|cos θ - cn| = Σ_k sin(φ_k)/|cos(π-θ) - cn| via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Combines Equiv.sum_comp + sin_pi_sub + cos_pi_sub + abs_neg. ~70 lines, Erdos1151OQ04.lean:1498 (Session 18, #17050)",
       "trig_sum_subsum_log_lb (n hn θ d hd_pos hd_le_pi hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · ((1/2)·log(m+2) - 1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1510 (Step 6c, ~36 lines, composes 6a + 6b). Recovered from PR #17046 (Session 21)",
-      "trig_sum_small_n_const (θ hne N hN) : ∃ C > 0, ∀ n ∈ {1,...,N}, C·n·log(n+1) ≤ S(θ,n) — Erdos1151OQ04.lean:1675 (Step 7b finite-set min'; ~80 lines, S22)"
+      "trig_sum_small_n_const (θ hne N hN) : ∃ C > 0, ∀ n ∈ {1,...,N}, C·n·log(n+1) ≤ S(θ,n) — Erdos1151OQ04.lean:1675 (Step 7b finite-set min'; ~80 lines, S22)",
+      "S25 (researcher-1, 2026-05-08, replay of stale PR #17386): trig_sum_combine_small_large_const (private lemma, ~58 lines) in Erdos1151OQ04.lean §X (lines 2109-2147). Min-of-two-constants closure of Step 7."
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -114,7 +115,8 @@
       "Reindex symmetry: S(θ, n) = S(π-θ, n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. The angle reflection φ_{σ k} = π - φ_k follows from algebraic identity (2(n-1-k)+1)π/(2n) = π - (2k+1)π/(2n); sin invariant under x ↦ π-x; cos sign-flips under x ↦ π-x. Combined with cos(π-θ) = -cos θ, the denominator |cos(π-θ) - (-cn)| = |cos θ - cn| via abs_neg. Reduces trig_sum_harmonic_lb to θ ∈ (0, π/2].",
       "When θ ∈ (0, π/2]: d = min(θ, π-θ) = θ; so d/2 = θ/2 and π - d/2 = π - θ/2. The going-up sub-sum upper bound (2j+3)π/(2n) ≤ π - d/2 - θ becomes (2j+3)π/(2n) ≤ π - 3θ/2, giving m ≤ n(2π - 3θ)/(4π) - 3/2. For θ < 2π/3 this is positive, and at θ = π/2 it gives m ≤ n/8 - 3/2.",
       "When θ ∈ (π/2, π): use trig_sum_reindex_symmetry to pass to θ' = π - θ ∈ (0, π/2). The going-up sub-sum at θ' applies. This avoids needing a separate going-down sub-sum lemma.",
-      "Step 7 split: factor finite-set min' (small n ≤ N) and asymptotic bound (large n ≥ N) into separate lemmas, then take pointwise min. The finite-set side is now closed (S22 trig_sum_small_n_const) using Finset.min' over the image of the ratio S(θ,n) / (n·log(n+1)). Each ratio is positive (chebyshev_trig_sum_pos numerator + log(n+1) ≥ log 2 denominator), so min is positive; le_div_iff inverts the division."
+      "Step 7 split: factor finite-set min' (small n ≤ N) and asymptotic bound (large n ≥ N) into separate lemmas, then take pointwise min. The finite-set side is now closed (S22 trig_sum_small_n_const) using Finset.min' over the image of the ratio S(θ,n) / (n·log(n+1)). Each ratio is positive (chebyshev_trig_sum_pos numerator + log(n+1) ≥ log 2 denominator), so min is positive; le_div_iff inverts the division.",
+      "S25 (2026-05-08): the unified-constant arithmetic of Step 7 factors cleanly into trig_sum_combine_small_large_const, which is independent of θ ∈ (0,π/2) reduction and the Lipschitz/min'-bound machinery. The helper takes the asymptotic side as a user-supplied hypothesis (`hlarge`), so the caller can choose any N₀ and any C₁ — the helper handles the case split with N := max N₀ 1, ensuring small-n is always covered by trig_sum_small_n_const. The min-of-two-constants idiom (case-split + monotonicity) is a recurring pattern; this is the third use in this file (after S20 chebyshev_trig_sum_pos and S22 trig_sum_small_n_const). Worth promoting to a higher-level utility once Step 7 closes."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -146,15 +148,15 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-05-08T11:00:00Z",
+  "lastUpdate": "2026-05-08T21:48:03Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 2288,
-      "theoremCount": 59,
+      "lineCount": 2349,
+      "theoremCount": 60,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 2,

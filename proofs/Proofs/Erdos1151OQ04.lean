@@ -2085,6 +2085,67 @@ private lemma chebyshev_quarter_floor_log_asymp_lb
   push_cast at h_log_ineq
   linarith
 
+/-- **(Step 7c combine helper) Min-of-two-constants closure.**
+
+    Given an asymptotic `C₁ · n · log(n+1) ≤ S(θ, n)` for all `n ≥ N₀`
+    (the user's responsibility — typically built from `trig_sum_subsum_log_lb`
+    with `m := ⌊nd/(4π)⌋` plus arithmetic comparing `log(m+2)` to `log(n+1)`)
+    and the finite-set min' lower bound from `trig_sum_small_n_const`, the
+    unified `C · n · log(n+1) ≤ S(θ, n)` for all `n ≥ 1` follows by case split
+    with `C := min C₁ C₂`.
+
+    This is the **case-split closure** of Step 7 in the proof of
+    `trig_sum_harmonic_lb`: it factors the unified-constant arithmetic out of
+    the main proof so that the only remaining work in `trig_sum_harmonic_lb`
+    is producing the asymptotic side `hlarge`. With S24's
+    `chebyshev_quarter_floor_log_asymp_lb` (Step 7a) plus
+    `trig_sum_subsum_log_lb` (Step 6c, S21), the asymptotic
+    `(sin(θ/2) / (2π)) · (1/4) · n · log(n+1)` lower bound is at hand.
+
+    Note: `N₀` is unconstrained — the helper handles `N₀ = 0` (trivial — `hlarge`
+    already covers all `n ≥ 1`, the small-n branch is still applied so the
+    final `C` accounts for both bounds), `N₀ = 1` (`hsmall` covers only `n = 1`,
+    `hlarge` covers `n ≥ 1`), and `N₀ ≥ 2` (the standard split). -/
+private lemma trig_sum_combine_small_large_const
+    (θ : ℝ)
+    (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k)
+    (N₀ : ℕ)
+    {C₁ : ℝ} (hC₁_pos : 0 < C₁)
+    (hlarge : ∀ n : ℕ, N₀ ≤ n →
+      C₁ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k|) :
+    ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
+      C * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
+        ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
+                     |Real.cos θ - chebyshevNode n k| := by
+  -- Cutoff `N := max N₀ 1` is always ≥ 1, so `trig_sum_small_n_const` applies.
+  set N : ℕ := max N₀ 1 with hN_def
+  have hN_ge : 1 ≤ N := le_max_right N₀ 1
+  obtain ⟨C₂, hC₂_pos, hsmall⟩ := trig_sum_small_n_const θ hne N hN_ge
+  refine ⟨min C₁ C₂, lt_min hC₁_pos hC₂_pos, fun n hn₁ => ?_⟩
+  -- Denominator nonneg: n ≥ 1 ⇒ n·log(n+1) ≥ 0 (in fact > 0, but ≥ 0 suffices).
+  have hg_nn : 0 ≤ (↑n : ℝ) * Real.log ((↑n : ℝ) + 1) := by
+    apply mul_nonneg (by exact_mod_cast Nat.zero_le n)
+    apply Real.log_nonneg
+    have hn_ge : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn₁
+    linarith
+  by_cases hcase : n ≤ N
+  · -- Small-n branch: 1 ≤ n ≤ N ⇒ apply `hsmall`; min ≤ C₂ by `min_le_right`.
+    calc min C₁ C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+        ≤ C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) :=
+          mul_le_mul_of_nonneg_right (min_le_right _ _) hg_nn
+      _ ≤ _ := hsmall n hn₁ hcase
+  · -- Large-n branch: n > N ≥ N₀ ⇒ apply `hlarge`; min ≤ C₁ by `min_le_left`.
+    push_neg at hcase
+    have hN₀_le_n : N₀ ≤ n := by
+      have hN₀_le_N : N₀ ≤ N := le_max_left N₀ 1
+      omega
+    calc min C₁ C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+        ≤ C₁ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) :=
+          mul_le_mul_of_nonneg_right (min_le_left _ _) hg_nn
+      _ ≤ _ := hlarge n hN₀_le_n
+
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
     ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
