@@ -235,6 +235,29 @@ theorem largestPrimeBelow_five : largestPrimeBelow 5 = 5 :=
 theorem largestPrimeBelow_seven : largestPrimeBelow 7 = 7 :=
   largestPrimeBelow_self_of_prime 7 (by norm_num)
 
+/-- **Fixed-point characterization**: for `n ≥ 2`,
+    `largestPrimeBelow n = n ↔ Nat.Prime n`.
+
+    The forward direction uses `largestPrimeBelow_isPrime` to derive primality
+    of the fixed point. The backward direction is `largestPrimeBelow_self_of_prime`. -/
+theorem largestPrimeBelow_eq_self_iff_prime (n : ℕ) (hn : 2 ≤ n) :
+    largestPrimeBelow n = n ↔ Nat.Prime n := by
+  refine ⟨fun h => ?_, largestPrimeBelow_self_of_prime n⟩
+  have hp := largestPrimeBelow_isPrime n hn
+  rwa [h] at hp
+
+/-- **Strict bound for composite `n`**: when `n ≥ 2` is not prime,
+    `largestPrimeBelow n < n` (strictly).
+
+    Combined with `largestPrimeBelow_le`, this characterizes composite `n`
+    as exactly those `n ≥ 2` where the largest prime ≤ `n` is *strictly*
+    less than `n`. -/
+theorem largestPrimeBelow_lt_of_not_prime (n : ℕ) (hn : 2 ≤ n)
+    (hcomp : ¬ Nat.Prime n) : largestPrimeBelow n < n := by
+  rcases (largestPrimeBelow_le n).lt_or_eq with hlt | heq
+  · exact hlt
+  · exact absurd ((largestPrimeBelow_eq_self_iff_prime n hn).mp heq) hcomp
+
 /-- **AXIOM-FREE consistency check**: at `n = 2`, the conjectured equality
     `symBUDim n d = buDim (largestPrimeBelow n) d` is *already provable*
     from the parent's `symBUDim_two` axiom and `largestPrimeBelow_two`,
@@ -270,6 +293,29 @@ theorem symBUDim_two_four_unconditional : symBUDim 2 4 = 3 := by
   have := symBUDim_two_even_formula_unconditional 2 (by norm_num)
   simpa using this
 
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 6 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=6. -/
+theorem symBUDim_six_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 6 (2 * k) :=
+  symBUDim_even_lower 6 k (by norm_num) hk
+
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 7 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=7 (prime). -/
+theorem symBUDim_seven_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 7 (2 * k) :=
+  symBUDim_even_lower 7 k (by norm_num) hk
+
+/-- **Unconditional**: `2 * k - 1 ≤ symBUDim 8 (2 * k)` for k ≥ 1.
+    Direct application of `symBUDim_even_lower` at n=8.
+
+    Note: S₈ has the rich non-cyclic subgroup structure (V₄, A₄, etc.)
+    cited in the problem statement as a key test case for the conjecture's
+    behavior at composite n. The unconditional cyclic lower bound is
+    `2k - 1` here regardless. -/
+theorem symBUDim_eight_lower_unconditional (k : ℕ) (hk : 0 < k) :
+    2 * k - 1 ≤ symBUDim 8 (2 * k) :=
+  symBUDim_even_lower 8 k (by norm_num) hk
+
 /-
 ## Summary
 
@@ -286,6 +332,10 @@ theorem symBUDim_two_four_unconditional : symBUDim 2 4 = 3 := by
   `largestPrimeBelow n = n` (squeeze argument). General lemma.
 - `largestPrimeBelow_two`, `_three`, `_five`, `_seven` — concrete
   computations at small primes.
+- `largestPrimeBelow_eq_self_iff_prime` — fixed-point characterization
+  iff primality (n ≥ 2): `largestPrimeBelow n = n ↔ Nat.Prime n`.
+- `largestPrimeBelow_lt_of_not_prime` — strict bound for composite n
+  (corollary of the iff).
 - `symBUDim_even_lower` — UNCONDITIONAL lower bound (no new axioms beyond
   parent), establishing `2k - 1 ≤ symBUDim n (2k)` for n ≥ 2.
 - `symBUDim_eq_largestPrime_two_unconditional` — **n=2 case of the
@@ -308,7 +358,9 @@ theorem symBUDim_two_four_unconditional : symBUDim 2 4 = 3 := by
 - `symBUDim_three_four`, `symBUDim_four_six` — concrete instances.
 
 ### Concrete instances (axiom-free)
-- `symBUDim_five_lower_unconditional`, `symBUDim_two_four_unconditional`.
+- `symBUDim_five_lower_unconditional`, `symBUDim_two_four_unconditional`,
+  `symBUDim_six_lower_unconditional`, `symBUDim_seven_lower_unconditional`,
+  `symBUDim_eight_lower_unconditional`.
 
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
@@ -328,6 +380,8 @@ theorem symBUDim_two_four_unconditional : symBUDim 2 4 = 3 := by
 #check @symBUDim_even_lower
 #check @n_div_two_lt_largestPrimeBelow
 #check @largestPrimeBelow_self_of_prime
+#check @largestPrimeBelow_eq_self_iff_prime
+#check @largestPrimeBelow_lt_of_not_prime
 #check @symBUDim_eq_largestPrime_two_unconditional
 
 end BorsukUlamSymPrime

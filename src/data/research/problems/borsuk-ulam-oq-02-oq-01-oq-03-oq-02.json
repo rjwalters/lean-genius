@@ -37,18 +37,18 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-05-08T02:50:00Z",
-    "iteration": 4,
-    "focus": "Iteration 4 (researcher-3): proved the conjecture's n=2 case AXIOM-FREE — consistency check against parent's symBUDim_two. Added largestPrimeBelow_self_of_prime general squeeze lemma + concrete corollaries at small primes. Added import to Proofs.lean.",
+    "iteration": 5,
+    "focus": "Iteration 5 (researcher-11): added structural fixed-point characterization largestPrimeBelow n = n ↔ Nat.Prime n (n ≥ 2) and its corollary largestPrimeBelow_lt_of_not_prime; added concrete unconditional Yang-Borsuk lower bounds for S₆, S₇, S₈ as direct applications of symBUDim_even_lower.",
     "blockers": [],
     "nextAction": "Stretch: prove n=3 case (would need a symBUDim_three base axiom in parent, since n=3 is not redundant). Or attempt n=4 by hand (V_4 ≤ S_4 case). Or coordinate with sister dihedral question OQ-02-OQ-01-OQ-03-OQ-01.",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (researcher-3, 2026-05-08): **Proved the n=2 case of the conjectured equality AXIOM-FREE** — `symBUDim_eq_largestPrime_two_unconditional` shows the n=2 instance of the new axiom `symBUDim_eq_largestPrime` is *redundant*: it follows from the parent's pre-existing `symBUDim_two` axiom + a general squeeze lemma `largestPrimeBelow_self_of_prime` (instantiated at n=p=2). Non-trivial consistency check between this file and the parent. Also added concrete computations `largestPrimeBelow_two/_three/_five/_seven` (axiom-free) and the axiom-free closed form `symBUDim 2 (2k) = 2k - 1`. Added import to Proofs.lean.\n\nS3 (researcher-9, 2026-05-08): added Bertrand-Chebyshev quantitative bound `n/2 < largestPrimeBelow n` (axiom-free).\n\nS2 (researcher-3, 2026-05-07): Phase 2 scaffold committed.\n\nOBSERVE → ORIENT phase. Counts: lineCount 333, theoremCount 18 (substantive 16), axiomCount 1, sorries 0.",
+    "progressSummary": "S5 (researcher-11, 2026-05-08): added structural iff `largestPrimeBelow n = n ↔ Nat.Prime n` (n ≥ 2) and its corollary `largestPrimeBelow_lt_of_not_prime`. Added 3 concrete unconditional Yang-Borsuk lower bounds at n ∈ {6, 7, 8} via direct applications of `symBUDim_even_lower`. n=8 is the canonical test case for non-cyclic structure (V₄, A₄ ≤ S₈) — the axiom-free lower bound holds regardless. Counts: lineCount 387, theoremCount 23 (substantive 21), axiomCount 1, sorries 0.\n\nS4 (researcher-3, 2026-05-08): **Proved the n=2 case of the conjectured equality AXIOM-FREE** — `symBUDim_eq_largestPrime_two_unconditional` shows the n=2 instance of the new axiom `symBUDim_eq_largestPrime` is *redundant*: it follows from the parent's pre-existing `symBUDim_two` axiom + a general squeeze lemma `largestPrimeBelow_self_of_prime` (instantiated at n=p=2). Non-trivial consistency check between this file and the parent.\n\nS3 (researcher-9, 2026-05-08): added Bertrand-Chebyshev quantitative bound `n/2 < largestPrimeBelow n` (axiom-free).\n\nS2 (researcher-3, 2026-05-07): Phase 2 scaffold committed.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean — Phase 2 scaffold with axiom symBUDim_eq_largestPrime + 18 theorems (substantive: 16); 333 lines",
       "Unconditional theorem symBUDim_even_lower : 2k-1 ≤ symBUDim n (2k) for n ≥ 2 (no new axioms beyond parent)",
@@ -59,7 +59,10 @@
       "S4 — symBUDim_eq_largestPrime_two_unconditional: axiom-free n=2 case of the conjectured equality (consistency check with parent's symBUDim_two)",
       "S4 — symBUDim_two_even_formula_unconditional: axiom-free closed form symBUDim 2 (2k) = 2k-1",
       "S4 — symBUDim_two_four_unconditional: axiom-free concrete instance symBUDim 2 4 = 3",
-      "S4 — Added `import Proofs.BorsukUlamOQ02OQ01OQ03OQ02` to proofs/Proofs.lean (gallery build hookup)"
+      "S4 — Added `import Proofs.BorsukUlamOQ02OQ01OQ03OQ02` to proofs/Proofs.lean (gallery build hookup)",
+      "S5 — largestPrimeBelow_eq_self_iff_prime: structural iff for n ≥ 2",
+      "S5 — largestPrimeBelow_lt_of_not_prime: strict bound for composite n (corollary of the iff)",
+      "S5 — symBUDim_six_lower_unconditional, symBUDim_seven_lower_unconditional, symBUDim_eight_lower_unconditional: axiom-free Yang-Borsuk lower bounds at n ∈ {6, 7, 8}"
     ],
     "insights": [
       "S4 — `largestPrimeBelow_self_of_prime` (squeeze argument: `n ≤ findGreatest ≤ n` from `Nat.le_findGreatest le_rfl hn` + `Nat.findGreatest_le`) is the cleanest derivation of `largestPrimeBelow p = p` for prime p. Generic enough to handle ALL primes uniformly.",
