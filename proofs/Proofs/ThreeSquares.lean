@@ -956,6 +956,83 @@ theorem minkowski_ellipsoid_has_lattice_point (d : ℕ) (R : ℝ) (hd : 0 < d) (
     rw [hx0, hx1, hx2] at hx_S
     exact hx_S
 
+/-! ### S6 Helpers: bridging Minkowski → Dirichlet key lemma
+
+The Minkowski step (above) gives a *real*-valued upper bound on the Dirichlet form
+`x² + d y² + d z²` evaluated at integer triples. To extract a sum-of-three-squares
+representation of `n` we need to argue on the *integer* side: positivity, divisibility,
+and identification with a specific multiple of `p = dn - 1`.
+
+The two helpers below are deliberately small and reusable:
+
+- `dirichletForm_pos` — strict positivity of the form on nonzero integer triples.
+  Combined with the upper bound `≤ R`, future steps will conclude that
+  `x² + d y² + d z²` is a *positive* integer in a controlled range.
+- `dirichletForm_real_eq_int_cast` — push the Minkowski bound from `ℝ` to `ℤ`
+  by recognising the form value as the cast of a single integer expression.
+
+The QR-divisibility step (`p ∣ x² + d y² + d z²` from `legendreSym p (-d) = 1`)
+remains for S7: it requires restricting Minkowski to a sublattice cut out by
+`x ≡ r y (mod p)` and `x ≡ r' z (mod p)` with `r² ≡ r'² ≡ -d (mod p)`.
+-/
+
+/-- **S6**: The Dirichlet form `x² + d y² + d z²` is strictly positive on every
+nonzero integer triple, when `d > 0`. -/
+private lemma dirichletForm_pos (d : ℕ) (hd : 0 < d) (v : Fin 3 → ℤ) (hv : v ≠ 0) :
+    0 < (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 := by
+  have hd' : (0 : ℝ) < d := by exact_mod_cast hd
+  -- Some coordinate is nonzero.
+  have hexists : ∃ i, v i ≠ 0 := by
+    by_contra h
+    push_neg at h
+    exact hv (funext h)
+  obtain ⟨i, hi⟩ := hexists
+  have h0nn : (0 : ℝ) ≤ (v 0 : ℝ) ^ 2 := sq_nonneg _
+  have h1nn : (0 : ℝ) ≤ (d : ℝ) * (v 1 : ℝ) ^ 2 := by positivity
+  have h2nn : (0 : ℝ) ≤ (d : ℝ) * (v 2 : ℝ) ^ 2 := by positivity
+  fin_cases i
+  · have hv0 : (v 0 : ℝ) ≠ 0 := by exact_mod_cast hi
+    have hpos : (0 : ℝ) < (v 0 : ℝ) ^ 2 := by positivity
+    linarith
+  · have hv1 : (v 1 : ℝ) ≠ 0 := by exact_mod_cast hi
+    have hpos : (0 : ℝ) < (d : ℝ) * (v 1 : ℝ) ^ 2 := by positivity
+    linarith
+  · have hv2 : (v 2 : ℝ) ≠ 0 := by exact_mod_cast hi
+    have hpos : (0 : ℝ) < (d : ℝ) * (v 2 : ℝ) ^ 2 := by positivity
+    linarith
+
+/-- **S6**: The real-valued Dirichlet form on an integer triple equals the
+integer cast of `(v 0)² + d (v 1)² + d (v 2)²`. Used to push the Minkowski
+upper bound from `ℝ` to `ℤ`. -/
+private lemma dirichletForm_real_eq_int_cast (d : ℕ) (v : Fin 3 → ℤ) :
+    (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 =
+      ((v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 : ℤ) : ℝ) := by
+  push_cast
+  ring
+
+/-- **S6**: Combined: under the volume hypothesis, there is a nonzero integer
+triple `v` such that `0 < (v 0)² + d (v 1)² + d (v 2)² ≤ ⌊R⌋` (in `ℤ`).
+This is the integer-side restatement of `minkowski_ellipsoid_has_lattice_point`
+that S7 will combine with the QR hypothesis. -/
+private lemma minkowski_ellipsoid_has_lattice_point_int
+    (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R)
+    (hvol : 8 < (4 * Real.pi / 3) * R ^ (3 / 2 : ℝ) / d) :
+    ∃ v : Fin 3 → ℤ,
+      v ≠ 0 ∧
+      0 < v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 ∧
+      (((v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 : ℤ) : ℝ) ≤ R) := by
+  obtain ⟨v, hvne, hbound⟩ :=
+    minkowski_ellipsoid_has_lattice_point d R hd hR hvol
+  refine ⟨v, hvne, ?_, ?_⟩
+  · -- positivity of the integer form value, from real positivity.
+    have hpos_real : 0 < (v 0 : ℝ) ^ 2 + d * (v 1 : ℝ) ^ 2 + d * (v 2 : ℝ) ^ 2 :=
+      dirichletForm_pos d hd v hvne
+    rw [dirichletForm_real_eq_int_cast] at hpos_real
+    exact_mod_cast hpos_real
+  · -- upper bound, by recognising the LHS as the real form value.
+    rw [← dirichletForm_real_eq_int_cast]
+    exact hbound
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.

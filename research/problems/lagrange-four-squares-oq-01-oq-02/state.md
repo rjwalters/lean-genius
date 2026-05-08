@@ -2,9 +2,31 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T07:00:00Z
-**Iteration**: 5
+**Iteration**: 6
 
 ## Current Focus
+
+S6 (2026-05-08, researcher-4): **Bridge helpers between Minkowski and Dirichlet key
+lemma**. Added three small `private` lemmas in `ThreeSquares.lean` (after the
+`minkowski_ellipsoid_has_lattice_point` theorem), preparing the integer-side
+machinery for the eventual elimination of `dirichlet_key_lemma`:
+
+1. `dirichletForm_pos` — strict positivity of `x² + d y² + d z²` on every nonzero
+   integer triple, when `d > 0`. Provided by case-splitting on a witness coordinate
+   (`fin_cases` over `Fin 3`) and `positivity`.
+2. `dirichletForm_real_eq_int_cast` — the real form value equals the cast of a
+   single integer expression `(v 0)² + d (v 1)² + d (v 2)²`. One-line proof
+   (`push_cast; ring`).
+3. `minkowski_ellipsoid_has_lattice_point_int` — integer-side restatement of the
+   Minkowski step: under the volume hypothesis there is a nonzero `v ∈ ℤ³` with
+   `0 < v 0² + d (v 1)² + d (v 2)² ≤ R` *as an integer cast*. Direct combination
+   of the two helpers above with the existing real-valued `minkowski_*` theorem.
+
+These are the pieces that S7 needs to start arguing about divisibility:
+positivity rules out the trivial multiple of `p`, and the integer cast lets us
+apply `Int.dvd_*` lemmas after the QR step extracts `r` with `p ∣ r² + d`.
+
+**Axiom delta**: unchanged (5 axioms in `ThreeSquares.lean`). Build pending.
 
 S5 (2026-05-08, researcher-4): **Eliminated `minkowski_ellipsoid_has_lattice_point` axiom.**
 Replaced the axiom with a complete proof applying Mathlib's geometry-of-numbers
@@ -53,24 +75,32 @@ analysis.
 
 ## Next Action
 
-**Session 6**: Begin elimination of `dirichlet_key_lemma`. Steps:
-1. Define the auxiliary form `f_d(x,y,z) := x² + d y² + d z²` (already present
-   in the ellipsoid).
-2. Choose `R = d n` (or similar) and verify `8 < (4π/3) R^(3/2) / d`
-   reduces to a clean condition on `n` and `d` (uses `R^(3/2) = R · R^(1/2)`
-   and `d > 0`).
-3. Apply `minkowski_ellipsoid_has_lattice_point` (now a theorem) to obtain a
-   nonzero `(x, y, z) ∈ ℤ³` with `x² + d y² + d z² ≤ R`.
-4. Use the QR hypothesis `legendreSym(-d) = 1 mod p` to argue `p ∣ x² + d y² + d z²`.
-5. Combine with `R = d n` and `p = dn - 1` to conclude
-   `x² + d y² + d z² ∈ {p+1, 2p, 3p, ...} ∩ [1, R]` and extract `dn`.
-6. Algebraic manipulation to rewrite as sum of three squares.
+**Session 7**: Tackle the QR-divisibility step. Outline:
+1. **Restrict Minkowski to a sublattice.** The form `x² + d y² + d z²` is *not*
+   automatically a multiple of `p` on all of `ℤ³` — only on the sublattice
+   `L_r = {(x, y, z) ∈ ℤ³ : x ≡ r y (mod p) ∧ x ≡ r' z (mod p)}` where
+   `r² ≡ r'² ≡ -d (mod p)` (existence guaranteed by `legendreSym p (-d) = 1`).
+   On `L_r` we get `x² + d y² + d z² ≡ 0 (mod p)`.
+2. **Sublattice covolume** is `p²`, so the volume condition becomes
+   `8 p² < (4π/3) R^(3/2) / d`, i.e. `R^(3/2) > 6 d p² / π`.
+3. **Range argument** — pick `R` so that `R < (d-1) p` (or similar), forcing
+   the form value `x² + d y² + d z²` to equal `kp` for a unique `k < d`.
+4. **Identification** — match `kp = k(dn-1)` against `x² + d y² + d z²` and
+   extract a sum-of-three-squares representation of `n`.
 
-Estimated 100–200 lines.
+The S6 helpers (`dirichletForm_pos`, `dirichletForm_real_eq_int_cast`,
+`minkowski_ellipsoid_has_lattice_point_int`) cover steps 3–4 once the
+sublattice restriction is in place. Step 1 (sublattice construction +
+QR-square-root extraction via `ZMod.isSquare_of_jacobiSym_eq_one`) is the
+main remaining S7 effort.
+
+**Estimated**: ~100 lines for sublattice (S7), ~60 lines for the divisibility +
+identification arguments (S8). Full elimination of `dirichlet_key_lemma`
+across S7+S8.
 
 ## Attempt Counts
 
-- Total attempts: 5 (Sessions 1–5)
+- Total attempts: 6 (Sessions 1–6)
 - Approaches tried:
   - **S1 (researcher-?)**: OBSERVE/scaffolding (PR #16805)
   - **S2 (researcher-?)**: stub + Legendre infra
@@ -83,4 +113,8 @@ Estimated 100–200 lines.
     axiom into a theorem. Applied Mathlib's
     `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` and
     extracted integer coordinates via
-    `Submodule.mem_span_range_iff_exists_fun`.
+    `Submodule.mem_span_range_iff_exists_fun`. (PR #16987)
+  - **S6 (researcher-4)**: Bridge helpers between Minkowski and Dirichlet key
+    lemma — `dirichletForm_pos` (strict positivity on nonzero ℤ³ triples),
+    `dirichletForm_real_eq_int_cast` (cast bridge), and
+    `minkowski_ellipsoid_has_lattice_point_int` (integer-side Minkowski).
