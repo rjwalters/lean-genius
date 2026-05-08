@@ -1204,10 +1204,239 @@ lemma tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
              Finset.mem_product]
   tauto
 
+-- ============================================================
+-- §7. OVERLAP-PATTERN PARTITION (Layer 3c+3d, Session 15)
+-- ============================================================
+
+/-
+  Layer 3c (this section, S15) defines the overlap-pattern partition of the
+  diagonal-removed pair-of-strict-triples space and shows the partition
+  identity: every pair (T₁, T₂) of strict triples with T₁ ≠ T₂ has a
+  uniquely-determined intersection size `(tripleSet T₁ ∩ tripleSet T₂).card`
+  in `{0, 1, 2}` (the size-3 stratum is empty for STRICT triples).
+
+  Layer 3d (also this section, S15) combines Layer 3c with Layer 3b's
+  identity `tripleCount_descFact_2_eq_pairs` to express the per-`f`
+  descending-factorial of `tripleCount` as a sum over overlap strata of
+  per-stratum f-trivialise counts. This is the structural identity that
+  Layers 3e/3f (S16) will turn into a quantitative limit by computing the
+  k = 0 (disjoint) contribution and bounding the k = 1, 2 contributions.
+
+  Public additions (3 defs/lemmas):
+  - `tripleSet`: underlying 3-element index Finset of a triple.
+  - `overlapPattern n k`: ordered pairs of distinct strict triples with
+    intersection-size exactly k.
+  - `overlapPattern_three_eq_empty`: the k = 3 stratum is empty.
+  - `overlapPattern_partitions_offDiag`: the k = 0,1,2,3 strata partition the
+    full diagonal-removed product (matters for Finset.card_biUnion_disjoint).
+  - `tripleCount_descFact_2_eq_overlap_sum`: factorial-moment-2 (per `f`) is
+    the sum over k of overlap-k f-trivialise counts.
+-/
+
+/-- The underlying 3-element index Finset of a triple `(i, j, k)`. For strict
+    triples, this Finset has cardinality exactly 3 (proved in
+    `card_tripleSet_of_strict`). -/
+def tripleSet {n : ℕ} (T : Fin n × Fin n × Fin n) : Finset (Fin n) :=
+  {T.1, T.2.1, T.2.2}
+
+/-- For a strict triple `T = (a, b, c)` with `a < b < c`, the underlying
+    3-element set has cardinality exactly 3. -/
+lemma card_tripleSet_of_strict {n : ℕ} {T : Fin n × Fin n × Fin n}
+    (hT : T ∈ strictTriples n) : (tripleSet T).card = 3 := by
+  classical
+  unfold strictTriples at hT
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hT
+  obtain ⟨h12, h23⟩ := hT
+  have h13 : T.1 < T.2.2 := lt_trans h12 h23
+  have hne12 : T.1 ≠ T.2.1 := ne_of_lt h12
+  have hne13 : T.1 ≠ T.2.2 := ne_of_lt h13
+  have hne23 : T.2.1 ≠ T.2.2 := ne_of_lt h23
+  have h_not_mem_2 : T.2.1 ∉ ({T.2.2} : Finset (Fin n)) := by
+    simp [hne23]
+  have h_not_mem_1 : T.1 ∉ (insert T.2.1 ({T.2.2} : Finset (Fin n))) := by
+    simp [hne12, hne13]
+  unfold tripleSet
+  rw [show ({T.1, T.2.1, T.2.2} : Finset (Fin n))
+        = insert T.1 (insert T.2.1 ({T.2.2} : Finset (Fin n))) from rfl,
+      Finset.card_insert_of_not_mem h_not_mem_1,
+      Finset.card_insert_of_not_mem h_not_mem_2,
+      Finset.card_singleton]
+
+/-- For STRICT triples (canonical sort order), the underlying 3-element set
+    determines the triple as a sorted tuple: same `tripleSet` ⇒ same triple.
+    This rules out the overlap-3 stratum in `overlapPattern` once the diagonal
+    `T₁ = T₂` is excluded. -/
+lemma strict_eq_of_tripleSet_eq {n : ℕ}
+    {T₁ T₂ : Fin n × Fin n × Fin n}
+    (hT₁ : T₁ ∈ strictTriples n) (hT₂ : T₂ ∈ strictTriples n)
+    (hset : tripleSet T₁ = tripleSet T₂) : T₁ = T₂ := by
+  classical
+  unfold strictTriples at hT₁ hT₂
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hT₁ hT₂
+  obtain ⟨a, b, c⟩ := T₁
+  obtain ⟨a', b', c'⟩ := T₂
+  obtain ⟨hab, hbc⟩ := hT₁
+  obtain ⟨hab', hbc'⟩ := hT₂
+  have hac : a < c := lt_trans hab hbc
+  have hac' : a' < c' := lt_trans hab' hbc'
+  unfold tripleSet at hset
+  -- Membership transfers
+  have ha_mem : a ∈ ({a', b', c'} : Finset (Fin n)) := by
+    rw [← hset]; simp
+  have hb_mem : b ∈ ({a', b', c'} : Finset (Fin n)) := by
+    rw [← hset]; simp
+  have hc_mem : c ∈ ({a', b', c'} : Finset (Fin n)) := by
+    rw [← hset]; simp
+  have ha'_mem : a' ∈ ({a, b, c} : Finset (Fin n)) := by
+    rw [hset]; simp
+  have hc'_mem : c' ∈ ({a, b, c} : Finset (Fin n)) := by
+    rw [hset]; simp
+  -- a = a' (both are minima of equal sets)
+  have ha_le_a' : a ≤ a' := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha_mem
+    rcases ha_mem with h | h | h
+    · exact h.le
+    · exact h ▸ hab'.le
+    · exact h ▸ hac'.le
+  have ha'_le_a : a' ≤ a := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha'_mem
+    rcases ha'_mem with h | h | h
+    · exact h.le
+    · exact h ▸ hab.le
+    · exact h ▸ hac.le
+  have ha_eq : a = a' := le_antisymm ha_le_a' ha'_le_a
+  -- c = c' (both are maxima of equal sets)
+  have hc'_le_c : c' ≤ c := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hc'_mem
+    rcases hc'_mem with h | h | h
+    · exact h ▸ hac.le
+    · exact h ▸ hbc.le
+    · exact h.le
+  have hc_le_c' : c ≤ c' := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hc_mem
+    rcases hc_mem with h | h | h
+    · exact h ▸ hac'.le
+    · exact h ▸ hbc'.le
+    · exact h.le
+  have hc_eq : c = c' := le_antisymm hc_le_c' hc'_le_c
+  -- b = b' (the only remaining element after fixing min and max)
+  have hb_eq : b = b' := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hb_mem
+    rcases hb_mem with h | h | h
+    · -- b = a' = a contradicts a < b
+      exfalso; rw [← ha_eq] at h; omega
+    · exact h
+    · -- b = c' = c contradicts b < c
+      exfalso; rw [← hc_eq] at h; omega
+  exact Prod.ext ha_eq (Prod.ext hb_eq hc_eq)
+
+/-- The intersection of two strict triples' underlying sets has cardinality
+    at most 3 (the cardinality of either factor). -/
+lemma tripleSet_inter_card_le_three {n : ℕ}
+    {T₁ T₂ : Fin n × Fin n × Fin n} (hT₁ : T₁ ∈ strictTriples n) :
+    (tripleSet T₁ ∩ tripleSet T₂).card ≤ 3 := by
+  classical
+  calc (tripleSet T₁ ∩ tripleSet T₂).card
+      ≤ (tripleSet T₁).card := Finset.card_le_card Finset.inter_subset_left
+    _ = 3 := card_tripleSet_of_strict hT₁
+
+/-- **Layer 3c.** Overlap-pattern stratum at intersection size `k`: ordered
+    pairs of distinct strict triples `(T₁, T₂)` with `(tripleSet T₁ ∩
+    tripleSet T₂).card = k`. The natural index range is `k ∈ {0, 1, 2, 3}`;
+    the `k = 3` stratum is empty (`overlapPattern_three_eq_empty`). The
+    diagonal `T₁ = T₂` is excluded by construction. -/
+def overlapPattern (n k : ℕ) :
+    Finset ((Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n)) :=
+  (((strictTriples n) ×ˢ (strictTriples n)).filter (fun p => p.1 ≠ p.2)).filter
+    (fun p => (tripleSet p.1 ∩ tripleSet p.2).card = k)
+
+/-- **Layer 3c.** The overlap-3 stratum is empty: for STRICT triples T₁ ≠ T₂,
+    the underlying 3-element sets cannot coincide (proved via
+    `strict_eq_of_tripleSet_eq`). The genuine partition is therefore over
+    `{0, 1, 2}`. -/
+lemma overlapPattern_three_eq_empty (n : ℕ) :
+    overlapPattern n 3 = ∅ := by
+  classical
+  ext ⟨T₁, T₂⟩
+  simp only [overlapPattern, Finset.mem_filter, Finset.mem_product,
+             Finset.notMem_empty, iff_false]
+  rintro ⟨⟨⟨hT₁, hT₂⟩, hne⟩, hcard3⟩
+  apply hne
+  -- inter ⊆ tripleSet T₁ and (inter).card = 3 = (tripleSet T₁).card → inter = tripleSet T₁
+  -- Hence tripleSet T₁ ⊆ tripleSet T₂; then by symmetric argument equal.
+  have hcard₁ := card_tripleSet_of_strict hT₁
+  have hcard₂ := card_tripleSet_of_strict hT₂
+  have hsub₁ : tripleSet T₁ ∩ tripleSet T₂ ⊆ tripleSet T₁ := Finset.inter_subset_left
+  have hsub₂ : tripleSet T₁ ∩ tripleSet T₂ ⊆ tripleSet T₂ := Finset.inter_subset_right
+  have heq₁ : tripleSet T₁ ∩ tripleSet T₂ = tripleSet T₁ :=
+    Finset.eq_of_subset_of_card_le hsub₁ (by rw [hcard3, hcard₁])
+  have heq₂ : tripleSet T₁ ∩ tripleSet T₂ = tripleSet T₂ :=
+    Finset.eq_of_subset_of_card_le hsub₂ (by rw [hcard3, hcard₂])
+  exact strict_eq_of_tripleSet_eq hT₁ hT₂ (heq₁.symm.trans heq₂)
+
+/-- **Layer 3c.** The four overlap-pattern strata partition the
+    diagonal-removed pair-of-strict-triples space: every pair `(T₁, T₂)` of
+    strict triples with `T₁ ≠ T₂` has a uniquely-determined intersection
+    size in `{0, 1, 2, 3}`. (Combined with `overlapPattern_three_eq_empty`,
+    the genuine partition is over `{0, 1, 2}`.) -/
+lemma overlapPattern_partitions_offDiag (n : ℕ) :
+    (((strictTriples n) ×ˢ (strictTriples n)).filter (fun p => p.1 ≠ p.2)).card =
+    ∑ k ∈ Finset.range 4, (overlapPattern n k).card := by
+  classical
+  have hF : ∀ p ∈ (((strictTriples n) ×ˢ (strictTriples n)).filter
+      (fun p : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) => p.1 ≠ p.2)),
+        (tripleSet p.1 ∩ tripleSet p.2).card ∈ Finset.range 4 := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    have hcard_le := tripleSet_inter_card_le_three (T₂ := p.2) hp.1.1
+    simp only [Finset.mem_range]
+    omega
+  rw [Finset.card_eq_sum_card_fiberwise hF]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  congr 1
+  ext ⟨T₁, T₂⟩
+  simp only [overlapPattern, Finset.mem_filter, Finset.mem_product]
+  tauto
+
+/-- **Layer 3d.** Per-`f` second-factorial-moment expansion: the
+    descending-factorial `tripleCount.descFactorial 2` decomposes as a sum
+    over the four overlap-pattern strata (Layer 3c) of f-trivialised counts.
+    This is the structural identity that Layers 3e–3g (S16/S17) will use to
+    extract the limit `(c³/6)²` after scaling by `1 / d^n`.
+
+    The decomposition follows by combining `tripleCount_descFact_2_eq_pairs`
+    (Layer 3b, S14) with the fiberwise partition from Layer 3c. -/
+lemma tripleCount_descFact_2_eq_overlap_sum (d n : ℕ) (f : Fin n → Fin d) :
+    (tripleCount d n f).descFactorial 2 =
+    ∑ k ∈ Finset.range 4, ((overlapPattern n k).filter (fun p =>
+      (f p.1.1 = f p.1.2.1 ∧ f p.1.2.1 = f p.1.2.2) ∧
+      (f p.2.1 = f p.2.2.1 ∧ f p.2.2.1 = f p.2.2.2))).card := by
+  classical
+  rw [tripleCount_descFact_2_eq_pairs]
+  -- Fiberwise partition of the f-trivialise pair set by overlap size.
+  have hF : ∀ p ∈ (((strictTriples n) ×ˢ (strictTriples n)).filter (fun p =>
+        p.1 ≠ p.2 ∧
+        (f p.1.1 = f p.1.2.1 ∧ f p.1.2.1 = f p.1.2.2) ∧
+        (f p.2.1 = f p.2.2.1 ∧ f p.2.2.1 = f p.2.2.2))),
+        (tripleSet p.1 ∩ tripleSet p.2).card ∈ Finset.range 4 := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    have hcard_le := tripleSet_inter_card_le_three (T₂ := p.2) hp.1.1
+    simp only [Finset.mem_range]
+    omega
+  rw [Finset.card_eq_sum_card_fiberwise hF]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  congr 1
+  ext ⟨T₁, T₂⟩
+  simp only [overlapPattern, Finset.mem_filter, Finset.mem_product]
+  tauto
+
 /-
   ## Summary
 
-  **Proved (26 theorems / lemmas, 1 axiom):**
+  **Proved (32 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -1258,6 +1487,32 @@ lemma tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
       to partition pair-of-triples space by overlap size.
   Plus 1 private bridge lemma `card_tripleCountFinset` (S14): the cardinality
   of `(strictTriples n).filter (f trivialises)` equals `tripleCount d n f`.
+  26. `tripleSet` (Session 15, Layer 3c): underlying 3-element index Finset
+      `{T.1, T.2.1, T.2.2}` of a triple. Strict triples have card 3.
+  27. `card_tripleSet_of_strict` (Session 15, Layer 3c): for a strict triple
+      `(a, b, c)` with `a < b < c`, `(tripleSet T).card = 3`.
+  28. `strict_eq_of_tripleSet_eq` (Session 15, Layer 3c): for STRICT triples,
+      the underlying 3-element set determines the canonically-sorted triple
+      (used to rule out the overlap-3 stratum).
+  29. `tripleSet_inter_card_le_three` (Session 15, Layer 3c): the intersection
+      of two strict triples' underlying sets has card ≤ 3 (auxiliary for
+      fiberwise partition).
+  30. `overlapPattern n k` (Session 15, Layer 3c): definition of the
+      overlap-pattern stratum at intersection size `k`. Pairs `(T₁, T₂)` of
+      distinct strict triples with `(tripleSet T₁ ∩ tripleSet T₂).card = k`.
+  31. `overlapPattern_three_eq_empty` (Session 15, Layer 3c): the `k = 3`
+      stratum is empty for STRICT triples (T₁ ≠ T₂ ⇒ tripleSet T₁ ≠
+      tripleSet T₂). The genuine partition is over `{0, 1, 2}`.
+  32. `overlapPattern_partitions_offDiag` (Session 15, Layer 3c): the four
+      strata partition the diagonal-removed pair-of-strict-triples space:
+      sum of stratum cardinalities equals the total. Proved via
+      `Finset.card_eq_sum_card_fiberwise`.
+  33. `tripleCount_descFact_2_eq_overlap_sum` (Session 15, Layer 3d): per-`f`
+      structural identity expressing `tripleCount.descFactorial 2` as a sum
+      over the four overlap-pattern strata of the f-trivialised counts.
+      Combines Layer 3b (S14) with the fiberwise partition. Sets up Layers
+      3e/3f (S16) to compute the disjoint contribution `1/d⁴` per pair and
+      bound the non-disjoint contributions as `O(d^{-2/3})`.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -1291,5 +1546,10 @@ lemma tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
 #check @strictTriples
 #check @descFactorial_two_real_eq
 #check @tripleCount_descFact_2_eq_pairs
+#check @tripleSet
+#check @overlapPattern
+#check @overlapPattern_three_eq_empty
+#check @overlapPattern_partitions_offDiag
+#check @tripleCount_descFact_2_eq_overlap_sum
 
 end BirthdayThreshold3
