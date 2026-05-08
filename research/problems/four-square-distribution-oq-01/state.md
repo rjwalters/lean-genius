@@ -2,22 +2,62 @@
 
 ## Current State
 **Phase**: ACT
-**Phase note**: S12: Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
-`r4Count(p^k) = 8·σ(p^k)` for odd prime `p` and arbitrary `k ≥ 0`.
-Generalizes Part 21's `jacobiR4_odd_prime` / `r4Count_odd_prime`
-(k = 1 case) by inlining Part 8's `sigmaStar_prime_pow_of_odd_prime`.
-With Part 15's pure 2-power closed form and Part 12's σ*-multiplicativity,
-this pins jacobiR4(n) explicitly on every prime power. Closure of
-`jacobi_r4_formula` still requires the multiplicative bridge from
-r4Count to jacobiR4 (atomic-axiom route — see S11) or Mathlib
-q-expansion of `jacobiTheta` / `E₂`.
+**Phase note**: S13 (analysis-only): modular-form atomic decomposition
+**spec** for `jacobi_r4_formula`, complementary to S11.alt's elementary
+3-hypothesis decomposition (PR #17388). Documents two atomic axioms
+on the modular-form route — (Hθ4Coef) q-coefficient bridge and
+(Hθ4Eis) `θ⁴ = 1 + 8·(E₂ − 4·E₂(4·)`) modular-form identification
+— a closure proof skeleton via S9 `r4Count_factorization_form`,
+Mathlib API gaps, and a 9-month upstream contribution sequence.
+The spec is decoupled from `FourSquareDistributionOQ01.lean` (no
+Lean changes) to avoid contention with the 4–5 build-pending PRs
+on the file. S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) =
+8·σ(p^k)` and `r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any
+`k ≥ 0`. With Part 15's pure 2-power closed form and Part 12's
+σ*-multiplicativity, jacobiR4(n) is now explicitly pinned on every
+prime power. Closure of `jacobi_r4_formula` still requires either
+the elementary route (S11.alt #17388 — three combinatorial
+hypotheses) or the modular-form route (S13 spec — two analytic
+axioms).
 **Path**: full
 **Since**: 2026-05-08T21:33:45+03:00
-**Last Updated**: 2026-05-08 (S12, researcher-11; build pending)
-**Iteration**: 12
+**Last Updated**: 2026-05-09 (S13, researcher-3; analysis-only, no Lean changes)
+**Iteration**: 13
 
 ## Current Focus
-S12 (this session) adds **Part 22** to FourSquareDistributionOQ01.lean:
+S13 (this session, analysis-only) adds
+`s13-modular-form-atomic-decomposition.md` to the problem dir: a
+self-contained specification for the modular-form atomic decomposition
+of `jacobi_r4_formula`, parallel to S11.alt's elementary three-hypothesis
+route (PR #17388). Two atomic axioms:
+
+* **(Hθ4Coef)** q-coefficient bridge:
+  `r4Count n = qCoeff_n((jacobiTheta τ)^4)` for `n > 0`.
+* **(Hθ4Eis)** modular-form identification:
+  `(jacobiTheta τ)^4 = 1 + 8·(E₂(τ) − 4·E₂(4τ))`.
+
+With Mathlib's eventual `EisensteinSeries.E2_qExpansion` and S9's
+`r4Count_factorization_form`, these two axioms close
+`jacobi_r4_formula` via finite arithmetic on n-th coefficients. The
+spec details (a) per-axiom Mathlib API status (both currently absent
+from v4.26.0); (b) the 6-step closure proof sketch tying back to
+S2's `σ*(n) = σ(n) − 4·σ(n/4)·[4∣n]` structural identity; (c) a
+comparison with S11.alt's elementary route (3 combinatorial
+hypotheses) — neither subsumes the other; closing **either** pair
+discharges the open axiom; (d) implementation plan for a follow-up
+S13-implement session (~60–80 lines of Lean axiomatic scaffolding +
+2–3 cross-validation `example`s); (e) a 9-month Mathlib upstream
+contribution sequence for the full discharge.
+
+**Why analysis-only this session**: `FourSquareDistributionOQ01.lean`
+has accumulated 4–5 build-pending PRs (S9, S10, S11, S11.alt #17388,
+S12). Adding more Lean code under contention risks build/merge
+conflicts without unblocking downstream work. A written specification
+captures the modular-form route at axiom-statement granularity, ready
+for transcription in a single follow-up session once contention
+subsides.
+
+S12 (PR #17490, merged) added **Part 22** to FourSquareDistributionOQ01.lean:
 the odd-prime-POWER closed forms
 
 * **`jacobiR4_prime_pow_of_odd_prime`**: for odd prime `p` and `k ≥ 0`,
@@ -108,7 +148,7 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Attempt Count
 
-- Total attempts: 12.
+- Total attempts: 13.
 - S1 (researcher-?): OBSERVE/ORIENT bootstrap (axiomatize, n = 1..10).
 - S2 (researcher-10): ACT — σ*(n) = σ(n) − 4·σ(n/4)·[4∣n] structural.
 - S3 (researcher-?): σ* on odd prime powers, σ*(2n)/σ*(4n) = 3·σ(n).
@@ -145,6 +185,18 @@ Currently still blocked on Mathlib infrastructure:
   `jacobiR4_prime_pow_of_odd_prime` / `r4Count_prime_pow_of_odd_prime`
   (closed form on odd prime POWERS for arbitrary `k ≥ 0`,
   generalizing S11's k = 1 case).
+- S13 (researcher-3, 2026-05-09, analysis-only): modular-form atomic
+  decomposition spec at `s13-modular-form-atomic-decomposition.md`.
+  Parallel route to S11.alt: two atomic axioms
+  (Hθ4Coef) `r4Count n = qCoeff_n((jacobiTheta τ)^4)` for `n > 0`
+  and (Hθ4Eis) `(jacobiTheta τ)^4 = 1 + 8·(E₂(τ) − 4·E₂(4τ))`,
+  closure proof skeleton via S9 + Mathlib's eventual
+  `EisensteinSeries.E2_qExpansion`, comparison with S11.alt's
+  elementary 3-hypothesis route, and a 9-month Mathlib upstream
+  contribution sequence. No Lean changes; spec captures the
+  modular-form route at axiom-statement granularity for a follow-up
+  S13-implement session (~60–80 lines of Part 23 axiomatic
+  scaffolding).
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -162,6 +214,15 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Next Action
 
+0. **(easy, mechanical) S13-implement**: transcribe the
+   `s13-modular-form-atomic-decomposition.md` spec into a new Part 23
+   of `FourSquareDistributionOQ01.lean`: state the two atomic axioms
+   `theta_pow_four_qCoeff` (Hθ4Coef) and `theta_pow_four_eq_eisenstein`
+   (Hθ4Eis) plus the closure-skeleton theorem
+   `jacobi_r4_formula_from_modular_form` with a documented `sorry`
+   body for the Mathlib-API-dependent finite arithmetic step.
+   ~60–80 lines, single session. Defer until file contention
+   subsides (currently 4–5 build-pending PRs).
 1. **(opportunistic, σ*-side AND r4Count-side closed)** When Mathlib
    gains q-expansion for `jacobiTheta` / `EisensteinSeries.E₂`, apply
    `r4Count_factorization_form` (S9) directly — the LHS of the
@@ -170,16 +231,18 @@ Currently still blocked on Mathlib infrastructure:
    `(if 2 ∣ n then 24 else 8)·σ(ord_compl[2] n)` (closed form already
    proven). Two q-coefficient extractions plus this corollary close
    `jacobi_r4_formula`. No σ*-side intermediation needed.
-2. **(productive, modular-form side, NEW STRUCTURAL DECOMPOSITION)**
-   Bootstrap two atomic axioms targeting Mathlib roadmap:
-   (a) `theta_pow_four_qExpansion : (1/(2π)) ∫ θ⁴ e^{-2πinτ} dτ = r4Count n`
-       (definitional bridge between integer counting and q-coefficient).
-   (b) `theta4_eq_eisenstein : θ⁴ = 1 + 8·(E₂(τ) − 4·E₂(4τ))`
-       (the Jacobi-1834 modular-form identity).
-   With (a) + (b) + Mathlib's `EisensteinSeries.E2_qExpansion`,
-   `r4Count_factorization_form` (S9) closes `jacobi_r4_formula`.
-   This decomposition is more atomic than the current single broad
-   axiom and each piece is on a known Mathlib roadmap.
+2. **(productive, modular-form side, S13 SPEC)**
+   Two atomic axioms targeting Mathlib roadmap:
+   (Hθ4Coef) `r4Count n = qCoeff_n((jacobiTheta τ)^4)` for `n > 0`
+       (definitional bridge between integer counting and q-coefficient);
+   (Hθ4Eis) `(jacobiTheta τ)^4 = 1 + 8·(E₂(τ) − 4·E₂(4τ))`
+       (Jacobi-1834 modular-form identity).
+   With (Hθ4Coef) + (Hθ4Eis) + Mathlib's `EisensteinSeries.E2_qExpansion`,
+   `r4Count_factorization_form` (S9) closes `jacobi_r4_formula`. See
+   `s13-modular-form-atomic-decomposition.md` for the closure proof
+   skeleton, Mathlib API status, and the 9-month upstream sequence.
+   This decomposition is parallel to S11.alt's elementary 3-hypothesis
+   route (PR #17388); closing **either** discharges the open axiom.
 3. **(elementary, hard)** Direct combinatorial proof of
    `r4Count(2n) = 3·r4Count(n)` for odd n via the pairing bijection
    `(a,b,c,d) ↦ ((a+b)/2, (a-b)/2, (c+d)/2, (c-d)/2)` (~300-500 lines
@@ -209,5 +272,9 @@ Currently still blocked on Mathlib infrastructure:
   gallery entry.
 - `research/problems/four-square-distribution-oq-01/problem.md` —
   detailed problem statement.
+- `research/problems/four-square-distribution-oq-01/s13-modular-form-atomic-decomposition.md` —
+  S13 spec: two-axiom modular-form atomic decomposition of
+  `jacobi_r4_formula`, closure proof skeleton, Mathlib API gaps,
+  comparison with S11.alt's elementary route.
 - `research/problems/four-square-distribution-oq-01/knowledge.md` —
   per-session notes.
