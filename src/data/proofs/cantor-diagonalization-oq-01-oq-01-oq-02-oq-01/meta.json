@@ -24,7 +24,7 @@
     "lineCount": 251,
     "assumptions": "2 axiom declarations (easton_permitted_realizable and easton_consistency) state the realizability direction of Easton's 1970 theorem: every regular κ > ℵ₀ is realizable as 2^ℵ₀, and every Easton function is realizable as the continuum function on regular cardinals. Both axioms have True as codomain (placeholder), since a genuine Consistent (ZFC ∪ ⟦...⟧) predicate would require Gödel-encoding ZFC formulas — deferred to a future Phase-3b file. Of 9 supporting theorems, 7 are fully machine-checked from Mathlib (IsPermittedValue scaffold, aleph_one_permitted, aleph_two_permitted, permitted_satisfies_konig, permitted_unbounded, IsEastonFunction structure, isEastonFunction_nonempty). 2 carry sorries pending Phase-3a Mathlib API fixes: aleph_succ_permitted (the ℵ₀ < ℵ_(succ α) step needs the current-Mathlib spelling of the strict aleph0_lt_aleph lemma) and isEastonFunction_continuum.monotone (Cardinal.power_le_power_right now varies the BASE not the exponent in current Mathlib; needs the correct exponent-monotone lemma name).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 7,
     "definitionCount": 1
   },
   "overview": {
@@ -109,7 +109,7 @@
     "namespace": "CantorDiagOQ01OQ01OQ02OQ01",
     "lineCount": 251,
     "axiomCount": 2,
-    "theoremCount": 9,
+    "theoremCount": 7,
     "definitionCount": 1,
     "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean",
     "sorries": 2
