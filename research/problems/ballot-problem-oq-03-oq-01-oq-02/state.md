@@ -1,21 +1,27 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ORIENT (S57 plan: K-induction decomposition into (S1)-(S7) sublemmas)
+**Phase**: ACT (S57.1 done; S57.2 next attack on (S2) arm-of-c' pointwise reduction)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-09
-**Iteration**: 57
+**Iteration**: 58
 
 ## Current Focus
 Close `F_side_identity_aligned` (Helpers, line ~14811) — the
-**common-domain parametric F-side hook-shift identity** that is now the
-sole remaining sorry-bearing lemma on the GNW route, after S56 (this
-session) sharpened the open obligation by aligning both summation
-domains to `(μ\c').cells`.  `F_side_identity` (S55a) is now sorry-free,
-deriving from `F_side_identity_aligned` via the existing S43 bridge
-`sum_gnwProb_eq_removeCorner_cells`.  `gnwProb_exchange` (S55a)
-remains sorry-free; only `F_side_identity_aligned` blocks `verified`
+**common-domain parametric F-side hook-shift identity** that is the
+sole remaining sorry-bearing lemma on the GNW route after S56.
+S57.1 (this session, researcher-1) added three foundational
+**off-spine structural invariances** under c'-removal as the base
+inputs to the (S1) off-spine branch of S57.0's joint-K-induction
+plan: `c'_notMem_strictHookCells_of_off_spine`,
+`hookLength_invariant_off_spine_of_c'`, and
+`strictHookCells_invariant_off_spine_of_c'` (Helpers ~lines 14562,
+14588, 14616; all sorry-free).  These eliminate two of the three
+"moving pieces" (h_μ vs h_{μ\c'} and H*(x) vs H'*(x)) at off-spine
+cells, reducing the (S1) target to a K-bookkeeping argument.
+`F_side_identity` (S55a) is sorry-free.  `gnwProb_exchange` (S55a)
+is sorry-free.  Only `F_side_identity_aligned` blocks `verified`
 status.
 
 ## Active Approach
@@ -334,15 +340,16 @@ Step 2 reduces to a single sorry'd lemma `F_side_identity_aligned`
 (parametric in `min`-coordinates, both sums on `(μ\c').cells`), which
 is the sole remaining open piece of the GNW route.
 
-**File-size**: Helpers.lean is at 15136 lines after S56 (+46 from 15090
-after S55a).  ~360 lines under the Docker 32GB-memory ceiling estimate
-(~15500 lines).  S57 (full F-side proof) is likely to push beyond
-15500; extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
-should now be a *blocking prerequisite* for S57 (or S57 should target
-the extracted file directly).  The natural extraction boundary is the
-entire double-removal infrastructure (S48-S56: lines ~5035–5500 for
-geometric+S52, plus ~14629–14850 for S53/S54/S55a-dispatcher and the
-S55a/S56 F-side block).
+**File-size**: Helpers.lean is at 15225 lines after S57.1 (+89 from
+15136 after S56).  ~275 lines under the Docker 32GB-memory ceiling
+estimate (~15500 lines).  S57.2+ (the bulk of the joint K-induction
+in `F_side_identity_aligned`) is likely to push beyond 15500;
+extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` is a
+deferred prerequisite for S57.2+ (per S57.0 Option E3).  The natural
+extraction boundary is the entire double-removal infrastructure
+(S48-S57.1: lines ~5035–5500 for geometric+S52, plus ~14535–14860
+for the S57.1 off-spine block, S43 bridges, S53/S54/S55a-dispatcher,
+and the S55a/S56 F-side block).
 
 Alternative (deferred): a deterministic weighted-path recasting of GNW
 that avoids the exchange step entirely (count weighted walks of every
@@ -371,6 +378,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-08-s10.md` — Session 55a: parametric `F_side_identity` + sorry-free `gnwProb_exchange` dispatcher
 - `sessions/2026-05-09-s01.md` — Session 56: common-domain `F_side_identity_aligned` + sorry-free `F_side_identity`
 - `sessions/2026-05-09-s02.md` — Session 57.0: K-induction strategy + cell-partition + (S1)-(S7) sublemma plan
+- `sessions/2026-05-09-s03.md` — Session 57.1: off-spine structural invariances under c'-removal (3 lemmas, sorry-free)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -383,17 +391,20 @@ Fallback if S55+ stalls.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5258` — `hookLength_removeCornerC'_leg_of_c` (S50)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5288` — `hookLength_at_d_ge_3` (S51)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5297` — `hookProd_doubleRemove_factor` (S52)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14629` — `gnwProb_exchange_lt_row_of_F_side`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14562` — `c'_notMem_strictHookCells_of_off_spine` (S57.1)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14588` — `hookLength_invariant_off_spine_of_c'` (S57.1)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14616` — `strictHookCells_invariant_off_spine_of_c'` (S57.1)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14719` — `gnwProb_exchange_lt_row_of_F_side`
   (S53 combiner, sorry-free conditional on F-side identity, case `c.1 < c'.1`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14724` — `gnwProb_exchange_lt_col_of_F_side`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14814` — `gnwProb_exchange_lt_col_of_F_side`
   (S54 combiner, sorry-free conditional on F-side identity, case `c'.1 < c.1`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14811` — `F_side_identity_aligned`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14900` — `F_side_identity_aligned`
   (S56, sorry-bearing, both sums on `(μ\c').cells` — sole open sorry on the GNW route)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14840` — `F_side_identity`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14929` — `F_side_identity`
   (S55a; sorry-free as of S56, derives from `F_side_identity_aligned` via `sum_gnwProb_eq_removeCorner_cells`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14866` — `gnwProb_exchange`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14955` — `gnwProb_exchange`
   (S55a, sorry-free, dispatches via `distinct_corners_dichotomy` to S53/S54 combiners, transitive on `F_side_identity_aligned`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14904` — `gnwProb_key`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14993` — `gnwProb_key`
   (proved modulo `gnwProb_exchange` and `isCorner_removeCorner_of_ne`; `gnwProb_exchange` itself is sorry-free as of S55a)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15115` — `hook_walk_identity_gnw`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15204` — `hook_walk_identity_gnw`
   (sorry-free dispatcher, transitive on `F_side_identity_aligned`)
