@@ -5003,6 +5003,207 @@ private lemma hookLength_eq_of_not_arm_leg {μ : YoungDiagram} {c : ℕ × ℕ} 
   unfold hookLength armLen legLen
   rw [rowLen_removeCorner_other hc ha, colLen_removeCorner_other hc hb]
 
+-- ============================================================
+-- Double-removal hookLength shifts (Session 48)
+-- For two distinct corners c, c' of μ with c.1 < c'.1 (whence c'.2 < c.2 by
+-- `corner_col_lt_of_row_lt`), the lemmas in this block characterize how
+-- `hookLength` shifts at each cell when both corners are removed.  The shift
+-- is determined purely by x's geometric relationship to the two corners:
+--   * `(c.1, c'.2)` (the doubly-affected cell)        → shift by 2
+--   * arm(c) \ {(c.1, c'.2)}, leg(c), arm(c'), leg(c') \ {(c.1, c'.2)} → shift by 1
+--   * everything else                                  → shift by 0.
+-- These six lemmas are the core combinatorial input to `gnwProb_exchange`
+-- (line 14173).  All proofs are 1-2 line consequences of the existing
+-- single-removal helpers (`hookLength_removeCorner_arm`, `_leg`,
+-- `hookLength_eq_of_not_arm_leg`) chained through `isCorner_removeCorner_of_ne`.
+-- The iteration order is `(μ\c)\c'`; convert to `(μ\c')\c` via
+-- `removeCorner_swap` if needed.
+-- ============================================================
+
+/-- **Doubly-affected cell shifts by 2.**
+
+For two distinct corners `c, c'` of `μ` with `c.1 < c'.1` (whence `c'.2 < c.2`),
+the cell `(c.1, c'.2)` is the unique cell sitting in the arm of `c` and the
+leg of `c'`.  Removing both corners shifts its hook length by exactly 2:
+removing `c` cuts its arm by 1, then removing `c'` (still a corner of `μ\c`)
+cuts its leg by 1.
+
+This is the cell whose hook-length asymmetry is the heart of the GNW 1979
+exchange identity:
+`h_μ(d) · h_{(μ\c)\c'}(d) = h(h-2)` versus
+`h_{μ\c}(d) · h_{μ\c'}(d) = (h-1)²`. -/
+private lemma hookLength_doubleRemove_doubly_affected
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1) :
+    hookLength (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) c.1 c'.2 + 2 =
+      hookLength μ c.1 c'.2 := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  -- Step 1 (arm of c): hookLength_{μ\c}(c.1, c'.2) + 1 = hookLength_μ(c.1, c'.2)
+  have h_arm := hookLength_removeCorner_arm hc h_col_lt
+  -- Step 2 (leg of c' inside μ\c): hookLength_{(μ\c)\c'}(c.1, c'.2) + 1
+  --                              = hookLength_{μ\c}(c.1, c'.2)
+  have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
+    isCorner_removeCorner_of_ne hc hc' hne
+  have h_leg := hookLength_removeCorner_leg hc'_in_rc hi
+  omega
+
+/-- **Arm of c (excluding doubly-affected): shift by 1.**
+
+For arm-of-`c` cells `(c.1, s)` with `s < c.2` and `s ≠ c'.2`, removing both
+corners shifts hook length by exactly 1: the arm-of-`c` shift accounts for
+the entire change, since the cell is in neither the arm nor the leg of `c'`
+(different row from `c'` and different column since `s ≠ c'.2`). -/
+private lemma hookLength_doubleRemove_arm_of_c_off_d
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1)
+    {s : ℕ} (hs : s < c.2) (hs' : s ≠ c'.2) :
+    hookLength (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) c.1 s + 1 =
+      hookLength μ c.1 s := by
+  -- Step 1 (arm of c): hookLength_{μ\c}(c.1, s) + 1 = hookLength_μ(c.1, s)
+  have h_arm := hookLength_removeCorner_arm hc hs
+  -- Step 2 (NOT arm or leg of c' in μ\c): hookLength unchanged after removing c'.
+  have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
+    isCorner_removeCorner_of_ne hc hc' hne
+  have hxν : (c.1, s) ∈ removeCorner μ c hc := by
+    rw [mem_removeCorner]
+    refine ⟨YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc]; omega), ?_⟩
+    intro h; have : s = c.2 := congr_arg Prod.snd h; omega
+  have hxc' : (c.1, s) ≠ c' := fun h => by
+    have : c.1 = c'.1 := congr_arg Prod.fst h; omega
+  have hxarm : ¬((c.1, s).1 = c'.1 ∧ (c.1, s).2 < c'.2) := by
+    rintro ⟨h1, _⟩; exact absurd h1 (Nat.ne_of_lt hi)
+  have hxleg : ¬((c.1, s).1 < c'.1 ∧ (c.1, s).2 = c'.2) := by
+    rintro ⟨_, h2⟩; exact hs' h2
+  have h_unaff := hookLength_eq_of_not_arm_leg hc'_in_rc hxν hxc' hxarm hxleg
+  -- Goal: hookLength ((μ\c)\c') c.1 s + 1 = hookLength μ c.1 s
+  -- h_unaff : hookLength ((μ\c)\c') c.1 s = hookLength (μ\c) c.1 s
+  -- h_arm   : hookLength (μ\c) c.1 s + 1 = hookLength μ c.1 s
+  rw [h_unaff]; exact h_arm
+
+/-- **Leg of c: shift by 1.**
+
+For leg-of-`c` cells `(r, c.2)` with `r < c.1`, removing both corners shifts
+hook length by exactly 1: the leg-of-`c` shift accounts for the entire change.
+The cell is in neither arm nor leg of `c'`:
+* not in arm of `c'` because `r < c.1 < c'.1`, so `r ≠ c'.1`;
+* not in leg of `c'` because `c.2 ≠ c'.2` (in fact `c'.2 < c.2`). -/
+private lemma hookLength_doubleRemove_leg_of_c
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1)
+    {r : ℕ} (hr : r < c.1) :
+    hookLength (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) r c.2 + 1 =
+      hookLength μ r c.2 := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  have h_leg := hookLength_removeCorner_leg hc hr
+  have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
+    isCorner_removeCorner_of_ne hc hc' hne
+  have hxν : (r, c.2) ∈ removeCorner μ c hc := by
+    rw [mem_removeCorner]
+    refine ⟨YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc]; omega), ?_⟩
+    intro h; have : r = c.1 := congr_arg Prod.fst h; omega
+  have hxc' : (r, c.2) ≠ c' := fun h => by
+    have : c.2 = c'.2 := congr_arg Prod.snd h; omega
+  have hxarm : ¬((r, c.2).1 = c'.1 ∧ (r, c.2).2 < c'.2) := by
+    rintro ⟨h1, _⟩; omega
+  have hxleg : ¬((r, c.2).1 < c'.1 ∧ (r, c.2).2 = c'.2) := by
+    rintro ⟨_, h2⟩; omega
+  have h_unaff := hookLength_eq_of_not_arm_leg hc'_in_rc hxν hxc' hxarm hxleg
+  rw [h_unaff]; exact h_leg
+
+/-- **Arm of c': shift by 1.**
+
+For arm-of-`c'` cells `(c'.1, s)` with `s < c'.2`, removing both corners shifts
+hook length by exactly 1: the arm-of-`c'` shift on `μ\c` accounts for the
+entire change.  The cell is in neither arm nor leg of `c` (different row from
+`c` since `c'.1 ≠ c.1`, and different column since `s < c'.2 < c.2`). -/
+private lemma hookLength_doubleRemove_arm_of_c'
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1)
+    {s : ℕ} (hs : s < c'.2) :
+    hookLength (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) c'.1 s + 1 =
+      hookLength μ c'.1 s := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  -- Step 1: removing c doesn't change hookLength at (c'.1, s) (not in arm/leg of c)
+  have hsmem : (c'.1, s) ∈ μ :=
+    YoungDiagram.mem_iff_lt_rowLen.mpr (by rw [rowLen_of_isCorner hc']; omega)
+  have hxc : (c'.1, s) ≠ c := fun h => by
+    have : c'.1 = c.1 := congr_arg Prod.fst h; omega
+  have hxarm : ¬((c'.1, s).1 = c.1 ∧ (c'.1, s).2 < c.2) := by
+    rintro ⟨h1, _⟩; omega
+  have hxleg : ¬((c'.1, s).1 < c.1 ∧ (c'.1, s).2 = c.2) := by
+    rintro ⟨_, h2⟩; omega
+  have h_unaff_c := hookLength_eq_of_not_arm_leg hc hsmem hxc hxarm hxleg
+  -- Step 2: hookLength_{(μ\c)\c'}(c'.1, s) + 1 = hookLength_{μ\c}(c'.1, s) (arm of c' in μ\c)
+  have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
+    isCorner_removeCorner_of_ne hc hc' hne
+  have h_arm_c' := hookLength_removeCorner_arm hc'_in_rc hs
+  -- Goal: hookLength ((μ\c)\c') c'.1 s + 1 = hookLength μ c'.1 s
+  -- h_arm_c' : hookLength ((μ\c)\c') c'.1 s + 1 = hookLength (μ\c) c'.1 s
+  -- h_unaff_c: hookLength (μ\c) c'.1 s = hookLength μ c'.1 s
+  omega
+
+/-- **Leg of c' (excluding doubly-affected): shift by 1.**
+
+For leg-of-`c'` cells `(r, c'.2)` with `r < c'.1` and `r ≠ c.1`, removing both
+corners shifts hook length by exactly 1.  The cell is in neither arm nor leg
+of `c`: not in arm of `c` because `r ≠ c.1`, and not in leg of `c` because
+`c'.2 ≠ c.2` (in fact `c'.2 < c.2`).  The leg-of-`c'` shift on `μ\c` accounts
+for the entire change. -/
+private lemma hookLength_doubleRemove_leg_of_c'_off_d
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1)
+    {r : ℕ} (hr : r < c'.1) (hrc : r ≠ c.1) :
+    hookLength (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) r c'.2 + 1 =
+      hookLength μ r c'.2 := by
+  have h_col_lt : c'.2 < c.2 := corner_col_lt_of_row_lt hc hc' hi
+  -- Step 1: removing c doesn't change hookLength at (r, c'.2) (not in arm/leg of c)
+  have hsmem : (r, c'.2) ∈ μ :=
+    YoungDiagram.mem_iff_lt_colLen.mpr (by rw [colLen_of_isCorner hc']; omega)
+  have hxc : (r, c'.2) ≠ c := fun h => by
+    have : c'.2 = c.2 := congr_arg Prod.snd h; omega
+  have hxarm : ¬((r, c'.2).1 = c.1 ∧ (r, c'.2).2 < c.2) := by
+    rintro ⟨h1, _⟩; exact hrc h1
+  have hxleg : ¬((r, c'.2).1 < c.1 ∧ (r, c'.2).2 = c.2) := by
+    rintro ⟨_, h2⟩; omega
+  have h_unaff_c := hookLength_eq_of_not_arm_leg hc hsmem hxc hxarm hxleg
+  -- Step 2: hookLength_{(μ\c)\c'}(r, c'.2) + 1 = hookLength_{μ\c}(r, c'.2) (leg of c' in μ\c)
+  have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
+    isCorner_removeCorner_of_ne hc hc' hne
+  have h_leg_c' := hookLength_removeCorner_leg hc'_in_rc hr
+  omega
+
+/-- **Cells outside both arm/leg sets: hookLength unchanged.**
+
+For cells `x ∈ μ` with `x ≠ c, c'` and `x` not in the arm or leg of either
+corner, removing both corners leaves hook length unchanged.  Each removal
+falls into the "unaffected" branch of `hookLength_eq_of_not_arm_leg`,
+applied first to `c` on `μ`, then to `c'` on `μ\c`. -/
+private lemma hookLength_doubleRemove_other
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c')
+    {x : ℕ × ℕ} (hxμ : x ∈ μ) (hxc : x ≠ c) (hxc' : x ≠ c')
+    (hxarm_c : ¬(x.1 = c.1 ∧ x.2 < c.2))
+    (hxleg_c : ¬(x.1 < c.1 ∧ x.2 = c.2))
+    (hxarm_c' : ¬(x.1 = c'.1 ∧ x.2 < c'.2))
+    (hxleg_c' : ¬(x.1 < c'.1 ∧ x.2 = c'.2)) :
+    hookLength (removeCorner (removeCorner μ c hc) c'
+        (isCorner_removeCorner_of_ne hc hc' hne)) x.1 x.2 =
+      hookLength μ x.1 x.2 := by
+  -- Step 1: removing c doesn't change hookLength (not in arm/leg of c)
+  have h_unaff_c := hookLength_eq_of_not_arm_leg hc hxμ hxc hxarm_c hxleg_c
+  -- Step 2: removing c' from μ\c doesn't change hookLength (not in arm/leg of c')
+  have hc'_in_rc : isCorner (removeCorner μ c hc) c' :=
+    isCorner_removeCorner_of_ne hc hc' hne
+  have hxν : x ∈ removeCorner μ c hc := by
+    rw [mem_removeCorner]; exact ⟨hxμ, hxc⟩
+  have h_unaff_c' := hookLength_eq_of_not_arm_leg hc'_in_rc hxν hxc' hxarm_c' hxleg_c'
+  rw [h_unaff_c', h_unaff_c]
+
 /-- Arm cells (c.1, s) with s < c.2 belong to ν = removeCorner μ c hc. -/
 private lemma arm_mem_nu {μ : YoungDiagram} {c : ℕ × ℕ} (hc : isCorner μ c)
     {s : ℕ} (hs : s < c.2) : (c.1, s) ∈ removeCorner μ c hc := by
