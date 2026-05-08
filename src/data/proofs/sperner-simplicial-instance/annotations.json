@@ -123,10 +123,10 @@
     "type": "theorem",
     "range": {
       "startLine": 295,
-      "endLine": 790
+      "endLine": 767
     },
-    "title": "AbstractSimplicialData Lemma Library (~25 lemmas, L295–790)",
-    "content": "After `AbstractSimplicialData V n` is defined, this ~500-line block builds the library of supporting lemmas needed to construct a `Triangulation` from unordered Finset-based simplicial data. Roughly grouped:\n\n• **Vertex enumeration** (L295–328): `vertexEnum_mem`, `faceOf_card`, `faceOf_subset` — basic facts about `Finset.sort`-derived vertex lists.\n• **Container lemmas** (L329–399): `self_mem_containersOf`, `containersOf_card_le_two`, `containersOf_card_one_or_two`, `sdiff_nonempty` — pseudomanifold property (≤ 2 top-cells per codim-1 face) made operational.\n• **Opposite-vertex machinery** (L401–456): `vertexEnum_findOppositeIdx_not_mem`, `erase_opposite_eq`, `vertexEnum_injective`, `vertexEnum_image_univ`, `vertexEnum_image_erase` — locate, verify, and characterize the opposite vertex of a codim-1 face.\n• **Face equalities** (L482–550): `faceOf_eq`, `vertexEnum_not_mem_faceOf_iff`, `findOppositeIdx_eq` — bridging Finset-level and List-level views of faces.\n• **Adjacency function** (L553–790): `adjFn_vertex`, `containersOf_card_eq_two_of_adjFn`, `adjFn_s'_mem_containers`, `adjFn_ne`, `adjFn_face_eq`, `adjFn_symm` — build the `adj : Cell → Fin (n+1) → Option (...)` function and prove its four pseudomanifold axioms.\n\nThe payoff comes shortly after this block: `AbstractSimplicialData.toTriangulation` packages all the verified field witnesses into a `Triangulation` value, completing the bridge from Mathlib-style Finset simplicial complexes to the CellComplex-friendly `Triangulation` form.",
+    "title": "AbstractSimplicialData Lemma Library (~25 lemmas, L295–767)",
+    "content": "After `AbstractSimplicialData V n` is defined, this ~470-line block builds the library of supporting lemmas needed to construct a `Triangulation` from unordered Finset-based simplicial data. Roughly grouped:\n\n• **Vertex enumeration** (L295–328): `vertexEnum_mem`, `faceOf_card`, `faceOf_subset` — basic facts about `Finset.sort`-derived vertex lists.\n• **Container lemmas** (L329–399): `self_mem_containersOf`, `containersOf_card_le_two`, `containersOf_card_one_or_two`, `sdiff_nonempty` — pseudomanifold property (≤ 2 top-cells per codim-1 face) made operational.\n• **Opposite-vertex machinery** (L401–456): `vertexEnum_findOppositeIdx_not_mem`, `erase_opposite_eq`, `vertexEnum_injective`, `vertexEnum_image_univ`, `vertexEnum_image_erase` — locate, verify, and characterize the opposite vertex of a codim-1 face.\n• **Face equalities** (L482–550): `faceOf_eq`, `vertexEnum_not_mem_faceOf_iff`, `findOppositeIdx_eq` — bridging Finset-level and List-level views of faces.\n• **Adjacency function** (L553–767): `adjFn_vertex`, `containersOf_card_eq_two_of_adjFn`, `adjFn_s'_mem_containers`, `adjFn_ne`, `adjFn_face_eq`, `adjFn_symm` — build the `adj : Cell → Fin (n+1) → Option (...)` function and prove its four pseudomanifold axioms.\n\nThe payoff arrives in the next annotation: `AbstractSimplicialData.toTriangulation` (L769–787) packages all the verified field witnesses into a `Triangulation` value, completing the bridge from Mathlib-style Finset simplicial complexes to the CellComplex-friendly `Triangulation` form.",
     "significance": "critical",
     "mathContext": "The library proves, for an abstract simplicial complex given as a `Finset (Finset V)` of top-dimensional simplices: (1) sorting via `Finset.sort` gives a canonical vertex enumeration with no duplicates; (2) the *opposite vertex* of a codim-1 face $F \\subset s$ is uniquely determined ($\\{v\\} = s \\setminus F$); (3) any two top-cells sharing a codim-1 face are uniquely paired by the `adjFn` map; (4) the resulting adjacency satisfies the pseudomanifold axioms (symmetry, vertex-preservation, distinctness). Together these promote unordered simplicial data into the ordered, axiom-verified Triangulation form.",
     "relatedConcepts": [
@@ -143,6 +143,30 @@
     ]
   },
   {
+    "id": "si-to-triangulation",
+    "proofId": "sperner-simplicial-instance",
+    "type": "definition",
+    "range": {
+      "startLine": 769,
+      "endLine": 787
+    },
+    "title": "AbstractSimplicialData.toTriangulation: Climactic Bridge",
+    "content": "`def toTriangulation (D : AbstractSimplicialData V n) : Triangulation V n` packages the entire ~500-line lemma library (L295–767) into a single `Triangulation` value:\n\n- `Cell := { s : Finset V // s ∈ D.topSimplices }`: cells are the top-simplices, lifted to a subtype so cell decidable equality and finiteness come from `inferInstance` and `Finset.Subtype.fintype`.\n- `vertex := fun ⟨s, hs⟩ k => D.vertexEnum s hs k`: ordered vertex map via `Finset.sort`.\n- `vertex_injective`: from `D.vertexEnum_injective`.\n- `adj := D.adjFn`: the adjacency function built from the pseudomanifold lemmas.\n- `adj_symm`, `adj_vertex`, `adj_ne`: the four pseudomanifold axioms, discharged via the `adjFn_*` lemmas; the `adj_ne` proof unwraps `Subtype` equality with `congr_arg Subtype.val` since cells are subtypes.\n\nThis is the *climactic* construction of the file: the full Mathlib-style → CellComplex-friendly bridge. Once this exists, any Mathlib `SimplicialComplex` satisfying pseudomanifold properties immediately inherits Sperner's lemma via `Triangulation.sperner ∘ toTriangulation`.",
+    "significance": "critical",
+    "mathContext": "Given an unordered simplicial complex $D = (\\mathcal{S}, \\text{card}, \\text{pseudomanifold})$ with top-simplices $\\mathcal{S} \\subseteq \\mathcal{P}_{\\text{fin}}(V)$, this construction produces an ordered triangulation in the sense required by `CellComplex`. The cell type becomes the subtype $\\{s \\in \\mathcal{P}_{\\text{fin}}(V) : s \\in \\mathcal{S}\\}$, vertices are sorted by the linear order on $V$, and adjacency is the canonical pseudomanifold adjacency: cells $s, s' \\in \\mathcal{S}$ are adjacent across their common codim-1 face $f = s \\cap s'$ iff $|s \\cap s'| = n$, in which case $\\text{adj}(s, k) = (s', k')$ where $k$ is the index of the vertex $s \\setminus f$ in the sorted order on $s$ (and symmetrically for $s'$).",
+    "relatedConcepts": [
+      "subtype as cell type",
+      "Mathlib SimplicialComplex bridge",
+      "pseudomanifold adjacency",
+      "Finset.Subtype.fintype"
+    ],
+    "prerequisites": [
+      "AbstractSimplicialData lemma library",
+      "Triangulation structure",
+      "Finset subtype and instance inference"
+    ]
+  },
+  {
     "id": "si-iadj-machinery",
     "proofId": "sperner-simplicial-instance",
     "type": "tactic",
@@ -153,7 +177,7 @@
     "title": "Interval Adjacency: ivtx, iadj, iadj_cases (L813–955)",
     "content": "Concrete 1-d triangulation primitives, all `private`:\n\n• `ivtx (_ : 0 < m) (i : Fin m) (k : Fin 2) : ℕ` (L813): the vertex map. Cell $i$ of the interval $[0,m]$ has vertices $\\{i, i+1\\}$, with `k=0 ↦ i` and `k=1 ↦ i+1`.\n• `iadj (m : ℕ) (i : Fin m) (k : Fin 2)` (L818): the adjacency function. `iadj i 0` (face opposite vertex 0, the right face $\\{i+1\\}$) connects to cell $i+1$ (when $i+1 < m$, else `none`). `iadj i 1` connects to cell $i-1$ symmetrically.\n• `iadj_cases` (L832): exhaustive case-split lemma for `iadj` — splits into two cases by the `k.val` value, used as the standard tactic for discharging adjacency goals.\n• `iadj_symm'` (L866): the symmetry axiom `adj_symm` for `iadj` — if `iadj i k = some (j, k')`, then `iadj j k' = some (i, k)`. Proved by `iadj_cases` × 2.\n• `iadj_ne'` (L893): the distinctness axiom — adjacent cells differ.\n• `iadj_vertex'` (L901): the vertex-preservation axiom — vertices of the shared face agree on both sides.\n\nAll four pseudomanifold axioms for the interval are discharged by `iadj_cases` + `simp`/`omega`. This is the *concrete* infrastructure that makes `intervalTriangulation m hm` (L958) and `interval_sperner` (L982) trivial one-liners.",
     "significance": "key",
-    "mathContext": "The unit-interval subdivision $[0,m] = \\bigcup_{i=0}^{m-1} [i, i+1]$ is the canonical 1-d simplicial complex: $m$ top-cells (edges), $m+1$ vertices ($0, 1, \\ldots, m$). Each interior vertex $i$ ($0 < i < m$) is shared by two cells (cell $i-1$ on the right, cell $i$ on the left), so the codim-1 face $\\{i\\}$ is in exactly 2 top simplices — pseudomanifold ✓. Boundary vertices $0$ and $m$ each touch only one cell — boundary doors (= 2, even? No: per cell only ONE face is boundary, so each boundary cell contributes 1 boundary door — total = 2 boundary doors). Wait: in the standard Sperner boundary-door counting, what counts is doors *on the last face* — for a 1-d Sperner coloring with $0 \\mapsto 0$, $m \\mapsto 1$, the parity of doors of color $1$ on the boundary is $1$ (only at vertex $m$), which is odd — so `interval_sperner` applies.",
+    "mathContext": "The unit-interval subdivision $[0,m] = \\bigcup_{i=0}^{m-1} [i, i+1]$ is the canonical 1-d simplicial complex: $m$ top-cells (edges), $m+1$ vertices ($0, 1, \\ldots, m$). Each interior vertex $i$ ($0 < i < m$) is shared by two cells (cell $i-1$ on the right, cell $i$ on the left), so the codim-1 face $\\{i\\}$ is in exactly 2 top simplices — pseudomanifold ✓. Boundary vertices $0$ and $m$ each lie in exactly one cell, so the cells $\\text{cell}_0$ and $\\text{cell}_{m-1}$ each have exactly one face on the geometric boundary. Under a 1-d Sperner coloring (boundary condition $c(0)=0$, $c(m)=1$), the only boundary door of color $1$ on the 'last face' is at vertex $m$ — exactly one — so $\\text{Odd}|\\{\\text{boundary doors}\\}|$ holds and `interval_sperner` applies, yielding a panchromatic edge $[i,i+1]$ with $c(i) \\ne c(i+1)$. This is the discrete intermediate value theorem: any sign-change crossing must occur at some unit interval.",
     "relatedConcepts": [
       "1-d triangulation",
       "iadj_cases tactic",
