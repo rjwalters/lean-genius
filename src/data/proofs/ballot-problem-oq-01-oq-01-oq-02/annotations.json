@@ -5,7 +5,7 @@
     "range": { "startLine": 1, "endLine": 33 },
     "type": "context",
     "title": "Extending Cycle Lemma Beyond {+1,-k}",
-    "content": "The Dvoretzky-Motzkin cycle lemma (1947) applies specifically to {+1,-k} sequences. This file systematically investigates which weaker conditions on the step alphabet still yield cycle lemma behavior. Two cases emerge: (1) unit-decrement sequences (steps ≥ -1) retain a downward IVT property that explains the lower bound mechanism; (2) all-positive sequences (steps > 0) give maximum count = length. The contrast with {+1,-k} (count = sum S) reveals that the step alphabet is structurally determinative.",
+    "content": "The Dvoretzky-Motzkin cycle lemma (1947, Duke Math. J. 14:305–313) applies specifically to {+1,-k} sequences and traces back to Bertrand's 1887 ballot problem and André's reflection principle. This file systematically investigates which weaker conditions on the step alphabet still yield cycle lemma behavior. Two cases emerge: (1) unit-decrement sequences (steps ≥ -1) retain a downward IVT property that explains the lower bound mechanism; (2) all-positive sequences (steps > 0) give maximum count = length. The contrast with {+1,-k} (count = sum S) reveals that the step alphabet is structurally determinative — it controls both the existence of every level (downward IVT) and the spacing of good rotations.",
     "mathContext": "For $\\{+1,-k\\}$: $|\\text{goodRotations}| = \\sum l = S$. For steps $> 0$: $|\\text{goodRotations}| = |l| = n$. The gap between $S$ and $n$ measures how positive-heavy the sequence is.",
     "significance": "context",
     "relatedConcepts": ["Dvoretzky-Motzkin cycle lemma", "prefix sum", "cyclic rotation", "good rotation"],
@@ -58,6 +58,18 @@
     "significance": "supporting",
     "relatedConcepts": ["strict monotonicity", "lt_trans", "Nat.eq_or_lt_of_le", "List.sum_take_succ"],
     "prerequisites": ["all_positive_prefixSum_step", "induction on Nat"]
+  },
+  {
+    "id": "ann-interior-bounds",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 170 },
+    "type": "technique",
+    "title": "Interior Bound and Non-Negativity: Two Plumbing Lemmas",
+    "content": "Two short bridging lemmas connect strict monotonicity to the cyclic-rotation argument. `all_positive_prefixSum_lt_sum` instantiates strict monotonicity at j = l.length and rewrites prefixSum l l.length = l.sum (via `prefixSum_length` from the parent file) to give: every interior prefix sum is strictly less than the total sum. `all_positive_prefixSum_nonneg` proves non-negativity of every prefix sum directly from `List.sum_nonneg`: each step is positive, so each element of `l.take i` is non-negative, so its sum is non-negative. The use of `(List.take_prefix i l).subset` translates membership-in-the-prefix to membership-in-the-list, dispatching the elementwise hypothesis. These two lemmas are exactly what the wrapping case of `all_positive_all_rotations_good` consumes: lt_sum bounds the starting prefix from above, nonneg bounds the wrapped piece from below, and linarith closes the gap.",
+    "mathContext": "Interior bound: $i < |l| \\Rightarrow \\text{PS}(l, i) < \\sum l$ (instantiate strict mono at $j = |l|$, then $\\text{PS}(l, |l|) = \\sum l$). Non-negativity: $0 \\leq \\sum_{x \\in l.\\text{take}(i)} x$ since each $x > 0$. Together: $\\sum l - \\text{PS}(l, i) > 0$ and $\\text{PS}(l, i+j-n) \\geq 0$ make the wrapped expression strictly positive.",
+    "significance": "supporting",
+    "relatedConcepts": ["List.sum_nonneg", "List.take_prefix", "prefixSum_length", "interior bound", "linarith plumbing"],
+    "prerequisites": ["all_positive_prefixSum_strictMono", "List.Subset on prefixes"]
   },
   {
     "id": "ann-all-rotations-good",
