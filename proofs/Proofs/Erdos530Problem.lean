@@ -348,6 +348,55 @@ theorem sidon_subset_interval_bound (S : Finset ℤ) (N : ℕ) (hN : 1 ≤ N)
   calc k * k ≤ k * (k + 1) := Nat.mul_le_mul_left k (Nat.le_succ k)
     _ ≤ 4 * N := h_prod
 
+/-- **Sharp** interval bound: every Sidon subset S of {1,...,N} satisfies
+    |S|(|S|+1) + 2 ≤ 4N (equivalently `k(k+1) ≤ 4N − 2`, sharper than the
+    `k² ≤ 4N` of `sidon_subset_interval_bound`).
+
+    Observation: pairwise sums `a + b` with `a, b ∈ S`, `a ≤ b` satisfy
+    `2 ≤ a + b ≤ 2N` (since `a, b ≥ 1`), so they lie in
+    `Finset.Icc 2 (2N)` of cardinality `2N − 1` rather than the
+    looser `Finset.Icc 1 (2N)` of cardinality `2N`. The `k(k+1)/2`
+    distinct Sidon sums therefore satisfy `k(k+1)/2 ≤ 2N − 1`, hence
+    `k(k+1) ≤ 4N − 2`.
+
+    Stated without ℕ-subtraction as `k(k+1) + 2 ≤ 4N`. -/
+theorem sidon_subset_interval_bound_sharp (S : Finset ℤ) (N : ℕ) (hN : 1 ≤ N)
+    (hS : IsSidon S) (hRange : ∀ x ∈ S, 1 ≤ x ∧ x ≤ ↑N) :
+    S.card * (S.card + 1) + 2 ≤ 4 * N := by
+  set k := S.card with hk_def
+  have h_count := sidon_sum_count S hS
+  -- Sums of sorted pairs from S with min ≥ 1 lie in [2, 2N]
+  have h_sub : ((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2) ⊆
+      Finset.Icc (2 : ℤ) (2 * ↑N) := by
+    intro s hs
+    simp only [Finset.mem_image, Prod.exists] at hs
+    obtain ⟨a, b, hab, rfl⟩ := hs
+    simp only [Finset.mem_filter, Finset.mem_product] at hab
+    rw [Finset.mem_Icc]
+    refine ⟨?_, ?_⟩
+    · linarith [(hRange a hab.1.1).1, (hRange b hab.1.2).1]
+    · linarith [(hRange a hab.1.1).2, (hRange b hab.1.2).2]
+  -- |[2, 2N]| = 2N - 1
+  have h_icc : (Finset.Icc (2 : ℤ) (2 * ↑N)).card = 2 * N - 1 := by
+    simp [Finset.card_Icc]; omega
+  -- k(k+1)/2 ≤ 2N - 1
+  have h_sum_le : k * (k + 1) / 2 ≤ 2 * N - 1 := by
+    calc k * (k + 1) / 2
+        = (((S ×ˢ S).filter (fun p => p.1 ≤ p.2)).image (fun p => p.1 + p.2)).card :=
+          h_count.symm
+      _ ≤ (Finset.Icc (2 : ℤ) (2 * ↑N)).card := Finset.card_le_card h_sub
+      _ = 2 * N - 1 := h_icc
+  -- k(k+1) is even (one of k, k+1 is even)
+  have h_even : 2 ∣ k * (k + 1) := by
+    rcases Nat.even_or_odd k with ⟨m, hm⟩ | ⟨m, hm⟩
+    · exact ⟨m * (k + 1), by rw [hm]; ring⟩
+    · exact ⟨k * (m + 1), by rw [hm]; ring⟩
+  -- k(k+1) + 2 = 2·(k(k+1)/2) + 2 ≤ 2·(2N-1) + 2 = 4N
+  have h_mul : k * (k + 1) / 2 * 2 ≤ (2 * N - 1) * 2 :=
+    Nat.mul_le_mul_right 2 h_sum_le
+  have h_div : k * (k + 1) / 2 * 2 = k * (k + 1) := Nat.div_mul_cancel h_even
+  omega
+
 /-- The interval {1,...,N} has maxSidonSize² ≤ 4N. -/
 theorem interval_sidon_upper (N : ℕ) (hN : 1 ≤ N) :
     maxSidonSize (Finset.Icc (1 : ℤ) ↑N) * maxSidonSize (Finset.Icc (1 : ℤ) ↑N) ≤ 4 * N := by
