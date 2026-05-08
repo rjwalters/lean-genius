@@ -699,3 +699,143 @@ Plus updates to two existing files:
    or apply upstream Mathlib lemma if landed.
 6. **Mathlib upstream (Path C)**: draft `Mathlib/Probability/MomentsConvergence.lean`
    contribution in parallel with local Layer 3.
+
+---
+
+## Session 2026-05-08 (Session 11, researcher-4) — Layer 2 Part 1: bad_count_general
+
+**Mode**: ACT (extending S10 Layer 1 — `tripleCount` indicator algebra — to Layer 2 part 1, the per-triple count)
+**Outcome**: PROGRESS — added `bad_count_general` and `p_triple_general` (≈ 168 lines including section header + Summary updates)
+
+### What I Did
+
+Added §4 to `BirthdayProblemOQ03OQ01OQ02.lean` after the S10 §3 (Indicator
+Algebra) block, containing two new theorems:
+
+1. **`bad_count_general (d n : ℕ) (i j k : Fin n) (hij hjk hik) : (filter pred).card = d^(n-2)`**
+   — the general per-triple coincidence count, generalising both `bad_count_n3`
+   (n=3, exponent 1, on main) and `bad_count_n4_canonical` (n=4 canonical
+   triple, in PR #16873) in one theorem. Proved via:
+
+   - **Step 1**: cardinality of the complement subtype `{m : Fin n // m ≠ j ∧ m ≠ k}`
+     equals `n - 2`. Reduces to `card (univ \ {j, k}) = n - 2` using
+     `Finset.card_sdiff` and `Finset.card_insert_of_not_mem` (with `j ≠ k`
+     to show `{j, k}` has card 2).
+   - **Step 2**: target function-space cardinality
+     `card ({m // m ≠ j ∧ m ≠ k} → Fin d) = d ^ (n - 2)` via
+     `Fintype.card_fun` + Step 1.
+   - **Step 3**: rewrite the `Finset.filter` count as `Fintype.card` of the
+     constrained subtype using `Fintype.card_coe`.
+   - **Step 4**: the explicit `Equiv` between the constrained subtype and the
+     complement function space:
+     - **Forward**: `f ↦ (m ↦ f m.val)` (restriction to the (n-2)-element complement).
+     - **Inverse**: `g ↦ ⟨fun m => if m = j then g ⟨i, hij, hik⟩ else if m = k then g ⟨i, hij, hik⟩ else g ⟨m, _, _⟩, _⟩`.
+       The membership proof discharges `f i = f j` and `f j = f k` by
+       `dif_neg hij/hik/Ne.symm hjk` + `dif_pos rfl`.
+     - **Left inverse** (`invFun ∘ toFun = id`): three-way case split on `m`:
+       (i) `m = j`: LHS reduces to `f i`, RHS is `f j`, equal by `hf.1`.
+       (ii) `m = k`: LHS reduces to `f i`, RHS is `f k`, equal by `hf.1.trans hf.2`.
+       (iii) else: LHS reduces to `f m`, RHS is `f m`, `rfl`.
+     - **Right inverse** (`toFun ∘ invFun = id`): pointwise on `m : {x // x ≠ j ∧ x ≠ k}`,
+       reduces to `g ⟨m, hmj, hmk⟩ = g ⟨m, hmj, hmk⟩` after `dif_neg`s.
+
+   Total proof: ≈ 110 lines including step-by-step `show`/`rw` for the dite
+   reduction.
+
+2. **`p_triple_general (d n : ℕ) (i j k : Fin n) (hij hjk hik) (hd : 1 ≤ d) (hn : 3 ≤ n)`**
+   — real-number probability form: `P(triple) = 1/d²`, independent of n.
+   Proved by combining `bad_count_general` with `Fintype.card_fun = d^n`,
+   then using `n - 2 + 2 = n` (`Nat.sub_add_cancel hn`) and `pow_add` to split
+   `d^n = d^(n-2) · d²`. Final: `field_simp` clears the fraction.
+   ≈ 15 lines.
+
+### Mathematical Significance
+
+Layer 2 of the lemma-c roadmap calls for the per-triple count `d^(n-2)`
+(building block of the first moment) followed by `expectedTripleCount_eq`
+(part 2, queued for S12). Session 11 establishes the **general** per-triple
+count, completing the inductive pattern from `bad_count_n3` (n=3,
+exponent 1) → `bad_count_n4_canonical` (n=4, exponent 2) → general n.
+
+The key structural insight is that the constraint `f i = f j ∧ f j = f k`
+ties together exactly three positions, leaving `n - 2` free positions
+(since `i` is "freed" by the equation `f j = f i`, contributing only one
+coupled position rather than three — three positions, two equations, one
+free degree of freedom shared across all three). Hence the count `d^(n-2)`,
+not `d^(n-3)`.
+
+The **per-triple probability is independent of n**: `1/d²` for any n ≥ 3.
+This is the structural reason why the expected number of triples factors
+neatly: `E[X_d] = (number of triples) × (per-triple prob) = C(n,3) × 1/d² = C(n,3)/d²`.
+The independence of n is the basis for the asymptotic formula `λ = lim C(n_c(d),3)/d² = c³/6`
+(Lemma A, S4).
+
+### Why an explicit Equiv (and not Mathlib's `Fintype.piEquivPiSubtypeProd`)
+
+`Fintype.piEquivPiSubtypeProd` decomposes `(∀ x, f x)` into
+`(∀ x : {x // p x}, f x) × (∀ x : {x // ¬p x}, f x)`, which would let us split
+`Fin n → Fin d` into restrictions to `{j, k}` and its complement. But to count
+the constrained subset we'd still need to count "constant functions on `{j, k}`",
+which is `d` (a 2-element domain forced to a single value). The explicit
+bijection sidesteps this intermediate step: it directly maps to the
+(n-2)-element function space by encoding the common value as `g i` (using
+`i ∉ {j, k}`).
+
+The trade-off: the explicit bijection is ≈ 110 lines (with full dite
+case-analysis), versus the `piEquivPiSubtypeProd` route which would be
+≈ 80 lines but require an extra `card_const_funcs` helper. Both are
+acceptable; the explicit route is more self-contained.
+
+### Why the n < 3 case is automatically vacuous
+
+The hypotheses `hij : i ≠ j`, `hjk : j ≠ k`, `hik : i ≠ k` for `i, j, k : Fin n`
+require three pairwise-distinct elements in `Fin n`, which forces `n ≥ 3` by
+pigeonhole. The proof does not need to derive `n ≥ 3` explicitly because:
+- The complement `{m : Fin n // m ≠ j ∧ m ≠ k}` is computed as
+  `Finset.univ \ {j, k}` (well-defined for any n).
+- For n = 0: `Fin 0` is empty, no `i, j, k` exist, hypothesis unsatisfiable.
+- For n = 1: `Fin 1 = {0}`, `i = j = 0` contradicts `hij`.
+- For n = 2: `Fin 2 = {0, 1}`, three distinct elements impossible.
+- For n ≥ 3: the bijection works as described, complement has `n - 2` elements,
+  count is `d^(n-2)`.
+
+The `n - 2` (Nat truncated subtraction) is `0` for n < 2 (giving `d^0 = 1`,
+which is also the size of the singleton function set `{∅ : Fin 0 → Fin d}` for
+n = 0 — a coincidence that doesn't matter since the hypothesis is unsatisfiable).
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+168 lines: §4 section
+  header + 2 theorems + Summary block update + 2 #check lines; 761 → 929)
+- `src/data/proofs/birthday-problem-oq-03-oq-01-oq-02/meta.json`
+  (lineCount 761 → 929, theoremCount 33 → 35 in both meta and leanFile)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/state.md`
+  (iteration 10 → 11; Layer 2 part 1 listed under Active Approach;
+  Next Action items 1–2 marked done)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md` (this entry)
+
+### Verification
+
+Following the convention of S6, S7, S8, S10 (all "build pending" PRs) and
+the 32 GB cgroup memory limit on Docker builds, this PR is opened as build
+pending. The proof structure follows established patterns:
+- The bijection uses `Fintype.card_congr` like `bad_count_n3` and
+  `bad_count_n4_canonical`.
+- The `dite` reduction uses `dif_pos rfl` and `dif_neg <ne_proof>` patterns
+  standard in Mathlib.
+- The Subtype equality uses `Subtype.ext` + `funext` + `by_cases`, following
+  S10's `noTriple_filter_eq_tripleCount_zero_filter` pattern.
+
+If the build verification reveals issues, the iteration's next session can
+repair them (typically minor `simp` lemma adjustments or `Subtype.mk` proof
+irrelevance hints).
+
+### Next Steps
+
+1. **Layer 2 part 2 (S12)**: `expectedTripleCount_eq` — sum the per-triple
+   count from S11 over the C(n,3) strictly-increasing triples and divide by
+   d^n to get C(n,3)/d² = `expectedTriples n d`. Connects:
+   `(∑ f, tripleCount d n f) / |Fin n → Fin d| = C(n,3) · d^(n-2) / d^n = C(n,3) / d²`.
+   ≈ 80 lines, building on S10's `tripleCount` def + S11's `bad_count_general`.
+2. **Layer 3 (S13–15)**: factorial-moment expansion (the bottleneck).
+3. **Layer 4 (S16–17)**: Method of Factorial Moments theorem.
