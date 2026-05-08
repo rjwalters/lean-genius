@@ -1,11 +1,12 @@
 # Research State: cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02
 
 ## Current State
-**Phase**: COMPLETE — full triangle of equivalences + companion-matrix
-Cayley-Hamilton (S5) + companion-matrix minpoly identity (S6) all axiom-free.
+**Phase**: COMPLETE (lifecycle closed S7) — full triangle of equivalences +
+companion-matrix Cayley-Hamilton (S5) + companion-matrix minpoly identity (S6)
+all axiom-free. Pool-status moved `progress` → `completed` in S7.
 **Path**: full
 **Since**: 2026-05-08
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
 
@@ -78,25 +79,54 @@ All four results machine-verified over **arbitrary fields with zero axioms**.
 
 ## Next Step (Future Sessions)
 
-The OQ-01-OQ-02 problem is now **fully closed at the single-block level**:
+The OQ-01-OQ-02 problem is **fully closed at the single-block level**, and as
+of S7 (this iteration) the candidate-pool status has been moved
+`progress` → `completed`. There is nothing more for *this* slug to do.
 
-- `companionMx` is a candidate `Matrix.companionMatrix` definition.
-- `nonderogatory_similar_to_companion` is a candidate
+The four single-block API pieces are stable Mathlib-PR candidates:
+
+- `companionMx` → `Matrix.companionMatrix`.
+- `nonderogatory_similar_to_companion` →
   `Matrix.IsSimilar.companionMatrix_of_nonderogatory`.
-- `aeval_companionMx_p_eq_zero` is a candidate
-  `Matrix.aeval_companionMatrix_self_eq_zero` (or
-  `Matrix.minpoly_companionMatrix.aeval`).
-- `minpoly_companionMx_eq` is a candidate `Matrix.minpoly_companionMatrix`.
+- `aeval_companionMx_p_eq_zero` → `Matrix.aeval_companionMatrix_self_eq_zero`
+  (or `Matrix.minpoly_companionMatrix.aeval`).
+- `minpoly_companionMx_eq` → `Matrix.minpoly_companionMatrix`.
 
-Possible directions for follow-up sessions:
-- **S7+**: write a Mathlib PR proposal that exposes these four theorems as a
-  `Matrix.companionMatrix` API. The polynomial-name conventions and the
-  `Matrix.charpoly_companionMatrix` (the *characteristic*-polynomial analogue,
-  which is harder and outside this entry's scope) are open design questions.
-- **Generalize to multi-block RCF**: invoke the K[X]-module structure theorem
-  (`Module.IsTorsion.isInternal_*` family) to decompose any
+Two genuinely larger directions live as **separate problems / gallery
+entries**, not as further iterations on this slug:
+
+- **Mathlib PR proposal track**: package the four theorems above with the
+  upstream-friendly naming. Open design questions: namespace placement under
+  `Mathlib/LinearAlgebra/Matrix/`, and whether to also include the
+  *characteristic*-polynomial analogue `Matrix.charpoly_companionMatrix` (which
+  is harder and out of scope for this entry).
+- **Multi-block rational canonical form**: invoke the K[X]-module structure
+  theorem (`Module.IsTorsion.isInternal_*` family) to decompose any
   matrix-as-K[X]-module into cyclic submodules, then apply this entry's
-  single-block result block-by-block. Substantially larger.
+  single-block result block-by-block. Substantially larger; warrants a fresh
+  gallery entry rather than another iteration here.
+
+## S7 Outcome (this session — lifecycle close)
+
+No new Lean code. S7 is bookkeeping:
+
+- Marked candidate-pool status `progress` → `completed`.
+- Refreshed `src/data/research/problems/...json`:
+  - `phase` ORIENT → COMPLETE; `status` in-progress → completed.
+  - `currentState.phase` ACT → COMPLETE; `iteration` 6 → 7.
+  - Refreshed `leanFiles[0]` metadata (lineCount 156 → 688, theoremCount 5 →
+    21, axiomCount 1 → 0) — was stale at the original Session-1 numbers.
+  - Replaced stale `nextSteps` (still listed S2/S3/S4 as TODO) with a S2–S6
+    DONE log plus the two out-of-scope future tracks above.
+  - Refreshed `knownResults.proven` to include S2–S6 results; cleared the
+    `open` list (was stale `hMn_axiom elimination`).
+  - Added `completedAt: 2026-05-08`.
+- Updated this `state.md` to match.
+
+The gallery entry itself (`src/data/proofs/.../meta.json` and the Lean source)
+is **untouched** — it is already at status `verified`/`original`, 0 sorries,
+0 axioms, 0 structure-encoded assumptions, 21 theorems / 2 defs over 688
+lines. Auditor should remain clean.
 
 ## Risks (Session 6)
 
