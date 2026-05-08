@@ -30,24 +30,23 @@
   },
   "currentState": {
     "phase": "PARK",
-    "since": "2026-05-08T03:35:00Z",
-    "iteration": 3,
-    "focus": "PARK: re-confirmed BLOCKED. No relevant Mathlib master changes since S2 (Cl periodicity / Frobenius / Wedderburn for real semisimple algebras still absent). Recorded a corrected cost estimate for option B: the bridge NormedDivisionRing -> NSquareIdentity is NOT ~80 lines because it requires constructing an InnerProductSpace from the multiplicative norm (~200-300 lines, itself a Frobenius-style argument).",
+    "since": "2026-05-08T07:30:00Z",
+    "iteration": 4,
+    "focus": "S4 mathlib re-survey corrects a key entry in the prior blockers list: Wedderburn-Artin (general rings, and finite-dim algebras over an arbitrary base ring) is now in Mathlib master as Mathlib/RingTheory/SimpleModule/WedderburnArtin.lean (Junyan Xu, 2025), via IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite. Specializing to base ring R, this gives Cl(0,n-1) ~= M_d(D) with D finite-dim over R. The remaining blocker collapses to a single missing theorem: the classical Frobenius theorem (real div algebras D in {R, C, H}). With Frobenius, Wedderburn pins D down and the Hurwitz sorry closes; without it, D cannot be identified.",
     "blockers": [
-      "Mathlib has no classification of real Clifford algebras Cl(0,n-1) (Bott periodicity).",
-      "Mathlib has no Artin-Wedderburn structure theorem usable to compute the minimum faithful real representation dimension of a real semisimple algebra.",
-      "Mathlib has no Frobenius theorem for finite-dim normed associative real division algebras (alternative path that would handle hurwitz_only_if_ring directly).",
-      "Bridge NormedDivisionRing -> NSquareIdentity n requires either an InnerProductSpace structure on A (not in Mathlib) or quadratic-form diagonalization machinery (not in Mathlib) -- so option B is also blocked, not the previously estimated ~80 lines of glue."
+      "Mathlib has no classical Frobenius theorem for real division algebras (finite-dim assoc div algebra over R has finrank in {1,2,4}). 'Frobenius' files in Mathlib cover Galois Frobenius, char-p ring endomorphisms, Witt vectors -- none give the real-division-algebra theorem.",
+      "Mathlib has no InnerProductSpace-from-NormedDivisionRing construction (imaginary-subspace polarization). Blocks option B (HurwitzOnlyIf refactor).",
+      "Mathlib has no real-Clifford-periodicity / Cl(0,k) structure classification. Most recent Mathlib/LinearAlgebra/CliffordAlgebra/ change is 2026-05-01, chore-only."
     ],
-    "nextAction": "Wait for Mathlib upstream. Periodically re-check Mathlib.LinearAlgebra.CliffordAlgebra.* for periodicity/structure-classification lemmas and Mathlib.Algebra.Algebra.* for a Frobenius theorem. See unblockCriteria for concrete trigger conditions.",
+    "nextAction": "Wait for Mathlib upstream OR open an upstream Mathlib RFC / draft PR proposing frobenius_theorem_real_division_ring -- with Wedderburn-Artin now present, Frobenius is the SINGLE missing piece. Estimated ~300-500 lines via the classical imaginary-subspace argument; arXiv:2405.01876 (Frobenius formalization in Coq, May 2024) is the natural reference. See unblockCriteria for the two concrete trigger conditions.",
     "attemptCounts": {
-      "total": 2,
+      "total": 4,
       "currentApproach": 0,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED (PARK), iteration 3. HurwitzTheorem.lean has a single sorry (line 1937) for even n notin {2,4,8}. All structural infrastructure is in place: crossMat_anticommute proves that an NSquareIdentity n yields n-1 anti-commuting orthogonal n x n real matrices M_j with M_j^2 = -I, i.e., a real n-dim representation of Cl(0,n-1). Closing the sorry requires the Clifford structure theorem (Bott periodicity for real Cl(0,k)) plus a minimum-rep-dim bound, neither of which is in Mathlib v4.26.0. HurwitzOnlyIf.lean has a parallel sorry for hurwitz_only_if_ring (the NormedDivisionRing formulation). 0 axioms in either file. S3 added: the previously-estimated ~80-line option-B refactor is itself blocked because the bridge NormedDivisionRing -> NSquareIdentity needs an InnerProductSpace structure derived from the multiplicative norm, which is itself a Frobenius-style construction (~200-300 lines) and not in Mathlib.",
+    "progressSummary": "BLOCKED (PARK), iteration 4. HurwitzTheorem.lean has a single sorry (line 1937) for even n notin {2,4,8}. All structural infrastructure is in place: crossMat_anticommute proves that an NSquareIdentity n yields n-1 anti-commuting orthogonal n x n real matrices M_j with M_j^2 = -I, i.e., a real n-dim representation of Cl(0,n-1). HurwitzOnlyIf.lean has a parallel sorry for hurwitz_only_if_ring. 0 axioms in either file. S4 (this session) corrects a key prior blocker entry: Wedderburn-Artin is NOW IN MATHLIB master (Mathlib/RingTheory/SimpleModule/WedderburnArtin.lean, Junyan Xu 2025). With it, Cl(0,n-1) ~= M_d(D) is provable for some finite-dim real div algebra D. The remaining blocker is sharper and lower-dim: the classical Frobenius theorem (D in {R, C, H}) is the SINGLE missing Mathlib piece. arXiv:2405.01876 (Frobenius in Coq, May 2024) is the natural reference for an upstream Mathlib contribution.",
     "builtItems": [],
     "insights": [
       "All the linear algebra that the impossibility proof needs is already done in HurwitzTheorem.lean. The blocker is purely a Clifford-algebra structure theorem — there is no remaining 'analysis' or 'matrix' work to do at the gallery level.",
@@ -56,13 +55,13 @@
       "S2 underestimated option B: the 'orthonormal basis -> NSquareIdentity n' bridge is NOT ~80 lines of glue. The L^2-norm of coordinate vectors equals ||sum a_i e_i||_A only when the basis is orthonormal, which requires an inner product on A. NormedDivisionRing alone does NOT give an inner product (a multiplicative norm is not automatically derived from an inner product on the underlying vector space). The bridge therefore needs first to construct an InnerProductSpace structure on A, which is a Frobenius-style argument (imaginary subspace V = {a : a^2 <= 0}, polarization identity) of roughly 200-300 lines that is itself absent from Mathlib.",
       "Frobenius alternative: NormedDivisionRing is associative, so for hurwitz_only_if_ring the stronger Frobenius theorem (finrank in {1,2,4}) suffices. But the classical Frobenius proof goes through the same Clifford / imaginary-subspace machinery, which is why the two open sorries collapse to the same blocker. arXiv:2405.01876 (May 2024) formalizes Frobenius in a non-Mathlib system; not yet ported.",
       "Mathlib's Mathlib.LinearAlgebra.CliffordAlgebra.* (as of v4.26.0) provides the universal property and basic conjugation, but does NOT provide the periodicity/structure classification needed here (search Mathlib for 'CliffordAlgebra equivalent matrix' confirms no decomposition theorems).",
-      "The companion gallery entry hurwitz-theorem (badge='wip', sorries=1) sits on this exact blocker; closing it would graduate that entry to verified."
+      "The companion gallery entry hurwitz-theorem (badge='wip', sorries=1) sits on this exact blocker; closing it would graduate that entry to verified.",
+      "S4 update (2026-05-08): Wedderburn-Artin (general, finite-dim algebras over arbitrary base ring) IS NOW IN MATHLIB MASTER (Mathlib/RingTheory/SimpleModule/WedderburnArtin.lean, Junyan Xu 2025). The prior blocker list incorrectly listed it as missing. Concretely: IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite gives R ~= M_d(D) for finite-dim simple Artinian R-algebras over an arbitrary base ring; specialized to base R, this gives Cl(0,n-1) ~= M_d(D) for some D finite-dim over R. The unblock criterion narrows: Frobenius theorem (D in {R, C, H}) is now the SINGLE missing piece for a general closure of the sorry."
     ],
     "mathlibGaps": [
-      "Real Clifford algebra periodicity: Cl(0,n+8) ~= Cl(0,n) tensor M_{16}(R).",
-      "Artin-Wedderburn for real semisimple algebras: A ~= prod_i M_{n_i}(D_i), D_i in {R, C, H}.",
-      "Minimum-faithful-real-representation-dimension lemma for real semisimple algebras (lower bound on simple module dimension).",
-      "(Equivalent path) Atiyah's K-theory proof via Bott periodicity for KO-theory of S^{n-1}: requires KO-theory of spheres + parallelizability obstruction, which is even further from Mathlib's current scope."
+      "Classical Frobenius theorem for real division algebras: every finite-dim associative division algebra over R has finrank in {1,2,4} (equivalently, AlgEquiv to one of R, C, H). This is the SINGLE remaining missing piece given that Wedderburn-Artin is now available.",
+      "InnerProductSpace-from-NormedDivisionRing construction (imaginary-subspace polarization). Needed for option B (HurwitzOnlyIf refactor). Not in Mathlib v4.26.0.",
+      "Real Clifford algebra periodicity: Cl(0,n+8) ~= Cl(0,n) tensor M_{16}(R). Not strictly necessary if Frobenius is available, but useful for a uniform argument."
     ],
     "nextSteps": [
       "Decomposition option A (small cases): introduce private lemma `no_six_square_identity` and `no_ten_square_identity` covering the next two even cases via ad-hoc Cl(0,5), Cl(0,9) Wedderburn structure (hand-coded if needed). Localizes the open sorry to 'even n >= 12 with n notin {16}'. ~400 lines per case.",
@@ -72,10 +71,8 @@
       "Aristotle option E: do NOT submit. The sorry is OPEN (genuinely missing infrastructure), not a routine lemma — Aristotle is the wrong tool."
     ],
     "unblockCriteria": [
-      "Mathlib gains `Mathlib.LinearAlgebra.CliffordAlgebra.Periodicity` with an isomorphism `Cl(0, n+8) ≅ Cl(0, n) ⊗[ℝ] M(16, ℝ)`.",
-      "Mathlib gains `Mathlib.LinearAlgebra.CliffordAlgebra.RealClassification` with a Wedderburn-style structure theorem for `Cl(0, k)`, k = 0..7.",
-      "Mathlib gains a `frobenius_theorem` for finite-dim normed associative real division algebras, asserting `finrank ℝ A ∈ {1, 2, 4}`.",
-      "Mathlib gains an `InnerProductSpace`-from-`NormedDivisionRing` instance / theorem (Frobenius-style polarization argument)."
+      "(crit-F) Mathlib gains a Frobenius theorem for real division algebras, with conclusion forall (D : Type*), [DivisionRing D] [Algebra R D] [FiniteDimensional R D] -> finrank R D in ({1,2,4} : Set N) (or equivalent: AlgEquiv to one of R, C, Quaternion R). Combined with the now-available Wedderburn-Artin, this suffices to close the sorry.",
+      "(crit-IPS) Mathlib gains an InnerProductSpace R A instance / theorem derivable from NormedDivisionRing A plus FiniteDimensional R A (the imaginary-subspace polarization construction). Enables option B (HurwitzOnlyIf refactor)."
     ]
   },
   "tags": [
@@ -106,11 +103,13 @@
       "Mathlib.Algebra.Quaternion (Quaternion.normSq_mul, used for n=4 existence).",
       "Mathlib.Analysis.Normed.Algebra.GelfandMazur (NormedAlgebra.Real.nonempty_algEquiv_or, used in HurwitzOnlyIf.hurwitz_field_case).",
       "Mathlib.LinearAlgebra.CliffordAlgebra.Basic (universal property; does NOT include periodicity/structure classification as of v4.26.0).",
-      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic (Matrix.det, used in no_odd_nsquare)."
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic (Matrix.det, used in no_odd_nsquare).",
+      "Mathlib.RingTheory.SimpleModule.WedderburnArtin (NEW, Junyan Xu 2025): IsSimpleRing.exists_algEquiv_matrix_divisionRing_finite gives R ~= M_d(D) for finite-dim simple Artinian R-algebras. Specialized to base R, this provides Cl(0,n-1) structure decomposition pending only an identification of D.",
+      "Mathlib.RingTheory.SimpleModule.IsAlgClosed (NEW): Wedderburn-Artin specialized to algebraically closed base fields (over C). Less directly useful for the real Hurwitz problem, but a model for the missing real-base specialization."
     ]
   },
   "started": "2026-05-06T14:18:33.487Z",
-  "lastUpdate": "2026-05-08T03:35:00Z",
+  "lastUpdate": "2026-05-08T07:30:00Z",
   "significance": 7,
   "tractability": 3
 }
