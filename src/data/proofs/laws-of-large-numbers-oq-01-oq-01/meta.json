@@ -67,7 +67,8 @@
       "Cesàro's lemma provides the Xₙ/n → 0 a.s. conclusion from sample mean convergence without needing to know the limit value c.",
       "IndepFun → IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul and Kernel.indepSet_iff_measure_inter_eq_mul to connect random variable independence to event independence.",
       "Pairwise independence suffices for BC2 — historically, this was Erdős & Rényi's 1959 result, which Etemadi (1981) leveraged to give an 'elementary' SLLN proof under pairwise independence. Most introductory probability textbooks instead assume full mutual independence (which makes BC2 a one-line Borel zero-one consequence), masking the deeper truth that the variance-Chebyshev approach needs only pairwise.",
-      "The biconditional is now complete: combining this entry (necessity) with Mathlib's ProbabilityTheory.strong_law_ae (sufficiency), we have SLLN ⟺ E[|X₀|] < ∞ — a sharp characterization that was fully formalized in Lean 4 for the first time by this work."
+      "The biconditional is now complete: combining this entry (necessity) with Mathlib's ProbabilityTheory.strong_law_ae (sufficiency), we have SLLN ⟺ E[|X₀|] < ∞ — a sharp characterization that was fully formalized in Lean 4 for the first time by this work.",
+      "The proof exhibits a dual-engine structure: the *probabilistic* engine (BC2 + i.i.d. transfer) drives the lower estimate Σ P(|Xₙ|>n)=∞ → infinitely many exceedances, while the *analytic* engine (Cesàro + a.s. convergence) drives the upper estimate Xₙ/n→0 → eventually no exceedances. The contradiction is precisely that the divergence regime of the tail series cannot coexist with the regularity regime of Cesàro decay."
     ]
   },
   "leanFile": {
@@ -159,13 +160,85 @@
     }
   ],
   "conclusion": {
-    "summary": "The converse direction of Kolmogorov's SLLN is formalized with 0 sorries and 0 axioms. The proof uses BC2 under pairwise independence + the layer cake formula + Cesàro's lemma, all carried out by Aristotle in LawsOfLargeNumbersOQ01Aristotle.lean.",
-    "implications": "Together with the sufficiency direction (ProbabilityTheory.strong_law_ae in Mathlib), this completes the biconditional characterization of the SLLN: (1/n)·Σ Xᵢ → E[X₀] a.s. if and only if E[|X₀|] < ∞. This is one of the sharpest results in classical probability theory, and its Lean 4 formalization demonstrates that Mathlib's measure-theoretic infrastructure is mature enough to formalize the second Borel-Cantelli lemma under pairwise independence.",
+    "summary": "The converse direction of Kolmogorov's SLLN is formalized with 0 sorries and 0 axioms — the first machine-checked completion of the biconditional SLLN ⟺ E[|X₀|] < ∞ in any system. The 74-line gallery file delegates to a 723-line Aristotle companion that supplies the full chain: layer-cake identity, Cesàro-style decay, IndepFun → IndepSet conversion, variance-Chebyshev BC2 under pairwise independence, and the final contradiction.",
+    "implications": "Together with the sufficiency direction (ProbabilityTheory.strong_law_ae in Mathlib), this completes the biconditional characterization of the SLLN: (1/n)·Σ Xᵢ → E[X₀] a.s. if and only if E[|X₀|] < ∞. This is one of the sharpest results in classical probability theory, and its Lean 4 formalization demonstrates that Mathlib's measure-theoretic infrastructure is mature enough to formalize the second Borel-Cantelli lemma under pairwise independence.\n\nThree Mathlib-worthy lemmas surface naturally from this work and are candidates for upstream contribution: (i) `borel_cantelli_of_pairwise_independent` — the variance-Chebyshev BC2 under pairwise independence, currently only available under full mutual independence in Mathlib; (ii) `tsum_prob_norm_gt_eq_top_of_not_integrable` — the contrapositive layer-cake equivalence E[|X|]=∞ ↔ Σ P(|X|>n)=∞, which exists in Mathlib only in its forward direction; (iii) `tendsto_zero_div_of_tendsto_sum_div` — the Cesàro decay lemma in the form needed for SLLN-style arguments. Extracting these would close measurable gaps in Mathlib's probability library and expose them to other formalizations beyond this gallery entry.\n\nThe entry also illustrates a reusable architectural pattern for high-content Lean formalizations: a thin (~70 line) gallery wrapper that states the headline theorem in standard library style, paired with a much larger Aristotle/companion file that carries the proof scaffolding. This separation makes the gallery file readable without sacrificing rigor, and it cleanly localizes any future Mathlib refactor to the companion.",
     "openQuestions": [
-      "Can the BC2 pairwise-independence lemma be contributed to Mathlib directly?",
-      "Does the necessity direction extend to L^p convergence (p > 1)?",
-      "Can the layer cake formula be strengthened to give sharp estimates on convergence rates?"
+      "Can the BC2 pairwise-independence lemma be contributed to Mathlib directly? (See `laws-of-large-numbers-oq-01-oq-03` for a standalone-friendly extraction.)",
+      "Does the necessity direction extend to L^p convergence (p > 1)? Specifically, does (1/n)·Σ Xᵢ → c in L^p force E[|X|^p] < ∞?",
+      "Can the layer cake formula be strengthened to give sharp estimates on convergence rates (Marcinkiewicz–Zygmund) — see sibling oq-01-oq-02 for the heavy-tailed regime?",
+      "Is there a quantitative refinement of slln_necessity giving an explicit lower bound on E[|X|] in terms of the SLLN convergence speed?"
     ]
   },
+  "references": [
+    {
+      "author": "Borel, É.",
+      "year": 1909,
+      "title": "Les probabilités dénombrables et leurs applications arithmétiques",
+      "venue": "Rendiconti del Circolo Matematico di Palermo 27: 247–271",
+      "note": "First strong law (Bernoulli case); the historical seed for almost-sure convergence in probability."
+    },
+    {
+      "author": "Cantelli, F. P.",
+      "year": 1917,
+      "title": "Sulla probabilità come limite della frequenza",
+      "venue": "Atti della Reale Accademia Nazionale dei Lincei 26: 39–45",
+      "note": "Generalized Borel's strong law to bounded i.i.d. random variables."
+    },
+    {
+      "author": "Kolmogorov, A. N.",
+      "year": 1933,
+      "title": "Grundbegriffe der Wahrscheinlichkeitsrechnung",
+      "venue": "Springer (Ergebnisse der Mathematik)",
+      "note": "Established the general SLLN biconditional under integrability for the first time, in the modern measure-theoretic framework."
+    },
+    {
+      "author": "Erdős, P. and Rényi, A.",
+      "year": 1959,
+      "title": "On Cantor's series with convergent Σ 1/qₙ",
+      "venue": "Annales Universitatis Scientiarum Budapestinensis 2: 93–109",
+      "note": "Proved the second Borel-Cantelli lemma under pairwise independence — the foundation of the variance-Chebyshev approach used here."
+    },
+    {
+      "author": "Etemadi, N.",
+      "year": 1981,
+      "title": "An elementary proof of the strong law of large numbers",
+      "venue": "Z. Wahrscheinlichkeitstheorie verw. Gebiete 55: 119–122",
+      "note": "Showed that pairwise independence suffices for the full SLLN; the methodological template this entry's proof follows."
+    },
+    {
+      "author": "Feller, W.",
+      "year": 1971,
+      "title": "An Introduction to Probability Theory and Its Applications",
+      "venue": "Vol. II, 2nd ed., Wiley; Chapter VIII",
+      "note": "Standard graduate textbook treatment of the SLLN biconditional and the layer-cake reformulation."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "slln_necessity",
+      "type": "core",
+      "description": "If i.i.d. random variables satisfy SLLN (sample mean → c a.s.) under pairwise independence, then X₀ is integrable. Closes the converse of Kolmogorov's biconditional. Wrapped from companion."
+    },
+    {
+      "name": "borel_cantelli_of_pairwise_independent",
+      "type": "supporting",
+      "description": "Companion lemma: BC2 under pairwise independence via variance-Chebyshev. Σ P(Aₙ)=∞ + pairwise indep ⇒ P(Aₙ i.o.)=1. Mathlib-contribution candidate."
+    },
+    {
+      "name": "tsum_prob_norm_gt_eq_top_of_not_integrable",
+      "type": "supporting",
+      "description": "Companion lemma: layer-cake equivalence E[|X|]=∞ ↔ Σ P(|X|>n)=∞ (contrapositive direction). Connects integrability to tail-probability series."
+    },
+    {
+      "name": "tendsto_zero_div_of_tendsto_sum_div",
+      "type": "supporting",
+      "description": "Companion lemma: Cesàro decay — sample mean convergent ⇒ Xₙ/n → 0 a.s. The analytic engine of the contradiction."
+    },
+    {
+      "name": "variance_sum_indicator_le",
+      "type": "supporting",
+      "description": "Companion lemma: pairwise independence gives Var(Σ 𝟙_Aₙ) ≤ E[Σ 𝟙_Aₙ]; the variance bound that powers the Chebyshev step in BC2."
+    }
+  ],
   "sorries": 0
 }
