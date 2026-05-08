@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1518,
+    "lineCount": 1517,
     "assumptions": "1 axiom: banach_tarski main theorem (800+ lines via Hausdorff paradox + Axiom of Choice; provably unprovable in ZF alone — Solovay 1970). Declared as an explicit axiom rather than a placeholder proof so the mathematical assumption is tracked per the axiom integrity policy. All supporting lemmas fully proved: hausdorff_free_subgroup/orbit_ne (inductive proof via irrationality of sqrt 2 + ℤ[√2] invariant), free_group_paradoxical (F₂ is paradoxical under left action), free_group_not_amenable, int_amenable (Cesaro window-shift), banach_tarski_pieces_nonmeasurable.",
     "dateAdded": "2026-04-22",
     "mathlib_version": "4.26.0",
@@ -218,7 +218,7 @@
       "Mathlib"
     ],
     "namespace": "BanachTarski",
-    "lineCount": 1518,
+    "lineCount": 1517,
     "axiomCount": 1,
     "theoremCount": 52,
     "definitionCount": 20,
