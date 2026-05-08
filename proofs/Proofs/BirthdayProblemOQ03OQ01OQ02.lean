@@ -1751,10 +1751,67 @@ theorem bad_count_disjoint_strict (d n : ℕ)
     h₁₂ h₂₃ h₁₃ h₄₅ h₅₆ h₄₆
     h₁₄ h₁₅ h₁₆ h₂₄ h₂₅ h₂₆ h₃₄ h₃₅ h₃₆
 
+-- ============================================================
+-- §9. OVERLAP-PATTERN UNION-CARDINALITY (Layer 3f preliminaries, Session 16c)
+-- ============================================================
+
+/-- **Layer 3f preliminary (generic).** Inclusion-exclusion for tripleSets of
+    overlap-`k` pairs: for any pair `(T₁, T₂) ∈ overlapPattern n k` with
+    `k ≤ 6` (in practice `k ∈ {0, 1, 2}`), the union of their underlying
+    3-element sets has cardinality exactly `6 - k`.
+
+    Concretely:
+    - `k = 0` (disjoint, 6 distinct indices): union has 6 elements.
+    - `k = 1` (one shared index, 5 distinct): union has 5 elements.
+    - `k = 2` (two shared, 4 distinct): union has 4 elements.
+    - `k = 3` is empty (`overlapPattern_three_eq_empty`); the formula would
+      give 3 but is vacuous.
+
+    Used by Layer 3f (S16c+) to bound `|overlapPattern n k|` polynomially in
+    `n`: each pair embeds into `(tripleSet T₁ ∪ tripleSet T₂, T₁)` with the
+    first component ranging over `(6-k)`-element subsets of `Fin n`. -/
+lemma tripleSet_union_card_of_overlap {n k : ℕ}
+    {T₁ T₂ : Fin n × Fin n × Fin n}
+    (hp : (T₁, T₂) ∈ overlapPattern n k) :
+    (tripleSet T₁ ∪ tripleSet T₂).card = 6 - k := by
+  classical
+  simp only [overlapPattern, Finset.mem_filter, Finset.mem_product] at hp
+  obtain ⟨⟨⟨hT₁, hT₂⟩, _hne⟩, hcard⟩ := hp
+  have h_ie := Finset.card_union_add_card_inter (tripleSet T₁) (tripleSet T₂)
+  rw [hcard, card_tripleSet_of_strict hT₁, card_tripleSet_of_strict hT₂] at h_ie
+  omega
+
+/-- **Layer 3f preliminary (k = 0).** Disjoint overlap stratum: tripleSet
+    union has 6 elements. Direct corollary of `tripleSet_union_card_of_overlap`. -/
+lemma tripleSet_union_card_of_overlap_zero {n : ℕ}
+    {T₁ T₂ : Fin n × Fin n × Fin n}
+    (hp : (T₁, T₂) ∈ overlapPattern n 0) :
+    (tripleSet T₁ ∪ tripleSet T₂).card = 6 :=
+  tripleSet_union_card_of_overlap hp
+
+/-- **Layer 3f preliminary (k = 1).** Overlap-1 stratum: tripleSet union
+    has exactly 5 elements (one shared index between T₁ and T₂). This is the
+    cardinality input for the Layer 3f bound `|overlapPattern n 1| = O(n⁵)`. -/
+lemma tripleSet_union_card_of_overlap_one {n : ℕ}
+    {T₁ T₂ : Fin n × Fin n × Fin n}
+    (hp : (T₁, T₂) ∈ overlapPattern n 1) :
+    (tripleSet T₁ ∪ tripleSet T₂).card = 5 :=
+  tripleSet_union_card_of_overlap hp
+
+/-- **Layer 3f preliminary (k = 2).** Overlap-2 stratum: tripleSet union
+    has exactly 4 elements (two shared indices between T₁ and T₂). This is
+    the cardinality input for the Layer 3f bound `|overlapPattern n 2| =
+    O(n⁴)`. -/
+lemma tripleSet_union_card_of_overlap_two {n : ℕ}
+    {T₁ T₂ : Fin n × Fin n × Fin n}
+    (hp : (T₁, T₂) ∈ overlapPattern n 2) :
+    (tripleSet T₁ ∪ tripleSet T₂).card = 4 :=
+  tripleSet_union_card_of_overlap hp
+
 /-
   ## Summary
 
-  **Proved (36 theorems / lemmas, 1 axiom):**
+  **Proved (40 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -1848,6 +1905,18 @@ theorem bad_count_disjoint_strict (d n : ℕ)
       distinctness inputs from the strict ordering (6) and disjoint
       intersection (9). Filter predicate is grouped `(P₁∧P₂) ∧ (Q₁∧Q₂)` to
       align with `tripleCount_descFact_2_eq_overlap_sum`.
+  37. `tripleSet_union_card_of_overlap` (Session 16c, Layer 3f preliminary):
+      generic inclusion-exclusion: for any `(T₁, T₂) ∈ overlapPattern n k`,
+      `(tripleSet T₁ ∪ tripleSet T₂).card = 6 - k`. Uses
+      `Finset.card_union_add_card_inter` with `card_tripleSet_of_strict`.
+  38. `tripleSet_union_card_of_overlap_zero` (S16c, Layer 3f preliminary):
+      disjoint stratum specialisation — union has 6 elements.
+  39. `tripleSet_union_card_of_overlap_one` (S16c, Layer 3f preliminary):
+      overlap-1 stratum specialisation — union has 5 elements. Cardinality
+      input for the bound `|overlapPattern n 1| = O(n⁵)`.
+  40. `tripleSet_union_card_of_overlap_two` (S16c, Layer 3f preliminary):
+      overlap-2 stratum specialisation — union has 4 elements. Cardinality
+      input for the bound `|overlapPattern n 2| = O(n⁴)`.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -1889,5 +1958,9 @@ theorem bad_count_disjoint_strict (d n : ℕ)
 #check @bad_count_disjoint
 #check @p_pair_disjoint
 #check @bad_count_disjoint_strict
+#check @tripleSet_union_card_of_overlap
+#check @tripleSet_union_card_of_overlap_zero
+#check @tripleSet_union_card_of_overlap_one
+#check @tripleSet_union_card_of_overlap_two
 
 end BirthdayThreshold3
