@@ -9,12 +9,13 @@
     "type": "definition",
     "title": "volumeSum and VolumeDissection",
     "content": "`volumeSum` computes ∑ c.side³ using Mathlib's BigOperators `∑ c ∈ cubes, c.side ^ 3`. `VolumeDissection` extends `CubeDissection` with the field `volume_constraint : volumeSum dissection.cubes = 1`, replacing the placeholder `covers_unit_cube : True` with the necessary geometric condition that cube volumes sum to 1.",
-    "mathContext": "For axis-aligned cubes in ℝ³, a cube with side length $s$ has volume $s^3$. If finitely many cubes tile the unit cube $[0,1]^3$ with disjoint interiors, the volumes must sum to $\\text{vol}([0,1]^3) = 1$. The constraint $\\sum_{c} c.\\text{side}^3 = 1$ is a necessary condition for any valid tiling.",
+    "mathContext": "For axis-aligned cubes in ℝ³, a cube with side length $s$ has volume $s^3$. If finitely many cubes tile the unit cube $[0,1]^3$ with disjoint interiors, the volumes must sum to $\\text{vol}([0,1]^3) = 1$. The constraint $\\sum_{c} c.\\text{side}^3 = 1$ is a necessary condition for any valid tiling — though not sufficient (e.g., one cube of side 1 trivially satisfies it without dissecting anything).",
     "significance": "key",
     "relatedConcepts": [
       "CubeDissection",
       "covers_unit_cube",
-      "Finset.sum"
+      "Finset.sum",
+      "Lebesgue measure"
     ],
     "prerequisites": [
       "DissectionOfCubes (CubeDissection structure)",
@@ -22,11 +23,34 @@
     ]
   },
   {
+    "id": "ann-volumesum-basics",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 69,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Basic Sum Lemmas: nonneg, singleton, insert",
+    "content": "Three foundational sum lemmas. `volumeSum_nonneg` uses `Finset.sum_nonneg` with the per-term hypothesis `pow_nonneg (le_of_lt c.side_pos) 3`. `volumeSum_singleton` follows by `simp [volumeSum]`. `volumeSum_insert` requires the classical `DecidableEq Cube` instance (declared at line 52) so that `Finset.sum_insert` can pattern-match on membership.",
+    "mathContext": "These are the `Finset` analogues of the inductive case in $\\sum_{i=1}^{n} a_i = a_1 + \\sum_{i=2}^{n} a_i$. The non-negativity uses $s > 0 \\Rightarrow s^3 > 0$; the insert lemma needs decidable equality because `insert c s` may already contain `c`, in which case the sum doesn't change.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_nonneg",
+      "Finset.sum_insert",
+      "DecidableEq",
+      "pow_nonneg"
+    ],
+    "prerequisites": [
+      "Cube.side_pos (positivity axiom)",
+      "Classical decidability"
+    ]
+  },
+  {
     "id": "ann-volume-bounds",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
-      "startLine": 92,
-      "endLine": 110
+      "startLine": 90,
+      "endLine": 109
     },
     "type": "proof",
     "title": "Volume and Side Bounds from Constraint",
@@ -36,7 +60,8 @@
     "relatedConcepts": [
       "Finset.single_le_sum",
       "nlinarith",
-      "cube positivity"
+      "cube positivity",
+      "sq_nonneg"
     ],
     "prerequisites": [
       "volumeSum_nonneg",
@@ -44,26 +69,141 @@
     ]
   },
   {
+    "id": "ann-volumesum-pos",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 111,
+      "endLine": 118
+    },
+    "type": "proof",
+    "title": "Volume Sum is Positive on Nonempty Dissections",
+    "content": "`volumeSum_pos` extracts a witness cube from `Finset.Nonempty`, applies `pow_pos c.side_pos 3` to get `0 < c.side³`, then uses `Finset.single_le_sum` to bound the sum below by this strictly-positive term. The conclusion `0 < volumeSum` follows by `linarith`.",
+    "mathContext": "The strict inequality $0 < \\sum s_i^3$ is essential because the volume_constraint says the sum equals $1$, so the dissection is automatically nonempty whenever it satisfies the constraint. This lemma is dual: it confirms that nonemptiness implies positive volume — necessary for the `cube_volume_lt_one_of_card_ge_two` argument later.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.Nonempty",
+      "Finset.single_le_sum",
+      "pow_pos",
+      "strict positivity"
+    ],
+    "prerequisites": [
+      "volumeSum_nonneg",
+      "Cube.side_pos"
+    ]
+  },
+  {
+    "id": "ann-volume-lt-one",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 120,
+      "endLine": 157
+    },
+    "type": "proof",
+    "title": "Strict Volume Bound for Multi-Cube Dissections",
+    "content": "`cube_volume_lt_one_of_card_ge_two` strengthens the ≤ 1 bound to < 1 when the dissection has ≥ 2 cubes. The proof case-splits on `lt_or_eq_of_le`: if equal, then the single cube exhausts the volume, leaving 0 for any other cube — contradicting `pow_pos c'.side_pos 3 > 0`. Uses `Finset.one_lt_card` to extract a distinct second cube, then `Finset.sum_le_sum_of_subset_of_nonneg` to bound the pair-sum below the total.",
+    "mathContext": "If $\\sum_{i=1}^{n} s_i^3 = 1$ with $n \\geq 2$ and some $s_k = 1$, then $\\sum_{i \\neq k} s_i^3 = 0$. But each $s_i^3 > 0$, so this forces $n = 1$ — contradiction. Geometrically: a dissection cannot contain a unit-side cube alongside any other cube, because the unit cube already fills $[0,1]^3$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.one_lt_card",
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "lt_or_eq_of_le",
+      "pigeonhole"
+    ],
+    "prerequisites": [
+      "cube_volume_le_one",
+      "Cube.side_pos"
+    ]
+  },
+  {
     "id": "ann-collision-volume",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
-      "startLine": 172,
-      "endLine": 202
+      "startLine": 163,
+      "endLine": 198
     },
     "type": "theorem",
     "title": "Collision Pairs and Volume: 2s³ ≤ 1",
-    "content": "`collision_volume_bound` proves that for any collision pair (c₁, c₂) — two distinct cubes with c₁.side = c₂.side = s — we have 2s³ ≤ 1. The proof: both cubes are in the dissection, so their total volume c₁.side³ + c₂.side³ = 2s³ is bounded by volumeSum = 1. `collision_side_le_half_cbrt` immediately gives s³ ≤ 1/2.",
+    "content": "`volume_dissection_has_collision` is a one-line corollary of `every_dissection_has_collision` from OQ-01. `collision_volume_bound` then proves that for any collision pair (c₁, c₂) with c₁.side = c₂.side = s, we have 2s³ ≤ 1. The proof bounds the pair-sum `c₁.side³ + c₂.side³ = 2s³` above by the total `volumeSum = 1` via `Finset.sum_le_sum_of_subset_of_nonneg`. `collision_side_le_half_cbrt` immediately gives s³ ≤ 1/2 via `linarith`.",
     "mathContext": "If two distinct cubes with the same side length $s$ appear in a VolumeDissection, they each contribute $s^3$ to the sum $\\sum c_i^3 = 1$. Since all other terms are nonneg, $2s^3 \\leq 1$, i.e., $s \\leq 2^{-1/3} \\approx 0.7937$. This is a quantitative upper bound on how large any repeated-size cube can be in a volume-constrained dissection.",
     "significance": "key",
     "relatedConcepts": [
       "IsCollisionPair",
       "every_dissection_has_collision",
-      "Finset.sum_le_sum_of_subset_of_nonneg"
+      "Finset.sum_le_sum_of_subset_of_nonneg",
+      "Wiedijk #82"
     ],
     "prerequisites": [
       "DissectionOfCubesOQ01 (IsCollisionPair definition)",
-      "collision_volume_bound",
-      "volumeSum"
+      "volumeSum",
+      "volume_constraint"
+    ]
+  },
+  {
+    "id": "ann-min-cubes",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 204,
+      "endLine": 216
+    },
+    "type": "proof",
+    "title": "Minimum Cubes for Collision",
+    "content": "`min_cubes_for_collision` shows any VolumeDissection containing a collision pair must have at least 2 cubes. The proof unpacks the collision pair (c₁, c₂) with `c₁ ≠ c₂`, builds the 2-element subset `{c₁, c₂}` via `Finset.card_insert_of_notMem`, and applies `Finset.card_le_card` to bound `2 ≤ d.cubes.card`.",
+    "mathContext": "A trivial-looking but necessary cardinality lemma: pairs require at least 2 elements. Combined with `cube_volume_lt_one_of_card_ge_two`, this means: in any nonempty VolumeDissection, every cube has strict volume < 1 (because OQ-01 forces ≥ 2 cubes via the existence of a collision pair).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.card_insert_of_notMem",
+      "Finset.card_le_card",
+      "Finset.notMem_singleton",
+      "cardinality"
+    ],
+    "prerequisites": [
+      "IsCollisionPair (with hne : c₁ ≠ c₂)"
+    ]
+  },
+  {
+    "id": "ann-volume-decomp",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 218,
+      "endLine": 227
+    },
+    "type": "definition",
+    "title": "Volume Sum Decomposition Lemmas",
+    "content": "`volumeSum_union` lifts `Finset.sum_union` to the volume-sum abstraction: when finsets `s, t` are disjoint, `volumeSum (s ∪ t) = volumeSum s + volumeSum t`. `volumeSum_eq` is a definitional rewriting (`rfl`) that exposes the underlying `Finset.sum` formulation — useful when downstream lemmas need the raw sum form.",
+    "mathContext": "These lemmas form the algebraic backbone for any future inductive argument over cube subsets. For instance, splitting a dissection into 'large' and 'small' cubes (e.g., side > $2^{-1/3}$ vs. ≤) uses `volumeSum_union` after verifying disjointness via the partition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_union",
+      "Disjoint",
+      "rfl",
+      "volume decomposition"
+    ],
+    "prerequisites": [
+      "Finset disjoint union",
+      "volumeSum definition"
+    ]
+  },
+  {
+    "id": "ann-satisfiable",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 229,
+      "endLine": 252
+    },
+    "type": "proof",
+    "title": "Satisfiability via Trivial Witness",
+    "content": "`volume_constraint_satisfiable` constructs an explicit `VolumeDissection` with one cube of side 1 at the origin. The witness cube `⟨0, 0, 0, 1, by norm_num⟩` is built directly; `all_contained` verifies $[0,1]^3 \\subseteq [0,1]^3$ via `le_refl`/`norm_num`; `pairwise_disjoint` is vacuous on a singleton (the only pair `(c, c)` is excluded by `c₁ ≠ c₂`); and `covers_unit_cube` is trivial because the base structure uses `True`.",
+    "mathContext": "The trivial witness — one unit cube — exists and shows the structure VolumeDissection is nonempty as a type. This is logically necessary: without a witness, every theorem about `vd : VolumeDissection` would be vacuous. Note this witness has `card = 1`, so it does NOT satisfy the more interesting `cube_volume_lt_one_of_card_ge_two` hypothesis — those theorems become non-vacuous only for genuine multi-cube tilings.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "satisfiability",
+      "trivial witness",
+      "structure construction",
+      "vacuous truth"
+    ],
+    "prerequisites": [
+      "CubeDissection structure fields",
+      "volumeSum_singleton"
     ]
   }
 ]
