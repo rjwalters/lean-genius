@@ -329,7 +329,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
       refine ⟨fun i => (e.symm i).1, ?_, ?_⟩
       · intro i j hij; exact e.symm.injective (Subtype.ext hij)
       · ext x
-        simp only [Set.mem_range, Set.mem_coe, Finset.mem_coe]
+        simp only [Set.mem_range, Finset.mem_coe]
         constructor
         · rintro ⟨i, rfl⟩; exact (e.symm i).2
         · intro hx; exact ⟨e ⟨x, hx⟩, by simp⟩
