@@ -773,6 +773,81 @@ private lemma firstViolationIdx_spec {n a b : ℕ}
   unfold firstViolationIdx
   exact (exists_first_violation_idx P Q h).choose_spec
 
+/-! ### S31 — Rotation infrastructure (Sub-lemma 2B prerequisite, 2B.3')
+
+Pure `Sym ↔ sorted-list-rotation` API. Builds the bridge to a future
+cycle-lemma proof of Sub-lemma 2B
+(`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`) without committing
+to the bijection's exact shape. See
+`research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/sublemma-2b-cycle-lemma-spec.md`
+§8 for the broader plan (revised after S30's first-violation-drop dead end).
+
+The key abstraction is `rotateSortedList M k` — the `k`-th cyclic shift of
+`M`'s sorted-list representative. Because `List.rotate` is a permutation of
+the original list, the underlying multiset is invariant under rotation;
+`rotateSortedList_toMultiset` exposes this so downstream callers can package
+a "rotation index" `k ∈ Fin c` alongside `M : Sym (Fin n) c` without
+committing to a particular `Sym`-level rotation.
+
+The §8 spec doc tentatively named this `rotateMul` and gave it return type
+`Sym (Fin n) (a + b)`; that signature is degenerate (rotation preserves the
+multiset, so it would be the identity on `Sym`), so the API here exposes the
+list-level rotation instead. Length, zero/period, and multiset-invariance
+lemmas form the basic kit; the descent index (`firstDescentRotation` in §8)
+is deferred to S32+ when the bijection's exact shape is committed. -/
+
+/-- Sorted-list representative of a `Sym`, rotated by `k` positions.
+
+    Equal to `(M.1.sort (· ≤ ·)).rotate k`. The sorted list is canonical
+    (`Multiset.sort` produces a `Pairwise (· ≤ ·)` list of length `c`);
+    rotating it by any `k : ℕ` gives a list with the same underlying
+    multiset but a (potentially) different order of presentation. The
+    sorted form is recovered at `k = 0` and at every `k` divisible by
+    `c`. -/
+private def rotateSortedList {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
+    List (Fin n) :=
+  (M.1.sort (· ≤ ·)).rotate k
+
+/-- The rotated sorted list has length `c` (same as the multiset's
+    cardinality). -/
+@[simp] private lemma rotateSortedList_length {n c : ℕ} (M : Sym (Fin n) c)
+    (k : ℕ) : (rotateSortedList M k).length = c := by
+  unfold rotateSortedList
+  rw [List.length_rotate, Multiset.length_sort, M.2]
+
+/-- Rotation by `0` yields the canonical sorted list of `M`. -/
+@[simp] private lemma rotateSortedList_zero {n c : ℕ} (M : Sym (Fin n) c) :
+    rotateSortedList M 0 = M.1.sort (· ≤ ·) := by
+  unfold rotateSortedList
+  exact List.rotate_zero _
+
+/-- Rotation has period `c`: rotating by the multiset's cardinality yields
+    the canonical sorted list back.
+
+    The "period" lemma for the cycle-lemma argument: the cyclic rotations
+    of `M.1.sort` are indexed by `Fin c` modulo `c`, so a rotation index
+    can be canonically chosen in `Fin c`. -/
+private lemma rotateSortedList_period {n c : ℕ} (M : Sym (Fin n) c) :
+    rotateSortedList M c = M.1.sort (· ≤ ·) := by
+  unfold rotateSortedList
+  have hlen : (M.1.sort (· ≤ ·)).length = c := by
+    rw [Multiset.length_sort, M.2]
+  conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
+  exact List.rotate_length _
+
+/-- The underlying multiset of the rotated sorted list equals `M.1`.
+
+    The key invariance property: rotating the sorted-list representative
+    is a permutation, hence preserves the multiset. Used downstream to
+    attach a "rotation index" `k : Fin c` to a multiset `M` without
+    changing `M` itself — the basis for the refined-codomain
+    `(P', k)` bijection in 2B.4'. -/
+private lemma rotateSortedList_toMultiset {n c : ℕ} (M : Sym (Fin n) c)
+    (k : ℕ) : (↑(rotateSortedList M k) : Multiset (Fin n)) = M.1 := by
+  unfold rotateSortedList
+  rw [Multiset.coe_eq_coe.mpr (List.rotate_perm _ k)]
+  exact Multiset.sort_eq (· ≤ ·) M.1
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
