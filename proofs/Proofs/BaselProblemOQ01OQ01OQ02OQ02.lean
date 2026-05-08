@@ -380,4 +380,78 @@ theorem dvd_mul_choose {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
   rw [mul_choose_eq_mul_choose_pred hm hmn]
   exact dvd_mul_right n (Nat.choose (n - 1) (m - 1))
 
+-- =====================================================================
+-- PART 6 (Session 6): m=1 and m=2 base cases of mul_choose_dvd_lcmRange
+-- =====================================================================
+
+/-! ### Why these base cases
+
+The full Session 6 target is
+  `mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m · C(n, m) ∣ lcmRange n`,
+which (per the JSON `currentState.blockers`) requires either Kummer's
+theorem on `v_p(C(n, m))` or a double `(n, m)` induction via Pascal —
+~100-200 lines of work.
+
+The cases `m = 1` and `m = 2` are **direct one- and ten-line proofs**,
+useful both as pedagogical anchors and as plug-in lemmas for the
+alternating-bilinear vdP analysis when only the first two summand
+denominators are needed.
+
+* `m = 1`: `1 · C(n, 1) = n`, and `n ∣ lcmRange n` by `dvd_lcmRange`.
+* `m = 2`: by `mul_choose_eq_mul_choose_pred`,
+    `2 · C(n, 2) = n · C(n-1, 1) = n · (n-1)`.
+  Both `n` and `n-1` divide `lcmRange n` (the latter requires `n ≥ 2`),
+  and consecutive integers are coprime, so their product divides
+  `lcmRange n` via `Nat.Coprime.mul_dvd_of_dvd_of_dvd`.
+
+Higher `m` (m ≥ 3) does NOT follow this pattern: for `m = 3` the
+identity `3 · C(n, 3) = n · (n-1) · (n-2) / 2` introduces an extra
+`/2` that consumes one factor of 2 from `n(n-1)(n-2)` — the Kummer /
+digit-sum analysis is needed to show the result remains an `lcmRange n`
+divisor. -/
+
+/-- **m=1 base case**: `1 · C(n, 1) = n` divides `lcmRange n` for any
+    `n ≥ 1`. Direct from `Nat.choose_one_right` + `dvd_lcmRange`. -/
+theorem mul_choose_dvd_lcmRange_one {n : ℕ} (hn : 1 ≤ n) :
+    1 * Nat.choose n 1 ∣ lcmRange n := by
+  rw [Nat.choose_one_right, one_mul]
+  exact dvd_lcmRange hn (le_refl n)
+
+/-- **m=2 base case**: `2 · C(n, 2) = n · (n - 1)` divides `lcmRange n`
+    for any `n ≥ 2`. Proof: rewrite via `mul_choose_eq_mul_choose_pred`
+    + `Nat.choose_one_right` to expose `n · (n - 1)`. Both factors
+    divide `lcmRange n` by `dvd_lcmRange`, and consecutive integers
+    are coprime (`Nat.Coprime n (n - 1)` via `coprime_self_add_right`
+    after `Nat.sub_add_cancel`). Conclude with
+    `Nat.Coprime.mul_dvd_of_dvd_of_dvd`. -/
+theorem mul_choose_dvd_lcmRange_two {n : ℕ} (hn : 2 ≤ n) :
+    2 * Nat.choose n 2 ∣ lcmRange n := by
+  have hm : (0 : ℕ) < 2 := by decide
+  have hmn : (2 : ℕ) ≤ n := hn
+  -- Step 1: 2 · C(n, 2) = n · C(n - 1, 1) = n · (n - 1).
+  -- After applying `mul_choose_eq_mul_choose_pred`, the index `(2 - 1)`
+  -- reduces definitionally to `1`, so we can plug in `Nat.choose_one_right`
+  -- via `show` to align the goal shape before rewriting.
+  rw [mul_choose_eq_mul_choose_pred hm hmn]
+  show n * Nat.choose (n - 1) 1 ∣ lcmRange n
+  rw [Nat.choose_one_right]
+  -- Goal: n * (n - 1) ∣ lcmRange n
+  have hn_pos : 0 < n := lt_of_lt_of_le hm hmn
+  have hn1_pos : 0 < n - 1 := by omega
+  have hn1_le : n - 1 ≤ n := Nat.sub_le n 1
+  -- Step 2: n ∣ lcmRange n and (n-1) ∣ lcmRange n.
+  have h_n : n ∣ lcmRange n := dvd_lcmRange hn_pos (le_refl n)
+  have h_n1 : (n - 1) ∣ lcmRange n := dvd_lcmRange hn1_pos hn1_le
+  -- Step 3: Coprime n (n - 1) — consecutive integers are coprime.
+  have hcop : Nat.Coprime n (n - 1) := by
+    -- Rewrite `n = (n - 1) + 1`. Goal: `Coprime ((n-1) + 1) (n - 1)`.
+    -- Symmetrise to `Coprime (n-1) ((n-1) + 1)`, then apply
+    -- `coprime_self_add_right : Coprime m (m + k) ↔ Coprime m k` with
+    -- `k = 1`, finishing via `coprime_one_right : Coprime _ 1`.
+    have hrewrite : n = (n - 1) + 1 := by omega
+    rw [hrewrite]
+    exact (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right _)).symm
+  -- Step 4: n · (n - 1) ∣ lcmRange n via the coprime mul_dvd lemma.
+  exact hcop.mul_dvd_of_dvd_of_dvd h_n h_n1
+
 end BaselProblemOQ01OQ01OQ02OQ02
