@@ -7,7 +7,7 @@
     "author": "Stirling (1730), de Moivre (1733)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stirling%27s_approximation#Speed_of_convergence_and_error_estimates",
     "date": "1730",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/StirlingExpansion.lean",
     "tags": [
       "analysis",
@@ -17,7 +17,7 @@
       "bernoulli-numbers"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 3,
     "axiomCount": 0,
     "assumptions": "None. 0 axioms, 0 sorries. The full chain {log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower, telescoping helpers (inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope), partial-sum bounds (log_stirlingSeq_partial_upper/lower), stirling_first_correction, stirling_two_term_expansion, error_bound_from_correction} is fully proved. The final upper-half exp-Taylor bound is discharged via Real.exp_bound at degree n=2 (|L|≤1 → |exp L − (1+L)| ≤ 3·L²/4), combined with L² ≤ 1/n² (from 0 ≤ L ≤ 1/n) and the algebraic identity L − 1/(12n) ≤ 1/(2n²) (from L ≤ 1/(12(n−1)) + 1/(12(n−1)²)).",
     "dateAdded": "2026-03-29",
@@ -154,5 +154,5 @@
       "Proofs/StirlingExpansionAristotle.lean"
     ]
   },
-  "sorries": 0
+  "sorries": 3
 }

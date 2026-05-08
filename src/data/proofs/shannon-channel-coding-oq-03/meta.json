@@ -7,7 +7,7 @@
     "author": "Robert Fano (1952), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fano%27s_inequality",
     "date": "1952",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/ShannonChannelCodingOQ03.lean",
     "tags": [
       "information-theory",
@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 4,
     "mathlibDependencies": [
       {
         "theorem": "Finset.le_sup'",
@@ -225,5 +225,5 @@
       "note": "Chapter 7: Fano's inequality and its application to channel coding converse"
     }
   ],
-  "sorries": 0
+  "sorries": 4
 }
