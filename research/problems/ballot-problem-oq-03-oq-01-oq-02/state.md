@@ -1,14 +1,14 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ORIENT/PLAN (S49 — refined attack plan for `gnwProb_exchange`: cell-wise gnwProb invariance shown to fail; pivot to sum-level joint-K induction strategy)
+**Phase**: ACT (S50 — single-removal bridge lemmas added; sets up the algebraic "easy half" of `gnwProb_exchange` via the dual chain `μ → μ\c' → (μ\c')\c`)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
 **Last Updated**: 2026-05-08
-**Iteration**: 49
+**Iteration**: 50
 
 ## Current Focus
-Close `gnwProb_exchange` (Helpers, line 14143) — the GNW 1979 exchange identity
+Close `gnwProb_exchange` (Helpers, line ~14441 after S50) — the GNW 1979 exchange identity
 in product form. This is now the SOLE remaining sorry-bearing lemma; the
 `hook_length_formula_general` dispatcher is sorry-free, and `gnwProb_key` for the
 multi-corner case is now structurally proved by well-founded recursion on
@@ -98,6 +98,18 @@ in place:
      `corner_col_lt_of_row_lt`, `isCorner_removeCorner_of_ne`,
      `mem_removeCorner`.  All proofs close with 1–2 lines of
      `omega` / `rw`+`exact`.
+ 12. Single-removal bridges (session 50) — added two `private` lemmas after
+     `hookLength_doubleRemove_other` (~line 5207) capturing how `μ → μ\c'`
+     shifts hookLength at arm/leg cells of `c`:
+     - `hookLength_removeCornerC'_arm_of_c_off_d`: arm cells `(c.1, s)` with
+       `s ≠ c'.2` are unaffected by removing `c'`.
+     - `hookLength_removeCornerC'_leg_of_c`: leg cells `(r, c.2)` with
+       `r < c.1` are unaffected by removing `c'`.
+     These are the dual chain to S48's `(μ\c)\c'` block; combined with
+     `hookLength_removeCorner_leg hc' hi` for the doubly-affected cell, they
+     pre-align the products produced by `hookProd_ratio_formula` applied to
+     corner `c` on `μ` versus on `μ\c'`.  Used in the upcoming
+     `hookProd_doubleRemove_factor` proof (S51).  ~33 lines.
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
@@ -109,25 +121,27 @@ in place:
   not yet confirmed in this session. CI will verify the PR.
 
 ## Next Action
-**S50 — extract `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` + prove
-`hookProd_doubleRemove_factor`** (the algebraic "easy half" of
-`gnwProb_exchange`).
+**S51 — prove `hookProd_doubleRemove_factor`** using the S50 single-removal
+bridges (this session) + `hookProd_ratio_formula` (twice) + `removeCorner_swap`.
 
-S49 (this session) re-examined S48's outlined cell-by-cell pairing and
-identified a subtle obstacle: cell-wise gnwProb invariance for cells
-"far from c'" does NOT hold, because the gnwProb random walk
-recursively descends into arm/leg of c' even when starting at cells
-disjoint from arm/leg of c'.  See `sessions/2026-05-08-s04.md` for the
-counterexample sketch (e.g., `x = (c'.1 - 1, 0)` reaches `(c'.1, 0)` in
-one walk step, and `(c'.1, 0)` is in the arm of c').
+S50 (this session) added the two single-removal bridge lemmas
+(`hookLength_removeCornerC'_arm_of_c_off_d`, `hookLength_removeCornerC'_leg_of_c`)
+that establish the dual chain `μ → μ\c' → (μ\c')\c`.  Combined with
+`hookLength_removeCorner_leg hc' hi` for the doubly-affected cell, these are
+exactly the pointwise hookLength facts needed when comparing the two
+`hookProd_ratio_formula` applications: one for corner `c` on `μ`, one for
+corner `c` on `μ\c'`.
 
-The refined attack splits `gnwProb_exchange` into two sub-lemmas:
+The refined attack still splits `gnwProb_exchange` into:
 
-1. **Algebraic "easy half" — `hookProd_doubleRemove_factor`** (~80 lines).
-   Pure hookProd identity using `hookProd_ratio_formula` (twice) plus
-   the six S48 shift lemmas.  States that
+1. **Algebraic "easy half" — `hookProd_doubleRemove_factor`** (~80-120 lines).
+   Pure hookProd identity using `hookProd_ratio_formula` (twice) plus the
+   S50 bridge lemmas + `hookLength_removeCorner_leg hc' hi` (single-shift at
+   `d`) + `hookProd_removeCorner_swap` (to identify `(μ\c')\c` with `(μ\c)\c'`).
+   States that
    `H(μ) · H((μ\c)\c') · (h_d − 1)² = H(μ\c) · H(μ\c') · h_d · (h_d − 2)`
-   where `d = (c.1, c'.2)`.  Confidence: high.
+   where `d = (c.1, c'.2)`.  Confidence: high.  See
+   `sessions/2026-05-08-s05.md` for a Lean-skeleton recipe.
 
 2. **F-side "hard half"** (~100-200 lines).  Joint K-induction on the
    sum-level invariant
@@ -139,20 +153,21 @@ The refined attack splits `gnwProb_exchange` into two sub-lemmas:
 3. **Combine** to close `gnwProb_exchange` (~50 lines algebraic
    rearrangement).
 
-Practical sequencing for S50: do step 1 first (purely algebraic, low risk,
-buildable in isolation).  Step 2 involves K-bookkeeping and may need
-multiple sub-sessions.
+Practical sequencing for S51: complete step 1 (the easy half).  This will
+either succeed cleanly via the dual-chain S50 bridges, or surface specific
+Mathlib `Finset.mul_prod_erase`/`Finset.prod_congr` quirks that the next
+session can patch.
 
-**File-size mitigation.** Helpers.lean is at 14629 lines after S48; the
-new bridge lemmas add ~150-300 lines.  Before S50 starts coding, extract
-S43-S48 + new bridges into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
-to stay below the 32GB Docker build ceiling.  This file would import
-the existing primitives and re-export the bridges to Helpers.
+**File-size**: Helpers.lean is at 14704 lines after S50 (+75 from 14629).
+S51's algebraic proof adds another ~80-120 lines.  Approaching 14900 — still
+below the practical Docker 32GB-memory ceiling but extraction into
+`BallotProblemOQ03OQ01OQ02DoubleRemove.lean` should be on the radar by S52
+to forestall the wall.
 
 Alternative (deferred): a deterministic weighted-path recasting of GNW
 that avoids the exchange step entirely (count weighted walks of every
 length, divide by `μ.card · ∏ |strict hook|`); ~400 lines self-contained.
-Fallback if S50-S52 stall.
+Fallback if S51-S53 stall.
 
 ## References
 
@@ -168,6 +183,7 @@ Fallback if S50-S52 stall.
 - `sessions/2026-05-08-s02.md` — Session 47: `removeCorner_swap` + `hookProd_removeCorner_swap`
 - `sessions/2026-05-08-s03.md` — Session 48: double-removal hookLength shift lemmas
 - `sessions/2026-05-08-s04.md` — Session 49: refined attack plan; cell-wise → sum-level pivot
+- `sessions/2026-05-08-s05.md` — Session 50: single-removal bridges + S51 Lean recipe
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -176,9 +192,11 @@ Fallback if S50-S52 stall.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5122` — `hookLength_doubleRemove_arm_of_c'` (S48)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5156` — `hookLength_doubleRemove_leg_of_c'_off_d` (S48)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5186` — `hookLength_doubleRemove_other` (S48)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14374` — `gnwProb_exchange`
-  (sorry'd, target of next session — line shifted by +201 from session 48 additions)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14399` — `gnwProb_key`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5232` — `hookLength_removeCornerC'_arm_of_c_off_d` (S50)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5258` — `hookLength_removeCornerC'_leg_of_c` (S50)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14441` — `gnwProb_exchange`
+  (sorry'd, target of S51-S52 — line shifted by +75 from S50 additions)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14466` — `gnwProb_key`
   (proved modulo `gnwProb_exchange`)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14608` — `hook_walk_identity_gnw`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14675` — `hook_walk_identity_gnw`
   (sorry-free dispatcher, transitive on `gnwProb_exchange`)
