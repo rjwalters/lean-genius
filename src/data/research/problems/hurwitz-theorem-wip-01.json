@@ -29,29 +29,32 @@
     "goal": "Reduce HurwitzTheorem.lean sorry count from 1 to 0 (and HurwitzOnlyIf.lean from 1 to 0), promoting hurwitz-theorem from badge='wip' to badge='verified' (or 'original')."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-07T18:10:00Z",
-    "iteration": 2,
-    "focus": "Survey: full enumeration of what is proved upstream of the blocking sorry, mapping the gap to the missing Mathlib API.",
+    "phase": "PARK",
+    "since": "2026-05-08T03:35:00Z",
+    "iteration": 3,
+    "focus": "PARK: re-confirmed BLOCKED. No relevant Mathlib master changes since S2 (Cl periodicity / Frobenius / Wedderburn for real semisimple algebras still absent). Recorded a corrected cost estimate for option B: the bridge NormedDivisionRing -> NSquareIdentity is NOT ~80 lines because it requires constructing an InnerProductSpace from the multiplicative norm (~200-300 lines, itself a Frobenius-style argument).",
     "blockers": [
       "Mathlib has no classification of real Clifford algebras Cl(0,n-1) (Bott periodicity).",
-      "Mathlib has no Artin-Wedderburn structure theorem usable to compute the minimum faithful real representation dimension of a real semisimple algebra."
+      "Mathlib has no Artin-Wedderburn structure theorem usable to compute the minimum faithful real representation dimension of a real semisimple algebra.",
+      "Mathlib has no Frobenius theorem for finite-dim normed associative real division algebras (alternative path that would handle hurwitz_only_if_ring directly).",
+      "Bridge NormedDivisionRing -> NSquareIdentity n requires either an InnerProductSpace structure on A (not in Mathlib) or quadratic-form diagonalization machinery (not in Mathlib) -- so option B is also blocked, not the previously estimated ~80 lines of glue."
     ],
-    "nextAction": "Either (a) wait for Mathlib Clifford-classification PRs to land, or (b) attempt the small-case decomposition: prove n=6 and n=10 directly (without Bott periodicity) using ad-hoc trace/determinant arguments, then leave only the asymptotic case as sorry. See nextSteps for a concrete decomposition.",
+    "nextAction": "Wait for Mathlib upstream. Periodically re-check Mathlib.LinearAlgebra.CliffordAlgebra.* for periodicity/structure-classification lemmas and Mathlib.Algebra.Algebra.* for a Frobenius theorem. See unblockCriteria for concrete trigger conditions.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED but cleanly localized. HurwitzTheorem.lean has a single sorry (line 1937) for even n notin {2,4,8}. All structural infrastructure is in place: crossMat_anticommute proves that an NSquareIdentity n yields n-1 anti-commuting orthogonal n x n real matrices M_j with M_j^2 = -I, i.e., a real n-dim representation of Cl(0,n-1). Closing the sorry requires the Clifford structure theorem (Bott periodicity for real Cl(0,k)) plus a minimum-rep-dim bound, neither of which is in Mathlib v4.26.0. HurwitzOnlyIf.lean has a parallel sorry for hurwitz_only_if_ring (the NormedDivisionRing formulation). 0 axioms in either file.",
+    "progressSummary": "BLOCKED (PARK), iteration 3. HurwitzTheorem.lean has a single sorry (line 1937) for even n notin {2,4,8}. All structural infrastructure is in place: crossMat_anticommute proves that an NSquareIdentity n yields n-1 anti-commuting orthogonal n x n real matrices M_j with M_j^2 = -I, i.e., a real n-dim representation of Cl(0,n-1). Closing the sorry requires the Clifford structure theorem (Bott periodicity for real Cl(0,k)) plus a minimum-rep-dim bound, neither of which is in Mathlib v4.26.0. HurwitzOnlyIf.lean has a parallel sorry for hurwitz_only_if_ring (the NormedDivisionRing formulation). 0 axioms in either file. S3 added: the previously-estimated ~80-line option-B refactor is itself blocked because the bridge NormedDivisionRing -> NSquareIdentity needs an InnerProductSpace structure derived from the multiplicative norm, which is itself a Frobenius-style construction (~200-300 lines) and not in Mathlib.",
     "builtItems": [],
     "insights": [
       "All the linear algebra that the impossibility proof needs is already done in HurwitzTheorem.lean. The blocker is purely a Clifford-algebra structure theorem — there is no remaining 'analysis' or 'matrix' work to do at the gallery level.",
       "Per-n decomposition is viable: the case n=6 reduces to showing that 5 anti-commuting orthogonal 6x6 real matrices cannot exist. A direct trace/dimension counting argument (Cl(0,5) has dim 32 over R; a faithful R-module needs dim >= 8) avoids invoking Bott periodicity, but still needs the Wedderburn structure of Cl(0,5).",
       "n=10 has the same obstruction (Cl(0,9) ~= M(16,R)). For n=12,14,16,... the gap widens, so any 'finite case enumeration' approach saturates without a uniform argument.",
-      "HurwitzOnlyIf.lean line 109's 'orthonormal basis -> NSquareIdentity n' bridge is concrete linear algebra (no Clifford theory): expressible in ~80 lines using existing Mathlib LinearMap.IsometryEquiv + Module.Finite.finBasis. Decomposing hurwitz_only_if_ring along this seam would isolate the same blocker into one place.",
+      "S2 underestimated option B: the 'orthonormal basis -> NSquareIdentity n' bridge is NOT ~80 lines of glue. The L^2-norm of coordinate vectors equals ||sum a_i e_i||_A only when the basis is orthonormal, which requires an inner product on A. NormedDivisionRing alone does NOT give an inner product (a multiplicative norm is not automatically derived from an inner product on the underlying vector space). The bridge therefore needs first to construct an InnerProductSpace structure on A, which is a Frobenius-style argument (imaginary subspace V = {a : a^2 <= 0}, polarization identity) of roughly 200-300 lines that is itself absent from Mathlib.",
+      "Frobenius alternative: NormedDivisionRing is associative, so for hurwitz_only_if_ring the stronger Frobenius theorem (finrank in {1,2,4}) suffices. But the classical Frobenius proof goes through the same Clifford / imaginary-subspace machinery, which is why the two open sorries collapse to the same blocker. arXiv:2405.01876 (May 2024) formalizes Frobenius in a non-Mathlib system; not yet ported.",
       "Mathlib's Mathlib.LinearAlgebra.CliffordAlgebra.* (as of v4.26.0) provides the universal property and basic conjugation, but does NOT provide the periodicity/structure classification needed here (search Mathlib for 'CliffordAlgebra equivalent matrix' confirms no decomposition theorems).",
       "The companion gallery entry hurwitz-theorem (badge='wip', sorries=1) sits on this exact blocker; closing it would graduate that entry to verified."
     ],
@@ -62,11 +65,17 @@
       "(Equivalent path) Atiyah's K-theory proof via Bott periodicity for KO-theory of S^{n-1}: requires KO-theory of spheres + parallelizability obstruction, which is even further from Mathlib's current scope."
     ],
     "nextSteps": [
-      "Decomposition option A (small cases): introduce private lemma `no_six_square_identity` and `no_ten_square_identity` covering the next two even cases via ad-hoc Cl(0,5), Cl(0,9) Wedderburn structure (hand-coded if needed). Localizes the open sorry to 'even n >= 12 with n notin {16}'.",
-      "Decomposition option B (algebra refactor): split HurwitzOnlyIf.hurwitz_only_if_ring into two lemmas — (1) `nsquareIdentity_of_normedDivisionRing` (concrete, no Clifford), (2) the existing axiom call to HurwitzTheorem.hurwitz_only_if. This eliminates the second sorry without adding/removing any total assumption.",
+      "Decomposition option A (small cases): introduce private lemma `no_six_square_identity` and `no_ten_square_identity` covering the next two even cases via ad-hoc Cl(0,5), Cl(0,9) Wedderburn structure (hand-coded if needed). Localizes the open sorry to 'even n >= 12 with n notin {16}'. ~400 lines per case.",
+      "Decomposition option B (algebra refactor, BLOCKED upstream): split HurwitzOnlyIf.hurwitz_only_if_ring into (1) `inner_product_of_normedDivisionRing` (~200-300 lines, Frobenius-style imaginary-subspace argument), (2) `nsquareIdentity_of_normedDivisionRing` (~80 lines once an InnerProductSpace exists), (3) call to HurwitzTheorem.hurwitz_only_if. Subtask (1) is itself a worthwhile Mathlib contribution.",
       "Survey option C: open a Mathlib-side feature request / RFC for the Clifford classification API needed here, with a precise wishlist (CliffordAlgebra.equivOfBottPeriodicity, ClassicalLieAlgebra.realClassification, ...). Tracking issue, not Lean work.",
-      "Wait option D: monitor Mathlib master for CliffordAlgebra structure theorems; revisit when CliffordAlgebra.equiv* lemmas appear.",
+      "Wait option D (current): monitor Mathlib master for CliffordAlgebra structure theorems and a Frobenius-for-real-division-algebras theorem. See `unblockCriteria` for concrete trigger lemmas to watch for.",
       "Aristotle option E: do NOT submit. The sorry is OPEN (genuinely missing infrastructure), not a routine lemma — Aristotle is the wrong tool."
+    ],
+    "unblockCriteria": [
+      "Mathlib gains `Mathlib.LinearAlgebra.CliffordAlgebra.Periodicity` with an isomorphism `Cl(0, n+8) ≅ Cl(0, n) ⊗[ℝ] M(16, ℝ)`.",
+      "Mathlib gains `Mathlib.LinearAlgebra.CliffordAlgebra.RealClassification` with a Wedderburn-style structure theorem for `Cl(0, k)`, k = 0..7.",
+      "Mathlib gains a `frobenius_theorem` for finite-dim normed associative real division algebras, asserting `finrank ℝ A ∈ {1, 2, 4}`.",
+      "Mathlib gains an `InnerProductSpace`-from-`NormedDivisionRing` instance / theorem (Frobenius-style polarization argument)."
     ]
   },
   "tags": [
@@ -101,7 +110,7 @@
     ]
   },
   "started": "2026-05-06T14:18:33.487Z",
-  "lastUpdate": "2026-05-07T18:10:00Z",
+  "lastUpdate": "2026-05-08T03:35:00Z",
   "significance": 7,
   "tractability": 3
 }
