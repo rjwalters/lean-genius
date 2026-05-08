@@ -671,3 +671,98 @@ private lemma face2_path_odd :
 end N2Grid
 
 end SpernerFreudSimp
+
+-- ============================================================
+-- Generic `_hLowerDim` discharge helper for Sperner-on-Triangulation
+-- (Session 15 — reusable across all concrete Sperner instantiations)
+-- ============================================================
+
+/-! ## Generic `_hLowerDim` Discharge
+
+`Triangulation.boundary_doors_odd` (in `SpernerSimplicialInstance.lean`)
+requires four hypotheses, one of which (`_hLowerDim`) states that, for
+each face index with `faceIdx.val < n`, the boundary doors landing on
+geometric face `faceIdx` form an Even-cardinality finset.
+
+Inspecting the proof of `boundary_doors_odd` shows that `_hLowerDim`
+is *not actually used* in the proof body — the proof shows directly
+that every boundary door must lie on the last face — yet the
+hypothesis must still be discharged at every call site.
+
+The lemmas in this section discharge `_hLowerDim` generically: for
+*any* Sperner coloring on *any* triangulation, the filter set is
+empty (cardinality `0`, hence Even). The argument is the same Sperner
+contradiction used inside `boundary_doors_odd` to show `S = S_n`: an
+`IsDoor` at color `faceIdx` requires some non-`k` vertex with color
+`faceIdx`, but the third filter clause says that non-`k` vertex is on
+geometric face `faceIdx`, contradicting the Sperner condition.
+
+These helpers are `f`-independent (they depend only on the abstract
+`IsSpernerColoring` predicate) and apply to every concrete Sperner
+instantiation. They are intended to be passed directly as the
+`_hLowerDim` argument of `Triangulation.boundary_doors_odd`,
+eliminating ~30 lines of boilerplate per call site. -/
+
+namespace SpernerLowerDimHelper
+
+open Finset
+
+variable {V : Type*} [DecidableEq V] {n : ℕ}
+
+/-- The `_hLowerDim` filter of `Triangulation.boundary_doors_odd` is
+empty whenever `c` is a Sperner coloring with respect to `onFace`
+and `faceIdx.val < n`. Any candidate door would witness a vertex
+with color `faceIdx` on geometric face `faceIdx`, which the Sperner
+condition forbids. -/
+lemma sperner_lowerDim_filter_empty
+    (T : Triangulation V n)
+    (c : V → Fin (n + 1)) (onFace : V → Fin (n + 1) → Prop)
+    [∀ v k, Decidable (onFace v k)]
+    (hSperner : Triangulation.IsSpernerColoring c onFace)
+    (faceIdx : Fin (n + 1)) (hlt : faceIdx.val < n) :
+    (Finset.univ.filter (fun p : T.Cell × Fin (n + 1) =>
+      CellComplex.IsDoor c (T.toCellComplex) p.1 p.2 ∧
+      T.adj p.1 p.2 = none ∧
+      (∀ j : Fin (n + 1), j ≠ p.2 →
+        onFace (T.vertex p.1 j) faceIdx))) = ∅ := by
+  rw [Finset.eq_empty_iff_forall_not_mem]
+  rintro ⟨s, k⟩ hmem
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hmem
+  obtain ⟨hDoor, _hAdj, hOnFace⟩ := hmem
+  -- `IsDoor c (T.toCellComplex) s k` says: for every `j : Fin n`, some
+  -- non-`k` vertex of `s` has color `Fin.castSucc j`.
+  have hDoor' := hDoor ⟨faceIdx.val, hlt⟩
+  obtain ⟨i, hi_ne, hi_color⟩ := hDoor'
+  -- Vertex `i` is on face `faceIdx` (since `i ≠ k` and `hOnFace` covers
+  -- all non-`k` vertices).
+  have hOnFace_i := hOnFace i hi_ne
+  -- Sperner condition: vertex on face `faceIdx` has color ≠ `faceIdx`.
+  have hSperner_i := hSperner (T.vertex s i) faceIdx hOnFace_i
+  -- `T.toCellComplex.vertex = T.vertex` is definitional.
+  change c (T.vertex s i) = _ at hi_color
+  -- `Fin.castSucc ⟨faceIdx.val, hlt⟩ = faceIdx`.
+  have hcast : (⟨faceIdx.val, hlt⟩ : Fin n).castSucc = faceIdx :=
+    Fin.ext rfl
+  rw [hcast] at hi_color
+  exact hSperner_i hi_color
+
+/-- Corollary of `sperner_lowerDim_filter_empty`: the cardinality is
+`0`, hence Even. This is the exact form required by `_hLowerDim`
+of `Triangulation.boundary_doors_odd`, ready to be passed at any
+concrete call site. -/
+lemma sperner_lowerDim_card_even
+    (T : Triangulation V n)
+    (c : V → Fin (n + 1)) (onFace : V → Fin (n + 1) → Prop)
+    [∀ v k, Decidable (onFace v k)]
+    (hSperner : Triangulation.IsSpernerColoring c onFace)
+    (faceIdx : Fin (n + 1)) (hlt : faceIdx.val < n) :
+    Even (Finset.univ.filter (fun p : T.Cell × Fin (n + 1) =>
+      CellComplex.IsDoor c (T.toCellComplex) p.1 p.2 ∧
+      T.adj p.1 p.2 = none ∧
+      (∀ j : Fin (n + 1), j ≠ p.2 →
+        onFace (T.vertex p.1 j) faceIdx))).card := by
+  rw [sperner_lowerDim_filter_empty T c onFace hSperner faceIdx hlt,
+      Finset.card_empty]
+  exact ⟨0, rfl⟩
+
+end SpernerLowerDimHelper

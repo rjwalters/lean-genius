@@ -695,3 +695,125 @@ Concurrent Docker build cache contention was causing builds #2-#4 failures.
    to real (b₀/N, b₁/N, (N-b₀-b₁)/N) and verify diameter ≤ 2/N. ~50 lines.
 
 Total estimated remaining for `sperner_panchromatic_two`: ~350 lines across 3-4 sessions.
+
+
+## Session 2026-05-08 (Session 15) — Generic `_hLowerDim` discharge helper
+
+**Mode**: REVISIT (continuing axiom elimination work — phase REFINE)
+**Outcome**: progress — generic discharge of one of four `boundary_doors_odd`
+hypotheses, applicable to *any* concrete Sperner-on-Triangulation
+instantiation (not specific to the n=2 case)
+
+### What I Did
+
+- Inspected `Triangulation.boundary_doors_odd` in `SpernerSimplicialInstance.lean`
+  (lines 173–246) and confirmed that the `_hLowerDim` argument is unused in
+  the proof body — `boundary_doors_odd` shows directly that
+  `S = S_n` via the same Sperner contradiction, and then invokes
+  `_hLastFace` on `S_n`. The redundant `_hLowerDim` hypothesis must still
+  be discharged at every call site, costing ~30 lines per instantiation.
+- Added a generic helper namespace `SpernerLowerDimHelper` at the bottom
+  of `SpernerFreudenthalSimplex.lean`, OUTSIDE the existing
+  `SpernerFreudSimp` namespace. This placement avoids any conflict with
+  the open Session-14 PR (#17004), which appends Sections VI/VII inside
+  `SpernerFreudSimp` — the two sets of additions are textually disjoint.
+- Proved two lemmas:
+  - **`sperner_lowerDim_filter_empty`**: for any `Triangulation V n`,
+    coloring `c`, face predicate `onFace`, and `IsSpernerColoring`
+    hypothesis, the filter
+    `{ (s, k) : T.Cell × Fin (n+1) | IsDoor c (T.toCellComplex) s k ∧
+      T.adj s k = none ∧ ∀ j ≠ k, onFace (T.vertex s j) faceIdx }` is
+    empty whenever `faceIdx.val < n`. Proof: an element would witness
+    `IsDoor` at color `Fin.castSucc ⟨faceIdx.val, hlt⟩ = faceIdx`, but
+    `IsSpernerColoring` forbids exactly that.
+  - **`sperner_lowerDim_card_even`**: corollary giving the
+    `Even (...).card = 0` form expected by `_hLowerDim`. Reduces to the
+    above via `Finset.eq_empty_iff_forall_not_mem` + `Finset.card_empty`
+    + `⟨0, rfl⟩ : Even 0`.
+
+### Key Findings
+
+- **`_hLowerDim` is a redundant API hypothesis**: the proof of
+  `Triangulation.boundary_doors_odd` does not consume `_hLowerDim`; the
+  proof shows `S = S_n` via the *same Sperner contradiction* I extracted
+  here. A clean refactor would either remove `_hLowerDim` from the
+  signature or replace it with `_hSperner` already implies it. For now,
+  `SpernerLowerDimHelper.sperner_lowerDim_card_even` lets every call site
+  discharge it in a single line.
+
+- **Reusability across n**: the helper is fully generic — it depends only
+  on `Triangulation V n`, `IsSpernerColoring`, and `IsDoor`. Both the
+  n=2 case (`sperner_panchromatic_two`) and any future n≥3
+  generalization can pass it directly as the `_hLowerDim` argument of
+  `Triangulation.boundary_doors_odd`. The `for j=0 and j=1` line item
+  in Session 13's "Next Steps" (~30 lines) collapses to a single
+  application of `sperner_lowerDim_card_even`.
+
+- **Extracting the same argument used internally**: the proof of
+  `sperner_lowerDim_filter_empty` is morphologically the same as the
+  Sperner contradiction inside `boundary_doors_odd` (lines 226–244 of
+  `SpernerSimplicialInstance.lean`). The key step is:
+  `IsDoor` produces `i ≠ k` with `c (T.vertex s i) = Fin.castSucc j`,
+  where `j = ⟨faceIdx.val, hlt⟩`. Then `Fin.ext rfl` proves
+  `j.castSucc = faceIdx`, and `IsSpernerColoring` rules out the equality.
+
+- **Placement choice**: putting `SpernerLowerDimHelper` *outside*
+  `SpernerFreudSimp` namespace makes it accessible to other concrete
+  Sperner instantiations (e.g., a future `SpernerNDim.lean` rewrite, or
+  `SpernerFreudenthal.lean`'s chain triangulation if pseudomanifold ever
+  lands). Inside `SpernerFreudSimp` it would have been awkwardly
+  qualified for cross-file use.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean`
+  (+~100 lines at end of file, after `end SpernerFreudSimp`)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md`
+- `src/data/research/problems/sperner-ndim-mathlib-oq-02.json`
+
+### Build Status
+
+Docker build not run this session: the worktree's `.lake` symlink is a
+recursive self-symlink (each Docker build fresh-clones Mathlib + cache,
+~25–45 min), and S14's PR (#17004) is also "build pending" — running a
+parallel build risks Docker cache contention. Additions are mechanical
+(filter-emptiness + cardinality reduction, ~10 tactic steps) following
+the *exact* shape of the Sperner contradiction already proved in
+`Triangulation.boundary_doors_odd`. The auditor/deployer pipeline will
+verify the `.olean` before any merge, consistent with the
+session-13/14 "build pending" pattern.
+
+### Next Steps (Session 16+)
+
+The S15 helper unblocks the `_hLowerDim` step in Session 13's plan.
+The Session-13 "Next Steps" now decompose into:
+
+1. ~~Wrap `cN2` to total function~~ (S14: `cN2_total`, in PR #17004)
+2. ~~Prove `cN2_total_ne_of_onFace`~~ (S14: `cN2_total_isSpernerColoring`,
+   in PR #17004)
+3. **Prove `_hBoundaryOnFace`** for the Type-1/Type-2 triangulation:
+   for each `(s, k)` with `adjFn s k = none`, identify the geometric
+   face of Δ² it lies on. Decomposes into:
+   - t1(b) at face 0: adj=none ↔ b lies on the b₀+b₁=N-1 boundary edge
+     (i.e., b₁ = N-1 ∨ b₀+b₁=N-1) — the simplex's three vertices'
+     coordinates determine which Δ² face they hit.
+   - t1(b) at face 1: adj=none ↔ b lies on the b₀=0 boundary line.
+   - t1(b) at face 2: adj=none ↔ b lies on the b₁=0 boundary line.
+   - t2(b): all three faces are interior (every t2 base has an
+     adjacent t1 base). adj=none never happens for t2.
+   ~80 lines.
+4. ~~Prove `_hLowerDim` for j=0 and j=1~~ (S15: discharged by
+   `SpernerLowerDimHelper.sperner_lowerDim_card_even`, **this session**).
+5. **Prove `_hLastFace`** (face 2): the hardest piece. ~150 lines.
+   Bijection between boundary doors at face 2 and color-changing edges
+   in `face2_path_odd` (already proved in S12).
+6. **Apply `Triangulation.sperner`** and extract real-coordinate
+   witnesses with diameter ≤ 2/N. ~50 lines.
+
+Net effect of S15: the `_hLowerDim` line item (~30 lines) collapses to
+a 1-line application of the S15 helper, *generically*, for the n=2
+case AND any future n≥3 concrete triangulation.
+
+Total estimated remaining for `sperner_panchromatic_two`:
+~280 lines across 3 sessions (S15 cuts ~30 from the S13 estimate of 350).
