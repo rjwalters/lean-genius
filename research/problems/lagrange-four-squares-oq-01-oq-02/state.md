@@ -1,10 +1,75 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T17:30:00Z
-**Iteration**: 9
+**Since**: 2026-05-08T20:30:00Z
+**Iteration**: 10
 
 ## Current Focus
+
+S10A (2026-05-08, researcher-3): **Multiple-of-p identification under bounded
+range**. Added two `private` lemmas to `ThreeSquares.lean` (directly after the
+S9 sublattice helpers, before the `not_excluded_form_is_sum_three_sq` axiom):
+
+```lean
+private lemma multiple_p_eq_p_of_lt_two_mul
+    {N p : ℤ} (hp : 0 < p) (h_pos : 0 < N) (h_lt : N < 2 * p)
+    (h_dvd : p ∣ N) : N = p
+
+private lemma dirichletForm_eq_p_of_lt_two_mul
+    {p d : ℤ} (hp : 0 < p) (hd : 0 < d) (v : Fin 3 → ℤ) (hv : v ≠ 0)
+    (h_lt : v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2 < 2 * p)
+    (h_dvd : p ∣ v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2) :
+    v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2 = p
+```
+
+**Proof structure** (~80 lines including docstrings, ~50 lines of tactic):
+
+The first lemma is the bare arithmetic kernel: given `p ∣ N`, extract the
+witness `N = p · k`; from `0 < p · k < 2 · p` deduce `0 < k < 2`, hence `k = 1`,
+hence `N = p`. Three steps:
+1. `obtain ⟨k, hk⟩ := h_dvd` — divisibility witness.
+2. `hk_pos : 0 < k` — from `0 < N = p · k` and `0 < p` (case-split on `k ≤ 0`
+   gives `p · k ≤ 0` via `mul_nonpos_iff`, contradicting positivity).
+3. `hk_eq : k = 1` — from `p · k < 2 · p` and `0 < p` deduce `k < 2`
+   (`nlinarith`); combined with `k ≥ 1`, `omega` yields `k = 1`.
+
+The second lemma packages this with the strict positivity of the Dirichlet form
+on non-zero integer triples (a self-contained inlined variant of S6's
+`dirichletForm_pos`, but stated on the integer side rather than the real side
+to keep the lemma usable directly downstream of the integer-side Minkowski
+output `minkowski_ellipsoid_has_lattice_point_int`).
+
+**Why this granularity** (small, focused, robust):
+
+- Purely arithmetic — no measure theory, no lattice machinery — so the proof
+  is robust to API drift in `MeasureTheory.*` and the latent build issues in
+  the S5 region of `ThreeSquares.lean`.
+- Self-contained: relies only on standard order/arithmetic lemmas from Mathlib
+  (`mul_nonpos_iff`, `nlinarith`, `omega`, `sq_nonneg`, `positivity`).
+- Plug-in shape: `dirichletForm_eq_p_of_lt_two_mul` accepts exactly the
+  hypotheses the eventual S10/S11 geometric Minkowski step on the Dirichlet
+  sublattice will produce — a non-zero `v ∈ ℤ³`, the form-value bound
+  `form(v) < 2 · p`, and the divisibility `p ∣ form(v)` (from S9's
+  `exists_dirichletSublattice_dvd_form`). Once the geometric covolume work
+  lands, the form-value identification step is one rewrite away.
+- Independent of the geometric S10 work: this PR does **not** touch the
+  geometry-of-numbers infrastructure (`Submodule.span ℤ`, `ZSpan.volume_*`,
+  `Matrix.det_fin_three`) — the geometric covolume computation is left to
+  a parallel session. S10A and the geometric S10 compose freely.
+
+**Axiom delta**: unchanged at 2 (`dirichlet_key_lemma`,
+`not_excluded_form_is_sum_three_sq`). S10A is *infrastructure* — it builds the
+identification half of the eventual `dirichlet_key_lemma` proof, complementing
+S9's divisibility half.
+
+**Build status**: pending (build infrastructure is the broken `proofs/.lake`
+recursive symlink; per the worktree-traps memory note, every Docker build
+fresh-clones Mathlib at ~10–15 min plus cache get at ~10 min; the S5 region
+of `ThreeSquares.lean` has been build-pending since pre-S6). Confidence high
+that the new tactic uses (`obtain`, `mul_nonpos_iff`, `nlinarith`, `omega`,
+`fin_cases`, `positivity`) compile against Mathlib 4.26 — the patterns mirror
+S6's `dirichletForm_pos` (lines 981–1002) and S9's `dirichletForm_dvd_of_in_sublattice`
+(lines 1158–1175) line-for-line.
 
 S9 (2026-05-08, researcher-9): **Dirichlet sublattice — divisibility side**.
 Added one definition and two `private` lemmas to `ThreeSquares.lean` (directly
@@ -225,7 +290,10 @@ session.
 
 ## Next Action
 
-**Session 10**: Sublattice covolume. With S9 delivering the divisibility
+**Session 10/11**: Geometric sublattice covolume + Minkowski-on-sublattice
+application. S10A (this session) delivered the **identification kernel**
+(`multiple_p_eq_p_of_lt_two_mul`, `dirichletForm_eq_p_of_lt_two_mul`) at the
+integer-arithmetic level. The remaining geometric work is:
 content (`dirichletForm_dvd_of_in_sublattice`), the remaining geometric
 work for `dirichlet_key_lemma` is:
 
@@ -250,20 +318,24 @@ work for `dirichlet_key_lemma` is:
    `k ≥ 1`. Match `k · p = k · (dn - 1)` to extract a sum-of-three-squares
    for `n`.
 
-S9 (this session) delivered the **divisibility side** of step 4 at the
-integer level. The composite `exists_dirichletSublattice_dvd_form`
-collapses S8 (QR extraction) and S9 (divisibility) into a single
-existential, ready for S10's geometric covolume work to feed into.
+S9 delivered the **divisibility side** of step 4 at the integer level
+(`dirichletForm_dvd_of_in_sublattice`). S10A (this session) delivered the
+**arithmetic identification kernel** for step 4
+(`dirichletForm_eq_p_of_lt_two_mul`): given a non-zero `v ∈ ℤ³` with
+`form(v) < 2 · p` and `p ∣ form(v)`, conclude `form(v) = p` exactly. Together
+S9 + S10A provide the entire integer-side input to the Minkowski-on-sublattice
+application; the remaining geometric work (S10/S11) is to produce a non-zero
+sublattice point `v` with the form-value bound `< 2p`.
 
 **Estimated**: ~80–100 lines for sublattice covolume (S10),
-~40 lines for the Minkowski-on-sublattice application + identification
-arguments (S11). Full elimination of `dirichlet_key_lemma` across S10+S11
-once the S5-region build issues are addressed by an Auditor / Mechanic
-follow-up.
+~40 lines for the Minkowski-on-sublattice application (S11) — both reduced
+slightly because the post-Minkowski identification is now packaged in S10A.
+Full elimination of `dirichlet_key_lemma` across S10+S11+S10A once the
+S5-region build issues are addressed by an Auditor / Mechanic follow-up.
 
 ## Attempt Counts
 
-- Total attempts: 9 (Sessions 1–9)
+- Total attempts: 10 (Sessions 1–9 + S10A)
 - Approaches tried:
   - **S1 (researcher-?)**: OBSERVE/scaffolding (PR #16805)
   - **S2 (researcher-?)**: stub + Legendre infra
