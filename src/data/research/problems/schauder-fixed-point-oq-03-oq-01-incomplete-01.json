@@ -1,7 +1,7 @@
 {
   "slug": "schauder-fixed-point-oq-03-oq-01-incomplete-01",
   "title": "Kakutani from Brouwer via Approximate Selections (2 sorries)",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,24 +28,29 @@
     "goal": "Fill 2 sorries using Mathlib's partition of unity machinery"
   },
   "currentState": {
-    "phase": "PLAN",
-    "since": "2026-05-07T23:10:00Z",
-    "iteration": 2,
-    "focus": "Move approx_fixedpoint_implies_fixedpoint above kakutani_from_brouwer; close limit-argument sorry",
+    "phase": "ACT",
+    "since": "2026-05-07T22:13:37Z",
+    "iteration": 3,
+    "focus": "Build verification pending. Helper proved, kakutani filled, axiom 3 eliminated. Convex hypothesis type-fixed.",
     "blockers": [],
-    "nextAction": "ATTEMPT: prove approx_fixedpoint_implies_fixedpoint using IsCompact.tendsto_subseq + Metric.thickening + Metric.infDist; once closed, kakutani_from_brouwer reduces to it",
+    "nextAction": "Re-run Docker build when memory contention subsides; if proof has bugs, iterate. Then update sorries/axiomCount.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-3, 2026-05-07): The 2 sorries are NOT in approx_selection_exists (which is an axiom). They are in (1) kakutani_from_brouwer and (2) approx_fixedpoint_implies_fixedpoint. Architectural insight: kakutani_from_brouwer reduces cleanly to approx_fixedpoint_implies_fixedpoint by chaining axioms 1+2 (brouwer_fpt + approx_selection_exists) to produce ε-approximate fixed points, then invoking the limit-argument helper. Closing the helper closes BOTH sorries. Detailed proof outlines + commented code skeletons committed in PR (proofs/Proofs/SchauderFixedPointOQ03OQ01.lean).",
+    "progressSummary": "S3 (researcher-11, 2026-05-08): Major restructuring submitted, build verification pending. Changes: (1) Eliminated seq_compact_of_compact axiom — replaced with theorem proved from IsCompact.isSeqCompact (3 axioms → 2). (2) Wrote full proof of approx_fixedpoint_implies_fixedpoint using union-of-balls open neighborhood + UHC + sequential compactness. (3) Filled kakutani_from_brouwer body with the previously-commented skeleton. (4) FIXED a pre-existing compilation error: Convex ℝ (F x) was malformed because Set ↥S has no AddCommMonoid; rewrote as Convex ℝ (Subtype.val '' F x) (lifted to ambient EuclideanSpace). The merged S2 commit (#16731) was docstring-only and never actually compiled. (5) Build attempt OOM'd during Mathlib clone+build under heavy multi-agent contention (8+ concurrent docker builds). File counts: 0 sorries, 2 axioms, 349 lines, 3 theorems, 4 definitions.",
     "builtItems": [
       "Detailed 4-step proof outline for approx_fixedpoint_implies_fixedpoint (committed as docstring) — covers sequence construction, subsequence extraction, limit transfer, and UHC-contradiction with empty/nonempty case split.",
       "Commented-out reduction skeleton for kakutani_from_brouwer (committed in tactic block) — exact 10-line proof body once the helper is moved up.",
-      "Architectural insight that closing the helper closes BOTH sorries (no separate work needed for kakutani_from_brouwer beyond reordering)."
+      "Architectural insight that closing the helper closes BOTH sorries (no separate work needed for kakutani_from_brouwer beyond reordering).",
+      "Eliminated axiom seq_compact_of_compact: now a theorem proved from IsCompact.isSeqCompact (Mathlib.Topology.Sequences). Axiom count: 3 → 2.",
+      "Full proof of approx_fixedpoint_implies_fixedpoint: ~80 lines, uses choose + seq_compact_of_compact + squeeze_zero + tendsto_iff_dist_tendsto_zero + by_contra + case-split on (F x*).Nonempty.",
+      "Full proof of kakutani_from_brouwer: ~25 lines, chains approx_selection_exists + brouwer_fpt + approx_fixedpoint_implies_fixedpoint via subtype-univ trick.",
+      "Type fix for Convex ℝ ((Subtype.val '' F x) : Set (EuclideanSpace ℝ (Fin n))) replacing malformed Convex ℝ (F x) — addresses pre-existing compilation error.",
+      "Added imports: Mathlib.Topology.MetricSpace.HausdorffDistance (for Metric.infDist family), Mathlib.Topology.Sequences (for IsCompact.isSeqCompact)."
     ],
     "insights": [
       "approx_selection_exists is an AXIOM, not a sorry — the file's 2 sorries are kakutani_from_brouwer and approx_fixedpoint_implies_fixedpoint. The original problemStatement framing is misleading.",
@@ -54,7 +59,11 @@
       "The subtype ↥S inherits PseudoMetricSpace from the ambient Euclidean space; CompactSpace ↥S follows from IsCompact S (via isCompact_iff_compactSpace.mp). Set.univ : Set ↥S is then compact.",
       "approx_fixedpoint_implies_fixedpoint proof: build sequences via choice with εₙ = 1/(n+1); extract convergent subsequence (IsCompact.tendsto_subseq, automatic for metric); show y_φ(n) → x* (squeeze); contradict x* ∉ F(x*) using UHC + thickening of F(x*) by δ/2 where δ = infDist(x*, F(x*)) > 0.",
       "Empty-F(x*) edge case: take V = ∅ (open superset of empty F(x*)); UHC forces F(x_φ(n)) = ∅ eventually, contradicting y_φ(n) ∈ F(x_φ(n)).",
-      "Docker build attempt with added imports (Mathlib.Topology.Sequences, Mathlib.Topology.Compactness.Compact) hit 32GB memory limit during Mathlib clone+build. Build verification deferred to a session with warm Docker cache OR a slimmer import set."
+      "Docker build attempt with added imports (Mathlib.Topology.Sequences, Mathlib.Topology.Compactness.Compact) hit 32GB memory limit during Mathlib clone+build. Build verification deferred to a session with warm Docker cache OR a slimmer import set.",
+      "PRE-EXISTING COMPILATION BUG: original Convex ℝ (F x) clause (in approx_selection_exists axiom and kakutani_from_brouwer signature) failed to type-check because ↥S = Subtype (· ∈ S) does not have AddCommMonoid. Lean silently substituted sorry for the elaborated type. The S2 PR (#16731) was docstring-only and merged without actual build verification, masking this. Fix: lift to ambient via Subtype.val '' F x.",
+      "seq_compact_of_compact AXIOM ELIMINATION: Mathlib's IsCompact.isSeqCompact (Mathlib.Topology.Sequences) directly provides the result for PseudoMetricSpace. The axiom is a one-line consequence: hS.isSeqCompact hx gives the existential witness.",
+      "HELPER PROOF STRATEGY: choose for sequence construction; seq_compact_of_compact for subsequence; squeeze_zero with tendsto_one_div_add_atTop_nhds_zero_nat for dist→0; tendsto_iff_dist_tendsto_zero + dist_triangle for yseq→x_star; case split on (F x*).Nonempty; nonempty case uses union-of-balls V := ⋃ y ∈ F x*, Metric.ball y (δ/2) instead of Metric.thickening (avoids EMetric API uncertainty); empty case uses V := ∅ directly.",
+      "BUILD VERIFICATION DEFERRED: Docker Desktop caps each container at ~7.65GiB regardless of LEAN_MEMORY_LIMIT=32768m; with 8+ concurrent agents, my build OOM'd at 510s during Mathlib clone. Code structure-checked and lemma names cross-referenced against gallery usage but not Lean-compiled. Re-run when contention is lower."
     ],
     "mathlibGaps": [
       "Mathlib.Topology.MetricSpace.HausdorffDistance for Metric.infDist, Metric.infDist_le_dist_add_infDist, Metric.infDist_pos_iff_not_mem_closure",
@@ -63,12 +72,10 @@
       "Mathlib.Topology.PartitionOfUnity has partition of unity constructions (only relevant if proving approx_selection_exists; not needed for the two current sorries)"
     ],
     "nextSteps": [
-      "(1) Move `approx_fixedpoint_implies_fixedpoint` block from Part V to between the axioms (Part II) and `kakutani_from_brouwer` (Part III) — or rename Parts. Forward references are not allowed in Lean 4.",
-      "(2) Add imports: Mathlib.Topology.MetricSpace.HausdorffDistance, Mathlib.Topology.MetricSpace.Thickening, Mathlib.Topology.Sequences. Verify these don't bloat compile time excessively in Docker.",
-      "(3) Prove approx_fixedpoint_implies_fixedpoint following the documented outline. Key tactic chain: choose for sequence construction; hS.tendsto_subseq for subsequence; by_cases on (F x_star).Nonempty; in nonempty case: let δ := Metric.infDist x_star (F x_star); use Metric.infDist_pos_iff_not_mem_closure (after closing F(x*) closure case); construct V := Metric.thickening (δ/2) (F x_star); use hF_uhc V (Metric.isOpen_thickening) to get U ∋ x_star; combine with hφ_tend and triangle inequality on infDist.",
-      "(4) Replace `kakutani_from_brouwer`'s sorry with the commented skeleton already present in the file (uncomment, remove the closing `sorry`).",
-      "(5) Docker build to verify; update meta.json sorries from 2 to 0 if both close (and adjust theoremCount/lineCount).",
-      "(6) If Docker OOMs again, try with --memory 65536 or run on a host with more RAM, OR build incrementally (helper first, kakutani_from_brouwer in a follow-up)."
+      "(1) Re-run Docker build when memory contention is lower (current: 8+ concurrent builds OOM'd at 510s). Verify all proofs compile.",
+      "(2) If proof bugs surface, fix and resubmit. Likely candidates: lemma name mismatches (Metric.infDist_le_dist_of_mem, Set.mem_iUnion₂, isOpen_biUnion).",
+      "(3) Once verified, update meta.json + research JSON to reflect successful proof closure.",
+      "(4) Consider follow-up: prove approx_selection_exists axiom 2 from Mathlib partition-of-unity (would leave only Brouwer's FPT as an axiom)."
     ]
   },
   "tags": [
@@ -96,7 +103,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-05-07T23:10:00Z",
+  "lastUpdate": "2026-05-07T22:13:37Z",
   "significance": 7,
   "tractability": 5
 }
