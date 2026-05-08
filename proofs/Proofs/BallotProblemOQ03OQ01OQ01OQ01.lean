@@ -822,6 +822,142 @@ private theorem ballot_counting_identity (n a b : ℕ) (hb : 2 ≤ b)
       (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).card := by
   sorry
 
+/-- **LHS fibered form** for the b≥2 case of `jdt_weight_sum`.
+
+    Re-expresses the subtype sum over non-col-strict pairs as a fiber-card sum
+    indexed by the total multiset `M : Sym (Fin n) (a + b)`. The integrand is
+    the constant weight `wt(M.1)` on each fiber, and the fiber cardinality
+    matches the LHS of `ballot_counting_identity`. -/
+private lemma jdt_weight_lhs_fibered (n a b : ℕ) :
+    (∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) b // ¬ColStrictSym a b PQ.1 PQ.2 },
+      (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+    ∑ M : Sym (Fin n) (a + b),
+      ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+        (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1)).card •
+        (M.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  -- Step 1: subtype sum → filter sum on (Sym a × Sym b) via Finset.sum_bij
+  have hLHS : (∑ PQ : { PQ : Sym (Fin n) a × Sym (Fin n) b // ¬ColStrictSym a b PQ.1 PQ.2 },
+        (PQ.1.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+        (PQ.1.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+      (∑ PQ ∈ (Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2),
+        (PQ.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+        (PQ.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) := by
+    refine Finset.sum_bij
+      (fun (PQ : { PQ : Sym (Fin n) a × Sym (Fin n) b // ¬ColStrictSym a b PQ.1 PQ.2 }) _ =>
+        PQ.val) ?_ ?_ ?_ ?_
+    · intro PQ _
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, PQ.property⟩
+    · intro a _ b _ hab
+      exact Subtype.ext hab
+    · intro PQ hPQ
+      exact ⟨⟨PQ, (Finset.mem_filter.mp hPQ).2⟩, Finset.mem_univ _, rfl⟩
+    · intro PQ _
+      rfl
+  rw [hLHS]
+  -- Step 2: rewrite weights via totalSym (constant per fiber)
+  rw [show
+      (∑ PQ ∈ (Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2),
+        (PQ.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+        (PQ.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+      (∑ PQ ∈ (Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2),
+        ((totalSym PQ.1 PQ.2).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) from
+    Finset.sum_congr rfl fun PQ _ => weight_eq_totalSym (R := R) PQ.1 PQ.2]
+  -- Step 3: fiber over M : Sym (Fin n) (a + b)
+  rw [← Finset.sum_fiberwise_of_maps_to
+        (s := (Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+                (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2))
+        (t := (Finset.univ : Finset (Sym (Fin n) (a + b))))
+        (g := fun PQ : Sym (Fin n) a × Sym (Fin n) b => totalSym PQ.1 PQ.2)
+        (fun _ _ => Finset.mem_univ _)
+        (fun PQ => ((totalSym PQ.1 PQ.2).1.map
+          (X : Fin n → MvPolynomial (Fin n) R)).prod)]
+  -- Step 4: simplify each inner sum: integrand becomes wt(M.1) constant; sum = card • wt(M.1)
+  refine Finset.sum_congr rfl fun M _ => ?_
+  rw [show
+      (∑ PQ ∈ ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2)).filter
+        (fun PQ : Sym (Fin n) a × Sym (Fin n) b => totalSym PQ.1 PQ.2 = M),
+        ((totalSym PQ.1 PQ.2).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+      (∑ PQ ∈ ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2)).filter
+        (fun PQ : Sym (Fin n) a × Sym (Fin n) b => totalSym PQ.1 PQ.2 = M),
+        (M.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) from
+    Finset.sum_congr rfl fun PQ hPQ => by
+      have heq : totalSym PQ.1 PQ.2 = M := (Finset.mem_filter.mp hPQ).2
+      rw [heq]]
+  rw [Finset.sum_const]
+  -- Match cardinalities: (univ.filter ¬cs).filter (totalSym = M) = univ.filter (¬cs ∧ split-of-M)
+  have hfilter :
+      ((Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+          (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2)).filter
+        (fun PQ : Sym (Fin n) a × Sym (Fin n) b => totalSym PQ.1 PQ.2 = M) =
+      (Finset.univ : Finset (Sym (Fin n) a × Sym (Fin n) b)).filter
+        (fun PQ => ¬ColStrictSym a b PQ.1 PQ.2 ∧ PQ.1.1 + PQ.2.1 = M.1) := by
+    rw [Finset.filter_filter]
+    apply Finset.filter_congr
+    intro PQ _
+    exact and_congr_right (fun _ => totalSym_eq_iff PQ.1 PQ.2 M)
+  rw [hfilter]
+
+/-- **RHS fibered form** for the b≥2 case of `jdt_weight_sum`.
+
+    Re-expresses the unconstrained `(a+1, b-1)`-pair sum as a fiber-card sum
+    indexed by the total multiset `M : Sym (Fin n) (a + b)`. The integrand is
+    the constant weight `wt(M.1)` on each fiber, and the fiber cardinality
+    matches the RHS of `ballot_counting_identity`. -/
+private lemma jdt_weight_rhs_fibered (n a b : ℕ) (hb : 1 ≤ b) :
+    (∑ PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1),
+      (PQ.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+      (PQ.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+    ∑ M : Sym (Fin n) (a + b),
+      ((Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
+        (fun PQ => PQ.1.1 + PQ.2.1 = M.1)).card •
+        (M.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod := by
+  -- Step 1: rewrite weights via totalSym'
+  rw [show
+      (∑ PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1),
+        (PQ.1.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod *
+        (PQ.2.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+      (∑ PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1),
+        ((totalSym' hb PQ.1 PQ.2).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) from
+    Finset.sum_congr rfl fun PQ _ => weight_eq_totalSym' (R := R) hb PQ.1 PQ.2]
+  -- Step 2: fiber over M : Sym (Fin n) (a + b)
+  rw [← Finset.sum_fiberwise_of_maps_to
+        (s := (Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))))
+        (t := (Finset.univ : Finset (Sym (Fin n) (a + b))))
+        (g := fun PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1) => totalSym' hb PQ.1 PQ.2)
+        (fun _ _ => Finset.mem_univ _)
+        (fun PQ => ((totalSym' hb PQ.1 PQ.2).1.map
+          (X : Fin n → MvPolynomial (Fin n) R)).prod)]
+  -- Step 3: integrand becomes wt(M.1) constant; sum = card • wt(M.1)
+  refine Finset.sum_congr rfl fun M _ => ?_
+  rw [show
+      (∑ PQ ∈ (Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
+        (fun PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1) => totalSym' hb PQ.1 PQ.2 = M),
+        ((totalSym' hb PQ.1 PQ.2).1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) =
+      (∑ PQ ∈ (Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
+        (fun PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1) => totalSym' hb PQ.1 PQ.2 = M),
+        (M.1.map (X : Fin n → MvPolynomial (Fin n) R)).prod) from
+    Finset.sum_congr rfl fun PQ hPQ => by
+      have heq : totalSym' hb PQ.1 PQ.2 = M := (Finset.mem_filter.mp hPQ).2
+      rw [heq]]
+  rw [Finset.sum_const]
+  -- Match cardinalities: filter (totalSym' hb = M) = filter (split-of-M)
+  have hfilter :
+      (Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
+        (fun PQ : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1) =>
+          totalSym' hb PQ.1 PQ.2 = M) =
+      (Finset.univ : Finset (Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1))).filter
+        (fun PQ => PQ.1.1 + PQ.2.1 = M.1) := by
+    apply Finset.filter_congr
+    intro PQ _
+    exact totalSym'_eq_iff hb PQ.1 PQ.2 M
+  rw [hfilter]
+
 /-- **Jeu de Taquin weight sum** (key step for two-row Jacobi-Trudi).
     The sum of pair-weights over NON-col-strict (a,b) pairs equals h_{a+1}*h_{b-1}.
 
@@ -847,35 +983,18 @@ private lemma jdt_weight_sum (n a b : ℕ) (hba : b ≤ a) :
       -- After subst, hba : 1 ≤ a, and the RHS is hsymm (a+1) * hsymm (1 - 1)
       -- which is hsymm (a+1) * hsymm 0 by rfl on Nat subtraction.
       exact jdt_weight_sum_b_one n a hba
-    · -- b ≥ 2: weight factorization + ballot counting identity
-      rw [← sum_all_sym_pairs n (a + 1) (b - 1)]
-      -- **S18 diagnosis:** the naive insert-violation bijection used at b=1
-      -- (move `Q.sort[c]` into `P` at position c) is **non-injective for b ≥ 2**:
-      -- two distinct non-col-strict (P,Q) pairs can produce the same (P',Q') because
-      -- the seam index c is not recoverable from (P',Q') without extra data.
+    · -- b ≥ 2: structural reduction via fiber bridges + ballot_counting_identity.
       --
-      -- **S19/S20 strategy**: factor weights through the total multiset
-      -- `M : Sym (Fin n) (a + b)`, then apply `ballot_counting_identity` (S20).
-      --
-      -- Step (i)   `weight_eq_totalSym` (S22): prod(P)*prod(Q) = prod((totalSym P Q).1).
-      --              (Sym-wrapped form of `weight_eq_total_multiset`.)
-      -- Step (ii)  regroup both sides by total multiset
-      --              `M : Sym (Fin n) (a+b)` via `Finset.sum_fiberwise_of_maps_to`
-      --              with map `(P, Q) ↦ totalSym P Q` (LHS) and `(P', Q') ↦ totalSym' hb P' Q'` (RHS).
-      --              The fiber predicate `g PQ = M` matches `ballot_counting_identity`'s
-      --              filter `P.1 + Q.1 = M.1` via `totalSym_eq_iff` / `totalSym'_eq_iff` (S22).
-      -- Step (iii) per-fiber count equality: `ballot_counting_identity` (S20, sorry).
-      -- Step (iv)  combine fiberings: ∑_M [count_LHS] • prod(M) = ∑_M [count_RHS] • prod(M).
-      --
-      -- The b = 1 case has `b - 1 = 0`, hence a unique `Q' = ∅`, so step (iii)
-      -- collapses to **unique-existence per M** — that's why b=1 admits a direct
-      -- bijection (cf. `jdt_weight_sum_b_one` and the Aristotle companion).
-      --
-      -- Remaining work for jdt_weight_sum b≥2:
-      --   * the per-fiber bijection inside `ballot_counting_identity` (~150 lines, S21+).
-      --   * the structural reduction (steps (i)-(iv) above) using `ballot_counting_identity`
-      --     as a black box (~80-100 lines, separate session).
-      sorry
+      -- **S23 closure** (this branch): with the LHS/RHS fiber-card forms
+      -- (`jdt_weight_lhs_fibered`, `jdt_weight_rhs_fibered`) the polynomial
+      -- identity reduces to per-fiber cardinality equality, which is exactly
+      -- what `ballot_counting_identity` provides. The remaining `sorry` lives
+      -- in `ballot_counting_identity` itself (~150 lines, S24+).
+      rw [← sum_all_sym_pairs n (a + 1) (b - 1),
+          jdt_weight_lhs_fibered (R := R),
+          jdt_weight_rhs_fibered (R := R) hb]
+      refine Finset.sum_congr rfl fun M _ => ?_
+      rw [ballot_counting_identity n a b hb2 M]
   · -- b = 0: ColStrictSym a 0 P Q is vacuously true (quantifies over Fin (min a 0) = Fin 0)
     -- So ¬ColStrictSym = False, the subtype is empty, and the sum equals 0
     push_neg at hb

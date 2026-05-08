@@ -2,7 +2,7 @@
   "id": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "Jacobi-Trudi Identity: Schur Polynomials as Determinants of Complete Homogeneous Symmetric Polynomials",
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
-  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). Session 9: ssytFin_two_row_eq_sum_colstrict proved (explicit bijection SSYTFin n 2 sh ≃ col-strict Sym pairs); 3 sorries remain (jdt_weight_sum_b_one, jdt_weight_sum b≥2 case, jacobi_trudi_ssyt_eq k≥3).",
+  "description": "Defines Schur polynomials via the Jacobi-Trudi determinant formula and the SSYT generating function. Proves k=0,1,2 SSYT bijections (k=2 via row-decomp Equiv + JDT partition argument). S23 closed the b≥2 case of jdt_weight_sum modulo ballot_counting_identity using fiber-bridge helpers; 2 sorries remain (ballot_counting_identity ~150 lines, jacobi_trudi_ssyt_eq k≥3 ~300 lines).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-24",
@@ -19,12 +19,12 @@
       "ssyt"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "dateAdded": "2026-04-23",
     "axiomCount": 0,
-    "assumptions": "3 sorries remain: (1) ballot_counting_identity (S20 extracted, ~150 lines remaining) — per-fiber count equality C(a+b, a+1) for the b≥2 reflection step; (2) jdt_weight_sum b≥2 — structural reduction (steps i–iv) using ballot_counting_identity as a black box (~80–100 lines, separate session); (3) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). S22 added the totalSym/totalSym' bridge family: weight_eq_totalSym, weight_eq_totalSym' (Sym-wrapped weight factorisation), totalSym_eq_iff, totalSym'_eq_iff (fiber-membership characterisation as `P.1 + Q.1 = M.1`); these reduce the b≥2 structural-reduction goal to a chain `Fintype.sum_subtype_eq_sum_filter` ⟶ `Finset.sum_fiberwise_of_maps_to` ⟶ `ballot_counting_identity` and updated the inline strategy comment with the explicit Mathlib API. S19 added weight_eq_total_multiset helper: prod(P)*prod(Q) = prod(P+Q) via Multiset.map_add+prod_add. jdt_weight_sum_b_one proved (S17): b=1 bijection via Sym.cons/erase + Multiset.sort_cons (~100 lines). ssytSchurFin_two_row and ssytFin_two_row_eq_sum_colstrict proved. k=0,1,2 proved.",
-    "lineCount": 992,
-    "theoremCount": 22,
+    "assumptions": "2 sorries remain: (1) ballot_counting_identity (~150 lines) — per-fiber count equality C(a+b, a+1) for the b≥2 reflection step; (2) jacobi_trudi_ssyt_eq k≥3 — algebraic LGV + RSK (~300 lines). S23 closed the b≥2 case of jdt_weight_sum (was sorry, now proved) by adding the structural fiber-bridge helpers jdt_weight_lhs_fibered and jdt_weight_rhs_fibered: each re-expresses one side of the polynomial identity as a fiber-card sum indexed by the total multiset M : Sym (Fin n) (a+b), with the integrand reduced to constant wt(M.1) on each fiber. Proof recipe: Finset.sum_bij for subtype→filter conversion (LHS), weight_eq_totalSym/weight_eq_totalSym' for weight factorisation, Finset.sum_fiberwise_of_maps_to for the fibering, totalSym_eq_iff/totalSym'_eq_iff to bridge filter predicates; ballot_counting_identity then equates the per-fiber cardinalities, closed by Finset.sum_congr. S22 added the totalSym/totalSym' bridge family. S19 added weight_eq_total_multiset. jdt_weight_sum_b_one proved (S17). ssytSchurFin_two_row and ssytFin_two_row_eq_sum_colstrict proved. k=0,1,2 proved.",
+    "lineCount": 1242,
+    "theoremCount": 30,
     "definitionCount": 6,
     "originalContributions": [
       "jacobiTrudiMatrix: the k×k matrix with entries h_{sh_i + j - i} (or 0 for negative index) — first Lean 4 Jacobi-Trudi matrix definition",
@@ -39,7 +39,8 @@
       "ssytSchurFin_empty: k=0 case proved via Unique (empty SSYT) + IsEmpty (empty sigma-type product)",
       "totalSym/totalSym' — Sym-wrapper for the total multiset of a (Sym a × Sym b) or (Sym (a+1) × Sym (b-1)) pair, packaged as Sym (a+b) (S19/S22)",
       "weight_eq_totalSym / weight_eq_totalSym' (S22): Sym-wrapped weight factorisation `prod(P)*prod(Q) = prod((totalSym P Q).1)` and its (a+1, b-1) companion — the cleanest form for chaining with Finset.sum_fiberwise_of_maps_to in the b≥2 structural reduction",
-      "totalSym_eq_iff / totalSym'_eq_iff (S22): bridges the fiber-membership predicate `g PQ = M` (used by Finset.sum_fiberwise_of_maps_to) to `P.1 + Q.1 = M.1` (used by ballot_counting_identity), via Subtype extensionality"
+      "totalSym_eq_iff / totalSym'_eq_iff (S22): bridges the fiber-membership predicate `g PQ = M` (used by Finset.sum_fiberwise_of_maps_to) to `P.1 + Q.1 = M.1` (used by ballot_counting_identity), via Subtype extensionality",
+      "jdt_weight_lhs_fibered / jdt_weight_rhs_fibered (S23): re-expresses each side of the b≥2 jdt_weight_sum polynomial identity as a fiber-card sum indexed by the total multiset M : Sym (Fin n) (a+b), with constant-on-fiber integrand wt(M.1). Closes the b≥2 branch of jdt_weight_sum modulo ballot_counting_identity via a single `Finset.sum_congr rfl` line — the structural reduction outlined in the S22 strategy comment is now realised as named lemmas and the b≥2 sorry is eliminated"
     ]
   },
   "overview": {
@@ -81,12 +82,12 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 992,
+    "lineCount": 1242,
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 30,
     "definitionCount": 6,
     "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
-    "sorries": 3,
+    "sorries": 2,
     "additionalFiles": [
       "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
     ]
@@ -176,5 +177,5 @@
       "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k≥3)."
     }
   ],
-  "sorries": 3
+  "sorries": 2
 }
