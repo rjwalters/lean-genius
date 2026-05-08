@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-insimplex-supp",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 70, "endLine": 98 },
+    "type": "definition",
+    "title": "Standard n-Simplex and Support",
+    "content": "`InSimplex v` says `v : Fin (n+1) → ℝ` lies in $\\Delta^n$: all coordinates nonneg AND $\\sum_i v_i = 1$. `supp v` is the Finset of strictly-positive indices, defined via `Finset.univ.filter (0 < v ·)`. `supp_le` shows nonneg points have `v i = 0` outside the support — used to plug zeros into sum arguments. `supp_nonempty` is the foundational lemma: any simplex point has at least one positive coordinate (by contradiction: if all were 0, the sum would be 0, but it equals 1).",
+    "mathContext": "$\\Delta^n = \\{ v \\in \\mathbb{R}^{n+1} : v_i \\geq 0, \\sum_i v_i = 1 \\}$. The support $\\text{supp}(v) = \\{ i : v_i > 0 \\} \\subseteq \\{0, 1, \\ldots, n\\}$. Geometrically, $\\text{supp}(v)$ records which face of the simplex contains $v$ in its relative interior; if $v$ is in the interior of $\\Delta^n$, then $\\text{supp}(v) = \\{0, \\ldots, n\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["standard simplex", "support of a point", "Finset.filter", "barycentric coordinates"],
+    "prerequisites": ["Mathlib Finset", "real-valued nonneg sum"]
+  },
+  {
+    "id": "ann-key-coloring-lemma",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 100, "endLine": 123 },
+    "type": "theorem",
+    "title": "Key Coloring Well-Definedness Lemma",
+    "content": "`exists_le_of_simplex_map` is the algebraic heart of the Sperner-based Brouwer proof. For any $v, fv \\in \\Delta^n$, there exists $i \\in \\text{supp}(v)$ with $f(v)_i \\leq v_i$. Proof by contradiction: assume $f(v)_i > v_i$ for all $i \\in \\text{supp}(v)$. For $i \\notin \\text{supp}(v)$, $v_i = 0 \\leq f(v)_i$. Then `Finset.sum_lt_sum` (which needs at least one strict inequality) gives $\\sum v_i < \\sum f(v)_i$, contradicting both being equal to 1.",
+    "mathContext": "If $f$ pointwise increased every supported coordinate, the total mass would strictly grow, but the simplex constraint $\\sum f(v)_i = 1 = \\sum v_i$ forbids this. So at least one supported coordinate must NOT increase — exactly what the Sperner coloring needs.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_lt_sum", "pigeonhole", "mass-conservation argument", "Sperner well-definedness"],
+    "prerequisites": ["supp_nonempty", "supp_le", "Finset.sum strict inequality"]
+  },
+  {
+    "id": "ann-sperner-color",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 125, "endLine": 174 },
+    "type": "definition",
+    "title": "Sperner Coloring Construction",
+    "content": "Defines `colorSet v fv = (supp v).filter (fv · ≤ v ·)` — the candidate color indices. `colorSet_nonempty` follows from the key lemma. `spernerColor v fv hv hfv := (colorSet v fv).min'` selects the minimum index. `spernerColor_in_supp` shows the color lies in `supp v` (via `colorSet ⊆ supp`). `spernerColor_le` extracts the defining inequality. **Boundary condition** `spernerColor_ne_of_zero`: if $v_j = 0$, then $j \\notin \\text{supp}(v)$, hence $\\text{spernerColor}(v) \\neq j$ — the Sperner condition for face $j$.",
+    "mathContext": "The Sperner coloring is $c(v) = \\min \\{ i \\in \\text{supp}(v) : f(v)_i \\leq v_i \\}$. The minimum is well-defined because $\\text{Fin}(n+1)$ has decidable order and `colorSet` is nonempty. The boundary condition $v_j = 0 \\Rightarrow c(v) \\neq j$ encodes the Sperner labeling: the $i$-th vertex of $\\Delta^n$ (at $e_i$) has $\\text{supp}(e_i) = \\{i\\}$, so $c(e_i) = i$, and on face $\\{j_1, \\ldots, j_k\\}^c$ (where $v_{j_1} = \\cdots = v_{j_k} = 0$), $c(v) \\notin \\{j_1, \\ldots, j_k\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Sperner labeling", "min' on Finset", "boundary condition", "labeling convention"],
+    "prerequisites": ["exists_le_of_simplex_map", "Finset.min'", "Sperner's lemma combinatorial setup"]
+  },
+  {
+    "id": "ann-spernercolormap",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 176, "endLine": 191 },
+    "type": "definition",
+    "title": "spernerColorMap and the Boundary Condition",
+    "content": "`spernerColorMap f hf_map v hv := spernerColor v (f v) hv (hf_map v hv)` packages the Sperner coloring as a function `(v : InSimplex) → Fin (n+1)`. The boundary theorem `spernerColorMap_boundary` lifts `spernerColor_ne_of_zero`: for any $v \\in \\Delta^n$ with $v_j = 0$, the assigned color is not $j$. This is exactly the input format that the abstract Sperner's lemma (in `SpernerNDimMathlib.lean`, 0 axioms) consumes to certify a panchromatic simplex.",
+    "mathContext": "Bridge function: combinatorial Sperner's lemma needs a coloring $c : V \\to \\{0, \\ldots, n\\}$ on triangulation vertices satisfying $c(v) \\neq j$ when $v_j = 0$. `spernerColorMap` is exactly such a coloring derived from a continuous self-map $f$ of the simplex. Sperner's lemma then guarantees an odd number of fully-colored simplices in any triangulation.",
+    "significance": "supporting",
+    "relatedConcepts": ["abstract Sperner's lemma", "coloring map", "boundary condition lift"],
+    "prerequisites": ["spernerColor_ne_of_zero", "Sperner's lemma statement"]
+  },
+  {
+    "id": "ann-sperner-panchromatic-axiom",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 196, "endLine": 216 },
+    "type": "context",
+    "title": "The Single Remaining Axiom: sperner_panchromatic",
+    "content": "The one axiom in this file: for each $N > 0$, the Nth Freudenthal grid triangulation of $\\Delta^n$ with the Sperner coloring yields $n+1$ vertices $v_0, \\ldots, v_n$ in $\\Delta^n$ such that (i) $f(v_i)_i \\leq (v_i)_i$ (color-$i$ property), and (ii) $|v_i^l - v_j^l| \\leq n/N$ for all $i, j, l$ (diameter bound). Justification sketch: (a) Freudenthal triangulation forms a CellComplex (~80 lines: adj_symm, adj_vertex, adj_ne); (b) boundary door count is odd by induction on $n$ (~200 lines: boundary_doors_odd); (c) `CellComplex.sperner` produces a panchromatic simplex; (d) grid vertices map to real coordinates with the diameter bound following from the $1/N$ mesh.",
+    "mathContext": "Freudenthal triangulation: vertices are lattice points $(a_0/N, \\ldots, a_n/N)$ with $\\sum a_i = N$, $a_i \\in \\mathbb{N}$. Two such vertices are adjacent in the standard Kuhn triangulation pattern. Each top-dimensional simplex has $n+1$ vertices with $\\ell^\\infty$ diameter $\\leq n/N$. The axiom packages two facts: (1) Sperner's lemma applied via CellComplex, and (2) Freudenthal mesh control.",
+    "significance": "key",
+    "relatedConcepts": ["Freudenthal triangulation", "Kuhn triangulation", "CellComplex.sperner", "mesh control", "boundary_doors_odd"],
+    "prerequisites": ["abstract Sperner's lemma", "grid triangulation", "compactness"]
+  },
+  {
+    "id": "ann-brouwer-from-panchromatic-compactness",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 218, "endLine": 264 },
+    "type": "proof",
+    "title": "Compactness Setup and Subsequence Extraction",
+    "content": "`brouwer_from_panchromatic` opens with a compactness proof: $\\Delta^n$ is closed (intersection of nonneg-coordinate halfspaces and $\\sum v_i = 1$ hyperplane) and bounded (subset of $[0,1]^{n+1}$). Mathlib gives compactness via `IsCompact.of_isClosed_subset (isCompact_univ_pi (fun _ => isCompact_Icc))` plus `isClosed_iInter` and `isClosed_eq`. Then for each $N$, `hpanch'` extracts a panchromatic tuple $vdata(N)$. The first-component sequence $u_N = vdata_N(0)$ has a convergent subsequence $u_{\\varphi(k)} \\to x^*$ by `IsCompact.tendsto_subseq`.",
+    "mathContext": "Sequential compactness of $\\Delta^n \\subset \\mathbb{R}^{n+1}$ via Bolzano-Weierstrass: any sequence has a convergent subsequence. The strict monotonicity of $\\varphi$ gives $\\varphi(k) \\to \\infty$, hence $n/(\\varphi(k)+1) \\to 0$ — the diameter goes to zero along the subsequence.",
+    "significance": "key",
+    "relatedConcepts": ["IsCompact.tendsto_subseq", "Bolzano-Weierstrass", "isClosed_iInter", "Pi compactness", "axiom of choice (Classical.choose)"],
+    "prerequisites": ["sequential compactness", "subtype topology", "Filter.Tendsto"]
+  },
+  {
+    "id": "ann-brouwer-diameter-squeeze",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 264, "endLine": 320 },
+    "type": "proof",
+    "title": "All n+1 Vertices Converge to x* via Diameter Bound",
+    "content": "All $n+1$ panchromatic vertices $v_{i,\\varphi(k)}$ converge to $x^*$ — not just the first. Pointwise (for each coordinate $l$): $|v_{i,\\varphi(k)}^l - x^l| \\leq |v_{i,\\varphi(k)}^l - v_{0,\\varphi(k)}^l| + |v_{0,\\varphi(k)}^l - x^l| \\leq n/(\\varphi(k)+1) + |u_{\\varphi(k)}^l - x^l|$. Both terms tend to zero (diameter $\\to 0$, first-component subsequence converges); `squeeze_zero_norm` packages this. Then $f$-continuity: $f(v_{i,\\varphi(k)}) \\to f(x^*)$. Inequality $f(v_{i,\\varphi(k)})_i \\leq (v_{i,\\varphi(k)})_i$ passes to the limit via `ge_of_tendsto` to give $f(x^*)_i \\leq x^*_i$.",
+    "mathContext": "Triangle inequality + squeeze theorem in $\\ell^\\infty$. The $n+1$ panchromatic vertices form a 'pinching cluster': they all lie within $n/N$ of each other, so they share their limit. Continuity of $f$ moves the inequality from sequence to limit; the limit-of-inequality direction needs `ge_of_tendsto` (which works because the inequality holds eventually).",
+    "significance": "key",
+    "relatedConcepts": ["squeeze_zero_norm", "ge_of_tendsto", "uniform convergence on a cluster", "continuity of f"],
+    "prerequisites": ["Filter.Tendsto algebra", "abs_sub_triangle", "ContinuousAt"]
+  },
+  {
+    "id": "ann-fixed-point-equality",
+    "proofId": "sperner-ndim-mathlib-oq-02",
+    "range": { "startLine": 320, "endLine": 344 },
+    "type": "proof",
+    "title": "Fixed Point Equality from Sum Constraint",
+    "content": "From the limits, $f(x^*)_i \\leq x^*_i$ for all $i$. To upgrade to equality: assume some $f(x^*)_i < x^*_i$ strictly. Then `Finset.sum_lt_sum` with the strict witness gives $\\sum f(x^*)_i < \\sum x^*_i$. But both equal 1 (since $f(x^*) \\in \\Delta^n$), contradiction. Hence $f(x^*)_i = x^*_i$ for all $i$, i.e., $f(x^*) = x^*$ by `funext`. `brouwer_fixed_point_simplex` then assembles `brouwer_from_panchromatic` with the `sperner_panchromatic` axiom.",
+    "mathContext": "The same mass-conservation trick used in `exists_le_of_simplex_map` reappears here: simplex sum constraint upgrades pointwise inequality to pointwise equality. This is a recurring motif in proofs that combine mass-preservation (sum = 1) with directional bounds.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_lt_sum", "funext", "fixed-point existence", "mass-conservation upgrade"],
+    "prerequisites": ["le_antisymm", "InSimplex sum constraint"]
+  }
+]
