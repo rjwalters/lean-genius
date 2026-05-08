@@ -543,6 +543,88 @@ example : schonhageGcdOf 1000 1000 = 1000 := by native_decide
 
 example : schonhageGcdOf 1000000 999999 = 1 := by native_decide
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART X: API SURFACE FOR `schonhageGcdOf` (S21)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### `schonhageGcdOf` satisfies the standard `Nat.gcd` API
+
+    With `schonhageGcdOf_eq_gcd` (S20) in hand, the entire
+    `Nat.gcd` API transfers to the verified Schönhage GCD function
+    by routine rewriting. The lemmas below state these wrappers
+    explicitly so that downstream code can use `schonhageGcdOf`
+    as a drop-in replacement for `Nat.gcd` without manually
+    invoking the correctness theorem at every site.
+
+    Each proof reduces to `schonhageGcdOf_eq_gcd` plus a single
+    `Nat.gcd` lemma; the section is purely an API surface, with
+    no new mathematical content beyond Session 20. The point is
+    pragmatic: a verified GCD function should expose the same
+    algebraic identities as the reference, and after S21 it does. -/
+
+/-- Schönhage GCD with zero on the left: returns the right argument. -/
+theorem schonhageGcdOf_zero_left (a : ℕ) : schonhageGcdOf 0 a = a := by
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_zero_left]
+
+/-- Schönhage GCD with zero on the right: returns the left argument. -/
+theorem schonhageGcdOf_zero_right (a : ℕ) : schonhageGcdOf a 0 = a := by
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_zero_right]
+
+/-- Schönhage GCD of `a` with itself is `a`. -/
+theorem schonhageGcdOf_self (a : ℕ) : schonhageGcdOf a a = a := by
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_self]
+
+/-- Schönhage GCD with one on the left collapses to one. -/
+theorem schonhageGcdOf_one_left (a : ℕ) : schonhageGcdOf 1 a = 1 := by
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_one_left]
+
+/-- Schönhage GCD with one on the right collapses to one. -/
+theorem schonhageGcdOf_one_right (a : ℕ) : schonhageGcdOf a 1 = 1 := by
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_one_right]
+
+/-- Schönhage GCD is commutative. -/
+theorem schonhageGcdOf_comm (a b : ℕ) :
+    schonhageGcdOf a b = schonhageGcdOf b a := by
+  rw [schonhageGcdOf_eq_gcd, schonhageGcdOf_eq_gcd, Nat.gcd_comm]
+
+/-- The Schönhage GCD divides the first argument. -/
+theorem schonhageGcdOf_dvd_left (a b : ℕ) : schonhageGcdOf a b ∣ a := by
+  rw [schonhageGcdOf_eq_gcd]; exact Nat.gcd_dvd_left a b
+
+/-- The Schönhage GCD divides the second argument. -/
+theorem schonhageGcdOf_dvd_right (a b : ℕ) : schonhageGcdOf a b ∣ b := by
+  rw [schonhageGcdOf_eq_gcd]; exact Nat.gcd_dvd_right a b
+
+/-- Universal property: any common divisor divides the Schönhage GCD. -/
+theorem dvd_schonhageGcdOf {c a b : ℕ} (ha : c ∣ a) (hb : c ∣ b) :
+    c ∣ schonhageGcdOf a b := by
+  rw [schonhageGcdOf_eq_gcd]; exact Nat.dvd_gcd ha hb
+
+/-- Schönhage GCD is associative. -/
+theorem schonhageGcdOf_assoc (a b c : ℕ) :
+    schonhageGcdOf (schonhageGcdOf a b) c
+      = schonhageGcdOf a (schonhageGcdOf b c) := by
+  rw [schonhageGcdOf_eq_gcd, schonhageGcdOf_eq_gcd, schonhageGcdOf_eq_gcd,
+      schonhageGcdOf_eq_gcd, Nat.gcd_assoc]
+
+/-- Schönhage GCD vanishes precisely when both inputs vanish. -/
+theorem schonhageGcdOf_eq_zero_iff (a b : ℕ) :
+    schonhageGcdOf a b = 0 ↔ a = 0 ∧ b = 0 := by
+  rw [schonhageGcdOf_eq_gcd, Nat.gcd_eq_zero_iff]
+
+/-- **Fuel irrelevance.** The fuel-indexed `schonhageGcd` is
+    fundamentally fuel-free: every choice of fuel yields the same
+    answer (namely `Nat.gcd a b`). The fuel parameter exists only
+    to satisfy Lean's structural recursion checker; semantically
+    the function is `Nat.gcd`.
+
+    This packages a corollary of `schonhageGcd_eq_gcd` that
+    downstream consumers find more directly useful when fuel
+    accounting bookkeeping would otherwise pollute proofs. -/
+theorem schonhageGcd_fuel_irrelevant (f₁ f₂ a b : ℕ) :
+    schonhageGcd f₁ a b = schonhageGcd f₂ a b := by
+  rw [schonhageGcd_eq_gcd, schonhageGcd_eq_gcd]
+
 end HGcdSafe
 
 /-! ## Summary
@@ -578,7 +660,7 @@ end HGcdSafe
 
 5. **Recursive Schönhage-style GCD via iterated safe HGCD**
    (`schonhageGcd`, `schonhageGcdOf`, `schonhageGcd_eq_gcd`,
-   `schonhageGcdOf_eq_gcd`, S20, this PR): a TOTAL CORRECT
+   `schonhageGcdOf_eq_gcd`, S20): a TOTAL CORRECT
    ITERATED GCD function. The body applies `hgcdSafeApply` once,
    checks whether the column-output natAbs strictly decreased
    `max a b`, and either recurses on the reduced pair or falls
@@ -588,6 +670,17 @@ end HGcdSafe
    holds unconditionally, INDEPENDENT of whether the underlying
    `hgcdMatrixSafe` ever reduces magnitude — the OUTER guard here
    handles every pathological input by dispatching to `Nat.gcd`.
+
+6. **API surface for `schonhageGcdOf`** (PART X, S21, this PR):
+   eleven wrapper lemmas establishing that `schonhageGcdOf`
+   satisfies the standard `Nat.gcd` algebraic identities — zero
+   absorption, commutativity, associativity, divisibility, the
+   universal property, and zero-vanishing. Plus
+   `schonhageGcd_fuel_irrelevant`, which packages the corollary
+   that the fuel parameter is semantically irrelevant: every
+   choice of fuel yields `Nat.gcd a b`. With S21 in place the
+   verified Schönhage GCD is a drop-in replacement for `Nat.gcd`
+   with respect to all standard rewriting tactics.
 
 **Significance of S20.** With `schonhageGcd_eq_gcd` in hand, the
 verified algorithmic story for Path A is complete: a recursive
@@ -599,7 +692,15 @@ yield an asymptotic speedup over `Nat.gcd`. That step requires
 both (a) a stronger invariant on `hgcdMatrixSafe` and (b) Mathlib
 bit-complexity infrastructure that does not yet exist.
 
-**Path A roadmap (Session 21+):**
+**Significance of S21.** The S21 API surface closes the
+ergonomic gap: callers can use the verified Schönhage GCD with
+exactly the same `simp`-style identities they would use for
+`Nat.gcd`, without ever invoking the correctness theorem at the
+call site. The proofs are uniformly trivial, but the lemmas are
+load-bearing for downstream usability and document that the
+verified function inherits the entire `Nat.gcd` theory.
+
+**Path A roadmap (Session 22+):**
 
 - Prove a structural inner-reduction theorem for
   `hgcdMatrixSafe`: characterise the input regime in which the

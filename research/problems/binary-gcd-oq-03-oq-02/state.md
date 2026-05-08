@@ -1,20 +1,23 @@
 # Current State
 
-**Phase**: ACT — Path A chosen post-S17. S20 closes the verified
-ALGORITHMIC story for Path A: `schonhageGcd` is a recursive
-Schönhage-style GCD function with correctness
-`schonhageGcd a b = Nat.gcd a b`, total and 0 axioms.
+**Phase**: ACT — Path A's algorithmic story (S18–S20) is closed.
+S21 adds the API surface: 11 wrapper lemmas + fuel-irrelevance,
+making `schonhageGcdOf` a drop-in replacement for `Nat.gcd` under
+standard rewriting.
 
 **Since**: 2026-05-01
-**Iteration**: 20
+**Iteration**: 21
 
 ## Current Focus
 
-Session 20 builds on S18–S19 to define an ITERATIVE Schönhage-style
-GCD function `schonhageGcd : ℕ → ℕ → ℕ → ℕ` (and top-level
-`schonhageGcdOf`), with correctness theorem
-`schonhageGcd_eq_gcd : schonhageGcd fuel a b = Nat.gcd a b` for
-every fuel and every pair of natural inputs.
+Session 21 packages the API surface for `schonhageGcdOf`. With
+`schonhageGcdOf_eq_gcd` (S20) in hand, the entire `Nat.gcd`
+algebraic theory transfers to the verified Schönhage GCD by
+routine rewriting — but downstream consumers shouldn't have to
+invoke the correctness theorem at every site. PART X provides
+named wrappers for every standard `Nat.gcd` identity, plus a
+fuel-irrelevance theorem packaging the corollary that the fuel
+parameter is semantically inert.
 
 The body iterates `hgcdSafeApply` (S19) on the reduced pair: each
 step takes the column output `(p.1.natAbs, p.2.natAbs)` and
@@ -103,7 +106,7 @@ Status of the proof plan (Sessions 1–19):
     counterexample family `(130, 89)` and worst-case `(107, 85)`.
     PART VI–VII of `BinaryGcdOQ03OQ02PathA.lean`.
 13. **Recursive Schönhage-style GCD via iteration** ✅ (S20,
-    this session): `schonhageGcd`, `schonhageGcdOf`,
+    PR #17087): `schonhageGcd`, `schonhageGcdOf`,
     `schonhageGcd_zero`, `schonhageGcd_succ`,
     `hgcdSafeApply_natAbs_gcd`, `schonhageGcd_eq_gcd`,
     `schonhageGcdOf_eq_gcd`. PART VIII–IX of
@@ -111,6 +114,18 @@ Status of the proof plan (Sessions 1–19):
     with two structural fallbacks (below-threshold + per-step
     guard). Native-decide examples include the S17
     counterexample family and `(1000000, 999999)`.
+14. **API surface for `schonhageGcdOf`** ✅ (S21, this session):
+    11 wrapper lemmas covering the standard `Nat.gcd` identities
+    (`schonhageGcdOf_zero_left`, `_zero_right`, `_self`,
+    `_one_left`, `_one_right`, `_comm`, `_dvd_left`, `_dvd_right`,
+    `dvd_schonhageGcdOf`, `_assoc`, `_eq_zero_iff`) plus
+    `schonhageGcd_fuel_irrelevant`. PART X of
+    `BinaryGcdOQ03OQ02PathA.lean`. Each wrapper reduces to
+    `schonhageGcdOf_eq_gcd` plus the corresponding `Nat.gcd`
+    lemma. The lemmas are uniformly trivial; their value is
+    pragmatic — `schonhageGcdOf` now responds to standard
+    `simp`-style tactics without manual unfolding at the call
+    site, completing the drop-in replacement story.
 
 **Open / Refuted**:
 - **Recursive case of `hgcdMatrix_row_output_le`** ❌ (line 1078,
@@ -136,6 +151,9 @@ The verified ALGORITHMIC story for Path A is now complete:
 - S20: a recursive iterated GCD function `schonhageGcd` with
   guarded fallback to `Nat.gcd`; correct via
   `schonhageGcd_eq_gcd`. Total and unconditional.
+- S21: API surface (PART X) — eleven wrapper lemmas + fuel
+  irrelevance, making `schonhageGcdOf` a drop-in replacement
+  for `Nat.gcd` under standard rewriting tactics.
 
 Remaining work for Path A is QUANTITATIVE only (asymptotic
 speedup, bit-complexity bound).
@@ -153,7 +171,7 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
-1. **Session 21 — quantitative inner-reduction characterisation**:
+1. **Session 22 — quantitative inner-reduction characterisation**:
    establish the input regime in which `hgcdMatrixSafe`'s inner
    runtime guard fires. The S17 PART XIV counterexample shows the
    guard can abort, but a density argument may still yield a
@@ -161,12 +179,14 @@ speedup, bit-complexity bound).
 2. **Empirical comparison**: native_decide-checked
    `schonhageGcdOf` on the S17 counterexample family vs `Nat.gcd`,
    to characterise the practical impact of the OUTER guard
-   firing on those inputs.
+   firing on those inputs (e.g. by exhibiting that
+   `(hgcdSafeApply 130 89)` does NOT reduce `max`, so the OUTER
+   guard fires unconditionally on this input).
 3. **Bit-complexity bound**: still blocked on Mathlib; defer.
 
 ## Attempt Counts
 
-- Total attempts: 20 (Sessions 1–20)
+- Total attempts: 21 (Sessions 1–21)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: Sessions 3–16
@@ -174,5 +194,7 @@ speedup, bit-complexity bound).
     invariant target was REFUTED by Session 17.
   - Path A algorithm refinement: GCD-preservation foundation
     (S18, #17042), verified single-step GCD function (S19, #17063),
-    recursive Schönhage-style iterated GCD (S20, this PR).
-  - Path A quantitative bounds (S21+): pending.
+    recursive Schönhage-style iterated GCD (S20, #17087).
+  - Path A API surface (S21, this PR): standard `Nat.gcd` API
+    transferred to `schonhageGcdOf`; fuel irrelevance packaged.
+  - Path A quantitative bounds (S22+): pending.
