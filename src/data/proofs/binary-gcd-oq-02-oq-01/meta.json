@@ -91,6 +91,14 @@
   },
   "sections": [
     {
+      "id": "header-and-imports",
+      "title": "Header: Problem Statement, Bit-Op Specification, Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Imports `Mathlib.Data.Nat.GCD.Basic`, `Mathlib.Tactic`, and the parent file `Proofs.GCDAlgorithmOQ02` (which provides the seven Nat.gcd identities `gcd_two_mul`, `gcd_mul_two_left/right`, `gcd_odd_sub_half`, etc. that close the inductive cases). Module docstring (5-32) frames the OQ as a hardware-correctness exercise: bignum GCD implementations (GMP, OpenSSL, …) replace `n % 2` with `n.testBit 0` (single AND) and `n / 2` with `n >>> 1` (single SHR); this file proves the bit-level rewrite preserves correctness against `Nat.gcd`. Lists the four core Lean/Mathlib lemmas that drive the bridge (`Nat.testBit_zero`, `Nat.mod_two_eq_zero_iff_testBit_zero`, `Nat.shiftRight_succ`, `Nat.shiftRight_zero`) and the file's deliverable: 7 theorems, 0 sorries, 0 axioms. Closes with `namespace BinaryGcdBit` + `open BinaryGcd` to expose the parent's gcd identities unqualified.",
+      "mathContext": "**Hardware-spec correctness setup**: the bit-level functions $n.\\mathrm{testBit}\\,0$ and $n \\mathbin{>>>} 1$ are *not* defined in terms of $\\mathrm{Nat}$ arithmetic — they are kernel primitives in Lean 4 that mirror CPU instructions. The bridge lemmas (Part I, lines 38-50) translate between the two formulations. The proof obligation is that running the recursive algorithm with bit operations produces the same answer as running it with arithmetic operations, against the *common* spec $\\mathrm{Nat.gcd}$.\n\n**Why this matters**: cryptographic libraries (RSA key generation, modular inversion in elliptic curves) need bignum GCD. A formal correctness proof of the bit-level algorithm — not just the arithmetic algorithm — is what justifies trusting the hardware-friendly implementation. This file is a small corner of that broader verification effort, restricted to the algorithmic core (no constant-time or side-channel claims)."
+    },
+    {
       "id": "bridge-lemmas",
       "title": "I. Bit Operation Bridge Lemmas",
       "startLine": 38,
