@@ -1,8 +1,121 @@
 # Knowledge Base: cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02
 
 **Problem**: Rational Canonical Form — Mathlib formalization connection (nonderogatory case)
-**Phase**: COMPLETE (axiom-free, biconditional closed); S4 advancing toward `Matrix.minpoly_companionMatrix`.
-**Status**: verified (0 axioms, 0 sorries; S2 PR #17039 + S3 PR #17069 merged)
+**Phase**: COMPLETE (axiom-free, biconditional closed, matrix-level companion CH proved); S5 prepares for `Matrix.minpoly_companionMatrix`.
+**Status**: verified (0 axioms, 0 sorries; S2 PR #17039 + S3 PR #17069 + S4 PR #17107 merged)
+
+---
+
+## Session 5 (2026-05-08) — Matrix-level Cayley-Hamilton for the companion
+
+**Mode**: CONTINUE
+**Outcome**: matrix-level identity `aeval (companionMx p) p = 0` proved (public theorem).
+
+### What I Did
+
+Lifted Session 4's vector-level annihilation `(aeval (companionMx p) p).mulVec e₀ = 0`
+to the matrix-level identity `aeval (companionMx p) p = 0` for monic `p` of
+`natDegree = n`. Three new lemmas:
+
+1. **`matrix_eq_zero_of_mulVec_basis`** (private, reusable utility): a matrix is
+   zero iff `A.mulVec (Pi.single k 1) = 0` for every `k : Fin n`. Proof: column j
+   of A satisfies `A.mulVec (Pi.single j 1) i = ∑ k, A i k · Pi.single j 1 k = A i j`
+   after `mul_ite + mul_one + mul_zero + Finset.sum_ite_eq + if_true`.
+
+2. **`aeval_companionMx_p_mulVec_ek_zero`** (private): for monic `p` of degree `n`,
+   `(aeval (companionMx p) p).mulVec (Pi.single k 1) = 0` for every `k : Fin n`.
+   Proof:
+   - `e_k = C^{k.val}.mulVec e₀` via S3's `companionMx_pow_e0` (with the small
+     `Fin.ext rfl` step to identify `⟨k.val, k.isLt⟩` with `k`).
+   - `← Matrix.mulVec_mulVec` collapses `(aeval C p).mulVec (C^{k.val}.mulVec e₀)`
+     into `(aeval C p · C^{k.val}).mulVec e₀`.
+   - **Commutation** `aeval C p · C^{k.val} = C^{k.val} · aeval C p`: rewrite
+     `C^{k.val} = aeval C (X^{k.val})` (via `map_pow + aeval_X`), then
+     `← map_mul, ← map_mul, mul_comm p (X^{k.val})` reduces to commutativity in
+     `K[X]` (which is a `CommRing`). The AlgHom `aeval C` does the rest.
+   - `Matrix.mulVec_mulVec` re-expands, then S4's `aeval_companionMx_p_mulVec_e0_zero`
+     gives `C^{k.val}.mulVec 0`, and `Matrix.mulVec_zero` closes.
+
+3. **`aeval_companionMx_p_eq_zero`** (public theorem, the main S5 result): combine
+   the above two — apply `matrix_eq_zero_of_mulVec_basis`, then for each `k`,
+   `aeval_companionMx_p_mulVec_ek_zero` discharges the column-wise hypothesis.
+
+### Files Modified (Session 5)
+
+- `proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean` (+81 lines net):
+  Three new lemmas + Session 5 docstring section. `aeval_companionMx_p_eq_zero`
+  is `theorem` (public); the two helpers are `private`.
+- `src/data/proofs/cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02/meta.json`:
+  - `meta.lineCount`: 509 → 590
+  - `meta.theoremCount`: 17 → 20
+  - `leanFile.lineCount`: 509 → 590
+  - `leanFile.theoremCount`: 17 → 20
+  - Appended Session 5 to `assumptions`, three new entries to
+    `originalContributions`, and refreshed `openQuestions[Q2]` to mark the
+    matrix-level identity DONE.
+- `research/problems/.../state.md`: bumped to Iteration 5; recorded S5
+  outcome and S6 plan (divide-and-conquer toward `Matrix.minpoly_companionMatrix`).
+- `research/problems/.../knowledge.md`: added this Session 5 record.
+
+### Result
+
+Status remains `verified` / `original` / 0 axioms / 0 sorries.
+`aeval_companionMx_p_eq_zero` is **public** (exported for S6's
+`Matrix.minpoly_companionMatrix : minpoly K (companionMx p) = p` derivation).
+
+### Strategy Choice (Pointwise vs. Cyclicity)
+
+State.md (post-S4) listed two routes for matrix-level annihilation:
+
+1. **Cyclicity-based**: extend `companionMx_isCyclic_e0` from "deg q < n" to
+   "any q with q(C) annihilating e₀ AND deg q = n is a multiple of the minpoly,
+   so the matrix-poly is zero by some submodule argument".
+2. **Pointwise**: prove `(aeval C p).mulVec e_k = 0` for each k, then matrix
+   equality follows from column-wise zero.
+
+I chose Route 2. Reasons:
+- Route 1 requires extending `companionMx_isCyclic_e0`, which is non-trivial
+  (need to show `Krylov-image is K[C]-submodule containing e₀, hence all of K^n`).
+- Route 2 is mostly API: S3's `companionMx_pow_e0` gives `e_k = C^k.mulVec e₀`
+  for free, the AlgHom commutation is a 4-line `rw`, and the column-zero ⇒
+  matrix-zero step is a clean reusable lemma.
+- Route 2's helper (`matrix_eq_zero_of_mulVec_basis`) is independent of the
+  companion-matrix context and can be reused (e.g. for similar arguments in
+  sibling entries).
+
+### Honest Reporting
+
+- **Build was NOT verified locally** — same `.lake` symlink trap. CI is the
+  ground truth.
+- **API drift risk** (S5-specific):
+  `Matrix.mulVec_mulVec` (`(A * B).mulVec v = A.mulVec (B.mulVec v)`),
+  `Matrix.mulVec_zero`,
+  `aeval_X` (`aeval r X = r`),
+  `map_pow` / `map_mul` (`AlgHom` preserves powers and products),
+  `mul_comm` on `K[X]` (always available since `K[X]` is `CommRing` for `K` a
+  field — but `Polynomial.mul_comm` may need an explicit name),
+  `dotProduct`, `Pi.single_apply`, `Pi.zero_apply`, `Pi.zero_apply`,
+  `mul_ite`, `mul_one`, `mul_zero`, `Finset.sum_ite_eq`, `Finset.mem_univ`.
+  Most are stable; if any break, S6 will repair before continuing.
+- **Did NOT touch `Matrix.minpoly_companionMatrix`** — that's S6.
+
+### Why Route 2's Commute Step Works
+
+The commutation `aeval C p · C^k = C^k · aeval C p` is mathematically obvious
+(any polynomial in C commutes with any power of C, since polynomials in a single
+matrix variable form a commutative subring). The Lean proof uses the fact that
+`aeval C : K[X] →ₐ[K] M_n(K)` is an algebra homomorphism. Specifically:
+
+```
+aeval C p · C^k
+  = aeval C p · aeval C (X^k)             -- map_pow + aeval_X
+  = aeval C (p · X^k)                     -- ← map_mul
+  = aeval C (X^k · p)                     -- mul_comm in K[X] (commutative)
+  = aeval C (X^k) · aeval C p             -- map_mul
+  = C^k · aeval C p                       -- map_pow + aeval_X (other direction)
+```
+
+Encoded in 4 `rw` steps: `[hk_eq_aeval, ← map_mul, ← map_mul, mul_comm p (X^k.val)]`.
 
 ---
 
