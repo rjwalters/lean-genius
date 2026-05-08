@@ -14533,6 +14533,95 @@ private lemma strictHookCells_removeCorner_eq_of_not_mem
   rw [strictHookCells_removeCorner_eq hc' i j, ← Finset.erase_eq,
       Finset.erase_eq_of_notMem hnotmem]
 
+-- ============================================================
+-- Off-spine structural invariances under c'-removal (Session 57.1)
+-- These three lemmas package the geometric fact that, for cells `x`
+-- strictly off both the row and column of corner `c'`, removing `c'`
+-- leaves the local hook structure (hookLength, strictHookCells, and
+-- non-membership of c' in x's strict hook) unchanged.  They are the
+-- foundational "category A/B" inputs for the joint K-induction in
+-- `F_side_identity_aligned` (S57; see `2026-05-09-s02.md`, sublemma
+-- (S1) preconditions).  All three are 1-3 line consequences of the
+-- existing primitives `hookLength_eq_of_not_arm_leg` and
+-- `strictHookCells_removeCorner_eq_of_not_mem`.
+-- ============================================================
+
+/-- **Off-spine: `c'` is not in the strict hook of `x`.**
+
+For any cell `x` whose row and column both differ from those of `c'`,
+the corner `c'` cannot be in the strict hook of `x`.  The arm-membership
+disjunct of `strictHookCells μ x.1 x.2` requires `c'.1 = x.1`, and the
+leg-membership disjunct requires `c'.2 = x.2`; off-spine cells negate
+both.
+
+This is the structural prerequisite for
+`strictHookCells_invariant_off_spine_of_c'` (which collapses the general
+identity `strictHookCells (μ\c') x = strictHookCells μ x \ {c'}` into
+plain equality).  Used in the (S1) off-spine branch of the joint
+K-induction for `F_side_identity_aligned`. -/
+private lemma c'_notMem_strictHookCells_of_off_spine
+    {μ : YoungDiagram} {c' : ℕ × ℕ} {x : ℕ × ℕ}
+    (hx_off_row : x.1 ≠ c'.1) (hx_off_col : x.2 ≠ c'.2) :
+    c' ∉ strictHookCells μ x.1 x.2 := by
+  simp only [strictHookCells, Finset.mem_union, Finset.mem_image,
+             Finset.mem_Ico]
+  rintro (⟨s, _, h_eq⟩ | ⟨r, _, h_eq⟩)
+  · exact hx_off_row (congr_arg Prod.fst h_eq)
+  · exact hx_off_col (congr_arg Prod.snd h_eq)
+
+/-- **Off-spine `hookLength` invariance under `c'`-removal.**
+
+For a cell `x ∈ μ\c'` strictly off both the row and column of corner
+`c'`, removing `c'` from `μ` leaves `hookLength` at `x` unchanged.
+
+Direct corollary of `hookLength_eq_of_not_arm_leg` applied to corner
+`c'`: when `x.1 ≠ c'.1`, the arm-of-`c'` membership condition
+`x.1 = c'.1 ∧ x.2 < c'.2` fails on its first conjunct; likewise for
+leg-of-`c'` membership when `x.2 ≠ c'.2`.
+
+Foundational input for the (S1) off-spine pointwise comparison in
+`F_side_identity_aligned` — both the LHS integrand
+`gnwProb μ c (h_μ x) x` and the RHS integrand
+`gnwProb (μ\c') c (h_{μ\c'} x) x` use *the same* hook-length value at
+off-spine cells, removing one of the three "moving pieces" identified
+in the S57 plan note. -/
+private lemma hookLength_invariant_off_spine_of_c'
+    {μ : YoungDiagram} {c' : ℕ × ℕ} (hc' : isCorner μ c')
+    {x : ℕ × ℕ} (hxν : x ∈ removeCorner μ c' hc')
+    (hx_off_row : x.1 ≠ c'.1) (hx_off_col : x.2 ≠ c'.2) :
+    hookLength (removeCorner μ c' hc') x.1 x.2 =
+      hookLength μ x.1 x.2 := by
+  have hx := (mem_removeCorner hc').mp hxν
+  refine hookLength_eq_of_not_arm_leg hc' hx.1 hx.2 ?_ ?_
+  · rintro ⟨h1, _⟩; exact hx_off_row h1
+  · rintro ⟨_, h2⟩; exact hx_off_col h2
+
+/-- **Off-spine `strictHookCells` invariance under `c'`-removal.**
+
+For a cell `x` strictly off both the row and column of corner `c'`,
+removing `c'` from `μ` leaves the strict hook cells of `x` unchanged.
+
+By `c'_notMem_strictHookCells_of_off_spine`, `c'` is not in
+`strictHookCells μ x.1 x.2` to begin with, so the general identity
+`strictHookCells (μ\c') x = strictHookCells μ x \ {c'}`
+(`strictHookCells_removeCorner_eq`) collapses to plain equality via
+`strictHookCells_removeCorner_eq_of_not_mem`.
+
+Foundational input for the (S1) off-spine pointwise comparison in
+`F_side_identity_aligned` — at off-spine cells, the recursive K-step
+`gnwProb _ c (K+1) x = (1/|H*(x)|) ∑_{y ∈ H*(x)} gnwProb _ c K y` is
+averaged over **the same** strict-hook set in both `μ` and `μ\c'`,
+removing the second of the three "moving pieces" identified in the
+S57 plan note. -/
+private lemma strictHookCells_invariant_off_spine_of_c'
+    {μ : YoungDiagram} {c' : ℕ × ℕ} (hc' : isCorner μ c')
+    {x : ℕ × ℕ}
+    (hx_off_row : x.1 ≠ c'.1) (hx_off_col : x.2 ≠ c'.2) :
+    strictHookCells (removeCorner μ c' hc') x.1 x.2 =
+      strictHookCells μ x.1 x.2 :=
+  strictHookCells_removeCorner_eq_of_not_mem hc'
+    (c'_notMem_strictHookCells_of_off_spine hx_off_row hx_off_col)
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by
