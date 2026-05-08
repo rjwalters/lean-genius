@@ -37,7 +37,8 @@
       "The telescoping sum ∑_k (u(k+1) - u(k)) = u(n) - u(0) is the key to bounding the total interval length",
       "Converting real-valued sum bounds to ENNReal uses ENNReal.ofReal_sum_of_nonneg and ofReal_le_ofReal",
       "The inductive eVariationOn.Icc_add_Icc application gives the global bound from local bounds",
-      "The ε-δ AC definition is *constructively* a finite-variation certificate: choosing ε = 1 hands the proof a uniform δ on which the variation of each sub-interval is < 1, so a covering of [a,b] by ⌈(b−a)/δ⌉ + 1 such pieces directly bounds the total variation. The measure-theoretic Carathéodory characterization of AC (μ ≪ Lebesgue with $L^1$ density) gives the same conclusion via Radon-Nikodym, but is *non-constructive* in the same sense — the ε-δ version Lean exploits here is computationally explicit, which is why it requires zero axioms beyond Mathlib core"
+      "The ε-δ AC definition is *constructively* a finite-variation certificate: choosing ε = 1 hands the proof a uniform δ on which the variation of each sub-interval is < 1, so a covering of [a,b] by ⌈(b−a)/δ⌉ + 1 such pieces directly bounds the total variation. The measure-theoretic Carathéodory characterization of AC (μ ≪ Lebesgue with $L^1$ density) gives the same conclusion via Radon-Nikodym, but is *non-constructive* in the same sense — the ε-δ version Lean exploits here is computationally explicit, which is why it requires zero axioms beyond Mathlib core",
+      "Choosing ε = 1 in the AC condition is not arithmetic convenience — it is *quantitatively optimal* for the covering count. Any other ε would either (i) shrink δ, forcing more pieces in the cover, or (ii) require more pieces to keep the per-piece variation ≤ ε, with no asymptotic savings. The constant `1` is what makes the bound `n` in `eVariationOn_le_n` literally the natural-number ceiling-plus-one — a clean invariant for the inductive splitting"
     ],
     "prerequisites": [
       "FundamentalTheoremCalculusLebesgue.lean: AbsolutelyContinuousOn definition",
@@ -48,28 +49,52 @@
   },
   "sections": [
     {
+      "id": "sec-docstring",
+      "title": "Module Docstring: Open Question and 4-Step Sketch",
+      "startLine": 1,
+      "endLine": 22,
+      "summary": "Poses OQ-01 (can AC ⟹ BV be proved from the bare ε-δ definition?) and gives the 4-step blueprint that the rest of the file fills in: AC with ε=1 yields δ; choose n = ⌈(b−a)/δ⌉+1; show eVariationOn ≤ 1 on δ-short intervals; glue n pieces via Icc_add_Icc to bound the total by n < ⊤.",
+      "mathContext": "$\\mathrm{AC}(F, [a,b]) \\Rightarrow V_F[a,b] \\le \\lceil (b-a)/\\delta(1) \\rceil + 1$, an explicit, constructive bound expressed in terms of the AC modulus."
+    },
+    {
+      "id": "sec-imports",
+      "title": "Imports, Namespace, and Heartbeat Setting",
+      "startLine": 23,
+      "endLine": 32,
+      "summary": "Imports the parent FTCLebesgue module (for AbsolutelyContinuousOn), Mathlib's BoundedVariation infrastructure, and EMetricSpace.BoundedVariation. Opens FTCLebesgue, Set, ENNReal, Finset. Raises maxHeartbeats to 800000 — the short-interval lemma's `nlinarith`/`ring_nf` chain would otherwise time out on a default-heartbeat run.",
+      "mathContext": "The proof never leaves the world of elementary real analysis + ENNReal arithmetic — no measure theory, no Vitali covering, no Hahn decomposition is imported."
+    },
+    {
       "id": "sec-helpers",
-      "title": "Helper Lemmas",
-      "startLine": 30,
-      "endLine": 75,
-      "summary": "Four helper lemmas: (1) edist on ℝ equals ENNReal.ofReal|x-y|; (2) upper-bound criterion for eVariationOn via iSup_le; (3) telescoping sum for Fin n; (4) short-interval variation ≤ 1 from AC.",
-      "mathContext": "The upper-bound criterion unfolds eVariationOn as a supremum and applies iSup_le. The short-interval lemma applies the AC condition to the n intervals [u(i), u(i+1)] of a monotone partition, using the telescoping sum to bound total length."
+      "title": "Lemmas 1–3: edist, iSup_le Criterion, Telescoping",
+      "startLine": 34,
+      "endLine": 60,
+      "summary": "Three reusable building blocks. (L1) `edist_real_ofReal`: edist on ℝ equals ENNReal.ofReal|x − y| — the bridge between metric-space and real arithmetic. (L2) `eVariationOn_le_of_forall`: an iSup_le criterion that reduces a uniform variation bound to a per-partition sum bound. (L3) `fin_telescoping`: ∑(u(k+1) − u(k)) = u(n) − u(0) — used to bound total partition length on a monotone u.",
+      "mathContext": "These three lemmas isolate the only structural facts needed to attack the supremum: a way to convert |·| ↔ edist, a way to attack a sup by attacking every value (iSup_le), and a way to bound a partition's total length from its endpoints alone."
+    },
+    {
+      "id": "sec-short-interval",
+      "title": "Lemma 4: Short-Interval Variation Engine",
+      "startLine": 62,
+      "endLine": 91,
+      "summary": "`eVariationOn_le_one_of_short`: on any sub-interval [c,d] ⊆ [a,b] with d − c < δ, eVariationOn F (Icc c d) ≤ 1. Built by feeding an arbitrary monotone partition u into the AC hypothesis: telescoping bounds total length by d − c < δ, monotonicity supplies disjointness, AC then gives the real-valued bound, and ENNReal.ofReal_sum_of_nonneg lifts it to the ENNReal sum that eVariationOn sees.",
+      "mathContext": "AC condition with ε = 1: $\\sum_k (b_k - a_k) < \\delta \\Rightarrow \\sum_k |F(b_k) - F(a_k)| < 1$. Specialising $a_k = u_k$, $b_k = u_{k+1}$, telescoping gives total length $u_n - u_0 \\le d - c < \\delta$, so the AC inequality applies — the heart of the proof."
     },
     {
       "id": "sec-inductive",
-      "title": "Inductive Splitting Lemma",
-      "startLine": 118,
-      "endLine": 151,
-      "summary": "Proves eVariationOn F (Icc a (a+n*step)) ≤ n by induction, using eVariationOn.Icc_add_Icc to split at each intermediate point.",
-      "mathContext": "Base case n=0: variation = 0 ≤ 0 by eq_zero_iff. Inductive step: split at a+m*step, bound left ≤ m by IH and right ≤ 1 by the short-interval lemma, conclude m+1."
+      "title": "Lemma 5: Inductive Splitting via Icc_add_Icc",
+      "startLine": 93,
+      "endLine": 124,
+      "summary": "`eVariationOn_le_n`: if every piece [a+k·step, a+(k+1)·step] has variation ≤ 1, then eVariationOn F (Icc a (a+n·step)) ≤ n. By induction on n, splitting at a+m·step with `eVariationOn.Icc_add_Icc` and combining IH (≤ m) with the per-piece bound (≤ 1).",
+      "mathContext": "Additivity of variation: $V_F[a,b] = V_F[a,c] + V_F[c,b]$ for $a \\le c \\le b$. Iterating n−1 times from local bounds gives the global bound. The base case n = 0 collapses [a,a] to a point and uses `eVariationOn.eq_zero_iff`."
     },
     {
       "id": "sec-main",
-      "title": "Main Theorem: AC → BV",
-      "startLine": 154,
+      "title": "Main Theorem: ac_implies_bv",
+      "startLine": 126,
       "endLine": 185,
-      "summary": "Proves BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b by constructing n pieces of step (b-a)/n < δ, applying the inductive splitting lemma, and concluding eVariationOn ≤ n ≠ ⊤.",
-      "mathContext": "The degenerate case a=b is handled separately (point interval, variation = 0). For a < b: n = ⌈(b-a)/δ⌉+1 ensures step < δ; the n pieces cover [a,b] exactly (a + n*step = b); each piece has variation ≤ 1; total ≤ n < ⊤."
+      "summary": "Combines Lemmas 4 and 5 to prove BoundedVariationOn F (Icc a b) from AbsolutelyContinuousOn F a b. Degenerate case a = b: variation = 0 ≠ ⊤. Generic case: extract δ from AC at ε = 1, set n = ⌈(b−a)/δ⌉+1 so step = (b−a)/n < δ, verify a + n·step = b, dispatch each of the n pieces via Lemma 4, then conclude via Lemma 5 that eVariationOn ≤ n ≠ ⊤.",
+      "mathContext": "Quantitative: $V_F[a,b] \\le \\lceil (b-a)/\\delta \\rceil + 1$. The +1 in the definition of n is what makes the ceiling inequality strict (b − a ≤ ⌈·⌉·δ < n·δ), giving step < δ — without this slack the AC condition would not apply."
     }
   ],
   "crossReferences": [
@@ -90,11 +115,13 @@
     }
   ],
   "conclusion": {
-    "summary": "AC → BV proved in 185 lines, 0 sorries, 0 axioms. Directly from the ε-δ definition using iSup_le on eVariationOn's definition.",
-    "implications": "**First step toward axiom-free Lebesgue FTC**: This removes the first of the parent's axioms. The remaining steps — Jordan decomposition of BV functions and the integral recovery theorem — require deeper Mathlib infrastructure but are now within reach.\n\n**Infrastructure lesson**: The key was that eVariationOn is defined as a supremum, so bounding it reduces to bounding individual partition sums, which the AC condition handles directly.",
+    "summary": "AC → BV proved in 185 lines, 0 sorries, 0 axioms — directly from the ε-δ definition. The proof is **quantitative**: it not only shows $V_F[a,b] < \\infty$ but exhibits the explicit bound $V_F[a,b] \\le \\lceil (b-a)/\\delta(1) \\rceil + 1$ in terms of the AC modulus at ε = 1. Mechanically, the trick is to attack the supremum that defines `eVariationOn` via `iSup_le`, reducing a global ceiling to a per-partition-sum bound that the AC condition handles by inspection.",
+    "implications": "**First step toward axiom-free Lebesgue FTC**: This removes the first of the parent's axioms. The remaining steps — Jordan decomposition of BV functions and the integral recovery theorem — require deeper Mathlib infrastructure but are now within reach.\n\n**Infrastructure lesson**: The key was that eVariationOn is defined as a supremum, so bounding it reduces to bounding individual partition sums, which the AC condition handles directly.\n\n**Template for the vector-valued case**: The same five-lemma scaffold (edist bridge → iSup_le criterion → telescoping → short-interval engine → inductive splitting) carries over to $F : \\mathbb{R} \\to E$ in a normed space once `edist_real_ofReal` is replaced by the analogous `edist x y = ENNReal.ofReal ‖x − y‖`. This is the path taken by the OQ-01-OQ-04 sibling.",
     "openQuestions": [
       "Can the Jordan decomposition (BV → difference of monotone functions) be proved from scratch in Lean 4, completing the next step toward the full Lebesgue FTC?",
-      "Does Mathlib have `BoundedVariationOn.jordanDecomposition` or similar, enabling a shorter path to the Lebesgue FTC?"
+      "Does Mathlib have `BoundedVariationOn.jordanDecomposition` or similar, enabling a shorter path to the Lebesgue FTC?",
+      "Is the explicit bound $V_F[a,b] \\le \\lceil (b-a)/\\delta(1) \\rceil + 1$ tight, or can the +1 slack (introduced to make the ceiling inequality strict) be removed by a sharper covering argument?",
+      "Does the same skeleton extend, line-for-line, to vector-valued $F : \\mathbb{R} \\to E$ in a Banach space (the OQ-01-OQ-04 sibling), or does the ENNReal ↔ ℝ bridge in Lemma 1 need a genuine generalisation when $|x - y|$ becomes $\\|x - y\\|$?"
     ]
   },
   "mainTheorems": [
