@@ -146,3 +146,87 @@ theorem padic_liouville_norm_bridge_proof (...) :
 1. Identify the right Mathlib name for "finite set of rational roots of an integer polynomial". Candidates: `Polynomial.roots`, `Polynomial.aroots`. Need a ℚ-version with finiteness from degree.
 2. Prove the bridge using the case-split sketched above.
 3. After bridge discharge: convert `axiom padic_liouville_norm_bridge` to `theorem ... := by <proof>`, drop the `axiomCount: 1` to 0, change `status: "axiomatized"` to `"verified"`, change `badge: "axiom"` to `"verified"` (or `"original"` since this is a from-scratch p-adic Liouville).
+
+---
+
+## Session 2026-05-08 (Session 12) — Uniform Poly-Eval Lower Bound (Part IV.9, researcher-1)
+
+**Mode**: REVISIT
+**Outcome**: progress (final missing structural ingredient for bridge discharge now formally proved)
+
+### What I Did
+
+Added Part IV.9 to `LiouvilleTheoremOQ04.lean` (~180 lines):
+
+**Definitions (2)**:
+- `intPolyL1 (f : ℤ[X]) : ℕ := ∑ i ∈ f.support, (f.coeff i).natAbs` — L¹ norm of integer
+  coefficients (ℕ-valued).
+- `intPolyHomogEval (f : ℤ[X]) (r s : ℤ) : ℤ := ∑ i ∈ f.support, f.coeff i · r^i · s^(d-i)` —
+  the integer "homogenized evaluation"; equals `s^d · f(r/s)` in ℚ by construction.
+
+**Theorems (4 public + 2 private helpers)**:
+- `intPolyL1_pos`: positive for nonzero polynomial (leading coeff contributes).
+- `natAbs_finset_sum_le` (private): triangle inequality `(∑ aᵢ).natAbs ≤ ∑ aᵢ.natAbs` over a Finset.
+  Proved by induction on the finset.
+- `intPolyHomogEval_cast_eq`: `↑(intPolyHomogEval f r s) = s^d · (f.map alg).eval (r/s)` in ℚ.
+  Proof: rewrite RHS as a sum over `f.support` via `aeval_def + eval_map + eval₂_eq_sum + sum_def`,
+  pair with `Finset.mul_sum`, then per-term: `(s:ℚ)^d` splits as `s^(d-i) · s^i`, `field_simp; ring`.
+- `intPolyHomogEval_natAbs_le`: `|N| ≤ intPolyL1 f · max(|r|,|s|)^d`. Proof: triangle (private helper) +
+  per-term bound `|aᵢ · r^i · s^(d-i)| ≤ |aᵢ| · H^d` via `Int.natAbs_mul/_pow + Nat.pow_le_pow_left + Nat.add_sub_of_le`.
+- `padicNorm_intCast_pow_le_one` (private): `padicNorm p ((s:ℚ)^d) ≤ 1` for any integer s.
+  Proof: induction on d; `padicNorm.mul + padicNorm.of_int + mul_le_mul_of_nonneg_*`.
+- **`padicNorm_int_poly_eval_uniform_lb`** (main result, the missing piece):
+  For nonzero `f : ℤ[X]`, r, s : ℤ with `s ≠ 0`, and `f.eval(r/s) ≠ 0` over ℚ:
+    `1 / (intPolyL1 f · max(|r|,|s|)^d) ≤ padicNorm p ((f.map alg).eval (r/s))`.
+  The witness `1 / intPolyL1 f` is **uniform in r, s** (depends only on f).
+  Proof chain: `s^d·f(r/s) = N ∈ ℤ` nonzero → `padicNorm p N ≥ 1/|N|` (Archimedean Complement, Part I) →
+  `|N| ≤ L · H^d` (Part IV.9 triangle) → `padicNorm p N = padicNorm p (s^d) · padicNorm p (f(r/s))` and
+  `padicNorm p (s^d) ≤ 1` give `padicNorm p N ≤ padicNorm p (f(r/s))` → combine via `one_div_le_one_div_of_le`.
+
+File builds clean (Docker, lean 4.26.0): 1 axiom, 0 sorries, 914 lines, 32 theorems, 6 defs.
+
+### Key Findings
+
+- **Filling the trivial-witness gap**: The pre-existing `padicNorm_poly_eval_bound` (Part III, line 177)
+  was a TRIVIAL witness — `C := padicNorm p (eval) · H^d` depends on r, s. Useless for the bridge.
+  Part IV.9 replaces this with a **genuinely uniform** lower bound where the constant `1/intPolyL1 f`
+  depends only on f. This is the *structural* missing piece, not a stylistic improvement.
+
+- **Homogenized evaluation pattern**: For f ∈ ℤ[X] of natDegree d, the integer `N = ∑ aᵢ·r^i·s^(d-i)`
+  satisfies `N = s^d · f(r/s)` in ℚ. This is the "clear-denominators" form classically used in proofs
+  of Liouville's theorem. The Lean translation: rewrite RHS via `aeval_def → eval_map → eval₂_eq_sum →
+  sum_def`, pair with `Finset.mul_sum`, then per-term reduces to `r^i · s^(d-i) = s^d · (r/s)^i` —
+  closed by `pow_split + div_pow + field_simp + ring`.
+
+- **Triangle bound on integer sums**: Lean 4 Mathlib (4.26.0) has `Int.natAbs_add_le` for two-arg case;
+  for `Finset.sum` we proved `natAbs_finset_sum_le` by induction (1-line per case via `Int.natAbs_add_le`
+  + `Nat.add_le_add_left`). Useful primitive for any "L¹ on integer sums" pattern.
+
+- **Cofactor exponent margin**: The bridge target is `H^(2d)` but the algebraic case analysis gives
+  `H^(2d-1)` (since `g.natDegree = d-1`); the extra `H` is harmless because `H ≥ 1`. Margin ensures
+  one constant works for both algebraic and finite-rational-roots cases.
+
+### Pending — Bridge Discharge Sketch (unchanged from Session 11)
+
+With Part IV.9 in place, the residual obstruction is purely the case analysis on rational roots of
+f distinct from α. Remaining work:
+
+1. Form the Finset of rational roots of f (via `Polynomial.aroots ℚ` → `Multiset.toFinset`).
+2. Filter to `(q : ℚ_[p]) ≠ α`; if nonempty, take `δ := inf' ‖α - (q:ℚ_[p])‖`.
+3. Set `C := min(C₁/M, δ)` where `C₁ = 1/intPolyL1 f` and `M = coeffNormSum p g`. (Or take `C = C₁/M`
+   if filtered set is empty.)
+4. Case split on `f.eval (r/s) = 0` over ℚ:
+   - If `≠ 0`: apply `padicNorm_int_poly_eval_uniform_lb` + `padic_norm_int_poly_eval` (lift ℚ to ℚ_[p])
+     + `padic_cofactor_bound_rat`. Get `‖α - r/s‖ ≥ (C₁/M) / H^(2d-1) ≥ (C₁/M) / H^(2d)`.
+   - If `= 0`: r/s is a rational root with `(r/s : ℚ_[p]) ≠ α` (by hypothesis), so `r/s ∈ filteredSet`,
+     hence `‖α - r/s‖ ≥ δ ≥ C / H^(2d)`.
+
+Estimated 80-150 lines of additional Lean for the case split + Finset min infrastructure.
+
+### Next Steps
+
+1. (Highest value) Discharge `padic_liouville_norm_bridge` axiom using Part IV.9 + the case split above.
+2. After discharge: change `status: "axiomatized" → "verified"`, `badge: "axiom" → "original"`,
+   `axiomCount: 1 → 0`.
+3. Generate follow-up open questions: e.g., function-field version (`F_q(t)`), Roth-style sharpening
+   from `H^d` to `H^(2+ε)`, multi-place generalization.

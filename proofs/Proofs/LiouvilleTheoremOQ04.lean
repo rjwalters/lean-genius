@@ -437,6 +437,188 @@ theorem padic_cofactor_bound_rat (g : Polynomial ℚ_[p]) (r s : ℤ) (hs : s �
   exact padic_polynomial_eval_norm_bound p g ((r : ℚ_[p]) / s) H hH_one hxH
 
 /-! ═══════════════════════════════════════════════════════════════════════════
+PART IV.9: UNIFORM LOWER BOUND ON ‖(f.map alg).eval (r/s)‖_p
+For nonzero f : ℤ[X] and r, s : ℤ with s ≠ 0 and rational evaluation nonzero:
+  `padicNorm p ((f.map alg).eval (r/s)) ≥ 1 / (intPolyL1 f · max(|r|,|s|)^d)`.
+
+This is the third and final ingredient needed to discharge the bridge axiom.
+The bound is uniform in r, s — the constant `intPolyL1 f` depends only on f
+(it's the L¹ norm of f's integer coefficients).
+
+Strategy:
+  1. The integer "homogeneous evaluation" `H(r,s) = ∑ aᵢ · r^i · s^(d-i) ∈ ℤ`
+     satisfies `H(r,s) = s^d · f(r/s)` in ℚ.
+  2. `|H(r,s)| ≤ intPolyL1 f · max(|r|,|s|)^d` (triangle on the integer sum).
+  3. Archimedean Complement (Part I): `padicNorm p H(r,s) ≥ 1/|H(r,s)|`.
+  4. `padicNorm p (s^d) ≤ 1`, so `padicNorm p (f(r/s)) ≥ padicNorm p H(r,s)`.
+═══════════════════════════════════════════════════════════════════════════ -/
+
+/-- L¹ norm of integer polynomial coefficients (as ℕ): `∑ i ∈ support, |coeff i|`. -/
+def intPolyL1 (f : ℤ[X]) : ℕ :=
+  f.support.sum (fun i => (f.coeff i).natAbs)
+
+/-- Positivity of `intPolyL1` for nonzero polynomial: leading coeff contributes ≥ 1. -/
+theorem intPolyL1_pos {f : ℤ[X]} (hf : f ≠ 0) : 0 < intPolyL1 f := by
+  have hsupp : f.support.Nonempty := Polynomial.support_nonempty.mpr hf
+  obtain ⟨i, hi⟩ := hsupp
+  have hcoeff : f.coeff i ≠ 0 := Polynomial.mem_support_iff.mp hi
+  have hpos : 0 < (f.coeff i).natAbs := Int.natAbs_pos.mpr hcoeff
+  refine lt_of_lt_of_le hpos ?_
+  exact Finset.single_le_sum (f := fun j => (f.coeff j).natAbs)
+    (h := fun _ _ => Nat.zero_le _) hi
+
+/-- "Homogenized integer evaluation": `intPolyHomogEval f r s = ∑ aᵢ · r^i · s^(d-i)`
+    over `i ∈ f.support`, where d = f.natDegree. By construction,
+    `↑(intPolyHomogEval f r s) = s^d · f(r/s)` in ℚ. -/
+def intPolyHomogEval (f : ℤ[X]) (r s : ℤ) : ℤ :=
+  f.support.sum (fun i => f.coeff i * r^i * s^(f.natDegree - i))
+
+/-- Helper: `(∑ aᵢ).natAbs ≤ ∑ aᵢ.natAbs` for integer-valued sums over a Finset. -/
+private theorem natAbs_finset_sum_le {α : Type*} (s : Finset α) (φ : α → ℤ) :
+    (∑ i ∈ s, φ i).natAbs ≤ ∑ i ∈ s, (φ i).natAbs := by
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+    rw [Finset.sum_insert ha, Finset.sum_insert ha]
+    exact le_trans (Int.natAbs_add_le _ _) (Nat.add_le_add_left ih _)
+
+/-- Cast identity: `↑(intPolyHomogEval f r s) = s^d · (f.map alg).eval (r/s)` in ℚ. -/
+theorem intPolyHomogEval_cast_eq (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0) :
+    ((intPolyHomogEval f r s : ℤ) : ℚ) =
+      (s : ℚ)^f.natDegree * (f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s) := by
+  have hs_q : (s : ℚ) ≠ 0 := Int.cast_ne_zero.mpr hs
+  -- Express RHS via aeval, then expand to a sum over f.support.
+  rw [show (f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s)
+        = Polynomial.aeval ((r:ℚ)/s) f from by
+      rw [Polynomial.aeval_def, ← Polynomial.eval_map]]
+  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Finset.mul_sum]
+  -- LHS push_cast through the integer sum
+  unfold intPolyHomogEval
+  push_cast
+  refine Finset.sum_congr rfl (fun i hi => ?_)
+  have hi_le : i ≤ f.natDegree := Polynomial.le_natDegree_of_mem_supp i hi
+  -- Per-term: (f.coeff i : ℚ) · r^i · s^(d-i) = s^d · (f.coeff i : ℚ) · (r/s)^i
+  -- Reduce s^d via splitting:
+  have hpow_split : (s : ℚ)^f.natDegree = (s : ℚ)^(f.natDegree - i) * (s : ℚ)^i := by
+    rw [← pow_add, Nat.sub_add_cancel hi_le]
+  rw [hpow_split, div_pow]
+  have hsi_ne : ((s : ℚ))^i ≠ 0 := pow_ne_zero _ hs_q
+  field_simp
+  ring
+
+/-- Bound: `|intPolyHomogEval f r s| ≤ intPolyL1 f · max(|r|,|s|)^d` (triangle). -/
+theorem intPolyHomogEval_natAbs_le (f : ℤ[X]) (r s : ℤ) :
+    (intPolyHomogEval f r s).natAbs ≤
+      intPolyL1 f * (max r.natAbs s.natAbs)^f.natDegree := by
+  unfold intPolyHomogEval intPolyL1
+  refine le_trans (natAbs_finset_sum_le _ _) ?_
+  rw [Finset.sum_mul]
+  refine Finset.sum_le_sum (fun i hi => ?_)
+  have hi_le : i ≤ f.natDegree := Polynomial.le_natDegree_of_mem_supp i hi
+  -- (aᵢ · r^i · s^(d-i)).natAbs = |aᵢ| · |r|^i · |s|^(d-i) ≤ |aᵢ| · H^d
+  rw [Int.natAbs_mul, Int.natAbs_mul, Int.natAbs_pow, Int.natAbs_pow, mul_assoc]
+  refine Nat.mul_le_mul_left _ ?_
+  -- |r|^i · |s|^(d-i) ≤ H^d
+  set H := max r.natAbs s.natAbs
+  calc r.natAbs^i * s.natAbs^(f.natDegree - i)
+      ≤ H^i * H^(f.natDegree - i) := Nat.mul_le_mul
+          (Nat.pow_le_pow_left (Nat.le_max_left _ _) i)
+          (Nat.pow_le_pow_left (Nat.le_max_right _ _) (f.natDegree - i))
+    _ = H^f.natDegree := by rw [← pow_add, Nat.add_sub_of_le hi_le]
+
+/-- Helper: `padicNorm p ((s : ℚ)^d) ≤ 1` for any integer s. -/
+private theorem padicNorm_intCast_pow_le_one (s : ℤ) (d : ℕ) :
+    padicNorm p ((s : ℚ)^d) ≤ 1 := by
+  induction d with
+  | zero => simp [padicNorm.one]
+  | succ d ih =>
+    rw [pow_succ, padicNorm.mul]
+    have h_int : padicNorm p (s : ℚ) ≤ 1 := padicNorm.of_int s
+    have h_pow_nn : 0 ≤ padicNorm p ((s : ℚ)^d) := padicNorm.nonneg _
+    calc padicNorm p ((s:ℚ)^d) * padicNorm p (s:ℚ)
+        ≤ 1 * padicNorm p (s:ℚ) := mul_le_mul_of_nonneg_right ih (padicNorm.nonneg _)
+      _ ≤ 1 * 1 := mul_le_mul_of_nonneg_left h_int (by norm_num)
+      _ = 1 := by ring
+
+/-- **Uniform polynomial evaluation lower bound** (Part IV.9 main result):
+    For nonzero f : ℤ[X] and r, s : ℤ with s ≠ 0 and `f.eval (r/s) ≠ 0`:
+      `padicNorm p (f.eval (r/s)) ≥ 1 / (intPolyL1 f · max(|r|, |s|)^d)`
+    where d = f.natDegree. The witness `1 / intPolyL1 f` depends only on f.
+
+    **Proof outline**:
+    1. Set `N := intPolyHomogEval f r s ∈ ℤ`. Then `↑N = s^d · f(r/s)` in ℚ.
+    2. `f(r/s) ≠ 0 ∧ s^d ≠ 0 ⟹ N ≠ 0`.
+    3. `|N| ≤ intPolyL1 f · H^d` (Part IV.9 triangle bound).
+    4. Archimedean Complement (Part I): `1/|N| ≤ padicNorm p N`.
+    5. `padicNorm p N = padicNorm p (s^d) · padicNorm p (f(r/s))`
+       and `padicNorm p (s^d) ≤ 1` give
+       `padicNorm p N ≤ padicNorm p (f(r/s))`.
+    6. Combine: `1/(intPolyL1 f · H^d) ≤ 1/|N| ≤ padicNorm p N ≤ padicNorm p (f(r/s))`. -/
+theorem padicNorm_int_poly_eval_uniform_lb
+    (f : ℤ[X]) (hf : f ≠ 0) (r s : ℤ) (hs : s ≠ 0)
+    (hne : (f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s) ≠ 0) :
+    (1 : ℚ) / ((intPolyL1 f : ℚ) * (max r.natAbs s.natAbs : ℚ)^f.natDegree) ≤
+      padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ) / s)) := by
+  set d := f.natDegree with hd_def
+  set H := max r.natAbs s.natAbs with hH_def
+  set N := intPolyHomogEval f r s with hN_def
+  set L := intPolyL1 f with hL_def
+  -- Positivity: L > 0
+  have hL_pos : 0 < L := intPolyL1_pos hf
+  have hL_pos_q : (0 : ℚ) < (L : ℚ) := by exact_mod_cast hL_pos
+  -- Positivity: H > 0
+  have hs_natAbs_pos : 0 < s.natAbs := Int.natAbs_pos.mpr hs
+  have hH_pos : 0 < H := lt_of_lt_of_le hs_natAbs_pos (Nat.le_max_right _ _)
+  have hH_pos_q : (0 : ℚ) < (H : ℚ) := by exact_mod_cast hH_pos
+  have hHpow_pos_q : (0 : ℚ) < (H : ℚ)^d := pow_pos hH_pos_q _
+  -- s^d ≠ 0
+  have hsd_ne : (s : ℚ)^d ≠ 0 := pow_ne_zero _ (Int.cast_ne_zero.mpr hs)
+  -- N as ℚ = s^d · f.eval(r/s)
+  have hN_cast : (N : ℚ) = (s : ℚ)^d * (f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s) :=
+    intPolyHomogEval_cast_eq f r s hs
+  -- N ≠ 0
+  have hN_ne_q : (N : ℚ) ≠ 0 := by rw [hN_cast]; exact mul_ne_zero hsd_ne hne
+  have hN_ne : N ≠ 0 := fun h => hN_ne_q (by rw [h]; simp)
+  have hN_natAbs_pos : 0 < N.natAbs := Int.natAbs_pos.mpr hN_ne
+  have hN_natAbs_pos_q : (0 : ℚ) < (N.natAbs : ℚ) := by exact_mod_cast hN_natAbs_pos
+  -- |N| ≤ L · H^d (in ℕ, then cast to ℚ)
+  have hN_natAbs_le : N.natAbs ≤ L * H^d := intPolyHomogEval_natAbs_le f r s
+  have hN_natAbs_le_q : (N.natAbs : ℚ) ≤ (L : ℚ) * (H : ℚ)^d := by
+    have h1 : ((N.natAbs : ℕ) : ℚ) ≤ ((L * H^d : ℕ) : ℚ) := by exact_mod_cast hN_natAbs_le
+    push_cast at h1
+    exact h1
+  -- Archimedean Complement: 1/|N| ≤ padicNorm p N
+  have h_arch : ((N.natAbs : ℚ))⁻¹ ≤ padicNorm p ((N : ℤ) : ℚ) :=
+    padicNorm_int_ge_inv p N hN_ne
+  -- padicNorm p N = padicNorm p (s^d) · padicNorm p (f(r/s))
+  have h_pnorm_mul : padicNorm p ((N : ℤ) : ℚ) =
+      padicNorm p ((s : ℚ)^d) *
+        padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s)) := by
+    rw [hN_cast, padicNorm.mul]
+  -- padicNorm p (s^d) ≤ 1
+  have h_psd_le : padicNorm p ((s : ℚ)^d) ≤ 1 := padicNorm_intCast_pow_le_one p s d
+  -- padicNorm p N ≤ padicNorm p (f(r/s))
+  have h_pnorm_le : padicNorm p ((N : ℤ) : ℚ) ≤
+      padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s)) := by
+    rw [h_pnorm_mul]
+    have hf_eval_nn : 0 ≤ padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s)) :=
+      padicNorm.nonneg _
+    calc padicNorm p ((s : ℚ)^d) *
+            padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s))
+        ≤ 1 * padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s)) :=
+          mul_le_mul_of_nonneg_right h_psd_le hf_eval_nn
+      _ = padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s)) := one_mul _
+  -- 1/|N| ≤ padicNorm p (f(r/s))
+  have h_combined : ((N.natAbs : ℚ))⁻¹ ≤
+      padicNorm p ((f.map (algebraMap ℤ ℚ)).eval ((r : ℚ)/s)) := le_trans h_arch h_pnorm_le
+  -- 1/(L · H^d) ≤ 1/|N|
+  have h_inv_le : (1 : ℚ) / ((L : ℚ) * (H : ℚ)^d) ≤ ((N.natAbs : ℚ))⁻¹ := by
+    rw [show (1 : ℚ) / ((L : ℚ) * (H : ℚ)^d) = ((L : ℚ) * (H : ℚ)^d)⁻¹ from one_div _,
+        ← one_div, ← one_div]
+    exact one_div_le_one_div_of_le hN_natAbs_pos_q hN_natAbs_le_q
+  exact le_trans h_inv_le h_combined
+
+/-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
@@ -726,6 +908,21 @@ must take the bridge constant C as `min(C_algebra, min_{r₀ rational root ≠ �
   Net: ingredients (1), (2a), (2b) of the bridge axiom are all now formally proved.
   The remaining obstruction to discharging the bridge as a theorem is purely the
   algebraic case analysis on rational roots of f distinct from α.
+
+**Session 12 changes (2026-05-08)**:
+- Added Part IV.9 (uniform polynomial evaluation lower bound):
+  - `intPolyL1`: L¹ norm of integer coefficients (∑ |aᵢ|), as ℕ.
+  - `intPolyL1_pos`: positivity for nonzero polynomial (leading coeff ≥ 1).
+  - `intPolyHomogEval`: integer "homogenized evaluation" ∑ aᵢ·r^i·s^(d-i).
+  - `intPolyHomogEval_cast_eq`: ↑(intPolyHomogEval f r s) = s^d · (f.map alg).eval (r/s) in ℚ.
+  - `intPolyHomogEval_natAbs_le`: |intPolyHomogEval| ≤ intPolyL1 · H^d (triangle).
+  - **`padicNorm_int_poly_eval_uniform_lb`**: 1/(intPolyL1 f · H^d) ≤ padicNorm p (f.eval (r/s))
+    when f, s, eval ≠ 0. The witness 1/intPolyL1 f is **uniform in r, s**.
+  Net: this is the missing structural piece. The pre-existing `padicNorm_poly_eval_bound`
+  (Part III) had a *trivial* witness depending on r,s; Part IV.9 supplies the genuinely
+  uniform bound. With this, all three ingredients (norm transport, cofactor upper bound,
+  polynomial lower bound) are now uniform-bound formal proofs. Remaining work to discharge
+  the bridge axiom is purely the rational-roots case analysis.
 
 -/
 

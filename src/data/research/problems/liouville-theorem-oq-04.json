@@ -17,21 +17,21 @@
   },
   "currentState": {
     "phase": "REFINE",
-    "since": "2026-05-08T01:00:00.000Z",
-    "iteration": 11,
-    "focus": "Bridge axiom INGREDIENT (2) DISCHARGED at the helper level. New Part IV.7 (height bound: ‖((r:ℚ_[p])/s)‖ ≤ max(|r|,|s|)) and Part IV.8 (polynomial cofactor bound: ‖g.eval x‖ ≤ coeffNormSum p g · H^(natDegree g)) provide all three sub-ingredients of the bridge. Remaining obstruction is purely algebraic: case analysis on rational roots of f distinct from α (finite set, requires C ≤ min ‖α - r₀‖ over those roots).",
+    "since": "2026-05-08T03:45:00.000Z",
+    "iteration": 12,
+    "focus": "Part IV.9 (uniform polynomial evaluation lower bound) added in Session 12. The pre-existing padicNorm_poly_eval_bound (Part III) was a TRIVIAL witness (C depending on r,s) — useless for the bridge. Part IV.9 supplies the genuinely uniform bound `padicNorm p (f.eval (r/s)) ≥ 1/(intPolyL1 f · H^d)` where the constant depends only on f. This is the missing structural piece. With Parts IV.5 (norm transport), IV.7 (height bound), IV.8 (cofactor upper bound), and IV.9 (NEW: polynomial lower bound), all THREE bridge ingredients are now uniform-bound formal proofs. Remaining: rational-roots case analysis only.",
     "blockers": [
-      "Rational-roots case analysis: when f(r/s) = 0 and r/s ≠ α (finitely many such rationals), the formula ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ is the indeterminate 0/0 (heval forces g(r/s) = 0 too). Discharging the bridge requires taking C ≤ min_{r₀ rat root ≠ α} ‖α - r₀‖ alongside the algebraic constant from the f(r/s) ≠ 0 case."
+      "Rational-roots case analysis: when f(r/s) = 0 and (r/s : ℚ_[p]) ≠ α (finitely many such rationals), the formula ‖α - r/s‖ = ‖f(r/s)‖/‖g(r/s)‖ is the indeterminate 0/0 (heval forces g(r/s) = 0 too when r/s ≠ α and f(r/s) = 0). Discharging the bridge requires taking C ≤ min_{r₀ rat root, (r₀:ℚ_[p]) ≠ α} ‖α - r₀‖ alongside the algebraic constant (1/intPolyL1 f) / coeffNormSum p g."
     ],
-    "nextAction": "Discharge padic_liouville_norm_bridge by case-splitting on f(r/s) = 0 vs ≠ 0. For ≠ 0: combine padic_norm_int_poly_eval + padicNorm_poly_eval_bound + padic_cofactor_bound_rat. For = 0 with r/s ≠ α: take min over the finite rational-root set of f. Likely needs a new helper around Polynomial.roots in ℚ.",
+    "nextAction": "Discharge padic_liouville_norm_bridge by case-splitting on f.eval(r/s) = 0 over ℚ vs ≠ 0. For ≠ 0: chain padic_norm_int_poly_eval (Part IV.5) → padicNorm_int_poly_eval_uniform_lb (NEW Part IV.9) for lower bound, padic_cofactor_bound_rat (Part IV.8) for upper bound, divide to get ‖α-r/s‖ ≥ (1/L)/M · 1/H^(2d). For = 0 with (r/s:ℚ_[p]) ≠ α: form Polynomial.aroots f ℚ → Finset, filter to (q:ℚ_[p]) ≠ α, take Finset.inf' ‖α - (q:ℚ_[p])‖.",
     "attemptCounts": {
-      "total": 10,
-      "currentApproach": 3,
+      "total": 11,
+      "currentApproach": 4,
       "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 11, 2026-05-08): Discharged ingredient (2) of the bridge axiom at the helper level. Added Part IV.7 (rational-division height bound) and Part IV.8 (polynomial cofactor evaluation bound). New formal lemmas: padicNorm_rat_int_div_le_natAbs (padicNorm p (r/s : ℚ) ≤ |s| via padicNorm.div + padicNorm.of_int + Archimedean Complement), padic_norm_intCast_eq_padicNorm (bridges integer-cast form ‖(z:ℤ:ℚ_[p])‖ to padicNorm p (z:ℚ) via norm_cast + norm_rat_eq_padicNorm), padic_norm_int_div_le_height (transports the rational bound to ℚ_[p] via norm_div + padicNorm.div), coeffNormSum + coeffNormSum_nonneg (the cofactor magnitude as ∑ ‖coeff i‖), padic_polynomial_eval_norm_bound (general: ‖g.eval x‖ ≤ coeffNormSum · H^(natDegree g) via norm_sum_le + norm_mul + norm_pow + monotonicity), padic_cofactor_bound_rat (rational-point specialization). All three originally-listed bridge ingredients (1, 2a, 2b) are now formally proved. The remaining obstruction is purely algebraic: case analysis on rational roots of f distinct from α. File builds cleanly (Docker, lean 4.26.0) with 1 axiom, 0 sorries.",
+    "progressSummary": "PROGRESS (Session 12, 2026-05-08): Added Part IV.9 — the UNIFORM polynomial evaluation lower bound. The pre-existing padicNorm_poly_eval_bound (Part III) was a TRIVIAL witness (C depending on r,s) — useless for the bridge. Part IV.9 supplies the genuinely uniform bound `padicNorm p (f.eval (r/s)) ≥ 1/(intPolyL1 f · H^d)` where the constant 1/intPolyL1 f depends only on f. New definitions: intPolyL1 (L¹ norm of integer coefficients as ℕ), intPolyHomogEval (integer 'homogenized evaluation' ∑ aᵢ·r^i·s^(d-i)). New theorems: intPolyL1_pos, intPolyHomogEval_cast_eq (↑intPolyHomogEval = s^d · f.eval(r/s) in ℚ via aeval+eval_map+eval₂_eq_sum+sum_def + per-term pow split), intPolyHomogEval_natAbs_le (|N| ≤ L · H^d via Finset triangle + Int.natAbs_mul/_pow + Nat.pow_le_pow_left), padicNorm_intCast_pow_le_one (padicNorm p (s^d) ≤ 1 by induction), padicNorm_int_poly_eval_uniform_lb (THE main result: chain Archimedean Complement + |N| bound + multiplicativity + one_div_le_one_div_of_le). Plus private helper natAbs_finset_sum_le proving (∑ aᵢ).natAbs ≤ ∑ aᵢ.natAbs by Finset.induction. With Parts IV.5 (norm transport), IV.7 (height bound), IV.8 (cofactor upper bound), and IV.9 (NEW: polynomial lower bound), all THREE bridge ingredients are now uniform-bound formal proofs. Remaining: rational-roots case analysis only. File builds cleanly (Docker, lean 4.26.0): 1 axiom, 0 sorries, 929 lines, 32 theorems, 6 defs.",
     "builtItems": [
       "IsPadicLiouville (LiouvilleTheoremOQ04.lean): definition with strict positivity 0 < ‖β - r/s‖ and height bound 2 ≤ max r.natAbs s.natAbs",
       "padic_liouville_estimate: proved via factorization + bridge axiom — exposes the standard (C/H^(2d)) lower bound",
@@ -47,7 +47,14 @@
       "padic_norm_int_div_le_height (Part IV.7, NEW Session 11): ‖((r:ℚ_[p])/s)‖ ≤ max(|r|,|s|) — ℚ_[p] version of height bound",
       "coeffNormSum + coeffNormSum_nonneg (Part IV.8, NEW Session 11): ∑ i ∈ support, ‖coeff i‖ — the cofactor magnitude",
       "padic_polynomial_eval_norm_bound (Part IV.8, NEW Session 11): ‖g.eval x‖ ≤ coeffNormSum p g · H^(natDegree g) for g : Polynomial ℚ_[p], 1 ≤ H, ‖x‖ ≤ H — general form",
-      "padic_cofactor_bound_rat (Part IV.8, NEW Session 11): rational-point specialization with H = max(|r|,|s|) and 2 ≤ H — direct fit for IsPadicLiouville"
+      "padic_cofactor_bound_rat (Part IV.8, NEW Session 11): rational-point specialization with H = max(|r|,|s|) and 2 ≤ H — direct fit for IsPadicLiouville",
+      "intPolyL1 + intPolyL1_pos (Part IV.9, NEW Session 12): L¹ norm ∑ |aᵢ| of integer coefficients (ℕ-valued); positive for nonzero polynomial",
+      "intPolyHomogEval (Part IV.9, NEW Session 12): integer ∑ aᵢ·r^i·s^(d-i); equals s^d · f(r/s) in ℚ by construction",
+      "intPolyHomogEval_cast_eq (Part IV.9, NEW Session 12): ↑(intPolyHomogEval f r s) = s^d · (f.map alg).eval (r/s) — proven via aeval_def + eval_map + eval₂_eq_sum + sum_def + per-term pow split + field_simp + ring",
+      "intPolyHomogEval_natAbs_le (Part IV.9, NEW Session 12): |intPolyHomogEval| ≤ intPolyL1 f · max(|r|,|s|)^d via Finset triangle + Int.natAbs multiplicativity + Nat.pow_le_pow_left",
+      "natAbs_finset_sum_le (Part IV.9, NEW Session 12, private): triangle (∑ aᵢ).natAbs ≤ ∑ aᵢ.natAbs over a Finset, by induction",
+      "padicNorm_intCast_pow_le_one (Part IV.9, NEW Session 12, private): padicNorm p ((s:ℚ)^d) ≤ 1 by induction on d",
+      "padicNorm_int_poly_eval_uniform_lb (Part IV.9, NEW Session 12, MAIN RESULT): UNIFORM lower bound 1/(intPolyL1 f · H^d) ≤ padicNorm p ((f.map alg).eval (r/s)) for nonzero f, s, eval — the structural piece making bridge discharge possible"
     ],
     "insights": [
       "IsPadicLiouville needs both 2 ≤ max(|r|,|s|) and 0 < ‖β - r/s‖. Without H≥2, bound 1/H^n=1 gives no useful constraint. Without strict positivity, every rational is trivially Liouville (r/s = β gives ‖β - r/s‖ = 0).",
@@ -57,7 +64,10 @@
       "Polynomial evaluation transport ℚ → ℚ_[p] is one line via Polynomial.aeval_algHom_apply applied to (Rat.castHom ℚ_[p]).toIntAlgHom : ℚ →ₐ[ℤ] ℚ_[p]; no manual map_map / eval_map gymnastics needed.",
       "Lean 4.26 API drift in this file: padicNorm.pos removed (use nonneg + nonzero), div_lt_div_right → div_lt_div_iff_of_pos_right, pow_le_pow_left → pow_le_pow_left₀. Also `set H : ℕ` no longer unifies with real-valued max output of `hbound`; switch to `set H : ℝ`.",
       "Session 11: When transporting `‖((r:ℚ_[p])/s)‖` to a padicNorm bound, the natural cast manipulation `push_cast; rfl` to prove `((r:ℚ_[p])/s) = (((r:ℚ)/s):ℚ_[p])` works for the equation but a subsequent `rw [hcast]` inside `‖·‖` triggers a deterministic isDefEq timeout (heartbeat exhaustion). The robust pattern: avoid the cast equation, instead `rw [norm_div]` first, then use a separate `padic_norm_intCast_eq_padicNorm` helper (proved with `norm_cast` for the integer-cast bridge) on each integer norm individually.",
-      "Session 11: A `padicNorm.div`-style multiplicativity rewrite produces a clean ℚ-statement; combining with the Archimedean Complement (lower bound on `padicNorm p s`) gives the height bound `padicNorm p (r/s) ≤ |s|` directly. The cleanest proof uses `div_le_iff₀ hs_norm_pos` to transform the goal to `padicNorm p r ≤ |s| · padicNorm p s` and then `mul_inv_cancel₀`."
+      "Session 11: A `padicNorm.div`-style multiplicativity rewrite produces a clean ℚ-statement; combining with the Archimedean Complement (lower bound on `padicNorm p s`) gives the height bound `padicNorm p (r/s) ≤ |s|` directly. The cleanest proof uses `div_le_iff₀ hs_norm_pos` to transform the goal to `padicNorm p r ≤ |s| · padicNorm p s` and then `mul_inv_cancel₀`.",
+      "Session 12: The pre-existing 'polynomial evaluation bound' Part III was a TRIVIAL witness — `C := padicNorm p (eval) · H^d` depends on r, s. This made the bridge axiom mathematically un-discharge-able with the existing lemmas. Part IV.9 fills this gap structurally: the uniform witness `1/intPolyL1 f` depends only on f, so the bridge constant `(1/L)/M · 1/H^(2d)` is a single number depending only on f and α (via g = f.map alg / (X-α)).",
+      "Session 12: The 'homogenized evaluation' pattern `N = ∑ aᵢ · r^i · s^(d-i) = s^d · f(r/s)` is the classical 'clear denominators' trick. The Lean translation of the rational identity `(N : ℚ) = s^d · f(r/s)` reduces (per term) to `r^i · s^(d-i) = s^d · (r/s)^i`, which is closed by `pow_split` (`s^d = s^(d-i)·s^i`) + `div_pow` + `field_simp` + `ring`. Avoids the more invasive `Polynomial.scaleRoots` machinery.",
+      "Session 12: Lean 4 Mathlib (4.26.0) lacks a direct `Finset.natAbs_sum_le`. Built `natAbs_finset_sum_le` privately by `Finset.induction_on`: empty case `simp`, insert case `Int.natAbs_add_le _ _` then `Nat.add_le_add_left`. Useful primitive for any 'L¹ on integer Finset sums' pattern."
     ],
     "mathlibGaps": [
       "Direct Mathlib lemma for `‖(z:ℤ):ℚ_[p]‖ = padicNorm p (z:ℚ)` (we proved padic_norm_intCast_eq_padicNorm as a wrapper around `norm_rat_eq_padicNorm` + `norm_cast`)",
@@ -65,9 +75,9 @@
       "Polynomial evaluation norm bound `‖g.eval x‖ ≤ M · max(1, ‖x‖)^(deg g)` for normed semirings (we proved padic_polynomial_eval_norm_bound directly via norm_sum_le)"
     ],
     "nextSteps": [
-      "Discharge padic_liouville_norm_bridge as a theorem: case-split on f(r/s) = 0. (Case f(r/s) ≠ 0): combine padic_norm_int_poly_eval + padicNorm_poly_eval_bound + padic_cofactor_bound_rat. (Case f(r/s) = 0 with r/s ≠ α): take min over the finite rational-root set.",
-      "Likely helper: a polynomial-roots-in-ℚ enumeration lemma producing the finite set {r/s : ℚ | f(r/s) = 0} as a Finset, then min_of_nonempty over distances ‖α - r₀‖.",
-      "After bridge discharge: the file will be axiom-free (verified status). Update meta.json status from 'axiomatized' to 'verified' and badge from 'axiom' to 'verified'."
+      "Discharge padic_liouville_norm_bridge as a theorem using Part IV.9. Case-split on f.eval(r/s) = 0 over ℚ: (≠ 0): chain padic_norm_int_poly_eval (Part IV.5) + padicNorm_int_poly_eval_uniform_lb (NEW IV.9, gives 1/(L·H^d) lower bound) + padic_cofactor_bound_rat (Part IV.8, gives M·H^d upper bound) → divide to get ‖α-r/s‖ ≥ (1/L)/M · 1/H^(2d-1) ≥ (1/L)/M · 1/H^(2d). (= 0): r/s is a rational root with (r/s:ℚ_[p]) ≠ α; take min over the finite filtered set.",
+      "Helper to build: form Polynomial.aroots f ℚ (multiset of rational roots), .toFinset (using Decidable on ℚ), filter to (q:ℚ_[p]) ≠ α, take Finset.inf' of fun q => ‖α - (q:ℚ_[p])‖. Estimated ~50-100 lines.",
+      "After bridge discharge: the file will be axiom-free (verified status). Update meta.json status from 'axiomatized' to 'verified' and badge from 'axiom' to 'verified' (or 'original' since this is a from-scratch p-adic Liouville)."
     ]
   },
   "tags": [
@@ -87,7 +97,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.505Z",
-  "lastUpdate": "2026-05-08T01:00:00.000Z",
+  "lastUpdate": "2026-05-08T03:50:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -105,10 +115,10 @@
     {
       "path": "Proofs/LiouvilleTheoremOQ04.lean",
       "filename": "LiouvilleTheoremOQ04.lean",
-      "lineCount": 732,
-      "theoremCount": 26,
+      "lineCount": 929,
+      "theoremCount": 32,
       "axiomCount": 1,
-      "defCount": 4,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
