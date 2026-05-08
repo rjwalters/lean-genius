@@ -441,6 +441,169 @@ theorem koenigsmann_implies_complement_existentialUniversal :
     hPi2
 
 -- ============================================================
+-- Part VIII.5 (iter 5): Symmetric duality forms — Σ₁ vs Π₁(¬·) and Σ₂ vs Π₂(¬·)
+-- ============================================================
+
+/-- **Symmetric Σ₁/Π₁ duality** (iteration 5):
+
+    A subset `S` is Π₁-definable iff its complement `¬ S` is Σ₁-definable.
+
+    This is the symmetric companion of `diophantine_iff_codiophantine_complement`
+    (which states `S ∈ Σ₁ ⟺ ¬S ∈ Π₁`). Together, the two forms exhibit the
+    Σ₁/Π₁ duality as an involutive bijection (modulo classical
+    double-negation), and either direction implies the other via the
+    `_iff_of_pred_iff` congruence and the bridge `S q ↔ ¬¬ S q`.
+
+    Proved here directly (no congruence detour) — same structural pattern
+    as the Σ₁→Π₁ direction, with one classical step. -/
+theorem codiophantine_iff_diophantine_complement (S : RatSubset) :
+    IsCoDiophantineDefinition S ↔ IsDiophantineDefinition (fun q => ¬ S q) := by
+  constructor
+  · intro h
+    obtain ⟨P, hP⟩ := h
+    refine ⟨P, fun q => ?_⟩
+    -- need: ¬ S q ↔ hasRationalSolution (P q)
+    -- hP q : S q ↔ ¬ hasRationalSolution (P q)
+    refine ⟨fun hnSq => ?_, fun hsol hSq => ?_⟩
+    · apply Classical.byContradiction
+      intro hnsol
+      exact hnSq ((hP q).mpr hnsol)
+    · exact ((hP q).mp hSq) hsol
+  · intro h
+    obtain ⟨P, hP⟩ := h
+    refine ⟨P, fun q => ?_⟩
+    -- need: S q ↔ ¬ hasRationalSolution (P q)
+    -- hP q : ¬ S q ↔ hasRationalSolution (P q)
+    refine ⟨fun hSq hsol => ?_, fun hnsol => ?_⟩
+    · exact ((hP q).mpr hsol) hSq
+    · apply Classical.byContradiction
+      intro hnSq
+      exact hnsol ((hP q).mp hnSq)
+
+/-- **Symmetric Σ₂/Π₂ duality** (iteration 5):
+
+    A subset `S` is Π₂-definable iff its complement `¬ S` is Σ₂-definable.
+
+    Higher-level analog of `codiophantine_iff_diophantine_complement`.
+    Symmetric companion of `existentialUniversal_iff_universalExistential_complement`.
+
+    Proof: derived as a corollary of the existing duality applied to `¬ S`,
+    using the Π₂ congruence helper to rewrite `¬¬ S` back to `S`.
+    No new axioms; pure classical-logic glue. -/
+theorem universalExistential_iff_existentialUniversal_complement (S : RatSubset) :
+    IsUniversalExistentialDefinition S ↔
+      IsExistentialUniversalDefinition (fun q => ¬ S q) := by
+  have hbridge : ∀ q : Rat, S q ↔ ¬ ¬ S q :=
+    fun q => ⟨fun hSq hnSq => hnSq hSq, fun hnnSq => Classical.byContradiction hnnSq⟩
+  have hStep1 : IsUniversalExistentialDefinition S ↔
+      IsUniversalExistentialDefinition (fun q => ¬ ¬ S q) :=
+    universalExistentialDefinition_iff_of_pred_iff hbridge
+  have hStep2 : IsUniversalExistentialDefinition (fun q => ¬ ¬ S q) ↔
+      IsExistentialUniversalDefinition (fun q => ¬ S q) :=
+    (existentialUniversal_iff_universalExistential_complement (fun q => ¬ S q)).symm
+  exact hStep1.trans hStep2
+
+-- ============================================================
+-- Part VIII.6 (iter 5): Trivial-set definability across all four classes
+-- ============================================================
+
+/-- The "always-zero" rational polynomial — a witness that the trivial
+    equation `0 = 0` always has a rational solution. Used as a building
+    block for trivial-set Σ₁/Π₂ membership. -/
+private def zeroPoly : RatDiophantinePoly := fun _ => 0
+
+/-- The "always-one" rational polynomial — a witness that the trivial
+    equation `1 = 0` never has a rational solution. Used as a building
+    block for trivial-set Π₁/Σ₂ membership and complement constructions. -/
+private def onePoly : RatDiophantinePoly := fun _ => 1
+
+private theorem hasRationalSolution_zeroPoly : hasRationalSolution zeroPoly :=
+  ⟨fun _ => 0, rfl⟩
+
+private theorem rat_one_ne_zero : (1 : Rat) ≠ 0 := by decide
+
+private theorem not_hasRationalSolution_onePoly : ¬ hasRationalSolution onePoly := by
+  rintro ⟨_, h⟩
+  exact rat_one_ne_zero (show (1 : Rat) = 0 from h)
+
+/-- The empty subset of ℚ (predicate `False`) is Σ₁-definable. Witness:
+    the always-one polynomial, which has no rational solution.
+
+    Foundational closure-under-emptiness fact for the Σ₁ class. -/
+theorem empty_isDiophantineDefinition :
+    IsDiophantineDefinition (fun _ : Rat => False) := by
+  refine ⟨fun _ => onePoly, fun q => ?_⟩
+  exact ⟨False.elim, fun h => not_hasRationalSolution_onePoly h⟩
+
+/-- The empty subset of ℚ is Π₁-definable. Witness: the always-zero
+    polynomial, which always has a rational solution; its negation is
+    therefore always false. -/
+theorem empty_isCoDiophantineDefinition :
+    IsCoDiophantineDefinition (fun _ : Rat => False) := by
+  refine ⟨fun _ => zeroPoly, fun q => ?_⟩
+  exact ⟨False.elim, fun hnsol => hnsol hasRationalSolution_zeroPoly⟩
+
+/-- The full subset of ℚ (predicate `True`) is Σ₁-definable. Witness:
+    the always-zero polynomial, whose rational solution set is all of ℚᵏ. -/
+theorem universe_isDiophantineDefinition :
+    IsDiophantineDefinition (fun _ : Rat => True) := by
+  refine ⟨fun _ => zeroPoly, fun q => ?_⟩
+  exact ⟨fun _ => hasRationalSolution_zeroPoly, fun _ => trivial⟩
+
+/-- The full subset of ℚ is Π₁-definable. Witness: the always-one
+    polynomial, whose negation is always true (no rational solution). -/
+theorem universe_isCoDiophantineDefinition :
+    IsCoDiophantineDefinition (fun _ : Rat => True) := by
+  refine ⟨fun _ => onePoly, fun q => ?_⟩
+  exact ⟨fun _ => not_hasRationalSolution_onePoly, fun _ => trivial⟩
+
+/-- The empty subset of ℚ is Π₂-definable.
+
+    Witness: the polynomial `P(q, y, x) = 1`, which never vanishes; the
+    inner existential `∃ x, P(q, y, x) = 0` is therefore false for every
+    `y`, and `Nat → Rat` is inhabited (by `fun _ => 0`), so the outer
+    universal quantifier `∀ y, False` is `False`. -/
+theorem empty_isUniversalExistentialDefinition :
+    IsUniversalExistentialDefinition (fun _ : Rat => False) := by
+  refine ⟨fun _ _ => onePoly, fun q => ?_⟩
+  refine ⟨False.elim, fun hAll => ?_⟩
+  exact not_hasRationalSolution_onePoly (hAll (fun _ => 0))
+
+/-- The full subset of ℚ is Π₂-definable.
+
+    Witness: the polynomial `P(q, y, x) = 0`, whose inner existential
+    block `∃ x, 0 = 0` is true for every `y`; the outer universal is then
+    vacuously true. -/
+theorem universe_isUniversalExistentialDefinition :
+    IsUniversalExistentialDefinition (fun _ : Rat => True) := by
+  refine ⟨fun _ _ => zeroPoly, fun q => ?_⟩
+  exact ⟨fun _ _ => hasRationalSolution_zeroPoly, fun _ => trivial⟩
+
+/-- The empty subset of ℚ is Σ₂-definable. Derivable from the Π₂ universe
+    fact via the symmetric Σ₂/Π₂ duality: `Σ₂(∅) ⟺ Π₂(¬∅) = Π₂(univ)`. -/
+theorem empty_isExistentialUniversalDefinition :
+    IsExistentialUniversalDefinition (fun _ : Rat => False) := by
+  have hbridge : ∀ q : Rat, ¬ (fun _ : Rat => False) q ↔ (fun _ : Rat => True) q :=
+    fun q => ⟨fun _ => trivial, fun _ hF => hF⟩
+  have hPi2 : IsUniversalExistentialDefinition (fun q => ¬ (fun _ : Rat => False) q) :=
+    (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr
+      universe_isUniversalExistentialDefinition
+  exact (existentialUniversal_iff_universalExistential_complement
+    (fun _ : Rat => False)).mpr hPi2
+
+/-- The full subset of ℚ is Σ₂-definable. Derivable from the Π₂ empty
+    fact via the symmetric Σ₂/Π₂ duality: `Σ₂(univ) ⟺ Π₂(¬univ) = Π₂(∅)`. -/
+theorem universe_isExistentialUniversalDefinition :
+    IsExistentialUniversalDefinition (fun _ : Rat => True) := by
+  have hbridge : ∀ q : Rat, ¬ (fun _ : Rat => True) q ↔ (fun _ : Rat => False) q :=
+    fun q => ⟨fun hnT => hnT trivial, fun hF _ => hF⟩
+  have hPi2 : IsUniversalExistentialDefinition (fun q => ¬ (fun _ : Rat => True) q) :=
+    (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr
+      empty_isUniversalExistentialDefinition
+  exact (existentialUniversal_iff_universalExistential_complement
+    (fun _ : Rat => True)).mpr hPi2
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -487,7 +650,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (16)
+## Theorems in THIS file (26)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -505,6 +668,16 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `coDiophantineDefinition_iff_of_pred_iff` (Π₁ class congruence, iter 4)
   - `existentialUniversalDefinition_iff_of_pred_iff` (Σ₂ class congruence, iter 4)
   - `koenigsmann_implies_complement_existentialUniversal` (Σ₂(ℚ\ℤ) corollary)
+  - `codiophantine_iff_diophantine_complement` (Π₁/Σ₁ symmetric duality, iter 5)
+  - `universalExistential_iff_existentialUniversal_complement` (Π₂/Σ₂ symmetric duality, iter 5)
+  - `empty_isDiophantineDefinition` (∅ is Σ₁, iter 5)
+  - `empty_isCoDiophantineDefinition` (∅ is Π₁, iter 5)
+  - `universe_isDiophantineDefinition` (ℚ is Σ₁, iter 5)
+  - `universe_isCoDiophantineDefinition` (ℚ is Π₁, iter 5)
+  - `empty_isUniversalExistentialDefinition` (∅ is Π₂, iter 5)
+  - `universe_isUniversalExistentialDefinition` (ℚ is Π₂, iter 5)
+  - `empty_isExistentialUniversalDefinition` (∅ is Σ₂, iter 5)
+  - `universe_isExistentialUniversalDefinition` (ℚ is Σ₂, iter 5)
 -/
 
 #check @IsDiophantineDefinition
@@ -522,5 +695,15 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @coDiophantineDefinition_iff_of_pred_iff
 #check @existentialUniversalDefinition_iff_of_pred_iff
 #check @koenigsmann_implies_complement_existentialUniversal
+#check @codiophantine_iff_diophantine_complement
+#check @universalExistential_iff_existentialUniversal_complement
+#check @empty_isDiophantineDefinition
+#check @empty_isCoDiophantineDefinition
+#check @universe_isDiophantineDefinition
+#check @universe_isCoDiophantineDefinition
+#check @empty_isUniversalExistentialDefinition
+#check @universe_isUniversalExistentialDefinition
+#check @empty_isExistentialUniversalDefinition
+#check @universe_isExistentialUniversalDefinition
 
 end Hilbert10Rationals
