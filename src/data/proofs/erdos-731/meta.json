@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/731",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 357,
+    "lineCount": 384,
     "mathlibDependencies": [
       {
         "theorem": "Nat.choose",
@@ -41,7 +41,7 @@
     ],
     "assumptions": "1 axiom declaration: prime_divides_central_iff (Kummer's carry characterization: p | C(2n,n) iff some base-p digit of n is ≥ ⌈p/2⌉). Proved: choose_dvd_lcm (C(N,k) divides lcm(1,...,N+1), via Nat.factorization_choose_le_log), upper_bound_trivial (least non-divisor ≤ 2n+1, by contradiction using choose_dvd_lcm), two_divides_central (Pascal+symmetry), bertrand_central (Bertrand+dvd_choose_add), central_binom_lower (binomial sum+max term). Note: choose_dvd_lcm and upper_bound_trivial are NOT axioms — both are fully proved theorems in the file.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 24,
+    "theoremCount": 28,
     "definitionCount": 3
   },
   "overview": {
@@ -145,9 +145,9 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 357,
+    "lineCount": 384,
     "axiomCount": 1,
-    "theoremCount": 24,
+    "theoremCount": 28,
     "definitionCount": 3,
     "path": "Proofs/Erdos731Problem.lean",
     "sorries": 0
