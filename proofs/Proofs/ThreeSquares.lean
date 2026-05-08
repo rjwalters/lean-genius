@@ -254,6 +254,54 @@ lemma four_mul_sum_three_sq {n : ℕ} (h : ∃ a b c : ℤ, a^2 + b^2 + c^2 = n)
   rw [this, hab]
   simp
 
+/-- **Reverse 4-scaling**: if `4n` is a sum of three integer squares, so is `n`.
+
+Given `4n = a² + b² + c²`, divisibility by 4 forces each of `a, b, c` to be even
+(by `four_dvd_sum_three_sq_implies_even`). Writing `a = 2a'`, `b = 2b'`, `c = 2c'`
+yields `4(a'² + b'² + c'²) = 4n`, hence `n = a'² + b'² + c'²`.
+
+Companion to `four_mul_sum_three_sq`: together they give `sum_three_sq_iff_four_mul`,
+the iff-form. This is the descent direction used implicitly in the necessity proof
+(`excluded_form_not_sum_three_sq`) at the integer level; this lemma exposes it as
+a stand-alone reduction usable by the sufficiency proof. -/
+lemma sum_three_sq_of_four_mul {n : ℕ}
+    (h : ∃ a b c : ℤ, a^2 + b^2 + c^2 = (4 * n : ℕ)) :
+    ∃ a b c : ℤ, a^2 + b^2 + c^2 = n := by
+  obtain ⟨a, b, c, hab⟩ := h
+  -- 4 ∣ a² + b² + c²
+  have hdvd : (4 : ℤ) ∣ a^2 + b^2 + c^2 := by
+    rw [hab]; exact ⟨n, by push_cast; ring⟩
+  obtain ⟨ha, hb, hc⟩ := four_dvd_sum_three_sq_implies_even a b c hdvd
+  obtain ⟨a', ha_eq⟩ := ha
+  obtain ⟨b', hb_eq⟩ := hb
+  obtain ⟨c', hc_eq⟩ := hc
+  refine ⟨a', b', c', ?_⟩
+  -- Substitute a = 2a', b = 2b', c = 2c' in hab
+  rw [ha_eq, hb_eq, hc_eq] at hab
+  -- Cast (4 * n : ℕ) → (4 * (n : ℤ))
+  have hcast : ((4 * n : ℕ) : ℤ) = 4 * (n : ℤ) := by push_cast; ring
+  rw [hcast] at hab
+  -- LHS = 4 · (a'² + b'² + c'²)
+  have hlhs : (2 * a')^2 + (2 * b')^2 + (2 * c')^2 = 4 * (a'^2 + b'^2 + c'^2) := by ring
+  rw [hlhs] at hab
+  -- 4 · X = 4 · n in ℤ ⟹ X = n
+  have h4 : (4 : ℤ) ≠ 0 := by norm_num
+  have h_eq : a'^2 + b'^2 + c'^2 = (n : ℤ) := mul_left_cancel₀ h4 hab
+  exact_mod_cast h_eq
+
+/-- **Iff form**: `n` is a sum of three integer squares iff `4n` is.
+
+Combines `four_mul_sum_three_sq` (forward) with `sum_three_sq_of_four_mul` (reverse).
+Lets the sufficiency proof normalise `n` modulo the action of `4` — combined with
+`Nat.exists_eq_two_pow_mul_odd` and the descent in the necessity direction, the
+case analysis for `not_excluded_form_is_sum_three_sq` can assume `n` is not divisible
+by `4`, leaving residue classes `n % 8 ∈ {1, 2, 3, 5, 6}` (the cases targeted by
+`dirichlet_key_lemma` for `d ∈ {1, 2}`). -/
+lemma sum_three_sq_iff_four_mul {n : ℕ} :
+    (∃ a b c : ℤ, a^2 + b^2 + c^2 = n) ↔
+    (∃ a b c : ℤ, a^2 + b^2 + c^2 = (4 * n : ℕ)) :=
+  ⟨four_mul_sum_three_sq, sum_three_sq_of_four_mul⟩
+
 /-- **Square scaling**: If m is a sum of 3 squares, so is k²m.
 This is the "easy direction" of the square-free reduction.
 Combined with the reverse (which requires more work), this allows reducing
