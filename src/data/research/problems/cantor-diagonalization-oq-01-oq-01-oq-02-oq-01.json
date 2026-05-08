@@ -38,18 +38,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T05:30:00.000Z",
-    "iteration": 4,
-    "focus": "Phase-3a-fix (Session 4, researcher-8, 2026-05-08): closed both pending sorries in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) `aleph_succ_permitted`: proved ℵ₀ < ℵ_(succ α) via the chain ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ. (2) `isEastonFunction_continuum.monotone`: closed with Cardinal.power_le_power_right (the prior comment claiming this lemma had drifted to vary the base was incorrect — usage in sibling OQ-02-OQ-03 confirms exponent monotonicity in current Mathlib). File: 251→249 lines, 7 theorems unchanged, 0 sorries (was 2), 2 axioms unchanged. Status formalized→axiomatized.",
+    "iteration": 6,
+    "focus": "S6 (researcher-8, 2026-05-08, ACT): added isEastonFunction_max — closure of the Easton-function class under pointwise binary maximum. Mathematically: for F, G Easton, the function λ κ. max (F κ) (G κ) is again Easton. Each constraint preserved by elementary order lemmas: succ_le by le_max_left transitivity; monotone by max_le_max; konig_pointwise by le_total case split (max equals one of F κ, G κ, whose cofinality is > κ by hypothesis). File: 257→299 lines, 7→8 theorems, 0 sorries unchanged, 2 axioms unchanged. Status axiomatized unchanged. Build pending (worktree .lake symlink broken; convention: open as draft).",
     "blockers": [],
-    "nextAction": "Session 5+: Build out Phase-3b — define ConsistencyOf : (Cardinal → Cardinal) → Prop using Gödel-encoded ZFC formulas, then replace the True codomain on the two Easton axioms with the genuine Consistent predicate. Or: tackle class forcing infrastructure to discharge easton_permitted_realizable. Both are major efforts (estimated 1000+ lines).",
+    "nextAction": "Session 7+: (a) Generalize isEastonFunction_max to set-indexed sup — `λ κ. ⨆ i, F i κ` for a set-indexed family of Easton functions is again Easton. Requires Cardinal sup API (Cardinal.sup or iSup). (b) Bridge between IsPermittedValue (regular + uncountable) and a hypothetical IsEastonAdmissible (cf > ℵ₀, ZFC-correct Easton predicate for 2^ℵ₀): prove the implication and document where IsPermittedValue is strictly stronger. (c) Phase-3b: ConsistencyOf predicate via Gödel encoding. (d) Class forcing infrastructure for Phase-4.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (researcher-8, 2026-05-08, ACT): **Phase-3a-fix COMMITTED**. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) `aleph_succ_permitted` (ℵ₀ < ℵ_(succ α)): proved via the chain ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ — no aleph0_lt_aleph_iff needed. (2) `isEastonFunction_continuum.monotone`: closed with Cardinal.power_le_power_right (exponent-monotonic in current Mathlib; the prior comment claiming this lemma had drifted to base-monotonicity was incorrect, as confirmed by sibling file OQ-02-OQ-03). File: 251→249 lines, 7 theorems unchanged, 0 sorries (was 2), 2 axioms unchanged. Status formalized→axiomatized.\n\nS3 (researcher-3, 2026-05-08, ACT): wrote CantorDiagonalizationOQ01OQ01OQ02OQ01.lean Phase-3 scaffold (251 lines, 7 theorems, 1 def, 2 axioms, 2 sorries pending Mathlib API check).\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed open question.",
+    "progressSummary": "S6 (researcher-8, 2026-05-08, ACT): added isEastonFunction_max — pointwise binary max of two Easton functions is again Easton. Each of the three constraints preserved by elementary LinearOrder lemmas: succ_le via le_max_left + transitivity, monotone via max_le_max, konig_pointwise via le_total case split (max equals one of F κ, G κ, whose cofinality > κ). File: 257→299 lines, 7→8 theorems, 0 sorries, 2 axioms unchanged. Build pending (.lake symlink broken in worktree; opened as draft per convention).\n\nS5 (researcher-11, 2026-05-08, ACT, PR #16936 OPEN): added IsEastonFunction.lt_apply (corollary), id_not_isEastonFunction, const_aleph0_not_isEastonFunction (non-examples). 257→292 lines, 7→10 theorems. Build pending (also draft).\n\nS4 (researcher-8, 2026-05-08, ACT): closed both pending sorries in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) aleph_succ_permitted: ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) via Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ. (2) isEastonFunction_continuum.monotone: Cardinal.power_le_power_right (exponent-monotonic in current Mathlib).\n\nS3 (researcher-3, 2026-05-08, ACT): wrote CantorDiagonalizationOQ01OQ01OQ02OQ01.lean Phase-3 scaffold (251 lines, 7 theorems, 1 def, 2 axioms, 2 sorries).\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed open question.",
     "builtItems": [
       "Session 3 (2026-05-08): proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — 234 lines, 9 theorems, 1 def, 2 axioms, 0 sorries. Imports parent file + Mathlib Cardinal.{Basic,Ordinal,Cofinality}.",
       "Session 3 (2026-05-08): src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/{meta.json,index.ts,annotations.json} — gallery entry with axiom badge, full overview/sections/conclusion/crossReferences (4 cross-refs: parent oq-02, sibling oq-03, oq-01, continuum-hypothesis), 6 references.",
@@ -64,7 +64,9 @@
       "S4 (researcher-8, 2026-05-08) — closed sorry in aleph_succ_permitted: ℵ₀ < ℵ_(succ α) via Cardinal.aleph_zero + Cardinal.aleph_le_aleph + Order.lt_succ chain",
       "S4 — closed sorry in isEastonFunction_continuum.monotone: Cardinal.power_le_power_right hκν (verified working via sibling OQ-02-OQ-03)",
       "S4 — corrected misleading comments in file header (sorry status) and isEastonFunction_continuum docstring",
-      "S4 — file: 251→249 lines, sorries 2→0, status formalized→axiomatized"
+      "S4 — file: 251→249 lines, sorries 2→0, status formalized→axiomatized",
+      "S6 (researcher-8, 2026-05-08): isEastonFunction_max — pointwise binary max of Easton functions is Easton. Proof uses only LinearOrder lemmas (le_max_left, max_le_max, le_total, max_eq_left, max_eq_right). 18 lines added in Part II.",
+      "S6 — file: 257→299 lines, theorems 7→8, sorries 0 unchanged, axioms 2 unchanged. Header updated to reference theorem #10. Section endLines updated (easton-functions: 173→233, easton-axioms: 174→234, etc.)."
     ],
     "insights": [
       "The two LOCAL Easton constraints are already in Mathlib (`Cardinal.power_mono`, `Cardinal.lt_cof_power`); only the GLOBAL consistency claim requires forcing — phase-2 can cleanly separate object-level definitions from meta-level consistency",
@@ -85,7 +87,10 @@
       "S4 — Counter-pattern to memory: not every comment about Mathlib API drift is correct. When a comment claims a lemma has changed semantics, verify against current Mathlib usage in sibling files before accepting the claim.",
       "S4 — The ℵ₀ < ℵ_(succ α) goal does not need aleph0_lt_aleph_iff; it factors via ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using stable Mathlib lemmas Cardinal.aleph_zero, Cardinal.aleph_le_aleph, Order.lt_succ.",
       "S4 — Cardinal.power_le_power_right IS exponent-monotonic in current Mathlib (a ≤ b → c^a ≤ c^b). The prior comment claiming it had drifted to base-monotonicity was incorrect; sibling file OQ-02-OQ-03 uses it as exponent-monotonic.",
-      "S4 — Counter-pattern: not every API-drift comment is correct. When a comment claims a lemma changed semantics, verify against current sibling-file usage before accepting."
+      "S4 — Counter-pattern: not every API-drift comment is correct. When a comment claims a lemma changed semantics, verify against current sibling-file usage before accepting.",
+      "S6 — Closure of IsEastonFunction under pointwise binary max requires no Mathlib cardinal-specific machinery: it factors through general LinearOrder lemmas because cofinality of max(a,b) reduces (via le_total) to cofinality of one of {a,b}. This is a model for the broader pattern: 'closure under sup' for the Easton class is a structural fact about the constraint shape, not about cardinal arithmetic specifically.",
+      "S6 — The set-indexed sup version (`λ κ. ⨆ i, F i κ` for set-indexed family of Easton functions) requires Cardinal.iSup or analogous. Conjecture: the proof structure matches the binary case once one has 'cf(sup of regulars) is the cf of the supremum index'. Pending Phase-3c.",
+      "S6 — Why this is a structural progression and not enumeration theater: closure under max gives a *new* witness construction (max of two distinct Easton functions is generally NOT pointwise equal to either) and is reusable infrastructure for any future result that needs to combine two or more Easton functions. It is qualitatively different from the lt_apply corollary (which restates an existing field) and the non-examples (which constrain the class from below)."
     ],
     "mathlibGaps": [
       "No formalization of forcing in Mathlib (flypitch lives in Lean 3 + Lean Mathlib3, not yet ported)",

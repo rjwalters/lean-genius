@@ -38,11 +38,13 @@ and develop the object-level scaffold around it.
    current Mathlib, `_right` varies the base), (E3) König via
    `Cardinal.lt_cof_power`)
 9. `isEastonFunction_nonempty` — the constraint set is non-vacuous
+10. `isEastonFunction_max` — the Easton-function class is closed under
+    pointwise binary maximum (structural closure result)
 
 ## What This File Axiomatizes (proof requires class forcing)
 
-10. `easton_permitted_realizable` — every permitted value is realizable
-11. `easton_consistency` — every Easton function is realizable
+11. `easton_permitted_realizable` — every permitted value is realizable
+12. `easton_consistency` — every Easton function is realizable
 
 The True codomain on these axioms is a placeholder. A future Phase-3b
 file will introduce `ConsistencyOf : (Cardinal → Cardinal) → Prop`
@@ -190,6 +192,45 @@ theorem isEastonFunction_nonempty :
     ∃ F : Cardinal.{0} → Cardinal.{0}, IsEastonFunction F :=
   ⟨_, isEastonFunction_continuum⟩
 
+/-- **Closure under pointwise maximum**: if `F` and `G` are Easton functions,
+    then so is `λ κ. max (F κ) (G κ)`.
+
+    Mathematical content: each of the three Easton constraints is preserved
+    by binary max:
+
+    - (E1) `succ_le`: `Order.succ κ ≤ F κ ≤ max (F κ) (G κ)` by `le_max_left`.
+    - (E2) `monotone`: `max` is monotone in each argument, so the joint
+      monotonicity of `F` and `G` lifts via `max_le_max`.
+    - (E3) `konig_pointwise`: `max (F κ) (G κ)` equals whichever of `F κ`,
+      `G κ` is larger (linear order on `Cardinal`), so its cofinality
+      equals one of `(F κ).ord.cof`, `(G κ).ord.cof` — both `> κ` by
+      assumption, hence so is the max's cofinality.
+
+    Why this matters: Easton's spectrum is closed under pointwise
+    coarsening from above. The pointwise sup of a (set-indexed) family of
+    Easton functions inherits the constraints. The binary case isolates
+    the structural argument; the family case reduces to it by induction.
+    No new Mathlib API is needed beyond standard order lemmas
+    (`le_max_left`, `max_le_max`, `max_eq_left`, `max_eq_right`,
+    `le_total`). -/
+theorem isEastonFunction_max
+    {F G : Cardinal.{0} → Cardinal.{0}}
+    (hF : IsEastonFunction F) (hG : IsEastonFunction G) :
+    IsEastonFunction (fun κ => max (F κ) (G κ)) where
+  succ_le κ hreg hℵ₀ :=
+    (hF.succ_le κ hreg hℵ₀).trans (le_max_left _ _)
+  monotone κ ν hκ hν hℵ₀ hκν :=
+    max_le_max
+      (hF.monotone κ ν hκ hν hℵ₀ hκν)
+      (hG.monotone κ ν hκ hν hℵ₀ hκν)
+  konig_pointwise κ hreg hℵ₀ := by
+    -- Linear order: either F κ ≤ G κ or G κ ≤ F κ.
+    rcases le_total (F κ) (G κ) with h | h
+    · -- max (F κ) (G κ) = G κ
+      simpa [max_eq_right h] using hG.konig_pointwise κ hreg hℵ₀
+    · -- max (F κ) (G κ) = F κ
+      simpa [max_eq_left h] using hF.konig_pointwise κ hreg hℵ₀
+
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART III: EASTON CONSISTENCY — AXIOMATIZED (PROOF NEEDS CLASS FORCING)
@@ -251,6 +292,7 @@ PART IV: VERIFICATION
 #check @IsEastonFunction
 #check @isEastonFunction_continuum
 #check @isEastonFunction_nonempty
+#check @isEastonFunction_max
 #check @easton_permitted_realizable
 #check @easton_consistency
 

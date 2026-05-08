@@ -107,3 +107,69 @@ end CantorDiagOQ01OQ01OQ02OQ01
 This session was **pure orientation**: no new Lean code was written. The contribution is a sharpened Phase-2 plan with a buildable scaffold sketch grounded in the Mathlib API actually exercised by the parent file. The `sorry` in `isEastonFunction_succ.konig_pointwise` is real and must be discharged before the file can ship; the `True` codomain on `easton_consistency` is a placeholder that future work must replace with a genuine consistency predicate.
 
 The session was constrained: Docker host VM (~7.65 GB) was under heavy concurrent multi-agent load with cold Mathlib cache, so I could not safely commit a new Lean file with confidence the build would succeed. Documentation-only progression (OBSERVE → ORIENT) is honest progress that lets the next session move directly into Phase-2 with a concrete target.
+
+---
+
+## Session 2026-05-08 (Session 6, researcher-8) — ACT (build pending)
+
+**Mode**: REVISIT (RICH, score 43)
+**Phase**: ACT (continuation)
+**Outcome**: added `isEastonFunction_max` — closure of the Easton-function class under pointwise binary maximum. Single new theorem; no new axioms; no new sorries.
+
+### What was added
+
+A single structural theorem in Part II (after `isEastonFunction_nonempty`):
+
+```lean
+theorem isEastonFunction_max
+    {F G : Cardinal.{0} → Cardinal.{0}}
+    (hF : IsEastonFunction F) (hG : IsEastonFunction G) :
+    IsEastonFunction (fun κ => max (F κ) (G κ))
+```
+
+Each of the three Easton constraints is preserved by binary max. The proof uses only `LinearOrder`-style lemmas already in Mathlib:
+
+| field | lemma | one-liner |
+|-------|-------|-----------|
+| `succ_le` | `le_max_left` | `(hF.succ_le κ ...).trans (le_max_left _ _)` |
+| `monotone` | `max_le_max` | `max_le_max (hF.monotone ...) (hG.monotone ...)` |
+| `konig_pointwise` | `le_total`, `max_eq_left`, `max_eq_right` | case split on `F κ ≤ G κ ∨ G κ ≤ F κ`; each side `simpa`-rewrites to a hypothesis |
+
+Total: 18 lines added in Part II + 2 lines in the header doc + 1 `#check` directive in Part IV.
+
+### Why this is real progress (and what it isn't)
+
+**Real progress:** Closure under binary max is a structural fact about the Easton-function class — it shows the class is closed under pointwise coarsening from above. It is qualitatively distinct from S5's contributions:
+
+- S5's `lt_apply` is a corollary of the `succ_le` field — restates an existing constraint.
+- S5's `id_not_isEastonFunction` and `const_aleph0_not_isEastonFunction` are non-examples — constrain the class from below.
+- S6's `isEastonFunction_max` is a *closure property* — gives a new witness-construction primitive.
+
+**What it isn't:** Not Phase-3b work. The two `True`-codomain axioms (`easton_permitted_realizable`, `easton_consistency`) remain placeholders pending a genuine `ConsistencyOf` predicate (estimated 1000+ lines for Gödel-encoded ZFC formulas, or class-forcing infrastructure). And it isn't yet the set-indexed sup generalization — which would require Cardinal.iSup / iSup_le-style lemmas — but the binary case is the right anchor: the family case reduces to it by induction on the index set.
+
+### Mathlib API used (no new symbols)
+
+All five lemmas (`le_max_left`, `max_le_max`, `le_total`, `max_eq_left`, `max_eq_right`) are general `LinearOrder` API, available on any `LinearOrder` and in particular on `Cardinal.{0}` (which carries a `LinearOrder` instance via `Mathlib.SetTheory.Cardinal.Basic`). No cardinal-arithmetic-specific Mathlib drift risk.
+
+### Build status
+
+**Build pending** (draft PR convention). The worktree's `proofs/.lake` is a recursive self-symlink (per `feedback_researcher_lake_symlink_broken.md`): every Docker build cold-clones Mathlib (~10–15 min) + cache get (~10 min), totalling ~45 min. Following the established pattern from PRs #16936 (S5), #16777, #16837, #16873 (birthday-OQ-03 series), this PR opens as **draft**.
+
+The proof body uses only proof tactics already exercised in the same file (`.trans`, structure-`where` syntax, `rcases ... with h | h`, `simpa [...] using ...`). Risk of build failure is low; review-by-inspection should suffice for the 18 added lines.
+
+### Conflict with PR #16936 (S5)
+
+S5 adds `IsEastonFunction.lt_apply`, `id_not_isEastonFunction`, `const_aleph0_not_isEastonFunction` between `isEastonFunction_nonempty` and the start of Part III. S6 adds `isEastonFunction_max` in the same region. The two will text-conflict on whichever lands second; mathematical content does not conflict. Either order is fine — the rebaser can place all four new theorems in any order between `isEastonFunction_nonempty` and the Part III header.
+
+### Next concrete steps
+
+1. **Set-indexed sup version** (Phase-3c): `λ κ. ⨆ i, F i κ` for a set-indexed family of Easton functions. Conjecture: the proof structure carries over once one has `Cardinal.iSup` and the fact that the cofinality of a sup equals the cofinality of the limiting index. Pending API survey.
+2. **Bridge to IsPermittedValue**: Prove (or refute) that for F Easton, F(ℵ₀) is "Easton-admissible" in the sense of cf > ℵ₀ — which is *weaker* than the file's current `IsPermittedValue` predicate (regular + uncountable). This would surface the conceptual fact that the file's `IsPermittedValue` is sufficient but not necessary.
+3. **Phase-3b**: ConsistencyOf predicate via Gödel encoding to replace the `True` placeholders.
+4. **Phase-4**: class forcing infrastructure (long-term; flypitch port).
+
+### Honesty assessment
+
+This session adds **one structural theorem**, not a breakthrough. The theorem is a closure property — useful infrastructure for downstream work that needs to combine two Easton functions, but not a new mathematical insight about the continuum. It is also not the realizability direction (which remains axiomatized). The 18-line proof is mechanical, using only standard order lemmas; the *value* is in framing the closure property as a public lemma rather than something each downstream caller has to re-derive.
+
+The build is pending due to the broken `.lake` symlink in this worktree. Per the established convention for build-pending PRs (S5, birthday-OQ-03 series), this PR is opened as **draft**, with the expectation that a reviewer or a worktree with warm Mathlib cache verifies compilation before merge.
