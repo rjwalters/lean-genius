@@ -21,11 +21,11 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "lineCount": 293,
+    "axiomCount": 1,
+    "lineCount": 296,
     "theoremCount": 5,
     "definitionCount": 0,
-    "assumptions": "Two axioms remain (down from four). The two structural measure-theory axioms (`blichfeldt_proj_measurable` and `blichfeldt_disj_bound`) have been promoted to proved theorems via continuous-translation preimages and `measure_iUnion`/`measure_mono` against `stdLattice_covolume = 1`. The two remaining axioms are: (1) `blichfeldt_volume_partition` \u2014 vol(S) = \u2211' v \u2208 \u2124\u207f, vol({z \u2208 F | z+v \u2208 S}), the partition formula provable from `IsAddFundamentalDomain.lintegral_eq_tsum`; (2) `blichfeldt_general` \u2014 the general k\u22651 case via averaging the covering count function c(z) = #{v | z+v \u2208 S}; the k=1 case is fully proved without it. The two former sorries in `minkowski_from_blichfeldt` are now closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`.",
+    "assumptions": "One axiom remains (down from four). Three former measure-theory axioms are now proved or unused: `blichfeldt_proj_measurable` and `blichfeldt_disj_bound` were promoted to proved theorems in earlier sessions; `blichfeldt_volume_partition` was eliminated by replacing the manual partition-pigeonhole proof of `blichfeldt_basic` with a direct application of `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib's pigeonhole on a fundamental domain). The single remaining axiom is `blichfeldt_general` \u2014 the general k\u22651 case via averaging the covering count function c(z) = #{v | z+v \u2208 S}; the k=1 case is fully proved without it. The two former sorries in `minkowski_from_blichfeldt` are closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`.",
     "dateAdded": "2026-05-07",
     "mathlibDependencies": [
       {
@@ -52,8 +52,8 @@
     "originalContributions": [
       "blichfeldt_proj_measurable: theorem (was axiom). Translation `(\u00b7 + v)` is measurable, so the preimage of s is measurable; intersect with the measurable fundamental domain.",
       "blichfeldt_disj_bound: theorem (was axiom). `Pairwise.measure_iUnion` (sigma-additivity) on disjoint measurable subsets, bounded above by `stdLattice_covolume = 1`.",
-      "blichfeldt_basic: full proof of the k=1 case from one remaining measure-theory axiom (`blichfeldt_volume_partition`); 0 sorries on the proof path.",
-      "Pairwise-disjointness argument: if no two points of S are \u2124\u207f-congruent, the fundamental-domain projections {z \u2208 F | z+v \u2208 S} are pairwise disjoint, contradicting the partition formula.",
+      "blichfeldt_basic: axiom-free proof of the k=1 case via direct application of `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib pigeonhole on a fundamental domain). The earlier proof manually built the partition-pigeonhole from a `blichfeldt_volume_partition` axiom; that axiom is now eliminated.",
+      "Bridge from `g +\u1d65 x = y` (AddSubgroup action on the parent group) to `(g : \u211d\u207f) + x = y` (additive group equation) via `AddSubgroup.vadd_def` + `vadd_eq_add`; this gives `y - x = (g : \u211d\u207f) \u2208 \u2124\u207f` directly.",
       "blichfeldt_basic_from_general: derives k=1 from the general-k axiom with the Fin (k+1) injectivity argument.",
       "minkowski_from_blichfeldt: structural reduction Minkowski \u2192 Blichfeldt via T = (1/2)\u00b7s; central symmetry + convexity give the lattice point in s. The two former sorries (measurability of T, volume identity vol(T) = vol(s)/2\u207f) are now closed via preimage rewriting + `Measure.addHaar_smul` + ENNReal arithmetic.",
       "Mathlib 4.26.0 API drift fixes: `Pairwise (Disjoint on f)` lambda rewrite; ENNReal Nat-coerce via `exact_mod_cast`; `Submodule.mem_toAddSubgroup` removal compensation; `open Pointwise` for the `Set.SMul` instance needed by `Measure.addHaar_smul`."
@@ -94,19 +94,19 @@
   "sections": [
     {
       "id": "axioms",
-      "title": "Measure-Theoretic Axioms (1 remaining)",
-      "startLine": 50,
-      "endLine": 99,
-      "summary": "One measure-theoretic axiom remains (`blichfeldt_volume_partition`); two former axioms are now proved theorems. The partition axiom captures vol(S) = \u03a3' vol(S\u1d65) for the fundamental-domain projections; the two proved theorems are: `blichfeldt_proj_measurable` (continuous-translation preimage measurability) and `blichfeldt_disj_bound` (sigma-additivity + monotonicity against vol(F) = 1).",
-      "mathContext": "All three axioms admit Mathlib proofs: (1) follows from `IsAddFundamentalDomain.lintegral_eq_tsum` applied to 1_S; (2) is intersection-of-measurables (continuous translation preimages are measurable); (3) is `measure_iUnion` (sigma-additivity) + `measure_mono` against vol(F) = 1."
+      "title": "Measure-Theoretic Infrastructure (helpers, no axioms)",
+      "startLine": 54,
+      "endLine": 103,
+      "summary": "Two helper theorems for the partition-based pigeonhole approach: `blichfeldt_proj_measurable` (continuous-translation preimage measurability) and `blichfeldt_disj_bound` (sigma-additivity + monotonicity against vol(F) = 1). The current `blichfeldt_basic` proof no longer uses them \u2014 it calls Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly \u2014 but they are kept as reusable building blocks for the still-open `blichfeldt_general`.",
+      "mathContext": "These are the standard Mathlib facts that underpin Blichfeldt's argument: continuous-translation preimage measurability and sigma-additivity for pairwise-disjoint measurable sets. The original Blichfeldt 1914 proof composes them with the partition formula vol(S) = \u03a3' vol(S\u1d65); Mathlib's `exists_ne_zero_vadd_eq` packages this composition."
     },
     {
       "id": "k1-blichfeldt",
       "title": "Blichfeldt's Basic Theorem (k = 1)",
       "startLine": 105,
       "endLine": 149,
-      "summary": "Full proof of the k=1 case from the three axioms. Assumes no two \u2124\u207f-congruent points and shows the fundamental-domain projections are pairwise disjoint, then chains the partition formula and disjoint bound to derive vol(S) \u2264 1 < vol(S).",
-      "mathContext": "The disjointness argument is the geometric heart: if z \u2208 S\u1d65 \u2229 Sw for v \u2260 w, then z+v, z+w are distinct (since v \u2260 w), both in S, with difference v\u2212w \u2208 \u2124\u207f \u2014 a forbidden \u2124\u207f-congruent pair."
+      "summary": "Axiom-free proof of the k=1 case. Reduces to Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` applied to the standard \u2124\u207f-fundamental-domain (covolume 1): a measurable set of volume > 1 admits two points x, y with `g +\u1d65 x = y` for some `g \u2260 0`, hence `y \u2212 x = (g : \u211d\u207f) \u2208 \u2124\u207f`.",
+      "mathContext": "Mathlib's pigeonhole encapsulates the original Blichfeldt 1914 argument: the lattice translates of the fundamental domain cover \u211d\u207f, and a set of volume > vol(F) = 1 cannot avoid all but one translate. The Lean bridge from `g +\u1d65 x = y` (action of an AddSubgroup on the parent group) to `(g : \u211d\u207f) + x = y` uses `AddSubgroup.vadd_def` + `vadd_eq_add`."
     },
     {
       "id": "general-case",
@@ -126,10 +126,9 @@
     }
   ],
   "conclusion": {
-    "summary": "Provides a Lean 4 formalization of Blichfeldt's 1914 strengthening of Minkowski's lattice point theorem. The k=1 case of Blichfeldt's theorem is fully proved (0 sorries on the proof path) from one remaining measure-theoretic axiom that admits a standard Mathlib proof (two former axioms now proved theorems). The general-k case is axiomatized pending the covering-count averaging argument. Minkowski's classical theorem is recovered as a corollary via the half-scaling T = (1/2)\u00b7s with 0 sorries (was 2). Builds against Lean 4.26.0 / Mathlib 4.26.0.",
+    "summary": "Provides a Lean 4 formalization of Blichfeldt's 1914 strengthening of Minkowski's lattice point theorem. The k=1 case of Blichfeldt's theorem is now axiom-free (0 sorries, 0 axioms), proved by directly applying Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` to the standard \u2124\u207f-fundamental-domain (covolume 1). Only the general-k case remains axiomatized pending the covering-count averaging argument. Minkowski's classical theorem is recovered as a corollary via the half-scaling T = (1/2)\u00b7s with 0 sorries. Builds against Lean 4.26.0 / Mathlib 4.26.0.",
     "implications": "Blichfeldt's theorem is the geometry-of-numbers tool of choice when convexity or central symmetry is unavailable. Applications include: pigeonhole arguments in number theory (e.g., bounds on simultaneous Diophantine approximations of irrationals); transference theorems between primal and dual lattices; and modern algorithmic results like LLL-based shortest-vector enumeration. Eliminating the four axioms (especially the general-k case) would graduate this entry from `axiomatized` to a fully verified Mathlib-grade formalization of Blichfeldt's theorem.",
     "openQuestions": [
-      "Can the remaining `blichfeldt_volume_partition` axiom be proved directly from Mathlib's `IsAddFundamentalDomain.lintegral_eq_tsum` API applied to `Set.indicator s 1`?",
       "Can `blichfeldt_general` (the k\u22651 case) be proved from the k=1 case via the covering-count averaging argument c(z) = #{v | z+v \u2208 S}?",
       "Once both axioms are eliminated, the entry graduates from `axiomatized` to `verified` (badge `original`)."
     ]
@@ -166,16 +165,16 @@
       "Mathlib.Tactic"
     ],
     "namespace": "BlichfeldtTheorem",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "sorries": 0,
-    "lineCount": 293,
+    "lineCount": 296,
     "theoremCount": 5,
     "definitionCount": 0,
     "mainTheorems": [
       {
         "name": "blichfeldt_basic",
         "type": "proved",
-        "description": "Blichfeldt's theorem k=1: vol(S) > 1 yields two distinct \u2124\u207f-congruent points in S (0 sorries; depends on three measure-theory axioms)",
+        "description": "Blichfeldt's theorem k=1: vol(S) > 1 yields two distinct \u2124\u207f-congruent points in S (0 sorries, axiom-free; uses Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly)",
         "leanType": "{n : \u2115} [NeZero n] (s : Set (Fin n \u2192 \u211d)) (h_meas : MeasurableSet s) (h_vol : (1 : ENNReal) < volume s) \u2192 \u2203 x y, x \u2208 s \u2227 y \u2208 s \u2227 x \u2260 y \u2227 x \u2212 y \u2208 stdLattice n"
       },
       {

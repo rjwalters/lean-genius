@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-07T20:08:05Z",
-    "iteration": 4,
-    "focus": "Half-scaling sorries closed (0 sorries in minkowski_from_blichfeldt). 2 axioms remain (blichfeldt_volume_partition, blichfeldt_general).",
+    "iteration": 5,
+    "focus": "S8 (2026-05-08): Eliminated `blichfeldt_volume_partition` axiom by replacing manual partition-pigeonhole proof of `blichfeldt_basic` with direct application of Mathlib `IsAddFundamentalDomain.exists_ne_zero_vadd_eq`. 1 axiom remains (`blichfeldt_general`).",
     "blockers": [],
-    "nextAction": "Eliminate blichfeldt_volume_partition via (stdLattice_isAddFundamentalDomain n).lintegral_eq_tsum on Set.indicator s 1. Each summand \u222b\u207b z in F, 1_S(z+g) dz collapses to volume {z \u2208 F | z+g \u2208 s}.",
+    "nextAction": "Eliminate `blichfeldt_general` (the general k\u22651 case) via the covering-count averaging argument c(z) = #{v \u2208 \u2124\u207f | z+v \u2208 S}; \u222b_F c dz = vol(S) > k means c attains \u2265 k+1 on a positive-measure set. Mathlib analog: `IsAddFundamentalDomain.essSup_measure_restrict` / measure-theoretic counting on a fundamental domain.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (2026-05-07): Both sorries in minkowski_from_blichfeldt closed (subject to docker build verification). Sorry 1 (measurability of T = (1/2)\u00b7s): rewrite as preimage of doubling map, MeasurableSet.preimage + measurable_const_smul. Sorry 2 (vol(T) > 1): Measure.addHaar_smul gives vol(T) = ofReal|1/2|^n \u00b7 vol(s); ENNReal.mul_lt_mul_left + (2\u207b\u00b9)^n \u00b7 2^n = 1 gives 1 < vol(T). Required `open Pointwise`. Axiom count corrected: meta.json claims 4 axioms but actual file has 2 (blichfeldt_volume_partition + blichfeldt_general); blichfeldt_proj_measurable and blichfeldt_disj_bound were converted to theorems in earlier sessions.",
+    "progressSummary": "S8 (2026-05-08): Eliminated `blichfeldt_volume_partition` axiom (axiomCount 2\u21921) by rewriting `blichfeldt_basic` to call Mathlib's `IsAddFundamentalDomain.exists_ne_zero_vadd_eq` directly on the standard \u2124\u207f-fundamental-domain (covolume 1). Bridge from `g +\u1d65 x = y` to `(g : \u211d\u207f) + x = y` via `AddSubgroup.vadd_def` + `vadd_eq_add`. The two helper theorems `blichfeldt_proj_measurable` and `blichfeldt_disj_bound` (former axioms) are now unused by `blichfeldt_basic` but kept as building blocks for the still-open `blichfeldt_general`. Pending Docker build verification on Mathlib 4.26.0.",
     "builtItems": [
-      "blichfeldt_basic in MinkowskiTheoremOQ04.lean:91: fully proved from axioms",
+      "blichfeldt_basic in MinkowskiTheoremOQ04.lean (line ~117): rewritten as a 30-line direct call to `IsAddFundamentalDomain.exists_ne_zero_vadd_eq`, eliminating `blichfeldt_volume_partition` axiom. Axiom count 2\u21921 (S8, 2026-05-08).",
+            "blichfeldt_basic in MinkowskiTheoremOQ04.lean:91: fully proved from axioms",
       "blichfeldt_basic_from_general in MinkowskiTheoremOQ04.lean:160: proved from blichfeldt_general",
       "minkowski_from_blichfeldt in MinkowskiTheoremOQ04.lean:192: proved (with 2 sorries)",
       "minkowski_from_blichfeldt in MinkowskiTheoremOQ04.lean:215: 0 sorries (was 2). Half-scaling reduction now complete.",
@@ -39,7 +40,8 @@
       "h_vol_T (line 235 of edited file): 1 < volume T via Measure.addHaar_smul + ENNReal.mul_lt_mul_left + (2\u207b\u00b9)^n \u00b7 2^n = 1 (~30 lines)."
     ],
     "insights": [
-      "Proof uses fundamental domain pigeonhole: if projections {Sv} are disjoint, sum of volumes <= 1 < vol(S)",
+      "`IsAddFundamentalDomain.exists_ne_zero_vadd_eq` is a one-line proof of Blichfeldt's basic theorem given the standard \u2124\u207f-fundamental-domain has volume 1; eliminates the manual partition-pigeonhole pattern and the `blichfeldt_volume_partition` axiom (S8, 2026-05-08).",
+            "Proof uses fundamental domain pigeonhole: if projections {Sv} are disjoint, sum of volumes <= 1 < vol(S)",
       "Three axioms capture measure-theory facts provable from IsAddFundamentalDomain.lintegral_eq_tsum",
       "Minkowski recovered via half-scaling: T = S/2 has vol > 1, Blichfeldt gives congruent points, symmetry+convexity gives lattice point",
       "Lean 4.26.0 + Mathlib 4.26.0 changed: (a) `Disjoint on f` infix needs `open Function` or rewrite, (b) Nat-cast h_vol in literal-1 contexts needs `by exact_mod_cast`, (c) `Submodule.mem_toAddSubgroup` removed \u2014 use direct `\u2208 ...toAddSubgroup` (defEq via SetLike).",
@@ -109,14 +111,14 @@
     {
       "path": "Proofs/MinkowskiTheoremOQ04.lean",
       "filename": "MinkowskiTheoremOQ04.lean",
-      "lineCount": 289,
+      "lineCount": 296,
       "theoremCount": 5,
-      "axiomCount": 2,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
     }
   ],
-  "lastUpdate": "2026-05-07T20:30:00Z"
+  "lastUpdate": "2026-05-08T01:00:00Z"
 }
