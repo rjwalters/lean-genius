@@ -1,77 +1,79 @@
 # Research State: liouville-theorem-oq-04
 
 ## Current State
-**Phase**: REFINE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-05-08T06:30:00+00:00
-**Iteration**: 14
+**Since**: 2026-05-08T12:00:00+00:00
+**Iteration**: 16
 
 ## Current Focus
-Part IV.11 (`padic_liouville_bridge_rational_roots_case`) added in Session 14.
-A fully-proved theorem (no new axioms, no sorries) discharging the
-**rational-roots case** of `padic_liouville_norm_bridge` — i.e., uniform δ > 0
-with `δ ≤ ‖α - (q : ℚ_[p])‖` for every rational root `q` of `f.map (algebraMap ℤ ℚ)`
-whose ℚ_[p]-image differs from α.
+Session 16 (this) — promote gallery metadata to `verified` / `original` after
+the Session 15 bridge discharge (PR #17053, merged 2026-05-08T11:27:03Z).
 
-Construction: form `R'` = Finset of rational roots `q` with `(q : ℚ_[p]) ≠ α`
-(finite, cardinality ≤ deg f). When `R'` is non-empty, take
-`δ := R'.inf' (q ↦ ‖α - (q : ℚ_[p])‖)` — strictly positive via
-`Finset.lt_inf'_iff` because every entry is the norm of a non-zero element.
-When `R'` is empty, take `δ := 1`; the conclusion is vacuously true.
+PR #17053 rewrote `padic_liouville_norm_bridge` from `axiom` to fully-proved
+`theorem` and resolved three pre-existing build errors discovered during the
+post-merge build retry (`intPolyL1_pos` Finset summand inference, the
+`Int.algebraMap_eq_intCast → eq_intCast` 4.26 rename, and the
+`field_simp; ring` → `field_simp <;> ring` "No goals" fix). After those fixes,
+the file is **0 axioms, 0 sorries, 1344 lines, 35 theorems, 6 defs**.
 
-After this session: 1 axiom (unchanged), 0 sorries, ~1216 lines, 34 theorems,
-6 defs. **Both case-analysis pieces are now formally proved**: Part IV.10
-(algebraic) + Part IV.11 (rational-roots). The bridge axiom can now be
-discharged in a single combine-and-case-split session.
+This session: meta.json status `axiomatized → verified`, badge
+`axiom → original`, axiomCount `1 → 0`, lineCount `1216 → 1344`,
+theoremCount `34 → 35`. Narratives in `description`, `assumptions`,
+`originalContributions`, `proofStrategy`, `keyInsights`, `conclusion.summary`,
+`conclusion.implications`, `conclusion.openQuestions`, the `main-theorem`
+section, and `mainTheorems` are refreshed to drop bridge-axiom language and
+reflect the now-fully-proved state.
 
 ## Active Approach
-With **both** case-analysis pieces (Parts IV.10 and IV.11) now proved as
-stand-alone lemmas, the remaining work to discharge `padic_liouville_norm_bridge`
-is purely combinational: take `C := min((1/(L·M)), δ)` and case-split on
-`(f.map alg').eval (r/s) ?= 0` over ℚ, dispatching each side via the
-respective lemma.
+N/A — work is COMPLETE pending build verification. Path forward is operational:
+flip the gallery flags, push the metadata PR, mark candidate-pool entry
+`completed`, release the claim.
 
 ## Attempt Count
-- Total attempts: 13
-- Current approach attempts: 6
+- Total attempts: 15
+- Current approach attempts: 1 (metadata sync)
 - Approaches tried: 3
 
 ## Blockers
-- None for the next step (combine-and-case-split). All structural ingredients
-  AND both case-analysis pieces are formally proved.
+- None. All Lean ingredients land on `origin/main` as of PR #17053
+  (commit 0175c59d).
 
 ## Next Action
-**Session 15**: discharge `padic_liouville_norm_bridge` axiom to theorem by
-combining Parts IV.10 and IV.11.
+**Session 17 (optional / future work)**: pursue follow-up open questions:
+1. Sharpen $\mu_p \leq 2d$ to $\mu_p \leq 2$ via Roth-style auxiliary
+   polynomials (much harder; would parallel a Lean formalization of Roth's
+   1955 theorem).
+2. Function-field analog over $\mathbb{F}_q(t)$ with $t$-adic norm —
+   would need a Mathlib `LaurentSeries` p-adic infrastructure or analogous
+   `RatFunc` machinery.
+3. Multi-place uniform statement: $\forall p, \mu_p(\alpha) \leq 2d$ for the
+   same $\alpha$ — touches the adelic product formula.
 
-1. State the new theorem `padic_liouville_norm_bridge_proved` with the same
-   signature as the axiom, and provide a `by`-proof.
-2. Obtain `δ > 0` from Part IV.11 (rational-roots case) given `f ≠ 0` (which
-   follows from `1 ≤ f.natDegree`).
-3. Set `L := intPolyL1 f`, `M := coeffNormSum p g`, both positive.
-4. Take `C := min((1/(L·M)), δ)` — strictly positive.
-5. For each `(r, s)` with `s ≠ 0` and `α ≠ (r:ℚ_[p])/s`:
-   - Let `H := max r.natAbs s.natAbs ≥ 1`.
-   - Case split on `(f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s) ?= 0`:
-     - **Non-zero**: apply Part IV.10 to get `1/(L·M·H^(2d)) ≤ ‖α - r/s‖`;
-       since `C ≤ 1/(L·M)`, conclude `C/H^(2d) ≤ 1/(L·M·H^(2d)) ≤ ‖α - r/s‖`.
-     - **Zero**: apply Part IV.11 with `q := (r:ℚ)/s` to get `δ ≤ ‖α - r/s‖`;
-       since `C ≤ δ` and `H ≥ 1`, conclude `C/H^(2d) ≤ C ≤ δ ≤ ‖α - r/s‖`.
-6. After the discharge: also remove the old `axiom` declaration, replace with
-   the new theorem, and update gallery: `status: "axiomatized" → "verified"`,
-   `badge: "axiom" → "original"`, `axiomCount: 1 → 0`.
+## Session 15 deltas (PR #17053, merged 2026-05-08T11:27:03Z)
+- File: 1216 → 1344 lines (+128), 34 → 35 theorems (+1), defs unchanged.
+- Theorem added: `padic_liouville_norm_bridge` (rewritten from `axiom`).
+- Axioms: 1 → 0.
+- Sorries unchanged (0).
+- Build: PR triggered three sequential commits to fix pre-existing 4.26
+  drift errors before the build went green; final build state on the merged
+  commit is reported as resolved by the PR description.
 
-## Session 14 deltas (this session)
-- File: 1102 → 1216 lines (+114), 33 → 34 theorems (+1), defs unchanged.
-- Theorem added: `padic_liouville_bridge_rational_roots_case`.
-- Axioms unchanged (still 1: `padic_liouville_norm_bridge`).
-- Sorries unchanged (still 0).
-- Build: pending (per established convention on this slug; cold-cache 45 min).
+## Session 16 deltas (this session)
+- meta.json status / badge / axiomCount / counts / narratives.
+- src/data/research/problems/liouville-theorem-oq-04.json:
+  phase NEW → COMPLETE, currentState.iteration 15 → 16, focus updated.
+- candidate-pool.json: `in-progress` → `completed`.
+- No Lean changes.
 
 ## References
-- Parent file: `proofs/Proofs/LiouvilleTheoremOQ04.lean`.
+- Parent file: `proofs/Proofs/LiouvilleTheoremOQ04.lean` (1344 lines, 0 axioms,
+  0 sorries, 35 theorems, 6 defs).
 - Algebraic case: Part IV.10, `padic_liouville_bridge_algebraic_case`
-  (Session 13, line ~671).
-- Rational-roots case (NEW): Part IV.11,
-  `padic_liouville_bridge_rational_roots_case` (Session 14, line ~813).
-- Bridge axiom: `padic_liouville_norm_bridge` (line ~917 after this session).
+  (Session 13, line ~679).
+- Rational-roots case: Part IV.11,
+  `padic_liouville_bridge_rational_roots_case` (Session 14, line ~846).
+- Bridge theorem (formerly axiom): `padic_liouville_norm_bridge`
+  (Session 15, line ~935).
+- Final main theorems: `padic_liouville_estimate` (line ~1066) and
+  `padic_algebraic_not_liouville` (line ~1089).

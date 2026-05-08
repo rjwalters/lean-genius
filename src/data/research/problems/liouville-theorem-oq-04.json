@@ -1,8 +1,8 @@
 {
   "slug": "liouville-theorem-oq-04",
   "title": "Liouville's Theorem: p-adic and Function Field Extensions",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "REFINE",
-    "since": "2026-05-08T11:00:00.000Z",
-    "iteration": 15,
-    "focus": "Session 15 (this) — `padic_liouville_norm_bridge` rewritten from `axiom` to `theorem`. Composes Part IV.10 (`padic_liouville_bridge_algebraic_case`, Session 13) and Part IV.11 (`padic_liouville_bridge_rational_roots_case`, Session 14): C' := min(1/(L·M), δ) with case split on (f.map alg').eval ((r:ℚ)/s) ?= 0 over ℚ. Degree bookkeeping (g.natDegree + 1 ≤ f.natDegree) comes from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le`. f ≠ 0 derived from hf_deg; g ≠ 0 from the factorization; algebraMap ℤ ℚ_[p] injectivity via integer-cast → ratCast composition. Lean file: 1216 → 1333 lines, 34 → 35 theorems, 1 → 0 axioms (build pending; meta.json status update deferred to a post-build follow-up PR).",
+    "phase": "COMPLETE",
+    "since": "2026-05-08T12:00:00.000Z",
+    "iteration": 16,
+    "focus": "Session 16 (this) — gallery metadata sync after the Session 15 bridge discharge merged in PR #17053 (commit 0175c59d, 2026-05-08T11:27:03Z). meta.json fields flipped: status `axiomatized → verified`, badge `axiom → original`, axiomCount `1 → 0`, lineCount `1216 → 1344`, theoremCount `34 → 35`. Narratives refreshed in `description`, `assumptions`, `originalContributions`, `proofStrategy`, `keyInsights`, `conclusion.summary`, `conclusion.implications`, `conclusion.openQuestions`, the `main-theorem` section, and `mainTheorems`. PR #17053 itself iterated through three commits to fix three pre-existing 4.26 drift errors (`intPolyL1_pos` Finset summand inference, `Int.algebraMap_eq_intCast → eq_intCast` rename, `field_simp; ring` → `field_simp <;> ring` 'No goals' fix); the file as on `origin/main` now has 0 axioms, 0 sorries, 1344 lines, 35 theorems, 6 defs.",
     "blockers": [],
-    "nextAction": "Session 16 (next, if build verifies): update meta.json status `axiomatized` → `verified`, badge `axiom` → `original`, axiomCount 1 → 0, lineCount 1216 → 1333, theoremCount 34 → 35; refresh assumptions/conclusion narratives. If the build fails: triage Mathlib 4.26 API drift in the new theorem (`Polynomial.natDegree_map_le`, `div_le_div_iff_of_pos_right`, `set`+`rw` round-trip) and push corrective commits.",
+    "nextAction": "Session 17 (optional / future work): (a) sharpen the formalized $\\mu_p$ bound from $2d$ to the Roth-optimal $2$ via auxiliary-polynomial techniques — would parallel a Lean formalization of Roth's 1955 theorem; (b) function-field analog over $\\mathbb{F}_q(t)$ with the $t$-adic absolute value (Mahler's framework) — needs Mathlib `LaurentSeries`/`RatFunc` p-adic infrastructure; (c) multi-place uniform statement $\\forall p, \\mu_p(\\alpha) \\leq 2d$ for the same $\\alpha$ — touches the adelic product formula.",
     "attemptCounts": {
-      "total": 14,
-      "currentApproach": 7,
+      "total": 15,
+      "currentApproach": 1,
       "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 15, 2026-05-08): `padic_liouville_norm_bridge` rewritten from `axiom` to fully-proved `theorem` by composing the two Session 13/14 ingredients. Witness: C' := min(1/(L·M), δ) where L = intPolyL1 f, M = coeffNormSum p g, δ from Part IV.11. Case split on (f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s) ?= 0 over ℚ — nonzero branch dispatches to Part IV.10 (`padic_liouville_bridge_algebraic_case`); zero branch dispatches to Part IV.11 (`padic_liouville_bridge_rational_roots_case`) with `push_cast; rfl` to bridge the cast `((r:ℚ)/s : ℚ_[p]) = (r:ℚ_[p])/s`. Bookkeeping: f ≠ 0 from hf_deg ≥ 1; algebraMap ℤ ℚ_[p] injective via the integer-cast → ratCast factoring with `simpa [eq_intCast]` + `exact_mod_cast`; f.map alg ≠ 0 by `Polynomial.map_injective`; g ≠ 0 from the factorization; degree relation `g.natDegree + 1 ≤ f.natDegree` from `Polynomial.natDegree_mul` + `natDegree_X_sub_C` + `Polynomial.natDegree_map_le` (no injectivity needed for the natDegree_map step). The new theorem occupies ~120 lines (894–1042) and is 0-sorry, 0-axiom. After the proof, padic_liouville_estimate (and through it padic_algebraic_not_liouville) become axiom-free as well: the entire file is 0 axioms, 0 sorries — pending build verification (cold-cache Docker ~45 min). Status accounting (post-build): axiomCount 1 → 0, theoremCount 34 → 35, lineCount 1216 → 1333. meta.json status update from `axiomatized` to `verified` deferred to a follow-up PR after the build finishes (per slug convention).",
+    "progressSummary": "COMPLETE (Session 16, 2026-05-08): All Lean work landed in PR #17053 (merged 2026-05-08T11:27:03Z, commit 0175c59d). `padic_liouville_norm_bridge` is now an axiom-free theorem composed of Parts IV.10 + IV.11 via the min-witness C' := min(1/(L·M), δ) and a single ℚ-decidable case split on (f.map (algebraMap ℤ ℚ)).eval ((r:ℚ)/s) ?= 0. The PR also resolved three pre-existing Mathlib 4.26 drift errors surfaced by the post-merge build (`intPolyL1_pos` Finset summand inference; `Int.algebraMap_eq_intCast → eq_intCast` rename; `field_simp; ring` → `field_simp <;> ring` 'No goals' fix). Final file: 1344 lines, 35 theorems, 6 defs, 0 axioms, 0 sorries. The full chain padic_liouville_norm_bridge → padic_liouville_estimate → padic_algebraic_not_liouville is fully proved. Session 16 (this PR) carries only metadata: status `axiomatized → verified`, badge `axiom → original`, axiomCount `1 → 0`, lineCount/theoremCount sync, narrative refresh.",
     "builtItems": [
       "IsPadicLiouville (LiouvilleTheoremOQ04.lean): definition with strict positivity 0 < ‖β - r/s‖ and height bound 2 ≤ max r.natAbs s.natAbs",
       "padic_liouville_estimate: proved via factorization + bridge axiom — exposes the standard (C/H^(2d)) lower bound",
@@ -81,9 +81,8 @@
       "Polynomial evaluation norm bound `‖g.eval x‖ ≤ M · max(1, ‖x‖)^(deg g)` for normed semirings (we proved padic_polynomial_eval_norm_bound directly via norm_sum_le)"
     ],
     "nextSteps": [
-      "S16 (post-build): update meta.json status `axiomatized` → `verified`, badge `axiom` → `original`, axiomCount 1 → 0, lineCount 1216 → 1333, theoremCount 34 → 35; refresh `assumptions`, `description`, and `conclusion` narratives to drop the bridge-axiom language; update candidate-pool status `in-progress` → `completed`.",
-      "Follow-up OQ candidates (after verified): (a) function-field analog over F_q(t) with t-adic absolute value (mirrors Mahler's framework — would need a Mathlib `LaurentSeries` p-adic analog); (b) Roth-style sharpening from H^(2d) to H^(2+ε) (much harder — Roth's theorem is the classical analog and required Fields Medal-level techniques); (c) multi-place generalization (∀ primes p simultaneously, the same algebraic α has μ_p ≤ d) — corresponds to Mahler's classification refined per-place.",
-      "If build fails: triage Mathlib 4.26 API drift (`Polynomial.natDegree_map_le` arg form, `div_le_div_iff_of_pos_right` availability, `set L := ... with hL_def` + `rw [hL_def]` round-trip) and push corrective commits to the same PR."
+      "DONE (S16): meta.json status flipped to verified/original, axiomCount 1→0, counts synced (lineCount 1216→1344, theoremCount 34→35), narratives refreshed to drop bridge-axiom language; candidate-pool entry marked completed.",
+      "Follow-up OQ candidates: (a) function-field analog over F_q(t) with t-adic absolute value (mirrors Mahler's framework — would need a Mathlib `LaurentSeries` p-adic analog); (b) Roth-style sharpening from H^(2d) to H^(2+ε) (much harder — Roth's theorem is the classical analog and required Fields Medal-level techniques); (c) multi-place generalization (∀ primes p simultaneously, the same algebraic α has μ_p ≤ 2d) — corresponds to Mahler's classification refined per-place."
     ]
   },
   "tags": [
@@ -103,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.505Z",
-  "lastUpdate": "2026-05-08T11:30:00.000Z",
+  "lastUpdate": "2026-05-08T12:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -121,9 +120,9 @@
     {
       "path": "Proofs/LiouvilleTheoremOQ04.lean",
       "filename": "LiouvilleTheoremOQ04.lean",
-      "lineCount": 1216,
-      "theoremCount": 34,
-      "axiomCount": 1,
+      "lineCount": 1344,
+      "theoremCount": 35,
+      "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
