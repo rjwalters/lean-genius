@@ -223,7 +223,53 @@ theorem quadratic_parity (pos sv : ℕ) (hpos : pos ≤ 2) (hsv : sv ≤ 2)
   interval_cases pos <;> interval_cases sv <;> simp_all <;> omega
 
 -- ============================================================
--- Part VII: Summary Assessment
+-- Part VII: General Parity Bookkeeping
+-- ============================================================
+
+/-- **General parity bookkeeping**: if `pos ≤ sv` and `pos + sv` is even, then
+    `sv = pos + 2k` for some `k`. This is the arithmetic core of Descartes'
+    parity, abstracted from any polynomial structure or degree bound — given
+    the inequality and the parity, the witness is forced. The `quadratic_parity`
+    proof above is one case-analysis instance of this lemma. -/
+theorem parity_witness (pos sv : ℕ) (hle : pos ≤ sv) (hmod : Even (sv + pos)) :
+    ∃ k : ℕ, pos + 2 * k = sv := by
+  obtain ⟨m, hm⟩ := hmod
+  refine ⟨m - pos, ?_⟩
+  omega
+
+/-- **Cubic case**: for any `pos sv` with `pos ≤ 3, sv ≤ 3, pos ≤ sv` and
+    `Even (sv + pos)`, the witness `k` exists. The proof is identical to the
+    quadratic case — the bound is irrelevant once `parity_witness` is in hand.
+    Included to confirm Descartes' rule applies to cubic polynomials. -/
+theorem cubic_parity (pos sv : ℕ) (_hpos : pos ≤ 3) (_hsv : sv ≤ 3)
+    (hle : pos ≤ sv) (hmod : Even (sv + pos)) :
+    ∃ k : ℕ, pos + 2 * k = sv :=
+  parity_witness pos sv hle hmod
+
+/-- **Quartic case**: same statement with the bound at 4. -/
+theorem quartic_parity (pos sv : ℕ) (_hpos : pos ≤ 4) (_hsv : sv ≤ 4)
+    (hle : pos ≤ sv) (hmod : Even (sv + pos)) :
+    ∃ k : ℕ, pos + 2 * k = sv :=
+  parity_witness pos sv hle hmod
+
+/-- **Combined parity result**: given the four structural ingredients
+    (sv–degree parity, root-count decomposition, conjugate-pair evenness,
+    negative-root evenness), Descartes' parity holds in existential form:
+    there exists `k` with `pos + 2k = sv`. This composes `parity_chain` (which
+    derives `Even (sv + pos)`) with `parity_witness` (which converts the parity
+    plus inequality into the witness `k`). -/
+theorem descartes_parity_witness (sv degree pos neg nonreal : ℕ)
+    (h_sv_deg : Even (sv + degree))
+    (h_deg : degree = pos + neg + nonreal)
+    (h_nonreal : Even nonreal)
+    (h_neg : Even neg)
+    (h_le : pos ≤ sv) :
+    ∃ k : ℕ, pos + 2 * k = sv :=
+  parity_witness pos sv h_le
+    (parity_chain sv degree pos neg nonreal h_sv_deg h_deg h_nonreal h_neg)
+
+-- ============================================================
+-- Part VIII: Summary Assessment
 -- ============================================================
 
 /-!

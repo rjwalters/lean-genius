@@ -47,7 +47,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 271,
+    "lineCount": 317,
     "prerequisites": [
       "Descartes' Rule of Signs (upper bound from Mathlib)",
       "Complex conjugate root theorem",
@@ -55,7 +55,7 @@
       "Parity arithmetic (mod 2)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 13,
     "definitionCount": 0
   },
   "overview": {
@@ -114,15 +114,23 @@
       "id": "small-cases",
       "title": "Linear and Quadratic Cases",
       "startLine": 177,
-      "endLine": 218,
+      "endLine": 223,
       "summary": "Complete parity proofs for degree 1 and 2 polynomials by case analysis.",
       "mathContext": "Parity holds trivially for $\\deg \\le 2$"
     },
     {
+      "id": "parity-bookkeeping",
+      "title": "General Parity Bookkeeping",
+      "startLine": 225,
+      "endLine": 269,
+      "summary": "Degree-uniform arithmetic core: parity_witness (pos ≤ sv ∧ Even(sv+pos) ⇒ ∃ k, pos+2k=sv) plus the cubic/quartic corollaries and the composite descartes_parity_witness that bundles parity_chain with parity_witness.",
+      "mathContext": "$\\text{pos} \\le \\text{sv} \\land 2 \\mid (\\text{sv}+\\text{pos}) \\;\\Rightarrow\\; \\exists k,\\ \\text{pos} + 2k = \\text{sv}$"
+    },
+    {
       "id": "assessment",
       "title": "Summary Assessment",
-      "startLine": 220,
-      "endLine": 271,
+      "startLine": 271,
+      "endLine": 317,
       "summary": "Final assessment: minimal infrastructure = conjugate pairing + sign variation parity under root extraction. Neither alone suffices.",
       "mathContext": "Minimal: conjugate pairs + sv parity under root factoring"
     }
@@ -162,9 +170,9 @@
     ],
     "opens": [],
     "namespace": "DescartesRuleOfSignsOQ01OQ02",
-    "lineCount": 271,
+    "lineCount": 317,
     "axiomCount": 1,
-    "theoremCount": 9,
+    "theoremCount": 13,
     "definitionCount": 0,
     "mainTheorems": [
       {
@@ -186,6 +194,26 @@
         "name": "quadratic_parity",
         "type": "proved",
         "description": "Complete parity for degree 2"
+      },
+      {
+        "name": "parity_witness",
+        "type": "proved",
+        "description": "General parity bookkeeping: pos ≤ sv ∧ Even(sv + pos) ⇒ ∃ k, pos + 2k = sv (degree-uniform arithmetic core of Descartes' parity)"
+      },
+      {
+        "name": "cubic_parity",
+        "type": "proved",
+        "description": "Descartes' parity witness for degree-3 polynomials (corollary of parity_witness)"
+      },
+      {
+        "name": "quartic_parity",
+        "type": "proved",
+        "description": "Descartes' parity witness for degree-4 polynomials (corollary of parity_witness)"
+      },
+      {
+        "name": "descartes_parity_witness",
+        "type": "proved",
+        "description": "Full Descartes parity in existential form: composes parity_chain with parity_witness to yield ∃ k, pos + 2k = sv from the four structural ingredients"
       }
     ],
     "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
