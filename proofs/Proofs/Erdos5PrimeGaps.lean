@@ -569,4 +569,89 @@ theorem erdos_5_from_dense_values
     erdos_5 :=
   ⟨fun C hC => isLimitPoint_of_frequently_near C (h C hC), westzynthius_large_gaps⟩
 
+/- ## Part XIII: Forward Density Direction -/
+
+/-- **Forward density**: if `C` is a limit point, then for every `ε > 0` there
+    are infinitely many `n` with `normalizedGap n` within `ε` of `C`.
+
+    This is the reverse implication of `isLimitPoint_of_frequently_near`: any
+    convergent subsequence injects ℕ (via `f ∘ (· + K)`) into the ε-ball around
+    `C`, so the set of `n` whose normalized gap is near `C` is infinite. -/
+theorem frequently_near_of_isLimitPoint
+    {C : ℝ} (hC : IsLimitPoint C) (ε : ℝ) (hε : 0 < ε) :
+    {n : ℕ | dist (normalizedGap n) C < ε}.Infinite := by
+  obtain ⟨f, hf_mono, hf_tendsto⟩ := hC
+  rw [Metric.tendsto_atTop] at hf_tendsto
+  obtain ⟨K, hK⟩ := hf_tendsto ε hε
+  apply Set.infinite_of_injective_forall_mem (f := fun k : ℕ => f (k + K))
+  · intro a b hab
+    have hinj : f (a + K) = f (b + K) := hab
+    have := hf_mono.injective hinj
+    omega
+  · intro k
+    have h_ge : K ≤ k + K := Nat.le_add_left K k
+    have := hK (k + K) h_ge
+    simp only [Function.comp_apply] at this
+    exact this
+
+/-- **Density characterization**: Erdős #5 is equivalent to the statement that
+    normalizedGap values are "frequently near" every `C ∈ [0, ∞)` (and `∞` is
+    a limit point).
+
+    This is the iff version of `erdos_5_from_dense_values` + the closure of
+    direction `frequently_near_of_isLimitPoint`. It says the open question is
+    purely distributional: does the normalized-gap sequence visit every
+    arbitrarily small neighborhood of every non-negative real infinitely often? -/
+theorem erdos_5_iff_dense_at_every_point :
+    erdos_5 ↔
+      (∀ C : ℝ, 0 ≤ C → ∀ ε : ℝ, 0 < ε →
+        {n : ℕ | dist (normalizedGap n) C < ε}.Infinite) ∧
+      InfinityIsLimitPoint := by
+  refine ⟨fun ⟨hForall, hInf⟩ => ⟨fun C hC ε hε =>
+    frequently_near_of_isLimitPoint (hForall C hC) ε hε, hInf⟩, ?_⟩
+  rintro ⟨hDense, hInf⟩
+  exact ⟨fun C hC => isLimitPoint_of_frequently_near C (fun ε hε => hDense C hC ε hε), hInf⟩
+
+/- ## Part XIV: Unconditional Oscillation -/
+
+/-- **Zhang corollary** (unconditional): for every `ε > 0`, there are infinitely
+    many `n` with `normalizedGap n < ε`.
+
+    Combines `zhang_implies_zero_limit` (0 ∈ S, from the `zhang_bounded_gaps`
+    axiom) with `frequently_near_of_isLimitPoint`. -/
+theorem frequently_normalizedGap_lt (ε : ℝ) (hε : 0 < ε) :
+    {n : ℕ | normalizedGap n < ε}.Infinite := by
+  have h0 : IsLimitPoint 0 := zhang_implies_zero_limit
+  have hinf := frequently_near_of_isLimitPoint h0 ε hε
+  apply hinf.mono
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  rw [dist_zero_right, Real.norm_of_nonneg (normalizedGap_nonneg n)] at hn
+  exact hn
+
+/-- **Westzynthius corollary** (unconditional): for every `M`, there are
+    infinitely many `n` with `normalizedGap n > M`.
+
+    A `Set.Infinite` reformulation of `westzynthius_implies_frequently_large`.
+    Combined with `frequently_normalizedGap_lt`, this establishes the
+    unconditional oscillation: normalized gaps dip arbitrarily close to 0 and
+    rise arbitrarily high, infinitely often each. The open question is
+    whether all intermediate values are also visited densely. -/
+theorem frequently_normalizedGap_gt (M : ℝ) :
+    {n : ℕ | M < normalizedGap n}.Infinite := by
+  obtain ⟨f, hf_mono, hf_tend⟩ := westzynthius_large_gaps
+  rw [Filter.tendsto_atTop_atTop] at hf_tend
+  obtain ⟨K, hK⟩ := hf_tend (M + 1)
+  apply Set.infinite_of_injective_forall_mem (f := fun k : ℕ => f (k + K))
+  · intro a b hab
+    have hinj : f (a + K) = f (b + K) := hab
+    have := hf_mono.injective hinj
+    omega
+  · intro k
+    have h_ge : K ≤ k + K := Nat.le_add_left K k
+    have := hK (k + K) h_ge
+    simp only [Function.comp_apply] at this
+    show M < normalizedGap (f (k + K))
+    linarith
+
 end Erdos5
