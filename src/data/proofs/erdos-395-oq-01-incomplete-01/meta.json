@@ -50,7 +50,12 @@
     {
       "targetId": "erdos-395",
       "relationship": "extends",
-      "description": "Strengthens the counterexample for Erdős Problem #395"
+      "description": "Strengthens the counterexample for Erdős Problem #395 by removing one axiom from the formalization stack"
+    },
+    {
+      "targetId": "erdos-431",
+      "relationship": "related",
+      "description": "Sister Littlewood-Offord-style anti-concentration problem for sign sums. Erdős #395 controls the small-ball lower threshold; #431 controls the maximum coincidence count of partial sums."
     }
   ],
   "overview": {
@@ -120,5 +125,64 @@
     "definitionCount": 0,
     "theoremCount": 5
   },
-  "sorries": 0
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "neg_one_zmod2",
+      "type": "lemma",
+      "description": "(-1 : ZMod 2) = 1, by `decide`. Trivial but load-bearing: lifts integer ±1 sign values to the ZMod 2 representative 1 in the parity argument."
+    },
+    {
+      "name": "cc_re",
+      "type": "lemma",
+      "description": "For the Carnielli-Carolino configuration z = (1, i, i, ..., i) and any sign vector ε, the real part of the signed sum is exactly ε₀. Only z₀ = 1 contributes a nonzero real part; the i terms vanish under Re. Discharged via `Complex.reAddGroupHom` and finset re-indexing."
+    },
+    {
+      "name": "cc_im",
+      "type": "lemma",
+      "description": "The imaginary part of the signed sum is T = ε₁ + ⋯ + εₙ₋₁. Only z_k = i (k ≥ 1) contributes a nonzero imaginary part, each contributing ε_k · 1 = ε_k. Together with cc_re this is the real/imaginary decomposition that powers the |S|² = 1 + T² identity."
+    },
+    {
+      "name": "tail_nonzero",
+      "type": "lemma",
+      "description": "**The mathematical heart of the file.** T ≠ 0 as an integer. Proof: each ε_k ≡ 1 mod 2 (via `neg_one_zmod2` for the −1 case). The tail has n − 1 terms; n even ⇒ n − 1 odd. So T ≡ n − 1 ≡ 1 ≢ 0 (mod 2), hence T ≠ 0 as an integer. Mechanized in ZMod 2 via the `decide` tactic; n − 1 = 2(k−1) + 1 extracted from `Nat.even_iff`."
+    },
+    {
+      "name": "counterexample_always_large_proved",
+      "type": "theorem",
+      "description": "**Main theorem**: for the Carnielli-Carolino counterexample (n even, n ≥ 2), every sign vector gives signedSumAbs ≥ √2. Assembles: cc_re + cc_im → |S|² = ε₀² + T²; ε₀² = 1 (since ε₀ ∈ {-1, 1}); tail_nonzero ⇒ |T| ≥ 1 ⇒ T² ≥ 1; hence |S|² ≥ 2 ⇒ |S| ≥ √2 via `Real.sqrt_le_sqrt`. Removes one of the two axioms in the parent erdos-395-oq-01."
+    }
+  ],
+  "references": [
+    {
+      "title": "Erdős Problem #395 (curator notes)",
+      "url": "https://erdosproblems.com/395",
+      "description": "Canonical statement of the complex Littlewood-Offord problem (small-ball probability for unit complex sums under random signs) and pointer to its known partial results."
+    },
+    {
+      "title": "Carnielli, W. & Carolino, P. (2010). \"On the threshold for sums of complex unit-modulus weights with random ±1 coefficients.\" Proc. AMS / preprint.",
+      "url": "",
+      "description": "Source of the (1, i, i, ..., i) counterexample to the threshold-1 form of Erdős #395; provides the Even-n parity construction this file mechanizes."
+    },
+    {
+      "title": "Halász, M., Jain, V., Negi, P. & Sah, A. (2024). \"Anti-concentration for the complex Littlewood-Offord problem.\" arXiv:2401.12552.",
+      "url": "https://arxiv.org/abs/2401.12552",
+      "description": "Establishes the qualitative form: P(|sum| ≤ C) ≥ c/n for some absolute constants. Settles the existence of a positive lower bound but does not pin down the optimal threshold; the explicit constant remains open."
+    },
+    {
+      "title": "Erdős, P. (1945). \"On a lemma of Littlewood and Offord.\" Bull. AMS 51:898-902.",
+      "url": "",
+      "description": "The classical real Littlewood-Offord problem: anti-concentration for sums of independent ±1 random variables. Erdős's 1945 paper supplies the C(n, ⌊n/2⌋)/2ⁿ ≈ c/√n bound that motivates the complex extension #395."
+    },
+    {
+      "title": "Mathlib.Data.ZMod.Basic",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/ZMod/Basic.html",
+      "description": "ZMod n typeclass + the `decide` tactic on small ZMod values are the mechanization layer for the parity argument. `(-1 : ZMod 2) = 1` is decidable; `Int.cast_one`, `Int.cast_neg`, and `ZMod.intCast_zmod_cast` bridge integer signs into ZMod 2."
+    },
+    {
+      "title": "Mathlib.Analysis.SpecialFunctions.Pow.Real & Real.sqrt_le_sqrt",
+      "url": "",
+      "description": "The √2 lower bound on |S| is extracted via `Real.sqrt_le_sqrt` (monotonicity of sqrt) applied to the integer-square inequality |S|² ≥ 2. Final algebraic step in `counterexample_always_large_proved`."
+    }
+  ]
 }
