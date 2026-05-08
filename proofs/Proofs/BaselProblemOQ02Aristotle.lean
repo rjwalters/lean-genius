@@ -10,8 +10,9 @@
   - No axiom declarations (converted to theorem ... := by sorry)
 
   Status: pi_transcendental proved via import. zeta_two/four_transcendental
-  proved via transcendental_pow + algebraic closure. apery_theorem remains
-  (deep 1978 result, not in Mathlib).
+  proved via transcendental_pow + algebraic closure. Apéry's theorem
+  (ζ(3) irrational, 1978) is not exposed here — it is not Aristotle-tractable
+  and is declared as `axiom apery_theorem` in BaselProblemOQ02.lean.
 -/
 import Mathlib.NumberTheory.ZetaValues
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
@@ -30,9 +31,6 @@ noncomputable def zetaValue (s : ℕ) : ℝ := ∑' n : ℕ, 1 / (n : ℝ) ^ s
 -- π is transcendental over ℚ (proved in PiTranscendental.lean from Lindemann axiom)
 theorem pi_transcendental : Transcendental ℚ (Real.pi : ℝ) :=
   pi_transcendental_over_rationals
-
--- Apéry's theorem: ζ(3) is irrational (deep 1978 result, not in Mathlib)
-theorem apery_theorem : Irrational (zetaValue 3) := by sorry
 
 -- Known closed forms (from Mathlib)
 theorem zetaValue_two : zetaValue 2 = π ^ 2 / 6 := by
