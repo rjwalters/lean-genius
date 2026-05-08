@@ -28,6 +28,97 @@ the main file.
 
 ---
 
+## Session 2026-05-08 (Session 10) - Recipe Extension: open_walk_interior_balanced'
+
+**Mode**: REVISIT (Session 9 validated `closed_walk_balance'`; Session 10
+adds a second worked template for the open-walk interior shape)
+**Outcome**: extended `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` with a
+fully worked-out generic `open_walk_interior_balanced'` template in the
+`walk[i]? = some v` form, mirroring the broken main file's L517–559.
+
+### Why Recipe-Extension Over In-Place Transcription
+
+The Session 9 hand-off plan called for in-place transcription. On evaluation
+this session, the in-place pass requires:
+- ~50 sites changed across 6 lemmas + 2 defs + 3 theorems, in a single pass
+  (per the standing rationale from Sessions 7–9 that a partial refactor
+  leaves the file in worse shape due to mixed signatures across callers)
+- A full Docker build at the end (~45+ minutes per current `.lake` symlink
+  state)
+
+Given a ~30 minute session window, this was infeasible. The pragmatic move
+was to grow the validated-recipe library with a second worked template so
+Session 11 (with proper time budget) has more confidence and fewer unknown
+API surfaces when doing the in-place pass.
+
+### What's Now in `KonigsbergOQ01OQ02Recipe.lean`
+
+After this session, the recipe file contains three validated artifacts:
+
+1. **Bridge lemma** `getElem?_eq_some_iff_of_lt` (Session 9):
+   `l[i]? = some v ↔ l[i] = v` for `i < l.length`.
+
+2. **Closed-walk template** `closed_walk_balance'` (Session 9):
+   For closed walks (`walk[0]? = walk[n]?`), source-count of `v` equals
+   target-count via cyclic bijection `i ↦ if i = 0 then n - 1 else i - 1`.
+   Worked Maps-into / Injective / Surjective; surjectivity uses
+   explicit `by_cases h : j = n - 1` (NOT `split_ifs <;> omega` — see
+   Session 9 finding on omega's incomplete handling of nested conditional
+   case-splits).
+
+3. **Open-walk interior template** `open_walk_interior_balanced'` (Session 10):
+   For open walks where neither endpoint is `v` (`walk[0]? ≠ some v` and
+   `walk[n]? ≠ some v`), source-count of `v` equals target-count via
+   linear bijection `i ↦ i - 1`. Endpoint contradictions extract
+   `i ≥ 1` (source side) and `j + 1 < n` (target side) via
+   `by_contra; push_neg; have : ... = 0 := by omega; exact hw0 (this ▸ _)`
+   pattern — direct port from the broken main file's structure.
+
+### Why `open_walk_interior_balanced'` Was the Right Second Template
+
+Three open-walk lemmas exist in the broken main file:
+- `open_walk_last_target_excess` (linear bijection on `T \ {n-1}` → S)
+- `open_walk_first_source_excess` (linear bijection on `S \ {0}` → T)
+- `open_walk_interior_balanced` (linear bijection on full filtered set,
+  endpoint exclusions force the bijection well-defined)
+
+`open_walk_interior_balanced` was chosen as the second template because:
+- It's the **simplest** open-walk shape (no `Finset.erase` plumbing).
+- It's the **most general** (used in the new Session 6
+  `euler_path_implies_degree_balance` proof for the interior-vertex case).
+- The `*_excess` lemmas combine its bijection structure with a
+  `Finset.card_insert_of_not_mem` setup; once `open_walk_interior_balanced'`
+  is validated, the `*_excess'` versions are mechanical extensions.
+
+### What Session 11 Should Verify First
+
+Before doing the in-place transcription, run:
+```bash
+./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ01OQ02Recipe
+```
+
+Expected: builds clean. The proof was traced by hand against the broken
+main file's structure, and uses the same API surface Session 9 validated.
+Most likely failure (low risk): the `(hi0 ▸ hi_v)` motive-inference. If
+that fails, replace with an explicit `subst hi0` followed by direct
+`exact hw0 hi_v`.
+
+### Files Modified This Session
+
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (+~75 lines)
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (Session 10 entry)
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this entry)
+- `src/data/research/problems/konigsberg-oq-01-oq-02.json` (status nudge)
+
+### What Did NOT Change
+
+- `proofs/Proofs/KonigsbergOQ01OQ02.lean` — still build-broken. Session 11
+  performs the in-place refactor with the now-3-template recipe library.
+- `src/data/proofs/konigsberg-oq-01-oq-02/meta.json` — sorries/axiomCount
+  unchanged (no main-file edits).
+
+---
+
 ## Session 2026-05-08 (Session 9) - Recipe Validation File
 
 **Mode**: REVISIT (Sessions 7+8 prepared recipe; this session validates it)
