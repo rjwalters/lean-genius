@@ -321,10 +321,11 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     -- Build Fin (k+1) → L injection from F₀ (S12 v4.26.0 fix: Set.toFinset_card path).
     obtain ⟨vs, hvs_inj, hvs_range⟩ : ∃ vs : Fin (k+1) → (stdLattice n).toAddSubgroup,
         Function.Injective vs ∧ Set.range vs = ↑F₀ := by
-      have h_card : Fintype.card (↑F₀ : Set _) = k + 1 := by
+      have h_card : Fintype.card (↑F₀ : Set ↥(stdLattice n).toAddSubgroup) = k + 1 := by
         rw [← Set.toFinset_card]
         simp [hF₀_card]
-      let e : (↑F₀ : Set _) ≃ Fin (k+1) := Fintype.equivFinOfCardEq h_card
+      let e : (↑F₀ : Set ↥(stdLattice n).toAddSubgroup) ≃ Fin (k+1) :=
+        Fintype.equivFinOfCardEq h_card
       refine ⟨fun i => (e.symm i).1, ?_, ?_⟩
       · intro i j hij; exact e.symm.injective (Subtype.ext hij)
       · ext x
@@ -351,7 +352,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
           (∑' v : (stdLattice n).toAddSubgroup,
               s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)) ∂volume
       ≤ ∫⁻ _ in stdFundDomain n, (k : ENNReal) ∂volume := by
-        apply MeasureTheory.setLIntegral_mono_ae measurable_const
+        apply MeasureTheory.setLIntegral_mono_ae measurable_const.aemeasurable
         exact MeasureTheory.ae_of_all _ (fun z _ => h_pointwise z)
     _ = (k : ENNReal) * volume (stdFundDomain n) := by
         rw [MeasureTheory.setLIntegral_const]
