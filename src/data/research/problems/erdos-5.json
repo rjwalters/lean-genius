@@ -30,19 +30,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-12T03:37:20.406Z",
-    "iteration": 4,
-    "focus": "Fixed build failure, added limitPointSet_isClosed outline",
+    "since": "2026-05-08T11:00:00Z",
+    "iteration": 5,
+    "focus": "Forward density direction + iff characterization + unconditional oscillation lemmas",
     "blockers": [],
-    "nextAction": "Prove limitPointSet_isClosed: implement diagonalization (cluster_implies_limitPoint) + triangle inequality for complement openness",
+    "nextAction": "Optional follow-ups: MapClusterPt reformulation; Filter.liminf/limsup formulation; investigate whether Hildebrand–Maier can be derived from Westzynthius + measure argument.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 5,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 29T/3A/0S (was 27T). Removed vacuous merikoski_density. Added isLimitPoint_of_frequently_near (cluster→limit point) and erdos_5_from_dense_values (reduces conjecture to distributional density). All 3 axioms are deep results — no further elimination possible.",
+    "progressSummary": "33T/3A/0S (was 29T after #16). Session 2026-05-08 added 4 theorems strengthening density theory: frequently_near_of_isLimitPoint (forward direction of density characterization), erdos_5_iff_dense_at_every_point (iff version of erdos_5_from_dense_values), frequently_normalizedGap_lt (unconditional from Zhang), frequently_normalizedGap_gt (unconditional from Westzynthius). All 3 axioms (Westzynthius, Zhang, Hildebrand–Maier) remain — they are deep results.",
     "builtItems": [
       "Proved goldston_pintz_yildirim_small_gaps: derived from zhang_implies_zero_limit (already proved from zhang_bounded_gaps axiom)",
       "Proved erdos_ricci_positive_measure: trivially True placeholder (needs measure theory for real content)",
@@ -86,7 +86,11 @@
       "4 axioms eliminated in this session: nthPrime (defined), nthPrime_prime (proved), nthPrime_strictMono (proved), hildebrand_maier_large_gaps (derived)",
       "Removed vacuous merikoski_density placeholder (∃ d ≥ 1/3, True proves nothing)",
       "Added isLimitPoint_of_frequently_near: if ∀ε>0 infinitely many n have dist(normalizedGap n, C)<ε, then C∈S (diagonal extraction)",
-      "Added erdos_5_from_dense_values: reduces conjecture to showing normalizedGap values are distributionally dense on [0,∞)"
+      "Added erdos_5_from_dense_values: reduces conjecture to showing normalizedGap values are distributionally dense on [0,∞)",
+      "frequently_near_of_isLimitPoint (Erdos5PrimeGaps.lean Part XIII): forward direction of density characterization. If C ∈ S, then ∀ε>0, {n | dist(normalizedGap n, C) < ε}.Infinite. Proof: extract convergent subsequence from IsLimitPoint, inject ℕ via k ↦ f(k+K) using Set.infinite_of_injective_forall_mem.",
+      "erdos_5_iff_dense_at_every_point: iff version of erdos_5_from_dense_values, combining the existing reverse direction (diagonal extraction) with the new forward direction. Erdős #5 ⇔ ∀C ≥ 0, ∀ε > 0, {n | dist(normalizedGap n, C) < ε}.Infinite ∧ ∞ ∈ S.",
+      "frequently_normalizedGap_lt (Erdos5PrimeGaps.lean Part XIV): unconditional consequence of Zhang. ∀ε>0, {n | normalizedGap n < ε}.Infinite. Uses dist_zero_right + Real.norm_of_nonneg to convert ε-ball form.",
+      "frequently_normalizedGap_gt: Set.Infinite reformulation of westzynthius_implies_frequently_large. Confirms unconditional bookend: gaps oscillate between arbitrarily small and arbitrarily large infinitely often."
     ],
     "mathlibGaps": [],
     "nextSteps": [
