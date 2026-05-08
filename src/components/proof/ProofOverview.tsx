@@ -228,7 +228,7 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                         <code className="bg-background/50 px-1.5 py-0.5 rounded text-annotation font-mono">
                           {dep.theorem}
                         </code>
-                        <p className="text-muted-foreground mt-0.5">{dep.description}</p>
+                        <MarkdownMathInline className="text-muted-foreground mt-0.5 block">{dep.description ?? ''}</MarkdownMathInline>
                       </li>
                     ))}
                     {meta.mathlibDependencies.length > 3 && (
@@ -372,9 +372,9 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                         <ArrowRight className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground group-hover:text-annotation transition-colors" />
                         <div>
                           <span className="font-medium text-annotation group-hover:underline">{refSlug}</span>
-                          <p className="text-xs text-muted-foreground mt-0.5">
-                            {ref.description ?? ref.relationship}
-                          </p>
+                          <MarkdownMathInline className="text-xs text-muted-foreground mt-0.5 block">
+                            {ref.description ?? ref.relationship ?? ''}
+                          </MarkdownMathInline>
                         </div>
                       </Link>
                     </li>
@@ -417,12 +417,12 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                   {/* Verdict/Status */}
                   {selectedVersion.content.objection && (
                     <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
-                      <h4 className="text-sm font-semibold text-red-400 mb-2">
+                      <MarkdownMathInline className="text-sm font-semibold text-red-400 mb-2 block">
                         {selectedVersion.content.objection.verdict}
-                      </h4>
-                      <p className="text-sm text-foreground/90">
+                      </MarkdownMathInline>
+                      <MarkdownMathInline className="text-sm text-foreground/90 block">
                         {selectedVersion.content.objection.summary}
-                      </p>
+                      </MarkdownMathInline>
                     </div>
                   )}
 
@@ -431,9 +431,9 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                     <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground mb-2">
                       Description
                     </h4>
-                    <p className="text-sm text-foreground/90 leading-relaxed">
-                      {selectedVersion.content.description}
-                    </p>
+                    <MarkdownMathInline className="text-sm text-foreground/90 leading-relaxed block">
+                      {selectedVersion.content.description ?? ''}
+                    </MarkdownMathInline>
                   </div>
 
                   {/* Proof Strategy */}
@@ -463,7 +463,7 @@ export function ProofOverview({ proof, versionInfo }: ProofOverviewProps) {
                             <span className="shrink-0 h-5 w-5 rounded-full bg-muted text-muted-foreground text-xs flex items-center justify-center font-medium">
                               {i + 1}
                             </span>
-                            <span className="leading-relaxed">{insight}</span>
+                            <MarkdownMathInline className="leading-relaxed">{insight}</MarkdownMathInline>
                           </li>
                         ))}
                       </ul>
