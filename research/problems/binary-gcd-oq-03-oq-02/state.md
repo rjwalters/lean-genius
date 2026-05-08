@@ -1,22 +1,46 @@
 # Current State
 
-**Phase**: ACT — Path A's algorithmic story (S18–S20) and primary
-API (S21) are closed. S22 fills the residual algebraic gaps:
-multiplicative laws, the iff form of the universal property,
-strict positivity, and a Fibonacci-style coprimality witness;
-plus five `native_decide` empirical witnesses that exercise the
-full Path A recursion stack on inputs spanning the threshold edge,
-the S17 PR #17024 survey range, and beyond.
+**Phase**: ACT — Path A's algorithmic story (S18–S20), primary
+API (S21–S22), and now the outer-guard branching characterisation
+(S23) are closed. S23 introduces a Boolean predicate
+`schonhageOuterGuardFires : ℕ → ℕ → Bool` capturing the OUTER
+size-reduction guard from `schonhageGcd`'s recursive case, plus
+five structural lemmas that reduce every reasoning step about the
+recursion to a Boolean case-split on the predicate. This is the
+qualitative foundation for the deferred quantitative speedup
+story (S24+).
 
 **Since**: 2026-05-01
-**Iteration**: 22
+**Iteration**: 23
 
 ## Current Focus
 
-Session 22 extends the S21 API surface with six further `Nat.gcd`
+Session 23 (this PR) introduces an outer-guard predicate
+characterisation of `schonhageGcd`'s recursive case. The predicate
+`schonhageOuterGuardFires : ℕ → ℕ → Bool` returns `true` iff
+applying `hgcdSafeApply a b` strictly reduces `max a b` (and the
+input is above threshold). Five structural lemmas provide the
+core reduction equations:
+
+  - `schonhageOuterGuardFires_below_threshold` — uniformly false
+    on small inputs.
+  - `schonhageOuterGuardFires_iff` — conjunctive iff with
+    above-threshold AND strict-decrease.
+  - `schonhageOuterGuardFires_strict_decrease` — forward direction:
+    the firing guard implies strict size-reduction at the next step.
+  - `schonhageGcd_succ_via_outerGuard` — **headline theorem**: one
+    fuel step of `schonhageGcd` is fully described by the predicate
+    (recurse if fires, dispatch to `Nat.gcd` if aborts).
+  - Specialisations: `_recurse_of_fires` and `_fallback_of_aborts`.
+
+Five `native_decide`-checked below-threshold witnesses confirm
+the closed-form Boolean kernel agrees with the abstract
+characterisation on concrete sub-threshold inputs.
+
+Session 22 extended the S21 API surface with six further `Nat.gcd`
 identities not previously packaged (`schonhageGcdOf_dvd_iff`,
 `_mul_left`, `_mul_right`, `_pos_of_pos_left`,
-`_pos_of_pos_right`, `_succ_self`) and adds a PART XII section of
+`_pos_of_pos_right`, `_succ_self`) and added a PART XII section of
 five `native_decide`-checked sanity examples. Together with S21
 the algebraic API for `schonhageGcdOf` now mirrors the standard
 Mathlib `Nat.gcd` theory, and the `native_decide` checks confirm
@@ -131,7 +155,7 @@ Status of the proof plan (Sessions 1–19):
     `simp`-style tactics without manual unfolding at the call
     site, completing the drop-in replacement story.
 15. **Extended algebraic identities + empirical witnesses** ✅
-    (S22, this session): 6 additional wrapper lemmas in PART XI
+    (S22, PR #15091): 6 additional wrapper lemmas in PART XI
     (`schonhageGcdOf_dvd_iff`, `_mul_left`, `_mul_right`,
     `_pos_of_pos_left`, `_pos_of_pos_right`, `_succ_self`) plus 5
     PART XII `native_decide` empirical sanity examples
@@ -142,6 +166,23 @@ Status of the proof plan (Sessions 1–19):
     style coprimality witness. The PART XII examples exercise the
     closed-form recursion at scale — the kernel reduces every fuel
     level and every `hgcdSafeApply` call.
+16. **Outer-guard predicate + branching characterisation** ✅
+    (S23, this session): Boolean predicate
+    `schonhageOuterGuardFires : ℕ → ℕ → Bool` capturing the OUTER
+    size-reduction guard from `schonhageGcd`'s recursive case
+    (PART VIII line 440), plus five structural lemmas in PART
+    XIII (`_below_threshold`, `_iff`, `_strict_decrease`,
+    `schonhageGcd_succ_via_outerGuard` — the headline reduction
+    equation, and the two specialisations `_recurse_of_fires` /
+    `_fallback_of_aborts`). PART XIV adds five
+    `native_decide`-checked below-threshold witnesses
+    (`(0, 0)`, `(5, 3)`, `(12, 8)`, `(63, 1)`, `(63, 63)`),
+    confirming the predicate is uniformly `false` on small inputs.
+    The headline theorem reduces every reasoning step about the
+    `schonhageGcd` recursion to a Boolean case-split on the
+    predicate, factoring out the algebra of the threshold check
+    + size-reduction guard. This is the qualitative foundation
+    for S24+ density theorems.
 
 **Open / Refuted**:
 - **Recursive case of `hgcdMatrix_row_output_le`** ❌ (line 1078,
@@ -191,18 +232,25 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
-1. **Session 23 — quantitative inner-reduction characterisation**:
-   establish the input regime in which `hgcdMatrixSafe`'s inner
-   runtime guard fires. The S17 PART XIV counterexample shows the
-   guard can abort, but a density argument may still yield a
-   probabilistic speedup bound. A first concrete sub-target:
-   prove a Boolean predicate `outerGuardFires a b : Bool` and
-   characterise it on the S17 counterexample family by
-   `native_decide`, anchoring the claim that the OUTER guard in
-   `schonhageGcd` is the actual mechanism that handles these
-   pathological inputs.
-2. **Bit-complexity bound**: still blocked on Mathlib; defer.
-3. **Mathlib upstream**: the current `schonhageGcdOf` API surface
+1. **Session 24 — outer-guard density theorem**: with the S23
+   branching equation in hand, prove a *density* statement for
+   `schonhageOuterGuardFires`. Concrete sub-targets:
+   - Coprime pairs above threshold with matching bit-length:
+     does the outer guard provably fire? Inspecting `hgcdSafeApply`
+     on such inputs would yield a *deterministic* speedup bound on
+     this regime (one full HGCD step per call, rather than the
+     worst-case fallback to `Nat.gcd`).
+   - Survey-range characterisation: for the S17 PART XIV
+     counterexample family `{(a, b) : 64 ≤ b ≤ a < 130}`, what
+     fraction of inputs trigger the outer guard? Can be measured
+     by `native_decide` on a Boolean tabulation function and
+     would calibrate the qualitative-vs-quantitative gap.
+2. **Session 25+ — inner-reduction characterisation**: refine the
+   *inner* runtime guard analysis for `hgcdMatrixSafe` itself,
+   complementing the S23 outer-guard predicate. This is the
+   second-level question the S17 PART XIV counterexample raised.
+3. **Bit-complexity bound**: still blocked on Mathlib; defer.
+4. **Mathlib upstream**: the current `schonhageGcdOf` API surface
    (S21+S22) is now sufficient that, contingent on a working
    Docker build, candidate Mathlib upstream PRs could be drafted
    for one or two of the routine wrapper lemmas. Survey what
@@ -210,7 +258,7 @@ speedup, bit-complexity bound).
 
 ## Attempt Counts
 
-- Total attempts: 22 (Sessions 1–22)
+- Total attempts: 23 (Sessions 1–23)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: Sessions 3–16
@@ -222,6 +270,11 @@ speedup, bit-complexity bound).
   - Path A API surface (S21, #17104): standard `Nat.gcd` API
     transferred to `schonhageGcdOf`; fuel irrelevance packaged.
   - Path A extended algebraic identities + empirical witnesses
-    (S22, this PR): multiplicative laws, dvd-iff, positivity,
+    (S22, #15091): multiplicative laws, dvd-iff, positivity,
     coprimality witness, plus 5 `native_decide` sanity examples.
-  - Path A quantitative bounds (S23+): pending.
+  - Path A outer-guard branching characterisation (S23, this PR):
+    Boolean predicate + 5 structural lemmas + 5 below-threshold
+    `native_decide` witnesses. Headline reduction equation
+    `schonhageGcd_succ_via_outerGuard` reduces every reasoning
+    step about the recursion to a Boolean case-split.
+  - Path A quantitative bounds (S24+): pending.
