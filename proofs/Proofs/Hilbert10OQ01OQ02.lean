@@ -669,6 +669,88 @@ theorem notZero_isExistentialUniversalDefinition :
   codiophantine_implies_existentialUniversal _ notZero_isCoDiophantineDefinition
 
 -- ============================================================
+-- Part VIII.8 (iter 7): ¬¬-shadow / double-negation invariance
+-- ============================================================
+
+/-- Classical double-negation bridge for an arbitrary `RatSubset`:
+    `S q ↔ ¬¬ S q`. Packaged as a reusable named lemma for the four
+    `_iff_of_pred_iff` congruence helpers below.
+
+    Already used inline in iteration 5's
+    `universalExistential_iff_existentialUniversal_complement`; factored
+    out here so the four ¬¬-shadow theorems are uniform one-liners. The
+    only non-constructive step is `Classical.byContradiction`. -/
+private theorem doubleNeg_pred_iff (S : RatSubset) :
+    ∀ q : Rat, S q ↔ ¬ ¬ S q :=
+  fun _ => ⟨fun hSq hnSq => hnSq hSq, fun hnnSq => Classical.byContradiction hnnSq⟩
+
+/-- **Σ₁ ¬¬-shadow** (iteration 7): the Σ₁ (Diophantine) class is
+    invariant under classical double-negation of the predicate.
+
+        Σ₁(¬¬ S)  ⟺  Σ₁(S).
+
+    Pure logic; pulls back through the Σ₁ class congruence
+    `diophantineDefinition_iff_of_pred_iff` (iteration 4) along the
+    classical bridge `doubleNeg_pred_iff`. No new axioms. -/
+theorem diophantineDefinition_doubleNeg_iff (S : RatSubset) :
+    IsDiophantineDefinition (fun q => ¬ ¬ S q) ↔ IsDiophantineDefinition S :=
+  (diophantineDefinition_iff_of_pred_iff (doubleNeg_pred_iff S)).symm
+
+/-- **Π₁ ¬¬-shadow** (iteration 7): the Π₁ (co-Diophantine) class is
+    invariant under classical double-negation of the predicate.
+
+        Π₁(¬¬ S)  ⟺  Π₁(S).
+
+    Pure logic; pulls back through `coDiophantineDefinition_iff_of_pred_iff`
+    (iteration 4) along the classical bridge. No new axioms. -/
+theorem coDiophantineDefinition_doubleNeg_iff (S : RatSubset) :
+    IsCoDiophantineDefinition (fun q => ¬ ¬ S q) ↔ IsCoDiophantineDefinition S :=
+  (coDiophantineDefinition_iff_of_pred_iff (doubleNeg_pred_iff S)).symm
+
+/-- **Π₂ ¬¬-shadow** (iteration 7): the Π₂ (universal-existential) class
+    is invariant under classical double-negation of the predicate.
+
+        Π₂(¬¬ S)  ⟺  Π₂(S).
+
+    Pure logic; pulls back through `universalExistentialDefinition_iff_of_pred_iff`
+    (iteration 3) along the classical bridge. No new axioms. -/
+theorem universalExistentialDefinition_doubleNeg_iff (S : RatSubset) :
+    IsUniversalExistentialDefinition (fun q => ¬ ¬ S q) ↔
+      IsUniversalExistentialDefinition S :=
+  (universalExistentialDefinition_iff_of_pred_iff (doubleNeg_pred_iff S)).symm
+
+/-- **Σ₂ ¬¬-shadow** (iteration 7): the Σ₂ (existential-universal) class
+    is invariant under classical double-negation of the predicate.
+
+        Σ₂(¬¬ S)  ⟺  Σ₂(S).
+
+    Pure logic; pulls back through `existentialUniversalDefinition_iff_of_pred_iff`
+    (iteration 4) along the classical bridge. Completes the four-class
+    ¬¬-shadow story (Σ₁/Π₁/Σ₂/Π₂ all stable under classical double
+    negation of the predicate). No new axioms. -/
+theorem existentialUniversalDefinition_doubleNeg_iff (S : RatSubset) :
+    IsExistentialUniversalDefinition (fun q => ¬ ¬ S q) ↔
+      IsExistentialUniversalDefinition S :=
+  (existentialUniversalDefinition_iff_of_pred_iff (doubleNeg_pred_iff S)).symm
+
+/-- **OPEN-question reformulation through the shadow** (iteration 7):
+    the OPEN Σ₁ question for ℤ ⊂ ℚ is equivalent to its double-negation
+    shadow.
+
+        IntegersAreDiophantineOverQ
+          ⟺  IsDiophantineDefinition (fun q => ¬¬ IntSubset q).
+
+    Concrete consequence of the Σ₁ ¬¬-shadow at the predicate `IntSubset`.
+    Useful when a putative refutation argument naturally produces a `¬¬`
+    layer (e.g., from a classical decomposition of a Π₁ counter-witness)
+    — the shadow reformulation lets one stay inside the Σ₁ class while
+    using the doubly-negated predicate. -/
+theorem integers_diophantine_iff_doubleNeg :
+    IntegersAreDiophantineOverQ ↔
+      IsDiophantineDefinition (fun q => ¬ ¬ IntSubset q) :=
+  (diophantineDefinition_doubleNeg_iff IntSubset).symm
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -709,6 +791,12 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   Σ₁ (resp. Π₁); these in turn place them into Π₂ and Σ₂ via the trivial
   inclusions `Σ₁ ⊆ Π₂` and `Π₁ ⊆ Σ₂`. This sharpens the iteration-5
   trivial-set library (∅, ℚ) to the smallest non-degenerate subset.
+- All four classes are stable under classical *double-negation* of the
+  predicate (iter 7): `Class(¬¬ S) ⟺ Class(S)` for `Class ∈ {Σ₁, Π₁, Σ₂, Π₂}`.
+  In particular, the OPEN Σ₁ question for ℤ ⊂ ℚ is equivalent to its
+  ¬¬-shadow `Σ₁(¬¬ IntSubset)`, which is occasionally a more tractable
+  reformulation when a refutation argument naturally produces a `¬¬`
+  layer (e.g., a classical decomposition of a Π₁ counter-witness).
 
 ## Axioms in THIS file (1 net new)
 
@@ -720,7 +808,7 @@ All other declared `theorem`s are NOT new axioms — they are logical
 consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
 Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (30)
+## Theorems in THIS file (35)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -752,6 +840,11 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `notZero_isCoDiophantineDefinition` (ℚ\{0} is Π₁, iter 6)
   - `singletonZero_isUniversalExistentialDefinition` ({0} is Π₂, iter 6)
   - `notZero_isExistentialUniversalDefinition` (ℚ\{0} is Σ₂, iter 6)
+  - `diophantineDefinition_doubleNeg_iff` (Σ₁ ¬¬-shadow, iter 7)
+  - `coDiophantineDefinition_doubleNeg_iff` (Π₁ ¬¬-shadow, iter 7)
+  - `universalExistentialDefinition_doubleNeg_iff` (Π₂ ¬¬-shadow, iter 7)
+  - `existentialUniversalDefinition_doubleNeg_iff` (Σ₂ ¬¬-shadow, iter 7)
+  - `integers_diophantine_iff_doubleNeg` (OPEN Σ₁ question ⟺ its ¬¬-shadow, iter 7)
 -/
 
 #check @IsDiophantineDefinition
@@ -783,5 +876,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @notZero_isCoDiophantineDefinition
 #check @singletonZero_isUniversalExistentialDefinition
 #check @notZero_isExistentialUniversalDefinition
+#check @diophantineDefinition_doubleNeg_iff
+#check @coDiophantineDefinition_doubleNeg_iff
+#check @universalExistentialDefinition_doubleNeg_iff
+#check @existentialUniversalDefinition_doubleNeg_iff
+#check @integers_diophantine_iff_doubleNeg
 
 end Hilbert10Rationals

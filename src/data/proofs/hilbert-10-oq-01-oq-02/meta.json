@@ -44,11 +44,16 @@
       "singletonZero_isDiophantineDefinition: {0} ⊂ ℚ is Σ₁-definable via the projection polynomial P(q,x) = q (smallest non-trivial Σ₁ subset; iter 6, axiom-free)",
       "notZero_isCoDiophantineDefinition: ℚ \\ {0} is Π₁-definable via the same projection polynomial (iter 6, axiom-free)",
       "singletonZero_isUniversalExistentialDefinition: {0} ⊂ ℚ is Π₂-definable, corollary of Σ₁ membership via Σ₁ ⊆ Π₂ (iter 6, no new axiom)",
-      "notZero_isExistentialUniversalDefinition: ℚ \\ {0} is Σ₂-definable, corollary of Π₁ membership via Π₁ ⊆ Σ₂ (iter 6, no new axiom)"
+      "notZero_isExistentialUniversalDefinition: ℚ \\ {0} is Σ₂-definable, corollary of Π₁ membership via Π₁ ⊆ Σ₂ (iter 6, no new axiom)",
+      "diophantineDefinition_doubleNeg_iff: Σ₁ class is invariant under classical double-negation of the predicate — Σ₁(¬¬ S) ⟺ Σ₁(S) (iter 7, axiom-free, one-line via Σ₁ class congruence)",
+      "coDiophantineDefinition_doubleNeg_iff: Π₁ class is invariant under classical double-negation — Π₁(¬¬ S) ⟺ Π₁(S) (iter 7, axiom-free)",
+      "universalExistentialDefinition_doubleNeg_iff: Π₂ class is invariant under classical double-negation — Π₂(¬¬ S) ⟺ Π₂(S) (iter 7, axiom-free)",
+      "existentialUniversalDefinition_doubleNeg_iff: Σ₂ class is invariant under classical double-negation — Σ₂(¬¬ S) ⟺ Σ₂(S) (iter 7, axiom-free; completes the four-class ¬¬-shadow story)",
+      "integers_diophantine_iff_doubleNeg: the OPEN Σ₁ question for ℤ ⊂ ℚ is equivalent to its ¬¬-shadow — IntegersAreDiophantineOverQ ⟺ Σ₁(fun q => ¬¬ IntSubset q) (iter 7, axiom-free, refutation-ergonomic reformulation)"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 787,
+    "lineCount": 885,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -56,7 +61,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 33,
+    "theoremCount": 39,
     "definitionCount": 11
   },
   "overview": {
@@ -184,9 +189,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 787,
+    "lineCount": 885,
     "axiomCount": 1,
-    "theoremCount": 33,
+    "theoremCount": 39,
     "definitionCount": 11,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
