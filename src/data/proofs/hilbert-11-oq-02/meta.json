@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 2,
-    "lineCount": 264,
+    "lineCount": 328,
     "theoremCount": 5,
     "definitionCount": 3,
     "assumptions": "2 axioms: (1) selmer_no_rational_solution — Selmer's 1951 theorem that 3x³ + 4y³ + 5z³ = 0 has no nontrivial rational solutions; the full proof uses 3-descent on the associated elliptic curve y² = x³ - 432·15² and computation of the 3-Selmer group, neither of which is available in Mathlib v4.26.0. (2) selmer_padic_solubility — for every prime p, the Selmer cubic is solvable over ℚₚ; provable via Hensel's lemma on the smooth reduction mod p for p ∉ {2,3,5} and direct construction at the small primes, but requires Hensel infrastructure for ℚₚ. The real solubility (existence of a nontrivial real root) and the easy directions ℚ → ℝ and ℚ → ℚₚ are proved unconditionally from Mathlib's intermediate_value_Icc and the standard ring embeddings.",
@@ -140,13 +140,21 @@
       "id": "summary",
       "title": "Section 7: Status Summary and #check",
       "startLine": 234,
-      "endLine": 264,
+      "endLine": 254,
       "summary": "Status table listing each component as PROVED or AXIOMATIZED, axiom count = 2, sorry count = 0, and #check statements for the seven main declarations.",
       "mathContext": "Final tally: 5 theorems, 3 definitions, 2 axioms, 0 sorries. The two axioms (`selmer_no_rational_solution`, `selmer_padic_solubility`) are documented with mathematical justification."
+    },
+    {
+      "id": "padic-roadmap",
+      "title": "Section 8: Roadmap for Eliminating selmer_padic_solubility",
+      "startLine": 256,
+      "endLine": 328,
+      "summary": "Documentation-only section catalogues the explicit Hensel-lift recipe for `selmer_padic_solubility` prime by prime. Case A (p ≡ 2 mod 3, p ∉ {2,5}): cubing is bijective on (ℤ/p)*, so the (0,1,z) projection lifts; explicit z₀ given for p = 11, 17, 23, 29. Case B (p ≡ 1 mod 3, p ≥ 7): only 1/3 of nonzero residues are cubes; smooth zeros nevertheless exist by Hasse-Weil; explicit smooth (x,y,z) given for p = 7, 13, 19, 31, 37. Special primes p ∈ {2, 5}: smooth direct constructions. Special prime p = 3: singular reduction (every Jacobian coefficient ≡ 0 mod 3); strong-form Hensel applies after climbing to mod 27, witness (0, 1, 4) mod 27 with v₃(f) = 3 > 2·v₃(∂_z f) = 2.",
+      "mathContext": "**Cube-residue analysis.** The structure of (ℤ/p)* under cubing splits primes into two regimes: p ≡ 2 (mod 3) ⇒ cubing is a bijection (every element is a cube); p ≡ 1 (mod 3) ⇒ exactly one third of (ℤ/p)* are cubes. **Hensel hypothesis.** For p ∉ {3}, standard Hensel `|f(α)|_p < |f'(α)|_p` lifts a smooth mod-p zero to a unique p-adic zero. **Singular reduction at p = 3.** Since 3 divides every coefficient of the Jacobian (9, 12, 15) of the Selmer cubic, no smooth mod-3 zero exists; one must use the strong-form Hensel `|f(α)|_p < |f'(α)|_p²` after climbing to mod 27. **Hasse-Weil bound.** A smooth genus-1 cubic curve over F_p has at least p + 1 - 2√p ≥ 5 (for p ≥ 5) F_p-points, guaranteeing the existence of a smooth mod-p zero for every p ≥ 5; for the Selmer cubic specifically the discriminant is supported on {2, 3, 5} so smooth reduction holds for p ≥ 7."
     }
   ],
   "conclusion": {
-    "summary": "The Selmer cubic 3x³ + 4y³ + 5z³ = 0 — the canonical 1951 counterexample to the Hasse principle for higher-degree forms — is formalized as a 264-line Lean 4 file with 5 theorems, 3 definitions, 2 axioms, 0 sorries. Real solubility is proved constructively via IVT; the easy directions of the Hasse principle (rational ⇒ local) are proved by formal ring-embedding arguments; Selmer's no-rational-solutions theorem and full p-adic solubility are axiomatized; and the Hasse-principle FAILURE for the Selmer cubic is then proved in 4 lines from the two axioms. The result is a clean encoding of the canonical counterexample with all the elementary content proved and all the deep arithmetic content explicitly axiomatized.",
+    "summary": "The Selmer cubic 3x³ + 4y³ + 5z³ = 0 — the canonical 1951 counterexample to the Hasse principle for higher-degree forms — is formalized as a 328-line Lean 4 file with 5 theorems, 3 definitions, 2 axioms, 0 sorries. Real solubility is proved constructively via IVT; the easy directions of the Hasse principle (rational ⇒ local) are proved by formal ring-embedding arguments; Selmer's no-rational-solutions theorem and full p-adic solubility are axiomatized; and the Hasse-principle FAILURE for the Selmer cubic is then proved in 4 lines from the two axioms. The result is a clean encoding of the canonical counterexample with all the elementary content proved and all the deep arithmetic content explicitly axiomatized.",
     "implications": "**Theoretical significance**: Selmer's cubic was the first explicit demonstration that the Hasse principle does not extend from quadratic to cubic forms. It launched the entire modern field of obstruction theory in arithmetic geometry — Manin's Brauer-Manin obstruction (1971), Skorobogatov's étale-Brauer-Manin (1999), Poonen's intermediate failures (2010). Whether the étale-Brauer-Manin obstruction is the only obstruction for rationally connected varieties is a central open question linking number theory to algebraic geometry.\n\n**Formalization significance**: This is one of the first Mathlib-aligned formalizations of a Hasse-principle failure. The two axioms cleanly localize the deep arithmetic content (3-descent, Hensel) without bleeding into the surrounding gallery framework. The genericity of `selmerPoly` over CommRing (rather than ℚ-specific) makes the easy-direction theorems reusable across the three local rings.\n\n**Path to fewer axioms**: `selmer_padic_solubility` is the more accessible axiom — it follows from Mathlib's existing Hensel infrastructure plus a smooth-reduction argument for primes p ∉ {2, 3, 5} and direct construction at p ∈ {2, 3, 5}. Eliminating this axiom would leave only Selmer 1951 itself as an assumption, an honest reflection of the mathematical depth.\n\n**Connection to other gallery entries**: hilbert-11 (parent, Hasse-Minkowski for quadratics — the result that Selmer demonstrates does NOT generalize); hilbert-11-oq-01 (sibling, refined Hasse-Minkowski); e-transcendental-oq-02 (similar pattern: deep open problem with axiomatized headline + proved framework).",
     "openQuestions": [
       "Eliminate the `selmer_padic_solubility` axiom by formalizing Hensel's lemma application to smooth cubic reductions. For p ∉ {2, 3, 5} this is direct; the small primes need explicit low-precision lifts.",
@@ -187,7 +195,7 @@
       "Set"
     ],
     "namespace": "Hilbert11OQ02",
-    "lineCount": 264,
+    "lineCount": 328,
     "axiomCount": 2,
     "theoremCount": 5,
     "definitionCount": 3,

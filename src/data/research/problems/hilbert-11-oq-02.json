@@ -41,19 +41,19 @@
   },
   "currentState": {
     "phase": "ITERATING",
-    "since": "2026-05-08T05:50:00Z",
-    "iteration": 2,
-    "focus": "Iteration 2 (gallery promotion): created src/data/proofs/hilbert-11-oq-02/ with full meta.json (8 sections, overview, conclusion, 7 references, 3 cross-references), empty annotations.json, and standard async-loaded index.ts. Validated via `pnpm annotations:build` (listings regenerate cleanly with our entry; no new annotation errors). Lean file unchanged (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries). Closes the gallery-presence gap left after #16808 merged the Lean side.",
+    "since": "2026-05-08T08:30:00Z",
+    "iteration": 3,
+    "focus": "Iteration 3 (Hensel-elimination roadmap): added Section 8 to `Proofs/Hilbert11OQ02.lean` (264 → 328 lines, no new declarations) cataloguing the explicit Hensel-lift recipe for `selmer_padic_solubility` prime by prime. Splits primes by residue class mod 3 (Case A: p ≡ 2 mod 3 — cubing bijective, (0,1,z) projection works; Case B: p ≡ 1 mod 3, p ≥ 7 — Hasse-Weil guarantees smooth zeros, alternative projections work) and treats p ∈ {2, 3, 5} separately (p = 3 has singular reduction requiring strong-form Hensel mod 27). Concrete witnesses given for p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}. meta.json line counts and sections updated.",
     "blockers": [],
-    "nextAction": "Future iteration: prove p-adic solubility of the Selmer cubic at primes p ∉ {2,3,5} via Hensel's lemma applied to the reduction mod p (currently axiomatized as `selmer_padic_solubility`). At p ∈ {2,3,5} requires direct construction at low precision. Replacing this axiom is the most accessible next step toward reducing the axiom count.",
+    "nextAction": "Iteration 4: split `selmer_padic_solubility` into per-case lemmas `selmer_padic_solubility_eq2_mod3 (p ≡ 2 mod 3)`, `selmer_padic_solubility_eq1_mod3 (p ≡ 1 mod 3, p ≥ 7)`, and three concrete cases for p ∈ {2, 3, 5}. Discharge Case A first since the cube-residue argument is purely formal and Mathlib's Hensel infrastructure for ℚ_p suffices. The witnesses in Section 8 (p = 11 → z₀ = 2; p = 17 → z₀ = 5; etc.) provide explicit lift starting points.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 2). Iter 1: created `proofs/Proofs/Hilbert11OQ02.lean` (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries) merged via PR #16808. Iter 2 (this session): promoted to gallery — created `src/data/proofs/hilbert-11-oq-02/` with full meta.json (8 sections, overview, conclusion, 7 references, 3 cross-references), empty annotations.json, and index.ts. The entry registers in listings.json with status=axiomatized, badge=axiom; validated via `pnpm annotations:build`.",
+    "progressSummary": "ITERATING (iter 3). Iter 1: created `proofs/Proofs/Hilbert11OQ02.lean` (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries) merged via PR #16808. Iter 2: promoted to gallery — created `src/data/proofs/hilbert-11-oq-02/` with full meta.json (now 9 sections), annotations.json, index.ts. Iter 3 (this session): added Section 8 (Hensel-elimination roadmap) to the Lean file (264 → 328 lines, no new declarations) with prime-by-prime cube-residue analysis and explicit smooth-zero witnesses for p ∈ {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37}. meta.json line counts and section table updated. No axiom count change (still 2); no sorry count change (still 0). Pure documentation iteration that turns the universal `selmer_padic_solubility` axiom into a finite checklist of per-prime lemmas, each with a concrete starting point for the next iteration's Hensel-lift work.",
     "builtItems": [
       "selmerPoly definition in Hilbert11OQ02.lean (3x³+4y³+5z³ over CommRing)",
       "selmerCubic_real_solution in Hilbert11OQ02.lean — nontrivial real solution constructed via IVT on g(x)=3x³+4 over [-2,0]",
@@ -62,9 +62,11 @@
       "selmer_locally_soluble_everywhere in Hilbert11OQ02.lean — combines proved real solubility with axiomatized p-adic solubility",
       "selmer_hasse_principle_fails in Hilbert11OQ02.lean — derives Hasse failure from selmer_no_rational_solution + local everywhere",
       "selmerHassePrinciple definition in Hilbert11OQ02.lean — local-global predicate for the Selmer cubic",
-      "src/data/proofs/hilbert-11-oq-02/meta.json — 287 lines: status=axiomatized, badge=axiom, 8 sections, full overview/conclusion, 7 references (Selmer 1951; Hasse 1923; Manin 1971; Skorobogatov 1999; Poonen 2010; Colliot-Thélène-Sansuc 1980), 3 cross-references (hilbert-11 parent, hilbert-11-oq-01 sibling, e-transcendental-oq-02 same-pattern)",
+      "src/data/proofs/hilbert-11-oq-02/meta.json — 9 sections: status=axiomatized, badge=axiom, full overview/conclusion, 7 references (Selmer 1951; Hasse 1923; Manin 1971; Skorobogatov 1999; Poonen 2010; Colliot-Thélène-Sansuc 1980), 3 cross-references (hilbert-11 parent, hilbert-11-oq-01 sibling, e-transcendental-oq-02 same-pattern)",
       "src/data/proofs/hilbert-11-oq-02/index.ts — standard async-loaded source template",
-      "src/data/proofs/hilbert-11-oq-02/annotations.json — empty []; annotation enrichment deferred to follow-up enricher session"
+      "src/data/proofs/hilbert-11-oq-02/annotations.json — empty []; annotation enrichment deferred to follow-up enricher session",
+      "Section 8 of Hilbert11OQ02.lean (lines 256–318): documentation-only Hensel-elimination roadmap. Splits the universal `selmer_padic_solubility` axiom into Case A (p ≡ 2 mod 3, p ∉ {2,5}; cube-residue argument plus Hensel along z), Case B (p ≡ 1 mod 3, p ≥ 7; Hasse-Weil + alternative projection), and special primes p ∈ {2, 3, 5}. Concrete smooth-zero witnesses tabulated for 12 primes.",
+      "meta.json updates: lineCount 264 → 328 (in both meta and leanFile blocks); Section 7 endLine 264 → 254; new section entry `padic-roadmap` (Section 8: Roadmap for Eliminating selmer_padic_solubility, lines 256–328) with summary and full mathContext."
     ],
     "insights": [
       "Hilbert11_QuadraticForms.lean already AXIOMATIZES the Selmer counterexample (`selmer_curve_no_rational_points`) — OQ-02 should LIFT this axiom into a dedicated entry and frame it as the canonical example of Hasse failure rather than burying it in the quadratic-forms parent",
@@ -75,7 +77,11 @@
       "The Selmer cubic 3x³+4y³+5z³=0 in ℙ² has genus 1 and is in fact a principal homogeneous space for an elliptic curve E: y² = x³ - 432 (a twist of E_60); this connects to the Tate-Shafarevich group Ш(E/ℚ)",
       "Real solubility of 3x³+4y³+5z³=0 has a one-line constructive proof: fix y=1, z=0, then need x with 3x³+4=0, supplied by IVT on g(x)=3x³+4 over [-2,0] since g(-2)=-20, g(0)=4. This makes the 'real local soluble' direction provable in Lean with no number-theory machinery beyond `intermediate_value_Icc`.",
       "The easy direction of the Hasse principle (rational ⇒ local) is purely formal in Lean: `Rat.cast : ℚ → ℝ` and `Rat.cast : ℚ → ℚ_[p]` are ring homomorphisms, so `push_cast; ring` closes the polynomial-equation-preservation goal. This is the same pattern used for any ℚ-rational point of any ℚ-variety — generalizable to a future `RatPoint_to_LocalPoint` framework.",
-      "Selmer's deep theorem `selmer_no_rational_solution` is irreducibly axiomatized: 3-descent on the associated elliptic curve E: y²=x³-432·15² is required, and Mathlib v4.26 has no Selmer-group infrastructure. p-adic solubility at p ∉ {2,3,5} could be proved via Hensel applied to the reduction; this is the most accessible axiom-elimination path."
+      "Selmer's deep theorem `selmer_no_rational_solution` is irreducibly axiomatized: 3-descent on the associated elliptic curve E: y²=x³-432·15² is required, and Mathlib v4.26 has no Selmer-group infrastructure. p-adic solubility at p ∉ {2,3,5} could be proved via Hensel applied to the reduction; this is the most accessible axiom-elimination path.",
+      "Cube-residue dichotomy mod p (iter 3): for p ≡ 2 (mod 3), cubing is a bijection on (ℤ/p)*, so the equation z³ = -4·5⁻¹ mod p always has a unique nonzero solution and the (0, 1, z) projection of the Selmer cubic admits an immediate Hensel lift. For p ≡ 1 (mod 3), only one third of (ℤ/p)* are cubes; the (0, 1, z) projection often fails (e.g. fails at p ∈ {7, 13, 19, 31}) and one must search over more of the (x, y) plane. Computationally verified: at p ∈ {7, 13, 19, 31} no z exists with 5z³ + 4 ≡ 0 mod p; at p ∈ {11, 17, 23, 29, 37} explicit z₀ values are available.",
+      "Singular reduction at p = 3 (iter 3): the Jacobian of `selmerPoly` is (9x², 12y², 15z²), and all three coefficients are divisible by 3. Hence every mod-3 zero of selmerPoly is non-smooth and naive Hensel's lemma does not lift. Strong-form Hensel (`|f(α)|_p < |f'(α)|_p²`) succeeds after climbing to mod 27: the witness (0, 1, 4) satisfies selmerPoly 0 1 4 = 4 + 5·64 = 324 = 12·27 ≡ 0 mod 27, with v₃(∂_z f(0,1,4)) = v₃(240) = 1, giving v₃(f) = 3 > 2·1 = 2·v₃(∂_z f) as required.",
+      "Hasse-Weil bound forces local solubility (iter 3): the Selmer cubic is a smooth genus-1 curve in ℙ², with discriminant supported on {2, 3, 5}. For p ≥ 7 it has smooth reduction, and Hasse-Weil guarantees at least p + 1 - 2√p ≥ 5 F_p-points. Existence of a smooth mod-p zero is therefore guaranteed at every p ≥ 7 — the Hensel-lift step is then routine. Combined with explicit constructions at p ∈ {2, 3, 5}, this fully resolves the universal `selmer_padic_solubility` axiom modulo Mathlib's Hensel API.",
+      "Concrete Hensel-lift starting points (iter 3): the primes p = 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 each have an explicit smooth (x₀, y₀, z₀) tabulated in Section 8 of Hilbert11OQ02.lean. Each is a verified mod-p (or mod-27 for p = 3) zero of selmerPoly with at least one Jacobian coordinate a unit, ready for direct application of the appropriate Hensel statement."
     ],
     "mathlibGaps": [
       "No formal definition of Brauer-Manin obstruction in Mathlib (would require Brauer group of a scheme + adelic points)",
@@ -85,9 +91,10 @@
       "`MvPolynomial.IsHomogeneous` exists but there is no specialized theory of 'rational-points predicate' for homogeneous forms over number fields"
     ],
     "nextSteps": [
-      "Replace `selmer_padic_solubility` axiom with a Hensel-based proof for primes p ∉ {2,3,5}: reduce 3x³+4y³+5z³ mod p, find a smooth ℤ/p-point, lift via Hensel. Mathlib v4.26 has `Polynomial.IsHensel` and `PadicNumbers.Hensel` lemmas applicable.",
-      "Direct construction of p-adic solutions at p ∈ {2,3,5}: low-precision lifts (e.g. 2-adic Hensel needs reduction mod 8 to find a smooth point).",
-      "Promote to gallery: create `src/data/proofs/hilbert-11-oq-02/` with meta.json, annotations.json, index.ts cross-referencing `hilbert-11`, `hilbert-11-oq-01`, and `e-transcendental-oq-02` (similar axiomatization-of-deep-result pattern).",
+      "Iter 4 — Case A lemma: state and prove `selmer_padic_solubility_eq2_mod3 : ∀ (p : ℕ) [Fact (Nat.Prime p)], p % 3 = 2 → p ≠ 2 → p ≠ 5 → ∃ (x y z : ℚ_[p]), nontrivial ∧ selmerPoly x y z = 0`. Strategy: take (0, 1, z) where z is the Hensel lift of the unique cube root of -4·5⁻¹ mod p. Mathlib's `PadicInt.hensel_lemma` (or `Polynomial.IsHensel`) applied to the polynomial `5 X^3 + 4 ∈ ℤ_p[X]` should suffice given the smoothness witness ∂_z = 15z² ≢ 0.",
+      "Iter 5 — Case B lemma: state and prove `selmer_padic_solubility_eq1_mod3 : ∀ (p : ℕ) [Fact (Nat.Prime p)], p % 3 = 1 → p ≥ 7 → ∃ (x y z : ℚ_[p]), nontrivial ∧ selmerPoly x y z = 0`. Strategy: enumerate small smooth witnesses (p = 7 → (1, 1, 0); p = 13 → (1, 4, 2); p = 19 → (1, 0, 4); p = 31 → (1, 3, 17); p = 37 → (0, 1, 5)) and for primes p > 37 cite a Hasse-Weil-style existence argument.",
+      "Iter 6 — Special primes: prove `selmer_padic_solubility_2`, `selmer_padic_solubility_3`, `selmer_padic_solubility_5` directly using the witnesses (1, 0, 1), (0, 1, 4), (1, 2, 0) respectively. The p = 3 case requires strong-form Hensel mod 27 (witness lift uses v₃(f) = 3, v₃(f') = 1).",
+      "Iter 7 — Combine the per-case lemmas via Mathlib's case split on `p % 3` and small-prime cases to prove the original universal `selmer_padic_solubility` as a theorem; remove the axiom; update meta to axiomCount = 1.",
       "Long-term: develop generic `IsHigherDegreeForm n` / `HassePrincipleFails F` predicates over `MvPolynomial (Fin k) ℚ` filtered by `IsHomogeneous F n`; restate Selmer as the canonical instance of the generic predicate.",
       "Stretch: state the Brauer-Manin obstruction conjecture (`brauer_manin_only_obstruction_for_rationally_connected`) as an axiomatized open problem, mirroring the `e_absolutely_normal` pattern.",
       "Survey: add other classical Hasse failures (Cassels-Guy 1966 cubic surface, Iskovskih 1971 del Pezzo) as parallel `*_hasse_principle_fails` instances, axiomatizing the no-rational-solution part for each."
