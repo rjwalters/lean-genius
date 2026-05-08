@@ -1,0 +1,185 @@
+{
+  "id": "greens-theorem-oq-01-oq-02",
+  "title": "Green's Theorem for Smooth Curves via Mathlib Path Integrals",
+  "slug": "greens-theorem-oq-01-oq-02",
+  "description": "Extends OQ-01 from rectangular boundaries to parametrized smooth curves. Defines `pathLineIntegral` directly on top of Mathlib's `intervalIntegral`, proves the standard orientation-reversal sign lemma, and reduces horizontal/vertical line segments to the edge integrals appearing in `rectLineIntegral`. The four-edge concatenation around a rectangle assembles into exactly OQ-01's `rectLineIntegral`, providing a smooth-curve-side proof of consistency. The fully general planar Green's theorem for an arbitrary parametrized piecewise-smooth simple closed curve is isolated as a single axiom — reflecting the genuine Mathlib gap (no packaged Jordan-curve / 2-D Stokes statement).",
+  "meta": {
+    "author": "Lean Genius Research Agent",
+    "date": "2026-05-08",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/GreensTheoremOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "multivariable-calculus",
+      "integration",
+      "path-integral",
+      "smooth-curves",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
+    "dateAdded": "2026-05-08",
+    "axiomCount": 1,
+    "lineCount": 227,
+    "assumptions": "1 own axiom: greens_theorem_smooth_boundary — the planar Green's theorem for a parametrized piecewise-smooth, positively-oriented, simple closed curve bounding a measurable region. This packages the open Mathlib gap: there is no first-class statement that takes a parametrized boundary γ : [a,b] → ℝ² and a region D and asserts ∮_γ (P dx + Q dy) = ∬_D (∂Q/∂x − ∂P/∂y). Mathlib has Stokes' theorem in higher generality via differential forms on manifolds, but the specifically planar Green statement is not packaged in this form. The path-integral side is fully proved (no axioms): `pathLineIntegral` is defined directly via `intervalIntegral`, and the rectangular case is recovered by the bridge lemma `pathLineIntegral_rect_boundary_eq_rectLineIntegral`.",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "pathLineIntegral: a definition of the line integral along a parametric plane curve, expressed entirely in terms of Mathlib's intervalIntegral (no axioms)",
+      "pathLineIntegral_swap_endpoints: orientation-reversal lemma via integral_symm — traversing the curve backwards negates the integral",
+      "pathLineIntegral_horizontal_segment / pathLineIntegral_vertical_segment: edge specializations connecting the smooth-curve formulation to OQ-01's rectLineIntegral",
+      "rectBoundaryPathIntegral: explicit four-edge counterclockwise parametrization of the rectangle boundary, each edge a smooth line segment",
+      "pathLineIntegral_rect_boundary_eq_rectLineIntegral: bridge theorem proving the smooth-curve framework agrees with OQ-01's rectangular formulation on the nose",
+      "greens_theorem_smooth_boundary (axiomatized): isolates the open Mathlib gap as a single axiom — the parametrized planar Green identity for a piecewise-smooth Jordan curve plus measurable region"
+    ],
+    "theoremCount": 5,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 proves Green's theorem for axis-aligned rectangles via intervalIntegral + FTC + Fubini. This OQ-02 extends the line-integral side to parametrized smooth curves and shows the rectangular case is a four-edge specialization of the smooth-curve framework."
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "supports",
+      "description": "The original Wiedijk #21 Green's theorem entry left both lineIntegral and the general curve case axiomatic. This entry replaces the abstract lineIntegral with a concrete pathLineIntegral on top of Mathlib's intervalIntegral, narrowing the remaining gap to the planar Stokes identity."
+    },
+    {
+      "targetId": "greens-theorem-oq-01-oq-01-oq-02",
+      "relationship": "complements",
+      "description": "The standalone intervalIntegral_swap from oq-01-oq-01-oq-02 fills Mathlib's Fubini-for-interval-integrals gap; this entry fills the line-integral-along-a-parametric-curve gap. Together they give the analytic infrastructure needed for a packaged planar Green's theorem."
+    }
+  ],
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Part I: Path Line Integral via intervalIntegral",
+      "startLine": 67,
+      "endLine": 92,
+      "summary": "pathLineIntegral P Q γx γy γx' γy' a b := ∫ t in a..b, P(γx t, γy t) · γx'(t) + Q(γx t, γy t) · γy'(t). Definition uses intervalIntegral directly. Companion lemma pathLineIntegral_swap_endpoints proves the orientation-reversal sign convention via integral_symm.",
+      "mathContext": "The classical definition ∫_γ (P dx + Q dy) = ∫_a^b (P γx' + Q γy') dt rendered as a single intervalIntegral. The orientation lemma ∫_γ⁻¹ = -∫_γ is the standard fact that reversing the parameter flips the line integral."
+    },
+    {
+      "id": "edges",
+      "title": "Part II: Edge Specializations (Bridge to OQ-01)",
+      "startLine": 94,
+      "endLine": 125,
+      "summary": "pathLineIntegral_horizontal_segment: on the smooth segment t ↦ (t, c), the path integral collapses to ∫ x in a..b, P(x,c) — exactly the bottom-edge integral from rectLineIntegral. pathLineIntegral_vertical_segment is the symmetric statement for t ↦ (k, t). Both proofs are integral_congr + simp.",
+      "mathContext": "On a horizontal line segment γ(t) = (t, c), the velocity is (1, 0), so the integrand reduces to P(γ(t)). On a vertical segment γ(t) = (k, t), the velocity is (0, 1), reducing to Q(γ(t)). These are the same integrals OQ-01 calls 'edge integrals'."
+    },
+    {
+      "id": "bridge",
+      "title": "Part III: Rectangular Boundary as Four Smooth Edges",
+      "startLine": 127,
+      "endLine": 169,
+      "summary": "rectBoundaryPathIntegral: four-edge counterclockwise parametrization of ∂([a,b]×[c,d]) — bottom, right, top (parametrized backward), left (parametrized backward). pathLineIntegral_rect_boundary_eq_rectLineIntegral: this assembly equals rectLineIntegral on the nose. Proof uses the edge specializations, two applications of pathLineIntegral_swap_endpoints (for top and left), and ring.",
+      "mathContext": "Counterclockwise traversal of the rectangle boundary pairs two left-to-right or bottom-to-top sweeps with two right-to-left or top-to-bottom sweeps. The latter pair contributes negatively under the orientation lemma, exactly matching the −∫P(x,d) dx − ∫Q(a,y) dy of rectLineIntegral."
+    },
+    {
+      "id": "axiom",
+      "title": "Part IV: General Green's Theorem (Axiomatized)",
+      "startLine": 171,
+      "endLine": 208,
+      "summary": "greens_theorem_smooth_boundary: the planar Green identity ∮_γ (P dx + Q dy) = ∬_D (∂Q/∂x − ∂P/∂y) for a parametrized piecewise-smooth simple closed curve γ bounding a measurable region D. This isolates the genuine Mathlib gap into a single statement — the line-integral side is fully expressible via pathLineIntegral, and the double-integral side via Mathlib's set integral.",
+      "mathContext": "The fully general planar Green's theorem requires Jordan-curve / Stokes-type 2-D infrastructure that Mathlib does not yet expose in this form. The axiom is mathematically standard (a theorem of classical analysis); the formalization gap is purely about packaging."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary Corollary",
+      "startLine": 210,
+      "endLine": 225,
+      "summary": "oq02_summary: restates the bridge identity rectBoundaryPathIntegral = rectLineIntegral as the headline result — the smooth-curve framework strictly extends OQ-01's rectangular formulation, with the four-edge parametrization recovering the rectangular case exactly.",
+      "mathContext": "The framework defined here is a true extension: every result OQ-01 proves about rectLineIntegral lifts to rectBoundaryPathIntegral, and the framework additionally accepts arbitrary smooth and piecewise-smooth boundaries (with the general identity captured by greens_theorem_smooth_boundary)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Green's theorem (1828) was originally stated for arbitrary regions in the plane bounded by a 'closed curve'. The modern formulation requires the boundary to be a piecewise-smooth, positively-oriented, simple closed curve (Jordan curve theorem). The classical proof has two ingredients: (1) decompose the line integral around the boundary into integrals along each smooth piece, parametrized as ∫_a^b (P γx' + Q γy') dt, and (2) apply Stokes-type identities to convert each piece into a contribution to ∬_D (∂Q/∂x − ∂P/∂y). The OQ-01 formalization handled axis-aligned rectangles using intervalIntegral, FTC, and Fubini. This OQ-02 builds the missing infrastructure for ingredient (1): a `pathLineIntegral` definition that takes the parametric form for granted and assembles it from Mathlib's `intervalIntegral`. Ingredient (2) — the planar Stokes identity for an arbitrary Jordan curve — remains an axiom because Mathlib's existing Stokes theorem is packaged in the differential-forms-on-manifolds framework, not as a direct planar statement that takes a parametrized boundary and a region.",
+    "problemStatement": "**Open Question (greens-theorem-oq-01-oq-02)**: Can the OQ-01 formalization of Green's theorem be extended from rectangular boundaries to smooth (piecewise-smooth) curves using Mathlib's path integration machinery?",
+    "text": "The OQ-01 entry proved Green's theorem for axis-aligned rectangles. This extension provides the smooth-curve infrastructure: a `pathLineIntegral` definition on top of `intervalIntegral`, the orientation-reversal lemma, and a bridge proving the four-edge parametrization of a rectangle boundary equals OQ-01's `rectLineIntegral`. The general planar Green identity for a piecewise-smooth Jordan curve is isolated as a single axiom.",
+    "proofStrategy": "**Three-layer approach**:\n\n1. **Path line integral definition**. For a parametric curve `(γx, γy) : [a, b] → ℝ²` with derivatives `(γx', γy')`, define\n   `pathLineIntegral P Q γx γy γx' γy' a b := ∫ t in a..b, P (γx t, γy t) · γx'(t) + Q (γx t, γy t) · γy'(t)`\n   This is a direct `intervalIntegral` and requires no axioms.\n\n2. **Orientation lemma**. `pathLineIntegral_swap_endpoints` proves `∫_γ` over `[b, a]` equals `-∫_γ` over `[a, b]`, via `intervalIntegral.integral_symm`.\n\n3. **Edge specializations and rectangular bridge**. The horizontal segment `t ↦ (t, c)` collapses (`integral_congr` + `simp`) to `∫ x in a..b, P (x, c)` — the bottom-edge integral of `rectLineIntegral`. Vertical segments are symmetric. The four-edge counterclockwise concatenation around `[a, b] × [c, d]` then assembles, with two `swap_endpoints` applications and `ring`, into `rectLineIntegral`.\n\n4. **Axiomatized general statement**. `greens_theorem_smooth_boundary` packages the planar Green identity for arbitrary parametrized piecewise-smooth simple closed curves bounding measurable regions. Documented as the open Mathlib gap.",
+    "keyInsights": [
+      "**The line-integral side is fully Mathlib-expressible**: Mathlib's `intervalIntegral` is sufficient to define `pathLineIntegral`. The 'BLOCKED: requires smooth path integral infrastructure not in Mathlib' status is *only* about the planar Stokes identity, not the path-integral definition.",
+      "**Orientation = sign-flip of intervalIntegral**: Reversing curve direction is just `intervalIntegral.integral_symm` applied to the parameter interval — no separate orientation theory is needed.",
+      "**Rectangle = four smooth segments**: The rectangle boundary is a piecewise-smooth Jordan curve with four straight pieces. The bridge lemma proves the four-edge `pathLineIntegral` sum equals OQ-01's `rectLineIntegral` — the smooth-curve framework is a true extension that recovers the rectangular case exactly.",
+      "**Edge specialization is one `simp`**: A horizontal segment has constant velocity `(1, 0)`, so the path integral integrand reduces to just `P(γ(t)) · 1 + Q(γ(t)) · 0 = P(t, c)`. The bridge proof structure is mechanical once the edge lemmas are in place.",
+      "**The genuine open work is a single axiom**: After this formalization, the open Green's-theorem gap reduces to one statement: the planar Stokes identity for a parametrized Jordan curve. Closing it requires either packaging Mathlib's manifold Stokes theorem in 2-D or proving Green's theorem via Jordan curve decomposition — both are substantial undertakings outside this entry's scope."
+    ],
+    "prerequisites": [
+      "Multivariable calculus (line integrals, parametric curves)",
+      "Mathlib `intervalIntegral` API",
+      "Basic understanding of Stokes-type theorems",
+      "OQ-01: Green's theorem for rectangles via intervalIntegral"
+    ]
+  },
+  "conclusion": {
+    "summary": "We extend OQ-01's rectangular Green's theorem to parametrized smooth curves by introducing `pathLineIntegral`, a direct `intervalIntegral`-based definition of the line integral along a planar curve. The orientation lemma is `intervalIntegral.integral_symm`; the rectangular case is recovered exactly by the bridge `pathLineIntegral_rect_boundary_eq_rectLineIntegral`. The general planar Green identity for a piecewise-smooth Jordan curve is isolated as a single axiom (`greens_theorem_smooth_boundary`), reflecting the open Mathlib gap.",
+    "implications": "The smooth-curve formulation isolates the genuine open work to a *single* axiom and shows the line-integral side is fully Mathlib-expressible. Future work can attack `greens_theorem_smooth_boundary` directly — either by packaging Mathlib's manifold Stokes theorem in 2-D, or by proving Green's theorem via decomposition of the region into rectangles plus boundary cancellation (the textbook proof). The path-integral infrastructure built here is a prerequisite for either route.",
+    "openQuestions": [
+      "Can `greens_theorem_smooth_boundary` be derived from Mathlib's manifold Stokes theorem (`Mathlib.Geometry.Manifold.IntegralCurve` and related), specialized to ℝ²?",
+      "Is there a direct proof of `greens_theorem_smooth_boundary` for axis-aligned regions decomposable into rectangles, building on OQ-01's rectangular Green's theorem plus boundary cancellation along shared edges?",
+      "Can the `pathLineIntegral` definition be packaged into a `Mathlib.Geometry.Curve` namespace as a contribution? The definition is a single `intervalIntegral` and the orientation lemma is one `integral_symm` — both are clean, reusable pieces.",
+      "Does Mathlib's planned `LineIntegral` for differentiable 1-forms (in development) eventually subsume `pathLineIntegral`? If so, the bridge results here would migrate to that framework."
+    ]
+  },
+  "references": [
+    {
+      "key": "Green1828",
+      "citation": "Green, G., An Essay on the Application of Mathematical Analysis to the Theories of Electricity and Magnetism (1828).",
+      "type": "book"
+    },
+    {
+      "key": "Mathlib4",
+      "citation": "The mathlib Community, mathlib4: a Lean 4 mathematical library (rev 2df2f015), https://github.com/leanprover-community/mathlib4",
+      "type": "software"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GreensTheoremOQ01"
+    ],
+    "namespace": "GreensTheoremOQ01OQ02",
+    "lineCount": 227,
+    "axiomCount": 1,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "substantiveTheoremCount": 5,
+    "mainTheorems": [
+      {
+        "name": "pathLineIntegral",
+        "type": "core",
+        "description": "Path line integral of (P, Q) along the parametric curve (γx, γy) over [a, b], defined via intervalIntegral of the parametric integrand",
+        "leanType": "(P Q : ℝ × ℝ → ℝ) → (γx γy γx' γy' : ℝ → ℝ) → (a b : ℝ) → ℝ"
+      },
+      {
+        "name": "pathLineIntegral_swap_endpoints",
+        "type": "key",
+        "description": "Orientation reversal: the path integral over [b, a] equals minus the path integral over [a, b]",
+        "leanType": "pathLineIntegral P Q γx γy γx' γy' b a = - pathLineIntegral P Q γx γy γx' γy' a b"
+      },
+      {
+        "name": "pathLineIntegral_horizontal_segment",
+        "type": "key",
+        "description": "Horizontal segment t ↦ (t, c) has path integral equal to ∫ x in a..b, P (x, c)",
+        "leanType": "pathLineIntegral P Q (·) (const c) (const 1) (const 0) a b = ∫ x in a..b, P (x, c)"
+      },
+      {
+        "name": "pathLineIntegral_rect_boundary_eq_rectLineIntegral",
+        "type": "core",
+        "description": "Four-edge smooth parametrization of the rectangle boundary has path integral equal to OQ-01's rectLineIntegral",
+        "leanType": "rectBoundaryPathIntegral P Q a b c d = rectLineIntegral P Q a b c d"
+      },
+      {
+        "name": "greens_theorem_smooth_boundary",
+        "type": "axiom",
+        "description": "Planar Green's theorem for an arbitrary parametrized piecewise-smooth simple closed curve bounding a measurable region (axiomatized — open Mathlib gap)",
+        "leanType": "pathLineIntegral P Q γx γy γx' γy' a b = ∫ p in D, (dQdx p - dPdy p)"
+      }
+    ],
+    "path": "Proofs/GreensTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
