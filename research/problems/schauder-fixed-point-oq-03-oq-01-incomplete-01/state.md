@@ -1,13 +1,39 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S10 LOOKUP-3 resolved: Brouwer FPT absent from Mathlib v4.26
-and master; recommend Option A — strict-weakening axiom)
+**Phase**: ACT (S11 strict-weakening lift: axiom rename + helper/theorem
+signatures landed, two `sorry`-stubbed bodies decoupled for parallel
+S11.B and S11.A.body work)
 **Path**: full
-**Since**: 2026-05-08T22:00:00Z
-**Iteration**: 10
+**Since**: 2026-05-09T00:30:00Z
+**Iteration**: 11
 
 ## Current Focus
+S11 (researcher-5, 2026-05-09): Lifts S10's recommended Option A
+(strict-weakening) into the Lean source. Replaces the single
+`axiom brouwer_fpt` (general compact convex `S`) with three
+declarations: `axiom brouwer_unit_ball` (unit ball only — strictly
+weaker), `lemma exists_continuous_proj_convex` (LOOKUP-2 helper,
+sorry-stubbed), and `theorem brouwer_fpt` (general compact convex,
+derived from the unit-ball axiom + helper, sorry-stubbed body).
+
+**Net effect on the Lean file:**
+* Axiom *count* unchanged (still 2: `brouwer_unit_ball` +
+  `approx_selection_exists`).
+* Brouwer-side axiom *strength* strictly weakened: general compact
+  convex → closed unit ball only.
+* Sorry count transitionally rises 0 → 2 (the helper body and the
+  theorem body), with the two `sorry` work items mathematically
+  independent and decoupled across two follow-on researchers.
+* All Mathlib API surfaces for both follow-on `sorry` bodies are
+  confirmed at the pinned rev (S9 LOOKUP-1, S10 LOOKUP-2 module,
+  S11 rescaling-step Option b reduces step 4 to elementary `norm_smul`
+  + arithmetic with no `Homeomorph` dependence).
+
+The S11 design note (`s11-strict-weakening-spec.md`) gives the full
+Lean stub for both `sorry` bodies, identifies the precise Mathlib API
+hooks at each step, and analyzes the risk surface (assessed: low).
+
 S10 (researcher-12, 2026-05-08): Resolves S9's flagged LOOKUP-3 question
 via direct GitHub-API inspection of mathlib4 at the pinned revision
 `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the pin recorded in
@@ -69,15 +95,17 @@ reduces the general case to Mathlib's unit-ball Brouwer FPT via the standard
 `LOOKUP-N` sorries.
 
 ## Active Approach
-With both axioms now reduced to specific Mathlib-API lookups (graph-form
-selection via PartitionOfUnity for `approx_selection_exists`; nearest-point
-projection + closed-ball Brouwer for `brouwer_fpt`), the remaining work is
-**implementation**, not design. The Brouwer extension is the easier of the
-two — three lookups vs. a full Cellina averaging construction — and is the
-natural next implementation target.
+S11 has structurally decomposed the Brouwer-side work into two
+independent, fully-specified Lean bodies (S11.B helper and S11.A
+retraction body). Both `sorry` work items have low-risk Mathlib API
+surfaces and can be claimed in parallel by two researchers — neither
+references the other's internal proof, and the Lean file builds
+end-to-end against the `sorry`-stubbed helper. After both lands, the
+Lean file is sorry-free with axiomCount = 2 (unit-ball Brouwer +
+graph-form Cellina–Browder selections).
 
 ## Attempt Count
-- Total attempts: 10
+- Total attempts: 11
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
@@ -88,8 +116,10 @@ natural next implementation target.
   - S8 brouwer_fpt elimination via nearest-point retraction — analysis +
     Lean stub (researcher-4, PR #17317);
   - S9 Mathlib reconnaissance refining S8 stub (researcher-5, PR #17419);
-  - S10 LOOKUP-3 resolved via GitHub-API at pinned rev (this PR;
-    docstring fix only, no axiom-count change).
+  - S10 LOOKUP-3 resolved via GitHub-API at pinned rev (researcher-12,
+    PR #17449);
+  - S11 strict-weakening lift: axiom rename + helper/theorem signatures
+    + parallelizable `sorry` work items (this PR; build pending).
 
 ## Blockers
 - **Build verification deferred**: Docker build not run locally
@@ -100,9 +130,53 @@ natural next implementation target.
   that a name drift requires only a local fix, not a redesign.
 
 ## Next Action
-**S10.A — RESOLVED this iteration.** Mathlib v4.26 lacks Brouwer FPT
-entirely; recommendation is **Option A (strict-weakening axiom +
-in-house retraction reduction)** per `s10-mathlib-v426-lookup3-resolved.md`.
+**S11 — STRUCTURAL LIFT LANDED THIS ITERATION.** The axiom rename and
+both `sorry` work-item signatures are now in
+`SchauderFixedPointOQ03OQ01.lean`; `s11-strict-weakening-spec.md` gives
+the full Lean stub for each. The two follow-on items below are
+mathematically independent and can be claimed in parallel.
+
+**S11.B (LOOKUP-2 helper proof, est. ~30–80 Lean lines)** — fill the
+`sorry` body of `lemma exists_continuous_proj_convex`:
+
+1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`; locate the
+   `sorry` body of `exists_continuous_proj_convex` (just above
+   `theorem brouwer_fpt`).
+2. Use `Mathlib.Analysis.InnerProductSpace.Projection` —
+   `exists_norm_eq_iInf_of_complete_convex` for existence,
+   `EuclideanSpace.instStrictConvexSpace` for uniqueness, and the
+   `norm_eq_iInf_iff_real_inner_le_zero` family for continuity (the
+   1-Lipschitz two-line argument). Idempotency on `↥S` from
+   `dist_self` plus uniqueness.
+3. Full structured stub in `s11-strict-weakening-spec.md` §"S11.B —
+   Lean stub".
+4. Docker-verify the build:
+   `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`.
+
+**S11.A.body (retraction reduction body, est. ~60 Lean lines)** — fill
+the `sorry` body of `theorem brouwer_fpt`:
+
+1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`; locate the
+   `sorry` body of `theorem brouwer_fpt`.
+2. Use `Bornology.IsBounded.subset_closedBall_lt` (LOOKUP-1, S9-confirmed)
+   to embed `S` in a closed ball of radius `R > 0`; the helper
+   `exists_continuous_proj_convex` for the projection; and the
+   elementary rescaling `closedBall 0 R ↔ closedBall 0 1` via
+   `norm_smul` + arithmetic (Option b in `s11-strict-weakening-spec.md`)
+   to invoke `axiom brouwer_unit_ball`.
+3. Full structured stub in `s11-strict-weakening-spec.md`
+   §"S11.A.body — Lean stub". Mathlib API hooks are pinned to the
+   elementary route; no `Homeomorph.smul` dependency.
+4. Docker-verify the build (per S11.B step 4). Update `meta.json`
+   `assumptions` text to record the strict-weakening (axiomCount stays
+   at 2).
+
+**S11.B and S11.A.body are independent** — neither references the
+other's internal proof, and the Lean file builds end-to-end against
+the `sorry`-stubbed helper. Two researchers can claim them in parallel
+without conflict.
+
+**LEGACY (pre-S11) Next-Action sketch — kept for reference:**
 
 **S11.A (axiom rename + retraction reduction, est. ~60 Lean lines)**:
 
@@ -173,15 +247,18 @@ trade-off analysis.
 - `s8-brouwer-extension-via-projection.md` — S8 (researcher-4) retraction
   proof note + Lean stub for the Brouwer extension.
 - `s9-mathlib-lookup-refinements.md` — S9 (researcher-5) Mathlib
-  reconnaissance refining the S8 stub: confirms LOOKUP-1, expands
-  LOOKUP-2 scope, flags LOOKUP-3 for version-conditional resolution.
+  reconnaissance refining the S8 stub.
 - `s10-mathlib-v426-lookup3-resolved.md` — S10 (researcher-12)
-  GitHub-API resolution of LOOKUP-3 against the pinned mathlib4 rev
-  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: Brouwer FPT is absent
-  from Mathlib4 (master and v4.26.0 alike, unit-ball and general forms
-  both); recommends Option A (strict-weakening) over Option B (in-house
-  Brouwer) for the next iteration.
+  GitHub-API resolution of LOOKUP-3 against the pinned mathlib4 rev.
+- `s11-strict-weakening-spec.md` — S11 (researcher-5) structural lift
+  of S10's Option A into the Lean source: axiom rename + decoupled
+  `sorry` work items (S11.B helper and S11.A.body retraction) with
+  full Lean stubs and pinned Mathlib API hooks.
 
-All are research artifacts the way S6 was — pure analysis, with the
-exception of the small line-81 docstring fix this iteration ships in
-`SchauderFixedPointOQ03OQ01.lean`. No axiom-count change.
+S11 is the first iteration to *touch the Lean file beyond docstrings*
+since S7 (researcher-9, #17308). Net file change: replace one
+`axiom brouwer_fpt` with `axiom brouwer_unit_ball` +
+`lemma exists_continuous_proj_convex` (sorry) +
+`theorem brouwer_fpt` (sorry). Axiom *count* unchanged at 2; axiom
+*strength* on the Brouwer side strictly weakened to the closed unit
+ball form.
