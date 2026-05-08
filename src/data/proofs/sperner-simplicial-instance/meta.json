@@ -47,7 +47,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Sperner's lemma (1928) states that any Sperner-colored triangulation of a simplex contains at least one fully colored (panchromatic) cell. The proof uses a parity argument: boundary doors have odd count, and each interior cell contributes 0 or 2 door-swaps. This formalization provides the instance layer connecting abstract combinatorial Sperner (proved in SpernerMathlib4.lean for any CellComplex) to concrete geometric triangulations.\n\nThe `AbstractSimplicialData` structure supports the Mathlib `Geometry.SimplicialComplex` (Finset-based) representation, bridging Mathlib's unordered simplices to the ordered vertex enumeration needed for CellComplex.",
+    "historicalContext": "Sperner's lemma was proved by Emanuel Sperner in 1928 (\"Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes\", *Abhandlungen aus dem mathematischen Seminar der Universität Hamburg*) as a combinatorial route to L. E. J. Brouwer's invariance-of-domain and fixed-point theorems. The lemma asserts: in any Sperner-colored triangulation of an n-simplex (corner i gets color i; faces inherit colors from corners), the number of panchromatic n-cells is odd — in particular, at least one exists. The proof is a clean parity argument on a pseudomanifold's boundary doors. Knaster, Kuratowski, and Mazurkiewicz (the KKM trio) used Sperner's lemma in 1929 to prove the KKM lemma, which gives the cleanest derivation of Brouwer's fixed-point theorem; Scarf (1967) reignited interest by turning the Sperner argument into the *constructive* fixed-point algorithm that powers modern computational economics. This formalization provides the *instance layer* connecting the abstract combinatorial Sperner proof (proved in `SpernerMathlib4.lean` for any `CellComplex`) to concrete geometric triangulations. The architectural separation — abstract `CellComplex` interface plus concrete `Triangulation` instance — mirrors Mathlib's pattern for filters, manifolds, and probability theory: prove once at the abstract level, instantiate for each concrete object. The `AbstractSimplicialData` structure further bridges to Mathlib's `Geometry.SimplicialComplex` (which uses unordered `Finset V` simplices), supplying the `Finset.sort`-based ordered-vertex enumeration required by `CellComplex`.",
     "problemStatement": "**Sperner's Lemma for Triangulations**: Given a `Triangulation V n` and a Sperner coloring c : V → Fin (n+1), if the number of boundary doors is odd, then there exists a panchromatic cell.\n\nFormalized as: `Triangulation.sperner (T : Triangulation V n) (c : V → Fin (n+1)) (hbdry : Odd (...).card) : ∃ s : T.Cell, CellComplex.IsPanchromatic c T.toCellComplex s`",
     "text": "A 994-line bridge construction. Part 1 defines `Triangulation V n` as a finite pure simplicial complex with pseudomanifold adjacency. Part 2 constructs the `toCellComplex` bridge and proves `Triangulation.sperner`. Part 3 develops the `boundary_doors_odd` theorem showing Sperner colorings give odd boundary doors. Part 4 introduces `AbstractSimplicialData` for constructing triangulations from unordered simplices (as in Mathlib). Part 5 provides the concrete `intervalTriangulation m hm` with all axioms fully proved.",
     "proofStrategy": "**Architecture**: `SpernerMathlib4.lean` proves the abstract `CellComplex.sperner` theorem for any abstract CellComplex. This file provides:\n\n**Step 1 (Triangulation structure)**: Define `Triangulation V n` with fields mirroring `CellComplex` plus `vertex_injective`. The bridge `toCellComplex` simply forgets `vertex_injective`.\n\n**Step 2 (Abstract Sperner)**: `Triangulation.sperner` is a one-line application of `CellComplex.sperner` via the bridge.\n\n**Step 3 (Boundary parity)**: `boundary_doors_odd` proves the boundary door parity hypothesis for any Sperner coloring. Key: if a door (s,k) is on geometric face faceIdx with faceIdx.val < n, then `IsDoor` would require color faceIdx on some non-k vertex, but the Sperner condition forbids it. So all boundary doors must be on the 'last' face, whose count is odd by hypothesis.\n\n**Step 4 (From unordered simplices)**: `AbstractSimplicialData` uses `Finset.sort` to produce ordered vertex enumerations from `Finset V` simplices. Injectivity follows from `List.nodup_iff_injective_get` on the sorted list.\n\n**Step 5 (Interval example)**: `intervalTriangulation m hm` uses vertex map `ivtx hm i k = if k=0 then i else i+1` and adjacency `iadj` connecting consecutive intervals. All adjacency axioms proved by case analysis on `iadj_cases`.",
@@ -55,7 +55,9 @@
       "**Trivial bridge**: The `Triangulation` structure is designed to have exactly the same fields as `CellComplex` plus `vertex_injective`, making `toCellComplex` trivial (just field projection). This design choice keeps the bridge one-liner.",
       "**Boundary door parity via Sperner constraint**: `boundary_doors_odd` reduces the parity question to showing all boundary doors lie on the 'last face'. If a door is on face faceIdx with faceIdx.val < n, the Sperner constraint directly contradicts the door condition — a clean contradiction proof.",
       "**vertexEnum injectivity via nodup sort**: `AbstractSimplicialData.vertexEnum_injective` uses `List.nodup_iff_injective_get` on the sorted vertex list. Since `Finset.sort` produces a nodup list, `List.get` is injective on it, giving vertex injectivity immediately.",
-      "**Concrete 1-d example fully verified**: `intervalTriangulation m hm` provides a complete worked example with all 4 adjacency axioms proved. The adjacency structure (adj i 0 = i+1 left face, adj i 1 = i-1 right face) is verified by `iadj_cases` splitting into two cases."
+      "**Concrete 1-d example fully verified**: `intervalTriangulation m hm` provides a complete worked example with all 4 adjacency axioms proved. The adjacency structure (adj i 0 = i+1 left face, adj i 1 = i-1 right face) is verified by `iadj_cases` splitting into two cases.",
+      "**Sperner ⇔ Brouwer**: Sperner's lemma is logically equivalent to Brouwer's fixed-point theorem (and to the KKM lemma); each yields the others by a short argument. The combinatorial Sperner proof is *constructive* (it provides an algorithm — Scarf's pivoting method — that locates a panchromatic cell in finite time), making this entry a foundation stone for any Lean-verified Brouwer theorem and for computational fixed-point search.",
+      "**Pseudomanifold, not arbitrary simplicial complex**: The pseudomanifold condition (each codim-1 face in ≤ 2 top simplices) is exactly what the parity argument needs. General simplicial complexes (e.g., a wedge of triangles meeting at a vertex, or a triangle with extra hanging edges) violate it and are excluded — `boundary_doors_odd` would not hold. This is *why* the Triangulation structure carries the pseudomanifold fields rather than just a generic simplicial complex."
     ],
     "prerequisites": [
       "Sperner's lemma and CellComplex (SpernerMathlib4.lean)",
@@ -69,6 +71,21 @@
       "targetId": "sperner-ndim",
       "relationship": "extends",
       "description": "This file provides the concrete simplicial complex instance for the abstract n-dimensional Sperner framework"
+    },
+    {
+      "targetId": "sperner-ndim-mathlib",
+      "relationship": "depends-on",
+      "description": "SpernerMathlib4.lean (additionalFile) supplies the abstract CellComplex.sperner theorem that this entry instantiates via toCellComplex."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "implies",
+      "description": "Sperner's lemma is the constructive combinatorial route to Brouwer's fixed-point theorem; this entry is foundational machinery for any Lean-verified Brouwer proof."
+    },
+    {
+      "targetId": "sperner-ndim-mathlib-oq-01",
+      "relationship": "sibling",
+      "description": "Companion entry developing the n-dimensional Sperner / Freudenthal triangulation API for Mathlib; both share the abstract CellComplex framework."
     }
   ],
   "leanFile": {
@@ -127,7 +144,9 @@
     "openQuestions": [
       "Verify the standard 2-simplex triangulation (triangulated triangle) as a concrete Triangulation instance",
       "Connect AbstractSimplicialData.toTriangulation to Mathlib's Geometry.SimplicialComplex for a fully Mathlib-compatible pipeline",
-      "Prove boundary_doors_odd for the standard n-simplex triangulation from first principles (geometric facts about the barycentric subdivision)"
+      "Prove boundary_doors_odd for the standard n-simplex triangulation from first principles (geometric facts about the barycentric subdivision)",
+      "Build a Brouwer-fixed-point theorem on top of this: combine `interval_sperner` (or its 2-d analogue) with a continuous-coloring → Sperner-coloring reduction to derive Brouwer for [0,1]^n.",
+      "Implement Scarf's algorithm as a *computable* function in Lean 4: input a Sperner-colored triangulation, output a panchromatic cell. The parity proof is non-constructive in form but the door-following procedure is finite — bridging the two would yield a verified fixed-point algorithm."
     ]
   },
   "sorries": 0
