@@ -925,6 +925,64 @@ theorem symBUDim_twentythree_eq_twentyeight_of
   symBUDim_const_in_no_prime_range_of h_conj 23 28 d
     (by norm_num) (by norm_num) no_prime_in_twentyfour_to_twentyeight
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XVIII: First prime gap of size 8 — plateau collapse at S₈₉ → S₉₆
+-- ═══════════════════════════════════════════════════════════════════════
+-- The interval `(89, 97)` is the first prime gap of size 8 in ℕ.  Seven
+-- consecutive composites — 90, 91, 92, 93, 94, 95, 96 — lie strictly
+-- between the consecutive primes 89 and 97 (89 < 97 with no prime
+-- in between).  This is the smallest n ∈ ℕ where the prime-gap function
+-- p_(k+1) − p_k first exceeds 7, distinguishing it from every gap among
+-- the first 24 primes.  Following the Part-XVII pattern at the gaps of
+-- size 4, 6, this section pins
+--   `largestPrimeBelow 96 = largestPrimeBelow 89` axiom-free, and
+--   `symBUDim 89 d = symBUDim 96 d` conditionally.
+-- The plateau spans **eight consecutive ranks** `n ∈ {89, 90, …, 96}` —
+-- the longest plateau collapse below n = 100, with structurally
+-- distinguished symmetric groups along the way:
+--   - S₈₉ (rank 89, with |S₈₉| = 89!),
+--   - S₉₀ ⊃ A₉₀ ⋊ Z/2 (highly composite rank, |Sylow_2| = 2⁸⁶),
+--   - S₉₆ ⊃ S_{96} on a multi-wreath rank (96 = 2⁵·3),
+-- conjecturally agree on equivariant Borsuk-Ulam dimension at every `d`.
+
+/-- **No prime in (89, 96]**: each of 90, 91, 92, 93, 94, 95, 96 is
+    composite.  Witness for the **first prime gap of size 8** in ℕ
+    (between consecutive primes 89 and 97). -/
+theorem no_prime_in_ninety_to_ninetysix :
+    ∀ k, 89 < k → k ≤ 96 → ¬ Nat.Prime k := by
+  intro k hk1 hk2
+  interval_cases k <;> decide
+
+/-- **LPB plateau across the first gap of size 8 (89, 97)**:
+    `largestPrimeBelow 96 = largestPrimeBelow 89`, axiom-free.  The
+    longest LPB plateau below n = 100 — eight consecutive ranks
+    `{89, 90, …, 96}` all share the same `largestPrimeBelow`. -/
+theorem largestPrimeBelow_eightynine_eq_ninetysix :
+    largestPrimeBelow 96 = largestPrimeBelow 89 :=
+  largestPrimeBelow_const_in_no_prime_range 89 96 (by norm_num)
+    no_prime_in_ninety_to_ninetysix
+
+/-- **Conjectural plateau collapse at S₈₉ → S₉₆**: under
+    `symBUDim_eq_largestPrime`, `symBUDim 89 d = symBUDim 96 d` for
+    every `d`.  The conjecture forces equivariant BU dimensions at all
+    eight consecutive ranks `n ∈ {89, 90, …, 96}` to coincide — the
+    longest plateau collapse below n = 100, spanning the first prime
+    gap of size 8 in ℕ.  Notable witnesses include S₈₉ (prime rank,
+    |S₈₉| = 89!) versus S₉₆ on the highly-composite rank 96 = 2⁵ · 3
+    (with rich Sylow-2 structure |Sylow_2(S₉₆)| = 2⁹³). -/
+theorem symBUDim_eightynine_eq_ninetysix (d : ℕ) :
+    symBUDim 89 d = symBUDim 96 d :=
+  symBUDim_const_in_no_prime_range 89 96 d (by norm_num) (by norm_num)
+    no_prime_in_ninety_to_ninetysix
+
+/-- **Hypothesis-form** of `symBUDim_eightynine_eq_ninetysix` — uses
+    explicit `ConjectureLPB` hypothesis instead of the file's axiom. -/
+theorem symBUDim_eightynine_eq_ninetysix_of
+    (h_conj : ConjectureLPB) (d : ℕ) :
+    symBUDim 89 d = symBUDim 96 d :=
+  symBUDim_const_in_no_prime_range_of h_conj 89 96 d
+    (by norm_num) (by norm_num) no_prime_in_ninety_to_ninetysix
+
 /-
 ## Summary
 
@@ -1100,6 +1158,26 @@ theorem symBUDim_twentythree_eq_twentyeight_of
   `symBUDim_twentythree_eq_twentyeight_of` — hypothesis-form variants
   taking `ConjectureLPB` explicitly.
 
+### Iteration 12 additions (first gap of size 8 — Part XVIII)
+- `no_prime_in_ninety_to_ninetysix` — **axiom-free** witness that the
+  half-open interval `(89, 96]` contains no primes (each of 90, 91, 92,
+  93, 94, 95, 96 is composite).  Pins the **first prime gap of size 8
+  in ℕ** (between consecutive primes 89 and 97).
+- `largestPrimeBelow_eightynine_eq_ninetysix` — **axiom-free** LPB
+  collapse at the first gap of size 8: `largestPrimeBelow 96 =
+  largestPrimeBelow 89`.  The longest LPB plateau below n = 100 —
+  eight consecutive ranks `{89, 90, …, 96}` all share the same
+  `largestPrimeBelow`.
+- `symBUDim_eightynine_eq_ninetysix` — **conditional** plateau collapse
+  at S₈₉ → S₉₆.  Two-line specialization of Part XVI's
+  `symBUDim_const_in_no_prime_range`.  The longest plateau collapse
+  below n = 100 — eight consecutive symmetric groups conjecturally
+  share equivariant Borsuk-Ulam dimensions at every dimension despite
+  qualitatively different rank structure (S₈₉ on prime rank vs S₉₆ on
+  the highly-composite rank 96 = 2⁵ · 3).
+- `symBUDim_eightynine_eq_ninetysix_of` — hypothesis-form variant
+  taking `ConjectureLPB` explicitly.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -1156,4 +1234,9 @@ theorem symBUDim_twentythree_eq_twentyeight_of
 #check @symBUDim_thirteen_eq_sixteen
 #check @no_prime_in_twentyfour_to_twentyeight
 #check @symBUDim_twentythree_eq_twentyeight
+
+#check @no_prime_in_ninety_to_ninetysix
+#check @largestPrimeBelow_eightynine_eq_ninetysix
+#check @symBUDim_eightynine_eq_ninetysix
+#check @symBUDim_eightynine_eq_ninetysix_of
 end BorsukUlamSymPrime
