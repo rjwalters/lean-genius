@@ -1,0 +1,130 @@
+{
+  "slug": "binomial-theorem-oq-02-oq-02-oq-01",
+  "title": "q-Vandermonde Identity via Gaussian Binomial Coefficients",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sum_{k=0}^{r} q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q = \\binom{m+n}{r}_q, where \\binom{n}{k}_q is the Gaussian (q-)binomial coefficient.",
+    "plain": "Can the q-Vandermonde identity ∑ q^{k(r-k)} C(m,k)_q · C(n,r-k)_q = C(m+n,r)_q be formalized using Mathlib's GaussianBinomial? In this slug we built the coefficient API from scratch (Mathlib v4.26.0 has no GaussianBinomial), proved the m=0 / n=0 base cases of q-Vandermonde, and the closed forms at k=1.",
+    "whyMatters": [
+      "Counts k-dimensional subspaces of an (r)-dimensional ambient space — the canonical combinatorial interpretation in finite vector spaces over F_q.",
+      "Specializes to classical Vandermonde at q=1 and to the binomial theorem at r=m, providing a unified q-deformation framework.",
+      "Provides the missing GaussianBinomial API for Mathlib (q-Pascal, vanishing, diagonal, q→1 specialization, k=1 closed form) — the open question reduces to the inductive step on top of this scaffolding."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "qBinomial : R → ℕ → ℕ → R defined over arbitrary CommSemiring via q-Pascal recurrence",
+      "Boundary lemmas: qBinomial_zero_right (n,0 ↦ 1), qBinomial_zero_succ (0, k+1 ↦ 0)",
+      "q-Pascal recurrence: qBinomial_succ_succ — \\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q",
+      "Vanishing: qBinomial_eq_zero_of_lt for k > n",
+      "Diagonal: qBinomial_self — \\binom{n}{n}_q = 1",
+      "q→1 specialization: qBinomial_at_one — qBinomial (1 : R) n k = Nat.choose n k",
+      "q-Vandermonde base cases: qVandermonde_zero_left (m=0) and qVandermonde_zero_right (n=0)",
+      "Classical (q=1) Vandermonde base cases: vandermonde_zero_left_nat, vandermonde_zero_right_nat",
+      "Closed form at k=1: qBinomial_one_eq_geom_sum — \\binom{n}{1}_q = ∑_{i<n} q^i",
+      "Symmetric closed form: qBinomial_succ_pred_eq_geom_sum — \\binom{n+1}{n}_q = ∑_{i≤n} q^i",
+      "Reflection symmetry at k=1: qBinomial_reflection_at_one — \\binom{n+1}{1}_q = \\binom{n+1}{n}_q"
+    ],
+    "open": [
+      "Inductive step of q-Vandermonde: leverage qBinomial_succ_succ on the m+1 side and re-index the convolution sum with careful tracking of the q^{(m-k)(r-k)} weights.",
+      "Dual q-Pascal recurrence: \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q. Now within reach given the k=1 closed form (geometric sum).",
+      "General reflection symmetry: \\binom{n}{k}_q = \\binom{n}{n-k}_q for k ≤ n, derived from dual q-Pascal."
+    ],
+    "goal": "Full q-Vandermonde identity proved by induction on m, with the inductive step using q-Pascal + sum re-indexing."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-07T22:00:00.000Z",
+    "iteration": 2,
+    "focus": "Slug fully verified (#16707 + #16779 merged). Foundational qBinomial API + base cases + k=1 closed form complete; full inductive q-Vandermonde recorded as future work.",
+    "blockers": [],
+    "nextAction": "None on this slug graduation. Next session: prove dual q-Pascal recurrence (smallest tractable next step) or attempt the inductive step of q-Vandermonde directly.",
+    "attemptCounts": {
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 13 theorems + 1 def, 0 sorries, 0 axioms (verified-original) across 297 lines. Established the Gaussian binomial coefficient API from first principles (Mathlib v4.26.0 has no GaussianBinomial), proved q-Pascal recurrence, vanishing, diagonal, q→1 specialization, q-Vandermonde m=0 / n=0 base cases, k=1 closed form via geometric sum, and the reflection symmetry C(n+1, 1)_q = C(n+1, n)_q. Two PRs merged (#16707 q-Vandermonde base cases, #16779 PART 2 closed forms).",
+    "builtItems": [
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial : R → ℕ → ℕ → R definition over CommSemiring via the q-Pascal recurrence",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_zero_right, qBinomial_zero_succ (boundary lemmas)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_succ_succ (q-Pascal recurrence)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_eq_zero_of_lt (vanishing for k > n)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_self (diagonal C(n,n)_q = 1)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_at_one (q→1 specialization to Nat.choose)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qVandermonde_zero_left, qVandermonde_zero_right (m=0, n=0 base cases)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — vandermonde_zero_left_nat, vandermonde_zero_right_nat (classical q=1 base cases in ℕ)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_one_eq_geom_sum (k=1 closed form via geometric sum, induction on n through q-Pascal)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_succ_pred_eq_geom_sum (symmetric closed form C(n+1, n)_q = ∑ q^i)",
+      "Proofs/BinomialTheoremOQ02OQ02OQ01.lean — qBinomial_reflection_at_one (k=1 reflection corollary)",
+      "src/data/proofs/binomial-theorem-oq-02-oq-02-oq-01/meta.json — gallery entry, status=verified, badge=original"
+    ],
+    "insights": [
+      "Mathlib v4.26.0 has no GaussianBinomial API at the time of this work — the entire qBinomial definition + identities had to be built from first principles via the q-Pascal recurrence (no rational-function or polynomial-quotient machinery).",
+      "Defining qBinomial over an arbitrary CommSemiring (rather than a field or ℤ[q]) allows the same definition to specialize to ℕ at q=1 and to ℤ[q] for the analytic theory, with no extra coercion machinery — a CommSemiring is exactly enough structure to support the q-Pascal recurrence.",
+      "The k=1 closed form C(n, 1)_q = ∑_{i<n} q^i is the q-analog of the trivial classical fact C(n, 1) = n, but proving it requires induction-via-q-Pascal: the recurrence reduces to a_{n+1} = q·a_n + 1 with a_0 = 0, whose unique solution is the geometric sum. This is the smallest non-trivial instance of using q-Pascal as an inductive engine.",
+      "Reflection symmetry C(n, k)_q = C(n, n-k)_q is harder than its classical counterpart because the q-Pascal recurrence is asymmetric in k vs n-k. The k=1 case drops out as a corollary of the two geometric-sum closed forms; the general case requires the dual q-Pascal recurrence (which was identified as the next tractable target).",
+      "The full q-Vandermonde inductive step is harder than it looks because the convolution sum's exponent q^{(m-k)(r-k)} interacts non-trivially with the q-Pascal split q^{k+1} C(m,k+1)_q + C(m,k)_q. Re-indexing the second sum shifts the exponent by (r-k) which has to be matched against the first sum's q^k factor — careful exponent algebra is required."
+    ],
+    "mathlibGaps": [
+      "GaussianBinomial / qBinomial not in Mathlib v4.26.0. The API built here (definition + q-Pascal + vanishing + diagonal + q→1 + k=1 closed form) is a candidate Mathlib contribution."
+    ],
+    "nextSteps": [
+      "Prove the dual q-Pascal recurrence \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q (smallest tractable next step; now within reach given k=1 closed form).",
+      "Use dual q-Pascal to prove general reflection symmetry \\binom{n}{k}_q = \\binom{n}{n-k}_q for k ≤ n.",
+      "Attempt the inductive step of q-Vandermonde directly: split via q-Pascal on m+1 side, re-index the convolution sum, match exponents."
+    ],
+    "markdown": "# Knowledge Base: binomial-theorem-oq-02-oq-02-oq-01\n\n## Status\n\nVerified-original. 13 theorems + 1 def, 0 sorries, 0 axioms, 297 lines. Two PRs merged: #16707 (base cases) and #16779 (k=1 closed form).\n\n## Architecture\n\nGaussian binomial coefficient API built from first principles over an arbitrary CommSemiring R:\n\n- `qBinomial : R → ℕ → ℕ → R` via the q-Pascal recurrence\n- All identities derived inductively (no polynomial-quotient or rational-function machinery)\n\n## Key Technique\n\n**Induction-via-q-Pascal as engine.** The k=1 closed form proof is the prototypical example: the q-Pascal recurrence collapses to a_{n+1} = q·a_n + 1, whose unique solution is the geometric sum.\n\n## Open Work\n\nThe full inductive q-Vandermonde identity is recorded as future work in `state.md`. The smallest tractable next step is the dual q-Pascal recurrence."
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "q-analogs",
+    "extension",
+    "gaussian-binomial",
+    "verified"
+  ],
+  "relatedProofs": [
+    "binomial-theorem",
+    "binomial-theorem-oq-02",
+    "binomial-theorem-oq-02-oq-02",
+    "binomial-theorem-oq-02-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+      "https://en.wikipedia.org/wiki/Q-Vandermonde_identity",
+      "https://github.com/rjwalters/lean-genius/pull/16707",
+      "https://github.com/rjwalters/lean-genius/pull/16779"
+    ],
+    "mathlib": [
+      "Finset.sum_range_succ",
+      "Finset.sum_range_succ'",
+      "Nat.choose_succ_succ"
+    ]
+  },
+  "started": "2026-05-07T00:00:00.000Z",
+  "lastUpdate": "2026-05-08T07:25:00.000Z",
+  "completed": "2026-05-07T22:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ02OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ02OQ01.lean"
+    }
+  ]
+}
