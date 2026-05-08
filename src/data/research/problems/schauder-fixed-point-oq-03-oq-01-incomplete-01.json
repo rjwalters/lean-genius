@@ -29,11 +29,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-07T22:13:37Z",
-    "iteration": 3,
-    "focus": "Build verification pending. Helper proved, kakutani filled, axiom 3 eliminated. Convex hypothesis type-fixed.",
+    "since": "2026-05-08T03:00:00Z",
+    "iteration": 4,
+    "focus": "S3 build verified offline (S4). All 4 declarations type-check. 0 sorries, 2 axioms remain. Next reduction: prove approx_selection_exists via partition of unity.",
     "blockers": [],
-    "nextAction": "Re-run Docker build when memory contention subsides; if proof has bugs, iterate. Then update sorries/axiomCount.",
+    "nextAction": "Optional follow-up: prove approx_selection_exists axiom from Mathlib.Topology.PartitionOfUnity (would leave only brouwer_fpt as an axiom — a Mathlib gap for general compact convex S).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S3 (researcher-11, 2026-05-08): Major restructuring submitted, build verification pending. Changes: (1) Eliminated seq_compact_of_compact axiom — replaced with theorem proved from IsCompact.isSeqCompact (3 axioms → 2). (2) Wrote full proof of approx_fixedpoint_implies_fixedpoint using union-of-balls open neighborhood + UHC + sequential compactness. (3) Filled kakutani_from_brouwer body with the previously-commented skeleton. (4) FIXED a pre-existing compilation error: Convex ℝ (F x) was malformed because Set ↥S has no AddCommMonoid; rewrote as Convex ℝ (Subtype.val '' F x) (lifted to ambient EuclideanSpace). The merged S2 commit (#16731) was docstring-only and never actually compiled. (5) Build attempt OOM'd during Mathlib clone+build under heavy multi-agent contention (8+ concurrent docker builds). File counts: 0 sorries, 2 axioms, 349 lines, 3 theorems, 4 definitions.",
+    "progressSummary": "S4 (researcher-10, 2026-05-08): Build VERIFIED. Ran `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01` (6GB cap, 38s lake build after Mathlib cache restore). All 4 declarations elaborated cleanly: brouwer_fpt, approx_selection_exists, approx_fixedpoint_implies_fixedpoint, kakutani_from_brouwer. No errors, no warnings. Confirms S3's restructuring is mathematically and syntactically sound: helper + main theorem proofs hold, Convex ℝ (Subtype.val '' F x) type fix is correct, seq_compact_of_compact theorem reduces to IsCompact.isSeqCompact. File counts confirmed: 0 sorries, 2 axioms (brouwer_fpt, approx_selection_exists), 349 lines, 3 theorems, 4 definitions. Also synced meta.json leanFile.imports list (5→7) to include S3-added Mathlib.Topology.MetricSpace.HausdorffDistance and Mathlib.Topology.Sequences.\n\nS3 (researcher-11, 2026-05-08): Major restructuring submitted, build verification pending. Changes: (1) Eliminated seq_compact_of_compact axiom — replaced with theorem proved from IsCompact.isSeqCompact (3 axioms → 2). (2) Wrote full proof of approx_fixedpoint_implies_fixedpoint using union-of-balls open neighborhood + UHC + sequential compactness. (3) Filled kakutani_from_brouwer body with the previously-commented skeleton. (4) FIXED a pre-existing compilation error: Convex ℝ (F x) was malformed because Set ↥S has no AddCommMonoid; rewrote as Convex ℝ (Subtype.val '' F x) (lifted to ambient EuclideanSpace). The merged S2 commit (#16731) was docstring-only and never actually compiled. (5) Build attempt OOM'd during Mathlib clone+build under heavy multi-agent contention (8+ concurrent docker builds). File counts: 0 sorries, 2 axioms, 349 lines, 3 theorems, 4 definitions.",
     "builtItems": [
       "Detailed 4-step proof outline for approx_fixedpoint_implies_fixedpoint (committed as docstring) — covers sequence construction, subsequence extraction, limit transfer, and UHC-contradiction with empty/nonempty case split.",
       "Commented-out reduction skeleton for kakutani_from_brouwer (committed in tactic block) — exact 10-line proof body once the helper is moved up.",
@@ -103,7 +103,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-05-07T22:13:37Z",
+  "lastUpdate": "2026-05-08T03:00:00Z",
   "significance": 7,
   "tractability": 5
 }
