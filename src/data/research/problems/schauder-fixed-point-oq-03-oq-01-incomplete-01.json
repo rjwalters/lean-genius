@@ -28,20 +28,20 @@
     "goal": "Fill 2 sorries using Mathlib's partition of unity machinery"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-08T03:00:00Z",
-    "iteration": 4,
-    "focus": "S3 build verified offline (S4). All 4 declarations type-check. 0 sorries, 2 axioms remain. Next reduction: prove approx_selection_exists via partition of unity.",
+    "phase": "ORIENT",
+    "since": "2026-05-08T15:30:00Z",
+    "iteration": 5,
+    "focus": "S6 (researcher-6): mathematical analysis surfaces that approx_selection_exists is FALSE as stated under USC + nonempty convex values. 1-D counterexample with F(0)=[0,1], F(t>0)={0}, F(t<0)={1} satisfies all hypotheses but admits no continuous pointwise (1/3)-approximate selection (continuity-at-zero forces f(0) into two disjoint intervals). The proposed PartitionOfUnity proof cannot succeed for the pointwise form; only the graph form (Cellina–Browder, Aubin–Frankowska §9.2) is provable from USC + convex values. Salvage: weaken the axiom to graph form and add a triangle-inequality step (≈10 lines) to kakutani_from_brouwer.",
     "blockers": [],
-    "nextAction": "Optional follow-up: prove approx_selection_exists axiom from Mathlib.Topology.PartitionOfUnity (would leave only brouwer_fpt as an axiom — a Mathlib gap for general compact convex S).",
+    "nextAction": "S7: edit the Lean file to (1) define IsGraphApproxSelection, (2) restate approx_selection_exists in graph form (cite Cellina–Browder), (3) patch kakutani_from_brouwer with triangle-inequality chain (ε ↦ 2ε in outer existential, helper unchanged), (4) Docker-verify build. Then S8+: attempt the PartitionOfUnity proof of the graph form.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (researcher-10, 2026-05-08): Build VERIFIED. Ran `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01` (6GB cap, 38s lake build after Mathlib cache restore). All 4 declarations elaborated cleanly: brouwer_fpt, approx_selection_exists, approx_fixedpoint_implies_fixedpoint, kakutani_from_brouwer. No errors, no warnings. Confirms S3's restructuring is mathematically and syntactically sound: helper + main theorem proofs hold, Convex ℝ (Subtype.val '' F x) type fix is correct, seq_compact_of_compact theorem reduces to IsCompact.isSeqCompact. File counts confirmed: 0 sorries, 2 axioms (brouwer_fpt, approx_selection_exists), 349 lines, 3 theorems, 4 definitions. Also synced meta.json leanFile.imports list (5→7) to include S3-added Mathlib.Topology.MetricSpace.HausdorffDistance and Mathlib.Topology.Sequences.\n\nS3 (researcher-11, 2026-05-08): Major restructuring submitted, build verification pending. Changes: (1) Eliminated seq_compact_of_compact axiom — replaced with theorem proved from IsCompact.isSeqCompact (3 axioms → 2). (2) Wrote full proof of approx_fixedpoint_implies_fixedpoint using union-of-balls open neighborhood + UHC + sequential compactness. (3) Filled kakutani_from_brouwer body with the previously-commented skeleton. (4) FIXED a pre-existing compilation error: Convex ℝ (F x) was malformed because Set ↥S has no AddCommMonoid; rewrote as Convex ℝ (Subtype.val '' F x) (lifted to ambient EuclideanSpace). The merged S2 commit (#16731) was docstring-only and never actually compiled. (5) Build attempt OOM'd during Mathlib clone+build under heavy multi-agent contention (8+ concurrent docker builds). File counts: 0 sorries, 2 axioms, 349 lines, 3 theorems, 4 definitions.",
+    "progressSummary": "S6 (researcher-6, 2026-05-08): KEY FINDING — the axiom approx_selection_exists is false as stated under USC + nonempty convex values. Counterexample (n=1): S = [-1, 1], F(0) = [0, 1], F(t) = {0} for t in (0, 1], F(t) = {1} for t in [-1, 0). Verified that F satisfies all four axiom hypotheses (nonempty, convex values via Subtype.val image, UHC by case-checking on V open). Verified that no continuous f : S → S can be a pointwise (1/3)-approximate selection: at t > 0 forces f(t) in (-1/3, 1/3); at t < 0 forces f(t) in (2/3, 1]; continuity at 0 forces f(0) into both [-1/3, 1/3] and [2/3, 1], which are disjoint. Same argument works for any ε < 1/2. Implication: the proposed S5/S4 next-step (prove approx_selection_exists via Mathlib.Topology.PartitionOfUnity) cannot succeed — under USC + convex values one obtains only a GRAPH approximate selection (Cellina–Browder, Aubin–Frankowska §9.2; Repovš–Semenov), not a pointwise one. The pointwise form requires lower hemicontinuity (LHC), which is a strictly stronger hypothesis. Salvage: replace IsApproxSelection with IsGraphApproxSelection in the axiom and chain a triangle-inequality step (~10 lines) into kakutani_from_brouwer (the helper approx_fixedpoint_implies_fixedpoint is unaffected). Full analysis with verbatim definitions, USC-verification by case split on V, no-f proof, and salvage outline written to research/problems/.../s6-axiom-counterexample.md (no Lean changes — axiom remains until S7 redefines it). Independent observation: brouwer_fpt's extension from Mathlib's unit-ball Brouwer to general compact convex S is provable via a retraction argument (every compact convex set in R^n is a retract of a closed ball; retracts inherit FPP) — easier of the two axioms.\n\nS4 (researcher-10, 2026-05-08): Build VERIFIED. Ran `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01` (6GB cap, 38s lake build after Mathlib cache restore). All 4 declarations elaborated cleanly: brouwer_fpt, approx_selection_exists, approx_fixedpoint_implies_fixedpoint, kakutani_from_brouwer. No errors, no warnings. Confirms S3's restructuring is mathematically and syntactically sound: helper + main theorem proofs hold, Convex ℝ (Subtype.val '' F x) type fix is correct, seq_compact_of_compact theorem reduces to IsCompact.isSeqCompact. File counts confirmed: 0 sorries, 2 axioms (brouwer_fpt, approx_selection_exists), 349 lines, 3 theorems, 4 definitions. Also synced meta.json leanFile.imports list (5→7) to include S3-added Mathlib.Topology.MetricSpace.HausdorffDistance and Mathlib.Topology.Sequences.\n\nS3 (researcher-11, 2026-05-08): Major restructuring submitted, build verification pending. Changes: (1) Eliminated seq_compact_of_compact axiom — replaced with theorem proved from IsCompact.isSeqCompact (3 axioms → 2). (2) Wrote full proof of approx_fixedpoint_implies_fixedpoint using union-of-balls open neighborhood + UHC + sequential compactness. (3) Filled kakutani_from_brouwer body with the previously-commented skeleton. (4) FIXED a pre-existing compilation error: Convex ℝ (F x) was malformed because Set ↥S has no AddCommMonoid; rewrote as Convex ℝ (Subtype.val '' F x) (lifted to ambient EuclideanSpace). The merged S2 commit (#16731) was docstring-only and never actually compiled. (5) Build attempt OOM'd during Mathlib clone+build under heavy multi-agent contention (8+ concurrent docker builds). File counts: 0 sorries, 2 axioms, 349 lines, 3 theorems, 4 definitions.",
     "builtItems": [
       "Detailed 4-step proof outline for approx_fixedpoint_implies_fixedpoint (committed as docstring) — covers sequence construction, subsequence extraction, limit transfer, and UHC-contradiction with empty/nonempty case split.",
       "Commented-out reduction skeleton for kakutani_from_brouwer (committed in tactic block) — exact 10-line proof body once the helper is moved up.",
@@ -53,6 +53,10 @@
       "Added imports: Mathlib.Topology.MetricSpace.HausdorffDistance (for Metric.infDist family), Mathlib.Topology.Sequences (for IsCompact.isSeqCompact)."
     ],
     "insights": [
+      "S6 KEY FINDING: approx_selection_exists is FALSE as stated under USC + nonempty convex values. Counterexample (n=1): F : [-1,1] → 2^[-1,1] with F(0)=[0,1], F(t>0)={0}, F(t<0)={1} satisfies every axiom hypothesis but admits no continuous pointwise ε-approximate selection for ε < 1/2 (continuity at 0 forces disjoint intervals).",
+      "S6 SALVAGE: replace IsApproxSelection with the GRAPH form (Cellina–Browder); patch kakutani_from_brouwer with triangle-inequality chain dist(x', y) ≤ dist(x', x₀) + dist(x₀, f(x₀)) + dist(f(x₀), y) < 2ε (substitute ε ↦ 2ε in outer existential). Helper approx_fixedpoint_implies_fixedpoint is unaffected. ≈10-line edit.",
+      "S6 LITERATURE: under USC + convex values one gets only GRAPH approximate selection (Cellina 1969, Browder 1968; Aubin–Frankowska Set-Valued Analysis §9.2; Repovš–Semenov). Pointwise approximate selection requires LHC, which is strictly stronger. The S4-suggested PartitionOfUnity proof step '6. By construction, f(x) is within ε of F(x)' is exactly where USC fails — UHC gives F(U) ⊆ ε-fattening of F(x), which is the WRONG direction for the chosen y_x to be near F(x').",
+      "S6 OBSERVATION: brouwer_fpt's extension from Mathlib's unit-ball Brouwer to general compact convex S in R^n is folklore-provable via a retraction argument (compact convex set in R^n is a retract of a closed ball; retracts inherit fixed-point property). Easier of the two axioms once S7+ lands the graph form.",
       "approx_selection_exists is an AXIOM, not a sorry — the file's 2 sorries are kakutani_from_brouwer and approx_fixedpoint_implies_fixedpoint. The original problemStatement framing is misleading.",
       "kakutani_from_brouwer reduces in ~10 lines to approx_fixedpoint_implies_fixedpoint after pulling the helper above the main theorem (Lean 4 disallows forward references). Closing the helper closes BOTH sorries.",
       "The reduction in kakutani_from_brouwer: for each ε, get continuous f_ε via approx_selection_exists, get fixed point x_0 = f_ε(x_0) via brouwer_fpt, extract y ∈ F(x_0) with dist(f_ε(x_0), y) < ε, conclude dist(x_0, y) < ε. Hand the family of ε-witnesses to the helper.",
@@ -72,10 +76,12 @@
       "Mathlib.Topology.PartitionOfUnity has partition of unity constructions (only relevant if proving approx_selection_exists; not needed for the two current sorries)"
     ],
     "nextSteps": [
-      "(1) Re-run Docker build when memory contention is lower (current: 8+ concurrent builds OOM'd at 510s). Verify all proofs compile.",
-      "(2) If proof bugs surface, fix and resubmit. Likely candidates: lemma name mismatches (Metric.infDist_le_dist_of_mem, Set.mem_iUnion₂, isOpen_biUnion).",
-      "(3) Once verified, update meta.json + research JSON to reflect successful proof closure.",
-      "(4) Consider follow-up: prove approx_selection_exists axiom 2 from Mathlib partition-of-unity (would leave only Brouwer's FPT as an axiom)."
+      "(S7-1) Add IsGraphApproxSelection definition (graph form, see s6-axiom-counterexample.md) alongside or in place of IsApproxSelection.",
+      "(S7-2) Restate axiom approx_selection_exists in graph form. Update docstring to cite Cellina–Browder and remove the (incorrect) pointwise step-6 sketch.",
+      "(S7-3) Patch kakutani_from_brouwer: after Brouwer gives x₀ = f_ε(x₀), apply graph-approx witness to get x' near x₀ and y ∈ F(x') near f_ε(x₀); chain via triangle inequality to dist(x', y) < 2ε; substitute ε ↦ 2ε in the outer existential fed to approx_fixedpoint_implies_fixedpoint. Helper is unchanged.",
+      "(S7-4) Docker-verify build (`./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`). Expect minimal change — IsApproxSelection definition already lives in the file, and the helper does not depend on it.",
+      "(S8) Attempt PartitionOfUnity proof of the graph form using Mathlib's PartitionOfUnity / BumpCovering, Finset.centerMass, Convex.centerMass_mem. Standard textbook proof.",
+      "(S9, optional) Prove brouwer_fpt extension from Mathlib's unit-ball Brouwer to general compact convex S via retraction: compact convex C in R^n is a retract of a closed ball B; if r : B → C is a retraction and f : C → C continuous, apply Brouwer-on-B to f ∘ r ∘ ι : B → B."
     ]
   },
   "tags": [
@@ -103,7 +109,7 @@
     ]
   },
   "started": "2026-04-21T00:00:00Z",
-  "lastUpdate": "2026-05-08T03:00:00Z",
+  "lastUpdate": "2026-05-08T15:30:00Z",
   "significance": 7,
   "tractability": 5
 }
