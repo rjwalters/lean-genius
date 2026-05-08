@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-001",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 27, "endLine": 27 },
+    "type": "technique",
+    "title": "Import the Side-over-Angle Form",
+    "content": "The single import `Proofs.LawOfCosinesOQ01OQ02` brings in `spherical_law_of_sines_all`, which is the conjunction sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C) for nondegenerate spherical triangles. The proof obligation in this file is the symmetric statement with sides and angles exchanged.",
+    "mathContext": "The side-over-angle form $\\frac{\\sin a}{\\sin A} = \\frac{\\sin b}{\\sin B} = \\frac{\\sin c}{\\sin C}$ is proved in the parent file via the Gram-determinant identity $\\sin^2(X)\\sin^2(y)\\sin^2(z) = G$ (where $G = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$ is the Gram determinant of perpendicular projections on the unit sphere). Once the side-over-angle form is in hand, the angle-over-side form is purely formal — no further geometric content is needed.",
+    "significance": "supporting",
+    "relatedConcepts": ["spherical law of sines", "Gram determinant", "perpendicular projection"],
+    "prerequisites": ["spherical law of sines (side-over-angle form)", "Lean 4 imports"]
+  },
+  {
+    "id": "ann-002",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 32, "endLine": 32 },
+    "type": "technique",
+    "title": "Extend the Parent Namespace for Dot Notation",
+    "content": "Reopening `namespace LawOfCosinesOQ01OQ02` in this file is required so that the dot notation `t.angleA`, `t.angleB`, `t.angleC` resolves to the parent file's `SphericalTriangle.angleA` etc. Without the namespace match the dot-notation desugaring would fail to find these projections (since `SphericalTriangle` itself is defined further upstream in `SphericalLawOfCosines.lean`, but the `angleA`/`angleB` definitions live inside `LawOfCosinesOQ01OQ02`).",
+    "mathContext": "Lean's dot notation `x.foo` desugars to `<Namespace>.foo x` where `<Namespace>` is the head of the type of `x`. For `t : SphericalTriangle`, dot notation searches `SphericalTriangle.foo` first; if not found it falls back to the `open` namespace stack. Reopening the namespace places the definitions of angleA/angleB into the lookup path used during elaboration.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lean 4 namespaces", "dot notation", "name resolution"],
+    "prerequisites": ["Lean 4 namespace mechanics"]
+  },
+  {
+    "id": "ann-003",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 38, "endLine": 54 },
+    "type": "key-step",
+    "title": "Algebraic Inversion via div_eq_div_iff",
+    "content": "The core of the proof: `div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)` rewrites the goal sin(A)/sin(a) = sin(B)/sin(b) into the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a). Applied symmetrically to the parent hypothesis h1 : sin(a)/sin(A) = sin(b)/sin(B), it yields sin(a)·sin(B) = sin(b)·sin(A). The two cross-multiplied forms differ only by a sign; `linear_combination -h1` closes the goal automatically.",
+    "mathContext": "$\\texttt{div\\_eq\\_div\\_iff}$: for nonzero $b, d$, the equation $\\frac{a}{b} = \\frac{c}{d}$ is equivalent to $a \\cdot d = c \\cdot b$. Applying it on both the goal and the hypothesis transforms a division-form equality into a polynomial identity that Lean's `linear_combination` tactic can verify by reducing to $0 = 0$ after a single linear combination of the hypothesis. The hypothesis 0 < sin(angle) provides the `ne_of_gt` nonzero requirement.",
+    "significance": "key",
+    "relatedConcepts": ["div_eq_div_iff", "linear_combination", "cross-multiplication", "polynomial identities"],
+    "prerequisites": ["division on Real", "linear_combination tactic", "ne_of_gt"]
+  },
+  {
+    "id": "ann-004",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 64 },
+    "type": "technique",
+    "title": "Transitivity Closes the Third Equality",
+    "content": "Once sin(A)/sin(a) = sin(B)/sin(b) and sin(A)/sin(a) = sin(C)/sin(c) are established, the third equality sin(B)/sin(b) = sin(C)/sin(c) follows by symmetry and transitivity: from h1.symm we get sin(B)/sin(b) = sin(A)/sin(a), then trans h2 gives sin(B)/sin(b) = sin(C)/sin(c). No further algebraic manipulation is required.",
+    "mathContext": "Eq.symm : a = b → b = a; Eq.trans : a = b → b = c → a = c. These are the basic equality combinators. The pattern h1.symm.trans h2 with h1 : x = y, h2 : x = z yields y = z. Applied here with x = sin(A)/sin(a), y = sin(B)/sin(b), z = sin(C)/sin(c), it gives the missing third equality of the sine rule.",
+    "significance": "supporting",
+    "relatedConcepts": ["Eq.symm", "Eq.trans", "transitivity"],
+    "prerequisites": ["Lean 4 equality calculus"]
+  }
+]

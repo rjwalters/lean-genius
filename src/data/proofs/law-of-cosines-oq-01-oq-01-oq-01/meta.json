@@ -1,0 +1,121 @@
+{
+  "id": "law-of-cosines-oq-01-oq-01-oq-01",
+  "title": "Spherical Law of Sines (Angle-over-Side Form)",
+  "slug": "law-of-cosines-oq-01-oq-01-oq-01",
+  "description": "Derives the angle-over-side form of the spherical law of sines, sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c), from the side-over-angle form sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) proved in Proofs/LawOfCosinesOQ01OQ02.lean. The proof is a 64-line algebraic inversion via div_eq_div_iff and linear_combination, completing the open question raised in law-of-cosines-oq-01-oq-01 about generalizing the Gram-determinant framework to the full sine rule.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "spherical-geometry",
+      "law-of-sines",
+      "law-of-cosines",
+      "gram-determinant",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 64,
+    "assumptions": "No axioms or sorries. Inherits Mathlib's inner-product-space theory and the spherical-law-of-sines (side-over-angle form, spherical_law_of_sines_all) proved in Proofs/LawOfCosinesOQ01OQ02.lean. All hypotheses (positive sines of all sides and all angles) are inherited from the parent theorem.",
+    "dateAdded": "2026-05-08",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "spherical_law_of_sines_angle_over_side: angle-over-side equalities sin(A)/sin(a) = sin(B)/sin(b) and sin(A)/sin(a) = sin(C)/sin(c) derived by div_eq_div_iff inversion of the side-over-angle form",
+      "spherical_law_of_sines_BC_angle_over_side: sin(B)/sin(b) = sin(C)/sin(c) by transitivity of the previous theorem",
+      "Confirmation that the Gram-determinant framework introduced for the dual cosine law is sufficient for the full sine rule (no new geometry needed): the 64-line wrapper closes the open question oq-01-oq-01-oq-01 raised in the parent entry"
+    ],
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "path": "Proofs/LawOfCosinesOQ01OQ01OQ01.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 64,
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The spherical law of sines, sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c), is one of the three fundamental relations of spherical trigonometry alongside the spherical law of cosines (cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C)) and its dual (cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c)). It is symmetric — both forms (angle-over-side and side-over-angle) are equivalent under the nondegeneracy hypothesis (positive sines), and the side-over-angle form drops out cleanly from the Gram-determinant identity sin²(X)·sin²(y)·sin²(z) = G established in the dual law of cosines. Todhunter (1886) proves the sine rule first via the polar triangle construction; the modern Gram-determinant route (without polar duality) was reformulated in the present project's earlier entries (law-of-cosines-oq-01-oq-01, law-of-cosines-oq-01-oq-02).",
+    "problemStatement": "The parent entry law-of-cosines-oq-01-oq-01 raised the open question: \"Generalize the Gram determinant argument to prove the full sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c).\" This file answers that question affirmatively. The side-over-angle form is proved in law-of-cosines-oq-01-oq-02 as `spherical_law_of_sines_all`; this file derives the angle-over-side equivalent.",
+    "text": "Derives the angle-over-side form of the spherical law of sines from the side-over-angle form by algebraic inversion, closing the open question on generalizing the Gram-determinant framework to the full sine rule.",
+    "proofStrategy": "Given `spherical_law_of_sines_all` (sin(a)/sin(A) = sin(b)/sin(B) and sin(a)/sin(A) = sin(c)/sin(C), proved in Proofs/LawOfCosinesOQ01OQ02.lean as a consequence of sin²(X)·sin²(y)·sin²(z) = gramDet for each angle-side triple), the angle-over-side form follows by clearing denominators with div_eq_div_iff and rearranging. Both equalities reduce to a single linear_combination once the hypotheses 0 < sin(angle), 0 < sin(side) are in scope. The B/b = C/c part follows by transitivity of the first two equalities (h₁.symm.trans h₂).",
+    "keyInsights": [
+      "div_eq_div_iff transforms a/b = c/d (with b, d nonzero) into a·d = c·b, removing the denominators and reducing the goal to a polynomial-ring identity. This converts the inversion sin(a)/sin(A) ↦ sin(A)/sin(a) into a finite linear combination over Real.",
+      "The Gram-determinant identity sin²(X)·sin²(y)·sin²(z) = G (for each cyclic triple (X,y,z)) is the actual content of the sine rule. Once that is in hand from the parent, the inversion to angle-over-side is purely formal — no geometric content beyond what is already in the dual cosine law's framework is needed.",
+      "Both directions of the sine rule require positive-sine hypotheses for both sides AND angles. In the side-over-angle form positive angle sines are needed to divide by sin(angle); in the angle-over-side form positive side sines are needed. The full theorem statement in this file takes all six hypotheses, matching the parent.",
+      "B/b = C/c follows from A/a = B/b and A/a = C/c by transitivity: (A/a = B/b).symm.trans (A/a = C/c) ⟹ B/b = C/c. The bare minimum is the conjunction A/a = B/b ∧ A/a = C/c, since the C-equality is enough to derive the third.",
+      "This 64-line wrapper is the lightest possible closure of the open question oq-01-oq-01-oq-01: by the time the side-over-angle form (which IS the harder direction, requiring the Gram-determinant nonnegativity argument) is in place, the angle-over-side form is just algebraic bookkeeping."
+    ],
+    "prerequisites": [
+      "Spherical law of sines, side-over-angle form: spherical_law_of_sines_all in Proofs/LawOfCosinesOQ01OQ02.lean",
+      "div_eq_div_iff: a/b = c/d ↔ a·d = c·b for b, d nonzero (Mathlib)",
+      "linear_combination tactic: closes goals reducible to linear combinations of given hypotheses over a commutative ring (Mathlib.Tactic.LinearCombination)",
+      "Eq.symm and Eq.trans for transitivity of equalities"
+    ],
+    "openQuestions": [
+      "Does the sine rule extend to degenerate spherical triangles (some sides 0 or π, equivalently some sides have sin = 0)? In that case some divisions are not defined; the right reformulation may be the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a) (which holds even when both factors are zero).",
+      "Can the angle-over-side form be derived more directly (without going through the side-over-angle form first), e.g., by unfolding angleA = arccos(...) via the cosine formula and proving sin²(A)·sin²(b)·sin²(c) = sin²(B)·sin²(a)·sin²(c) directly?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring stating the open question (`Generalize to prove the full spherical sine rule sin(A)/sin(a)=sin(B)/sin(b)=sin(C)/sin(c) using the Gram determinant framework`) and the answer (yes, by algebraic inversion of the side-over-angle form). Imports Proofs.LawOfCosinesOQ01OQ02 to inherit the side-over-angle theorem and dot notation for SphericalTriangle's angleA/angleB."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Angle-over-Side Form",
+      "startLine": 34,
+      "endLine": 54,
+      "summary": "spherical_law_of_sines_angle_over_side: sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). Proof obtains the side-over-angle conjunction from spherical_law_of_sines_all, then for each part rewrites both sides via div_eq_div_iff to clear denominators, and closes with linear_combination -h."
+    },
+    {
+      "id": "transitivity-corollary",
+      "title": "Transitivity Corollary: B/b = C/c",
+      "startLine": 56,
+      "endLine": 64,
+      "summary": "spherical_law_of_sines_BC_angle_over_side: sin(B)/sin(b) = sin(C)/sin(c). Trivially follows from the conjunction in the main theorem via h1.symm.trans h2."
+    }
+  ],
+  "conclusion": {
+    "summary": "Closes the open question raised in law-of-cosines-oq-01-oq-01 (`Generalize to prove the full spherical sine rule using the Gram determinant framework established here`). The proof is a 64-line wrapper over the side-over-angle form spherical_law_of_sines_all (proved in law-of-cosines-oq-01-oq-02 from the Gram-determinant identity sin²(X)·sin²(y)·sin²(z) = G); the angle-over-side equivalent follows by div_eq_div_iff inversion and linear_combination. Verified: 2 theorems, 0 sorries, 0 axioms, 64 lines.",
+    "implications": "Confirms that the Gram-determinant framework is the right invariant for spherical trigonometry: it underpins both the dual cosine law (cos(C) = -cos(A)cos(B) + sin(A)sin(B)cos(c), proved in law-of-cosines-oq-01-oq-01) and now the full sine rule (proved here as a corollary of its side-over-angle form, established in law-of-cosines-oq-01-oq-02). Together these three results — the standard spherical law of cosines, its dual, and the sine rule — are now machine-checked in Lean 4 from a single common framework (the Gram determinant of perpendicular projections), without recourse to the polar triangle construction. The proof infrastructure (perpendicular projections, gramDet nonnegativity via Cauchy-Schwarz) generalizes to higher-dimensional spherical geometry and to hyperbolic analogues.",
+    "openQuestions": [
+      "Extend the sine rule to degenerate spherical triangles (sides 0 or π, where some sines vanish). The right reformulation is likely the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a), which holds without nondegeneracy hypotheses.",
+      "Derive the angle-over-side form directly without going through the side-over-angle form, as an exercise in the symmetry of the Gram determinant.",
+      "Generalize to spherical n-gons: does the Gram determinant of n perpendicular projections give angle-side relations for spherical polygons?",
+      "Prove the hyperbolic analogue: sinh(a)/sin(A) = sinh(b)/sin(B) = sinh(c)/sin(C) on the hyperbolic plane H², via a hyperbolic Gram determinant 1 - cosh²(a) - cosh²(b) - cosh²(c) + 2cosh(a)cosh(b)cosh(c) ≤ 0."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "law-of-cosines-oq-01-oq-01",
+      "title": "Dual Spherical Law of Cosines",
+      "relationship": "Direct parent: raised the open question that this entry answers. The Gram-determinant framework for the dual cosine law is reused (via the side-over-angle form proved in law-of-cosines-oq-01-oq-02) to derive the sine rule."
+    },
+    {
+      "id": "law-of-cosines-oq-01-oq-02",
+      "title": "Spherical Law of Sines (Side-over-Angle Form)",
+      "relationship": "Direct prerequisite: proves spherical_law_of_sines_all (the side-over-angle conjunction sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C)) via the Gram-determinant identity sin²(X)·sin²(y)·sin²(z) = G. This file inverts that to angle-over-side."
+    },
+    {
+      "id": "law-of-cosines-oq-01-oq-01-oq-03",
+      "title": "Polar Triangle and Dual Spherical Law",
+      "relationship": "Sibling: an alternative proof of the dual spherical law via the polar triangle construction. Together with this entry's framework-internal proof of the sine rule, the dual law has both indirect (polar) and direct (Gram-determinant) routes formalized."
+    },
+    {
+      "id": "law-of-cosines-oq-01",
+      "title": "Spherical Law of Cosines (Open Question)",
+      "relationship": "Grandparent open question about generalizing the planar law of cosines to the sphere. This entry, together with its siblings, completes the Lean 4 formalization of the three fundamental relations of spherical trigonometry."
+    }
+  ],
+  "sorries": 0
+}
