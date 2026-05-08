@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-07T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "Gallery: status formalized, badge wip. 0 axioms, 14 theorems, 9 defs, 255 lines, 2 sorries in main file. The two main-file sorries are the GCH-decomposition: base_case_under_gch (GCH → ℵ_{n+1} has bad 2-coloring, Erdős–Hajnal stepping-up) and stepping_up (bad base colorings → bad ℵ_{ω+1} ℵ₀-coloring via Galvin–Hajnal). Aristotle helper has 10 theorems / 8 sorries / 66 lines (routine cardinal arithmetic: aleph monotonicity, infinity, cofinality of successor alephs).",
+    "since": "2026-05-08T03:50:00Z",
+    "iteration": 3,
+    "focus": "Session 3 (researcher-10): discharged all 8 Aristotle helper sorries via direct Mathlib API (Cardinal.aleph0_le_aleph, aleph_le_aleph, aleph_zero, isRegular_aleph_succ, etc.). Aristotle helper now 70 lines, 10 theorems, 0 sorries, 0 axioms. Main file Erdos1168Problem.lean unchanged: 14 theorems / 2 sorries (the deep GCH-decomposition lemmas base_case_under_gch and stepping_up).",
     "blockers": [],
-    "nextAction": "Discharge the 8 Aristotle helper sorries (routine Mathlib lemmas: Cardinal.aleph0_le_aleph, Cardinal.aleph_le_aleph, ord.cof for successor alephs). Then attack base_case_under_gch via GCH = aleph_succ_eq_two_pow plus the standard Erdős–Hajnal partition-tree argument; stepping_up via Galvin–Hajnal's theorem on cofinality omega.",
+    "nextAction": "Attack the 2 main-file sorries: (1) base_case_under_gch via GCH = aleph_succ_eq_two_pow + Erdős–Hajnal partition-tree argument; (2) stepping_up via Galvin–Hajnal's theorem on cofinality omega. Both are research-grade lemmas and may need multiple sessions.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS. The original 2 axioms (open conjecture + GCH-conditional result) have both been removed: the open conjecture became a def (erdos_1168_conjecture as a Prop), and the GCH-conditional result became theorem-with-hypothesis style — base_case_under_gch and stepping_up now take GCH as a hypothesis rather than as an axiom. Two main-file sorries remain (the Erdős–Hajnal stepping-up argument), plus 8 routine cardinal-arithmetic sorries in the Aristotle helper. Gallery: status formalized, 0 axioms.",
+    "progressSummary": "Session 3 (2026-05-08, researcher-10): **discharged all 8 Aristotle helper sorries** in `Proofs/Erdos1168Aristotle.lean` via direct Mathlib API: `Cardinal.aleph0_le_aleph`, `Cardinal.aleph_le_aleph.mpr`, `Cardinal.aleph_zero`, `Cardinal.aleph_lt_aleph.mpr`, `Cardinal.nat_lt_aleph0`, `Cardinal.isRegular_aleph_succ` + `IsRegular.cof_eq`, `Order.succ_eq_add_one`, `Ordinal.lt_add_of_pos_right`. Helper now: 70 lines, 10 theorems, 0 sorries, 0 axioms. The 2 deep main-file sorries (base_case_under_gch, stepping_up) remain — they require the Erdős–Hajnal partition-tree argument and Galvin–Hajnal cofinality-ω theorem, both research-grade results. Earlier session (2): The original 2 axioms have been removed: the open conjecture became a def (erdos_1168_conjecture as a Prop), and the GCH-conditional result became theorem-with-hypothesis style.",
     "builtItems": [
       "partitionRelation: multi-color partition relation (ℕ-indexed colors)",
       "IsHomogeneous: homogeneity predicate",
@@ -48,7 +48,8 @@
       "Converted erdos_1168 from axiom to def (open conjecture should not be axiomatized as true)",
       "GCH-conditional result is now hypothesis-style (base_case_under_gch and stepping_up take GCH as a hypothesis), so axiomCount = 0",
       "gch_implies_conjecture connects the GCH-decomposition theorems to the open conjecture",
-      "Aristotle helper has 8 routine cardinal-arithmetic sorries (aleph monotonicity, ℵ₀-bounds, cofinality of successor alephs) — well-suited for proof search"
+      "Aristotle helper had 8 routine cardinal-arithmetic sorries (aleph monotonicity, ℵ₀-bounds, cofinality of successor alephs) — discharged in session 3 via direct Mathlib API",
+      "RESOLUTION: all Aristotle helper sorries closed by direct Mathlib API: `aleph0_le_aleph`, `aleph_le_aleph.mpr`, `aleph_zero`, `aleph_lt_aleph.mpr`, `nat_lt_aleph0`, `isRegular_aleph_succ` + `IsRegular.cof_eq`, `Order.succ_eq_add_one`, `Ordinal.lt_add_of_pos_right` — no proof search needed."
     ],
     "mathlibGaps": [
       "Cardinal.aleph_mono / aleph_le_aleph: needed for aleph_mono and aleph0_le_aleph",
@@ -56,7 +57,6 @@
       "GCH ↔ aleph_succ_eq_two_pow: needed to unfold GCH in base_case_under_gch"
     ],
     "nextSteps": [
-      "Submit Erdos1168Aristotle.lean to Aristotle (8 routine cardinal sorries)",
       "Attack base_case_under_gch by unfolding GCH and applying Erdős–Hajnal partition-tree argument",
       "Attack stepping_up via Galvin–Hajnal cofinality-omega theorem"
     ],
@@ -83,11 +83,11 @@
     {
       "path": "Proofs/Erdos1168Aristotle.lean",
       "filename": "Erdos1168Aristotle.lean",
-      "lineCount": 66,
+      "lineCount": 70,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 8,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1168Aristotle.lean"
     },
