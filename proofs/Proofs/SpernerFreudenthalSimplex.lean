@@ -1351,6 +1351,144 @@ private lemma vertical_endpoints_on_face0
   · rw [onFaceΔ2_zero_iff]; exact hb1
   · rw [onFaceΔ2_zero_iff]; exact hb1
 
+-- ----------------------------------------------------------------
+-- (S18 part 2) t2-face shared with t1: container card ≥ 2.
+--
+-- For `b ∈ t2Bases N`, every face of `t2 b` is shared with a t1
+-- cell (per S16 `t2_face{0,1,2}_in_t1` + S17 `t2Bases_*_in_t1Bases`).
+-- Hence the container set in `topSimps2 N` for any face of `t2 b`
+-- contains both `t2 b` and a sharing t1 cell, giving card ≥ 2.
+-- This *rules out* t2 faces from being boundary doors in
+-- `_hBoundaryOnFace`, completing the t1/t2 dichotomy:
+--
+--   * t1 boundary edges (S18 part 1): container card = 1.
+--   * t2 faces (S18 part 2): container card ≥ 2 (interior shared).
+--   * t1 interior edges (diagonal/horizontal/vertical, non-boundary
+--     positions): container card ≥ 2 via S17's
+--     `diagonal_neighbor_topSimps2` + S16's `*_in_t2_pos`.
+-- ----------------------------------------------------------------
+
+-- Each face of `t2 b` is contained in `t2 b` itself (used as the
+-- second container alongside the sharing t1 cell). These three
+-- inclusions are pure unfolding + omega.
+
+private lemma t2_face0_in_t2 (b : ℕ × ℕ) :
+    ({(b.1+1, b.2), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t2 b := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+private lemma t2_face1_in_t2 (b : ℕ × ℕ) :
+    ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ t2 b := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+private lemma t2_face2_in_t2 (b : ℕ × ℕ) :
+    ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 b := by
+  intro x hx
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+  rcases hx with rfl | rfl <;>
+    · simp only [t2, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+      omega
+
+-- Card-≥-2 lemmas: each t2 face has at least two containers in
+-- `topSimps2 N` — `t2 b` itself and the sharing t1 cell.
+
+private lemma t2_face0_card_ge_two (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) :
+    2 ≤ ((topSimps2 N).filter
+        (fun s => ({(b.1+1, b.2), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s)).card := by
+  have h_t1_in : t1 (b.1+1, b.2) ∈ (topSimps2 N).filter
+      (fun s => ({(b.1+1, b.2), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+    · exact t1_in_topSimps2_of_base N (t2Bases_right_in_t1Bases N hb)
+    · exact t2_face0_in_t1 b
+  have h_t2_in : t2 b ∈ (topSimps2 N).filter
+      (fun s => ({(b.1+1, b.2), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+    · exact t2_in_topSimps2_of_base N hb
+    · exact t2_face0_in_t2 b
+  have h_ne : t1 (b.1+1, b.2) ≠ t2 b := t1_ne_t2 _ _
+  have h_pair_card : ({t1 (b.1+1, b.2), t2 b} : Finset (Finset (ℕ × ℕ))).card = 2 := by
+    rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h_ne),
+        Finset.card_singleton]
+  have h_pair_sub :
+      ({t1 (b.1+1, b.2), t2 b} : Finset (Finset (ℕ × ℕ))) ⊆
+        (topSimps2 N).filter
+          (fun s => ({(b.1+1, b.2), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact h_t1_in
+    · exact h_t2_in
+  calc 2 = ({t1 (b.1+1, b.2), t2 b} : Finset (Finset (ℕ × ℕ))).card := h_pair_card.symm
+    _ ≤ _ := Finset.card_le_card h_pair_sub
+
+private lemma t2_face1_card_ge_two (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) :
+    2 ≤ ((topSimps2 N).filter
+        (fun s => ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s)).card := by
+  have h_t1_in : t1 (b.1, b.2+1) ∈ (topSimps2 N).filter
+      (fun s => ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+    · exact t1_in_topSimps2_of_base N (t2Bases_top_in_t1Bases N hb)
+    · exact t2_face1_in_t1 b
+  have h_t2_in : t2 b ∈ (topSimps2 N).filter
+      (fun s => ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+    · exact t2_in_topSimps2_of_base N hb
+    · exact t2_face1_in_t2 b
+  have h_ne : t1 (b.1, b.2+1) ≠ t2 b := t1_ne_t2 _ _
+  have h_pair_card : ({t1 (b.1, b.2+1), t2 b} : Finset (Finset (ℕ × ℕ))).card = 2 := by
+    rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h_ne),
+        Finset.card_singleton]
+  have h_pair_sub :
+      ({t1 (b.1, b.2+1), t2 b} : Finset (Finset (ℕ × ℕ))) ⊆
+        (topSimps2 N).filter
+          (fun s => ({(b.1, b.2+1), (b.1+1, b.2+1)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact h_t1_in
+    · exact h_t2_in
+  calc 2 = ({t1 (b.1, b.2+1), t2 b} : Finset (Finset (ℕ × ℕ))).card := h_pair_card.symm
+    _ ≤ _ := Finset.card_le_card h_pair_sub
+
+private lemma t2_face2_card_ge_two (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) :
+    2 ≤ ((topSimps2 N).filter
+        (fun s => ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s)).card := by
+  have h_t1_in : t1 b ∈ (topSimps2 N).filter
+      (fun s => ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+    · exact t1_in_topSimps2_of_base N (t2Bases_self_in_t1Bases N hb)
+    · exact t2_face2_in_t1 b
+  have h_t2_in : t2 b ∈ (topSimps2 N).filter
+      (fun s => ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    refine Finset.mem_filter.mpr ⟨?_, ?_⟩
+    · exact t2_in_topSimps2_of_base N hb
+    · exact t2_face2_in_t2 b
+  have h_ne : t1 b ≠ t2 b := t1_ne_t2 _ _
+  have h_pair_card : ({t1 b, t2 b} : Finset (Finset (ℕ × ℕ))).card = 2 := by
+    rw [Finset.card_insert_of_not_mem (by rw [Finset.mem_singleton]; exact h_ne),
+        Finset.card_singleton]
+  have h_pair_sub :
+      ({t1 b, t2 b} : Finset (Finset (ℕ × ℕ))) ⊆
+        (topSimps2 N).filter
+          (fun s => ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s) := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact h_t1_in
+    · exact h_t2_in
+  calc 2 = ({t1 b, t2 b} : Finset (Finset (ℕ × ℕ))).card := h_pair_card.symm
+    _ ≤ _ := Finset.card_le_card h_pair_sub
+
 end N2BoundaryAnalysis
 
 -- ============================================================
