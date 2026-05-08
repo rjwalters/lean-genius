@@ -22,7 +22,7 @@
     "axiomCount": 3,
     "assumptions": "3 axioms for deep analytic number theory results: westzynthius_large_gaps (Westzynthius 1931: arbitrarily large prime gaps exist, i.e., ∞ ∈ S), zhang_bounded_gaps (Zhang 2013: ∃H, infinitely many prime gaps ≤ H, i.e., 0 ∈ S via bounded gaps), hildebrand_maier_large_limit_points (Hildebrand-Maier: S contains arbitrarily large finite values). The full conjecture S = [0,∞) remains open.",
     "lineCount": 572,
-    "theoremCount": 29,
+    "theoremCount": 33,
     "definitionCount": 9,
     "originalContributions": [
       "nthPrime: nth prime function (0-indexed, via Mathlib's Nat.nth)",
@@ -71,7 +71,7 @@
     "namespace": "Erdos5",
     "lineCount": 572,
     "axiomCount": 3,
-    "theoremCount": 29,
+    "theoremCount": 33,
     "definitionCount": 9,
     "path": "Proofs/Erdos5PrimeGaps.lean",
     "sorries": 0
