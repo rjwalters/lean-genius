@@ -57,7 +57,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Kolmogorov's Strong Law of Large Numbers (1930) is one of the cornerstone results in probability theory: for i.i.d. integrable random variables, the sample mean converges almost surely to the expectation. Etemadi (1981) gave a proof requiring only pairwise independence. The converse — that almost sure convergence of sample means implies finite first moment — is a classical result often stated without proof in textbooks. It provides a sharp characterization: the SLLN holds if and only if E[|X|] < ∞. This entry formalizes the necessity direction using the second Borel-Cantelli lemma adapted for pairwise independence, completing Kolmogorov's biconditional characterization in Lean 4.",
+    "historicalContext": "The Strong Law of Large Numbers has a layered history. Émile Borel (1909) first proved a strong law for Bernoulli trials in his work on normal numbers — historically, the first 'almost sure' result in probability, predating the formal axiomatization of measure-theoretic probability. Francesco Cantelli (1917) generalized Borel's argument to bounded i.i.d. random variables. Andrei Kolmogorov, in his foundational 1930 paper and 1933 monograph 'Grundbegriffe der Wahrscheinlichkeitsrechnung', established the general SLLN: for i.i.d. integrable random variables on any probability space, the sample mean converges almost surely to E[X]. The independence assumption was relaxed in stages: Erdős & Rényi (1959) showed the Borel-Cantelli second lemma holds under mere pairwise independence (a major surprise — pairwise independence is much weaker than full mutual independence in most other contexts), and Nasrollah Etemadi (1981) used this to give an 'elementary proof of the strong law' under pairwise independence alone. The converse direction — that SLLN convergence forces finite first moment — is classical (going back to Kolmogorov and explicitly in Loève and Feller) but is often stated without proof in graduate textbooks because the contradiction argument requires careful machinery: layer cake, Cesàro, and BC2 in tandem. This entry formalizes the necessity direction in Lean 4 using the Etemadi/Erdős-Rényi pairwise BC2 approach, completing Kolmogorov's biconditional characterization SLLN ⟺ E[|X|] < ∞ machine-checked for the first time.",
     "problemStatement": "**The Open Question**: Can the converse direction (slln_necessity) of Kolmogorov's SLLN characterization — that SLLN convergence forces finite first moment — be formally proved in Lean 4 using only Mathlib infrastructure?\n\n**Answer**: Yes. The proof proceeds by contradiction: assume E[|X₀|] = ∞. By the layer cake formula, Σ P(|Xₙ| > n) = ∞. By the second Borel-Cantelli lemma (pairwise independence suffices), P(|Xₙ| > n i.o.) = 1. But SLLN implies Xₙ/n → 0 a.s. via Cesàro, so |Xₙ| ≤ n for all large n a.s. — contradiction. The full proof is carried out by Aristotle in LawsOfLargeNumbersOQ01Aristotle.lean.",
     "text": "The necessity direction of Kolmogorov's SLLN states: if i.i.d. random variables X₁, X₂, ... satisfy (1/n)·Σᵢ₌₁ⁿ Xᵢ → c a.s. for some c ∈ ℝ, then E[|X₀|] < ∞.\n\nProof by contradiction:\n1. **Cesàro**: sample mean → c a.s. implies Xₙ/n → 0 a.s.\n2. **Layer cake**: E[|X₀|] = ∞ implies Σₙ P(|X₀| > n) = ∞\n3. **i.i.d.**: Σₙ P(|Xₙ| > n) = ∞ (same distribution)\n4. **BC2**: pairwise independence + divergent sum → P(|Xₙ| > n i.o.) = 1\n5. **Contradiction**: Xₙ/n → 0 a.s. means |Xₙ| ≤ n eventually a.s.",
     "proofStrategy": "Contradiction: assume ¬Integrable (X 0) μ. The layer cake formula (Σ P(‖X₀‖ > n) = ∞) combined with identical distribution gives Σ P(‖Xₙ‖ > n) = ∞. The second Borel-Cantelli lemma under pairwise independence (via `borel_cantelli_of_pairwise_independent`) then gives μ(limsup {|Xₙ| > n}) = 1. Meanwhile, the SLLN hypothesis implies Xₙ/n → 0 a.s. via Cesàro (`tendsto_zero_div_of_tendsto_sum_div`), giving |Xₙ| ≤ n for all large n almost surely. These two conclusions contradict each other.",
@@ -66,6 +66,7 @@
       "The layer cake formula is central: E[|X|] = Σₙ P(|X| > n) (for nonneg X). Its divergence characterizes non-integrability: E[|X|] = ∞ ↔ Σ P(|X| > n) = ∞.",
       "Cesàro's lemma provides the Xₙ/n → 0 a.s. conclusion from sample mean convergence without needing to know the limit value c.",
       "IndepFun → IndepSet conversion uses Kernel.indepFun_iff_measure_inter_preimage_eq_mul and Kernel.indepSet_iff_measure_inter_eq_mul to connect random variable independence to event independence.",
+      "Pairwise independence suffices for BC2 — historically, this was Erdős & Rényi's 1959 result, which Etemadi (1981) leveraged to give an 'elementary' SLLN proof under pairwise independence. Most introductory probability textbooks instead assume full mutual independence (which makes BC2 a one-line Borel zero-one consequence), masking the deeper truth that the variance-Chebyshev approach needs only pairwise.",
       "The biconditional is now complete: combining this entry (necessity) with Mathlib's ProbabilityTheory.strong_law_ae (sufficiency), we have SLLN ⟺ E[|X₀|] < ∞ — a sharp characterization that was fully formalized in Lean 4 for the first time by this work."
     ]
   },
@@ -145,6 +146,16 @@
       "proofId": "laws-of-large-numbers",
       "relationship": "related",
       "description": "Base LLN. The characterization SLLN ⟺ E[|X|] < ∞ is now complete."
+    },
+    {
+      "proofId": "laws-of-large-numbers-oq-01-oq-03",
+      "relationship": "depends-on",
+      "description": "Sibling entry that extracts the Erdős-Rényi (1959) Borel-Cantelli second lemma for pairwise-independent events as a standalone result. The variance-Chebyshev BC2 used here (`borel_cantelli_of_pairwise_independent` in the Aristotle companion) is exactly the lemma formalized there. The standalone version is a candidate for upstream contribution to Mathlib."
+    },
+    {
+      "proofId": "laws-of-large-numbers-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling entry on the Marcinkiewicz-Zygmund rate of convergence for heavy-tailed distributions (E[X²] = ∞). Where this entry establishes when SLLN holds, oq-01-oq-02 quantifies how slowly the sample mean converges in the regime where finite mean exists but the variance is infinite."
     }
   ],
   "conclusion": {
