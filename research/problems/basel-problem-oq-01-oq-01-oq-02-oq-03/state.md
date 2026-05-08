@@ -4,12 +4,42 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-09 (Iteration 13, researcher-10)
-**Iteration**: 13
+**Last Updated**: 2026-05-09 (Iteration 14, researcher-12)
+**Iteration**: 14
 
 ## Current Focus
-Iteration 13 (2026-05-09, this PR): **prime-counting subordination
-chain**. Three new theorems make the dependency
+Iteration 14 (2026-05-09, this PR): **sharpened prime-counting bound
+`π(n) ≤ n - 1` and the resulting chain
+`lcmRange n ≤ n^π(n) ≤ n^(n-1)`**. Three new theorems sharpen Iter 13
+by exploiting that *both* `0` and `1` are non-prime (Iter 13 only
+excluded `0`), tightening the cardinality argument from `n` to
+`n - 1`:
+
+* `primeCounting_le_pred (n : ℕ) : Nat.primeCounting n ≤ n - 1` —
+  the prime filter on `Finset.range (n+1)` is a subset of
+  `((Finset.range (n+1)).erase 0).erase 1`, whose cardinality is
+  `n - 1` (with `Nat` truncated subtraction handling `n = 0, 1`
+  correctly).
+* `pow_primeCounting_le_pow_pred (n : ℕ) (hn : 1 ≤ n) :
+  n ^ Nat.primeCounting n ≤ n ^ (n - 1)` — one-line via
+  `Nat.pow_le_pow_right`, analogous to Iter 13's
+  `pow_primeCounting_le_pow_self`.
+* `lcmRange_le_pow_pred (n : ℕ) : lcmRange n ≤ n ^ (n - 1)` —
+  the strict improvement over Iter 13's
+  `lcmRange_le_pow_self_via_primeCounting`. Saves one factor of `n`
+  in the exponent — concretely: `n = 4` gives `lcmRange 4 = 12 ≤ 64`
+  (Iter 14) vs `≤ 256` (Iter 13); `n = 10` gives `≤ 10⁹` vs `≤ 10¹⁰`.
+
+Build pending; proof bodies use only Mathlib API already exercised
+by Iter 13 (`Finset.card_erase_of_mem`, `Finset.card_le_card`,
+`Nat.not_prime_zero`, `Nat.not_prime_one`, `Nat.pow_le_pow_right`).
+File 560 → 657 lines (+97), theorems 40 → 43 (+3),
+definitions/sorries/axiomCount unchanged.
+
+----
+
+Iteration 13 (2026-05-09, retained for context): **prime-counting
+subordination chain**. Three new theorems make the dependency
 `Iter 11 ⟹ Iter 13 ⟹ Part 3` explicit by establishing the chain
 `lcmRange n ≤ n^π(n) ≤ n^n`. The middle step is the trivial
 `π(n) ≤ n` bound (`primeCounting_le_self`), proved by observing
@@ -226,7 +256,7 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 13.
+- Total attempts: 14.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
   structural-lemma layer for inductive proofs (iter 2); generic
@@ -248,9 +278,14 @@ Currently blocked on:
   (line 376) — iter 12, #17448; restores build for iters 5–11;
   prime-counting subordination chain `primeCounting_le_self`,
   `pow_primeCounting_le_pow_self`, `lcmRange_le_pow_self_via_primeCounting`
-  (iter 13, this PR, build pending) — makes explicit that Iter 11's
+  (iter 13, #17499 merged build pending) — makes explicit that Iter 11's
   `lcmRange ≤ n^π(n)` subordinates Part 3's `lcmRange ≤ n^n` via
-  the trivial `π(n) ≤ n` bound.
+  the trivial `π(n) ≤ n` bound; sharpened-prime-counting bound
+  `primeCounting_le_pred`, `pow_primeCounting_le_pow_pred`,
+  `lcmRange_le_pow_pred` (iter 14, this PR, build pending) —
+  exploits `1 ∉ Prime` (in addition to Iter 13's `0 ∉ Prime`) to
+  tighten the chain to `lcmRange n ≤ n^π(n) ≤ n^(n-1)`, saving one
+  factor of `n` in the exponent.
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -259,36 +294,41 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 13 (this PR, build pending)**: prime-counting subordination
-chain. Three new theorems realise the explicit chain
-`lcmRange n ≤ n^π(n) ≤ n^n`:
+**Iteration 14 (this PR, build pending)**: sharpened prime-counting
+bound `π(n) ≤ n - 1` and resulting chain
+`lcmRange n ≤ n^π(n) ≤ n^(n-1)`. Three new theorems sharpen Iter 13
+by exploiting that *both* `0` and `1` are non-prime:
 
-* `primeCounting_le_self (n : ℕ) : Nat.primeCounting n ≤ n` — the prime
-  filter on `(Finset.range (n+1))` is a subset of the (n+1)-element
-  range with `0` removed (since `0` is not prime), giving cardinality
-  `≤ n`.
-* `pow_primeCounting_le_pow_self (n : ℕ) (hn : 1 ≤ n) :
-  n ^ Nat.primeCounting n ≤ n ^ n` — one-line via
+* `primeCounting_le_pred (n : ℕ) : Nat.primeCounting n ≤ n - 1` —
+  the prime filter on `(Finset.range (n+1))` is a subset of
+  `((Finset.range (n+1)).erase 0).erase 1`, whose cardinality is
+  `n - 1` (with `Nat` truncated subtraction).
+* `pow_primeCounting_le_pow_pred (n : ℕ) (hn : 1 ≤ n) :
+  n ^ Nat.primeCounting n ≤ n ^ (n - 1)` — one-line via
   `Nat.pow_le_pow_right`.
-* `lcmRange_le_pow_self_via_primeCounting (n : ℕ) :
-  lcmRange n ≤ n ^ n` — re-derives the trivial Part 3 bound by
-  routing through `lcmRange_le_pow_primeCounting` (Iter 11) and the
-  new `pow_primeCounting_le_pow_self`. Documents that the Iter 10/11
-  prime-counting bound subordinates Part 3.
+* `lcmRange_le_pow_pred (n : ℕ) : lcmRange n ≤ n ^ (n - 1)` — strict
+  improvement over Iter 13's `lcmRange_le_pow_self_via_primeCounting`,
+  saving one factor of `n` in the exponent.
 
-**File delta**: +72 lines (488 → 560), +3 theorems (37 → 40),
-definitions/sorries/axiomCount unchanged. Build pending — proof bodies
-use only standard Mathlib API already exercised by Iter 7/8/9/11
-(`Nat.count_eq_card_filter_range`, `Finset.card_erase_of_mem`,
-`Nat.pow_le_pow_right`).
+**File delta**: +97 lines (560 → 657), +3 theorems (40 → 43),
+definitions/sorries/axiomCount unchanged. Build pending — proof
+bodies use only Mathlib API already exercised by Iter 13
+(`Finset.card_erase_of_mem`, `Finset.card_le_card`,
+`Nat.not_prime_one`, `Nat.pow_le_pow_right`).
 
-**Iteration 14 candidate**: connect the prime-counting bound to
+**Iteration 15 candidate**: connect the prime-counting bound to
 asymptotic Chebyshev-style improvements. Mathlib has
 `Nat.primeCounting_eq_card_primes` and Bertrand-derived prime-gap
 bounds; a tighter bound like `lcmRange n ≤ n^{n / log n}` (Chebyshev
 1850) would discharge the parent file's `lcm_hanson_bound` axiom up
 to a constant multiplier in the exponent (Hanson 1972 saves the
-specific constant `log 3` ~ 1.0986).
+specific constant `log 3` ~ 1.0986). Alternatively, an Iter 15a
+candidate is to upgrade `primeCounting_le_pred` to use
+`Nat.Prime.two_le`, sharpening the subset to
+`Finset.Ioc 1 n` directly (cleaner card computation via
+`Nat.card_Ioc`), then chase the bound `π(n) ≤ ⌈n/2⌉` for `n ≥ 4` by
+also excluding even composites — yielding `lcmRange n ≤ n^⌈n/2⌉`,
+strictly stronger than `n^(n-1)` for `n ≥ 4`.
 
 **Long-term paths still open:**
 
