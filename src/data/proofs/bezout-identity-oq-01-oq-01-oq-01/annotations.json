@@ -1,5 +1,29 @@
 [
   {
+    "id": "file-header-overview",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "context",
+    "title": "File Header: Step-Count and Bit-Complexity Analysis",
+    "content": "The docstring lays out the two-part complexity analysis:\n\n**Part 1 (fully proved, 0 sorries):** binary GCD terminates in at most $2(\\log_2 a + \\log_2 b) + 2$ recursive calls. The constant 2 reflects that each call drops the measure $M(a,b) = \\log_2 a + \\log_2 b$ by at least 1, so $M(a,b)/1 + \\text{base-case overhead}$ steps suffice.\n\n**Part 2 (axiomatized):** Each step performs at most $3(\\log_2(\\max a b) + 1)$ bit operations, accounting for one comparison, one subtraction-or-shift, and one parity test on bit-RAM hardware.\n\nThe header enumerates all 7 algorithm branches and the per-branch measure decrease, providing the proof skeleton that the rest of the file fills in. The five-branch structure (after collapsing zero base cases) maps exactly to the case analysis in `binaryGcdSteps_le_log` (lines 105–188). The references cite Stein's 1967 original paper, Knuth TAOCP §4.5.2, and Sørenson 1994 — the canonical sources for this analysis.\n\nImports: `Mathlib.Data.Nat.GCD.Basic` (basic gcd lemmas), `Mathlib.Data.Nat.Log` (`Nat.log_div_two`, `Nat.log_mono`, `Nat.log_pos`), `Mathlib.Tactic` (full tactic suite for `omega`/`decide`/`linarith`), and the parent `Proofs.BezoutIdentityOQ01OQ01` for the `binaryGcd` definition itself. The `open Nat BezoutIdentityOQ01OQ01` lifts the algorithm and Mathlib's `Nat.log` into scope.",
+    "mathContext": "$\\text{steps}(a,b) \\le 2(\\log_2 a + \\log_2 b) + 2$ (proved); $\\text{stepBitOps}(a,b) \\le 3(\\log_2(\\max a b) + 1)$ (axiomatized). Combining: $\\text{totalBitOps}(a,b) \\le 6(\\log_2(\\max a b) + 1)^2 = O(\\log^2 n)$.",
+    "significance": "context",
+    "prerequisites": [
+      "binaryGcd algorithm (parent file BezoutIdentityOQ01OQ01)",
+      "Nat.log in Mathlib",
+      "bit-RAM vs word-RAM models"
+    ],
+    "relatedConcepts": [
+      "two-stage complexity proof (combinatorial step count + per-step machine cost)",
+      "Lyapunov measure for algorithm termination",
+      "Stein 1967 original paper",
+      "Knuth TAOCP §4.5.2"
+    ]
+  },
+  {
     "id": "step-counter-design",
     "proofId": "bezout-identity-oq-01-oq-01-oq-01",
     "range": {

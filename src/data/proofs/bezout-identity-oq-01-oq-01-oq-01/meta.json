@@ -62,7 +62,9 @@
       "Odd-minus-odd halves the log: if b is odd and a < b, then (b−a) is even and (b−a)/2 < b/2, so log₂((b−a)/2) ≤ log₂ b − 1 — this is the most delicate case, formalized in log_odd_sub_half",
       "Two-stage complexity: step count × per-step cost = O(log n) × O(log n) = O(log² n); the separation into two stages makes the argument modular and allows the per-step model to be replaced without re-proving the step count",
       "Per-step axiomatization: the bit cost of each step (one comparison + one shift/subtraction + one parity test) is axiomatized as 3·(log₂(max a b)+1); this is the only non-constructive element — the step count itself is fully proved",
-      "Verification by native_decide: three concrete examples (binaryGcdSteps 12 8 = 5, etc.) serve as sanity checks that the step counter matches the algorithm's actual behavior"
+      "Verification by native_decide: three concrete examples (binaryGcdSteps 12 8 = 5, etc.) serve as sanity checks that the step counter matches the algorithm's actual behavior",
+      "**Word-RAM vs bit-RAM**: The $O(\\log^2 n)$ bound is for the *bit-RAM* model (each bit operation costs unit time). On a *word-RAM* (where word-arithmetic on $n$-bit values costs $O(1)$ when $n$ fits in a machine word), Stein's algorithm runs in $O(\\log n)$ word operations — the same as Euclid's. So the $O(\\log^2 n)$ here is the bit-level worst case; in practice on real hardware, GCD computations on word-sized inputs are linear-in-log. Formalizing the word-RAM bound in Lean would require parametrizing the cost model.",
+      "**Why the step bound is $2(\\log_2 a + \\log_2 b) + 2$, not just $O(\\log)$**: The constant 2 in front of $\\log_2 a + \\log_2 b$ is *tight* — there exist input sequences where each recursive call drops exactly one bit (no \"double-bit\" drops). Concretely, $a = 2^k - 1$ (all-ones binary) and $b = 1$ exhibits this worst case. The +2 covers the two base-case calls. So the $2 \\cdot$ is not slack from a loose proof; it's the actual asymptotic constant."
     ]
   },
   "sections": [
@@ -100,20 +102,63 @@
     "implications": "This formalization establishes that Stein's binary GCD algorithm achieves the same O(log² n) asymptotic bit complexity as Euclid's algorithm, confirming binary GCD as a practical and theoretically sound alternative. The modular two-stage proof structure (step count fully verified, per-step cost axiomatized) provides a template for formalizing complexity bounds of other recursive algorithms in Lean 4.",
     "significance": "The formalization separates the combinatorial step-count argument (fully proved) from the per-step bit-cost model (axiomatized). The step count bound is the non-trivial part: it requires showing that every branch of Stein's algorithm strictly decreases the logarithm measure, including the delicate odd-minus-odd halving case. The result confirms that binary GCD has the same asymptotic bit complexity as Euclid's algorithm.",
     "openQuestions": [
-      "Can stepBitOps_le be eliminated by defining a more explicit bit-level computation model in Lean 4?",
-      "Does the analysis extend to the HGCD (half-GCD) algorithm of Schönhage, giving O(M(n) log n) complexity where M(n) is the multiplication cost?"
+      "Can `stepBitOps_le` be eliminated by defining a more explicit bit-level computation model in Lean 4? One path: implement `binaryGcd` as an operation on `Bool` lists (binary representations) and count bit-level steps directly. The challenge is encoding the $O(\\log)$-bit cost of comparison and subtraction in a way that's tractable for `decide`/`omega`-style tactics.",
+      "Does the analysis extend to the HGCD (half-GCD) algorithm of Schönhage, giving $O(M(n) \\log n)$ complexity where $M(n)$ is the multiplication cost? HGCD's recurrence is $T(n) = 2T(n/2) + M(n)$, which by the Master theorem gives $T(n) = O(M(n) \\log n)$. Formalizing this would require: (a) HGCD's key invariant that two-by-two integer matrices encode partial Euclidean steps, (b) the Master theorem in Lean (currently absent from Mathlib), and (c) parametrization over the multiplication primitive $M$.",
+      "**Word-RAM bound**: Formalize the alternative $O(\\log n)$ word-operation bound for inputs fitting in a machine word. This requires a model with $O(1)$ word-arithmetic and would give a much sharper bound for practical use cases.",
+      "**Tightness of the step-count constant 2**: Prove that the constant 2 in $2(\\log_2 a + \\log_2 b) + 2$ is asymptotically tight by exhibiting an input family $\\{(a_n, b_n)\\}$ where the step count is exactly $2 \\log_2 a_n + 2 \\log_2 b_n + O(1)$. The candidate is the worst-case Fibonacci-like inputs; formalizing tightness would require a matching lower bound on `binaryGcdSteps`."
     ]
   },
   "crossReferences": [
     {
-      "id": "bezout-identity-oq-01-oq-01",
+      "targetId": "bezout-identity-oq-01-oq-01",
       "relationship": "parent",
-      "description": "Correctness of Stein's binary GCD algorithm — this entry extends it with complexity analysis"
+      "description": "Correctness of Stein's binary GCD algorithm — this entry extends it with complexity analysis. The same seven-branch case analysis used to prove correctness is mirrored in `binaryGcdSteps` to count the recursive calls."
     },
     {
-      "id": "binary-gcd-oq-03-oq-02",
+      "targetId": "binary-gcd-oq-03-oq-02",
       "relationship": "related",
-      "description": "Schönhage's HGCD algorithm — a more sophisticated recursive GCD with better asymptotic complexity"
+      "description": "Schönhage's HGCD (Half-GCD) algorithm — a more sophisticated recursive GCD with $O(M(n) \\log n)$ complexity (where $M(n)$ is the cost of multiplying $n$-bit numbers). HGCD improves on Stein's $O(\\log^2 n)$ bound for very large $n$ where multiplication is sub-quadratic, but the constant factor is large enough that Stein's algorithm dominates in practice up to $n$ in the thousands of bits."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "Root of the Bézout identity hub. Bézout's identity $\\gcd(a,b) = sa + tb$ underlies the practical role of GCD algorithms — once the gcd is computed, the coefficients $s, t$ can be extracted from the same recursion. Stein's algorithm computes the gcd; an extended-Bézout variant tracks $s, t$ at the cost of constant-factor overhead per step (the $O(\\log^2 n)$ bound here applies equally)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stein, Josef",
+      "title": "Computational problems associated with Racah algebra",
+      "year": "1967",
+      "venue": "Journal of Computational Physics",
+      "volume": "1",
+      "pages": "397-405",
+      "note": "Original paper introducing the binary GCD algorithm. Stein's primary motivation was the computation of Racah coefficients (angular momentum coupling in quantum mechanics), where many GCDs of moderately-sized integers must be computed and binary operations are cheaper than divisions on the contemporary IBM hardware."
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Volume 2: Seminumerical Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley (3rd ed.)",
+      "note": "§4.5.2 (\"The Greatest Common Divisor\") gives the canonical complexity analysis of Stein's algorithm. Knuth's argument is essentially the proof formalized here: each recursive step strips at least one bit from one of the inputs, giving $O(\\log n)$ steps; each step's bit cost is $O(\\log n)$ on a bit-RAM, giving total $O(\\log^2 n)$. Knuth notes that on modern word-RAM hardware (where word arithmetic is $O(1)$ for $n$ fitting in a machine word), Stein's algorithm runs in $O(\\log n)$ word operations."
+    },
+    {
+      "authors": "Schönhage, Arnold",
+      "title": "Schnelle Berechnung von Kettenbruchentwicklungen",
+      "year": "1971",
+      "venue": "Acta Informatica",
+      "volume": "1",
+      "pages": "139-144",
+      "note": "Introduces the Half-GCD (HGCD) algorithm achieving $O(M(n) \\log n)$ bit complexity (where $M(n)$ is the multiplication cost). HGCD is the asymptotically fastest known GCD algorithm, but its constants are large enough that binary GCD remains competitive for inputs up to thousands of bits. The HGCD analysis is significantly more complex than the bit-stripping argument formalized here."
+    },
+    {
+      "authors": ["Möller, Niels"],
+      "title": "On Schönhage's algorithm and subquadratic integer GCD computation",
+      "year": "2008",
+      "venue": "Mathematics of Computation",
+      "volume": "77",
+      "pages": "589-607",
+      "note": "Modern treatment of HGCD with explicit constants and an implementation analysis. Useful as a follow-up reference for anyone interested in extending this gallery's complexity formalization beyond Stein's $O(\\log^2 n)$ bound."
     }
   ],
   "leanFile": {
