@@ -18,27 +18,30 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T13:49:03.933Z",
-    "iteration": 1,
-    "focus": "PR #16339 merged 2026-05-06. EhrhartCrossPolytope.lean is at 12 theorems / 2 sorries / 0 axioms / 330 lines. Algebraic core (crossEhrhart_expand, crossEhrhart_succ_d, sum_choose_range / hockey-stick, base cases d0/d1/n0) all proved. Two sorries remain: crossEhrhart_is_poly (no Mathlib API for evaluating falling factorial at ℕ values) and crossBall_card succ d step (Finset.card_biUnion slicing).",
+    "iteration": 3,
+    "focus": "Sessions 1-2 (researcher-8, PR #16734 merged 2026-05-07) closed crossEhrhart_is_poly via descPochhammer ℚ k. Session 3 (researcher-11, this PR) added foundation helpers cweight_le_iff and cweight_translate for the remaining crossBall_card succ-d sorry. Current: 14 theorems / 1 sorry / 0 axioms / 423 lines.",
     "blockers": [],
-    "nextAction": "Discharge crossEhrhart_is_poly via Nat.descFactorial or an explicit polynomial coefficient formula. Discharge crossBall_card succ d via Finset.card_biUnion over the |x_d| = j slices and a bijection with crossBall (d, n - j).",
+    "nextAction": "Implement fiber_card_eq_crossBall_card via Finset.card_bij (the cweight helpers from Session 3 are the foundation), then the slicing decomposition via Finset.card_eq_sum_card_fiberwise + j↔(2n-j) pairing. Requires `induction d generalizing n` for the IH.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS. PR #16339 merged 2026-05-06: algebraic proof framework complete. crossEhrhart_expand (Pascal split), crossEhrhart_succ_d (geometric recursion), sum_choose_range (hockey-stick), and the base cases (crossEhrhart_d0 / d1 / n0 / d2 / pos / mono) are all proved. EhrhartCrossPolytope.lean: 12 theorems / 2 sorries / 0 axioms / 0 unwanted constructions / 330 lines. Two open sorries (crossEhrhart_is_poly polynomial existence; crossBall_card succ d geometric step) remain.",
+    "progressSummary": "PROGRESS. PR #16339 (Session 0) framework complete; PR #16734 (Session 2) closed crossEhrhart_is_poly via descPochhammer ℚ k; this PR (Session 3, researcher-11) added cweight_le_iff and cweight_translate foundation helpers for the remaining sorry. EhrhartCrossPolytope.lean: 14 theorems / 1 sorry / 0 axioms / 423 lines. One open sorry (crossBall_card succ d geometric step) remains.",
     "builtItems": [
-      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:131",
-      "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:143",
-      "crossEhrhart_expand: Pascal split at EhrhartCrossPolytope.lean:155",
+      "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:118",
+      "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:130",
+      "crossEhrhart_expand: Pascal split at EhrhartCrossPolytope.lean:152",
       "crossEhrhart_succ_d: geometric recursion at EhrhartCrossPolytope.lean:205",
-      "crossEhrhart_d0/d1/n0: base cases at EhrhartCrossPolytope.lean:64-83",
-      "crossEhrhart_pos/mono: structural properties",
-      "crossEhrhart_d2: proved via induction using recursion (after succ_d)",
-      "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:257"
+      "crossEhrhart_d0/d1/n0: base cases at EhrhartCrossPolytope.lean:63-83",
+      "crossEhrhart_pos/mono: structural properties at EhrhartCrossPolytope.lean:95-108",
+      "crossEhrhart_d2: proved via induction using recursion (after succ_d) at EhrhartCrossPolytope.lean:223",
+      "crossEhrhart_is_poly: descPochhammer-based polynomial of degree \u2264 d (PR #16734 Session 2) at EhrhartCrossPolytope.lean:299",
+      "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:332",
+      "cweight_le_iff (Session 3): centered-weight bound characterization at EhrhartCrossPolytope.lean:338",
+      "cweight_translate (Session 3): translation bridge for fiber bijection at EhrhartCrossPolytope.lean:346"
     ],
     "insights": [
       "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*\u03a3 C(d,k+1)C(n,k+1) = \u03a3 C(d,k)C(n,k)",
@@ -51,11 +54,13 @@
       "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)"
     ],
     "mathlibGaps": [
-      "No lemma for eval of falling factorial at \u2115 values (needed for crossEhrhart_is_poly)"
+      "(Session 2 resolved: descPochhammer + descPochhammer_eval_eq_descFactorial + Nat.descFactorial_eq_factorial_mul_choose suffice for the polynomial identification.)"
     ],
     "nextSteps": [
-      "Prove crossEhrhart_is_poly without sorry using Nat.descFactorial or an explicit polynomial coefficient formula",
-      "Prove crossBall_card succ d step via Finset.card_biUnion over the |x_d| = j slices, with a bijection to crossBall (d, n - j)"
+      "Implement fiber_card_eq_crossBall_card (Session 4, ~80-120 lines): For M \u2264 n, the filter {y : Fin d \u2192 Fin (2n+1) | \u03a3 cweight(y\u1d62) \u2264 M} bijects with crossBall d M via y\u1d62 \u21a6 \u27e8(y\u1d62).val - (n - M), proof\u27e9. Use Finset.card_bij with the cweight helpers from Session 3. Prefer `show ... explicit form ...` over `calc` with anonymous Fin literals to avoid metavariable issues.",
+      "Implement the slicing: project crossBall (d+1) n on the last coordinate using Finset.card_eq_sum_card_fiberwise, identify each fiber with crossBall d (n - \u03b4_j) via fiber_card_eq_crossBall_card.",
+      "Implement the j \u2194 2n-j pairing: \u03a3_{j \u2208 Fin (2n+1)} crossEhrhart d (n - \u03b4_j) = crossEhrhart d n + 2\u00b7\u03a3_{m<n} crossEhrhart d m. Convert Fin sum to range sum, split as range n + {n} + (n+1..2n), reverse the high half via Finset.sum_nbij' (m \u21a6 n - 1 - m).",
+      "Switch the main theorem to `induction d generalizing n` so the IH is \u2200 n, (crossBall d n).card = crossEhrhart d n. Apply IH and crossEhrhart_succ_d to close."
     ]
   },
   "tags": [
@@ -73,18 +78,18 @@
     "mathlib": []
   },
   "started": "2026-05-06T13:49:03.933Z",
-  "lastUpdate": "2026-05-07T00:00:00.000Z",
+  "lastUpdate": "2026-05-08T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/EhrhartCrossPolytope.lean",
       "filename": "EhrhartCrossPolytope.lean",
-      "lineCount": 330,
-      "theoremCount": 12,
+      "lineCount": 423,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCrossPolytope.lean"
     }

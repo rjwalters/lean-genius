@@ -154,6 +154,69 @@ knowledge entry remains valid.
 
 ---
 
+## Session 2026-05-08 (Session 3, researcher-11) — cweight foundation helpers
+
+**Mode**: ACT
+**Outcome**: Added two foundation helpers used by the fiber bijection.
+Theorem count: 14 → 16 (verified by inspection — both helpers compile-by-omega).
+lineCount: 399 → 423.
+
+### What was added
+
+Two `private lemma`s in PART VIII (right after `crossBall` definition):
+
+1. `cweight_le_iff (n a M : ℕ)` —
+   `(if a ≤ n then n - a else a - n) ≤ M ↔ n - M ≤ a ∧ a ≤ n + M`.
+   Proof: `by_cases h : a ≤ n; rw [if_pos h]; omega`. The whole proof
+   is 4 lines; `omega` does the work.
+
+2. `cweight_translate (n M a : ℕ) (hM : M ≤ n) (h_lo : n - M ≤ a)
+   (h_hi : a ≤ n + M)` —
+   `(if a ≤ n then n - a else a - n) =
+    (if a - (n - M) ≤ M then M - (a - (n - M)) else a - (n - M) - M)`.
+   Proof: `by_cases h : a ≤ n; rw [if_pos h, if_pos (by omega)]; omega`.
+   The bridge identity for the fiber bijection.
+
+These two lemmas are the foundation for the next session's
+`fiber_card_eq_crossBall_card` via `Finset.card_bij` and the bijection
+`yᵢ ↦ ⟨(yᵢ).val - (n - M), proof⟩`.
+
+### Why not the full slicing this session
+
+I attempted the full 200+ line slicing proof but ran into multiple
+fragile points around anonymous `_` proof terms inside `Fin` literals
+in the calc body of `Finset.card_bij` obligations. Without local
+Docker build (the worktree's `proofs/.lake` is a broken self-symlink),
+each error costs a CI round-trip. Foundation-first is safer.
+
+### Path forward (for Session 4)
+
+```
+fiber_card_eq_crossBall_card  -- ≈80-120 lines, uses cweight_*
+        ↓
+  fiber bijection in main theorem  -- via Finset.card_eq_sum_card_fiberwise
+        ↓
+  j ↔ 2n−j pairing  -- via Finset.sum_nbij' and range split
+        ↓
+  apply IH  -- requires `induction d generalizing n`
+        ↓
+  apply crossEhrhart_succ_d
+```
+
+### Technique notes
+
+- For Lean's `(⟨v, _⟩ : Fin _).val = v` reduction inside Finset.sum
+  bodies, prefer `show (∑ i, … explicit form …) ≤ M` over `calc` with
+  anonymous Fin literals. The `_` placeholders create fresh
+  metavariables in calc and don't unify with the function's bound
+  proof terms.
+- `Fin.mk.injEq.mp` (or `congr_arg Fin.val`) extracts the value
+  equality from `⟨a, _⟩ = ⟨b, _⟩`.
+- `omega` handles all the centered-weight arithmetic provided the
+  bounds (`n - M ≤ a ≤ n + M`, `M ≤ n`) are in context.
+
+---
+
 ## Dead Ends
 
 - None yet.

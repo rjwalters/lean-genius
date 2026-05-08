@@ -6,7 +6,7 @@
   "leanFile": {
     "path": "Proofs/EhrhartCrossPolytope.lean",
     "filename": "EhrhartCrossPolytope.lean",
-    "lineCount": 399,
+    "lineCount": 423,
     "theoremCount": 14,
     "definitionCount": 2,
     "sorries": 1,
@@ -31,8 +31,8 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 399,
-    "assumptions": "1 sorry: crossBall_card d+1 \u2014 Finset slicing decomposition. All algebraic/combinatorial theorems are proved including the geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m) and the polynomial identification crossEhrhart_is_poly via descPochhammer \u211a k.",
+    "lineCount": 423,
+    "assumptions": "1 sorry: crossBall_card d+1 \u2014 Finset slicing decomposition. Foundation helpers cweight_le_iff and cweight_translate added (Session 3) for the eventual fiber bijection. All algebraic/combinatorial theorems are proved including the geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m) and the polynomial identification crossEhrhart_is_poly via descPochhammer \u211a k.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -43,6 +43,8 @@
       "crossEhrhart_succ_d: geometric recursion L(B_{d+1},n) = L(B_d,n) + 2\u00b7\u03a3_{m<n} L(B_d,m) by combining expand + hockey-stick",
       "crossEhrhart_is_poly: explicit polynomial of degree \u2264 d in n over \u211a, constructed as P = \u03a3_k C((2^k\u00b7C(d,k))/k!) \u00b7 descPochhammer \u211a k via Mathlib's descPochhammer; the k! denominator cancels the descFactorial = k!\u00b7C(n,k) factor",
       "crossBall: Finset model of cross-polytope lattice points via centered Fin (2n+1) coordinates",
+      "cweight_le_iff: characterization of (if a \u2264 n then n - a else a - n) \u2264 M as n - M \u2264 a \u2227 a \u2264 n + M (foundation helper for fiber bijection)",
+      "cweight_translate: bridge identity equating the centered weight at center n with the centered weight at center M (after translation), enabling the bijection between truncated lattice fibers and crossBall d M",
       "Concrete verifications: d=1 (2n+1), d=2 (2n\u00b2+2n+1), d=3 spot checks via native_decide"
     ],
     "theoremCount": 14,

@@ -333,17 +333,41 @@ def crossBall (d n : ℕ) : Finset (Fin d → Fin (2 * n + 1)) :=
   Finset.univ.filter fun x =>
     ∑ i, (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ n
 
+/-- The "centered weight" `(if a ≤ n then n - a else a - n)` of a Nat `a` relative
+    to center `n` is at most `M` iff `a` lies in the interval `[n - M, n + M]`. -/
+private lemma cweight_le_iff (n a M : ℕ) :
+    (if a ≤ n then n - a else a - n) ≤ M ↔ n - M ≤ a ∧ a ≤ n + M := by
+  by_cases h : a ≤ n
+  · rw [if_pos h]; omega
+  · push_neg at h; rw [if_neg (not_le.mpr h)]; omega
+
+/-- "Translate" the centered weight: when `M ≤ n` and `a ∈ [n - M, n + M]`,
+    the weight at center `n` of `a` equals the weight at center `M` of `a - (n - M)`. -/
+private lemma cweight_translate (n M a : ℕ) (hM : M ≤ n)
+    (h_lo : n - M ≤ a) (h_hi : a ≤ n + M) :
+    (if a ≤ n then n - a else a - n) =
+    (if a - (n - M) ≤ M then M - (a - (n - M)) else a - (n - M) - M) := by
+  by_cases h : a ≤ n
+  · rw [if_pos h, if_pos (by omega)]; omega
+  · push_neg at h
+    rw [if_neg (not_le.mpr h), if_neg (by push_neg; omega)]
+    omega
+
 /-- **Main geometric theorem**: the cross-polytope lattice count equals crossEhrhart d n.
 
     Proof sketch (induction on d):
     - Base d=0: crossBall 0 n = {∅}, card = 1 = crossEhrhart 0 n. ✓
     - Step: crossBall (d+1) n decomposes by last coordinate j ∈ {0,...,2n}.
-      For each j, the fiber is crossBall d (n - |j - n|).
-      Summing: card = Σ_{j=0}^{2n} crossBall d (n - |j-n|).card
-             = crossBall d n + 2·Σ_{m=0}^{n-1} crossBall d m   [pair j↔(2n-j)]
-      By IH and crossEhrhart_succ_d: = crossEhrhart d n + 2·Σ crossEhrhart d m
-             = crossEhrhart (d+1) n.
-    The Finset slicing argument is standard but lengthy. -/
+      For each j, the fiber is in bijection (via the cweight translation
+      `yᵢ ↦ yᵢ - (n - M)` where `M = n - |j - n|`) with crossBall d M.
+      Pairing j ↔ 2n−j: total card = (crossBall d n).card + 2·Σ_{m<n} (crossBall d m).card.
+      By IH (`generalizing n`) and `crossEhrhart_succ_d`, equals `crossEhrhart (d+1) n`.
+
+    Status: weight helpers in place (`cweight_le_iff`, `cweight_translate`).
+    Remaining: (1) fiber bijection helper using `Finset.card_bij` with the
+    map `yᵢ ↦ yᵢ - (n - M)`; (2) slicing via `Finset.card_eq_sum_card_fiberwise`
+    over the last-coordinate projection; (3) j↔(2n−j) pairing to fold the sum
+    into the form of `crossEhrhart_succ_d`'s RHS. -/
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
   induction d with
   | zero =>
