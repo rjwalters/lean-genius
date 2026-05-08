@@ -2,7 +2,7 @@
   "id": "wilsons-theorem-oq-01",
   "title": "Wilson's Theorem: Complete Classification for Non-Prime Moduli",
   "slug": "wilsons-theorem-oq-01",
-  "description": "Extends Wilson's theorem to all moduli n≥2: for composite n>4, n∣(n-1)!; for n=4, (n-1)! ≡ 2 (mod 4); for primes, (p-1)! ≡ -1 (mod p). Formalizes Wilson primes (p∣(p-1)!+1 with p²), verifies 5, 13 are Wilson primes, and proves the Gauss-Wilson classification (product of units ≡ -1 iff n ∈ {1,2,4,p^k,2p^k}). 33 theorems, 0 axioms.",
+  "description": "Extends Wilson's theorem to all moduli n≥2: for composite n>4, n∣(n-1)!; for n=4, (n-1)! ≡ 2 (mod 4); for primes, (p-1)! ≡ -1 (mod p). Formalizes Wilson primes (p∣(p-1)!+1 with p²), verifies 5, 13 are Wilson primes, and proves the Gauss-Wilson classification (product of units ≡ -1 iff n ∈ {1,2,4,p^k,2p^k}). 35 theorems, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -57,7 +57,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Wilson's theorem fully generalized: trichotomy (n-1)! ≡ {-1, 2, 0} mod n for primes, n=4, composite n>4 respectively. Wilson quotient, Wilson primes defined; 5 and 13 verified. Gauss-Wilson classification proved for all n≥3 via Mathlib's ZMod.isCyclic_units_iff and OQ02's abstract bridge. Computationally verified to n≤200. 33 theorems, 9 definitions, 688 lines, 0 axioms.",
+    "summary": "Wilson's theorem fully generalized: trichotomy (n-1)! ≡ {-1, 2, 0} mod n for primes, n=4, composite n>4 respectively. Wilson quotient, Wilson primes defined; 5 and 13 verified. Gauss-Wilson classification proved for all n≥3 via Mathlib's ZMod.isCyclic_units_iff and OQ02's abstract bridge. Computationally verified to n≤200. 35 theorems, 9 definitions, 688 lines, 0 axioms.",
     "implications": "The Gauss-Wilson classification is the number-theoretic foundation for primitive root theory and cyclic unit groups in algebraic number theory. It implies: primitive roots exist mod n iff n ∈ {1,2,4,p^k,2p^k}. Wilson primes connect to irregular primes, Bernoulli numbers, and Kummer's proof strategy for Fermat's Last Theorem. The only known Wilson primes are 5, 13, and 563; this remains a major open problem.",
     "openQuestions": [
       "Are there infinitely many Wilson primes? — equivalent to asking if p | B_{p-1} for infinitely many primes p",
