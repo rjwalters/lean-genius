@@ -90,6 +90,14 @@
   "sorries": 0,
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Header Docstring and Imports",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Module docstring explains the open question (factorization bridge without deep Finset), the V2-vs-V1 architecture (~50-line bridge instead of ~800-line RCF), and lists related gallery entries (cayley-hamilton-minpoly-* siblings). Imports `Mathlib` and the WIP04 companion. Opens `Matrix Polynomial UniqueFactorizationMonoid` and enters the `CayleyHamiltonCyclicVectorAllFields` namespace under `noncomputable section`.",
+      "mathContext": "Architecture: this file (~50 lines of factorization bridge) + WIP04 companion (~primary-decomposition + Bezout) = full cyclic-vector theorem over any field. The bridge isolates the multiset $\\to$ Fin-indexed-distinct-with-exponents step that the parent OQ flagged as the only remaining concern."
+    },
+    {
       "id": "sec-definitions",
       "title": "Definitions",
       "startLine": 59,
@@ -143,41 +151,57 @@
     {
       "name": "monic_irreducible_multiset_factorization",
       "type": "lemma",
+      "statement": "$\\forall \\mu \\in K[X]\\colon \\mu.\\mathrm{Monic} \\land 0 < \\mu.\\mathrm{natDegree} \\Rightarrow \\exists s : \\mathrm{Multiset}\\,K[X], (\\forall p \\in s, p.\\mathrm{Monic} \\land \\mathrm{Irreducible}\\,p) \\land \\mu = s.\\mathrm{prod}$",
+      "significance": "UFD entry point: turns `UniqueFactorizationMonoid.exists_prime_factors` into a *monic* multiset factorization by re-monicizing each prime via $\\mathrm{leadingCoeff}^{-1}$. The multiset form (vs.\\ Finset) preserves the multiplicity structure consumed downstream by the prime-power grouping.",
       "description": "Every monic polynomial μ of positive degree over a field factors as μ = prod of a multiset of monic irreducibles. Wraps `UniqueFactorizationMonoid.exists_prime_factors`, then re-monicizes each prime factor via leadingCoeff⁻¹·p. The multiset (rather than Finset) form preserves the multiplicity structure that the downstream prime-power grouping needs."
     },
     {
       "name": "coprime_of_distinct_monic_irreducible",
       "type": "lemma",
+      "statement": "$\\forall p, q \\in K[X]\\colon p.\\mathrm{Monic} \\land q.\\mathrm{Monic} \\land \\mathrm{Irreducible}\\,p \\land \\mathrm{Irreducible}\\,q \\land p \\ne q \\Rightarrow \\mathrm{IsCoprime}\\,p\\,q$",
+      "significance": "Distinct monic irreducibles are pairwise coprime. Proof leverages monic-uniqueness: a unit-multiple between two monic irreducibles must be the constant 1, so `Irreducible.coprime_iff_not_dvd` closes the lemma.",
       "description": "Two distinct monic irreducible polynomials over a field are coprime. Proof: distinct monic irreducibles cannot divide each other (a unit-multiple would coincide once both are monic), and `Irreducible.coprime_iff_not_dvd` closes the deal."
     },
     {
       "name": "coprime_pow_of_coprime_irreducible",
       "type": "lemma",
+      "statement": "$\\forall p, q \\in K[X], \\forall m, n \\in \\mathbb{N}\\colon \\mathrm{IsCoprime}\\,p\\,q \\Rightarrow \\mathrm{IsCoprime}\\,(p^m)\\,(q^n)$",
+      "significance": "Lifts pairwise irreducible-coprime to pairwise prime-power-coprime — the exact form WIP04's primary-decomposition theorem consumes. Direct application of `IsCoprime.pow`.",
       "description": "If p, q are coprime, then p^m, q^n are coprime — direct application of `IsCoprime.pow`. Used to lift the irreducible-coprime conclusion to the prime-power factorization in the main bridge."
     },
     {
       "name": "finset_factorization_from_multiset",
       "type": "lemma",
+      "statement": "$\\forall s : \\mathrm{Multiset}\\,K[X], s \\ne \\emptyset \\land (\\forall p \\in s, p.\\mathrm{Monic} \\land \\mathrm{Irreducible}\\,p) \\Rightarrow \\exists k > 0, \\exists f : \\mathrm{Fin}\\,k \\to K[X], \\exists e : \\mathrm{Fin}\\,k \\to \\mathbb{N}^{>0}, f\\text{ injective on values} \\land s = \\sum_i e_i \\cdot \\{f_i\\}$",
+      "significance": "Workhorse step of the factorization bridge: converts an unordered multiset of irreducibles into a `Fin k`-indexed family of *distinct* irreducibles with positive exponents — without invoking heavy `Finset` infrastructure. Decidable equality on $K[X]$ powers a recursive merge-or-append induction.",
       "description": "Multiset-to-`Fin k` induction: from a non-empty multiset of monic irreducibles, extract a list of *distinct* irreducibles indexed by `Fin k` together with positive exponents. Proof induct on the multiset; on each step, either merge with an existing index (incrementing its exponent) or append a new index. This is the workhorse step that converts the unordered factorization into an indexed product, avoiding heavy Finset infrastructure."
     },
     {
       "name": "monic_factored_form",
       "type": "lemma",
+      "statement": "$\\forall \\mu \\in K[X]\\colon \\mu.\\mathrm{Monic} \\land 0 < \\mu.\\mathrm{natDegree} \\Rightarrow \\exists k > 0, \\exists p : \\mathrm{Fin}\\,k \\to K[X], \\exists e : \\mathrm{Fin}\\,k \\to \\mathbb{N}^{>0},\\ (\\forall i, p_i.\\mathrm{Monic} \\land \\mathrm{Irreducible}\\,p_i) \\land (\\forall i \\ne j, \\mathrm{IsCoprime}\\,(p_i^{e_i})\\,(p_j^{e_j})) \\land \\mu = \\prod_i p_i^{e_i}$",
+      "significance": "**The factorization bridge** — the headline result of this file. Composes the three preceding private lemmas (factorize $\\to$ re-index by Fin $\\to$ upgrade to pairwise-coprime). This is the *exact* structural input WIP04's primary-decomposition theorem consumes, and answers the parent OQ's question affirmatively: deep `Finset` infrastructure is **not** needed.",
       "description": "**The factorization bridge.** Every monic polynomial μ of positive degree factors as μ = ∏ᵢ pᵢ^{eᵢ} with the pᵢ distinct monic irreducibles, eᵢ > 0, and the prime powers pairwise coprime. Composes the three preceding private lemmas: factorize → re-index by Fin → upgrade pairwise-distinct-irreducible to pairwise-coprime via `IsCoprime.pow`. This is the structural input the WIP04 primary-decomposition theorem consumes."
     },
     {
       "name": "nonderogatory_has_cyclic_vector",
       "type": "theorem",
+      "statement": "$\\forall K\\colon \\mathrm{Field}, \\forall n \\in \\mathbb{N}, \\forall M : \\mathrm{Matrix}\\,(\\mathrm{Fin}\\,n)\\,(\\mathrm{Fin}\\,n)\\,K\\colon \\mathrm{IsNonderogatory}\\,M \\Rightarrow \\exists v, \\mathrm{IsCyclicVector}\\,M\\,v$",
+      "significance": "**Main theorem.** Every nonderogatory matrix over *any* field — finite or infinite, any cardinality — has a cyclic vector. Proof factors `minpoly K M` via `monic_factored_form`, then invokes the WIP04 primary-decomposition theorem. The $n = 0$ case is dispatched separately.",
       "description": "**Main theorem**: every nonderogatory matrix M over any field K (finite or infinite, any size) has a cyclic vector. Proof: factor minpoly K M via `monic_factored_form`, then invoke `GeneralCyclicVector.nonderogatory_general_has_cyclic_vector` from WIP04 to extract the cyclic vector via primary decomposition + Bezout/CRT. The n = 0 case is dispatched separately."
     },
     {
       "name": "nonderogatory_has_cyclic_vector_finite",
       "type": "theorem",
+      "statement": "$\\forall K\\colon \\mathrm{Field}, \\forall [\\mathrm{Fintype}\\,K], \\forall n \\in \\mathbb{N}, \\forall M : \\mathrm{Matrix}\\,(\\mathrm{Fin}\\,n)\\,(\\mathrm{Fin}\\,n)\\,K\\colon \\mathrm{IsNonderogatory}\\,M \\Rightarrow \\exists v, \\mathrm{IsCyclicVector}\\,M\\,v$",
+      "significance": "**Corollary for finite $\\mathbb{F}_q$**, including the regime $q \\le n$ where the classical union-avoidance proof breaks down. Holds with no extra hypotheses because the primary-decomposition pathway never invokes $|K| > n$.",
       "description": "**Corollary** for finite fields F_q: holds even when q ≤ n (the regime where classical union-avoidance proofs break down). Direct corollary of the main theorem — no extra hypotheses needed because the primary-decomposition pathway never invokes |K| > n."
     },
     {
       "name": "cyclic_iff_not_killed_below_degree",
       "type": "theorem",
+      "statement": "$\\forall M\\colon \\mathrm{IsNonderogatory}\\,M \\Rightarrow \\forall v\\colon \\mathrm{IsCyclicVector}\\,M\\,v \\iff \\bigl(\\forall p \\in K[X], 0 < p.\\mathrm{natDegree} \\land p.\\mathrm{natDegree} < n \\land \\mathrm{aeval}\\,M\\,p \\cdot v = 0 \\Rightarrow p = 0\\bigr)$",
+      "significance": "Characterisation of cyclicity in terms of low-degree annihilators — useful for downstream existence-of-witness arguments and for bridging to the linear-independence formulation of cyclicity ($\\{v, Mv, \\ldots, M^{n-1}v\\}$ is a basis).",
       "description": "**Characterization**: for nonderogatory M, a vector v is cyclic iff no nonzero polynomial of degree < n annihilates v under aeval M. Useful for downstream existence-of-witness arguments and for connecting to the linear-independence formulation of cyclicity."
     }
   ],
