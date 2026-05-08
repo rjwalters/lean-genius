@@ -621,10 +621,54 @@ theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
   rw [p_triple_n3 d hd]
   simp [expectedTriples, Nat.choose_self]
 
+/-- For n=4 with the canonical (0,1,2) triple: bad functions = d².
+    Bijection f ↔ (f 0, f 3): the constraint forces f 0 = f 1 = f 2 = v (one
+    degree of freedom for the common value) and f 3 is free.
+
+    First step toward the general per-triple coincidence count
+    `card {f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n-2)` for distinct
+    i,j,k (state.md Next Action #1): the n=4 case extends `bad_count_n3`
+    (n=3, exponent 1) to exponent 2, isolating the single extra free position
+    introduced when n grows by 1. -/
+theorem bad_count_n4_canonical (d : ℕ) :
+    (Finset.univ.filter (fun f : Fin 4 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card = d ^ 2 := by
+  rw [show (d ^ 2 : ℕ) = Fintype.card (Fin d × Fin d) from by
+        simp [Fintype.card_prod, Fintype.card_fin, sq],
+      ← Fintype.card_coe]
+  apply Fintype.card_congr
+  exact {
+    toFun := fun ⟨f, _⟩ => (f 0, f 3)
+    invFun := fun ⟨v, w⟩ =>
+      ⟨fun i => if i.val = 3 then w else v,
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, rfl, rfl⟩⟩
+    left_inv := fun ⟨f, hf⟩ => by
+      simp only [Subtype.mk.injEq]
+      have h := (Finset.mem_filter.mp hf).2
+      ext i
+      fin_cases i <;> simp_all [h.1, h.1.trans h.2]
+    right_inv := fun ⟨v, w⟩ => rfl }
+
+/-- Per-triple probability for the canonical (0,1,2) triple in Fin 4 (d ≥ 1):
+    P(f 0 = f 1 = f 2) = 1/d². The probability is independent of n in the per-triple
+    sense — `p_triple_n3` gives the same 1/d² value at n=3, since each additional
+    "free" position contributes a factor of `d` to both numerator and denominator. -/
+theorem p_canonical_triple_n4 (d : ℕ) (hd : 1 ≤ d) :
+    ((Finset.univ.filter (fun f : Fin 4 → Fin d =>
+      f 0 = f 1 ∧ f 1 = f 2)).card : ℝ) /
+    (Fintype.card (Fin 4 → Fin d) : ℝ) = 1 / (d : ℝ) ^ 2 := by
+  have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast hd
+  have hcard_nat : Fintype.card (Fin 4 → Fin d) = d ^ 4 := by simp [Fintype.card_fun]
+  rw [bad_count_n4_canonical, hcard_nat]
+  push_cast
+  have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  field_simp
+  ring
+
 /-
   ## Summary
 
-  **Proved (15 theorems, 1 axiom):**
+  **Proved (17 theorems, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -641,6 +685,11 @@ theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
   14. `p_triple_n3` (Session 7): P(triple|n=3) = 1/d² as a real number
   15. `p_triple_n3_eq_expectedTriples` (Session 7): n=3 first-moment identity
       P(triple|n=3) = expectedTriples 3 d (Markov is tight at n=3 since X_d ≤ 1)
+  16. `bad_count_n4_canonical` (Session 8): per-triple count for canonical (0,1,2)
+      triple in Fin 4 = d² (one common value + one free position) — first step
+      toward general n per-triple count d^(n-2)
+  17. `p_canonical_triple_n4` (Session 8): per-triple probability for canonical
+      triple in Fin 4 = 1/d² (= same per-triple value as n=3, by symmetry)
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -663,5 +712,7 @@ theorem p_triple_n3_eq_expectedTriples (d : ℕ) (hd : 1 ≤ d) :
 #check @p_no_triple_n3
 #check @p_triple_n3
 #check @p_triple_n3_eq_expectedTriples
+#check @bad_count_n4_canonical
+#check @p_canonical_triple_n4
 
 end BirthdayThreshold3

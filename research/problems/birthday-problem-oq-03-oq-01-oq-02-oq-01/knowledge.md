@@ -585,3 +585,95 @@ summary block to reflect 15 proved theorems.
    correction. Foundation for higher-order factorial moments.
 4. Lemma C itself remains the target; expect to need a multi-session push or a
    Mathlib upstream contribution.
+
+---
+
+## Session 2026-05-08 (Session 8, researcher-6) — Per-triple Count for n=4
+
+**Mode**: ACT (extending Session 7's n=3 first-moment identity to per-triple count for n=4)
+**Outcome**: PROGRESS — added `bad_count_n4_canonical` and `p_canonical_triple_n4`
+
+### What I Did
+
+Added two theorems after `p_triple_n3_eq_expectedTriples` in
+`BirthdayProblemOQ03OQ01OQ02.lean`:
+
+1. **`bad_count_n4_canonical (d : ℕ)`** — for the canonical triple (0,1,2) in
+   `Fin 4`, the count of `f : Fin 4 → Fin d` with `f 0 = f 1 ∧ f 1 = f 2`
+   equals `d²`. Proof: explicit `Equiv` between the bad subtype and `Fin d × Fin d`
+   via `f ↔ (f 0, f 3)`. Forward map projects out the common value and the free
+   position; inverse map sets f 0, f 1, f 2 to the common value and f 3 to the
+   free value (using `if i.val = 3 then w else v`).
+
+2. **`p_canonical_triple_n4 (d : ℕ) (hd : 1 ≤ d)`** — the real-number probability
+   form: P(f 0 = f 1 = f 2 | n=4, d days) = 1/d². Direct corollary of
+   `bad_count_n4_canonical` and `Fintype.card_fun` (= d⁴), via `push_cast`,
+   `field_simp`, `ring`.
+
+### Mathematical Significance
+
+The state.md Next Action #1 calls for the **general per-triple coincidence count**
+`card {f : Fin n → Fin d | f i = f j ∧ f j = f k} = d^(n-2)` for distinct i,j,k.
+Session 8 establishes this for the **n=4 canonical case** (i,j,k = 0,1,2), continuing
+the pattern from `bad_count_n3` (n=3, exponent 1).
+
+The **per-triple probability is invariant in n** (in the canonical form):
+- `p_triple_n3` gives 1/d² (n=3, denominator d³, numerator d)
+- `p_canonical_triple_n4` gives 1/d² (n=4, denominator d⁴, numerator d²)
+
+This invariance is the structural reason why `expectedTriples n d = C(n,3)/d²`
+factors as `(number of triples) × (per-triple probability)`. Session 8 verifies
+this factorization for one extra value of n; the general n version requires
+extending the bijection to `Fin d × (Fin (n-3) → Fin d)`.
+
+The n=4 case isolates the **inductive step from n=3 to n=4**: a single extra
+free position contributes a factor of d to the count, raising the exponent from
+1 to 2. The general n case follows the same inductive pattern (each new free
+position adds another factor of d).
+
+### Why n=4 specifically (and not the general n form)?
+
+A general-n proof requires `Fin.snoc`/`Fin.castSucc`-based decomposition of
+`Fin (n+1) → Fin d` into `(Fin n → Fin d) × Fin d`, with care to show the
+constraint on indices 0,1,2 is preserved. This is ~50–100 lines and benefits
+from infrastructure not yet present in this file.
+
+The n=4 case uses a direct `Equiv` (parallels `bad_count_n3`'s style) with
+`if i.val = 3 then w else v`, fitting in ~20 lines. It demonstrates the pattern
+without the bookkeeping overhead of general-n induction. The next session can
+attempt the general lemma using the n=4 case as a sanity-check anchor.
+
+### Files Modified
+
+- `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` (+51 lines: 2 theorems +
+  Summary block update + 2 #check lines; 667 → 718)
+- `src/data/proofs/birthday-problem-oq-03-oq-01-oq-02/meta.json` (lineCount
+  667→718, theoremCount 30→32 in both top-level meta and leanFile;
+  originalContributions += 2 entries)
+- `src/data/research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01.json`
+  (Session 8 entries in builtItems/insights/progressSummary; iteration 7→8;
+  leanFiles[BirthdayProblemOQ03OQ01OQ02] lineCount/theoremCount synced)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/state.md` (iteration
+  7→8; per-triple n=4 entry under Active Approach; Next Action #1 reframed as
+  "general n" with n=3,4 noted as solved)
+- `research/problems/birthday-problem-oq-03-oq-01-oq-02-oq-01/knowledge.md` (this entry)
+
+### Verification
+
+Docker build of `Proofs.BirthdayProblemOQ03OQ01OQ02` was launched at session
+start (cold cache, Mathlib clone in progress). Build outcome to be confirmed
+before opening PR; if build verification times out, PR will be marked as draft
+"build pending" matching prior sessions' convention.
+
+### Next Steps
+
+1. **General n per-triple count** (still open from Session 8): prove
+   `card {f : Fin n → Fin d | f 0 = f 1 ∧ f 1 = f 2} = d^(n-2)` for n ≥ 3
+   via induction (base case n=3 is `bad_count_n3`; n=4 is `bad_count_n4_canonical`;
+   inductive step uses `Fin.snoc` decomposition `Fin (n+1) → Fin d ≃ (Fin n → Fin d) × Fin d`).
+   Then extend to general distinct i,j,k via permutation symmetry.
+2. **Markov bound for general n** (state.md Next Action #2): combine general
+   per-triple count with C(n,3) triples to get P(some triple) ≤ C(n,3)/d²
+   = expectedTriples n d. Global form of Session 7's n=3 identity, as an
+   inequality.
+3. Lemma C itself remains the target.
