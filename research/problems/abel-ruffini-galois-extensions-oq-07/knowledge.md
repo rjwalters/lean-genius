@@ -1,13 +1,20 @@
 # Knowledge: Burnside's pᵃqᵇ Theorem (abel-ruffini-galois-extensions-oq-07)
 
-## Status (2026-05-08, Iteration 9)
+## Status (2026-05-09, Iteration 14)
 
-Phase-2 axiomatization with axiom narrowed and three of four `(a, b) = (2, 1)`
-sub-cases discharged axiom-free (S7, S7.5, S9) modulo a single isolated
-sorry deferred to S10:
-`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`, 876 lines, 20 theorems
-(16 substantive), 1 axiom (umbrella for `2 ≤ a ∨ 2 ≤ b`), 1 sorry
-(`sylow_two_unique_when_n3_four`, S10 deferred).
+Phase-2 axiomatization with the umbrella axiom narrowed (S4),
+three of four `(a, b) = (2, 1)` sub-cases discharged axiom-free
+(S7, S7.5, S9), all three `(a, b) = (1, 2)` sub-cases discharged
+(S11.1, S11.2, S11.3), and four named ingredients of the S10
+element-counting closure of `sylow_two_unique_when_n3_four` now
+in place (S11.5, S13×2, S14):
+
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`, 1248 lines,
+27 theorems (18 substantive), 1 axiom (umbrella for `2 ≤ a ∨ 2 ≤ b`),
+1 sorry (`sylow_two_unique_when_n3_four`, S10 deferred — element-counting
+core remains; pointwise membership characterization, Sylow-3 cardinality,
+Sylow-2 cardinality, and pairwise disjointness of distinct Sylow 3's
+are all named lemmas now).
 
 ## Key Results
 
