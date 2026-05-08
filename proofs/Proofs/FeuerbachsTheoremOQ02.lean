@@ -632,6 +632,29 @@ theorem edge_midpoints_equidist_from_centroid (T : OrthocentricTetrahedron) :
     Tetrahedron.midpoint_CD midpoint3 vec3 dot3 at *
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> nlinarith
 
+/-- For ANY tetrahedron (no orthocentric hypothesis required), each pair of opposite
+    edge midpoints is equidistant from the centroid:
+      dist²(G, M_AB) = dist²(G, M_CD)
+      dist²(G, M_AC) = dist²(G, M_BD)
+      dist²(G, M_AD) = dist²(G, M_BC)
+
+    Proof: G - M_AB = (C + D - A - B)/4 = -(G - M_CD), so the two displacements
+    are negatives of each other and hence have equal squared length. The same
+    argument applies to the other two opposite-edge pairs.
+
+    Combined with `edge_midpoints_equidist_from_centroid` (which uses
+    orthocentricity to bridge across the three pairs), this gives a clean
+    decomposition: the three pair-equalities hold universally, while the
+    inter-pair equality is the orthocentric content. -/
+theorem edge_midpoints_paired_equidist_from_centroid (T : Tetrahedron) :
+    dist3_sq T.centroid T.midpoint_AB = dist3_sq T.centroid T.midpoint_CD ∧
+    dist3_sq T.centroid T.midpoint_AC = dist3_sq T.centroid T.midpoint_BD ∧
+    dist3_sq T.centroid T.midpoint_AD = dist3_sq T.centroid T.midpoint_BC := by
+  unfold dist3_sq Tetrahedron.centroid Tetrahedron.midpoint_AB Tetrahedron.midpoint_AC
+    Tetrahedron.midpoint_AD Tetrahedron.midpoint_BC Tetrahedron.midpoint_BD
+    Tetrahedron.midpoint_CD midpoint3
+  refine ⟨?_, ?_, ?_⟩ <;> ring
+
 /-- The exact squared distance from centroid G to each edge midpoint, for an orthocentric
     tetrahedron. The formula dist²(G, M_AB) = (|AC|² + |BD|²)/16 follows from the
     orthocentric condition AC⊥BD: writing G - M_AB = (C+D-A-B)/4 = (AC + BD)/4 as
@@ -686,13 +709,16 @@ theorem edge_midpoints_dist_sq_formula (T : OrthocentricTetrahedron) :
    from the centroid G (requires orthocentric hypothesis)
 10. edge_midpoints_dist_sq_formula: dist²(G, M_AB) = (|AC|²+|BD|²)/16, and
     dist²(G, M_AC) = (|AB|²+|CD|²)/16 (exact formula using orthocentric conditions)
+11. edge_midpoints_paired_equidist_from_centroid: For ANY tetrahedron, each pair
+    of opposite edge midpoints is equidistant from the centroid (3 pair-equalities;
+    no orthocentric hypothesis required)
 
 ### Sorries (0): all five tangency theorems were removed in 2026-05-02 after
 the symbolic counterexample at PART 10 closed the question of whether the
 (N₂₄, R/3)-sphere is tangent to the insphere/exspheres — it is not.
 
 ### Axioms (1):
-11. feuerbach_3d_fails_general: A non-orthocentric tetrahedron exists for
+12. feuerbach_3d_fails_general: A non-orthocentric tetrahedron exists for
     which the (N₂₄, R/3)-sphere fails to be internally tangent to the insphere.
     (Existential claim. Note: per the PART 10 refutation, tangency also fails
     for many *orthocentric* tetrahedra, so the orthocentric hypothesis does
