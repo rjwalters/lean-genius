@@ -1,8 +1,8 @@
 {
   "id": "harmonic-divergence-oq-02",
-  "title": "Divergence of the Log-Harmonic Series",
+  "title": "Divergence and Convergence in the Log-Harmonic Hierarchy",
   "slug": "harmonic-divergence-oq-02",
-  "description": "The series Σ 1/(n·log n) diverges, proved via the Cauchy condensation test. The condensed series 2^k/(2^k·k·log 2) = Σ 1/(k·log 2) is a rescaled harmonic series.",
+  "description": "Σ 1/(n·log n) diverges via Cauchy condensation (condensed = rescaled harmonic), but Σ 1/(n·(log n)²) converges (condensed = rescaled Basel p-series). Same condensation framework distinguishes the two cases.",
   "meta": {
     "author": "Classical",
     "status": "verified",
@@ -11,18 +11,20 @@
       "analysis",
       "series",
       "divergence",
+      "convergence",
       "condensation test",
-      "logarithmic"
+      "logarithmic",
+      "Basel"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "lineCount": 156,
+    "theoremCount": 14,
+    "lineCount": 289,
     "assumptions": "None. All results fully proved via Cauchy condensation.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
-    "definitionCount": 1
+    "theoremCount": 14,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The log-harmonic series Σ 1/(n log n) sits in a classical hierarchy of divergent series established in the 19th century. Oresme (ca. 1350) proved the harmonic series Σ 1/n diverges. Cauchy (1827) introduced the condensation test in Cours d'Analyse, giving a powerful criterion for positive decreasing series. The Cauchy condensation test reduces the convergence of Σ f(n) to that of Σ 2^k f(2^k), and for f(n) = 1/(n log n) this gives the elegant computation 2^k · 1/(2^k · k log 2) = 1/(k log 2). The connection to logarithm iteration was systematized by du Bois-Reymond (1873) in the 'logarithmico-exponential scale': the hierarchy Σ 1/n, Σ 1/(n log n), Σ 1/(n log n log log n), etc., all diverge, but successively slower. Hardy's 'A Course of Pure Mathematics' (1908) popularized these examples as illustrations of the subtlety of series convergence. The partial sums grow as log N, log log N, log log log N respectively, giving a countable tower of divergence rates.",
@@ -48,46 +50,54 @@
     {
       "id": "definition",
       "title": "The logHarmonic Function",
-      "startLine": 32,
-      "endLine": 46,
+      "startLine": 35,
+      "endLine": 57,
       "summary": "Defines logHarmonic n = 1/(n·log n) for n ≥ 2, else 0. Proves nonnegativity.",
       "mathContext": "The definition uses a conditional: $\\texttt{logHarmonic}(n) = \\begin{cases} 0 & n < 2 \\\\ 1/(n \\log n) & n \\geq 2 \\end{cases}$. The guard $n < 2$ excludes $n = 0$ (where $\\log 0 = 0$ in Lean's Real.log, undefined mathematically) and $n = 1$ (where $\\log 1 = 0$, making $n \\log n = 0$). The nonnegativity proof splits on the conditional: the $n < 2$ case returns $0 \\geq 0$; the $n \\geq 2$ case uses \\texttt{div\\_nonneg} and \\texttt{mul\\_nonneg}."
     },
     {
       "id": "antitone",
       "title": "logHarmonic is Antitone",
-      "startLine": 57,
-      "endLine": 79,
+      "startLine": 59,
+      "endLine": 87,
       "summary": "Proves logHarmonic is antitone (decreasing), required as a hypothesis for the condensation test.",
       "mathContext": "Antitone means: $m \\leq n \\Rightarrow f(n) \\leq f(m)$. The proof splits: (a) if $m = 1$, then $f(m) = 0 \\leq f(n)$ trivially. (b) if $m \\geq 2$, then both $f(m)$ and $f(n)$ have the form $1/(x \\log x)$, and $1/(n \\log n) \\leq 1/(m \\log m)$ iff $m \\log m \\leq n \\log n$ (using \\texttt{div\\_le\\_div\\_iff}). The bound $m \\log m \\leq n \\log n$ follows from $m \\leq n$ and monotonicity of log."
     },
     {
       "id": "condensation",
       "title": "Condensed Series Equals Rescaled Harmonic",
-      "startLine": 83,
-      "endLine": 102,
+      "startLine": 89,
+      "endLine": 110,
       "summary": "The key computation: 2^k · logHarmonic(2^k) = 1/(k·log 2) for k ≥ 1.",
       "mathContext": "The computation: $2^k \\cdot \\frac{1}{2^k \\cdot \\log(2^k)} = \\frac{2^k}{2^k \\cdot k \\log 2} = \\frac{1}{k \\log 2}$, using $\\log(2^k) = k \\log 2$ (\\texttt{Real.log\\_pow}). The Lean proof uses \\texttt{field\\_simp} and \\texttt{ring} to handle the algebraic manipulation after substituting the logarithm identity. The nonzero guards ($k \\neq 0$, $\\log 2 \\neq 0$, $2^k \\neq 0$) are necessary for \\texttt{field\\_simp} to work."
     },
     {
       "id": "not-summable",
       "title": "Condensed Series Diverges",
-      "startLine": 106,
-      "endLine": 142,
+      "startLine": 112,
+      "endLine": 150,
       "summary": "Proves the condensed series is not summable, then applies the condensation test to conclude log-harmonic diverges.",
       "mathContext": "The proof by contradiction: assume $\\sum_k 2^k f(2^k)$ is summable. Extract the tail $\\sum_{k \\geq 1} 1/(k \\log 2)$ using \\texttt{Summable.comp\\_injective} (the injection $k \\mapsto k+1$). Multiply by $\\log 2$: get $\\sum 1/(k+1)$ summable. But $\\sum 1/(k+1) = \\sum_{n \\geq 1} 1/n$ diverges (\\texttt{Real.not\\_summable\\_one\\_div\\_natCast}). The final step: \\texttt{summable\\_condensed\\_iff\\_of\\_nonneg logHarmonic\\_nonneg logHarmonic\\_antitone} transfers the condensed non-summability to the original series."
     },
     {
       "id": "divergence-rate",
       "title": "Divergence Rate: log(log N) Growth of Partial Sums",
-      "startLine": 144,
-      "endLine": 156,
+      "startLine": 152,
+      "endLine": 162,
       "summary": "Contextual section showing the partial sums Σ_{n=2}^N 1/(n·log n) grow asymptotically like log(log N), placing the log-harmonic series as the slowest-diverging classical series. Proved via integral comparison ∫ dx/(x·log x) = log(log x).",
       "mathContext": "The growth $\\sum_{n=2}^N \\frac{1}{n \\log n} \\sim \\log \\log N$ follows from the integral comparison $\\int_2^N \\frac{dx}{x \\log x} = [\\log \\log x]_2^N = \\log \\log N - \\log \\log 2$. This is analogous to how the harmonic series grows like $\\log N$ (Euler-Mascheroni). The log-harmonic series is slower than any power of $\\log N$ yet still diverges — it sits at the very boundary of summability."
+    },
+    {
+      "id": "squared-log-convergence",
+      "title": "The Squared-Log Series Converges: 1/(n·(log n)²)",
+      "startLine": 164,
+      "endLine": 287,
+      "summary": "Crossing from divergence to convergence: replacing log n by (log n)² in the denominator turns Σ 1/(n·log n) into a summable series. The same Cauchy condensation framework applies — only the condensed series changes, from a rescaled harmonic (divergent) to a rescaled Basel p-series (convergent).",
+      "mathContext": "The condensed term: $2^k \\cdot \\frac{1}{2^k \\cdot (\\log 2^k)^2} = \\frac{1}{k^2 (\\log 2)^2} = \\frac{1}{(\\log 2)^2} \\cdot \\frac{1}{k^2}$. The factor $1/(\\log 2)^2$ is a constant, and $\\sum_{k \\geq 1} 1/k^2$ converges (Basel: Mathlib's \\texttt{Real.summable\\_one\\_div\\_nat\\_pow} for $p=2$). This sits at the next level of the iterated-log convergence hierarchy: $\\sum 1/(n \\cdot (\\log n)^p)$ converges iff $p > 1$, with $p = 1$ as the divergent borderline (already proved above). The Lean proof reuses logHarmonicSq_nonneg/antitone (mirroring the divergent case), computes the condensed identity (\\texttt{condensed\\_logHarmonicSq\\_eq}), shifts past $k = 0$ via \\texttt{summable\\_nat\\_add\\_iff}, and identifies the tail with the convergent p-series via \\texttt{Summable.mul\\_left} and \\texttt{Summable.congr}."
     }
   ],
   "conclusion": {
-    "summary": "The series Σ 1/(n log n) diverges. The proof is a clean application of the Cauchy condensation test: the key computation 2^k · f(2^k) = 1/(k log 2) reduces log-harmonic divergence to harmonic divergence in one elegant step.",
+    "summary": "The series Σ 1/(n log n) diverges, while Σ 1/(n·(log n)²) converges. The proofs are parallel applications of the Cauchy condensation test: the divergent case condenses to a rescaled harmonic series (Σ 1/(k·log 2)), while the convergent case condenses to a rescaled Basel p-series (Σ 1/(k²·(log 2)²)). Together they exhibit the divergent/convergent boundary in the iterated-log hierarchy.",
     "openQuestions": [
       "Can the full du Bois-Reymond hierarchy be formalized? Each iterated level Σ 1/(n log n log log n ··· log^(k) n) diverges by one more application of the condensation test. Can this be captured as a single inductive theorem in Lean?",
       "The integral test gives an alternative proof: ∫₂^∞ 1/(x log x) dx = [log log x]₂^∞ = ∞. Can this be formalized in Lean using Mathlib's integral/MeasureTheory infrastructure?",
@@ -134,10 +144,10 @@
       "Real"
     ],
     "namespace": "HarmonicDivergenceOQ02",
-    "lineCount": 156,
+    "lineCount": 289,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 1,
+    "theoremCount": 14,
+    "definitionCount": 2,
     "path": "Proofs/HarmonicDivergenceOQ02.lean",
     "sorries": 0
   },
