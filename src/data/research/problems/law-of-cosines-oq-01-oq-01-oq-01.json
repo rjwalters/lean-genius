@@ -1,8 +1,8 @@
 {
   "slug": "law-of-cosines-oq-01-oq-01-oq-01",
   "title": "Spherical sine rule generalization sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c)",
-  "phase": "BLOCKED",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,15 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "BLOCKED",
-    "since": "2026-05-07T16:30:00Z",
-    "iteration": 2,
-    "focus": "Proof complete in worktree but cannot build: upstream Proofs/LawOfCosinesOQ01OQ02 fails on main (issue #16613).",
-    "blockers": [
-      "Proofs/LawOfCosinesOQ01OQ02.lean fails Docker build on main: spherical_law_of_sines_all C-case lines 347/349/354 (issue #16613)",
-      "Specifically: (a) dite vs ite mismatch between SphericalTriangle.angleC (uses dite via \"if h :\") and SphericalTriangle.angleA (uses plain ite); (b) Or.comm + real_inner_comm needed for t.angleB = t.angleA permutation step; (c) rewrite pattern stale at line 354."
-    ],
-    "nextAction": "Wait for issue #16613 to be resolved (mechanic agent will pick it up); then revisit and ship gallery entry.",
+    "phase": "COMPLETED",
+    "since": "2026-05-08T03:50:00Z",
+    "iteration": 3,
+    "focus": "Completed and shipped. Upstream blocker #16613 was resolved by PR #16710 (closed 2026-05-07). LawOfCosinesOQ01OQ02 now builds; the 64-line wrapper in proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean is verified (2 theorems, 0 sorries, 0 axioms) and gallery entry shipped in src/data/proofs/law-of-cosines-oq-01-oq-01-oq-01/.",
+    "blockers": [],
+    "nextAction": "None — entry shipped. Future work: degenerate-triangle generalization (sides 0/π) and curvature-parametric K ≠ 1 versions.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -32,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED on upstream OQ02 build failure (issue #16613, 2026-05-07). My 64-line wrapper file (proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean) is mathematically complete: spherical_law_of_sines_angle_over_side proves sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c) by algebraic inversion of spherical_law_of_sines_all from OQ02; spherical_law_of_sines_BC_angle_over_side adds B/b = C/c by transitivity. But OQ02 itself currently fails to build on main due to three specific tactic bugs in spherical_law_of_sines_all C-case (lines 347/349/354). Detailed root-cause analysis filed in issue #16613.",
+    "progressSummary": "COMPLETED 2026-05-08. Upstream blocker (issue #16613) was resolved by PR #16710 (closed 2026-05-07). The 64-line wrapper file (proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean) was already on main from earlier work; this iteration shipped the gallery entry (src/data/proofs/law-of-cosines-oq-01-oq-01-oq-01/) with meta.json + index.ts + annotations.json. spherical_law_of_sines_angle_over_side proves sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c) by algebraic inversion (div_eq_div_iff + linear_combination) of spherical_law_of_sines_all from OQ02; spherical_law_of_sines_BC_angle_over_side adds B/b = C/c by transitivity. Counts: 2 theorems, 0 sorries, 0 axioms, 64 lines. Closes the open question raised in law-of-cosines-oq-01-oq-01: 'Generalize the Gram determinant argument to prove the full sine rule.' Answer: yes, by 64 lines of formal inversion of the side-over-angle form, no new geometric content needed.",
     "builtItems": [
       "sinC_sq_gramDet: sin²(C)·sin²(a)·sin²(b) = gramDet (parallel to sinA/sinB)",
       "sinC_nonneg: 0 ≤ sin(C)",
@@ -54,9 +51,9 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Wait for #16613 (LawOfCosinesOQ01OQ02 build failure) to be resolved by mechanic.",
-      "After OQ02 builds: cp the lean file from main repo to worktree, build to verify, then add gallery entry (meta.json/index.ts/annotations.json).",
-      "Future generalizations (post-merge): degenerate triangles (sides 0/π) requiring limit arguments; geodesic triangles on surfaces of constant curvature K ≠ 1."
+      "Future generalization (open question): degenerate spherical triangles where sides are 0 or π (some sines vanish). Right reformulation likely the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a), which holds without nondegeneracy hypotheses.",
+      "Future generalization (open question): geodesic triangles on surfaces of constant curvature K ≠ 1, via the curvature-parametric framework of law-of-cosines-oq-01-oq-05 (UnifiedTriangle).",
+      "Possible direct proof (no inversion): unfold angleA = arccos(...) via the cosine formula and prove sin²(A)·sin²(b)·sin²(c) = sin²(B)·sin²(a)·sin²(c) directly, mirroring the dual cosine law's pattern."
     ]
   },
   "tags": [
@@ -83,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.695Z",
-  "lastUpdate": "2026-05-07T16:30:00Z",
+  "lastUpdate": "2026-05-08T03:50:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
