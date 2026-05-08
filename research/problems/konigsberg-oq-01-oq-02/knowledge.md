@@ -4,8 +4,9 @@ Extend the Eulerian circuit characterization to directed graphs. A weakly connec
 an Eulerian circuit iff every vertex has equal in-degree and out-degree; directed analogue of
 Königsberg bridges.
 
-**Current status**: ACT (build-blocked, recipe validated) — 2 of 5 original
-axioms remain (Hierholzer sufficiency + path iff). Session 6 strengthened
+**Current status**: ACT (main-file build-blocked; recipe file
+**fully build-verified** as of S11) — 2 of 5 original axioms remain
+(Hierholzer sufficiency + path iff). Session 6 strengthened
 `HasEulerianPath` with `∃!` coverage, added `open_walk_interior_balanced`,
 and wrote a proof of `euler_path_implies_degree_balance`. **BUILD BLOCKER:
 the main file does NOT currently build under the latest Mathlib (~80 errors,
@@ -25,6 +26,30 @@ file is independent of the broken main file and **builds cleanly under
 Mathlib v4.26.0**, validating that the Session 7+8 refactor strategy compiles
 under current Mathlib API names. Session 10 can transcribe these lemmas into
 the main file.
+
+---
+
+## Session 2026-05-08 (Session 11) - Recipe File Build Verification
+
+**Mode**: REVISIT (Sessions 7–10 prepared+extended the recipe; S11 verifies
+the extended recipe builds end-to-end after S10 added an unbuilt template)
+
+**Outcome**: ran `LEAN_BUILD_TIMEOUT=45m ./proofs/scripts/docker-build.sh
+Proofs.KonigsbergOQ01OQ02Recipe`. Result: **build succeeded** (`Built
+Proofs.KonigsbergOQ01OQ02Recipe (8.6s)`, 7743 jobs, ~5 min wall-clock).
+Three non-fatal lint warnings (unused `hlen` × 2 and unused simp arg
+`hne` × 1); intentionally NOT "fixed" since the Recipe file is meant to be
+deleted post-Session-12 transcription, and `hlen` IS used in the main file
+where it'll be transcribed.
+
+**Significance**: this finishes the Sessions 9–10 recipe-validation arc.
+Session 12 starts the in-place refactor with **two build-verified bijection
+templates** (`closed_walk_balance'` cyclic + `open_walk_interior_balanced'`
+linear) plus the build-verified bridge lemma `getElem?_eq_some_iff_of_lt`.
+Zero remaining template-correctness risk; only mechanical-transcription
+risk plus the `Finset.sum_ite_eq'` simp fix at L87/L99.
+
+**No file edits** beyond the state.md/knowledge.md updates documenting this.
 
 ---
 
