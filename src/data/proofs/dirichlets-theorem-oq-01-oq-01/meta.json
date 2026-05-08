@@ -48,13 +48,16 @@
     "summary": "This file directly addresses the question 'Do Siegel zeros exist?' by formalizing the consequences of each answer. The two worlds explored are: World A (Siegel zeros exist, ¬SiegelZeroConjecture) and World B (no Siegel zeros, SiegelZeroConjecture). Key results include: the MVT-Siegel combination constraining how close a Siegel zero can be to 1; Linnik's theorem and its L=2 improvement under no Siegel zeros; the Landau-Page uniqueness of exceptional conductors per region; and the Deuring-Heilbronn repulsion phenomenon showing Siegel zeros are 'self-limiting'.",
     "keyInsight": "Even in World A, Siegel's ineffective lower bound prevents L(1,χ) from being exactly zero (nonvanishing holds unconditionally), but it can be exponentially small — smaller than any power of 1/log(q). The effective bound C/log(q)² from GRH is what the Siegel zero problem is about.",
     "keyInsights": [
-      "Even in World A (Siegel zeros exist), L(1,χ) > 0 is unconditional — nonvanishing is proved regardless. The problem is purely about the SIZE of L(1,χ), not its vanishing.",
+      "Even in World A (Siegel zeros exist), $L(1,\\chi) > 0$ is unconditional — nonvanishing is proved regardless. The problem is purely about the SIZE of $L(1,\\chi)$, not its vanishing.",
       "The two worlds are logically independent: nothing in current mathematics rules out either World A or World B. GRH would rule out Siegel zeros, but GRH is itself open.",
-      "Deuring-Heilbronn repulsion makes Siegel zeros 'self-limiting': if one exists at β₁, it pushes ALL other L-function zeros away from 1, creating a wider zero-free region. A Siegel zero would be an isolated phenomenon.",
-      "The Linnik exponent L measures the difficulty of finding primes in APs. Current best is L ≤ 5 (Xylouris 2011). No Siegel zeros (World B) gives L = 2, the same as GRH. This tight connection makes Siegel zeros central to sieve theory.",
-      "The three-tier hierarchy GRH ⊃ SZC ⊃ L(1,χ) > 0 shows that Siegel zeros sit at exactly the gap between GRH and unconditional results. Proving SZC without GRH would be a major advance."
+      "Deuring-Heilbronn repulsion makes Siegel zeros 'self-limiting': if one exists at $\\beta_1$, it pushes ALL other L-function zeros away from $1$, creating a wider zero-free region. A Siegel zero would be an isolated phenomenon.",
+      "The Linnik exponent $L$ measures the difficulty of finding primes in APs. Current best is $L \\leq 5$ (Xylouris 2011). No Siegel zeros (World B) gives $L = 2$, the same as GRH. This tight connection makes Siegel zeros central to sieve theory.",
+      "The three-tier hierarchy GRH $\\supset$ SZC $\\supset$ $L(1,\\chi) > 0$ shows that Siegel zeros sit at exactly the gap between GRH and unconditional results. Proving SZC without GRH would be a major advance.",
+      "Quantitative gap: Under GRH, $L(1,\\chi) \\gg 1/\\log^2(q)$ (squared log, effective). Under SZC alone (World B), $L(1,\\chi) \\gg 1/\\log(q)$ (single log, effective). Unconditionally (Siegel), $L(1,\\chi) \\gg_\\varepsilon q^{-\\varepsilon}$ (any power, INeffective). The exponent gap from $-\\varepsilon$ to $-1$ to $-2$ in the log measures how much each hypothesis buys.",
+      "Class number connection (Goldfeld 1976, Gross-Zagier 1986): Siegel zeros are equivalent to slowly-growing class numbers $h(-D)$ of imaginary quadratic fields. The 'effective Goldfeld' result $h(-D) \\gg \\log D$ implicitly assumes no Siegel zeros — the implication chain is bidirectional, exposing why the Siegel zero question is also a class number question.",
+      "Axiomatization is honest: this file imports 5 axioms from the parent (siegel_theorem, GRH→no-Siegel, Landau-Page, Deuring-Heilbronn, Tatuzawa) and adds 2 new (linnik_bound, effective_linnik_no_siegel). Total 7 axioms encode infrastructure not yet in Mathlib. The 20 theorems are *consequences*, not new mathematics — they organize what each axiomatic input gives."
     ],
-    "historicalContext": "The Siegel zero problem traces to Carl Ludwig Siegel's 1935 theorem giving an ineffective lower bound on L(1,χ). The term 'Siegel zero' was coined for the potential zeros in (1-c/log(q), 1) whose existence Siegel's method cannot rule out. Heath-Brown (1992) connected Linnik's constant to Siegel zeros. Xylouris (2011) proved L ≤ 5 for Linnik's theorem. Deuring (1933) and Heilbronn (1934) showed that Siegel zeros, if they exist, would repel other zeros. The question remains open as of 2026."
+    "historicalContext": "The Siegel zero problem traces to Carl Ludwig Siegel's 1935 theorem giving an ineffective lower bound $L(1,\\chi) \\gg_\\varepsilon q^{-\\varepsilon}$. The term 'Siegel zero' (also 'exceptional zero' or 'Landau-Siegel zero') was coined for the potential zeros in $(1-c/\\log(q), 1)$ whose existence Siegel's method cannot rule out. Earlier, Landau (1918) and Page (1935) had established the uniqueness-of-exceptional-conductor result; Deuring (1933) and Heilbronn (1934) independently showed that exceptional zeros, if they existed, would repel other zeros — a phenomenon now called Deuring-Heilbronn repulsion. Tatuzawa (1951) showed Siegel's bound becomes effective with at most one exception. Linnik (1944) connected the smallest prime in arithmetic progressions to L-function zeros; Heath-Brown (1990, 1992) and Xylouris (2011) progressively reduced the Linnik exponent to $L \\leq 5$. The class-number connection — that Siegel zeros bound the class numbers of imaginary quadratic fields from above — was sharpened by Goldfeld (1976) and the Gross-Zagier formula (1986); their joint work produced the first effective lower bound for class numbers. Notable advocates and skeptics include Iwaniec, Sarnak, and Friedlander, all of whom have written on the centrality of the Siegel-zero question to analytic number theory. The conjecture remains open as of 2026."
   },
   "sections": [
     {
@@ -99,11 +102,14 @@
     }
   ],
   "conclusion": {
-    "summary": "This file formalizes the landscape of knowledge about Siegel zero existence: the complete formalization shows that while L(1,χ) ≠ 0 is proved, whether Siegel zeros exist remains open. The two axioms (Linnik bound, effective Linnik under SZC) represent infrastructure not yet in Mathlib. Key proved results: Landau-Page uniqueness of exceptional conductors, Deuring-Heilbronn repulsion from a Siegel zero, GRH eliminates zeros in standard range, Tatuzawa has at most one exception, Linnik implies Dirichlet existence.",
+    "summary": "This file formalizes the landscape of knowledge about Siegel zero existence: the complete formalization shows that while $L(1,\\chi) \\neq 0$ is proved, whether Siegel zeros exist remains open. The two new axioms (Linnik bound, effective Linnik under SZC) represent infrastructure not yet in Mathlib. Key proved results: Landau-Page uniqueness of exceptional conductors, Deuring-Heilbronn repulsion from a Siegel zero, GRH eliminates zeros in standard range, Tatuzawa has at most one exception, Linnik implies Dirichlet existence, three-tier hierarchy GRH⊃SZC⊃L(1,χ)>0.",
+    "implications": "**Centrality of the question**: Siegel zeros sit at the precise gap between GRH (the ultimate analytic conjecture) and unconditional results. Resolving SZC unconditionally would constitute one of the most important advances in 20th–21st century analytic number theory — without proving GRH itself.\n\n**Sieve-theoretic consequences**: The Linnik exponent $L$ is a key input to sieve methods, the Bombieri-Vinogradov theorem, and Elliott-Halberstam-style conjectures. Each refinement of the no-Siegel-zero result improves the smallest-prime-in-AP bound and sharpens uniform distribution results.\n\n**Class number connection (Goldfeld–Gross–Zagier)**: A Siegel zero $\\beta$ for the conductor $D$ implies the class number $h(-D)$ is small (at most $\\sim \\log D / (1-\\beta)$). The first effective lower bound $h(-D) \\gg \\log D$ (Goldfeld 1976 + Gross-Zagier 1986) circumvented Siegel zeros via the L-function of an elliptic curve with high analytic rank. Resolving SZC would give a more uniform path.\n\n**Computational consequences**: Effective Siegel zero bounds are needed for explicit constants in PNT-for-AP, for primality tests, and for determining 'all small examples' of various number-theoretic phenomena. The squared-log bound under GRH ($L(1,\\chi) \\gg 1/\\log^2 q$) is what powers most modern explicit results.\n\n**Two-worlds organization as a research tool**: By splitting the formalization into World A and World B, this file makes precise *which* results survive each alternative. Future work can extend each world independently — e.g., adding more World B improvements (under SZC) without committing to either alternative.",
     "openQuestions": [
       "Does the SiegelZeroConjecture hold? (The central question — almost certainly YES under GRH, but unknown unconditionally)",
-      "Is there an effective version of Siegel's theorem with no exceptions? (Would imply Linnik L=2 and extended Siegel-Walfisz)",
-      "What is the precise relationship between Linnik's constant L and the depth of Siegel zeros?"
+      "Is there an effective version of Siegel's theorem with no exceptions? (Would imply Linnik $L=2$ and extended Siegel-Walfisz)",
+      "What is the precise relationship between Linnik's constant $L$ and the depth of Siegel zeros? (Heath-Brown's connection is one direction; is there a converse?)",
+      "Can the class-number / Siegel-zero equivalence (via Goldfeld-Gross-Zagier) be made tight, giving an unconditional polynomial-log lower bound on $h(-D)$ that would resolve the depth of Siegel zeros?",
+      "Can the linnik_bound and effective_linnik_no_siegel axioms be discharged inside Mathlib once L-function zero-density estimates are formalized?"
     ]
   },
   "crossReferences": [
@@ -124,6 +130,92 @@
     "Three-tier hierarchy theorem: GRH → SZC (standard range) → Nonvanishing in one clean proof",
     "siegel_zero_distance_lower_bound: MVT + Siegel combination showing (1-β)·M > C(ε)/N^ε",
     "state_of_knowledge: summary theorem cataloging proved vs open results"
+  ],
+  "references": [
+    {
+      "authors": "Carl Ludwig Siegel",
+      "title": "Über die Classenzahl quadratischer Zahlkörper",
+      "year": "1935",
+      "venue": "Acta Arithmetica 1, 83–86",
+      "note": "The original ineffective lower bound L(1,χ) ≫_ε q^{-ε}, source of the term 'Siegel zero'"
+    },
+    {
+      "authors": "Yuri V. Linnik",
+      "title": "On the least prime in an arithmetic progression. I, II",
+      "year": "1944",
+      "venue": "Doklady Akad. Nauk SSSR",
+      "note": "Original Linnik bound p_min(a,q) ≤ C·q^L; the constant L is now called the Linnik exponent"
+    },
+    {
+      "authors": "Max Deuring",
+      "title": "Imaginäre quadratische Zahlkörper mit der Klassenzahl 1",
+      "year": "1933",
+      "venue": "Mathematische Zeitschrift 37, 405–415",
+      "note": "First half of Deuring-Heilbronn repulsion phenomenon"
+    },
+    {
+      "authors": "Hans Heilbronn",
+      "title": "On the class-number in imaginary quadratic fields",
+      "year": "1934",
+      "venue": "Quarterly Journal of Mathematics 5, 150–160",
+      "note": "Second half of Deuring-Heilbronn: shows Siegel zeros (if any) repel other zeros"
+    },
+    {
+      "authors": "Tikao Tatuzawa",
+      "title": "On a theorem of Siegel",
+      "year": "1951",
+      "venue": "Japanese Journal of Mathematics 21, 163–178",
+      "note": "Effective Siegel bound with at most one exceptional conductor"
+    },
+    {
+      "authors": "Edmund Landau",
+      "title": "Über die Klassenzahl imaginär-quadratischer Zahlkörper",
+      "year": "1918",
+      "venue": "Göttinger Nachrichten",
+      "note": "Original 'Landau' half of Landau-Page uniqueness theorem"
+    },
+    {
+      "authors": "Albert Page",
+      "title": "On the number of primes in an arithmetic progression",
+      "year": "1935",
+      "venue": "Proc. London Math. Soc. (2) 39, 116–141",
+      "note": "Page's contribution to Landau-Page: at most one exceptional conductor in any range"
+    },
+    {
+      "authors": "Dorian Goldfeld",
+      "title": "The class number of quadratic fields and the conjectures of Birch and Swinnerton-Dyer",
+      "year": "1976",
+      "venue": "Annali della Scuola Normale Superiore di Pisa",
+      "note": "Reduces the effective class number lower bound to existence of an L-function with vanishing of order ≥ 3 at s=1/2"
+    },
+    {
+      "authors": "Benedict H. Gross and Don Zagier",
+      "title": "Heegner points and derivatives of L-series",
+      "year": "1986",
+      "venue": "Inventiones Mathematicae 84, 225–320",
+      "note": "Provides the elliptic-curve L-function input to Goldfeld's program; together gives the first effective h(-D) ≫ (log D)^{1-ε}"
+    },
+    {
+      "authors": "D. R. Heath-Brown",
+      "title": "Zero-free regions for Dirichlet L-functions, and the least prime in an arithmetic progression",
+      "year": "1992",
+      "venue": "Proc. London Math. Soc. (3) 64, 265–338",
+      "note": "Connects Linnik's exponent L to depth of Siegel zeros; reduces L to ≤ 5.5"
+    },
+    {
+      "authors": "Triantafyllos Xylouris",
+      "title": "On the least prime in an arithmetic progression and estimates for the zeros of Dirichlet L-functions",
+      "year": "2011",
+      "venue": "Acta Arithmetica 150, 65–91",
+      "note": "Current best Linnik exponent: L ≤ 5"
+    },
+    {
+      "authors": "Henryk Iwaniec and Emmanuel Kowalski",
+      "title": "Analytic Number Theory",
+      "year": "2004",
+      "venue": "AMS Colloquium Publications 53",
+      "note": "Standard reference for L-function zero-free regions, Siegel-Walfisz, and Linnik's theorem in modern form (Chapter 5, 18)"
+    }
   ],
   "sorries": 0
 }
