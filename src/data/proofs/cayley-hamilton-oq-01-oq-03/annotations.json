@@ -2,31 +2,77 @@
   {
     "id": "ann-ch-poly-coeff-def",
     "proofId": "cayley-hamilton-oq-01-oq-03",
-    "range": { "startLine": 59, "endLine": 85 },
+    "range": { "startLine": 53, "endLine": 60 },
     "type": "definition",
     "title": "expPolyCoeff: the coefficient functions p_k(t) as tsum",
-    "content": "Defines `expPolyCoeff M k t = ∑' m : ℕ, t^m / m! * (X^m % minpoly ℝ M).coeff k`. This is the k-th coefficient function in the polynomial expansion exp(t·M) = ∑_{k=0}^{d-1} p_k(t)·M^k. The companion theorem `expPolyCoeff_summable` states the series converges for all t. The section also proves `matrixExp_eq_tsum`: exp(t·M) = ∑' m, t^m/m! · M^m, from `NormedSpace.exp_eq_tsum` and `Algebra.smul_pow`.",
-    "mathContext": "The coefficient $p_k(t) = \\sum_{m=0}^\\infty \\frac{t^m}{m!} c_{m,k}$ where $c_{m,k} = [X^m \\bmod \\mu_M]_k$ (the $k$-th coefficient of $X^m$ reduced modulo the minimal polynomial $\\mu_M$). By Cayley-Hamilton, $M^m = \\sum_{k<d} c_{m,k} M^k$ (minimal polynomial reduction). The series converges because $|c_{m,k}| \\leq \\|C\\|^m$ (companion matrix bound) and $\\sum_m \\|t\\|^m/m! \\|C\\|^m = e^{\\|t\\|\\|C\\|}$ converges. Thus $p_k(t)$ is an entire function of $t$.",
+    "content": "Defines `expPolyCoeff M k t = ∑' m : ℕ, t^m / m! * (X^m % minpoly ℝ M).coeff k`. This is the k-th coefficient function in the polynomial expansion exp(t·M) = ∑_{k=0}^{d-1} p_k(t)·M^k. The series in t is established to converge by the companion theorem `expPolyCoeff_summable` (proved without axioms in Section 1b below).",
+    "mathContext": "The coefficient $p_k(t) = \\sum_{m=0}^\\infty \\frac{t^m}{m!} c_{m,k}$ where $c_{m,k} = [X^m \\bmod \\mu_M]_k$ (the $k$-th coefficient of $X^m$ reduced modulo the minimal polynomial $\\mu_M$). By Cayley-Hamilton, $M^m = \\sum_{k<d} c_{m,k} M^k$ (minimal polynomial reduction). The series converges because $|c_{m,k}| \\leq \\|C\\|^m$ (companion matrix bound, see next annotation) and $\\sum_m |t|^m/m! \\cdot \\|C\\|^m = e^{|t|\\|C\\|}$ converges. Thus $p_k(t)$ is an entire function of $t$.",
     "significance": "key",
     "relatedConcepts": [
       "minimal polynomial reduction",
       "companion matrix",
       "tsum convergence",
-      "NormedSpace.exp_eq_tsum",
-      "Algebra.smul_pow"
+      "noncomputable definitions",
+      "polynomial coefficient extraction"
     ],
     "prerequisites": [
       "Polynomial.coeff",
-      "Polynomial.X_pow_mod",
+      "Polynomial.modByMonic (X^m %ₘ μ)",
+      "tsum",
+      "Nat.factorial"
+    ]
+  },
+  {
+    "id": "ann-ch-companion-orbit",
+    "proofId": "cayley-hamilton-oq-01-oq-03",
+    "range": { "startLine": 62, "endLine": 154 },
+    "type": "insight",
+    "title": "Section 1b: companion matrix orbit identity unlocks axiom-free summability",
+    "content": "The crux of the entry's `verified` (axiom-free) status. The auxiliary lemma `coeff_pow_X_eq_companion` proves the identity coeff_k(X^m mod μ) = (C^m)_{k,0} where C = companionMatrix μ_M. The proof: minpoly C = μ (CayleyHamiltonReductionOQ02OQ01.minpoly_companionMatrix), so C^m = aeval_C(X^m) = aeval_C(X^m mod μ) = ∑_{j<d} c_{m,j}·C^j (basis expansion). Taking the (k,0) entry and using the orbit fact (C^j)_{k,0} = δ_{j,k} (companionMatrix_pow_basis) collapses the sum to c_{m,k}. The main theorem `expPolyCoeff_summable` then case-splits on k<d vs k≥d: in the bounded case, ‖C^m‖ ≤ ‖C‖^m gives |c_{m,k}| ≤ ‖C‖^m and Summable.of_norm_bounded compares against summable_pow_div_factorial; in the k≥d case the coefficient is identically 0 (modByMonic_natDegree_lt).",
+    "mathContext": "The identity $[X^m \\bmod \\mu]_k = (C^m)_{k,0}$ is the bridge between the *polynomial* world (where bounding $|c_{m,k}|$ directly is awkward) and the *Banach algebra* world (where $\\|C^m\\| \\leq \\|C\\|^m$ is automatic). It works because the companion matrix $C$ of $\\mu$ has the universal property $\\mu_C = \\mu$, making $K[C] \\cong K[X]/(\\mu)$ canonically, with the standard basis vector $e_0$ as a cyclic generator: $C^j e_0 = e_j$ for $j<d$. So evaluating $X^m \\bmod \\mu$ at $C$ in the standard basis directly reads off the coefficient sequence $(c_{m,0}, c_{m,1}, \\ldots, c_{m,d-1})^T$ as the column $(C^m)_{\\cdot, 0}$. This is a discrete analog of the Lagrange–Sylvester interpolation viewpoint: the companion matrix is a 'universal model' of $K[X]/(\\mu)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "companion matrix",
+      "minpoly_companionMatrix",
+      "companionMatrix_pow_basis (cyclic basis orbit)",
+      "Banach algebra norm bound ‖C^m‖ ≤ ‖C‖^m",
+      "Summable.of_norm_bounded",
+      "summable_pow_div_factorial"
+    ],
+    "prerequisites": [
+      "CayleyHamiltonReductionOQ02OQ01.companionMatrix",
+      "CayleyHamiltonReductionOQ02OQ01.minpoly_companionMatrix",
+      "CayleyHamiltonReductionOQ02OQ01.companionMatrix_pow_basis",
+      "CayleyHamiltonOQ01.aeval_eq_aeval_mod_minpoly",
+      "norm_pow_le",
+      "Summable.of_norm_bounded"
+    ]
+  },
+  {
+    "id": "ann-ch-matrix-exp-tsum",
+    "proofId": "cayley-hamilton-oq-01-oq-03",
+    "range": { "startLine": 156, "endLine": 166 },
+    "type": "technique",
+    "title": "matrixExp_eq_tsum: NormedSpace.exp as the matrix power series",
+    "content": "Proves `exp ℝ (t • M) = ∑' m, (t^m/m!) • M^m` by unfolding `NormedSpace.exp` (the Banach-algebra exponential) and pulling the scalar t through the smul/pow with `Algebra.smul_pow`.",
+    "mathContext": "$\\mathrm{NormedSpace.exp}\\, x = \\sum_{m=0}^\\infty \\tfrac{1}{m!} x^m$ converges in any complete normed algebra. For $x = tM$ in $\\mathrm{Matrix}_n(\\mathbb{R})$ (a Banach algebra), $(tM)^m = t^m M^m$ by `Algebra.smul_pow`, so the series rearranges to $\\sum_m \\tfrac{t^m}{m!} M^m$. The factor split $\\tfrac{t^m}{m!}$ vs $t^m/m!$ requires `field_simp` because Lean carries the inverse and the multiplication separately.",
+    "significance": "supporting",
+    "relatedConcepts": [
       "NormedSpace.exp_eq_tsum",
       "Algebra.smul_pow",
-      "tsum"
+      "Banach algebra exponential",
+      "Matrix.normedAlgebra"
+    ],
+    "prerequisites": [
+      "NormedSpace.exp_eq_tsum",
+      "Algebra.smul_pow",
+      "tsum_congr"
     ]
   },
   {
     "id": "ann-ch-basis-expansion",
     "proofId": "cayley-hamilton-oq-01-oq-03",
-    "range": { "startLine": 88, "endLine": 115 },
+    "range": { "startLine": 168, "endLine": 178 },
     "type": "technique",
     "title": "power_eq_basis_sum: M^m as a polynomial in M via minpoly reduction",
     "content": "Proves `M^m = ∑_{k < d} (X^m mod μ_M).coeff k • M^k`. The proof uses: (1) `power_eq_aeval_mod_minpoly` (from CayleyHamiltonOQ01): `M^m = aeval M (X^m mod μ_M)`; (2) `Polynomial.eval₂_eq_sum_range'`: the evaluation of a polynomial is a finite sum up to its degree. The degree bound `natDegree(X^m mod μ_M) < d` ensures the sum stops at k=d-1.",
@@ -49,7 +95,7 @@
   {
     "id": "ann-ch-interchange",
     "proofId": "cayley-hamilton-oq-01-oq-03",
-    "range": { "startLine": 118, "endLine": 155 },
+    "range": { "startLine": 180, "endLine": 222 },
     "type": "technique",
     "title": "exp_tsum_interchange: exchanging ∑' m with ∑_{k<d} entry-wise",
     "content": "Proves `exp_tsum_interchange`: the entry-wise interchange `∑' m, (∑_{k<d} c_{m,k} a_{m,k}) = ∑_{k<d} (∑' m, c_{m,k} a_{m,k})`. The proof works via `Matrix.ext` (reduce to entries), then applies `tsum_sum` (the real-valued interchange theorem) with summability from `expPolyCoeff_summable`. The `matrixExp_poly_form` main theorem follows by identifying the interchange.",
@@ -73,7 +119,7 @@
   {
     "id": "ann-ch-main-result",
     "proofId": "cayley-hamilton-oq-01-oq-03",
-    "range": { "startLine": 157, "endLine": 230 },
+    "range": { "startLine": 224, "endLine": 264 },
     "type": "insight",
     "title": "matrixExp_poly_form and corollaries: exp(t·M) ∈ K[M]",
     "content": "The main theorem `matrixExp_poly_form : NormedSpace.exp ℝ (t • M) = ∑ k in Finset.range d, expPolyCoeff M k t • M^k` assembles all steps. Corollaries: `matrixExp_in_span` (exp(t·M) ∈ span{I, M, ..., M^{d-1}}), `matrixExp_zero_eq_one` (exp(0·M) = I, a consistency check), `matrixExp_atMost_n_terms` (at most n terms since deg(minpoly) ≤ n).",
