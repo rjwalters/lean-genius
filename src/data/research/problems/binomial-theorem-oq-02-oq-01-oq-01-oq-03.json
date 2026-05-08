@@ -36,21 +36,21 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T03:30:00.000Z",
-    "iteration": 6,
-    "focus": "Phase-4 axiom elimination — Session 6 replaced the Session-2 standardNormalCDF opaque with a concrete noncomputable def integrating Mathlib's gaussianPDFReal 0 1 over Set.Iic x; added three structural lemmas (standardNormalCDF_nonneg, _le_one, _mono) on the Phase-4 Portmanteau-bridge critical path. **Axiom count 2 → 1** — only binomial_clt_pointwise remains. File 369 lines, 0 sorries, 1 axiom, 10 theorems (substantive 9), 3 definitions.",
+    "iteration": 8,
+    "focus": "Phase-4 axiom elimination — Session 8 added two CDF-tail-limit lemmas for Φ (standardNormalCDF_tendsto_atBot and _atTop) closing the gaussian-side proper-CDF library: Φ is now machine-verified to be non-negative, monotone, bounded ≤ 1, continuous, and to have limit 0 at -∞ and 1 at +∞. Axiom count unchanged at 1 (binomial_clt_pointwise). File 566 lines, 0 sorries, 1 axiom, 16 theorems (substantive 12), 3 definitions.",
     "blockers": [
       "Build verification: this session could not run docker-build.sh (worktree .lake symlink trap forces fresh Mathlib clone, ~45 min); CI is the ground truth.",
-      "binomial_clt_pointwise axiom (Session 7 target via Portmanteau bridge to Mathlib iid_central_limit_theorem) — sole remaining axiom."
+      "binomial_clt_pointwise axiom — sole remaining axiom; Session 9-10 target via Portmanteau bridge + Bernoulli→Binomial measure bridge."
     ],
-    "nextAction": "Session 7 (Phase-4 axiom attack): bridge binomial_clt_pointwise to Mathlib's ProbabilityTheory.iid_central_limit_theorem via the Portmanteau theorem at continuity points of the (now concrete) standardNormalCDF. The seven structural CDF properties added in Sessions 4-6 are the prerequisites.",
+    "nextAction": "Session 9 (Phase-4 axiom attack continued): now that the Φ side has the full proper-CDF structural library (continuity + tail limits + monotonicity), build (a) the Bernoulli→Binomial measure bridge — pushforward of n i.i.d. Bernoulli(p) under sum equals PMF.binomial(n, p) — and (b) the abstract Portmanteau lemma application at continuity points of Φ (every point ∈ ℝ).",
     "attemptCounts": {
-      "total": 6,
+      "total": 8,
       "currentApproach": 5,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "ACT phase, Phase-4 prep — Session 7 (2026-05-08, researcher-11) completed the standard-normal CDF structural library by adding `standardNormalCDF_continuous` (Φ is continuous on ℝ) plus a private bridge lemma `standardNormalCDF_eq_zero_plus_intervalIntegral`. Together with Sessions 4–6 lemmas, the file now has machine-verified evidence on both sides of the Portmanteau convergence that Φ and the standardized binomial CDFs are bona fide CDFs in the Mathlib sense — non-negative, monotone, bounded above by 1, and (for Φ) continuous everywhere. **Axiom count: 1 (unchanged)**. File now 445 lines, 0 sorries, 1 axiom, 12 theorems (substantive 10), 3 definitions, +2 imports (IntegralEqImproper, DominatedConvergence). History: Sessions 1-2 produced the CDF-based scaffold (#16866); Session 3 closed the reduction-lemma sorry (#16877); Session 4 added binomialCDF_neg/mono (#16951); Session 5 added binomialCDF_le_one/zero_le (#16992); Session 6 replaced standardNormalCDF opaque + added _nonneg/_le_one/_mono (#17014). Next: Session 8 Lemma A — Bernoulli→Binomial measure bridge (foundational for Mathlib CLT application).",
+    "progressSummary": "ACT phase, Phase-4 prep — Session 8 (2026-05-08, researcher-1) added two Φ tail-limit lemmas (standardNormalCDF_tendsto_atBot/atTop) closing the gaussian-side proper-CDF library. Φ is now machine-verified to be non-negative, monotone, bounded ≤ 1, continuous, and with the correct limits 0 / 1 at the two infinities — the full data Mathlib's Portmanteau lemmas need. Axiom count unchanged at 1 (binomial_clt_pointwise). File 566 lines, 0 sorries, 1 axiom, 16 theorems (substantive 12), 3 definitions. History: #16866 (S1-2 CDF scaffold), #16877 (S3 reduction-lemma sorry closed), #16951 (S4 binomialCDF_neg/mono), #16992 (S5 binomialCDF_zero_le/le_one), #17014 (S6 standardNormalCDF concrete + nonneg/le_one/mono), #17067 (S7 standardNormalCDF_continuous). Next: Session 9 Lemma A (Bernoulli→Binomial measure bridge) + Lemma C (Portmanteau application at continuity points of Φ).",
     "builtItems": [
       "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:100 (concrete CDF of Binomial(n,p))",
       "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:107 (marginal CDF of multinomial)",
@@ -67,7 +67,9 @@
       "binomialCDF_zero_le in BinomialTheoremOQ02OQ01OQ01OQ03.lean:294 — for 0 ≤ p ≤ 1, 0 ≤ binomialCDF n p x (Phase-4 Portmanteau prep, Session 5)",
       "binomialCDF_le_one in BinomialTheoremOQ02OQ01OQ01OQ03.lean:316 — for 0 ≤ p ≤ 1, binomialCDF n p x ≤ 1 via add_pow / (p+(1-p))^n=1 (Phase-4 Portmanteau prep, Session 5)",
       "standardNormalCDF_eq_zero_plus_intervalIntegral (private lemma) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:170 — Φ x = Φ 0 + ∫_{0..x} gaussianPDFReal 0 1 t, via intervalIntegral_tendsto_integral_Iic + adjacent-intervals + tendsto_nhds_unique (Session 7)",
-      "standardNormalCDF_continuous in BinomialTheoremOQ02OQ01OQ01OQ03.lean:225 — Continuous standardNormalCDF, via Integrable.continuous_primitive on the bridge-lemma form (Session 7)"
+      "standardNormalCDF_continuous in BinomialTheoremOQ02OQ01OQ01OQ03.lean:225 — Continuous standardNormalCDF, via Integrable.continuous_primitive on the bridge-lemma form (Session 7)",
+      "standardNormalCDF_tendsto_atBot (Session 8): Filter.Tendsto Φ atBot (𝓝 0) — direct corollary of MeasureTheory.tendsto_integral_Iic_zero with f := gaussianPDFReal 0 1 and a := id (Filter.tendsto_id)",
+      "standardNormalCDF_tendsto_atTop (Session 8): Filter.Tendsto Φ atTop (𝓝 1) — uses MeasureTheory.aecover_Iic Filter.tendsto_id + AECover.integral_tendsto_of_countably_generated + integral_gaussianPDFReal_eq_one. Establishes the right-tail saturation; jointly with _atBot proves Φ has the correct CDF limit values at the two infinities"
     ],
     "insights": [
       "Multinomial marginal Xᵢ ~ Binomial(n, pᵢ) is ALREADY proved (`BinomialTheoremOQ02OQ01OQ02.lean`); OQ-02-OQ-01-OQ-01-OQ-03 'just' needs the binomial CLT ON TOP",
@@ -297,8 +299,8 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ01OQ03.lean",
-      "lineCount": 369,
-      "theoremCount": 10,
+      "lineCount": 566,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,

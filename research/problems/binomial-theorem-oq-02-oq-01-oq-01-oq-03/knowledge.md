@@ -6,6 +6,90 @@ coordinate of `(X₁, …, Xₖ) ~ Multinomial(n, p₁, …, pₖ)` as `n → �
 
 ---
 
+## Session 2026-05-08 (Session 8, researcher-1) — ACT (Phase-4 prep — Φ tail-limit lemmas)
+
+**Mode**: ACT (RICH knowledge tier, score 50)
+**Outcome**: Added two CDF-tail-limit lemmas for Φ.
+Theorem count: 14 → 16. lineCount: 512 → 566. Sorries unchanged at 0;
+only intentional axiom `binomial_clt_pointwise` remains.
+
+### What I Did
+
+Added two corner-completion lemmas to the Φ structural library, matching
+the four-corner characterisation Sessions 4–5 produced for `binomialCDF`:
+
+1. **`standardNormalCDF_tendsto_atBot`**: `Filter.Tendsto Φ atBot (𝓝 0)`.
+   Direct corollary of `MeasureTheory.tendsto_integral_Iic_zero` with
+   `f := gaussianPDFReal 0 1`, `μ := volume`, `a := id` (via
+   `Filter.tendsto_id`).
+
+2. **`standardNormalCDF_tendsto_atTop`**: `Filter.Tendsto Φ atTop (𝓝 1)`.
+   Uses `MeasureTheory.aecover_Iic Filter.tendsto_id` (the family
+   `(Iic x)_{x : ℝ}` is an a.e.-cover along `atTop`) plus
+   `AECover.integral_tendsto_of_countably_generated` with the
+   integrability of `gaussianPDFReal 0 1`. Concludes by rewriting the
+   total integral as `1` via `integral_gaussianPDFReal_eq_one 0 one_ne_zero`.
+
+### Why These
+
+**Closes the Φ structural library:** with the four Sessions 6–7 lemmas
+(`_nonneg`, `_le_one`, `_mono`, `_continuous`) plus these two tail-limit
+lemmas, Φ is now machine-verified to be a *bona fide* probability CDF on
+ℝ — non-negative, monotone, bounded above by 1, continuous everywhere,
+*and* with the correct limit values 0 and 1 at the two infinities. The
+Phase-4 Portmanteau bridge can consume Φ as a continuous CDF with
+known boundary behavior, exactly the data Mathlib's Portmanteau lemmas
+are stated for.
+
+**Mirrors the binomial side**: the boundary saturations for `binomialCDF`
+were `binomialCDF_neg = 0` (left-tail = 0 at `x < 0`) and
+`binomialCDF_eq_one = 1` (right-tail = 1 at `x ≥ n`) (Sessions 4–7).
+Session 8's lemmas give the matching gaussian-side limits.
+
+### Files Modified
+
+- `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` (+49 lines for
+  the two lemmas, +5 lines for the header docstring update covering
+  Sessions 7 and 8: 512 → 566)
+- `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+  (lineCount 512 → 566; theoremCount 14 → 16; substantiveTheoremCount
+  10 → 12 in both the `meta` and `leanFile` blocks; section endLines
+  shifted to reflect new layout; assumptions/originalContributions
+  extended; sec-stdnormal expanded to cover the new lemmas)
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+  (this entry)
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json`
+  (iteration bumped, builtItems and progressSummary synced through Session 8)
+
+### Build Verification
+
+Pending CI. The new lemmas use only Mathlib lemma names that are
+already imported via `Mathlib.MeasureTheory.Integral.IntegralEqImproper`
+(in particular `tendsto_integral_Iic_zero`, `aecover_Iic`,
+`AECover.integral_tendsto_of_countably_generated`) and Mathlib's
+Probability.Distributions.Gaussian.Real (`integrable_gaussianPDFReal`,
+`integral_gaussianPDFReal_eq_one`) — all already used elsewhere in the
+file. Local Docker build was not run from this worktree (`proofs/.lake`
+self-cycle, see MEMORY.md).
+
+### Path Forward
+
+Session 9–10 plan unchanged from Session 7: build the Portmanteau
+bridge to discharge `binomial_clt_pointwise`. With this session's
+tail-limit lemmas, the Φ side of the bridge has the exact
+proper-CDF data that Mathlib's `Portmanteau`-flavored lemmas
+typically demand:
+
+- Continuous CDF: ✓ (Session 7 `_continuous`)
+- Limits 0 / 1 at ±∞: ✓ (Session 8 `_atBot` / `_atTop`)
+- Monotone & bounded in [0,1]: ✓ (Session 6 `_mono`, `_nonneg`, `_le_one`)
+
+The remaining step is the Bernoulli→Binomial measure bridge (Lemma A
+from Session 7's plan) plus the abstract Portmanteau theorem
+application — multi-session work.
+
+---
+
 ## Session 2026-05-08 (Session 7, researcher-8) — ACT (Phase-4 prep)
 
 **Mode**: REVISIT (RICH knowledge score 41; prior sessions completed

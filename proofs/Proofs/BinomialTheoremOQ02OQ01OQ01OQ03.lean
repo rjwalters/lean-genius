@@ -57,12 +57,17 @@ gives the multinomial marginal CLT.
   opaque was replaced in Session 6 with a concrete `noncomputable def`
   using Mathlib's `gaussianPDFReal`.
 - Status: axiomatized — not "verified".
-- Session 7 (this session) adds two boundary-saturation lemmas
-  `binomialCDF_zero` and `binomialCDF_eq_one`, completing the four-corner
-  characterization of `binomialCDF` (`_neg` left-tail = 0, `_eq_one`
-  right-tail = 1, `_zero_le` lower bound, `_le_one` upper bound). These
-  feed the Phase-4 Portmanteau bridge that aims to discharge
-  `binomial_clt_pointwise`.
+- Session 7 added the two boundary-saturation lemmas `binomialCDF_zero`
+  and `binomialCDF_eq_one`, completing the four-corner characterization
+  of `binomialCDF` on the binomial side, plus `standardNormalCDF_continuous`
+  on the gaussian side.
+- Session 8 (this session) adds two CDF-tail-limit lemmas for Φ:
+  `standardNormalCDF_tendsto_atBot` (Φ → 0 as x → -∞) and
+  `standardNormalCDF_tendsto_atTop` (Φ → 1 as x → +∞). Together with
+  the prior structural lemmas this proves Φ has the full proper-CDF
+  signature (nonneg, monotone, continuous, ≤ 1, with limit values 0
+  and 1 at the two infinities) — the data the Phase-4 Portmanteau
+  bridge needs at every continuity point of the limit.
 
 The contribution of this file is the *full reduction* of the multinomial
 marginal CLT to the classical Binomial CLT, leaving only the latter as
@@ -241,6 +246,55 @@ theorem standardNormalCDF_continuous : Continuous standardNormalCDF := by
   rw [hfeq]
   exact continuous_const.add
     ((ProbabilityTheory.integrable_gaussianPDFReal 0 1).continuous_primitive 0)
+
+/-- **Left tail saturation**: `standardNormalCDF x → 0` as `x → -∞`.
+
+    Direct corollary of `MeasureTheory.tendsto_integral_Iic_zero`, which says that
+    for any integrable `f`, `(λ a, ∫ t in Iic a, f t) → 0` along `atBot`. With
+    `f := gaussianPDFReal 0 1` (integrable by Mathlib's
+    `ProbabilityTheory.integrable_gaussianPDFReal`) and `a := id`, the
+    conclusion matches `standardNormalCDF` after unfolding.
+
+    On the **Portmanteau-bridge critical path** for Phase-4 axiom elimination:
+    Portmanteau converts measure-weak-convergence into pointwise CDF
+    convergence at every continuity point. Combined with continuity (Session 7)
+    and the right-tail saturation `standardNormalCDF_tendsto_atTop`, this
+    proves Φ is a *bona fide* probability CDF in the Mathlib sense — the
+    limit value at `-∞` is `0` and the limit at `+∞` is `1`, mirroring the
+    boundary saturations `binomialCDF_neg = 0` and `binomialCDF_eq_one = 1`
+    on the binomial side. -/
+theorem standardNormalCDF_tendsto_atBot :
+    Filter.Tendsto standardNormalCDF Filter.atBot (nhds 0) := by
+  unfold standardNormalCDF
+  exact MeasureTheory.tendsto_integral_Iic_zero
+    (μ := MeasureTheory.volume) (f := ProbabilityTheory.gaussianPDFReal 0 1)
+    Filter.tendsto_id
+
+/-- **Right tail saturation**: `standardNormalCDF x → 1` as `x → +∞`.
+
+    Proof: the family `(Iic x)_{x : ℝ}` is an `MeasureTheory.AECover` of `ℝ`
+    along `atTop` (Mathlib's `aecover_Iic` plus `Filter.tendsto_id`). Combined
+    with the integrability of `gaussianPDFReal 0 1`,
+    `AECover.integral_tendsto_of_countably_generated` gives
+    `(λ x, ∫ t in Iic x, gaussianPDFReal 0 1 t) → ∫ t, gaussianPDFReal 0 1 t`,
+    and the total integral is `1` by `integral_gaussianPDFReal_eq_one 0 one_ne_zero`.
+
+    On the **Portmanteau-bridge critical path**: companion to
+    `standardNormalCDF_tendsto_atBot`, jointly establishing that Φ is a
+    proper CDF with limits `0` and `1` at the two infinities. -/
+theorem standardNormalCDF_tendsto_atTop :
+    Filter.Tendsto standardNormalCDF Filter.atTop (nhds 1) := by
+  unfold standardNormalCDF
+  have hcover : MeasureTheory.AECover MeasureTheory.volume Filter.atTop
+      (fun x : ℝ => Set.Iic x) :=
+    MeasureTheory.aecover_Iic Filter.tendsto_id
+  have hint : MeasureTheory.Integrable (ProbabilityTheory.gaussianPDFReal 0 1) :=
+    ProbabilityTheory.integrable_gaussianPDFReal 0 1
+  have htendsto := hcover.integral_tendsto_of_countably_generated hint
+  have hone : ∫ t, ProbabilityTheory.gaussianPDFReal 0 1 t = 1 :=
+    ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero
+  rw [hone] at htendsto
+  exact htendsto
 
 /-! ## Axiom: classical de Moivre–Laplace (binomial CLT) -/
 
