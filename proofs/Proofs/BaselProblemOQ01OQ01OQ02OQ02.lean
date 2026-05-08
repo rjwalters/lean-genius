@@ -95,7 +95,12 @@ strong-induction proof of `denominator_control`.
 ## File Status
 * axioms: 0
 * sorries: 0
-* lemmas: 4 reusable + 5 numerical witnesses
+* lemmas: 4 reusable + 6 numerical witnesses + Part 4 adds
+  `harmonicCubed` (the cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3)
+  with base values, non-negativity, and monotonicity (4 lemmas).
+  The main divisibility theorem `harmonicCubed_lcm_clear` is deferred
+  to a follow-up session (per-term `Nat.cast_div` proof exceeded
+  available Docker build time in this session).
 -/
 
 namespace BaselProblemOQ01OQ01OQ02OQ02
@@ -177,5 +182,58 @@ theorem lcmRange_four : lcmRange 4 = 12 := by decide
 
 /-- `lcmRange 5 = 60`. -/
 theorem lcmRange_five : lcmRange 5 = 60 := by decide
+
+-- =====================================================================
+-- PART 4: Harmonic-cube denominator clearing (vdP closed-form prep)
+-- =====================================================================
+
+/-- The cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3 (as a rational).
+
+    This appears in the van der Poorten closed form for the Apéry
+    a-sequence
+    `aₙ = ∑_{k=0}^{n} C(n,k)^2 C(n+k,k)^2 (H_n^{(3)} + cnk)`
+    where `cnk` is the alternating bilinear "second-summand" term.
+    The identity `H_n^{(3)} · lcmRange n^3 ∈ ℤ` is the first half of the
+    denominator analysis required for `denominator_control` along route
+    (F) (see this file's header). Reproduced locally to keep this file
+    independent of the parent's analytic dependencies. -/
+noncomputable def harmonicCubed (n : ℕ) : ℚ :=
+  ∑ k ∈ Finset.range n, (1 : ℚ) / (k + 1) ^ 3
+
+/-- **Base value**: `H_0^{(3)} = 0` (empty sum). -/
+theorem harmonicCubed_zero : harmonicCubed 0 = 0 := by
+  simp [harmonicCubed]
+
+/-- `H_1^{(3)} = 1/1^3 = 1`. -/
+theorem harmonicCubed_one : harmonicCubed 1 = 1 := by
+  simp [harmonicCubed, Finset.sum_range_succ]
+
+/-- `H_n^{(3)}` is non-negative (each term `1/(k+1)^3 ≥ 0`). -/
+theorem harmonicCubed_nonneg (n : ℕ) : 0 ≤ harmonicCubed n := by
+  unfold harmonicCubed
+  apply Finset.sum_nonneg
+  intro k _
+  positivity
+
+/-- `H_n^{(3)}` is monotone increasing in `n`. -/
+theorem harmonicCubed_mono {m n : ℕ} (h : m ≤ n) :
+    harmonicCubed m ≤ harmonicCubed n := by
+  unfold harmonicCubed
+  apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_mono h)
+  intro k _ _
+  positivity
+
+/- **Next session target**: prove
+   `∃ m : ℤ, (lcmRange n : ℚ)^3 * harmonicCubed n = m`. The integer
+   witness is `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3` (each term is
+   integral via `pow_dvd_lcmRange_pow`), but the per-term identity
+   `(lcmRange n : ℚ)^3 * (1/(k+1)^3) = ((lcmRange n)^3 / (k+1)^3 : ℕ→ℚ)`
+   requires careful `Nat.cast_div` handling that ran out of Docker
+   build time in this session.
+
+   This is the H_n^{(3)} half of the van der Poorten denominator
+   analysis for `denominator_control` (route F). Combined with a
+   separate alternating-bilinear lemma it discharges the `denominator_control`
+   axiom in `Proofs/BaselProblemOQ01OQ01OQ02.lean` (line 385). -/
 
 end BaselProblemOQ01OQ01OQ02OQ02
