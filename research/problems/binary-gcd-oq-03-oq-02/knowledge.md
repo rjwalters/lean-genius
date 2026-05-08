@@ -645,3 +645,130 @@ reusable algebraic primitive. The hard part of Session 14 (the recursive
 case) was deliberately deferred with documentation, mirroring the
 recursive-case sorry of `hgcdMatrix_row_output_le`. The session does
 **not** advance the file's sorry count.
+
+## Session 2026-05-08 (Session 15) — Pattern-det coupling for HGCD (PART XII)
+
+### What I Did
+
+Added the **conjoint sign-pattern × determinant invariant** for every
+matrix produced by Schönhage's recursive HGCD:
+
+    (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1).
+
+This couples the existing PART III determinant bound (det ±1) with the
+PART X sign-pattern lifting (Even ∨ Odd). Without the coupling, applying
+`entry_bound_of_even` (which requires `det = 1`) or `entry_bound_of_odd`
+(which requires `det = -1`) in any downstream proof would require a
+four-way case split (Even+1, Even+(-1), Odd+1, Odd+(-1)); two of those
+cases never occur for matrices coming out of Lehmer/HGCD reductions
+starting from identity, but ruling them out *is* this coupling.
+
+### Key Findings
+
+The coupling is a **strict consequence** of the existing PART VI/PART X
+infrastructure plus a single new observation:
+
+* `lehmerInnerStep_det` (PART IV of `BinaryGcdOQ03.lean`): each Lehmer
+  step **negates** the determinant.
+* `lehmerInnerStep_even_to_odd` / `lehmerInnerStep_odd_to_even`
+  (PART VI): each Lehmer step **flips** the pattern (Even ↔ Odd).
+
+Combining: each step preserves the disjunction
+`(Even ∧ +1) ∨ (Odd ∧ -1)`. Identity satisfies the left disjunct; by
+induction, so does every matrix in the lehmerCofactors id chain. For
+matrix products `M.mul N`, the Z/2-grading of patterns matches the
+multiplicativity of det (Even·Even = Even with +1·+1 = +1, Even·Odd =
+Odd with +1·-1 = -1, etc.), so the coupling is preserved by HGCD's
+recursive multiplication.
+
+Five new theorems:
+
+1. `lehmerInnerStep_pattern_det_coupled` — single Lehmer step preserves
+   the conjoint invariant. Proof: rewrite the new det as `-M.det` and
+   case-split on the input invariant.
+
+2. `lehmerCofactors_pattern_det_coupled_from` — induction on fuel
+   through the cofactor accumulation, using
+   `lehmerInnerStep_pattern_det_coupled`.
+
+3. `lehmerCofactors_pattern_det_coupled` — specialised form starting
+   from `(EvenPattern id, det id = 1)`. This is the form HGCD's
+   threshold case uses.
+
+4. `cofactor_mul_pattern_det_coupled` — combines the four PART X mul
+   rules (`cofactor_mul_even_even`, `cofactor_mul_even_odd`,
+   `cofactor_mul_odd_even`, `cofactor_mul_odd_odd`) with
+   `CofactorMatrix.det_mul`. Pattern flow matches det flow:
+   - Even · Even = (Even, +1·+1 = +1)
+   - Even · Odd  = (Odd,  +1·-1 = -1)
+   - Odd  · Even = (Odd,  -1·+1 = -1)
+   - Odd  · Odd  = (Even, -1·-1 = +1)
+
+5. `hgcdMatrix_pattern_det_coupled` (and `hgcdMatrixOf_pattern_det_coupled`)
+   — the conjoint invariant for HGCD by induction on fuel:
+   - Base (`fuel = 0`): identity is `(Even, +1)`.
+   - Threshold case: `lehmerCofactors_pattern_det_coupled` applies
+     directly.
+   - Recursive case: result is `M_outer.mul M_inner`; each factor
+     satisfies the invariant by IH, so does the product by
+     `cofactor_mul_pattern_det_coupled`.
+
+### Files Modified
+
+- `proofs/Proofs/BinaryGcdOQ03OQ02.lean` — +211 lines: PART XII section
+  with 6 theorems, file docstring updated, Summary item 18 added. No new
+  sorries, no new axioms. (1493 → 1704 lines, 49 → 55 theorems.)
+- `src/data/proofs/binary-gcd-oq-03-oq-02/meta.json` — lineCount and
+  theoremCount synced; originalContributions updated with Session 15
+  entry.
+
+### Build Status
+
+Not re-verified locally this session. The PR #16944 mechanic fix
+(2026-05-08, issue #16938) cleared the pre-existing API drift in
+PARTS V.5/VI/IX, so the file is expected to build end-to-end at HEAD.
+Session 15's contributions are local to PART XII and use only PART X
+mul rules, PART VI alternation lemmas, and `CofactorMatrix.det_mul` /
+`CofactorMatrix.det_id` — no novel API; risk of build breakage is low.
+
+### Next Steps
+
+1. **Session 16**: derive the threshold case of `hgcdMatrix_entry_bound`
+   by combining
+   - `hgcdMatrix_small_row_invariant` (PART XI Session 14): natural-number
+     witnesses for the row-vector relation;
+   - `hgcdMatrix_pattern_det_coupled` (PART XII Session 15): pattern and
+     det disjunction with no spurious cases;
+   - `row_vec_cramer` (PART V): Cramer recovery formula;
+   - `entry_bound_of_even` / `entry_bound_of_odd` (PART VI): entry
+     magnitude bounds under positivity hypotheses.
+
+   The main remaining subtlety is the precondition `1 ≤ ahat'` and
+   `1 ≤ bhat'` for `entry_bound_of_*` — the witnesses from
+   `hgcdMatrix_small_row_invariant` are natural numbers, so they may be
+   zero (when the GCD-finding algorithm zeros a coordinate). One of two
+   approaches:
+   - Add positivity preconditions on the inputs `(a, b)` plus a
+     non-termination guarantee for the residues; or
+   - Re-state the entry-bound conclusion to accept zero witnesses
+     (entries are then bounded by the *initial* inputs in a weaker
+     sense).
+
+2. **Session 17+**: tackle the recursive-case obstruction via joint
+   induction, using `cofactor_mul_row_invariant` (PART XI) and
+   `cofactor_mul_pattern_det_coupled` (PART XII) to chain ghost pairs
+   once the IH's row-invariant at full-precision `(a, b)` is established
+   for the inner matrix.
+
+### Honest Assessment
+
+**Incremental, on the critical path, NOT a breakthrough.** The coupling
+is a routine consequence of the existing per-step lemmas; the proofs are
+mechanical (`rcases` + `rw [hflip, hdet]`). However, packaging the
+coupling explicitly is *necessary* for the threshold-case entry bound,
+which is itself a prerequisite for the joint-induction reformulation of
+`hgcdMatrix_row_output_le`. It eliminates a four-way split that would
+otherwise have to be repeated in every downstream entry-bound proof.
+
+The session does **not** advance the file's sorry count. It adds 6
+theorems / +211 lines of structurally clean infrastructure.

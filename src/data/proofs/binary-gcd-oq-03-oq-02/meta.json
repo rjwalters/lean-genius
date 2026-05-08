@@ -21,9 +21,9 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1498,
+    "lineCount": 1704,
     "dateAdded": "2026-05-03",
-    "theoremCount": 49,
+    "theoremCount": 55,
     "assumptions": "",
     "mathlibDependencies": [
       {
@@ -52,7 +52,8 @@
       "entry_bound_of_even/odd: all matrix entries of lehmerCofactors are bounded in absolute value by the initial inputs, proved via Cramer + alternating sign pattern",
       "cofactor_apply_shift_decomp: apply(aHi·2^s + ea, bHi·2^s + eb) = 2^s·apply(aHi,bHi) + apply(ea,eb) — the key algebraic identity for the Lehmer perturbation argument",
       "cofactor_apply_err_bound: given |entries| ≤ C and |errors| ≤ B, the perturbation component is ≤ 2·C·B",
-      "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction"
+      "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction",
+      "hgcdMatrix_pattern_det_coupled (Session 15): every matrix produced by HGCD satisfies the conjoint invariant (EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1) — couples PART III determinant ±1 with PART X sign-pattern, eliminating the spurious (Even ∧ -1) and (Odd ∧ +1) cases that would otherwise force a four-way split when applying entry_bound_of_even/odd"
     ],
     "definitionCount": 6
   },
@@ -167,9 +168,9 @@
   ],
   "leanFile": {
     "namespace": "HGcd",
-    "lineCount": 1498,
+    "lineCount": 1704,
     "axiomCount": 0,
-    "theoremCount": 49,
+    "theoremCount": 55,
     "definitionCount": 6,
     "path": "Proofs/BinaryGcdOQ03OQ02.lean",
     "sorries": 1

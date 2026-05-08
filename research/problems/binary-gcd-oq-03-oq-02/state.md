@@ -2,7 +2,7 @@
 
 **Phase**: ACT
 **Since**: 2026-05-01
-**Iteration**: 14
+**Iteration**: 15
 
 ## Current Focus
 
@@ -11,7 +11,7 @@ Pursuing the **size-reduction lemma** `hgcdMatrix_row_output_le` (PART IX,
 plan has been refactored over Sessions 12–14 to a joint induction tracking
 row-output bound + entry bound simultaneously (Stehlé–Zimmermann 2004 §4).
 
-Status of the proof plan (Sessions 1–14):
+Status of the proof plan (Sessions 1–15):
 
 1. **Step 1** ✅ (S3, PR #14522): row-vector invariant for
    `lehmerCofactors`. PART V.5.
@@ -28,18 +28,26 @@ Status of the proof plan (Sessions 1–14):
    `hgcdMatrix_has_pattern` via Z/2-graded `cofactor_mul_pattern`.
    PART X.
 7. **Row-vector invariant — base + threshold + composition law** ✅
-   (S14, this session): `cofactor_mul_row_invariant`,
+   (S14, PR #16908): `cofactor_mul_row_invariant`,
    `hgcdMatrix_zero_row_invariant`, `hgcdMatrix_small_row_invariant`.
    PART XI.
+8. **Pattern-det coupling for HGCD** ✅ (S15, this session):
+   `hgcdMatrix_pattern_det_coupled` — the conjoint invariant
+   `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)` for every HGCD
+   matrix. Eliminates the spurious (Even ∧ -1) and (Odd ∧ +1) cases
+   that would otherwise force a four-way split when applying
+   `entry_bound_of_even` / `entry_bound_of_odd`. PART XII.
 
 **Open**:
 - **Step 4 (entry bound for HGCD)** ⏳: combine PART X (pattern) +
-  PART XI (row-invariant) + `row_vec_cramer` + `hgcdMatrix_det_unit`
-  to derive `hgcdMatrix_entry_bound`. Threshold case is now
-  derivable; recursive case remains.
-- **Recursive case of `hgcdMatrix_row_output_le`** ⏳: the
-  documented joint-induction obstacle. Resolves once
-  `hgcdMatrix_entry_bound` is available for the recursive case.
+  PART XI (row-invariant) + PART XII (pattern-det coupling) +
+  `row_vec_cramer` + `hgcdMatrix_det_unit` to derive
+  `hgcdMatrix_entry_bound`. Threshold case is now derivable from the
+  PART XI/XII components plus `entry_bound_of_even/odd`; recursive
+  case remains.
+- **Recursive case of `hgcdMatrix_row_output_le`** ⏳: the documented
+  joint-induction obstacle. Resolves once `hgcdMatrix_entry_bound` is
+  available for the recursive case.
 
 Concurrently: bit-complexity claim O(M(n)·log n) remains genuinely
 blocked on Mathlib (no fast multiplication, no bit-complexity model).
@@ -55,20 +63,18 @@ contributed leaf-by-leaf via:
 * `hgcdMatrix_zero_row_invariant`/`hgcdMatrix_small_row_invariant`
   (S14, PART XI): the leaf cases producing natural-number residue
   witnesses, suitable for Cramer-based entry bounds.
+* `hgcdMatrix_pattern_det_coupled` (S15, PART XII): the pattern-det
+  coupling that lets `entry_bound_of_even/odd` apply directly.
 
 The remaining work for Step 4 is to lift the row-vector invariant to
 the recursive case via joint induction with the entry-bound side.
 
 ## Blockers
 
-* **Pre-existing API drift in BinaryGcdOQ03OQ02.lean** (discovered S14):
-  Docker build surfaced `Int.natAbs_ofNat` (3 sites) and `split at hstep`
-  (3 sites) errors in code merged via PRs #14522/#14881/#14910 (Sessions
-  3–7). These were merged via the deployer auto-merge path without
-  successful builds (S13's docstring records the build timeouts). My
-  S14 contribution elaborates cleanly in isolation; the file-level
-  build is blocked on these drift issues. Should be addressed by
-  mechanic/auditor (out of S14 scope).
+* **Pre-existing API drift in BinaryGcdOQ03OQ02.lean**: resolved by
+  PR #16944 (mechanic fix for issue #16938) — `Int.natAbs_ofNat`
+  rename and `split at hstep` replacement applied. File now builds
+  against current Lean/Mathlib (not re-verified locally this session).
 
 * **Bit complexity (C)**: genuinely blocked on Mathlib infrastructure.
   Documented in `BinaryGcdOQ03OQ02.lean` PART VII; not a blocker on
@@ -76,22 +82,26 @@ the recursive case via joint induction with the entry-bound side.
 
 ## Next Action
 
-1. **Mechanic/auditor**: fix `Int.natAbs_ofNat` rename and `split at hstep`
-   replacement in PARTS V.5/VI/IX of `BinaryGcdOQ03OQ02.lean` so the
-   file builds end-to-end.
-2. **Session 15**: derive `hgcdMatrix_entry_bound` for the threshold
-   case using PART X (pattern) + PART XI (row-invariant) +
-   `row_vec_cramer` + `hgcdMatrix_det_unit`.
-3. **Session 16+**: tackle the recursive-case obstruction via joint
-   induction, using `cofactor_mul_row_invariant` (PART XI) to chain
-   ghost pairs once the IH's row-invariant at full-precision (a, b) is
-   established for the inner matrix.
+1. **Session 16**: combine PART XI (`hgcdMatrix_small_row_invariant`)
+   + PART XII (`hgcdMatrix_pattern_det_coupled`) + `row_vec_cramer` +
+   `entry_bound_of_even/odd` to prove the threshold case of
+   `hgcdMatrix_entry_bound`. With the pattern-det coupling, only one
+   branch of the four-way split remains in each pattern case; the
+   positivity-of-witnesses precondition is the main remaining
+   subtlety (witnesses can be 0 if input has gcd reached zero
+   coordinate).
+2. **Session 17+**: tackle the recursive-case obstruction via joint
+   induction, using `cofactor_mul_row_invariant` (PART XI) +
+   `cofactor_mul_pattern_det_coupled` (PART XII) to chain ghost pairs
+   once the IH's row-invariant at full-precision (a, b) is established
+   for the inner matrix.
 
 ## Attempt Counts
 
-- Total attempts: 14 (Sessions 1–14)
+- Total attempts: 15 (Sessions 1–15)
 - Approaches tried:
   - Path A (fuel-indexed correctness): merged Session 2 (#14389)
   - Row-convention size-reduction infrastructure: in progress
-    (Sessions 3–14 add Steps 1, 2a, 2b, 3, plus row-output composition,
-    pattern lifting, and row-vector base/threshold/composition law)
+    (Sessions 3–15 add Steps 1, 2a, 2b, 3, plus row-output composition,
+    pattern lifting, row-vector base/threshold/composition law, and
+    pattern-det coupling)
