@@ -31,18 +31,18 @@
     "goal": "Prove hook_length_formula using lgv_lemma_rxr from BallotProblemOQ03OQ02.lean, starting with rectangular shapes then generalizing"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "ORIENT/PLAN",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 48,
-    "focus": "Sole remaining sorry is `gnwProb_exchange` (Helpers, line 14374; GNW 1979 hook-weight shift identity in product form). Session 48 added six double-removal hookLength characterization lemmas (Helpers, lines 5035–5186) covering all seven cell-type cases under double corner removal; combined with S43-S47 infrastructure this is sufficient for the per-cell algebra of the exchange identity. Next sessions should chain the per-cell shifts through the gnwProb walk recursion to close gnwProb_exchange.",
+    "iteration": 49,
+    "focus": "Sole remaining sorry is `gnwProb_exchange` (Helpers, line 14374; GNW 1979 hook-weight shift identity in product form). Session 49 (this session) is a strategic planning iteration: re-examined S48's outlined cell-wise attack and identified an obstacle — cell-wise gnwProb invariance for cells \"far from c'\" does NOT hold, because the gnwProb random walk recursively descends into arm/leg of c' even when starting at cells disjoint from arm/leg of c'. Pivots the attack to a SUM-LEVEL joint-K induction strategy, splitting `gnwProb_exchange` into an algebraic \"easy half\" (`hookProd_doubleRemove_factor`) and an F-side \"hard half\" (joint K-induction). See sessions/2026-05-08-s04.md for the counterexample sketch and refined plan. Sorry count unchanged (1).",
     "blockers": [
-      "gnwProb_exchange: GNW 1979 hook-weight shift identity in product form (~100 lines of careful arm/leg case analysis); the sole remaining sorry. Per-cell hookLength shifts are now fully characterized (S48); remaining work is the gnwProb walk-probability factor pairing."
+      "gnwProb_exchange: GNW 1979 hook-weight shift identity in product form. S49 refined the attack plan: split into algebraic `hookProd_doubleRemove_factor` (easy half, ~80 lines via `hookProd_ratio_formula` + S48 shift lemmas) and F-side joint-K-induction (hard half, ~100-200 lines). Cell-wise gnwProb invariance was shown to fail (counterexample in s04.md), so the F-side proof must use sum-level invariance via `gnwProb_step` and the S43 sum-bridges, not cell-wise pairing as initially outlined in S48."
     ],
-    "nextAction": "Prove gnwProb_exchange using S48's six double-removal hookLength lemmas to match per-cell hook factors, plus gnwProb_step / gnwProb_stable / sum_gnwProb_strictHookCells_eq_removeCorner to descend the walk recursion in lockstep on (μ, c) and (μ\\c', c). Decompose μ.cells via the dichotomy from S45 (corners c, c' with c.1 < c'.1); apply the seven-case partition.",
+    "nextAction": "S50: extract `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` (preempting the file-size wall on Helpers.lean) and prove `hookProd_doubleRemove_factor` — the algebraic \"easy half\" of `gnwProb_exchange`, ~80 lines via two applications of `hookProd_ratio_formula` plus the six S48 shift lemmas. Then in S51-S52 tackle the F-side joint-K-induction. Confidence: high for S50 (purely algebraic), medium for S51-S52.",
     "attemptCounts": {
-      "total": 48,
-      "currentApproach": 12,
-      "approachesTried": 11
+      "total": 49,
+      "currentApproach": 13,
+      "approachesTried": 12
     }
   },
   "knowledge": {
