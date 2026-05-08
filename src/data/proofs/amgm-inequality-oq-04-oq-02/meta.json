@@ -20,9 +20,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 565,
-    "theoremCount": 30,
-    "definitionCount": 7,
+    "lineCount": 697,
+    "theoremCount": 33,
+    "definitionCount": 8,
     "assumptions": "1 axiom: legendre_relation (the general Legendre relation E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2 for 0 < k < 1; classical 19th-century result; proof requires differentiation under the integral sign and the Wronskian of the Legendre ODE — to be replaced with a constructive proof in a future session). The file inherits 1 additional axiom from AmgmInequalityOQ04OQ01 (agm_ellipticK_connection), but that is not declared in this file.",
     "mathlib_version": "4.26.0"
   },
@@ -176,10 +176,10 @@
       "AmgmInequalityOQ04OQ01"
     ],
     "namespace": "AmgmInequalityOQ04OQ02",
-    "lineCount": 565,
+    "lineCount": 697,
     "axiomCount": 1,
-    "theoremCount": 30,
-    "definitionCount": 7,
+    "theoremCount": 33,
+    "definitionCount": 8,
     "path": "Proofs/AmgmInequalityOQ04OQ02.lean",
     "sorries": 0
   },
