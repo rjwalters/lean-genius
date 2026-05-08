@@ -222,6 +222,45 @@ lemma complModulus_complModulus (hk : 0 ≤ k) (hk1 : k ^ 2 ≤ 1) :
   rw [sq, Real.mul_self_sqrt (by linarith), sub_sub_cancel]
   exact Real.sqrt_sq hk
 
+/-- **Chain rule for the complementary modulus.**
+
+    For `k² < 1`, the complementary modulus `k' := √(1 − k²)` is differentiable
+    in `k` with derivative `−k / k'`. Mirrors `integrandE_hasDerivAt_in_k`
+    (§8, with the `θ` parameter dropped): chain rule on the inner polynomial
+    `1 − k²` (derivative `−2k`), `HasDerivAt.sqrt` using `1 − k² ≠ 0`, then
+    reduce the native quotient `−(2k) / (2 · √(1 − k²))` to `−k / k'` via
+    `field_simp`.
+
+    This is the missing K-side ingredient (alongside the eventually-assembled
+    `dE_dk` and `dK_dk`) for the S11 Wronskian closure: the complementary
+    elliptic integrals `K(k')` and `E(k')` then differentiate by composition
+    `(d/dk) ellipticK' k = (d/dk') ellipticK k' · (−k / k')`. -/
+lemma complModulus_hasDerivAt (hk : k ^ 2 < 1) :
+    HasDerivAt complModulus (-k / complModulus k) k := by
+  unfold complModulus
+  -- Inner: f(κ) = 1 − κ²; f'(κ) = −2κ.
+  have h_inner : HasDerivAt (fun κ : ℝ => 1 - κ ^ 2) (-(2 * k)) k := by
+    have h_pow : HasDerivAt (fun κ : ℝ => κ ^ 2) (2 * k) k := by
+      simpa using hasDerivAt_pow 2 k
+    have h_sub : HasDerivAt (fun κ : ℝ => 1 - κ ^ 2) (0 - 2 * k) k :=
+      (hasDerivAt_const k (1 : ℝ)).sub h_pow
+    simpa using h_sub
+  -- 1 − k² ≠ 0 since k² < 1 implies 1 − k² > 0.
+  have h_ne : (1 : ℝ) - k ^ 2 ≠ 0 :=
+    (show (0 : ℝ) < 1 - k ^ 2 by linarith).ne'
+  -- Chain rule for sqrt: HasDerivAt.sqrt requires the inner ≠ 0.
+  have h_sqrt := h_inner.sqrt h_ne
+  -- h_sqrt : HasDerivAt (fun κ => √(1 − κ²)) (−(2k) / (2 · √(1 − k²))) k
+  have h_sqrt_ne : Real.sqrt (1 - k ^ 2) ≠ 0 :=
+    (Real.sqrt_pos.mpr (by linarith)).ne'
+  -- Reduce the deriv expression to match h_sqrt's deriv.
+  have h_eq_deriv : -(2 * k) / (2 * Real.sqrt (1 - k ^ 2))
+      = -k / Real.sqrt (1 - k ^ 2) := by
+    field_simp
+  rw [← h_eq_deriv]
+  exact h_sqrt
+
+
 -- ============================================================================
 -- § 5. K and E at the Complementary Modulus
 -- ============================================================================
