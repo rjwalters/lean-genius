@@ -352,6 +352,130 @@ theorem burnside_p_squared_q_p_gt_q
   have hcard' : Nat.card G = p ^ 2 * q ^ 1 := by rw [pow_one]; exact hcard
   exact burnside_pq_with_normal_pSylow (a := 2) (b := 1) hcard' (P : Subgroup G) hP_card
 
+/-- **Sylow count constraint** (helper for `|G| = p² · q`, case `p < q`):
+    if `n ∣ p²` (with `p` prime), `n ≡ 1 [MOD q]` (`q` prime), `p < q`, and
+    `(p, q) ≠ (2, 3)`, then `n = 1`.
+
+    The divisors of `p²` are `1, p, p²`. The case `n = p` would force
+    `q ∣ p - 1` with `p < q`, contradiction. The case `n = p²` would
+    force `q ∣ p² - 1 = (p - 1)(p + 1)`; since `q` is prime and
+    `q ∤ p - 1`, we'd need `q ∣ p + 1`, hence `q = p + 1`. With both
+    prime, this forces `(p, q) = (2, 3)` — excluded by hypothesis. -/
+private lemma sylow_count_eq_one_of_lt_prime_pow_two
+    {n p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p < q)
+    (hexc : ¬ (p = 2 ∧ q = 3))
+    (hmod : n ≡ 1 [MOD q]) (hdvd : n ∣ p ^ 2) : n = 1 := by
+  -- Divisors of p^2 are {1, p, p^2}.
+  obtain ⟨i, hi_le, hni⟩ := (Nat.dvd_prime_pow hp).mp hdvd
+  have hp_two_le : 2 ≤ p := hp.two_le
+  have hq_two_le : 2 ≤ q := hq.two_le
+  interval_cases i
+  · -- n = p^0 = 1
+    rw [pow_zero] at hni; exact hni
+  · -- n = p^1 = p. Then q ∣ p - 1, contradicting p < q.
+    rw [pow_one] at hni
+    subst hni
+    have hq_dvd : q ∣ p - 1 :=
+      (Nat.modEq_iff_dvd' (by omega : 1 ≤ p)).mp hmod.symm
+    have : q ≤ p - 1 := Nat.le_of_dvd (by omega : 0 < p - 1) hq_dvd
+    omega
+  · -- n = p^2. Then q ∣ p^2 - 1 = (p - 1) * (p + 1).
+    subst hni
+    have hp2_one_le : 1 ≤ p ^ 2 := by
+      have := hp.pos; positivity
+    have hq_dvd_diff : q ∣ p ^ 2 - 1 :=
+      (Nat.modEq_iff_dvd' hp2_one_le).mp hmod.symm
+    -- p^2 - 1 = (p - 1) * (p + 1) (Nat arithmetic; p ≥ 2 ensures no underflow).
+    have hfactor : p ^ 2 - 1 = (p - 1) * (p + 1) := by
+      rcases Nat.exists_eq_succ_of_ne_zero (by omega : p ≠ 0) with ⟨k, hk⟩
+      subst hk
+      show (k + 1) ^ 2 - 1 = (k + 1 - 1) * (k + 1 + 1)
+      have hkk : k + 1 - 1 = k := by omega
+      rw [hkk]
+      ring_nf
+      omega
+    rw [hfactor] at hq_dvd_diff
+    -- q prime ⇒ q ∣ (p - 1) or q ∣ (p + 1)
+    rcases (hq.dvd_mul.mp hq_dvd_diff) with hq_dvd_low | hq_dvd_high
+    · -- q ∣ p - 1; p < q means q > p > p - 1, so q ≤ p - 1 — contradiction.
+      have : q ≤ p - 1 := Nat.le_of_dvd (by omega : 0 < p - 1) hq_dvd_low
+      omega
+    · -- q ∣ p + 1; p < q ≤ p + 1 ⇒ q = p + 1.
+      have hq_le : q ≤ p + 1 := Nat.le_of_dvd (by omega : 0 < p + 1) hq_dvd_high
+      have hq_eq : q = p + 1 := by omega
+      -- Both p and q = p + 1 are prime ⇒ p = 2 (only consecutive primes).
+      have hp_eq_two : p = 2 := by
+        by_contra hp_ne_two
+        -- p ≥ 3, so p is odd (only even prime is 2).
+        have hp_odd : Odd p :=
+          hp.eq_two_or_odd'.resolve_left hp_ne_two
+        -- Then p + 1 is even, but p + 1 = q ≥ 3, so q is even and ≥ 3.
+        have hq_even : Even q := by rw [hq_eq]; exact hp_odd.add_one
+        -- The only even prime is 2; q ≥ 3 contradiction.
+        have : q = 2 := (Nat.Prime.even_iff hq).mp hq_even
+        omega
+      exact absurd ⟨hp_eq_two, by omega⟩ hexc
+
+/-- **Burnside `|G| = p² · q`, case `p < q`, non-exceptional** (axiom-free).
+
+    Sylow's third theorem gives `n_q ≡ 1 [MOD q]`, and `Sylow.card_dvd_index`
+    gives `n_q ∣ p²` (the index of a Sylow `q`-subgroup is `p²`, since
+    `|Q| = q` and `|G| = p² · q`). The helper
+    `sylow_count_eq_one_of_lt_prime_pow_two` then forces `n_q = 1`,
+    using that `(p, q) ≠ (2, 3)` to rule out the `n_q = p²` case.
+
+    With `n_q = 1`, the unique Sylow `q`-subgroup `Q` is normal
+    (`Sylow.normal_of_subsingleton`). Then
+    `burnside_pq_with_normal_qSylow` discharges, treating `|G| = p² · q¹`.
+
+    Together with `burnside_p_squared_q_p_gt_q` and the (deferred) S8
+    exceptional case `|G| = 12`, this completes the `(a, b) = (2, 1)`
+    shape elimination from the `burnside_pq_nontrivial` axiom. -/
+theorem burnside_p_squared_q_p_lt_q
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p < q) (hexc : ¬ (p = 2 ∧ q = 3))
+    (hcard : Nat.card G = p ^ 2 * q) :
+    IsSolvable G := by
+  -- Step 1: pick a Sylow q-subgroup; |Q| = q^1 = q by `Sylow.card_eq_multiplicity`.
+  obtain ⟨Q⟩ : Nonempty (Sylow q G) := inferInstance
+  have hp_ne_q : p ≠ q := by omega
+  have hq_ne_p : q ≠ p := fun h => hp_ne_q h.symm
+  have hq_not_dvd_p2 : ¬ q ∣ p ^ 2 := by
+    intro hdvd
+    have : q ∣ p := hq.out.dvd_of_dvd_pow hdvd
+    exact hq_ne_p ((Nat.prime_dvd_prime_iff_eq hq.out hp.out).mp this)
+  have hcop : Nat.Coprime (p ^ 2) q :=
+    ((Nat.coprime_primes hp.out hq.out).mpr hp_ne_q).pow_left 2
+  have hQ_card : Nat.card (Q : Subgroup G) = q := by
+    have hmult := Sylow.card_eq_multiplicity Q
+    have hfact : Nat.factorization (Nat.card G) q = 1 := by
+      rw [hcard, Nat.factorization_mul_apply_of_coprime hcop,
+          Nat.factorization_eq_zero_of_not_dvd hq_not_dvd_p2,
+          Nat.Prime.factorization_self hq.out]
+      simp
+    rw [hfact, pow_one] at hmult
+    exact hmult
+  -- Step 2: index of Q is p^2 (Lagrange + cancellation).
+  have hq_pos : 0 < q := hq.out.pos
+  have hQ_index : (Q : Subgroup G).index = p ^ 2 := by
+    have h := Subgroup.card_mul_index (Q : Subgroup G)
+    rw [hQ_card, hcard, mul_comm (p ^ 2) q] at h
+    exact Nat.eq_of_mul_eq_mul_left hq_pos h
+  -- Step 3: n_q ≡ 1 [MOD q] and n_q ∣ p^2; helper forces n_q = 1.
+  have hnq_mod : Nat.card (Sylow q G) ≡ 1 [MOD q] := card_sylow_modEq_one q G
+  have hnq_dvd : Nat.card (Sylow q G) ∣ p ^ 2 :=
+    hQ_index ▸ Sylow.card_dvd_index Q
+  have hnq_eq_one : Nat.card (Sylow q G) = 1 :=
+    sylow_count_eq_one_of_lt_prime_pow_two hp.out hq.out hpq hexc hnq_mod hnq_dvd
+  -- Step 4: n_q = 1 ⇒ Subsingleton (Sylow q G) ⇒ Q.Normal.
+  haveI hSub : Subsingleton (Sylow q G) :=
+    (Nat.card_eq_one_iff_unique.mp hnq_eq_one).1
+  haveI hQ_normal : (Q : Subgroup G).Normal := Sylow.normal_of_subsingleton Q
+  -- Step 5: discharge via burnside_pq_with_normal_qSylow with a = 2, b = 1.
+  have hcard' : Nat.card G = p ^ 2 * q ^ 1 := by rw [pow_one]; exact hcard
+  exact burnside_pq_with_normal_qSylow (a := 2) (b := 1) hcard' (Q : Subgroup G) hQ_card
+
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART IV: Main theorem
 -- ═══════════════════════════════════════════════════════════════════════

@@ -2,7 +2,29 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T15:30:00Z
-**Iteration**: 7
+**Iteration**: 7.5
+
+## S7.5 (this session, build pending)
+
+Adds `burnside_p_squared_q_p_lt_q` (axiom-free, case `p < q ≠ (2, 3)`)
+plus the private helper `sylow_count_eq_one_of_lt_prime_pow_two`. The
+helper rules out `n_q ∈ {p, p²}` from the Sylow constraint
+`n_q ≡ 1 [MOD q]`, `n_q ∣ p²`, `p < q`, `(p, q) ≠ (2, 3)`:
+
+* `n_q = p` requires `q ∣ p − 1` with `p < q`, impossible.
+* `n_q = p²` requires `q ∣ p² − 1 = (p − 1)(p + 1)`. Then `q ∣ p + 1`
+  (since `q ∤ p − 1`), forcing `q = p + 1`. Both prime ⇒ `p = 2`,
+  `q = 3` — excluded by hypothesis.
+
+The main theorem mirrors `burnside_p_squared_q_p_gt_q`'s 5-step
+structure: pick a Sylow q-subgroup, compute `|Q| = q` and
+`Q.index = p²`, apply the helper to force `n_q = 1`, derive
+`Subsingleton (Sylow q G)` ⇒ `Q.Normal`, then discharge via
+`burnside_pq_with_normal_qSylow`.
+
+Together with S7's `p > q` case, this leaves only the exceptional
+`(p, q) = (2, 3), |G| = 12` case (S8) to complete the `(a, b) = (2, 1)`
+shape elimination from `burnside_pq_nontrivial`.
 
 ## Current Focus
 
