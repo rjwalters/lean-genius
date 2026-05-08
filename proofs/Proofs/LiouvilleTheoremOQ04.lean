@@ -511,9 +511,11 @@ theorem intPolyHomogEval_cast_eq (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0) :
   have hsi_ne : ((s : ℚ))^i ≠ 0 := pow_ne_zero _ hs_q
   -- Lean 4.26: `(algebraMap ℤ ℚ) z` reduces to the integer cast via `eq_intCast`
   -- (the previous `Int.algebraMap_eq_intCast` lemma was renamed/removed).
+  -- After `simp [eq_intCast]`, `field_simp` already closes the goal; the
+  -- subsequent `ring` would error with "No goals". Use `<;> ring` to make
+  -- ring optional on any residual subgoals.
   simp only [eq_intCast]
-  field_simp
-  ring
+  field_simp <;> ring
 
 /-- Bound: `|intPolyHomogEval f r s| ≤ intPolyL1 f · max(|r|,|s|)^d` (triangle). -/
 theorem intPolyHomogEval_natAbs_le (f : ℤ[X]) (r s : ℤ) :
