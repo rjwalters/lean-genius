@@ -972,14 +972,17 @@ private lemma half_log_le_log_half_add_one (n : ℕ) (hn : 2 ≤ n) :
   have key : (↑n : ℝ) + 1 ≤ ((↑(n / 2) : ℝ) + 1) ^ 2 := by
     have h1 : n ≤ 2 * (n / 2) + 1 := by omega
     have h2 : 1 ≤ n / 2 := Nat.div_pos hn (by norm_num)
-    nlinarith [show (↑(n / 2) : ℝ) ≥ 1 from by exact_mod_cast h2]
+    have h1R : (↑n : ℝ) ≤ 2 * (↑(n / 2) : ℝ) + 1 := by exact_mod_cast h1
+    have h2R : (1 : ℝ) ≤ (↑(n / 2) : ℝ) := by exact_mod_cast h2
+    nlinarith [h1R, h2R, sq_nonneg ((↑(n / 2) : ℝ) - 1)]
   -- (1/2)·log(n+1) ≤ log(n/2+1) via: log(n+1) ≤ 2·log(n/2+1) = log((n/2+1)²)
   have h2log : Real.log ((↑n : ℝ) + 1) ≤ 2 * Real.log ((↑(n / 2) : ℝ) + 1) := by
     have hpow : Real.log (((↑(n / 2) : ℝ) + 1) ^ 2) = 2 * Real.log ((↑(n / 2) : ℝ) + 1) := by
       rw [Real.log_pow]
       ring
     rw [← hpow]
-    exact Real.log_le_log hn1_pos.le key
+    -- Mathlib v4.26.0: Real.log_le_log expects strict positivity (0 < x), not 0 ≤ x.
+    exact Real.log_le_log hn1_pos key
   linarith
 
 /-- For the x = -1 case: the trigonometric Lebesgue sum S_n = Σ tan(φₖ/2) grows like n log n.
@@ -997,8 +1000,11 @@ private lemma trig_sum_lb_of_cos_eq_neg_one (n : ℕ) (hn : 0 < n) :
                    Real.cos ((2 * k.val + 1 : ℝ) * Real.pi / (4 * n)) :=
     Finset.sum_congr rfl (fun k _ => sum_term_eq_tan_half_angle n hn k)
   rw [hS_eq]
-  -- Step 2: Handle n = 1 separately (sum = tan(π/4) = 1, target < 1)
-  rcases eq_or_lt_of_le hn with rfl | hn_ge_2
+  -- Step 2: Handle n = 1 separately (sum = tan(π/4) = 1, target < 1).
+  -- For ℕ, `0 < n` is `1 ≤ n`; rewrite via `Nat.one_le_iff_ne_zero` to get a `≤`-shaped
+  -- term that `eq_or_lt_of_le` accepts (Mathlib unification quirk in v4.26.0).
+  have hn_ge1 : 1 ≤ n := hn
+  rcases eq_or_lt_of_le hn_ge1 with rfl | hn_ge_2
   · -- n = 1: target = (1/(2π))·log(2) ≤ 1 = sum
     simp only [Fin.sum_univ_one, Nat.cast_one, mul_one]
     have hlog2_le : Real.log 2 ≤ 1 := by
@@ -1492,8 +1498,90 @@ private lemma trig_sum_subsum_lb (n : ℕ) (hn : 0 < n)
     rw [Finset.mul_sum]
     apply Finset.sum_congr rfl
     intro j _
-    ring
+    -- Per-term equality: (sin(d/2)·2n/π) · (1/(2(j+1)+1)) = sin(d/2)·2n / ((2(j+1)+1)·π)
+    -- Both sides equal sin(d/2)·2n / (π·(2j+3)). `ring` cannot handle the inverse
+    -- distribution `(a * b)⁻¹ = a⁻¹ * b⁻¹` directly; field_simp clears inverses
+    -- and closes the goal in one step.
+    have hpi_ne : (Real.pi : ℝ) ≠ 0 := Real.pi_pos.ne'
+    have h_denom_pos : (0 : ℝ) < 2 * ((↑j : ℝ) + 1) + 1 := by positivity
+    have h_denom_ne : 2 * ((↑j : ℝ) + 1) + 1 ≠ 0 := h_denom_pos.ne'
+    field_simp
   linarith [hLHS_eq, hsub_sum_lb, hsub_eq_image, himg_le_full]
+
+/-- **Reindex symmetry of the Chebyshev-Lebesgue trig sum: θ ↔ π - θ.**
+
+    Under the involution `σ : Fin n ≃ Fin n`, `k ↦ n - 1 - k`:
+
+      - The Chebyshev midpoint at the swapped index is the angle reflection:
+        `φ_{σ k} = π - φ_k`, hence `sin(φ_{σ k}) = sin(φ_k)`.
+      - The Chebyshev node at the swapped index is sign-flipped:
+        `cos(φ_{σ k}) = -cos(φ_k)`, i.e. `chebyshevNode n (σ k) = -chebyshevNode n k`.
+      - Combined with `cos(π - θ) = -cos θ`:
+        `|cos(π - θ) - cos(φ_{σ k})| = |-cos θ - (-cos φ_k)| = |cos θ - cos φ_k|`.
+
+    Therefore the Chebyshev-Lebesgue trig sum
+    `S(θ, n) = Σₖ sin(φₖ)/|cos θ - cos φₖ|` is invariant under `θ ↦ π - θ`.
+
+    This invariance reduces `trig_sum_harmonic_lb` to the case `θ ∈ (0, π/2]`:
+    the going-down sub-sum (k = k₀ - j - 1) at θ ∈ (π/2, π) corresponds, via
+    `σ`, to the going-up sub-sum at `π - θ ∈ (0, π/2)`. -/
+private lemma trig_sum_reindex_symmetry (n : ℕ) (hn : 0 < n) (θ : ℝ) :
+    ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                 |Real.cos θ - chebyshevNode n k| =
+    ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+                 |Real.cos (Real.pi - θ) - chebyshevNode n k| := by
+  -- The involution σ : Fin n ≃ Fin n via k ↦ n - 1 - k
+  let σ : Fin n ≃ Fin n :=
+    { toFun := fun k => ⟨n - 1 - k.val, by have := k.isLt; omega⟩
+      invFun := fun k => ⟨n - 1 - k.val, by have := k.isLt; omega⟩
+      left_inv := fun k => by
+        apply Fin.ext
+        show n - 1 - (n - 1 - k.val) = k.val
+        have := k.isLt; omega
+      right_inv := fun k => by
+        apply Fin.ext
+        show n - 1 - (n - 1 - k.val) = k.val
+        have := k.isLt; omega }
+  -- Reindex the RHS via σ
+  rw [show ∑ k : Fin n, Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) /
+        |Real.cos (Real.pi - θ) - chebyshevNode n k| =
+      ∑ k : Fin n, Real.sin ((2 * ((σ k).val : ℝ) + 1) * Real.pi / (2 * n)) /
+        |Real.cos (Real.pi - θ) - chebyshevNode n (σ k)| from
+    (Equiv.sum_comp σ
+      (fun k => Real.sin ((2 * ((k : Fin n).val : ℝ) + 1) * Real.pi / (2 * n)) /
+                |Real.cos (Real.pi - θ) - chebyshevNode n k|)).symm]
+  -- Termwise equality
+  apply Finset.sum_congr rfl
+  intro k _
+  have hk_le : k.val ≤ n - 1 := by have := k.isLt; omega
+  have hone_le : 1 ≤ n := hn
+  -- σ k.val = n - 1 - k.val
+  have hσ_val_nat : (σ k).val = n - 1 - k.val := rfl
+  -- Cast value to ℝ
+  have hσ_val : ((σ k).val : ℝ) = (n : ℝ) - 1 - (k.val : ℝ) := by
+    rw [hσ_val_nat, Nat.cast_sub hk_le, Nat.cast_sub hone_le, Nat.cast_one]
+  -- Angle identity: φ_{σ k} = π - φ_k
+  have hangle_eq : (2 * ((σ k).val : ℝ) + 1) * Real.pi / (2 * (n : ℝ)) =
+      Real.pi - (2 * (k.val : ℝ) + 1) * Real.pi / (2 * (n : ℝ)) := by
+    have hn_pos : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+    have hn_ne : (n : ℝ) ≠ 0 := hn_pos.ne'
+    rw [hσ_val]
+    field_simp
+    ring
+  -- Sin invariance: sin(φ_{σ k}) = sin(φ_k)
+  have hsin_eq : Real.sin ((2 * ((σ k).val : ℝ) + 1) * Real.pi / (2 * n)) =
+      Real.sin ((2 * (k.val : ℝ) + 1) * Real.pi / (2 * n)) := by
+    rw [hangle_eq, Real.sin_pi_sub]
+  -- Node sign-flip: chebyshevNode n (σ k) = -chebyshevNode n k
+  have hnode_eq : chebyshevNode n (σ k) = -chebyshevNode n k := by
+    simp only [chebyshevNode]
+    rw [hangle_eq, Real.cos_pi_sub]
+  rw [hsin_eq, hnode_eq, Real.cos_pi_sub]
+  -- Goal: sin(φ_k)/|cos θ - cn| = sin(φ_k)/|-cos θ - -cn|
+  congr 1
+  rw [show -Real.cos θ - -chebyshevNode n k =
+        -(Real.cos θ - chebyshevNode n k) from by ring,
+      abs_neg]
 
 /-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
 
@@ -1511,7 +1599,9 @@ private lemma trig_sum_subsum_lb (n : ℕ) (hn : 0 < n)
     5. For n ≥ N₀(d), this gives ≥ C · n · log(n+1) where C depends on d.
     6. For 1 ≤ n < N₀, each S_n > 0 and n·log(n+1) > 0, so min ratio over
        the finite set {1,...,N₀-1} is positive (Finset.min' argument).
-    7. Take C₂ = min of the large-n constant and the finite-set minimum. -/
+    7. Take C₂ = min of the large-n constant and the finite-set minimum.
+
+    NOTE: `trig_sum_reindex_symmetry` lets the proof WLOG assume θ ∈ (0, π/2]. -/
 private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < Real.pi)
     (hne : ∀ (n : ℕ) (_ : 0 < n) (k : Fin n), Real.cos θ ≠ chebyshevNode n k) :
     ∃ C : ℝ, 0 < C ∧ ∀ n : ℕ, 1 ≤ n →
@@ -1582,7 +1672,7 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
       have hq_ne : (q : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hq_pos.ne'
       have hpR : (p : ℝ) = k * (2 * q) := by field_simp at hk; linarith
       have hpZ : (p : ℤ) = k * (2 * q) := by exact_mod_cast hpR
-      exact (not_odd_iff_even.mpr (⟨k * q, by linarith⟩ : Even (p : ℤ))) (by exact_mod_cast hp)
+      exact (Int.not_odd_iff_even.mpr (⟨k * q, by linarith⟩ : Even (p : ℤ))) (by exact_mod_cast hp)
     -- Step 2: arccos gives canonical angle θ₀ ∈ (0, π) with cos θ₀ = cos(πp/q)
     set x := Real.cos ((↑p : ℝ) * Real.pi / ↑q) with hx_def
     set θ₀ := Real.arccos x with hθ₀_def
@@ -1591,7 +1681,8 @@ private lemma chebyshev_trig_sum_lb (p q : ℕ) (hp : Odd p) (hq : Odd q) (hq_po
     have hθ₀_lt_pi : θ₀ < Real.pi := by
       apply lt_of_le_of_ne (Real.arccos_le_pi x)
       intro heq
-      rw [← heq, Real.cos_pi] at hcos_eq
+      -- θ₀ := arccos x and arccos x = π give θ₀ = π, so cos θ₀ = cos π = -1.
+      rw [hθ₀_def, heq, Real.cos_pi] at hcos_eq
       linarith
     -- Step 3: Each sum term is positive
     have hterm_pos : ∀ (n : ℕ) (hn : 0 < n) (k : Fin n),

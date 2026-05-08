@@ -29,10 +29,10 @@
   "currentState": {
     "phase": "IN-PROGRESS",
     "since": "2026-05-08",
-    "iteration": 5,
-    "focus": "Session 16: Added Step 4 (sin lower bound on [d/2, π-d/2] via case-split + sin_pi_sub) and Step 5 (per-term lower bound combining Step 3 + Step 4 + cos-Lipschitz). New private lemmas: sin_lb_of_in_interior, sin_chebyshev_midpoint_lb, chebyshev_term_lb_at_node. PR #16765 opened.",
+    "iteration": 18,
+    "focus": "Session 18 (researcher-10, 2026-05-08): Added reindex-symmetry helper trig_sum_reindex_symmetry — S(θ,n) = S(π-θ,n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Proof structure: define σ as involution; reindex via Equiv.sum_comp; combine sin_pi_sub (sin invariance) + cos_pi_sub (chebyshevNode sign-flip) + cos(π-θ) = -cos θ; resulting denom |-cos θ - (-cn)| = |cos θ - cn| via abs_neg. ~70 lines, sorries unchanged at 2.",
     "blockers": [],
-    "nextAction": "(Researcher) Step 6 — sub-sum of size m = ⌊n·d/(4π)⌋ over indices near k₀ applying chebyshev_term_lb_at_node to derive S_n ≥ (2dn/π²)·Σ_j 1/(2j+3). Step 7 — combine with odd_harmonic_sum_lb for large n + Finset.min' over {1,...,N₀-1} for small n. Verify constraint that φ_{k₀+j+1} ∈ (d/2, π-d/2) when |j| ≤ ⌊nd/(4π)⌋.",
+    "nextAction": "(Researcher) Step 7 closure of trig_sum_harmonic_lb. Use trig_sum_reindex_symmetry to WLOG assume θ ∈ (0, π/2] (so d = θ). Then for n ≥ N₀(θ), choose m = ⌊nθ/(4π)⌋ and verify: hm_le (k₀+m+1 ≤ n via k₀ ≤ n-1 and m bound) and h_interior (each midpoint φ_{k₀+j+1} ∈ [d/2, π-d/2]: lower θ + (2j+1)π/(2n) ≥ θ ≥ d/2; upper (2j+3)π/(2n) ≤ π - 3θ/2 since d/2 = θ/2). For 1 ≤ n < N₀, use Finset.min'.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 17 (2026-05-08, researcher-1): Step 6a/6b — sub-sum lower bound assembly. Step 6a (odd_harmonic_sum_shifted_lb, ~20 lines): shifted odd harmonic Σⱼ 1/(2(j+1)+1) ≥ (1/2)·log(m+2) - 1, via odd_harmonic_sum_lb (m+1) + Finset.sum_range_succ' to split off j=0 term. Step 6b (trig_sum_subsum_lb, ~104 lines): sub-sum assembly over Fin m — defines φ : Fin m → Fin n via j ↦ k₀+j+1, applies chebyshev_term_lb_at_node per j, lifts to image sub-sum via Finset.sum_image + sum_le_sum_of_subset_of_nonneg, yielding sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. +144 lines, 2 sorries unchanged. Step 7 (choose m=⌊nd/(4π)⌋, verify h_interior + hm_le, finite-n min') is next.",
+    "progressSummary": "Session 18 (2026-05-08, researcher-10): Reindex-symmetry helper trig_sum_reindex_symmetry — S(θ,n) = S(π-θ,n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Proof: define σ as Equiv (involutive); reindex via Equiv.sum_comp; then sin_pi_sub gives sin invariance, cos_pi_sub gives chebyshevNode sign-flip (cos(π-x) = -cos x), and cos(π-θ) = -cos θ combines so |cos(π-θ) - (-cn)| = |cos θ - cn| via abs_neg. This reduces trig_sum_harmonic_lb to θ ∈ (0, π/2] (so the going-up sub-sum from trig_sum_subsum_lb suffices). +77 lines (1711→1788), 2 sorries unchanged. Step 7 closure (choose m=⌊nθ/(4π)⌋, verify h_interior + hm_le, finite-n min') still next, but now with cleaner θ ≤ π/2 setup.",
     "builtItems": [
       "T_ofNat_ne_zero (n : ℕ) : T ℝ (n : ℤ) ≠ 0 — Erdos1151OQ04.lean:274",
       "natDegree_T_ofNat : ∀ n : ℕ, (T ℝ (n : ℤ)).natDegree = n — Erdos1151OQ04.lean:282",
@@ -68,7 +68,8 @@
       "chebyshev_term_lb_at_node: per-term lb sin(φ_k)/|cos θ - cos φ_k| ≥ sin(d/2)·(2n)/((2|k-k₀|+1)·π) — Erdos1151OQ04.lean (Step 5)",
       "Combined Step 3 + Step 4 + cos-Lipschitz (Real.abs_cos_sub_cos_le) into ready-to-sum per-term lower bound",
       "odd_harmonic_sum_shifted_lb (m : ℕ) : (1/2)·log(m+2) - 1 ≤ ∑ j ∈ Finset.range m, 1/(2(j+1)+1) — Erdos1151OQ04.lean:1362 (Step 6a, ~20 lines)",
-      "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)"
+      "trig_sum_subsum_lb (n hn θ d hd_pos hne k₀ hk₀_close m hm_le h_interior) : sin(d/2)·(2n/π) · Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k| — Erdos1151OQ04.lean:1393 (Step 6b, ~104 lines)",
+      "trig_sum_reindex_symmetry (n hn θ) : Σ_k sin(φ_k)/|cos θ - cn| = Σ_k sin(φ_k)/|cos(π-θ) - cn| via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. Combines Equiv.sum_comp + sin_pi_sub + cos_pi_sub + abs_neg. ~70 lines, Erdos1151OQ04.lean:1498 (Session 18, this session)"
     ],
     "insights": [
       "Lebesgue function Λₙ(x) = Σₖ |ℓₖ(x)| measures worst-case interpolation amplification",
@@ -107,13 +108,16 @@
       "odd_harmonic_sum_shifted_lb (Step 6a): shifted odd harmonic Σⱼ 1/(2(j+1)+1) ≥ (1/2)·log(m+2) - 1, derived from odd_harmonic_sum_lb (m+1) by Finset.sum_range_succ' splitting off j=0 term (= 1).",
       "trig_sum_subsum_lb (Step 6b): sub-sum assembly over Fin m index range — define φ : Fin m → Fin n via j ↦ k₀+j+1, apply chebyshev_term_lb_at_node per j, lift to image sub-sum via Finset.sum_image + Finset.sum_le_sum_of_subset_of_nonneg.",
       "Bridge ∑ j : Fin m to ∑ j ∈ Finset.range m via Fin.sum_univ_eq_sum_range; pull constants out of sum via Finset.mul_sum; close field-equality per-term goal with ring.",
-      "Sub-sum lower bound shape: sin(d/2) * (2n/π) * Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Combined with Step 6a, this gives n·log(m+2) growth — basis for asymptotic n·log(n) bound when m ~ n·d/(4π)."
+      "Sub-sum lower bound shape: sin(d/2) * (2n/π) * Σⱼ 1/(2(j+1)+1) ≤ Σ_k sin(φ_k)/|cos θ - cos φ_k|. Combined with Step 6a, this gives n·log(m+2) growth — basis for asymptotic n·log(n) bound when m ~ n·d/(4π).",
+      "Reindex symmetry: S(θ, n) = S(π-θ, n) via the involution σ : Fin n ≃ Fin n, k ↦ n-1-k. The angle reflection φ_{σ k} = π - φ_k follows from algebraic identity (2(n-1-k)+1)π/(2n) = π - (2k+1)π/(2n); sin invariant under x ↦ π-x; cos sign-flips under x ↦ π-x. Combined with cos(π-θ) = -cos θ, the denominator |cos(π-θ) - (-cn)| = |cos θ - cn| via abs_neg. Reduces trig_sum_harmonic_lb to θ ∈ (0, π/2].",
+      "When θ ∈ (0, π/2]: d = min(θ, π-θ) = θ; so d/2 = θ/2 and π - d/2 = π - θ/2. The going-up sub-sum upper bound (2j+3)π/(2n) ≤ π - d/2 - θ becomes (2j+3)π/(2n) ≤ π - 3θ/2, giving m ≤ n(2π - 3θ)/(4π) - 3/2. For θ < 2π/3 this is positive, and at θ = π/2 it gives m ≤ n/8 - 3/2.",
+      "When θ ∈ (π/2, π): use trig_sum_reindex_symmetry to pass to θ' = π - θ ∈ (0, π/2). The going-up sub-sum at θ' applies. This avoids needing a separate going-down sub-sum lemma."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "(Researcher / next session) Step 7a — choose m := ⌊n·d/(4π)⌋ (with d = min(θ, π-θ)) and prove that for n ≥ N₀(d) the hypotheses of trig_sum_subsum_lb hold: hm_le (k₀+m+1 ≤ n) and h_interior (each midpoint φ_{k₀+j+1} ∈ [d/2, π-d/2]). The latter is the technical heart, requiring k₀ to be near the midpoint π/2 of the interval modulo arccos.",
-      "(Researcher / next session) Step 7b — for 1 ≤ n < N₀(d), use Finset.min' (or direct computation) over the finite set of ratios S_n / (n·log(n+1)) to find a positive lower bound. Combine with Step 7a's asymptotic constant via min.",
-      "(Researcher / next session) Step 8 — close trig_sum_harmonic_lb by chaining trig_sum_subsum_lb (gives n·Σⱼ 1/(2j+3) lb) + odd_harmonic_sum_shifted_lb (gives log(m+2) lb) + Step 7 case analysis. Witness C₂ depends on θ via d = min(θ, π-θ)."
+      "(Researcher / next session) Step 7a — Apply trig_sum_reindex_symmetry to WLOG assume θ ∈ (0, π/2] (so d = θ). Then choose m := ⌊n·θ/(4π)⌋ (or similar) and prove that for n ≥ N₀(θ) the hypotheses of trig_sum_subsum_lb hold: hm_le (k₀+m+1 ≤ n) and h_interior (each midpoint φ_{k₀+j+1} ∈ [θ/2, π-θ/2]).",
+      "(Researcher / next session) Step 7b — for 1 ≤ n < N₀(θ), use Finset.min' (or direct computation) over the finite set of ratios S_n / (n·log(n+1)) to find a positive lower bound. Combine with Step 7a's asymptotic constant via min.",
+      "(Researcher / next session) Step 8 — close trig_sum_harmonic_lb by chaining trig_sum_subsum_lb (gives n·Σⱼ 1/(2j+3) lb) + odd_harmonic_sum_shifted_lb (gives log(m+2) lb) + Step 7 case analysis. Witness C₂ depends on θ via d = θ (after symmetry reduction)."
     ]
   },
   "tags": [
@@ -137,15 +141,15 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-05-07T20:40:00Z",
+  "lastUpdate": "2026-05-08T11:00:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 1440,
-      "theoremCount": 34,
+      "lineCount": 1802,
+      "theoremCount": 35,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 2,

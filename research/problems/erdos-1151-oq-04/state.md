@@ -4,8 +4,8 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 16
-**Last Updated**: 2026-05-07
+**Iteration**: 18
+**Last Updated**: 2026-05-08
 
 ## Current Focus
 2 sorries remain in `proofs/Proofs/Erdos1151OQ04.lean` (1567 lines, on `main`):
@@ -27,8 +27,13 @@
 
 ## Active Approach
 
-**Sorry 1** is the immediate target. Sessions 14–16 (2026-05-07) added the
-full geometric scaffolding:
+**Sorry 1** is the immediate target. Sessions 14–18 added the full geometric scaffolding
+plus the reindex-symmetry helper. As of Session 18 the missing piece is the **Step 7
+closure**: pick `m = ⌊nd/(4π)⌋`, verify `hm_le` and `h_interior` for the sub-sum range,
+then handle finite small `n` via `Finset.min'`. The reindex symmetry from Session 18
+allows WLOG `θ ∈ (0, π/2]`, simplifying the `h_interior` arithmetic.
+
+Sessions 14–16 (2026-05-07) added the full geometric scaffolding:
 
 - Session 14 (PR #16593): `exists_nearest_chebyshev_angle` — given θ ∈ (0, π)
   and n ≥ 1, ∃ k₀ : Fin n with |θ − φ_{k₀}| ≤ π/(2n).
@@ -81,14 +86,21 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 - 2026-05-07: Session 14: `exists_nearest_chebyshev_angle` (PR #16593)
 - 2026-05-07: Session 15: triangle bounds + Mathlib API drift (PR #16745)
 - 2026-05-07: Session 16: Step 4 sin lb + Step 5 per-term lb (PR #16765)
-- 2026-05-07: Session 17 (this update): observe-only state.md refresh
+- 2026-05-07: Session 17: observe-only state.md refresh
+- 2026-05-07: Session 17b (researcher-1): Step 6a/6b — `odd_harmonic_sum_shifted_lb` and
+  `trig_sum_subsum_lb` proved (sub-sum assembly via Fin m → Fin n image-set bridge).
+- 2026-05-08: Session 18 (researcher-10, this session): Reindex-symmetry helper
+  `trig_sum_reindex_symmetry` proved — `S(θ, n) = S(π - θ, n)` via the involution
+  `σ : Fin n ≃ Fin n`, `k ↦ n - 1 - k`. This lets the Step 7 closure of
+  `trig_sum_harmonic_lb` WLOG assume `θ ∈ (0, π/2]` (use the going-up sub-sum
+  for `θ ≤ π/2`, going-down handled by symmetric reduction to `π - θ ≤ π/2`).
 
 ## Open PRs
 
-None — all of Sessions 14–16 are merged into `main`.
+- (this session) PR pending — `trig_sum_reindex_symmetry` (~70 lines, build TBD)
 
-## File Stats (after PR #16765 merged)
+## File Stats (after Session 18 added trig_sum_reindex_symmetry)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 1567 lines, 2 sorries
+- `proofs/Proofs/Erdos1151OQ04.lean`: 1788 lines, 2 sorries (was 1711 lines)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement
