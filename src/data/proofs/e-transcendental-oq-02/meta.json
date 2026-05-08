@@ -67,7 +67,7 @@
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 2,
-    "lineCount": 636,
+    "lineCount": 639,
     "assumptions": "2 axioms (Sessions 11–12 made structural progress on normal_imp_irrational): (1) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (the count/Tendsto step remains, but the missing-tuple input has been built); (2) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026). The rational-digits-periodic axiom was discharged in Session 11 via the 3-layer recipe: Layer 1 (eventually_periodic_iterate, S8, orbit pigeonhole), Layer 2 (ratResidue_eventually_periodic, S9, residue sequence in ZMod q.den), Layer 3a (floor_pow_mul_div, S10, ℝ→ℤ cast bridge), Layer 3b (nthDigit_succ_via_residue, S11, integer-arithmetic residue-to-digit bridge). Session 12 added Layer 4a (the Fin b cast bridge): nthDigitFin packages nthDigit's [0, b) bound into Fin b, and rational_has_missing_ktuple composes Layers 1–3 with periodic_has_missing_ktuple to assert that for any rational q some k-tuple never appears in (q : ℝ)'s base-b expansion past a finite cutoff. 29 public theorems including first 9 decimal digits of e proved from exp_one bounds.",
     "mathlib_version": "4.26.0",
     "definitionCount": 3
