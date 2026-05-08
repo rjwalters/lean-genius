@@ -104,12 +104,44 @@
   },
   "sections": [
     {
-      "id": "header-docstring",
-      "title": "Module Docstring — Open Question, Theorem Statement, and References",
+      "id": "header-open-question",
+      "title": "Header — Open Question and Erdős-Rényi Answer",
       "startLine": 1,
-      "endLine": 59,
-      "summary": "59-line module-level docstring framing the OQ-03 sub-question: can pairwise-independent BC2 (used inside laws-of-large-numbers-oq-01-oq-01's slln_necessity proof) be extracted as a clean standalone Mathlib-worthy theorem, and is pairwise independence the minimal hypothesis? Records both answers as YES and provides the 5-step Chebyshev-variance proof sketch (divergent expectation → Var ≤ E via covariance cancellation → Chebyshev → monotone limit → equivalence to limsup), the minimality argument (stronger is unnecessary; mere uncorrelated-ness is insufficient — Petrov 2002), the Erdős-Rényi (1959) attribution, and primary references (Erdős-Rényi original Cantor-series paper, Petrov counterexample, Feller II).",
-      "mathContext": "Statement: pairwise independence of $\\{A_n\\}$ + $\\sum_n \\mu(A_n) = \\infty$ ⟹ $\\mu(\\limsup_n A_n) = 1$. Proof skeleton (Chebyshev-variance, Erdős-Rényi 1959): with $S_n = \\sum_{k<n} \\mathbf{1}_{A_k}$, (i) $E[S_n] = \\sum_{k<n} \\mu(A_k) \\to \\infty$; (ii) pairwise independence gives $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = 0$ for $i \\ne j$, hence $\\mathrm{Var}(S_n) = \\sum_{k<n} \\mu(A_k)(1 - \\mu(A_k)) \\le E[S_n]$; (iii) Chebyshev: $\\mu(S_n \\le M) \\le \\mathrm{Var}(S_n)/(E[S_n] - M)^2 \\to 0$; (iv) $S_n$ non-decreasing ⟹ $S_n \\to \\infty$ a.s.; (v) $\\{S_n \\to \\infty\\} = \\{\\omega \\in A_n \\text{ i.o.}\\} = \\limsup_n A_n$. Minimality (Petrov 2002, §10): mere uncorrelated-ness — $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = 0$ without the joint $\\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$ identity — does not suffice."
+      "endLine": 23,
+      "summary": "Frames the OQ-03 sub-question — can pairwise-independent BC2 (the engine of `slln_necessity` in laws-of-large-numbers-oq-01-oq-01) be extracted as a clean Mathlib-worthy standalone theorem, and is pairwise independence the minimal hypothesis? — and answers both YES, attributing the result to Erdős-Rényi 1959 and noting the strict weakening relative to classical BC2's full mutual independence requirement.",
+      "mathContext": "Headline (Erdős-Rényi 1959): pairwise independence of $\\{A_n\\}$ + $\\sum_n \\mu(A_n) = \\infty$ ⟹ $\\mu(\\limsup_n A_n) = 1$. The strengthening over classical BC2 (which needs every finite subfamily independent — `iIndepSet`) is genuine: pairwise independence is *strictly* weaker, witnessed by the Bernstein triple $(A_1, A_2, A_3 = A_1 \\triangle A_2)$ on a 4-element sample space where every pair has product probability $1/4$ but $\\mu(A_1 \\cap A_2 \\cap A_3) = 1/4 \\ne 1/8$."
+    },
+    {
+      "id": "header-proof-sketch",
+      "title": "Header — Five-Step Chebyshev-Variance Proof Sketch",
+      "startLine": 25,
+      "endLine": 34,
+      "summary": "Outlines the standard Chebyshev-variance method in five numbered steps: (1) define partial counts $S_n = \\sum_{k<n} \\mathbf{1}_{A_k}$; (2) divergent expectation $E[S_n] \\to \\infty$ from the hypothesis; (3) variance bound $\\mathrm{Var}(S_n) \\le E[S_n]$ via covariance cancellation under pairwise independence — *the only step where the hypothesis is consumed*; (4) Chebyshev tail bound $P(S_n \\le M) \\to 0$; (5) monotone upgrade to a.s. convergence and identification of $\\{S_n \\to \\infty\\}$ with $\\limsup A_n$ up to a null set.",
+      "mathContext": "Step 3 expanded: $\\mathrm{Var}(S_n) = \\sum_{k<n} \\mathrm{Var}(\\mathbf{1}_{A_k}) + 2\\sum_{i<j<n} \\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j})$. Pairwise independence gives $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = \\mu(A_i \\cap A_j) - \\mu(A_i)\\mu(A_j) = 0$, killing the off-diagonal sum. The diagonal $\\sum_{k<n} \\mathrm{Var}(\\mathbf{1}_{A_k}) = \\sum_{k<n} p_k(1 - p_k) \\le \\sum_{k<n} p_k = E[S_n]$. The remainder of the argument (steps 4-5) is classical second-moment-method machinery, identical to its appearances throughout probabilistic combinatorics (random-graph thresholds, Erdős probabilistic method)."
+    },
+    {
+      "id": "header-minimality",
+      "title": "Header — Minimal Independence Condition",
+      "startLine": 36,
+      "endLine": 44,
+      "summary": "Records the precise threshold: pairwise independence is exactly the right hypothesis level for BC2. Stronger conditions (full mutual independence) are unnecessary; weaker conditions (mere uncorrelated-ness without the joint distributional identity) fail. The Petrov 2002 §10 counterexample is cited as evidence that the conclusion can fail below the pairwise-independence threshold.",
+      "mathContext": "**At the events level**, pairwise independence is *equivalent* to uncorrelated-ness of indicators: $\\mathrm{Cov}(\\mathbf{1}_{A_i}, \\mathbf{1}_{A_j}) = \\mu(A_i \\cap A_j) - \\mu(A_i)\\mu(A_j) = 0 \\iff \\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$. Petrov 2002's counterexamples therefore must operate *strictly below* uncorrelated-ness — typically by relaxing pairwise independence to block-uncorrelated-ness (factorization for restricted classes of test functions) or to triangular-array dependence structures where the covariance bound $\\mathrm{Var}(S_n) \\le E[S_n]$ no longer holds."
+    },
+    {
+      "id": "header-status",
+      "title": "Header — Verification Status (0 axioms, 0 sorries)",
+      "startLine": 46,
+      "endLine": 50,
+      "summary": "Records the verification status: 0 axioms, 0 sorries, with the proof a one-line delegation to `LawsOfLargeNumbersOQ01.borel_cantelli_of_pairwise_independent` — itself an Aristotle-discovered proof using the Chebyshev-variance method, residing in the companion file `LawsOfLargeNumbersOQ01Aristotle.lean`. The companion-file pattern keeps the gallery facade clean while exposing the technical proof to Aristotle's automated proof search.",
+      "mathContext": "**Verification chain**: this file (98 lines, 1 theorem, 0 sorries, 0 axioms) → companion `LawsOfLargeNumbersOQ01Aristotle.lean` (Aristotle-proved `borel_cantelli_of_pairwise_independent`) → `Mathlib.Probability.{Independence.Basic, Variance}` → Mathlib foundational axioms (`Classical.choice`, `propext`, `Quot.sound`). Per the project's axiom integrity policy, no structure-encoded hypotheses (no `NSAxioms`-style assumption-bearing record fields) — `axiomCount: 0` is honest end-to-end."
+    },
+    {
+      "id": "header-references",
+      "title": "Header — In-Source References (Erdős-Rényi, Petrov, Feller)",
+      "startLine": 52,
+      "endLine": 58,
+      "summary": "Lists the three primary references: Erdős-Rényi (1959, *Ann. Univ. Sci. Budapest. Eötvös Sect. Math.*) — the original publication of pairwise BC2 inside a Cantor-series number-theoretic question; Petrov (2002, *Statist. Probab. Lett.*) — the counterexample establishing pairwise independence as the *minimal* threshold; and Feller (1971, Vol. II, Ch. VIII) — the standard textbook abstraction of the Erdős-Rényi result as a freestanding lemma. The structured `references` array in `meta.json` extends this list with seven additional entries (Borel 1909, Cantelli 1917, Chung-Erdős 1952, Etemadi 1981, two Mathlib module pointers).",
+      "mathContext": "**Provenance arc**: (1) Erdős-Rényi 1959 — lemma is *embedded* in a Cantor-series argument, used to show $\\sum 1/q_n = \\infty$ forces every digit to occur i.o. for almost every $x$; (2) Feller 1971 — lemma is *abstracted out* as a standalone result and named after the original authors; (3) Petrov 2002 — *minimality* of pairwise independence is established by counterexample, completing the threshold characterization. The Lean gallery entry mirrors Feller's abstraction step inside a formal verification framework, with Petrov's minimality observation recorded in the `Minimal Independence Condition` subsection (lines 36-44) and `keyInsights` array."
     },
     {
       "id": "setup",
