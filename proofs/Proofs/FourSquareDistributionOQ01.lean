@@ -1,5 +1,6 @@
 import Proofs.FourSquareDistribution
 import Mathlib.NumberTheory.Divisors
+import Mathlib.NumberTheory.ArithmeticFunction
 import Mathlib.Tactic
 
 /-
@@ -609,5 +610,182 @@ example : sigmaStar (4 * 3) = 3 * sigmaOne 3 :=
 /-- Cross-check: σ*(4·5) = 3·σ(5) — i.e., σ*(20) = 18. -/
 example : sigmaStar (4 * 5) = 3 * sigmaOne 5 :=
   sigmaStar_four_mul_of_odd (by decide) (by decide)
+
+-- =====================================================================
+-- PART 11: σ on powers of 2 and σ on (2^k · n) for n odd.
+--
+-- We now lift the σ-side computation from the special cases k = 1, 2
+-- (handled in Parts 8–9 by direct partition arguments) to all k ≥ 0.
+-- The two ingredients:
+--   * σ(2^k) = 2^(k+1) − 1 (geometric sum over divisors {1, 2, …, 2^k}).
+--   * σ(2^k · n) = σ(2^k) · σ(n) for n odd (coprime multiplicativity,
+--     via Mathlib's `Nat.Coprime.sum_divisors_mul`).
+--
+-- Together these give σ(2^k · n) = (2^(k+1) − 1) · σ(n) for n odd.
+-- This σ-side closed form is the missing input to extend
+-- σ*(2n) = σ*(4n) = 3·σ(n) (Part 9) to σ*(2^k n) = 3·σ(n) for ALL k ≥ 1.
+-- =====================================================================
+
+/-- Geometric sum: ∑_{i=0}^{k} 2^i = 2^(k+1) − 1.
+
+    Proved by induction on k. Used to evaluate σ(2^k) below. -/
+theorem sum_range_two_pow (k : ℕ) :
+    ∑ i ∈ Finset.range (k + 1), 2 ^ i = 2 ^ (k + 1) - 1 := by
+  induction k with
+  | zero => simp
+  | succ n ih =>
+    rw [Finset.sum_range_succ, ih]
+    have hpos : 1 ≤ 2 ^ (n + 1) := Nat.one_le_pow _ _ (by decide)
+    have hpow : 2 ^ (n + 2) = 2 ^ (n + 1) + 2 ^ (n + 1) := by
+      rw [pow_succ]; ring
+    omega
+
+/-- σ on powers of 2: σ(2^k) = 2^(k+1) − 1.
+
+    Proof: divisors of 2^k are {1, 2, 4, …, 2^k}, so the sum is the
+    geometric series ∑_{i=0}^{k} 2^i = 2^(k+1) − 1 (via
+    `Nat.sum_divisors_prime_pow` and `sum_range_two_pow`). -/
+theorem sigmaOne_two_pow (k : ℕ) : sigmaOne (2 ^ k) = 2 ^ (k + 1) - 1 := by
+  unfold sigmaOne
+  rw [Nat.sum_divisors_prime_pow Nat.prime_two]
+  simpa using sum_range_two_pow k
+
+/-- For n odd and k ≥ 0, σ(2^k · n) = σ(2^k) · σ(n).
+
+    Coprime multiplicativity of σ — `Nat.Coprime.sum_divisors_mul`
+    applied to the pair (2^k, n). For k = 0 this is trivial
+    (σ(1) = 1); for k ≥ 1 it uses `Nat.coprime_pow_left_iff` to
+    reduce gcd(2^k, n) = 1 to gcd(2, n) = 1, which holds by
+    `Nat.Prime.coprime_iff_not_dvd` since 2 ∤ n. -/
+theorem sigmaOne_two_pow_mul_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) (k : ℕ) :
+    sigmaOne (2 ^ k * n) = sigmaOne (2 ^ k) * sigmaOne n := by
+  unfold sigmaOne
+  rcases Nat.eq_zero_or_pos k with rfl | hk
+  · simp
+  · have hcop2 : Nat.Coprime 2 n :=
+      (Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hn
+    have hcop : Nat.Coprime (2 ^ k) n :=
+      (Nat.coprime_pow_left_iff hk 2 n).mpr hcop2
+    exact Nat.Coprime.sum_divisors_mul hcop
+
+/-- Closed form: σ(2^k · n) = (2^(k+1) − 1) · σ(n) for n odd, all k ≥ 0.
+
+    Direct corollary of `sigmaOne_two_pow_mul_of_odd` and
+    `sigmaOne_two_pow`. -/
+theorem sigmaOne_two_pow_mul_of_odd_eq {n : ℕ} (hn : ¬ 2 ∣ n) (k : ℕ) :
+    sigmaOne (2 ^ k * n) = (2 ^ (k + 1) - 1) * sigmaOne n := by
+  rw [sigmaOne_two_pow_mul_of_odd hn k, sigmaOne_two_pow]
+
+-- =====================================================================
+-- PART 12: σ*(2^k · n) = 3·σ(n) for k ≥ 1 and n odd — the general
+-- pattern previously established only for k = 1 (Part 9) and k = 2.
+-- =====================================================================
+
+/-- **σ*(2^k · n) = 3·σ(n) for k ≥ 1 and n odd** — main S5 contribution.
+
+    This is the general pattern hinted at by the k = 1 case
+    (`sigmaStar_two_mul_of_odd`) and the k = 2 case
+    (`sigmaStar_four_mul_of_odd`): the factor of 3 is independent of
+    which power of 2 (≥ 1) multiplies the odd part.
+
+    Proof: split on k.
+    * k = 1: reduce to `sigmaStar_two_mul_of_odd`.
+    * k ≥ 2: 4 ∣ 2^k · n, so `sigmaStar_of_four_dvd` gives
+        σ*(2^k · n) + 4·σ(2^(k-2) · n) = σ(2^k · n).
+      Substitute the closed forms σ(2^k · n) = (2^(k+1) − 1)·σ(n) and
+      σ(2^(k-2) · n) = (2^(k-1) − 1)·σ(n) (Part 11), giving
+        σ*(2^k · n) = (2^(k+1) − 1 − 4·(2^(k-1) − 1)) · σ(n)
+                    = (2^(k+1) − 1 − 2^(k+1) + 4) · σ(n)
+                    = 3 · σ(n). -/
+theorem sigmaStar_two_pow_mul_of_odd
+    {n : ℕ} (hn : ¬ 2 ∣ n) (hpos : 0 < n) {k : ℕ} (hk : 1 ≤ k) :
+    sigmaStar (2 ^ k * n) = 3 * sigmaOne n := by
+  -- Discharge k = 1 (uses Part 9) and reduce to k ≥ 2.
+  rcases Nat.lt_or_ge k 2 with hk2 | hk2
+  · -- k = 1 (since 1 ≤ k < 2)
+    have hk1 : k = 1 := by omega
+    subst hk1
+    rw [pow_one]
+    exact sigmaStar_two_mul_of_odd hn hpos
+  · -- k ≥ 2: 2^k · n = 4 · (2^(k-2) · n), so sigmaStar_of_four_dvd applies.
+    obtain ⟨j, rfl⟩ := Nat.exists_eq_add_of_le hk2
+    -- k = 2 + j; rewrite 2^(2+j) = 4 * 2^j.
+    have hpow : (2 : ℕ) ^ (2 + j) = 4 * 2 ^ j := by
+      rw [pow_add]; ring
+    have hpos' : 0 < 2 ^ j * n := by positivity
+    have h4_dvd : (4 : ℕ) ∣ 2 ^ (2 + j) * n := by
+      rw [hpow]
+      exact ⟨2 ^ j * n, by ring⟩
+    have h_pos_4n : 0 < 2 ^ (2 + j) * n := by positivity
+    have h_div : (2 ^ (2 + j) * n) / 4 = 2 ^ j * n := by
+      rw [hpow, Nat.mul_assoc, Nat.mul_div_cancel_left _ (by decide : (0:ℕ) < 4)]
+    -- Apply the structural identity σ*(N) + 4·σ(N/4) = σ(N) for N = 2^(2+j)·n.
+    have hbase : sigmaStar (2 ^ (2 + j) * n) + 4 * sigmaOne (2 ^ j * n)
+        = sigmaOne (2 ^ (2 + j) * n) := by
+      have := sigmaStar_of_four_dvd h4_dvd h_pos_4n
+      rwa [h_div] at this
+    -- Substitute σ-closed-forms.
+    have hsig_full : sigmaOne (2 ^ (2 + j) * n) = (2 ^ (2 + j + 1) - 1) * sigmaOne n :=
+      sigmaOne_two_pow_mul_of_odd_eq hn (2 + j)
+    have hsig_quarter : sigmaOne (2 ^ j * n) = (2 ^ (j + 1) - 1) * sigmaOne n :=
+      sigmaOne_two_pow_mul_of_odd_eq hn j
+    -- Now omega-friendly arithmetic on ℕ. Use facts about the sizes.
+    have h2pow_ge : (2 : ℕ) ^ (j + 1) ≥ 1 := Nat.one_le_pow _ _ (by decide)
+    have h2pow_full_ge : (2 : ℕ) ^ (2 + j + 1) ≥ 1 := Nat.one_le_pow _ _ (by decide)
+    -- The crucial identity 2^(2+j+1) = 4 * 2^(j+1).
+    have h_pow_rel : (2 : ℕ) ^ (2 + j + 1) = 4 * 2 ^ (j + 1) := by
+      have : 2 + j + 1 = 2 + (j + 1) := by ring
+      rw [this, pow_add]; ring
+    rw [hsig_full, hsig_quarter] at hbase
+    rw [h_pow_rel] at hbase
+    -- (sigmaStar X) + 4 * ((2^(j+1) - 1) * sigmaOne n) = (4 * 2^(j+1) - 1) * sigmaOne n
+    -- Expand: 4 * 2^(j+1) - 1 = 4 * 2^(j+1) - 4 + 3, so
+    -- sigmaStar X = 3 * sigmaOne n.
+    -- Use omega after extracting the nonneg subtraction.
+    -- Let p := 2^(j+1).
+    set p := (2 : ℕ) ^ (j + 1)
+    -- hbase : sigmaStar (2^(2+j) * n) + 4 * ((p - 1) * sigmaOne n) = (4 * p - 1) * sigmaOne n
+    -- (4 * p - 1) = 4 * (p - 1) + 3 (nonneg subtraction since p ≥ 1)
+    have hp_ge : 1 ≤ p := h2pow_ge
+    have h_unfold : (4 * p - 1) * sigmaOne n
+        = 4 * ((p - 1) * sigmaOne n) + 3 * sigmaOne n := by
+      have : 4 * p - 1 = 4 * (p - 1) + 3 := by omega
+      rw [this, Nat.add_mul, Nat.mul_assoc]
+    rw [h_unfold] at hbase
+    omega
+
+-- =====================================================================
+-- PART 13: Cross-validation of σ*(2^k · n) = 3·σ(n) for k = 1..4
+-- and small odd n. Together with Parts 7, 9, these give a complete
+-- numerical sanity check across the whole 2-power × odd-part range.
+-- =====================================================================
+
+/-- Cross-check: σ*(2¹·1) = 3·σ(1) — i.e., σ*(2) = 3. -/
+example : sigmaStar (2 ^ 1 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
+
+/-- Cross-check: σ*(2²·1) = 3·σ(1) — i.e., σ*(4) = 3. -/
+example : sigmaStar (2 ^ 2 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
+
+/-- Cross-check: σ*(2³·1) = 3·σ(1) — i.e., σ*(8) = 3. -/
+example : sigmaStar (2 ^ 3 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
+
+/-- Cross-check: σ*(2⁴·1) = 3·σ(1) — i.e., σ*(16) = 3. -/
+example : sigmaStar (2 ^ 4 * 1) = 3 * sigmaOne 1 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
+
+/-- Cross-check: σ*(2³·3) = 3·σ(3) — i.e., σ*(24) = 12. -/
+example : sigmaStar (2 ^ 3 * 3) = 3 * sigmaOne 3 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
+
+/-- Cross-check: σ*(2³·5) = 3·σ(5) — i.e., σ*(40) = 18. -/
+example : sigmaStar (2 ^ 3 * 5) = 3 * sigmaOne 5 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
+
+/-- Cross-check: σ*(2⁴·3) = 3·σ(3) — i.e., σ*(48) = 12. -/
+example : sigmaStar (2 ^ 4 * 3) = 3 * sigmaOne 3 :=
+  sigmaStar_two_pow_mul_of_odd (by decide) (by decide) (by decide)
 
 end FourSquareDistributionOQ01

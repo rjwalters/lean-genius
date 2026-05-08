@@ -31,15 +31,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 4,
-    "focus": "S4 (2026-05-08, researcher-7): added sigma*-side reduction for doubled-odd numbers — sigmaStar(2n) = 3*sigmaOne(n) and sigmaStar(4n) = 3*sigmaOne(n) for n odd. Proved via Finset partitions (divisors_two_mul_of_odd, divisors_four_mul_of_odd) and disjoint-image sum lemmas, plus sigmaOne multiplicativity at (2,n) and (4,n) for n odd. Combined with S3 (odd prime powers) and S2 (4-divisibility structural identity), gives a complete reformulation of sigma*(2^k * m) for k in {0,1,2} and m odd in terms of Mathlib sigma. PR opened. File: 401 -> 609 lines, 1 axiom unchanged, 0 sorries.",
+    "iteration": 5,
+    "focus": "S5 (2026-05-08, researcher-8): generalized S4 from k ∈ {1, 2} to ALL k ≥ 1 — sigmaStar_two_pow_mul_of_odd: σ*(2^k · n) = 3·σ(n) for n odd, k ≥ 1. Bridge built via PART 11: sigmaOne_two_pow (σ(2^k) = 2^(k+1) − 1, geometric sum via Nat.sum_divisors_prime_pow + sum_range_two_pow induction), sigmaOne_two_pow_mul_of_odd (coprime multiplicativity via Nat.Coprime.sum_divisors_mul + Nat.coprime_pow_left_iff), and sigmaOne_two_pow_mul_of_odd_eq closed form. PART 12 main theorem: case-split on k ∈ {1} vs k ≥ 2; the k ≥ 2 case applies sigmaStar_of_four_dvd (S2) recursively with the σ closed form. PART 13 cross-validates for k ∈ {1, 2, 3, 4} and m ∈ {1, 3, 5}. File: 609 -> 791 lines, 1 axiom unchanged, 0 sorries. PR opened.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
       "Local Docker build memory ceiling (host has 7.65 GiB Docker memory; Mathlib + this file exceeds that). S2 commits unverified per researcher-3 PR #16188 pattern; CI to validate."
     ],
-    "nextAction": "(Researcher) S5 candidates: (1) Generalize sigma*(2^k n) = 3*sigma(n) for n odd to all k >= 1 by induction on k via sigmaStar_of_four_dvd. (2) Bridge to Mathlib ArithmeticFunction.IsMultiplicative for full sigma*-multiplicativity at coprime args (when at least one is odd). (3) Compose with sigma_one_apply_prime_pow to give sigma*(2^k * p^j) closed forms for odd prime p.",
+    "nextAction": "(Researcher) S6 candidates: (1) Bridge sigmaStar_two_pow_mul_of_odd × sigmaStar_prime_pow_of_odd_prime via Mathlib's Nat.Coprime.sum_divisors_mul to give a closed form for sigma*(2^k · p^j) for odd prime p. (2) Push toward full sigma* multiplicativity on coprime args (m, n): split on which of m, n carries the 2-adic content. (3) The remaining hard work is the modular-form bridge — that requires Mathlib q-expansion for jacobiTheta. Both prep paths are now sigma-side complete for all 2-power × odd-part decompositions.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 0,
@@ -78,7 +78,13 @@
       "S4 sigmaStar_two_mul_of_odd: sigma*(2n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~467",
       "S4 sigmaOne_four_mul_of_odd: sigma(4n) = 7*sigma(n) for n odd via 2-adic-valuation 3-piece partition — FourSquareDistributionOQ01.lean ~480",
       "S4 sigmaStar_four_mul_of_odd: sigma*(4n) = 3*sigma(n) for n odd — FourSquareDistributionOQ01.lean ~563",
-      "S4 cross-checks: 7 example blocks for n in {1,3,5,9} (2n) and {1,3,5} (4n) — inline examples"
+      "S4 cross-checks: 7 example blocks for n in {1,3,5,9} (2n) and {1,3,5} (4n) — inline examples",
+      "S5 sum_range_two_pow: ∑_{i=0}^{k} 2^i = 2^(k+1) - 1, induction on k — FourSquareDistributionOQ01.lean ~632",
+      "S5 sigmaOne_two_pow: σ(2^k) = 2^(k+1) - 1 via Nat.sum_divisors_prime_pow + sum_range_two_pow — FourSquareDistributionOQ01.lean ~648",
+      "S5 sigmaOne_two_pow_mul_of_odd: σ(2^k · n) = σ(2^k)·σ(n) for n odd, via Nat.Coprime.sum_divisors_mul + Nat.coprime_pow_left_iff — FourSquareDistributionOQ01.lean ~660",
+      "S5 sigmaOne_two_pow_mul_of_odd_eq: σ(2^k · n) = (2^(k+1) - 1)·σ(n) for n odd, all k ≥ 0 — FourSquareDistributionOQ01.lean ~675",
+      "S5 sigmaStar_two_pow_mul_of_odd: σ*(2^k · n) = 3·σ(n) for k ≥ 1, n odd — main S5 theorem at FourSquareDistributionOQ01.lean ~700",
+      "S5 cross-checks: 7 example blocks for k ∈ {1,2,3,4} and m ∈ {1,3,5} — inline examples"
     ],
     "insights": [
       "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
@@ -104,6 +110,18 @@
       {
         "insight": "S4 closes most of the sigma*-side preparation: combined with S3 (odd prime powers) and S2 (4-divisibility), sigma*(2^k * p^j) for prime p odd, k in {0,1,2}, j >= 0 is now fully reduced to Mathlib sigma. Only the multiplicativity bridge sigma*(m*n) = sigma*(m)*sigma*(n)/sigma*(gcd) for coprime m,n with at least one even and another component remains for general n; this is the natural S5 target.",
         "source": "S4 architecture review"
+      },
+      {
+        "insight": "S5: σ*(2^k · n) = 3·σ(n) for ALL k ≥ 1 and n odd. The factor of 3 is independent of k — it equals σ(2) − 0 (no 4-divisible divisors of 2) regardless of how many additional powers of 2 multiply n. Mechanism: σ*(2^k · n) = σ(2^k · n) − 4·σ(2^(k-2) · n) = ((2^(k+1) − 1) − 4·(2^(k-1) − 1))·σ(n) = (2^(k+1) − 1 − 2^(k+1) + 4)·σ(n) = 3·σ(n). The 4 from the structural identity exactly cancels the geometric difference 2^(k+1) − 4·2^(k-1) = 0.",
+        "source": "S5 generalization of S4 to all k"
+      },
+      {
+        "insight": "S5: The σ-side closed form sigmaOne_two_pow_mul_of_odd_eq is more general than what S5 needs — it gives σ(2^k · n) = (2^(k+1) − 1)·σ(n) for n odd and ANY k ≥ 0. This subsumes the explicit closed forms in S4 (sigmaOne_two_mul_of_odd: 3·σ for k=1; sigmaOne_four_mul_of_odd: 7·σ for k=2). Future use cases: r4(2^k) for arbitrary k, σ-side of full r4(n) computation, divisor-sum identities involving 2-adic structure.",
+        "source": "S5 σ-side bridge"
+      },
+      {
+        "insight": "S5 architecture: The σ*-side preparation now covers σ*(2^k · m) for ALL k ≥ 0 (k=0 by S3, k≥1 by S5) and m odd. Combined with S3's σ*(p^j) = σ(p^j) for odd primes p, this means the σ*-side of r4(n) for n = 2^k · m with m a power of an odd prime is FULLY reduced to Mathlib-σ. The only remaining σ*-side work is multi-prime composition for m with multiple odd-prime factors, which follows from sigmaStar_eq_sigmaOne_of_odd + Nat.Coprime.sum_divisors_mul. The deep blocker remains the modular-form q-expansion (the 8·σ*(n) value is settled; the 8·σ*(n) = r4(n) IDENTITY is what's modular-form-blocked).",
+        "source": "S5 σ*-side completion"
       }
     ],
     "mathlibGaps": [
