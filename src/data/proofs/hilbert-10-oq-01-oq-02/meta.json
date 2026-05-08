@@ -22,7 +22,11 @@
     "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
-      "Mathlib.Algebra.Group.Basic"
+      {
+        "theorem": "sub_eq_zero",
+        "description": "x - y = 0 ↔ x = y; used in singleton {a} ⊂ ℚ Σ₁-definability via shift polynomial P(q,x) = q - a",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
     ],
     "originalContributions": [
       "IsDiophantineDefinition: Σ₁ (purely existential) definability of subsets of ℚ",
