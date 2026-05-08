@@ -65,7 +65,7 @@
     ],
     "dateAdded": "2026-05-04",
     "axiomCount": 3,
-    "lineCount": 300,
+    "lineCount": 454,
     "assumptions": "3 axioms: (1) rational_digits_eventually_periodic — rationals have eventually periodic base-b digit expansions (pigeonhole principle, period T | φ(q)); (2) normal_imp_irrational — normality in any base b ≥ 2 implies irrationality (uses axiom 1 + periodic_has_missing_ktuple + Tendsto formalism); (3) e_absolutely_normal — e is absolutely normal (the main open conjecture, 2026). periodic_has_missing_ktuple is now a proved theorem (orbit cardinality argument). 28 theorems including first 9 decimal digits of e proved from exp_one bounds.",
     "mathlib_version": "4.26.0",
     "definitionCount": 3
@@ -169,7 +169,7 @@
       "Filter"
     ],
     "namespace": "ETranscendentalOQ02",
-    "lineCount": 300,
+    "lineCount": 454,
     "axiomCount": 3,
     "theoremCount": 28,
     "definitionCount": 3,

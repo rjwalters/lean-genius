@@ -322,17 +322,44 @@ private lemma ratResidue_eventually_periodic (b : ℕ) (q : ℚ) (hq : 0 < q.den
     simp only [ratResidue_eq_iterate]
     exact hper n hn
 
+/-! ### Layer 3a: floor of `b^n · (p/q)` reduces to integer division
+
+Layer 3 — the residue-bridge for `nthDigit b n (p/q)` — factors into two
+parts. Part (a), implemented here, discharges the `ℝ → ℤ` cast burden:
+for `p : ℤ` and `q : ℕ`, the floor of `b^n · (p/q)` taken in `ℝ` is just
+the integer Euclidean quotient `(b^n · p) / q`. Part (b), deferred,
+relates this quotient to the residue `(b^n · p) mod q` in the `% b` form
+needed by `nthDigit`. Splitting (a) out of (b) keeps the residue algebra
+a pure-integer-arithmetic exercise, free of `Real`-side floor lemmas.
+-/
+
+/-- Floor of `b^n · (p / q)` (real-valued division) equals `(b^n · p) / q`
+    (integer Euclidean division). For `q = 0` both sides reduce to 0 by
+    Lean's division convention (`x / 0 = 0`). The proof reduces to
+    `Int.floor_div_natCast` after rewriting the real expression as a
+    single `ℤ`-cast over a `ℕ`-divisor. -/
+private lemma floor_pow_mul_div (b : ℕ) (p : ℤ) (q : ℕ) (n : ℕ) :
+    ⌊(b : ℝ) ^ n * ((p : ℝ) / (q : ℝ))⌋ = ((b : ℤ) ^ n * p) / q := by
+  have hcast : (b : ℝ) ^ n * ((p : ℝ) / (q : ℝ)) =
+      (((b : ℤ) ^ n * p : ℤ) : ℝ) / (q : ℝ) := by
+    push_cast
+    ring
+  rw [hcast, Int.floor_div_natCast, Int.floor_intCast]
+
 /-- **Axiom**: Rational numbers have eventually periodic base-b expansions.
     Proof sketch: if x = p/q, then bⁿ·(p/q) mod 1 = (bⁿ·p mod q)/q, and
     bⁿ mod q is periodic (pigeonhole on {0,...,q-1}).
     The period T divides φ(q) ≤ q.
 
     Recipe-status (Session 3 #16976; Layer 1 added Session 8; Layer 2 added
-    Session 9): the orbit-form pigeonhole `eventually_periodic_iterate` plus
-    the residue bridge `ratResidue_eventually_periodic` together give the
-    abstract eventual-periodicity ingredient — the residue sequence
-    `q.num · bⁿ mod q.den` is now formally periodic for every `q : ℚ` with
-    `q.den > 0`. Layer 3 (`nthDigit_rat_eq_residue` cast bridge) remains. -/
+    Session 9; Layer 3a added Session 10): the orbit-form pigeonhole
+    `eventually_periodic_iterate` plus the residue bridge
+    `ratResidue_eventually_periodic` give the abstract eventual-periodicity
+    ingredient — the residue sequence `q.num · bⁿ mod q.den` is now formally
+    periodic for every `q : ℚ` with `q.den > 0`. Layer 3a
+    (`floor_pow_mul_div`) discharges the `ℝ → ℤ` cast burden, leaving
+    Layer 3b — the integer-arithmetic residue-bridge — as the only piece
+    between this axiom and a discharged theorem. -/
 axiom rational_digits_eventually_periodic (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
     ∃ (T : ℕ) (N₀ : ℕ), 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
 
