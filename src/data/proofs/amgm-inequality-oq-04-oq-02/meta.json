@@ -1,0 +1,217 @@
+{
+  "id": "amgm-inequality-oq-04-oq-02",
+  "title": "Legendre's Relation for Complete Elliptic Integrals (Stub)",
+  "slug": "amgm-inequality-oq-04-oq-02",
+  "description": "Stub formalization of Legendre's relation E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2 for the complete elliptic integrals of the first and second kind. Reuses the rigorous K(k) definition from AmgmInequalityOQ04OQ01 (Mathlib intervalIntegral), introduces E(k) rigorously (also as intervalIntegral), defines the complementary modulus k' = √(1-k²), and axiomatizes the general Legendre relation. The symmetric case 2KE - K² = π/2 at k = 1/√2 is **derived as a theorem** from the general axiom — providing infrastructure to eliminate the corresponding axiom in AmgmInequalityOQ04OQ05 in a future session.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://dlmf.nist.gov/19.7",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ04OQ02.lean",
+    "tags": [
+      "analysis",
+      "elliptic-integrals",
+      "special-functions",
+      "legendre-relation",
+      "agm",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 285,
+    "theoremCount": 21,
+    "definitionCount": 5,
+    "assumptions": "1 axiom: legendre_relation (the general Legendre relation E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2 for 0 < k < 1; classical 19th-century result; proof requires differentiation under the integral sign and the Wronskian of the Legendre ODE — to be replaced with a constructive proof in a future session). The file inherits 1 additional axiom from AmgmInequalityOQ04OQ01 (agm_ellipticK_connection), but that is not declared in this file.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "**Legendre (1811–1828)**: Adrien-Marie Legendre published *Traité des fonctions elliptiques et des intégrales eulériennes* (3 volumes, 1825–1828) in which he established the relation E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2 connecting the complete elliptic integrals of the first and second kind at a modulus k and its complement k' = √(1-k²). The proof uses the **Legendre ODE** satisfied by K(k) and a Wronskian-style argument: differentiating the bracketed combination shows it is constant in k; evaluating at any convenient point (e.g. k = 1/√2 or the limit k → 0) pins the constant to π/2.\n\n**Whittaker–Watson (1927)**: §22.41 of *A Course of Modern Analysis* gives a now-standard textbook proof. Defining f(k) = E·K' + E'·K - K·K' and using dK/dk = (E - k'²K)/(k k'²), dE/dk = (E - K)/k, one computes df/dk = 0, so f is constant. The constant is π/2 by the symmetric case k = 1/√2 (where k' = k and the relation reduces to 2KE - K² = π/2).\n\n**Gauss–Brent–Salamin connection**: Legendre's relation is one of three pillars of the Brent–Salamin algorithm for computing π (Salamin 1976, Brent 1976), formalized in this gallery as `amgm-inequality-oq-04-oq-05`. There the symmetric form `2KE - K² = π/2` at k = 1/√2 is taken as an axiom; **this file's `legendre_relation_symmetric` theorem is the form needed to discharge that axiom**. Combined with Gauss's AGM theorem (`amgm-inequality-oq-04-oq-01`'s `agm_ellipticK_connection`) and the E-via-AGM Landen identity, the full Brent-Salamin formula π = 4M²/(1-2S) follows.",
+    "problemStatement": "Define the complete elliptic integral of the second kind E(k) = ∫₀^{π/2} √(1 - k² sin²θ) dθ rigorously via Mathlib's intervalIntegral, define the complementary modulus k' = √(1 - k²), and state the Legendre relation: for all 0 < k < 1, E(k)·K(k') + E(k')·K(k) − K(k)·K(k') = π/2.",
+    "text": "Legendre's relation is a classical Wronskian-type identity for the complete elliptic integrals. This formalization rigorously defines E(k) and the complementary modulus, axiomatizes the general relation, and derives the symmetric special case 2KE - K² = π/2 at k = 1/√2 — the form used in the Brent-Salamin formula.",
+    "proofStrategy": "Rigorous Mathlib-based **definitions** of E(k), the complementary modulus k', and K'(k), E'(k); the deep analytic identity (the Legendre relation itself) is **axiomatized** because its proof requires differentiation under the integral sign and the Legendre ODE Wronskian, both present in Mathlib but not yet wired up to ellipticK. The **symmetric case** 2KE - K² = π/2 at k = 1/√2 is then **derived as a theorem** by specializing the general axiom and using complModulus_symmetric (the proof that k' = k at k = 1/√2).",
+    "keyInsights": [
+      "**E(k) admits a clean Mathlib intervalIntegral definition**: Following the pattern in AmgmInequalityOQ04OQ01 for K(k), E(k) = ∫₀^{π/2} √(1 - k² sin²θ) dθ is a continuous integrand on ℝ for any k. Continuity (`integrandE_continuous`) and integrability (`ellipticE_integrable`) are direct from `Real.continuous_sqrt` ∘ `(continuous_const.sub (continuous_const.mul (continuous_sin.pow 2)))`. **No restriction on k is needed** for integrability, unlike K(k) where k² < 1 is required to keep the denominator positive.",
+      "**E(0) = π/2 by direct computation**: At k = 0 the integrand collapses to √1 = 1, so E(0) = π/2. The proof is identical in spirit to `ellipticK_zero` in OQ04OQ01 — one `simp_rw` with `integrandE_zero_eq_one` then `intervalIntegral.integral_const`.",
+      "**E(k) > 0 via the lower bound √(1 - k²)**: Since `1 - k² ≤ 1 - k² sin²θ` for all θ, we get `√(1 - k²) ≤ √(1 - k² sin²θ) = ellipticIntegrandE k θ`. Then `intervalIntegral.integral_mono_on` gives `√(1-k²) · (π/2) ≤ E(k)`, and the LHS is positive when k² < 1.",
+      "**Complementary modulus is involutive on [0, 1]**: For 0 ≤ k ≤ 1, complModulus(complModulus k) = k. Proof: `√(1 - (√(1-k²))²) = √(1 - (1-k²)) = √(k²) = k` (using `Real.sqrt_sq` for the last step).",
+      "**Symmetric case at k = 1/√2 is the key payoff**: At k = 1/√2 the complementary modulus equals k itself: complModulus(1/√2) = √(1 - 1/2) = √(1/2) = 1/√2. Hence K(k') = K(k) and E(k') = E(k), and Legendre's relation collapses from 4 terms to: `E·K + E·K - K·K = 2·K·E - K² = π/2`. This matches the form axiomatized in AmgmInequalityOQ04OQ05.",
+      "**This file unblocks an axiom elimination in OQ04OQ05**: The Brent-Salamin formalization (oq-04-oq-05) currently axiomatizes `legendre_relation : 2 K · E - K² = π/2` for k = 1/√2. By importing this file's `legendre_relation_symmetric` (proved here from the more general axiom), a future session can replace that axiom with a derivation. The general axiom is *also* deeper than the symmetric case, so the assumption load doesn't decrease — but the dependency graph becomes more accurate: oq-04-oq-05's symmetric Legendre is a consequence of a single more-general fact, not an independent assumption.",
+      "**The general proof is reachable from Mathlib but non-trivial**: Mathlib has all the ingredients (`intervalIntegral.deriv_*`, `MeasureTheory.intervalIntegral.differentiableOn_intervalIntegral_lemmas`, the chain rule). The blocker is plumbing — the standard textbook proof differentiates K(k) and E(k) under the integral with respect to the modulus, computes their explicit derivatives (`dK/dk = (E - k'²K)/(k·k'²)`, `dE/dk = (E - K)/k`), and shows the bracketed combination has zero derivative on (0, 1). Future session goal: provide a proper proof of legendre_relation, reducing this file's axiom count to 0."
+    ],
+    "prerequisites": [
+      "AmgmInequalityOQ04OQ01: ellipticK definition and properties (Mathlib intervalIntegral)",
+      "Mathlib intervalIntegral, integral_const, integral_mono_on",
+      "Real.sqrt and basic identities (sqrt_sq, mul_self_sqrt, sqrt_le_sqrt)",
+      "Continuity of Real.sqrt, sin, polynomial functions",
+      "Elementary algebra over ℝ"
+    ]
+  },
+  "conclusion": {
+    "summary": "This stub formalization of Legendre's relation provides: (1) a rigorous Mathlib-based definition of E(k) (matching the pattern of OQ04OQ01's K(k)); (2) the complementary modulus k' = √(1-k²); (3) the general Legendre relation E·K' + E'·K - K·K' = π/2 axiomatized for 0 < k < 1; (4) the symmetric corollary `2·K·E - K² = π/2` at k = 1/√2 derived as a theorem. The symmetric case is the form used in the Brent-Salamin algorithm (OQ04OQ05) — this file therefore provides infrastructure to discharge that file's symmetric-Legendre axiom in a future session. 1 axiom in this file (the general relation), 0 sorries.",
+    "implications": "The Legendre relation is a classical Wronskian identity at the heart of elliptic-function theory. A constructive Mathlib proof would unlock several downstream formalizations: (1) the Brent-Salamin algorithm fully proved without the symmetric-Legendre axiom; (2) a constructive theory of complete elliptic integrals via interval integrals; (3) the foundation for further classical identities (e.g. K(k) = (1+k')/2 · K(2√k'/(1+k')) — the Landen transformation). Future sessions should target the constructive proof using `intervalIntegral.deriv_*` and the explicit derivatives `dK/dk`, `dE/dk`.",
+    "openQuestions": [
+      "Prove the general Legendre relation `legendre_relation` constructively from the explicit derivatives `dK/dk = (E - k'²K)/(k·k'²)` and `dE/dk = (E - K)/k` and the Wronskian-vanishing argument (textbook approach Whittaker–Watson §22.41)",
+      "Prove `dK/dk = (E - k'²K)/(k·k'²)` by differentiation under the integral sign using `MeasureTheory.intervalIntegral.deriv_integral_*`",
+      "Prove `dE/dk = (E - K)/k` similarly",
+      "Discharge the symmetric-Legendre axiom in `AmgmInequalityOQ04OQ05` by importing this file's `legendre_relation_symmetric` (cleanup task; small PR)",
+      "Generalize to complex moduli — the complete elliptic integrals over ℂ\\{1, -1} satisfy a complex-modulus Legendre relation (Borwein–Borwein 1987 §3)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Reuses the rigorous `ellipticK` definition (Mathlib intervalIntegral). This file defines `ellipticE` analogously and adds the complementary modulus k' = √(1-k²) plus the Legendre relation."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04-oq-05",
+      "relationship": "supports",
+      "description": "OQ04OQ05 (Brent-Salamin) currently axiomatizes the symmetric Legendre relation `2KE - K² = π/2` at k = 1/√2. This file's `legendre_relation_symmetric` theorem (proved from the more general axiom) provides exactly that statement, enabling a future session to discharge the OQ04OQ05 axiom."
+    },
+    {
+      "targetId": "amgm-inequality-oq-04",
+      "relationship": "extends",
+      "description": "Indirectly inherits the AGM definitions (agmA, agmB, agm) via the OQ04OQ01 import chain. Future session work integrating Legendre's relation with the AGM theorem will use these."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-preamble",
+      "title": "Preamble: Goals and Status Checklist",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring laying out the seven-step plan: reuse ellipticK from OQ04OQ01; define ellipticE via intervalIntegral; define complementary modulus and K', E'; prove basic properties; axiomatize the general Legendre relation; derive the symmetric case at k = 1/√2. Includes a status checklist tracking which steps are proved vs axiomatized.",
+      "mathContext": "Legendre's relation (DLMF §19.7.1) for complete elliptic integrals: $E(k) K(k') + E(k') K(k) - K(k) K(k') = \\pi/2$ where $k' = \\sqrt{1-k^2}$. The standard textbook proof differentiates the bracketed combination using $\\frac{dK}{dk} = \\frac{E - (k')^2 K}{k (k')^2}$ and $\\frac{dE}{dk} = \\frac{E - K}{k}$, shows the derivative is zero, and pins the constant by the boundary value at k = 1/√2 (or the limit k → 0)."
+    },
+    {
+      "id": "sec-ellipticE",
+      "title": "§ 1: Complete Elliptic Integral E(k) of the Second Kind",
+      "startLine": 62,
+      "endLine": 76,
+      "summary": "Defines `ellipticIntegrandE k θ = √(1 - k²·sin²θ)` and `ellipticE k = ∫₀^{π/2} ellipticIntegrandE k θ dθ` via Mathlib's `intervalIntegral`. Both are `noncomputable def`s.",
+      "mathContext": "$E(k) = \\int_0^{\\pi/2} \\sqrt{1 - k^2 \\sin^2 \\theta} \\, d\\theta$. Unlike $K(k)$, which requires $|k| < 1$ for the denominator to stay positive, $E(k)$'s integrand is well-defined for all real $k$ (using `Real.sqrt`'s convention that `sqrt` of a negative is 0). For $|k| \\leq 1$ the integrand is also bounded above by 1, since $1 - k^2 \\sin^2 \\theta \\leq 1$."
+    },
+    {
+      "id": "sec-integrand",
+      "title": "§ 2: Basic Properties of the E-Integrand",
+      "startLine": 78,
+      "endLine": 117,
+      "summary": "Six lemmas: integrandE_nonneg (Real.sqrt is nonneg), integrandE_le_one (uses 1 - k²sin²θ ≤ 1), integrandE_zero_eq_one (the integrand at k=0 is √1=1), integrandE_lower_bound (`√(1-k²) ≤ ellipticIntegrandE k θ` for k² < 1), integrandE_continuous (composition of continuous functions), ellipticE_integrable (continuous ⇒ intervalIntegrable on a closed interval).",
+      "mathContext": "The lower bound $\\sqrt{1-k^2} \\leq \\sqrt{1 - k^2 \\sin^2 \\theta}$ uses $\\sin^2 \\theta \\leq 1$, hence $k^2 \\sin^2 \\theta \\leq k^2$, hence $1 - k^2 \\leq 1 - k^2 \\sin^2 \\theta$, then `Real.sqrt_le_sqrt`. This lower bound is the engine behind `ellipticE_pos`."
+    },
+    {
+      "id": "sec-keyvalues",
+      "title": "§ 3: Key Values of E",
+      "startLine": 119,
+      "endLine": 153,
+      "summary": "Two main theorems: `ellipticE_zero : E(0) = π/2` (one-line proof: simp_rw integrandE_zero_eq_one + integral_const) and `ellipticE_pos : 0 < E(k)` for k² < 1 (uses `intervalIntegral.integral_mono_on` with the lower bound √(1-k²)).",
+      "mathContext": "$E(0) = \\int_0^{\\pi/2} 1 \\, d\\theta = \\pi/2$. For $|k| < 1$: $E(k) \\geq \\sqrt{1 - k^2} \\cdot \\frac{\\pi}{2} > 0$ since both factors are positive."
+    },
+    {
+      "id": "sec-complmodulus",
+      "title": "§ 4: The Complementary Modulus k' = √(1-k²)",
+      "startLine": 155,
+      "endLine": 184,
+      "summary": "Defines `complModulus k = Real.sqrt (1 - k^2)`. Five lemmas: complModulus_nonneg, complModulus_pos (when k² < 1), complModulus_sq (Pythagorean: (k')² = 1 - k² when k² ≤ 1), complModulus_sq_lt_one (when 0 < k² < 1), complModulus_complModulus (k'' = k for k ∈ [0, 1]).",
+      "mathContext": "$k' = \\sqrt{1 - k^2}$ is defined for all real $k$ via `Real.sqrt`. The key identities are $(k')^2 = 1 - k^2$ for $|k| \\leq 1$ (using `Real.mul_self_sqrt`) and the involutive property $k'' = k$ for $0 \\leq k \\leq 1$ (using `Real.sqrt_sq`). The pair $(k, k')$ with $k^2 + (k')^2 = 1$ parametrizes the unit circle's first quadrant."
+    },
+    {
+      "id": "sec-Kprime-Eprime",
+      "title": "§ 5: K and E at the Complementary Modulus",
+      "startLine": 186,
+      "endLine": 200,
+      "summary": "Defines ellipticK' k = K(k') and ellipticE' k = E(k'). Two positivity lemmas: ellipticK'_pos and ellipticE'_pos for 0 < k² < 1 (since k' is then in the open interval (0, 1)).",
+      "mathContext": "$K'(k) := K(k') = K(\\sqrt{1-k^2})$ and $E'(k) := E(k')$ are the standard *complementary* elliptic integrals. The notation $K'$ is overloaded in the literature (sometimes meaning $\\frac{dK}{dk}$, sometimes $K(k')$); we use the latter convention."
+    },
+    {
+      "id": "sec-legendre",
+      "title": "§ 6: Legendre's Relation (Axiomatized)",
+      "startLine": 202,
+      "endLine": 244,
+      "summary": "States `axiom legendre_relation` for 0 < k < 1: E(k)·K'(k) + E'(k)·K(k) − K(k)·K'(k) = π/2. Comment block explains the axiom is a deep classical analytic identity proved via the Legendre ODE Wronskian, requires differentiation under the integral, and is targeted for elimination in a future session.",
+      "mathContext": "Legendre's relation (NIST DLMF 19.7.1, Whittaker–Watson §22.41): $E(k) K(k') + E(k') K(k) - K(k) K(k') = \\pi/2$ for $0 < k < 1$. The standard proof: define $f(k) := E K' + E' K - K K'$ and compute $f'(k) = 0$ using $\\frac{dK}{dk} = \\frac{E - (k')^2 K}{k (k')^2}$ and $\\frac{dE}{dk} = \\frac{E - K}{k}$ (with corresponding derivatives in $k'$). Pin the constant by evaluating at any convenient point — e.g. $k = 1/\\sqrt{2}$ where $f = 2KE - K^2$, or the limit $k \\to 0^+$ where $K \\to \\pi/2$, $E \\to \\pi/2$, $K' \\to \\infty$, $E' \\to 1$, and a careful limit gives $\\pi/2$."
+    },
+    {
+      "id": "sec-symmetric",
+      "title": "§ 7: Symmetric Special Case at k = 1/√2",
+      "startLine": 246,
+      "endLine": 285,
+      "summary": "Four private helper lemmas (sqrt_two_pos, one_div_sqrt_two_sq, one_div_sqrt_two_pos, one_div_sqrt_two_lt_one) plus two main theorems: `complModulus_symmetric : complModulus(1/√2) = 1/√2` (uses `Real.sqrt_sq` after reducing `1 - (1/√2)² = (1/√2)²`); `legendre_relation_symmetric : 2·K(1/√2)·E(1/√2) − K(1/√2)² = π/2` (specializes the general axiom and uses `linear_combination`).",
+      "mathContext": "At $k = 1/\\sqrt{2}$: $k' = \\sqrt{1 - 1/2} = \\sqrt{1/2} = 1/\\sqrt{2} = k$. So $K(k') = K(k)$ and $E(k') = E(k)$. The general Legendre relation $E K' + E' K - K K' = \\pi/2$ becomes $E K + E K - K K = 2 E K - K^2 = \\pi/2$. This is the symmetric form used in the Brent-Salamin algorithm and currently axiomatized in `AmgmInequalityOQ04OQ05.legendre_relation`."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "AmgmInequalityOQ04OQ02.ellipticE_zero",
+      "statement": "ellipticE 0 = Real.pi / 2",
+      "description": "E(0) = π/2: the degenerate complete elliptic integral of the second kind equals π/2."
+    },
+    {
+      "name": "AmgmInequalityOQ04OQ02.ellipticE_pos",
+      "statement": "0 < ellipticE k  (when k^2 < 1)",
+      "description": "E(k) > 0 for |k| < 1, proved via the integrand lower bound √(1-k²)."
+    },
+    {
+      "name": "AmgmInequalityOQ04OQ02.complModulus_symmetric",
+      "statement": "complModulus (1 / Real.sqrt 2) = 1 / Real.sqrt 2",
+      "description": "At k = 1/√2 the complementary modulus equals the modulus itself: k' = k."
+    },
+    {
+      "name": "AmgmInequalityOQ04OQ02.legendre_relation_symmetric",
+      "statement": "2 * ellipticK (1 / Real.sqrt 2) * ellipticE (1 / Real.sqrt 2) - (ellipticK (1 / Real.sqrt 2))^2 = Real.pi / 2",
+      "description": "Symmetric Legendre relation at k = 1/√2: 2KE - K² = π/2. Derived from the general axiom plus complModulus_symmetric. Matches the form used in AmgmInequalityOQ04OQ05 (Brent-Salamin)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AmgmInequalityOQ04OQ01"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "Real",
+      "AmgmInequalityOQ04OQ01"
+    ],
+    "namespace": "AmgmInequalityOQ04OQ02",
+    "lineCount": 285,
+    "axiomCount": 1,
+    "theoremCount": 21,
+    "definitionCount": 5,
+    "path": "Proofs/AmgmInequalityOQ04OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Legendre, Adrien-Marie",
+      "title": "Traité des fonctions elliptiques et des intégrales eulériennes",
+      "year": "1825-1828",
+      "venue": "Paris: Huzard-Courcier",
+      "note": "Original three-volume treatise establishing the Legendre relation among many other classical results in elliptic integral theory."
+    },
+    {
+      "authors": "Whittaker, E. T.; Watson, G. N.",
+      "title": "A Course of Modern Analysis (4th ed.)",
+      "year": "1927",
+      "venue": "Cambridge University Press, §22.41",
+      "note": "Standard textbook proof of Legendre's relation via the Wronskian of K(k) and K'(k) viewed as solutions of the Legendre differential equation."
+    },
+    {
+      "authors": "Borwein, Jonathan M.; Borwein, Peter B.",
+      "title": "Pi and the AGM: A Study in Analytic Number Theory and Computational Complexity",
+      "year": "1987",
+      "venue": "John Wiley & Sons",
+      "note": "Chapter 1 (Theorem 1.6) gives a complete proof of Legendre's relation and applies it (with Gauss's AGM theorem and the Landen transformation) to derive the Brent-Salamin formula for π."
+    },
+    {
+      "authors": "DLMF",
+      "title": "NIST Digital Library of Mathematical Functions, §19.7",
+      "year": "2024",
+      "venue": "https://dlmf.nist.gov/19.7",
+      "note": "Equation 19.7.1 is Legendre's relation in the canonical form used here. The DLMF section also covers complementary moduli, the Landen transformation, and quadratic transformations."
+    }
+  ],
+  "sorries": 0
+}

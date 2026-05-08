@@ -116,6 +116,7 @@ theorem ellipticK_pos (hk : k ^ 2 < 1) : 0 < ellipticK k := by
     _ ≤ ellipticK k := by
         unfold ellipticK
         refine intervalIntegral.integral_mono
+          (by linarith [Real.pi_pos] : (0:ℝ) ≤ π / 2)
           (ellipticK_integrable (by norm_num : (0:ℝ)^2 < 1))
           (ellipticK_integrable hk) ?_
         intro θ
