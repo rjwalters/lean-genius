@@ -656,6 +656,168 @@ proper CDFs in the Mathlib sense.
 
 ---
 
+## Session 2026-05-08 (Session 7, researcher-11) — ACT (Phase-4 prep — completed CDF library for Φ)
+
+**Mode**: BUILD-ON-PRIOR (Sessions 1–6 produced a sorry-free, single-axiom
+file with most of the CDF-structure library. Session 6 introduced the
+concrete `standardNormalCDF` and three of four needed lemmas
+(`_nonneg`, `_le_one`, `_mono`); the missing piece is continuity, which
+is the central Portmanteau input.)
+
+**Outcome**: Added `standardNormalCDF_continuous` (Φ is continuous on ℝ)
+plus a private bridge lemma `standardNormalCDF_eq_zero_plus_intervalIntegral`.
+This completes the structural-CDF library on both sides of the Portmanteau
+convergence (limit CDF Φ + approximating CDFs binomial). The session does
+**not** discharge any axioms — axiom count remains at 1 — but unblocks
+the Session 8 axiom attack.
+
+### What Was Built
+
+* **Bridge lemma (private)**:
+  `standardNormalCDF_eq_zero_plus_intervalIntegral (x : ℝ) :`
+  `standardNormalCDF x = standardNormalCDF 0 + ∫ t in (0:ℝ)..x, gaussianPDFReal 0 1 t`
+
+  Proof strategy (~30 lines):
+  1. `MeasureTheory.intervalIntegral_tendsto_integral_Iic` gives that
+     `(fun a => ∫ t in a..x, f t)` and `(fun a => ∫ t in a..0, f t)`
+     converge to `standardNormalCDF x` and `standardNormalCDF 0`
+     respectively as `a → atBot`.
+  2. `intervalIntegral.integral_add_adjacent_intervals` rewrites
+     `∫ a..x = ∫ a..0 + ∫ 0..x`, so both LHS and RHS limits compute
+     the same function.
+  3. `Filter.Tendsto.add_const` lifts the second limit to
+     `(fun a => ∫ a..0 + ∫ 0..x) → standardNormalCDF 0 + ∫ 0..x`.
+  4. `tendsto_nhds_unique` closes the equation.
+
+* **Public theorem**:
+  `standardNormalCDF_continuous : Continuous standardNormalCDF` (~7 lines)
+
+  Proof: rewrite `standardNormalCDF` as `Φ 0 + intervalIntegral 0..x`
+  via the bridge lemma, then apply
+  `MeasureTheory.Integrable.continuous_primitive` (which uses `NoAtoms`
+  on `volume` to make the primitive of an integrable function
+  continuous on ℝ).
+
+### New Imports
+
+- `Mathlib.MeasureTheory.Integral.IntegralEqImproper` — for
+  `intervalIntegral_tendsto_integral_Iic`.
+- `Mathlib.MeasureTheory.Integral.DominatedConvergence` — for
+  `Integrable.continuous_primitive`.
+
+### Why This Lemma
+
+The Phase-4 work is to discharge `binomial_clt_pointwise`. The natural
+Mathlib path bridges from `ProbabilityTheory.iid_central_limit_theorem`
+(which gives measure-weak-convergence of the standardized binomial law
+to the standard Gaussian) to a CDF-pointwise-convergence statement via
+the Portmanteau theorem at continuity points of the standard normal CDF.
+
+The Portmanteau theorem characterizes weak convergence by several
+equivalent conditions, the most useful here being:
+
+> If `μₙ →ʷ μ` and `μ(∂B) = 0` for a Borel set `B`, then `μₙ(B) → μ(B)`.
+
+Applied to `B = Set.Iic x`, the boundary is `{x}`, which has `μ({x}) = 0`
+exactly when the CDF is continuous at `x`. For the standard normal,
+the CDF is continuous **everywhere**, so the convergence is **universal**.
+
+`standardNormalCDF_continuous` is the input that makes this work. Without
+it, the Portmanteau bridge can only conclude convergence at *some* points,
+not all `x ∈ ℝ`.
+
+### Mathlib Survey Findings (Session 7)
+
+Surveyed `Mathlib/Probability/CentralLimitTheorem.lean`,
+`Mathlib/Probability/Distributions/Binomial.lean`,
+`Mathlib/Probability/Distributions/Gaussian/Real.lean`,
+`Mathlib/MeasureTheory/Measure/Portmanteau.lean`, and
+`Mathlib/MeasureTheory/Integral/IntegralEqImproper.lean` for the building
+blocks needed by Session 8+:
+
+1. **No single `iid_central_limit_theorem`** in Mathlib. The closest is
+   `ProbabilityTheory.tendstoInDistribution_inv_sqrt_mul_sum` (centered,
+   unit-variance, i.i.d., identically-distributed; concludes
+   `TendstoInDistribution`, not pointwise CDF convergence).
+2. **No Mathlib lemma** stating "the law of (X₁ + ... + Xₙ) for i.i.d.
+   Bernoulli(p) X₁,...,Xₙ equals Binomial(n,p)". `PMF.binomial` and
+   `binomial_one_eq_bernoulli` exist but the bridge is missing. We will
+   need to build this manually using product measures and pushforward.
+3. **Portmanteau is well-developed** in
+   `Mathlib/MeasureTheory/Measure/Portmanteau.lean` (T/C/O/B
+   characterizations); `tendsto_measure_of_null_frontier` is the
+   direct (B)-direction hook for `Set.Iic x`.
+4. **Mathlib does NOT prove `Continuous Φ`** — Session 7 fills this gap.
+
+**Realistic estimate** for full discharge of `binomial_clt_pointwise`:
+~300–500 lines across **2+ sessions** (not feasible in one).
+
+### Honest Reporting
+
+* **Local Docker build was NOT run** (CI is the ground truth, and the
+  worktree has the recursive `.lake` symlink trap that forces a fresh
+  Mathlib clone per build, making local iteration prohibitive). The
+  proofs use well-tested Mathlib idioms — `intervalIntegral_tendsto_integral_Iic`,
+  `intervalIntegral.integral_add_adjacent_intervals`, `Tendsto.add_const`,
+  `tendsto_nhds_unique`, `Integrable.continuous_primitive`,
+  `Integrable.intervalIntegrable`, `Integrable.integrableOn`. Confidence
+  is moderate-high but not CI-verified at push time.
+
+* This is **Phase-4 prep / infrastructure**, NOT axiom elimination. The
+  axiom count is unchanged at 1 (`binomial_clt_pointwise`). The
+  contribution is the final structural-CDF lemma needed to make the
+  Portmanteau bridge applicable at every `x ∈ ℝ` — a key prerequisite
+  for the Session 8 axiom attack.
+
+* The continuity proof relies on `MeasureTheory.Integrable.continuous_primitive`
+  which requires a `[NoAtoms volume]` instance on `ℝ`. This is a
+  well-known Mathlib instance (Lebesgue measure has no atoms), but if
+  it fails to resolve in CI we may need to invoke
+  `MeasureTheory.NoAtoms.lebesgue` or similar explicitly.
+
+* Two new imports were added (`IntegralEqImproper` and
+  `DominatedConvergence`) — these may already be transitive deps of
+  `Mathlib.Probability.Distributions.Gaussian.Real`, but explicit
+  imports are safer.
+
+### Files Changed
+
+- UPDATED `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+  (369 → 445 lines, +1 private lemma + 1 public theorem, +2 imports).
+- UPDATED `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+  (lineCount, theoremCount, substantiveTheoremCount, imports,
+   originalContributions, sections, description, problemStatement,
+   keyInsights, conclusion, assumptions).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+  (this entry).
+- UPDATED `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`
+  (Session 7 status; promoted Session 8 Lemma A axiom attack to next
+  action; recorded Mathlib-survey findings).
+- UPDATED `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json`
+  (knowledge fields).
+
+### Next Steps
+
+1. **Session 8 (Lemma A — Bernoulli→Binomial measure bridge)**: prove
+   that for n i.i.d. Bernoulli(p) random variables `X₁, ..., Xₙ` on a
+   finite product probability space, the pushforward of the product
+   measure under `(ω ↦ Σ Xᵢ(ω))` has law equal to `Binomial(n, p)`
+   (PMF matching `binomialCDF`'s summand). Estimated ~150–250 lines.
+   This is the foundational bridge that lets Mathlib's
+   `tendstoInDistribution_inv_sqrt_mul_sum` apply at our PMF.
+
+2. **Session 9 (Lemma C — Portmanteau bridge)**: prove the abstract
+   bridge "convergence in distribution + continuous limit CDF ⟹
+   pointwise CDF convergence", combining Mathlib's Portmanteau lemmas
+   with `standardNormalCDF_continuous`. Estimated ~80–120 lines.
+
+3. **Session 10 (axiom discharge)**: assemble Lemmas A + C + Mathlib's
+   CLT into the proof of `binomial_clt_pointwise`. Convert axiom →
+   theorem; status promotes to `verified` (axiomCount 1 → 0).
+   Estimated ~50–100 lines.
+
+---
+
 ## Dead Ends
 
 - None yet.

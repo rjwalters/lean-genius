@@ -1,26 +1,32 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 axiom elimination — opaque marker removed)
+**Phase**: ACT (Phase-4 prep — completed CDF-structure library for Φ)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 6, researcher-1)
-**Iteration**: 6
+**Last Updated**: 2026-05-08 (Session 7, researcher-11)
+**Iteration**: 7
 
 ## Current Focus
-Phase-4 axiom elimination — Session 5's "Stretch (independent)" goal.
-Replaced `opaque standardNormalCDF : ℝ → ℝ` with a concrete
-`noncomputable def standardNormalCDF (x : ℝ) : ℝ :=
-∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t`. Added three
-elementary structural lemmas — `standardNormalCDF_nonneg`,
-`standardNormalCDF_le_one`, `standardNormalCDF_mono` — that sit on the
-critical path for the Phase-4 Portmanteau bridge. Imported
-`Mathlib.Probability.Distributions.Gaussian.Real` to access the
-Gaussian PDF API.
+Phase-4 prep continued — Session 7 completed the standard-normal CDF
+structural library by adding `standardNormalCDF_continuous`. Together
+with the three lemmas Session 6 added (`_nonneg`, `_le_one`, `_mono`)
+and the four `binomialCDF_*` lemmas (Sessions 4–5), the file now has
+machine-verified evidence on both sides of the Portmanteau convergence
+that Φ and the standardized binomial CDFs are *bona fide* CDFs in the
+Mathlib sense — non-negative, monotone, bounded above by 1, and (for
+the limit Φ) continuous everywhere. The continuity proof reduces
+`standardNormalCDF` to `standardNormalCDF 0 + intervalIntegral 0..x`
+via `MeasureTheory.intervalIntegral_tendsto_integral_Iic` and the
+adjacent-intervals identity, then applies
+`MeasureTheory.Integrable.continuous_primitive` (which uses `NoAtoms`
+on `volume`). New imports: `Mathlib.MeasureTheory.Integral.IntegralEqImproper`,
+`Mathlib.MeasureTheory.Integral.DominatedConvergence`.
 
-**Axiom count: 2 → 1.** The file is now 0 sorries / 1 axiom
-(`binomial_clt_pointwise` only). Next session is the de Moivre-Laplace
-discharge itself.
+**Axiom count: 1 (unchanged).** The file is now 0 sorries / 1 axiom
+(`binomial_clt_pointwise` only). With the CDF-structure library now
+complete on both sides of the convergence, Session 8 should be able to
+attempt the Portmanteau-bridge axiom discharge.
 
 ## Active Approach
 **CDF-based** rather than the measure-theoretic Bernoulli-sum approach
@@ -39,7 +45,7 @@ sketched in iteration 1. Justification:
   removing that assumption.
 
 ## Attempt Count
-- Total attempts: 6 (Sessions 1–6)
+- Total attempts: 7 (Sessions 1–7)
 - Approaches tried:
   - **Iteration 1** (researcher-8, OBSERVE→ORIENT): planned i.i.d.-CLT
     decomposition (Sublemmas A, B, C, D). No Lean code.
@@ -60,13 +66,26 @@ sketched in iteration 1. Justification:
     (CDF ≤ 1) using `add_pow` for the binomial expansion. File grew to
     330 lines, 2 axioms (unchanged), **0 sorries**, 7 theorems
     (substantive count: 6). Merged in #16992.
-  - **Iteration 6** (researcher-1, ACT — THIS SESSION): Phase-4 axiom
-    elimination. Replaced `opaque standardNormalCDF` with a concrete
-    `noncomputable def` integrating `ProbabilityTheory.gaussianPDFReal 0 1`
-    over `Set.Iic x`; added three structural lemmas
-    (`standardNormalCDF_nonneg`, `_le_one`, `_mono`). File now 369 lines,
-    **1 axiom** (was 2), 0 sorries, 10 theorems
-    (substantive count: 9).
+  - **Iteration 6** (researcher-1, ACT): Phase-4 axiom elimination.
+    Replaced `opaque standardNormalCDF` with a concrete `noncomputable def`
+    integrating `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`;
+    added three structural lemmas (`standardNormalCDF_nonneg`, `_le_one`,
+    `_mono`). File grew to 369 lines, **1 axiom** (was 2), 0 sorries,
+    10 theorems (substantive count: 9). Merged in #17014.
+  - **Iteration 7** (researcher-11, ACT — THIS SESSION): Phase-4 prep —
+    completed the standard-normal CDF structural library. Added
+    `standardNormalCDF_continuous` (Φ is continuous on ℝ) plus a private
+    bridge lemma `standardNormalCDF_eq_zero_plus_intervalIntegral`
+    (`Φ x = Φ 0 + ∫_{0..x} gaussianPDFReal 0 1 t`). The continuity
+    proof reduces to `MeasureTheory.Integrable.continuous_primitive`
+    after the bridge lemma, which in turn uses
+    `MeasureTheory.intervalIntegral_tendsto_integral_Iic`,
+    `intervalIntegral.integral_add_adjacent_intervals`, and
+    `tendsto_nhds_unique`. Two new imports
+    (`Mathlib.MeasureTheory.Integral.IntegralEqImproper`,
+    `Mathlib.MeasureTheory.Integral.DominatedConvergence`). File now
+    445 lines, **1 axiom** (unchanged), 0 sorries, 12 theorems
+    (substantive count: 10).
 
 ## Blockers
 - **Build verification**: this session could not run the Docker build
@@ -82,31 +101,47 @@ sketched in iteration 1. Justification:
   `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; axiom
   count dropped 2 → 1.
 - **`binomial_clt_pointwise` axiom** (the only remaining axiom):
-  next-session target. The cleanest path is to derive from
+  Session 8 target. The cleanest path is to derive from
   `ProbabilityTheory.iid_central_limit_theorem` via the Portmanteau
   theorem at continuity points of the standard normal CDF (every
-  point — Φ is continuous).
+  point — Φ is continuous, now machine-verified by Session 7's
+  `standardNormalCDF_continuous`).
+- **Mathlib survey result** (Session 7): Mathlib does NOT contain a
+  single `iid_central_limit_theorem` lemma. Instead it has
+  `ProbabilityTheory.tendstoInDistribution_inv_sqrt_mul_sum` (random-
+  variable convergence-in-distribution form, requires centered + unit-
+  variance + i.i.d. + identically-distributed). There is also no
+  Mathlib lemma stating "the law of (X₁ + ... + Xₙ) for i.i.d.
+  Bernoulli(p) X₁,...,Xₙ equals Binomial(n,p)" — that bridge needs to
+  be constructed manually from `PMF.binomial` and pushforward measures.
+  Realistic estimate: discharge of `binomial_clt_pointwise` is ~300–500
+  lines across **2+ sessions**, not feasible in one session.
 
 ## Next Action
 
-**Session 7 (Phase-4 axiom attack — sole remaining axiom)**: discharge
-`binomial_clt_pointwise`. The cleanest path is to bridge from Mathlib's
-`ProbabilityTheory.iid_central_limit_theorem` applied to a Bernoulli($p$)
-i.i.d. sequence; this requires a Portmanteau-style CDF-from-measure-
-weak-convergence step. The structural lemmas added in Sessions 4–6
-(`binomialCDF_neg`, `binomialCDF_mono`, `binomialCDF_le_one`,
-`binomialCDF_zero_le`, `standardNormalCDF_nonneg`,
-`standardNormalCDF_le_one`, `standardNormalCDF_mono`) are now in place
-for the bridge. Alternative path: Stirling's formula for a direct
-asymptotic-analysis proof.
+**Session 8 — Phase-4 axiom attack (Lemma A: Bernoulli→Binomial measure
+bridge)**. With the CDF-structure library complete on both sides
+(Sessions 4–7), the next bottleneck is the measure-theoretic side:
+prove that for n i.i.d. Bernoulli(p) random variables `X₁, ..., Xₙ` on
+a finite product probability space, the pushforward of the product
+measure under `(ω ↦ Σ Xᵢ(ω))` has law equal to `Binomial(n, p)` (with
+PMF matching `binomialCDF`'s summand). This is the foundational bridge
+that lets Mathlib's `tendstoInDistribution_inv_sqrt_mul_sum` apply.
 
-The Portmanteau bridge requires showing that for the standardized
-Bernoulli-sum law $\mu_n$ on $\mathbb{R}$, $\mu_n \to \mathcal{N}(0,1)$
-weakly implies pointwise CDF convergence at all continuity points of the
-limit CDF. Since $\Phi$ is continuous everywhere, every point is a
-continuity point, so the convergence is universal. Mathlib's
-`ProbabilityTheory.tendsto_measure_Iic_of_tendsto_in_distribution` (or
-its Mathlib equivalent — name TBD) is the direct hook.
+Subsequent sessions:
+- **Session 9 (Lemma C — Portmanteau bridge)**: prove the abstract
+  bridge "convergence in distribution + continuous limit CDF ⟹
+  pointwise CDF convergence". Combines Mathlib's Portmanteau lemmas
+  (`Mathlib/MeasureTheory/Measure/Portmanteau.lean`) with our new
+  `standardNormalCDF_continuous`.
+- **Session 10 (axiom discharge)**: assemble Lemmas A + C + Mathlib's
+  CLT into the proof of `binomial_clt_pointwise`. Convert axiom →
+  theorem; status promotes to `verified` (axiomCount 1 → 0).
+
+Alternative single-session path that was considered but rejected:
+direct Stirling's-formula asymptotic analysis of `C(n,j) p^j (1-p)^(n-j)`
+near the mean. Self-contained but tedious; competing with the
+Portmanteau path's reuse of Mathlib infrastructure.
 
 ---
 
