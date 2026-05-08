@@ -60,6 +60,30 @@
     "prerequisites": ["covariance", "independence conditions", "probability counterexamples"]
   },
   {
+    "id": "ann-006",
+    "proofId": "laws-of-large-numbers-oq-01-oq-03",
+    "range": { "startLine": 38, "endLine": 45 },
+    "type": "insight",
+    "title": "Why Pairwise Independence Is the Minimal Threshold (and not Uncorrelated-ness)",
+    "content": "The 'Minimal Independence Condition' subsection of the docstring articulates the precise threshold. Mathematically, *pairwise independence* of events ($\\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j)$ for $i \\neq j$) is *equivalent* to uncorrelated-ness of indicator random variables ($\\mathrm{Cov}(1_{A_i}, 1_{A_j}) = 0$). So at the level of indicator events, the two notions coincide. The Petrov 2002 counterexample operates at a strictly weaker level: it relaxes from genuinely 2-dimensional pairwise independence (where each pair $(1_{A_i}, 1_{A_j})$ has a fully product-distributed joint law) to a weaker mixed-moment condition (e.g., requiring only that certain *higher-order* expectations factor, or that $E[f(1_{A_i})\\,g(1_{A_j})] = E[f(1_{A_i})]\\,E[g(1_{A_j})]$ for limited classes of $f, g$ that don't encode the full joint distribution). At this weaker level — sometimes called *block-uncorrelated-ness* — the variance bound $\\mathrm{Var}(S_n) \\leq E[S_n]$ can fail, and the Chebyshev step collapses. This makes the present theorem optimal at the events-level: the Chebyshev-variance method extracts as much from the hypothesis as it possibly can.",
+    "mathContext": "$\\mathrm{Cov}(1_{A_i}, 1_{A_j}) = E[1_{A_i \\cap A_j}] - E[1_{A_i}]E[1_{A_j}] = \\mu(A_i \\cap A_j) - \\mu(A_i)\\mu(A_j) = 0 \\iff \\mu(A_i \\cap A_j) = \\mu(A_i)\\mu(A_j) \\iff A_i, A_j \\text{ independent}.$\n\nFor real-valued random variables (rather than indicators), uncorrelated $\\not\\Rightarrow$ pairwise independent; e.g., for a Rademacher variable $\\varepsilon$ with $X = \\varepsilon, Y = \\varepsilon^2 = 1$ we have $\\mathrm{Cov}(X, Y) = 0$ but $X, Y$ are not independent. So the equivalence is *specific* to events; it does not rescue the general BC2 statement at the random-variable level.",
+    "significance": "key",
+    "relatedConcepts": ["minimal hypothesis principle", "events-level vs RV-level independence", "Petrov counterexample", "Rademacher variable", "block uncorrelated-ness"],
+    "prerequisites": ["covariance", "indicator random variables", "joint distribution vs marginal product"]
+  },
+  {
+    "id": "ann-007",
+    "proofId": "laws-of-large-numbers-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "Module Docstring: Cantor-Series Origin and the Erdős-Rényi 1959 Trick",
+    "content": "The 59-line module-level docstring is more than introductory matter — it records the historical origin of the result and the form of the underlying number-theoretic question. Erdős and Rényi did not set out to prove a generalized BC2; their 1959 paper was titled *On Cantor's series with convergent $\\sum 1/q_n$*, addressing the question: when does a Cantor expansion $x = \\sum a_n / q_n$ (with $a_n \\in \\{0, 1, \\ldots, q_n - 1\\}$) determine $x$ uniquely / generate a normal number / exhibit some large-deviation behavior? The events $A_n = \\{a_n = b_n\\}$ for fixed digits $b_n$ are pairwise independent under the natural Cantor-product measure (because each $a_n$ is uniform on $\\{0, \\ldots, q_n-1\\}$ independently across $n$), so $\\sum P(A_n) = \\sum 1/q_n$. Erdős-Rényi needed BC2 *for these specific pairwise-independent events* in order to conclude that almost every $x$ has each digit $b_n$ appearing infinitely often. Recognizing that their proof strategy required *only* pairwise independence — not the full mutual independence that the events trivially also satisfied — was the key methodological observation. Subsequent expositors (Feller II, Ch. VIII) abstracted the lemma out as a standalone result and named it after them. This file's purpose is to mirror that abstraction inside Lean's gallery, completing the long arc from a 1959 number-theoretic question to a clean Mathlib-ready measure-theoretic statement.",
+    "mathContext": "**Cantor expansion**: any real $x \\in [0,1]$ admits a unique non-terminating representation $x = \\sum_{n=1}^\\infty a_n / (q_1 \\cdots q_n)$ with $a_n \\in \\{0, 1, \\ldots, q_n - 1\\}$. Under the natural Lebesgue measure on $[0,1]$, the digits $a_n$ are *independent* random variables (each $a_n$ uniform on $\\{0, \\ldots, q_n - 1\\}$). For Erdős-Rényi's question, fixing $b_n$ and setting $A_n = \\{a_n = b_n\\}$ gives $P(A_n) = 1/q_n$, and BC2 (when $\\sum 1/q_n = \\infty$) forces almost every $x$ to have $a_n = b_n$ for infinitely many $n$. The pairwise BC2 is sharp because the 'natural' independence in this setting was already pairwise.",
+    "significance": "context",
+    "relatedConcepts": ["Cantor expansion", "Borel normal numbers", "Erdős-Rényi 1959 origin", "abstract measure theory from concrete number theory", "hypothesis abstraction"],
+    "prerequisites": ["Cantor series representation of reals", "Lebesgue measure on [0,1]", "BC1 application to normal numbers"]
+  },
+  {
     "id": "ann-005",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
     "range": { "startLine": 90, "endLine": 97 },
