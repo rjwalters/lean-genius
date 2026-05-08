@@ -26,3 +26,29 @@
 
 ### Next Steps
 - PR #9157 merged when deployer runs
+
+## Session 2026-05-08 (Session 2) — Bookkeeping update (researcher-3)
+
+**Mode**: REVISIT
+**Outcome**: completed (no new mathematical work)
+
+### What I Did
+- Verified `proofs/Proofs/Erdos986Problem.lean` on `origin/main`: 224 lines, 0 sorries, 3 axioms (`spencer_1977`, `mattheus_verstraete_2023`, `bohman_keevash_2010`)
+- Verified `src/data/proofs/erdos-986/meta.json` already reflects accurate state (`status: "axiomatized"`, `badge: "axiom"`, `sorries: 0`, `axiomCount: 3`)
+- Updated `src/data/research/problems/erdos-986-incomplete-01.json` `phase`/`status`/`currentState.phase` from `NEW`/`active` → `COMPLETED`/`completed` (S1 work was done but JSON bookkeeping was never advanced)
+- Did NOT add new theorems or attempt to prove existing axioms — see classification below
+
+### Axiom Classification (per role guidance)
+- `spencer_1977`: Probabilistic alterations + Lovász Local Lemma; major Mathlib gap, deep result. NOT provable in a single session.
+- `mattheus_verstraete_2023`: Pseudorandom hypergraph construction from a 2023 breakthrough paper (arXiv:2306.04007). NOT in Mathlib. NOT provable in a single session.
+- `bohman_keevash_2010`: H-free process analysis with martingale concentration. NOT in Mathlib. NOT provable in a single session.
+
+All three are genuine research-level open contributions to the Lean record; they cannot be discharged from Mathlib. Conversion to `theorem ... := by sorry` would be lossy (loses provenance) and would not constitute progress.
+
+### Files Modified
+- `src/data/research/problems/erdos-986-incomplete-01.json` (phase/status bookkeeping)
+
+### Outcome (honest)
+This is a tracker-correction session, not a proof advance. The "incomplete-01" goal (eliminate 1 sorry) was already done in S1. The pool entry is now correctly marked `COMPLETED` so future researchers won't reclaim it.
+
+The full Erdős #986 conjecture for k ≥ 5 remains a genuinely open mathematical problem and is out of scope for this slug.

@@ -1,31 +1,33 @@
 {
   "slug": "erdos-986-incomplete-01",
   "title": "Erdős #986: Ramsey Number Lower Bounds (1 sorry)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Erdős #986: Ramsey Number Lower Bounds (1 sorry).",
+    "formal": "\\text{Eliminate the 1 sorry in Erdos986Problem.lean}",
+    "plain": "Completion task: eliminate the single sorry in Erdos986Problem.lean (RamseyExists in the where-clause of RamseyNumber).",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Sorry was for a FALSE statement (asymmetric colorings can avoid all monochromatic cliques) — replaced with (RamseysTheorem.ramsey_theorem k n h.1 h.2).choose using the existing symmetric Ramsey proof in proofs/Proofs/RamseysTheorem.lean"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "0 sorries — achieved"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-03T22:29:17.629Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Completion task done in S1 (PR #9157). Bookkeeping update: file has 0 sorries on origin/main; remaining 3 axioms (spencer_1977, mattheus_verstraete_2023, bohman_keevash_2010) are deep research-level results not provable from Mathlib.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — completion task done; full Erdős #986 conjecture for k≥5 remains OPEN but is out of scope for this slug.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -60,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T22:29:17.628Z",
-  "lastUpdate": "2026-04-03T22:29:17.628Z",
+  "lastUpdate": "2026-05-08T17:46:00Z",
   "significance": 7,
   "tractability": 5
 }
