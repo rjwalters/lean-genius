@@ -9,19 +9,23 @@ Can the Chebyshev T product-to-sum formula
   2 T_m(cos θ) · T_n(cos θ) = T_{m+n}(cos θ) + T_{m-n}(cos θ)
 be extended to Chebyshev polynomials of the second kind U_n?
 
-## Answer: YES (cross-product formula)
+## Answer: YES (cross-product and U·U formulas)
 
-We prove the mixed T·U product-to-sum identity for all integers m, n:
+We prove two mixed/U·U product-to-sum identities for all integers m, n:
 
-  2 · T_m(cos θ) · U_n(cos θ) = U_{m+n}(cos θ) + U_{n-m}(cos θ)
+  T·U: 2 · T_m(cos θ) · U_n(cos θ) = U_{m+n}(cos θ) + U_{n-m}(cos θ)
+  U·U: 2(1−cos²θ) · U_m(cos θ) · U_n(cos θ) = T_{m−n}(cos θ) − T_{m+n+2}(cos θ)
 
 ## Proof Strategy
 
-Paired integer induction on m, carrying P(m) and P(m-1) simultaneously:
+T·U identity: Paired integer induction on m, carrying P(m) and P(m-1) simultaneously:
   P(m) := 2 · T R m · U R n = U R (m + n) + U R (n - m)
 
 The key helper is 2·X·U_k = U_{k+1} + U_{k-1} (rearranged Chebyshev recurrence).
 Each induction step uses this helper twice, via linear_combination.
+
+U·U identity: Direct trig via cos(A-B) - cos(A+B) = 2·sin(A)·sin(B), combined
+with U_n(cos θ)·sin θ = sin((n+1)θ).
 -/
 
 open Polynomial Polynomial.Chebyshev Real
@@ -62,17 +66,9 @@ private lemma Q_zero : Q n 0 := by
     rw [hm1]
     exact two_X_U n
 
-private lemma Q_succ (m : ℤ) (⟨hm, hm1⟩ : Q n m) : Q n (m + 1) := by
+private lemma Q_succ (m : ℤ) (ih : Q n m) : Q n (m + 1) := by
+  obtain ⟨hm, hm1⟩ := ih
   refine ⟨?_, hm⟩
-  -- P(m+1): T(m+1) appears, use T(m+1) via T(m) and T(m-1) via hT
-  -- Actually: from Q(m), we have P(m) and P(m-1). Want P(m+1).
-  -- From T(m+1) = 2X*T(m) - T(m-1): T_add_two at m-1:
-  --   T(m+1) = 2X*T(m) - T(m-1)
-  -- 2*T(m+1)*U n = 2*(2X*T(m) - T(m-1))*U n
-  --   = 2X*(2*T(m)*U n) - (2*T(m-1)*U n)
-  --   = 2X*(U(m+n) + U(n-m)) - (U(m-1+n) + U(n-m+1))   by hm, hm1
-  --   = (U(m+n+1)+U(m+n-1)) + (U(n-m+1)+U(n-m-1)) - U(m-1+n) - U(n-m+1)  by two_X_U twice
-  --   = U(m+1+n) + U(n-m-1)  ✓
   simp only [P, show (m + 1 : ℤ) + n = m + n + 1 from by ring,
              show n - (m + 1 : ℤ) = n - m - 1 from by ring]
   have hT := T_add_two (R := R) (m - 1)
@@ -86,15 +82,9 @@ private lemma Q_succ (m : ℤ) (⟨hm, hm1⟩ : Q n m) : Q n (m + 1) := by
   simp only [show (m - 1 : ℤ) + n = m - 1 + n from rfl, show n - (m - 1 : ℤ) = n - m + 1 from by ring] at hm1
   linear_combination 2 * U R n * hT + 2 * X * hm - hm1 - hu1 - hu2
 
-private lemma Q_pred (m : ℤ) (⟨hm, hm1⟩ : Q n m) : Q n (m - 1) := by
+private lemma Q_pred (m : ℤ) (ih : Q n m) : Q n (m - 1) := by
+  obtain ⟨hm, hm1⟩ := ih
   refine ⟨hm1, ?_⟩
-  -- P(m-2): from P(m) and P(m-1), using T(m) = 2X*T(m-1) - T(m-2)
-  --   T(m-2) = 2X*T(m-1) - T(m)
-  --   2*T(m-2)*U n = 2*(2X*T(m-1) - T(m))*U n
-  --     = 2X*(2*T(m-1)*U n) - (2*T(m)*U n)
-  --     = 2X*(U(m-1+n) + U(n-m+1)) - (U(m+n) + U(n-m))  by hm1, hm
-  --     = (U(m+n) + U(m-2+n)) + (U(n-m+2) + U(n-m)) - U(m+n) - U(n-m)  by two_X_U twice
-  --     = U(m-2+n) + U(n-m+2) = U((m-1)-1+n) + U(n-((m-1)-1))  ✓
   simp only [P, show (m - 1 : ℤ) - 1 = m - 2 from by ring,
              show (m - 2 : ℤ) + n = m - 2 + n from rfl,
              show n - (m - 2 : ℤ) = n - m + 2 from by ring]
@@ -116,12 +106,10 @@ private lemma Q_pred (m : ℤ) (⟨hm, hm1⟩ : Q n m) : Q n (m - 1) := by
 Proved by integer induction (paired), using only the Chebyshev polynomial recurrences. -/
 theorem T_mul_U_product (m : ℤ) : (2 : R[X]) * T R m * U R n = U R (m + n) + U R (n - m) := by
   suffices h : Q n m from h.1
-  induction m using Int.induction_on with
-  | hz => exact Q_zero n
-  | hp k ih => exact Q_succ n k ih
-  | hn k ih =>
-    -- ih : Q n (-↑k), goal : Q n (-↑k - 1) = Q n ((-↑k) - 1)
-    exact Q_pred n (-(↑k : ℤ)) ih
+  apply Int.induction_on m
+  · exact Q_zero n
+  · intro k ih; exact Q_succ n k ih
+  · intro k ih; exact Q_pred n (-(↑k : ℤ)) ih
 
 end PolynomialIdentity
 
@@ -141,7 +129,9 @@ theorem chebyshev_T_U_product_to_sum (m n : ℤ) (θ : ℝ) :
     (U ℝ (m + n)).eval (Real.cos θ) + (U ℝ (n - m)).eval (Real.cos θ) := by
   have h := T_mul_U_product (R := ℝ) n m
   have key := congr_arg (Polynomial.eval (Real.cos θ)) h
-  simp only [Polynomial.eval_mul, Polynomial.eval_add, map_ofNat] at key
+  simp only [Polynomial.eval_mul, Polynomial.eval_add] at key
+  have h2 : (2 : ℝ[X]).eval (Real.cos θ) = 2 := by norm_num
+  rw [h2] at key
   linarith
 
 /-- Recurrence eval form: 2·cos θ·U_n(cos θ) = U_{n+1}(cos θ) + U_{n-1}(cos θ) -/
@@ -150,33 +140,77 @@ theorem chebyshev_cos_U (n : ℤ) (θ : ℝ) :
     (U ℝ (n + 1)).eval (Real.cos θ) + (U ℝ (n - 1)).eval (Real.cos θ) := by
   have h := chebyshev_T_U_product_to_sum 1 n θ
   simp only [T_real_cos, Int.cast_one, one_mul] at h
-  convert h using 2 <;> [ring; ring]
+  simp only [show (1 : ℤ) + n = n + 1 from by ring] at h
+  linarith
 
 /-- Trig form: 2·cos θ·sin((n+1)θ) = sin((n+2)θ) + sin(nθ) -/
 theorem two_cos_sin_spreading (n : ℤ) (θ : ℝ) :
     2 * Real.cos θ * Real.sin (((n : ℝ) + 1) * θ) =
     Real.sin (((n : ℝ) + 2) * θ) + Real.sin ((n : ℝ) * θ) := by
-  have hcos := chebyshev_cos_U n θ
-  rw [← U_real_cos θ n] at hcos
-  rw [show (n : ℝ) + 1 = ((n : ℤ) : ℝ) + 1 from by norm_cast]
-  have h1 := U_real_cos θ (n + 1)
-  have h2 := U_real_cos θ (n - 1)
-  have hn1 : (↑(n + 1 : ℤ) : ℝ) + 1 = (n : ℝ) + 2 := by push_cast; ring
-  have hn2 : (↑(n - 1 : ℤ) : ℝ) + 1 = (n : ℝ) := by push_cast; ring
-  rw [hn1] at h1; rw [hn2] at h2
-  nlinarith [hcos, h1, h2, Real.sin_sq_add_cos_sq θ,
-             mul_comm ((U ℝ n).eval (Real.cos θ)) (Real.sin θ),
-             mul_comm ((U ℝ (n + 1)).eval (Real.cos θ)) (Real.sin θ),
-             mul_comm ((U ℝ (n - 1)).eval (Real.cos θ)) (Real.sin θ)]
+  have h1 := Real.sin_add (((n : ℝ) + 1) * θ) θ
+  have h2 := Real.sin_sub (((n : ℝ) + 1) * θ) θ
+  simp only [show ((n : ℝ) + 1) * θ + θ = ((n : ℝ) + 2) * θ from by ring,
+             show ((n : ℝ) + 1) * θ - θ = (n : ℝ) * θ from by ring] at h1 h2
+  linarith
 
 end RealEvaluation
 
-/-- **Summary**: cross product-to-sum formula and the recurrence corollary -/
+-- ============================================================
+-- U·U Product-to-Difference
+-- ============================================================
+
+section UUProduct
+
+/-- **U·U Product-to-Difference** (real form):
+  2(1−cos²θ)·U_m(cosθ)·U_n(cosθ) = T_{m−n}(cosθ) − T_{m+n+2}(cosθ)
+
+  Completes the Chebyshev product table:
+    T·T: 2·T_m·T_n = T_{m+n} + T_{m−n}  (classical real identities)
+    T·U: 2·T_m·U_n = U_{m+n} + U_{n−m}  (proved above)
+    U·U: 2(1−x²)·U_m·U_n = T_{m−n} − T_{m+n+2}  (proved here) -/
+theorem chebyshev_U_U_product_to_diff (m n : ℤ) (θ : ℝ) :
+    2 * (1 - Real.cos θ ^ 2) * (U ℝ m).eval (Real.cos θ) * (U ℝ n).eval (Real.cos θ) =
+    (T ℝ (m - n)).eval (Real.cos θ) - (T ℝ (m + n + 2)).eval (Real.cos θ) := by
+  have hUm := U_real_cos θ m
+  have hUn := U_real_cos θ n
+  have hsin2 : 1 - Real.cos θ ^ 2 = Real.sin θ ^ 2 := by
+    nlinarith [Real.sin_sq_add_cos_sq θ]
+  have hprod : Real.cos ((↑(m - n) : ℝ) * θ) - Real.cos ((↑(m + n + 2) : ℝ) * θ) =
+      2 * Real.sin (((↑m : ℝ) + 1) * θ) * Real.sin (((↑n : ℝ) + 1) * θ) := by
+    have eq1 : (↑(m - n) : ℝ) * θ = ((↑m : ℝ) + 1) * θ - ((↑n : ℝ) + 1) * θ := by
+      push_cast; ring
+    have eq2 : (↑(m + n + 2) : ℝ) * θ = ((↑m : ℝ) + 1) * θ + ((↑n : ℝ) + 1) * θ := by
+      push_cast; ring
+    rw [eq1, eq2]
+    have h1 := Real.cos_sub (((↑m : ℝ) + 1) * θ) (((↑n : ℝ) + 1) * θ)
+    have h2 := Real.cos_add (((↑m : ℝ) + 1) * θ) (((↑n : ℝ) + 1) * θ)
+    linarith
+  have step : Real.sin (((↑m : ℝ) + 1) * θ) * Real.sin (((↑n : ℝ) + 1) * θ) =
+      (U ℝ m).eval (Real.cos θ) * Real.sin θ * ((U ℝ n).eval (Real.cos θ) * Real.sin θ) := by
+    rw [← hUm, ← hUn]
+  rw [hsin2, T_real_cos θ (m - n), T_real_cos θ (m + n + 2)]
+  linear_combination -hprod - 2 * step
+
+/-- Trig form: 2·sin((m+1)θ)·sin((n+1)θ) = cos((m−n)θ) − cos((m+n+2)θ) -/
+theorem two_sin_sin_spreading (m n : ℤ) (θ : ℝ) :
+    2 * Real.sin (((↑m : ℝ) + 1) * θ) * Real.sin (((↑n : ℝ) + 1) * θ) =
+    Real.cos (((↑m : ℝ) - ↑n) * θ) - Real.cos (((↑m : ℝ) + ↑n + 2) * θ) := by
+  have h1 := Real.cos_sub (((↑m : ℝ) + 1) * θ) (((↑n : ℝ) + 1) * θ)
+  have h2 := Real.cos_add (((↑m : ℝ) + 1) * θ) (((↑n : ℝ) + 1) * θ)
+  simp only [show ((↑m : ℝ) + 1) * θ - ((↑n : ℝ) + 1) * θ = ((↑m : ℝ) - ↑n) * θ from by ring,
+             show ((↑m : ℝ) + 1) * θ + ((↑n : ℝ) + 1) * θ = ((↑m : ℝ) + ↑n + 2) * θ from by ring] at h1 h2
+  linarith
+
+end UUProduct
+
+/-- **Summary**: cross product-to-sum, recurrence corollary, and U·U product -/
 theorem demoivre_oq02oq02_summary (m n : ℤ) (θ : ℝ) :
     (2 * (T ℝ m).eval (Real.cos θ) * (U ℝ n).eval (Real.cos θ) =
      (U ℝ (m + n)).eval (Real.cos θ) + (U ℝ (n - m)).eval (Real.cos θ)) ∧
     (2 * Real.cos θ * (U ℝ n).eval (Real.cos θ) =
-     (U ℝ (n + 1)).eval (Real.cos θ) + (U ℝ (n - 1)).eval (Real.cos θ)) :=
-  ⟨chebyshev_T_U_product_to_sum m n θ, chebyshev_cos_U n θ⟩
+     (U ℝ (n + 1)).eval (Real.cos θ) + (U ℝ (n - 1)).eval (Real.cos θ)) ∧
+    (2 * (1 - Real.cos θ ^ 2) * (U ℝ m).eval (Real.cos θ) * (U ℝ n).eval (Real.cos θ) =
+     (T ℝ (m - n)).eval (Real.cos θ) - (T ℝ (m + n + 2)).eval (Real.cos θ)) :=
+  ⟨chebyshev_T_U_product_to_sum m n θ, chebyshev_cos_U n θ, chebyshev_U_U_product_to_diff m n θ⟩
 
 end DeMoivreOQ02OQ02
