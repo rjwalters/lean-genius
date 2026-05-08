@@ -6,8 +6,8 @@
   "leanFile": {
     "path": "Proofs/EhrhartSimplexProven.lean",
     "filename": "EhrhartSimplexProven.lean",
-    "lineCount": 207,
-    "theoremCount": 12,
+    "lineCount": 268,
+    "theoremCount": 15,
     "definitionCount": 0,
     "sorries": 0,
     "axiomCount": 0
@@ -29,8 +29,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 207,
-    "assumptions": "No axioms or sorries. All results proved from Mathlib multiset cardinality theory.",
+    "lineCount": 268,
+    "assumptions": "No axioms or sorries. All results proved from Mathlib multiset cardinality theory and Mathlib's binomial / factorial bridges.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -39,9 +39,12 @@
       "simplex_interior_count: interior lattice points = C(n-1, d) for n ≥ d+1, proved by shifting all coordinates down by 1",
       "simplex_pascal: Pascal-type recursion C(n+1+(d+1), d+1) = C(n+1+d, d) + C(n+(d+1), d+1) proved via Nat.choose_succ_succ",
       "simplex_monotone: count is increasing in n, proved via Nat.choose_le_choose",
-      "Dimensional specializations: 0D (trivial), 1D (segment = cube), 2D (triangular numbers C(n+2,2)), 3D (tetrahedral numbers C(n+3,3))"
+      "Dimensional specializations: 0D (trivial), 1D (segment = cube), 2D (triangular numbers C(n+2,2)), 3D (tetrahedral numbers C(n+3,3))",
+      "simplex_count_descFactorial: count·d! = (n+d).descFactorial d = (n+d)(n+d-1)···(n+1), via Nat.descFactorial_eq_factorial_mul_choose",
+      "simplex_count_ascFactorial: count·d! = (n+1).ascFactorial d = (n+1)(n+2)···(n+d), via Nat.ascFactorial_eq_factorial_mul_choose",
+      "simplex_count_prod: count·d! = ∏ i ∈ range d, (n + 1 + i), via Nat.ascFactorial_eq_prod_range; exhibits the count as a degree-d polynomial in n with positive integer coefficients"
     ],
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 0
   },
   "overview": {
@@ -67,48 +70,55 @@
     {
       "id": "main-theorem",
       "title": "Main Theorem: Simplex Lattice Count",
-      "startLine": 43,
-      "endLine": 52,
+      "startLine": 42,
+      "endLine": 67,
       "summary": "Proves simplex_lattice_count: Fintype.card (Sym (Fin (d+1)) n) = C(n+d, d). Uses Sym.card_sym_eq_choose to get C(n+d, n), then Nat.choose_symm_of_eq_add for binomial symmetry."
     },
     {
       "id": "base-cases",
       "title": "Base Cases: n=0 and n=1",
-      "startLine": 55,
-      "endLine": 69,
+      "startLine": 69,
+      "endLine": 82,
       "summary": "simplex_at_zero: count at n=0 is 1 (the origin). simplex_at_one: count at n=1 is d+1 (the vertices). Both proved by simp with Sym.card_sym_eq_choose."
     },
     {
       "id": "dimensional-specializations",
       "title": "Dimensional Specializations: 0D, 1D, 2D, 3D",
-      "startLine": 72,
-      "endLine": 101,
+      "startLine": 85,
+      "endLine": 117,
       "summary": "simplex_0d: single point always. simplex_1d: n+1 lattice points (same as 1D cube). simplex_2d: C(n+2,2) triangular numbers. simplex_3d: C(n+3,3) tetrahedral numbers. Concrete native_decide verifications for small values."
     },
     {
       "id": "interior-points",
       "title": "Interior Lattice Points",
-      "startLine": 104,
-      "endLine": 130,
+      "startLine": 119,
+      "endLine": 158,
       "summary": "simplex_interior_count: interior points = C(n-1, d) for n ≥ d+1. Proved by shifting coordinates (yᵢ = xᵢ - 1) to reduce interior constraint to boundary constraint at n-d-1. Also proves boundary count and concrete example for 2D triangle."
     },
     {
       "id": "monotonicity-recursion",
       "title": "Monotonicity and Pascal Recursion",
-      "startLine": 133,
-      "endLine": 152,
+      "startLine": 160,
+      "endLine": 185,
       "summary": "simplex_monotone: count is increasing in n via Nat.choose_le_choose. simplex_pascal: dimensional recursion C(n+1+(d+1), d+1) = C(n+1+d, d) + C(n+(d+1), d+1) via Nat.choose_succ_succ (Pascal's rule)."
     },
     {
       "id": "cube-comparison",
       "title": "Comparison with Cube",
-      "startLine": 155,
-      "endLine": 165,
+      "startLine": 187,
+      "endLine": 200,
       "summary": "simplex_cube_1d_agree: 1D simplex = 1D cube (both n+1 points). Example: 3D simplex at n=2 has 10 points vs cube's 27 (C(5,3) vs 3^3)."
+    },
+    {
+      "id": "polynomial-form",
+      "title": "Polynomial Form: Closed Form via Factorials",
+      "startLine": 202,
+      "endLine": 256,
+      "summary": "Three theorems exhibit L(Δ^d, n) as a degree-d polynomial in n with explicit closed forms: simplex_count_descFactorial gives count·d! = (n+d)(n+d-1)···(n+1) via Nat.descFactorial_eq_factorial_mul_choose; simplex_count_ascFactorial gives count·d! = (n+1)(n+2)···(n+d) via Nat.ascFactorial_eq_factorial_mul_choose; simplex_count_prod gives the same as a Finset.range product. The polynomial roots at n = -1, ..., -d are visible directly in the ascending-factorial form. Concrete native_decide examples verify 2D triangle (n=3), 3D tetrahedron (n=2), and 4D pentachoron (n=2)."
     }
   ],
   "conclusion": {
-    "summary": "This formalization answers ehrhart-cube-proven OQ-01 by proving the simplex Ehrhart polynomial L(Δ^d, n) = C(n+d, d) axiom-free. The 14 theorems (0 sorries, 0 axioms) cover the full simplex story: the main count formula, vertices (n=1 gives d+1 points), interior counts C(n-1, d), Pascal's recursion between dimensions, and monotonicity.\n\nThe key technical insight is the multiset bijection: lattice points of n·Δ^d correspond to Sym (Fin (d+1)) n (size-n multisets from {0,...,d}), enabling a two-line proof via Sym.card_sym_eq_choose + binomial symmetry. This mirrors the cube's bijection with Fin d → Fin (n+1) exactly.\n\nThe interior count C(n-1, d) provides the numerical shadow of Ehrhart-Macdonald reciprocity for the simplex, without requiring the polynomial extension to negative integers.",
+    "summary": "This formalization answers ehrhart-cube-proven OQ-01 by proving the simplex Ehrhart polynomial L(Δ^d, n) = C(n+d, d) axiom-free. The 15 theorems (0 sorries, 0 axioms) cover the full simplex story in two layers: (i) the cardinality layer — main count formula, vertices (n=1 gives d+1 points), interior counts C(n-1, d), Pascal's recursion between dimensions, monotonicity; (ii) the polynomial layer — count·d! = (n+d)(n+d-1)···(n+1) = (n+1)(n+2)···(n+d), exhibiting the count as an explicit degree-d polynomial in n.\n\nThe key technical insight is the multiset bijection: lattice points of n·Δ^d correspond to Sym (Fin (d+1)) n (size-n multisets from {0,...,d}), enabling a two-line proof via Sym.card_sym_eq_choose + binomial symmetry. This mirrors the cube's bijection with Fin d → Fin (n+1) exactly.\n\nThe interior count C(n-1, d) provides the numerical shadow of Ehrhart-Macdonald reciprocity for the simplex, and the descending/ascending factorial closed forms make the polynomial structure (degree d, leading coefficient 1/d!, roots at n = -1, ..., -d) explicit without needing to lift to a Polynomial-typed object.",
     "implications": "**The multiset paradigm for Ehrhart theory**: The cube uses Fin d → Fin (n+1) (ordered selections with replacement) while the simplex uses Sym (Fin (d+1)) n (unordered multisets). Both are counted by Fintype.card with explicit formulas. This suggests a systematic approach: for polytopes with explicit lattice-point formulas, find the natural Fintype encoding.\n\n**Cross-polytope and other polytopes**: The cross-polytope (generalized octahedron) has L(♦^d, n) = 2^d * C(n+d-1, d-1) via a signed inclusion-exclusion over 2^d orthants. Can this be proved axiom-free using Sym with sign flips? The product formula C(n+d-1, d-1) is similar to the simplex formula shifted by one dimension.\n\n**Barvinok's algorithm**: For general polytopes in fixed dimension, Barvinok's 1994 algorithm computes L_P(n) in polynomial time via rational generating functions. Formalizing Barvinok would require (1) Brion's theorem on vertex generating functions, (2) signed cone decompositions, and (3) evaluation of short rational functions. The simplex is the base case whose rational function is 1/(1-t)^(d+1).\n\n**Mathlib contribution**: The bijection between Sym (Fin (d+1)) n and {f : Fin d → ℕ // ∑ i, f i ≤ n} (simplex lattice points) is a natural Fintype equivalence. Formalizing this explicit equivalence (not just the cardinality) and contributing it to Mathlib would give a usable type-theoretic simplex.",
     "openQuestions": [
       "Can the explicit bijection Sym (Fin (d+1)) n ≃ {f : Fin d → ℕ // ∑ i, f i ≤ n} (mapping multiset multiplicities to lattice coordinates) be formalized as a Lean Equiv without sorries?",
