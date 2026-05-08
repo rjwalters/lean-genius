@@ -18,7 +18,7 @@
   "Can Ehrhart polynomials for polytopes with known formulas be proved
    from first principles without the general existence theorem?"
 
-  Main results (11 theorems, 1 sorry):
+  Main results (12 theorems, 1 sorry):
   1. crossEhrhart_d0          — L(B_0,n) = 1
   2. crossEhrhart_n0          — L(B_d,0) = 1
   3. crossEhrhart_d1          — L(B_1,n) = 2n+1
@@ -30,6 +30,7 @@
   9. crossEhrhart_expand       — key algebraic expansion (Pascal split)
   10. crossEhrhart_succ_d      — geometric recursion: L(B_{d+1},n) = L(B_d,n) + 2·Σ L(B_d,m)
   11. crossEhrhart_is_poly     — polynomial identification via descPochhammer
+  12. fiber_card_eq_crossBall_card — fiber bijection for slicing argument
 
   Remaining sorry (1):
   - crossBall_card succ-d: Finset slicing decomposition (geometric recursion)
@@ -242,11 +243,11 @@ example : crossEhrhart 3 4 = 129 := by native_decide
 
 -- Helper: natDegree of `descPochhammer ℚ k` is at most `k`.
 private lemma natDegree_descPochhammer_le (k : ℕ) :
-    (Polynomial.descPochhammer ℚ k).natDegree ≤ k := by
+    (descPochhammer ℚ k).natDegree ≤ k := by
   induction k with
   | zero => simp
   | succ k ih =>
-    rw [Polynomial.descPochhammer_succ_right]
+    rw [descPochhammer_succ_right]
     refine le_trans Polynomial.natDegree_mul_le ?_
     have h1 : (Polynomial.X - ((k : ℕ) : Polynomial ℚ)).natDegree ≤ 1 := by
       refine le_trans (Polynomial.natDegree_sub_le _ _) ?_
@@ -255,12 +256,12 @@ private lemma natDegree_descPochhammer_le (k : ℕ) :
 
 -- Helper: `(descPochhammer ℚ k).eval (n : ℚ) = ↑(n.descFactorial k)`.
 private lemma eval_descPochhammer_natCast (k n : ℕ) :
-    (Polynomial.descPochhammer ℚ k).eval ((n : ℕ) : ℚ) =
+    (descPochhammer ℚ k).eval ((n : ℕ) : ℚ) =
       ((n.descFactorial k : ℕ) : ℚ) := by
   induction k with
   | zero => simp
   | succ k ih =>
-    rw [Polynomial.descPochhammer_succ_right]
+    rw [descPochhammer_succ_right]
     simp only [Polynomial.eval_mul, Polynomial.eval_sub, Polynomial.eval_X,
                Polynomial.eval_natCast, ih]
     rcases le_or_lt k n with hkn | hkn
@@ -301,7 +302,7 @@ theorem crossEhrhart_is_poly (d : ℕ) :
     ∀ n : ℕ, P.eval (n : ℚ) = (crossEhrhart d n : ℚ) := by
   refine ⟨∑ k ∈ range (d + 1),
     Polynomial.C ((2 ^ k : ℚ) * (Nat.choose d k : ℚ) / (k.factorial : ℚ)) *
-      Polynomial.descPochhammer ℚ k, ?_, ?_⟩
+      descPochhammer ℚ k, ?_, ?_⟩
   · -- natDegree ≤ d
     refine le_trans (Polynomial.natDegree_sum_le _ _) ?_
     apply Finset.sup_le
@@ -353,6 +354,111 @@ private lemma cweight_translate (n M a : ℕ) (hM : M ≤ n)
     rw [if_neg (not_le.mpr h), if_neg (by push_neg; omega)]
     omega
 
+/-- If `Σ cweight ≤ M`, then each individual cweight is `≤ M` (since all summands are
+    non-negative `Nat`s). -/
+private lemma cweight_each_le_of_sum_le {d n M : ℕ} (x : Fin d → Fin (2 * n + 1))
+    (hsum : ∑ i, (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ M)
+    (i : Fin d) :
+    (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ M :=
+  le_trans
+    (Finset.single_le_sum
+      (f := fun j => (if (x j).val ≤ n then n - (x j).val else (x j).val - n))
+      (fun _ _ => Nat.zero_le _) (Finset.mem_univ i))
+    hsum
+
+/-- If `Σ cweight at center n ≤ M`, every coordinate `(x i).val` lies in `[n - M, n + M]`.
+    This is the pointwise range bound needed for the fiber bijection. -/
+private lemma coord_in_range_of_sum_le {d n M : ℕ} (x : Fin d → Fin (2 * n + 1))
+    (hsum : ∑ i, (if (x i).val ≤ n then n - (x i).val else (x i).val - n) ≤ M)
+    (i : Fin d) :
+    n - M ≤ (x i).val ∧ (x i).val ≤ n + M :=
+  (cweight_le_iff n (x i).val M).mp (cweight_each_le_of_sum_le x hsum i)
+
+/-- **Fiber bijection** (foundation for the slicing argument in `crossBall_card`).
+
+    For `M ≤ n`, the fiber-style filter
+    `{y : Fin d → Fin (2n+1) | Σ cweight_at_n(yᵢ) ≤ M}`
+    is in cardinality bijection with `crossBall d M`, via the translation
+    `yᵢ ↦ ⟨(yᵢ).val - (n - M), _⟩ : Fin (2M+1)`.
+
+    Key ingredient: `cweight_translate` shifts the centered weight from
+    center `n` to center `M`, so the membership predicate is preserved
+    under the val-translation. -/
+private lemma fiber_card_eq_crossBall_card (d n M : ℕ) (hM : M ≤ n) :
+    ((Finset.univ : Finset (Fin d → Fin (2 * n + 1))).filter fun y =>
+      ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) ≤ M).card
+    = (crossBall d M).card := by
+  refine Finset.card_bij
+    (fun y hy i =>
+      ⟨(y i).val - (n - M), by
+        have hsum : ∑ j, (if (y j).val ≤ n then n - (y j).val else (y j).val - n) ≤ M :=
+          (Finset.mem_filter.mp hy).2
+        have ⟨_, h_hi⟩ := coord_in_range_of_sum_le y hsum i
+        omega⟩)
+    ?mem ?inj ?surj
+  · -- forward map lands in `crossBall d M`
+    intro y hy
+    have hsum : ∑ j, (if (y j).val ≤ n then n - (y j).val else (y j).val - n) ≤ M :=
+      (Finset.mem_filter.mp hy).2
+    simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and]
+    have hcong : ∀ i,
+        (if ((y i).val - (n - M)) ≤ M then M - ((y i).val - (n - M))
+         else ((y i).val - (n - M)) - M) =
+        (if (y i).val ≤ n then n - (y i).val else (y i).val - n) := fun i => by
+      have ⟨h_lo, h_hi⟩ := coord_in_range_of_sum_le y hsum i
+      exact (cweight_translate n M (y i).val hM h_lo h_hi).symm
+    show ∑ i, (if ((y i).val - (n - M)) ≤ M then M - ((y i).val - (n - M))
+                else ((y i).val - (n - M)) - M) ≤ M
+    calc ∑ i, (if ((y i).val - (n - M)) ≤ M then M - ((y i).val - (n - M))
+                else ((y i).val - (n - M)) - M)
+        = ∑ i, (if (y i).val ≤ n then n - (y i).val else (y i).val - n) :=
+          Finset.sum_congr rfl (fun i _ => hcong i)
+      _ ≤ M := hsum
+  · -- injectivity
+    intro y₁ hy₁ y₂ hy₂ heq
+    have hsum₁ : ∑ j, (if (y₁ j).val ≤ n then n - (y₁ j).val else (y₁ j).val - n) ≤ M :=
+      (Finset.mem_filter.mp hy₁).2
+    have hsum₂ : ∑ j, (if (y₂ j).val ≤ n then n - (y₂ j).val else (y₂ j).val - n) ≤ M :=
+      (Finset.mem_filter.mp hy₂).2
+    funext i
+    apply Fin.ext
+    have h₁ := (coord_in_range_of_sum_le y₁ hsum₁ i).1
+    have h₂ := (coord_in_range_of_sum_le y₂ hsum₂ i).1
+    have hval : (y₁ i).val - (n - M) = (y₂ i).val - (n - M) :=
+      congr_arg Fin.val (congr_fun heq i)
+    omega
+  · -- surjectivity
+    intro z hz
+    simp only [crossBall, Finset.mem_filter, Finset.mem_univ, true_and] at hz
+    have h_lt : ∀ i, (z i).val + (n - M) < 2 * n + 1 := fun i => by
+      have : (z i).val < 2 * M + 1 := (z i).isLt
+      omega
+    refine ⟨fun i => ⟨(z i).val + (n - M), h_lt i⟩, ?_, ?_⟩
+    · -- membership in fiber filter
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      have hcong : ∀ i,
+          (if ((z i).val + (n - M)) ≤ n then n - ((z i).val + (n - M))
+           else ((z i).val + (n - M)) - n) =
+          (if (z i).val ≤ M then M - (z i).val else (z i).val - M) := fun i => by
+        have hz_lt : (z i).val < 2 * M + 1 := (z i).isLt
+        have h_lo : n - M ≤ (z i).val + (n - M) := by omega
+        have h_hi : (z i).val + (n - M) ≤ n + M := by omega
+        have heq := cweight_translate n M ((z i).val + (n - M)) hM h_lo h_hi
+        have hsub : (z i).val + (n - M) - (n - M) = (z i).val := by omega
+        rw [heq, hsub]
+      show ∑ i, (if ((z i).val + (n - M)) ≤ n then n - ((z i).val + (n - M))
+                  else ((z i).val + (n - M)) - n) ≤ M
+      calc ∑ i, (if ((z i).val + (n - M)) ≤ n then n - ((z i).val + (n - M))
+                  else ((z i).val + (n - M)) - n)
+          = ∑ i, (if (z i).val ≤ M then M - (z i).val else (z i).val - M) :=
+            Finset.sum_congr rfl (fun i _ => hcong i)
+        _ ≤ M := hz
+    · -- the constructed `y` round-trips back to `z`
+      funext i
+      apply Fin.ext
+      show (z i).val + (n - M) - (n - M) = (z i).val
+      omega
+
 /-- **Main geometric theorem**: the cross-polytope lattice count equals crossEhrhart d n.
 
     Proof sketch (induction on d):
@@ -363,11 +469,13 @@ private lemma cweight_translate (n M a : ℕ) (hM : M ≤ n)
       Pairing j ↔ 2n−j: total card = (crossBall d n).card + 2·Σ_{m<n} (crossBall d m).card.
       By IH (`generalizing n`) and `crossEhrhart_succ_d`, equals `crossEhrhart (d+1) n`.
 
-    Status: weight helpers in place (`cweight_le_iff`, `cweight_translate`).
-    Remaining: (1) fiber bijection helper using `Finset.card_bij` with the
-    map `yᵢ ↦ yᵢ - (n - M)`; (2) slicing via `Finset.card_eq_sum_card_fiberwise`
-    over the last-coordinate projection; (3) j↔(2n−j) pairing to fold the sum
-    into the form of `crossEhrhart_succ_d`'s RHS. -/
+    Status: weight helpers and fiber bijection in place
+    (`cweight_le_iff`, `cweight_translate`, `cweight_each_le_of_sum_le`,
+    `coord_in_range_of_sum_le`, `fiber_card_eq_crossBall_card`).
+    Remaining: (1) slicing via `Finset.card_eq_sum_card_fiberwise` over the
+    last-coordinate projection, identifying each fiber with the cweight-`(n - δ_j)`
+    filter and applying `fiber_card_eq_crossBall_card`; (2) j↔(2n−j) pairing
+    to fold the sum into the form of `crossEhrhart_succ_d`'s RHS. -/
 theorem crossBall_card (d n : ℕ) : (crossBall d n).card = crossEhrhart d n := by
   induction d with
   | zero =>

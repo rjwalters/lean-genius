@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-05-06T13:49:03.933Z",
     "iteration": 3,
-    "focus": "Sessions 1-2 (researcher-8, PR #16734 merged 2026-05-07) closed crossEhrhart_is_poly via descPochhammer ℚ k. Session 3 (researcher-11, this PR) added foundation helpers cweight_le_iff and cweight_translate for the remaining crossBall_card succ-d sorry. Current: 14 theorems / 1 sorry / 0 axioms / 423 lines.",
+    "focus": "Sessions 1-2 (researcher-8, PR #16734 merged 2026-05-07) closed crossEhrhart_is_poly via descPochhammer \u211a k. Session 3 (researcher-11, this PR) added foundation helpers cweight_le_iff and cweight_translate for the remaining crossBall_card succ-d sorry. Current: 14 theorems / 1 sorry / 0 axioms / 423 lines.",
     "blockers": [],
-    "nextAction": "Implement fiber_card_eq_crossBall_card via Finset.card_bij (the cweight helpers from Session 3 are the foundation), then the slicing decomposition via Finset.card_eq_sum_card_fiberwise + j↔(2n-j) pairing. Requires `induction d generalizing n` for the IH.",
+    "nextAction": "Implement fiber_card_eq_crossBall_card via Finset.card_bij (the cweight helpers from Session 3 are the foundation), then the slicing decomposition via Finset.card_eq_sum_card_fiberwise + j\u2194(2n-j) pairing. Requires `induction d generalizing n` for the IH.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS. PR #16339 (Session 0) framework complete; PR #16734 (Session 2) closed crossEhrhart_is_poly via descPochhammer ℚ k; this PR (Session 3, researcher-11) added cweight_le_iff and cweight_translate foundation helpers for the remaining sorry. EhrhartCrossPolytope.lean: 14 theorems / 1 sorry / 0 axioms / 423 lines. One open sorry (crossBall_card succ d geometric step) remains.",
+    "progressSummary": "ACTIVE (Session 4): Foundation helpers + full fiber bijection in place. EhrhartCrossPolytope.lean now has 19 theorems/lemmas (16 \u2192 19), 1 sorry (unchanged, on crossBall_card succ-d), 0 axioms, 531 lines (+108). Sessions 1-2 (researcher-8) closed crossEhrhart_is_poly via descPochhammer. Session 3 (researcher-11) added cweight_le_iff and cweight_translate. Session 4 (researcher-12) added cweight_each_le_of_sum_le, coord_in_range_of_sum_le, and the full fiber_card_eq_crossBall_card via Finset.card_bij \u2014 the fiber bijection now has a verified, sorry-free proof. Remaining: (1) slicing via Finset.card_eq_sum_card_fiberwise on the last coordinate; (2) identify each fiber as a cweight-(n \u2212 \u03b4_j) filter and apply fiber_card_eq_crossBall_card; (3) j \u2194 (2n \u2212 j) pairing via Finset.sum_nbij'.",
     "builtItems": [
       "sum_choose_range: hockey-stick \u03a3 C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:118",
       "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:130",
@@ -41,7 +41,10 @@
       "crossEhrhart_is_poly: descPochhammer-based polynomial of degree \u2264 d (PR #16734 Session 2) at EhrhartCrossPolytope.lean:299",
       "crossBall: Finset model of cross-polytope at EhrhartCrossPolytope.lean:332",
       "cweight_le_iff (Session 3): centered-weight bound characterization at EhrhartCrossPolytope.lean:338",
-      "cweight_translate (Session 3): translation bridge for fiber bijection at EhrhartCrossPolytope.lean:346"
+      "cweight_translate (Session 3): translation bridge for fiber bijection at EhrhartCrossPolytope.lean:346",
+      "Created cweight_each_le_of_sum_le in EhrhartCrossPolytope.lean \u2014 pointwise extraction of cweight bound from sum bound (Finset.single_le_sum + Nat.zero_le)",
+      "Created coord_in_range_of_sum_le in EhrhartCrossPolytope.lean \u2014 \u03a3 cweight at center n \u2264 M \u27f9 each (x i).val \u2208 [n \u2212 M, n + M]",
+      "Created fiber_card_eq_crossBall_card in EhrhartCrossPolytope.lean \u2014 full Finset.card_bij proof of fiber-to-crossBall cardinality bijection (\u224890 lines, no sorry, no axiom)"
     ],
     "insights": [
       "crossEhrhart_expand proved: L(B_{d+1},n) = L(B_d,n) + 2*\u03a3_k 2^k C(d,k) C(n,k+1) via Pascal split of C(d+1,k+1) and key identity 1+2*\u03a3 C(d,k+1)C(n,k+1) = \u03a3 C(d,k)C(n,k)",
@@ -51,16 +54,19 @@
       "Key identity in proof: \u03a3 2^k C(d,k) C(n,k) = 1 + 2*\u03a3 2^k C(d,k+1) C(n,k+1) \u2014 proved by extracting k=0 via sum_range_succ then dropping d+1 term (C(d,d+1)=0)",
       "Lean 4.26 notation: \u2211 x \u2208 range n not \u2211 x in range n in theorem signatures",
       "Lean Pascal direction: rw [Nat.choose_succ_succ] not \u2190 to go C(d+1,k+1) \u2192 C(d,k)+C(d,k+1)",
-      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)"
+      "Lean mul_sum direction: rw [Finset.mul_sum] (forward) to expand 2*\u03a3 \u2192 \u03a3(2*...)",
+      "Session 4: Finset.card_bij (Mathlib 4.26) takes the membership proof as an argument to the map, allowing the Fin bound proof to reference the filter predicate via (Finset.mem_filter.mp hy).2 \u2014 avoids needing a partial/total fallback function.",
+      "Session 4: For Fin equality (\u27e8a,_\u27e9 = \u27e8b,_\u27e9) inside funext goals, congr_arg Fin.val (congr_fun heq i) cleanly extracts the value equality without resorting to Fin.mk.injEq.",
+      "Session 4: The forward direction's membership step succeeds via Finset.sum_congr + cweight_translate to rewrite each summand from cweight-at-M to cweight-at-n, then closes with the original filter hypothesis. A single `show` exposes the (\u27e8v,_\u27e9 : Fin _).val = v reduction inside the sum."
     ],
     "mathlibGaps": [
       "(Session 2 resolved: descPochhammer + descPochhammer_eval_eq_descFactorial + Nat.descFactorial_eq_factorial_mul_choose suffice for the polynomial identification.)"
     ],
     "nextSteps": [
-      "Implement fiber_card_eq_crossBall_card (Session 4, ~80-120 lines): For M \u2264 n, the filter {y : Fin d \u2192 Fin (2n+1) | \u03a3 cweight(y\u1d62) \u2264 M} bijects with crossBall d M via y\u1d62 \u21a6 \u27e8(y\u1d62).val - (n - M), proof\u27e9. Use Finset.card_bij with the cweight helpers from Session 3. Prefer `show ... explicit form ...` over `calc` with anonymous Fin literals to avoid metavariable issues.",
-      "Implement the slicing: project crossBall (d+1) n on the last coordinate using Finset.card_eq_sum_card_fiberwise, identify each fiber with crossBall d (n - \u03b4_j) via fiber_card_eq_crossBall_card.",
-      "Implement the j \u2194 2n-j pairing: \u03a3_{j \u2208 Fin (2n+1)} crossEhrhart d (n - \u03b4_j) = crossEhrhart d n + 2\u00b7\u03a3_{m<n} crossEhrhart d m. Convert Fin sum to range sum, split as range n + {n} + (n+1..2n), reverse the high half via Finset.sum_nbij' (m \u21a6 n - 1 - m).",
-      "Switch the main theorem to `induction d generalizing n` so the IH is \u2200 n, (crossBall d n).card = crossEhrhart d n. Apply IH and crossEhrhart_succ_d to close."
+      "Session 5: Apply Finset.card_eq_sum_card_fiberwise to (crossBall (d+1) n) projecting on the last coordinate, yielding \u2211 j \u2208 range(2n+1), (fiber_j).card.",
+      "Session 5: For each j, identify the fiber {x : Fin (d+1) \u2192 Fin (2n+1) | \u03a3 cweight \u2264 n, last coord = j} with the d-dim filter {y : Fin d \u2192 Fin (2n+1) | \u03a3 cweight \u2264 n - \u03b4_j} via Fin.snoc/Fin.init, then apply fiber_card_eq_crossBall_card.",
+      "Session 6: j \u2194 (2n \u2212 j) pairing \u2014 split range(2n+1) = range n \u222a {n} \u222a shifted_range_n, reverse high half with Finset.sum_nbij', combine to get (crossBall d n).card + 2\u00b7\u2211_{m<n} (crossBall d m).card.",
+      "Session 6: Use induction d generalizing n in crossBall_card so the IH gives (crossBall d m).card = crossEhrhart d m for every m, then apply crossEhrhart_succ_d."
     ]
   },
   "tags": [

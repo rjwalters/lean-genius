@@ -217,6 +217,102 @@ fiber_card_eq_crossBall_card  -- ≈80-120 lines, uses cweight_*
 
 ---
 
+## Session 2026-05-08 (Session 4, researcher-12) — Full fiber bijection
+
+**Mode**: ACT (RICH, score 24)
+**Outcome**: progress — `fiber_card_eq_crossBall_card` proved in full
+(no new sorries); two pointwise helpers added on the way.
+
+### What I Did
+
+Closed the fiber bijection helper that Session 3 had set up the
+foundation for. Three new private lemmas in `EhrhartCrossPolytope.lean`
+between `cweight_translate` (line 354) and `crossBall_card`
+(line 479):
+
+1. `cweight_each_le_of_sum_le` (≈ 8 lines) — Σ cweight ≤ M ⟹ each
+   cweight ≤ M, via `Finset.single_le_sum` + `Nat.zero_le`. Generic
+   pointwise extraction.
+
+2. `coord_in_range_of_sum_le` (≈ 5 lines) — Σ cweight at center n ≤ M
+   ⟹ each `(x i).val ∈ [n − M, n + M]`. Direct combination of
+   `cweight_each_le_of_sum_le` + `cweight_le_iff`.
+
+3. `fiber_card_eq_crossBall_card` (≈ 90 lines) — full
+   `Finset.card_bij` proof, no sorries. Forward map
+   `y ↦ fun i => ⟨(y i).val − (n − M), _⟩ : Fin (2M+1)`. Bound proof
+   uses `coord_in_range_of_sum_le` + `omega`. Membership preservation
+   uses `cweight_translate` to rewrite each sum term. Injectivity
+   recovers `(y₁ i).val = (y₂ i).val` from
+   `(y₁ i).val − (n − M) = (y₂ i).val − (n − M)` plus the lower bound
+   `n − M ≤ (y i).val`. Surjectivity inverts via
+   `z ↦ fun i => ⟨(z i).val + (n − M), _⟩`.
+
+File: 423 → 531 lines, theorems 16 → 19 (counting private lemmas),
+sorries unchanged (1, in `crossBall_card` succ-d).
+
+### Key Findings
+
+- The `Finset.card_bij` API (Mathlib4 4.26.0) takes the membership
+  proof as an argument to the map, allowing the Fin bound proof to
+  reference the filter predicate via `(Finset.mem_filter.mp hy).2`.
+  This avoids the need to define a partial/total fallback function.
+- For the forward direction's membership step, the trick is to
+  rewrite the sum body via `Finset.sum_congr` + `cweight_translate`,
+  then close with the original sum hypothesis. The `show` tactic is
+  needed once to expose the `(⟨v, _⟩ : Fin _).val = v` reduction
+  inside the goal.
+- `congr_arg Fin.val (congr_fun heq i)` cleanly extracts the value
+  equality from a function-level equation between Fin-valued
+  functions; no need for `Fin.mk.injEq` machinery.
+
+### Files Modified
+
+- `proofs/Proofs/EhrhartCrossPolytope.lean` (423 → 531 lines, 16 → 19
+  theorems/lemmas, sorries unchanged at 1)
+- `src/data/proofs/ehrhart-cube-proven-oq-02/meta.json`
+  (lineCount, theoremCount, assumptions, originalContributions,
+  Section VIII endLine, all updated)
+- `research/problems/ehrhart-cube-proven-oq-02/knowledge.md`
+  (this entry)
+
+### Status
+
+- **Sorry count**: 1 (unchanged; `crossBall_card` succ-d)
+- **Axiom count**: 0
+- **Theorems proved**: 19 (added 3 new private lemmas)
+- **Definitions**: 2
+
+### Next Steps (Session 5)
+
+The remaining `crossBall_card` succ-d sorry now has all foundation
+in place. The path:
+
+1. **Slicing**: `(crossBall (d+1) n).card = ∑ j : Fin (2n+1), (fiber j).card`
+   via `Finset.card_eq_sum_card_fiberwise` projecting on the last
+   coordinate.
+
+2. **Identify each fiber with `crossBall d (n − δ_j)`** where
+   `δ_j = if j ≤ n then n − j else j − n` is the cweight of the last
+   coordinate at center n. The fiber over j is
+   `{x : Fin d → Fin (2n+1) | Σ cweight(xᵢ) ≤ n − δ_j}`,
+   and `fiber_card_eq_crossBall_card d n (n − δ_j) (by omega)` gives
+   the cardinality identity directly.
+
+3. **j ↔ (2n − j) pairing**: split `range (2n+1) = range n ∪ {n} ∪ shifted_range_n`
+   and reverse the high half via `Finset.sum_nbij'`. Yields
+   `(crossBall (d+1) n).card = (crossBall d n).card + 2·∑_{m<n} (crossBall d m).card`.
+
+4. **Apply IH** (with `induction d generalizing n`) and
+   `crossEhrhart_succ_d` to close.
+
+Estimated 100-150 lines for steps 1-4. The hardest step is likely
+(2) — the fiber identification requires careful `Fin.snoc`/`Fin.init`
+manipulation and a re-indexing lemma to match the cweight constraint
+between the (d+1)-coord setup and the d-coord crossBall.
+
+---
+
 ## Dead Ends
 
 - None yet.

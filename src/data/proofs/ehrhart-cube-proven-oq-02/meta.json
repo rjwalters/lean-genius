@@ -6,8 +6,8 @@
   "leanFile": {
     "path": "Proofs/EhrhartCrossPolytope.lean",
     "filename": "EhrhartCrossPolytope.lean",
-    "lineCount": 423,
-    "theoremCount": 16,
+    "lineCount": 531,
+    "theoremCount": 19,
     "definitionCount": 2,
     "sorries": 1,
     "axiomCount": 0
@@ -31,8 +31,8 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 423,
-    "assumptions": "1 sorry: crossBall_card d+1 \u2014 Finset slicing decomposition. Foundation helpers cweight_le_iff and cweight_translate added (Session 3) for the eventual fiber bijection. All algebraic/combinatorial theorems are proved including the geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m) and the polynomial identification crossEhrhart_is_poly via descPochhammer \u211a k.",
+    "lineCount": 531,
+    "assumptions": "1 sorry: crossBall_card d+1 \u2014 Finset slicing decomposition. Foundation helpers cweight_le_iff, cweight_translate, cweight_each_le_of_sum_le, coord_in_range_of_sum_le, and the full fiber bijection fiber_card_eq_crossBall_card (Session 4) are now in place. All algebraic/combinatorial theorems are proved including the geometric recursion L(B_{d+1},n) = L(B_d,n) + 2*\u03a3 L(B_d,m) and the polynomial identification crossEhrhart_is_poly via descPochhammer \u211a k. Remaining for the geometric crossBall_card sorry: (1) slicing via Finset.card_eq_sum_card_fiberwise over the last-coordinate projection, identifying each fiber with the cweight-(n - \u03b4_j) filter and applying fiber_card_eq_crossBall_card; (2) j\u2194(2n\u2212j) pairing to fold the sum into the form of crossEhrhart_succ_d's RHS.",
     "dateAdded": "2026-05-06",
     "mathlib_version": "4.26.0",
     "originalContributions": [
@@ -45,9 +45,12 @@
       "crossBall: Finset model of cross-polytope lattice points via centered Fin (2n+1) coordinates",
       "cweight_le_iff: characterization of (if a \u2264 n then n - a else a - n) \u2264 M as n - M \u2264 a \u2227 a \u2264 n + M (foundation helper for fiber bijection)",
       "cweight_translate: bridge identity equating the centered weight at center n with the centered weight at center M (after translation), enabling the bijection between truncated lattice fibers and crossBall d M",
+      "cweight_each_le_of_sum_le: pointwise extraction \u2014 \u03a3 cweight \u2264 M implies each cweight \u2264 M (Nat single_le_sum)",
+      "coord_in_range_of_sum_le: pointwise range \u2014 \u03a3 cweight at center n \u2264 M implies each (x i).val \u2208 [n - M, n + M], the geometric content needed for the fiber bijection",
+      "fiber_card_eq_crossBall_card: full Finset.card_bij proof that the cweight-M filter on Fin d \u2192 Fin (2n+1) is in cardinality bijection with crossBall d M when M \u2264 n; map y \u21a6 (i \u21a6 \u27e8(y i).val - (n - M), _\u27e9); injectivity uses the lower coord bound; surjectivity uses the inverse y i := \u27e8(z i).val + (n - M), _\u27e9",
       "Concrete verifications: d=1 (2n+1), d=2 (2n\u00b2+2n+1), d=3 spot checks via native_decide"
     ],
-    "theoremCount": 16,
+    "theoremCount": 19,
     "definitionCount": 2
   },
   "overview": {
@@ -124,8 +127,8 @@
       "id": "lattice-connection",
       "title": "Section VIII: Lattice Point Connection",
       "startLine": 327,
-      "endLine": 353,
-      "summary": "crossBall: Finset model of n\u00b7B_d lattice points via Fin d \u2192 Fin(2n+1) with L\u00b9-norm constraint. crossBall_card: card = crossEhrhart d n (proved for d=0; inductive step has 1 sorry for Finset slicing)."
+      "endLine": 485,
+      "summary": "crossBall: Finset model of n\u00b7B_d lattice points via Fin d \u2192 Fin(2n+1) with L\u00b9-norm constraint. Foundation helpers (cweight_le_iff, cweight_translate, cweight_each_le_of_sum_le, coord_in_range_of_sum_le) and the full fiber bijection (fiber_card_eq_crossBall_card via Finset.card_bij). crossBall_card: card = crossEhrhart d n (proved for d=0; inductive step has 1 sorry for Finset slicing using fiber_card_eq_crossBall_card)."
     }
   ],
   "conclusion": {
