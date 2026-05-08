@@ -634,3 +634,64 @@ Concurrent Docker build cache contention was causing builds #2-#4 failures.
    - Establish bijection between boundary IsDoors and color-changing face-2 edges
    - Use Sperner condition to exclude faces 0,1
 3. **Apply Triangulation.sperner** and extract witnesses for `sperner_panchromatic_two`
+
+
+## Session 2026-05-08 (Session 13) — onFace infrastructure for Triangulation hookup
+
+**Mode**: REVISIT (continuing axiom elimination work — phase REFINE)
+**Outcome**: progress — onFace predicate + Sperner-condition wrapper added; third corner color forced
+
+### What I Did
+
+- Added `onFaceΔ2 N b j` predicate: vertex `b = (b₀,b₁)` is on face j of Δ² iff its j-th
+  real coordinate is zero (j=0: b₀=0; j=1: b₁=0; j=2: b₀+b₁=N).
+- Added `Decidable` instance for `onFaceΔ2`.
+- Proved three `onFaceΔ2_<j>_iff` lemmas exposing the simple Nat-level conditions.
+- Proved three `onFaceΔ2_<j>_iff_gridPt_zero` lemmas connecting the predicate to
+  `gridPt N b j = 0` via `div_eq_zero_iff`.
+- Proved **`cN2_ne_of_onFace`**: face-form Sperner condition. Has the exact shape
+  `IsSpernerColoring c onFace` from `Triangulation.boundary_doors_odd`, ready for hookup.
+- Proved `cN2_origin_corner`: corner (0,0) (= (0,0,N) in Δ²) is on faces 0 and 1, so its
+  color is forced to 2. Completes the trio of forced corner colors (left=1, right=0, origin=2).
+- Added `gridPt_00_coord0` and `gridPt_00_coord1` helper lemmas.
+
+### Key Findings
+
+- **`Triangulation.boundary_doors_odd` signature match**: with `V = ℕ × ℕ`, `n = 2`, the
+  hypothesis `_hSperner : IsSpernerColoring c onFace` means `∀ v k, onFace v k → c v ≠ k`.
+  My `cN2_ne_of_onFace` provides exactly this. Sessions 14+ can wrap `cN2` to a total
+  function `(ℕ × ℕ) → Fin 3` and plug straight into the abstract Sperner machinery.
+- **Decoupled face predicate**: `onFaceΔ2 N b j` is purely arithmetic on `ℕ × ℕ` and `N`,
+  with no dependency on `f` or `gridPt`. This makes `onFace` ergonomic for `_hBoundaryOnFace`
+  and `_hLowerDim`/`_hLastFace` proofs (purely combinatorial).
+- **Three forced corner colors**: corners of Δ² are (N,0,0), (0,N,0), (0,0,N) in real coords;
+  in grid coords they are (N,0), (0,N), (0,0). Each lies on two geometric faces, so its
+  color is uniquely forced — the three corners give three distinct colors, witnessing that
+  the Sperner coloring is non-trivial regardless of `f`.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean` (583 → 673 lines, +90 lines)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (phase REFINE, iter 13)
+
+### Next Steps
+
+1. **Wrap `cN2` to a total function** `cN2_total : (ℕ × ℕ) → Fin 3` (default to 0 outside
+   the b₀+b₁≤N region — the wrapping is irrelevant since only in-range vertices appear in
+   `topSimps2`). ~10 lines.
+2. **Prove `cN2_total_ne_of_onFace`**: lift `cN2_ne_of_onFace` through the wrapper.
+   Requires showing every vertex of every `t1`/`t2` simplex has `b₀+b₁ ≤ N`. ~30 lines.
+3. **Prove `_hBoundaryOnFace`**: for each boundary cell-face pair `(s, k)` with
+   `adjFn s k = none`, identify which geometric face of Δ² it lies on by inspecting which
+   t1/t2 base coordinate hit its boundary. ~80 lines.
+4. **Prove `_hLowerDim`** for j=0 and j=1: by Sperner condition, no `IsDoor` can occur on
+   faces with color < 2 (the door requires color faceIdx, but Sperner forbids it). The
+   filter set is empty, so cardinality = 0 (even). ~30 lines.
+5. **Prove `_hLastFace`** (face 2): bijection with `face2_path_odd`'s color-changing edges.
+   The hard piece — requires identifying which t1 simplex contains edge `{(k,N-k), (k+1,N-k-1)}`
+   and showing IsDoor ↔ color change at that edge. ~150 lines.
+6. **Apply `Triangulation.sperner`** and extract witness vertices, then convert grid (b₀,b₁)
+   to real (b₀/N, b₁/N, (N-b₀-b₁)/N) and verify diameter ≤ 2/N. ~50 lines.
+
+Total estimated remaining for `sperner_panchromatic_two`: ~350 lines across 3-4 sessions.
