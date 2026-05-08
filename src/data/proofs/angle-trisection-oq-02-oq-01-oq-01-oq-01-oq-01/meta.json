@@ -73,7 +73,8 @@
       "The splitting field of g(X^p) (g separable irreducible) is isomorphic to g.SplittingField, and Gal(g(X^p)) ≅ Gal(g) — non-trivial when deg(g) ≥ 2",
       "The correct hypothesis is IsPurelyInseparable F f.SplittingField, which holds exactly when f has only ONE distinct root (f = c·(X - r)^(p^e))",
       "Proof of correct theorem: σ(x)^(p^n) = x^(p^n) (σ fixes F), then (σ(x) - x)^(p^n) = 0 by char-p Frobenius, then σ(x) = x since fields have no nilpotents",
-      "Artin-Schreier theory provides the cleanest source of inseparable-but-not-purely-inseparable counterexamples in characteristic p: the polynomial X^p − X − a is separable, but its composition with X^(p^k) (giving (X^(p^k))^p − X^(p^k) − a) is inseparable with a non-trivial Artin-Schreier Galois action — exactly the structure that breaks the false `insep_gal_trivial` axiom. The char-2 example f = X⁴ + X² + a in this file is the smallest non-trivial instance of this construction"
+      "Artin-Schreier theory provides the cleanest source of inseparable-but-not-purely-inseparable counterexamples in characteristic p: the polynomial X^p − X − a is separable, but its composition with X^(p^k) (giving (X^(p^k))^p − X^(p^k) − a) is inseparable with a non-trivial Artin-Schreier Galois action — exactly the structure that breaks the false `insep_gal_trivial` axiom. The char-2 example f = X⁴ + X² + a in this file is the smallest non-trivial instance of this construction",
+      "The proof of `algEquiv_eq_refl_of_isPurelyInseparable` is short (≈20 Lean lines) only because Mathlib already encodes the right abstractions: `IsPurelyInseparable.pow_mem` packages the inductive existence of $n$ with $x^{p^n} \\in F$, `iterateFrobenius` packages the iterated $x \\mapsto x^{p^n}$ as a *ring hom* (so `map_sub` discharges the binomial-coefficient combinatorics), and `AlgEquiv.commutes` discharges $\\sigma$-fixity on the base field. The mathematical content is one Bourbaki-style page; the Lean compactness comes from typeclass-driven lemma reuse"
     ],
     "proofStrategy": "1. **Counterexample construction**: Work over F₂(a) = FractionRing(F₂[X]). Set f = X⁴ + X² + a = g(X²) where g = X² + X + a (Artin-Schreier, irreducible). Show f is inseparable (f' = 0 in char 2) and has a nontrivial automorphism (σ: α^(1/2) ↦ α^(1/2) + 1).\n\n2. **Correct theorem**: For IsPurelyInseparable F K and σ : K ≃ₐ[F] K:\n   - Get n with x^(p^n) ∈ F via IsPurelyInseparable.pow_mem\n   - σ(x^(p^n)) = x^(p^n) since σ fixes F (AlgEquiv.commutes)\n   - So σ(x)^(p^n) = x^(p^n)\n   - Char-p Frobenius: (σ(x) - x)^(p^n) = σ(x)^(p^n) - x^(p^n) = 0\n   - Field = no nilpotents: σ(x) = x\n   - Hence σ = id by AlgEquiv.ext\n\n3. **Corollary**: Nat.card f.Gal = 1 when IsPurelyInseparable F f.SplittingField",
     "prerequisites": [
@@ -128,6 +129,16 @@
       "targetId": "angle-trisection",
       "relationship": "context",
       "description": "Top-level angle-trisection entry. The whole OQ chain leading here drills down on the Galois-theoretic inputs needed to make the impossibility argument fully rigorous in arbitrary characteristic."
+    },
+    {
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "contrasts",
+      "description": "Companion entry that computes |Gal(8X³−6X−1/ℚ)| = 3 in characteristic 0 (the cos(20°) minimal polynomial). Makes the same Galois-cardinality move on the trisection side, but in the well-behaved characteristic-0 / separable regime — illustrating exactly the regime where the false `insep_gal_trivial` axiom is unnecessary because separability already gives `natDegree | |Gal|`."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "context",
+      "description": "Provides the broader Galois-theoretic infrastructure (solvability of Sₙ, isSolvable lemmas) that consumes statements about |Gal(f)|. The corrected theorem here — `gal_card_one_of_purelyInseparable_splitting` — is the kind of building block that any characteristic-p extension of the Abel-Ruffini program would need to invoke when tracking inseparable factors."
     }
   ],
   "mainTheorems": [
@@ -235,7 +246,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The axiom insep_gal_trivial is mathematically incorrect. The correct theorem requires the splitting field to be purely inseparable, not just the polynomial to be inseparable.",
+    "summary": "The axiom `insep_gal_trivial` is mathematically incorrect. The correct theorem requires the **splitting field** to be purely inseparable, not just the polynomial to be inseparable. The two conditions are inequivalent in general: any inseparable irreducible $f = g(X^p)$ with $g$ separable of degree $\\ge 2$ has $|\\mathrm{Gal}(f)| = |\\mathrm{Gal}(g)| > 1$. The corrected theorem `gal_card_one_of_purelyInseparable_splitting` is proved here in roughly twenty Lean lines from Mathlib's `IsPurelyInseparable` API and the iterated Frobenius ring homomorphism, and a concrete char-2 counterexample $f = X^4 + X^2 + a$ over $\\mathbb{F}_2(a)$ formally refutes the original claim. One axiom remains (`counterexample_gal_card`) pending a full Artin-Schreier formalization of $|\\mathrm{Gal}(f)| = 2$ for the explicit witness.",
     "implications": "The parent entry's axiom should be replaced with the weaker (and correct) claim for purely inseparable polynomials only (f = X^(p^e) - c type). The general inseparable case has |Gal(f)| = |Gal(g)| where g is the separable part of f. More broadly, this result clarifies that 'natDegree | |Gal|' fails in characteristic p exactly because of separability: the standard divisibility holds for the *separable degree*, not the full degree. Any constructibility/impossibility argument that takes characteristic-p coefficient fields seriously (Abel-Ruffini in characteristic p, transcendence bases over F_p, finite-field algebraic geometry) must therefore distinguish between inseparable and purely inseparable hypotheses.",
     "openQuestions": [
       "Can xPow_sub_of_irreducible_isPurelyInseparable be proved directly from Mathlib's SplittingField API?",
