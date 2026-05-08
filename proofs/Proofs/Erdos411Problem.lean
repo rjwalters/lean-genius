@@ -272,13 +272,54 @@ theorem cambie_ratio4_4325798 : GeneralRatioRelation 4325798 4 4 :=
   ⟨1, fun k hk => (ratio4_4325798_aux k hk).2⟩
 
 /-
-## Section V: Steinerberger's Reduction
+## Section VI: Steinerberger's Reduction (PROVED, sufficient direction)
+
+Steinerberger (2025, arXiv:2504.08023) observed that the r = 2 doubling
+problem is equivalent to the elementary equation φ(n) + φ(n + φ(n)) = n.
+We formalize the sufficient direction: if this equation holds for an
+even n > 2, then DoublingRelation n 2 holds (with K = 0).
+
+The converse (DoublingRelation n 2 → equation) requires backward reasoning
+along orbits of g and is not formalized here.
 -/
 
-/-- Steinerberger showed the r = 2 case is equivalent to solving
-φ(n) + φ(n + φ(n)) = n. -/
+/-- Computational expansion: g_2(n) = (n + φ(n)) + φ(n + φ(n)). -/
+theorem iteratedTotientStep_two (n : ℕ) :
+    iteratedTotientStep 2 n = (n + n.totient) + (n + n.totient).totient := by
+  rfl
+
+/-- Steinerberger's identity (computational form):
+g_2(n) = 2n ⟺ φ(n) + φ(n + φ(n)) = n. -/
+theorem steinerberger_iff (n : ℕ) :
+    iteratedTotientStep 2 n = 2 * n ↔
+      n.totient + (n + n.totient).totient = n := by
+  rw [iteratedTotientStep_two]; omega
+
+/-- **Steinerberger's reduction (sufficient direction).** If n is even, n > 2,
+and φ(n) + φ(n + φ(n)) = n, then DoublingRelation n 2 holds with K = 0.
+
+Proof: The hypothesis gives g_2(n) = 2n by `steinerberger_iff`, and
+`doubling_propagation` extends this to all k ≥ 0. -/
+theorem steinerberger_r2_sufficient {n : ℕ} (hn_even : 2 ∣ n) (hn_gt : n > 2)
+    (h_eq : n.totient + (n + n.totient).totient = n) :
+    DoublingRelation n 2 :=
+  ⟨0, fun k _ => doubling_propagation n hn_even hn_gt
+    ((steinerberger_iff n).mpr h_eq) k⟩
+
+/-- The known r = 2 solution n = 10 satisfies Steinerberger's equation:
+φ(10) + φ(10 + φ(10)) = 4 + φ(14) = 4 + 6 = 10. -/
+theorem steinerberger_eq_n10 :
+    (10 : ℕ).totient + (10 + (10 : ℕ).totient).totient = 10 := by
+  native_decide
+
+/-- The known r = 2 solution n = 94 satisfies Steinerberger's equation:
+φ(94) + φ(94 + φ(94)) = 46 + φ(140) = 46 + 48 = 94. -/
+theorem steinerberger_eq_n94 :
+    (94 : ℕ).totient + (94 + (94 : ℕ).totient).totient = 94 := by
+  native_decide
+
 /-
-## Section VI: Structural Properties
+## Section VII: Structural Properties
 -/
 
 /-- For even n, g(n) = n + φ(n) is always even, so the iterates
