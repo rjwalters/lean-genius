@@ -41,19 +41,19 @@
   },
   "currentState": {
     "phase": "ITERATING",
-    "since": "2026-05-07T22:45:00.000Z",
-    "iteration": 1,
-    "focus": "Iteration 1: established a Lean framework around the Selmer cubic counterexample. Proved real solubility constructively via IVT, proved the easy direction of the Hasse principle (rational ⇒ local) over both ℝ and ℚₚ, axiomatized Selmer 1951 (no rational solutions) and p-adic solubility, and proved that the Hasse principle FAILS for the Selmer cubic from these.",
+    "since": "2026-05-08T05:50:00Z",
+    "iteration": 2,
+    "focus": "Iteration 2 (gallery promotion): created src/data/proofs/hilbert-11-oq-02/ with full meta.json (8 sections, overview, conclusion, 7 references, 3 cross-references), empty annotations.json, and standard async-loaded index.ts. Validated via `pnpm annotations:build` (listings regenerate cleanly with our entry; no new annotation errors). Lean file unchanged (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries). Closes the gallery-presence gap left after #16808 merged the Lean side.",
     "blockers": [],
     "nextAction": "Future iteration: prove p-adic solubility of the Selmer cubic at primes p ∉ {2,3,5} via Hensel's lemma applied to the reduction mod p (currently axiomatized as `selmer_padic_solubility`). At p ∈ {2,3,5} requires direct construction at low precision. Replacing this axiom is the most accessible next step toward reducing the axiom count.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 1). Created `proofs/Proofs/Hilbert11OQ02.lean` (264 lines, 7 theorems/defs, 2 axioms, 0 sorries) framing the Selmer cubic as the canonical Hasse-principle-failure example. Proved nontrivial real solubility constructively via IVT on g(x)=3x³+4 over [-2,0]; proved easy directions ℚ⇒ℝ and ℚ⇒ℚ_p via Rat.cast; axiomatized Selmer 1951 (no rational solutions, deep) and p-adic solubility (Hensel pending); proved `selmer_hasse_principle_fails` from the two axioms. Defined `colliot_thelene_conjecture` as a documented placeholder. Recovers and extends prior researcher-9 unpushed wip session.",
+    "progressSummary": "ITERATING (iter 2). Iter 1: created `proofs/Proofs/Hilbert11OQ02.lean` (264 lines, 5 theorems, 3 defs, 2 axioms, 0 sorries) merged via PR #16808. Iter 2 (this session): promoted to gallery — created `src/data/proofs/hilbert-11-oq-02/` with full meta.json (8 sections, overview, conclusion, 7 references, 3 cross-references), empty annotations.json, and index.ts. The entry registers in listings.json with status=axiomatized, badge=axiom; validated via `pnpm annotations:build`.",
     "builtItems": [
       "selmerPoly definition in Hilbert11OQ02.lean (3x³+4y³+5z³ over CommRing)",
       "selmerCubic_real_solution in Hilbert11OQ02.lean — nontrivial real solution constructed via IVT on g(x)=3x³+4 over [-2,0]",
@@ -61,7 +61,10 @@
       "selmer_rat_implies_padic in Hilbert11OQ02.lean — easy direction ℚ⇒ℚ_p via Rat.cast embedding (parametric in prime p)",
       "selmer_locally_soluble_everywhere in Hilbert11OQ02.lean — combines proved real solubility with axiomatized p-adic solubility",
       "selmer_hasse_principle_fails in Hilbert11OQ02.lean — derives Hasse failure from selmer_no_rational_solution + local everywhere",
-      "selmerHassePrinciple definition in Hilbert11OQ02.lean — local-global predicate for the Selmer cubic"
+      "selmerHassePrinciple definition in Hilbert11OQ02.lean — local-global predicate for the Selmer cubic",
+      "src/data/proofs/hilbert-11-oq-02/meta.json — 287 lines: status=axiomatized, badge=axiom, 8 sections, full overview/conclusion, 7 references (Selmer 1951; Hasse 1923; Manin 1971; Skorobogatov 1999; Poonen 2010; Colliot-Thélène-Sansuc 1980), 3 cross-references (hilbert-11 parent, hilbert-11-oq-01 sibling, e-transcendental-oq-02 same-pattern)",
+      "src/data/proofs/hilbert-11-oq-02/index.ts — standard async-loaded source template",
+      "src/data/proofs/hilbert-11-oq-02/annotations.json — empty []; annotation enrichment deferred to follow-up enricher session"
     ],
     "insights": [
       "Hilbert11_QuadraticForms.lean already AXIOMATIZES the Selmer counterexample (`selmer_curve_no_rational_points`) — OQ-02 should LIFT this axiom into a dedicated entry and frame it as the canonical example of Hasse failure rather than burying it in the quadratic-forms parent",
@@ -128,7 +131,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.056Z",
-  "lastUpdate": "2026-05-07T22:45:00.000Z",
+  "lastUpdate": "2026-05-08T05:50:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
