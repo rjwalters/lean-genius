@@ -441,4 +441,57 @@ lemma walk_target_eq_edge_filter' (walk : List V) (n : ℕ) (v : V)
       ⟨hi_lt, he_src, he_tgt⟩
     exact (hcov e he_mem).unique hspec hi_spec
 
+/-- **Generic circuit_edge_balance**: for any vertex `v`, the count of
+    edges in `edges` whose **source** is `v` equals the count whose
+    **target** is `v`, when `edges` is the unique-coverage edge set of a
+    closed walk.
+
+    This is the connective lemma needed for the deferred main-file theorem
+    `remove_circuit_balanced` (currently L1103, the file's last `sorry`).
+
+    ## Why this matters for `remove_circuit_balanced`
+
+    `remove_circuit_balanced` claims that removing a directed circuit's
+    edges from a balanced graph leaves a balanced graph. The proof reduces
+    (via `Finset.card_sdiff` on edge sets — already in Mathlib) to showing
+    that the removed edges themselves contribute equally to in- and
+    out-degree at every vertex `v`. With `edges := (walkEdges C.walk).toFinset`
+    and the closed-walk hypotheses on `C.walk`, this template provides
+    exactly that equality.
+
+    ## Proof structure
+
+    Compose the three previously-built templates:
+    1. `walk_source_eq_edge_filter'` — bijects walk source-positions with
+       source-incident edges.
+    2. `walk_target_eq_edge_filter'` — bijects walk target-positions with
+       target-incident edges.
+    3. `closed_walk_balance'` — closed walks have equal source/target
+       position counts.
+
+    Specifically:
+    `(edges.filter src=v).card = #{i < n : walk[i]? = v}` (by `walk_source_eq_edge_filter'`)
+    `                          = #{i < n : walk[i+1]? = v}` (by `closed_walk_balance'`)
+    `                          = (edges.filter tgt=v).card` (by `walk_target_eq_edge_filter'`)
+
+    ## Hypotheses
+
+    All five required hypotheses are exactly the union of the three
+    component templates' inputs (with no new hypothesis introduced):
+    - `hlen`, `hclosed` from `closed_walk_balance'`
+    - `hcov`, `hsteps` from both edge-filter templates (shared form). -/
+lemma circuit_edge_balance' (walk : List V) (n : ℕ) (v : V)
+    (edges : Finset (V × V))
+    (hlen : walk.length = n + 1)
+    (hclosed : walk[0]? = walk[n]?)
+    (hcov : ∀ e ∈ edges, ∃! i : ℕ, i < n ∧
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2)
+    (hsteps : ∀ i, i < n → ∃ e ∈ edges,
+      walk[i]? = some e.1 ∧ walk[i + 1]? = some e.2) :
+    (edges.filter fun e => e.1 = v).card =
+    (edges.filter fun e => e.2 = v).card := by
+  rw [← walk_source_eq_edge_filter' walk n v edges hcov hsteps,
+      ← walk_target_eq_edge_filter' walk n v edges hcov hsteps]
+  exact closed_walk_balance' walk n hlen hclosed v
+
 end KonigsbergOQ01OQ02Recipe
