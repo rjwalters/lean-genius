@@ -19,6 +19,10 @@
   Both are KNOWN mathematical results but require substantial bijection/algebra
   infrastructure not currently in Mathlib.
 
+  TARGET 3 (hook_walk_identity) is now resolved by delegating to
+  `hook_walk_identity_gnw` (Helpers, PART XXVI) — see the comment above the
+  declaration below.
+
   ## WARNING FOR ARISTOTLE
 
   These targets are NOT routine Mathlib lookups. They require:
@@ -91,23 +95,23 @@ theorem lgv_det_factors_as_hook_quotient_Aristotle (μ : YoungDiagram) (r : ℕ)
   sorry
 
 /-
-TARGET 3 (hook_walk_identity)
+TARGET 3 (hook_walk_identity) — RESOLVED via dispatcher
 
 The hook walk identity: for any non-empty Young diagram μ,
   Σ_{c ∈ corners(μ)} hookProd(μ) / hookProd(μ\c) = μ.card  (in ℚ)
 
-For each corner c=(r,s): hookProd(μ)/hookProd(μ\c) equals the product over cells in
-the same row/column as c (excluding c) of h(cell)/(h(cell)-1), since the corner itself
-has hook length 1. The sum over all corners telescopes to μ.card by hook combinatorics.
-
-This is the key lemma for proving hook_length_formula_Q by well-founded induction.
-Verified for 1-row, 1-column, and hook shapes. General proof requires frame-Robinson-Thrall
-hook walk argument or a combinatorial identity on hook lengths.
+This target is now closed by direct delegation to `hook_walk_identity_gnw`
+(Helpers, PART XXVI), the GNW-walk dispatcher.  That dispatcher rewrites each
+ratio via `gnwProb_key`, swaps the double sum, and collapses the inner sum
+through `gnwProb_sum_corners`.  No outstanding sorry remains in this statement;
+its only transitive dependence is `gnwProb_exchange` (the GNW 1979 hook-weight
+shift identity), which is the sole remaining open sorry for the entire
+hook-length formalization.
 -/
 lemma hook_walk_identity_Aristotle (μ : YoungDiagram) (hn : 0 < μ.card) :
     ∑ c ∈ (corners μ).attach,
       ((hookProd μ : ℚ) / (hookProd (removeCorner μ c.val (mem_corners.mp c.prop)) : ℚ))
-    = (μ.card : ℚ) := by
-  sorry
+    = (μ.card : ℚ) :=
+  hook_walk_identity_gnw μ hn
 
 end BallotProblemOQ03OQ01OQ02Aristotle
