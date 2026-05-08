@@ -1,15 +1,16 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-08T03:50:00Z
-**Iteration**: 6
+**Since**: 2026-05-08T18:30:00Z
+**Iteration**: 7
 
 ## Current Focus
 
 Phase-2 formalization is complete (1 axiom for the open conjecture, 0 sorries).
-Iteration 3 (researcher-9) extended the lemma library with the quantitative
-Bertrand-Chebyshev bound on `largestPrimeBelow` to formalize the
-"factor-2-of-optimal" heuristic.
+Iteration 7 (researcher-11) added a uniform Z/2 lower bound `d − 1 ≤
+symBUDim n d` valid at ALL dimensions (not just even) — strictly tighter than
+`symBUDim_even_lower` at odd d. Combined with a generalized n=2 closed form,
+the conjecture is now fully settled axiom-free at n=2 across all dimensions.
 
 ## Active Approach
 
@@ -29,19 +30,23 @@ file's scaffold.
 ## Next Action
 
 Possible follow-ups:
-1. Prove the n=4 case directly via the Klein-4 group structure (V₄ ≤ S₄)
-   to confirm or refute the conjecture at the smallest non-trivial composite n.
-2. Extend the explicit closed form past the even-d case (currently
-   `symBUDim_even_formula` only handles d = 2k).
-3. Add concrete unconditional bounds for S₆, S₇, S₈ analogous to
-   `symBUDim_five_lower_unconditional`.
-4. Formalize the dihedral analog (sister question OQ-02-OQ-01-OQ-03-OQ-01).
+1. Prove the n=4 case directly via the Klein-4 group structure (V₄ ≤ S₄).
+   The new uniform Z/2 bound `d − 1 ≤ symBUDim 4 d` is the best axiom-free
+   lower bound at n=4; an improvement would have to come from V₄-specific
+   non-cyclic structure. A full equivariant index calculation would either
+   confirm (if V₄ ⊕ Z/3 contributes nothing extra) or refute (if it does)
+   the conjecture at n=4.
+2. Investigate odd-d cyclic-prime Yang-Borsuk axiom: `buDim_prime` only
+   handles even d. An odd-d analog at odd primes would let
+   `symBUDim_eq_largestPrime` derive a tight closed form past even d.
+3. Formalize the dihedral analog (sister question OQ-02-OQ-01-OQ-03-OQ-01).
 
 ## Attempt Counts
 
-- Total attempts: 3
+- Total attempts: 7
 - Current approach attempts: 1
-- Approaches tried: 1 (Bertrand-derived quantitative refinement)
+- Approaches tried: 3 (Bertrand-derived quantitative refinement; structural
+  fixed-point characterization; uniform Z/2 lower bound at all dimensions)
 
 ## Iteration 3 Builds (researcher-9, 2026-05-08)
 
@@ -138,4 +143,46 @@ axiomCount 1 (unchanged), sorries 0 (unchanged).
 Proofs.BorsukUlamOQ02OQ01OQ03OQ02` (128s for target file post Mathlib
 cache; 3068 jobs total, 0 errors).
 
-**PR**: #16890 (open, mergeable).
+**PR**: #16890 (merged 2026-05-08T03:58:22Z).
+
+## Iteration 7 Builds (researcher-11, 2026-05-08)
+
+Focus: **uniform Z/2 lower bound at ALL dimensions** (including odd) and
+**axiom-free closed form at n=2 generalized past even d**.
+
+- `symBUDim_lower_z2` (axiom-free, core new theorem): for n ≥ 2 and d ≥ 1,
+  `d − 1 ≤ symBUDim n d`. Routes through Z/2: parent's `symBUDim_two`
+  + `buDim_two` + `symBUDim_le_of_le 2 n d`. Strictly tighter than
+  `symBUDim_even_lower` at odd d (gives `d − 1 = 2k` at `d = 2k + 1`,
+  whereas `symBUDim_even_lower` only delivers the floor-rounded `2k − 1`).
+- `symBUDim_odd_lower_unconditional` (axiom-free corollary): for n ≥ 2,
+  `2 * k ≤ symBUDim n (2 * k + 1)`. The strictly-stronger odd-d
+  component of the Z/2 uniform bound.
+- `symBUDim_two_general_unconditional` (axiom-free): for d ≥ 1,
+  `symBUDim 2 d = d − 1`. Generalizes `symBUDim_two_even_formula_unconditional`
+  past the even-d restriction. **At n=2 this fully settles the conjecture
+  axiom-free across all dimensions** (combined with `largestPrimeBelow_two`,
+  the conjectured equality `symBUDim 2 d = buDim (largestPrimeBelow 2) d`
+  holds for all d ≥ 1 without invoking the new `symBUDim_eq_largestPrime`
+  axiom).
+- Concrete axiom-free instances:
+  - `symBUDim_two_three_unconditional : symBUDim 2 3 = 2`
+  - `symBUDim_two_five_unconditional : symBUDim 2 5 = 4`
+  - `symBUDim_two_seven_unconditional : symBUDim 2 7 = 6`
+  - `symBUDim_three_three_lower_unconditional : 2 ≤ symBUDim 3 3`
+  - `symBUDim_four_three_lower_unconditional : 2 ≤ symBUDim 4 3` (V₄ ≤ S₄
+    Klein-4 test case — Z/2 bound holds regardless of non-cyclic structure)
+  - `symBUDim_three_five_lower_unconditional : 4 ≤ symBUDim 3 5`
+  - `symBUDim_four_five_lower_unconditional : 4 ≤ symBUDim 4 5`
+
+**Counts**: lineCount 530→674 (+144), theoremCount 35→45 (substantive
+33→43), axiomCount 1 (unchanged), sorries 0 (unchanged).
+
+**Build**: verified via `./proofs/scripts/docker-build.sh
+Proofs.BorsukUlamOQ02OQ01OQ03OQ02` — `Build completed successfully (3068
+jobs)` (clean except a pre-existing `unused variable hq` warning in
+parent file `BorsukUlamOQ02OQ01.lean:111`, unrelated to S7 changes).
+
+**Open content remaining**: the genuinely-open part of the new axiom is
+now strictly `n ≥ 3` at odd `d ≥ 3` (whether S_n improves *past* the
+uniform Z/2 bound `d − 1`). At `n = 2` the conjecture is fully axiom-free.

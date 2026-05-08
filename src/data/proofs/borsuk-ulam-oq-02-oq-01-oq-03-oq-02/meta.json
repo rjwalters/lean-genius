@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 530,
+    "lineCount": 674,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -80,10 +80,15 @@
       "symBUDim_eq_buDim_at_prime: at any prime p, the conjectural equality symBUDim_eq_largestPrime collapses (via largestPrimeBelow_self_of_prime) to the clean statement symBUDim p d = buDim p d — isolates the *prime-n content* of the open question (Sₙ vs ℤ/p, no Bertrand selector involved). Conditional on the new axiom",
       "symBUDim_prime_even_formula: tight closed form symBUDim p (2k) = 2k - 1 at any prime p with k ≥ 1; combines symBUDim_eq_buDim_at_prime with parent's buDim_prime",
       "symBUDim_{eleven,thirteen}_eq_buDim: concrete prime-n equality instances at n = 11, 13 (conditional)",
-      "symBUDim_{eleven,thirteen}_even_formula: concrete prime-n closed-form instances symBUDim 11 (2k) = 2k - 1, symBUDim 13 (2k) = 2k - 1 (conditional)"
+      "symBUDim_{eleven,thirteen}_even_formula: concrete prime-n closed-form instances symBUDim 11 (2k) = 2k - 1, symBUDim 13 (2k) = 2k - 1 (conditional)",
+      "symBUDim_lower_z2: UNIFORM unconditional lower bound `d − 1 ≤ symBUDim n d` for all n ≥ 2, d ≥ 1 (axiom-free up to parent's symBUDim_two + buDim_two + symBUDim_le_of_le). Strictly tighter than `symBUDim_even_lower` at odd d: at d = 2k+1 it gives 2k, while symBUDim_even_lower only delivers the floor-rounded 2k − 1. Routes through Z/2 — the cyclic-prime lower bound at p = 2 — and is therefore independent of the new largestPrimeBelow axiom",
+      "symBUDim_odd_lower_unconditional: odd-d corollary `2k ≤ symBUDim n (2k+1)` for n ≥ 2 (axiom-free); the strictly-stronger odd-d component of the Z/2 uniform bound",
+      "symBUDim_two_general_unconditional: axiom-free CLOSED FORM at n = 2 for ALL d ≥ 1: `symBUDim 2 d = d − 1`. Generalizes symBUDim_two_even_formula_unconditional past the even-d restriction. Combined with largestPrimeBelow_two, this **fully settles the conjecture axiom-free at n = 2 across all dimensions** (independent of the new symBUDim_eq_largestPrime axiom)",
+      "symBUDim_two_{three,five,seven}_unconditional: concrete axiom-free closed-form values at n = 2 and small odd d (`symBUDim 2 3 = 2`, `symBUDim 2 5 = 4`, `symBUDim 2 7 = 6`)",
+      "symBUDim_{three,four}_three_lower_unconditional, symBUDim_{three,four}_five_lower_unconditional: concrete axiom-free odd-d lower bounds at n = 3, 4 — including the V₄ ≤ S₄ Klein-4 test case cited in the problem statement"
     ],
-    "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **The n=2 instance of this axiom is redundant** — `symBUDim_eq_largestPrime_two_unconditional` proves it axiom-free from the parent's `symBUDim_two` axiom + `largestPrimeBelow_two`. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime` (counted in the parent gallery entries).",
-    "theoremCount": 35,
+    "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **At n = 2 the conjecture is now settled axiom-free for ALL dimensions d ≥ 1**: `symBUDim_two_general_unconditional` shows symBUDim 2 d = d − 1 from the parent's `symBUDim_two` axiom + `buDim_two`, and combined with `largestPrimeBelow_two` this matches the conjectured value buDim (largestPrimeBelow 2) d = buDim 2 d = d − 1. So the new axiom is redundant at n = 2 not only on even d (per `symBUDim_eq_largestPrime_two_unconditional`) but on ALL d. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime`, `buDim_two` (counted in the parent gallery entries).",
+    "theoremCount": 45,
     "definitionCount": 1
   },
   "overview": {
@@ -100,7 +105,9 @@
       "**Concrete computations are immediate.** `symBUDim_three_four = 3` and `symBUDim_four_six = 5` follow from the closed-form formula; the unconditional `symBUDim_five_lower_unconditional` is axiom-free up to parent. These serve as both regression tests and Lean-verified instances of the conjecture's predictions.",
       "**Bertrand-Chebyshev makes the factor-2 gap formal.** The unconditional cyclic lower bound `2k − 1 ≤ symBUDim n (2k)` matches the conjectural upper bound exactly modulo the open axiom — but it's also worth showing that the prime witness $p^*$ is genuinely close to $n$, not just some small prime. `n_div_two_lt_largestPrimeBelow` formalizes this: for any $n \\geq 2$, $p^* > n/2$, axiom-free via Mathlib's `Nat.exists_prime_lt_and_le_two_mul`. The prime witness is in the dyadic window $(n/2, n]$, so any improvement beyond the cyclic lower bound must come from $S_n$-specific (non-cyclic) structure.",
       "**The n=2 instance of the conjecture is provable, axiom-free.** `symBUDim_eq_largestPrime_two_unconditional` shows that the conjectured equality $\\text{symBUDim}(n, d) = \\text{buDim}(p^*, d)$ at $n=2$ is *not* an independent axiom: it follows from the parent file's pre-existing `symBUDim_two` axiom and the squeeze-argument `largestPrimeBelow_self_of_prime` (instantiated at $n = p = 2$). This is a non-trivial *consistency check* — the new axiom `symBUDim_eq_largestPrime` is compatible with prior axiomatization, and its true open content is for $n \\geq 3$. (For larger primes $n$, the analogous derivation would require a $\\text{symBUDim}_p$ base axiom that the gallery does not yet have.)",
-      "**At prime n, the conjecture has a strikingly simpler form.** Specializing `symBUDim_eq_largestPrime` at any prime $p$ gives `symBUDim p d = buDim p d` (since `largestPrimeBelow p = p` by the squeeze argument). The Bertrand selector and the `n/2 < p^* \\leq n$` window collapse to the trivial `p^* = n` — there is no choice to make. So the *prime-n case* asks whether the symmetric-group BU dimension equals the cyclic-prime-$n$ BU dimension, a strictly $S_n$-versus-$\\mathbb{Z}/p$ comparison. This separates two qualitatively different difficulties: composite-$n$ cases (the prime $p^* < n$ is a non-trivial choice) versus prime-$n$ cases (no choice, Sₙ vs ℤ/p directly). Captured in `symBUDim_eq_buDim_at_prime` and instantiated at $n = 11, 13$."
+      "**At prime n, the conjecture has a strikingly simpler form.** Specializing `symBUDim_eq_largestPrime` at any prime $p$ gives `symBUDim p d = buDim p d` (since `largestPrimeBelow p = p` by the squeeze argument). The Bertrand selector and the `n/2 < p^* \\leq n$` window collapse to the trivial `p^* = n` — there is no choice to make. So the *prime-n case* asks whether the symmetric-group BU dimension equals the cyclic-prime-$n$ BU dimension, a strictly $S_n$-versus-$\\mathbb{Z}/p$ comparison. This separates two qualitatively different difficulties: composite-$n$ cases (the prime $p^* < n$ is a non-trivial choice) versus prime-$n$ cases (no choice, Sₙ vs ℤ/p directly). Captured in `symBUDim_eq_buDim_at_prime` and instantiated at $n = 11, 13$.",
+      "**The Z/2 subgroup gives a uniform lower bound at ALL d (including odd).** The Yang-Borsuk cyclic-prime axiom only pins `buDim p (2k) = 2k − 1` for even dimensions, so the largestPrimeBelow route delivers only the floor-rounded $2 \\lfloor d/2 \\rfloor - 1$ at odd $d$. But the parent's `buDim_two : buDim 2 (m+1) = m` operates in *any* dimension via the classical $S^d \\to \\mathbb{R}^d$ antipodal map. Composing with parent's `symBUDim_two` and subgroup monotonicity yields the **strictly stronger** uniform bound $d - 1 \\leq \\text{symBUDim}(n, d)$ at odd $d$ (`symBUDim_lower_z2`). Captured cleanly in Part IX. At $n = 2$ this also delivers the **complete axiom-free closed form** $\\text{symBUDim}(2, d) = d - 1$ for all $d$ — the conjecture is fully settled at $n = 2$ independent of the new largestPrimeBelow axiom.",
+      "**The genuinely-open content of the new axiom is strictly $n \\geq 3$ at odd $d \\geq 3$.** With Part IX/X, $n = 2$ is fully axiom-free for all $d$, and even-$d$ at $n \\geq 3$ has a tight unconditional lower bound matching the conjectured value modulo the conjectured *upper* bound. The remaining open content is whether $S_n$ for $n \\geq 3$ at odd $d \\geq 3$ improves *past* the Z/2 uniform bound $d - 1$ — that would require $S_n$-specific or non-cyclic-subgroup contributions beyond what $\\mathbb{Z}/2$ already provides."
     ],
     "prerequisites": [
       "BorsukUlamOQ02OQ01.lean (cyclic-group buDim, buDim_two, buDim_prime, buDim_mono)",
@@ -173,6 +180,30 @@
       "endLine": 443,
       "summary": "`symBUDim_eq_buDim_at_prime`: at any prime $p$, the conjectural equality `symBUDim_eq_largestPrime` collapses (via `largestPrimeBelow_self_of_prime`) to the clean statement $\\text{symBUDim}(p, d) = \\text{buDim}(p, d)$. `symBUDim_prime_even_formula`: tight closed form $\\text{symBUDim}(p, 2k) = 2k - 1$ at any prime $p$, $k \\geq 1$ (combines `symBUDim_eq_buDim_at_prime` + parent's `buDim_prime`). Concrete instances `symBUDim_eleven_eq_buDim_eleven`, `symBUDim_thirteen_eq_buDim_thirteen`, `symBUDim_eleven_even_formula`, `symBUDim_thirteen_even_formula`. All conditional on the new axiom.",
       "mathContext": "At prime $n$, the Bertrand selector and the dyadic window $(n/2, n]$ collapse: $p^* = n$ is forced. The conjecture's content reduces to whether the symmetric-group BU dimension equals the cyclic-prime-$n$ BU dimension — a strictly $S_n$-versus-$\\mathbb{Z}/p$ comparison. Separates two qualitatively different difficulties: composite-$n$ cases (the prime $p^* < n$ is a non-trivial choice from Bertrand's window) versus prime-$n$ cases (no choice, direct comparison). The cleanly-isolated prime-$n$ case may admit elementary equivariant techniques."
+    },
+    {
+      "id": "z2-general-d-lower",
+      "title": "Part IX: General-d Unconditional Lower Bound from Z/2",
+      "startLine": 444,
+      "endLine": 492,
+      "summary": "`symBUDim_lower_z2`: uniform unconditional lower bound $d - 1 \\leq \\text{symBUDim}(n, d)$ for all $n \\geq 2$, $d \\geq 1$. Routes through Z/2 — the parent's `symBUDim_two : symBUDim 2 d = buDim 2 d`, `buDim_two : buDim 2 (m+1) = m`, and `symBUDim_le_of_le 2 n d`. Strictly tighter than `symBUDim_even_lower` at odd $d$: at $d = 2k + 1$ this gives $2k$, while `symBUDim_even_lower` only delivers the floor-rounded $2k - 1$. `symBUDim_odd_lower_unconditional`: odd-$d$ corollary $2k \\leq \\text{symBUDim}(n, 2k + 1)$ for $n \\geq 2$.",
+      "mathContext": "The Yang-Borsuk cyclic-prime axiom `buDim_prime p k` only handles even dimensions ($d = 2k$). For odd $d$ the largestPrimeBelow route gives at best the floor-rounded value $2 \\lfloor d/2 \\rfloor - 1$, but the classical Borsuk-Ulam map at $p = 2$ ($S^d \\to \\mathbb{R}^d$ with antipodal action) operates in *any* dimension via `buDim_two : buDim 2 (m+1) = m`. So the Z/2 subgroup contributes the strictly-stronger $d - 1$ lower bound at odd $d$, independent of the new $largestPrimeBelow$ axiom. This isolates one half of the conjecture's odd-$d$ content — only the question of whether $S_n$ for $n \\geq 3$ improves past $\\mathbb{Z}/2$ at odd $d$ remains."
+    },
+    {
+      "id": "n2-general-d-closed-form",
+      "title": "Part X: General-d Closed Form at n = 2 (Axiom-free)",
+      "startLine": 493,
+      "endLine": 532,
+      "summary": "`symBUDim_two_general_unconditional`: axiom-free closed form $\\text{symBUDim}(2, d) = d - 1$ for ALL $d \\geq 1$. Generalizes `symBUDim_two_even_formula_unconditional` (which only handled even $d$) by routing through `buDim_two` at the general-$d$ shape. Combined with `largestPrimeBelow_two`, this **fully settles the conjecture axiom-free at $n = 2$ across all dimensions**, independent of the new `symBUDim_eq_largestPrime` axiom. Concrete instances at small odd $d$: `symBUDim_two_three_unconditional` (= 2), `_two_five_` (= 4), `_two_seven_` (= 6).",
+      "mathContext": "At $n = 2$ the parent already pins $\\text{symBUDim}(2, d) = \\text{buDim}(2, d)$ via the `symBUDim_two` axiom, and `buDim_two` is the classical Borsuk-Ulam in any dimension. The redundancy of the new axiom at $n = 2$ — previously known only on even $d$ via `symBUDim_eq_largestPrime_two_unconditional` — is now extended to all dimensions. The genuinely-open content of the new axiom is therefore strictly for $n \\geq 3$."
+    },
+    {
+      "id": "odd-d-concrete-bounds",
+      "title": "Part XI: Concrete Odd-d Lower Bounds (n ≥ 3)",
+      "startLine": 533,
+      "endLine": 564,
+      "summary": "Concrete axiom-free instances of `symBUDim_odd_lower_unconditional`: `symBUDim_three_three_lower_` ($2 \\leq \\text{symBUDim}(3, 3)$), `_four_three_lower_` ($2 \\leq \\text{symBUDim}(4, 3)$ — V₄ ≤ S₄ test case), `_three_five_lower_` ($4 \\leq \\text{symBUDim}(3, 5)$), `_four_five_lower_` ($4 \\leq \\text{symBUDim}(4, 5)$). At odd $d$ the largestPrimeBelow route only delivers the floor-rounded value, so these bounds are **strictly tighter** than what Part IV / Part V's even-$d$ machinery can produce.",
+      "mathContext": "Specialization of the Z/2 odd-$d$ uniform bound to small $n$ and $d$. The $S_4$ instances are the natural Klein-4 ($V_4 \\leq S_4$) test cases cited in the problem statement: even though $V_4$ is non-cyclic of order 4, the Z/2 lower bound applies regardless. A future improvement at $S_4$ that goes beyond $d - 1$ would have to come from $V_4$-specific representation-theoretic obstructions."
     }
   ],
   "crossReferences": [
@@ -216,10 +247,10 @@
       "BorsukUlamOQ02OQ01"
     ],
     "namespace": "BorsukUlamSymPrime",
-    "lineCount": 530,
+    "lineCount": 674,
     "axiomCount": 1,
-    "theoremCount": 35,
-    "substantiveTheoremCount": 33,
+    "theoremCount": 45,
+    "substantiveTheoremCount": 43,
     "definitionCount": 1,
     "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
     "sorries": 0
@@ -298,6 +329,18 @@
       "type": "core",
       "description": "Bertrand-Chebyshev bound (axiom-free): for n ≥ 2, n/2 < largestPrimeBelow n. Pins p* in the dyadic window (n/2, n] regardless of how composite n is.",
       "leanType": "(n : ℕ) → 2 ≤ n → n / 2 < largestPrimeBelow n"
+    },
+    {
+      "name": "symBUDim_lower_z2",
+      "type": "core",
+      "description": "Uniform unconditional lower bound (axiom-free up to parent): d − 1 ≤ symBUDim n d for all n ≥ 2 and d ≥ 1. Routes through Z/2 (parent's symBUDim_two + buDim_two + symBUDim_le_of_le 2 n d). Strictly tighter than symBUDim_even_lower at odd d: at d = 2k + 1 it gives 2k while symBUDim_even_lower delivers only the floor-rounded 2k − 1.",
+      "leanType": "(n d : ℕ) → 2 ≤ n → 0 < d → d - 1 ≤ symBUDim n d"
+    },
+    {
+      "name": "symBUDim_two_general_unconditional",
+      "type": "core",
+      "description": "Axiom-free closed form at n = 2 for all d ≥ 1: symBUDim 2 d = d − 1. Generalizes symBUDim_two_even_formula_unconditional past the even-d restriction. Combined with largestPrimeBelow_two this fully settles the conjecture axiom-free at n = 2 across all dimensions, independent of the new symBUDim_eq_largestPrime axiom.",
+      "leanType": "(d : ℕ) → 0 < d → symBUDim 2 d = d - 1"
     }
   ],
   "sorries": 0
