@@ -21,9 +21,9 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1498,
+    "lineCount": 1759,
     "dateAdded": "2026-05-03",
-    "theoremCount": 49,
+    "theoremCount": 54,
     "assumptions": "",
     "mathlibDependencies": [
       {
@@ -52,7 +52,11 @@
       "entry_bound_of_even/odd: all matrix entries of lehmerCofactors are bounded in absolute value by the initial inputs, proved via Cramer + alternating sign pattern",
       "cofactor_apply_shift_decomp: apply(aHi·2^s + ea, bHi·2^s + eb) = 2^s·apply(aHi,bHi) + apply(ea,eb) — the key algebraic identity for the Lehmer perturbation argument",
       "cofactor_apply_err_bound: given |entries| ≤ C and |errors| ≤ B, the perturbation component is ≤ 2·C·B",
-      "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction"
+      "hgcdShift_top_lt: the top-half truncation a/2^s is strictly less than a — the induction-measure decrease for Step 4 strong induction",
+      "lehmerCofactors_pattern_det_correlated_from (S15): joint pattern-determinant invariant for lehmerCofactors — pattern (Even↔Odd) and det sign (±1↔∓1) flip simultaneously at each step, preserving the disjunction (EvenPattern ∧ det=1) ∨ (OddPattern ∧ det=-1) by induction on fuel",
+      "hgcdMatrix_small_pattern_det_correlated (S15): joint pattern-det invariant lifts to hgcdMatrix in the threshold case (max a b < hgcdThreshold) directly from the lehmerCofactors specialization",
+      "entry_bound_of_pattern_det_natAbs (S15): unifies entry_bound_of_even and entry_bound_of_odd into a single natAbs statement — under the joint pattern-det hypothesis, all four matrix entries are bounded in natAbs by the inputs (a₀, b₀), regardless of which pattern case applies",
+      "hgcdMatrix_small_entry_bound (S15): Session 15 main result — threshold-case entry bound for hgcdMatrix combining PART XI row-vector witnesses, PART XII joint pattern-det invariant, and the unified natAbs bound. All four entries of hgcdMatrix (fuel+1) a b are bounded in natAbs by the inputs (a, b) themselves, given positive residue witnesses"
     ],
     "definitionCount": 6
   },
@@ -140,6 +144,14 @@
       "endLine": 935,
       "summary": "States hgcdMatrix_joint_bound: for sufficient fuel, output and entries are bounded by 2^(hgcdShift+3). Base cases and column-convention counterexample proved; recursive case has 1 sorry awaiting quotient stability infrastructure.",
       "mathContext": "The missing piece is quotient stability: showing the Euclidean quotients from $(a/2^s, b/2^s)$ match those from $(a,b)$ for the first $O(n/2)$ steps. Proved in Stehlé–Zimmermann (2004) §3–4 using the approximation quality bound; requires ≈200 lines of Lean infrastructure not yet formalized."
+    },
+    {
+      "id": "pattern-det-correlation",
+      "title": "Part XII: Pattern-Det Correlation + Threshold Entry Bound (Session 15)",
+      "startLine": 1332,
+      "endLine": 1591,
+      "summary": "Five theorems closing the gap noted in S13 (sign pattern alone is insufficient for entry bounds; det case must match). lehmerCofactors_pattern_det_correlated_from proves joint pattern-det invariant by induction on fuel: each step flips both pattern (Even↔Odd) and det sign (±1↔∓1) in lockstep. Specialized to id (lehmerCofactors_id_pattern_det_correlated) and lifted to hgcdMatrix threshold case (hgcdMatrix_small_pattern_det_correlated). entry_bound_of_pattern_det_natAbs unifies entry_bound_of_even/odd into a single uniform natAbs ≤ · statement, eliminating the case split for downstream callers. hgcdMatrix_small_entry_bound is the Session 15 main result: combines PART XI row-vector witnesses + PART XII joint invariant + unified natAbs bound to give all four entries of hgcdMatrix (fuel+1) a b bounded in natAbs by inputs (a,b) themselves, in the threshold case.",
+      "mathContext": "The pattern-det correlation $(\\mathrm{EvenPattern} \\wedge \\det = 1) \\vee (\\mathrm{OddPattern} \\wedge \\det = -1)$ is the joint invariant that closes the entry-bound argument. Each Lehmer inner step right-multiplies the cofactor matrix by $S = \\begin{pmatrix}0&1\\\\1&-q\\end{pmatrix}$ which has $\\det S = -1$, so $\\det(M S) = -\\det(M)$; simultaneously the sign-pattern flip lemmas (lehmerInnerStep_even_to_odd / _odd_to_even) show that pattern flips Even↔Odd at each step. Joint induction lifts the correlated invariant through arbitrary fuel. With this, entry_bound_of_even (which requires $\\det = 1$) and entry_bound_of_odd (which requires $\\det = -1$) can each be applied in their respective sub-cases of the disjunction, and the resulting inequalities collapse to a uniform $|M_{ij}| \\le \\max(a_0, b_0)$ once natAbs is taken. This is the sign-and-magnitude half of $\\mathrm{hgcdMatrix\\_entry\\_bound}$ for the threshold case; the recursive case (Session 16+) requires lifting the row-vector invariant to arbitrary fuel via cofactor_mul_row_invariant."
     }
   ],
   "openQuestions": [
@@ -167,9 +179,9 @@
   ],
   "leanFile": {
     "namespace": "HGcd",
-    "lineCount": 1498,
+    "lineCount": 1759,
     "axiomCount": 0,
-    "theoremCount": 49,
+    "theoremCount": 54,
     "definitionCount": 6,
     "path": "Proofs/BinaryGcdOQ03OQ02.lean",
     "sorries": 1

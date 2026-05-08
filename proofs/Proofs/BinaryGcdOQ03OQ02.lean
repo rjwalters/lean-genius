@@ -310,16 +310,19 @@ theorem lehmerInnerStep_invariant {a₀ b₀ : ℤ} {ahat bhat : ℕ} {M : Cofac
   · -- a₀ * M'.α + b₀ * M'.γ = a₀ * M.β + b₀ * M.δ = bhat
     exact h_inv₂
   · -- a₀ * (M.α - q·M.β) + b₀ * (M.γ - q·M.δ) = ahat % bhat
+    -- Modern simp normalizes nat-cast division to int division of casts.
     have expand :
-        a₀ * (M.α - ((ahat / bhat : ℕ) : ℤ) * M.β)
-          + b₀ * (M.γ - ((ahat / bhat : ℕ) : ℤ) * M.δ)
+        a₀ * (M.α - ((ahat : ℤ) / (bhat : ℤ)) * M.β)
+          + b₀ * (M.γ - ((ahat : ℤ) / (bhat : ℤ)) * M.δ)
         = (a₀ * M.α + b₀ * M.γ)
-            - ((ahat / bhat : ℕ) : ℤ) * (a₀ * M.β + b₀ * M.δ) := by ring
+            - ((ahat : ℤ) / (bhat : ℤ)) * (a₀ * M.β + b₀ * M.δ) := by ring
     rw [expand, h_inv₁, h_inv₂]
-    -- Goal: (ahat : ℤ) - ↑(ahat/bhat) * (bhat : ℤ) = ↑(ahat % bhat)
+    -- Goal: (ahat : ℤ) - (↑ahat / ↑bhat) * (bhat : ℤ) = ↑(ahat % bhat)
+    -- Use Nat.div_add_mod cast to ℤ; push_cast normalizes ↑(ahat/bhat) to ↑ahat/↑bhat.
     have hdivmod_int :
         (bhat : ℤ) * ((ahat / bhat : ℕ) : ℤ) + ((ahat % bhat) : ℤ) = (ahat : ℤ) := by
       exact_mod_cast Nat.div_add_mod ahat bhat
+    push_cast at hdivmod_int
     linarith
 
 /-- Multi-step matrix-vector invariant for `lehmerCofactors`.
@@ -379,12 +382,14 @@ theorem lehmerInnerStep_residue_le {ahat bhat : ℕ} {M : CofactorMatrix}
     (h : lehmerInnerStep ahat bhat M = some (ahat', bhat', M')) :
     bhat' < bhat ∧ ahat' = bhat := by
   simp [lehmerInnerStep] at h
-  split at h <;> simp_all
-  split at h <;> simp_all
-  obtain ⟨rfl, rfl, _⟩ := h
-  refine ⟨?_, rfl⟩
-  -- Goal: ahat % bhat < bhat. omega uses bhat ≠ 0 from context.
-  omega
+  -- Modern simp reduces the some-equation directly to a 5-conjunct
+  -- (bhat ≠ 0, r ≠ 0, bhat = ahat', r = bhat', struct = M'). Destructure
+  -- explicitly so we have named hypotheses for both pieces of the conclusion.
+  obtain ⟨hbhat_ne, _, hahat_eq, hbhat_eq, _⟩ := h
+  refine ⟨?_, hahat_eq.symm⟩
+  -- bhat' < bhat: substitute bhat' = ahat % bhat, then Nat.mod_lt.
+  rw [← hbhat_eq]
+  exact Nat.mod_lt _ (Nat.pos_of_ne_zero hbhat_ne)
 
 /-- One successful Lehmer inner step does not increase the maximum
     of the pair `(ahat, bhat)`. -/
@@ -502,10 +507,13 @@ theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := heven
   simp only [OddPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  -- Modern simp normalizes `((ahat / bhat : ℕ) : ℤ)` to `(ahat : ℤ) / (bhat : ℤ)`
+  -- (Int.ediv form). Provide hq in the matching syntactic form so the nlinarith
+  -- hints (`mul_nonneg hq …`) actually fire on the goal's terms.
+  have hq : (0 : ℤ) ≤ (ahat : ℤ) / (bhat : ℤ) := by positivity
   refine ⟨hβ, ?_, hδ, ?_⟩
-  · nlinarith
-  · nlinarith
+  · nlinarith [mul_nonneg hq (neg_nonneg.mpr hβ), mul_nonneg hq hα]
+  · nlinarith [mul_nonneg hq (neg_nonneg.mpr hβ), mul_nonneg hq hδ]
 
 /-- One successful `lehmerInnerStep` takes OddPattern to EvenPattern. -/
 theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
@@ -517,14 +525,15 @@ theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
   simp only [EvenPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  -- Modern simp normalizes `((ahat / bhat : ℕ) : ℤ)` to `(ahat : ℤ) / (bhat : ℤ)`.
+  have hq : (0 : ℤ) ≤ (ahat : ℤ) / (bhat : ℤ) := by positivity
   -- M' = [[M.β, M.α - q·M.β], [M.δ, M.γ - q·M.δ]]
   -- EvenPattern: M'.α = M.β ≥ 0, M'.β = M.α - q·M.β ≤ 0, M'.γ = M.δ ≤ 0, M'.δ = M.γ - q·M.δ ≥ 0
   refine ⟨hβ, ?_, hδ, ?_⟩
-  · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0
-    nlinarith
+  · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0 (q ≥ 0, M.β ≥ 0)
+    nlinarith [mul_nonneg hq hβ]
   · -- 0 ≤ M.γ - q*M.δ: M.γ ≥ 0, -q*M.δ ≥ 0 (since M.δ ≤ 0)
-    nlinarith
+    nlinarith [mul_nonneg hq (neg_nonneg.mpr hδ)]
 
 /-- `lehmerCofactors` preserves the EvenPattern/OddPattern disjunction
     from any starting matrix that has one.
@@ -1057,8 +1066,12 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
   induction fuel generalizing a b with
   | zero =>
     rw [hgcdMatrix_zero]
+    -- simp [CofactorMatrix.id, Int.natAbs_natCast] reduces to
+    -- `a ≤ max a b ∧ b ≤ max a b`; modern simp closes this directly via
+    -- `le_max_left`/`le_max_right`. Older Mathlib needed the explicit
+    -- witnesses, hence the `try`.
     simp [CofactorMatrix.id, Int.natAbs_natCast]
-    exact ⟨le_max_left a b, le_max_right a b⟩
+    try exact ⟨le_max_left a b, le_max_right a b⟩
   | succ f ih =>
     by_cases hsmall : max a b < hgcdThreshold
     · exact hgcdMatrix_small_row_output_le f a b hsmall
@@ -1329,6 +1342,256 @@ theorem hgcdMatrix_small_row_invariant (fuel a b : ℕ)
   rw [hgcdMatrix_small fuel a b h]
   exact lehmerCofactors_id_apply_le hgcdThreshold a b
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XII: PATTERN-DET CORRELATION + THRESHOLD ENTRY BOUND (Session 15)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Pattern-determinant correlation
+
+The PART X sign pattern (`EvenPattern`/`OddPattern`) and the determinant
+identity (`hgcdMatrix_det_unit`: ±1) are established independently. To
+apply `entry_bound_of_even` (which needs `det = 1`) or `entry_bound_of_odd`
+(which needs `det = -1`), we need to know which det case applies based on
+the pattern.
+
+For matrices arising from `lehmerCofactors fuel ahat bhat id`, pattern and
+determinant are CORRELATED:
+
+  - `EvenPattern ↔ det = 1`
+  - `OddPattern ↔ det = -1`
+
+This holds because `CofactorMatrix.id` is even with det 1, and each
+`lehmerInnerStep` simultaneously flips the pattern (Even↔Odd via
+`lehmerInnerStep_even_to_odd`/`_odd_to_even`) and negates the determinant
+(`lehmerInnerStep_det`: `M'.det = -M.det`).
+
+This subsection proves the correlation by joint induction on fuel, then
+specializes to the threshold case for `hgcdMatrix`.
+-/
+
+/-- Joint pattern-determinant invariant for `lehmerCofactors` from any
+    starting matrix that satisfies one of the two correlated cases.
+
+    Each successful `lehmerInnerStep` flips both pattern (Even↔Odd) and
+    det sign (±1↔∓1) in lockstep, preserving the disjunction
+    `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)`.
+
+    This is the joint analogue of `lehmerCofactors_has_pattern_from`
+    (pattern-only) and `lehmerCofactors_det_unit` (det-only). -/
+theorem lehmerCofactors_pattern_det_correlated_from
+    (fuel ahat bhat : ℕ) (M₀ : CofactorMatrix)
+    (h₀ : (EvenPattern M₀ ∧ M₀.det = 1) ∨ (OddPattern M₀ ∧ M₀.det = -1)) :
+    (EvenPattern (lehmerCofactors fuel ahat bhat M₀)
+        ∧ (lehmerCofactors fuel ahat bhat M₀).det = 1) ∨
+    (OddPattern (lehmerCofactors fuel ahat bhat M₀)
+        ∧ (lehmerCofactors fuel ahat bhat M₀).det = -1) := by
+  induction fuel generalizing ahat bhat M₀ with
+  | zero => simp [lehmerCofactors]; exact h₀
+  | succ n ih =>
+    simp only [lehmerCofactors]
+    match hstep : lehmerInnerStep ahat bhat M₀ with
+    | none => exact h₀
+    | some (ahat', bhat', M') =>
+      apply ih
+      have hd := lehmerInnerStep_det hstep
+      rcases h₀ with ⟨heven, hd₀⟩ | ⟨hodd, hd₀⟩
+      · -- Even+1 → Odd+(-1): pattern flips Even→Odd, det flips 1→-1
+        right
+        refine ⟨lehmerInnerStep_even_to_odd hstep heven, ?_⟩
+        linarith
+      · -- Odd+(-1) → Even+1: pattern flips Odd→Even, det flips -1→1
+        left
+        refine ⟨lehmerInnerStep_odd_to_even hstep hodd, ?_⟩
+        linarith
+
+/-- Specialization of `lehmerCofactors_pattern_det_correlated_from` to the
+    standard starting matrix `CofactorMatrix.id` (EvenPattern, det = 1).
+
+    Provides the joint pattern-determinant invariant required to apply
+    `entry_bound_of_even`/`entry_bound_of_odd` to outputs of
+    `lehmerCofactors` starting from id. -/
+theorem lehmerCofactors_id_pattern_det_correlated (fuel ahat bhat : ℕ) :
+    (EvenPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id)
+        ∧ (lehmerCofactors fuel ahat bhat CofactorMatrix.id).det = 1) ∨
+    (OddPattern (lehmerCofactors fuel ahat bhat CofactorMatrix.id)
+        ∧ (lehmerCofactors fuel ahat bhat CofactorMatrix.id).det = -1) :=
+  lehmerCofactors_pattern_det_correlated_from fuel ahat bhat CofactorMatrix.id
+    (Or.inl ⟨CofactorMatrix.id_even_pattern, CofactorMatrix.det_id⟩)
+
+/-- Threshold case: when `max a b < hgcdThreshold`,
+    `hgcdMatrix (fuel+1) a b` reduces to `lehmerCofactors hgcdThreshold a b id`,
+    so the joint pattern-determinant invariant lifts directly. -/
+theorem hgcdMatrix_small_pattern_det_correlated (fuel a b : ℕ)
+    (h : max a b < hgcdThreshold) :
+    (EvenPattern (hgcdMatrix (fuel + 1) a b)
+        ∧ (hgcdMatrix (fuel + 1) a b).det = 1) ∨
+    (OddPattern (hgcdMatrix (fuel + 1) a b)
+        ∧ (hgcdMatrix (fuel + 1) a b).det = -1) := by
+  rw [hgcdMatrix_small fuel a b h]
+  exact lehmerCofactors_id_pattern_det_correlated hgcdThreshold a b
+
+/-! ### Unified entry-bound lemma (natAbs form)
+
+Combining `entry_bound_of_even`/`entry_bound_of_odd` with the joint
+pattern-determinant hypothesis gives uniform `natAbs` bounds on all four
+matrix entries:
+
+  - `M.α.natAbs ≤ b₀.natAbs`
+  - `M.β.natAbs ≤ b₀.natAbs`
+  - `M.γ.natAbs ≤ a₀.natAbs`
+  - `M.δ.natAbs ≤ a₀.natAbs`
+
+These hold uniformly across the Even and Odd cases — the pattern-specific
+sign hypotheses combine with the pattern-specific Cramer-derived
+inequalities to produce a single `natAbs ≤ ·` form regardless of which
+pattern applies.
+-/
+
+/-- Unified entry-bound theorem: under the row-vector invariant with
+    positive residues and the joint pattern-determinant hypothesis, every
+    entry of the cofactor matrix is bounded in `natAbs` by the inputs
+    `(a₀, b₀)`. Combines `entry_bound_of_even` and `entry_bound_of_odd`
+    into a single uniform statement. -/
+theorem entry_bound_of_pattern_det_natAbs
+    {a₀ b₀ ahat' bhat' : ℤ} {M : CofactorMatrix}
+    (h₁ : a₀ * M.α + b₀ * M.γ = ahat')
+    (h₂ : a₀ * M.β + b₀ * M.δ = bhat')
+    (hpd : (EvenPattern M ∧ M.det = 1) ∨ (OddPattern M ∧ M.det = -1))
+    (ha₀ : 0 < a₀) (hb₀ : 0 < b₀)
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    M.α.natAbs ≤ b₀.natAbs ∧
+    M.β.natAbs ≤ b₀.natAbs ∧
+    M.γ.natAbs ≤ a₀.natAbs ∧
+    M.δ.natAbs ≤ a₀.natAbs := by
+  -- Helper: a ≤-bound on integers (with sign info on both) lifts to a
+  -- ≤-bound on natAbs values. We prove `(·.natAbs : ℤ) ≤ (·.natAbs : ℤ)`
+  -- using `Int.natAbs_of_nonneg` to reduce both sides to their integer
+  -- forms, then `exact_mod_cast` lifts back to ℕ. For non-positive `a`,
+  -- we use `Int.natAbs_neg` + `Int.natAbs_of_nonneg` (with `0 ≤ -a`) to
+  -- avoid relying on `Int.natAbs_of_nonpos` which is not consistently
+  -- available across Mathlib versions.
+  have natAbs_int_nonpos : ∀ {x : ℤ}, x ≤ 0 → (x.natAbs : ℤ) = -x := by
+    intro x hx
+    have h_nn : 0 ≤ -x := by linarith
+    rw [show x.natAbs = (-x).natAbs from (Int.natAbs_neg x).symm]
+    exact Int.natAbs_of_nonneg h_nn
+  rcases hpd with ⟨heven, hdet⟩ | ⟨hodd, hdet⟩
+  · -- EvenPattern: M.α ≥ 0, M.β ≤ 0, M.γ ≤ 0, M.δ ≥ 0; det = 1
+    obtain ⟨hδ_le, hγ_ge, hα_le, hβ_ge⟩ :=
+      entry_bound_of_even h₁ h₂ hdet heven ha₀ hb₀ hahat' hbhat'
+    -- hδ_le : M.δ ≤ a₀
+    -- hγ_ge : -a₀ ≤ M.γ
+    -- hα_le : M.α ≤ b₀
+    -- hβ_ge : -b₀ ≤ M.β
+    obtain ⟨hα_pos, hβ_neg, hγ_neg, hδ_pos⟩ := heven
+    have hbnn : 0 ≤ b₀ := le_of_lt hb₀
+    have hann : 0 ≤ a₀ := le_of_lt ha₀
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · -- M.α.natAbs ≤ b₀.natAbs (M.α ≥ 0, M.α ≤ b₀)
+      have h_int : (M.α.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hα_pos, Int.natAbs_of_nonneg hbnn]
+        exact hα_le
+      exact_mod_cast h_int
+    · -- M.β.natAbs ≤ b₀.natAbs (M.β ≤ 0, -b₀ ≤ M.β)
+      have h_int : (M.β.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hβ_neg, Int.natAbs_of_nonneg hbnn]
+        linarith
+      exact_mod_cast h_int
+    · -- M.γ.natAbs ≤ a₀.natAbs (M.γ ≤ 0, -a₀ ≤ M.γ)
+      have h_int : (M.γ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hγ_neg, Int.natAbs_of_nonneg hann]
+        linarith
+      exact_mod_cast h_int
+    · -- M.δ.natAbs ≤ a₀.natAbs (M.δ ≥ 0, M.δ ≤ a₀)
+      have h_int : (M.δ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hδ_pos, Int.natAbs_of_nonneg hann]
+        exact hδ_le
+      exact_mod_cast h_int
+  · -- OddPattern: M.α ≤ 0, M.β ≥ 0, M.γ ≥ 0, M.δ ≤ 0; det = -1
+    obtain ⟨hδ_ge, hγ_le, hα_ge, hβ_le⟩ :=
+      entry_bound_of_odd h₁ h₂ hdet hodd ha₀ hb₀ hahat' hbhat'
+    -- hδ_ge : -a₀ ≤ M.δ
+    -- hγ_le : M.γ ≤ a₀
+    -- hα_ge : -b₀ ≤ M.α
+    -- hβ_le : M.β ≤ b₀
+    obtain ⟨hα_neg, hβ_pos, hγ_pos, hδ_neg⟩ := hodd
+    have hbnn : 0 ≤ b₀ := le_of_lt hb₀
+    have hann : 0 ≤ a₀ := le_of_lt ha₀
+    refine ⟨?_, ?_, ?_, ?_⟩
+    · -- M.α.natAbs ≤ b₀.natAbs (M.α ≤ 0, -b₀ ≤ M.α)
+      have h_int : (M.α.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hα_neg, Int.natAbs_of_nonneg hbnn]
+        linarith
+      exact_mod_cast h_int
+    · -- M.β.natAbs ≤ b₀.natAbs (M.β ≥ 0, M.β ≤ b₀)
+      have h_int : (M.β.natAbs : ℤ) ≤ (b₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hβ_pos, Int.natAbs_of_nonneg hbnn]
+        exact hβ_le
+      exact_mod_cast h_int
+    · -- M.γ.natAbs ≤ a₀.natAbs (M.γ ≥ 0, M.γ ≤ a₀)
+      have h_int : (M.γ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [Int.natAbs_of_nonneg hγ_pos, Int.natAbs_of_nonneg hann]
+        exact hγ_le
+      exact_mod_cast h_int
+    · -- M.δ.natAbs ≤ a₀.natAbs (M.δ ≤ 0, -a₀ ≤ M.δ)
+      have h_int : (M.δ.natAbs : ℤ) ≤ (a₀.natAbs : ℤ) := by
+        rw [natAbs_int_nonpos hδ_neg, Int.natAbs_of_nonneg hann]
+        linarith
+      exact_mod_cast h_int
+
+/-! ### Threshold-case entry bound for `hgcdMatrix`
+
+Combines:
+  - `hgcdMatrix_small_pattern_det_correlated` (above, joint pattern-det)
+  - `hgcdMatrix_small_row_invariant` (PART XI, row-vector witnesses)
+  - `entry_bound_of_pattern_det_natAbs` (above, unified `natAbs` form)
+
+This is the threshold case of the conjectural full `hgcdMatrix_entry_bound`.
+The full version (all fuel) requires the recursive case, which depends on
+lifting the row-vector invariant from the threshold case to arbitrary fuel
+via `cofactor_mul_row_invariant` together with this entry bound — Session
+16+ work.
+
+The hypothesis `1 ≤ ahat' ∧ 1 ≤ bhat'` is the "still-running" condition
+inherited from `entry_bound_of_even/odd`. The witnesses themselves come
+from `hgcdMatrix_small_row_invariant` (PART XI); this theorem leaves them
+as explicit preconditions to allow callers to supply the positivity from
+their own context (e.g., a "the algorithm has not bottomed out" hypothesis
+in the recursive case).
+-/
+
+/-- Threshold-case entry bound for `hgcdMatrix`: when inputs are below
+    `hgcdThreshold` and we have positive natural-number residue witnesses
+    `ahat', bhat'` from the row-vector invariant (i.e., the algorithm
+    produced a non-trivial output pair), all four entries of the cofactor
+    matrix are bounded in `natAbs` by the inputs `a` and `b`.
+
+    Proof: combine `hgcdMatrix_small_pattern_det_correlated` (joint
+    pattern-det) with the supplied row-vector relations and apply
+    `entry_bound_of_pattern_det_natAbs`; rewrite `(↑a).natAbs = a` and
+    `(↑b).natAbs = b` via `Int.natAbs_natCast`. -/
+theorem hgcdMatrix_small_entry_bound (fuel a b : ℕ)
+    (hsmall : max a b < hgcdThreshold) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (ahat' bhat' : ℕ)
+    (h₁ : (a : ℤ) * (hgcdMatrix (fuel + 1) a b).α
+            + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).γ = (ahat' : ℤ))
+    (h₂ : (a : ℤ) * (hgcdMatrix (fuel + 1) a b).β
+            + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).δ = (bhat' : ℤ))
+    (hahat' : 1 ≤ ahat') (hbhat' : 1 ≤ bhat') :
+    (hgcdMatrix (fuel + 1) a b).α.natAbs ≤ b ∧
+    (hgcdMatrix (fuel + 1) a b).β.natAbs ≤ b ∧
+    (hgcdMatrix (fuel + 1) a b).γ.natAbs ≤ a ∧
+    (hgcdMatrix (fuel + 1) a b).δ.natAbs ≤ a := by
+  have hpd := hgcdMatrix_small_pattern_det_correlated fuel a b hsmall
+  have ha₀ : (0 : ℤ) < (a : ℤ) := by exact_mod_cast ha
+  have hb₀ : (0 : ℤ) < (b : ℤ) := by exact_mod_cast hb
+  have hahatℤ : (1 : ℤ) ≤ (ahat' : ℤ) := by exact_mod_cast hahat'
+  have hbhatℤ : (1 : ℤ) ≤ (bhat' : ℤ) := by exact_mod_cast hbhat'
+  obtain ⟨hα, hβ, hγ, hδ⟩ :=
+    entry_bound_of_pattern_det_natAbs h₁ h₂ hpd ha₀ hb₀ hahatℤ hbhatℤ
+  simp only [Int.natAbs_natCast] at hα hβ hγ hδ
+  exact ⟨hα, hβ, hγ, hδ⟩
+
 /-! ## Summary
 
 **Proved (0 axioms, 0 sorries):**
@@ -1472,18 +1735,58 @@ theorem hgcdMatrix_small_row_invariant (fuel a b : ℕ)
     sorry, which the joint induction (Stehlé–Zimmermann §4) is designed
     to break.
 
+18. **Pattern-determinant correlation + threshold entry bound**
+    (PART XII, Session 15):
+    - `lehmerCofactors_pattern_det_correlated_from`: joint invariant for
+      `lehmerCofactors`. Each `lehmerInnerStep` flips both pattern
+      (Even↔Odd via `lehmerInnerStep_even_to_odd/_odd_to_even`) and det
+      sign (±1↔∓1 via `lehmerInnerStep_det`); these flips are
+      simultaneous, preserving the disjunction
+      `(EvenPattern ∧ det = 1) ∨ (OddPattern ∧ det = -1)`. Joint
+      induction on fuel from any starting matrix satisfying the
+      correlated hypothesis.
+    - `lehmerCofactors_id_pattern_det_correlated`: specialization to
+      starting matrix `CofactorMatrix.id` (which is Even with det 1).
+    - `hgcdMatrix_small_pattern_det_correlated`: for inputs below
+      threshold, `hgcdMatrix (fuel+1) a b` reduces to
+      `lehmerCofactors hgcdThreshold a b id`, so the joint pattern-det
+      invariant lifts directly.
+    - `entry_bound_of_pattern_det_natAbs`: unifies `entry_bound_of_even`
+      and `entry_bound_of_odd` into a single uniform `natAbs ≤ ·`
+      statement. The pattern-specific sign hypotheses combine with the
+      pattern-specific Cramer-derived inequalities to give
+      `M.α.natAbs ≤ b₀.natAbs`, etc., regardless of which pattern
+      applies. Discharges the case-split on the joint pattern-det
+      hypothesis.
+    - `hgcdMatrix_small_entry_bound`: threshold case of the conjectural
+      full `hgcdMatrix_entry_bound`. Combines PART XI row-vector
+      witnesses, PART XII joint pattern-det invariant, and the unified
+      entry bound into a single statement: under positive residue
+      witnesses, all four entries of `hgcdMatrix (fuel+1) a b` are
+      bounded in `natAbs` by `(a, b)` themselves.
+
+    The pattern-det correlation closes the gap noted in Session 13
+    (sign pattern alone is insufficient; det case must match for the
+    Cramer-based entry bound to apply). With this in place, the entry
+    bound for the threshold case is now fully assembled; the recursive
+    case (Session 16+) requires lifting the row-vector invariant via
+    `cofactor_mul_row_invariant` together with this entry bound.
+
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
   Base cases (fuel=0 and threshold case) are proved; the **missing piece** is the
   recursive case. The Session 12 infrastructure (PART VIIc) reframes the
   recursive case so that the inner subproblem `M_inner = hgcdMatrix f aHi bHi`
-  contributes via *entry* bounds (still to be derived from
-  `lehmerCofactors_has_pattern` + `entry_bound_of_even/odd`, lifted to
-  arbitrary fuel) rather than via its row-output bound at the wrong inputs.
-  The remaining gap is a `hgcdMatrix_entry_bound` lemma (analogue of
-  `entry_bound_of_even/odd` for HGCD); Session 13 (PART X) supplies the
-  sign-pattern half of this lemma. The entry magnitude half (combining
-  pattern + det + row-vector invariant + Cramer) remains future work.
+  contributes via *entry* bounds. As of Session 15 (PART XII), the
+  threshold-case entry bound is fully assembled (`hgcdMatrix_small_entry_bound`)
+  combining sign-pattern (Session 13), row-vector invariant (Session 14), and
+  pattern-det correlation (Session 15). The remaining gap is the recursive
+  case of the entry bound — lifting the row-vector invariant for `hgcdMatrix`
+  to arbitrary fuel via `cofactor_mul_row_invariant`, which itself depends on
+  resolving the circular dependency in `hgcdMatrix_row_invariant` (the
+  recursive case requires the entry bound, which requires the row-vector
+  invariant). The Stehlé–Zimmermann §4 joint induction is the standard
+  technique for breaking this circularity.
 
 **Out of scope (deferred):**
 - Bit-complexity bound O(M(n)·log n): requires Mathlib infrastructure
