@@ -292,7 +292,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     have h_bridge :
         ∑' v : (stdLattice n).toAddSubgroup,
             s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
-          = (T.encard : ℝ≥0∞) := by
+          = (T.encard : ENNReal) := by
       rw [tsum_congr h_summand_eq, ← tsum_subtype, ENNReal.tsum_set_one]
     rw [h_bridge]
     -- Bound encard ≤ k via contrapositive of h_neg.
@@ -301,7 +301,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     -- h_too_many : (k : ℝ≥0∞) < (T.encard : ℝ≥0∞)
     have h_le_encard : ((k + 1 : ℕ) : ℕ∞) ≤ T.encard := by
       have h_lt_enat : (k : ℕ∞) < T.encard := by
-        have h_cast : ((k : ℕ∞) : ℝ≥0∞) < ((T.encard : ℝ≥0∞)) := by exact_mod_cast h_too_many
+        have h_cast : ((k : ℕ∞) : ENNReal) < ((T.encard : ENNReal)) := by exact_mod_cast h_too_many
         exact_mod_cast h_cast
       have h_succ : (k : ℕ∞) + 1 ≤ T.encard :=
         (ENat.add_one_le_iff (ENat.coe_ne_top k)).mpr h_lt_enat
@@ -321,14 +321,15 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     -- Build Fin (k+1) → L injection from F₀ (S12 v4.26.0 fix: Set.toFinset_card path).
     obtain ⟨vs, hvs_inj, hvs_range⟩ : ∃ vs : Fin (k+1) → (stdLattice n).toAddSubgroup,
         Function.Injective vs ∧ Set.range vs = ↑F₀ := by
-      have h_card : Fintype.card (↑F₀ : Set _) = k + 1 := by
+      have h_card : Fintype.card (↑F₀ : Set ↥(stdLattice n).toAddSubgroup) = k + 1 := by
         rw [← Set.toFinset_card]
         simp [hF₀_card]
-      let e : (↑F₀ : Set _) ≃ Fin (k+1) := Fintype.equivFinOfCardEq h_card
+      let e : (↑F₀ : Set ↥(stdLattice n).toAddSubgroup) ≃ Fin (k+1) :=
+        Fintype.equivFinOfCardEq h_card
       refine ⟨fun i => (e.symm i).1, ?_, ?_⟩
       · intro i j hij; exact e.symm.injective (Subtype.ext hij)
       · ext x
-        simp only [Set.mem_range, Set.mem_coe, Finset.mem_coe]
+        simp only [Set.mem_range, Finset.mem_coe]
         constructor
         · rintro ⟨i, rfl⟩; exact (e.symm i).2
         · intro hx; exact ⟨e ⟨x, hx⟩, by simp⟩
@@ -351,7 +352,7 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
           (∑' v : (stdLattice n).toAddSubgroup,
               s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)) ∂volume
       ≤ ∫⁻ _ in stdFundDomain n, (k : ENNReal) ∂volume := by
-        apply MeasureTheory.setLIntegral_mono_ae measurable_const
+        apply MeasureTheory.setLIntegral_mono_ae measurable_const.aemeasurable
         exact MeasureTheory.ae_of_all _ (fun z _ => h_pointwise z)
     _ = (k : ENNReal) * volume (stdFundDomain n) := by
         rw [MeasureTheory.setLIntegral_const]
