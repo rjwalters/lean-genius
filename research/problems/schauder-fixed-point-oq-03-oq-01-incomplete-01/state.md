@@ -1,15 +1,32 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S11 strict-weakening lift: axiom rename + helper/theorem
-signatures landed, two `sorry`-stubbed bodies decoupled for parallel
-S11.B and S11.A.body work)
+**Phase**: ACT (S12 spec: Step 6 refinement + Mathlib API
+cross-verification for the S11.A.body work item, in advance of
+implementation)
 **Path**: full
-**Since**: 2026-05-09T00:30:00Z
-**Iteration**: 11
+**Since**: 2026-05-09T01:30:00Z
+**Iteration**: 12
 
 ## Current Focus
-S11 (researcher-5, 2026-05-09): Lifts S10's recommended Option A
+S12 (researcher-3, 2026-05-09, analysis-only): Tightens the
+S11.A.body Lean stub before implementation. Started transcribing
+Option (b) elementary rescaling from `s11-strict-weakening-spec.md`,
+hit a non-trivial logical gap at Step 6 (the spec implies a
+1-line `congrArg` finish, but extracting an `↥S`-fixed-point from
+`(F (σ y) : E) = (σ y : E)` actually requires a 9–11 line block
+showing `(σ y : E) ∈ S` first, then lifting and applying the
+helper's idempotency clause). Documents the corrected Step 6 in
+`s12-s11a-body-step6-refinement.md` plus a full Mathlib API
+cross-verification of every name in the spec's Option (b) Lean
+stub against the cached v4.10 mathlib (proxy for v4.26 confidence).
+All names verified except the `_₀`-suffix family
+(`inv_mul_cancel₀` / `mul_inv_cancel₀`) which may have drifted
+between v4.10 and v4.26; spec includes a one-token fallback.
+Estimated implementation effort post-S12: ~70 Lean lines, single
+1-hour session, dropping the file's sorry count from 2 to 1.
+
+S11 (researcher-5, 2026-05-09, PR #17501 merged): Lifts S10's recommended Option A
 (strict-weakening) into the Lean source. Replaces the single
 `axiom brouwer_fpt` (general compact convex `S`) with three
 declarations: `axiom brouwer_unit_ball` (unit ball only — strictly
@@ -105,7 +122,7 @@ Lean file is sorry-free with axiomCount = 2 (unit-ball Brouwer +
 graph-form Cellina–Browder selections).
 
 ## Attempt Count
-- Total attempts: 11
+- Total attempts: 12
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
@@ -119,7 +136,12 @@ graph-form Cellina–Browder selections).
   - S10 LOOKUP-3 resolved via GitHub-API at pinned rev (researcher-12,
     PR #17449);
   - S11 strict-weakening lift: axiom rename + helper/theorem signatures
-    + parallelizable `sorry` work items (this PR; build pending).
+    + parallelizable `sorry` work items (PR #17501, build pending);
+  - S12 S11.A.body Step 6 refinement + Mathlib API cross-verification
+    (researcher-3, this PR, analysis-only — sharpens the spec before
+    implementation; flags one `_₀`-suffix name uncertainty and
+    structures the previously-implicit Step 6 conclusion as a 9–11 line
+    block).
 
 ## Blockers
 - **Build verification deferred**: Docker build not run locally
@@ -130,11 +152,15 @@ graph-form Cellina–Browder selections).
   that a name drift requires only a local fix, not a redesign.
 
 ## Next Action
-**S11 — STRUCTURAL LIFT LANDED THIS ITERATION.** The axiom rename and
-both `sorry` work-item signatures are now in
-`SchauderFixedPointOQ03OQ01.lean`; `s11-strict-weakening-spec.md` gives
-the full Lean stub for each. The two follow-on items below are
+**S12 — Step 6 REFINEMENT LANDED THIS ITERATION (analysis-only).**
+The S11.A.body implementation is now tightened: Step 6 is a 9–11 line
+block (not a 1-line `congrArg`), all Mathlib names except one
+`_₀`-suffix family are confirmed against v4.10. See
+`s12-s11a-body-step6-refinement.md`. Two follow-on items below are
 mathematically independent and can be claimed in parallel.
+
+**S11.B remains unchanged** (S11 spec still authoritative; LOOKUP-2
+helper, 30–80 Lean lines).
 
 **S11.B (LOOKUP-2 helper proof, est. ~30–80 Lean lines)** — fill the
 `sorry` body of `lemma exists_continuous_proj_convex`:
