@@ -36,6 +36,15 @@
   `hgcdMatrix_joint_bound` is stated as a sorry; the missing piece
   is a "quotient stability" lemma not yet formalized here.
 
+  Toward size reduction (PART XI, Session 14):
+  We add the abstract composition law `cofactor_mul_row_invariant`
+  for the row-vector relation through `M.mul N`, plus the existential
+  row-vector invariants `hgcdMatrix_zero_row_invariant` and
+  `hgcdMatrix_small_row_invariant` that supply natural-number
+  witnesses + monotonicity for the base/threshold cases of HGCD.
+  These are the inputs needed by `row_vec_cramer` to derive entry
+  bounds at the leaf of the recursion.
+
   Out of scope (deferred):
   The bit-complexity claim O(M(n)·log n) requires a Mathlib model of
   fast multiplication and bit operations that does not yet exist.
@@ -1221,6 +1230,110 @@ theorem hgcdMatrixOf_has_pattern (a b : ℕ) :
     EvenPattern (hgcdMatrixOf a b) ∨ OddPattern (hgcdMatrixOf a b) :=
   hgcdMatrix_has_pattern _ a b
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XI: ROW-VECTOR INVARIANT FOR `hgcdMatrix` (Session 14)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Row-vector invariant — base, threshold, and composition law
+
+The PART V.5 row-vector invariant `(a₀, b₀) · M = (ahat', bhat')` is stated
+for `lehmerCofactors`. To feed Cramer's identity (`row_vec_cramer`) and the
+entry bounds (`entry_bound_of_even/odd`) at the level of the recursive
+`hgcdMatrix`, we need the analogous existential row-vector statement for
+`hgcdMatrix` itself, with **natural-number** witnesses for the residue pair.
+
+This subsection contributes:
+  * the **abstract composition law** `cofactor_mul_row_invariant`: if the
+    row-vector relation holds for `M` between ghost `(a₀, b₀)` and
+    intermediate `(ahat₁, bhat₁)`, and for `N` between `(ahat₁, bhat₁)` and
+    final `(ahat₂, bhat₂)`, then it holds for `M.mul N` between
+    `(a₀, b₀)` and `(ahat₂, bhat₂)`. Pure algebra (`ring` after expanding
+    `cofactor_mul_row_output`).
+  * the **base case** `hgcdMatrix_zero_row_invariant`: for `fuel = 0`,
+    `hgcdMatrix` returns the identity, and the row-vector relation is just
+    `(a, b) · id = (a, b)` with `max a b ≤ max a b`.
+  * the **threshold case** `hgcdMatrix_small_row_invariant`: for
+    `max a b < hgcdThreshold`, `hgcdMatrix (fuel+1) a b` reduces to
+    `lehmerCofactors hgcdThreshold a b id`, and the existential
+    row-vector invariant comes directly from `lehmerCofactors_id_apply_le`.
+
+The recursive case `hgcdMatrix (f+1) a b = M_outer.mul M_inner` for inputs
+above threshold is **not** proved here. The structural obstacle is that
+`M_outer = hgcdMatrix f c1 c2` is built for inputs `(c1, c2)` derived from
+the column-apply of `M_inner` on `(a, b)`, so its row-vector invariant (by
+IH) is at ghost `(c1, c2)` rather than at `(a, b)`. Composing via
+`cofactor_mul_row_invariant` therefore requires a row-vector invariant for
+`M_outer` at the *full-precision* ghost `(a, b)`, which is precisely the
+sorry of `hgcdMatrix_row_output_le` (recursive case). Establishing it
+requires the joint induction documented in the PART IX docstring;
+the abstract composition law contributed here will plug into that induction
+once the entry-bound side is closed.
+
+The base + threshold cases proved here are sufficient for the leaf of any
+recursive analysis of HGCD; together with PART X's sign-pattern lifting,
+they supply two of the three ingredients for `hgcdMatrix_entry_bound`. -/
+
+/-- Sequential composition of the row-vector invariant through
+    `CofactorMatrix.mul`.
+
+    From the row-vector relations
+      `a₀ · M.α + b₀ · M.γ = ahat₁`,  `a₀ · M.β + b₀ · M.δ = bhat₁`
+    and
+      `ahat₁ · N.α + bhat₁ · N.γ = ahat₂`,  `ahat₁ · N.β + bhat₁ · N.δ = bhat₂`,
+    the row-vector relation holds for the product:
+      `a₀ · (M.mul N).α + b₀ · (M.mul N).γ = ahat₂`,
+      `a₀ · (M.mul N).β + b₀ · (M.mul N).δ = bhat₂`.
+
+    Proof: substitute via `cofactor_mul_row_output` and use the inner
+    relations linearly (`linear_combination`). This is the row-convention
+    dual of the `cofactor_mul_apply` chaining rule. -/
+theorem cofactor_mul_row_invariant {a₀ b₀ ahat₁ bhat₁ ahat₂ bhat₂ : ℤ}
+    {M N : CofactorMatrix}
+    (hM₁ : a₀ * M.α + b₀ * M.γ = ahat₁) (hM₂ : a₀ * M.β + b₀ * M.δ = bhat₁)
+    (hN₁ : ahat₁ * N.α + bhat₁ * N.γ = ahat₂)
+    (hN₂ : ahat₁ * N.β + bhat₁ * N.δ = bhat₂) :
+    a₀ * (M.mul N).α + b₀ * (M.mul N).γ = ahat₂ ∧
+    a₀ * (M.mul N).β + b₀ * (M.mul N).δ = bhat₂ := by
+  obtain ⟨hα_eq, hβ_eq⟩ := cofactor_mul_row_output M N a₀ b₀
+  refine ⟨?_, ?_⟩
+  · rw [hα_eq, hM₁, hM₂]; linear_combination hN₁
+  · rw [hβ_eq, hM₁, hM₂]; linear_combination hN₂
+
+/-- Base case: at `fuel = 0`, `hgcdMatrix` returns `CofactorMatrix.id`,
+    so the row-vector relation `(a, b) · id = (a, b)` holds with the input
+    pair as the witness, trivially with `max a b ≤ max a b`. -/
+theorem hgcdMatrix_zero_row_invariant (a b : ℕ) :
+    ∃ ahat' bhat' : ℕ,
+      (a : ℤ) * (hgcdMatrix 0 a b).α
+        + (b : ℤ) * (hgcdMatrix 0 a b).γ = (ahat' : ℤ) ∧
+      (a : ℤ) * (hgcdMatrix 0 a b).β
+        + (b : ℤ) * (hgcdMatrix 0 a b).δ = (bhat' : ℤ) ∧
+      max ahat' bhat' ≤ max a b := by
+  rw [hgcdMatrix_zero]
+  refine ⟨a, b, ?_, ?_, le_refl _⟩
+  · simp [CofactorMatrix.id]
+  · simp [CofactorMatrix.id]
+
+/-- Threshold case: when `max a b < hgcdThreshold`,
+    `hgcdMatrix (fuel+1) a b = lehmerCofactors hgcdThreshold a b id`,
+    and `lehmerCofactors_id_apply_le` directly supplies natural-number
+    witnesses for the row-vector relation, with the residue-monotonicity
+    bound `max ahat' bhat' ≤ max a b`.
+
+    This is the existential-witness companion of
+    `hgcdMatrix_small_row_output_le`, exposing the natural witnesses that
+    feed Cramer's identity (`row_vec_cramer`) for the entry bound. -/
+theorem hgcdMatrix_small_row_invariant (fuel a b : ℕ)
+    (h : max a b < hgcdThreshold) :
+    ∃ ahat' bhat' : ℕ,
+      (a : ℤ) * (hgcdMatrix (fuel + 1) a b).α
+        + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).γ = (ahat' : ℤ) ∧
+      (a : ℤ) * (hgcdMatrix (fuel + 1) a b).β
+        + (b : ℤ) * (hgcdMatrix (fuel + 1) a b).δ = (bhat' : ℤ) ∧
+      max ahat' bhat' ≤ max a b := by
+  rw [hgcdMatrix_small fuel a b h]
+  exact lehmerCofactors_id_apply_le hgcdThreshold a b
+
 /-! ## Summary
 
 **Proved (0 axioms, 0 sorries):**
@@ -1336,6 +1449,33 @@ theorem hgcdMatrixOf_has_pattern (a b : ℕ) :
     (it requires a row-vector invariant for HGCD, which requires solving the
     `hgcdMatrix_row_output_le` recursive case — circularity to be broken
     via joint induction).
+
+17. **Row-vector invariant for `hgcdMatrix`** (PART XI, Session 14):
+    - `cofactor_mul_row_invariant`: the abstract composition law for the
+      row-vector relation through `M.mul N`. From
+      `(a₀, b₀) · M = (ahat₁, bhat₁)` and `(ahat₁, bhat₁) · N = (ahat₂, bhat₂)`,
+      deduces `(a₀, b₀) · (M.mul N) = (ahat₂, bhat₂)`. Proved via
+      `cofactor_mul_row_output` plus linear substitution.
+    - `hgcdMatrix_zero_row_invariant`: at `fuel = 0`, the row-vector
+      relation is trivial — `(a, b) · id = (a, b)` with monotonicity bound
+      `max a b ≤ max a b`.
+    - `hgcdMatrix_small_row_invariant`: for inputs below threshold,
+      `hgcdMatrix (fuel+1) a b = lehmerCofactors hgcdThreshold a b id` and
+      the existential row-vector invariant + monotonicity comes directly
+      from `lehmerCofactors_id_apply_le`. This exposes natural-number
+      witnesses (rather than just the `natAbs` bound that
+      `hgcdMatrix_small_row_output_le` provides), suitable for plugging
+      into `row_vec_cramer` for entry bounds.
+
+    The recursive case of `hgcdMatrix_row_invariant` is **not** closed
+    here. Structural obstacle: `M_outer = hgcdMatrix f c1 c2` is built
+    for column-output inputs `(c1, c2)` from `M_inner.apply ↑a ↑b`, so its
+    IH-supplied row-vector invariant is at ghost `(c1, c2)`, not at the
+    full-precision `(a, b)`. Composing via `cofactor_mul_row_invariant`
+    therefore requires a row-vector invariant for `M_outer` at ghost
+    `(a, b)` — exactly the obstacle of the `hgcdMatrix_row_output_le`
+    sorry, which the joint induction (Stehlé–Zimmermann §4) is designed
+    to break.
 
 **Remaining for size reduction (1 sorry):**
 - `hgcdMatrix_row_output_le` (PART IX): the full row-output bound for all fuel.
