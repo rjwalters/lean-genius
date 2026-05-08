@@ -255,15 +255,84 @@ private lemma eventually_periodic_iterate {α : Type*} [Fintype α] [DecidableEq
       Function.iterate_add_apply g k j, Function.iterate_add_apply g k i,
       hf_eq]
 
+/-! ### Layer 2: rational residue sequence in `ZMod q.den`
+
+`ratResidue b q n` packages the residue `q.num · bⁿ mod q.den` as an element of
+the finite type `ZMod q.den`. Two facts make it the right intermediate
+representation:
+
+* `ratResidue_succ` says `ratResidue b q (n+1) = b · ratResidue b q n`, so the
+  sequence is just multiplication-by-`b` applied iteratively.
+* `ratResidue_eq_iterate` rewrites `ratResidue b q n` as the `n`-th iterate of
+  `(· * (b : ZMod q.den))` starting at `(q.num : ZMod q.den)`.
+
+Combined with Layer 1's `eventually_periodic_iterate`, this gives an eventually
+periodic residue sequence with period `T ≤ q.den`. Layer 3 (the `nthDigit ↔
+residue` bridge, deferred) ports periodicity from the residue sequence to the
+digit sequence used by `rational_digits_eventually_periodic`. -/
+
+/-- For `x = p/q` with denominator `q.den`, the residue sequence
+    `r n = q.num · bⁿ` reduced modulo `q.den`. Lives in the finite type
+    `ZMod q.den`. -/
+private noncomputable def ratResidue (b : ℕ) (q : ℚ) (n : ℕ) : ZMod q.den :=
+  ((q.num * (b : ℤ) ^ n : ℤ) : ZMod q.den)
+
+/-- One-step recurrence: `ratResidue b q (n+1) = b · ratResidue b q n`.
+    Direct consequence of `b^(n+1) = b · b^n` after pushing the cast through. -/
+private lemma ratResidue_succ (b : ℕ) (q : ℚ) (n : ℕ) :
+    ratResidue b q (n + 1) = (b : ZMod q.den) * ratResidue b q n := by
+  unfold ratResidue
+  push_cast
+  ring
+
+/-- `ratResidue b q n` is the `n`-th iterate of right-multiplication by
+    `(b : ZMod q.den)` starting at `(q.num : ZMod q.den)`. This is the bridge
+    that makes Layer 1's `eventually_periodic_iterate` applicable to the residue
+    sequence: pigeonhole on the orbit of `(· * b)` in `ZMod q.den`. -/
+private lemma ratResidue_eq_iterate (b : ℕ) (q : ℚ) :
+    ∀ n, ratResidue b q n =
+      (fun x : ZMod q.den => x * (b : ZMod q.den))^[n] (q.num : ZMod q.den) := by
+  intro n
+  induction n with
+  | zero =>
+    simp [ratResidue]
+  | succ k ih =>
+    rw [Function.iterate_succ_apply', ← ih, ratResidue_succ]
+    ring
+
+/-- The residue sequence is eventually periodic, with period `T ≤ q.den` and
+    pre-period `N₀ ≤ q.den`. This is the application of Layer 1's
+    `eventually_periodic_iterate` to the orbit of `(· * b)` on `ZMod q.den`,
+    threaded through the bridge `ratResidue_eq_iterate`. The case `q.den = 0`
+    (which makes `ZMod q.den = ℤ`, an infinite type) is excluded. -/
+private lemma ratResidue_eventually_periodic (b : ℕ) (q : ℚ) (hq : 0 < q.den) :
+    ∃ (T N₀ : ℕ), 0 < T ∧ N₀ ≤ q.den ∧ T ≤ q.den ∧
+      ∀ n ≥ N₀, ratResidue b q (n + T) = ratResidue b q n := by
+  -- ZMod q.den is a Fintype with `Fintype.card (ZMod q.den) = q.den` when q.den > 0.
+  haveI : NeZero q.den := ⟨by omega⟩
+  have hcard : Fintype.card (ZMod q.den) = q.den := ZMod.card q.den
+  obtain ⟨T, N₀, hT_pos, hN₀_le, hT_le, hper⟩ :=
+    eventually_periodic_iterate
+      (fun x : ZMod q.den => x * (b : ZMod q.den))
+      ((q.num : ZMod q.den))
+  refine ⟨T, N₀, hT_pos, ?_, ?_, ?_⟩
+  · rw [hcard] at hN₀_le; exact hN₀_le
+  · rw [hcard] at hT_le; exact hT_le
+  · intro n hn
+    simp only [ratResidue_eq_iterate]
+    exact hper n hn
+
 /-- **Axiom**: Rational numbers have eventually periodic base-b expansions.
     Proof sketch: if x = p/q, then bⁿ·(p/q) mod 1 = (bⁿ·p mod q)/q, and
     bⁿ mod q is periodic (pigeonhole on {0,...,q-1}).
     The period T divides φ(q) ≤ q.
 
-    Recipe-status (Session 3 #16976; Layer 1 added Session 8): the orbit-form
-    pigeonhole `eventually_periodic_iterate` above provides the abstract
-    eventual-periodicity ingredient. Layers 2 (ZMod q.den residue bridge) and
-    3 (`nthDigit_rat_eq_residue` cast bridge) remain. -/
+    Recipe-status (Session 3 #16976; Layer 1 added Session 8; Layer 2 added
+    Session 9): the orbit-form pigeonhole `eventually_periodic_iterate` plus
+    the residue bridge `ratResidue_eventually_periodic` together give the
+    abstract eventual-periodicity ingredient — the residue sequence
+    `q.num · bⁿ mod q.den` is now formally periodic for every `q : ℚ` with
+    `q.den > 0`. Layer 3 (`nthDigit_rat_eq_residue` cast bridge) remains. -/
 axiom rational_digits_eventually_periodic (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
     ∃ (T : ℕ) (N₀ : ℕ), 0 < T ∧ ∀ n ≥ N₀, nthDigit b (n + T) q = nthDigit b n q
 
