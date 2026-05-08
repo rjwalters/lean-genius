@@ -72,6 +72,18 @@
     "prerequisites": ["all_positive_prefixSum_step", "induction on Nat"]
   },
   {
+    "id": "ann-positivity-bridge",
+    "proofId": "ballot-problem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 170 },
+    "type": "technique",
+    "title": "Positivity Bridge Lemmas: Interior Bound and Non-Negativity",
+    "content": "Two short bridge lemmas convert the strict-monotonicity property of all-positive prefix sums into the form needed by the wrapping case of `all_positive_all_rotations_good`. (1) `all_positive_prefixSum_lt_sum`: every interior prefix sum is strictly less than the total list sum. The proof is one line — apply strict monotonicity at $i < |l|$ and rewrite using `prefixSum_length` (which identifies $\\text{prefixSum}\\,l\\,|l| = l.\\text{sum}$). (2) `all_positive_prefixSum_nonneg`: every prefix sum (including the empty prefix at position 0) is non-negative. The proof unfolds to a `List.sum_nonneg` over a prefix list whose elements are all positive (transferred via `List.take_prefix l i`). These two lemmas are the only pieces of structure that the wrapping branch needs beyond strict monotonicity itself: the wrapping bound becomes $\\text{PS}(i+j-n) + \\text{sum}(l) - \\text{PS}(i) > 0$, which `linarith` solves once it knows $\\text{PS}(i) < \\text{sum}(l)$ and $\\text{PS}(i+j-n) \\geq 0$.",
+    "mathContext": "$\\text{Lemma 1 (interior bound):}\\quad i < |l| \\implies \\text{PS}(i) < \\sum l$ (strict, via mono).\n$\\text{Lemma 2 (non-negativity):}\\quad \\forall i,\\ 0 \\leq \\text{PS}(i)$ (positive elements give a non-negative sum).",
+    "significance": "supporting",
+    "relatedConcepts": ["List.sum_nonneg", "List.take_prefix", "prefixSum_length", "wrapping prefix decomposition"],
+    "prerequisites": ["all_positive_prefixSum_strictMono", "List.take_prefix membership lemma"]
+  },
+  {
     "id": "ann-all-rotations-good",
     "proofId": "ballot-problem-oq-01-oq-01-oq-02",
     "range": { "startLine": 172, "endLine": 197 },

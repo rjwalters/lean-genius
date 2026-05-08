@@ -186,14 +186,49 @@
   ],
   "mainTheorems": [
     {
+      "name": "unit_decrement_step_bound",
+      "type": "lemma",
+      "description": "One-step bound: for step-≥-1 sequences, prefixSum l j - 1 ≤ prefixSum l (j+1). The local property that drives the downward IVT — a prefix sum cannot drop by more than 1 per step."
+    },
+    {
       "name": "unit_decrement_downward_ivt",
       "type": "core",
-      "description": "Downward IVT: for step-≥-1 sequences, if prefix sum at i > v and at j ≤ v, some k ∈ (i,j] achieves exactly v"
+      "description": "Downward IVT: for step-≥-1 sequences, if prefix sum at i exceeds v but at j > i is ≤ v, some k ∈ (i,j] achieves prefix sum exactly v. Proved via Finset.min' (leftmost crossing) — the discrete analog of the continuous IVT."
+    },
+    {
+      "name": "unit_decrement_levels_achieved",
+      "type": "core",
+      "description": "Global level-achievement: for step-≥-1 sequences, every integer level v ∈ [minPrefixSum l, 0] is achieved by some prefix sum position. Combines the IVT with the rightmost-min position to span the full reachable range."
+    },
+    {
+      "name": "all_positive_prefixSum_step",
+      "type": "lemma",
+      "description": "One-step strict increase for all-positive sequences: prefixSum l j < prefixSum l (j+1). The local positivity property that propagates to global strict monotonicity."
+    },
+    {
+      "name": "all_positive_prefixSum_strictMono",
+      "type": "lemma",
+      "description": "Global strict monotonicity: for all-positive sequences, i < j ≤ |l| ⟹ prefixSum l i < prefixSum l j. Proved by induction on j chaining the one-step increase."
+    },
+    {
+      "name": "all_positive_prefixSum_lt_sum",
+      "type": "lemma",
+      "description": "Interior bound: for all-positive sequences, i < |l| ⟹ prefixSum l i < l.sum. Used in the wrapping case of all_positive_all_rotations_good."
+    },
+    {
+      "name": "all_positive_prefixSum_nonneg",
+      "type": "lemma",
+      "description": "Universal non-negativity: for all-positive sequences, every prefix sum is ≥ 0. Used in the wrapping case alongside the interior bound."
+    },
+    {
+      "name": "all_positive_all_rotations_good",
+      "type": "core",
+      "description": "Every cyclic rotation is good for all-positive-step sequences. The non-wrapping case uses strict monotonicity directly; the wrapping case combines the interior bound with non-negativity of wrapped prefix sums."
     },
     {
       "name": "all_positive_goodRotations_card",
       "type": "core",
-      "description": "|goodRotations l| = l.length for all-positive-step sequences — every rotation is good"
+      "description": "|goodRotations l| = l.length for all-positive-step sequences — every rotation is good. Proved by Finset extensionality identifying goodRotations l with Finset.range l.length."
     }
   ],
   "sorries": 0
