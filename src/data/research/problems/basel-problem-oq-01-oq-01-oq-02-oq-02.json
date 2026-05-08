@@ -1,7 +1,7 @@
 {
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-02",
   "title": "Apéry denominator_control: lcm(1,…,n)³·aₙ ∈ ℤ for the Apéry a-sequence",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 3 (2026-05-08, ORIENT): Added the `harmonicCubed` definition (the cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3) plus 4 reusable lemmas (`harmonicCubed_zero`, `harmonicCubed_one`, `harmonicCubed_nonneg`, `harmonicCubed_mono`) to `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean`. These provide the basic infrastructure for the H_n^{(3)} half of the van der Poorten denominator analysis (route F). The MAIN divisibility theorem `harmonicCubed_lcm_clear : ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m` was scaffolded with witness and proof structure but local Docker build timed out twice (30-min cold cache + concurrent agent contention). Documented for next session: the integer witness is `∑ k ∈ range n, (lcmRange n)^3 / (k+1)^3` (each term integral via `pow_dvd_lcmRange_pow`); the per-term identity `(lcmRange n : ℚ)^3 * (1/(k+1)^3) = ((Nat.div : ℕ→ℚ))` requires `Int.cast_natCast` + `Nat.cast_sum` + private `Nat.cast_div`-based lemma to avoid `push_cast` pushing through to `Int.div`. PROOF TECHNIQUE INSIGHT: `push_cast` is aggressive on `((a/b : ℕ) : ℤ)` via `Int.ofNat_div` — collapse the ℕ→ℤ→ℚ chain to ℕ→ℚ FIRST via `Int.cast_natCast`, then per-term work in ℕ→ℚ using `Nat.cast_div`. Session 2 (ORIENT): Built infrastructure lemmas (`dvd_lcmRange`, `pow_dvd_lcmRange_pow`, etc.) and corrected session 1's strategy. Session 1 (OBSERVE): Surveyed and identified van der Poorten path.",
+    "progressSummary": "Session 4 (2026-05-08, ACT): discharged the H_n^{(3)} half of the van der Poorten denominator analysis (route F). Proved harmonicCubed_lcm_clear_nat (explicit ℕ-sum identity) and harmonicCubed_lcm_clear (existential form matching denominator_control). The integer witness is ∑ k ∈ range n, (lcmRange n)^3/(k+1)^3 (Nat division — each summand exact via pow_dvd_lcmRange_pow). Proof technique: Finset.mul_sum → Nat.cast_sum → per-term Nat.cast_div hdvd hk1ne → mul_one_div → push_cast; ring. Session 3 (ORIENT): added harmonicCubed (cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^{n} 1/k^3) plus 4 reusable lemmas. Session 2 (ORIENT): built infrastructure lemmas (dvd_lcmRange, pow_dvd_lcmRange_pow, etc.) and corrected session 1 strategy. Session 1 (OBSERVE): surveyed and identified van der Poorten path. NEXT (session 5): vdpAlternatingSum_lcm_clear — the alternating-bilinear half via central-binomial telescoping (vdP 1979 §6).",
     "builtItems": [
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: dvd_lcmRange (k>0, k≤n → k∣lcmRange n) — basic membership divisibility",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: pow_dvd_lcmRange_pow (k>0, k≤n → k^p ∣ (lcmRange n)^p) — the cubed divisibility ingredient any inductive proof of denominator_control needs",
@@ -54,7 +54,9 @@
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed (cubed-harmonic sum H_n^{(3)} = ∑_{k=1}^n 1/k^3, reproduced locally to keep file self-contained)",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_zero, harmonicCubed_one (base values: H_0^{(3)} = 0, H_1^{(3)} = 1)",
       "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_nonneg (H_n^{(3)} ≥ 0)",
-      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_mono (m ≤ n → H_m^{(3)} ≤ H_n^{(3)})"
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_mono (m ≤ n → H_m^{(3)} ≤ H_n^{(3)})",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_lcm_clear_nat (explicit ℕ-witness identity (lcmRange n)^3 · H_n^{(3)} = ∑ k ∈ range n, (lcmRange n)^3/(k+1)^3)",
+      "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean: harmonicCubed_lcm_clear (existential ∃ m : ℤ, (lcmRange n)^3 · H_n^{(3)} = m — matches denominator_control shape)"
     ],
     "insights": [
       "BaselProblemOQ01OQ01OQ02.lean already has `denominator_control_factorial : ∃ m : ℤ, (n.factorial : ℚ)^3 * aperyA n = m` PROVED (Part XIX). The factorial proof works because `(n+2)! = (n+2)·(n+1)!` is EXACT multiplicative — multiplying through the recurrence by `(n+1)!^3` produces `(n+2)!^3` on the LHS with no leftover (n+2)^3 to absorb. lcm has no analogous factorisation: lcm(1..n+2) ≠ (n+2)·lcm(1..n+1) in general (e.g. lcm(1..4)=12 ≠ 4·6=24).",
@@ -64,7 +66,8 @@
       "Mathlib `Mathlib.Data.Nat.GCD.Basic` has `Nat.lcm` and `Finset.lcm`. The basic divisibility `(k+1) ∣ Finset.lcm (Finset.range n) (· + 1)` follows from `Finset.dvd_lcm` and is now packaged in OQ-02-OQ-02 as `dvd_lcmRange`.",
       "The cubed divisibility `k^p ∣ (lcmRange n)^p` is now AVAILABLE as `pow_dvd_lcmRange_pow` in OQ-02-OQ-02. It packages `dvd_lcmRange` + `pow_dvd_pow_of_dvd`. Reusable across both strategy (P) and (F).",
       "Sibling file Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean already provides `lcmRange_succ` (lcmRange (n+1) = Nat.lcm (lcmRange n) (n+1)), `lcmRange_dvd_lcmRange_of_le`, `lcmRange_monotone`, `lcmRange_dvd_factorial`. These cover the BasicNat-arithmetic side; OQ-02 file adds the powered version specifically needed for denominator analysis.",
-      "Watch out: `lcmUpTo n = (Finset.range n).lcm (· + 1)` so lcmUpTo n covers integers 1 through n (not 0 through n-1). lcmUpTo 0 = 1 (lcm of empty set). The defining equation `lcmUpTo_dvd_of_le` (already proved in parent) gives lcm(1..n) ∣ lcm(1..m) for n ≤ m."
+      "Watch out: `lcmUpTo n = (Finset.range n).lcm (· + 1)` so lcmUpTo n covers integers 1 through n (not 0 through n-1). lcmUpTo 0 = 1 (lcm of empty set). The defining equation `lcmUpTo_dvd_of_le` (already proved in parent) gives lcm(1..n) ∣ lcm(1..m) for n ≤ m.",
+      "SESSION 4 (2026-05-08, ACT): proved harmonicCubed_lcm_clear and harmonicCubed_lcm_clear_nat in Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean. The H_n^{(3)} half of the van der Poorten denominator analysis (route F) is now discharged. Proof flow: Finset.mul_sum → Nat.cast_sum → per-term Nat.cast_div hdvd hk1ne → mul_one_div → push_cast; ring. The dvd hypothesis is exactly pow_dvd_lcmRange_pow (Part 2). Inlining the per-term work into the main theorem (no separate private helper) avoids the cast-form mismatch (↑k+1)^3 vs ((k+1:ℕ):ℚ)^3 that session 3 hit."
     ],
     "mathlibGaps": [
       "No Apéry numbers in Mathlib (aperyA, aperyB are gallery-local).",
@@ -72,11 +75,10 @@
       "No `Nat.lcm_range` simp lemma giving `lcm({1,…,n}) = ⋁_{k≤n} k` form."
     ],
     "nextSteps": [
-      "Session 4 (vdp alternating sum): State and prove `vdpAlternatingSum_lcm_clear`: `∃ m : ℤ, (lcmRange n)^3 · ∑_{k=0}^n ∑_{m=1}^k (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) = m`. The classical denominator identity (van der Poorten 1979 §6) shows that 2 m^3 · C(n,m) · C(n+m,m) divides lcm(1..n)^3 (the factor 2 is absorbed by the squared central binomial; the m^3 factor is `pow_dvd_lcmRange_pow`; the binomial denominators follow from m·C(n,m) = n·C(n-1,m-1) and similar). Estimated ~200 lines.",
-      "Session 5 (vdp closed form, sorried): State `aperyA_explicit_formula : aperyA n = ∑_{k=0}^{n} C(n,k)^2 C(n+k,k)^2 (H_n^{(3)} + cnk(n,k))` as a sorried theorem. Validate at n=0,1,2,3,4 via `native_decide`. Estimated ~80 lines.",
-      "Session 6 (assembly): Combine `harmonicCubed_lcm_clear`, `vdpAlternatingSum_lcm_clear`, and `aperyA_explicit_formula` to prove `denominator_control_lcm : ∃ m : ℤ, (lcmRange n)^3 · aperyA n = m`. Eliminate the parent's `axiom denominator_control` by importing the result. Estimated ~80 lines.",
-      "Session 7 (axiom count update): Update meta.json axiomCount 5→4, status remains axiomatized (4 axioms remain: aperyB_recurrence, lcm_hanson_bound, apery_linearForm_decay, apery_linearForm_nonzero). Update gallery integration.",
-      "Optional Session 8 (Mathlib contribution): If `pow_dvd_lcmRange_pow` is judged clean and general, draft a Mathlib PR — `Finset.lcm_pow_dvd_pow_of_mem` or similar. Currently only OQ-02 and OQ-03 in this gallery use this lemma; broader applicability uncertain."
+      "Session 5 (vdp alternating sum): State and prove vdpAlternatingSum_lcm_clear: ∃ m : ℤ, (lcmRange n)^3 · ∑_{k=0}^{n} ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)) = m. Use central-binomial telescoping: m·C(n,m) = n·C(n-1,m-1), so 2 m^3 · C(n,m) · C(n+m,m) divides lcm(1..n)^3. Estimated ~200 lines.",
+      "Session 6 (vdp closed form, sorried): State aperyA_explicit_formula : aperyA n = ∑_{k=0}^{n} C(n,k)^2 C(n+k,k)^2 (H_n^{(3)} + cnk(n,k)) as a sorried theorem. Validate at n=0,1,2,3,4 via native_decide. Estimated ~80 lines.",
+      "Session 7 (assembly): Combine harmonicCubed_lcm_clear, vdpAlternatingSum_lcm_clear, and aperyA_explicit_formula to prove denominator_control_lcm. Eliminate the parent axiom denominator_control. Estimated ~80 lines.",
+      "Session 8 (axiom count update): Update parent meta.json axiomCount 5→4 once denominator_control is eliminated. Status remains axiomatized (4 axioms remain)."
     ]
   },
   "tags": [
