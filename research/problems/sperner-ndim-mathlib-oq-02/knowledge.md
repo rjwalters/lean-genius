@@ -926,3 +926,135 @@ in S11 and confirmed compiling). CI is the ground truth for the PR.
 Total estimated remaining for `sperner_panchromatic_two`:
 ~250 lines across 2-3 sessions (S16 cuts ~30 from the S15 estimate
 of 280).
+
+## Session 2026-05-08 (Session 17) — Base ↔ topSimps2 bridge
+
+**Mode**: REVISIT (continuing S16 boundary classification work)
+**Outcome**: progress — 13 new bridge lemmas, 1 sorry remaining (n=2)
+
+### What I Did
+
+Extended the `N2BoundaryAnalysis` section of `SpernerFreudenthalSimplex.lean`
+(currently 1014 lines after S16) with the **base ↔ topSimps2 bridge**.
+The S16 building blocks were edge-level (about which `t1 b`/`t2 c`
+contain a given edge); S17 bridges those to top-level `topSimps2 N`
+membership and arithmetic conditions on bases.
+
+**13 new lemmas in 7 groups**:
+
+1. `t1Bases_mem_iff`, `t2Bases_mem_iff` — clean iff form
+   `b ∈ t{1,2}Bases N ↔ b.1 < N ∧ b.2 < N ∧ ...`. Without these, every
+   later lemma had to unfold `t1Bases`/`t2Bases` and chain
+   `Finset.mem_filter`/`mem_product`/`mem_range`.
+2. `t1_in_topSimps2_of_base`, `t2_in_topSimps2_of_base`,
+   `topSimps2_mem_iff` — top-simplex membership from base membership
+   plus the canonical case-split `s ∈ topSimps2 N ↔ ∃ b ∈ t1Bases, t1 b = s
+   ∨ ∃ b ∈ t2Bases, t2 b = s` for inversion.
+3. `t2Bases_self_in_t1Bases`, `t2Bases_right_in_t1Bases`,
+   `t2Bases_top_in_t1Bases` — for `b ∈ t2Bases N`, all three "face-mate"
+   t1 bases (`b`, `(b.1+1, b.2)`, `(b.1, b.2+1)`) are in `t1Bases N`.
+   Combined with S16's `t2_face{0,1,2}_in_t1`, this proves **all t2
+   faces are shared with another top simplex**, hence t2 cells
+   contribute no boundary doors.
+4. `t1Bases_horizontal_neighbor_in_t2Bases`,
+   `t1Bases_vertical_neighbor_in_t2Bases`,
+   `t1Bases_diagonal_neighbor_in_t2Bases` — existential side of t1's
+   neighbor analysis.
+5. `diagonal_not_in_t2_at_diagonal` — the missing boundary case.
+   Counterpart to S16's `horizontal_not_in_t2_at_y0` and
+   `vertical_not_in_t2_at_x0`. When `b` saturates the diagonal
+   `b.1 + b.2 + 1 ≥ N`, no `t2 c` with `c ∈ t2Bases` contains the
+   diagonal of `t1 b`.
+6. `diagonal_neighbor_topSimps2` — top-level classification:
+   `∃ s ∈ topSimps2 N, s ≠ t1 b ∧ {(b.1, b.2+1), (b.1+1, b.2)} ⊆ s ↔
+   b.1 + b.2 + 1 < N`. This is the form S18's `containersOf`-based
+   assembly will consume directly.
+
+### Key Findings
+
+- **Base ↔ topSimps2 split is the right factoring.** S16 gave us
+  edge-level lemmas (`{u, v} ⊆ t1 c ↔ ...`), but the
+  `Triangulation.adj` API operates at the topSimps2 level
+  (`containersOf face = top simplices containing face`). Without an
+  explicit `topSimps2_mem_iff` for inversion, the case split
+  `s = t1 c ∨ s = t2 c` had to be re-derived inline at each call site.
+  The new iff makes the case-split a single `rw`.
+
+- **t2 cells contribute no boundary doors.** This was implicit in S16
+  via the three `t2_face{0,1,2}_in_t1` lemmas, but those alone don't
+  finish the argument: we also need the witness t1 cell to be in
+  `topSimps2 N`. The three `t2Bases_*_in_t1Bases` lemmas close this
+  gap. Now any boundary door `T.adj s k = none` with `s = ⟨t2 b, hb⟩`
+  is contradictory — the t1 face-mate is always in `containersOf`,
+  giving cardinality ≥ 2.
+
+- **Diagonal-boundary asymmetry.** The three boundary cases for t1
+  cells are not symmetric:
+  - **Horizontal boundary** (b.2 = 0): the y=0 edge of Δ² ⇒ Δ²-face 1.
+  - **Vertical boundary** (b.1 = 0): the x=0 edge of Δ² ⇒ Δ²-face 0.
+  - **Diagonal boundary** (b.1 + b.2 + 1 ≥ N, equivalently
+    b.1 + b.2 = N - 1 since `b ∈ t1Bases ⇒ b.1 + b.2 < N`): the
+    x+y = N edge of Δ² ⇒ Δ²-face 2.
+  The horizontal/vertical cases are "missing neighbor base"
+  (the would-be neighbor has negative coord), and S16's
+  `*_not_in_t2_at_*0` lemmas handle them. The diagonal case is
+  different: the would-be neighbor base `b` is in `t1Bases` but not
+  `t2Bases`. That's why a separate `diagonal_not_in_t2_at_diagonal`
+  lemma was needed.
+
+- **`subst h ⇒ rw [t2Bases_mem_iff] at hc ⇒ omega` is the canonical
+  contradiction pattern** for the diagonal case. After
+  `diagonal_in_t2_iff` reduces "diagonal in t2 c" to "c = b", `subst`
+  replaces c with b, then unfolding t2Bases gives the impossible
+  `b.1 + b.2 + 1 < N ∧ ... ≥ N`. Three lines each.
+
+- **Reverse direction of `diagonal_neighbor_topSimps2` uses
+  `(t1_ne_t2 b b).symm`** to get `t2 b ≠ t1 b`. The `.symm` is needed
+  because S16's `t1_ne_t2 (b c) : t1 b ≠ t2 c` is stated as t1 ≠ t2
+  but the goal here wants t2 ≠ t1.
+
+### Files Modified
+
+- `proofs/Proofs/SpernerFreudenthalSimplex.lean`
+  (+~165 lines, added inside `N2BoundaryAnalysis` section)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (iter 17)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this file)
+
+### Build Status
+
+Docker build not run this session: same `.lake` recursive-symlink
+constraint as S14–S16 (~25–45 min fresh-clone of Mathlib + cache).
+Additions are mechanical: `simp only`/`unfold` + `omega` on each
+arithmetic-content lemma, or a structural pattern matching S16
+(diagonal in/out via `diagonal_in_t{1,2}_iff` + `subst` + omega).
+CI is the ground truth.
+
+### Next Steps (Session 18+)
+
+1. **Assemble `_hBoundaryOnFace` for the n=2 case** using the S16
+   edge-level lemmas + S17 base-level bridge:
+   - For each cell `s = ⟨S, hS⟩` with `S ∈ topSimps2 N`, case-split
+     via `topSimps2_mem_iff` to get `S = t1 b` (with `b ∈ t1Bases N`)
+     or `S = t2 b` (with `b ∈ t2Bases N`).
+   - For each face index `k ∈ Fin 3`, compute `vertexEnum S hS k`
+     (lex-sort of t1/t2) — for `t1 b`, this is `b`, `(b.1, b.2+1)`,
+     `(b.1+1, b.2)`; for `t2 b`, it's `(b.1, b.2+1)`, `(b.1+1, b.2)`,
+     `(b.1+1, b.2+1)`.
+   - For the `t2 b` case: every k is non-boundary by the three
+     `t2Bases_*_in_t1Bases` lemmas + `t1_in_topSimps2_of_base` + S16's
+     `t2_face*_in_t1`. So `T.adj s k = none` is impossible — use
+     `False.elim`.
+   - For the `t1 b` case: each k corresponds to one boundary
+     condition (b.1 = 0, b.2 = 0, or b.1 + b.2 + 1 ≥ N), and the
+     existential `faceIdx` is one of `Fin 3` (Δ²-face 0, 1, or 2).
+     The non-k vertices both satisfy `onFaceΔ2 N · faceIdx`
+     by direct arithmetic case split.
+   ~80 lines.
+2. **Prove `_hLastFace`** (face 2 boundary doors, hardest piece):
+   bijection with `face2_path_odd`'s color-changing edges. ~120 lines.
+3. **Apply `Triangulation.sperner`** and extract real-coordinate
+   witnesses with diameter ≤ 2/N. ~50 lines.
+
+Total estimated remaining for `sperner_panchromatic_two`:
+~200 lines across 2 sessions (S17 cuts ~30 from the post-S16 estimate
+of 250).

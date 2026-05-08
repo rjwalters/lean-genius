@@ -1010,5 +1010,179 @@ private lemma t2_face2_in_t1 (b : ℕ × ℕ) :
     · simp only [t1, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
       omega
 
+-- ============================================================
+-- (Session 17) Boundary classification — base ↔ topSimps2 bridge
+--
+-- These lemmas characterize when each face of a t1/t2 cell is a
+-- boundary face of Δ², i.e. when no other top simplex of the
+-- triangulation contains it. They build on the S16 edge-containment
+-- lemmas and the t1Bases / t2Bases membership conditions.
+-- ============================================================
+
+-- ----------------------------------------------------------------
+-- (S17.1) Base-membership iff. Bare-`Finset.mem_filter` unfolding
+-- gives an unwieldy product blob; the iff form is a cleaner rewrite
+-- target for downstream boundary classification.
+-- ----------------------------------------------------------------
+
+private lemma t1Bases_mem_iff (N : ℕ) (b : ℕ × ℕ) :
+    b ∈ t1Bases N ↔ b.1 < N ∧ b.2 < N ∧ b.1 + b.2 < N := by
+  refine ⟨fun h => ?_, fun ⟨h1, h2, h3⟩ => ?_⟩
+  · simp only [t1Bases, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_range] at h
+    exact ⟨h.1.1, h.1.2, h.2⟩
+  · simp only [t1Bases, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_range]
+    exact ⟨⟨h1, h2⟩, h3⟩
+
+private lemma t2Bases_mem_iff (N : ℕ) (b : ℕ × ℕ) :
+    b ∈ t2Bases N ↔ b.1 < N ∧ b.2 < N ∧ b.1 + b.2 + 1 < N := by
+  refine ⟨fun h => ?_, fun ⟨h1, h2, h3⟩ => ?_⟩
+  · simp only [t2Bases, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_range] at h
+    exact ⟨h.1.1, h.1.2, h.2⟩
+  · simp only [t2Bases, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_range]
+    exact ⟨⟨h1, h2⟩, h3⟩
+
+-- ----------------------------------------------------------------
+-- (S17.2) topSimps2 membership of t1/t2 cells from base membership.
+-- ----------------------------------------------------------------
+
+private lemma t1_in_topSimps2_of_base (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t1Bases N) : t1 b ∈ topSimps2 N := by
+  unfold topSimps2
+  exact Finset.mem_union.mpr (Or.inl (Finset.mem_image.mpr ⟨b, hb, rfl⟩))
+
+private lemma t2_in_topSimps2_of_base (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) : t2 b ∈ topSimps2 N := by
+  unfold topSimps2
+  exact Finset.mem_union.mpr (Or.inr (Finset.mem_image.mpr ⟨b, hb, rfl⟩))
+
+-- (S17.3) Reverse: every cell in topSimps2 is t1 or t2 of some base.
+private lemma topSimps2_mem_iff (N : ℕ) (s : Finset (ℕ × ℕ)) :
+    s ∈ topSimps2 N ↔
+      (∃ b ∈ t1Bases N, t1 b = s) ∨ (∃ b ∈ t2Bases N, t2 b = s) := by
+  unfold topSimps2
+  simp only [Finset.mem_union, Finset.mem_image]
+
+-- ----------------------------------------------------------------
+-- (S17.4) Base translation across t2 ↔ t1 face-mates.
+--
+-- For every t2 cell with base in `t2Bases N`, the three t1 cells
+-- sharing its three faces (per S16's `t2_face{0,1,2}_in_t1`) all
+-- have their bases in `t1Bases N`. Hence every t2 face is shared
+-- with another top simplex — t2 faces are *never* boundary.
+-- ----------------------------------------------------------------
+
+private lemma t2Bases_self_in_t1Bases (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) : b ∈ t1Bases N := by
+  rw [t1Bases_mem_iff]
+  rw [t2Bases_mem_iff] at hb
+  exact ⟨hb.1, hb.2.1, by omega⟩
+
+private lemma t2Bases_right_in_t1Bases (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) : (b.1 + 1, b.2) ∈ t1Bases N := by
+  rw [t1Bases_mem_iff]
+  rw [t2Bases_mem_iff] at hb
+  refine ⟨?_, hb.2.1, ?_⟩ <;> omega
+
+private lemma t2Bases_top_in_t1Bases (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t2Bases N) : (b.1, b.2 + 1) ∈ t1Bases N := by
+  rw [t1Bases_mem_iff]
+  rw [t2Bases_mem_iff] at hb
+  refine ⟨hb.1, ?_, ?_⟩ <;> omega
+
+-- ----------------------------------------------------------------
+-- (S17.5) Base translation across t1 ↔ t2 face-mates.
+--
+-- For a t1 cell with base `b ∈ t1Bases`, its three faces are:
+--   * diagonal {(b.1, b.2+1), (b.1+1, b.2)} — shared with t2(b)
+--     iff b ∈ t2Bases (i.e. b.1 + b.2 + 1 < N)
+--   * horizontal {b, (b.1+1, b.2)} — shared with t2(b.1, b.2-1)
+--     iff b.2 ≥ 1
+--   * vertical {b, (b.1, b.2+1)} — shared with t2(b.1-1, b.2)
+--     iff b.1 ≥ 1
+-- The lemmas below give the existential side of these
+-- characterizations; the negative side comes from S16 via
+-- `horizontal_not_in_t2_at_y0`, `vertical_not_in_t2_at_x0`, and
+-- the new `diagonal_not_in_t2_at_diagonal` below.
+-- ----------------------------------------------------------------
+
+private lemma t1Bases_horizontal_neighbor_in_t2Bases
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb2 : 1 ≤ b.2) :
+    (b.1, b.2 - 1) ∈ t2Bases N := by
+  rw [t1Bases_mem_iff] at hb
+  rw [t2Bases_mem_iff]
+  refine ⟨hb.1, ?_, ?_⟩ <;> omega
+
+private lemma t1Bases_vertical_neighbor_in_t2Bases
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hb1 : 1 ≤ b.1) :
+    (b.1 - 1, b.2) ∈ t2Bases N := by
+  rw [t1Bases_mem_iff] at hb
+  rw [t2Bases_mem_iff]
+  refine ⟨?_, hb.2.1, ?_⟩ <;> omega
+
+private lemma t1Bases_diagonal_neighbor_in_t2Bases
+    (N : ℕ) {b : ℕ × ℕ} (hb : b ∈ t1Bases N) (hbd : b.1 + b.2 + 1 < N) :
+    b ∈ t2Bases N := by
+  rw [t1Bases_mem_iff] at hb
+  rw [t2Bases_mem_iff]
+  exact ⟨hb.1, hb.2.1, hbd⟩
+
+-- ----------------------------------------------------------------
+-- (S17.6) The missing boundary case — diagonal at the diag-boundary.
+--
+-- Counterpart to `horizontal_not_in_t2_at_y0` and
+-- `vertical_not_in_t2_at_x0`: when `b ∈ t1Bases N` saturates the
+-- diagonal-boundary `b.1 + b.2 + 1 ≥ N`, no t2 cell with base in
+-- `t2Bases N` contains the diagonal of t1(b).
+-- ----------------------------------------------------------------
+
+private lemma diagonal_not_in_t2_at_diagonal (N : ℕ) (b : ℕ × ℕ)
+    (hbd : N ≤ b.1 + b.2 + 1) (c : ℕ × ℕ) (hc : c ∈ t2Bases N) :
+    ¬ (({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ t2 c) := by
+  intro h
+  rw [diagonal_in_t2_iff] at h
+  rw [t2Bases_mem_iff] at hc
+  -- h : c = b ⇒ b.1 + b.2 + 1 < N, contradicting hbd
+  subst h
+  omega
+
+-- ----------------------------------------------------------------
+-- (S17.7) Diagonal-neighbor classification at topSimps2 level.
+--
+-- For `b ∈ t1Bases N`, the diagonal edge of `t1 b` is contained in
+-- *some other* simplex of `topSimps2 N` iff `b ∈ t2Bases N`
+-- (equivalently `b.1 + b.2 + 1 < N`), and that other simplex is
+-- `t2 b`. This is the form needed by S18's `containersOf`-based
+-- assembly of `_hBoundaryOnFace` for the diagonal face.
+-- ----------------------------------------------------------------
+
+private lemma diagonal_neighbor_topSimps2 (N : ℕ) {b : ℕ × ℕ}
+    (hb : b ∈ t1Bases N) :
+    (∃ s ∈ topSimps2 N, s ≠ t1 b ∧
+      ({(b.1, b.2+1), (b.1+1, b.2)} : Finset (ℕ × ℕ)) ⊆ s) ↔
+      b.1 + b.2 + 1 < N := by
+  refine ⟨?_, ?_⟩
+  · rintro ⟨s, hs_mem, hs_ne, hs_sub⟩
+    rw [topSimps2_mem_iff] at hs_mem
+    rcases hs_mem with ⟨c, _, rfl⟩ | ⟨c, hc, rfl⟩
+    · -- s = t1 c. Diagonal forces c = b ⇒ s = t1 b, contradicting hs_ne.
+      rw [diagonal_in_t1_iff] at hs_sub
+      subst hs_sub
+      exact (hs_ne rfl).elim
+    · -- s = t2 c with c ∈ t2Bases. Diagonal forces c = b.
+      rw [diagonal_in_t2_iff] at hs_sub
+      subst hs_sub
+      rw [t2Bases_mem_iff] at hc
+      exact hc.2.2
+  · intro hbd
+    refine ⟨t2 b, ?_, ?_, ?_⟩
+    · exact t2_in_topSimps2_of_base N
+        (t1Bases_diagonal_neighbor_in_t2Bases N hb hbd)
+    · exact (t1_ne_t2 b b).symm
+    · rw [diagonal_in_t2_iff]
+
 end N2BoundaryAnalysis
 end SpernerFreudSimp
