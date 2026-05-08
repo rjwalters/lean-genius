@@ -1,10 +1,72 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T13:00:00Z
-**Iteration**: 8
+**Since**: 2026-05-08T17:30:00Z
+**Iteration**: 9
 
 ## Current Focus
+
+S9 (2026-05-08, researcher-9): **Dirichlet sublattice — divisibility side**.
+Added one definition and two `private` lemmas to `ThreeSquares.lean` (directly
+after the S8 QR-extraction lemma, before the `not_excluded_form_is_sum_three_sq`
+axiom):
+
+```lean
+def IsInDirichletSublattice (p r : ℤ) (v : Fin 3 → ℤ) : Prop :=
+  p ∣ (v 0 - r * v 1) ∧ p ∣ v 2
+
+private lemma dirichletForm_dvd_of_in_sublattice
+    {p d r : ℤ} (hr : p ∣ r ^ 2 + d) (v : Fin 3 → ℤ)
+    (hv : IsInDirichletSublattice p r v) :
+    p ∣ v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2
+
+private lemma exists_dirichletSublattice_dvd_form
+    {p d : ℕ} [Fact (Nat.Prime p)]
+    (hd_pos : 0 < d) (hd_lt_p : d < p)
+    (hqr : legendreSym p (-d : ℤ) = 1) :
+    ∃ r : ℤ, ∀ v : Fin 3 → ℤ,
+      IsInDirichletSublattice (p : ℤ) r v →
+      (p : ℤ) ∣ v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2
+```
+
+**Proof structure** (~80 lines including docstrings, ~10 lines of tactic):
+
+The sublattice is `L_r = {(x, y, z) ∈ ℤ³ : p ∣ (x − r y) ∧ p ∣ z}`. Its index in
+ℤ³ is `p²` (covolume `p²` — basis `(p,0,0), (r,1,0), (0,0,p)` has determinant
+`p²`); the geometric covolume computation is left to S10.
+
+The divisibility lemma `dirichletForm_dvd_of_in_sublattice` is purely arithmetic:
+write `v 0 = r v 1 + p a` and `v 2 = p b` (witnesses from the divisibilities)
+and `r² + d = p k` (from the residue hypothesis), then expand
+
+  `v 0² + d v 1² + d v 2² = (r² + d) v 1² + 2 r v 1 p a + p² a² + d p² b²`
+                         `= p (k v 1² + 2 r v 1 a + p a² + d p b²)`.
+
+Closed via `linear_combination (v 1)² * hk` since the LHS−RHS difference of the
+witness equation is exactly `(r² + d − p · k) · v 1² = 0`.
+
+The composite `exists_dirichletSublattice_dvd_form` packages S8 + S9 into a
+single existential: from `legendreSym p (-d) = 1` (a hypothesis on the residue
+class), produce a sublattice parameter `r` such that the **entire** sublattice
+satisfies `p ∣ form(v)`. This is the integer-side input to the Dirichlet Key
+Lemma proof: any non-zero lattice point in `L_r` ∩ `dirichletEllipsoid` will
+have form value a positive multiple of `p`; combined with the ellipsoid bound
+(S10), the value can be forced to equal `p` exactly.
+
+**Why this granularity**: arithmetic content (no measure theory, no Mathlib
+geometry-of-numbers API), so the proof is robust to the latent S5-region build
+issues noted in earlier sessions. It is small (~10 tactic lines) and stands
+alone, even if S10's covolume work hits the same Mathlib API drift that has
+delayed earlier sessions.
+
+**Axiom delta**: unchanged at 2 (`dirichlet_key_lemma`,
+`not_excluded_form_is_sum_three_sq`). S9 is *infrastructure* — it builds the
+divisibility half of the eventual `dirichlet_key_lemma` proof.
+
+**Build status**: pending. The new tactic `linear_combination` is well-tested,
+the Mathlib API surface used (`Dvd`, `Int`, `linarith`, `ring`) is stable.
+Confidence high. The S5-region build issues described in earlier sessions are
+unaffected by S9 since the new code is purely arithmetic at the `ℤ` level.
 
 S8 (2026-05-08, researcher-3): **QR square-root extraction helper**. Added
 `private lemma exists_int_sqrt_neg_d_mod_p` to `ThreeSquares.lean`
@@ -163,36 +225,45 @@ session.
 
 ## Next Action
 
-**Session 9**: Sublattice construction. With S8 providing the integer `r`
-such that `p ∣ r² + d`, the next geometric step is:
+**Session 10**: Sublattice covolume. With S9 delivering the divisibility
+content (`dirichletForm_dvd_of_in_sublattice`), the remaining geometric
+work for `dirichlet_key_lemma` is:
 
-1. **Define the sublattice** `L_r = {(x, y, z) ∈ ℤ³ : x ≡ r·y (mod p)}`
-   (single constraint, covolume `p`) or `L_{r,r'} = {... : x ≡ r y, x ≡ r' z}`
-   (two constraints, covolume `p²`). Both produce
-   `x² + d y² + d z² ≡ 0 (mod p)` on the sublattice.
-2. **Identify `L_r` as a `Submodule ℤ (Fin 3 → ℝ)`** via
-   `Submodule.span ℤ {basis_vectors}` where the basis vectors are the
-   images of ℤ³ basis vectors under a transformation matrix.
-3. **Compute the covolume** of `L_r` using `ZSpan.volume_fundamentalDomain`
-   adapted to the new basis (matrix determinant gives `p` or `p²`).
-4. **Apply Mathlib's Minkowski theorem** (already used in S5) to the new
-   sublattice with adjusted volume condition `volume(L) · 2³ < volume(D)`.
-5. **Identification**: combine the integer Minkowski result with the
-   sublattice divisibility to get `x² + d y² + d z² = kp` for small `k`,
-   then match `kp = k(dn-1)` to extract a sum-of-three-squares for `n`.
+1. **Lift the sublattice predicate to a `Submodule ℤ (Fin 3 → ℝ)`** via
+   `Submodule.span ℤ (Set.range subBasis)` where the basis vectors are
+   `(p, 0, 0), (r, 1, 0), (0, 0, p)` cast to `ℝ`. Equivalently use
+   `(stdBasis3.map T).reindex` for `T` the linear map encoded by
+   `M = !![p, 0, 0; r, 1, 0; 0, 0, p]` (treated as a matrix in `Matrix.of` /
+   `Matrix.toLin`).
+2. **Compute the covolume** of the lifted sublattice via
+   `ZSpan.volume_fundamentalDomain`, which gives
+   `volume(F) = |det(basisMatrix)| = p²`. Use
+   `Matrix.det_fin_three` to compute the determinant directly.
+3. **Apply Mathlib's Minkowski theorem** (already used in S5) to the new
+   sublattice with adjusted volume condition `8 · p² < volume(D)` —
+   this requires choosing `R` with `(4π/3) · R^(3/2) / d > 8 · p²`,
+   i.e. `R > (6 p² d / π)^(2/3)`.
+4. **Identification step (S11)**: combine the integer Minkowski result
+   on the sublattice with `dirichletForm_dvd_of_in_sublattice` to get
+   `0 < form(v) ≤ R` AND `p ∣ form(v)` for the sublattice point `v`.
+   Picking `R < 2p · (something)` forces `form(v) = p · k` for small
+   `k ≥ 1`. Match `k · p = k · (dn - 1)` to extract a sum-of-three-squares
+   for `n`.
 
-S8 (this session) delivered the QR square-root extraction (item 0 of
-the chain): `legendreSym p (-d) = 1 ⟹ ∃ r : ℤ, p ∣ r² + d`.
-That `r` is the seed for the sublattice constraint in step 1.
+S9 (this session) delivered the **divisibility side** of step 4 at the
+integer level. The composite `exists_dirichletSublattice_dvd_form`
+collapses S8 (QR extraction) and S9 (divisibility) into a single
+existential, ready for S10's geometric covolume work to feed into.
 
-**Estimated**: ~80 lines for sublattice construction + covolume (S9),
-~40 lines for Minkowski-on-sublattice application (S10), ~40 lines for
-the divisibility + identification arguments (S11). Full elimination of
-`dirichlet_key_lemma` across S9+S10+S11.
+**Estimated**: ~80–100 lines for sublattice covolume (S10),
+~40 lines for the Minkowski-on-sublattice application + identification
+arguments (S11). Full elimination of `dirichlet_key_lemma` across S10+S11
+once the S5-region build issues are addressed by an Auditor / Mechanic
+follow-up.
 
 ## Attempt Counts
 
-- Total attempts: 8 (Sessions 1–8)
+- Total attempts: 9 (Sessions 1–9)
 - Approaches tried:
   - **S1 (researcher-?)**: OBSERVE/scaffolding (PR #16805)
   - **S2 (researcher-?)**: stub + Legendre infra
@@ -235,7 +306,7 @@ the divisibility + identification arguments (S11). Full elimination of
       `dirichlet_key_lemma` and `not_excluded_form_is_sum_three_sq`
       remain). Inconsistency count: 2 → 0. (PR #17099, build pending —
       blocked on pre-existing S5 errors, see "Build" above.)
-  - **S8 (researcher-3, this PR)**: **QR square-root extraction**.
+  - **S8 (researcher-3)**: **QR square-root extraction**.
     Added `private lemma exists_int_sqrt_neg_d_mod_p` between the S6
     helpers and `not_excluded_form_is_sum_three_sq` axiom. Given prime
     `p`, `0 < d < p`, and `legendreSym p (-d : ℤ) = 1`, extracts
@@ -243,4 +314,19 @@ the divisibility + identification arguments (S11). Full elimination of
     adaptation of the QR-lift technique from
     `ZsqrtdNegTwo.lean:not_irreducible_of_neg_two_is_qr`. Axiom count
     unchanged at 2 (this is *infrastructure* for the eventual
-    `dirichlet_key_lemma` proof). Build pending.
+    `dirichlet_key_lemma` proof). Build pending. (PR #17111)
+  - **S9 (researcher-9, this PR)**: **Dirichlet sublattice — divisibility
+    side**. Added `def IsInDirichletSublattice (p r : ℤ) (v : Fin 3 → ℤ)`,
+    `private lemma dirichletForm_dvd_of_in_sublattice` (`hr : p ∣ r² + d`
+    + sublattice membership ⟹ `p ∣ v 0² + d v 1² + d v 2²`), and the
+    composite `private lemma exists_dirichletSublattice_dvd_form`
+    packaging S8 + S9 (`legendreSym p (-d) = 1` ⟹ existence of `r` such
+    that the entire sublattice carries the divisibility property).
+    Proof (~10 tactic lines) is purely arithmetic — `obtain` witnesses
+    for the three divisibility hypotheses, `linear_combination
+    (v 1)² * hk` closes the algebraic identity. Axiom count unchanged at
+    2 (this is the *divisibility half* of the eventual
+    `dirichlet_key_lemma` proof; the geometric covolume side comes in
+    S10). Build pending — but the S5 region build issues are orthogonal
+    to S9 since the new content uses only `Dvd`/`Int`/`linear_combination`.
+    Total iteration: 9.
