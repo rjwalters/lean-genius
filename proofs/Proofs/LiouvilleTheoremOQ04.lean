@@ -464,8 +464,13 @@ theorem intPolyL1_pos {f : ℤ[X]} (hf : f ≠ 0) : 0 < intPolyL1 f := by
   have hcoeff : f.coeff i ≠ 0 := Polynomial.mem_support_iff.mp hi
   have hpos : 0 < (f.coeff i).natAbs := Int.natAbs_pos.mpr hcoeff
   refine lt_of_lt_of_le hpos ?_
-  -- Lean 4.26: use fully positional args (named `(f := ...)` may shadow local `f : ℤ[X]`)
-  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi
+  -- Unfold so the function being summed is explicit, side-stepping the
+  -- `f` name clash between the local polynomial and `Finset.single_le_sum`'s
+  -- implicit summand argument.
+  show (f.coeff i).natAbs ≤ f.support.sum (fun j => (f.coeff j).natAbs)
+  exact Finset.single_le_sum
+    (f := fun j => (Polynomial.coeff f j).natAbs)
+    (fun _ _ => Nat.zero_le _) hi
 
 /-- "Homogenized integer evaluation": `intPolyHomogEval f r s = ∑ aᵢ · r^i · s^(d-i)`
     over `i ∈ f.support`, where d = f.natDegree. By construction,
@@ -504,8 +509,9 @@ theorem intPolyHomogEval_cast_eq (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0) :
     rw [← pow_add, Nat.sub_add_cancel hi_le]
   rw [hpow_split, div_pow]
   have hsi_ne : ((s : ℚ))^i ≠ 0 := pow_ne_zero _ hs_q
-  -- Lean 4.26: `(algebraMap ℤ ℚ) z` is not definitionally `↑z`; reduce explicitly.
-  simp only [Int.algebraMap_eq_intCast]
+  -- Lean 4.26: `(algebraMap ℤ ℚ) z` reduces to the integer cast via `eq_intCast`
+  -- (the previous `Int.algebraMap_eq_intCast` lemma was renamed/removed).
+  simp only [eq_intCast]
   field_simp
   ring
 
@@ -854,8 +860,12 @@ theorem padic_liouville_bridge_rational_roots_case
     have hinj : Function.Injective (Polynomial.map (algebraMap ℤ ℚ)) :=
       Polynomial.map_injective (algebraMap ℤ ℚ) h_alg_inj
     apply hinj
-    simp [hfQ_def] at h0
-    rw [Polynomial.map_zero, h0]
+    -- Goal: `f.map (algebraMap ℤ ℚ) = (0 : ℤ[X]).map (algebraMap ℤ ℚ)`. Rewrite
+    -- the RHS via `Polynomial.map_zero`, then transport `h0 : fQ = 0` back to
+    -- the goal via `← hfQ_def` (avoids `simp` unfolding `algebraMap` to
+    -- `Int.castRingHom`, which broke the subsequent `rw [h0]`).
+    rw [Polynomial.map_zero, ← hfQ_def]
+    exact h0
   -- Finite set of rational roots of fQ; filter to those distinct (in ℚ_[p]) from α.
   let R : Finset ℚ := fQ.roots.toFinset
   let R' : Finset ℚ := R.filter (fun q : ℚ => (q : ℚ_[p]) ≠ α)
@@ -946,7 +956,7 @@ theorem padic_liouville_norm_bridge
     intro h
     apply hf_ne
     have hinj : Function.Injective (Polynomial.map (algebraMap ℤ ℚ_[p])) :=
-      Polynomial.map_injective _ h_alg_inj_p
+      Polynomial.map_injective (algebraMap ℤ ℚ_[p]) h_alg_inj_p
     apply hinj
     rw [Polynomial.map_zero]; exact h
   -- Step 4: g ≠ 0 from the factorization + f.map alg ≠ 0.
@@ -1021,17 +1031,17 @@ theorem padic_liouville_norm_bridge
             mul_le_mul_of_nonneg_left hHpow_ge_one h_min_pos.le
     linarith
   · -- Algebraic branch: apply Part IV.10.
-    have h_alg :
-        1 / ((intPolyL1 f : ℝ) * coeffNormSum p g) /
-            (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤
-          ‖α - (r : ℚ_[p]) / s‖ :=
-      padic_liouville_bridge_algebraic_case p α f hf_ne g hg_ne hg_deg_le
-        heval r s hs hαne hf_eval
-    -- Rewrite via L, M, H.
+    -- Build the algebraic-case bound directly in terms of L, M, H — defeq via the
+    -- `set` let-bindings — to avoid a `set + rw` round-trip that can fail to
+    -- match `L` in the goal against `(intPolyL1 f : ℝ)` in the lemma's output.
     have h_alg' :
         1 / (L * M) / H ^ (2 * f.natDegree) ≤
           ‖α - (r : ℚ_[p]) / s‖ := by
-      rw [hL_def, hM_def, hH_def]; exact h_alg
+      show 1 / ((intPolyL1 f : ℝ) * coeffNormSum p g) /
+          (max r.natAbs s.natAbs : ℝ) ^ (2 * f.natDegree) ≤
+            ‖α - (r : ℚ_[p]) / s‖
+      exact padic_liouville_bridge_algebraic_case p α f hf_ne g hg_ne hg_deg_le
+        heval r s hs hαne hf_eval
     -- min ≤ 1/(L·M) ⇒ min/H^(2d) ≤ (1/(L·M))/H^(2d).
     have h_min_le_inv : min (1 / (L * M)) δ ≤ 1 / (L * M) := min_le_left _ _
     have h_div_mono :
