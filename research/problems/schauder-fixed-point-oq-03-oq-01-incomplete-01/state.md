@@ -1,12 +1,43 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S9 reconnaissance refines S8 stub; pre-lift name verification)
+**Phase**: ACT (S10 LOOKUP-3 resolved: Brouwer FPT absent from Mathlib v4.26
+and master; recommend Option A — strict-weakening axiom)
 **Path**: full
-**Since**: 2026-05-08T19:50:00Z
-**Iteration**: 9
+**Since**: 2026-05-08T22:00:00Z
+**Iteration**: 10
 
 ## Current Focus
+S10 (researcher-12, 2026-05-08): Resolves S9's flagged LOOKUP-3 question
+via direct GitHub-API inspection of mathlib4 at the pinned revision
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the pin recorded in
+`proofs/lake-manifest.json` for `inputRev: "v4.26.0"`). This bypasses
+the broken `proofs/.lake` symlink and the stale v4.10 on-disk copy.
+
+**Conclusive finding (s10-mathlib-v426-lookup3-resolved.md):**
+Brouwer FPT is **absent from Mathlib4** at the pinned rev AND on the
+default branch — not just for general compact convex sets, but also for
+the unit ball. The `docs/100.yaml` entry tracks an external Lean 3
+implementation; `docs/1000.yaml` is annotated `comment: "in Lean 3"`;
+zero Lean files in `Mathlib/Topology/...` or `Mathlib/Analysis/...`
+mention `Brouwer` (the only three Brouwer hits in `.lean` files are
+order-theoretic — Heyting-algebra Brouwer, not the FPT).
+
+This places LOOKUP-3 in S9's **scenario 2** (Mathlib-level block).
+S10 recommends **Option A — strict-weakening**: replace the current
+`axiom brouwer_fpt` (general compact convex) with `axiom
+brouwer_unit_ball` (closed-ball-only) and ship the retraction reduction
+in-house as a derived theorem. Net axiom count unchanged (still 2),
+axiom strength on the Brouwer side strictly reduced (general → unit
+ball). The retraction reduction also fits the LOOKUP-2 work item
+seamlessly, since both paths require the continuous nearest-point
+projection helper.
+
+S10 also corrects the line-81 docstring of `axiom brouwer_fpt` in
+`proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`, which previously
+claimed "This is proved in Mathlib for the unit ball via degree theory"
+— a claim that is false at the pinned rev.
+
 S9 (researcher-5, 2026-05-08): Pre-lift Mathlib reconnaissance for the
 brouwer_fpt elimination. Greps the on-disk Mathlib (v4.10 copy at
 `/Users/rwalters/Projects/lean-genius-proofs/.lake/packages/mathlib/`) for
@@ -46,7 +77,7 @@ two — three lookups vs. a full Cellina averaging construction — and is the
 natural next implementation target.
 
 ## Attempt Count
-- Total attempts: 8
+- Total attempts: 10
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
@@ -55,7 +86,10 @@ natural next implementation target.
   - S6 axiom-strength counterexample analysis (researcher-6, #17265);
   - S7 graph-form axiom + 10-line kakutani_from_brouwer patch (researcher-9, #17308);
   - S8 brouwer_fpt elimination via nearest-point retraction — analysis +
-    Lean stub (this PR, no Lean changes).
+    Lean stub (researcher-4, PR #17317);
+  - S9 Mathlib reconnaissance refining S8 stub (researcher-5, PR #17419);
+  - S10 LOOKUP-3 resolved via GitHub-API at pinned rev (this PR;
+    docstring fix only, no axiom-count change).
 
 ## Blockers
 - **Build verification deferred**: Docker build not run locally
@@ -66,19 +100,35 @@ natural next implementation target.
   that a name drift requires only a local fix, not a redesign.
 
 ## Next Action
-**S10.A (Mathlib v4.26 LOOKUP-3 probe — requires `proofs/.lake` repaired or
-v4.26 copy on disk)**:
+**S10.A — RESOLVED this iteration.** Mathlib v4.26 lacks Brouwer FPT
+entirely; recommendation is **Option A (strict-weakening axiom +
+in-house retraction reduction)** per `s10-mathlib-v426-lookup3-resolved.md`.
 
-1. `grep -r "Brouwer\|brouwer" Mathlib/` against the pinned-version source.
-2. If a closed-ball Brouwer FPT theorem exists, record its precise name in
-   the `s9-mathlib-lookup-refinements.md` note (LOOKUP-3 section) and
-   proceed to S10.B.
-3. If not, decide between (a) shipping the retraction reduction with a
-   strictly weaker `axiom brouwer_unit_ball` (axiom-count neutral, axiom-
-   strength reduced), or (b) building a Brouwer FPT proof in our `proofs/`
-   tree (significant scope; algebraic-topology infrastructure required).
+**S11.A (axiom rename + retraction reduction, est. ~60 Lean lines)**:
 
-**S10.B (continuous-projection lemma, ~30–80 lines)**:
+1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`.
+2. Replace `axiom brouwer_fpt …` with two declarations:
+   ```lean
+   axiom brouwer_unit_ball {n : ℕ}
+       (f : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)
+          → ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))
+       (hf : Continuous f) :
+       ∃ x, f x = x
+   theorem brouwer_fpt {n : ℕ} … := by
+     -- retraction reduction body from S8's stub
+   ```
+3. Body uses LOOKUP-1 (`Bornology.IsBounded.subset_closedBall_lt`) to
+   embed `S` in a closed ball, the LOOKUP-2 helper
+   `exists_continuous_proj_convex` (S11.B) for the retraction, and a
+   `Homeomorph.smul`-style rescaling to invoke `brouwer_unit_ball`.
+4. Net axiom count unchanged (still 2 axioms: `brouwer_unit_ball` +
+   `approx_selection_exists`); the axiom *strength* on the Brouwer side
+   is strictly reduced from "general compact convex" to "unit ball
+   only".
+5. Update meta.json `assumptions` to record the strict-weakening (do not
+   change `axiomCount`; status remains `axiomatized`).
+
+**S11.B (continuous-projection lemma, ~30–80 lines)**:
 
 1. Add a helper lemma (likely in
    `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean` or a new helper file):
@@ -96,25 +146,27 @@ v4.26 copy on disk)**:
    `Mathlib.Analysis.InnerProductSpace.Projection`).
 4. Idempotency on `↥S` from `dist_self` + uniqueness.
 
-**S11 (lift the brouwer_fpt stub once both prerequisites land)**:
+**S11.C (lift, after S11.A and S11.B are merged)**:
 
 1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`.
-2. Replace `axiom brouwer_fpt …` with `theorem brouwer_fpt … := by` and
-   paste the body from `s8-brouwer-extension-via-projection.md`
-   §"A Lean stub", with these substitutions:
-   - **LOOKUP-1**: replace `hS_bounded.exists_pos_subset_closedBall (0 : E)`
-     with `hS_bounded.subset_closedBall_lt 0 (0 : E)`.
-   - **LOOKUP-2**: replace the `sorry` block with
-     `exists_continuous_proj_convex S hS_ne hS_compact hS_convex`.
-   - **LOOKUP-3**: invoke the verified Brouwer name + `Homeomorph.smul`
-     rescaling if only unit-ball form is in Mathlib.
+2. The S11.A `theorem brouwer_fpt …` body uses:
+   - **LOOKUP-1**: `hS_bounded.subset_closedBall_lt 0 (0 : E)`.
+   - **LOOKUP-2**: the S11.B helper `exists_continuous_proj_convex S
+     hS_ne hS_compact hS_convex`.
+   - **LOOKUP-3**: invokes the new `axiom brouwer_unit_ball` after a
+     `Homeomorph.smul`-style rescaling from the closed ball of radius
+     `R` (from LOOKUP-1) to the closed unit ball.
 3. Docker-verify the build:
    `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`.
-4. After build VERIFIED, sync meta.json: axiomCount 2 → 1, status remains
-   `axiomatized` (one axiom — `approx_selection_exists` — still pending).
+4. After build VERIFIED, sync meta.json `assumptions` to reflect the
+   strict-weakening (axiomCount remains 2; the change is in axiom
+   *strength*, not count).
 
 **S12+** (the harder axiom): PartitionOfUnity proof of the graph form of
-`approx_selection_exists`, per s6/s7 plan.
+`approx_selection_exists`, per s6/s7 plan. Optional far-future S13:
+in-house Brouwer FPT proof to eliminate `brouwer_unit_ball` (Option B
+from the S10 note); see `s10-mathlib-v426-lookup3-resolved.md` for the
+trade-off analysis.
 
 ## Open files
 - `s6-axiom-counterexample.md` — counterexample for the pointwise selection.
@@ -123,7 +175,13 @@ v4.26 copy on disk)**:
 - `s9-mathlib-lookup-refinements.md` — S9 (researcher-5) Mathlib
   reconnaissance refining the S8 stub: confirms LOOKUP-1, expands
   LOOKUP-2 scope, flags LOOKUP-3 for version-conditional resolution.
+- `s10-mathlib-v426-lookup3-resolved.md` — S10 (researcher-12)
+  GitHub-API resolution of LOOKUP-3 against the pinned mathlib4 rev
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: Brouwer FPT is absent
+  from Mathlib4 (master and v4.26.0 alike, unit-ball and general forms
+  both); recommends Option A (strict-weakening) over Option B (in-house
+  Brouwer) for the next iteration.
 
-All are research artifacts the way S6 was — pure analysis, no Lean changes,
-intended to set up the next implementation iteration with minimal in-session
-design risk.
+All are research artifacts the way S6 was — pure analysis, with the
+exception of the small line-81 docstring fix this iteration ships in
+`SchauderFixedPointOQ03OQ01.lean`. No axiom-count change.
