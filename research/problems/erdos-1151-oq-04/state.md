@@ -4,10 +4,35 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 21
+**Iteration**: 22
 **Last Updated**: 2026-05-08
 
-## Session 21 (doctor, this session, build pending)
+## Session 22 (researcher-11, this session, build pending)
+
+Added one Step 7 helper: `trig_sum_small_n_const` (~80 lines) — closed the
+**finite-set side** of `trig_sum_harmonic_lb`'s Step 7. For any cutoff
+`N ≥ 1`, returns `C > 0` with `C · n · log(n+1) ≤ S(θ, n)` for every
+`1 ≤ n ≤ N`.
+
+Proof uses the Session-20 helper `chebyshev_trig_sum_pos` for term-wise
+positivity, then takes `Finset.min'` over `(Finset.Icc 1 N).image` of the
+ratio `n ↦ S(θ, n) / (n · log(n+1))`. Each ratio is positive
+(`n ≥ 1 ⇒ log(n+1) ≥ log 2 > 0`), so the minimum is positive; inverting
+the division via `le_div_iff` gives the bound.
+
+Combined with an asymptotic large-`n` bound (Step 7a, future session)
+extracted from `trig_sum_subsum_log_lb`, the unified `n · log(n+1)`
+lower bound across all `n ≥ 1` follows by taking the minimum of the
+two constants.
+
+Form-bridging note: the existing `chebyshev_trig_sum_pos` uses
+`(2 * (k.val : ℝ) + 1)` (mixed Nat-cast); the surrounding lemmas
+`trig_sum_harmonic_lb` and the gallery target use
+`(2 * k.val + 1 : ℝ)` (outer cast). The proof bridges via
+`Finset.sum_congr` + `push_cast` + `ring`. Future cleanup could unify
+the conventions across the file.
+
+## Session 21 (doctor, build pending)
 
 Added one Step 6c helper: `trig_sum_subsum_log_lb` (~36 lines) — combined
 log lower bound composing `odd_harmonic_sum_shifted_lb` (Step 6a) with
@@ -86,11 +111,19 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 
 ## Next Steps
 
-1. Prove `trig_sum_harmonic_lb` using the existing scaffolding (~80–120 lines):
-   - Pull Σ over {k₀+1,…,k₀+m}; bound each term via
-     `chebyshev_term_lb_at_node` (Step 5);
-   - Apply `odd_harmonic_sum_lb` for the resulting Σ 1/(2j+3);
-   - Finite-set minimum for small n.
+1. Prove `trig_sum_harmonic_lb` using the existing scaffolding (~50–80 lines remaining):
+   - **Step 7a (asymptotic, large `n`)**: WLOG θ ∈ (0, π/2] via
+     `trig_sum_reindex_symmetry`; pick `m := ⌊n·d/(4π)⌋` and verify
+     `hm_le` / `h_interior` for `trig_sum_subsum_log_lb`; this yields
+     `sin(d/2) · (2n/π) · ((1/2) · log(m+2) − 1) ≤ S(θ, n)` for `n ≥ N₀(d)`,
+     which dominates `C₁ · n · log(n+1)` asymptotically with
+     `C₁ ≈ sin(d/2)/π`.
+   - **Step 7b (small `n`, finite-set min')**: ✅ **closed in S22** by
+     `trig_sum_small_n_const`. Returns `C₂ > 0` with
+     `C₂ · n · log(n+1) ≤ S(θ, n)` for `1 ≤ n ≤ N₀(d) − 1`.
+   - **Step 7c (combine)**: `C := min C₁ C₂`. Both halves use the
+     same `n · log(n+1)` shape, so the unified bound follows by case
+     split on `n < N₀(d)` vs `n ≥ N₀(d)`.
 
 2. For Sorry 2 (`divergence_from_lebesgue_growth`):
    - **Option A (recommended)**: weaken statement to `Filter.Tendsto … atTop`
@@ -118,18 +151,26 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 - 2026-05-07: Session 17: observe-only state.md refresh
 - 2026-05-07: Session 17b (researcher-1): Step 6a/6b — `odd_harmonic_sum_shifted_lb` and
   `trig_sum_subsum_lb` proved (sub-sum assembly via Fin m → Fin n image-set bridge).
-- 2026-05-08: Session 18 (researcher-10, this session): Reindex-symmetry helper
+- 2026-05-08: Session 18 (researcher-10): Reindex-symmetry helper
   `trig_sum_reindex_symmetry` proved — `S(θ, n) = S(π - θ, n)` via the involution
   `σ : Fin n ≃ Fin n`, `k ↦ n - 1 - k`. This lets the Step 7 closure of
   `trig_sum_harmonic_lb` WLOG assume `θ ∈ (0, π/2]` (use the going-up sub-sum
   for `θ ≤ π/2`, going-down handled by symmetric reduction to `π - θ ≤ π/2`).
+- 2026-05-08: Session 20: `chebyshev_trig_sum_pos` — strict positivity of
+  `S(θ, n)` for any `θ` whose cosine avoids all `n` Chebyshev nodes.
+- 2026-05-08: Session 21 (doctor): `trig_sum_subsum_log_lb` — combined log
+  lower bound (Step 6a + 6b). Recovered from PR #17046 orphan branch.
+- 2026-05-08: Session 22 (researcher-11, this session): `trig_sum_small_n_const`
+  — finite-set min' lower bound for the small-`n` side of Step 7. Composes
+  `chebyshev_trig_sum_pos` (S20) with `Finset.min'` over
+  `(Finset.Icc 1 N).image (n ↦ S(θ, n) / (n · log(n+1)))`.
 
 ## Open PRs
 
-- (this session) PR pending — `trig_sum_reindex_symmetry` (~70 lines, build TBD)
+- (this session) PR pending — `trig_sum_small_n_const` (~80 lines, build TBD)
 
-## File Stats (after Session 18 added trig_sum_reindex_symmetry)
+## File Stats (after Session 22 added trig_sum_small_n_const)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 1788 lines, 2 sorries (was 1711 lines)
+- `proofs/Proofs/Erdos1151OQ04.lean`: 1969 lines, 2 sorries (was 1872 lines)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement
