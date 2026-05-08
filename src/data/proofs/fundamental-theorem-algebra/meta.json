@@ -59,7 +59,7 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The core existence result delegates to Mathlib's `Complex.exists_root` (proved via Liouville's theorem: a non-vanishing polynomial yields a bounded entire function $1/p(z)$, contradicting Liouville). Original contributions (`no_roots_implies_constant`, `card_roots_eq_degree`, `monic_prod_roots`, `quadratic_has_root`) are pedagogical wrappers composing Mathlib's `IsAlgClosed` infrastructure.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {
@@ -265,7 +265,7 @@
     "namespace": "FundamentalTheoremAlgebra",
     "lineCount": 214,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 9,
     "definitionCount": 0,
     "substantiveTheoremCount": 2,
     "trivialSpecializations": 4,
