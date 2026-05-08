@@ -810,6 +810,83 @@ theorem padic_liouville_bridge_algebraic_case
   exact h_final
 
 /-! ═══════════════════════════════════════════════════════════════════════════
+PART IV.11: RATIONAL-ROOTS CASE FOR THE BRIDGE
+Uniform δ > 0 separating α from the finitely-many rational roots q ≠ α of f
+═══════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Part IV.11** — *Rational-roots case for the bridge axiom.*
+
+    Given any α : ℚ_[p] and any nonzero integer polynomial f, there exists a uniform
+    `δ > 0` such that **every rational root** `q` of `f.map (algebraMap ℤ ℚ)` whose
+    `ℚ_[p]`-image differs from α is bounded away from α by at least δ in p-adic norm:
+      `δ ≤ ‖α - (q : ℚ_[p])‖`.
+
+    Together with `padic_liouville_bridge_algebraic_case` (Part IV.10, which handles
+    the case `(f.map alg').eval (r/s) ≠ 0`), this is the missing piece for discharging
+    `padic_liouville_norm_bridge` from axiom to theorem. A future session combines the
+    two case bounds via `C := min((1/(L·M)), δ)` and the case split on
+    `(f.map alg').eval (r/s) ?= 0` over ℚ.
+
+    Construction: let `R'` be the (finite) Finset of distinct rational roots of
+    `f.map (algebraMap ℤ ℚ)` whose ℚ_[p]-image is not α. If `R'` is non-empty, take
+    `δ := R'.inf' (q ↦ ‖α - (q : ℚ_[p])‖)` — strictly positive because each entry is the
+    norm of a non-zero element. If `R'` is empty, take `δ := 1`; the conclusion is then
+    vacuously true (no `q` satisfies the hypotheses).
+
+    The hypothesis `f ≠ 0` is essential: otherwise `f.map alg'` is zero, every rational
+    is a "root", and rationals can approach α arbitrarily closely in ℚ_[p] (density). -/
+theorem padic_liouville_bridge_rational_roots_case
+    (α : ℚ_[p]) (f : ℤ[X]) (hf_ne : f ≠ 0) :
+    ∃ δ : ℝ, 0 < δ ∧ ∀ q : ℚ,
+      (f.map (algebraMap ℤ ℚ)).eval q = 0 → α ≠ (q : ℚ_[p]) →
+        δ ≤ ‖α - (q : ℚ_[p])‖ := by
+  classical
+  -- The mapped polynomial is non-zero (algebraMap ℤ ℚ is injective on coefficients).
+  set fQ : Polynomial ℚ := f.map (algebraMap ℤ ℚ) with hfQ_def
+  have h_alg_inj : Function.Injective (algebraMap ℤ ℚ) := fun a b hab => by
+    -- (algebraMap ℤ ℚ : ℤ → ℚ) coincides with the integer cast.
+    have : (a : ℚ) = (b : ℚ) := by
+      simpa [eq_intCast] using hab
+    exact_mod_cast this
+  have hfQ_ne : fQ ≠ 0 := by
+    intro h0
+    apply hf_ne
+    have hinj : Function.Injective (Polynomial.map (algebraMap ℤ ℚ)) :=
+      Polynomial.map_injective (algebraMap ℤ ℚ) h_alg_inj
+    apply hinj
+    simp [hfQ_def] at h0
+    rw [Polynomial.map_zero, h0]
+  -- Finite set of rational roots of fQ; filter to those distinct (in ℚ_[p]) from α.
+  let R : Finset ℚ := fQ.roots.toFinset
+  let R' : Finset ℚ := R.filter (fun q : ℚ => (q : ℚ_[p]) ≠ α)
+  by_cases hR' : R'.Nonempty
+  · -- Non-empty case: δ = inf' of distances ‖α - (q : ℚ_[p])‖ over R'.
+    refine ⟨R'.inf' hR' (fun q : ℚ => ‖α - (q : ℚ_[p])‖), ?_, ?_⟩
+    · -- δ > 0: every entry is the norm of a nonzero element.
+      rw [Finset.lt_inf'_iff]
+      intro q hq
+      have hq_ne : (q : ℚ_[p]) ≠ α := (Finset.mem_filter.mp hq).2
+      have h_ne : α - (q : ℚ_[p]) ≠ 0 := sub_ne_zero.mpr (Ne.symm hq_ne)
+      exact norm_pos_iff.mpr h_ne
+    · -- For any q satisfying the hypothesis, q ∈ R', so inf' ≤ ‖α - q‖.
+      intro q hq_root hα_ne
+      have hq_R : q ∈ R := by
+        simp only [R, Multiset.mem_toFinset]
+        exact (Polynomial.mem_roots hfQ_ne).mpr hq_root
+      have hq_R' : q ∈ R' := Finset.mem_filter.mpr ⟨hq_R, Ne.symm hα_ne⟩
+      exact Finset.inf'_le _ hq_R'
+  · -- Empty case: δ = 1; conclusion is vacuously true.
+    refine ⟨1, by norm_num, ?_⟩
+    intro q hq_root hα_ne
+    exfalso
+    apply hR'
+    refine ⟨q, ?_⟩
+    apply Finset.mem_filter.mpr
+    refine ⟨?_, Ne.symm hα_ne⟩
+    simp only [R, Multiset.mem_toFinset]
+    exact (Polynomial.mem_roots hfQ_ne).mpr hq_root
+
+/-! ═══════════════════════════════════════════════════════════════════════════
 PART V: MAIN THEOREM
 P-adic algebraic numbers are not p-adically Liouville
 ═══════════════════════════════════════════════════════════════════════════ -/
@@ -1114,6 +1191,25 @@ must take the bridge constant C as `min(C_algebra, min_{r₀ rational root ≠ �
   uniform bound. With this, all three ingredients (norm transport, cofactor upper bound,
   polynomial lower bound) are now uniform-bound formal proofs. Remaining work to discharge
   the bridge axiom is purely the rational-roots case analysis.
+
+**Session 14 changes (2026-05-08)**:
+- Added Part IV.11 (rational-roots case for the bridge axiom):
+  - **`padic_liouville_bridge_rational_roots_case`**: For any α : ℚ_[p] and any non-zero
+    f ∈ ℤ[X], there exists a uniform `δ > 0` such that for every rational `q` with
+    `(f.map (algebraMap ℤ ℚ)).eval q = 0` and `(q : ℚ_[p]) ≠ α`, the bound
+    `δ ≤ ‖α - (q : ℚ_[p])‖` holds.
+  - Construction: form the Finset `R'` of rational roots of `f.map alg'` whose ℚ_[p]-image
+    is not α (which is finite of cardinality ≤ deg f). When `R'` is non-empty, take
+    `δ := R'.inf' (q ↦ ‖α - (q : ℚ_[p])‖)`. Each entry is positive (norm of a non-zero
+    element), so `δ > 0` via `Finset.lt_inf'_iff`. When `R'` is empty, take `δ := 1`;
+    the conclusion is vacuously true.
+  Net: this is the **complementary case** to Part IV.10 (`padic_liouville_bridge_algebraic_case`,
+  Session 13). Together they exhaust all (r, s) cases for the bridge:
+  - Algebraic (`f(r/s) ≠ 0`): Part IV.10 gives `1/(L·M·H^(2d)) ≤ ‖α - r/s‖`.
+  - Rational-root (`f(r/s) = 0`): Part IV.11 gives `δ ≤ ‖α - r/s‖`.
+  A future Session 15 will combine via `C := min((1/(L·M)), δ)` and a case split on
+  `(f.map alg').eval (r/s) ?= 0` over ℚ to discharge `padic_liouville_norm_bridge` from
+  axiom to theorem (`axiom 1 → 0`, `status: axiomatized → verified`).
 
 -/
 

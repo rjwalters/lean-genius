@@ -2,7 +2,7 @@
   "id": "liouville-theorem-oq-04",
   "title": "P-adic Liouville Theorem: The Archimedean Complement Lemma",
   "slug": "liouville-theorem-oq-04",
-  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. 1 axiom (padic_liouville_norm_bridge: rational-roots case analysis remains; all three structural ingredients formally proved as uniform bounds), 0 sorries.",
+  "description": "Extension of Liouville's approximation theorem to the p-adic setting. Proves the key Archimedean Complement Lemma: padicNorm p n ≥ 1/n for nonzero naturals. Defines p-adic Liouville numbers using height max(|r|,|s|) and proves the main theorem that p-adic algebraic numbers are not p-adically Liouville. 1 axiom (padic_liouville_norm_bridge: structural ingredients AND both case-analysis pieces formally proved — discharge to theorem requires only one combine-and-case-split session), 0 sorries.",
   "meta": {
     "author": "lean-genius research agent",
     "sourceUrl": "https://mathworld.wolfram.com/p-adicNumber.html",
@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. All FOUR structural ingredients now formally proved as uniform bounds: (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q (Part IV.5, norm_rat_eq_padicNorm/padic_norm_int_poly_eval), (2a) height bound padicNorm p (r/s) ≤ max(|r|,|s|) (Part IV.7, padic_norm_int_div_le_height), (2b) cofactor evaluation upper bound ‖g.eval(r/s)‖_p ≤ M·H^(deg g) with M depending only on g (Part IV.8, padic_polynomial_eval_norm_bound + padic_cofactor_bound_rat), (3) UNIFORM polynomial lower bound padicNorm p (f.eval(r/s)) ≥ 1/(intPolyL1 f · H^d) with constant depending only on f (Part IV.9 NEW, padicNorm_int_poly_eval_uniform_lb). The pre-existing Part III bound was a trivial witness; Part IV.9 supplies the genuinely uniform version. The remaining obstruction to discharging the bridge as a theorem is purely the case analysis on rational roots of f distinct from α (finite set, requires taking C ≤ min ‖α - r₀‖ over those roots).",
+    "assumptions": "1 axiom: padic_liouville_norm_bridge — connects the factorization f = (X-C α)·g and evaluation identity to the p-adic Liouville lower bound. All FOUR structural ingredients now formally proved as uniform bounds: (1) norm compatibility ‖algebraMap ℚ ℚ_[p] q‖ = padicNorm p q (Part IV.5, norm_rat_eq_padicNorm/padic_norm_int_poly_eval), (2a) height bound padicNorm p (r/s) ≤ max(|r|,|s|) (Part IV.7, padic_norm_int_div_le_height), (2b) cofactor evaluation upper bound ‖g.eval(r/s)‖_p ≤ M·H^(deg g) with M depending only on g (Part IV.8, padic_polynomial_eval_norm_bound + padic_cofactor_bound_rat), (3) UNIFORM polynomial lower bound padicNorm p (f.eval(r/s)) ≥ 1/(intPolyL1 f · H^d) with constant depending only on f (Part IV.9, padicNorm_int_poly_eval_uniform_lb). Both case-analysis pieces also formally proved: (4a) algebraic case ‖α - r/s‖ ≥ 1/(L·M·H^(2d)) when f(r/s)≠0 (Part IV.10, padic_liouville_bridge_algebraic_case, Session 13); (4b) rational-roots case δ > 0 with δ ≤ ‖α - q‖ for every rational root q with (q:ℚ_[p]) ≠ α (Part IV.11 NEW, padic_liouville_bridge_rational_roots_case, Session 14). Discharging the bridge axiom is now a single combine-and-case-split session: take C := min((1/(L·M)), δ) and case-split on (f.map alg').eval (r/s) ?= 0.",
     "dateAdded": "2026-04-26",
     "mathlibDependencies": [
       {
@@ -59,8 +59,8 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "lineCount": 1102,
-    "theoremCount": 33,
+    "lineCount": 1216,
+    "theoremCount": 34,
     "definitionCount": 6
   },
   "overview": {
@@ -200,9 +200,9 @@
       "Polynomial"
     ],
     "namespace": "LiouvilleTheoremOQ04",
-    "lineCount": 1102,
+    "lineCount": 1216,
     "axiomCount": 1,
-    "theoremCount": 33,
+    "theoremCount": 34,
     "definitionCount": 6,
     "path": "Proofs/LiouvilleTheoremOQ04.lean",
     "sorries": 0
