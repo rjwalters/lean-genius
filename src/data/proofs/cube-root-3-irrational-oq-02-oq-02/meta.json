@@ -131,6 +131,23 @@
         "definitionCount": 1,
         "theoremCount": 3
     },
+    "mainTheorems": [
+        {
+            "name": "α_minpoly_deg",
+            "type": "lemma",
+            "description": "Helper: natDegree(minpoly ℚ α) = 3 for α = (3:ℝ)^(1/3). One-line application of minpoly_nthRoot_natDegree 3 3 3 (Eisenstein at p=3) imported from CubeRoot2IrrationalOQ03. The single fact this entry needs about α."
+        },
+        {
+            "name": "cbrt3_powers_linearIndependent",
+            "type": "core",
+            "description": "Main theorem: {α^0, α^1, α^2} is ℚ-linearly independent, where α = (3:ℝ)^(1/3). Proved via Fintype.linearIndependent_iff: encode coefficients (c₀, c₁, c₂) into the polynomial p = C(c₀) + C(c₁)X + C(c₂)X², deduce minpoly ℚ α | p from aeval α p = 0, force p = 0 by degree comparison (3 > 2), then read each cᵢ = coeff(p, i) = 0."
+        },
+        {
+            "name": "one_cbrt3_cbrt3_sq_linearIndependent",
+            "type": "core",
+            "description": "User-facing form: ![1, α, α²] : Fin 3 → ℝ is ℚ-linearly independent. Proved by `convert cbrt3_powers_linearIndependent` plus a small fin_cases reducing each entry to α^(i:ℕ). This is the explicit-vector statement most likely to be cited in downstream proofs."
+        }
+    ],
     "references": [
         {
             "authors": "Mathlib Contributors",
