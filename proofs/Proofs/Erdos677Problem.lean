@@ -211,7 +211,11 @@ theorem le_lcmInterval (n k : ℕ) (hk : 0 < k) : n + k ≤ lcmInterval n k :=
     and `lcm(m, n) = m * n` when `gcd(m, n) = 1`. -/
 theorem lcmInterval_two (n : ℕ) : lcmInterval n 2 = (n + 1) * (n + 2) := by
   rw [show (2 : ℕ) = 1 + 1 from rfl, lcmInterval_succ, lcmInterval_one, Nat.lcm_comm]
-  exact (Nat.coprime_succ_self (n + 1)).lcm_eq_mul
+  have h : Nat.Coprime (n + 1) (n + 2) := by
+    show Nat.gcd (n + 1) (n + 2) = 1
+    have hrw : (n + 2) = 1 * (n + 1) + 1 := by ring
+    rw [hrw, Nat.gcd_add_mul_left_right, Nat.gcd_one_right]
+  exact h.lcm_eq_mul
 
 /-- Erdős #677 holds for `k = 1`: `M(m, 1) = m + 1 ≠ n + 1 = M(n, 1)` when `m ≥ n + 1`. -/
 theorem erdos677_k1 (m n : ℕ) (hm : n + 1 ≤ m) :
@@ -234,7 +238,7 @@ theorem factorization_lcmInterval (n k : ℕ) :
     (lcmInterval n k).factorization =
     (Finset.range k).sup (fun i => (n + i + 1).factorization) := by
   induction k with
-  | zero => simp [lcmInterval_zero]
+  | zero => simp [lcmInterval_zero, Finset.range_zero, Finset.sup_empty]
   | succ k ih =>
     rw [lcmInterval_succ,
         Nat.factorization_lcm (by omega) (lcmInterval_ne_zero n k),
@@ -264,5 +268,46 @@ theorem erdos677_k3_large_m (m n : ℕ) (hm : n + 3 ≤ m)
     lcmInterval m 3 ≠ lcmInterval n 3 := by
   apply erdos677_large_m n m 3 (by omega) hm
   have : consecutiveProduct n 3 = (n + 1) * (n + 2) * (n + 3) := by
-    simp [consecutiveProduct, Finset.prod_range_succ]; ring
+    simp [consecutiveProduct, Finset.prod_range_succ]
   linarith
+
+/-- Explicit closed form: `consecutiveProduct n 3 = (n+1) * (n+2) * (n+3)`. -/
+theorem consecutiveProduct_three (n : ℕ) :
+    consecutiveProduct n 3 = (n + 1) * (n + 2) * (n + 3) := by
+  simp [consecutiveProduct, Finset.prod_range_succ]
+
+/- ## k = 3 small-n cases (axiom-free) -/
+
+/-- **Erdős #677 holds for k = 3, n = 0**: `lcmInterval m 3 ≠ lcmInterval 0 3 = 6` for all `m ≥ 3`.
+
+    Proof: combining `m + 3 ≤ lcmInterval m 3` (from `le_lcmInterval`) with the
+    hypothetical equality forces `m + 3 ≤ 6`, so `m ≤ 3`; since `m ≥ 3` we get
+    `m = 3`. But `lcmInterval 3 3 = lcm(4, 5, 6) = 60 ≠ 6`, contradiction. -/
+theorem erdos677_k3_at_zero (m : ℕ) (hm : 3 ≤ m) :
+    lcmInterval m 3 ≠ lcmInterval 0 3 := by
+  intro heq
+  have h0 : lcmInterval 0 3 = 6 := by native_decide
+  have hge : m + 3 ≤ lcmInterval m 3 := le_lcmInterval m 3 (by omega)
+  rw [heq, h0] at hge
+  -- hge : m + 3 ≤ 6, so m ≤ 3 combined with hm : 3 ≤ m gives m = 3
+  have hm_eq : m = 3 := by omega
+  subst hm_eq
+  -- Now heq : lcmInterval 3 3 = lcmInterval 0 3
+  have h_three : lcmInterval 3 3 = 60 := by native_decide
+  rw [h_three, h0] at heq
+  omega
+
+/-- **Erdős #677 holds for k = 3, n = 1**: `lcmInterval m 3 ≠ lcmInterval 1 3 = 12` for all `m ≥ 4`.
+
+    Proof: `m + 3 ≤ lcmInterval m 3 = 12` forces `m ≤ 9`. The conjecture then
+    reduces to a finite check over `m ∈ {4, 5, 6, 7, 8, 9}`, each dispatched by
+    `native_decide`: `lcmInterval k 3 ∈ {210, 168, 504, 360, 990, 660}`, none = 12. -/
+theorem erdos677_k3_at_one (m : ℕ) (hm : 4 ≤ m) :
+    lcmInterval m 3 ≠ lcmInterval 1 3 := by
+  intro heq
+  have h0 : lcmInterval 1 3 = 12 := by native_decide
+  have hge : m + 3 ≤ lcmInterval m 3 := le_lcmInterval m 3 (by omega)
+  rw [heq, h0] at hge
+  -- hge : m + 3 ≤ 12, so m ≤ 9
+  have hm_le : m ≤ 9 := by omega
+  interval_cases m <;> revert heq <;> native_decide
