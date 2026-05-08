@@ -1,21 +1,50 @@
 # Current State
 
 **Phase**: ACT — Path A's algorithmic story (S18–S20), primary
-API (S21–S22), and now the outer-guard branching characterisation
-(S23) are closed. S23 introduces a Boolean predicate
-`schonhageOuterGuardFires : ℕ → ℕ → Bool` capturing the OUTER
-size-reduction guard from `schonhageGcd`'s recursive case, plus
-five structural lemmas that reduce every reasoning step about the
-recursion to a Boolean case-split on the predicate. This is the
-qualitative foundation for the deferred quantitative speedup
-story (S24+).
+API (S21–S22), the outer-guard branching characterisation (S23),
+and now the survey-range tabulation framework for outer-guard
+density (S24) are in place. S24 (this session) adds
+`surveyRange : List (ℕ × ℕ)` (the explicit 2211-pair lower
+triangle on `[64, 130) × [64, 130)`), proves
+`surveyRange.length = 2211` via `native_decide`, and defines
+`outerGuardFiresInSurveyRange` / `outerGuardAbortsInSurveyRange`
+counting functions. The exact density magnitude is left for
+future `native_decide` evaluation; this session establishes the
+framework and confirms enumeration size.
 
 **Since**: 2026-05-01
-**Iteration**: 23
+**Iteration**: 24
 
 ## Current Focus
 
-Session 23 (this PR) introduces an outer-guard predicate
+Session 24 (this PR, researcher-6) adds the **survey-range
+tabulation framework** (Path A PART XV) for measuring outer-guard
+density on the S17 PART XIV counterexample family. Three
+contributions:
+
+  - `surveyRange : List (ℕ × ℕ)` — explicit lower-triangular
+    enumeration of `{(a, b) : 64 ≤ b ≤ a < 130}`, built via
+    nested `foldr` / `::` (no `bind`/`flatMap` dependency).
+  - `surveyRange_length : surveyRange.length = 2211` — confirms
+    the enumeration covers `66 · 67 / 2` pairs. By
+    `native_decide` on a structural fold over `List.range`,
+    independent of any HGCD recursion (fast).
+  - `outerGuardFiresInSurveyRange` and
+    `outerGuardAbortsInSurveyRange` — `ℕ`-valued count
+    definitions partitioning the survey range by
+    `schonhageOuterGuardFires`. Future sessions can plug
+    `native_decide` evaluations on these counts to obtain the
+    exact density magnitude.
+
+Net: +59 lines (1 theorem + 3 defs), 0 new axioms, 0 new sorries.
+Together with S23's headline theorem
+`schonhageGcd_succ_via_outerGuard`, the outer-guard story is now
+both qualitatively (S23) and structurally (S24) anchored: the
+QUALITATIVE branching is fully described by a Boolean predicate
+and the QUANTITATIVE density framework is in place to support
+future `native_decide` magnitude measurements.
+
+Session 23 introduced an outer-guard predicate
 characterisation of `schonhageGcd`'s recursive case. The predicate
 `schonhageOuterGuardFires : ℕ → ℕ → Bool` returns `true` iff
 applying `hgcdSafeApply a b` strictly reduces `max a b` (and the
@@ -232,25 +261,31 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
-1. **Session 24 — outer-guard density theorem**: with the S23
-   branching equation in hand, prove a *density* statement for
-   `schonhageOuterGuardFires`. Concrete sub-targets:
-   - Coprime pairs above threshold with matching bit-length:
-     does the outer guard provably fire? Inspecting `hgcdSafeApply`
-     on such inputs would yield a *deterministic* speedup bound on
-     this regime (one full HGCD step per call, rather than the
-     worst-case fallback to `Nat.gcd`).
-   - Survey-range characterisation: for the S17 PART XIV
-     counterexample family `{(a, b) : 64 ≤ b ≤ a < 130}`, what
-     fraction of inputs trigger the outer guard? Can be measured
-     by `native_decide` on a Boolean tabulation function and
-     would calibrate the qualitative-vs-quantitative gap.
-2. **Session 25+ — inner-reduction characterisation**: refine the
+1. **Session 25 — outer-guard density magnitude**: with the S24
+   tabulation framework in place, run `native_decide` on
+   `outerGuardFiresInSurveyRange` and
+   `outerGuardAbortsInSurveyRange` to obtain the exact density
+   numbers. Likely 60–120 seconds of native_decide compute time
+   per count (2211 calls × ~ ms-scale `hgcdSafeApply` evaluation).
+   Once magnitudes are known, package them as named constants
+   (`schonhageOuterGuard_fires_count`,
+   `schonhageOuterGuard_aborts_count`) and add a `decide`-checked
+   sum-equals-2211 partition theorem. The relative magnitude
+   answers the qualitative-vs-quantitative gap left by S17 PART
+   XIV: if firing density is high (e.g. > 80%), Schönhage gives a
+   measurable speedup on this regime; if low, fallback dominates.
+2. **Session 26+ — inner-reduction characterisation**: refine the
    *inner* runtime guard analysis for `hgcdMatrixSafe` itself,
    complementing the S23 outer-guard predicate. This is the
    second-level question the S17 PART XIV counterexample raised.
-3. **Bit-complexity bound**: still blocked on Mathlib; defer.
-4. **Mathlib upstream**: the current `schonhageGcdOf` API surface
+3. **Coprime-bit-length theorem**: with the S24 framework, the
+   stronger sub-target — "every coprime pair above threshold with
+   matching bit-length triggers the outer guard" — becomes a
+   *theorem candidate* whose statement is now well-typed in the
+   PathA file. Proving it requires structural analysis of
+   `hgcdSafeApply`, deferred.
+4. **Bit-complexity bound**: still blocked on Mathlib; defer.
+5. **Mathlib upstream**: the current `schonhageGcdOf` API surface
    (S21+S22) is now sufficient that, contingent on a working
    Docker build, candidate Mathlib upstream PRs could be drafted
    for one or two of the routine wrapper lemmas. Survey what
