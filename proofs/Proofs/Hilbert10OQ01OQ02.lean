@@ -265,22 +265,143 @@ theorem mazur_implies_not_codiophantine_complement :
     (integers_diophantine_iff_complement_codiophantine.mpr hCodiop)
 
 -- ============================================================
--- Part VIII: The landscape, sharpened
+-- Part VIII: Σ₂ (∃∀, "existential-universal") Definability
+--           and the Σ₂/Π₂ Duality
+-- ============================================================
+
+/-- A subset S ⊆ ℚ is **Σ₂-definable** ("existential-universal", "∃∀") if
+    there exists a polynomial family `P` parametric in `q` AND in an
+    existential block `y : ℕ → ℚ` such that
+
+        q ∈ S  ⟺  ∃ y : ℕ → ℚ, ∀ x : ℕ → ℚ : P(q, y, x) ≠ 0,
+
+    i.e., there is a choice of `y` for which the polynomial `P(q, y, ·)`
+    has no rational solution.
+
+    This is the dual of `IsUniversalExistentialDefinition` (Π₂); the
+    duality is `S ∈ Σ₂  ⟺  (¬S) ∈ Π₂`, proved as
+    `existentialUniversal_iff_universalExistential_complement`. -/
+def IsExistentialUniversalDefinition (S : RatSubset) : Prop :=
+  ∃ P : Rat → (Nat → Rat) → RatDiophantinePoly,
+    ∀ q : Rat, S q ↔ ∃ y : Nat → Rat, ¬ hasRationalSolution (P q y)
+
+/-- **Π₁ ⊆ Σ₂** (one-line containment, axiom-free):
+
+    Every Π₁-definable subset of ℚ is also Σ₂-definable.
+
+    Reason: if `S q ⟺ ∀ x, P(q, x) ≠ 0`, take the existential block `y`
+    to be a dummy and the polynomial to ignore `y`. Then
+    `∃ y, ∀ x, P(q, x) ≠ 0` collapses to the Π₁ form again.
+
+    Precise dual of `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂). -/
+theorem codiophantine_implies_existentialUniversal
+    (S : RatSubset) (h : IsCoDiophantineDefinition S) :
+    IsExistentialUniversalDefinition S := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q _ => P q, ?_⟩
+  intro q
+  constructor
+  · intro hSq
+    refine ⟨fun _ => 0, ?_⟩
+    exact (hP q).mp hSq
+  · intro hex
+    obtain ⟨_y, hnsol⟩ := hex
+    exact (hP q).mpr hnsol
+
+/-- **Σ₂ / Π₂ duality** (axiom-free up to classical excluded middle):
+
+    A subset S ⊆ ℚ is Σ₂-definable iff its complement is Π₂-definable.
+
+    Higher-level analog of `diophantine_iff_codiophantine_complement`
+    (the Σ₁/Π₁ duality). Both directions use one classical
+    `Classical.byContradiction` step to convert `¬¬` to identity. -/
+theorem existentialUniversal_iff_universalExistential_complement (S : RatSubset) :
+    IsExistentialUniversalDefinition S ↔
+      IsUniversalExistentialDefinition (fun q => ¬ S q) := by
+  constructor
+  · intro h
+    obtain ⟨P, hP⟩ := h
+    refine ⟨P, fun q => ?_⟩
+    constructor
+    · intro hnSq y
+      apply Classical.byContradiction
+      intro hnsol
+      exact hnSq ((hP q).mpr ⟨y, hnsol⟩)
+    · intro hAll hSq
+      obtain ⟨y, hnsol⟩ := (hP q).mp hSq
+      exact hnsol (hAll y)
+  · intro h
+    obtain ⟨P, hP⟩ := h
+    refine ⟨P, fun q => ?_⟩
+    constructor
+    · intro hSq
+      apply Classical.byContradiction
+      intro hnex
+      have hAll : ∀ y : Nat → Rat, hasRationalSolution (P q y) := by
+        intro y
+        apply Classical.byContradiction
+        intro hnsol
+        exact hnex ⟨y, hnsol⟩
+      exact ((hP q).mpr hAll) hSq
+    · intro hex
+      obtain ⟨y, hnsol⟩ := hex
+      apply Classical.byContradiction
+      intro hnSq
+      exact hnsol ((hP q).mp hnSq y)
+
+/-- The Π₂ class is invariant under propositional equivalence of the
+    defining predicate. Pure logical congruence; no axioms. -/
+theorem universalExistentialDefinition_iff_of_pred_iff
+    {S S' : RatSubset} (h : ∀ q, S q ↔ S' q) :
+    IsUniversalExistentialDefinition S ↔ IsUniversalExistentialDefinition S' := by
+  constructor
+  · intro hS
+    obtain ⟨P, hP⟩ := hS
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).symm.trans (hP q)
+  · intro hS'
+    obtain ⟨P, hP⟩ := hS'
+    refine ⟨P, fun q => ?_⟩
+    exact (h q).trans (hP q)
+
+/-- **Corollary of Koenigsmann via Σ₂/Π₂ duality**:
+
+    The complement `ℚ \ ℤ` is Σ₂-definable in ℚ.
+
+    Proof: by `existentialUniversal_iff_universalExistential_complement`,
+    Σ₂(ℚ\ℤ) ⟺ Π₂(¬(ℚ\ℤ)) = Π₂(¬¬ ℤ). Classically, ¬¬ ℤ ⟺ ℤ, so
+    Π₂(¬¬ ℤ) ⟺ Π₂(ℤ), which is `koenigsmann_2016_universal`. NOT a new
+    axiom — pure logical consequence of Koenigsmann + Σ₂/Π₂ duality. -/
+theorem koenigsmann_implies_complement_existentialUniversal :
+    IsExistentialUniversalDefinition NotIntSubset := by
+  have hbridge : ∀ q : Rat, IntSubset q ↔ ¬ NotIntSubset q :=
+    fun q => ⟨fun hZ hnZ => hnZ hZ, fun hnnZ => Classical.byContradiction hnnZ⟩
+  have hPi2 : IsUniversalExistentialDefinition (fun q => ¬ NotIntSubset q) :=
+    (universalExistentialDefinition_iff_of_pred_iff hbridge).mp
+      koenigsmann_2016_universal
+  exact (existentialUniversal_iff_universalExistential_complement NotIntSubset).mpr
+    hPi2
+
+-- ============================================================
+-- Part IX: The landscape, sharpened
 -- ============================================================
 
 /-
-## Σ₁ vs Π₁ vs Π₂: the precise gap
+## Σ₁ vs Π₁ vs Σ₂ vs Π₂: the precise gap
 
-| Class | Statement on ℤ ⊂ ℚ | Status (2026) |
-|-------|--------------------|----------------|
-| Σ₁ (∃)            | ℤ Diophantine over ℚ                  | **OPEN** (THIS PROBLEM) |
-| Π₁ (∀, complement) | ℚ \ ℤ Π₁-definable over ℚ              | **OPEN** (equivalent to Σ₁ via duality) |
+| Class | Statement on ℤ ⊂ ℚ                       | Status (2026) |
+|-------|------------------------------------------|----------------|
+| Σ₁ (∃)            | ℤ Diophantine over ℚ                | **OPEN** (THIS PROBLEM) |
+| Π₁ (∀, complement) | ℚ \ ℤ Π₁-definable over ℚ            | **OPEN** (equivalent to Σ₁ via duality) |
+| Σ₂ (∃∀, complement) | ℚ \ ℤ Σ₂-definable over ℚ          | **PROVED** (corollary of Koenigsmann) |
 | Π₂ (∀∃)           | ℤ universally-existentially def. in ℚ | **PROVED** (Koenigsmann 2016) |
 
-The Σ₁ ⟺ Π₁(complement) equivalence is now proved in this file as
-`diophantine_iff_codiophantine_complement` (and its specialization
-`integers_diophantine_iff_complement_codiophantine`), formalizing the
-narrative claim. The non-trivial open gap is Σ₁ vs Π₂.
+The Σ₁ ⟺ Π₁(complement) and Σ₂ ⟺ Π₂(complement) dualities are now
+proved as `diophantine_iff_codiophantine_complement` and
+`existentialUniversal_iff_universalExistential_complement`, with the
+Σ₂(ℚ\ℤ) entry derived from Koenigsmann via duality as
+`koenigsmann_implies_complement_existentialUniversal`. The non-trivial
+open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)).
 
 ## Why this distinction matters
 
@@ -294,6 +415,9 @@ narrative claim. The non-trivial open gap is Σ₁ vs Π₂.
 - The Π₁(complement) reformulation is sometimes more tractable for a
   putative refutation: a Π₁ definition of ℚ \ ℤ would mean a polynomial
   P(q, x) such that q ∉ ℤ ⟺ ∃ x rational with P(q,x) = 0.
+- The Σ₂(complement) corollary places `ℚ \ ℤ` on the second level of the
+  arithmetic hierarchy unconditionally, sharpening the "what is known"
+  side of the picture.
 
 ## Axioms in THIS file (1 net new)
 
@@ -302,10 +426,10 @@ narrative claim. The non-trivial open gap is Σ₁ vs Π₂.
      of the explicit Hilbert-symbol polynomial witness).
 
 All other declared `theorem`s are NOT new axioms — they are logical
-consequences of the OQ-01 axioms and the Σ₁ ↔ existing-formulation /
-Σ₁ ↔ Π₁(complement) equivalences proved here.
+consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulation,
+Σ₁ ↔ Π₁(complement), and Σ₂ ↔ Π₂(complement) equivalences proved here.
 
-## Theorems in THIS file (8)
+## Theorems in THIS file (12)
 
   - `integers_diophantine_iff` (Σ₁ predicate ↔ existing formulation)
   - `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂)
@@ -316,15 +440,23 @@ consequences of the OQ-01 axioms and the Σ₁ ↔ existing-formulation /
   - `integers_diophantine_iff_complement_codiophantine` (specialization to ℤ)
   - `codiophantine_complement_implies_h10_q_undecidable` (Π₁(ℚ\ℤ) re-export)
   - `mazur_implies_not_codiophantine_complement` (Π₁(ℚ\ℤ) re-export)
+  - `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂, dual of Σ₁ ⊆ Π₂)
+  - `existentialUniversal_iff_universalExistential_complement` (Σ₂/Π₂ duality)
+  - `universalExistentialDefinition_iff_of_pred_iff` (Π₂ class congruence)
+  - `koenigsmann_implies_complement_existentialUniversal` (Σ₂(ℚ\ℤ) corollary)
 -/
 
 #check @IsDiophantineDefinition
 #check @IsUniversalExistentialDefinition
 #check @IsCoDiophantineDefinition
+#check @IsExistentialUniversalDefinition
 #check @koenigsmann_2016_universal
 #check @integers_diophantine_iff
 #check @diophantine_implies_universal_existential
 #check @diophantine_iff_codiophantine_complement
 #check @integers_diophantine_iff_complement_codiophantine
+#check @codiophantine_implies_existentialUniversal
+#check @existentialUniversal_iff_universalExistential_complement
+#check @koenigsmann_implies_complement_existentialUniversal
 
 end Hilbert10Rationals

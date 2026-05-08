@@ -26,7 +26,7 @@
   {
     "id": "ann-rat-subset",
     "proofId": "hilbert-10-oq-01-oq-02",
-    "range": { "startLine": 66, "endLine": 75 },
+    "range": { "startLine": 66, "endLine": 74 },
     "type": "definition",
     "title": "Subsets of ℚ as Predicates",
     "content": "Establishes the predicate-style encoding of subsets: `RatSubset := Rat → Prop`, and the canonical example `IntSubset q := ∃ z : Int, q = z` (the image of $\\mathbb{Z}$ under $\\mathbb{Z} \\hookrightarrow \\mathbb{Q}$). Using `Prop`-valued predicates rather than `Set`-typed objects makes the $\\Sigma_1$/$\\Pi_2$ definability statements unfold cleanly into first-order quantifier blocks.",
@@ -38,7 +38,7 @@
   {
     "id": "ann-sigma1-def",
     "proofId": "hilbert-10-oq-01-oq-02",
-    "range": { "startLine": 76, "endLine": 102 },
+    "range": { "startLine": 76, "endLine": 101 },
     "type": "concept",
     "title": "Σ₁ Definability: The OPEN Layer",
     "content": "`IsDiophantineDefinition S` says there exists a parametric family $P : \\mathbb{Q} \\to \\text{RatDiophantinePoly}$ such that $S(q) \\iff $ the rational equation $P(q) = 0$ has a solution. `IntegersAreDiophantineOverQ := IsDiophantineDefinition IntSubset` is the open question. The lemma `integers_diophantine_iff` proves $\\Sigma_1$-definability $\\iff$ OQ-01's `IntegersDiophantineOverQ` by `Iff.rfl` — they are *definitionally* equal, not merely logically equivalent. This is the bridge that lets the file re-export OQ-01 conditionals without introducing new axioms.",
@@ -50,7 +50,7 @@
   {
     "id": "ann-pi2-def",
     "proofId": "hilbert-10-oq-01-oq-02",
-    "range": { "startLine": 103, "endLine": 126 },
+    "range": { "startLine": 103, "endLine": 125 },
     "type": "concept",
     "title": "Π₂ Definability + Koenigsmann's Axiom",
     "content": "`IsUniversalExistentialDefinition S` adds a *universal* quantifier block: $S(q) \\iff \\forall y \\in \\mathbb{Q}^\\mathbb{N}, P(q, y) = 0$ has a rational solution. Koenigsmann 2016 is captured as the SINGLE axiom `koenigsmann_2016_universal : IsUniversalExistentialDefinition IntSubset`. The axiomatization is honest: the original proof is constructive (an explicit polynomial built from Hilbert symbols and quaternion algebras over $\\mathbb{Q}$), but Mathlib lacks the Hilbert-symbol/quaternion-form infrastructure to build the polynomial, so we record the conclusion as a black-box assumption pending future formalization.",
@@ -86,7 +86,7 @@
   {
     "id": "ann-mazur-consequence",
     "proofId": "hilbert-10-oq-01-oq-02",
-    "range": { "startLine": 171, "endLine": 186 },
+    "range": { "startLine": 171, "endLine": 185 },
     "type": "insight",
     "title": "Mazur ⟹ ¬Σ₁ (Re-Export, NOT a New Axiom)",
     "content": "Re-exports OQ-01's `mazur_implies_not_diophantine` against the new $\\Sigma_1$ predicate, again as a logical consequence (not an axiom). Mazur's conjecture (1992) places topological constraints on the closure of $\\mathbb{Q}$-solution sets of polynomial equations — constraints that an $\\mathbb{R}$-discrete set like $\\mathbb{Z}$ would violate. So Mazur $\\implies$ $\\mathbb{Z}$ is not $\\Sigma_1$-definable in $\\mathbb{Q}$. Crucially, Mazur is *consistent* with $\\Pi_2$-definability — clarifying why the conjecture does not contradict Koenigsmann.",
@@ -96,13 +96,49 @@
     "prerequisites": ["arithmetic geometry", "real-analytic topology"]
   },
   {
+    "id": "ann-pi1-duality",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 187, "endLine": 265 },
+    "type": "concept",
+    "title": "Π₁ Definability and the Σ₁/Π₁ Duality",
+    "content": "Adds the third quantifier class: $\\Pi_1$ — purely universal, $S(q) \\iff \\forall x, P(q, x) \\ne 0$. The duality theorem `diophantine_iff_codiophantine_complement` proves the textbook fact that $S$ is $\\Sigma_1$-definable iff its complement is $\\Pi_1$-definable: the easy direction is `refine ⟨P, fun q => ⟨fun hnSq hsol => hnSq ((hP q).mpr hsol), fun hnsol hSq => hnsol ((hP q).mp hSq)⟩⟩`; the reverse direction uses `Classical.byContradiction`. Specializing to $\\mathbb{Z}$ via `integers_diophantine_iff_complement_codiophantine` gives a useful equivalent reformulation: 'is $\\mathbb{Q} \\setminus \\mathbb{Z}$ $\\Pi_1$-definable in $\\mathbb{Q}$?' — sometimes more amenable to refutation arguments. Both H10/ℚ-undecidability and Mazur consequences are re-exported against the new $\\Pi_1(\\mathbb{Q} \\setminus \\mathbb{Z})$ predicate (no new axioms).",
+    "mathContext": "$\\Pi_1$/$\\Sigma_1$ duality (general): for any subset $S \\subseteq \\mathbb{Q}$, $S \\in \\Sigma_1 \\iff (\\mathbb{Q} \\setminus S) \\in \\Pi_1$. This is the standard logical fact that complementing turns existential definitions into universal ones (and vice versa, classically). The reverse direction $\\Pi_1(\\neg S) \\to \\Sigma_1(S)$ uses excluded middle.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic-hierarchy duality", "co-recursively enumerable sets", "Classical.byContradiction"],
+    "prerequisites": ["classical logic", "first-order definability"]
+  },
+  {
+    "id": "ann-sigma2-pi1",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 267, "endLine": 309 },
+    "type": "concept",
+    "title": "Σ₂ Definability and Π₁ ⊆ Σ₂",
+    "content": "Adds the fourth and final quantifier class: $\\Sigma_2$ — existential-universal ($\\exists \\forall$), defined as `∃ P : Rat → (Nat → Rat) → RatDiophantinePoly, ∀ q, S q ↔ ∃ y, ¬ hasRationalSolution (P q y)`. The trivial containment `codiophantine_implies_existentialUniversal` ($\\Pi_1 \\subseteq \\Sigma_2$) is the precise dual of the earlier $\\Sigma_1 \\subseteq \\Pi_2$: a Π₁ formula $\\forall x, P(q, x) \\ne 0$ is automatically a $\\Sigma_2$ formula $\\exists y, \\forall x, P(q, x) \\ne 0$ with a dummy existential block (witnessed here by `fun _ => 0`). Together, the four classes Σ₁/Π₁/Σ₂/Π₂ form a 'square' with two trivial containments and two dualities.",
+    "mathContext": "$\\Sigma_2$ subset $S \\subseteq \\mathbb{Q}$: $\\exists P : \\mathbb{Q} \\times \\mathbb{Q}^\\mathbb{N} \\to \\text{RatDiophantinePoly} \\, \\forall q : S(q) \\iff \\exists y \\in \\mathbb{Q}^\\mathbb{N}, \\forall x \\in \\mathbb{Q}^\\mathbb{N}, P(q, y, x) \\ne 0$. The standard arithmetic-hierarchy fact that $\\Pi_1 \\subseteq \\Sigma_2$ (trivially, by adding a vacuous existential block on the outside) is proved here in 6 lines.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic hierarchy Σ₂", "Π₁ ⊆ Σ₂ trivial containment", "quantifier-block embedding"],
+    "prerequisites": ["first-order logic", "arithmetic hierarchy"]
+  },
+  {
+    "id": "ann-sigma2-pi2-duality",
+    "proofId": "hilbert-10-oq-01-oq-02",
+    "range": { "startLine": 311, "endLine": 383 },
+    "type": "insight",
+    "title": "Σ₂/Π₂ Duality and the Σ₂(ℚ\\ℤ) Corollary of Koenigsmann",
+    "content": "`existentialUniversal_iff_universalExistential_complement` proves the higher-level analog of the Σ₁/Π₁ duality: $S$ is $\\Sigma_2$-definable iff its complement is $\\Pi_2$-definable. Both directions use one classical `Classical.byContradiction` step (twice in total, once per direction) to convert `¬¬p` to `p`. The helper `universalExistentialDefinition_iff_of_pred_iff` shows the $\\Pi_2$ class is invariant under propositional equivalence of the predicate. Combining these with `koenigsmann_2016_universal` yields the unconditional corollary `koenigsmann_implies_complement_existentialUniversal`: $\\mathbb{Q} \\setminus \\mathbb{Z}$ is $\\Sigma_2$-definable in $\\mathbb{Q}$ — a non-trivial structural fact pulled out of Koenigsmann via the $\\Sigma_2$/$\\Pi_2$ duality, with no new axiom.",
+    "mathContext": "$\\Sigma_2$/$\\Pi_2$ duality: $S \\in \\Sigma_2 \\iff (\\mathbb{Q} \\setminus S) \\in \\Pi_2$. Bridging classically: $\\Pi_2(\\mathbb{Z}) \\implies \\Pi_2(\\neg\\neg \\mathbb{Z}) \\iff \\Pi_2(\\neg(\\mathbb{Q} \\setminus \\mathbb{Z})) \\iff \\Sigma_2(\\mathbb{Q} \\setminus \\mathbb{Z})$. Classical excluded middle is essential for both the duality and the predicate-equivalence bridge.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic-hierarchy duality at level 2", "complementation classical", "Koenigsmann corollary", "Π₂ class congruence"],
+    "prerequisites": ["classical logic", "double-negation elimination", "Koenigsmann 2016"]
+  },
+  {
     "id": "ann-landscape",
     "proofId": "hilbert-10-oq-01-oq-02",
-    "range": { "startLine": 187, "endLine": 231 },
+    "range": { "startLine": 385, "endLine": 447 },
     "type": "context",
-    "title": "Status Table: Σ₁ Open, Π₂ Closed",
-    "content": "The closing comment block presents the sharpened landscape as a table — Σ₁ (∃) OPEN, Π₁ (∀ on the complement) OPEN-equivalent, Π₂ (∀∃) PROVED by Koenigsmann — and explains why the gap matters: only Σ₁ yields H10/ℚ-undecidability via MRDP; Mazur refutes Σ₁ but is consistent with Π₂; a positive Σ₁ answer would be a constructive polynomial witness while a negative answer would likely come from Brauer-Manin / topological structure on ℚ-points. The block also tallies the file's axiom count (1 net new) and theorem count (4-5).",
-    "mathContext": "$\\Sigma_1 \\Leftrightarrow \\neg \\Pi_1$ on the complement (basic logic), so the open content is $\\Sigma_1$ vs $\\Pi_2$. Daans 2021 reduced Koenigsmann's Π₂ definition to 10 universal quantifiers — the next milestone would be reducing further toward Σ₁.",
+    "title": "Status Table: Σ₁/Π₁ Open, Σ₂/Π₂ Closed",
+    "content": "The closing comment block presents the sharpened landscape as a 4-row table — Σ₁ (∃) OPEN, Π₁ (∀ on the complement) OPEN-equivalent, Σ₂ (∃∀ on the complement) PROVED, Π₂ (∀∃) PROVED by Koenigsmann — and explains why the gap matters: only Σ₁ yields H10/ℚ-undecidability via MRDP; Mazur refutes Σ₁ but is consistent with Π₂; the Σ₂(ℚ\\ℤ) corollary places the complement on the second level of the arithmetic hierarchy unconditionally. The block also tallies the file's axiom count (1 net new) and theorem count (13).",
+    "mathContext": "$\\Sigma_1 \\Leftrightarrow \\neg \\Pi_1$ on the complement and $\\Sigma_2 \\Leftrightarrow \\neg \\Pi_2$ on the complement (basic logic), so the open content is $\\Sigma_1$ vs $\\Pi_2$ (equivalently, $\\Pi_1(\\mathbb{Q} \\setminus \\mathbb{Z})$ vs $\\Sigma_2(\\mathbb{Q} \\setminus \\mathbb{Z})$). Daans 2021 reduced Koenigsmann's Π₂ definition to 10 universal quantifiers — the next milestone would be reducing further toward Σ₁.",
     "significance": "context",
     "relatedConcepts": ["arithmetic hierarchy", "Daans 2021", "Eisenträger-Park 2018", "Poonen 2009 nonsquares"],
     "prerequisites": []
@@ -110,11 +146,11 @@
   {
     "id": "ann-checks-and-end",
     "proofId": "hilbert-10-oq-01-oq-02",
-    "range": { "startLine": 232, "endLine": 239 },
+    "range": { "startLine": 449, "endLine": 462 },
     "type": "technique",
     "title": "#check Sanity Tests + Namespace Close",
-    "content": "Five `#check` commands serve as type-level regression tests: `IsDiophantineDefinition`, `IsUniversalExistentialDefinition`, `koenigsmann_2016_universal`, `integers_diophantine_iff`, and `diophantine_implies_universal_existential`. If any of these signatures shift (e.g., the import refactors `RatDiophantinePoly`), the elaboration fails at compile time — pinning the file's API surface. The `end Hilbert10Rationals` closes the namespace cleanly.",
-    "mathContext": "The 5 #check'd identifiers are exactly the public API of the file: 2 definitions ($\\Sigma_1$, $\\Pi_2$), 1 axiom (Koenigsmann), and 2 theorems (definitional equivalence, $\\Sigma_1 \\subseteq \\Pi_2$). Together they characterize the refinement.",
+    "content": "Twelve `#check` commands serve as type-level regression tests for the file's public API: 4 definitions ($\\Sigma_1$, $\\Pi_2$, $\\Pi_1$, $\\Sigma_2$), 1 axiom (Koenigsmann), and 7 theorems (definitional equivalence, $\\Sigma_1 \\subseteq \\Pi_2$, both dualities and their specialization to $\\mathbb{Z}$, $\\Pi_1 \\subseteq \\Sigma_2$, the $\\Sigma_2(\\mathbb{Q} \\setminus \\mathbb{Z})$ corollary). If any of these signatures shift (e.g., the import refactors `RatDiophantinePoly`), the elaboration fails at compile time — pinning the file's API surface. The `end Hilbert10Rationals` closes the namespace cleanly.",
+    "mathContext": "The 12 #check'd identifiers are exactly the public API of the file: 4 definitions ($\\Sigma_1$, $\\Pi_2$, $\\Pi_1$, $\\Sigma_2$), 1 axiom (Koenigsmann), and 7 theorems including both dualities. Together they characterize the four-corner Σ₁/Π₁/Σ₂/Π₂ refinement.",
     "significance": "technical",
     "relatedConcepts": ["Lean #check command", "API stability"],
     "prerequisites": []
