@@ -93,7 +93,9 @@
     "openQuestions": [
       "Can the strong Markov property (the distribution of B(\u03c4+\u00b7) given \u03c4 equals the distribution of B given B(0)=a) be formalized in Lean using Mathlib's probability spaces?",
       "Does L\u00e9vy's reflection principle (conditional on \u03c4_a \u2264 T, the path B reflected at \u03c4_a is again Brownian) follow from this characterization and symmetry?",
-      "Can Doob's optional stopping theorem for martingales be formalized in Lean, using this first passage time characterization to verify the stopping time measurability hypothesis?"
+      "Can Doob's optional stopping theorem for martingales be formalized in Lean, using this first passage time characterization to verify the stopping time measurability hypothesis?",
+      "Generalize the csInf + IsClosed.csInf_mem pattern to a Mathlib lemma `IsClosed.firstHittingTime_mem`: for any continuous process $X : \\mathbb{R}_{\\ge 0} \\times \\Omega \\to E$ and any closed target set $F \\subseteq E$, the first hitting time $\\tau_F(\\omega) = \\inf\\{t \\ge 0 : X(t,\\omega) \\in F\\}$ belongs to the hitting set whenever the latter is nonempty.",
+      "Prove the measurability of `firstPassageTime` as a function $\\Omega \\to \\mathbb{R}$: under standard adapted-filtration hypotheses, $\\tau$ is a stopping time. The pointwise characterization `fpt_le_iff_maxEvent` reduces this to measurability of `maxEvent`, which is the pre-image of $[a,\\infty)$ under the running maximum process."
     ]
   },
   "mainTheorems": [

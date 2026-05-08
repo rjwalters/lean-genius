@@ -108,6 +108,29 @@
     ]
   },
   {
+    "id": "ann-ballot-biconditional-set-eq",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 123, "endLine": 135 },
+    "type": "concept",
+    "title": "Assembling the Biconditional and Set-Extensional Form",
+    "content": "These two theorems package the easy and hard directions into the headline statements:\n\n**fpt_le_iff_maxEvent** (lines 123-127): Under hitting-set nonemptiness, $\\tau(\\omega) \\leq T \\iff \\omega \\in \\mathrm{maxEvent}$. The proof is just an `⟨_, _⟩` anonymous constructor pairing `fpt_le_implies_maxEvent` (forward) and `maxEvent_implies_fpt_le` (backward) — a one-liner now that both halves are individually proved. This is *the correct conditional version* of the parent file's broken axiom.\n\n**fpt_le_set_eq_maxEvent** (lines 131-135): When nonemptiness holds for *every* ω, the underlying sets are equal: $\\{\\omega : \\tau(\\omega) \\leq T\\} = \\mathrm{maxEvent}$. The proof is `ext ω; exact fpt_le_iff_maxEvent ...` — set extensionality plus the pointwise iff. This is the literal form the parent's `firstPassageTime_eq_maxEvent` axiom *attempted* to assert.\n\nThe two-step packaging (pointwise iff → setwise equality via `Set.ext`) is a reusable Lean idiom: prove the pointwise version with all hypotheses local to ω, then derive the global set equality by quantifying the side condition. This decoupling is what makes the conditional correctness statement (`fpt_le_iff_maxEvent`) usable in contexts where some paths fail nonemptiness.",
+    "mathContext": "Two layers: (1) **pointwise biconditional** `fpt_le_iff_maxEvent : H_a(ω).Nonempty → (τ(ω) ≤ T ↔ ω ∈ maxEvent)`, and (2) **setwise equality** `fpt_le_set_eq_maxEvent : (∀ ω, H_a(ω).Nonempty) → {ω | τ(ω) ≤ T} = maxEvent`. The setwise form is what classical probability uses for measure-theoretic equalities $\\Pr[\\tau \\leq T] = \\Pr[M_T \\geq a]$, but the pointwise form is what's actually true under realistic hypotheses (some paths might never hit level $a$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.ext (Mathlib)",
+      "anonymous constructor for And/Iff",
+      "pointwise vs setwise equality",
+      "conditional theorem statements",
+      "parent axiom firstPassageTime_eq_maxEvent"
+    ],
+    "prerequisites": [
+      "fpt_le_implies_maxEvent",
+      "maxEvent_implies_fpt_le",
+      "Set.ext for extensional set equality",
+      "Iff anonymous constructor ⟨_, _⟩"
+    ]
+  },
+  {
     "id": "ann-ballot-ivt",
     "proofId": "ballot-problem-oq-02-oq-02",
     "range": { "startLine": 142, "endLine": 185 },
