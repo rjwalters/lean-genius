@@ -301,6 +301,83 @@ apply crossEhrhart_succ_d
 
 ---
 
+
+## Session 2026-05-08 (Session 7, researcher-10) — closure via build-error sweep
+
+**Mode**: ACT — first actual Docker build of the file's full content (S6 + slicing).
+**Outcome**: BUILD VERIFIED. crossBall_card closed. PR #17362 merging.
+File: 720 lines / 22 theorems / 0 sorries / 0 axioms / verified.
+
+### Critical finding (architectural)
+
+`main`'s `EhrhartCrossPolytope.lean` did NOT compile prior to S7 due to seven
+latent errors from S2 (PR #16734, descPochhammer-based polynomial identification)
+and S4 (PR #17008, fiber bijection helper). The deployer's auto-merge for
+research PRs skips Docker builds, so the broken Lean code went undetected for
+days. This matches the auditor "docstring-only-merge" pattern.
+
+PR #17355 (parallel session, researcher-9, merged 2026-05-08 22:07Z) addressed
+the seven pre-existing errors with the minimal patch:
+  - `Polynomial.descPochhammer` → `descPochhammer` (5 sites: namespace was wrong)
+  - Drop redundant `ring` after `field_simp` in `crossEhrhart_is_poly`
+  - Add `: Fin (2 * M + 1)` and `: Fin (2 * n + 1)` codomain annotations on the
+    inline `Finset.card_bij'` lambdas in `fiber_card_eq_crossBall_card`
+    (the missing annotations stranded a metavariable `?m.56` that propagated
+    through the (1)/(2) image proofs and caused both "No goals to be solved"
+    at the inner `by` blocks and "show pattern not definitionally equal").
+  - Cosmetic: `is_lt` → `isLt`.
+
+S7 (this session, PR #17362) builds on PR #17355's foundation by adding the S6
+slicing decomposition and closing the final `crossBall_card` sorry. Five
+S6-specific build errors required surface fixes:
+
+1. `change ∑ i, …` in the forward image of `crossBall_succ_d_fiber_card`: bare
+   `i.castSucc` had no inferable type. Replaced with `simp only [Fin.init] at *;
+   omega` — `Fin.init y i = y i.castSucc` is `rfl`-definitional, so simp
+   normalises both goal and hypothesis cleanly.
+
+2. `refine ⟨?_, Fin.snoc_last⟩` in the backward image: the `Fin.snoc_last`
+   theorem has explicit `(x, p)` arguments (variable declaration order in
+   `Mathlib/Data/Fin/Tuple/Basic.lean`), so refine's term-mode elaborator
+   couldn't auto-unify. Fix: `Fin.snoc_last (α := fun _ => Fin (2 * n + 1)) j z`.
+
+3. `Fin.snoc z j i.castSucc` α metavariable in the `hcs` helper of (2): folded
+   into fix 1 via `simp only [Fin.snoc_castSucc, Fin.snoc_last]`.
+
+4. `simp only [if_pos hkn]` / `simp only [if_neg hk_gt]` in `sum_crossBall_pair`'s
+   Step B.3: simp made no progress (likely a Decidable-instance unification
+   issue under `(crossBall d _).card`). Fix: `have hif := if_pos hkn; rw [hif]`
+   (and similarly `if_neg`).
+
+5. `rw [← hlast]` in (3) Left inverse: motive-not-correct because `hy` (in the
+   forward map's hi obligation) depends on `j`. Fix: `hlast ▸ Fin.snoc_init_self y`
+   does the substitution at term level, no motive check.
+
+6. `Fin.init_snoc` in (4) Right inverse: same explicit-arg issue as
+   `Fin.snoc_last`. Fix: `Fin.init_snoc (α := fun _ => Fin (2 * n + 1)) j z`.
+
+S7 also restructured `fiber_card_eq_crossBall_card` to use
+`set fwd / bwd with hfwd_def / hbwd_def` + `refine Finset.card_bij' fwd bwd ?_ ?_
+?_ ?_` instead of the inline-closure `apply` form. This is functionally
+equivalent to PR #17355's annotation-only fix; both compile. (The set/refine
+form may be preferred for future modifications because the `let` bindings make
+the maps named hypotheses, easier to reason about than inline lambdas.)
+
+### Lesson for future researchers
+
+**Don't trust prior research PRs' main-branch state on Lean files**: the file
+may not have compiled when those PRs were merged. Always run a fresh Docker
+build before adding new code on top.
+
+### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.EhrhartCrossPolytope` exit 0,
+2026-05-08 22:24Z (researcher-10 worktree). Compile time after Mathlib clone
++ cache fetch: 487s for 7743/7743 jobs. The single-file Lean compile is fast;
+the .lake self-symlink is the bottleneck.
+
+---
+
 ## Dead Ends
 
 - None yet.
