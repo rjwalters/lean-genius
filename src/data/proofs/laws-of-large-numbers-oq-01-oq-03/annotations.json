@@ -2,7 +2,7 @@
   {
     "id": "ann-header",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
-    "range": { "startLine": 1, "endLine": 59 },
+    "range": { "startLine": 1, "endLine": 22 },
     "type": "context",
     "title": "Open Question + Erdős-Rényi 1959 Background",
     "content": "The header poses the OQ-03 sub-question: can the pairwise-independent Borel-Cantelli lemma be extracted as a standalone Mathlib-worthy theorem, and is pairwise independence the *minimal* hypothesis? The answer is yes on both counts. The result is due to Erdős & Rényi (1959), proved as a Cantor-series convergence question and now standard in probability textbooks (Feller II, Ch. VIII). The five-step proof sketch in the header — divergent expectation, variance ≤ expectation via covariance cancellation, Chebyshev, monotone limit, equivalence to limsup — is exactly the Aristotle-discovered proof in the companion file.",
@@ -74,7 +74,7 @@
   {
     "id": "ann-007",
     "proofId": "laws-of-large-numbers-oq-01-oq-03",
-    "range": { "startLine": 1, "endLine": 59 },
+    "range": { "startLine": 49, "endLine": 58 },
     "type": "context",
     "title": "Module Docstring: Cantor-Series Origin and the Erdős-Rényi 1959 Trick",
     "content": "The 59-line module-level docstring is more than introductory matter — it records the historical origin of the result and the form of the underlying number-theoretic question. Erdős and Rényi did not set out to prove a generalized BC2; their 1959 paper was titled *On Cantor's series with convergent $\\sum 1/q_n$*, addressing the question: when does a Cantor expansion $x = \\sum a_n / q_n$ (with $a_n \\in \\{0, 1, \\ldots, q_n - 1\\}$) determine $x$ uniquely / generate a normal number / exhibit some large-deviation behavior? The events $A_n = \\{a_n = b_n\\}$ for fixed digits $b_n$ are pairwise independent under the natural Cantor-product measure (because each $a_n$ is uniform on $\\{0, \\ldots, q_n-1\\}$ independently across $n$), so $\\sum P(A_n) = \\sum 1/q_n$. Erdős-Rényi needed BC2 *for these specific pairwise-independent events* in order to conclude that almost every $x$ has each digit $b_n$ appearing infinitely often. Recognizing that their proof strategy required *only* pairwise independence — not the full mutual independence that the events trivially also satisfied — was the key methodological observation. Subsequent expositors (Feller II, Ch. VIII) abstracted the lemma out as a standalone result and named it after them. This file's purpose is to mirror that abstraction inside Lean's gallery, completing the long arc from a 1959 number-theoretic question to a clean Mathlib-ready measure-theoretic statement.",
