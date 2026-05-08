@@ -2,7 +2,7 @@
   "id": "schauder-fixed-point-oq-03-oq-01",
   "title": "Kakutani from Brouwer via Approximate Selections",
   "slug": "schauder-fixed-point-oq-03-oq-01",
-  "description": "Outlines the proof of Kakutani's fixed point theorem from Brouwer's FPT using approximate continuous selections. Factors the proof into three independent axioms (Brouwer, approximate selections, sequential compactness) and provides the combination framework.",
+  "description": "Proves Kakutani's fixed point theorem from Brouwer's FPT using approximate continuous selections. Reduces the theorem to two independent axioms (Brouwer's FPT and existence of approximate selections); the previous sequential compactness axiom is now derived from Mathlib.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Kakutani_fixed-point_theorem",
@@ -17,7 +17,7 @@
       "game-theory"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "mathlibDependencies": [
       {
         "theorem": "IsCompact",
@@ -39,21 +39,22 @@
       "IsApproxSelection: Definition of ε-approximate continuous selections",
       "brouwer_fpt: Brouwer's FPT for compact convex sets (AXIOMATIZED)",
       "approx_selection_exists: UHC + convex → ε-selections exist (AXIOMATIZED)",
-      "kakutani_from_brouwer: Proof framework combining three axioms (SORRY)",
-      "approx_fixedpoint_implies_fixedpoint: Limit argument for approximate FPs (SORRY)"
+      "seq_compact_of_compact: Sequential compactness derived from Mathlib's IsCompact.isSeqCompact",
+      "approx_fixedpoint_implies_fixedpoint: Limit argument for approximate fixed points (proved)",
+      "kakutani_from_brouwer: Combines Brouwer + approximate selections to prove Kakutani (proved)"
     ],
     "dateAdded": "2026-04-12",
-    "axiomCount": 3,
-    "lineCount": 280,
+    "axiomCount": 2,
+    "lineCount": 349,
     "prerequisites": [
       "Brouwer's fixed point theorem",
       "Compact metric spaces",
       "Convex sets in Euclidean space",
       "Upper hemicontinuity"
     ],
-    "assumptions": "Three axioms: (1) Brouwer's FPT for compact convex sets, (2) existence of approximate continuous selections for UHC maps with convex values, (3) sequential compactness of compact metric spaces. Plus 2 sorries for the combination arguments.",
+    "assumptions": "Two axioms: (1) Brouwer's FPT for compact convex sets, (2) existence of approximate continuous selections for UHC maps with convex values. Sequential compactness, previously a third axiom, is now derived from Mathlib. The combination argument and the limit lemma are fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 2,
+    "theoremCount": 3,
     "definitionCount": 4
   },
   "overview": {
@@ -105,39 +106,39 @@
       "summary": "Defines IsApproxSelection and axiomatizes the existence of continuous $\\varepsilon$-approximate selections for UHC maps with convex values."
     },
     {
-      "id": "seq-compact-axiom",
-      "title": "Axiom 3: Sequential Compactness",
-      "startLine": 108,
-      "endLine": 114,
-      "summary": "Axiomatizes that compact metric spaces are sequentially compact — needed to extract the limit of approximate fixed points."
+      "id": "seq-compact-theorem",
+      "title": "Sequential Compactness (derived from Mathlib)",
+      "startLine": 112,
+      "endLine": 122,
+      "summary": "Sequential compactness in pseudo-metric spaces, derived in one line from Mathlib's `IsCompact.isSeqCompact`. Previously stated as Axiom 3."
     },
     {
       "id": "kakutani-proof",
       "title": "Kakutani's FPT from Brouwer",
-      "startLine": 116,
-      "endLine": 147,
-      "summary": "The main theorem combining all three axioms: approximate selections → Brouwer fixed points → compactness extraction → UHC limit argument. Currently sorry."
+      "startLine": 258,
+      "endLine": 304,
+      "summary": "The main theorem combining the two axioms: approximate selections → Brouwer fixed points → hand off to the limit lemma. Fully proved."
     },
     {
       "id": "commentary",
       "title": "Mathematical Commentary",
-      "startLine": 149,
-      "endLine": 171,
+      "startLine": 305,
+      "endLine": 343,
       "summary": "Discussion of why the proof matters, Mathlib infrastructure gaps (partition of unity, general Brouwer), and alternative proof paths (simplicial approximation, Michael selection)."
     },
     {
       "id": "structural-lemma",
       "title": "Approximate FPs Imply True FPs",
-      "startLine": 173,
-      "endLine": 189,
-      "summary": "Structural lemma abstracting the limit argument: if approximate fixed points exist for all $\\varepsilon > 0$, compactness and closedness yield a true fixed point. Currently sorry."
+      "startLine": 124,
+      "endLine": 256,
+      "summary": "Structural lemma abstracting the limit argument: if approximate fixed points exist for all $\\varepsilon > 0$, compactness and closedness yield a true fixed point. Fully proved using sequential compactness, the squeeze theorem, and a UHC closed-graph case split."
     },
     {
       "id": "summary-checks",
       "title": "Summary and Type Checks",
-      "startLine": 191,
-      "endLine": 217,
-      "summary": "Summary comment listing axioms and framework status, followed by #check commands verifying the types of the three main declarations."
+      "startLine": 344,
+      "endLine": 349,
+      "summary": "#check commands verifying the types of the four main declarations."
     }
   ],
   "crossReferences": [
@@ -178,7 +179,6 @@
     "openQuestions": [
       "Prove approx_selection_exists using partitions of unity — the main Mathlib infrastructure gap",
       "Verify brouwer_fpt against Mathlib's Brouwer formalization for closed balls and extend to general compact convex sets",
-      "Complete the sorry in kakutani_from_brouwer with the full metric-space limit argument",
       "Extend to the infinite-dimensional Kakutani–Fan–Glicksberg theorem using Schauder's FPT in place of Brouwer's",
       "Formalize the application to Nash equilibrium existence: verify that the best-response correspondence satisfies the Kakutani conditions"
     ]
@@ -198,12 +198,12 @@
       "Metric"
     ],
     "namespace": "KakutaniFromBrouwer",
-    "lineCount": 280,
-    "axiomCount": 3,
-    "theoremCount": 2,
+    "lineCount": 349,
+    "axiomCount": 2,
+    "theoremCount": 3,
     "definitionCount": 4,
     "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
-    "sorries": 2
+    "sorries": 0
   },
   "references": [
     {
@@ -232,8 +232,8 @@
       "name": "kakutani_from_brouwer",
       "type": "theorem",
       "description": "Kakutani FPT from Brouwer + approximate selections + compactness",
-      "leanType": "(sorry) Framework combining three axioms to prove Kakutani"
+      "leanType": "Combination of Brouwer's FPT and approximate selections; the limit argument is encapsulated in approx_fixedpoint_implies_fixedpoint."
     }
   ],
-  "sorries": 2
+  "sorries": 0
 }
