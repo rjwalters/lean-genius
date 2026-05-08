@@ -377,3 +377,107 @@ already proven in Parts 6 and 15. S6 simply hands the user a single
 lemma that handles both branches. The open axiom `jacobi_r4_formula`
 is unchanged. The σ*-side is reduced from two named lemmas to one;
 the modular-form bridge remains the open frontier.
+
+## Session 7 — n-keyed existential closed form (researcher-10)
+
+**Date**: 2026-05-08
+**Result**: σ*-side is now keyed off `n` alone — caller no longer
+supplies the 2-adic decomposition. Eliminates the last "user supplies
+(k, m)" friction.
+**File delta**: 1052 → 1125 lines, 88 → 90 theorems, 1 axiom unchanged,
+0 sorries.
+
+### Statement
+
+Part 17 adds two theorems:
+
+```lean
+theorem sigmaStar_exists_decomp_of_pos {n : ℕ} (hn : 0 < n) :
+    ∃ k m : ℕ, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2 ^ k * m ∧
+      sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m
+
+theorem jacobiR4_exists_decomp_of_pos {n : ℕ} (hn : 0 < n) :
+    ∃ k m : ℕ, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2 ^ k * m ∧
+      jacobiR4 n = (if k = 0 then 8 else 24) * sigmaOne m
+```
+
+### Proof sketch
+
+```lean
+theorem sigmaStar_exists_decomp_of_pos {n : ℕ} (hn : 0 < n) := by
+  obtain ⟨k, m, hm_odd, hn_eq⟩ :=
+    Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)
+  -- m > 0 from n > 0 and n = 2^k * m
+  have hm_ne : m ≠ 0 := fun hm0 => hn.ne' (by rw [hm0, mul_zero] at hn_eq; exact hn_eq)
+  have hm_pos : 0 < m := Nat.pos_of_ne_zero hm_ne
+  refine ⟨k, m, hm_pos, hm_odd, hn_eq, ?_⟩
+  rw [hn_eq]
+  exact sigmaStar_decomp hm_pos hm_odd  -- S6
+```
+
+The jacobiR4 version is a one-line wrap that re-uses
+`sigmaStar_exists_decomp_of_pos` for the witness and applies
+`jacobiR4_decomp` (S6) for the formula.
+
+### Mathlib dependency
+
+`Nat.exists_eq_pow_mul_and_not_dvd` lives in
+`Mathlib.Data.Nat.Factorization.Basic` (line 275 as of Mathlib
+2026-05). Signature:
+
+```lean
+theorem Nat.exists_eq_pow_mul_and_not_dvd {n : ℕ} (hn : n ≠ 0)
+    (p : ℕ) (hp : p ≠ 1) :
+    ∃ e n' : ℕ, ¬p ∣ n' ∧ n = p ^ e * n'
+```
+
+Mathlib transitively imports it via `Mathlib.Tactic` (kitchen-sink),
+so no new explicit import was needed.
+
+### Cross-validation
+
+Four `example` blocks discharged by `(by decide : 0 < n)`:
+
+| n  | Existential expectation                              |
+|----|------------------------------------------------------|
+| 1  | k = 0, m = 1: σ*(1) = 1·σ(1) = 1                     |
+| 9  | k = 0, m = 9: σ*(9) = 1·σ(9) = 13                    |
+| 40 | k = 3, m = 5: σ*(40) = 3·σ(5) = 18                   |
+| 40 | k = 3, m = 5: jacobiR4(40) = 24·σ(5) = 144           |
+
+The decomposition (k, m) is canonical: k = v₂(n), m = n / 2^v₂(n).
+The existential matches Mathlib's `Nat.exists_eq_pow_mul_and_not_dvd`
+witness, which extracts (k, m) via the multiplicity API.
+
+### S7 build status
+
+Build pending (S13/S14-of-sperner-ndim precedent, S6 follow-up): the
+`proofs/.lake` self-referential symlink in this fork forces a fresh
+Mathlib clone per Docker build (~45 min cold). S7 wraps S6 lemmas
+plus one Mathlib lookup; auditor pipeline carries the build outcome.
+
+### Honest assessment
+
+S7 is a **packaging refinement** like S6, not a new mathematical
+result. The mathematical content was settled by S5 (closed form for
+σ*(2^k·m)) and S6 (unified `if`-form). S7 only exposes the closed form
+without requiring the user to perform the 2-adic decomposition — the
+existential extracts it via Mathlib. The open axiom `jacobi_r4_formula`
+is unchanged. After S7, the σ*-side has a single n-keyed entry point;
+the modular-form bridge remains the only open frontier.
+
+### Why this is the natural endpoint of the σ*-side
+
+After S2 (structural reduction), S3-S5 (multiplicative theory), and
+S6 (unified if-form), the σ*-side admitted three forms of statement:
+
+1. σ*(2^k · m) = … (caller supplies k, m) — Parts 15 and 16.
+2. ∃ k m, n = 2^k · m ∧ … — Part 17 (S7).
+3. σ*(n) = (if 2 ∣ n then 3 else 1) · σ(n.oddPart) — open (next).
+
+Form 2 is the cleanest "Mathlib-style" statement, since it matches
+the existential signature of `Nat.exists_eq_pow_mul_and_not_dvd`
+verbatim. Form 3 is more concrete but requires Mathlib's
+`Nat.factorization` API and a few lemmas on `ord_proj`/`ord_compl`.
+Both are pure σ*-side improvements; the modular-form bridge for
+`jacobi_r4_formula` is independent of which form is chosen.

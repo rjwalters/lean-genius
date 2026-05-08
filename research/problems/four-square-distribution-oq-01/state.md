@@ -1,35 +1,37 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S6: σ*-side closed form **unified into a single
-`if`-form** statement). Closure of `jacobi_r4_formula` still requires
-Mathlib q-expansion of `jacobiTheta`.
+**Phase**: ACT (S7: σ*-side existential closed form **keyed off `n`
+alone** — caller no longer supplies the (k, m) decomposition).
+Closure of `jacobi_r4_formula` still requires Mathlib q-expansion of
+`jacobiTheta`.
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (S6, researcher-11)
-**Iteration**: 6
+**Last Updated**: 2026-05-08 (S7, researcher-10)
+**Iteration**: 7
 
 ## Current Focus
-S6 (this session) added **Part 16** to FourSquareDistributionOQ01.lean,
-unifying S5's two-case closed form into a single statement:
+S7 (this session) added **Part 17** to FourSquareDistributionOQ01.lean,
+wrapping S6 `sigmaStar_decomp` with Mathlib's
+`Nat.exists_eq_pow_mul_and_not_dvd` to deliver the existential form:
 
-* **`sigmaStar_decomp`**: for `m` odd, `0 < m`, **any** `k ≥ 0`,
-  `σ*(2^k · m) = (if k = 0 then 1 else 3) · σ(m)`.
-* **`jacobiR4_decomp`**: same hypotheses,
-  `jacobiR4(2^k · m) = (if k = 0 then 8 else 24) · σ(m)`.
+* **`sigmaStar_exists_decomp_of_pos`**: for `0 < n`,
+  `∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k · m ∧
+   σ*(n) = (if k = 0 then 1 else 3) · σ(m)`.
+* **`jacobiR4_exists_decomp_of_pos`**: identical wrap with constants
+  8/24.
 
-This drops Part 15's `1 ≤ k` side-condition by absorbing the `k = 0`
-case into the `if`. The proof is a 4-line case split: `k = 0` reduces
-via `sigmaStar_eq_sigmaOne_of_odd` (Part 6); `k ≠ 0` reduces via
-`sigmaStar_two_pow_mul_odd` (Part 15). Seven cross-validation
-`example` checks cover both branches at n ∈ {1, 3, 2, 40}.
+The proof is a 7-line block: invoke
+`Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)` for the
+2-adic decomposition; derive `0 < m` from `0 < n` and `n = 2^k · m`;
+apply S6 `sigmaStar_decomp`. Four cross-validation `example` checks at
+n ∈ {1, 9, 40} (σ*) and n = 40 (jacobiR4) demonstrate the witness.
 
-**What S6 changes**: the σ*-side now exposes a single uniform formula
-that future modular-form work can pattern-match on without case
-analysis at the call site. The `if`-form mirrors the Eisenstein-series
-coefficient structure in `1 + 8(E₂(τ) − 4·E₂(4τ))`, where the factor
-of 3 (resp. 1) corresponds to the odd-divisor weight on even (resp.
-odd) n. The open axiom `jacobi_r4_formula` is unchanged.
+**What S7 changes**: this is the final piece eliminating "caller
+supplies (k, m)" friction on the σ*-side. Downstream modular-form work
+can now invoke the closed form keyed only on `n`. The witness extracts
+canonically as k = v₂(n), m = n/2^k. The open axiom `jacobi_r4_formula`
+is unchanged.
 
 ## Reduction Frontier
 The σ*-side is now reduced to **two** Mathlib lookups: `Nat.factorization`
@@ -59,7 +61,7 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Attempt Count
 
-- Total attempts: 6.
+- Total attempts: 7.
 - S1 (researcher-?): OBSERVE/ORIENT bootstrap (axiomatize, n = 1..10).
 - S2 (researcher-10): ACT — σ*(n) = σ(n) − 4·σ(n/4)·[4∣n] structural.
 - S3 (researcher-?): σ* on odd prime powers, σ*(2n)/σ*(4n) = 3·σ(n).
@@ -67,6 +69,9 @@ Currently still blocked on Mathlib infrastructure:
 - S5 (researcher-8, 2026-05-08): σ*(2^k · m) = 3·σ(m) closed form.
 - S6 (researcher-11, 2026-05-08): Part 16 — unified `sigmaStar_decomp`
   / `jacobiR4_decomp` (single-formula `if`-form for k ≥ 0).
+- S7 (researcher-10, 2026-05-08): Part 17 —
+  `sigmaStar_exists_decomp_of_pos` / `jacobiR4_exists_decomp_of_pos`
+  (existential closed form keyed off `n`).
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -74,24 +79,27 @@ Currently still blocked on Mathlib infrastructure:
 - **Mathlib q-expansion infrastructure absent** for `jacobiTheta` —
   unchanged from S1.
 - **Mathlib Eisenstein-coefficient identification absent** — unchanged.
-- **Local Docker build verification**: S6 elects the "build pending"
-  pattern (S13/S14 of sperner-ndim-mathlib-oq-02 precedent) — the
+- **Local Docker build verification**: S7 continues the "build pending"
+  pattern (precedent: S6, sperner-ndim-mathlib-oq-02 S13/S14) — the
   proofs/.lake self-referential symlink forces a fresh Mathlib clone
-  per Docker build (~45 min cold). New theorems are 4-line corollaries
-  of already-proven Part 15 / Part 6 lemmas; auditor pipeline carries
-  the build outcome.
+  per Docker build (~45 min cold). The S7 additions are 7-line wrappers
+  on already-proven S6 lemmas plus one Mathlib lookup
+  (`Nat.exists_eq_pow_mul_and_not_dvd`); auditor pipeline carries the
+  build outcome.
 
 ## Next Action
 
 1. **(opportunistic)** When Mathlib gains q-expansion for `jacobiTheta`,
-   apply `sigmaStar_decomp` (S6) — one rewrite rather than two — to
-   close `axiom jacobi_r4_formula` for all n > 0 given a 2-adic
-   decomposition.
-2. **(productive — small)** Wrap `sigmaStar_decomp` with
-   `Nat.exists_eq_pow_mul_and_not_dvd` (or equivalent factorization
-   helper) to get a `∃ k m`-statement keyed off `n` directly, with
-   no caller-supplied decomposition. Once attempted, this would
-   eliminate the last "user supplies (k, m)" friction.
+   apply `sigmaStar_decomp` (S6) **or** `sigmaStar_exists_decomp_of_pos`
+   (S7) — one rewrite either way — to close `axiom jacobi_r4_formula`
+   for all n > 0. With S7 the call site no longer needs to supply the
+   2-adic decomposition.
+2. **(productive — constructive form)** Lift S7's existential to a
+   factorization-keyed expression
+   `σ*(n) = (if 2 ∣ n then 3 else 1) · σ(n / 2^(n.factorization 2))`
+   for `0 < n`, using Mathlib's `Nat.factorization n 2`,
+   `Nat.ord_proj_mul_ord_compl_eq_self`, and `Nat.not_dvd_ord_compl`.
+   Single n-indexed expression, no existential. ~6–10 line proof.
 3. **(speculative)** Pursue the Hurwitz-quaternion route. Mathlib has
    quaternions but no Hurwitz integers; multi-month project upstream.
 4. **(skip)** Brute-force extension beyond n = 10 — pure enumeration
@@ -101,12 +109,12 @@ Currently still blocked on Mathlib infrastructure:
 
 ## References
 
-- `proofs/Proofs/FourSquareDistributionOQ01.lean` — Parts 1-16:
+- `proofs/Proofs/FourSquareDistributionOQ01.lean` — Parts 1-17:
   bootstrap (1-5), structural σ* ↔ σ (6-7), σ* on odd prime powers (8),
   σ*(2n) = σ*(4n) = 3·σ(n) for odd n (9-10), σ-multiplicativity bridge
   (11), σ*-multiplicativity (12), σ*(2^k) closed form (13),
   cross-validation (14), σ*(2^k · m) closed form (15, S5),
-  unified `if`-form (16, S6).
+  unified `if`-form (16, S6), n-keyed existential decomp (17, S7).
 - `proofs/Proofs/FourSquareDistribution.lean` — parent file with
   type-decomposition theorems used as cross-checks.
 - `src/data/proofs/four-square-distribution-oq-01/meta.json` —

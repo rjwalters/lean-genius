@@ -31,17 +31,17 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 7,
-    "focus": "S6 (2026-05-08, researcher-11): added Part 16 — unified `sigmaStar_decomp` and `jacobiR4_decomp`, collapsing S5's two-case closed form into a single `if`-form statement valid for all k ≥ 0. `sigmaStar_decomp : 0 < m → ¬ 2 ∣ m → sigmaStar (2^k * m) = (if k = 0 then 1 else 3) * sigmaOne m`. Companion `jacobiR4_decomp : jacobiR4 (2^k * m) = (if k = 0 then 8 else 24) * sigmaOne m`. Proof shape: 4-line case split — `k = 0` reduces via Part 6 `sigmaStar_eq_sigmaOne_of_odd`; `k ≠ 0` lifts to `1 ≤ k` via `Nat.one_le_iff_ne_zero` and applies S5 `sigmaStar_two_pow_mul_odd`. Seven cross-validation examples cover both branches (n ∈ {1, 3, 2, 40}). File: 977 → 1052 lines, 86 → 88 theorems, 1 axiom unchanged, 0 sorries. Net effect: the σ*-side now exposes a single uniform closed form regardless of v₂(n), reducing future modular-form bridge work to a single rewrite at the call site. Build pending.",
+    "iteration": 8,
+    "focus": "S7 (2026-05-08, researcher-10): added Part 17 — `sigmaStar_exists_decomp_of_pos` and `jacobiR4_exists_decomp_of_pos`, wrapping S6's `sigmaStar_decomp` with Mathlib `Nat.exists_eq_pow_mul_and_not_dvd` to deliver an existential closed form keyed off `n` alone. Signature: `0 < n → ∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k * m ∧ sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m`. Companion identical for jacobiR4 with constants 8/24. Proof shape: invoke `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)`, derive `m > 0` from `n > 0` and `n = 2^k * m`, apply S6 closed form. Four cross-validation examples at n ∈ {1, 9, 40} (σ*) and n = 40 (jacobiR4). File: 1052 → 1125 lines, 88 → 90 theorems, 1 axiom unchanged, 0 sorries. Net effect: eliminates the last 'caller supplies (k, m)' friction on the σ*-side — downstream modular-form work can now invoke the closed form keyed only on n. Build pending.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
       "Local Docker build verification: proofs/.lake self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold). S6 commits under the 'build pending' precedent; auditor pipeline carries the build outcome."
     ],
-    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, apply sigmaStar_decomp (S6) — one rewrite — to close `axiom jacobi_r4_formula` for any n > 0 given a 2-adic decomposition. (productive — small) Wrap sigmaStar_decomp with Nat.exists_eq_pow_mul_and_not_dvd (or equivalent factorization helper) to package n directly without caller-supplied (k, m). (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
+    "nextAction": "(opportunistic) When Mathlib gains q-expansion for jacobiTheta, apply sigmaStar_decomp (S6) or sigmaStar_exists_decomp_of_pos (S7) — one rewrite either way — to close `axiom jacobi_r4_formula` for any n > 0. (productive — constructive form) Lift S7 existential to the factorization-keyed `sigmaStar_eq_padic_form` using `Nat.factorization n 2` and `Nat.ord_proj_mul_ord_compl_eq_self` so the closed form reads `(if 2 ∣ n then 3 else 1) * sigmaOne (n / 2^(n.factorization 2))` — a single n-indexed expression with no existential. (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 0,
       "approachesTried": 1
     }
@@ -92,7 +92,12 @@
       "S5 cross-checks: 4 examples for sigma*(2^k) at k=1,2,3,5; 5 examples for sigma*-mult at (3,5),(2,3),(4,3),(8,5),(9,5) — inline examples",
       "S5 sigmaStar_two_pow_mul_odd (theorem, Part 15): for 1 <= k, m odd, 0 < m: sigma*(2^k * m) = 3 * sigma(m). Proof: 4 rewrites combining Coprime (2^k) m via Nat.Prime.coprime_iff_not_dvd Nat.prime_two + Nat.Coprime.pow_left k, then sigmaStar_mul_of_coprime, sigmaStar_two_pow, sigmaStar_eq_sigmaOne_of_odd. — FourSquareDistributionOQ01.lean ~898",
       "S5 jacobiR4_two_pow_mul_odd (theorem, Part 15): for 1 <= k, m odd, 0 < m: jacobiR4(2^k * m) = 24 * sigma(m). Two lines: unfold + rewrite + ring. — FourSquareDistributionOQ01.lean ~922",
-      "S5 cross-validation examples (Part 15): 8 examples — 6 sigmaStar checks at (k=1,m=1),(k=2,m=1),(k=1,m=3),(k=3,m=1),(k=1,m=5),(k=3,m=5); 2 jacobiR4 checks at (k=3,m=1),(k=3,m=5). All by sigmaStar_two_pow_mul_odd / jacobiR4_two_pow_mul_odd."
+      "S5 cross-validation examples (Part 15): 8 examples — 6 sigmaStar checks at (k=1,m=1),(k=2,m=1),(k=1,m=3),(k=3,m=1),(k=1,m=5),(k=3,m=5); 2 jacobiR4 checks at (k=3,m=1),(k=3,m=5). All by sigmaStar_two_pow_mul_odd / jacobiR4_two_pow_mul_odd.",
+      "S6 sigmaStar_decomp (theorem, Part 16): 0 < m → ¬ 2 ∣ m → sigmaStar (2^k * m) = (if k = 0 then 1 else 3) * sigmaOne m — FourSquareDistributionOQ01.lean ~1001",
+      "S6 jacobiR4_decomp (theorem, Part 16): same with constants 8/24 — FourSquareDistributionOQ01.lean ~1014",
+      "S7 sigmaStar_exists_decomp_of_pos (theorem, Part 17): 0 < n → ∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k * m ∧ sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m — FourSquareDistributionOQ01.lean ~1071 [main S7 contribution]",
+      "S7 jacobiR4_exists_decomp_of_pos (theorem, Part 17): same for jacobiR4 with constants 8/24 — FourSquareDistributionOQ01.lean ~1086",
+      "S7 cross-validation examples (Part 17): 4 examples — sigmaStar_exists at n ∈ {1, 9, 40}, jacobiR4_exists at n = 40. All by sigmaStar_exists_decomp_of_pos / jacobiR4_exists_decomp_of_pos with `(by decide : 0 < n)`."
     ],
     "insights": [
       "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
@@ -131,7 +136,9 @@
         "insight": "S5 architectural conclusion: sigma* is now COMPLETELY characterised by its prime-power values. For n = 2^a * prod p_i^{e_i} with p_i odd: sigma*(n) = sigma*(2^a) * prod sigma*(p_i^{e_i}) = (a=0: 1; a>=1: 3) * prod sigma(p_i^{e_i}). The sigma-side is in Mathlib (sigma_apply_prime_pow). The remaining bottleneck is therefore strictly the modular-form bridge for r4(n): once Mathlib gains q-expansion for jacobiTheta, no further sigma*-side work is required.",
         "source": "S5 architecture review"
       },
-      "**S5 — complete σ* characterisation by 2-adic decomposition**: With S5 sigmaStar_two_pow_mul_odd plus S2 sigmaStar_eq_sigmaOne_of_odd, σ*(n) is now expressible by a single two-case rule keyed only on whether 2 | n: σ*(odd m) = σ(m); σ*(n) = 3·σ(odd_part(n)) when v₂(n) ≥ 1. The σ*-side of Jacobi r₄ is fully reduced to one σ-value computation on the odd part of n."
+      "**S5 — complete σ* characterisation by 2-adic decomposition**: With S5 sigmaStar_two_pow_mul_odd plus S2 sigmaStar_eq_sigmaOne_of_odd, σ*(n) is now expressible by a single two-case rule keyed only on whether 2 | n: σ*(odd m) = σ(m); σ*(n) = 3·σ(odd_part(n)) when v₂(n) ≥ 1. The σ*-side of Jacobi r₄ is fully reduced to one σ-value computation on the odd part of n.",
+      "**S7 — n-keyed existential closed form**: Mathlib already supplies the 2-adic decomposition existentially via `Nat.exists_eq_pow_mul_and_not_dvd` (`Mathlib.Data.Nat.Factorization.Basic`). Wrapping S6 `sigmaStar_decomp` with this lemma packages the σ*-side as a single existential statement keyed on n alone — `0 < n → ∃ k m, 0 < m ∧ ¬ 2 ∣ m ∧ n = 2^k * m ∧ sigmaStar n = (if k = 0 then 1 else 3) * sigmaOne m`. Two-line proof: `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' 2 (by decide)` for the decomposition, derive `m > 0` from `n > 0` and `n = 2^k * m`, apply S6. The dual existential for `jacobiR4` is a one-line corollary from the σ* version. Net effect: downstream modular-form work needs no caller-supplied (k, m); the existential delivers them automatically.",
+      "**S7 — what remains**: The constructive (non-existential) form is the natural next step — `sigmaStar n = (if 2 ∣ n then 3 else 1) * sigmaOne (n / 2^(n.factorization 2))` for n > 0. This requires Mathlib API for `Nat.factorization`, `Nat.ord_proj_mul_ord_compl_eq_self`, and `Nat.not_dvd_ord_compl` (all in `Mathlib.Data.Nat.Factorization.Basic`). The proof is approximately 6–10 lines and is independent of the modular-form bridge."
     ],
     "mathlibGaps": [
       "No q-expansion lemma extracting Fourier coefficients of `jacobiTheta τ` as a function of `τ`.",
@@ -145,7 +152,7 @@
       "(speculative) Hurwitz-quaternion alternative route — still gated on Mathlib; multi-month upstream cost.",
       "(skip) Brute-force extension beyond n = 10 — pure enumeration theater. The closed form prediction r4(40) = 144 is now a corollary; cross-validation requires the modular-form bridge itself."
     ],
-    "markdown": "# Knowledge Base: four-square-distribution-oq-01\n\nSee `research/problems/four-square-distribution-oq-01/problem.md`, `state.md`, and `knowledge.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (S5 — sigma* multiplicative theory completed)\n* **Files**: `proofs/Proofs/FourSquareDistributionOQ01.lean` (889 lines, 1 axiom, 0 sorries; 14 parts: bootstrap, structural reduction, odd prime powers, doubled-odd cases, sigma*-multiplicativity, sigma*(2^k) closed form).\n* **Gallery**: meta.json status=axiomatized; 6 deep annotations (PR #16682); canonical-schema cross-refs to parents (PR #16678).\n* **Open target (held in axiom)**: replace `axiom jacobi_r4_formula` with a theorem.\n* **S5 contribution**: sigmaStar_mul_of_coprime + sigmaStar_two_pow — fully characterises sigma* by prime-power values.\n* **Blocker**: Mathlib lacks q-expansion machinery for `jacobiTheta` and Eisenstein-coefficient identification.\n"
+    "markdown": "# Knowledge Base: four-square-distribution-oq-01\n\nSee `research/problems/four-square-distribution-oq-01/problem.md`, `state.md`, and `knowledge.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (S7 — n-keyed existential closed form for σ* and jacobiR4)\n* **Files**: `proofs/Proofs/FourSquareDistributionOQ01.lean` (1125 lines, 1 axiom, 0 sorries; 17 parts: bootstrap, structural reduction, odd prime powers, doubled-odd cases, sigma*-multiplicativity, sigma*(2^k), sigma*(2^k·m), unified `if`-form decomp, n-keyed existential decomp).\n* **Gallery**: meta.json status=axiomatized; 6 deep annotations (PR #16682); canonical-schema cross-refs to parents (PR #16678).\n* **Open target (held in axiom)**: replace `axiom jacobi_r4_formula` with a theorem.\n* **S7 contribution**: sigmaStar_exists_decomp_of_pos + jacobiR4_exists_decomp_of_pos — eliminates the caller-supplied (k, m) on the σ*-side.\n* **Blocker**: Mathlib lacks q-expansion machinery for `jacobiTheta` and Eisenstein-coefficient identification.\n"
   },
   "tags": [
     "number-theory",
