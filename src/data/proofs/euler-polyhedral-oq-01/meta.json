@@ -46,15 +46,17 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Euler's polyhedral formula V − E + F = 2 (1758) is one of the founding results of topology. The spanning-tree proof is particularly elegant: a spanning tree of V vertices has V − 1 edges and 1 face; each non-tree edge splits a face, adding exactly one new face; after adding all E − (V − 1) non-tree edges, F = 1 + (E − V + 1) = E − V + 2, giving V − E + F = 2.\n\nThe Six Color Theorem (a corollary) follows from 5-degeneracy of planar graphs: since E ≤ 3V − 6, by the handshaking lemma some vertex has degree ≤ 5; greedy coloring in degeneracy order uses at most 6 colors. The Four Color Theorem (requiring a computer-assisted proof) tightens this to 4.",
+    "historicalContext": "Euler's polyhedral formula V − E + F = 2, communicated to Christian Goldbach in a 1750 letter and published in *Elementa Doctrinae Solidorum* (1758), is one of the founding results of topology. Cauchy gave the first algebraically rigorous proof in 1813, *Recherches sur les polyèdres*, by removing one face and flattening the polyhedron into a planar graph — the conceptual ancestor of the spanning-tree proof formalized here. Listing (1862) extended the relation to general planar graphs (the term \"topology\" itself is his coinage), and Schläfli (1850s) generalized it to higher dimensions via the Euler-Poincaré characteristic.\n\nThe spanning-tree proof is particularly elegant: a spanning tree of V vertices has V − 1 edges and 1 face; each non-tree edge splits a face, adding exactly one new face; after adding all E − (V − 1) non-tree edges, F = 1 + (E − V + 1) = E − V + 2, giving V − E + F = 2. This argument lifts directly to a Lean inductive type (`SpanningBuild`) where each constructor is a topological move that preserves the Euler invariant.\n\nThe Six Color Theorem (a corollary) follows from 5-degeneracy of planar graphs: since E ≤ 3V − 6, by the handshaking lemma some vertex has degree ≤ 5; greedy coloring in degeneracy order uses at most 6 colors. **Heawood's 1890 paper** \"Map-colour theorem\" originally aimed to prove the Four Color Theorem (Kempe 1879) but Heawood found a flaw in Kempe's argument and salvaged the Five Color Theorem instead, simultaneously stating the **Heawood map color conjecture** for higher genus surfaces: H(g) = ⌊(7+√(1+48g))/2⌋. The conjecture was finally proved by **Ringel and Youngs (1968)** for all g ≥ 1, while the original Four Color Theorem required computer assistance (**Appel-Haken 1976**; simplified by **Robertson-Sanders-Seymour-Thomas 1997**; formalized in Coq by **Gonthier (2005)**, but not yet ported to Lean 4 with Mathlib).\n\nNon-planarity is governed by **Kuratowski's theorem (1930)**: a graph is non-planar iff it contains K₅ or K₃,₃ as a topological minor. The present file gives the edge-bound *witnesses* (K₅ has E=10 > 9, K₃,₃ has E=9 > 8) but not Kuratowski's structural characterization. **Wagner's theorem (1937)** restates this in terms of graph minors. The **Robertson-Seymour graph minor theorem (1983-2004)** generalizes both to a well-quasi-ordering on all graph minor classes.",
     "problemStatement": "**Euler's polyhedral formula**: For any connected planar graph, V − E + F = 2.\n**Six Color Theorem**: Every planar graph is 6-colorable.\n**Non-planarity**: K₅, K₃,₃, and the Petersen graph are non-planar.",
     "text": "A 903-line comprehensive formalization spanning 11 parts across two Lean namespaces (`EulerOQ01` and `SixColorTheorem`). Part 1 proves V − E + F = 2 by structural induction on `SpanningBuild`. Parts 2-10 develop degeneracy theory, double-counting bounds, non-planarity certificates, genus theory, and connectivity results. Part 11 connects to Mathlib's `SimpleGraph.Colorable` to prove the Six Color Theorem formally.",
     "proofStrategy": "**Step 1 (Spanning-tree Euler)**: Define `SpanningBuild` inductively: `single` (V=1, E=0, F=1), `addTreeEdge` (V+1, E+1, F), `addCycleEdge` (V, E+1, F+1). Prove `euler_spanning` by structural induction: each case preserves V − E + F = 2.\n\n**Step 2 (Degeneracy)**: From E ≤ 3V − 6 and the handshaking lemma (`sum_degrees_eq_twice_card_edges`), if all vertices had degree ≥ 6, then 2E ≥ 6V, contradicting E ≤ 3V − 6. So some vertex has degree ≤ 5.\n\n**Step 3 (Double counting)**: For each face-girth lower bound d, prove `face_edge_double_count`: dF ≤ 2E (each edge borders ≤ 2 faces) combined with Euler's formula gives (d−2)E ≤ d(V−2). Specializing: d=3 gives E ≤ 3V−6, d=4 gives E ≤ 2V−4 (bipartite), d=6 gives 2E ≤ 3V−6.\n\n**Step 4 (Six Color Theorem)**: Define `LocalPlanarEmbedding` as a self-contained structure carrying the Euler axiom. Use `local_exists_low_degree` (5-degeneracy) and `six_colorable_small` (Mathlib `Colorable` for small graphs) to establish 6-colorability.",
     "keyInsights": [
-      "**SpanningBuild inductive structure**: The spanning-tree proof of Euler's formula maps perfectly to a Lean inductive type. Each constructor corresponds to a topological operation (add tree vertex or add cycle edge), and V − E + F = 2 is an invariant of every constructor.",
+      "**SpanningBuild inductive structure**: The spanning-tree proof of Euler's formula maps perfectly to a Lean inductive type. Each constructor corresponds to a topological operation (add tree vertex or add cycle edge), and V − E + F = 2 is an invariant of every constructor. Cauchy's 1813 proof is, structurally, exactly this induction, just expressed without a type-theoretic constructor.",
       "**Handshaking lemma integration**: `exists_low_degree_vertex` uses Mathlib's `SimpleGraph.sum_degrees_eq_twice_card_edges` directly, making the degeneracy proof fully connected to Mathlib's graph library rather than working in an abstract combinatorial setting.",
-      "**Unified face-edge bound**: `face_edge_double_count` proves the general statement (d−2)E ≤ d(V−2), avoiding integer division. Specializing to d=3, 4, 6 recovers all classical edge bounds for planar, bipartite-planar, and high-girth-planar graphs.",
-      "**Self-contained Six Color section**: `LocalPlanarEmbedding` duplicates the minimal Euler axiom locally, making the SixColorTheorem namespace standalone. This avoids importing the parent EulerPolyhedralFormula.lean and keeps the file self-contained."
+      "**Unified face-edge bound**: `face_edge_double_count` proves the general statement (d−2)E ≤ d(V−2), avoiding integer division. Specializing to d=3, 4, 6 recovers all classical edge bounds for planar, bipartite-planar, and high-girth-planar graphs. The unified form is genus-aware: replacing 2 with 2 − 2g recovers the Heawood inequality for genus-g surfaces.",
+      "**Self-contained Six Color section**: `LocalPlanarEmbedding` duplicates the minimal Euler axiom locally, making the `SixColorTheorem` namespace standalone. This avoids importing the parent EulerPolyhedralFormula.lean and keeps the file self-contained — at the cost of *axiomatizing* the Euler relation (rather than deriving it from a topological embedding).",
+      "**Mathlib `Colorable` connection**: `six_colorable_small` builds a `SimpleGraph.Coloring.mk` from `Fintype.equivFin V`, threading the abstract chromatic-number bound into Mathlib's coloring API. This is the formal bridge from the combinatorial 6-degeneracy argument to a proper proof of `G.Colorable 6`.",
+      "**Genus-aware double counting**: The same (d−2)E ≤ d(V−2) machinery extends to genus-g surfaces (V − E + F = 2 − 2g) and yields the Heawood lower bound 6g ≥ E − 3V + 6. Applied to K₅ and K₇, this gives explicit minimum-genus certificates without invoking general embedding theory."
     ],
     "prerequisites": [
       "Euler's polyhedral formula",
@@ -68,6 +70,26 @@
       "targetId": "euler-polyhedral-formula",
       "relationship": "extends",
       "description": "Parent euler-polyhedral-formula entry; this OQ-01 file develops the spanning-tree proof and Six Color Theorem extensions"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open-question file under the same parent, exploring complementary refinements of the polyhedral formula"
+    },
+    {
+      "targetId": "euler-polyhedral-formula-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling open-question file under the same parent"
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "specializes",
+      "description": "The Six Color Theorem proved here is the easy degeneracy-based predecessor; the Four Color Theorem (Appel-Haken 1976, Gonthier 2005) sharpens 6 → 4 via discharging and unavoidable configurations"
+    },
+    {
+      "targetId": "four-color-theorem-oq-01",
+      "relationship": "related",
+      "description": "Open-question file on the Four Color Theorem; the present file's `kempe_prerequisite` is the entry point for the Five Color Theorem upgrade that lies between Six and Four"
     }
   ],
   "leanFile": {
@@ -122,7 +144,7 @@
   ],
   "conclusion": {
     "summary": "A 903-line axiom-free comprehensive treatment of planar graph theory. The 60-theorem file covers the Euler formula (spanning-tree proof), degeneracy theory (5-degenerate → 6-colorable), non-planarity of K₅/K₃,₃/Petersen, genus bounds (Heawood), and the Six Color Theorem formally stated via Mathlib's SimpleGraph.Colorable.",
-    "implications": "The spanning-tree proof gives a constructive approach to Euler's formula, directly suitable for Lean's inductive type system. The Mathlib handshaking lemma integration demonstrates how planar graph degeneracy connects to existing Mathlib graph theory infrastructure. The Six Color Theorem proof provides a template for the Five Color Theorem (which additionally requires Kempe chain arguments).",
+    "implications": "The spanning-tree proof gives a constructive approach to Euler's formula, directly suitable for Lean's inductive type system: each `SpanningBuild` constructor is a topological move whose effect on V − E + F is mechanically verifiable. The Mathlib handshaking lemma integration demonstrates how planar graph degeneracy connects to existing Mathlib graph theory infrastructure (`SimpleGraph.sum_degrees_eq_twice_card_edges`, `SimpleGraph.Coloring.mk`).\n\nThe Six Color Theorem proof here is the **easy degeneracy-based** version. Tightening 6 → 5 requires Kempe chain arguments (a degree-5 vertex's neighborhood is not K₅, by `kempe_prerequisite`), and tightening 5 → 4 requires the full discharging method of Appel-Haken (1976) — currently formalized in Coq (Gonthier 2005) but not yet ported to Lean 4 with Mathlib.\n\nThe genus-bound machinery (`genus_edge_bound`, `min_genus`) gives explicit minimum-genus certificates for K₅ and K₇ via the Heawood inequality 6g ≥ E − 3V + 6, and the Heawood map color theorem (Ringel-Youngs 1968) places the present file on a continuum: the planar Six Color Theorem is one specialization of a general $H(g)$-coloring result that becomes asymptotically tight for high genus.",
     "openQuestions": [
       "Five Color Theorem: requires Kempe chain argument (two non-adjacent degree-5 neighbors → color swap possible)",
       "Four Color Theorem: requires computer-assisted verification; Gonthier's 2005 Coq proof has not been ported to Lean 4 with Mathlib",
