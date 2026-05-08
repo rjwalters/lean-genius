@@ -232,7 +232,11 @@ merge_prs() {
                 ((failed++))
                 continue
             }
-            (cd "$worktree_path" && git checkout -B "$branch" "origin/$branch")
+            # --no-track: don't write upstream-tracking config to .git/config,
+            # which is shared across all worktrees and serialized via a single
+            # lockfile. With ~60 worktrees doing concurrent rebases this lock
+            # is the dominant failure mode ("could not lock config file").
+            (cd "$worktree_path" && git checkout --no-track -B "$branch" "origin/$branch")
             temp_worktree=true
         fi
 
@@ -245,7 +249,7 @@ merge_prs() {
 
             if git rebase origin/main 2>/dev/null; then
                 # Rebase succeeded cleanly
-                git push --force-with-lease origin "$branch" 2>/dev/null || true
+                git -c push.autoSetupRemote=false push --force-with-lease origin "$branch" 2>/dev/null || true
             else
                 # Handle conflicts intelligently
                 resolve_conflicts() {
@@ -313,7 +317,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
                             # If continue fails, try once more after resolving any new conflicts
                             resolve_conflicts && GIT_EDITOR=true git rebase --continue 2>/dev/null || git rebase --abort 2>/dev/null || true
                         }
-                        git push --force-with-lease origin "$branch" 2>/dev/null || true
+                        git -c push.autoSetupRemote=false push --force-with-lease origin "$branch" 2>/dev/null || true
                     fi
                 else
                     print_warning "  Could not auto-resolve all conflicts"
@@ -552,12 +556,32 @@ build_website() {
     fi
 
     print_info "Running pnpm build..."
-    if pnpm build 2>&1 | tail -5; then
-        print_success "Build completed"
-    else
-        print_error "Build failed"
-        return 1
-    fi
+    # Capture full log so failures aren't masked by `| tail -5` (which forces
+    # the pipe's exit status to tail's, always 0). Cap node heap at 8 GB so
+    # OOMs surface as deterministic exits rather than thrashing the host, and
+    # bound the whole chain at 20 minutes so a hung step can't accumulate
+    # zombie pnpm/vite processes across cycles.
+    local build_log
+    build_log=$(mktemp)
+    local build_status=0
+    NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=8192" \
+        timeout --kill-after=30 20m pnpm build > "$build_log" 2>&1 \
+        || build_status=$?
+    tail -20 "$build_log"
+    case $build_status in
+        0)
+            print_success "Build completed"
+            rm -f "$build_log"
+            ;;
+        124|137)
+            print_error "Build timed out after 20m (status $build_status); see full log at $build_log"
+            return 1
+            ;;
+        *)
+            print_error "Build failed (exit $build_status); see full log at $build_log"
+            return 1
+            ;;
+    esac
 
     # Run quality audit and log results
     print_info "Running quality audit..."
