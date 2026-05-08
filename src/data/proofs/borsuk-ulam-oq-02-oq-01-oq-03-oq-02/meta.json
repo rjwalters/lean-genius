@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1159,
+    "lineCount": 1242,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -103,10 +103,14 @@
       "no_prime_in_eight_to_ten, no_prime_in_fourteen_to_sixteen, no_prime_in_twentyfour_to_twentyeight (axiom-free, iter 11): witnesses that the half-open intervals (8, 10], (13, 16], (23, 28] contain no primes (each proved by `interval_cases` + `decide`). Cover the smallest prime gaps with multiple composites: the dyadic gap (7, 11), (13, 17), and the first gap of size 6 at (23, 29).",
       "largestPrimeBelow_eight_eq_ten, largestPrimeBelow_thirteen_eq_sixteen, largestPrimeBelow_twentythree_eq_twentyeight (axiom-free, iter 11): concrete LPB plateau collapse instances at the three intervals. One-line specializations of `largestPrimeBelow_const_in_no_prime_range`. The S₂₃ → S₂₈ instance witnesses that the first prime gap of size 6 forces five consecutive `largestPrimeBelow` values to coincide.",
       "symBUDim_eight_eq_ten, symBUDim_thirteen_eq_sixteen, symBUDim_twentythree_eq_twentyeight (conditional, iter 11): plateau collapse predictions of the conjecture at three intervals. The S₂₃ → S₂₈ instance is the longest plateau collapse below n = 30: under `symBUDim_eq_largestPrime`, six consecutive symmetric groups (n = 23, 24, ..., 28) share equivariant Borsuk-Ulam dimensions at every dimension, despite their qualitatively different subgroup structures.",
-      "symBUDim_eight_eq_ten_of, symBUDim_thirteen_eq_sixteen_of, symBUDim_twentythree_eq_twentyeight_of (conditional, iter 11): hypothesis-form variants of the three plateau-collapse instances, taking `ConjectureLPB` explicitly."
+      "symBUDim_eight_eq_ten_of, symBUDim_thirteen_eq_sixteen_of, symBUDim_twentythree_eq_twentyeight_of (conditional, iter 11): hypothesis-form variants of the three plateau-collapse instances, taking `ConjectureLPB` explicitly.",
+      "no_prime_in_ninety_to_ninetysix (axiom-free, iter 12): witness that the half-open interval (89, 96] contains no primes — each of 90, 91, 92, 93, 94, 95, 96 is composite. Pins the **first prime gap of size 8 in ℕ** (between consecutive primes 89 and 97). Proof: `interval_cases k` then `decide` on each of the seven composite cases.",
+      "largestPrimeBelow_eightynine_eq_ninetysix (axiom-free, iter 12): the longest LPB plateau below n = 100. `largestPrimeBelow 96 = largestPrimeBelow 89`. Eight consecutive ranks {89, 90, …, 96} all share the same `largestPrimeBelow`. One-line specialization of Part XVI's `largestPrimeBelow_const_in_no_prime_range`.",
+      "symBUDim_eightynine_eq_ninetysix (conditional, iter 12): the longest conjectural plateau collapse below n = 100. Under `symBUDim_eq_largestPrime`, `symBUDim 89 d = symBUDim 96 d` for every dimension d — eight consecutive symmetric groups conjecturally agree on equivariant Borsuk-Ulam dimension despite qualitatively different rank structure (S₈₉ on prime rank vs S₉₆ on the highly-composite 96 = 2⁵·3, where Sylow_2(S₉₆) has order 2⁹³).",
+      "symBUDim_eightynine_eq_ninetysix_of (conditional, iter 12): hypothesis-form variant of the size-8-gap plateau-collapse instance, taking `ConjectureLPB` explicitly."
     ],
     "assumptions": "1 axiom: `symBUDim_eq_largestPrime` — the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n ≥ 2. The lower-bound direction (`buDim p* d ≤ symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **At n = 2 the conjecture is now settled axiom-free for ALL dimensions d ≥ 1**: `symBUDim_two_general_unconditional` shows symBUDim 2 d = d − 1 from the parent's `symBUDim_two` axiom + `buDim_two`, and combined with `largestPrimeBelow_two` this matches the conjectured value buDim (largestPrimeBelow 2) d = buDim 2 d = d − 1. So the new axiom is redundant at n = 2 not only on even d (per `symBUDim_eq_largestPrime_two_unconditional`) but on ALL d. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime`, `buDim_two` (counted in the parent gallery entries).",
-    "theoremCount": 77,
+    "theoremCount": 81,
     "definitionCount": 2
   },
   "overview": {
@@ -299,10 +303,10 @@
       "BorsukUlamOQ02OQ01"
     ],
     "namespace": "BorsukUlamSymPrime",
-    "lineCount": 1159,
+    "lineCount": 1242,
     "axiomCount": 1,
-    "theoremCount": 77,
-    "substantiveTheoremCount": 75,
+    "theoremCount": 81,
+    "substantiveTheoremCount": 79,
     "definitionCount": 2,
     "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
     "sorries": 0

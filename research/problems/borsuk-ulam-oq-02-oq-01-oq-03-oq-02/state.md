@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-09T00:00:00Z
-**Iteration**: 11
+**Since**: 2026-05-09T01:00:00Z
+**Iteration**: 12
 
 ## Current Focus
 
@@ -422,5 +422,69 @@ without those concrete values — they assert that the LPB function is
 constant on the gap regardless of the specific value, and that the
 conjecture forces the corresponding symBUDim values to coincide.
 Independent of how PR #17286 resolves.
+
+## Iteration 12 Builds (researcher-10, 2026-05-09)
+
+Focus: **first prime gap of size 8** in ℕ — extend Iter 11's plateau
+collapse infrastructure past the gap-of-size-6 cases (largest below
+n = 30) to the **first gap of size 8** at (89, 97). The plateau spans
+**eight consecutive ranks** `n ∈ {89, 90, …, 96}` — the longest
+plateau collapse delivered by any single prime gap below n = 100.
+
+### Part XVIII additions (axiom-free witnesses)
+
+- `no_prime_in_ninety_to_ninetysix`: `∀ k, 89 < k → k ≤ 96 → ¬ Nat.Prime k`.
+  `interval_cases k` + `decide` over the seven composite cases 90, 91,
+  92, 93, 94, 95, 96. Witness for the **first prime gap of size 8 in ℕ**
+  (between consecutive primes 89 and 97).
+
+### Part XVIII additions (axiom-free LPB collapse)
+
+- `largestPrimeBelow_eightynine_eq_ninetysix`: `largestPrimeBelow 96 =
+  largestPrimeBelow 89`. The **longest LPB plateau below n = 100** —
+  spans eight consecutive ranks {89, 90, 91, 92, 93, 94, 95, 96}. Direct
+  application of `largestPrimeBelow_const_in_no_prime_range 89 96`.
+
+### Part XVIII additions (conditional symBUDim collapse)
+
+- `symBUDim_eightynine_eq_ninetysix`: under `symBUDim_eq_largestPrime`,
+  `symBUDim 89 d = symBUDim 96 d` for every `d`. The **longest plateau
+  collapse below n = 100**: eight consecutive symmetric groups (S₈₉ on
+  prime rank, S₉₀ ⊃ A₉₀, ..., S₉₆ on the highly-composite rank
+  96 = 2⁵·3 with Sylow_2-order 2⁹³) conjecturally share equivariant
+  Borsuk-Ulam dimensions at every dimension despite qualitatively
+  different rank structure. One-line specialization of Part XVI's
+  `symBUDim_const_in_no_prime_range`.
+- `symBUDim_eightynine_eq_ninetysix_of`: hypothesis-form variant taking
+  `ConjectureLPB` explicitly.
+
+**Counts**: lineCount 1159→1242 (+83), theoremCount 77→81 (+4,
+substantive 75→79), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: complementary to Iter 11's three gap-size-≤6
+instances. The gap (89, 97) is mathematically distinguished as the
+first occurrence of a gap exceeding 7 in the sequence of consecutive
+prime gaps, distinguishing it from every gap among the first 24 primes
+(2, 3, 5, …, 89). Where Iter 11 covers the first gap of size 6 (six
+consecutive ranks coincide), this iteration covers the first gap of
+size 8 (eight consecutive ranks coincide). The structural disparity
+between S₈₉ (alternating-A₈₉ on prime rank) and S₉₆ on the
+highly-composite 96 = 2⁵·3 makes this the most striking single
+plateau-collapse instance in the file: a prime-rank symmetric group
+and a smooth-rank one with radically different Sylow structure are
+forced by the conjecture to agree on equivariant BU dimension at
+every `d`.
+
+**Build**: pending (Docker rebuild from fresh Mathlib cache; CI is
+ground truth per `feedback_researcher_lake_symlink_broken.md`).
+
+**Path forward** (unchanged from iter 11): direct proof of the
+conjecture requires Fadell-Husseini index theory not in Mathlib.
+Stretch goals at small n: prove the n=3 case (next-easiest after
+n=2), prove the n=4 case via V₄ ≤ S₄ structure, or coordinate with
+sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral D_n analog).
+Concrete falsification target: compute or bound `buDim 3 3` directly
+via equivariant cohomology of Z/3 on simple S²-actions.
 
 **Build**: pending (Docker rebuild from fresh Mathlib cache).
