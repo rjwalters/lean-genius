@@ -2,12 +2,12 @@
   "id": "law-of-cosines-oq-01-oq-01-oq-03",
   "title": "Polar Triangle and Dual Spherical Law of Cosines",
   "slug": "law-of-cosines-oq-01-oq-01-oq-03",
-  "description": "Formalizes the polar triangle construction on S² and derives the dual spherical law of cosines. The key result — that each side of the polar triangle equals π minus the corresponding dihedral angle of the original triangle — is fully proved from cross product algebra.",
+  "description": "Formalizes the polar triangle construction on S² and derives the dual spherical law of cosines, fully proved (0 axioms, 0 sorries). Both the polar side formula (arcLen(A',B') = π − γ) and the polar dihedral-angle formula (dihedralAngle(C',A',B') = π − arcLen(A,B)) are derivable axiom-free from cross-product algebra; the polar-of-polar reduction was completed in Session 4 (2026-05-08).",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean",
     "tags": [
       "geometry",
@@ -16,7 +16,7 @@
       "cross-product",
       "duality"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-05-06",
     "mathlibDependencies": [
@@ -37,19 +37,21 @@
       "Proves normSq(B×C) = normSq(projPerp B C) for unit vectors, connecting cross product to projection norms",
       "Fully proves the polar side formula: arcLen(normalize(B×C), normalize(C×A)) = π - dihedralAngle(C, A, B)",
       "Proves projperp_dot_sinsincos: dot(projPerp A C, projPerp B C) = sin(arcLen A C)·sin(arcLen B C)·cos(dihedralAngle C A B), via Cauchy-Schwarz (Lagrange identity) and Real.cos_arccos",
-      "Derives the dual spherical law of cosines via polar triangle substitution"
+      "Derives the dual spherical law of cosines via polar triangle substitution",
+      "Proves the cross-of-crosses BAC-CAB identities (C×A)×(A×B) = tripleProduct(A,B,C)·A and (A×B)×(B×C) = tripleProduct(A,B,C)·B (Session 4) — the BAC-CAB rule specialized to cyclic cross products on the polar triangle",
+      "Proves the polar dihedral-angle formula (Session 4): dihedralAngle(C',A',B') = π − arcLen(A,B), eliminating the final axiom of the entry. The proof reduces to polar_side_eq_pi_minus_angle applied to (A',B',C') after showing dot(normalize(B'×C'), normalize(C'×A')) = dot(A,B), via the cross-cross identities and a sign analysis using tripleProduct ≠ 0 (which is forced by the non-degeneracy hypothesis)"
     ],
-    "axiomCount": 1,
-    "assumptions": "One axiom: polar_angle_eq — the dihedral angle of the polar triangle equals π minus the corresponding side of the original, proved analogously to the side formula but requiring intricate cross-cross algebra (eliminated in a follow-up).",
-    "lineCount": 327,
-    "theoremCount": 13,
+    "axiomCount": 0,
+    "assumptions": "No axioms remain. Sessions 3 and 4 eliminated both original axioms (projperp_dot_sinsincos via Lagrange/Cauchy-Schwarz, polar_angle_eq via the polar-of-polar reduction).",
+    "lineCount": 516,
+    "theoremCount": 16,
     "definitionCount": 1
   },
   "leanFile": {
-    "axiomCount": 1,
-    "theoremCount": 13,
+    "axiomCount": 0,
+    "theoremCount": 16,
     "definitionCount": 1,
-    "lineCount": 327,
+    "lineCount": 516,
     "sorries": 0,
     "path": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean"
   },
@@ -79,40 +81,48 @@
       "id": "algebra",
       "title": "Algebraic Infrastructure",
       "startLine": 1,
-      "endLine": 90,
-      "summary": "Proves supporting lemmas: cos_arcLen_unit (cosine of arc length = dot product for unit vectors), the generalized Lagrange identity, the key cross product identity dot(B×C, C×A) = -dot(projPerp A C, projPerp B C), and the norm equality normSq(B×C) = normSq(projPerp B C).",
-      "mathContext": "Cross product Lagrange identity: normSq(u×v) = normSq(u)*normSq(v) - (dot u v)². Applied to B×C and C×A to relate cross product norms to projection norms."
+      "endLine": 115,
+      "summary": "Proves supporting lemmas: cos_arcLen_unit (cosine of arc length = dot product for unit vectors), the key cross product identity dot(B×C, C×A) = -dot(projPerp A C, projPerp B C), the norm equalities normSq(B×C) = normSq(projPerp B C) and normSq(C×A) = normSq(projPerp A C), and the BAC-CAB cross-of-crosses identities (C×A)×(A×B) = tripleProduct(A,B,C)·A and (A×B)×(B×C) = tripleProduct(A,B,C)·B.",
+      "mathContext": "Cross product Lagrange identity: normSq(u×v) = normSq(u)*normSq(v) - (dot u v)². The cross-of-crosses identities are specializations of u × (v × w) = (u·w)v - (u·v)w with the cyclic pattern."
     },
     {
       "id": "normalization",
       "title": "Normalization",
-      "startLine": 91,
-      "endLine": 113,
+      "startLine": 117,
+      "endLine": 143,
       "summary": "Defines normalize3 (division by sqrt of normSq) and proves it produces unit vectors. Shows dot product of normalized vectors = dot product divided by norms.",
       "mathContext": "normalize3(v) = v/‖v‖ where ‖v‖ = sqrt(normSq v). IsUnit3(normalize3 v) holds when normSq v > 0."
     },
     {
       "id": "polar-side",
-      "title": "Polar Triangle Side Formula (Key Result)",
-      "startLine": 115,
-      "endLine": 157,
-      "summary": "Defines the polar triangle construction and proves the principal theorem: arcLen(normalize(B×C), normalize(C×A)) = π - dihedralAngle(C, A, B). This is fully proved (0 sorries) using the algebraic identity and arccos_neg.",
+      "title": "Polar Triangle Side Formula",
+      "startLine": 145,
+      "endLine": 183,
+      "summary": "Defines the polar triangle construction and proves the principal theorem: arcLen(normalize(B×C), normalize(C×A)) = π - dihedralAngle(C, A, B). Proved via the cross_dot_eq_neg_projperp identity and arccos_neg.",
       "mathContext": "dot(normalize(B×C), normalize(C×A)) = dot(B×C,C×A)/(|B×C||C×A|) = -dot(projPerp A C, projPerp B C)/(sin(a)*sin(b)) = -cos(γ). Then arccos(-cos(γ)) = π - γ."
+    },
+    {
+      "id": "polar-angle",
+      "title": "Polar Dihedral-Angle Formula and projperp_dot_sinsincos",
+      "startLine": 185,
+      "endLine": 439,
+      "summary": "Proves the polar dihedral-angle formula dihedralAngle(C',A',B') = π − arcLen(A,B) (Session 4) by reducing to polar_side_eq_pi_minus_angle applied to the polar triangle. Also proves projperp_dot_sinsincos (Session 3) — the projection-dot identity expressing dot(projPerp A C, projPerp B C) as sin·sin·cos(dihedral) via Lagrange + Cauchy–Schwarz.",
+      "mathContext": "The polar of the polar is the original up to sign: B'×C' = (t/(nCA·nAB))·A and C'×A' = (t/(nAB·nBC))·B with t = tripleProduct(A,B,C). Non-degeneracy forces t ≠ 0; both sign factors equal sign(t), so sign² = 1 and dot(normalize(B'×C'), normalize(C'×A')) = dot(A,B)."
     },
     {
       "id": "dual-law",
       "title": "Dual Law via Polar Substitution",
-      "startLine": 159,
-      "endLine": 271,
-      "summary": "Applies the standard spherical law to the polar triangle. After substituting the supplementary side/angle relationships (c' = π-γ, a' = π-α, b' = π-β, γ' = π-c), the dual law follows by pure trigonometric algebra via dual_trig_identity (proved) using cos(π-x) = -cos(x) and sin(π-x) = sin(x).",
+      "startLine": 441,
+      "endLine": 516,
+      "summary": "Applies the standard spherical law to the polar triangle. After substituting the supplementary side/angle relationships (c' = π-γ, a' = π-α, b' = π-β, γ' = π-c), the dual law follows by pure trigonometric algebra via dual_trig_identity using cos(π-x) = -cos(x) and sin(π-x) = sin(x).",
       "mathContext": "The standard law cos(c') = cos(a')cos(b') + sin(a')sin(b')cos(γ') becomes -cos(γ) = cos(α)cos(β) - sin(α)sin(β)cos(c) after substitution, giving cos(γ) = -cos(α)cos(β) + sin(α)sin(β)cos(c)."
     }
   ],
   "conclusion": {
     "summary": "The polar triangle construction provides a conceptually clean derivation of the dual spherical law of cosines as a symmetry of the standard law. The key identity dot(B×C, C×A) = -dot(projPerp A C, projPerp B C) bridges the cross product geometry of the polar vertices to the dihedral angle geometry of the original triangle.",
-    "implications": "This establishes the side formula for the polar triangle in Lean 4 (fully proved). The Cauchy-Schwarz/projection-dot identity (projperp_dot_sinsincos) is now also fully proved via Lagrange + Real.cos_arccos. The remaining axiom polar_angle_eq (dihedralAngle of polar triangle = π minus corresponding side) follows analogously to the side formula but requires intricate cross-cross algebra.",
+    "implications": "This establishes the polar triangle side and angle formulas in Lean 4 (fully proved, axiom-free). The Cauchy-Schwarz/projection-dot identity (projperp_dot_sinsincos) was eliminated in Session 3; the polar_angle_eq axiom was eliminated in Session 4 via the polar-of-polar reduction. The dual spherical law of cosines is now derivable axiom-free in this entry.",
     "openQuestions": [
-      "Can the polar_angle_eq axiom be eliminated by applying cross_dot_eq_neg_projperp to the polar triangle's projections? (the computation is analogous to the side formula but more intricate due to nested cross products)",
+      "Generalize cross_CA_cross_AB and cross_AB_cross_BC to a unified BAC-CAB lemma family in Mathlib's CrossProduct module — the BAC-CAB rule for cross-of-crosses on cyclic triples is a ubiquitous identity that's currently re-derived locally in each spherical-geometry formalization",
       "Does Mathlib have a direct Cauchy-Schwarz for the dot product on Fin 3 → ℝ?",
       "Generalize the polar-triangle construction to S^n for n ≥ 3 — does the side/angle duality persist in higher-dimensional spherical simplices, and what's the analogue of cross product algebra there (wedge products in ⋀^(n-1)ℝ^(n+1))?",
       "Derive the spherical law of sines from the dual law — does the symmetric form sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ) emerge naturally from the polar duality?"
