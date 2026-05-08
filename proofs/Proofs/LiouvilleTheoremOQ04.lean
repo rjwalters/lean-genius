@@ -464,8 +464,8 @@ theorem intPolyL1_pos {f : ℤ[X]} (hf : f ≠ 0) : 0 < intPolyL1 f := by
   have hcoeff : f.coeff i ≠ 0 := Polynomial.mem_support_iff.mp hi
   have hpos : 0 < (f.coeff i).natAbs := Int.natAbs_pos.mpr hcoeff
   refine lt_of_lt_of_le hpos ?_
-  exact Finset.single_le_sum (f := fun j => (f.coeff j).natAbs)
-    (h := fun _ _ => Nat.zero_le _) hi
+  -- Lean 4.26: use fully positional args (named `(f := ...)` may shadow local `f : ℤ[X]`)
+  exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) hi
 
 /-- "Homogenized integer evaluation": `intPolyHomogEval f r s = ∑ aᵢ · r^i · s^(d-i)`
     over `i ∈ f.support`, where d = f.natDegree. By construction,
@@ -476,6 +476,7 @@ def intPolyHomogEval (f : ℤ[X]) (r s : ℤ) : ℤ :=
 /-- Helper: `(∑ aᵢ).natAbs ≤ ∑ aᵢ.natAbs` for integer-valued sums over a Finset. -/
 private theorem natAbs_finset_sum_le {α : Type*} (s : Finset α) (φ : α → ℤ) :
     (∑ i ∈ s, φ i).natAbs ≤ ∑ i ∈ s, (φ i).natAbs := by
+  classical
   induction s using Finset.induction_on with
   | empty => simp
   | @insert a s ha ih =>
@@ -503,6 +504,8 @@ theorem intPolyHomogEval_cast_eq (f : ℤ[X]) (r s : ℤ) (hs : s ≠ 0) :
     rw [← pow_add, Nat.sub_add_cancel hi_le]
   rw [hpow_split, div_pow]
   have hsi_ne : ((s : ℚ))^i ≠ 0 := pow_ne_zero _ hs_q
+  -- Lean 4.26: `(algebraMap ℤ ℚ) z` is not definitionally `↑z`; reduce explicitly.
+  simp only [Int.algebraMap_eq_intCast]
   field_simp
   ring
 
@@ -616,7 +619,15 @@ theorem padicNorm_int_poly_eval_uniform_lb
     rw [show (1 : ℚ) / ((L : ℚ) * (H : ℚ)^d) = ((L : ℚ) * (H : ℚ)^d)⁻¹ from one_div _,
         ← one_div, ← one_div]
     exact one_div_le_one_div_of_le hN_natAbs_pos_q hN_natAbs_le_q
-  exact le_trans h_inv_le h_combined
+  -- Lean 4.26: `(max r.natAbs s.natAbs : ℚ)` may elaborate as `max ↑r.natAbs ↑s.natAbs`,
+  -- breaking direct `set H` substitution. Bridge via `Nat.cast_max`.
+  have h_inv_le' : (1 : ℚ) /
+      ((L : ℚ) * (max (r.natAbs : ℚ) (s.natAbs : ℚ))^d) ≤ ((N.natAbs : ℚ))⁻¹ := by
+    have heq : ((H : ℕ) : ℚ) = max (r.natAbs : ℚ) (s.natAbs : ℚ) := by
+      rw [hH_def]; push_cast; rfl
+    rw [← heq]
+    exact h_inv_le
+  exact le_trans h_inv_le' h_combined
 
 /-! ═══════════════════════════════════════════════════════════════════════════
 PART IV.10: ALGEBRAIC CASE OF THE BRIDGE
@@ -755,17 +766,24 @@ theorem padic_liouville_bridge_algebraic_case
     have hxH : ‖((r : ℚ_[p]) / s)‖ ≤ H := padic_norm_int_div_le_height p r s hs
     exact padic_polynomial_eval_norm_bound p g ((r : ℚ_[p]) / s) H hH_one hxH
   -- Step 8: Combine to get ‖α - r/s‖ ≥ 1/(L·M·H^(d + g.natDegree))
+  -- (Lean 4.26: avoid `div_le_div_iff` — use `div_le_iff₀` instead.)
+  have h_M_pos_dg : 0 < M * H ^ g.natDegree := mul_pos hM_pos hHpow_dg_pos
+  have h_α_nn : 0 ≤ ‖α - (r : ℚ_[p]) / s‖ := norm_nonneg _
+  -- Identity from Step 5: ‖α - r/s‖ · ‖g(r/s)‖ = ‖f(r/s)‖
+  have h_eq_mul : ‖α - (r : ℚ_[p]) / s‖ * ‖g.eval ((r : ℚ_[p]) / s)‖ =
+      ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ := by
+    rw [h_div_eq, div_mul_cancel₀ _ h_g_norm_pos.ne']
+  -- Cross-multiplied bound: 1/(L·H^d) ≤ ‖α - r/s‖ · (M·H^dg)
+  have h_cross : 1 / (L * H ^ d) ≤ ‖α - (r : ℚ_[p]) / s‖ * (M * H ^ g.natDegree) := by
+    calc 1 / (L * H ^ d)
+        ≤ ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ := h_lb_r
+      _ = ‖α - (r : ℚ_[p]) / s‖ * ‖g.eval ((r : ℚ_[p]) / s)‖ := h_eq_mul.symm
+      _ ≤ ‖α - (r : ℚ_[p]) / s‖ * (M * H ^ g.natDegree) :=
+          mul_le_mul_of_nonneg_left h_g_ub h_α_nn
+  -- Convert to the divided form via `div_le_iff₀`.
   have h_intermediate : 1 / (L * H ^ d) / (M * H ^ g.natDegree) ≤
-      ‖α - (r : ℚ_[p]) / s‖ := by
-    rw [h_div_eq]
-    rw [div_le_div_iff (mul_pos hM_pos hHpow_dg_pos) h_g_norm_pos]
-    have h1 : 1 / (L * H ^ d) * ‖g.eval ((r : ℚ_[p]) / s)‖ ≤
-        1 / (L * H ^ d) * (M * H ^ g.natDegree) :=
-      mul_le_mul_of_nonneg_left h_g_ub (one_div_nonneg.mpr hLM_pow_d_pos.le)
-    have h2 : 1 / (L * H ^ d) * (M * H ^ g.natDegree) ≤
-        ‖(f.map (algebraMap ℤ ℚ_[p])).eval ((r : ℚ_[p]) / s)‖ * (M * H ^ g.natDegree) :=
-      mul_le_mul_of_nonneg_right h_lb_r (mul_pos hM_pos hHpow_dg_pos).le
-    linarith
+      ‖α - (r : ℚ_[p]) / s‖ :=
+    (div_le_iff₀ h_M_pos_dg).mpr h_cross
   -- Step 9: Simplify (1/(L·H^d)) / (M·H^dg) = 1/(L·M·H^(d+dg))
   have h_simp_lhs : 1 / (L * H ^ d) / (M * H ^ g.natDegree) =
       1 / (L * M * H ^ (d + g.natDegree)) := by
