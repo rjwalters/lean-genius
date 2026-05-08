@@ -221,6 +221,75 @@ This is the cleanest restatement of the OPEN Σ₁ question yet:
 * The **uniform** Σ₁-definability of all of ℤ is the OPEN question:
   no single polynomial is known to witness `t ∈ ℤ` for all `t : ℚ`.
 
+## Iteration 14 Builds (researcher-6, 2026-05-08)
+
+Focus: **list versions of iter-12 (Σ₁ ∩) and iter-13 (Π₁ ∪) closure**
+— the S12.1 and S12.3 priority items in the iter-13 next-action list.
+Adds the FINITE-arity arbitrary-list lifts of the binary closures so
+the 2×2 Boolean closure grid extends to arbitrary list arity within
+each operation.
+
+### Part VIII.14 / .15 additions (axiom-free)
+
+- `finIntersectionList_isDiophantineDefinition (l : List RatSubset)
+  (h : ∀ S ∈ l, IsDiophantineDefinition S) :
+  IsDiophantineDefinition (fun q => ∀ S ∈ l, S q)` — list lift of
+  iter 12. Empty list: `∀ S ∈ [], S q ↔ True`, dispatched to
+  `universe_isDiophantineDefinition`. Cons step: peel head via
+  `intersection_isDiophantineDefinition` and bridge `∀ S ∈ a :: t, S q
+  ↔ a q ∧ ∀ S ∈ t, S q` via constructive `List.mem_cons` case
+  analysis + iter-4 `diophantineDefinition_iff_of_pred_iff`.
+- `finIntersectionList_isUniversalExistentialDefinition` — Π₂
+  corollary via the trivial Σ₁ ⊆ Π₂ inclusion.
+- `finUnionList_isCoDiophantineDefinition (l : List RatSubset)
+  (h : ∀ S ∈ l, IsCoDiophantineDefinition S) :
+  IsCoDiophantineDefinition (fun q => ∃ S ∈ l, S q)` — list lift of
+  iter 13. Empty list: `∃ S ∈ [], S q ↔ False`, dispatched to
+  `empty_isCoDiophantineDefinition`. Cons step: peel head via
+  `union_isCoDiophantineDefinition` and bridge `∃ S ∈ a :: t, S q ↔
+  a q ∨ ∃ S ∈ t, S q` via constructive `List.mem_cons` case analysis
+  + iter-4 `coDiophantineDefinition_iff_of_pred_iff`.
+- `finUnionList_isExistentialUniversalDefinition` — Σ₂ corollary via
+  the trivial Π₁ ⊆ Σ₂ inclusion.
+
+**Counts**: lineCount 1610→1743 (+133), theoremCount 61→65 (+4),
+definitionCount 15 (unchanged), axiomCount 1 (unchanged), sorries 0
+(unchanged). No new imports.
+
+**Significance**: with iter 14 the Σ₁ class over ℚ is now closed
+under arbitrary FINITE-arity list intersection, and the Π₁ class
+under arbitrary FINITE-arity list union (in addition to the binary
+closures from iter 9, 12, 13). This means any *concrete* finite
+collection of Σ₁-definable subsets has Σ₁-definable intersection,
+and any concrete finite collection of Π₁-definable subsets has
+Π₁-definable union — closure properties strictly bigger than the
+binary versions. Combined with iter-10's
+`finUnionList_singletons_isDiophantineDefinition`, the full
+finite-arity Boolean closure grid for Σ₁ and Π₁ over ℚ is now
+populated:
+
+```
+| Class | binary ∪  | binary ∩  | list ∪    | list ∩    |
+|-------|-----------|-----------|-----------|-----------|
+| Σ₁    | iter 9    | iter 12   | iter 14*  | iter 14   |
+| Π₁    | iter 13   | iter 9    | iter 14   | iter 14*  |
+```
+
+*The diagonals (Σ₁ list ∪ via iter 9 by induction, Π₁ list ∩ via
+iter 9-dual by induction) are immediate routine inductive lifts on
+the same template; if helpful as separate named lemmas, they slot
+in as 2-line copies of the new theorems. Not added in this
+iteration to keep the focus tight.*
+
+OPEN content is unaffected: the question is precisely whether the
+COUNTABLY-INFINITE union `⋃_{n : ℤ} {n}` admits a uniform Σ₁
+witness (a single polynomial), independent of finite-arity closure.
+The list-arity lift makes this gap precise: every FINITE
+sublist-union is dispatched, only the infinite supremum is open.
+
+**Build**: pending (Docker rebuild; per
+`feedback_researcher_lake_symlink_broken.md`).
+
 ## Build Status
 
 Iteration 13 build: PENDING. Worktree's `proofs/.lake` is a recursive
