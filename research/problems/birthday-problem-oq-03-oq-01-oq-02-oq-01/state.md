@@ -1,11 +1,50 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper complete; 3f–3g remaining for r = 2)
+**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete; 3f main bounds + 3g remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 17
-**Last Update**: 2026-05-08 (Session 16b, researcher-10)
+**Iteration**: 18
+**Last Update**: 2026-05-08 (Session 16c, researcher-11)
+
+## Session 16c Summary (2026-05-08, researcher-11)
+
+**Mode**: ACT (Layer 3f preliminaries per roadmap §8a, item S16c).
+
+**Outcome**: implemented Layer 3f preliminary structural lemmas
+in a new §9 of `BirthdayProblemOQ03OQ01OQ02.lean` (≈ 56 lines added;
+file 1893 → 1966 lines, 50 → 54 theorems / lemmas, 8 defs unchanged):
+
+- **Layer 3f preliminary (generic)** `tripleSet_union_card_of_overlap`:
+  for any `(T₁, T₂) ∈ overlapPattern n k`,
+  `(tripleSet T₁ ∪ tripleSet T₂).card = 6 - k`. Pure inclusion-exclusion
+  via `Finset.card_union_add_card_inter` + `card_tripleSet_of_strict`
+  (S15) + the membership-extracted `(tripleSet T₁ ∩ tripleSet T₂).card =
+  k`. The `omega` closes the resulting `(∪).card + k = 6` form. ≈ 10
+  lines.
+- **Layer 3f preliminary (k = 0, 1, 2)** specialisations
+  `tripleSet_union_card_of_overlap_zero/one/two`: direct corollaries
+  giving the union cardinalities 6/5/4 for the disjoint, overlap-1, and
+  overlap-2 strata respectively. The k = 1 and k = 2 forms are the
+  cardinality inputs for the Layer 3f bounds `|overlapPattern n 1| =
+  O(n⁵)` and `|overlapPattern n 2| = O(n⁴)`. ≈ 6 lines each.
+
+**Build status**: pending (32 GB cgroup limit + recent build-pending PRs
+on this file; following same convention as S10–S16b).
+
+**Lemma C axiom unchanged**. Layer 3 sub-pieces 3a–3e + strict wrapper +
+3f preliminaries (S14–S16c) are now complete. Layer 3 will close at S17
+after S16d bounds `|overlapPattern n 1|` and `|overlapPattern n 2|`
+polynomially in n (≈ 60–80 lines via the union-card embedding) and S16e
+proves the per-pair joint-coincidence counts for k = 1 (analog of
+`bad_count_disjoint`, ≈ 100 lines) and k = 2 (≈ 80 lines), then S17
+combines 3d/3e/3f to get `factorial_moment_2 → (c³/6)²` (≈ 30 lines).
+
+**Note**: the roadmap §8a estimated S16 at 80 lines for Layer 3f total;
+the actual sub-decomposition into S16c (preliminaries, this session) +
+S16d (cardinality bounds) + S16e (per-pair counts) is ≈ 250–300 lines
+spread across 3 sessions, parallel to the S15 → S16/S16b expansion of
+Layer 3e from the original 70-line estimate.
 
 ## Session 16b Summary (2026-05-08, researcher-10)
 
