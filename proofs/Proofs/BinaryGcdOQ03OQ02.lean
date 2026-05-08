@@ -514,10 +514,13 @@ theorem lehmerInnerStep_even_to_odd {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := heven
   simp only [OddPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  have hq : (0 : ℤ) ≤ ((ahat : ℤ) / bhat) :=
+    Int.ediv_nonneg (Int.natCast_nonneg _) (Int.natCast_nonneg _)
   refine ⟨hβ, ?_, hδ, ?_⟩
-  · nlinarith
-  · nlinarith
+  · -- 0 ≤ M.α - q*M.β: M.α ≥ 0, q*M.β ≤ 0 (q ≥ 0, M.β ≤ 0)
+    nlinarith [mul_nonpos_of_nonneg_of_nonpos hq hβ]
+  · -- M.γ - q*M.δ ≤ 0: M.γ ≤ 0, q*M.δ ≥ 0
+    nlinarith [mul_nonneg hq hδ]
 
 /-- One successful `lehmerInnerStep` takes OddPattern to EvenPattern. -/
 theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
@@ -529,14 +532,15 @@ theorem lehmerInnerStep_odd_to_even {ahat bhat : ℕ} {M M' : CofactorMatrix}
   obtain ⟨_, _, _, _, rfl⟩ := hstep
   obtain ⟨hα, hβ, hγ, hδ⟩ := hodd
   simp only [EvenPattern]
-  have hq : (0 : ℤ) ≤ (ahat / bhat : ℕ) := Int.ofNat_nonneg _
+  have hq : (0 : ℤ) ≤ ((ahat : ℤ) / bhat) :=
+    Int.ediv_nonneg (Int.natCast_nonneg _) (Int.natCast_nonneg _)
   -- M' = [[M.β, M.α - q·M.β], [M.δ, M.γ - q·M.δ]]
   -- EvenPattern: M'.α = M.β ≥ 0, M'.β = M.α - q·M.β ≤ 0, M'.γ = M.δ ≤ 0, M'.δ = M.γ - q·M.δ ≥ 0
   refine ⟨hβ, ?_, hδ, ?_⟩
   · -- M.α - q*M.β ≤ 0: M.α ≤ 0, q*M.β ≥ 0
-    nlinarith
-  · -- 0 ≤ M.γ - q*M.δ: M.γ ≥ 0, -q*M.δ ≥ 0 (since M.δ ≤ 0)
-    nlinarith
+    nlinarith [mul_nonneg hq hβ]
+  · -- 0 ≤ M.γ - q*M.δ: M.γ ≥ 0, q*M.δ ≤ 0 (since q ≥ 0, M.δ ≤ 0)
+    nlinarith [mul_nonpos_of_nonneg_of_nonpos hq hδ]
 
 /-- `lehmerCofactors` preserves the EvenPattern/OddPattern disjunction
     from any starting matrix that has one.
@@ -1069,8 +1073,8 @@ theorem hgcdMatrix_row_output_le (fuel a b : ℕ) :
   induction fuel generalizing a b with
   | zero =>
     rw [hgcdMatrix_zero]
-    simp [CofactorMatrix.id, Int.natAbs_natCast]
-    exact ⟨le_max_left a b, le_max_right a b⟩
+    refine ⟨?_, ?_⟩ <;>
+      simp [CofactorMatrix.id, Int.natAbs_natCast, le_max_left, le_max_right]
   | succ f ih =>
     by_cases hsmall : max a b < hgcdThreshold
     · exact hgcdMatrix_small_row_output_le f a b hsmall
