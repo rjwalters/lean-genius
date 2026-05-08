@@ -234,7 +234,7 @@
     "multiplicative-functions"
   ],
   "conclusion": {
-    "summary": "Complete formalization of the Jacobi symbol's multiplicative structure in Lean 4 with 22 theorems and 9 computational verifications, all with 0 sorries and 0 axioms. Demonstrates that multiplicativity in both arguments, periodicity, power laws, and QR provide a complete system for reducing any J(a,n) computation to base cases in O(log^2 n) steps.",
+    "summary": "Complete formalization of the Jacobi symbol's multiplicative structure in Lean 4 with 24 theorems and 9 computational verifications, all with 0 sorries and 0 axioms. Demonstrates that multiplicativity in both arguments, periodicity, power laws, and QR provide a complete system for reducing any J(a,n) computation to base cases in O(log^2 n) steps.",
     "implications": "**Affirmative answer to OQ-03-OQ-01**: The Mathlib API for `jacobiSym` provides complete coverage of the multiplicativity reduction. Every step of the Euclidean algorithm for Jacobi symbols has a corresponding Mathlib lemma.\n\n**Computational significance**: The formalized reduction steps (mod, extract 2s, reciprocate) constitute a verified specification of the Jacobi symbol computation algorithm used in Solovay-Strassen primality testing.\n\n**Proof architecture**: The bilateral multiplicativity J(ab,n) = J(a,n)J(b,n) and J(a,mn) = J(a,m)J(a,n) means the Jacobi symbol is determined by its values on (prime, prime) pairs, which are exactly the Legendre symbols covered by classical QR.",
     "openQuestions": [
       "Can the Kronecker symbol (extending Jacobi to even moduli and n = 0, -1, -2) be formalized as a further generalization?",

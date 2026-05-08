@@ -136,7 +136,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file answers OQ-01-OQ-03: YES, the nnnorm approach generalizes the Hölder inequality uniformly to any NormedField. The abstract holder_normedField_lintegral subsumes both real (ℝ) and complex (ℂ) cases with the same 5-line proof. All 7 theorems are verified with 0 sorries and 0 axioms.",
+    "summary": "This file answers OQ-01-OQ-03: YES, the nnnorm approach generalizes the Hölder inequality uniformly to any NormedField. The abstract holder_normedField_lintegral subsumes both real (ℝ) and complex (ℂ) cases with the same 5-line proof. All 8 theorems are verified with 0 sorries and 0 axioms.",
     "implications": "**Why This Matters**\n\n1. **Algebraic Clarity**: The nnnorm approach cleanly separates algebraic content (norm multiplicativity, valid in any NormedField) from analytic content (ENNReal Hölder). This is the right level of abstraction.\n\n2. **Maximal Generality**: The theorem applies to p-adic fields, finite extensions of ℚ, and any future valued field that Mathlib may add — with zero additional proof work.\n\n3. **Code Reuse**: The real-valued Hölder from OQ01 is now a strict corollary, showing the OQ01 proof was already pointing toward the right abstraction.",
     "openQuestions": [
       "Can the snorm-based Hölder (‖fg‖_{L1} ≤ ‖f‖_{Lp}·‖g‖_{Lq}) be formalized for NormedField in the same uniform way?",

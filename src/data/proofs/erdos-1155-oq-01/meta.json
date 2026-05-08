@@ -2,7 +2,7 @@
   "id": "erdos-1155-oq-01",
   "title": "Triangle Removal Process: Exact Asymptotics",
   "slug": "erdos-1155-oq-01",
-  "description": "Formalizes the gap between the Bohman-Frieze-Lubetzky $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process on $K_n$. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. This 489-line formalization proves 20 theorems from 5 axioms (0 sorries): structural decomposition of the conjecture into independent $O$ and $\\Omega$ bounds, characterization of $3/2$ as the exact critical exponent, the strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable, and sufficient conditions (ratio convergence) for the full conjecture.",
+  "description": "Formalizes the gap between the Bohman-Frieze-Lubetzky $n^{3/2+o(1)}$ result and Erdős's conjectured $\\Theta(n^{3/2})$ for the triangle removal process on $K_n$. The triangle removal process repeatedly deletes edges of a uniformly random triangle from $K_n$ until no triangles remain; $f(n)$ counts the surviving edges. This 489-line formalization proves 18 theorems from 5 axioms (0 sorries): structural decomposition of the conjecture into independent $O$ and $\\Omega$ bounds, characterization of $3/2$ as the exact critical exponent, the strict hierarchy Conjecture $\\Rightarrow$ BFL $\\Rightarrow$ Grable, and sufficient conditions (ratio convergence) for the full conjecture.",
   "meta": {
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://erdosproblems.com/1155",

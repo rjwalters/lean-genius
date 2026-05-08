@@ -133,7 +133,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The open question is answered affirmatively: the equality characterization of Cauchy-Schwarz extends to complex inner product spaces. All 12 theorems are proved with 0 sorries and 0 axioms.",
+    "summary": "The open question is answered affirmatively: the equality characterization of Cauchy-Schwarz extends to complex inner product spaces. All 9 theorems are proved with 0 sorries and 0 axioms.",
     "implications": "**Theoretical Significance**: **Implications**\n\n1. **Quantum mechanics**: In complex Hilbert spaces (the setting of quantum mechanics), this characterization tells us when two quantum states are proportional — i.e., physically equivalent up to a global phase.\n\n**2. Tight bounds**: Any use of Cauchy-Schwarz that achieves equality (e.g., in optimization or estimation) corresponds to vectors that are scalar multiples of each other.\n\n3. **Connection to CauchySchwarz.lean**: That file proves equality for real IPS using norm_inner_eq_norm_iff. This file proves it for complex (and all RCLike) IPS via orthogonal decomposition — a fundamentally different proof technique.",
     "openQuestions": [
       "Can the complex Gram-Schmidt process be formalized using this equality characterization?",

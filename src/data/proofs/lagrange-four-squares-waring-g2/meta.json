@@ -20,7 +20,7 @@
     "axiomCount": 0,
     "lineCount": 442,
     "theoremCount": 69,
-    "assumptions": "None. All 68 theorems proved. Upper bound uses Mathlib's Nat.sq_add_sq (Lagrange); lower bound is self-contained via mod 8 analysis.",
+    "assumptions": "None. All 69 theorems proved. Upper bound uses Mathlib's Nat.sq_add_sq (Lagrange); lower bound is self-contained via mod 8 analysis.",
     "mathlibDependencies": [
       {
         "theorem": "Nat.sq_add_sq",
@@ -92,7 +92,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Waring's problem for squares is completely resolved: $g(2) = 4$. Upper bound from Mathlib (Lagrange 1770), lower bound self-contained via mod 8 analysis (Legendre 1798). 68 theorems, 0 sorries, 0 axioms.",
+    "summary": "Waring's problem for squares is completely resolved: $g(2) = 4$. Upper bound from Mathlib (Lagrange 1770), lower bound self-contained via mod 8 analysis (Legendre 1798). 69 theorems, 0 sorries, 0 axioms.",
     "implications": "The result is fully formal: both the classical Lagrange upper bound and Legendre's characterization of 3-square-free numbers are proved. The computable `numSquaresNeeded` function and batch verification provide computational evidence alongside the mathematical proofs.",
     "openQuestions": [
       "What is $g(k)$ for $k \\geq 3$? (Waring: $g(3) = 9$, $g(4) = 19$, all known)",

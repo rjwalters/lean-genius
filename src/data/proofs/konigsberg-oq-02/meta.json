@@ -53,7 +53,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The directed Euler theorem is formalized with 2 axioms for the sufficiency directions. Necessity (balanced degrees → needed for Eulerian circuit/path) is fully proved. 30 theorems, 8 definitions, 813 lines.",
+    "summary": "The directed Euler theorem is formalized with 2 axioms for the sufficiency directions. Necessity (balanced degrees → needed for Eulerian circuit/path) is fully proved. 35 theorems, 8 definitions, 813 lines.",
     "implications": "Directed Eulerian path theory is used in computational linguistics (de Bruijn sequences), bioinformatics (genome assembly via de Bruijn graphs), and Chinese Postman Problem algorithms. The formal characterization enables verified routing and traversal algorithms.",
     "openQuestions": [
       "Prove directed_euler_circuit_sufficient: formalize Hierholzer's algorithm in Lean 4",

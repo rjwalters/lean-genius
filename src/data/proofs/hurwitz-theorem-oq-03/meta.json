@@ -56,7 +56,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Hurwitz's theorem is formalized with 1 axiom covering the non-existence direction (requiring Clifford algebra machinery). The existence direction — identities for n=1,2,4,8 — is fully proved, including the 4-square identity via quaternion norm multiplicativity from Mathlib. 32 theorems, 15 definitions, 1731 lines.",
+    "summary": "Hurwitz's theorem is formalized with 1 axiom covering the non-existence direction (requiring Clifford algebra machinery). The existence direction — identities for n=1,2,4,8 — is fully proved, including the 4-square identity via quaternion norm multiplicativity from Mathlib. 45 theorems, 15 definitions, 1731 lines.",
     "implications": "This formalization demonstrates how Mathlib's quaternion library directly enables algebraic results. The four normed division algebras (ℝ,ℂ,ℍ,𝕆) are among the most fundamental structures in mathematics and physics. The Hurwitz theorem's connection to Bott periodicity and K-theory shows its deep topological significance.",
     "openQuestions": [
       "Prove hurwitz_only_if: requires Clifford algebra theory and representation of norm-preserving multiplications",

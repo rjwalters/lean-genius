@@ -112,7 +112,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization proves the canonical CRT theorem: for any system of congruences with pairwise coprime positive moduli, there exists a unique solution in $[0, M)$, obtained by reducing any solution modulo $M$. All 5 theorems are fully proved with 0 sorries and 0 axioms. The Sunzi problem (x = 23) is verified as a concrete example.",
+    "summary": "The formalization proves the canonical CRT theorem: for any system of congruences with pairwise coprime positive moduli, there exists a unique solution in $[0, M)$, obtained by reducing any solution modulo $M$. All 7 theorems are fully proved with 0 sorries and 0 axioms. The Sunzi problem (x = 23) is verified as a concrete example.",
     "implications": "The `crt_list_min` theorem provides the foundation for practical CRT applications: cryptographic operations (RSA Chinese remainder exponentiation), hash function design, and modular arithmetic in computational number theory all rely on extracting the canonical representative. The formalization shows that `ZMod.val` is the type-theoretic analogue: both give the unique $x \\in [0, M)$ representing a tuple of residues. The connection `ℤ/M ≅ ∏ ℤ/mᵢ` is now proved at the element level in Lean.",
     "openQuestions": [
       "Can `crt_list_min` be connected to Mathlib's `ZMod` and the ring isomorphism `ZMod.chineseRemainder`? This would lift the element-level theorem to the ring isomorphism level.",

@@ -2,7 +2,7 @@
   "id": "central-limit-theorem-oq-02",
   "title": "Central Limit Theorem for Dependent Random Variables",
   "slug": "central-limit-theorem-oq-02",
-  "description": "Formalizes the CLT beyond i.i.d. sequences to dependent random variables via two generalizations: the Martingale CLT (McLeish 1974) for martingale difference arrays with Lindeberg condition, and the \u03b1-mixing CLT (Ibragimov 1962) for stationary mixing sequences. Proves Lyapunov implies Lindeberg, i.i.d. variance convergence, and classical CLT recovery. 19 theorems, 1 axiom, 3 sorries.",
+  "description": "Formalizes the CLT beyond i.i.d. sequences to dependent random variables via two generalizations: the Martingale CLT (McLeish 1974) for martingale difference arrays with Lindeberg condition, and the \u03b1-mixing CLT (Ibragimov 1962) for stationary mixing sequences. Proves Lyapunov implies Lindeberg, i.i.d. variance convergence, and classical CLT recovery. 20 theorems, 1 axiom, 3 sorries.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Martingale_central_limit_theorem",
@@ -60,7 +60,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The CLT for dependent variables is formally developed: MDA structure, Lindeberg and Lyapunov conditions, \u03b1-mixing coefficients, and the classical recovery. Lyapunov implies Lindeberg is fully proved. The Martingale CLT (McLeish 1974) is axiomatized as the deep core result. 19 theorems, 6 definitions, 729 lines, 1 axiom, 3 sorries.",
+    "summary": "The CLT for dependent variables is formally developed: MDA structure, Lindeberg and Lyapunov conditions, \u03b1-mixing coefficients, and the classical recovery. Lyapunov implies Lindeberg is fully proved. The Martingale CLT (McLeish 1974) is axiomatized as the deep core result. 20 theorems, 6 definitions, 729 lines, 1 axiom, 3 sorries.",
     "implications": "**Stochastic process infrastructure**: This formalization provides the foundational infrastructure for proving CLT-type results for stochastic processes in Lean 4. The MDA framework covers time series (ARMA, GARCH), Markov chains (via martingale approximation), and ergodic processes.\n\n**Financial mathematics**: The martingale CLT is the theoretical foundation for the Black-Scholes model: stock price increments form a martingale difference sequence, and the CLT gives the Gaussian limit underlying geometric Brownian motion. The mixing CLT applies to high-frequency trading data where temporal dependence decays.\n\n**Statistical estimation**: The dependent CLT is essential for proving asymptotic normality of estimators from dependent data. Maximum likelihood estimators for time series models, kernel density estimators for mixing processes, and sample means of Markov chains all require CLTs beyond the i.i.d. setting.\n\n**Completion path**: Completing the 3 sorries (i.i.d. Lindeberg via DCT, i.i.d. Lyapunov via rpow moment decay, and nested ciSup for independence) would give a fully verified dependent CLT framework. The hardest remaining piece is the axiomatized martingale_clt itself, which requires characteristic function methods and conditional expectation products not yet in Mathlib.",
     "openQuestions": [
       "Prove martingale_clt: formalize McLeish 1974 via characteristic function method",

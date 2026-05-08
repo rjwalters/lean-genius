@@ -2,7 +2,7 @@
   "id": "erdos-131-oq-01",
   "title": "Erdős #131: Non-Dividing Sets Growth Rate",
   "slug": "erdos-131-oq-01",
-  "description": "Formalizes Erdős Problem #131: estimate F(N) = max size of A ⊆ {1,...,N} where no element divides the sum of other distinct elements. Defines IsNonDividing predicate, proves the two formulations are not equivalent (counterexample {2,4}), monotonicity of F, and derives the negative resolution: Pham-Zakharov (2024) shows F(N) ≤ N^{1/4+o(1)}, answering Erdős's question negatively. 20 theorems, 6 definitions, 2 axioms.",
+  "description": "Formalizes Erdős Problem #131: estimate F(N) = max size of A ⊆ {1,...,N} where no element divides the sum of other distinct elements. Defines IsNonDividing predicate, proves the two formulations are not equivalent (counterexample {2,4}), monotonicity of F, and derives the negative resolution: Pham-Zakharov (2024) shows F(N) ≤ N^{1/4+o(1)}, answering Erdős's question negatively. 26 theorems, 6 definitions, 2 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -52,7 +52,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős #131 formalized: IsNonDividing defined, counterexample distinguishing two formulations, F(N) function, original question answered NO via Pham-Zakharov 2024. 20 theorems, 556 lines, 2 axioms.",
+    "summary": "Erdős #131 formalized: IsNonDividing defined, counterexample distinguishing two formulations, F(N) function, original question answered NO via Pham-Zakharov 2024. 26 theorems, 556 lines, 2 axioms.",
     "implications": "The Pham-Zakharov result (2024) is very recent and represents a major advance. The connection to non-averaging sets and cap sets is the new technique. The exact growth rate of F(N) between N^{1/5} and N^{1/4} remains open.",
     "openQuestions": [
       "Determine the exact growth rate of F(N): is it N^{1/5+o(1)} or some other power?",

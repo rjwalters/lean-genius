@@ -111,7 +111,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Fully verified (0 sorries, 0 axioms) Sylow counting analysis of A₅ with 18 theorems and 1 definition. Computes all Sylow numbers, proves non-normality of all Sylow subgroups, verifies conjugacy class arithmetic, and establishes simplicity and non-solvability.",
+    "summary": "Fully verified (0 sorries, 0 axioms) Sylow counting analysis of A₅ with 21 theorems and 1 definition. Computes all Sylow numbers, proves non-normality of all Sylow subgroups, verifies conjugacy class arithmetic, and establishes simplicity and non-solvability.",
     "implications": "The simplicity of A₅ is the foundational obstruction in the Abel-Ruffini theorem: since A₅ is a composition factor of S₅ and is not solvable, the general quintic polynomial has no radical solution. The Sylow counting technique demonstrated here generalizes: for any finite group, the Sylow constraints n_p ≡ 1 (mod p) and n_p | m (where |G| = p^k·m) are the primary tool for establishing simplicity or ruling it out.",
     "openQuestions": [
       "Compute the full subgroup lattice of A₅ in Lean: A₅ has exactly 59 subgroups, organized by order {1, 2, 3, 4, 5, 6, 10, 12, 60}. The subgroups of order 12 are isomorphic to A₄.",

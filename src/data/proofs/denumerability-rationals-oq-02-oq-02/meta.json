@@ -2,7 +2,7 @@
   "id": "denumerability-rationals-oq-02-oq-02",
   "title": "ℝ as the Unique Complete Ordered Field",
   "slug": "denumerability-rationals-oq-02-oq-02",
-  "description": "Categoricity theorem for ℝ: any complete ordered field is (uniquely) isomorphic to ℝ, via the Dedekind cut map. Parallel to Cantor's characterization of ℚ as the unique CDLO. Uses Mathlib's ConditionallyCompleteLinearOrderedField infrastructure. 16 theorems, 2 definitions, 0 sorries.",
+  "description": "Categoricity theorem for ℝ: any complete ordered field is (uniquely) isomorphic to ℝ, via the Dedekind cut map. Parallel to Cantor's characterization of ℚ as the unique CDLO. Uses Mathlib's ConditionallyCompleteLinearOrderedField infrastructure. 15 theorems, 2 definitions, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-12",
@@ -60,7 +60,7 @@
     ]
   },
   "conclusion": {
-    "summary": "ℝ formalized as unique complete ordered field: any F satisfying ConditionallyCompleteLinearOrderedField is isomorphic to ℝ via the canonical Dedekind cut map, and the isomorphism is unique. 16 theorems, 2 definitions, 216 lines, 0 sorries.",
+    "summary": "ℝ formalized as unique complete ordered field: any F satisfying ConditionallyCompleteLinearOrderedField is isomorphic to ℝ via the canonical Dedekind cut map, and the isomorphism is unique. 15 theorems, 2 definitions, 216 lines, 0 sorries.",
     "implications": "This categoricity theorem for ℝ is the algebraic backbone of real analysis: it explains why all constructions of ℝ (Dedekind cuts, Cauchy sequences, Eudoxus reals) give the same structure. It also shows ℝ is 'rigid' (no non-trivial automorphisms), contrasting with ℂ's enormous automorphism group.",
     "openQuestions": [
       "Formalize quantifier elimination for the theory of real closed fields (Tarski 1951): every first-order sentence about ℝ is decidable",

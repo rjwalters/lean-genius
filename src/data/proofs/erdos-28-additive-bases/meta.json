@@ -2,7 +2,7 @@
   "id": "erdos-28-additive-bases",
   "title": "Erdős Problem #28: Erdős-Turán Conjecture on Additive Bases",
   "slug": "erdos-28-additive-bases",
-  "description": "Formalizes Erdős Problem #28 (prize: $500): if A+A contains all sufficiently large integers, must lim sup r_A(n) = ∞? Develops representation function theory, asymptotic basis structure, density lower bounds (|A∩[0,N]| ≥ √N), and axiomatizes the known partial results (Grekos 2003: r_A≥6 infinitely often, Borwein: r_A≥8 infinitely often). 15 theorems, 2 axioms.",
+  "description": "Formalizes Erdős Problem #28 (prize: $500): if A+A contains all sufficiently large integers, must lim sup r_A(n) = ∞? Develops representation function theory, asymptotic basis structure, density lower bounds (|A∩[0,N]| ≥ √N), and axiomatizes the known partial results (Grekos 2003: r_A≥6 infinitely often, Borwein: r_A≥8 infinitely often). 19 theorems, 2 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -54,7 +54,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős-Turán conjecture on additive bases formally developed: representation function theory, density lower bound (√N), conjecture statement, known partial results axiomatized. 15 theorems, 11 definitions, 647 lines, 2 axioms. The main conjecture remains open ($500 prize).",
+    "summary": "Erdős-Turán conjecture on additive bases formally developed: representation function theory, density lower bound (√N), conjecture statement, known partial results axiomatized. 19 theorems, 11 definitions, 647 lines, 2 axioms. The main conjecture remains open ($500 prize).",
     "implications": "This formalization provides verified infrastructure for attacking the Erdős-Turán conjecture: the representation function theory, asymptotic basis framework, density bounds, and Sidon impossibility result are all machine-checked. The √N density lower bound is a key structural result — it shows bases have the same asymptotic density threshold as Sidon sets from the opposite direction. A resolution of the full conjecture would solve a 80+ year open problem in additive number theory, with implications for the structure theory of sumsets and connections to probabilistic methods (random sets are almost surely bases with unbounded representation).",
     "openQuestions": [
       "Prove lim sup r_A(n) = ∞ for any asymptotic basis of order 2 — the $500 Erdős problem",

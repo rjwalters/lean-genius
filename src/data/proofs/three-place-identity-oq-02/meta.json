@@ -86,7 +86,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization proves Etter's Stereo Equality Theorem in both directions: two equivalence relations suffice to encode relative identity (stereoToRelative), and every relative identity arises from a stereo pair (relativeToStereo). The negative result — a single equivalence relation is insufficient — is also machine-verified. All 8 theorems and 5 definitions are fully proved, 0 sorries.",
+    "summary": "The formalization proves Etter's Stereo Equality Theorem in both directions: two equivalence relations suffice to encode relative identity (stereoToRelative), and every relative identity arises from a stereo pair (relativeToStereo). The negative result — a single equivalence relation is insufficient — is also machine-verified. All 6 theorems and 5 definitions are fully proved, 0 sorries.",
     "implications": "This result provides a formal foundation for the Geach-Etter position in the philosophy of identity: relative identity is not a weakening of Leibniz identity but an extension requiring a richer structure. In Lean 4, the proof is elementary (just propositional logic and equivalence axioms), making it a clean example of philosophy-to-machine-verification. The framework is relevant to database theory (where two records may be 'the same person' under one schema and 'different' under another) and to coalgebraic models of identity in process algebra.",
     "openQuestions": [
       "Can the viewpoint-dependent construction (where Id(x,y,z) genuinely depends on x) be formalized in Lean 4, and does it yield a richer theory than the viewpoint-independent consensus?",

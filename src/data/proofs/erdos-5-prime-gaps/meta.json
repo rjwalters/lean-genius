@@ -2,7 +2,7 @@
   "id": "erdos-5-prime-gaps",
   "title": "Erdős Problem #5: Prime Gap Limit Points",
   "slug": "erdos-5-prime-gaps",
-  "description": "Formalizes Erdős Problem #5: is the set S = {lim (p_{n+1}-p_n)/log(n)} of prime gap ratio limit points equal to [0,∞)? Develops prime gap and normalized gap functions, axiomatizes known partial results (Westzynthius large gaps, Zhang bounded gaps, Hildebrand-Maier large limit points), and proves S is closed, non-empty, and unbounded. 29 theorems, 3 axioms.",
+  "description": "Formalizes Erdős Problem #5: is the set S = {lim (p_{n+1}-p_n)/log(n)} of prime gap ratio limit points equal to [0,∞)? Develops prime gap and normalized gap functions, axiomatizes known partial results (Westzynthius large gaps, Zhang bounded gaps, Hildebrand-Maier large limit points), and proves S is closed, non-empty, and unbounded. 33 theorems, 3 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -57,7 +57,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Erdős Problem #5 formalized: prime gap ratio limit point set S, key partial results axiomatized (Westzynthius, Zhang, Hildebrand-Maier), 0 ∈ S proved, density reduction established. 29 theorems, 9 definitions, 572 lines, 3 axioms. Main conjecture S = [0,∞) open.",
+    "summary": "Erdős Problem #5 formalized: prime gap ratio limit point set S, key partial results axiomatized (Westzynthius, Zhang, Hildebrand-Maier), 0 ∈ S proved, density reduction established. 33 theorems, 9 definitions, 572 lines, 3 axioms. Main conjecture S = [0,∞) open.",
     "implications": "This provides the formal infrastructure for attacking the prime gap conjecture. The density reduction theorem gives a clean characterization of what needs to be proved to resolve Erdős #5.",
     "openQuestions": [
       "Prove S = [0,∞) (Erdős #5 itself): this would follow from proving normalized gaps are dense in [0,∞), which is within reach of Merikoski's current methods but not yet achieved",

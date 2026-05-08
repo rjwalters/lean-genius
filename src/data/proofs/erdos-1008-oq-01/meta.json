@@ -26,7 +26,7 @@
     "erdosProblemStatus": "open-question",
     "axiomCount": 1,
     "lineCount": 374,
-    "assumptions": "One axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). folkman_upper_bound now proved via completeGraph(Fin 2) specialization. 18 theorems fully proved.",
+    "assumptions": "One axiom: cfs_admissible_exists (Conlon-Fox-Sudakov main theorem). folkman_upper_bound now proved via completeGraph(Fin 2) specialization. 15 theorems fully proved.",
     "mathlib_version": "4.26.0",
     "theoremCount": 15,
     "definitionCount": 6
@@ -108,7 +108,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the open question about optimal constants in the $C_4$-free subgraph bound. All 17 theorems fully proved (0 sorries) including the $K_{2,2} = C_4$ equivalence, common neighbor uniqueness, c4free_of_few_edges, optimal_constant_pos, hereditary $C_4$-freeness, and the Folkman ratio $(n^3)^{2/3} = n^2$. Two axioms encode the deep results: Folkman's upper bound $c^* \\leq 1$ (requiring full KST formalization) and the CFS existence theorem.",
+    "summary": "Formalizes the open question about optimal constants in the $C_4$-free subgraph bound. All 15 theorems fully proved (0 sorries) including the $K_{2,2} = C_4$ equivalence, common neighbor uniqueness, c4free_of_few_edges, optimal_constant_pos, hereditary $C_4$-freeness, and the Folkman ratio $(n^3)^{2/3} = n^2$. Two axioms encode the deep results: Folkman's upper bound $c^* \\leq 1$ (requiring full KST formalization) and the CFS existence theorem.",
     "implications": "The common neighbor uniqueness theorem ($|N(a) \\cap N(b)| \\leq 1$ in $C_4$-free graphs) is the combinatorial engine behind all density bounds for $C_4$-free graphs, from the original Kővári-Sós-Turán proof to modern dependent random choice arguments. The optimal constant framework via `IsAdmissibleConstant` and `optimalConstant = sSup` provides a clean formalization target: resolving the value of $c^*$ would complete a quantitative picture of $C_4$-free subgraph extraction that has been open since the 1960s. The techniques here connect to graph sparsification in theoretical computer science and to the broader Zarankiewicz problem in combinatorics.",
     "openQuestions": [
       "Determine the exact value of the optimal constant c* in (0, 1]",
