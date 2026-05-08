@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW exchange-step framework + diagram commutativity; corner-distinctness coordinate lemmas added; Aristotle Target 3 closed via dispatcher; double-removal hookLength shift characterization complete)
+**Phase**: ORIENT/PLAN (S49 — refined attack plan for `gnwProb_exchange`: cell-wise gnwProb invariance shown to fail; pivot to sum-level joint-K induction strategy)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
 **Last Updated**: 2026-05-08
-**Iteration**: 48
+**Iteration**: 49
 
 ## Current Focus
 Close `gnwProb_exchange` (Helpers, line 14143) — the GNW 1979 exchange identity
@@ -31,9 +31,9 @@ in place:
    (L-shape, (3,1)).
 
 ## Attempt Count
-- Total attempts: 48 (sessions 1–48; sessions 1–4 archived to
-  `sessions/`; sessions 5–48 in `knowledge.md` + `sessions/`)
-- Current approach attempts: 12 (sessions 37–48 on GNW)
+- Total attempts: 49 (sessions 1–49; sessions 1–4 archived to
+  `sessions/`; sessions 5–49 in `knowledge.md` + `sessions/`)
+- Current approach attempts: 13 (sessions 37–49 on GNW)
 - Approaches tried:
   1. LGV-determinant via `lgv_lemma_rxr` + Jacobi–Trudi (sessions 1–10) —
      dead scaffolding deleted in session 32.
@@ -109,25 +109,50 @@ in place:
   not yet confirmed in this session. CI will verify the PR.
 
 ## Next Action
-**ACT — prove `gnwProb_exchange`.**
+**S50 — extract `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` + prove
+`hookProd_doubleRemove_factor`** (the algebraic "easy half" of
+`gnwProb_exchange`).
 
-1. Decompose `μ.cells = (removeCorner μ c').cells ∪ {c'}` and split the LHS sum
-   into the c' contribution + the rest.
-2. For x ≠ c', relate `gnwProb μ c (h(x)) x` to `gnwProb (μ\c') c (h(x)) x`
-   by analyzing how `strictHookCells x` changes when c' is removed
-   (changes only when x is in the arm/leg of c').
-3. The hook lengths satisfy:
-   - `h_{μ\c'}(r,c'.2) = h_μ(r,c'.2) - 1` for r < c'.1 (leg of c')
-   - `h_{μ\c'}(c'.1,s) = h_μ(c'.1,s) - 1` for s < c'.2 (arm of c')
-   - `h_{μ\c'}(x) = h_μ(x)` elsewhere
-4. The product
-   `H(μ)·H((μ\c')\c) = H(μ\c)·H(μ\c')` follows from a careful tally of the
-   doubly-affected cell `(c'.1,c.2)` (or similar boundary cells if c, c'
-   are adjacent in the appropriate sense).
+S49 (this session) re-examined S48's outlined cell-by-cell pairing and
+identified a subtle obstacle: cell-wise gnwProb invariance for cells
+"far from c'" does NOT hold, because the gnwProb random walk
+recursively descends into arm/leg of c' even when starting at cells
+disjoint from arm/leg of c'.  See `sessions/2026-05-08-s04.md` for the
+counterexample sketch (e.g., `x = (c'.1 - 1, 0)` reaches `(c'.1, 0)` in
+one walk step, and `(c'.1, 0)` is in the arm of c').
 
-Alternative: a deterministic weighted-path recasting of GNW that avoids the
-exchange step entirely (count weighted walks of every length, divide by
-`μ.card · ∏ |strict hook|`); ~400 lines self-contained.
+The refined attack splits `gnwProb_exchange` into two sub-lemmas:
+
+1. **Algebraic "easy half" — `hookProd_doubleRemove_factor`** (~80 lines).
+   Pure hookProd identity using `hookProd_ratio_formula` (twice) plus
+   the six S48 shift lemmas.  States that
+   `H(μ) · H((μ\c)\c') · (h_d − 1)² = H(μ\c) · H(μ\c') · h_d · (h_d − 2)`
+   where `d = (c.1, c'.2)`.  Confidence: high.
+
+2. **F-side "hard half"** (~100-200 lines).  Joint K-induction on the
+   sum-level invariant
+   `(∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\c') c K) · (h_d − 1)²`,
+   using `gnwProb_step` for K-stability and the S43 sum-bridges
+   (`sum_gnwProb_eq_removeCorner_cells`,
+   `sum_gnwProb_strictHookCells_eq_removeCorner`).  Confidence: medium.
+
+3. **Combine** to close `gnwProb_exchange` (~50 lines algebraic
+   rearrangement).
+
+Practical sequencing for S50: do step 1 first (purely algebraic, low risk,
+buildable in isolation).  Step 2 involves K-bookkeeping and may need
+multiple sub-sessions.
+
+**File-size mitigation.** Helpers.lean is at 14629 lines after S48; the
+new bridge lemmas add ~150-300 lines.  Before S50 starts coding, extract
+S43-S48 + new bridges into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
+to stay below the 32GB Docker build ceiling.  This file would import
+the existing primitives and re-export the bridges to Helpers.
+
+Alternative (deferred): a deterministic weighted-path recasting of GNW
+that avoids the exchange step entirely (count weighted walks of every
+length, divide by `μ.card · ∏ |strict hook|`); ~400 lines self-contained.
+Fallback if S50-S52 stall.
 
 ## References
 
@@ -142,6 +167,7 @@ exchange step entirely (count weighted walks of every length, divide by
 - `sessions/2026-05-08-s01.md` — Session 46: Aristotle Target 3 closed via dispatcher
 - `sessions/2026-05-08-s02.md` — Session 47: `removeCorner_swap` + `hookProd_removeCorner_swap`
 - `sessions/2026-05-08-s03.md` — Session 48: double-removal hookLength shift lemmas
+- `sessions/2026-05-08-s04.md` — Session 49: refined attack plan; cell-wise → sum-level pivot
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
