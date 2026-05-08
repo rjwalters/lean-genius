@@ -1108,6 +1108,90 @@ private lemma exists_int_sqrt_neg_d_mod_p
     ring
   exact (ZMod.intCast_zmod_eq_zero_iff_dvd (r' ^ 2 + (d : ℤ)) p).mp h1
 
+/-! ### S9 (2026-05-08): Dirichlet Sublattice — Divisibility Side
+
+The Dirichlet Key Lemma combines the integer Minkowski step (S5/S6) with a
+divisibility condition: `p ∣ x² + d y² + d z²` for `(x, y, z)` in a sublattice
+`L_r ⊂ ℤ³` of covolume `p²`. Combined with the ellipsoid bound, the form value
+on the lattice point is `≤ R` and `≥ 0` and divisible by `p`, so picking `R < 2p`
+forces the value to be exactly `p` — which we then identify with `dn - 1`.
+
+S9 builds the **divisibility side** of this construction at the integer level.
+The geometric covolume computation (lifting `L_r` to `Submodule ℤ (Fin 3 → ℝ)`
+and computing `volume(fundamentalDomain) = p²` via `ZSpan.volume_fundamentalDomain`)
+is left to S10; what we deliver here is purely arithmetic and self-contained.
+
+Concretely: given `r : ℤ` with `p ∣ r² + d` (e.g. obtained from S8's
+`exists_int_sqrt_neg_d_mod_p`), define the sublattice
+  `L_r = {(x, y, z) ∈ ℤ³ : p ∣ (x − r y) ∧ p ∣ z}`
+and prove that for every `v ∈ L_r`, `p ∣ v 0² + d · v 1² + d · v 2²`.
+
+The composite `exists_dirichletSublattice_dvd_form` packages S8 + S9 into a single
+existential: from `legendreSym p (-d) = 1`, extract `r` such that the entire
+sublattice carries the divisibility property. -/
+
+/-- **S9**: Dirichlet sublattice predicate. A vector `v ∈ ℤ³` lies in the
+sublattice `L_r ⊂ ℤ³` defined by `p ∣ (v 0 − r · v 1)` and `p ∣ v 2`. The
+sublattice has index `p²` (covolume `p²`) inside ℤ³.
+
+Combined with `r² + d ≡ 0 (mod p)`, every element of the sublattice satisfies
+`p ∣ v 0² + d · v 1² + d · v 2²` — see `dirichletForm_dvd_of_in_sublattice`. -/
+def IsInDirichletSublattice (p r : ℤ) (v : Fin 3 → ℤ) : Prop :=
+  p ∣ (v 0 - r * v 1) ∧ p ∣ v 2
+
+/-- **S9**: Closure of the Dirichlet quadratic form under sublattice membership.
+If `r² + d ≡ 0 (mod p)` and `(v 0, v 1, v 2)` lies in the sublattice
+`L_r = {p ∣ (x − r y) ∧ p ∣ z}`, then `p ∣ v 0² + d · v 1² + d · v 2²`.
+
+**Proof outline**. Write `v 0 = r · v 1 + p · a` (from `p ∣ v 0 − r · v 1`) and
+`v 2 = p · b` (from `p ∣ v 2`). Then expanding:
+
+  `v 0² + d · v 1² + d · v 2²`
+   `= (r · v 1 + p · a)² + d · v 1² + d · (p · b)²`
+   `= (r² + d) · v 1² + 2 r · v 1 · p · a + p² · a² + d · p² · b²`
+
+and using `r² + d = p · k`,
+
+   `= p · (k · v 1² + 2 r · v 1 · a + p · a² + d · p · b²)`,
+
+which exhibits `p` as a divisor.
+
+Closed via `linear_combination (v 1)² * hk` since the LHS−RHS difference of the
+witness equation is exactly `(r² + d − p · k) · v 1²`. -/
+private lemma dirichletForm_dvd_of_in_sublattice
+    {p d r : ℤ} (hr : p ∣ r ^ 2 + d) (v : Fin 3 → ℤ)
+    (hv : IsInDirichletSublattice p r v) :
+    p ∣ v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2 := by
+  obtain ⟨hxy, hz⟩ := hv
+  -- Witnesses for the three divisibility facts.
+  obtain ⟨a, ha⟩ := hxy            -- v 0 - r * v 1 = p * a
+  obtain ⟨b, hb⟩ := hz              -- v 2 = p * b
+  obtain ⟨k, hk⟩ := hr              -- r ^ 2 + d = p * k
+  refine ⟨k * v 1 ^ 2 + 2 * r * v 1 * a + p * a ^ 2 + d * p * b ^ 2, ?_⟩
+  have hv0 : v 0 = r * v 1 + p * a := by linarith
+  rw [hv0, hb]
+  linear_combination (v 1) ^ 2 * hk
+
+/-- **S9 (composite)**: From `legendreSym p (-d) = 1`, extract a sublattice
+parameter `r : ℤ` such that the entire Dirichlet sublattice
+`L_r = {(x, y, z) ∈ ℤ³ : p ∣ (x − r y) ∧ p ∣ z}` carries the divisibility
+property `p ∣ x² + d y² + d z²`.
+
+This composes S8's QR square-root extraction (`exists_int_sqrt_neg_d_mod_p`)
+with S9's `dirichletForm_dvd_of_in_sublattice`. It is the integer-side input to
+the Dirichlet Key Lemma proof: for any non-zero lattice point in `L_r`, the form
+value is a positive multiple of `p`. Combined with the ellipsoid bound (S10),
+the value can be forced to equal `p` exactly. -/
+private lemma exists_dirichletSublattice_dvd_form
+    {p d : ℕ} [Fact (Nat.Prime p)]
+    (hd_pos : 0 < d) (hd_lt_p : d < p)
+    (hqr : legendreSym p (-d : ℤ) = 1) :
+    ∃ r : ℤ, ∀ v : Fin 3 → ℤ,
+      IsInDirichletSublattice (p : ℤ) r v →
+      (p : ℤ) ∣ v 0 ^ 2 + (d : ℤ) * v 1 ^ 2 + (d : ℤ) * v 2 ^ 2 := by
+  obtain ⟨r, hr⟩ := exists_int_sqrt_neg_d_mod_p hd_pos hd_lt_p hqr
+  exact ⟨r, fun v hv => dirichletForm_dvd_of_in_sublattice hr v hv⟩
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
