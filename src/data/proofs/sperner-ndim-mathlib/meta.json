@@ -33,7 +33,7 @@
       "sperner: Sperner's lemma for abstract cell complexes"
     ],
     "theoremCount": 13,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "leanFile": {
     "path": "Proofs/SpernerNDimMathlib.lean",
@@ -41,7 +41,7 @@
     "axiomCount": 0,
     "lineCount": 521,
     "theoremCount": 13,
-    "definitionCount": 3
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Sperner's lemma was proved by Emanuel Sperner in his 1928 paper *Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes* (Abh. Math. Sem. Univ. Hamburg 6, 265–272), where it served as the combinatorial substrate for an elementary proof of the *invariance of dimension* and *invariance of domain* — results previously known only via the homological / Brouwer-degree machinery of Brouwer (1911) and Lebesgue (1911). Sperner's contribution was to recast a topological invariance question as a finite combinatorial counting argument: given any *Sperner coloring* of the vertices of a triangulated simplex (vertex $i$ on the original face opposite $i$ never receives color $i$), the number of fully-coloured small simplices is *odd*, hence at least one exists.\n\nThe modern *door-counting* proof — assigning each $(d-1)$-facet of each $d$-simplex a 'door' label and observing that interior doors pair up while exterior doors do not — was popularised by Donald Knuth in *The Art of Computer Programming* Vol. 1, §1.2.6 Ex. 47, and is now standard in combinatorial textbooks (Aigner-Ziegler, *Proofs from THE BOOK*, Ch. 27). The door-counting proof is essentially constructive (it gives an explicit pivoting algorithm for finding a fully-coloured cell, used in algorithmic fair-division and in the Lemke-Howson algorithm for bimatrix Nash equilibria).\n\nThe *abstract cell complex* formulation in this file is the natural Mathlib-shaped abstraction: rather than committing to a specific triangulation scheme (Freudenthal, barycentric subdivision, Kuhn), the proof axiomatises adjacency directly via three axioms — `adj_symm` (adjacency is symmetric), `adj_vertices` (adjacent cells share a $(d-1)$-face), and `adj_ne` (distinct cells stay distinct). Concrete triangulations and CW-style polyhedral complexes both instantiate this structure. The argument works over `ZMod 2`-counts, and the combinatorial heart is the lemma `even_card_fpf_invol` (a fixed-point-free involution on a finite set has even cardinality), which is independently useful and a standalone Mathlib-worthy contribution. The full Sperner-via-CellComplex argument lives in 521 lines without sorries or axioms, and is part of an active push (Spring 2026) to upstream Sperner's lemma to Mathlib (mathlib4#25231 *Sperner's Lemma*, ongoing).",
