@@ -4,33 +4,50 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Iteration 8, researcher-9)
-**Iteration**: 8
+**Last Updated**: 2026-05-08 (Iteration 10, researcher-9)
+**Iteration**: 10
 
 ## Current Focus
-Iteration 8 (2026-05-08, this PR): closes the **reverse direction of
+Iteration 10 (2026-05-08, this PR): extracts the **first non-trivial
+published-bound** from the just-closed Chebyshev decomposition:
+
+- `lcmRange_le_pow_card_primes_le (n : ℕ) :
+   lcmRange n ≤ n ^ ((Finset.range (n+1)).filter Nat.Prime).card`
+
+Equivalently `lcmRange n ≤ n ^ π(n)`, where `π(n)` is the
+prime-counting function. Strictly weaker than Hanson's `3 ^ n` (since
+`π(n) ~ n / log n` by PNT, so `n ^ π(n) ~ n ^ {n/log n}` grows
+super-exponentially), but a non-trivial sharpening of the trivial
+`n ^ n` bound (Part 3 of the file): this saves the contribution of
+all *composite* `k ∈ {1,...,n}` via prime-power coalescing.
+
+The proof is short (~15 lines) and follows immediately from the
+Iter 9 Chebyshev identity:
+
+1. `n = 0`: `lcmRange 0 = 1` and the prime-filter is empty
+   (0 isn't prime), so RHS = `0 ^ 0 = 1`. Closes by `simp`-style
+   `Finset.range_one + Finset.filter_singleton + Nat.not_prime_zero`.
+2. `n ≥ 1`: rewrite via `lcmRange_eq_prod_prime_powers`; bound each
+   factor `p ^ ⌊log_p n⌋ ≤ n` by `Nat.pow_log_le_self p hn.ne'`;
+   collapse `∏ _ ∈ S, n = n ^ S.card` via `Finset.prod_const`.
+
+Iteration 9 (#17333 merged): closed the antisymmetric **Chebyshev
+prime-power equality** by `Nat.dvd_antisymm`:
+
+- `lcmRange_eq_prod_prime_powers (n : ℕ) :
+   lcmRange n = ∏ p ∈ (Finset.range (n+1)).filter Nat.Prime,
+                 p ^ Nat.log p n`
+
+Iteration 8 (#17312 merged): closed the **reverse direction of
 Chebyshev's decomposition**, complementing Iter 7's forward direction:
 
 - `lcmRange_dvd_prod_prime_powers (n : ℕ) :
    lcmRange n ∣ ∏ p ∈ (Finset.range (n+1)).filter Nat.Prime, p ^ Nat.log p n`
 
-The proof routes through `Nat.factorization`:
-
-1. By `Finset.lcm_dvd_iff` it suffices to show every `m ∈ {1,…,n}`
-   divides the product `N`.
-2. Rewrite `m = ∏_{p ∈ m.primeFactors} p^(m.factorization p)` via
-   `Nat.factorization_prod_pow_eq_self`.
-3. Extend the index set from `m.primeFactors` to
-   `(Finset.range (n+1)).filter Nat.Prime` via `Finset.prod_subset`
-   (the extra factors contribute `p^0 = 1`).
-4. Pointwise divisibility on the resulting two products: each
-   `m.factorization p ≤ Nat.log p n` since
-   `p^(m.factorization p) ∣ m ≤ n` and `Nat.le_log_of_pow_le` lifts
-   the `p^k ≤ n` inequality into the exponent bound (using
-   `hp_prime.one_lt`).
-
-Combining Iter 7 and Iter 8 via `Nat.dvd_antisymm` gives the exact
-Chebyshev identity (Iter 9 candidate).
+Routes through `Nat.factorization`: write
+`m = ∏_{p ∈ m.primeFactors} p^(m.factorization p)` via
+`Nat.factorization_prod_pow_eq_self`, extend the index set, and bound
+each exponent by `Nat.log p n` using `Nat.le_log_of_pow_le`.
 
 Iteration 7 (#17166 merged): closes the **easy direction of
 Chebyshev's decomposition**, the major structural milestone of the
@@ -99,7 +116,7 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 8.
+- Total attempts: 10.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
 - Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
   structural-lemma layer for inductive proofs (iter 2); generic
@@ -110,7 +127,10 @@ Currently blocked on:
   #17128); easy direction of Chebyshev's decomposition
   `prod_prime_powers_dvd_lcmRange` (iter 7, #17166); reverse
   direction `lcmRange_dvd_prod_prime_powers` via `Nat.factorization`
-  (iter 8, this PR).
+  (iter 8, #17312); antisymmetric closure
+  `lcmRange_eq_prod_prime_powers` (iter 9, #17333);
+  prime-counting bound `lcmRange_le_pow_card_primes_le` (iter 10,
+  this PR).
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -119,20 +139,24 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 9 candidate**: the **antisymmetric closure** —
-combining Iter 7 and Iter 8 to produce the exact Chebyshev identity:
+**Iteration 11 candidate**: reformulate Iter 10 in terms of
+`Nat.primeCounting`:
 
-  `lcmRange_eq_prod_prime_powers : lcmRange n =
-     ∏ p ∈ filter Prime (range (n+1)), p ^ Nat.log p n`
+  `lcmRange_le_pow_primeCounting (n : ℕ) :
+     lcmRange n ≤ n ^ Nat.primeCounting n`
 
-This is a one-line `Nat.dvd_antisymm` proof from
-`prod_prime_powers_dvd_lcmRange` (Iter 7) and
-`lcmRange_dvd_prod_prime_powers` (Iter 8).
+A one-line corollary: rewrite `Nat.primeCounting n` as
+`((Finset.range (n+1)).filter Nat.Prime).card` via
+`Nat.count_eq_card_filter_range` (cf. `ChebyshevPNTBridgeOQ01.lean`
+line 145–147 for the exact pattern), then apply Iter 10. This is the
+literal published form of the bound and brings the file into the
+PNT-statement vocabulary.
 
-After this, the Chebyshev product gives an explicit prime-power
-form for `lcmRange n`, and the bound
-`lcmRange n ≤ ∏_{p ≤ n} n = n^{π(n)}` follows immediately
-(strictly weaker than 3^n but a non-trivial published-bound milestone).
+**Iteration 12 candidate**: state and prove the chain
+`lcmRange n ≤ n ^ Nat.primeCounting n ≤ n ^ n` (the second inequality
+holds when `Nat.primeCounting n ≤ n`, trivially since primes ≤ n are
+a subset of {1,...,n}). This makes explicit that Iter 10/11 sharpen
+`lcmRange_le_self_pow` (Part 3 of the file).
 
 **Long-term paths still open:**
 

@@ -297,6 +297,45 @@ theorem lcmRange_eq_prod_prime_powers (n : ℕ) :
   Nat.dvd_antisymm (lcmRange_dvd_prod_prime_powers n)
     (prod_prime_powers_dvd_lcmRange n)
 
+/-- **Chebyshev bound via prime-counting**: `lcmRange n ≤ n ^ π(n)`,
+    where `π(n) = #{p ≤ n : p prime}`.
+
+    The first non-trivial published-bound milestone on the path from
+    the elementary `lcmRange n ≤ n ^ n` (via `lcmRange_le_self_pow`,
+    Part 3) to Hanson's `lcmRange n ≤ 3 ^ n`. Follows immediately from
+    the just-proved Chebyshev decomposition `lcmRange_eq_prod_prime_powers`:
+
+    `∏_{p ≤ n} p^⌊log_p n⌋ ≤ ∏_{p ≤ n} n = n ^ π(n).`
+
+    Compared to the trivial `n ^ n`, this saves the contribution of all
+    *composite* `k ∈ {1,...,n}` via prime-power coalescing — by the
+    prime number theorem `π(n) ~ n / log n ≪ n`. Compared to Hanson's
+    `3 ^ n`, this is asymptotically much weaker (`n^{n/log n}` grows
+    super-exponentially) but it requires no analytic machinery beyond
+    the Chebyshev decomposition already established here.
+
+    Strategy:
+    1. Apply `lcmRange_eq_prod_prime_powers` to rewrite the LHS.
+    2. Bound each factor `p ^ ⌊log_p n⌋ ≤ n` via `Nat.pow_log_le_self`
+       (only requires `n ≠ 0`).
+    3. Collapse `∏ _ ∈ S, n = n ^ S.card` via `Finset.prod_const`. -/
+theorem lcmRange_le_pow_card_primes_le (n : ℕ) :
+    lcmRange n ≤ n ^ ((Finset.range (n + 1)).filter Nat.Prime).card := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: range 1 = {0}, 0 isn't prime, so the filter is empty,
+    -- card = 0, and 0 ^ 0 = 1 = lcmRange 0. Closed by simp.
+    simp [lcmRange_zero, Finset.range_one, Finset.filter_singleton,
+          Nat.not_prime_zero]
+  rw [lcmRange_eq_prod_prime_powers]
+  calc (∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, p ^ Nat.log p n)
+      ≤ ∏ _p ∈ (Finset.range (n + 1)).filter Nat.Prime, n := by
+        apply Finset.prod_le_prod
+        · intro _ _; exact Nat.zero_le _
+        · intro p _hp
+          exact Nat.pow_log_le_self p hn.ne'
+    _ = n ^ ((Finset.range (n + 1)).filter Nat.Prime).card :=
+        Finset.prod_const n
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
