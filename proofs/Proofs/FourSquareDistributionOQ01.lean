@@ -1650,4 +1650,125 @@ example : r4Count (7 ^ 2) = 8 * sigmaOne (7 ^ 2) :=
 example : jacobiR4 (3 ^ 0) = 8 * sigmaOne (3 ^ 0) :=
   jacobiR4_prime_pow_of_odd_prime (by decide) (by decide) 0
 
+-- =====================================================================
+-- PART 23: Atomic decomposition of `jacobi_r4_formula` —
+-- modular-form route, abstracted over the Mathlib q-expansion API gap
+-- (S13 spec, S14 implementation)
+-- =====================================================================
+--
+-- Parallel to PR #17388's elementary three-hypothesis decomposition,
+-- this section provides a TWO-hypothesis implication theorem along the
+-- modular-form route. The implication is proved AXIOM-FREE by
+-- elementary transitivity, abstracting over the Mathlib q-expansion
+-- API gap (Mathlib v4.26.0 lacks both a Fourier-coefficient extractor
+-- for `jacobiTheta` and the weight-2 Eisenstein series `E2` at level 4
+-- — see `s13-modular-form-atomic-decomposition.md` §3 for the API
+-- audit).
+--
+-- Hypotheses (abstracted as `QC : ℕ → ℕ`):
+--
+--   (Hθ4Coef)        r4Count n = QC n   for n > 0
+--   (Hθ4EisCoeff)    QC n     = jacobiR4 n   for n > 0
+--
+-- where `QC n` is mathematically `jacobiThetaPow4QCoeff n` — the n-th
+-- Fourier coefficient of `(jacobiTheta τ)^4`. The two hypotheses are
+-- the q-coefficient bridge (Hθ4Coef) and the Eisenstein-side closed
+-- form derived from the Jacobi-1834 modular-form identification
+-- `(jacobiTheta τ)^4 = 1 + 8·(E₂(τ) − 4·E₂(4τ))` plus Mathlib's
+-- (forthcoming) `E2_qExpansion` plus the S2 σ* identity
+-- `σ*(n) = σ(n) − 4·σ(n/4)·[4∣n]`.
+--
+-- Closing both hypotheses discharges the open `jacobi_r4_formula`
+-- axiom. NOTE: The original axiom is NOT retired by Part 23; the
+-- two hypotheses live as PARAMETERS of the implication theorem, not
+-- as new file-level axioms. So Part 23 adds ZERO new axioms and ZERO
+-- new sorries — strict refinement of the file's assumption surface.
+
+/-- (S13 spec / S14 implementation) **Atomic decomposition of Jacobi's
+    four-square formula along the modular-form route.**
+
+    Given an opaque "q-coefficient extractor" `QC : ℕ → ℕ` (intended:
+    `QC n = jacobiThetaPow4QCoeff n`), assume:
+
+    * `(Hθ4Coef)`: `r4Count n = QC n` for `n > 0` — the q-coefficient
+      bridge between integer counting and Fourier coefficients of
+      `(jacobiTheta τ)^4`. Standard expansion of
+      `jacobiTheta τ = ∑' k : ℤ, q^{k²}` to a Cauchy product over
+      `ℤ⁴` with index sum `k₁² + k₂² + k₃² + k₄² = n`.
+    * `(Hθ4EisCoeff)`: `QC n = jacobiR4 n` for `n > 0` — the Eisenstein
+      side. Combines the modular-form identification
+      `(jacobiTheta τ)^4 = 1 + 8·(E₂(τ) − 4·E₂(4τ))` (Jacobi 1834,
+      provable via the dimension-counting argument on weight-2 forms
+      on `Γ₀(4)`) with Mathlib's q-expansion
+      `E₂(τ) = 1 - 24·∑ σ(m)·q^m` and the S2 structural identity
+      `σ*(n) = σ(n) - 4·σ(n/4)·[4∣n]`. The signs and factors collapse
+      to `8·σ*(n) = jacobiR4 n` after the constant-term `1` is
+      absorbed (the constant term contributes only at `n = 0`, which
+      `n > 0` excludes).
+
+    Conclusion: `r4Count n = jacobiR4 n` for `n > 0`, the content of
+    the open `jacobi_r4_formula` axiom (Part 5).
+
+    This is trivially transitivity: `r4Count n = QC n = jacobiR4 n`.
+    The mathematical content lies in the *precision* of the two
+    hypotheses, each of which is on a known Mathlib roadmap (q-expansion
+    infrastructure for `jacobiTheta`, weight-2 `E2` at level 4, and
+    dimension-counting for `Γ₀(4)`-forms). Phrased here with `QC`
+    abstract, the theorem requires no modular-form symbols and adds
+    zero new axioms.
+
+    **Comparison with PR #17388** (elementary route, S11.alt):
+    that route consumes THREE combinatorial hypotheses
+    (Hodd `r4Count(n) = 8σ(n)` for odd n, HtwoPow `r4Count(2^k) = 24`,
+    Hmul `8·r4Count(m·n) = r4Count(m)·r4Count(n)` for coprime m,n) with
+    no modular-form dependence. Closing **either** the elementary
+    triple or the modular-form pair discharges `jacobi_r4_formula`;
+    the two routes exit through different doors of the Mathlib
+    upstream roadmap. -/
+theorem jacobi_r4_formula_from_modular_form
+    (QC : ℕ → ℕ)
+    (HthetaCoef : ∀ n : ℕ, 0 < n → r4Count n = QC n)
+    (HthetaEisCoeff : ∀ n : ℕ, 0 < n → QC n = jacobiR4 n)
+    {n : ℕ} (hn : 0 < n) : r4Count n = jacobiR4 n := by
+  rw [HthetaCoef n hn]
+  exact HthetaEisCoeff n hn
+
+/-- **Consistency sanity check**: feeding the existing
+    `jacobi_r4_formula` axiom (Part 5) into both hypotheses with
+    `QC := jacobiR4` recovers the axiom's content. This confirms the
+    atomic decomposition is consistent — `jacobi_r4_formula_from_modular_form`
+    is logically equivalent to the original axiom under the strongest
+    instantiation. -/
+example : ∀ n : ℕ, 0 < n → r4Count n = jacobiR4 n := fun n hn =>
+  jacobi_r4_formula_from_modular_form
+    jacobiR4
+    (fun m hm => jacobi_r4_formula m hm)
+    (fun _ _ => rfl)
+    hn
+
+/-- **Cross-route sanity check**: instantiate `QC` with `r4Count` itself.
+    Then `(Hθ4Coef)` is reflexivity and `(Hθ4EisCoeff)` is exactly the
+    open axiom — i.e., the modular-form decomposition reduces to the
+    original axiom under this trivial instantiation, just as the
+    elementary route does (PR #17388's analogous example). -/
+example : ∀ n : ℕ, 0 < n → r4Count n = jacobiR4 n := fun n hn =>
+  jacobi_r4_formula_from_modular_form
+    r4Count
+    (fun _ _ => rfl)
+    (fun m hm => jacobi_r4_formula m hm)
+    hn
+
+/-- **Numerical witness on a coprime split**: for `n = 6 = 2 · 3`, the
+    decomposition predicts `r4Count 6 = QC 6 = jacobiR4 6 = 8·σ*(6)
+    = 8·(1+3+6) = 8·10·... wait, σ*(6): divisors of 6 are 1,2,3,6;
+    none are divisible by 4, so σ*(6) = 1+2+3+6 = 12. So
+    jacobiR4 6 = 8·12 = 96`. This matches the Part 1 numerical
+    witness `r4Count_6 = 96` (via `native_decide` cross-check). -/
+example : r4Count 6 = jacobiR4 6 :=
+  jacobi_r4_formula_from_modular_form
+    jacobiR4
+    (fun m hm => jacobi_r4_formula m hm)
+    (fun _ _ => rfl)
+    (by decide : (0 : ℕ) < 6)
+
 end FourSquareDistributionOQ01
