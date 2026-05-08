@@ -157,23 +157,47 @@
   {
     "id": "ann-ballot-ivt",
     "proofId": "ballot-problem-oq-02-oq-02",
-    "range": { "startLine": 142, "endLine": 185 },
+    "range": { "startLine": 142, "endLine": 160 },
     "type": "technique",
-    "title": "IVT provides nonemptiness for crossing paths",
-    "content": "Proves `ivt_first_crossing`: if W(0,ω) < a ≤ W(T,ω), there exists s ∈ (0,T] with W(s,ω) ≥ a, using `intermediate_value_Icc`. Then `hittingSet_nonempty_of_ivt` gives nonemptiness, and `fpt_le_T_of_crossing` gives both τ ≤ T and ω ∈ maxEvent for crossing paths. This handles the typical case where a path crosses the threshold.",
-    "mathContext": "IVT on $[0,T]$: for continuous $f: [0,T] \\to \\mathbb{R}$ with $f(0) < a \\leq f(T)$, there exists $s \\in [0,T]$ with $f(s) \\geq a$ (specifically $f(s) = a$ is sufficient). The crossing time $s$ witnesses nonemptiness of the hitting set, enabling `hittingSet_csInf_mem` and the full characterization. For paths starting at or above $a$ ($W(0,\\omega) \\geq a$), nonemptiness is immediate ($0$ is in the hitting set).",
+    "title": "IVT first-crossing time: extracting $s$ with $B(s,\\omega) = a$",
+    "content": "`ivt_first_crossing` is the topological extraction step that supplies the nonemptiness hypothesis required by the hard direction. Given a continuous path $B(\\cdot,\\omega)$ that strictly starts below $a$ ($B(0,\\omega) < a$) and ends at or above $a$ ($B(T,\\omega) \\ge a$), the Intermediate Value Theorem in two-function form (`isPreconnected_Icc.intermediate_value₂`) crosses the constant function $g \\equiv a$ to produce $s \\in [0,T]$ with $B(s,\\omega) = a$ exactly. Two notable mechanical steps follow IVT: (i) the equality $B(s,\\omega) = a$ rewrites to $B(s,\\omega) \\ge a$ via `hs_eq ▸ le_refl a`, fitting the hitting-set predicate; (ii) the strict initial inequality $B(0,\\omega) < a$ rules out $s = 0$, so $s > 0$ — a strengthening that is not strictly needed for nonemptiness (any $s \\ge 0$ would do) but is preserved in the conclusion as documentation of where the crossing actually lives.",
+    "mathContext": "**IVT, two-function form**: for continuous $f, g$ on a preconnected space with $f(a) \\le g(a)$ and $g(b) \\le f(b)$, there is $s$ with $f(s) = g(s)$. Here $f(t) = B(t,\\omega)$ (continuous by `bm.path_continuous`), $g(t) = a$ (constant, hence continuous), endpoints $a = 0$ and $b = T$. The hypotheses become $B(0,\\omega) \\le a$ (from `le_of_lt hstart`, weakening the strict inequality) and $a \\le B(T,\\omega)$ (`hend`). Conclusion: $\\exists s \\in [0,T]\\colon B(s,\\omega) = a$.\n\n**Why $s > 0$**: if $s = 0$ then $B(0,\\omega) = a$, contradicting $B(0,\\omega) < a$. Lean: `rcases hs_Icc.1.eq_or_gt with rfl | hs_pos` cases on whether $s = 0$ or $s > 0$; the first branch derives `False` from `hs_eq` + `hstart`.\n\n**Why two-function IVT instead of `intermediate_value_Icc`**: the two-function form lets us cross a constant *level* $a$ directly without forming the auxiliary function $f - a$, avoiding the boilerplate of proving continuity of the difference. This is the standard Mathlib pattern for hitting-time arguments.",
     "significance": "supporting",
     "relatedConcepts": [
-      "intermediate_value_Icc",
+      "isPreconnected_Icc.intermediate_value₂",
       "IVT for continuous functions",
       "level crossing",
-      "path continuity"
+      "path continuity",
+      "constant-function comparison"
     ],
     "prerequisites": [
-      "intermediate_value_Icc",
+      "isPreconnected_Icc.intermediate_value₂",
       "Continuous.continuousOn",
-      "hittingSet_isClosed",
-      "fpt_le_iff_maxEvent"
+      "isClosed_Ici (for the Ici ∋ a image)",
+      "Set.Icc and Set.mem_Icc"
+    ]
+  },
+  {
+    "id": "ann-ballot-crossing-fpt-bound",
+    "proofId": "ballot-problem-oq-02-oq-02",
+    "range": { "startLine": 162, "endLine": 185 },
+    "type": "insight",
+    "title": "Capstone: crossing paths automatically discharge nonemptiness",
+    "content": "Two corollaries close the loop on the conditional characterization. `hittingSet_nonempty_of_ivt` repackages the IVT witness from Part VII as a nonemptiness proof for the hitting set $H_a(\\omega) = \\{t \\ge 0 : B(t,\\omega) \\ge a\\}$ — purely a coordinate change between the IVT output (a witness $s \\in [0,T]$ with $B(s,\\omega) = a$) and the hitting-set predicate. `fpt_le_T_of_crossing` then composes `hittingSet_nonempty_of_ivt` with `fpt_le_iff_maxEvent` to deliver, in one user-facing step, both $\\tau(\\omega) \\le T$ and $\\omega \\in \\mathrm{maxEvent}$ for any path satisfying the natural crossing endpoints $B(0,\\omega) < a \\le B(T,\\omega)$. This is the *deliverable* of the file: the parent axiom holds (with both directions) for every crossing path, with no remaining nonemptiness obligation on the caller.",
+    "mathContext": "**`hittingSet_nonempty_of_ivt`**: the IVT witness $s$ has $0 \\le s$ (from $s \\in [0,T]$) and $B(s,\\omega) \\ge a$ (rewriting $B(s,\\omega) = a$ via `hs_eq ▸ le_refl a`). So $s \\in H_a(\\omega)$, witnessing nonemptiness.\n\n**`fpt_le_T_of_crossing`**: combine `hittingSet_nonempty_of_ivt` with `(fpt_le_iff_maxEvent ...).mpr`. The right-hand witness for $\\omega \\in \\mathrm{maxEvent}$ is $T$ itself: $T \\in [0,T]$ trivially, and $B(T,\\omega) \\ge a$ from the `hend` hypothesis. So $\\omega \\in \\mathrm{maxEvent}$ via $\\langle T, \\langle 0 \\le T, T \\le T \\rangle, \\mathrm{hend} \\rangle$, and then `fpt_le_iff_maxEvent.mpr` upgrades this to $\\tau(\\omega) \\le T$.\n\n**Why this corollary is the right shape**: in real Brownian-motion applications, one almost always knows endpoints (or has them by Skorokhod / Doob). The crossing-endpoint condition $B(0,\\omega) < a \\le B(T,\\omega)$ is the natural input, and `fpt_le_T_of_crossing` returns exactly what an analyst wants — both directions of the level-crossing identity, with no side condition. Compare to the looser `fpt_le_iff_maxEvent`, which leaves the caller to verify nonemptiness — useful for non-crossing paths (where nonemptiness might come from a non-IVT source) but inconvenient for the typical use case.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fpt_le_iff_maxEvent (composition target)",
+      "discharging hypotheses",
+      "user-facing capstone theorem",
+      "level-crossing identity",
+      "stopping time bounds"
+    ],
+    "prerequisites": [
+      "fpt_le_iff_maxEvent",
+      "ivt_first_crossing",
+      "Set.mem_Icc",
+      "anonymous-constructor witness construction"
     ]
   }
 ]
