@@ -31,28 +31,30 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 6,
-    "focus": "Building structural lemma library toward prime-power decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}. Iteration 2 (#16704 merged) added lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange — any positive base power b^k ≤ n divides lcmRange n. Iteration 5 (#17021 merged) specialized to the prime case: prime_pow_dvd_lcmRange. Iteration 6 (this PR) adds the pairwise-coprimality input coprime_prime_pow_pow_of_ne : for distinct primes p ≠ q and any exponents a, b, Coprime (p^a) (q^b). This is the structural prerequisite for the easy direction (∏ p ∈ filter Prime (range (n+1)), p^⌊log_p n⌋) ∣ lcmRange n of Chebyshev's decomposition: pairwise-coprime divisors of N have product dividing N.",
+    "iteration": 7,
+    "focus": "Building structural lemma library toward prime-power decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}. Iteration 2 (#16704 merged) added lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange — any positive base power b^k ≤ n divides lcmRange n. Iteration 5 (#17021 merged) specialized to the prime case: prime_pow_dvd_lcmRange. Iteration 6 (#17128 merged) added pairwise-coprimality of distinct prime-power factors: coprime_prime_pow_pow_of_ne. Iteration 7 (this PR) closes the **easy direction of Chebyshev's decomposition**: prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^⌊log_p n⌋) ∣ lcmRange n. Adds the helper prod_dvd_of_pairwise_coprime (Finset induction packaging) which combines Nat.Coprime.prod_right and Nat.Coprime.mul_dvd_of_dvd_of_dvd. The reverse direction (lcmRange ∣ prod) — needing Nat.factorization — is the next structural target.",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
       "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)"
     ],
-    "nextAction": "Iteration 7 should prove `prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n) ∣ lcmRange n` — the easy direction of Chebyshev's decomposition. Two ingredients are now in place: prime_pow_dvd_lcmRange (#17021) for each-factor-divides, and coprime_prime_pow_pow_of_ne (this PR) for pairwise-coprimality. Proof: Finset.induction on the prime filter; inductive step uses Nat.Coprime.prod_right (or .prod_left) to lift pairwise coprimality to coprime-with-product, then Nat.Coprime.mul_dvd_of_dvd_of_dvd to combine. Iteration 8+: reverse direction via Nat.factorization framework, then `lcmRange_eq_prod_prime_powers` by Nat.dvd_antisymm.",
+    "nextAction": "Iteration 8 should prove the **reverse direction**: `lcmRange n ∣ ∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n`. This requires Mathlib's `Nat.factorization` framework: for each k ∈ {1,...,n}, write k = ∏_p p^(k.factorization p) (Nat.factorization_prod_pow_factorization), then bound each exponent by Nat.log p n via `Nat.factorization_lt_log_self_of_lt` (or equivalent). The two key Mathlib facts needed: (1) Nat.factorization_le_factorization_of_dvd OR direct `p^(k.factorization p) ∣ p^(Nat.log p n)` for k ≤ n; (2) the squarefree-style bound that combines factorizations across k. Once Iter 8 lands, Iteration 9 derives `lcmRange_eq_prod_prime_powers` via Nat.dvd_antisymm of Iter 7 + Iter 8. Then `lcmRange n ≤ ∏_{p ≤ n} n = n^{π(n)}` follows immediately as a non-trivial published bound.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 1,
+      "total": 6,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Iteration 6. `Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (280 lines, 31 theorems, 1 def, 1 axiom, 0 sorries). Iteration 1 (bootstrap, merged) defined lcmRange and elementary bounds. Iteration 2 (#16704 merged) added structural lemmas lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange. Iteration 5 (#17021 merged) added prime_pow_dvd_lcmRange, the maximal-prime-power half of Chebyshev's decomposition. Iteration 6 (this PR) adds the pairwise-coprimality input `coprime_prime_pow_pow_of_ne {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpq : p ≠ q) (a b : ℕ) : Nat.Coprime (p^a) (q^b)` — the structural prerequisite for the easy direction (∏ p, p^⌊log_p n⌋) ∣ lcmRange n of Chebyshev's decomposition. Proof: `Nat.dvd_prime hq` reduces `p ∣ q` to `p = 1 ∨ p = q`; `hp.one_lt.ne'` rules out `p = 1`, `hpq` rules out `p = q`; then `Nat.Prime.coprime_iff_not_dvd` + `Coprime.pow_left a` + `Coprime.pow_right b` lifts to the prime-power form.",
+    "progressSummary": "Iteration 7. `Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (341 lines, 33 theorems, 1 def, 1 axiom, 0 sorries). Iteration 1 (bootstrap, merged) defined lcmRange and elementary bounds. Iteration 2 (#16704 merged) added structural lemmas lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange. Iteration 5 (#17021 merged) added prime_pow_dvd_lcmRange. Iteration 6 (#17128 merged) added coprime_prime_pow_pow_of_ne. Iteration 7 (this PR) closes the **easy direction of Chebyshev's decomposition**: `prod_prime_powers_dvd_lcmRange (n : ℕ) : (∏ p ∈ (Finset.range (n+1)).filter Nat.Prime, p^Nat.log p n) ∣ lcmRange n`. Adds the helper `prod_dvd_of_pairwise_coprime` (Finset.induction; private, parallels Erdos1057Problem.prod_primes_dvd_of_each_dvd). The proof combines prime_pow_dvd_lcmRange (each factor divides) with coprime_prime_pow_pow_of_ne lifted via Nat.Coprime.prod_right to coprime-with-product, then Nat.Coprime.mul_dvd_of_dvd_of_dvd. The n=0 boundary case is handled by noting (Finset.range 1).filter Nat.Prime = ∅ via Nat.not_prime_zero.",
     "builtItems": [
       "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:80",
       "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:87-98",
       "dvd_lcmRange: each k ∈ {1,...,n} divides lcmRange n at BaselProblemOQ01OQ01OQ02OQ03.lean:101",
       "pow_dvd_lcmRange: any b^k ≤ n with positive base divides lcmRange n at BaselProblemOQ01OQ01OQ02OQ03.lean:114 (#16772)",
       "prime_pow_dvd_lcmRange: ∀ p n, p.Prime → 1 ≤ n → p^(Nat.log p n) ∣ lcmRange n — at BaselProblemOQ01OQ01OQ02OQ03.lean:130 (#17021)",
-      "coprime_prime_pow_pow_of_ne: for distinct primes p ≠ q and any exponents a, b, Coprime (p^a) (q^b) — at BaselProblemOQ01OQ01OQ02OQ03.lean:151 (this PR, Iteration 6)",
+      "coprime_prime_pow_pow_of_ne: for distinct primes p ≠ q and any exponents a, b, Coprime (p^a) (q^b) — at BaselProblemOQ01OQ01OQ02OQ03.lean:151 (#17128, Iteration 6)",
+      "prod_dvd_of_pairwise_coprime (private helper): pairwise-coprime divisors of N have product dividing N — at BaselProblemOQ01OQ01OQ02OQ03.lean:166 (this PR, Iteration 7)",
+      "prod_prime_powers_dvd_lcmRange: easy direction of Chebyshev's decomposition (∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n) ∣ lcmRange n — at BaselProblemOQ01OQ01OQ02OQ03.lean:203 (this PR, Iteration 7)",
       "lcmRange_succ: recursion lcm(1..n+1) = lcm(lcm(1..n), n+1) (#16704)",
       "lcmRange_dvd_lcmRange_of_le: monotone divisibility (#16704)",
       "lcmRange_monotone: numerical monotonicity (#16704)",
@@ -73,7 +75,8 @@
       "**Counterexample**: `lcm(1..n) ≤ n · primorial(n)` is FALSE in general — already at n=9 we have lcm(1..9) = 2520 > 9 · 210 = 1890. The intermediate primorial bridge as commonly stated does NOT yield the 4^n bound; the correct path goes through Chebyshev's prime-power formula `lcm(1..n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}`.",
       "**pow_dvd_lcmRange** is the structural-lemma counterpart of `dvd_lcmRange` for prime-power arguments: applied with `b = p` prime and `k = Nat.log p n`, with `Nat.pow_log_le_self p hn` it gives the maximal-prime-power divisibility `p^(⌊log_p n⌋) ∣ lcmRange n` in a single line — the easy direction of the Chebyshev decomposition.",
       "**prime_pow_dvd_lcmRange** (Iteration 5) makes the corollary explicit. The proof is literally `pow_dvd_lcmRange hp.pos (Nat.pow_log_le_self p (by omega))` — three Mathlib calls glued together. This is the canonical entry point for any prime-power Chebyshev-style argument on `lcmRange`.",
-      "**coprime_prime_pow_pow_of_ne** (Iteration 6) — the second half of the easy direction's machinery. The proof routes through `Nat.dvd_prime` rather than `Nat.prime_dvd_prime_iff_eq` to avoid an API drift risk: `(Nat.dvd_prime hq).mp` produces `p = 1 ∨ p = q`, both alternatives directly contradicting hypotheses (`hp.one_lt.ne'` and `hpq` respectively). The pow-lifting `((..).pow_left a).pow_right b` is the same idiom used in Erdos828Problem.lean:53 and Erdos1136Problem.lean:60 (cross-referenced for stability)."
+      "**coprime_prime_pow_pow_of_ne** (Iteration 6) — the second half of the easy direction's machinery. The proof routes through `Nat.dvd_prime` rather than `Nat.prime_dvd_prime_iff_eq` to avoid an API drift risk: `(Nat.dvd_prime hq).mp` produces `p = 1 ∨ p = q`, both alternatives directly contradicting hypotheses (`hp.one_lt.ne'` and `hpq` respectively). The pow-lifting `((..).pow_left a).pow_right b` is the same idiom used in Erdos828Problem.lean:53 and Erdos1136Problem.lean:60 (cross-referenced for stability).",
+      "**prod_prime_powers_dvd_lcmRange** (Iteration 7) — the easy direction of Chebyshev's decomposition closes in 8 lines on top of the helper. The Finset.induction packaging (prod_dvd_of_pairwise_coprime) is abstracted over the divisor function f : ℕ → ℕ so it can be reused for any pairwise-coprime divisor product (e.g., squarefree × squarefree, prime × prime^k). Direct parallel of Erdos1057Problem.prod_primes_dvd_of_each_dvd at lines 84-105, but generalized from primes to prime powers; the n=0 base case dispatches via Nat.not_prime_zero (range 1 = {0}, 0 ∉ Prime). Three Mathlib calls glued: Nat.Coprime.prod_right, Nat.Coprime.mul_dvd_of_dvd_of_dvd, and the existing prime_pow_dvd_lcmRange/coprime_prime_pow_pow_of_ne from previous iterations."
     ],
     "mathlibGaps": [
       "No `lcm(1,...,n) ≤ X^n`-style bound exists in Mathlib for any X.",
@@ -82,16 +85,16 @@
     ],
     "nextSteps": [
       "✅ DONE (#17021, Iteration 5): `prime_pow_dvd_lcmRange : ∀ p n, p.Prime → 1 ≤ n → p^(Nat.log p n) ∣ lcmRange n`.",
-      "✅ DONE (this PR, Iteration 6): `coprime_prime_pow_pow_of_ne : ∀ p q, p.Prime → q.Prime → p ≠ q → ∀ a b, Coprime (p^a) (q^b)`.",
-      "Iteration 7: `prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n) ∣ lcmRange n` — easy direction. Proof: Finset.induction on the prime filter; inductive step combines `prime_pow_dvd_lcmRange` (each factor divides) with `coprime_prime_pow_pow_of_ne` lifted to coprime-with-product (via Nat.Coprime.prod_right) and Nat.Coprime.mul_dvd_of_dvd_of_dvd.",
-      "Iteration 8: reverse direction `lcmRange n ∣ ∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n` via Mathlib's `Nat.factorization` framework.",
+      "✅ DONE (#17128, Iteration 6): `coprime_prime_pow_pow_of_ne : ∀ p q, p.Prime → q.Prime → p ≠ q → ∀ a b, Coprime (p^a) (q^b)`.",
+      "✅ DONE (this PR, Iteration 7): `prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n) ∣ lcmRange n` — easy direction of Chebyshev's decomposition. Helper `prod_dvd_of_pairwise_coprime` (private) packages the Finset.induction.",
+      "Iteration 8: reverse direction `lcmRange n ∣ ∏ p ∈ filter Prime (range (n+1)), p^Nat.log p n` via Mathlib's `Nat.factorization` framework. For each k ≤ n: write k = ∏_p p^(k.factorization p), then `p^(k.factorization p) ∣ p^(Nat.log p n)` via Nat.pow_le_pow_right + factorization_le_log_self bound (or analogous).",
       "Iteration 9: `lcmRange_eq_prod_prime_powers` by Nat.dvd_antisymm of Iter 7+8.",
       "With Chebyshev's decomposition, derive `lcmRange n ≤ ∏_{p ≤ n} n = n^{π(n)}` (still weaker than 3^n but proves a non-trivial bound).",
       "Wait for or contribute Mathlib Beta-integral machinery for ℚ-valued bounds.",
       "Explore Nair's 1982 alternative constants as a possibly-easier intermediate (uses central binomial coefficients).",
       "Add cross-references in `basel-problem-oq-01-oq-01-oq-02` and `basel-problem` gallery entries pointing to this OQ-03."
     ],
-    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (iteration 6)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (280 lines, 31 theorems, 1 def, 1 axiom, 0 sorries; numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / Chebyshev-prime-power-formula infrastructure.\n* **Iteration 6 (this PR)**: added `coprime_prime_pow_pow_of_ne`, the pairwise-coprimality input for the easy direction of Chebyshev's decomposition.\n"
+    "markdown": "# Knowledge Base: basel-problem-oq-01-oq-01-oq-02-oq-03\n\nSee `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` and `state.md` for full discussion.\n\n## Status\n\n* **Phase**: ACT (iteration 7)\n* **Files**: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` (341 lines, 33 theorems, 1 def, 1 axiom, 0 sorries; numerically verified n ∈ {1..10, 12, 15, 20}).\n* **Open target**: replace `axiom hanson_bound` with a theorem.\n* **Blocker**: Mathlib lacks Beta-integral / Chebyshev-prime-power-formula infrastructure.\n* **Iteration 7 (this PR)**: added `prod_prime_powers_dvd_lcmRange` (easy direction of Chebyshev's decomposition) and the helper `prod_dvd_of_pairwise_coprime`.\n"
   },
   "tags": [
     "number-theory",
@@ -133,8 +136,8 @@
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
       "filename": "BaselProblemOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 237,
-      "theoremCount": 29,
+      "lineCount": 341,
+      "theoremCount": 33,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,

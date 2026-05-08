@@ -156,6 +156,67 @@ theorem coprime_prime_pow_pow_of_ne {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     · exact hpq heq
   exact ((hp.coprime_iff_not_dvd.mpr hndvd).pow_left a).pow_right b
 
+/-- **Pairwise-coprime divisors of `N` have product dividing `N`** (helper).
+
+    For any `Finset ℕ` `S` and function `f : ℕ → ℕ`: if every `f p` for
+    `p ∈ S` divides `N`, and `f p`, `f q` are coprime for `p ≠ q ∈ S`,
+    then `∏ p ∈ S, f p ∣ N`. Standard Finset-induction packaging,
+    parallels `Erdos1057Problem.prod_primes_dvd_of_each_dvd` but
+    abstracted over `f` to support prime-power factors. -/
+private theorem prod_dvd_of_pairwise_coprime
+    {S : Finset ℕ} {f : ℕ → ℕ} {N : ℕ}
+    (hdvd : ∀ p ∈ S, f p ∣ N)
+    (hcop : ∀ p ∈ S, ∀ q ∈ S, p ≠ q → Nat.Coprime (f p) (f q)) :
+    (∏ p ∈ S, f p) ∣ N := by
+  induction S using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+    rw [Finset.prod_insert ha]
+    have ha_dvd := hdvd a (Finset.mem_insert_self a s)
+    have hs_dvd : ∀ p ∈ s, f p ∣ N :=
+      fun p hp => hdvd p (Finset.mem_insert_of_mem hp)
+    have hs_cop : ∀ p ∈ s, ∀ q ∈ s, p ≠ q → Nat.Coprime (f p) (f q) :=
+      fun p hp q hq hpq =>
+        hcop p (Finset.mem_insert_of_mem hp) q (Finset.mem_insert_of_mem hq) hpq
+    have hprod_dvd := ih hs_dvd hs_cop
+    refine Nat.Coprime.mul_dvd_of_dvd_of_dvd ?_ ha_dvd hprod_dvd
+    apply Nat.Coprime.prod_right
+    intro p hp
+    have hap : a ≠ p := fun h => ha (h ▸ hp)
+    exact hcop a (Finset.mem_insert_self a s) p (Finset.mem_insert_of_mem hp) hap
+
+/-- **Easy direction of Chebyshev's decomposition**: the product of maximal
+    prime powers `p ^ ⌊log_p n⌋` over primes `p ≤ n` divides `lcmRange n`.
+
+    The forward inclusion `(∏ p, p ^ ⌊log_p n⌋) ∣ lcmRange n` of the
+    Chebyshev decomposition
+    `lcmRange n = ∏ p ∈ filter Prime (range (n+1)), p ^ ⌊log_p n⌋`. The
+    reverse inclusion (LHS ∣ RHS) is harder — it routes through Mathlib's
+    `Nat.factorization` framework and is the next structural target.
+
+    Combines two ingredients from previous iterations:
+    - `prime_pow_dvd_lcmRange` (Iter 5): each factor divides `lcmRange n`.
+    - `coprime_prime_pow_pow_of_ne` (Iter 6): distinct factors are coprime.
+
+    Then `prod_dvd_of_pairwise_coprime` packages these into the product
+    statement via Finset induction. -/
+theorem prod_prime_powers_dvd_lcmRange (n : ℕ) :
+    (∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, p ^ Nat.log p n)
+      ∣ lcmRange n := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: range 1 = {0}, 0 isn't prime, so filter is empty, product is 1.
+    have hempty : (Finset.range 1).filter Nat.Prime = ∅ := by
+      simp [Finset.range_one, Finset.filter_singleton, Nat.not_prime_zero]
+    rw [hempty, Finset.prod_empty]
+    exact one_dvd _
+  -- n ≥ 1: each prime power divides lcmRange n; distinct factors are coprime.
+  refine prod_dvd_of_pairwise_coprime ?_ ?_
+  · intro p hp
+    exact prime_pow_dvd_lcmRange (Finset.mem_filter.mp hp).2 hn
+  · intro p hp q hq hpq
+    exact coprime_prime_pow_pow_of_ne (Finset.mem_filter.mp hp).2
+      (Finset.mem_filter.mp hq).2 hpq _ _
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
