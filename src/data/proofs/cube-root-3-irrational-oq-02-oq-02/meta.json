@@ -51,28 +51,52 @@
     },
     "sections": [
         {
-            "id": "sec-setup",
-            "title": "Setup and Helper Lemma",
+            "id": "sec-preamble",
+            "title": "Preamble: Header, Imports, Namespace",
+            "startLine": 1,
+            "endLine": 37,
+            "summary": "File header documenting the proof strategy and gallery relationships. Import of CubeRoot2IrrationalOQ03 (source of minpoly_nthRoot_natDegree, the Eisenstein-based minimal polynomial degree lemma). Opens the Polynomial namespace and the CubeRoot2IrrationalOQ03 namespace. Sets maxHeartbeats 800000 to accommodate the polynomial-arithmetic-heavy aeval computation. Enters namespace CubeRoot3IrrationalOQ02OQ02.",
+            "mathContext": "Inherits from $\\text{CubeRoot2IrrationalOQ03}$ the single fact $\\text{natDegree}(\\text{minpoly}\\,\\mathbb{Q}\\,\\sqrt[n]{m}) = n$ for Eisenstein-eligible $(n, m, p)$. Here we instantiate with $n = m = p = 3$."
+        },
+        {
+            "id": "sec-alpha-minpoly",
+            "title": "Setup: α := (3 : ℝ)^(1/3) and the Degree-3 Minpoly",
             "startLine": 38,
             "endLine": 48,
-            "summary": "Defines α = (3:ℝ)^(1/3) and establishes α_minpoly_deg: natDegree(minpoly ℚ α) = 3, as a one-line application of minpoly_nthRoot_natDegree 3 3 3 from CubeRoot2IrrationalOQ03.",
-            "mathContext": "The Eisenstein conditions for n=3, m=3, p=3: 2 ≤ 3 (by norm_num), Prime 3 (by norm_num), 3|3 (by norm_num), ¬9|3 (by norm_num), 0<3 (by norm_num). All five conditions hold, giving minpoly ℚ α = X³-3 of degree 3."
+            "summary": "Defines α = (3 : ℝ)^(1/3) as a private noncomputable abbreviation, then establishes the helper lemma α_minpoly_deg: natDegree(minpoly ℚ α) = 3. The lemma is a one-line application of minpoly_nthRoot_natDegree 3 3 3 with five Eisenstein side-conditions discharged by norm_num.",
+            "mathContext": "Eisenstein at $(n, m, p) = (3, 3, 3)$: $2 \\leq 3,\\ \\text{Prime}\\,3,\\ 3 \\mid 3,\\ 9 \\nmid 3,\\ 0 < 3$. All five hold, so $\\text{minpoly}\\,\\mathbb{Q}\\,\\alpha = X^3 - 3$ with $\\text{natDegree} = 3$."
         },
         {
-            "id": "sec-main-proof",
-            "title": "Main Theorem: Linear Independence",
+            "id": "sec-polynomial-encoding",
+            "title": "Main Proof, Step 1: Encode Coefficients into a Polynomial",
             "startLine": 50,
-            "endLine": 95,
-            "summary": "cbrt3_powers_linearIndependent proves LinearIndependent ℚ (fun i : Fin 3 => α^i). Uses Fintype.linearIndependent_iff, builds polynomial p from coefficients c, shows aeval α p = 0 via ring, deduces minpoly ℚ α | p, proves p = 0 by degree comparison (3 > 2), extracts cᵢ = 0 via coefficient computation.",
-            "mathContext": "Key chain: aeval α p = 0 (ring) → minpoly ℚ α | p (minpoly.dvd) → natDeg(minpoly) ≤ natDeg(p) if p≠0 (natDegree_le_of_dvd) → 3 ≤ 2 (contradiction). Coefficient extraction: coeff(C(c₀) + C(c₁)X + C(c₂)X², i) = cᵢ by polynomial arithmetic."
+            "endLine": 70,
+            "summary": "Opens cbrt3_powers_linearIndependent. Uses Fintype.linearIndependent_iff to reduce to: ∀ c : Fin 3 → ℚ, (Σ cᵢ • αⁱ = 0) → (∀ i, cᵢ = 0). Constructs the encoding polynomial p := C(c₀) + C(c₁)·X + C(c₂)·X² ∈ ℚ[X] and proves aeval α p = ∑ᵢ cᵢ • αⁱ via simp on aeval/Algebra.smul_def + Fin.sum_univ_three + ring. Combined with the hypothesis Σ cᵢ • αⁱ = 0, this yields aeval α p = 0. The minpoly.dvd lemma immediately gives minpoly ℚ α ∣ p — the bridge from analysis (evaluation) to algebra (divisibility).",
+            "mathContext": "Encoding: $(c_0, c_1, c_2) \\mapsto p_c := C(c_0) + C(c_1) X + C(c_2) X^2 \\in \\mathbb{Q}[X]$.\nIdentity: $\\text{aeval}_\\alpha(p_c) = \\sum_{i<3} c_i \\alpha^i$.\nBridge lemma: $\\text{aeval}_\\alpha(p_c) = 0 \\Rightarrow \\text{minpoly}_\\mathbb{Q}(\\alpha) \\mid p_c$ (Mathlib's $\\text{minpoly.dvd}$)."
         },
         {
-            "id": "sec-explicit",
-            "title": "Explicit Form: ![1, α, α²]",
+            "id": "sec-degree-contradiction",
+            "title": "Main Proof, Step 2: Force p = 0 by Degree Comparison",
+            "startLine": 71,
+            "endLine": 89,
+            "summary": "By contradiction: assume p ≠ 0. Bound natDegree(p) ≤ 2 by chained applications of natDegree_add_le, natDegree_mul_le, natDegree_C = 0, and natDegree_X / natDegree_X_pow. Apply natDegree_le_of_dvd to the divisibility minpoly ℚ α ∣ p, getting natDegree(minpoly) ≤ natDegree(p) ≤ 2. But α_minpoly_deg gives natDegree(minpoly) = 3, so 3 ≤ 2 — discharged by omega.",
+            "mathContext": "Degree bound: $\\text{natDegree}(p_c) \\leq \\max(\\text{natDeg}(C(c_0)),\\ \\text{natDeg}(C(c_1)\\cdot X),\\ \\text{natDeg}(C(c_2)\\cdot X^2)) \\leq \\max(0, 1, 2) = 2$.\nDivisibility ⇒ degree: $p_c \\neq 0 \\wedge \\text{minpoly}\\,\\mathbb{Q}\\,\\alpha \\mid p_c \\Rightarrow \\text{natDeg}(\\text{minpoly}) \\leq \\text{natDeg}(p_c)$, i.e. $3 \\leq 2$. Contradiction."
+        },
+        {
+            "id": "sec-coefficient-extraction",
+            "title": "Main Proof, Step 3: Read Coefficients off the Zero Polynomial",
+            "startLine": 90,
+            "endLine": 95,
+            "summary": "From p = 0, extract cᵢ = 0 for each i : Fin 3. The identity cᵢ = coeff(p, i) is verified by fin_cases on i and simp on the polynomial definition: at i=0, coeff(p,0) = c₀; at i=1, coeff(p,1) = c₁; at i=2, coeff(p,2) = c₂. Combined with coeff(0, i) = 0, this gives cᵢ = 0.",
+            "mathContext": "$p_c = 0 \\Rightarrow \\forall i,\\ \\text{coeff}(p_c, i) = 0$. With $\\text{coeff}(p_c, i) = c_i$ for $i \\in \\{0, 1, 2\\}$ (by direct polynomial-arithmetic identification), $c_i = 0$ for all $i$."
+        },
+        {
+            "id": "sec-explicit-form",
+            "title": "Explicit Form: ![1, α, α²] and Namespace Closer",
             "startLine": 97,
-            "endLine": 103,
-            "summary": "one_cbrt3_cbrt3_sq_linearIndependent gives the same result for the explicit vector ![1, α, α²] : Fin 3 → ℝ. Proved by convert + fin_cases + simp from the main theorem.",
-            "mathContext": "![1, α, α²] i = α^(i:ℕ) for i ∈ {0,1,2}: at i=0, α^0=1; at i=1, α^1=α; at i=2, α^2. The convert step rewrites the goal using this equality."
+            "endLine": 104,
+            "summary": "one_cbrt3_cbrt3_sq_linearIndependent restates the result for the explicit vector ![1, α, α²] : Fin 3 → ℝ — the form most likely to be cited downstream (e.g., in basis-extraction proofs for ℚ(∛3)/ℚ). Proved by `convert` + `ext` + `fin_cases` + `simp [pow_succ]`, identifying ![1, α, α²] i with α^(i:ℕ) at each Fin 3 index. The namespace closer ends the file.",
+            "mathContext": "Reduction: $!\\!\\left[1, \\alpha, \\alpha^2\\right]\\!_i = \\alpha^{(i:\\mathbb{N})}$ for $i \\in \\{0,1,2\\}$. At $i = 0$: $\\alpha^0 = 1$; at $i = 1$: $\\alpha^1 = \\alpha$; at $i = 2$: $\\alpha^2$. The `convert` rewrites the goal using these three equalities, transferring linear independence from the powers form to the explicit form."
         }
     ],
     "crossReferences": [
