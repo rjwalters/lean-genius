@@ -2,16 +2,26 @@
 
 **Phase**: ACT — gallery entry built; 2 axioms tractable, 1 is the main open conjecture
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 3, researcher-11)
-**Iteration**: 3
+**Last Updated**: 2026-05-08 (Session 9, researcher-9)
+**Iteration**: 9
 
 ## Current Focus
 
-Session 3 produced a **3-layer proof recipe** for the next-axiom-to-discharge
-`rational_digits_eventually_periodic` (see `knowledge.md` heading "Session
-2026-05-08 (Session 3) — Recipe for `rational_digits_eventually_periodic`").
+Session 9 implemented **Layer 2** of the 3-layer recipe for
+`rational_digits_eventually_periodic`, building directly on the Layer 1
+helpers added in Session 8 (PR #16993). Four new private declarations
+were added to `proofs/Proofs/ETranscendentalOQ02.lean`:
 
-The recipe:
+* `ratResidue (b q n)` — the residue sequence `q.num · bⁿ mod q.den`.
+* `ratResidue_succ` — one-step recurrence `r(n+1) = b · r(n)`.
+* `ratResidue_eq_iterate` — bridge to `(· * (b : ZMod q.den))^[n]`.
+* `ratResidue_eventually_periodic` — eventual periodicity (`T, N₀ ≤ q.den`)
+  by composing Layer 1's `eventually_periodic_iterate` with the bridge.
+
+Layer 3 (`nthDigit_rat_eq_residue` cast bridge) is the only remaining
+piece before the axiom can be discharged.
+
+Earlier session context (Session 3 produced the recipe):
 - Surveys Mathlib 4.26 API for "fintype ⇒ eventually periodic" (named lemma is
   missing; must be assembled from `Fintype.exists_ne_map_eq_of_card_lt` +
   iterated `Function.iterate_add_apply`).
@@ -60,21 +70,28 @@ Three remaining axioms (per `proofs/Proofs/ETranscendentalOQ02.lean`):
 
 ## Next Action
 
-**ACT** — apply Session 3 recipe (`knowledge.md`) Layer 1: prove
-`eventually_periodic_iterate` (a fintype-orbit pigeonhole lemma) as a
-self-contained ~30–40 line lemma. It is the most reusable artifact and a
-clean Mathlib contribution candidate (no module-specific dependencies).
+**ACT (Session 10)** — implement Layer 3: the
+`nthDigit_rat_eq_residue` cast bridge. The recipe (knowledge.md
+"Layer 3") sketches it as ~50–80 lines, cast-juggling-heavy. Once
+Layer 3 is in, the axiom can be replaced by a theorem chaining Layers
+1, 2, 3.
 
-Subsequent sessions: Layer 2 (~30–50 lines, ratResidue ZMod bridge) and
-Layer 3 (~50–80 lines, nthDigit ↔ residue cast-bridge) — see
-`knowledge.md` for the worked sketches.
+Layer 3 statement (paraphrased):
+```
+private lemma nthDigit_rat_eq_residue (b : ℕ) (hb : 2 ≤ b) (p : ℤ) (q : ℕ) (hq : 0 < q) :
+    ∀ n, nthDigit b n ((p : ℝ) / q) = ⌊((p * (b : ℤ)^n) % q : ℤ) * (b : ℝ) / q⌋ % b
+```
+
+The hard part is the floor algebra (`⌊b^n · p/q⌋ % b` reformulated in terms of
+`(p · bⁿ) mod q`). Sign handling for negative `p` adds a wrinkle.
 
 ## Attempt Counts
 
-- Total attempts: 2 (Session 1 = entry built 2026-05-04; Session 1.5 = digit
-  extension + axiomCount 4→3 via `periodic_has_missing_ktuple`; Session 2 =
-  metadata reconciliation 2026-05-07; Session 3 = recipe-only 2026-05-08).
-- Current approach attempts: 0 (recipe stage; no proof attempted yet)
+- Total attempts: 4 (Session 1 = entry built 2026-05-04; Session 2 =
+  metadata reconciliation 2026-05-07; Session 3 = recipe (2026-05-08);
+  Session 8 = Layer 1 (#16993, 2026-05-08); Session 9 = Layer 2
+  (researcher-9, 2026-05-08)).
+- Current approach attempts: 2 (Layer 1 closed; Layer 2 closed)
 - Approaches tried: 0 for the rational-digits axiom; 1 successful approach
   for `periodic_has_missing_ktuple` (orbit cardinality, archived in
   `knowledge.md`).

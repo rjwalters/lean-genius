@@ -372,3 +372,86 @@ No `.lean` edits, no `meta.json` count edits.
 - Mathlib API survey: `Mathlib.Data.Fintype.Pigeonhole`, `Mathlib.Algebra.Periodic`,
   `Mathlib.Data.ZMod.Basic`, `Mathlib.Logic.Function.Iterate`.
 - Convention precedent: `konigsberg-oq-01-oq-02` Session 7 (recipe-only PR).
+
+---
+
+## Session 2026-05-08 (Session 9, researcher-9) — Layer 2 closed
+
+**Mode**: ACT
+**Outcome**: Implemented Layer 2 of the Session 3 recipe. Four new private
+declarations in `proofs/Proofs/ETranscendentalOQ02.lean` (~70 lines):
+
+```lean
+private noncomputable def ratResidue (b : ℕ) (q : ℚ) (n : ℕ) : ZMod q.den :=
+  ((q.num * (b : ℤ) ^ n : ℤ) : ZMod q.den)
+
+private lemma ratResidue_succ ...
+  -- 3 lines: unfold + push_cast + ring
+
+private lemma ratResidue_eq_iterate (b : ℕ) (q : ℚ) :
+    ∀ n, ratResidue b q n = (· * (b : ZMod q.den))^[n] (q.num : ZMod q.den)
+  -- induction on n; succ case via Function.iterate_succ_apply' + ratResidue_succ + ring
+
+private lemma ratResidue_eventually_periodic (b : ℕ) (q : ℚ) (hq : 0 < q.den) :
+    ∃ T N₀, 0 < T ∧ N₀ ≤ q.den ∧ T ≤ q.den ∧
+      ∀ n ≥ N₀, ratResidue b q (n + T) = ratResidue b q n
+  -- NeZero q.den from hq; ZMod.card; eventually_periodic_iterate (Layer 1) on (· * b);
+  -- thread through ratResidue_eq_iterate via simp only.
+```
+
+### What worked
+
+- The recipe in §"Layer 2" was followed verbatim: `ratResidue` matches
+  the recipe def, and `ratResidue_succ` is the same one-line proof
+  (`unfold` + `push_cast` + `ring`).
+- `ratResidue_eq_iterate` came together cleanly with
+  `Function.iterate_succ_apply'` (the variant `f^[n+1] x = f (f^[n] x)`
+  rather than `f^[n+1] x = f^[n] (f x)`). The `ring` close is needed only
+  because `ratResidue_succ` puts `b` on the left while the iterate puts it
+  on the right (commutativity).
+- For `ratResidue_eventually_periodic`, the `NeZero q.den` instance is
+  built from `hq : 0 < q.den` via `⟨by omega⟩`. With that instance,
+  `ZMod.card q.den` gives the `Fintype.card` reduction. The bridge
+  `ratResidue_eq_iterate` is then applied to both `n + T` and `n` in one
+  pass via `simp only [ratResidue_eq_iterate]`, leaving exactly the form
+  proved by `eventually_periodic_iterate` (Layer 1).
+
+### Build verification
+
+Local Docker build deferred (broken `proofs/.lake` symlink — see
+`feedback_researcher_lake_symlink_broken.md`). CI is the verifier. Risk
+factors I'm watching:
+
+- `ZMod.card q.den` may be `ZMod.card_zmod` or similar in a different Mathlib
+  version. If it doesn't resolve, the fix is to instantiate it
+  manually via `Fintype.card_zmod` or compute via the `NeZero` instance
+  of `Fin q.den`.
+- `Function.iterate_succ_apply'` is the standard name; should be solid.
+- `simp [ratResidue]` (zero case) relies on `b^0 = 1` being a simp lemma.
+  If it doesn't fire, the fallback is `unfold ratResidue; simp [pow_zero]`.
+
+### Lines & decl deltas
+
+- `proofs/Proofs/ETranscendentalOQ02.lean`: +75 lines (358 → 429
+  approximate; exact numbers depend on docstring count). Adds 4 private
+  declarations: 1 def + 3 lemmas.
+- `meta.json` not updated this session (count is for theorem decls in the
+  PART-headers, not for new `private` helpers — but mechanic-style
+  audits may want to revisit).
+
+### Next session (Session 10) target
+
+**Layer 3**: `nthDigit_rat_eq_residue`. The recipe estimate (50–80 lines)
+and the cast-heavy nature mean this is the largest of the three layers.
+Once it's in, the `rational_digits_eventually_periodic` axiom can be
+discharged by composing Layers 1, 2, 3 (the `Combining the three layers`
+sketch in §"Layer 3" of this knowledge file).
+
+### Files Modified (Session 9, researcher-9)
+
+- `proofs/Proofs/ETranscendentalOQ02.lean` (Layer 2 implementation)
+- `research/problems/e-transcendental-oq-02/state.md` (Session 9 entry, iter 8→9)
+- `research/problems/e-transcendental-oq-02/knowledge.md` (this entry)
+
+No axiom-count changes; the axiom remains as a placeholder until Layer 3
+is in.
