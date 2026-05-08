@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01",
   "title": "Can insep_gal_trivial be proved in Lean using Mathlib's purely inseparable ex...",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
@@ -17,36 +17,53 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-05-04T17:47:35.841Z",
-    "iteration": 1,
-    "focus": "Proved: insep_gal_trivial is mathematically FALSE. Correct theorem: IsPurelyInseparable F f.SplittingField → |Gal(f)| = 1. Counterexample: X⁴+X²+a over F₂(a) is inseparable irreducible with |Gal| = 2.",
+    "since": "2026-05-08T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Gallery is axiomatized (status: axiomatized, badge: axiom). 10 theorems, 1 intentional axiom (counterexample_gal_card), 0 sorries. The structural scaffolding (f_target_natDegree=4, _degree=4, _ne_zero, _monic) is in place for any future Artin-Schreier irreducibility / |Gal|=2 argument.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Multi-session Artin-Schreier formalization to discharge counterexample_gal_card. Each step (Eisenstein irreducibility, splitting field characterization, automorphism construction, upper-bound) is independently useful and may have Mathlib upstream value.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Showed insep_gal_trivial is false; proved correct version gal_card_one_of_purelyInseparable_splitting. 7 theorems, 1 axiom (counterexample), 2 minor API sorries.",
+    "progressSummary": "AXIOMATIZED. Gallery entry shows insep_gal_trivial is false in general; proves correct replacement gal_card_one_of_purelyInseparable_splitting. 10 theorems, 1 intentional axiom (counterexample_gal_card pending Artin-Schreier), 0 sorries. PR #16106 (Session 1: counterexample + correct theorem with 2 API sorries), #16660 (Session 2: closed both API sorries via iterateFrobenius), #16889 (enricher 5th key insight Artin-Schreier). Session 3 (this PR): added structural scaffolding f_target_natDegree (=4), f_target_degree, f_target_ne_zero, f_target_monic — prerequisites for any downstream Artin-Schreier irreducibility / |Gal|=2 argument.",
     "builtItems": [
-      "AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean: 278 lines, 7 theorems",
-      "algEquiv_eq_refl_of_isPurelyInseparable: proven modulo 2 API sorries",
-      "gal_card_one_of_purelyInseparable_splitting: proven modulo above",
-      "sub_pow_char_pow: (a-b)^(p^n) = a^(p^n) - b^(p^n) in char p",
-      "counterexample: f_target = X^4+X^2+a over F₂(a), formally defined"
+      "AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean: 230 lines, 10 theorems, 1 intentional axiom",
+      "f_is_g_composed_sq: f_target = g_factor.comp (X^2)",
+      "f_derivative_zero: f_target.derivative = 0 in char 2 (inseparability witness)",
+      "f_target_natDegree (Session 3): f_target.natDegree = 4 via compute_degree!",
+      "f_target_degree (Session 3): f_target.degree = 4",
+      "f_target_ne_zero (Session 3): f_target ≠ 0 (corollary of natDegree)",
+      "f_target_monic (Session 3): f_target.Monic (leading coefficient = 1)",
+      "sub_pow_char_pow_eq: (a-b)^(p^n) = a^(p^n) - b^(p^n) in char p, via iterateFrobenius and map_sub",
+      "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension is the identity",
+      "gal_card_one_of_purelyInseparable_splitting: corollary, |Gal(f)| = 1 when SplittingField is purely inseparable",
+      "insep_gal_trivial_refuted: formal refutation using counterexample_gal_card axiom"
     ],
     "insights": [
       "insep_gal_trivial as stated is mathematically FALSE: f=g(X^p) with deg(g)≥2 gives inseparable irreducible with |Gal|=|Gal(g)|≥2",
       "Correct condition: IsPurelyInseparable F f.SplittingField (holds only when f has exactly 1 distinct root)",
       "Char-2 counterexample: X⁴+X²+a over F₂(a) — inseparable irreducible but |Gal|=2 via σ: α^(1/2)↦α^(1/2)+1",
-      "Proof of correct theorem: (σ(x)-x)^(p^n)=0 in field → σ(x)=x via char-p Frobenius + no nilpotents"
+      "Proof of correct theorem: (σ(x)-x)^(p^n)=0 in field → σ(x)=x via char-p Frobenius + no nilpotents",
+      "iterateFrobenius (the iterated p^n-power as a ring hom) + map_sub bypasses the parity case split for sub_pow_char_pow_eq — one line in any characteristic",
+      "ringChar.eq is the Mathlib name for ringChar K = p when [CharP K p] (NOT ringChar_eq_charP)",
+      "Artin-Schreier theory provides the cleanest source of inseparable-but-not-purely-inseparable counterexamples in characteristic p; the char-2 example f = X⁴ + X² + a is the smallest non-trivial instance",
+      "compute_degree! handles polynomials of monomial-sum shape (X^a + X^b + C c) and is the standard Mathlib tactic for natDegree / degree of explicit polynomials in this codebase"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Artin-Schreier extension theory over function fields F_p(t) — the irreducibility of X^p - X - a over F_p(t) is not in Mathlib v4.26",
+      "Splitting-field characterization for inseparable polynomials of the form g(X^p) — would short-circuit much of the counterexample side"
+    ],
     "nextSteps": [
-      "Submit sub_pow_char_pow and charP-ringChar alignment sorries to Aristotle",
-      "Consider replacing insep_gal_trivial in parent with correct purely-inseparable version"
+      "Multi-session Artin-Schreier formalization to discharge counterexample_gal_card",
+      "Step 1: Irreducibility of f_target via Eisenstein at the prime ideal (X) in (ZMod 2)[X], lifted through algebraMap to the FractionRing",
+      "Step 2: Splitting field characterization SplittingField f_target ≃ base⟮α^(1/2)⟯",
+      "Step 3: Construct nontrivial automorphism σ: α^(1/2) ↦ α^(1/2)+1 of order 2",
+      "Step 4: Upper bound |Gal(f_target)| ≤ 2 via separable-degree argument or Galois-closure index",
+      "Each step is independently useful and could be a Mathlib upstream contribution"
     ]
   },
   "tags": [
@@ -93,7 +110,8 @@
     "mathlib": []
   },
   "started": "2026-05-04T17:47:35.841Z",
-  "lastUpdate": "2026-05-04T17:47:35.841Z",
+  "lastUpdate": "2026-05-08T00:00:00.000Z",
+  "completed": "2026-05-08T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -261,6 +279,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
+      "filename": "AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 231,
+      "theoremCount": 10,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/AngleTrisectionOQ02OQ01OQ02.lean",

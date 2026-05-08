@@ -50,7 +50,7 @@
 
   Axioms: 1 (counterexample_gal_card)
   Sorries: 0
-  Theorems: 6
+  Theorems: 10
 -/
 
 import Mathlib
@@ -88,6 +88,27 @@ lemma f_derivative_zero : f_target.derivative = 0 := by
   simp [f_target, Polynomial.derivative_add, Polynomial.derivative_pow,
         Polynomial.derivative_C, Polynomial.derivative_X_pow]
   ring
+
+/-- f_target = X⁴ + X² + aGen has natDegree 4 (the leading X⁴ term dominates). -/
+lemma f_target_natDegree : f_target.natDegree = 4 := by
+  unfold f_target; compute_degree!
+
+/-- f_target = X⁴ + X² + aGen has degree 4. -/
+lemma f_target_degree : f_target.degree = 4 := by
+  unfold f_target; compute_degree!
+
+/-- f_target is nonzero — immediate from natDegree = 4. -/
+lemma f_target_ne_zero : f_target ≠ 0 := by
+  intro h
+  have hd : f_target.natDegree = 4 := f_target_natDegree
+  rw [h, Polynomial.natDegree_zero] at hd
+  exact absurd hd (by norm_num)
+
+/-- f_target is monic (leading coefficient = 1). -/
+lemma f_target_monic : f_target.Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, f_target_natDegree]
+  unfold f_target
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
 
 -- ============================================================================
 -- Part II: The Correct Theorem — Purely Inseparable ⟹ Trivial Galois Group
@@ -195,6 +216,10 @@ The false axiom should be replaced in the parent entry.
 |---------|--------|
 | `f_is_g_composed_sq` | proved |
 | `f_derivative_zero` | proved |
+| `f_target_natDegree` | proved (compute_degree!) |
+| `f_target_degree` | proved (compute_degree!) |
+| `f_target_ne_zero` | proved (corollary of natDegree) |
+| `f_target_monic` | proved (leading coefficient = 1) |
 | `sub_pow_char_pow_eq` | proved (via `iterateFrobenius` and `map_sub`) |
 | `algEquiv_eq_refl_of_isPurelyInseparable` | proved |
 | `gal_card_one_of_purelyInseparable_splitting` | proved |
