@@ -1,0 +1,118 @@
+{
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+  "title": "Rational Canonical Form — Mathlib formalization connection (nonderogatory case)",
+  "phase": "ORIENT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall K \\text{ field}, \\forall n, \\forall M \\in M_n(K), \\text{IsNonderogatory}(M) \\Rightarrow \\exists P \\in GL_n(K), P^{-1} M P = C(\\mu_M)",
+    "plain": "Every nonderogatory matrix is similar to its companion matrix — the nonderogatory case of the rational canonical form, formalized as a stand-alone theorem because Mathlib v4.26.0 does not have a general RCF.",
+    "whyMatters": [
+      "Closes the cyclic-vector / RCF chain begun in cayley-hamilton-cyclic-vector-all-fields-oq-01.",
+      "Provides a concrete similarity matrix (the Krylov matrix) — not just an abstract similarity.",
+      "Stepping-stone toward a future Mathlib contribution adding companion matrices and RCF."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "nonderogatory_similar_to_companion: every nonderogatory matrix M is similar to companionMx (minpoly K M), via the Krylov matrix [v | Mv | ... | M^{n-1}v] for any cyclic vector v",
+      "cyclicMatrix_isUnit: the Krylov matrix is invertible (mulVec injective from cyclicity)",
+      "M_mul_cyclicMatrix: the conjugation identity M·P = P·C(minpoly K M)"
+    ],
+    "open": [
+      "hMn_axiom elimination (routine — Mathlib API exists, just needs a careful unwrap of aeval M (minpoly K M) = 0)"
+    ],
+    "goal": "Status `axiomatized` → `verified`: eliminate the single hMn_axiom in Session 2."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-05-08",
+    "iteration": 1,
+    "focus": "Scaffold the existing file (added inadvertently via PR #16881) into the gallery, register in the build, and document the axiom-elimination path.",
+    "blockers": [],
+    "nextAction": "Session 2: prove hMn_axiom from minpoly.aeval + minpoly.monic + Polynomial.aeval_eq_sum_range. Verify with Docker build.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SCAFFOLDED: Lean file (156 lines, 1 axiom hMn_axiom, 0 sorries) already on origin/main; gallery entry, build registration, and research scaffold added in Session 1. Axiom elimination deferred to Session 2 (routine — needs Docker build for verification).",
+    "builtItems": [
+      "companionMx: companion matrix of a polynomial (Fin n indexed) — proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean:26",
+      "cyclicMatrix: Krylov matrix [v | Mv | ... | M^{n-1}v] — :33",
+      "cyclicMatrix_ker (private): kernel-of-mulVec characterization — :37",
+      "cyclicMatrix_injective: mulVec is injective when v cyclic — :71",
+      "cyclicMatrix_isUnit: cyclicMatrix is invertible — :76",
+      "M_mul_cyclicMatrix: conjugation identity M·P = P·C(minpoly) — :86",
+      "nonderogatory_similar_to_companion: main theorem (∃ P : IsUnit P ∧ P⁻¹·M·P = companionMx (minpoly K M)) — :132",
+      "hMn_axiom (private): Cayley-Hamilton-style expansion (M^n)·v = -∑ c_k (M^k)·v — :81 (TO ELIMINATE)"
+    ],
+    "insights": [
+      "Mathlib v4.26.0 has SmithNormalForm and module-structure theorems but NO matrix-form RCF or companionMatrix API. This entry's companionMx + nonderogatory_similar_to_companion seeds a future contribution.",
+      "The Krylov matrix P[i,j] = (M^j v)_i is the natural change-of-basis: invertibility of P is exactly cyclicity recast in matrix language.",
+      "The conjugation identity M·P = P·C(minpoly) decomposes column-by-column. Non-last columns give the trivial M·(M^j v) = M^{j+1} v. The last column reduces to the Cayley-Hamilton relation M^n v = -∑ c_k M^k v.",
+      "hMn_axiom is NOT a deep statement — it is routine: aeval M (minpoly K M) = 0 plus monicity gives M^n + ∑ c_k M^k = 0, hence M^n = -∑ c_k M^k. Applying mulVec v finishes.",
+      "The file imports CayleyHamiltonCyclicVectorAllFields (parent, gives existence of v) and CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01 (gives minpoly_natDegree_of_cyclic which establishes natDegree = n).",
+      "Honest reading of the slug 'Rational canonical form Mathlib formalization connection': the answer to 'is RCF in Mathlib?' is no. The productive operationalization is to formalize the nonderogatory case as a stand-alone theorem, which the file does."
+    ],
+    "mathlibGaps": [
+      "Matrix.companionMatrix — not in Mathlib v4.26.0. This entry's companionMx is a candidate definition.",
+      "Matrix.similar_companionMatrix_of_nonderogatory — not in Mathlib. This entry's nonderogatory_similar_to_companion is a candidate.",
+      "Full Matrix.rationalCanonicalForm (multi-block, all matrices) — would require generalizing this single-block case via the K[X]-module structure theorem."
+    ],
+    "nextSteps": [
+      "Session 2: replace `hMn_axiom` with a `theorem hMn` proved from minpoly.aeval + minpoly.monic + Polynomial.aeval_eq_sum_range. Target: 0 axioms.",
+      "Session 3: explore biconditional formalization — IsCyclic v M ↔ ∃ P : IsUnit P ∧ P⁻¹·M·P = companionMx (minpoly K M). Likely easy from existing infrastructure.",
+      "Session 4+: stretch — propose Matrix.companionMatrix to Mathlib, alongside the nonderogatory similarity result."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "cayley-hamilton",
+    "rational-canonical-form",
+    "companion-matrix",
+    "krylov-matrix",
+    "cyclic-vector",
+    "research",
+    "open-question",
+    "mathlib-gap"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton-cyclic-vector-all-fields",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Gantmacher, F. R., The Theory of Matrices, Vol. 1, Chelsea (1959), Ch. VII (rational canonical form)",
+      "Curtis, C. W. and Reiner, I., Representation Theory of Finite Groups and Associative Algebras, Wiley (1962), §4 (cyclic vectors and primary decomposition)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/FieldTheory/Minpoly/Field.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/SmithNormalForm.html"
+    ]
+  },
+  "started": "2026-05-08",
+  "lastUpdate": "2026-05-08",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean"
+    }
+  ]
+}
