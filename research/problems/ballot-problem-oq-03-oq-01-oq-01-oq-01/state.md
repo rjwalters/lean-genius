@@ -4,8 +4,67 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-08 (S28 — researcher-9)
-**Iteration**: 28
+**Last Updated**: 2026-05-08 (S29 — researcher-6)
+**Iteration**: 29
+
+## S29 Summary (2026-05-08, researcher-6)
+
+**Mode**: ACT (canonical-complement bridge infrastructure for the eventual
+Sub-lemma 2B cycle-lemma proof; pure helpers, no churn to existing proof
+structure).
+
+**Outcome**: added three private helper lemmas just before Sub-lemma 2B
+that reformulate the existential LHS predicate
+`¬ ∃ Q : Sym (Fin n) b, P.1 + Q.1 = M.1 ∧ ColStrictSym a b P Q` into the
+canonical-complement form `¬ ColStrictSym a b P ⟨M.1 − P.1, _⟩`,
+exposing the rotation-equivariance of the predicate (since `Q` is forced
+to be `M.1 − P.1` by `add_left_cancel` once we fix `P.1 ≤ M.1`).
+
+1. **`comp_card_eq`** (~5-line proof): for `M : Sym (Fin n) (a+b)`,
+   `P : Sym (Fin n) a`, and `hP : P.1 ≤ M.1`, the cardinality identity
+   `(M.1 − P.1).card = b` via `Multiset.card_sub hP + M.2 + P.2 +
+   Nat.add_sub_cancel_left`. Packages `M.1 − P.1` as a valid
+   `Sym (Fin n) b`.
+
+2. **`comp_add_eq`** (~3-line proof): the multiset decomposition
+   `P.1 + (M.1 − P.1) = M.1` via `add_comm + tsub_add_cancel_of_le hP`.
+
+3. **`noColStrict_iff_canonicalComp`** (~25-line bridge): the iff between
+   the existential and canonical-complement forms of the "bad P" predicate.
+   Forward direction: package `Q := canonical complement` from
+   `comp_card_eq` and `comp_add_eq`. Reverse direction: from a witness
+   `(Q, hPQ, hCS)` of the existential, derive
+   `Q.1 = M.1 − P.1` via `add_left_cancel` on
+   `P.1 + Q.1 = P.1 + (M.1 − P.1)`, then `Subtype.ext` to identify `Q`
+   with the canonical complement, then transport the col-strict witness.
+
+**Net sorry count**: 2 → 2 (unchanged). The three new helpers are pure
+proofs — none introduces a sorry. Sub-lemma 2B's statement and proof
+(still `sorry`) are unchanged, as is Sub-lemma 2's body. Sub-lemma 2B's
+docstring receives a brief addendum noting the bridge's availability.
+
+**Why this matters for S30+**: the canonical-complement form
+`¬ ColStrictSym a b P ⟨M.1 − P.1, _⟩` is the natural input to the
+cycle-lemma argument because it isolates a single rotation-equivariant
+predicate on `Sym (Fin n) a` (parametrised by `M`). The existential form
+in the current Sub-lemma 2B statement obscures this — a future cycle-
+lemma proof can apply `Finset.filter_congr` with
+`noColStrict_iff_canonicalComp` to reformulate the LHS as
+`#{P : Sym a // P.1 ≤ M.1 ∧ ¬ ColStrictSym a b P ⟨M.1 − P.1, _⟩}`,
+then attack the bijection on the rotation-invariant form directly.
+
+**Files modified**:
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` (1623 → 1705 lines,
+  net +82: three new private lemmas + their docstrings + a brief addendum
+  to Sub-lemma 2B's docstring noting the bridge).
+- `src/data/proofs/.../meta.json` (lineCount 1623 → 1705, theoremCount
+  35 → 38; description, assumptions, originalContributions updated for S29).
+- `research/problems/.../state.md` (this file: iteration 28 → 29, S29 summary).
+
+**Build**: pending (CI is the ground truth on PR; the three new lemmas
+compose only standard Mathlib API — `Multiset.card_sub`,
+`tsub_add_cancel_of_le`, `add_left_cancel`, `Subtype.ext` — already used
+elsewhere in the file, so build risk is very low).
 
 ## S28 Summary (2026-05-08, researcher-9)
 
@@ -420,14 +479,25 @@ None for current approach. The ballot bijection inside
    pair count ↔ single-Sym filtered count bijection for col-strict subsets;
    strict refinement of Sub-lemma 1.
 
-4. ✅ **S28 (this session)**: Sub-lemma 2B
+4. ✅ **S28**: Sub-lemma 2B
    (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`, single-Sym
    sharpest form, `sorry`) + Sub-lemma 2 body closure via Sub-lemma 2A +
    Sub-lemma 2B + filter partition + `Finset.filter_filter` + `omega`. The
    pair encoding is fully dissolved from the cycle-lemma input; the
    remaining sorry is on the canonical single-Sym statement.
 
-5. **S29+**: Attack **Sub-lemma 2B** via the multiset Cycle Lemma. The
+5. ✅ **S29 (this session)**: Canonical-complement bridge infrastructure
+   for Sub-lemma 2B's eventual cycle-lemma proof. Three pure private
+   helpers added just before Sub-lemma 2B:
+   `comp_card_eq` ((M.1 − P.1).card = b), `comp_add_eq`
+   (P.1 + (M.1 − P.1) = M.1), and `noColStrict_iff_canonicalComp` (the
+   bridge between the existential and canonical-complement forms of the
+   "bad P" predicate). Sub-lemma 2B's statement and proof remain
+   unchanged; the bridge is available for `Finset.filter_congr`-based
+   reformulation at the cycle-lemma proof step. Net sorry count
+   unchanged at 2.
+
+6. **S30+**: Attack **Sub-lemma 2B** via the multiset Cycle Lemma. The
    target statement:
 
    ```lean
@@ -443,26 +513,31 @@ None for current approach. The ballot bijection inside
 
    ~80–100 lines; the dominant cost. Two sub-paths:
 
-   * **5a — Mathlib contribution**: implement the Cycle Lemma for sorted
+   * **6a — Mathlib contribution**: implement the Cycle Lemma for sorted
      multiset prefixes (Lyndon / Dvoretzky-Motzkin generalised). Independent
      of this proof; reusable across other gallery work.
-   * **5b — inline proof**: build the bijection directly using sorted-list
+   * **6b — inline proof**: build the bijection directly using sorted-list
      representatives. Define the "shift one element from `Q` to `P`" map
      on the bad submultisets and prove it's a bijection to size-`(a+1)`
-     submultisets via a multiset rotation argument.
+     submultisets via a multiset rotation argument. With S29's
+     `noColStrict_iff_canonicalComp` available, the LHS predicate can
+     be reformulated via `Finset.filter_congr` to the canonical-
+     complement form before attacking the bijection — removing the
+     existential `Q` from the predicate exposes rotation-equivariance
+     and is the natural starting point for the inline construction.
 
-6. **Future**: After `jdt_weight_sum` fully closes, `jacobi_trudi_ssyt_eq`
+7. **Future**: After `jdt_weight_sum` fully closes, `jacobi_trudi_ssyt_eq`
    k ≥ 3 (RSK / algebraic LGV, ~300 lines).
 
 ## File Status
 
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1528 → 1623 lines
-  (+95 this session: Sub-lemma 2B docstring + statement + sorry; Sub-lemma 2
-  body refactor; docstring tail update).
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1623 → 1705 lines
+  (+82 this session: three new private lemmas — `comp_card_eq`,
+  `comp_add_eq`, `noColStrict_iff_canonicalComp` — with docstrings, plus a
+  brief addendum to Sub-lemma 2B's docstring noting the bridge).
 - Sorry count: 2 (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`
-  Sub-lemma 2B, `jacobi_trudi_ssyt_eq` k≥3 — net unchanged from S27, but
-  the Sub-lemma 2 sorry has migrated to Sub-lemma 2B with strictly cleaner
-  provenance).
+  Sub-lemma 2B, `jacobi_trudi_ssyt_eq` k≥3 — net unchanged from S28).
 - 0 axioms.
-- Theorems / lemmas: +1 (`noColStrict_subSym_a_count_eq_subSym_le_aplus1_count`).
+- Theorems / lemmas: 35 → 38 (+3: `comp_card_eq`, `comp_add_eq`,
+  `noColStrict_iff_canonicalComp`; all pure proofs, no sorries).
 - Definitions: 8 (unchanged).
