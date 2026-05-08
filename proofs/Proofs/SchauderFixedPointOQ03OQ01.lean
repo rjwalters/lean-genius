@@ -79,26 +79,58 @@ axiom brouwer_fpt {n : ℕ}
     (f : ↥S → ↥S) (hf : Continuous f) :
     ∃ x : ↥S, f x = x
 
-/-- A continuous function f : S → S is an ε-approximate selection of F
-    if d(f(x), F(x)) < ε for all x ∈ S. -/
+/-- A continuous function f : S → S is a *pointwise* ε-approximate
+    selection of F if d(f(x), F(x)) < ε for all x ∈ S.
+
+    **NOTE (S6, 2026-05-08)**: this pointwise form is strictly stronger
+    than what is provable from upper-hemicontinuity (USC) + convex
+    values alone. A 1-D counterexample (see `s6-axiom-counterexample.md`
+    in the per-problem state directory) shows no continuous pointwise
+    `(1/3)`-approximate selection exists for the USC + convex-valued
+    correspondence `F : [-1,1] → 2^[-1,1]` with `F(0) = [0,1]`,
+    `F(t > 0) = {0}`, `F(t < 0) = {1}`. The provable form under USC
+    alone is the *graph* form `IsGraphApproxSelection` below
+    (Cellina–Browder, 1968–1969). -/
 def IsApproxSelection {X : Type*} [PseudoMetricSpace X]
     (F : SetValuedMap X X) (f : X → X) (ε : ℝ) : Prop :=
   ∀ x, ∃ y ∈ F x, dist (f x) y < ε
 
-/-- **Axiom 2: Approximate Continuous Selections**
+/-- A continuous function f : S → S is a *graph* ε-approximate
+    selection of F if for every x ∈ S there is some x' ∈ S with
+    `dist x x' < ε` and some `y ∈ F(x')` with `dist (f x) y < ε`.
 
-    For a compact convex S, an UHC map F : S → 2^S with nonempty convex
-    values, and any ε > 0, there exists a continuous ε-approximate
-    selection f : S → S.
+    Equivalently, the graph of `f` lies in the `ε`-neighborhood of
+    the graph of `F` (the standard form in Cellina–Browder, 1968–1969;
+    Aubin–Frankowska *Set-Valued Analysis* §9.2). This is the
+    correct provable form under USC + convex values, weaker than
+    `IsApproxSelection` (which requires the *pointwise* condition
+    `f(x)` close to `F(x)`, not just to `F` at some nearby point). -/
+def IsGraphApproxSelection {X : Type*} [PseudoMetricSpace X]
+    (F : SetValuedMap X X) (f : X → X) (ε : ℝ) : Prop :=
+  ∀ x, ∃ x' y, dist x x' < ε ∧ y ∈ F x' ∧ dist (f x) y < ε
 
+/-- **Axiom 2: Approximate Continuous Selections (graph form)**
+
+    For a compact convex S, an USC map F : S → 2^S with nonempty
+    convex values, and any ε > 0, there exists a continuous f : S → S
+    whose graph lies in the `ε`-neighborhood of `graph(F)`.
+
+    This is the Cellina–Browder theorem (Cellina 1969, Browder 1968).
     The proof uses:
-    1. For each x, pick y_x ∈ F(x) and use UHC to get a neighborhood U_x
-       where F(U_x) ⊆ B(F(x), ε)
+    1. For each x, pick y_x ∈ F(x) and use USC to get a neighborhood U_x
+       where F(U_x) ⊆ ε-thickening of F(x).
     2. By compactness, extract a finite subcover U_{x_1}, ..., U_{x_k}
     3. Take a subordinate partition of unity {φ_i}
     4. Define f(x) = Σ φ_i(x) · y_{x_i}
     5. By convexity of S, f maps into S
-    6. By construction, f(x) is within ε of F(x) -/
+    6. By construction, the graph of f is in the ε-neighborhood of
+       the graph of F (NOT pointwise close — see S6 counterexample).
+
+    **History (S6, 2026-05-08)**: this axiom was previously stated as
+    the pointwise form `IsApproxSelection`. S6 analysis showed the
+    pointwise form is FALSE under USC + convex values; this S7 revision
+    weakens to the (provable) graph form and re-threads
+    `kakutani_from_brouwer` through the triangle inequality. -/
 axiom approx_selection_exists {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
@@ -107,7 +139,7 @@ axiom approx_selection_exists {n : ℕ}
     (hF_convex : ∀ x, Convex ℝ ((Subtype.val '' F x) : Set (EuclideanSpace ℝ (Fin n))))
     (hF_uhc : IsUpperHemicontinuous F)
     (ε : ℝ) (hε : 0 < ε) :
-    ∃ f : ↥S → ↥S, Continuous f ∧ IsApproxSelection F (fun x => (f x : ↥S)) ε
+    ∃ f : ↥S → ↥S, Continuous f ∧ IsGraphApproxSelection F (fun x => (f x : ↥S)) ε
 
 /-- **Sequential Compactness in Metric Spaces**
 
@@ -259,17 +291,27 @@ theorem approx_fixedpoint_implies_fixedpoint
 -- Part IV: The Proof of Kakutani from Brouwer
 -- ============================================================
 
-/-- **Kakutani's FPT from Brouwer + Approximate Selections**
+/-- **Kakutani's FPT from Brouwer + Approximate Selections (graph form)**
 
     Proof sketch (filled body below):
-    1. For each ε > 0, get a continuous ε-approximate selection f_ε of F
-       via `approx_selection_exists`.
+    1. For each ε > 0, request a continuous (ε/2)-graph-approximate
+       selection f_ε of F via `approx_selection_exists`.
     2. Apply `brouwer_fpt` to f_ε on S to get x₀ with f_ε(x₀) = x₀.
-    3. The approximate-selection property at x₀ gives y ∈ F(x₀) with
-       `dist(f_ε(x₀), y) < ε`. Since f_ε(x₀) = x₀, `dist(x₀, y) < ε`.
-    4. Hand the family of ε-witnesses to `approx_fixedpoint_implies_fixedpoint`,
-       which uses sequential compactness + closedness + UHC of F to extract
-       a genuine fixed point. -/
+    3. The graph-approximate property at x₀ gives x' ∈ S, y ∈ F(x')
+       with `dist(x₀, x') < ε/2` and `dist(f_ε(x₀), y) < ε/2`.
+       Since f_ε(x₀) = x₀, `dist(x₀, y) < ε/2`.
+    4. Triangle inequality: `dist(x', y) ≤ dist(x', x₀) + dist(x₀, y)
+                                            < ε/2 + ε/2 = ε`.
+    5. Hand the family of (x', y) ε-witnesses to
+       `approx_fixedpoint_implies_fixedpoint`, which uses sequential
+       compactness + closedness + UHC of F to extract a genuine
+       fixed point.
+
+    **History (S7, 2026-05-08)**: previously consumed the pointwise
+    `IsApproxSelection` axiom (S3+S4+S5). S6 analysis showed that
+    axiom is false under USC + convex values; S7 re-threads the
+    proof through the (provable) graph form via one triangle-inequality
+    step, with `ε ↦ 2ε` substitution (request ε/2 from the axiom). -/
 theorem kakutani_from_brouwer {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
@@ -288,15 +330,28 @@ theorem kakutani_from_brouwer {n : ℕ}
   have happrox_total :
       ∀ ε > 0, ∃ x ∈ (Set.univ : Set ↥S), ∃ y ∈ F x, dist x y < ε := by
     intro ε hε
+    -- Request a (ε/2)-graph approximate selection.
+    have hε_half : (0 : ℝ) < ε / 2 := by linarith
     obtain ⟨f, hf_cont, hf_approx⟩ :=
       approx_selection_exists S hS_ne hS_compact hS_convex F
-        hF_ne hF_convex hF_uhc ε hε
+        hF_ne hF_convex hF_uhc (ε / 2) hε_half
+    -- Apply Brouwer to f to get a fixed point.
     obtain ⟨x0, hx0⟩ := brouwer_fpt S hS_ne hS_compact hS_convex f hf_cont
-    obtain ⟨y, hy_F, hy_dist⟩ := hf_approx x0
-    refine ⟨x0, Set.mem_univ _, y, hy_F, ?_⟩
-    -- dist (f x0) y < ε with f x0 = x0 ⇒ dist x0 y < ε
-    rw [← hx0]
-    exact hy_dist
+    -- Graph approximate selection at x0: ∃ x' y, dist x0 x' < ε/2 ∧
+    -- y ∈ F x' ∧ dist (f x0) y < ε/2.
+    obtain ⟨x', y, hxx'_dist, hy_F, hfy_dist⟩ := hf_approx x0
+    -- f x0 = x0, so dist x0 y < ε/2.
+    have hx0y_dist : dist x0 y < ε / 2 := by rw [← hx0]; exact hfy_dist
+    -- Triangle inequality: dist x' y ≤ dist x' x0 + dist x0 y < ε.
+    have hxy_dist : dist x' y < ε := by
+      calc dist x' y
+          ≤ dist x' x0 + dist x0 y := dist_triangle x' x0 y
+        _ < ε / 2 + ε / 2 := by
+            have hxx0' : dist x' x0 < ε / 2 := by
+              rw [dist_comm]; exact hxx'_dist
+            linarith
+        _ = ε := by ring
+    refine ⟨x', Set.mem_univ _, y, hy_F, hxy_dist⟩
   obtain ⟨x_star, _, hfp⟩ :=
     approx_fixedpoint_implies_fixedpoint (Set.univ : Set ↥S) hUniv F
       hF_closed' hF_uhc happrox_total
@@ -328,17 +383,32 @@ of Nash equilibrium existence in game theory.
 
 ### Axioms (2)
 1. `brouwer_fpt` - Brouwer's FPT for compact convex subsets of ℝⁿ
-2. `approx_selection_exists` - UHC + convex values → continuous ε-selections exist
+2. `approx_selection_exists` - USC + convex values → continuous
+   *graph* ε-selections exist (Cellina–Browder, S7 2026-05-08)
+
+### Definitions
+- `IsApproxSelection` (pointwise form) — false in general under USC
+  alone; retained for documentation purposes (see S6 analysis).
+- `IsGraphApproxSelection` (graph form, S7 2026-05-08) — provable
+  under USC + convex values, the form `approx_selection_exists`
+  asserts.
 
 ### Theorems (proved)
 - `seq_compact_of_compact` - Sequential compactness in compact metric spaces
   (was an axiom; now derived from Mathlib)
 - `approx_fixedpoint_implies_fixedpoint` - Limit argument for approximate fixed points
-- `kakutani_from_brouwer` - The main reduction: Kakutani from the two axioms
+- `kakutani_from_brouwer` - The main reduction: Kakutani from the two
+  axioms (S7 2026-05-08: re-threaded through the graph form via one
+  triangle-inequality step + `ε ↦ ε/2` substitution).
 
 ### Path to Full Verification
-1. Prove `approx_selection_exists` using partition of unity (main infrastructure gap)
-2. Verify `brouwer_fpt` against Mathlib's existing Brouwer formalization
+1. Prove `approx_selection_exists` (graph form) using partition of
+   unity. This is the standard Cellina–Browder PoU construction
+   (Aubin–Frankowska §9.2), now matched to what is actually
+   provable under USC alone — main infrastructure gap.
+2. Verify `brouwer_fpt` against Mathlib's existing Brouwer
+   formalization (extension from unit ball to compact convex sets via
+   retraction; folklore-level).
 -/
 
 #check @brouwer_fpt
