@@ -14587,6 +14587,93 @@ private lemma sum_gnwProb_eq_removeCorner_cells
     gnwProb_at_other_corner hc' hne (hookLength μ c'.1 c'.2)
   linarith [hsum, h0]
 
+/-- **Algebraic combiner for `gnwProb_exchange` (case `c.1 < c'.1`, S53).**
+
+Given the F-side identity `h_F` as a hypothesis, plus S52's
+`hookProd_doubleRemove_factor` and `hookProd_removeCorner_swap`, the GNW
+exchange identity in product form reduces to a polynomial identity over ℚ
+discharged by `linear_combination`.
+
+The two halves of `gnwProb_exchange` (when `c.1 < c'.1`):
+
+* **H-side ("easy half").**  S52's `hookProd_doubleRemove_factor`:
+  `H(μ) · H((μ\c)\c') · (h_d − 1)² = H(μ\c) · H(μ\c') · h_d · (h_d − 2)`
+  where `h_d = h_μ(c.1, c'.2)` is the hook length at the doubly-affected
+  cell `d = (c.1, c'.2)`.  Sorry-free since S52 (PR #17173).
+
+* **F-side ("hard half"), assumed by hypothesis `h_F` here.**
+  `F(μ,c) · (h_d − 1)² = F(μ\c',c) · h_d · (h_d − 2)`.
+
+By multiplying the gnwProb_exchange goal by `(h_d − 1)²` (which is nonzero
+since `h_d ≥ 3` by `hookLength_at_d_ge_3`), substituting both halves, and
+applying `hookProd_removeCorner_swap` to align iteration orders
+`H((μ\c')\c) ↔ H((μ\c)\c')`, the resulting polynomial identity in the six
+variables `(F_μ, F_ν, H_μ, H(μ\c), H(μ\c'), h_d)` follows by `ring` /
+`linear_combination`.
+
+**Note (corrected F-side direction).**  An earlier draft of state.md had
+the factor placement reversed.  The correct sense was verified concretely
+on the (3,1) shape with target c = (0,2) and other corner c' = (1,0):
+* `h_d = h_μ(0,0) = 4`
+* `F(μ,c) = 8/3` (gnwProb at (0,0) = 2/3, (0,1) = 1, (0,2) = 1, (1,0) = 0)
+* `F(μ\c',c) = 3` (single-row μ\c' = [3])
+* Identity: `(8/3) · (4 − 1)² = 24 = 3 · 4 · (4 − 2)` ✓
+
+**Why this lemma matters.**  S53 (the F-side joint K-induction) is the
+single remaining open piece of `gnwProb_exchange`.  This combiner makes
+that target precise: any future proof of the F-side identity (in the form
+above) immediately closes `gnwProb_exchange` for the `c.1 < c'.1` case via
+this lemma.  The case `c'.1 < c.1` is symmetric (apply with c, c' swapped
+in the underlying applications of `hookProd_doubleRemove_factor` and S50);
+its companion combiner is deferred to a follow-up session. -/
+private lemma gnwProb_exchange_lt_row_of_F_side
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc : isCorner μ c) (hc' : isCorner μ c') (hne : c ≠ c') (hi : c.1 < c'.1)
+    (h_F :
+      (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
+        ((hookLength μ c.1 c'.2 : ℚ) - 1) ^ 2 =
+      (∑ x ∈ (removeCorner μ c' hc').cells,
+          gnwProb (removeCorner μ c' hc') c
+            (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
+        (hookLength μ c.1 c'.2 : ℚ) *
+        ((hookLength μ c.1 c'.2 : ℚ) - 2)) :
+    (∑ x ∈ μ.cells, gnwProb μ c (hookLength μ x.1 x.2) x) *
+      (hookProd (removeCorner μ c hc) : ℚ) *
+      (hookProd (removeCorner μ c' hc') : ℚ) =
+    (∑ x ∈ (removeCorner μ c' hc').cells,
+        gnwProb (removeCorner μ c' hc') c
+          (hookLength (removeCorner μ c' hc') x.1 x.2) x) *
+      (hookProd (removeCorner (removeCorner μ c' hc') c
+          (isCorner_removeCorner_of_ne hc' hc hne.symm)) : ℚ) *
+      (hookProd μ : ℚ) := by
+  -- Geometric prerequisite (S51): h_d ≥ 3, hence (h_d − 1)² ≠ 0 in ℚ.
+  have hd_ge_3 : 3 ≤ hookLength μ c.1 c'.2 := hookLength_at_d_ge_3 hc hc' hi
+  have hd_ge_3_Q : (3 : ℚ) ≤ (hookLength μ c.1 c'.2 : ℚ) := by exact_mod_cast hd_ge_3
+  have hd_sub1_ne : (hookLength μ c.1 c'.2 : ℚ) - 1 ≠ 0 := by linarith
+  have hd_sub1_sq_ne : ((hookLength μ c.1 c'.2 : ℚ) - 1) ^ 2 ≠ 0 :=
+    pow_ne_zero 2 hd_sub1_ne
+  -- S52 (algebraic easy half): the hookProd-side identity.
+  have h_S52 := hookProd_doubleRemove_factor hc hc' hne hi
+  -- Iteration-order swap for the doubly-removed hookProd.
+  have h_swap :
+      hookProd (removeCorner (removeCorner μ c' hc') c
+          (isCorner_removeCorner_of_ne hc' hc hne.symm)) =
+      hookProd (removeCorner (removeCorner μ c hc) c'
+          (isCorner_removeCorner_of_ne hc hc' hne)) :=
+    (hookProd_removeCorner_swap hc hc' hne).symm
+  -- Multiply both sides of the goal by (h_d − 1)², then use h_F and h_S52.
+  apply mul_right_cancel₀ hd_sub1_sq_ne
+  rw [h_swap]
+  -- After the swap, both halves are stated in the iteration order
+  -- `(μ\c)\c'`, matching S52 directly.  The polynomial identity over ℚ
+  -- closes by linear_combination of h_F (scaled by H(μ\c) · H(μ\c'))
+  -- and h_S52 (scaled by −F_ν).
+  linear_combination
+    (hookProd (removeCorner μ c hc) : ℚ) * (hookProd (removeCorner μ c' hc') : ℚ) * h_F
+      - (∑ x ∈ (removeCorner μ c' hc').cells,
+          gnwProb (removeCorner μ c' hc') c
+            (hookLength (removeCorner μ c' hc') x.1 x.2) x) * h_S52
+
 /-- GNW 1979 exchange identity (core inductive step, product form — no division).
     For distinct corners c and c' of μ, removing c' preserves the normalized walk probability:
       F(μ,c) · H(μ\c) · H(μ\c') = F(μ\c',c) · H((μ\c')\c) · H(μ)
