@@ -20,21 +20,23 @@ Easton's 1970 theorem states that every permitted value is REALIZABLE as
 not yet formalized in Lean. We therefore axiomatize the consistency claim
 and develop the object-level scaffold around it.
 
-## What This File Proves (from Mathlib, 2 sorries pending Phase-3a API drift)
+## What This File Proves (from Mathlib, axiom-free)
 
 ### Permitted values (pointwise):
 1. `IsPermittedValue κ` — predicate: κ is regular and uncountable
 2. `permitted_satisfies_konig` — every permitted value satisfies cf(κ) > ℵ₀
 3. `aleph_one_permitted` — ℵ₁ is permitted (CH value)
 4. `aleph_two_permitted` — ℵ₂ is permitted (PFA value)
-5. `aleph_succ_permitted` — every successor aleph is permitted (1 sorry — API drift)
+5. `aleph_succ_permitted` — every successor aleph is permitted
 6. `permitted_unbounded` — the permitted-value class is proper (unbounded)
 
 ### Easton functions (function-level):
 7. `IsEastonFunction F` — structure capturing the three Easton constraints
-8. `isEastonFunction_continuum` — `κ ↦ 2^κ` is an Easton function (1 sorry on
-   `monotone` field — `Cardinal.power_le_power_right` now varies the BASE
-   in current Mathlib; pending Phase-3a fix to identify exponent-monotone lemma)
+8. `isEastonFunction_continuum` — `κ ↦ 2^κ` is an Easton function (all three
+   constraints proved axiom-free: (E1) Cantor, (E2) exponent monotonicity via
+   `Cardinal.power_le_power_left` (note: `_left` varies the exponent in
+   current Mathlib, `_right` varies the base), (E3) König via
+   `Cardinal.lt_cof_power`)
 9. `isEastonFunction_nonempty` — the constraint set is non-vacuous
 
 ## What This File Axiomatizes (proof requires class forcing)
@@ -52,7 +54,7 @@ file will introduce `ConsistencyOf : (Cardinal → Cardinal) → Prop`
 - Cohen, P. (1963). "The independence of the continuum hypothesis."
 - Han, Van Doorn (2020). "A formal proof of the independence of CH" (flypitch, Lean 3).
 - Jech, T. (2003). Set Theory, Springer. Chapter 15: Easton's theorem.
-- Mathlib: `Cardinal.lt_cof_power` (König), `Cardinal.cantor`, `Cardinal.power_le_power_right`,
+- Mathlib: `Cardinal.lt_cof_power` (König), `Cardinal.cantor`, `Cardinal.power_le_power_left`,
   `Cardinal.isRegular_aleph_succ`, `IsRegular.cof_eq`.
 -/
 
@@ -95,16 +97,20 @@ theorem permitted_satisfies_konig (κ : Cardinal.{0}) (h : IsPermittedValue κ) 
     aleph is strictly monotone. -/
 theorem aleph_one_permitted : IsPermittedValue (Cardinal.aleph 1) := by
   refine ⟨Cardinal.isRegular_aleph_one, ?_⟩
-  -- ℵ₀ < ℵ_ 1 via the chain ℵ_ 1 = ℵ_ (succ 0) = succ (ℵ_ 0) = succ ℵ₀
-  rw [show (1 : Ordinal.{0}) = Order.succ 0 from rfl, Cardinal.aleph_succ, Cardinal.aleph_zero]
+  -- ℵ₀ < ℵ_ 1 via the chain ℵ_ 1 = ℵ_ (succ 0) = succ (ℵ_ 0) = succ ℵ₀.
+  -- Note: (1 : Ordinal) = Order.succ 0 is NOT rfl in current Mathlib —
+  -- need to unfold via Order.succ_eq_add_one + zero_add.
+  rw [show (1 : Ordinal.{0}) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
+      Cardinal.aleph_succ, Cardinal.aleph_zero]
   exact Order.lt_succ _
 
 /-- ℵ₂ is permitted: this is the PFA value, 2^ℵ₀ = ℵ₂. -/
 theorem aleph_two_permitted : IsPermittedValue (Cardinal.aleph 2) := by
-  rw [show (2 : Ordinal.{0}) = Order.succ 1 from rfl]
+  -- ℵ_2 = ℵ_(succ 1) = succ (ℵ_ 1) = succ (succ ℵ₀).
+  rw [show (2 : Ordinal.{0}) = Order.succ 1 from by rw [Order.succ_eq_add_one, one_add_one_eq_two]]
   refine ⟨Cardinal.isRegular_aleph_succ 1, ?_⟩
-  -- ℵ₀ < ℵ_ (succ 1) via succ chain
-  rw [Cardinal.aleph_succ, show (1 : Ordinal.{0}) = Order.succ 0 from rfl,
+  rw [Cardinal.aleph_succ,
+      show (1 : Ordinal.{0}) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
       Cardinal.aleph_succ, Cardinal.aleph_zero]
   exact lt_trans (Order.lt_succ _) (Order.lt_succ _)
 
@@ -113,10 +119,11 @@ theorem aleph_two_permitted : IsPermittedValue (Cardinal.aleph 2) := by
 theorem aleph_succ_permitted (α : Ordinal.{0}) :
     IsPermittedValue (Cardinal.aleph (Order.succ α)) := by
   refine ⟨Cardinal.isRegular_aleph_succ α, ?_⟩
-  -- ℵ₀ < ℵ_ (succ α): pending Phase-3a — Mathlib API drift on aleph0_lt_aleph_iff
-  -- The result is mathematically immediate (succ α > 0 → ℵ_(succ α) > ℵ₀) but
-  -- the precise current-Mathlib spelling needs verification.
-  sorry
+  -- ℵ₀ < ℵ_(succ α) via the chain ℵ₀ = ℵ_0 ≤ ℵ_α < succ (ℵ_α) = ℵ_(succ α).
+  rw [Cardinal.aleph_succ]
+  refine lt_of_le_of_lt ?_ (Order.lt_succ _)
+  rw [← Cardinal.aleph_zero]
+  exact Cardinal.aleph_le_aleph.mpr (zero_le α)
 
 /-- The permitted values form a proper class: for every ordinal α, there
     is a permitted value strictly above ℵ_α (namely ℵ_{α+1}).
@@ -158,22 +165,21 @@ structure IsEastonFunction (F : Cardinal.{0} → Cardinal.{0}) : Prop where
   konig_pointwise : ∀ κ : Cardinal.{0}, κ.IsRegular → ℵ₀ ≤ κ →
                       κ < (F κ).ord.cof
 
-/-- The actual continuum function `κ ↦ 2^κ` is an Easton function. Two
-    of the three constraints are provable from Mathlib without forcing:
+/-- The actual continuum function `κ ↦ 2^κ` is an Easton function. All
+    three constraints are provable from Mathlib without forcing:
     - (E1) `succ_le` follows from Cantor's theorem κ < 2^κ
-    - (E3) `konig_pointwise` is exactly `Cardinal.lt_cof_power` (König's theorem)
-
-    The (E2) `monotone` field uses an exponent-monotonicity lemma whose
-    Mathlib name has drifted (`Cardinal.power_le_power_right` now varies
-    the BASE, not the exponent). Pending Phase-3a fix to identify the
-    correct exponent-monotone lemma name. -/
+    - (E2) `monotone` uses `Cardinal.power_le_power_left` (exponent
+      monotonic with fixed nonzero base — note the Mathlib naming
+      convention: `power_le_power_left` varies the EXPONENT, while
+      `power_le_power_right` varies the BASE). The base hypothesis
+      `(2 : Cardinal) ≠ 0` is discharged by `norm_num`.
+    - (E3) `konig_pointwise` is exactly `Cardinal.lt_cof_power` (König's
+      theorem). -/
 theorem isEastonFunction_continuum :
     IsEastonFunction (fun κ => (2 : Cardinal.{0}) ^ κ) where
   succ_le κ _ _ := Order.succ_le_of_lt (Cardinal.cantor κ)
-  monotone _ _ _ _ _ hκν := by
-    -- TODO Phase-3a: replace with correct exponent-monotone lemma
-    -- Goal: 2^κ ≤ 2^ν given κ ≤ ν
-    sorry
+  monotone _ _ _ _ _ hκν :=
+    Cardinal.power_le_power_left (by norm_num : (2 : Cardinal.{0}) ≠ 0) hκν
   konig_pointwise κ _ hℵ₀ := Cardinal.lt_cof_power hℵ₀ (by norm_num)
 
 /-- The Easton-function constraint set is non-vacuous: the continuum
