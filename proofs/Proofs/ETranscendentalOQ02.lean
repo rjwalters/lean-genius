@@ -587,18 +587,100 @@ private theorem rational_has_missing_ktuple (b : ℕ) (hb : 2 ≤ b) (q : ℚ) :
   obtain ⟨s, hs⟩ := periodic_has_missing_ktuple b T T hb hT_pos hT_lt f N₀ hper_fin
   exact ⟨T, N₀, s, hT_pos, hs⟩
 
-/-- Normal numbers must be irrational.
-    Proof: if x = p/q is rational, its expansion has period T ≤ q (by rational_digits_eventually_periodic).
-    Choose k with bᵏ > T (exists since b ≥ 2). By periodic_has_missing_ktuple, some k-string s₀
-    never appears in the expansion after position N₀, so its count is bounded by N₀.
-    Hence count(s₀, N)/N → 0 as N → ∞. But normality requires count(s₀, N)/N → 1/bᵏ > 0.
-    Contradiction (the Tendsto codings need cast between Fin b and ℤ-valued nthDigit).
+/-- **Bridge (S13 prep)**: matching the missing-tuple bound to the
+    `IsNormalInBase` predicate. The ℤ-valued `nthDigit` and the
+    `Fin b`-valued `nthDigitFin` agree on equality with a constant `d : Fin b`. -/
+private lemma nthDigit_eq_iff_nthDigitFin (b : ℕ) (hb : 0 < b) (n : ℕ) (x : ℝ)
+    (d : Fin b) :
+    nthDigit b n x = (d : ℤ) ↔ nthDigitFin b hb n x = d := by
+  have h1 : ((nthDigitFin b hb n x : ℕ) : ℤ) = nthDigit b n x :=
+    nthDigitFin_intCast b hb n x
+  have hd : (d : ℤ) = ((d : ℕ) : ℤ) := by norm_cast
+  rw [hd]
+  constructor
+  · intro heq
+    apply Fin.ext
+    have hint : ((nthDigitFin b hb n x : ℕ) : ℤ) = ((d : ℕ) : ℤ) := h1.trans heq
+    exact_mod_cast hint
+  · intro heq
+    rw [← h1]
+    exact_mod_cast congrArg Fin.val heq
 
-    **Layer 4a (Session 12)** built the cast bridge and the missing-tuple
-    composite (`rational_has_missing_ktuple`). The remaining work for Session 13
-    is the count/Tendsto step. -/
-axiom normal_imp_irrational (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
-    (hn : IsNormalInBase b x) : Irrational x
+/-- **Theorem (Session 13)**: Normal numbers must be irrational.
+
+    Proof outline (recipe owner: state.md S12):
+    1. Assume `x = (q : ℝ)` for some rational `q`.
+    2. Apply `rational_has_missing_ktuple` to get `(k, N₀, s)` such that
+       for `n ≥ N₀`, ∃ i, `nthDigitFin b _ (n+i) (q : ℝ) ≠ s i`.
+    3. Apply `IsNormalInBase` at this `(k, s)` to get
+       `count(N) / N → b^(-k)` where `count(N)` is the cardinality of
+       starting positions `n < N` with all `k` digits at offsets `0..k-1`
+       matching `s`.
+    4. By the missing-tuple property + `nthDigit_eq_iff_nthDigitFin`, every
+       matching position satisfies `n < N₀`, so `count(N) ≤ N₀`.
+    5. Hence `count(N)/N ≤ N₀/N → 0` (squeeze theorem).
+    6. By `tendsto_nhds_unique`, `b^(-k) = 0`. But `b ≥ 2` makes
+       `b^(-k) > 0` (`zpow_pos`). Contradiction. -/
+theorem normal_imp_irrational (b : ℕ) (hb : 2 ≤ b) (x : ℝ)
+    (hn : IsNormalInBase b x) : Irrational x := by
+  intro hRat
+  obtain ⟨q, hq⟩ := hRat
+  -- hq : (q : ℝ) = x
+  have hbpos : 0 < b := by omega
+  -- Get the missing k-tuple data from Layer 4a
+  obtain ⟨k, N₀, s, _hk_pos, hmiss⟩ := rational_has_missing_ktuple b hb q
+  -- Apply `IsNormalInBase` at this `(k, s)`
+  have hcount : Tendsto
+      (fun N : ℕ =>
+        (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) /
+        (N : ℝ))
+      atTop (nhds ((b : ℝ) ^ (-(k : ℤ)))) := hn k s
+  -- Bound: count ≤ N₀ for every N
+  have hbound : ∀ N : ℕ, ((Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card ≤ N₀ := by
+    intro N
+    have hsubset : (Finset.range N).filter
+        (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ)) ⊆
+        Finset.range N₀ := by
+      intro n hn_mem
+      rw [Finset.mem_filter, Finset.mem_range] at hn_mem
+      rw [Finset.mem_range]
+      by_contra h_not_lt
+      push_neg at h_not_lt
+      obtain ⟨i, hi_neq⟩ := hmiss n h_not_lt
+      apply hi_neq
+      have h_nthDigit_eq : nthDigit b (n + i.val) (q : ℝ) = (s i : ℤ) := by
+        rw [← hq]; exact hn_mem.2 i
+      exact (nthDigit_eq_iff_nthDigitFin b hbpos (n + i.val) (q : ℝ) (s i)).mp
+        h_nthDigit_eq
+    calc ((Finset.range N).filter _).card
+        ≤ (Finset.range N₀).card := Finset.card_le_card hsubset
+      _ = N₀ := Finset.card_range N₀
+  -- count/N → 0 by squeeze (count/N ∈ [0, N₀/N], both bounds → 0)
+  have htozero : Tendsto
+      (fun N : ℕ =>
+        (((Finset.range N).filter
+          (fun n => ∀ i : Fin k, nthDigit b (n + i.val) x = (s i : ℤ))).card : ℝ) /
+        (N : ℝ))
+      atTop (nhds 0) := by
+    have hzero : Tendsto (fun _ : ℕ => (0 : ℝ)) atTop (nhds 0) := tendsto_const_nhds
+    apply tendsto_of_tendsto_of_tendsto_of_le_of_le hzero
+      (tendsto_const_div_atTop_nhds_zero_nat (N₀ : ℝ))
+    · intro N
+      positivity
+    · intro N
+      rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+      · simp [hN0]
+      · have hNR : (0 : ℝ) < N := by exact_mod_cast hNpos
+        gcongr
+        exact_mod_cast hbound N
+  -- Contradiction: b^(-k) → 0 forces b^(-k) = 0, but b^(-k) > 0
+  have h_eq : ((b : ℝ) ^ (-(k : ℤ))) = 0 := tendsto_nhds_unique hcount htozero
+  have h_pos : (0 : ℝ) < (b : ℝ) ^ (-(k : ℤ)) := by
+    apply zpow_pos
+    exact_mod_cast hbpos
+  linarith
 
 -- ============================================================
 -- PART V: OPEN QUESTION

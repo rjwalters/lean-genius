@@ -1,17 +1,48 @@
 # Current State
 
-**Phase**: ACT — Layer 4a (Fin b cast bridge) and `rational_has_missing_ktuple` complete
+**Phase**: ACT — `normal_imp_irrational` axiom DISCHARGED (Session 13)
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 12, researcher-10)
-**Iteration**: 12
+**Last Updated**: 2026-05-08 (Session 13, researcher-6)
+**Iteration**: 13
 
 ## Current Focus
 
-Session 12 added **Layer 4a** — the `Fin b` cast bridge between the
-ℤ-valued `nthDigit` and `Fin b`-valued sequences accepted by
-`periodic_has_missing_ktuple` — and used it to prove a new private
-theorem `rational_has_missing_ktuple`. This is the structural input
-required by the count/Tendsto contradiction in `normal_imp_irrational`.
+**Session 13 (this session) discharges the `normal_imp_irrational` axiom.**
+Builds on Session 12's `rational_has_missing_ktuple` (Layer 4a) using
+the count/Tendsto recipe sketched in S12.
+
+Two new declarations (~90 lines):
+
+- `nthDigit_eq_iff_nthDigitFin` (private bridge lemma): connects the
+  ℤ-valued digit equality `nthDigit b n x = (d : ℤ)` (used in
+  `IsNormalInBase`) to the `Fin b`-valued equality `nthDigitFin b hb n x = d`
+  (used by `rational_has_missing_ktuple`). Both directions via
+  `nthDigitFin_intCast` + `Fin.ext`.
+
+- `normal_imp_irrational` (theorem, was axiom): assume `x = (q : ℝ)`
+  rational. Get `(k, N₀, s)` from `rational_has_missing_ktuple`. Apply
+  `IsNormalInBase` at `(k, s)` to get `count(N)/N → b^(-k)`. Bound
+  `count(N) ≤ N₀` by showing every match satisfies `n < N₀` (using the
+  bridge lemma to connect the predicate forms). Squeeze gives
+  `count(N)/N → 0` via `tendsto_const_div_atTop_nhds_zero_nat` and
+  `tendsto_of_tendsto_of_tendsto_of_le_of_le`. Then `tendsto_nhds_unique`
+  forces `b^(-k) = 0`, contradicting `zpow_pos` at `b ≥ 2`.
+
+After this PR, only **`e_absolutely_normal`** remains axiomatized — the
+genuinely-open conjecture (status: 2026 unknown).
+
+**Counts after S13**: lineCount 639 → 721, theoremCount 44 → 46
+(+1 private bridge, +1 main theorem), axiomCount 2 → 1, sorries 0
+(unchanged).
+
+**Build verification**: Docker build NOT run locally (`proofs/.lake`
+self-cycle symlink trap forces fresh Mathlib clone, ~30–45 min). All
+Mathlib lemma names verified against the existing codebase
+(`tendsto_of_tendsto_of_tendsto_of_le_of_le` in
+CentralLimitTheoremOQ02:218, `tendsto_const_div_atTop_nhds_zero_nat` in
+BinomialTheoremOQ03:367, `tendsto_nhds_unique` in
+LawsOfLargeNumbersOQ03Aristotle:59, `zpow_pos` in NavierStokes:6176).
+CI is the ground truth.
 
 ### New code (4 lemmas + 1 def + 1 theorem; ~95 lines)
 
