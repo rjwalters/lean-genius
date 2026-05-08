@@ -1,14 +1,14 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (GNW exchange-step framework wired up; corner-distinctness coordinate lemmas added)
+**Phase**: ACT (GNW exchange-step framework wired up; corner-distinctness coordinate lemmas added; Aristotle Target 3 closed via dispatcher)
 **Path**: full
 **Since**: 2026-04-21T20:08:44+02:00
-**Last Updated**: 2026-05-07
-**Iteration**: 45
+**Last Updated**: 2026-05-08
+**Iteration**: 46
 
 ## Current Focus
-Close `gnwProb_exchange` (Helpers, line 13871) — the GNW 1979 exchange identity
+Close `gnwProb_exchange` (Helpers, line 14143) — the GNW 1979 exchange identity
 in product form. This is now the SOLE remaining sorry-bearing lemma; the
 `hook_length_formula_general` dispatcher is sorry-free, and `gnwProb_key` for the
 multi-corner case is now structurally proved by well-founded recursion on
@@ -69,13 +69,20 @@ in place:
      (c'.1 < c.1 ∧ c.2 < c'.2)` for downstream case analysis. They eliminate
      repeated `rowLen_of_isCorner` / `colLen_of_isCorner` boilerplate in the
      upcoming `gnwProb_exchange` proof.
+  9. Aristotle Target 3 closed via dispatcher (session 46) — replaced the
+     redundant `sorry` in `hook_walk_identity_Aristotle` with a one-line
+     term-mode delegation `hook_walk_identity_gnw μ hn`.  The Aristotle
+     companion file's sorry count drops from 3 to 2 (only the deep LGV-route
+     `ni_count_eq_syt_count_Aristotle` and `lgv_det_factors_as_hook_quotient_Aristotle`
+     remain).  No new dependency is introduced; transitive dependence on
+     `gnwProb_exchange` is unchanged.
 
 ## Blockers
 - **`gnwProb_exchange` proof.** This is the GNW 1979 hook-weight shift argument.
   The proof requires showing that hookProd and the gnwProb sum transform
   predictably when one corner c' is removed. Estimated ~100 lines of careful
   case analysis on arm/leg of c vs c'.
-- **Build verification.** Helpers file is at 14126 lines; whether it
+- **Build verification.** Helpers file is at 14398 lines; whether it
   type-checks under Docker's 32GB memory limit (post-modularization) is
   not yet confirmed in this session. CI will verify the PR.
 
@@ -109,8 +116,11 @@ exchange step entirely (count weighted walks of every length, divide by
 - `knowledge.md` §Session 40-42 — single-corner case proof, exchange framework
 - `knowledge.md` §Session 43 — strong induction wrapper
 - `knowledge.md` §Session 44 — anti-monotone corner helpers (PR #16648)
-- `knowledge.md` §Session 45 — corner-distinctness coordinate lemmas (this session)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:13871` — `gnwProb_exchange`
+- `knowledge.md` §Session 45 — corner-distinctness coordinate lemmas
+- `sessions/2026-05-08-s01.md` — Session 46: Aristotle Target 3 closed via dispatcher
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14143` — `gnwProb_exchange`
   (sorry'd, target of next session)
-- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:13884` — `gnwProb_key`
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14168` — `gnwProb_key`
   (proved modulo `gnwProb_exchange`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14377` — `hook_walk_identity_gnw`
+  (sorry-free dispatcher, transitive on `gnwProb_exchange`)
