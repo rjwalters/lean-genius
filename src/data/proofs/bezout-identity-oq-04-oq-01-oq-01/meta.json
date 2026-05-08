@@ -121,12 +121,19 @@
   },
   "crossReferences": [
     {
-      "id": "bezout-identity-oq-04-oq-01",
-      "relationship": "parent: Smith Normal Form theory over ℤ — this entry lifts to arbitrary PIDs"
+      "proofId": "bezout-identity-oq-04-oq-01",
+      "relationship": "parent",
+      "description": "Smith Normal Form theory over ℤ — this entry lifts to arbitrary PIDs by replacing the IsUnimodular (det = ±1) and Int.gcd primitives with IsUnimodularPID (IsUnit det) and GCDMonoid.gcd. The 1×2 invariant-factor argument is the same up to the case-split-vs-unit-cancellation switch (`unit.inv_val`)."
     },
     {
-      "id": "bezout-identity",
-      "relationship": "root: Bezout's identity — the foundational result formalized in the main entry"
+      "proofId": "bezout-identity",
+      "relationship": "ancestor",
+      "description": "Root of the Bézout identity hub. The forward direction `ax + by = c → gcd(a,b) | c` proved here in `bezout_pid_forward` is the GCDMonoid generalization of the classical Bézout identity over ℤ; the backward direction (existence of $s, t$ with $sa + tb = \\gcd(a,b)$) follows over any PID from the principal-ideal property and is shown over ℤ here via Int.gcdA / Int.gcdB."
+    },
+    {
+      "proofId": "bezout-identity-oq-01-oq-01-oq-01",
+      "relationship": "shares-technique",
+      "description": "Both entries demonstrate the same *abstract-vs-concrete* refactoring template under the bezout-identity hub. *This entry*: replace ±1 case split → `unit.inv_val` cancellation in any GCDMonoid, lifting Smith Normal Form from ℤ to arbitrary PIDs. *That entry* (Binary GCD O(log²n)): replace ad-hoc bit tracking → abstract Lyapunov measure $M(a,b) = \\log_2 a + \\log_2 b$, lifting the complexity argument from ℤ-specific bit manipulation to a strong-induction-on-measure framework. In each case the abstraction yields a strict generalization without enlarging the proof — a recurring pattern in the bezout-identity-oq-* tree."
     }
   ],
   "sorries": 0,
