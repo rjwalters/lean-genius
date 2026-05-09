@@ -14690,6 +14690,62 @@ private lemma gnwProb_unreachable_zero {μ : YoungDiagram} {c : ℕ × ℕ} :
           · exact Or.inr h
       rw [hsum_zero, mul_zero]
 
+/-- **(S57.3a, helper) Per-cell vanishing on arm-of-c' — case 1, generic-x form.**
+
+A pointwise `μ`-generic restatement of S57.2's `gnwProb_unreachable_zero`
+in the row-disjunct branch, packaged for direct use at sites where the
+cell `x` is an *arbitrary* `ℕ × ℕ` carrying the predicate
+`x.1 = c'.1` rather than the literal pair `(c'.1, s)` indexed over
+`Finset.range c'.2`.
+
+**Why a separate lemma from `sum_gnwProb_arm_of_c'_eq_zero_case1`
+(S57.3, PR #17605).**  The summand-form lemma indexes over a literal
+`Finset.range c'.2` of natural numbers and constructs cells via
+`(c'.1, s)`.  When the joint K-induction's S57.7 assembly partitions
+`(removeCorner μ c' hc').cells` into cell-type subsets via
+`Finset.filter (fun x => x.1 = c'.1 ∧ x ≠ c')`, the natural reduction
+applies `Finset.sum_eq_zero` over the *filtered* `Finset` whose
+elements are `x : ℕ × ℕ` carrying the predicate as a hypothesis —
+not the literal pair construction.  This per-cell form lets
+`Finset.sum_eq_zero` discharge the goal directly without inserting an
+extra `Finset.sum_image` step (the pair-construction injection
+`s ↦ (c'.1, s)`).
+
+**Hypothesis form.**  Direct coordinate inequality `c.1 < c'.1` plus
+the cell predicate `hx : x.1 = c'.1`; `omega` discharges the implicit
+`c.1 < x.1` substitution.  The conclusion `gnwProb μ c K x = 0` then
+follows from `gnwProb_unreachable_zero K x (Or.inl _)`.
+
+**Status.**  Sorry-free.  Companion to PR #17605
+(`sum_gnwProb_arm_of_c'_eq_zero_case1`, S57.3); see also the leg-
+column mirror `gnwProb_zero_of_col_eq_c'_case2` below. -/
+private lemma gnwProb_zero_of_row_eq_c'_case1
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc1 : c.1 < c'.1) (x : ℕ × ℕ) (hx : x.1 = c'.1) (K : ℕ) :
+    gnwProb μ c K x = 0 := by
+  apply gnwProb_unreachable_zero K x
+  exact Or.inl (by omega)
+
+/-- **(S57.3a, helper) Per-cell vanishing on leg-of-c' — case 2, generic-x form.**
+
+Mirror of `gnwProb_zero_of_row_eq_c'_case1` for the column-disjunct
+of `gnwProb_unreachable_zero`.  Direct coordinate inequality
+`c.2 < c'.2` plus cell predicate `hx : x.2 = c'.2` discharges
+`gnwProb μ c K x = 0` for arbitrary `x : ℕ × ℕ`.
+
+**Status.**  Sorry-free.  Companion to PR #17605
+(`sum_gnwProb_leg_of_c'_eq_zero_case2`, S57.3); together the four
+S57.3+S57.3a lemmas package S57.2's `gnwProb_unreachable_zero` for
+both the literal-pair-summand form (PR #17605) and the filtered-cell
+form (this PR) needed at downstream call sites of the joint
+K-induction. -/
+private lemma gnwProb_zero_of_col_eq_c'_case2
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc2 : c.2 < c'.2) (x : ℕ × ℕ) (hx : x.2 = c'.2) (K : ℕ) :
+    gnwProb μ c K x = 0 := by
+  apply gnwProb_unreachable_zero K x
+  exact Or.inr (by omega)
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by

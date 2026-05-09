@@ -432,6 +432,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-09-s02.md` — Session 57.0: K-induction strategy + cell-partition + (S1)-(S7) sublemma plan
 - `sessions/2026-05-09-s03.md` — Session 57.1: off-spine structural invariances under c'-removal (3 lemmas, sorry-free)
 - `sessions/2026-05-09-s04.md` — Session 57.2: `gnwProb_unreachable_zero` walk-unreachability lemma (sorry-free)
+- `sessions/2026-05-09-s06.md` — Session 57.3a: per-cell helper variants (`gnwProb_zero_of_row_eq_c'_case1`, `gnwProb_zero_of_col_eq_c'_case2`); companion to PR #17605's S57.3 summand lemmas (sorry-free)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -448,6 +449,8 @@ Fallback if S55+ stalls.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14588` — `hookLength_invariant_off_spine_of_c'` (S57.1)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14616` — `strictHookCells_invariant_off_spine_of_c'` (S57.1)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14656` — `gnwProb_unreachable_zero` (S57.2; sorry-free; closes (S2)/(S3) on the unreachable branches via case-1 arm-of-c' / case-2 leg-of-c')
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14722` — `gnwProb_zero_of_row_eq_c'_case1` (S57.3a, sorry-free; per-cell vanishing for arbitrary `x` with `x.1 = c'.1` — companion to PR #17605's `sum_gnwProb_arm_of_c'_eq_zero_case1`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14742` — `gnwProb_zero_of_col_eq_c'_case2` (S57.3a, sorry-free; per-cell vanishing for arbitrary `x` with `x.2 = c'.2` — companion to PR #17605's `sum_gnwProb_leg_of_c'_eq_zero_case2`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14719` — `gnwProb_exchange_lt_row_of_F_side`
   (S53 combiner, sorry-free conditional on F-side identity, case `c.1 < c'.1`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14814` — `gnwProb_exchange_lt_col_of_F_side`
