@@ -42,6 +42,7 @@ Parent: SchauderFixedPointOQ03.lean (Kakutani framework)
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+import Mathlib.Analysis.InnerProductSpace.Projection
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Topology.MetricSpace.HausdorffDistance
 import Mathlib.Topology.Sequences
@@ -113,21 +114,122 @@ axiom brouwer_unit_ball {n : ℕ}
     `EuclideanSpace ℝ (Fin n)`, packaged as a continuous map that is the
     identity on the set.
 
-    **Proof outline (deferred to S11.B):** existence and uniqueness of
-    the nearest point come from
-    `exists_norm_eq_iInf_of_complete_convex`
-    (`Mathlib.Analysis.InnerProductSpace.Projection`) combined with
-    strict convexity of the Euclidean norm; continuity comes from the
-    variational inequality (`norm_eq_iInf_iff_real_inner_le_zero`
-    family); idempotency on `↥S` follows from `dist_self` plus the
-    uniqueness clause. The full proof is ~30–80 Lean lines and is the
-    isolated dependency of the S11.A retraction reduction below. -/
+    **Proof (S14, researcher-9, 2026-05-09):** existence of the nearest
+    point comes from `exists_norm_eq_iInf_of_complete_convex`
+    (`Mathlib.Analysis.InnerProductSpace.Projection.Minimal`) using
+    `IsCompact.isComplete` to discharge completeness; continuity (in
+    fact 1-Lipschitz) is the standard variational-inequality + Cauchy-
+    Schwarz argument via `norm_eq_iInf_iff_real_inner_le_zero` and
+    `abs_real_inner_le_norm`; idempotency on `↥S` follows from the
+    same variational inequality applied at `u = x ∈ S` with witness
+    `w = x` (the uniqueness clause is implicit in this case). -/
 lemma exists_continuous_proj_convex {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S) :
     ∃ r : EuclideanSpace ℝ (Fin n) → ↥S,
       Continuous r ∧ ∀ x : ↥S, r (x : EuclideanSpace ℝ (Fin n)) = x := by
-  sorry  -- S11.B work item; see docstring above.
+  -- S11.B (researcher-9, S14, 2026-05-09): nearest-point retraction
+  -- onto a compact convex S in EuclideanSpace ℝ (Fin n).
+  -- Compact ⇒ complete (in any metric space), so we can invoke
+  -- `exists_norm_eq_iInf_of_complete_convex`.
+  have hS_complete : IsComplete S := hS_compact.isComplete
+  -- np : E → E picks a nearest point in S for every u.
+  set np : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n) := fun u =>
+    (exists_norm_eq_iInf_of_complete_convex hS_ne hS_complete hS_convex u).choose
+    with hnp_def
+  have np_mem : ∀ u : EuclideanSpace ℝ (Fin n), np u ∈ S := fun u =>
+    (exists_norm_eq_iInf_of_complete_convex hS_ne hS_complete hS_convex u).choose_spec.1
+  have np_min : ∀ u : EuclideanSpace ℝ (Fin n),
+      ‖u - np u‖ = ⨅ w : ↥S, ‖u - (w : EuclideanSpace ℝ (Fin n))‖ := fun u =>
+    (exists_norm_eq_iInf_of_complete_convex hS_ne hS_complete hS_convex u).choose_spec.2
+  -- Variational inequality (vi): for every w ∈ S, ⟨u - np u, w - np u⟩_ℝ ≤ 0.
+  have np_vi : ∀ u : EuclideanSpace ℝ (Fin n), ∀ w ∈ S,
+      ⟪u - np u, w - np u⟫_ℝ ≤ 0 := by
+    intro u w hw
+    exact (norm_eq_iInf_iff_real_inner_le_zero hS_convex (np_mem u)).mp (np_min u) w hw
+  -- Idempotency: np x = x for x ∈ S. Apply vi at u = x, w = x ∈ S.
+  have np_id : ∀ x : EuclideanSpace ℝ (Fin n), x ∈ S → np x = x := by
+    intro x hx
+    have h1 : ⟪x - np x, x - np x⟫_ℝ ≤ 0 := np_vi x x hx
+    have h2 : ⟪x - np x, x - np x⟫_ℝ = ‖x - np x‖ * ‖x - np x‖ :=
+      real_inner_self_eq_norm_mul_norm _
+    have h3 : ‖x - np x‖ * ‖x - np x‖ ≤ 0 := h2 ▸ h1
+    have h4 : ‖x - np x‖ * ‖x - np x‖ = 0 :=
+      le_antisymm h3 (mul_self_nonneg _)
+    have h5 : ‖x - np x‖ = 0 := by
+      rcases mul_self_eq_zero.mp h4 with h
+      exact h
+    have h6 : x - np x = 0 := norm_eq_zero.mp h5
+    exact (sub_eq_zero.mp h6).symm
+  -- 1-Lipschitz: ‖np x - np y‖ ≤ ‖x - y‖.
+  -- Standard variational + Cauchy-Schwarz argument.
+  -- VI at x with w = np y ∈ S: ⟨x - np x, np y - np x⟩ ≤ 0
+  -- VI at y with w = np x ∈ S: ⟨y - np y, np x - np y⟩ ≤ 0
+  -- Sum the two (with sign flip on the second) to get
+  --   ⟨x - y, np y - np x⟩ + ‖np y - np x‖² ≤ 0
+  -- so ‖np y - np x‖² ≤ -⟨x - y, np y - np x⟩ ≤ ‖x - y‖ · ‖np y - np x‖.
+  have np_lip : ∀ x y : EuclideanSpace ℝ (Fin n),
+      ‖np x - np y‖ ≤ ‖x - y‖ := by
+    intro x y
+    set p : EuclideanSpace ℝ (Fin n) := np x with hp_def
+    set q : EuclideanSpace ℝ (Fin n) := np y with hq_def
+    have h1 : ⟪x - p, q - p⟫_ℝ ≤ 0 := np_vi x q (np_mem y)
+    have h2 : ⟪y - q, p - q⟫_ℝ ≤ 0 := np_vi y p (np_mem x)
+    -- Convert h2 to ⟨q - y, q - p⟩ ≤ 0 via two sign flips:
+    --   ⟨y - q, p - q⟩ = ⟨y - q, -(q - p)⟩ = -⟨y - q, q - p⟩
+    --   so ⟨y - q, q - p⟩ ≥ 0, and ⟨q - y, q - p⟩ = -⟨y - q, q - p⟩ ≤ 0.
+    have hpq_neg : p - q = -(q - p) := by ring
+    have h2' : ⟪y - q, q - p⟫_ℝ ≥ 0 := by
+      have hflip : ⟪y - q, p - q⟫_ℝ = -⟪y - q, q - p⟫_ℝ := by
+        rw [hpq_neg, inner_neg_right]
+      linarith [hflip ▸ h2]
+    have h3 : ⟪q - y, q - p⟫_ℝ ≤ 0 := by
+      have : ⟪q - y, q - p⟫_ℝ = -⟪y - q, q - p⟫_ℝ := by
+        rw [show q - y = -(y - q) from by ring, inner_neg_left]
+      linarith [this ▸ h2']
+    -- Sum h1 and h3: ⟨(x - p) + (q - y), q - p⟩ ≤ 0.
+    have hsum_inner : ⟪(x - p) + (q - y), q - p⟫_ℝ ≤ 0 := by
+      rw [inner_add_left]; linarith
+    -- (x - p) + (q - y) = (x - y) + (q - p), so:
+    --   ⟨(x - y) + (q - p), q - p⟩ = ⟨x - y, q - p⟩ + ⟨q - p, q - p⟩ ≤ 0
+    have heq : (x - p) + (q - y) = (x - y) + (q - p) := by ring
+    rw [heq, inner_add_left] at hsum_inner
+    -- ⟨q - p, q - p⟩ = ‖q - p‖²
+    have hself : ⟪q - p, q - p⟫_ℝ = ‖q - p‖ * ‖q - p‖ :=
+      real_inner_self_eq_norm_mul_norm _
+    -- ‖q - p‖² ≤ -⟨x - y, q - p⟩
+    have h_sq_bound : ‖q - p‖ * ‖q - p‖ ≤ -⟪x - y, q - p⟫_ℝ := by
+      linarith [hsum_inner, hself]
+    -- Cauchy-Schwarz: -⟨x - y, q - p⟩ ≤ |⟨x - y, q - p⟩| ≤ ‖x - y‖ · ‖q - p‖.
+    have h_cs : -⟪x - y, q - p⟫_ℝ ≤ ‖x - y‖ * ‖q - p‖ :=
+      le_trans (neg_le_abs _) (abs_real_inner_le_norm _ _)
+    have h_chain : ‖q - p‖ * ‖q - p‖ ≤ ‖x - y‖ * ‖q - p‖ :=
+      le_trans h_sq_bound h_cs
+    -- ‖p - q‖ = ‖q - p‖ via norm_neg + ring.
+    have h_norm_eq : ‖p - q‖ = ‖q - p‖ := by
+      rw [show p - q = -(q - p) from by ring, norm_neg]
+    rw [h_norm_eq]
+    -- Goal: ‖q - p‖ ≤ ‖x - y‖. Case-split on ‖q - p‖ = 0 vs > 0.
+    rcases eq_or_lt_of_le (norm_nonneg (q - p)) with hzero | hpos
+    · -- 0 = ‖q - p‖
+      rw [← hzero]; exact norm_nonneg _
+    · -- 0 < ‖q - p‖: divide h_chain by ‖q - p‖.
+      exact le_of_mul_le_mul_right h_chain hpos
+  -- Continuity from 1-Lipschitz, via metric ε-δ.
+  have np_cont : Continuous np := by
+    rw [Metric.continuous_iff]
+    intro u ε hε
+    refine ⟨ε, hε, fun y hy => ?_⟩
+    rw [dist_eq_norm] at hy ⊢
+    exact lt_of_le_of_lt (np_lip y u) hy
+  -- Package as ↥S-valued retraction.
+  refine ⟨fun u => ⟨np u, np_mem u⟩, ?_, ?_⟩
+  · -- Continuity of the ↥S-valued projection.
+    exact np_cont.subtype_mk np_mem
+  · -- Idempotency: r x = x for x : ↥S.
+    intro x
+    apply Subtype.ext
+    exact np_id (x : EuclideanSpace ℝ (Fin n)) x.property
 
 /-- **Theorem 1 (was Axiom 1): Brouwer's FPT on a compact convex subset.**
 
@@ -139,11 +241,12 @@ lemma exists_continuous_proj_convex {n : ℕ}
 
     **S11.A.body landed (S13, researcher-10, 2026-05-09; see
     `s11-strict-weakening-spec.md` and `s12-s11a-body-step6-refinement.md`).**
-    The body still depends on the `sorry`-stubbed
-    `exists_continuous_proj_convex` helper (S11.B work item), so this
-    theorem is not yet end-to-end sorry-free; once S11.B lands, the
-    file's only remaining assumption on the Brouwer side will be the
-    closed-unit-ball axiom.
+    **S11.B landed (S14, researcher-9, 2026-05-09):** the
+    `exists_continuous_proj_convex` helper is now proven from
+    `exists_norm_eq_iInf_of_complete_convex` plus the variational-
+    inequality + Cauchy-Schwarz argument. As a result this theorem is
+    end-to-end sorry-free, and the only assumption on the Brouwer side
+    is the closed-unit-ball axiom `brouwer_unit_ball`.
 
     **Proof structure:**
 
@@ -151,8 +254,8 @@ lemma exists_continuous_proj_convex {n : ℕ}
        (`IsCompact.isBounded`); pick `R > 0` with
        `S ⊆ Metric.closedBall 0 R` via `Bornology.IsBounded.subset_closedBall_lt`.
     2. Build the nearest-point retraction `r : E → ↥S` from
-       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B; currently
-       `sorry`-stubbed).
+       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B; proved
+       in S14, 2026-05-09).
     3. Compose `F : ↥(closedBall 0 R) → ↥(closedBall 0 R)` via
        `b ↦ ⟨f (r b), …⟩`, well-defined since `f (r b) ∈ ↥S ⊆ closedBall 0 R`;
        continuity from `continuous_subtype_val`/`Continuous.subtype_mk`.
@@ -638,22 +741,25 @@ infrastructure can produce via the Cellina averaging argument.
 - `brouwer_fpt` — Brouwer's FPT for general compact convex `S`,
   derived from `axiom brouwer_unit_ball` via the elementwise rescaling
   retraction reduction (S11.A.body landed S13, researcher-10,
-  2026-05-09). The body still depends on the `sorry`-stubbed helper
-  `exists_continuous_proj_convex`, so it is not yet end-to-end
-  sorry-free.
+  2026-05-09). End-to-end sorry-free as of S14 (researcher-9,
+  2026-05-09): the helper `exists_continuous_proj_convex` is now
+  proven, so the only Brouwer-side assumption is the closed-unit-ball
+  axiom.
 - `exists_continuous_proj_convex` — Continuous nearest-point retraction
-  onto a compact convex set, used by the `brouwer_fpt` body.
-  **Currently `sorry`-stubbed** (S11.B work item, ~30–80 Lean lines via
-  `exists_norm_eq_iInf_of_complete_convex` + variational inequality).
+  onto a compact convex set, used by the `brouwer_fpt` body. **Proven
+  in S14 (researcher-9, 2026-05-09)** via
+  `exists_norm_eq_iInf_of_complete_convex` (existence) +
+  `norm_eq_iInf_iff_real_inner_le_zero` (variational inequality) +
+  `abs_real_inner_le_norm` (Cauchy-Schwarz, for the 1-Lipschitz step).
 
 ### Path to Full Verification
-1. **S11.B (next)**: prove `exists_continuous_proj_convex` from
-   `Mathlib.Analysis.InnerProductSpace.Projection` API. After this
-   lands, `theorem brouwer_fpt` is end-to-end sorry-free and the file's
-   only remaining axiom on the Brouwer side is the closed-unit-ball
-   form.
-2. **S12+**: prove `approx_selection_exists` (graph form) using
-   `PartitionOfUnity` plus the Cellina averaging argument.
+1. ~~**S11.B**: prove `exists_continuous_proj_convex` from
+   `Mathlib.Analysis.InnerProductSpace.Projection` API.~~ **Done in
+   S14 (researcher-9, 2026-05-09).** `theorem brouwer_fpt` is now
+   end-to-end sorry-free. The only remaining Brouwer-side assumption
+   is the closed-unit-ball axiom `brouwer_unit_ball`.
+2. **S15+ (current frontier)**: prove `approx_selection_exists` (graph
+   form) using `PartitionOfUnity` plus the Cellina averaging argument.
 3. **(Optional, far future)**: in-house Brouwer FPT proof to eliminate
    `brouwer_unit_ball` (Option B from S10's note).
 -/
