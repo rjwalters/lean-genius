@@ -14622,6 +14622,74 @@ private lemma strictHookCells_invariant_off_spine_of_c'
   strictHookCells_removeCorner_eq_of_not_mem hc'
     (c'_notMem_strictHookCells_of_off_spine hx_off_row hx_off_col)
 
+/-- **Walks toward `c` cannot start "past" `c` in either coordinate.**
+
+If a cell `x` lies strictly above or strictly to the right of `c`
+(i.e. `c.1 < x.1 ∨ c.2 < x.2`), then `gnwProb μ c K x = 0` for every
+`K`.  The hook walk `gnwProb _ c K _` only descends to cells in
+`strictHookCells y`, which lie within
+`{(y.1, _ ≥ y.2 + 1)} ∪ {(_ ≥ y.1 + 1, y.2)}`; both branches preserve
+the unreachability hypothesis pointwise (`y.1 ≥ x.1` and `y.2 ≥ x.2`),
+so a walk starting strictly past `c` in either coordinate can never
+reach `c`.
+
+**Proof**: induction on `K`.
+* `K = 0`: `gnwProb _ _ 0 _ = 0` by definition of `gnwProb`.
+* `K + 1`: unfold; either `x` is a corner ≠ `c` (the
+  `if x = c then 1 else 0` indicator vanishes), or pull out the
+  `1 / |H*(x)|` factor and apply the IH to each `y ∈ H*(x)` — every
+  such `y` inherits the hypothesis since `y.1 ≥ x.1` and `y.2 ≥ x.2`
+  by the strict-hook decomposition.
+
+**Used in S57.2+** to discharge sublemmas (S2)/(S3) of the
+`F_side_identity_aligned` K-induction in the trivial direction:
+* Case 1 (`c.1 < c'.1`): cells `x ∈ arm-of-c'` have
+  `x.1 = c'.1 > c.1`, so both `gnwProb μ c (h_μ x) x` and
+  `gnwProb (μ\c') c (h_{μ\c'} x) x` vanish — (S2)'s LHS and RHS are
+  both `0`, eliminating the `δ_arm` correction-term design problem in
+  this branch.
+* Case 2 (`c'.1 < c.1`): symmetric, via `c.2 < x.2` for cells in
+  the leg-of-c' role.
+
+Generic enough to also cover any `x` for which the walk is in the
+"wrong half-plane" relative to `c`. -/
+private lemma gnwProb_unreachable_zero {μ : YoungDiagram} {c : ℕ × ℕ} :
+    ∀ K x, (c.1 < x.1 ∨ c.2 < x.2) → gnwProb μ c K x = 0 := by
+  intro K
+  induction K with
+  | zero => intros; rfl
+  | succ K ih =>
+    intro x hx_unreach
+    have h_unfold : gnwProb μ c (K + 1) x =
+        if isCorner μ x then (if x = c then (1 : ℚ) else 0)
+        else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+             ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y := rfl
+    rw [h_unfold]
+    by_cases h_corner : isCorner μ x
+    · rw [if_pos h_corner]
+      have hxc : x ≠ c := by
+        rintro rfl
+        rcases hx_unreach with h | h <;> omega
+      rw [if_neg hxc]
+    · rw [if_neg h_corner]
+      have hsum_zero :
+          ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y = 0 := by
+        apply Finset.sum_eq_zero
+        intro y hy
+        apply ih
+        simp only [strictHookCells, Finset.mem_union, Finset.mem_image,
+                   Finset.mem_Ico] at hy
+        rcases hy with ⟨s, ⟨hjs, _⟩, rfl⟩ | ⟨r, ⟨hir, _⟩, rfl⟩
+        · -- y = (x.1, s) with x.2 < s
+          rcases hx_unreach with h | h
+          · exact Or.inl h
+          · exact Or.inr (by omega)
+        · -- y = (r, x.2) with x.1 < r
+          rcases hx_unreach with h | h
+          · exact Or.inl (by omega)
+          · exact Or.inr h
+      rw [hsum_zero, mul_zero]
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by

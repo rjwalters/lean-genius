@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS session 57.1 (researcher-1): Added three foundational off-spine structural invariances under c'-removal as the (S1) base inputs for the joint K-induction in F_side_identity_aligned. (1) c'_notMem_strictHookCells_of_off_spine: c' is not in the strict hook of any off-spine cell. (2) hookLength_invariant_off_spine_of_c': hookLength is invariant at off-spine cells under c'-removal. (3) strictHookCells_invariant_off_spine_of_c': strictHookCells is invariant at off-spine cells under c'-removal. All three sorry-free; ~89 lines (lemmas + docstrings + section header). Helpers.lean now 15225 lines (~275 below estimated 15500 ceiling). These eliminate two of the three S57.0 moving pieces (h_μ vs h_{μ\\c'} and H*(x) vs H'*(x)) at off-spine cells. The (S1) gnwProb pointwise equality requires K-induction (descendants may be on c'-spine); deferred to S57.2+. Sole open sorry on GNW route remains F_side_identity_aligned.",
+    "progressSummary": "PROGRESS session 57.2 (researcher-1): Added gnwProb_unreachable_zero — a sorry-free walk-unreachability lemma stating gnwProb mu c K x = 0 whenever c.1 < x.1 OR c.2 < x.2 (i.e. the walk is started in the wrong half-plane relative to c). Proof: induction on K (~15 lines); base case rfl, step splits on isCorner mu x (indicator vanishes since x != c) and uses Finset.sum_eq_zero + IH on each y in strictHookCells (each y inherits the unreachability disjunct since y.1 >= x.1 AND y.2 >= x.2 by the strict-hook decomposition). +68 Helpers.lean lines (now 15293, ~207 below estimated 15500 ceiling). Why useful: dissolves the delta_arm correction-term design problem from S57.0's plan note for the case-1 arm-of-c' branch (and case-2 leg-of-c' branch) of (S2)/(S3) — both LHS and RHS pointwise gnwProb values are 0 there, collapsing those (S2)/(S3) sub-branches to 0 = 0 triviality. Sole open sorry on GNW route remains F_side_identity_aligned. Next: S57.3 wraps this lemma into (S4)/(S5) summand identities.",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -156,7 +156,8 @@
       "gnwProb_exchange_lt_row_of_F_side proved in BallotProblemOQ03OQ01OQ02Helpers.lean:~14633 — the algebraic combiner for gnwProb_exchange (case c.1 < c'.1). Takes the F-side identity as a hypothesis and discharges gnwProb_exchange algebraically via mul_right_cancel₀, hookProd_removeCorner_swap, and linear_combination. Step 3 of 3 in the s05 recipe (S53, sorry-free).",
       "c'_notMem_strictHookCells_of_off_spine in BallotProblemOQ03OQ01OQ02Helpers.lean:~14562 (S57.1, sorry-free): for x off-spine of c' (x.1≠c'.1 and x.2≠c'.2), c' ∉ strictHookCells μ x.1 x.2",
       "hookLength_invariant_off_spine_of_c' in BallotProblemOQ03OQ01OQ02Helpers.lean:~14588 (S57.1, sorry-free): for x ∈ μ\\c' off-spine, hookLength (μ\\c') x = hookLength μ x; corollary of hookLength_eq_of_not_arm_leg",
-      "strictHookCells_invariant_off_spine_of_c' in BallotProblemOQ03OQ01OQ02Helpers.lean:~14616 (S57.1, sorry-free): for x off-spine of c', strictHookCells (μ\\c') x = strictHookCells μ x; via strictHookCells_removeCorner_eq_of_not_mem"
+      "strictHookCells_invariant_off_spine_of_c' in BallotProblemOQ03OQ01OQ02Helpers.lean:~14616 (S57.1, sorry-free): for x off-spine of c', strictHookCells (μ\\c') x = strictHookCells μ x; via strictHookCells_removeCorner_eq_of_not_mem",
+      "Added gnwProb_unreachable_zero (S57.2, BallotProblemOQ03OQ01OQ02Helpers.lean:14656; sorry-free, ~30-line proof + 32-line docstring): for any cell x with c.1 < x.1 OR c.2 < x.2, gnwProb mu c K x = 0 for all K. Proof by induction on K, using the strict-hook decomposition (descendants y satisfy y.1 >= x.1 AND y.2 >= x.2). Dissolves the delta_arm correction-term design problem from S57.0's plan note for the case-1 arm-of-c' branch (and case-2 leg-of-c' branch) of (S2)/(S3): both LHS and RHS pointwise gnwProb values are 0, so (S2)/(S3) on the unreachable branches collapse to 0 = 0 trivially."
     ],
     "insights": [
       "lgv_lemma_rxr in BallotProblemOQ03OQ02.lean is the key building block (Gessel-Viennot involution proof)",
@@ -265,7 +266,8 @@
       "S54 — F-side joint K-induction proving F(μ,c)·(h_d-1)² = F(μ\\c',c)·h_d·(h_d-2) (case c.1 < c'.1). Use gnwProb_step for K-stability and the S43 sum-bridges (sum_gnwProb_eq_removeCorner_cells, sum_gnwProb_strictHookCells_eq_removeCorner). ~100-200 lines. After S54, gnwProb_exchange (case 1) closes by instantiating gnwProb_exchange_lt_row_of_F_side.",
       "S55 — symmetric companion combiner gnwProb_exchange_gt_row_of_F_side for case 2 (c'.1 < c.1) plus the analogous F-side identity. After both cases, gnwProb_exchange itself closes via distinct_corners_dichotomy (S45).",
       "S56+ — eliminate gnwProb_exchange sorry; promote entry to verified status (last sorry).",
-      "Promote entry to verified once gnwProb_exchange is sorry-free."
+      "Promote entry to verified once gnwProb_exchange is sorry-free.",
+      "(S57.3) Wrap gnwProb_unreachable_zero into the case-1 arm-of-c' summand identity (S4) and case-2 leg-of-c' summand identity (S5); each ~15-20 lines, both sorry-free. (S57.4) Investigate whether (S2) case 2 reduces to (S3) case 1 by transpose duality. (S57.5+) Tackle off-spine summand (S6) — the genuine pointwise K-induction comparison."
     ]
   },
   "tags": [
