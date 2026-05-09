@@ -57,60 +57,76 @@
   },
   "sections": [
     {
+      "id": "header-and-imports",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Imports the full Mathlib library, declares the OQ-03 question and answer in the docstring, sets `maxHeartbeats 800000`, opens the namespace `PrimitiveElementOQ03`, and brings `Polynomial`, `IntermediateField`, `Module`, `FiniteDimensional` into scope. The `variable {K L : Type*} [Field K] [Field L] [Algebra K L]` block fixes the ambient field extension.",
+      "mathContext": "The docstring frames the identity chain at the heart of the proof: $\\deg(\\mathrm{minpoly}_K(\\alpha)) = \\mathrm{finrank}_K K\\langle\\alpha\\rangle = \\mathrm{finrank}_K \\uparrow\\!\\top = \\mathrm{finrank}_K L$. The four `open` declarations are essential: `Polynomial` for `natDegree`/`minpoly`, `IntermediateField` for `K⟮α⟯` notation and `topEquiv`, `Module`/`FiniteDimensional` for `finrank` lemmas."
+    },
+    {
       "id": "finrank-top",
-      "title": "Finrank of the Top Intermediate Field",
-      "startLine": 42,
-      "endLine": 48,
-      "summary": "Proves finrank K ↥(⊤ : IntermediateField K L) = finrank K L using IntermediateField.topEquiv and LinearEquiv.finrank_eq.",
-      "mathContext": "The top intermediate field ⊤ = L is K-isomorphic to L itself via topEquiv. The linear equivalence converts this to a finrank equality, bridging the subtype ↥⊤ and the ambient field L."
+      "title": "PART I — Finrank of the Top Intermediate Field",
+      "startLine": 40,
+      "endLine": 51,
+      "summary": "Proves `finrank_top_eq`: `finrank K ↑(⊤ : IntermediateField K L) = finrank K L` in a single line, applying `LinearEquiv.finrank_eq` to `IntermediateField.topEquiv.toLinearEquiv`.",
+      "mathContext": "The top intermediate field $\\top = L$ is K-isomorphic to L itself via `topEquiv`. The K-linear equivalence converts this to a finrank equality, bridging the subtype `↑⊤` and the ambient field L. This bridging lemma is needed because `adjoin.finrank` produces `finrank K K⟮α⟯` rather than `finrank K L`; rewriting `K⟮α⟯ = ⊤` yields `finrank K ↑⊤`, and this lemma closes the gap."
     },
     {
       "id": "bridge-lemma",
-      "title": "Primitive Element Implies Maximal Degree",
-      "startLine": 50,
-      "endLine": 70,
-      "summary": "If K(α) = ⊤ (α generates L over K), then deg(minpoly K α) = finrank K L. Uses adjoin.finrank and finrank_top_eq.",
-      "mathContext": "The key identity chain: deg(minpoly K α) = finrank K K(α) [by adjoin.finrank] = finrank K ⊤ [since K(α)=⊤] = finrank K L [by topEquiv]. This is the forward direction of the main biconditional."
+      "title": "PART II — Primitive Element Implies Maximal Degree",
+      "startLine": 53,
+      "endLine": 72,
+      "summary": "Proves `minpoly_deg_of_generator`: if `K⟮α⟯ = ⊤` (α generates L over K), then `(minpoly K α).natDegree = finrank K L`. Four steps: integrality from `IsIntegral.of_finite`, then `IntermediateField.adjoin.finrank` for `finrank K ↑K⟮α⟯ = natDegree`, then rewrite via the generator hypothesis and `finrank_top_eq`, finishing with `omega`.",
+      "mathContext": "The key identity chain: $\\deg(\\mathrm{minpoly}_K \\alpha) = \\mathrm{finrank}_K K\\langle\\alpha\\rangle$ [by `adjoin.finrank`] $=\\mathrm{finrank}_K \\top$ [since $K\\langle\\alpha\\rangle = \\top$] $= \\mathrm{finrank}_K L$ [by `topEquiv`]. This is the forward direction of the main biconditional and the cornerstone of every subsequent theorem in the file."
     },
     {
       "id": "primitive-element-theorem",
-      "title": "The Primitive Element Theorem (Mathlib)",
-      "startLine": 72,
-      "endLine": 100,
-      "summary": "States Field.exists_primitive_element from Mathlib: for finite separable K⊂L over infinite K, ∃ α with K(α)=L.",
-      "mathContext": "Artin's proof: for any finite set of intermediate fields {E₁,...,Eₖ} ⊊ L, the set of bad scalars c with K(β+c·γ)∈{E₁,...,Eₖ} is finite. Since K is infinite, some c avoids all bad values, giving a generator by induction."
+      "title": "PART III — The Primitive Element Theorem (from Mathlib)",
+      "startLine": 74,
+      "endLine": 94,
+      "summary": "Wraps `Field.exists_primitive_element` from `Mathlib.FieldTheory.PrimitiveElement` as `primitive_element_exists`: for `[FiniteDimensional K L] [IsSeparable K L] [Infinite K]`, there exists `α : L` with `K⟮α⟯ = ⊤`. The wrapper makes the full hypothesis list explicit and serves as documentation of the Mathlib dependency.",
+      "mathContext": "Artin's proof (1944): for any finite set of intermediate fields $\\{E_1, \\ldots, E_k\\} \\subsetneq L$, the set of 'bad' scalars $c \\in K$ with $K(\\beta + c\\gamma) \\in \\{E_i\\}$ is finite. Since $K$ is infinite, some $c$ avoids all bad values, giving a generator by induction on the number of generators. The hypothesis `Infinite K` is essential: for finite fields, every separable extension is automatically simple via the cyclic structure of $L^\\times$ (generated by the Frobenius), but the proof uses different machinery."
     },
     {
       "id": "main-theorem",
-      "title": "Main Theorem: ∃ α with deg(minpoly K α) = [L:K]",
-      "startLine": 102,
-      "endLine": 115,
-      "summary": "Combines Field.exists_primitive_element with minpoly_deg_of_generator to prove the main result.",
-      "mathContext": "This directly answers OQ-03: YES, the primitive element theorem is formalizable. The proof is three lines: get α from Mathlib's theorem, then apply the bridge lemma."
+      "title": "PART IV — Main Theorem: ∃ α with deg(minpoly K α) = [L:K]",
+      "startLine": 96,
+      "endLine": 110,
+      "summary": "Proves `primitive_element_minpoly` — the OQ-03 main result — by combining `primitive_element_exists` with `minpoly_deg_of_generator`. The proof is three lines: `obtain ⟨α, hα⟩ := primitive_element_exists` then `exact ⟨α, minpoly_deg_of_generator α hα⟩`.",
+      "mathContext": "This directly answers OQ-03: **YES**, the primitive element theorem is formalizable in Lean 4. The conciseness of the proof reveals that Mathlib already contains the hard combinatorial work (Artin's argument); the only missing piece for the OQ-03 framing was the finrank identity chain `finrank K K⟮α⟯ = natDegree (minpoly K α)`. Once that bridge is in place, the theorem follows in three lines of structured proof."
     },
     {
       "id": "degree-bounds",
-      "title": "Degree Bounds and Non-Generator Characterization",
-      "startLine": 117,
-      "endLine": 155,
-      "summary": "Proves deg(minpoly K α) ≤ [L:K] always, and deg < [L:K] characterizes non-generators. Shows primitive elements have maximum degree.",
-      "mathContext": "Since K(α) ⊆ L as K-vector spaces, finrank K K(α) ≤ finrank K L. Equality holds iff K(α) = L. Elements with strictly smaller degree generate proper subfields."
+      "title": "PART V — Degree Bounds and Non-Generator Characterization",
+      "startLine": 112,
+      "endLine": 160,
+      "summary": "Three theorems on degree bounds: `minpoly_deg_le_finrank` (deg ≤ [L:K] always, by `Submodule.finrank_le` after rewriting via `adjoin.finrank`), `not_generator_of_deg_lt` (deg < [L:K] ⟹ K⟮α⟯ ≠ ⊤, contrapositive of bridge), and `primitive_has_max_minpoly_deg` (non-generators have strictly smaller degree). The latter uses a `where` clause to inline a private `generator_iff_minpoly_maxdeg` helper.",
+      "mathContext": "Since $K\\langle\\alpha\\rangle \\subseteq L$ as K-vector spaces, $\\mathrm{finrank}_K K\\langle\\alpha\\rangle \\leq \\mathrm{finrank}_K L$, so $\\deg(\\mathrm{minpoly}_K \\alpha) \\leq [L:K]$. Equality holds iff $K\\langle\\alpha\\rangle = L$. Elements with strictly smaller degree generate proper subfields. The trichotomy 'deg < [L:K] / deg = [L:K] / no other case' classifies every element of L by its minimal polynomial degree relative to the extension degree."
     },
     {
       "id": "iff-characterization",
-      "title": "Biconditional: Generator ↔ Maximal Degree",
-      "startLine": 157,
-      "endLine": 175,
-      "summary": "Proves K(α)=⊤ ↔ deg(minpoly K α) = [L:K]. The backward direction uses IntermediateField.eq_top_of_finrank_eq.",
-      "mathContext": "This biconditional characterizes primitive elements purely in terms of their minimal polynomial degree. It shows that primitive elements are exactly the degree-maximizing elements of L."
+      "title": "PART VI — Biconditional: Generator ↔ Maximal Degree",
+      "startLine": 162,
+      "endLine": 179,
+      "summary": "Proves `generator_iff_minpoly_maxdeg`: `K⟮α⟯ = ⊤ ↔ (minpoly K α).natDegree = finrank K L`. Forward direction is `minpoly_deg_of_generator`. Backward direction: from `natDegree = finrank K L`, use `adjoin.finrank` to get `finrank K ↑K⟮α⟯ = finrank K L`, then `IntermediateField.eq_top_of_finrank_eq` (a subspace of equal finite dimension equals the whole space) yields `K⟮α⟯ = ⊤`.",
+      "mathContext": "This biconditional gives the definitive characterization of primitive elements: they are precisely the degree-maximizing elements of L. Backward direction reasoning: $\\deg(\\mathrm{minpoly}_K \\alpha) = [L:K]$ $\\Rightarrow$ $[K(\\alpha):K] = [L:K]$ $\\Rightarrow$ $K(\\alpha) = L$ (equal-dimensional subspace equals whole). The lemma `IntermediateField.eq_top_of_finrank_eq` is the Lean-side manifestation of this finite-dimensional linear algebra fact applied to intermediate fields."
     },
     {
       "id": "applications",
-      "title": "Tower Formula and Degree Divisibility",
-      "startLine": 177,
-      "endLine": 220,
-      "summary": "Proves the tower formula [L:K] = deg(minpoly β) · [L:K(β)] and that deg(minpoly β) | deg(primitive element).",
-      "mathContext": "The tower law finrank K L = finrank K K(β) · finrank K(β) L, combined with adjoin.finrank, gives the tower formula. The divisibility follows because deg(primitive) = [L:K] and deg(minpoly β) | [L:K]."
+      "title": "PART VII — Tower Formula and Degree Divisibility",
+      "startLine": 181,
+      "endLine": 212,
+      "summary": "Two corollaries: `tower_formula_via_primitive` ([L:K] = deg(minpoly β) · [L:K(β)] for any β, using `finrank_mul_finrank` and `adjoin.finrank`), and `primitive_elem_deg_dvd_finrank` (deg(minpoly β) divides deg(primitive element) = [L:K], proved via the tower formula).",
+      "mathContext": "The tower law $\\mathrm{finrank}_K L = \\mathrm{finrank}_K K\\langle\\beta\\rangle \\cdot \\mathrm{finrank}_{K\\langle\\beta\\rangle} L$, combined with `adjoin.finrank`, yields the tower formula $[L:K] = \\deg(\\mathrm{minpoly}_K \\beta) \\cdot [L:K(\\beta)]$. The divisibility $\\deg(\\mathrm{minpoly}_K \\beta) \\mid [L:K]$ follows immediately. Since the primitive element $\\alpha$ satisfies $\\deg(\\mathrm{minpoly}_K \\alpha) = [L:K]$, this gives $\\deg(\\mathrm{minpoly}_K \\beta) \\mid \\deg(\\mathrm{minpoly}_K \\alpha)$ — the quantitative form of the fact that primitive elements have maximum-degree minimal polynomials."
+    },
+    {
+      "id": "summary-block",
+      "title": "Summary: 10 Theorems and the OQ-03 Answer",
+      "startLine": 214,
+      "endLine": 242,
+      "summary": "Concluding comment block enumerating all 10 theorems and re-stating the OQ-03 answer. Lists the three Mathlib dependencies (`Field.exists_primitive_element`, `IntermediateField.adjoin.finrank`, `IntermediateField.topEquiv.toLinearEquiv`) and notes the `[FiniteDimensional K L] [IsSeparable K L] [Infinite K]` hypothesis triple required for the main theorem.",
+      "mathContext": "The summary block is documentation rather than executable Lean code. It serves as a roadmap of the file's logical structure — the 10 theorems form a tight web in which each later result depends only on the earlier ones plus Mathlib. Reading the file from this summary backward exposes the dependency graph: `primitive_element_minpoly` (theorem 4) is the climax, supported by theorems 1-3 (Mathlib bridge), and refined/extended by theorems 5-10."
     }
   ],
   "overview": {
