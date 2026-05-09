@@ -846,6 +846,52 @@ private theorem sylow_two_inter_cube_id_eq_singleton_one
     rintro rfl
     exact ⟨(P : Subgroup G).one_mem, one_pow 3⟩
 
+/-- **S18 ingredient 4 cardinality (per session-13 spec §4)**: in a finite
+    group of order 12, each Sylow 2-subgroup `P` has exactly 3 non-identity
+    elements when viewed as a set: `Set.ncard ((P : Set G) \ {1}) = 3`.
+
+    Direct combination of `sylow_two_card_eq_four_of_card_twelve`
+    (S13: `|P| = 4`) with `Set.ncard_diff_singleton_of_mem` and
+    `Nat.card_coe_set_eq` (which bridges `Nat.card (P : Subgroup G)` to
+    `Set.ncard (P : Set G)` via the `SetLike (Sylow 2 G) G` coercion).
+
+    Sylow-2 mirror of `sylow_three_set_diff_one_ncard_eq_two`
+    (PR #17587, S16 ingredient 3a): same proof template with `(2, 4, 3)`
+    substituted for `(3, 3, 2)`. Together with the `Set`-level
+    forward containment supplied by `sylow_two_inter_cube_id_eq_singleton_one`
+    (S17, immediately above) and the cardinality coincidence
+    `|G| − 9 = 3` (which awaits S16's `cube_id_card_eq_nine`, in flight
+    via PRs #17586 / #17587), this lemma closes the cardinality side
+    of ingredient 4 of the S10 element-counting closure: any Sylow
+    2-subgroup `P` satisfies `(P : Set G) \ {1} = G \ {g | g^3 = 1}`
+    once the cube-identity set has size 9, since the forward containment
+    already lives at the set level (S17) and both sides have `ncard = 3`.
+    The set-equality is independent of the choice of `P`, hence
+    `Subsingleton (Sylow 2 G)` (ingredient 5).
+
+    **Complementary, non-overlapping with PRs #17586 / #17587** (Sylow-3
+    side of ingredient 3) and merged PR #17630 (S17, Sylow-2 / cube-id
+    set-level intersection). This lemma carries no hypothesis on
+    `n_3 = 4` — it holds for any Sylow 2-subgroup of any |G| = 12. -/
+private lemma sylow_two_set_diff_one_ncard_eq_three
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12) (P : Sylow 2 G) :
+    Set.ncard ((P : Set G) \ ({1} : Set G)) = 3 := by
+  -- Step 1: |P| = 4 from S13.
+  have h4 : Nat.card (P : Subgroup G) = 4 :=
+    sylow_two_card_eq_four_of_card_twelve hcard P
+  -- Step 2: 1 ∈ (P : Set G) (the subgroup contains the identity).
+  have h1mem : (1 : G) ∈ (P : Set G) := (P : Subgroup G).one_mem
+  -- Step 3: Set.ncard (P : Set G) = 4 via Nat.card_coe_set_eq + S13.
+  -- The subtypes ↥((P : Sylow 2 G) : Set G) and ↥(P : Subgroup G)
+  -- are defeq via the SetLike coercion chain Sylow → Subgroup → Set
+  -- (same elaboration path as S16 ingredient 3a, PR #17587).
+  have hncard : Set.ncard ((P : Set G) : Set G) = 4 := by
+    rw [← Nat.card_coe_set_eq]
+    exact h4
+  rw [Set.ncard_diff_singleton_of_mem h1mem, hncard]
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
