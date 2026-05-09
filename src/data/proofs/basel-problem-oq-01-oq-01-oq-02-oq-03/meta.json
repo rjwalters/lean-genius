@@ -18,8 +18,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 657,
-    "theoremCount": 43,
+    "lineCount": 757,
+    "theoremCount": 46,
     "definitionCount": 1,
     "assumptions": "Axiomatized: hanson_bound — for all n, lcm(1,...,n) ≤ 3^n. Numerically verified for n ∈ {1..10, 12, 15, 20} via decide/native_decide. Hanson's original 1972 proof uses Beta-integral identities and Chebyshev-style prime-power bounds; neither is in Mathlib. Provable easier bounds (lcm | n!, lcm ≤ n!, lcm ≤ n^n) are included with no axioms.",
     "originalContributions": [
