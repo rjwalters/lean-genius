@@ -1,0 +1,206 @@
+/-
+  Chebyshev Bounds OQ-04-OQ-01: Toward an Elementary PNT (Selberg-Erdős)
+
+  ## Open Question
+
+  Prove ψ(n)/n → 1 (the Prime Number Theorem for the second Chebyshev
+  function) elementarily, removing the axiom `chebyshevPsi_asymptotic`
+  from `ChebyshevBoundsOQ04.lean`.
+
+  ## Status: Iteration 1 / OBSERVE
+
+  This file scaffolds the Selberg-Erdős 1949 elementary proof strategy.
+  Concretely, it:
+
+  - Defines the Selberg auxiliary function
+        Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n),
+    where Λ ∗ Λ denotes Dirichlet convolution.
+  - Defines the Selberg partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n).
+  - Proves routine non-negativity, base-value, and monotonicity lemmas.
+  - Documents the elementary-PNT roadmap and identifies Mathlib gaps.
+
+  No new axioms are added; the parent file's `chebyshevPsi_asymptotic`
+  axiom remains the open target.
+
+  ## Roadmap
+
+  1. **Selberg's symmetry formula**: S₂(N) = 2N·log N + O(N).
+
+     This is the central identity of the elementary proof. It is
+     provable from the Möbius–log identity
+        Σ_{d ∣ n} μ(d)·log²(n/d) = Λ₂(n)   (n ≥ 1)
+     combined with
+        Σ_{n ≤ N} log²n = N·log²N − 2N·log N + O(log²N).
+
+  2. **Reduction to oscillation control**: define
+        R(x) := ψ(x) − x,    V(x) := |R(x)| / x.
+     Selberg's symmetry formula yields the Tauberian inequality
+        V(x)·log x ≤ (2/x)·Σ_{n ≤ x} V(x/n)·Λ(n) + O(1),
+     which expresses oscillations of ψ(x)/x in terms of an averaged
+     self-reference.
+
+  3. **Erdős's combinatorial lemma**: if V(x) ≤ V for all x ≥ x₀ and
+     V(x) attains a value close to V along a subsequence, then for some
+     c > 0 the values V(x) cannot stay arbitrarily close to V on a long
+     enough interval — forcing lim sup V(x) = 0.
+
+  4. **Conclusion**: lim ψ(x)/x = 1, i.e. `chebyshevPsi_asymptotic`.
+
+  ## Mathlib gaps observed (Mathlib v4.26.0)
+
+  - No formalization of Selberg's symmetry formula.
+  - No analogue of the Möbius–log identity Σ_{d ∣ n} μ(d)·log²(n/d).
+  - No partial-summation framework specialized to Λ₂-type sums.
+
+  ## References
+
+  - Selberg, "An elementary proof of the prime-number theorem",
+    Annals of Math. 50 (1949), 305–313.
+  - Erdős, "On a new method in elementary number theory which leads to
+    an elementary proof of the prime number theorem",
+    PNAS 35 (1949), 374–384.
+  - Tenenbaum, "Introduction to analytic and probabilistic number
+    theory" (3rd ed., 2015), §I.6.
+  - Iwaniec–Kowalski, "Analytic Number Theory", AMS Colloquium 53
+    (2004), §2.3.
+-/
+
+import Mathlib
+import Proofs.ChebyshevBoundsOQ04
+
+namespace ChebyshevBoundsOQ04OQ01
+
+open Nat Finset ArithmeticFunction
+open scoped BigOperators
+
+/-! ## Dirichlet convolution Λ ∗ Λ
+
+We use the explicit divisor-sum form so that subsequent algebraic
+manipulations (which the elementary proof requires) avoid the
+`divisorsAntidiagonal` abstraction. -/
+
+/-- The Dirichlet convolution `(Λ ∗ Λ)` at `n`, defined explicitly:
+    `(Λ ∗ Λ)(n) = Σ_{d ∣ n} Λ(d) · Λ(n/d)`.
+    For `n = 0`, the empty divisor set yields `0`. -/
+noncomputable def vonMangoldtConv (n : ℕ) : ℝ :=
+  ∑ d ∈ n.divisors, vonMangoldt d * vonMangoldt (n / d)
+
+/-! ## Selberg's auxiliary function Λ₂
+
+Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n). The basic identity used by Selberg is
+
+   Σ_{d ∣ n} μ(d)·log²(n/d) = Λ₂(n)   (n ≥ 1),
+
+from which Selberg's symmetry formula
+
+   Σ_{n ≤ N} Λ₂(n) = 2N·log N + O(N)
+
+follows by standard Dirichlet hyperbola summation. -/
+
+/-- Selberg's auxiliary function:
+    `Λ₂(n) = Λ(n) · log n + (Λ ∗ Λ)(n)`. -/
+noncomputable def selbergLambda2 (n : ℕ) : ℝ :=
+  vonMangoldt n * Real.log n + vonMangoldtConv n
+
+/-- The partial Selberg sum: `S₂(N) = Σ_{n ≤ N} Λ₂(n)`. -/
+noncomputable def selbergSum2 (N : ℕ) : ℝ :=
+  ∑ n ∈ range (N + 1), selbergLambda2 n
+
+/-! ### Base values and non-negativity -/
+
+/-- `(Λ ∗ Λ)(0) = 0` since `divisors 0 = ∅`. -/
+theorem vonMangoldtConv_zero : vonMangoldtConv 0 = 0 := by
+  unfold vonMangoldtConv
+  simp
+
+/-- `(Λ ∗ Λ)(1) = 0` since the only divisor is `1` and `Λ(1) = 0`. -/
+theorem vonMangoldtConv_one : vonMangoldtConv 1 = 0 := by
+  unfold vonMangoldtConv
+  simp [vonMangoldt_apply_one]
+
+/-- `(Λ ∗ Λ)(n) ≥ 0` for all `n`, since `Λ ≥ 0` everywhere. -/
+theorem vonMangoldtConv_nonneg (n : ℕ) : 0 ≤ vonMangoldtConv n := by
+  unfold vonMangoldtConv
+  exact Finset.sum_nonneg (fun _ _ =>
+    mul_nonneg vonMangoldt_nonneg vonMangoldt_nonneg)
+
+/-- `Λ₂(0) = 0`. -/
+theorem selbergLambda2_zero : selbergLambda2 0 = 0 := by
+  unfold selbergLambda2
+  rw [vonMangoldtConv_zero]
+  simp [ArithmeticFunction.map_zero]
+
+/-- `Λ₂(1) = 0`: both summands vanish (Λ(1) = 0 and (Λ ∗ Λ)(1) = 0). -/
+theorem selbergLambda2_one : selbergLambda2 1 = 0 := by
+  unfold selbergLambda2
+  rw [vonMangoldtConv_one, vonMangoldt_apply_one]
+  ring
+
+/-- `Λ₂(n) ≥ 0` for all `n`. The first summand is non-negative because
+    `Λ(n) ≥ 0` and `log n ≥ 0` (with the convention `log 0 = 0`). -/
+theorem selbergLambda2_nonneg (n : ℕ) : 0 ≤ selbergLambda2 n := by
+  unfold selbergLambda2
+  refine add_nonneg ?_ (vonMangoldtConv_nonneg n)
+  rcases Nat.eq_zero_or_pos n with h | h
+  · subst h
+    simp [ArithmeticFunction.map_zero]
+  · exact mul_nonneg vonMangoldt_nonneg
+      (Real.log_nonneg (by exact_mod_cast h))
+
+/-! ### Partial sum properties -/
+
+/-- `S₂(0) = 0`: the only term is `Λ₂(0) = 0`. -/
+theorem selbergSum2_zero : selbergSum2 0 = 0 := by
+  unfold selbergSum2
+  rw [Finset.sum_range_one, selbergLambda2_zero]
+
+/-- `S₂(N+1) = S₂(N) + Λ₂(N+1)`: the partial-sum recurrence. -/
+theorem selbergSum2_succ (N : ℕ) :
+    selbergSum2 (N + 1) = selbergSum2 N + selbergLambda2 (N + 1) := by
+  unfold selbergSum2
+  rw [Finset.sum_range_succ]
+
+/-- The partial Selberg sum is non-negative. -/
+theorem selbergSum2_nonneg (N : ℕ) : 0 ≤ selbergSum2 N := by
+  unfold selbergSum2
+  exact Finset.sum_nonneg (fun n _ => selbergLambda2_nonneg n)
+
+/-- The partial Selberg sum is monotone in the truncation parameter. -/
+theorem selbergSum2_mono : Monotone selbergSum2 := by
+  intro M N hMN
+  unfold selbergSum2
+  apply Finset.sum_le_sum_of_subset_of_nonneg
+  · intro k hk
+    simp only [Finset.mem_range] at hk ⊢
+    omega
+  · intro k _ _
+    exact selbergLambda2_nonneg k
+
+/-! ## Future Work
+
+The next-iteration deliverables are, in order of increasing difficulty:
+
+1. **`vonMangoldtConv_prime`**: `(Λ ∗ Λ)(p) = 0` for prime `p`. Routine
+   from `Nat.Prime.divisors`.
+
+2. **`selbergLambda2_prime`**: `Λ₂(p) = (log p)²`. Direct from (1) and
+   `vonMangoldt_apply_prime`.
+
+3. **`selbergLambda2_eq_moebius_log_sq`**: the identity
+        Λ₂(n) = Σ_{d ∣ n} μ(d) · (log (n/d))²    (n ≥ 1).
+   Provable from the Mathlib `moebius_mul_coe_zeta` machinery once one
+   knows Λ = μ ∗ log (the standard expansion).
+
+4. **`selbergSum2_eq_two_n_log_n_plus_O`**: Selberg's symmetry formula
+        S₂(N) = 2 N · log N + O(N).
+   This is the central identity. The error-term step requires summation
+   by parts and quantitative control of Σ_{d ≤ x} μ(d) — but only its
+   `O(x)` form, which is well within elementary bounds.
+
+5. **Tauberian step → PNT**: Erdős–Selberg's combinatorial finishing
+   argument, the longest part of the elementary proof.
+
+The total estimated formalization size is several thousand lines, but
+each step decomposes into Mathlib-friendly pieces. -/
+
+end ChebyshevBoundsOQ04OQ01

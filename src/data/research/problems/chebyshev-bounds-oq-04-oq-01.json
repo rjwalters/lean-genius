@@ -1,0 +1,186 @@
+{
+  "slug": "chebyshev-bounds-oq-04-oq-01",
+  "title": "Elementary Proof of Full PNT from Chebyshev Bounds",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "S",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Prove `Filter.Tendsto (fun n : ℕ => ChebyshevBoundsOQ04.chebyshevPsi n / n) Filter.atTop (nhds 1)` without using complex analysis of ζ(s), thereby discharging the axiom `ChebyshevBoundsOQ04.chebyshevPsi_asymptotic`.",
+    "plain": "Prove the full PNT ψ(n)/n → 1 from scratch in Lean 4 — currently requires either complex analysis of ζ(s) or an elementary proof (Selberg/Erdős 1949 style).",
+    "whyMatters": [
+      "Mathlib has no formalized PNT in any form; an elementary proof would be a milestone result.",
+      "The Selberg-Erdős 1949 elementary proof avoids complex analysis entirely, working only with real-variable estimates of arithmetic functions — making it a natural fit for Lean 4.",
+      "The parent entry chebyshev-bounds-oq-04 already provides ψ-bounds (Chebyshev) and the axiom chebyshevPsi_asymptotic this problem aims to discharge."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "ChebyshevBoundsOQ04.chebyshevPsi: definition of ψ(n) = Σ_{k ≤ n} Λ(k)",
+      "ChebyshevBoundsOQ04.chebyshevPsi_upper_bound: ψ(n) ≤ 2n·log 2 (proved via central binomials)",
+      "ChebyshevBoundsOQ04.chebyshevPsi_doubling_lower: ψ(2n) − ψ(n) ≥ log(n+1) for n ≥ 1 (Bertrand)",
+      "ChebyshevBoundsOQ04OQ01.selbergLambda2: definition of Selberg's auxiliary function (Iter 1)",
+      "ChebyshevBoundsOQ04OQ01.selbergSum2: definition of partial Selberg sum (Iter 1)",
+      "ChebyshevBoundsOQ04OQ01.selbergLambda2_nonneg, selbergSum2_nonneg, selbergSum2_mono (Iter 1)"
+    ],
+    "open": [
+      "Möbius–log identity: Σ_{d ∣ n} μ(d) · log²(n/d) = Λ₂(n) for n ≥ 1",
+      "Selberg's symmetry formula: Σ_{n ≤ N} Λ₂(n) = 2N·log N + O(N)",
+      "Tauberian inequality: V(x)·log x ≤ (2/x) Σ_{n ≤ x} V(x/n) Λ(n) + O(1) where V(x) = |ψ(x) − x|/x",
+      "Erdős combinatorial finishing: lim sup V(x) = 0 from the Tauberian inequality",
+      "Discharge of chebyshevPsi_asymptotic axiom"
+    ],
+    "goal": "Replace the axiom ChebyshevBoundsOQ04.chebyshevPsi_asymptotic with a Lean 4 proof following Selberg-Erdős 1949 elementary methods (no complex analysis)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-09T03:50:00.000Z",
+    "iteration": 2,
+    "focus": "Iter 1 (researcher-12, 2026-05-09) scaffolds the Selberg auxiliary function Λ₂(n) and the partial sum S₂(N), with routine non-negativity, base-value, and monotonicity lemmas — all axiom-free, sorry-free. Iter 2 will target the Möbius–log identity Λ₂ = μ ∗ log² and the prime-base lemmas vonMangoldtConv_prime, selbergLambda2_prime.",
+    "blockers": [],
+    "nextAction": "Iter 2: prove vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 for prime p), selbergLambda2_prime (Λ₂(p) = (log p)²), and the Möbius–log identity Σ_{d ∣ n} μ(d) · log²(n/d) = Λ₂(n) using Mathlib's moebius_mul_coe_zeta and the standard Λ = μ ∗ log decomposition.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Iter 1 (2026-05-09, researcher-12, OBSERVE phase): scaffolded the Selberg-Erdős 1949 elementary PNT strategy in Proofs/ChebyshevBoundsOQ04OQ01.lean (209 lines, 10 theorems, 3 noncomputable defs, 0 sorries, 0 axioms). Defined Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n) and S₂(N) := Σ_{n ≤ N} Λ₂(n); proved vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg, selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg, selbergSum2_zero, selbergSum2_succ, selbergSum2_nonneg, selbergSum2_mono. Created gallery entry chebyshev-bounds-oq-04-oq-01 with status formalized / badge wip. The Selberg symmetry formula and Erdős finishing argument are documented in the file's roadmap and Future Work sections, and the chebyshevPsi_asymptotic axiom (parent's) remains the open target.",
+    "builtItems": [
+      "Proofs/ChebyshevBoundsOQ04OQ01.lean (206 lines, 10 theorems, 3 defs, 0 sorries, 0 axioms)",
+      "vonMangoldtConv : ℕ → ℝ — Dirichlet convolution Λ ∗ Λ as explicit divisor sum",
+      "selbergLambda2 : ℕ → ℝ — Selberg's Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n)",
+      "selbergSum2 : ℕ → ℝ — partial Selberg sum S₂(N) := Σ_{n ≤ N} Λ₂(n)",
+      "Lemmas: vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg",
+      "Lemmas: selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg",
+      "Lemmas: selbergSum2_zero, selbergSum2_succ, selbergSum2_nonneg, selbergSum2_mono",
+      "Gallery entry src/data/proofs/chebyshev-bounds-oq-04-oq-01/ (meta.json, index.ts, annotations.json)"
+    ],
+    "insights": [
+      "Selberg's Λ₂ identity Λ_2 = μ ∗ log² (where ∗ is Dirichlet convolution and μ is Möbius) reduces the elementary PNT proof to Möbius-function manipulations of log² — this is the dimensional reduction that bypasses complex analysis entirely.",
+      "Defining (Λ ∗ Λ)(n) as a literal divisor-sum rather than via Mathlib's ArithmeticFunction.mul (Dirichlet convolution as the * operator on ArithmeticFunction R) simplifies subsequent algebraic manipulations: identities become rewrites rather than reductions through divisorsAntidiagonal.",
+      "Non-negativity Λ_2(n) ≥ 0 — provable from Λ ≥ 0 and Real.log_nonneg with a case split at n = 0 — is essential for the Tauberian step downstream: it allows L¹-type oscillation inequalities.",
+      "The error term O(N) in Selberg's symmetry formula S₂(N) = 2N log N + O(N) is much weaker than what PNT eventually delivers; the Tauberian step amplifies this O(N) error into o(N) for ψ(N) − N, which is the substance of the elementary proof.",
+      "Mathlib v4.26.0 already provides all the API needed for this iteration: ArithmeticFunction.vonMangoldt, vonMangoldt_apply_one (Λ(1) = 0), ArithmeticFunction.map_zero (Λ(0) = 0), vonMangoldt_apply_prime (Λ(p) = log p), vonMangoldt_nonneg, Real.log_nonneg, Nat.divisors, Finset.sum_le_sum_of_subset_of_nonneg."
+    ],
+    "mathlibGaps": [
+      "No formalization of Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N).",
+      "No analogue of the Möbius–log identity Σ_{d ∣ n} μ(d) · log²(n/d) = Λ₂(n).",
+      "No partial-summation framework specialized to Λ₂-type sums (would require summation by parts with Λ-weighted sums).",
+      "No formalization of Erdős's combinatorial finishing argument that derives lim sup |ψ(x)/x − 1| = 0 from a Tauberian-type oscillation inequality."
+    ],
+    "nextSteps": [
+      "Iter 2: prove vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 for prime p) using Nat.Prime.divisors = {1, p} and vonMangoldt_apply_one.",
+      "Iter 2: prove selbergLambda2_prime (Λ₂(p) = (log p)²) — direct corollary.",
+      "Iter 3: prove the Möbius–log identity Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d) for n ≥ 1, using Mathlib's moebius_mul_coe_zeta machinery and Λ = μ ∗ log.",
+      "Iter 4–6: prove Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N). Decomposes as: (a) Σ_{n ≤ N} log²n = N log²N − 2N log N + O(log²N), (b) Möbius hyperbola summation to bound the error term.",
+      "Iter 7+: formalize the Tauberian inequality and Erdős's combinatorial finishing argument (lim sup V(x) = 0 ⇒ ψ(x)/x → 1)."
+    ]
+  },
+  "tags": [
+    "analytic-number-theory",
+    "prime-number-theorem",
+    "hard",
+    "seeker-selected",
+    "elementary-proof",
+    "selberg-symmetry",
+    "scaffold"
+  ],
+  "relatedProofs": [
+    "chebyshev-bounds",
+    "chebyshev-bounds-oq-04",
+    "chebyshev-pnt-bridge"
+  ],
+  "references": {
+    "papers": [
+      {
+        "author": "Atle Selberg",
+        "title": "An elementary proof of the prime-number theorem",
+        "venue": "Annals of Mathematics",
+        "year": 1949,
+        "volume": "50",
+        "pages": "305–313"
+      },
+      {
+        "author": "Paul Erdős",
+        "title": "On a new method in elementary number theory which leads to an elementary proof of the prime number theorem",
+        "venue": "Proceedings of the National Academy of Sciences",
+        "year": 1949,
+        "volume": "35",
+        "pages": "374–384"
+      },
+      {
+        "author": "Gérald Tenenbaum",
+        "title": "Introduction to analytic and probabilistic number theory",
+        "venue": "Cambridge University Press, 3rd ed.",
+        "year": 2015,
+        "section": "§I.6"
+      },
+      {
+        "author": "Henryk Iwaniec and Emmanuel Kowalski",
+        "title": "Analytic Number Theory",
+        "venue": "AMS Colloquium Publications",
+        "year": 2004,
+        "volume": "53",
+        "section": "§2.3"
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt",
+      "Mathlib.NumberTheory.ArithmeticFunction.Moebius",
+      "Mathlib.Data.Nat.Divisors"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.340Z",
+  "lastUpdate": "2026-05-09T03:55:00.000Z",
+  "significance": 9,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/ChebyshevBounds.lean",
+      "filename": "ChebyshevBounds.lean",
+      "lineCount": 440,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBounds.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04.lean",
+      "filename": "ChebyshevBoundsOQ04.lean",
+      "lineCount": 387,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04Aristotle.lean",
+      "filename": "ChebyshevBoundsOQ04Aristotle.lean",
+      "lineCount": 223,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
+      "filename": "ChebyshevBoundsOQ04OQ01.lean",
+      "lineCount": 206,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean"
+    }
+  ]
+}
