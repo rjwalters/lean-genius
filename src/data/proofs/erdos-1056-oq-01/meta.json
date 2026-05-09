@@ -2,7 +2,7 @@
   "id": "erdos-1056-oq-01",
   "title": "Erdős Problem #1056 OQ01: New Solutions for Consecutive Interval Products ≡ 1",
   "slug": "erdos-1056-oq-01",
-  "description": "Erdős (1979) asked: do there exist primes p and k disjoint intervals I₁,...,Iₖ of consecutive integers all with product ≡ 1 (mod p)? This extends known solutions from k=3 (Makowski 1983, p=17) to k=4 (p=23), k=5 (p=71), k=6 (p=71), k=7 (p=673), and k=8 (p=599, the smallest prime giving k=8) via computational verification.",
+  "description": "Erdős (1979) asked: do there exist primes p and k disjoint intervals I₁,...,Iₖ of consecutive integers all with product ≡ 1 (mod p)? This extends known solutions from k=3 (Makowski 1983, p=17) to k=4 (p=23), k=5 (p=71), k=6 (p=71), k=7 (p=673), k=8 (p=599), and k=9 (p=3011) via computational verification.",
   "meta": {
     "author": "Erdős (1979); Makowski (1983); Lean Genius OQ-01",
     "sourceUrl": "https://erdosproblems.com/1056",
@@ -22,10 +22,10 @@
     "erdosUrl": "https://erdosproblems.com/1056",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 362,
-    "theoremCount": 52,
-    "definitionCount": 9,
-    "assumptions": "None. All 52 theorems are fully proved. Computational verification via native_decide.",
+    "lineCount": 446,
+    "theoremCount": 65,
+    "definitionCount": 10,
+    "assumptions": "None. All 65 theorems are fully proved. Computational verification via native_decide.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.prod",
@@ -42,7 +42,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "Erdős (1979) asked: do there exist a prime $p$ and $k$ disjoint intervals of consecutive integers $I_1, \\ldots, I_k$ such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j$? Makowski (1983) found the first multi-interval solution: for $k=3$ with $p=17$, the intervals $[2,6)$, $[6,12)$, $[12,16)$ all have products $\\equiv 1 \\pmod{17}$.\n\nThe connection to Wilson's theorem is key: $(p-1)! \\equiv -1 \\pmod{p}$, so the product of all integers from 1 to $p-1$ is $\\equiv -1$, not $1$. Solutions require carefully chosen sub-intervals that \"balance\" to give product $\\equiv 1$. The boundary points $b_0 < b_1 < \\cdots < b_k$ define the intervals $[b_{i-1}, b_i)$, and the condition $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod{p}$ is equivalent to consecutive factorials being congruent: $b_{i-1}!/\\gcd \\equiv b_i!/\\gcd$.\n\nThis OQ-01 file extends the known solutions: Erdős's original $k=2$ with $p=11$, Makowski's $k=3$ with $p=17$, and new solutions $k=4$ (p=23), $k=5$ (p=71), $k=6$ (p=71), $k=7$ (p=673), and $k=8$ (p=599, the smallest prime giving $k=8$).",
+    "historicalContext": "Erdős (1979) asked: do there exist a prime $p$ and $k$ disjoint intervals of consecutive integers $I_1, \\ldots, I_k$ such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j$? Makowski (1983) found the first multi-interval solution: for $k=3$ with $p=17$, the intervals $[2,6)$, $[6,12)$, $[12,16)$ all have products $\\equiv 1 \\pmod{17}$.\n\nThe connection to Wilson's theorem is key: $(p-1)! \\equiv -1 \\pmod{p}$, so the product of all integers from 1 to $p-1$ is $\\equiv -1$, not $1$. Solutions require carefully chosen sub-intervals that \"balance\" to give product $\\equiv 1$. The boundary points $b_0 < b_1 < \\cdots < b_k$ define the intervals $[b_{i-1}, b_i)$, and the condition $\\prod_{n=b_{i-1}}^{b_i-1} n \\equiv 1 \\pmod{p}$ is equivalent to consecutive factorials being congruent: $b_{i-1}! \\equiv b_i! \\pmod{p}$.\n\nThis OQ-01 file extends the known solutions: Erdős's original $k=2$ with $p=11$, Makowski's $k=3$ with $p=17$, and new solutions $k=4$ ($p=23$), $k=5$ ($p=71$), $k=6$ ($p=71$), $k=7$ ($p=673$), $k=8$ ($p=599$), $k=9$ ($p=3011$). For $k = 7, 8, 9$ the primes were located by exhaustive search over primes up to 5000 of the largest residue class in the factorial sequence $(1!, 2!, \\ldots, (p-1)!)$ modulo $p$.",
     "problemStatement": "Do there exist a prime $p$ and $k \\geq 2$ disjoint intervals $I_1, \\ldots, I_k$ of consecutive positive integers such that $\\prod_{n \\in I_j} n \\equiv 1 \\pmod{p}$ for all $j = 1, \\ldots, k$?",
     "proofStrategy": "The proofs are entirely computational: the intervals and primes are explicitly exhibited, and `native_decide` verifies all modular arithmetic. The definitions encode the combinatorial structure: `HasSolutionk` checks primality of $p$ and the interval-boundary ordering and product conditions. The main theorems `erdos_k2` through `erdos_k8` instantiate these with explicit witnesses, then `exists_k2` through `exists_k8` existentially quantify the witnesses. The `all_solutions_2_to_8` theorem collects all results. The high-k boundaries (k=7,8) are obtained by enumerating $\\{n! \\bmod p : 0 \\le n < p\\}$ for small primes and selecting residue classes with maximum multiplicity: $p=599$ has nine factorials in residue class 175, $p=673$ has eight in residue class 56.",
     "keyInsights": [

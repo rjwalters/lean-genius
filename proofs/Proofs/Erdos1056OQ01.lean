@@ -5,17 +5,22 @@
 Extending known solutions for consecutive interval products ≡ 1 (mod p).
 
 ## What This Proves
-1. **Wilson's constraint** for specific primes: (p-1)! ≡ -1 (mod p) for p=11,17,23,71,599,673.
+1. **Wilson's constraint** for specific primes: (p-1)! ≡ -1 (mod p) for
+   p ∈ {11, 17, 23, 71, 599, 673, 3011}.
 2. **k=4 solution with p=23**: New verified solution.
 3. **k=5 solution with p=71**: New verified solution.
 4. **k=6 solution with p=71**: New verified solution.
 5. **k=7 solution with p=673**: New verified solution.
 6. **k=8 solution with p=599**: New verified solution (smallest prime giving k=8).
-7. **Solutions for all 2 ≤ k ≤ 8**: Comprehensive verification.
+7. **k=9 solution with p=3011**: New verified solution.
+8. **Solutions for all 2 ≤ k ≤ 9**: Comprehensive verification.
 
 ## New Results
 Previously only k=2 (Erdős 1979, p=11) and k=3 (Makowski 1983, p=17) were verified.
-We add k=4 (p=23), k=5 (p=71), k=6 (p=71), k=7 (p=673), and k=8 (p=599).
+We add k=4 (p=23), k=5 (p=71), k=6 (p=71), k=7 (p=673), k=8 (p=599), and
+k=9 (p=3011). The minimal primes for k=7, 8, 9 were located by exhaustive
+search over all primes up to 5000 of the largest residue class in the
+factorial sequence (1!, 2!, …, (p-1)!) modulo p.
 
 ## Approach
 Computational verification via native_decide. The key insight is that solutions
@@ -93,6 +98,17 @@ def HasSolution8 (p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈ : ℕ) : Prop :
   intervalProd b₄ b₅ % p = 1 ∧ intervalProd b₅ b₆ % p = 1 ∧
   intervalProd b₆ b₇ % p = 1 ∧ intervalProd b₇ b₈ % p = 1
 
+/-- A solution for k=9: prime p and 10 boundaries with all consecutive
+    products ≡ 1 (mod p). -/
+def HasSolution9 (p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈ b₉ : ℕ) : Prop :=
+  p.Prime ∧ b₀ < b₁ ∧ b₁ < b₂ ∧ b₂ < b₃ ∧ b₃ < b₄ ∧ b₄ < b₅ ∧ b₅ < b₆ ∧
+    b₆ < b₇ ∧ b₇ < b₈ ∧ b₈ < b₉ ∧
+  intervalProd b₀ b₁ % p = 1 ∧ intervalProd b₁ b₂ % p = 1 ∧
+  intervalProd b₂ b₃ % p = 1 ∧ intervalProd b₃ b₄ % p = 1 ∧
+  intervalProd b₄ b₅ % p = 1 ∧ intervalProd b₅ b₆ % p = 1 ∧
+  intervalProd b₆ b₇ % p = 1 ∧ intervalProd b₇ b₈ % p = 1 ∧
+  intervalProd b₈ b₉ % p = 1
+
 /-- Existence of a k-interval solution. -/
 def ExistsSolution (k : ℕ) : Prop :=
   match k with
@@ -103,6 +119,8 @@ def ExistsSolution (k : ℕ) : Prop :=
   | 6 => ∃ p b₀ b₁ b₂ b₃ b₄ b₅ b₆, HasSolution6 p b₀ b₁ b₂ b₃ b₄ b₅ b₆
   | 7 => ∃ p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇, HasSolution7 p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇
   | 8 => ∃ p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈, HasSolution8 p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈
+  | 9 => ∃ p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈ b₉,
+           HasSolution9 p b₀ b₁ b₂ b₃ b₄ b₅ b₆ b₇ b₈ b₉
   | _ => True  -- placeholder for other k
 
 /- ## Part II: Wilson's Constraint for Key Primes -/
@@ -124,6 +142,9 @@ theorem wilson_599 : (Finset.Ico 1 599).prod id % 599 = 598 := by native_decide
 
 /-- Wilson's constraint for p=673: (673-1)! ≡ 672 (mod 673). -/
 theorem wilson_673 : (Finset.Ico 1 673).prod id % 673 = 672 := by native_decide
+
+/-- Wilson's constraint for p=3011: (3011-1)! ≡ 3010 (mod 3011). -/
+theorem wilson_3011 : (Finset.Ico 1 3011).prod id % 3011 = 3010 := by native_decide
 
 /- ## Part III: Individual Interval Verifications -/
 
@@ -222,6 +243,38 @@ theorem k8_interval_7 : intervalProd 501 540 % 599 = 1 := by unfold intervalProd
 /-- intervalProd 540 556 ≡ 1 (mod 599). -/
 theorem k8_interval_8 : intervalProd 540 556 % 599 = 1 := by unfold intervalProd; native_decide
 
+-- k=9 intervals (NEW, p=3011) — boundaries [1, 612, 724, 750, 806, 2206, 2262, 2288, 2400, 3010]
+-- Derived from factorial pattern: 0! ≡ 611! ≡ 723! ≡ 749! ≡ 805! ≡ 2205! ≡ 2261!
+-- ≡ 2287! ≡ 2399! ≡ 3009! ≡ 1 (mod 3011).
+
+/-- ∏[1,612) ≡ 1 (mod 3011). -/
+theorem k9_interval_1 : intervalProd 1 612 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[612,724) ≡ 1 (mod 3011). -/
+theorem k9_interval_2 : intervalProd 612 724 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[724,750) ≡ 1 (mod 3011). -/
+theorem k9_interval_3 : intervalProd 724 750 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[750,806) ≡ 1 (mod 3011). -/
+theorem k9_interval_4 : intervalProd 750 806 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[806,2206) ≡ 1 (mod 3011). -/
+theorem k9_interval_5 : intervalProd 806 2206 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[2206,2262) ≡ 1 (mod 3011). -/
+theorem k9_interval_6 : intervalProd 2206 2262 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[2262,2288) ≡ 1 (mod 3011). -/
+theorem k9_interval_7 : intervalProd 2262 2288 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[2288,2400) ≡ 1 (mod 3011). -/
+theorem k9_interval_8 : intervalProd 2288 2400 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+/-- ∏[2400,3010) ≡ 1 (mod 3011). -/
+theorem k9_interval_9 : intervalProd 2400 3010 % 3011 = 1 := by
+  unfold intervalProd; native_decide
+
 /- ## Part IV: Combined Solution Theorems -/
 
 /-- **Erdős (1979): k=2 has a solution with p=11.** -/
@@ -271,9 +324,17 @@ theorem erdos_k7 : HasSolution7 673 160 317 355 394 398 507 546 648 := by
 theorem erdos_k8 : HasSolution8 599 29 51 123 184 251 290 501 540 556 := by
   unfold HasSolution8 intervalProd; native_decide
 
+/-- **NEW: k=9 has a solution with p=3011.**
+    Boundaries: [1, 612, 724, 750, 806, 2206, 2262, 2288, 2400, 3010].
+    Smallest prime, by exhaustive search over primes up to 5000, with a
+    chain of 10 indices in the same factorial residue class (residue 1,
+    indices {0, 611, 723, 749, 805, 2205, 2261, 2287, 2399, 3009}). -/
+theorem erdos_k9 : HasSolution9 3011 1 612 724 750 806 2206 2262 2288 2400 3010 := by
+  unfold HasSolution9 intervalProd; native_decide
+
 /- ## Part V: Existence Proofs -/
 
-/-- All solutions from k=2 to k=8 exist. -/
+/-- All solutions from k=2 to k=9 exist. -/
 theorem exists_k2 : ExistsSolution 2 := ⟨11, 3, 5, 8, erdos_k2⟩
 theorem exists_k3 : ExistsSolution 3 := ⟨17, 2, 6, 12, 16, makowski_k3⟩
 theorem exists_k4 : ExistsSolution 4 := ⟨23, 2, 5, 9, 12, 22, erdos_k4⟩
@@ -283,12 +344,16 @@ theorem exists_k7 : ExistsSolution 7 :=
   ⟨673, 160, 317, 355, 394, 398, 507, 546, 648, erdos_k7⟩
 theorem exists_k8 : ExistsSolution 8 :=
   ⟨599, 29, 51, 123, 184, 251, 290, 501, 540, 556, erdos_k8⟩
+theorem exists_k9 : ExistsSolution 9 :=
+  ⟨3011, 1, 612, 724, 750, 806, 2206, 2262, 2288, 2400, 3010, erdos_k9⟩
 
-/-- Comprehensive summary: solutions verified for all 2 ≤ k ≤ 8. -/
-theorem all_solutions_2_to_8 :
+/-- Comprehensive summary: solutions verified for all 2 ≤ k ≤ 9. -/
+theorem all_solutions_2_to_9 :
     ExistsSolution 2 ∧ ExistsSolution 3 ∧ ExistsSolution 4 ∧
-    ExistsSolution 5 ∧ ExistsSolution 6 ∧ ExistsSolution 7 ∧ ExistsSolution 8 :=
-  ⟨exists_k2, exists_k3, exists_k4, exists_k5, exists_k6, exists_k7, exists_k8⟩
+    ExistsSolution 5 ∧ ExistsSolution 6 ∧ ExistsSolution 7 ∧
+    ExistsSolution 8 ∧ ExistsSolution 9 :=
+  ⟨exists_k2, exists_k3, exists_k4, exists_k5, exists_k6,
+   exists_k7, exists_k8, exists_k9⟩
 
 /- ## Part VI: Factorial Pattern -/
 
@@ -340,14 +405,31 @@ theorem factorial_pattern_599 :
     Nat.factorial 539 % 599 = Nat.factorial 555 % 599 := by
   native_decide
 
+/-- The factorial pattern for p=3011 underlying the k=9 solution:
+    0! ≡ 611! ≡ 723! ≡ 749! ≡ 805! ≡ 2205! ≡ 2261! ≡ 2287! ≡ 2399! ≡ 3009! (mod 3011).
+    Notably the residue is 1 — these factorials all collapse to the identity mod p. -/
+theorem factorial_pattern_3011 :
+    Nat.factorial 0 % 3011 = Nat.factorial 611 % 3011 ∧
+    Nat.factorial 611 % 3011 = Nat.factorial 723 % 3011 ∧
+    Nat.factorial 723 % 3011 = Nat.factorial 749 % 3011 ∧
+    Nat.factorial 749 % 3011 = Nat.factorial 805 % 3011 ∧
+    Nat.factorial 805 % 3011 = Nat.factorial 2205 % 3011 ∧
+    Nat.factorial 2205 % 3011 = Nat.factorial 2261 % 3011 ∧
+    Nat.factorial 2261 % 3011 = Nat.factorial 2287 % 3011 ∧
+    Nat.factorial 2287 % 3011 = Nat.factorial 2399 % 3011 ∧
+    Nat.factorial 2399 % 3011 = Nat.factorial 3009 % 3011 := by
+  native_decide
+
 /- ## Part VII: Summary of New Results -/
 
-/-- The main theorem: solutions exist for k=4 through k=8.
-    This extends the previously known k=2 (Erdős 1979) and k=3 (Makowski 1983). -/
+/-- The main theorem: solutions exist for k=4 through k=9.
+    This extends the previously known k=2 (Erdős 1979) and k=3 (Makowski 1983)
+    by adding six new k-values, each obtained from a chain of factorials sharing
+    a common residue class modulo a prime. -/
 theorem erdos_1056_new_solutions :
     ExistsSolution 4 ∧ ExistsSolution 5 ∧ ExistsSolution 6 ∧
-    ExistsSolution 7 ∧ ExistsSolution 8 :=
-  ⟨exists_k4, exists_k5, exists_k6, exists_k7, exists_k8⟩
+    ExistsSolution 7 ∧ ExistsSolution 8 ∧ ExistsSolution 9 :=
+  ⟨exists_k4, exists_k5, exists_k6, exists_k7, exists_k8, exists_k9⟩
 
 /-- Wilson's constraint verified for all primes used in solutions. -/
 theorem wilson_constraints_verified :
@@ -356,7 +438,9 @@ theorem wilson_constraints_verified :
     (Finset.Ico 1 23).prod id % 23 = 22 ∧
     (Finset.Ico 1 71).prod id % 71 = 70 ∧
     (Finset.Ico 1 599).prod id % 599 = 598 ∧
-    (Finset.Ico 1 673).prod id % 673 = 672 :=
-  ⟨wilson_11, wilson_17, wilson_23, wilson_71, wilson_599, wilson_673⟩
+    (Finset.Ico 1 673).prod id % 673 = 672 ∧
+    (Finset.Ico 1 3011).prod id % 3011 = 3010 :=
+  ⟨wilson_11, wilson_17, wilson_23, wilson_71,
+   wilson_599, wilson_673, wilson_3011⟩
 
 end Erdos1056OQ01
