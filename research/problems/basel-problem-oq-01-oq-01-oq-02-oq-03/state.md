@@ -4,11 +4,47 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-09 (Iteration 14, researcher-12)
-**Iteration**: 14
+**Last Updated**: 2026-05-09 (Iteration 15, researcher-10)
+**Iteration**: 15
 
 ## Current Focus
-Iteration 14 (2026-05-09, this PR): **sharpened prime-counting bound
+Iteration 15 (2026-05-09, this PR): **primorial → lcmRange divisibility
+bridge**. Adds two new theorems wiring Mathlib's
+`NumberTheory.Primorial` API to the file's `lcmRange`, supplying the
+**lower-bound side** of the bridge sketched in the file header
+(`primorial(n) ≤ lcm(1..n) ≤ n · primorial(n)`):
+
+* `primorial_dvd_lcmRange (n : ℕ) : primorial n ∣ lcmRange n` —
+  direct from Iter 9's Chebyshev decomposition
+  `lcmRange n = ∏ p ∈ primes ≤ n, p ^ Nat.log p n`. Each prime
+  `p ≤ n` has `Nat.log p n ≥ 1` (via `Nat.log_pos`), so each factor
+  `p` divides `p ^ Nat.log p n`, and the divisibility lifts pointwise
+  via `Finset.prod_dvd_prod_of_dvd`.
+* `primorial_le_lcmRange (n : ℕ) : primorial n ≤ lcmRange n` —
+  one-line corollary via `Nat.le_of_dvd` + `lcmRange_pos` (with the
+  `n = 0` boundary case `primorial 0 = lcmRange 0 = 1` dispatched by
+  `simp`).
+
+Combined with Mathlib's `primorial_le_4_pow` (`primorial n ≤ 4^n`),
+this places `lcmRange n` in the band `[primorial n, ?]` whose upper
+edge is the target of Hanson's `≤ 3^n`. Future iterations will
+attack the upper-bound side `lcmRange ≤ n · primorial`, which
+requires a Chebyshev-type bound on small primes: each prime
+`p ≤ √n` contributes a factor `p^(⌊log_p n⌋ - 1) ≤ √n` beyond its
+primorial contribution, and bounding the total contribution of
+small primes by `n` is the missing piece for the `4^n` bound.
+
+Build pending; proof bodies use only Mathlib API already exercised
+by Iters 7-14 (`Finset.prod_dvd_prod_of_dvd`, `Nat.log_pos`,
+`dvd_pow_self`, `Nat.le_of_dvd`, `lcmRange_pos`,
+`lcmRange_eq_prod_prime_powers`). New import:
+`Mathlib.NumberTheory.Primorial`. File 657 → 705 lines (+48 in Lean
++ docstrings), theorems 43 → 45 (+2), definitions/sorries/axiomCount
+unchanged.
+
+----
+
+Iteration 14 (PR #17513, merged): **sharpened prime-counting bound
 `π(n) ≤ n - 1` and the resulting chain
 `lcmRange n ≤ n^π(n) ≤ n^(n-1)`**. Three new theorems sharpen Iter 13
 by exploiting that *both* `0` and `1` are non-prime (Iter 13 only
