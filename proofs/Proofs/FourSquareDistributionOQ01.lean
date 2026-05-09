@@ -1771,4 +1771,133 @@ example : r4Count 6 = jacobiR4 6 :=
     (fun _ _ => rfl)
     (by decide : (0 : ℕ) < 6)
 
+-- =====================================================================
+-- PART 24: σ*-side images of S11.alt's elementary atomic axioms (S15)
+--
+-- PR #17388's S11.alt decomposes `jacobi_r4_formula` (Part 5) into three
+-- elementary `r4Count` facts (Hodd, HtwoPow, Hmul). Two of those three —
+-- (Hodd) `r4Count(n) = 8·σ(n)` for odd n, and (HtwoPow) `r4Count(2^k) = 24`
+-- for k ≥ 1 — have AXIOM-FREE σ*-side images on `jacobiR4 = 8·σ*`:
+--
+--   `jacobiR4_eq_eight_sigmaOne_of_odd`: for odd n,
+--      `jacobiR4 n = 8 · σ(n)`     (via `sigmaStar_eq_sigmaOne_of_odd`,
+--                                   Part 6)
+--   `jacobiR4_two_pow`:              for k ≥ 1,
+--      `jacobiR4 (2^k) = 24`        (via `sigmaStar_two_pow`, Part 13)
+--
+-- These are the σ*-side counterparts that hold UNCONDITIONALLY (no
+-- modular-form bridge needed). The corresponding `r4Count`-side facts
+-- (which would be the actual (Hodd) and (HtwoPow) of S11.alt) follow
+-- from the open axiom `jacobi_r4_formula` and so remain axiomatic on
+-- this side; they are recorded here as direct consequences for symmetry
+-- with the σ*-side identities and as named entry points for downstream
+-- chains. Closing (Hodd) or (HtwoPow) axiom-free on the `r4Count` side
+-- (e.g. via the bijection arguments sketched in PR #17388's docstring
+-- and Mordell 1917) would discharge the open axiom on the corresponding
+-- subdomain; the multiplicativity hypothesis (Hmul) of S11.alt is the
+-- third leg and is already named axiomatically as `r4Count_mul_of_coprime`
+-- (Part 20).
+--
+-- This Part is COMPLEMENTARY to Part 23 (S14, modular-form route): Part 23
+-- closes the open axiom from a SINGLE-FUNCTION abstraction `QC : ℕ → ℕ`
+-- representing the q-coefficient extractor; Part 24 names the two
+-- ELEMENTARY ARITHMETIC facts that S11.alt's three-hypothesis route
+-- predicts on the σ*-side. Both Parts 23 and 24 leave the open axiom
+-- in place; the value is in capturing the named decomposition pieces
+-- so that future Mathlib-side or bijection-side advances slot in
+-- without re-proof.
+-- =====================================================================
+
+/-- **σ*-side image of (Hodd).** For odd `n`, `jacobiR4 n = 8 · σ(n)`.
+
+    Axiom-free: definition of `jacobiR4` plus
+    `sigmaStar_eq_sigmaOne_of_odd` (Part 6). Generalises Part 21's
+    `jacobiR4_odd_prime` (odd PRIME, k = 1) and Part 22's
+    `jacobiR4_prime_pow_of_odd_prime` (odd prime POWER) to ALL odd `n`,
+    including odd composites like `n = 15 = 3 · 5`. The hypothesis
+    `0 < n` is not required: `n = 0` gives `jacobiR4 0 = 0 = 8 · 0` and
+    `0 < n → ¬ 2 ∣ n` is the relevant case for the Jacobi-1834 closure;
+    we keep the lemma in the uniform `¬ 2 ∣ n` form since
+    `0 < n` is implied by `¬ 2 ∣ n` only via excluded middle on
+    `n = 0` separately. -/
+theorem jacobiR4_eq_eight_sigmaOne_of_odd {n : ℕ} (hn : ¬ 2 ∣ n) :
+    jacobiR4 n = 8 * sigmaOne n := by
+  unfold jacobiR4
+  rw [sigmaStar_eq_sigmaOne_of_odd hn]
+
+/-- **r4Count-side analogue of (Hodd) (axiomatic).** For odd `n > 0`,
+    `r4Count n = 8 · σ(n)`.
+
+    Chains `jacobi_r4_formula` (Part 5) with
+    `jacobiR4_eq_eight_sigmaOne_of_odd` (this Part). This is exactly the
+    (Hodd) hypothesis of PR #17388's S11.alt decomposition; here it is
+    derived FROM the open axiom rather than assumed. An axiom-free proof
+    of this lemma — e.g. via Mordell's 1917 bijection or a direct
+    Lagrange-identity argument on odd-modulus 4-tuples — would discharge
+    the open conjecture on the odd subdomain. -/
+theorem r4Count_eq_eight_sigmaOne_of_odd {n : ℕ}
+    (hpos : 0 < n) (hn : ¬ 2 ∣ n) :
+    r4Count n = 8 * sigmaOne n := by
+  rw [jacobi_r4_formula n hpos]
+  exact jacobiR4_eq_eight_sigmaOne_of_odd hn
+
+/-- **σ*-side image of (HtwoPow).** For `k ≥ 1`, `jacobiR4 (2^k) = 24`.
+
+    Axiom-free: definition of `jacobiR4` plus `sigmaStar_two_pow`
+    (Part 13). The constant `24 = 8 · 3` reflects `σ*(2^k) = 3` for any
+    `k ≥ 1`. This is the pure-2-power specialisation of Part 15's
+    `jacobiR4_two_pow_mul_odd` at `m = 1` (since `σ(1) = 1`), but
+    presented directly without the multiplicative coupling. -/
+theorem jacobiR4_two_pow {k : ℕ} (hk : 1 ≤ k) : jacobiR4 (2 ^ k) = 24 := by
+  unfold jacobiR4
+  rw [sigmaStar_two_pow hk]
+
+/-- **r4Count-side analogue of (HtwoPow) (axiomatic).** For `k ≥ 1`,
+    `r4Count (2^k) = 24`.
+
+    Chains `jacobi_r4_formula` (Part 5) with `jacobiR4_two_pow`
+    (this Part). This is exactly the (HtwoPow) hypothesis of PR #17388's
+    S11.alt decomposition; here it is derived FROM the open axiom. The
+    statement `r₄(2^k) = 24` for `k ≥ 1` is provable axiom-free via a
+    finite induction + bijection argument on parity-balanced 4-tuples,
+    independent of the modular-form route. -/
+theorem r4Count_two_pow {k : ℕ} (hk : 1 ≤ k) : r4Count (2 ^ k) = 24 := by
+  have h2 : 0 < 2 ^ k := pow_pos (by decide : (0 : ℕ) < 2) k
+  rw [jacobi_r4_formula _ h2]
+  exact jacobiR4_two_pow hk
+
+-- ---------------------------------------------------------------------
+-- Cross-validation against Part 1's brute-force values (`r4Count_n`):
+-- the σ*-side closed form recovers `r4Count n = 8 · σ(n)` for small odd
+-- n and `r4Count(2^k) = 24` for small k.
+-- ---------------------------------------------------------------------
+
+/-- jacobiR4 1 = 8 · σ(1) = 8 · 1 = 8 (matches Part 1's `r4Count_1`
+    via the open axiom). -/
+example : jacobiR4 1 = 8 * sigmaOne 1 :=
+  jacobiR4_eq_eight_sigmaOne_of_odd (by decide)
+
+/-- jacobiR4 3 = 8 · σ(3) = 8 · (1 + 3) = 32. Matches Part 1's
+    `jacobiR4_3` numerical example. -/
+example : jacobiR4 3 = 8 * sigmaOne 3 :=
+  jacobiR4_eq_eight_sigmaOne_of_odd (by decide)
+
+/-- jacobiR4 15 = 8 · σ(15) = 8 · (1 + 3 + 5 + 15) = 8 · 24 = 192. The
+    first odd COMPOSITE value beyond Part 21/22's prime-power coverage:
+    15 = 3 · 5 is coprime, with `sigmaStar 15 = sigmaOne 15` since 15
+    is odd. -/
+example : jacobiR4 15 = 8 * sigmaOne 15 :=
+  jacobiR4_eq_eight_sigmaOne_of_odd (by decide)
+
+/-- jacobiR4 (2^1) = 24. -/
+example : jacobiR4 (2 ^ 1) = 24 := jacobiR4_two_pow (by decide)
+
+/-- jacobiR4 (2^3) = 24. The σ*-side identity `σ*(2^k) = 3` collapses
+    the formula at every k ≥ 1 to a SINGLE constant 24, explaining the
+    "pure-2-power plateau" of `jacobiR4` on `{2, 4, 8, 16, …}`. -/
+example : jacobiR4 (2 ^ 3) = 24 := jacobiR4_two_pow (by decide)
+
+/-- r4Count (2^2) = 24, axiomatic via Jacobi's formula. -/
+example : r4Count (2 ^ 2) = 24 := r4Count_two_pow (by decide)
+
 end FourSquareDistributionOQ01

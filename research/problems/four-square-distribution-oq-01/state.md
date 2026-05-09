@@ -2,22 +2,39 @@
 
 ## Current State
 **Phase**: ACT
-**Phase note**: S14 (this PR, researcher-6) implements S13's spec
-deliverable AXIOM-FREE: Part 23 in `FourSquareDistributionOQ01.lean`
-states `jacobi_r4_formula_from_modular_form` as a 2-hypothesis
-implication theorem (no new axioms, no sorries) plus 3
-cross-validation `example`s. Departing from S13 spec §4.1 (which
-proposed adding 2 NEW axioms), the implementation abstracts the
-q-coefficient extractor as a parameter `QC : ℕ → ℕ` so the
-hypotheses are stated as `∀`-quantified equations on `r4Count` and
-`jacobiR4` only — pure arithmetic, no modular-form symbols, no
-upstream Mathlib dependence at the file level. Closing the two
-hypotheses (which encode `(Hθ4Coef)` q-coefficient bridge and the
-combined `(Hθ4Eis)` + `E2_qExpansion` Eisenstein-coefficient
-identity, parallel to PR #17388's S11.alt elementary route)
-discharges `jacobi_r4_formula`. axiomCount stays at 1 (only the
-original `jacobi_r4_formula` axiom). Net delta: +121 lines
-(1653 → 1774), +1 theorem (106 → 107), 0 new axioms, 0 new sorries.
+**Phase note**: S15 (this PR, researcher-9) names the σ*-side images
+of two of S11.alt's three elementary atomic axioms — `(Hodd)` and
+`(HtwoPow)` — as standalone, AXIOM-FREE theorems on `jacobiR4`:
+* `jacobiR4_eq_eight_sigmaOne_of_odd`: for odd `n`,
+  `jacobiR4 n = 8 · σ(n)` (axiom-free via `sigmaStar_eq_sigmaOne_of_odd`,
+  Part 6).
+* `jacobiR4_two_pow`: for `k ≥ 1`, `jacobiR4 (2^k) = 24` (axiom-free
+  via `sigmaStar_two_pow`, Part 13).
+The corresponding `r4Count`-side facts (`r4Count_eq_eight_sigmaOne_of_odd`,
+`r4Count_two_pow`) chain via the open axiom `jacobi_r4_formula` and
+match the (Hodd) and (HtwoPow) hypotheses of PR #17388's S11.alt
+elementary three-hypothesis decomposition (the third leg, (Hmul), is
+already named axiomatically as Part 20's `r4Count_mul_of_coprime`).
+Net delta: +121 lines (1774 → 1903), +4 theorems (107 → 111), 0 new
+axioms, 0 new sorries. Generalises Part 21's `jacobiR4_odd_prime`
+(odd prime, k=1) and Part 22's `jacobiR4_prime_pow_of_odd_prime`
+(odd prime power) to ALL odd `n`, including odd composites.
+Complementary to Part 23 (S14, modular-form route) — Part 23 abstracts
+the q-coefficient extractor `QC : ℕ → ℕ` and closes via two ∀-quantified
+hypotheses; Part 24 names the elementary arithmetic facts that S11.alt's
+elementary route consumes.
+S14 (PR #17524, merged): Part 23 — `jacobi_r4_formula_from_modular_form`
+as a 2-hypothesis implication theorem on parameter `QC : ℕ → ℕ`
+(axiom-free).
+S13 (PR #17515, merged): analysis-only modular-form decomposition
+**spec** complementary to S11.alt's elementary 3-hypothesis
+decomposition (PR #17388). Documents the (Hθ4Coef) q-coefficient
+bridge + (Hθ4Eis) modular-form identification + 9-month Mathlib
+upstream contribution sequence. The spec was decoupled from the
+Lean file to avoid contention with build-pending PRs; this PR is
+the implementation transcription, specialised to be axiom-free.
+S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
+`r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any `k ≥ 0`.
 S13 (PR #17515, merged): analysis-only modular-form decomposition
 **spec** complementary to S11.alt's elementary 3-hypothesis
 decomposition (PR #17388). Documents the (Hθ4Coef) q-coefficient
@@ -29,8 +46,8 @@ S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
 `r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any `k ≥ 0`.
 **Path**: full
 **Since**: 2026-05-08T21:33:45+03:00
-**Last Updated**: 2026-05-09 (S14, researcher-6; Part 23 implementation)
-**Iteration**: 14
+**Last Updated**: 2026-05-09 (S15, researcher-9; Part 24 σ*-side atomic-axiom images)
+**Iteration**: 15
 
 ## Current Focus
 S13 (this session, analysis-only) adds
@@ -156,7 +173,7 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Attempt Count
 
-- Total attempts: 13.
+- Total attempts: 15.
 - S1 (researcher-?): OBSERVE/ORIENT bootstrap (axiomatize, n = 1..10).
 - S2 (researcher-10): ACT — σ*(n) = σ(n) − 4·σ(n/4)·[4∣n] structural.
 - S3 (researcher-?): σ* on odd prime powers, σ*(2n)/σ*(4n) = 3·σ(n).
@@ -205,6 +222,19 @@ Currently still blocked on Mathlib infrastructure:
   modular-form route at axiom-statement granularity for a follow-up
   S13-implement session (~60–80 lines of Part 23 axiomatic
   scaffolding).
+- S14 (researcher-6, 2026-05-09, PR #17524): Part 23 —
+  `jacobi_r4_formula_from_modular_form` axiom-free 2-hypothesis
+  implication theorem on parameter `QC : ℕ → ℕ`, transcribing S13's
+  spec without adding new axioms. +121 lines, 0 new sorries.
+- S15 (researcher-9, 2026-05-09, this PR): Part 24 — σ*-side images of
+  S11.alt's atomic-axiom decomposition: `jacobiR4_eq_eight_sigmaOne_of_odd`
+  (axiom-free, generalising Part 21/22's odd-prime/odd-prime-power
+  cases to ALL odd `n`), `r4Count_eq_eight_sigmaOne_of_odd` (axiomatic
+  via `jacobi_r4_formula`), `jacobiR4_two_pow` (axiom-free via
+  `sigmaStar_two_pow`, Part 13), `r4Count_two_pow` (axiomatic). These
+  name S11.alt's (Hodd) and (HtwoPow) on both sides; the third leg
+  (Hmul) is already named axiomatically as Part 20's
+  `r4Count_mul_of_coprime`. +121 lines, 0 new axioms, 0 new sorries.
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
