@@ -27,7 +27,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "The Anning–Erdős theorem (1945) is a fundamental result in discrete geometry: any infinite set of points in the plane with all pairwise distances being integers must be collinear. Equivalently, for any bound d, every non-collinear planar integer-distance set with all distances ≤ d is finite. The proof rests on two key observations: (1) two distinct circles intersect in at most 2 points, and (2) for fixed anchor points P₁, P₂, any other point Q in the set is determined by the pair (dist(Q,P₁), dist(Q,P₂)) up to a 2-fold ambiguity. Since there are at most d² distance pairs, the set has at most 2+2d² points.",
+    "historicalContext": "The Anning–Erdős theorem (1945) is a fundamental result in discrete geometry: any infinite set of points in the plane with all pairwise distances being integers must be collinear. Equivalently, for any bound d, every non-collinear planar integer-distance set with all distances ≤ d is finite. The proof rests on two key observations: (1) two distinct circles intersect in at most 2 points, and (2) for fixed anchor points P₁, P₂, any other point Q in the set is determined by the pair (dist(Q,P₁), dist(Q,P₂)) up to a 2-fold ambiguity. Since there are at most d² distance pairs, the set has at most 2+2d² points.\n\nNorman Anning and Paul Erdős published the result as a two-page note in the *Bulletin of the AMS* (Vol. 51, 1945, pp. 598–600), titled simply *Integral distances*. The note proves both the finiteness claim and constructs explicit large integer-distance sets on lines and circles to show non-triviality. Erdős revisited the problem repeatedly in subsequent decades: in particular, Erdős (1958) strengthened the result by showing that an integer-distance set with all distances rational must be collinear unless it lies on a circle (the *rational distance problem*). The status of *bounded* non-collinear integer-distance sets — Erdős asked: how large can such a set be? — remains an active topic. **Modern bounds**: Solymosi–de Zeeuw (2008) proved that any non-collinear $n$-point integer-distance set has diameter at least $\\Omega(n^{4/3})$ (via the Szemerédi–Trotter incidence theorem); Greenfeld–Iliopoulou–Peluse (2024) recently improved the lower bound. The 2d²+2 bound formalized here is the *easy* direction known since 1945; the conjectured tight bound is exponentially smaller, $\\sim c \\cdot d$ for constants $c$ that remain unknown in closed form.",
     "problemStatement": "For any d > 0, every non-collinear planar point set with all pairwise integer distances bounded by d has at most 2d² + 2 points.",
     "text": "Proves the Anning–Erdős finiteness theorem completely: every non-collinear planar set with all pairwise integer distances ≤ d has at most 2d²+2 points. Zero sorries, zero axioms.",
     "proofStrategy": "The proof proceeds in three stages: (1) **Algebraic root bound** — `quadratic_at_most_two_roots` proves that a nonzero quadratic polynomial has at most 2 roots using only ring arithmetic (via `linear_combination`), avoiding the Polynomial API entirely. (2) **Circle intersection** — `three_pts_two_circles_contra` proves that three distinct points cannot simultaneously lie on two circles with distinct centers. The proof subtracts the two circle equations to obtain the radical axis (a linear equation), then splits on whether the center-difference dx is zero or not: in the dx=0 case, all points share the same y-coordinate and a quadratic in x applies; in the dx≠0 case, x is expressed as a linear function of y via the radical axis, and substituting into one circle equation yields a quadratic in y. In both cases, three distinct roots of a degree-2 polynomial give a contradiction via `quadratic_at_most_two_roots`. (3) **Fiber counting** — `int_dist_card_le` covers S∖{P₁,P₂} by distance-pair fibers indexed by (k₁,k₂) ∈ {1..d}², shows each fiber has ≤ 2 elements via `three_pts_two_circles_contra`, and concludes |S| ≤ 2d²+2 via `Finset.card_biUnion_le`.",
@@ -41,7 +41,9 @@
       "The `linear_combination` tactic cleanly handles the polynomial algebra: proving that substituting the radical axis expression into a circle equation yields a quadratic, and proving the quadratic root bound, both reduce to ring identities that `linear_combination` dispatches instantly.",
       "The radical axis approach unifies the two cases of the circle intersection proof: subtracting circle equations always gives a linear constraint, regardless of whether dx or dy is zero. The case split on dx=0 vs dx≠0 then determines whether x or y can be used as the free variable.",
       "Three distinct points on a degree-2 algebraic curve is impossible over ℝ — this is the `quadratic_at_most_two_roots` lemma, which needs only basic ring arithmetic and the fact that a nonzero polynomial has no repeated factor (proven via the `mul_eq_zero` split on the difference-of-squares factorization).",
-      "The fiber counting proof uses `Finset.card_biUnion_le` to bound |S∖{P₁,P₂}| ≤ 2d² by covering with distance-pair fibers, each of size ≤ 2 by `three_pts_two_circles_contra`. Together with |{P₁,P₂}| = 2, this gives |S| ≤ 2d²+2. The key step uses `Finset.two_lt_card` to extract three witnesses when a fiber has more than 2 elements, then derives a contradiction via `three_pts_two_circles_contra`."
+      "The fiber counting proof uses `Finset.card_biUnion_le` to bound |S∖{P₁,P₂}| ≤ 2d² by covering with distance-pair fibers, each of size ≤ 2 by `three_pts_two_circles_contra`. Together with |{P₁,P₂}| = 2, this gives |S| ≤ 2d²+2. The key step uses `Finset.two_lt_card` to extract three witnesses when a fiber has more than 2 elements, then derives a contradiction via `three_pts_two_circles_contra`.",
+      "**The 2d² bound is exponentially loose, but suffices for finiteness**: Solymosi–de Zeeuw (2008) and follow-ups show that the *true* maximum size of a non-collinear integer-distance set with diameter $\\le d$ is conjecturally $O(d / \\log d)$ — exponentially smaller than $2d^2 + 2$. The gap between $O(d)$ and $O(d^2)$ is one of the central open problems in combinatorial geometry. **However, for the *finiteness* question this proof addresses, any polynomial bound suffices**: Anning–Erdős just need 'finite vs. infinite'. The lossy fiber-counting argument trades sharpness for proof simplicity — the slick constant-bound-per-fiber argument is what makes the proof short, while the modern tight bounds need Szemerédi–Trotter or worse. This is a pedagogical lesson: when the question is qualitative ('finite?'), the cheapest quantitative bound is best — the formalization here is faithful to the 1945 paper's elegance.",
+      "**`linear_combination` replaces a paragraph of high-school algebra**: The substitution-into-circle-equation step in the dx≠0 case (lines 130–160) would be a half-page of expand-collect-simplify in a textbook proof, easily error-prone. In Lean, `linear_combination` dispatches it instantly given the right linear hint, because the equation $A y^2 + B y + C = 0$ is a *ring identity* in the variables $y, c_{1x}, c_{1y}, c_{2x}, c_{2y}, r_1, r_2$. The tactic's witness is the linear combination of the radical-axis equation and the circle equation that produces the quadratic. This replacement of human algebra with `ring`-style tactics is the formalization's main pedagogical advance over the 1945 paper: the steps a human would *check* with paper algebra are now *certified* in seconds by Lean."
     ]
   },
   "sections": [
@@ -113,6 +115,27 @@
       "title": "Integral distances",
       "year": "1945",
       "venue": "Bulletin of the American Mathematical Society 51(8):598–600"
+    },
+    {
+      "authors": "Erdős, P.",
+      "title": "On sets of distances of n points",
+      "year": "1946",
+      "venue": "American Mathematical Monthly 53:248–250",
+      "description": "Companion paper to Anning–Erdős, posing several still-open distance set problems"
+    },
+    {
+      "authors": "Solymosi, J. and de Zeeuw, F.",
+      "title": "On a question of Erdős and Ulam",
+      "year": "2010",
+      "venue": "Discrete & Computational Geometry 43(2):393–401",
+      "description": "Proves diameter Ω(n^{4/3}) for non-collinear n-point integer distance sets via Szemerédi–Trotter"
+    },
+    {
+      "authors": "Greenfeld, R., Iliopoulou, M. and Peluse, S.",
+      "title": "On integer distance sets",
+      "year": "2024",
+      "venue": "arXiv:2401.10821",
+      "description": "Recent strengthening of Solymosi–de Zeeuw bounds; current state of the art"
     }
   ],
   "leanFile": {
