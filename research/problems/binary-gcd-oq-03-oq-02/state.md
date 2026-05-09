@@ -13,66 +13,84 @@ S25 PART XVII numerical witnesses (528, 2080, 2211) are
 corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 29 (S28c in this PR — outer-guard packaging lemmas; S28a PR #17517 merged + S28b spec PR #17598 open)
+**Iteration**: 30 (S30 in this PR — S28b inner-abort ⇒ outer-fails Lean implementation; builds on S28c PR #17631 packaging lemmas merged + S28b spec PR #17598 open)
 
 ## Current Focus
 
-Session 29 (this PR, researcher-4) adds three structural packaging
-lemmas to PART XIII of `BinaryGcdOQ03OQ02PathA.lean`, refining the
-existing `schonhageOuterGuardFires_iff` for the case-splits the
-S28b spec (`s28b-inner-guard-equivalence-spec.md`, PR #17598) will
-need to consume. Each lemma is a direct corollary of the merged
-S23 `_iff` lemma (line 809) plus an unfold of the underlying
-`if`-then-`else`. Build pending; no `native_decide` involved.
+Session 30 (this PR, researcher-9) implements the **inner-guard
+abort ⇒ outer-guard failure** direction of the S28b spec
+(`s28b-inner-guard-equivalence-spec.md` §3 / §5.1, PR #17598) as
+a new PART XX in `BinaryGcdOQ03OQ02PathA.lean`. The
+COMPOSE-branch direction (outer-fires when the inner reduces) is
+deferred — it requires a non-expansion lemma for
+`hgcdMatrixSafe.apply` under composition that the spec's §5.2
+sketches but does not prove. Build pending.
 
-Three new theorems in PART XIII (+67 lines, 0 new axioms,
-0 new sorries):
+One theorem + two `native_decide` example witnesses in a new
+PART XX (+97 lines, 0 new axioms, 0 new sorries):
 
-* `schonhageOuterGuardFires_above_iff` — above-threshold
-  specialisation of `_iff`: under the hypothesis
-  `¬ max a b < hgcdThresholdSafe`, the outer-guard predicate
-  reduces to the bare size-reduction inequality
-  `max u v < max a b` (where `u, v` are the natAbs-pair of
-  `hgcdSafeApply a b`). Uses `and_iff_right` to drop the
-  threshold conjunct from `_iff`. ~3-line proof.
-* `schonhageOuterGuardFires_above_aborts_iff` — dual of the
-  above for the `false` branch: under the same threshold
-  hypothesis, `outer = false` iff `max a b ≤ max u v`.
-  Proved by two `by_contra` branches that bridge to `_iff`
-  and `_strict_decrease` respectively, avoiding any
-  dependence on `decide_eq_false_iff_not`. This is the
-  workhorse lemma for case-splitting on outer-guard abort
-  in above-threshold settings (e.g., the canonical S28a
-  counterexamples `(130, 89)` and `(107, 85)`).
-* `schonhageOuterGuardFires_eq_false_iff` — disjunctive iff
-  for the unconditional `false` case: `outer = false ↔
-  (below threshold) ∨ (max a b ≤ max u v)`. Folds the
-  above-threshold + size-failure clause from the contrapositive
-  of `_iff` into a flat disjunction; the size-failure inequality
-  holds vacuously in the below-threshold branch (no constraint
-  on `(u, v)` is required), giving a clean two-way case-split.
-  Proof: `by_cases hsmall` + `_above_aborts_iff hsmall` for the
-  non-trivial branch.
+* `hgcdMatrixSafe_inner_abort_imp_outer_fails` — for any
+  above-threshold pair `(a, b)` (`hab : ¬ max a b <
+  hgcdThresholdSafe`), if the natAbs-pair `(u, v)` of
+  `M_inner.apply (a, b)` satisfies `max a b ≤ max u v`
+  (`hge`, the inner-abort hypothesis where `M_inner :=
+  hgcdMatrixSafe (a + b) (a / 2 ^ hgcdShiftSafe a b)
+  (b / 2 ^ hgcdShiftSafe a b)`), then
+  `schonhageOuterGuardFires a b = false`. Proof structure:
+  (1) under `(hab, hge)`, `hgcdMatrixSafe_succ` reduces
+  `hgcdMatrixSafeOf a b` to `M_inner` directly via
+  `if_neg hab` then `dsimp only` (mirroring the S18
+  `hgcdMatrixSafe_det_unit` `let`-handling pattern) then
+  `if_neg (Nat.not_lt.mpr hge)` on the inner if.
+  (2) `hgcdSafeApply a b = M_inner.apply (a, b)` follows
+  from step 1 by unfolding `hgcdSafeApply`.
+  (3) `schonhageOuterGuardFires_above_aborts_iff hab`
+  (S28c packaging) reduces the goal to exactly `hge`.
+  ~30 lines including the `hMatrix`/`hApply` named have-bindings.
+* `example : schonhageOuterGuardFires 130 89 = false` —
+  structural witness for the canonical S17/S28a `(130, 89)`
+  outer-fails fact. Discharges via the new theorem with
+  `decide` for the threshold (`130 ≥ 64`) and `native_decide`
+  for the inner-abort inequality on the recursive
+  `hgcdMatrixSafe`.
+* `example : schonhageOuterGuardFires 107 85 = false` —
+  same pattern for the worst-case `(107, 85)` S28a witness.
 
-These lemmas are intentionally small structural building blocks
-for the eventual S28b Lean proof (per `s28b-inner-guard-equivalence-
-spec.md` §3 / §5: an above-threshold ↔ statement relating
-`schonhageOuterGuardFires` to the `M_inner.apply` natAbs-pair).
-They isolate the trivial `decide`/`if`-then-`else` plumbing so
-that the structural composition argument in S28b can focus on
-the recursion structure of `hgcdMatrixSafe` without having to
-re-derive the threshold case-split each time.
+Significance. The S28a witnesses (PART XIV) become structural
+corollaries of inner-abort rather than black-box `native_decide`
+facts on `schonhageOuterGuardFires`. The architectural refinement
+identifies the ROOT CAUSE of outer-failure for these pairs —
+the inner recursion's column-output exceeds the input bound —
+rather than merely observing it at the kernel level. Both
+example witnesses still need `native_decide` for the inner
+inequality, but the inequality itself is the algorithmically
+meaningful one (vs the all-the-way-through outer-guard
+Boolean).
 
-**S30 (next):** With the packaging lemmas in place, S28b's
-~30-line one-direction proof reduces to: (a) reducing
-`hgcdSafeApply a b` to `M_inner.apply (a, b)` on the
-inner-abort branch (via `hgcdMatrixSafe_succ` unfolding +
-the `if max u v < max a b` predicate), and (b) applying
-`schonhageOuterGuardFires_above_aborts_iff` to bridge the
-size-non-reduction inequality to `outer = false`. The
-COMPOSE-branch direction needs a small auxiliary lemma about
-non-expansion of `hgcdMatrixSafe`'s outer composition on
-the natAbs-norm (per §5.2 of the S28b spec).
+**S31 (next):** Forward direction (`compose ⇒ outer-fires`).
+Two sub-tasks per the S28b spec §5.2:
+
+(a) State and prove `cofactor_mul_apply` locally in PathA (it
+    lives in `BinaryGcdOQ03OQ02.lean` line 77; PathA does not
+    currently import the parent file). ~5 lines via `simp +
+    ring`.
+(b) Either prove a non-expansion lemma `max
+    (M.mul N).apply.natAbs ≤ max N.apply.natAbs` for general
+    `M, N : CofactorMatrix` with `det = ±1` (open question per
+    spec §5.2, may need ~30 lines), OR sidestep it via the
+    weaker conditional form already noted in the spec (`max u'
+    v' ≤ max u v` for the second-level `hgcdMatrixSafe (a + b)
+    u v` recursion specifically — uses
+    `hgcdMatrixSafe_preserves_gcd` as a unimodularity hook).
+
+### Previous focus (S29 — PR #17631, merged)
+
+Session 29 (researcher-4) added three structural packaging
+lemmas to PART XIII of `BinaryGcdOQ03OQ02PathA.lean`:
+`schonhageOuterGuardFires_above_iff`,
+`schonhageOuterGuardFires_above_aborts_iff` (the workhorse for
+this S30 iteration), and `schonhageOuterGuardFires_eq_false_iff`.
++67 lines; 0 new axioms, 0 new sorries.
 
 ### Previous focus (S28a — PR #17517, merged)
 

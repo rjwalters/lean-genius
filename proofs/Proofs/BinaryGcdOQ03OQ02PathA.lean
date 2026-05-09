@@ -1500,6 +1500,103 @@ theorem surveyRange_length_eq_outerGuardSurveySize :
     surveyRange.length = outerGuardSurveySize 64 130 := by
   rw [surveyRange_length, outerGuardSurveySize_64_130]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XX: INNER-GUARD ABORT ⇒ OUTER-GUARD FAILURE (Session 29)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Inner-guard abort ⇒ outer-guard failure (above threshold)
+
+    `s28b-inner-guard-equivalence-spec.md` (researcher-13, 2026-05-09;
+    PR #17598) proposes the equivalence: on above-threshold inputs
+    `(a, b)`, the outer guard `schonhageOuterGuardFires a b` fails to
+    fire **iff** the inner `if max u v < max a b` of `hgcdMatrixSafe`
+    takes the abort branch — i.e. `max u v ≥ max a b`, where `(u, v)`
+    is the natAbs-pair of `M_inner.apply (a, b)` and `M_inner` is the
+    inner recursive call.
+
+    This session implements the **inner-abort ⇒ outer-fails** direction
+    of that equivalence, building on the S28c packaging lemma
+    `schonhageOuterGuardFires_above_aborts_iff` (PART XIII). The
+    forward direction (compose ⇒ outer-fires) requires a non-expansion
+    lemma for `hgcdMatrixSafe.apply` under composition — sketched in
+    §5.2 of the spec — and is deferred to a future session.
+
+    Significance. The canonical S28a witnesses `(130, 89)` and
+    `(107, 85)` (PART XIV) are now structural corollaries of the
+    inner-abort hypothesis rather than black-box `native_decide` facts
+    on `schonhageOuterGuardFires`. The architectural refinement is
+    that the ROOT CAUSE of outer-failure for these pairs is identified
+    (the inner recursion's column-output exceeds the input bound)
+    rather than merely observed at the kernel level. -/
+
+/-- **Inner-guard abort ⇒ outer-guard failure** (above threshold).
+
+    Above threshold (`hab`), if the inner-guard abort branch of
+    `hgcdMatrixSafe (a + b + 1) a b` is taken — i.e., the natAbs-pair
+    `(u, v)` of `M_inner.apply (a, b)` satisfies `max a b ≤ max u v`
+    (`hge`) — then `schonhageOuterGuardFires a b = false`.
+
+    Proof. Under `hab` and `hge`, `hgcdMatrixSafe_succ` reduces
+    `hgcdMatrixSafeOf a b` to `M_inner` directly (the `else` branch of
+    the inner `if`). Hence `hgcdSafeApply a b = M_inner.apply (a, b)`,
+    whose natAbs-pair is exactly the `(u, v)` from `hge`. The
+    conclusion follows by the S28c packaging lemma
+    `schonhageOuterGuardFires_above_aborts_iff`. -/
+theorem hgcdMatrixSafe_inner_abort_imp_outer_fails (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hge : max a b ≤
+      max ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs) :
+    schonhageOuterGuardFires a b = false := by
+  -- Step 1: under (hab, hge), hgcdMatrixSafeOf a b = M_inner.
+  have hMatrix : hgcdMatrixSafeOf a b
+      = hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b) := by
+    unfold hgcdMatrixSafeOf
+    rw [hgcdMatrixSafe_succ, if_neg hab]
+    -- After if_neg the RHS is the let-bundled inner if; beta-reduce
+    -- the lets (same dsimp pattern as `hgcdMatrixSafe_det_unit`),
+    -- then commit to the abort branch via if_neg on the inner if.
+    dsimp only
+    rw [if_neg (Nat.not_lt.mpr hge)]
+  -- Step 2: hgcdSafeApply a b unfolds to M_inner.apply (a, b).
+  have hApply : hgcdSafeApply a b
+      = (hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ) := by
+    unfold hgcdSafeApply
+    rw [hMatrix]
+  -- Step 3: bridge via the S28c packaging lemma.
+  rw [schonhageOuterGuardFires_above_aborts_iff hab, hApply]
+  exact hge
+
+/-- **Structural witness: `(130, 89)` outer-fails via inner-abort.**
+
+    Recovers the S28a `(130, 89)` outer-fails fact (PART XIV) from
+    `hgcdMatrixSafe_inner_abort_imp_outer_fails`: the threshold check
+    is discharged by `decide` (`130 ≥ 64`), and the inner-abort
+    inequality is confirmed by `native_decide` evaluating the inner
+    recursive call. The kernel reduction goes through the structural
+    theorem rather than directly `native_decide`-ing the full
+    `schonhageOuterGuardFires` Boolean. -/
+example : schonhageOuterGuardFires 130 89 = false :=
+  hgcdMatrixSafe_inner_abort_imp_outer_fails 130 89
+    (by decide) (by native_decide)
+
+/-- **Structural witness: `(107, 85)` outer-fails via inner-abort.**
+
+    The `(107, 85)` worst-case S28a witness (PART XIV) likewise
+    recovers as a corollary of inner-abort, with the inner-abort
+    inequality `native_decide`-checked. -/
+example : schonhageOuterGuardFires 107 85 = false :=
+  hgcdMatrixSafe_inner_abort_imp_outer_fails 107 85
+    (by decide) (by native_decide)
+
 end HGcdSafe
 
 /-! ## Summary
