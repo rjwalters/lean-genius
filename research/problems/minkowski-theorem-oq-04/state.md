@@ -5,7 +5,113 @@
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
 **Last Updated**: 2026-05-09
-**Iteration**: 19 (`blichfeldt_general_pairwise` — explicit-nonzero-diffs wrapper)
+**Iteration**: 20 (`minkowski_general_k_finset` — Finset transport for Minkowski-k)
+
+## Iteration 20 (researcher-3, 2026-05-09)
+
+**Focus**: S20 — `minkowski_general_k_finset`, the Finset transport of
+`minkowski_general_k` (S18, PR #17533).  Parallel in spirit to Iter 17
+(#17508), which exposed `blichfeldt_general_finset` as the Finset
+transport of `blichfeldt_general`.  This iteration completes the
+structural symmetry between the Blichfeldt and Minkowski sides of the
+half-scaling bridge: both now have indexed and Finset shapes available.
+
+### Outcome
+
+One downstream theorem (build-pending convention, like S13–S19):
+
+* `minkowski_general_k_finset` (~66 lines including docstring): for
+  measurable convex centrally-symmetric `s ⊆ ℝⁿ` with
+  `volume s > k · 2ⁿ`, there exists a `Finset (Fin n → ℝ)` of
+  cardinality `k + 1` whose elements are simultaneously (i) members of
+  `s` and (ii) lattice points in `stdLattice n`.  Proved as a five-line
+  transport from `minkowski_general_k k s ...` via
+  `Finset.univ.image f` where
+  `f : Fin (k + 1) → (Fin n → ℝ) := fun i => ((pts i : Fin n → ℝ))`,
+  promoting subtype-injectivity to ambient injectivity via
+  `Subtype.ext` and using only `Finset.card_image_of_injective`,
+  `Finset.card_univ`, `Fintype.card_fin`, `Finset.mem_coe`, and
+  `Finset.mem_image`.
+
+### Why this scope
+
+Iter 19's next-action list (post-S18) offered three candidates:
+
+* `minkowski_general_k_symm` (~120–150 lines, hard sign-selection)
+* `blichfeldt_general_pairwise` (~10 lines, low risk) ← claimed by Iter 19
+* `minkowski_general_k_lattice` (~30 lines, lattice generalisation)
+
+This iteration adds a fourth, complementary candidate that was implicit
+in the Iter 17 / Iter 19 symmetry but not explicitly listed: the
+**Minkowski-side Finset transport**.  Where Iter 19 strengthens the
+*Blichfeldt* indexed-form conclusion (explicit nonzero-diffs), this
+iteration produces the *Minkowski* Finset-form conclusion (set
+membership + lattice-point membership for the entire Finset).  No
+overlap with Iter 19's source-file insertion site
+(post-`blichfeldt_four_points`); the new theorem inserts after
+`minkowski_general_k` (lines ~744 in post-#17554 origin/main).
+
+Pedagogical value: the Finset shape makes the lattice-point content
+of Minkowski-k uniformly accessible to downstream callers that prefer
+Finset reasoning over indexed families (e.g. counting / pigeonhole
+arguments where `Finset.card` is the working currency, or set-level
+intersection / subset reasoning that interacts naturally with
+`(↑F : Set _)` coercions).  The strictly stronger Minkowski-Finset
+clause "all elements in stdLattice" — stronger than the
+Blichfeldt-Finset clause "all pairwise differences in stdLattice" —
+reflects the geometric content of the half-scaling + symmetry +
+convexity argument that distinguishes Minkowski from Blichfeldt.
+
+### Counts (build-pending convention)
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **757 → 823** lines (+66):
+  * +65 lines for `minkowski_general_k_finset` body + docstring + blank line.
+  * +1 line: `#check BlichfeldtTheorem.minkowski_general_k_finset` in
+    the Export check section.
+* `theoremCount`: 12 → 13 (+1; mechanic to sync after CI green).
+* `axiomCount`: 0 (unchanged).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, following the
+S15/S16/S17/S18/S19 build-pending convention to avoid line-conflict
+with mechanic sync PRs.  The next mechanic pass naturally bumps to
+lineCount 823 / theoremCount 13 after this PR and any pending
+post-S19 mechanic syncs both merge.
+
+### Mathlib API used
+
+All lemmas reused from `blichfeldt_general_finset` already on
+origin/main; **zero new Mathlib references**.  Specifically used:
+`Finset.card_image_of_injective`, `Finset.card_univ`,
+`Fintype.card_fin`, `Finset.mem_coe`, `Finset.mem_image`,
+`Subtype.ext`, plus the already-proved `minkowski_general_k`.  Drift
+risk inherits from these existing lemmas' build status (any upstream
+Mathlib change affecting them would surface in
+`blichfeldt_general_finset` first).
+
+### Next Action
+
+**Session 21** (when this PR + #17554 merge): one of:
+
+* `minkowski_general_k_symm` (§2.2 of `minkowski-general-k-spec.md`;
+  ~120–150 lines): the ±-symmetric pair form.  Conclusion: `k`
+  nonzero lattice points `p₁,…,pₖ` with all `pᵢ, -pᵢ ∈ s` and
+  `pᵢ ∉ {0, ±p₁,…,±pᵢ₋₁}`.  Requires sign-selection argument; spec
+  §6 outlines the approach.
+* `minkowski_general_k_lattice` (~30 lines): generalize from the
+  standard `ℤⁿ`-lattice to any full-rank `ℤ`-lattice `Λ ⊆ ℝⁿ` with
+  covolume `V`, hypothesis `vol(s) > k · V`.  May need ZLattice API
+  reconnaissance (assess `Mathlib.Algebra.Module.ZLattice.*` coverage
+  before committing scope).
+* `blichfeldt_general_pairwise_finset` (~30 lines): combine Iter 19's
+  explicit-nonzero-diffs wrapper with Iter 17's Finset transport,
+  yielding Finset of cardinality `k + 1` with explicit nonzero
+  pairwise lattice-vector differences.
+* Once Docker CI verifies S13–S20, Mechanic/Auditor flips
+  `meta.status: axiomatized → verified`, `meta.badge: axiom → original`,
+  rewrites `meta.assumptions` to reflect 0 axioms.
+
+----
 
 ## Iteration 19 (researcher-1, 2026-05-09)
 

@@ -741,6 +741,71 @@ theorem minkowski_general_k {n : ℕ} [NeZero n] (k : ℕ)
   have h_val : pts_T i - pts_T 0 = pts_T j - pts_T 0 := congrArg Subtype.val hij
   exact sub_left_inj.mp h_val
 
+/-- **Generalized Minkowski (Finset form)**: a measurable convex
+centrally-symmetric set `s ⊆ ℝⁿ` with `volume s > k · 2ⁿ` contains a
+`Finset` of cardinality `k + 1` whose elements are all simultaneously
+(i) members of `s` and (ii) lattice points in `stdLattice n`.
+
+A direct Finset-form transport of `minkowski_general_k`, parallel to
+how `blichfeldt_general_finset` (S17) is the Finset transport of
+`blichfeldt_general`.  The indexed family
+`pts : Fin (k + 1) → (stdLattice n).toAddSubgroup` from
+`minkowski_general_k` is repackaged via `Finset.univ.image` into a
+single Finset of `Fin n → ℝ` values; injectivity of `pts` on the
+ambient `Fin n → ℝ` value descends from injectivity on the subtype
+via `Subtype.ext`.
+
+**Pedagogical role**: completes the structural symmetry between the
+Blichfeldt and Minkowski generalisations.  Iter 17 (#17508) exposed
+the Finset transport for `blichfeldt_general`; this iteration exposes
+the Finset transport for `minkowski_general_k`, so downstream
+applications now have uniform Finset-shape access to *both* sides of
+the half-scaling bridge.
+
+**Conclusion clauses**:
+* `F.card = k + 1` — exactly `k + 1` distinct elements.
+* `(↑F : Set _) ⊆ s` — every element lies in the convex symmetric body.
+* `(↑F : Set _) ⊆ (stdLattice n : Set _)` — every element is a lattice
+  point.
+
+The analogous Blichfeldt-Finset clause is "all *pairwise differences*
+are lattice vectors"; the Minkowski-Finset clause is the strictly
+stronger "all *elements themselves* are lattice points", reflecting
+the geometric content of Minkowski over Blichfeldt: the half-scaling
++ symmetry + convexity argument upgrades pairwise lattice-difference
+witnesses to actual lattice-point witnesses.
+
+**No new Mathlib API beyond `minkowski_general_k` itself**: the proof
+is a five-line transport using `Finset.image` of the indexed family,
+relying on `Function.Injective` lifting via `Subtype.ext`,
+`Finset.card_image_of_injective`, and `Finset.mem_image`. -/
+theorem minkowski_general_k_finset {n : ℕ} [NeZero n] (k : ℕ)
+    (s : Set (Fin n → ℝ))
+    (h_meas : MeasurableSet s)
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : (k : ENNReal) * (2 : ENNReal) ^ n < volume s) :
+    ∃ F : Finset (Fin n → ℝ),
+      F.card = k + 1 ∧
+      (↑F : Set (Fin n → ℝ)) ⊆ s ∧
+      (↑F : Set (Fin n → ℝ)) ⊆ (stdLattice n : Set (Fin n → ℝ)) := by
+  obtain ⟨pts, h_pts_inj, h_pts_in_s⟩ :=
+    minkowski_general_k k s h_meas h_symm h_conv h_vol
+  let f : Fin (k + 1) → (Fin n → ℝ) := fun i => ((pts i : Fin n → ℝ))
+  have hf_inj : Function.Injective f := by
+    intro i j hij
+    exact h_pts_inj (Subtype.ext hij)
+  refine ⟨(Finset.univ : Finset (Fin (k + 1))).image f, ?_, ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ hf_inj, Finset.card_univ, Fintype.card_fin]
+  · intro x hx
+    rw [Finset.mem_coe] at hx
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+    exact h_pts_in_s i
+  · intro x hx
+    rw [Finset.mem_coe] at hx
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+    exact (pts i).property
+
 end BlichfeldtTheorem
 
 -- ============================================================
@@ -755,3 +820,4 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.blichfeldt_general_finset
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
 #check BlichfeldtTheorem.minkowski_general_k
+#check BlichfeldtTheorem.minkowski_general_k_finset
