@@ -4,10 +4,61 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 26
+**Iteration**: 28
 **Last Updated**: 2026-05-09
 
-## Session 26 (researcher-12, this session, build pending)
+## Session 28 (researcher-6, this session, build pending)
+
+Added the **Step 7a/general-θ asymptotic packaging** as a new private helper
+`trig_sum_harmonic_lb_asymp` (~50 lines). Extends S26's
+`trig_sum_harmonic_lb_asymp_le_half_pi` from `θ ∈ (0, π/2]` to the full
+open interval `θ ∈ (0, π)` via the WLOG bridge:
+
+```
+∃ N₀ : ℕ, ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ n ≥ N₀,
+  C₁ · n · log(n+1) ≤ S(θ, n)
+```
+
+with no constraint on `θ ∈ (0, π)` beyond the cosine-not-a-Chebyshev-node
+hypothesis.
+
+**Composition** (purely from already-merged helpers):
+
+  1. Case split on `θ ≤ π/2` vs `θ > π/2`.
+  2. **`θ ≤ π/2`**: directly apply S26.
+  3. **`θ > π/2`**: set `θ' := π − θ ∈ (0, π/2)`.
+     a. S27 (`chebyshev_hne_pi_sub`) → `hne'` for `θ'` from `hne` for `θ`.
+     b. S26 applied to `θ'` → `(N₀, C₁, hbound')` for `S(π − θ, n)`.
+     c. S18 (`trig_sum_reindex_symmetry`) → `S(θ, n) = S(π − θ, n)`.
+     d. Bump `N₀` to `max N₀ 1` so we can apply S18 (which requires `0 < n`).
+     e. `rw [hsym]` flips the goal LHS sum, then `exact hbound' n hN₀_le`.
+
+**Why this matters**: this is the **last gap** between the half-π asymp
+bound (S26) and the general (0, π) hypothesis required by
+`trig_sum_combine_small_large_const` (S25, in flight as PR #17457).
+Once S25 + S28 both merge, the `trig_sum_harmonic_lb` proof closes in
+~5 lines: apply S28 → `(N₀, C₁, hlarge)`, apply S25 → unified `(C, h)`.
+
+**No conflict with PR #17457 or PR #17386**: this S28 helper inserts
+AT a NEW POSITION (immediately after S26, before `trig_sum_harmonic_lb`),
+which is the same insertion point as S25 (#17457) and the stale S23
+(#17386). All three are independent helpers with disjoint signatures
+(`trig_sum_harmonic_lb_asymp` vs `trig_sum_combine_small_large_const`);
+whichever lands first triggers a trivial relocation in the others.
+
+## Session 27 (researcher-11, build pending, merged via #17505)
+
+Added `chebyshev_hne_pi_sub` (~50 lines): `hne` side of WLOG bridge.
+For any `n > 0`, `θ ∈ ℝ`, `(hne : ∀ k, cos θ ≠ chebyshevNode n k)`,
+yields `∀ k, cos (π − θ) ≠ chebyshevNode n k`. Uses the same involution
+`σ : Fin n ≃ Fin n`, `k ↦ n − 1 − k` as S18; key step is
+`chebyshevNode n (σ k) = − chebyshevNode n k` via `Real.cos_pi_sub`.
+
+Combined with S18 (which provides the **sum side** `S(θ, n) = S(π − θ, n)`),
+S27 constitutes the entire WLOG-bridge machinery for extending `θ ∈ (0, π/2]`
+results to `θ ∈ (0, π)`. Used by S28 (this session).
+
+## Session 26 (researcher-12, merged via #17486)
 
 Added the **Step 7a/asymptotic side packaging** as a new private helper
 `trig_sum_harmonic_lb_asymp_le_half_pi` (~120 lines). For any
@@ -242,23 +293,20 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 
 ## Next Steps
 
-1. Prove `trig_sum_harmonic_lb` using the existing scaffolding (~30–60 lines remaining):
-   - **Step 7a (asymptotic, large `n`)**: WLOG `θ ∈ (0, π/2]` via
-     `trig_sum_reindex_symmetry`; pick `m := ⌊n·θ/(4π)⌋` (with `Nat.floor_le`
-     supplying the `(m : ℝ) ≤ n·θ/(4π)` hypothesis), then chain
-     `chebyshev_quarter_floor_hm_le_and_cap_max` (S23) →
-     `chebyshev_h_interior_of_close_and_max_index_cap` (S22) →
-     `trig_sum_subsum_log_lb` to obtain
-     `sin(θ/2) · (2n/π) · ((1/2) · log(m+2) − 1) ≤ S(θ, n)` for `n ≥ N₀(θ)`.
-     Asymptotically dominates `C₁ · n · log(n+1)` with `C₁ ≈ sin(θ/2)/π`,
-     once `log(m+2) ≥ (1/2)·log(n+1)` is established (use
-     `Nat.lt_floor_add_one` + log-monotonicity).
+1. Prove `trig_sum_harmonic_lb` (~5 caller lines after S25 + S28 merge):
+   - **Step 7a (asymptotic, large `n`)**: ✅ **closed in S26 (half-π) + S28 (general θ)**.
+     `trig_sum_harmonic_lb_asymp` returns `(N₀, C₁, hC₁_pos, hlarge)` for any
+     `θ ∈ (0, π)` with `cos θ` not a Chebyshev node.
    - **Step 7b (small `n`, finite-set min')**: ✅ **closed in S22** by
      `trig_sum_small_n_const`. Returns `C₂ > 0` with
      `C₂ · n · log(n+1) ≤ S(θ, n)` for `1 ≤ n ≤ N₀(θ) − 1`.
-   - **Step 7c (combine)**: `C := min C₁ C₂`. Both halves use the
+   - **Step 7c (combine)**: `C := min C₁ C₂`. In flight as
+     `trig_sum_combine_small_large_const` (PR #17457). Both halves use the
      same `n · log(n+1)` shape, so the unified bound follows by case
      split on `n < N₀(θ)` vs `n ≥ N₀(θ)`.
+   - **Final glue** (post-merge of S25 + S28): `obtain ⟨N₀, C₁, hC₁_pos, hlarge⟩ :=
+     trig_sum_harmonic_lb_asymp θ hθ_pos hθ_lt hne` then
+     `exact trig_sum_combine_small_large_const θ hne N₀ hC₁_pos hlarge`.
 
 2. For Sorry 2 (`divergence_from_lebesgue_growth`):
    - **Option A (recommended)**: weaken statement to `Filter.Tendsto … atTop`
@@ -314,25 +362,37 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 - 2026-05-08: Session 25 (researcher-1, in flight): `trig_sum_combine_small_large_const`
   — Step 7c min-of-two-constants closure, replay of stale PR #17386 onto
   fresh `origin/main`. Open as PR #17457.
-- 2026-05-09: Session 26 (researcher-12, this session): `trig_sum_harmonic_lb_asymp_le_half_pi`
+- 2026-05-09: Session 26 (researcher-12): `trig_sum_harmonic_lb_asymp_le_half_pi`
   — asymptotic large-`n` packaging for `θ ∈ (0, π/2]`. Composes
   `exists_nearest_chebyshev_angle` (S14), `chebyshev_quarter_floor_hm_le_and_cap_max`
   (S23), `chebyshev_h_interior_of_close_and_max_index_cap` (S22),
   `trig_sum_subsum_log_lb` (S21), and `chebyshev_quarter_floor_log_asymp_lb`
   (S24) into the single `hlarge` hypothesis consumed by S25's
-  combine helper. PR pending.
+  combine helper. Merged via #17486.
+- 2026-05-09: Session 27 (researcher-11): `chebyshev_hne_pi_sub` — `hne` side
+  of WLOG bridge: `(∀ k, cos θ ≠ chebyshevNode n k) → (∀ k, cos (π − θ) ≠ chebyshevNode n k)`.
+  Uses S18's involution `σ : k ↦ n − 1 − k` + `Real.cos_pi_sub`.
+  Merged via #17505.
+- 2026-05-09: Session 28 (researcher-6, this session): `trig_sum_harmonic_lb_asymp`
+  — extends S26's asymp bound from `θ ∈ (0, π/2]` to `θ ∈ (0, π)` via WLOG
+  bridge S18 + S27 (case `θ > π/2`: set `θ' := π − θ ∈ (0, π/2)`, lift `hne`
+  via S27, apply S26 to `θ'`, rewrite `S(θ, n) = S(π − θ, n)` via S18).
+  PR pending.
 
 ## Open PRs
 
-- (this session, S26) PR pending — `trig_sum_harmonic_lb_asymp_le_half_pi`
-  (~140 lines, build TBD) — packages the asymptotic large-`n` side for
-  `θ ∈ (0, π/2]`; exactly the `hlarge` hypothesis #17457's combine
-  helper expects.
+- (this session, S28) PR pending — `trig_sum_harmonic_lb_asymp`
+  (~50 lines, build pending) — extends S26's asymp bound from
+  `θ ∈ (0, π/2]` to `θ ∈ (0, π)` via WLOG bridge S18 + S27.
+  The general-θ `hlarge` hypothesis required to apply S25's combine
+  helper directly inside `trig_sum_harmonic_lb`.
 - PR #17457 (researcher-1, S25 replay of stale PR #17386) —
   `trig_sum_combine_small_large_const` Step 7c min-of-two-constants closure.
+- PR #17386 (researcher-1, S23 stale, conflicting) — original combine
+  helper; superseded by #17457.
 
-## File Stats (after Session 26 added trig_sum_harmonic_lb_asymp_le_half_pi)
+## File Stats (after Session 28 added trig_sum_harmonic_lb_asymp)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 2415 lines, 2 sorries (was 2288 on origin/main)
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2528 lines, 2 sorries (was 2467 on origin/main)
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement
