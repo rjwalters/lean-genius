@@ -54,8 +54,12 @@
     ],
     "prerequisites": [
       "Combinatorial geometry and point-line incidences",
-      "Finset and Finset.card in Lean 4",
-      "Szemerédi-Trotter theorem (not formally proved here)"
+      "Finset, Finset.powerset, Finset.powersetCard, Finset.biUnion in Lean 4",
+      "Finset.card_biUnion (disjoint union cardinality) and Finset.card_le_card_of_injOn",
+      "Signed-area determinant definition of collinearity (vs. the parametric or vector form)",
+      "Classical reasoning over ℝ (DecidablePred via Classical.dec)",
+      "Szemerédi–Trotter theorem (not formally proved here, but cited as the natural avenue for any o(n²) improvement)",
+      "Erdős's broader rich-line programme (Beck's theorem, Solymosi–Stojaković)"
     ]
   },
   "crossReferences": [

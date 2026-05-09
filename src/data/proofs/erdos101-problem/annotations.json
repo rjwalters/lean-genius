@@ -1,5 +1,28 @@
 [
   {
+    "id": "e101-symmetries",
+    "proofId": "erdos101-problem",
+    "type": "technique",
+    "range": {
+      "startLine": 52,
+      "endLine": 83
+    },
+    "title": "Collinearity Symmetry Suite: Reflexivity, Swap, Rotate, Cycle",
+    "content": "Seven trivial-but-essential algebraic lemmas:\n- `collinear_self`, `collinear_refl`, `collinear_self_right`: reflexivity in any of the three slots — proved by `unfold collinear; ring` because the determinant vanishes when two of $p,q,r$ coincide.\n- `collinear_swap23`: `collinear p q r → collinear p r q`. The determinant is anti-symmetric in its second and third arguments, so swapping them flips a sign — a one-line `linarith` after unfolding.\n- `collinear_swap12`: `collinear p q r → collinear q p r`. Swapping the first two arguments requires the more powerful `nlinarith` because the determinant rewrites involve products of differences.\n- `collinear_rotate` and `collinear_cycle`: build the full $S_3$-action by composing two or three swaps.\n\nThese suffice to prove that the relation \"$\\{p,q,r\\}$ is collinear\" depends only on the *set* $\\{p,q,r\\}$, not the ordered triple — a fact tacitly used everywhere downstream (in `four_collinear_unique`, `collinear_any_triple`, etc.). Without an explicit symmetry suite, the proof scripts would need ad-hoc determinant manipulations every time the order of arguments changes.",
+    "significance": "supporting",
+    "mathContext": "The signed-area definition $\\det\\begin{pmatrix} q_1-p_1 & r_1-p_1 \\\\ q_2-p_2 & r_2-p_2 \\end{pmatrix} = 0$ is *not* a priori symmetric in $\\{p,q,r\\}$ — but the vanishing locus is. The seven lemmas establish the full $S_3$-action, after which we may treat `collinear` as a property of the underlying 3-element set.",
+    "relatedConcepts": [
+      "signed area determinant",
+      "S_3 action on collinearity",
+      "ring tactic",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "collinear definition (line 30)",
+      "Lean ring / linarith / nlinarith tactics"
+    ]
+  },
+  {
     "id": "e101-collinear-trans",
     "proofId": "erdos101-problem",
     "type": "theorem",
@@ -115,6 +138,30 @@
     ]
   },
   {
+    "id": "e101-trivial-sq",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 295,
+      "endLine": 359
+    },
+    "title": "trivial_upper_bound_sq: The Looser n² Bound via witnessMap",
+    "content": "`theorem trivial_upper_bound_sq (P : PlanarPointSet) (hP : NoFiveCollinear P) : fourPointLineCount P ≤ P.points.card * P.points.card`\n\nThis is the *first*, looser bound — proved before `trivial_upper_bound` and using a different injection.\n\n**Strategy**: For each $S \\in F$, choose by `Classical.choice` an *ordered* witness pair $(a, b) \\in S \\times S$ with $a \\neq b$ and all of $S$ collinear with $(a,b)$. Bundle the choice in `witnessMap : Finset (ℝ × ℝ) → (ℝ × ℝ) × (ℝ × ℝ)` defined by `dite` over the existence hypothesis.\n\n**Injectivity**: If `witnessMap S₁ = witnessMap S₂`, then both $S_1$ and $S_2$ contain the same pair $(a,b)$ and are collinear with it, so by `four_collinear_unique` we get $S_1 = S_2$.\n\n**Bound**: $|F| \\leq |P.\\text{points} \\times P.\\text{points}| = n^2$.\n\nThe stronger bound $n(n-1)/2$ in `trivial_upper_bound` improves on this by (a) restricting to `Finset.offDiag` (so $a \\neq b$ is automatic), and (b) absorbing the unordered-pair double-counting.",
+    "significance": "supporting",
+    "mathContext": "Two trivial bounds, in increasing tightness:\n- `trivial_upper_bound_sq`: $|F| \\leq n^2$ (ordered pairs, witnessMap injection).\n- `trivial_upper_bound`: $|F| \\leq \\binom{n}{2} = n(n-1)/2$ (unordered pairs via offDiag).\n- `improved_upper_bound`: $|F| \\leq n(n-1)/12$ (pair-packing with disjointness).\n\nThe progression illustrates how each refinement extracts more structure: ordered → unordered → all 6 pairs disjoint.",
+    "relatedConcepts": [
+      "Classical.choice",
+      "dite (dependent if-then-else)",
+      "Finset.card_le_card_of_injOn",
+      "trivial_upper_bound",
+      "four_collinear_unique"
+    ],
+    "prerequisites": [
+      "four_collinear_unique theorem",
+      "Classical reasoning (witnessMap is non-constructive)"
+    ]
+  },
+  {
     "id": "e101-trivial-bound",
     "proofId": "erdos101-problem",
     "type": "theorem",
@@ -138,6 +185,30 @@
     ]
   },
   {
+    "id": "e101-powersetcard2-disjoint",
+    "proofId": "erdos101-problem",
+    "type": "technique",
+    "range": {
+      "startLine": 504,
+      "endLine": 515
+    },
+    "title": "powersetCard2_disjoint: Overlap-1 ⇒ Pair-Sets Disjoint",
+    "content": "`theorem powersetCard2_disjoint {α : Type*} [DecidableEq α] {S₁ S₂ : Finset α} (h : (S₁ ∩ S₂).card ≤ 1) : Disjoint (S₁.powersetCard 2) (S₂.powersetCard 2)`\n\nProof: Suppose $T \\in S_1.\\text{powersetCard}\\ 2 \\cap S_2.\\text{powersetCard}\\ 2$, so $T \\subseteq S_1$, $T \\subseteq S_2$, and $|T| = 2$. Then $T \\subseteq S_1 \\cap S_2$, giving $2 = |T| \\leq |S_1 \\cap S_2| \\leq 1$ — contradiction (closed by `omega`).\n\nThis is a **type-generic helper** — it does not mention collinearity at all. It abstracts the combinatorial step \"shared-element bound on $S_1, S_2$ controls overlap of their pair-sets,\" enabling reuse and clean separation of the geometric argument (`four_collinear_overlap_small`) from the counting argument (`improved_upper_bound`).",
+    "significance": "supporting",
+    "mathContext": "If two finite sets share fewer than 2 elements, their 2-element subsets are pairwise disjoint. This is the abstract statement underlying any pair-packing argument: a 2-subset of $S_1$ that's also a 2-subset of $S_2$ is contained in $S_1 \\cap S_2$, which therefore has size $\\geq 2$.",
+    "relatedConcepts": [
+      "Finset.powersetCard",
+      "Finset.disjoint_left",
+      "Finset.subset_inter",
+      "pair-packing argument",
+      "type-generic combinatorial lemma"
+    ],
+    "prerequisites": [
+      "Finset.powersetCard_mp / mpr",
+      "Lean omega tactic"
+    ]
+  },
+  {
     "id": "e101-improved-bound",
     "proofId": "erdos101-problem",
     "type": "theorem",
@@ -158,6 +229,30 @@
     "prerequisites": [
       "four_collinear_overlap_small",
       "Finset.powersetCard and Finset.biUnion"
+    ]
+  },
+  {
+    "id": "e101-family-bridge",
+    "proofId": "erdos101-problem",
+    "type": "definition",
+    "range": {
+      "startLine": 600,
+      "endLine": 612
+    },
+    "title": "fourCollinearFamily and the Bridge to fourPointLineCount",
+    "content": "`noncomputable def fourCollinearFamily (P : PlanarPointSet) : Finset (Finset (ℝ × ℝ))` \n\nReifies the family $F$ of 4-element collinear subsets as a `Finset` (rather than as a count), enabling per-point sub-families and biUnion arguments.\n\n`theorem fourPointLineCount_eq_family : fourPointLineCount P = (fourCollinearFamily P).card` — a one-line `rfl` that bridges the two views.\n\n**Why two definitions?** `fourPointLineCount` returns a `Nat` directly (good for stating bounds), while `fourCollinearFamily` returns the actual family (good for set-theoretic reasoning, e.g. taking sub-families like `fourCollinearThrough` or for biUnion-of-pair-sets in `improved_upper_bound`). The `rfl` bridge means we get both views *for free* once one is set up — a common Lean pattern for definition/cardinality dualities.\n\nThe `noncomputable` modifier and `open Classical in` block reflect the underlying use of `Classical.dec` to decide membership in a set defined by an existential predicate over ℝ.",
+    "significance": "supporting",
+    "mathContext": "The family $F = \\{S \\subseteq P : |S| = 4 \\wedge \\exists a \\neq b \\in S, \\forall p \\in S\\ \\text{collinear}(a,b,p)\\}$ is the central object of study. Per-point sub-families $F_p = \\{S \\in F : p \\in S\\}$ are the input to the per-point bound `fourCollinearThrough_bound`.",
+    "relatedConcepts": [
+      "fourPointLineCount",
+      "fourCollinearThrough",
+      "Finset.powerset.filter",
+      "noncomputable / Classical reasoning",
+      "definition-cardinality duality"
+    ],
+    "prerequisites": [
+      "Finset.powerset and Finset.filter",
+      "Lean noncomputable / Classical declarations"
     ]
   },
   {
