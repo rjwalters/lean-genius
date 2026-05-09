@@ -829,6 +829,87 @@ theorem schonhageOuterGuardFires_strict_decrease {a b : ℕ}
       < max a b :=
   (schonhageOuterGuardFires_iff.mp h).2
 
+/-- Above-threshold specialisation of `schonhageOuterGuardFires_iff`.
+
+    On any pair `(a, b)` whose `max` is at least `hgcdThresholdSafe`,
+    the early-return branch of `schonhageOuterGuardFires` is excluded,
+    and the predicate reduces purely to the size-reduction inequality.
+
+    This is the workhorse "above-threshold ⇒ guard fires iff size
+    reduces" form referenced by `s28b-inner-guard-equivalence-spec.md`
+    §3, where the proposed S28b structural theorem extends it by
+    relating the size-reduction predicate to the inner-guard branch
+    of `hgcdMatrixSafe`. -/
+theorem schonhageOuterGuardFires_above_iff {a b : ℕ}
+    (h : ¬ max a b < hgcdThresholdSafe) :
+    schonhageOuterGuardFires a b = true ↔
+      max (hgcdSafeApply a b).1.natAbs (hgcdSafeApply a b).2.natAbs
+        < max a b := by
+  rw [schonhageOuterGuardFires_iff, and_iff_right h]
+
+/-- Above-threshold abort iff: the dual of `_above_iff`, packaging
+    the `false` case of `schonhageOuterGuardFires` on above-threshold
+    inputs as the size-NON-reduction inequality `max a b ≤ max u v`.
+
+    Useful for case-splitting on the outer-guard predicate when the
+    interesting information is the abort branch — the canonical
+    setting for the S28a counterexamples `(130, 89)` and `(107, 85)`,
+    which are above threshold and abort. -/
+theorem schonhageOuterGuardFires_above_aborts_iff {a b : ℕ}
+    (h : ¬ max a b < hgcdThresholdSafe) :
+    schonhageOuterGuardFires a b = false ↔
+      max a b ≤ max (hgcdSafeApply a b).1.natAbs
+                    (hgcdSafeApply a b).2.natAbs := by
+  constructor
+  · intro hfalse
+    by_contra hlt
+    push_neg at hlt
+    have htrue : schonhageOuterGuardFires a b = true :=
+      schonhageOuterGuardFires_iff.mpr ⟨h, hlt⟩
+    simp [htrue] at hfalse
+  · intro hge
+    by_contra hne
+    have htrue : schonhageOuterGuardFires a b = true := by
+      cases hb : schonhageOuterGuardFires a b
+      · exact absurd hb hne
+      · rfl
+    exact Nat.not_lt.mpr hge
+      (schonhageOuterGuardFires_strict_decrease htrue)
+
+/-- Disjunctive iff for the outer-guard `false` case. The predicate
+    `schonhageOuterGuardFires a b = false` decomposes into a
+    two-disjunct characterisation: either the input is below the
+    safe-HGCD threshold (early-return branch), or the input is above
+    threshold but `hgcdSafeApply` does not strictly reduce `max a b`
+    (size-reduction failure). The simplification
+
+    `(below) ∨ (max a b ≤ max u v)`
+
+    folds the above-threshold + size-failure clause into a single
+    inequality that holds vacuously below threshold (since both sides
+    of the conjunction are then unconstrained), giving a clean
+    flat disjunction.
+
+    This is the structural counterpart of `schonhageOuterGuardFires_iff`
+    for the negative branch, supporting reasoning patterns where one
+    case-splits on `outer = false` and needs to extract WHY the guard
+    failed (early return vs size-failure). -/
+theorem schonhageOuterGuardFires_eq_false_iff {a b : ℕ} :
+    schonhageOuterGuardFires a b = false ↔
+      max a b < hgcdThresholdSafe ∨
+      max a b ≤ max (hgcdSafeApply a b).1.natAbs
+                    (hgcdSafeApply a b).2.natAbs := by
+  by_cases hsmall : max a b < hgcdThresholdSafe
+  · constructor
+    · intro _; exact Or.inl hsmall
+    · intro _; exact schonhageOuterGuardFires_below_threshold hsmall
+  · rw [schonhageOuterGuardFires_above_aborts_iff hsmall]
+    constructor
+    · exact fun h => Or.inr h
+    · rintro (h | h)
+      · exact absurd h hsmall
+      · exact h
+
 /-- One fuel step of `schonhageGcd` is fully described by the
     outer-guard predicate. **Headline theorem of S23.** When
     `schonhageOuterGuardFires a b = true`, the recursive case

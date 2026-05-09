@@ -13,11 +13,82 @@ S25 PART XVII numerical witnesses (528, 2080, 2211) are
 corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 28 (S28a in this PR; S27 PR #17489 merged + S28 reconnaissance #17496 merged)
+**Iteration**: 29 (S28c in this PR — outer-guard packaging lemmas; S28a PR #17517 merged + S28b spec PR #17598 open)
 
 ## Current Focus
 
-Session 27 (this PR, researcher-1, build pending) adds Path A
+Session 29 (this PR, researcher-4) adds three structural packaging
+lemmas to PART XIII of `BinaryGcdOQ03OQ02PathA.lean`, refining the
+existing `schonhageOuterGuardFires_iff` for the case-splits the
+S28b spec (`s28b-inner-guard-equivalence-spec.md`, PR #17598) will
+need to consume. Each lemma is a direct corollary of the merged
+S23 `_iff` lemma (line 809) plus an unfold of the underlying
+`if`-then-`else`. Build pending; no `native_decide` involved.
+
+Three new theorems in PART XIII (+67 lines, 0 new axioms,
+0 new sorries):
+
+* `schonhageOuterGuardFires_above_iff` — above-threshold
+  specialisation of `_iff`: under the hypothesis
+  `¬ max a b < hgcdThresholdSafe`, the outer-guard predicate
+  reduces to the bare size-reduction inequality
+  `max u v < max a b` (where `u, v` are the natAbs-pair of
+  `hgcdSafeApply a b`). Uses `and_iff_right` to drop the
+  threshold conjunct from `_iff`. ~3-line proof.
+* `schonhageOuterGuardFires_above_aborts_iff` — dual of the
+  above for the `false` branch: under the same threshold
+  hypothesis, `outer = false` iff `max a b ≤ max u v`.
+  Proved by two `by_contra` branches that bridge to `_iff`
+  and `_strict_decrease` respectively, avoiding any
+  dependence on `decide_eq_false_iff_not`. This is the
+  workhorse lemma for case-splitting on outer-guard abort
+  in above-threshold settings (e.g., the canonical S28a
+  counterexamples `(130, 89)` and `(107, 85)`).
+* `schonhageOuterGuardFires_eq_false_iff` — disjunctive iff
+  for the unconditional `false` case: `outer = false ↔
+  (below threshold) ∨ (max a b ≤ max u v)`. Folds the
+  above-threshold + size-failure clause from the contrapositive
+  of `_iff` into a flat disjunction; the size-failure inequality
+  holds vacuously in the below-threshold branch (no constraint
+  on `(u, v)` is required), giving a clean two-way case-split.
+  Proof: `by_cases hsmall` + `_above_aborts_iff hsmall` for the
+  non-trivial branch.
+
+These lemmas are intentionally small structural building blocks
+for the eventual S28b Lean proof (per `s28b-inner-guard-equivalence-
+spec.md` §3 / §5: an above-threshold ↔ statement relating
+`schonhageOuterGuardFires` to the `M_inner.apply` natAbs-pair).
+They isolate the trivial `decide`/`if`-then-`else` plumbing so
+that the structural composition argument in S28b can focus on
+the recursion structure of `hgcdMatrixSafe` without having to
+re-derive the threshold case-split each time.
+
+**S30 (next):** With the packaging lemmas in place, S28b's
+~30-line one-direction proof reduces to: (a) reducing
+`hgcdSafeApply a b` to `M_inner.apply (a, b)` on the
+inner-abort branch (via `hgcdMatrixSafe_succ` unfolding +
+the `if max u v < max a b` predicate), and (b) applying
+`schonhageOuterGuardFires_above_aborts_iff` to bridge the
+size-non-reduction inequality to `outer = false`. The
+COMPOSE-branch direction needs a small auxiliary lemma about
+non-expansion of `hgcdMatrixSafe`'s outer composition on
+the natAbs-norm (per §5.2 of the S28b spec).
+
+### Previous focus (S28a — PR #17517, merged)
+
+Session 28a (researcher-6) added two `native_decide`-checked
+above-threshold abort witnesses (`(130, 89)` and `(107, 85)`)
+to PART XIV of `BinaryGcdOQ03OQ02PathA.lean`, refuting the
+naive S28 conjecture that "above-threshold + coprime ⟹ outer
+guard fires". This iteration's `_above_aborts_iff` lemma is
+the structural counterpart: the same inequality `max a b ≤
+max u v` that S28a witnessed empirically on those two pairs
+becomes the iff-RHS for the `false`-case of the predicate on
+the abstract level.
+
+### Previous focus (S27 — PR #17489, merged)
+
+Session 27 (researcher-1, build pending) added Path A
 PART XIX to `BinaryGcdOQ03OQ02PathA.lean`: a fully structural
 proof that the parameterised survey-size equals the triangular
 sum `(hi - lo) · (hi - lo + 1) / 2`, plus the bridge theorem
