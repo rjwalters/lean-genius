@@ -740,6 +740,44 @@ private lemma g_pow_three_iff_mem_some_sylow_three
       _ = ((1 : (Q : Subgroup G)) : G) := by rw [h_pow_in_Q]
       _ = 1 := rfl
 
+/-- **S15 ingredient 2**: set-equality decomposition of the cube-identity
+    set `{g : G | g^3 = 1}` as the union of the singleton `{1}` and the
+    non-identity portions of all Sylow 3-subgroups.
+
+    Combined with `sylow_prime_order_disjoint_of_ne` (S11.5), this becomes
+    a *disjoint* union once `|Q| = 3` is plugged in via S13's
+    `sylow_three_card_eq_three_of_card_twelve`; the cardinality count
+    `|{g | g^3 = 1}| = 1 + n_3 · (3 - 1)` is the third ingredient
+    of the S10 closure.
+
+    **Proof**: pointwise via `g_pow_three_iff_mem_some_sylow_three`
+    (S14 ingredient 1):
+    - **(⊆)**: `g^3 = 1 → ∃ Q, g ∈ Q`. Case `g = 1`: contributes to `{1}`.
+      Case `g ≠ 1`: contributes to `(Q : Set G) \ {1}`.
+    - **(⊇)**: `g = 1` gives `1^3 = 1`. `g ∈ Q` (with `|Q| = 3`)
+      gives `g^3 = 1` via the backward direction of S14. -/
+private lemma cube_id_set_eq_disjoint_union
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 3)]
+    (hcard : Nat.card G = 12) :
+    {g : G | g ^ 3 = 1} =
+      {1} ∪ ⋃ (Q : Sylow 3 G), ((Q : Set G) \ {1}) := by
+  ext g
+  simp only [Set.mem_setOf_eq, Set.mem_union, Set.mem_singleton_iff,
+             Set.mem_iUnion, Set.mem_diff]
+  constructor
+  · -- Forward: g^3 = 1 → g = 1 ∨ ∃ Q, g ∈ Q ∧ g ≠ 1.
+    intro hg3
+    by_cases hg : g = 1
+    · exact Or.inl hg
+    · obtain ⟨Q, hgQ⟩ :=
+        (g_pow_three_iff_mem_some_sylow_three hcard g).mp hg3
+      exact Or.inr ⟨Q, hgQ, hg⟩
+  · -- Backward: g = 1 ∨ (∃ Q, g ∈ Q ∧ g ≠ 1) → g^3 = 1.
+    rintro (hg1 | ⟨Q, hgQ, _⟩)
+    · subst hg1; exact one_pow 3
+    · exact (g_pow_three_iff_mem_some_sylow_three hcard g).mpr ⟨Q, hgQ⟩
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
@@ -749,8 +787,12 @@ private lemma g_pow_three_iff_mem_some_sylow_three
     pinning down `P` as `{e} ∪ (G \ {g | g^3 = 1})` independent of choice.
     The full Lean proof requires set/Finset cardinality machinery;
     isolated as a single `sorry` for S10. The pointwise membership
-    characterization `g^3 = 1 ↔ ∃ Q, g ∈ Q` is now provided by
-    `g_pow_three_iff_mem_some_sylow_three` (S14 ingredient 1, above).
+    characterization `g^3 = 1 ↔ ∃ Q, g ∈ Q` is provided by
+    `g_pow_three_iff_mem_some_sylow_three` (S14 ingredient 1, above);
+    the set-decomposition `{g | g^3 = 1} = {1} ∪ ⋃ Q, (Q \ {1})` is
+    provided by `cube_id_set_eq_disjoint_union` (S15 ingredient 2,
+    above). The remaining ingredients (cardinality count of the
+    decomposition, complement-in-Sylow-2 set equality) are deferred.
     See
     `research/problems/abel-ruffini-galois-extensions-oq-07/session-8-twelve-spec.md` §6–7
     and the S14 closure spec in

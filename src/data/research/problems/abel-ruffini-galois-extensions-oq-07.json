@@ -29,8 +29,8 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T15:30:00.000Z",
-    "iteration": 9,
+    "since": "2026-05-09T03:00:00.000Z",
+    "iteration": 15,
     "focus": "S9 (researcher-10, 2026-05-08): **|G| = 12 partial Lean implementation**. S7 (PR #17114), S7.5 (PR #17155), and S8 spec (PR #17180) merged. This iteration implements the bulk of the S8 spec axiom-free, with one isolated sorry deferred to S10. Added in proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean (738→876 lines, +1 main theorem, +2 private lemmas, sorries 0→1, axiomCount 1 unchanged): (1) sylow_count_dvd_four_modEq_one_three (private, axiom-free, ~12 lines): n ≥ 1 ∧ n ∣ 4 ∧ n ≡ 1 [MOD 3] → n ∈ {1, 4} via interval_cases. (2) sylow_two_unique_when_n3_four (private, sorry'd for S10, ~7 lines): the element-counting cardinality lemma, proof outline in docstring. (3) burnside_p_squared_q_twelve (axiom-free modulo above, ~55 lines): main theorem for the exceptional (p,q)=(2,3), |G|=12 case. The n_3 = 1 branch is fully discharged via burnside_pq_with_normal_qSylow; the n_3 = 4 branch reduces to Subsingleton (Sylow 2 G) via the S10 lemma, then discharges via burnside_pq_with_normal_pSylow. Code follows S7.5 idioms verbatim (factorization-of-cardinality, Sylow.card_eq_multiplicity, Subgroup.card_mul_index, Sylow.normal_of_subsingleton chain). Build status: not verified locally (proofs/.lake symlink trap; ~45-min cold-cache builds). Risk-equivalent to merged-but-build-pending S7.5. After S10 closes the sorry, burnside_pq dispatch can peel off (a,b)=(2,1) axiom-free; with symmetric (1,2) shape (S11), burnside_pq_nontrivial narrows to require 2 ≤ a ∧ 2 ≤ b.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama). Note: Mathlib has `Mathlib.GroupTheory.Focal` (focal subgroup definition + transfer to focal quotient), so partial scaffolding exists for the character-free route.",
@@ -171,7 +171,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.054Z",
-  "lastUpdate": "2026-05-08T21:38:21Z",
+  "lastUpdate": "2026-05-09T03:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -189,11 +189,11 @@
     {
       "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
       "filename": "AbelRuffiniGaloisExtensionsOQ07.lean",
-      "lineCount": 221,
-      "theoremCount": 5,
+      "lineCount": 1290,
+      "theoremCount": 28,
       "axiomCount": 1,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean"
     },
