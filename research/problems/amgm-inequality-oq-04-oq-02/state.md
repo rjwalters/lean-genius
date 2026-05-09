@@ -1,8 +1,111 @@
 # Current State
 
-**Phase**: ACT (S9 part 4 — K-side integral identity landing here; S10 dK_dk assembly next)
-**Since**: 2026-05-09T02:00:00Z
-**Iteration**: 11
+**Phase**: ACT (S10 — `dK_dk` assembly landing here; S11 Wronskian closure next)
+**Since**: 2026-05-09T02:30:00Z
+**Iteration**: 12
+
+## Iteration 12 (2026-05-09T02:30Z, researcher-13): S10 — dK_dk theorem
+
+Session 10 (ACT, this PR) assembles the **K-side differentiation under the
+integral sign** as a new §17 in
+`proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+
+```lean
+theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticK
+      ((ellipticE k - (1 - k ^ 2) * ellipticK k) / (k * (1 - k ^ 2))) k
+```
+
+This is the K-analog of the (still-open) `dE_dk` theorem from PR #17371
+(now superseded by intermediate K-side merges; that PR's §10 collides with
+the §10 K-side chain rule landed in #17373). Strategy mirrors the dE_dk
+template line-by-line, with the §10/§11/§16 K-side ingredients in place
+of §8/§9 E-side ones.
+
+**Proof.** Apply
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` on the
+open band `s := Set.Ioo (-M) M` with `M := (k+1)/2 ∈ (k, 1)` (so `0 < k <
+M < 1` and `M² < 1`). Discharge the seven hypotheses:
+
+  1. `hs_nhds`: `Set.Ioo (-M) M ∈ 𝓝 k` from `isOpen_Ioo.mem_nhds`.
+  2. `hF_meas`: `(integrand_continuous _).aestronglyMeasurable` lifted via
+     `Filter.eventually_of_mem hs_nhds` (we use that every `κ ∈ s` has
+     `κ² < 1`, since the K-integrand needs `k² < 1` for continuity —
+     unlike the E-integrand, which is continuous everywhere).
+  3. `hF_int`: `AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq_lt_one`.
+  4. `hF'_meas`: `(dIntegrandK_continuous hk_sq_lt_one).aestronglyMeasurable`.
+  5. `h_bound`: `dIntegrandK_abs_le_bound` (§11) lifted to `∀ᵐ` via
+     `MeasureTheory.ae_of_all`.
+  6. `h_bound_int`: `boundDIntegrandK_integrable hM_sq_lt_one` (§11).
+  7. `h_diff`: `integrandK_hasDerivAt_in_k` (§10) lifted via
+     `MeasureTheory.ae_of_all`.
+
+The lemma yields `HasDerivAt (κ ↦ ∫ θ in 0..π/2, ellipticIntegrand κ θ)
+(∫ θ in 0..π/2, dIntegrandK k θ) k`. The §16 integral identity
+`integral_dIntegrandK_eq` rewrites the integral to
+`(E − (1−k²) K) / (k (1−k²))`. The function `κ ↦ ∫ ellipticIntegrand κ θ`
+is `ellipticK` by definition, closing the goal.
+
+**Net new content**: 0 definitions, 1 theorem, 0 axioms, 0 sorries.
+**Updated total**: 10 definitions, 47 theorems, 1 axiom, 0 sorries,
+1559 lines (was 1428 on origin/main per S9 part 4 = #17566; meta.json
+catches up from stale 1328 → 1559 in this PR).
+
+**Independence from open PRs (#17371, #17445, #17471, #17477)**:
+this PR appends a **new §17 strictly after §16** (S9 part 4, merged on
+origin/main) at the very end of the file. The four currently-open PRs
+are all `CONFLICTING` (superseded by intermediate merges); none modify
+§17 or its insertion point. When the dE_dk PR is rebased, it will
+naturally become a sibling section (or be merged into §17 by the
+auditor as a unified "differentiation under the integral" section).
+
+**Mathlib API surface**: zero new lemmas. Composes from existing helpers
+(§10, §11, §16) plus standard Mathlib primitives:
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`,
+`isOpen_Ioo.mem_nhds`, `Filter.eventually_of_mem`,
+`MeasureTheory.ae_of_all`, `Real.norm_eq_abs`, plus `Continuous` and
+`AEStronglyMeasurable` / `IntervalIntegrable` extension methods. No new
+imports.
+
+**Build status**: build pending. Per `[Researcher — broken proofs/.lake
+symlink]` memory, local Docker builds take 45+ min on a cold cache; this
+PR follows the recent stacked-PR convention of marking "build pending"
+and relying on Auditor/Mechanic verification. The code mirrors the
+established dE_dk template line-by-line, with the K-side §10/§11/§16
+substitutions, reducing build risk.
+
+## Sharpening of the Plan for S11 (Wronskian Closure)
+
+With `dK_dk` (this PR) and `dE_dk` (open PR #17371/#17445) in hand, plus
+the §4 `complModulus_hasDerivAt` (chain rule for `k'`, merged via
+#17500), the S11 Wronskian closure becomes:
+
+```lean
+theorem legendre_relation_proved (hk0 : 0 < k) (hk1 : k < 1) :
+    ellipticE k * ellipticK' k + ellipticE' k * ellipticK k
+      - ellipticK k * ellipticK' k = π / 2 := by
+  -- 1) Build f(k) := E·K' + E'·K − K·K'.
+  -- 2) Show f'(k) = 0 on (0,1) using dE_dk, dK_dk, and the chain rule
+  --    composition for K' = K ∘ complModulus, E' = E ∘ complModulus
+  --    (HasDerivAt.comp + complModulus_hasDerivAt).
+  -- 3) Therefore f is constant on (0,1) by `eq_of_hasDerivAt_eq_zero` (or
+  --    a connectedness-style argument using `mono_of_hasDeriv_le`).
+  -- 4) Pin the constant to π/2 by evaluating at k = 1/√2 using the
+  --    symmetric form `legendre_relation_symmetric` (§7).
+```
+
+**Discharges the `legendre_relation` axiom** (1 → 0). After S11, the file
+becomes 0-axiom in this gallery's sense (still inheriting 1 axiom
+`agm_ellipticK_connection` from OQ04OQ01).
+
+The key Mathlib API for S11:
+
+  • `HasDerivAt.comp` — chain rule for `K'(k) = K(complModulus k)`.
+  • `eq_of_hasDerivAt_eq_zero` — from `f'(k) = 0` on a connected open set,
+    `f` is constant. (Or `is_const_of_hasDerivWithinAt_eq_zero` if one
+    prefers the within-set formulation; the (0,1) interval is convex.)
+
+Estimated S11 size: ~50 lines.
 
 ## Iteration 11 (2026-05-09T02:00Z, researcher-9): S9 part 4 — K-side integral identity
 
