@@ -92,6 +92,101 @@
       "description": "Open-question file on the Four Color Theorem; the present file's `kempe_prerequisite` is the entry point for the Five Color Theorem upgrade that lies between Six and Four"
     }
   ],
+  "references": [
+    {
+      "authors": ["Leonhard Euler"],
+      "title": "Elementa doctrinae solidorum",
+      "year": 1758,
+      "venue": "Novi Commentarii academiae scientiarum Petropolitanae",
+      "volume": "4",
+      "pages": "109–140",
+      "note": "Original publication of V − E + F = 2 for convex polyhedra. Communicated earlier in Euler's 1750 letter to Christian Goldbach."
+    },
+    {
+      "authors": ["Augustin-Louis Cauchy"],
+      "title": "Recherches sur les polyèdres — premier mémoire",
+      "year": 1813,
+      "venue": "Journal de l'École Polytechnique",
+      "volume": "9 (Cahier 16)",
+      "pages": "68–86",
+      "note": "First rigorous proof: remove one face and flatten the polyhedron into a planar graph. Conceptual ancestor of the SpanningBuild induction formalized here."
+    },
+    {
+      "authors": ["Percy John Heawood"],
+      "title": "Map-colour theorem",
+      "year": 1890,
+      "venue": "Quarterly Journal of Pure and Applied Mathematics",
+      "volume": "24",
+      "pages": "332–338",
+      "note": "Identifies the gap in Kempe's 1879 4-Color proof, salvages the Five Color Theorem, and conjectures the Heawood map-color formula H(g) = ⌊(7+√(1+48g))/2⌋ for higher-genus surfaces."
+    },
+    {
+      "authors": ["Kazimierz Kuratowski"],
+      "title": "Sur le problème des courbes gauches en topologie",
+      "year": 1930,
+      "venue": "Fundamenta Mathematicae",
+      "volume": "15",
+      "pages": "271–283",
+      "note": "Kuratowski's theorem: a graph is non-planar iff it contains K₅ or K₃,₃ as a topological minor. Generalizes the explicit non-planarity certificates proved here."
+    },
+    {
+      "authors": ["Klaus Wagner"],
+      "title": "Über eine Eigenschaft der ebenen Komplexe",
+      "year": 1937,
+      "venue": "Mathematische Annalen",
+      "volume": "114",
+      "pages": "570–590",
+      "doi": "10.1007/BF01594196",
+      "note": "Wagner's theorem (graph-minor restatement of Kuratowski): a graph is planar iff it has no K₅ or K₃,₃ minor."
+    },
+    {
+      "authors": ["Gerhard Ringel", "John W. T. Youngs"],
+      "title": "Solution of the Heawood map-coloring problem",
+      "year": 1968,
+      "venue": "Proceedings of the National Academy of Sciences",
+      "volume": "60(2)",
+      "pages": "438–445",
+      "doi": "10.1073/pnas.60.2.438",
+      "note": "Proves Heawood's map-color conjecture for all g ≥ 1 (the planar g=0 case is the Four Color Theorem, proved separately). Establishes the genus formula g(Kₙ) = ⌈(n-3)(n-4)/12⌉."
+    },
+    {
+      "authors": ["Kenneth Appel", "Wolfgang Haken"],
+      "title": "Every planar map is four colorable",
+      "year": 1976,
+      "venue": "Bulletin of the American Mathematical Society",
+      "volume": "82(5)",
+      "pages": "711–712",
+      "doi": "10.1090/S0002-9904-1976-14122-5",
+      "note": "First proof of the Four Color Theorem. Computer-assisted via 1936 unavoidable configurations and 487 discharging rules."
+    },
+    {
+      "authors": ["Neil Robertson", "Daniel Sanders", "Paul Seymour", "Robin Thomas"],
+      "title": "The four-colour theorem",
+      "year": 1997,
+      "venue": "Journal of Combinatorial Theory, Series B",
+      "volume": "70(1)",
+      "pages": "2–44",
+      "doi": "10.1006/jctb.1997.1750",
+      "note": "Simplified Appel-Haken proof using 633 unavoidable configurations and 32 discharging rules. The version eventually formalized by Gonthier in Coq."
+    },
+    {
+      "authors": ["Georges Gonthier"],
+      "title": "Formal proof — the four-color theorem",
+      "year": 2008,
+      "venue": "Notices of the AMS",
+      "volume": "55(11)",
+      "pages": "1382–1393",
+      "url": "https://www.ams.org/notices/200811/tx081101382p.pdf",
+      "note": "Coq formalization of the Robertson-Sanders-Seymour-Thomas proof. Has not yet been ported to Lean 4 with Mathlib — the Six Color Theorem proved here is the easy degeneracy ancestor."
+    },
+    {
+      "authors": ["Reinhard Diestel"],
+      "title": "Graph Theory",
+      "year": 2017,
+      "venue": "Springer Graduate Texts in Mathematics 173 (5th ed.)",
+      "note": "Standard graduate reference for planar graph theory, degeneracy, genus, and the chromatic-number / Heawood / Kuratowski results consolidated in this formalization."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
@@ -111,34 +206,50 @@
   "sections": [
     {
       "id": "sec-spanning-euler",
-      "title": "Spanning Tree Euler Formula (L1–214)",
+      "title": "Spanning Tree Euler Formula",
       "startLine": 52,
       "endLine": 214,
       "summary": "SpanningBuild inductive type (single, addTreeEdge, addCycleEdge). euler_spanning: V − E + F = 2 by structural induction. buildTree, addCycleEdges, buildPlanarGraph constructors. Platonic solid examples (tetrahedron, cube, octahedron).",
       "mathContext": "A connected planar graph built from a spanning tree: the tree has V vertices, V−1 edges, 1 face. Each non-tree edge adds exactly one new face. After adding k non-tree edges: E = V−1+k, F = 1+k, so V−E+F = 2."
     },
     {
-      "id": "sec-degeneracy-coloring",
-      "title": "Graph Degeneracy and Edge Bounds (L215–500)",
+      "id": "sec-degeneracy-edge-bounds",
+      "title": "Degeneracy and Face-Edge Double Counting",
       "startLine": 215,
-      "endLine": 500,
-      "summary": "planar_five_degenerate: 2E < 6V for planar graphs. exists_low_degree_vertex: using Mathlib handshaking lemma, every planar graph has a vertex of degree ≤ 5. face_edge_double_count: double-counting gives (d−2)E ≤ d(V−2). edge_bound_simple/bipartite/girth6: E ≤ 3V−6, E ≤ 2V−4, 2E ≤ 3V−6.",
-      "mathContext": "Planar graphs satisfy E ≤ 3V − 6 (for V ≥ 3). If all vertices had degree ≥ 6, the handshaking lemma gives 2E ≥ 6V, contradicting the edge bound. So some vertex has degree ≤ 5. Double counting: each edge borders ≤ 2 faces, so if each face has ≥ d boundary edges, dF ≤ 2E."
+      "endLine": 432,
+      "summary": "k-degeneracy and the planar 5-degeneracy theorem (planar_five_degenerate). exists_low_degree_vertex: every planar graph has a vertex of degree ≤ 5 (uses Mathlib handshaking lemma `sum_degrees_eq_twice_card_edges`). face_edge_double_count: (d−2)E ≤ d(V−2) for graphs with face-girth ≥ d. Specializations: edge_bound_simple (E ≤ 3V−6), edge_bound_bipartite (E ≤ 2V−4), edge_bound_girth6 (2E ≤ 3V−6).",
+      "mathContext": "Each edge borders at most 2 faces, so $dF \\leq 2E$ when each face has $\\geq d$ boundary edges. Combined with Euler $V - E + F = 2$ this gives the unified bound $(d-2)E \\leq d(V-2)$. The handshaking lemma $\\sum_v \\deg(v) = 2E$ then forces $\\min_v \\deg(v) \\leq 5$ in any planar graph."
     },
     {
-      "id": "sec-non-planarity-genus",
-      "title": "Non-Planarity and Genus Theory (L435–565)",
+      "id": "sec-non-planarity",
+      "title": "Non-Planarity Certificates (K₅, K₃,₃, Petersen)",
       "startLine": 435,
-      "endLine": 565,
-      "summary": "k5_not_planar (V=5, E=10 exceeds 3V−6=9). k33_not_planar (bipartite, E=9 exceeds 2V−4=8). petersen_not_planar (girth 5, V=10, E=15, F=7, but 5·7>2·15). genus_edge_bound: E ≤ 3(V+2g)−6. min_genus: 6g ≥ E−3V+6. k5_min_genus, k7_min_genus: K₅ and K₇ require genus ≥ 1.",
-      "mathContext": "K₅: V=5, E=10 > 3·5−6=9 → not planar. K₃,₃: bipartite with E=9 > 2·6−4=8 → not planar. Petersen: girth 5, so 5F ≤ 2E=30, F ≤ 6; but Euler gives F=E−V+2=7, contradiction."
+      "endLine": 466,
+      "summary": "k5_not_planar: V=5, E=10 > 3V−6=9. k33_not_planar: bipartite, V=6, E=9 > 2V−4=8. petersen_not_planar: girth 5 → 5F ≤ 2E=30 → F ≤ 6, but Euler forces F=E−V+2=7.",
+      "mathContext": "Three classical non-planarity arguments by edge counting. The Petersen case demonstrates how higher girth tightens the bound: girth $g$ gives $E \\leq \\frac{g}{g-2}(V-2)$, so girth-5 graphs satisfy $E \\leq \\frac{5}{3}(V-2)$. The Petersen graph violates this with $V=10, E=15, \\frac{5}{3} \\cdot 8 = 13.\\overline{3} < 15$."
+    },
+    {
+      "id": "sec-genus-heawood",
+      "title": "Genus Bounds and Heawood Numbers",
+      "startLine": 467,
+      "endLine": 539,
+      "summary": "genus_edge_bound: E ≤ 3(V + 2g) − 6 on a genus-g surface. min_genus: 6g ≥ E − 3V + 6. k5_min_genus and k7_min_genus: K₅ and K₇ require genus ≥ 1. Heawood number H(g) and toroidal degree-7 bound for genus-1 embeddings.",
+      "mathContext": "On a genus-$g$ surface, Euler's formula generalizes to $V - E + F = 2 - 2g$. Combined with $3F \\leq 2E$ this gives $E \\leq 3(V + 2g) - 6$, so $g \\geq \\lceil (E - 3V + 6)/6 \\rceil$. For $K_n$: $g(K_n) = \\lceil (n-3)(n-4)/12 \\rceil$ (Ringel-Youngs 1968). Heawood number $H(g) = \\lfloor (7 + \\sqrt{1+48g})/2 \\rfloor$."
+    },
+    {
+      "id": "sec-connectivity",
+      "title": "Multi-Component Euler and Edge-Addition Effects",
+      "startLine": 540,
+      "endLine": 614,
+      "summary": "Disconnected Euler formula V − E + F = 1 + c (c components). Edge-addition lemmas: adding an inter-component edge reduces c by 1; adding an intra-component edge increases F by 1. Closes the EulerOQ01 namespace.",
+      "mathContext": "For a planar graph with $c$ connected components, $V - E + F = 1 + c$. Adding an edge between two components: $c \\mapsto c - 1$, $E \\mapsto E + 1$, $F$ unchanged — consistent. Adding an intra-component edge creates a cycle: $E \\mapsto E + 1$, $F \\mapsto F + 1$, $c$ unchanged."
     },
     {
       "id": "sec-six-color",
-      "title": "Six Color Theorem via Mathlib Colorable (L616–903)",
-      "startLine": 616,
+      "title": "Six Color Theorem via Mathlib Colorable",
+      "startLine": 615,
       "endLine": 903,
-      "summary": "DegeneracyBuild inductive type. LocalPlanarEmbedding structure with Euler axiom. local_exists_low_degree: degree-5 vertex from embedding + edge bound. six_colorable_small: graphs on ≤ 6 vertices are 6-colorable (Mathlib Colorable). planar_has_low_degree: unified (handles V < 3). kempe_prerequisite: K₅ non-planarity for Five Color Theorem. Coloring bounds for outerplanar, series-parallel, toroidal graphs.",
+      "summary": "DegeneracyBuild inductive type. LocalPlanarEmbedding structure with Euler axiom (self-contained). local_exists_low_degree: degree-5 vertex from embedding + edge bound. six_colorable_small: graphs on ≤ 6 vertices are 6-colorable (Mathlib Colorable). planar_has_low_degree: unified (handles V < 3). kempe_prerequisite: K₅ non-planarity for Five Color Theorem. Coloring bounds for outerplanar, series-parallel, toroidal graphs.",
       "mathContext": "Six Color Theorem: planar graphs are 5-degenerate → (5+1=6)-colorable. Proved by induction: process vertices in degeneracy order; each new vertex has ≤ 5 already-colored neighbors, so one of 6 colors is always free. `six_colorable_small` uses Mathlib's `SimpleGraph.Coloring.mk` for explicit colorings."
     }
   ],
