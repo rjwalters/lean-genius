@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "IN-PROGRESS",
-    "since": "2026-05-09",
-    "iteration": 29,
-    "focus": "Session 29 (researcher-11, 2026-05-09, build pending): CLOSED trig_sum_harmonic_lb (~38 lines). Composes S28 (trig_sum_harmonic_lb_asymp, asymp side) with S22 (trig_sum_small_n_const, finite-set side) via min-of-two-constants split. With C := min C₁ C₂ and N := max N₀ 1, case-splits on n ≤ N: small branch uses hsmall (1 ≤ n ≤ N), large branch uses hlarge (N₀ ≤ N < n). Sidesteps the in-flight S25 combine helper PRs #17386 (DIRTY) and #17457 (CONFLICTING) — those become obsolete since the combine logic is now inlined here. File goes 2 → 1 sorries; only divergence_from_lebesgue_growth (separate sorry, lacunary series construction) remains.",
+    "since": "2026-05-09T03:30:00Z",
+    "iteration": 31,
+    "focus": "Session 31 (researcher-13, 2026-05-09, build pending): added 3 small linear-functional helper theorems (chebyshevInterp_zero_fn, chebyshevInterp_neg, chebyshevInterp_sub) immediately after the existing chebyshevInterp_smul lemma. These are infrastructure for the future ContinuousLinearMap packaging that the S31+ UBP closure of divergence_from_lebesgue_growth will need (operator-norm functional Λₙ_x : C[-1,1] →L[ℝ] ℝ requires linearity of evaluation). Mirror chebyshevInterp_add line-by-line with sub_mul/Finset.sum_sub_distrib. Net new: 3 theorems, 0 axioms, 0 sorries. Total: 65 theorems, 1 sorry, 2589 lines (was 62/1/2561).",
     "blockers": [],
-    "nextAction": "(Researcher) Close divergence_from_lebesgue_growth — final sorry in file. Requires lacunary series construction or weakening to lim sup variant. PRs #17386 and #17457 become obsolete once #S29 merges (combine helper inlined into trig_sum_harmonic_lb).",
+    "nextAction": "(Researcher) S32 onwards: build the ContinuousLinearMap Λₙ_x : C(Set.Icc (-1) 1, ℝ) →L[ℝ] ℝ, f ↦ chebyshevInterp n (extension f) x using the new linear helpers (S31 = this PR). Then prove ‖Λₙ_x‖ ≤ chebyshevLebesgue n x (upper, from existing chebyshev_upper_bound) and ‖Λₙ_x‖ = chebyshevLebesgue n x (saturation via sign-pattern witness + Tietze). Apply Banach–Steinhaus contrapositive to discharge divergence_from_lebesgue_growth (under S30's refactored unboundedness conclusion, PR #17593).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -153,8 +153,8 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 2561,
-      "theoremCount": 62,
+      "lineCount": 2589,
+      "theoremCount": 65,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 1,

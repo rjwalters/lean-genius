@@ -151,6 +151,34 @@ theorem chebyshevInterp_smul (n : ℕ) (c : ℝ) (f : ℝ → ℝ) (x : ℝ) :
   simp_rw [mul_assoc]
   exact (Finset.mul_sum _ _ _).symm
 
+/-- Chebyshev interpolation of the zero function is zero.
+
+    Useful when packaging `chebyshevInterp n · x` as a linear functional
+    `C[-1,1] →L[ℝ] ℝ` (S31 UBP closure prep). -/
+theorem chebyshevInterp_zero_fn (n : ℕ) (x : ℝ) :
+    chebyshevInterp n (fun _ : ℝ => 0) x = 0 := by
+  simp only [chebyshevInterp, lagrangeInterp, zero_mul, Finset.sum_const_zero]
+
+/-- Chebyshev interpolation negates with the negated function.
+
+    Composes `chebyshevInterp_smul` with `c := -1`. Useful for the
+    operator-norm packaging in S31 (UBP closure prep). -/
+theorem chebyshevInterp_neg (n : ℕ) (f : ℝ → ℝ) (x : ℝ) :
+    chebyshevInterp n (fun t => -f t) x = -chebyshevInterp n f x := by
+  simp only [chebyshevInterp, lagrangeInterp, neg_mul, Finset.sum_neg_distrib]
+
+/-- Chebyshev interpolation distributes over subtraction.
+
+    Mirrors `chebyshevInterp_add` with `Finset.sum_sub_distrib` in place
+    of `Finset.sum_add_distrib`. Useful for the linear-functional
+    packaging in S31 (UBP closure prep). -/
+theorem chebyshevInterp_sub (n : ℕ) (f g : ℝ → ℝ) (x : ℝ) :
+    chebyshevInterp n (fun t => f t - g t) x =
+    chebyshevInterp n f x - chebyshevInterp n g x := by
+  simp only [chebyshevInterp, lagrangeInterp]
+  simp_rw [sub_mul]
+  exact Finset.sum_sub_distrib
+
 /-! ## Proved Results: Chebyshev Polynomial Connection -/
 
 /-- **Chebyshev identity**: Tₙ(cos θ) = cos(nθ). -/
