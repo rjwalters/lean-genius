@@ -848,6 +848,42 @@ private lemma rotateSortedList_toMultiset {n c : ℕ} (M : Sym (Fin n) c)
   rw [Multiset.coe_eq_coe.mpr (List.rotate_perm _ k)]
   exact Multiset.sort_eq (· ≤ ·) M.1
 
+/-- **Rotation composition** (S32, this PR): rotating by `j` then by `k`
+    is the same as rotating by `j + k`.
+
+    The structural counterpart of `rotateSortedList_zero` and
+    `rotateSortedList_period` (S31). One-line wrapper around Mathlib's
+    `List.rotate_rotate`; lets future callers freely commute and combine
+    rotation indices. Used downstream in the 2B.4' refined-codomain
+    bijection where rotation indices are accumulated additively. -/
+private lemma rotateSortedList_rotate {n c : ℕ} (M : Sym (Fin n) c)
+    (j k : ℕ) :
+    (rotateSortedList M j).rotate k = rotateSortedList M (j + k) := by
+  unfold rotateSortedList
+  exact List.rotate_rotate _ _ _
+
+/-- **Rotation period (mod form)** (S32, this PR): rotation depends only
+    on the index modulo `c` (the multiset cardinality / sorted-list
+    length).
+
+    Strengthens `rotateSortedList_period` (S31, which handles the special
+    case `k = c`) to the full mod-periodicity statement. Lets the
+    rotation index be canonically chosen in `Fin c` for non-empty
+    multisets — the cycle-lemma structural fact that "the cyclic
+    rotations of `M.1.sort` form a `c`-element orbit", needed for the
+    2B.4' refined-codomain `(P', k) : Sym (a+1) × Fin (a+b)` bijection.
+
+    Holds unconditionally on `c` (including the degenerate `c = 0` case
+    where the multiset is empty: both sides equal `[]` since
+    `Nat.mod_zero k = k` and `[].rotate _ = []`). -/
+private lemma rotateSortedList_mod {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
+    rotateSortedList M (k % c) = rotateSortedList M k := by
+  unfold rotateSortedList
+  have hlen : (M.1.sort (· ≤ ·)).length = c := by
+    rw [Multiset.length_sort, M.2]
+  conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
+  exact List.rotate_mod _ _
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in

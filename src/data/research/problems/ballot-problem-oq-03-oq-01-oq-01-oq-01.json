@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 22,
-    "focus": "ballot_counting_identity remains the only open question gating jdt_weight_sum b≥2; S22 added the totalSym/weight bridge family making the structural reduction one Finset.sum_fiberwise_of_maps_to call away.",
+    "iteration": 32,
+    "focus": "S32 (researcher-5, this PR): rotation-composition lemmas — adds `rotateSortedList_rotate` (composition: rotation by `j+k` decomposes as rotation by `j` then `k`) and `rotateSortedList_mod` (rotation depends only on `k mod c`) on top of S31's rotation infrastructure. Pure Mathlib wrappers around `List.rotate_rotate` and `List.rotate_mod`. Together with S31's `rotateSortedList_*` family, this closes the *algebraic* half of 2B.3' (2B.3' operational half closed by S31), making 2B.4' refined-codomain bijection ready to attempt in S33+.",
     "blockers": [],
-    "nextAction": "S23: Prove ballot_counting_identity via bijection at the multiset level (~150 lines). Once filled, jdt_weight_sum b≥2 follows in ~50–80 lines using the S22 helpers (weight_eq_totalSym, totalSym_eq_iff and primed companions) + Finset.sum_fiberwise_of_maps_to.",
+    "nextAction": "S33: 2B.4' refined-codomain bijection (~50 lines, now ready with S32's `rotateSortedList_rotate` + `rotateSortedList_mod`); or Mathlib-side cycle lemma (~200 lines, mathlib4 PR); or punt to k=3 SSYT (~300 lines RSK / algebraic LGV).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 22 (2026-05-08): Bridge-lemma family for the b≥2 structural reduction. Added weight_eq_totalSym, weight_eq_totalSym^prime (Sym-wrapped weight factorisations), totalSym_eq_iff, totalSym^prime_eq_iff (fiber-membership characterisations as `P.1 + Q.1 = M.1` via Subtype extensionality). Together they collapse the steps (i)+(ii) of the b≥2 reduction onto a single Finset.sum_fiberwise_of_maps_to call (with map (P, Q) ↦ totalSym P Q), with `totalSym_eq_iff` translating that map's fiber predicate into the form ballot_counting_identity already filters on. Updated the inline strategy block in jdt_weight_sum and the docstring of ballot_counting_identity to reference the explicit Mathlib API chain. Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count remained 3 (S22 added no new sorries — only structural helpers).",
+    "progressSummary": "Session 32 (2026-05-09, researcher-5): Two rotation-composition lemmas extending S31's `rotateSortedList` family. `rotateSortedList_rotate (j k : ℕ) : (rotateSortedList M j).rotate k = rotateSortedList M (j + k)` — successive rotations compose by index addition (one-line wrapper around `List.rotate_rotate`). `rotateSortedList_mod (k : ℕ) : rotateSortedList M (k % c) = rotateSortedList M k` — rotation index canonicalizes mod `c` (3-line proof: rewrite `c` to the sorted list's length via `Multiset.length_sort` + `M.2`, then apply `List.rotate_mod`). Together these close the algebraic half of 2B.3' rotation infrastructure (operational half closed by S31), making 2B.4' refined-codomain bijection ready to attempt — the bijection's `(P', k) : Sym (a+1) × Fin (a+b)` codomain needs canonical rotation indices in `Fin c`, which `_mod` provides, and incremental rotation accumulation, which `_rotate` provides. File 1861 → 1897 lines (+36); theorems 43 → 45 (+2); defs 10 unchanged; sorries 2 unchanged; axioms 0 unchanged. Build pending — uses only Mathlib API already exercised by S31. Session 22 (2026-05-08): Bridge-lemma family for the b≥2 structural reduction. Added weight_eq_totalSym, weight_eq_totalSym^prime (Sym-wrapped weight factorisations), totalSym_eq_iff, totalSym^prime_eq_iff (fiber-membership characterisations as `P.1 + Q.1 = M.1` via Subtype extensionality). Together they collapse the steps (i)+(ii) of the b≥2 reduction onto a single Finset.sum_fiberwise_of_maps_to call (with map (P, Q) ↦ totalSym P Q), with `totalSym_eq_iff` translating that map's fiber predicate into the form ballot_counting_identity already filters on. Updated the inline strategy block in jdt_weight_sum and the docstring of ballot_counting_identity to reference the explicit Mathlib API chain. Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count remained 3 (S22 added no new sorries — only structural helpers).",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -192,7 +192,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-08T09:30:00.000Z",
+  "lastUpdate": "2026-05-09T01:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
