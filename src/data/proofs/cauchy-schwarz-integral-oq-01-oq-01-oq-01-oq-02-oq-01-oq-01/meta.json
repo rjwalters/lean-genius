@@ -97,18 +97,26 @@
       "mathContext": "nonempty_of_pos_sum_one proves s is nonempty by contradiction: if s = ∅ then Σ w_i = 0 ≠ 1. power_sum_pos uses Finset.sum_pos with each term being mul_pos (hw i hi) (rpow_pos_of_pos (hz i hi) r)."
     },
     {
-      "id": "main-theorem",
-      "title": "§2: Main Theorem — Power Mean Equality Condition",
+      "id": "main-theorem-statement-and-setup",
+      "title": "§2a: Main Theorem — Statement and Pre-Proof Setup",
       "startLine": 73,
-      "endLine": 180,
-      "summary": "power_mean_eq_iff_all_eq_pos: M_r = M_t iff all z_i equal (0 < r < t). Forward direction by contradiction using strict Jensen; backward direction by substituting common value.",
-      "mathContext": "The proof reduces M_r = M_t to A^(t/r) = B via Real.rpow_mul, then uses StrictConvexOn.map_sum_lt for f(x) = x^(t/r) (strictly convex by strictConvexOn_rpow, since t/r > 1). Injectivity step uses Real.rpow_left_inj."
+      "endLine": 114,
+      "summary": "Theorem statement `power_mean_eq_iff_all_eq_pos` (lines 84-90): for $0 < r < t$, the weighted power mean $M_r$ equals $M_t$ iff all $z_i$ are equal. Pre-proof setup (91-114) introduces the abbreviations `A := Σ w_i z_i^r` and `B := Σ w_i z_i^t`, derives positivity (`hA_pos`, `hB_pos`) and nonnegativity (`hA_nn`, `hB_nn`) via `power_sum_pos`, computes `1 < t/r` (the strict-convexity exponent threshold) by `mul_lt_mul_of_pos_right`, and establishes the two key technical identities used throughout: `hmem` ($z_i^r \\in [0, \\infty)$ for `strictConvexOn_rpow`'s domain) and `h_pow_simp` ($(z_i^r)^{t/r} = z_i^t$ via `rpow_mul`), which lets `B` be re-expressed as $\\sum w_i (z_i^r)^{t/r}$ — the form `StrictConvexOn.map_sum_lt` expects.",
+      "mathContext": "The setup phase converts the equality $M_r = M_t$ from its rpow-laden surface form into the strict-Jensen-ready form. The crucial reformulations: (i) $A^{t/r} = B$ in place of $M_r = M_t$, (ii) $B = \\sum_i w_i (z_i^r)^{t/r}$ via `h_pow_simp`. Once these are in hand, the forward direction is a single application of `StrictConvexOn.map_sum_lt` to the strictly convex $x \\mapsto x^{t/r}$ (strict because $t/r > 1$)."
+    },
+    {
+      "id": "main-theorem-biconditional-proof",
+      "title": "§2b: Main Theorem — Forward and Converse Proofs",
+      "startLine": 115,
+      "endLine": 173,
+      "summary": "Forward direction (115-149): assuming $M_r = M_t$, show all $z_i$ equal. **Step 1** (118-128): rewrite $M_r = M_t$ as $A^{t/r} = B$ using `rpow_mul` chain. **Step 2** (129-145): contradiction proof — if some $z_j^r \\ne z_k^r$, then `StrictConvexOn.map_sum_lt` gives $A^{t/r} < B$, contradicting Step 1. **Step 3** (146-149): upgrade $z_j^r = z_k^r$ to $z_j = z_k$ via `rpow_left_inj` (injectivity of $x \\mapsto x^r$ on $[0, \\infty)$ for $r \\ne 0$). Converse direction (150-173): assuming all $z_i$ equal to some common $z_{i_0}$ (witness from `nonempty_of_pos_sum_one`), substitute to get $A = z_{i_0}^r$ and $B = z_{i_0}^t$, then verify $A^{1/r} = z_{i_0} = B^{1/t}$.",
+      "mathContext": "**Forward**: $A^{t/r} = B$ in Step 1 follows by the calculation $A^{t/r} = (A^{1/r})^t = (M_r)^t = (M_t)^t = (B^{1/t})^t = B$ — the middle equality uses the hypothesis $M_r = M_t$. **Strict Jensen** (Step 2): for $\\phi(x) = x^{t/r}$ strictly convex on $[0, \\infty)$ (since $t/r > 1$), $\\phi(\\sum w_i x_i) \\le \\sum w_i \\phi(x_i)$ with equality iff all $x_i$ equal — applied with $x_i = z_i^r$, the inequality becomes $A^{t/r} \\le B$, with equality iff all $z_i^r$ equal. The contrapositive $\\neg(\\text{all } z_i^r \\text{ equal}) \\Rightarrow A^{t/r} < B$ contradicts Step 1's equality. **rpow injectivity** (Step 3): on $[0, \\infty)$ with exponent $r \\ne 0$, $x^r = y^r \\Leftrightarrow x = y$. **Converse**: when all $z_i$ are the common value $z_{i_0}$, $A = \\sum w_i z_{i_0}^r = z_{i_0}^r \\cdot \\sum w_i = z_{i_0}^r \\cdot 1$, and similarly $B = z_{i_0}^t$, so $A^{1/r} = z_{i_0} = B^{1/t}$."
     },
     {
       "id": "corollaries",
       "title": "§3: Corollaries",
-      "startLine": 181,
-      "endLine": 200,
+      "startLine": 175,
+      "endLine": 205,
       "summary": "am_eq_qm_iff_all_eq: AM = QM iff all equal (r=1, t=2 specialization). am_lt_qm_of_not_all_eq: strict AM < QM when values differ (combining monotonicity and equality condition).",
       "mathContext": "am_eq_qm_iff_all_eq is immediate from the main theorem with r=1, t=2. am_lt_qm_of_not_all_eq combines power_mean_monotone_pos (for ≤) with the negation of am_eq_qm_iff_all_eq (for ≠) via lt_of_le_of_ne."
     }
