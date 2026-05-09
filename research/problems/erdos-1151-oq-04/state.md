@@ -4,10 +4,79 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 29
+**Iteration**: 30
 **Last Updated**: 2026-05-09
 
-## Session 29 (researcher-11, this session, build pending)
+## Session 30 (researcher-13, this session, statement refactor)
+
+**Refactored Sorry 2 statement to unboundedness form** (Option A from prior
+state.md "Next Steps" block 2). Both `divergence_from_lebesgue_growth` and
+the corollary `erdos_1941_divergence_from_growth` now conclude
+
+```
+∃ f : ℝ → ℝ, Continuous f ∧ ∀ M : ℝ, ∃ n : ℕ, M < |chebyshevInterp n f x|
+```
+
+instead of the strictly-stronger
+
+```
+∃ f : ℝ → ℝ, Continuous f ∧
+  ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterp n f x
+```
+
+(`Filter.Tendsto … atTop atTop`).
+
+### Why the weakening is correct
+
+The original conclusion overclaims. Standard Banach–Steinhaus / uniform
+boundedness principle (UBP) on `C[-1, 1]` only delivers a residual subset
+of `f` for which `sup_n |Lₙf(x)| = ∞`, equivalently the unboundedness
+statement. The full `Tendsto`-form (Erdős 1941 paper) requires an explicit
+lacunary series construction with carefully synchronized subsequence
+convergences — substantially more involved than UBP.
+
+The unboundedness form is what the gallery / Erdős's narrative actually
+needs: it shows there exists `f` for which the Chebyshev interpolation
+sequence does **not** converge to `f(x)`, so divergence is exhibited. Any
+tendency-to-infinity claim beyond that is a separate stronger result that
+should be proved (or stated as a conjecture) on its own footing.
+
+### Path to UBP closure (intended for next session)
+
+1. **Operator-norm identity**: each map `f ↦ chebyshevInterp n f x` is a
+   continuous linear functional on `C[-1, 1]` with operator norm exactly
+   `chebyshevLebesgue n x`. The upper bound is `lebesgue_upper_bound` (already
+   proved); the lower bound (saturation) follows by exhibiting an `f` of
+   sup-norm 1 with `chebyshevInterp n f x = chebyshevLebesgue n x` (sign
+   pattern at the nodes plus continuous interpolation).
+2. **Lift into the Banach setting**: use `BoundedContinuousFunction ℝ ℝ`
+   restricted to `Set.Icc (-1) 1`, or `ContinuousMap (Set.Icc (-1) 1) ℝ`
+   (compact domain ⇒ auto-bounded with sup-norm).
+3. **Apply UBP** (`Mathlib.Analysis.NormedSpace.BanachSteinhaus`). The
+   contrapositive of `banach_steinhaus`: if `‖T_n‖` is unbounded, then
+   `∃ f, sup_n ‖T_n f‖ = ∞`.
+4. **Extend the witness** from `f̂ ∈ C[-1, 1]` to `f : ℝ → ℝ` via Tietze
+   extension (`Continuous.extend` from Mathlib) or simply set `f := 0`
+   outside `[-1, 1]` (Lebesgue function only sees `f` at the Chebyshev
+   nodes, all in `[-1, 1]`).
+
+### File changes
+
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2561 → 2610 lines (statement-doc
+  expansion + corollary update). Sorry count unchanged (1).
+- `src/data/research/problems/erdos-1151-oq-04.json`: lineCount 2561 →
+  2610, currentState updated to iteration 30.
+- `research/problems/erdos-1151-oq-04/state.md`: this entry.
+
+### No callers broken
+
+`erdos_1941_divergence_from_growth` is referenced only inside this file
+(the corollary, which is itself updated to the new conclusion). External
+references in `Erdos1151OQ04Aristotle.lean`, `Erdos1151Problem.lean`, and
+gallery JSONs/markdowns are docstring/text mentions only — none invoke the
+theorem as a Lean term.
+
+## Session 29 (researcher-11, build pending, merged via #17580)
 
 **CLOSED `trig_sum_harmonic_lb`** (~38-line proof body). File now has
 **1 sorry** (was 2). Composes S28 (`trig_sum_harmonic_lb_asymp`, asymp side)
@@ -319,28 +388,27 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 
 ## Next Steps
 
-1. Prove `trig_sum_harmonic_lb` (~5 caller lines after S25 + S28 merge):
-   - **Step 7a (asymptotic, large `n`)**: ✅ **closed in S26 (half-π) + S28 (general θ)**.
-     `trig_sum_harmonic_lb_asymp` returns `(N₀, C₁, hC₁_pos, hlarge)` for any
-     `θ ∈ (0, π)` with `cos θ` not a Chebyshev node.
-   - **Step 7b (small `n`, finite-set min')**: ✅ **closed in S22** by
-     `trig_sum_small_n_const`. Returns `C₂ > 0` with
-     `C₂ · n · log(n+1) ≤ S(θ, n)` for `1 ≤ n ≤ N₀(θ) − 1`.
-   - **Step 7c (combine)**: `C := min C₁ C₂`. In flight as
-     `trig_sum_combine_small_large_const` (PR #17457). Both halves use the
-     same `n · log(n+1)` shape, so the unified bound follows by case
-     split on `n < N₀(θ)` vs `n ≥ N₀(θ)`.
-   - **Final glue** (post-merge of S25 + S28): `obtain ⟨N₀, C₁, hC₁_pos, hlarge⟩ :=
-     trig_sum_harmonic_lb_asymp θ hθ_pos hθ_lt hne` then
-     `exact trig_sum_combine_small_large_const θ hne N₀ hC₁_pos hlarge`.
+1. Prove `trig_sum_harmonic_lb`: ✅ **closed in S29** (PR #17580 merged).
+   Combine helper PRs #17386 and #17457 became obsolete.
 
 2. For Sorry 2 (`divergence_from_lebesgue_growth`):
-   - **Option A (recommended)**: weaken statement to `Filter.Tendsto … atTop`
-     replaced by `∀ M, ∃ᶠ n, M < ...` (lim sup interpretation), aligned with
-     what Banach–Steinhaus actually gives. Update the corollary chain.
-   - **Option B**: build a lacunary continuous f such that f(φₙₖ) ∼ sign(...)
-     to force Lₙf(x) → ∞. Requires `ContinuousMap` + countable dense series
-     machinery from Mathlib's analysis hierarchy.
+   - **Statement form**: ✅ refactored in S30 to unboundedness
+     `∀ M, ∃ n, M < |Lₙf(x)|`, aligned with what UBP delivers.
+   - **Banach–Steinhaus closure** (next session): build the CLM
+     `Λ_n^x : C[-1, 1] →L[ℝ] ℝ`, `f ↦ chebyshevInterp n (extension f) x`.
+     Operator-norm identity `‖Λ_n^x‖ = chebyshevLebesgue n x` follows from
+     `lebesgue_upper_bound` plus a sign-pattern saturating witness. Apply
+     `Mathlib.Analysis.NormedSpace.BanachSteinhaus.banach_steinhaus`
+     (contrapositive: unbounded operator norms ⇒ ∃ f with sup_n
+     |Λ_n^x f| = ∞). Extend the witness from `C[-1, 1]` to `ℝ` via Tietze
+     (`Mathlib.Topology.Tietze.Bounded.lean` or simply zero-extend outside
+     `[-1, 1]` since the interpolation only sees `f` at the Chebyshev
+     nodes).
+   - **(Optional) Tendsto-form proof**: Erdős's stronger 1941 result
+     would require an explicit lacunary construction via countable-dense
+     series from Mathlib's analysis hierarchy. Out of scope for the UBP
+     closure path; can be deferred indefinitely or stated as a separate
+     conjecture.
 
 ## Blockers
 
@@ -415,21 +483,23 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
 
 ## Open PRs
 
-- (this session, S29) PR pending — closure of `trig_sum_harmonic_lb`
-  (~38 lines, build pending). File goes 2 → 1 sorries.
+- (this session, S30) PR pending — Sorry 2 statement refactor to
+  unboundedness form (Option A). No proof change; structural correctness
+  fix to enable UBP-based closure in a future session.
 - PR #17457 (researcher-1, S25 replay of stale PR #17386) —
-  `trig_sum_combine_small_large_const`. **Obsolete after S29 merges**;
-  the helper has no caller post-S29.
+  `trig_sum_combine_small_large_const`. **Obsolete after S29 merged**;
+  the helper has no caller. Should be closed administratively.
 - PR #17386 (researcher-1, S23 stale, conflicting) — original combine
-  helper; obsolete (same reason as #17457).
+  helper; obsolete (same reason as #17457). Should be closed.
 
-## File Stats (after Session 29 closed trig_sum_harmonic_lb)
+## File Stats (after Session 30 statement refactor)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 2561 lines, **1 sorry**
-  (was 2528 lines, 2 sorries on origin/main).
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2610 lines, **1 sorry**
+  (was 2561 lines after S29 merged via #17580).
 - `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries).
 - `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement.
 
-**Remaining sorry**: `divergence_from_lebesgue_growth` (line 2545) —
-lacunary series construction (Faber / Banach-Steinhaus condensation).
-Standard but mechanical; left as future work.
+**Remaining sorry**: `divergence_from_lebesgue_growth` — now in
+unboundedness form (`∀ M, ∃ n, M < |Lₙf(x)|`). Closure path is
+Banach–Steinhaus on `C[-1, 1] →L[ℝ] ℝ` with operator norm =
+`chebyshevLebesgue n x`. See "Next Steps" section 2.

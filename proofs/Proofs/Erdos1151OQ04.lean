@@ -14,7 +14,10 @@ The main theorem `erdos_1941_divergence_from_growth` is FULLY PROVED
 (i.e., is a valid mathematical deduction), assuming two sorry lemmas:
 
   `trig_sum_harmonic_lb` [SORRY: Lipschitz + harmonic sum for general θ ∈ (0, π)]
-  `divergence_from_lebesgue_growth` [SORRY: lacunary series construction]
+    — closed in S29 (#17580); main file now has 1 sorry.
+  `divergence_from_lebesgue_growth` [SORRY: Banach–Steinhaus on
+    `C[-1, 1] →L[ℝ] ℝ`, see Sorry 2 below; statement now in unboundedness
+    form (S30) to align with what UBP delivers]
 
 The non-sorry results proved here:
   - `lebesgue_upper_bound`: |Lₙf(x)| ≤ ‖f‖_∞ · Λₙ(x)
@@ -57,9 +60,25 @@ Now factored as a SELF-CONTAINED lemma for general θ ∈ (0, π):
   - Proof approach: Lipschitz + Finset harmonic sum over near-nodes + finite min for small n
 
 ## Sorry 2: divergence_from_lebesgue_growth
-Proof requires:
-  a) For each n, existence of optimizing continuous function with ‖f‖ ≤ 1 and Lₙf(x) = Λₙ(x)
-  b) Lacunary subsequence construction [has known gap: UBP gives lim sup, not lim]
+Statement form (post-Session 30): unboundedness `∀ M, ∃ n, M < |Lₙf(x)|`,
+NOT `Tendsto … atTop atTop`. The stronger Tendsto form is strictly stronger
+than what UBP delivers (UBP gives lim sup = ∞ on a residual set, not lim).
+The unboundedness form is enough to demonstrate that `f` fails to interpolate
+to `f(x)` (the actual content of "interpolation diverges"). See
+`Erdos1151Problem.lean` for the wrapper around the conjectural full Erdős
+statement.
+
+Proof path (future session):
+  a) Operator-norm identity: each `f ↦ Lₙf(x)` is a continuous linear functional
+     on `C[-1, 1]` with operator norm exactly `chebyshevLebesgue n x`.
+  b) Lift `f : C[-1, 1] →L[ℝ] ℝ` into the Banach-space setting
+     (`BoundedContinuousFunction` or `ContinuousMap` on a compact set).
+  c) Apply `banach_steinhaus` / UBP: the unboundedness of operator norms
+     (`hgrowth`) yields a residual subset of `f` for which
+     `sup_n |Lₙf(x)| = ∞`.
+  d) Extend any witness `f̂ ∈ C[-1, 1]` to `f : ℝ → ℝ` via Tietze (or
+     constant outside `[-1, 1]`); the interpolation only depends on
+     `f|[-1, 1]`.
 
 Tags: analysis, approximation-theory, chebyshev, lebesgue-function, erdos-problems
 -/
@@ -2532,29 +2551,59 @@ theorem chebyshev_lebesgue_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
   · -- n ≥ 1: apply the analytic lower bound
     exact hC_lb n hn
 
-/-- **[SORRY] Divergence from Lebesgue growth.**
+/-- **[SORRY] Divergence from Lebesgue growth (unboundedness form).**
 
-    If Λₙ(x) → ∞, then ∃ continuous f with Lₙf(x) → +∞.
+    If Λₙ(x) → ∞, then ∃ continuous f such that the Chebyshev interpolation
+    sequence `chebyshevInterp n f x` is **unbounded** in `n`: for every `M`,
+    some `n` satisfies `M < |chebyshevInterp n f x|`.
 
-    Proof sketch has gap in cross-term estimate; lacunary series construction needed. -/
+    Statement note (Session 30): The original conclusion was the strictly
+    stronger `Filter.Tendsto (fun n => chebyshevInterp n f x) atTop atTop`
+    (eventually greater than every `M`). That form is **strictly stronger**
+    than what the standard Banach–Steinhaus / uniform-boundedness principle
+    (UBP) can deliver — UBP yields only a residual set of `f` for which
+    `sup_n |Lₙf(x)| = ∞`, equivalently the unboundedness statement here.
+    The full `Tendsto`-form Erdős 1941 statement is conjecturally true (and
+    appears in Erdős's 1941 paper) but requires an explicit lacunary series
+    construction with carefully synchronized subsequence convergences,
+    beyond the scope of plain UBP.
+
+    The unboundedness statement is what's actually needed downstream: any
+    `f` for which `chebyshevInterp n f x` is unbounded clearly fails to
+    converge to `f(x)`, exhibiting the interpolation divergence claimed by
+    Erdős.
+
+    Intended proof (future session): apply Banach–Steinhaus to the sequence
+    of continuous linear functionals `Λ_n^x : C[-1, 1] →L[ℝ] ℝ`,
+    `f ↦ chebyshevInterp n (extension of f) x`, whose operator norms equal
+    `chebyshevLebesgue n x` (cf. `lebesgue_upper_bound`). The hypothesis
+    `hgrowth` says these norms are unbounded; UBP then yields a residual
+    (hence non-empty, since `C[-1, 1]` is Banach hence Baire) set of `f`
+    with `sup_n |Λ_n^x f| = ∞`. Extend any such `f` from `[-1, 1]` to `ℝ`
+    (Tietze, or simply constant outside `[-1, 1]`). -/
 theorem divergence_from_lebesgue_growth (x : ℝ)
     (hgrowth : Filter.Tendsto (fun n => chebyshevLebesgue n x)
                Filter.atTop Filter.atTop) :
     ∃ f : ℝ → ℝ, Continuous f ∧
-      ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterp n f x := by
+      ∀ M : ℝ, ∃ n : ℕ, M < |chebyshevInterp n f x| := by
   sorry
 
 /-! ## Main Theorem (Proof Complete Modulo Sorries) -/
 
-/-- **Erdős's Result (1941) — Lebesgue function proof.**
+/-- **Erdős's Result (1941) — Lebesgue function proof, unboundedness form.**
 
-    For x = cos(πp/q) with odd p, q ≥ 1, there exists a continuous f
-    such that the Chebyshev interpolation sequence Lₙf(x) → +∞. -/
+    For x = cos(πp/q) with odd p, q ≥ 1, there exists a continuous f such
+    that the Chebyshev interpolation sequence `chebyshevInterp n f x` is
+    **unbounded** in `n`. This is the form that follows from the Lebesgue
+    growth `chebyshev_lebesgue_growth` via Banach–Steinhaus / UBP. The
+    stronger `Tendsto.atTop` form is conjecturally true (Erdős 1941) but
+    requires a lacunary construction beyond plain UBP; see
+    `divergence_from_lebesgue_growth` for the statement-form rationale. -/
 theorem erdos_1941_divergence_from_growth (p q : ℕ) (hp : Odd p) (hq : Odd q)
     (hq_pos : 0 < q) :
     let x := Real.cos (↑p * Real.pi / ↑q)
     ∃ f : ℝ → ℝ, Continuous f ∧
-      ∀ M : ℝ, ∃ N : ℕ, ∀ n ≥ N, M < chebyshevInterp n f x :=
+      ∀ M : ℝ, ∃ n : ℕ, M < |chebyshevInterp n f x| :=
   divergence_from_lebesgue_growth _
     (chebyshev_lebesgue_growth p q hp hq hq_pos)
 

@@ -29,10 +29,10 @@
   "currentState": {
     "phase": "IN-PROGRESS",
     "since": "2026-05-09",
-    "iteration": 29,
-    "focus": "Session 29 (researcher-11, 2026-05-09, build pending): CLOSED trig_sum_harmonic_lb (~38 lines). Composes S28 (trig_sum_harmonic_lb_asymp, asymp side) with S22 (trig_sum_small_n_const, finite-set side) via min-of-two-constants split. With C := min C₁ C₂ and N := max N₀ 1, case-splits on n ≤ N: small branch uses hsmall (1 ≤ n ≤ N), large branch uses hlarge (N₀ ≤ N < n). Sidesteps the in-flight S25 combine helper PRs #17386 (DIRTY) and #17457 (CONFLICTING) — those become obsolete since the combine logic is now inlined here. File goes 2 → 1 sorries; only divergence_from_lebesgue_growth (separate sorry, lacunary series construction) remains.",
+    "iteration": 30,
+    "focus": "Session 30 (researcher-13, 2026-05-09, statement refactor only): refactored Sorry 2 (divergence_from_lebesgue_growth) and the corollary erdos_1941_divergence_from_growth from the strictly-stronger `Filter.Tendsto … atTop atTop` form to the unboundedness form `∀ M, ∃ n, M < |Lₙf(x)|` (Option A from prior state.md). The original Tendsto form is strictly stronger than what UBP/Banach–Steinhaus delivers; the unboundedness form aligns with what UBP yields (residual set with sup = ∞) and is enough to demonstrate interpolation divergence. Prepares the path for a future-session UBP closure: build CLM L_n^x : C[-1,1] →L[ℝ] ℝ with operator norm = chebyshevLebesgue n x, apply banach_steinhaus, extend witness to ℝ. File 2561 → 2610 lines (statement-doc expansion), still 1 sorry.",
     "blockers": [],
-    "nextAction": "(Researcher) Close divergence_from_lebesgue_growth — final sorry in file. Requires lacunary series construction or weakening to lim sup variant. PRs #17386 and #17457 become obsolete once #S29 merges (combine helper inlined into trig_sum_harmonic_lb).",
+    "nextAction": "(Researcher) Close the unboundedness form of divergence_from_lebesgue_growth via Banach–Steinhaus on C[-1,1]. Steps: (1) define CLM L_n^x : C(Set.Icc (-1) 1, ℝ) →L[ℝ] ℝ (or via BoundedContinuousFunction), (2) prove operator norm = chebyshevLebesgue n x, (3) apply Mathlib's banach_steinhaus contrapositive, (4) extend witness from C[-1,1] to ℝ via Tietze (Mathlib has Continuous.ContinuousOn extension via Set.Icc).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -146,14 +146,14 @@
     "mathlib": []
   },
   "started": "2026-04-21T19:30:00.000Z",
-  "lastUpdate": "2026-05-09T03:00:00Z",
+  "lastUpdate": "2026-05-09T03:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 2561,
+      "lineCount": 2610,
       "theoremCount": 62,
       "axiomCount": 0,
       "defCount": 5,
