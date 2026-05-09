@@ -574,6 +574,60 @@ theorem primorial_le_lcmRange (n : ℕ) :
     simp [primorial, lcmRange_zero]
   exact Nat.le_of_dvd (lcmRange_pos n hn) (primorial_dvd_lcmRange n)
 
+/-- **Chebyshev decomposition factored through primorial** (Iter 16):
+
+      `lcmRange n = primorial n · ∏_{p prime ≤ n} p^(⌊log_p n⌋ - 1)`.
+
+    A refinement of Iter 15's `primorial_dvd_lcmRange` from divisibility
+    to an explicit equality. Decomposes `lcmRange n` as the primorial
+    (`∏ p` over primes `p ≤ n`) times the **correction factor**
+    `∏ p^(⌊log_p n⌋ - 1)`, capturing the "extra" prime-power content
+    beyond the bare primorial. The factorization is well-defined because
+    every prime `p ≤ n` contributes `Nat.log p n ≥ 1` (via `Nat.log_pos`),
+    so the truncated subtraction `Nat.log p n - 1` faithfully represents
+    the residual exponent.
+
+    Concrete numerics:
+
+    | n   | primorial(n) | correction          | lcmRange(n) |
+    | --- | ------------ | ------------------- | ----------- |
+    | 4   | 6            | 2  (= 2¹)           | 12          |
+    | 9   | 210          | 12 (= 2² · 3¹)      | 2520        |
+    | 10  | 210          | 12 (= 2² · 3¹)      | 2520        |
+    | 20  | 9699690      | 24 (= 2³ · 3¹)      | 232792560   |
+
+    Strategic value: combined with Mathlib's `Nat.primorial_le_4_pow`
+    (`primorial n ≤ 4^n`), this isolates the asymptotic challenge into
+    the correction factor — bounding the correction by a Chebyshev-style
+    small-prime estimate would yield Hanson's `≤ 3^n` via the
+    multiplicative split (since `(3/4)^n · 4^n = 3^n`). Concretely, the
+    correction factor only "sees" primes `p ≤ √n` (because `p > √n` ⇒
+    `Nat.log p n ≤ 1` ⇒ exponent `0` ⇒ factor `1`), which is the
+    classical Chebyshev observation reducing the bound to
+    `O(2^√n)`-style estimates on small primes.
+
+    Proof: chain `lcmRange_eq_prod_prime_powers` (Iter 9) with
+    `Finset.prod_mul_distrib` to combine the primorial product with the
+    correction product, then use `pow_succ'` and `Nat.sub_add_cancel`
+    pointwise to factor `p^(log_p n) = p · p^(log_p n - 1)` (valid
+    because `Nat.log_pos` gives `log_p n ≥ 1`). -/
+theorem lcmRange_eq_primorial_mul_prod_prime_pow_pred (n : ℕ) :
+    lcmRange n = primorial n *
+      ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime,
+        p ^ (Nat.log p n - 1) := by
+  unfold primorial
+  rw [lcmRange_eq_prod_prime_powers, ← Finset.prod_mul_distrib]
+  apply Finset.prod_congr rfl
+  intro p hp
+  rw [Finset.mem_filter, Finset.mem_range] at hp
+  have hp_prime := hp.2
+  have hp_le_n : p ≤ n := by omega
+  have h_log_pos : 0 < Nat.log p n :=
+    Nat.log_pos hp_prime.one_lt hp_le_n
+  -- Goal (pointwise): p ^ Nat.log p n = p * p ^ (Nat.log p n - 1).
+  conv_lhs => rw [← Nat.sub_add_cancel h_log_pos]
+  rw [pow_succ']
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound

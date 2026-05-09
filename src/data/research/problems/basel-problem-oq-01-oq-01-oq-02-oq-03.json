@@ -31,7 +31,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T20:50:00Z",
-    "iteration": 9,
+    "iteration": 16,
     "focus": "Building structural lemma library toward prime-power decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}. Iteration 2 (#16704 merged) added lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange — any positive base power b^k ≤ n divides lcmRange n. Iteration 5 (#17021 merged) specialized to the prime case: prime_pow_dvd_lcmRange. Iteration 6 (#17128 merged) added pairwise-coprimality of distinct prime-power factors: coprime_prime_pow_pow_of_ne. Iteration 7 (this PR) closes the **easy direction of Chebyshev's decomposition**: prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^⌊log_p n⌋) ∣ lcmRange n. Adds the helper prod_dvd_of_pairwise_coprime (Finset induction packaging) which combines Nat.Coprime.prod_right and Nat.Coprime.mul_dvd_of_dvd_of_dvd. The reverse direction (lcmRange ∣ prod) — needing Nat.factorization — is the next structural target.",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
@@ -45,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 9). Iter 9 (researcher-5, this session): added lcmRange_eq_prod_prime_powers — Chebyshev's prime-power decomposition equality (lcmRange n = ∏ p prime ≤ n, p^(Nat.log p n)) as the antisymmetric combination of Iter 7's prod_prime_powers_dvd_lcmRange (forward) and Iter 8's lcmRange_dvd_prod_prime_powers (reverse). Two-line proof via Nat.dvd_antisymm. With this equality, Hanson's bound lcmRange n ≤ 3^n reduces to a Chebyshev-type prime-counting inequality on ∑_{p ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3. File 405 → 421 lines (+16). Theorems 34 → 35 (+1). Defs 1 unchanged. Axioms 1 unchanged (only hanson_bound). Sorries 0 unchanged. Status axiomatized unchanged. Build status: pending.",
+    "progressSummary": "ITERATING (iter 16). Iter 16 (researcher-5, this session): added lcmRange_eq_primorial_mul_prod_prime_pow_pred — refines Iter 15's primorial_dvd_lcmRange (#17559) from divisibility to an explicit equality lcmRange n = primorial n * ∏_{p prime ≤ n} p^(⌊log_p n⌋ - 1). Decomposes lcmRange as the primorial times a correction factor; combined with Mathlib's primorial_le_4_pow, isolates the asymptotic challenge into the correction factor (which only sees primes p ≤ √n since p > √n implies log_p n ≤ 1). Proof: lcmRange_eq_prod_prime_powers + Finset.prod_mul_distrib + pointwise pow_succ' / Nat.sub_add_cancel. File 703 → 757 lines (+54). Theorems 45 → 46 (+1). Defs 1 unchanged. Axioms 1 unchanged (only hanson_bound). Sorries 0 unchanged. Status axiomatized unchanged. Build status: pending.",
     "builtItems": [
       "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:80",
       "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:87-98",
@@ -65,7 +65,8 @@
       "lcmRange_5/10/15/20_eq: concrete OEIS values 60, 2520, 360360, 232792560",
       "hanson_bound (axiom): the open target ∀ n, lcmRange n ≤ 3^n",
       "hanson_strictly_stronger_than_factorial: 3^n < n^n for n ≥ 4",
-      "Theorem lcmRange_eq_prod_prime_powers: lcm(1,...,n) = ∏ p prime ≤ n, p^Nat.log p n in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 9). Two-line proof: Nat.dvd_antisymm of lcmRange_dvd_prod_prime_powers and prod_prime_powers_dvd_lcmRange. Closes Chebyshev decomposition started in iters 7-8."
+      "Theorem lcmRange_eq_prod_prime_powers: lcm(1,...,n) = ∏ p prime ≤ n, p^Nat.log p n in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 9). Two-line proof: Nat.dvd_antisymm of lcmRange_dvd_prod_prime_powers and prod_prime_powers_dvd_lcmRange. Closes Chebyshev decomposition started in iters 7-8.",
+      "Theorem lcmRange_eq_primorial_mul_prod_prime_pow_pred: lcm(1,...,n) = primorial n * ∏ p prime ≤ n, p^(Nat.log p n - 1) in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 16, this PR). Refines iter 15's primorial_dvd_lcmRange (#17559) from divisibility to explicit equality, factoring lcmRange as the primorial times a correction factor that only sees primes p ≤ √n (since p > √n ⇒ Nat.log p n ≤ 1 ⇒ exponent 0). Combined with Mathlib's primorial_le_4_pow, isolates the asymptotic challenge into the correction factor — bounding it by Chebyshev-style small-prime estimates would yield Hanson's 3^n via (3/4)^n · 4^n = 3^n. Proof: lcmRange_eq_prod_prime_powers + Finset.prod_mul_distrib + pointwise pow_succ' / Nat.sub_add_cancel."
     ],
     "insights": [
       "Apéry's proof of ζ(3) irrationality requires the exact constant 3 (threshold c ≈ 3.245); the easier 4^n is insufficient.",
@@ -131,7 +132,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-08",
+  "lastUpdate": "2026-05-09",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [

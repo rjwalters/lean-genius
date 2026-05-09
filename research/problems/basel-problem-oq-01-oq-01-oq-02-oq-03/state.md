@@ -4,14 +4,62 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-09 (Iteration 15, researcher-10)
-**Iteration**: 15
+**Last Updated**: 2026-05-09 (Iteration 16, researcher-5)
+**Iteration**: 16
 
 ## Current Focus
-Iteration 15 (2026-05-09, this PR): **primorial → lcmRange divisibility
-bridge**. Adds two new theorems wiring Mathlib's
-`NumberTheory.Primorial` API to the file's `lcmRange`, supplying the
-**lower-bound side** of the bridge sketched in the file header
+
+Iteration 16 (2026-05-09, this PR, researcher-5): **primorial-correction
+factorization** — refines Iter 15's `primorial_dvd_lcmRange` from a
+divisibility statement to an explicit equality. New theorem:
+
+* `lcmRange_eq_primorial_mul_prod_prime_pow_pred (n : ℕ) :
+    lcmRange n = primorial n *
+      ∏ p ∈ filter Prime (range (n + 1)), p ^ (Nat.log p n - 1)` —
+  decomposes `lcmRange n` as the primorial times the **correction
+  factor** `∏ p^(⌊log_p n⌋ - 1)`. Proof: chain Iter 9's
+  `lcmRange_eq_prod_prime_powers` with `Finset.prod_mul_distrib`, then
+  factor `p^(log_p n) = p · p^(log_p n - 1)` pointwise via `pow_succ'`
+  and `Nat.sub_add_cancel` (using `Nat.log_pos` to ensure
+  `log_p n ≥ 1` for every `p ≤ n`).
+
+**Strategic value**: combined with Mathlib's `Nat.primorial_le_4_pow`
+(`primorial n ≤ 4^n`), this isolates the asymptotic challenge into the
+*correction factor*. Bounding the correction by a Chebyshev-style
+small-prime estimate would yield Hanson's `≤ 3^n` via the multiplicative
+split (since `(3/4)^n · 4^n = 3^n`). The correction factor only "sees"
+primes `p ≤ √n` (because `p > √n` ⇒ `Nat.log p n ≤ 1` ⇒ exponent `0` ⇒
+factor `1`), reducing the asymptotic challenge to the classical
+Chebyshev `O(2^√n)`-style estimate on small-prime contributions.
+
+**File delta**: +54 lines (703 → 757), +1 theorem (45 → 46). Defs/sorries/
+axiomCount unchanged. Build pending — proof body uses only Mathlib API
+already exercised by Iters 7–15 (`Finset.prod_mul_distrib`,
+`Finset.prod_congr`, `Nat.log_pos`, `Nat.sub_add_cancel`, `pow_succ'`).
+
+### Iteration 15 (background, two parallel PRs)
+
+The previous iteration was tracked under "Iter 15" but split into two
+independent threads:
+
+* `#17559` (researcher-10, **merged**, this branch's base): primorial →
+  lcmRange divisibility bridge. Adds `primorial_dvd_lcmRange` and
+  `primorial_le_lcmRange` (lower-bound side
+  `primorial(n) ≤ lcm(1..n)`).
+* `#17551` (researcher-1, open, parallel): doubly-sharpened
+  prime-counting bound `π(n) ≤ n - 2` for `n ≥ 4`, yielding
+  `lcmRange n ≤ n^(n-2)` (Iter 14's `n^(n-1)` improved by erasing the
+  smallest even composite from the prime filter).
+
+Iter 16 (this PR) builds on the **merged** Iter 15 (#17559); it does not
+overlap with the open `n^(n-2)` bound of #17551 and so does not depend
+on its merge order.
+
+#### Background on Iter 15 (#17559, the divisibility bridge merged into base)
+
+Two new theorems wire Mathlib's `NumberTheory.Primorial` API to the
+file's `lcmRange`, supplying the **lower-bound side** of the bridge
+sketched in the file header
 (`primorial(n) ≤ lcm(1..n) ≤ n · primorial(n)`):
 
 * `primorial_dvd_lcmRange (n : ℕ) : primorial n ∣ lcmRange n` —
