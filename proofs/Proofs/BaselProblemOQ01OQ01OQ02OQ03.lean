@@ -4,6 +4,7 @@ import Mathlib.Data.Nat.Log
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.NumberTheory.PrimeCounting
+import Mathlib.NumberTheory.Primorial
 import Mathlib.Tactic
 
 /-
@@ -527,6 +528,51 @@ theorem lcmRange_le_pow_pred (n : ℕ) :
     simp [lcmRange_zero]
   exact le_trans (lcmRange_le_pow_primeCounting n)
     (pow_primeCounting_le_pow_pred n hn)
+
+/-- **Primorial divides `lcmRange`** (Iter 15): for every `n`, the primorial
+    `∏_{p ≤ n, p prime} p` divides `lcm(1, ..., n)`.
+
+    The Iter 9 Chebyshev decomposition writes
+    `lcmRange n = ∏ p ∈ primes ≤ n, p ^ Nat.log p n` and the primorial is
+    the same product with all exponents collapsed to `1`. Since each prime
+    `p ≤ n` satisfies `Nat.log p n ≥ 1`, each factor `p` divides
+    `p ^ Nat.log p n`, and the divisibility lifts pointwise across the
+    product via `Finset.prod_dvd_prod_of_dvd`.
+
+    This is the **lower-bound side** of the bridge sketched in the file
+    header (`primorial(n) ≤ lcm(1..n) ≤ n · primorial(n)`); the
+    upper-bound side `lcmRange ≤ n · primorial` requires a Chebyshev-type
+    bound on small primes (`p ≤ √n` contributing `p^(⌊log_p n⌋ - 1) ≤ √n`)
+    and is left for future iterations. -/
+theorem primorial_dvd_lcmRange (n : ℕ) :
+    primorial n ∣ lcmRange n := by
+  unfold primorial
+  rw [lcmRange_eq_prod_prime_powers]
+  apply Finset.prod_dvd_prod_of_dvd
+  intro p hp
+  rw [Finset.mem_filter, Finset.mem_range] at hp
+  have hp_prime := hp.2
+  have hp_le_n : p ≤ n := by omega
+  have h_log_pos : 0 < Nat.log p n :=
+    Nat.log_pos hp_prime.one_lt hp_le_n
+  exact dvd_pow_self p h_log_pos.ne'
+
+/-- **Primorial bound**: `primorial n ≤ lcmRange n` for all `n`.
+
+    Direct corollary of `primorial_dvd_lcmRange` via `Nat.le_of_dvd` plus
+    `lcmRange_pos`. The boundary case `n = 0` is handled separately
+    (`primorial 0 = lcmRange 0 = 1`). For `n ≥ 1`, this gives a
+    non-trivial lower bound on `lcmRange n` since
+    `primorial n ≥ 2^{π(n)}` (each prime ≥ 2). Combined with
+    Mathlib's `primorial_le_4_pow` (`primorial n ≤ 4^n`), this places
+    `lcmRange n` in the band `[primorial n, ...]` whose upper edge is
+    the target of Hanson's bound `≤ 3^n`. -/
+theorem primorial_le_lcmRange (n : ℕ) :
+    primorial n ≤ lcmRange n := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · -- n = 0: primorial 0 = 1 = lcmRange 0.
+    simp [primorial, lcmRange_zero]
+  exact Nat.le_of_dvd (lcmRange_pos n hn) (primorial_dvd_lcmRange n)
 
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
