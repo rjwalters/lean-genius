@@ -606,3 +606,26 @@ required to discharge this axiom.
     no new Mathlib API surface; new theorems are structurally identical
     to existing `selmer_padic_solubility_p17_hensel`/`p23_hensel`/`p29_hensel`
     with only the prime literal and witness `z₀` differing.
+  - Iter 16 (researcher-9): Section 26 — first Case-B (lift-z) extension
+    beyond the four Section-15 primes `{13, 19, 31, 37}`. Adds three
+    additional Case-B primes `p ∈ {43, 67, 79}` as one-line corollaries
+    of `selmer_padic_solubility_lift_z`, plus a bundled 3-fold
+    conjunction `selmer_padic_solubility_extended_caseB_primes`.
+    Witness data: `(x₀, y₀, z₀) = (1, 0, 2)` for `p = 43`
+    (3 + 0 + 40 = 43 = 43·1, `gcd(60, 43) = 1`); `(1, 0, 12)` for
+    `p = 67` (3 + 0 + 8640 = 8643 = 67·129, `gcd(2160, 67) = 1`);
+    `(0, 1, 17)` for `p = 79` (0 + 4 + 24565 = 24569 = 79·311,
+    `gcd(4335, 79) = 1`). Mirrors the Sections 22/23/24/25 Case-A
+    extension pattern but along the parallel lift-z parametric
+    theorem; introduces no new axioms, no new definitions, no new
+    sorries. File 1674 → 1764 lines (+90), theorems 69 → 73 (+4),
+    definitions unchanged at 8, axioms unchanged at 2. Build pending —
+    no new Mathlib API surface; new theorems are structurally identical
+    to existing `selmer_padic_solubility_p13_hensel`/`p19_hensel`/`p31_hensel`/`p37_hensel`
+    with only the prime literal and witness `(x₀, y₀, z₀)` differing.
+    Brings the discharged sub-collection from 22 (Section-8 + extended
+    Case-A v4) to 25 primes total: 12 Section-8 + 10 extended Case-A
+    + 3 extended Case-B. Note: PR #17610 (universal Case-A theorem,
+    Iter 15 in flight) is parallel to this work — universal Case-A
+    subsumes the per-prime Case-A corollaries but does not subsume the
+    Case-B chain that Section 26 begins extending.
