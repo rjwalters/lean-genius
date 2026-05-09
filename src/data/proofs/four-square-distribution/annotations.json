@@ -67,6 +67,28 @@
     ]
   },
   {
+    "id": "ann-4sq-jacobi-checks",
+    "proofId": "four-square-distribution",
+    "range": { "startLine": 186, "endLine": 226 },
+    "type": "insight",
+    "title": "Jacobi-Formula Numerical Validators: r₄_4 / r₄_9 / r₄_10 Match 8·σ*(n)",
+    "content": "The three theorems `r₄_4_distribution`, `r₄_9_distribution`, `r₄_10_distribution` are the *cross-validation layer* between the type decomposition (this file) and Jacobi's classical formula $r_4(n) = 8 \\sigma^*(n)$:\n\n- `r₄_4_distribution` (L186): $8 + 16 = 24 = 8\\sigma^*(4) = 8(1+3) = 24$. Note $4 \\nmid d$ excludes $d = 4$ from $\\sigma^*(4) = 1 + 3 = 4$, but $4$ is included in $\\sigma(4) = 1+2+4=7$ — the $4 \\nmid d$ filter is *essential* for Jacobi's identity.\n- `r₄_9_distribution` (L211): $8 + 96 = 104 = 8\\sigma^*(9) = 8(1+3+9)$. All divisors of 9 satisfy $4 \\nmid d$, so $\\sigma^*(9) = \\sigma(9) = 13$.\n- `r₄_10_distribution` (L221): $48 + 96 = 144 = 8\\sigma^*(10) = 8(1+2+5+10) = 144$. Again $4 \\nmid d$ for any $d \\mid 10$.\n\nProof method: each is a direct two-step `rw` chaining the individual contribution theorems — the *arithmetic* check ($x + y = z$) lives in the kernel and is closed by `rfl` once the contributions are unfolded.\n\nWhy this matters: these four arithmetic identities are the only place where the type-decomposition viewpoint *meets* Jacobi's formula. Without them, the file would be a self-contained combinatorial study with no link to classical analytic number theory. Each successful match is empirical evidence (verified by `native_decide`) that the contribution formula computes the same thing as Jacobi's $\\theta^4$ Fourier coefficient — a finite check that, if extended to all $n$, would constitute a proof of Jacobi's identity (the open problem `four-square-distribution-oq-01`).",
+    "mathContext": "Jacobi: $r_4(n) = 8 \\sigma^*(n)$, $\\sigma^*(n) = \\sum_{d \\mid n,\\,4 \\nmid d} d$. Validation table:\n- $n=4$: $\\sigma^*(4) = 1+3 = 4$; types contribute $8+16 = 24 = 8 \\cdot \\sigma^*(4)$. ✓\n- $n=9$: $\\sigma^*(9) = 1+3+9 = 13$; types contribute $8+96 = 104 = 8 \\cdot \\sigma^*(9)$. ✓\n- $n=10$: $\\sigma^*(10) = 1+2+5+10 = 18$; types contribute $48+96 = 144 = 8 \\cdot \\sigma^*(10)$. ✓",
+    "significance": "critical",
+    "prerequisites": [
+      "Jacobi's four-square formula r₄(n) = 8σ*(n)",
+      "σ*(n) = Σ_{d∣n, 4∤d} d definition",
+      "Individual contribution theorems"
+    ],
+    "relatedConcepts": [
+      "r₄_4_distribution",
+      "r₄_9_distribution",
+      "r₄_10_distribution",
+      "σ*(n) divisor function",
+      "four-square-distribution-oq-01"
+    ]
+  },
+  {
     "id": "ann-4sq-structural-bounds",
     "proofId": "four-square-distribution",
     "range": { "startLine": 228, "endLine": 271 },
