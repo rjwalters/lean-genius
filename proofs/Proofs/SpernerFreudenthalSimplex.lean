@@ -2489,4 +2489,101 @@ private lemma t1_lastFace_implies_satDiag
 
 end N2LastFaceExtract
 
+-- ============================================================
+-- (S24) t2-side boundary extinction for `_hLastFace`.
+--
+-- For `c ∈ t2Bases N` and any drop-index `k : Fin 3`, the cell
+-- `(t2 c, k)` is **never** in the `_hLastFace` filter of
+-- `Triangulation.boundary_doors_odd`: every codim-1 face of a
+-- `t2 c` simplex has at least two containers (`t2 c` itself plus
+-- a sharing `t1` cell — see `t2_face*_card_ge_two`), so by S19.1's
+-- `adjFn_eq_none_iff_card_le_one` the adjacency function returns
+-- `some _` for every drop index.
+--
+-- This is the t2-counterpart to S21A's `t1_lastFace_implies_satDiag`:
+-- together they show the only cells contributing to the
+-- `_hLastFace` filter of `(simData2 N).toTriangulation` are
+-- saturating-diagonal `t1` cells with the diagonal-drop index.
+-- The proof is a direct extraction of the t2 branch of
+-- `boundaryOnFace_simData2` (lines 2186–2230), packaged so that
+-- S25's bijection assembly can dismiss the t2 case by a single
+-- `match`/`rcases` rather than re-running the case-split.
+-- ============================================================
+
+section N2LastFaceT2Extinct
+
+/-- t2-side boundary extinction: for `c ∈ t2Bases N` and any
+`k : Fin 3`, the adjacency of the cell `⟨t2 c, _⟩` at face `k`
+is never `none`. Every codim-1 face of `t2 c` has at least two
+containers (`t2 c` itself plus a sharing `t1` cell), so the
+generic `adjFn_eq_none_iff_card_le_one` fails the cardinality
+direction.
+
+This is the t2-companion to S21A's `t1_lastFace_implies_satDiag`:
+together they show the only cells `(s, k)` with `adj = none` and
+all non-`k` vertices on geometric face 2 are saturating-diagonal
+`t1` cells with the diagonal-drop index. -/
+private lemma t2_adj_ne_none
+    (N : ℕ) {c : ℕ × ℕ} (hc : c ∈ t2Bases N) (k : Fin 3) :
+    ((simData2 N).toTriangulation).adj
+        ⟨t2 c, t2_in_topSimps2_of_base N hc⟩ k ≠ none := by
+  intro h_adj
+  set hS := t2_in_topSimps2_of_base N hc with hS_def
+  -- Convert adj=none to containers card ≤ 1 (S19.1).
+  have h_card_le :
+      ((simData2 N).containersOf
+        ((simData2 N).faceOf (t2 c) hS k)).card ≤ 1 :=
+    (SimplicialAdjFnHelper.adjFn_eq_none_iff_card_le_one
+      (simData2 N) ⟨t2 c, hS⟩ k).mp h_adj
+  -- Definitional equation for `(simData2 N).containersOf`.
+  have h_containers_eq : ∀ (f : Finset (ℕ × ℕ)),
+      (simData2 N).containersOf f =
+        (topSimps2 N).filter (fun s => f ⊆ s) := fun _ => rfl
+  -- Case-split on which vertex of `t2 c` is dropped.
+  have h_drop : (simData2 N).vertexEnum (t2 c) hS k ∈ t2 c :=
+    (simData2 N).vertexEnum_mem (t2 c) hS k
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton] at h_drop
+  rcases h_drop with hd | hd | hd
+  · -- dropped = `(c.1+1, c.2+1)`: face = `{(c.1, c.2+1), (c.1+1, c.2)}` (face 2 of t2 c).
+    have h_face_eq :
+        (simData2 N).faceOf (t2 c) hS k =
+          ({(c.1, c.2+1), (c.1+1, c.2)} : Finset (ℕ × ℕ)) := by
+      show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
+      rw [hd]; exact t2_erase_first c
+    have h_two := t2_face2_card_ge_two N hc
+    rw [h_face_eq, h_containers_eq] at h_card_le
+    omega
+  · -- dropped = `(c.1+1, c.2)`: face = `{(c.1, c.2+1), (c.1+1, c.2+1)}` (face 1 of t2 c).
+    have h_face_eq :
+        (simData2 N).faceOf (t2 c) hS k =
+          ({(c.1, c.2+1), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
+      show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
+      rw [hd]; exact t2_erase_second c
+    have h_two := t2_face1_card_ge_two N hc
+    rw [h_face_eq, h_containers_eq] at h_card_le
+    omega
+  · -- dropped = `(c.1, c.2+1)`: face = `{(c.1+1, c.2), (c.1+1, c.2+1)}` (face 0 of t2 c).
+    have h_face_eq :
+        (simData2 N).faceOf (t2 c) hS k =
+          ({(c.1+1, c.2), (c.1+1, c.2+1)} : Finset (ℕ × ℕ)) := by
+      show (t2 c).erase ((simData2 N).vertexEnum (t2 c) hS k) = _
+      rw [hd]; exact t2_erase_third c
+    have h_two := t2_face0_card_ge_two N hc
+    rw [h_face_eq, h_containers_eq] at h_card_le
+    omega
+
+/-- Filter-membership form for direct S25 consumption: no element
+of the `_hLastFace` filter of `(simData2 N).toTriangulation` has a
+`t2`-cell first coordinate. Together with the `topSimps2_mem_iff`
+case split this lets S25 reduce the bijection assembly to t1 cells
+only (then S21A pins the t1 base to `satDiagBases N`). -/
+private lemma t2_lastFace_filter_impossible
+    (N : ℕ) {c : ℕ × ℕ} (hc : c ∈ t2Bases N) (k : Fin 3)
+    (h_adj : ((simData2 N).toTriangulation).adj
+        ⟨t2 c, t2_in_topSimps2_of_base N hc⟩ k = none) :
+    False :=
+  t2_adj_ne_none N hc k h_adj
+
+end N2LastFaceT2Extinct
+
 end SpernerFreudSimp
