@@ -43,7 +43,8 @@
       "Spherical summation avoids the tensor product structure: the kernel for $S_R^{\\text{sph}}$ is the inverse Fourier transform of $\\mathbf{1}_{|k| \\leq R}$, a Bessel function in the continuous setting. While better behaved, its pointwise convergence for L² remains open in n≥2.",
       "Bochner-Riesz regularization $(1 - |k|^2/R^2)_+^\\delta$ introduces a smooth weight that tapers high-frequency contributions. For $\\delta > (n-1)/2$ (the 'critical index'), the means converge in all $L^p$ ($1 \\leq p \\leq \\infty$). Below the critical index, convergence is more subtle and the full Bochner-Riesz conjecture remains open.",
       "The Carleson-Hunt theorem (1D): for $f \\in L^p$, $1 < p \\leq \\infty$, the partial sums $S_N f(x) \\to f(x)$ a.e. The maximal function $S^* f = \\sup_N |S_N f|$ is bounded on $L^p$ for $p > 1$. This is the key tool—whether analogous bounds hold for spherical maximal functions in n≥2 is the crux of the 2D conjecture.",
-      "L² convergence via Parseval always holds: $\\|f - S_R^{\\text{sph}} f\\|_{L^2}^2 = \\sum_{|k| > R} |\\hat{f}(k)|^2 \\to 0$ by dominated convergence (Bessel's inequality and L² square-summability). This is independent of dimension and explains why L² is the 'easy' case while pointwise a.e. requires much harder analysis."
+      "L² convergence via Parseval always holds: $\\|f - S_R^{\\text{sph}} f\\|_{L^2}^2 = \\sum_{|k| > R} |\\hat{f}(k)|^2 \\to 0$ by dominated convergence (Bessel's inequality and L² square-summability). This is independent of dimension and explains why L² is the 'easy' case while pointwise a.e. requires much harder analysis.",
+      "The Bochner-Riesz problem in $n=2$ is fully solved by the Carleson-Sjölin theorem (1972), which uses Stein-Tomas-type restriction estimates: $L^p$ boundedness of the Fourier extension operator $E_S g(x) = \\widehat{g\\,d\\sigma}(x)$ from the sphere $S^{n-1}$ controls $S_R^\\delta$ via a stationary-phase decomposition. This embeds multi-dimensional Fourier convergence inside Stein's restriction theory — a direction with no 1D analogue, and the reason why 'higher dimensions' is genuinely harder, not just notationally heavier."
     ]
   },
   "sections": [
@@ -71,9 +72,9 @@
     {
       "id": "section-convergence-results",
       "title": "Part III: Convergence Results and Open Problems",
-      "startLine": 75,
-      "endLine": 101,
-      "summary": "Mathematical commentary summarizing convergence properties in a table: L² always holds (Parseval), pointwise a.e. for L² holds in 1D (Carleson), fails for rectangular in n≥2 (Fefferman), open for spherical in n≥2 (2D Carleson conjecture). Two trailing commentary blocks flag the 1D Carleson result and the open 2D case."
+      "startLine": 71,
+      "endLine": 103,
+      "summary": "Mathematical commentary summarizing convergence properties in a table: L² always holds (Parseval), pointwise a.e. for L² holds in 1D (Carleson), fails for rectangular in n≥2 (Fefferman), open for spherical in n≥2 (2D Carleson conjecture). Five `/--` docstrings document target theorems (no declarations attached — see PR #17223 for the strip of prose claiming these existed); two trailing commentary blocks flag the 1D Carleson result and the open 2D case."
     }
   ],
   "conclusion": {
@@ -81,9 +82,10 @@
     "implications": "The 2D Carleson conjecture, if resolved, would fundamentally advance our understanding of when multi-dimensional Fourier series can be trusted as pointwise representations of functions. This has implications for PDEs (boundary value problems on rectangular domains), signal processing (multi-dimensional signal reconstruction), and mathematical physics (quantum mechanics on multi-dimensional tori). The Bochner-Riesz conjecture, if settled, would complete the picture of $L^p$ convergence for regularized sums in all dimensions.",
     "openQuestions": [
       "Does the spherical Fourier series $S_R^{\\text{sph}} f(x) \\to f(x)$ a.e. for every $f \\in L^2(\\mathbb{T}^2)$? This is the 2D Carleson conjecture.",
-      "Can the Bochner-Riesz conjecture be proved for all $p \\in [1, \\infty]$ and $n \\geq 3$? Current progress: proved for n=2 (Carleson-Sjölin) and in $L^p$ ranges near $p=2$.",
+      "Can the Bochner-Riesz conjecture be proved for all $p \\in [1, \\infty]$ and $n \\geq 3$? Current progress: proved for n=2 (Carleson-Sjölin 1972); in $n \\geq 3$, partial results in $L^p$ ranges near $p=2$ via Stein-Tomas restriction (1975) and Bourgain (1991), with later improvements by Tao, Vargas-Vega, Guth, and others, but the full conjectured range remains open.",
       "Is there a formalization of Carleson's 1D theorem in Lean 4/Mathlib, and can the techniques (interpolation, Calderón-Zygmund theory) be adapted for the n-dimensional setting?",
-      "Can the placeholder `fourierCoeff` be implemented in Lean 4 using Mathlib's integration and Haar measure on compact groups, turning this scaffold into a complete formalization?"
+      "Can the placeholder `fourierCoeff` be implemented in Lean 4 using Mathlib's integration and Haar measure on compact groups, turning this scaffold into a complete formalization? A concrete path is `Fin n → AddCircle (1 : ℝ)` with the product Haar measure, integrating $f(x) \\cdot \\overline{e^{2\\pi i k \\cdot x}}$ via `MeasureTheory.integral`.",
+      "Does the spherical maximal operator $S^* f = \\sup_R |S_R^{\\text{sph}} f|$ satisfy $\\|S^* f\\|_{L^2(\\mathbb{T}^2)} \\leq C\\|f\\|_{L^2(\\mathbb{T}^2)}$? An affirmative answer would resolve the 2D Carleson conjecture by the standard maximal-inequality-implies-a.e.-convergence argument."
     ]
   },
   "crossReferences": [

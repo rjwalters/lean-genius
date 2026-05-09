@@ -50,6 +50,30 @@
     ]
   },
   {
+    "id": "ann-dot-product",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 43,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "The Inner Product k · x on the n-Torus",
+    "content": "Unlike the placeholder `fourierCoeff`, the `dotProduct` is fully implemented: it computes $k \\cdot x = \\sum_i k_i x_i$ as a finite sum over `Fin n`. This is the only computational ingredient available without Haar measure, and it is the phase term inside every Fourier mode $e^{2\\pi i k \\cdot x}$. The fact that `k_i : ℤ` is coerced to `ℝ` via `(k i : ℝ)` is essential: the multi-index lives in $\\mathbb{Z}^n$ (so the modes are periodic on $\\mathbb{T}^n$), but the inner product is real-valued so the phase is well-defined modulo $2\\pi$.",
+    "mathContext": "On the n-torus $\\mathbb{T}^n = (\\mathbb{R}/\\mathbb{Z})^n$, characters of the group are exactly $\\chi_k(x) = e^{2\\pi i k \\cdot x}$ for $k \\in \\widehat{\\mathbb{T}^n} = \\mathbb{Z}^n$ (Pontryagin dual). The inner product $k \\cdot x$ is well-defined modulo $1$ — i.e. $\\chi_k(x + e_j) = \\chi_k(x)$ for any standard basis vector $e_j$ — because $k_j \\in \\mathbb{Z}$. This is the integrality condition that distinguishes the discrete dual lattice $\\mathbb{Z}^n$ from a continuous frequency variable $\\xi \\in \\mathbb{R}^n$ (used for the Fourier transform on $\\mathbb{R}^n$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pontryagin duality",
+      "characters of compact groups",
+      "dual lattice",
+      "Fourier modes"
+    ],
+    "prerequisites": [
+      "abelian groups",
+      "characters",
+      "complex exponentials"
+    ]
+  },
+  {
     "id": "ann-summation-methods",
     "proofId": "fourier-series-oq-04",
     "range": {
@@ -79,19 +103,19 @@
     "proofId": "fourier-series-oq-04",
     "range": {
       "startLine": 75,
-      "endLine": 97
+      "endLine": 85
     },
     "type": "insight",
-    "title": "Fefferman's Divergence Theorem and the Carleson-2D Open Problem",
-    "content": "The convergence table in the comment block encapsulates the state of the art. The landmark negative result is Fefferman (1971): rectangular partial sums of Fourier series on T² fail to converge a.e. even for L¹ functions, showing that the 1D theory does NOT generalize to n≥2 for rectangular summation. The positive results that DO extend: L² convergence (Parseval), uniform convergence for Lipschitz functions (all dimensions). The major open problem is the top-left gap: does the SPHERICAL (not rectangular) Fourier series of every L²(T²) function converge a.e.? This is the 2D Carleson conjecture, one of the central open problems in harmonic analysis.",
-    "mathContext": "Fefferman's theorem (1971): $\\exists f \\in L^1(\\mathbb{T}^2)$ such that $\\limsup_{N\\to\\infty} |S_N^{\\text{rect}} f(x)| = \\infty$ for a.e. $x$. 2D Carleson conjecture: for $f \\in L^2(\\mathbb{T}^2)$, does $S_R^{\\text{sph}} f(x) \\to f(x)$ for a.e. $x$? Answer: unknown. Bochner-Riesz conjecture: $S_R^\\delta$ converges in $L^p$ for $\\delta > n|1/p - 1/2| - 1/2$, $1 \\leq p \\leq \\infty$.",
+    "title": "Convergence Statements: Fefferman, Bochner-Riesz, Carleson-2D",
+    "content": "Lines 75–85 are docstring commentary ONLY — there are no actual theorem declarations attached to these lines. The five `/--`-prefixed strings document the convergence landscape that *would* be theorems in a complete formalization: (i) L² convergence in all n (Parseval); (ii) Fefferman's negative result on rectangular sums for L¹ functions on T² (1971); (iii) uniform convergence of square sums for Lipschitz functions (all n); (iv) the partial Bochner-Riesz result for δ > (n-1)/2; (v) Parseval's identity. Each docstring describes a target theorem; PR #17223 (2026-05-08) explicitly stripped any prose claiming these were axioms or theorems, since no declaration body exists.",
+    "mathContext": "Fefferman's theorem (1971): $\\exists f \\in L^1(\\mathbb{T}^2)$ such that $\\limsup_{N\\to\\infty} |S_N^{\\text{rect}} f(x)| = \\infty$ for a.e. $x$. Bochner-Riesz (above critical index, classical): for $\\delta > (n-1)/2$, $S_R^\\delta f \\to f$ in $L^p$ for $1 \\leq p \\leq \\infty$. The full Bochner-Riesz conjecture: $S_R^\\delta f \\to f$ in $L^p$ for $\\delta > n|1/p - 1/2| - 1/2$, $1 \\leq p \\leq \\infty$ — proved for $n=2$ by Carleson-Sjölin (1972) but open for $n \\geq 3$ in the full range.",
     "significance": "key",
     "relatedConcepts": [
       "Fefferman 1971",
-      "2D Carleson conjecture",
       "Bochner-Riesz conjecture",
+      "Carleson-Sjölin theorem",
       "a.e. convergence",
-      "L^p boundedness of maximal functions"
+      "Parseval's identity"
     ],
     "prerequisites": [
       "Carleson's theorem (1D)",
@@ -101,28 +125,52 @@
     ]
   },
   {
+    "id": "ann-convergence-table",
+    "proofId": "fourier-series-oq-04",
+    "range": {
+      "startLine": 86,
+      "endLine": 97
+    },
+    "type": "context",
+    "title": "Convergence Landscape Table: 1D vs n=2 vs n≥3",
+    "content": "The 5×3 table inside this comment block is the heart of the file's mathematical content: it is the only place where the 1D-vs-higher-D dichotomy is laid out by mode (rectangular vs square vs spherical vs Bochner-Riesz) and by function class (L^p, Lipschitz). Three cells deserve emphasis: (1) `Pointwise a.e. (L²)` is OPEN for n≥2 — this is the cell where the 2D Carleson conjecture lives; (2) `Rectangular a.e. (L¹)` is the only cell with a definitive negative answer in n≥2 (Fefferman 1971); (3) `Bochner-Riesz (L^p)` is `Partial` in n≥2 — Carleson-Sjölin (1972) settled n=2 in the full conjectured range but n≥3 remains open above the Stein-Tomas threshold.",
+    "mathContext": "2D Carleson conjecture: for $f \\in L^2(\\mathbb{T}^2)$, does $S_R^{\\text{sph}} f(x) \\to f(x)$ for a.e. $x$ as $R \\to \\infty$? Status: unknown. Best partial result: Lacey-Thiele's bilinear-Hilbert-transform machinery (2000s) extends Carleson-Hunt to multilinear settings, but does not yet resolve the spherical maximal a.e. convergence problem in n=2.",
+    "significance": "key",
+    "relatedConcepts": [
+      "2D Carleson conjecture",
+      "Carleson-Sjölin theorem",
+      "Stein-Tomas restriction theorem",
+      "spherical maximal function"
+    ],
+    "prerequisites": [
+      "harmonic analysis",
+      "restriction theory",
+      "maximal inequalities"
+    ]
+  },
+  {
     "id": "ann-parseval-l2",
     "proofId": "fourier-series-oq-04",
     "range": {
-      "startLine": 75,
+      "startLine": 98,
       "endLine": 102
     },
     "type": "insight",
-    "title": "L² Convergence and Parseval's Identity in n Dimensions",
-    "content": "The axiomatized theorems l2_convergence and parseval_identity establish that L² theory extends cleanly to n dimensions: the Fourier partial sums converge in L² norm, and ∫_{T^n} |f|² = Σ |f̂(k)|². These hold for all n and require no condition beyond f ∈ L². In contrast, pointwise convergence (the hard problem) fails for rectangular sums in n ≥ 2 even for continuous f.",
-    "mathContext": "Parseval's identity $\\|f\\|_{L^2(T^n)}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$ follows from the fact that $\\{e^{2\\pi i k \\cdot x}\\}_{k \\in \\mathbb{Z}^n}$ is an orthonormal basis for $L^2(T^n)$. The $L^2$ convergence of partial sums is then automatic from Bessel's inequality. Crucially, $L^2$ convergence does NOT imply pointwise convergence — Fefferman's 1971 counterexample shows a continuous $f$ on $T^2$ whose rectangular Fourier sums diverge at a point.",
+    "title": "L² Convergence Holds Universally — and What That Hides",
+    "content": "Lines 98–100 are commentary noting that the 1D Carleson result is the only 'easy' case and the 2D analogue is open. Stepping back: $L^2$ convergence in norm is automatic in every dimension and every summation method indexed by an exhaustive family of finite sets — it follows immediately from $\\{e^{2\\pi i k \\cdot x}\\}_{k \\in \\mathbb{Z}^n}$ being an orthonormal basis. The hard problem is the GAP between norm and pointwise convergence: in 1D, Carleson (1966) closed it for L²; in n≥2, Fefferman closed it negatively for rectangular sums on L¹ but the spherical-summation/L² question remains open. Norm convergence is an existence-of-limit-in-Hilbert-space statement; pointwise a.e. convergence is a maximal-function statement, and the latter is qualitatively harder because it requires uniform-in-the-truncation control.",
+    "mathContext": "Parseval: $\\|f\\|_{L^2(T^n)}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat{f}(k)|^2$. This is the orthonormal-basis identity for the system $\\{\\chi_k\\}$. Norm convergence: $\\|f - S_R^{\\text{sph}} f\\|_{L^2} \\to 0$ trivially since the tail $\\sum_{|k| > R} |\\hat{f}(k)|^2 \\to 0$. Pointwise convergence requires the maximal inequality $\\|S^* f\\|_{L^2} \\leq C \\|f\\|_{L^2}$ where $S^* f = \\sup_R |S_R^{\\text{sph}} f|$ — Carleson-Hunt for n=1, OPEN for n≥2.",
     "significance": "key",
     "relatedConcepts": [
-      "L2 norm",
       "Parseval identity",
-      "Hilbert space",
       "orthonormal basis",
-      "Bessel inequality"
+      "maximal inequality",
+      "norm vs pointwise convergence",
+      "Carleson-Hunt theorem"
     ],
     "prerequisites": [
-      "L² function spaces",
       "Hilbert space theory",
-      "Fourier coefficient definition"
+      "L² function spaces",
+      "maximal functions"
     ]
   }
 ]
