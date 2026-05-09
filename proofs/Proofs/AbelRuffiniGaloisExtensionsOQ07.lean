@@ -778,6 +778,74 @@ private lemma cube_id_set_eq_disjoint_union
     · subst hg1; exact one_pow 3
     · exact (g_pow_three_iff_mem_some_sylow_three hcard g).mpr ⟨Q, hgQ⟩
 
+/-- **S17 ingredient (4 forward fragment)**: in a finite group of order 12,
+    the intersection of any Sylow 2-subgroup `P` with the cube-identity set
+    `{g | g^3 = 1}` is exactly the singleton `{1}`.
+
+    Equivalently: every non-identity element of a Sylow 2-subgroup fails
+    `g^3 = 1`.
+
+    **Proof**: every `g ∈ P` satisfies `g ^ Nat.card P = 1` (i.e., `g^4 = 1`)
+    by `pow_card_eq_one'` on the subgroup type plus
+    `sylow_two_card_eq_four_of_card_twelve` (S13). Combined with the
+    hypothesis `g^3 = 1`: `g = 1 · g = g^3 · g = g^(3+1) = g^4 = 1`, so
+    `g = 1`. The reverse inclusion `{1} ⊆ (P : Set G) ∩ {g | g^3 = 1}` is
+    trivial: `1 ∈ P` (subgroup) and `1^3 = 1` (`one_pow`).
+
+    **Significance**: this is the *cardinality-free containment* fragment
+    of ingredient 4 of the S10 element-counting closure (per
+    `session-13-s10-element-count-spec.md` §4). The full ingredient-4
+    statement
+    `(P : Set G) = {1} ∪ ((Set.univ : Set G) \ {g | g^3 = 1})`
+    requires a cardinality count via ingredient 3 (`cube_id_card_eq_nine`)
+    plus the four-Sylow-3 hypothesis `n_3 = 4`; this sub-lemma is
+    independent of those — it holds for *any* `|G| = 12` regardless of
+    `n_3`, exposing the underlying coprimality
+    `gcd(|P|, 3) = gcd(4, 3) = 1` between the Sylow-2 order and the
+    cube exponent.
+
+    **Complementary, non-overlapping with PRs #17586 / #17587** (S16
+    parallel fragments of ingredient 3): #17586 supplies Set-level
+    pairwise disjointness of `(Q : Set G) \ {1}` for distinct
+    Sylow 3-subgroups; #17587 supplies the per-fiber count
+    `Set.ncard ((Q : Set G) \ {1}) = 2`. Both target the cardinality of
+    the Sylow-3 disjoint union (ingredient 3); this lemma targets the
+    Sylow-2 / cube-id intersection (ingredient 4 forward), which uses
+    `|P| = 4` rather than `|Q| = 3` and so does not interact with
+    either of those PRs' Sylow-3 lemmas. -/
+private theorem sylow_two_inter_cube_id_eq_singleton_one
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12) (P : Sylow 2 G) :
+    (P : Set G) ∩ {g : G | g ^ 3 = 1} = ({1} : Set G) := by
+  ext g
+  simp only [Set.mem_inter_iff, SetLike.mem_coe, Set.mem_setOf_eq,
+             Set.mem_singleton_iff]
+  refine ⟨fun ⟨hgP, hg3⟩ => ?_, ?_⟩
+  · -- Forward: g ∈ P, g^3 = 1 → g = 1.
+    have hP_card : Nat.card ((P : Subgroup G)) = 4 :=
+      sylow_two_card_eq_four_of_card_twelve hcard P
+    have h_pow_in_P :
+        (⟨g, hgP⟩ : (P : Subgroup G)) ^ Nat.card ((P : Subgroup G)) = 1 :=
+      pow_card_eq_one'
+    rw [hP_card] at h_pow_in_P
+    -- h_pow_in_P : (⟨g, hgP⟩ : (P : Subgroup G)) ^ 4 = 1.
+    -- Push down to G via Subgroup.coe_pow + Subgroup.coe_one (both rfl on coerce).
+    have h_g4 : g ^ 4 = 1 := by
+      calc g ^ 4
+          = (((⟨g, hgP⟩ : (P : Subgroup G)) ^ 4 : (P : Subgroup G)) : G) := rfl
+        _ = ((1 : (P : Subgroup G)) : G) := by rw [h_pow_in_P]
+        _ = 1 := rfl
+    -- Combine with g^3 = 1: g = 1 · g = g^3 · g = g^(3+1) = g^4 = 1.
+    calc g = 1 * g := (one_mul g).symm
+      _ = g^3 * g := by rw [hg3]
+      _ = g^(3+1) := by rw [← pow_succ]
+      _ = g^4 := rfl
+      _ = 1 := h_g4
+  · -- Backward: g = 1 → g ∈ P ∧ g^3 = 1.
+    rintro rfl
+    exact ⟨(P : Subgroup G).one_mem, one_pow 3⟩
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
