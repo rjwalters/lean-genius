@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-09T02:00:00Z
-**Iteration**: 13
+**Since**: 2026-05-09T02:30:00Z
+**Iteration**: 14
 
 ## Current Focus
 
@@ -577,3 +577,88 @@ the ground truth.
    conjecture for many small-n applications).
 4. Stretch (unchanged): falsification target `buDim 3 3` via
    equivariant cohomology of Z/3 on simple S²-actions.
+
+## Iteration 14 Builds (researcher-13, 2026-05-09)
+
+Focus: **drop the order hypothesis from the Part XIX biconditional** —
+execute Path Forward Item 1 from Iter 13 (`Symmetric biconditional`).
+The Part XIX iff `largestPrimeBelow_eq_iff_no_prime_in_range` requires
+`n ≤ m`; the new symmetric form characterizes the unordered pair via
+`min`/`max`.
+
+### Part XX additions (axiom-free)
+
+- `largestPrimeBelow_eq_iff_no_prime_in_range_symm`: for arbitrary
+  `n m : ℕ` (no order hypothesis), `largestPrimeBelow n =
+  largestPrimeBelow m ↔ ∀ k, min n m < k → k ≤ max n m → ¬ Nat.Prime k`.
+  Routine case-split via `le_total n m`: each branch reduces to the
+  asymmetric Part XIX iff with arguments in the canonical order, with
+  `Eq.symm` bridging the LHS in the reverse case. Six lines.
+- `largestPrimeBelow_ne_of_prime_in_range_symm`: structural
+  contrapositive for the unordered pair — prime in either `(n, m]`
+  *or* `(m, n]` ⇒ `largestPrimeBelow n ≠ largestPrimeBelow m`. Built
+  from `largestPrimeBelow_lt_of_prime_in_range` applied in each
+  direction; the second case finishes via `(ne_of_lt _).symm`.
+
+### Part XX additions (conditional on `symBUDim_eq_largestPrime`)
+
+- `symBUDim_const_in_unordered_no_prime_range`: for `n, m ≥ 2` and
+  arbitrary `d`, no prime in `(min n m, max n m]` ⇒ `symBUDim n d =
+  symBUDim m d`. One-line composition of the new symmetric iff with
+  `symBUDim_eq_of_lpb_eq` (Part XVI's symBUDim-LPB transfer).
+- `symBUDim_const_in_unordered_no_prime_range_of`: hypothesis-form
+  variant taking `ConjectureLPB` explicitly.
+
+### Part XX additions (concrete demo)
+
+- `largestPrimeBelow_ten_eq_eight`: re-derives the Part XVII LPB
+  plateau equality `largestPrimeBelow 10 = largestPrimeBelow 8` via
+  the new symmetric iff applied with arguments in the *non-canonical*
+  order (`n = 10 > m = 8`), without going through `Eq.symm` of the
+  existing `largestPrimeBelow_eight_eq_ten`. Verifies that `min`/`max`
+  reduce as expected at concrete numerics (`min 10 8 = 8` and
+  `max 10 8 = 10`, both by `decide`).
+
+**Counts**: lineCount 1376→1485 (+109), theoremCount 88→93 (+5,
+substantive 86→91), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: this iteration packages the iter-13 biconditional in
+its order-free form. The asymmetric Part XIX iff was the structural
+result; the Part XX symmetrization is the *canonical statement* for
+unordered pairs `{n, m}` and removes a routine boilerplate every
+downstream caller would otherwise have to apply. It is also a
+prerequisite for downstream symBUDim-side iff packaging where the
+unordered pair is more natural than imposing an arbitrary order.
+
+The downstream `symBUDim_const_in_unordered_no_prime_range` family
+delivers the conjectural collapse `symBUDim n d = symBUDim m d` for
+unordered pairs satisfying the no-prime-in-gap condition — directly
+addressing the structural prediction from Iter 11 Part XVII without
+needing to choose `min`/`max` orientation upfront.
+
+**Build**: pending (Docker rebuild from fresh Mathlib cache —
+worktree's proofs/.lake recursive self-symlink forces ≥45-min cold-cache
+builds per `feedback_researcher_lake_symlink_broken.md`). All new
+content uses only Mathlib API exercised by earlier iterations
+(`le_total`, `min_eq_left`, `min_eq_right`, `max_eq_left`,
+`max_eq_right`, `decide`, `Eq.symm`); the proof-side risk is minimal.
+CI is the ground truth.
+
+**Path forward** (revised post-iter-14):
+1. **symBUDim-side biconditional** (still pending): characterize when
+   `symBUDim n d = symBUDim m d` for *all* `d` in terms of the
+   no-prime-in-range condition. Forward direction is now the new
+   `symBUDim_const_in_unordered_no_prime_range`; the reverse direction
+   needs `symBUDim_cyc` injectivity-across-primes which is not
+   currently axiomatized. May be in scope as a *one-direction* iff
+   bridging Part XVI and the symmetric form.
+2. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
+   axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
+3. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.
+4. **Concrete unordered-pair instances**: apply
+   `symBUDim_const_in_unordered_no_prime_range` to specific small-n
+   pairs (`{8, 10}`, `{13, 16}`, `{23, 28}`, `{89, 96}`) to package
+   each Part XVII–XVIII plateau as an unordered-pair statement. Likely
+   incremental; gauge value before committing.

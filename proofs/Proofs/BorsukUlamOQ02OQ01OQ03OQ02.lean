@@ -1084,6 +1084,85 @@ theorem largestPrimeBelow_eightynine_lt_ninetyseven :
     largestPrimeBelow 89 < largestPrimeBelow 97 :=
   largestPrimeBelow_strict_mono_at_prime 89 97 (by decide) (by norm_num)
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XX: Symmetric biconditional — drop the order hypothesis
+-- ═══════════════════════════════════════════════════════════════════════
+-- The Part XIX biconditional `largestPrimeBelow_eq_iff_no_prime_in_range`
+-- carries an `n ≤ m` hypothesis.  Equality of `largestPrimeBelow` values
+-- is symmetric in its arguments, so the same characterization holds for
+-- the unordered pair `{n, m}`: the condition becomes "no prime in
+-- `(min n m, max n m]`".
+--
+-- The symmetric form is the canonical statement when the order between
+-- `n` and `m` is unknown or context-dependent (e.g., the conjectured
+-- collapse `symBUDim n d = symBUDim m d` for an unordered pair).
+
+/-- **Symmetric plateau characterization**: for any `n m : ℕ`,
+    `largestPrimeBelow n = largestPrimeBelow m` iff no prime lies in
+    the half-open interval `(min n m, max n m]`.  Drops the `n ≤ m`
+    hypothesis from `largestPrimeBelow_eq_iff_no_prime_in_range` by
+    case-splitting on `le_total n m`.  Axiom-free. -/
+theorem largestPrimeBelow_eq_iff_no_prime_in_range_symm (n m : ℕ) :
+    largestPrimeBelow n = largestPrimeBelow m ↔
+      (∀ k, min n m < k → k ≤ max n m → ¬ Nat.Prime k) := by
+  rcases le_total n m with hnm | hmn
+  · rw [min_eq_left hnm, max_eq_right hnm]
+    exact largestPrimeBelow_eq_iff_no_prime_in_range n m hnm
+  · rw [min_eq_right hmn, max_eq_left hmn]
+    refine ⟨fun h => ?_, fun h => ?_⟩
+    · exact (largestPrimeBelow_eq_iff_no_prime_in_range m n hmn).mp h.symm
+    · exact ((largestPrimeBelow_eq_iff_no_prime_in_range m n hmn).mpr h).symm
+
+/-- **Symmetric strict-monotonicity contrapositive**: if a prime lies in
+    either half-open interval `(n, m]` or `(m, n]`, then `largestPrimeBelow
+    n ≠ largestPrimeBelow m`.  Together with
+    `largestPrimeBelow_eq_iff_no_prime_in_range_symm` this packages both
+    directions of the order-free characterization. -/
+theorem largestPrimeBelow_ne_of_prime_in_range_symm
+    (n m p : ℕ) (hp : Nat.Prime p)
+    (h : (n < p ∧ p ≤ m) ∨ (m < p ∧ p ≤ n)) :
+    largestPrimeBelow n ≠ largestPrimeBelow m := by
+  rcases h with ⟨hnp, hpm⟩ | ⟨hmp, hpn⟩
+  · exact ne_of_lt (largestPrimeBelow_lt_of_prime_in_range n m p hp hnp hpm)
+  · exact (ne_of_lt (largestPrimeBelow_lt_of_prime_in_range m n p hp hmp hpn)).symm
+
+/-- **Unordered symBUDim collapse**: for `n, m ≥ 2` and `d` arbitrary, if
+    no prime lies in `(min n m, max n m]`, then `symBUDim n d = symBUDim
+    m d`.  Combines the symmetric LPB-iff with `symBUDim_eq_of_lpb_eq`
+    (which uses the file axiom).  Conditional on
+    `symBUDim_eq_largestPrime`. -/
+theorem symBUDim_const_in_unordered_no_prime_range
+    (n m d : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m)
+    (h : ∀ k, min n m < k → k ≤ max n m → ¬ Nat.Prime k) :
+    symBUDim n d = symBUDim m d :=
+  symBUDim_eq_of_lpb_eq n m d hn hm
+    ((largestPrimeBelow_eq_iff_no_prime_in_range_symm n m).mpr h)
+
+/-- **Hypothesis-form** of `symBUDim_const_in_unordered_no_prime_range` —
+    uses explicit `ConjectureLPB` hypothesis instead of the file's axiom. -/
+theorem symBUDim_const_in_unordered_no_prime_range_of
+    (h_conj : ConjectureLPB) (n m d : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m)
+    (h : ∀ k, min n m < k → k ≤ max n m → ¬ Nat.Prime k) :
+    symBUDim n d = symBUDim m d :=
+  symBUDim_eq_of_lpb_eq_of h_conj n m d hn hm
+    ((largestPrimeBelow_eq_iff_no_prime_in_range_symm n m).mpr h)
+
+/-- **Concrete reverse-order instance**: re-derives the Part XVII LPB
+    plateau equality `largestPrimeBelow 10 = largestPrimeBelow 8` via
+    the symmetric biconditional applied with arguments swapped (LHS:
+    `n = 10 > m = 8`).  Demonstrates that the new iff handles the
+    non-canonical order without going through `Eq.symm`. -/
+theorem largestPrimeBelow_ten_eq_eight :
+    largestPrimeBelow 10 = largestPrimeBelow 8 := by
+  refine (largestPrimeBelow_eq_iff_no_prime_in_range_symm 10 8).mpr ?_
+  intro k hk1 hk2
+  -- min 10 8 = 8, max 10 8 = 10
+  have hmin : min (10 : ℕ) 8 = 8 := by decide
+  have hmax : max (10 : ℕ) 8 = 10 := by decide
+  rw [hmin] at hk1
+  rw [hmax] at hk2
+  exact no_prime_in_eight_to_ten k hk1 hk2
+
 /-
 ## Summary
 
@@ -1304,6 +1383,30 @@ theorem largestPrimeBelow_eightynine_lt_ninetyseven :
   each plateau as a *maximal* level set of `largestPrimeBelow` (rather
   than a possibly-extendable equal-LPB cluster).
 
+### Iteration 14 additions (symmetric biconditional — Part XX)
+- `largestPrimeBelow_eq_iff_no_prime_in_range_symm` — **axiom-free**
+  drop of the `n ≤ m` hypothesis from the Part XIX biconditional.
+  For arbitrary `n m : ℕ`, `largestPrimeBelow n = largestPrimeBelow m`
+  iff no prime lies in `(min n m, max n m]`.  Routine case-split via
+  `le_total n m` reducing each branch to the asymmetric iff with
+  arguments in the canonical order.  This is the order-free statement
+  natural for unordered pairs.
+- `largestPrimeBelow_ne_of_prime_in_range_symm` — symmetric
+  contrapositive: prime in either `(n, m]` or `(m, n]` ⇒
+  `largestPrimeBelow n ≠ largestPrimeBelow m`.  Packages both directions
+  of the order-free characterization.
+- `symBUDim_const_in_unordered_no_prime_range` (conditional on
+  `symBUDim_eq_largestPrime`) and `_of` (hypothesis form): unordered
+  symBUDim collapse — for `n, m ≥ 2`, no prime in `(min n m, max n m]`
+  forces `symBUDim n d = symBUDim m d` at every `d`.  Direct
+  composition of the new iff with `symBUDim_eq_of_lpb_eq` /
+  `symBUDim_eq_of_lpb_eq_of`.
+- `largestPrimeBelow_ten_eq_eight` — concrete demo: re-derives
+  `lpb 10 = lpb 8` by applying the new iff with arguments in the
+  *non-canonical* order (`n = 10 > m = 8`), without going through
+  `Eq.symm` of the existing `largestPrimeBelow_eight_eq_ten`.  Verifies
+  `min`/`max` reduce as expected at concrete values.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -1373,4 +1476,10 @@ theorem largestPrimeBelow_eightynine_lt_ninetyseven :
 #check @largestPrimeBelow_thirteen_lt_seventeen
 #check @largestPrimeBelow_twentythree_lt_twentynine
 #check @largestPrimeBelow_eightynine_lt_ninetyseven
+
+#check @largestPrimeBelow_eq_iff_no_prime_in_range_symm
+#check @largestPrimeBelow_ne_of_prime_in_range_symm
+#check @symBUDim_const_in_unordered_no_prime_range
+#check @symBUDim_const_in_unordered_no_prime_range_of
+#check @largestPrimeBelow_ten_eq_eight
 end BorsukUlamSymPrime
