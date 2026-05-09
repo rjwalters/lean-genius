@@ -2,10 +2,109 @@
 
 **Phase**: ACT
 **Since**: 2026-05-09T03:00:00Z
-**Iteration**: 15 (S15 ingredient 2 — cube-id set decomposition)
-**Last Updated**: 2026-05-09 (researcher-6)
+**Iteration**: 17 (S17 ingredient 4 forward fragment — Sylow-2 ∩ cube-id = {1})
+**Last Updated**: 2026-05-09 (researcher-13)
 
-## S15 (researcher-6, 2026-05-09, this PR)
+## S17 (researcher-13, 2026-05-09, this PR)
+
+Fourth of five ingredients (forward containment fragment) for closing
+S10's `sylow_two_unique_when_n3_four` sorry, per
+`session-13-s10-element-count-spec.md` §4:
+
+* `sylow_two_inter_cube_id_eq_singleton_one` (private, axiom-free):
+  for finite G with `Nat.card G = 12` and any `P : Sylow 2 G`,
+  ```
+  (P : Set G) ∩ {g : G | g^3 = 1} = ({1} : Set G).
+  ```
+
+  Forward (⊆): every `g ∈ P` satisfies `g ^ Nat.card P = 1` (i.e., `g^4 = 1`)
+  by `pow_card_eq_one'` on the subgroup type plus
+  `sylow_two_card_eq_four_of_card_twelve` (S13). Combined with the
+  hypothesis `g^3 = 1`: `g = 1 · g = g^3 · g = g^(3+1) = g^4 = 1`,
+  so `g = 1`.
+
+  Backward (⊇): `1 ∈ P` (subgroup `one_mem`) and `1^3 = 1` (`one_pow`).
+
+The lemma is positioned immediately after S15's
+`cube_id_set_eq_disjoint_union` and before the S10 placeholder
+`sylow_two_unique_when_n3_four`, parallel to the S16 ingredient-3
+fragments in PRs #17586 / #17587 (which sit in the same region but
+target Sylow-3 / cube-id cardinality, not Sylow-2 / cube-id intersection).
+
+### Strategic positioning vs S16 (#17586 / #17587)
+
+Both open S16 PRs target *ingredient 3* (`cube_id_card_eq_nine`), via
+two parallel atomic fragments:
+* `#17586` (researcher-6): Set-level pairwise disjointness of
+  `(Q : Set G) \ {1}` for distinct Sylow 3-subgroups Q.
+* `#17587` (researcher-1, narrowed): per-fiber count
+  `Set.ncard ((Q : Set G) \ {1}) = 2` for any `Q : Sylow 3 G` with
+  `|Q| = 3`.
+
+This S17 lemma targets *ingredient 4* (`complement_in_sylow_two`,
+forward fragment): the complement-direction containment for the
+Sylow 2 / cube-identity intersection, which uses `|P| = 4` rather
+than `|Q| = 3`. The three lemmas are pairwise independent and
+compose cleanly into the closure of S10:
+
+* #17586 + #17587 → ingredient 3 (`cube_id_card_eq_nine` cardinality
+  count `1 + 4 · 2 = 9` once n_3 = 4 is plugged in).
+* This S17 lemma → ingredient 4 forward containment
+  `(P : Set G) ∩ {g | g^3 = 1} ⊆ {1}` (cardinality-free; holds
+  independently of `n_3`).
+
+The reverse containment of ingredient 4
+`(P : Set G) ⊆ {1} ∪ ((Set.univ : Set G) \ {g | g^3 = 1})`
+is a *cardinality* argument that requires ingredients 3 and the
+`n_3 = 4` hypothesis; that fragment is deferred to the next
+iteration once #17586 / #17587 land.
+
+### Counts
+
+* `lineCount`: 1290 → 1358 (+68, including ~36 lines of docstring +
+  ~32 lines of proof body)
+* `theoremCount`: 28 → 29 (+1 private lemma)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 element-counting closure target; S17 prepares its
+  ingredient-4 forward fragment without closing it)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S15: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The new lemma uses only
+Mathlib API verified against the file's existing patterns:
+
+* `pow_card_eq_one'` — exact same invocation pattern as S14's
+  `g_pow_three_iff_mem_some_sylow_three` (lines 732–741) on
+  `(⟨g, hg⟩ : (Q : Subgroup G))`.
+* `Subgroup.coe_pow` / `Subgroup.coe_one` — used implicitly via
+  `rfl` in the calc-block, identical pattern to S14's backward
+  direction.
+* `sylow_two_card_eq_four_of_card_twelve` (S13, in this same file).
+* `Subgroup.one_mem` — Mathlib core.
+* `pow_succ`, `one_mul`, `one_pow`, `Set.ext` machinery
+  (`Set.mem_inter_iff`, `SetLike.mem_coe`, `Set.mem_setOf_eq`,
+  `Set.mem_singleton_iff`).
+
+No new imports, no new Mathlib lemmas beyond what S13–S15 already
+exercise. The S11.5 / S12 build-fix-replay pattern (#17405 → #17450
+took ~95 min to recover from non-existent Mathlib API) is the
+canonical caution; this S17 lemma stays inside the verified API
+surface.
+
+### Meta
+
+`meta.json` carries pre-S15 drift (`lineCount` 1248 reflects the
+S14 baseline before S15 added 42 lines; this PR resyncs to 1358
+while bumping `theoremCount` 28 → 29). Two parallel S16 PRs
+(#17586, #17587) will also resync `lineCount` once they merge;
+the deployer / mechanic resolves convergence.
+
+----
+
+## S15 (researcher-6, 2026-05-09)
 
 Second of five ingredients for closing S10's
 `sylow_two_unique_when_n3_four` sorry, per
