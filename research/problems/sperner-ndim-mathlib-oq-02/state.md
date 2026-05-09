@@ -2,16 +2,58 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-08 (Iteration 21, researcher-12)
-**Iteration**: 21
+**Last Updated**: 2026-05-09 (Iteration 22, researcher-10)
+**Iteration**: 22
 
 ## Current Focus
 
-Session 21A (this iteration, researcher-12, 2026-05-08, build
-pending): Added the **t1-side forward extraction lemma** for
-`_hLastFace`, eliminating the two non-diagonal drop cases by
-inconsistent face-2 sums and identifying the diagonal-drop case
-with `b ∈ satDiagBases N`.
+Session 22 (this iteration, researcher-10, 2026-05-09, build
+pending): Added the **Sperner-restricted IsDoor ↔ color-change**
+bridge in `SimplicialAdjFnHelper`, specializing S21B's generic
+`isDoor_dim_two_iff` to the case where neither non-`k` vertex carries
+color `2` (which the Sperner condition forces whenever both lie on
+geometric face `2`). The conclusion is in the canonical "the two
+non-`k` vertices have different colors" shape, ready to match
+`face2_path_odd`'s `g k ≠ g (k+1)` predicate.
+
+New lemmas in `SimplicialAdjFnHelper` (~73 lines added to
+`SpernerFreudenthalSimplex.lean` after `isDoor_dim_two_iff`):
+
+* `fin_three_other_eq` (private): For `i₁, i₂ : Fin 3` distinct and
+  both `≠ k`, every `j : Fin 3` with `j ≠ k` satisfies `j = i₁ ∨ j = i₂`.
+  Pure `Fin 3` enumeration via `decide`.
+* `isDoor_dim_two_iff_color_change_of_no_color_two`:
+  `IsDoor c K s k ↔ c (K.vertex s i₁) ≠ c (K.vertex s i₂)` under
+  hypothesis `h_no2 : ∀ i ≠ k, c (K.vertex s i) ≠ 2` for any choice
+  of two distinct non-`k` indices `i₁, i₂`. Forward direction is the
+  contrapositive (equal colors at `i₁, i₂` would force the color-`0`
+  and color-`1` witnesses of `isDoor_dim_two_iff` to share a vertex,
+  hence `0 = 1`). Reverse direction: distinct colors `≠ 2` are
+  necessarily `0` and `1` in some order, supplying both witnesses.
+
+Together with S21B's `isDoor_dim_two_iff` (PR #17502, merged) and
+S21A's `t1_lastFace_implies_satDiag` (PR #17464, merged), the n=2
+`_hLastFace` discharge for `simData2 N` now has all abstract bridges
+in place. The remaining S23+ work is the concrete bijection between
+the `_hLastFace` filter and `(Finset.range N).filter (fun k => g k ≠ g (k+1))`,
+parametrized by `b.1` from `satDiagBases N` (since for
+`b ∈ satDiagBases N` with `b.1 + b.2 + 1 = N`, the diagonal endpoints
+`(b.1, b.2+1)` and `(b.1+1, b.2)` correspond to path positions
+`b.1` and `b.1+1` of the index-`k → (k, N-k)` face-2 path).
+
+S22 keeps the iterative-PR cadence small (one self-contained
+abstract bridge lemma + supporting `decide` helper) to reduce
+merge-conflict risk and keep any build regressions narrow, given
+the persistent `proofs/.lake` recursive-symlink build infrastructure
+issue (every Docker build is a 30–45 min Mathlib refetch + 10 min
+cache fetch).
+
+## Previous Focus
+
+Session 21A (PR #17464, merged): Added the **t1-side forward
+extraction lemma** for `_hLastFace`, eliminating the two non-diagonal
+drop cases by inconsistent face-2 sums and identifying the
+diagonal-drop case with `b ∈ satDiagBases N`.
 
 New private lemma in a new `N2LastFaceExtract` section appended
 to `SpernerFreudSimp` (84 lines added to
@@ -455,11 +497,21 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
   parametrization, cardinality = N, endpoints in range,
   endpoints on face 2, t1 ∈ topSimps2 alias).
 - `N2LastFaceExtract` t1-side `_hLastFace` forward extraction
-  (S21A, this session, build pending): `t1_lastFace_implies_satDiag`
+  (S21A, PR #17464, merged): `t1_lastFace_implies_satDiag`
   identifies `b ∈ satDiagBases N` and the dropped vertex = `b`
   for any `(t1 b, k)` with face-2 condition; eliminates the
   vertical-edge and horizontal-edge drop cases by inconsistent
   face-2 sums.
+- `SimplicialAdjFnHelper.isDoor_dim_two_iff` (S21B,
+  PR #17502, merged): generic d=2 IsDoor characterization
+  (colors `0` and `1` both appear among non-`k` vertices).
+- `SimplicialAdjFnHelper.isDoor_dim_two_iff_color_change_of_no_color_two`
+  + `fin_three_other_eq` (S22, this session, build pending):
+  Sperner-restricted specialization of S21B; under
+  `∀ i ≠ k, c (vertex s i) ≠ 2`, the door condition is
+  `c (vertex s i₁) ≠ c (vertex s i₂)` for any two distinct
+  non-`k` indices. Bridges to `face2_path_odd`'s color-change
+  predicate.
 - `sperner_panchromatic_two` (n=2): 1 sorry remaining
 - n≥3: future work
 
@@ -480,15 +532,27 @@ does NOT appear in FreudCell. FreudCell simply triangulates the wrong space.
    boundary t1 cells). ~80 lines of pure case work.
 3. `_hLowerDim` — done generically by S15 helper
 4. `_hLastFace` — IN PROGRESS:
-    * S20 (PR #17426): `satDiagBases N` foundation + count = N.
-    * S21A (this session): t1-side forward extraction
+    * S20 (PR #17426, merged): `satDiagBases N` foundation +
+      count = N.
+    * S21A (PR #17464, merged): t1-side forward extraction
       (`t1_lastFace_implies_satDiag`) identifies dropped vertex
       and `b ∈ satDiagBases N`.
-    * S21B (next): `IsDoor` ↔ `g k ≠ g (k+1)` color-change
-      bridge + assembly of full `_hLastFace_simData2`
-      (~60-80 lines). The t2-extinction is already implicit in
-      `boundaryOnFace_simData2`'s `exfalso` t2 branch (every t2
-      face has ≥ 2 containers per `t2_face*_card_ge_two`).
+    * S21B (PR #17502, merged): generic d=2
+      `isDoor_dim_two_iff` (`IsDoor ↔ colors 0 and 1 both
+      appear among non-`k` vertices`).
+    * S22 (this session, build pending): Sperner-restricted
+      `isDoor_dim_two_iff_color_change_of_no_color_two`,
+      collapsing the door condition to "two non-`k` vertices
+      have different colors" under the no-color-`2` hypothesis
+      (forced by Sperner + face-`2` membership).
+    * S23 (next): assemble `_hLastFace_simData2` by combining
+      `t1_lastFace_implies_satDiag` (S21A) →
+      `isDoor_dim_two_iff_color_change_of_no_color_two` (S22) →
+      bijection with `(Finset.range N).filter (g k ≠ g (k+1))`
+      via `b.1`-parametrization on `satDiagBases N`. Then apply
+      `face2_path_odd` for oddness. ~80-100 lines. The
+      t2-extinction side is already implicit in
+      `boundaryOnFace_simData2`'s `exfalso` t2 branch.
 
 Then apply `Triangulation.sperner` (~50 lines for diameter bound + real
 coordinates). Total estimated remaining: ~150 lines across 2 sessions.
