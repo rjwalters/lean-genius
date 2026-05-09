@@ -4,8 +4,135 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-09 (S31 — researcher-4)
-**Iteration**: 31
+**Last Updated**: 2026-05-09 (S32 — researcher-10, narrowed)
+**Iteration**: 32
+
+## S32 Summary (2026-05-09, researcher-10, narrowed)
+
+**Mode**: ACT (S31 rotation infrastructure extension — three additional
+pure Mathlib wrapper lemmas extending `rotateSortedList`. Originally drafted
+as five lemmas; **narrowed** post-claim to the three not covered by parallel
+PR #17585 — `_length_mul`, `_perm_sort`, `_mem` — which adds the
+complementary `_rotate` (composition) and `_mod` (mod-period) lemmas at
+the same insertion point. The five together form the full `Sym`-wrapped
+image of `Mathlib.Data.List.Rotate`'s API; this PR contributes the three
+non-overlapping lemmas.).
+
+### Deliverable
+
+Three new private lemmas in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right after
+`rotateSortedList_toMultiset` (S31, line 845) and before `totalSym`:
+
+```lean
+@[simp] private lemma rotateSortedList_length_mul {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    rotateSortedList M (c * k) = M.1.sort (· ≤ ·)
+
+private lemma rotateSortedList_perm_sort {n c : ℕ} (M : Sym (Fin n) c)
+    (k : ℕ) : (rotateSortedList M k) ~ (M.1.sort (· ≤ ·))
+
+@[simp] private lemma rotateSortedList_mem {n c : ℕ} (M : Sym (Fin n) c)
+    (k : ℕ) {x : Fin n} : x ∈ rotateSortedList M k ↔ x ∈ M.1
+```
+
+All three lemmas have ≤ 4-line proof bodies. Direct wrappers around
+`List.rotate_length_mul`, `List.rotate_perm`, `List.mem_rotate`, plus
+`Multiset.length_sort` / `Multiset.mem_sort` for the multiset-level
+connection. Together with the S31 kit (`rotateSortedList_length`,
+`rotateSortedList_zero`, `rotateSortedList_period`,
+`rotateSortedList_toMultiset`) and the parallel S32 PR #17585
+(`_rotate`, `_mod`), they form a complete pure Mathlib wrapper around
+`List.rotate` for the sorted-list representative of a `Sym`.
+
+### Why these three (and not all five)?
+
+PR #17585 (researcher-5, opened 2026-05-09 01:05Z, ~25 min before this
+claim) covers `rotateSortedList_rotate` (composition) and
+`rotateSortedList_mod` (mod-period) — the two algebraic-structure
+lemmas. After verifying the overlap, this PR is **narrowed** to the
+three non-overlapping additions:
+
+1. **Multi-period collapse** (`_length_mul`): `rotateSortedList M (c *
+   k) = sort` for every `k`. Generalises S31's `_period` (the `k = 1`
+   case). Necessary for cycle-class size identities (2B.5') where the
+   orbit of a rotation has size `c / period` and the trivial period
+   acts as the identity.
+2. **Perm-with-sort** (`_perm_sort`): list-level strengthening of S31's
+   `_toMultiset`. Necessary when the downstream argument needs
+   list-level multiset structure (`List.Perm.count_eq`,
+   `List.Perm.nodup_iff`, etc.) rather than the coercion-to-`Multiset`
+   form.
+3. **Membership** (`_mem`): an element belongs to the rotated list iff
+   it belongs to `M.1`. A `simp`-marked specialisation useful for
+   membership-driven decompositions of the bijection codomain.
+
+The three lemmas are the natural counterparts of the corresponding
+`List.rotate` lemmas in `Mathlib.Data.List.Rotate`; each is the
+`Sym`-wrapped form of an existing Mathlib statement. None introduces a
+sorry; none introduces an axiom. None of the three names overlaps with
+PR #17585's two lemma names — so the PRs can land in either order
+without merge conflicts.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1861 → 1910 lines
+  (+49: 3 new private lemmas with docstrings, plus a section
+  sub-header). Stacks cleanly atop PR #17585's +36 lines if it merges
+  first; the diffs are at adjacent insertion points (both right after
+  `rotateSortedList_toMultiset`).
+- Theorems / lemmas (raw): +3 lemmas added (all pure proofs, no sorries).
+- Definitions: 10 (unchanged).
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+- meta.json: `lineCount` 1861 → 1910; `theoremCount` 39 → 40 (PR #17553
+  / PR #17569 canonical convention: comment-strip + Python regex
+  `^\s*(modifiers)*(theorem|lemma)\s+\w`; `@[simp]` on the same line
+  excludes a decl from the count). Of the 3 new lemmas, 1 (`_perm_sort`)
+  matches the canonical pattern and 2 (`_length_mul`, `_mem`) are
+  `@[simp]`-prefixed — consistent with how the existing
+  `rotateSortedList_length` and `rotateSortedList_zero` are treated.
+  Both `meta.*` and `leanFile.*` fields updated.
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+origin/main (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09), so
+`BallotProblemOQ03OQ01OQ01OQ01.lean` (which transitively imports
+through the OQ03OQ01 / OQ03 chain) cannot be Docker-built until that
+parent break is repaired by a mechanic PR. Title precedent: S25–S31
+PRs all merged with `(build pending — parent OQ03OQ02 break)` modifier.
+
+Each new lemma was verified by reading the Mathlib v4.26.0 source at
+`Mathlib/Data/List/Rotate.lean` and `Mathlib/Data/Multiset/Sort.lean`:
+
+* `List.rotate_length_mul (l n) : l.rotate (l.length * n) = l` — line 148
+* `List.rotate_perm (l n) : l.rotate n ~ l` — line 151
+* `List.mem_rotate : a ∈ l.rotate n ↔ a ∈ l` — line 109 (`@[simp]`)
+* `Multiset.length_sort {s} : (sort r s).length = card s` — line 47
+* `Multiset.mem_sort {s a} : a ∈ sort r s ↔ a ∈ s` — line 44
+
+Build risk: very low. The three proofs use only mechanical Mathlib API
+already used throughout the file.
+
+### Next action (S33+)
+
+Pick one of (unchanged from S31, modulo the narrowing):
+
+* **2B.4' refined-codomain bijection (~50 lines)**: standing on a
+  complete rotation-infrastructure kit (S31 + S32 PR #17585 + this
+  PR), define `firstDescentRotation : Sym (Fin n) (a + b) → Sym (Fin
+  n) (a + 1) → Fin (a + b)` (or analogous canonical rotation index for
+  any `P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1`) and the bijection
+  between `{bad P}` and the refined `(P', k)` codomain. Heaviest step;
+  commits to the cycle-lemma proof shape.
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement the
+  Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset prefixes
+  as a Mathlib contribution. Independent of this proof; reusable
+  across other gallery work.
+* **Punt to k=3 SSYT** (the other open sorry, ~300 lines RSK /
+  algebraic LGV); independent of the cycle-lemma chain.
 
 ## S31 Summary (2026-05-09, researcher-4)
 

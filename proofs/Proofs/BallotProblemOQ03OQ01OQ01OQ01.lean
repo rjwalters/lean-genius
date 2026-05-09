@@ -848,6 +848,55 @@ private lemma rotateSortedList_toMultiset {n c : ℕ} (M : Sym (Fin n) c)
   rw [Multiset.coe_eq_coe.mpr (List.rotate_perm _ k)]
   exact Multiset.sort_eq (· ≤ ·) M.1
 
+/-! #### S32 — Length-multiple / Perm / membership helpers
+
+Three additional pure-Mathlib wrapper lemmas extending the S31
+`rotateSortedList` family. None of these change the file's sorry count
+(still 2) or axiom count (still 0); each is a one-to-three-line proof
+against `Mathlib.Data.List.Rotate` / `Mathlib.Data.Multiset.Sort`. They
+are complementary to the `_rotate` / `_mod` composition lemmas (added
+elsewhere in S32 by a parallel PR): together the five additions form the
+full `Sym`-wrapped image of `Mathlib.Data.List.Rotate`'s API used
+downstream by 2B.4' / 2B.5'. -/
+
+/-- **Rotation by a multiple of `c` is the canonical sorted list.**
+    Generalises `rotateSortedList_period` (the `k = 1` case): for every
+    `k : ℕ`, `rotateSortedList M (c * k) = M.1.sort (· ≤ ·)`. Direct from
+    `List.rotate_length_mul`. Useful for cycle-class size identities
+    (2B.5') where the orbit of a rotation has size `c / period` and the
+    trivial period acts as the identity. -/
+@[simp] private lemma rotateSortedList_length_mul {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    rotateSortedList M (c * k) = M.1.sort (· ≤ ·) := by
+  unfold rotateSortedList
+  have hlen : (M.1.sort (· ≤ ·)).length = c := by
+    rw [Multiset.length_sort, M.2]
+  rw [← hlen]
+  exact List.rotate_length_mul _ k
+
+/-- **List-level permutation invariance.** Every rotation of the sorted-list
+    representative of `M` is a `List.Perm` (`~`) of the canonical sorted
+    form. A list-level strengthening of `rotateSortedList_toMultiset`; used
+    when the downstream argument needs list-level multiset structure
+    (`List.Perm.count_eq`, `List.Perm.nodup_iff`, etc.) rather than the
+    coercion-to-`Multiset` form. Direct from `List.rotate_perm`. -/
+private lemma rotateSortedList_perm_sort {n c : ℕ} (M : Sym (Fin n) c)
+    (k : ℕ) : (rotateSortedList M k) ~ (M.1.sort (· ≤ ·)) := by
+  unfold rotateSortedList
+  exact List.rotate_perm _ k
+
+/-- **Membership invariance.** An element `x : Fin n` belongs to
+    `rotateSortedList M k` iff it belongs to the underlying multiset `M.1`.
+    Combines `List.mem_rotate` with `Multiset.mem_sort`. Useful for
+    membership-driven decompositions of the cycle-lemma bijection codomain
+    (e.g., "the rotated list contains exactly the elements of `M.1`,
+    counted with multiplicity"). -/
+@[simp] private lemma rotateSortedList_mem {n c : ℕ} (M : Sym (Fin n) c)
+    (k : ℕ) {x : Fin n} : x ∈ rotateSortedList M k ↔ x ∈ M.1 := by
+  unfold rotateSortedList
+  rw [List.mem_rotate]
+  exact Multiset.mem_sort _
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
