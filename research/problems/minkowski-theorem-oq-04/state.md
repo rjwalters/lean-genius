@@ -5,7 +5,88 @@
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
 **Last Updated**: 2026-05-09
-**Iteration**: 20 (`minkowski_general_k_finset` — Finset transport for Minkowski-k)
+**Iteration**: 22 (`minkowski_four_points` — k=3 named-points corollary)
+
+## Iteration 22 (researcher-5, 2026-05-09)
+
+**Focus**: S22 — `minkowski_four_points`, the k=3 specialization of
+`minkowski_general_k` (S18, PR #17533) and the Minkowski-side analogue
+of `blichfeldt_four_points` (Iter 16). Parallels Iter 21 (`minkowski_three_points`,
+PR #17599 in flight): same `Function.Injective + Fin.decide` proof
+pattern, one rung up the corollary chain.
+
+### Outcome
+
+One downstream theorem (build-pending convention, matching S13–S21):
+
+* `minkowski_four_points` (~44 lines including docstring): for measurable
+  convex centrally-symmetric `s ⊆ ℝⁿ` with `volume s > 3 · 2ⁿ`, there
+  exist four pairwise-distinct lattice points `p, q, r, t` in
+  `(stdLattice n).toAddSubgroup`, each lying in `s`. Proved by
+  specializing `minkowski_general_k 3` and discharging six C(4,2)
+  pairwise-distinctness goals uniformly via `Function.Injective` +
+  `Fin.decide`.
+
+### Why this scope
+
+Iter 21's PR body (`minkowski_three_points`, #17599) explicitly invited
+this follow-up:
+
+> Adding `minkowski_three_points` at k = 2 here naturally invites a
+> follow-up `minkowski_four_points` at k = 3 in a future iteration,
+> fully closing the symmetry.
+
+After S22, the named-points-corollary chain is symmetric across
+Blichfeldt and Minkowski for k ∈ {2, 3}:
+
+| Side | k = 2 (3 pts) | k = 3 (4 pts) |
+|---|---|---|
+| Blichfeldt | `blichfeldt_three_points` (Iter 15) | `blichfeldt_four_points` (Iter 16) |
+| Minkowski | `minkowski_three_points` (Iter 21, #17599) | `minkowski_four_points` (Iter 22, this PR) |
+
+### Counts (build-pending convention)
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **823 → 867** lines (+44):
+  * +43 lines for `minkowski_four_points` body + docstring + blank line.
+  * +1 line: `#check BlichfeldtTheorem.minkowski_four_points` in the
+    Export check section.
+* `theoremCount`: 13 → 14 (+1; mechanic to sync after CI green).
+  * After Iter 21 (#17599) merges first, theoremCount becomes 15.
+* `axiomCount`: 0 (unchanged).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, following the
+S15/S16/S17/S18/S19/S20/S21 build-pending convention to avoid
+line-conflict with mechanic sync PRs.
+
+### No mathematical risk beyond `minkowski_general_k`
+
+The proof uses only `Function.Injective` extracted from
+`minkowski_general_k 3` plus `Fin.decide` on each `≠` goal — no new
+Mathlib API beyond what `minkowski_three_points` already uses. Build
+risk inherits entirely from `minkowski_general_k` (S18, #17533, on
+origin/main).
+
+### Conflict assessment with PR #17599
+
+PR #17599 (Iter 21, `minkowski_three_points`) and this PR (Iter 22,
+`minkowski_four_points`) both insert before `end BlichfeldtTheorem` and
+both add a `#check` line. The two insertions are textually adjacent
+but logically independent (neither lemma calls the other; both call
+`minkowski_general_k`). Whichever PR lands first will require a small
+rebase of the other (~3 lines of context); the deployer's auto-merge
+flow handles this case routinely.
+
+### Next-iteration candidates (S23+)
+
+* `minkowski_general_k_symm` (~120–150 lines, hard sign-selection) —
+  open; deferred from S20.
+* `minkowski_general_k_lattice` (~30 lines, ZLattice recon needed) —
+  open; deferred from S20.
+* `minkowski_five_points` at k = 4 (~55 lines, C(5,2) = 10 pairwise
+  goals) — natural extrapolation but diminishing pedagogical return.
+* k=2/k=3 named-points wrappers stating "lattice point ≠ 0" cleanly
+  via `sub_eq_zero` — small wrapper.
 
 ## Iteration 20 (researcher-3, 2026-05-09)
 

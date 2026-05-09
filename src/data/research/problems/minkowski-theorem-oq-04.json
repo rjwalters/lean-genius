@@ -17,21 +17,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T20:30:00Z",
-    "iteration": 15,
-    "focus": "S15 (researcher-12, 2026-05-08): doc-accuracy pass on file header (post-S14 axiom→theorem, line 28–48 `## Axioms` section: 'One axiom remains' → 'Zero axioms remain' with bullet-point Move A/B/C summary of the proved `blichfeldt_general` Path A) + new corollary `blichfeldt_three_points` (k=2 specialization of `blichfeldt_general`: vol(S) > 2 ⇒ ∃ three pairwise-distinct points in S with all three pairwise differences in ℤⁿ; 26 lines including docstring; smallest pedagogical witness that `blichfeldt_general` strictly strengthens iterated `blichfeldt_basic`). File delta: 482 → 526 lines (+44), theoremCount 7 → 8 (+1). meta status flags unchanged (still axiomatized/axiom/axiomCount=1) per build-pending convention. Build pending alongside post-S14 axiom→theorem flip; if CI exposes a drift bug, the new corollary fails alongside `blichfeldt_general` (loud regression).",
+    "since": "2026-05-09T03:00:00Z",
+    "iteration": 22,
+    "focus": "S22 (researcher-5, 2026-05-09): minkowski_four_points (k=3 specialization of minkowski_general_k) — Minkowski-side analogue of blichfeldt_four_points, parallel to Iter 21's minkowski_three_points (#17599 in flight). Six C(4,2) pairwise-distinctness goals discharged uniformly via Function.Injective + Fin.decide. File delta: 823 → 867 lines (+44), theoremCount 13 → 14 (+1; mechanic to sync after CI green and after #17599 lands). Build pending; uses no new Mathlib API beyond minkowski_general_k.",
     "blockers": [
       "proofs/.lake recursive self-symlink: every Docker build = ~30-45 min Mathlib clone + ~10 min cache fetch. Blocks build verification of post-S14 axiom→theorem flip and S15 corollary."
     ],
-    "nextAction": "S16 (Mechanic/Auditor follow-up, post CI green): meta.json axiomCount 1→0, status axiomatized→verified, badge axiom→original; rewrite meta.assumptions to reflect 0 axioms; update mainTheorems[blichfeldt_general].type axiom→proved. Future research iter could extend the corollary chain (e.g. `blichfeldt_general_pairwise` with explicit non-zero diffs, or `minkowski_general_k` strengthening Minkowski to vol(S) > k·2ⁿ yielding 2k nonzero ±-symmetric lattice points).",
+    "nextAction": "S23 candidates: minkowski_general_k_symm (~120-150 lines, hard sign-selection); minkowski_general_k_lattice (~30 lines, ZLattice recon needed); minkowski_five_points at k=4 (~55 lines, C(5,2)=10 pairwise goals); k=2/k=3 named-points wrappers stating lattice point ≠ 0 cleanly via sub_eq_zero.",
     "attemptCounts": {
-      "total": 14,
-      "currentApproach": 5,
+      "total": 21,
+      "currentApproach": 7,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS Iter 20 (researcher-3): Added minkowski_general_k_finset, the Finset transport of minkowski_general_k (S18, #17533). Parallels Iter 17 (#17508) for the Blichfeldt side. Conclusion: F : Finset (Fin n → ℝ) with cardinality k+1, F ⊆ s, F ⊆ stdLattice n. Five-line transport using Finset.univ.image, Subtype.ext, Finset.card_image_of_injective. File 757 → 823 lines (+66), theorems 12 → 13 (+1). Iter 17 + Iter 20 now expose Finset-shape access to both sides of the half-scaling bridge. Build verification pending Docker CI; uses no new Mathlib API beyond minkowski_general_k (already in file).",
+    "progressSummary": "PROGRESS Iter 22 (researcher-5): Added minkowski_four_points (k=3 specialization of minkowski_general_k), the Minkowski-side analogue of blichfeldt_four_points (Iter 16) and the natural follow-up to Iter 21's minkowski_three_points (#17599 in flight). Same `Function.Injective + Fin.decide` proof pattern; six C(4,2) pairwise-distinctness goals discharged uniformly. File 823 → 867 lines (+44), theorems 13 → 14 (+1). After Iter 21 lands, theorems become 15. Together Iter 21 + Iter 22 close the named-points-corollary chain symmetry across Blichfeldt and Minkowski for k ∈ {2, 3}. Build verification pending Docker CI; uses no new Mathlib API beyond minkowski_general_k (already in file). Iter 20 (researcher-3): Added minkowski_general_k_finset, the Finset transport of minkowski_general_k (S18, #17533).",
     "builtItems": [
       "blichfeldt_three_points in MinkowskiTheoremOQ04.lean:400 (S15, 2026-05-08, researcher-12): k=2 specialization of `blichfeldt_general`. Statement: vol(S) > 2 yields three pairwise-distinct points x, y, z ∈ S with all three pairwise differences in ℤⁿ. 26 lines including docstring; 3-line proof = `blichfeldt_general 2` + `Function.Injective` + `by decide` per pair. Smallest pedagogical witness of `blichfeldt_general`'s strict strengthening over iterated k=1 (no naive iteration of `blichfeldt_basic` yields 3 points in a common ℤⁿ-coset).",
       "research/problems/minkowski-theorem-oq-04/s12-api-verification.md (S12, 2026-05-08): re-verifies S11 prototype's 12 API references against the v4.26.0 pin (`2df2f01`). 11/12 verbatim; `Set.Finite.fintype_coe_eq_toFinset_card` confirmed missing. Provides 2-line drift fix (`← Set.toFinset_card; simp [hF₀_card]`) using only verified v4.26.0 names; explicit `(↑F₀).toFinset = F₀` fallback for simp non-normalization. Re-evaluates all six S11 §4 risks against v4.26.0: rows 2/5/6 fully discharged; rows 1/3/4 confirmed stable. Revised 6-step S13 build plan.",
