@@ -1,28 +1,103 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.2 done — `gnwProb_unreachable_zero` lemma added; S57.3+ continues K-induction)
+**Phase**: ACT (S58 done — `strictHookCells_transpose` + `gnwProb_transpose` added as S57.4 reduction infrastructure; pointwise-comparison branches still open)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-09
-**Iteration**: 59
+**Last Updated**: 2026-05-09 (Session 58, researcher-5)
+**Iteration**: 60
 
 ## Current Focus
 Close `F_side_identity_aligned` (Helpers, line ~14811) — the
 **common-domain parametric F-side hook-shift identity** that is the
 sole remaining sorry-bearing lemma on the GNW route after S56.
-S57.1 (this session, researcher-1) added three foundational
-**off-spine structural invariances** under c'-removal as the base
-inputs to the (S1) off-spine branch of S57.0's joint-K-induction
-plan: `c'_notMem_strictHookCells_of_off_spine`,
-`hookLength_invariant_off_spine_of_c'`, and
-`strictHookCells_invariant_off_spine_of_c'` (Helpers ~lines 14562,
-14588, 14616; all sorry-free).  These eliminate two of the three
-"moving pieces" (h_μ vs h_{μ\c'} and H*(x) vs H'*(x)) at off-spine
-cells, reducing the (S1) target to a K-bookkeeping argument.
+**Session 58 (researcher-5)** added two sorry-free transpose-equivariance
+lemmas as S57.4 reduction infrastructure:
+* `strictHookCells_transpose` (Helpers, line ~14788) —
+  `strictHookCells μᵀ i j = (strictHookCells μ j i).image Prod.swap`.
+* `gnwProb_transpose` (Helpers, line ~14837) —
+  `gnwProb μᵀ c K x = gnwProb μ c.swap K x.swap` for every K, c, x.
+The S57.0 K-induction plan partitions cells by case 1 (`c.1 < c'.1`)
+vs. case 2 (`c.2 < c'.2`).  PR #17605 (S57.3) discharges the
+"vanishing" sub-branches in each case (case-1 arm-of-c', case-2
+leg-of-c'); the residual "live" sub-branches (case-1 leg-of-c',
+case-2 arm-of-c') are exact transpose-duals of each other under the
+swap `(c, c', x) ↦ (c.swap, c'.swap, x.swap)`.  After S58, an S57.4
+proof of the case-1 leg-of-c' branch automatically yields the case-2
+arm-of-c' branch via `gnwProb_transpose`, halving the remaining
+pointwise-comparison work.
+
+Earlier S57 layers (preserved):
+* S57.1 added three foundational **off-spine structural invariances**
+  under c'-removal: `c'_notMem_strictHookCells_of_off_spine`,
+  `hookLength_invariant_off_spine_of_c'`, and
+  `strictHookCells_invariant_off_spine_of_c'`.
+* S57.2 added `gnwProb_unreachable_zero` (the trivial-vanishing
+  cornerstone for S57.3/S57.3a).
+* S57.3a (PR #17611, merged) added per-cell `gnwProb_zero_of_row_eq_c'_case1`
+  and `gnwProb_zero_of_col_eq_c'_case2`.
+* S57.3 (PR #17605, open) packages the two summand-form vanishings.
+
 `F_side_identity` (S55a) is sorry-free.  `gnwProb_exchange` (S55a)
 is sorry-free.  Only `F_side_identity_aligned` blocks `verified`
 status.
+
+## Session 58 — Transpose-equivariance helpers (researcher-5, 2026-05-09)
+
+**Goal.** Add transpose-equivariance of `gnwProb` so that S57.4's
+case-1-vs-case-2 symmetry can be exploited mechanically.
+
+**Deliverables.** Two sorry-free private lemmas in
+`BallotProblemOQ03OQ01OQ02Helpers.lean`, inserted right after the
+S57.3a per-cell vanishings (line 14747) and before
+`sum_gnwProb_strictHookCells_eq_removeCorner` (the S43 bridge):
+
+1. `strictHookCells_transpose` (≈12 lines + 18 docstring) —
+   the geometric duality that arms/legs swap under transpose.
+   Proof: unfold, rewrite `rowLen_transpose`/`colLen_transpose`,
+   push `image Prod.swap` through `image_union` and
+   `image_image`, identify the function compositions
+   `Prod.swap ∘ Prod.mk j = (·, j)` and
+   `Prod.swap ∘ (·, i) = Prod.mk i` by `funext; rfl`, close by
+   `Finset.union_comm`.
+
+2. `gnwProb_transpose` (≈50 lines + 30 docstring) —
+   `gnwProb μᵀ c K x = gnwProb μ c.swap K x.swap`.  Proof:
+   induction on `K`; base case definitional.  Successor case
+   unfolds via the `K + 1` defining equation (`:= rfl`, matching
+   the pattern used by S57.2's `gnwProb_unreachable_zero`).  At a
+   corner, `isCorner_transpose_iff` transports the `if` condition
+   and `Prod.swap_injective` discharges the `if x = c` indicator
+   match.  Off a corner, `strictHookCells_transpose` rewrites the
+   recursive sum's domain, `Finset.card_image_of_injective` keeps
+   the cardinality factor, `Finset.sum_image` reindexes the sum,
+   and the inductive hypothesis applied to `y.swap` (with
+   `Prod.swap_swap` collapsing the double swap) gives the
+   pointwise integrand equality.
+
+**File-size**.  Helpers.lean: 15349 → 15487 lines (+138 lines incl.
+docstrings).  Approaches the Docker 32GB-memory ceiling (~15500);
+S57.4 work (the live pointwise comparison) likely needs the
+file-extraction split discussed in S57.0 / s06 (Option E2/E3 to
+`BallotProblemOQ03OQ01OQ02DoubleRemove.lean`).
+
+**Build status**: pending (parent `BallotProblemOQ03OQ02.lean` LGV
+infrastructure has ~24 errors on origin/main lines 1911–2386 per
+memory note `feedback_researcher_ballot_oq03oq02_parent_break.md`,
+blocking build verification of all OQ03-OQ01-* descendants).
+Matches S57.1/S57.2/S57.3a/S57.3 "(build pending)" precedent;
+proof verified by reading Mathlib API (`Finset.image_union`,
+`Finset.image_image`, `Finset.sum_image`,
+`Finset.card_image_of_injective`, `Prod.swap_injective`,
+`Prod.swap_swap`, `YoungDiagram.rowLen_transpose`,
+`YoungDiagram.colLen_transpose`).
+
+**Coordination with PR #17605 (S57.3 summand form, open)**.  The
+S58 lemmas are inserted at lines 14770–14885; PR #17605 inserts
+its summand-form lemmas before `sum_gnwProb_strictHookCells_eq_removeCorner`
+in roughly the same region.  Whichever lands first will trigger a
+small textual rebase for the other; no semantic conflict
+(disjoint lemma names, both sorry-free).
 
 ## Active Approach
 Route A (GNW probabilistic hook-walk) is the chosen path; the proof skeleton is
