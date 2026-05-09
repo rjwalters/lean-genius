@@ -4,8 +4,137 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 29
+**Iteration**: 31
 **Last Updated**: 2026-05-09
+
+## Session 31 (researcher-13, 2026-05-09, build pending) — linear-functional helpers
+
+**Three small new theorems** added immediately after the existing
+`chebyshevInterp_smul` (line 152 on origin/main), as infrastructure for the
+future `ContinuousLinearMap` packaging in the UBP closure of
+`divergence_from_lebesgue_growth`:
+
+```lean
+theorem chebyshevInterp_zero_fn (n : ℕ) (x : ℝ) :
+    chebyshevInterp n (fun _ : ℝ => 0) x = 0
+
+theorem chebyshevInterp_neg (n : ℕ) (f : ℝ → ℝ) (x : ℝ) :
+    chebyshevInterp n (fun t => -f t) x = -chebyshevInterp n f x
+
+theorem chebyshevInterp_sub (n : ℕ) (f g : ℝ → ℝ) (x : ℝ) :
+    chebyshevInterp n (fun t => f t - g t) x =
+    chebyshevInterp n f x - chebyshevInterp n g x
+```
+
+**Proofs.** Mirror the existing `chebyshevInterp_add` template line-by-line:
+
+  • `_zero_fn`: `simp only [chebyshevInterp, lagrangeInterp, zero_mul,
+    Finset.sum_const_zero]`.
+  • `_neg`: `simp only [chebyshevInterp, lagrangeInterp, neg_mul,
+    Finset.sum_neg_distrib]`.
+  • `_sub`: `simp only [chebyshevInterp, lagrangeInterp]; simp_rw [sub_mul];
+    exact Finset.sum_sub_distrib`.
+
+All three are mechanical 1-line `simp` proofs, cross-checked against
+existing usages of `Finset.sum_sub_distrib` (in `BinomialTheoremOQ02OQ01OQ03`,
+`CauchySchwarzOQ03`) and `Finset.sum_neg_distrib` (in `ArithmeticSeriesOQ02OQ03`)
+to confirm Mathlib API names.
+
+**Why these specifically** (foundation for the post-S30 UBP closure):
+
+1. **Linearity over ℝ-vector-spaces**: `(fun t => f t - g t)` and
+   `(fun t => -f t)` appear pervasively in operator-norm bounds. The
+   `ContinuousLinearMap.opNorm_le_iff` recipe uses
+   `‖A (f - g)‖ ≤ M · ‖f - g‖`; without `chebyshevInterp_sub` and
+   `chebyshevInterp_neg`, every operator-norm calculation needs an inline
+   `simp_rw [sub_mul]; rw [Finset.sum_sub_distrib]` boilerplate.
+
+2. **Zero baseline for `Λₙ_x`**: A `LinearMap` from `C[-1,1] → ℝ` requires a
+   `map_zero'` field; `chebyshevInterp_zero_fn` is exactly that field's
+   witness (composed with the trivial extension of `0 : C[-1,1]` to
+   `0 : ℝ → ℝ`).
+
+3. **Independence from S30 (PR #17593, in flight)**: S30 modifies the
+   trailing two theorems (`divergence_from_lebesgue_growth` and
+   `erdos_1941_divergence_from_growth`) at lines 2535–2606 to refactor
+   Sorry 2's conclusion to the unboundedness form. This PR appends helpers
+   immediately after `chebyshevInterp_smul` (line 152) — over 2300 lines
+   away — so the two PRs are textually disjoint and can both land cleanly.
+
+4. **Independence from open S25 PRs (#17386, #17457)**: those modify the
+   `trig_sum_harmonic_lb` area (line ~2300+); the two PRs are similarly
+   disjoint.
+
+**Net new content**: +3 theorems, 0 definitions, 0 axioms, 0 sorries.
+**Updated total**: 65 theorems, 5 definitions, 0 axioms, 1 sorry, 2589
+lines (was 62/5/0/1/2561 on origin/main; the S30 PR will add ~49 statement-
+doc lines on top of that, but in a different file region).
+
+**Mathlib API surface**: zero new lemmas. Only standard simp-set members
+(`zero_mul`, `Finset.sum_const_zero`, `neg_mul`, `Finset.sum_neg_distrib`,
+`sub_mul`, `Finset.sum_sub_distrib`).
+
+**Build status**: build pending. These three lemmas are 1-line `simp`-style
+proofs over a build-verified template (`chebyshevInterp_add`). Build risk
+is minimal — the only failure mode is Mathlib API drift (e.g. if
+`Finset.sum_sub_distrib` were renamed). Verified usage in two independent
+recent files on `origin/main`; the names are stable.
+
+## Sharpening of the Plan for S32+ (UBP Closure of `divergence_from_lebesgue_growth`)
+
+Once S30 (PR #17593, statement refactor) and S31 (this PR, linear helpers)
+both land, the UBP closure outline is:
+
+  1. **Define `Λₙ_x` as a `ContinuousLinearMap`** (~30–40 lines).
+     Build the bounded-linear-functional `Λₙ_x : C(Set.Icc (-1) 1, ℝ) →L[ℝ] ℝ`,
+     `f ↦ chebyshevInterp n (extension f) x`, where
+     `extension : C(Icc (-1) 1) → (ℝ → ℝ)` extends by the convention
+     `f(t) = f(clip t (-1, 1))` (or zero outside — since the interpolation
+     only sees `f` at the Chebyshev nodes
+     `Set.Icc (-1) 1 ⊃ chebyshevNode n`, both work).
+     Linearity: `chebyshevInterp_add` (existing), `chebyshevInterp_smul`
+     (existing), `chebyshevInterp_zero_fn` / `chebyshevInterp_neg` /
+     `chebyshevInterp_sub` (this PR, S31).
+     Continuity: `chebyshev_upper_bound` (existing) gives the operator-norm
+     bound `‖Λₙ_x f‖ ≤ chebyshevLebesgue n x · ‖f‖_∞`; pack as a
+     `ContinuousLinearMap` via `LinearMap.mkContinuous`.
+
+  2. **Operator-norm equality** (~50–80 lines).
+     Upper bound `‖Λₙ_x‖ ≤ chebyshevLebesgue n x` is direct from step 1's
+     bound. Lower bound (saturation): construct a witness `f₀ : C[-1,1]`
+     with `‖f₀‖_∞ ≤ 1` and `f₀(node_k) = sign(basis_k(x))`; then
+     `Λₙ_x f₀ = ∑_k sign(basis_k(x)) · basis_k(x) = ∑_k |basis_k(x)|
+     = chebyshevLebesgue n x`. Construction: piecewise-linear interpolation
+     between consecutive nodes, or Tietze extension from the finite set
+     `{node_k}`.
+
+  3. **UBP contrapositive** (~10–20 lines). The hypothesis
+     `Filter.Tendsto Λₙ_x atTop atTop` (from S30's refactor: equivalently
+     "norms unbounded") together with
+     `Mathlib.Analysis.NormedSpace.BanachSteinhaus.banach_steinhaus_iff`
+     gives `∃ f : C[-1,1], ¬ Bounded {Λₙ_x f | n}`, i.e.
+     `∃ f, ∀ M, ∃ n, M < |chebyshevInterp n (extension f) x|`. Extending
+     `f` to `ℝ → ℝ` preserves the values at the nodes, hence the conclusion
+     of `divergence_from_lebesgue_growth`.
+
+  4. **Glue** (~5 lines).
+
+Estimated S32–S35 sizes total: ~110–150 lines split into 3–4 PRs.
+
+## Session 30 (researcher-1, 2026-05-09, in flight as PR #17593) — Sorry 2 statement refactor
+
+**Refactors `divergence_from_lebesgue_growth` and the corollary
+`erdos_1941_divergence_from_growth`** from the strictly-stronger
+`Filter.Tendsto … atTop atTop` form to the unboundedness form
+
+```
+∃ f : ℝ → ℝ, Continuous f ∧ ∀ M : ℝ, ∃ n : ℕ, M < |chebyshevInterp n f x|
+```
+
+aligning the conclusion with what Banach–Steinhaus / UBP actually delivers
+(see prior `state.md` "Next Steps" section 2 Option A). Net file change:
+2561 → 2610 lines (statement-doc expansion). Build pending. PR remains
+open at time of S31 (this session).
 
 ## Session 29 (researcher-11, this session, build pending)
 
