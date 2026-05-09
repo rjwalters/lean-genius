@@ -42,6 +42,7 @@ Parent: SchauderFixedPointOQ03.lean (Kakutani framework)
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
+import Mathlib.Analysis.InnerProductSpace.Projection
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Topology.MetricSpace.HausdorffDistance
 import Mathlib.Topology.Sequences
@@ -127,7 +128,104 @@ lemma exists_continuous_proj_convex {n : ℕ}
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S) :
     ∃ r : EuclideanSpace ℝ (Fin n) → ↥S,
       Continuous r ∧ ∀ x : ↥S, r (x : EuclideanSpace ℝ (Fin n)) = x := by
-  sorry  -- S11.B work item; see docstring above.
+  -- S14 (researcher-3, 2026-05-09): full nearest-point retraction proof.
+  -- The Hilbert projection theorem (`exists_norm_eq_iInf_of_complete_convex`)
+  -- gives existence of the nearest point on a complete convex set.
+  -- Continuity follows from 1-Lipschitz, derived from the variational
+  -- inequality (`norm_eq_iInf_iff_real_inner_le_zero`) and Cauchy–Schwarz.
+  -- Idempotency on `↥S` follows from the infimum being 0 when `x ∈ S`.
+  classical
+  have hS_complete : IsComplete S := hS_compact.isComplete
+  have hexists : ∀ u : EuclideanSpace ℝ (Fin n),
+      ∃ v ∈ S, ‖u - v‖ = ⨅ w : S, ‖u - w‖ :=
+    exists_norm_eq_iInf_of_complete_convex hS_ne hS_complete hS_convex
+  -- Define the retraction via Classical.choose.
+  let r : EuclideanSpace ℝ (Fin n) → ↥S := fun u =>
+    ⟨Classical.choose (hexists u), (Classical.choose_spec (hexists u)).1⟩
+  have hr_min : ∀ u, ‖u - (r u : EuclideanSpace ℝ (Fin n))‖ = ⨅ w : S, ‖u - w‖ :=
+    fun u => (Classical.choose_spec (hexists u)).2
+  have hr_mem : ∀ u, (r u : EuclideanSpace ℝ (Fin n)) ∈ S := fun u => (r u).2
+  -- Variational inequality (characterization of the projection).
+  have hVI : ∀ u : EuclideanSpace ℝ (Fin n),
+      ∀ w ∈ S, ⟪u - (r u : EuclideanSpace ℝ (Fin n)),
+                  w - (r u : EuclideanSpace ℝ (Fin n))⟫_ℝ ≤ 0 := by
+    intro u
+    rw [← norm_eq_iInf_iff_real_inner_le_zero hS_convex (hr_mem u)]
+    exact hr_min u
+  -- Lower-bound zero of `‖u - ·‖` is shared by every `u`; needed for ciInf bounds.
+  have hbdd : ∀ u : EuclideanSpace ℝ (Fin n),
+      BddBelow (Set.range fun w : S => ‖u - (w : EuclideanSpace ℝ (Fin n))‖) := by
+    intro u
+    refine ⟨0, ?_⟩
+    rintro y ⟨z, rfl⟩
+    exact norm_nonneg _
+  refine ⟨r, ?_, ?_⟩
+  · -- Continuity: prove r is 1-Lipschitz.
+    have hLip : ∀ u₁ u₂ : EuclideanSpace ℝ (Fin n),
+        ‖(r u₁ : EuclideanSpace ℝ (Fin n)) - (r u₂ : EuclideanSpace ℝ (Fin n))‖
+          ≤ ‖u₁ - u₂‖ := by
+      intro u₁ u₂
+      set v₁ : EuclideanSpace ℝ (Fin n) := (r u₁ : _) with hv₁
+      set v₂ : EuclideanSpace ℝ (Fin n) := (r u₂ : _) with hv₂
+      have h1 : ⟪u₁ - v₁, v₂ - v₁⟫_ℝ ≤ 0 := hVI u₁ v₂ (hr_mem u₂)
+      have h2 : ⟪u₂ - v₂, v₁ - v₂⟫_ℝ ≤ 0 := hVI u₂ v₁ (hr_mem u₁)
+      -- Algebraic identity: the sum of the two variational quantities equals
+      --   ‖v₁ - v₂‖² - ⟪u₁ - u₂, v₁ - v₂⟫.
+      have hexp : ⟪u₁ - v₁, v₂ - v₁⟫_ℝ + ⟪u₂ - v₂, v₁ - v₂⟫_ℝ
+                = ‖v₁ - v₂‖ ^ 2 - ⟪u₁ - u₂, v₁ - v₂⟫_ℝ := by
+        have hself : ⟪v₁ - v₂, v₁ - v₂⟫_ℝ = ‖v₁ - v₂‖ ^ 2 :=
+          real_inner_self_eq_norm_sq _
+        have hcomm : ⟪v₂, v₁⟫_ℝ = ⟪v₁, v₂⟫_ℝ := real_inner_comm v₂ v₁
+        simp only [inner_sub_left, inner_sub_right, hcomm] at hself
+        simp only [inner_sub_left, inner_sub_right, hcomm]
+        linarith [hself]
+      have hsum : ‖v₁ - v₂‖ ^ 2 ≤ ⟪u₁ - u₂, v₁ - v₂⟫_ℝ := by
+        have := add_le_add h1 h2
+        linarith [hexp]
+      -- Cauchy–Schwarz upper bound on the right.
+      have hcs : ⟪u₁ - u₂, v₁ - v₂⟫_ℝ ≤ ‖u₁ - u₂‖ * ‖v₁ - v₂‖ :=
+        real_inner_le_norm _ _
+      have hsq : ‖v₁ - v₂‖ ^ 2 ≤ ‖u₁ - u₂‖ * ‖v₁ - v₂‖ := hsum.trans hcs
+      -- Conclude ‖v₁ - v₂‖ ≤ ‖u₁ - u₂‖ via case-split on whether v₁ = v₂.
+      rcases eq_or_lt_of_le (norm_nonneg (v₁ - v₂)) with heq | hpos
+      · rw [← heq]; exact norm_nonneg _
+      · have hsq' : ‖v₁ - v₂‖ * ‖v₁ - v₂‖ ≤ ‖u₁ - u₂‖ * ‖v₁ - v₂‖ := by
+          have h := hsq; rw [sq] at h; exact h
+        exact le_of_mul_le_mul_right hsq' hpos
+    -- Convert Lipschitz on the underlying value to continuity into ↥S.
+    refine continuous_induced_rng.mpr ?_
+    have hg_dist : ∀ u₁ u₂ : EuclideanSpace ℝ (Fin n),
+        dist ((r u₁ : EuclideanSpace ℝ (Fin n)))
+             ((r u₂ : EuclideanSpace ℝ (Fin n)))
+          ≤ ((1 : ℝ≥0) : ℝ) * dist u₁ u₂ := by
+      intro u₁ u₂
+      rw [NNReal.coe_one, one_mul, dist_eq_norm, dist_eq_norm]
+      exact hLip u₁ u₂
+    have hLipWith :
+        LipschitzWith 1 (fun u : EuclideanSpace ℝ (Fin n) =>
+                          ((r u : EuclideanSpace ℝ (Fin n)) :
+                            EuclideanSpace ℝ (Fin n))) :=
+      LipschitzWith.of_dist_le_mul hg_dist
+    exact hLipWith.continuous
+  · -- Idempotency: `x ∈ S ⇒ r x = x`.
+    intro x
+    apply Subtype.ext
+    -- The infimum of `‖x - ·‖` over `S` is 0, attained at `x ∈ S`.
+    have hinf_zero : (⨅ w : S, ‖(x : EuclideanSpace ℝ (Fin n)) - w‖) = 0 := by
+      apply le_antisymm
+      · have hle :
+            (⨅ w : S, ‖(x : EuclideanSpace ℝ (Fin n)) - w‖)
+              ≤ ‖(x : EuclideanSpace ℝ (Fin n)) - (x : EuclideanSpace ℝ (Fin n))‖ :=
+          ciInf_le (hbdd (x : EuclideanSpace ℝ (Fin n))) x
+        simpa using hle
+      · exact le_ciInf (fun _ => norm_nonneg _)
+    have hzero : ‖(x : EuclideanSpace ℝ (Fin n))
+                  - (r (x : EuclideanSpace ℝ (Fin n)) : EuclideanSpace ℝ (Fin n))‖ = 0 :=
+      (hr_min (x : EuclideanSpace ℝ (Fin n))).trans hinf_zero
+    have hsub : (x : EuclideanSpace ℝ (Fin n))
+              - (r (x : EuclideanSpace ℝ (Fin n)) : EuclideanSpace ℝ (Fin n)) = 0 :=
+      (norm_eq_zero).mp hzero
+    exact (sub_eq_zero.mp hsub).symm
 
 /-- **Theorem 1 (was Axiom 1): Brouwer's FPT on a compact convex subset.**
 

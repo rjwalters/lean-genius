@@ -1,23 +1,34 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S13 implementation: S11.A.body landed; one `sorry`
-remains on the S11.B helper)
+**Phase**: ACT (S14 implementation: S11.B helper landed; **0 sorries**
+in the file, build pending)
 **Path**: full
-**Since**: 2026-05-09T03:45:00Z
-**Iteration**: 13
+**Since**: 2026-05-09T04:20:00Z
+**Iteration**: 14
 
 ## Current Focus
-S13 (researcher-10, 2026-05-09, implementation): Replaces the `sorry`
+S14 (researcher-3, 2026-05-09, implementation): Fills the final `sorry`
+on `lemma exists_continuous_proj_convex` (LOOKUP-2 helper) with a
+complete proof using the Hilbert projection theorem
+(`exists_norm_eq_iInf_of_complete_convex`) for existence, the
+variational inequality (`norm_eq_iInf_iff_real_inner_le_zero`) for
+continuity (1-Lipschitz from variational inequality + Cauchy–Schwarz),
+and `ciInf_le` for idempotency. Net file change: sorry count 1 → **0**;
+axiom count unchanged at 2; line count ~668 → ~762. Build pending per
+established cadence (`proofs/.lake` self-symlink trap blocks local
+Docker verification). After build verification, `theorem brouwer_fpt`
+will be end-to-end sorry-free; the file's only mathematical assumptions
+are `axiom brouwer_unit_ball` (closed-unit-ball Brouwer FPT) and
+`axiom approx_selection_exists` (Cellina–Browder graph approximate
+selections).
+
+S13 (researcher-10, 2026-05-09, PR #17575 merged): Replaces the `sorry`
 in `theorem brouwer_fpt`'s body with the ~140-line retraction
 reduction proof per `s11-strict-weakening-spec.md` §"S11.A.body — Lean
 stub" (Option b elementary rescaling) + `s12-s11a-body-step6-refinement.md`
 9–11-line Step 6 block. Net file change: sorry count 2 → 1; axiom
-count unchanged at 2; line count ~517 → ~657. Build pending per
-established cadence (`proofs/.lake` self-symlink trap blocks local
-Docker verification). The remaining `sorry` is the S11.B helper
-`exists_continuous_proj_convex`; once it lands, `theorem brouwer_fpt`
-is end-to-end sorry-free.
+count unchanged at 2; line count ~517 → ~668.
 
 S12 (researcher-3, 2026-05-09, PR #17523 merged, analysis-only): Tightened the
 S11.A.body Lean stub before implementation. Documented the corrected
@@ -121,7 +132,7 @@ Lean file is sorry-free with axiomCount = 2 (unit-ball Brouwer +
 graph-form Cellina–Browder selections).
 
 ## Attempt Count
-- Total attempts: 13
+- Total attempts: 14
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
@@ -139,7 +150,9 @@ graph-form Cellina–Browder selections).
   - S12 S11.A.body Step 6 refinement + Mathlib API cross-verification
     (researcher-3, PR #17523, analysis-only);
   - S13 S11.A.body implementation: ~140-line retraction reduction body
-    landed, sorry count 2 → 1 (researcher-10, this PR, build pending).
+    landed, sorry count 2 → 1 (researcher-10, PR #17575, build pending);
+  - S14 S11.B helper implementation: nearest-point retraction proof
+    landed, sorry count 1 → **0** (researcher-3, this PR, build pending).
 
 ## Blockers
 - **Build verification deferred**: Docker build not run locally
@@ -150,41 +163,32 @@ graph-form Cellina–Browder selections).
   that a name drift requires only a local fix, not a redesign.
 
 ## Next Action
-**S13 — S11.A.body LANDED THIS ITERATION (implementation).** The body
-of `theorem brouwer_fpt` is now filled with the ~140-line retraction
-reduction proof per S11/S12 spec. Sorry count 2 → 1; the only
-remaining `sorry` is on the S11.B helper. Build pending per the
-`proofs/.lake` self-symlink trap; build verification deferred to a
-build-equipped session (or to the cycle right after S11.B lands).
+**S14 — S11.B LANDED THIS ITERATION (implementation).** The `sorry`
+body of `lemma exists_continuous_proj_convex` is now filled with a
+complete proof: existence via the Hilbert projection theorem,
+continuity via 1-Lipschitz from the variational inequality +
+Cauchy–Schwarz, idempotency via `ciInf_le`. Sorry count 1 → **0**.
+Build pending per the `proofs/.lake` self-symlink trap; build
+verification kicked off at PR submission time.
 
-**S11.B (LOOKUP-2 helper proof, est. ~30–80 Lean lines)** — fill the
-`sorry` body of `lemma exists_continuous_proj_convex`:
+**Build verification (post-S14)** — confirm the worktree-local Docker
+build is green:
+1. `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`
+2. If green, sync `meta.json`: `sorries: 2 → 0`, `lineCount: 517 → ~762`,
+   `axiomCount` unchanged at 2.
+3. Update the file header `**Status**: AXIOMATIZED (2 axioms)` block to
+   reflect 0 sorries and end-to-end derivation of `theorem brouwer_fpt`.
+4. If the build fails on a Mathlib API drift between v4.10 (cached) and
+   v4.26 (pinned), the most likely names to drift are
+   `LipschitzWith.of_dist_le_mul`, `real_inner_self_eq_norm_sq`, or the
+   `inner_sub_*` family; these can be fixed by `gh search code` against
+   the pinned-rev SHA.
 
-1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`; locate the
-   `sorry` body of `exists_continuous_proj_convex` (just above
-   `theorem brouwer_fpt`).
-2. Use `Mathlib.Analysis.InnerProductSpace.Projection` —
-   `exists_norm_eq_iInf_of_complete_convex` for existence,
-   `EuclideanSpace.instStrictConvexSpace` for uniqueness, and the
-   `norm_eq_iInf_iff_real_inner_le_zero` family for continuity (the
-   1-Lipschitz two-line argument). Idempotency on `↥S` from
-   `dist_self` plus uniqueness.
-3. Full structured stub in `s11-strict-weakening-spec.md` §"S11.B —
-   Lean stub".
-4. Docker-verify the build:
-   `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`.
-
-**S11.A.body — DONE in S13 (this PR).** ~140-line retraction
-reduction body landed. See `s13-s11a-body-implementation.md` for the
-session note.
-
-**Build verification (post-S11.B)** — once S11.B lands, run
-`./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`
-on a build-equipped worktree. If green, sync `meta.json` to record
-sorries 0, axiomCount 2 (strict-weakening on the Brouwer side). If
-the `_₀`-suffix names (`inv_mul_cancel₀`, `mul_inv_cancel₀`) drift
-between v4.10 and v4.26, the fix is a one-token substitution per
-`s12-s11a-body-step6-refinement.md`'s flagged guidance.
+**Future work — the harder axiom**: PartitionOfUnity proof of the graph
+form of `approx_selection_exists`, per s6/s7 plan. Optional far-future
+session: in-house Brouwer FPT proof to eliminate `brouwer_unit_ball`
+(Option B from S10); see `s10-mathlib-v426-lookup3-resolved.md` for the
+trade-off analysis.
 
 **LEGACY (pre-S11) Next-Action sketch — kept for reference:**
 
