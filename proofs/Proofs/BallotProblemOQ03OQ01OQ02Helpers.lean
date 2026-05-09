@@ -14746,6 +14746,144 @@ private lemma gnwProb_zero_of_col_eq_c'_case2
   apply gnwProb_unreachable_zero K x
   exact Or.inr (by omega)
 
+-- ============================================================
+-- Transpose-equivariance of `strictHookCells` and `gnwProb`
+-- (Session 58 — S57.4 reduction infrastructure)
+-- These two sorry-free lemmas package the geometric duality that
+-- the GNW walk on a Young diagram is transpose-symmetric: arms of
+-- `(i, j)` in `μ` are legs of `(j, i)` in `μᵀ` and vice versa, and
+-- the walk-end probability `gnwProb μ c K x` is invariant under the
+-- joint transpose `(μ, c, x) ↦ (μᵀ, c.swap, x.swap)`.
+--
+-- The S57.0 K-induction plan for `F_side_identity_aligned` partitions
+-- cells by case 1 (`c.1 < c'.1`) vs. case 2 (`c.2 < c'.2`) of the
+-- corner-distinctness dichotomy.  PR #17605 (S57.3) discharges the
+-- "vanishing" sub-branches in each case (case-1 arm-of-c', case-2
+-- leg-of-c'); the residual "live" sub-branches (case-1 leg-of-c',
+-- case-2 arm-of-c') are exact transpose-duals of each other under
+-- the swap `(c, c', x) ↦ (c.swap, c'.swap, x.swap)`.  After
+-- `gnwProb_transpose` lands, an S57.4 proof of the case-1 leg-of-c'
+-- branch automatically yields the case-2 arm-of-c' branch by
+-- transposing μ and reapplying.
+-- ============================================================
+
+/-- **Transpose-equivariance of `strictHookCells`.**
+
+For any Young diagram `μ` and indices `i j : ℕ`,
+`strictHookCells μᵀ i j = (strictHookCells μ j i).image Prod.swap`.
+
+Geometrically: arms of `(i, j)` in `μᵀ` (cells `(i, s)` with
+`j < s < μᵀ.rowLen i = μ.colLen i`) correspond bijectively, under the
+swap `(s, j) ↦ (j, s)`, to legs of `(j, i)` in `μ` (cells `(s, i)`
+with `j < s < μ.colLen i`).  Symmetrically for legs of `(i, j)` in
+`μᵀ` and arms of `(j, i)` in `μ`.
+
+**Proof.** Unfold `strictHookCells`, apply
+`YoungDiagram.rowLen_transpose` and `YoungDiagram.colLen_transpose` to
+swap the row/col-length factors, then push the outer `image Prod.swap`
+through the union and image-of-image factors.  The compositions
+`Prod.swap ∘ Prod.mk j = (·, j)` and
+`Prod.swap ∘ (·, i) = Prod.mk i` are definitionally equal, so the two
+unions match up to the commutativity of `∪`. -/
+private lemma strictHookCells_transpose (μ : YoungDiagram) (i j : ℕ) :
+    strictHookCells μ.transpose i j =
+      (strictHookCells μ j i).image Prod.swap := by
+  unfold strictHookCells
+  rw [YoungDiagram.rowLen_transpose, YoungDiagram.colLen_transpose,
+      Finset.image_union, Finset.image_image, Finset.image_image]
+  -- After the rewrites, the LHS arm/leg images have row/col-lengths
+  -- (μ.colLen i, μ.rowLen j) and the RHS image-of-image factors are
+  -- precomposed with `Prod.swap`.  Identify the function compositions.
+  have hcomp1 : (Prod.swap : ℕ × ℕ → ℕ × ℕ) ∘ Prod.mk j =
+      fun (s : ℕ) => ((s, j) : ℕ × ℕ) := by
+    funext s; rfl
+  have hcomp2 : (Prod.swap : ℕ × ℕ → ℕ × ℕ) ∘ (fun r => (r, i)) =
+      Prod.mk i := by
+    funext s; rfl
+  rw [hcomp1, hcomp2]
+  exact Finset.union_comm _ _
+
+/-- **Transpose-equivariance of `gnwProb`.**
+
+The GNW walk-end probability is invariant under the joint transpose
+`(μ, c, x) ↦ (μᵀ, c.swap, x.swap)`:
+`gnwProb μᵀ c K x = gnwProb μ c.swap K x.swap` for every `K : ℕ` and
+every `c x : ℕ × ℕ`.
+
+This is the "transpose duality" recommended in S57.0's risk register
+for halving the S57.4 case analysis: a proof of the case-1
+leg-of-`c'` pointwise comparison branch of `F_side_identity_aligned`
+yields the case-2 arm-of-`c'` branch by applying `gnwProb_transpose`
+to swap rows and columns.
+
+**Proof.** Induction on `K`.
+
+* `K = 0`: both sides are `0` by definition of `gnwProb` (defining
+  equation at `0`).
+* `K + 1`: unfold both sides via the `K + 1` defining equation.
+  - **Corner branch** (`isCorner μᵀ x`): equivalent to
+    `isCorner μ x.swap` by `isCorner_transpose_iff`.  The indicator
+    `if x = c then 1 else 0` matches `if x.swap = c.swap then 1 else 0`
+    because `Prod.swap` is injective.
+  - **Non-corner branch**: rewrite `strictHookCells μᵀ x.1 x.2` as
+    `(strictHookCells μ x.swap.1 x.swap.2).image Prod.swap` via
+    `strictHookCells_transpose` (using `x.swap.1 = x.2` and
+    `x.swap.2 = x.1`).  The cardinality factor matches by
+    `Finset.card_image_of_injective` (`Prod.swap` injective).  The
+    sum reindexes via `Finset.sum_image` (also `Prod.swap` injective),
+    and the inductive hypothesis applied to `y.swap` together with
+    `Prod.swap_swap` collapses
+    `gnwProb μᵀ c K y.swap = gnwProb μ c.swap K y` pointwise. -/
+private lemma gnwProb_transpose (μ : YoungDiagram) (c : ℕ × ℕ) :
+    ∀ (K : ℕ) (x : ℕ × ℕ),
+      gnwProb μ.transpose c K x = gnwProb μ c.swap K x.swap := by
+  intro K
+  induction K with
+  | zero => intro x; rfl
+  | succ K IH =>
+    intro x
+    -- Unfold both sides via the K+1 defining equation of `gnwProb`.
+    have hL : gnwProb μ.transpose c (K + 1) x =
+        if isCorner μ.transpose x then (if x = c then (1 : ℚ) else 0)
+        else (1 / ((strictHookCells μ.transpose x.1 x.2).card : ℚ)) *
+             ∑ y ∈ strictHookCells μ.transpose x.1 x.2,
+                 gnwProb μ.transpose c K y := rfl
+    have hR : gnwProb μ c.swap (K + 1) x.swap =
+        if isCorner μ x.swap then
+          (if x.swap = c.swap then (1 : ℚ) else 0)
+        else (1 / ((strictHookCells μ x.swap.1 x.swap.2).card : ℚ)) *
+             ∑ y ∈ strictHookCells μ x.swap.1 x.swap.2,
+                 gnwProb μ c.swap K y := rfl
+    rw [hL, hR]
+    by_cases hcrn : isCorner μ.transpose x
+    · -- Corner branch: transport across `isCorner_transpose_iff`.
+      have hcrn' : isCorner μ x.swap :=
+        (isCorner_transpose_iff μ x).mp hcrn
+      rw [if_pos hcrn, if_pos hcrn']
+      by_cases hxc : x = c
+      · subst hxc; simp
+      · have hxc' : x.swap ≠ c.swap := fun h =>
+          hxc (Prod.swap_injective h)
+        rw [if_neg hxc, if_neg hxc']
+    · -- Non-corner branch: sum-reindex via `Prod.swap`.
+      have hcrn' : ¬ isCorner μ x.swap := fun h =>
+        hcrn ((isCorner_transpose_iff μ x).mpr h)
+      rw [if_neg hcrn, if_neg hcrn']
+      -- Rewrite the LHS strict-hook set as the image-under-swap of
+      -- the RHS strict-hook set.  Note `x.swap.1 = x.2` and
+      -- `x.swap.2 = x.1` definitionally.
+      have hSH : strictHookCells μ.transpose x.1 x.2 =
+          (strictHookCells μ x.swap.1 x.swap.2).image Prod.swap :=
+        strictHookCells_transpose μ x.1 x.2
+      rw [hSH,
+          Finset.card_image_of_injective _ Prod.swap_injective,
+          Finset.sum_image (fun a _ b _ h => Prod.swap_injective h)]
+      congr 1
+      apply Finset.sum_congr rfl
+      intro y _
+      have h := IH y.swap
+      rwa [Prod.swap_swap] at h
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by
