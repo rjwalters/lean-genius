@@ -2586,4 +2586,81 @@ private lemma t2_lastFace_filter_impossible
 
 end N2LastFaceT2Extinct
 
+-- ============================================================
+-- (S25-prep-index) First-coordinate parametrization of `satDiagBases`.
+--
+-- The eventual S25 bijection between the `_hLastFace` filter and
+-- `(Finset.range N).filter (fun k => g k ≠ g (k+1))` color-change
+-- edges uses the natural map `b ↦ b.1` to identify a saturating-
+-- diagonal base with its first coordinate. S20's
+-- `satDiagBases_eq_image_range` parametrises in the FORWARD
+-- direction (`k ↦ (k, N-1-k)`); this section packages the
+-- corresponding INVERSE direction `b ↦ b.1` together with the
+-- structural facts that drive the bijection assembly:
+--
+--   * `satDiagBases_fst_lt` — first coord is strictly < N
+--   * `satDiagBases_snd_eq` — second coord = `N - 1 - b.1`
+--   * `satDiagBases_eq_pair_fst` — base equals `(b.1, N-1-b.1)`
+--   * `satDiagBases_image_fst` — `image Prod.fst = Finset.range N`
+--   * `satDiagBases_fst_injOn` — `Prod.fst` is injective on `satDiagBases N`
+--
+-- Each is a one-line corollary of `satDiagBases_mem_iff` (S20).
+-- Independent of the in-flight S23 (color wiring, PR #17571) and
+-- S25-prep (gridPt coordinates, PR #17621) contributions, which
+-- target the color side and the geometric coordinate side
+-- respectively.
+-- ============================================================
+
+section N2SatDiagBasesIndex
+
+variable (N : ℕ)
+
+/-- For `b ∈ satDiagBases N`, the first coordinate is strictly < N. -/
+private lemma satDiagBases_fst_lt {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    b.1 < N :=
+  ((satDiagBases_mem_iff N b).mp hb).1
+
+/-- For `b ∈ satDiagBases N`, the second coordinate is determined by the
+first via `b.2 = N - 1 - b.1`. -/
+private lemma satDiagBases_snd_eq {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    b.2 = N - 1 - b.1 := by
+  obtain ⟨_, _, hsat⟩ := (satDiagBases_mem_iff N b).mp hb
+  omega
+
+/-- For `b ∈ satDiagBases N`, the base equals `(b.1, N - 1 - b.1)`. This is
+the "ETA-form" sister of S20's `satDiagBases_eq_image_range`: the latter
+parametrises by `k ↦ (k, N-1-k)`, this packages the inverse `b ↦ b.1`
+that the S25 bijection consumes. -/
+private lemma satDiagBases_eq_pair_fst {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    b = (b.1, N - 1 - b.1) :=
+  Prod.ext rfl (satDiagBases_snd_eq N hb)
+
+/-- The image of `satDiagBases N` under `Prod.fst` is exactly `Finset.range N`.
+This is the count-side equality the S25 bijection ultimately turns into the
+forward direction of the door ↔ color-change correspondence. -/
+private lemma satDiagBases_image_fst :
+    (satDiagBases N).image Prod.fst = Finset.range N := by
+  ext k
+  simp only [Finset.mem_image, Finset.mem_range]
+  refine ⟨?_, ?_⟩
+  · rintro ⟨b, hb, rfl⟩
+    exact satDiagBases_fst_lt N hb
+  · intro hk
+    refine ⟨(k, N - 1 - k), ?_, rfl⟩
+    rw [satDiagBases_mem_iff]
+    refine ⟨hk, ?_, ?_⟩ <;> omega
+
+/-- `Prod.fst` is injective on `satDiagBases N`: a saturating-diagonal base
+is determined by its first coordinate (since the second is `N - 1 - b.1`).
+Combined with `satDiagBases_image_fst`, this gives the bijection
+`satDiagBases N ≃ Finset.range N` via `b ↔ b.1` that S25 will compose
+with `face2_path_odd`'s color-change predicate. -/
+private lemma satDiagBases_fst_injOn :
+    Set.InjOn (Prod.fst : ℕ × ℕ → ℕ) (↑(satDiagBases N) : Set (ℕ × ℕ)) := by
+  intro b₁ hb₁ b₂ hb₂ h_eq
+  rw [Finset.mem_coe] at hb₁ hb₂
+  rw [satDiagBases_eq_pair_fst N hb₁, satDiagBases_eq_pair_fst N hb₂, h_eq]
+
+end N2SatDiagBasesIndex
+
 end SpernerFreudSimp
