@@ -4,7 +4,7 @@
   "parentId": "roth-theorem-k3",
   "status": "in-progress",
   "knowledge": {
-    "score": 18,
+    "score": 20,
     "insights": [
       "k=3 uses U² = Fourier L⁴, k≥4 needs U^{k-1} Gowers norms",
       "Generalized von Neumann: k-AP count controlled by min_i ||f_i||_{U^{k-1}}",
@@ -23,7 +23,12 @@
       "density_increment_kAP strengthened with IsKAPFreeZMod A' k in conclusion — enables iteration",
       "isKAPFreeZMod_three_of_apFree: reverse bridge APFree → IsKAPFreeZMod for k=3",
       "density_increment_k3_explicit now captures APFree from density_increment_lemma and converts back to IsKAPFreeZMod",
-      "Remaining sorry blocker: szemeredi_from_density_increment needs quantitative iteration bound (M not just < N but large enough for enough steps)"
+      "Remaining sorry blocker: szemeredi_from_density_increment needs quantitative iteration bound (M not just < N but large enough for enough steps)",
+      "isKAPFreeZMod_subset: subsets of k-AP-free sets are k-AP-free (set-monotonicity, mirrors apFree_subset)",
+      "isKAPFreeZMod_succ: k-AP-free implies (k+1)-AP-free via Fin.castSucc embedding (k-monotonicity); useful for upward inductive arguments",
+      "isKAPFreeZMod_empty: empty set is k-AP-free for k ≥ 1",
+      "isKAPFreeZMod_singleton: singleton is k-AP-free for k ≥ 2 (positions 0,1 force d = 0)",
+      "isKAPFreeZMod_three_iff_apFree: bundles bridge directions for k=3 as a single iff lemma"
     ],
     "builtItems": [
       "RothTheoremOQ03.lean: 195 lines, 7 axioms, 2 sorries",
@@ -38,9 +43,11 @@
       "density_increment_k3_explicit: proved (was sorry) using RothTheorem infrastructure",
       "isKAPFreeZMod_three_of_apFree: reverse bridge lemma in RothTheoremOQ03.lean",
       "Strengthened density_increment_kAP with AP-free preservation in conclusion",
-      "Strengthened density_increment_k3_explicit with IsKAPFreeZMod A' 3 from Roth APFree"
+      "Strengthened density_increment_k3_explicit with IsKAPFreeZMod A' 3 from Roth APFree",
+      "Added Part I.5 structural-lemmas section in RothTheoremOQ03.lean (lines 65-121)",
+      "5 new theorems: isKAPFreeZMod_empty/_subset/_succ/_singleton/_three_iff_apFree"
     ],
-    "progressSummary": "PROGRESS: density_increment_kAP and density_increment_k3_explicit now include AP-free preservation. Reverse bridge isKAPFreeZMod_three_of_apFree proved. Still 2 axioms, 1 sorry. Sorry blocked on quantitative iteration bound for szemeredi_from_density_increment.",
+    "progressSummary": "PROGRESS: Added Part I.5 structural lemmas for IsKAPFreeZMod (empty, subset, succ, singleton, three_iff_apFree). Mirrors Szemeredi.Roth.apFree_* trio at general-k level. lineCount 277→335, theoremCount 4→9. Still 1 axiom (density_increment_kAP) + 1 transitive (szemeredi_k_ge_4) + 1 sorry (quantitative iteration bound).",
     "nextSteps": [
       "Define Gowers norms constructively using iterated expectations",
       "Prove Gowers-Cauchy-Schwarz inequality (monotonicity)",

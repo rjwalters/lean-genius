@@ -63,6 +63,64 @@ theorem isKAPFreeZMod_three_of_apFree {N : ℕ} {A : Finset (ZMod N)}
   exact h a d hd ha had hadd
 
 -- ============================================================
+-- PART I.5: Structural Lemmas for IsKAPFreeZMod
+-- ============================================================
+
+/-
+Routine structural facts that mirror the k=3 lemmas in
+`Szemeredi.Roth` (apFree_empty / apFree_subset etc.). These are
+useful for combining or restricting AP-free witnesses across
+the density-increment recursion.
+-/
+
+/-- The empty set is k-AP-free for any k ≥ 1.
+    For k = 0 the predicate is non-trivially false on any ZMod N
+    with N ≥ 2 (the implication has vacuous AP hypothesis but a
+    non-vacuous d ≠ 0), so we require k ≥ 1. -/
+theorem isKAPFreeZMod_empty {N k : ℕ} (hk : 0 < k) :
+    IsKAPFreeZMod (∅ : Finset (ZMod N)) k := by
+  intro a d _ hAP
+  exact (Finset.notMem_empty _) (hAP ⟨0, hk⟩)
+
+/-- Monotonicity in the set: subsets of k-AP-free sets are k-AP-free. -/
+theorem isKAPFreeZMod_subset {N k : ℕ} {A B : Finset (ZMod N)}
+    (hAB : B ⊆ A) (hA : IsKAPFreeZMod A k) : IsKAPFreeZMod B k :=
+  fun a d hd hAP => hA a d hd (fun i => hAB (hAP i))
+
+/-- Monotonicity in k: if A is k-AP-free then A is (k+1)-AP-free.
+    Reason: any (k+1)-AP {a, a+d, …, a+kd} contains the k-AP
+    {a, a+d, …, a+(k-1)d} as its initial segment. -/
+theorem isKAPFreeZMod_succ {N k : ℕ} {A : Finset (ZMod N)}
+    (h : IsKAPFreeZMod A k) : IsKAPFreeZMod A (k + 1) :=
+  fun a d hd hAP => h a d hd (fun i => hAP i.castSucc)
+
+/-- A singleton is k-AP-free for any k ≥ 2.
+    Reason: the positions 0 and 1 in a putative AP would give
+    a = x and a + d = x, forcing d = 0. -/
+theorem isKAPFreeZMod_singleton {N : ℕ} (x : ZMod N) {k : ℕ} (hk : 2 ≤ k) :
+    IsKAPFreeZMod ({x} : Finset (ZMod N)) k := by
+  intro a d hd hAP
+  have h0 : (0 : ℕ) < k := by omega
+  have h1 : (1 : ℕ) < k := by omega
+  have ha : a ∈ ({x} : Finset (ZMod N)) := by
+    have := hAP ⟨0, h0⟩
+    rwa [show (⟨0, h0⟩ : Fin k).val = 0 from rfl, zero_nsmul, add_zero] at this
+  have had : a + d ∈ ({x} : Finset (ZMod N)) := by
+    have := hAP ⟨1, h1⟩
+    rwa [show (⟨1, h1⟩ : Fin k).val = 1 from rfl, one_nsmul] at this
+  rw [Finset.mem_singleton] at ha had
+  apply hd
+  -- a = x and a + d = x ⟹ d = 0
+  have hcancel : a + d = a + 0 := by rw [add_zero, had, ← ha]
+  exact add_left_cancel hcancel
+
+/-- Convenience: if A is 3-AP-free in our sense, then `Szemeredi.Roth.APFree`
+    holds and conversely. Bundles the two bridge directions for k = 3. -/
+theorem isKAPFreeZMod_three_iff_apFree {N : ℕ} {A : Finset (ZMod N)} :
+    IsKAPFreeZMod A 3 ↔ Szemeredi.Roth.APFree A :=
+  ⟨apFree_of_isKAPFreeZMod_three, isKAPFreeZMod_three_of_apFree⟩
+
+-- ============================================================
 -- PART II: Gowers Uniformity Norms
 -- ============================================================
 

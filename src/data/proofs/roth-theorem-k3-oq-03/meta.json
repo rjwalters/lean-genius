@@ -19,8 +19,8 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 2,
     "assumptions": "2 axioms: density_increment_kAP (density increases on subprogression, AP-free preserved) declared in this file; szemeredi_k_ge_4 inherited transitively via Proofs.SzemerediTheorem. gowersNorm and kAPCount constructive.",
-    "lineCount": 277,
-    "theoremCount": 4,
+    "lineCount": 335,
+    "theoremCount": 9,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/SzemerediTheorem.lean"
@@ -50,61 +50,69 @@
       "id": "kap-free",
       "title": "Part I: k-AP-Free Sets and Equivalence with APFree",
       "startLine": 1,
-      "endLine": 65,
+      "endLine": 63,
       "summary": "Defines `IsKAPFreeZMod A k` using Fin k as AP index. Proves `apFree_of_isKAPFreeZMod_three` and `isKAPFreeZMod_three_of_apFree` — the equivalence with Szemeredi.Roth.APFree for k=3 — using fin_cases on Fin 3.",
       "mathContext": "`IsKAPFreeZMod A k`: $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ contains no $k$-term AP, i.e., $\\nexists x, d \\neq 0: \\{x, x+d, \\ldots, x+(k-1)d\\} \\subseteq A$. Encoded as $\\forall x\\, d \\neq 0,\\, \\lnot (\\forall i : \\text{Fin}\\, k,\\, x + i \\cdot d \\in A)$. The equivalence `apFree_of_isKAPFreeZMod_three`/`isKAPFreeZMod_three_of_apFree` bridges this to Mathlib's `Szemeredi.Roth.APFree` (which uses a different encoding), proved by `fin_cases` on `Fin 3` to handle all cases $i \\in \\{0, 1, 2\\}$."
     },
     {
+      "id": "structural-lemmas",
+      "title": "Part I.5: Structural Lemmas for IsKAPFreeZMod",
+      "startLine": 65,
+      "endLine": 121,
+      "summary": "Routine structural facts about `IsKAPFreeZMod`: `isKAPFreeZMod_empty` (∅ is k-AP-free for k ≥ 1), `isKAPFreeZMod_subset` (downward closed under inclusion), `isKAPFreeZMod_succ` (k-AP-free → (k+1)-AP-free), `isKAPFreeZMod_singleton` (singleton is k-AP-free for k ≥ 2), and the convenience iff `isKAPFreeZMod_three_iff_apFree` bundling the two k=3 bridge directions. Mirrors the existing apFree_empty / apFree_subset / apFree_singleton trio in `Szemeredi.Roth` at the general-k level.",
+      "mathContext": "**Set-monotonicity** $B \\subseteq A,\\ A\\text{ is }k\\text{-AP-free} \\Rightarrow B\\text{ is }k\\text{-AP-free}$ is immediate by transporting the AP witness. **k-monotonicity** $A\\text{ is }k\\text{-AP-free} \\Rightarrow A\\text{ is }(k{+}1)\\text{-AP-free}$ follows because any $(k{+}1)$-AP $\\{a, a+d, \\ldots, a+kd\\}$ contains the initial $k$-AP $\\{a, \\ldots, a+(k-1)d\\}$ as a sub-AP — formalized via `Fin.castSucc : Fin k \\hookrightarrow Fin (k+1)`. **Singleton case** uses positions $0$ and $1$ to derive $a = x$ and $a + d = x$, so $d = 0$ via additive cancellation, contradicting $d \\neq 0$ — needs $k \\geq 2$ to access position $1$. The empty case requires $k \\geq 1$ to extract any AP element."
+    },
+    {
       "id": "gowers-norms",
       "title": "Parts II-III: Gowers Norms and k-AP Counting Operator",
-      "startLine": 67,
-      "endLine": 135,
+      "startLine": 123,
+      "endLine": 180,
       "summary": "Defines `hypercubeShift h ω = Σᵢ (if ω i then h i else 0)`, `conjugateByWeight ω z` (conjugates when Hamming weight is odd), `gowersNorm N s f` (U^s norm via hypercube average), and `kAPCount k f` (arithmetic progression counting operator as double average over (x,d)).",
       "mathContext": "**Gowers $U^s$ norm**: $\\|f\\|_{U^s}^{2^s} = \\mathbb{E}_{x, h_1, \\ldots, h_s} \\prod_{\\omega \\in \\{0,1\\}^s} \\mathcal{C}^{|\\omega|} f(x + \\omega_1 h_1 + \\cdots + \\omega_s h_s)$ where $\\mathcal{C}$ is complex conjugation (applied when $|\\omega| = \\sum_i \\omega_i$ is odd). Lean encoding: `hypercubeShift h ω = Σ i, if ω i then h i else 0` gives the corner $x + \\omega \\cdot \\mathbf{h}$; `conjugateByWeight ω z = if Odd |ω| then conj z else z`. **k-AP counting operator**: `kAPCount k f = E_{x,d} ∏_{i<k} f_i(x + i·d)` — the normalized count of $k$-APs weighted by $f_0, \\ldots, f_{k-1}$."
     },
     {
       "id": "von-neumann-axiom",
       "title": "Part IV: Generalized von Neumann Theorem (Axiom)",
-      "startLine": 137,
-      "endLine": 170,
+      "startLine": 182,
+      "endLine": 199,
       "summary": "Axiom `generalized_von_neumann`: |kAPCount k f| ≤ gowersNorm N (k-1) (f 0) when each |f i x| ≤ 1. The docstring explains the Gowers-Cauchy-Schwarz inequality needed for the proof.",
       "mathContext": "**Generalized von Neumann theorem**: $|\\Lambda_k(f_0, \\ldots, f_{k-1})| \\leq \\min_i \\|f_i\\|_{U^{k-1}}$ where $\\Lambda_k$ is the $k$-AP counting operator and $\\|\\cdot\\|_{U^{k-1}}$ is the Gowers $(k-1)$-norm. Proved via iterative Cauchy-Schwarz on the hypercube: each application squares one function while halving the number of free parameters, until only one function remains — giving control by the $U^{k-1}$ norm. For $k=3$ this is $|\\Lambda_3(f,g,h)| \\leq \\|f\\|_{U^2}$ (Fourier $L^4$ norm), the key step in Roth's theorem."
     },
     {
       "id": "density-increment-axiom",
       "title": "Parts V-VI: Inverse Theorem + Density Increment for k≥3 (Axiom)",
-      "startLine": 171,
-      "endLine": 225,
+      "startLine": 201,
+      "endLine": 258,
       "summary": "Docstring for the inverse theorem (U^{k-1} large → nilsequence correlation). Axiom `density_increment_kAP`: k-AP-free A with density δ has a subprogression A' with higher density and still k-AP-free.",
       "mathContext": "**Inverse theorem** (Green-Tao-Ziegler 2012): $\\|f\\|_{U^{k-1}} \\geq \\varepsilon$ implies $\\langle f, \\phi \\rangle \\geq \\delta(\\varepsilon)$ for some $(k-2)$-step nilsequence $\\phi$. This is the deep structure theorem converting Gowers norm control into correlation with algebraically structured functions. **Density increment** (axiom): if $A \\subseteq \\mathbb{Z}/N\\mathbb{Z}$ is $k$-AP-free with density $\\delta$, then $\\exists$ subprogression $P$ of length $M \\geq N^c$ with $\\delta(A \\cap P) \\geq \\delta + g(\\delta, k) > \\delta$. For $k \\geq 4$ the function $g$ is tower-type; for $k=3$, $g(\\delta,3) = \\delta^2/100$ (Roth)."
     },
     {
       "id": "szemeredi-sorry",
       "title": "Part VII: Szemerédi from Density Increment (Sorry)",
-      "startLine": 226,
-      "endLine": 245,
+      "startLine": 260,
+      "endLine": 280,
       "summary": "Theorem `szemeredi_from_density_increment` has a sorry. The docstring explains the blocker: density_increment_kAP gives δ' > δ but not a quantitative lower bound δ' ≥ δ + g(δ,k) needed for the iteration to terminate in bounded steps.",
       "mathContext": "The density increment argument: start with $\\delta_0 = \\delta$; at step $i$, find a subprogression with $\\delta_{i+1} \\geq \\delta_i + g(\\delta_i)$. Since density $\\leq 1$, the iteration terminates after $\\leq 1/g(\\delta)$ steps. The sorry is at the **quantitative bound**: the axiom gives $\\delta' > \\delta$ but not $\\delta' \\geq \\delta + g(\\delta)$ for a specific explicit function $g$. Without $g$, one cannot bound the number of iterations and prove finiteness. For $k=3$: $g(\\delta) = \\delta^2/100$ gives termination in $\\leq 100/\\delta^2$ steps, giving Szemerédi's bound $r_3(N) \\leq N/(\\log\\log N)^c$."
     },
     {
       "id": "k3-proved",
       "title": "Part VIII: k=3 Case Proved from RothTheorem.lean",
-      "startLine": 247,
-      "endLine": 270,
+      "startLine": 282,
+      "endLine": 307,
       "summary": "Theorem `density_increment_k3_explicit` (no axioms, no sorry): translates between k-AP notions, applies Szemeredi.Roth.density_increment_lemma, and produces A' with δ' ≥ δ + δ²/100 and still 3-AP-free.",
       "mathContext": "`density_increment_k3_explicit`: for 3-AP-free $A$ with density $\\delta$, $\\exists$ subprogression $A' \\subseteq \\mathbb{Z}/M\\mathbb{Z}$ with $M \\geq N^c$ and density $\\delta' \\geq \\delta + \\delta^2/100$. Proved (0 axioms, 0 sorries) by translating `IsKAPFreeZMod A 3` to `Szemeredi.Roth.APFree` (via the Part I equivalence) and applying `Szemeredi.Roth.density_increment_lemma` from Mathlib. The explicit bound $\\delta^2/100$ enables the iteration to terminate in $\\leq 100/\\delta^2$ steps, giving Szemerédi's quantitative bound for $k=3$."
     },
     {
       "id": "comparison",
       "title": "Part IX: k=3 vs k≥4 Comparison",
-      "startLine": 272,
-      "endLine": 277,
+      "startLine": 309,
+      "endLine": 333,
       "summary": "Markdown comparison table: k=3 uses U²=Fourier L⁴ with explicit δ²/100 increment; k≥4 uses U^{k-1} with tower-type c(δ,k). Documents proof length (~1400 lines for k=3 proved; ~5000+ estimated for k≥4).",
       "mathContext": "$k=3$ (Roth): $\\|f\\|_{U^2} = \\|\\hat{f}\\|_{\\ell^4}^{1/2}$ (Fourier $L^4$ norm); inverse theorem is just 'large $U^2$ iff large Fourier coefficient'; density increment $\\delta^2/100$ is polynomial; total proof $\\approx 1400$ lines. $k \\geq 4$ (Szemerédi/Gowers): $\\|f\\|_{U^{k-1}}$ is not Fourier; inverse theorem requires $(k-2)$-step nilsequences (Green-Tao-Ziegler); density increment $c(\\delta,k)$ is tower-type ($k$-fold exponential in $1/\\delta$); estimated $5000+$ Lean lines. The table documents why $k=3$ is proved here while $k \\geq 4$ requires the two axioms."
     }
   ],
   "conclusion": {
-    "summary": "This 280-line file axiomatizes the Gowers norm framework for k-AP density increment. Two axioms (generalized von Neumann, density increment for k≥3) state the deep analytic results; the k=3 case is fully proved from existing infrastructure. The sorry in `szemeredi_from_density_increment` captures the remaining gap: a quantitative lower bound on the density increment needed to ensure iteration terminates.",
+    "summary": "This 335-line file axiomatizes the Gowers norm framework for k-AP density increment. One declared axiom (density_increment_kAP for general k≥3) plus a transitive Szemerédi axiom state the deep analytic results; the k=3 case is fully proved from existing infrastructure. A small structural-lemmas section (Part I.5) provides set-monotonicity, k-monotonicity, empty/singleton facts about `IsKAPFreeZMod`, mirroring `Szemeredi.Roth` apFree_* lemmas at the general-k level. The sorry in `szemeredi_from_density_increment` captures the remaining gap: a quantitative lower bound on the density increment needed to ensure iteration terminates.",
     "implications": "The Gowers uniformity norm framework is the central tool of modern additive combinatorics, underlying the Green-Tao theorem (primes contain long APs), Bergelson-Leibman (polynomial extensions), and the Hales-Jewett theorem. Formalizing the generalized von Neumann theorem in Lean would be a significant contribution to additive combinatorics in Mathlib.",
     "openQuestions": [
       "Can `generalized_von_neumann` be proved? The proof requires the Gowers-Cauchy-Schwarz inequality, an iterated application of Cauchy-Schwarz indexed by binary strings. This would need Lean 4 formalization of the hypercube combinatorics and complex-valued Cauchy-Schwarz.",
@@ -115,11 +123,11 @@
   },
   "leanFile": {
     "axiomCount": 1,
-    "lineCount": 277,
+    "lineCount": 335,
     "path": "Proofs/RothTheoremOQ03.lean",
     "sorries": 1,
     "definitionCount": 5,
-    "theoremCount": 4
+    "theoremCount": 9
   },
   "sorries": 1
 }
