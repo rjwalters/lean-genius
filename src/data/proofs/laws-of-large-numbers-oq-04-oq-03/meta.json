@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-06",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
     "additionalFiles": [
       "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean"
@@ -19,9 +19,9 @@
       "integration",
       "research"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 158,
     "theoremCount": 4,
     "definitionCount": 0,
@@ -54,7 +54,7 @@
       "empiricalCDF_pointwise_convergence_no_axiom: pointwise SLLN for empirical CDF with no integration axioms",
       "Reduction of Glivenko-Cantelli axiom count from 3 to 1: only glivenko_cantelli_uniform remains"
     ],
-    "assumptions": "0 sorries. 0 axiom declarations. Two integration axioms from LawsOfLargeNumbersOQ04 are now fully machine-checked."
+    "assumptions": "0 sorries in main file. The associated companion file LawsOfLargeNumbersOQ04OQ03Bracketing.lean introduces 1 new axiom (`bracketingGrid_exists`) supporting the separate uniform-convergence reduction; chain axiom count is 1. The two integration axioms from LawsOfLargeNumbersOQ04 (thresholdIndicator_integrable, integral_thresholdIndicator_eq_cdf) are fully machine-checked in the main file."
   },
   "overview": {
     "historicalContext": "The Glivenko-Cantelli theorem (1933) — the uniform law of large numbers — states that the empirical CDF Fₙ(x) = |{i ≤ n : Xᵢ ≤ x}|/n converges to the true CDF F(x) uniformly in x, almost surely. This is a fundamental result in statistics and is the basis for Kolmogorov-Smirnov tests.\n\nThe key steps in the proof are: (1) for each fixed x, apply the SLLN to get Fₙ(x) → F(x) a.s. (pointwise convergence); and (2) upgrade to uniform convergence via a finite bracketing argument using continuity points of F.\n\nStep (1) requires two integration facts: that 1_{Xᵢ ≤ x} is integrable (so SLLN applies) and that its expectation equals F(x) (so the SLLN limit is identified). These are mathematically obvious but require careful Mathlib API navigation to formalize.\n\nStep (2) — the bracketing uniformity — is the genuinely hard part and requires finite covering of ℝ by continuity points of F with controlled jump sizes, infrastructure not yet available in Mathlib 4.26.",
