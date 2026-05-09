@@ -18,21 +18,23 @@
   "currentState": {
     "phase": "REFINE",
     "since": "2026-05-06T11:50:53.576Z",
-    "iteration": 21,
-    "focus": "S21B (this PR, build pending): added the generic d=2 IsDoor characterization isDoor_dim_two_iff to SimplicialAdjFnHelper. Converts the abstract `∀ j : Fin 2, ∃ i ≠ k, c (vertex s i) = Fin.castSucc j` quantifier into the explicit conjunction `(∃ i ≠ k, c v_i = 0) ∧ (∃ i ≠ k, c v_i = 1)`. This is the abstract half of the IsDoor ↔ color-change bridge from PR #17464's S21B roadmap. ~50 lines including docstring.",
+    "iteration": 22,
+    "focus": "S24 (this PR, build pending): added the t2-side boundary extinction lemma t2_adj_ne_none for the n=2 _hLastFace discharge — for c ∈ t2Bases N and k : Fin 3, ((simData2 N).toTriangulation).adj ⟨t2 c, _⟩ k ≠ none. Packages the t2 branch of boundaryOnFace_simData2 (lines 2186–2230) as a stand-alone re-export so S25's bijection assembly can dismiss the t2 case by a single rcases. Filter-shaped corollary t2_lastFace_filter_impossible bundles the contrapositive form S25 will consume directly. ~97 lines added in a new N2LastFaceT2Extinct section appended to SpernerFreudSimp. Together with S21A's t1-side extraction, the t1/t2 split for _hLastFace is now complete.",
     "blockers": [],
-    "nextAction": "S21C: Sperner + face-2 specialisation of S21B. Combine isDoor_dim_two_iff with cN2_total_isSpernerColoring + satDiagBases_endpoints_on_face2 to force the 2 non-k vertex colors into {0, 1}, then conclude IsDoor ↔ colors differ (matching face2_path_odd's `g k ≠ g (k+1)`). ~30 lines. Then S21D assembles _hLastFace_simData2 (~60 lines) consuming S21A (PR #17464) + S21C + face2_path_odd. Then S22 applies Triangulation.sperner + diameter + real coords (~50 lines).",
+    "nextAction": "S25: bijection assembly between _hLastFace filter pairs (t1 b at the diagonal-drop, with b ∈ satDiagBases N per S21A) and (Finset.range N).filter (fun k => g k ≠ g (k+1)) color-change edges. Use S22 isDoor_dim_two_iff_color_change_of_no_color_two with S23's color-side wiring (PR #17571) to translate geometric face-2 hypothesis to the color-change predicate; use this PR's t2_lastFace_filter_impossible to dismiss t2 cells. ~80 lines.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
       "approachesTried": 0
     },
     "builtItems": [
+      "S24 (this PR): SpernerFreudSimp.t2_adj_ne_none + t2_lastFace_filter_impossible in SpernerFreudenthalSimplex.lean (N2LastFaceT2Extinct section). For c ∈ t2Bases N and k : Fin 3, the adjacency of ⟨t2 c, _⟩ at face k is never none. Proof case-splits on vertexEnum (t2 c) hS k ∈ t2 c (S19.3 pattern) and applies t2_face*_card_ge_two against the card ≤ 1 consequence of adj = none from S19.1's adjFn_eq_none_iff_card_le_one. ~97 lines.",
       "S21B (this PR): SimplicialAdjFnHelper.isDoor_dim_two_iff — generic CellComplex.IsDoor characterization for d=2: IsDoor c K s k ↔ (∃ i ≠ k, c (K.vertex s i) = 0) ∧ (∃ i ≠ k, c (K.vertex s i) = 1). Proof by unfold + Fin.castSucc 0 / Fin.castSucc 1 reduction (Fin.ext rfl) + fin_cases on j : Fin 2 in the reverse direction. ~50 lines including docstring.",
       "S21A (PR #17464): t1_lastFace_implies_satDiag — t1-side forward extraction for _hLastFace. Given b ∈ t1Bases N + ∀ j ≠ k, onFaceΔ2_strict (vertexEnum (t1 b) hS j) 2, concludes b ∈ satDiagBases N ∧ vertexEnum (t1 b) hS k = b (drop must be b itself). 84 lines.",
       "S20 (PR #17426): satDiagBases N + supporting structural lemmas (mem_iff, subset_t1Bases, image_map_injOn, eq_image_range, card = N, endpoints_in_range, endpoints_on_face2, t1_in_topSimps2). The count side of the future _hLastFace ↔ face2_path_odd bijection."
     ],
     "insights": [
+      "S24 insight: the t2-side _hLastFace extinction is a corollary of the (already-proved) t2 branch of boundaryOnFace_simData2, which shows every t2-cell drop produces ≥ 2 containers contradicting card ≤ 1 from adj = none. By extracting this branch as a stand-alone lemma (rather than re-proving it inline at the S25 bijection), S25's case-split on (s, k) ∈ _hLastFace filter reduces cleanly to t1 cells only — and S21A then pins the t1 base to satDiagBases N with the diagonal-drop index. The complete t1/t2 split is now done.",
       "S21B insight: For d=2, CellComplex.IsDoor c K s k unfolds to a quantifier over j : Fin 2, which fin_cases splits cleanly into the j=0 and j=1 cases. Fin.castSucc (0 : Fin 2) = (0 : Fin 3) and Fin.castSucc (1 : Fin 2) = (1 : Fin 3) both reduce by Fin.ext rfl, giving a clean iff into a concrete conjunction without any Fin-arithmetic gymnastics.",
       "Placement choice for S21B: SimplicialAdjFnHelper namespace (not SpernerFreudSimp), making the lemma generic and reusable for any future d=2 CellComplex Sperner instance. Sits naturally next to S19's adjFn_eq_none_iff_card_le_one and forall_vertex_ne_iff_forall_face_mem helpers.",
       "S21B is independent of S21A: the bridge characterizes IsDoor in terms of color predicates without referring to satDiagBases or the t1/t2 cell structure. This decoupling lets S21B land even if S21A needs revision, and makes the eventual S21C/D assembly modular.",
@@ -42,7 +44,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S21B (this PR, build pending): added generic d=2 IsDoor characterization isDoor_dim_two_iff to SimplicialAdjFnHelper — abstract half of the IsDoor ↔ color-change bridge slated in S21A's PR #17464 roadmap. ~50 lines, build pending. Builds on: S20 (PR #17426, satDiagBases foundation, build pending), S21A (PR #17464, t1-side forward extraction, build pending). Next: S21C Sperner+face-2 specialisation, then S21D _hLastFace assembly, then S22 Triangulation.sperner glue.",
+    "progressSummary": "S24 (this PR, build pending): added t2-side boundary extinction lemma t2_adj_ne_none — packaging the t2 branch of boundaryOnFace_simData2 as a stand-alone re-export so S25's bijection assembly can dismiss the t2 case in a single rcases. ~97 lines, build pending. Builds on S19.1 (adjFn_eq_none_iff_card_le_one), S18 (t2_face*_card_ge_two), and the existing t2 erase lemmas. Together with S21A (PR #17464, merged) the t1/t2 split for the _hLastFace filter is complete; S23 (PR #17571, in flight) supplies the color-side wiring. Next: S25 bijection assembly.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -89,7 +91,8 @@
       "t2_erase_first/second/third: explicit (t2 c).erase v computations giving the 3 edges (face2/face1/face0) (S19 part 2)",
       "S20 (PR #17426): satDiagBases N + satDiagBases_mem_iff + satDiagBases_subset_t1Bases + satDiagBases_image_map_injOn + satDiagBases_eq_image_range + satDiagBases_card + satDiagBases_endpoints_in_range + satDiagBases_endpoints_on_face2 + satDiagBases_t1_in_topSimps2 in SpernerFreudenthalSimplex.lean (N2LastFaceBases section)",
       "S21A (PR #17464): SpernerFreudSimp.t1_lastFace_implies_satDiag in SpernerFreudenthalSimplex.lean (N2LastFaceExtract section). Given b ∈ t1Bases N + drop-index k with all non-k vertices on face 2, concludes b ∈ satDiagBases N ∧ vertexEnum (t1 b) hS k = b.",
-      "S21B (this PR): SimplicialAdjFnHelper.isDoor_dim_two_iff in SpernerFreudenthalSimplex.lean. Generic CellComplex.IsDoor characterization for d=2: IsDoor c K s k ↔ (∃ i ≠ k, c (K.vertex s i) = 0) ∧ (∃ i ≠ k, c (K.vertex s i) = 1)."
+      "S21B (this PR): SimplicialAdjFnHelper.isDoor_dim_two_iff in SpernerFreudenthalSimplex.lean. Generic CellComplex.IsDoor characterization for d=2: IsDoor c K s k ↔ (∃ i ≠ k, c (K.vertex s i) = 0) ∧ (∃ i ≠ k, c (K.vertex s i) = 1).",
+      "S24 (this PR): SpernerFreudSimp.t2_adj_ne_none + t2_lastFace_filter_impossible in SpernerFreudenthalSimplex.lean (N2LastFaceT2Extinct section). t2-side _hLastFace boundary extinction: for c ∈ t2Bases N and k : Fin 3, ((simData2 N).toTriangulation).adj ⟨t2 c, t2_in_topSimps2_of_base N hc⟩ k ≠ none. Filter-shape corollary t2_lastFace_filter_impossible drops the face-2 hypothesis for direct S25 consumption."
     ],
     "insights": [
       "Sperner coloring well-definedness is purely algebraic: if fv_i > v_i for all i in supp(v), then sum fv > sum v = 1, contradiction. Proved using Finset.sum_lt_sum.",
@@ -125,7 +128,8 @@
       "Six-cell coverage table now complete for n=2 _hBoundaryOnFace: t1 cells × {diagonal, horizontal, vertical} have both boundary singleton (S18.1) AND interior existential (S17 + S18.2); t2 cells × {face0, face1, face2} are always interior (S18.2.3-5; t2 contributes no boundary doors).",
       "S19.1 connects abstract adjFn to abstract containersOf; the missing link to S18 lemmas (which use concrete edge filter sets) is the explicit faceOf computation. The 6 erase lemmas + the ∀-quantifier bridge close this gap.",
       "Edit-tool path trap recurrence: writing to /Users/rwalters/GitHub/lean-genius/proofs/... (main repo path, not worktree) silently lost 177 lines of edits to concurrent rebase activity. Always use /Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-6/proofs/... for edits.",
-      "S20: Saturating-diagonal t1 bases form the cell side of _hLastFace. By S18.1+S18.5, the only boundary doors lying on geometric face 2 come from t1 b cells with b.1+b.2+1=N (t2 cells contribute none, horizontal/vertical t1 boundaries are on face 1/0). The count |satDiagBases N| = N matches face2_path_odd's Finset.range N index set, providing the bijection's count-side foundation."
+      "S20: Saturating-diagonal t1 bases form the cell side of _hLastFace. By S18.1+S18.5, the only boundary doors lying on geometric face 2 come from t1 b cells with b.1+b.2+1=N (t2 cells contribute none, horizontal/vertical t1 boundaries are on face 1/0). The count |satDiagBases N| = N matches face2_path_odd's Finset.range N index set, providing the bijection's count-side foundation.",
+      "S24: the t2-side _hLastFace filter is empty even before invoking the per-vertex face-2 hypothesis — every t2-cell codim-1 face has ≥ 2 containers (the t2 itself + a sharing t1) so adj = none never holds. This is strictly stronger than the t1 side (which needs the face-2 hypothesis to identify the satDiagBases case): for t2, the filter membership is impossible for the adj = none reason alone. Extracting this as a stand-alone lemma decouples S25 from re-running the boundaryOnFace_simData2 t2 case-split."
     ],
     "mathlibGaps": [
       "Grid triangulation of Δⁿ as a CellComplex (needed for sperner_near_fixed_point axiom — significant work ~200 lines)",

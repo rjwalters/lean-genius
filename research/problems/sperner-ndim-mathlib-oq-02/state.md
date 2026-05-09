@@ -2,13 +2,67 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-09 (Iteration 22, researcher-10)
-**Iteration**: 22
+**Last Updated**: 2026-05-09 (Iteration 24, researcher-9)
+**Iteration**: 24
 
 ## Current Focus
 
-Session 22 (this iteration, researcher-10, 2026-05-09, build
-pending): Added the **Sperner-restricted IsDoor ↔ color-change**
+Session 24 (this iteration, researcher-9, 2026-05-09, build
+pending): Added the **t2-side boundary extinction** lemma for
+`_hLastFace`, packaging the t2 branch of `boundaryOnFace_simData2`
+as a stand-alone re-export so S25's bijection assembly can dismiss
+the t2 case by a single `match`/`rcases` rather than re-running the
+case-split. New private lemma `t2_adj_ne_none` in a new
+`N2LastFaceT2Extinct` section appended to `SpernerFreudSimp`
+(97 lines added to `SpernerFreudenthalSimplex.lean`).
+
+Together with S21A's `t1_lastFace_implies_satDiag` (PR #17464,
+merged), the t1/t2 split for `_hLastFace` is now complete:
+* **t2 side (this PR, S24)**: `c ∈ t2Bases N`, k : Fin 3 ⟹
+  `((simData2 N).toTriangulation).adj ⟨t2 c, _⟩ k ≠ none`. Hence
+  no t2 cell contributes to the `_hLastFace` filter at all.
+* **t1 side (S21A, merged)**: under the per-vertex face-2
+  hypothesis, the drop must be `b` itself and `b ∈ satDiagBases N`.
+
+New lemmas (~97 lines including section header + docstrings):
+
+* `t2_adj_ne_none`: `c ∈ t2Bases N → k : Fin 3 →
+  ((simData2 N).toTriangulation).adj ⟨t2 c, t2_in_topSimps2_of_base N hc⟩ k ≠ none`.
+  Proof case-splits on `vertexEnum (t2 c) hS k ∈ t2 c` (the S19.3
+  pattern) and applies the appropriate `t2_face*_card_ge_two` to
+  contradict the `card ≤ 1` consequence of `adj = none` from
+  `adjFn_eq_none_iff_card_le_one` (S19.1).
+* `t2_lastFace_filter_impossible`: filter-shaped corollary in the
+  exact contrapositive form S25 will consume, deriving `False`
+  from any `(t2 c, k)` triple with `adj = none`.
+
+This is the **S24** step of the n=2 Sperner-via-Freudenthal
+pipeline. After S24, the remaining S25 step is the bijection
+between the `_hLastFace` filter (now provably restricted to t1
+cells with diagonal-drop and `b ∈ satDiagBases N` per S21A) and
+`(Finset.range N).filter (fun k => g k ≠ g (k+1))`'s color-change
+edges — using S22's `isDoor_dim_two_iff_color_change_of_no_color_two`
+and S23's color-side wiring (PR #17571, in flight) to translate
+between geometric face-2 hypothesis and the color-change predicate.
+
+S24 keeps the iterative-PR cadence small (one self-contained
+extraction lemma + filter-shape corollary) to reduce merge-conflict
+risk against the in-flight S23 PR #17571 (which appends a different
+section, `N2LastFaceColors`, before this one) and keep any build
+regressions narrow, given the persistent `proofs/.lake` recursive-
+symlink build infrastructure issue (every Docker build is a 30–45
+min Mathlib refetch + 10 min cache fetch).
+
+## Previous Focus
+
+Session 23 (PR #17571, in flight): Added the **color-side wiring**
+(`cN2_total_face2_color_ne_two`, `satDiagBases_endpoints_color_ne_two`,
+`t1_lastFace_color_ne_two`) connecting S21A's geometric face-2 hypothesis
+to S22's color-change bridge. ~83 lines, build pending.
+
+## Previous Focus
+
+Session 22 (PR #17549, merged 2026-05-09): Added the **Sperner-restricted IsDoor ↔ color-change**
 bridge in `SimplicialAdjFnHelper`, specializing S21B's generic
 `isDoor_dim_two_iff` to the case where neither non-`k` vertex carries
 color `2` (which the Sperner condition forces whenever both lie on
