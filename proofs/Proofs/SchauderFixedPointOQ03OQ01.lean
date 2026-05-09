@@ -137,36 +137,185 @@ lemma exists_continuous_proj_convex {n : ℕ}
     ball only" (S11.A, 2026-05-09; see
     `s10-mathlib-v426-lookup3-resolved.md` Option A).
 
-    **Proof sketch (body deferred to S11.A.body — see
-    `s11-strict-weakening-spec.md` for the full Lean stub):**
+    **S11.A.body landed (S13, researcher-10, 2026-05-09; see
+    `s11-strict-weakening-spec.md` and `s12-s11a-body-step6-refinement.md`).**
+    The body still depends on the `sorry`-stubbed
+    `exists_continuous_proj_convex` helper (S11.B work item), so this
+    theorem is not yet end-to-end sorry-free; once S11.B lands, the
+    file's only remaining assumption on the Brouwer side will be the
+    closed-unit-ball axiom.
+
+    **Proof structure:**
 
     1. Since `S` is compact, it is bounded
        (`IsCompact.isBounded`); pick `R > 0` with
-       `S ⊆ Metric.closedBall 0 R` via `Bornology.IsBounded.subset_closedBall_lt`
-       (LOOKUP-1, S9-confirmed at the pinned rev).
+       `S ⊆ Metric.closedBall 0 R` via `Bornology.IsBounded.subset_closedBall_lt`.
     2. Build the nearest-point retraction `r : E → ↥S` from
-       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B).
+       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B; currently
+       `sorry`-stubbed).
     3. Compose `F : ↥(closedBall 0 R) → ↥(closedBall 0 R)` via
-       `b ↦ f (r b)` (well-defined: `f (r b) ∈ ↥S ⊆ closedBall 0 R`;
-       continuous: composition of continuous maps via
-       `Continuous.codRestrict`).
-    4. Conjugate by `Homeomorph.smul` (multiplication by `1/R`) to get
-       `F' : ↥(closedBall 0 1) → ↥(closedBall 0 1)`; apply
-       `brouwer_unit_ball` to `F'`; rescale the fixed point back.
-    5. The fixed point `b₀ ∈ closedBall 0 R` satisfies
-       `F b₀ = ⟨f (r b₀), _⟩`, so `b₀ ∈ S`. Idempotency `r b₀ = b₀`
-       (from the helper's second clause) gives `f b₀ = b₀`.
-
-    The rescaling in step 4 is the only Mathlib-API-uncertain step in
-    the body; `s11-strict-weakening-spec.md` pins it down to either
-    `Homeomorph.smul` + fixed-point conjugation or a direct elementwise
-    rescaling argument. -/
+       `b ↦ ⟨f (r b), …⟩`, well-defined since `f (r b) ∈ ↥S ⊆ closedBall 0 R`;
+       continuity from `continuous_subtype_val`/`Continuous.subtype_mk`.
+    4. Rescale closed balls *elementwise* (Option b: no `Homeomorph` needed):
+       `σ x := R • x` carries `closedBall 0 1` to `closedBall 0 R`, with
+       inverse `τ b := R⁻¹ • b`; both are continuous via
+       `continuous_const_smul`. Apply `brouwer_unit_ball` to
+       `G := τ ∘ F ∘ σ` to get `y` with `G y = y`. Multiplying by `R`
+       and using `mul_inv_cancel₀ + one_smul` yields the coordinate
+       identity `(F (σ y) : E) = (σ y : E)`.
+    5. (S12 refinement.) Lift `σ y` from `↥(closedBall 0 R)` to `↥S` by
+       observing `(σ y : E) = (F (σ y) : E) = (f (r (σ y : E)) : E) ∈ S`,
+       then invoking the helper's idempotency clause to identify
+       `r (σ y : E) = ⟨(σ y : E), …⟩` in `↥S`. The `↥S` candidate
+       fixed point is `r (σ y : E)`; the equation `f (r (σ y : E)) =
+       r (σ y : E)` follows from the coord chain
+       `(F (σ y) : E) = (σ y : E) = (r (σ y : E) : E)` and `Subtype.ext`. -/
 theorem brouwer_fpt {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
     (f : ↥S → ↥S) (hf : Continuous f) :
     ∃ x : ↥S, f x = x := by
-  sorry  -- S11.A.body work item; structured stub in s11-strict-weakening-spec.md.
+  -- S11.A.body (researcher-10, S13, 2026-05-09): retraction reduction body
+  -- per s11-strict-weakening-spec.md + s12-s11a-body-step6-refinement.md.
+  -- Step 1: bound S by closedBall 0 R for some R > 0 (LOOKUP-1, S9-confirmed).
+  have hS_bounded : Bornology.IsBounded S := hS_compact.isBounded
+  obtain ⟨R, hR_pos, hSR⟩ :=
+    hS_bounded.subset_closedBall_lt 0 (0 : EuclideanSpace ℝ (Fin n))
+  have hR_ne : R ≠ 0 := hR_pos.ne'
+  have hRinv_pos : 0 < R⁻¹ := inv_pos.mpr hR_pos
+  -- Step 2: continuous nearest-point retraction r : E → ↥S (LOOKUP-2 helper, S11.B).
+  obtain ⟨r, hr_cont, hr_id⟩ :=
+    exists_continuous_proj_convex S hS_ne hS_compact hS_convex
+  -- Step 3: F : ↥(closedBall 0 R) → ↥(closedBall 0 R), b ↦ ⟨f (r b), _⟩.
+  have hF_coord_cont :
+      Continuous fun b : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R) =>
+        (f (r ((b : EuclideanSpace ℝ (Fin n)))) : EuclideanSpace ℝ (Fin n)) :=
+    continuous_subtype_val.comp
+      (hf.comp (hr_cont.comp continuous_subtype_val))
+  have hF_in_B : ∀ b : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R),
+      (f (r ((b : EuclideanSpace ℝ (Fin n)))) : EuclideanSpace ℝ (Fin n))
+        ∈ Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R :=
+    fun b => hSR (f (r ((b : EuclideanSpace ℝ (Fin n))))).property
+  let F : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R) →
+        ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R) :=
+    fun b => ⟨(f (r ((b : EuclideanSpace ℝ (Fin n)))) : EuclideanSpace ℝ (Fin n)),
+              hF_in_B b⟩
+  have hF_cont : Continuous F := hF_coord_cont.subtype_mk hF_in_B
+  -- Step 4: rescale closedBall 0 R ↔ closedBall 0 1 elementwise (Option b).
+  -- σ : ↥(closedBall 0 1) → ↥(closedBall 0 R), x ↦ R • x.
+  have hσ_in_B : ∀ x : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1),
+      R • ((x : EuclideanSpace ℝ (Fin n)))
+        ∈ Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R := by
+    intro x
+    rw [Metric.mem_closedBall_zero_iff, norm_smul,
+        Real.norm_of_nonneg hR_pos.le]
+    have hx_le : ‖(x : EuclideanSpace ℝ (Fin n))‖ ≤ 1 := by
+      have hx := x.property
+      rwa [Metric.mem_closedBall_zero_iff] at hx
+    calc R * ‖(x : EuclideanSpace ℝ (Fin n))‖
+        ≤ R * 1 := mul_le_mul_of_nonneg_left hx_le hR_pos.le
+      _ = R := by ring
+  let σ : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) →
+        ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R) :=
+    fun x => ⟨R • (x : EuclideanSpace ℝ (Fin n)), hσ_in_B x⟩
+  have hσ_cont : Continuous σ :=
+    ((continuous_const_smul R).comp continuous_subtype_val).subtype_mk hσ_in_B
+  -- τ : ↥(closedBall 0 R) → ↥(closedBall 0 1), b ↦ R⁻¹ • b.
+  have hτ_in_U : ∀ b : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R),
+      R⁻¹ • ((b : EuclideanSpace ℝ (Fin n)))
+        ∈ Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1 := by
+    intro b
+    rw [Metric.mem_closedBall_zero_iff, norm_smul,
+        Real.norm_of_nonneg hRinv_pos.le]
+    have hb_le : ‖(b : EuclideanSpace ℝ (Fin n))‖ ≤ R := by
+      have hb := b.property
+      rwa [Metric.mem_closedBall_zero_iff] at hb
+    calc R⁻¹ * ‖(b : EuclideanSpace ℝ (Fin n))‖
+        ≤ R⁻¹ * R := mul_le_mul_of_nonneg_left hb_le hRinv_pos.le
+      _ = 1 := inv_mul_cancel₀ hR_ne
+  let τ : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R) →
+        ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) :=
+    fun b => ⟨R⁻¹ • (b : EuclideanSpace ℝ (Fin n)), hτ_in_U b⟩
+  have hτ_cont : Continuous τ :=
+    ((continuous_const_smul R⁻¹).comp continuous_subtype_val).subtype_mk hτ_in_U
+  -- G := τ ∘ F ∘ σ : ↥(closedBall 0 1) → ↥(closedBall 0 1).
+  let G : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) →
+        ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) := τ ∘ F ∘ σ
+  have hG_cont : Continuous G := hτ_cont.comp (hF_cont.comp hσ_cont)
+  -- Apply the unit-ball axiom.
+  obtain ⟨y, hy⟩ := brouwer_unit_ball G hG_cont
+  -- Step 5: extract (F (σ y) : E) = (σ y : E) from G y = y.
+  -- hy : G y = y, so (G y : E) = (y : E), and (G y : E) = R⁻¹ • (F (σ y) : E).
+  have hτFσy_coord :
+      R⁻¹ • ((F (σ y) :
+          ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+            EuclideanSpace ℝ (Fin n)) =
+      ((y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)) :
+          EuclideanSpace ℝ (Fin n)) :=
+    congrArg Subtype.val hy
+  -- Multiply by R: (F (σ y) : E) = R • (y : E) = (σ y : E).
+  have hFσy_eq_σy :
+      ((F (σ y) :
+          ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+            EuclideanSpace ℝ (Fin n)) =
+      ((σ y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+            EuclideanSpace ℝ (Fin n)) := by
+    have step1 : R • R⁻¹ •
+        ((F (σ y) :
+            ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+              EuclideanSpace ℝ (Fin n)) =
+        R • ((y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)) :
+              EuclideanSpace ℝ (Fin n)) := by
+      rw [hτFσy_coord]
+    rw [smul_smul, mul_inv_cancel₀ hR_ne, one_smul] at step1
+    -- step1 : (F (σ y) : E) = R • (y : E); (σ y : E) = R • (y : E) by `let σ`.
+    exact step1
+  -- Step 6: lift `σ y` from ↥B to ↥S, then derive the ↥S fixed point.
+  -- (σ y : E) ∈ S because (σ y : E) = (F (σ y) : E) = (f (r (σ y : E)) : E),
+  -- and f's codomain is ↥S.
+  have hσy_in_S :
+      ((σ y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+            EuclideanSpace ℝ (Fin n)) ∈ S := by
+    rw [← hFσy_eq_σy]
+    show (f (r (((σ y :
+        ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+            EuclideanSpace ℝ (Fin n)))) : EuclideanSpace ℝ (Fin n)) ∈ S
+    exact (f (r (((σ y :
+        ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+            EuclideanSpace ℝ (Fin n))))).property
+  -- Lift σ y to ↥S and use idempotency r ((x : E)) = x for x : ↥S.
+  let x' : ↥S :=
+    ⟨((σ y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+          EuclideanSpace ℝ (Fin n)), hσy_in_S⟩
+  have hx'_coord : ((x' : ↥S) : EuclideanSpace ℝ (Fin n)) =
+      ((σ y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+          EuclideanSpace ℝ (Fin n)) := rfl
+  have hr_x' : r ((x' : EuclideanSpace ℝ (Fin n))) = x' := hr_id x'
+  have hr_σy : r (((σ y :
+      ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+        EuclideanSpace ℝ (Fin n))) = x' := by
+    rw [← hx'_coord]; exact hr_x'
+  -- Candidate fixed point: r (σ y : E) ∈ ↥S.
+  refine ⟨r (((σ y :
+      ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+        EuclideanSpace ℝ (Fin n))), ?_⟩
+  -- Reduce to coord equality, then chain through hFσy_eq_σy + hr_σy + hx'_coord.
+  apply Subtype.ext
+  -- Goal: (f (r (σ y : E)) : E) = (r (σ y : E) : E)
+  -- LHS = (F (σ y) : E) by `let F`-unfolding; = (σ y : E) by hFσy_eq_σy.
+  -- RHS = (x' : E) via hr_σy; = (σ y : E) by hx'_coord.
+  calc (f (r (((σ y :
+              ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+                EuclideanSpace ℝ (Fin n)))) : EuclideanSpace ℝ (Fin n))
+      = ((F (σ y) : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+              EuclideanSpace ℝ (Fin n)) := rfl
+    _ = ((σ y : ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+              EuclideanSpace ℝ (Fin n)) := hFσy_eq_σy
+    _ = ((x' : ↥S) : EuclideanSpace ℝ (Fin n)) := hx'_coord.symm
+    _ = (r (((σ y :
+              ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R)) :
+                EuclideanSpace ℝ (Fin n))) : EuclideanSpace ℝ (Fin n)) := by
+              rw [hr_σy]
 
 /-- A continuous `f : S → S` is an ε-graph-approximate selection of `F`
     if for every `x` there is a nearby point `x'` (within `ε`) and a point
@@ -487,9 +636,11 @@ infrastructure can produce via the Cellina averaging argument.
   axioms (uses the graph form via a triangle-inequality
   `ε ↦ 2·(ε/2) = ε` step).
 - `brouwer_fpt` — Brouwer's FPT for general compact convex `S`,
-  derived from `axiom brouwer_unit_ball`. **Currently `sorry`-stubbed**
-  (S11.A.body work item; structured stub in
-  `s11-strict-weakening-spec.md`).
+  derived from `axiom brouwer_unit_ball` via the elementwise rescaling
+  retraction reduction (S11.A.body landed S13, researcher-10,
+  2026-05-09). The body still depends on the `sorry`-stubbed helper
+  `exists_continuous_proj_convex`, so it is not yet end-to-end
+  sorry-free.
 - `exists_continuous_proj_convex` — Continuous nearest-point retraction
   onto a compact convex set, used by the `brouwer_fpt` body.
   **Currently `sorry`-stubbed** (S11.B work item, ~30–80 Lean lines via
@@ -497,13 +648,13 @@ infrastructure can produce via the Cellina averaging argument.
 
 ### Path to Full Verification
 1. **S11.B (next)**: prove `exists_continuous_proj_convex` from
-   `Mathlib.Analysis.InnerProductSpace.Projection` API.
-2. **S11.A.body**: fill the body of `theorem brouwer_fpt` using the
-   helper from step 1 plus the rescaling step
-   `closedBall 0 R ↔ closedBall 0 1` (`Homeomorph.smul`).
-3. **S12+**: prove `approx_selection_exists` (graph form) using
+   `Mathlib.Analysis.InnerProductSpace.Projection` API. After this
+   lands, `theorem brouwer_fpt` is end-to-end sorry-free and the file's
+   only remaining axiom on the Brouwer side is the closed-unit-ball
+   form.
+2. **S12+**: prove `approx_selection_exists` (graph form) using
    `PartitionOfUnity` plus the Cellina averaging argument.
-4. **(Optional, far future)**: in-house Brouwer FPT proof to eliminate
+3. **(Optional, far future)**: in-house Brouwer FPT proof to eliminate
    `brouwer_unit_ball` (Option B from S10's note).
 -/
 
