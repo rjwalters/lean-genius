@@ -59,7 +59,8 @@
       "**Uniform framework across dimensions**: The same three definitions (`nBallVolumeFn`, `nSphereSurfaceConst`, `nSphereSurfaceFn`) work for all $n$. The $n=2$ case gives the circumference $2\\pi r$, $n=3$ gives the sphere surface $4\\pi r^2$, and $n \\to \\infty$ exhibits the *concentration of measure*: $\\omega_n \\to 0$ super-exponentially while the surface-to-volume ratio $n/r$ grows linearly — the high-dimensional 'spike' behind Lévy's lemma.",
       "**Parent theorem is a special case**: `disk_area_matches_parent` shows that `CircumferenceViaDifferentiation.area_hasDerivAt` follows from the general theorem for $n=2$, eliminating the need for a separate 2D proof.",
       "**Geometry isolated to Mathlib**: The file proves a *calculus* identity. The geometric content — that $V_n(r)$ is the actual Lebesgue measure of $\\{x : |x| \\le r\\}$ — is delegated to Mathlib's `unitBallVolume` infrastructure. This separation makes the file portable: any future Mathlib improvement to the underlying volume formula automatically improves the surface area formula via this entry.",
-      "**Bypass for surface measure**: The conventional way to derive surface area in $\\mathbb{R}^n$ — via the spherical-Hausdorff measure $\\mathcal{H}^{n-1}$ on $S^{n-1}$, which requires Jacobians, a parameterization of the sphere, or coarea formulas — is *bypassed entirely* in this approach. The identity $S_{n-1}(r) = dV_n/dr$ characterizes the surface area constant without ever computing a surface integral. This is the ancient Archimedean trick paid forward 2300 years."
+      "**Bypass for surface measure**: The conventional way to derive surface area in $\\mathbb{R}^n$ — via the spherical-Hausdorff measure $\\mathcal{H}^{n-1}$ on $S^{n-1}$, which requires Jacobians, a parameterization of the sphere, or coarea formulas — is *bypassed entirely* in this approach. The identity $S_{n-1}(r) = dV_n/dr$ characterizes the surface area constant without ever computing a surface integral. This is the ancient Archimedean trick paid forward 2300 years.",
+      "**Half-integer Gamma is the only nontrivial computation**: All four numerical specializations ($\\omega_2 = \\pi$, $\\omega_3 = 4\\pi/3$, $C_2 = 2\\pi$, $C_3 = 4\\pi$) flow from two private helpers: $\\Gamma(3/2) = \\sqrt{\\pi}/2$ and $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$. Both are derived in 3-line proofs from `Gamma_one_half_eq` plus `Gamma_add_one`. Mathlib's `Gamma_two = 1` handles even $n$. So the file's entire numerical content is a chain of recursive applications of $\\Gamma(x+1) = x\\Gamma(x)$ rooted at $\\Gamma(1/2) = \\sqrt{\\pi}$ — a result Euler proved in 1729 from the reflection formula and that Mathlib carries as a direct theorem. The half-integer Gamma is the *only* place where a transcendental constant is computed; everywhere else the proofs are linear algebra plus `ring`."
     ],
     "prerequisites": [
       "Real analysis: `HasDerivAt`, the power rule",
@@ -69,6 +70,30 @@
     ]
   },
   "sections": [
+    {
+      "id": "section-header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Docstring stating the central identity dV_n/dr = S_{n-1}(r), three Mathlib imports (Deriv.Pow, Gamma.Basic, Tactic), and the parent file import. Opens `Real`, `MeasureTheory`, declares `noncomputable section`.",
+      "mathContext": "File-level setup: imports the power rule, Gamma recursion, and parent CircumferenceViaDifferentiation theorem."
+    },
+    {
+      "id": "section-unit-volume",
+      "title": "Unit Ball Volume and Half-Integer Gamma",
+      "startLine": 33,
+      "endLine": 75,
+      "summary": "`unitBallVolume n = π^(n/2)/Γ(n/2+1)`, plus helpers for Γ(3/2)=√π/2, Γ(5/2)=3√π/4, and the special values ω_2=π, ω_3=4π/3.",
+      "mathContext": "ω_n = π^(n/2)/Γ(n/2+1); half-integer Gamma values via Γ(1/2)=√π and the Gamma recursion."
+    },
+    {
+      "id": "section-framework",
+      "title": "n-Dimensional Framework Definitions",
+      "startLine": 77,
+      "endLine": 90,
+      "summary": "Three uniform definitions: `nBallVolumeFn n r = ω_n · rⁿ`, `nSphereSurfaceConst n = n · ω_n`, `nSphereSurfaceFn n r = (n·ω_n) · r^(n-1)`. Same formulas for all n.",
+      "mathContext": "V_n(r) = ω_n r^n, C_n = n·ω_n, S_{n-1}(r) = C_n · r^(n-1)."
+    },
     {
       "id": "section-main-deriv",
       "title": "Main Derivative Theorem",
@@ -100,6 +125,22 @@
       "endLine": 190,
       "summary": "`nBallVolumeFn_two_eq_areaFn` and `disk_area_matches_parent` show that the n=2 case recovers the parent file's circumference derivation.",
       "mathContext": "nBallVolumeFn 2 = CircumferenceViaDifferentiation.areaFn, so the parent theorem is a special case."
+    },
+    {
+      "id": "section-closure",
+      "title": "Volume and Surface Closure Properties",
+      "startLine": 192,
+      "endLine": 213,
+      "summary": "Three closure lemmas: `nSphereSurface_unit` (S(1)=C_n), `unitBallVolume_from_surface` (ω_n = C_n/n for n≥1), and `nBallVolumeFn_nonneg` (V_n(r) ≥ 0 for r ≥ 0).",
+      "mathContext": "S_{n-1}(1) = C_n; ω_n = C_n/n; V_n is monotone in r ≥ 0 because ω_n ≥ 0 and r ↦ rⁿ preserves nonnegativity."
+    },
+    {
+      "id": "section-examples",
+      "title": "Examples and Sanity Checks",
+      "startLine": 215,
+      "endLine": 240,
+      "summary": "Closing `example` block reducing the framework to textbook formulas: V_2(r) = πr², V_3(r) = (4π/3)r³, deriv(V_2)(1) = 2π, plus type-check of the main theorem signature.",
+      "mathContext": "Concrete instantiations confirming the abstraction composes correctly to the formulas every calculus student already knows."
     }
   ],
   "conclusion": {
