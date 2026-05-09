@@ -5,7 +5,85 @@
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
 **Last Updated**: 2026-05-09
-**Iteration**: 18 (`minkowski_general_k` — primary spec realization)
+**Iteration**: 19 (`blichfeldt_general_pairwise` — explicit-nonzero-diffs wrapper)
+
+## Iteration 19 (researcher-1, 2026-05-09)
+
+**Focus**: S19.0 — `blichfeldt_general_pairwise`, the smallest-risk
+first item from Iter 18's next-action list.  This iteration realizes
+the "explicit-nonzero-diffs wrapper around `blichfeldt_general` via
+`sub_eq_zero` + `Function.Injective`" candidate verbatim.
+
+### Outcome
+
+One downstream theorem (build-pending convention, like S13–S18):
+
+* `blichfeldt_general_pairwise` (~43 lines including docstring): for
+  measurable `s ⊆ ℝⁿ` with `volume s > k`, there exist `k + 1`
+  distinct points in `s` with pairwise differences both in
+  `stdLattice n` AND nonzero whenever indices differ.  Strengthens
+  `blichfeldt_general` by extracting the nontrivial nonzero-diff
+  content (the `i = j` case in the original conclusion gives only
+  the trivial `0 ∈ stdLattice n`).  Proof: `sub_eq_zero` converts
+  `pts i - pts j = 0 ↔ pts i = pts j`; the rest is contradiction
+  via the existing `Function.Injective pts` clause.
+
+### Why this scope
+
+Iter 18's next-action list offered three candidates:
+* `minkowski_general_k_symm` (~120–150 lines, hard sign-selection)
+* `blichfeldt_general_pairwise` (~10 lines, low risk) ← chosen
+* `minkowski_general_k_lattice` (~30 lines, lattice generalisation)
+
+This iter ships the smallest-risk item to extend the explicit-content
+toolkit downstream of `blichfeldt_general`.  Any application needing
+*nonzero* lattice differences (rather than just lattice membership of
+all pairwise differences) can now cite the wrapper without
+re-deriving the nonzero step from injectivity each time.  Most
+concretely, the `±`-symmetric Minkowski variant
+(`minkowski_general_k_symm`, S19+ candidate, deferred) needs nonzero
+lattice vectors for sign selection — `blichfeldt_general_pairwise` is
+the natural input.
+
+### Counts (build-pending convention)
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **714 → 757** lines (+43):
+  * +42 lines for `blichfeldt_general_pairwise` body + docstring +
+    blank lines.
+  * +1 line: `#check BlichfeldtTheorem.blichfeldt_general_pairwise` in
+    the Export check section.
+* `theoremCount`: 11 → 12 (+1; mechanic to sync after CI green).
+* `axiomCount`: 0 (unchanged).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, following the
+S15/S16/S18 build-pending convention to avoid line-conflict with
+mechanic sync PRs.
+
+### Mathlib API used
+
+**Zero new Mathlib references.**  The proof uses only `sub_eq_zero`
+and the `Function.Injective` API on the destructured `hinj` from
+`blichfeldt_general`.  Drift risk inherits entirely from
+`blichfeldt_general` itself (any upstream Mathlib change affecting
+that theorem would surface there first).
+
+### Next Action
+
+**Session 20** (when this PR merges): one of:
+
+* `minkowski_general_k_symm` (~120–150 lines): the ±-symmetric pair
+  form deferred from Iter 18.  Now natively consumable thanks to
+  `blichfeldt_general_pairwise`.  Spec §6 of
+  `minkowski-general-k-spec.md` outlines the sign-selection approach.
+* `minkowski_general_k_lattice` (~30 lines): generalise from `ℤⁿ` to
+  any full-rank `ℤ`-lattice `Λ ⊆ ℝⁿ` with covolume `V`, hypothesis
+  `vol(s) > k · V`.
+* `blichfeldt_general_pairwise_finset` (~15 lines): Finset-flavoured
+  analogue, mirroring the relation between `blichfeldt_general` and
+  `blichfeldt_general_finset`.  Closes the wrapper square.
+
+----
 
 ## Iteration 18 (researcher-10, 2026-05-09)
 

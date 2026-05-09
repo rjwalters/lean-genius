@@ -448,6 +448,48 @@ theorem blichfeldt_four_points {n : ℕ} [NeZero n]
   · intro heq; exact absurd (hinj heq) (by decide)
   · intro heq; exact absurd (hinj heq) (by decide)
 
+/-- **Blichfeldt's General Theorem with explicit nonzero pairwise differences**.
+
+For a measurable set `s ⊆ ℝⁿ` with `volume s > k`, there exist `k + 1`
+distinct points in `s` whose pairwise differences are *both* in
+`stdLattice n` *and* nonzero whenever the indices differ.
+
+A direct strengthening of `blichfeldt_general`: the existing lattice-
+membership conclusion `∀ i j, pts i - pts j ∈ stdLattice n` includes
+the trivial `i = j` case where the difference is `0` (which is in any
+sublattice).  This wrapper extracts the nontrivial content — that
+*distinct* indices yield *nonzero* lattice differences — by combining
+the original `Function.Injective pts` clause with `sub_eq_zero`.
+
+Pedagogical role: clarifies the geometric content of Blichfeldt's
+theorem.  The classical statement reads "there exist two distinct
+points whose difference is a nonzero lattice vector"; the indexed
+generalisation says "there exist `k + 1` points whose pairwise
+differences are lattice vectors", with the *nonzero*-diff content
+implicit in the injectivity of the family.  This wrapper makes the
+nonzero-diff structure explicit, which is the form needed by
+downstream applications such as the `±`-symmetric Minkowski variant
+(`minkowski_general_k_symm`, S19+ candidate) where one selects sign
+representatives among the pairwise differences and needs each
+representative to be a nonzero lattice vector.
+
+No new Mathlib API beyond `blichfeldt_general` itself: the proof is a
+three-line transport using `sub_eq_zero` to convert
+`pts i - pts j = 0` ↔ `pts i = pts j`, then contradicting `i ≠ j`
+via the injectivity of `pts`. -/
+theorem blichfeldt_general_pairwise {n : ℕ} [NeZero n]
+    (k : ℕ) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
+    (h_vol : (k : ENNReal) < volume s) :
+    ∃ pts : Fin (k + 1) → Fin n → ℝ,
+      Function.Injective pts ∧
+      (∀ i, pts i ∈ s) ∧
+      (∀ i j, pts i - pts j ∈ (stdLattice n : Set (Fin n → ℝ))) ∧
+      (∀ i j, i ≠ j → pts i - pts j ≠ 0) := by
+  obtain ⟨pts, hinj, hmem, hcong⟩ := blichfeldt_general k s h_meas h_vol
+  refine ⟨pts, hinj, hmem, hcong, ?_⟩
+  intro i j hij hzero
+  exact hij (hinj (sub_eq_zero.mp hzero))
+
 /-- **Blichfeldt's General Theorem in Finset form**: a measurable set S ⊆ ℝⁿ
 with `volume S > k` contains a `Finset` of cardinality `k + 1` whose pairwise
 differences all lie in `stdLattice n`.
@@ -709,6 +751,7 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.blichfeldt_general
 #check BlichfeldtTheorem.blichfeldt_three_points
 #check BlichfeldtTheorem.blichfeldt_four_points
+#check BlichfeldtTheorem.blichfeldt_general_pairwise
 #check BlichfeldtTheorem.blichfeldt_general_finset
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
 #check BlichfeldtTheorem.minkowski_general_k
