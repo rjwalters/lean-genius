@@ -13,7 +13,7 @@ S25 PART XVII numerical witnesses (528, 2080, 2211) are
 corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 28 (S28a in this PR; S27 PR #17489 merged + S28 reconnaissance #17496 merged)
+**Iteration**: 29 (S28b spec/recon doc in this PR; S28a PR #17517 merged, S27 PR #17489 merged, S28 reconnaissance #17496 merged)
 
 ## Current Focus
 
@@ -336,6 +336,12 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
+0. **Session 28b (Lean implementation)**: implement the weak `→` form of
+   the inner-guard ↔ outer-guard equivalence (per
+   `s28b-inner-guard-equivalence-spec.md` §3, §5). New PART XX of
+   `BinaryGcdOQ03OQ02PathA.lean`, ~30 lines. Re-derives S28a's `(130, 89)`
+   and `(107, 85)` examples as theorem corollaries. Prerequisite for the
+   Lehmer-prefix-mismatch refinement (S28c).
 1. **Session 26 — outer-guard density magnitude**: with both S24
    (List) and S25 (Finset) frameworks in place, run `native_decide`
    on either `outerGuardFiresInSurveyRange` (S24) or
@@ -418,7 +424,49 @@ speedup, bit-complexity bound).
     `(build pending)` convention for above-threshold
     `native_decide` checks on this slug).
 
-## S28a — Above-threshold abort witnesses (this PR)
+## S28b — Inner-guard ↔ outer-guard equivalence spec (this PR)
+
+**Goal**: Refine `s28-coprime-firing-spec.md` §4.S28b proposal into a
+precise theorem statement and proof skeleton: on above-threshold inputs
+`(a, b)`, `schonhageOuterGuardFires a b = false ↔ max u v ≥ max a b`,
+where `(u, v)` is the natAbs-pair of the recursive `M_inner.apply (a, b)`.
+
+**Deliverable**: New file
+`research/problems/binary-gcd-oq-03-oq-02/s28b-inner-guard-equivalence-spec.md`
+(8 sections, ~270 lines):
+
+1. Goal restatement, building on `s28-coprime-firing-spec.md` §4.
+2. Recursion structure of `hgcdMatrixSafe` extracted from PathA lines
+   106–120 — explicit table of the two `if` predicates and what each
+   branch does to the column-output.
+3. Proposed theorem statement (both ↔ form and weaker → form).
+4. Verification trace on the S28a witnesses `(130, 89)` and `(107, 85)`
+   — the inner-abort equivalence is consistent with the merged
+   `native_decide` outputs.
+5. Proof skeleton with case-split on `max u v < max a b` and a
+   highlighted Mathlib API gap (composition rule
+   `(M.mul N).apply x = M.apply (N.apply x)` for natAbs-tracking).
+6. Estimated effort: ~30 lines for the weak `→` form, ~50 for the full
+   `↔` form. Recommend starting with `→`.
+7. Per-session honesty: spec only, no Lean code, conjecture not yet
+   proved, FIRING-witness candidate not yet verified.
+8. Recommended next session sequence: S28b (Lean) → S28c (Lehmer
+   prefix mismatch) → FIRING-witness verification.
+
+**Mathematical content**: identifies the **structural mechanism** behind
+S28a's empirical witnesses. The S28a `native_decide` examples are
+consistent with INNER ABORT ↔ OUTER FAILS, but did not state or prove the
+equivalence as a theorem. This spec doc makes that equivalence the explicit
+target of S28b's Lean iteration.
+
+**Build**: N/A (markdown only). Per-session honesty in §7. Coordinated with
+open PR #17304 (S23 PART XIII, stale ~13h): the spec doc does not modify
+any file in #17304's diff.
+
+**Append-point stability**: NEW file in
+`research/problems/binary-gcd-oq-03-oq-02/`; no overlap with any open PR.
+
+## S28a — Above-threshold abort witnesses (PR #17517, merged)
 
 **Goal**: Document the canonical structural counterexample to the
 naive S28 coprime-firing conjecture (refuted in
