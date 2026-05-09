@@ -23,6 +23,29 @@
     ]
   },
   {
+    "id": "e101-any-triple",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 119,
+      "endLine": 127
+    },
+    "title": "collinear_any_triple: Line-Wide Transitivity",
+    "content": "`theorem collinear_any_triple {p q r s t : ℝ × ℝ} (hpq : p ≠ q) (hr : collinear p q r) (hs : collinear p q s) (ht : collinear p q t) : collinear r s t`\n\nProof: Apply `collinear_trans` twice — once to get `collinear p r s` (from `hr`, `hs`), once to get `collinear p r t` (from `hr`, `ht`). Case on `r = p`:\n- if `r = p`, substitute and apply `collinear_trans hpq hs ht` directly;\n- if `r ≠ p`, swap arguments to feed both prior facts into a third `collinear_trans` keyed on `r`.\n\nThis upgrades pairwise transitivity into the universal statement: **once 5 points share a defining line, every triple is collinear**, which is exactly what the no-5-collinear hypothesis needs to forbid.",
+    "significance": "supporting",
+    "mathContext": "If $r$, $s$, $t$ all lie on the unique line through distinct $p, q$, then they are mutually collinear. This is what makes the line $L = \\{x \\in P : \\text{collinear}(a,b,x)\\}$ a *coherent* configuration: no internal triple of $L$ can be non-collinear, so $|L| \\geq 5$ would directly violate `NoFiveCollinear`.",
+    "relatedConcepts": [
+      "collinear_trans",
+      "collinear_swap12",
+      "line incidence",
+      "case analysis on equality"
+    ],
+    "prerequisites": [
+      "collinear_trans",
+      "Lean by_cases tactic"
+    ]
+  },
+  {
     "id": "e101-line-bound",
     "proofId": "erdos101-problem",
     "type": "theorem",
@@ -46,6 +69,29 @@
     ]
   },
   {
+    "id": "e101-four-unique",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 223,
+      "endLine": 245
+    },
+    "title": "four_collinear_unique: One Line, At Most One 4-Subset",
+    "content": "`theorem four_collinear_unique (P : PlanarPointSet) (hP : NoFiveCollinear P) (S₁ S₂ : Finset (ℝ × ℝ)) (hS_sub : Sᵢ ⊆ P.points) (hS_card : Sᵢ.card = 4) (a b : ℝ × ℝ) (hab : a ≠ b) (haᵢ : a ∈ Sᵢ) (hbᵢ : b ∈ Sᵢ) (hcolᵢ : ∀ p ∈ Sᵢ, collinear a b p) : S₁ = S₂`\n\nProof: Define `L := P.points.filter (fun p => collinear a b p)` — the full intersection of $P$ with the line through $a, b$. By `noFiveCollinear_line_bound`, $|L| \\leq 4$. Each Sᵢ is collinear with $a,b$ and a subset of $P$, so Sᵢ ⊆ L. With $|S_i| = 4 \\geq |L|$ and `Finset.eq_of_subset_of_card_le`, we conclude $S_i = L$, hence $S_1 = S_2$.\n\nThe `Classical` opening is used because `Finset.filter` requires `DecidablePred (collinear a b ·)`, which is non-constructive over ℝ.",
+    "significance": "key",
+    "mathContext": "Two points determine a line, and that line meets $P$ in at most 4 points (by the no-5-collinear hypothesis). Therefore any 4-element collinear subset of $P$ that contains $a$ and $b$ is *forced to equal* the full line-of-$P$ through them. This is the mechanism that converts a *configuration* (any pair → line) into a *function* (any pair → unique 4-subset, if one exists).",
+    "relatedConcepts": [
+      "noFiveCollinear_line_bound",
+      "Finset.eq_of_subset_of_card_le",
+      "DecidablePred",
+      "Classical reasoning over ℝ"
+    ],
+    "prerequisites": [
+      "noFiveCollinear_line_bound",
+      "Finset.filter and decidability"
+    ]
+  },
+  {
     "id": "e101-overlap-small",
     "proofId": "erdos101-problem",
     "type": "theorem",
@@ -66,6 +112,29 @@
     "prerequisites": [
       "four_collinear_unique theorem",
       "collinear_any_triple"
+    ]
+  },
+  {
+    "id": "e101-trivial-bound",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 367,
+      "endLine": 503
+    },
+    "title": "trivial_upper_bound: fourPointLineCount ≤ n(n-1)/2",
+    "content": "`theorem trivial_upper_bound : ∀ P : PlanarPointSet, NoFiveCollinear P → fourPointLineCount P ≤ P.points.card * (P.points.card - 1) / 2`\n\nProof (high-level): Each 4-element collinear S ∈ F is determined by some unordered pair of distinct points of S (via `four_collinear_unique`). Inject F into `P.offDiag` (the set of distinct ordered pairs of P) by sending S to its lex-minimal pair `(a, b)` of distinct elements. Distinct S₁, S₂ → distinct chosen pairs (would violate `four_collinear_unique` if equal), so the map is injective. Cardinality: $|F| \\leq |P.\\mathrm{offDiag}| / 2 = n(n-1)/2$ — the /2 absorbs the (a,b) vs (b,a) double-counting.\n\nThis is the elementary bound that the pair-packing argument improves by a factor of 6.",
+    "significance": "supporting",
+    "mathContext": "The trivial bound counts pairs: each 4-collinear subset has $\\binom{4}{2}=6$ pairs, but the simplest argument only uses *one* distinguishing pair per subset — namely the lex-minimal pair. Distinct 4-subsets force distinct distinguishing pairs (by `four_collinear_unique`), so $|F| \\leq \\binom{n}{2} = n(n-1)/2$. Compare with `improved_upper_bound` which uses *all 6 pairs* and disjointness to obtain $|F| \\leq n(n-1)/12$.",
+    "relatedConcepts": [
+      "four_collinear_unique",
+      "Finset.offDiag",
+      "lex-minimal element",
+      "trivial vs improved bound"
+    ],
+    "prerequisites": [
+      "four_collinear_unique",
+      "Finset.offDiag and unordered pairs"
     ]
   },
   {
