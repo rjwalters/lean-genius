@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.2 done — `gnwProb_unreachable_zero` lemma added; S57.3+ continues K-induction)
+**Phase**: ACT (S57.3 done — case-1 arm-of-c' and case-2 leg-of-c' summand vanishings added; S57.4+ continues K-induction)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-09
-**Iteration**: 59
+**Iteration**: 60
 
 ## Current Focus
 Close `F_side_identity_aligned` (Helpers, line ~14811) — the
@@ -238,8 +238,33 @@ in place:
      K-induction in `F_side_identity_aligned`, eliminating two of the
      three "moving pieces" in S57.0's analysis.  +89 Helpers lines.
      PR #17537 (merged 2026-05-08 23:55Z, build pending).
+ 21. **Case-1 arm-of-c' / case-2 leg-of-c' summand vanishings
+     (session 57.3, this session)** — added two sorry-free private
+     lemmas after `gnwProb_unreachable_zero` (line ~14693):
+     `sum_gnwProb_arm_of_c'_eq_zero_case1` (~14717,
+     `∑ s ∈ Finset.range c'.2, gnwProb μ c K (c'.1, s) = 0` when
+     `c.1 < c'.1`) and `sum_gnwProb_leg_of_c'_eq_zero_case2` (~14750,
+     `∑ r ∈ Finset.range c'.1, gnwProb μ c K (r, c'.2) = 0` when
+     `c.2 < c'.2`).  Each is a 3-line proof — `Finset.sum_eq_zero`
+     + `gnwProb_unreachable_zero` with the appropriate
+     `Or.inl`/`Or.inr` disjunct.  These package the (S4) and (S5)
+     summand vanishings of S57.0's K-induction plan: when the joint
+     K-induction case-splits `(μ\c').cells` by cell type, the
+     case-1 arm-of-c' (cells `(c'.1, s)` with `s < c'.2`) and case-2
+     leg-of-c' (cells `(r, c'.2)` with `r < c'.1`) contributions to
+     both LHS and RHS sums of `F_side_identity_aligned` collapse to
+     `0 = 0` — sidestepping the `δ_arm` correction-term design
+     problem flagged in S57.0.  Both lemmas are universal in `μ`,
+     so they apply to LHS (`gnwProb μ c (h_μ x) x`) and RHS
+     (`gnwProb (μ\c') c (h_{μ\c'} x) x`) sums alike.  +65 Helpers
+     lines (was 15293; now 15358).  **Sorry count unchanged (1)** —
+     `F_side_identity_aligned` remains the sole open sorry on the
+     GNW route; this lemma pair is sorry-free infrastructure that
+     materially shrinks the K-induction's case-analysis burden in
+     S57.4+.
+
  20. **Walk-unreachability lemma for arm/leg-of-c' (session 57.2,
-     this session)** — added `private lemma gnwProb_unreachable_zero`
+     prior session)** — added `private lemma gnwProb_unreachable_zero`
      (line ~14656, +68 lines including 32-line docstring): for any
      cell `x` with `c.1 < x.1 ∨ c.2 < x.2`, `gnwProb μ c K x = 0` for
      every `K`.  **Proof**: induction on `K` (~15 lines).  Base `K=0`
@@ -279,19 +304,22 @@ in place:
   memory ceiling estimate (~15500).  CI will verify the PR.
 
 ## Next Action
-**S57.3 — apply `gnwProb_unreachable_zero` to discharge (S2) and (S3)
-in the trivial branches**, completing the case-1 arm-of-c' and case-2
-leg-of-c' summands of the K-induction.  After S57.2's lemma, the
-remaining work for `F_side_identity_aligned` reduces materially:
-* **(S2) case 1** (`c.1 < c'.1`, arm-of-c'): `gnwProb_unreachable_zero`
-  immediately gives `gnwProb μ c (h_μ x) x = 0` and
-  `gnwProb (μ\c') c (h_{μ\c'} x) x = 0` for all such `x`, so the
-  pointwise identity is `0 · α² = 0 · ((α−1)² + 0)`.  Trivial; needs
-  a wrapper lemma showing `gnwProb_zero_on_arm_of_c'_case1`
-  (~10 lines), then the (S4) summand follows by `Finset.sum_eq_zero`
-  (~10 lines).
-* **(S3) case 2** (`c'.1 < c.1`, leg-of-c'): analogous, via the
-  `c.2 < x.2` disjunct of `gnwProb_unreachable_zero`.
+**S57.4 — investigate transpose duality for the cross-case branches**,
+specifically whether (S2) case 2 (arm-of-c' with `c'.1 < c.1`) reduces
+to (S3) case 1 by transpose-mirror argument.  S57.3 (this session)
+discharged the two trivial branches with summand-level vanishing
+lemmas; the remaining open piece is whether the cross-case sub-branches
+also dissolve via duality, or whether genuine pointwise comparison
+(with a `δ_arm` correction term) is needed.
+
+After S57.3, the remaining work for `F_side_identity_aligned`
+partitions as:
+* **(S2) case 1** (`c.1 < c'.1`, arm-of-c'): ✓ trivial via
+  `sum_gnwProb_arm_of_c'_eq_zero_case1` (S57.3, this session) + a
+  Finset.image lift.  Both LHS and RHS sums vanish on this subset.
+* **(S3) case 2** (`c'.1 < c.1`, leg-of-c'): ✓ trivial via
+  `sum_gnwProb_leg_of_c'_eq_zero_case2` (S57.3, this session) + a
+  Finset.image lift.
 * **(S2) case 2** (arm-of-c' with `c'.1 < c.1`): NOT covered.
   Cells `x = (c'.1, s)` with `s < c'.2` and `c'.1 < c.1` give
   `x.1 = c'.1 < c.1`, no unreachability.  These cells need genuine
@@ -432,6 +460,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-09-s02.md` — Session 57.0: K-induction strategy + cell-partition + (S1)-(S7) sublemma plan
 - `sessions/2026-05-09-s03.md` — Session 57.1: off-spine structural invariances under c'-removal (3 lemmas, sorry-free)
 - `sessions/2026-05-09-s04.md` — Session 57.2: `gnwProb_unreachable_zero` walk-unreachability lemma (sorry-free)
+- `sessions/2026-05-09-s05.md` — Session 57.3: case-1 arm-of-c' / case-2 leg-of-c' summand vanishings (2 sorry-free lemmas, +65 Helpers lines)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -448,6 +477,8 @@ Fallback if S55+ stalls.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14588` — `hookLength_invariant_off_spine_of_c'` (S57.1)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14616` — `strictHookCells_invariant_off_spine_of_c'` (S57.1)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14656` — `gnwProb_unreachable_zero` (S57.2; sorry-free; closes (S2)/(S3) on the unreachable branches via case-1 arm-of-c' / case-2 leg-of-c')
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14717` — `sum_gnwProb_arm_of_c'_eq_zero_case1` (S57.3; sorry-free; case-1 arm-of-c' summand vanishes via `Finset.sum_eq_zero` + `gnwProb_unreachable_zero`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14750` — `sum_gnwProb_leg_of_c'_eq_zero_case2` (S57.3; sorry-free; case-2 leg-of-c' summand vanishes via `Finset.sum_eq_zero` + `gnwProb_unreachable_zero`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14719` — `gnwProb_exchange_lt_row_of_F_side`
   (S53 combiner, sorry-free conditional on F-side identity, case `c.1 < c'.1`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14814` — `gnwProb_exchange_lt_col_of_F_side`
