@@ -1390,6 +1390,64 @@ theorem selmer_padic_solubility_extended_caseA_primes :
   ⟨selmer_padic_solubility_p41_hensel,
    selmer_padic_solubility_p47_hensel⟩
 
+/-! ## Section 23: Further Case-A Primes (p ∈ {53, 59})
+
+Continuing the Section-22 pattern, this section adds two more Case-A
+primes — `p ∈ {53, 59}` — as one-line corollaries of
+`selmer_padic_solubility_caseA`. Together with Section 22 these extend
+the discharged sub-collection from 14 to 16 primes total.
+
+Like the Section-22 primes, neither `p = 53` nor `p = 59` is part of the
+Hasse-failure pipeline (which only consumes the twelve Section-8 primes
+plus the four Section-9-table primes `{11, 17, 23, 29}`). The purpose of
+the extension is the same as Section 22: demonstrate the parametric
+theorem's reach beyond the Section-8 list, and provide additional
+axiom-free citation points for any consumer needing `ℚ_[p]`-solubility
+at a small Case-A prime.
+
+**Eligibility**: a prime `p` is Case-A in the sense of Section 13 iff
+`p ≡ 2 (mod 3)` and `p ∉ {2, 5}`. Among primes `p < 60` not yet in the
+discharged sub-collection (i.e., `p ∉ {2, 3, 5, 7, 11, 13, 17, 19, 23,
+29, 31, 37, 41, 47}`), the Case-A primes are `{53, 59}`. Both `53 ≡ 2`
+and `59 ≡ 2 (mod 3)`. -/
+
+instance : Fact (Nat.Prime 53) := ⟨by decide⟩
+instance : Fact (Nat.Prime 59) := ⟨by decide⟩
+
+/-- ℚ_[53] solubility of the Selmer cubic: `(0, 1, zt)` for `zt`
+    lifting `34 mod 53`. Witness data: `53 ∣ 4 + 5·34³ = 196524 = 53·3708`
+    and `gcd(15·34², 53) = gcd(17340, 53) = 1`. -/
+theorem selmer_padic_solubility_p53_hensel :
+    ∃ (x y z : ℚ_[53]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 34
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[59] solubility of the Selmer cubic: `(0, 1, zt)` for `zt`
+    lifting `52 mod 59`. Witness data: `59 ∣ 4 + 5·52³ = 703044 = 59·11916`
+    and `gcd(15·52², 59) = gcd(40560, 59) = 1`. -/
+theorem selmer_padic_solubility_p59_hensel :
+    ∃ (x y z : ℚ_[59]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 52
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- **Bundled Case-A solubility extension v2** — covers all four
+    extended Case-A primes `p ∈ {41, 47, 53, 59}`. Each is an axiom-free
+    application of the Section-13 parametric Case-A theorem; together
+    with `selmer_padic_solubility_section8_primes` (the 12 Section-8
+    primes), this gives an axiom-free 16-prime sub-collection of the
+    universal axiom `selmer_padic_solubility`. -/
+theorem selmer_padic_solubility_extended_caseA_primes_v2 :
+    (∃ x y z : ℚ_[41], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[47], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[53], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[59], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) :=
+  ⟨selmer_padic_solubility_p41_hensel,
+   selmer_padic_solubility_p47_hensel,
+   selmer_padic_solubility_p53_hensel,
+   selmer_padic_solubility_p59_hensel⟩
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -1416,5 +1474,8 @@ theorem selmer_padic_solubility_extended_caseA_primes :
 #check @selmer_padic_solubility_p41_hensel
 #check @selmer_padic_solubility_p47_hensel
 #check @selmer_padic_solubility_extended_caseA_primes
+#check @selmer_padic_solubility_p53_hensel
+#check @selmer_padic_solubility_p59_hensel
+#check @selmer_padic_solubility_extended_caseA_primes_v2
 
 end Hilbert11OQ02
