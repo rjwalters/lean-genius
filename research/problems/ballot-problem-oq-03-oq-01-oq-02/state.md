@@ -1,11 +1,11 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.1 done; S57.2 next attack on (S2) arm-of-c' pointwise reduction)
+**Phase**: ACT (S57.2 done — `gnwProb_unreachable_zero` lemma added; S57.3+ continues K-induction)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
 **Last Updated**: 2026-05-09
-**Iteration**: 58
+**Iteration**: 59
 
 ## Current Focus
 Close `F_side_identity_aligned` (Helpers, line ~14811) — the
@@ -228,6 +228,41 @@ in place:
      structural sharpening that removes the cell-wise `c'` excision
      step from the K-induction's burden (S57+ now compares integrands
      pointwise on a single common domain).
+ 19. Off-spine structural invariances under c'-removal (session 57.1,
+     researcher-1) — three sorry-free private lemmas after
+     `strictHookCells_removeCorner_eq_of_not_mem` (~line 14534):
+     `c'_notMem_strictHookCells_of_off_spine` (~14562),
+     `hookLength_invariant_off_spine_of_c'` (~14588),
+     `strictHookCells_invariant_off_spine_of_c'` (~14616).  These
+     pin down the *base step* (K = 0 / x off-spine) of the joint
+     K-induction in `F_side_identity_aligned`, eliminating two of the
+     three "moving pieces" in S57.0's analysis.  +89 Helpers lines.
+     PR #17537 (merged 2026-05-08 23:55Z, build pending).
+ 20. **Walk-unreachability lemma for arm/leg-of-c' (session 57.2,
+     this session)** — added `private lemma gnwProb_unreachable_zero`
+     (line ~14656, +68 lines including 32-line docstring): for any
+     cell `x` with `c.1 < x.1 ∨ c.2 < x.2`, `gnwProb μ c K x = 0` for
+     every `K`.  **Proof**: induction on `K` (~15 lines).  Base `K=0`
+     is `rfl`.  Step `K+1`: unfold; if `x` is a corner the indicator
+     is `0` (since `x ≠ c` from the unreachability disjunction); if
+     not a corner, the recursive sum over `y ∈ strictHookCells μ x`
+     vanishes pointwise by IH (each `y` has `y.1 ≥ x.1` and
+     `y.2 ≥ x.2`, so the unreachability disjunct propagates from `x`
+     to `y`).  **Why useful for S57+**: in case 1 (`c.1 < c'.1`),
+     the arm-of-c' cells `x = (c'.1, s)` with `s < c'.2` satisfy
+     `x.1 = c'.1 > c.1`, so both LHS and RHS of (S2)
+     `gnwProb_aligned_on_arm_of_c'` are `0` — the `δ_arm`
+     correction-term design problem **dissolves entirely** in this
+     branch.  Case 2 leg-of-c' cells dissolve similarly via the
+     `c.2 < x.2` disjunct.  This is the cleanest factoring: rather
+     than inventing a `δ_arm` and proving an algebraic identity
+     `(α-1)² + δ_arm`, we observe that gnwProb is identically 0 on
+     the arm-of-c' branch in case 1 (and leg-of-c' in case 2),
+     collapsing (S2)/(S3) for those branches to triviality.
+     **Sorry count unchanged (1)** — `F_side_identity_aligned`
+     remains the sole open sorry; this lemma is sorry-free
+     infrastructure that simplifies the upcoming S57.3+ K-induction.
+     File at 15293 lines (was 15225 after S57.1, +68).
 
 ## Blockers
 - **`F_side_identity_aligned` proof.** The common-domain parametric
@@ -244,9 +279,26 @@ in place:
   memory ceiling estimate (~15500).  CI will verify the PR.
 
 ## Next Action
-**S57.1 — implement sublemma (S1) `gnwProb_invariant_off_strictHook_of_c'`**
-as the smallest-risk first attack on the K-induction
-decomposition planned in S57.0 (session note `2026-05-09-s02.md`).
+**S57.3 — apply `gnwProb_unreachable_zero` to discharge (S2) and (S3)
+in the trivial branches**, completing the case-1 arm-of-c' and case-2
+leg-of-c' summands of the K-induction.  After S57.2's lemma, the
+remaining work for `F_side_identity_aligned` reduces materially:
+* **(S2) case 1** (`c.1 < c'.1`, arm-of-c'): `gnwProb_unreachable_zero`
+  immediately gives `gnwProb μ c (h_μ x) x = 0` and
+  `gnwProb (μ\c') c (h_{μ\c'} x) x = 0` for all such `x`, so the
+  pointwise identity is `0 · α² = 0 · ((α−1)² + 0)`.  Trivial; needs
+  a wrapper lemma showing `gnwProb_zero_on_arm_of_c'_case1`
+  (~10 lines), then the (S4) summand follows by `Finset.sum_eq_zero`
+  (~10 lines).
+* **(S3) case 2** (`c'.1 < c.1`, leg-of-c'): analogous, via the
+  `c.2 < x.2` disjunct of `gnwProb_unreachable_zero`.
+* **(S2) case 2** (arm-of-c' with `c'.1 < c.1`): NOT covered.
+  Cells `x = (c'.1, s)` with `s < c'.2` and `c'.1 < c.1` give
+  `x.1 = c'.1 < c.1`, no unreachability.  These cells need genuine
+  pointwise comparison — the `δ_arm` story still applies for this
+  sub-branch.  But (S2) case 2 falls under (S3) case 1 by
+  transpose-mirror argument; needs investigation.
+
 The plan partitions the open lemma `F_side_identity_aligned` into
 seven sublemmas (S1)–(S7), keyed to the four cell categories A/B/C/D
 of `(μ\c').cells` (off-spine, off-arm-of-c, arm-of-c', leg-of-c').
@@ -379,6 +431,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-09-s01.md` — Session 56: common-domain `F_side_identity_aligned` + sorry-free `F_side_identity`
 - `sessions/2026-05-09-s02.md` — Session 57.0: K-induction strategy + cell-partition + (S1)-(S7) sublemma plan
 - `sessions/2026-05-09-s03.md` — Session 57.1: off-spine structural invariances under c'-removal (3 lemmas, sorry-free)
+- `sessions/2026-05-09-s04.md` — Session 57.2: `gnwProb_unreachable_zero` walk-unreachability lemma (sorry-free)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -394,6 +447,7 @@ Fallback if S55+ stalls.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14562` — `c'_notMem_strictHookCells_of_off_spine` (S57.1)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14588` — `hookLength_invariant_off_spine_of_c'` (S57.1)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14616` — `strictHookCells_invariant_off_spine_of_c'` (S57.1)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14656` — `gnwProb_unreachable_zero` (S57.2; sorry-free; closes (S2)/(S3) on the unreachable branches via case-1 arm-of-c' / case-2 leg-of-c')
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14719` — `gnwProb_exchange_lt_row_of_F_side`
   (S53 combiner, sorry-free conditional on F-side identity, case `c.1 < c'.1`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14814` — `gnwProb_exchange_lt_col_of_F_side`
