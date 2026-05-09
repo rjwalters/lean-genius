@@ -806,6 +806,49 @@ theorem minkowski_general_k_finset {n : ℕ} [NeZero n] (k : ℕ)
     obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
     exact (pts i).property
 
+/-- **Minkowski at k = 3**: a measurable convex centrally-symmetric set
+`s ⊆ ℝⁿ` with `volume s > 3 · 2ⁿ` contains four pairwise-distinct lattice
+points, each lying in `s`.
+
+The natural extension of `minkowski_three_points` (k = 2) one rung up
+the corollary chain from `minkowski_general_k`, and the Minkowski-side
+analogue of `blichfeldt_four_points`. As at k = 2, the Minkowski
+conclusion is strictly stronger than the Blichfeldt analogue: the
+half-scaling + symmetry + convexity argument upgrades pairwise
+lattice-difference witnesses (Blichfeldt) to actual lattice-point
+witnesses (Minkowski).
+
+Specialization of `minkowski_general_k` at k = 3; six pairwise-
+distinctness goals (C(4, 2) = 6) discharged uniformly via
+`Function.Injective` on the indexed family
+`pts : Fin 4 → (stdLattice n).toAddSubgroup` returned by
+`minkowski_general_k 3`, with each goal closed by `Fin.decide`.
+
+Together with `minkowski_three_points`, this completes the
+Blichfeldt/Minkowski symmetry at the named-points-corollary chain
+level (k = 2 and k = 3). -/
+theorem minkowski_four_points {n : ℕ} [NeZero n]
+    (s : Set (Fin n → ℝ))
+    (h_meas : MeasurableSet s)
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : (3 : ENNReal) * (2 : ENNReal) ^ n < volume s) :
+    ∃ p q r t : (stdLattice n).toAddSubgroup,
+      ((p : Fin n → ℝ)) ∈ s ∧ ((q : Fin n → ℝ)) ∈ s ∧
+      ((r : Fin n → ℝ)) ∈ s ∧ ((t : Fin n → ℝ)) ∈ s ∧
+      p ≠ q ∧ p ≠ r ∧ p ≠ t ∧ q ≠ r ∧ q ≠ t ∧ r ≠ t := by
+  obtain ⟨pts, hinj, hmem⟩ :=
+    minkowski_general_k 3 s h_meas h_symm h_conv (by exact_mod_cast h_vol)
+  refine ⟨pts 0, pts 1, pts 2, pts 3,
+    hmem 0, hmem 1, hmem 2, hmem 3,
+    ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+  · intro heq; exact absurd (hinj heq) (by decide)
+
 end BlichfeldtTheorem
 
 -- ============================================================
@@ -821,3 +864,4 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
 #check BlichfeldtTheorem.minkowski_general_k
 #check BlichfeldtTheorem.minkowski_general_k_finset
+#check BlichfeldtTheorem.minkowski_four_points
