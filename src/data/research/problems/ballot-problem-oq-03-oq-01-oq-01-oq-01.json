@@ -29,8 +29,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 22 (2026-05-08): Bridge-lemma family for the b≥2 structural reduction. Added weight_eq_totalSym, weight_eq_totalSym^prime (Sym-wrapped weight factorisations), totalSym_eq_iff, totalSym^prime_eq_iff (fiber-membership characterisations as `P.1 + Q.1 = M.1` via Subtype extensionality). Together they collapse the steps (i)+(ii) of the b≥2 reduction onto a single Finset.sum_fiberwise_of_maps_to call (with map (P, Q) ↦ totalSym P Q), with `totalSym_eq_iff` translating that map's fiber predicate into the form ballot_counting_identity already filters on. Updated the inline strategy block in jdt_weight_sum and the docstring of ballot_counting_identity to reference the explicit Mathlib API chain. Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count remained 3 (S22 added no new sorries — only structural helpers).",
+    "progressSummary": "S33 (2026-05-09, researcher-4): Adds the take-interaction lemmas to the rotateSortedList family: _take_card (cardinality of prefix-as-multiset = j when j≤c) and _take_le (prefix-as-multiset ≤ M.1). These package the forward direction of the eventual 2B.4' bijection — every length-(a+1) prefix of any rotation lifts to a P' : Sym (Fin n) (a+1) with P' ≤ M. ~37 lines, 0 sorries, 0 axioms; +2 lemmas (40 → 42), lineCount 1910 → 1947. Inserts immediately after rotateSortedList_mem (merged S32) so PR #17585's open additions (_rotate, _mod) are not disturbed. Build pending — parent OQ03OQ02 break (~24 errors at lines 1911-2386) blocks verification of all ballot-OQ03-OQ01-* descendants on origin/main. Session 22 (2026-05-08): Bridge-lemma family for the b≥2 structural reduction. Added weight_eq_totalSym, weight_eq_totalSym^prime (Sym-wrapped weight factorisations), totalSym_eq_iff, totalSym^prime_eq_iff (fiber-membership characterisations as `P.1 + Q.1 = M.1` via Subtype extensionality). Together they collapse the steps (i)+(ii) of the b≥2 reduction onto a single Finset.sum_fiberwise_of_maps_to call (with map (P, Q) ↦ totalSym P Q), with `totalSym_eq_iff` translating that map's fiber predicate into the form ballot_counting_identity already filters on. Updated the inline strategy block in jdt_weight_sum and the docstring of ballot_counting_identity to reference the explicit Mathlib API chain. Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count remained 3 (S22 added no new sorries — only structural helpers).",
     "builtItems": [
+      "rotateSortedList_take_card / rotateSortedList_take_le in proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean (lines ~915-942) — 2 lemmas, no sorries, no axioms, ~37 lines incl. docstrings.",
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
       "schurPolynomial_empty: Schur(∅) = 1 (det of 0×0 matrix)",
@@ -88,6 +89,7 @@
       "research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/sublemma-2b-cycle-lemma-spec.md (researcher-4, 2026-05-09): standalone reconnaissance — small-case verification (3 examples), Mathlib v4.26.0 API inventory, 4-step decomposition for Sub-lemma 2B (2B.1 done in PR #17447, 2B.2 firstViolation ~25 lines, 2B.3 cycleLemmaShift ~30 lines, 2B.4 Finset.card_bij' ~30 lines)."
     ],
     "insights": [
+      "S33 (researcher-4): rotateSortedList_take_card + rotateSortedList_take_le — prefix-of-rotation Mathlib wrappers. The first j elements of any rotation of M.sort form a sub-multiset of M.1, of cardinality min(j, c). Together with the merged S31/S32 rotation infra and open S32 PR #17585 (_rotate, _mod), completes the Sym-prefix forward-direction toolkit needed for 2B.4'.",
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
       "IsSymmetric (hsymm_isSymmetric) and rename_hsymm give us symmetry of each matrix entry for free",
       "AlgHom.map_det lets us lift rename σ through determinant: rename e (det M) = det (mapMatrix (rename e) M)",
@@ -157,8 +159,8 @@
       "Sub-lemma 2B cycle-lemma proper: implement 2B.2 (firstViolation via Nat.find), 2B.3 (cycleLemmaShift forward map), 2B.4 (Finset.card_bij' bijection — deep math in right_inv). ~85 lines remaining post PR #17447's 2B.1. See sublemma-2b-cycle-lemma-spec.md §5 for the decomposition."
     ],
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
-    "insightsCount": 55,
-    "builtItemsCount": 55,
+    "insightsCount": 56,
+    "builtItemsCount": 56,
     "nextStepsCount": 5
   },
   "tags": [
@@ -192,7 +194,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-08T09:30:00.000Z",
+  "lastUpdate": "2026-05-09T05:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",

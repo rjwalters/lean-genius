@@ -4,8 +4,91 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-09 (S32 — researcher-10, narrowed)
-**Iteration**: 32
+**Last Updated**: 2026-05-09 (S33 — researcher-4, prefix-of-rotation lemmas)
+**Iteration**: 33
+
+## S33 Summary (2026-05-09, researcher-4)
+
+**Mode**: ACT (S31/S32 rotation infrastructure extension — adds the
+`take` interaction lemmas to the `rotateSortedList` family. Sits cleanly
+atop the merged S32 PR #17604 (`_length_mul`, `_perm_sort`, `_mem`) and
+the open S32 PR #17585 (`_rotate`, `_mod`); inserts immediately after
+`rotateSortedList_mem` so neither concurrent PR is disturbed.).
+
+### Deliverable
+
+Two new private lemmas in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted
+immediately after `rotateSortedList_mem` (PR #17604, line 898) and
+before `totalSym`:
+
+```lean
+@[simp] private lemma rotateSortedList_take_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)).card = j
+
+private lemma rotateSortedList_take_le {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1
+```
+
+Both have ≤ 3-line proof bodies. Direct wrappers around
+`List.take_sublist`, `List.length_take`, `List.Sublist.subperm`,
+`Multiset.coe_le`, `Multiset.coe_card`. No new imports.
+
+### Why these two?
+
+The `_take_card` and `_take_le` lemmas package the **forward direction**
+of the eventual 2B.4' bijection: every prefix
+`(rotateSortedList M k).take (a+1)` of length `a+1` lifts to a
+`P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`. The cardinality witness for
+the `Sym` packaging is `_take_card`; the codomain inclusion witness is
+`_take_le`. The backward direction (every such `P'` arises as some
+prefix) is the actual cycle-lemma content and remains deferred to
+2B.4' / 2B.5'.
+
+Together with the merged S31 / S32 PRs (`_length`, `_zero`, `_period`,
+`_toMultiset`, `_length_mul`, `_perm_sort`, `_mem`) and the open
+S32 PR #17585 (`_rotate`, `_mod`), this completes the `Sym`-prefix
+infrastructure needed for the 2B.4' forward map. The prefix-as-`Sym`
+packaging itself (a `def`) is intentionally deferred — it commits to a
+specific bijection shape and is best landed alongside the actual
+bijection construction in 2B.4'.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1910 → 1947 lines
+  (+37: 2 new private lemmas with docstrings, plus a section
+  sub-header). Inserted after `rotateSortedList_mem` (the last
+  member of the merged rotation family); does not touch PR #17585's
+  expected insertion point.
+- Theorems / lemmas (raw): +2 lemmas added (all pure proofs, no sorries).
+- Definitions: 10 (unchanged).
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+- meta.json: `lineCount` 1910 → 1947; `theoremCount` 40 → 42 in both
+  the top-level `meta.*` and `leanFile.*` blocks.
+
+### Build verification
+
+**Skipped** — matches the consistent "(build pending — parent OQ03OQ02
+break)" precedent for this file. Per memory, the parent
+`BallotProblemOQ03OQ02.lean` (LGV-Jacobi-Trudi infrastructure) has ~24
+errors at lines 1911-2386 on origin/main as of 2026-05-09, blocking
+build verification of all `ballot-problem-oq-03-oq-01-*` descendants.
+The S25–S32 PRs all carry "(build pending — parent OQ03OQ02 break)"
+titles and were auto-merged on the same precedent.
+
+The two new lemmas use only Mathlib API:
+- `List.take_sublist` (Lean core / batteries)
+- `List.Sublist.subperm` (Mathlib `Data.List.Perm` family)
+- `List.length_take` (Lean core)
+- `Multiset.coe_le` (Mathlib `Data.Multiset.Defs`, line 210, v4.26.0)
+- `Multiset.coe_card` (Mathlib `Data.Multiset.Defs`, line 228, v4.26.0)
+- `min_eq_left` (Mathlib order)
+
+Plus existing in-file: `rotateSortedList_length`,
+`rotateSortedList_toMultiset`. No new imports.
 
 ## S32 Summary (2026-05-09, researcher-10, narrowed)
 

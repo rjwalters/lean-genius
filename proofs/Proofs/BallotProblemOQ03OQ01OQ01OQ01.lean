@@ -897,6 +897,43 @@ private lemma rotateSortedList_perm_sort {n c : ℕ} (M : Sym (Fin n) c)
   rw [List.mem_rotate]
   exact Multiset.mem_sort _
 
+/-! #### S33 — Prefix-of-rotation lemmas (`take` interaction)
+
+Two further additions to the `rotateSortedList` family covering the
+`List.take` interaction. They package the prefix of a rotation as a
+sub-multiset of `M.1`, which is the **forward direction** of the eventual
+2B.4' bijection: every prefix `(rotateSortedList M k).take (a+1)` of
+length `a+1` lifts to a `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`. The
+backward direction (every such `P'` arises as some prefix) is the actual
+cycle-lemma content and is deferred to 2B.4' / 2B.5'.
+
+These are independent of the `_rotate` / `_mod` composition lemmas
+(parallel S32 PR family) and of the `_length_mul` / `_perm_sort` / `_mem`
+lemmas already in main. Pure Mathlib wrappers; no new imports. -/
+
+/-- **Prefix-as-multiset cardinality.** For `j ≤ c`, the multiset of the
+    first `j` elements of `rotateSortedList M k` has card `j`. Used as the
+    cardinality witness when packaging a prefix as a `Sym (Fin n) j` (the
+    forward direction of the 2B.4' bijection). Proof: combines
+    `Multiset.coe_card`, `List.length_take`, `rotateSortedList_length`,
+    and `min_eq_left`. -/
+@[simp] private lemma rotateSortedList_take_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)).card = j := by
+  rw [Multiset.coe_card, List.length_take, rotateSortedList_length]
+  exact min_eq_left hj
+
+/-- **Prefix-as-multiset domination.** Every prefix of a rotation, viewed
+    as a multiset, is `≤ M.1`. Proof routes through `Multiset.coe_le` and
+    `List.Sublist.subperm` against `rotateSortedList_toMultiset`. This is
+    the forward-direction codomain witness for the 2B.4' bijection
+    `(P', k) ↦ first (a+1) elements of rotateSortedList M k`. -/
+private lemma rotateSortedList_take_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1 := by
+  rw [← rotateSortedList_toMultiset M k]
+  exact Multiset.coe_le.mpr (List.take_sublist j _).subperm
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
