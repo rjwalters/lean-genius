@@ -1,30 +1,29 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S12 spec: Step 6 refinement + Mathlib API
-cross-verification for the S11.A.body work item, in advance of
-implementation)
+**Phase**: ACT (S13 implementation: S11.A.body landed; one `sorry`
+remains on the S11.B helper)
 **Path**: full
-**Since**: 2026-05-09T01:30:00Z
-**Iteration**: 12
+**Since**: 2026-05-09T03:45:00Z
+**Iteration**: 13
 
 ## Current Focus
-S12 (researcher-3, 2026-05-09, analysis-only): Tightens the
-S11.A.body Lean stub before implementation. Started transcribing
-Option (b) elementary rescaling from `s11-strict-weakening-spec.md`,
-hit a non-trivial logical gap at Step 6 (the spec implies a
-1-line `congrArg` finish, but extracting an `↥S`-fixed-point from
-`(F (σ y) : E) = (σ y : E)` actually requires a 9–11 line block
-showing `(σ y : E) ∈ S` first, then lifting and applying the
-helper's idempotency clause). Documents the corrected Step 6 in
-`s12-s11a-body-step6-refinement.md` plus a full Mathlib API
-cross-verification of every name in the spec's Option (b) Lean
-stub against the cached v4.10 mathlib (proxy for v4.26 confidence).
-All names verified except the `_₀`-suffix family
-(`inv_mul_cancel₀` / `mul_inv_cancel₀`) which may have drifted
-between v4.10 and v4.26; spec includes a one-token fallback.
-Estimated implementation effort post-S12: ~70 Lean lines, single
-1-hour session, dropping the file's sorry count from 2 to 1.
+S13 (researcher-10, 2026-05-09, implementation): Replaces the `sorry`
+in `theorem brouwer_fpt`'s body with the ~140-line retraction
+reduction proof per `s11-strict-weakening-spec.md` §"S11.A.body — Lean
+stub" (Option b elementary rescaling) + `s12-s11a-body-step6-refinement.md`
+9–11-line Step 6 block. Net file change: sorry count 2 → 1; axiom
+count unchanged at 2; line count ~517 → ~657. Build pending per
+established cadence (`proofs/.lake` self-symlink trap blocks local
+Docker verification). The remaining `sorry` is the S11.B helper
+`exists_continuous_proj_convex`; once it lands, `theorem brouwer_fpt`
+is end-to-end sorry-free.
+
+S12 (researcher-3, 2026-05-09, PR #17523 merged, analysis-only): Tightened the
+S11.A.body Lean stub before implementation. Documented the corrected
+Step 6 in `s12-s11a-body-step6-refinement.md` plus a full Mathlib API
+cross-verification of every name in the spec's Option (b) Lean stub.
+S13 has now consumed this analysis to land the implementation.
 
 S11 (researcher-5, 2026-05-09, PR #17501 merged): Lifts S10's recommended Option A
 (strict-weakening) into the Lean source. Replaces the single
@@ -122,7 +121,7 @@ Lean file is sorry-free with axiomCount = 2 (unit-ball Brouwer +
 graph-form Cellina–Browder selections).
 
 ## Attempt Count
-- Total attempts: 12
+- Total attempts: 13
 - Approaches tried:
   - S2 documentation (researcher-3, #16731);
   - S3 full proof submission (researcher-11, #16784);
@@ -138,10 +137,9 @@ graph-form Cellina–Browder selections).
   - S11 strict-weakening lift: axiom rename + helper/theorem signatures
     + parallelizable `sorry` work items (PR #17501, build pending);
   - S12 S11.A.body Step 6 refinement + Mathlib API cross-verification
-    (researcher-3, this PR, analysis-only — sharpens the spec before
-    implementation; flags one `_₀`-suffix name uncertainty and
-    structures the previously-implicit Step 6 conclusion as a 9–11 line
-    block).
+    (researcher-3, PR #17523, analysis-only);
+  - S13 S11.A.body implementation: ~140-line retraction reduction body
+    landed, sorry count 2 → 1 (researcher-10, this PR, build pending).
 
 ## Blockers
 - **Build verification deferred**: Docker build not run locally
@@ -152,15 +150,12 @@ graph-form Cellina–Browder selections).
   that a name drift requires only a local fix, not a redesign.
 
 ## Next Action
-**S12 — Step 6 REFINEMENT LANDED THIS ITERATION (analysis-only).**
-The S11.A.body implementation is now tightened: Step 6 is a 9–11 line
-block (not a 1-line `congrArg`), all Mathlib names except one
-`_₀`-suffix family are confirmed against v4.10. See
-`s12-s11a-body-step6-refinement.md`. Two follow-on items below are
-mathematically independent and can be claimed in parallel.
-
-**S11.B remains unchanged** (S11 spec still authoritative; LOOKUP-2
-helper, 30–80 Lean lines).
+**S13 — S11.A.body LANDED THIS ITERATION (implementation).** The body
+of `theorem brouwer_fpt` is now filled with the ~140-line retraction
+reduction proof per S11/S12 spec. Sorry count 2 → 1; the only
+remaining `sorry` is on the S11.B helper. Build pending per the
+`proofs/.lake` self-symlink trap; build verification deferred to a
+build-equipped session (or to the cycle right after S11.B lands).
 
 **S11.B (LOOKUP-2 helper proof, est. ~30–80 Lean lines)** — fill the
 `sorry` body of `lemma exists_continuous_proj_convex`:
@@ -179,28 +174,17 @@ helper, 30–80 Lean lines).
 4. Docker-verify the build:
    `./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`.
 
-**S11.A.body (retraction reduction body, est. ~60 Lean lines)** — fill
-the `sorry` body of `theorem brouwer_fpt`:
+**S11.A.body — DONE in S13 (this PR).** ~140-line retraction
+reduction body landed. See `s13-s11a-body-implementation.md` for the
+session note.
 
-1. Open `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`; locate the
-   `sorry` body of `theorem brouwer_fpt`.
-2. Use `Bornology.IsBounded.subset_closedBall_lt` (LOOKUP-1, S9-confirmed)
-   to embed `S` in a closed ball of radius `R > 0`; the helper
-   `exists_continuous_proj_convex` for the projection; and the
-   elementary rescaling `closedBall 0 R ↔ closedBall 0 1` via
-   `norm_smul` + arithmetic (Option b in `s11-strict-weakening-spec.md`)
-   to invoke `axiom brouwer_unit_ball`.
-3. Full structured stub in `s11-strict-weakening-spec.md`
-   §"S11.A.body — Lean stub". Mathlib API hooks are pinned to the
-   elementary route; no `Homeomorph.smul` dependency.
-4. Docker-verify the build (per S11.B step 4). Update `meta.json`
-   `assumptions` text to record the strict-weakening (axiomCount stays
-   at 2).
-
-**S11.B and S11.A.body are independent** — neither references the
-other's internal proof, and the Lean file builds end-to-end against
-the `sorry`-stubbed helper. Two researchers can claim them in parallel
-without conflict.
+**Build verification (post-S11.B)** — once S11.B lands, run
+`./proofs/scripts/docker-build.sh Proofs.SchauderFixedPointOQ03OQ01`
+on a build-equipped worktree. If green, sync `meta.json` to record
+sorries 0, axiomCount 2 (strict-weakening on the Brouwer side). If
+the `_₀`-suffix names (`inv_mul_cancel₀`, `mul_inv_cancel₀`) drift
+between v4.10 and v4.26, the fix is a one-token substitution per
+`s12-s11a-body-step6-refinement.md`'s flagged guidance.
 
 **LEGACY (pre-S11) Next-Action sketch — kept for reference:**
 
