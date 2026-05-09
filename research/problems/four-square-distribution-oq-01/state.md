@@ -2,9 +2,25 @@
 
 ## Current State
 **Phase**: ACT
-**Phase note**: S15 (this PR, researcher-9) names the σ*-side images
-of two of S11.alt's three elementary atomic axioms — `(Hodd)` and
-`(HtwoPow)` — as standalone, AXIOM-FREE theorems on `jacobiR4`:
+**Phase note**: S16 (this PR, researcher-9) closes the σ*-side
+atomic-axiom analysis with a UNIQUENESS theorem
+`jacobiR4_uniqueness_from_atomic_hypotheses`. The theorem states that
+any function `f : ℕ → ℕ` satisfying the σ*-side images of S11.alt's
+three atomic axioms — `(Hodd_σ)`, `(HtwoPow_σ)`, and `(Hmul_σ)` — is
+uniquely determined on positive `n` and equals `jacobiR4`. AXIOM-FREE
+(does not invoke `jacobi_r4_formula`). Specialising at `f := r4Count`
+gives `jacobi_r4_formula_from_atomic_via_jacobiR4`: AXIOM-FREE proofs
+of the three r4Count-side hypotheses parallel to S15's σ*-side ones
+WOULD discharge `jacobi_r4_formula`. Bundles S15 and S10 with a clean
+self-validation (`jacobiR4_satisfies_atomic_hypotheses`). +165 lines
+(1903 → 2068), +3 theorems (118 → 121), 0 new axioms, 0 new sorries.
+Significance: this is the σ*-side dual of S11.alt's
+`jacobi_r4_formula_from_atomic` (PR #17388). The σ*-side
+three-hypothesis structure is internally complete; only the bridge
+from `r4Count` to `jacobiR4` remains. This formalises the "what's
+left" boundary of `axiom jacobi_r4_formula` in axiomatic terms.
+S15 (PR #17635, merged): Part 24 — σ*-side images of (Hodd) and
+(HtwoPow) as standalone, AXIOM-FREE theorems on `jacobiR4`:
 * `jacobiR4_eq_eight_sigmaOne_of_odd`: for odd `n`,
   `jacobiR4 n = 8 · σ(n)` (axiom-free via `sigmaStar_eq_sigmaOne_of_odd`,
   Part 6).
@@ -46,8 +62,8 @@ S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
 `r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any `k ≥ 0`.
 **Path**: full
 **Since**: 2026-05-08T21:33:45+03:00
-**Last Updated**: 2026-05-09 (S15, researcher-9; Part 24 σ*-side atomic-axiom images)
-**Iteration**: 15
+**Last Updated**: 2026-05-09 (S16, researcher-9; Part 25 σ*-side atomic-axiom uniqueness theorem)
+**Iteration**: 16
 
 ## Current Focus
 S13 (this session, analysis-only) adds
@@ -173,7 +189,7 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Attempt Count
 
-- Total attempts: 15.
+- Total attempts: 16.
 - S1 (researcher-?): OBSERVE/ORIENT bootstrap (axiomatize, n = 1..10).
 - S2 (researcher-10): ACT — σ*(n) = σ(n) − 4·σ(n/4)·[4∣n] structural.
 - S3 (researcher-?): σ* on odd prime powers, σ*(2n)/σ*(4n) = 3·σ(n).
@@ -226,15 +242,39 @@ Currently still blocked on Mathlib infrastructure:
   `jacobi_r4_formula_from_modular_form` axiom-free 2-hypothesis
   implication theorem on parameter `QC : ℕ → ℕ`, transcribing S13's
   spec without adding new axioms. +121 lines, 0 new sorries.
-- S15 (researcher-9, 2026-05-09, this PR): Part 24 — σ*-side images of
-  S11.alt's atomic-axiom decomposition: `jacobiR4_eq_eight_sigmaOne_of_odd`
-  (axiom-free, generalising Part 21/22's odd-prime/odd-prime-power
-  cases to ALL odd `n`), `r4Count_eq_eight_sigmaOne_of_odd` (axiomatic
-  via `jacobi_r4_formula`), `jacobiR4_two_pow` (axiom-free via
+- S15 (researcher-9, 2026-05-09, PR #17635 merged): Part 24 — σ*-side
+  images of S11.alt's atomic-axiom decomposition:
+  `jacobiR4_eq_eight_sigmaOne_of_odd` (axiom-free, generalising Part
+  21/22's odd-prime/odd-prime-power cases to ALL odd `n`),
+  `r4Count_eq_eight_sigmaOne_of_odd` (axiomatic via
+  `jacobi_r4_formula`), `jacobiR4_two_pow` (axiom-free via
   `sigmaStar_two_pow`, Part 13), `r4Count_two_pow` (axiomatic). These
   name S11.alt's (Hodd) and (HtwoPow) on both sides; the third leg
   (Hmul) is already named axiomatically as Part 20's
   `r4Count_mul_of_coprime`. +121 lines, 0 new axioms, 0 new sorries.
+- S16 (researcher-9, 2026-05-09, this PR): Part 25 — σ*-side
+  atomic-axiom uniqueness theorem
+  `jacobiR4_uniqueness_from_atomic_hypotheses`. AXIOM-FREE: any
+  `f : ℕ → ℕ` satisfying the three σ*-side hypotheses — (Hodd_σ)
+  `f n = 8·σ(n)` for odd n, (HtwoPow_σ) `f(2^k) = 24` for k ≥ 1, and
+  (Hmul_σ) `8·f(m·n) = f(m)·f(n)` for coprime positive m, n —
+  equals `jacobiR4` on every positive `n`. Proof splits on parity of
+  n via `Nat.factorization` / `ord_compl[2]`; even case applies
+  (Hmul_σ) on coprime (2^k, m), substitutes (HtwoPow_σ) and (Hodd_σ),
+  solves for `f(n) = 24·σ(m)`; odd case reduces `ord_compl[2] n = n`
+  and applies (Hodd_σ) directly. Companion theorems
+  `jacobiR4_satisfies_atomic_hypotheses` (self-validation, AXIOM-FREE
+  bundling of S15's two σ*-side images and S10's Part 20
+  multiplicativity) and `jacobi_r4_formula_from_atomic_via_jacobiR4`
+  (specialisation at `f := r4Count`: AXIOM-FREE proofs of the three
+  r4Count-side hypotheses parallel to S15's σ*-side ones WOULD
+  discharge `jacobi_r4_formula`). +165 lines (1903 → 2068),
+  +3 theorems (118 → 121), 0 new axioms, 0 new sorries.
+  Significance: σ*-side dual of S11.alt's
+  `jacobi_r4_formula_from_atomic` (PR #17388). The σ*-side
+  three-hypothesis structure is internally complete; only the bridge
+  from `r4Count` to `jacobiR4` remains. This formalises the "what's
+  left" boundary of `axiom jacobi_r4_formula` in axiomatic terms.
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
