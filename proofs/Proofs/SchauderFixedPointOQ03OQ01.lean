@@ -305,11 +305,11 @@ theorem brouwer_fpt {n : ℕ}
       R • ((x : EuclideanSpace ℝ (Fin n)))
         ∈ Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) R := by
     intro x
-    rw [Metric.mem_closedBall_zero_iff, norm_smul,
+    rw [mem_closedBall_zero_iff, norm_smul,
         Real.norm_of_nonneg hR_pos.le]
     have hx_le : ‖(x : EuclideanSpace ℝ (Fin n))‖ ≤ 1 := by
       have hx := x.property
-      rwa [Metric.mem_closedBall_zero_iff] at hx
+      rwa [mem_closedBall_zero_iff] at hx
     calc R * ‖(x : EuclideanSpace ℝ (Fin n))‖
         ≤ R * 1 := mul_le_mul_of_nonneg_left hx_le hR_pos.le
       _ = R := by ring
@@ -323,11 +323,11 @@ theorem brouwer_fpt {n : ℕ}
       R⁻¹ • ((b : EuclideanSpace ℝ (Fin n)))
         ∈ Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1 := by
     intro b
-    rw [Metric.mem_closedBall_zero_iff, norm_smul,
+    rw [mem_closedBall_zero_iff, norm_smul,
         Real.norm_of_nonneg hRinv_pos.le]
     have hb_le : ‖(b : EuclideanSpace ℝ (Fin n))‖ ≤ R := by
       have hb := b.property
-      rwa [Metric.mem_closedBall_zero_iff] at hb
+      rwa [mem_closedBall_zero_iff] at hb
     calc R⁻¹ * ‖(b : EuclideanSpace ℝ (Fin n))‖
         ≤ R⁻¹ * R := mul_le_mul_of_nonneg_left hb_le hRinv_pos.le
       _ = 1 := inv_mul_cancel₀ hR_ne
