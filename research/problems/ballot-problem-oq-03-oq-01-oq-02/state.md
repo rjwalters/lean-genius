@@ -1,10 +1,10 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S58 done — `strictHookCells_transpose` + `gnwProb_transpose` added as S57.4 reduction infrastructure; pointwise-comparison branches still open)
+**Phase**: ACT (S58 + S57.4 done — transpose-equivariance infrastructure (`strictHookCells_transpose`, `gnwProb_transpose`) and off-spine inductive step (`isCorner_invariant_off_spine_of_c'`, `gnwProb_succ_eq_off_spine_of_c'`); pointwise-comparison branches still open)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-09 (Session 58, researcher-5)
+**Last Updated**: 2026-05-09 (Session 58 researcher-5 + Session 57.4 researcher-10)
 **Iteration**: 60
 
 ## Current Focus
@@ -313,6 +313,45 @@ in place:
      K-induction in `F_side_identity_aligned`, eliminating two of the
      three "moving pieces" in S57.0's analysis.  +89 Helpers lines.
      PR #17537 (merged 2026-05-08 23:55Z, build pending).
+ 21. **Off-spine `isCorner` invariance + integrand recurrence step
+     (session 57.4, this session, researcher-10)** — two sorry-free
+     private lemmas after S57.3a's `gnwProb_zero_of_col_eq_c'_case2`
+     (line ~14747):
+     - `isCorner_invariant_off_spine_of_c'` (line ~14775, +22 lines):
+       the fourth structural invariance under `c'`-removal at
+       off-spine cells: `isCorner (μ\c') x ↔ isCorner μ x` whenever
+       `x.1 ≠ c'.1 ∧ x.2 ≠ c'.2`.  Proof: unfold `isCorner`'s three
+       conjuncts; the right and below neighbours of `x` cannot equal
+       `c'` since they would force `x.1 = c'.1` or `x.2 = c'.2` (each
+       contradicting one off-spine hypothesis).
+     - `gnwProb_succ_eq_off_spine_of_c'` (line ~14830, +30 lines):
+       the K-step recurrence at off-spine cells: assuming
+       `∀ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y =
+       gnwProb (μ\c') c K y` (the K-step IH on the strict hook of
+       `x`), derive
+       `gnwProb μ c (K+1) x = gnwProb (μ\c') c (K+1) x`.  Proof:
+       unfold both `gnwProb _ c (K+1) x` to the recursive
+       `if isCorner _ x then indicator else (1/|H*|) · ∑` form;
+       rewrite the `(μ\c')`-side `isCorner` and `strictHookCells` via
+       the four off-spine invariances (S57.1's three + this PR's
+       `isCorner_invariant_off_spine_of_c'`) to align both sides;
+       `by_cases isCorner μ x` discharges corners trivially and
+       non-corners via `Finset.sum_congr` against the IH.
+     **Why useful for S57.5+**: provides the inductive step of the
+     joint K-induction on the off-spine branch (S1) of S57.0's plan.
+     Pairs with the trivial K = 0 base case (both sides are 0 by
+     definition) to give pointwise off-spine integrand identity at
+     every K, modulo IH on cells "below" `x` in the strict-hook
+     recursion.  Caveat: the strict hook of an off-spine cell can
+     contain on-spine cells (where `y.1 = c'.1` or `y.2 = c'.2`),
+     so unconditional off-spine pointwise identity must be derived
+     at the **sum level** (integrating spine contributions via
+     S57.3/S57.3a's trivial branches and the S43 bridge); S57.5
+     is therefore not just a wrapper around S57.4.
+     **Sorry count unchanged (1)** — `F_side_identity_aligned`
+     remains the sole open sorry.  +109 Helpers.lean lines.
+     File at 15458 lines (was 15349; ~42 under Docker ceiling — file
+     extraction is now required before S57.5+ lands further bulk).
  20. **Walk-unreachability lemma for arm/leg-of-c' (session 57.2,
      this session)** — added `private lemma gnwProb_unreachable_zero`
      (line ~14656, +68 lines including 32-line docstring): for any
@@ -508,6 +547,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-09-s03.md` — Session 57.1: off-spine structural invariances under c'-removal (3 lemmas, sorry-free)
 - `sessions/2026-05-09-s04.md` — Session 57.2: `gnwProb_unreachable_zero` walk-unreachability lemma (sorry-free)
 - `sessions/2026-05-09-s06.md` — Session 57.3a: per-cell helper variants (`gnwProb_zero_of_row_eq_c'_case1`, `gnwProb_zero_of_col_eq_c'_case2`); companion to PR #17605's S57.3 summand lemmas (sorry-free)
+- `sessions/2026-05-09-s07.md` — Session 57.4: off-spine `isCorner` invariance + integrand recurrence step (`isCorner_invariant_off_spine_of_c'`, `gnwProb_succ_eq_off_spine_of_c'`; both sorry-free); the inductive step for the (S1) off-spine branch of `F_side_identity_aligned`'s K-induction
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
@@ -526,6 +566,8 @@ Fallback if S55+ stalls.
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14656` — `gnwProb_unreachable_zero` (S57.2; sorry-free; closes (S2)/(S3) on the unreachable branches via case-1 arm-of-c' / case-2 leg-of-c')
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14722` — `gnwProb_zero_of_row_eq_c'_case1` (S57.3a, sorry-free; per-cell vanishing for arbitrary `x` with `x.1 = c'.1` — companion to PR #17605's `sum_gnwProb_arm_of_c'_eq_zero_case1`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14742` — `gnwProb_zero_of_col_eq_c'_case2` (S57.3a, sorry-free; per-cell vanishing for arbitrary `x` with `x.2 = c'.2` — companion to PR #17605's `sum_gnwProb_leg_of_c'_eq_zero_case2`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14775` — `isCorner_invariant_off_spine_of_c'` (S57.4, sorry-free; the fourth off-spine structural invariance: `isCorner (μ\c') x ↔ isCorner μ x` for `x.1 ≠ c'.1 ∧ x.2 ≠ c'.2`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14830` — `gnwProb_succ_eq_off_spine_of_c'` (S57.4, sorry-free; off-spine integrand recurrence step: assuming K-step IH on `x`'s strict hook, derive (K+1)-step at `x`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14719` — `gnwProb_exchange_lt_row_of_F_side`
   (S53 combiner, sorry-free conditional on F-side identity, case `c.1 < c'.1`)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:14814` — `gnwProb_exchange_lt_col_of_F_side`

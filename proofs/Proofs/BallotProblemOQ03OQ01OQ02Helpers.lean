@@ -14884,6 +14884,119 @@ private lemma gnwProb_transpose (μ : YoungDiagram) (c : ℕ × ℕ) :
       have h := IH y.swap
       rwa [Prod.swap_swap] at h
 
+/-- **(S57.4) Off-spine `isCorner` invariance under `c'`-removal.**
+
+For a cell `x` strictly off both the row and column of corner `c'`,
+removing `c'` from `μ` preserves `x`'s corner status:
+`isCorner (μ\c') x ↔ isCorner μ x`.
+
+The forward direction is the only one that needs care: the
+right/below neighbours of `x` are
+`(x.1, x.2 + 1)` and `(x.1 + 1, x.2)`.  Membership in `μ\c'` is
+`mem_μ ∧ ≠ c'`; the off-spine hypotheses
+`x.1 ≠ c'.1` and `x.2 ≠ c'.2` rule out the right neighbour ever
+being `c'` (it would require `x.1 = c'.1`) and the below neighbour
+ever being `c'` (it would require `x.2 = c'.2`), so the negation
+collapses cleanly.
+
+**Use case.**  The fourth structural invariance under `c'`-removal
+on the off-spine branch (after `c'_notMem_strictHookCells_of_off_spine`,
+`hookLength_invariant_off_spine_of_c'`,
+`strictHookCells_invariant_off_spine_of_c'` from S57.1).  Together
+with those three, this lets us identify the recursive step of
+`gnwProb μ c (K+1) x` with `gnwProb (μ\c') c (K+1) x` at off-spine
+`x` modulo a K-step IH — see
+`gnwProb_succ_eq_off_spine_of_c'` below.
+
+**Status.**  Sorry-free.  Foundational input for the joint
+K-induction in `F_side_identity_aligned`. -/
+private lemma isCorner_invariant_off_spine_of_c'
+    {μ : YoungDiagram} {c' : ℕ × ℕ} (hc' : isCorner μ c')
+    {x : ℕ × ℕ} (hx_off_row : x.1 ≠ c'.1) (hx_off_col : x.2 ≠ c'.2) :
+    isCorner (removeCorner μ c' hc') x ↔ isCorner μ x := by
+  have hx_ne_c' : x ≠ c' := fun h => hx_off_row (congr_arg Prod.fst h)
+  have h_right_ne : (x.1, x.2 + 1) ≠ c' :=
+    fun h => hx_off_row (congr_arg Prod.fst h)
+  have h_below_ne : (x.1 + 1, x.2) ≠ c' :=
+    fun h => hx_off_col (congr_arg Prod.snd h)
+  refine ⟨?_, ?_⟩
+  · rintro ⟨hxmem, hright, hbelow⟩
+    refine ⟨((mem_removeCorner hc').mp hxmem).1, ?_, ?_⟩
+    · intro hmem
+      exact hright ((mem_removeCorner hc').mpr ⟨hmem, h_right_ne⟩)
+    · intro hmem
+      exact hbelow ((mem_removeCorner hc').mpr ⟨hmem, h_below_ne⟩)
+  · rintro ⟨hxmem, hright, hbelow⟩
+    refine ⟨(mem_removeCorner hc').mpr ⟨hxmem, hx_ne_c'⟩, ?_, ?_⟩
+    · intro hmem
+      exact hright ((mem_removeCorner hc').mp hmem).1
+    · intro hmem
+      exact hbelow ((mem_removeCorner hc').mp hmem).1
+
+/-- **(S57.4) Off-spine integrand recurrence step under `c'`-removal.**
+
+For a cell `x` strictly off both the row and column of corner `c'`,
+the `(K+1)`-step of `gnwProb` at `x` is preserved under removing `c'`,
+**provided** the `K`-step pointwise identity already holds on `x`'s
+strict hook.  Concretely, if
+`gnwProb μ c K y = gnwProb (μ\c') c K y` for every
+`y ∈ strictHookCells μ x.1 x.2`, then
+`gnwProb μ c (K+1) x = gnwProb (μ\c') c (K+1) x`.
+
+**Proof structure.**  Unfold both `gnwProb _ c (K+1) x` definitions to
+their `if isCorner _ x then indicator else (1/|H*|) · ∑` recursive
+form.  Apply the four S57.1+S57.4 off-spine structural invariances
+to align the `if`-branches:
+* `isCorner_invariant_off_spine_of_c'` — same corner test;
+* `strictHookCells_invariant_off_spine_of_c'` — same strict hook
+  set, so same cardinality and same summation domain.
+At corners both sides reduce to `if x = c then 1 else 0`; at
+non-corners both sides equal the same `(1/|H*|) · ∑_{y∈H*} ...`,
+with the integrand identity provided pointwise by the IH.
+
+**Use case.**  This is the inductive step of the joint K-induction
+for the off-spine branch (S1) of `F_side_identity_aligned`.  Pairs
+with the trivial base `K = 0` (where both sides are `0` by the
+zero-case of `gnwProb`) to give pointwise off-spine integrand
+identity at every K, modulo the IH on cells "below" `x` in the
+strict-hook recursion.
+
+**Status.**  Sorry-free.  Useful in S57.5+ for the off-spine summand
+of `F_side_identity_aligned`.  ℚ-cast safety is automatic — both
+sides are unfolded to identical `if-then-else` expressions at the
+ℚ level. -/
+private lemma gnwProb_succ_eq_off_spine_of_c'
+    {μ : YoungDiagram} {c c' : ℕ × ℕ} (hc' : isCorner μ c')
+    {x : ℕ × ℕ}
+    (hx_off_row : x.1 ≠ c'.1) (hx_off_col : x.2 ≠ c'.2)
+    {K : ℕ}
+    (h_IH : ∀ y, y ∈ strictHookCells μ x.1 x.2 →
+      gnwProb μ c K y = gnwProb (removeCorner μ c' hc') c K y) :
+    gnwProb μ c (K + 1) x =
+      gnwProb (removeCorner μ c' hc') c (K + 1) x := by
+  have h_unfold_μ : gnwProb μ c (K + 1) x =
+      if isCorner μ x then (if x = c then (1 : ℚ) else 0)
+      else (1 / ↑(strictHookCells μ x.1 x.2).card : ℚ) *
+           ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y := rfl
+  have h_unfold_ν : gnwProb (removeCorner μ c' hc') c (K + 1) x =
+      if isCorner (removeCorner μ c' hc') x then
+        (if x = c then (1 : ℚ) else 0)
+      else (1 / ↑(strictHookCells (removeCorner μ c' hc') x.1 x.2).card : ℚ) *
+           ∑ y ∈ strictHookCells (removeCorner μ c' hc') x.1 x.2,
+              gnwProb (removeCorner μ c' hc') c K y := rfl
+  rw [h_unfold_μ, h_unfold_ν,
+      isCorner_invariant_off_spine_of_c' hc' hx_off_row hx_off_col,
+      strictHookCells_invariant_off_spine_of_c' hc' hx_off_row hx_off_col]
+  by_cases hc : isCorner μ x
+  · rw [if_pos hc, if_pos hc]
+  · rw [if_neg hc, if_neg hc]
+    have h_sum :
+        ∑ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y =
+        ∑ y ∈ strictHookCells μ x.1 x.2,
+            gnwProb (removeCorner μ c' hc') c K y :=
+      Finset.sum_congr rfl (fun y hy => h_IH y hy)
+    rw [h_sum]
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by
