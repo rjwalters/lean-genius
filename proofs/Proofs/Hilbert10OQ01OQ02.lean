@@ -76,6 +76,14 @@ import Mathlib.Algebra.Order.Ring.Lemmas
 -- S12 (iter 12, Path B): `linarith` to discharge the conclusion
 -- `a*a + b*b = 0  ∧  0 ≤ a*a  ∧  0 ≤ b*b  →  a*a = 0  ∧  b*b = 0`.
 import Mathlib.Tactic.Linarith
+-- Iter 19 (Path B, this PR, stacked on iter 18 PR #17552): `Finset.toList`
+-- and `Finset.mem_toList` for the Finset transports of iter 18's
+-- list-arity level-2 closures (Π₂ ∩ over `Finset RatSubset` and
+-- Σ₂ ∪ over `Finset RatSubset`). NB: iter 17 (PR #17478, already on
+-- main) also imports this for the level-1 Finset transports; once the
+-- iter 16/18 chain rebases onto main, this import line is a duplicate
+-- and should be dropped.
+import Mathlib.Data.Finset.Basic
 
 namespace Hilbert10Rationals
 
@@ -1961,6 +1969,70 @@ theorem sigma2_unionList_isExistentialUniversalDefinition
         · exact ⟨a, List.mem_cons_self a t, ha⟩
         · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
     exact (existentialUniversalDefinition_iff_of_pred_iff hbridge).mpr h_union
+
+-- ============================================================
+-- Part VIII.20 (iter 19, Path B): Finset transport of iter 18's
+-- list-arity level-2 closures.
+-- ============================================================
+
+/-- Iter 19, Path B (this PR, stacked on iter 18 PR #17552, indirectly
+    on iter 16 PR #17456): **the Π₂ class is closed under
+    `Finset RatSubset`-indexed intersection of arbitrary Π₂-definable
+    subsets**.
+
+    Finset analog of iter 18's
+    `pi2_intersectionList_isUniversalExistentialDefinition`,
+    transported via `Finset.mem_toList` (the same iter 17 template
+    used for the level-1 Σ₁/Π₁ Finset transports on origin/main).
+
+    The witness polynomial is the inductive sum-of-squares + interleave
+    on `s.toList` from iter 18 (which itself unfolds to iter 16's
+    binary Π₂ ∩ per cons step). -/
+theorem pi2_intersectionFinset_isUniversalExistentialDefinition
+    (s : Finset RatSubset)
+    (h : ∀ S ∈ s, IsUniversalExistentialDefinition S) :
+    IsUniversalExistentialDefinition (fun q : Rat => ∀ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsUniversalExistentialDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∀ S ∈ s, S q) q ↔
+      (fun q : Rat => ∀ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · intro hall S hS; exact hall S (Finset.mem_toList.mp hS)
+    · intro hall S hS; exact hall S (Finset.mem_toList.mpr hS)
+  exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr
+    (pi2_intersectionList_isUniversalExistentialDefinition s.toList h_list)
+
+/-- Iter 19, Path B (this PR, stacked on iter 18 PR #17552, indirectly
+    on iter 16 PR #17456): **the Σ₂ class is closed under
+    `Finset RatSubset`-indexed union of arbitrary Σ₂-definable
+    subsets**.
+
+    Finset analog of iter 18's
+    `sigma2_unionList_isExistentialUniversalDefinition`, transported
+    via `Finset.mem_toList` (the same iter 17 template used for the
+    level-1 Σ₁/Π₁ Finset transports on origin/main).
+
+    Combined with `pi2_intersectionFinset_isUniversalExistentialDefinition`,
+    this populates the FINSET-arity column of the level-2 Boolean
+    closure grid for arbitrary Σ₂/Π₂ inputs, completing the
+    binary/list/Finset arity table at level 2. -/
+theorem sigma2_unionFinset_isExistentialUniversalDefinition
+    (s : Finset RatSubset)
+    (h : ∀ S ∈ s, IsExistentialUniversalDefinition S) :
+    IsExistentialUniversalDefinition (fun q : Rat => ∃ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsExistentialUniversalDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∃ S ∈ s, S q) q ↔
+      (fun q : Rat => ∃ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mpr hS, hSq⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mp hS, hSq⟩
+  exact (existentialUniversalDefinition_iff_of_pred_iff hbridge).mpr
+    (sigma2_unionList_isExistentialUniversalDefinition s.toList h_list)
 
 -- ============================================================
 -- Part IX: The landscape, sharpened
