@@ -2,12 +2,93 @@
 
 **Phase**: ITERATING (extending discharged sub-collection beyond Section-8 primes)
 **Since**: 2026-05-08T22:30:00Z
-**Last Updated**: 2026-05-09 (Iteration 13, researcher-4)
-**Iteration**: 13
+**Last Updated**: 2026-05-09 (Iteration 14, researcher-13)
+**Iteration**: 14
 
 ## Current Focus
 
-Iteration 13 (this session, researcher-4): added **Section 23** —
+Iteration 14 (this session, researcher-13): added **Section 24** —
+four further Case-A primes (`p ∈ {71, 83, 89, 101}`) as one-line
+corollaries of the Section-13 parametric `selmer_padic_solubility_caseA`.
+Continuing the Section-22/23 pattern (Iters 12/13), this extends the
+discharged sub-collection from 16 to **20 primes total**: the 12
+Section-8 primes + Section-22's `{41, 47}` + Section-23's `{53, 59}` +
+Section-24's `{71, 83, 89, 101}`.
+
+```lean
+instance : Fact (Nat.Prime 71)  := ⟨by decide⟩
+instance : Fact (Nat.Prime 83)  := ⟨by decide⟩
+instance : Fact (Nat.Prime 89)  := ⟨by decide⟩
+instance : Fact (Nat.Prime 101) := ⟨by decide⟩
+
+theorem selmer_padic_solubility_p71_hensel :
+    ∃ (x y z : ℚ_[71]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 63
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+-- ... and three analogous corollaries for p ∈ {83, 89, 101}
+```
+
+**Witness data** (verified by direct ℤ-arithmetic + `decide`):
+
+| prime | `z₀` | `4 + 5·z₀³`           | `p ∣ (4+5z₀³)` | `15·z₀²` | `gcd(15z₀², p)` |
+| ----- | ---- | --------------------- | -------------- | -------- | --------------- |
+| 71    | 63   | 1250239 = 71·17609    | ✓              | 59535    | 1               |
+| 83    | 23   | 60839   = 83·733      | ✓              | 7935     | 1               |
+| 89    | 9    | 3649    = 89·41       | ✓              | 1215     | 1               |
+| 101   | 81   | 2657209 = 101·26309   | ✓              | 98415    | 1               |
+
+All four primes satisfy `p ≡ 2 (mod 3)` and `p ∉ {2, 5}`, so each
+qualifies for the `(x, y) = (0, 1)` Case-A slice. Witnesses are the
+smallest non-negative `z₀ < p` with `5·z₀³ ≡ -4 (mod p)`, obtained
+by enumerating `(ZMod p)`. Existence is guaranteed by cube-bijectivity
+of the multiplicative group `(ZMod p)ˣ` (cyclic of order `p-1` with
+`gcd(3, p-1) = 1` exactly when `p ≡ 2 mod 3`).
+
+**File delta** (`proofs/Proofs/Hilbert11OQ02.lean`, 1481 → 1592 lines, +111):
+- Section 24 docstring header (~37 lines).
+- Four new `instance : Fact (Nat.Prime N)` for `N ∈ {71, 83, 89, 101}`.
+- Four new `selmer_padic_solubility_p{71,83,89,101}_hensel` corollaries
+  (~7 lines each including docstring).
+- One new `selmer_padic_solubility_extended_caseA_primes_v3` bundle
+  theorem covering all eight extended Case-A primes (the Sections 22/23
+  bundles `_extended_caseA_primes` and `_extended_caseA_primes_v2` are
+  preserved for backward compatibility).
+- Five new `#check` lines.
+
+**Counts**: theorems 66 → 71 (`+5`), defs unchanged at 8, axioms
+unchanged at 2, sorries unchanged at 0.
+
+**Build status**: pending. All new code uses only
+`selmer_padic_solubility_caseA` (verified in PR #17093 / origin/main
+since 2026-05-08), `Int.isCoprime_iff_gcd_eq_one`, and `decide`. No
+new Mathlib API surface introduced.
+
+**Confidence the build succeeds**: high. The new theorems are
+structurally identical to the Iter 12/13 / Section 22/23 theorems
+(`selmer_padic_solubility_p{41,47,53,59}_hensel`) — only the
+prime literal and the witness `z₀` differ. Witness arithmetic was
+independently verified outside the build (`1250239 = 71·17609`,
+`60839 = 83·733`, `3649 = 89·41`, `2657209 = 101·26309`).
+
+**Strategic note**: The natural follow-up remains the parametric
+**Section 25 — universal Case-A theorem**: prove that for *every*
+prime `p ≡ 2 (mod 3)`, `p ∉ {2, 5}`, the Selmer cubic has an
+axiom-free `ℚ_[p]`-solubility proof, by combining
+`selmer_padic_solubility_caseA` with the cyclic-group fact that the
+cube map on `(ZMod p)ˣ` is bijective when `gcd(3, p - 1) = 1` (which
+holds iff `p ≡ 2 (mod 3)`). This would replace the infinite enumeration
+with a single parametric closure theorem and demonstrate that the
+universal axiom is provable for *all* Case-A primes. The required
+Mathlib lemma is in the cyclic-group machinery (`Subgroup.zpowers`
+/ `IsCyclic.exists_pow_eq` / `Nat.Coprime.pow_dvd_iff` family) and
+exists in v4.26.0. Iter 14 deliberately did not attempt this; the
+Section 22/23/24 incremental pattern continues to give steady progress
+while the `_v3` bundle naturally generalises to the parametric form.
+
+----
+
+Iteration 13 (researcher-4, Section 23, p ∈ {53, 59}, merged via #17556): added **Section 23** —
 two further Case-A primes (`p ∈ {53, 59}`) as one-line corollaries of
 the Section-13 parametric `selmer_padic_solubility_caseA`. Continuing
 the Section-22 pattern (Iter 12), this extends the discharged
@@ -464,8 +545,8 @@ required to discharge this axiom.
 
 ## Attempt Counts
 
-- Total attempts: 12 (iterations 1–12)
-- Current approach attempts: 12
+- Total attempts: 14 (iterations 1–14)
+- Current approach attempts: 14
 - Approaches tried:
   - Iter 1 (researcher-9, FRESH): Selmer-cubic framework, real
     solubility via IVT, easy directions, Hasse-failure proof from
@@ -512,7 +593,7 @@ required to discharge this axiom.
     theorems; introduces no new axioms, no new definitions, no new
     sorries. File 1299 → 1365 lines (+66), theorems 59 → 60 (+1),
     definitions unchanged at 8, axioms unchanged at 2. PR #17406 merged.
-  - **Iter 12 (researcher-13, THIS SESSION)**: Section 22 — additional
+  - Iter 12 (researcher-13, retained for context): Section 22 — additional
     Case-A primes `p ∈ {41, 47}` as one-line corollaries of
     `selmer_padic_solubility_caseA`, plus the
     `selmer_padic_solubility_extended_caseA_primes` 2-fold-conjunction
