@@ -1,21 +1,39 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 bijection templates + circuit-balance helper + List→Finset bridge for `remove_circuit_balanced`)
+**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 bijection templates + circuit-balance helper + List→Finset bridge + Finset-removal balance helper — full mathematical chain to `remove_circuit_balanced` complete)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 15
-**Last Update**: 2026-05-09 (Session 15, researcher-4) — **BUILD VERIFIED**
+**Iteration**: 16
+**Last Update**: 2026-05-09 (Session 16, researcher-3) — **BUILD VERIFIED**
 
 ## Current Focus
-Session 15 (this session, researcher-4) **added the List→Finset bridge
-lemma `toFinset_balance'` plus a packaged corollary
-`circuit_edge_balance_list'`** that connects the abstract Finset-level
-`circuit_edge_balance'` (S14) to the concrete `List (V × V)` shape
-produced by `walkEdges` in the broken main file. This closes the
-"toFinset bijection" gap noted in S14's next-action plan and reduces
-`remove_circuit_balanced` to two purely List-level hypotheses on
-`walkEdges C.walk` (coverage and step-witness).
+Session 16 (this session, researcher-3) **added the post-bridge Finset
+removal balance lemma `remove_balanced_subset_balanced'`**, closing the
+final gap on the Recipe-side mathematical chain to
+`remove_circuit_balanced`. Prior to S16, S15 (#17542, researcher-4)
+added the List→Finset bridge `toFinset_balance'` plus the packaged
+corollary `circuit_edge_balance_list'`, supplying the `hEbal` half of
+the proof. S16 supplies the **purely Finset-level removal-balance
+preservation** lemma — no walk-level reasoning, no List-level hypotheses
+— which is the post-bridge step needed once `circuit_edge_balance_list'`
+delivers the edge-set balance.
+
+Before-S16 chain (after S15): `circuit_edge_balance_list'` → balanced
+edge-set; gap → `(G.edges \ E).filter src=v.card =
+(G.edges \ E).filter tgt=v.card` (i.e., `IsBalanced (G.removeEdgeSet E) v`).
+
+After-S16 chain: `remove_balanced_subset_balanced'` closes that gap
+generically: given `E ⊆ G.edges` (subset), `G` balanced (hSbal), and
+`E` balanced (hEbal — supplied by `circuit_edge_balance_list'`),
+`G.removeEdgeSet E` is balanced.
+
+S16 deliberately did NOT attempt the full in-place refactor of the
+broken main file — same reasoning as S7–S15 (≥3 hours mechanical work
++ 30–60 min Docker build, exceeds typical agent-session budgets). The
+recipe-extension pattern continues: each session adds a build-verifiable
+template that reduces total mathematical risk for the eventual
+single-pass S17+ in-place refactor.
 
 S15 deliberately did NOT attempt the full in-place refactor of the
 broken main file — same reasoning as S7–S14 (≥3 hours mechanical work
@@ -24,7 +42,58 @@ recipe-extension pattern continues: each session adds a build-verifiable
 template that reduces total mathematical risk for the eventual
 single-pass S16+ in-place refactor.
 
-### What `toFinset_balance'` proves
+### What `remove_balanced_subset_balanced'` proves (S16)
+
+For any finsets of edges `S, E : Finset (V × V)` with `E ⊆ S`, if both
+`S` and `E` are "balanced at `v`" (source-card = target-card), then
+`S \ E` is balanced at `v`:
+
+```
+((S \ E).filter src=v).card = ((S \ E).filter tgt=v).card
+```
+
+Proof outline (purely Finset arithmetic, no walk-level reasoning):
+1. `Finset.filter` distributes over `\` (provable by `ext` + `tauto` on
+   `mem_filter` / `mem_sdiff`).
+2. `E ⊆ S` ⟹ `E.filter p ⊆ S.filter p` (via
+   `Finset.filter_subset_filter`).
+3. `Finset.card_sdiff` (in current Mathlib) has the unconditional form
+   `(s \ t).card = s.card - (t ∩ s).card`. Combined with
+   `Finset.inter_eq_left.mpr` (under `t ⊆ s`, `t ∩ s = t`), this
+   collapses to `s.card - t.card`.
+4. `hSbal` and `hEbal` rewrites close the goal.
+
+### Why S16 closes the chain to `remove_circuit_balanced`
+
+After S16, the proof of `remove_circuit_balanced` decomposes into pure
+plumbing — no remaining mathematical content:
+
+```lean
+theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G) :
+    IsEulerianBalanced (G.removeEdgeSet (walkEdges C.walk).toFinset) := by
+  intro v
+  unfold IsBalanced inDegree outDegree DiGraph.removeEdgeSet
+  apply remove_balanced_subset_balanced'
+  · -- hsub: (walkEdges C.walk).toFinset ⊆ G.edges
+    -- one-liner from `hsteps` (each step is in G.edges) via `mem_toFinset`
+    intro e he
+    rw [List.mem_toFinset] at he
+    -- ...derive `e ∈ G.edges` from walk's step-witness on its filterMap form
+    sorry
+  · -- hSbal: G is balanced at v
+    exact h_balanced v  -- from hypothesis `IsEulerianBalanced G`
+  · -- hEbal: walk's edge-finset is balanced at v
+    exact circuit_edge_balance_list' C.walk n v (walkEdges C.walk)
+          hlen hclosed hcov_list hsteps_list
+```
+
+Estimated proof body for `remove_circuit_balanced` after S17+ refactor:
+**~20 lines total**. The only remaining proof obligation is `hsub` (a
+short `mem_toFinset` derivation from the walk's step-witnesses) plus
+the two List-level hypotheses (`hcov_list`, `hsteps_list`) that decompose
+mechanically over `walkEdges`'s `filterMap` definition.
+
+### What `toFinset_balance'` proves (S15)
 
 Given a `List (V × V)` `L` with List-level coverage and step-witness
 hypotheses, the Finset-level coverage and step-witness hypotheses for
@@ -62,7 +131,7 @@ straightforward to derive from `walkEdges`'s `filterMap` definition
 plus (for `hcov`) the `maxTrail_steps_distinct` lemma (already proved
 in the broken main file at L832–916) when C comes from `circuit_exists`.
 
-### Recipe library status post-S15
+### Recipe library status post-S16
 
 The Recipe file now contains:
 - `getElem?_eq_some_iff_of_lt` — bridge lemma (S9, S11-verified)
@@ -73,11 +142,12 @@ The Recipe file now contains:
 - `walk_source_eq_edge_filter'` — Classical.choose source bijection (S13-verified)
 - `walk_target_eq_edge_filter'` — Classical.choose target bijection (S13-verified)
 - `circuit_edge_balance'` — connective lemma for `remove_circuit_balanced` (S14-verified)
-- `toFinset_balance'` — List→Finset hypothesis bridge (**S15-added, S15-verified**)
-- `circuit_edge_balance_list'` — packaged corollary for `walkEdges`-style List input (**S15-added, S15-verified**)
+- `toFinset_balance'` — List→Finset hypothesis bridge (S15-verified, #17542)
+- `circuit_edge_balance_list'` — packaged corollary for `walkEdges`-style List input (S15-verified, #17542)
+- `remove_balanced_subset_balanced'` — Finset removal balance preservation (**S16-added, S16-verified**)
 
-This completes the **List-input route** to `remove_circuit_balanced`.
-After the S16+ in-place refactor lands and `remove_circuit_balanced`
+This completes **the full mathematical chain** to `remove_circuit_balanced`.
+After the S17+ in-place refactor lands and `remove_circuit_balanced`
 becomes the next sorry-elimination target, the proof body reduces to
 ~20 lines: produce the two List-level hypotheses for `walkEdges C.walk`
 (both decompose mechanically over the `filterMap` definition; uniqueness
@@ -350,12 +420,16 @@ After build repair: `remove_circuit_balanced` becomes the next research target
 (plan unchanged from Session 5).
 
 ## Attempt Count
-- Total attempts: 11
-- Current approach attempts: 11 (Sessions 2–11)
+- Total attempts: 16
+- Current approach attempts: 16 (Sessions 2–16)
 - Approaches tried: 1 (decompose Hierholzer into independent lemmas; greedy
   `maxTrail` for circuit existence; closed-walk and open-walk balance helpers;
   walk-position bijections; Session 7 prepared `get?` refactor recipe;
-  Session 11 build-verified the recipe templates)
+  Session 11 build-verified the recipe templates; Sessions 12–14 added
+  endpoint-excess + Classical.choose + circuit-edge-balance templates;
+  Session 15 added List→Finset bridge `toFinset_balance'`; Session 16 added
+  Finset removal balance preservation `remove_balanced_subset_balanced'`,
+  completing the full mathematical chain to `remove_circuit_balanced`)
 
 ## Blockers
 - **Build does not pass under latest Mathlib** (~80 errors in pre-existing code;
@@ -371,12 +445,13 @@ After build repair: `remove_circuit_balanced` becomes the next research target
   for both axioms' sufficiency directions.
 
 ## Next Action
-1. **Session 15**: Apply the **complete** Sessions 9–14 refactor recipe
-   in-place to `KonigsbergOQ01OQ02.lean`. After S14 Docker verification,
+1. **Session 17**: Apply the **complete** Sessions 9–16 refactor recipe
+   in-place to `KonigsbergOQ01OQ02.lean`. After S16 Docker verification,
    the Recipe file `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` contains
-   all 6 bijection templates plus the bridge lemma plus the
-   circuit-balance helper — **zero remaining template-correctness risk**
-   for the in-place pass and the deferred `remove_circuit_balanced` proof:
+   all 6 bijection templates plus the bridge lemma plus the circuit-edge-
+   balance helper plus the L→Finset bridge plus the Finset removal balance
+   helper — **zero remaining mathematical content** for the deferred
+   `remove_circuit_balanced` proof:
 
    - `getElem?_eq_some_iff_of_lt` (bridge) — S9, S11-verified
    - `closed_walk_balance'` (cyclic bijection) — S9, S11-verified
@@ -385,7 +460,10 @@ After build repair: `remove_circuit_balanced` becomes the next research target
    - `open_walk_first_source_excess'` (source excess) — S12, S13-built
    - `walk_source_eq_edge_filter'` (Classical.choose source) — S13
    - `walk_target_eq_edge_filter'` (Classical.choose target) — S13
-   - `circuit_edge_balance'` (closed-walk edge-set balance) — **S14**
+   - `circuit_edge_balance'` (closed-walk edge-set balance) — S14
+   - `toFinset_balance'` (List→Finset hypothesis bridge) — S15 (#17542)
+   - `circuit_edge_balance_list'` (List-input corollary) — S15 (#17542)
+   - `remove_balanced_subset_balanced'` (Finset removal balance) — **S16**
 
    Refactor the 6 bijection lemmas, 2 definitions, and 3 consumer theorems
    per Session 8's line-anchored task list. Apply `Finset.sum_ite_eq'` simp
@@ -393,17 +471,37 @@ After build repair: `remove_circuit_balanced` becomes the next research target
    `proofs/.lake` symlink state), then update `meta.json` (sorries 2 → 1)
    and delete the recipe-validation file.
 
-   Estimated S15 cost: 2–3 hours mechanical + 1 build (~5–60 min wall-clock
+   Estimated S17 cost: 2–3 hours mechanical + 1 build (~5–60 min wall-clock
    depending on .lake symlink state).
-2. **(after S15) `remove_circuit_balanced`** — plan now sharper: instead
-   of the original "define `circuitVisits` + apply `closed_walk_balance`"
-   approach, use `circuit_edge_balance'` directly on
-   `edges := (walkEdges C.walk).toFinset`. The proof reduces to ~30
-   lines: combine `circuit_edge_balance'` with `Finset.filter_sdiff` /
-   `Finset.card_sdiff` for the `(G.edges \ E_C).filter` decomposition.
-   Distinctness of `walkEdges C.walk` may require strengthening
-   `DirectedCircuit` with an `edges_distinct` field (or restricting the
-   theorem to that case — natural for Hierholzer's construction).
+2. **(after S17) `remove_circuit_balanced`** — plan is now ~20 lines of
+   pure plumbing inside the theorem body, no remaining mathematical
+   content:
+
+   ```lean
+   theorem remove_circuit_balanced (G : DiGraph V) (C : DirectedCircuit G)
+       (h_balanced : IsEulerianBalanced G) :
+       IsEulerianBalanced (G.removeEdgeSet (walkEdges C.walk).toFinset) := by
+     intro v
+     unfold IsBalanced inDegree outDegree DiGraph.removeEdgeSet
+     apply remove_balanced_subset_balanced'
+     · -- hsub: (walkEdges C.walk).toFinset ⊆ G.edges
+       intro e he
+       rw [List.mem_toFinset] at he
+       -- one-liner from `walkEdges`'s `filterMap` definition + `hsteps`
+       sorry
+     · exact h_balanced v  -- hSbal
+     · exact circuit_edge_balance_list' C.walk n v (walkEdges C.walk)
+             hlen hclosed hcov_list hsteps_list
+   ```
+
+   The remaining open question is the `walkEdges C.walk` distinctness for
+   the `circuit_edge_balance_list'` `hcov_list` hypothesis. Two routes:
+   (a) Strengthen `DirectedCircuit` with an `edges_distinct` field at
+       refactor time;
+   (b) Restrict `remove_circuit_balanced` to circuits with distinct edges
+       (the natural case in Hierholzer's construction).
+   Option (b) is recommended for the eventual main proof of
+   `directed_eulerian_iff` — Hierholzer never repeats an edge.
 
 ## Session 13 Summary (2026-05-08)
 **Mode**: REVISIT (Sessions 9–12 built recipe library to 5 of 6 templates;

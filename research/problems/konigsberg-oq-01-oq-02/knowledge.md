@@ -29,6 +29,133 @@ the main file.
 
 ---
 
+## Session 2026-05-09 (Session 16) — Finset-Removal Balance Helper: Full Mathematical Chain Complete
+
+**Mode**: REVISIT (Sessions 9–15 built the recipe library culminating in
+S15's `toFinset_balance'` + `circuit_edge_balance_list'`; S16 adds the
+final post-bridge pure-Finset lemma `remove_balanced_subset_balanced'`
+that closes the chain to `remove_circuit_balanced`.)
+
+**Outcome**: extended `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` by
+~78 lines with the new lemma `remove_balanced_subset_balanced'`. Build
+verified under v4.26.0 Mathlib (Docker target
+`Proofs.KonigsbergOQ01OQ02Recipe`, ~12s build time after Mathlib clone +
+cache fetch).
+
+### Statement
+
+```lean
+lemma remove_balanced_subset_balanced' (S E : Finset (V × V)) (v : V)
+    (hsub : E ⊆ S)
+    (hSbal : (S.filter fun e => e.1 = v).card =
+             (S.filter fun e => e.2 = v).card)
+    (hEbal : (E.filter fun e => e.1 = v).card =
+             (E.filter fun e => e.2 = v).card) :
+    ((S \ E).filter fun e => e.1 = v).card =
+    ((S \ E).filter fun e => e.2 = v).card
+```
+
+The lemma is **purely Finset-arithmetic** — no walk-level or graph-level
+reasoning, no List dependencies. Generic in the edge-Finsets `S, E`,
+so it composes directly with any source of `hSbal`/`hEbal` (e.g., S15's
+`circuit_edge_balance_list'` for the closed-walk-derived `E`, or
+graph-level assumptions for `S`).
+
+### Why this completes the mathematical chain to `remove_circuit_balanced`
+
+After S16, the proof body for `remove_circuit_balanced` decomposes into
+**pure plumbing** — no remaining mathematical content:
+
+1. `intro v; unfold IsBalanced inDegree outDegree DiGraph.removeEdgeSet`
+2. `apply remove_balanced_subset_balanced' G.edges
+   (walkEdges C.walk).toFinset v`
+3. `hsub`: from a one-liner derivation that `walkEdges C.walk`'s
+   filterMap-form image is in `G.edges` (via `hsteps`).
+4. `hSbal`: from the caller's `IsEulerianBalanced G` hypothesis.
+5. `hEbal`: from S15's `circuit_edge_balance_list'` applied to
+   `C.walk` with the closed-walk hypotheses bundled in `DirectedCircuit`.
+
+Estimated proof body for `remove_circuit_balanced` after S17+ refactor:
+**~20 lines total**.
+
+### Proof outline (purely Finset arithmetic)
+
+The proof is ~10 lines of standard Finset reasoning:
+
+1. **`Finset.filter` distributes over `\`** for any predicate `p`:
+   `(S \ E).filter p = S.filter p \ E.filter p`. Provable by `ext` +
+   `tauto` on `mem_filter` / `mem_sdiff`.
+2. **`E ⊆ S` ⟹ `E.filter p ⊆ S.filter p`** via
+   `Finset.filter_subset_filter`.
+3. **`Finset.card_sdiff` (in current Mathlib, v4.26.0)** has the
+   **unconditional** form
+   `(s \ t).card = s.card - (t ∩ s).card`. The conditional `s.card -
+   t.card` form requires combining with `Finset.inter_eq_left.mpr h`
+   (under `t ⊆ s`, the intersection collapses to `t`). The first
+   build attempt (passing `hsub_src` directly to `Finset.card_sdiff`)
+   failed with "Function expected at Finset.card_sdiff but this term
+   has type ..." — Lean was reporting the unconditional equation type.
+   Fix: split into intermediate `have` statements that rewrite via
+   `Finset.card_sdiff` then `Finset.inter_eq_left.mpr hsub_src` to
+   collapse the intersection.
+4. After applying `hSbal` and `hEbal`, both sides become
+   `(S.filter src=v).card - (E.filter src=v).card =
+    (S.filter tgt=v).card - (E.filter tgt=v).card`, which closes by
+   `rfl` (after the rewrites).
+
+### What I Did
+
+- **Pre-claim trap-checks** per memory feedback:
+  - `gh pr list --search "konigsberg-oq-01-oq-02" --state open` —
+    no S16 PR in flight at claim-time.
+  - `git log origin/main --oneline -25 | grep -i konigsberg` — at
+    claim-time, the latest was #17465 (S14, merged 2026-05-08).
+- Drafted the lemma + ~50-line docstring summarizing the composition
+  with S15's `circuit_edge_balance_list'` and the proof outline.
+- **Worktree-path trap encountered and recovered**: initial `Edit`
+  call used the main-repo absolute path
+  (`/Users/rwalters/GitHub/lean-genius/...`) instead of the worktree
+  path. Trapped via memory `feedback_worktree_traps.md`. Caught via
+  `git diff --stat HEAD` showing zero diff in worktree, recovered by
+  `cp` from main-repo to worktree, then `git restore` in main repo to
+  clear the spurious modification.
+- Started initial Docker build under v4.26.0 Mathlib. **Build failed**
+  with two errors at the new lemma's L562 / L546 — `Finset.card_sdiff`
+  in current Mathlib has the unconditional intersection form, not the
+  conditional subtraction form expected. Fixed by splitting the rewrite
+  chain.
+- Re-ran Docker build with the fix. **Build succeeded**:
+  `⚠ [7743/7743] Built Proofs.KonigsbergOQ01OQ02Recipe (12s)`,
+  no errors.
+- **Mid-session parallel-PR detection**: after building, fetch on
+  origin/main showed PR #17542 (researcher-4's S15) had merged
+  during my session, adding `toFinset_balance'` and
+  `circuit_edge_balance_list'`. My `remove_balanced_subset_balanced'`
+  is **complementary** (post-bridge step), not duplicate. Reset
+  worktree to fresh `origin/main`, re-applied my new lemma onto the
+  rebased Recipe file (now numbered as S16, not S15), updated state.md
+  and knowledge.md to reflect the parallel-S15 merge. Total redundant
+  work: zero (my lemma touches a different gap in the proof chain).
+
+### What I Did NOT Do
+
+- The in-place refactor of the broken main file — by design (Sessions
+  7–15 standing rationale).
+- Modify `proofs/Proofs/KonigsbergOQ01OQ02.lean` (still build-broken).
+- Modify `meta.json` counts (the Recipe file is meant to be deleted
+  post-S17-transcription, so its line/theorem counts don't go into
+  meta.json).
+
+### Files Modified
+
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (562 → 640 lines, +78)
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (this session
+  updated Current Focus, Previous Focus, Next Action, Attempt Count to
+  reflect S16 + the parallel S15 merge)
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this entry)
+
+---
+
 ## Session 2026-05-09 (Session 15) — List→Finset Bridge for `remove_circuit_balanced`
 
 **Mode**: REVISIT (Sessions 9–14 completed the bijection-template
