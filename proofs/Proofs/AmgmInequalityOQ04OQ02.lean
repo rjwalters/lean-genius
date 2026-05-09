@@ -1425,4 +1425,135 @@ theorem integral_dIntegrandK_eq (hk_pos : 0 < k) (hk_lt : k < 1) :
   field_simp at h_ftc
   linear_combination -h_ftc
 
+-- ============================================================================
+-- § 17. K-side Differentiation Under the Integral: dK/dk = (E − (1−k²)K) / (k(1−k²))
+-- ============================================================================
+
+/-
+With the K-side chain rule (§10), uniform bound (§11), and integral identity
+(§16) in hand, we apply Mathlib's
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` to obtain
+the K-analog of `dE_dk`:
+
+    dK/dk = (E(k) − (1 − k²) · K(k)) / (k · (1 − k²))     for 0 < k < 1.
+
+Strategy mirrors the §10-of-PR-#17371 dE_dk template (now superseded by
+intermediate K-side merges; that PR's §10 will become §18 on rebase). The
+seven hypotheses of the parametric-integral lemma are discharged with:
+
+  • `hs_nhds`     : `Set.Ioo (-M) M ∈ 𝓝 k` for `M := (k+1)/2` (open band).
+  • `hF_meas`     : `(integrand_continuous _).aestronglyMeasurable`
+                    over the band — F at every parameter is ae-measurable.
+  • `hF_int`      : `ellipticK_integrable hk_sq_lt_one`
+                    — F at x₀ = k is interval-integrable.
+  • `hF'_meas`    : `(dIntegrandK_continuous _).aestronglyMeasurable`
+                    — F' at x₀ is ae-measurable.
+  • `h_bound`     : `dIntegrandK_abs_le_bound` (§11) lifted to `∀ᵐ` via
+                    `MeasureTheory.ae_of_all`.
+  • `h_bound_int` : `boundDIntegrandK_integrable hM_sq_lt_one` (§11).
+  • `h_diff`      : `integrandK_hasDerivAt_in_k` (§10) lifted similarly.
+
+The lemma yields `HasDerivAt (κ ↦ ∫ ellipticIntegrand κ θ dθ)
+(∫ dIntegrandK k θ dθ) k`. Definitional unfolding identifies the function
+with `ellipticK`. The §16 integral identity then rewrites the conclusion
+to the desired closed form.
+
+This is the K-side companion to the (still-open) `dE_dk` theorem PRs
+(#17371, #17445). Once `dE_dk` lands, S11 will combine the two derivatives
+with the chain rule for `complModulus` (§4) to discharge the
+`legendre_relation` axiom by the Wronskian-vanishing argument.
+-/
+
+/-- **Differentiation under the integral sign** for `ellipticK`.
+
+    For `0 < k < 1`,
+    `dK/dk = (E(k) − (1 − k²) · K(k)) / (k · (1 − k²))`.
+
+    Proof: apply `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`
+    on the open neighborhood `Set.Ioo (-M) M` with `M := (k+1)/2 ∈ (k, 1)`.
+    Discharge the seven hypotheses with the §10 chain rule and integrability
+    facts (`integrandK_hasDerivAt_in_k`, `dIntegrandK_continuous`), the §11
+    uniform bound (`dIntegrandK_abs_le_bound` plus `boundDIntegrandK_integrable`),
+    and `Filter.eventually_of_forall` / `MeasureTheory.ae_of_all` to lift
+    pointwise statements to ae-statements. The lemma yields
+    `HasDerivAt ellipticK (∫₀^{π/2} dIntegrandK k θ dθ) k`, and the §16
+    integral identity `integral_dIntegrandK_eq` rewrites the integral to
+    `(E(k) − (1 − k²) · K(k)) / (k · (1 − k²))`. -/
+theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticK
+      ((ellipticE k - (1 - k ^ 2) * ellipticK k) / (k * (1 - k ^ 2))) k := by
+  -- Pick the band M = (k+1)/2 ∈ (k, 1); note M² < 1.
+  set M : ℝ := (k + 1) / 2 with hM_def
+  have hM_pos : 0 < M := by simp only [hM_def]; linarith
+  have hk_lt_M : k < M := by simp only [hM_def]; linarith
+  have hM_lt_one : M < 1 := by simp only [hM_def]; linarith
+  have hM_sq_lt_one : M ^ 2 < 1 := by nlinarith
+  have hM_nn : (0 : ℝ) ≤ M := le_of_lt hM_pos
+  have hk_sq_lt_one : k ^ 2 < 1 := by nlinarith
+  -- The open neighborhood s := Set.Ioo (-M) M of k.
+  set s : Set ℝ := Set.Ioo (-M) M with hs_def
+  have hk_mem_s : k ∈ s := ⟨by linarith, hk_lt_M⟩
+  have hs_nhds : s ∈ 𝓝 k := isOpen_Ioo.mem_nhds hk_mem_s
+  -- For κ ∈ s, κ² ≤ M² (and a fortiori κ² < 1).
+  have h_kappa_sq_le : ∀ κ ∈ s, κ ^ 2 ≤ M ^ 2 := by
+    intro κ hκ
+    obtain ⟨hκ_low, hκ_hi⟩ := hκ
+    exact le_of_lt (sq_lt_sq' hκ_low hκ_hi)
+  have h_kappa_sq_lt_one : ∀ κ ∈ s, κ ^ 2 < 1 := fun κ hκ =>
+    lt_of_le_of_lt (h_kappa_sq_le κ hκ) hM_sq_lt_one
+  -- Hypothesis: F is ae-strongly-measurable in a neighborhood of k.
+  -- (We use `s` as the neighborhood — every κ ∈ s has κ² < 1, so the
+  -- K-integrand is continuous and hence ae-measurable.)
+  have hF_meas : ∀ᶠ x in 𝓝 k,
+      MeasureTheory.AEStronglyMeasurable
+        (fun θ => AmgmInequalityOQ04OQ01.ellipticIntegrand x θ)
+        (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) := by
+    refine Filter.eventually_of_mem hs_nhds ?_
+    intro x hx
+    exact (AmgmInequalityOQ04OQ01.integrand_continuous
+      (h_kappa_sq_lt_one x hx)).aestronglyMeasurable
+  -- Hypothesis: F at x₀ = k is interval-integrable.
+  have hF_int : IntervalIntegrable
+      (fun θ => AmgmInequalityOQ04OQ01.ellipticIntegrand k θ)
+      MeasureTheory.volume 0 (π / 2) :=
+    AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq_lt_one
+  -- Hypothesis: F' at x₀ = k is ae-strongly-measurable on the restriction.
+  have hF'_meas : MeasureTheory.AEStronglyMeasurable
+      (fun θ => dIntegrandK k θ)
+      (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) :=
+    (dIntegrandK_continuous hk_sq_lt_one).aestronglyMeasurable
+  -- Hypothesis: pointwise majorization on the band.
+  have h_bound : ∀ᵐ θ ∂MeasureTheory.volume,
+      θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
+      ∀ κ ∈ s, ‖dIntegrandK κ θ‖ ≤ boundDIntegrandK M θ := by
+    refine MeasureTheory.ae_of_all _ ?_
+    intro θ _ κ hκ
+    rw [Real.norm_eq_abs]
+    exact dIntegrandK_abs_le_bound hM_sq_lt_one hM_nn κ θ (h_kappa_sq_le κ hκ)
+  -- Hypothesis: bound is interval-integrable.
+  have h_bound_int : IntervalIntegrable (boundDIntegrandK M)
+      MeasureTheory.volume 0 (π / 2) :=
+    boundDIntegrandK_integrable hM_sq_lt_one
+  -- Hypothesis: pointwise differentiability on the band.
+  have h_diff : ∀ᵐ θ ∂MeasureTheory.volume,
+      θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
+      ∀ κ ∈ s, HasDerivAt
+        (fun x => AmgmInequalityOQ04OQ01.ellipticIntegrand x θ)
+        (dIntegrandK κ θ) κ := by
+    refine MeasureTheory.ae_of_all _ ?_
+    intro θ _ κ hκ
+    exact integrandK_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκ) θ
+  -- Apply the parametric integral derivative lemma and extract the deriv.
+  have h := intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
+    hs_nhds hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
+  have h_deriv :
+      HasDerivAt
+        (fun κ => ∫ θ in (0 : ℝ)..π / 2,
+          AmgmInequalityOQ04OQ01.ellipticIntegrand κ θ)
+        (∫ θ in (0 : ℝ)..π / 2, dIntegrandK k θ) k := h.2
+  -- Rewrite the integral via the §16 integral identity.
+  rw [integral_dIntegrandK_eq hk_pos hk_lt] at h_deriv
+  -- The function fun κ ↦ ∫ ellipticIntegrand κ is ellipticK by definition.
+  exact h_deriv
+
 end AmgmInequalityOQ04OQ02
