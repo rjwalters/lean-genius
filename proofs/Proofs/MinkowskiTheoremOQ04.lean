@@ -741,6 +741,60 @@ theorem minkowski_general_k {n : ℕ} [NeZero n] (k : ℕ)
   have h_val : pts_T i - pts_T 0 = pts_T j - pts_T 0 := congrArg Subtype.val hij
   exact sub_left_inj.mp h_val
 
+/-- **Generalized Minkowski (k+1-point form) with explicit nonzero
+pairwise differences**.
+
+For Minkowski conditions (`s` measurable, centrally symmetric, convex,
+`volume s > k · 2ⁿ`), there exist `k + 1` lattice points `pts` in `s`
+whose pairwise differences at distinct indices are *nonzero* (and
+automatically lie in `stdLattice n` since both endpoints do).
+
+A direct strengthening of `minkowski_general_k`: the existing
+`Function.Injective pts` clause already implies pointwise distinctness
+on the underlying `Fin n → ℝ` values via `Subtype.ext`, but the
+strengthened pairwise content `pts i - pts j ≠ 0` (for `i ≠ j`) is
+exactly the form required by downstream applications that work with
+ambient values rather than subtype values — for example
+`pts i - pts j ∈ stdLattice n ∧ pts i - pts j ≠ 0` is a single
+clean hypothesis for downstream consumers.
+
+Pedagogical role: the Minkowski analogue of `blichfeldt_general_pairwise`
+(Iter 19, #17554).  Where the Blichfeldt wrapper exposes the
+nonzero-pairwise-differences content for the Blichfeldt conclusion,
+this wrapper exposes the same for Minkowski plus the strictly stronger
+*ambient-membership* enhancement: each `pts i` itself lies in `s` (not
+just the pairwise differences).
+
+No new Mathlib API beyond `minkowski_general_k`: the proof is a
+three-line transport using `sub_eq_zero` to convert
+`pts i - pts j = 0` ↔ `pts i = pts j` (on the ambient values), then
+contradicting `i ≠ j` via the injectivity of `pts` on the subtype
+through `Subtype.ext`.
+
+Specialization for the canonical Minkowski-2 case `volume s > 2 · 2ⁿ`
+(`k = 2`): the conclusion gives three lattice points in `s` with three
+nonzero pairwise differences — directly the geometric content of the
+"three-point" form parallel to `blichfeldt_three_points` (S15, #17400)
+and the in-flight `minkowski_three_points` (Iter 21, #17599). -/
+theorem minkowski_general_k_pairwise {n : ℕ} [NeZero n] (k : ℕ)
+    (s : Set (Fin n → ℝ))
+    (h_meas : MeasurableSet s)
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : (k : ENNReal) * (2 : ENNReal) ^ n < volume s) :
+    ∃ pts : Fin (k + 1) → (stdLattice n).toAddSubgroup,
+      Function.Injective pts ∧
+      (∀ i, ((pts i : Fin n → ℝ)) ∈ s) ∧
+      (∀ i j, i ≠ j →
+        ((pts i : Fin n → ℝ)) - ((pts j : Fin n → ℝ)) ≠ 0) := by
+  obtain ⟨pts, h_inj, h_in_s⟩ :=
+    minkowski_general_k k s h_meas h_symm h_conv h_vol
+  refine ⟨pts, h_inj, h_in_s, ?_⟩
+  intro i j hij
+  rw [sub_ne_zero]
+  intro heq
+  exact hij (h_inj (Subtype.ext heq))
+
 /-- **Generalized Minkowski (Finset form)**: a measurable convex
 centrally-symmetric set `s ⊆ ℝⁿ` with `volume s > k · 2ⁿ` contains a
 `Finset` of cardinality `k + 1` whose elements are all simultaneously
