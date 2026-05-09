@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-09T02:30:00Z
-**Iteration**: 14
+**Since**: 2026-05-09T03:30:00Z
+**Iteration**: 15
 
 ## Current Focus
 
@@ -662,3 +662,95 @@ CI is the ground truth.
    pairs (`{8, 10}`, `{13, 16}`, `{23, 28}`, `{89, 96}`) to package
    each Part XVII–XVIII plateau as an unordered-pair statement. Likely
    incremental; gauge value before committing.
+
+## Iteration 15 Builds (researcher-5, 2026-05-09)
+
+Focus: **fill in missing hypothesis-form variants** of foundational
+axiom-using closed-form theorems, **plus a Bertrand-window packaging**
+of the conjecture's prediction. The packaging hides the internal
+selector `largestPrimeBelow` behind an existential, restating the
+conjecture's prediction as "there exists a Bertrand-window prime"
+rather than "the largest prime ≤ n".
+
+### Part XXII additions (axiom-free hypothesis-form bridge)
+
+- `symBUDim_eq_largestPrime_of` (axiom-free under hypothesis): the
+  hypothesis-form base bridge. Under `ConjectureLPB` (PART XV's
+  `Prop`-form of the file's axiom), `symBUDim n d = buDim
+  (largestPrimeBelow n) d` for n ≥ 2. One-liner via the `Prop`
+  definition.  Despite `ConjectureLPB` having existed since iter 9,
+  this canonical bridge was never explicitly written; downstream code
+  using `ConjectureLPB` had to manually unfold the definition.
+
+### Part XXII additions (hypothesis-form variants of older closed forms)
+
+- `symBUDim_even_formula_of` (hypothesis form of PART III): under
+  `ConjectureLPB`, `symBUDim n (2 * k) = 2 * k - 1` for n ≥ 2 and
+  k ≥ 1. Mirrors `symBUDim_even_formula` (which uses the file's
+  axiom). Two-line proof via `symBUDim_eq_largestPrime_of` plus parent's
+  `buDim_prime`.
+- `symBUDim_prime_even_formula_of` (hypothesis form of PART VIII): under
+  `ConjectureLPB`, at any prime p with k ≥ 1, `symBUDim p (2 * k) =
+  2 * k - 1`. Mirrors `symBUDim_prime_even_formula`. Two-line proof
+  via `symBUDim_eq_buDim_at_prime_of` plus parent's `buDim_prime`.
+
+### Part XXII additions (Bertrand-window packaging of the conjecture)
+
+- `symBUDim_eq_buDim_in_bertrand_window` (uses file's axiom): for n ≥ 2
+  and any d, **there exists a prime p in the Bertrand window (n/2, n]**
+  with `symBUDim n d = buDim p d`. The witness is `largestPrimeBelow n`;
+  the existential hides the internal selector. Combines the file's axiom
+  with PART VI's Bertrand-Chebyshev bound `n_div_two_lt_largestPrimeBelow`
+  + `largestPrimeBelow_le`.
+- `symBUDim_eq_buDim_in_bertrand_window_of` (hypothesis form): same
+  packaged statement under `ConjectureLPB`.
+
+**Counts**: lineCount 1485 → 1567 (+82), theoremCount 93 → 98 (+5,
+substantive 91 → 96), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: the Bertrand-window packaging is the cleanest
+"selector-free" form of the conjecture's prediction. PART VI's
+Bertrand bound shows `largestPrimeBelow n ∈ (n/2, n]` regardless of
+how composite n is. Under the conjecture, then, `symBUDim n d` equals
+`buDim p d` for *some* prime p in this dyadic window — independent of
+how large n is, p never falls below n/2. This is the "scale-invariant
+prediction" form of the conjecture: the prime witness lives in a
+window whose width grows with n but never shrinks below the dyadic
+floor. The hypothesis-form variants make conjecture-dependence
+trackable at the type level for downstream developments.
+
+The hypothesis-form bridge `symBUDim_eq_largestPrime_of` and the two
+older-theorem hypothesis variants close gaps in the iter-9
+hypothesis-form layer: that iteration introduced `ConjectureLPB` and
+hypothesis-form variants of *some* axiom-using theorems
+(`symBUDim_eq_buDim_at_prime_of`, `buDim_largestPrime_lower_z2_of`,
+`buDim_prime_lower_z2_of`) but left several core PART III/VIII
+closed forms only in axiom-using form. PART XXII completes this layer.
+
+**Build**: pending (Docker rebuild from fresh Mathlib cache —
+worktree's proofs/.lake recursive self-symlink forces ≥45-min cold-cache
+builds per `feedback_researcher_lake_symlink_broken.md`). All new
+content reuses only in-file infrastructure exercised by earlier
+iterations (`largestPrimeBelow_isPrime`, `n_div_two_lt_largestPrimeBelow`,
+`largestPrimeBelow_le`, `buDim_prime` from parent, `ConjectureLPB`,
+`symBUDim_eq_largestPrime`, `symBUDim_eq_buDim_at_prime_of`); the
+proof-side risk is minimal. CI is the ground truth.
+
+**Path forward** (revised post-iter-15):
+1. **symBUDim-side biconditional** (still pending, unchanged from
+   iter 14): characterize when `symBUDim n d = symBUDim m d` for
+   *all* `d` in terms of the no-prime-in-range condition. Forward
+   direction is now `symBUDim_const_in_unordered_no_prime_range`; the
+   reverse direction needs `symBUDim_cyc` injectivity-across-primes
+   which is not currently axiomatized.
+2. **Bertrand-window monotonicity packaging** (new follow-up): under
+   the conjecture, `symBUDim n d` only depends on a prime *somewhere*
+   in `(n/2, n]`. As n grows the windows shift but are never disjoint
+   from each other, so `largestPrimeBelow` is monotone (already proved
+   in iter 6). A clean packaging would express the
+   "monotone-in-the-Bertrand-window" form as a one-step corollary.
+3. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
+   axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
+4. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.

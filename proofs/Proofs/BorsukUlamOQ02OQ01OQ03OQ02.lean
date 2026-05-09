@@ -1163,6 +1163,82 @@ theorem largestPrimeBelow_ten_eq_eight :
   rw [hmax] at hk2
   exact no_prime_in_eight_to_ten k hk1 hk2
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XXII: Bertrand-window packaging + missing hypothesis-form variants
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-! ### Hypothesis-form bridge for the conjecture
+
+`ConjectureLPB` (PART XV) is definitionally the universal closure of the
+file's axiom `symBUDim_eq_largestPrime`. The bridge lemma
+`symBUDim_eq_largestPrime_of` lets a `ConjectureLPB` hypothesis stand in
+for the axiom in any rewrite. Trivial proof, but it is the canonical
+hypothesis-form base for downstream developments that want to track
+conjecture-dependence at the type level. -/
+
+/-- **Hypothesis-form bridge** for the conjecture: under `ConjectureLPB`,
+    the file's axiom statement holds. One-liner via the `Prop`
+    definition. -/
+theorem symBUDim_eq_largestPrime_of (h : ConjectureLPB) (n d : ℕ)
+    (hn : 2 ≤ n) :
+    symBUDim n d = buDim (largestPrimeBelow n) d :=
+  h n d hn
+
+/-! ### Hypothesis-form variants of older closed-form theorems
+
+Mirrors of `symBUDim_even_formula` (PART III) and `symBUDim_prime_even_formula`
+(PART VIII) that take `ConjectureLPB` as a hypothesis instead of relying on
+the file's axiom. Same statements, but conjecture-dependence is explicit. -/
+
+/-- **Hypothesis-form** of `symBUDim_even_formula` (PART III): under
+    `ConjectureLPB`, `symBUDim n (2 * k) = 2 * k - 1` for n ≥ 2 and k ≥ 1. -/
+theorem symBUDim_even_formula_of (h : ConjectureLPB) (n k : ℕ)
+    (hn : 2 ≤ n) (hk : 0 < k) :
+    symBUDim n (2 * k) = 2 * k - 1 := by
+  rw [symBUDim_eq_largestPrime_of h n (2 * k) hn]
+  exact buDim_prime (largestPrimeBelow n) k
+    (largestPrimeBelow_isPrime n hn) hk
+
+/-- **Hypothesis-form** of `symBUDim_prime_even_formula` (PART VIII): under
+    `ConjectureLPB`, at any prime p with k ≥ 1, `symBUDim p (2 * k) = 2 * k - 1`. -/
+theorem symBUDim_prime_even_formula_of (h : ConjectureLPB) (p k : ℕ)
+    (hp : Nat.Prime p) (hk : 0 < k) :
+    symBUDim p (2 * k) = 2 * k - 1 := by
+  rw [symBUDim_eq_buDim_at_prime_of h p (2 * k) hp]
+  exact buDim_prime p k hp hk
+
+/-! ### Bertrand-window packaging of the conjecture
+
+The conjecture pins `symBUDim n d = buDim (largestPrimeBelow n) d`. The
+Bertrand-Chebyshev bound `n / 2 < largestPrimeBelow n ≤ n` (PART VI)
+constrains `largestPrimeBelow n` to the dyadic window `(n/2, n]`.
+Combining the two yields a packaged form of the conjecture's prediction
+that **does not reference `largestPrimeBelow` at all**: `symBUDim n d =
+buDim p d` for *some* prime `p` in `(n/2, n]`. The internal selector
+`largestPrimeBelow` is hidden behind an existential — useful for
+downstream applications that want to think of the prediction as a
+"there exists a Bertrand-window prime" statement rather than a
+"the largest prime ≤ n" statement. -/
+
+/-- **Bertrand-window packaging of the conjecture** (uses file's axiom):
+    for n ≥ 2 and any d, there exists a prime `p` in the Bertrand window
+    `(n/2, n]` with `symBUDim n d = buDim p d`. The witness is
+    `largestPrimeBelow n`; the existential hides the internal selector. -/
+theorem symBUDim_eq_buDim_in_bertrand_window (n d : ℕ) (hn : 2 ≤ n) :
+    ∃ p : ℕ, Nat.Prime p ∧ n / 2 < p ∧ p ≤ n ∧ symBUDim n d = buDim p d :=
+  ⟨largestPrimeBelow n, largestPrimeBelow_isPrime n hn,
+    n_div_two_lt_largestPrimeBelow n hn, largestPrimeBelow_le n,
+    symBUDim_eq_largestPrime n d hn⟩
+
+/-- **Hypothesis-form** of `symBUDim_eq_buDim_in_bertrand_window`: under
+    `ConjectureLPB`, the same packaged Bertrand-window prediction holds. -/
+theorem symBUDim_eq_buDim_in_bertrand_window_of (h : ConjectureLPB)
+    (n d : ℕ) (hn : 2 ≤ n) :
+    ∃ p : ℕ, Nat.Prime p ∧ n / 2 < p ∧ p ≤ n ∧ symBUDim n d = buDim p d :=
+  ⟨largestPrimeBelow n, largestPrimeBelow_isPrime n hn,
+    n_div_two_lt_largestPrimeBelow n hn, largestPrimeBelow_le n,
+    h n d hn⟩
+
 /-
 ## Summary
 
@@ -1482,4 +1558,10 @@ theorem largestPrimeBelow_ten_eq_eight :
 #check @symBUDim_const_in_unordered_no_prime_range
 #check @symBUDim_const_in_unordered_no_prime_range_of
 #check @largestPrimeBelow_ten_eq_eight
+
+#check @symBUDim_eq_largestPrime_of
+#check @symBUDim_even_formula_of
+#check @symBUDim_prime_even_formula_of
+#check @symBUDim_eq_buDim_in_bertrand_window
+#check @symBUDim_eq_buDim_in_bertrand_window_of
 end BorsukUlamSymPrime
