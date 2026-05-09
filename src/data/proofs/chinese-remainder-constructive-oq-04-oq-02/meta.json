@@ -85,36 +85,44 @@
   },
   "sections": [
     {
+      "id": "header-and-imports",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "The opening docstring states the OQ-04 → OQ-02 unification question, gives the affirmative answer (`Satisfies` ↔ `chineseRemainder` equality), and outlines the four-key-fact proof strategy. Imports `Mathlib.Data.ZMod.Basic` for `ZMod.chineseRemainder` and the parent files `ChineseRemainderConstructiveOQ04`/`OQ04OQ04` for `CRTList.Satisfies` and `crt_list_minimal_unique`. Sets `maxHeartbeats 400000`, opens `namespace CRTUnification`, and brings `CRTList`, `ZMod`, `Nat` into scope.",
+      "mathContext": "The four-fact recipe stated in the docstring: (1) `map_natCast` for ring equivs gives `ZMod.chineseRemainder h (↑x) = (↑x, ↑x)` componentwise; (2) `ZMod.natCast_eq_natCast_iff` translates ZMod equality to ℕ-modular congruence; (3) `ZMod.natCast_zmod_val` shows `val` is a right inverse of the nat cast on `ZMod n`; (4) `RingEquiv.apply_symm_apply` ties round-trip through the inverse iso. These four lemmas, all already in Mathlib, are the entire toolkit — no new mathematics is invented."
+    },
+    {
       "id": "structure",
-      "title": "Structure of the 2-Element System",
-      "startLine": 29,
-      "endLine": 57,
-      "summary": "Four helper lemmas: moduli_pair, moduliProd_pair, pairwise_coprime_pair, satisfies_pair_iff. These unpack the 2-element system structure for use in the bridge theorems.",
-      "mathContext": "moduli [(a,m),(b,n)] = [m,n]; moduliProd [(a,m),(b,n)] = m*n; Satisfies x [(a,m),(b,n)] ↔ x≡a[m] ∧ x≡b[n]"
+      "title": "Section 1 — Structure of the 2-Element System",
+      "startLine": 38,
+      "endLine": 70,
+      "summary": "Four helper lemmas unpacking the 2-element system: `moduli_pair` (`moduli [(a,m),(b,n)] = [m,n]`), `moduliProd_pair` (`moduliProd = m*n`), `pairwise_coprime_pair` (reduces `List.Pairwise Coprime` to `Nat.Coprime m n`), and `satisfies_pair_iff` (`Satisfies x [(a,m),(b,n)] ↔ x ≡ a [MOD m] ∧ x ≡ b [MOD n]`). Each is a `simp`/`apply List.Pairwise.cons` one-liner — pure structural unpacking with no mathematical content beyond the `CRTList.Satisfies` definition.",
+      "mathContext": "These four lemmas form a 'spec layer' between the polymorphic `CRTList.Satisfies` predicate (which works for any list of `(a, m)` pairs) and the 2-fold case used by every subsequent theorem in the file. Without them, every later proof would have to unfold `CRTList` definitions inline; with them, the bridge theorems read as straightforward statements about pairs of modular congruences."
     },
     {
       "id": "bridge",
-      "title": "The Ring-Theoretic Bridge",
-      "startLine": 59,
-      "endLine": 77,
-      "summary": "Two core theorems: chineseRemainder_natCast (iso applied to ↑x gives (↑x,↑x)) and satisfies_pair_iff_chineseRemainder (main bridge equating the two formulations).",
-      "mathContext": "ZMod.chineseRemainder h (↑x) = ((↑x : ZMod m), (↑x : ZMod n)) by map_natCast; bridge follows by ZMod.natCast_eq_natCast_iff"
+      "title": "Section 2 — The Ring-Theoretic Bridge",
+      "startLine": 71,
+      "endLine": 98,
+      "summary": "Two core theorems: `chineseRemainder_natCast` (`ZMod.chineseRemainder h (↑x : ZMod(m*n)) = ((↑x : ZMod m), (↑x : ZMod n))` via `map_natCast` and the product `NatCast` instance) and `satisfies_pair_iff_chineseRemainder` (the headline equivalence). The latter proof chains three rewrites: `satisfies_pair_iff` (unfold list-side), `chineseRemainder_natCast` (apply iso to ↑x), then componentwise `ZMod.natCast_eq_natCast_iff` to recover the modular congruences.",
+      "mathContext": "The componentwise computation: $\\mathrm{chineseRemainder}_h(\\overline{x}) = \\overline{x} = (\\overline{x}, \\overline{x})$ since the product `NatCast` is defined componentwise. So $\\mathrm{chineseRemainder}_h(\\overline{x}) = (\\overline{a}, \\overline{b})$ iff $\\overline{x} = \\overline{a}$ in $\\mathbb{Z}/m$ AND $\\overline{x} = \\overline{b}$ in $\\mathbb{Z}/n$, iff $x \\equiv a \\pmod m$ AND $x \\equiv b \\pmod n$. The bridge is purely formal — no mathematics beyond `map_natCast` and the definitional product cast."
     },
     {
       "id": "canonical",
-      "title": "Canonical Solution = ZMod Preimage",
-      "startLine": 79,
-      "endLine": 116,
-      "summary": "Three theorems establishing that the minimal CRT solution equals the ZMod.val of the ring-theoretic preimage: val_lt, satisfies, and the canonical bridge theorem.",
-      "mathContext": "Let w = (ZMod.chineseRemainder h).symm (a, b). Then ZMod.val w < m*n (by ZMod.val_lt) and Satisfies (ZMod.val w) [(a,m),(b,n)] (by natCast_zmod_val + apply_symm_apply)."
+      "title": "Section 3 — Canonical Solution = ZMod Preimage",
+      "startLine": 99,
+      "endLine": 138,
+      "summary": "Three theorems showing the unique minimal CRT solution equals `ZMod.val` of the ring-theoretic preimage. `chineseRemainder_symm_val_lt`: `ZMod.val ((chineseRemainder h).symm (a, b)) < m*n` via `ZMod.val_lt`. `chineseRemainder_symm_satisfies`: the preimage satisfies the system, by `bridge ▸ natCast_zmod_val ▸ apply_symm_apply`. `crt_min_eq_chineseRemainder_val` (canonical bridge): combines uniqueness from `crt_list_minimal_unique` to identify the two representatives.",
+      "mathContext": "Round-trip recipe: let $w = (\\mathrm{chineseRemainder}_h)^{-1}(\\overline{a}, \\overline{b})$. To show $\\mathrm{val}(w)$ satisfies the system: (1) by the bridge theorem, $\\mathrm{Satisfies}(\\mathrm{val}(w))$ ↔ $\\mathrm{chineseRemainder}_h(\\overline{\\mathrm{val}(w)}) = (\\overline{a}, \\overline{b})$; (2) `natCast_zmod_val` gives $\\overline{\\mathrm{val}(w)} = w$; (3) `apply_symm_apply` gives $\\mathrm{chineseRemainder}_h(w) = (\\overline{a}, \\overline{b})$. The chain `bridge ▸ natCast_zmod_val ▸ apply_symm_apply` is the canonical idiom for descending from the ring-theoretic side back to ℕ."
     },
     {
       "id": "summary",
-      "title": "Summary Theorems",
+      "title": "Section 4 — Summary Theorems and Concrete Example",
       "startLine": 139,
       "endLine": 180,
-      "summary": "Three summary theorems: crt_exists_via_zmod (existence via the inverse iso), crt_unique_two_fold (uniqueness in [0, m*n)), and example_8_mod3_mod5, a concrete verified computation closing the file with native_decide.",
-      "mathContext": "Existence and uniqueness in $[0, mn)$ follow from the canonical bridge; example: $x \\equiv 2 \\pmod 3$, $x \\equiv 3 \\pmod 5$ has unique solution $8$ in $[0,15)$."
+      "summary": "Three concluding theorems: `crt_exists_via_zmod` (alternative existence proof — the ring iso's inverse gives an explicit witness in `[0, m*n)`, bypassing the explicit Bezout construction of the parent file), `crt_unique_two_fold` (uniqueness in `[0, m*n)` from `crt_list_minimal_unique`), and `example_8_mod3_mod5` (concrete verification: $x \\equiv 2 \\pmod 3$, $x \\equiv 3 \\pmod 5$ has unique solution $8$ in $[0, 15)$, closed by `native_decide`).",
+      "mathContext": "The example is more than decoration: it demonstrates that the list-based and ring-theoretic representatives coincide on a concrete instance — `ZMod.val ((chineseRemainder h).symm (2, 3)) = 8` ought to evaluate computationally to the same value 8 that satisfies the system in $[0, 15)$. `native_decide` validates the computation, giving end-to-end evidence that the bridge is not just propositional but also computable."
     }
   ],
   "conclusion": {
