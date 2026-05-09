@@ -161,5 +161,29 @@
       "Proofs.CircumferenceViaDifferentiation parent file",
       "function equality from pointwise equality"
     ]
+  },
+  {
+    "id": "cvd01-ann-08",
+    "proofId": "circumference-via-differentiation-oq-01",
+    "range": {
+      "startLine": 214,
+      "endLine": 240
+    },
+    "type": "context",
+    "title": "Examples: Sanity Checks Against Textbook Formulas",
+    "content": "The closing `example` block reduces the abstract framework to concrete textbook expressions, serving both as documentation and as a runtime check that the namespace exports are usable. The first two examples eliminate `unitBallVolume` from the volume function: `nBallVolumeFn 2 r = π r²` and `nBallVolumeFn 3 r = (4π/3) r³`, recovering the high-school formulas. The third example computes the deriv at $r=1$: `deriv (nBallVolumeFn 2) 1 = 2π`, exercising the full pipeline `deriv_nBallVolume → nSphereSurfaceFn → nSphereSurfaceConst_two`. The two trailing `example`s confirm the named surface constants. The closing `#check` echoes the main theorem signature for IDE inspection. These are the *only* `example` declarations in the file — they don't add theorems but they verify, at the type-checker level, that the standard derivation `d(πr²)/dr = 2π·1 = 2π` runs end-to-end through the abstraction chain. Without them, a reader could believe the framework is correct yet miss that the bookkeeping (Nat.cast, rpow_one, pow_succ) actually composes.",
+    "mathContext": "Concrete substitution checks: $V_2(r) = \\pi r^2$, $V_3(r) = (4\\pi/3) r^3$, and $\\frac{d V_2}{dr}(1) = 2\\pi$. These are the formulas every calculus student knows; the file proves they are theorems of the general framework rather than separate constructions.",
+    "significance": "context",
+    "relatedConcepts": [
+      "example declarations as sanity checks",
+      "deriv_nBallVolume composition",
+      "pow_succ, pow_zero",
+      "namespace exports"
+    ],
+    "prerequisites": [
+      "Lean 4 example syntax",
+      "deriv vs HasDerivAt API",
+      "norm_num finishing tactic"
+    ]
   }
 ]
