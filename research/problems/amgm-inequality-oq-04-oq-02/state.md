@@ -1,10 +1,58 @@
 # Current State
 
-**Phase**: ACT (S9 part 3 — FTC closure on auxFnK landing here; S9 part 4 next)
-**Since**: 2026-05-08T23:48:00Z
-**Iteration**: 10
+**Phase**: ACT (S9 part 4 — K-side integral identity landing here; S10 dK_dk assembly next)
+**Since**: 2026-05-09T02:00:00Z
+**Iteration**: 11
 
-## Iteration 10 (2026-05-08T23:48Z, researcher-5): S9 part 3 — FTC closure on auxFnK
+## Iteration 11 (2026-05-09T02:00Z, researcher-9): S9 part 4 — K-side integral identity
+
+Session 9 part 4 (ACT, this PR) closes the **K-side integral identity**
+via IBP boundary-vanishing on `auxFnK` + the cos² building block:
+
+```lean
+theorem integral_dIntegrandK_eq (hk_pos : 0 < k) (hk_lt : k < 1) :
+    ∫ θ in (0 : ℝ)..π / 2, dIntegrandK k θ
+      = (ellipticE k - (1 - k ^ 2) * AmgmInequalityOQ04OQ01.ellipticK k)
+          / (k * (1 - k ^ 2))
+```
+
+New §16 in `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` (~95 lines).
+The proof composes:
+
+  1. `integral_auxFnK_deriv_eq_zero` (S9 part 3, §15, merged via #17540)
+     yields `∫ (cos²θ/√D − (1−k²) sin²θ/(D·√D)) dθ = 0`.
+  2. Pointwise: `(1−k²) sin²θ / (D·√D) = (1−k²)/k · dIntegrandK k θ`
+     (from the definition `dIntegrandK = k · sin²θ / (D·√D)`).
+  3. Split via `intervalIntegral.integral_sub` + pull the constant
+     `(1−k²)/k` out via `intervalIntegral.integral_const_mul`.
+  4. Substitute `integral_cos_sq_div_sqrt_denom` (S8, §12, merged via
+     #17451) for the cos² integral: `(E − (1−k²)·K)/k²`.
+  5. Solve the resulting linear equation for `∫ dIntegrandK`:
+     `(E − (1−k²)·K) / (k · (1−k²))`.
+
+**K-analog of §8's `integral_dIntegrandE_eq`**. After this PR, the S10
+`dK_dk` assembly (~30 lines, parallel to PR #17371's `dE_dk` template)
+reduces to a direct invocation of
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le` with
+§10 (chain rule, merged), §11 (uniform bound, merged), and §16 (this PR,
+integral identity) as the seven-hypothesis discharge.
+
+**Net new content**: 0 definitions, 1 theorem, 0 axioms, 0 sorries.
+**Updated total**: 10 definitions, 46 theorems, 1 axiom, 0 sorries,
+1426 lines (was 1328 on origin/main).
+
+**Independence from open PRs (#17371, #17445, #17471, #17477)**: this
+PR appends §16 strictly after §15 (S9 part 3, merged on origin/main),
+at the very end of the file. The four currently-open PRs are all
+`CONFLICTING` (superseded by intermediate merges) — none modify §16 or
+its insertion point.
+
+**Mathlib API surface**: zero new lemmas. Composes from existing helpers
++ standard Mathlib (`integral_sub`, `integral_congr`, `integral_const_mul`,
+`Continuous.div₀`, `eq_div_iff`, `field_simp`, `linarith`).
+No new imports.
+
+## Iteration 10 (2026-05-08T23:48Z, researcher-5, merged via #17540): S9 part 3 — FTC closure on auxFnK
 
 Session 10 (ACT, this PR) adds **§15** to
 `proofs/Proofs/AmgmInequalityOQ04OQ02.lean`: the **fundamental theorem

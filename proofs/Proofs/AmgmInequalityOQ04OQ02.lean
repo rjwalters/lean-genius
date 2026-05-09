@@ -1325,4 +1325,104 @@ theorem integral_auxFnK_deriv_eq_zero (hk : k ^ 2 < 1) :
   show auxFnK k (π / 2) - auxFnK k 0 = 0
   rw [auxFnK_pi_div_two, auxFnK_zero, sub_zero]
 
+-- ============================================================================
+-- § 16. K-side Integral Identity (S9 part 4 — IBP closure for `dIntegrandK`)
+-- ============================================================================
+
+/-
+Combining §15's `integral_auxFnK_deriv_eq_zero` (FTC closure on `auxFnK`)
+with §12's `integral_cos_sq_div_sqrt_denom` discharges the K-side integral
+identity:
+
+    ∫₀^{π/2} dIntegrandK k θ dθ
+      = (E(k) − (1 − k²) · K(k)) / (k · (1 − k²)).
+
+This is the K-analog of §8's `integral_dIntegrandE_eq` and the final
+ingredient for the S10 `dK_dk` assembly via the parametric-integral lemma
+of Mathlib (`hasDerivAt_integral_of_dominated_loc_of_deriv_le`).
+
+Proof sketch.
+
+  • S9 part 3 yields  ∫ cos²θ/√D − (1−k²) sin²θ/(D·√D) dθ = 0,
+    i.e. ∫ cos²θ/√D dθ = (1−k²) ∫ sin²θ/(D·√D) dθ.
+  • Pointwise, dIntegrandK k θ = k · sin²θ / (D·√D), so
+    ∫ sin²θ/(D·√D) dθ = (∫ dIntegrandK k θ dθ) / k.
+  • S8 (`integral_cos_sq_div_sqrt_denom`) yields
+    ∫ cos²θ/√D dθ = (E − (1−k²) K) / k².
+  • Combining: (1−k²) · (∫ dIntegrandK)/k = (E − (1−k²) K)/k², hence
+    ∫ dIntegrandK = (E − (1−k²) K) / (k · (1−k²)).
+-/
+
+/-- **K-side integral identity** (S9 part 4 — IBP closure for `dIntegrandK`).
+
+    For `0 < k < 1`,
+    `∫₀^{π/2} dIntegrandK k θ dθ = (E(k) − (1 − k²) · K(k)) / (k · (1 − k²))`.
+
+    Proof: apply `integral_auxFnK_deriv_eq_zero` (S9 part 3) to obtain the FTC
+    boundary-vanishing identity; rewrite its `(1 − k²) · sin²θ / (D · √D)`
+    term as `(1 − k²) / k · dIntegrandK k θ` (pointwise, via the definition of
+    `dIntegrandK`); split via `intervalIntegral.integral_sub`; pull the
+    constant `(1 − k²) / k` out via `intervalIntegral.integral_const_mul`;
+    substitute `integral_cos_sq_div_sqrt_denom` (S8) for the `cos²θ / √D`
+    integral; solve the resulting linear equation for `∫ dIntegrandK k θ dθ`.
+
+    This is the K-analog of `integral_dIntegrandE_eq` (§8). The conclusion
+    feeds the `h_int_eq` rewrite of the S10 `dK_dk` assembly. -/
+theorem integral_dIntegrandK_eq (hk_pos : 0 < k) (hk_lt : k < 1) :
+    ∫ θ in (0 : ℝ)..π / 2, dIntegrandK k θ
+      = (ellipticE k - (1 - k ^ 2) * AmgmInequalityOQ04OQ01.ellipticK k)
+          / (k * (1 - k ^ 2)) := by
+  have hk_sq : k ^ 2 < 1 := by nlinarith
+  have hk_ne : k ≠ 0 := ne_of_gt hk_pos
+  have h1mk2_pos : 0 < 1 - k ^ 2 := by linarith
+  have h1mk2_ne : (1 - k ^ 2) ≠ 0 := h1mk2_pos.ne'
+  have hk_sq_ne : (k : ℝ) ^ 2 ≠ 0 := pow_ne_zero 2 hk_ne
+  -- Apply S9 part 3 (FTC closure for `auxFnK`).
+  have h_ftc := integral_auxFnK_deriv_eq_zero (k := k) hk_sq
+  -- Pointwise rewrite: the FTC integrand's second term equals
+  -- `(1 - k²) / k * dIntegrandK k θ` (via the definition of `dIntegrandK`).
+  have h_pw : ∀ θ ∈ Set.uIcc (0 : ℝ) (π / 2),
+      Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+        - (1 - k ^ 2) * Real.sin θ ^ 2 /
+          ((1 - k ^ 2 * Real.sin θ ^ 2)
+            * Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+      = Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2)
+          - (1 - k ^ 2) / k * dIntegrandK k θ := by
+    intro θ _
+    have hp : 0 < 1 - k ^ 2 * Real.sin θ ^ 2 :=
+      AmgmInequalityOQ04OQ01.denom_pos hk_sq θ
+    have hsp : 0 < Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) :=
+      AmgmInequalityOQ04OQ01.sqrt_denom_pos hk_sq θ
+    have hp_ne : (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hp.ne'
+    have hsp_ne : Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2) ≠ 0 := hsp.ne'
+    unfold dIntegrandK
+    field_simp
+    ring
+  rw [intervalIntegral.integral_congr h_pw] at h_ftc
+  -- Split the integral and pull the constant `(1-k²)/k` outside.
+  have h_cos_int : IntervalIntegrable
+      (fun θ : ℝ => Real.cos θ ^ 2 / Real.sqrt (1 - k ^ 2 * Real.sin θ ^ 2))
+      MeasureTheory.volume 0 (π / 2) := by
+    apply Continuous.intervalIntegrable
+    refine Continuous.div₀ (continuous_cos.pow 2) ?_ ?_
+    · exact Real.continuous_sqrt.comp
+        (Continuous.sub continuous_const
+          (continuous_const.mul (continuous_sin.pow 2)))
+    · intro θ
+      exact (AmgmInequalityOQ04OQ01.sqrt_denom_pos hk_sq θ).ne'
+  have h_dK_int : IntervalIntegrable (dIntegrandK k) MeasureTheory.volume 0 (π / 2) :=
+    dIntegrandK_integrable hk_sq
+  rw [intervalIntegral.integral_sub h_cos_int
+        (h_dK_int.const_mul ((1 - k ^ 2) / k))] at h_ftc
+  rw [intervalIntegral.integral_const_mul] at h_ftc
+  -- Substitute the S8 cos² integral identity.
+  rw [integral_cos_sq_div_sqrt_denom hk_pos hk_lt] at h_ftc
+  -- h_ftc: (E - (1-k²)·K) / k² - (1-k²)/k · ∫ dIntegrandK = 0
+  -- Solve for ∫ dIntegrandK = (E - (1-k²)·K) / (k·(1-k²)).
+  rw [eq_div_iff (mul_ne_zero hk_ne h1mk2_ne)]
+  -- Clear denominators in h_ftc (multiply by k²) to obtain a polynomial form,
+  -- then close by `linear_combination` (which uses `ring` for commutativity).
+  field_simp at h_ftc
+  linear_combination -h_ftc
+
 end AmgmInequalityOQ04OQ02
