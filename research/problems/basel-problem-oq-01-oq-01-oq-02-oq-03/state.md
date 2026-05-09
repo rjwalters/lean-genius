@@ -4,14 +4,66 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-09 (Iteration 16, researcher-5)
-**Iteration**: 16
+**Last Updated**: 2026-05-09 (Iteration 17, researcher-13)
+**Iteration**: 17
 
 ## Current Focus
 
-Iteration 16 (2026-05-09, this PR, researcher-5): **primorial-correction
-factorization** — refines Iter 15's `primorial_dvd_lcmRange` from a
-divisibility statement to an explicit equality. New theorem:
+Iteration 17 (2026-05-09, this PR, researcher-13): **arithmetic helpers
+for the small-prime correction-factor reduction** — extracts the two
+key arithmetic observations behind the "only primes `p ≤ √n` matter"
+strategic remark from Iter 16's docstring as standalone, sorry-free,
+reusable lemmas:
+
+* `log_le_one_of_sq_lt {p n : ℕ} (hp : 1 < p) (hsq : n < p * p)
+    : Nat.log p n ≤ 1` —
+  the key arithmetic observation. Proof: if `Nat.log p n ≥ 2`, then
+  `Nat.pow_le_of_le_log` gives `p² ≤ n`, contradicting `n < p²`;
+  the boundary case `n = 0` is immediate via `simp`
+  (`Nat.log p 0 = 0`).
+* `prime_pow_pred_eq_one_of_sq_lt {p n : ℕ} (hp : p.Prime) (hsq : n < p * p)
+    : p ^ (Nat.log p n - 1) = 1` —
+  direct corollary: for primes `p` with `p² > n`, the Iter-16
+  correction-factor exponent vanishes, so the factor is `1`.
+
+These helpers are deliberately *base-agnostic* (`log_le_one_of_sq_lt`
+needs only `1 < p`, not primality) so they are reusable beyond the
+specific Hanson-correction-factor application; the prime-specific
+corollary `prime_pow_pred_eq_one_of_sq_lt` is the ready-made hammer
+for any `Finset.prod_subset` argument that wants to restrict
+correction-factor-style products to small primes.
+
+**Complementary, non-overlapping with #17619** (Iter 17 by
+researcher-1): #17619 supplies the global product reformulation
+`lcmRange_correction_supported_on_small_primes` (correction = product
+over primes with `p² ≤ n`) using these same arithmetic facts inlined;
+this iter extracts those arithmetic facts as named, reusable lemmas.
+The two PRs compose cleanly — once both merge, future iters can
+either invoke the global theorem directly, or invoke
+`prime_pow_pred_eq_one_of_sq_lt` pointwise inside other product
+manipulations.
+
+**Strategic value**: with the small-prime restriction made explicit,
+the correction factor is now bounded over `O(√n / log n)` primes
+(by PNT). The next attack stage is bounding this small-prime product
+by `(3/4)^n` (or any `c^n` with `c · 4 ≤ 3 · k` for controllable `k`);
+combined with Mathlib's `Nat.primorial_le_4_pow` and Iter 16's
+primorial-correction factorization, this would discharge
+`axiom hanson_bound` via the multiplicative split
+`lcmRange ≤ primorial · correction ≤ 4^n · (3/4)^n = 3^n`.
+
+**File delta**: +38 lines (757 → 795), +2 theorems (46 → 48). Defs /
+sorries / axiomCount unchanged. Build pending — proof body uses only
+Mathlib API already exercised by Iters 7–16 (`Nat.pow_le_of_le_log`,
+`Nat.log_zero_right` via `simp`, `pow_two`, `pow_zero`, `omega`,
+`push_neg`, `by_contra`).
+
+### Iteration 16 (background, merged base)
+
+Iteration 16 (2026-05-09, merged as #17578, researcher-5):
+**primorial-correction factorization** — refines Iter 15's
+`primorial_dvd_lcmRange` from a divisibility statement to an explicit
+equality. New theorem:
 
 * `lcmRange_eq_primorial_mul_prod_prime_pow_pred (n : ℕ) :
     lcmRange n = primorial n *

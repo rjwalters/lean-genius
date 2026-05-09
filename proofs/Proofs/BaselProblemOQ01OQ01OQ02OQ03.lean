@@ -628,6 +628,44 @@ theorem lcmRange_eq_primorial_mul_prod_prime_pow_pred (n : ℕ) :
   conv_lhs => rw [← Nat.sub_add_cancel h_log_pos]
   rw [pow_succ']
 
+/-- **Small-prime focus** (Iter 17): for any base `p > 1` with `p² > n`,
+    we have `Nat.log p n ≤ 1`.
+
+    Proof: if `Nat.log p n ≥ 2`, then by `Nat.pow_le_of_le_log`,
+    `p² ≤ n`, contradicting `n < p²`. The boundary case `n = 0` is
+    immediate since `Nat.log p 0 = 0`.
+
+    This is the key arithmetic observation underpinning the Chebyshev
+    "correction is small" route to Hanson's bound: only primes `p` with
+    `p² ≤ n` (equivalently `p ≤ √n`) contribute non-trivially to the
+    Iter-16 correction factor. Primes `p > √n` enter the correction
+    product with exponent `Nat.log p n - 1 = 0` and so contribute the
+    multiplicative identity `1`. -/
+theorem log_le_one_of_sq_lt {p n : ℕ} (hp : 1 < p) (hsq : n < p * p) :
+    Nat.log p n ≤ 1 := by
+  rcases Nat.eq_zero_or_pos n with rfl | hn
+  · simp
+  by_contra h_not
+  push_neg at h_not
+  -- h_not : 1 < Nat.log p n, so 2 ≤ Nat.log p n.
+  have h2 : 2 ≤ Nat.log p n := h_not
+  -- By Nat.pow_le_of_le_log: 2 ≤ Nat.log p n → p^2 ≤ n.
+  have h_p_sq_le_n : p ^ 2 ≤ n := Nat.pow_le_of_le_log hn.ne' h2
+  -- But hsq : n < p * p = p^2, contradiction.
+  rw [pow_two] at h_p_sq_le_n
+  omega
+
+/-- **Correction-factor exponent vanishes for large primes** (Iter 17):
+    for primes `p` with `p² > n`, the Iter-16 correction-factor exponent
+    `Nat.log p n - 1` is zero, so the entire factor `p^(Nat.log p n - 1)`
+    equals `1`. -/
+theorem prime_pow_pred_eq_one_of_sq_lt
+    {p n : ℕ} (hp : p.Prime) (hsq : n < p * p) :
+    p ^ (Nat.log p n - 1) = 1 := by
+  have h_log_le : Nat.log p n ≤ 1 := log_le_one_of_sq_lt hp.one_lt hsq
+  have h_zero : Nat.log p n - 1 = 0 := by omega
+  rw [h_zero, pow_zero]
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
