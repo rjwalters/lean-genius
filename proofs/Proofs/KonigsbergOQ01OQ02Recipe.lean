@@ -637,4 +637,125 @@ lemma remove_balanced_subset_balanced' (S E : Finset (V × V)) (v : V)
     rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_tgt]
   rw [h_filt_src, h_filt_tgt, h_src_card, h_tgt_card, hSbal, hEbal]
 
+/-- **Generic remove_balanced_subset_source_excess**: open-path analog of
+    `remove_balanced_subset_balanced'`, for the source-excess case.
+
+    For any finsets of edges `S, E` with `E ⊆ S`, if `S` has `+1` source
+    excess at `v` (i.e., `src=v` count exceeds `tgt=v` count by exactly 1)
+    and `E` is balanced at `v`, then `S \ E` retains the `+1` source
+    excess at `v`.
+
+    This is the post-bridge building block for the eventual
+    `directed_eulerian_path_iff` (open Euler trail half of
+    `directed_eulerian_iff`). Combined with S18's
+    `open_walk_edge_source_excess'` (PR #17623, in flight) — which
+    supplies the `hEbal` hypothesis for `E := (walkEdges path).toFinset`
+    when `path` is an open Eulerian trail starting at `v` — this lemma
+    is the closing step that says the residual graph after removing the
+    trail's edges remains in the `+1`-source-excess shape needed for
+    Hierholzer-style induction.
+
+    ## Proof structure (parallel to `remove_balanced_subset_balanced'`)
+
+    Same purely-`Finset` calculation as S16, with one extra step:
+
+    1. `Finset.filter` distributes over `\` (S16 step 1).
+    2. `E.filter p ⊆ S.filter p` under `E ⊆ S` (S16 step 2).
+    3. `Finset.card_sdiff` collapses to `s.card - t.card` under
+       `t ⊆ s` (S16 step 3).
+    4. After `hSexc` and `hEbal` rewrites, the goal reduces to a
+       Nat-arithmetic identity:
+       `(S.filter tgt).card + 1 - (E.filter tgt).card =
+        (S.filter tgt).card - (E.filter tgt).card + 1`
+       which `omega` discharges, given the monotonicity bound
+       `(E.filter tgt).card ≤ (S.filter tgt).card` from `hsub`. -/
+lemma remove_balanced_subset_source_excess' (S E : Finset (V × V)) (v : V)
+    (hsub : E ⊆ S)
+    (hSexc : (S.filter fun e => e.1 = v).card =
+             (S.filter fun e => e.2 = v).card + 1)
+    (hEbal : (E.filter fun e => e.1 = v).card =
+             (E.filter fun e => e.2 = v).card) :
+    ((S \ E).filter fun e => e.1 = v).card =
+    ((S \ E).filter fun e => e.2 = v).card + 1 := by
+  have hsub_src : E.filter (fun e => e.1 = v) ⊆ S.filter (fun e => e.1 = v) :=
+    Finset.filter_subset_filter _ hsub
+  have hsub_tgt : E.filter (fun e => e.2 = v) ⊆ S.filter (fun e => e.2 = v) :=
+    Finset.filter_subset_filter _ hsub
+  have hcard_tgt_le :
+      (E.filter fun e => e.2 = v).card ≤ (S.filter fun e => e.2 = v).card :=
+    Finset.card_le_card hsub_tgt
+  have h_filt_src : (S \ E).filter (fun e => e.1 = v) =
+      S.filter (fun e => e.1 = v) \ E.filter (fun e => e.1 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have h_filt_tgt : (S \ E).filter (fun e => e.2 = v) =
+      S.filter (fun e => e.2 = v) \ E.filter (fun e => e.2 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have h_src_card :
+      (S.filter (fun e => e.1 = v) \ E.filter (fun e => e.1 = v)).card =
+      (S.filter (fun e => e.1 = v)).card - (E.filter (fun e => e.1 = v)).card := by
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_src]
+  have h_tgt_card :
+      (S.filter (fun e => e.2 = v) \ E.filter (fun e => e.2 = v)).card =
+      (S.filter (fun e => e.2 = v)).card - (E.filter (fun e => e.2 = v)).card := by
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_tgt]
+  rw [h_filt_src, h_filt_tgt, h_src_card, h_tgt_card, hSexc, hEbal]
+  omega
+
+/-- **Generic remove_balanced_subset_target_excess**: open-path analog of
+    `remove_balanced_subset_balanced'`, for the target-excess case.
+
+    Symmetric counterpart to `remove_balanced_subset_source_excess'`:
+    for `E ⊆ S`, if `S` has `+1` target excess at `v` and `E` is
+    balanced at `v`, then `S \ E` retains the `+1` target excess at `v`.
+
+    Together with `remove_balanced_subset_source_excess'`, this lemma
+    closes the post-bridge step for an open Eulerian trail's two
+    endpoints: at the trail's start vertex `s`, the underlying graph
+    has `+1` source excess; at the end vertex `t`, the graph has `+1`
+    target excess; both excesses are preserved by removing the trail's
+    balanced edge-set away from these endpoints.
+
+    Proof structure is identical to `remove_balanced_subset_source_excess'`
+    with the roles of `e.1` and `e.2` swapped; the `omega`-discharged
+    Nat identity at the end is symmetric. -/
+lemma remove_balanced_subset_target_excess' (S E : Finset (V × V)) (v : V)
+    (hsub : E ⊆ S)
+    (hSexc : (S.filter fun e => e.2 = v).card =
+             (S.filter fun e => e.1 = v).card + 1)
+    (hEbal : (E.filter fun e => e.1 = v).card =
+             (E.filter fun e => e.2 = v).card) :
+    ((S \ E).filter fun e => e.2 = v).card =
+    ((S \ E).filter fun e => e.1 = v).card + 1 := by
+  have hsub_src : E.filter (fun e => e.1 = v) ⊆ S.filter (fun e => e.1 = v) :=
+    Finset.filter_subset_filter _ hsub
+  have hsub_tgt : E.filter (fun e => e.2 = v) ⊆ S.filter (fun e => e.2 = v) :=
+    Finset.filter_subset_filter _ hsub
+  have hcard_src_le :
+      (E.filter fun e => e.1 = v).card ≤ (S.filter fun e => e.1 = v).card :=
+    Finset.card_le_card hsub_src
+  have h_filt_src : (S \ E).filter (fun e => e.1 = v) =
+      S.filter (fun e => e.1 = v) \ E.filter (fun e => e.1 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have h_filt_tgt : (S \ E).filter (fun e => e.2 = v) =
+      S.filter (fun e => e.2 = v) \ E.filter (fun e => e.2 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have h_src_card :
+      (S.filter (fun e => e.1 = v) \ E.filter (fun e => e.1 = v)).card =
+      (S.filter (fun e => e.1 = v)).card - (E.filter (fun e => e.1 = v)).card := by
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_src]
+  have h_tgt_card :
+      (S.filter (fun e => e.2 = v) \ E.filter (fun e => e.2 = v)).card =
+      (S.filter (fun e => e.2 = v)).card - (E.filter (fun e => e.2 = v)).card := by
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_tgt]
+  rw [h_filt_src, h_filt_tgt, h_src_card, h_tgt_card, hSexc, hEbal]
+  omega
+
 end KonigsbergOQ01OQ02Recipe

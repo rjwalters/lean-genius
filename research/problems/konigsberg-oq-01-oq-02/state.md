@@ -1,14 +1,121 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe file build-VERIFIED with all 6 bijection templates + circuit-balance helper + List→Finset bridge + Finset-removal balance helper — full mathematical chain to `remove_circuit_balanced` complete)
+**Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 16
-**Last Update**: 2026-05-09 (Session 16, researcher-3) — **BUILD VERIFIED**
+**Iteration**: 19
+**Last Update**: 2026-05-09 (Session 19, researcher-9) — adds open-walk
+post-bridge `remove_balanced_subset_source_excess'` /
+`remove_balanced_subset_target_excess'` to the Recipe library; sits parallel
+to in-flight S17 (#17596) and S18 (#17623) PRs without symbol overlap.
 
 ## Current Focus
-Session 16 (this session, researcher-3) **added the post-bridge Finset
+
+Session 19 (this session, researcher-9) **adds the open-path post-bridge
+pair** `remove_balanced_subset_source_excess'` /
+`remove_balanced_subset_target_excess'` to the Recipe library — the
+±1-imbalanced analog of S16's `remove_balanced_subset_balanced'`.
+
+Before-S19: only `remove_balanced_subset_balanced'` was available, which
+preserves balance under subset removal. This handles the closed-circuit
+case for `remove_circuit_balanced` once the in-place refactor lands, but
+provides no parallel statement for **open Eulerian trails** (whose
+endpoints have ±1 imbalance). S18 (PR #17623, in flight) supplies the
+edge-set excess statements at the trail's two endpoints; what was
+missing was the generic Finset-arithmetic lemma showing that the
+±1 excess survives subset-removal of a balanced sub-set.
+
+After-S19: `remove_balanced_subset_source_excess'` says: given
+`E ⊆ S`, `S` with `+1` source excess at `v`, and `E` balanced at `v`,
+`S \ E` retains the `+1` source excess. Symmetric statement for target
+excess. Both proofs are pure Finset arithmetic (parallel to S16's
+proof structure, with one extra `omega` step at the end to discharge a
+Nat subtraction identity given the monotonicity bound from `hsub`).
+
+S19 deliberately did NOT attempt the in-place refactor of the broken
+main file — same reasoning as S7–S18 (≥3 hours mechanical work +
+30–60 min Docker build, exceeds typical agent-session budgets).
+
+S19 also did NOT touch the symbol set of the two in-flight PRs:
+- #17596 (S17) adds `walkEdges'` / `mem_walkEdges'` /
+  `walkEdges'_hsteps_list`.
+- #17623 (S18) adds `open_walk_edge_interior_balanced'` /
+  `open_walk_edge_source_excess'` / `open_walk_edge_target_excess'`.
+- S19 (this) adds `remove_balanced_subset_source_excess'` /
+  `remove_balanced_subset_target_excess'`.
+
+The three PRs all append at the bottom of the recipe file before
+`end KonigsbergOQ01OQ02Recipe`. The textual conflict is small (final
+`end` line) and trivially resolvable in any merge order.
+
+### What `remove_balanced_subset_source_excess'` proves (S19)
+
+For any finsets of edges `S, E` with `E ⊆ S`, if `S` has `+1` source
+excess at `v` and `E` is balanced at `v`, then `S \ E` retains the
+`+1` source excess:
+
+```
+hSexc : (S.filter src=v).card = (S.filter tgt=v).card + 1
+hEbal : (E.filter src=v).card = (E.filter tgt=v).card
+       ⟹
+((S \ E).filter src=v).card = ((S \ E).filter tgt=v).card + 1
+```
+
+Proof outline (purely Finset arithmetic, no walk-level reasoning):
+
+1. `Finset.filter` distributes over `\` (S16 step 1).
+2. `E ⊆ S` ⟹ `E.filter p ⊆ S.filter p` (S16 step 2).
+3. `Finset.card_sdiff` collapses to `s.card - t.card` under `t ⊆ s`
+   (S16 step 3).
+4. After `hSexc` and `hEbal` rewrites the goal becomes a Nat
+   arithmetic identity which `omega` discharges given the monotonicity
+   bound `(E.filter tgt).card ≤ (S.filter tgt).card` from `hsub`.
+
+The target-excess lemma is symmetric: same structure, roles of
+`e.1` and `e.2` swapped.
+
+### Why these lemmas matter for the open Euler-trail proof
+
+Once S18 (PR #17623) lands, the eventual `directed_eulerian_path_iff`
+(open-trail half of `directed_eulerian_iff`) reduces to three
+post-bridge applications:
+
+```lean
+-- At the trail's start vertex s (S has +1 source excess at s):
+remove_balanced_subset_source_excess' G.edges (walkEdges path).toFinset s
+  hsub hSexc_s S18.open_walk_edge_source_excess'_at_s
+-- At the end vertex t (S has +1 target excess at t):
+remove_balanced_subset_target_excess' G.edges (walkEdges path).toFinset t
+  hsub hSexc_t S18.open_walk_edge_target_excess'_at_t
+-- At interior vertices v (S balanced at v):
+remove_balanced_subset_balanced' G.edges (walkEdges path).toFinset v
+  hsub hSbal S18.open_walk_edge_interior_balanced'_at_v
+```
+
+Together with S15's `circuit_edge_balance_list'` for the closed case,
+this is the complete post-bridge mathematical machinery for both
+sides of `directed_eulerian_iff`.
+
+### Recipe library status post-S19
+
+The Recipe file now contains:
+- `getElem?_eq_some_iff_of_lt` — bridge lemma (S9, S11-verified)
+- `closed_walk_balance'` — cyclic-bijection template (S9, S11-verified)
+- `open_walk_interior_balanced'` — linear bijection w/ endpoint exclusions (S10, S11-verified)
+- `open_walk_last_target_excess'` — endpoint-target excess (S12, S13-verified)
+- `open_walk_first_source_excess'` — endpoint-source excess (S12, S13-verified)
+- `walk_source_eq_edge_filter'` — Classical.choose source bijection (S13-verified)
+- `walk_target_eq_edge_filter'` — Classical.choose target bijection (S13-verified)
+- `circuit_edge_balance'` — connective lemma for `remove_circuit_balanced` (S14-verified)
+- `toFinset_balance'` — List→Finset hypothesis bridge (S15-verified, #17542)
+- `circuit_edge_balance_list'` — packaged corollary for `walkEdges`-style List input (S15-verified, #17542)
+- `remove_balanced_subset_balanced'` — Finset removal balance preservation (S16-verified)
+- `remove_balanced_subset_source_excess'` — open-walk source excess preservation (**S19-added**)
+- `remove_balanced_subset_target_excess'` — open-walk target excess preservation (**S19-added**)
+
+### Previous Focus (Session 16)
+Session 16 (researcher-3) **added the post-bridge Finset
 removal balance lemma `remove_balanced_subset_balanced'`**, closing the
 final gap on the Recipe-side mathematical chain to
 `remove_circuit_balanced`. Prior to S16, S15 (#17542, researcher-4)
