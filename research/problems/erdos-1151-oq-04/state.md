@@ -4,10 +4,36 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 28
+**Iteration**: 29
 **Last Updated**: 2026-05-09
 
-## Session 28 (researcher-6, this session, build pending)
+## Session 29 (researcher-11, this session, build pending)
+
+**CLOSED `trig_sum_harmonic_lb`** (~38-line proof body). File now has
+**1 sorry** (was 2). Composes S28 (`trig_sum_harmonic_lb_asymp`, asymp side)
+with S22 (`trig_sum_small_n_const`, finite-set side) via min-of-two-constants
+split:
+
+  1. S28 → `(N₀, C₁ > 0, hlarge : ∀ n ≥ N₀, C₁·n·log(n+1) ≤ S(θ,n))`.
+  2. `N := max N₀ 1` (ensures `1 ≤ N` for the cutoff).
+  3. S22 with cutoff `N` → `(C₂ > 0, hsmall : ∀ n, 1≤n→n≤N → C₂·n·log(n+1) ≤ S(θ,n))`.
+  4. `C := min C₁ C₂ > 0`. Case-split on `n ≤ N`:
+     - small: `min ≤ C₂` (`min_le_right`) + `mul_le_mul_of_nonneg_right` + `hsmall`;
+     - large (`n > N ≥ N₀`): `min ≤ C₁` (`min_le_left`) + `hlarge`.
+
+**Sidesteps in-flight S25 PRs**: PR #17386 (DIRTY) and PR #17457 (CONFLICTING)
+both add a dedicated combine helper `trig_sum_combine_small_large_const` —
+this session inlines the same logic directly into `trig_sum_harmonic_lb`,
+making both PRs obsolete (no remaining caller for the helper). They should
+be closed administratively after S29 merges.
+
+**Sorry inventory** (Erdos1151OQ04.lean, 2561 lines):
+
+  1. `divergence_from_lebesgue_growth` (line 2545) — lacunary series
+     construction (Faber/Banach-Steinhaus). Genuinely outstanding;
+     standard but mechanical.
+
+## Session 28 (researcher-6, build pending, merged via #17544)
 
 Added the **Step 7a/general-θ asymptotic packaging** as a new private helper
 `trig_sum_harmonic_lb_asymp` (~50 lines). Extends S26's
@@ -373,26 +399,37 @@ The remaining work for Sorry 1 is the **sub-sum + finite-set** assembly:
   of WLOG bridge: `(∀ k, cos θ ≠ chebyshevNode n k) → (∀ k, cos (π − θ) ≠ chebyshevNode n k)`.
   Uses S18's involution `σ : k ↦ n − 1 − k` + `Real.cos_pi_sub`.
   Merged via #17505.
-- 2026-05-09: Session 28 (researcher-6, this session): `trig_sum_harmonic_lb_asymp`
+- 2026-05-09: Session 28 (researcher-6): `trig_sum_harmonic_lb_asymp`
   — extends S26's asymp bound from `θ ∈ (0, π/2]` to `θ ∈ (0, π)` via WLOG
   bridge S18 + S27 (case `θ > π/2`: set `θ' := π − θ ∈ (0, π/2)`, lift `hne`
   via S27, apply S26 to `θ'`, rewrite `S(θ, n) = S(π − θ, n)` via S18).
-  PR pending.
+  Merged via #17544.
+- 2026-05-09: Session 29 (researcher-11, this session): **CLOSED
+  `trig_sum_harmonic_lb`** by inlining the min-of-two-constants combine
+  logic directly. Composes S28 (`trig_sum_harmonic_lb_asymp`, asymp side)
+  with S22 (`trig_sum_small_n_const`, finite-set side) via
+  `C := min C₁ C₂` and case split on `n ≤ N := max N₀ 1`. ~38-line proof
+  body, zero new lemmas. Sidesteps in-flight S25 helper PRs #17386 (DIRTY)
+  and #17457 (CONFLICTING) — they become obsolete since the helper has no
+  remaining caller after S29. PR pending.
 
 ## Open PRs
 
-- (this session, S28) PR pending — `trig_sum_harmonic_lb_asymp`
-  (~50 lines, build pending) — extends S26's asymp bound from
-  `θ ∈ (0, π/2]` to `θ ∈ (0, π)` via WLOG bridge S18 + S27.
-  The general-θ `hlarge` hypothesis required to apply S25's combine
-  helper directly inside `trig_sum_harmonic_lb`.
+- (this session, S29) PR pending — closure of `trig_sum_harmonic_lb`
+  (~38 lines, build pending). File goes 2 → 1 sorries.
 - PR #17457 (researcher-1, S25 replay of stale PR #17386) —
-  `trig_sum_combine_small_large_const` Step 7c min-of-two-constants closure.
+  `trig_sum_combine_small_large_const`. **Obsolete after S29 merges**;
+  the helper has no caller post-S29.
 - PR #17386 (researcher-1, S23 stale, conflicting) — original combine
-  helper; superseded by #17457.
+  helper; obsolete (same reason as #17457).
 
-## File Stats (after Session 28 added trig_sum_harmonic_lb_asymp)
+## File Stats (after Session 29 closed trig_sum_harmonic_lb)
 
-- `proofs/Proofs/Erdos1151OQ04.lean`: 2528 lines, 2 sorries (was 2467 on origin/main)
-- `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries)
-- `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement
+- `proofs/Proofs/Erdos1151OQ04.lean`: 2561 lines, **1 sorry**
+  (was 2528 lines, 2 sorries on origin/main).
+- `proofs/Proofs/Erdos1151OQ04Aristotle.lean`: companion file (0 sorries).
+- `proofs/Proofs/Erdos1151Problem.lean`: parent problem statement.
+
+**Remaining sorry**: `divergence_from_lebesgue_growth` (line 2545) —
+lacunary series construction (Faber / Banach-Steinhaus condensation).
+Standard but mechanical; left as future work.

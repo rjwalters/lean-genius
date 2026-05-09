@@ -2331,12 +2331,45 @@ private lemma trig_sum_harmonic_lb (θ : ℝ) (hθ_pos : 0 < θ) (hθ_lt : θ < 
       C * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) ≤
         ∑ k : Fin n, Real.sin ((2 * k.val + 1 : ℝ) * Real.pi / (2 * n)) /
                      |Real.cos θ - chebyshevNode n k| := by
-  -- Core technical lemma: Lipschitz + harmonic sum over near-nodes + finite minimum.
-  -- The small-`n` finite-set portion is now factored out as
-  -- `trig_sum_small_n_const`; the remaining work is the asymptotic
-  -- (large-`n`) bound via `trig_sum_subsum_log_lb` plus a min-of-two-constants
-  -- combination. See docstring for the full proof sketch.
-  sorry
+  -- **Closure (S29)**. The proof composes the asymptotic large-`n` packaging
+  -- `trig_sum_harmonic_lb_asymp` (S28, general θ ∈ (0, π)) with the
+  -- finite-set min' lower bound `trig_sum_small_n_const` (S22) via a
+  -- min-of-two-constants split.
+  --
+  -- Step 1: S28 yields `(N₀, C₁ > 0, hlarge)` with
+  --   `∀ n ≥ N₀, C₁ · n · log(n+1) ≤ S(θ, n)`.
+  -- Step 2: S22 with cutoff `N := max N₀ 1` (`≥ 1`) yields `(C₂ > 0, hsmall)`
+  --   covering `1 ≤ n ≤ N`.
+  -- Step 3: take `C := min C₁ C₂ > 0`. Case on `n ≤ N`:
+  --   - small branch: `min ≤ C₂` and `hsmall` gives the bound;
+  --   - large branch (`n > N ≥ N₀`): `min ≤ C₁` and `hlarge` gives the bound.
+  obtain ⟨N₀, C₁, hC₁_pos, hlarge⟩ :=
+    trig_sum_harmonic_lb_asymp θ hθ_pos hθ_lt hne
+  set N : ℕ := max N₀ 1 with hN_def
+  have hN_ge : 1 ≤ N := le_max_right N₀ 1
+  obtain ⟨C₂, hC₂_pos, hsmall⟩ := trig_sum_small_n_const θ hne N hN_ge
+  refine ⟨min C₁ C₂, lt_min hC₁_pos hC₂_pos, fun n hn₁ => ?_⟩
+  -- Denominator nonneg: `n ≥ 1 ⇒ n · log(n+1) ≥ 0` (in fact > 0; ≥ 0 suffices).
+  have hg_nn : 0 ≤ (↑n : ℝ) * Real.log ((↑n : ℝ) + 1) := by
+    apply mul_nonneg (by exact_mod_cast Nat.zero_le n)
+    apply Real.log_nonneg
+    have hn_real : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn₁
+    linarith
+  by_cases hcase : n ≤ N
+  · -- Small-n branch: `1 ≤ n ≤ N` ⇒ apply `hsmall`; `min ≤ C₂` by `min_le_right`.
+    calc min C₁ C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+        ≤ C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) :=
+          mul_le_mul_of_nonneg_right (min_le_right _ _) hg_nn
+      _ ≤ _ := hsmall n hn₁ hcase
+  · -- Large-n branch: `n > N ≥ N₀` ⇒ apply `hlarge`; `min ≤ C₁` by `min_le_left`.
+    push_neg at hcase
+    have hN₀_le_n : N₀ ≤ n := by
+      have hN₀_le_N : N₀ ≤ N := le_max_left N₀ 1
+      omega
+    calc min C₁ C₂ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1))
+        ≤ C₁ * ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) :=
+          mul_le_mul_of_nonneg_right (min_le_left _ _) hg_nn
+      _ ≤ _ := hlarge n hN₀_le_n
 
 /-! ## Key Lemmas with Sorry -/
 

@@ -29,10 +29,10 @@
   "currentState": {
     "phase": "IN-PROGRESS",
     "since": "2026-05-09",
-    "iteration": 28,
-    "focus": "Session 28 (researcher-6, 2026-05-09, build pending): Added trig_sum_harmonic_lb_asymp (~50 lines) — extends S26's asymptotic large-n bound from θ ∈ (0, π/2] to the full open interval θ ∈ (0, π) via the WLOG bridge S18 (trig_sum_reindex_symmetry) + S27 (chebyshev_hne_pi_sub). For θ > π/2, sets θ' := π − θ ∈ (0, π/2), uses S27 to lift hne, applies S26 to θ', then uses S18 to rewrite S(θ, n) = S(π − θ, n). With this and S25 (combine helper #17457) merged, the Step 7 closure of trig_sum_harmonic_lb collapses to ~5 caller lines.",
+    "iteration": 29,
+    "focus": "Session 29 (researcher-11, 2026-05-09, build pending): CLOSED trig_sum_harmonic_lb (~38 lines). Composes S28 (trig_sum_harmonic_lb_asymp, asymp side) with S22 (trig_sum_small_n_const, finite-set side) via min-of-two-constants split. With C := min C₁ C₂ and N := max N₀ 1, case-splits on n ≤ N: small branch uses hsmall (1 ≤ n ≤ N), large branch uses hlarge (N₀ ≤ N < n). Sidesteps the in-flight S25 combine helper PRs #17386 (DIRTY) and #17457 (CONFLICTING) — those become obsolete since the combine logic is now inlined here. File goes 2 → 1 sorries; only divergence_from_lebesgue_growth (separate sorry, lacunary series construction) remains.",
     "blockers": [],
-    "nextAction": "(Researcher) Final Step 7 closure of trig_sum_harmonic_lb (~5 lines, after S25+S28 merge): apply trig_sum_harmonic_lb_asymp to obtain (N₀, C₁, hlarge), then trig_sum_combine_small_large_const to obtain unified C, conclude.",
+    "nextAction": "(Researcher) Close divergence_from_lebesgue_growth — final sorry in file. Requires lacunary series construction or weakening to lim sup variant. PRs #17386 and #17457 become obsolete once #S29 merges (combine helper inlined into trig_sum_harmonic_lb).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -153,11 +153,11 @@
     {
       "path": "Proofs/Erdos1151OQ04.lean",
       "filename": "Erdos1151OQ04.lean",
-      "lineCount": 2528,
+      "lineCount": 2561,
       "theoremCount": 62,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1151OQ04.lean"
     },
