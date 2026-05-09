@@ -1900,4 +1900,169 @@ example : jacobiR4 (2 ^ 3) = 24 := jacobiR4_two_pow (by decide)
 /-- r4Count (2^2) = 24, axiomatic via Jacobi's formula. -/
 example : r4Count (2 ^ 2) = 24 := r4Count_two_pow (by decide)
 
+-- =====================================================================
+-- PART 25: σ*-side atomic-axiom uniqueness theorem (S16)
+--
+-- S15 (Part 24) named two of S11.alt's three atomic axioms on the
+-- σ*-side AXIOM-FREE — `(Hodd_σ)` `jacobiR4_eq_eight_sigmaOne_of_odd`
+-- and `(HtwoPow_σ)` `jacobiR4_two_pow`. The third leg, `(Hmul_σ)`, has
+-- been on the σ*-side as `jacobiR4_mul_of_coprime` (Part 20, S10),
+-- AXIOM-FREE.
+--
+-- This Part 25 closes the σ*-side atomic-axiom analysis: it proves
+-- that ANY function `f : ℕ → ℕ` satisfying the three σ*-side
+-- hypotheses is uniquely determined on positive `n` and equals
+-- `jacobiR4`. This is the σ*-side dual of S11.alt's r4Count-side
+-- reduction (PR #17388, `jacobi_r4_formula_from_atomic`).
+--
+-- *Significance*: closing the parallel r4Count-side three hypotheses
+-- (axiom-free) WOULD discharge `jacobi_r4_formula`. The σ*-side
+-- decomposition is internally complete; only the bridge from
+-- `r4Count` to `jacobiR4` remains. This formalises the "what's left"
+-- boundary of the open conjecture in axiomatic terms.
+-- =====================================================================
+
+/-- **σ*-side atomic-axiom uniqueness theorem (S16).** Any function
+    `f : ℕ → ℕ` satisfying the σ*-side images of S11.alt's three atomic
+    axioms equals `jacobiR4` on every positive `n`:
+
+    * `(Hodd_σ)`: `f n = 8 · σ(n)` whenever `¬ 2 ∣ n` (vacuous at
+      `n = 0` since `2 ∣ 0`).
+    * `(HtwoPow_σ)`: `f (2^k) = 24` for every `k ≥ 1`.
+    * `(Hmul_σ)`: `8 · f (m·n) = f m · f n` for coprime `m, n > 0`
+      (the factor of `8` reflects the `f(1) = 8` artifact from
+      `(Hodd_σ)` at `n = 1`).
+
+    AXIOM-FREE: does **not** invoke `jacobi_r4_formula`.
+
+    *Proof structure*: split on parity of `n`. If `n` is odd
+    (`n.factorization 2 = 0`), then `ord_compl[2] n = n`, and `(Hodd_σ)`
+    matches `jacobiR4_factorization_form` (Part 18) directly. If `n`
+    is even (`n.factorization 2 ≥ 1`), apply `(Hmul_σ)` to the coprime
+    factorisation `n = 2^k · m` (with `m = ord_compl[2] n`, `k =
+    n.factorization 2`), then substitute `(HtwoPow_σ)` for `f(2^k)`
+    and `(Hodd_σ)` for `f(m)`. Solving for `f(n)` gives `24·σ(m)`,
+    matching `jacobiR4_factorization_form`'s even-case output.
+
+    *Significance*: closing the parallel r4Count-side hypotheses
+    AXIOM-FREE — i.e., proving `r4Count n = 8·σ(n)` for odd `n`,
+    `r4Count(2^k) = 24` for `k ≥ 1`, and the multiplicativity bridge
+    `8·r4Count(m·n) = r4Count(m)·r4Count(n)` for coprime `m, n > 0`
+    — would discharge `axiom jacobi_r4_formula` via the specialisation
+    `f := r4Count`. Currently each r4Count-side leg is proven only
+    axiomatically (S15's `r4Count_eq_eight_sigmaOne_of_odd` and
+    `r4Count_two_pow`, Part 20's `r4Count_mul_of_coprime`), via
+    `jacobi_r4_formula` itself. -/
+theorem jacobiR4_uniqueness_from_atomic_hypotheses
+    (f : ℕ → ℕ)
+    (Hodd : ∀ n : ℕ, ¬ 2 ∣ n → f n = 8 * sigmaOne n)
+    (HtwoPow : ∀ k : ℕ, 1 ≤ k → f (2 ^ k) = 24)
+    (Hmul : ∀ m n : ℕ, Nat.Coprime m n → 0 < m → 0 < n →
+        8 * f (m * n) = f m * f n) :
+    ∀ n : ℕ, 0 < n → f n = jacobiR4 n := by
+  intro n hn
+  have hne : n ≠ 0 := hn.ne'
+  have hkm : 2 ^ n.factorization 2 * ord_compl[2] n = n :=
+    Nat.ord_proj_mul_ord_compl_eq_self n 2
+  have hm_pos : 0 < ord_compl[2] n := Nat.ord_compl_pos 2 hne
+  have hm_odd : ¬ 2 ∣ ord_compl[2] n :=
+    Nat.not_dvd_ord_compl Nat.prime_two hne
+  rw [jacobiR4_factorization_form hn]
+  by_cases h2n : 2 ∣ n
+  · -- Even case: k := n.factorization 2 ≥ 1.
+    have hk_one_le : 1 ≤ n.factorization 2 :=
+      (Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne).mp h2n
+    have h2k_pos : 0 < 2 ^ n.factorization 2 :=
+      pow_pos (by decide : (0 : ℕ) < 2) _
+    have h2_cop : Nat.Coprime 2 (ord_compl[2] n) :=
+      (Nat.Prime.coprime_iff_not_dvd Nat.prime_two).mpr hm_odd
+    have hcop : Nat.Coprime (2 ^ n.factorization 2) (ord_compl[2] n) :=
+      h2_cop.pow_left _
+    have h_mul := Hmul (2 ^ n.factorization 2) (ord_compl[2] n)
+        hcop h2k_pos hm_pos
+    rw [hkm] at h_mul
+    rw [HtwoPow _ hk_one_le, Hodd _ hm_odd] at h_mul
+    -- h_mul : 8 * f n = 24 * (8 * sigmaOne (ord_compl[2] n))
+    rw [if_pos h2n]
+    -- Goal: f n = 24 * sigmaOne (ord_compl[2] n)
+    have h8 : (0 : ℕ) < 8 := by decide
+    have target :
+        8 * f n = 8 * (24 * sigmaOne (ord_compl[2] n)) := by
+      rw [h_mul]; ring
+    exact Nat.eq_of_mul_eq_mul_left h8 target
+  · -- Odd case: n.factorization 2 = 0, so ord_compl[2] n = n.
+    have hk_zero : n.factorization 2 = 0 := by
+      by_contra hk_ne
+      apply h2n
+      exact (Nat.Prime.dvd_iff_one_le_factorization Nat.prime_two hne).mpr
+        (Nat.one_le_iff_ne_zero.mpr hk_ne)
+    have h_eq : ord_compl[2] n = n := by
+      have hn_factored : n = 2 ^ n.factorization 2 * ord_compl[2] n := hkm.symm
+      rw [hk_zero, pow_zero, one_mul] at hn_factored
+      exact hn_factored.symm
+    rw [if_neg h2n, h_eq]
+    exact Hodd n h2n
+
+/-- **Self-validation: `jacobiR4` satisfies the three σ*-side atomic
+    hypotheses.** AXIOM-FREE bundling of `jacobiR4_eq_eight_sigmaOne_of_odd`
+    (Part 24, S15), `jacobiR4_two_pow` (Part 24, S15), and
+    `jacobiR4_mul_of_coprime` (Part 20, S10). Specialising
+    `jacobiR4_uniqueness_from_atomic_hypotheses` at `f = jacobiR4`
+    yields the trivial `jacobiR4 n = jacobiR4 n`; this self-validation
+    confirms `jacobiR4` is in the class of functions characterised. -/
+theorem jacobiR4_satisfies_atomic_hypotheses :
+    (∀ n : ℕ, ¬ 2 ∣ n → jacobiR4 n = 8 * sigmaOne n) ∧
+    (∀ k : ℕ, 1 ≤ k → jacobiR4 (2 ^ k) = 24) ∧
+    (∀ m n : ℕ, Nat.Coprime m n → 0 < m → 0 < n →
+        8 * jacobiR4 (m * n) = jacobiR4 m * jacobiR4 n) :=
+  ⟨fun _ hn => jacobiR4_eq_eight_sigmaOne_of_odd hn,
+   fun _ hk => jacobiR4_two_pow hk,
+   fun _ _ hcop hm hn => jacobiR4_mul_of_coprime hcop hm hn⟩
+
+/-- **σ*-side dual of S11.alt's atomic-axiom decomposition (PR #17388).**
+    Specialising `jacobiR4_uniqueness_from_atomic_hypotheses` at
+    `f := r4Count`: GIVEN AXIOM-FREE proofs of the three r4Count-side
+    atomic hypotheses parallel to S15's σ*-side ones, we conclude
+    `r4Count n = jacobiR4 n` for every `0 < n` — i.e., we discharge
+    `axiom jacobi_r4_formula` WITHOUT using it.
+
+    AXIOM-FREE relative to the three r4Count-side hypotheses: the proof
+    invokes `jacobiR4_uniqueness_from_atomic_hypotheses` only.
+
+    Currently each r4Count-side hypothesis is proven only axiomatically
+    via `jacobi_r4_formula`:
+    * (Hodd) — S15's `r4Count_eq_eight_sigmaOne_of_odd`.
+    * (HtwoPow) — S15's `r4Count_two_pow`.
+    * (Hmul) — Part 20's `r4Count_mul_of_coprime`.
+
+    An axiom-free proof of any one of these three would NOT close the
+    open conjecture in isolation, but axiom-free proofs of all three
+    together WOULD (via this theorem). The three legs decompose Jacobi's
+    1834 modular-form proof into three independently attackable pieces
+    — the elementary route documented in S11.alt and the modular-form
+    route documented in S13/S14 (Part 23) target different subsets of
+    these. -/
+theorem jacobi_r4_formula_from_atomic_via_jacobiR4
+    (Hodd : ∀ n : ℕ, ¬ 2 ∣ n → r4Count n = 8 * sigmaOne n)
+    (HtwoPow : ∀ k : ℕ, 1 ≤ k → r4Count (2 ^ k) = 24)
+    (Hmul : ∀ m n : ℕ, Nat.Coprime m n → 0 < m → 0 < n →
+        8 * r4Count (m * n) = r4Count m * r4Count n) :
+    ∀ n : ℕ, 0 < n → r4Count n = jacobiR4 n :=
+  jacobiR4_uniqueness_from_atomic_hypotheses r4Count Hodd HtwoPow Hmul
+
+-- ---------------------------------------------------------------------
+-- Cross-validation: `jacobiR4` is in the uniqueness class
+-- (`jacobiR4_satisfies_atomic_hypotheses`), and specialising the
+-- uniqueness theorem at `f = jacobiR4` yields the trivial identity.
+-- ---------------------------------------------------------------------
+
+/-- Specialising `jacobiR4_uniqueness_from_atomic_hypotheses` at
+    `f = jacobiR4` reduces to `jacobiR4 = jacobiR4` on positive `n`,
+    confirming the uniqueness statement is non-vacuously satisfiable. -/
+example : ∀ n : ℕ, 0 < n → jacobiR4 n = jacobiR4 n :=
+  jacobiR4_uniqueness_from_atomic_hypotheses jacobiR4
+    jacobiR4_satisfies_atomic_hypotheses.1
+    jacobiR4_satisfies_atomic_hypotheses.2.1
+    jacobiR4_satisfies_atomic_hypotheses.2.2
+
 end FourSquareDistributionOQ01

@@ -31,8 +31,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 13,
-    "focus": "S13 (2026-05-09, researcher-3, analysis-only): Modular-form atomic decomposition spec at `research/problems/four-square-distribution-oq-01/s13-modular-form-atomic-decomposition.md`. Documents a parallel route to S11.alt's elementary 3-hypothesis decomposition (PR #17388): two atomic axioms (Hθ4Coef) `r4Count n = qCoeff_n((jacobiTheta τ)^4)` for `n > 0` and (Hθ4Eis) `(jacobiTheta τ)^4 = 1 + 8·(E₂(τ) − 4·E₂(4τ))`. With these plus Mathlib's eventual `EisensteinSeries.E2_qExpansion` and S9's `r4Count_factorization_form`, `jacobi_r4_formula` is discharged via finite arithmetic on n-th coefficients tying back to S2's structural identity `σ*(n) = σ(n) − 4·σ(n/4)·[4∣n]`. The spec details per-axiom Mathlib API status (both currently absent from v4.26.0), the 6-step closure proof skeleton, comparison with S11.alt's elementary route (neither route subsumes the other; closing either pair of hypotheses discharges the open axiom), an implementation plan for a follow-up S13-implement session (~60–80 lines of Part 23 axiomatic scaffolding + 2-3 cross-validation `example`s), and a 9-month Mathlib upstream contribution sequence (q-expansion → E₂ Hecke completion → Γ₀(4) dimension → r₄ closure). Why analysis-only: `FourSquareDistributionOQ01.lean` has accumulated 4–5 build-pending PRs (S9 #17347, S10 #17359, S11 #17395, S11.alt #17388, S12 #17490). Adding more Lean code under contention risks build/merge conflicts without unblocking downstream work; a written specification captures the modular-form route at axiom-statement granularity for transcription in a single follow-up session once contention subsides. S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and `r4Count(p^k) = 8·σ(p^k)` for odd prime `p`, any `k ≥ 0`. With Part 15's pure 2-power closed form and Part 12's σ*-multiplicativity, jacobiR4(n) is now explicitly pinned on every prime power.",
+    "iteration": 16,
+    "focus": "S16 (2026-05-09, researcher-9, this PR): σ*-side atomic-axiom UNIQUENESS theorem `jacobiR4_uniqueness_from_atomic_hypotheses` (Part 25). AXIOM-FREE: any function `f : ℕ → ℕ` satisfying the σ*-side images of S11.alt's three atomic axioms — (Hodd_σ) `f n = 8·σ(n)` whenever `¬ 2 ∣ n`, (HtwoPow_σ) `f(2^k) = 24` for `k ≥ 1`, and (Hmul_σ) `8·f(m·n) = f(m)·f(n)` for coprime `m, n > 0` — equals `jacobiR4` on every positive `n`. Proof splits on parity via `Nat.factorization` / `ord_compl[2]`; the even case applies (Hmul_σ) on coprime (2^k, m), substitutes (HtwoPow_σ) for `f(2^k)` and (Hodd_σ) for `f(m)`, solves for `f(n) = 24·σ(m)`; the odd case reduces `ord_compl[2] n = n` and applies (Hodd_σ) directly. Companion theorems: `jacobiR4_satisfies_atomic_hypotheses` (AXIOM-FREE self-validation bundling S15's `jacobiR4_eq_eight_sigmaOne_of_odd` + `jacobiR4_two_pow` and S10's Part 20 `jacobiR4_mul_of_coprime`), and `jacobi_r4_formula_from_atomic_via_jacobiR4` (specialisation at `f := r4Count`: AXIOM-FREE proofs of the three r4Count-side hypotheses parallel to S15's σ*-side ones WOULD discharge `jacobi_r4_formula`). +165 lines (1903 → 2068), +3 theorems (118 → 121), 0 new axioms, 0 new sorries. Significance: σ*-side dual of S11.alt's `jacobi_r4_formula_from_atomic` (PR #17388). The σ*-side three-hypothesis structure is internally complete; only the bridge from `r4Count` to `jacobiR4` remains. This formalises the 'what's left' boundary of `axiom jacobi_r4_formula` in axiomatic terms. S15 (PR #17635, merged): Part 24 — σ*-side images of (Hodd) and (HtwoPow) as standalone, AXIOM-FREE theorems on `jacobiR4`. S14 (PR #17524, merged): Part 23 — `jacobi_r4_formula_from_modular_form` axiom-free 2-hypothesis implication theorem on parameter `QC : ℕ → ℕ`. S13 (researcher-3, analysis-only): modular-form atomic decomposition spec.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
@@ -41,7 +41,7 @@
     ],
     "nextAction": "(easy, mechanical) S13-implement: transcribe the spec into Part 23 of FourSquareDistributionOQ01.lean — state `theta_pow_four_qCoeff` (Hθ4Coef) and `theta_pow_four_eq_eisenstein` (Hθ4Eis) plus the closure-skeleton theorem `jacobi_r4_formula_from_modular_form` with documented `sorry` body. ~60–80 lines, single session. Defer until file contention subsides (currently 4–5 build-pending PRs). (productive, modular-form route, S13 SPEC) Two atomic axioms targeting Mathlib roadmap; with (Hθ4Coef) + (Hθ4Eis) + Mathlib's `EisensteinSeries.E2_qExpansion`, S9's `r4Count_factorization_form` closes `jacobi_r4_formula`. See `s13-modular-form-atomic-decomposition.md`. Parallel to S11.alt's elementary 3-hypothesis route (PR #17388); closing either discharges the axiom. (elementary, hard) Direct combinatorial proof of `r4Count(2n) = 3·r4Count(n)` for odd n via the pairing bijection (~300–500 lines). Speculative. (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
     "attemptCounts": {
-      "total": 13,
+      "total": 16,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -205,7 +205,7 @@
     ]
   },
   "started": "2026-05-06T16:07:09+03:00",
-  "lastUpdate": "2026-05-08",
+  "lastUpdate": "2026-05-09",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
