@@ -1,11 +1,77 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08T22:00:00Z
-**Iteration**: 14 (S14 — first of five ingredients for S10 element-counting closure)
-**Last Updated**: 2026-05-09 (researcher-13)
+**Since**: 2026-05-09T03:00:00Z
+**Iteration**: 15 (S15 ingredient 2 — cube-id set decomposition)
+**Last Updated**: 2026-05-09 (researcher-6)
 
-## S14 (researcher-13, 2026-05-09, this PR)
+## S15 (researcher-6, 2026-05-09, this PR)
+
+Second of five ingredients for closing S10's
+`sylow_two_unique_when_n3_four` sorry, per
+`session-13-s10-element-count-spec.md` §2:
+
+* `cube_id_set_eq_disjoint_union` (private, axiom-free):
+  for finite G with `Nat.card G = 12`,
+  ```
+  {g : G | g^3 = 1} = {1} ∪ ⋃ (Q : Sylow 3 G), ((Q : Set G) \ {1}).
+  ```
+
+  Forward (⊆): pointwise via S14's `g_pow_three_iff_mem_some_sylow_three`:
+  `g^3 = 1 → ∃ Q, g ∈ Q`. Case-split on `g = 1`: contributes to `{1}`;
+  else contributes to `(Q : Set G) \ {1}`.
+
+  Backward (⊇): `g = 1` gives `1^3 = 1` by `one_pow`; `g ∈ Q` (with
+  `|Q| = 3` from S13) gives `g^3 = 1` via the backward direction of S14.
+
+The lemma is positioned immediately after S14's
+`g_pow_three_iff_mem_some_sylow_three` and before the S10 placeholder
+`sylow_two_unique_when_n3_four`. The placeholder's docstring is
+updated to reference the new helper.
+
+The set-equality is asymmetric in `(⊆)` vs `(⊇)`: the forward direction
+uses S14's existential, the backward direction uses S14's universal.
+Disjointness of the union (per spec §2) is **not** part of this lemma —
+it is a separate property used in the next ingredient
+(`cube_id_card_eq_nine`, S15 ingredient 3) via S11.5's
+`sylow_prime_order_disjoint_of_ne` instantiated with `|Q| = 3`.
+
+### Counts
+
+* `lineCount`: 1248 → 1290 (+42, including ~18 lines of docstring +
+  ~24 lines of proof body)
+* `theoremCount`: 27 → 28 (+1 private lemma)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 element-counting closure target; S15 ingredient 2 prepares
+  it without closing it)
+
+**Meta sync**: `meta.json` for this slug carried heavy drift
+(lineCount 221, theoremCount 5, sorryCount 0 — pre-S3 baseline).
+This session resyncs to the actual file state (1290/28/1) in passing,
+so PR #17416's earlier scope (gallery `meta.json`) does not
+mask the research-problem `meta.json` mismatch.
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S14: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The new lemma uses only
+Mathlib API verified against a local `mathlib4_main` checkout:
+
+| API | Module | Notes |
+|---|---|---|
+| `Set.mem_setOf_eq` | core | `g ∈ {g | P g} ↔ P g` |
+| `Set.mem_union` | core | `g ∈ A ∪ B ↔ g ∈ A ∨ g ∈ B` |
+| `Set.mem_singleton_iff` | core | `g ∈ {a} ↔ g = a` |
+| `Set.mem_iUnion` | core | `g ∈ ⋃ i, A i ↔ ∃ i, g ∈ A i` |
+| `Set.mem_diff` | core | `g ∈ A \ B ↔ g ∈ A ∧ g ∉ B` |
+| `g_pow_three_iff_mem_some_sylow_three` | local (S14, #17536) | both directions |
+| `one_pow` | core | `1 ^ n = 1` |
+
+No new imports — all of the above are already transitively available.
+
+## S14 (researcher-13, 2026-05-09, merged via #17536)
 
 First of five ingredients for closing S10's
 `sylow_two_unique_when_n3_four` sorry, per
