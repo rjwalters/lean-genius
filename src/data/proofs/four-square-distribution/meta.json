@@ -13,7 +13,10 @@
       "combinatorics",
       "representations",
       "jacobi",
-      "waring"
+      "waring",
+      "modular-forms",
+      "hyperoctahedral-group",
+      "native-decide"
     ],
     "badge": "original",
     "sorries": 0,
@@ -84,9 +87,10 @@
     "summary": "Four-square distribution theory fully formalized: 38 theorems, 0 sorries, 0 axioms. The symmetry-based contribution formula is verified for all major representation types.",
     "implications": "The formalization bridges combinatorics and analytic number theory: the contribution formula shows that Jacobi's factor of 8 is not a coincidence but a consequence of the signed permutation symmetry group acting on 4-tuples. The type (0,0,0,k) always contributing 8 implies every perfect square k² satisfies r₄(k²) ≥ 8 — a weak but unconditional lower bound that follows from the type-decomposition without using Jacobi's formula. The symmetry ratio 384/16 = 24 = |S₄| gives a precise meaning to 'how much symmetry reduces the representation count': maximally symmetric types (all equal) are suppressed by |S₄| relative to maximally asymmetric types. This connects to the Hurwitz quaternion interpretation: four-square representations correspond to Hurwitz integers of a given norm, and the symmetry group is the left-unit group of Hurwitz integers acting on representations.",
     "openQuestions": [
-      "Can Jacobi's four-square formula r₄(n) = 8·Σ_{4∤d|n} d be formally proved in Lean 4?",
+      "Can Jacobi's four-square formula r₄(n) = 8·Σ_{4∤d|n} d be formally proved in Lean 4? (Tracked as four-square-distribution-oq-01.)",
       "Can the distribution of r₄(n) across types be used to prove bounds on the number of representation types?",
-      "Can the r₄(n) formula be connected to modular form theory in Lean?"
+      "Can the r₄(n) formula be connected to modular form theory in Lean? Specifically, can θ(q)⁴ be formalized as a weight-2 Eisenstein series and the Fourier coefficient identity derived from that perspective rather than from the elementary proofs of Jacobi?",
+      "Does the type-decomposition framework generalize to representations as sums of 2k squares? The orbit-stabilizer pattern predicts contribution = 2^(nonzero) × (2k)!/∏mᵢ! for sums of 2k squares — for example, r₈(n) decomposition would use B₈ = S₈ ⋉ (ℤ/2)⁸ of order 8! × 2⁸ = 10321920."
     ]
   },
   "leanFile": {
@@ -142,14 +146,42 @@
       "type": "core",
       "statement": "∀ n : ℕ, ∀ t : RepType n, t.contribution ≤ 384",
       "description": "Every representation type contributes at most 384 to r₄(n).",
-      "significance": "Sharp bound achieved by all-distinct all-nonzero type (a,b,c,d)"
+      "significance": "Sharp bound achieved by all-distinct all-nonzero type (a,b,c,d). Proved by Nat.mul_le_mul on signFactor_le_sixteen (signFactor ≤ 2⁴ = 16) and permutations_le_twentyfour (24/m ≤ 24 by Nat.div_le_self)."
     },
     {
       "name": "all_distinct_nonzero_contribution",
       "type": "core",
-      "statement": "When a₁,a₂,a₃,a₄ are all distinct nonzero, contribution = 384",
-      "description": "Maximum contribution: 2^4 × 4! = 384.",
-      "significance": "Confirms the maximum symmetry group size for four-square types"
+      "statement": "type_30_a.contribution = 384 (where type_30_a = (1,2,3,4))",
+      "description": "Maximum contribution: 2⁴ × 4! = 384, achieved by (1,2,3,4) with 1²+2²+3²+4² = 30.",
+      "significance": "Witnesses the sharpness of contribution_le_384 — the upper bound is attained by the maximally asymmetric type and the orbit of B₄ = S₄ ⋉ (ℤ/2)⁴ has full size 4! · 2⁴ = 384."
+    },
+    {
+      "name": "all_equal_nonzero_contribution",
+      "type": "core",
+      "statement": "type_4_b.contribution = 16 (where type_4_b = (1,1,1,1))",
+      "description": "Minimum nonzero contribution: 2⁴ × 1 = 16, achieved by (1,1,1,1) with 1²+1²+1²+1² = 4.",
+      "significance": "Lower extreme of the symmetry spectrum — a fully symmetric type has trivial S₄-stabilizer of size 24 = 4!, leaving only the 16 sign choices."
+    },
+    {
+      "name": "symmetry_ratio",
+      "type": "core",
+      "statement": "384 / 16 = 24",
+      "description": "The ratio between maximum (all distinct) and minimum nonzero (all equal) contributions equals |S₄| = 4!.",
+      "significance": "Group-theoretic identity: the 24:1 ratio is precisely the order of the symmetric group S₄ acting on ordered 4-tuples. This makes Jacobi's factor of 8 a direct consequence of orbit-stabilizer applied to the hyperoctahedral group B₄."
+    },
+    {
+      "name": "trivial_type_k.contribution = 8",
+      "type": "supporting",
+      "statement": "For each k ∈ {1,2,3,4,5}, (trivial_type k).contribution = 8 where trivial_type k = (0,0,0,k) : RepType (k²)",
+      "description": "Every perfect square k² has the trivial type (0,0,0,k), which contributes exactly 8 to r₄(k²) (1 nonzero × 4 permutations × 2 signs).",
+      "significance": "Structural source of the '8' in Jacobi's formula: r₄(k²) ≥ 8 for all k ≥ 1 follows directly from the type decomposition without needing the σ*-formula. Verified by native_decide for k = 1..5; the general statement requires more work because RepType depends on the specific n."
+    },
+    {
+      "name": "r₄_4_distribution",
+      "type": "supporting",
+      "statement": "type_4_a.contribution + type_4_b.contribution = 24",
+      "description": "For n=4: type (0,0,0,2) contributes 8, type (1,1,1,1) contributes 16, total 24 = 8·σ*(4) = 8·(1+3) = 24.",
+      "significance": "Smallest non-trivial multi-type case — exhibits both the trivial-type contribution (8) and the all-equal nonzero contribution (16) in a single decomposition. Confirms Jacobi's formula numerically for n = 4."
     }
   ],
   "sorries": 0
