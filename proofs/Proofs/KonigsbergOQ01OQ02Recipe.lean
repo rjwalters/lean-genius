@@ -559,4 +559,82 @@ lemma circuit_edge_balance_list' (walk : List V) (n : ℕ) (v : V)
   obtain ⟨hcov, hsteps⟩ := toFinset_balance' walk n L hcov_list hsteps_list
   exact circuit_edge_balance' walk n v L.toFinset hlen hclosed hcov hsteps
 
+/-- **Generic remove_balanced_subset_balanced**: for any finsets of edges
+    `S, E` with `E ⊆ S`, if both `S` and `E` are "balanced at `v`"
+    (i.e., source-card = target-card), then `S \ E` is balanced at `v`.
+
+    This is the **post-bridge** building block for the deferred main-file
+    theorem `remove_circuit_balanced` (currently L1103, the file's last
+    `sorry`). Combined with S15's `circuit_edge_balance_list'` (which
+    supplies `hEbal` for `E := (walkEdges C.walk).toFinset`), the
+    Recipe-side mathematical chain is now complete: caller of
+    `remove_circuit_balanced` only needs to supply (a) the underlying
+    graph's balance hypothesis (`hSbal`) and (b) the subset relation
+    `(walkEdges C.walk).toFinset ⊆ G.edges` (`hsub`).
+
+    ## Proof structure
+
+    Purely `Finset` calculation, no walk-level reasoning:
+
+    1. `Finset.filter` distributes over `\` (provable by `ext` + `tauto`
+       on `mem_filter` / `mem_sdiff`).
+    2. `E ⊆ S` ⟹ `E.filter p ⊆ S.filter p` (via
+       `Finset.filter_subset_filter`).
+    3. `Finset.card_sdiff` (in the current Mathlib) has the unconditional
+       form `(s \ t).card = s.card - (t ∩ s).card`. Combined with
+       `Finset.inter_eq_left.mpr` (under `t ⊆ s`, `t ∩ s = t`), this
+       collapses to the standard `s.card - t.card`.
+    4. After `hSbal` and `hEbal` rewrites, both sides become equal
+       subtractions of equal naturals.
+
+    ## Use in `remove_circuit_balanced`
+
+    ```lean
+    theorem remove_circuit_balanced ... := by
+      intro v
+      unfold IsBalanced inDegree outDegree DiGraph.removeEdgeSet
+      apply remove_balanced_subset_balanced' G.edges (walkEdges C.walk).toFinset v
+      · -- hsub: (walkEdges C.walk).toFinset ⊆ G.edges
+        -- supplied from hsteps in the closed-walk hypothesis
+        sorry
+      · -- hSbal: G is balanced at v
+        exact h_balanced v  -- caller's IsEulerianBalanced G hypothesis
+      · -- hEbal: walk's edge-finset is balanced at v
+        exact circuit_edge_balance_list' C.walk n v (walkEdges C.walk)
+              hlen hclosed hcov_list hsteps_list
+    ```
+
+    The above, together with the S16+ in-place refactor of the main file,
+    fully discharges `remove_circuit_balanced` modulo the subset proof
+    `hsub` (a one-liner from `hsteps` via `List.mem_toFinset.mp`). -/
+lemma remove_balanced_subset_balanced' (S E : Finset (V × V)) (v : V)
+    (hsub : E ⊆ S)
+    (hSbal : (S.filter fun e => e.1 = v).card =
+             (S.filter fun e => e.2 = v).card)
+    (hEbal : (E.filter fun e => e.1 = v).card =
+             (E.filter fun e => e.2 = v).card) :
+    ((S \ E).filter fun e => e.1 = v).card =
+    ((S \ E).filter fun e => e.2 = v).card := by
+  have hsub_src : E.filter (fun e => e.1 = v) ⊆ S.filter (fun e => e.1 = v) :=
+    Finset.filter_subset_filter _ hsub
+  have hsub_tgt : E.filter (fun e => e.2 = v) ⊆ S.filter (fun e => e.2 = v) :=
+    Finset.filter_subset_filter _ hsub
+  have h_filt_src : (S \ E).filter (fun e => e.1 = v) =
+      S.filter (fun e => e.1 = v) \ E.filter (fun e => e.1 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have h_filt_tgt : (S \ E).filter (fun e => e.2 = v) =
+      S.filter (fun e => e.2 = v) \ E.filter (fun e => e.2 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_sdiff]
+    tauto
+  have h_src_card : (S.filter (fun e => e.1 = v) \ E.filter (fun e => e.1 = v)).card =
+      (S.filter (fun e => e.1 = v)).card - (E.filter (fun e => e.1 = v)).card := by
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_src]
+  have h_tgt_card : (S.filter (fun e => e.2 = v) \ E.filter (fun e => e.2 = v)).card =
+      (S.filter (fun e => e.2 = v)).card - (E.filter (fun e => e.2 = v)).card := by
+    rw [Finset.card_sdiff, Finset.inter_eq_left.mpr hsub_tgt]
+  rw [h_filt_src, h_filt_tgt, h_src_card, h_tgt_card, hSbal, hEbal]
+
 end KonigsbergOQ01OQ02Recipe
