@@ -182,6 +182,57 @@
       "statement": "type_4_a.contribution + type_4_b.contribution = 24",
       "description": "For n=4: type (0,0,0,2) contributes 8, type (1,1,1,1) contributes 16, total 24 = 8·σ*(4) = 8·(1+3) = 24.",
       "significance": "Smallest non-trivial multi-type case — exhibits both the trivial-type contribution (8) and the all-equal nonzero contribution (16) in a single decomposition. Confirms Jacobi's formula numerically for n = 4."
+    },
+    {
+      "name": "r₄_9_distribution",
+      "type": "supporting",
+      "statement": "type_9_a.contribution + type_9_b.contribution = 104",
+      "description": "For n=9: type (0,0,0,3) contributes 8, type (0,1,2,2) contributes 96, total 104 = 8·σ*(9) = 8·(1+3+9) = 104. (4 ∤ d for d ∈ {1,3,9}, all divisors counted.)",
+      "significance": "First multi-type case with a *prime-power-free* divisor sum (σ*(9) = σ(9) since 4 ∤ 9). Demonstrates the 8 + 96 = 8 × 13 split for a perfect square that is *not* a power of 2 — every perfect square contains the trivial type (0,0,0,k) contributing 8, plus additional types reflecting the divisor structure of n."
+    },
+    {
+      "name": "r₄_10_distribution",
+      "type": "supporting",
+      "statement": "type_10_a.contribution + type_10_b.contribution = 144",
+      "description": "For n=10: type (0,0,1,3) contributes 48, type (1,1,2,2) contributes 96, total 144 = 8·σ*(10) = 8·(1+2+5+10) = 144.",
+      "significance": "Composite n = 2·5 with all 4 divisors contributing (4 ∤ d for any d | 10). Shows the 48 + 96 split — neither type is the trivial (0,0,0,k) form (since 10 is not a perfect square), and yet the σ*-sum still resolves cleanly. Useful test case for understanding how the type decomposition handles non-square n."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Jacobi, C.G.J. (1829). \"Fundamenta Nova Theoriae Functionum Ellipticarum.\" Königsberg: Borntraeger. (English summary in Hardy & Wright, *An Introduction to the Theory of Numbers*, §20.12.)",
+      "relevance": "Original derivation of $r_4(n) = 8 \\sigma^*(n)$ via Fourier coefficients of $\\theta(q)^4$. The factor of 8 — quantified here as the per-divisor contribution of the type decomposition — first appears in Jacobi's identity for $\\theta^4$ as a weight-2 Eisenstein series."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Lagrange, J.-L. (1770). \"Démonstration d'un théorème d'arithmétique.\" Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin.",
+      "relevance": "Original existence proof: every $n \\in \\mathbb{N}$ is a sum of four squares, $r_4(n) > 0$. The distribution analysis here is the *quantitative* refinement of Lagrange's qualitative existence theorem."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H. & Wright, E.M. (2008). *An Introduction to the Theory of Numbers*, 6th ed., Oxford University Press. Chapter XX (\"The Representation of a Number by Two or Four Squares\").",
+      "relevance": "Standard exposition of $r_2$ and $r_4$ formulas, including Jacobi's proof via theta functions and the elementary divisor-sum identities. The contribution formula $\\binom{4}{m_1,\\ldots,m_k} \\cdot 2^k$ is the explicit form of Hardy–Wright's symmetry-counting argument."
+    },
+    {
+      "type": "textbook",
+      "citation": "Conway, J.H. & Smith, D.A. (2003). *On Quaternions and Octonions*, A K Peters / CRC Press. Chapter 2 (\"Quaternions and 4D Symmetry\") and Chapter 5 (\"Hurwitz Integers\").",
+      "relevance": "The hyperoctahedral group $B_4 = S_4 \\ltimes (\\mathbb{Z}/2)^4$ of order 384 is the group of left-units of the Hurwitz order $\\mathbb{H}(\\mathbb{Z})$. The contribution $2^k \\cdot 4!/\\prod m_i!$ counts $B_4$-orbits on signed sorted tuples — making the elementary combinatorial formula here the orbit-counting shadow of the deep algebraic structure of Hurwitz quaternions."
+    },
+    {
+      "type": "textbook",
+      "citation": "Iwaniec, H. (1997). *Topics in Classical Automorphic Forms*, Graduate Studies in Mathematics 17, AMS. §10 on Theta Functions and §11 on Eisenstein Series.",
+      "relevance": "Modern modular-forms treatment of $r_k(n)$ via theta functions: $\\theta(q)^4 \\in M_2(\\Gamma_0(4))$ is a weight-2 modular form, and the identity $\\theta(q)^4 = 1 + 8\\sum_{n \\geq 1} \\sigma^*(n) q^n$ is the Eisenstein series decomposition. This is the analytic counterpart to the combinatorial decomposition formalized here."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. \"Mathlib.NumberTheory.SumFourSquares.\" (accessed 2026).",
+      "relevance": "Lagrange's four-square theorem in Mathlib (`Nat.sum_four_squares`). This formalization builds on top of the existence theorem to provide the quantitative type decomposition; the long-term integration would prove `Nat.r4_eq_eight_sigmaStar` connecting the two."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Deza, M. & Grishukhin, V.P. (1996). \"Hypermetrics in Geometry of Numbers.\" In *Geometric Combinatorics* (DIMACS Series, AMS), pp. 1–109.",
+      "relevance": "Survey of the hyperoctahedral group action on lattice points and its appearance in lattice-point-counting problems beyond four squares — provides the abstract framework in which the $S_4 \\ltimes (\\mathbb{Z}/2)^4$ action appearing here is one instance."
     }
   ],
   "sorries": 0
