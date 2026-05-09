@@ -272,12 +272,96 @@ axiom density_increment_kAP (N k : ℕ) [NeZero N] (hk : k ≥ 3) (hN : N ≥ 2)
     and N might reach 1 before density exceeds 1.
 
     For k=3, g(δ) = δ²/100 (proved in `density_increment_k3_explicit`).
-    For k≥4, the bound involves tower functions (Gowers 2001). -/
+    For k≥4, the bound involves tower functions (Gowers 2001).
+
+    Proof: rather than iterate `density_increment_kAP` (which would also
+    require a quantitative lower bound `δ' ≥ δ + g(δ,k)`), we directly
+    transfer `Szemeredi.szemeredi_theorem` from `Finset ℕ` (subset of
+    `Finset.range N`) to `Finset (ZMod N)` via `ZMod.val`. The image
+    `A.image ZMod.val` is a subset of `Finset.range N` of the same
+    cardinality (since `ZMod.val` is injective for `N ≥ 1`), so the
+    density assumption transfers. The k-AP `(a, a+d, …, a+(k-1)d)` in
+    `ℕ` then lifts back to a k-AP in `ZMod N`: since
+    `a + (k-1)·d < N`, every term `a + i·d` lies in `[0, N)` and so its
+    image under `Nat.cast : ℕ → ZMod N` has the same val. This shows
+    membership of the lifted AP in `A` and gives `(d : ZMod N) ≠ 0`
+    from `0 < d < N`. -/
 theorem szemeredi_from_density_increment (k : ℕ) (hk : k ≥ 3) :
     ∀ δ : ℝ, 0 < δ → ∃ N₀ : ℕ, ∀ N ≥ N₀,
       ∀ A : Finset (ZMod N), A.card ≥ δ * N →
         ¬IsKAPFreeZMod A k := by
-  sorry
+  intro δ hδ
+  -- Apply the assembled Szemerédi theorem (k=1,2 trivial; k=3 Roth via
+  -- Mathlib's corner theorem; k≥4 axiomatized in `Szemeredi.szemeredi_k_ge_4`).
+  obtain ⟨N₀, hN₀⟩ :=
+    Szemeredi.szemeredi_theorem k δ (by omega) hδ
+  -- Inflate the threshold so that `N ≥ 1` is automatic. (Even when
+  -- `N₀ = 0`, the case `N = 0` is vacuously handled by density: any
+  -- `A : Finset (ZMod 0)` has `δ * 0 = 0` and the conclusion follows
+  -- directly, but lifting to `Finset.range 0 = ∅` requires `N ≥ 1`.)
+  refine ⟨max N₀ 1, ?_⟩
+  intro N hN A hA_card hAPFree
+  have hN_ge : N ≥ N₀ := le_of_max_le_left hN
+  have hN_pos : 0 < N := by
+    have h1 : 1 ≤ max N₀ 1 := le_max_right _ _
+    omega
+  haveI : NeZero N := ⟨by omega⟩
+  -- Lift A : Finset (ZMod N) to S := A.image ZMod.val ⊆ Finset.range N.
+  have hS_sub : A.image (fun x : ZMod N => x.val) ⊆ Finset.range N := by
+    intro x hx
+    rcases Finset.mem_image.mp hx with ⟨y, _, rfl⟩
+    exact Finset.mem_range.mpr (ZMod.val_lt y)
+  have hS_card :
+      (A.image (fun x : ZMod N => x.val)).card = A.card :=
+    Finset.card_image_of_injective _ (ZMod.val_injective N)
+  have hS_density :
+      ((A.image (fun x : ZMod N => x.val)).card : ℝ) ≥ δ * N := by
+    rw [hS_card]; exact hA_card
+  -- Apply the Szemerédi conclusion in ℕ to get a k-AP `(a, a+d, …, a+(k-1)d)`
+  -- inside `A.image ZMod.val`.
+  obtain ⟨a, d, hd_pos, hAP_in_S⟩ :=
+    hN₀ N hN_ge (A.image (fun x : ZMod N => x.val)) hS_sub hS_density
+  -- The last term `a + (k-1)·d` lies in `Finset.range N`, hence < N.
+  have hk_pos : 0 < k := by omega
+  have h_km1_lt_k : k - 1 < k := Nat.sub_lt hk_pos Nat.one_pos
+  have h_last_in_S : a + (k - 1) * d ∈ A.image (fun x : ZMod N => x.val) :=
+    hAP_in_S (k - 1) h_km1_lt_k
+  have h_last_lt_N : a + (k - 1) * d < N :=
+    Finset.mem_range.mp (hS_sub h_last_in_S)
+  -- d < N: since k ≥ 3 ⇒ k - 1 ≥ 2 ≥ 1, we have `d ≤ (k-1)·d ≤ a + (k-1)·d < N`.
+  have h_one_le_km1 : 1 ≤ k - 1 := by omega
+  have h_d_le : d ≤ (k - 1) * d := Nat.le_mul_of_pos_left d h_one_le_km1
+  have h_d_lt_N : d < N := by omega
+  -- Therefore `(d : ZMod N) ≠ 0`: if it were zero then `N ∣ d`, but
+  -- `0 < d < N` rules this out.
+  have h_d_ne_zero : (d : ZMod N) ≠ 0 := by
+    intro h0
+    have hdvd : (N : ℕ) ∣ d := (ZMod.natCast_zmod_eq_zero_iff_dvd d N).mp h0
+    have := Nat.le_of_dvd hd_pos hdvd
+    omega
+  -- Lift the AP back to ZMod N. For each `i : Fin k`, the i-th term
+  -- `a + i·d < N` (since `i ≤ k-1`), and its `Nat.cast` matches the
+  -- ZMod expression `↑a + i.val • ↑d`.
+  refine hAPFree (a : ZMod N) (d : ZMod N) h_d_ne_zero (fun i => ?_)
+  have h_i_lt_k : (i : ℕ) < k := i.isLt
+  have h_i_le_km1 : (i : ℕ) ≤ k - 1 := by omega
+  have h_id_le : (i : ℕ) * d ≤ (k - 1) * d := Nat.mul_le_mul_right d h_i_le_km1
+  have h_term_lt_N : a + (i : ℕ) * d < N := by omega
+  have h_term_in_S :
+      a + (i : ℕ) * d ∈ A.image (fun x : ZMod N => x.val) :=
+    hAP_in_S i.val h_i_lt_k
+  rcases Finset.mem_image.mp h_term_in_S with ⟨y, hy_in_A, hy_val⟩
+  -- Show y = (a : ZMod N) + i.val • (d : ZMod N).
+  have h_cast :
+      ((a + (i : ℕ) * d : ℕ) : ZMod N) = (a : ZMod N) + (i : ℕ) • (d : ZMod N) := by
+    rw [nsmul_eq_mul]; push_cast; ring
+  have h_y_val_target :
+      y.val = (((a : ZMod N) + (i : ℕ) • (d : ZMod N)) : ZMod N).val := by
+    rw [hy_val, ← h_cast, ZMod.val_natCast_of_lt h_term_lt_N]
+  have h_y_eq : y = (a : ZMod N) + (i : ℕ) • (d : ZMod N) :=
+    ZMod.val_injective N h_y_val_target
+  rw [← h_y_eq]
+  exact hy_in_A
 
 -- ============================================================
 -- PART VIII: k=3 Case (Proved from RothTheorem.lean)
