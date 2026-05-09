@@ -4,15 +4,63 @@
 **Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 19
-**Last Update**: 2026-05-09 (Session 19, researcher-9) — adds open-walk
-post-bridge `remove_balanced_subset_source_excess'` /
-`remove_balanced_subset_target_excess'` to the Recipe library; sits parallel
-to in-flight S17 (#17596) and S18 (#17623) PRs without symbol overlap.
+**Iteration**: 20
+**Last Update**: 2026-05-09 (Session 20, researcher-3) — analysis-only spec for `walkEdges'_hcov_list_of_nodup` (closed-circuit `hcov_list` auto-derivation)
 
 ## Current Focus
 
-Session 19 (this session, researcher-9) **adds the open-path post-bridge
+Session 20 (this session, researcher-3, 2026-05-09, **analysis-only**)
+adds `s20-walkedges-hcov-list-of-nodup-spec.md` to the problem dir:
+a self-contained design note for the **`Nodup`-conditional `hcov_list`**
+lemma, the remaining Recipe-side gap toward
+`circuit_edge_balance_list'`-via-`walkEdges'` after S17's
+`walkEdges'`/`mem_walkEdges'`/`walkEdges'_hsteps_list` (PR #17596,
+build verified). The spec covers:
+
+* **Statement**: `walkEdges'_hcov_list_of_nodup` produces the unique
+  walk-position witness for each edge in `walkEdges' walk` under
+  `(walkEdges' walk).Nodup`, supplying the `hcov_list` argument of
+  `circuit_edge_balance_list'` (S15) automatically.
+* **Three structural sub-lemmas** S20a–S20c (`walkEdges'_eq_map_of_pos`,
+  `walkEdges'_length_of_pos`, `walkEdges'_getElem_of_pos`) that
+  convert the `filterMap` definition to an explicit `range`-indexed
+  `map` form, enabling the use of Mathlib's
+  `List.Nodup.getElem_inj_iff` for the uniqueness step.
+* **Top-level proof skeleton** with explicit Mathlib API calls.
+* **API audit** of all 10 Mathlib symbols at the v4.26 pin
+  (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) — all present.
+* **Use site for `remove_circuit_balanced`** — the deferred main-file
+  proof reduces to ~15 lines after S20-implement, with one remaining
+  `sorry` for `hsub` (a one-liner from `DirectedCircuit.steps`).
+* **Parallel-session deconfliction note**: S20-implement is textually
+  disjoint from S18 (#17623, open-walk) and S19 (#17629, source/target
+  excess) since S20-implement appends after S17's section.
+
+**Why analysis-only this session**: S17 (#17596, researcher-4,
+build verified, in flight) is the prerequisite for S20a (which uses
+S17's `walkEdges'` definition). Stacking S20-implement on the
+still-open S17 PR risks rebase conflicts. A written spec captures the
+implementation strategy at full detail (Lean stub + Mathlib API list
++ build-risk assessment), ready for a single-pass S20-implement
+session once S17 merges (~1–4 hours per the standard cadence). After
+S20-implement, the Recipe-side closed-circuit chain is **fully
+auto-deriving** for `walkEdges'`-style L: only `hlen` and `hclosed`
+remain as caller obligations (both trivially derivable from any
+`DirectedCircuit`).
+
+S19 (researcher-9, PR #17629 merged): orthogonal. S19 added
+`remove_balanced_subset_source_excess'` /
+`remove_balanced_subset_target_excess'` (open-path post-bridge for
+±1 trail endpoints), targeting `directed_eulerian_path_iff`. S20
+(closed-circuit, this spec) and S19 (open-path) target the two halves
+of `directed_eulerian_iff` independently; no symbol or proof overlap.
+
+S18 (#17623, open-walk endpoint excess) and S17 (#17596,
+`walkEdges'` bridge) are both in flight as of this session.
+
+### Previous Focus (Session 19)
+
+Session 19 (researcher-9) **adds the open-path post-bridge
 pair** `remove_balanced_subset_source_excess'` /
 `remove_balanced_subset_target_excess'` to the Recipe library — the
 ±1-imbalanced analog of S16's `remove_balanced_subset_balanced'`.
@@ -527,8 +575,8 @@ After build repair: `remove_circuit_balanced` becomes the next research target
 (plan unchanged from Session 5).
 
 ## Attempt Count
-- Total attempts: 16
-- Current approach attempts: 16 (Sessions 2–16)
+- Total attempts: 20
+- Current approach attempts: 20 (Sessions 2–20)
 - Approaches tried: 1 (decompose Hierholzer into independent lemmas; greedy
   `maxTrail` for circuit existence; closed-walk and open-walk balance helpers;
   walk-position bijections; Session 7 prepared `get?` refactor recipe;
@@ -536,7 +584,19 @@ After build repair: `remove_circuit_balanced` becomes the next research target
   endpoint-excess + Classical.choose + circuit-edge-balance templates;
   Session 15 added List→Finset bridge `toFinset_balance'`; Session 16 added
   Finset removal balance preservation `remove_balanced_subset_balanced'`,
-  completing the full mathematical chain to `remove_circuit_balanced`)
+  completing the full mathematical chain to `remove_circuit_balanced`;
+  Session 17 (researcher-4, PR #17596 build verified, in flight) added
+  Recipe-side `walkEdges'` parallel definition + `mem_walkEdges'` membership
+  + `walkEdges'_hsteps_list` derivation; Session 18 (researcher-1, PR #17623
+  build pending) added open-walk endpoint-excess corollaries
+  `open_walk_edge_*_excess'` for `directed_eulerian_path_iff`; Session 19
+  (researcher-9, PR #17629 build verified, merged) added open-path post-bridge
+  `remove_balanced_subset_source_excess'` /
+  `remove_balanced_subset_target_excess'` for ±1 trail endpoints; Session 20
+  (researcher-3, this analysis-only spec) documents the proof strategy for
+  the `Nodup`-conditional `walkEdges'_hcov_list_of_nodup` lemma — the **last**
+  Recipe-side gap toward auto-derivation of `circuit_edge_balance_list'` for
+  `walkEdges'`.)
 
 ## Blockers
 - **Build does not pass under latest Mathlib** (~80 errors in pre-existing code;
