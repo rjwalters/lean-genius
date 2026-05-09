@@ -1448,6 +1448,112 @@ theorem selmer_padic_solubility_extended_caseA_primes_v2 :
    selmer_padic_solubility_p53_hensel,
    selmer_padic_solubility_p59_hensel⟩
 
+/-! ## Section 24: Case-A Primes Beyond 60 (p ∈ {71, 83, 89, 101})
+
+Continuing the Sections 22/23 pattern, this section adds four further
+Case-A primes — `p ∈ {71, 83, 89, 101}` — as one-line corollaries of
+`selmer_padic_solubility_caseA`. Together with Sections 22 and 23,
+this extends the discharged sub-collection from 16 to 20 primes total
+(12 Section-8 primes + Sections 22/23's 4 primes + Section 24's 4 primes).
+
+Eligibility (per Section 13): a prime `p` is Case-A iff `p ≡ 2 (mod 3)`
+and `p ∉ {2, 5}`. All four primes satisfy this:
+
+| prime | `p mod 3` | comment                                   |
+| ----- | --------- | ----------------------------------------- |
+| 71    | 2         | smallest Case-A prime above 60            |
+| 83    | 2         | (next Case-A prime; 73 ≡ 1 mod 3, skipped)|
+| 89    | 2         | (next; 79 ≡ 1 mod 3, skipped)             |
+| 101   | 2         | smallest 3-digit Case-A prime; 97 ≡ 1     |
+
+These primes (like the Sections 22/23 primes) are not part of the
+Hasse-failure pipeline (which consumes only the twelve Section-8 primes
+plus the four Section-9 table primes `{11, 17, 23, 29}`). They serve
+the same purpose as Sections 22/23: demonstrate the parametric theorem's
+unbounded reach and provide additional axiom-free citation points for
+any consumer needing `ℚ_[p]`-solubility at a small Case-A prime.
+
+**Witness data** (verified by direct ℤ-arithmetic + `decide`):
+
+| prime | `z₀` | `4 + 5·z₀³`         | `p ∣ (4+5z₀³)` | `15·z₀²` | `gcd(15z₀², p)` |
+| ----- | ---- | ------------------- | -------------- | -------- | --------------- |
+| 71    | 63   | 1250239 = 71·17609  | ✓              | 59535    | 1               |
+| 83    | 23   | 60839   = 83·733    | ✓              | 7935     | 1               |
+| 89    | 9    | 3649    = 89·41     | ✓              | 1215     | 1               |
+| 101   | 81   | 2657209 = 101·26309 | ✓              | 98415    | 1               |
+
+The witnesses are the smallest non-negative `z₀ < p` with `5·z₀³ ≡ -4 (mod p)`,
+obtained by iterating over `(ZMod p)`. Each exists uniquely because the
+cube map on `(ZMod p)ˣ` is bijective when `gcd(3, p - 1) = 1`, which holds
+exactly when `p ≡ 2 (mod 3)`. A future Section 25 may codify this
+existence-of-cube-root step parametrically, eliminating the per-prime
+enumeration entirely (the universal Case-A theorem). -/
+
+instance : Fact (Nat.Prime 71) := ⟨by decide⟩
+instance : Fact (Nat.Prime 83) := ⟨by decide⟩
+instance : Fact (Nat.Prime 89) := ⟨by decide⟩
+instance : Fact (Nat.Prime 101) := ⟨by decide⟩
+
+/-- ℚ_[71] solubility of the Selmer cubic: `(0, 1, zt)` for `zt`
+    lifting `63 mod 71`. Witness data: `71 ∣ 4 + 5·63³ = 1250239 = 71·17609`
+    and `gcd(15·63², 71) = gcd(59535, 71) = 1`. -/
+theorem selmer_padic_solubility_p71_hensel :
+    ∃ (x y z : ℚ_[71]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 63
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[83] solubility of the Selmer cubic: `(0, 1, zt)` for `zt`
+    lifting `23 mod 83`. Witness data: `83 ∣ 4 + 5·23³ = 60839 = 83·733`
+    and `gcd(15·23², 83) = gcd(7935, 83) = 1`. -/
+theorem selmer_padic_solubility_p83_hensel :
+    ∃ (x y z : ℚ_[83]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 23
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[89] solubility of the Selmer cubic: `(0, 1, zt)` for `zt`
+    lifting `9 mod 89`. Witness data: `89 ∣ 4 + 5·9³ = 3649 = 89·41`
+    and `gcd(15·9², 89) = gcd(1215, 89) = 1`. -/
+theorem selmer_padic_solubility_p89_hensel :
+    ∃ (x y z : ℚ_[89]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 9
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- ℚ_[101] solubility of the Selmer cubic: `(0, 1, zt)` for `zt`
+    lifting `81 mod 101`. Witness data: `101 ∣ 4 + 5·81³ = 2657209 = 101·26309`
+    and `gcd(15·81², 101) = gcd(98415, 101) = 1`. -/
+theorem selmer_padic_solubility_p101_hensel :
+    ∃ (x y z : ℚ_[101]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA 81
+    (by decide)
+    (Int.isCoprime_iff_gcd_eq_one.mpr (by decide))
+
+/-- **Bundled Case-A solubility extension v3** — covers all eight
+    extended Case-A primes `p ∈ {41, 47, 53, 59, 71, 83, 89, 101}`.
+    Each is an axiom-free application of the Section-13 parametric
+    Case-A theorem; together with `selmer_padic_solubility_section8_primes`
+    (the 12 Section-8 primes), this gives an axiom-free 20-prime
+    sub-collection of the universal axiom `selmer_padic_solubility`. -/
+theorem selmer_padic_solubility_extended_caseA_primes_v3 :
+    (∃ x y z : ℚ_[41], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[47], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[53], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[59], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[71], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[83], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[89], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) ∧
+    (∃ x y z : ℚ_[101], (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0) :=
+  ⟨selmer_padic_solubility_p41_hensel,
+   selmer_padic_solubility_p47_hensel,
+   selmer_padic_solubility_p53_hensel,
+   selmer_padic_solubility_p59_hensel,
+   selmer_padic_solubility_p71_hensel,
+   selmer_padic_solubility_p83_hensel,
+   selmer_padic_solubility_p89_hensel,
+   selmer_padic_solubility_p101_hensel⟩
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -1477,5 +1583,10 @@ theorem selmer_padic_solubility_extended_caseA_primes_v2 :
 #check @selmer_padic_solubility_p53_hensel
 #check @selmer_padic_solubility_p59_hensel
 #check @selmer_padic_solubility_extended_caseA_primes_v2
+#check @selmer_padic_solubility_p71_hensel
+#check @selmer_padic_solubility_p83_hensel
+#check @selmer_padic_solubility_p89_hensel
+#check @selmer_padic_solubility_p101_hensel
+#check @selmer_padic_solubility_extended_caseA_primes_v3
 
 end Hilbert11OQ02
