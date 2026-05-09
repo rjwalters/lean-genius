@@ -83,7 +83,9 @@
       "**Exceptional position of ℝ**: The Artin-Schreier theorem characterizes real-closed fields as exactly those whose algebraic closure is a degree-2 extension. ℝ is the prototypical real-closed field; ℚ_p is not real-closed (it lacks a square root of -1 for p ≡ 3 mod 4, and even when it doesn't, extensions of all degrees exist via ramified extensions).",
       "**Newton polygon argument**: For X^n - p over ℚ_p, the Newton polygon has a single segment with slope -1/n. When gcd(1,n) = 1 (always true), a single-slope Newton polygon implies the polynomial is irreducible — this is a fundamental result in p-adic analysis.",
       "**AdjoinRoot finrank**: The key machine-checked result is Module.finrank ℚ_[p] (AdjoinRoot(X^n - C p)) = n, proved using the PowerBasis construction. This is a general algebraic fact about adjoin-root algebras that doesn't require the irreducibility axiom — just that the polynomial is nonzero.",
-      "**Two axioms, different strengths**: Xn_sub_p_irred_Qp (irreducibility) implies padic_alg_closure_infinite_dim (infinite dimension) but not conversely. We axiomatize both because the second requires AlgebraicClosure infrastructure beyond what's proved."
+      "**Two axioms, different strengths**: Xn_sub_p_irred_Qp (irreducibility) implies padic_alg_closure_infinite_dim (infinite dimension) but not conversely. We axiomatize both because the second requires AlgebraicClosure infrastructure beyond what's proved.",
+      "**finrank does not need irreducibility**: The machine-checked core `padic_root_extension_finrank` works because Module.finrank of an AdjoinRoot only requires the polynomial to be nonzero — it returns natDegree(f) regardless of whether f is irreducible. This separation of concerns is a powerful Lean-idiomatic trick: the *vector-space dimension* of $F[X]/(f)$ is purely a polynomial-degree fact, while the *field structure* is what irreducibility delivers. The cardinal-bound argument (every n is achieved) cleanly bypasses the open p-adic-irreducibility infrastructure gap.",
+      "**Totally ramified vs unramified extensions**: $\\mathbb{Q}_p(p^{1/n})$ is *totally ramified* — its residue field is the same as ℚ_p's, namely 𝔽_p. The unramified extensions of $\\mathbb{Q}_p$ are classified by extensions of 𝔽_p (degree $f$ unramified ↔ 𝔽_{p^f}), and there are countably many of every degree. Together with the totally ramified extensions (parameterized by Eisenstein polynomials of each degree), they generate the full algebraic closure $\\overline{\\mathbb{Q}_p}$. This entry constructs an instance of every totally-ramified degree, and the axiomatized infinite-dimensionality follows."
     ],
     "prerequisites": [
       "Field extensions and vector space dimension ([K:F] = dim_F K)",
@@ -154,20 +156,24 @@
   },
   "crossReferences": [
     {
-      "id": "fundamental-theorem-algebra-oq-04",
-      "relationship": "parent entry: proves [ℂ:ℝ] = 2 and C is the unique algebraic closure of ℝ — this entry proves the p-adic analogue has infinite degree"
+      "proofId": "fundamental-theorem-algebra-oq-04",
+      "relationship": "parent",
+      "description": "Parent entry proves [ℂ:ℝ] = 2 and that ℂ is the unique algebraic closure of ℝ. This entry proves the p-adic analogue has infinite degree, completing the dichotomy between archimedean and non-archimedean completions of ℚ."
     },
     {
-      "id": "fundamental-theorem-algebra",
-      "relationship": "grandparent: the fundamental theorem itself, proving ℂ is algebraically closed (used via Complex.isAlgClosed in the parent)"
+      "proofId": "fundamental-theorem-algebra",
+      "relationship": "grandparent",
+      "description": "The fundamental theorem itself, proving ℂ is algebraically closed (used via Complex.isAlgClosed in the parent oq-04). This entry establishes the p-adic counterexample: no analogous finite-degree algebraic closure exists for ℚ_p."
     },
     {
-      "id": "nth-root-irrational-oq-01",
-      "relationship": "sibling: provides eisenstein_X_pow_sub_prime used to prove Xn_sub_p_irred_Q"
+      "proofId": "nth-root-irrational-oq-01",
+      "relationship": "sibling",
+      "description": "Provides `eisenstein_X_pow_sub_prime` used to prove `Xn_sub_p_irred_Q` (irreducibility of X^n - p over ℚ via Gauss's lemma from ℤ-irreducibility)."
     },
     {
-      "id": "triangle-inequality-oq-02",
-      "relationship": "related: formalizes the p-adic ultrametric inequality, demonstrating ℚ_[p] infrastructure in Lean"
+      "proofId": "triangle-inequality-oq-02",
+      "relationship": "related",
+      "description": "Formalizes the p-adic ultrametric inequality $|x+y|_p \\leq \\max(|x|_p, |y|_p)$, demonstrating Mathlib's ℚ_[p] infrastructure. The ultrametric is the analytic foundation underlying the Newton polygon argument used here."
     }
   ],
   "leanFile": {
@@ -190,18 +196,42 @@
   "references": [
     {
       "key": "Se79",
-      "citation": "Serre, J.-P., Local Fields, Springer GTM 67 (1979). The standard reference for p-adic fields, DVRs, and extensions.",
+      "citation": "Serre, J.-P. (1979). *Local Fields*, Springer GTM 67. The standard reference for p-adic fields, DVRs, and extensions; Chapters I–III cover the Newton polygon argument and the structure of finite extensions of $\\mathbb{Q}_p$.",
       "type": "book"
     },
     {
       "key": "Ne99",
-      "citation": "Neukirch, J., Algebraic Number Theory, Springer GMW 322 (1999), Ch. II §6: completions and p-adic fields.",
+      "citation": "Neukirch, J. (1999). *Algebraic Number Theory*, Springer GMW 322, Ch. II §6: completions and p-adic fields; §7: extensions of local fields and the totally-ramified vs unramified decomposition.",
       "type": "book"
     },
     {
       "key": "Go03",
-      "citation": "Gouvêa, F.Q., p-adic Numbers: An Introduction, 2nd ed., Springer Universitext (2003), Ch. 3: extensions of p-adic fields.",
+      "citation": "Gouvêa, F.Q. (2003). *p-adic Numbers: An Introduction*, 2nd ed., Springer Universitext, Ch. 3: extensions of p-adic fields. The most accessible exposition of the Newton polygon argument used in the irreducibility axiom.",
       "type": "book"
+    },
+    {
+      "key": "AS27",
+      "citation": "Artin, E. & Schreier, O. (1927). \"Eine Kennzeichnung der reell abgeschlossenen Körper.\" Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 5: 225–231.",
+      "type": "research-paper",
+      "relevance": "Original Artin–Schreier theorem characterizing real-closed fields as exactly those whose algebraic closure is a degree-2 extension. This is the deep reason [ℂ:ℝ] = 2 is special — and why ℚ_p, lacking the order structure required to be real-closed, must have an infinite-degree algebraic closure."
+    },
+    {
+      "key": "Kr66",
+      "citation": "Krasner, M. (1966). \"Nombre des extensions d'un degré donné d'un corps p-adique.\" Les Tendances Géom. en Algèbre et Théorie des Nombres, Éditions du CNRS, pp. 143–169.",
+      "type": "research-paper",
+      "relevance": "Krasner's lemma and the count of degree-$n$ extensions of $\\mathbb{Q}_p$. The lemma underlies the construction of the spherically-complete field $\\mathbb{C}_p = \\widehat{\\overline{\\mathbb{Q}_p}}$ in OQ-04's full statement."
+    },
+    {
+      "key": "BCDT01",
+      "citation": "Berger, L., Colmez, P., et al., as collected in Colmez, P. (2008). \"Représentations de $\\mathrm{GL}_2(\\mathbb{Q}_p)$ et $(\\varphi, \\Gamma)$-modules.\" Astérisque 330.",
+      "type": "research-paper",
+      "relevance": "Modern p-adic Hodge theory builds on the absolute Galois group $G_{\\mathbb{Q}_p} = \\mathrm{Gal}(\\overline{\\mathbb{Q}_p}/\\mathbb{Q}_p)$, whose structure is intimately linked to the totally-ramified extension tower constructed here. Cited as the natural research context for the absolute Galois group open question."
+    },
+    {
+      "key": "Ma17",
+      "citation": "The mathlib Community. (accessed 2026). *Mathlib4: Mathlib.RingTheory.AdjoinRoot* and *Mathlib.NumberTheory.Padics.PadicNumbers*.",
+      "type": "library",
+      "relevance": "The `AdjoinRoot.powerBasis` construction in Mathlib makes `padic_root_extension_finrank` a one-line proof modulo the `natDegree` arithmetic. The `Padic` and `PadicInt` types provide the ambient field $\\mathbb{Q}_p$; bridging `PadicInt` to the `DiscreteValuationRing` typeclass is the Mathlib-side gap blocking a full proof of the Newton-polygon irreducibility axiom."
     }
   ],
   "sorries": 0
