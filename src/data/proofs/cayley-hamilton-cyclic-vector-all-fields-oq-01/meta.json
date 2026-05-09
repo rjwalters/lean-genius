@@ -115,11 +115,19 @@
     },
     {
       "id": "sec-main-theorem",
-      "title": "Main Theorem and Corollaries",
-      "startLine": 189,
+      "title": "Section III: Main Theorem and Finite-Field Corollary",
+      "startLine": 173,
+      "endLine": 218,
+      "summary": "Section III separator + the two main results: `nonderogatory_has_cyclic_vector` (line 189) — the headline theorem stating that *every* nonderogatory matrix over *any* field has a cyclic vector, proved by factoring the minimal polynomial via `monic_factored_form` (Section II) and feeding the factorization to WIP04's `nonderogatory_general_has_cyclic_vector`. `nonderogatory_has_cyclic_vector_finite` (line 213) — the corollary for finite fields, immediate since the proof never invokes the field-size hypothesis $|K| > n$ that the parent OQ axiomatized.",
+      "mathContext": "**Architecture of the main proof**: (i) `n = 0` is trivial since `Fin 0 → K` is the empty function. (ii) For $n > 0$, factor $\\mathrm{minpoly}_K(M) = \\prod p_i^{e_i}$ via `monic_factored_form`; apply WIP04's primary decomposition + Bezout / CRT to assemble a cyclic vector from per-factor cyclic vectors.\n\n**Why this works over finite fields**: the V1 proof needed $|K| > n$ to perform a *union avoidance* argument (find a vector outside the union of $n$ proper subspaces). V2 sidesteps union avoidance entirely by using primary decomposition + CRT — purely structural, no cardinality hypothesis. So the *same* proof handles $K = \\mathbb{F}_q$ with $q \\le n$, which V1 had to exclude as a hypothesis."
+    },
+    {
+      "id": "sec-characterization-and-summary",
+      "title": "Section III Characterization + Section V Summary",
+      "startLine": 219,
       "endLine": 268,
-      "summary": "nonderogatory_has_cyclic_vector: main theorem over ANY field (including finite). nonderogatory_has_cyclic_vector_finite: corollary for finite fields. cyclic_iff_not_killed_below_degree: characterization via degree bound.",
-      "mathContext": "The main proof: factor minpoly K M via monic_factored_form, then apply WIP04's primary decomposition to get the cyclic vector. The finite field corollary is immediate since the proof never invokes |K| > n. The characterization corollary unwraps the definition of IsCyclicVector."
+      "summary": "`cyclic_iff_not_killed_below_degree` (line 221) — the standard characterization: a vector $v$ is cyclic for a nonderogatory $M$ iff no polynomial of degree $< n$ annihilates $v$. Both directions are one-line unfoldings of the `IsCyclicVector` definition. Closing summary docstring (235-264) accounts for the V1 → V2 architectural delta: removed `axiom nonderogatory_similar_companion` (RCF similarity, ~800 lines to prove), added the lone remaining `sorry` in `monic_factored_form` (routine UFD API navigation, ~50 lines, Aristotle-suitable). Net: a deep mathematical axiom traded for a shallow Mathlib-API sorry — the V2 architecture is strictly stronger.",
+      "mathContext": "**Characterization**: $v$ is cyclic for $M$ $\\iff$ $\\forall p \\in K[X],\\ p \\ne 0 \\wedge \\deg p < n \\Rightarrow (\\mathrm{aeval}_M\\,p)\\,v \\ne 0$. The forward direction unfolds the contrapositive of `IsCyclicVector`; the converse contraposes back. No new mathematical content — pure interface lemma.\n\n**V1 → V2 architectural delta** (from the closing summary):\n\n| | V1 | V2 |\n|---|---|---|\n| Field-size hypothesis | $|K| > n$ | none |\n| Heavy axiom | `nonderogatory_similar_companion` (RCF, ~800 lines) | none |\n| Remaining hole | none | `sorry` in `monic_factored_form` (~50 lines) |\n| Ladder height | full RCF + structure thm for f.g. PID modules | UFD factorization + WIP04 primary decomp |\n\nV2 is strictly more general (works on $\\mathbb{F}_q$ with $q \\le n$) and depends on strictly fewer axioms — the trade is a shallow API sorry for a deep mathematical axiom."
     }
   ],
   "crossReferences": [
