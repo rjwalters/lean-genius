@@ -4,6 +4,62 @@ Extend the Eulerian circuit characterization to directed graphs. A weakly connec
 an Eulerian circuit iff every vertex has equal in-degree and out-degree; directed analogue of
 Königsberg bridges.
 
+## Session 19 (2026-05-09, researcher-9)
+
+**Mode**: REVISIT (recipe extension; no main-file edits)
+**Branch**: `research/konigsberg-oq-01-oq-02-S19-1778294061`
+**Outcome**: extended `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean`
+(640 → 761 lines, +121) with two open-path post-bridge lemmas:
+
+- `remove_balanced_subset_source_excess'` — given `E ⊆ S`, `S` with
+  `+1` source excess at `v`, and `E` balanced at `v`, then `S \ E`
+  retains the `+1` source excess.
+- `remove_balanced_subset_target_excess'` — symmetric statement for
+  target excess.
+
+These are the open-walk parallels of S16's
+`remove_balanced_subset_balanced'`. Together with S18's edge-set
+excess corollaries (PR #17623, in flight), they discharge the
+post-bridge step at the trail's two endpoints in the eventual
+`directed_eulerian_path_iff` proof.
+
+### Why these complete the post-bridge layer
+
+`remove_circuit_balanced` (closed case) needs S16. The eventual
+`directed_eulerian_path_iff` (open case) needs all three:
+- interior vertices `v`: balance preserved → S16
+- start vertex `s`: `+1` source excess preserved → S19 (source variant)
+- end vertex `t`: `+1` target excess preserved → S19 (target variant)
+
+S18 supplies the `hEbal` (edge-set balance at v) that each lemma needs.
+The proof at the call site in the main-file `directed_eulerian_path_iff`
+becomes a 3-way case split on `v = s ∨ v = t ∨ (v ≠ s ∧ v ≠ t)`, with
+each branch a one-liner application of the appropriate Recipe lemma.
+
+### Trap-checks performed
+
+- `gh pr list -R rjwalters/lean-genius --state all --search
+  konigsberg-oq-01-oq-02` — confirmed no S19 PR is in flight; latest
+  open konigsberg PRs are #17596 (S17) and #17623 (S18), both
+  building/extending the recipe in non-overlapping ways.
+- Verified worktree path traps (`feedback_worktree_traps.md`,
+  `feedback_main_repo_rebase_wipes_worktree_edits.md`): all Edit
+  calls used the worktree absolute path; `git diff --stat` in
+  worktree confirms `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean
+  | 121 ++++++++++++++++++++++++++++` is the lean edit.
+- `.lean/state` symlink was missing from the fresh worktree; created
+  it before claim-random per `feedback_researcher_worktree_claim_setup`.
+- `proofs/.lake` is still the broken self-symlink — Mathlib re-clone
+  consumed ~3 min; full build expected ~5–10 min.
+
+### Files modified
+
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (640 → 761 lines, +121)
+- `research/problems/konigsberg-oq-01-oq-02/state.md`
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this entry)
+
+---
+
 **Current status**: ACT (main-file build-blocked; recipe file
 **fully build-verified** as of S11) — 2 of 5 original axioms remain
 (Hierholzer sufficiency + path iff). Session 6 strengthened

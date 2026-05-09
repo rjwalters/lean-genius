@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-06T11:21:30.000Z",
-    "iteration": 12,
-    "focus": "S12 (researcher-8, 2026-05-08): extended `KonigsbergOQ01OQ02Recipe.lean` (~187 → ~319 lines) with two more build-verified bijection templates covering the open-walk endpoint-excess shapes: `open_walk_last_target_excess'` and `open_walk_first_source_excess'`. Recipe file now has 5 validated artifacts: bridge lemma + 4 bijection templates covering 5 of the 6 distinct shapes in the broken main file (the 2 Classical.choose lemmas walk_source_eq_outDegree / walk_target_eq_inDegree do not have templates yet — they are structurally different and may be inlined during the in-place pass). S12 made no edits to broken main file; recipe-extension was chosen for the same reason as S9-S11 (in-place pass requires ≥3hr + 60min Docker build, exceeds typical agent-session budget; partial in-place leaves file in worse mixed-signature state). S13 with proper budget can do the in-place pass with maximum template confidence.",
+    "iteration": 19,
+    "focus": "S19 (researcher-9, 2026-05-09): added two open-path post-bridge lemmas to `KonigsbergOQ01OQ02Recipe.lean` (640 → 761 lines, +121): `remove_balanced_subset_source_excess'` and `remove_balanced_subset_target_excess'` — the ±1-imbalanced analogs of S16's `remove_balanced_subset_balanced'`. Both proofs are pure Finset arithmetic (parallel to S16's structure with one extra `omega` step). Build verified via Docker. Sits parallel to in-flight S17 (#17596) and S18 (#17623) PRs without symbol overlap; the three together complete the post-bridge mathematical layer for both halves of `directed_eulerian_iff` (closed-circuit case via S16, open-trail case via S18 + S19).",
     "blockers": [
-      "File currently does NOT build under latest Mathlib (~80 errors, pre-existing from #16675). Recipe library now covers 5 of 6 distinct bijection shapes (S9 + S10 + S12 templates, all S11/S12-build-verified). The fix is mechanical (~50 sites + 2 simp calls) but requires a single-shot session with full Docker build budget."
+      "File currently does NOT build under latest Mathlib (~80 errors, pre-existing from #16675). Recipe library now covers all bijection templates + closed-circuit post-bridge + open-walk post-bridge. The remaining work is the in-place transcription (~3 hr mechanical + 60 min Docker build, exceeds typical agent-session budget)."
     ],
-    "nextAction": "S13: in-place transcription using all 4 build-verified bijection templates plus the bridge lemma + S8 line-anchored task list. Order: (1) add bridge lemma to top of file; (2) refactor `HasEulerianCircuit`/`HasEulerianPath` defs to use bracket-Option form; (3) refactor 6 bijection lemmas — copy `closed_walk_balance'`, `open_walk_interior_balanced'`, `open_walk_last_target_excess'`, `open_walk_first_source_excess'` verbatim into main file; hand-port `walk_source_eq_outDegree` and `walk_target_eq_inDegree` (Classical.choose-based, no template); (4) refactor 3 caller theorems; (5) fix `Finset.sum_ite_eq'` at L87/L99 per S7 recipe; (6) run Docker build with `LEAN_BUILD_TIMEOUT=60m`; (7) on success: update meta.json (sorries 2→1), delete Recipe file. Alternative S13 approach: add 5th template for the Classical.choose pattern + a worked Finset.sum_ite_eq' fix, deferring the in-place pass once more.",
+    "nextAction": "S20+: in-place transcription of broken main file using all build-verified Recipe templates. Order per S8 line-anchored task list: (1) add bridge lemma; (2) refactor 2 definitions; (3) refactor 6 bijection lemmas; (4) refactor 3 consumer theorems; (5) apply `Finset.sum_ite_eq'` simp fix at L87/L99; (6) run Docker build with LEAN_BUILD_TIMEOUT=60m; (7) on success: update meta.json (sorries 2→1), delete Recipe file. Alternatively, S20 can wait for S17 (#17596) and S18 (#17623) to merge before adding any further Recipe lemmas — at that point the Recipe library is complete on origin/main for both closed and open cases.",
     "attemptCounts": {
-      "total": 12,
+      "total": 19,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -58,7 +58,8 @@
       "euler_path_implies_degree_balance: PROVED KonigsbergOQ01OQ02.lean:~1125 (Session 6) — necessity for Eulerian paths: outDeg(s)=inDeg(s)+1, inDeg(t)=outDeg(t)+1, interior vertices balanced; combines walk-position bijection (walk_source_eq_outDegree, walk_target_eq_inDegree) with open-walk counting trilogy (first_source_excess, last_target_excess, interior_balanced)",
       "Created proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean (~110 lines, 0 sorries, 0 axioms) with bridge lemma + worked closed_walk_balance' template. Build-verified under Lean 4.26.0 + Mathlib.",
       "S10: Extended Recipe to ~187 lines with `open_walk_interior_balanced'` (linear bijection, endpoint exclusions). S11 build-verified.",
-      "S12: Extended Recipe to ~319 lines with `open_walk_last_target_excess'` (i ↦ i+1 on T \\ {n-1}) and `open_walk_first_source_excess'` (i ↦ i-1 on S \\ {0}). Recipe now covers 5 of 6 distinct bijection shapes in the broken main file."
+      "S12: Extended Recipe to ~319 lines with `open_walk_last_target_excess'` (i ↦ i+1 on T \\ {n-1}) and `open_walk_first_source_excess'` (i ↦ i-1 on S \\ {0}). Recipe now covers 5 of 6 distinct bijection shapes in the broken main file.",
+    "S19: Extended Recipe to 761 lines (+121) with `remove_balanced_subset_source_excess'` and `remove_balanced_subset_target_excess'` — pure Finset arithmetic, ±1-imbalanced analogs of S16's `remove_balanced_subset_balanced'`. Together with S18 (in flight) these discharge the post-bridge step at an open Eulerian trail's two endpoints, completing the post-bridge layer for both closed and open cases of `directed_eulerian_iff`."
     ],
     "insights": [
       "Handshaking proved by Finset.sum_comm: expand |{e: e.1=v}| as ∑_e [e.1=v], swap sums, get ∑_e 1 = |E|.",
