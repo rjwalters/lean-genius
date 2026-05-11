@@ -90,7 +90,9 @@
       "Can Jacobi's four-square formula r₄(n) = 8·Σ_{4∤d|n} d be formally proved in Lean 4? (Tracked as four-square-distribution-oq-01.)",
       "Can the distribution of r₄(n) across types be used to prove bounds on the number of representation types?",
       "Can the r₄(n) formula be connected to modular form theory in Lean? Specifically, can θ(q)⁴ be formalized as a weight-2 Eisenstein series and the Fourier coefficient identity derived from that perspective rather than from the elementary proofs of Jacobi?",
-      "Does the type-decomposition framework generalize to representations as sums of 2k squares? The orbit-stabilizer pattern predicts contribution = 2^(nonzero) × (2k)!/∏mᵢ! for sums of 2k squares — for example, r₈(n) decomposition would use B₈ = S₈ ⋉ (ℤ/2)⁸ of order 8! × 2⁸ = 10321920."
+      "Does the type-decomposition framework generalize to representations as sums of 2k squares? The orbit-stabilizer pattern predicts contribution = 2^(nonzero) × (2k)!/∏mᵢ! for sums of 2k squares — for example, r₈(n) decomposition would use B₈ = S₈ ⋉ (ℤ/2)⁸ of order 8! × 2⁸ = 10321920.",
+      "Does the type-decomposition methodology lift to *universal* positive-definite quaternary quadratic forms beyond x²+y²+z²+w²? Bhargava and Conway's 15-theorem (1993, 2000) shows that a positive-definite integer-matrix quadratic form represents every positive integer iff it represents 1, 2, 3, 5, 6, 7, 10, 14, 15. Bhargava-Hanke's 290-theorem (2005) is the integer-valued analogue (290 critical numbers). The hyperoctahedral symmetry analysis here is specific to the sum-of-squares form; what is the analogue of `contribution(t)` for a general quaternary form Q(x,y,z,w), and is there a `15-theorem analogue` for the r_Q(n) distribution rather than just nonzero-existence?",
+      "Can the type-decomposition compute r₄(p²) symbolically as a function of an odd prime p, matching Jacobi's prediction r₄(p²) = 8(1+p+p²)? For p=3 this gives 8·13 = 104, matching the verified `r₄_9_distribution = 104` in this file. A symbolic proof would require enumerating all RepType (p²) for symbolic p — the types are (0,0,0,p), and depending on whether p²-a² is a sum of three squares for various small a, families of further types. This would be a stepping-stone toward the full Jacobi formalization (OQ-01) by isolating the prime-power case where the type structure is most regular."
     ]
   },
   "leanFile": {
@@ -233,6 +235,16 @@
       "type": "research-paper",
       "citation": "Deza, M. & Grishukhin, V.P. (1996). \"Hypermetrics in Geometry of Numbers.\" In *Geometric Combinatorics* (DIMACS Series, AMS), pp. 1–109.",
       "relevance": "Survey of the hyperoctahedral group action on lattice points and its appearance in lattice-point-counting problems beyond four squares — provides the abstract framework in which the $S_4 \\ltimes (\\mathbb{Z}/2)^4$ action appearing here is one instance."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Bhargava, M. (2000). \"On the Conway-Schneeberger Fifteen Theorem.\" In *Quadratic Forms and Their Applications* (Contemporary Mathematics 272, AMS), pp. 27–37.",
+      "relevance": "Bhargava's elegant reformulation of the Conway-Schneeberger 15-theorem (proved 1993, published with Bhargava's new proof 2000): a positive-definite integer-matrix quaternary quadratic form represents every positive integer iff it represents 1, 2, 3, 5, 6, 7, 10, 14, 15. The form $x^2+y^2+z^2+w^2$ studied here is the unique-up-to-equivalence form whose representation function $r_4(n)$ admits Jacobi's closed-form factor of 8 — Bhargava's theorem clarifies why this form is special among all universal quaternary forms."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Bhargava, M. & Hanke, J. (2005). \"Universal Quadratic Forms and the 290-Theorem.\" Preprint (later published in *Inventiones Mathematicae*).",
+      "relevance": "The integer-valued analogue of the 15-theorem: a positive-definite integer-valued quaternary quadratic form is universal iff it represents 290 specific integers. The proof uses sophisticated computer search and theta-series arguments. Reading this in conjunction with the present file motivates the open question of whether the type-decomposition framework extends from $x^2+y^2+z^2+w^2$ to general quaternary forms — and whether each universal form has its own Jacobi-like formula."
     }
   ],
   "sorries": 0
