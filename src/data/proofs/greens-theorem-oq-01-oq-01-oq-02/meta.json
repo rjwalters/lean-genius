@@ -111,6 +111,88 @@
       "description": "The fundamental Green's theorem formalization that motivated the need for a reusable Fubini lemma for interval integrals"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "intervalIntegral_swap_of_le",
+      "type": "core",
+      "statement": "∀ (a b c d : ℝ) (hab : a ≤ b) (hcd : c ≤ d) (f : ℝ → ℝ → ℝ), AEMeasurable (fun p => f p.1 p.2) ((volume.restrict (Icc a b)).prod (volume.restrict (Icc c d))) → IntegrableOn (fun p => f p.1 p.2) (Icc a b ×ˢ Icc c d) → ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y",
+      "description": "Ordered Fubini for interval integrals: with bounds in canonical order, converts both interval integrals to Lebesgue integrals over Ioc and applies MeasureTheory.integral_integral_swap.",
+      "significance": "Foundational — the ordered case that the general version reduces to via sign analysis. Each conversion through `integral_of_le` requires an integrability downgrade from Icc to Ioc via `restrict_mono`."
+    },
+    {
+      "name": "intervalIntegral_swap",
+      "type": "core",
+      "statement": "∀ (a b c d : ℝ) (f : ℝ → ℝ → ℝ), [appropriate measurability + integrability over uIcc a b × uIcc c d] → ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y",
+      "description": "GENERAL Fubini for interval integrals, no ordering assumption on a, b, c, d. The 4-case proof uses flip_bounds (sign-flip identity) and neg_outside (negation linearity) to reduce each non-canonical case to intervalIntegral_swap_of_le.",
+      "significance": "The headline result — the lemma that is *missing* from Mathlib (rev 2df2f015) and that this entry contributes. The genius is that all four orderings of (a,b) × (c,d) collapse to a single ordered case via even sign-cancellation, closed by linarith on the chain of sign-flip equalities."
+    },
+    {
+      "name": "intervalIntegral_swap_of_continuous",
+      "type": "core",
+      "statement": "∀ (a b c d : ℝ) (f : ℝ → ℝ → ℝ), Continuous (fun p => f p.1 p.2) → ∫ y in c..d, ∫ x in a..b, f x y = ∫ x in a..b, ∫ y in c..d, f x y",
+      "description": "Continuous-case Fubini: no measurability or integrability hypotheses needed. ContinuousOn.integrableOn_compact discharges integrability on the compact rectangle uIcc a b × uIcc c d.",
+      "significance": "The most practically useful version — most callers reach for this, since C¹ vector fields automatically have continuous components. Used by greens_theorem_fubini_discharged below to eliminate the parent Green's theorem's hFubini hypothesis."
+    },
+    {
+      "name": "flip_bounds",
+      "type": "supporting",
+      "statement": "∀ (a b : ℝ) (f : ℝ → ℝ), ∫ x in a..b, f x = -(∫ x in b..a, f x)",
+      "description": "Sign-flip identity for interval integrals: reversing bounds negates. Trivial wrapper around Mathlib's intervalIntegral.integral_symm, but extracted as a named lemma to keep the 4-case proof readable.",
+      "significance": "The cornerstone of interval-integral arithmetic — what distinguishes signed interval integrals from unsigned Lebesgue integrals. The 4-case proof of intervalIntegral_swap relies entirely on chaining this identity to convert non-canonical orderings into canonical ones."
+    },
+    {
+      "name": "neg_outside",
+      "type": "supporting",
+      "statement": "∀ (a b : ℝ) (g : ℝ → ℝ), ∫ x in a..b, -g x = -(∫ x in a..b, g x)",
+      "description": "Linearity of the interval integral with respect to negation. Used to commute sign-flips from inner to outer integrals during the 4-case sign analysis.",
+      "significance": "Indispensable plumbing — without this, each case proof would have to repeat the negation-extraction calculation. Wraps Mathlib's intervalIntegral.integral_neg."
+    },
+    {
+      "name": "greens_theorem_fubini_discharged",
+      "type": "supporting",
+      "statement": "∀ (P : ℝ × ℝ → ℝ) (dPdy : ℝ × ℝ → ℝ) (a b c d : ℝ), Continuous dPdy → ∫ y in c..d, ∫ x in a..b, dPdy (x, y) = ∫ x in a..b, ∫ y in c..d, dPdy (x, y)",
+      "description": "Application of the continuous swap to discharge the Fubini hypothesis from Green's theorem. The continuous_prod_mk + continuous_fst/snd dance rewrites Continuous dPdy in the shape that intervalIntegral_swap_of_continuous expects.",
+      "significance": "The original motivation — eliminates the hFubini hypothesis from greens-theorem-oq-01 for C¹ vector fields, making the parent Green's theorem truly self-contained for the calculus-textbook case."
+    }
+  ],
+  "references": [
+    {
+      "key": "Ru87",
+      "citation": "Rudin, W. (1987). *Real and Complex Analysis*, 3rd ed., McGraw-Hill. Chapter 8 (\"Integration on Product Spaces\") — Fubini-Tonelli theorems.",
+      "type": "book",
+      "relevance": "Standard reference for Fubini's theorem in the Lebesgue setting. The interval-integral version proved here is the *signed* refinement: Mathlib's MeasureTheory.integral_integral_swap is the unsigned Lebesgue version, and this entry bridges it to the calculus convention $\\int_a^b$."
+    },
+    {
+      "key": "Fo99",
+      "citation": "Folland, G.B. (1999). *Real Analysis: Modern Techniques and Their Applications*, 2nd ed., Wiley. §2.5 on Tonelli–Fubini and §2.7 on integration in product spaces.",
+      "type": "book",
+      "relevance": "Most-cited modern textbook for the σ-finite Tonelli–Fubini machinery underlying MeasureTheory.integral_integral_swap. Discusses the Icc-vs-Ioc subtlety that this proof navigates via Measure.restrict_mono."
+    },
+    {
+      "key": "Sp65",
+      "citation": "Spivak, M. (1965). *Calculus on Manifolds*, Westview Press. §4 on Stokes' theorem and §5 on Green's theorem in two dimensions.",
+      "type": "book",
+      "relevance": "The classical calculus-textbook treatment of Green's theorem that motivated this entry's parent (`greens-theorem-oq-01`) and consequently the search for a reusable Fubini lemma. Spivak's proof of Green's theorem uses iterated interval integrals with implicit sign conventions — exactly what `intervalIntegral_swap` formalizes."
+    },
+    {
+      "key": "Ma17",
+      "citation": "The mathlib Community. (accessed 2026-05-06, rev 2df2f015). *Mathlib.MeasureTheory.Integral.IntervalIntegral* and *Mathlib.MeasureTheory.Integral.Prod*.",
+      "type": "library",
+      "relevance": "The two Mathlib modules whose APIs this proof composes. `IntervalIntegral.integral_of_le` and `intervalIntegral.integral_symm` are the key bridge lemmas; `MeasureTheory.integral_integral_swap` is the underlying Lebesgue Fubini. Also documents the absence of a standalone `intervalIntegral_swap` at this revision — the contribution gap this entry fills."
+    },
+    {
+      "key": "Bourbaki",
+      "citation": "Bourbaki, N. (2004). *Functions of a Real Variable: Elementary Theory*, Springer (English translation). Chapter II §3: integration with respect to a directed parameter.",
+      "type": "book",
+      "relevance": "One of the few classical sources to develop the *signed* interval integral as a primary object (rather than as a derived sign-convention applied to the unsigned Lebesgue integral). The directional sign convention $\\int_a^b = -\\int_b^a$ is treated axiomatically there, in line with Mathlib's `intervalIntegral.integral_symm`."
+    },
+    {
+      "key": "Mathlib-PR-template",
+      "citation": "Mathlib4 contribution guide. (accessed 2026). Section on \"Adding lemmas to existing files\" — the suggested pathway for `intervalIntegral.swap` / `intervalIntegral.integral_comm`.",
+      "type": "documentation",
+      "relevance": "The Mathlib contribution target identified in the file's summary docstring. Adding `intervalIntegral_swap` (general 4-case version) to `Mathlib.MeasureTheory.Integral.IntervalIntegral` would benefit every gallery proof requiring iterated interval integrals."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "imports": [
