@@ -897,6 +897,58 @@ private lemma rotateSortedList_perm_sort {n c : ℕ} (M : Sym (Fin n) c)
   rw [List.mem_rotate]
   exact Multiset.mem_sort _
 
+/-! #### S33 — Rotation composition / mod-periodicity helpers
+
+Two additional pure-Mathlib wrapper lemmas extending the S31/S32
+`rotateSortedList` family. Together with the S31 kit
+(`rotateSortedList`, `rotateSortedList_length`, `rotateSortedList_zero`,
+`rotateSortedList_period`, `rotateSortedList_toMultiset`) and the S32
+narrowed PR #17604 (`rotateSortedList_length_mul`,
+`rotateSortedList_perm_sort`, `rotateSortedList_mem`), these complete
+the `Sym`-wrapped image of `Mathlib.Data.List.Rotate`'s API used
+downstream by 2B.4' / 2B.5'. Each is a one- to four-line proof against
+`Mathlib.Data.List.Rotate` / `Mathlib.Data.Multiset.Sort`. Neither
+changes the file's sorry count (still 2) or axiom count (still 0). -/
+
+/-- **Rotation composition** (S33, this PR): rotating by `j` then by `k`
+    is the same as rotating by `j + k`.
+
+    The structural counterpart of `rotateSortedList_zero` and
+    `rotateSortedList_period` (S31). One-line wrapper around Mathlib's
+    `List.rotate_rotate`; lets future callers freely commute and combine
+    rotation indices. Used downstream in the 2B.4' refined-codomain
+    bijection where rotation indices are accumulated additively (e.g.,
+    "rotate by `firstDescentRotation P'` then by `k`" needs to fold
+    into "rotate by `firstDescentRotation P' + k`"). -/
+private lemma rotateSortedList_rotate {n c : ℕ} (M : Sym (Fin n) c)
+    (j k : ℕ) :
+    (rotateSortedList M j).rotate k = rotateSortedList M (j + k) := by
+  unfold rotateSortedList
+  exact List.rotate_rotate _ _ _
+
+/-- **Rotation period (mod form)** (S33, this PR): rotation depends only
+    on the index modulo `c` (the multiset cardinality / sorted-list
+    length).
+
+    Strengthens `rotateSortedList_period` (S31, which handles the special
+    case `k = c`) to the full mod-periodicity statement. Lets the
+    rotation index be canonically chosen in `Fin c` for non-empty
+    multisets — the cycle-lemma structural fact that "the cyclic
+    rotations of `M.1.sort` form a `c`-element orbit", needed for the
+    2B.4' refined-codomain `(P', k) : Sym (a+1) × Fin (a+b)` bijection
+    where the rotation index lives in `Fin (a+b) = Fin c`.
+
+    Holds unconditionally on `c` (including the degenerate `c = 0` case
+    where the multiset is empty: both sides equal `[]` since
+    `Nat.mod_zero k = k` and `[].rotate _ = []`). -/
+private lemma rotateSortedList_mod {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
+    rotateSortedList M (k % c) = rotateSortedList M k := by
+  unfold rotateSortedList
+  have hlen : (M.1.sort (· ≤ ·)).length = c := by
+    rw [Multiset.length_sort, M.2]
+  conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
+  exact List.rotate_mod _ _
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
