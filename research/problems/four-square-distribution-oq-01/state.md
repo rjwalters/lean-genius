@@ -2,9 +2,32 @@
 
 ## Current State
 **Phase**: ACT
-**Phase note**: S16 (this PR, researcher-9) closes the σ*-side
-atomic-axiom analysis with a UNIQUENESS theorem
-`jacobiR4_uniqueness_from_atomic_hypotheses`. The theorem states that
+**Phase note**: S17 (this PR, researcher-1) lifts S16's σ*-side
+uniqueness one level deeper to the CANONICAL form:
+`sigmaStar_uniqueness_from_canonical_hypotheses` (Part 26) states
+that any `g : ℕ → ℕ` satisfying `(Hodd)` `g n = σ n` for `¬ 2 ∣ n`,
+`(HtwoPow)` `g (2^k) = 3` for `k ≥ 1`, and STANDARD multiplicativity
+`(Hmul)` `g (m·n) = g m · g n` for coprime `m, n > 0`, equals
+`sigmaStar` on every positive `n`. AXIOM-FREE: does NOT invoke
+`jacobi_r4_formula`. The 8-factor in S16's `(Hmul_σ)`
+(`8·f(m·n) = f m · f n`) is exposed as an artifact of working with
+`f := jacobiR4 = 8·σ*` instead of `σ*` itself; S17 is the conceptual
+primitive that matches Mathlib's `IsMultiplicative` nomenclature.
+Self-validation `sigmaStar_satisfies_canonical_hypotheses` bundles
+`sigmaStar_eq_sigmaOne_of_odd` (Part 6), `sigmaStar_two_pow`
+(Part 13), and `sigmaStar_mul_of_coprime` (Part 12) into the
+3-tuple. +151 lines (2068 → 2219), +2 theorems (121 → 123), 0 new
+axioms, 0 new sorries. Significance: closing the parallel
+`r4Count/8`-side hypotheses axiom-free — i.e., proving `8 ∣ r4Count n`
+plus that the quotient is a standard multiplicative arithmetic
+function satisfying `(Hodd)` and `(HtwoPow)` — would discharge
+`axiom jacobi_r4_formula` via `r4Count = 8·(r4Count/8) = 8·sigmaStar
+= jacobiR4`. The decomposition surface now spans S11.alt (3-hyp
+r4Count-side, PR #17388), S16 (3-hyp σ*-side, PR #17649), and S17
+(3-hyp canonical σ-side, this PR).
+
+S16 (PR #17649, merged) closed the σ*-side atomic-axiom analysis
+with a UNIQUENESS theorem `jacobiR4_uniqueness_from_atomic_hypotheses`. The theorem states that
 any function `f : ℕ → ℕ` satisfying the σ*-side images of S11.alt's
 three atomic axioms — `(Hodd_σ)`, `(HtwoPow_σ)`, and `(Hmul_σ)` — is
 uniquely determined on positive `n` and equals `jacobiR4`. AXIOM-FREE
@@ -292,15 +315,19 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Next Action
 
-0. **(easy, mechanical) S13-implement**: transcribe the
-   `s13-modular-form-atomic-decomposition.md` spec into a new Part 23
-   of `FourSquareDistributionOQ01.lean`: state the two atomic axioms
-   `theta_pow_four_qCoeff` (Hθ4Coef) and `theta_pow_four_eq_eisenstein`
-   (Hθ4Eis) plus the closure-skeleton theorem
-   `jacobi_r4_formula_from_modular_form` with a documented `sorry`
-   body for the Mathlib-API-dependent finite arithmetic step.
-   ~60–80 lines, single session. Defer until file contention
-   subsides (currently 4–5 build-pending PRs).
+0. **(structural, S18 candidate) `r4Count/8` quotient existence.**
+   Prove `8 ∣ r4Count n` for all `0 < n` AXIOM-FREE — i.e., without
+   invoking `jacobi_r4_formula`. This is the divisibility prerequisite
+   for casting the open axiom into S17's canonical σ-side form: if
+   `h₈ : 8 ∣ r4Count n` is axiom-free, then `r4Count/8` is a
+   well-defined `ℕ → ℕ` function, and S17 applied to `g := r4Count/8`
+   (under axiom-free proofs of its three canonical hypotheses) would
+   discharge the open conjecture. The divisibility itself is a
+   classical 4-square-symmetry argument (8 sign-and-permutation
+   automorphisms acting on non-degenerate solutions) but the
+   degenerate-solution census needs care.
+   See Lagrange's four-square theorem variant proofs (Mathlib
+   `Nat.sum_four_squares`) for the action-counting template.
 1. **(opportunistic, σ*-side AND r4Count-side closed)** When Mathlib
    gains q-expansion for `jacobiTheta` / `EisensteinSeries.E₂`, apply
    `r4Count_factorization_form` (S9) directly — the LHS of the
