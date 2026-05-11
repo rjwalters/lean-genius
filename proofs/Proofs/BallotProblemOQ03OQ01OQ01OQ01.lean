@@ -949,6 +949,85 @@ private lemma rotateSortedList_mod {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
   conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
   exact List.rotate_mod _ _
 
+/-! ### S34: prefix-of-rotation infrastructure
+
+Two pure Mathlib wrapper lemmas + a packaging `def`:
+
+* `rotateSortedList_take_card`: a length-`j` prefix of `rotateSortedList M k`,
+  coerced to `Multiset (Fin n)`, has cardinality `j` whenever `j ≤ c`.
+* `rotateSortedList_take_le`: that same prefix multiset is `≤ M.1`.
+* `rotateSortedListPrefixSym M k j hj : Sym (Fin n) j`: the prefix
+  packaged as a `Sym`, using `_take_card` for the cardinality witness.
+* `rotateSortedListPrefixSym_le`: codomain witness `(prefix).1 ≤ M.1`.
+
+Together with the rotation-composition / mod-period lemmas (S33,
+PR #17665) and the length / zero / period / multi-period / membership /
+permutation-with-sort / multiset-coercion family (S31 / S32 PR #17604),
+these are the structural building blocks for the eventual 2B.4'
+refined-codomain bijection: every `(P', k) : Sym (a+1) × Fin (a+b)`
+with `P'.1 ≤ M.1` arises canonically as some
+`rotateSortedListPrefixSym M k (a+1) ...` (forward direction); the
+backward direction is the cycle-lemma content. -/
+
+/-- **Cardinality of a prefix of a rotation, coerced to `Multiset`** (S34).
+
+    For any `M : Sym (Fin n) c`, any rotation index `k : ℕ`, any prefix
+    length `j ≤ c`: the multiset cardinality of
+    `(rotateSortedList M k).take j` is `j`.
+
+    Combines `Multiset.coe_card`, `List.length_take`,
+    `rotateSortedList_length`, and `min_eq_left`. The `j ≤ c` hypothesis
+    is needed for the `min_eq_left` step (otherwise `min j c = c < j`
+    and the multiset has fewer than `j` elements). -/
+@[simp] private lemma rotateSortedList_take_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)).card = j := by
+  rw [Multiset.coe_card, List.length_take, rotateSortedList_length]
+  exact min_eq_left hj
+
+/-- **Prefix of a rotation is a sub-multiset of `M.1`** (S34).
+
+    For any `M : Sym (Fin n) c`, any rotation index `k : ℕ`, any prefix
+    length `j : ℕ`: the multiset
+    `((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1`.
+
+    No upper bound on `j` needed — `List.take j` truncates silently when
+    `j` exceeds the list length, so the prefix is at most the whole
+    rotated list, which has the same multiset as `M.1` by
+    `rotateSortedList_toMultiset`. Proof: rewrite by `_toMultiset`, then
+    use `Multiset.coe_le.mpr` against `(List.take_sublist j _).subperm`. -/
+private lemma rotateSortedList_take_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1 := by
+  rw [← rotateSortedList_toMultiset M k]
+  exact Multiset.coe_le.mpr (List.take_sublist j _).subperm
+
+/-- **Prefix of a rotation, packaged as a `Sym`** (S34).
+
+    The prefix multiset `((rotateSortedList M k).take j : Multiset (Fin n))`
+    repackaged so the result lives in `Sym (Fin n) j`, using
+    `rotateSortedList_take_card` for the cardinality witness.
+
+    Together with `rotateSortedListPrefixSym_le` (the codomain witness
+    `≤ M.1`) this is the forward construction for the 2B.4'
+    refined-codomain bijection: every `(k, j)` with `j ≤ c` produces a
+    canonical `Sym (Fin n) j` lying inside `M.1`. The 2B.4' bijection
+    will instantiate `j := a + 1`. -/
+private def rotateSortedListPrefixSym {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) : Sym (Fin n) j :=
+  ⟨↑((rotateSortedList M k).take j), rotateSortedList_take_card M k j hj⟩
+
+/-- **Codomain witness for `rotateSortedListPrefixSym`** (S34).
+
+    The packaged prefix multiset is `≤ M.1`. Direct corollary of
+    `rotateSortedList_take_le` (which states the same fact at the
+    underlying `Multiset` level), unwrapped through the `Sym`'s `.1`
+    projection. -/
+private lemma rotateSortedListPrefixSym_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1 ≤ M.1 :=
+  rotateSortedList_take_le M k j
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in

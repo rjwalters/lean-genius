@@ -29,8 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 22 (2026-05-08): Bridge-lemma family for the b≥2 structural reduction. Added weight_eq_totalSym, weight_eq_totalSym^prime (Sym-wrapped weight factorisations), totalSym_eq_iff, totalSym^prime_eq_iff (fiber-membership characterisations as `P.1 + Q.1 = M.1` via Subtype extensionality). Together they collapse the steps (i)+(ii) of the b≥2 reduction onto a single Finset.sum_fiberwise_of_maps_to call (with map (P, Q) ↦ totalSym P Q), with `totalSym_eq_iff` translating that map's fiber predicate into the form ballot_counting_identity already filters on. Updated the inline strategy block in jdt_weight_sum and the docstring of ballot_counting_identity to reference the explicit Mathlib API chain. Session 20 (2026-05-08): Architectural refactor of the b≥2 path. Added totalSym + totalSym^prime helpers (Sym pair → Sym (a+b) total multiset) and ballot_counting_identity as a clean black-box per-fiber cardinality subproblem (sorry; ~150 lines remaining). Updated jdt_weight_sum b≥2 comment block to reference the new structural reduction (steps i-iv). The architecture cleanly separates the polynomial-algebra reduction (steps i,ii,iv) from the combinatorial heart (step iii / ballot_counting_identity), so future sessions can attack the latter in isolation. Sorry count remained 3 (S22 added no new sorries — only structural helpers).",
+    "progressSummary": "Session 34 (2026-05-11): Prefix-of-rotation infrastructure + Sym packaging. Added `rotateSortedList_take_card` (@[simp]), `rotateSortedList_take_le`, `rotateSortedListPrefixSym` (def), and `rotateSortedListPrefixSym_le` — all pure Mathlib wrappers, no sorries, no axioms. With this, the forward direction of the eventual 2B.4' refined-codomain bijection is a one-liner: every (P', k) with P'.1 ≤ M.1 of size a+1 is `rotateSortedListPrefixSym M k (a+1) hj` for some `hj : a+1 ≤ a+b`. The backward direction (cycle-lemma content) remains deferred. Supersedes the conflicting S33 PR #17664 (same `_take_*` lemmas) by rebasing onto post-#17665 main + adding the natural Sym-packaging step. Sorry count: 2 → 2 (unchanged); axiom count: 0 (unchanged); lineCount 1962 → 2041; theoremCount 42 → 44; definitionCount 10 → 11.",
     "builtItems": [
+      "S34: rotateSortedList_take_card (@[simp] private lemma, ~3 lines): ((rotateSortedList M k).take j : Multiset (Fin n)).card = j when j ≤ c. BallotProblemOQ03OQ01OQ01OQ01.lean:982",
+      "S34: rotateSortedList_take_le (private lemma, ~3 lines): ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1 (no upper bound on j needed). BallotProblemOQ03OQ01OQ01OQ01.lean:999",
+      "S34: rotateSortedListPrefixSym (private def, 1 line): packages the prefix multiset as Sym (Fin n) j using _take_card for the cardinality witness. BallotProblemOQ03OQ01OQ01OQ01.lean:1016",
+      "S34: rotateSortedListPrefixSym_le (private lemma, 1 line): codomain witness — packaged Sym's underlying multiset is ≤ M.1, direct from _take_le. BallotProblemOQ03OQ01OQ01OQ01.lean:1026",
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
       "schurPolynomial_empty: Schur(∅) = 1 (det of 0×0 matrix)",
@@ -88,6 +92,8 @@
       "research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01/sublemma-2b-cycle-lemma-spec.md (researcher-4, 2026-05-09): standalone reconnaissance — small-case verification (3 examples), Mathlib v4.26.0 API inventory, 4-step decomposition for Sub-lemma 2B (2B.1 done in PR #17447, 2B.2 firstViolation ~25 lines, 2B.3 cycleLemmaShift ~30 lines, 2B.4 Finset.card_bij' ~30 lines)."
     ],
     "insights": [
+      "S34 (researcher-4, 2026-05-11): The forward direction of 2B.4' (refined-codomain bijection) is now a one-liner: every (P', k) with P' ≤ M.1 of size a+1 is `rotateSortedListPrefixSym M k (a+1) hj` for some `hj : a+1 ≤ a+b`. The backward direction (every such P' arises this way) remains the cycle-lemma content, deferred to S35+.",
+      "S34: `rotateSortedListPrefixSym` packages `(rotateSortedList M k).take j` as `Sym (Fin n) j` directly — the cardinality witness from `_take_card` (which is `min_eq_left hj` after `Multiset.coe_card`/`List.length_take`/`rotateSortedList_length`). No need for an intermediate fiber-counting argument.",
       "Mathlib has hsymm σ R n (complete homogeneous symmetric polynomials) in RingTheory.MvPolynomial.Symmetric.Defs — directly usable for Jacobi-Trudi matrix entries",
       "IsSymmetric (hsymm_isSymmetric) and rename_hsymm give us symmetry of each matrix entry for free",
       "AlgHom.map_det lets us lift rename σ through determinant: rename e (det M) = det (mapMatrix (rename e) M)",
@@ -192,7 +198,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-08T09:30:00.000Z",
+  "lastUpdate": "2026-05-11T20:55:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",

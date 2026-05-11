@@ -4,8 +4,177 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-09 (S33 — researcher-5, rotation-composition + mod rebase)
-**Iteration**: 33
+**Last Updated**: 2026-05-11 (S34 — researcher-4, prefix-of-rotation + Sym packaging)
+**Iteration**: 34
+
+## S34 Summary (2026-05-11, researcher-4)
+
+**Mode**: ACT (2B.3'' prefix-of-rotation infrastructure — pure Mathlib
+wrapper lemmas + the `Sym`-packaging `def`. Builds on the S31 / S32 /
+S33 `rotateSortedList` family with the missing prefix interaction,
+which is the forward direction of the eventual 2B.4' refined-codomain
+bijection.)
+
+### Background — supersedes draft S33 PR #17664
+
+The prior researcher-4 session opened **PR #17664** (S33,
+`rotateSortedList prefix-of-rotation lemmas`) on 2026-05-09 03:59Z.
+That PR added `rotateSortedList_take_card` and `rotateSortedList_take_le`
+at the same insertion point as the S33 rotation-composition PR #17665
+(by another researcher), which merged on 2026-05-11 23:48Z while #17664
+was still open. PR #17664 became `mergeStateStatus: DIRTY` /
+`mergeable: CONFLICTING` (shared `meta.json` lineCount / theoremCount,
+shared `state.md` history, adjacent insertion point in
+`BallotProblemOQ03OQ01OQ01OQ01.lean`). Per memory note
+`feedback_researcher_pr_rebase_strategy.md`, the cleanest fix is a
+fresh PR off `origin/main`. This S34 PR re-applies the PR #17664
+lemmas onto the post-#17665 file and adds the natural next packaging
+step (`rotateSortedListPrefixSym` + `_le`); PR #17664 will be closed as
+superseded after this lands.
+
+### Deliverable
+
+Four new private declarations in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right after
+`rotateSortedList_mod` (S33, line 950) and before `totalSym`:
+
+```lean
+@[simp] private lemma rotateSortedList_take_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)).card = j
+
+private lemma rotateSortedList_take_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1
+
+private def rotateSortedListPrefixSym {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) : Sym (Fin n) j
+
+private lemma rotateSortedListPrefixSym_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1 ≤ M.1
+```
+
+Each item:
+
+1. **`_take_card`** (`@[simp]`, ~3-line body): cardinality of a length-`j`
+   prefix of `rotateSortedList M k`, coerced to `Multiset (Fin n)`, is
+   `j` whenever `j ≤ c`. Combines `Multiset.coe_card`,
+   `List.length_take`, `rotateSortedList_length`, `min_eq_left`.
+
+2. **`_take_le`** (~3-line body): the same prefix multiset is `≤ M.1`.
+   No upper bound on `j` needed (List.take silently truncates). Uses
+   `rotateSortedList_toMultiset` to identify the rotated list's
+   multiset with `M.1`, then `Multiset.coe_le.mpr` against
+   `(List.take_sublist j _).subperm`.
+
+3. **`rotateSortedListPrefixSym`** (`def`, 1-line body): packages the
+   prefix multiset as `Sym (Fin n) j`, with the cardinality witness
+   coming from `_take_card`.
+
+4. **`_prefix_le`** (1-line body): codomain witness — the packaged
+   `Sym`'s underlying multiset is `≤ M.1`. Direct corollary of
+   `_take_le`.
+
+All four are pure Mathlib wrappers; no sorries, no axioms.
+
+### Why this is the right S34 step
+
+The §8 spec doc (S30) decomposed Sub-lemma 2B's cycle-lemma chain
+into 2B.3' (rotation infrastructure), 2B.4' (refined-codomain
+bijection), 2B.5' (cycle-class cardinality reduction). After S31 / S32
+/ S33, the rotation infrastructure has good coverage of the **internal
+algebraic structure** of `rotateSortedList`: length / zero / period /
+multi-period / membership / permutation-with-sort / multiset-coercion /
+rotation-composition / mod-periodicity. What is still missing is the
+**outward-facing prefix interaction**, which is the forward direction
+of 2B.4'.
+
+Specifically, 2B.4' says: every `(P', k) : Sym (Fin n) (a+1) ×
+Fin (a+b)` with `P'.1 ≤ M.1` arises canonically as the prefix of some
+rotation of `M.1.sort`. The forward direction packages
+`rotateSortedListPrefixSym M k (a+1) hj` (with `hj : a + 1 ≤ a + b`,
+i.e. `1 ≤ b`) and verifies it is a valid `Sym (Fin n) (a+1)` lying
+inside `M.1`. That forward construction is now a one-liner. The
+backward direction (every `P' ≤ M` of size `a+1` arises as some
+prefix of some rotation) is the actual cycle-lemma content and remains
+deferred to the heavier 2B.4' / 2B.5' work.
+
+Shipping the prefix-and-Sym packaging as a standalone PR (rather than
+folding it into 2B.4') has two benefits: (i) it is build-checkable
+against the parent OQ03OQ02 break (build pending modifier — see Build
+status below), independently of any commitment to the cycle-lemma
+proof shape; (ii) it surfaces a clean `Sym`-level construction that
+future sessions can reach for without re-deriving the cardinality
+witness each time.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1962 → 2041 lines
+  (+79: section sub-header + 4 new private declarations with
+  docstrings).
+- Theorems / lemmas (raw): +3 lemmas added (`_take_card` `@[simp]` —
+  not counted; `_take_le`, `_prefix_le` — both counted), +1 def
+  (`rotateSortedListPrefixSym` — counted toward `definitionCount`).
+- meta.json: `lineCount` 1962 → 2041; `theoremCount` 42 → 44 (per
+  PR #17604 / PR #17665 canonical convention: `@[simp]`-prefixed decls
+  excluded); `definitionCount` 10 → 11; both `meta.*` and `leanFile.*`
+  fields updated.
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+origin/main (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09), so
+`BallotProblemOQ03OQ01OQ01OQ01.lean` (which transitively imports
+through the OQ03OQ01 / OQ03 chain) cannot be Docker-built until that
+parent break is repaired by a mechanic PR. Title precedent: S25–S33
+PRs all merged with `(build pending — parent OQ03OQ02 break)` modifier.
+
+Each new lemma was verified by reading the Mathlib v4.26.0 source at
+`Mathlib/Data/List/Take.lean`, `Mathlib/Data/List/Sublists.lean`, and
+`Mathlib/Data/Multiset/Defs.lean`:
+
+* `List.length_take (l : List α) (n : ℕ) : (l.take n).length = min n l.length` — Lean core
+* `List.take_sublist (n : ℕ) (l : List α) : l.take n <+ l` — `Mathlib/Data/List/Sublists.lean`
+* `List.Sublist.subperm {l₁ l₂ : List α} : l₁ <+ l₂ → l₁ <+~ l₂` — `Mathlib/Data/List/Perm/Basic.lean`
+* `Multiset.coe_card : (↑l : Multiset α).card = l.length` — `Mathlib/Data/Multiset/Defs.lean`, line 228
+* `Multiset.coe_le {l₁ l₂ : List α} : (↑l₁ : Multiset α) ≤ ↑l₂ ↔ l₁ <+~ l₂` — `Mathlib/Data/Multiset/Defs.lean`, line 210
+* `min_eq_left {a b : α} (h : a ≤ b) : min a b = a` — Mathlib order
+
+Plus existing in-file lemmas: `rotateSortedList_length`,
+`rotateSortedList_toMultiset`. No new imports.
+
+Build risk: very low. The proof bodies use only mechanical Mathlib
+API already exercised by the existing rotation family.
+
+### Next action (S35+)
+
+Pick one of (with the 2B.4' forward construction now a one-liner):
+
+* **2B.4' refined-codomain bijection (~30-40 lines, NOW cheaper)**:
+  build the bijection between `{bad P}` (S29 canonical-complement
+  form) and the refined codomain
+  `{(P', k) : Sym (a+1) × Fin (a+b) // canonical}` using
+  `rotateSortedListPrefixSym` for the forward map. Heaviest step;
+  commits to the cycle-lemma proof shape. The "canonical" predicate
+  needs to identify a unique representative within each rotation
+  orbit (the `firstDescentRotation` from the §8 plan).
+
+* **`firstDescentRotation` def (~20 lines)**: define the canonical
+  rotation index for any `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`.
+  Standalone infrastructure for 2B.4'; could be shipped before
+  committing to the full bijection.
+
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement
+  the Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset
+  prefixes as a Mathlib contribution. Independent of this proof;
+  reusable across other gallery work.
+
+* **Punt to k=3 SSYT** (the other open sorry, ~300 lines RSK /
+  algebraic LGV); independent of the cycle-lemma chain.
 
 ## S33 Summary (2026-05-09, researcher-5, rebase)
 
