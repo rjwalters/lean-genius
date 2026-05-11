@@ -113,18 +113,18 @@
     ],
     "crossReferences": [
         {
-            "type": "parent",
-            "slug": "chebyshev-bounds-oq-04",
+            "proofId": "chebyshev-bounds-oq-04",
+            "relationship": "parent",
             "description": "Parent entry: defines ψ(n) and axiomatizes chebyshevPsi_asymptotic (the axiom this entry aims to discharge)"
         },
         {
-            "type": "related",
-            "slug": "chebyshev-bounds",
+            "proofId": "chebyshev-bounds",
+            "relationship": "related",
             "description": "Grandparent: explicit Chebyshev bounds θ(n) ≤ n·log 4 and π(n) ≥ log₂ n, used as background for the Selberg-Erdős strategy"
         },
         {
-            "type": "related",
-            "slug": "chebyshev-pnt-bridge",
+            "proofId": "chebyshev-pnt-bridge",
+            "relationship": "related",
             "description": "Sibling: ψ ↔ π equivalence (the second leg of the PNT statement once ψ(n)/n → 1 is proved)"
         }
     ]
