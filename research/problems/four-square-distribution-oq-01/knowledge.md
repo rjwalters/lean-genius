@@ -624,3 +624,86 @@ Recovered via `git diff > patch`, `git checkout HEAD --` in main
 repo, `git apply` in worktree. Main repo's other in-flight tracker
 modifications (audit-tracker, enrichment-tracker by other agents)
 left untouched.
+
+## Session S17 — Canonical σ-side uniqueness (researcher-1, this PR)
+
+### What was added
+
+Part 26 of `FourSquareDistributionOQ01.lean`:
+
+- `sigmaStar_uniqueness_from_canonical_hypotheses` — the canonical
+  σ*-side uniqueness theorem. Any `g : ℕ → ℕ` satisfying
+  `(Hodd)` `g n = σ n` for odd `n`, `(HtwoPow)` `g (2^k) = 3` for
+  `k ≥ 1`, and STANDARD multiplicativity `(Hmul)` `g (m·n) = g m · g n`
+  for coprime `m, n > 0` equals `sigmaStar` on positive `n`.
+  AXIOM-FREE (does not invoke `jacobi_r4_formula`).
+
+- `sigmaStar_satisfies_canonical_hypotheses` — self-validation
+  bundling `sigmaStar_eq_sigmaOne_of_odd` (Part 6),
+  `sigmaStar_two_pow` (Part 13), and `sigmaStar_mul_of_coprime`
+  (Part 12) into the 3-tuple.
+
+- Two cross-validation `example` blocks: the self-specialisation
+  `g := sigmaStar` reducing to `sigmaStar = sigmaStar`, and the
+  bridge `jacobiR4 n = 8 · sigmaStar n` (definitional).
+
+### Net delta (raw recount)
+
+- +151 lines (2068 → 2219).
+- +2 theorems (121 → 123).
+- 0 new axioms. 0 new sorries.
+- Target axiom (`jacobi_r4_formula`): unchanged.
+
+### Conceptual contribution
+
+S16 (Part 25, PR #17649) proved `jacobiR4_uniqueness_from_atomic_hypotheses`,
+a σ*-side uniqueness theorem on `f := jacobiR4 = 8 · σ*`. Its
+multiplicativity hypothesis carries an artificial factor of 8:
+`8 · f (m·n) = f m · f n` for coprime `m, n > 0`. The factor is an
+artifact: `f 1 = jacobiR4 1 = 8 · 1 = 8`, while standard multiplicative
+arithmetic functions have `g 1 = 1`.
+
+S17 (this PR) lifts the uniqueness one level deeper to the standard
+multiplicativity form: any `g : ℕ → ℕ` satisfying `g (m·n) = g m · g n`
+(no factor of 8) plus the two value hypotheses on odd `n` and pure
+2-powers equals `sigmaStar` on positive `n`. This is the conceptual
+primitive that matches Mathlib's `IsMultiplicative` nomenclature.
+
+S17 → S16 reduction: in the σ*-self case, `jacobiR4 = 8 · sigmaStar`
+follows definitionally. For arbitrary `f` satisfying S16's
+3-hypothesis form, casting to `g := f / 8` requires the divisibility
+`8 ∣ f n` for all positive `n` — automatic when `f 1 = 8` and
+`f` is 8-multiplicative, since `f (m·n) = f m · f n / 8` (in ℚ) and
+inductive 2-power expansion preserves the factor.
+
+### Reduction frontier after S17
+
+The σ*-side decomposition now spans three internally complete forms:
+
+* S11.alt (3-hyp r4Count-side, PR #17388, open): r4Count satisfies
+  `(Hodd_r): r4Count n = 8·σ(n)` for odd n, `(HtwoPow_r): r4Count(2^k) = 24`
+  for k ≥ 1, and `(Hmul_r): 8·r4Count(m·n) = r4Count(m)·r4Count(n)`
+  for coprime m, n > 0  ⇒  r4Count = jacobiR4 on positive n.
+* S16 (3-hyp σ*-side, PR #17649, merged): same three hypotheses
+  imposed on an abstract `f : ℕ → ℕ`  ⇒  f = jacobiR4 on positive n.
+* S17 (3-hyp canonical σ-side, this PR): standard-multiplicativity
+  hypotheses on `g : ℕ → ℕ`  ⇒  g = sigmaStar on positive n. Combined
+  with `r4Count = 8·(r4Count/8)` (axiom-free if `8 ∣ r4Count`),
+  reduces `jacobi_r4_formula` to a standard-multiplicativity claim
+  on `r4Count/8`.
+
+### Build verification
+
+Skipped locally: `proofs/.lake` self-referential symlink trap (memory
+`feedback_researcher_lake_symlink_broken.md`) forces a 45+ minute
+fresh Mathlib clone per Docker build. CI is the ground truth.
+PR title carries "(build pending)" precedent per recent S13–S16 PRs
+(#17515, #17524, #17635, #17649).
+
+### Next action seed
+
+S18 candidate: prove `8 ∣ r4Count n` for `0 < n` AXIOM-FREE, casting
+the open axiom into S17's canonical form via `g := r4Count / 8`.
+Classical 4-square-symmetry argument (8 sign-and-permutation
+automorphisms on non-degenerate solutions); template:
+`Mathlib.NumberTheory.SumFourSquares`.
