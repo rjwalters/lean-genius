@@ -1,5 +1,30 @@
 [
   {
+    "id": "e101-definitions",
+    "proofId": "erdos101-problem",
+    "type": "definition",
+    "range": {
+      "startLine": 22,
+      "endLine": 48
+    },
+    "title": "Foundational Definitions: PlanarPointSet, collinear, NoFiveCollinear, fourPointLineCount",
+    "content": "Four definitions that fix the formal vocabulary of the proof.\n\n1. **`PlanarPointSet`** (L24–27): a `structure` carrying a finite set `points : Finset (ℝ × ℝ)` together with a positivity proof `size_pos : points.card > 0`. The bundled positivity proof lets every downstream theorem assume a non-empty point set without having to discharge an `n ≥ 1` precondition.\n\n2. **`collinear p q r`** (L30–31): the *signed-area* (cross-product) definition `(q.1 − p.1) · (r.2 − p.2) = (r.1 − p.1) · (q.2 − p.2)`. Equivalent to `r − p ∥ q − p` but avoids division, division-by-zero case splits at the definition site, and the parametric `∃ t, …` form.\n\n3. **`NoFiveCollinear P`** (L34–40): pointwise unfolded — for any choice of 5 distinct points $a, b, c, d, e \\in P$ at least one of `collinear a b c`, `collinear a b d`, `collinear a b e` fails. Unfolded form chosen so that `noFiveCollinear_line_bound` can attack the proof by destructuring directly without going through a Finset-on-Finset existential.\n\n4. **`fourPointLineCount`** (L44–48): the central counting target — `Finset.card` of the powerset filter `{S ⊆ P.points : |S| = 4 ∧ ∃ a ≠ b ∈ S, ∀ p ∈ S, collinear a b p}`. The `open Classical in` block + `noncomputable` modifier reflect that membership in this set is decided by an existential over $\\mathbb{R}$.",
+    "significance": "key",
+    "mathContext": "Three choices that shape every downstream proof:\n- **Determinant vs. parametric collinearity**: `(q_1-p_1)(r_2-p_2) = (r_1-p_1)(q_2-p_2)` is polynomial (no division) and ring/linarith-friendly, but it is *not a priori symmetric* in $\\{p,q,r\\}$ — hence the symmetry suite in the next block.\n- **`NoFiveCollinear` as an unfolded $\\forall^{15}$ formula**: avoids `Finset`-level existentials, making the proof of `noFiveCollinear_line_bound` a series of `Finset.erase`/`Finset.card_pos` calls rather than a `Finset.choose` argument.\n- **`fourPointLineCount` over Finset powersets**: filtering `P.points.powerset` is finite ($2^n$ subsets) so the count is well-defined, but requires `Classical` decidability of the existential collinearity predicate."
+    ,
+    "relatedConcepts": [
+      "signed area determinant",
+      "Finset.powerset",
+      "Finset.filter",
+      "Classical.dec",
+      "noncomputable"
+    ],
+    "prerequisites": [
+      "Finset and Finset.powerset",
+      "Classical reasoning over ℝ (DecidablePred)"
+    ]
+  },
+  {
     "id": "e101-symmetries",
     "proofId": "erdos101-problem",
     "type": "technique",
@@ -66,6 +91,30 @@
     "prerequisites": [
       "collinear_trans",
       "Lean by_cases tactic"
+    ]
+  },
+  {
+    "id": "e101-small-cases",
+    "proofId": "erdos101-problem",
+    "type": "theorem",
+    "range": {
+      "startLine": 130,
+      "endLine": 162
+    },
+    "title": "Small-Case Sanity Lemmas: noFiveCollinear_small and fourPointLineCount_lt_four",
+    "content": "Two vacuous-base-case lemmas that pin down the boundary behavior of the bounds.\n\n**`noFiveCollinear_small`** (L131–149): For any `P` with `|P.points| ≤ 4`, the predicate `NoFiveCollinear P` holds vacuously. Proof builds the literal 5-element `Finset` `{a, b, c, d, e}` from the 15 distinctness hypotheses, computes its cardinality as `5` by four nested `Finset.card_insert_of_notMem` rewrites, then derives `5 = |{a,…,e}| ≤ |P.points| ≤ 4` for an `omega`-closed contradiction. This makes the hypothesis statement-of-record harmless even on tiny configurations — the theorems below remain true *and informative* (the bound $n(n-1)/12$ becomes vacuous at $n \\leq 4$).\n\n**`fourPointLineCount_lt_four`** (L153–162): For any `P` with `|P.points| < 4`, `fourPointLineCount P = 0`. Proof: any 4-element subset $S$ of a $<4$-point set would have $|S| \\leq |P.\\text{points}| < 4$, contradicting $|S| = 4$. Closed via `Finset.filter_eq_empty_iff` + `omega`.\n\nTogether these establish: *the bounds in this file are meaningful only at $n \\geq 4$, and degenerate gracefully below.*",
+    "significance": "supporting",
+    "mathContext": "Boundary behavior: $|F| \\leq n(n-1)/12$ at $n = 4$ gives $|F| \\leq 1$ (a single 4-collinear subset is allowed), at $n = 5$ gives $|F| \\leq 20/12 = 1$ (still one), at $n = 12$ gives $|F| \\leq 11$ (matching Grünbaum's projective-plane lower bound qualitatively). The small-case lemmas certify that the formal statements remain *true* throughout this regime by ensuring the no-5-collinear hypothesis cannot fail vacuously and the count cannot be negative.",
+    "relatedConcepts": [
+      "Finset.card_insert_of_notMem",
+      "Finset.filter_eq_empty_iff",
+      "vacuous truth",
+      "boundary cases"
+    ],
+    "prerequisites": [
+      "NoFiveCollinear definition",
+      "Finset.card_le_card",
+      "omega tactic"
     ]
   },
   {
