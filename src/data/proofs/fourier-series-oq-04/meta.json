@@ -105,5 +105,57 @@
       "description": "OQ-03 covers the Dirichlet kernel and pointwise convergence criteria; this OQ-04 shows the n-dimensional Dirichlet kernel D_N^n = ∏ D_N^1 has L¹ norm growing as (log N)^n, explaining why rectangular summation fails in n≥2"
     }
   ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Carleson, L. (1966). \"On convergence and growth of partial sums of Fourier series.\" *Acta Mathematica* 116, 135–157.",
+      "relevance": "The 1D foundation: every $f \\in L^2(\\mathbb{T}^1)$ has a Fourier series converging pointwise a.e. Won the 2006 Abel Prize (jointly with Hunt's extension to $L^p$, $p > 1$). The natural target for n-dimensional generalization — the unsolved 2D Carleson conjecture asks whether the analogue holds for spherical summation on $\\mathbb{T}^2$."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Hunt, R.A. (1968). \"On the convergence of Fourier series.\" In *Orthogonal Expansions and Their Continuous Analogues*, Southern Illinois Univ. Press, 235–255.",
+      "relevance": "Extended Carleson's L² result to $L^p$, $1 < p \\leq \\infty$: the Carleson-Hunt theorem. The proof technique (linearization of the maximal operator + frequency localization) is the conceptual ancestor of every later approach to a.e. Fourier convergence."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Fefferman, C. (1971). \"On the divergence of multiple Fourier series.\" *Bulletin of the AMS* 77, 191–195.",
+      "relevance": "The watershed negative result: there exists $f \\in L^1(\\mathbb{T}^2)$ whose rectangular partial sums $S_N^{\\text{rect}}f$ diverge a.e. Shows that for $n \\geq 2$, the choice of summation method is not a convenience — rectangular summation genuinely fails, motivating the entire Bochner-Riesz / spherical summation industry."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Carleson, L. & Sjölin, P. (1972). \"Oscillatory integrals and a multiplier problem for the disc.\" *Studia Mathematica* 44, 287–299.",
+      "relevance": "Resolved the Bochner-Riesz conjecture in $n=2$ via oscillatory integral estimates: $S_R^\\delta \\to f$ in $L^p(\\mathbb{T}^2)$ iff $\\delta > \\max(0, 2|1/p - 1/2| - 1/2)$. The proof introduced what is now called the Carleson-Sjölin oscillatory integral, a cornerstone of modern restriction theory."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Stein, E.M. & Tomas, P.A. (1975). \"A restriction theorem for the Fourier transform.\" *Bulletin of the AMS* 81, 477–478.",
+      "relevance": "The Stein-Tomas restriction theorem: the Fourier extension operator from $S^{n-1}$ is bounded $L^2(S^{n-1}) \\to L^{2(n+1)/(n-1)}(\\mathbb{R}^n)$. Reduces partial Bochner-Riesz convergence (above the Stein-Tomas threshold) to restriction estimates; the engine behind much subsequent higher-dimensional progress."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Bourgain, J. (1991). \"Besicovitch-type maximal operators and applications to Fourier analysis.\" *Geometric and Functional Analysis* 1, 147–187.",
+      "relevance": "Improved Bochner-Riesz beyond Stein-Tomas in $n \\geq 3$ using the Kakeya maximal function. Established the deep three-way link between Bochner-Riesz multipliers, restriction estimates, and Kakeya set conjectures — a triangle still driving 21st-century progress."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Guth, L. (2016). \"A restriction estimate using polynomial partitioning.\" *Journal of the AMS* 29(2), 371–413.",
+      "relevance": "Polynomial partitioning method significantly advanced Bochner-Riesz/restriction in $n \\geq 3$. Demonstrates that the higher-dimensional case requires fundamentally different tools (algebraic geometry, incidence bounds) than the 1D Carleson framework — explaining why the gap from $n=2$ to $n\\geq 3$ in the open question is so wide."
+    },
+    {
+      "type": "textbook",
+      "citation": "Grafakos, L. (2014). *Classical Fourier Analysis* (3rd ed.) and *Modern Fourier Analysis* (3rd ed.), Graduate Texts in Mathematics 249/250, Springer.",
+      "relevance": "Standard graduate reference covering Carleson's theorem, Bochner-Riesz means, the Carleson-Sjölin theorem, and the Stein-Tomas restriction theorem. Chapter 11 of *Modern Fourier Analysis* is the canonical reference for multi-dimensional summability."
+    },
+    {
+      "type": "textbook",
+      "citation": "Stein, E.M. & Weiss, G. (1971). *Introduction to Fourier Analysis on Euclidean Spaces*, Princeton Mathematical Series 32, Princeton University Press.",
+      "relevance": "Cited in the file header. The foundational reference for Bochner-Riesz means and spherical summation in $\\mathbb{R}^n$ — Chapter VII develops the theory that adapts directly to the torus case studied here."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. *Mathlib.MeasureTheory.Group.AddCircle* and *Mathlib.MeasureTheory.Measure.Haar.Basic*. Accessed 2026.",
+      "relevance": "Mathlib infrastructure required to upgrade the placeholder `fourierCoeff` definition to a real integral: `AddCircle (1 : ℝ)` is $\\mathbb{R}/\\mathbb{Z}$ as a measurable group with normalized Haar measure, and `Fin n → AddCircle 1` carries the product measure. The integration framework `MeasureTheory.integral` then handles the n-fold Fourier integral."
+    }
+  ],
   "sorries": 0
 }
