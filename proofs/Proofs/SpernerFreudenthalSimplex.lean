@@ -746,6 +746,194 @@ private lemma topSimps2_vertex_in_range (N : ℕ) {s : Finset (ℕ × ℕ)}
 
 end N2VertexRange
 
+-- ============================================================
+-- SECTION VIII: gridPt per-coordinate diameter bounds
+-- (S26-prep, f-independent: pairwise per-coordinate distances between
+-- vertices of a single top simplex in `topSimps2 N`. Feeds the
+-- real-coordinate diameter conclusion `|v i l - v j l| ≤ 2/N` of
+-- `sperner_panchromatic_two`. Independent of in-flight S23 PR #17571
+-- (color-side wiring) and S25-prep PR #17621 (explicit gridPt
+-- coordinate values) — added in a new section between
+-- `N2VertexRange` and `end SpernerFreudSimp`, no overlap with either.)
+-- ============================================================
+
+section N2GridDiameter
+
+variable (N : ℕ) (hN : 0 < N)
+
+/-- Closed form for the coordinate-0 difference of two `gridPt` values:
+the ℕ difference of the first coordinates divided by `N`. -/
+private lemma gridPt_coord0_diff (b₁ b₂ : ℕ × ℕ) :
+    gridPt N b₁ 0 - gridPt N b₂ 0 = ((b₁.1 : ℝ) - b₂.1) / N := by
+  simp only [gridPt, show (0:Fin 3).val = 0 from rfl, ↓reduceIte]
+  ring
+
+/-- Closed form for the coordinate-1 difference of two `gridPt` values:
+the ℕ difference of the second coordinates divided by `N`. -/
+private lemma gridPt_coord1_diff (b₁ b₂ : ℕ × ℕ) :
+    gridPt N b₁ 1 - gridPt N b₂ 1 = ((b₁.2 : ℝ) - b₂.2) / N := by
+  simp only [gridPt, show (1:Fin 3).val = 1 from rfl,
+             show ¬(1:ℕ) = 0 from by omega, ↓reduceIte]
+  ring
+
+/-- Closed form for the coordinate-2 difference of two `gridPt` values:
+the reverse-sign ℕ difference of the coordinate sums divided by `N`.
+(Coordinate 2 of `gridPt N b` is `(N - b.1 - b.2)/N`, so increasing the
+sum decreases the value.) -/
+private lemma gridPt_coord2_diff (b₁ b₂ : ℕ × ℕ) :
+    gridPt N b₁ 2 - gridPt N b₂ 2 =
+      (((b₂.1 : ℝ) + b₂.2) - ((b₁.1 : ℝ) + b₁.2)) / N := by
+  simp only [gridPt, show (2:Fin 3).val = 2 from rfl,
+             show ¬(2:ℕ) = 0 from by omega, show ¬(2:ℕ) = 1 from by omega,
+             ↓reduceIte]
+  ring
+
+/-- First-coordinate range bound for `t1 b` vertices: `b.1 ≤ v.1 ≤ b.1 + 1`. -/
+private lemma t1_vertex_first_coord_range (b v : ℕ × ℕ) (hv : v ∈ t1 b) :
+    b.1 ≤ v.1 ∧ v.1 ≤ b.1 + 1 := by
+  simp only [t1, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- Second-coordinate range bound for `t1 b` vertices: `b.2 ≤ v.2 ≤ b.2 + 1`. -/
+private lemma t1_vertex_second_coord_range (b v : ℕ × ℕ) (hv : v ∈ t1 b) :
+    b.2 ≤ v.2 ∧ v.2 ≤ b.2 + 1 := by
+  simp only [t1, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- Coordinate-sum range bound for `t1 b` vertices:
+`b.1 + b.2 ≤ v.1 + v.2 ≤ b.1 + b.2 + 1`. The upper half coincides with the
+existing `t1_vertex_sum_le`; the lower half is new (the diagonal vertex
+realises the lower bound). -/
+private lemma t1_vertex_sum_coord_range (b v : ℕ × ℕ) (hv : v ∈ t1 b) :
+    b.1 + b.2 ≤ v.1 + v.2 ∧ v.1 + v.2 ≤ b.1 + b.2 + 1 := by
+  simp only [t1, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- First-coordinate range bound for `t2 b` vertices: `b.1 ≤ v.1 ≤ b.1 + 1`. -/
+private lemma t2_vertex_first_coord_range (b v : ℕ × ℕ) (hv : v ∈ t2 b) :
+    b.1 ≤ v.1 ∧ v.1 ≤ b.1 + 1 := by
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- Second-coordinate range bound for `t2 b` vertices: `b.2 ≤ v.2 ≤ b.2 + 1`. -/
+private lemma t2_vertex_second_coord_range (b v : ℕ × ℕ) (hv : v ∈ t2 b) :
+    b.2 ≤ v.2 ∧ v.2 ≤ b.2 + 1 := by
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- Coordinate-sum range bound for `t2 b` vertices:
+`b.1 + b.2 + 1 ≤ v.1 + v.2 ≤ b.1 + b.2 + 2`. The upper-corner vertex
+`(b.1+1, b.2+1)` realises the upper bound; the two edge vertices realise
+the lower bound. -/
+private lemma t2_vertex_sum_coord_range (b v : ℕ × ℕ) (hv : v ∈ t2 b) :
+    b.1 + b.2 + 1 ≤ v.1 + v.2 ∧ v.1 + v.2 ≤ b.1 + b.2 + 2 := by
+  simp only [t2, Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl | rfl <;> omega
+
+/-- Per-coordinate gridPt diameter within `t1 b` is bounded by `1/N`. Any
+two vertices of a single `t1` cell differ in each coordinate by at most
+`1/N`, because each ℕ coordinate (and the coordinate sum) varies over a
+unit interval among the three vertices `{(b.1+1, b.2), (b.1, b.2+1), b}`. -/
+private lemma gridPt_t1_coord_diameter (b b₁ b₂ : ℕ × ℕ)
+    (hb₁ : b₁ ∈ t1 b) (hb₂ : b₂ ∈ t1 b) (l : Fin 3) :
+    |gridPt N b₁ l - gridPt N b₂ l| ≤ 1 / N := by
+  have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  fin_cases l
+  · -- l = 0: first-coordinate difference
+    rw [gridPt_coord0_diff, abs_div, abs_of_pos hNr]
+    have h₁ := t1_vertex_first_coord_range b b₁ hb₁
+    have h₂ := t1_vertex_first_coord_range b b₂ hb₂
+    have hnum : |(b₁.1 : ℝ) - b₂.1| ≤ 1 := by
+      have h₁lo : (b.1 : ℝ) ≤ b₁.1 := by exact_mod_cast h₁.1
+      have h₁hi : (b₁.1 : ℝ) ≤ (b.1 : ℝ) + 1 := by exact_mod_cast h₁.2
+      have h₂lo : (b.1 : ℝ) ≤ b₂.1 := by exact_mod_cast h₂.1
+      have h₂hi : (b₂.1 : ℝ) ≤ (b.1 : ℝ) + 1 := by exact_mod_cast h₂.2
+      rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
+    exact div_le_div_of_nonneg_right hnum hNr.le
+  · -- l = 1: second-coordinate difference
+    rw [gridPt_coord1_diff, abs_div, abs_of_pos hNr]
+    have h₁ := t1_vertex_second_coord_range b b₁ hb₁
+    have h₂ := t1_vertex_second_coord_range b b₂ hb₂
+    have hnum : |(b₁.2 : ℝ) - b₂.2| ≤ 1 := by
+      have h₁lo : (b.2 : ℝ) ≤ b₁.2 := by exact_mod_cast h₁.1
+      have h₁hi : (b₁.2 : ℝ) ≤ (b.2 : ℝ) + 1 := by exact_mod_cast h₁.2
+      have h₂lo : (b.2 : ℝ) ≤ b₂.2 := by exact_mod_cast h₂.1
+      have h₂hi : (b₂.2 : ℝ) ≤ (b.2 : ℝ) + 1 := by exact_mod_cast h₂.2
+      rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
+    exact div_le_div_of_nonneg_right hnum hNr.le
+  · -- l = 2: third-coordinate difference (via coordinate-sum range)
+    rw [gridPt_coord2_diff, abs_div, abs_of_pos hNr]
+    have h₁ := t1_vertex_sum_coord_range b b₁ hb₁
+    have h₂ := t1_vertex_sum_coord_range b b₂ hb₂
+    have hnum :
+        |((b₂.1 : ℝ) + b₂.2) - ((b₁.1 : ℝ) + b₁.2)| ≤ 1 := by
+      have h₁lo : (b.1 : ℝ) + b.2 ≤ (b₁.1 : ℝ) + b₁.2 := by exact_mod_cast h₁.1
+      have h₁hi : (b₁.1 : ℝ) + b₁.2 ≤ (b.1 : ℝ) + b.2 + 1 := by exact_mod_cast h₁.2
+      have h₂lo : (b.1 : ℝ) + b.2 ≤ (b₂.1 : ℝ) + b₂.2 := by exact_mod_cast h₂.1
+      have h₂hi : (b₂.1 : ℝ) + b₂.2 ≤ (b.1 : ℝ) + b.2 + 1 := by exact_mod_cast h₂.2
+      rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
+    exact div_le_div_of_nonneg_right hnum hNr.le
+
+/-- Per-coordinate gridPt diameter within `t2 b` is bounded by `1/N`. Same
+shape as `gridPt_t1_coord_diameter` but with the `t2`-vertex bounds (the
+coordinate-sum interval is now `[b.1+b.2+1, b.1+b.2+2]`). -/
+private lemma gridPt_t2_coord_diameter (b b₁ b₂ : ℕ × ℕ)
+    (hb₁ : b₁ ∈ t2 b) (hb₂ : b₂ ∈ t2 b) (l : Fin 3) :
+    |gridPt N b₁ l - gridPt N b₂ l| ≤ 1 / N := by
+  have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  fin_cases l
+  · rw [gridPt_coord0_diff, abs_div, abs_of_pos hNr]
+    have h₁ := t2_vertex_first_coord_range b b₁ hb₁
+    have h₂ := t2_vertex_first_coord_range b b₂ hb₂
+    have hnum : |(b₁.1 : ℝ) - b₂.1| ≤ 1 := by
+      have h₁lo : (b.1 : ℝ) ≤ b₁.1 := by exact_mod_cast h₁.1
+      have h₁hi : (b₁.1 : ℝ) ≤ (b.1 : ℝ) + 1 := by exact_mod_cast h₁.2
+      have h₂lo : (b.1 : ℝ) ≤ b₂.1 := by exact_mod_cast h₂.1
+      have h₂hi : (b₂.1 : ℝ) ≤ (b.1 : ℝ) + 1 := by exact_mod_cast h₂.2
+      rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
+    exact div_le_div_of_nonneg_right hnum hNr.le
+  · rw [gridPt_coord1_diff, abs_div, abs_of_pos hNr]
+    have h₁ := t2_vertex_second_coord_range b b₁ hb₁
+    have h₂ := t2_vertex_second_coord_range b b₂ hb₂
+    have hnum : |(b₁.2 : ℝ) - b₂.2| ≤ 1 := by
+      have h₁lo : (b.2 : ℝ) ≤ b₁.2 := by exact_mod_cast h₁.1
+      have h₁hi : (b₁.2 : ℝ) ≤ (b.2 : ℝ) + 1 := by exact_mod_cast h₁.2
+      have h₂lo : (b.2 : ℝ) ≤ b₂.2 := by exact_mod_cast h₂.1
+      have h₂hi : (b₂.2 : ℝ) ≤ (b.2 : ℝ) + 1 := by exact_mod_cast h₂.2
+      rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
+    exact div_le_div_of_nonneg_right hnum hNr.le
+  · rw [gridPt_coord2_diff, abs_div, abs_of_pos hNr]
+    have h₁ := t2_vertex_sum_coord_range b b₁ hb₁
+    have h₂ := t2_vertex_sum_coord_range b b₂ hb₂
+    have hnum :
+        |((b₂.1 : ℝ) + b₂.2) - ((b₁.1 : ℝ) + b₁.2)| ≤ 1 := by
+      have h₁lo : (b.1 : ℝ) + b.2 + 1 ≤ (b₁.1 : ℝ) + b₁.2 := by exact_mod_cast h₁.1
+      have h₁hi : (b₁.1 : ℝ) + b₁.2 ≤ (b.1 : ℝ) + b.2 + 2 := by exact_mod_cast h₁.2
+      have h₂lo : (b.1 : ℝ) + b.2 + 1 ≤ (b₂.1 : ℝ) + b₂.2 := by exact_mod_cast h₂.1
+      have h₂hi : (b₂.1 : ℝ) + b₂.2 ≤ (b.1 : ℝ) + b.2 + 2 := by exact_mod_cast h₂.2
+      rw [abs_le]; refine ⟨?_, ?_⟩ <;> linarith
+    exact div_le_div_of_nonneg_right hnum hNr.le
+
+/-- Per-coordinate gridPt diameter within any `s ∈ topSimps2 N` is bounded
+by `2/N`. This is the form matching `sperner_panchromatic_two`'s
+real-coordinate conclusion `|v i l - v j l| ≤ 2/N`; the underlying tight
+bound is `1/N` (via `gridPt_t1_coord_diameter` / `gridPt_t2_coord_diameter`).
+The factor-of-2 slack is harmless and matches the abstract axiom shape
+`diameter ≤ n/N` (here `n = 2`). -/
+private lemma gridPt_topSimps2_coord_diameter
+    (s : Finset (ℕ × ℕ)) (hs : s ∈ topSimps2 N)
+    (b₁ b₂ : ℕ × ℕ) (hb₁ : b₁ ∈ s) (hb₂ : b₂ ∈ s) (l : Fin 3) :
+    |gridPt N b₁ l - gridPt N b₂ l| ≤ 2 / N := by
+  have hNr : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  have h12 : (1 : ℝ) / N ≤ 2 / N :=
+    div_le_div_of_nonneg_right (by norm_num : (1 : ℝ) ≤ 2) hNr.le
+  simp only [topSimps2, Finset.mem_union, Finset.mem_image] at hs
+  rcases hs with ⟨c, _, rfl⟩ | ⟨c, _, rfl⟩
+  · exact (gridPt_t1_coord_diameter N hN c b₁ b₂ hb₁ hb₂ l).trans h12
+  · exact (gridPt_t2_coord_diameter N hN c b₁ b₂ hb₁ hb₂ l).trans h12
+
+end N2GridDiameter
+
 end SpernerFreudSimp
 
 -- ============================================================
