@@ -1,10 +1,44 @@
 # Current State
 
-**Phase**: ACT (path-B + path-C scaffolding)
-**Since**: 2026-05-12 (S5)
-**Iteration**: 5
+**Phase**: ACT (path-B + path-C scaffolding, S6 logarithmic-density statement scaffold)
+**Since**: 2026-05-12 (S6)
+**Iteration**: 6
 
 ## Current Focus
+
+S6 (researcher-4, 2026-05-12): **Statement-only SCAFFOLD** for the
+logarithmic-density target. Added one new theorem to
+`proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (~50 lines including the section
+docstring), declared with `sorry`:
+
+* `mertens_log_density_4k1` — the partial sums of `log p / p` over primes
+  `p ≡ 1 (mod 4)` up to `N` grow asymptotically like `(1/2) · log N`. This is
+  the **Mertens-1874 logarithmic-density form** of OQ-03, strictly weaker
+  than the natural-density form (`primes_4k1_natural_density`, also `sorry`)
+  but strictly stronger than the qualitative divergence
+  (`not_summable_primes_4k1_log_div`, S5, fully proved). The S6 docstring
+  records the Abel-summation proof outline on top of S4's
+  `LSeries_residueClass_one_mod_four_lower_bound`.
+
+**Why a statement-only scaffold**: per the recommendation in S5's
+state.md, "Recommended for the next session: S6 alternative (logarithmic
+density via Mertens). This is unblocked by current Mathlib; S4 + S5 supply
+the required ingredients (qualitative divergence + pole-strength lower
+bound)." However, the full Abel-summation proof is ~100-150 lines of
+analytic-number-theory bookkeeping, and the worktree's `proofs/.lake`
+symlink trap forces ≥45-minute Docker builds — too long for a single
+session's PR cycle. S6 instead pins the *target asymptotic* with a
+concrete syntactic statement, so S7+ can attack the proof body
+deterministically. This matches the S2 pattern (state
+`primes_4k1_natural_density` with `sorry`, defer the proof to S3+).
+
+**Net effect on file**: +1 theorem stated with `sorry`, +50 lines of code
+and docstring, no axiom changes, sorry count 1 → 2 (the new
+`mertens_log_density_4k1` statement plus the existing
+`primes_4k1_natural_density` statement, both as OQ-03 targets with
+explicit "deferred proof" tracking).
+
+### Previous Focus (Session 5)
 
 S5 (researcher-1, 2026-05-12): Added the **elementary divergence + sum-of-two-squares
 corollary** to `proofs/Proofs/InfinitudePrimes4k1OQ03.lean`. Two new fully-proved
@@ -111,36 +145,56 @@ asymptotic. This is *not yet* in Mathlib at the pinned revision.
 
 ## Next Action
 
-S5 delivered (a) the elementary form of S4's Mertens-style divergence and
-(b) the path-C sum-of-two-squares infinitude corollary. The remaining steps:
+S6 delivered the **statement scaffold** for the logarithmic-density target
+(`mertens_log_density_4k1`, sorry'd). The remaining steps:
 
-**S6 path B step 3 (Tauberian transfer to natural density)**: The natural-density
-form (the OQ-03 sorry) remains blocked on the absence of
-`Mathlib.NumberTheory.LSeries.Wiener` / `LSeries.IkeharaTauberian` at the
-pinned revision. Once Mathlib gains a Tauberian module, the
-`primes_4k1_natural_density` sorry can be discharged by combining
-`LSeries_residueClass_one_mod_four_lower_bound` (the S4 lemma) with the
-Tauberian transfer to convert the L-series pole strength to a counting
-asymptotic.
+**S7 (logarithmic-density proof body via Abel summation)**: Discharge the
+`mertens_log_density_4k1` sorry. Concrete plan (~100-150 lines):
 
-**S6 alternative (logarithmic density via Mertens)**: Quantitative upgrade of
-S5's qualitative divergence. State and prove
-`∑_{p ≤ N, p ≡ 1 (mod 4)} log p / p ~ (1/2) log N` using Abel summation +
-`LSeries_residueClass_one_mod_four_lower_bound`. About 100-150 lines following
-the standard Mertens-1874 outline.
+1. **Abel-summation identity** (~30 lines). Apply
+   `Real.Abel_summation` / `tsum_eq_integral_of_summable`-style identity to
+   relate `∑_{n ≤ N} f(n) / n^x` and `∫_1^N (∑_{n ≤ t} f(n)) / t^(x+1) dt`
+   for `f n := vonMangoldt.residueClass (1 : ZMod 4) n · (n.Prime indicator)`
+   and `x` in a half-neighbourhood of `1`.
+2. **Lower-bound transfer** (~30 lines). Combine S4's
+   `LSeries_residueClass_one_mod_four_lower_bound` with the Abel identity
+   in the limit `x ↘ 1` to extract the partial-sum lower asymptotic.
+3. **Upper-bound transfer** (~30 lines). Symmetric upper bound from
+   continuity of the residue-class L-function on `re s ≥ 1`
+   (`continuousOn_LFunctionResidueClassAux`).
+4. **Conversion to elementary form** (~10 lines). Translate von Mangoldt
+   restricted-prime sums to elementary `log p / p` via S5's
+   `residueClass_one_mod_four_apply_prime` and `vonMangoldt_apply_prime`.
+5. **Squeeze theorem** (~10 lines). Combine the matching upper and lower
+   bounds to land the `Tendsto … (𝓝 (1/2))` conclusion.
 
-**S6 path C extension (density form)**: Once a density form (natural or
-logarithmic) is proved, upgrade `primes_sum_two_squares_infinite` to the
-density-1/2 statement.
+Mathlib API audit at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+all required infrastructure is present (`Real.log`, `LSeries`,
+`vonMangoldt.LSeries_residueClass_lower_bound`,
+`continuousOn_LFunctionResidueClassAux`, `Asymptotics.IsEquivalent`,
+Abel-summation primitives in `Mathlib.NumberTheory.AbelSummation`).
 
-Recommended for the next session: S6 alternative (logarithmic density via
-Mertens). This is unblocked by current Mathlib; S4 + S5 supply the
-required ingredients (qualitative divergence + pole-strength lower bound).
+**S7+ path B step 3 (Tauberian transfer to natural density)**: The
+natural-density form (`primes_4k1_natural_density` sorry) remains blocked on
+the absence of `Mathlib.NumberTheory.LSeries.Wiener` /
+`LSeries.IkeharaTauberian` at the pinned revision. Once Mathlib gains a
+Tauberian module, the sorry can be discharged by combining
+`LSeries_residueClass_one_mod_four_lower_bound` with the Tauberian transfer
+to convert the L-series pole strength to a counting asymptotic.
+
+**S7+ path C extension (density form)**: Once a density form (natural or
+logarithmic — i.e., once `mertens_log_density_4k1` lands) is proved,
+upgrade `primes_sum_two_squares_infinite` to the density-1/2 statement.
+
+Recommended for the next session: **S7 (logarithmic-density proof body)**.
+The full proof structure is pinned by the new S6 statement; the next
+session can attack the body without ambiguity. Allow ≥45 minutes for one
+end-of-session Docker build given the `proofs/.lake` symlink state.
 
 ## Attempt Counts
 
-* Total attempts: 5 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold, S4 Dirichlet-density bridge, S5 elementary divergence + path-C corollary)
-* Current approach attempts: 5 (Mathlib bridge → path-B steps 1+2 → S5 elementary repackaging + path-C infinitude)
+* Total attempts: 6 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold, S4 Dirichlet-density bridge, S5 elementary divergence + path-C corollary, S6 logarithmic-density statement scaffold)
+* Current approach attempts: 6 (Mathlib bridge → path-B steps 1+2 → S5 elementary repackaging + path-C infinitude → S6 logarithmic-density target statement)
 * Approaches tried: 2 (path B partial; path C infinitude corollary)
 
 ## Open files
@@ -148,13 +202,15 @@ required ingredients (qualitative divergence + pole-strength lower bound).
 * `problem.md` — theoretical context, Mathlib infrastructure map,
   decomposition table, three-density theory comparison.
 * `knowledge.md` — S1 survey + S2 Mathlib-reality + S3 orthogonality scaffold
-  + S4 Dirichlet-density bridge + S5 elementary divergence + path-C corollary.
-* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (S2 base, S3+S4+S5 enriched) —
-  Mathlib-bridge infinitude (verified) + character-orthogonality scaffold
+  + S4 Dirichlet-density bridge + S5 elementary divergence + path-C corollary
+  + S6 logarithmic-density statement scaffold.
+* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (S2 base, S3+S4+S5+S6 enriched)
+  — Mathlib-bridge infinitude (verified) + character-orthogonality scaffold
   for `q = 4` (3 verified lemmas, S3) + Dirichlet-density bridge for
   `(q, a) = (4, 1)` (2 verified theorems, S4) + elementary Mertens-style
   divergence (`not_summable_primes_4k1_log_div`, S5) + sum-of-two-squares
   infinitude corollary (`primes_sum_two_squares_infinite`, S5) +
+  logarithmic-density target statement (`mertens_log_density_4k1`, sorry, S6) +
   natural-density statement (sorry).
 
 ## S5 Deliverable
