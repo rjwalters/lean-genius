@@ -33,20 +33,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-21T13:45:00Z",
-    "iteration": 52,
-    "focus": "S52 (this session) — proved `hookProd_doubleRemove_factor` (BallotProblemOQ03OQ01OQ02Helpers.lean:5297, ~133 lines including 38-line docstring). This is the algebraic 'easy half' of the GNW exchange identity: H(μ)·H((μ\\c)\\c')·(h_d-1)² = H(μ\\c)·H(μ\\c')·h_d·(h_d-2) where h_d = hookLength μ c.1 c'.2. Proof applies hookProd_ratio_formula twice (to corner c on μ and on μ\\c'), uses S50 single-removal bridges to show pointwise equality off the doubly-affected cell d, uses Finset.mul_prod_erase to extract the differing d-factors (h_d/(h_d-1) in R₁ vs (h_d-1)/(h_d-2) in R₂), then closes by `rw [hR1, hR2]; field_simp; ring` after applying h_swap. S51 `hookLength_at_d_ge_3` provides the ℚ-cast safety. This closes step 1 of 3 in the s05 recipe; remaining: S53 F-side joint K-induction (~100-200 lines), S54+ combine. Sorry count unchanged (1).",
+    "iteration": 66,
+    "focus": "S66 (this session, researcher-8, ANALYSIS-ONLY) — refuted S65's planned naive pointwise S57.7 (`gnwProb μ c K y = gnwProb (μ\\c') c K y` on non-vanishing crossing cells of the S57.6 prep partition) with a (3,2)-shape counter-example: c=(0,2), c'=(1,1), x=(0,0), y=(0,1). Direct computation from the gnwProb def yields gnwProb μ c K y = 1/2 vs gnwProb (μ\\c') c K y = 1 (K ≥ 2). The mismatch is structural: c' ∈ H*(y) \\ H*'(y) so the K+1 step's divisor differs by 1 (1/2 vs 1/1), and IH on the strict-hook cells does not bridge the missing-mass gap. Sum-level F_side_identity_aligned identity verified to still hold at (3,2): both sides equal 8 despite per-cell pointwise inequality at three of four (μ\\c').cells. Realigns S57.7 with state.md's earlier `δ_arm` correction-term plan (line 537–539, 558–563). No `.lean` edits.",
     "blockers": [
       "gnwProb_exchange: GNW 1979 hook-weight shift identity in product form. S52 (this session) closed the algebraic easy half (`hookProd_doubleRemove_factor`, sorry-free). Remaining: F-side joint K-induction (S53, ~100-200 lines) using `gnwProb_step` for K-stability and the S43 sum-bridges, then S54+ combines via gnwProb bookkeeping. File-size approaches Docker 32GB ceiling at 14852 lines; extraction into a `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` sub-file should be a blocking prerequisite for S53."
     ],
-    "nextAction": "S53: prove the F-side joint K-induction on the sum-level invariant `(∑ gnwProb μ c K) · h_d (h_d−2) = (∑ gnwProb (μ\\c') c K) · (h_d − 1)²` using `gnwProb_step` for K-stability and the S43 sum-bridges (`sum_gnwProb_eq_removeCorner_cells`, `sum_gnwProb_strictHookCells_eq_removeCorner`). Likely needs file extraction first (Helpers.lean is at 14852 lines, Docker ceiling ~15500). Confidence: medium — joint K-induction may bifurcate at K=0 base case requiring a separate lemma. Then S54+ combines with S52's hookProd_doubleRemove_factor to close gnwProb_exchange.",
+    "nextAction": "S57.7 (REPLANNED, post-S66 refutation) — sum-level F-side aligned residual identity for non-vanishing crossings. The S57.6 prep 1/2/3 chain (PRs #17747/#17817/#17865) covers the vanishing crossing classes; remaining contribution is the case-1 arm-class y=(x.1,c'.2) and case-2 leg-class y=(c'.1,x.2). Per-cell equality `gnwProb μ c K y = gnwProb (μ\\c') c K y` is FALSE (Session 66 (3,2)-shape counter-example). Correct target: ∑ x ∈ off-spine (μ\\c').cells, [gnwProb μ ⋅ (h_d-1)² − gnwProb (μ\\c') ⋅ h_d(h_d-2)] = 0, with (h_d-1)² − h_d(h_d-2) = +1 absorbing the missing c'-step mass. Sub-lemmas S57.7a (case-1 arm partial sums), S57.7b (case-2 leg via S58 transpose), S57.7c (δ_arm integration to zero). Estimated 150–250 lines + 40–80 for assembly; Option E3 file-extraction must land first (Helpers.lean at 15995 lines). Recommend Session 67 = analysis-only S57.7 spec on (3,2)/(3,2,1) test diagrams to derive S57.7a's algebraic form before any .lean edit.",
     "attemptCounts": {
-      "total": 52,
-      "currentApproach": 16,
+      "total": 66,
+      "currentApproach": 30,
       "approachesTried": 12
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS session 62 / S57.5 (researcher-10, 2026-05-12): Added two sorry-free private lemmas in BallotProblemOQ03OQ01OQ02Helpers.lean (after S57.4 gnwProb_succ_eq_off_spine_of_c'): sum_gnwProb_leg_of_c'_reduce_case1 (case 1 c.1<c'.1 leg-of-c' sum reduces to range (c.1+1)) and sum_gnwProb_arm_of_c'_reduce_case2 (case 2 c.2<c'.2 arm-of-c' sum reduces to range (c.2+1)). Together with S57.3 PR #17719 sum-form vanishings, the four sub-branches of S57.0's cell partition are now tightly bounded: two vanish (S57.3), two reduce to small residuals containing the doubly-affected cell d plus c.1/c.2 below-c cells. Proofs use Finset.sum_Ico_consecutive + Finset.range_eq_Ico + Finset.sum_eq_zero + S57.2 gnwProb_unreachable_zero. +116 Helpers.lean lines (15600 → 15716, crossing the ~15500 Docker memory ceiling estimate by ~216 lines; S57.0 Option E3 file-extraction may be needed for S57.6+). Build pending due to ongoing BallotProblemOQ03OQ02.lean LGV-route sibling break on origin/main. Sole open sorry on GNW route remains F_side_identity_aligned. Next: S57.6 derives unconditional pointwise off-spine identity via WF recursion on hookLength using S57.4 + S57.3a crossing-cell helpers.",
+    "progressSummary": "PROGRESS session 66 / S66 (researcher-8, 2026-05-12, ANALYSIS-ONLY): Refuted S65's planned naive pointwise S57.7 (`gnwProb μ c K y = gnwProb (μ\\c') c K y` on non-vanishing crossing cells of PR #17747's S57.6 prep partition) with a (3,2)-shape counter-example. With μ=(3,2), c=(0,2), c'=(1,1), x=(0,0), y=(0,1): direct computation from the gnwProb def (line 14384) yields gnwProb μ c K y = 1/2 vs gnwProb (μ\\c') c K y = 1 for K ≥ 2. Structural cause: c' ∈ H*(y) \\ H*'(y), so the K+1 step's divisor differs by 1 (1/2 vs 1/1) and IH on the strict-hook cells does not bridge the missing-mass gap. Sum-level F_side_identity_aligned still holds at (3,2) — both sides equal 8 — confirming the aligned identity must operate at the summed level with a δ_arm correction term, as state.md line 537–539 already predicted. Realigns S57.7's plan: target sum-form residual identity (Σ over off-spine (μ\\c').cells of [(h_d-1)² ⋅ gnwProb μ − h_d(h_d-2) ⋅ gnwProb (μ\\c')] = 0), with the +1 discrepancy absorbing the missing c'-step mass. No .lean edits. Build pending — parent BallotProblemOQ03OQ02.lean break on origin/main. Sole open GNW-route sorry remains F_side_identity_aligned. Recent merges: PRs #17865 (S65 prep 3), #17817 (S64 prep 2), #17747 (S63 prep 1).",
     "builtItems": [
       "instFintypeSYT: Fintype instance for StandardYoungTableau (BallotProblemOQ03OQ01OQ02.lean, Part IIIb)",
       "emptyTableau: unique SYT of shape bot (BallotProblemOQ03OQ01OQ02.lean, Part IIIc)",
@@ -268,9 +268,11 @@
       "BallotProblemOQ03.lean regression (omega failure near minSharedStepIdx_preserved) blocks all builds"
     ],
     "nextSteps": [
-      "S57.6 — unconditional pointwise off-spine integrand identity at every K, via well-founded recursion on hookLength μ x.1 x.2 using S57.4 gnwProb_succ_eq_off_spine_of_c'. Strict-hook cells y that cross c's spine are handled by S57.3a per-cell helpers. ~80-150 lines.",
-      "S57.7 — pointwise arm/leg comparison at the S57.5 residual cells (case 1 leg-of-c' for r ∈ range (c.1+1), case 2 arm-of-c' for s ∈ range (c.2+1)). Each residual contains the doubly-affected cell d and c.1/c.2 below-c cells; the pointwise gnwProb μ vs gnwProb (μ\\c') comparison likely needs a δ_arm correction term in the integrand recurrence. ~150-300 lines.",
-      "S57.8 — assemble the (S2)+(S3)+(S6) pointwise identities + S57.3 (PR #17719) vanishings + S57.5 residual reductions into F_side_identity_aligned. After this, the sole sorry of the GNW route closes and the entry promotes to verified status. ~50-100 lines."
+      "S57.7a (post-S66 replan) — case-1 arm-class partial-sum identity at non-vanishing crossing y=(x.1,c'.2). Per-cell `gnwProb μ c K y = gnwProb (μ\\c') c K y` REFUTED by Session 66 (3,2)-shape counter-example. Correct target: K-step residual `gnwProb μ c (K+1) x − gnwProb (μ\\c') c (K+1) x` decomposed as `(1/(K+1)) gnwProb μ c K c' + 1/(|H*'|·(|H*'|+1)) ⋅ gnwProb (μ\\c') c K x` plus IH-reachable terms; uses S65 hookLength_at_arm_class_case1 for divisor alignment. ~80–120 lines.",
+      "S57.7b — case-2 leg-class mirror of S57.7a, reduced via S58 (PR #17650) gnwProb transpose-equivariance. ~30–60 lines.",
+      "S57.7c — `δ_arm` integration to zero. Sum the per-cell δ_arm correction over off-spine arm/leg sub-domain and show it cancels the +1 discrepancy `(h_d-1)² − h_d(h_d-2)` weighted by off-spine cell count. Tools: S57.5 sum reductions (PR #17734), sum_gnwProb_strictHookCells_eq_removeCorner (line 15405). ~40–70 lines.",
+      "S57.8 — assemble S57.7a+b+c + S57.6 prep 1/2/3 + S57.5 residual reductions into F_side_identity_aligned. After this, the sole GNW-route sorry closes and the entry promotes to verified. ~40–80 lines.",
+      "Option E3 prerequisite — extract double-removal section (~5000–8000 lines around S48–S57) of BallotProblemOQ03OQ01OQ02Helpers.lean (15995 lines, ~495 over Docker ceiling) into BallotProblemOQ03OQ01OQ02DoubleRemove.lean. Must land before S57.7a's bulk addition."
     ]
   },
   "tags": [
@@ -316,7 +318,7 @@
     ]
   },
   "started": "2026-04-21T12:53:48.109Z",
-  "lastUpdate": "2026-05-08T18:30:00.000Z",
+  "lastUpdate": "2026-05-12T08:00:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
