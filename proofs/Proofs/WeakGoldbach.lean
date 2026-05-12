@@ -415,22 +415,25 @@ theorem tao_five_primes :
   by_cases h5 : n > 5
   · -- Large odd `n`: Helfgott gives 3 primes summing to `n`; `3 ≤ 5`.
     obtain ⟨p, q, r, hp, hq, hr, heq⟩ := helfgott_weak_goldbach n h5 hodd
-    refine ⟨[p, q, r], ?_, by decide, ?_⟩
+    refine ⟨[p, q, r], ?_, ?_, ?_⟩
     · intro x hx
       simp at hx
       rcases hx with rfl | rfl | rfl <;> assumption
+    · show 3 ≤ 5; decide
     · simp; omega
   · -- Small odd: `n > 1`, `n ≤ 5`, `Odd n` forces `n ∈ {3, 5}`.
     push_neg at h5
-    rcases hodd with ⟨k, rfl⟩
-    interval_cases k
-    · -- `k = 1`, so `n = 3`. Witness: the singleton list `[3]`.
+    have hn35 : n = 3 ∨ n = 5 := by
+      rcases hodd with ⟨k, rfl⟩
+      omega
+    rcases hn35 with rfl | rfl
+    · -- `n = 3`. Witness: the singleton list `[3]`.
       refine ⟨[3], ?_, by decide, by decide⟩
       intro p hp
       simp at hp
       subst hp
       exact Nat.prime_three
-    · -- `k = 2`, so `n = 5`. Witness: the singleton list `[5]`.
+    · -- `n = 5`. Witness: the singleton list `[5]`.
       refine ⟨[5], ?_, by decide, by decide⟩
       intro p hp
       simp at hp
@@ -461,7 +464,7 @@ theorem ramare_six_primes :
     have h5_n3 : k + k - 3 > 5 := by omega
     obtain ⟨p, q, r, hp, hq, hr, heq⟩ :=
       helfgott_weak_goldbach (k + k - 3) h5_n3 hodd_n3
-    refine ⟨[3, p, q, r], ?_, by decide, ?_⟩
+    refine ⟨[3, p, q, r], ?_, ?_, ?_⟩
     · intro x hx
       simp at hx
       rcases hx with rfl | rfl | rfl | rfl
@@ -469,10 +472,12 @@ theorem ramare_six_primes :
       · exact hp
       · exact hq
       · exact hr
+    · show 4 ≤ 6; decide
     · simp; omega
   · -- `k + k < 10` with `k + k ≥ 4`: `k ∈ {2, 3, 4}`; small witnesses suffice.
     push_neg at h10
-    interval_cases k
+    have hk234 : k = 2 ∨ k = 3 ∨ k = 4 := by omega
+    rcases hk234 with rfl | rfl | rfl
     · -- `k = 2`, `n = 4`: `[2, 2]`, length 2 ≤ 6, sum 4.
       refine ⟨[2, 2], ?_, by decide, by decide⟩
       intro p hp
