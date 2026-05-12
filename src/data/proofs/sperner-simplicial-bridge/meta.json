@@ -54,11 +54,25 @@
       "summary": "A codimension-1 face (opposite vertex k) is the image of vertexEnum on Finset.univ.erase k. Lemmas faceOf_card (face has d vertices), faceOf_subset (face ⊆ simplex), vertexEnum_image_erase (face equals s.erase v_k bridging abstract index erasure to geometric vertex erasure), and vertexEnum_not_mem_faceOf_iff (j is not in face k iff j = k)."
     },
     {
-      "id": "containers-adjacency",
-      "title": "Containers, findOppositeIdx, and Adjacency",
+      "id": "containers",
+      "title": "Containers and findOppositeIdx",
       "startLine": 170,
-      "endLine": 542,
-      "summary": "containersOf finds all top-dimensional cells containing a given face; pseudomanifold gives ≤ 2 containers per codimension-1 face. findOppositeIdx, given a cell t containing face f, returns the index k' such that faceOf t k' = f. adjFn maps cell-face pairs (s, k) to the unique adjacent cell (s', k') if the face has 2 containers, else none. The three adjacency-axiom lemmas (adjFn_vertex, adjFn_ne, adjFn_symm) verify the abstract Sperner framework's requirements."
+      "endLine": 276,
+      "summary": "`containersOf topCells f` returns the set of top cells containing face `f`; pseudomanifold gives `card ≤ 2`. `findOppositeIdx t ht f` returns the unique index `k'` such that `faceOf t hs k' = f`, using `(t \\ f).Nonempty.choose` to extract the opposite vertex classically. These are the foundational pieces consumed by adjFn in §3b."
+    },
+    {
+      "id": "adjfn",
+      "title": "adjFn: noncomputable adjacency function",
+      "startLine": 277,
+      "endLine": 345,
+      "summary": "`adjFn topCells hcard (s, k)` returns `Option (cell × Fin(d+1))`: when `containersOf topCells (faceOf s hs k)` has cardinality 2, the unique `t ≠ s` with its opposite index `k'` gives the adjacent pair `(⟨t, _⟩, k')`; otherwise `none`. Noncomputable because `findOppositeIdx` invokes `Nonempty.choose`. Three small helper lemmas establish unfolding and option-vs-some equality patterns used by the symm axiom in §3c."
+    },
+    {
+      "id": "adjacency-axioms",
+      "title": "Three adjacency axioms: adjFn_vertex, adjFn_ne, adjFn_symm",
+      "startLine": 347,
+      "endLine": 543,
+      "summary": "200-line discharge of the three abstract Sperner-framework axioms. **adjFn_vertex** (shared-face equality, ~30 LOC): the two cells share faceOf at the indexed positions. **adjFn_ne** (distinct cells, ~20 LOC): the adjacent cell is genuinely different. **adjFn_symm** (symmetry, ~150 LOC and the hard one): if adjFn s k = some (s', k') then adjFn s' k' = some (s, k); proof navigates `split_ifs`, `Option.some.injEq`, `Prod.mk.injEq`, and `Finset.Nonempty.choose_spec` to recover the original cell."
     },
     {
       "id": "bridge-theorem",
@@ -66,6 +80,13 @@
       "startLine": 545,
       "endLine": 590,
       "summary": "The main theorem exists_panchromatic applies abstract Sperner's lemma (from SpernerMathlib) to finite sets of top-dimensional simplices. Given topCells (a finite set of (d+1)-vertex simplices), the pseudomanifold property (each codim-1 face in at most 2 cells), a vertex coloring, and an odd boundary door count, the theorem produces a panchromatic cell. Proof instantiates Sperner.exists_panchromatic with adjFn and the three verified axioms."
+    },
+    {
+      "id": "mathlib-connection",
+      "title": "Connection to Mathlib's Geometry.SimplicialComplex (commentary)",
+      "startLine": 591,
+      "endLine": 611,
+      "summary": "Closing commentary explaining how to apply `exists_panchromatic` to a Mathlib `Geometry.SimplicialComplex 𝕜 E`: extract the facets of cardinality `d+1` as a `Finset (Finset E)` (requires establishing finiteness for the specific complex, e.g. polytope triangulations), provide the pseudomanifold condition, and invoke `exists_panchromatic`. The theorem is deliberately parameterised by `topCells : Finset (Finset E)` directly (not by `SimplicialComplex`), keeping the file independently type-checkable without importing `Mathlib.Analysis.Convex.SimplicialComplex.Basic`."
     }
   ],
   "overview": {
