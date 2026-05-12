@@ -1,0 +1,114 @@
+{
+  "slug": "sylow-theorems-oq-03",
+  "title": "Pro-p Sylow — narrow axiom-discharge targets adjacent to completed OQ-02",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Identify narrow S2 targets adjacent to the completed sibling slug }\\texttt{sylow-theorems-oq-02}\\text{ (5 axioms + 1 sorry in }\\texttt{SylowTheoremOQ02.lean}\\text{); discharge two of the five axioms and the one sorry without re-attempting the deep inverse-limit construction.}",
+    "plain": "sylow-theorems-oq-03 ('pro-p Sylow theorem, recovered as inverse limit of finite-group Sylow theorems') is a near-duplicate of the completed sibling sylow-theorems-oq-02 ('Pro-p Sylow Theory for Profinite Groups'). Rather than re-attempt the conjecture, audit the OQ-02 file (393 lines, 5 axioms + 1 sorry) and propose 2-3 narrow adjacent S2 targets that surgically discharge the easy axioms without the deep inverse-limit construction. S1 OBSERVE shortlists three candidates: (A) project_pgroup axiom via existing proP_subgroup_card_ppow ~50 LOC; (B) inter_trivial axiom via coprime-order in finite quotients ~25 LOC; (C) normal_of_unique sorry via existing isProP_conj_map ~40 LOC.",
+    "whyMatters": [
+      "Axiom integrity: dropping OQ-02's axiom count from 5 to 3 strengthens the gallery claim without changing main-theorem signatures.",
+      "Duplicate-detection pattern: follows the memory-recorded approach for completed-sibling slugs (researcher-12 PR #18235, 2026-05-12).",
+      "OQ-02's own nextSteps explicitly list normal_of_unique as a target; OQ-03 picks it up."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "A: discharge sylowProP_projects_pgroup axiom (line 134 of OQ-02) using proP_subgroup_card_ppow (line 332, already proven) — ~50 LOC.",
+      "B: discharge sylowProP_inter_trivial axiom (line 142) via coprime-order in finite quotients — ~25 LOC, conditional on IsProfiniteGroup exposing totally-disconnected.",
+      "C: discharge sylowProP_normal_of_unique sorry (line 285) using isProP_conj_map (line 226) — ~40 LOC."
+    ],
+    "goal": "Ship proofs/Proofs/SylowTheoremOQ03.lean (~50 LOC, 0 sorries) discharging Candidate A; update OQ-02's file to delete the axiom and replace uses. Net: OQ-02 axiom count drops from 5 to 4 with no main-theorem signature changes."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T20:55:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — duplicate detection vs. completed OQ-02 + audit of OQ-02's 5 axioms + 1 sorry + shortlist of three narrow adjacent S2 targets.",
+    "blockers": [],
+    "nextAction": "S2 ACT — Candidate A: ship proofs/Proofs/SylowTheoremOQ03.lean (~50 LOC) discharging sylowProP_projects_pgroup. Skeleton in knowledge.md §3.2.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE doc-only: detected duplication with completed sibling sylow-theorems-oq-02; audited OQ-02's actual open items (5 axioms + 1 sorry at lines 108/119/126/134/142/285 of SylowTheoremOQ02.lean); classified each by S2-addressability into deep (existence, conjugacy — needs inverse-limit), moderate (frattini — needs existence+conjugacy), and surgical (projects_pgroup, inter_trivial, normal_of_unique). Locked three narrow Candidate S2 targets (A/B/C) with concrete Lean signatures, proof sketches, and effort estimates. Recommended S2 = Candidate A (~50 LOC, drops axiom count 5→4).",
+    "builtItems": [
+      "research/problems/sylow-theorems-oq-03/problem.md (OQ-02 audit table, three S2 candidates with formal signatures)",
+      "research/problems/sylow-theorems-oq-03/knowledge.md (duplicate detection, detailed candidate proof sketches, recommended order A → C → B)",
+      "research/problems/sylow-theorems-oq-03/state.md (phase OBSERVE, S2 scope lock, race awareness)"
+    ],
+    "insights": [
+      "OQ-02's 5 axioms cleanly split into deep (existence, conjugacy — inverse-limit) and surgical (projects_pgroup, inter_trivial — finite-quotient arguments).",
+      "frattini_profinite is derivable from existence + conjugacy + finite Frattini; it is NOT independent — discharging it after the two deep ones is mechanical.",
+      "The 1 sorry (normal_of_unique) is in OQ-02's own nextSteps and is the easiest single-iteration win for OQ-03.",
+      "Candidate A's discharge uses an already-proven local lemma (proP_subgroup_card_ppow at line 332) — no new Mathlib lemmas required.",
+      "Candidate B is conditional on IsProfiniteGroup's API; recommended order is A → C → B."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no ProfiniteGroup class (consistent with OQ-02's note); the local IsProfiniteGroup is the working substitute.",
+      "Mathlib has no pro-p group type; the local IsProP class is the working substitute.",
+      "Both gaps are out of scope for OQ-03 (OQ-02 already records them)."
+    ],
+    "nextSteps": [
+      "S2 ACT — Candidate A: discharge sylowProP_projects_pgroup (~50 LOC). Drops OQ-02 axiom count 5→4.",
+      "S3 ACT — Candidate C: discharge sylowProP_normal_of_unique sorry (~40 LOC). Drops OQ-02 sorry count 1→0.",
+      "S4 ACT — Candidate B (conditional): discharge sylowProP_inter_trivial (~25 LOC) once IsProfiniteGroup API is augmented if needed."
+    ]
+  },
+  "tags": [
+    "group-theory",
+    "profinite-groups",
+    "sylow",
+    "pro-p",
+    "duplicate-detection",
+    "axiom-discharge",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "sylow-theorem",
+    "sylow-theorems",
+    "sylow-theorems-oq-01",
+    "sylow-theorems-oq-02",
+    "sylow-theorems-oq-04",
+    "sylow-theorems-oq-05",
+    "inverse-galois"
+  ],
+  "references": {
+    "papers": [
+      {
+        "author": "Serre, J.-P.",
+        "year": 1965,
+        "title": "Cohomologie Galoisienne, Chapter I §1 (pro-p Sylow theory)",
+        "venue": "Springer LNM 5"
+      },
+      {
+        "author": "Wilson, J. S.",
+        "year": 1998,
+        "title": "Profinite Groups, §2 (Sylow theory)",
+        "venue": "London Math. Soc. Monographs"
+      },
+      {
+        "author": "Ribes, L., and Zalesskii, P.",
+        "year": 2010,
+        "title": "Profinite Groups (2nd ed.), Theorem 2.3.2",
+        "venue": "Ergebnisse 40, Springer"
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.GroupTheory.Sylow (finite Sylow, reused by OQ-02)",
+      "Mathlib.GroupTheory.PGroup.iff_card (used by Candidate A)"
+    ]
+  },
+  "started": "2026-05-12T20:55:00Z",
+  "lastUpdate": "2026-05-12T20:55:00Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": []
+}
