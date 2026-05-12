@@ -1,10 +1,102 @@
 # Current State
 
-**Phase**: OBSERVE → ORIENT (S1 completed)
+**Phase**: ACT (S2 scaffold landed; advancing to S3 anchoring lemma)
 **Since**: 2026-05-11T22:00:00Z
-**Iteration**: 1
+**Last Updated**: 2026-05-12 (S2 scaffold by researcher-3)
+**Iteration**: 2
 
-## Current Focus
+## S2 Summary (2026-05-12, researcher-3)
+
+**Mode**: ACT (scaffold the five Mathlib-gap definitions identified
+by S1 in a fresh per-slug file, leaving the parent `Hilbert15OQ02OQ03.lean`
+axiom untouched until the S3 2-row anchoring lemma has been proved).
+
+### Deliverable
+
+New file `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` (~250 lines,
+0 sorries, 0 axioms) containing:
+
+1. `Hilbert15OQ02OQ03OQ01.Partition.Subset` — pointwise containment
+   `μ ⊆ ν` on `Partition n` (defined via `HasSubset` instance), plus
+   the `Decidable (μ ⊆ ν)` instance via `Fintype.decidableForallFintype`.
+2. `SkewSSYTFin n ν μ` — semistandard skew Young tableau encoded as
+   the subtype of `((i : Fin n) × Fin (ν.parts i - μ.parts i)) → Fin n`
+   satisfying row-weak + **skew column-strict** (ambient column index
+   `μ.parts i + j.val`, not the inner-relative `j` itself). Truncated
+   subtraction makes the cell sigma-type empty when `μ.parts i >
+   ν.parts i`, so no `μ ⊆ ν` hypothesis is required on the type
+   itself. `Fintype` via `Subtype.fintype`.
+3. `SkewSSYTFin.content T k` — count of cells of `T` filled with
+   value `k : Fin n`; returns `ℕ` (not `Partition n`).
+4. `SkewSSYTFin.reverseRowWord` — Fulton-convention reading word
+   (each row right-to-left, rows top-to-bottom), via
+   `List.finRange n |>.flatMap ...`. Returns `List (Fin n)`.
+5. `isLatticeWord w` — predicate (synonyms: ballot, Yamanouchi)
+   bounded by `Fin (w.length + 1)` for decidability; `Decidable`
+   instance via `inferInstanceAs`.
+6. `lrCoeffN_def ν lam μ` — the LR count, with `if`-guard on
+   `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight`. `Decidable
+   (0 < lrCoeffN_def ν lam μ)` via `Nat.decLt`.
+7. `lrCoeffN_def_eq_zero_of_not_support` — `@[simp]` pruning lemma
+   for the out-of-support case.
+
+Added to `proofs/Proofs.lean` import list between `Hilbert15OQ02OQ03`
+and `Hilbert15SchubertCalculus` (alphabetic order).
+
+### Design choices
+
+* **No containment hypothesis on `SkewSSYTFin`.** With truncated
+  natural subtraction in `Fin (ν.parts i - μ.parts i)`, the cell
+  sigma-type is automatically empty wherever `μ.parts i > ν.parts i`.
+  Carrying `μ ⊆ ν` as a type parameter would force every consumer
+  to thread the proof through, and the S1 spec sketch in `state.md`
+  did not lock in a particular API. Cleaner to gate at the
+  `lrCoeffN_def` level where the well-definedness condition lives
+  anyway.
+
+* **Skew column-strict on ambient column index.** Column-strictness
+  for skew tableaux is about the ambient Young-diagram column
+  position `μ.parts i + j.val`, NOT the inner-relative `j` of the
+  skew strip. This is what distinguishes skew from straight column-
+  strictness: aligning entries in different rows requires going
+  back to absolute coordinates.
+
+* **`content` returns `ℕ`, not `Partition n`.** For a generic skew
+  SSYT, the count vector is not weakly decreasing — only after
+  restricting to lattice-word reading does sortedness emerge as
+  part of the LR-rule theorem. Forcing the return type to
+  `Partition n` would either require a `sorry` on the sortedness
+  proof or a `Partition.ofCounts`-style auxiliary construction.
+
+* **`lam` instead of `λ`.** Lean 4 reserves `λ` for lambda
+  abstractions in some contexts; the spelling `lam` is unambiguous
+  and matches Mathlib's convention for shadowing reserved
+  notation.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: NEW, 250 lines.
+- `proofs/Proofs.lean`: +1 import line.
+- Sorry count: 0.
+- Axiom count: 0.
+- Theorem count: 1 (`lrCoeffN_def_eq_zero_of_not_support`).
+- Definition count: 5 (`Partition.Subset`, `SkewSSYTFin`,
+  `SkewSSYTFin.content`, `SkewSSYTFin.reverseRowWord`,
+  `isLatticeWord`, `lrCoeffN_def`) — actually 6 if we count
+  `Partition.Subset` (yes), so 6 total.
+- Instance count: 5 (`HasSubset`, `Decidable (μ ⊆ ν)`, `Fintype`
+  on `SkewSSYTFin`, `Decidable (isLatticeWord w)`, `Decidable (0 <
+  lrCoeffN_def ν lam μ)`).
+
+### Build status
+
+Pending. Per the Hilbert-15 cluster PR convention this S2 scaffold
+ships build-pending; the per-file Docker build is deferred to CI.
+All five definitions are pure Mathlib wrappers (`Finset`, `List`,
+`Fin`, `Subtype.fintype`), and the only theorem is a one-line
+`if_neg` invocation.
+
+## Current Focus (legacy S1 — kept for history)
 
 S1 OBSERVE survey (researcher-1, 2026-05-11): mathematical
 specification + Mathlib gap inventory for replacing the axiom
@@ -42,37 +134,39 @@ exercised in S3 via the 2-row anchoring lemma.
 
 ## Next Action
 
-**S2 (next iteration)**: scaffold `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`.
+**S3 (next iteration)**: 2-row anchoring lemma
+`lrCoeffN_def_two_eq_lrCoeff2` against the 7 Gr(2,4) Chow ring
+constants verified in `Hilbert15OQ01.lean`. The anchoring lemma
+serves three roles:
 
-Concrete deliverables:
+1. Sanity-check the abstract count reduces to the existing
+   computable case.
+2. Exercise `SkewSSYTFin.reverseRowWord` and `isLatticeWord` on
+   concrete `Partition 2` data, surfacing any API gaps that the
+   S2 scaffold did not anticipate.
+3. Leave a concrete subgoal — `decide`-checkable for each of the 7
+   anchor constants — before committing to the parent-file
+   refactor (S4).
 
-1. `SkewShape n` — pair of `Partition n` with containment
-   `μ.parts i ≤ ν.parts i` and the proof that the cell sigma-type
-   `(i : Fin n) × Fin (ν.parts i - μ.parts i)` is `Fintype`.
-2. `SkewSSYTFin n ν μ` — semistandard skew Young tableau, modelled
-   on the existing `SSYTFin n k sh` in
-   `BallotProblemOQ03OQ01OQ01OQ01.lean:177` (row-weak +
-   col-strict), with content function
-   `content : SkewSSYTFin n ν μ → Partition n`.
-3. `reverseRowWord : SkewSSYTFin n ν μ → List (Fin n)` —
-   Fulton-convention reading order (each row right-to-left, rows
-   top-to-bottom).
-4. `isLatticeWord : List (Fin n) → Prop` (with
-   `Decidable` instance) — at every prefix and every pair
-   `k < k'`, count of `k` ≥ count of `k'`.
-5. `lrCoeffN_def {n : ℕ} (ν λ μ : Partition n) : ℕ` and
-   `instance : Decidable (0 < lrCoeffN_def ν λ μ)`.
-6. Module documentation block listing the three deferred items
-   (S3 anchoring lemma, S4 axiom replacement, OQ-02/OQ-03 Klyachko
-   proper).
+Suggested approach: case-split `Partition 2` data into the
+`(p, q) | p ≥ q` shape, evaluate `lrCoeffN_def` symbolically via
+`Fintype.card` reduction + Decidable enumeration, and compare
+against `lrCoeff2`'s closed-form output for each pair.
 
-Target: ~150 lines Lean, 0 sorries on the definitional content,
-≤2 sorries on instance proofs flagged for Aristotle.
+**S4 (later)**: parent-axiom replacement. Modify
+`proofs/Proofs/Hilbert15OQ02OQ03.lean:128` from `axiom lrCoeffN`
+to `def lrCoeffN := Hilbert15OQ02OQ03OQ01.lrCoeffN_def`. Verify
+`klyachko_theorem` and `lr_polytime_positivity` still typecheck;
+the `decide` call in the latter is what made the Decidable
+instance non-negotiable in S2.
+
+**S5+ (later)**: OQ-02 / OQ-03 proper — the Klyachko/Horn
+chain. Out of scope for this slug.
 
 ## Attempt Counts
 
-- Total attempts: 1
-- Current approach attempts: 1
+- Total attempts: 2 (S1 OBSERVE, S2 scaffold)
+- Current approach attempts: 2
 - Approaches tried: 1
 
 ## Open Questions for Future Iterations
