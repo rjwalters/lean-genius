@@ -557,6 +557,53 @@ private lemma convex_combination_of_partition_in_S
     (∑ i ∈ ρ.finsupport x₀, ρ i x₀ • y i) ∈ K :=
   hK.sum_mem (fun i _ => ρ.nonneg i x₀) (ρ.sum_finsupport hx₀) hy
 
+/-- **S18b helper for `approx_selection_exists` axiom elimination
+    (typeclass-instance plumbing for `PartitionOfUnity.exists_isSubordinate`):**
+
+    For any compact `S : Set (EuclideanSpace ℝ (Fin n))`, the subtype
+    `↥S` satisfies the three typeclass requirements of
+    `PartitionOfUnity.exists_isSubordinate`
+    (`Mathlib/Topology/PartitionOfUnity.lean` line 629 at pinned rev
+    `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, signature
+    `[NormalSpace X] [ParacompactSpace X] (hs : IsClosed s) ...`):
+
+    * `CompactSpace ↥S` — derived from `IsCompact S` via
+      `isCompact_iff_compactSpace.mp`
+      (`Mathlib/Topology/Compactness/Compact.lean` line 989).
+    * `ParacompactSpace ↥S` — auto-derived from the metric subspace
+      structure via `instParacompactSpace`
+      (`Mathlib/Topology/EMetricSpace/Paracompact.lean` line 42:
+      `[PseudoEMetricSpace α] : ParacompactSpace α`).
+    * `NormalSpace ↥S` — auto-derived via `T4Space.toNormalSpace`,
+      where `T4Space ↥S` itself comes from `EMetricSpace.t4Space`
+      (`Mathlib/Topology/EMetricSpace/Paracompact.lean` line 166:
+      `[EMetricSpace α] : T4Space α`).
+
+    Only the first instance requires the explicit `IsCompact S`
+    hypothesis; the latter two are inherited unconditionally from the
+    metric structure on `EuclideanSpace ℝ (Fin n)` and its subtypes.
+    Returning them as a `∧`-conjunction (each component is a `Prop`
+    typeclass) makes them available to S18c+ via the destructuring
+    pattern
+    `obtain ⟨hCS, hPS, hNS⟩ := approx_selection_instances S hS_compact;
+     haveI := hCS; haveI := hPS; haveI := hNS`.
+
+    **Use site (S18d).** Step 3 of the Cellina–Browder construction
+    (S17 survey, `s17-cellina-mathlib-api-survey.md`, Step 3) invokes
+    `PartitionOfUnity.exists_isSubordinate` against the finite subcover
+    of `↥S` built in S18c. The signature of `exists_isSubordinate`
+    requires the two instance-arguments `[NormalSpace X]` and
+    `[ParacompactSpace X]` plus the compactness needed to invoke
+    `IsCompact.elim_finite_subcover` in S18c, so the three instances
+    bundled here cover the full instance-resolution surface of the
+    upcoming axiom-elimination proof. -/
+private lemma approx_selection_instances {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (hS_compact : IsCompact S) :
+    CompactSpace ↥S ∧ ParacompactSpace ↥S ∧ NormalSpace ↥S := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  exact ⟨inferInstance, inferInstance, inferInstance⟩
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
