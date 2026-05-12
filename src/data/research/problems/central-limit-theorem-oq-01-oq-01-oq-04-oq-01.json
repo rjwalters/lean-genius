@@ -1,0 +1,91 @@
+{
+  "slug": "central-limit-theorem-oq-01-oq-01-oq-04-oq-01",
+  "title": "Partial Mathlib formalization of the Meerschaert-Scheffler DOA theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "partial",
+  "problemStatement": {
+    "formal": "(\\exists \\psi, \\text{InOperatorDOA}(d, \\phi, \\psi)) \\iff \\exists (E, \\nu), \\forall t > 0, \\xi, \\lim_n \\phi(n\\xi)^n / \\nu(t^E \\xi) = 1",
+    "plain": "Can the Meerschaert-Scheffler domain-of-attraction biconditional for multivariate operator-stable laws (axiomatized in the parent file as `meerschaert_scheffler`) be partially formalized in Lean 4 using Mathlib v4.26.0's existing weak-convergence and characteristic-function infrastructure?",
+    "whyMatters": [
+      "Axiom elimination on the parent CLT-OQ04 gallery entry (drops axiomCount 2 -> 1 in the best case)",
+      "First Mathlib bridge from univariate Gnedenko-Kolmogorov to multivariate operator DOA",
+      "Demonstrates non-vacuity of the M-S axiom via a Gaussian-specialised worked example",
+      "Maps the Mathlib gap (matrix regular variation absent) for a future infrastructure push"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Gaussian N(0,Sigma) is in its own DOA (parent's gaussian_in_own_doa)",
+      "Gaussian has scalar exponent E = (1/2) I (parent's gaussian_has_scalar_exponent)",
+      "Algebraic identity (exp(-x/n))^n = exp(-x) (parent's exp_neg_div_pow)",
+      "1D alpha-stable embeds as operator-stable with scalar exponent 1/alpha (parent's alpha_stable_is_operator_stable)"
+    ],
+    "open": [
+      "Meerschaert-Scheffler biconditional in full multivariate generality (axiomatized in parent; requires matrix regular variation, absent from Mathlib)",
+      "Forward direction (DOA -> matrix-RV tail) of M-S (blocked by matrix RV gap)",
+      "Multivariate Levy continuity theorem (scalar version exists in Mathlib; multivariate is a known gap)"
+    ],
+    "goal": "Produce a Gaussian-specialised version of the M-S characteristic-function convergence (R1 route, ~80-150 Lean lines)"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T19:28:00Z",
+    "iteration": 1,
+    "focus": "S1 survey: three-route discharge plan drafted (R1 Gaussian specialised, R2 scalar exponent reduction, R3 full forward direction). R1 is the recommended S2 target.",
+    "blockers": [
+      "Matrix regular variation absent from Mathlib (blocks R3 full M-S forward direction)",
+      "Multivariate Levy continuity theorem absent (blocks general M-S; R1 sidesteps via Gaussian specialisation)"
+    ],
+    "nextAction": "S2 ACT: implement R1 Gaussian-specialised Meerschaert-Scheffler theorem in proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04Meerschaert.lean (~80-150 Lean lines, 0 axiom delta on parent).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete (doc-only). Surveyed parent file (303 lines, 18 theorems, 2 axioms) and Mathlib v4.26.0 weak-convergence + characteristic-function + matrix-exponential modules. Three discharge routes mapped: R1 (Gaussian specialised, recommended for S2, ~80-150 Lean lines, demonstrates axiom non-vacuity); R2 (scalar exponent reduction to univariate, shifts axiom location without elimination); R3 (full forward direction, blocked by matrix-regular-variation gap). Parent file unchanged (axiomatized, 2 axioms). The M-S axiom is currently load-bearing-by-state-only (no other theorem in the file depends on it on the right-hand side).",
+    "builtItems": [
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/problem.md (~280 lines: three-route survey + Mathlib gap map + reference reading)",
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/knowledge.md (~210 lines: S1 session note + R1 Lean skeleton)",
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/state.md (this iteration)",
+      "src/data/research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01.json (research index entry)"
+    ],
+    "insights": [
+      "Parent's gaussian_in_own_doa and gaussian_has_scalar_exponent already prove the Gaussian sub-case under a different framing; R1 is a restatement exercise, not new mathematics",
+      "Matrix.exp (Real.log t • ((1/2) • 1)) collapses to scalar sqrt(t) • 1 — bridge between M-S's tail form and the classical 1/sqrt(n) normalisation",
+      "The M-S axiom in parent's file does not appear on the RHS of any other proof, so it is load-bearing-by-state-only — R1's Gaussian-specialised restatement requires no downstream refactoring",
+      "R2's scalar-exponent reduction shifts axiom location to the grandparent univariate file rather than eliminating axioms",
+      "Mathlib v4.26.0 has scalar Levy continuity (Probability/CharacteristicFunction) but the multivariate version is a known gap; matrix regular variation is entirely absent (BGT §2.10 scope)"
+    ],
+    "mathlibGaps": [
+      "Multivariate Levy continuity theorem (charFun -> weak convergence in R^d): scalar exists, multivariate gap",
+      "Matrix regular variation infrastructure (A_n = n^{-E} scaling families): absent at v4.26.0",
+      "Tail asymptotics for multivariate Levy measures: absent",
+      "Slowly-varying function API beyond BGT §1.4 scope: partial"
+    ],
+    "nextSteps": [
+      "S2 ACT: create proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04Meerschaert.lean with helper matrix_exp_log_smul_half_id (~20 lines) and main theorem meerschaert_scheffler_gaussian (~60 lines) — use parent's gaussian_operator_stable + gaussian_has_scalar_exponent + exp_neg_div_pow + quadForm_scale_inv_sqrt",
+      "S2 ACT: update proofs/Proofs.lean import list and re-verify build via docker-build.sh",
+      "S3 (optional): implement R2 scalar-exponent reduction bridge to univariate DOA framework in central-limit-theorem-oq-01-oq-01.lean",
+      "S4+ (deferred): R3 full forward direction remains blocked until Mathlib lands matrix regular variation"
+    ]
+  },
+  "tags": [
+    "probability",
+    "stable-distributions",
+    "multivariate",
+    "operator-stable",
+    "matrix-regular-variation",
+    "central-limit-theorem",
+    "meerschaert-scheffler",
+    "domain-of-attraction",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "createdAt": "2026-05-12T19:28:00Z",
+  "updatedAt": "2026-05-12T19:30:00Z"
+}
