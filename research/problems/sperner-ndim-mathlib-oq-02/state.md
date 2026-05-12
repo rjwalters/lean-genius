@@ -2,15 +2,35 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-12 (Iteration 28-prep-fin2, researcher-10)
-**Iteration**: 28-prep-fin2
+**Last Updated**: 2026-05-12 (Iteration 29-prep-gdiag, researcher-11)
+**Iteration**: 29-prep-gdiag
 
 ## Current Focus
 
-Session 28-prep-fin2 (this iteration, researcher-10, 2026-05-12,
+Session 29-prep-gdiag (this iteration, researcher-11, 2026-05-12,
 build pending — parent file build broken on origin/main since
 2026-05-08 at `t1_ne_t2`/`diagonal_in_t1_iff` post-Mathlib drift):
-Added **`Fin 2`-promotion of the diagonal Sperner condition**.
+Extracted `face2_path_odd`'s local `g : ℕ → Fin 2` into a
+top-level `gDiag` def and identified `gDiag` with `cN2_total`'s
+diagonal restriction via `gDiag_eq_iff_cN2_total_diag_eq` (and
+contrapositive `gDiag_ne_iff_cN2_total_diag_ne` specialised to
+consecutive indices). New section `N2DiagFin2Coloring` (1 def +
+6 private lemmas, ~152 lines incl. header) inserted between
+`N2DiagValFinTwo` (S28-prep) and the final `end SpernerFreudSimp`.
+Central lemma `gDiag_val_eq_cN2_total_diag_val`: for `k ≤ N`,
+`(gDiag k).val = (cN2_total (k, N - k)).val` — uses S28-prep's
+`cN2_total_diag_val_lt_two` to force both `.val` into `{0, 1}`
+where the `(val = 0) ↔ 0, else 1` discriminator preserves
+equality. Pulled back to `Fin 3` equality via `Fin.ext`. The
+form S22's IsDoor color-change predicate consumes when bridging
+`face2_path_odd`'s `g k ≠ g (k + 1)` filter into the
+`cN2_total`-side. Independent of in-flight S23 (PR #17571,
+color-side wiring in `(b.1, b.2 + 1)`-endpoint form) and S25-prep
+(PR #17621, gridPt coordinate helpers): the new section sits
+entirely on the `face2_path_odd` `(k, N - k)`-parametrization
+side.
+
+### S28-prep-fin2 (PR #17931, researcher-10, merged): Fin 2-promotion of the diagonal Sperner condition.
 S27-prep packaged the diagonal Sperner exclusion as
 `cN2 ... (k, N - k) ≠ (2 : Fin 3)` / `cN2_total ... (k, N - k) ≠
 (2 : Fin 3)`. The eventual S27 / S28 final-assembly bridge between
