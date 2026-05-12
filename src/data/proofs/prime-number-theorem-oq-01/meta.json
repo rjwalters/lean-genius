@@ -107,7 +107,9 @@
       "The PNT zero-free region (Re(s) ≥ 1) and RH's zero-free region (Re(s) > 1/2) differ in the exponent of the error term: O(x exp(-c√log x)) vs O(√x log x). This is because |x^ρ| = x^{Re(ρ)}, so moving zeros closer to Re(s) = 0 would improve the bound.",
       "Von Koch's theorem is a precise implication: RH → O(√x log x) error. The converse also holds: O(√x log x) error → RH. So the error bound is equivalent to RH.",
       "Littlewood's omega result shows √x is optimal: no zero-free region can give better than Ω(√x) error in |π(x) - Li(x)|. This is because the zeros on the critical line contribute oscillations of size √x.",
-      "The functional equation ζ(1-s) = 2(2π)^{-s} Γ(s) cos(πs/2) ζ(s) implies zeros come in pairs: if ζ(s) = 0 then ζ(1-s) = 0. Combined with complex conjugation, zeros are symmetric about Re(s) = 1/2, which is consistent with RH."
+      "The functional equation ζ(1-s) = 2(2π)^{-s} Γ(s) cos(πs/2) ζ(s) implies zeros come in pairs: if ζ(s) = 0 then ζ(1-s) = 0. Combined with complex conjugation, zeros are symmetric about Re(s) = 1/2, which is consistent with RH.",
+      "**Three-tier epistemic structure**: this file deliberately separates Mathlib-proved facts (zero-free regions, functional equation), Lean-proved-conditionally-on-RH facts (rh_strip_zero_free, rh_zeros_on_half_line), and axiomatized analytic-NT results (vonKoch, Littlewood, Backlund). The grand summary theorem `pnt_rh_landscape` packages the second and third tiers into a single triple, making the file's epistemic structure explicit at the theorem level.",
+      "**The explicit formula is the bridge**: ψ(x) = x − ∑_ρ x^ρ/ρ − log(2π) − (1/2)·log(1 − x⁻²) (Riemann 1859) converts the analytic data (zeros of ζ) directly into prime-distribution oscillations. Under RH, every term in the sum has magnitude exactly √x · |1/ρ|, and the Backlund count of zeros up to height T gives the right log factor — the two combine to give the O(√x log x) bound. Without RH, the unknown imaginary parts of zeros could in principle have real parts arbitrarily close to 1, ruining the bound; the Vinogradov-Korobov zero-free region carves out a region near Re(s) = 1 that gives the unconditional exp(-c·(log x)^{3/5}) bound."
     ],
     "prerequisites": [
       "Prime Number Theorem (Proofs.PrimeNumberTheorem): π(x) ~ x/log x",
@@ -184,5 +186,70 @@
     "path": "Proofs/PrimeNumberTheoremOQ01.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "RiemannHypothesis",
+      "type": "definition",
+      "statement": "$\\forall s : \\mathbb{C},\\ \\zeta(s) = 0 \\,\\land\\, s \\in \\mathrm{criticalStrip} \\,\\Rightarrow\\, s \\in \\mathrm{criticalLine}$",
+      "significance": "**The Millennium-Prize conjecture itself.** Formally states that every zero of `riemannZeta` in the critical strip $0 < \\mathrm{Re}(s) < 1$ has $\\mathrm{Re}(s) = 1/2$. Used as a hypothesis in every RH-conditional theorem in the file.",
+      "description": "Defines RH as a Prop using Mathlib's `riemannZeta : ℂ → ℂ`. Companion lemma `rh_iff_re_half` gives the equivalent explicit form."
+    },
+    {
+      "name": "pnt_zero_free_region",
+      "type": "supporting",
+      "statement": "$\\forall s : \\mathbb{C},\\ 1 \\leq \\mathrm{Re}(s) \\,\\Rightarrow\\, \\zeta(s) \\neq 0$",
+      "significance": "**The PNT-equivalent statement** (Hadamard-de la Vallée Poussin 1896). Proved by reduction to `riemannZeta_ne_zero_of_one_le_re` from Mathlib. The PNT itself is then a consequence of this non-vanishing on Re(s) = 1 via the explicit formula.",
+      "description": "Mathlib-backed proof of ζ(s) ≠ 0 for Re(s) ≥ 1."
+    },
+    {
+      "name": "rh_strip_zero_free",
+      "type": "supporting",
+      "statement": "$\\mathrm{RH} \\Rightarrow \\forall s,\\ 1/2 < \\mathrm{Re}(s) < 1 \\,\\Rightarrow\\, \\zeta(s) \\neq 0$",
+      "significance": "**RH-conditional zero-free region.** Proved directly from the RH definition by contradiction: if ζ(s₀) = 0 with Re(s₀) > 1/2, then RH places s₀ on the critical line Re(s) = 1/2 — contradiction. The proof is 6 lines.",
+      "description": "Under RH, the open strip 1/2 < Re(s) < 1 contains no zeros. Proved unconditionally on top of the RH definition."
+    },
+    {
+      "name": "zeros_symmetric_in_strip",
+      "type": "supporting",
+      "statement": "$\\forall s \\in \\mathrm{criticalStrip},\\ \\zeta(s) = 0 \\,\\Rightarrow\\, \\zeta(1-s) = 0$",
+      "significance": "**Functional-equation symmetry.** Independent of RH. Critical-strip zeros come in pairs {s, 1-s}, symmetric about Re = 1/2. Proved via Mathlib's `riemannZeta_one_sub` after discharging the technical side-conditions (s not a non-positive integer, s ≠ 1).",
+      "description": "Non-RH zero pairing via the functional equation."
+    },
+    {
+      "name": "vonKoch_rh_error",
+      "type": "axiom",
+      "statement": "$\\mathrm{RH} \\Rightarrow \\exists C > 0,\\ \\forall x \\geq 2,\\ |\\pi(x) - \\mathrm{Li}(x)| \\leq C\\sqrt{x}\\log x$",
+      "significance": "**Von Koch's theorem (1901)**, axiomatized. Equivalent to RH. Provides the optimal PNT error bound. Proof would require the explicit formula ψ(x) = x − ∑ρ x^ρ/ρ + … combined with Backlund's zero-counting estimate; both ingredients are themselves not yet in Mathlib.",
+      "description": "Axiomatized von Koch implication RH → O(√x log x) PNT error."
+    },
+    {
+      "name": "pnt_classical_error",
+      "type": "axiom",
+      "statement": "$\\exists C, c > 0,\\ \\forall x \\geq 2,\\ |\\pi(x) - \\mathrm{Li}(x)| \\leq C\\, x\\,\\exp(-c\\sqrt{\\log x})$",
+      "significance": "**Unconditional PNT error bound**, axiomatized. Hadamard-de la Vallée Poussin 1896, refined by Vinogradov-Korobov (1958) to the stronger exp(-c(log x)^{3/5}(log log x)^{-1/5}) bound. The √log x form is the historically cleaner statement; this entry uses it for parallelism with von Koch.",
+      "description": "Unconditional PNT error via zero-free region near Re(s) = 1."
+    },
+    {
+      "name": "littlewood_omega",
+      "type": "axiom",
+      "statement": "$\\exists C > 0,\\ \\exists^\\infty x \\to \\infty,\\ C\\sqrt{x}\\log\\log\\log x/\\log x \\leq |\\pi(x) - \\mathrm{Li}(x)|$",
+      "significance": "**Littlewood (1914)**, axiomatized. Shows von Koch's O(√x log x) bound is correct to within a doubly-logarithmic factor — no zero-free region can deliver better than Ω(√x · log log log x / log x).",
+      "description": "Optimality companion to von Koch. Together they pin |π(x) − Li(x)| between √x log log log x / log x and √x log x."
+    },
+    {
+      "name": "backlund_zero_counting",
+      "type": "axiom",
+      "statement": "$N(T) \\sim \\frac{T}{2\\pi}\\log\\frac{T}{2\\pi} - \\frac{T}{2\\pi} + O(\\log T)$",
+      "significance": "**Backlund (1918)**, axiomatized. Counts non-trivial zeros up to height T. Proved by integrating log ζ(s) around the critical rectangle via the argument principle. Essential ingredient (together with the explicit formula) for the von Koch derivation.",
+      "description": "Asymptotic count of zeta zeros up to imaginary part T."
+    },
+    {
+      "name": "pnt_rh_landscape",
+      "type": "core",
+      "statement": "$\\mathrm{RH} \\Rightarrow (\\forall s,\\ 1 \\leq \\mathrm{Re}(s) \\Rightarrow \\zeta(s) \\neq 0) \\land (\\forall s,\\ 1/2 < \\mathrm{Re}(s) < 1 \\Rightarrow \\zeta(s) \\neq 0) \\land (\\exists C > 0,\\ \\forall x \\geq 2,\\ |\\pi(x) - \\mathrm{Li}(x)| \\leq C\\sqrt{x}\\log x)$",
+      "significance": "**Grand summary theorem.** Bundles the three headline RH-conditional implications into a single Prop. Proof is a literal triple: `⟨riemannZeta_ne_zero_of_one_le_re, rh_strip_zero_free h, vonKoch_rh_error h⟩`. The cleanest one-shot statement of 'what RH buys you for prime distribution'.",
+      "description": "The file's headline implication, packaging all RH-conditional results into one statement."
+    }
+  ],
   "sorries": 0
 }
