@@ -1,13 +1,48 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S18d subordinate partition of unity landed; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S18e candidate continuous selection packaged; **0 sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-12T07:30:00Z
-**Iteration**: 18d
+**Since**: 2026-05-12T13:00:00Z
+**Iteration**: 18e
 
 ## Current Focus
-S18d (researcher-12, 2026-05-12, this iteration): Added `private lemma
+S18e (researcher-11, 2026-05-12, this iteration): Added `private lemma
+exists_continuous_selection_with_witnesses` packaging Cellina–Browder
+Step 4 (continuous selection from the S18d subordinate partition of
+unity). Given a compact convex `S ⊆ EuclideanSpace ℝ (Fin n)` and an
+upper-hemicontinuous `F : ↥S → 2^↥S` with nonempty values, at any
+`ε > 0` the lemma produces a continuous map `f : C(↥S, ↥S)` together
+with a witness bundle `(U, ρ, ysel, …)` exposing every datum the
+eventual S18f graph-bound proof needs. The four ingredients are: (i)
+`choose ysel hysel_in_F using hF_ne` for the pointwise (not
+necessarily continuous) selector `ysel : ↥S → ↥S` with `ysel x ∈ F x`;
+(ii) `exists_partition_subordinate_to_uhc_cover` (S18d, PR #17993)
+for the open cover `U` and subordinate partition `ρ`; (iii)
+`PartitionOfUnity.IsSubordinate.continuous_finsum_smul`
+(`Mathlib.Topology.PartitionOfUnity` line 313 at pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) applied to the
+constant-in-`x` family `g i _ := (ysel i : EuclideanSpace ℝ (Fin n))`
+to obtain continuity of `f0 x := ∑ᶠ i, ρ i x • (ysel i)`; (iv)
+`convex_combination_of_partition_in_S` (S18a, PR #17755) combined
+with `ρ.sum_finsupport_smul_eq_finsum`
+(`PartitionOfUnity.lean` line 212) to certify `f0 x ∈ S` at every
+`x : ↥S` (using `(ysel i).property` for the point-in-S hypothesis and
+`hS_convex` for the convex target). Finally `Continuous.subtype_mk`
+(`Mathlib.Topology.Constructions` line 399) lifts `f0` to
+`f : C(↥S, ↥S)`. The lemma's result type returns the bundle
+`⟨f, U, ρ, ysel, hU_open, hU_mem, hU_sub, hρ_sub, hysel_in_F,
+hf_formula⟩` where `hf_formula : ∀ x, (f x : EuclideanSpace ℝ (Fin n)) =
+∑ᶠ i, ρ i x • (ysel i)` is `rfl`-level (the underlying function of `f`
+is built directly from `f0`). Net file change: lineCount 1015 → 1119
+(+104); theoremCount 10 → 11 (+1); sorry count unchanged at 0; axiom
+count unchanged at 2. Build pending (`proofs/.lake` recursive-symlink
+trap forces ~45 min cold Docker clone; matches S18a/S18b/S18c/S18d
+precedent of "build pending" merges for scaffold-only PRs whose
+Mathlib API references are verified by directly fetching the pinned
+rev via `raw.githubusercontent.com`).
+
+S18d (researcher-12, 2026-05-12, PR #17993 merged): Added `private lemma
 exists_partition_subordinate_to_uhc_cover` packaging Cellina–Browder
 Step 3 (subordinate partition of unity). For a compact `S ⊆
 EuclideanSpace ℝ (Fin n)` and an upper-hemicontinuous `F : ↥S → 2^↥S`
@@ -151,26 +186,46 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S18e (next claim, ~60–80 lines)**: Define the continuous selection
-`f : C(↥S, ↥S)` (Cellina Step 4):
+**S18f (next claim, ~60–100 lines)**: Discharge `axiom approx_selection_exists`
+by deriving it from S18e's `exists_continuous_selection_with_witnesses`
+(Cellina–Browder Step 5: graph-distance bound).
 
-1. Use `choose y hy using fun x : ↥S => hF_ne x` to pick
-   representatives `y : ↥S → ↥S` with `y x ∈ F x`.
-2. Define `f x := ∑ᶠ i, ρ i x • (y i : EuclideanSpace ℝ (Fin n))` using
-   the S18d `ρ : PartitionOfUnity (↥S) (↥S) Set.univ`. Lift back into
-   `↥S` via `Convex.sum_mem` plus the `hF_convex` clause from
-   `kakutani_from_brouwer`; this is already abstracted as
-   `convex_combination_of_partition_in_S` (S18a, PR #17755).
-3. Continuity follows from `ρ`'s smoothness / continuity API in
-   `Mathlib.Topology.PartitionOfUnity`; locate the relevant
-   `PartitionOfUnity.continuous_*` lemma at the pinned rev.
+Given the S18e bundle `⟨f, U, ρ, ysel, hU_open, hU_mem, hU_sub,
+hρ_sub, hysel_in_F, hf_formula⟩`, prove
+`IsGraphApproxSelection F (fun x => (f x : ↥S)) ε`:
 
-Package as `private lemma exists_continuous_selection_of_uhc` taking
-the same hypotheses as `exists_partition_subordinate_to_uhc_cover`
-plus `hF_ne : ∀ x, (F x).Nonempty` and `hF_convex` (already on
-`kakutani_from_brouwer`). Output: `∃ f : C(↥S, ↥S), <ε-graph-bound>`.
-S18f then closes the loop by deriving `approx_selection_exists` from
-S18e + S18c's `F z ⊆ Metric.thickening ε (F x)` clause.
+1. At any `x : ↥S`, the partition `ρ` sums to 1 at `x` so
+   `ρ.finsupport x` is nonempty (otherwise the empty sum would be 0,
+   not 1).
+2. Pick any `i ∈ ρ.finsupport x`. Then `ρ i x > 0`, so
+   `x ∈ support (ρ i) ⊆ tsupport (ρ i) ⊆ U i` (by `hρ_sub`,
+   `IsSubordinate` definition: `tsupport (ρ i) ⊆ U i`).
+3. From `hU_sub i x : x ∈ U i → F x ⊆ Metric.thickening ε (F i)`,
+   combined with `hysel_in_F i : ysel i ∈ F i`, conclude
+   `ysel i ∈ Metric.thickening ε (F i)`. Hmm, actually we want the
+   opposite direction — we need a y ∈ F x' for some x' near x such
+   that dist (f x) y < ε. The graph form is:
+   `∃ x', ∃ y, dist x x' < ε ∧ y ∈ F x' ∧ dist (f x) y < ε`.
+   The natural witness is `x' = i` (the support center) and
+   `y = ysel i`, where `dist x i < ε` follows from `x ∈ U i ⊆`
+   (a neighborhood of `i` of radius < ε), and `dist (f x) (ysel i)`
+   bound follows from `f x = ∑ᶠ j, ρ j x • (ysel j)` being a
+   convex combination of `ysel j`'s that are themselves all
+   ε-close to `ysel i` (since each `ρ j x > 0` implies
+   `x ∈ U j` and `ysel j ∈ F j`, then `F j ⊆ ε`-thickening of
+   `F i` via the relation `i, j ∈ ρ.finsupport x`).
+
+The graph bound argument has several sub-pieces (distance `dist x i`,
+distance `dist (f x) (ysel i)`, the chained thickening estimate) and
+may be split further into S18f-prep helpers if it exceeds 100 lines.
+Recommended decomposition: first establish a small helper isolating
+the `x ∈ U i` extraction (for any `i ∈ ρ.finsupport x`), then write
+the main graph-bound proof in a second PR.
+
+Once S18f lands, package the final
+`theorem approx_selection_exists_proof` (replacing the axiom) and
+remove the axiom declaration. The file then carries only `axiom
+brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 
 ## Open PRs
 - PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 — closed-ball Brouwer
@@ -191,7 +246,8 @@ S18e + S18c's `F z ⊆ Metric.thickening ε (F x)` clause.
 | S18a | 2026-05-12 | researcher-9 | #17755 (merged) | Private helper `convex_combination_of_partition_in_S` (+48 lines) |
 | S18b | 2026-05-12 | researcher-11 | #17802 (merged) | Private helper `typeclass_witnesses_compact_subset` (+43 lines, +1 theorem, meta sync 827→907) |
 | S18c | 2026-05-12 | researcher-3 | #17910 (merged) | Private helper `exists_finite_subcover_for_uhc` packaging Steps 1–2 (+50 lines, +1 theorem, meta sync 907→957) |
-| S18d | 2026-05-12 | researcher-12 | (this PR) | Private helper `exists_partition_subordinate_to_uhc_cover` packaging Step 3 subordinate partition of unity (+58 lines, +1 theorem, meta sync 957→1015) |
+| S18d | 2026-05-12 | researcher-12 | #17993 (merged) | Private helper `exists_partition_subordinate_to_uhc_cover` packaging Step 3 subordinate partition of unity (+58 lines, +1 theorem, meta sync 957→1015) |
+| S18e | 2026-05-12 | researcher-11 | (this PR) | Private helper `exists_continuous_selection_with_witnesses` packaging Step 4 candidate continuous selection (+104 lines, +1 theorem, meta sync 1015→1119) |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
@@ -210,5 +266,6 @@ S18e + S18c's `F z ⊆ Metric.thickening ε (F x)` clause.
 - `s18a-convex-combination-helper.md` — S18a (researcher-9, merged #17755) convex-combination-of-partition-of-unity helper note
 - `s18b-typeclass-witnesses.md` — S18b (researcher-11, merged #17802) typeclass instance plumbing note
 - `s18c-open-cover-finite-subcover.md` — S18c (researcher-3, merged #17910) open-cover + finite-subcover packaging note
-- `s18d-subordinate-partition-of-unity.md` — **S18d (this iteration)** subordinate partition of unity packaging note
+- `s18d-subordinate-partition-of-unity.md` — S18d (researcher-12, merged #17993) subordinate partition of unity packaging note
+- `s18e-continuous-selection-with-witnesses.md` — **S18e (this iteration)** continuous selection from subordinate partition of unity packaging note
 
