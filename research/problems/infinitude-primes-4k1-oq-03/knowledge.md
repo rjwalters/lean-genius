@@ -188,3 +188,87 @@ PNT-AP API. Once the Mathlib name is confirmed (`exact?` /
 - **`primeCounting` namespace**: `Nat.primeCounting` vs
   `Nat.Prime.count` vs the new `Nat.nth Nat.Prime`-based form —
   several flavors exist; pick the one matching the PNT-AP signature.
+
+## S2 (researcher-11, 2026-05-12) — Mathlib reality check
+
+### Direct inspection of Mathlib v4.26.0
+
+Pinned revision: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (from
+`proofs/lake-manifest.json`).
+
+Fetched `Mathlib/NumberTheory/LSeries/PrimesInAP.lean` from the GitHub raw
+endpoint at that rev (since `proofs/.lake` is a broken self-symlink). Its
+final `DirichletsTheorem` section exports **only the infinitude form**:
+
+```
+theorem Nat.infinite_setOf_prime_and_eq_mod      -- {p prime : (p : ZMod q) = a}.Infinite
+theorem Nat.forall_exists_prime_gt_and_eq_mod    -- ∃ p > n, p.Prime ∧ ...
+theorem Nat.forall_exists_prime_gt_and_zmodEq    -- via ℤ-coprimality
+theorem Nat.forall_exists_prime_gt_and_modEq     -- via ℕ-coprimality
+theorem Nat.frequently_atTop_prime_and_modEq     -- frequently version
+theorem Nat.infinite_setOf_prime_and_modEq       -- modEq version
+```
+
+There is **no** `Nat.setOf_prime_and_eq_mod_*_tendsto_*` theorem, and no
+`Mathlib.NumberTheory.LSeries.Wiener` or `LSeries.IkeharaTauberian` module
+at this pin (a recursive `tree?recursive=true` listing confirms: only
+`Mathlib/NumberTheory/LSeries/{AbstractFuncEq, Basic, Convergence,
+Convolution, Deriv, Dirichlet, DirichletContinuation, HurwitzZeta*,
+Injectivity, Linearity, MellinEqDirichlet, Nonvanishing, Positivity,
+PrimesInAP, RiemannZeta, SumCoeff, ZMod}.lean` exist). The S1 plan's
+"wire up the density form" was based on Mathlib state that does not
+exist yet at the pinned revision.
+
+### Quantitative L-series data available at this pin
+
+Inside `PrimesInAP.lean`, the lemma
+`ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound (ha : IsUnit a)`
+provides:
+
+```
+∃ C : ℝ, ∀ {x : ℝ} (_ : x ∈ Set.Ioc 1 2),
+  (q.totient : ℝ)⁻¹ / (x - 1) - C  ≤  ∑' n, residueClass a n / (n : ℝ) ^ x
+```
+
+This is precisely the **Dirichlet-density pole-strength** statement: the
+restricted L-series has a pole of strength `1/φ(q)` at `s = 1`. It is the
+analytic-side ingredient of both the Dirichlet (1837) and natural-density
+(de la Vallée-Poussin 1899) versions of PNT-AP. What's missing at this pin
+is the **Tauberian transfer** to a prime-counting asymptotic.
+
+### Updated decomposition
+
+| Subgoal | Mathlib status (v4.26.0) | Tractable now? |
+|---------|---------------------------|----------------|
+| `φ(4) = 2` via `decide` | trivial | **yes** |
+| Reduced residues mod 4 are `{1, 3}` | `decide` | **yes** |
+| `IsUnit (1 : ZMod 4)` | `isUnit_one` | **yes** |
+| Mathlib infinitude bridge `(q=4, a=1)` | `Nat.infinite_setOf_prime_and_eq_mod` | **yes** (proved in S2) |
+| Dirichlet-density form `Tendsto … (𝓝 (1/2))` (Re s ↘ 1) | via `LSeries_residueClass_lower_bound` + upper bound | yes, ~80 lines |
+| Natural-density form `π(N; 4, 1)/π(N) → 1/2` | requires Tauberian module (not in Mathlib) | **NO** |
+
+### Path forward
+
+* **S3 path A (Mathlib upgrade)**: discharge the natural-density form once
+  Mathlib gains an Ikehara-Tauberian module. ETA: unknown; the file
+  `LSeries/Nonvanishing.lean` (the prerequisite for the closed half-plane
+  nonvanishing) is already present in v4.26.0, so the Tauberian transfer
+  is a likely near-future Mathlib addition.
+* **S3 path B (Dirichlet density now)**: prove a Dirichlet-density-flavour
+  density statement using the L-series lower bound + matching upper bound.
+  This is the cleanest "make progress now" option.
+* **S3 path C (Sum-of-two-squares corollary)**: chain whichever density
+  form is proved through Fermat's two-square theorem to get a striking
+  corollary for the gallery.
+
+### S2 deliverable summary
+
+* **1 new Lean file**: `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (~165 lines).
+* **6 new theorems / lemmas**, 5 proved (totient, isUnit, mod-↔-ZMod-coercion,
+  Mathlib infinitude bridge, `p % 4 = 1`-form infinitude bridge) + 1 stated
+  with `sorry` (natural-density target).
+* **0 axiom declarations**, 1 `sorry` (deliberate, the OQ-03 target).
+* **Updated state.md**: iteration 1 → 2, phase OBSERVE → ORIENT, next-action
+  rewritten with three explicit S3 paths.
+* **Updated gallery JSON**: focus / insights / mathlibGaps / nextSteps
+  reflecting the Mathlib reality.
