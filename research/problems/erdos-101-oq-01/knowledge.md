@@ -104,3 +104,64 @@ only well-established Mathlib API. The one risky step is the
 `bounds_at_rate_quadratic_over_twelve`; this is a standard ℕ→ℝ
 manipulation. If CI fails, the fall-back is to weaken the rate to
 the unconditional $n^2$ alone (already provable).
+
+## S2 (researcher-1, 2026-05-12) — Solymosi–Stojaković lower bound
+
+### S2 deliverable (this iteration)
+
+Two new `theorem ... := by sorry` declarations appended to
+`Erdos101OQ01.lean` (file grows 253 → 325 lines, sorries 1 → 3,
+theorems 6 → 8, axioms unchanged at 0):
+
+| Theorem | Type | Status |
+|---|---|---|
+| `solymosi_stojakovic_lower_bound` | $\forall C > 0, \exists N, \forall n \geq N, \exists P, \lvert P \rvert = n \land \text{NoFiveCollinear } P \land \text{fourPointLineCount } P \geq n^{2 - C/\sqrt{\log n}}$ | sorry (construction deferred) |
+| `erdos_three_halves_conjecture_refuted` | $\neg (\exists N, \forall P, \text{NoFiveCollinear } P \to N \leq \lvert P \rvert \to \text{fourPointLineCount } P \leq \lvert P \rvert ^ {3/2})$ | sorry (real-analysis arithmetic) |
+
+Three new Mathlib imports added (no other changes to existing code):
+
+- `Mathlib.Analysis.SpecialFunctions.Pow.Real` — `Real.rpow` for the
+  $n^{2 - C / \sqrt{\log n}}$ expression and the $\lvert P \rvert ^ {3/2}$
+  corollary.
+- `Mathlib.Analysis.SpecialFunctions.Log.Basic` — `Real.log` in the
+  $\sqrt{\log n}$ denominator.
+- `Mathlib.Analysis.SpecialFunctions.Sqrt` — `Real.sqrt` for
+  $\sqrt{\log n}$.
+
+### Why record the lower bound as a theorem-stub rather than an axiom
+
+Memory's axiom-integrity policy: every `axiom` declaration is a
+*permanent* assumption.  A `theorem ... := by sorry` is a *deferred
+proof obligation* that future iterations can discharge; the file
+remains formally axiom-free.  This matches the project's
+"axiomCount = 0 wherever possible" preference (see
+`feedback_mechanic_axiomcount_pattern.md`).
+
+### S3 next-action candidates
+
+1. **Discharge `erdos_three_halves_conjecture_refuted`** from the
+   Solymosi–Stojaković lower bound by elementary real-analysis
+   arithmetic.  Estimated 30–60 lines using `Real.rpow_lt_rpow`,
+   `Real.log_pos`, `Real.sqrt_lt_sqrt`, and the fact that
+   $C / \sqrt{\log n} \to 0$.
+
+2. **Connect to `Asymptotics.IsBigO` / `IsLittleO`** by defining
+   `maxFourPointLines : ℕ → ℕ` via `Finset.sup'` over all
+   no-five-collinear sets of fixed size; convert
+   `fourPointLineCount_le_quadratic` to an `IsBigO` statement and
+   record the conjecture as an `IsLittleO` sorry.
+
+3. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
+   $\leq (n-1)/3$ to potentially yield a $1 - o(1)$ leading constant
+   on the elementary $n^2/12$ bound (not $o(n^2)$, but a real
+   improvement on the constant).
+
+### Build risk
+
+S2 introduces no proof tactics — both new theorems are pure
+sorry stubs with no `by ...` body beyond `sorry`.  The only build
+risk is in the *type signatures*: `Real.rpow`, `Real.sqrt`, and
+`Real.log` are all in the imported modules.  The
+`(n : ℝ) ^ (real exponent)` syntax resolves to `Real.rpow` by
+inheriting the `HPow ℝ ℝ ℝ` instance from
+`Mathlib.Analysis.SpecialFunctions.Pow.Real`.
