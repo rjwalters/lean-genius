@@ -86,6 +86,79 @@ lemma witnessFamilyB_subset (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [← ha]
     exact Finset.filter_subset _ _
 
+/-! ### Membership API for the ε-grid
+
+These lemmas are the building blocks for the S5 ADLRY implication proof.
+The slack-4 implication needs to instantiate `IsWitnessRegular` at the two
+members of the witness family produced by each `a ∈ A` (the neighbour
+pattern and its complement), and then average the bounds. The lemmas in
+this subsection expose the witness family as a clean union of two
+neighbourhood-indexed images and prove the standard disjoint-decomposition
+identities. -/
+
+/-- For any `a ∈ A`, the neighbour-pattern `B ∩ N(a)` is in the witness
+    family. Used by the S5 ADLRY proof to apply `IsWitnessRegular` at the
+    relevant per-vertex test set. -/
+lemma mem_witnessFamilyB_nhd (G : SimpleGraph V) [DecidableRel G.Adj]
+    {A B : Finset V} {a : V} (ha : a ∈ A) :
+    B.filter (fun b => G.Adj a b) ∈ witnessFamilyB G A B := by
+  unfold witnessFamilyB
+  exact Finset.mem_union_left _ (Finset.mem_image.mpr ⟨a, ha, rfl⟩)
+
+/-- For any `a ∈ A`, the complement `B \ N(a)` is in the witness family.
+    The companion of `mem_witnessFamilyB_nhd`. -/
+lemma mem_witnessFamilyB_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    {A B : Finset V} {a : V} (ha : a ∈ A) :
+    B.filter (fun b => ¬ G.Adj a b) ∈ witnessFamilyB G A B := by
+  unfold witnessFamilyB
+  exact Finset.mem_union_right _ (Finset.mem_image.mpr ⟨a, ha, rfl⟩)
+
+/-- Characterization of membership in the witness family. -/
+lemma mem_witnessFamilyB_iff (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B B' : Finset V) :
+    B' ∈ witnessFamilyB G A B ↔
+      (∃ a ∈ A, B' = B.filter (fun b => G.Adj a b)) ∨
+      (∃ a ∈ A, B' = B.filter (fun b => ¬ G.Adj a b)) := by
+  unfold witnessFamilyB
+  constructor
+  · intro h
+    rcases Finset.mem_union.mp h with h | h
+    · obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp h
+      exact Or.inl ⟨a, ha, rfl⟩
+    · obtain ⟨a, ha, rfl⟩ := Finset.mem_image.mp h
+      exact Or.inr ⟨a, ha, rfl⟩
+  · intro h
+    rcases h with ⟨a, ha, rfl⟩ | ⟨a, ha, rfl⟩
+    · exact Finset.mem_union_left _ (Finset.mem_image.mpr ⟨a, ha, rfl⟩)
+    · exact Finset.mem_union_right _ (Finset.mem_image.mpr ⟨a, ha, rfl⟩)
+
+/-- The two ε-grid members for a single `a ∈ A` partition `B` disjointly.
+    This is the classical "neighbour-pattern / non-neighbour-pattern"
+    decomposition used in the ADLRY proof: applying `IsWitnessRegular`
+    to BOTH members yields a per-vertex density estimate, and the
+    cardinalities sum to `|B|`. -/
+lemma witnessFamilyB_card_split (G : SimpleGraph V) [DecidableRel G.Adj]
+    (B : Finset V) (a : V) :
+    (B.filter (fun b => G.Adj a b)).card +
+      (B.filter (fun b => ¬ G.Adj a b)).card = B.card :=
+  Finset.filter_card_add_filter_neg_card_eq_card (fun b => G.Adj a b)
+
+/-- For each `a ∈ A`, at least one of `B ∩ N(a)` and `B \ N(a)` has size
+    at least `|B| / 2`. This is the pigeonhole step used by the ADLRY
+    slack-4 implication: it guarantees that at least one ε-grid witness
+    is "large" (≥ eps · |B|) whenever `eps ≤ 1/2`. -/
+lemma witnessFamilyB_card_half (G : SimpleGraph V) [DecidableRel G.Adj]
+    (B : Finset V) (a : V) :
+    2 * (B.filter (fun b => G.Adj a b)).card ≥ B.card ∨
+    2 * (B.filter (fun b => ¬ G.Adj a b)).card ≥ B.card := by
+  have hsum : (B.filter (fun b => G.Adj a b)).card +
+      (B.filter (fun b => ¬ G.Adj a b)).card = B.card :=
+    witnessFamilyB_card_split (G := G) B a
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨h1, h2⟩ := hlt
+  omega
+
 /-! ## Part 2: The decidable surrogate -/
 
 /-- `IsWitnessRegular G eps A B` is the ADLRY surrogate for ε-regularity:
