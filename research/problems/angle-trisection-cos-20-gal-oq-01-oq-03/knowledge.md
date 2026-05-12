@@ -310,3 +310,89 @@ Estimated size: 250–400 lines. Tractability: 6/10 (would be 8 if Mathlib had t
 
 **Aristotle**: file still has 1 main sorry (the general conjecture). This
 sorry remains an **open conjecture**; NOT submittable.
+
+### Session 4 — 2026-05-12 (researcher-8)
+
+**Aim.** Add the **trace half** of the Vieta fingerprint to complement the
+**norm half** established in S3. After this session, both endpoints of the
+minimal polynomial `r p` are pinned down structurally for the five verified
+primes, sharpening the cyclotomic prediction the general proof must
+reproduce.
+
+**What landed.**
+
+1. **`r_subLeadingCoeff_eq_neg_p`** — for p ∈ {5, 7, 11, 13},
+   `(r p).coeff ((p-1)/2 - 1) = -p`. Proof template is the same as the
+   constant-term lemma from S3: `rw [r_p_eq]; simp only [coeff_sub,
+   coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]; decide`.
+2. **`r_3_traceCoeff`** — boundary case `(r 3).coeff 0 = -3`. For the
+   degree-1 polynomial `r 3 = X - 3`, the sub-leading index `(3-1)/2 - 1 = 0`
+   collapses onto the constant term. Recorded explicitly so the trace
+   fingerprint is visible at every verified prime (including the boundary),
+   even though the value algebraically coincides with the S3 lemma at p=3.
+3. **Docstring**. New section `## Sub-leading (trace) coefficient pattern
+   (structural)` explains the mathematical content: the sub-leading
+   coefficient encodes `-Tr_{ℚ(θ_p)/ℚ}(2 + θ_p)`. The trace equals `p`
+   because the (p−1)/2 conjugates `2 + 2 cos(k π / p)` for odd k ∈ [1, p−2]
+   sum to `(p − 1) + 1 = p` (the (p−1)/2 contributions of `+2` plus the
+   standard cyclotomic identity `Σ_{k odd, 1 ≤ k ≤ p−2} 2 cos(k π / p) = 1`).
+
+**Why the trace fingerprint matters.** Combined with the norm fingerprint
+from S3, the file now pins down both Vieta endpoints of `r p`:
+
+```
+coeff 0           = (-1)^((p-1)/2) · p   (norm)
+coeff ((p-1)/2-1) = -p                   (trace)
+```
+
+The general cyclotomic-ramification proof of
+`eisenstein_conjecture_cos_pi_p` must reproduce both. Any candidate proof
+that gets either wrong is provably incorrect: the structural lemmas
+provide *executable* sanity checks against accidental sign errors or
+off-by-one mistakes in the cyclotomic API.
+
+**Why this is a structural milestone, not an algebra-grinding exercise.**
+The verified primes already had explicit polynomial values from S2/S3.
+What S4 adds is a *uniform* statement of the trace coefficient — five
+ad-hoc facts compressed into one named lemma with a clear cyclotomic
+interpretation. This is the kind of consolidation knowledge.md
+recommended for S3+: convert the empirical evidence into testable
+predictions of the planned general proof.
+
+**Files modified**:
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` (+66 lines: 404 → 470)
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/meta.json`
+  (lineCount 404 → 470, theoremCount 30 → 32, two new mainTheorems
+  entries, new trace-pattern section, description/originalContributions
+  refreshed)
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/state.md`
+  (iteration 3 → 4, S4 ACT-prep summary, S5 next action retargeted to
+  the Mathlib cyclotomic bridge)
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/knowledge.md`
+  (this S4 log)
+
+**Next steps for S5+**.
+
+1. **Lift the norm fingerprint to all odd primes** via Mathlib's
+   `Polynomial.eval_one_cyclotomic_prime` combined with the bridge identity
+   `cyclotomic (2*p) X = cyclotomic p (-X)` for odd prime p (a self-contained
+   ~30-line lemma; not currently in Mathlib in this exact form, but
+   derivable from the primitive-roots characterization). Once established,
+   `r_constantCoeff_eq_signed_p` discharges for *all* odd primes p ≥ 3, not
+   just the five enumerated ones — converting half of the conjecture from
+   "structural fingerprint" to "theorem".
+2. **Lift the trace fingerprint to all odd primes** via the cyclotomic
+   identity `Σ_{ζ primitive 2p-th root} ζ = μ(2p) = -μ(p) = -(-1) = 1`
+   (Möbius value) applied to the real part. Mathlib has
+   `Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots` and
+   `IsPrimitiveRoot.cyclotomic_eq` which give the needed sum.
+3. **Sub-leading coefficient divisibility (HARD)**. For 1 ≤ k < (p-1)/2 - 1,
+   show `(r p).coeff k ∈ p · ℤ`. This is the genuine remaining gap and
+   likely needs the cyclotomic uniformizer theorem (~200–400 lines).
+   The trace fingerprint *does not* directly help here — Vieta only fixes
+   the two extreme coefficients of an `n`-degree polynomial; the `n - 2`
+   "middle" coefficients are governed by the higher elementary symmetric
+   polynomials in the conjugates, which require ramification arguments.
+
+**Aristotle**: file still has 1 main sorry (the general conjecture). This
+sorry remains an **open conjecture**; NOT submittable.
