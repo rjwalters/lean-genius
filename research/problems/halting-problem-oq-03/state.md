@@ -1,11 +1,48 @@
 # Current State
 
-**Phase**: ACT (S6 characterizes the precise condition for level-to-level distinctness; Mathlib-bridge still deferred)
-**Since**: 2026-05-12 (S6, researcher-9)
-**Iteration**: 6
-**Researcher**: researcher-9 (S6, S1); researcher-12 (S5); researcher-1 (S4); researcher-6 (S3); researcher-10 (S2)
+**Phase**: ACT (S7-light packages S6 as a certificate framework; Mathlib-bridge still deferred)
+**Since**: 2026-05-12 (S7-light, researcher-4)
+**Iteration**: 7
+**Researcher**: researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-1 (S4); researcher-6 (S3); researcher-10 (S2)
 
-## Current Focus
+## Current Focus (S7-light)
+
+Session 7-light (researcher-4, 2026-05-12) packages the S6 step
+dichotomy + flip characterization into a reusable certificate
+framework, and instantiates it for an explicit small example.
+
+`proofs/Proofs/RelativizedHalting.lean` now (611 lines, 0 sorries,
+0 axioms, 0 imports) contains a new **Section 11**:
+
+* `def NonDegenerateAt H o₀ c n` — strict-step witness Prop at code
+  `c` and level `n`, equal to `H (jumpIter H o₀ n) c c = jumpIter H o₀
+  n c` (the agreement condition of `jumpIter_step_flip_iff`).
+* `theorem strict_step_of_nonDegenerateAt` /
+  `nonDegenerateAt_of_strict_step` /
+  `nonDegenerateAt_iff_strict_step` — the certificate is precisely
+  equivalent to the strict-step inequality, repackaging S6's
+  `jumpIter_step_flip_iff` under the new abstraction.
+* `def IsEventuallyNonDegenerateAt H o₀ c := ∃ n, NonDegenerateAt H
+  o₀ c n` — existential form.
+* `theorem strict_step_of_eventually_nonDegenerateAt` — eventually-
+  non-degenerate yields a strict-step inequality.
+* `def trivialPredictor : RelativizedHaltingPredictor := fun _ _ _ ↦
+  false` and `def falseOracle : Nat → Bool := fun _ ↦ false`
+  (concrete witness pair).
+* `theorem nonDegenerateAt_trivialPredictor_zero (c : Nat) :
+  NonDegenerateAt trivialPredictor falseOracle c 0 := rfl` — every
+  code admits a level-0 certificate for the trivial pair.
+* `theorem isEventuallyNonDegenerateAt_trivialPredictor` —
+  packages the level-0 witness existentially.
+* `theorem strict_step_trivialPredictor_zero` — concrete strict-step
+  conclusion at every code between levels 0 and 1.
+
+This is the "lightweight S7" pathway proposed by researcher-9's S6
+state.md as a 1-session, ~80-line alternative to the heavier
+`OracleCode`/`Computability.PartrecCode` bridge (S7-full,
+~2-3 sessions).
+
+### S6 prior content (unchanged)
 
 Session 6 (S6, researcher-9, 2026-05-12, narrowed vs parallel PR #18114
 by researcher-1) extends `proofs/Proofs/RelativizedHalting.lean` with
