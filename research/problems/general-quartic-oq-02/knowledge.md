@@ -111,6 +111,74 @@ independent sub-steps:
 - Lean axiomCount: 6 (unchanged)
 - LOC: 360 → 428 (+68, under 100-LOC budget)
 
+### S3 ACT — DISCHARGE (2026-05-12)
+
+`ferrari_biquad_limit` discharged. Single-theorem proof; no helper
+declarations added (~70 LOC of inline proof, including doc-strings).
+
+**Strategy adopted.** The "Alternative" path proposed in the S2 DECOMPOSITION
+note above turned out to be the right call — explicit-formula expansion of
+`yᵢ^2 = ((±α + sqrtᵢ)/2)^2` introduces a `Complex.cpow (-α²) (1/2)` term
+whose squaring back to `-α²` would require a `Complex.cpow_two_eq_self`-style
+lemma keyed to the *principal* branch, plus a sign-choice between `+iα` and
+`-iα` driven by which Ferrari branch (y₁/y₂ vs y₃/y₄) is being squared.
+By contrast, the `ferrari_roots_are_roots`-then-`biquadratic_simple` chain
+bypasses all of this: by assumption `yᵢ` is a root of the depressed quartic,
+hence `yᵢ²` is forced into the biquadratic root pair by the (axiomatic)
+`biquadratic_forward`. The price: the proof uses two parent axioms
+(`ferrari_roots_verify`, `biquadratic_forward`) transitively. Neither was
+introduced by S3 — both were already in the file. Sub-step A (non-degenerate
+resolvent root existence) is the only step that does new algebra.
+
+**Sub-step A architecture (chosen for tractability):**
+
+1. Obtain `u : ℂ` with `u² = r` via FTA on `X² + C(-r)` (degree 2 over ℂ).
+   `Polynomial.degree_X_pow_add_C 2 (-r) : (X² + C(-r)).degree = 2`,
+   then `IsAlgClosed.exists_root` discharges existence.
+2. **Key algebraic identity (verified by `linear_combination`):**
+   ```
+   (resolventCubic p 0 r).eval (-p + v) = (8v - 4p) * (v² - r)
+   ```
+   So for any `v` with `v² = r`, both `m₁ = -p + u` and `m₂ = -p - u`
+   are resolvent roots. (The identity arises from the factorization
+   `resolventCubic p 0 r = 8 · (X + p/2) · (X² + 2pX + (p² - r))`,
+   but the identity itself is `linear_combination`-discharged without
+   making the factorization explicit.)
+3. **Case-split on `2*m₁ + p ≠ 0`:**
+   - If non-degenerate: use `m₁ = -p + u`.
+   - Otherwise: `u = p/2` (linear), so `r = u² = p²/4`. From the
+     hypothesis `p ≠ 0 ∨ r ≠ 0`: if `p = 0` then `r = 0`, contradicting
+     either disjunct. So `p ≠ 0`. Then `m₂ = -p - u = -3p/2`, and
+     `2*m₂ + p = -2p ≠ 0`.
+
+**Sub-step B architecture (the chosen "Alternative"):**
+
+For any `m` satisfying the resolvent cubic, `ferrari_roots_are_roots`
+(via the parent's `ferrari_roots_verify` axiom) gives that each
+`yᵢ ∈ ferrariRoots p 0 r m hm` satisfies
+`(depressedQuartic p 0 r).eval yᵢ = 0`. Then `biquadratic_simple p r yᵢ`
+(forward direction, via `biquadratic_forward`) yields
+`yᵢ² = z₁ ∨ yᵢ² = z₂` directly. No explicit-formula manipulation needed.
+
+**Files modified in S3 DISCHARGE:**
+- `proofs/Proofs/GeneralQuartic.lean`: -1 sorry, ~72 lines of inline
+  proof + docstring update on Part VI.5 header. Net +72 lines (428 → 500).
+
+**Metrics after S3:**
+- Lean theoremCount: 12 (unchanged — no new top-level theorems)
+- Lean sorryCount: 1 → 0 ✓
+- Lean axiomCount: 6 (unchanged)
+- LOC: 428 → 500 (+72)
+
+**Mathlib API touched in S3:**
+- `Polynomial.degree_X_pow_add_C` (positivity hypothesis on exponent)
+- `IsAlgClosed.exists_root` (degree ≠ 0)
+- `Polynomial.eval_add`, `eval_mul`, `eval_pow`, `eval_X`, `eval_C` (simp set)
+- `linear_combination` tactic (twice: in `hresolv` and in `u = p/2` derivation)
+
+No drift observed on these APIs at Mathlib v4.26.0 (per the canonical
+references in similar S3 proofs across the gallery).
+
 ## Survey of Prior Art
 
 ### Folklore Status
