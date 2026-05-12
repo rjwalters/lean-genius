@@ -1,25 +1,36 @@
 # Current State
 
-**Phase**: ORIENT
-**Since**: 2026-05-12 (S1 OBSERVE → ORIENT, researcher-8)
-**Iteration**: 1
+**Phase**: ACT (S2 scaffold landed; existence + k=1 sanity check remain `sorry`)
+**Since**: 2026-05-12 (S2 ACT-A scaffold, researcher-9)
+**Iteration**: 2
 
 ## Current Focus
 
-Session 1 (S1, researcher-8, 2026-05-12): Survey of the hypergraph
-Ramsey-number literature for the OQ-03 generalization of Erdős–Szekeres.
-No Lean changes — pure OBSERVE/ORIENT pass to set up future ACT sessions.
+Session 2 (S2 ACT-A, researcher-9, 2026-05-12): create the
+`RamseyHypergraph.lean` API surface and state the main existence theorem
+(OQ-03a) as a `sorry`.
 
 Output of this session:
 
-* `problem.md` — formal restatement of OQ-03 as three sub-goals
-  (existence OQ-03a, Erdős–Rado upper bound OQ-03b, Erdős–Hajnal lower bound
-  OQ-03c) with explicit tower-function bounds.
-* `knowledge.md` — literature survey covering Ramsey (1930), Erdős–Rado
-  (1952), Erdős–Hajnal (1972) stepping-up, and Conlon–Fox–Sudakov (2010);
-  Mathlib API audit; suggested `RamseyK.ramseyNumber` API surface.
-* This `state.md` update advancing NEW → ORIENT and pinning the
-  S2 next-action.
+* `proofs/Proofs/RamseyHypergraph.lean` (~147 lines, 2 sorries, 0 axioms).
+  Definitions: `kColoring`, `IsMonochromatic`, `IsRamsey`, `ramseyNumber`
+  (via `sInf`).
+  Proved API lemmas: `isMonochromatic_of_card_lt` (subsets smaller than
+  the uniformity have no `k`-subsets, hence are trivially monochromatic),
+  `isMonochromatic_empty_zero`, `is_ramsey_zero_false`, `is_ramsey_zero_true`
+  (degenerate `s=0` / `t=0` cases — the empty set is the witness).
+  Two sorries:
+  - `ramsey_existence` (the OQ-03a main theorem) — to be discharged in S3.
+  - `ramseyNumber_one` (k=1 pigeonhole sanity check) — postponed to S3
+    because the lower-bound construction (a coloring with `s-1`
+    `false`-singletons and `t-1` `true`-singletons) takes more space than
+    initially estimated.
+* `proofs/Proofs.lean` regenerated to include the new file.
+
+## Prior Session Outputs (S1, researcher-8)
+
+* `problem.md` — formal restatement of OQ-03 as three sub-goals.
+* `knowledge.md` — literature survey + Mathlib API audit.
 
 ## Active Approach
 
@@ -54,25 +65,44 @@ adequate but verbose.
 
 ## Next Action
 
-**S2 ACT-A.** Create `proofs/Proofs/RamseyHypergraph.lean` with:
+**S3 ACT-B.** Two parallel tasks (can be done in either order):
 
-* `def IsMonochromatic {n k : ℕ} (χ : Finset (Fin n) → Bool) (S : Finset (Fin n)) (c : Bool) : Prop`
-* `def IsRamsey (n k s t : ℕ) : Prop`
-* `def ramseyNumber (k s t : ℕ) : ℕ := Nat.find ...`
-* `lemma ramseyNumber_one (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) : ramseyNumber 1 s t = s + t - 1`
-* `theorem ramsey_existence (k s t : ℕ) (hk : 2 ≤ k) (hs : k ≤ s) (ht : k ≤ t) : ∃ n, IsRamsey n k s t := by sorry`
+1. **Pigeonhole base case `ramseyNumber_one s t = s + t - 1`.**
+   - Forward (`IsRamsey (s+t-1) 1 s t`): partition `Fin (s+t-1)` by
+     `i ↦ χ {i}`; if `|filter (χ{·}=false)| ≥ s` use that as the s-clique,
+     else (by pigeonhole) the complement gives a t-clique.
+   - Backward (`¬ IsRamsey (s+t-2) 1 s t`): explicit coloring with the
+     first `s-1` singletons `false` and the remaining `t-1` `true`.
+   - Combine via `sInf_eq_iff` (or by showing both `sInf ≤ s+t-1` and
+     `s+t-1 ≤ sInf`).
+2. **Existence theorem `ramsey_existence` (OQ-03a).**
+   The standard two-layer induction (Ramsey 1930). Induct on `s + t`
+   for fixed `k`; the inductive step is the "neighborhood-tree" argument:
+   fix any vertex `v`, the `(k-1)`-restrictions of `k`-subsets through
+   `v` give a `(k-1)`-coloring on `[n] \ {v}`, then apply induction at
+   uniformity `k-1`.
+   - Base case `k = 2`: reuse `SimpleGraph.ramseyNumber` from Mathlib
+     (or re-prove inline). 
+   - Inductive step (k ≥ 3): the harder half; ~150-300 lines depending on
+     how much Mathlib API is built up.
 
-Add the gallery shim: `src/data/research/problems/erdos-szekeres-oq-03.json`
-should list this new file under `leanFiles` (or leave unchanged if the
-file is not yet created; S2 will add the entry).
+S4 will state the Erdős–Rado tower upper bound `erdos_rado_upper`.
 
 ## Attempt Counts
 
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1 (literature survey + Lean API design)
+- Total attempts: 2
+- Current approach attempts: 2
+- Approaches tried: 2 (literature survey + Lean API design; S2 scaffold)
 
 ## Outcome of S1
 
 ORIENT complete. Three sub-goals (existence, Erdős–Rado upper, Erdős–Hajnal
 lower) cleanly stated; Mathlib gaps identified; S2 ACT-A is unblocked.
+
+## Outcome of S2
+
+S2 SCAFFOLD landed (build pending). `RamseyHypergraph.lean` adds 4
+definitions and 4 sorry-free supporting lemmas alongside 2 sorries
+(`ramsey_existence`, `ramseyNumber_one`). The `IsMonochromatic`-of-too-small
+helper and the `s=0` / `t=0` degenerate Ramsey base cases form the
+foundation for S3's pigeonhole and inductive arguments.
