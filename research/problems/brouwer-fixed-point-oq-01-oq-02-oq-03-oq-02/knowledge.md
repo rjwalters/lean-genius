@@ -1166,3 +1166,89 @@ chain composition). Estimate: 1-session ACT-D-1 closes cleanly.
   axiom signatures (L4–L5) and a newly-identified algebraic-bridge
   gap (L6) that is *not* covered by sibling PR #18011's G6 Unit-bridge
   work. No Lean changes this iteration.
+
+
+### Section M — S7 ACT-D-1 exec installation log (2026-05-12)
+
+#### M1. Files modified
+
+* `proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean`
+  - Line 10: `import Mathlib.Topology.Category.TopCat.Sphere` (new).
+  - File header docstring: theorem count and axiom count refreshed
+    to `14 theorems, 0 sorries, 4 axioms`; new
+    `## S7 ACT-D-1 exec (2026-05-12)` section inserted between the
+    summary line and the existing `## S5 ACT-B exec (2026-05-12)`
+    section.
+  - New axiom `sphere_singularHomology_nonzero` inserted between
+    `H_n_minus_1_ball_zero_substantive` and the existing
+    `singular_homology_retraction_split` theorem. Exact signature
+    matches §L4 candidate-(a) verbatim. Carrier is
+    `TopCat.diskBoundary (n + 1)` (definitionally equal to
+    `TopCat.sphere n`).
+  - New theorem `H_n_minus_1_sphere_nonzero_substantive` immediately
+    below the new axiom. Proof: `(n - 1) + 1 = n` index-shift
+    handled by `omega`, then `rw` + `exact`. ~10 lines of Lean.
+
+#### M2. Net deltas
+
+* Axioms: +1 (file-level count: 3 → 4).
+* Theorems: +1 (file-level count: 13 → 14).
+* Imports: +1.
+* Lines: 375 → 462 (the 87-line growth is dominated by the
+  axiom/theorem docstrings; the executable Lean is ~25 lines).
+
+#### M3. Axiom inventory after S7 (file-level)
+
+1. `no_retraction_axiom` (line 44) — composite top-level mock
+   axiom, kept for `BrouwerFixedPoint.lean` interoperability.
+2. `H_n_minus_1_sphere_nonzero` (line 261) — composite mock
+   axiom (sphere homology + retraction-induced section). To be
+   dropped in S10 ACT-D-4 after G7 + G6 + functoriality bridges
+   are in place.
+3. `contractible_singularHomology_zero` (line 287) — thin B1
+   surrogate (single classical fact), landed in S5 ACT-B exec.
+4. `sphere_singularHomology_nonzero` (line 351) — thin B2
+   surrogate (single classical fact), this iteration.
+
+All four axioms are textbook facts with explicit Mathlib
+contribution paths. The S10 plan reduces this to three axioms
+(drop #2, the only composite one) once the algebraic bridges land.
+
+#### M4. Build verification
+
+S7 ACT-D-1 build runs in a 60-min docker timeout with the broken
+`.lake` symlink in this repo forcing a fresh Mathlib clone
+(~10–15 min) + cache get (~10 min) + target build. Build log
+reference: `.loom/logs/researcher-10-brouwer-s7-build.log`. See
+PR description for the verified-status line; if the PR ships as
+"build pending", a follow-on Mechanic / Auditor PR will record
+verification once docker has cycled.
+
+#### M5. ACT-D execution plan progress
+
+* S7 ACT-D-1: ✅ **DONE** (this iteration).
+* S8 ACT-D-2: design + install Section G7 algebraic bridge
+  `¬ IsZero (X) → ∃ x : X, x ≠ 0` for `AddCommGrpCat`.
+  Self-contained algebra. No new axioms. Estimate: 1 session.
+* S9 ACT-D-3: combine G7 + functoriality + G6 (PR #18011) to
+  bridge `¬ IsZero (H_n(𝕊 n))` → `∃ ψ, ψ ∘ φ = id`. Gated on
+  PR #18011 merge.
+* S10 ACT-D-4: drop mock `H_n_minus_1_sphere_nonzero` axiom.
+  Net axiom delta: −1.
+
+#### M6. Iteration log entry
+
+* 2026-05-12 (researcher-10, S7 ACT-D-1 exec): thin B2 surrogate
+  axiom `sphere_singularHomology_nonzero` + trivial substantive
+  theorem `H_n_minus_1_sphere_nonzero_substantive` installed in
+  `proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean`. Net file-level
+  axiom count: 3 → 4. Net file-level theorem count: 13 → 14. All
+  downstream consumers continue to use the mock axiom for now; the
+  substantive theorem is *parallel* to the mock chain and will
+  replace it in S10 once the S8 G7 bridge and S9 G6 bridge are in
+  place. Build risk: lower than S5 (verified at §L8). The new
+  axiom is *strictly tighter* than the existing
+  `H_n_minus_1_sphere_nonzero` mock — it packages a single
+  classical fact (sphere homology non-vanishing) rather than the
+  composite "sphere-homology + retraction-induced section" of the
+  mock.

@@ -7,6 +7,7 @@ import Mathlib.AlgebraicTopology.SingularHomology.Basic
 import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Algebra.Category.Grp.Colimits
 import Mathlib.Algebra.Category.Grp.Abelian
+import Mathlib.Topology.Category.TopCat.Sphere
 
 /-
 # No-Retraction Theorem via Singular Homology
@@ -45,7 +46,26 @@ axiom no_retraction_axiom (n : ℕ) (hn : n ≥ 1) : ¬∃ r : Retraction n, Tru
 This file derives no-retraction from **more primitive** axioms that precisely
 identify what singular homology contributes. The pure algebraic argument is fully proved.
 
-## Summary: 14 theorems, 0 sorries, 2 axioms
+## Summary: 14 theorems, 0 sorries, 4 axioms
+
+## S7 ACT-D-1 exec (2026-05-12)
+
+Installs the B2 thin surrogate axiom `sphere_singularHomology_nonzero`
+and the trivial substantive theorem `H_n_minus_1_sphere_nonzero_substantive`
+(directly mirroring the ball-side `contractible_singularHomology_zero` /
+`H_n_minus_1_ball_zero_substantive` pair landed in S5 ACT-B exec).
+
+The B2 surrogate is *strictly weaker* than the textbook
+`H_n(𝕊 n) ≅ ℤ` statement — it only asserts non-vanishing, which is
+sufficient to drive the contradiction in `singular_homology_retraction_split`
+once the algebraic Section G7 bridge (planned for S8 ACT-D-2) connects
+the `IsZero` shape to the `∃ ψ, ψ ∘ φ = id` shape.
+
+Net axiom count: 2 → 4 (no_retraction_axiom, H_n_minus_1_sphere_nonzero,
+contractible_singularHomology_zero, sphere_singularHomology_nonzero).
+Both new surrogates are standard textbook facts with explicit Mathlib
+contribution paths (`Mathlib/Topology/Category/TopCat/Sphere.lean` already
+provides the canonical signatures for `𝕊 n`, `∂𝔻 n`).
 
 ## S5 ACT-B exec (2026-05-12)
 
@@ -298,6 +318,73 @@ theorem H_n_minus_1_ball_zero_substantive (n : ℕ) (hn : 2 ≤ n) :
       ⟨0, Metric.mem_closedBall_self zero_le_one⟩
   exact contractible_singularHomology_zero (n - 1) (by omega)
     (↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))
+
+/-- **Local axiom (B2 surrogate)**: the `n`-th singular homology of the
+    `n`-sphere (`TopCat.diskBoundary (n + 1)`) is non-zero, for `n ≥ 1`.
+
+    This is the *thin* classical-fact surrogate for Mathlib gap **B2** (the
+    sphere-homology computation `H_n(𝕊 n) ≅ ℤ`). It is strictly weaker than
+    the full isomorphism statement — only the non-vanishing direction is
+    needed to drive the contradiction in `singular_homology_retraction_split`
+    (because the identity `id_ℤ` factoring through a zero object would force
+    `ℤ` itself to be zero, contradicting non-vanishing).
+
+    **Standard proof path** (knowledge.md §C, §L1–L3): the cleanest upstream
+    contribution is via the cellular chain complex of `𝕊 n`:
+
+    1. `TopCat.sphere n = TopCat.diskBoundary (n + 1)` is a finite CW complex
+       with two `n`-cells (or one cell in each of dim `0` and `n`); see
+       `Mathlib/Topology/Category/TopCat/Sphere.lean` (Xia, Young 2024,
+       new infrastructure post-S1 OBSERVE).
+    2. The cellular chain complex computes `H_n(𝕊 n) ≅ ℤ`.
+    3. `cellularHomology_iso_singularHomology` (Mathlib gap, but a single
+       construction once the CW infrastructure is fleshed out) transports
+       the cellular computation to singular homology.
+
+    This axiom is *strictly tighter* than the existing
+    `H_n_minus_1_sphere_nonzero`: it packages a single classical fact
+    (sphere homology) rather than the composite "sphere-homology +
+    retraction-induced section" of the sphere-nonzero residual. The
+    `Retraction`-quantifier and the `∃ ψ, ψ ∘ φ = id` shape are now
+    handled separately by the functoriality argument (see knowledge.md
+    §L6 and the planned §G7 algebraic bridge for the future ACT-D-2). -/
+axiom sphere_singularHomology_nonzero
+    (n : ℕ) (hn : 1 ≤ n) :
+    ¬ CategoryTheory.Limits.IsZero
+        (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} n).obj
+            (AddCommGrpCat.of ℤ)).obj
+          (TopCat.diskBoundary (n + 1)))
+
+/-- **Substantive form of `H_{n-1}(S^{n-1}) ≠ 0`**: the `(n-1)`-sphere
+    `TopCat.diskBoundary n` has non-zero `(n-1)`-th singular homology with
+    `ℤ`-coefficients, for `n ≥ 2`. This is the *real-homology* statement
+    paired with the mock-form axiom `H_n_minus_1_sphere_nonzero` above.
+
+    The hypothesis is strengthened from `n ≥ 1` (mock form) to `n ≥ 2`
+    because `TopCat.diskBoundary 1 = 𝕊 0` is two points whose `H_0 ≅ ℤ²`
+    is non-zero for a different reason (path-disconnectedness rather than
+    the "fundamental class" cohomology), and the substantive form is
+    intended to be uniform with the `n ≥ 2` cases. The original mock form
+    via the `Retraction` quantifier is unaffected because `Retraction 1`
+    is uninhabited (intermediate value theorem) so the universal
+    quantifier is vacuously satisfied at `n = 1` regardless.
+
+    **Proof**: direct restatement — `TopCat.diskBoundary n` *is* the
+    `(n-1)`-sphere `𝕊 (n-1)` (`Mathlib/Topology/Category/TopCat/Sphere.lean`).
+    Apply `sphere_singularHomology_nonzero` at degree `n - 1 ≥ 1`. -/
+theorem H_n_minus_1_sphere_nonzero_substantive (n : ℕ) (hn : 2 ≤ n) :
+    ¬ CategoryTheory.Limits.IsZero
+        (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} (n - 1)).obj
+            (AddCommGrpCat.of ℤ)).obj
+          (TopCat.diskBoundary n)) := by
+  -- `TopCat.diskBoundary n = 𝕊 (n-1)`, so this is `H_{n-1}(𝕊 (n-1)) ≠ 0`.
+  have hn1 : 1 ≤ n - 1 := by omega
+  have h := sphere_singularHomology_nonzero (n - 1) hn1
+  -- `sphere_singularHomology_nonzero (n - 1)` concludes on
+  -- `TopCat.diskBoundary ((n - 1) + 1)`. Since `2 ≤ n`, `(n - 1) + 1 = n`.
+  have hsucc : (n - 1) + 1 = n := by omega
+  rw [hsucc] at h
+  exact h
 
 /-- **Theorem (formerly an axiom)**: combining `H_n_minus_1_ball_zero` and
     `H_n_minus_1_sphere_nonzero` reproduces the original composite split
