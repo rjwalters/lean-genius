@@ -167,6 +167,56 @@ theorem witness_regular_implies_epsilon_regular
   -- See proof strategy in the docstring above.
   sorry
 
+/-! ## Part 3b: Constructive witness extraction (S3, sorry-free)
+
+When the witness-regular surrogate fails, we want an explicit `B'` that
+exhibits the failure — both for downstream "constructive partition"
+work (Target C in S1's roadmap) and for diagnostic output of any future
+algorithmic-Szemerédi implementation.
+
+The extraction is a pure-logic decomposition of `¬ IsWitnessRegular`:
+unfold the definition, push the negation through the bounded universal,
+and pull out the witness via existential introduction. Since the witness
+family is finite and decidable, no constructive choice is needed beyond
+`push_neg`. -/
+
+/-- **Constructive witness extraction**: if `(A, B)` fails the
+witness-regular surrogate at parameter `eps`, then there exists an
+explicit `B'` in the ε-grid family of large enough size and with
+density bias exceeding `eps`.
+
+The proof is a one-step `push_neg` decomposition of the universally
+quantified definition. The conclusion is the natural negation of
+`IsWitnessRegular`:
+```
+∃ B' ∈ witnessFamilyB G A B,
+  (B'.card : ℚ) ≥ eps * B.card ∧
+  |edgeDensity G A B' - edgeDensity G A B| > eps.
+```
+
+This is the dual to `IsEpsilonRegular`'s `¬`-form witness and is the
+piece that the algorithmic Szemerédi partition (Target C) iterates on
+to produce a refinement when irregularity is detected. -/
+theorem witnessOfIrregular (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (h : ¬ IsWitnessRegular G eps A B) :
+    ∃ B' ∈ witnessFamilyB G A B,
+      (B'.card : ℚ) ≥ eps * B.card ∧
+      |edgeDensity G A B' - edgeDensity G A B| > eps := by
+  unfold IsWitnessRegular at h
+  push_neg at h
+  exact h
+
+/-- **Contrapositive**: if every `B'` in the ε-grid family that is at
+least `eps · |B|` large has density bias ≤ `eps`, then `(A, B)` is
+witness-regular. (The forward direction of the equivalence is just the
+definition; this corollary spells it out for readers.) -/
+theorem isWitnessRegular_of_no_witness (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V)
+    (h : ∀ B' ∈ witnessFamilyB G A B,
+      (B'.card : ℚ) ≥ eps * B.card →
+      |edgeDensity G A B' - edgeDensity G A B| ≤ eps) :
+    IsWitnessRegular G eps A B := h
+
 /-! ## Part 4: Mathlib-bridge stubs (S5 placeholders, not exported)
 
     These signatures are placeholders for the downstream S5 task —
