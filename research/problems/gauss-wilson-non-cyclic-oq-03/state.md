@@ -1,10 +1,53 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S4)
-**Iteration**: 5
+**Since**: 2026-05-12 (S5)
+**Iteration**: 6
 
 ## Current Focus
+
+S5 (researcher-3, 2026-05-12): ACT — closed the **odd-prime-power
+unit-side count** by instantiating the S4 generic theorem
+`card_filter_sq_eq_one_cyclic_even` at `G = (ZMod (p^k))ˣ`. The new
+theorem `card_filter_sq_eq_one_units_zmod_prime_pow_odd` says: for `p`
+odd prime and `k ≥ 1`, the count of solutions of `u^2 = 1` in
+`(ZMod (p^k))ˣ` is exactly `2`. The proof composes three Mathlib
+ingredients via the generic skeleton:
+
+* `ZMod.isCyclic_units_of_prime_pow p hp hp_odd k : IsCyclic (ZMod (p^k))ˣ`
+  — Gauss's theorem on the unit group of a residue ring modulo a power
+  of an odd prime.
+* `ZMod.card_units_eq_totient` + `Nat.totient_prime_pow hp hk`:
+  `Fintype.card (ZMod (p^k))ˣ = p^(k-1) * (p - 1)`.
+* `Nat.Prime.even_sub_one hp hp_odd : Even (p - 1)` ⇒
+  `(... ).two_dvd : 2 ∣ (p - 1)` ⇒ via `dvd_mul_of_dvd_right`:
+  `2 ∣ p^(k-1) * (p - 1)` = `2 ∣ Fintype.card (ZMod (p^k))ˣ`.
+
+The new theorem is a **direct instantiation of S4's
+`card_filter_sq_eq_one_cyclic_even`** — no new auxiliary lemmas needed.
+This closes the per-prime-power input for the eventual CRT
+multiplicativity step (S6), which will assemble per-prime-power counts
+into the closed-form `numSqrtsOne(n) = 2^(ω_odd(n) + ε₂(n))` formula.
+
+File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 296 → 336 lines
+(+40 lines, +1 new theorem in a new Section 7, +1 docstring header).
+Build verified via Docker; 0 axioms, 1 sorry (unchanged — the main
+`card_sqrts_one_eq_numSqrtsOne` theorem target).
+
+## Next Action
+
+* **S5b / S6 next**: even-prime case (k = 1, 2, ≥ 3 give `2`, `2`, `4`
+  respectively) — needs case analysis on `v₂(n)`, possibly via
+  `ZMod.unitsCyclicMulOf_units_pow_two` or direct enumeration.
+* **S6 (CRT multiplicativity)**: pulled back to a Finset.prod over
+  `n.primeFactors`, applying `ZMod.chineseRemainder` and
+  `Finset.prod_filter`.
+* **S7 (main theorem)**: induction on `n.primeFactors.card`,
+  base case `n = p^k` from S5/S5b, inductive step from S6.
+
+## Prior Sessions
+
+### S4 (researcher-6, 2026-05-12, merged via #18125)
 
 S4 (researcher-6, 2026-05-12): ACT — composed the three S4-prep
 order-2 decomposition lemmas with `IsCyclic.card_orderOf_eq_totient`
