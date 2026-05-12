@@ -7,17 +7,27 @@
   function) elementarily, removing the axiom `chebyshevPsi_asymptotic`
   from `ChebyshevBoundsOQ04.lean`.
 
-  ## Status: Iteration 1 / OBSERVE
+  ## Status: Iteration 2 / ACT
 
-  This file scaffolds the Selberg-Erdős 1949 elementary proof strategy.
-  Concretely, it:
+  Iter 1 scaffolded the Selberg-Erdős 1949 elementary proof strategy
+  (Λ₂ and S₂ definitions, non-negativity, monotonicity, base values
+  at 0 and 1). Iter 2 adds the **prime-case lemmas**:
 
-  - Defines the Selberg auxiliary function
+  - `vonMangoldtConv_prime`: `(Λ ∗ Λ)(p) = 0` for prime `p`.
+  - `selbergLambda2_prime`: `Λ₂(p) = (log p)²` for prime `p`.
+  - `selbergSum2_one`: `S₂(1) = 0` (both summands `Λ₂(0)` and `Λ₂(1)`
+    vanish).
+  - `selbergSum2_two`: `S₂(2) = (log 2)²` (the first non-zero value of
+    the partial sum, via `selbergLambda2_prime Nat.prime_two`).
+
+  Definitions and roadmap from iter 1:
+
+  - The Selberg auxiliary function
         Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n),
     where Λ ∗ Λ denotes Dirichlet convolution.
-  - Defines the Selberg partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n).
-  - Proves routine non-negativity, base-value, and monotonicity lemmas.
-  - Documents the elementary-PNT roadmap and identifies Mathlib gaps.
+  - The Selberg partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n).
+  - Routine non-negativity, base-value, and monotonicity lemmas.
+  - The elementary-PNT roadmap and identified Mathlib gaps.
 
   No new axioms are added; the parent file's `chebyshevPsi_asymptotic`
   axiom remains the open target.
@@ -147,6 +157,44 @@ theorem selbergLambda2_nonneg (n : ℕ) : 0 ≤ selbergLambda2 n := by
   · exact mul_nonneg vonMangoldt_nonneg
       (Real.log_nonneg (by exact_mod_cast h))
 
+/-! ### Prime values
+
+For a prime `p` the divisor sum `(Λ ∗ Λ)(p)` collapses: the only
+divisors are `1` and `p`, and `Λ(1) = 0` annihilates both cross terms.
+Consequently `Λ₂(p)` reduces to the single summand `Λ(p) · log p`, which
+is `(log p)²` by `vonMangoldt_apply_prime`.
+
+These are the iter-2 deliverables flagged as routine in the iter-1
+roadmap (items 1 and 2 of the "Future Work" list). They are the first
+non-zero base-case values of `Λ₂`, and together with the `S₂` recurrence
+established in iter 1 they yield the first non-trivial values of the
+partial Selberg sum (`selbergSum2_two` below). -/
+
+/-- Iter 2: `(Λ ∗ Λ)(p) = 0` for any prime `p`.
+
+    The divisor set is `divisors p = {1, p}` (`Nat.Prime.divisors`), so
+    the convolution expands to two terms:
+      * `d = 1`: `Λ(1) · Λ(p)`. Annihilated by `vonMangoldt_apply_one`.
+      * `d = p`: `Λ(p) · Λ(p / p) = Λ(p) · Λ(1)`. Same annihilator.
+    The Finset sum `Finset.sum_pair` requires `1 ≠ p`, supplied by
+    `hp.one_lt.ne`. No new imports. -/
+theorem vonMangoldtConv_prime {p : ℕ} (hp : Nat.Prime p) :
+    vonMangoldtConv p = 0 := by
+  unfold vonMangoldtConv
+  rw [Nat.Prime.divisors hp, Finset.sum_pair hp.one_lt.ne]
+  simp [vonMangoldt_apply_one, Nat.div_self hp.pos]
+
+/-- Iter 2: `Λ₂(p) = (log p)²` for any prime `p`.
+
+    Immediate from `vonMangoldtConv_prime hp` (annihilates the
+    convolution summand) and `vonMangoldt_apply_prime hp` (rewrites
+    `Λ(p) = log p`, so the first summand becomes `log p · log p`). -/
+theorem selbergLambda2_prime {p : ℕ} (hp : Nat.Prime p) :
+    selbergLambda2 p = (Real.log p) ^ 2 := by
+  unfold selbergLambda2
+  rw [vonMangoldtConv_prime hp, vonMangoldt_apply_prime hp]
+  ring
+
 /-! ### Partial sum properties -/
 
 /-- `S₂(0) = 0`: the only term is `Λ₂(0) = 0`. -/
@@ -176,28 +224,59 @@ theorem selbergSum2_mono : Monotone selbergSum2 := by
   · intro k _ _
     exact selbergLambda2_nonneg k
 
+/-- Iter 2: `S₂(1) = 0`. Both summands `Λ₂(0)` and `Λ₂(1)` vanish, so
+    the partial sum is `0`.
+
+    The first non-zero value of `S₂` occurs at `N = 2`, as recorded by
+    `selbergSum2_two` below. This places the support of the Selberg
+    sequence `(S₂(N))_{N ≥ 0}` precisely on `N ≥ 2`. -/
+theorem selbergSum2_one : selbergSum2 1 = 0 := by
+  have h : selbergSum2 1 = selbergSum2 0 + selbergLambda2 1 :=
+    selbergSum2_succ 0
+  rw [h, selbergSum2_zero, selbergLambda2_one]
+  ring
+
+/-- Iter 2: `S₂(2) = (log 2)²`.
+
+    The first non-zero value of the partial Selberg sum. Computation:
+    `S₂(2) = S₂(1) + Λ₂(2) = 0 + (log 2)²` by `selbergSum2_succ`,
+    `selbergSum2_one`, and `selbergLambda2_prime Nat.prime_two`. -/
+theorem selbergSum2_two : selbergSum2 2 = (Real.log 2) ^ 2 := by
+  have h : selbergSum2 2 = selbergSum2 1 + selbergLambda2 2 :=
+    selbergSum2_succ 1
+  rw [h, selbergSum2_one, selbergLambda2_prime Nat.prime_two]
+  ring
+
 /-! ## Future Work
 
-The next-iteration deliverables are, in order of increasing difficulty:
+Iter-2 status:
 
-1. **`vonMangoldtConv_prime`**: `(Λ ∗ Λ)(p) = 0` for prime `p`. Routine
-   from `Nat.Prime.divisors`.
+- ✅ **`vonMangoldtConv_prime`**: `(Λ ∗ Λ)(p) = 0` for prime `p`.
+  Discharged via `Nat.Prime.divisors` + `Finset.sum_pair`.
+- ✅ **`selbergLambda2_prime`**: `Λ₂(p) = (log p)²`. Discharged via
+  `vonMangoldtConv_prime` + `vonMangoldt_apply_prime`.
+- ✅ **`selbergSum2_one`** / **`selbergSum2_two`**: first non-trivial
+  partial-sum values (`S₂(1) = 0`, `S₂(2) = (log 2)²`).
 
-2. **`selbergLambda2_prime`**: `Λ₂(p) = (log p)²`. Direct from (1) and
-   `vonMangoldt_apply_prime`.
+Remaining deliverables in order of increasing difficulty:
 
-3. **`selbergLambda2_eq_moebius_log_sq`**: the identity
+1. **`vonMangoldtConv_prime_pow`**: `(Λ ∗ Λ)(p^k) = (k-1) · (log p)²`
+   for prime `p` and `k ≥ 1`. Generalizes `vonMangoldtConv_prime`
+   (k = 1 case) via `Nat.divisors_prime_pow` and a small Finset sum
+   over `range (k+1)`. Routine.
+
+2. **`selbergLambda2_eq_moebius_log_sq`**: the identity
         Λ₂(n) = Σ_{d ∣ n} μ(d) · (log (n/d))²    (n ≥ 1).
    Provable from the Mathlib `moebius_mul_coe_zeta` machinery once one
    knows Λ = μ ∗ log (the standard expansion).
 
-4. **`selbergSum2_eq_two_n_log_n_plus_O`**: Selberg's symmetry formula
+3. **`selbergSum2_eq_two_n_log_n_plus_O`**: Selberg's symmetry formula
         S₂(N) = 2 N · log N + O(N).
    This is the central identity. The error-term step requires summation
    by parts and quantitative control of Σ_{d ≤ x} μ(d) — but only its
    `O(x)` form, which is well within elementary bounds.
 
-5. **Tauberian step → PNT**: Erdős–Selberg's combinatorial finishing
+4. **Tauberian step → PNT**: Erdős–Selberg's combinatorial finishing
    argument, the longest part of the elementary proof.
 
 The total estimated formalization size is several thousand lines, but
