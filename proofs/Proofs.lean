@@ -2733,6 +2733,7 @@ import Proofs.SzemerediCore
 import Proofs.SzemerediCoreOQ01
 import Proofs.SzemerediCoreOQ01Aristotle
 import Proofs.SzemerediCoreOQ03
+import Proofs.SzemerediCoreOQ04
 import Proofs.SzemerediCounting
 import Proofs.SzemerediFullOQ02
 import Proofs.SzemerediHypergraphCore
