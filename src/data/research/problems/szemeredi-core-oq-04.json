@@ -1,0 +1,105 @@
+{
+  "slug": "szemeredi-core-oq-04",
+  "title": "Algorithmic Szemerédi: formalize the Alon-Duke-Lefmann-Rödl-Yuster 1994 constructive partition algorithm",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "constructive-refactor",
+  "problemStatement": {
+    "formal": "Build `IsWitnessRegular G eps A B`, a decidable surrogate for `IsEpsilonRegular`, such that `IsWitnessRegular → IsEpsilonRegular` (with a slack constant). Use it to construct `def findRegularPartition (eps : Q) (G : SimpleGraph V) : Finset (Finset V)` returning a partition that satisfies `IsRegularPartition G eps`. Replaces the `Classical.choice` usage at `Proofs/SzemerediRegularity.lean:436` (`regularity_lemma_strong`).",
+    "plain": "The gallery's Szemerédi regularity lemma (Proofs/SzemerediRegularity.lean:327, line 436 for the strong version) proves existence of an ε-regular partition non-constructively via `Classical.choice`. Alon-Duke-Lefmann-Rödl-Yuster (1994) showed that the regularity partition can be found in polynomial time. This slug formalizes the constructive replacement — making the partition a computable function rather than an existential — by introducing a decidable surrogate for `IsEpsilonRegular` and a constructive witness-extraction step for irregular pairs.",
+    "whyMatters": [
+      "Decouples the Szemerédi pipeline from `Classical.choice`: the gallery's `SzemerediRegularity.lean:436` (`regularity_lemma_strong`) is the *only* point where the partition construction uses choice. Replacing it with ADLRY's constructive witness gives a computable `findRegularPartition`.",
+      "Enables decidability: the current `IsEpsilonRegular` predicate (`SzemerediCore.lean:39`) quantifies over arbitrary `Finset V` and is not `Decidable`. The ADLRY surrogate `IsWitnessRegular` quantifies over a polynomial-size family — `Decidable` by construction.",
+      "Prerequisite for downstream quantitative Szemerédi entries (Roth, removal, counting, full Szemerédi): each uses the partition itself, not just its existence, so a computable `findRegularPartition` unblocks them.",
+      "Mathlib gap: `SimpleGraph.szemeredi_regularity` in Mathlib v4.26.0 is existential. ADLRY 1994 has no Mathlib representation. Candidate Mathlib contribution.",
+      "Formalization, not research: ADLRY 1994 is 30 years old, well-documented in Tao (Higher-Order Fourier Analysis) and Zhao (Graph theory and additive combinatorics). The contribution is making it Lean-native."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Szemerédi regularity lemma — existential form (gallery: SzemerediRegularity.lean:327, 436, 487; Mathlib: SimpleGraph.szemeredi_regularity)",
+      "Edge density agrees with Mathlib's SimpleGraph.edgeDensity (gallery: SzemerediRegularity.lean:362)",
+      "Alon-Duke-Lefmann-Rödl-Yuster (1994) algorithm — classical, see References"
+    ],
+    "open": [
+      "Decidable surrogate for IsEpsilonRegular (Target A, S2)",
+      "Constructive witness extraction (Target B, S3)",
+      "Computable findRegularPartition (Target C, S4)",
+      "Mathlib bridge: IsWitnessRegular ↔ Mathlib's analog (S5)"
+    ],
+    "goal": "Replace `Classical.choice` at `SzemerediRegularity.lean:436` with a constructive `findRegularPartition` built on a decidable surrogate for `IsEpsilonRegular`."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T22:30:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-1, 2026-05-11) — OBSERVE survey. Established three-target hierarchy: A) decidable surrogate IsWitnessRegular, B) constructive witness extraction witnessOfIrregular, C) computable findRegularPartition. Identified Mathlib gaps: Decidable IsEpsilonRegular, constructive witness, computable partition, polynomial-time meta-claim infrastructure. No Lean changes; 4 documentation/JSON files only.",
+    "blockers": [],
+    "nextAction": "S2 (next iteration): scaffold Proofs/SzemerediCoreOQ04.lean with IsWitnessRegular G eps A B (decidable surrogate using ε-grid family `{N(a) ∩ B | a ∈ A}` ∪ complements — polynomial-size, slack constant 4), Decidable instance, and witness_regular_implies_epsilon_regular implication. Target ~150 lines, 0 sorries on definition, ≤2 sorries on implication (Aristotle-friendly if the ε-grid surrogate is the strong variant).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-1, 2026-05-11): OBSERVE survey. Identified the algorithmic Szemerédi target — decoupling the partition construction in Proofs/SzemerediRegularity.lean:436 (regularity_lemma_strong) from Classical.choice using the ADLRY 1994 constructive witness. Decomposed into three Lean-level targets: (A) decidable surrogate IsWitnessRegular with one-directional implication to IsEpsilonRegular, (B) constructive witness extraction witnessOfIrregular as Σ'-elimination, (C) computable findRegularPartition replacing the existential regularity_lemma_strong. Mathlib gap inventory: Decidable IsEpsilonRegular missing (universal quantifier over Finset V), constructive witness missing (Mathlib's szemeredi_regularity also existential), polynomial-time cost-model missing in Lean 4 (meta-claim only), bridge to Mathlib's IsEpsilonRegular missing (gallery already proves edgeDensity_eq_mathlib at SzemerediRegularity.lean:362). The energy-increment proof at SzemerediRegularity.lean:225-325 is already calculational — Classical is used only at line 436 for witness extraction — so the refactor surface is small. Honesty: this is formalization, not research; ADLRY 1994 is 30 years old.",
+    "builtItems": [],
+    "insights": [
+      "IsEpsilonRegular at SzemerediCore.lean:39 quantifies over arbitrary Finset V — decidable in principle (Finset over Fintype is finite) but no explicit instance, and the naive Decidable would be O(2^|V|)-time. The ADLRY surrogate is the meaningful decidable replacement.",
+      "The decidable surrogate has a slack constant: IsWitnessRegular G eps A B → IsEpsilonRegular G eps A B holds directly; the converse holds with eps' = eps/c for some c ≤ 10 depending on the surrogate variant. ε-grid variant (`{N(a) ∩ B | a ∈ A}` ∪ complements) gives c=4 with polynomial-size family (|S| ≤ 2|A|).",
+      "The energy-increment proof in SzemerediRegularity.lean:225-325 is purely calculational (no choice). Classical.choice is used at exactly ONE place: SzemerediRegularity.lean:436 (regularity_lemma_strong), where the witness subsets (A', B') for an irregular pair are extracted. ADLRY's contribution is a constructive replacement for exactly that step. The refactor surface is small (~50 lines of one proof).",
+      "Polynomial-time is a meta-claim. Lean 4 has no cost-monad library, so the surrogate's runtime cannot be stated within Lean. Document it in the surrogate's docstring; the claim is verified externally via Mathlib's `decide` tactic's evaluation cost on the finite-quantifier form.",
+      "Mathlib bridge for `IsEpsilonRegular` doesn't exist; only `edgeDensity_eq_mathlib` at SzemerediRegularity.lean:362. Add the regularity-predicate bridge in S5 (independently useful for any Mathlib contribution and a sanity check that we haven't drifted from the standard definition).",
+      "Per the Szemerédi pipeline architecture memory: definitions should be frozen in Core; the refactor should add a new file SzemerediCoreOQ04.lean rather than modify SzemerediCore. This avoids drift across the cluster and keeps the surrogate localized."
+    ],
+    "mathlibGaps": [
+      "Decidable IsEpsilonRegular — Mathlib's SimpleGraph.IsEpsilonRegular has no Decidable instance either; the universal quantifier over Finset V is decidable in principle but no efficient explicit instance exists.",
+      "Constructive witness for irregular pairs — Mathlib's SimpleGraph.szemeredi_regularity uses Classical.choice, no Σ'-form witness extraction available.",
+      "Polynomial-time complexity claims — Lean 4 / Mathlib have no cost-monad infrastructure. The 'polynomial-time' property of the ADLRY surrogate is meta-claim only.",
+      "Computable findRegularPartition — Mathlib's szemeredi_regularity is existential, not computable.",
+      "Bridge IsEpsilonRegular (gallery) ↔ SimpleGraph.IsEpsilonRegular (Mathlib) — gallery has the edge-density bridge but not the predicate bridge."
+    ],
+    "nextSteps": [
+      "S2: scaffold Proofs/SzemerediCoreOQ04.lean. Define IsWitnessRegular G eps A B as a Decidable predicate using the ε-grid subset family {N(a) ∩ B | a ∈ A} ∪ complements (size ≤ 2|A|, polynomial). Auto-derive Decidable instance from the finite-quantifier form. Prove witness_regular_implies_epsilon_regular : IsWitnessRegular G eps A B → IsEpsilonRegular G eps A B. Target ~150 lines, 0 sorries on definitions, ≤2 routine sorries on the implication.",
+      "S3: define witnessOfIrregular : ¬ IsWitnessRegular G eps A B → Σ' (A' B' : Finset V), A' ⊆ A ∧ B' ⊆ B ∧ |edgeDensity G A' B' - edgeDensity G A B| > eps. Uses Finset.findP on the decidable surrogate's quantifier domain. Bridge: every irregular pair has an explicit witness from the surrogate's finite subset family.",
+      "S4: refactor regularity_lemma_strong at SzemerediRegularity.lean:436 to use witnessOfIrregular instead of Classical.choice. Export def findRegularPartition (eps : Q) (G : SimpleGraph V) [DecidableRel G.Adj] : Finset (Finset V) returning the partition explicitly, plus the theorem findRegularPartition_isRegular : IsRegularPartition G eps (findRegularPartition eps G).",
+      "S5 (optional): bridge IsWitnessRegular to Mathlib's SimpleGraph.IsEpsilonRegular (analog of the existing edgeDensity_eq_mathlib), and consider submitting the surrogate + decidability + bridge as a Mathlib PR."
+    ]
+  },
+  "references": [
+    {
+      "label": "ADLRY (1994)",
+      "citation": "Alon, N., Duke, R.A., Lefmann, H., Rödl, V., Yuster, R. (1994). The algorithmic aspects of the regularity lemma. Journal of Algorithms 16(1), 80-109. — foundational paper for this slug."
+    },
+    {
+      "label": "Frieze-Kannan (1996)",
+      "citation": "Frieze, A., Kannan, R. (1996). The regularity lemma and approximation schemes for dense problems. FOCS '96. — simpler approximation-scheme proof."
+    },
+    {
+      "label": "Tao (2012)",
+      "citation": "Tao, T. (2012). Higher-Order Fourier Analysis. AMS GSM 142. — textbook treatment of the constructive regularity lemma."
+    },
+    {
+      "label": "Zhao (2023)",
+      "citation": "Zhao, Y. (2023). Graph Theory and Additive Combinatorics. Cambridge University Press. — Chapter 4: regularity method, algorithmic variants."
+    },
+    {
+      "label": "Fischer-Matsliah-Shapira (2010)",
+      "citation": "Fischer, E., Matsliah, A., Shapira, A. (2010). Approximate hypergraph partitioning and applications. SIAM J. Comput. 39(7), 3155-3185. — modern algorithmic perspective; hypergraph generalization relevant to szemeredi-hypergraph-core."
+    }
+  ],
+  "tags": [
+    "combinatorics",
+    "graph-theory",
+    "szemeredi",
+    "regularity-lemma",
+    "constructive",
+    "decidability",
+    "algorithmic",
+    "axiom-elimination",
+    "mathlib-gap",
+    "scaffold"
+  ]
+}
