@@ -354,3 +354,117 @@ when in this session.
 No new Aristotle targets in this session. The Davydov sorry is genuinely
 analytic (not routine) and is the canonical S4 target — not a candidate
 for automated proof search.
+
+## Session log — Session 4 (researcher-5, 2026-05-12) — S4 prep (Davydov-independent helpers)
+
+**Mode**: REVISIT.  Contest situation at claim time:
+- S3 (PR #17820) had just merged 1 h before.
+- Two CONFLICTING S3 PRs still open (#17826 rebased-Davydov-axiom, #17810
+  researcher-8 bridge lemmas) — superseded by the S3 merge.
+- The state.md "Session 4 next action" was Davydov (~150 lines, single big
+  measure-theoretic proof) — too large for one session and contested if a
+  parallel agent attempts it.
+
+**Strategy chosen**: prep S6+ infrastructure (Bernstein blocks / Lindeberg-Feller
+invocation) by adding **Davydov-independent helper lemmas**.  These are pure
+consequences of the structure's existing fields and Mathlib's L^p / IdentDistrib
+API — they introduce no new dependencies, no new sorries, and unblock the S6+
+proof skeleton.
+
+### What I did
+
+Added a new **Part IV-bis** to `CentralLimitTheoremOQ02OQ04.lean` between
+the long-run-variance proof and the main-theorem statement.  Five new
+proven theorems, all in the `IbragimovHypotheses` namespace:
+
+1. **`IbragimovHypotheses.memLp_two`** — `MemLp (X k) 2 μ`.  Lyapunov's
+   inequality on the probability measure: `(2 + δ)`-moment ⇒ `2`-moment
+   via `MemLp.mono_exponent` applied to the ENNReal-coerced exponents.
+   Key Mathlib lemma: `MeasureTheory.MemLp.mono_exponent` (used at
+   `LawsOfLargeNumbersOQ01OQ02.lean:75` for the same pattern).
+2. **`IbragimovHypotheses.integrable_sq`** — `Integrable (fun ω => (X k ω)^2) μ`.
+   Bridges `MemLp · 2 μ` to `Integrable (·^2)` via
+   `memLp_two_iff_integrable_sq_norm` + a one-step `‖x‖^2 = x^2` congruence
+   (`Real.norm_eq_abs` then `sq_abs`).
+3. **`IbragimovHypotheses.integral_sq_eq`** — `∫ (X k)^2 = ∫ (X 0)^2`.
+   Pushforward of marginal stationarity through `(· ^ 2) : ℝ → ℝ`:
+   `((H.stationary k).comp (measurable_id.pow_const 2)).integral_eq`.
+4. **`IbragimovHypotheses.partialSum_integrable`** — `Integrable (∑_{k<n} X k) μ`.
+   `MeasureTheory.integrable_finset_sum` applied to `H.integrable`.
+5. **`IbragimovHypotheses.partialSum_mean_zero`** — `∫ ∑_{k<n} X k = 0`.
+   `integral_finset_sum` swap + `Finset.sum_eq_zero` of per-term mean-zero.
+
+### Why these (instead of attempting Davydov S4)
+
+- **Davydov is contested + monolithic.**  Iter-on-iter risk of being scooped
+  mid-session by a parallel agent claiming the same slug; ~150-line single
+  proof would need 1-2 sessions just to land cleanly.
+- **Helper lemmas are non-conflicting + non-blocking.**  They don't touch
+  the Davydov sorry, the long-run-variance proof, or the main theorem
+  statement.  A future Davydov PR will rebase cleanly on this work; a
+  future S6+ Bernstein-blocks PR will use these helpers directly.
+- **Real value.**  S6+ needs second-moment finiteness in every Lindeberg
+  verification, partial-sum mean-zero in the centering step, and stationary
+  second-moment equality to identify `Var(X k) = Var(X 0)`.  Each was an
+  inline obligation in any future Bernstein-blocks proof; now they are
+  one-line `H.memLp_two k`, `H.integrable_sq k`, `H.integral_sq_eq k`,
+  etc.
+
+### Net change to sorry / axiom counts
+
+| Item | Before (S3) | After (S4 helpers) |
+|---|---|---|
+| `mixing_clt_ibragimov` | sorry | sorry (unchanged) |
+| `davydov_covariance_inequality` | sorry | sorry (unchanged) |
+| Total sorries in file | 2 | 2 |
+| Total `axiom` declarations | 0 | 0 |
+| Total proven theorems | 7 | **12** |
+| Lines | 402 | ~485 |
+
+Pure infrastructure addition — zero new assumptions, zero new sorries.
+
+### Key Mathlib API confirmed
+
+- `MeasureTheory.MemLp.mono_exponent` — Lyapunov inequality on probability
+  measure.  Takes `(hpq : p ≤ q) (h : MemLp f q μ) : MemLp f p μ`.
+- `memLp_two_iff_integrable_sq_norm` — `MemLp f 2 μ ↔ Integrable (‖f ·‖^2) μ`
+  given AEStronglyMeasurable.
+- `Real.norm_eq_abs` — `‖x‖ = |x|` for `x : ℝ`.  `sq_abs : |x|^2 = x^2`.
+- `IdentDistrib.comp` — pushforward of identical distributions through a
+  measurable map: `h.comp hu : IdentDistrib (u ∘ X) (u ∘ Y)`.
+- `Measurable.pow_const` — `Measurable f → Measurable (f^n)` for `n : ℕ`.
+- `MeasureTheory.integrable_finset_sum` — finite sum of integrables is
+  integrable.
+- `integral_finset_sum` — swap of finite-sum and Bochner integral
+  (already used at parent file OQ02:97).
+
+### Files modified
+
+- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` (402 → ~485 lines, +5
+  proven theorems in Part IV-bis)
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` (theoremCount
+  7 → 12, lineCount 402 → ~485, sections updated to reflect new Part IV-bis)
+- `research/problems/central-limit-theorem-oq-02-oq-04/state.md` (S4 prep
+  recorded; next action remains Davydov but now with rich helper API to
+  build atop)
+- `research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md` (this
+  entry)
+
+### Next steps for S5+
+
+1. **S5 (= old S4)**: Discharge `davydov_covariance_inequality` via Hölder
+   + indicator decomposition.  References: Doukhan 1994 §1.2.2, Bradley
+   2007 Vol I Thm 3.7.  ~150 lines.
+2. **S6**: Refine `Stationary` to joint tuple stationarity (~100 lines).
+3. **S7**: Bernstein blocks `p_n, q_n` (~150 lines) — uses `partialSum_*`
+   helpers from this session directly.
+4. **S8**: Large-block independence via mixing (~120 lines).
+5. **S9**: Lindeberg condition on blocks (~100 lines) — uses
+   `memLp_two`, `integrable_sq`, `integral_sq_eq` from this session.
+6. **S10**: Invoke parent's Lindeberg-Feller CLT (~50 lines).
+
+### Aristotle
+
+No new Aristotle targets in this session.  The five helpers are all proven;
+the Davydov sorry remains the canonical S5 (was S4) target and is still
+genuinely analytic.
