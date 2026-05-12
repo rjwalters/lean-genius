@@ -1,14 +1,19 @@
 /-
-Area of Circle OQ-05-OQ-04 (S2a + S3): The Complex Gaussian Integral
+Area of Circle OQ-05-OQ-04 (S2a + S3 + S4a + S5): The Complex Gaussian Integral
 
 Proves the complex Gaussian identities
 
-    ∫_ℂ exp(-π · ‖z‖²) dz = 1               (S2a, b = π specialisation)
-    ∫_ℂ exp(-(b · ‖z‖²)) dz = π / b         (S3, parametric in b > 0)
+    ∫_ℂ exp(-π · ‖z‖²) dz = 1                       (S2a, b = π specialisation)
+    ∫_ℂ exp(-(b · ‖z‖²)) dz = π / b                 (S3, parametric in b > 0)
+    ∫_{ℂⁿ} exp(-(b · ∑ ‖zᵢ‖²)) dz = (π/b)ⁿ          (S4a, n-dim parametric)
+    ∫_ℂ exp(-(b · ‖z - c‖²)) dz = π / b             (S5, translation invariant)
 
 and the natural corollaries `∫_ℂ exp(-‖z‖²) dz = π` (unit weight,
-"complex Gaussian = area of unit disc") and the probability density
-`∫_ℂ (1/π) · exp(-‖z‖²) dz = 1`.
+"complex Gaussian = area of unit disc"), the probability density
+`∫_ℂ (1/π) · exp(-‖z‖²) dz = 1`, the multidimensional analogues
+`∫_{ℂⁿ} exp(-∑ ‖zᵢ‖²) = πⁿ` and `∫_{ℂⁿ} (1/π)ⁿ · exp(-∑‖zᵢ‖²) = 1`, and
+the shifted probability density `∫_ℂ (b/π) · exp(-(b · ‖z - c‖²)) dz = 1`
+(canonical two-parameter complex Gaussian, mean `c`, scale `b`).
 
 The S2a results assert that the Gaussian density `e^{-π |z|²}` on ℂ
 integrates to 1 against the standard Lebesgue measure on ℂ (induced
@@ -77,6 +82,7 @@ Parent: `AreaOfCircleOQ05OQ02.lean` (multivariate Gaussian, all proved).
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Integral.Pi
 import Proofs.AreaOfCircleOQ05
 
 namespace ComplexGaussianCircle
@@ -288,6 +294,203 @@ theorem complex_gaussian_integral_normalised :
   rw [integral_const_mul, complex_gaussian_integral_unit_norm, one_div,
       inv_mul_cancel₀ Real.pi_ne_zero]
 
+/-! ## Part 3: The n-dimensional complex Gaussian (S4a)
+
+The parametric complex Gaussian generalises uniformly in dimension: for
+`n : ℕ` and `b > 0`,
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ ‖zᵢ‖²)) dz = (π / b)ⁿ.
+
+This is the complex-side counterpart of the parent file's diagonal real
+Gaussian (`AreaOfCircleOQ05OQ02.diagonal_gaussian`, with a uniform weight
+`b`): each ℂ-axis contributes a factor `π/b` (via
+`complex_gaussian_integral_scaled_norm`), and `n` axes compose by
+`integral_fintype_prod_volume_eq_pow`. The proof skeleton mirrors
+`diagonal_gaussian` (`← Finset.sum_neg_distrib` + `Real.exp_sum` +
+n-fold Fubini), differing only in that the per-axis factor is itself the
+2-real-dimensional `complex_gaussian_integral_scaled_norm` rather than
+the 1-real-dimensional `scaled_gaussian`. -/
+
+/-- **n-dimensional parametric complex Gaussian**: for `b > 0` and `n : ℕ`,
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ ‖zᵢ‖²)) dz = (π / b)ⁿ.
+
+The `n = 1` case is `complex_gaussian_integral_scaled_norm` after the
+trivial reindexing `Fin 1 → ℂ ≃ ℂ`. The `n = 2` case is the joint
+density used in the 2-mode coherent-state model in quantum optics
+(each mode contributes `π/b`).
+
+Proof: factor the exponential of a sum as a product (`Real.exp_sum`),
+apply n-fold Fubini (`integral_fintype_prod_volume_eq_pow`), and
+evaluate each ℂ-factor by `complex_gaussian_integral_scaled_norm`. -/
+theorem complex_gaussian_integral_scaled_pow {n : ℕ} (b : ℝ) (hb : 0 < b) :
+    ∫ z : Fin n → ℂ, Real.exp (-(b * ∑ i, ‖z i‖ ^ 2)) = (Real.pi / b) ^ n := by
+  -- Step 1: factor exp(-(b · ∑ᵢ ‖zᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ‖²)).
+  -- Distribute `b` into the sum, then push the negation inside, then
+  -- apply `Real.exp_sum`. This is the same pattern as the parent file's
+  -- `diagonal_gaussian` (real-axis n-fold Gaussian).
+  simp_rw [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]
+  -- Step 2: n-fold Fubini over `Fin n → ℂ`. The integrand `∏ᵢ exp(-(b · ‖z i‖²))`
+  -- has the shape `∏ᵢ f (z i)` with `f := fun z : ℂ => exp(-(b · ‖z‖²))`,
+  -- so `integral_fintype_prod_volume_eq_pow` applies and gives
+  -- `(∫ z : ℂ, f z) ^ Fintype.card (Fin n)`.
+  rw [integral_fintype_prod_volume_eq_pow
+        (ι := Fin n) (fun z : ℂ => Real.exp (-(b * ‖z‖ ^ 2)))]
+  -- Step 3: evaluate the per-axis factor (`π/b`) and collapse `Fintype.card (Fin n) = n`.
+  rw [complex_gaussian_integral_scaled_norm b hb, Fintype.card_fin]
+
+/-- `normSq` form of the n-dimensional parametric complex Gaussian:
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ normSq (zᵢ))) dz = (π / b)ⁿ.
+
+This is the version that pairs directly with the `Complex.normSq` form
+of the `n = 1` theorem `complex_gaussian_integral_scaled`. Useful for
+consumers that prefer the algebraic `normSq` to the analytic `‖·‖²`. -/
+theorem complex_gaussian_integral_scaled_pow_normSq {n : ℕ} (b : ℝ) (hb : 0 < b) :
+    ∫ z : Fin n → ℂ, Real.exp (-(b * ∑ i, Complex.normSq (z i))) = (Real.pi / b) ^ n := by
+  -- Replace each `normSq (z i)` by `‖z i‖ ^ 2` inside the sum, then reduce to
+  -- the `‖·‖²` version. Using `simp_rw` (rather than `congr`) keeps the
+  -- additive-monoid structure on the sum's codomain fully determined.
+  simp_rw [Complex.normSq_eq_norm_sq]
+  exact complex_gaussian_integral_scaled_pow b hb
+
+/-- **n-dimensional unit-weight complex Gaussian**: ∫_{ℂⁿ} exp(-∑ᵢ ‖zᵢ‖²) dz = πⁿ.
+
+The unit-weight case `b = 1` of `complex_gaussian_integral_scaled_pow`.
+Generalises `complex_gaussian_integral_unit_norm` (the `n = 1` value `π`)
+to arbitrary dimension. -/
+theorem complex_gaussian_integral_pow_unit_norm {n : ℕ} :
+    ∫ z : Fin n → ℂ, Real.exp (-∑ i, ‖z i‖ ^ 2) = Real.pi ^ n := by
+  have h := complex_gaussian_integral_scaled_pow (n := n) 1 one_pos
+  -- `h : ∫ z, exp(-(1 * ∑ᵢ ‖zᵢ‖²)) = (π / 1) ^ n`.
+  simp only [one_mul, div_one] at h
+  exact h
+
+/-- **Normalised n-dimensional complex Gaussian density**: the
+    n-dimensional unit-weight Gaussian divided by `πⁿ` is a probability
+    density on `ℂⁿ`:
+
+    ∫_{ℂⁿ} (1/π)ⁿ · exp(-∑ᵢ ‖zᵢ‖²) dz = 1.
+
+This is the multidimensional analogue of
+`complex_gaussian_integral_normalised`. -/
+theorem complex_gaussian_integral_pow_normalised {n : ℕ} :
+    ∫ z : Fin n → ℂ, (1 / Real.pi) ^ n * Real.exp (-∑ i, ‖z i‖ ^ 2) = 1 := by
+  rw [integral_const_mul, complex_gaussian_integral_pow_unit_norm,
+      one_div, inv_pow, inv_mul_cancel₀ (pow_ne_zero n Real.pi_ne_zero)]
+
+/-! ## Part 4: Translation invariance and the shifted Gaussian density (S5)
+
+The complex Lebesgue measure is an additive Haar measure, hence invariant
+under translation `z ↦ z + c`. Composing this with the parametric complex
+Gaussian (S3, `complex_gaussian_integral_scaled_norm`) yields the
+**shifted** complex Gaussian identity
+
+    ∫_ℂ exp(-(b · ‖z - c‖²)) dz = π / b              (for any `c : ℂ`, `b > 0`)
+
+and, after dividing by `π/b`, the canonical two-parameter probability
+density on `ℂ` with mean `c` and scale `b`,
+
+    ∫_ℂ (b/π) · exp(-(b · ‖z - c‖²)) dz = 1.
+
+This is the complex analogue of the real one-dimensional Gaussian density
+`(a/π)^{1/2} · exp(-(a · (x-μ)²))` familiar from probability theory; in
+information-theoretic terms (cf. `ShannonEntropyOQ01.lean`) it is the
+*translation-invariance* property used to show that the differential
+entropy of a complex Gaussian depends only on the scale `b`, not on the
+mean `c`.
+
+The proof reduces to `complex_gaussian_integral_scaled_norm` via
+`MeasureTheory.integral_add_right_eq_self`, applied to the volume
+measure on `ℂ` (which is `IsAddRightInvariant` as an additive Haar
+measure). The mechanism is identical to the real-line translation
+invariance used in `ShannonEntropyOQ01.differential_entropy_translation_invariant`
+and `FourierSeriesOQ02.lean`'s Fourier-coefficient shift lemma. -/
+
+/-- **Translation invariance of the parametric complex Gaussian**: for
+any shift `c : ℂ` and weight `b > 0`,
+
+    ∫_ℂ exp(-(b · ‖z - c‖²)) dz = π / b.
+
+The `c = 0` case is `complex_gaussian_integral_scaled_norm`. The proof
+applies translation invariance of the complex Lebesgue (= additive Haar)
+measure: writing `z - c = z + (-c)`, the substitution `w = z + (-c)`
+preserves the volume, so the integral coincides with the unshifted
+parametric complex Gaussian.
+
+Proof skeleton (matching the real-line pattern in
+`ShannonEntropyOQ01.differential_entropy_translation_invariant`):
+rewrite the integrand `exp(-(b · ‖z - c‖²))` as the value at `z + (-c)`
+of the function `w ↦ exp(-(b · ‖w‖²))`, then apply
+`MeasureTheory.integral_add_right_eq_self`. -/
+theorem complex_gaussian_integral_scaled_shifted_norm (b : ℝ) (hb : 0 < b) (c : ℂ) :
+    ∫ z : ℂ, Real.exp (-(b * ‖z - c‖ ^ 2)) = Real.pi / b := by
+  -- Step 1: rewrite the integrand into the shape `(fun w ↦ exp(-(b · ‖w‖²))) (z + (-c))`
+  -- using `sub_eq_add_neg`. The β-reduction `(fun w ↦ f w) (z + (-c)) = f (z + (-c))`
+  -- is definitional, so the per-point equality is just a `rw [sub_eq_add_neg]`
+  -- after exposing the pre-β form via a `show`. This matches the idiom used in
+  -- `ShannonEntropyOQ01.gaussian_variance` for the same translation-invariance step.
+  have key : ∀ z : ℂ,
+      (fun w : ℂ => Real.exp (-(b * ‖w‖ ^ 2))) (z + (-c)) =
+        Real.exp (-(b * ‖z - c‖ ^ 2)) := by
+    intro z
+    show Real.exp (-(b * ‖z + (-c)‖ ^ 2)) = Real.exp (-(b * ‖z - c‖ ^ 2))
+    rw [← sub_eq_add_neg]
+  rw [show (fun z : ℂ => Real.exp (-(b * ‖z - c‖ ^ 2))) =
+          (fun z : ℂ => (fun w : ℂ => Real.exp (-(b * ‖w‖ ^ 2))) (z + (-c))) from
+        funext (fun z => (key z).symm)]
+  -- Step 2: chain translation invariance of `volume : Measure ℂ` (an
+  -- `IsAddHaarMeasure`, hence `IsAddRightInvariant`) with the unshifted
+  -- parametric complex Gaussian.
+  exact (integral_add_right_eq_self (fun w : ℂ => Real.exp (-(b * ‖w‖ ^ 2))) (-c)).trans
+    (complex_gaussian_integral_scaled_norm b hb)
+
+/-- **Translation invariance of the parametric complex Gaussian (`normSq` form)**:
+for any shift `c : ℂ` and `b > 0`,
+
+    ∫_ℂ exp(-(b · normSq (z - c))) dz = π / b.
+
+This is the algebraic `Complex.normSq` companion of
+`complex_gaussian_integral_scaled_shifted_norm`. -/
+theorem complex_gaussian_integral_scaled_shifted (b : ℝ) (hb : 0 < b) (c : ℂ) :
+    ∫ z : ℂ, Real.exp (-(b * Complex.normSq (z - c))) = Real.pi / b := by
+  simp_rw [Complex.normSq_eq_norm_sq]
+  exact complex_gaussian_integral_scaled_shifted_norm b hb c
+
+/-- **Unit-weight shifted complex Gaussian**: for any shift `c : ℂ`,
+
+    ∫_ℂ exp(-‖z - c‖²) dz = π.
+
+The shifted form of `complex_gaussian_integral_unit_norm`, capturing the
+fact that the total mass of `exp(-‖z - c‖²)` is exactly the area of the
+unit disc, independent of where the Gaussian is centred. -/
+theorem complex_gaussian_integral_unit_shifted_norm (c : ℂ) :
+    ∫ z : ℂ, Real.exp (-‖z - c‖ ^ 2) = Real.pi := by
+  have h := complex_gaussian_integral_scaled_shifted_norm 1 one_pos c
+  -- `h : ∫ z, exp(-(1 * ‖z - c‖²)) = π / 1`. Normalise `1 * x = x` and `π / 1 = π`.
+  simp only [one_mul, div_one] at h
+  exact h
+
+/-- **Shifted complex Gaussian probability density** (mean `c`, scale `b`):
+for any `c : ℂ` and `b > 0`,
+
+    ∫_ℂ (b / π) · exp(-(b · ‖z - c‖²)) dz = 1.
+
+This is the canonical two-parameter complex Gaussian density on `ℂ`. The
+`c = 0` case is `complex_gaussian_integral_scaled` after multiplying by
+`b/π`; the `b = 1` case specialises to
+`(1/π) · exp(-‖z - c‖²)`, the shifted analogue of
+`complex_gaussian_integral_normalised`.
+
+Proof: pull the constant `b/π` outside the integral
+(`integral_const_mul`), apply the shifted parametric integral
+(`complex_gaussian_integral_scaled_shifted_norm`), then simplify
+`(b/π) · (π/b) = 1` via `field_simp`. -/
+theorem complex_gaussian_density_shifted (b : ℝ) (hb : 0 < b) (c : ℂ) :
+    ∫ z : ℂ, (b / Real.pi) * Real.exp (-(b * ‖z - c‖ ^ 2)) = 1 := by
+  rw [integral_const_mul, complex_gaussian_integral_scaled_shifted_norm b hb c]
+  field_simp
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -298,6 +501,14 @@ theorem complex_gaussian_integral_normalised :
 - `complex_gaussian_integral_scaled_norm` : proved (`‖z‖²` form).
 - `complex_gaussian_integral_unit_norm` : proved (`b = 1` corollary).
 - `complex_gaussian_integral_normalised` : proved (`1/π` density).
+- `complex_gaussian_integral_scaled_pow` : proved (n-dim parametric, S4a).
+- `complex_gaussian_integral_scaled_pow_normSq` : proved (`normSq` form).
+- `complex_gaussian_integral_pow_unit_norm` : proved (n-dim `b = 1`).
+- `complex_gaussian_integral_pow_normalised` : proved (`(1/π)ⁿ` density).
+- `complex_gaussian_integral_scaled_shifted_norm` : proved (translation-invariant, S5).
+- `complex_gaussian_integral_scaled_shifted` : proved (`normSq` form of shifted).
+- `complex_gaussian_integral_unit_shifted_norm` : proved (unit-weight shifted).
+- `complex_gaussian_density_shifted` : proved (canonical `(c, b)` density).
 
 All theorems above are sorry-free and axiom-free.
 

@@ -28,21 +28,9 @@
     ],
     "goal": "Recommended path: S2a proves the complex Gaussian (low-risk bridge); S2b writes a sorry-bearing p-adic scaffold of (C2) flagged with axioms for the missing psi_p and Haar measure. Eventual full proof of (C2) blocks on two Mathlib contributions (standard psi_p, Haar on Q_p)."
   },
-  "currentState": {
-    "phase": "RESEARCH",
-    "since": "2026-05-12T10:58:14+00:00",
-    "iteration": 3,
-    "focus": "S3 ACT-B: generalised the complex Gaussian to arbitrary positive weight b. Added complex_gaussian_integral_scaled (∫_ℂ exp(-b·normSq z) = π/b) and ‖z‖² variant + unit-weight (∫_ℂ exp(-‖z‖²) = π) + normalised density (∫_ℂ (1/π)·exp(-‖z‖²) = 1). Same Fubini-style proof as S2a, parameterised in b. 0 sorries, 0 axioms.",
-    "blockers": [],
-    "nextAction": "S4: either (a) prove the n-dimensional complex Gaussian ∫_{ℂⁿ} exp(-b·∑‖zᵢ‖²) = (π/b)ⁿ via induction or by composing the n-real Multivariate Gaussian (AreaOfCircleOQ05OQ02) with the complex transport; OR (b) S2b p-adic scaffold with axiom padicAddChar + Haar stub. Recommendation: (a) keeps the file axiom-free and pushes the complex-side coverage further; (b) is the deeper open content but requires axioms.",
-    "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
-    }
-  },
+  "currentState": "{\"phase\": \"RESEARCH\", \"since\": \"2026-05-12T19:30:00+00:00\", \"iteration\": 5, \"focus\": \"S5 ACT: translation invariance of the parametric complex Gaussian. For any shift c : ℂ and b > 0, ∫_ℂ exp(-(b·‖z-c‖²)) dz = π/b. Proof uses MeasureTheory.integral_add_right_eq_self (volume on ℂ is IsAddHaarMeasure → IsAddRightInvariant) chained with complex_gaussian_integral_scaled_norm (S3). Adds 4 theorems: complex_gaussian_integral_scaled_shifted_norm (main), complex_gaussian_integral_scaled_shifted (normSq form), complex_gaussian_integral_unit_shifted_norm (b=1 corollary), complex_gaussian_density_shifted (canonical (c,b)-density). 0 sorries, 0 axioms; build verified via Docker wrapper.\", \"blockers\": [], \"nextAction\": \"S6: four viable directions. (S6a) Lift S5 to Fin n → ℂ giving ∫_{ℂⁿ} exp(-(b·∑‖zᵢ-cᵢ‖²)) = (π/b)ⁿ — combines S4a and S5 idioms via MeasureTheory.Measure.pi.instIsAddHaarMeasure on the product measure. (S6b) Complex Fourier-eigenfunction (archimedean analogue of C2): reduce 2-D Fourier transform of exp(-π‖z‖²) to 1-D via ℂ ≃ ℝ × ℝ. (S6c) Schur orthogonality ∫ zᵢ z̄ⱼ · (1/π)ⁿ · exp(-∑‖zₖ‖²) = δᵢⱼ via parametric differentiation. (S6d) Mathlib milestone: Measure ℚ_p with μ(ℤ_p) = 1 (multi-week upstream PR).\", \"attemptCounts\": {\"total\": 0, \"currentApproach\": 0, \"approachesTried\": 0}}",
   "knowledge": {
-    "progressSummary": "S1 OBSERVE + S2a ACT-A (b=π) + S3 ACT-B (parametric b>0) complete with build verified. AreaOfCircleOQ05OQ04.lean now has 8 theorems + 2 private helpers, all sorry-free and axiom-free. Complete complex-side coverage: π-weight, parametric b, unit weight, normalised density. p-adic case (C2) remains deferred pending two Mathlib milestones (ψ_p : ℚ_p → ℂ and explicit Haar on ℚ_p).",
+    "progressSummary": "S1 OBSERVE + S2a ACT-A (b=π) + S3 ACT-B (parametric b>0) + S4a ACT (n-dim parametric, open PR #18221) + S5 ACT (translation invariance + (c,b) density) complete with build verified. AreaOfCircleOQ05OQ04.lean now ~543 lines, 16 theorems + 2 private helpers, all sorry-free and axiom-free. Complete complex-side coverage: π-weight, parametric b, unit weight, normalised density, n-dim parametric, n-dim unit-weight, n-dim normalised, c-shifted parametric, c-shifted unit, c-shifted (c,b)-density. p-adic case (C2) remains deferred pending two Mathlib milestones (ψ_p : ℚ_p → ℂ and explicit Haar on ℚ_p).",
     "builtItems": [
       {
         "item": "S1 OBSERVE markdown set (problem.md, knowledge.md, state.md)",
@@ -63,6 +51,15 @@
       {
         "item": "Proofs/AreaOfCircleOQ05OQ04.lean: integral_b_gaussian (b-scaled scalar re-export), complex_gaussian_integral_scaled (∫_ℂ exp(-(b·normSq z)) = π/b), complex_gaussian_integral_scaled_norm (‖z‖² form), complex_gaussian_integral_unit_norm (b=1, value π), complex_gaussian_integral_normalised (1/π density integrates to 1) — proven via parametric Fubini + Real.mul_self_sqrt",
         "session": "S3"
+      },
+      {
+        "item": "Proofs/AreaOfCircleOQ05OQ04.lean: complex_gaussian_integral_scaled_pow (n-dim ∫_{ℂⁿ} exp(-(b·∑‖zᵢ‖²)) = (π/b)ⁿ), complex_gaussian_integral_scaled_pow_normSq (normSq form), complex_gaussian_integral_pow_unit_norm (b=1 corollary, value πⁿ), complex_gaussian_integral_pow_normalised ((1/π)ⁿ joint density) — proven via Real.exp_sum reduction + integral_fintype_prod_volume_eq_pow + complex_gaussian_integral_scaled_norm per axis",
+        "session": "S4a"
+      },
+      {
+        "item": "Proofs/AreaOfCircleOQ05OQ04.lean: complex_gaussian_integral_scaled_shifted_norm (translation-invariant ∫_ℂ exp(-(b·‖z-c‖²)) = π/b), complex_gaussian_integral_scaled_shifted (normSq form), complex_gaussian_integral_unit_shifted_norm (b=1 corollary), complex_gaussian_density_shifted (canonical two-parameter (c,b)-density integrates to 1). 4 theorems, all sorry-free and axiom-free, building on complex_gaussian_integral_scaled_norm (S3) via integral_add_right_eq_self (translation invariance of the additive Haar volume on ℂ). No new imports.",
+        "phase": "S5 ACT",
+        "date": "2026-05-12"
       }
     ],
     "insights": [
@@ -74,7 +71,14 @@
       "The scalar π-weighted Gaussian ∫ exp(-π · x²) dx = √(π/π) = 1 specialises scaled_gaussian at a = π; this gives a clean unit factor on each axis of the complex factorisation.",
       "The proof of the complex Gaussian = 1 needs zero new analysis - it is purely a transport + Fubini composition on top of existing real Gaussian / measure-preserving machinery already in Mathlib.",
       "The complex Gaussian generalises uniformly in b > 0 because Fubini-and-transport composes with scaled_gaussian, which is itself uniform in a. Each real factor contributes √(π/b); two factors compose to π/b via Real.mul_self_sqrt.",
-      "The unit-weight complex Gaussian ∫_ℂ exp(-‖z‖²) = π is the 'circle area' identity: the Gaussian density at zero scaling has total mass equal to the area of the unit disc. This is the cleanest statement linking the slug's 'area of circle' theme to the complex Gaussian."
+      "The unit-weight complex Gaussian ∫_ℂ exp(-‖z‖²) = π is the 'circle area' identity: the Gaussian density at zero scaling has total mass equal to the area of the unit disc. This is the cleanest statement linking the slug's 'area of circle' theme to the complex Gaussian.",
+      "integral_fintype_prod_volume_eq_pow at Mathlib/MeasureTheory/Integral/Pi.lean:123 is the right n-fold Fubini lemma when all factors share the same f : E → 𝕜; it gives (∫ f) ^ Fintype.card ι directly, avoiding per-index simp_rw.",
+      "The S4a reduction exp(-(b · ∑ ‖zᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ‖²)) is a three-step rewrite chain that needs no custom lemma: Finset.mul_sum distributes b into the sum, ← Finset.sum_neg_distrib pushes negation inside, then Real.exp_sum converts to a product. Same combo used in parent file AreaOfCircleOQ05OQ02.diagonal_gaussian (real n-fold).",
+      "Once the n-fold reduction is in place, no measure-preserving change of variables is needed at the n-dimensional level: the Fin n → ℂ integrand factors before any transport, so we never need to interact with Complex.measurableEquivRealProd beyond what was already done in S2a / S3 for the per-axis factor.",
+      "MeasureTheory.integral_add_right_eq_self at Mathlib/MeasureTheory/Group/Integral.lean is the canonical translation-invariance lemma; for ℂ, it applies because volume : Measure ℂ is IsAddHaarMeasure (via Complex.measurableEquivRealProd inheriting from ℝ × ℝ) and therefore IsAddRightInvariant (abelian group). Same idiom used in ShannonEntropyOQ01.gaussian_variance and FourierSeriesOQ02 Fourier-shift lemma.",
+      "Pitfall: rw [integral_add_right_eq_self] fails on goals of the shape ∫ z, (fun w => f w) (z + (-c)) = ... because the rewriter cannot pattern-match ∫ x, ?f (x + ?g) ∂?μ against an integrand whose outer function is a lambda. Fix: chain directly via (integral_add_right_eq_self (fun w => exp(-(b·‖w‖²))) (-c)).trans (complex_gaussian_integral_scaled_norm b hb) — Lean accepts via β-defeq. Verified at v4.26.0.",
+      "Converting f(z - c) to f(z + (-c)) inside an integral requires a show + funext + rw [← sub_eq_add_neg] idiom (ShannonEntropy-style): use a per-point key lemma that proves the equality with an explicit show step to expose the β-reduced form, then funext into the integral via rw [show ... = ... from funext ...].",
+      "The c=0 specialisation of complex_gaussian_integral_scaled_shifted_norm recovers complex_gaussian_integral_scaled_norm (S3); the b=1 specialisation gives the unit-weight shifted form. So S5 strictly subsumes S2a/S3 in the (c, b) plane: every previously-stated theorem is a special case of complex_gaussian_density_shifted (after un-normalising by π/b)."
     ],
     "mathlibGaps": [
       "No padicAddChar : Q_p -> C (standard additive character with psi_p|_{Z_p} = 1, psi_p(p^{-n}) = e^{2*pi*i/p^n}).",
@@ -82,8 +86,10 @@
       "No Bruhat-Schwartz function space or Fourier-transform infrastructure specialised to Q_p."
     ],
     "nextSteps": [
-      "S4a (recommended): n-dim complex Gaussian ∫_{ℂⁿ} exp(-(b·∑‖zᵢ‖²)) = (π/b)ⁿ. Can be proven by induction over Fin n using integral_fintype_prod_volume_eq_prod + complex_gaussian_integral_scaled, or via the existing real MultivariateGaussian.diagonal_gaussian + transport ℂⁿ ≃ ℝ^{2n}.",
-      "S4b (deferred — see C2 above): p-adic self-Fourier of 1_{ℤ_p} blocks on two Mathlib milestones (standard ψ_p, Haar on ℚ_p)."
+      "S6a: lift translation invariance to Fin n → ℂ, giving ∫_{ℂⁿ} exp(-(b·∑‖zᵢ - cᵢ‖²)) = (π/b)ⁿ. Combines S4as n-fold Fubini with S5s additive-Haar translation. Needs MeasureTheory.Measure.pi.instIsAddHaarMeasure (Mathlib v4.26.0 should provide).",
+      "S6b: complex Fourier-eigenfunction. Mathlib has Real.fourierIntegral_gaussian_pi for the real-axis fixed point exp(-π x²); the complex case is one ℂ ≃ ℝ × ℝ transport + Fubini reduction. Canonical archimedean analogue of (C2).",
+      "S6c: Schur orthogonality ∫ zᵢ z̄ⱼ · (1/π)ⁿ · exp(-∑‖zₖ‖²) = δᵢⱼ via parametric differentiation. Heavier — needs hasDerivAt_integral_of_dominated_loc machinery.",
+      "S6d: Mathlib milestone — explicit MeasureTheory.Measure ℚ_p with μ(ℤ_p) = 1 (see S4b PR #18269 survey). Multi-week upstream PR; independent of S6a-c. The conjugate milestone (standard ψ_p : ℚ_p → ℂ) is heavier."
     ]
   },
   "tags": [
@@ -170,7 +176,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-12T10:58:14+00:00",
+  "lastUpdate": "2026-05-12T20:30:00+00:00",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

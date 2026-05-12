@@ -168,3 +168,117 @@ Status of the four candidates:
   satisfies, but Lean needs explicit `(μ := volume)` `(ν := volume)`
   annotations to pick up the right product measure when both factors
   are `volume : Measure ℝ`.
+
+## S4a Mathlib API confirmed (verified 2026-05-12 against v4.26.0)
+
+### n-fold Fubini
+
+* `MeasureTheory.integral_fintype_prod_volume_eq_prod {ι : Type*} [Fintype ι]
+  {E : ι → Type*} (f : (i : ι) → E i → 𝕜)
+  [∀ i, MeasureSpace (E i)] [∀ i, SigmaFinite (volume : Measure (E i))] :
+  ∫ x : (i : ι) → E i, ∏ i, f i (x i) = ∏ i, ∫ x, f i x` — n-fold Fubini.
+  Source: `Mathlib/MeasureTheory/Integral/Pi.lean:114`.
+* `MeasureTheory.integral_fintype_prod_volume_eq_pow {ι : Type*} [Fintype ι]
+  {E : Type*} (f : E → 𝕜) [MeasureSpace E] [SigmaFinite (volume : Measure E)] :
+  ∫ x : ι → E, ∏ i, f (x i) = (∫ x, f x) ^ (Fintype.card ι)` — uniform
+  n-fold Fubini (all factors share `f`). Source: same file, line 123.
+  Used by S4a in `complex_gaussian_integral_scaled_pow`.
+
+### Sum/product algebra
+
+* `Real.exp_sum (s : Finset α) (f : α → ℝ) : Real.exp (∑ x ∈ s, f x) =
+  ∏ x ∈ s, Real.exp (f x)`. Source:
+  `Mathlib/Analysis/Complex/Exponential.lean:222`. (Also `Complex.exp_sum`
+  at line 141 of the same file.)
+* `Finset.mul_sum : b * ∑ i ∈ s, f i = ∑ i ∈ s, b * f i` — distributes
+  a scalar into a sum.
+* `Finset.sum_neg_distrib : ∑ i ∈ s, -f i = -∑ i ∈ s, f i` — applied
+  backward (`← Finset.sum_neg_distrib`) to push `-` inside `∑`. Same
+  combo used in parent `AreaOfCircleOQ05OQ02.diagonal_gaussian`.
+
+### Cardinality
+
+* `Fintype.card_fin (n : ℕ) : Fintype.card (Fin n) = n`. Source:
+  `Mathlib/Data/Fintype/Card.lean:485`.
+
+### Lessons (S4a)
+
+* The S4a skeleton is identical to the parent file's real-axis
+  `diagonal_gaussian` (`AreaOfCircleOQ05OQ02.lean`), differing only in
+  that the per-axis factor is `complex_gaussian_integral_scaled_norm`
+  (2-real-dim) rather than `scaled_gaussian` (1-real-dim).
+* `integral_fintype_prod_volume_eq_pow` is preferable to
+  `integral_fintype_prod_volume_eq_prod` when all factors are the same:
+  it sidesteps the per-index `Finset.prod_congr` reduction and gives the
+  final `(π/b)^n` form directly via `Fintype.card_fin`.
+* The reduction `exp(-(b · ∑ ‖zᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ‖²))` is a
+  three-step rewrite chain that doesn't need any custom lemma:
+  `Finset.mul_sum` distributes `b`, `← Finset.sum_neg_distrib` pushes
+  the negation inside, and `Real.exp_sum` converts the resulting
+  `exp (∑ ...)` to `∏ exp (...)`.
+* No measure-preserving change of variables is needed at the
+  n-dimensional level: the `Fin n → ℂ` integrand factors before any
+  transport, so we never need to interact with `Complex.measurableEquivRealProd`
+  beyond what was already done in S2a / S3 for the per-axis factor.
+
+## S5 Mathlib API confirmed (verified 2026-05-12 against v4.26.0)
+
+### Translation invariance
+
+* `MeasureTheory.integral_add_right_eq_self {G : Type*} {E : Type*}
+  [MeasurableSpace G] [Group G] [TopologicalSpace G] [TopologicalGroup G]
+  [BorelSpace G] [NormedAddCommGroup E] [NormedSpace ℝ E]
+  {μ : Measure G} [IsAddRightInvariant μ] (f : G → E) (g : G) :
+  ∫ x, f (x + g) ∂μ = ∫ x, f x ∂μ`
+  — translation invariance of integrals against a right-invariant measure.
+  Source: `Mathlib/MeasureTheory/Group/Integral.lean`.
+* `volume : Measure ℂ` carries `IsAddHaarMeasure` (via the `MeasureSpace`
+  instance through `Complex.measurableEquivRealProd` plus inherited Haar
+  property of `ℝ × ℝ`), hence both `IsAddLeftInvariant` and
+  `IsAddRightInvariant` (abelian group).
+
+### Pitfall: HOU through `fun w => f w`
+
+* `rw [integral_add_right_eq_self]` fails when the integrand has the
+  shape `(fun w => exp(-(b · ‖w‖²))) (z + (-c))`: the rewrite engine
+  can't pattern-match `∫ x, ?f (x + ?g) ∂?μ` against an integrand whose
+  outer function is a lambda. Symptom (v4.26.0):
+  > `Tactic 'rewrite' failed: Did not find an occurrence of the pattern`
+  > `∫ (x : ?m), ?f (x + ?g) ∂?m in the target expression`
+  > `∫ (z : ℂ), (fun w => rexp (-(b * ‖w‖^2))) (z + -c) = π / b`
+* **Fix**: don't rewrite — instead chain via `.trans` with explicit `f`:
+  ```lean
+  exact (integral_add_right_eq_self (fun w : ℂ => Real.exp (-(b * ‖w‖^2))) (-c)).trans
+        (complex_gaussian_integral_scaled_norm b hb)
+  ```
+  Lean accepts the result via β-defeq.
+
+### `sub_eq_add_neg` rewrite under integrals
+
+* To convert `f (z - c)` to `f (z + (-c))` inside an integral, the
+  cleanest pattern (matching `ShannonEntropyOQ01.gaussian_variance`):
+  ```lean
+  have key : ∀ z, (fun w => f w) (z + (-c)) = f (z - c) := by
+    intro z; show f (z + (-c)) = f (z - c); rw [← sub_eq_add_neg]
+  rw [show (fun z => f (z - c)) = (fun z => (fun w => f w) (z + (-c))) from
+        funext (fun z => (key z).symm)]
+  ```
+  The `show` step is essential: it tells Lean to β-reduce the lambda
+  application so the subsequent `rw [← sub_eq_add_neg]` finds its
+  pattern.
+
+### Lessons (S5)
+
+* Translation invariance is the simplest non-trivial extension of the S3
+  parametric Gaussian: it costs no new Mathlib imports (the
+  `Measure.Group.Integral` machinery is transitively pulled in by the
+  Gaussian integral module) and replicates the real-line idiom that
+  already appears in `ShannonEntropyOQ01.lean` and `FourierSeriesOQ02.lean`.
+* The two-parameter `(c, b)` complex Gaussian density emerges as a
+  one-line corollary (`integral_const_mul` + the shifted parametric
+  integral + `field_simp`). This is the natural "Gaussian density with
+  mean and scale" object that the OQ p-adic source aspired to.
+* The `c = 0` and `b = 1` specialisations reduce to S3 and S2a
+  respectively, so the S5 additions strictly subsume the unshifted
+  unit-weight cases — useful for downstream consumers that prefer the
+  general statement.
