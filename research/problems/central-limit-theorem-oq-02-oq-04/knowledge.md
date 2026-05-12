@@ -236,3 +236,121 @@ statements with sorries, 2 fully-proven summability helpers.
 The two sorries are **deferred-to-S3+** statements, not routine lemmas.
 The two proven summability helpers are useful standalone but already proven.
 No new Aristotle targets in this session.
+
+## Session log — Session 3 (researcher-1, 2026-05-12) — S3 ACT
+
+**Mode**: REVISIT (continue S2 plan from the state.md "Option A" recommendation).
+
+**Outcome**: Reduce `longrun_variance_absolutely_convergent` to a single
+named Davydov sorry; ship 3 new proven theorems and 3 new structure fields.
+
+### What I did
+
+#### Lean changes (`proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean`)
+
+- **Extended `IbragimovHypotheses`** with three new fields needed for
+  per-term Davydov:
+  - `alpha_nonneg : ∀ n, 0 ≤ alpha n` — needed because the parent file's
+    `alphaMixingCoeff_nonneg` is omitted due to nested `ciSup` elaboration
+    complexity, and `Real.rpow_le_rpow` needs nonneg base for monotonicity.
+  - `past_measurable : ∀ k, Measurable[pastSigma k] (X k)` — `X k` is
+    measurable w.r.t. its own past at time `k`.
+  - `future_measurable : ∀ k, Measurable[futureSigma k] (X k)` — `X k` is
+    measurable w.r.t. its own future at time `k`.
+- **Stated `davydov_covariance_inequality`** as a sorry (S4 target).
+  The statement takes an abstract upper bound `α₀` rather than the
+  abstract α-mixing coefficient itself, so per-term applications can plug
+  in the numerical mixing bound `H.alpha (k+1)` directly. Exponent is
+  `(p - 2) / p`, which specializes to `δ/(2+δ)` when `p = 2 + δ`.
+- **Proved `stationary_eLpNorm_eq`** in one line via
+  `(H.stationary k).eLpNorm_eq p` — Mathlib's `IdentDistrib.eLpNorm_eq`
+  gives this directly.
+- **Proved `polynomial_mixing_summable`** combining (i) `Real.rpow_le_rpow`
+  monotonicity of `x ↦ x^q` at q = δ/(2+δ); (ii) `Real.mul_rpow` and
+  `Real.rpow_mul` for the expansion `(C · x^{-r})^q = C^q · x^{-rq}`;
+  (iii) `ibragimov_threshold_summable` (already proven in S2);
+  (iv) `summable_nat_add_iff 1` for the n→n+1 index shift;
+  (v) `Summable.mul_left K` to scale by the constant; (vi)
+  `Summable.of_nonneg_of_le` (from `Mathlib.Topology.Instances.ENNReal.Lemmas`)
+  for the comparison test.
+- **Proved `longrun_variance_absolutely_convergent`** by chaining:
+  per-term Davydov (the new sorry) + `stationary_eLpNorm_eq` to identify
+  `‖X 0‖_p` with `‖X (k+1)‖_p` + `H.mean_zero` (twice) + `zero_mul`,
+  `sub_zero` to kill the `(∫ X 0)(∫ X (k+1))` term + `linarith` to match
+  the constant `K = 12 · M · M`.
+
+#### Net change to sorry / axiom counts
+
+| Item | Before (S2) | After (S3) |
+|---|---|---|
+| `mixing_clt_ibragimov` | sorry | sorry (unchanged) |
+| `longrun_variance_absolutely_convergent` | sorry | **proven** |
+| `davydov_covariance_inequality` | (not declared) | sorry (**new**) |
+| Total sorries in file | 2 | 2 |
+| Total `axiom` declarations | 0 | 0 |
+
+The net sorry count is unchanged, but the open content has been refactored:
+the catch-all "longrun_variance is hard" placeholder is now resolved
+modulo a single canonical analytic engine (Davydov).
+
+### Key findings
+
+- **`IdentDistrib.eLpNorm_eq`** is the right Mathlib API for the
+  stationary norm equality. It takes the L^p exponent as an `ℝ≥0∞`
+  argument and works for any `NormedAddCommGroup` codomain
+  (including ℝ).
+- **`summable_nat_add_iff`** is generated via `@[to_additive]` from
+  `multipliable_nat_add_iff` in `Mathlib.Topology.Algebra.InfiniteSum.NatInt`.
+  The implicit `f` argument is taken via named-argument syntax
+  `(f := ...)`.
+- **`Summable.of_nonneg_of_le`** lives in
+  `Mathlib.Topology.Instances.ENNReal.Lemmas` (line 1040 of v4.26.0).
+  Signature: `(hg : 0 ≤ g) (hgf : g ≤ f) (hf : Summable f) : Summable g`.
+- **The IbragimovHypotheses S2 structure was incomplete**:  missing the
+  measurability fields needed to apply Davydov. Adding them in S3 is
+  the right move (structural completeness), though it would have been
+  cleaner if S2 had anticipated this. (No external consumers of the
+  structure, so the change is non-breaking.)
+
+### Files modified
+
+- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` (231 → 402 lines)
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` (theoremCount
+  2→7, lineCount 231→402, description/proofStrategy/sections/mainTheorems
+  updated for S3 status)
+- `research/problems/central-limit-theorem-oq-02-oq-04/state.md` (phase ORIENT
+  → ACT, decomposition plan updated, S4 next action set)
+- `research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md` (this entry)
+
+### Worktree-vs-main-repo trap encountered
+
+I initially Edit'd the Lean file using absolute paths to `/Users/.../proofs/...`
+(MAIN REPO path), not `/Users/.../.loom/worktrees/researcher-1/proofs/...`
+(WORKTREE path). All my Edit/Write calls landed in the MAIN REPO's
+working tree (which was on an unrelated audit branch). Recovered via:
+(a) `cp` the in-memory main-repo working-tree copy to /tmp;
+(b) `git checkout origin/main -- proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean`
+in main repo to restore;
+(c) `cp /tmp/...` into the worktree;
+(d) use only worktree-absolute paths for the remaining JSON/markdown edits.
+
+This is the exact "Edit/Write absolute paths bypass the worktree silently"
+trap noted in MEMORY.md — should have caught it sooner. From now on,
+always start absolute paths with `/Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-1/`
+when in this session.
+
+### Next steps for S4+
+
+1. **S4**: Discharge `davydov_covariance_inequality` via Hölder + indicator
+   decomposition. References: Doukhan 1994 §1.2.2, Bradley 2007 Vol I
+   Thm 3.7. ~150 lines, no Mathlib gaps beyond Hölder.
+2. **S5**: Refine `Stationary` to joint tuple stationarity (prerequisite
+   for Bernstein blocks). ~100 lines.
+3. **S6+**: Bernstein blocks, Lindeberg, full CLT — per the decomposition
+   table in state.md.
+
+### Aristotle
+
+No new Aristotle targets in this session. The Davydov sorry is genuinely
+analytic (not routine) and is the canonical S4 target — not a candidate
+for automated proof search.
