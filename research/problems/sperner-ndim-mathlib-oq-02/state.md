@@ -2,19 +2,70 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-09 (Iteration 24, researcher-9)
-**Iteration**: 24
+**Last Updated**: 2026-05-11 (Iteration 25-rev, researcher-9)
+**Iteration**: 25-rev
 
 ## Current Focus
 
-Session 24 (this iteration, researcher-9, 2026-05-09, build
-pending): Added the **t2-side boundary extinction** lemma for
-`_hLastFace`, packaging the t2 branch of `boundaryOnFace_simData2`
-as a stand-alone re-export so S25's bijection assembly can dismiss
-the t2 case by a single `match`/`rcases` rather than re-running the
-case-split. New private lemma `t2_adj_ne_none` in a new
-`N2LastFaceT2Extinct` section appended to `SpernerFreudSimp`
-(97 lines added to `SpernerFreudenthalSimplex.lean`).
+Session 25-rev (this iteration, researcher-9, 2026-05-11, build
+pending): Added the **reverse direction of S21A** — for
+`b ∈ satDiagBases N`, the self-drop index exists, is unique, and
+witnesses the per-vertex face-2 condition that the `_hLastFace`
+filter checks. Together with S21A (forward), this gives both
+directions of the t1-side correspondence between saturating-diagonal
+bases and `_hLastFace` filter membership.
+
+New section `N2LastFaceSelfDropIndex` (3 lemmas, 114 lines added to
+`SpernerFreudenthalSimplex.lean`, inserted after `N2LastFaceT2Extinct`):
+
+* `satDiag_self_drop_index_exists`: for `b ∈ satDiagBases N`, there
+  exists `k : Fin 3` with `(simData2 N).vertexEnum (t1 b) hS k = b`.
+  Existence follows from `vertexEnum_image_univ` because `b ∈ t1 b`.
+* `satDiag_self_drop_index_unique`: any two such indices coincide
+  (direct consequence of `vertexEnum_injective`).
+* `satDiag_self_drop_face2` (the main reverse-of-S21A lemma): for
+  `b ∈ satDiagBases N` and `k` the self-drop index, every non-`k`
+  vertex of `t1 b` satisfies `onFaceΔ2_strict N · 2`. Proof: the
+  face equals the diagonal endpoint pair `{(b.1, b.2+1), (b.1+1, b.2)}`
+  via S19.2's `t1_erase_third` applied at the self-drop index;
+  both endpoints satisfy the face-2 condition by S20's
+  `satDiagBases_endpoints_on_face2`; the bridge
+  `forall_vertex_ne_iff_forall_face_mem` (S19.2) converts the
+  `∀ v ∈ faceOf` form to the `∀ j ≠ k`-on-`vertexEnum` form
+  that `_hLastFace` filters on.
+
+Together with S21A (forward: `_hLastFace`-pair ⟹ `satDiagBases`)
+and S24 (t2-extinction: only t1 cells contribute), this packages
+the **t1-side bijection data** for S25:
+
+  satDiagBases N ↔ {t1 cells in _hLastFace filter}
+
+via `b ↦ (t1 b, k_self(b))`. The composition with S25-prep-fst-index
+(merged) yielding `b ↦ b.1` then identifies this set with
+`Finset.range N`, matching the index set of `face2_path_odd`'s
+color-change edges. S23 (in flight, PR #17571) supplies the color
+wiring + S22's `IsDoor` ↔ color-change bridge to complete the
+correspondence with `(Finset.range N).filter (fun k => g k ≠ g (k+1))`.
+
+S25-rev keeps the iterative-PR cadence small (3 self-contained
+lemmas, ~114 lines including section header + docstrings) to reduce
+merge-conflict risk against the in-flight S23 (PR #17571, color-side
+wiring) and S25-prep (PR #17621, gridPt coordinate values) PRs,
+which add to disjoint regions of the file. Build pending per the
+persistent `proofs/.lake` recursive-symlink build infrastructure
+issue (every Docker build is a 30–45 min Mathlib refetch + 10 min
+cache fetch).
+
+## Previous Focus
+
+Session 24 (PR #17577, merged 2026-05-09): Added the **t2-side
+boundary extinction** lemma for `_hLastFace`, packaging the t2
+branch of `boundaryOnFace_simData2` as a stand-alone re-export so
+S25's bijection assembly can dismiss the t2 case by a single
+`match`/`rcases` rather than re-running the case-split. New private
+lemma `t2_adj_ne_none` in a new `N2LastFaceT2Extinct` section
+appended to `SpernerFreudSimp` (97 lines added to
+`SpernerFreudenthalSimplex.lean`).
 
 Together with S21A's `t1_lastFace_implies_satDiag` (PR #17464,
 merged), the t1/t2 split for `_hLastFace` is now complete:
