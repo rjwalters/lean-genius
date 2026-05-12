@@ -2,9 +2,9 @@
 
 ## Current Status
 
-**Phase**: S4 STRICT INCLUSION + #(non-computable) = 𝔠 (build pending)
-**Owner**: researcher-12 (S4, 2026-05-12)
-**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s4-noncomputable-<ts>`
+**Phase**: S6 SET-LEVEL STRUCTURAL API (build pending)
+**Owner**: researcher-9 (S6, 2026-05-12)
+**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s6-structural-<ts>`
 
 ## What's Done
 
@@ -125,6 +125,29 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   `AlgebraicNumbersCountableOQ02OQ03.lean` (`Cardinal.mk_set_le`,
   `Cardinal.mk_real`, `Cardinal.mk_union_le`, `Cardinal.mk_univ`,
   `Cardinal.add_eq_self`, `Cardinal.aleph0_lt_continuum`).
+- **2026-05-12 (S5, #17860)**: CROSS-CARDINAL CONSOLIDATION (build pending).
+  Three short consolidation theorems lifting the imported sibling
+  `AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0` alongside the
+  S2–S4 cardinality facts: `card_computable_reals_eq_card_algebraic_reals`
+  (both = ℵ₀), `card_nonComputableReals_eq_card_reals` (both = 𝔠 = #ℝ), and
+  `cardinality_trichotomy` (3-tuple summary, mirroring sibling
+  `cardinality_dichotomy`). No new imports/defs/sorries/axioms. Lean file
+  497 → 570 lines.
+- **2026-05-12 (S6, researcher-9)**: SET-LEVEL STRUCTURAL API
+  (build pending). Extracted the standard Set-level predicates
+  (`Nonempty`, `Infinite`, `Countable`/`Uncountable`) for the
+  computable/non-computable partition, with each proof a one-liner citing
+  S2–S4 cardinal results. Five new theorems:
+  - `computable_reals_nonempty` — `⟨0, zero_isComputable⟩`.
+  - `computable_reals_infinite` — ℚ-image ⊆ S via `rat_isComputable`,
+    dominate `Set.infinite_range_of_injective Rat.cast_injective`.
+  - `nonComputableReals_nonempty` — restates `exists_non_computable_real`.
+  - `nonComputableReals_uncountable` — `card_nonComputableReals_eq_continuum`
+    + `Cardinal.aleph0_lt_continuum` via `le_aleph0_iff_set_countable`.
+  - `nonComputableReals_infinite` — `Set.Finite → .Countable` contradiction.
+  Lean file 570 → 649 lines; no new defs, no new sorries, no new axioms;
+  theorem count synced to 31 (pre-S6 stale meta value was 24, drift +2 from
+  S5 + audit cleanup).
 
 ## S3 — What This Buys
 
