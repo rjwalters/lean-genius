@@ -1,10 +1,58 @@
 # Current State
 
-**Phase**: ACT (S3a-build-verify attempted — pre-existing parent drift in `SylowTheoremOQ01.lean` blocks full Docker verification)
-**Since**: 2026-05-12 (S3a-build-verify)
-**Iteration**: 4
+**Phase**: ACT (S3c-prep — gallery & parent meta synced to reflect Approach A + Approach B preliminaries; Sylow drift unblocked upstream)
+**Since**: 2026-05-12 (S3c-prep, doc-only)
+**Iteration**: 5
 
-## Latest Iteration: S3a-build-verify (researcher-9, 2026-05-12)
+## Latest Iteration: S3c-prep — gallery + parent meta sync (researcher-9, 2026-05-12)
+
+Doc-only iteration synthesising the four prior iterations into the
+gallery & parent meta. No Lean changes; no new theorems or sorries.
+
+**Upstream unblock noted.** `SylowTheoremOQ01.lean` drift (the umbrella
+blocker called out in S3a-build-verify) was fixed in commit
+`ba135dd66a2` (PR #18160, merged 2026-05-12): four call sites
+`(Nat.Prime.prime h.h?).factorization` → `h.h?.factorization`, removing
+the `And.factorization` parse error at Mathlib v4.26.0. The
+`LagrangeTheoremOQ01OQ01OQ01` and `LagrangeTheoremOQ01OQ01OQ01ApproachB`
+files are therefore now expected to build through the umbrella; a
+follow-up Docker rebuild is the appropriate next confirmation step but
+is gated on Mathlib cold-cache provisioning (~45 min fresh-clone in
+researcher worktrees per `feedback_researcher_lake_symlink_broken.md`).
+
+**Deliverables in this iteration:**
+
+1. `src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/meta.json`
+   - Added `additionalFiles: ["Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean"]`
+     so the gallery's leanFile picker discovers the Approach B
+     preliminaries file alongside Approach A's main file.
+   - Extended `tags` with `approach-b-preliminaries`, `cyclic-units`,
+     `ZMod` to reflect S3a/S3b content.
+   - Extended `originalContributions` with two new bullets covering
+     `isCyclic_units_zmod` / `card_units_zmod` (S3a) and
+     `exists_unit_of_order_p` (S3b).
+   - Refined `openQuestions[0]` into separate S3c (lift to AddAut) and
+     S3d (assemble semidirect product) bullets, with explicit Mathlib
+     API leads (`zmodEquivZPowers`, `ZMod.lift`, `SemidirectProduct.card`).
+
+2. `src/data/proofs/lagrange-theorem-oq-01-oq-01/meta.json` (parent)
+   - Marked `openQuestions[0]` as partially resolved: the `p = 2`
+     specialisation is supplied by this entry (`DihedralGroup q`);
+     general-`p` case remains open with Approach B preliminaries
+     landed.
+   - Added `crossReferences` entry `extended-by` pointing to this
+     entry with status summary (Approach A complete, S3a/S3b
+     preliminaries landed, S3c/S3d open).
+
+3. `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md`
+   - This entry; also records the SylowTheoremOQ01 drift-fix landing.
+
+**No Lean changes**. The two existing Lean files
+(`LagrangeTheoremOQ01OQ01OQ01.lean`, `LagrangeTheoremOQ01OQ01OQ01ApproachB.lean`,
+6 + 6 declarations across 140 + 152 lines, 0 sorries, 0 axioms) are
+unmodified.
+
+## Earlier Iteration: S3a-build-verify (researcher-9, 2026-05-12)
 
 Mechanic-style PR per the S3a-prep state.md "Next Action" (one-shot
 umbrella wiring + Docker build).
@@ -168,27 +216,40 @@ S2 will need a build verification but can be deferred to a follow-up
 
 ## Next Action
 
-**S3a-build-verify or S3c (action sequence post-S3a-prep)**:
+**S3a-build-rerun OR S3c (action sequence after this iteration)**:
 
-* **S3a-build-verify** (one-shot mechanic-style PR): add
-  `LagrangeTheoremOQ01OQ01OQ01.lean` and
-  `LagrangeTheoremOQ01OQ01OQ01ApproachB.lean` to the `proofs/Proofs.lean`
-  umbrella (currently they exist on disk but aren't part of the
-  defaultTarget build), then attempt a full Docker build to re-verify
-  both Approach A and the new S3a building blocks at the pinned rev.
+* **S3a-build-rerun** (low-risk, mechanic-style verification PR).
+  Now that `SylowTheoremOQ01.lean` v4.26.0 drift was fixed in PR
+  #18160, the import chain
+  `LagrangeTheoremOQ01OQ01OQ01ApproachB → LagrangeTheoremOQ01OQ01OQ01 → LagrangeTheoremOQ01OQ01 → SylowTheoremOQ01`
+  should compile end-to-end. Re-run `./proofs/scripts/docker-build.sh
+  Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachB` (the deepest target in
+  the chain); on green, flip the gallery `badge` / `status` from
+  `verified` *with build-pending caveat* to fully build-verified and
+  update both files' implicit "build pending" annotations. Expected
+  build time ≈ 45 min on cold worktree cache.
 
-* **S3c (Approach B continuation)**: Lift the order-`p` element
-  produced by `exists_unit_of_order_p` to a non-trivial group
-  homomorphism `φ : ZMod p →* MulAut (ZMod q)`. The natural choice
-  sends a generator `1 : ZMod p` to the multiplication-by-`g`
-  automorphism on `ZMod q`. Concrete pieces needed:
+* **S3c (Approach B continuation, substantive Lean addition)**: Lift
+  the order-`p` unit `g ∈ (ZMod q)ˣ` produced by
+  `exists_unit_of_order_p` to a non-trivial group homomorphism
+  `φ : ZMod p →* AddAut (ZMod q)` (note: `AddAut` of the additive
+  cyclic group `ZMod q`, *not* `MulAut`; multiplication by a unit is an
+  *additive* automorphism of the ring). The natural choice sends
+  `1 : ZMod p` to `mulLeft g.val : ZMod q ≃+ ZMod q`. Concrete pieces:
 
-  - `ZMod q →+* ZMod q` from a unit (`Units.coeHom` inverse direction:
-    multiplication by a unit gives a `MulAut`).
-  - `MulAut (ZMod q)` non-triviality from `g ≠ 1` (the unit has order
-    `p ≥ 2`).
-  - Pack into `ZMod p →* MulAut (ZMod q)` via the universal property of
-    cyclic groups (`zmodEquivZPowers` or `ZMod.lift`).
+  - `unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)` via Mathlib's
+    `DistribMulAction (ZMod q)ˣ (ZMod q)` infrastructure
+    (`MulAction.toEndomorphism` upgraded with the additive
+    distributivity instance, or directly `DistribMulAction.toAddEquiv`).
+  - Non-triviality of `unitToAddAut g`: equivalent to `g.val ≠ 1` in
+    `ZMod q`, follows from `orderOf g = p ≥ 2`.
+  - Pack into `ZMod p →* AddAut (ZMod q)` via `zmodEquivZPowers`
+    (`Multiplicative (ZMod p) ≃* Subgroup.zpowers g'` for `g' :=
+    unitToAddAut g`), or equivalently use `ZMod.lift p ⟨g', hg'⟩` with
+    `hg'` the `g' ^ p = 1` certificate from `orderOf` analysis.
+
+  Estimated effort: ~50-80 lines new Lean in `ApproachB.lean`, 1
+  session, single PR with Docker build verification.
 
 Outline retained in the "Future Iterations (Deferred)" section below.
 
