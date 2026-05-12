@@ -1000,10 +1000,10 @@
       "result": "clean"
     },
     "binomial-theorem-oq-02-oq-01-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-08T17:31:26Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-12T14:42:35Z",
+      "result": "issues-found"
     },
     "binomial-theorem-oq-02-oq-01-oq-01-oq-01": {
       "auditCount": 2,
@@ -11536,9 +11536,10 @@
     },
     "general-quartic": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T23:03:21Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-05-12T14:42:43Z",
+      "result": "issues-found",
+      "issues": []
     },
     "geometric-series": {
       "agentId": "auditor-cycle-20-batch",
@@ -12975,10 +12976,10 @@
       "result": "clean"
     },
     "shannon-channel-coding-oq-02-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-04T04:08:09Z",
-      "result": "clean"
+      "lastAudited": "2026-05-12T14:41:01Z",
+      "result": "issues-found"
     },
     "shannon-channel-coding-oq-02-oq-04": {
       "auditCount": 2,
@@ -12987,10 +12988,10 @@
       "result": "clean"
     },
     "shannon-channel-coding-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-08T17:31:34Z",
-      "result": "clean"
+      "lastAudited": "2026-05-12T14:42:13Z",
+      "result": "issues-found"
     },
     "shannon-channel-coding-oq-04": {
       "auditCount": 4,
@@ -15172,6 +15173,30 @@
       "lastAudited": "2026-05-12T11:48:14Z",
       "result": "clean",
       "issues": []
+    },
+    "binary-gcd-oq-02-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-12T14:43:52Z",
+      "result": "clean"
+    },
+    "cramers-rule-oq-01-oq-02-oq-01-oq-01": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-12T14:44:15Z",
+      "result": "clean"
+    },
+    "kepler-conjecture-oq-04": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-12T14:44:39Z",
+      "result": "clean"
+    },
+    "lagrange-theorem-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-05-12T14:45:00Z",
+      "result": "clean"
     }
   },
   "version": 1,
