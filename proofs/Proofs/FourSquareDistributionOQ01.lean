@@ -2345,4 +2345,75 @@ private lemma r4Count_eq_nested_sum (n : ℕ) :
   exact foldl_4nest_indicator_eq_nested_sum (shiftedRange n)
     (fun a b c d => a^2 + b^2 + c^2 + d^2 = (n : ℤ))
 
+-- =====================================================================
+-- PART 28 (S18b): shiftedRange ↔ Finset.Icc structural bridges
+--
+-- Foundational equivalences for the Finset.card reformulation of
+-- Sublemma 3.1 (see
+-- `research/problems/four-square-distribution-oq-01/s18-eight-divisibility-spec.md`
+-- §3/§4): the list `shiftedRange n = [-n, …, n] : List ℤ` is `Nodup`,
+-- and its `List.toFinset` equals `Finset.Icc (-(n:ℤ)) n`. Combined with
+-- Part 27's (S18a) `r4Count_eq_nested_sum`, these let downstream
+-- (Part 29 / S18c) replace each inner `List.filter`-length factor with
+-- a `Finset.card` over `Finset.Icc`; the corollary
+-- `shiftedRange_filter_length_eq_Icc_card` performs that innermost-
+-- level substitution. The nested-sum-to-`Finset.product` reformulation
+-- of `r4Count_eq_nested_sum` itself (full Sublemma 3.1) defers to S18c.
+--
+-- Pure structural content; no number theory.
+-- =====================================================================
+
+/-- `shiftedRange n = [-n, -n+1, …, n]` is duplicate-free.
+
+    Foundation for `shiftedRange_toFinset_eq_Icc` and for transporting
+    `List.filter`-length factors of `r4Count_eq_nested_sum` (Part 27)
+    to `Finset.card`. -/
+private lemma shiftedRange_nodup (n : ℕ) : (shiftedRange n).Nodup := by
+  unfold shiftedRange
+  refine List.Nodup.map ?_ (List.nodup_range _)
+  intro a b hab; omega
+
+/-- **Sublemma 3.1 building-block.** Lifting `shiftedRange n` to a
+    `Finset ℤ` recovers exactly the integer interval `[-n, n]`. The
+    forward direction casts `k ∈ [0, 2n+1) ↦ k - n ∈ [-n, n]`; the
+    backward direction witnesses any `x ∈ [-n, n]` by `k := (x+n).toNat`
+    using `Int.toNat_of_nonneg`. -/
+private lemma shiftedRange_toFinset_eq_Icc (n : ℕ) :
+    (shiftedRange n).toFinset = Finset.Icc (-(n : ℤ)) (n : ℤ) := by
+  ext x
+  simp only [List.mem_toFinset, shiftedRange, List.mem_map, List.mem_range,
+    Finset.mem_Icc]
+  constructor
+  · rintro ⟨k, hk, rfl⟩
+    have hk' : k ≤ 2 * n := by omega
+    have hk_int : (k : ℤ) ≤ 2 * (n : ℤ) := by exact_mod_cast hk'
+    have hk_nn : (0 : ℤ) ≤ (k : ℤ) := by exact_mod_cast Nat.zero_le k
+    refine ⟨by linarith, by linarith⟩
+  · rintro ⟨hlo, hhi⟩
+    have hge : (0 : ℤ) ≤ x + n := by linarith
+    have h_eq : ((x + n).toNat : ℤ) = x + n := Int.toNat_of_nonneg hge
+    refine ⟨(x + n).toNat, ?_, ?_⟩
+    · have h_lt : ((x + n).toNat : ℤ) < 2 * (n : ℤ) + 1 := by linarith
+      exact_mod_cast h_lt
+    · linarith
+
+/-- **Sublemma 3.1 (inner-level Finset.card bridge, S18b).** For any
+    decidable predicate `q : ℤ → Prop`, the `List.filter`-length of
+    `shiftedRange n` over `decide ∘ q` equals the `Finset.card` of
+    `Finset.Icc (-n) n` filtered by `q`.
+
+    Plugs into the innermost level of `r4Count_eq_nested_sum`
+    (Part 27 / S18a): the `(shiftedRange n).filter`-length factor for
+    the 4th coordinate becomes `((Finset.Icc (-n) n).filter q).card`
+    once `q` is provided (here, `q d := a^2 + b^2 + c^2 + d^2 = n`). -/
+private lemma shiftedRange_filter_length_eq_Icc_card (n : ℕ)
+    (q : ℤ → Prop) [DecidablePred q] :
+    ((shiftedRange n).filter (fun x => decide (q x))).length =
+    ((Finset.Icc (-(n : ℤ)) (n : ℤ)).filter q).card := by
+  rw [← List.toFinset_card_of_nodup ((shiftedRange_nodup n).filter _)]
+  congr 1
+  ext x
+  simp only [List.mem_toFinset, List.mem_filter, Finset.mem_filter,
+    decide_eq_true_eq, ← shiftedRange_toFinset_eq_Icc]
+
 end FourSquareDistributionOQ01
