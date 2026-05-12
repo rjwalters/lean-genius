@@ -2,9 +2,32 @@
 
 ## Current phase
 
-**S3a ACT** — exact orders proved: `orderOf hexRot = 6`, `orderOf hexRev = 2`. Full `card_hexagonalGroup = 12` deferred to S3b (homomorphism construction).
+**S3b-prep ACT** — powered semiconjugacy lemmas (`hexRev_inv`, `hexRev_semiconj_hexRot`, `hexRev_semiconj_hexRot_pow`, `hexRev_hexRot_pow_hexRev`) added. The four `map_mul'` cases of the planned `DihedralGroup 6 →* Equiv.Perm (Fin 6)` homomorphism (S3c) now rewrite mechanically from S2 + S3a + S3b-prep.
 
 ## Latest iteration
+
+**Iteration 4** (2026-05-12, researcher-3)
+
+**Outcome**: S3b-prep complete — four new lemmas added to `proofs/Proofs/PascalsHexagonOQ03.lean` in a new PART 2d (~40 lines):
+
+| Lemma | Statement | Tactic |
+|---|---|---|
+| `hexRev_inv` | `hexRev⁻¹ = hexRev` | `inv_eq_of_mul_eq_one_right hexRev_mul_self` |
+| `hexRev_semiconj_hexRot` | `SemiconjBy hexRev hexRot hexRot⁻¹` (i.e. `hexRev * hexRot = hexRot⁻¹ * hexRev`) | `unfold SemiconjBy` + 4-step `calc` using S2's `hexRev_mul_self`, `hexRev_hexRot_hexRev`, plus `← mul_assoc` |
+| `hexRev_semiconj_hexRot_pow` | `∀ n, hexRev * hexRot ^ n = (hexRot ^ n)⁻¹ * hexRev` | `SemiconjBy.pow_right` + `rw [inv_pow]` + `.eq` projection |
+| `hexRev_hexRot_pow_hexRev` | `∀ n, hexRev * hexRot ^ n * hexRev = (hexRot ^ n)⁻¹` | `rw [hexRev_semiconj_hexRot_pow, mul_assoc, hexRev_mul_self, mul_one]` |
+
+These extend the S2 dihedral conjugation relation from `n = 1` to all natural exponents. Combined with S3a's `orderOf hexRot = 6`, they suffice to mechanically discharge the three non-trivial cases of `map_mul'` for the S3c homomorphism `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)`:
+
+- `φ (r i) * φ (sr j) = φ (sr (j - i))`: needs to push `hexRot^i.val` past `hexRev`, which `hexRev_semiconj_hexRot_pow` does (in the opposite direction; commute).
+- `φ (sr i) * φ (r j) = φ (sr (i + j))`: needs `(hexRev * hexRot^i.val) * hexRot^j.val = hexRev * hexRot^(i.val + j.val)`, a single `mul_assoc` + `pow_add`.
+- `φ (sr i) * φ (sr j) = φ (r (j - i))`: needs `(hexRev * hexRot^i.val) * (hexRev * hexRot^j.val) = hexRot^((j-i).val)`. Rewrite `hexRot^i.val * hexRev` via the semiconjugacy (push form), then collapse `hexRev * hexRev = 1`, leaving `(hexRot^i.val)⁻¹ * hexRot^j.val`. The modular wraparound `(i.val + j.val mod 6)` vs `(i + j : ZMod 6).val` is handled by `hexRot_pow_six`.
+
+**Sorry delta**: unchanged at 5 (4 new lemmas are fully proved; `card_hexagonalGroup` still sorry pending the homomorphism).
+
+**Build status**: pending. Parent `Proofs/PascalsHexagon.lean` is broken on origin/main (40 Mathlib drift errors). S1 PR #17916, S2 PR #17983, S3a PR #18026 all merged "(build pending)"; this PR follows the same precedent. No new dependencies; only uses `SemiconjBy.pow_right`, `inv_pow`, `inv_eq_of_mul_eq_one_right`, and basic associativity — all verified to exist in pinned Mathlib (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) at `Mathlib/Algebra/Group/Semiconj/Defs.lean:107` and `Mathlib/Algebra/Group/Basic.lean:409`.
+
+**Honest scope note**: S3b-prep does NOT discharge OQ-03-OQ-01. It supplies the powered-conjugation toolkit so that S3c (the homomorphism construction + range + injectivity) reduces to a mechanical case split. The hard mathematical content of S3c is the four `map_mul'` cases (especially the `ZMod 6` wraparound) and the injectivity argument; S3b-prep does not address these directly but makes the rewrite chains tractable.
 
 **Iteration 3** (2026-05-12, researcher-3)
 
@@ -93,7 +116,25 @@ Estimated S3 size: ~80–150 lines, mostly the `map_mul'` case-split and the ran
 - ACT: chose to ship `orderOf hexRot = 6` and `orderOf hexRev = 2` as S3a, decoupling the easy "exact orders" part from the substantial homomorphism construction (S3b). Rationale: the injectivity step of S3b reduces cleanly once these orders are pinned (standard dihedral argument), so S3a is a genuine prerequisite. New lemma `hexRot_pow_lt_six_ne_one` discharges the five non-trivial powers via `interval_cases m` + `congrArg (·.toFun 0)` + `native_decide` per case — avoids the fragile `simp [hexRot, finRotate]` approach used in the existing `hexRot_ne_one`/`hexRev_ne_one` sanity lemmas.
 - Verification: each `orderOf X = n` proof uses Mathlib's `orderOf_eq_iff` with positivity precondition. The 5-case `interval_cases` produces concrete goals `(hexRot ^ k) 0 = (1 : Equiv.Perm (Fin 6)) 0 → False` for k=1..5, each settled by `native_decide` after specializing the equality at 0 via `congrArg`. The `hexRev` case is one-line: `pow_one` + `hexRev_ne_one`.
 
-**Next action (S3b)**: same as listed above the S3a log — construct `hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6)` using the S2 dihedral relations and the S3a order facts for injectivity.
+### S3b-prep (2026-05-12, researcher-3)
+
+- ORIENT: claim-random selected pascals-hexagon-oq-03 again (knowledge score 28, RICH). Pre-claim checks: open PRs on slug are #17953 (enrichment), #18006/#18007 (meta drift) — same as S3a; no parallel S3b PR; `gh pr list --search "pascals-hexagon-oq-03"` returned 3 merged research PRs (S1 #17916, S2 #17983, S3a #18026 just merged 09:55 UTC) and zero open research PRs. Memory + state.md confirm parent broken; followed S1/S2/S3a "build pending" precedent.
+- ACT: chose to ship the four powered-semiconjugacy lemmas as S3b-prep, decoupling the powered-conjugation toolkit (pure group theory consequences of S2 + S3a) from the substantial homomorphism construction (S3c). Rationale: the three non-trivial `map_mul'` cases of `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)` reduce to mechanical rewrites once `hexRev * hexRot^n = (hexRot^n)⁻¹ * hexRev` and its conjugation cousin are in hand. New PART 2d (~40 lines, 4 lemmas). No new Mathlib dependencies — only `SemiconjBy.pow_right` (verified at `Mathlib/Algebra/Group/Semiconj/Defs.lean:107`), `inv_pow` (verified at `Mathlib/Algebra/Group/Basic.lean:409`), and `inv_eq_of_mul_eq_one_right`.
+- Verification: each proof uses standard Mathlib group-theory lemmas plus the S2 relations. The `hexRev_semiconj_hexRot` proof is a 4-step `calc` that inserts `hexRev * hexRev = 1` between `hexRot` and `hexRev` to expose the S2 conjugation pattern. The powered version follows by `SemiconjBy.pow_right n` + `rw [inv_pow]` + `.eq`. The conjugation form `hexRev_hexRot_pow_hexRev` is a 4-step `rw` chain. No `decide` / `native_decide` / `interval_cases` needed — pure group-theory algebra at this level.
+
+**Next action (S3c)**: construct `hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6)` using S2 + S3a + S3b-prep. Concrete plan:
+- `toFun (r i) := hexRot ^ i.val`, `toFun (sr i) := hexRev * hexRot ^ i.val` (i : ZMod 6).
+- `map_one' = rfl` (since `1 = r 0` in DihedralGroup; `hexRot^0 = 1`).
+- `map_mul'` four cases:
+  - **r-r**: `hexRot^i.val * hexRot^j.val = hexRot^((i+j).val)`. Use `pow_add` + `hexRot_pow_six` to discharge the `ZMod 6` modular wraparound.
+  - **r-sr**: `hexRot^i.val * (hexRev * hexRot^j.val) = hexRev * hexRot^((j-i).val)`. Use `hexRev_semiconj_hexRot_pow i.val` (in the form `hexRot^i.val * hexRev = hexRev * hexRot⁻¹^i.val = hexRev * (hexRot^i.val)⁻¹`) — actually need the opposite-direction push; can derive by inversion + S3b-prep.
+  - **sr-r**: `(hexRev * hexRot^i.val) * hexRot^j.val = hexRev * hexRot^((i+j).val)`. Single `mul_assoc` + `pow_add` + wraparound.
+  - **sr-sr**: `(hexRev * hexRot^i.val) * (hexRev * hexRot^j.val) = hexRot^((j-i).val)`. Use `hexRev_hexRot_pow_hexRev` to collapse `hexRev * hexRot^i.val * hexRev = (hexRot^i.val)⁻¹`, leaving `(hexRot^i.val)⁻¹ * hexRot^j.val`. Then `pow_neg` / `zpow` + wraparound.
+- Then `hexHom.range = hexagonalGroup` (≤ by induction; ≥ by `hexRot, hexRev ∈ range`).
+- Injectivity: 12 image elements pairwise distinct via S3a order facts.
+- Conclude `Nat.card hexagonalGroup = 12` via `DihedralGroup.nat_card`.
+
+Estimated S3c size: ~120–180 lines, mostly the `map_mul'` case split and the range/injectivity proofs.
 
 ## Notes
 
