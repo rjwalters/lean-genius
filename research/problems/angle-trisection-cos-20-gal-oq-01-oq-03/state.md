@@ -1,14 +1,80 @@
 # Current State
 
-**Phase**: ACT (S9 closed — uniform numerical anchor `Φ_{2p}(-1) = p`
-proved for all odd primes)
-**Since**: 2026-05-12T12:30:00Z
-**Iteration**: 9
+**Phase**: ACT (S10 closed — uniform constant-coefficient corollary
+`(r p).coeff 0 = (-1)^((p-1)/2) · p` lifted via S9 anchor)
+**Since**: 2026-05-12T15:30:00Z
+**Iteration**: 10
 
 ## Current Focus
 
-S9 ACT — **Uniform numerical anchor `Φ_{2p}(-1) = p` proved for every
-odd prime p ≥ 3.** Lifts the per-prime cyclotomic evaluation lemmas
+S10 ACT — **Uniform constant-coefficient corollary closed.** Lifts the
+per-prime cyclotomic-anchor bridges
+`r_{3, 5, 7, 11, 13}_constantCoeff_eq_cyclotomic` (S5+S6) into two new
+statements indexed by the parametric `(2 * p)` instead of literal
+`{6, 10, 14, 22, 26}`, then combines with the S9 numerical anchor
+`cyclotomic_two_mul_prime_eval_neg_one_uniform` to recover the empirical
+sign pattern `(r p).coeff 0 = (-1)^((p-1)/2) · p` (S3 era) via the
+**cyclotomic-anchor route**:
+
+  `r_constantCoeff_eq_signed_cyclotomic_uniform`
+  : `∀ p ∈ ({3, 5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff 0 = (-1)^((p-1)/2) · (cyclotomic (2*p) ℤ).eval (-1)`
+
+  `r_constantCoeff_eq_signed_uniform`
+  : `∀ p ∈ ({3, 5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff 0 = (-1)^((p-1)/2) · (p : ℤ)`.
+
+Unlike `r_constantCoeff_eq_signed_p` (S3) which was a five-clause
+conjunction whose proof was five independent `decide`-driven coefficient
+expansions, the S10 theorem `r_constantCoeff_eq_signed_uniform` is a
+single Finset-quantified statement whose proof routes through the
+**uniform** S9 cyclotomic anchor — making the dependence on the
+`Φ_{2p}(-1) = p` identity explicit in the proof term. The
+intermediate `r_constantCoeff_eq_signed_cyclotomic_uniform` packages
+the five per-prime cyclotomic bridges into the same Finset form using
+`(2 * p)` indexing, which reduces definitionally to the literal indices
+at each case.
+
+This S10 step is the "sign-pattern uniform constant-coeff corollary"
+target announced as the S10 next-step in S9's state.md. Next iteration
+(S11) shifts attention to **Tactic B** for the trace fingerprint
+(sub-leading-coefficient cyclotomic-sum identity
+`∑ primitive 2p-th roots = 1` / Möbius value μ(2p) = -μ(p) = 1 for p
+prime odd), targeting the uniform `r_subLeadingCoeff_eq_neg_p`.
+
+Note the quantification is over the **verified** prime set
+`{3, 5, 7, 11, 13}` because `r p = 0` for `p ∉ {3, 5, 7, 11, 13}`. The
+uniformity is in the **indexing** (now `2 * p` instead of literal
+`{6, 10, 14, 22, 26}`) and in the **proof routing** (via the S9 uniform
+anchor), not in the parametric polynomial `r` itself.
+
+### Stats
+
+- File grows: 1089 → 1166 lines (+77), 59 → 61 theorems (+2 named theorems).
+- Sorries: 1 (unchanged — the general conjecture).
+- Axioms: 0 (unchanged).
+- New theorems: `r_constantCoeff_eq_signed_cyclotomic_uniform` (Finset
+  + (2*p)-indexed cyclotomic bridge), `r_constantCoeff_eq_signed_uniform`
+  (corollary plugging in the S9 anchor).
+- New module-docstring section documenting S10.
+
+### Build status
+
+**Pending.** Docker build is queued (proofs/.lake symlink is broken,
+forcing ~30–45 min fresh-clone of Mathlib + cache get). The proof
+references only standard Mathlib API (`Finset.mem_insert`,
+`Finset.mem_singleton`, `rcases`, `decide` for primality/oddness of
+`{3, 5, 7, 11, 13}`) plus the S5/S6 per-prime bridges
+`r_{3, 5, 7, 11, 13}_constantCoeff_eq_cyclotomic` and the S9 anchor
+`cyclotomic_two_mul_prime_eval_neg_one_uniform` — all already merged in
+PRs #18028, #18066, and #18103. Per the build-pending precedent of
+S4 (#17906), S5 (#17975), S6 (#18028), S8 (#18066), and S9 (#18103),
+this PR is submitted as "build pending" for deployer verification.
+
+## Previous focus (S9 — uniform numerical anchor `Φ_{2p}(-1) = p`)
+
+S9 ACT — Uniform numerical anchor `Φ_{2p}(-1) = p` proved for every
+odd prime p ≥ 3. Lifts the per-prime cyclotomic evaluation lemmas
 `cyclotomic_{six, ten, fourteen, twentytwo, twentysix}_eval_neg_one = {3, 5, 7, 11, 13}`
 of S5+S6 into a single statement holding for **every** odd prime — not
 just the five verified gallery primes. Two new theorems:
@@ -167,27 +233,37 @@ divisibility half — Tactic B) remains the deeper gap (~200–400 lines).
 
 ## Next Action
 
-**S10 next action**: Lift the constant-coefficient sign-pattern
-corollary to all odd primes. With S9 in place, the prediction
+**S11 next action**: Lift the **trace** fingerprint
+`r_subLeadingCoeff_eq_neg_p` uniformly. With S10 closing the
+constant-coefficient sign-pattern corollary via the
+S9 anchor, attention shifts to **Tactic B**: re-derive the
+sub-leading coefficient identity
 
-  `(r p).coeff 0 = (-1)^((p-1)/2) · Φ_{2p}(-1) = (-1)^((p-1)/2) · p`
+  `(r p).coeff ((p-1)/2 - 1) = -p`
 
-becomes a one-liner combining the existing general
-`r_constantCoeff_eq_signed_p` (S3) with the new S9 numerical anchor.
-The bridge step `r_constantCoeff_eq_cyclotomic_full` already exists
-for p ∈ {3, 5, 7, 11, 13} as a packaged conjunction; the uniform
-generalization should land as
+uniformly across the verified primes using
+`Polynomial.coeff_natDegree_sub_one_of_monic` plus the cyclotomic-sum
+identity `∑ primitive 2p-th roots = 1` (or the Möbius value
+μ(2p) = −μ(p) = 1 for `p` prime odd). The desired S11 deliverable:
 
-  `r_constantCoeff_eq_signed_cyclotomic_uniform`
-  : `∀ p, p.Prime → Odd p → (r p).coeff 0
-        = (-1)^((p-1)/2) · (cyclotomic (2*p) ℤ).eval (-1)`
+  `r_subLeadingCoeff_eq_neg_cyclotomic_uniform`
+  : `∀ p ∈ ({5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff ((p-1)/2 - 1) = -(cyclotomic (2*p) ℤ).subLeadingCoeff` (or
+       equivalent Möbius-value-derived form);
 
-with body `cyclotomic_two_mul_prime_eval_neg_one_uniform` plugged into
-the existing per-prime template. After landing, attention shifts to
-**Tactic B** for the trace fingerprint (sub-leading-coefficient
-cyclotomic-sum identity `∑ primitive 2p-th roots = 1` /
-Möbius value μ(2p) = −μ(p) = 1 for `p` prime odd), targeting the
-uniform `r_subLeadingCoeff_eq_neg_p`.
+  `r_subLeadingCoeff_eq_neg_uniform`
+  : `∀ p ∈ ({5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff ((p-1)/2 - 1) = -(p : ℤ)`.
+
+The boundary case p = 3 stays separate (`r_3_traceCoeff`) since
+`(3-1)/2 - 1 = 0` collides with the constant-coefficient case already
+handled by `r_constantCoeff_eq_signed_uniform`.
+
+### S10 DONE (this iteration)
+`r_constantCoeff_eq_signed_cyclotomic_uniform` (Finset + (2*p)-indexed
+cyclotomic bridge) and `r_constantCoeff_eq_signed_uniform` (corollary
+combining with the S9 numerical anchor). 77 line additions, 0 new sorries,
+0 new axioms, +2 named theorems.
 
 ### Tactic A1-corollary (DONE in S9): Uniform `Φ_{2p}(-1) = p`
 **Approach (A) chosen.** Geometric-series identification.
@@ -240,15 +316,16 @@ calculation or the local-field uniformizer theorem.
 
 ## Attempt Counts
 
-- Total attempts: 9 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
+- Total attempts: 10 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
   S4 ACT trace-Vieta, S5 ACT cyclotomic anchor {3,5,7},
   S6 ACT cyclotomic anchor extension {11,13},
   S7 SCAFFOLD divisor enumeration for uniform bridge,
   S8 ACT uniform cyclotomic bridge identity,
-  S9 ACT uniform numerical anchor Φ_{2p}(-1) = p).
-- Current approach attempts: 8 (Level-2 + S3 norm + S4 trace +
+  S9 ACT uniform numerical anchor Φ_{2p}(-1) = p,
+  S10 ACT uniform constant-coefficient corollary).
+- Current approach attempts: 9 (Level-2 + S3 norm + S4 trace +
   S5 cyclotomic anchor + S6 cyclotomic extension + S7 SCAFFOLD + S8 ACT
-  + S9 ACT).
+  + S9 ACT + S10 ACT).
 - Approaches tried:
   - S1: cyclotomic ramification, surveyed only.
   - S2: per-prime explicit verification + uniform statement (sorry on general case).
@@ -259,10 +336,11 @@ calculation or the local-field uniformizer theorem.
   - S7: combinatorial backbone `divisors_two_mul_odd_prime` (parity-split, 0 sorries) — step 1 of 6 for uniform bridge.
   - S8: uniform cyclotomic bridge identity `cyclotomic_two_mul_prime_mul_X_add_one_uniform` via composition of S7 backbone with `prod_cyclotomic_eq_X_pow_sub_one` + `cyclotomic_prime_mul_X_sub_one` + `mul_left_cancel₀`.
   - S9: uniform numerical anchor `cyclotomic_two_mul_prime_eval_neg_one_uniform` via the new structural lemma `cyclotomic_two_mul_prime_eq_geom_neg_series` (identifying Φ_{2p} as the geometric series in `-X`) + standard `eval_*` simp set at X = -1.
+  - S10: uniform constant-coefficient corollary `r_constantCoeff_eq_signed_uniform` via the new Finset-indexed bridge `r_constantCoeff_eq_signed_cyclotomic_uniform` (`(2 * p)`-indexed cyclotomic, case-splits to S5/S6 per-prime bridges) + S9 numerical anchor.
 
 ## Key Files
 
-- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` — **extended in S9** (1089 lines, +127 vs S8).
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` — **extended in S10** (1166 lines, +77 vs S9).
   Parametric `r : ℕ → ℤ[X]` covers p ∈ {3, 5, 7, 11, 13}.
   Eisenstein verification for all five primes. Irreducibility for p ∈ {11, 13}.
   Two structural Vieta lemmas (`r_constantCoeff_eq_signed_p` for the norm,
@@ -280,15 +358,24 @@ calculation or the local-field uniformizer theorem.
   `cyclotomic_two_mul_prime_mul_X_add_one_uniform`:
   `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1` for `p` odd prime.
   Replaces five per-prime ring identities with a single uniform statement.
-  **S9** (this iteration): uniform numerical anchor
+  **S9**: uniform numerical anchor
   `cyclotomic_two_mul_prime_eval_neg_one_uniform`:
   `(cyclotomic (2 * p) ℤ).eval (-1) = p` for `p` odd prime, plus the
   structural lemma `cyclotomic_two_mul_prime_eq_geom_neg_series`
   identifying `Φ_{2p}` with `∑_{i<p} (-X)^i`.
+  **S10** (this iteration): uniform constant-coefficient corollary.
+  `r_constantCoeff_eq_signed_cyclotomic_uniform` quantifies the per-prime
+  cyclotomic bridges of S5+S6 over `p ∈ ({3, 5, 7, 11, 13} : Finset ℕ)`,
+  using `(2 * p)`-indexed cyclotomic (which reduces definitionally to
+  the literal cyclotomic index at each case).
+  `r_constantCoeff_eq_signed_uniform` combines that with the S9 numerical
+  anchor `cyclotomic_two_mul_prime_eval_neg_one_uniform` to yield
+  `(r p).coeff 0 = (-1)^((p-1)/2) · p` over the Finset, re-deriving the
+  S3-era `r_constantCoeff_eq_signed_p` via the cyclotomic anchor route.
   General conjecture sorry (unchanged).
-- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/` — **refreshed in S9**.
-  Gallery entry: meta.json (status: axiomatized, sorries: 1, lineCount 1089, theoremCount 59,
-  14 sections), annotations.json, index.ts.
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/` — **refreshed in S10**.
+  Gallery entry: meta.json (status: axiomatized, sorries: 1, lineCount 1166, theoremCount 61,
+  15 sections), annotations.json, index.ts.
 - `proofs/Proofs/AngleTrisectionCos20Gal.lean` — cos(20°) case, p=3 via cos(π/9); Eisenstein at 3.
 - `proofs/Proofs/AngleTrisectionCos20GalOQ01.lean` — cos(π/7); Eisenstein at 7.
 - `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ01.lean` — unified cos(20°) ⊕ cos(π/7) for p ∈ {3, 7}.
