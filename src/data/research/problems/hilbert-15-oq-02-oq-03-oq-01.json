@@ -1,0 +1,97 @@
+{
+  "slug": "hilbert-15-oq-02-oq-03-oq-01",
+  "title": "Formalize lrCoeffN: replace the axiomatic Littlewood-Richardson coefficient in Hilbert15OQ02OQ03 with a concrete combinatorial definition",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "scaffold",
+  "problemStatement": {
+    "formal": "Replace `axiom lrCoeffN : Partition n -> Partition n -> Partition n -> N` in `proofs/Proofs/Hilbert15OQ02OQ03.lean:128` with `def lrCoeffN_def` whose value is `#{T : SkewSSYT n nu mu // T.content = lambda /\\ isLatticeWord (reverseRowWord T)}`, and show on the 2-row case that `lrCoeffN_def = lrCoeff2` (from `Hilbert15OQ02.lean:131`).",
+    "plain": "Formalize the standard Littlewood-Richardson rule (Fulton 1997, Ch. 5) in Lean 4 so the parent file's axiom-3 (`lrCoeffN`) can be removed. Currently the gallery's general n-row LR coefficient is an axiom; the 2-row case is computable (`lrCoeff2`). This slug bridges the two by giving a computable definition that the parent file can swap in.",
+    "whyMatters": [
+      "Removes one of three axioms from Hilbert15OQ02OQ03.lean, the gallery's Klyachko/Horn-inequalities formalization. Axiom count is a load-bearing measure of formal confidence.",
+      "Mathlib gap closure: pinned Mathlib v4.26.0 has YoungDiagram + StandardYoungTableau but no SemistandardYoungTableau, no skew-shape encoding, no reverse-row reading word, no lattice-word predicate. The scaffold is a candidate Mathlib contribution.",
+      "Brings the n-row LR coefficient into Lean's computational fragment: lrCoeffN_def is Decidable by construction, which is required for downstream LP-feasibility decidability in the parent's `lr_polytime_positivity`.",
+      "Anchoring to the existing computable `lrCoeff2` (Gr(2,4) Chow ring) gives a 7-test-case smoke check before propagating the new definition to the rest of the cluster."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "lrCoeff2 (2-row case) — Hilbert15OQ02.lean:131, verified against 7 Gr(2,4) Chow ring constants from Hilbert15OQ01.lean",
+      "Skew-shape + reading-word + lattice-word LR rule (Littlewood 1934 / Fulton 1997 Ch. 5 §2) — classical, see References"
+    ],
+    "open": [
+      "Concrete computable lrCoeffN_def for general n ≥ 3 (this slug)",
+      "Anchoring lemma lrCoeffN_def (Partition 2) = lrCoeff2 — concrete check (S3)",
+      "Refactor parent Hilbert15OQ02OQ03.lean to replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def` (S4)"
+    ],
+    "goal": "Replace one axiom in Hilbert15OQ02OQ03.lean with a computable definition, exercised against existing 2-row test cases."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T22:00:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-1, 2026-05-11) — OBSERVE survey. Mathematical specification (skew SSYT count via reverse row reading word + lattice word, Fulton 1997 Ch. 5 convention). Mathlib gap inventory: SemistandardYoungTableau / skew shape / reverse-row word / lattice-word predicate all absent at pinned v4.26.0. No Lean changes this iteration; 4 documentation/JSON files only.",
+    "blockers": [],
+    "nextAction": "S2 (next iteration): scaffold proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean. Five definitions (SkewShape, SkewSSYTFin, reverseRowWord, isLatticeWord, lrCoeffN_def) plus Decidable / Fintype instances. Modelled on the existing gallery `SSYTFin n k sh` in BallotProblemOQ03OQ01OQ01OQ01.lean:177. Target ~150 lines, 0 sorries on type-level definitions, ≤2 sorries on instance proofs flagged for Aristotle.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-1, 2026-05-11): OBSERVE survey. Established that this slug is scaffolding (not research) — `lrCoeffN` is the only axiom in the parent Hilbert15OQ02OQ03.lean with a fully explicit combinatorial definition in the literature (Littlewood 1934, Fulton 1997 Ch. 5). The other two parent axioms (`admissible`, `klyachko_theorem`) are either recursive on `lrCoeffN` or are the deep Klyachko/Belkale theorem itself, so they belong to the parent slug, not here. Identified four missing Mathlib ingredients at pinned v4.26.0: SemistandardYoungTableau, skew shape encoding, reverse row reading word (Fulton convention vs Stanley convention noted), lattice-word predicate. Adopted Fulton convention for the reading word to match the existing gallery `lrCoeff2` 2-row anchor in Hilbert15OQ02.lean:131. Drafted a 4-iteration roadmap: S2 type-level definitions + lrCoeffN_def, S3 2-row anchoring lemma against Gr(2,4) Chow ring constants, S4 (optional) parent axiom replacement.",
+    "builtItems": [],
+    "insights": [
+      "Of the three axioms in Hilbert15OQ02OQ03.lean (lrCoeffN, admissible, klyachko_theorem), only lrCoeffN has a fully explicit combinatorial definition in the literature. Reducing it is Mathlib-style scaffolding, not research; the other two are either recursive on lrCoeffN or are the deep Klyachko/Belkale theorem itself.",
+      "Use Fin n entries (not N) for SSYT, matching the gallery's existing SSYTFin n k sh in BallotProblemOQ03OQ01OQ01OQ01.lean:177. The bounded codomain makes finiteness automatic via Subtype.fintype + Pi-over-finite, no extra infrastructure needed.",
+      "Reverse row reading word — Fulton (1997 Ch. 5) reads right-to-left top-to-bottom; Stanley (EC v.2 A.1.3) reads right-to-left bottom-to-top. The existing gallery lrCoeff2 in Hilbert15OQ02.lean:131 follows Fulton (comment block lines 99-122 + the ballot-condition analysis confirms). Use Fulton for consistency with the 2-row anchor.",
+      "Lattice word ≡ ballot word ≡ Yamanouchi word — three names for the same predicate. Document the synonyms in the docstring of isLatticeWord; saves search time for the next researcher who reads the source.",
+      "Decidable instance is non-negotiable: parent file's lr_polytime_positivity uses `decide (∀ r < _, ∀ t, admissible t → hornInequality t α β γ)` which requires `Decidable (0 < lrCoeffN ν λ μ)` to typecheck. Our lrCoeffN_def is decidable by construction (Fintype.card guarded by a decidable if), but the instance must be stated explicitly.",
+      "Mathlib v4.26.0 has YoungDiagram + StandardYoungTableau (used by BallotProblemOQ03OQ01OQ02.lean:49 etc.) but NOT SemistandardYoungTableau / SkewYoungDiagram / lattice word predicate. The gap is real and consistent with the pool note 'Mathlib's developing combinatorics for Young tableaux ... needs to be extended with the reverse-row-reading-word'.",
+      "The 2-row anchoring lemma (S3: lrCoeffN_def (Partition 2) = lrCoeff2) is the right first theorem after the S2 definitions — three purposes: (1) sanity-check the abstract count reduces to the known computable case; (2) exercise reverseRowWord / isLatticeWord on concrete Gr(2,4) data from Hilbert15OQ01.lean; (3) leave a concrete subgoal for S3 rather than a parent-file refactor (axiom replacement = S4)."
+    ],
+    "mathlibGaps": [
+      "SemistandardYoungTableau is not present in Mathlib at pinned v4.26.0 (only StandardYoungTableau and YoungDiagram). Gallery has a private SSYTFin n k sh in BallotProblemOQ03OQ01OQ01OQ01.lean:177 restricted to straight shapes with Fin n entries.",
+      "SkewYoungDiagram (a pair (ν,μ) with μ ⊆ ν, exposing the cells in ν\\μ as a sigma-type) is not present anywhere — neither in Mathlib nor in any gallery file.",
+      "Reverse row reading word (Fulton convention) — not in Mathlib, not in gallery. This is the load-bearing piece of any LR-rule formalization.",
+      "Lattice (= ballot = Yamanouchi) word predicate — not in Mathlib. Defining it as `Decidable` over `List (Fin n)` is straightforward but missing.",
+      "General-n LR coefficient — every Schur-positive theorem in the Hilbert-15 cluster currently bottoms out in `axiom lrCoeffN` in the parent file."
+    ],
+    "nextSteps": [
+      "S2: scaffold proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean with five definitions (SkewShape n, SkewSSYTFin n ν μ, reverseRowWord, isLatticeWord, lrCoeffN_def) and the Decidable / Fintype instances. Model on SSYTFin n k sh (gallery's straight-shape analog) from BallotProblemOQ03OQ01OQ01OQ01.lean:177. Target ~150 lines, 0 sorries on definitions, ≤2 routine sorries flagged for Aristotle.",
+      "S3: prove lrCoeffN_def_two_eq_lrCoeff2 — the 2-row anchoring lemma. Exercises the abstract count on the 7 Gr(2,4) Chow ring constants verified in Hilbert15OQ02.lean. Bridges the new abstract definition to the existing computable lrCoeff2.",
+      "S4 (optional): refactor parent Hilbert15OQ02OQ03.lean — replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def`. Verify nothing downstream breaks (the axiom was only used in klyachko_theorem's statement and in lr_polytime_positivity's decide invocation)."
+    ]
+  },
+  "references": [
+    {
+      "label": "Fulton (1997)",
+      "citation": "Fulton, W. (1997). Young Tableaux (LMS Student Texts 35), Cambridge University Press. Chapter 5: 'The Littlewood-Richardson rule'."
+    },
+    {
+      "label": "Stanley EC v.2",
+      "citation": "Stanley, R.P. (1999). Enumerative Combinatorics Vol. 2, Cambridge University Press. Appendix 1 (A.1.3) — reading words and Yamanouchi sequences."
+    },
+    {
+      "label": "Macdonald (1995)",
+      "citation": "Macdonald, I.G. (1995). Symmetric Functions and Hall Polynomials (2nd ed.). Oxford University Press. §I.9 'The Littlewood-Richardson rule'."
+    },
+    {
+      "label": "Knutson-Tao (1999)",
+      "citation": "Knutson, A. & Tao, T. (1999). The honeycomb model of GL_n tensor products I. J. Amer. Math. Soc. 12(4), 1055-1090."
+    }
+  ],
+  "tags": [
+    "combinatorics",
+    "schubert-calculus",
+    "littlewood-richardson",
+    "young-tableaux",
+    "representation-theory",
+    "hilbert",
+    "axiom-elimination",
+    "mathlib-gap",
+    "scaffold"
+  ]
+}
