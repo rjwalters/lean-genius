@@ -1,8 +1,83 @@
 # Current State
 
-**Phase**: ACT (S2 implementation, build pending)
-**Since**: 2026-05-12 (S2 by researcher-4)
-**Iteration**: 2
+**Phase**: ACT (S3 parent-gallery polish, build pending on S2 Lean file)
+**Since**: 2026-05-12 (S3 by researcher-1)
+**Iteration**: 3
+
+## S3 Summary (2026-05-12, researcher-1)
+
+**Mode**: ACT (POLISH — parent gallery cross-reference and openQuestion
+resolution). Pure JSON edit, zero Lean changes, zero build risk.
+
+### Deliverable
+
+Two edits to `src/data/proofs/cantors-theorem-oq-01/meta.json`
+(the **parent gallery entry**):
+
+1. **`conclusion.openQuestions[2]`** appended with `[RESOLVED in
+   oq-01-oq-03 — theorem `CantorsTheoremOQ01OQ03.oq01oq03_resolution`,
+   formalized 2026-05-12 via Cardinal.lt_cof_power]`. The question
+   "Can König's constraint be formalized in Lean4 without axioms?
+   (Requires formalizing infinite product cardinal arithmetic)" was
+   resolved YES by S2 (PR #17741 / researcher-4, 2026-05-12) —
+   `Cardinal.lt_cof_power` is already in Mathlib and the
+   formalization uses it directly without invoking infinite product
+   cardinal arithmetic.
+
+2. **`crossReferences[]`** gains a reciprocal `"extends"` entry
+   pointing at `cantors-theorem-oq-01-oq-03`. The child file's
+   parent-crossRef has been on origin/main since S2 merge; this fixes
+   the asymmetry. Description connects it to the Part 7 placeholder
+   commentary in the parent Lean file.
+
+### Why this is the right S3 step
+
+S1's plan included this update as part of S4 polish (the original
+state.md note used the wrong theorem name `konig_cof_powerSet_real`
+and the wrong index `openQuestions[1]`; this S3 corrects both: the
+actual theorem is `oq01oq03_resolution` and the resolved question is
+`openQuestions[2]`). Decoupling the JSON polish from the heavier
+Lean cross-reference (the original S4 plan's `import` + `#check`
+inside parent's Part 7) keeps this PR build-risk-free while still
+restoring gallery integrity: any reader of `cantors-theorem-oq-01`'s
+page will now see the König constraint marked resolved and can click
+through to the child entry.
+
+The heavier Lean cross-reference inside parent's Part 7 (replacing
+the empty comment block at lines 215-223 with `import` + `#check`
+of the new theorems) is deferred to S4. That change introduces a
+build dependency on `CantorsTheoremOQ01OQ03.lean`, which is currently
+"(build pending)" per S2's note in this file's S2 deliverables. Once
+a Docker build of the child file is confirmed clean, S4 can land the
+parent's Part 7 commentary update.
+
+### File deltas
+
+- `src/data/proofs/cantors-theorem-oq-01/meta.json`: +5 lines, -1 line.
+- No Lean changes; no changes to child slug's own meta.json (already
+  correct from S2).
+- Sorry count: unchanged. Axiom count: unchanged. Lean line count:
+  unchanged.
+
+### Build status
+
+N/A — no Lean code touched. Parent `CantorsTheoremOQ01.lean` continues
+to build cleanly on origin/main (untouched). Child
+`CantorsTheoremOQ01OQ03.lean` remains "(build pending)" from S2 — this
+S3 PR does not affect that pending state.
+
+### Next action (S4+)
+
+- **S4 polish (~5 lines, Lean change)**: replace parent's Part 7
+  comment block (lines 215-223 of `CantorsTheoremOQ01.lean`) with
+  `import Proofs.CantorsTheoremOQ01OQ03` (at top of file) + a
+  `#check CantorsTheoremOQ01OQ03.oq01oq03_resolution` reference in
+  Part 7. Adds a build dependency; defer until S2's child file has a
+  confirmed clean Docker build.
+- **S4 alt (~10 lines, sibling cleanup)**: deprecate
+  `CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real` in favor of
+  the more general `CantorsTheoremOQ01OQ03.konig_constraint_continuum`.
+  Optional — adds gallery hygiene but is orthogonal to the resolution.
 
 ## Current Focus
 
