@@ -2965,4 +2965,89 @@ private lemma satDiagBases_fst_injOn :
 
 end N2SatDiagBasesIndex
 
+-- ============================================================
+-- (S25-prep-endpoint-form) Diagonal endpoints of `satDiagBases`
+-- rewritten in `face2_path_odd`'s `(k, N - k)` parametrization.
+--
+-- `face2_path_odd` (in `N2Grid` section) defines its color path
+-- function `g : ℕ → Fin 2` over vertices `(k, N - k)` for
+-- `k : ℕ`. The eventual S25 bijection between the `_hLastFace`
+-- filter and `(Finset.range N).filter (g · ≠ g · + 1)` color
+-- changes will translate, for `b ∈ satDiagBases N` with self-
+-- drop index `k`, the two non-`k` vertices of `t1 b` —
+-- `(b.1, b.2 + 1)` and `(b.1 + 1, b.2)` — into the form
+-- `(b.1, N - b.1)` and `(b.1 + 1, N - (b.1 + 1))` that
+-- `face2_path_odd`'s parametrization expects.
+--
+-- The four lemmas in this section package those rewrites once
+-- for reuse by S25:
+--
+--   * `satDiagBases_succ_le` — `b.1 + 1 ≤ N` (range bound for
+--     `cN2` on the second endpoint).
+--   * `satDiagBases_first_endpoint_face2_path_form` —
+--     `(b.1, b.2 + 1) = (b.1, N - b.1)` (first endpoint at
+--     `face2_path_odd`'s index `k = b.1`).
+--   * `satDiagBases_second_endpoint_face2_path_form` —
+--     `(b.1 + 1, b.2) = (b.1 + 1, N - (b.1 + 1))` (second
+--     endpoint at index `k = b.1 + 1`).
+--   * `satDiagBases_endpoints_pair_face2_path_form` — the
+--     unordered pair of diagonal endpoints rewritten as a pair
+--     of `(k, N - k)`-form vertices.
+--
+-- Each is a one-line corollary of `satDiagBases_mem_iff` (S20)
+-- + `omega` + `Prod.ext`. Independent of the in-flight S23
+-- (`N2LastFaceColors`, PR #17571) color wiring and S25-prep
+-- (`N2GridCoord`, PR #17621) gridPt coordinate helpers.
+-- ============================================================
+
+section N2DiagonalEndpointForm
+
+variable (N : ℕ)
+
+/-- For `b ∈ satDiagBases N`, the successor of `b.1` is bounded by
+`N`. This is the range hypothesis required to evaluate `cN2 N hN
+f hf_map` (or `face2_path_odd`'s `g`) at the second diagonal
+endpoint `(b.1 + 1, N - (b.1 + 1))`. -/
+private lemma satDiagBases_succ_le
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    b.1 + 1 ≤ N := by
+  obtain ⟨h1, _, _⟩ := (satDiagBases_mem_iff N b).mp hb
+  omega
+
+/-- For `b ∈ satDiagBases N`, the first diagonal endpoint
+`(b.1, b.2 + 1)` is exactly `(b.1, N - b.1)` — the `k = b.1`
+slice of `face2_path_odd`'s `(k, N - k)` parametrization. -/
+private lemma satDiagBases_first_endpoint_face2_path_form
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    ((b.1, b.2 + 1) : ℕ × ℕ) = (b.1, N - b.1) := by
+  obtain ⟨_, _, hsat⟩ := (satDiagBases_mem_iff N b).mp hb
+  refine Prod.ext rfl ?_
+  omega
+
+/-- For `b ∈ satDiagBases N`, the second diagonal endpoint
+`(b.1 + 1, b.2)` is exactly `(b.1 + 1, N - (b.1 + 1))` — the
+`k = b.1 + 1` slice of `face2_path_odd`'s parametrization. -/
+private lemma satDiagBases_second_endpoint_face2_path_form
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    ((b.1 + 1, b.2) : ℕ × ℕ) = (b.1 + 1, N - (b.1 + 1)) := by
+  obtain ⟨_, _, hsat⟩ := (satDiagBases_mem_iff N b).mp hb
+  refine Prod.ext rfl ?_
+  omega
+
+/-- For `b ∈ satDiagBases N`, the unordered pair of diagonal
+endpoints `{(b.1, b.2 + 1), (b.1 + 1, b.2)}` equals the pair of
+consecutive `face2_path_odd` slices `{(b.1, N - b.1),
+(b.1 + 1, N - (b.1 + 1))}`. This is the convenient `Finset`-level
+form S25 will consume when relating the door condition (acting on
+the 2-element codim-1 face) to the color-change predicate
+`g(b.1) ≠ g(b.1 + 1)`. -/
+private lemma satDiagBases_endpoints_pair_face2_path_form
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    (({(b.1, b.2 + 1), (b.1 + 1, b.2)} : Finset (ℕ × ℕ))) =
+      ({(b.1, N - b.1), (b.1 + 1, N - (b.1 + 1))} : Finset (ℕ × ℕ)) := by
+  rw [satDiagBases_first_endpoint_face2_path_form N hb,
+      satDiagBases_second_endpoint_face2_path_form N hb]
+
+end N2DiagonalEndpointForm
+
 end SpernerFreudSimp

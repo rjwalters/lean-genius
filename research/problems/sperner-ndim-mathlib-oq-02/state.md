@@ -791,3 +791,24 @@ coordinates). Total estimated remaining: ~150 lines across 2 sessions.
 
 Main entry: 1 axiom (honest, correct). Companion shows n=0,1 concretely proved.
 OQ-02 question answered modulo 1 axiom (the combinatorial Sperner's lemma for n-dim grid).
+
+Session 26 (S25-prep-endpoint-form, this session, build pending):
+Added `N2DiagonalEndpointForm` section (4 lemmas, 51 lines added
+to `SpernerFreudenthalSimplex.lean`) bridging `satDiagBases N`
+diagonal endpoint expressions to `face2_path_odd`'s `(k, N - k)`
+parametrization:
+
+  * `satDiagBases_succ_le` — `b.1 + 1 ≤ N` (range bound).
+  * `satDiagBases_first_endpoint_face2_path_form` —
+    `(b.1, b.2 + 1) = (b.1, N - b.1)`.
+  * `satDiagBases_second_endpoint_face2_path_form` —
+    `(b.1 + 1, b.2) = (b.1 + 1, N - (b.1 + 1))`.
+  * `satDiagBases_endpoints_pair_face2_path_form` — unordered
+    pair rewrite combining the two endpoint forms.
+
+Each proof: extract `satDiagBases_mem_iff` data + `omega`.
+Independent of in-flight S23 (N2LastFaceColors, PR #17571) color
+wiring and S25-prep (N2GridCoord, PR #17621) gridPt coordinate
+helpers. Pure combinatorial form-rewriting consumed by the
+eventual S25 bijection between the `_hLastFace` filter and
+`(Finset.range N).filter (g k ≠ g (k+1))` color-change edges.
