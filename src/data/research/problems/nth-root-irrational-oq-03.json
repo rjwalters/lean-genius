@@ -1,0 +1,78 @@
+{
+  "id": "nth-root-irrational-oq-03",
+  "title": "Transcendence: Hermite-Lindemann / Lindemann-Weierstrass",
+  "source": "gallery-gap",
+  "parent": "nth-root-irrational",
+  "wiedijk100": [52, 53, 67],
+  "created": "2026-05-12",
+  "lastUpdated": "2026-05-12",
+  "phase": "OBSERVE",
+  "iteration": 1,
+  "status": "active",
+  "shortDescription": "Hermite-Lindemann (1882): for nonzero algebraic α, e^α is transcendental. Lindemann-Weierstrass (1885): for Q-linearly-independent algebraic α₁..αₙ, the e^αᵢ are algebraically independent over Q. Project status: axiomatized in HermiteLindemann.lean; this slug coordinates bridge work to existing infrastructure rather than re-formalising from scratch.",
+  "wiedijkRefs": [
+    {"number": 52, "title": "Transcendence of e"},
+    {"number": 53, "title": "Transcendence of pi"},
+    {"number": 67, "title": "e is transcendental (corollary form)"}
+  ],
+  "knowledge": {
+    "insights": [
+      "Slug duplicates substantial existing transcendence infrastructure: HermiteLindemann.lean (390 lines, 1 axiom), eTranscendental.lean (304 lines, 1 sorry), ETranscendentalOQ0{1,2,3}.lean (538/715/219 lines, 0/1/2 axioms), PiTranscendental.lean (457 lines, 1 sorry). Total 2,623 lines of related work.",
+      "Parent placement under `nth-root-irrational` is technique-mismatched: parent is *algebraic-irrationality of irreducible-polynomial roots* (purely algebraic), this OQ is *transcendence over Q* (analytic/auxiliary-polynomial techniques). Effective parent should be `e-transcendental-*` family.",
+      "Two adjacent axioms are tractable bridge targets: (1) `irrational_liouvilleWith_two` in ETranscendentalOQ03.lean:114 (Dirichlet's approximation lower bound, ~30-60 line proof from Mathlib); (2) `e_not_liouvilleWith_gt_two` in ETranscendentalOQ03.lean:154 (sharp upper bound via regular CF expansion of e, harder ~100-200 lines).",
+      "Full Hermite-Lindemann proof is ~900 lines of formalisation (auxiliary polynomial + integral identity + prime-selection contradiction). Mathlib has active upstream PR work; long-term right move is to bridge to upstream rather than re-formalise.",
+      "Status field must be `axiomatized` (per Axiom Integrity Policy): main result depends on `axiom hermite_lindemann` plus 2 OQ03 axioms plus 4 sibling sorries. Never mark `verified`."
+    ],
+    "builtItems": [],
+    "progressSummary": "S1 OBSERVE: duplicate-detection survey + 4-iteration roadmap. No Lean changes this iteration.",
+    "approachesAttempted": [],
+    "knownDeadEnds": [],
+    "nextSteps": [
+      "S2 ACT: Discharge `axiom irrational_liouvilleWith_two` in ETranscendentalOQ03.lean using Mathlib Dirichlet-approximation API (axiom count 2→1).",
+      "S3: Survey current `mathlib4` Lindemann-Weierstrass upstream PR status; bridge `axiom hermite_lindemann` if upstream API is stable.",
+      "S4: Attempt `axiom e_not_liouvilleWith_gt_two` via Mathlib continued-fraction API (or document blocker if upstream CF support is insufficient on v4.26.0).",
+      "S5 (optional): Cross-reference all transcendence files in gallery for unified narrative thread."
+    ]
+  },
+  "leanFile": {
+    "path": "proofs/Proofs/HermiteLindemann.lean",
+    "namespace": "HermiteLindemann",
+    "primaryDeclaration": "hermite_lindemann"
+  },
+  "additionalFiles": [
+    "proofs/Proofs/eTranscendental.lean",
+    "proofs/Proofs/ETranscendentalOQ01.lean",
+    "proofs/Proofs/ETranscendentalOQ02.lean",
+    "proofs/Proofs/ETranscendentalOQ03.lean",
+    "proofs/Proofs/PiTranscendental.lean"
+  ],
+  "crossReferences": [
+    {"slug": "e-transcendental-oq-01", "reason": "Sibling: strong-form Q-linear-independence of 1, e, e², …, eⁿ"},
+    {"slug": "e-transcendental-oq-02", "reason": "Sibling: irrationality measure µ(e) = 2 via continued fractions"},
+    {"slug": "e-transcendental-oq-03", "reason": "Sibling: µ(e) = 2 via Liouville framework — contains the two tractable axioms targeted by this slug's S2/S4"},
+    {"slug": "nth-root-irrational", "reason": "Parent slug — placement is technique-mismatched but seeker-assigned"},
+    {"slug": "angle-trisection-cos-20-gal-oq-01-oq-03", "reason": "Adjacent algebraic-transcendence interface (cyclotomic Φ_{2p}(-1) = p)"},
+    {"slug": "algebraic-numbers-countable-oq-02-oq-04", "reason": "Adjacent transcendence-theoretic context"}
+  ],
+  "openQuestions": [
+    {
+      "id": "nth-root-irrational-oq-03-q1",
+      "question": "What is the current state of `mathlib4` Lindemann-Weierstrass / Hermite-Lindemann formalisation as of 2026-05-12? Has any upstream PR landed that would let us discharge `axiom hermite_lindemann` directly?",
+      "rationale": "Bridge-vs-rebuild decision for S3. If upstream is stable, ~50 lines of bridge work; if not, the axiom stays and we focus on tier-A/B/C non-HL targets."
+    },
+    {
+      "id": "nth-root-irrational-oq-03-q2",
+      "question": "Should `nth-root-irrational-oq-03` be renamed/aliased to align with the `e-transcendental-*` family, or remain as a cross-reference entry pointing to the real work in those slugs?",
+      "rationale": "Pure organisational question. Either choice is defensible; flagged for human/curator review."
+    }
+  ],
+  "references": [
+    "Hermite, C. (1873). Sur la fonction exponentielle. Comptes Rendus 77, 18-24, 74-79.",
+    "Lindemann, F. (1882). Über die Zahl π. Math. Ann. 20, 213-225.",
+    "Weierstrass, K. (1885). Zu Lindemann's Abhandlung. Sitz. Berlin Akad.",
+    "Baker, A. (1990). Transcendental Number Theory, CUP. Ch. 1-2 (Hermite-Lindemann), Ch. 6 (Baker's theorem).",
+    "Niven, I. (1956). Irrational Numbers, Carus Math. Monographs 11. (Accessible proof of Hermite-Lindemann.)",
+    "Mathlib: Mathlib.NumberTheory.Transcendental.Liouville.* (Liouville constructions), Mathlib.Data.Real.Pi.Irrational (Real.pi_irrational)."
+  ],
+  "tags": ["transcendence", "hermite-lindemann", "lindemann-weierstrass", "wiedijk-100", "axiomatized", "bridge-target"]
+}
