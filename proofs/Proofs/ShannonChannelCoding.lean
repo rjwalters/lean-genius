@@ -10,9 +10,10 @@
 
   Axioms: 3 (channel_coding_achievability, channel_coding_converse,
     bsc_capacity_eq)
-  Theorems: 9 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
-    channelMI_le_log_card, capacity_nonneg, rate_of_code_pos,
-    fano_inequality, bsc_capacity_le_one, bsc_capacity_nonneg)
+  Theorems: 11 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+    channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity,
+    capacity_le_log_card, rate_of_code_pos, fano_inequality,
+    bsc_capacity_le_one, bsc_capacity_nonneg)
   Sorries: 0
 -/
 import Mathlib
@@ -122,6 +123,48 @@ theorem capacity_nonneg {α β : Type*} [Fintype α] [Fintype β]
       hr ▸ channelMI_le_log_card ch inp⟩
   · exact ⟨inp₀, rfl⟩
   · exact channelMI_nonneg ch inp₀
+
+/-- **Single-letter capacity upper bound.** For every input distribution `inp`,
+    the mutual information `I(X;Y)` is bounded by the channel capacity.
+
+    This is the immediate consequence of `channelCapacity` being defined as a
+    supremum over input distributions: any particular `inp` sits below the sup.
+    `BddAbove` is witnessed by `log |β|` via `channelMI_le_log_card`.
+
+    This lemma is the single-letter ingredient used in the converse direction
+    of the channel coding theorem (Fano's inequality + this bound rearrange
+    into `(1 - P_e) log M ≤ I(X;Y) + h(P_e) ≤ C + h(P_e)`). -/
+theorem channelMI_le_capacity {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (ch : DMChannel α β) (inp : InputDist α) :
+    channelMI ch inp ≤ channelCapacity ch := by
+  unfold channelCapacity
+  apply le_csSup
+  · exact ⟨Real.log (Fintype.card β), fun _ ⟨inp', hr⟩ =>
+      hr ▸ channelMI_le_log_card ch inp'⟩
+  · exact ⟨inp, rfl⟩
+
+/-- **Capacity upper bound by output alphabet.** Channel capacity is at most
+    `log |β|`. Combined with `capacity_nonneg`, this localises the capacity
+    of every DMChannel `α → β` to `[0, log |β|]`.
+
+    Immediate from `channelMI_le_log_card` and the supremum definition of
+    `channelCapacity`. Used downstream in the bsc analysis to bound the
+    capacity-achieving rate `1 - h(p)` from above. -/
+theorem capacity_le_log_card {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β] [Nonempty α]
+    (ch : DMChannel α β) :
+    channelCapacity ch ≤ Real.log (Fintype.card β) := by
+  unfold channelCapacity
+  have ⟨a⟩ := ‹Nonempty α›
+  let inp₀ : InputDist α :=
+    { p := fun x => if x = a then 1 else 0
+      nonneg := fun x => by split_ifs <;> norm_num
+      sum_one := by simp [Finset.sum_ite_eq', Finset.mem_univ] }
+  apply csSup_le
+  · exact ⟨channelMI ch inp₀, inp₀, rfl⟩
+  · rintro r ⟨inp, rfl⟩
+    exact channelMI_le_log_card ch inp
 
 /- ## Block codes -/
 
