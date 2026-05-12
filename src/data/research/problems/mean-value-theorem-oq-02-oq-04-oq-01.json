@@ -1,7 +1,7 @@
 {
   "slug": "mean-value-theorem-oq-02-oq-04-oq-01",
   "title": "Refutation of the OQ-04 axiom: Cauchy uniform bound fails on real-only hypotheses (Runge phenomenon)",
-  "phase": "ACT",
+  "phase": "ACT (S4: §3b main theorem fully proven modulo cauchy_diag_norm_bound sub-lemma; sorry count stays at 1 but residual gap isolated to a single Cauchy-coefficient bridge)",
   "status": "progress",
   "tier": "B",
   "path": "full",
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "REFUTED (S1) + EXISTENTIAL CORRECTED FORM PROVEN (S2) + OFF-BY-ONE REFUTATION FORMALIZED (S3): parent OQ-04 axiom refuted by Runge counterexample; existential Cauchy-style approximation proven via Mathlib uniform_geometric_approx; S1-S2 explicit-form RHS paired with partialSum n is FALSE (constant-1 witness, 1 ≤ 1/3) and the corrected statement uses partialSum (n+1); geometric_tail_identity proven.",
+    "progressSummary": "S4 (2026-05-12) — §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. Combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → RHS rescaling via 1−r/R = (R−r)/R + geometric_tail_identity) is now Lean code, not docstring. Sorry count unchanged (1 → 1) but residual gap is isolated to the per-degree Cauchy coefficient estimate.",
     "builtItems": [
       "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~137) — the Runge function 1/(1+x²)",
       "Theorem runge_one_add_sq_pos (~142) — 1 + x² > 0",
@@ -59,7 +59,9 @@
       "**(S3 NEW)** Definition OriginalRemainderForm — Prop-encoding of the S1-S2 false explicit form (refuted in originalRemainderForm_is_false)",
       "**(S3 NEW)** Theorem originalRemainderForm_is_false — constant-1 witness refutation forcing (1:ℝ) ≤ 1/3 contradiction; uses constFormalMultilinearSeries + HasFPowerSeriesOnBall.mono",
       "**(S3 NEW)** Theorem geometric_tail_identity — pure-algebra rewrite (r/R)^(n+1)·R/(R-r) = r^(n+1)/(R^n·(R-r)); field_simp + ring",
-      "**(S3 RESTATEMENT)** Theorem analytic_taylor_remainder_uniform_bound_complex — corrected partialSum (n+1) indexing; RHS aligns with geometric tail from degree k=n+1; sorry retained"
+      "**(S3 RESTATEMENT)** Theorem analytic_taylor_remainder_uniform_bound_complex — corrected partialSum (n+1) indexing; RHS aligns with geometric tail from degree k=n+1; sorry retained",
+      "S4: cauchy_diag_norm_bound (sorry, named sub-lemma) — isolates the residual gap to the Cauchy coefficient bound `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖/R)^k` for `‖w‖ < R`, with proof chain sketched in the docstring",
+      "S4: analytic_taylor_remainder_uniform_bound_complex (PROVEN modulo cauchy_diag_norm_bound) — full combination chain: hasSum_sub + per-term bound + norm_sub_le_of_geometric_bound_of_hasSum + norm_sub_rev + algebraic rescaling"
     ],
     "insights": [
       "The parent OQ-04 axiom is mathematically false: real-analyticity + real sup bound does not control complex Cauchy coefficient estimates, which require a complex sup bound on a complex disk.",
@@ -72,7 +74,11 @@
       "**(S2 finding)** Mathlib's lemma `uniform_geometric_approx'` is in y-centered form (f(a+y), y ∈ ball 0 r'); a z-centered version (f z, z ∈ ball a r) is useful for downstream applications. The translation is purely change-of-variables but worth packaging as a named theorem.",
       "Mathlib partialSum n convention truncates at degree n−1 (∑ k ∈ Finset.range n); the geometric tail from degree k=n is M·r^n·R/(R^n·(R-r)), not M·r^(n+1)/(R^n·(R-r)).",
       "constFormalMultilinearSeries 𝕜 E c is the Mathlib power series for constant functions; combined with hasFPowerSeriesOnBall_const + HasFPowerSeriesOnBall.mono gives a counterexample witness on any radius.",
-      "S3 supersedes PR #17904 (DIRTY/CONFLICTING after #17912 merged): same off-by-one finding, cleanly rebased against current origin/main with descriptive Prop name OriginalRemainderForm."
+      "S3 supersedes PR #17904 (DIRTY/CONFLICTING after #17912 merged): same off-by-one finding, cleanly rebased against current origin/main with descriptive Prop name OriginalRemainderForm.",
+      "S4: HasFPowerSeriesOnBall.hasSum_sub is the right Mathlib hook for the diagonal HasSum at a point `z` in the disk — no need for the ball-at-origin form.",
+      "S4: partialSum n y = ∑ k ∈ Finset.range n, p k (fun _ => y) definitionally — rfl closes the unfolding step.",
+      "S4: The RHS algebra (`M * (r/R)^(n+1) / (1 - r/R) = M * r^(n+1) / (R^n * (R-r))`) does NOT close by `field_simp + ring` alone — `ring` cannot combine stray `R⁻¹^n` factors. Use an explicit `calc` chain via `div_div_eq_mul_div + mul_assoc + mul_div_assoc + geometric_tail_identity + ← mul_div_assoc`.",
+      "S4: `pow_le_pow_left` is unknown in Mathlib v4.26.0 (renamed or removed). Use `gcongr` for monotonicity-of-pow + monotonicity-of-div together."
     ],
     "mathlibGaps": [
       "Bridge from AnalyticOn ℝ (real-analytic on a real interval) to HasFPowerSeriesOnBall on Metric.ball (a:ℂ) R for some complex extension — not directly available; would need real-to-complex analytic continuation lemmas.",
@@ -80,10 +86,9 @@
       "No high-level Mathlib lemma `cauchyEstimate : ‖p k‖ ≤ M/R^k from sup bound on the circle` — must be derived from `Complex.norm_cauchyPowerSeries_le` + `DifferentiableOn.hasFPowerSeriesOnBall` manually. Could be a Mathlib contribution opportunity."
     ],
     "nextSteps": [
-      "S3+: discharge analytic_taylor_remainder_uniform_bound_complex (explicit form) via the Cauchy integral chain: norm_cauchyPowerSeries_le → ‖p k‖ ≤ M/R^k → term-by-term bound → geometric tail. Estimated 150-200 lines.",
-      "Consider scope-creep: add a comment to the parent OQ-04 file referencing this refutation, so future readers see the obstruction without searching.",
-      "Generalize the Prop-encoding refutation pattern as a gallery template for axiom-validity audits.",
-      "Audit the gallery for other partialSum-indexing-off-by-one bugs: search for theorem statements involving `partialSum n` + Cauchy-style `r^(n+1)/R^n` bounds; verify the indexing matches the convention `range N = {0, ..., N-1}` (n+1 terms for degree-n Taylor polynomial)."
+      "S5: Discharge cauchy_diag_norm_bound via the Mathlib Cauchy-integral chain (Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le + HasFPowerSeriesOnBall.factorial_smul + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod + r'→R⁻ limit). Estimated 100-150 lines.",
+      "S5 alternative: cauchyPowerSeries + Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall + power-series uniqueness on closed disk of radius r' < R.",
+      "Audit sibling gallery files that import MeanValueTheoremOQ02OQ04 for similar OQ-04-axiom-dependence."
     ]
   },
   "tags": [
@@ -121,7 +126,7 @@
     ]
   },
   "started": "2026-05-12T00:00:00.000Z",
-  "lastUpdate": "2026-05-12T00:00:00.000Z",
+  "lastUpdate": "2026-05-12T12:00:23.926270Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

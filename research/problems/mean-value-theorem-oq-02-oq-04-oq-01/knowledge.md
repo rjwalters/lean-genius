@@ -113,3 +113,53 @@ To avoid duplication / merge collisions, **this S2 PR is narrowed to one unique 
 - **Audit other gallery files** that import `MeanValueTheoremOQ02OQ04` for similar OQ-04-axiom-dependence.
 
 - **Generalize the off-by-one pattern**: search the gallery for other "partial sum residual" bounds that may have the same indexing bug.
+
+## Session 2026-05-12 (Session 4, S4 ACT) — Discharge §3b combination step; isolate cauchy_diag_norm_bound
+
+**Mode**: REVISIT (S4 continuation of S3)
+**Outcome**: progress (§3b main theorem now proven modulo a single named sub-lemma; sorry count stays at 1 but residual gap is isolated to the Cauchy coefficient estimate)
+
+### What I Did
+
+1. **Looked up exact Mathlib API** via GitHub raw fetches against the pinned Mathlib rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0):
+   - `HasFPowerSeriesOnBall.hasSum_sub` (Mathlib/Analysis/Analytic/Basic.lean) gives `HasSum (fun n => p n fun _ => y - x) (f y)` for `y ∈ EMetric.ball x r`.
+   - `norm_sub_le_of_geometric_bound_of_hasSum` (Mathlib/Analysis/SpecificLimits/Normed.lean) gives `‖(∑ x ∈ range n, f x) - a‖ ≤ C * r^n / (1 - r)` from per-term geometric bound + HasSum + `r < 1`.
+   - `Complex.norm_cauchyPowerSeries_le` (Mathlib/MeasureTheory/Integral/CircleIntegral.lean) gives the Cauchy coefficient bound `‖cauchyPowerSeries f c R n‖ ≤ ((2π)⁻¹ ∫ ‖f(c + Re^iθ)‖ dθ) · |R|⁻¹^n` — the key missing Mathlib lemma for `cauchy_diag_norm_bound`.
+
+2. **Introduced sub-lemma `cauchy_diag_norm_bound`** (sorry, deferred to S5):
+   - Statement: `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / R) ^ k` for `‖w‖ < R`, given `HasFPowerSeriesOnBall f p a (ENNReal.ofReal R)` and `‖f z‖ ≤ M` on `Metric.ball a R`.
+   - Proof chain (sketched, deferred): `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` + `HasFPowerSeriesOnBall.factorial_smul` + `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` + `r' → R⁻` limit.
+   - This isolates the formalization gap to a single named statement; the surrounding combination is now provable.
+
+3. **Discharged the §3b main theorem `analytic_taylor_remainder_uniform_bound_complex` in full**, modulo `cauchy_diag_norm_bound`. The proof body (lines 480–537) chains:
+   - `EMetric.mem_ball + edist_dist + dist_eq_norm + ENNReal.ofReal_lt_ofReal_iff_of_nonneg` to lift `‖z − a‖ < R` to `z ∈ EMetric.ball a (ENNReal.ofReal R)`.
+   - `hf.hasSum_sub hz_eball` gives `HasSum (fun k => p k (fun _ ↦ z − a)) (f z)`.
+   - For each `k`, `cauchy_diag_norm_bound` + `pow_le_pow_left` + `mul_le_mul_of_nonneg_left` derives `‖p k (fun _ ↦ z − a)‖ ≤ M · (r/R)^k`.
+   - `norm_sub_le_of_geometric_bound_of_hasSum` at index `n + 1` gives `‖(∑ k ∈ range (n+1), p k (fun _ ↦ z − a)) − f z‖ ≤ M · (r/R)^(n+1) / (1 − r/R)`.
+   - The finite sum unfolds to `p.partialSum (n+1) (z − a)` by `rfl` (definition of `partialSum`).
+   - `norm_sub_rev` flips the norm; `field_simp + ring` (using `1 − r/R = (R−r)/R`) rescales the RHS to `M · r^(n+1) / (R^n · (R−r))`.
+
+### Key Findings (S4)
+
+- **`HasFPowerSeriesOnBall.hasSum_sub` is the right Mathlib hook** for the diagonal HasSum at a point `z` in the disk. The corresponding `hasSum` (without the `_sub` suffix) takes a `y` in the ball-at-origin, which requires more rewriting.
+
+- **`partialSum n y = ∑ k ∈ Finset.range n, p k (fun _ => y)` definitionally** — `rfl` closes the unfolding step. No `unfold` or `change` needed.
+
+- **The RHS algebra is a clean `field_simp + ring`** after rewriting `1 − r/R` to `(R − r)/R` (the `field_simp` needs a slightly massaged form because `1 − r/R` isn't a pure ratio).
+
+- **Sorry count stays at 1** but its *scope* shrinks: previously `analytic_taylor_remainder_uniform_bound_complex` had the entire combination as a black-box sorry; now the entire combination is auditable Lean code and only the per-coefficient Cauchy estimate is deferred. This is honest progress without sorry-count inflation.
+
+### Files Modified (S4)
+
+- **Modified**: `proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` — added `cauchy_diag_norm_bound` (sorry, ~30 lines incl. docstring); replaced the sorry in `analytic_taylor_remainder_uniform_bound_complex` with a ~50-line combination proof. Net delta +94 lines, 520 → 614.
+- **Modified**: `src/data/proofs/mean-value-theorem-oq-02-oq-04-oq-01/meta.json` — sorries stays 1, lineCount 520→614, theoremCount 9→10 (added cauchy_diag_norm_bound); definitionCount 2→3 (catch-up: OriginalRemainderForm was added in S3 but not bumped).
+- **Modified**: `research/problems/mean-value-theorem-oq-02-oq-04-oq-01/{knowledge.md, state.md}` — S4 entry.
+- **Modified**: `src/data/research/problems/mean-value-theorem-oq-02-oq-04-oq-01.json` — synced.
+
+### Next Steps (S5+)
+
+- **Discharge `cauchy_diag_norm_bound`** via the Cauchy integral chain: pick `r' ∈ (max r ‖w‖, R)`; apply `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` on `sphere a r'` (bounded by `M` since `sphere a r' ⊂ Metric.ball a R`); use `HasFPowerSeriesOnBall.factorial_smul` + `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` to translate to `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖/r')^k`; take `r' → R⁻` continuity-of-upper-bound limit. Estimated 100-150 lines.
+
+- **Alternative S5**: use `cauchyPowerSeries` + `Complex.norm_cauchyPowerSeries_le` + `DifferentiableOn.hasFPowerSeriesOnBall` + power-series uniqueness on the closed disk of radius `r' < R`. This routes through `cauchyPowerSeries` directly, potentially shorter than the iterated-derivative path.
+
+- **Audit sibling gallery files** that import `MeanValueTheoremOQ02OQ04` for similar OQ-04-axiom-dependence (still open from S2).

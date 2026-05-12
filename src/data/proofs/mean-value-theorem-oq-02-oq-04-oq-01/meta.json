@@ -23,8 +23,8 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 520,
-    "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in §2). The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in §3a via constant-1 witness on ℂ, S3 contribution). One sorry remains: the proof of the corrected complex-disk version analytic_taylor_remainder_uniform_bound_complex with the indexing fix partialSum (n+1), deferred to S4.",
+    "lineCount": 614,
+    "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in §2). The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in §3a via constant-1 witness on ℂ, S3 contribution). One sorry remains in cauchy_diag_norm_bound (the per-degree Cauchy coefficient estimate ‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / R)^k); the surrounding §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo this single sub-lemma (S4 contribution).",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -93,10 +93,11 @@
       "Constructive refutation of the parent OQ-04 axiom analytic_taylor_remainder_uniform_bound via the Runge function f(x)=1/(1+x²) at (a,R,M,r,n,x) = (0, 100, 1, 1, 0, 1). The refutation does not invoke the parent axiom (it refutes the *statement*), so it stands even if the parent axiom is later removed.",
       "Identification of the Runge phenomenon as the root cause: real-analyticity + real sup bound does not yield Cauchy coefficient estimates because the complex radius of convergence (the distance to the nearest pole in ℂ) can be much smaller than the real interval radius (the distance to the nearest singularity on ℝ).",
       "Statement of the corrected complex-hypothesis version analytic_taylor_remainder_uniform_bound_complex with explicit Mathlib chain (HasFPowerSeriesOnBall.uniform_geometric_approx' + FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius) for S2 discharge.",
-      "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses."
+      "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses.",
+      "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap)."
     ],
-    "theoremCount": 9,
-    "definitionCount": 2
+    "theoremCount": 10,
+    "definitionCount": 3
   },
   "overview": {
     "historicalContext": "The Runge phenomenon (Carl Runge, 1901) is the canonical obstruction to polynomial interpolation on equispaced nodes: as the polynomial degree grows, the interpolant of a smooth function on equispaced nodes can diverge (rather than converge) at the interval endpoints. The standard witness is f(x)=1/(1+25x²) on [-1,1]; here we use the simpler f(x)=1/(1+x²), which has the same essential feature: poles at x=±i in the complex plane, limiting the complex radius of convergence to 1 even though f is real-analytic on all of ℝ. Cauchy's coefficient estimates |a_k| ≤ M/R^k (Cauchy 1823) require M to bound |f| on a *complex* disk of radius R, not merely on a real interval. The parent gallery entry's OQ-04 axiom dropped this complex hypothesis, yielding a false statement; this OQ-01 file documents the obstruction with a fully-formalized counterexample and points to the correct Mathlib API surface for the real fix.",
