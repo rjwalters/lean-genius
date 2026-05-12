@@ -1,0 +1,85 @@
+{
+  "slug": "bezout-identity-oq-01-oq-01-oq-01-oq-01",
+  "title": "Eliminate stepBitOps_le axiom from Binary GCD bit-complexity proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Replace the two axioms } \\texttt{stepBitOps} \\text{ and } \\texttt{stepBitOps\\_le} \\text{ in } \\texttt{Proofs/BezoutIdentityOQ01OQ01OQ01.lean} \\text{ with a } \\texttt{def} \\text{ and proved } \\texttt{theorem}.",
+    "plain": "The parent gallery proof of binary GCD's O(log^2 n) bit complexity uses two axioms encoding 'each step takes at most 3*(log(max a b)+1) bit operations'. This OQ asks whether those axioms can be eliminated by giving a concrete per-step cost function (e.g., 2*Nat.size(max a b)+1) and proving the bound as a theorem.",
+    "whyMatters": [
+      "Eliminating these axioms moves the parent bezout-identity-oq-01-oq-01-oq-01 from the axiomatized track to the verified track, since stepBitOps and stepBitOps_le are the only assumptions in the entire bit-complexity proof.",
+      "Provides the first worked template for explicit bit-cost modeling in a gallery algorithm-complexity proof; reusable by future entries on FFT, sorting, Schönhage–Strassen, etc.",
+      "Surfaces Mathlib's Nat.size / Nat.bits API as gallery-load-bearing and exposes the Mathlib gap 'no size_eq_succ_log lemma' as a contribution candidate."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "binaryGcdSteps_le_log: binaryGcdSteps a b ≤ 2 * (Nat.log 2 a + Nat.log 2 b) + 2 (parent, Part 1, fully proved)",
+      "binaryGcd_log_sq_bound: totalBitOps a b ≤ 6 * (Nat.log 2 (max a b) + 1)^2 (parent, depends on the axiom-encoded stepBitOps_le)"
+    ],
+    "open": [
+      "Can stepBitOps_le be eliminated by defining a concrete bit-level cost function in Lean 4?"
+    ],
+    "goal": "Eliminate both axioms in Proofs/BezoutIdentityOQ01OQ01OQ01.lean by replacing 'axiom stepBitOps' / 'axiom stepBitOps_le' with 'def stepBitOps' / 'theorem stepBitOps_le'. Approach A target: stepBitOps a b := 2 * Nat.size (max a b) + 1; bound 2*size+1 ≤ 3*(log+1) holds because size n = log 2 n + 1 for n ≥ 1 and 1 ≤ 3 at n = 0."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T08:08:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-9, 2026-05-12): survey three approaches (A: closed-form 2*Nat.size+1; B: List Bool re-implementation; C: BitVec n re-implementation). Recommended Approach A as the S2 attack target — single PR, ~30 net lines Lean, all stable Mathlib API, drops parent's axiomCount 2 → 0. Identified one load-bearing helper missing from Mathlib (size n = log 2 n + 1 for n ≥ 1), with 4-line proof template using Nat.size_le, Nat.lt_size, Nat.lt_pow_succ_log_self, Nat.pow_log_le_self. Edge cases analyzed (max a b = 0 collapses to 1 ≤ 3; max a b ≥ 2 has gap log ≥ 1).",
+    "blockers": [],
+    "nextAction": "S2: implement Approach A in proofs/Proofs/BezoutIdentityOQ01OQ01OQ01.lean. Three changes: (1) add private lemma size_eq_succ_log (4 lines, le_antisymm via Nat.size_le + Nat.lt_pow_succ_log_self for the ≤ direction, Nat.lt_size + Nat.pow_log_le_self for the ≥ direction). (2) Replace 'axiom stepBitOps (a b : ℕ) : ℕ' and 'axiom stepBitOps_le (a b : ℕ) : ...' with 'def stepBitOps (a b : ℕ) : ℕ := 2 * Nat.size (max a b) + 1' and 'theorem stepBitOps_le' (proof: by_cases on max a b = 0, then size_eq_succ_log + omega). (3) Optionally check parent gallery meta.json for badge update from axiomatized to verified. ~30 lines net, single session.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-9, 2026-05-12): OBSERVE survey. Surveyed three approaches to eliminating stepBitOps_le: A (closed-form 2*Nat.size+1), B (List Bool re-implementation, ~300 lines), C (BitVec n re-implementation, ~250 lines). Settled on A for S2 — minimal PR (~30 net lines), all stable API. Verified key Mathlib lemmas at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: Nat.size_le, Nat.lt_size, Nat.lt_size_self, Nat.size_pos, Nat.size_eq_bits_len, Nat.pow_log_le_self, Nat.lt_pow_succ_log_self. Identified Mathlib gap: 'size n = log 2 n + 1 for n ≥ 1' not stated at pinned rev; 4-line proof via le_antisymm provided. Edge cases (max a b ∈ {0, 1, ≥2}) all close under the concrete model with strict-or-equal inequalities. 0 Lean changes in S1; 4 markdown/JSON files produced.",
+    "builtItems": [
+      "research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-01/problem.md (new, ~210 lines): full statement, three-approach survey, sub-lemma list, Mathlib API map, tractability assessment.",
+      "research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-01/state.md (new, ~80 lines): phase=OBSERVE, S1 survey, S2 next-action sketch with concrete Lean code.",
+      "research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-01/knowledge.md (new, ~200 lines): S1 session note with parent context, three-approach analysis, load-bearing identity (size_eq_succ_log), Mathlib API table at pinned rev, edge cases, insights, mathlibGaps, nextSteps.",
+      "src/data/research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-01.json (this file): research index entry."
+    ],
+    "insights": [
+      "The parent's two axioms (stepBitOps : ℕ → ℕ → ℕ; stepBitOps_le) are the ONLY assumptions in the entire binary-GCD O(log² n) bit-complexity proof. Eliminating them moves the parent from axiomatized to verified.",
+      "Approach A (closed-form 2*Nat.size(max a b)+1) is strictly stronger than the original axiom: in all cases (max a b ∈ {0, 1, ≥2}) the concrete bound is ≤ the axiomatized bound, with equality only at max a b = 1 (LHS = RHS = 3).",
+      "Mathlib gap at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: 'Nat.size n = Nat.log 2 n + 1 for n ≥ 1' is not a stated lemma. The 4-line proof is le_antisymm: ≤ from Nat.size_le + Nat.lt_pow_succ_log_self, ≥ from Nat.lt_size + Nat.pow_log_le_self. Worth a Mathlib contribution after S2.",
+      "Edge case: Nat.size 0 = 0 and Nat.log 2 0 = 0 (both collapse to 0, not off-by-one), so the size = log+1 identity requires n ≥ 1. The stepBitOps_le proof must split on max a b = 0 separately; that case has LHS = 1 ≤ RHS = 3 by omega.",
+      "Approach B (List Bool re-implementation) is interesting as a sibling gallery entry (~300 lines, multi-session) demonstrating the actual algorithm at the bit level, not just bounding the cost. Equivalence to Nat.binaryGcd is the main hurdle (5 recursive branches × 1 toNat-cast case each).",
+      "Approach C (BitVec n re-implementation) is similar to B but fixed-width; bound becomes 3*n+1 (no log). Width-invariance is the main bookkeeping cost; uses Mathlib's BitVec.toNat layer which is well-developed.",
+      "The parent's downstream consumers (totalBitOps, binaryGcd_log_sq_complexity, binaryGcd_log_sq_bound) all use stepBitOps_le via the abstract inequality, not the axiom directly, so they continue to work unchanged after Approach A.",
+      "Nat.size is the bit-length (so size 1 = 1, size 2 = 2, size 4 = 3, size 7 = 3, size 8 = 4); Nat.log 2 is the exponent (log 1 = 0, log 2 = 1, log 4 = 2). They differ by 1 exactly when n ≥ 1, and coincide at 0."
+    ],
+    "mathlibGaps": [
+      "Nat.size_eq_succ_log : ∀ {n : ℕ}, 0 < n → Nat.size n = Nat.log 2 n + 1 is not stated at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. 4-line proof template provided. Pairs naturally with the existing Nat.size_pow lemma in Mathlib/Data/Nat/Size.lean.",
+      "No worked example of an explicit bit-cost model in any gallery proof. The parent's stepBitOps + stepBitOps_le axiom pair is the only one of its kind; eliminating it sets a precedent that other algorithm-complexity proofs can follow.",
+      "No tactic-level support for 'count bit operations in a recursive function'. Each cost-model proof currently has to be hand-rolled. A 'sumBitOps' framework over Nat.binaryRec could be a Mathlib contribution after several gallery use-cases accumulate."
+    ],
+    "nextSteps": [
+      "S2: Implement Approach A in proofs/Proofs/BezoutIdentityOQ01OQ01OQ01.lean. Three changes (helper size_eq_succ_log, replace axioms with def + theorem, optional parent gallery meta update). ~30 lines net, single session.",
+      "S3 (optional): Update parent meta.json (src/data/proofs/bezout-identity-oq-01-oq-01-oq-01/meta.json) to reflect the axiom elimination — drop axiomCount from 2 to 0, update badge from 'axiom' to 'verified' (if currently 'axiom'), refresh conclusion.openQuestions to mark OQ-01 as resolved.",
+      "S4 (deferred, sibling slug): Approach B as a separate gallery entry — bit-list re-implementation of binaryGcd with directly-counted bit ops. ~300 lines, multi-session.",
+      "S5 (deferred, optional Mathlib contribution): Submit Nat.size_eq_succ_log upstream to Mathlib (Mathlib/Data/Nat/Size.lean). 4-line proof; pairs with existing Nat.size_pow."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "binary-gcd",
+    "bit-complexity",
+    "axiom-elimination",
+    "mathlib-Nat.size"
+  ],
+  "relatedProofs": [
+    "bezout-identity-oq-01-oq-01-oq-01",
+    "bezout-identity-oq-01-oq-01",
+    "bezout-identity",
+    "binary-gcd"
+  ],
+  "createdAt": "2026-05-12T08:08:00.000Z",
+  "updatedAt": "2026-05-12T08:08:00.000Z"
+}
