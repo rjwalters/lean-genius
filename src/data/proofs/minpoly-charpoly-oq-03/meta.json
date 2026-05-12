@@ -22,11 +22,11 @@
     "badge": "research",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 226,
+    "lineCount": 377,
     "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT). The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 5,
+    "theoremCount": 10,
     "definitionCount": 3,
     "originalContributions": [
       "InvariantFactorChain structure: bundles a list of monic polynomials with divisibility chain p_1 | p_2 | ... | p_k as a first-class invariant",
@@ -152,9 +152,9 @@
       "BigOperators"
     ],
     "namespace": "MinpolyCharpolyOQ03",
-    "lineCount": 226,
+    "lineCount": 377,
     "axiomCount": 0,
-    "theoremCount": 5,
+    "theoremCount": 10,
     "definitionCount": 3,
     "path": "Proofs/MinpolyCharpolyOQ03.lean",
     "sorries": 1
@@ -200,42 +200,55 @@
   "sorries": 1,
   "references": [
     {
-      "authors": ["Frobenius, Georg"],
+      "authors": [
+        "Frobenius, Georg"
+      ],
       "year": 1879,
       "title": "Theorie der linearen Formen mit ganzen Coefficienten",
       "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 86, pp. 146-208",
       "note": "Frobenius's original classification of matrices over a field up to similarity via the rational canonical form — the source result this scaffold targets."
     },
     {
-      "authors": ["Frobenius, Georg"],
+      "authors": [
+        "Frobenius, Georg"
+      ],
       "year": 1896,
       "title": "Über die mit einer Matrix vertauschbaren Matrizen",
       "venue": "Sitzungsberichte der Berliner Akademie",
       "note": "Cited in the Lean module's References section. Frobenius's refinement establishing uniqueness of the invariant-factor chain."
     },
     {
-      "authors": ["Dummit, David S.", "Foote, Richard M."],
+      "authors": [
+        "Dummit, David S.",
+        "Foote, Richard M."
+      ],
       "year": 2004,
       "title": "Abstract Algebra",
       "venue": "John Wiley & Sons, 3rd edition, §12.2",
       "note": "Modern textbook treatment of RCF via the structure theorem for finitely generated modules over a PID — the proof route this scaffold's S2+ sub-OQs will follow."
     },
     {
-      "authors": ["Hungerford, Thomas W."],
+      "authors": [
+        "Hungerford, Thomas W."
+      ],
       "year": 1974,
       "title": "Algebra",
       "venue": "Graduate Texts in Mathematics 73, Springer-Verlag, §VII.4",
       "note": "Alternative graduate-level reference for the RCF / structure-theorem chain. Companion to Dummit-Foote."
     },
     {
-      "authors": ["The mathlib Community"],
+      "authors": [
+        "The mathlib Community"
+      ],
       "year": 2024,
       "title": "Mathlib4: Mathlib.Algebra.Module.PID",
       "venue": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
       "note": "Source of `Module.equiv_directSum_of_isTorsion` — the structure-theorem workhorse that OQ-03-OQ-02 will invoke."
     },
     {
-      "authors": ["Wikipedia"],
+      "authors": [
+        "Wikipedia"
+      ],
       "year": 2025,
       "title": "Frobenius normal form",
       "venue": "https://en.wikipedia.org/wiki/Frobenius_normal_form",

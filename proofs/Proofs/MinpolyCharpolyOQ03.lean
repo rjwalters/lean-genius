@@ -104,6 +104,15 @@ structure theorem directly).
   natDegree chain: `factors[i].natDegree ≤ factors[j].natDegree` for
   `i ≤ j`. Direct use of the structure's `chain` field plus
   `Polynomial.natDegree_le_of_dvd`.
+* **`lastFactor_mem`** *(S4)* — when the chain is nonempty, the last
+  factor is a member of the chain.
+* **`lastFactor_monic`** *(S4)* — when the chain is nonempty, the last
+  factor is monic. One-line application of `lastFactor_mem` + the
+  structure's `monic` field.
+* **`lastFactor_natDegree_maximal`** *(S4)* — every factor's natDegree
+  is at most `lastFactor.natDegree`. One-line application of
+  `chain_natDegree_le` with the last index. Abstract counterpart of
+  "`pₖ = minpoly M` has the maximal degree among invariant factors".
 
 ## References
 
@@ -293,5 +302,76 @@ theorem chain_natDegree_le
   have hmem : c.factors[j] ∈ c.factors := List.getElem_mem j.isLt
   have hmonic : c.factors[j].Monic := c.monic _ hmem
   exact Polynomial.natDegree_le_of_dvd hdvd hmonic.ne_zero
+
+
+/-! ## Part 5: S4 unconditional helpers — `lastFactor` membership,
+       monicness, and degree maximality.
+
+These extend S3 with three more sorry-free facts about the
+`InvariantFactorChain` data, all conditional on `c.factors ≠ []`:
+
+* `lastFactor_mem` — `lastFactor c ∈ c.factors` (when factors are
+  nonempty). Direct consequence of `getLast?.getD 1 = getLast h`
+  for nonempty lists, combined with `List.getLast_mem`.
+* `lastFactor_monic` — `(lastFactor c).Monic`. One-liner via the
+  chain's `monic` field applied to `lastFactor_mem`.
+* `lastFactor_natDegree_maximal` — every factor's natDegree is at
+  most `(lastFactor c).natDegree`. The abstract counterpart of the
+  RCF fact "`pₖ = minpoly M` has the maximal degree among invariant
+  factors" — one-line application of `chain_natDegree_le` with the
+  last index. With S3's `prodFactors_natDegree` this also yields
+  the bookkeeping bound `lastFactor.natDegree ≤ ∑ deg pᵢ`, useful
+  when the chain is eventually instantiated by a matrix M.
+-/
+
+/-- The `lastFactor` of a nonempty chain coincides with the indexed
+    access at the last position. Internal-use lemma bridging the
+    `getLast?.getD 1` definition with the `Fin`-indexed access used
+    by `chain_natDegree_le`. -/
+private theorem lastFactor_eq_getElem_pred
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.lastFactor = c.factors[c.factors.length - 1]'(by
+      have hpos : 0 < c.factors.length := List.length_pos.mpr h
+      omega) := by
+  show c.factors.getLast?.getD 1 = _
+  rw [List.getLast?_eq_getLast h]
+  -- Now: `(some (c.factors.getLast h)).getD 1 = c.factors[...]`
+  show c.factors.getLast h = _
+  exact List.getLast_eq_getElem h
+
+/-- The last factor of a nonempty invariant-factor chain is a member of
+    the chain. -/
+theorem lastFactor_mem (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.lastFactor ∈ c.factors := by
+  rw [lastFactor_eq_getElem_pred c h]
+  exact List.getElem_mem _
+
+/-- The last factor of a nonempty invariant-factor chain is monic. -/
+theorem lastFactor_monic
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.lastFactor.Monic :=
+  c.monic _ (lastFactor_mem c h)
+
+/-- Every invariant factor has natDegree at most that of the last
+    factor. This is the abstract counterpart of the RCF fact that the
+    last invariant factor `pₖ` (which equals `minpoly M` in the matrix
+    instantiation) has the maximal degree among the invariant factors.
+    One-line application of `chain_natDegree_le` with `j = length - 1`. -/
+theorem lastFactor_natDegree_maximal
+    (c : InvariantFactorChain F) (h : c.factors ≠ [])
+    {p : F[X]} (hp : p ∈ c.factors) :
+    p.natDegree ≤ c.lastFactor.natDegree := by
+  rw [List.mem_iff_getElem] at hp
+  obtain ⟨i, hi, hip⟩ := hp
+  have hpos : 0 < c.factors.length := List.length_pos.mpr h
+  let i' : Fin c.factors.length := ⟨i, hi⟩
+  let j  : Fin c.factors.length := ⟨c.factors.length - 1, by omega⟩
+  have hij : i'.val ≤ j.val := by
+    show i ≤ c.factors.length - 1
+    omega
+  have hdeg : c.factors[i'].natDegree ≤ c.factors[j].natDegree :=
+    chain_natDegree_le c hij
+  rw [← hip, lastFactor_eq_getElem_pred c h]
+  exact hdeg
 
 end MinpolyCharpolyOQ03
