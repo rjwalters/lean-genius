@@ -277,31 +277,7 @@ theorem cube_h_star_eulerian (d k : ℕ) (hd : 0 < d) (hk : k < d) :
   exact if_pos (Finset.mem_range.mpr hk)
 
 -- ============================================================
--- SECTION VI: Generating-Function Form
--- ============================================================
-
-/--
-  **Generating-function form** of the Worpitzky identity (deferred):
-      Σ_{n ≥ 0} (n+1)^d · t^n  =  (Σ_{k=0}^{d-1} A(d, k) · t^k) / (1 - t)^{d+1}
-
-  In Lean, this is naturally stated using `PowerSeries` and the
-  `inverse` of `(1 - X)^{d+1}`. The proof reduces to `worpitzky_identity_cube`
-  via the standard generating-function expansion
-      1 / (1 - t)^{d+1} = Σ_{m ≥ 0} C(m + d, d) · t^m.
-
-  Sketch (deferred to S3+):
-  1. Multiply both sides by `(1 - X)^{d+1}`.
-  2. Extract the coefficient of `t^n` on each side.
-  3. The LHS coefficient is `(n+1)^d` by direct expansion.
-  4. The RHS coefficient is `Σ_{k=0}^{d-1} A(d,k) · C(n+1+k, d)` via convolution.
-  5. Apply `worpitzky_identity_cube`.
--/
-theorem cube_ehrhart_gf (d : ℕ) (hd : 0 < d) : True := by
-  -- Generating-function statement deferred (depends on PowerSeries inverse).
-  trivial
-
--- ============================================================
--- SECTION VII: Coherence with EhrhartCubeProven
+-- SECTION VI: Coherence with EhrhartCubeProven
 -- ============================================================
 
 /--
