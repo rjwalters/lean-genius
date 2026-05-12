@@ -52,7 +52,8 @@
       "This 64-line wrapper is the lightest possible closure of the open question oq-01-oq-01-oq-01: by the time the side-over-angle form (which IS the harder direction, requiring the Gram-determinant nonnegativity argument) is in place, the angle-over-side form is just algebraic bookkeeping.",
       "The two forms (angle/side and side/angle) are not redundant in practice: in spherical astronomy and geodesy, the angle-over-side form is the natural one when angles are measured directly (as observed at a vertex) and side lengths are the unknowns to be solved; the side-over-angle form is natural when sides (great-circle arc lengths) are measured (e.g., from chronometers and bearings) and angles are computed. The Lean formalization preserves this duality by making each direction a separate theorem statement, both proved from the common Gram-determinant identity.",
       "From a categorical perspective, the symmetry sin(X)/sin(x) ↔ sin(x)/sin(X) is the involution induced by inversion in the multiplicative group of positive reals. The choice of which form to take as primitive is conventional; the Gram-determinant proof produces the symmetric expression sin²(X)·sin²(y)·sin²(z) = G first, and either single-fraction form is then a corollary. This is a small instance of the pattern that homogeneous polynomial identities are more fundamental than affine ratios — algebraic geometers prefer projective invariants over their affine charts for exactly this reason.",
-      "The `linear_combination -h` step is not merely cosmetic: after `rw [div_eq_div_iff ..]` on both goal and hypothesis the goal becomes sin(A)·sin(b) = sin(B)·sin(a) while h1 becomes sin(a)·sin(B) = sin(b)·sin(A). These differ by a sign and a transposition of factors. `linear_combination -h1` instructs Lean to verify the polynomial identity 0 = (sin A · sin b) - (sin B · sin a) - (-1)·((sin a · sin B) - (sin b · sin A)); the `ring` checker then closes it by commutativity. Choosing the right scalar (-1 rather than +1) is what makes the tactic succeed in one step instead of a brittle nlinarith call."
+      "The `linear_combination -h` step is not merely cosmetic: after `rw [div_eq_div_iff ..]` on both goal and hypothesis the goal becomes sin(A)·sin(b) = sin(B)·sin(a) while h1 becomes sin(a)·sin(B) = sin(b)·sin(A). These differ by a sign and a transposition of factors. `linear_combination -h1` instructs Lean to verify the polynomial identity 0 = (sin A · sin b) - (sin B · sin a) - (-1)·((sin a · sin B) - (sin b · sin A)); the `ring` checker then closes it by commutativity. Choosing the right scalar (-1 rather than +1) is what makes the tactic succeed in one step instead of a brittle nlinarith call.",
+      "`linear_combination` is implemented as a thin wrapper over `ring` (Mathlib.Tactic.LinearCombination): given a goal LHS = RHS and a hypothesis h : LHS_h = RHS_h, the tactic constructs the residual (LHS − RHS) − c·(LHS_h − RHS_h) and discharges it via `ring`. The user's only obligation is to choose the scalar c — the rest of the algebraic bookkeeping is automatic. For one-hypothesis goals like this entry's the choice is binary (±1), but for k-hypothesis goals the tactic accepts a linear combination Σ cᵢ·hᵢ where each cᵢ is a term in the commutative ring. This pattern is the workhorse for closing the final algebra step in countless Mathlib proofs of identities derivable by polynomial manipulation."
     ],
     "prerequisites": [
       "Spherical law of sines, side-over-angle form: spherical_law_of_sines_all in Proofs/LawOfCosinesOQ01OQ02.lean",
@@ -151,6 +152,16 @@
       "proofId": "law-of-cosines-oq-01-oq-04",
       "relationship": "related",
       "description": "Sibling (Small-Angle Limit: Spherical Reduces to Euclidean): proves that the spherical law of cosines reduces to the planar law in the limit of small triangles. The analogous small-angle reduction sin(a) ≈ a converts the spherical sine rule (this entry) to the planar sine rule sin(A)/a = sin(B)/b = sin(C)/c."
+    },
+    {
+      "proofId": "law-of-cosines-oq-01-oq-05",
+      "relationship": "related",
+      "description": "Cousin (Unified Curvature-Parametrized Law of Cosines): subsumes the spherical (K = +1) and hyperbolic (K = −1) cases into a single formula cs_K(c) = cs_K(a)·cs_K(b) + K·sn_K(a)·sn_K(b)·cos(C). The unified framework parameterizes the trigonometric identities by sectional curvature; the spherical sine rule proved here is the K = +1 specialization of a curvature-parametrized sine rule sn_K(A)/sn_K(a) = sn_K(B)/sn_K(b) = sn_K(C)/sn_K(c)."
+    },
+    {
+      "proofId": "spherical-law-of-cosines-oq-05",
+      "relationship": "related",
+      "description": "Sibling (Haversine Formula): a numerically-stable reformulation of the spherical law of cosines using haversine = sin²(x/2). The angle-over-side sine rule proved in this entry is part of the same toolkit for spherical-distance computations (great-circle astronomy, geodesy); the haversine and sine-rule together cover the standard spherical-triangle-solving identities."
     }
   ],
   "references": [

@@ -36,6 +36,18 @@
     "prerequisites": ["Lean 4 namespace mechanics"]
   },
   {
+    "id": "ann-002b",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
+    "range": { "startLine": 33, "endLine": 37 },
+    "type": "context",
+    "title": "Theorem Docstring: Statement of the Inverted Form",
+    "content": "The theorem docstring states the sine rule in its angle-over-side form — the form that natively appears in spherical astronomy when angles are observed and side-arc-lengths are solved for. The phrase `Derived by algebraic inversion from the Gram determinant form proved in this file` is a slight misnomer: the inversion is not happening in this file — `spherical_law_of_sines_all` is proved in the imported sibling Proofs/LawOfCosinesOQ01OQ02.lean. The docstring's `this file` phrasing is a historical artifact from when the side-over-angle and angle-over-side proofs were sketched in the same file before being split.",
+    "mathContext": "Both forms of the sine rule encode the same mathematical content: the symmetric expression $\\sin^2 X \\cdot \\sin^2 y \\cdot \\sin^2 z = G$ (Gram determinant of perpendicular projections), which is symmetric under the involution swapping each side $x \\leftrightarrow$ its opposite angle $X$. The choice of which fraction goes on top is a notational convention; the underlying invariant is the projective ratio $[\\sin A : \\sin a]_{\\mathrm{P}^1} = [\\sin B : \\sin b] = [\\sin C : \\sin c]$.",
+    "significance": "context",
+    "relatedConcepts": ["docstring conventions", "angle-over-side form", "projective ratio", "spherical astronomy"],
+    "prerequisites": ["spherical trigonometry"]
+  },
+  {
     "id": "ann-003a",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
     "range": { "startLine": 38, "endLine": 46 },
