@@ -1,9 +1,90 @@
 # Current State
 
-**Phase**: ACT (S3c-prep-2 row-0 lattice-bound packaging landed; advancing to row0_forced_zero)
+**Phase**: ACT (S3c-prep-3 row-0 monotonicity + top-zero forcing landed; row-0-forcing remaining input: "rightmost row-0 cell is zero")
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-12 (S3c-prep-2 row-0/row-1 prefix decomposition by researcher-11)
-**Iteration**: 6
+**Last Updated**: 2026-05-12 (S3c-prep-3 row-0 monotonicity adapter + top-zero forcing by researcher-5)
+**Iteration**: 7
+
+## S3c-Prep-3 Summary (2026-05-12, researcher-5)
+
+**Mode**: ACT — package the pointwise direction of Step 1 of Part
+VIII's docstring sketch ("row 0 is forced to all zeros") modulo the
+single-cell input "the rightmost row-0 cell equals zero".
+
+### Deliverable
+
+Append Part XII (S3c-Prep-3) to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`
+(+66 lines, 611 → 677; 1 sorry unchanged; +2 theorems, 0 axioms):
+
+* `skewSSYTFin_row0_mono` — Row-0 monotonicity adapter. The
+  `SkewSSYTFin` structure field gives row weakness in the **strict**
+  form `j₁ < j₂ → T ⟨0, j₁⟩ ≤ T ⟨0, j₂⟩`. The S3c row-0 analysis
+  repeatedly needs the **inclusive** form `j₁ ≤ j₂ → ...`. Closed by
+  `rcases h.lt_or_eq` + `T.2.1 0 j₁ j₂ hlt` (strict branch) and
+  `subst heq` + `le_refl _` (equality branch).
+
+* `skewSSYTFin_row0_eq_zero_of_top_zero` — Top-zero forces all-zero.
+  When `T ⟨0, ⟨r₀ - 1, _⟩⟩ = 0`, every `T ⟨0, j⟩ = 0`. Via row-0
+  monotonicity applied to `j ≤ ⟨r₀ - 1, _⟩` (which follows from
+  `j.isLt` + `omega`), then `Fin 2` collapse: the only `Fin 2` value
+  `≤ 0` is `0` itself (closed by `Fin.ext` + `omega` over `.val`).
+
+### Design choices
+
+* **Pointwise direction first, lattice → top-zero step deferred.**
+  The S3c proof sketch's Step 1 has TWO conjuncts: (a) the rightmost
+  row-0 cell is `0`, and (b) by row weakness this propagates to all
+  cells. The (b) propagation is captured here as a clean, named
+  primitive, isolated from the count-at-prefix-1 reasoning needed
+  for (a). This factors the proof into independently-shippable
+  layers.
+
+* **`Fin.ext` + `omega` rather than `Fin.le_zero_iff`.** The Mathlib
+  lemma `Fin.le_zero_iff` likely exists, but routing the proof
+  through definitional unfolding of the `Fin` `LE` instance to
+  `Nat`-level `≤` + `omega` avoids a name-lookup dependency. The
+  `((0 : Fin 2)).val = 0` step is `rfl` since the `Fin 2` `Zero`
+  instance is `⟨0, _⟩`.
+
+* **Positivity hypothesis `0 < r₀` rather than guarded `Option`-style
+  return.** The index `⟨r₀ - 1, _⟩` requires `r₀ > 0` to be a valid
+  `Fin r₀`. The conclusion `∀ j : Fin r₀, ... = 0` is vacuously true
+  when `r₀ = 0` (`Fin 0` is empty), so a `r₀ > 0` hypothesis is
+  appropriate for the substantive case. The vacuous `r₀ = 0` case
+  can be handled inline by S3c with `Fin.elim0`.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 611 → 677 lines (+66).
+- Sorry count: 1 → 1 (unchanged).
+- Axiom count: 0 (unchanged).
+- Theorem count: 11 → 13 (`skewSSYTFin_row0_mono`,
+  `skewSSYTFin_row0_eq_zero_of_top_zero`).
+- Definition count: 7 (unchanged).
+- Instance count: 5 (unchanged).
+
+### Build status
+
+Pending. Per the Hilbert-15 cluster PR convention. The S3c-prep-3
+proofs use only `rcases`, `subst`, `le_refl`, `omega`, `Fin.ext`,
+and the existing `skewSSYTFin_row0_mono` — all standard Mathlib +
+Init/Core. The remaining sorry is unchanged.
+
+### Remaining input for full row-0 forcing (S3c-prep-4)
+
+To discharge Step 1 of the S3c proof sketch entirely, the next
+iteration must supply:
+
+```
+T ⟨0, ⟨r₀ - 1, hpos⟩⟩ = 0
+```
+
+i.e. the **rightmost** cell of row 0 (which is the **first** entry
+of the reverse row reading word) equals `0`. Strategy: apply the
+lattice condition at **prefix length `1`** of `T.reverseRowWord`
+(instead of `r₀` as in S3c-prep-2), using `reverseRowWord_two_take_r0`
+restricted to the head, and the standard `List.count_singleton`
+identities to derive `count 1 [head] ≤ count 0 [head]` ⟹ `head = 0`.
 
 ## S3c-Prep-2 Summary (2026-05-12, researcher-11)
 

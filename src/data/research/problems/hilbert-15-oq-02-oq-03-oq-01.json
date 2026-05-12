@@ -17,12 +17,12 @@
   },
   "knownResults": {
     "proven": [
-      "lrCoeff2 (2-row case) \u2014 Hilbert15OQ02.lean:131, verified against 7 Gr(2,4) Chow ring constants from Hilbert15OQ01.lean",
-      "Skew-shape + reading-word + lattice-word LR rule (Littlewood 1934 / Fulton 1997 Ch. 5 \u00a72) \u2014 classical, see References"
+      "lrCoeff2 (2-row case) — Hilbert15OQ02.lean:131, verified against 7 Gr(2,4) Chow ring constants from Hilbert15OQ01.lean",
+      "Skew-shape + reading-word + lattice-word LR rule (Littlewood 1934 / Fulton 1997 Ch. 5 §2) — classical, see References"
     ],
     "open": [
-      "Concrete computable lrCoeffN_def for general n \u2265 3 (this slug)",
-      "Anchoring lemma lrCoeffN_def (Partition 2) = lrCoeff2 \u2014 concrete check (S3)",
+      "Concrete computable lrCoeffN_def for general n ≥ 3 (this slug)",
+      "Anchoring lemma lrCoeffN_def (Partition 2) = lrCoeff2 — concrete check (S3)",
       "Refactor parent Hilbert15OQ02OQ03.lean to replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def` (S4)"
     ],
     "goal": "Replace one axiom in Hilbert15OQ02OQ03.lean with a computable definition, exercised against existing 2-row test cases."
@@ -30,31 +30,31 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T09:00:55.000Z",
-    "iteration": 6,
-    "focus": "S3c-prep-2 (researcher-11, 2026-05-12): three row-0/row-1 prefix-decomposition lemmas plus two small helpers, building on Part X. Appended Part XI: (a) reverseRowWord_two_take_r0 \u2014 first r0 entries of T.reverseRowWord are exactly row-0's reverse-mapped list; (b) reverseRowWord_two_drop_r0 \u2014 entries after r0 are exactly row-1's reverse-mapped list; (c) reverseRowWord_two_lattice_row0 \u2014 instantiates the lattice-word predicate at the row-0/row-1 boundary p=r0, yielding the row-0 sub-list count bound `count 1 \u2264 count 0`. Plus two private helpers take_left_of_length / drop_left_of_length that package List.take_left / List.drop_left with a length-rewrite step via subst (to avoid the leftmost-occurrence ambiguity when the take/drop amount also appears inside `List.finRange r0` / lambda `Fin r0` type annotations). This packages Step 1 of Part VIII's docstring sketch (\"row 0 is forced to all zeros\") as a clean count bound over an explicit list; the count-to-pointwise reasoning is left for follow-on iterations. The S3c sorry remains unchanged. File: 508 -> 606 lines, 1 sorry unchanged, +3 theorems, +2 private lemmas, 0 axioms.",
+    "iteration": 7,
+    "focus": "S3c-prep-3 (researcher-5, 2026-05-12): row-0 monotonicity adapter + top-zero forcing on row 0. Appended Part XII (+66 lines, 611 → 677): (a) skewSSYTFin_row0_mono — promotes the strict `j₁ < j₂ → T ⟨0, j₁⟩ ≤ T ⟨0, j₂⟩` row-weakness field to the inclusive `j₁ ≤ j₂ → ...` form via `h.lt_or_eq` + `subst`; (b) skewSSYTFin_row0_eq_zero_of_top_zero — when `T ⟨0, ⟨r0-1, _⟩⟩ = 0`, every `T ⟨0, j⟩ = 0`. Closed by row-0 monotonicity applied to `j ≤ ⟨r0-1, _⟩` (which follows from `j.isLt` + `hpos`) then `Fin.ext` + `omega` over `.val`; the only `Fin 2` value `≤ 0` is `0` itself. Together these convert the S3c-prep-2 prefix-count bound into the pointwise row-0 vanishing modulo the single-cell input \"the rightmost row-0 cell is zero\". The S3c sorry remains unchanged. File: 611 → 677 lines, 1 sorry unchanged, +2 theorems, 0 axioms.",
     "blockers": [],
-    "nextAction": "S3c continuation: prove row0_forced_zero from reverseRowWord_two_lattice_row0. Method: (a) note the row-0 sub-list has length r0 (List.length_map/_reverse/_finRange); (b) use the count bound `count 1 \u2264 count 0` plus the equality `count 0 + count 1 = r0` (for Fin 2 lists, every element is either 0 or 1) to derive `count 0 \u2265 r0/2` is not tight enough \u2014 actually we need `count 1 = 0`. Approach: combine with monotonicity \u2014 the row-0 sub-list is (finRange r0).reverse.map (T.1 \u27e80,\u00b7\u27e9), which by `List.count_le_of_sublist` + `T.2.1` (row-weak: monotonic on Fin r0) gives count 1 = (cells with value=1) = (j with T.1 \u27e80,j\u27e9=1). If any cell has value 1, then by monotonicity all later cells in the row also have value 1, so count 1 \u2265 1 and count 0 = (cells before that one) < count 1 at some prefix \u2014 violating the lattice. Conclude every cell in row 0 is 0. Stronger formulation: `\u2200 j : Fin r0, T.1 \u27e80, j\u27e9 = 0`. After this lands, in-support proof of lrCoeffN_def_two_eq_lrCoeff2_of_support reduces to row-1 uniqueness + guard matching against lrCoeff2's if-cascade.",
+    "nextAction": "S3c-prep-4: derive `T ⟨0, ⟨r0 - 1, hpos⟩⟩ = 0` from `reverseRowWord_two_lattice_row0` specialized to prefix length 1 (instead of r0). With S3c-prep-3 in hand, this single-cell fact composes with `skewSSYTFin_row0_eq_zero_of_top_zero` to give Step 1 of the proof sketch (\"row 0 is forced to all zeros\") fully discharged. Strategy: take `p = 1` in `isLatticeWord T.reverseRowWord`, decompose `T.reverseRowWord.take 1 = [head]` for some `head : Fin 2`, identify `head = T.1 ⟨0, ⟨r0-1, _⟩⟩` from the reverse-row-word's first entry being the rightmost row-0 cell, and conclude `head = 0` from `count 1 [head] ≤ count 0 [head]` via `List.count_singleton`. After Step 1 lands, in-support proof of lrCoeffN_def_two_eq_lrCoeff2_of_support reduces to row-1 uniqueness + guard matching against lrCoeff2's if-cascade.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 6,
+      "total": 7,
+      "currentApproach": 7,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-1, 2026-05-11): OBSERVE survey. Established this slug is scaffolding (not research) \u2014 lrCoeffN is the only axiom in Hilbert15OQ02OQ03.lean with a fully explicit literature definition (Littlewood 1934, Fulton 1997 Ch. 5). Identified four Mathlib gaps at v4.26.0: SemistandardYoungTableau, skew shape, reverse row reading word (Fulton convention), lattice-word predicate. Adopted Fulton convention to match existing 2-row anchor lrCoeff2. S2 (researcher-3, 2026-05-12): ACT scaffold. New file proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean (~250 lines, 0 sorries, 0 axioms): Partition.Subset + HasSubset/Decidable instances; SkewSSYTFin n \u03bd \u03bc subtype (row-weak + skew-column-strict on ambient column index \u03bc.parts i + j.val) with Fintype; content returning Fin n \u2192 \u2115 (not Partition n \u2014 sortedness emerges only on lattice-word sub-family); reverseRowWord via List.flatMap (Fulton); isLatticeWord bounded by Fin (w.length + 1) for Decidability; lrCoeffN_def gated by \u03bc \u2286 \u03bd \u2227 \u03bd.weight = lam.weight + \u03bc.weight; @[simp] pruning lemma for the out-of-support case. Imported into proofs/Proofs.lean. S3a (researcher-3, 2026-05-12): ACT translation. Append Part VI (Translation) + Part VII (Main S3 anchor \u2014 DEFERRED to S3b) to Hilbert15OQ02OQ03OQ01.lean. New def `toPartition2 (p : Partition 2) : LRComplexity.Partition2` and four @[simp] equivalence lemmas (`_a`, `_b` rfl; `_size` via Fin.sum_univ_two; `_contains_iff` via fin_cases). Main anchor `lrCoeffN_def_two_eq_lrCoeff2 \u03bd lam \u03bc` stated with sorry; 90-line docstring with proof sketch (out-of-support: `_eq_zero_of_not_support` + iff/size collapse; in-support: Fulton 2-row, k\u2081=r\u2081 forced by ballot, Equiv to lrCoeff2's if-cascade). 247 \u2192 347 lines; 0 \u2192 1 sorry; +1 def, +5 theorems; 0 axioms unchanged. S3b (researcher-3, 2026-05-12): ACT out-of-support discharge. Append Part VII (Out-of-Support Discharge) + Part VIII (In-Support Sub-Lemma DEFERRED to S3c) + Part IX (Main Theorem, refactored). New helper `lrCoeff2_eq_zero_of_not_support (\u03bd lam \u03bc : Partition 2) (h : \u00ac support) : lrCoeff2 (toPartition2 \u03bd) (toPartition2 lam) (toPartition2 \u03bc) = 0` proved by push_neg + by_cases on \u03bc \u2286 \u03bd + if_neg/if_pos on lrCoeff2's two outer guards (containment via toPartition2_contains_iff/_a/_b, size via toPartition2_size). New sub-lemma `lrCoeffN_def_two_eq_lrCoeff2_of_support` with in-support hypothesis and refined 60-line proof sketch (5 steps: row-0 all-zeros by lattice prefix; row-1 content determined; row-1 weakly-increasing \u2192 unique; remaining guards match lrCoeff2's 4 pass-conditions; Fintype.card_eq_of_equiv). Main theorem `lrCoeffN_def_two_eq_lrCoeff2` refactored: case-split, out-of-support branch fully proved, in-support delegates to sub-lemma. File: 351 \u2192 455 lines; 1 sorry (moved from main theorem to in-support sub-lemma, main is now discharged modulo the sub-lemma); +2 theorems, 0 axioms.",
+    "progressSummary": "S1 (researcher-1, 2026-05-11): OBSERVE survey. Established this slug is scaffolding (not research) — lrCoeffN is the only axiom in Hilbert15OQ02OQ03.lean with a fully explicit literature definition (Littlewood 1934, Fulton 1997 Ch. 5). Identified four Mathlib gaps at v4.26.0: SemistandardYoungTableau, skew shape, reverse row reading word (Fulton convention), lattice-word predicate. Adopted Fulton convention to match existing 2-row anchor lrCoeff2. S2 (researcher-3, 2026-05-12): ACT scaffold. New file proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean (~250 lines, 0 sorries, 0 axioms): Partition.Subset + HasSubset/Decidable instances; SkewSSYTFin n ν μ subtype (row-weak + skew-column-strict on ambient column index μ.parts i + j.val) with Fintype; content returning Fin n → ℕ (not Partition n — sortedness emerges only on lattice-word sub-family); reverseRowWord via List.flatMap (Fulton); isLatticeWord bounded by Fin (w.length + 1) for Decidability; lrCoeffN_def gated by μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight; @[simp] pruning lemma for the out-of-support case. Imported into proofs/Proofs.lean. S3a (researcher-3, 2026-05-12): ACT translation. Append Part VI (Translation) + Part VII (Main S3 anchor — DEFERRED to S3b) to Hilbert15OQ02OQ03OQ01.lean. New def `toPartition2 (p : Partition 2) : LRComplexity.Partition2` and four @[simp] equivalence lemmas (`_a`, `_b` rfl; `_size` via Fin.sum_univ_two; `_contains_iff` via fin_cases). Main anchor `lrCoeffN_def_two_eq_lrCoeff2 ν lam μ` stated with sorry; 90-line docstring with proof sketch (out-of-support: `_eq_zero_of_not_support` + iff/size collapse; in-support: Fulton 2-row, k₁=r₁ forced by ballot, Equiv to lrCoeff2's if-cascade). 247 → 347 lines; 0 → 1 sorry; +1 def, +5 theorems; 0 axioms unchanged. S3b (researcher-3, 2026-05-12): ACT out-of-support discharge. Append Part VII (Out-of-Support Discharge) + Part VIII (In-Support Sub-Lemma DEFERRED to S3c) + Part IX (Main Theorem, refactored). New helper `lrCoeff2_eq_zero_of_not_support (ν lam μ : Partition 2) (h : ¬ support) : lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ) = 0` proved by push_neg + by_cases on μ ⊆ ν + if_neg/if_pos on lrCoeff2's two outer guards (containment via toPartition2_contains_iff/_a/_b, size via toPartition2_size). New sub-lemma `lrCoeffN_def_two_eq_lrCoeff2_of_support` with in-support hypothesis and refined 60-line proof sketch (5 steps: row-0 all-zeros by lattice prefix; row-1 content determined; row-1 weakly-increasing → unique; remaining guards match lrCoeff2's 4 pass-conditions; Fintype.card_eq_of_equiv). Main theorem `lrCoeffN_def_two_eq_lrCoeff2` refactored: case-split, out-of-support branch fully proved, in-support delegates to sub-lemma. File: 351 → 455 lines; 1 sorry (moved from main theorem to in-support sub-lemma, main is now discharged modulo the sub-lemma); +2 theorems, 0 axioms.",
     "builtItems": [
-      "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean \u2014 S2 scaffold + S3a translation + S3b out-of-support (455 lines, 1 sorry deferred to S3c, 0 axioms): Part I-V (S2): Partition.Subset + HasSubset/Decidable; SkewSSYTFin + Fintype; SkewSSYTFin.content : Fin n \u2192 \u2115; SkewSSYTFin.reverseRowWord (Fulton); isLatticeWord + Decidable; lrCoeffN_def + Decidable (0 < \u00b7); @[simp] lrCoeffN_def_eq_zero_of_not_support. Part VI (S3a Translation): toPartition2 + four @[simp] equivalence lemmas. Part VII (S3b Out-of-Support): lrCoeff2_eq_zero_of_not_support proved. Part VIII (S3c \u2014 DEFERRED): lrCoeffN_def_two_eq_lrCoeff2_of_support (sub-lemma with in-support hypothesis + 60-line proof sketch + sorry). Part IX (S3b Main): lrCoeffN_def_two_eq_lrCoeff2 (case-split, both branches discharged \u2014 in-support delegates to Part VIII).",
+      "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean — S2 scaffold + S3a translation + S3b out-of-support (455 lines, 1 sorry deferred to S3c, 0 axioms): Part I-V (S2): Partition.Subset + HasSubset/Decidable; SkewSSYTFin + Fintype; SkewSSYTFin.content : Fin n → ℕ; SkewSSYTFin.reverseRowWord (Fulton); isLatticeWord + Decidable; lrCoeffN_def + Decidable (0 < ·); @[simp] lrCoeffN_def_eq_zero_of_not_support. Part VI (S3a Translation): toPartition2 + four @[simp] equivalence lemmas. Part VII (S3b Out-of-Support): lrCoeff2_eq_zero_of_not_support proved. Part VIII (S3c — DEFERRED): lrCoeffN_def_two_eq_lrCoeff2_of_support (sub-lemma with in-support hypothesis + 60-line proof sketch + sorry). Part IX (S3b Main): lrCoeffN_def_two_eq_lrCoeff2 (case-split, both branches discharged — in-support delegates to Part VIII).",
       "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean Part X (S3c-Prep, 53 lines added): reverseRowWord_two_eq + reverseRowWord_two_length. Two clean infrastructure lemmas unfolding the n=2 specialisation of reverseRowWord; pure bookkeeping over List.finRange 2 = [0,1] and flatMap_cons/_nil. Closed by show+rw+simp (no API guesses; standard Mathlib v4.26.0 list lemmas).",
       "proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean Part XI (S3c-Prep-2, 98 lines added): three row-0/row-1 prefix-decomposition lemmas plus two private helpers. (a) reverseRowWord_two_take_r0 — `T.reverseRowWord.take r0 = (finRange r0).reverse.map (T.1 ⟨0, ·⟩)`; (b) reverseRowWord_two_drop_r0 — `T.reverseRowWord.drop r0 = (finRange r1).reverse.map (T.1 ⟨1, ·⟩)`; (c) reverseRowWord_two_lattice_row0 — applies the lattice-word predicate at p=r0 with k=0,k'=1, yielding the row-0 sub-list count bound `count 1 ≤ count 0`. Helpers take_left_of_length / drop_left_of_length factor the standard `rw [← length_eq]; List.take_left` idiom through `subst`, sidestepping the leftmost-occurrence ambiguity that the take-amount r0 (also appearing inside List.finRange r0 / Fin r0 type) would otherwise create. Step 1 of Part VIII's docstring sketch (\"row 0 is forced to all zeros\") is now packaged as a count bound over an explicit, syntactically-visible list — the count-to-pointwise step is the only remaining gap for row0_forced_zero."
     ],
     "insights": [
       "Of the three axioms in Hilbert15OQ02OQ03.lean (lrCoeffN, admissible, klyachko_theorem), only lrCoeffN has a fully explicit combinatorial definition in the literature. Reducing it is Mathlib-style scaffolding, not research; the other two are either recursive on lrCoeffN or are the deep Klyachko/Belkale theorem itself.",
       "Use Fin n entries (not N) for SSYT, matching the gallery's existing SSYTFin n k sh in BallotProblemOQ03OQ01OQ01OQ01.lean:177. The bounded codomain makes finiteness automatic via Subtype.fintype + Pi-over-finite, no extra infrastructure needed.",
-      "Reverse row reading word \u2014 Fulton (1997 Ch. 5) reads right-to-left top-to-bottom; Stanley (EC v.2 A.1.3) reads right-to-left bottom-to-top. The existing gallery lrCoeff2 in Hilbert15OQ02.lean:131 follows Fulton (comment block lines 99-122 + the ballot-condition analysis confirms). Use Fulton for consistency with the 2-row anchor.",
-      "Lattice word \u2261 ballot word \u2261 Yamanouchi word \u2014 three names for the same predicate. Document the synonyms in the docstring of isLatticeWord; saves search time for the next researcher who reads the source.",
-      "Decidable instance is non-negotiable: parent file's lr_polytime_positivity uses `decide (\u2200 r < _, \u2200 t, admissible t \u2192 hornInequality t \u03b1 \u03b2 \u03b3)` which requires `Decidable (0 < lrCoeffN \u03bd \u03bb \u03bc)` to typecheck. Our lrCoeffN_def is decidable by construction (Fintype.card guarded by a decidable if), but the instance must be stated explicitly.",
+      "Reverse row reading word — Fulton (1997 Ch. 5) reads right-to-left top-to-bottom; Stanley (EC v.2 A.1.3) reads right-to-left bottom-to-top. The existing gallery lrCoeff2 in Hilbert15OQ02.lean:131 follows Fulton (comment block lines 99-122 + the ballot-condition analysis confirms). Use Fulton for consistency with the 2-row anchor.",
+      "Lattice word ≡ ballot word ≡ Yamanouchi word — three names for the same predicate. Document the synonyms in the docstring of isLatticeWord; saves search time for the next researcher who reads the source.",
+      "Decidable instance is non-negotiable: parent file's lr_polytime_positivity uses `decide (∀ r < _, ∀ t, admissible t → hornInequality t α β γ)` which requires `Decidable (0 < lrCoeffN ν λ μ)` to typecheck. Our lrCoeffN_def is decidable by construction (Fintype.card guarded by a decidable if), but the instance must be stated explicitly.",
       "Mathlib v4.26.0 has YoungDiagram + StandardYoungTableau (used by BallotProblemOQ03OQ01OQ02.lean:49 etc.) but NOT SemistandardYoungTableau / SkewYoungDiagram / lattice word predicate. The gap is real and consistent with the pool note 'Mathlib's developing combinatorics for Young tableaux ... needs to be extended with the reverse-row-reading-word'.",
-      "The 2-row anchoring lemma (S3: lrCoeffN_def (Partition 2) = lrCoeff2) is the right first theorem after the S2 definitions \u2014 three purposes: (1) sanity-check the abstract count reduces to the known computable case; (2) exercise reverseRowWord / isLatticeWord on concrete Gr(2,4) data from Hilbert15OQ01.lean; (3) leave a concrete subgoal for S3 rather than a parent-file refactor (axiom replacement = S4).",
+      "The 2-row anchoring lemma (S3: lrCoeffN_def (Partition 2) = lrCoeff2) is the right first theorem after the S2 definitions — three purposes: (1) sanity-check the abstract count reduces to the known computable case; (2) exercise reverseRowWord / isLatticeWord on concrete Gr(2,4) data from Hilbert15OQ01.lean; (3) leave a concrete subgoal for S3 rather than a parent-file refactor (axiom replacement = S4).",
       "reverseRowWord on Fin 2 cleanly decomposes via List.finRange 2 = [0,1] (closed by decide on the literal) + List.flatMap_cons + List.flatMap_nil + List.append_nil. The List.append_nil step is needed because [b].flatMap f = f b ++ []; without explicitly absorbing the trailing nil, rfl fails. The decomposition is now a one-line rewrite-target for any S3c-prefix calculation.",
       "The next sub-lemma row0_forced_zero is decidedly more API-dependent (List.finRange_succ_last + Fin.last + Fin.le_zero_iff + Fin.size_pos) and merited deferring to its own iteration. Bundling it with the safe decomposition lemmas would gamble the entire PR on the riskiest step.",
       "S3c-Prep-2 design choice: instead of attacking row0_forced_zero directly at prefix length 1 (the #18015 plan), attack at prefix length r0 by first packaging take/drop-r0 decompositions. The trade-off: applying the lattice at p=r0 (Part XI's `reverseRowWord_two_lattice_row0`) yields the count bound `count 1 ≤ count 0` over the full row-0 sub-list rather than just the singleton head. The remaining row0_forced_zero step is then a single combinatorial argument (`Fin 2`-valued monotone list with `count 1 ≤ count 0` is all zeros) instead of an iteration on j with rightmost-cell tactics. Either route closes Step 1; the p=r0 route makes the resulting count bound usable independently in Step 4 (lattice-from-row-2 guard) without a separate prefix-length application.",
@@ -62,15 +62,15 @@
     ],
     "mathlibGaps": [
       "SemistandardYoungTableau is not present in Mathlib at pinned v4.26.0 (only StandardYoungTableau and YoungDiagram). Gallery has a private SSYTFin n k sh in BallotProblemOQ03OQ01OQ01OQ01.lean:177 restricted to straight shapes with Fin n entries.",
-      "SkewYoungDiagram (a pair (\u03bd,\u03bc) with \u03bc \u2286 \u03bd, exposing the cells in \u03bd\\\u03bc as a sigma-type) is not present anywhere \u2014 neither in Mathlib nor in any gallery file.",
-      "Reverse row reading word (Fulton convention) \u2014 not in Mathlib, not in gallery. This is the load-bearing piece of any LR-rule formalization.",
-      "Lattice (= ballot = Yamanouchi) word predicate \u2014 not in Mathlib. Defining it as `Decidable` over `List (Fin n)` is straightforward but missing.",
-      "General-n LR coefficient \u2014 every Schur-positive theorem in the Hilbert-15 cluster currently bottoms out in `axiom lrCoeffN` in the parent file."
+      "SkewYoungDiagram (a pair (ν,μ) with μ ⊆ ν, exposing the cells in ν\\μ as a sigma-type) is not present anywhere — neither in Mathlib nor in any gallery file.",
+      "Reverse row reading word (Fulton convention) — not in Mathlib, not in gallery. This is the load-bearing piece of any LR-rule formalization.",
+      "Lattice (= ballot = Yamanouchi) word predicate — not in Mathlib. Defining it as `Decidable` over `List (Fin n)` is straightforward but missing.",
+      "General-n LR coefficient — every Schur-positive theorem in the Hilbert-15 cluster currently bottoms out in `axiom lrCoeffN` in the parent file."
     ],
     "nextSteps": [
-      "S3c: prove lrCoeffN_def_two_eq_lrCoeff2_of_support. With out-of-support now discharged, only the in-support hypothesis case remains. Five steps per Part VIII docstring: (1) lattice prefix forces row-0 to all zeros (Fin 2); (2) content equation determines row-1 counts c\u2080 = lam.parts 0 - r\u2080 zeros and c\u2081 = lam.parts 1 ones; (3) weakly-increasing row 1 \u2192 unique function `j \u21a6 if j.val < c\u2080 then 0 else 1`; (4) column-strict-in-overlap matches `ov > 0 \u2227 k\u2082 > \u03bc.a - \u03bc.b`, lattice-from-row-2 matches `r\u2081 < \u03bb.b`; (5) Fintype.card_eq_of_equiv to singleton/empty. Target ~150 lines.",
+      "S3c: prove lrCoeffN_def_two_eq_lrCoeff2_of_support. With out-of-support now discharged, only the in-support hypothesis case remains. Five steps per Part VIII docstring: (1) lattice prefix forces row-0 to all zeros (Fin 2); (2) content equation determines row-1 counts c₀ = lam.parts 0 - r₀ zeros and c₁ = lam.parts 1 ones; (3) weakly-increasing row 1 → unique function `j ↦ if j.val < c₀ then 0 else 1`; (4) column-strict-in-overlap matches `ov > 0 ∧ k₂ > μ.a - μ.b`, lattice-from-row-2 matches `r₁ < λ.b`; (5) Fintype.card_eq_of_equiv to singleton/empty. Target ~150 lines.",
       "S3d (after S3c): lift the 7 verified `lrCoeff2 ... = 1` (resp. = 0) results from Hilbert15OQ02.lean to `lrCoeffN_def`-form by rewriting with `lrCoeffN_def_two_eq_lrCoeff2` then re-discharging via `native_decide`.",
-      "S4 (after S3d): refactor parent Hilbert15OQ02OQ03.lean \u2014 replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def`. Verify nothing downstream breaks (the axiom was only used in klyachko_theorem's statement and in lr_polytime_positivity's decide invocation)."
+      "S4 (after S3d): refactor parent Hilbert15OQ02OQ03.lean — replace `axiom lrCoeffN` with `def lrCoeffN := lrCoeffN_def`. Verify nothing downstream breaks (the axiom was only used in klyachko_theorem's statement and in lr_polytime_positivity's decide invocation)."
     ]
   },
   "references": [
@@ -80,11 +80,11 @@
     },
     {
       "label": "Stanley EC v.2",
-      "citation": "Stanley, R.P. (1999). Enumerative Combinatorics Vol. 2, Cambridge University Press. Appendix 1 (A.1.3) \u2014 reading words and Yamanouchi sequences."
+      "citation": "Stanley, R.P. (1999). Enumerative Combinatorics Vol. 2, Cambridge University Press. Appendix 1 (A.1.3) — reading words and Yamanouchi sequences."
     },
     {
       "label": "Macdonald (1995)",
-      "citation": "Macdonald, I.G. (1995). Symmetric Functions and Hall Polynomials (2nd ed.). Oxford University Press. \u00a7I.9 'The Littlewood-Richardson rule'."
+      "citation": "Macdonald, I.G. (1995). Symmetric Functions and Hall Polynomials (2nd ed.). Oxford University Press. §I.9 'The Littlewood-Richardson rule'."
     },
     {
       "label": "Knutson-Tao (1999)",
@@ -101,5 +101,79 @@
     "axiom-elimination",
     "mathlib-gap",
     "scaffold"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Hilbert15OQ01.lean",
+      "filename": "Hilbert15OQ01.lean",
+      "lineCount": 352,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15OQ02.lean",
+      "filename": "Hilbert15OQ02.lean",
+      "lineCount": 507,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15OQ02OQ03.lean",
+      "filename": "Hilbert15OQ02OQ03.lean",
+      "lineCount": 250,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15OQ02OQ03OQ01.lean",
+      "filename": "Hilbert15OQ02OQ03OQ01.lean",
+      "lineCount": 612,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculus.lean",
+      "filename": "Hilbert15SchubertCalculus.lean",
+      "lineCount": 471,
+      "theoremCount": 3,
+      "axiomCount": 7,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculus.lean"
+    },
+    {
+      "path": "Proofs/Hilbert15SchubertCalculusOQ01.lean",
+      "filename": "Hilbert15SchubertCalculusOQ01.lean",
+      "lineCount": 311,
+      "theoremCount": 5,
+      "axiomCount": 6,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert15SchubertCalculusOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "hilbert-15",
+    "hilbert-15-oq-01",
+    "hilbert-15-oq-02",
+    "hilbert-15-oq-02-oq-03"
   ]
 }

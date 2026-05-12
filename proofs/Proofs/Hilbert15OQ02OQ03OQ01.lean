@@ -608,4 +608,70 @@ theorem reverseRowWord_two_lattice_row0 {ν μ : Partition 2}
   rw [reverseRowWord_two_take_r0] at hLW'
   exact hLW'
 
+/-! ## Part XII: S3c-Prep-3 — Row-0 Monotonicity & Top-Zero Forcing (`n = 2`)
+
+The S3c proof of `lrCoeffN_def_two_eq_lrCoeff2_of_support` Step 1 ("row 0
+is forced to all zeros") splits into two sub-steps:
+
+1. **Row-0 monotonicity adapter** — package the row weakness field of
+   `SkewSSYTFin` for row index `0` and the inclusive `j₁ ≤ j₂` form
+   (the structure field uses strict `<` only).
+2. **Top-zero forces all-zero** — when the largest row-0 cell
+   `T ⟨0, ⟨r₀ - 1, _⟩⟩` already equals `0 : Fin 2`, monotonicity propagates
+   the zero down to every row-0 cell. This reduces Step 1 to the
+   single-cell input "the rightmost cell of row 0 is 0", which the
+   lattice condition delivers at prefix length `1` of `T.reverseRowWord`
+   (cf. `reverseRowWord_two_lattice_row0`).
+
+Together these convert the S3c-prep-2 prefix count bound into the
+pointwise row-0 vanishing conclusion. The lattice → top-zero step itself
+(the count-at-prefix-1 argument) is left for a follow-on iteration. -/
+
+/-- **Row-0 monotonicity (inclusive form).** Row weakness on a
+    `SkewSSYTFin 2 ν μ` is stated using the strict order `j₁ < j₂` in
+    the structure field. For the S3c row-0 analysis we repeatedly need
+    the inclusive form `j₁ ≤ j₂ → T ⟨0, j₁⟩ ≤ T ⟨0, j₂⟩`. The proof
+    splits on `j₁ < j₂ ∨ j₁ = j₂` and applies the field directly in
+    the strict case, closing the equality case by reflexivity after
+    substitution. -/
+theorem skewSSYTFin_row0_mono {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    {j₁ j₂ : Fin (ν.parts 0 - μ.parts 0)}
+    (h : j₁ ≤ j₂) : T.1 ⟨0, j₁⟩ ≤ T.1 ⟨0, j₂⟩ := by
+  rcases h.lt_or_eq with hlt | heq
+  · exact T.2.1 0 j₁ j₂ hlt
+  · subst heq
+    exact le_refl _
+
+/-- **Top-zero forces all-zero on row 0 (`n = 2`).** If the rightmost
+    row-0 cell `T ⟨0, ⟨r₀ - 1, _⟩⟩` equals `0 : Fin 2`, then every
+    row-0 cell `T ⟨0, j⟩` equals `0`. Direct consequence of row-0
+    monotonicity: every `j` satisfies `j ≤ r₀ - 1`, so monotonicity
+    gives `T ⟨0, j⟩ ≤ T ⟨0, ⟨r₀ - 1, _⟩⟩ = 0` in `Fin 2`, and the only
+    `Fin 2` value `≤ 0` is `0` itself.
+
+    The positivity hypothesis `0 < r₀` ensures `⟨r₀ - 1, _⟩` is a
+    valid `Fin r₀` index; under `hpos = False` the conclusion is
+    vacuous (no `j : Fin 0` exists). -/
+theorem skewSSYTFin_row0_eq_zero_of_top_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hpos : 0 < ν.parts 0 - μ.parts 0)
+    (hzero : T.1 ⟨0, ⟨ν.parts 0 - μ.parts 0 - 1, by omega⟩⟩ = 0)
+    (j : Fin (ν.parts 0 - μ.parts 0)) :
+    T.1 ⟨0, j⟩ = 0 := by
+  have hjle :
+      j ≤ (⟨ν.parts 0 - μ.parts 0 - 1, by omega⟩ :
+            Fin (ν.parts 0 - μ.parts 0)) := by
+    show j.val ≤ ν.parts 0 - μ.parts 0 - 1
+    have := j.isLt
+    omega
+  have hle := skewSSYTFin_row0_mono T hjle
+  rw [hzero] at hle
+  -- `hle : T.1 ⟨0, j⟩ ≤ (0 : Fin 2)`. The `Fin 2`-side `LE` unfolds to
+  -- `Nat.le` on `.val`; `(0 : Fin 2).val = 0`, so `.val ≤ 0` gives `.val = 0`.
+  apply Fin.ext
+  have hle_val : (T.1 ⟨0, j⟩).val ≤ ((0 : Fin 2)).val := hle
+  have h0 : ((0 : Fin 2)).val = 0 := rfl
+  omega
+
 end Hilbert15OQ02OQ03OQ01
