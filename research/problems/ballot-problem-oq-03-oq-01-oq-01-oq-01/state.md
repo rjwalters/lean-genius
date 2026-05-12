@@ -4,8 +4,196 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-12 (S36 — researcher-5, suffix-`Sym` degenerate cases)
-**Iteration**: 36
+**Last Updated**: 2026-05-12 (S37 — researcher-1, prefix-`Sym` packaging rebase of PR #17680)
+**Iteration**: 37
+
+## S37 Summary (2026-05-12, researcher-1)
+
+**Mode**: ACT (prefix-of-rotation `Sym` packaging — rebase of the
+`mergeStateStatus: DIRTY` PR #17680 (researcher-4, S34, opened
+2026-05-12T00:00Z). Four pure Mathlib wrapper declarations: two
+`_take_*` lemmas plus the `Sym`-packaging `def` and its `_le`
+witness. Symmetric counterpart of the merged S35/S36 suffix-`Sym`
+block.).
+
+### Background — rebase of PR #17680
+
+PR #17680 was opened against `origin/main` at file line 1962 and added
+four new declarations at the post-`rotateSortedList_mod` anchor
+(originally line 949). Between then and now, PR #17721 (S35, merged
+2026-05-12T01:48Z) and PR #17758 (S36, merged 2026-05-12T02:37Z) both
+landed at adjacent insertion points with overlapping `meta.json`
+lineCount / theoremCount / definitionCount fields and overlapping
+`state.md` history. PR #17680's branch became
+`mergeStateStatus: DIRTY` / `mergeable: CONFLICTING` against the
+current `origin/main` (file now 2143 lines, meta `theoremCount` 45,
+`definitionCount` 11). Per memory note
+`feedback_researcher_pr_rebase_strategy.md` (researcher-3, 2026-05-08
+schauder), the cleanest fix for a CONFLICTING PR by another researcher
+is a **fresh PR off `origin/main`**, not a force-push to the original
+branch.
+
+This S37 PR re-applies PR #17680's exact four declarations onto the
+post-S36 file. The insertion anchor (line 951, right after
+`rotateSortedList_mod`) survives untouched in `origin/main` — both S35
+and S36 inserted at line 1069+ (post-S34 drop family), well past the
+PR #17680 anchor. Only the section header text + numbering and the
+surrounding `state.md` / `meta.json` lines were re-targeted to the
+current file. PR #17680 should be closed as superseded once this lands.
+
+### Deliverable
+
+Four new private declarations in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right
+after `rotateSortedList_mod` (S33, line 950) and before the existing
+`/-! #### S34 — Drop-suffix` block (now line 1036 in the updated file):
+
+```lean
+@[simp] private lemma rotateSortedList_take_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)).card = j
+
+private lemma rotateSortedList_take_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1
+
+private def rotateSortedListPrefixSym {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) : Sym (Fin n) j
+
+private lemma rotateSortedListPrefixSym_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1 ≤ M.1
+```
+
+Each item:
+
+1. **`_take_card`** (`@[simp]`, 3-line body): cardinality of a length-`j`
+   prefix of `rotateSortedList M k`, coerced to `Multiset (Fin n)`, is
+   `j` whenever `j ≤ c`. Combines `Multiset.coe_card`,
+   `List.length_take`, `rotateSortedList_length`, `min_eq_left`.
+
+2. **`_take_le`** (3-line body): the same prefix multiset is `≤ M.1`.
+   No upper bound on `j` needed (`List.take` silently truncates). Uses
+   `rotateSortedList_toMultiset` to identify the rotated list's
+   multiset with `M.1`, then `Multiset.coe_le.mpr` against
+   `(List.take_sublist j _).subperm`.
+
+3. **`rotateSortedListPrefixSym`** (`def`, 1-line body): packages the
+   prefix multiset as `Sym (Fin n) j`, with the cardinality witness
+   coming from `_take_card`.
+
+4. **`_prefix_le`** (1-line body): codomain witness — the packaged
+   `Sym`'s underlying multiset is `≤ M.1`. Direct corollary of
+   `_take_le`.
+
+All four are pure Mathlib wrappers; no sorries, no axioms. Bodies are
+byte-identical to PR #17680.
+
+### Why this is the right S37 step
+
+The 2B.4' forward construction is now a one-liner via
+`rotateSortedListPrefixSym M k (a+1) hj` with `hj : a + 1 ≤ a + b`
+(i.e. `1 ≤ b`). Together with the merged S35/S36 suffix-`Sym`
+packaging, both halves of every `take j ++ drop j` split of any
+rotation of `M.1.sort` now have clean `Sym`-level codomain witnesses
+(`rotateSortedListPrefixSym M k j hj : Sym (Fin n) j` with `_le`, and
+`rotateSortedListSuffixSym M k j : Sym (Fin n) (c - j)` with `_le`).
+This unblocks the 2B.4' refined-codomain bijection (~30-40 lines), the
+`firstDescentRotation` def (~20 lines), and any future cycle-lemma
+work, without re-deriving the cardinality / submultiset witnesses each
+time.
+
+Without this rebase landing, the entire downstream chain (2B.4'
+bijection, `firstDescentRotation`, 2B.5' cycle-class cardinality
+reduction) remains blocked: the merged S35/S36 suffix-`Sym` block
+defines the *complementary* half, but the prefix half — which is where
+the 2B.4' bijection's forward map lands — is not yet on origin/main.
+
+### Coexistence with already-merged S35/S36 and the merged S33
+
+* PR #17721 (S35, merged): defines `rotateSortedListSuffixSym` +
+  `_le` at line 1069 (post-S34 drop family). No name collision with
+  this PR's `rotateSortedListPrefixSym` family.
+* PR #17758 (S36, merged): defines `rotateSortedListSuffixSym_zero_val`
+  and `_self_val` boundary identities at line 1135 (post-S35). No
+  collision.
+* PR #17665 (S33, merged): defines `rotateSortedList_comp` and
+  `rotateSortedList_mod` at line 943. This S37 PR inserts immediately
+  *after* `rotateSortedList_mod` (line 950 → 951+), so no overlap.
+* PR #17680 (S34, OPEN, CONFLICTING): same four declarations at the
+  same anchor. **This S37 PR supersedes PR #17680**; the latter should
+  be closed once this lands.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 2143 → 2227
+  lines (+84: section sub-header + 4 new private declarations with
+  docstrings).
+- Theorems / lemmas (canonical PR #17518/#17569/#17604/#17665 / S36
+  convention, `@[simp]`-prefixed decls excluded from `theoremCount`):
+  +2 lemmas counted (`_take_le`, `_prefix_le`); `_take_card` not
+  counted (`@[simp]`-prefixed).
+- Definitions: +1 (`rotateSortedListPrefixSym`).
+- meta.json: `lineCount` 2143 → 2227; `theoremCount` 45 → 47;
+  `definitionCount` 11 → 12; both `meta.*` and `leanFile.*` fields
+  updated.
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+`origin/main` (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09),
+so `BallotProblemOQ03OQ01OQ01OQ01.lean` (which transitively imports
+through the OQ03OQ01 / OQ03 chain) cannot be Docker-built until that
+parent break is repaired by a mechanic PR. Title precedent: S25–S36
+PRs all merged with `(build pending — parent OQ03OQ02 break)` modifier.
+
+Build risk: very low. The proof bodies use only mechanical Mathlib
+API already exercised by the existing rotation family. Each lemma was
+re-verified against Mathlib v4.26.0:
+
+* `List.length_take (l : List α) (n : ℕ) : (l.take n).length = min n l.length` — Lean core
+* `List.take_sublist (n : ℕ) (l : List α) : l.take n <+ l` — `Mathlib/Data/List/Sublists.lean`
+* `List.Sublist.subperm {l₁ l₂ : List α} : l₁ <+ l₂ → l₁ <+~ l₂` — `Mathlib/Data/List/Perm/Basic.lean`
+* `Multiset.coe_card : (↑l : Multiset α).card = l.length` — `Mathlib/Data/Multiset/Defs.lean` line 228
+* `Multiset.coe_le {l₁ l₂ : List α} : (↑l₁ : Multiset α) ≤ ↑l₂ ↔ l₁ <+~ l₂` — `Mathlib/Data/Multiset/Defs.lean` line 210
+* `min_eq_left {a b : α} (h : a ≤ b) : min a b = a` — Mathlib order
+
+Plus existing in-file lemmas: `rotateSortedList_length` (S31, line 805),
+`rotateSortedList_toMultiset` (S31, line 845). No new imports.
+
+### Next action (S38+)
+
+With both prefix-`Sym` and suffix-`Sym` packagings now on `origin/main`:
+
+* **2B.4' refined-codomain bijection (~30-40 lines, NOW cheaper)**:
+  build the bijection between `{bad P}` (S29 canonical-complement
+  form) and the refined codomain
+  `{(P', k) : Sym (a+1) × Fin (a+b) // canonical}` using
+  `rotateSortedListPrefixSym` for the forward map. The "canonical"
+  predicate needs to identify a unique representative within each
+  rotation orbit (the `firstDescentRotation` from the §8 plan).
+
+* **`firstDescentRotation` def (~20 lines)**: define the canonical
+  rotation index for any `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`.
+  Standalone infrastructure for 2B.4'; could be shipped before
+  committing to the full bijection.
+
+* **`rotateSortedListPrefixSym` boundary cases (~10 lines)**: analogous
+  to S36's `rotateSortedListSuffixSym_{zero,self}_val` but for the
+  prefix side — `(rotateSortedListPrefixSym M k 0 _).1 = 0` and
+  `(rotateSortedListPrefixSym M k c (le_refl c)).1 = M.1`. Trivial
+  but completes the simp-normal-form picture.
+
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement
+  the Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset
+  prefixes as a Mathlib contribution. Independent of this proof;
+  reusable across other gallery work.
+
+* **Punt to k=3 SSYT** (the other open sorry at line 2079, ~300
+  lines RSK / algebraic LGV); independent of the cycle-lemma chain.
 
 ## S36 Summary (2026-05-12, researcher-5)
 

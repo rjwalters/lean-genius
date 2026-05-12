@@ -949,6 +949,90 @@ private lemma rotateSortedList_mod {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
   conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
   exact List.rotate_mod _ _
 
+/-! ### S37 — Prefix-of-rotation `Sym` packaging (rebase of PR #17680)
+
+Four pure Mathlib wrapper declarations: two `_take_*` lemmas plus the
+`Sym`-packaging `def` and its `_le` witness. Symmetric counterpart of
+the merged S35/S36 suffix-`Sym` block (lines 1021–1135 in the current
+file). Together they give the **forward direction** of the eventual
+2B.4' refined-codomain bijection: every `(P', k) : Sym (Fin n) (a+1) ×
+Fin (a+b)` with `P'.1 ≤ M.1` arises canonically as
+`rotateSortedListPrefixSym M k (a+1) hj`, with `hj : a + 1 ≤ a + b`
+(i.e., `1 ≤ b`) and the codomain witness given by
+`rotateSortedListPrefixSym_le`. The backward direction is the
+cycle-lemma content, deferred to the heavier 2B.4' / 2B.5' work.
+
+This block is a rebase of PR #17680 (researcher-4, opened
+2026-05-12T00:00Z), which became `mergeStateStatus: DIRTY` /
+`mergeable: CONFLICTING` after the S35 (PR #17721) and S36 (PR #17758)
+suffix-`Sym` PRs merged at an adjacent insertion point with shared
+`meta.json` / `state.md` history. Per memory note
+`feedback_researcher_pr_rebase_strategy.md`, the cleanest fix is a
+fresh PR off `origin/main`. The four declarations, their bodies, and
+their docstrings are unchanged from #17680; only the section header
+text + numbering and the surrounding `state.md` / `meta.json` lines
+are re-targeted to the current file. PR #17680 should be closed as
+superseded once this lands. -/
+
+/-- **Cardinality of a prefix of a rotation, coerced to `Multiset`** (S37).
+
+    For any `M : Sym (Fin n) c`, any rotation index `k : ℕ`, any prefix
+    length `j ≤ c`: the multiset cardinality of
+    `(rotateSortedList M k).take j` is `j`.
+
+    Combines `Multiset.coe_card`, `List.length_take`,
+    `rotateSortedList_length`, and `min_eq_left`. The `j ≤ c` hypothesis
+    is needed for the `min_eq_left` step (otherwise `min j c = c < j`
+    and the multiset has fewer than `j` elements). -/
+@[simp] private lemma rotateSortedList_take_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)).card = j := by
+  rw [Multiset.coe_card, List.length_take, rotateSortedList_length]
+  exact min_eq_left hj
+
+/-- **Prefix of a rotation is a sub-multiset of `M.1`** (S37).
+
+    For any `M : Sym (Fin n) c`, any rotation index `k : ℕ`, any prefix
+    length `j : ℕ`: the multiset
+    `((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1`.
+
+    No upper bound on `j` needed — `List.take j` truncates silently when
+    `j` exceeds the list length, so the prefix is at most the whole
+    rotated list, which has the same multiset as `M.1` by
+    `rotateSortedList_toMultiset`. Proof: rewrite by `_toMultiset`, then
+    use `Multiset.coe_le.mpr` against `(List.take_sublist j _).subperm`. -/
+private lemma rotateSortedList_take_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n)) ≤ M.1 := by
+  rw [← rotateSortedList_toMultiset M k]
+  exact Multiset.coe_le.mpr (List.take_sublist j _).subperm
+
+/-- **Prefix of a rotation, packaged as a `Sym`** (S37).
+
+    The prefix multiset `((rotateSortedList M k).take j : Multiset (Fin n))`
+    repackaged so the result lives in `Sym (Fin n) j`, using
+    `rotateSortedList_take_card` for the cardinality witness.
+
+    Together with `rotateSortedListPrefixSym_le` (the codomain witness
+    `≤ M.1`) this is the forward construction for the 2B.4'
+    refined-codomain bijection: every `(k, j)` with `j ≤ c` produces a
+    canonical `Sym (Fin n) j` lying inside `M.1`. The 2B.4' bijection
+    will instantiate `j := a + 1`. -/
+private def rotateSortedListPrefixSym {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) : Sym (Fin n) j :=
+  ⟨↑((rotateSortedList M k).take j), rotateSortedList_take_card M k j hj⟩
+
+/-- **Codomain witness for `rotateSortedListPrefixSym`** (S37).
+
+    The packaged prefix multiset is `≤ M.1`. Direct corollary of
+    `rotateSortedList_take_le` (which states the same fact at the
+    underlying `Multiset` level), unwrapped through the `Sym`'s `.1`
+    projection. -/
+private lemma rotateSortedListPrefixSym_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1 ≤ M.1 :=
+  rotateSortedList_take_le M k j
+
 /-! #### S34 — Drop-suffix and take/drop split helpers
 
 Three additional pure-Mathlib wrapper lemmas extending the S31/S32/S33
