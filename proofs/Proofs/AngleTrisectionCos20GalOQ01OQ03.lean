@@ -18,6 +18,7 @@
 
   **Explicit polynomials** (degree (p−1)/2, monic):
 
+      p=3  : Y − 3                                            (degree 1)
       p=5  : Y² − 5Y + 5
       p=7  : Y³ − 7Y² + 14Y − 7
       p=11 : Y⁵ − 11Y⁴ + 44Y³ − 77Y² + 55Y − 11
@@ -27,6 +28,28 @@
   not divisible by p². The p=5, p=7 polynomials match sibling files
   (up to the substitution Y = 2X + 2, sibling files use the
   pre-substitution form 8X³−4X²−4X+1 etc.).
+
+  **p = 3 boundary case.** `cos(π/3) = 1/2`, so `2 + 2 cos(π/3) = 3` and its
+  minimal polynomial over ℚ is `Y − 3`. This is degree (3−1)/2 = 1, monic,
+  and (degenerately) Eisenstein at 3: the only sub-leading coefficient is
+  the constant `−3 ∈ (3)`, and `−3 ∉ (9)`. So the family extends down to
+  p = 3 — a useful base case for any inductive proof of the general conjecture.
+
+  **Constant-coefficient sign pattern.** Across the five verified primes
+  p ∈ {3, 5, 7, 11, 13}, the constant term of `r p` equals
+  `(-1)^((p−1)/2) · p`:
+
+      p=3  : (−1)¹ · 3  = −3   (n=1)
+      p=5  : (−1)² · 5  = +5   (n=2)
+      p=7  : (−1)³ · 7  = −7   (n=3)
+      p=11 : (−1)⁵ · 11 = −11  (n=5)
+      p=13 : (−1)⁶ · 13 = +13  (n=6)
+
+  This matches the cyclotomic prediction
+  `N_{ℚ(θ_p)/ℚ}(2 + θ_p) = (−1)^((p−1)/2) · Φ_{2p}(−1) = (−1)^((p−1)/2) · p`
+  derived from the norm identity `(1 + ζ)(1 + ζ⁻¹) = 2 + θ_p`. The sign
+  alternation is exactly what any general proof via the cyclotomic-ramification
+  route must reproduce. See `r_constantCoeff_eq_signed_p` below.
 
   **Mathematical justification (sketch).** By cyclotomic ramification:
   the prime p is totally ramified in ℤ[2cos(π/p)] with ramification
@@ -51,8 +74,9 @@ namespace AngleTrisectionCos20GalOQ01OQ03
 Parametric polynomial `r p ∈ ℤ[X]` that is conjecturally the minimal
 polynomial of `2 + 2 cos(π/p)` over ℚ for odd prime p ≥ 3.
 
-Explicit values for p ∈ {5, 7, 11, 13} match the empirically verified cases:
+Explicit values for p ∈ {3, 5, 7, 11, 13} match the empirically verified cases:
 
+    r 3  = X − 3                                              (degree 1, base case)
     r 5  = X² − 5X + 5
     r 7  = X³ − 7X² + 14X − 7
     r 11 = X⁵ − 11X⁴ + 44X³ − 77X² + 55X − 11
@@ -63,11 +87,48 @@ For all other p, returns a placeholder `0`. The conjecture
 with the required Eisenstein structure for every odd prime p ≥ 3.
 -/
 noncomputable def r : ℕ → ℤ[X]
+  | 3 => X - C 3
   | 5 => X ^ 2 - C 5 * X + C 5
   | 7 => X ^ 3 - C 7 * X ^ 2 + C 14 * X - C 7
   | 11 => X ^ 5 - C 11 * X ^ 4 + C 44 * X ^ 3 - C 77 * X ^ 2 + C 55 * X - C 11
   | 13 => X ^ 6 - C 13 * X ^ 5 + C 65 * X ^ 4 - C 156 * X ^ 3 + C 182 * X ^ 2 - C 91 * X + C 13
   | _ => 0
+
+/-! ## p = 3 (boundary case: degree 1)
+
+`cos(π/3) = 1/2`, so `2 + 2 cos(π/3) = 3` has rational minimal polynomial
+`X − 3`. This is the smallest case where the Eisenstein-at-`p` structure
+applies: degree `(3 − 1)/2 = 1`, leading coefficient `1 ∉ (3)`, the unique
+sub-leading coefficient is `−3 ∈ (3)`, and `−3 ∉ (9)`. -/
+
+theorem r_3_eq : r 3 = X - C 3 := rfl
+
+theorem r_3_natDegree : (r 3).natDegree = 1 := by
+  rw [r_3_eq]; compute_degree!
+
+theorem r_3_degree : (r 3).degree = 1 := by
+  rw [r_3_eq]; compute_degree!
+
+theorem r_3_monic : (r 3).Monic := by
+  rw [Polynomial.Monic, Polynomial.leadingCoeff, r_3_natDegree, r_3_eq]
+  simp only [coeff_sub, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  norm_num
+
+theorem r_3_isEisensteinAt :
+    (r 3).IsEisensteinAt (Ideal.span {(3 : ℤ)}) := by
+  refine ⟨?_, ?_, ?_⟩
+  · rw [show (r 3).leadingCoeff = 1 from r_3_monic, Ideal.mem_span_singleton]
+    decide
+  · intro k hk
+    rw [r_3_natDegree] at hk
+    simp only [Ideal.mem_span_singleton]
+    rw [r_3_eq]
+    simp only [coeff_sub, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    interval_cases k <;> norm_num
+  · rw [Ideal.span_singleton_pow, Ideal.mem_span_singleton]
+    rw [r_3_eq]
+    simp only [coeff_sub, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
 
 /-! ## p = 5 -/
 
@@ -204,24 +265,64 @@ theorem r_13_isEisensteinAt :
 /-! ## Empirical verification: the four cases packaged -/
 
 /--
-Verification of the conjecture for the four smallest odd primes p ≥ 5.
-Each of the explicit polynomials `r 5, r 7, r 11, r 13` is Eisenstein
-at p, in the sense of `Polynomial.IsEisensteinAt`.
+Verification of the conjecture for the five smallest odd primes p ≥ 3.
+Each of the explicit polynomials `r 3, r 5, r 7, r 11, r 13` is
+Eisenstein at p, in the sense of `Polynomial.IsEisensteinAt`.
 
-For p = 5, p = 7 the polynomial agrees (up to the substitution
-Y = 2X + 2) with the polynomials in sibling files
-`AngleTrisectionCos20GalOQ01OQ02.lean` and `AngleTrisectionCos20GalOQ01.lean`,
-which also derive irreducibility via Eisenstein at the same prime.
+The `p = 3` case is the degenerate degree-1 base case: `r 3 = X − 3`,
+whose only sub-leading coefficient is `−3 ∈ (3)`. The `p = 5, 7` cases
+agree (up to the substitution `Y = 2X + 2`) with the polynomials in
+sibling files `AngleTrisectionCos20GalOQ01OQ02.lean` and
+`AngleTrisectionCos20GalOQ01.lean`, which also derive irreducibility
+via Eisenstein at the same prime.
 
 For p = 11, p = 13, this is the first formal verification of the
 Eisenstein structure in the gallery.
 -/
 theorem eisenstein_verified_small_primes :
-    (r 5).IsEisensteinAt (Ideal.span {(5 : ℤ)})
+    (r 3).IsEisensteinAt (Ideal.span {(3 : ℤ)})
+    ∧ (r 5).IsEisensteinAt (Ideal.span {(5 : ℤ)})
     ∧ (r 7).IsEisensteinAt (Ideal.span {(7 : ℤ)})
     ∧ (r 11).IsEisensteinAt (Ideal.span {(11 : ℤ)})
     ∧ (r 13).IsEisensteinAt (Ideal.span {(13 : ℤ)}) :=
-  ⟨r_5_isEisensteinAt, r_7_isEisensteinAt, r_11_isEisensteinAt, r_13_isEisensteinAt⟩
+  ⟨r_3_isEisensteinAt, r_5_isEisensteinAt, r_7_isEisensteinAt,
+   r_11_isEisensteinAt, r_13_isEisensteinAt⟩
+
+/-! ## Constant-coefficient sign pattern (structural)
+
+The constant term of `r p` for the five verified primes follows the
+cyclotomic prediction
+`(r p).coeff 0 = (-1)^((p-1)/2) · p`. This matches the norm
+`N_{ℚ(θ_p)/ℚ}(2 + θ_p) = (-1)^((p-1)/2) · Φ_{2p}(-1) = (-1)^((p-1)/2) · p`
+from the identity `(1 + ζ_{2p})(1 + ζ_{2p}⁻¹) = 2 + 2 cos(π/p)`. Any
+general proof of `eisenstein_conjecture_cos_pi_p` along the
+cyclotomic-ramification route must reproduce exactly this sign.
+-/
+
+/-- Constant term of `r p` equals `(-1)^((p-1)/2) · p` for the five
+verified primes p ∈ {3, 5, 7, 11, 13}. -/
+theorem r_constantCoeff_eq_signed_p :
+    (r 3).coeff 0 = (-1) ^ ((3 - 1) / 2) * 3
+    ∧ (r 5).coeff 0 = (-1) ^ ((5 - 1) / 2) * 5
+    ∧ (r 7).coeff 0 = (-1) ^ ((7 - 1) / 2) * 7
+    ∧ (r 11).coeff 0 = (-1) ^ ((11 - 1) / 2) * 11
+    ∧ (r 13).coeff 0 = (-1) ^ ((13 - 1) / 2) * 13 := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · rw [r_3_eq]
+    simp only [coeff_sub, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_5_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_7_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_11_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_13_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
 
 /-! ## Irreducibility corollaries for p ∈ {11, 13} (new gallery content) -/
 
@@ -289,8 +390,10 @@ Mathlib has Φ_{2p}(−1) = p (via `Polynomial.cyclotomic_prime_eq_X_pow_sub_one
 and the relation Φ_{2p} = Φ_p(−X) for p odd). The local-field uniformizer
 theorem is the main gap to fill — see knowledge.md for the proof outline.
 
-This file verifies the conjecture for p ∈ {5, 7, 11, 13} via
-`eisenstein_verified_small_primes`.
+This file verifies the conjecture for p ∈ {3, 5, 7, 11, 13} via
+`eisenstein_verified_small_primes`, including the degenerate
+degree-1 base case `r 3 = X − 3`. The sign of the constant term
+follows `(-1)^((p-1)/2) · p` (see `r_constantCoeff_eq_signed_p`).
 -/
 theorem eisenstein_conjecture_cos_pi_p :
     ∀ p : ℕ, p.Prime → 3 ≤ p → Odd p →

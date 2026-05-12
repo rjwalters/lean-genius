@@ -2,7 +2,7 @@
   "id": "angle-trisection-cos-20-gal-oq-01-oq-03",
   "title": "Eisenstein Conjecture for cos(π/p), General Odd Prime p",
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-03",
-  "description": "States the uniform Eisenstein conjecture: for every odd prime p ≥ 3, the minimal polynomial of 2 + 2cos(π/p) over ℚ is Eisenstein at p. Defines a parametric polynomial r : ℕ → ℤ[X] with explicit values for p ∈ {5, 7, 11, 13}: r₅ = Y²−5Y+5, r₇ = Y³−7Y²+14Y−7, r₁₁ = Y⁵−11Y⁴+44Y³−77Y²+55Y−11, r₁₃ = Y⁶−13Y⁵+65Y⁴−156Y³+182Y²−91Y+13. Proves IsEisensteinAt for each of the four primes by direct coefficient computation, and derives irreducibility for the new primes p = 11, p = 13. The general conjecture is stated as a sorry; the proof requires the cyclotomic-ramification argument that 2 + 2cos(π/p) is a uniformizer in the unique prime above p in ℤ[2cos(π/p)] (totally ramified extension of degree (p−1)/2, with norm Φ_{2p}(−1) = Φ_p(1) = p).",
+  "description": "States the uniform Eisenstein conjecture: for every odd prime p ≥ 3, the minimal polynomial of 2 + 2cos(π/p) over ℚ is Eisenstein at p. Defines a parametric polynomial r : ℕ → ℤ[X] with explicit values for p ∈ {3, 5, 7, 11, 13}: r₃ = Y−3 (degenerate degree-1 boundary case, since cos(π/3) = 1/2), r₅ = Y²−5Y+5, r₇ = Y³−7Y²+14Y−7, r₁₁ = Y⁵−11Y⁴+44Y³−77Y²+55Y−11, r₁₃ = Y⁶−13Y⁵+65Y⁴−156Y³+182Y²−91Y+13. Proves IsEisensteinAt for each of the five primes by direct coefficient computation, derives irreducibility for the new primes p = 11, p = 13, and packages the structural sign pattern `(r p).coeff 0 = (-1)^((p-1)/2) · p` as `r_constantCoeff_eq_signed_p` (matching the cyclotomic prediction N(2+θ_p) = (-1)^((p-1)/2) · Φ_{2p}(-1)). The general conjecture is stated as a sorry; the proof requires the cyclotomic-ramification argument that 2 + 2cos(π/p) is a uniformizer in the unique prime above p in ℤ[2cos(π/p)] (totally ramified extension of degree (p−1)/2, with norm Φ_{2p}(−1) = Φ_p(1) = p).",
   "meta": {
     "author": "researcher-6",
     "date": "2026",
@@ -21,17 +21,18 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 301,
-    "assumptions": "1 sorry: the general statement `eisenstein_conjecture_cos_pi_p` (for all odd primes p ≥ 3) is open in this gallery. The proof requires cyclotomic ramification theory: Φ_{2p}(−1) = p and the local-field theorem 'uniformizer of totally ramified extension ⇒ minimal polynomial is Eisenstein'. Mathlib has the first ingredient (Polynomial.cyclotomic API at −1) but may lack the second in fully general form. All per-prime cases for p ∈ {5, 7, 11, 13} are fully proven with 0 sorries.",
+    "lineCount": 404,
+    "assumptions": "1 sorry: the general statement `eisenstein_conjecture_cos_pi_p` (for all odd primes p ≥ 3) is open in this gallery. The proof requires cyclotomic ramification theory: Φ_{2p}(−1) = p and the local-field theorem 'uniformizer of totally ramified extension ⇒ minimal polynomial is Eisenstein'. Mathlib has the first ingredient (Polynomial.cyclotomic API at −1) but may lack the second in fully general form. All per-prime cases for p ∈ {3, 5, 7, 11, 13} are fully proven with 0 sorries.",
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to the irreducibility of minimal polynomials of cosines. For specific primes the gallery already has formalizations: cos(20°) = cos(π/9) (Eisenstein at 3), cos(π/5) (Eisenstein at 5), cos(π/7) (Eisenstein at 7). The pattern Y → Y − 2 and the resulting Eisenstein-at-p form for the minimal polynomial of 2 + 2cos(π/p) is conjectured to hold for every odd prime p ≥ 3. The cyclotomic perspective ties this to Φ_{2p}(−1) = Φ_p(1) = p, a Mathlib-available identity, and the standard ramification theory of cyclotomic fields developed by Kummer, Hilbert, and Hensel.",
     "proofStrategy": "Per-prime: define the explicit polynomial r_p ∈ ℤ[X] and apply Mathlib's `Polynomial.IsEisensteinAt` constructor with three obligations: leadingCoeff = 1 ∉ (p), all sub-leading coefficients in (p), constant term ∉ (p)². Each obligation reduces to `decide` or `interval_cases k <;> norm_num` after coefficient unfolding. For p ∈ {11, 13}, derive irreducibility via `Polynomial.irreducible_of_eisenstein_criterion`. General conjecture (sorry): cyclotomic ramification — (1+ζ_{2p}) is uniformizer of unique prime above p in ℤ[ζ_{2p}] (Mathlib's `IsCyclotomicExtension.Rat.totallyRamified`), descends to (2 + 2cos(π/p)) as uniformizer in the real subfield with ramification index (p−1)/2, hence minimal polynomial is Eisenstein by local-field theory.",
-    "theoremCount": 24,
+    "theoremCount": 30,
     "definitionCount": 1,
     "originalContributions": [
-      "Parametric definition r : ℕ → ℤ[X] explicit for p ∈ {5, 7, 11, 13}",
-      "IsEisensteinAt verification for p ∈ {5, 7, 11, 13}",
+      "Parametric definition r : ℕ → ℤ[X] explicit for p ∈ {3, 5, 7, 11, 13}",
+      "IsEisensteinAt verification for p ∈ {3, 5, 7, 11, 13}, including the degenerate degree-1 boundary case r 3 = X − 3 (base case for any inductive proof)",
       "Irreducibility of r₁₁ and r₁₃ (new gallery content — sibling files cover p=5, p=7)",
+      "Structural sign-pattern lemma `r_constantCoeff_eq_signed_p`: constant term equals (-1)^((p-1)/2) · p for each verified prime, matching the cyclotomic prediction N(2+θ_p) = (-1)^((p-1)/2) · Φ_{2p}(-1)",
       "Uniform statement of the Eisenstein conjecture for general odd prime p"
     ],
     "prerequisites": [
@@ -82,13 +83,15 @@
       "Ramification theory of cyclotomic fields (used in informal proof sketch)"
     ],
     "mainTheorems": [
+      "r_3_isEisensteinAt: IsEisensteinAt (Y−3) (span {3}) — degenerate degree-1 boundary case",
       "r_5_isEisensteinAt: IsEisensteinAt (Y²−5Y+5) (span {5})",
       "r_7_isEisensteinAt: IsEisensteinAt (Y³−7Y²+14Y−7) (span {7})",
       "r_11_isEisensteinAt: IsEisensteinAt (Y⁵−11Y⁴+44Y³−77Y²+55Y−11) (span {11})",
       "r_13_isEisensteinAt: IsEisensteinAt (Y⁶−13Y⁵+65Y⁴−156Y³+182Y²−91Y+13) (span {13})",
       "r_11_irreducible: r_{11} is irreducible over ℤ (via Eisenstein at 11)",
       "r_13_irreducible: r_{13} is irreducible over ℤ (via Eisenstein at 13)",
-      "eisenstein_verified_small_primes: packages the four IsEisensteinAt claims",
+      "eisenstein_verified_small_primes: packages the five IsEisensteinAt claims (p ∈ {3, 5, 7, 11, 13})",
+      "r_constantCoeff_eq_signed_p: (r p).coeff 0 = (-1)^((p−1)/2) · p for p ∈ {3, 5, 7, 11, 13} — matches cyclotomic prediction",
       "eisenstein_conjecture_cos_pi_p (sorry): for all odd primes p ≥ 3, ∃ monic q ∈ ℤ[X] of degree (p−1)/2 that is Eisenstein at p"
     ],
     "references": [
@@ -102,63 +105,79 @@
       "id": "header",
       "title": "Conjecture and Definitions",
       "startLine": 1,
-      "endLine": 70,
-      "summary": "States the Eisenstein conjecture for cos(π/p), describes the explicit polynomials for p ∈ {5, 7, 11, 13}, sketches the cyclotomic ramification proof, and defines the parametric polynomial r : ℕ → ℤ[X] with explicit values.",
-      "mathContext": "Definition: $r_p \\in \\mathbb{Z}[X]$ for $p \\in \\{5, 7, 11, 13\\}$; $r_5 = Y^2 - 5Y + 5$, $r_7 = Y^3 - 7Y^2 + 14Y - 7$, $r_{11} = Y^5 - 11Y^4 + 44Y^3 - 77Y^2 + 55Y - 11$, $r_{13} = Y^6 - 13Y^5 + 65Y^4 - 156Y^3 + 182Y^2 - 91Y + 13$."
+      "endLine": 96,
+      "summary": "States the Eisenstein conjecture for cos(π/p), describes the explicit polynomials for p ∈ {3, 5, 7, 11, 13}, sketches the cyclotomic ramification proof, and defines the parametric polynomial r : ℕ → ℤ[X] with explicit values. Notes the boundary case r 3 = X − 3 (since cos(π/3) = 1/2) and the constant-coefficient sign pattern (-1)^((p−1)/2) · p.",
+      "mathContext": "Definition: $r_p \\in \\mathbb{Z}[X]$ for $p \\in \\{3, 5, 7, 11, 13\\}$; $r_3 = Y - 3$, $r_5 = Y^2 - 5Y + 5$, $r_7 = Y^3 - 7Y^2 + 14Y - 7$, $r_{11} = Y^5 - 11Y^4 + 44Y^3 - 77Y^2 + 55Y - 11$, $r_{13} = Y^6 - 13Y^5 + 65Y^4 - 156Y^3 + 182Y^2 - 91Y + 13$."
+    },
+    {
+      "id": "p-equals-3",
+      "title": "Verification at p = 3 (boundary case, degree 1)",
+      "startLine": 97,
+      "endLine": 132,
+      "summary": "Establishes the boundary case r 3 = X − 3 (since cos(π/3) = 1/2 gives 2 + 2cos(π/3) = 3, whose minimal polynomial over ℚ is X − 3). Verifies natDegree 1, monic, and (degenerate) Eisenstein at 3: leading 1 ∉ (3), the unique sub-leading coefficient −3 ∈ (3), constant −3 ∉ (9).",
+      "mathContext": "$r_3 = Y - 3$. Eisenstein at $p = 3$ in the degenerate degree-1 sense: leading 1, constant $-3 \\in (3) \\setminus (9)$."
     },
     {
       "id": "p-equals-5",
       "title": "Verification at p = 5",
-      "startLine": 71,
-      "endLine": 100,
+      "startLine": 133,
+      "endLine": 166,
       "summary": "Proves r_5 has degree 2 and natDegree 2, is monic, and is Eisenstein at 5. The constant term 5 is not divisible by 25; the single sub-leading coefficient −5 is divisible by 5.",
       "mathContext": "$r_5 = Y^2 - 5Y + 5$. Eisenstein at $p = 5$: leading 1 not in $(5)$, coefficient $-5 \\in (5)$, constant $5 \\notin (25)$."
     },
     {
       "id": "p-equals-7",
       "title": "Verification at p = 7",
-      "startLine": 101,
-      "endLine": 131,
+      "startLine": 167,
+      "endLine": 197,
       "summary": "Proves r_7 has degree 3 and natDegree 3, is monic, and is Eisenstein at 7. Three sub-leading coefficients (−7, 14, −7) all divisible by 7; constant term −7 not divisible by 49.",
       "mathContext": "$r_7 = Y^3 - 7Y^2 + 14Y - 7$. Eisenstein at $p = 7$: leading 1, coefficients $(-7, 14, -7)$ all divisible by 7, constant $-7 \\notin (49)$."
     },
     {
       "id": "p-equals-11",
       "title": "Verification at p = 11",
-      "startLine": 132,
-      "endLine": 162,
+      "startLine": 198,
+      "endLine": 230,
       "summary": "Proves r_11 has degree 5 and natDegree 5, is monic, and is Eisenstein at 11. Sub-leading coefficients (−11, 44, −77, 55, −11) all divisible by 11; constant term −11 not divisible by 121.",
       "mathContext": "$r_{11} = Y^5 - 11Y^4 + 44Y^3 - 77Y^2 + 55Y - 11$. Eisenstein at $p = 11$: 44 = 4·11, 77 = 7·11, 55 = 5·11."
     },
     {
       "id": "p-equals-13",
       "title": "Verification at p = 13",
-      "startLine": 163,
-      "endLine": 197,
+      "startLine": 231,
+      "endLine": 264,
       "summary": "Proves r_13 has degree 6 and natDegree 6, is monic, and is Eisenstein at 13. Sub-leading coefficients (−13, 65, −156, 182, −91, 13) all divisible by 13; constant term 13 not divisible by 169.",
       "mathContext": "$r_{13} = Y^6 - 13Y^5 + 65Y^4 - 156Y^3 + 182Y^2 - 91Y + 13$. Eisenstein at $p = 13$: 65 = 5·13, 156 = 12·13, 182 = 14·13, 91 = 7·13."
     },
     {
       "id": "packaged-verification",
-      "title": "Four-Prime Verification, Packaged",
-      "startLine": 198,
-      "endLine": 222,
-      "summary": "Conjunction of the four per-prime IsEisensteinAt claims, packaged as `eisenstein_verified_small_primes`. Useful for downstream use and for documenting the empirical evidence behind the general conjecture.",
-      "mathContext": "$\\forall p \\in \\{5, 7, 11, 13\\}: r_p \\text{ is Eisenstein at } p$."
+      "title": "Five-Prime Verification, Packaged",
+      "startLine": 265,
+      "endLine": 290,
+      "summary": "Conjunction of the five per-prime IsEisensteinAt claims, packaged as `eisenstein_verified_small_primes`. Useful for downstream use and for documenting the empirical evidence behind the general conjecture across p ∈ {3, 5, 7, 11, 13}.",
+      "mathContext": "$\\forall p \\in \\{3, 5, 7, 11, 13\\}: r_p \\text{ is Eisenstein at } p$."
+    },
+    {
+      "id": "sign-pattern",
+      "title": "Constant-Coefficient Sign Pattern",
+      "startLine": 291,
+      "endLine": 326,
+      "summary": "Proves the structural identity `(r p).coeff 0 = (-1)^((p−1)/2) · p` for each of the five verified primes p ∈ {3, 5, 7, 11, 13}, packaged as `r_constantCoeff_eq_signed_p`. This matches the cyclotomic prediction `N_{ℚ(θ_p)/ℚ}(2 + θ_p) = (-1)^((p−1)/2) · Φ_{2p}(-1) = (-1)^((p−1)/2) · p` derived from the norm identity (1 + ζ_{2p})(1 + ζ_{2p}⁻¹) = 2 + 2cos(π/p). Any general proof along the cyclotomic-ramification route must reproduce exactly this sign.",
+      "mathContext": "$\\forall p \\in \\{3, 5, 7, 11, 13\\}: (r_p)_0 = (-1)^{(p-1)/2} \\cdot p$, matching $N_{\\mathbb{Q}(\\theta_p)/\\mathbb{Q}}(2 + \\theta_p) = (-1)^{(p-1)/2} \\cdot \\Phi_{2p}(-1)$."
     },
     {
       "id": "irreducibility-corollaries",
       "title": "Irreducibility of r_{11} and r_{13}",
-      "startLine": 223,
-      "endLine": 270,
+      "startLine": 327,
+      "endLine": 372,
       "summary": "Derives Irreducible (r 11) and Irreducible (r 13) by applying `Polynomial.irreducible_of_eisenstein_criterion`. The p=5 and p=7 cases are already established in sibling files via the same mechanism applied to the equivalent polynomials 4X²−2X−1 and 8X³−4X²−4X+1.",
       "mathContext": "By Gauss's lemma and the integer-coefficient Eisenstein criterion, $r_{11}$ and $r_{13}$ are irreducible over $\\mathbb{Z}$ (hence over $\\mathbb{Q}$)."
     },
     {
       "id": "uniform-conjecture",
       "title": "Uniform Conjecture (Open)",
-      "startLine": 271,
-      "endLine": 301,
+      "startLine": 373,
+      "endLine": 404,
       "summary": "States the general Eisenstein conjecture for cos(π/p) as `eisenstein_conjecture_cos_pi_p`, leaving the proof as a sorry. The proof outline (via Φ_{2p}(−1) = p and the local-field uniformizer theorem) is documented in the file comment and in knowledge.md.",
       "mathContext": "$\\forall p \\geq 3 \\text{ prime, } p \\text{ odd}: \\exists q \\in \\mathbb{Z}[X], \\deg q = (p-1)/2 \\wedge q \\text{ monic} \\wedge q.\\mathrm{IsEisensteinAt}((p))$."
     }
