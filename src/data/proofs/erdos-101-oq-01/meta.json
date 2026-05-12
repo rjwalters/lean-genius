@@ -1,0 +1,146 @@
+{
+  "id": "erdos-101-oq-01",
+  "title": "Erdős #101 OQ-01: Four-Point Lines are $o(n^2)$",
+  "slug": "erdos-101-oq-01",
+  "description": "Formal statement of Erdős's $100 open question OQ-01 of Problem #101: under no-five-collinear, is the four-point line count $o(n^2)$? Scaffold file with the asymptotic vocabulary, the formal conjecture (1 sorry), and small-case lemmas the conjecture subsumes — proved unconditionally.",
+  "meta": {
+    "author": "Erdős",
+    "erdosNumber": 101,
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos101OQ01.lean",
+    "tags": [
+      "erdos",
+      "combinatorial-geometry",
+      "incidence-geometry",
+      "collinearity",
+      "asymptotics",
+      "open",
+      "research"
+    ],
+    "badge": "wip",
+    "sorries": 1,
+    "sourceUrl": "https://erdosproblems.com/101",
+    "erdosUrl": "https://erdosproblems.com/101",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-05-11",
+    "axiomCount": 0,
+    "lineCount": 253,
+    "assumptions": "1 sorry: erdos_101_oq_01 (the main open conjecture, $100 Erdős prize). All supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness) are unconditional and axiom-free; they witness the regime in which the conjecture would tighten existing bounds.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "substantiveTheoremCount": 5
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "File Header and Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Documentation header outlining the OQ-01 conjecture, status (open, $100 prize), the Solymosi–Stojaković lower bound, and the file's deliverables. Imports the parent `Erdos101Problem`.",
+      "mathContext": "OQ-01 is the o(n²) refinement question: every elementary upper bound is currently $\\Theta(n^2)$ (the trivial $n^2$, the $n(n-1)/12$ improved bound, the per-point $(n-1)/3$ bound)."
+    },
+    {
+      "id": "asymptotic-vocabulary",
+      "title": "Asymptotic vocabulary",
+      "startLine": 57,
+      "endLine": 80,
+      "summary": "Defines `IsLittleOh_n_squared` (an `ε–N` formulation for `ℕ → ℕ`) and `BoundsAtRate` (a predicate parameterising rate bounds on `fourPointLineCount` over no-five-collinear sets).",
+      "mathContext": "The `ε–N` form is chosen for direct readability; equivalence with `Asymptotics.IsLittleO` is deferred to S3."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "The OPEN question, in two equivalent forms",
+      "startLine": 81,
+      "endLine": 119,
+      "summary": "States `erdos_101_oq_01_conjecture` (primary ε–N form) and `erdos_101_oq_01_rate_form` (witness-function form). The theorem `erdos_101_oq_01` records the primary form as a `sorry` — this is the OPEN question.",
+      "mathContext": "Each form is the standard expression of the question in combinatorial geometry; both unfold to the assertion that the maximum four-point line count grows strictly slower than $n^2$."
+    },
+    {
+      "id": "easy-cases",
+      "title": "Easy cases the conjecture subsumes",
+      "startLine": 120,
+      "endLine": 175,
+      "summary": "Proves unconditionally: (1) `fourPointLineCount_zero_of_small` (n < 4 ⇒ count is 0); (2) `fourPointLineCount_o_n_squared_holds_below_four` (the OQ-01 ε–N bound holds vacuously for every $|P| \\leq 3$); (3) `fourPointLineCount_le_quadratic` (the real-valued $\\leq n^2$ trivial upper bound).",
+      "mathContext": "These witness that the OPEN content is genuinely the $o(n^2)$ refinement: the trivial $O(n^2)$ regime is already known."
+    },
+    {
+      "id": "rate-bounds",
+      "title": "Known bounds via `BoundsAtRate`",
+      "startLine": 176,
+      "endLine": 217,
+      "summary": "Records the elementary rates: `bounds_at_rate_quadratic_unconditional` (rate $n^2$) and `bounds_at_rate_quadratic_over_twelve` (rate $n^2/12$, weakening of `improved_upper_bound`'s $n(n-1)/12$ to avoid the ℕ subtraction cast subtlety; asymptotically equivalent).",
+      "mathContext": "These are the strongest *elementary* rate bounds. None is $o(n^2)$ — closing the gap is the open content."
+    },
+    {
+      "id": "obstructions",
+      "title": "Proof obstructions and next iterations",
+      "startLine": 218,
+      "endLine": 253,
+      "summary": "Documents the Solymosi–Stojaković lower bound $n^{2-O(1/\\sqrt{\\log n})}$ refuting Erdős's $\\Theta(n^{3/2})$ conjecture; the obstructions from Szemerédi–Trotter and trivial double counting; and the S2/S3 next-iteration plan (lower-bound formalisation, `Asymptotics.IsBigO` connection).",
+      "mathContext": "The gap between known lower $n^{2-O(1/\\sqrt{\\log n})}$ and known upper $O(n^2)$ is the substantive content of OQ-01."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Erdős posed Problem #101 across multiple papers from 1984 to 1997, asking whether the maximum number of lines through exactly four points of an $n$-point planar set (with no five collinear) is $o(n^2)$. He initially conjectured $\\Theta(n^{3/2})$, based on Grünbaum's $\\Omega(n^{3/2})$ construction. This conjecture stood for decades until Solymosi and Stojaković (2013) disproved it with a stunning $n^{2-O(1/\\sqrt{\\log n})}$ construction—nearly quadratic growth, using number-theoretic ideas related to sum-product estimates. The gap between this lower bound and the conjectured $o(n^2)$ upper bound remains one of the central open problems in combinatorial geometry. The problem carries a $\\$100$ Erdős prize and connects deeply to the Szemerédi–Trotter incidence theorem and the broader program of understanding collinearity patterns in finite point sets.",
+    "problemStatement": "**OQ-01**: For every $\\varepsilon > 0$, does there exist $N$ such that every no-five-collinear planar point set $P$ with $|P| \\geq N$ satisfies $\\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2$? Equivalently, is the maximum four-point line count $o(n^2)$?",
+    "text": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: trivial $O(n^2)$ upper bound (Szemerédi–Trotter or elementary double-counting), Solymosi–Stojaković $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower bound.",
+    "proofStrategy": "S1 (this scaffold) records the formal Σ₂-style statement of the conjecture, the asymptotic vocabulary, and the small-case lemmas the conjecture trivially subsumes. The single open `sorry` is the main theorem; everything else is unconditional. Subsequent iterations will (S2) formalise the Solymosi–Stojaković lower bound as a recorded existence statement, (S3) connect to `Asymptotics.IsBigO`/`IsLittleO` infrastructure, and explore whether per-point Cauchy–Schwarz refinements beyond `fourCollinearThrough_bound` yield a $1 - o(1)$ leading constant.",
+    "keyInsights": [
+      "OQ-01 is the precise quantitative refinement of the trivial $O(n^2)$ upper bound; the $\\Theta(n^2)$ regime is already established elementarily.",
+      "The Solymosi–Stojaković construction (2013) gives $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ four-point lines, refuting Erdős's earlier $\\Theta(n^{3/2})$ conjecture.",
+      "All known elementary upper bounds are $\\Theta(n^2)$: trivial $n^2$, improved $n(n-1)/12$ (pair-packing), per-point $n(n-1)/12$ via $(n-1)/3 \\cdot n / 4$ double-counting.",
+      "Szemerédi–Trotter applied to lines of multiplicity-4 gives $O(n^2)$ but no $o(n^2)$ refinement; the open content requires either a multiplicity-aware incidence improvement or a non-incidence argument.",
+      "The conjecture's quantification is genuinely Σ₂ — `∀ε∃N∀P`—the witness `N(ε)` is the unknown content.",
+      "Connections to Erdős Problems #102, #588, #669 (related collinearity extremal questions in different settings)."
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (incidence theorems, configurations)",
+      "Real analysis (ε–N asymptotics, $o(n^2)$ vocabulary)",
+      "Discrete geometry (point-line incidences, arrangements)",
+      "Background from Erdos101Problem.lean (PlanarPointSet, NoFiveCollinear, fourPointLineCount, improved_upper_bound)"
+    ]
+  },
+  "conclusion": {
+    "summary": "S1 scaffold: the formal OQ-01 statement is recorded as `erdos_101_oq_01` (1 sorry), and three unconditional supporting theorems witness the regime — small-case lemmas, the real-valued trivial $O(n^2)$ bound, and the elementary $n^2/12$ rate. No new axioms. The open content is precisely the sub-quadratic quantitative refinement.",
+    "implications": "Provides a Lean-checkable home for future OQ-01 progress: the Σ₂ statement is now in canonical form; future iterations can substitute weaker but constructive rates (e.g., $n^2 / \\log\\log n$, $n^2 / (\\log n)^{1/2}$) as `BoundsAtRate` instances once proved.",
+    "openQuestions": [
+      "Can the Szemerédi–Trotter incidence theorem be combined with a multiplicity-aware filter to yield a $1 - o(1)$ leading constant on $n^2 / 12$?",
+      "Does the per-point bound `fourCollinearThrough_bound` $\\leq (n-1)/3$ admit a Cauchy–Schwarz second-moment improvement that propagates to the global count?",
+      "What is the exact growth rate of the maximum four-point line count? Both the constant and the polylog correction in the Solymosi–Stojaković construction are sharp candidates."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.Erdos101Problem"
+    ],
+    "opens": [
+      "Classical"
+    ],
+    "namespace": "Erdos101OQ01",
+    "lineCount": 253,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos101OQ01.lean",
+    "sorries": 1
+  },
+  "crossReferences": [
+    {
+      "relationship": "extends",
+      "description": "OQ-01 is the central open question of the parent Erdős #101 formalisation; this file records the formal Σ₂ statement and the small-case lemmas it subsumes.",
+      "targetId": "erdos-101"
+    },
+    {
+      "relationship": "uses",
+      "description": "Reuses `PlanarPointSet`, `collinear`, `NoFiveCollinear`, `fourPointLineCount`, `improved_upper_bound`, `fourPointLineCount_lt_four` from the parent file.",
+      "targetId": "erdos-101"
+    }
+  ],
+  "references": [
+    "Erdős, P. (1984–1997). Problem 101, https://erdosproblems.com/101",
+    "Grünbaum, B. (1972). Arrangements and Spreads — $\\Omega(n^{3/2})$ four-point line construction.",
+    "Solymosi, J., Stojaković, M. (2013). Many collinear k-tuples with no $k+1$ collinear points. Discrete & Computational Geometry 50: 811–820 — $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower bound disproving Erdős's $\\Theta(n^{3/2})$ conjecture.",
+    "Szemerédi, E., Trotter, W.T. (1983). Extremal problems in discrete geometry. Combinatorica 3: 381–392 — $I(P,L) = O(n^{2/3} m^{2/3} + n + m)$ incidence bound."
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "slug": "erdos-101-oq-01",
+  "title": "Erdős #101 OQ-01: Four-Point Lines are $o(n^2)$",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "significance": 7,
+  "tractability": 5,
+  "started": "2026-05-11T19:00:00Z",
+  "lastUpdate": "2026-05-11T19:00:00Z",
+  "problemStatement": {
+    "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
+    "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
+    "whyMatters": [
+      "$\\$100$ Erdős prize problem.",
+      "Central open problem in combinatorial geometry.",
+      "Connects to Szemerédi–Trotter incidence theorem and sum–product phenomenology.",
+      "Disproof of Erdős's conjectured $\\Theta(n^{3/2})$ behaviour is itself one of the major surprises of the last 20 years in extremal combinatorics."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "$\\text{fourPointLineCount}(P) \\leq |P|(|P|-1)/12$ (improved_upper_bound, parent file)",
+      "At most $(|P|-1)/3$ four-point lines through any single point (fourCollinearThrough_bound, parent file)",
+      "$\\text{fourPointLineCount}(P) \\leq |P|^2$ (this file, real-valued cast)",
+      "$\\text{fourPointLineCount}(P) \\leq |P|^2/12$ (this file, BoundsAtRate instance)"
+    ],
+    "open": [
+      "$o(n^2)$ upper bound — this is the OQ-01 conjecture (1 sorry in Erdos101OQ01.lean).",
+      "Solymosi–Stojaković lower-bound formalisation — deferred to S2."
+    ],
+    "goal": "Prove $\\text{fourPointLineCount}(P) = o(|P|^2)$ for all `NoFiveCollinear P`, or sharpen the bound to an explicit subquadratic rate."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T19:00:00Z",
+    "iteration": 1,
+    "focus": "S1 scaffold: Σ₂ statement of OQ-01, asymptotic vocabulary, small-case lemmas the conjecture subsumes.",
+    "blockers": [],
+    "nextAction": "S2: formalise Solymosi–Stojaković existence statement (refuting Erdős's $\\Theta(n^{3/2})$) and Asymptotics.IsBigO bridge.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-3, 2026-05-11) — OBSERVE: formal Σ₂ statement recorded, 5 supporting theorems proved unconditionally, 1 sorry on the main conjecture. New file Erdos101OQ01.lean (253 lines, 6 thms, 4 defs, 0 axioms, 1 sorry).",
+    "builtItems": [
+      "proofs/Proofs/Erdos101OQ01.lean: IsLittleOh_n_squared (def)",
+      "proofs/Proofs/Erdos101OQ01.lean: BoundsAtRate (def)",
+      "proofs/Proofs/Erdos101OQ01.lean: erdos_101_oq_01_conjecture (def, OPEN)",
+      "proofs/Proofs/Erdos101OQ01.lean: erdos_101_oq_01_rate_form (def, OPEN, equivalent)",
+      "proofs/Proofs/Erdos101OQ01.lean: erdos_101_oq_01 (theorem, 1 sorry)",
+      "proofs/Proofs/Erdos101OQ01.lean: fourPointLineCount_zero_of_small (parent restatement)",
+      "proofs/Proofs/Erdos101OQ01.lean: fourPointLineCount_o_n_squared_holds_below_four (vacuous case)",
+      "proofs/Proofs/Erdos101OQ01.lean: fourPointLineCount_le_quadratic (real-valued $\\leq n^2$)",
+      "proofs/Proofs/Erdos101OQ01.lean: bounds_at_rate_quadratic_unconditional (rate $n^2$)",
+      "proofs/Proofs/Erdos101OQ01.lean: bounds_at_rate_quadratic_over_twelve (rate $n^2/12$)",
+      "src/data/proofs/erdos-101-oq-01/: gallery entry (meta + 6 annotations + index.ts)",
+      "research/problems/erdos-101-oq-01/: problem.md + knowledge.md + state.md"
+    ],
+    "insights": [
+      "The OQ-01 question is the precise quantitative refinement of the trivial $O(n^2)$ upper bound; the $\\Theta(n^2)$ regime is already established elementarily.",
+      "Two equivalent formal forms (ε–N primary; rate-witness via $\\exists g$) are mutually convertible by the standard Cauchy criterion; we record both.",
+      "Solymosi–Stojaković (2013) refuted Erdős's $\\Theta(n^{3/2})$ conjecture with $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ — the open content is the polylog correction, not the leading order.",
+      "All known elementary upper bounds are $\\Theta(n^2)$; closing the gap to $o(n^2)$ requires either a multiplicity-aware Szemerédi–Trotter refinement or a non-incidence argument.",
+      "The ℕ→ℝ cast in `bounds_at_rate_quadratic_over_twelve` weakens $n(n-1)/12$ to $n^2/12$ to avoid `Nat.sub` truncation; asymptotically equivalent."
+    ],
+    "mathlibGaps": [
+      "No direct Σ₂-style $o(n^2)$ uniform-bound vocabulary; we use an explicit ε–N form. Bridge to `Asymptotics.IsLittleO` deferred to S3.",
+      "Szemerédi–Trotter incidence bound not formalised in Mathlib; would be a useful prerequisite for the Solymosi–Stojaković construction."
+    ],
+    "nextSteps": [
+      "S2: formalise Solymosi–Stojaković existence statement ($\\Omega(n^{2-O(1/\\sqrt{\\log n})})$, as a recorded `theorem ... := by sorry` for the existential statement).",
+      "S3: connect `BoundsAtRate` instances to `Asymptotics.IsBigO`/`IsLittleO` on the filter `atTop`.",
+      "Optional: probe whether the per-point bound $(n-1)/3$ + Cauchy–Schwarz yields a $1 - o(1)$ leading constant on the global $n^2/12$ bound (would still be $\\Theta(n^2)$ but a concrete elementary improvement)."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "combinatorial-geometry",
+    "incidence-geometry",
+    "collinearity",
+    "asymptotics",
+    "open",
+    "research",
+    "tier-B"
+  ],
+  "relatedProofs": [
+    "erdos-101",
+    "erdos-101-oq-04"
+  ],
+  "leanFiles": [
+    "Proofs/Erdos101OQ01.lean",
+    "Proofs/Erdos101Problem.lean"
+  ],
+  "references": [
+    "Erdős, P. (1984–1997). Problem 101. https://erdosproblems.com/101",
+    "Grünbaum, B. (1972). Arrangements and Spreads. American Math. Soc.",
+    "Solymosi, J., Stojaković, M. (2013). Many collinear k-tuples with no $k+1$ collinear points. Discrete & Computational Geometry 50, 811–820.",
+    "Szemerédi, E., Trotter, W.T. (1983). Extremal problems in discrete geometry. Combinatorica 3, 381–392."
+  ]
+}
