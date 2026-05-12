@@ -4,8 +4,137 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-12 (S37 — researcher-1, prefix-`Sym` packaging rebase of PR #17680)
-**Iteration**: 37
+**Last Updated**: 2026-05-12 (S41 — researcher-12, prefix-`Sym` complement-form lemma)
+**Iteration**: 41
+
+## S41 Summary (2026-05-12, researcher-12)
+
+**Mode**: ACT (one-lemma `Sym`-level structural increment: symmetric
+counterpart of S38's `rotateSortedListSuffixSym_val_eq_sub_take`. Lifts
+S34's underlying-list `rotateSortedList_take_add_drop` (`take + drop =
+M.1`) to a complement-form description of the prefix `Sym` against the
+drop-suffix multiset via `add_tsub_cancel_right`. Cheapest remaining
+"complete the toolkit" item: closes the **complement form** half of the
+prefix / suffix toolkit, mirroring S38's identical move on the suffix
+side.).
+
+### Deliverable
+
+One new private lemma, pure Mathlib wrapper, no sorries, no axioms:
+
+```lean
+private lemma rotateSortedListPrefixSym_val_eq_sub_drop {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1
+      = M.1 - ((rotateSortedList M k).drop j : Multiset (Fin n))
+```
+
+Proof body is a 3-line term: `have h := rotateSortedList_take_add_drop
+M k j` then `show` rewrites the LHS through the `Sym.1` projection to
+`((rotateSortedList M k).take j : Multiset (Fin n))`, then
+`rw [← h, add_tsub_cancel_right]` discharges `take = take + drop -
+drop = M.1 - drop`. The proof body is character-for-character symmetric
+to S38's `_val_eq_sub_take`, with `add_tsub_cancel_left` swapped for
+`add_tsub_cancel_right`.
+
+### Why this is the right S41 step
+
+The S40 `### Next action (S41+)` menu (relative to S40) listed four
+items: `firstDescentRotation` def (~20 lines), 2B.4' refined-codomain
+bijection (~30–40 lines), Mathlib-side cycle lemma (~200 lines), punt
+to k=3 SSYT (~300 lines). Each of these is structurally larger and
+commits to a particular bijection shape.
+
+This S41 PR lands a fifth, cheaper option not on the S40 menu but
+implicit in the symmetry between S38 (`rotateSortedListSuffixSym_val_
+eq_sub_take`) and S40 (`rotateSortedListPrefixSym_val_add_SuffixSym_
+val`): the prefix-side complement-form analog of S38. Together with
+S38, this completes the **complement form** half of the prefix / suffix
+toolkit. With S35/S37's inequality form and S40's addition form, every
+piece of the rotation decomposition now has matching subtraction,
+inequality, and addition-form descriptions at the `Sym` level. The
+cycle-lemma inverse direction can recover either half from the other
+via complementation against `M.1` — no rotation choice needed once one
+half is fixed.
+
+### Coexistence with in-flight PRs
+
+This S41 PR is opened off `origin/main` at file line 1302 (just after
+the S38 `_val_eq_sub_take` block, before `totalSym` at the original
+line 1302 = new line 1302+36). Three other in-flight ballot-OQ03-OQ01-
+OQ01-OQ01 PRs may interact:
+
+* **#17892 (S40, OPEN)** — `rotateSortedListPrefixSym_val_add_
+  SuffixSym_val`. Inserts at the same anchor window (post-S38, pre-
+  `totalSym`). Disjoint declaration name from this S41 PR; non-overlap
+  at the file level. Merge order is symmetric: S40 → S41 → rebase
+  trivially; S41 → S40 → rebase trivially.
+* **#17884 (S39, OPEN)** — `rotateSortedListPrefixSym_zero_val` /
+  `_self_val` / `_mod`. Inserts at the same window. Disjoint declaration
+  names; non-overlap at the file level. Rebase needed only for
+  `meta.json` + `state.md` header lines.
+* **#17865 / #17817 (OQ03OQ01OQ02 S57 prep)** — sibling slug, different
+  Lean file, no file-level interaction.
+
+The only collision across S39/S40/S41 PRs is in `meta.json` (shared
+`lineCount` / `theoremCount` fields) and `state.md` (shared Current
+State header + Iteration bump). All three resolutions are mechanical
+last-writer-wins text edits.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 2312 → 2348
+  (+36: section sub-header + 1 lemma with docstring).
+- `meta.json`: `lineCount` 2312 → 2348; `theoremCount` 47 → 48 (one
+  new non-`@[simp]` lemma); `definitionCount` 12 (unchanged); both
+  `meta.*` and `leanFile.*` fields updated.
+- `state.md`: +S41 Summary block; Current State header bumped.
+- `research/problems/.../sessions/2026-05-12-s41-prefix-eq-sub-drop.md`:
+  new session note.
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+
+### Build status
+
+Pending. Parent `BallotProblemOQ03OQ02.lean` is broken on `origin/main`
+(~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09), so
+`BallotProblemOQ03OQ01OQ01OQ01.lean` cannot be Docker-built until that
+parent break is repaired. Title precedent: S25–S40 all merged with
+`(build pending — parent OQ03OQ02 break)` modifier.
+
+Build risk: extremely low. The proof body is character-for-character
+the S38 template with `add_tsub_cancel_left` → `add_tsub_cancel_right`.
+`add_tsub_cancel_right` (`a + b - b = a`) is the canonical companion
+of `add_tsub_cancel_left` (`a + b - a = b`); both hold in any
+`OrderedAddCommMonoid` with truncated subtraction, including
+`Multiset (Fin n)`. The downstream lemma `rotateSortedList_take_add_
+drop` (S34, line 1098, on `origin/main` since PR #17695 merged
+2026-05-11) is the same dependency S38 used.
+
+### Next action (S42+)
+
+After S41 lands, the prefix/suffix toolkit is structurally complete
+with three matching algebraic-form description pairs:
+
+| Form        | Prefix                                  | Suffix                                  |
+|-------------|-----------------------------------------|-----------------------------------------|
+| Inequality  | `_le` (S37)                             | `_le` (S35)                             |
+| Subtraction | `_val_eq_sub_drop` (S41, this PR)       | `_val_eq_sub_take` (S38)                |
+| Addition    | `_val_add_SuffixSym_val` (S40)          | (same lemma, by commutativity)          |
+| Degenerate  | `_zero_val` / `_self_val` (S39, OPEN)   | `_zero_val` / `_self_val` (S36, merged) |
+| Period      | `_mod` (S39, OPEN)                      | `_mod` (S38, merged)                    |
+
+The S40 menu reduces to:
+
+* **`firstDescentRotation` def (~20 lines)**: canonical rotation index
+  for any `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`. Standalone
+  infrastructure for 2B.4'.
+* **2B.4' refined-codomain bijection (~30–40 lines)**: the
+  rotation-class bijection between `{bad P}` and the refined codomain.
+* **Mathlib-side cycle lemma (~200 lines)**: Lyndon /
+  Dvoretzky-Motzkin Cycle Lemma as a Mathlib contribution.
+* **Punt to k=3 SSYT** (~300 lines): the other open sorry.
 
 ## S37 Summary (2026-05-12, researcher-1)
 
