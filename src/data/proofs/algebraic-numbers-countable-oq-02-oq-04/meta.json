@@ -175,8 +175,11 @@
     "implications": "Once discharged, this result will:\n\n1. **Complete the cardinality hierarchy** `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ` with the middle three layers all at cardinality ℵ₀. The final inclusion is then strict by `ℵ₀ < 𝔠` — uncountably many non-computable reals exist.\n\n2. **Establish 'almost all reals are non-computable'** in the precise cardinality sense: removing the countable computable reals from ℝ leaves a set of full cardinality 𝔠. This complements (and refines) the analogous statement for algebraic reals.\n\n3. **Provide a foundation for computable analysis** in Lean. Many subsequent results (computable arithmetic, computable Cauchy completion, etc.) rest on the basic countability of the underlying set.\n\n4. **Bridge to Type-2 effectivity**: the Mathlib-based definition can be related to Weihrauch's TTE formalism, opening a route to formalizing more general computable-analysis results.",
     "openQuestions": [
       "Verify the S3 build under Docker (`./proofs/scripts/docker-build.sh Proofs.AlgebraicNumbersCountableOQ02OQ04`) and bump `badge` from `wip` to `verified` on green.",
-      "Prove `IsComputable e` and `IsComputable π` to demonstrate the strict inclusion `algebraic ⊊ computable`.",
-      "Construct a specific non-computable real (Chaitin's Ω) to demonstrate `computable ⊊ ℝ` via an explicit witness rather than cardinality alone."
+      "Prove `IsComputable e` and `IsComputable π` to demonstrate the strict inclusion `algebraic ⊊ computable`. Both follow from constructive Cauchy sequences with explicit moduli of convergence: $e = \\sum_{n=0}^\\infty 1/n!$ has modulus $\\epsilon_n = 1/n!$, and $\\pi = 4 \\arctan(1) = 4 \\sum_{n=0}^\\infty (-1)^n/(2n+1)$ with Leibniz modulus (or a faster Machin-style series). The `Computable` predicate on the rational truncation function is mechanical.",
+      "Construct a specific non-computable real (Chaitin's Ω) to demonstrate `computable ⊊ ℝ` via an explicit witness rather than cardinality alone. $\\Omega = \\sum_{p \\text{ halts}} 2^{-|p|}$ (sum over halting programs $p$ of $2^{-\\text{length}(p)}$) is provably non-computable because computing finitely many bits would solve the Halting Problem (via Chaitin's compression argument). See `halting-problem` gallery entry.",
+      "Quantify the GAP between computable and definable: every computable real is definable (by its defining Turing machine), but Hilbert's hotel of further-definable reals extends beyond computability. Specifically, $\\Sigma_1^0$-definable, $\\Pi_2^0$-definable, $\\Sigma_2^0$-definable etc. form a transfinite arithmetical hierarchy of definability classes, ALL of which are countable (countably many formulas per class). This refines the present entry's $\\mathbb{Q} \\subsetneq \\text{Alg} \\subseteq \\text{Computable} \\subsetneq \\mathbb{R}$ into $\\mathbb{Q} \\subsetneq \\text{Alg} \\subsetneq \\text{Computable} \\subsetneq \\Delta_2^0 \\subsetneq \\Sigma_2^0 \\subsetneq \\cdots \\subsetneq \\text{Arithmetical} \\subsetneq \\text{Analytical} \\subsetneq \\mathbb{R}$ — an entire $\\omega_1$-tower of countable definability classes inside $\\mathbb{R}$.",
+      "Formalize Specker's 1949 theorem: there exists a computable, monotone, bounded sequence of rationals whose limit is non-computable. This is the formal proof that the computable reals are NOT closed under the limit operation — a key disanalogy with $\\mathbb{Q}$ (closed under no limit) and $\\mathbb{R}$ (closed under all bounded monotone limits). Specker's example uses a recursively-enumerable-but-not-recursive set $S \\subseteq \\mathbb{N}$ and $r_n = \\sum_{k \\in S, k \\leq n} 2^{-k}$: the sequence is computable and converges, but the limit $\\sum_{k \\in S} 2^{-k}$ encodes membership in $S$ and is therefore non-computable.",
+      "Compare three countability proofs structurally: (a) the present entry's `decodeReal : Nat.Partrec.Code → ℝ` route via Mathlib's Encodable on partial-recursive codes; (b) the parent `algebraic-numbers-countable`'s `Algebraic.countable` via polynomial enumeration; (c) Cantor's 1874 height-function approach (`algebraic-numbers-countable-oq-05`). All three instantiate the abstract pattern 'countable index $\\to$ real via a partial map; image is countable by Set.Countable.mono'. A unified abstract lemma `Set.Countable.of_image_partial` would refactor all three."
     ]
   },
   "crossReferences": [
@@ -204,6 +207,26 @@
       "targetId": "cantor-diagonalization",
       "relationship": "foundational",
       "description": "Cantor's diagonal argument: the basis for showing ℵ₀ < 𝔠 and hence the strict inclusion computable ⊊ ℝ once countability of computable is established."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "complementary",
+      "description": "The Halting Problem's undecidability is the canonical example of a non-computable real (Chaitin's $\\Omega = \\sum_{p \\text{ halts}} 2^{-|p|}$ encodes the halting status of every program); this entry proves $|\\text{Computable}(\\mathbb{R})| = \\aleph_0 < \\mathfrak{c} = |\\mathbb{R}|$, giving cardinality evidence that non-computable reals are abundant. The pair (halting problem provides an explicit non-computable witness; this entry proves uncountably many non-computables exist) parallels the algebraic/transcendental dichotomy: Liouville gave the first explicit transcendental, Cantor proved transcendentals form an uncountable set."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-05",
+      "relationship": "complementary",
+      "description": "Cantor's 1874 height-function proof of algebraic countability uses the same Encodable-style enumeration pattern as the present entry: index by a countable type (polynomial heights $\\mathbb{N}$ vs. partial-recursive codes $\\texttt{Nat.Partrec.Code}$), map to reals via a partial 'extract' function (roots of polynomial of given height; limit of computable Cauchy sequence), and apply $\\texttt{Set.Countable.mono}$. The structural parallel suggests a unified abstract lemma — see openQuestion #5."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-04",
+      "relationship": "related",
+      "description": "Baker's theorem on linear forms in logarithms: produces effective lower bounds for $|\\sum n_i \\log \\alpha_i|$ in terms of heights and degrees of algebraic $\\alpha_i$. Linear forms in logarithms of computable algebraic numbers are themselves computable (via Baker's algorithm), demonstrating that the algebraic-computable inclusion $\\text{Alg}(\\mathbb{R}) \\subseteq \\text{Computable}(\\mathbb{R})$ formalized in the present entry has effective content beyond pure cardinality: explicit computability of arithmetic operations on $\\text{Alg}$ within $\\text{Computable}$."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Lindemann-Weierstrass: $e^\\alpha$ is transcendental for algebraic $\\alpha \\neq 0$. Both $e$ and $\\pi$ are Lindemann-Weierstrass transcendentals AND computable (via convergent series with computable rate of convergence), so they sit in the gap $\\text{Computable}(\\mathbb{R}) \\setminus \\text{Alg}(\\mathbb{R})$ — explicit witnesses that this entry's inclusion $\\text{Alg} \\subsetneq \\text{Computable}$ is strict. The strictness proof (openQuestion #2) reduces to verifying $\\texttt{IsComputable}\\ e$ and $\\texttt{IsComputable}\\ \\pi$."
     }
   ],
   "mainTheorems": [
