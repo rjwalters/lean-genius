@@ -181,3 +181,49 @@ Estimated size: 250–400 lines. Tractability: 6/10 (would be 8 if Mathlib had t
 5. If unification proves too costly, fall back to Level 1 by adding p ∈ {11, 13} cases as concrete witnesses, but only after attempting Level 2.
 
 **Aristotle**: not used in this OBSERVE session (no Lean code yet).
+
+### Session 2026-05-12 (S2) — ACT — Level-2 implementation: per-prime verification + uniform statement
+
+**Mode**: REVISIT (build on S1 plan)
+
+**Outcome**: progress (per-prime cases proven; general conjecture stated as sorry)
+
+**What I did**:
+- Created `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` (301 lines).
+- Defined parametric `r : ℕ → ℤ[X]` with explicit values for p ∈ {5, 7, 11, 13}:
+  - `r 5  = X² − 5X + 5`
+  - `r 7  = X³ − 7X² + 14X − 7`
+  - `r 11 = X⁵ − 11X⁴ + 44X³ − 77X² + 55X − 11`
+  - `r 13 = X⁶ − 13X⁵ + 65X⁴ − 156X³ + 182X² − 91X + 13`
+- For each prime p ∈ {5, 7, 11, 13}, proved:
+  - `(r p).natDegree = (p-1)/2`
+  - `(r p).degree = (p-1)/2`
+  - `(r p).Monic`
+  - `(r p).IsEisensteinAt (Ideal.span {(p : ℤ)})` — three obligations (leading, mem, not_mem)
+- Proved irreducibility of `r 11` and `r 13` via `Polynomial.irreducible_of_eisenstein_criterion`.
+  (For p = 5, p = 7 the irreducibility of the equivalent polynomial after Y = 2X + 2 substitution is already in sibling files.)
+- Packaged the four cases as `eisenstein_verified_small_primes`.
+- Stated the uniform conjecture as `eisenstein_conjecture_cos_pi_p` (sorry).
+- Created gallery entry `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/` with meta.json (status `axiomatized`, sorries 1, axioms 0), annotations.json (empty), index.ts.
+
+**Key findings**:
+- The per-prime IsEisensteinAt verification is mechanical and fast: each prime reduces to 3 obligations, each discharged by `decide` or `interval_cases k <;> norm_num` after coefficient unfolding.
+- The pattern is identical across primes; scaling to more primes is purely a copy-paste exercise.
+- The general conjecture's missing ingredient (per S1) is the local-field theorem "uniformizer of totally ramified extension ⇒ Eisenstein minimal polynomial". This is the main S3+ target.
+- `Polynomial.cyclotomic_prime_eval_one : Φ_p.eval 1 = p` (or its equivalent) provides the norm side. The relation Φ_{2p}(−1) = Φ_p(1) = p is then a one-step computation. Combined with the Mathlib totally-ramified API for cyclotomic fields, the proof should be tractable.
+
+**Files modified**:
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` (new, 301 lines)
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/meta.json` (new)
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/annotations.json` (new, empty)
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/index.ts` (new)
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/state.md` (updated for S2)
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/knowledge.md` (updated for S2)
+
+**Next steps for S3+**:
+1. **Path A** (high-leverage): Build the local-field uniformizer ⇒ Eisenstein theorem in Mathlib style. ~200–400 lines.
+2. **Path B** (recommended): Direct cyclotomic + Newton-identity argument using `Polynomial.cyclotomic_prime_eval_one` and the ramification API. Estimated ~300 lines, hugs the existing Mathlib infrastructure.
+3. **Followup**: Extend the explicit verification to p ∈ {17, 19, 23} for additional empirical evidence. Each adds ~30 lines.
+4. **Cross-link**: Once the general theorem is proven, propagate to sibling files (replace per-prime Eisenstein proofs in `OQ01OQ02.lean` and `OQ01.lean` with corollary of the general result).
+
+**Aristotle**: file has 1 main sorry (the general conjecture). This sorry is an **open conjecture** (NOT a routine supporting lemma); it should NOT be submitted to Aristotle. The smaller routine lemmas (e.g., `r_5_natDegree`, `r_5_monic`) are all already proven — nothing to submit.
