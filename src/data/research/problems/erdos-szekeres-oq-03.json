@@ -1,0 +1,114 @@
+{
+  "slug": "erdos-szekeres-oq-03",
+  "title": "Ramsey Numbers for k-Uniform Hypergraphs (generalization of Erdős–Szekeres)",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "R_k(s,t) := \\min\\{ n : \\forall \\chi : [n]^{(k)} \\to \\{0,1\\}, \\exists S \\subseteq [n] \\text{ with } |S|=s,\\ \\chi \\equiv 0 \\text{ on } [S]^{(k)},\\ \\text{or } |S|=t,\\ \\chi \\equiv 1 \\text{ on } [S]^{(k)} \\}.\\ \\text{OQ-03 packages: (a) finiteness of } R_k(s,t),\\ \\text{(b) Erdős–Rado } R_k(s,s) \\le \\mathrm{tower}_{k-1}(c_k s),\\ \\text{(c) Erdős–Hajnal stepping-up } R_k(s,s) \\ge \\mathrm{tower}_{k-2}(c'_k s^2) \\text{ for } k \\ge 4.",
+    "plain": "Generalize the Erdős–Szekeres theorem from sequences (k=2) to k-uniform hypergraphs: for the diagonal hypergraph Ramsey number R_k(s,s) — the smallest n such that every 2-coloring of the k-subsets of {1,…,n} contains a monochromatic s-clique — establish (a) finiteness for all k ≥ 2, s ≥ k; (b) the Erdős–Rado tower-type upper bound; (c) the Erdős–Hajnal stepping-up lower bound.",
+    "whyMatters": [
+      "Closes the natural higher-uniformity generalization of Erdős–Szekeres; the k=2 case is the existing gallery proof and Mathlib's SimpleGraph.ramseyNumber.",
+      "Provides a clean Lean reduction target for erdos_szekeres_tight_axiom (currently axiomatized in Proofs/ErdosSzekeres.lean).",
+      "The k=3 case is one of the major open problems in Ramsey theory: lower 2^{cs} vs upper 2^{cs^2 log s} (Conlon–Fox–Sudakov 2010)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Ramsey (1930): R_k(s,t) is finite for all k, s, t with k ≤ s, t.",
+      "Erdős–Rado (1952): R_k(s,s) ≤ tower_{k-1}(c_k s) via the two-layer neighborhood induction.",
+      "Erdős–Hajnal (1972): stepping-up gives R_{k+1}(2s-1, 2s-1) ≥ 2^{R_k(s,s) - 1} for k ≥ 3.",
+      "Conlon–Fox–Sudakov (2010): R_3(s,s) ≤ 2^{c s^2 log s}, currently the best upper bound for k=3."
+    ],
+    "open": [
+      "Exact growth of R_3(s,s): gap between 2^{cs} lower and 2^{cs^2 log s} upper. Erdős conjectured R_3(s,s) ≤ 2^{cs^2}.",
+      "Whether stepping-up can be extended to k=3 to give a tower lower bound at uniformity 3."
+    ],
+    "goal": "Lean-formalize the finiteness theorem (OQ-03a) and the Erdős–Rado upper bound (OQ-03b) via a new RamseyK.ramseyNumber API, then state the stepping-up lower bound (OQ-03c) as a theorem with sorry."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-05-12",
+    "iteration": 1,
+    "focus": "S1 OBSERVE → ORIENT (researcher-8): literature survey + Lean API design. No Lean changes this session.",
+    "blockers": [],
+    "nextAction": "S2 ACT-A: create proofs/Proofs/RamseyHypergraph.lean with RamseyK.ramseyNumber definition, the k=1 pigeonhole base case, and ramsey_existence stated as a sorry.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 ORIENT (researcher-8 2026-05-12): Decomposed OQ-03 into three sub-goals — (a) finiteness, (b) Erdős–Rado tower upper bound, (c) Erdős–Hajnal stepping-up lower bound — with explicit Lean API surface for a new RamseyK module. Identified Mathlib gap: no Hypergraph / RamseyK definition yet; existing SimpleGraph.ramseyNumber covers only k=2.",
+    "builtItems": [
+      "research/problems/erdos-szekeres-oq-03/problem.md — formal statement of OQ-03 as three sub-goals.",
+      "research/problems/erdos-szekeres-oq-03/knowledge.md — literature survey (Ramsey 1930, Erdős–Rado 1952, Erdős–Hajnal 1972, Conlon–Fox–Sudakov 2010) + Mathlib API audit + suggested RamseyK API surface.",
+      "research/problems/erdos-szekeres-oq-03/state.md — phase advanced NEW → ORIENT with S2 next-action pinned."
+    ],
+    "insights": [
+      "OQ-03 cleanly factors into existence + upper + lower bounds; the existence and upper bound share the same two-layer neighborhood induction.",
+      "The k=1 case ramseyNumber 1 s t = s + t - 1 is direct pigeonhole and serves as a clean sanity-check theorem for the new API (~30 lines).",
+      "The lower-bound half (OQ-03c) is the harder direction and likely warrants its own sub-OQ once OQ-03a/b land.",
+      "erdos_szekeres_tight_axiom in Proofs/ErdosSzekeres.lean is precisely R_2(s,s)'s diagonal lower bound; it could be discharged as a corollary of the k=2 specialization of OQ-03c."
+    ],
+    "mathlibGaps": [
+      "No general hypergraph Ramsey number — only SimpleGraph.ramseyNumber (k=2).",
+      "No Hypergraph structure; we work with Finset.powersetCard k instead.",
+      "Tower function (iterated 2^·) is not packaged but can be obtained via Nat.iterate."
+    ],
+    "nextSteps": [
+      "S2: implement RamseyK module with definitions + k=1 pigeonhole + ramsey_existence sorry.",
+      "S3: discharge ramsey_existence by the two-layer induction.",
+      "S4: state erdos_rado_upper as a tower-function bound and prove it by unwinding the recursive R_k ≤ R_{k-1}(...) inequality.",
+      "S5: spawn the stepping-up lower bound as a separate sub-OQ if S4 lands cleanly."
+    ]
+  },
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "ramsey-theory",
+    "hypergraphs",
+    "pigeonhole",
+    "erdos-rado",
+    "stepping-up",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "erdos-szekeres"
+  ],
+  "references": {
+    "papers": [
+      "P. Erdős, G. Szekeres, A combinatorial problem in geometry, Compositio Math. 2 (1935) 463–470.",
+      "P. Erdős, R. Rado, A partition calculus in set theory, Bull. Amer. Math. Soc. 62 (1956) 427–489.",
+      "P. Erdős, A. Hajnal, On Ramsey like theorems: problems and results, in Combinatorics (Proc. Conf. Combinatorial Math., Oxford 1972), 123–140.",
+      "D. Conlon, J. Fox, B. Sudakov, Hypergraph Ramsey numbers, J. Amer. Math. Soc. 23 (2010) 247–266.",
+      "A. Suk, On the Erdős–Szekeres convex polygon problem, J. Amer. Math. Soc. 30 (2017) 1047–1053."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.SimpleGraph.Ramsey",
+      "Mathlib.Data.Finset.Powerset (Finset.powersetCard)",
+      "Mathlib.Data.Sym.Basic (Sym (Fin n) k as alternative model)"
+    ]
+  },
+  "started": "2026-05-12T04:48:16.447Z",
+  "lastUpdate": "2026-05-12T15:00:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/ErdosSzekeres.lean",
+      "filename": "ErdosSzekeres.lean",
+      "lineCount": 281,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ErdosSzekeres.lean"
+    }
+  ]
+}
