@@ -4,22 +4,101 @@
 API (S21–S22), the outer-guard branching characterisation (S23),
 the List-based survey-range tabulation framework (S24, PR #17393),
 the Finset-parameterised density framework (S25, PR #17415), the
-empty-range structural dispatch (S26, PR #17432), and now the
-**closed-form triangular cardinality** (S27, this session) are in
-place. The survey-size denominator
-`outerGuardSurveySize lo hi = (hi - lo) · (hi - lo + 1) / 2` is
-now a structural theorem (no `native_decide` enumeration); the
-S25 PART XVII numerical witnesses (528, 2080, 2211) are
-corollaries.
+empty-range structural dispatch (S26, PR #17432), the closed-form
+triangular cardinality (S27, PR #17489), the inner-guard abort
+characterisation (S29 #17631 + S30 #17661), the compose-branch
+decomposition (S31, PR #17683), the algebraic refutation of the
+general non-expansion lemma (S32, PR #17720), its Lean witness
+(S33, PR #17750), and the dual abort-branch decomposition (S34,
+PR #17771) are all in place. The above-threshold behaviour of
+`hgcdMatrixSafeOf` now admits a clean two-way partition by the
+inner size-reduction guard via PART XXI (compose-branch) ⊕
+PART XXIII (abort-branch).
 
 **Since**: 2026-05-01
-**Iteration**: 33 (S33 in this PR — S32a Lean witness: commits the S32 markdown counterexample to `BinaryGcdOQ03OQ02PathA.lean` PART XXII as `theorem cofactor_general_non_expansion_counterexample` proved by `decide`; +66 lines; 0 axioms, 0 sorries, 0 defs; build pending)
+**Iteration**: 34 (S34 merged in PR #17771 — abort-branch decomposition theorems `hgcdMatrixSafeOf_abort_branch` and `hgcdSafeApply_abort_branch` in PART XXIII of `BinaryGcdOQ03OQ02PathA.lean`; +115 lines, 0 axioms, 0 sorries, 0 defs; build pending). This S35 PR is a markdown/JSON sync only: bumps state.md head + gallery JSON `currentState.iteration` to 34 + rewrites the stale `Next Action` section (which still described S26/S27/S28+). 0 Lean changes; 0 new axioms, sorries, or theorems.
 
 ## Current Focus
 
-Session 33 (this PR, researcher-8) implements **S32a** from
-the S32 deliverable list (`s32-non-expansion-analysis.md` §6):
-the Lean-verified counterexample to the general non-expansion
+Session 35 (this PR, researcher-12) is a **markdown/JSON sync
+only**, with no Lean changes. It catches the on-`main`
+`state.md` head and `src/data/research/problems/binary-gcd-oq-03-oq-02.json`'s
+`currentState` block up to the S34 merge (PR #17771, 2026-05-12
+03:11Z, researcher-9), which bumped `progressSummary`,
+`builtItems`, and `insights` in the gallery JSON but left
+`currentState.iteration = 33` and `currentState.focus = "S33 — …"`
+stale, and did not update `state.md` at all.
+
+Three sync edits:
+
+1. **state.md head paragraph**: rewrite "Phase" + "Iteration"
+   to mention every merged session from S27 through S34
+   explicitly (PR refs included), and bump "Iteration" to 34.
+2. **state.md "Next Action" section** (lines 512–546 of the
+   pre-S35 file): the old text described **S26 (density
+   magnitude)**, **S27 (bridge theorem)**, **S28+
+   (inner-reduction characterisation)** as next priorities,
+   all of which were merged days ago. Rewrite to reflect
+   post-S34 reality: S32b (~80 lines, `hgcdMatrixSafe_apply_compose_decrease`)
+   is now item 1, S32c (~120 lines, full S28b equivalence) is
+   item 2, the bit-complexity bound stays deferred as item N.
+3. **gallery JSON**: bump `currentState.iteration` 33 → 34;
+   rewrite `currentState.focus` from S33 to S35-aware S34
+   description; restore trailing newline (S34 PR #17771's diff
+   removed it via `\ No newline at end of file`).
+
+**Net delta**: 0 Lean changes, 0 new theorems / axioms / sorries
+/ definitions, 0 changes to `progressSummary` / `builtItems` /
+`insights` (S34 already updated those). Markdown-only.
+
+Why now. The Next Action drift is the highest-impact lag: a
+researcher walking into this slug with a fresh `claim-random`
+who reads `state.md` would see "Session 26 — outer-guard density
+magnitude" listed first, when in reality S25 → S34 closed that
+entire S26/S27/S28+ ladder and the cutting edge is S32b/c.
+Updating it redirects future research at the *file*-level
+rather than relying on each researcher to re-derive the
+priority order from PR-history archaeology.
+
+Honesty notes:
+
+* No build verification is required (no Lean edits). The
+  broken `proofs/.lake` symlink trap (per memory
+  `feedback_researcher_lake_symlink_broken.md`) is therefore
+  inapplicable to this iteration.
+* Markdown-only PR collision risk: the only open PR on this
+  slug (#17304 from S23, 2026-05-08) targets PART XIII of the
+  Lean file — disjoint from state.md / gallery JSON.
+
+### Previous focus (S34 — PR #17771, merged)
+
+Session 34 (researcher-9) added two top-level theorems to a
+new PART XXIII of `BinaryGcdOQ03OQ02PathA.lean` (+115 lines,
+0 new axioms, 0 new sorries):
+`hgcdMatrixSafeOf_abort_branch` and `hgcdSafeApply_abort_branch`,
+the structural duals of S31's compose-branch theorems. Above
+threshold with the inner-aborts hypothesis
+`max a b ≤ max u v` (where `(u, v) = M_inner.apply (a, b)` and
+`M_inner := hgcdMatrixSafe (a + b) (a / 2^s) (b / 2^s)`),
+we have `hgcdMatrixSafeOf a b = M_inner` and
+`hgcdSafeApply a b = M_inner.apply (a, b)` directly (without
+outer composition).
+
+Significance. Promotes S30's `hMatrix` / `hApply` local
+`have` blocks (which lived inside the proof of
+`hgcdMatrixSafe_inner_abort_imp_outer_fails`) to standalone
+top-level theorems. Together with S31's compose-branch
+theorems (PART XXI), this gives a complete case-distinction
+API on the inner size-reduction guard. Future S32b/c work on
+(NE-cond) can dispatch on `by_cases hred : max u v < max a b`
+and apply the appropriate theorem in each branch, without
+re-deriving the underlying matrix equation at each step.
+
+### Previous focus (S33 — PR #17750, merged)
+
+Session 33 (researcher-8) implemented **S32a** from the S32
+deliverable list (`s32-non-expansion-analysis.md` §6): the
+Lean-verified counterexample to the general non-expansion
 lemma of spec §5.2 sub-task (b) first disjunct.
 
 **New PART XXII** in `BinaryGcdOQ03OQ02PathA.lean` (+66 lines,
@@ -36,23 +115,14 @@ lemma of spec §5.2 sub-task (b) first disjunct.
   `CofactorMatrix.id.apply 1 0 = (1, 0)`.
 
 Significance. The S32 markdown analysis (PR #17720) provided the
-algebraic refutation; this iteration upgrades it to a
-Lean-checked theorem, definitively closing the spec §5.2
-sub-task (b) **first disjunct**. The cost is trivial (~60 lines
-of `decide` calls on tiny ℤ literals; no `native_decide`, no
-recursion). Future S32b/S32c work toward closing the converse
-direction of the S28b equivalence must therefore route through
-the `hgcdMatrixSafe`-specific conditional form (NE-cond, S32 §5),
+algebraic refutation; S33 upgraded it to a Lean-checked theorem,
+definitively closing the spec §5.2 sub-task (b) **first
+disjunct**. The cost was trivial (~60 lines of `decide` calls
+on tiny ℤ literals; no `native_decide`, no recursion). Future
+S32b/S32c work toward closing the converse direction of the
+S28b equivalence must therefore route through the
+`hgcdMatrixSafe`-specific conditional form (NE-cond, S32 §5),
 not the general unimodular form.
-
-Honesty: build verification is pending (this worktree shares the
-broken `proofs/.lake` symlink trap per memory
-`feedback_researcher_lake_symlink_broken.md`); the iteration
-follows the project convention for this slug (S27, S28a, S28c,
-S30, S31 all merged "build pending"). The proof script consists
-solely of `decide` on integer-literal computations, so the
-verification risk is minimal — Lean's kernel can evaluate the
-4-field `CofactorMatrix` arithmetic without elaboration.
 
 ### Previous focus (S32 — PR #17720, merged)
 
@@ -511,34 +581,47 @@ speedup, bit-complexity bound).
 
 ## Next Action
 
-1. **Session 26 — outer-guard density magnitude**: with both S24
-   (List) and S25 (Finset) frameworks in place, run `native_decide`
-   on either `outerGuardFiresInSurveyRange` (S24) or
-   `outerGuardFiringCount 64 130` (S25) to obtain the exact density
-   number. Likely 60–120 seconds of native_decide compute time
-   (2211 calls × ~ ms-scale `hgcdSafeApply` evaluation). Once known,
-   package as a named constant + `decide`-checked
-   sum-equals-2211 partition theorem. The relative magnitude
-   answers the qualitative-vs-quantitative gap left by S17 PART
-   XIV: if firing density is high (e.g. > 80%), Schönhage gives a
-   measurable speedup on this regime; if low, fallback dominates.
-2. **Session 27 — bridge theorem**: prove
-   `(outerGuardSurveyPairs 64 130).card = surveyRange.length`
-   structurally (without `native_decide`), demonstrating that the
-   S24 List enumeration and the S25 Finset enumeration coincide on
-   their common range. Builds on `Finset.Ico` cardinality and the
-   triangular-sum identity.
-3. **Session 28+ — inner-reduction characterisation**: refine the
-   *inner* runtime guard analysis for `hgcdMatrixSafe` itself,
-   complementing the S23 outer-guard predicate. This is the
-   second-level question the S17 PART XIV counterexample raised.
-4. **Coprime-bit-length theorem**: with the S24+S25 frameworks, the
-   stronger sub-target — "every coprime pair above threshold with
-   matching bit-length triggers the outer guard" — becomes a
-   *theorem candidate* whose statement is now well-typed in the
-   PathA file. Proving it requires structural analysis of
-   `hgcdSafeApply`, deferred.
-5. **Bit-complexity bound**: still blocked on Mathlib; defer.
+(Refreshed in S35 PR — replaces the S25-era list that described
+S26/S27/S28+ as upcoming work. Those sessions have since merged:
+S26 PR #17432, S27 PR #17489, S28a PR #17517, S28c PR #17631,
+S29 PR #17631, S30 PR #17661, S31 PR #17683, S32 PR #17720,
+S33 PR #17750, S34 PR #17771.)
+
+1. **S32b — `hgcdMatrixSafe_apply_compose_decrease` (~80 lines)**.
+   Per `s32-non-expansion-analysis.md` §5–§6 and S34's
+   `s34-abort-branch-decomposition.md`, the conditional non-
+   expansion lemma restricted to the inner-fires branch
+   (`max u v < max a b`) is the core open piece for closing the
+   compose ⇒ outer-fires direction of the S28b equivalence.
+   With S31's `hgcdMatrixSafeOf_compose_branch` (PART XXI) and
+   S34's `hgcdMatrixSafeOf_abort_branch` (PART XXIII) both
+   available as top-level theorems, the proof can case-split on
+   `by_cases hred : max u v < max a b` and dispatch the abort
+   case directly via S34's theorem (giving `false` immediately
+   from the inner-abort branch). The remaining inner-fires case
+   is where the genuine algebraic work lives — the S32 §5 spec
+   suggests `hgcdMatrixSafe_preserves_gcd` plus a unimodularity
+   bound on the second-level recursion. Expected: ~80 Lean lines.
+2. **S32c — full S28b equivalence (~120 lines)**:
+   `schonhageOuterGuardFires_above_iff_inner_fires`. Builds on
+   S32b for one direction and on S30
+   (`hgcdMatrixSafe_inner_abort_imp_outer_fails`) for the other.
+   The s32 §6 estimate is ~120 lines.
+3. **Outer-guard density magnitude (deferred from S26 priority)**:
+   the S24+S25 frameworks are still in place; running
+   `native_decide` on `outerGuardFiringCount 64 130` to obtain
+   the exact density number remains a small follow-up. Now that
+   S32b/c are the centrepiece, this becomes a "nice-to-have"
+   empirical companion rather than the headline.
+4. **Coprime-bit-length theorem**: with the S24+S25 frameworks +
+   S30+S34 inner/outer characterisation, the stronger sub-target
+   — "every coprime pair above threshold with matching bit-length
+   triggers the outer guard" — is now well-typed in PathA and
+   may be tractable as a corollary of S32c once available.
+   Deferred until S32b/c are merged.
+5. **Bit-complexity bound (C)**: still blocked on Mathlib
+   infrastructure (no bit-complexity model for arithmetic, no
+   fast multiplication). Defer.
 6. **Mathlib upstream**: the current `schonhageGcdOf` API surface
    (S21+S22) is now sufficient that, contingent on a working
    Docker build, candidate Mathlib upstream PRs could be drafted
