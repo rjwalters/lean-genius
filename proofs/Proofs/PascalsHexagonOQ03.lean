@@ -221,6 +221,55 @@ theorem orderOf_hexRev : orderOf hexRev = 2 := by
     exact hexRev_ne_one
 
 -- ============================================================
+-- PART 2d: Semiconjugacy and Power-Inversion (S3b-prep)
+-- ============================================================
+-- The S2 dihedral relation `hexRev * hexRot * hexRev = hexRot⁻¹` extends
+-- to all powers via `SemiconjBy`. The four lemmas below give the form
+-- needed for the four cases of `map_mul'` in the S3c homomorphism
+-- `DihedralGroup 6 →* Equiv.Perm (Fin 6)` (built from `hexRot, hexRev`):
+--   • `r i * sr j` requires pushing `hexRot ^ i.val` past `hexRev`.
+--   • `sr i * r j` and `sr i * sr j` similarly need the powered form.
+-- All four are pure group-theory consequences of S2 + S3a; no new
+-- computation on `Equiv.Perm (Fin 6)` is required.
+
+/-- `hexRev` is self-inverse: `hexRev⁻¹ = hexRev`.
+    Immediate from `hexRev_mul_self : hexRev * hexRev = 1`. -/
+theorem hexRev_inv : hexRev⁻¹ = hexRev :=
+  inv_eq_of_mul_eq_one_right hexRev_mul_self
+
+/-- **Semiconjugacy form of the S2 relation**: `hexRev * hexRot = hexRot⁻¹ * hexRev`.
+    Equivalent to `hexRev_hexRot_hexRev` after right-multiplying by `hexRev`
+    and using `hexRev_mul_self`. Phrased via Mathlib's `SemiconjBy` so the
+    powered form follows by `SemiconjBy.pow_right`. -/
+theorem hexRev_semiconj_hexRot : SemiconjBy hexRev hexRot hexRot⁻¹ := by
+  unfold SemiconjBy
+  calc hexRev * hexRot
+      = hexRev * hexRot * 1 := by rw [mul_one]
+    _ = hexRev * hexRot * (hexRev * hexRev) := by rw [← hexRev_mul_self]
+    _ = (hexRev * hexRot * hexRev) * hexRev := by rw [← mul_assoc]
+    _ = hexRot⁻¹ * hexRev := by rw [hexRev_hexRot_hexRev]
+
+/-- **Powered semiconjugacy**: `hexRev * hexRot ^ n = (hexRot ^ n)⁻¹ * hexRev`.
+    Push form of the dihedral conjugation relation; obtained from
+    `hexRev_semiconj_hexRot` via `SemiconjBy.pow_right` plus `inv_pow`. -/
+theorem hexRev_semiconj_hexRot_pow (n : ℕ) :
+    hexRev * hexRot ^ n = (hexRot ^ n)⁻¹ * hexRev := by
+  have h : SemiconjBy hexRev (hexRot ^ n) (hexRot⁻¹ ^ n) :=
+    hexRev_semiconj_hexRot.pow_right n
+  -- `SemiconjBy.eq` extracts the equation `a * x = y * a`; rewrite `hexRot⁻¹ ^ n` to `(hexRot^n)⁻¹`.
+  rw [inv_pow] at h
+  exact h.eq
+
+/-- **Conjugation-by-`hexRev` powered form**:
+    `hexRev * hexRot ^ n * hexRev = (hexRot ^ n)⁻¹`.
+    Combines `hexRev_semiconj_hexRot_pow` with `hexRev_mul_self` to cancel
+    the trailing pair. This is the workhorse for the `sr * sr` and `r * sr`
+    cases of the S3c homomorphism's `map_mul'`. -/
+theorem hexRev_hexRot_pow_hexRev (n : ℕ) :
+    hexRev * hexRot ^ n * hexRev = (hexRot ^ n)⁻¹ := by
+  rw [hexRev_semiconj_hexRot_pow n, mul_assoc, hexRev_mul_self, mul_one]
+
+-- ============================================================
 -- PART 3: Hexagon Labelings as Sym(6) ⧸ D_6
 -- ============================================================
 
@@ -240,22 +289,31 @@ theorem card_sym6 : Fintype.card (Equiv.Perm (Fin 6)) = 720 := by
 
 /-- **OQ-03-OQ-01**: the dihedral subgroup `hexagonalGroup` has order 12.
 
-    Progress (S3a, this PR): the dihedral defining relations and the exact
-    orders of the two generators are now in hand —
-    `hexRot_pow_six`, `hexRev_mul_self`, `hexRev_hexRot_hexRev`,
-    `orderOf_hexRot` (= 6), and `orderOf_hexRev` (= 2). These pin the
-    twelve elements `{hexRot ^ i, hexRev * hexRot ^ i : i ∈ Fin 6}` to be
-    pairwise distinct (standard dihedral argument).
+    Progress so far (S2 + S3a + S3b-prep, this PR adds the third):
 
-    Remaining (S3b): (i) define a homomorphism
+    * S2 — dihedral defining relations on `(hexRot, hexRev)`:
+      `hexRot_pow_six`, `hexRev_mul_self`, `hexRev_hexRot_hexRev`.
+    * S3a — exact orders: `orderOf_hexRot` (= 6), `orderOf_hexRev` (= 2).
+    * S3b-prep — powered semiconjugacy (this PR):
+      `hexRev_inv`, `hexRev_semiconj_hexRot`, `hexRev_semiconj_hexRot_pow`,
+      `hexRev_hexRot_pow_hexRev`. These extend the S2 conjugation
+      relation from `n = 1` to all natural exponents.
+
+    Together S2 + S3a + S3b-prep give the standard dihedral toolkit:
+    the twelve elements `{hexRot ^ i, hexRev * hexRot ^ i : i ∈ Fin 6}`
+    are pairwise distinct and the four `map_mul'` cases of the
+    DihedralGroup-into-Sym(6) hom rewrite mechanically using these
+    lemmas.
+
+    Remaining (S3c): (i) define
     `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)` by
     `φ (r i) = hexRot ^ i.val`, `φ (sr i) = hexRev * hexRot ^ i.val`,
-    using the three relations for the `map_mul'` proof (the
-    modular-wraparound `i + j : ZMod 6` is discharged via
-    `hexRot_pow_six`); (ii) show `φ.range = hexagonalGroup`; (iii)
-    show `φ` is injective using `orderOf_hexRot` plus the conjugation
-    relation; then `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6)
-    = 12` via `DihedralGroup.nat_card`. -/
+    using S3b-prep for the `r * sr`, `sr * r`, `sr * sr` cases and
+    `hexRot_pow_six` for the `ZMod 6` modular wraparound; (ii) show
+    `φ.range = hexagonalGroup`; (iii) show `φ` is injective using
+    `orderOf_hexRot` plus the conjugation relation; then
+    `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6) = 12` via
+    `DihedralGroup.nat_card`. -/
 theorem card_hexagonalGroup : Nat.card hexagonalGroup = 12 := by
   sorry
 
