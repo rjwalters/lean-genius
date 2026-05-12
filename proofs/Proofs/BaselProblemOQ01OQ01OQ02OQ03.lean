@@ -885,6 +885,74 @@ example :
     ((Finset.range 101).filter (fun p => Nat.Prime p ∧ p ^ 2 ≤ 100)).card = 4 := by
   decide
 
+/-- **Pointwise division bound** (Iter 21 helper): for any prime `p`, the
+    division `n / p` is bounded by `n / 2`.
+
+    Since every prime is `≥ 2`, dividing by a larger value yields a smaller
+    quotient (`Nat.div_le_div_left`). This is the pointwise atom of the
+    multiplicative combination step in the four-step Hanson bridge:
+
+    1. Iter 19: product bound `∏ p^(log_p n - 1) ≤ ∏ (n/p)`.
+    2. Iter 17 (PR #17619, in flight): support reduction `p² > n → factor = 1`.
+    3. Iter 20: cardinality bound `|{p prime : p² ≤ n}| ≤ √n`.
+    4. **This iter (pointwise)**: `n / p ≤ n / 2` for any prime `p`.
+    5. Iter 21 (this PR, main): `∏_{p prime, p² ≤ n} (n/p) ≤ (n/2) ^ card`.
+
+    Concrete numerics:
+    * `p = 2, n = 10`: `10 / 2 = 5 ≤ 5`. ✓ (tight)
+    * `p = 3, n = 10`: `10 / 3 = 3 ≤ 5`. ✓
+    * `p = 5, n = 10`: `10 / 5 = 2 ≤ 5`. ✓
+    * `p = 7, n = 10`: `10 / 7 = 1 ≤ 5`. ✓ -/
+theorem div_prime_le_div_two {p : ℕ} (hp : p.Prime) (n : ℕ) :
+    n / p ≤ n / 2 :=
+  Nat.div_le_div_left hp.two_le (by norm_num)
+
+/-- **Small-prime correction-factor product bound** (Iter 21): the product
+    `∏_{p prime, p² ≤ n} (n / p)` is bounded above by `(n / 2)` raised to
+    the cardinality of the small-prime filter.
+
+    Step 5 of the four-step Hanson bridge (post-Iter-20 documented plan):
+    combines Iter 21's pointwise `div_prime_le_div_two` with `Mathlib`'s
+    `Finset.prod_le_pow_card` (`∀ x ∈ s, f x ≤ b → ∏ f ≤ b ^ s.card`).
+
+    Combined with Iter 20's `small_prime_card_le_sqrt`, this yields the
+    Chebyshev-style `(n/2) ^ √n` envelope for the small-prime correction
+    product. The final assembly (a future iter) folds this with Iter 17's
+    support-reduction (PR #17619, in flight) and Iter 19's product bound
+    to discharge the correction factor `∏_{p ≤ n} (n/p) ≤ (n/2) ^ √n`,
+    then combines with `Nat.primorial_le_4_pow` for the structural
+    Chebyshev envelope `lcmRange n ≤ 4^n · (n/2) ^ √n`.
+
+    Concrete numerics:
+    * `n = 10`: small primes `{2, 3}` (`2² = 4 ≤ 10`, `3² = 9 ≤ 10`),
+                LHS = `(10/2)·(10/3) = 5·3 = 15`,
+                RHS = `(10/2)^2 = 5² = 25`. ✓ (15 ≤ 25)
+    * `n = 20`: small primes `{2, 3}` (`3² = 9 ≤ 20`, `5² = 25 > 20`),
+                LHS = `(20/2)·(20/3) = 10·6 = 60`,
+                RHS = `(20/2)^2 = 10² = 100`. ✓ (60 ≤ 100)
+    * `n = 100`: small primes `{2, 3, 5, 7}`,
+                 LHS = `50·33·20·14 = 462000`,
+                 RHS = `50^4 = 6,250,000`. ✓ -/
+theorem prod_div_small_prime_le_pow_card (n : ℕ) :
+    ∏ p ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n), n / p
+      ≤ (n / 2) ^
+        ((Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n)).card := by
+  apply Finset.prod_le_pow_card
+  intro p hp
+  rw [Finset.mem_filter] at hp
+  exact div_prime_le_div_two hp.2.1 n
+
+/-- **Concrete numerical witness** (Iter 21): at `n = 100` the small-prime
+    product `∏_{p ∈ {2,3,5,7}} (100 / p) = 462000` is bounded by
+    `(100 / 2) ^ 4 = 6,250,000`.
+
+    Sanity check for `prod_div_small_prime_le_pow_card`. -/
+example :
+    ∏ p ∈ (Finset.range 101).filter (fun p => p.Prime ∧ p ^ 2 ≤ 100), 100 / p
+      ≤ (100 / 2) ^
+        ((Finset.range 101).filter (fun p => p.Prime ∧ p ^ 2 ≤ 100)).card := by
+  native_decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
