@@ -194,6 +194,11 @@
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "related",
       "description": "Shares the `Equiv.Perm (Fin 6)` cardinality pattern: `card_s6 = 720` by `native_decide` appears identically in `AbelRuffiniGaloisExtensions.lean` line 314."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "depends-on",
+      "description": "The 60-Pascal-line count is a direct Lagrange consequence: `card_hexagon_labelings = |Sym(6)| / |hexagonalGroup| = 720 / 12 = 60`. The OQ-03-OQ-01 (`card_hexagonalGroup = 12`) is the only nontrivial step; once that is in hand, the 60-count is a single application of `Subgroup.card_eq_card_quotient_mul_card_subgroup`. Lagrange's theorem itself is formalized as Wiedijk #71 in the gallery."
     }
   ],
   "mainTheorems": [
