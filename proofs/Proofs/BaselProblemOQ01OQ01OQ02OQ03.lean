@@ -824,6 +824,67 @@ theorem lcmRange_le_primorial_mul_prod_div_prime (n : ℕ) :
   rw [lcmRange_eq_primorial_mul_prod_prime_pow_pred]
   exact Nat.mul_le_mul_left _ (prod_prime_pow_pred_le_prod_div_prime n)
 
+/-- **Cardinality of small-prime filter** (Iter 20): the set of primes `p`
+    with `p² ≤ n` (the *non-trivial* support of the Iter-16 correction
+    factor by Iter 17's `prime_pow_pred_eq_one_of_sq_lt`) has at most
+    `Nat.sqrt n` elements.
+
+    This is a purely combinatorial cardinality lemma — no number-theoretic
+    estimate is needed beyond the basic fact `p² ≤ n ↔ p ≤ √n`. The bound
+    is used in the next stage of the bridge toward Hanson's `lcmRange n ≤ 3^n`:
+
+    1. Iter 19's `prod_prime_pow_pred_le_prod_div_prime` gives
+       `∏ p^(log_p n - 1) ≤ ∏ (n/p)` over all primes `p ≤ n`.
+    2. Iter 17's `prime_pow_pred_eq_one_of_sq_lt` (once PR #17619 lands)
+       drops the large-prime tail (`p² > n`): both products reduce to
+       `∏_{p² ≤ n} (n / p)`.
+    3. **This iteration**: the number of small primes `p² ≤ n` is at
+       most `√n`, so the small-prime product is `≤ (n/2)^√n` (using
+       `n/p ≤ n/2` for any prime `p ≥ 2`).
+    4. Combined with `Nat.primorial_le_4_pow`, this gives a
+       sub-`(4 + ε)^n` bound on `lcmRange n`, the structural envelope
+       around Hanson's asymptotic `3^n`.
+
+    Concrete checks:
+    * `n = 4`: small primes are `{2}` (`2² = 4 ≤ 4`), card = 1, `√4 = 2`. ✓
+    * `n = 9`: small primes are `{2, 3}` (`9 ≤ 9`), card = 2, `√9 = 3`. ✓
+    * `n = 25`: small primes are `{2, 3, 5}`, card = 3, `√25 = 5`. ✓
+    * `n = 100`: small primes are `{2, 3, 5, 7}` (`7² = 49 ≤ 100 < 121 = 11²`),
+      card = 4, `√100 = 10`. ✓
+
+    Proof: the filter is contained in `Finset.Ico 2 (Nat.sqrt n + 1)`
+    (primes are `≥ 2`; the `p² ≤ n` condition is equivalent to
+    `p ≤ Nat.sqrt n` by `Nat.le_sqrt`). The Ico has cardinality
+    `Nat.sqrt n + 1 - 2 = Nat.sqrt n - 1 ≤ Nat.sqrt n`. -/
+theorem small_prime_card_le_sqrt (n : ℕ) :
+    ((Finset.range (n + 1)).filter (fun p => Nat.Prime p ∧ p ^ 2 ≤ n)).card
+      ≤ Nat.sqrt n := by
+  have h_sub :
+      ((Finset.range (n + 1)).filter (fun p => Nat.Prime p ∧ p ^ 2 ≤ n))
+        ⊆ Finset.Ico 2 (Nat.sqrt n + 1) := by
+    intro p hp
+    simp only [Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨_, hp_prime, hp_sq_le⟩ := hp
+    simp only [Finset.mem_Ico]
+    refine ⟨hp_prime.two_le, ?_⟩
+    have hp_le_sqrt : p ≤ Nat.sqrt n := by
+      -- Convert `p^2 ≤ n` to the `p * p ≤ n` form expected by `Nat.le_sqrt`
+      rw [pow_two] at hp_sq_le
+      exact Nat.le_sqrt.mpr hp_sq_le
+    omega
+  calc ((Finset.range (n + 1)).filter (fun p => Nat.Prime p ∧ p ^ 2 ≤ n)).card
+      ≤ (Finset.Ico 2 (Nat.sqrt n + 1)).card := Finset.card_le_card h_sub
+    _ = Nat.sqrt n + 1 - 2 := Nat.card_Ico 2 (Nat.sqrt n + 1)
+    _ ≤ Nat.sqrt n := by omega
+
+/-- **Concrete cardinality witness** (Iter 20): at `n = 100` the small-prime
+    filter `{p prime : p² ≤ 100}` has cardinality `4` (= `{2, 3, 5, 7}`).
+    Sanity check for `small_prime_card_le_sqrt` (which only gives `≤ √100 = 10`,
+    much looser than the true count). -/
+example :
+    ((Finset.range 101).filter (fun p => Nat.Prime p ∧ p ^ 2 ≤ 100)).card = 4 := by
+  decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
