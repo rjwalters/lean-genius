@@ -74,7 +74,9 @@
     {
       "id": "martingale-time-invariance",
       "title": "Part I: Martingale Expected Value Time-Invariance",
-      "description": "E[f_n] = E[f_0] for martingales, proved via Martingale.setIntegral_eq",
+      "startLine": 52,
+      "endLine": 85,
+      "summary": "E[f_n] = E[f_0] for martingales, proved via Martingale.setIntegral_eq",
       "theorems": [
         {
           "name": "martingale_time_invariance",
@@ -87,7 +89,9 @@
     {
       "id": "gamblers-ruin-formula",
       "title": "Part II: Gambler's Ruin Probability Formula",
-      "description": "Algebraic derivation of win probability from fair game condition",
+      "startLine": 86,
+      "endLine": 134,
+      "summary": "Algebraic derivation of win probability from fair game condition",
       "theorems": [
         {
           "name": "gamblers_ruin_win_prob",
@@ -112,7 +116,9 @@
     {
       "id": "betting-systems-fail",
       "title": "Part III: Betting Systems Fail",
-      "description": "Any bounded stopping strategy preserves the expected value, proved via sub/supermartingale sandwich",
+      "startLine": 135,
+      "endLine": 187,
+      "summary": "Any bounded stopping strategy preserves the expected value, proved via sub/supermartingale sandwich",
       "theorems": [
         {
           "name": "any_bounded_strategy_preserves_expectation",
@@ -131,7 +137,9 @@
     {
       "id": "option-pricing",
       "title": "Part IV: Option Pricing Neutrality",
-      "description": "Risk-neutral pricing: exercise timing preserves expected payoff, delegates to Part III",
+      "startLine": 188,
+      "endLine": 213,
+      "summary": "Risk-neutral pricing: exercise timing preserves expected payoff, delegates to Part III",
       "theorems": [
         {
           "name": "risk_neutral_pricing_neutrality",
@@ -144,7 +152,9 @@
     {
       "id": "submartingale-characterization",
       "title": "Part V: Submartingale Characterization (Axiom Elimination)",
-      "description": "Proves the converse of optional stopping monotonicity from Mathlib's iff",
+      "startLine": 214,
+      "endLine": 250,
+      "summary": "Proves the converse of optional stopping monotonicity from Mathlib's iff",
       "theorems": [
         {
           "name": "submartingale_of_stoppedValue_mono_proved",
@@ -157,7 +167,9 @@
     {
       "id": "doobs-inequality",
       "title": "Part VI: Doob's Maximal Inequality",
-      "description": "P(max f_n ≥ thresh) ≤ E[f_N]/thresh for submartingales",
+      "startLine": 251,
+      "endLine": 330,
+      "summary": "P(max f_n ≥ thresh) ≤ E[f_N]/thresh for submartingales",
       "theorems": [
         {
           "name": "doobs_maximal_inequality",
