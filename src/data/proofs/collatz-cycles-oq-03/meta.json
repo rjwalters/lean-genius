@@ -49,55 +49,46 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module header and imports",
+      "startLine": 1,
+      "endLine": 26,
+      "summary": "Module docstring (5-line architecture summary, parent file references, Lagarias 1985 citation) and imports: `Mathlib.Tactic` for `omega`/`interval_cases`/`push_neg`, plus `Proofs.CollatzCycles` for the parent's `collatz`/`collatzIter`/`collatz_odd`/`IsPeriodic` API. Opens the `CollatzCycles` namespace at line 25 so all theorems live alongside the parent's."
+    },
+    {
       "id": "parity-flip",
-      "title": "Part I: Parity Flip",
-      "description": "three_n_plus_one_even: 3n+1 is even when n is odd",
-      "theorems": [
-        {
-          "name": "three_n_plus_one_even",
-          "statement": "n % 2 = 1 → (3 * n + 1) % 2 = 0",
-          "status": "proved",
-          "description": "Pure arithmetic parity, dispatched by `omega`."
-        }
-      ]
+      "title": "Part I: Parity Flip (three_n_plus_one_even)",
+      "startLine": 27,
+      "endLine": 29,
+      "summary": "`three_n_plus_one_even {n : ℕ} (h : n % 2 = 1) : (3 * n + 1) % 2 = 0`. One-line `omega` proof: pure Presburger arithmetic. This is the parity flip that drives every subsequent contradiction."
     },
     {
       "id": "single-step-parity",
-      "title": "Part II: Single-Step Parity",
-      "description": "collatz_of_odd_is_even: collatz n is even when n is odd",
-      "theorems": [
-        {
-          "name": "collatz_of_odd_is_even",
-          "statement": "n % 2 = 1 → (collatz n) % 2 = 0",
-          "status": "proved",
-          "description": "Rewrite `collatz n = 3n+1` via the parent's `collatz_odd`, then apply `three_n_plus_one_even`."
-        }
-      ]
+      "title": "Part II: Single-Step Parity (collatz_of_odd_is_even)",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "`collatz_of_odd_is_even {n : ℕ} (h : n % 2 = 1) : (collatz n) % 2 = 0`. Bridges the function's definitional case-split to the parity flip: `rw [collatz_odd h]` (parent lemma) reduces `collatz n` to `3 * n + 1`, then `three_n_plus_one_even` closes."
     },
     {
-      "id": "cycle-contradiction",
-      "title": "Part III: Cycle Must Contain an Even Iterate",
-      "description": "no_all_odd_cycle, cycle_contains_even, isPeriodic_contains_even",
-      "theorems": [
-        {
-          "name": "no_all_odd_cycle",
-          "statement": "If collatz^[k] n = n with k ≥ 1 and every iterate < k is odd, then False",
-          "status": "proved",
-          "description": "Case split k = 1 vs k ≥ 2. Both cases reduce to a parity-mismatch closed by `omega` after observing that step-0 odd forces step-1 even via `collatz_of_odd_is_even`."
-        },
-        {
-          "name": "cycle_contains_even",
-          "statement": "∃ i, i < k ∧ (collatz^[i] n) % 2 = 0  whenever k ≥ 1 and collatz^[k] n = n",
-          "status": "proved",
-          "description": "Contrapositive of `no_all_odd_cycle` via `by_contra + push_neg`."
-        },
-        {
-          "name": "isPeriodic_contains_even",
-          "statement": "Same as cycle_contains_even, packaged with the parent's IsPeriodic predicate",
-          "status": "proved",
-          "description": "Trivial unpacking of `IsPeriodic n k = (k ≥ 1) ∧ (collatzIter k n = n)`."
-        }
-      ]
+      "id": "no-all-odd-cycle",
+      "title": "Part III(a): No all-odd cycle contradiction",
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "`no_all_odd_cycle {n k : ℕ} (hk : k ≥ 1) (hper : collatzIter k n = n) (hodd_all : ∀ i, i < k → (collatzIter i n) % 2 = 1) : False`. Derives `n % 2 = 1` from `hodd_all 0 hk` + `Function.iterate_zero`, then `(collatz^[1] n) % 2 = 0` from `collatz_of_odd_is_even`. Case-splits `1 < k` vs `k = 1`: the `≥ 2` branch contradicts `hodd_all 1 _`; the `k = 1` branch uses `hper : collatzIter 1 n = n` to deduce `n` is both even (from step 1) and odd (from step 0), `omega`-closed."
+    },
+    {
+      "id": "cycle-contains-even-positive",
+      "title": "Part III(b): Positive form (cycle_contains_even)",
+      "startLine": 62,
+      "endLine": 73,
+      "summary": "`cycle_contains_even {n k : ℕ} (hk : k ≥ 1) (hper : collatzIter k n = n) : ∃ i, i < k ∧ (collatzIter i n) % 2 = 0`. Contrapositive of `no_all_odd_cycle` via `by_contra + push_neg`; `omega` converts the resulting `¬ (… = 0)` to `= 1` and `no_all_odd_cycle` finishes."
+    },
+    {
+      "id": "isperiodic-form",
+      "title": "Part III(c): Repackaged with IsPeriodic",
+      "startLine": 75,
+      "endLine": 78,
+      "summary": "`isPeriodic_contains_even {n k : ℕ} (hper : IsPeriodic n k) : ∃ i, i < k ∧ (collatzIter i n) % 2 = 0`. One-line theorem unpacking `IsPeriodic n k := k ≥ 1 ∧ collatzIter k n = n` and feeding both halves into `cycle_contains_even`. Provides API parity with the parent's `IsPeriodic`-using theorems (`collatz_no_fixpoint`, `collatz_no_two_cycle`)."
     }
   ],
   "conclusion": {
