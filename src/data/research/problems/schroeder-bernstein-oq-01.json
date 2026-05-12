@@ -1,0 +1,116 @@
+{
+  "slug": "schroeder-bernstein-oq-01",
+  "title": "Categorical characterization of the Schroeder-Bernstein property",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Let C be a locally small category. C has the Schroeder-Bernstein property (SBP) iff for all X, Y in Ob(C), the existence of monos m : X → Y and n : Y → X implies X ≅ Y. Identify a minimal categorical hypothesis Φ(C) such that Φ(C) ⇒ SBP. Banaschewski–Brümmer (1986) gave one sufficient condition (the split-mono / retraction condition).",
+    "plain": "Schroeder-Bernstein in Set says: mutual injections imply a bijection. In many concrete categories (groups, Banach spaces) this fails. The open question is: what is the right categorical hypothesis that recovers the property? Banaschewski and Brümmer (1986) showed a 'split-mono' axiom suffices; a complete (necessary + sufficient) characterization is open.",
+    "whyMatters": [
+      "Foundational categorical question with concrete failure witnesses (Bumby, Gowers).",
+      "Direct extension of a fully verified Wiedijk-100 gallery entry (Schroeder–Bernstein in Set).",
+      "Mathlib currently has zero infrastructure for SBP in arbitrary categories — the gap is wide open."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Set has SBP (Bernstein 1898; Mathlib's Function.Embedding.antisymm).",
+      "Categories with the split-mono / retraction condition have SBP (Banaschewski–Brümmer 1986).",
+      "Divisible abelian groups have SBP (Bumby 1965)."
+    ],
+    "open": [
+      "Necessary + sufficient categorical conditions for SBP (i.e. a complete characterization).",
+      "Whether the split-mono condition is strictly weaker than 'topos'."
+    ],
+    "goal": "Define HasSBP in Mathlib's CategoryTheory framework, prove HasSBP (Type u), and formalize Banaschewski–Brümmer's split-mono ⇒ SBP implication."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T20:25:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE survey: problem.md, knowledge.md, state.md, this JSON. No Lean changes.",
+    "blockers": [],
+    "nextAction": "S2 ACT: create proofs/Proofs/SchroederBernsteinOQ01.lean with the HasSBP definition + Type u instance (sorry-bridged via Function.Embedding.antisymm).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete: open question scoped, Mathlib infrastructure mapped, Banaschewski–Brümmer sufficient condition surveyed, S2/S3/S4 decomposition recorded.",
+    "builtItems": [],
+    "insights": [
+      "SBP fails in concrete categories with structure (Grp, Ban) but holds in pure Set; the categorical 'right hypothesis' isolates the structure-free skeleton.",
+      "The split-mono / retraction condition (Banaschewski–Brümmer 1986) is the cleanest known sufficient condition: every mono splits ⇒ SBP, via a short composition argument.",
+      "Mathlib's CategoryTheory.SplitMono cleanly models the hypothesis; the Lean formalization should be ~80 LOC."
+    ],
+    "mathlibGaps": [
+      "No HasSchroederBernsteinProperty class in Mathlib.",
+      "No instance for Type u (despite Function.Embedding.antisymm existing).",
+      "No formal failure witness in any concrete category."
+    ],
+    "nextSteps": [
+      "S2: scaffold proofs/Proofs/SchroederBernsteinOQ01.lean with HasSBP + Type u instance (1 sorry).",
+      "S3: discharge the Type u sorry via Function.Embedding.antisymm bridge.",
+      "S4: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski–Brümmer)."
+    ]
+  },
+  "tags": [
+    "category-theory",
+    "set-theory",
+    "cardinality",
+    "schroeder-bernstein",
+    "wiedijk-100",
+    "mathlib-gap",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "schroeder-bernstein",
+    "cantor-diagonalization",
+    "continuum-hypothesis",
+    "denumerability-rationals",
+    "cantors-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Banaschewski & Brümmer (1986). Thoughts on the Cantor–Bernstein theorem. Quaestiones Mathematicae 9, 1–27.",
+      "Bernstein (1898). Beitrag zur Mengenlehre. Göttingen dissertation.",
+      "Bumby (1965). Modules which are isomorphic to submodules of each other. Arch. Math. 16, 184–185.",
+      "Gowers (1996). A solution to the Schroeder-Bernstein problem for Banach spaces. Bull. LMS 28, 297–304.",
+      "Pradic & Brown (2019). Cantor–Bernstein implies Excluded Middle. arXiv:1904.09193.",
+      "Trnková (1975). On a Schroeder–Bernstein type theorem for concrete categories. Comment. Math. Univ. Carolin."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Schr%C3%B6der%E2%80%93Bernstein_theorem",
+      "https://arxiv.org/abs/1904.09193"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Cardinal.SchroederBernstein",
+      "Mathlib.CategoryTheory.EpiMono",
+      "Mathlib.CategoryTheory.Types",
+      "Mathlib.CategoryTheory.Iso"
+    ]
+  },
+  "started": "2026-05-12T20:25:00Z",
+  "lastUpdate": "2026-05-12T20:25:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/SchroederBernstein.lean",
+      "filename": "SchroederBernstein.lean",
+      "lineCount": 198,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernstein.lean"
+    }
+  ]
+}
