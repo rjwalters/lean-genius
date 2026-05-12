@@ -1,0 +1,158 @@
+{
+  "id": "fourier-series-oq-04-oq-01",
+  "title": "2D Carleson Spherical-Summation Conjecture (axiomatized)",
+  "slug": "fourier-series-oq-04-oq-01",
+  "description": "Axiomatizes the 2D Carleson conjecture on T² = (R/Z)²: for f ∈ L²(T²), the spherical partial Fourier sum S_R^sph f converges to f for almost every x as R → ∞. This is the L²-endpoint of the Bochner-Riesz / spherical-summation family and the natural higher-dimensional analogue of the 1D Carleson theorem (1966). Open in mathematics; no improvement on Fefferman's 1971 ball-multiplier barrier. Companion unconditional theorem (L² norm convergence by Plancherel) stated with sorry pending the Plancherel-on-T² lemma (Mathlib gap).",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ04OQ01.lean",
+    "imports": ["Mathlib"],
+    "opens": ["MeasureTheory", "Complex", "Filter", "Topology"],
+    "namespace": "FourierSeriesOQ04OQ01",
+    "lineCount": 179,
+    "axiomCount": 1,
+    "sorries": 1,
+    "definitionCount": 5,
+    "theoremCount": 3
+  },
+  "meta": {
+    "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bochner%E2%80%93Riesz_mean",
+    "date": "Open conjecture (no known closure as of 2024)",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FourierSeriesOQ04OQ01.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "bochner-riesz",
+      "carleson-conjecture",
+      "spherical-summation",
+      "open-conjecture",
+      "two-dimensional"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "dateAdded": "2026-05-12",
+    "axiomCount": 1,
+    "lineCount": 179,
+    "theoremCount": 3,
+    "definitionCount": 5,
+    "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T². 1 sorry: `sphPartialSum_L2_norm_converge` — the unconditional L²-norm convergence statement; provable from Plancherel on T² (Mathlib gap; the orthonormal basis tensor-product structure is implicit but not exposed as a named identity). No other assumptions.",
+    "mathlibDependencies": [
+      {
+        "theorem": "AddCircle",
+        "description": "The quotient R/T·Z carrying Haar measure",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "fourier",
+        "description": "Fourier monomials e_n(x) = exp(2πinx/T) on AddCircle T",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "haarAddCircle",
+        "description": "Normalized Haar measure on AddCircle T",
+        "module": "Mathlib.Analysis.Fourier.AddCircle"
+      },
+      {
+        "theorem": "MeasureTheory.Measure.pi",
+        "description": "Product measure on Pi types — used for haarT2 = ⊗ haarAddCircle",
+        "module": "Mathlib.MeasureTheory.Constructions.Pi"
+      },
+      {
+        "theorem": "MeasureTheory.MemLp",
+        "description": "L^p membership predicate",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      },
+      {
+        "theorem": "MeasureTheory.eLpNorm",
+        "description": "Extended L^p norm",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace"
+      }
+    ],
+    "originalContributions": [
+      "T2: 2-torus as Fin 2 → AddCircle 1",
+      "haarT2: product Haar measure on T2",
+      "multiFourierCoeff: 2D Fourier coefficient as iterated integral against fourier characters",
+      "latticeDisc: integer lattice disc |k| ≤ R as a Finset (bounding-box + decidable filter)",
+      "sphPartialSum: spherical partial Fourier sum on T²",
+      "carleson_2d_sph: the open 2D Carleson conjecture axiomatized with full quantifiers",
+      "sphPartialSum_L2_norm_converge: unconditional L²-norm convergence statement (Plancherel-direct; sorried)",
+      "multiFourierCoeff_zero, sphPartialSum_zero: sanity-check lemmas (zero function in / zero coefficient out)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**The 2D Carleson Conjecture (open)**\n\nIn 1966, Lennart Carleson proved that for every $f \\in L^2(\\mathbb{T}^1)$, the Fourier partial sums $S_N f$ converge to $f$ for almost every $x \\in \\mathbb{T}^1$. Fields-Medal-winning work (1966 Acta Math; 2006 Abel Prize). The natural higher-dimensional generalisation — for $f \\in L^2(\\mathbb{T}^n)$ with $n \\geq 2$, do the **spherical** partial sums $S_R^{\\text{sph}} f$ converge a.e. as $R \\to \\infty$? — is open even for $n=2$.\n\n**Why the 1D case is solved but 2D is not.** Carleson's 1D proof relied on a time-frequency decomposition of $\\{|k| \\leq N\\} \\subset \\mathbb{Z}$, an interval — a single rectangle in phase space. In 2D, $\\{|k| \\leq R\\} \\subset \\mathbb{Z}^2$ is a **disc** whose curved boundary cannot be efficiently covered by axis-aligned dyadic rectangles. Fefferman (1971, Annals of Math 94) proved the ball multiplier theorem: for $p \\neq 2$ the operator does not extend to $L^p$. This rules out Hunt-style $L^p$-interpolation; the L²-endpoint a.e. statement remains the unique untouched case.\n\n**Current status (2024).** No conditional reduction (Kakeya, restriction) discharges the L² endpoint. The conjecture is the L² endpoint of the Bochner–Riesz family; equivalently, no weak-type maximal estimate for the spherical Carleson operator is known.",
+    "problemStatement": "Let $\\mathbb{T}^2 = (\\mathbb{R}/\\mathbb{Z})^2$ with normalised Haar measure $\\mu$. For $f \\in L^2(\\mathbb{T}^2)$ and $k = (k_1, k_2) \\in \\mathbb{Z}^2$, define\n$$\n\\widehat{f}(k) = \\int_{\\mathbb{T}^2} f(x)\\, e^{-2\\pi i k \\cdot x}\\, d\\mu(x), \\qquad S_R^{\\text{sph}} f(x) = \\sum_{|k| \\leq R} \\widehat{f}(k)\\, e^{2\\pi i k \\cdot x},\n$$\nwith $|k| = \\sqrt{k_1^2 + k_2^2}$. **Conjecture (2D Carleson, spherical):**\n$$\n\\forall f \\in L^2(\\mathbb{T}^2):\\quad S_R^{\\text{sph}} f(x) \\xrightarrow{R \\to \\infty} f(x) \\quad \\text{for } \\mu\\text{-a.e. } x.\n$$\n**Status:** Open as of 2024.",
+    "proofStrategy": "This entry **axiomatises** the open conjecture (per the gallery's Axiom Integrity Policy: open-mathematics conjectures must use `status: axiomatized`, never `verified`). The Lean architecture has three layers:\n\n**Layer 1 — Definitions (rigorous, no sorries).** The 2-torus is realised as `T2 := Fin 2 → AddCircle 1` with product Haar measure `haarT2`. The Fourier coefficient `multiFourierCoeff f k` is the iterated integral of `f(x) · fourier(-(k 0))(x 0) · fourier(-(k 1))(x 1)` against `haarT2`. The lattice disc `latticeDisc R : Finset (Fin 2 → ℤ)` is the `Finset` of integer pairs $(k_1, k_2)$ with $k_1^2 + k_2^2 \\leq R^2$, implemented as the filter of a bounding box `Icc (-⌈|R|⌉) ⌈|R|⌉ × Icc (-⌈|R|⌉) ⌈|R|⌉`. The spherical partial sum is the explicit `Finset.sum` over `latticeDisc R`.\n\n**Layer 2 — The conjecture (axiomatised, 1 axiom).** `carleson_2d_sph` states the convergence with all quantifiers spelled out — `∀ᵐ x ∂haarT2, Tendsto (fun R ↦ sphPartialSum f R x) atTop (𝓝 (f x))` for any `f : T2 → ℂ` with `MemLp f 2 haarT2`. This is the L²-pointwise-a.e. claim.\n\n**Layer 3 — Unconditional companion (sorried, 1 sorry).** `sphPartialSum_L2_norm_converge` states the *norm* version — `‖S_R^sph f - f‖_{L²} → 0` — which holds without conjectural input by Plancherel on T². The proof is left as `sorry` pending the named Plancherel-on-T² identity (Mathlib gap; the engine is the orthonormal-basis tensor product on `lp 2`, available but not yet exposed as `Plancherel_ntorus`). See `research/problems/fourier-series-oq-04-oq-01/knowledge.md` for the Mathlib gap list.\n\nTwo definitional sanity-check lemmas (`multiFourierCoeff_zero`, `sphPartialSum_zero`) confirm the type signatures are coherent.",
+    "keyInsights": [
+      "**L² norm convergence is trivial; a.e. convergence is the open problem.** The asymmetry guides the formalisation: Plancherel gives the norm statement; the maximal-operator estimate for $\\sup_R |S_R^{\\text{sph}} f|$ on $L^2(\\mathbb{T}^2)$ is the missing weak-type bound. No such estimate is known.",
+      "**Rectangular ≠ spherical in $n \\geq 2$.** Fefferman (1971) showed that *rectangular* $L^1$ partial sums diverge a.e. on $\\mathbb{T}^2$; yet *spherical* $L^2$ a.e. convergence is open. Both facts coexist consistently in the gallery (rectangular failure is unconditional; spherical $L^2$ a.e. is the open conjecture).",
+      "**The 2D Carleson conjecture is the L² endpoint of Bochner–Riesz.** For $\\delta > (n-1)/2 = 1/2$ in $n=2$, Stein 1958 proved $S_R^\\delta f \\to f$ a.e. (the $\\delta > 0$ regularised version). The unregularised $\\delta = 0$ case — exactly the spherical sum — is open at the $L^2$ endpoint.",
+      "**No conditional reduction is known.** Kakeya, restriction, and decoupling have all yielded partial Bochner-Riesz results for $\\delta > 0$, but none discharge the $L^2$-endpoint a.e. statement. The conjecture is genuinely a flagship open problem in harmonic analysis.",
+      "**Axiomatisation is the honest path.** Per the gallery's Axiom Integrity Policy, an open conjecture in mathematics must use `status: axiomatized` with `badge: axiom`. The companion L²-norm theorem (unconditional, sorried) is the legitimate progress this entry contributes."
+    ],
+    "prerequisites": [
+      "Fourier series fundamentals (1D Carleson theorem: Proofs/FourierSeriesOQ01.lean)",
+      "L² spaces and Hilbert basis theory (Mathlib's lp 2)",
+      "Measure theory: product / iterated measures on Pi types",
+      "AddCircle and the fourier-character API (Mathlib.Analysis.Fourier.AddCircle)",
+      "Bochner-Riesz means and the critical-exponent landscape"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions: T², Haar measure, Fourier coefficient, lattice disc, partial sum",
+      "startLine": 73,
+      "endLine": 121,
+      "summary": "Rigorous definitions: T² as Fin 2 → AddCircle 1, product Haar measure, the iterated-integral 2D Fourier coefficient, the lattice disc as a Finset (Icc bounding box + decidable filter), and the spherical partial sum.",
+      "mathContext": "T² = (R/Z)² inherits its measure-theoretic instances from the AddCircle 1 base (with Fact (0 < 1) instance provided). The multi-character $e^{-2\\pi i k \\cdot x}$ factors as `fourier (-(k 0)) (x 0) * fourier (-(k 1)) (x 1)` using Mathlib's fourier-monomial API. `latticeDisc R` is finite because $|k_i| \\leq |R| \\leq \\lceil |R| \\rceil$ for any $(k_1, k_2)$ in the disc."
+    },
+    {
+      "id": "conjecture",
+      "title": "The Conjecture (axiomatised)",
+      "startLine": 122,
+      "endLine": 135,
+      "summary": "`carleson_2d_sph`: for every f ∈ L²(T²), the spherical partial Fourier sums converge to f for almost every x as R → ∞. Open in mathematics; axiomatised here per gallery policy.",
+      "mathContext": "The conjecture combines two layers of quantification: pointwise a.e. (via `Filter.Eventually` against `MeasureTheory.ae μ`) and the Tendsto-at-infinity convergence. Equivalent to a *weak-type* maximal-operator estimate for $\\sup_R |S_R^{\\text{sph}} f|$ on $L^2(\\mathbb{T}^2)$, which is the missing analytic content."
+    },
+    {
+      "id": "l2-norm-companion",
+      "title": "Unconditional L²-norm Companion (sorried)",
+      "startLine": 136,
+      "endLine": 166,
+      "summary": "`sphPartialSum_L2_norm_converge`: ‖S_R^sph f - f‖_{L²} → 0 as R → ∞, without conjectural input. Provable from Plancherel on T²; left as sorry pending the named Plancherel identity (Mathlib gap).",
+      "mathContext": "Plancherel on $\\mathbb{T}^2$: $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^2} |\\hat f(k)|^2$. The partial-sum projection onto `latticeDisc R` is the orthogonal projection onto a sub-basis; by Bessel + monotone convergence (since the lattice discs exhaust $\\mathbb{Z}^2$ as $R \\to \\infty$), the residual norm vanishes. Mathlib has the 1D version (`hasSum_fourier_series_L2`) but not yet the n-torus tensor-product identity as a named lemma."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity-check lemmas (no sorries)",
+      "startLine": 167,
+      "endLine": 178,
+      "summary": "`multiFourierCoeff_zero` and `sphPartialSum_zero`: the Fourier coefficient and spherical partial sum of the zero function are identically zero. Definitional, no sorries.",
+      "mathContext": "These exist to confirm the definitions are not vacuous and that the type signatures interact correctly with `simp` lemmas about integration of the zero function. Sanity checks rather than substantive theorems."
+    }
+  ],
+  "conclusion": {
+    "text": "This entry contributes a rigorous formalisation of the 2D Carleson spherical-summation conjecture and its unconditional L²-norm companion. The conjecture itself is axiomatised (1 axiom, `carleson_2d_sph`) per the gallery's Axiom Integrity Policy; the companion (1 sorry, `sphPartialSum_L2_norm_converge`) is left for a future iteration once Plancherel on T² is exposed in Mathlib as a named identity. Progress toward closing the sorry: contribute `Plancherel_ntorus` to Mathlib (the tensor-product structure is implicit; estimated 30-50 lines).",
+    "openQuestions": [
+      "**Plancherel on T²**: expose the named identity $\\|f\\|_{L^2(\\mathbb{T}^n)}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat f(k)|^2$ in Mathlib (currently implicit via the orthonormal-basis tensor product). Closes the sorry in `sphPartialSum_L2_norm_converge`.",
+      "**Bochner–Riesz $\\delta > 1/2$**: formalise Stein 1958 a.e. convergence for the regularised spherical operator $S_R^\\delta$ on $\\mathbb{T}^2$ (classical, ~300–500 Lean lines). Companion to this axiom file.",
+      "**Fefferman ball-multiplier counterexample**: formalise the 1971 negative result for rectangular $L^1$ partial sums. Requires Besicovitch / Kakeya machinery (substantial Mathlib detour)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "type": "parent",
+      "slug": "fourier-series-oq-04",
+      "title": "Higher-dimensional Fourier series convergence on tori (scaffold)",
+      "description": "Parent file with placeholder definitions; this child rigorises the 2D case."
+    },
+    {
+      "type": "sibling",
+      "slug": "fourier-series-oq-01",
+      "title": "Carleson's theorem (1D L² pointwise a.e. convergence, axiomatized)",
+      "description": "The 1D analogue this conjecture extends. Same axiomatisation pattern; 1D version is solved (Carleson 1966)."
+    }
+  ]
+}

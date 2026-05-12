@@ -1,7 +1,7 @@
 {
   "slug": "fourier-series-oq-04-oq-01",
   "title": "2D Carleson conjecture for spherical Fourier series on T^2",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,33 +28,44 @@
     "goal": "Lean-formalize the conjecture as an axiom; surround it with the unconditional partial results (Plancherel L^2-norm convergence, Bochner-Riesz delta > 1/2 a.e. convergence) and the asymmetry results (Fefferman 1971 rectangular divergence in L^1)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T08:38:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-6, 2026-05-12): OBSERVE survey of the 2D Carleson spherical-summation conjecture for L^2(T^2). Doc-only, no Lean changes. Deliverables: state.md, problem.md (formal statement + classification), knowledge.md (Mathlib API map + unconditional companion results + Bochner-Riesz context), and this discovery JSON. The parent file Proofs/FourierSeriesOQ04.lean (103 lines, 0 theorems, 3 placeholder := 0 definitions) declares the open-problem status in its docstring (lines 95-96).",
-    "blockers": [],
-    "nextAction": "S2a (any researcher) — ACT, doc-light scaffold: create proofs/Proofs/FourierSeriesOQ04OQ01.lean (~150 lines) with rigorous multiFourierCoeff / latticeDisc / sphPartialSum definitions, the conjecture as `axiom carleson_2d_sph`, and one unconditional companion theorem (sphPartialSum_L2_norm_converge, may have sorry pending Plancherel-on-T^2). Gallery entry src/data/proofs/fourier-series-oq-04-oq-01/meta.json with status='axiomatized', badge='axiom', sorries=1, axiomCount=1, additionalFiles=['Proofs/FourierSeriesOQ04.lean'].",
+    "phase": "ACT",
+    "since": "2026-05-12T14:30:00.000Z",
+    "iteration": 2,
+    "focus": "S2a (researcher-8, 2026-05-12): ACT scaffold for the 2D Carleson spherical-summation conjecture (axiomatized) + unconditional L^2-norm-convergence companion (sorried) + gallery entry. Lean file Proofs/FourierSeriesOQ04OQ01.lean (179 lines, 5 defs, 3 theorems, 1 axiom, 1 sorry). Gallery entry src/data/proofs/fourier-series-oq-04-oq-01/meta.json (status=axiomatized, badge=axiom, sorries=1, axiomCount=1). Build pending (worktree .lake symlink recursive).",
+    "blockers": [
+      "Mathlib gap: Plancherel_ntorus not exposed as a named identity. Blocks closing the sphPartialSum_L2_norm_converge sorry. Future contribution: ~30-50 line Mathlib PR specialising the lp 2 orthonormal-basis tensor product on Fin n -> AddCircle T.",
+      "Mathlib gap: no BochnerRiesz / ballMultiplier API. Required for S2b (delta > 1/2 a.e. convergence) and S3 (Fefferman counterexample)."
+    ],
+    "nextAction": "S2b (any researcher) — ACT, slower: formalise Bochner-Riesz a.e. convergence for delta > 1/2 in n=2 (Stein 1958, ~300-500 lines, 2-3 iterations). Define bochnerRieszMultiplier, bochnerRieszPartialSum, kernel decomposition (K_R^delta * f)(x), a.e. convergence via Hardy-Littlewood maximal function. ALTERNATIVE S2b: close the L^2-norm sorry in sphPartialSum_L2_norm_converge by building Plancherel_ntorus directly in this file (~80-150 lines, candidate for future Mathlib contribution). S2c (parallel, easier): add latticeDisc_card_le_R_sq (Gauss circle bound, 5-10 lines).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-6, 2026-05-12) — OBSERVE survey. Established that the 2D Carleson spherical-summation conjecture is open in mathematics (Stein 1971 ICM; Tao 2002 survey; no progress as of 2024). Identified the precise formal statement (sum over integer lattice points in a closed Euclidean disc of radius R), the Mathlib API gap (no MultiFourierCoeff on Fin n -> AddCircle T), the unconditional companion results (Plancherel L^2-norm convergence trivially; Bochner-Riesz a.e. for delta > (n-1)/2 classically), and the asymmetry results (Fefferman 1971 rectangular L^1 divergence; ball-multiplier theorem ruling out L^p for p != 2). S2a is a doc-light scaffold creating proofs/Proofs/FourierSeriesOQ04OQ01.lean with the conjecture axiomatized + one provable companion (Plancherel-derived L^2-norm convergence). No Lean changes in this iteration.",
+    "progressSummary": "S2a (researcher-8, 2026-05-12) — ACT scaffold. Created proofs/Proofs/FourierSeriesOQ04OQ01.lean (179 lines) with rigorous definitions (T2 := Fin 2 -> AddCircle 1; haarT2 = Measure.pi haarAddCircle; multiFourierCoeff f k as iterated integral against fourier (-(k 0)) (x 0) * fourier (-(k 1)) (x 1); latticeDisc R as Finset.Icc bounding box filtered by k_0^2 + k_1^2 <= R^2; sphPartialSum f R x as Finset.sum over latticeDisc R), 1 axiom `carleson_2d_sph` (the open conjecture), 1 sorried companion theorem `sphPartialSum_L2_norm_converge` (Plancherel-direct L^2-norm convergence, sorry pending Mathlib Plancherel_ntorus gap), and 2 definitional sanity-check lemmas (multiFourierCoeff_zero, sphPartialSum_zero) with full proofs. Gallery entry src/data/proofs/fourier-series-oq-04-oq-01/{meta.json, index.ts, annotations.json} registered with status=axiomatized, badge=axiom, sorries=1, axiomCount=1. Build status: pending (worktree .lake symlink recursive; docker build would be ~25 min fresh Mathlib clone). Earlier: S1 (researcher-6, 2026-05-12) — OBSERVE survey, established that the conjecture is open in mathematics (Stein 1971 ICM; Tao 2002 survey; no progress as of 2024) and laid out the formalisation plan now executed in S2a.",
     "builtItems": [
-      "research/problems/fourier-series-oq-04-oq-01/problem.md (new, ~120 lines): formal statement, classification (tier B, sig 6, tract 5), why-matters, theoretical context (known unconditional, known negative, open status).",
-      "research/problems/fourier-series-oq-04-oq-01/knowledge.md (new, ~120 lines): S1 OBSERVE survey with Mathlib API map (verified what is and is not available), insights (5 numbered), gaps (4 numbered), next steps (priority order), risk notes (4 numbered).",
-      "research/problems/fourier-series-oq-04-oq-01/state.md (new, ~80 lines): phase OBSERVE, S1 focus, active approach (axiomatize + partial results), blockers (none mathematical), detailed S2a next-action spec.",
-      "src/data/research/problems/fourier-series-oq-04-oq-01.json (new, this file): discovery metadata."
+      "proofs/Proofs/FourierSeriesOQ04OQ01.lean (NEW, 179 lines, S2a): 5 defs (T2 abbrev, haarT2, multiFourierCoeff, latticeDisc, sphPartialSum), 1 axiom (carleson_2d_sph), 3 theorems (sphPartialSum_L2_norm_converge with sorry; multiFourierCoeff_zero, sphPartialSum_zero with full proofs). Build pending.",
+      "proofs/Proofs.lean (MODIFIED, S2a): registered new file in umbrella.",
+      "src/data/proofs/fourier-series-oq-04-oq-01/meta.json (NEW, S2a): gallery entry with status=axiomatized, badge=axiom, sorries=1, axiomCount=1, lineCount=179, theoremCount=3, definitionCount=5. Full sections (4) with line ranges, overview, conclusion, crossReferences (parent fourier-series-oq-04, sibling fourier-series-oq-01).",
+      "src/data/proofs/fourier-series-oq-04-oq-01/index.ts (NEW, S2a): Vite glob-import entry point.",
+      "src/data/proofs/fourier-series-oq-04-oq-01/annotations.json (NEW, S2a): empty array — enricher target.",
+      "research/problems/fourier-series-oq-04-oq-01/problem.md (S1, researcher-6): formal statement, classification, why-matters, theoretical context.",
+      "research/problems/fourier-series-oq-04-oq-01/knowledge.md (S1, researcher-6): Mathlib API survey, insights, gaps, next steps, risks.",
+      "research/problems/fourier-series-oq-04-oq-01/state.md (S2a UPDATED): phase ACT, S2a deliverables, S2b next-action with two alternatives, S2c parallel mini-task.",
+      "src/data/research/problems/fourier-series-oq-04-oq-01.json (S2a UPDATED, this file): phase=ACT, iteration=2, currentState.focus + progressSummary + builtItems + insights updated for S2a."
     ],
     "insights": [
       "The 2D Carleson conjecture is the 'endpoint' of two flagship open problems — Bochner-Riesz in L^2 AND 1D Carleson lifted to n=2. Either positive progress would collapse one of these; no conditional approach (Kakeya, restriction) has discharged the L^2 endpoint.",
       "L^2 norm convergence is trivial by Plancherel (the partial-sum residual is the L^2-norm of the tail of a square-summable series). The difficulty is the a.e. claim, which requires a maximal-operator estimate sup_R |S_R^sph f|.",
       "Rectangular vs spherical asymmetry is genuinely n-dependent: in 1D the two coincide; in n >= 2, Fefferman 1971 showed rectangular L^1 may diverge a.e. yet spherical L^2 a.e. is open. Both facts can be stated separately in the gallery without conflict.",
       "Fefferman's ball-multiplier theorem (the characteristic function of the unit ball is not an L^p multiplier on R^n for p != 2, n >= 2) is the canonical obstruction to applying Hunt-style L^p-interpolation. This is why the 2D conjecture is genuinely L^2-specific.",
-      "Doc-only S1 is the right scope for a fresh slug whose parent is a stub: parent FourierSeriesOQ04.lean has placeholder `:= 0` definitions. Until those are rigorised (S2a), the child cannot prove anything substantive. The S1 deliverable is laying the math substrate.",
-      "The honest formalisation matches CLAUDE.md's Axiom Integrity Policy: status='axiomatized', badge='axiom', axiomCount=1 (or more after Bochner-Riesz / Fefferman are added). Per memory_marquee_initiative and infrastructure conventions, open problems get axioms not 'verified' claims."
+      "Doc-only S1 was the right scope for a fresh slug whose parent is a stub: parent FourierSeriesOQ04.lean has placeholder `:= 0` definitions. Until those are rigorised (S2a), the child cannot prove anything substantive. The S1 deliverable laid the math substrate; S2a now rigorises the definitions on T^2.",
+      "The honest formalisation matches CLAUDE.md's Axiom Integrity Policy: status='axiomatized', badge='axiom', axiomCount=1 (or more after Bochner-Riesz / Fefferman are added). Per memory_marquee_initiative and infrastructure conventions, open problems get axioms not 'verified' claims.",
+      "S2a design: T^2 modelled as `Fin 2 -> AddCircle 1` (cleaner than `Fin 2 -> R / Z` or hand-rolled quotients), inheriting Mathlib's `fourier` characters, `haarAddCircle` measure, and `lp 2` Hilbert structure via `Measure.pi`. The `multiFourierCoeff` is an iterated integral; the multi-character factors as a product of 1D characters, which avoids redefining 2D exponentials.",
+      "S2a design: `latticeDisc R` as `Finset.Icc (-⌈|R|⌉) ⌈|R|⌉` filtered by the disc inequality (classical decidability on the reals via `Classical.decPred`). This is finite by construction (box bounds) and the disc condition is mathematically correct (since `|k_i| <= |R| <= ⌈|R|⌉` for any pair in the disc).",
+      "S2a design: the L^2-norm-convergence companion is left as `sorry` not because the result is doubtful but because the named `Plancherel_ntorus` identity is not yet in Mathlib (the orthonormal-basis tensor-product structure exists but is implicit). Future S2b alternative: build this identity directly in the file (~80-150 lines) as a candidate Mathlib contribution."
     ],
     "mathlibGaps": [
       "No MultiFourierCoeff / fourierCoeff over (Fin n -> AddCircle T). Mathlib's fourierCoeff is 1D-only at AddCircle T.",
@@ -63,8 +74,9 @@
       "No Fefferman_ball_multiplier or related counterexample (requires Besicovitch / Kakeya machinery not present)."
     ],
     "nextSteps": [
-      "S2a (ACT, doc-light): create proofs/Proofs/FourierSeriesOQ04OQ01.lean (~150 lines) — rigorous definitions of multiFourierCoeff / latticeDisc / sphPartialSum on T^2 = Fin 2 -> AddCircle 1; the conjecture as `axiom carleson_2d_sph`; one unconditional companion theorem sphPartialSum_L2_norm_converge (may have sorry pending Mathlib n-D Plancherel). Plus gallery entry src/data/proofs/fourier-series-oq-04-oq-01/meta.json.",
-      "S2b (ACT, slower): formalise Bochner-Riesz a.e. convergence for delta > (n-1)/2 (Stein 1958). Real theorem to formalise (1958-era classical), not a placeholder. Estimate 300-500 lines, 2-3 iterations.",
+      "S2b (ACT, slower): formalise Bochner-Riesz a.e. convergence for delta > 1/2 in n=2 (Stein 1958). Real theorem (1958-era classical), not a placeholder. Estimate 300-500 lines, 2-3 iterations. Define bochnerRieszMultiplier delta R k := max (1 - |k|^2 / R^2) 0 ^ delta; kernel decomposition (K_R^delta * f); a.e. convergence via Hardy-Littlewood maximal function.",
+      "S2b ALTERNATIVE (ACT, focused): close the sphPartialSum_L2_norm_converge sorry by building Plancherel_ntorus directly in FourierSeriesOQ04OQ01.lean (specialised to n=2). Engine: tensor product of two 1D fourierBasis Hilbert bases; Bessel inequality + monotone convergence as lattice discs exhaust Z^2. Estimate 80-150 lines. Candidate for future Mathlib contribution as a named identity.",
+      "S2c (ACT, parallel mini-task): add latticeDisc_card_le_R_sq — `(latticeDisc R).card <= Nat.ceil (Real.pi * R^2) + O(R)` — Gauss circle problem bound. Short (5-10 lines); useful in any quantitative argument.",
       "S3 (ACT, speculative): Fefferman 1971 ball-multiplier counterexample. Classical proof uses Besicovitch sets and a Kakeya-style construction — likely beyond a single Lean file without a major Mathlib detour. Postpone until Mathlib gains Kakeya infrastructure.",
       "(skip): attempting to prove the conjecture itself. This is genuine open mathematics; no PR should claim to close it."
     ]
@@ -111,10 +123,21 @@
     ]
   },
   "started": "2026-05-12T08:38:00.000Z",
-  "lastUpdate": "2026-05-12T08:38:00.000Z",
+  "lastUpdate": "2026-05-12T14:35:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
+    {
+      "path": "Proofs/FourierSeriesOQ04OQ01.lean",
+      "filename": "FourierSeriesOQ04OQ01.lean",
+      "lineCount": 179,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
+    },
     {
       "path": "Proofs/FourierSeriesOQ04.lean",
       "filename": "FourierSeriesOQ04.lean",
