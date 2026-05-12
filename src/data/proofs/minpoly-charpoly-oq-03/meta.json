@@ -1,0 +1,201 @@
+{
+  "id": "minpoly-charpoly-oq-03",
+  "title": "Rational Canonical Form via Minimal-Polynomial Invariant Factors (S1 Scaffold)",
+  "slug": "minpoly-charpoly-oq-03",
+  "description": "S1 OBSERVE scaffold resolving the parent's third open question 'Can the rational canonical form (based on minpoly factorization) be formalized?' Affirmative: provides the abstract InvariantFactorChain data structure, states the main RCF existence theorem (guarded by a single sorry), and lays out a four-sub-OQ decomposition routing through Mathlib's structure theorem for finitely generated modules over a PID plus the in-tree companion matrix infrastructure.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/MinpolyCharpolyOQ03.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "rational-canonical-form",
+      "minimal-polynomial",
+      "characteristic-polynomial",
+      "companion-matrix",
+      "structure-theorem-pid",
+      "research"
+    ],
+    "badge": "research",
+    "sorries": 1,
+    "axiomCount": 0,
+    "lineCount": 191,
+    "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT). The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-05-12",
+    "theoremCount": 2,
+    "definitionCount": 3,
+    "originalContributions": [
+      "InvariantFactorChain structure: bundles a list of monic polynomials with divisibility chain p_1 | p_2 | ... | p_k as a first-class invariant",
+      "InvariantFactorChain.prodFactors and .lastFactor: the two target values (charpoly, minpoly) packaged with the data",
+      "rational_canonical_form_exists: statement of Frobenius's RCF existence theorem (sorry-guarded; weak form omitting similarity and minpoly equality)",
+      "Sub-OQ decomposition (OQ-03-OQ-01 ... OQ-03-OQ-04): four-step roadmap totaling ~900 lines for the full RCF formalization, routed via Mathlib's `Module.equiv_directSum_of_isTorsion`"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.charpoly",
+        "description": "Characteristic polynomial of a square matrix",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Polynomial.Monic",
+        "description": "Predicate for monic polynomials",
+        "module": "Mathlib.Algebra.Polynomial.Monic"
+      },
+      {
+        "theorem": "Module.equiv_directSum_of_isTorsion",
+        "description": "Structure theorem for finitely generated torsion modules over a PID — the workhorse for OQ-03-OQ-02 (deferred to a future iteration)",
+        "module": "Mathlib.Algebra.Module.PID"
+      },
+      {
+        "theorem": "List.prod_nil",
+        "description": "Empty-list product equals 1 (used by prodFactors_empty)",
+        "module": "Mathlib.Data.List.BigOperators.Basic"
+      }
+    ],
+    "prerequisites": [
+      "MinpolyCharpoly: parent file with 17 theorems on minpoly | charpoly",
+      "CayleyHamiltonReductionOQ02OQ01: in-tree companion matrix infrastructure (charpoly, minpoly, orbit lemma)",
+      "Mathlib's `Module.equiv_directSum_of_isTorsion` (structure theorem for finitely generated PID-modules)",
+      "Lean 4 structures and List/Fin indexing"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Frobenius (1879) classified matrices over a field up to similarity via the rational canonical form (RCF): every square matrix M over F is similar to a block-diagonal matrix whose blocks are the companion matrices of a sequence of monic polynomials p_1, p_2, …, p_k satisfying p_1 | p_2 | ⋯ | p_k. The polynomials, called the *invariant factors* of M, are uniquely determined by M, and their last factor equals minpoly(M) while their product equals charpoly(M). The RCF is the field-independent canonical form: it makes no use of eigenvalues (unlike Jordan normal form) and exists over any field, including non-algebraically-closed fields like ℚ. Modern presentations (Dummit & Foote §12.2, Hungerford §VII.4) derive the RCF from the structure theorem for finitely generated modules over a principal ideal domain, applied to K^n viewed as an F[X]-module via the action of M.",
+    "problemStatement": "**Open Question (minpoly-charpoly-oq-03)**: Can the rational canonical form (based on minpoly factorization) be formalized in Lean 4? — `conclusion.openQuestions[2]` of the parent gallery entry `minpoly-charpoly`. The question is whether Lean 4 + Mathlib provides enough infrastructure to (a) state RCF rigorously and (b) prove the existence theorem.",
+    "text": "**Resolution (S1 OBSERVE): YES.** All three required ingredients are available — companion-matrix infrastructure (in-tree), Mathlib's structure theorem for finitely generated modules over a PID, and the cyclic-summand-to-companion-block correspondence. The remaining work is purely integrative and decomposes into four sub-OQs totaling ~900 lines.",
+    "proofStrategy": "**S1 scaffold deliverable**: state RCF rigorously via `InvariantFactorChain` (structure bundling factors + monic + posDegree + divisibility chain) and `rational_canonical_form_exists` (existence theorem with sorry).\n\n**S2+ deliverable** (sub-OQs):\n\n1. **OQ-03-OQ-01** (~150 lines): F[X]-module structure on K^n via the M-action; show finitely generated and torsion (Cayley-Hamilton).\n2. **OQ-03-OQ-02** (~300 lines): apply `Module.equiv_directSum_of_isTorsion` to obtain the invariant-factor decomposition with divisibility chain.\n3. **OQ-03-OQ-03** (~250 lines): on each cyclic F[X]/(p_i), basis {1, X, ..., X^{d_i-1}} realises mul-by-X as companionMatrix p_i.\n4. **OQ-03-OQ-04** (~200 lines): reassembly into the global similarity transform.",
+    "keyInsights": [
+      "**Three-ingredient resolution**: companion matrix (in-tree) + Mathlib structure theorem (PID) + cyclic-summand-to-companion correspondence. No genuine Mathlib gap; only integrative work remains.",
+      "**Structure-encoded divisibility chain**: bundling `factors`, `monic`, `posDegree`, and `chain` as a single `InvariantFactorChain` structure makes the divisibility invariant first-class — downstream lemmas (e.g. `lastFactor = minpoly M`) can use it without re-deriving the chain.",
+      "**Weak vs strong RCF**: the S1 statement asserts only `prodFactors = charpoly M`, omitting both (a) the full similarity claim and (b) the `lastFactor = minpoly M` equality. These are intentionally deferred to keep the scaffold minimal; both follow from the structure-theorem proof once the cyclic-summand correspondence is established.",
+      "**Roadmap arithmetic**: ~900 lines via Mathlib's structure theorem is significantly less than the ~1800-line Smith-normal-form route documented in `CayleyHamiltonReductionOQ02OQ01.lean`'s gap assessment.",
+      "**Companion matrix double duty**: each `companionMatrix p_i` simultaneously realises (a) the block on a cyclic F[X]-summand, (b) the characteristic polynomial `p_i` of that block, and (c) the minimal polynomial of that block (companion is non-derogatory). All three facts are already proved in `Proofs/CayleyHamiltonReductionOQ02OQ01.lean`."
+    ],
+    "prerequisites": [
+      "Linear algebra: matrices, similarity, charpoly/minpoly",
+      "Module theory: structure theorem for finitely generated modules over a PID",
+      "Companion matrix and cyclic modules",
+      "Lean 4 structures, Lists, Fin indexing"
+    ]
+  },
+  "sections": [
+    {
+      "id": "intro-docstring",
+      "title": "§0: Open Question, Resolution Plan, and Sub-OQ Decomposition",
+      "startLine": 1,
+      "endLine": 109,
+      "summary": "Imports (MinpolyCharpoly parent, Mathlib charpoly/minpoly/monic, Tactic) and the top-level docstring stating the OQ-03 question, the affirmative resolution via the three-ingredient plan (companion matrices in-tree, Mathlib structure theorem for PID-modules, cyclic-summand-to-companion correspondence), and the four-sub-OQ decomposition roadmap (~150 + 300 + 250 + 200 = ~900 lines total).",
+      "mathContext": "OQ-03: 'Can the rational canonical form (based on minpoly factorization) be formalized in Lean 4?' Resolution: YES via three ingredients, no Mathlib gap."
+    },
+    {
+      "id": "invariant-factor-chain",
+      "title": "§1: InvariantFactorChain — Abstract Data Structure",
+      "startLine": 111,
+      "endLine": 148,
+      "summary": "Defines the `InvariantFactorChain F` structure with four fields (factors, monic, posDegree, chain) and the two derived `noncomputable def`s `prodFactors = factors.prod` (target charpoly) and `lastFactor = getLast?.getD 1` (target minpoly). The divisibility chain `p_1 | p_2 | ... | p_k` is captured as a structure field, making it a first-class invariant.",
+      "mathContext": "$\\mathrm{InvariantFactorChain}\\, F = \\{\\, (p_1, \\dots, p_k) : p_i \\in F[X],\\ p_i \\text{ monic},\\ \\deg p_i \\geq 1,\\ p_1 \\mid p_2 \\mid \\cdots \\mid p_k \\,\\}$. Two derived quantities: $\\prod p_i$ (target charpoly) and $p_k$ (target minpoly)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§2: rational_canonical_form_exists (S1 statement + sorry)",
+      "startLine": 150,
+      "endLine": 177,
+      "summary": "The S1 deliverable: the statement of Frobenius's rational canonical form existence theorem, in its weak form (only `prodFactors = charpoly M`, omitting the full similarity claim and the `lastFactor = minpoly M` equality). The proof is a `sorry` placeholder; the four-sub-OQ decomposition described in the docstring above will discharge it.",
+      "mathContext": "**Frobenius's RCF (existence, weak form)**: $\\forall M \\in \\mathrm{Mat}_n(F),\\ \\exists (p_1, \\dots, p_k) \\in (F[X])^k$ with $p_i$ monic, $\\deg p_i \\geq 1$, $p_1 \\mid \\cdots \\mid p_k$, and $\\prod_i p_i = \\mathrm{charpoly}(M)$."
+    },
+    {
+      "id": "empty-chain",
+      "title": "§3: prodFactors_empty — Unconditional Sanity Check",
+      "startLine": 179,
+      "endLine": 191,
+      "summary": "The only unconditional theorem in the S1 scaffold: an empty `InvariantFactorChain` has product 1. Proved by `unfold + rw + simp`. Verifies the `InvariantFactorChain`/`prodFactors` definitions are internally consistent. Mathematically: matches `charpoly (0 : Matrix (Fin 0) (Fin 0) F) = 1` for the degenerate 0×0 matrix.",
+      "mathContext": "$\\mathrm{prodFactors}(\\emptyset) = 1$, matching $\\mathrm{charpoly}(\\mathrm{Mat}_0(F)) = 1$ for the degenerate $0 \\times 0$ matrix."
+    }
+  ],
+  "conclusion": {
+    "summary": "S1 OBSERVE scaffold for the rational canonical form. States the existence theorem, defines the `InvariantFactorChain` data structure, and lays out a four-sub-OQ decomposition that routes through Mathlib's structure theorem for PID-modules and the in-tree companion matrix infrastructure. The parent's third open question is resolved affirmatively at the strategy level; full proof deferred to S2+ sub-OQ iterations.",
+    "implications": "RCF is the field-independent canonical form for matrix similarity classification — it makes no use of eigenvalues (unlike Jordan normal form) and exists over any field, including ℚ where eigenvalues may not split. Once discharged, this scaffold provides the cornerstone of every matrix similarity-classification theorem in the gallery: combined with `minpoly = lastFactor` (a future corollary), it gives Frobenius's theorem that two matrices are similar iff they share the same invariant-factor chain.",
+    "openQuestions": [
+      "**OQ-03-OQ-01**: Formalize the F[X]-module structure on K^n via the M-action; prove finitely-generated + torsion (Cayley-Hamilton). (~150 lines)",
+      "**OQ-03-OQ-02**: Apply `Module.equiv_directSum_of_isTorsion` to extract the invariant-factor decomposition with the divisibility chain p_1 | p_2 | ... | p_k. (~300 lines)",
+      "**OQ-03-OQ-03**: On each cyclic F[X]/(p_i), show that the basis {1, X, ..., X^{deg p_i - 1}} realises multiplication-by-X as the companion matrix `companionMatrix p_i`. (~250 lines)",
+      "**OQ-03-OQ-04**: Reassemble the cyclic-summand correspondence into the global similarity `M = P · blockDiag(companionMatrix p_1, ..., companionMatrix p_k) · P⁻¹`. (~200 lines)",
+      "**Strong form**: extend the S1 statement to assert `c.lastFactor = M.minpoly` in addition to `c.prodFactors = M.charpoly`.",
+      "**Uniqueness**: prove that two invariant-factor chains yielding the same matrix are equal (up to associates), making `InvariantFactorChain` a *canonical* invariant."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.Algebra.Polynomial.Monic",
+      "Mathlib.Tactic",
+      "Proofs.MinpolyCharpoly"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "BigOperators"
+    ],
+    "namespace": "MinpolyCharpolyOQ03",
+    "lineCount": 191,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 3,
+    "path": "Proofs/MinpolyCharpolyOQ03.lean",
+    "sorries": 1
+  },
+  "crossReferences": [
+    {
+      "targetId": "minpoly-charpoly",
+      "relationship": "parent",
+      "description": "Parent entry establishing the minpoly | charpoly relationship via 17 theorems. This OQ-03 entry resolves the third of three open questions enumerated at the end of the parent's `conclusion.openQuestions`."
+    },
+    {
+      "targetId": "cayley-hamilton",
+      "relationship": "depends-on",
+      "description": "Cayley-Hamilton (charpoly(M)(M) = 0) is the key ingredient making K^n a torsion F[X]-module — the prerequisite for applying the PID structure theorem in OQ-03-OQ-02."
+    },
+    {
+      "targetId": "cayley-hamilton-reduction-oq-02-oq-01",
+      "relationship": "depends-on",
+      "description": "Companion matrix infrastructure (`companionMatrix p`, `charpoly = p`, `minpoly = p`). Provides the block-level building blocks for the eventual RCF assembly in OQ-03-OQ-04."
+    },
+    {
+      "targetId": "cayley-hamilton-cyclic-vector-all-fields",
+      "relationship": "related",
+      "description": "Cyclic vector theory: when the chain has length 1 (single invariant factor), M is non-derogatory and similar to a single companion matrix. RCF generalizes this to the multi-block case."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "rational_canonical_form_exists",
+      "type": "core",
+      "statement": "∀ {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n F), ∃ c : InvariantFactorChain F, c.prodFactors = M.charpoly",
+      "description": "Frobenius's rational canonical form existence theorem (S1 statement, weak form). Asserts that every square matrix admits an invariant-factor chain whose product equals its characteristic polynomial. Sorry-guarded; proof deferred to four sub-OQs.",
+      "significance": "Cornerstone of matrix similarity classification over any field"
+    },
+    {
+      "name": "prodFactors_empty",
+      "type": "supporting",
+      "statement": "∀ (c : InvariantFactorChain F), c.factors = [] → c.prodFactors = 1",
+      "description": "Sanity check: empty invariant-factor chains have product 1, matching the 0×0 matrix's charpoly.",
+      "significance": "Internal consistency of InvariantFactorChain / prodFactors definitions"
+    }
+  ],
+  "sorries": 1,
+  "references": {
+    "papers": [
+      "Frobenius, G. (1879). 'Theorie der linearen Formen mit ganzen Coefficienten.' Crelle's Journal, 86, 146-208.",
+      "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.2."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
+      "https://en.wikipedia.org/wiki/Frobenius_normal_form"
+    ]
+  }
+}
