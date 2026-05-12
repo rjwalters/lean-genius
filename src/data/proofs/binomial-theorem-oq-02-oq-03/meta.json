@@ -161,7 +161,37 @@
     {
       "targetId": "binomial-theorem-oq-02",
       "relationship": "extends",
-      "description": "The q-multinomial theorem is the quantum generalization of the classical multinomial theorem proved in OQ-02"
+      "description": "The q-multinomial theorem is the quantum generalization of the classical multinomial theorem proved in OQ-02. Setting q=1 in qMultinom recovers Nat.multinomial via `qMultinom_at_one`."
+    },
+    {
+      "proofId": "combinations-formula-oq-03",
+      "relationship": "prerequisite",
+      "description": "Direct dependency: the file `CombinationsFormulaOQ03.lean` defines `qBinom` (Gaussian binomial coefficient via q-Pascal recurrence), `qFactorial`, and the key bridge lemmas `qBinom_at_one` (qBinom 1 n k = Nat.choose n k) and `qBinom_product` (qBinom q n k · qFactorial q k · qFactorial q (n-k) = qFactorial q n). The q-multinomial definition iterates qBinom and the product identity proof reduces to qBinom_product."
+    },
+    {
+      "proofId": "combinations-formula",
+      "relationship": "complementary",
+      "description": "Establishes the classical binomial coefficient C(n,k) = n!/(k!(n-k)!), which is the q=1 specialization of qBinom. The classical multinomial coefficient n!/(k₁!...kₘ!) is correspondingly the q=1 limit of qMultinom — both verified here via `qMultinom_at_one`."
+    },
+    {
+      "proofId": "binomial-theorem",
+      "relationship": "complementary",
+      "description": "Wiedijk #44, the classical binomial theorem (x+y)ⁿ = ∑ C(n,k) xᵏ yⁿ⁻ᵏ. The q-binomial theorem (in q-commutative algebras where yx = qxy) generalizes this by replacing C(n,k) with qBinom q n k. The q-multinomial coefficients formalized here are the building blocks for the multi-variable q-binomial theorem."
+    },
+    {
+      "proofId": "binomial-theorem-oq-02-oq-04",
+      "relationship": "complementary",
+      "description": "Provides a direct induction-on-|s| Lean proof of the classical multinomial theorem (without going through binomial-theorem-oq-02). The induction structure on Finset cardinality mirrors the recursion qMultinom q k = qBinom q (∑kᵢ) (k 0) · qMultinom q (k∘Fin.succ) used here, suggesting a parallel q-analog induction is the natural route to the full q-multinomial theorem (an open question in the conclusion)."
+    },
+    {
+      "proofId": "partition-theorem",
+      "relationship": "complementary",
+      "description": "Euler's partition identity (partitions into odd parts = partitions into distinct parts) is a hallmark of generating-function combinatorics where q-series appear: ∏(1+qᵏ) = ∏ 1/(1−q^(2k-1)). The q-multinomial coefficients are the polynomial coefficients in ∏(1−xqⁱ)⁻¹-type expansions, providing the algebraic counterpart to these partition-theoretic identities."
+    },
+    {
+      "proofId": "stirling-formula",
+      "relationship": "context",
+      "description": "Stirling's approximation n! ~ √(2πn)·(n/e)ⁿ governs the asymptotic growth of classical multinomial coefficients. The q-analog asymptotics of qFactorial q m and qMultinom (as polynomial degree in q grows) lead to MacMahon's box theorem and the Gauss formula for the number of plane partitions, q-generalizations of Stirling that remain open in this gallery."
     }
   ],
   "references": [
