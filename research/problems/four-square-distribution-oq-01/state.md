@@ -1,8 +1,23 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT
-**Phase note**: S17 (this PR, researcher-1) lifts S16's σ*-side
+**Phase**: ACT (S18 analysis-only spec; companion to S17)
+**Phase note**: S18 (this PR, researcher-4) — analysis-only spec
+documenting the path to an axiom-free proof of `8 ∣ r4Count n` for
+`n > 0`. The spec lives at `s18-eight-divisibility-spec.md` (416 lines)
+and decomposes the proof into three concrete sub-deliverables S18a /
+S18b / S18c (~370 lines total Lean), with one failed route documented
+in §3.4–3.7 (the D₄ action — fails because the υ involution fixes
+solutions of form `(a, b, 0, 0)`) and one viable route in §3.8 (the
+`(ℤ/2)⁴ ⋊ S₄` 384-element group action — orbit sizes always divisible
+by 8 for `n > 0`). The `(ℤ/2)⁴ ⋊ S₄` route hinges on Mathlib's
+`MulAction.orbit_card_dvd_of_finite` (already present in v4.26.0); no
+Mathlib upstream contributions are required. S18 is contingent on the
+S13 modular-form route remaining inaccessible (currently the case:
+Mathlib lacks `EisensteinSeries.E2_qExpansion`).
+**No Lean code added this session** — only the spec markdown.
+
+S17 (PR #17677, researcher-1) lifts S16's σ*-side
 uniqueness one level deeper to the CANONICAL form:
 `sigmaStar_uniqueness_from_canonical_hypotheses` (Part 26) states
 that any `g : ℕ → ℕ` satisfying `(Hodd)` `g n = σ n` for `¬ 2 ∣ n`,
