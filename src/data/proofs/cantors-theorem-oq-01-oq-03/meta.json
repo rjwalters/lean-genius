@@ -78,36 +78,52 @@
   },
   "sections": [
     {
+      "id": "intro-docstring",
+      "title": "§0: Introduction and \"Without Axioms\" Caveats",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Imports (CantorsTheoremOQ01 parent, sibling OQ02, Mathlib cofinality/continuum/ordinal), namespace setup, and the file's top-level docstring stating the open question, the affirmative resolution via Cardinal.lt_cof_power, and the two readings of \"without axioms\" (no explicit `axiom` declarations vs no `Classical.choice`).",
+      "mathContext": "OQ-01-OQ-03: \"Can König's constraint cf(2^κ) > κ be formalized in Lean4 without axioms?\" The two readings of \"without axioms\" — no explicit `axiom` declarations (achieved) vs no Choice (not achieved; Mathlib uses Classical.choice silently)."
+    },
+    {
       "id": "general-konig",
       "title": "§1: König's Cofinality Theorem (General Form)",
-      "startLine": 78,
-      "endLine": 89,
-      "summary": "konig_general: for any infinite cardinal κ (i.e., ℵ₀ ≤ κ), κ < (2^κ).ord.cof. One-line proof from Mathlib's Cardinal.lt_cof_power.",
+      "startLine": 72,
+      "endLine": 87,
+      "summary": "konig_general: for any infinite cardinal κ (i.e., ℵ₀ ≤ κ), κ < (2^κ).ord.cof. One-line proof from Mathlib's Cardinal.lt_cof_power with the 1 < 2 hypothesis discharged by norm_num.",
       "mathContext": "König (1905): cf(2^κ) > κ for any infinite cardinal κ. The Mathlib lemma `Cardinal.lt_cof_power : ℵ₀ ≤ κ → 1 < c → κ < (c^κ).ord.cof` is exactly this with c=2."
     },
     {
       "id": "specializations",
       "title": "§2: Specializations to 𝔠 and ℵ_α",
-      "startLine": 91,
-      "endLine": 114,
-      "summary": "konig_constraint_continuum: 𝔠 < cf(2^𝔠). konig_constraint_aleph: ℵ_α < cf(2^ℵ_α) for any ordinal α. Both are immediate corollaries of the general form.",
-      "mathContext": "𝔠-specialization parallels CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real. The ℵ_α-form extends to the entire aleph hierarchy uniformly."
+      "startLine": 89,
+      "endLine": 110,
+      "summary": "konig_constraint_continuum: 𝔠 < cf(2^𝔠) via `Cardinal.aleph0_le_continuum`. konig_constraint_aleph: ℵ_α < cf(2^ℵ_α) for any ordinal α via `Cardinal.aleph0_le_aleph`. Both are immediate corollaries of the general form, demonstrating uniform applicability over the aleph hierarchy.",
+      "mathContext": "𝔠-specialization parallels CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real. The ℵ_α-form extends to the entire aleph hierarchy uniformly: ∀ α ∈ Ord, aleph α < cf(2^(aleph α))."
     },
     {
       "id": "powerset-application",
       "title": "§3: Application to |𝒫(ℝ)|",
-      "startLine": 116,
+      "startLine": 112,
       "endLine": 138,
-      "summary": "cf_powerSet_real_gt_continuum: 𝔠 < (#(Set ℝ)).ord.cof. cf_powerSet_real_ne_aleph0: (#(Set ℝ)).ord.cof ≠ ℵ₀. Applies the general König to the canonical case via parent's |𝒫(ℝ)| = 2^𝔠.",
-      "mathContext": "Combines König's constraint with parent's card_powerSet_real_formula. The cf ≠ ℵ₀ corollary rules out |𝒫(ℝ)| = ℵ_ω, ℵ_{ω+ω}, etc."
+      "summary": "cf_powerSet_real_gt_continuum: 𝔠 < (#(Set ℝ)).ord.cof, applying parent's |𝒫(ℝ)| = 2^𝔠 to the 𝔠-specialization. cf_powerSet_real_ne_aleph0: a contradiction-style corollary deriving (#(Set ℝ)).ord.cof ≠ ℵ₀ from cf > 𝔠 and ℵ₀ ≤ 𝔠.",
+      "mathContext": "Combines König's constraint with parent's card_powerSet_real_formula : #(Set ℝ) = 2^𝔠. The cf ≠ ℵ₀ corollary rules out |𝒫(ℝ)| = ℵ_ω, ℵ_{ω+ω}, etc. — any aleph with countable cofinality."
     },
     {
       "id": "resolution",
       "title": "§4: Open-Question Resolution Bundle",
       "startLine": 140,
-      "endLine": 170,
-      "summary": "oq01oq03_resolution: bundle theorem packaging the four key forms (general, 𝔠, |𝒫(ℝ)|, cf ≠ ℵ₀) as a conjunction. Demonstrates the affirmative resolution of cantors-theorem-oq-01-oq-03.",
-      "mathContext": "The OQ asked whether König's constraint can be formalized in Lean4 without axioms. The bundle theorem exhibits the four salient corollaries together as the affirmative answer."
+      "endLine": 162,
+      "summary": "oq01oq03_resolution: bundle theorem packaging the four key forms (general, 𝔠-specialized, |𝒫(ℝ)|-specialized, cf ≠ ℵ₀) as a single conjunction. Demonstrates the affirmative resolution of cantors-theorem-oq-01-oq-03 with one explicit statement, using `@konig_general` to insert the implicit κ-argument.",
+      "mathContext": "The OQ asked whether König's constraint can be formalized in Lean4 without axioms. The bundle exhibits the four salient corollaries together as the affirmative answer: (∀ κ, ℵ₀ ≤ κ → κ < cf(2^κ)) ∧ 𝔠 < cf(2^𝔠) ∧ 𝔠 < cf(#(Set ℝ)).ord ∧ (#(Set ℝ)).ord.cof ≠ ℵ₀."
+    },
+    {
+      "id": "conclusion-and-checks",
+      "title": "§5: Concluding Docstring and Sanity-Check Exports",
+      "startLine": 164,
+      "endLine": 206,
+      "summary": "End-of-file docstring restating the resolution, the four salient forms, and the note on infinite-product cardinal arithmetic (Cardinal.sum_lt_prod) being already in Mathlib. Followed by `#check` statements exporting the six main theorems for the gallery to display.",
+      "mathContext": "The OQ's caveat — \"Requires formalizing infinite product cardinal arithmetic\" — is satisfied by Mathlib's existing `Cardinal.sum_lt_prod : (∀ i, f i < g i) → ∑ f < ∏ g`, which `Cardinal.lt_cof_power` is derived from."
     }
   ],
   "conclusion": {
