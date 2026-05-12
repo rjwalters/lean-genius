@@ -53,11 +53,18 @@
   },
   "sections": [
     {
-      "id": "header-imports",
-      "title": "Header and Imports",
+      "id": "module-docstring",
+      "title": "Module Docstring: OQ Statement and Approach A Strategy",
       "startLine": 1,
+      "endLine": 47,
+      "summary": "States the open question (OQ-01-OQ-01-OQ-01): exhibit an explicit non-cyclic group of order pq when distinct primes p, q satisfy p ∣ (q-1). Describes Approach A (this file) — specialize to p = 2 and use Mathlib's DihedralGroup q — and Approach B (deferred to S3+) — the general semidirect product ZMod q ⋊[φ] ZMod p. Pins the required Mathlib API at rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, cites Dummit-Foote §4.5, and notes that the q ≠ 2 hypothesis is documentary rather than load-bearing."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports and Namespace",
+      "startLine": 49,
       "endLine": 53,
-      "summary": "Module docstring stating the OQ-01-OQ-01-OQ-01 problem (explicit non-cyclic pq-witness), Approach A strategy (specialize to p = 2, use DihedralGroup q), and the pinned Mathlib API (DihedralGroup.card, DihedralGroup.not_isCyclic). Imports Mathlib and Proofs.LagrangeTheoremOQ01OQ01."
+      "summary": "Imports the full Mathlib bundle (for DihedralGroup, NeZero, Nat.Prime) and the parent file Proofs.LagrangeTheoremOQ01OQ01 (for the pq-classification context). Opens the LagrangeOQ01OQ01OQ01 namespace where all theorems live."
     },
     {
       "id": "main-existence",
