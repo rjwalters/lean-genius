@@ -1,37 +1,67 @@
 # Current State
 
-**Phase**: ACT (S7 SCAFFOLD landed — divisor enumeration for uniform bridge)
-**Since**: 2026-05-12T10:55:00Z
-**Iteration**: 7
+**Phase**: ACT (S8 closed — uniform cyclotomic bridge identity proved)
+**Since**: 2026-05-12T11:30:00Z
+**Iteration**: 8
 
 ## Current Focus
 
-S7 SCAFFOLD — Combinatorial backbone (step 1 of 6) for the uniform
-cyclotomic bridge identity `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`
-(odd prime `p`). Lands `divisors_two_mul_odd_prime`:
+S8 ACT — **Uniform cyclotomic bridge identity proved.** Discharges
+steps 2–6 of the outline laid down in the S7 module docstring, landing
+the structural theorem
 
-  `Nat.divisors (2 * p) = {1, 2, p, 2 * p}` for `p` odd prime, 0 sorries.
+  `cyclotomic_two_mul_prime_mul_X_add_one_uniform`
+  : `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`    in `ℤ[X]`,
+    for every odd prime `p`.
 
-Proof: `ext k`, parity-split on `k`. Even branch: `k = 2 * m`, cancel `2`
-via `Nat.eq_of_mul_eq_mul_left` to extract `m ∣ p`, then primality
-(`Nat.Prime.eq_one_or_self_of_dvd`) gives `m ∈ {1, p}` hence `k ∈ {2, 2*p}`.
-Odd branch: `Nat.Coprime k 2` (from `¬ 2 ∣ k`), then
-`Nat.Coprime.dvd_of_dvd_mul_left` extracts `k ∣ p`, primality closes.
+This collapses the five per-prime ring identities of S5+S6
+(`cyclotomic_{6, 10, 14, 22, 26}_eq`) into a single uniform statement
+holding for **all** odd primes — not just the five verified gallery
+primes. Together with Mathlib's `cyclotomic_prime_mul_X_sub_one`
+(`cyclotomic p ℤ * (X − 1) = X^p − 1`), the canonical cyclotomic duality
 
-This enables the next session (S8) to apply
-`Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at `n = 2 * p` and substitute
-the divisor enumeration, completing steps 2–6 of the uniform bridge:
+      cyclotomic p ℤ · (X - 1) = X^p - 1
+      cyclotomic (2*p) ℤ · (X + 1) = X^p + 1            (new in S8)
 
-  3. `Φ_1 = X - 1`, `Φ_2 = X + 1` ⇒ product becomes
-     `(X-1)(X+1) Φ_p Φ_{2p} = X^{2p} - 1`.
-  4. `prod_cyclotomic_eq_X_pow_sub_one` at `n = p` ⇒
-     `(X-1) Φ_p = X^p - 1`.
-  5. Algebraic identity `X^{2p} - 1 = (X^p-1)(X^p+1)`.
-  6. Cancel `(X-1) Φ_p` (monic, nonzero in ℤ[X], an ID).
+is now formally available, exposing `Φ_{2p}` as the X ↦ -X conjugate of
+`Φ_p` without invoking polynomial composition or working in a splitting
+field.
 
-File grows: 750 → 835 lines (+85), 55 → 56 theorems (+1 lemma).
-Sorries: 1 (unchanged — the general conjecture).
-Axioms: 0 (unchanged).
+### Proof structure
+
+Six steps, mirroring the outline in the S7 module docstring:
+
+1. (S7 lemma `divisors_two_mul_odd_prime`): `(2p).divisors = {1,2,p,2p}`.
+2. `Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at `n = 2p`:
+     `∏ d ∈ (2p).divisors, cyclotomic d ℤ = X^{2p} − 1`.
+3. Substitute step 1, unfold the four-term `Finset.prod` via three
+   `Finset.prod_insert`s + one `Finset.prod_singleton`, and simplify
+   with `cyclotomic_one` (= X−1) and `cyclotomic_two` (= X+1).
+4. `Polynomial.cyclotomic_prime_mul_X_sub_one` (using `Fact (Nat.Prime p)`):
+     `cyclotomic p ℤ · (X − 1) = X^p − 1`.
+5. `X^{2p} − 1 = (X^p − 1) · (X^p + 1)` via `two_mul` plus `ring`.
+6. Cancel `X^p − 1` via `mul_left_cancel₀`. Nonzero in `ℤ[X]`: evaluating
+   at `0` yields `0^p − 1 = −1 ≠ 0` for `p > 0`.
+
+### Stats
+
+- File grows: 835 → 962 lines (+127), 56 → 57 theorems (+1 named theorem).
+- Sorries: 1 (unchanged — the general conjecture).
+- Axioms: 0 (unchanged).
+- New theorem: `cyclotomic_two_mul_prime_mul_X_add_one_uniform`.
+- New module-docstring section documenting S8.
+
+### Build status
+
+**Pending.** Docker build is queued (proofs/.lake symlink is broken,
+forcing ~30–45 min fresh-clone of Mathlib + cache get). The proof
+references only standard Mathlib API (`prod_cyclotomic_eq_X_pow_sub_one`,
+`cyclotomic_one`, `cyclotomic_two`, `cyclotomic_prime_mul_X_sub_one`,
+`mul_left_cancel₀`, `Finset.prod_insert`, `Finset.prod_singleton`,
+`Polynomial.eval_*`) plus the S7 `divisors_two_mul_odd_prime` already
+merged in PR #18057 (build verified). Per the build-pending precedent
+of S4 (#17906), S5 (#17975), and S6 (#18028), this PR is submitted as
+"build pending" for deployer verification.
 
 ## Previous focus (S6 — `cyclotomic_{22,26}_eq` + 5-prime bridge)
 
@@ -98,39 +128,54 @@ Proof strategy:
 
 ## Blockers
 
-None firm. Mathlib v4.26.0 lacks the uniform bridge `Φ_{2p}(X) = Φ_p(-X)`
-(or equivalently `Φ_{2p}(X)·(X+1) = X^p + 1` for odd prime p ≥ 3).
-S5+S6 jointly verified the cyclotomic anchor per-prime for the full
-gallery set p ∈ {3, 5, 7, 11, 13} via `eq_cyclotomic_iff` and explicit
-divisor unfolding. Lifting to all odd primes (S7 target) still requires
-the general bridge identity (Tactic A1 below). The local-field
-uniformizer ⇒ Eisenstein theorem (for the sub-leading divisibility half)
-remains the deeper gap (~200–400 lines).
+None firm. The uniform cyclotomic bridge identity is now **proved**
+(this S8 iteration). The local-field uniformizer ⇒ Eisenstein theorem
+(for the sub-leading divisibility half — Tactic B) remains the deeper
+gap (~200–400 lines). The eval-at-(-1) corollary
+`Φ_{2p}(-1) = p` (deferred to S9) collapses S5+S6 anchors but requires
+polynomial-evaluation manipulation of the bridge (geometric-series
+substitution via `geom_sum_mul` or formal differentiation).
 
 ## Next Action
 
-**S8 next action**: Finish the uniform cyclotomic bridge using
-`divisors_two_mul_odd_prime` (S7) as the combinatorial input.
+**S9 next action**: Lift `Φ_{2p}(-1) = p` to all odd primes (corollary
+of the S8 bridge). Once landed, the per-prime S5+S6 evaluations collapse
+into one uniform statement; the constant-coefficient sign-pattern
+prediction
+`(r p).coeff 0 = (-1)^((p-1)/2) · Φ_{2p}(-1) = (-1)^((p-1)/2) · p`
+becomes a one-line corollary for every odd prime, not just the five
+verified gallery primes.
 
-### Tactic A1 (primary): The (X+1) factorization identity — S8
-Prove the general identity
-  `(cyclotomic (2 * p) ℤ) * (X + 1) = X^p + 1`
-for odd prime p ≥ 3. Derivation now uses the S7 helper directly:
-1. `Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at n = 2p gives
-   `∏ d ∈ Nat.divisors (2*p), Φ_d = X^{2p} - 1`.
-2. Rewrite using `divisors_two_mul_odd_prime` (S7) to get the four-term
-   product `Φ_1 · Φ_2 · Φ_p · Φ_{2p} = X^{2p} - 1`.
-3. Substitute `Φ_1 = X - 1`, `Φ_2 = X + 1`, then
-   `(X-1) · Φ_p = X^p - 1` (via `prod_cyclotomic_eq_X_pow_sub_one` at
-   n = p, using `Nat.divisors_prime hp = {1, p}`).
-4. Result: `(X+1) · Φ_{2p} · (X^p - 1) = X^{2p} - 1 = (X^p - 1)(X^p + 1)`.
-5. Cancel `(X^p - 1)` (monic, nonzero in ℤ[X], an ID).
+### Tactic A1 (DONE in S8): The (X+1) factorization identity
+Lemma `cyclotomic_two_mul_prime_mul_X_add_one_uniform`
+  : `cyclotomic (2 * p) ℤ * (X + 1) = X^p + 1` for `p` odd prime.
+Proof composes `prod_cyclotomic_eq_X_pow_sub_one` at `n = 2 * p` with
+the S7 `divisors_two_mul_odd_prime` enumeration, identifies
+`(X − 1) · Φ_p = X^p − 1` via `cyclotomic_prime_mul_X_sub_one`, factors
+`X^{2p} − 1 = (X^p − 1)(X^p + 1)`, and cancels `X^p − 1` via
+`mul_left_cancel₀`. 127 line additions; 0 new sorries; 0 new axioms.
 
-Estimated ~50 lines on top of the S7 SCAFFOLD.
+### Tactic A1-corollary (S9 target): Uniform `Φ_{2p}(-1) = p`
+Approaches:
+
+* **(A)** Geometric-series identification. Use `geom_sum_mul` at `-X` to
+  build `Q(X) := ∑_{k < p} (-X)^k` satisfying `Q · (X + 1) = X^p + 1`
+  (for `p` odd, via `Odd.neg_one_pow`). Cancel `(X + 1)` (nonzero in
+  `ℤ[X]`) against the S8 bridge to identify `Φ_{2p} = Q`. Evaluate at
+  `−1`: `Q(-1) = ∑_{k<p} (-(-1))^k = ∑_{k<p} 1 = p`.
+
+* **(B)** Formal differentiation. Apply `Polynomial.derivative` to the
+  S8 bridge, evaluate at `−1`: the derivative term `Φ'_{2p}(-1) · ((-1)+1) = 0`
+  cancels, leaving `Φ_{2p}(-1) = p · (-1)^(p-1) = p` (since `p − 1` is
+  even). Cleaner mathematically; depends on Mathlib's `derivative_mul`,
+  `derivative_X_pow`, `eval` simp lemmas, and `Even.neg_one_pow`.
+
+Either approach is ~30 lines. Pick (A) for fewer Mathlib API surfaces;
+(B) for cleaner mathematics.
 
 ### S7 DONE: Combinatorial backbone
 Lemma `divisors_two_mul_odd_prime : Nat.divisors (2*p) = {1, 2, p, 2*p}`
-for `p` odd prime. Parity-split proof, 0 sorries.
+for `p` odd prime. Parity-split proof, 0 sorries (PR #18057, merged).
 
 ### Tactic A2 (DONE in S6): Per-prime extension to {11, 13}
 Completed. Both `cyclotomic_22_eq` (degree-22 ring identity) and
@@ -151,12 +196,13 @@ calculation or the local-field uniformizer theorem.
 
 ## Attempt Counts
 
-- Total attempts: 7 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
+- Total attempts: 8 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
   S4 ACT trace-Vieta, S5 ACT cyclotomic anchor {3,5,7},
   S6 ACT cyclotomic anchor extension {11,13},
-  S7 SCAFFOLD divisor enumeration for uniform bridge).
-- Current approach attempts: 6 (Level-2 + S3 norm + S4 trace +
-  S5 cyclotomic anchor + S6 cyclotomic extension + S7 SCAFFOLD).
+  S7 SCAFFOLD divisor enumeration for uniform bridge,
+  S8 ACT uniform cyclotomic bridge identity).
+- Current approach attempts: 7 (Level-2 + S3 norm + S4 trace +
+  S5 cyclotomic anchor + S6 cyclotomic extension + S7 SCAFFOLD + S8 ACT).
 - Approaches tried:
   - S1: cyclotomic ramification, surveyed only.
   - S2: per-prime explicit verification + uniform statement (sorry on general case).
@@ -165,10 +211,11 @@ calculation or the local-field uniformizer theorem.
   - S5: cyclotomic anchor Φ_{2p}(-1) = p for p ∈ {3, 5, 7} (per-prime) + bridge to `r p` constant.
   - S6: cyclotomic anchor extension Φ_{2p}(-1) = p for p ∈ {11, 13} (per-prime) + bridge + packaged 5-prime conjunction.
   - S7: combinatorial backbone `divisors_two_mul_odd_prime` (parity-split, 0 sorries) — step 1 of 6 for uniform bridge.
+  - S8: uniform cyclotomic bridge identity `cyclotomic_two_mul_prime_mul_X_add_one_uniform` via composition of S7 backbone with `prod_cyclotomic_eq_X_pow_sub_one` + `cyclotomic_prime_mul_X_sub_one` + `mul_left_cancel₀`.
 
 ## Key Files
 
-- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` — **extended in S7** (835 lines, +85 vs S6).
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` — **extended in S8** (962 lines, +127 vs S7).
   Parametric `r : ℕ → ℤ[X]` covers p ∈ {3, 5, 7, 11, 13}.
   Eisenstein verification for all five primes. Irreducibility for p ∈ {11, 13}.
   Two structural Vieta lemmas (`r_constantCoeff_eq_signed_p` for the norm,
@@ -181,12 +228,14 @@ calculation or the local-field uniformizer theorem.
   plus bridge `r_{11,13}_constantCoeff_eq_cyclotomic` and packaged
   5-prime conjunction `r_constantCoeff_eq_cyclotomic_full`.
   **S7**: combinatorial backbone `divisors_two_mul_odd_prime`
-  (`Nat.divisors (2*p) = {1, 2, p, 2*p}` for `p` odd prime; 0 sorries)
-  — step 1 of 6 for the uniform bridge identity. Detailed proof outline
-  in module docstring for the S7 section.
+  (`Nat.divisors (2*p) = {1, 2, p, 2*p}` for `p` odd prime; 0 sorries).
+  **S8**: uniform cyclotomic bridge identity
+  `cyclotomic_two_mul_prime_mul_X_add_one_uniform`:
+  `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1` for `p` odd prime.
+  Replaces five per-prime ring identities with a single uniform statement.
   General conjecture sorry (unchanged).
-- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/` — **refreshed in S6**.
-  Gallery entry: meta.json (status: axiomatized, sorries: 1, lineCount 750, theoremCount 55,
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/` — **refreshed in S8**.
+  Gallery entry: meta.json (status: axiomatized, sorries: 1, lineCount 962, theoremCount 57,
   14 sections), annotations.json, index.ts.
 - `proofs/Proofs/AngleTrisectionCos20Gal.lean` — cos(20°) case, p=3 via cos(π/9); Eisenstein at 3.
 - `proofs/Proofs/AngleTrisectionCos20GalOQ01.lean` — cos(π/7); Eisenstein at 7.

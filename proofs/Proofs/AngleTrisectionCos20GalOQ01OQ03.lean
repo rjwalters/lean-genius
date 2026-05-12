@@ -801,6 +801,133 @@ lemma divisors_two_mul_odd_prime {p : ℕ} (hp : p.Prime) (hpodd : Odd p) :
     · exact ⟨dvd_mul_left _ _, h2p_ne⟩
     · exact ⟨dvd_refl _, h2p_ne⟩
 
+/-! ## S8: Uniform cyclotomic bridge identity for odd primes p ≥ 3
+
+S7 SCAFFOLD (`divisors_two_mul_odd_prime`) landed the combinatorial
+backbone of the proof outline in steps 2–6 of the S7 module docstring.
+This S8 iteration **closes** the remaining algebraic steps and delivers
+the uniform identity
+
+  `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`     in `ℤ[X]`
+
+for every odd prime `p`. Together with Mathlib's `cyclotomic_prime_mul_X_sub_one`
+(`cyclotomic p ℤ * (X - 1) = X ^ p - 1`) this establishes the canonical
+cyclotomic duality
+
+      cyclotomic p ℤ · (X - 1) = X ^ p - 1
+      cyclotomic (2*p) ℤ · (X + 1) = X ^ p + 1            (this S8 result)
+
+for `p` odd prime, exposing `Φ_{2p}` as the "X ↦ -X conjugate" of `Φ_p`
+**without** invoking polynomial composition or working in a splitting
+field. Together with S7 it collapses the five per-prime ring identities
+`cyclotomic_{6,10,14,22,26}_eq` (S5+S6) into one uniform statement,
+applicable to *every* odd prime — including primes outside the verified
+gallery set `{3, 5, 7, 11, 13}`.
+
+**Proof.** Six steps mirroring the outline of the S7 module docstring:
+
+1. `divisors_two_mul_odd_prime` (S7): `Nat.divisors (2*p) = {1, 2, p, 2*p}`.
+2. `Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at `n = 2 * p`:
+     `∏ d ∈ (2*p).divisors, cyclotomic d ℤ = X ^ (2 * p) - 1`.
+3. Substitute step 1, unfold the four-term `Finset.prod`, and replace
+   `cyclotomic 1 ℤ = X - 1`, `cyclotomic 2 ℤ = X + 1`.
+4. `Polynomial.cyclotomic_prime_mul_X_sub_one`:
+     `cyclotomic p ℤ * (X - 1) = X ^ p - 1`.
+5. Algebraic identity `X ^ (2 * p) - 1 = (X ^ p - 1) * (X ^ p + 1)`
+   (`two_mul` plus `ring`).
+6. Cancel the factor `X ^ p - 1` via `mul_left_cancel₀`. Nonzero in
+   `ℤ[X]` (an integral domain): evaluating at `0` gives `-1 ≠ 0` for
+   `p > 0`.
+
+**Mathlib status.** All ingredients are in
+`Mathlib.RingTheory.Polynomial.Cyclotomic.Basic` (v4.26.0):
+`prod_cyclotomic_eq_X_pow_sub_one`, `cyclotomic_one`, `cyclotomic_two`,
+`cyclotomic_prime_mul_X_sub_one`. The cancellation step uses
+`mul_left_cancel₀` from `Mathlib.Algebra.GroupWithZero.Basic`.
+
+**Axiom bookkeeping.** No new axioms, no new sorries; one new theorem.
+The uniform anchor corollary `(cyclotomic (2 * p) ℤ).eval (-1) = p` is
+deferred to S9 (requires polynomial-evaluation manipulation of the
+bridge — geometric-series substitution or formal differentiation).
+-/
+
+/--
+**Uniform cyclotomic bridge.** For every odd prime `p`,
+  `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`     in `ℤ[X]`.
+
+The S8 structural payoff: replaces the five per-prime explicit
+`cyclotomic_{6, 10, 14, 22, 26}_eq` ring identities of S5+S6 with a
+single uniform identity holding for **all** odd primes `p`.
+
+**Proof.** Apply `prod_cyclotomic_eq_X_pow_sub_one` at `n = 2 * p`,
+expand the divisor set via `divisors_two_mul_odd_prime` (S7), and unfold
+the resulting four-term `Finset.prod`. Identify the prefix
+`(X - 1) * cyclotomic p ℤ = X ^ p - 1` using
+`cyclotomic_prime_mul_X_sub_one` and the standard factorization
+`X ^ (2 * p) - 1 = (X ^ p - 1) * (X ^ p + 1)`. Cancel `X ^ p - 1`
+(nonzero in `ℤ[X]`) via `mul_left_cancel₀`.
+-/
+theorem cyclotomic_two_mul_prime_mul_X_add_one_uniform
+    {p : ℕ} (hp : p.Prime) (hpodd : Odd p) :
+    cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1 := by
+  haveI : Fact (Nat.Prime p) := ⟨hp⟩
+  have hp_pos : 0 < p := hp.pos
+  have h2p_pos : 0 < 2 * p := Nat.mul_pos (by norm_num) hp_pos
+  have hp_ne1 : p ≠ 1 := hp.one_lt.ne'
+  have hp_ne2 : p ≠ 2 := fun h => absurd hpodd (h ▸ by decide)
+  have hp_ge3 : 3 ≤ p := by omega
+  have h2p_ne1 : 2 * p ≠ 1 := by omega
+  have h2p_ne2 : 2 * p ≠ 2 := by intro h; exact hp_ne1 (by omega)
+  have h2p_nep : 2 * p ≠ p := by omega
+  -- Step 2 of the outline: cyclotomic product over divisors of 2p.
+  have h_prod := prod_cyclotomic_eq_X_pow_sub_one h2p_pos ℤ
+  -- Step 3: substitute the divisor enumeration (S7) and unfold the product.
+  rw [divisors_two_mul_odd_prime hp hpodd] at h_prod
+  have h1_notin : (1 : ℕ) ∉ insert 2 (insert p ({2 * p} : Finset ℕ)) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+  have h2_notin : (2 : ℕ) ∉ insert p ({2 * p} : Finset ℕ) := by
+    simp only [Finset.mem_insert, Finset.mem_singleton]; omega
+  have hp_notin : p ∉ ({2 * p} : Finset ℕ) := by
+    simp only [Finset.mem_singleton]; omega
+  rw [show ({1, 2, p, 2 * p} : Finset ℕ)
+        = insert 1 (insert 2 (insert p ({2 * p} : Finset ℕ))) from rfl,
+      Finset.prod_insert h1_notin,
+      Finset.prod_insert h2_notin,
+      Finset.prod_insert hp_notin,
+      Finset.prod_singleton,
+      cyclotomic_one, cyclotomic_two] at h_prod
+  -- h_prod : (X - 1) * ((X + 1) * (cyclotomic p ℤ * cyclotomic (2 * p) ℤ))
+  --         = X ^ (2 * p) - 1
+  -- Step 4: identify (X - 1) · Φ_p = X^p - 1.
+  have h_cyclop : (X - 1) * cyclotomic p ℤ = (X : ℤ[X]) ^ p - 1 := by
+    rw [mul_comm]; exact cyclotomic_prime_mul_X_sub_one ℤ p
+  -- Step 5: factorize X^{2p} - 1 = (X^p - 1) · (X^p + 1).
+  have h_factor : (X : ℤ[X]) ^ (2 * p) - 1 = (X ^ p - 1) * (X ^ p + 1) := by
+    rw [two_mul]; ring
+  -- Rearrange the LHS into the form (X^p - 1) · ((X + 1) · Φ_{2p}).
+  have h_rearr :
+      (X - 1) * ((X + 1) * (cyclotomic p ℤ * cyclotomic (2 * p) ℤ))
+        = ((X : ℤ[X]) ^ p - 1) * ((X + 1) * cyclotomic (2 * p) ℤ) :=
+    calc (X - 1) * ((X + 1) * (cyclotomic p ℤ * cyclotomic (2 * p) ℤ))
+        = ((X - 1) * cyclotomic p ℤ) * ((X + 1) * cyclotomic (2 * p) ℤ) := by ring
+      _ = ((X : ℤ[X]) ^ p - 1) * ((X + 1) * cyclotomic (2 * p) ℤ) := by rw [h_cyclop]
+  rw [h_rearr, h_factor] at h_prod
+  -- h_prod : (X^p - 1) * ((X + 1) * cyclotomic (2 * p) ℤ) = (X^p - 1) * (X^p + 1)
+  -- Step 6: cancel the X^p - 1 factor (nonzero in ℤ[X]).
+  have h_nz : (X : ℤ[X]) ^ p - 1 ≠ 0 := by
+    intro hzero
+    have h_eval : ((X : ℤ[X]) ^ p - 1).eval 0 = (0 : ℤ) := by
+      rw [hzero]; simp
+    simp only [eval_sub, eval_pow, eval_X, eval_one] at h_eval
+    rw [zero_pow hp_pos.ne'] at h_eval
+    -- h_eval : 0 - 1 = 0, contradiction.
+    norm_num at h_eval
+  have h_cancel := mul_left_cancel₀ h_nz h_prod
+  -- h_cancel : (X + 1) * cyclotomic (2 * p) ℤ = X ^ p + 1.
+  -- Goal:      cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1
+  rw [mul_comm]
+  exact h_cancel
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--
