@@ -144,4 +144,304 @@ theorem bracketing_simultaneous_pointwise [IsProbabilityMeasure μ]
   intro j
   exact empiricalCDF_pointwise_convergence hX_meas hX_iid hX_ident (q j)
 
+-- ============================================================================
+-- §2.4: Uniform sup-bound from grid + simultaneous pointwise convergence
+-- ============================================================================
+
+/-! ### Helpers: trivial upper bounds on the empirical and true CDF
+
+Both `empiricalCDF` and `trueCDF` take values in `[0, 1]`. The lower bounds
+`empiricalCDF_nonneg`, `trueCDF_nonneg` are already in the parent file. The
+upper bounds are routine but were not previously needed; the §2.4 uniform
+bound uses them in the boundary (left tail / right tail) cases. -/
+
+private lemma empiricalCDF_le_one (X : ℕ → Ω → ℝ) (n : ℕ) (x : ℝ) (ω : Ω) :
+    empiricalCDF X n x ω ≤ 1 := by
+  simp only [empiricalCDF]
+  rcases Nat.eq_zero_or_pos n with hn0 | hn
+  · subst hn0; simp
+  · have hn' : (0 : ℝ) < n := by exact_mod_cast hn
+    have hsum_le : ∑ i ∈ Finset.range n,
+        Set.indicator (Set.Iic x) (fun _ => (1 : ℝ)) (X i ω) ≤ (n : ℝ) := by
+      calc ∑ i ∈ Finset.range n,
+              Set.indicator (Set.Iic x) (fun _ => (1 : ℝ)) (X i ω)
+          ≤ ∑ _i ∈ Finset.range n, (1 : ℝ) := by
+            apply Finset.sum_le_sum
+            intro i _
+            simp only [Set.indicator]
+            split_ifs <;> norm_num
+        _ = (n : ℝ) := by simp
+    have : (1 / (n : ℝ)) * ∑ i ∈ Finset.range n,
+        Set.indicator (Set.Iic x) (fun _ => (1 : ℝ)) (X i ω) ≤ (1 / (n : ℝ)) * n := by
+      apply mul_le_mul_of_nonneg_left hsum_le
+      positivity
+    calc (1 / (n : ℝ)) * ∑ i ∈ Finset.range n,
+            Set.indicator (Set.Iic x) (fun _ => (1 : ℝ)) (X i ω)
+        ≤ (1 / (n : ℝ)) * (n : ℝ) := this
+      _ = 1 := by rw [one_div, inv_mul_cancel₀ hn'.ne']
+
+private lemma trueCDF_le_one [IsProbabilityMeasure μ] (X : ℕ → Ω → ℝ) (x : ℝ) :
+    trueCDF X μ x ≤ 1 := by
+  simp only [trueCDF]
+  have h : μ {ω | X 0 ω ≤ x} ≤ μ Set.univ := measure_mono (Set.subset_univ _)
+  rw [measure_univ] at h
+  have h1 : (μ {ω | X 0 ω ≤ x}).toReal ≤ (1 : ENNReal).toReal :=
+    ENNReal.toReal_mono ENNReal.one_ne_top h
+  simpa using h1
+
+/-! ### Cell-finding helper: locate `x` in a grid
+
+Given a strictly increasing grid `q : Fin (k+2) → ℝ`, any `x` with
+`q 0 ≤ x < q (Fin.last (k+1))` lies in a unique grid cell `[q.castSucc, q.succ)`
+indexed by some `j : Fin (k+1)`. This is the elementary trichotomy that the
+§2.4 case split uses for the deterministic uniform bound. -/
+
+private lemma find_cell {k : ℕ} (q : Fin (k + 2) → ℝ) (_hq : StrictMono q)
+    {x : ℝ} (h0 : q 0 ≤ x) (hk : x < q (Fin.last (k + 1))) :
+    ∃ j : Fin (k + 1), q j.castSucc ≤ x ∧ x < q j.succ := by
+  classical
+  let s : Finset (Fin (k + 2)) := Finset.univ.filter (fun j => q j ≤ x)
+  have hne : s.Nonempty := ⟨0, Finset.mem_filter.mpr ⟨Finset.mem_univ _, h0⟩⟩
+  set jmax := s.max' hne with hjmax_def
+  have hjmax_mem : jmax ∈ s := s.max'_mem hne
+  have hjmax_le : q jmax ≤ x := (Finset.mem_filter.mp hjmax_mem).2
+  have hjmax_ne_last : jmax ≠ Fin.last (k + 1) := by
+    intro h
+    rw [h] at hjmax_le
+    linarith
+  have hjmax_val_lt : jmax.val < k + 1 := by
+    have h_le : jmax.val ≤ k + 1 := Nat.lt_succ_iff.mp jmax.isLt
+    have h_ne : jmax.val ≠ k + 1 := fun heq => hjmax_ne_last (Fin.ext (by simp [heq]))
+    omega
+  refine ⟨⟨jmax.val, hjmax_val_lt⟩, ?_, ?_⟩
+  · -- `castSucc` preserves the underlying value, so the cell's left endpoint
+    -- is exactly `q jmax`, which is `≤ x` by maximality membership.
+    have hcs : (⟨jmax.val, hjmax_val_lt⟩ : Fin (k + 1)).castSucc = jmax :=
+      Fin.ext rfl
+    rw [hcs]
+    exact hjmax_le
+  · -- The right endpoint `q jmax.succ` must exceed `x`, else `jmax.succ` would
+    -- belong to `s`, contradicting the maximality of `jmax`.
+    by_contra h
+    push_neg at h
+    have hsucc_in_s : (⟨jmax.val, hjmax_val_lt⟩ : Fin (k + 1)).succ ∈ s :=
+      Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩
+    have h_le : (⟨jmax.val, hjmax_val_lt⟩ : Fin (k + 1)).succ ≤ jmax :=
+      s.le_max' _ hsucc_in_s
+    have h_succ_val : ((⟨jmax.val, hjmax_val_lt⟩ : Fin (k + 1)).succ).val
+        = jmax.val + 1 := rfl
+    have h_le_val : ((⟨jmax.val, hjmax_val_lt⟩ : Fin (k + 1)).succ).val ≤ jmax.val := h_le
+    rw [h_succ_val] at h_le_val
+    omega
+
+/-! ### Per-`x` deterministic bound
+
+The core deterministic inequality: for any `x : ℝ`, the pointwise error
+`|Fₙ(x) − F(x)|` is bounded by the finite maximum of the grid-point errors
+plus `2ε`. The three cases — left tail, right tail, and an interior cell —
+follow the spec's §2.4 step-by-step reasoning verbatim. No probability or
+limits are used; this is a clean monotone-interpolation argument relying on
+the parent file's `empiricalCDF_mono` / `trueCDF_mono` and the boundary
+inequalities `left_le` / `right_ge` from the `BracketingGrid` structure. -/
+
+private lemma bracketing_pointwise_bound [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} {ε : ℝ} (_hε : 0 < ε)
+    (G : BracketingGrid (trueCDF X μ) ε)
+    (n : ℕ) (ω : Ω) (x : ℝ) :
+    |empiricalCDF X n x ω - trueCDF X μ x| ≤
+      (Finset.univ.sup' Finset.univ_nonempty
+        (fun j : Fin (G.k + 2) => |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|))
+      + 2 * ε := by
+  set F : ℝ → ℝ := trueCDF X μ with hF_def
+  set Fn : ℝ → ℝ := fun y => empiricalCDF X n y ω with hFn_def
+  set M : ℝ := Finset.univ.sup' Finset.univ_nonempty
+    (fun j : Fin (G.k + 2) => |Fn (G.q j) - F (G.q j)|) with hM_def
+  -- Bound at any specific grid point: `|Fn(q j) - F(q j)| ≤ M`.
+  have hM_at : ∀ j : Fin (G.k + 2), |Fn (G.q j) - F (G.q j)| ≤ M := by
+    intro j
+    exact Finset.le_sup'
+      (f := fun j : Fin (G.k + 2) => |Fn (G.q j) - F (G.q j)|)
+      (Finset.mem_univ j)
+  by_cases hA : x < G.q 0
+  · -- Case A: x in the left tail
+    have hFnx_nn : 0 ≤ Fn x := empiricalCDF_nonneg X n x ω
+    have hFx_nn : 0 ≤ F x := trueCDF_nonneg X x
+    have hFnx_le : Fn x ≤ Fn (G.q 0) := empiricalCDF_mono X n ω hA.le
+    have hFx_le : F x ≤ F (G.q 0) := trueCDF_mono X hA.le
+    have hF0_le_ε : F (G.q 0) ≤ ε := G.left_le
+    have hM0 : |Fn (G.q 0) - F (G.q 0)| ≤ M := hM_at 0
+    -- F(q 0) - Fn(q 0) ≤ |Fn(q 0) - F(q 0)| ≤ M (use abs_sub_comm-equivalent).
+    have hFmnFn : F (G.q 0) - Fn (G.q 0) ≤ M := by
+      have h1 : F (G.q 0) - Fn (G.q 0) = -(Fn (G.q 0) - F (G.q 0)) := by ring
+      rw [h1]
+      have := neg_abs_le (Fn (G.q 0) - F (G.q 0))
+      linarith
+    have hFnmF : Fn (G.q 0) - F (G.q 0) ≤ M := by
+      have := le_abs_self (Fn (G.q 0) - F (G.q 0))
+      linarith
+    rw [abs_le]
+    refine ⟨?_, ?_⟩
+    · -- -(M + 2ε) ≤ Fn x - F x
+      have : F x - Fn x ≤ M + 2 * ε := by
+        calc F x - Fn x ≤ F x := by linarith
+          _ ≤ ε := by linarith
+          _ ≤ M + 2 * ε := by
+              have hM_nn : 0 ≤ M := by
+                have := abs_nonneg (Fn (G.q 0) - F (G.q 0))
+                linarith
+              linarith
+      linarith
+    · -- Fn x - F x ≤ M + 2ε
+      calc Fn x - F x ≤ Fn x := by linarith
+        _ ≤ Fn (G.q 0) := hFnx_le
+        _ = (Fn (G.q 0) - F (G.q 0)) + F (G.q 0) := by ring
+        _ ≤ M + ε := by linarith
+        _ ≤ M + 2 * ε := by linarith
+  · push_neg at hA  -- hA : G.q 0 ≤ x
+    by_cases hB : x < G.q (Fin.last (G.k + 1))
+    · -- Case C: interior cell
+      obtain ⟨j, hj_lower, hj_upper⟩ := find_cell G.q G.mono hA hB
+      have hFnx_lower : Fn (G.q j.castSucc) ≤ Fn x := empiricalCDF_mono X n ω hj_lower
+      have hFnx_upper : Fn x ≤ Fn (G.q j.succ) := empiricalCDF_mono X n ω hj_upper.le
+      have hFx_lower : F (G.q j.castSucc) ≤ F x := trueCDF_mono X hj_lower
+      have hFx_upper : F x ≤ F (G.q j.succ) := trueCDF_mono X hj_upper.le
+      have hStep : F (G.q j.succ) - F (G.q j.castSucc) ≤ ε := G.step_le j
+      have hM_succ : |Fn (G.q j.succ) - F (G.q j.succ)| ≤ M := hM_at j.succ
+      have hM_cast : |Fn (G.q j.castSucc) - F (G.q j.castSucc)| ≤ M := hM_at j.castSucc
+      have hFnmF_succ : Fn (G.q j.succ) - F (G.q j.succ) ≤ M :=
+        le_trans (le_abs_self _) hM_succ
+      have hFmnFn_cast : F (G.q j.castSucc) - Fn (G.q j.castSucc) ≤ M := by
+        have h := neg_abs_le (Fn (G.q j.castSucc) - F (G.q j.castSucc))
+        linarith
+      rw [abs_le]
+      refine ⟨?_, ?_⟩
+      · -- -(M + 2ε) ≤ Fn x - F x; equivalently, F x - Fn x ≤ M + 2ε.
+        have : F x - Fn x ≤ M + 2 * ε := by
+          calc F x - Fn x
+              ≤ F (G.q j.succ) - Fn (G.q j.castSucc) := by linarith
+            _ = (F (G.q j.castSucc) - Fn (G.q j.castSucc))
+                  + (F (G.q j.succ) - F (G.q j.castSucc)) := by ring
+            _ ≤ M + ε := by linarith
+            _ ≤ M + 2 * ε := by linarith
+        linarith
+      · -- Fn x - F x ≤ M + 2ε
+        calc Fn x - F x
+            ≤ Fn (G.q j.succ) - F (G.q j.castSucc) := by linarith
+          _ = (Fn (G.q j.succ) - F (G.q j.succ))
+                + (F (G.q j.succ) - F (G.q j.castSucc)) := by ring
+          _ ≤ M + ε := by linarith
+          _ ≤ M + 2 * ε := by linarith
+    · -- Case B: right tail, x ≥ G.q (Fin.last)
+      push_neg at hB  -- hB : G.q (Fin.last (G.k + 1)) ≤ x
+      have hFnx_lower : Fn (G.q (Fin.last (G.k + 1))) ≤ Fn x :=
+        empiricalCDF_mono X n ω hB
+      have hFx_lower : F (G.q (Fin.last (G.k + 1))) ≤ F x := trueCDF_mono X hB
+      have hFnx_le_one : Fn x ≤ 1 := empiricalCDF_le_one X n x ω
+      have hFx_le_one : F x ≤ 1 := trueCDF_le_one X x
+      have hFlast_ge : F (G.q (Fin.last (G.k + 1))) ≥ 1 - ε := G.right_ge
+      have hM_last : |Fn (G.q (Fin.last (G.k + 1))) - F (G.q (Fin.last (G.k + 1)))| ≤ M :=
+        hM_at (Fin.last (G.k + 1))
+      have hFmnFn_last : F (G.q (Fin.last (G.k + 1))) - Fn (G.q (Fin.last (G.k + 1))) ≤ M := by
+        have h := neg_abs_le
+          (Fn (G.q (Fin.last (G.k + 1))) - F (G.q (Fin.last (G.k + 1))))
+        linarith
+      have hFnmF_last : Fn (G.q (Fin.last (G.k + 1))) - F (G.q (Fin.last (G.k + 1))) ≤ M :=
+        le_trans (le_abs_self _) hM_last
+      have hM_nn : 0 ≤ M := by
+        have := abs_nonneg
+          (Fn (G.q (Fin.last (G.k + 1))) - F (G.q (Fin.last (G.k + 1))))
+        linarith
+      rw [abs_le]
+      refine ⟨?_, ?_⟩
+      · -- -(M + 2ε) ≤ Fn x - F x; equivalently, F x - Fn x ≤ M + 2ε.
+        have : F x - Fn x ≤ M + 2 * ε := by
+          calc F x - Fn x
+              ≤ 1 - Fn x := by linarith
+            _ ≤ 1 - Fn (G.q (Fin.last (G.k + 1))) := by linarith
+            _ = (1 - F (G.q (Fin.last (G.k + 1))))
+                  + (F (G.q (Fin.last (G.k + 1))) - Fn (G.q (Fin.last (G.k + 1)))) := by ring
+            _ ≤ ε + M := by linarith
+            _ ≤ M + 2 * ε := by linarith
+        linarith
+      · -- Fn x - F x ≤ M + 2ε
+        calc Fn x - F x
+            ≤ 1 - F x := by linarith
+          _ ≤ 1 - F (G.q (Fin.last (G.k + 1))) := by linarith
+          _ ≤ ε := by linarith
+          _ ≤ M + 2 * ε := by linarith
+
+/-! ### Deterministic uniform sup-bound
+
+`bracketing_uniform_sup_bound`: a probability-free, limit-free statement.
+For any sample `ω` and any `n`, the `⨆` over `x : ℝ` of `|Fₙ(x, ω) - F(x)|` is
+bounded by the finite maximum of grid-point errors plus `2ε`. This is the
+clean target of §2.4 in the bracketing spec; pairing it with the limit
+hypothesis on grid-point convergence (next theorem) yields the
+`asymptotic 2ε` statement informally written in
+`bracketing-decomposition-draft.md` §2.4. -/
+
+theorem bracketing_uniform_sup_bound [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} {ε : ℝ} (hε : 0 < ε)
+    (G : BracketingGrid (trueCDF X μ) ε)
+    (n : ℕ) (ω : Ω) :
+    (⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x|) ≤
+      (Finset.univ.sup' Finset.univ_nonempty
+        (fun j : Fin (G.k + 2) => |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|))
+      + 2 * ε := by
+  apply ciSup_le
+  intro x
+  exact bracketing_pointwise_bound hε G n ω x
+
+/-! ### §2.4 limit form: eventually `≤ 2ε + η`
+
+Combined statement matching `bracketing-decomposition-draft.md` §2.4. Given
+the simultaneous pointwise convergence hypothesis `hpw`, for every slack
+`η > 0`, eventually the sup-error of `Fₙ(·, ω)` against `F` is at most
+`2ε + η`. This is the precise (well-typed) Lean form of the spec's informal
+`Tendsto … (nhds_le_of (· ≤ 2 * ε))` notation: each `|Fₙ(qⱼ) − F(qⱼ)|` is
+eventually `< η`, so their finite maximum is eventually `≤ η`, and the
+deterministic bound `bracketing_uniform_sup_bound` lifts this to the `iSup`. -/
+
+theorem bracketing_uniform_from_grid [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} {ε : ℝ} (hε : 0 < ε)
+    (G : BracketingGrid (trueCDF X μ) ε)
+    {ω : Ω}
+    (hpw : ∀ j : Fin (G.k + 2),
+        Filter.Tendsto (fun n => empiricalCDF X n (G.q j) ω)
+          Filter.atTop (nhds (trueCDF X μ (G.q j)))) :
+    ∀ η : ℝ, 0 < η → ∀ᶠ n in Filter.atTop,
+      (⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x|) ≤ 2 * ε + η := by
+  intro η hη
+  -- For each grid index `j`, eventually `|Fₙ(qⱼ) − F(qⱼ)| ≤ η`.
+  have h_each : ∀ j : Fin (G.k + 2), ∀ᶠ n in Filter.atTop,
+      |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)| ≤ η := by
+    intro j
+    have h_dist : ∀ᶠ n in Filter.atTop,
+        dist (empiricalCDF X n (G.q j) ω) (trueCDF X μ (G.q j)) < η :=
+      (Metric.tendsto_nhds.mp (hpw j)) η hη
+    filter_upwards [h_dist] with n hn
+    have := hn
+    rw [Real.dist_eq] at this
+    linarith [this]
+  -- Combine over the finite index set `Fin (G.k + 2)` via `Filter.eventually_all`.
+  have h_combined : ∀ᶠ n in Filter.atTop, ∀ j : Fin (G.k + 2),
+      |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)| ≤ η := by
+    rw [Filter.eventually_all]
+    exact h_each
+  filter_upwards [h_combined] with n hn
+  -- Bound the finite sup' by `η`.
+  have hM_le : (Finset.univ.sup' Finset.univ_nonempty
+        (fun j : Fin (G.k + 2) => |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|))
+      ≤ η := by
+    apply Finset.sup'_le
+    intro j _
+    exact hn j
+  -- Chain with the deterministic bound.
+  calc (⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x|)
+      ≤ (Finset.univ.sup' Finset.univ_nonempty
+          (fun j : Fin (G.k + 2) => |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|))
+        + 2 * ε := bracketing_uniform_sup_bound hε G n ω
+    _ ≤ η + 2 * ε := by linarith
+    _ = 2 * ε + η := by ring
+
 end GlivenkoCantelli
