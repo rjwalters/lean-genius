@@ -35,12 +35,13 @@
     "title": "n=0 Specialization: Cauchy Tangent-Line Bound",
     "content": "The theorem `analytic_remainder_zero_bound` derives the n=0 specialization of the OQ-04 axiom: for f real-analytic on (a-R, a+R) with sup bound M and 0 < r < R, |f(x) - f(a)| ≤ M·r / (R-r) for x ∈ [a-r, a+r]. The proof is a three-line one-shot: instantiate the axiom at n=0, rewrite using `MeanValueTheoremOQ02.taylorPolynomial_zero` (which says T_0 = f(a)), and apply `simpa` to clear r^(0+1) = r.",
     "mathContext": "At $n = 0$: $T_0 f(a)(x) = f(a)$, so the OQ-04 bound becomes $|f(x) - f(a)| \\le M \\cdot r / (R - r)$. This is the analytic-function strengthening of the ordinary MVT Lipschitz bound $|f(x) - f(a)| \\le \\sup |f'| \\cdot |x - a|$: the right-hand side now depends only on the sup bound $M$ of $f$ itself (not its derivative) and the geometric shrinkage factor $r / (R - r)$.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": [
       "taylorPolynomial_zero",
       "MVT",
       "Lipschitz bound",
-      "Cauchy bound"
+      "Cauchy bound",
+      "tangent-line approximation"
     ],
     "prerequisites": [
       "MeanValueTheoremOQ02.taylorPolynomial_zero",

@@ -63,9 +63,62 @@
       "**Cauchy's bound is uniform; Lagrange's is pointwise**: The parent OQ-02 entry's `taylor_lagrange_remainder` axiom gives an *existential* statement (∃ c ∈ (a,b), error = f^(n+1)(c)/(n+1)! · (b-a)^(n+1)) at a single point. This OQ-04 entry strengthens that to a *uniform* bound over $[a-r, a+r]$, with the right-hand side independent of $x$—essential for series convergence, error envelope analysis, and uniform polynomial approximation.",
       "**Dependence on $M$, not derivatives**: The Lagrange remainder bound depends on $f^{(n+1)}(c)$ at some intermediate point $c$, requiring control of $(n+1)$-st derivatives. Cauchy's bound depends only on $M = \\sup |f|$ on a *larger* ball of radius $R > r$. This trades higher derivative control for a margin in the ball radius (the gap $R - r$), reflecting how Cauchy's bounds extract derivative information from the analytic-function holomorphicity-on-the-disk hypothesis.",
       "**Geometric tail factor $r/(R-r)$**: The bound is $M \\cdot r^{n+1} / (R - r)$, geometric in $n$ when $r < R$. As $r \\downarrow 0$, the bound vanishes; as $r \\uparrow R$, it blows up. This $r/(R-r)$ shape is characteristic of analytic-function Taylor convergence and recurs in the analysis of Padé approximants, Tchebyshev polynomials, and complex polynomial interpolation.",
-      "**Connecting to qualitative `taylor_remainder_tendsto_zero`**: The sibling entry `taylor-theorem-oq-02` proves that for analytic functions, the Taylor remainder vanishes ($R_n(x) \\to 0$ as $n \\to \\infty$). This OQ-04 entry's bound is the *rate* of that convergence: $r^{n+1} \\to 0$ exponentially when $r < R$, which makes the convergence in the sibling entry's `tendsto` explicitly *geometric*."
+      "**Connecting to qualitative `taylor_remainder_tendsto_zero`**: The sibling entry `taylor-theorem-oq-02` proves that for analytic functions, the Taylor remainder vanishes ($R_n(x) \\to 0$ as $n \\to \\infty$). This OQ-04 entry's bound is the *rate* of that convergence: $r^{n+1} \\to 0$ exponentially when $r < R$, which makes the convergence in the sibling entry's `tendsto` explicitly *geometric*.",
+      "**The real-line vs. complex-disk asymmetry**: Cauchy's bound is genuinely a *complex-analytic* statement — it follows from the contour integral $f^{(k)}(a) = \\frac{k!}{2\\pi i}\\oint_{|z-a|=R} \\frac{f(z)}{(z-a)^{k+1}}\\,dz$, which requires $f$ to extend holomorphically to a complex disk of radius $R$. The real-line formulation in this file is the *consequence* of complex analyticity restricted to $\\mathbb{R}$. Mathlib's `AnalyticOn ℝ` predicate hides this passage to the complex world (via `RestrictScalars` and `Complex.analytic_iff_locally_real_analytic`), but the proof discharge in S2 will likely need to lift to the complex plane to access Cauchy's integral formula machinery — a structural cost not visible at the statement level."
+    ],
+    "prerequisites": [
+      "Real-analytic functions and power series convergence",
+      "Cauchy's integral formula and Cauchy's coefficient estimates (complex analysis)",
+      "Taylor polynomial: $T_n f(a)(x) = \\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!}(x-a)^k$",
+      "Geometric series convergence and tail bounds",
+      "Mathlib `AnalyticOn ℝ` and `HasFPowerSeriesOnBall` API",
+      "The parent file `MeanValueTheoremOQ02.taylorPolynomial` definition (reused here)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "analytic_taylor_remainder_uniform_bound",
+      "type": "axiom",
+      "description": "Cauchy uniform bound on the analytic Taylor remainder (OQ-04 statement, axiomatized verbatim). For f real-analytic on the open interval (a-R, a+R) with uniform sup bound |f y| ≤ M, and any 0 < r < R, the Taylor remainder at order n satisfies |f(x) - taylorPolynomial f a n x| ≤ M·r^(n+1) / (R-r) uniformly for x ∈ [a-r, a+r] and any n ∈ ℕ. Future iterations will discharge this via Mathlib's HasFPowerSeriesOnBall + Cauchy coefficient estimates + geometric tail."
+    },
+    {
+      "name": "analytic_remainder_zero_bound",
+      "type": "theorem",
+      "description": "n=0 specialization of the OQ-04 axiom: |f(x) - f(a)| ≤ M·r/(R-r) for x ∈ [a-r, a+r] when f is analytic on (a-R, a+R) with sup bound M. Three-line proof: instantiate the axiom at n=0, rewrite using MeanValueTheoremOQ02.taylorPolynomial_zero (T_0 = f(a)), simpa to clear r^(0+1) = r."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Cauchy, A.-L. (1823). \"Résumé des leçons données à l'École royale polytechnique sur le calcul infinitésimal, Tome premier.\" Imprimerie royale, Paris.",
+      "relevance": "Original source of Cauchy's integral form of the Taylor remainder and the coefficient estimates |a_k| ≤ M/R^k that underlie the uniform remainder bound axiomatized in this file. The geometric-tail bound R_n(x) = O((r/R)^(n+1)) is derived directly from these estimates."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Lagrange, J.-L. (1797). \"Théorie des fonctions analytiques.\" Imprimerie de la République, Paris.",
+      "relevance": "Original source of the Lagrange form of the Taylor remainder (used in the parent entry mean-value-theorem-oq-02). The Lagrange remainder is pointwise existential (some intermediate c), contrasted in this OQ-04 entry with Cauchy's uniform analytic bound."
+    },
+    {
+      "type": "textbook",
+      "citation": "Ahlfors, L.V. (1979). \"Complex Analysis,\" 3rd ed. McGraw-Hill. §2.3 (Cauchy's integral formula) and §5.1 (Power series).",
+      "relevance": "Standard modern treatment of Cauchy's integral formula and the coefficient estimates that prove the OQ-04 bound. The textbook's derivation of the geometric tail estimate is essentially the S2 discharge strategy for the axiom in this file."
+    },
+    {
+      "type": "textbook",
+      "citation": "Rudin, W. (1976). \"Principles of Mathematical Analysis,\" 3rd ed. McGraw-Hill. §8.4 (Taylor's theorem) and Chapter 10 (Functions of several variables).",
+      "relevance": "Standard real-analysis treatment of Taylor's theorem with both Lagrange and integral remainder forms. Useful for connecting the real-line OQ-04 statement to the broader real-analysis context."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.Analytic.Basic\" — `AnalyticOn`, `HasFPowerSeriesOnBall`, `FormalMultilinearSeries`. (accessed 2026)",
+      "relevance": "The Mathlib API on which the S2 axiom discharge will be built: AnalyticOn ℝ is the hypothesis, HasFPowerSeriesOnBall + Cauchy coefficient bounds + tsum_geometric_of_lt_one are the discharge tools."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Proofs.MeanValueTheoremOQ02\" — `taylorPolynomial`, `taylorPolynomial_zero`. (this repository, accessed 2026)",
+      "relevance": "The parent gallery file's Taylor polynomial definition and n=0 specialization lemma, both reused directly in this OQ-04 entry. Reuse keeps the gallery's algebraic notation consistent and avoids duplicate definitions."
+    }
+  ],
   "sections": [
     {
       "id": "axiom",
