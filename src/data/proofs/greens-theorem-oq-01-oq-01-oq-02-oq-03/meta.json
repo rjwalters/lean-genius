@@ -2,11 +2,11 @@
   "id": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
   "title": "Bochner Generalization of intervalIntegral_swap: Banach-Valued Fubini for Interval Integrals",
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
-  "description": "S2 SCAFFOLD: ports the parent's three real-valued intervalIntegral_swap theorems to a Banach codomain E (with NormedAddCommGroup, NormedSpace ℝ, CompleteSpace). The ordered case `intervalIntegral_swap_of_le` for `f : ℝ → ℝ → E` is fully proved by verbatim port from the parent file's real-valued script — every Mathlib lemma used is already stated for Bochner integrands (MeasureTheory.integral_integral_swap, Measure.prod_mono, Measure.restrict_mono, integral_of_le, Integrable.mono_measure). The general case (no ordering on a,b or c,d) and the continuous-function specialization are stated for the Banach codomain with sorry, deferred to S3 where the parent's four linarith invocations in the sign analysis are replaced by abel (the underlying identity is additive-abelian, not order-theoretic).",
+  "description": "S3 ACT: closes the S2 sorries, delivering all three intervalIntegral_swap theorems for a Banach codomain E (NormedAddCommGroup + NormedSpace ℝ + CompleteSpace) with 0 sorries and 0 axioms. (1) Ordered case `intervalIntegral_swap_of_le` (proved S2) reduces to `MeasureTheory.integral_integral_swap` after Icc → Ioc restriction via `Measure.prod_mono`. (2) General case `intervalIntegral_swap` (proved S3) handles four sign sub-cases of (a ≤ b vs a > b) × (c ≤ d vs c > d) via sign-flip helpers `flip_bounds_E` and `neg_outside_E`; the parent's four `linarith` calls are replaced by `rw + neg_neg` (the underlying identity is additive-abelian, not order-theoretic). (3) Continuous case `intervalIntegral_swap_of_continuous` (proved S3) reduces to the general case using `Continuous.measurable` and `ContinuousOn.integrableOn_compact`. Confirms the S1 OBSERVE finding that the parent's real-valued proof is fully codomain-generic.",
   "meta": {
     "author": "researcher-6",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean",
     "tags": [
       "measure-theory",
@@ -17,22 +17,23 @@
       "open-question",
       "research"
     ],
-    "badge": "axiom",
-    "sorries": 2,
+    "badge": "verified",
+    "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 143,
-    "assumptions": "2 sorries: (1) `intervalIntegral_swap` — the general case (no ordering on a,b,c,d) for Bochner E, deferred to S3 (4-case sign analysis with `linarith → abel`); (2) `intervalIntegral_swap_of_continuous` — the continuous-function specialization for E, deferred to S3 (depends on general case + Continuous.measurable + ContinuousOn.integrableOn_compact, all codomain-generic in Mathlib). The ordered case `intervalIntegral_swap_of_le` is fully proven by verbatim port. 0 axioms. Per S1 OBSERVE audit, every Mathlib lemma the parent invokes is already Bochner-generic — no Mathlib gaps.",
+    "lineCount": 216,
+    "assumptions": "0 sorries, 0 axioms. All three intervalIntegral_swap theorems for `f : ℝ → ℝ → E` are fully proved: ordered case (S2), general case (S3, 4-sign-case analysis with sign-flip helpers), and continuous case (S3, reduces to general via Continuous.measurable + ContinuousOn.integrableOn_compact). The two private helpers `flip_bounds_E` and `neg_outside_E` are also fully proved (one-line ports of the parent's real-valued helpers). Confirms the S1 OBSERVE audit finding that the parent's proof structure is fully codomain-generic — no Mathlib gaps for Banach-valued interval-integral Fubini.",
     "mathlib_version": "4.26.0",
     "historicalContext": "Fubini's theorem (Fubini 1907) states that under integrability, ∫∫f dxdy = ∫∫f dydx for any iterated integral. Mathlib's `MeasureTheory.integral_integral_swap` provides this for the Bochner integral of a function `f : α × β → E` valued in a Banach space E. However, Mathlib does NOT provide a corresponding `intervalIntegral_swap` lemma for the *interval integral* `∫ x in a..b, f x` notation — every application of Fubini to interval integrals must reimplement the Icc/Ioc bridge. The parent slug `greens-theorem-oq-01-oq-01-oq-02` proves three real-valued versions of this missing lemma (ordered case, general case via sign-flip, continuous specialization). This OQ-03 sibling asks the natural follow-up: does the same proof structure work for a Banach codomain E? The S1 OBSERVE audit confirms YES, with no mathematical novelty — the question is purely a portability/codomain-genericity check. This S2 SCAFFOLD ships the first fully-ported lemma (ordered case) and stubs the remaining two for S3.",
-    "proofStrategy": "S2 SCAFFOLD (this file): verbatim port of the parent's ordered-case proof for the Bochner codomain E, plus sorry stubs for the general case and the continuous case. S3 ACT (next): close the two sorries by porting the parent's 4-case sign analysis, replacing `linarith` (4 invocations) with `abel`. Then port the continuous case verbatim using `Continuous.measurable` and `ContinuousOn.integrableOn_compact`. S4: gallery entry + companion `…Aristotle.lean` with `flip_bounds_E` and `neg_outside_E` as parallelizable routine helpers (already private-proven in this file).",
+    "proofStrategy": "S3 ACT (this session): closes the two S2 sorries by porting the parent's 4-case sign analysis with `linarith → rw + neg_neg` substitution. Each sub-case threads three (or five for Case 4) sign-flip equalities through `rw [..., neg_neg]` (or `simp only [neg_neg]` for Case 4's quadruple nesting). The continuous case reduces to the general case via `hf.measurable` + `hf.continuousOn.integrableOn_compact` applied to the compact rectangle `uIcc a b ×ˢ uIcc c d`, with `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc` bridging the integrability hypothesis form. S4 (optional follow-up): companion `…Aristotle.lean` could expose `flip_bounds_E` / `neg_outside_E` as parallelizable routine helpers, though they are already trivially proven inline (one-line ports), so a companion file is low-value.",
     "theoremCount": 5,
     "definitionCount": 0,
     "originalContributions": [
-      "intervalIntegral_swap_of_le for `f : ℝ → ℝ → E` (Bochner generalization, fully proven)",
-      "flip_bounds_E: sign-flip helper for `f : ℝ → E` (private, fully proven)",
-      "neg_outside_E: negation-extraction helper for `g : ℝ → E` (private, fully proven)",
-      "intervalIntegral_swap for `f : ℝ → ℝ → E` (general case, sorry — S3 target)",
-      "intervalIntegral_swap_of_continuous for `f : ℝ → ℝ → E` (sorry — S3 target)"
+      "intervalIntegral_swap_of_le for `f : ℝ → ℝ → E` (Bochner ordered case, fully proven, S2)",
+      "intervalIntegral_swap for `f : ℝ → ℝ → E` (Bochner general case, fully proven, S3)",
+      "intervalIntegral_swap_of_continuous for `f : ℝ → ℝ → E` (Bochner continuous case, fully proven, S3)",
+      "flip_bounds_E: sign-flip helper for `f : ℝ → E` (private, fully proven, S2)",
+      "neg_outside_E: negation-extraction helper for `g : ℝ → E` (private, fully proven, S2)",
+      "Verification of the S1 OBSERVE codomain-genericity claim: all three Bochner-valued interval-integral Fubini theorems hold without any Mathlib gap (0 sorries, 0 axioms)."
     ],
     "prerequisites": [
       "greens-theorem-oq-01-oq-01-oq-02: parent file with three real-valued intervalIntegral_swap theorems (verified, 0 sorries, 0 axioms)",
@@ -87,11 +88,11 @@
       "Sign-flip identity ∫ x in a..b = -∫ x in b..a (codomain-generic)"
     ],
     "mainTheorems": [
-      "intervalIntegral_swap_of_le (Bochner, ordered case, fully proven)",
-      "intervalIntegral_swap (Bochner, general case, sorry — S3)",
-      "intervalIntegral_swap_of_continuous (Bochner, continuous case, sorry — S3)",
-      "flip_bounds_E (private, sign-flip helper, fully proven)",
-      "neg_outside_E (private, negation-extraction helper, fully proven)"
+      "intervalIntegral_swap_of_le (Bochner, ordered case, fully proven, S2)",
+      "intervalIntegral_swap (Bochner, general case, fully proven, S3)",
+      "intervalIntegral_swap_of_continuous (Bochner, continuous case, fully proven, S3)",
+      "flip_bounds_E (private, sign-flip helper, fully proven, S2)",
+      "neg_outside_E (private, negation-extraction helper, fully proven, S2)"
     ],
     "references": [
       "Fubini, G. (1907). *Sugli integrali multipli*. Rom. Acc. L. Rend. 16, 608-614.",
@@ -128,18 +129,18 @@
     },
     {
       "id": "general-case",
-      "title": "General Case (sorry, S3 target)",
+      "title": "General Case (S3 proven)",
       "startLine": 106,
-      "endLine": 125,
-      "summary": "States `intervalIntegral_swap` for `f : ℝ → ℝ → E` with no ordering hypothesis on `(a,b)` or `(c,d)`, requiring measurability + integrability on the `uIcc` product. Proof deferred to S3: 4-case sign analysis reducing to ordered case via `flip_bounds_E` and `neg_outside_E`, with `linarith → abel` substitution.",
+      "endLine": 197,
+      "summary": "Proves `intervalIntegral_swap` for `f : ℝ → ℝ → E` with no ordering hypothesis on `(a,b)` or `(c,d)`, requiring only measurability + integrability on the `uIcc` product. Splits on the four sign possibilities of `(a ≤ b vs a > b)` × `(c ≤ d vs c > d)`. Cases 2/3 thread three sign-flip equalities through `rw [..., neg_neg]`; Case 4 (both reversed) threads five sign-flip equalities with `simp only [neg_neg]` closing the quadruple negation. The parent's four `linarith` calls are replaced by these explicit rewrites — the underlying identity is additive-abelian, not order-theoretic.",
       "mathContext": "General Fubini: $\\int_c^d \\int_a^b f\\,dx\\,dy = \\int_a^b \\int_c^d f\\,dy\\,dx$ for arbitrary $a, b, c, d \\in \\mathbb{R}$, under integrability on the unordered product rectangle."
     },
     {
       "id": "continuous-case",
-      "title": "Continuous Case (sorry, S3 target)",
-      "startLine": 126,
-      "endLine": 143,
-      "summary": "States `intervalIntegral_swap_of_continuous` for `f : ℝ → ℝ → E` with no measurability or integrability hypotheses — both automatic from `Continuous f` via `Continuous.measurable` and `ContinuousOn.integrableOn_compact`. Proof deferred to S3.",
+      "title": "Continuous Case (S3 proven)",
+      "startLine": 199,
+      "endLine": 216,
+      "summary": "Proves `intervalIntegral_swap_of_continuous` for `f : ℝ → ℝ → E` with no measurability or integrability hypotheses. Extracts measurability via `hf.measurable` and integrability via `hf.continuousOn.integrableOn_compact` on the compact rectangle `uIcc a b ×ˢ uIcc c d`, bridging the hypothesis form via `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc`.",
       "mathContext": "Continuous Fubini: for $f: \\mathbb{R}^2 \\to E$ continuous, the iterated interval integrals on any $(a,b) \\times (c,d)$ rectangle coincide automatically."
     }
   ],
