@@ -125,6 +125,38 @@
       "Is there a deterministic polynomial-time algorithm for four-square representation? The Rabin-Shallit algorithm is probabilistic; all known deterministic algorithms require sub-exponential time. A polynomial-time deterministic version would be a significant number-theoretic achievement."
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-four-squares",
+      "relationship": "foundational",
+      "description": "Lagrange's 1770 four-square theorem: every $n \\in \\mathbb{N}$ is expressible as $n = a^2 + b^2 + c^2 + d^2$. This non-constructive existence theorem (Mathlib's `Nat.sum_four_squares`) is the source of the splitter-existence step (2) in the Rabin-Shallit algorithm: a valid splitter $x \\leq \\sqrt{n}$ such that $n - x^2$ is a sum of three squares is guaranteed to exist for every $n$, because Lagrange already produces a four-square decomposition $(a, b, c, d)$ from which $x := a$ and $(b, c, d)$ serve as the three-square remainder. The present file leverages Lagrange's *existence* to convert the algorithmic problem to *finding* a splitter quickly."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-01",
+      "relationship": "parent",
+      "description": "Parent OQ-01 'Computational Complexity of Four-Square Representations'. Frames the meta-question: given Lagrange's existence theorem, what is the best algorithmic complexity for *finding* the four-square representation of a given $n$? This OQ-01-OQ-01 contributes the formalized mathematical core of the Rabin-Shallit (1986) randomized $O(\\log^2 n)$ approach, addressing one branch of the parent's algorithmic taxonomy."
+    },
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "related",
+      "description": "Distribution of four-square representations among orderings. Whereas this file analyzes the *algorithm* for producing one such representation, four-square-distribution studies the *count* and *symmetry structure* of all $(a, b, c, d) \\in \\mathbb{Z}^4$ with $a^2 + b^2 + c^2 + d^2 = n$. The two perspectives are complementary: the present algorithmic file proves that *some* representation can be found in $O(\\log^2 n)$ expected time; the distribution file quantifies *how many* such representations exist and how they are distributed among orderings (relevant to derandomization)."
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "related",
+      "description": "Jacobi's four-square formula $r_4(n) = 8 \\sigma^*(n)$ (the number of four-square representations equals 8 times the sum of divisors of $n$ not divisible by 4). Jacobi's formula gives an *exact* count of representations, which provides a probability-of-success calibration for randomized algorithms: if a candidate splitter $x$ is chosen uniformly, the probability that $n - x^2$ has a three-square representation can be estimated using Jacobi-style density results — the analytic backbone behind this file's 5/6 success-probability claim."
+    },
+    {
+      "targetId": "geometric-series",
+      "relationship": "technique",
+      "description": "Geometric series convergence $\\sum_{k=0}^{\\infty} r^k = 1/(1-r)$ for $|r| < 1$. The present file proves the density of excluded forms $4^a(8b + 7)$ equals $1/6$ by applying `tsum_geometric_of_lt_one` (Mathlib) to a geometric series in $r = 1/4$. The argument: among integers in $[1, 4^a \\cdot 8]$, the form $4^a(8b + 7)$ occupies $\\sim 1$ residue out of $\\sim 32$ for each $a$, summing geometrically over $a$ to total density $\\sum_a (1/4)^{a+1} \\cdot (1/8) \\cdot \\ldots = 1/6$."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "background",
+      "description": "Generalized Riemann Hypothesis (GRH). The original Rabin-Shallit (1986) complexity analysis is *conditional on GRH* (specifically, GRH-based bounds on the least prime in an arithmetic progression). This file formalizes the GRH-*unconditional* mathematical core (density 1/6, splitter existence, split-combine correctness); the GRH-conditional $O(\\log^2 n)$ runtime claim is listed in `openQuestions` as still requiring a formal probability model. Riemann-hypothesis is the gallery's home for the analytic-number-theory hypothesis that underlies this branch of derandomization theory."
+    }
+  ],
   "openQuestions": [
     {
       "id": "oq-01",
