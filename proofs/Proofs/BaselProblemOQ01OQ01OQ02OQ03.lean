@@ -1118,6 +1118,114 @@ example :
       ≤ (10 / 2) ^ Nat.sqrt 10 := by
   native_decide
 
+-- =====================================================================
+-- ITER 24: full correction-factor envelope (support reduction + chain)
+-- =====================================================================
+-- Combine the support-reduction primitive
+-- `prime_pow_pred_eq_one_of_sq_lt` (Iter 17, #17624) with Iter 23's
+-- small-prime power-product envelope
+-- (`prod_prime_pow_pred_small_le_pow_sqrt`) to obtain the FULL
+-- correction-factor envelope over the entire prime filter:
+--
+--   ∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n / 2) ^ √n   (n ≥ 2)
+--
+-- This closes the small-vs-full filter gap left open by PR #17619
+-- (Iter 17 support-reduction, OPEN since 2026-05-09) by providing a
+-- direct, in-file proof of the equality between the full-prime and
+-- small-prime correction-factor products.
+
+/-- **Support-reduction equality** (Iter 24): the full prime-filtered
+    correction product equals the small-prime-filtered (`p² ≤ n`)
+    product, because primes `p` with `p² > n` contribute `p^0 = 1`.
+
+    Proof: `Finset.prod_subset` from the small filter (⊆ big filter)
+    composed with the "complement is 1" condition, which is exactly
+    Iter 17's `prime_pow_pred_eq_one_of_sq_lt` applied to primes whose
+    membership in the big filter but not the small filter forces
+    `n < p²` (equivalently `n < p * p`).
+
+    Concrete numerics:
+    * `n = 10`: full filter `{2, 3, 5, 7}` vs small filter `{2, 3}`
+      (`5² = 25 > 10`), both products equal `2² · 3¹ · 5⁰ · 7⁰ = 12`.
+    * `n = 100`: full filter has 25 primes vs small filter
+      `{2, 3, 5, 7}` (`11² = 121 > 100`), both products equal
+      `2⁵ · 3³ · 5 · 7 = 30240`.
+
+    This is the direct in-file analogue of the
+    `lcmRange_correction_supported_on_small_primes` lemma that PR
+    #17619 (Iter 17) attempted but did not merge. -/
+theorem prod_prime_pow_pred_eq_small (n : ℕ) :
+    ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime,
+        p ^ (Nat.log p n - 1) =
+    ∏ p ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n),
+        p ^ (Nat.log p n - 1) := by
+  refine (Finset.prod_subset ?_ ?_).symm
+  · -- The small-prime filter is a subset of the full prime filter.
+    intro p hp
+    rw [Finset.mem_filter] at hp ⊢
+    exact ⟨hp.1, hp.2.1⟩
+  · -- For `p` in the big filter but not the small filter, the
+    -- correction factor `p^(Nat.log p n - 1)` is `1` because `p² > n`.
+    intro p hp h_not_small
+    rw [Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨hp_lt, hp_prime⟩ := hp
+    have h_sq_gt : n < p * p := by
+      by_contra h_sq_le
+      push_neg at h_sq_le
+      have h_sq_pow : p ^ 2 ≤ n := by rw [pow_two]; exact h_sq_le
+      apply h_not_small
+      rw [Finset.mem_filter, Finset.mem_range]
+      exact ⟨hp_lt, hp_prime, h_sq_pow⟩
+    exact prime_pow_pred_eq_one_of_sq_lt hp_prime h_sq_gt
+
+/-- **Full correction-factor envelope** (Iter 24 main): chains Iter
+    24's support-reduction equality (`prod_prime_pow_pred_eq_small`)
+    with Iter 23's small-prime power-product envelope
+    (`prod_prime_pow_pred_small_le_pow_sqrt`) to obtain the FULL
+    correction-factor envelope
+
+      `∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n / 2) ^ √n`
+
+    under the hypothesis `2 ≤ n`.
+
+    This is the **full LHS** of the Hanson bridge — bounding the
+    correction factor (whose effective support is small primes `p² ≤ n`
+    after support reduction) by `(n / 2)^√n = 2^(O(√n · log n))`.
+
+    Combined with Iter 16's decomposition
+    `lcmRange n = primorial n · ∏_{p prime} p^(Nat.log p n - 1)`
+    (`lcmRange_eq_primorial_mul_prod_prime_pow_pred`) and Mathlib's
+    `Nat.primorial_le_4_pow` (`primorial n ≤ 4^n`), this yields the
+    structural Chebyshev envelope `lcmRange n ≤ 4^n · (n / 2)^√n`
+    (assembled in a future iter), which closes the asymptotic gap to
+    Hanson's `3^n` modulo small-`n` numerical checks (already covered
+    by `hanson_n1`–`hanson_n20`).
+
+    Concrete numerics (same as Iter 23's small-prime version, since
+    the products are equal by `prod_prime_pow_pred_eq_small`):
+    * `n = 10`: LHS = `12`, RHS = `5³ = 125`. ✓ (12 ≤ 125)
+    * `n = 100`: LHS = `30240`, RHS = `50¹⁰ ≈ 9.77 · 10¹⁶`. ✓ -/
+theorem prod_prime_pow_pred_le_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
+    ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime,
+        p ^ (Nat.log p n - 1)
+      ≤ (n / 2) ^ n.sqrt := by
+  rw [prod_prime_pow_pred_eq_small]
+  exact prod_prime_pow_pred_small_le_pow_sqrt hn
+
+/-- **Concrete numerical witness** (Iter 24): at `n = 10` the full
+    prime correction-factor product
+    `∏_{p ∈ {2,3,5,7}} p^(Nat.log p 10 - 1) = 12` is bounded by
+    `(10 / 2) ^ Nat.sqrt 10 = 5³ = 125`.
+
+    Sanity check for `prod_prime_pow_pred_le_pow_sqrt`. The full-prime
+    LHS equals the small-prime LHS (Iter 23's witness) because primes
+    `5` and `7` (with `p² > 10`) contribute `p⁰ = 1`. -/
+example :
+    ∏ p ∈ (Finset.range 11).filter Nat.Prime,
+        p ^ (Nat.log p 10 - 1)
+      ≤ (10 / 2) ^ Nat.sqrt 10 := by
+  native_decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
