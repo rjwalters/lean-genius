@@ -2,7 +2,7 @@
   "id": "algebraic-numbers-countable-oq-02-oq-04",
   "title": "Countability of Computable Real Numbers",
   "slug": "algebraic-numbers-countable-oq-02-oq-04",
-  "description": "Open question addressing the cardinality layer below algebraic in the real-number hierarchy: prove that the set of computable real numbers is countable. A real `r` is computable when some Turing machine (formalized as a `Computable` function `ℕ → ℚ` in Mathlib) outputs a sequence of rationals converging to `r`. Since Turing-machine descriptions form a countable set, so does the set of computable reals — yielding the hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ with all but the last carrying cardinality ℵ₀. S1 SCAFFOLD: `IsComputable` definition + main theorem stated; proof deferred.",
+  "description": "Open question addressing the cardinality layer below algebraic in the real-number hierarchy: prove that the set of computable real numbers is countable. A real `r` is computable when some Turing machine (formalized as a `Computable` function `ℕ → ℚ` in Mathlib) outputs a sequence of rationals converging to `r`. Since Turing-machine descriptions form a countable set, so does the set of computable reals — yielding the hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ with all but the last carrying cardinality ℵ₀. S3 status (build pending): full proof via `decodeReal : Nat.Partrec.Code → ℝ` pipeline; main theorem `computable_reals_countable` and exact cardinality `card_computable_reals_eq_aleph0` are unconditional, with `wip` badge held until Docker build verifies.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Computable_number",
@@ -162,11 +162,10 @@
     }
   ],
   "conclusion": {
-    "summary": "**S1 SCAFFOLD**: This entry sets up the open question — countability of the computable reals — by introducing the formal definition `IsComputable` in terms of Mathlib's `Computable` predicate, stating the main countability theorem, and laying out a three-step strategy (code countability + code completeness + image of countable) for future iterations to discharge the single `sorry`. The cardinal corollary `card_computable_reals_le_aleph0` is wired up so the result automatically lifts to the `#·≤ℵ₀` form upon completion.",
+    "summary": "**S3 status (build pending)**: This entry resolves the open question — countability of the computable reals — by (i) defining `IsComputable` via Mathlib's `Computable` predicate, (ii) constructing the noncomputable decoder `decodeReal : Nat.Partrec.Code → ℝ`, and (iii) proving the pipeline lemmas (`exists_code_of_computable_rat_seq`, `computable_real_mem_range_decodeReal`) that route every computable real through the countable code type. The main theorem `computable_reals_countable` (no sorry), the upper bound `card_computable_reals_le_aleph0`, the lower bound `aleph0_le_card_computable_reals` (via the ℚ embedding), and the exact equality `card_computable_reals_eq_aleph0` are all unconditional. Badge remains `wip` until Docker build verifies the named Mathlib API calls.",
     "implications": "Once discharged, this result will:\n\n1. **Complete the cardinality hierarchy** `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ` with the middle three layers all at cardinality ℵ₀. The final inclusion is then strict by `ℵ₀ < 𝔠` — uncountably many non-computable reals exist.\n\n2. **Establish 'almost all reals are non-computable'** in the precise cardinality sense: removing the countable computable reals from ℝ leaves a set of full cardinality 𝔠. This complements (and refines) the analogous statement for algebraic reals.\n\n3. **Provide a foundation for computable analysis** in Lean. Many subsequent results (computable arithmetic, computable Cauchy completion, etc.) rest on the basic countability of the underlying set.\n\n4. **Bridge to Type-2 effectivity**: the Mathlib-based definition can be related to Weihrauch's TTE formalism, opening a route to formalizing more general computable-analysis results.",
     "openQuestions": [
-      "Discharge the `sorry` in `computable_reals_countable` by implementing the `Nat.Partrec.Code` ↔ `Computable` ↔ ℝ pipeline (iter 2 target).",
-      "Prove a complementary lower bound: ℵ₀ ≤ #(computable reals), giving #(computable reals) = ℵ₀ exactly.",
+      "Verify the S3 build under Docker (`./proofs/scripts/docker-build.sh Proofs.AlgebraicNumbersCountableOQ02OQ04`) and bump `badge` from `wip` to `verified` on green.",
       "Prove `IsComputable e` and `IsComputable π` to demonstrate the strict inclusion `algebraic ⊊ computable`.",
       "Construct a specific non-computable real (Chaitin's Ω) to demonstrate `computable ⊊ ℝ` via an explicit witness rather than cardinality alone."
     ]
@@ -208,7 +207,7 @@
     {
       "name": "computable_reals_countable",
       "type": "core",
-      "description": "**MAIN (SCAFFOLD — sorry)**: The set of computable real numbers is countable. Proof strategy: image of `Nat.Partrec.Code` (countable) under the partial 'limit-of-eval' map.",
+      "description": "**MAIN (S3, build pending)**: The set of computable real numbers is countable. Proved via `decodeReal : Nat.Partrec.Code → ℝ`: the image of `Nat.Partrec.Code` (countable, by `Encodable`) under the partial 'limit-of-eval' map contains every computable real, so `Set.Countable.mono` applies.",
       "leanType": "Set.Countable {r : ℝ | IsComputable r}"
     },
     {
