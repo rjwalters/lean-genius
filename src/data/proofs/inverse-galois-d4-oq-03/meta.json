@@ -21,11 +21,11 @@
     "badge": "research",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 153,
-    "assumptions": "0 axioms; 1 sorry — `dihedral_galois_xPow4_sub_2` (the parent's (4, 2) specialization, bridging from `InverseGaloisD4.d4_realizable` which proves the order is 8 to the explicit D₄ identification via the classical fact that D₄ is the unique transitive subgroup of S₄ of order 8). S3a (researcher-12, PR pending) closed the former second sorry on `dihedral_iff_schinzel_velez` by replacing its false `↔ True` statement with the provably-true existential `schinzel_velez_characterization_exists`, and added two no-sorry helpers `xPowSub_def` and `gal_card_xPowSub_4_2` that lift the parent's `x4_sub_2_gal_card` (order 8) onto `xPowSub 4 2` for use in S4. Imports: `Mathlib.FieldTheory.Galois.Basic`, `Mathlib.GroupTheory.SpecificGroups.Dihedral`, `Mathlib.Algebra.Polynomial.{Basic,AlgebraMap}`, `Proofs.InverseGaloisD4`.",
+    "lineCount": 235,
+    "assumptions": "0 axioms; 1 sorry — `dihedral_galois_xPow4_sub_2` (the parent's (4, 2) specialization, bridging from `InverseGaloisD4.d4_realizable` which proves the order is 8 to the explicit D₄ identification via the classical fact that D₄ is the unique transitive subgroup of S₄ of order 8). S3b (researcher-4, this iteration) adds 7 no-sorry bridge helpers: `xPowSub_4_2_natDegree`, `xPowSub_4_2_irreducible`, `xPowSub_4_2_separable`, `xPowSub_4_2_monic`, `dihedralGroup_4_card`, `gal_card_eq_dihedralGroup_4_card`, and `dihedral_galois_xPow4_sub_2_of_mulEquiv` — narrowing the remaining S4 work to a single `MulEquiv` construction. S3a (researcher-12, PR #18063) closed the former second sorry on `dihedral_iff_schinzel_velez` by replacing its false `↔ True` statement with the provably-true existential `schinzel_velez_characterization_exists`, and added two no-sorry helpers `xPowSub_def` and `gal_card_xPowSub_4_2`. Imports: `Mathlib.FieldTheory.Galois.Basic`, `Mathlib.GroupTheory.SpecificGroups.Dihedral`, `Mathlib.Algebra.Polynomial.{Basic,AlgebraMap}`, `Proofs.InverseGaloisD4`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 4,
+    "theoremCount": 11,
     "definitionCount": 2,
     "originalContributions": [
       "IsDihedralGaloisOfXnMinusA: abstract proposition for 'Gal(X^n - a / ℚ) is dihedral' phrased via Mathlib's existing Polynomial.SplittingField and DihedralGroup constructions — no new infrastructure required",
@@ -33,6 +33,13 @@
       "xPowSub_def: definitional-unfolding helper (S3a, no sorry) bridging `xPowSub n a` to `X^n - C a`; lets downstream lemmas alternate between the two notations for free",
       "dihedral_galois_xPow4_sub_2: statement of the parent's (4, 2) specialization in terms of the abstract criterion; sorry-guarded, with proof route documented (transitive-subgroup-of-S4 argument)",
       "gal_card_xPowSub_4_2: S3a cardinality lift (no sorry) — `Fintype.card (xPowSub 4 2).Gal = 8` via the parent's `x4_sub_2_gal_card`; isolates the cardinality input of the S3+ bridge from the harder 'order-8 transitive S₄ subgroup is D₄' classification step",
+      "xPowSub_4_2_natDegree: S3b polynomial-degree bridge (no sorry) — `(xPowSub 4 2).natDegree = 4` via the parent's `x_fourth_sub_2_natDegree`; sets up the S₄-embedding context for S4",
+      "xPowSub_4_2_irreducible: S3b irreducibility bridge (no sorry) — `Irreducible (xPowSub 4 2)` via the parent's Eisenstein-at-2 lemma; supplies the transitivity hypothesis for the `Polynomial.Gal.galActionHom` injection into S₄",
+      "xPowSub_4_2_separable: S3b separability bridge (no sorry) — irreducible polynomials over char-0 fields are separable",
+      "xPowSub_4_2_monic: S3b monicity bridge (no sorry) — leading coefficient is 1",
+      "dihedralGroup_4_card: S3b codomain cardinality (no sorry) — `Fintype.card (DihedralGroup 4) = 8` via Mathlib's `DihedralGroup.card`",
+      "gal_card_eq_dihedralGroup_4_card: S3b cardinality match (no sorry) — necessary condition for the existence of a `MulEquiv` Gal ≃* DihedralGroup 4; structural identification (non-abelian + order-4 element) is the remaining S4 work",
+      "dihedral_galois_xPow4_sub_2_of_mulEquiv: S3b S4 entry point (no sorry) — supplies the existential witness `m = 4` so S4 only needs to construct a concrete `MulEquiv` Gal(X^4 − 2) ≃* DihedralGroup 4",
       "schinzel_velez_characterization_exists: S3a audit-fix replacement (no sorry) for the previously-incorrect `dihedral_iff_schinzel_velez : ... ↔ True` statement (which was vacuously false for any (n, a) outside the dihedral case). States the trivially-true existential `∃ P, ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a`, preserving the original docstring's existence-of-characterization intent without false content."
     ],
     "mathlibDependencies": [

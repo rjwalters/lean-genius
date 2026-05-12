@@ -123,6 +123,88 @@ theorem gal_card_xPowSub_4_2 :
   show Fintype.card ((X : ℚ[X]) ^ 4 - C 2).Gal = 8
   exact InverseGaloisExtensions.x4_sub_2_gal_card
 
+/-- **Natural-degree bridge (S3b, no sorry)**: `xPowSub 4 2` has
+    `natDegree = 4`. Reuses the parent's
+    `x_fourth_sub_2_natDegree` under the local notation.
+
+    Useful for any S4+ argument that needs the polynomial degree to
+    set up the embedding `Gal ↪ S₄` (via `Polynomial.Gal.galActionHom`
+    on the four-element root set). -/
+theorem xPowSub_4_2_natDegree :
+    (xPowSub 4 2).natDegree = 4 := by
+  show ((X : ℚ[X]) ^ 4 - C 2).natDegree = 4
+  exact InverseGaloisExtensions.x_fourth_sub_2_natDegree
+
+/-- **Irreducibility bridge (S3b, no sorry)**: `xPowSub 4 2` is
+    irreducible over `ℚ`. Reuses the parent's
+    `x_fourth_sub_2_irreducible` (Eisenstein at `p = 2`).
+
+    Irreducibility supplies the transitivity-of-the-Galois-action
+    hypothesis used by the S4 bridge: `Polynomial.Gal.galActionHom`
+    is injective (parent argument in `x4_sub_2_gal_card_dvd_24`), and
+    the image acts transitively on the roots by irreducibility, so
+    it embeds as a transitive subgroup of `S₄`. -/
+theorem xPowSub_4_2_irreducible :
+    Irreducible (xPowSub 4 2) := by
+  show Irreducible ((X : ℚ[X]) ^ 4 - C 2)
+  exact InverseGaloisExtensions.x_fourth_sub_2_irreducible
+
+/-- **Separability bridge (S3b, no sorry)**: `xPowSub 4 2` is
+    separable (every irreducible polynomial over a characteristic-0
+    field is separable). -/
+theorem xPowSub_4_2_separable :
+    (xPowSub 4 2).Separable := by
+  show ((X : ℚ[X]) ^ 4 - C 2).Separable
+  exact InverseGaloisExtensions.x_fourth_sub_2_separable
+
+/-- **Monicity bridge (S3b, no sorry)**: `xPowSub 4 2` is monic
+    (leading coefficient `1`). Reuses the parent's
+    `x_fourth_sub_2_monic`. -/
+theorem xPowSub_4_2_monic :
+    (xPowSub 4 2).Monic := by
+  show ((X : ℚ[X]) ^ 4 - C 2).Monic
+  exact InverseGaloisExtensions.x_fourth_sub_2_monic
+
+/-- **`DihedralGroup 4` has 8 elements (S3b, no sorry)**: the order
+    of the dihedral group `D₄` is `8 = 2 · 4`. Direct consequence of
+    Mathlib's `DihedralGroup.card`.
+
+    This is the cardinality target on the codomain side of the
+    eventual S4 isomorphism `Gal(X⁴ − 2 / ℚ) ≃* DihedralGroup 4`. -/
+theorem dihedralGroup_4_card :
+    Fintype.card (DihedralGroup 4) = 8 :=
+  DihedralGroup.card.trans (by norm_num)
+
+/-- **Cardinality match (S3b, no sorry)**: the Galois group of
+    `xPowSub 4 2` and `DihedralGroup 4` have equal cardinality (both
+    `8`). Combines `gal_card_xPowSub_4_2` and `dihedralGroup_4_card`.
+
+    Equal cardinality is *necessary* for the existence of a
+    `MulEquiv` between two finite groups, but not sufficient — the
+    S4 bridge still needs the structural identification that the
+    Galois group is non-abelian and contains an order-`4` element
+    (ruling out `(ℤ/2)³` and `(ℤ/2) × (ℤ/4)`, the only other groups
+    of order `8` of relevance — `Q₈` is also order `8` but does not
+    embed in `S₄` since `Q₈` has a unique involution while every
+    order-`8` subgroup of `S₄` contains multiple involutions). -/
+theorem gal_card_eq_dihedralGroup_4_card :
+    Fintype.card (xPowSub 4 2).Gal = Fintype.card (DihedralGroup 4) := by
+  rw [gal_card_xPowSub_4_2, dihedralGroup_4_card]
+
+/-- **S4 entry point (S3b, no sorry)**: if a `MulEquiv` between the
+    Galois group of `X⁴ − 2` and `DihedralGroup 4` is exhibited,
+    then `IsDihedralGaloisOfXnMinusA 4 2` holds (using `m = 4`).
+
+    This is the precise "remaining work" reduction for S4: instead
+    of producing both the witness `m ≥ 2` and the `MulEquiv`, the
+    S4 iteration only needs the concrete `MulEquiv`. The witness
+    `m = 4` is supplied here. -/
+theorem dihedral_galois_xPow4_sub_2_of_mulEquiv
+    (φ : ((xPowSub 4 2).SplittingField ≃ₐ[ℚ] (xPowSub 4 2).SplittingField)
+      ≃* DihedralGroup 4) :
+    IsDihedralGaloisOfXnMinusA 4 2 :=
+  ⟨4, by norm_num, ⟨φ⟩⟩
+
 /-- **Schinzel–Velez characterization (existential form, S3a audit fix)**.
 
     The Schinzel–Velez classification asserts that there exists a

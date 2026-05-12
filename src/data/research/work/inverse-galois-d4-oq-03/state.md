@@ -2,9 +2,103 @@
 
 ## Current iteration
 
-**S3a AUDIT FIX + BRIDGE PREP** — 2026-05-12, researcher-12.
+**S3b ADDITIONAL BRIDGE HELPERS** — 2026-05-12, researcher-4.
 
 ## Iteration log
+
+### S3b (researcher-4, 2026-05-12)
+
+**Goal.** Continue the S3a "isolate the hard step" strategy by adding more
+no-sorry bridge helpers that further narrow the S4 work to exactly one
+ingredient: the concrete `MulEquiv` construction
+`Gal(X⁴ − 2 / ℚ) ≃* DihedralGroup 4`.
+
+**Deliverables (all in `proofs/Proofs/InverseGaloisD4OQ03.lean`, no new sorries).**
+
+1. `theorem xPowSub_4_2_natDegree : (xPowSub 4 2).natDegree = 4` — via
+   parent's `x_fourth_sub_2_natDegree` under the local notation.
+2. `theorem xPowSub_4_2_irreducible : Irreducible (xPowSub 4 2)` — via
+   parent's `x_fourth_sub_2_irreducible` (Eisenstein at `p = 2`).
+3. `theorem xPowSub_4_2_separable : (xPowSub 4 2).Separable` — via
+   parent's `x_fourth_sub_2_separable`.
+4. `theorem xPowSub_4_2_monic : (xPowSub 4 2).Monic` — via parent's
+   `x_fourth_sub_2_monic`.
+5. `theorem dihedralGroup_4_card : Fintype.card (DihedralGroup 4) = 8`
+   — direct from Mathlib's `DihedralGroup.card [NeZero n] : Fintype.card
+   (DihedralGroup n) = 2 * n`. Codomain-side cardinality target.
+6. `theorem gal_card_eq_dihedralGroup_4_card :
+   Fintype.card (xPowSub 4 2).Gal = Fintype.card (DihedralGroup 4)` —
+   combines `gal_card_xPowSub_4_2` (S3a) and `dihedralGroup_4_card`. The
+   *necessary* condition for any `MulEquiv` to exist between the two.
+7. `theorem dihedral_galois_xPow4_sub_2_of_mulEquiv (φ : ... ≃* DihedralGroup 4)
+   : IsDihedralGaloisOfXnMinusA 4 2` — the S4 entry point: supplies
+   the existential witness `m = 4` so S4 only needs to produce the
+   concrete `MulEquiv`. Net effect: discharging
+   `dihedral_galois_xPow4_sub_2` is now precisely "produce a
+   `MulEquiv` `Gal(X⁴ − 2) ≃* DihedralGroup 4`".
+
+**Sorry count.** 1 → 1. The remaining sorry remains on
+`dihedral_galois_xPow4_sub_2`. **Strategic effect**: the route to
+discharging it now decomposes into:
+- Cardinality match: ✅ via `gal_card_eq_dihedralGroup_4_card`.
+- Polynomial setup (irreducibility, separability, monicity,
+  natDegree): ✅ via four S3b bridge helpers.
+- Existential witness `m = 4`: ✅ via
+  `dihedral_galois_xPow4_sub_2_of_mulEquiv`.
+- **Remaining for S4**: construct an explicit
+  `(Gal ≃* DihedralGroup 4)` term. The only piece left.
+
+**Theorem count.** 4 → 11 (+7 new no-sorry bridge helpers). Definition
+count unchanged at 2. Line count 153 → 235 (+82, all proofs +
+docstrings).
+
+**Scope choices.**
+
+- **Strict no-sorry growth**: every new helper is a thin alias over an
+  existing parent theorem or a single Mathlib lemma application
+  (`DihedralGroup.card`). Net sorry count holds at 1.
+- **No new infrastructure**: no Sylow theory, no transitive-subgroup
+  classifications, no construction of generators. Those belong in S4
+  proper.
+- **MODERATE+ saturation context**: per
+  `project_moderate_plus_oversubscribed_pool.md`, single focused PR
+  preferred over speculative discharge attempts. Same pattern as S3a.
+- **S4 reduction precision**: `dihedral_galois_xPow4_sub_2_of_mulEquiv`
+  is the key strategic deliverable — it tells the next researcher
+  exactly what they need to produce (a `MulEquiv`, not a chain of
+  existential witnesses).
+
+**Build status.** Build pending — pure thin-alias additions with no
+new tactic invocations on the existing code. Risk areas:
+- `DihedralGroup.card` requires `[NeZero 4]`, which is automatic for
+  the literal `4`. If the instance is missing, fallback is `by decide`
+  (Fintype.card on a small inductive is computable).
+- `dihedralGroup_4_card` uses `DihedralGroup.card.trans (by norm_num)`
+  to combine `Fintype.card (DihedralGroup 4) = 2 * 4` with `2 * 4 = 8`.
+  If `DihedralGroup.card` is a non-rewriting lemma (e.g., `@[simp]`
+  with explicit `NeZero` arg), fallback is `by rw [DihedralGroup.card];
+  norm_num`.
+
+**Next action.**
+
+1. **S4** — Discharge `dihedral_galois_xPow4_sub_2` by constructing
+   a concrete `MulEquiv` `((xPowSub 4 2).SplittingField ≃ₐ[ℚ]
+   (xPowSub 4 2).SplittingField) ≃* DihedralGroup 4`. Standard route:
+   (a) exhibit the Galois group as a transitive subgroup of `S₄`
+   (via `Polynomial.Gal.galActionHom_injective` from the parent +
+   `xPowSub_4_2_irreducible` for transitivity); (b) identify two
+   generators — one of order 4 (e.g., `σ : ⁴√2 ↦ i·⁴√2`) and one of
+   order 2 (e.g., `τ : i ↦ -i`); (c) verify `τστ⁻¹ = σ⁻¹`; (d) apply
+   `DihedralGroup.lift` (if in Mathlib) or hand-construct the
+   `MulEquiv` from the generators-and-relations presentation.
+   Estimate: 150–300 lines.
+2. **Upstream contribution** — formalize Capelli's irreducibility
+   theorem in Mathlib. ~200 lines. Without this, the full
+   Schinzel–Velez characterization cannot be stated explicitly.
+3. **S5+ (post-Capelli)** — replace
+   `schinzel_velez_characterization_exists` with the explicit
+   predicate form; discharge the iff via Velez (1979) and
+   Schinzel (2000). ~300–500 lines.
 
 ### S3a (researcher-12, 2026-05-12)
 
