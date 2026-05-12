@@ -2587,6 +2587,120 @@ private lemma t2_lastFace_filter_impossible
 end N2LastFaceT2Extinct
 
 -- ============================================================
+-- (S25-rev) Reverse of S21A: for `b ∈ satDiagBases N`, the
+-- self-drop index exists, is unique, and witnesses the per-vertex
+-- face-2 condition that `_hLastFace` filters on.
+--
+-- S21A (forward, `t1_lastFace_implies_satDiag`) shows that any
+-- `(t1 b, k)` cell pair in the `_hLastFace` filter forces
+-- `b ∈ satDiagBases N` with `vertexEnum (t1 b) hS k = b`. This
+-- section establishes the matching backward direction:
+--
+--   * `satDiag_self_drop_index_exists` — `b ∈ satDiagBases N` ⟹
+--     ∃ k : Fin 3, `vertexEnum (t1 b) hS k = b`. Existence via
+--     `vertexEnum_image_univ` (`b ∈ t1 b` lies in the image).
+--   * `satDiag_self_drop_index_unique` — the self-drop index is
+--     unique via `vertexEnum_injective`.
+--   * `satDiag_self_drop_face2` — at the self-drop index, the two
+--     remaining vertices `(b.1, b.2+1)` and `(b.1+1, b.2)` both
+--     satisfy `onFaceΔ2_strict N · 2`. Combines `t1_erase_third`
+--     (S19.2) with `satDiagBases_endpoints_on_face2` (S20) via the
+--     bridge `forall_vertex_ne_iff_forall_face_mem` (S19.2).
+--
+-- Together with S24's t2-side extinction and S20's
+-- `satDiagBases_card_eq N`, this packages the `satDiagBases N →
+-- _hLastFace filter` direction that S25 will compose with S23's
+-- color-side wiring + S22's `IsDoor` ↔ color-change bridge.
+-- Independent of the in-flight S23 (`N2LastFaceColors`,
+-- PR #17571) and S25-prep (gridPt coordinate values, PR #17621)
+-- contributions.
+-- ============================================================
+
+section N2LastFaceSelfDropIndex
+
+variable (N : ℕ)
+
+/-- For `b ∈ satDiagBases N`, there exists `k : Fin 3` such that
+the vertex enumeration at index `k` returns `b` itself.
+
+This is the backward existence companion to S21A's forward
+extraction. Existence follows from the surjection
+`vertexEnum_image_univ` because `b ∈ t1 b` (it is the third
+vertex by the `t1` definition). -/
+private lemma satDiag_self_drop_index_exists
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N) :
+    ∃ k : Fin 3,
+      (simData2 N).vertexEnum (t1 b)
+        (satDiagBases_t1_in_topSimps2 N hb) k = b := by
+  set hS := satDiagBases_t1_in_topSimps2 N hb with hS_def
+  have hb_mem_t1 : b ∈ t1 b := by
+    simp only [t1, Finset.mem_insert, Finset.mem_singleton]
+    right; right; rfl
+  have h_img := (simData2 N).vertexEnum_image_univ (t1 b) hS
+  rw [← h_img] at hb_mem_t1
+  obtain ⟨k, _, hk⟩ := Finset.mem_image.mp hb_mem_t1
+  exact ⟨k, hk⟩
+
+/-- The self-drop index of `b ∈ satDiagBases N` is unique: any two
+indices `k₁, k₂ : Fin 3` whose `vertexEnum` value equals `b` must
+themselves be equal. Direct consequence of `vertexEnum_injective`. -/
+private lemma satDiag_self_drop_index_unique
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N)
+    {k₁ k₂ : Fin 3}
+    (hk₁ : (simData2 N).vertexEnum (t1 b)
+      (satDiagBases_t1_in_topSimps2 N hb) k₁ = b)
+    (hk₂ : (simData2 N).vertexEnum (t1 b)
+      (satDiagBases_t1_in_topSimps2 N hb) k₂ = b) :
+    k₁ = k₂ :=
+  (simData2 N).vertexEnum_injective (t1 b)
+    (satDiagBases_t1_in_topSimps2 N hb) (hk₁.trans hk₂.symm)
+
+/-- **Reverse of S21A.** For `b ∈ satDiagBases N` and any `k : Fin 3`
+that is the self-drop index (`vertexEnum (t1 b) hS k = b`), every
+non-`k` vertex of `t1 b` satisfies the geometric face-2 condition
+`onFaceΔ2_strict N · 2` — i.e., the pair `(t1 b, k)` satisfies the
+per-vertex condition of the `_hLastFace` filter of
+`Triangulation.boundary_doors_odd`.
+
+Proof: the dropped vertex is `b`, so `faceOf (t1 b) hS k =
+(t1 b).erase b = {(b.1, b.2+1), (b.1+1, b.2)}` by S19.2's
+`t1_erase_third`. Both diagonal endpoints satisfy
+`onFaceΔ2_strict N · 2` by S20's `satDiagBases_endpoints_on_face2`.
+The S19.2 bridge `forall_vertex_ne_iff_forall_face_mem` rewrites
+the `∀ j ≠ k`-on-`vertexEnum` goal into the `∀ v ∈ faceOf` form
+that the two-element membership case-split discharges.
+
+Together with the existence + uniqueness lemmas above, this packages
+the `b ∈ satDiagBases N → (t1 b, k_b) ∈ _hLastFace-style condition`
+half of the eventual S25 bijection. -/
+private lemma satDiag_self_drop_face2
+    {b : ℕ × ℕ} (hb : b ∈ satDiagBases N)
+    {k : Fin 3}
+    (hk : (simData2 N).vertexEnum (t1 b)
+      (satDiagBases_t1_in_topSimps2 N hb) k = b) :
+    ∀ j : Fin 3, j ≠ k →
+      onFaceΔ2_strict N
+        ((simData2 N).vertexEnum (t1 b)
+          (satDiagBases_t1_in_topSimps2 N hb) j)
+        (2 : Fin 3) := by
+  set hS := satDiagBases_t1_in_topSimps2 N hb with hS_def
+  have h_face_eq : (simData2 N).faceOf (t1 b) hS k =
+      ({(b.1, b.2 + 1), (b.1 + 1, b.2)} : Finset (ℕ × ℕ)) := by
+    show (t1 b).erase ((simData2 N).vertexEnum (t1 b) hS k) = _
+    rw [hk]; exact t1_erase_third b
+  have h_endpoints := satDiagBases_endpoints_on_face2 N hb
+  apply (SimplicialAdjFnHelper.forall_vertex_ne_iff_forall_face_mem
+    (simData2 N) (t1 b) hS k _).mpr
+  intro v hv
+  rw [h_face_eq] at hv
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hv
+  rcases hv with rfl | rfl
+  · exact h_endpoints.1
+  · exact h_endpoints.2
+
+end N2LastFaceSelfDropIndex
+
+-- ============================================================
 -- (S25-prep-index) First-coordinate parametrization of `satDiagBases`.
 --
 -- The eventual S25 bijection between the `_hLastFace` filter and
