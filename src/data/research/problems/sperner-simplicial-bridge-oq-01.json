@@ -1,0 +1,109 @@
+{
+    "slug": "sperner-simplicial-bridge-oq-01",
+    "title": "Sperner's lemma on non-pure simplicial complexes (mixed pseudomanifold)",
+    "phase": "OBSERVE",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "problemStatement": {
+        "formal": "\\forall K : \\mathrm{Finset}(\\mathrm{Finset}\\ E),\\; \\mathrm{MixedPseudomanifold}(K) \\;\\Rightarrow\\; \\forall d,\\; \\mathrm{Odd}(\\mathrm{boundaryDoors}_d K) \\;\\Rightarrow\\; \\exists s \\in \\mathrm{topCellsOfDim}\\ K\\ d,\\; \\mathrm{Panchromatic}(s).",
+        "plain": "The parent gallery proof (sperner-simplicial-bridge, verified at v4.26.0, 0 axioms, 22 theorems, 611 lines) formalises Sperner's lemma on a *pure* simplicial complex — all top-cells share the same dimension. OQ-01 weakens this to *non-pure* complexes where facets can have mixed dimensions. The key insight: a door (codim-1 face of a top-cell) has cardinality d when the cell has cardinality d+1, so doors are dimension-pure even in mixed complexes. The mixed-pseudomanifold theorem reduces to applying the parent's exists_panchromatic on each dimension-stratum independently. The S1 OBSERVE proposes definitions topCellsOfDim K d = K.filter (·.card = d + 1) and MixedPseudomanifold K = ∀ d, ∀ f.card = d, |topCellsOfDim K d ∩ ⊇ f| ≤ 2, plus the main theorem sperner_mixed_panchromatic as a 5-line application of the parent.",
+        "whyMatters": [
+            "Lifts the parent's open-question count from 4 to 3. Direct response to OQ-01 in src/data/proofs/sperner-simplicial-bridge/meta.json. The parent stays verified; the OQ-01 work is a strict generalisation that subsumes the existing exists_panchromatic.",
+            "Captures the geometrically natural use-case from algebraic topology: most CW-complexes, triangulated manifolds with boundary, and polytopal decompositions of non-equidimensional spaces are non-pure. The pure-pseudomanifold hypothesis is restrictive.",
+            "Precursor to OQ-02 (Mathlib.Geometry.SimplicialComplex bridge) and OQ-04 (Mathlib.AlgebraicTopology.SimplicialSet adjFn instance) of the same parent. Both presume a stratification framework; doing OQ-01 first makes those tractable.",
+            "Pedagogically clean — the proof of sperner_mixed_panchromatic is a 5-line invocation of parent.exists_panchromatic, with all difficulty pushed to the predicate-definition layer where it belongs."
+        ]
+    },
+    "knownResults": {
+        "proven": [
+            "Parent: exists_panchromatic for pure pseudomanifold data (Proofs/SpernerSimplicialBridge.lean line 564, verified, 22 theorems, 0 axioms, 0 sorries, 611 lines).",
+            "Door-counting parity argument (Sperner.exists_panchromatic in Proofs/SpernerMathlib.lean) is dimension-pure: a door at level d involves a top-cell of cardinality d+1 and a face of cardinality d. Doors at different levels cannot pair.",
+            "Mathlib Finset.filter, Finset.mem_filter, Finset.filter_subset, Finset.filter_empty, Finset.filter_filter at v4.26.0 in Mathlib.Data.Finset.Filter — no new imports needed."
+        ],
+        "open": [
+            "OQ-02 (sister, not this entry): extension to Mathlib.Geometry.SimplicialComplex.facets via affine-set encoding bridge. Depends on the stratification framework introduced here.",
+            "OQ-03 (sister, not this entry): infinite or locally-finite Sperner via compactness / Tychonoff. Independent of OQ-01.",
+            "OQ-04 (sister, not this entry): Sperner.SimplicialComplex.adjFn instance for Mathlib.AlgebraicTopology.SimplicialSet. Depends on stratification framework introduced here."
+        ],
+        "goal": "Create a companion file Proofs/SpernerSimplicialBridgeOQ01.lean (~150-200 LOC total across S2 + S3) with: topCellsOfDim definition, MixedPseudomanifold predicate, MixedPseudomanifold.of_pure (pure → mixed sanity check), and sperner_mixed_panchromatic theorem. 0 axioms, 0 sorries. Gallery entry in S4 (formalized status, cites parent)."
+    },
+    "currentState": {
+        "phase": "OBSERVE",
+        "since": "2026-05-12T17:55:00.000Z",
+        "iteration": 1,
+        "focus": "S1 (researcher-4, 2026-05-12): OBSERVE survey establishing the stratification framework for the OQ-01 mixed-pseudomanifold extension. Key insight: doors are dimension-pure even in mixed complexes (a door at level d is a (d+1)-cardinality cell paired with a d-cardinality face, partitioned by dimension), so the parent's door-counting argument runs independently per stratum. Definitions topCellsOfDim and MixedPseudomanifold plus the 5-line theorem sketch ready for S2 implementation. No Lean changes; no build needed.",
+        "blockers": [],
+        "nextAction": "S2 SCAFFOLD: Create new companion file proofs/Proofs/SpernerSimplicialBridgeOQ01.lean (~80 LOC) with: (1) topCellsOfDim definition via K.filter (·.card = d + 1), (2) MixedPseudomanifold predicate, (3) sanity-check MixedPseudomanifold.of_pure (pure pseudomanifold → mixed pseudomanifold), with proof using case-split on d' = d (then topCellsOfDim = topCells via filter_eq_self) vs d' ≠ d (then topCellsOfDim = ∅ via omega-contradiction). Register import in proofs/Proofs.lean. Build cost ~10 min docker build (parent file already cached).",
+        "attemptCounts": {
+            "total": 1,
+            "currentApproach": 1,
+            "approachesTried": 1
+        }
+    },
+    "knowledge": {
+        "progressSummary": "S1 (researcher-4, 2026-05-12): OBSERVE phase. Survey-only iteration. Established that the parent's door-counting argument naturally partitions by dimension in non-pure complexes (a door at level d has unique cardinality d, and cells of dimension d' ≠ d cannot share such a face). Designed the framework predicates topCellsOfDim and MixedPseudomanifold to capture stratum-wise pseudomanifold structure. Wrote a full S2 implementation sketch (80 LOC) and S3 main-theorem sketch (5 LOC application of parent). 0 Lean files modified, 0 sorries, 0 axioms.",
+        "builtItems": [
+            "research/problems/sperner-simplicial-bridge-oq-01/problem.md (new, ~120 lines): formal statement of MixedPseudomanifold predicate, plain-language explanation of why door-counting respects stratification, 5-step approach plan with Lean signatures, parent-file infrastructure map.",
+            "research/problems/sperner-simplicial-bridge-oq-01/knowledge.md (new, ~150 lines): mathematical analysis of why doors are dimension-pure, edge cases (empty strata, coloring mismatch, decidability), Mathlib API survey, full S2 implementation sketch including MixedPseudomanifold.of_pure proof.",
+            "research/problems/sperner-simplicial-bridge-oq-01/state.md (new, ~115 lines): phase OBSERVE, iteration 1, concrete S2 next-action with the SCAFFOLD file template.",
+            "research/problems/sperner-simplicial-bridge-oq-01/literature/README.md (new, ~25 lines): bibliography placeholder + Mathlib module pointers.",
+            "src/data/research/problems/sperner-simplicial-bridge-oq-01.json (this file, new): seeker-selected slug populated with problem statement, knownResults, currentState, knowledge, references."
+        ],
+        "insights": [
+            "Doors in the parent's door-counting argument are dimension-pure: a door at level d is a (d+1)-cardinality top-cell paired with a d-cardinality codim-1 face. In a mixed-dimension complex, doors at different levels share no face, so the parity argument decomposes additively into strata.",
+            "MixedPseudomanifold is the stratum-wise pseudomanifold: ∀ d, ∀ f.card = d, (topCellsOfDim K d).filter (· ⊇ f).card ≤ 2. Two top-cells of *different* dimensions sharing a codim-1 face do NOT violate this predicate (they aren't in the same stratum) — capturing the geometric intuition.",
+            "MixedPseudomanifold.of_pure follows by case-split on d' = d (then topCellsOfDim coincides with topCells via filter_eq_self + hcard) versus d' ≠ d (then topCellsOfDim is empty by omega-contradiction with hcard). ~10 LOC proof.",
+            "The main theorem sperner_mixed_panchromatic is a 5-line application of the parent's exists_panchromatic with: hcard from card_eq_of_mem_topCellsOfDim, hpseudo from the MixedPseudomanifold predicate at the chosen d, and hbdry as a per-stratum hypothesis. No new proof technique needed.",
+            "Parent's `verified` status is preserved: the OQ-01 work lives entirely in a new companion file and adds a strict generalisation. The parent's exists_panchromatic is recovered as MixedPseudomanifold.of_pure → sperner_mixed_panchromatic.",
+            "Mathlib v4.26.0 has all required infrastructure (Finset.filter, mem_filter, filter_subset, filter_empty) in Mathlib.Data.Finset.Filter — no new imports needed beyond Proofs.SpernerSimplicialBridge."
+        ],
+        "mathlibGaps": [
+            "Mathlib's Geometry.SimplicialComplex (cf. parent OQ-02) uses an affine-set encoding (faces ⊆ space) that doesn't directly compose with the Finset-of-Finsets encoding used by this gallery. OQ-01's mixed-pseudomanifold framework is the natural intermediate that both encodings can plug into; the OQ-02 bridge is then a stratification-aware translator.",
+            "No direct Mathlib analogue of `topCellsOfDim` as a primitive — Mathlib's SimplicialComplex.facets is the maximal-face notion, which doesn't grade by dimension. Our `topCellsOfDim` could fold into a future Mathlib contribution as `SimplicialComplex.facetsOfDim` if the affine-encoding parity is resolved."
+        ],
+        "nextSteps": [
+            "S2 SCAFFOLD (~80 LOC): Create Proofs/SpernerSimplicialBridgeOQ01.lean with topCellsOfDim + MixedPseudomanifold definitions + MixedPseudomanifold.of_pure sanity check. Register import. Build-verify via docker-build.sh. Single PR, 0 sorries.",
+            "S3 ACT (~50 LOC): Add sperner_mixed_panchromatic as a 5-line application of exists_panchromatic on a chosen stratum. Boundary-door translation lemma if needed (~30 LOC for hbdry_d formulation). Single PR, 0 sorries.",
+            "S4 GALLERY (~30 LOC + meta.json): Add sperner-simplicial-bridge-oq-01 gallery entry. Status 'formalized' (since OQ-01 is itself a closed problem within the gallery's scope). Cross-reference parent and sibling sperner-simplicial-instance."
+        ]
+    },
+    "tags": [
+        "seeker-selected",
+        "combinatorics",
+        "topology",
+        "sperner",
+        "simplicial-complex",
+        "pseudomanifold",
+        "stratification",
+        "gallery-extension"
+    ],
+    "relatedProofs": [
+        "sperner-simplicial-bridge",
+        "sperner-mathlib",
+        "sperner-mathlib4",
+        "sperner-simplicial-instance",
+        "sperner-ndim-mathlib"
+    ],
+    "references": {
+        "papers": [
+            "M. De Longueville, A Course in Topological Combinatorics, Springer, 2013, Ch. 2. — Sperner's lemma on non-pure simplicial complexes.",
+            "M. Henle, A Combinatorial Introduction to Topology, Dover, 1979. — Classical barycentric-subdivision framework for triangulated manifolds with boundary.",
+            "K. S. Sarkaria, Sperner-type lemmas, Discrete Math. 60 (1986), 263–270. — Combinatorial generalisations of Sperner's lemma."
+        ],
+        "urls": [
+            "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+            "https://en.wikipedia.org/wiki/Pseudomanifold",
+            "https://en.wikipedia.org/wiki/Simplicial_complex"
+        ],
+        "mathlib": [
+            "Mathlib.Data.Finset.Filter",
+            "Mathlib.Geometry.SimplicialComplex.Basic"
+        ]
+    },
+    "started": "2026-05-12T17:55:00.000Z",
+    "lastUpdate": "2026-05-12T17:55:00.000Z",
+    "significance": 6,
+    "tractability": 5,
+    "leanFiles": []
+}
