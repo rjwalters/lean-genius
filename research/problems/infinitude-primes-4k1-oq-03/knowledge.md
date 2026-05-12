@@ -272,3 +272,65 @@ is the **Tauberian transfer** to a prime-counting asymptotic.
   rewritten with three explicit S3 paths.
 * **Updated gallery JSON**: focus / insights / mathlibGaps / nextSteps
   reflecting the Mathlib reality.
+
+## S3 (researcher-8, 2026-05-12) — ORIENT/ACT: character-orthogonality scaffold
+
+### What S3 delivers
+
+Three **fully proved** scaffolding lemmas in
+`proofs/Proofs/InfinitudePrimes4k1OQ03.lean`, encoding the character-
+orthogonality decomposition that is the algebraic core of the
+**path-B** (Dirichlet-density) proof for `(q, a) = (4, 1)`:
+
+1. `sum_dirichletChars_zmodFour : ∀ b : ZMod 4,
+   ∑ χ : DirichletCharacter ℂ 4, χ b = if b = 1 then (2 : ℂ) else 0`
+2. `indicator_zmodFour_eq_one : ∀ n : ℕ,
+   (if (n : ZMod 4) = 1 then (1 : ℂ) else 0) =
+   ((2 : ℂ))⁻¹ * ∑ χ : DirichletCharacter ℂ 4, χ (n : ZMod 4)`
+3. `indicator_mod_four_eq_one : ∀ n : ℕ,
+   (if n % 4 = 1 then (1 : ℂ) else 0) =
+   ((2 : ℂ))⁻¹ * ∑ χ : DirichletCharacter ℂ 4, χ (n : ZMod 4)`
+
+All three are proved without any `sorry` (one short proof each — total
+~15 lines of tactic script). The `sorry` in `primes_4k1_natural_density`
+remains untouched.
+
+### How the proof works
+
+`sum_dirichletChars_zmodFour` is `DirichletCharacter.sum_characters_eq`
+(from `Mathlib.NumberTheory.DirichletCharacter.Orthogonality`) specialized
+to `n = 4`, with `Nat.totient 4 = 2` plugged in via the existing
+`totient_four` lemma. The required typeclass
+`HasEnoughRootsOfUnity ℂ (Monoid.exponent (ZMod 4)ˣ)` resolves automatically
+because `(ZMod 4)ˣ ≃ ℤ/2ℤ` has exponent 2 and `ℂ` is algebraically closed
+(via `IsSepClosed.hasEnoughRootsOfUnity`).
+
+`indicator_zmodFour_eq_one` is then a one-step rewrite + `norm_num`
+case split. `indicator_mod_four_eq_one` is `indicator_zmodFour_eq_one`
+composed with the existing bridge lemma
+`mod_four_eq_one_iff_zmodFour_eq_one`.
+
+### Why this is the right next step
+
+The path-B proof outlined in `state.md` is:
+
+1. Decompose the indicator of `{p : p ≡ 1 (mod 4)}` via character
+   orthogonality on `(ℤ/4ℤ)ˣ`.  **← S3 delivers exactly this.**
+2. Pole analysis of the L-series at `s = 1` via
+   `LSeries_residueClass_lower_bound` + matching upper bound.
+3. Tauberian transfer to natural density.
+
+Step 1 is now a verified Mathlib-style API; future iterations can
+discharge step 2 by combining the character decomposition with the L-series
+machinery already present in Mathlib v4.26.0. Step 3 still requires
+external Tauberian infrastructure (path A), so the OQ-03 sorry remains.
+
+### S3 deliverable summary
+
+* **0 new Lean files**; **3 new theorems / lemmas** added to
+  `InfinitudePrimes4k1OQ03.lean` (~55 lines including the section docstring).
+* **All 3 lemmas verified** (no new sorries introduced; the existing
+  `primes_4k1_natural_density` sorry is unchanged).
+* **0 new axiom declarations**.
+* **Total file count**: 9 theorems / lemmas in this file
+  (8 proved + 1 sorry-target).

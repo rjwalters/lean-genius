@@ -1,10 +1,18 @@
 # Current State
 
-**Phase**: ORIENT
-**Since**: 2026-05-12 (S2)
-**Iteration**: 2
+**Phase**: ACT (path-B scaffolding)
+**Since**: 2026-05-12 (S3)
+**Iteration**: 3
 
 ## Current Focus
+
+S3 (researcher-8, 2026-05-12): Added the **character-orthogonality scaffold**
+for `q = 4` to `proofs/Proofs/InfinitudePrimes4k1OQ03.lean`. Three new
+fully-proved lemmas (no new sorries) translate the general Mathlib
+orthogonality result `DirichletCharacter.sum_characters_eq` into the
+`q = 4` case, expressing the indicator of `[p % 4 = 1]` (over `ℂ`) as
+`(1/2) · ∑ χ : DirichletCharacter ℂ 4, χ((p : ZMod 4))`. This is step 1
+of the three-step path-B proof outlined in S2's state.md.
 
 S2 (researcher-11, 2026-05-12): Created
 `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` and discovered a Mathlib
@@ -54,56 +62,81 @@ asymptotic. This is *not yet* in Mathlib at the pinned revision.
 
 ## Next Action
 
-**S3 path A (Mathlib upgrade)**: Wait for `Mathlib.NumberTheory.LSeries.Wiener`
-(or equivalent Ikehara-Tauberian module) to land in a future Mathlib bump.
-Once it does, the `sorry` in `primes_4k1_natural_density` can be discharged
-by:
-1. Decompose the indicator of `{p : p ≡ 1 (mod 4)}` via character orthogonality
-   on `(ℤ/4ℤ)ˣ`.
-2. Apply PNT-AP (the Ikehara-Tauberian transfer) to extract the asymptotic.
-3. Divide to obtain the limit `→ 1/2`.
+S3 completed step 1 of the path-B proof (the character-orthogonality
+decomposition). The remaining steps:
 
-**S3 path B (Dirichlet density at current pin)**: State and prove a *Dirichlet
-density* version that is achievable now via `LSeries_residueClass_lower_bound`
-plus the matching upper bound. This gives a formally weaker but pedagogically
-equivalent result and unblocks gallery progress while waiting for Mathlib
-PNT-AP.
+**S4 path B step 2 (L-series pole analysis at `s = 1`)**: Combine the
+character decomposition `indicator_mod_four_eq_one` with
+`ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound` (for the
+pole strength of the trivial character) plus
+`DirichletCharacter.LFunction_ne_zero_of_one_le_re` (for the nonvanishing of
+the nontrivial character's L-function on the closed half-plane). This
+extracts the Dirichlet-density pole-strength data.
 
-**S3 path C (Sum-of-two-squares corollary)**: Once the density form is
-available (path A or B), add a ~30-line corollary chaining through
-`Mathlib.NumberTheory.SumTwoSquares`: *primes representable as sums of two
-squares have density 1/2 among all primes*.
+Concrete deliverable: state and prove a lemma of the form
+`Dirichlet-density-of-primes-4k1` using the `s ↘ 1` Abel-summation route,
+without yet invoking Tauberian methods. Estimated ~80 lines.
 
-Recommended: S3 path B (Dirichlet density) — it makes concrete progress at the
-current Mathlib pin without waiting on external infrastructure.
+**S5 path B step 3 (Tauberian transfer)**: The natural-density form
+(the OQ-03 sorry) remains blocked on the absence of
+`Mathlib.NumberTheory.LSeries.Wiener` / `LSeries.IkeharaTauberian` at the
+pinned revision. Once Mathlib gains a Tauberian module, the
+`primes_4k1_natural_density` sorry can be discharged.
+
+**S? path C (Sum-of-two-squares corollary)**: Once the density form is
+proved (whether Dirichlet or natural), add a ~30-line corollary chaining
+through `Mathlib.NumberTheory.SumTwoSquares`: *primes representable as sums
+of two squares have density 1/2 among all primes*.
+
+Recommended for the next session: S4 (path B step 2 — pole analysis). The
+character decomposition is now wired up and step 2's Mathlib API is
+already verified to exist at v4.26.0.
 
 ## Attempt Counts
 
-* Total attempts: 2 (S1 survey, S2 Mathlib-reality SCAFFOLD)
-* Current approach attempts: 2 (Mathlib bridge)
-* Approaches tried: 1
+* Total attempts: 3 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold)
+* Current approach attempts: 3 (Mathlib bridge → path-B step 1)
+* Approaches tried: 1 (path B, two of three steps remaining)
 
 ## Open files
 
 * `problem.md` — theoretical context, Mathlib infrastructure map,
   decomposition table, three-density theory comparison.
-* `knowledge.md` — S1 survey notes + S2 Mathlib-reality update.
-* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (NEW S2) — Mathlib-bridge
-  infinitude (verified) + natural-density statement (sorry).
+* `knowledge.md` — S1 survey + S2 Mathlib-reality + S3 orthogonality scaffold.
+* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (S2 base, S3 enriched) —
+  Mathlib-bridge infinitude (verified) + character-orthogonality scaffold
+  for `q = 4` (3 verified lemmas, S3) + natural-density statement (sorry).
 
-## S2 Deliverable
+## S3 Deliverable
 
-This iteration is a **CORRECTION SCAFFOLD**:
+This iteration is an **ORTHOGONALITY SCAFFOLD** (path-B step 1):
+* 0 new Lean files; 3 new lemmas added to `InfinitudePrimes4k1OQ03.lean`
+  (~55 lines including the section docstring)
+* 3 lemmas all **fully proved** — no new `sorry` introduced
+* 1 `sorry` total remaining (the natural-density form, OQ-03 target, unchanged from S2)
+* 0 axiom changes
+
+New lemmas:
+* `sum_dirichletChars_zmodFour` — orthogonality at `q = 4`
+* `indicator_zmodFour_eq_one` — indicator-as-half-character-sum (ZMod 4 form)
+* `indicator_mod_four_eq_one` — indicator-as-half-character-sum (`% 4` form)
+
+Files touched:
+* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` — added orthogonality
+  scaffold section (after `primes_4k1_infinite_mod`, before
+  natural-density target); added explicit
+  `Mathlib.NumberTheory.DirichletCharacter.Orthogonality` import; extended
+  `#check` block.
+* `state.md` — iteration 2 → 3, phase ORIENT → ACT, Current Focus + Next
+  Action + Open files + Attempt Counts updated.
+* `knowledge.md` — added "S3 — ORIENT/ACT: character-orthogonality scaffold"
+  section with proof sketch + role in path-B plan.
+* `src/data/research/problems/infinitude-primes-4k1-oq-03.json` — iteration
+  2 → 3, phase ORIENT → ACT, focus + insights + nextSteps refreshed.
+
+## S2 Deliverable (historical)
+
 * 1 new Lean file (`InfinitudePrimes4k1OQ03.lean`, ~165 lines)
 * 6 new theorems / lemmas (5 fully proved + 1 stated with `sorry`)
 * 1 sorry remaining (the natural-density form, OQ-03 target)
 * 0 axiom changes
-
-Produced:
-* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (new, ~165 lines).
-* `state.md` (this file, updated): iteration 1 → 2, phase OBSERVE → ORIENT.
-* `knowledge.md` (updated): added "S2 Mathlib reality check" section with the
-  corrected status of `PrimesInAP.lean`.
-* `src/data/research/problems/infinitude-primes-4k1-oq-03.json` updated:
-  iteration 1 → 2, phase OBSERVE → ORIENT, focus + insights + nextSteps
-  refreshed with the Mathlib-reality correction.
