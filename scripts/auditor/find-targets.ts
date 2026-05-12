@@ -60,6 +60,7 @@ interface AuditTarget {
   }
   actual: {
     sorryCount: number
+    mainSorryCount: number
     axiomCount: number
     trueStubCount: number
     hasMajorMathlibDep: boolean
@@ -211,9 +212,20 @@ function detectIssues(target: AuditTarget): string[] {
     issues.push(`CRITICAL: ${target.actual.trueStubCount} True stubs but status is "verified"`)
   }
 
-  // Sorry count mismatch
-  if (target.meta.claimedSorries !== target.actual.sorryCount) {
-    issues.push(`sorry mismatch: claims ${target.meta.claimedSorries}, actual ${target.actual.sorryCount}`)
+  // Sorry count mismatch.
+  // Two coexisting meta.sorries conventions for entries with companion/additional files:
+  //   - chain-aggregate (PR #18120, axiom-symmetric): counts main + additionalFiles + companion
+  //   - main-file-only (PR #18127): counts only the main proofRepoPath
+  // Accept either to break the false-clean oscillation cycle on Aristotle-companion entries
+  // (Issue #18137). When no companion/additional files are followed, both counts are equal,
+  // so single-file entries are unaffected.
+  const claimed = target.meta.claimedSorries
+  if (claimed !== target.actual.sorryCount && claimed !== target.actual.mainSorryCount) {
+    issues.push(
+      target.actual.mainSorryCount === target.actual.sorryCount
+        ? `sorry mismatch: claims ${claimed}, actual ${target.actual.sorryCount}`
+        : `sorry mismatch: claims ${claimed}, actual main ${target.actual.mainSorryCount} / chain ${target.actual.sorryCount}`
+    )
   }
 
   // Axiom count mismatch -- only flag undercounts (meta claims fewer than detected).
@@ -259,17 +271,24 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
 
   // Actual counts from Lean file(s) — includes submodules and additionalFiles
   let sorryCount = 0
+  let mainSorryCount = 0
   let axiomCount = 0
   let trueStubCount = 0
   let hasMajorMathlibDep = false
 
   const allLeanFiles = leanPath ? resolveAllLeanFiles(leanPath, proofMeta) : []
-  for (const filePath of allLeanFiles) {
+  for (let i = 0; i < allLeanFiles.length; i++) {
+    const filePath = allLeanFiles[i]
     const rawContent = fs.readFileSync(filePath, 'utf-8')
     // Strip comments to avoid counting sorry/True in comments (Issue #6130)
     const content = stripLeanComments(rawContent)
 
-    sorryCount += (content.match(/\bsorry\b/g) || []).length
+    const fileSorryCount = (content.match(/\bsorry\b/g) || []).length
+    sorryCount += fileSorryCount
+    // resolveAllLeanFiles puts the main proofRepoPath first; track its sorries
+    // separately so meta.sorries claims using the main-file-only convention
+    // (PR #18127) can validate alongside chain-aggregate claims (PR #18120).
+    if (i === 0) mainSorryCount = fileSorryCount
     axiomCount += (content.match(/^(?:(?:private|noncomputable)\s+)*axiom /gm) || []).length
 
     // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
@@ -309,6 +328,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     },
     actual: {
       sorryCount,
+      mainSorryCount,
       axiomCount,
       trueStubCount,
       hasMajorMathlibDep,
