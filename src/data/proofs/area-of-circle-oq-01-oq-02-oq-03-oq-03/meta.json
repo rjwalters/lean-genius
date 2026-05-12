@@ -58,7 +58,17 @@
       }
     ],
     "theoremCount": 15,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "prerequisites": [
+      "Power rule for real differentiation: hasDerivAt_pow (Mathlib.Analysis.Calculus.Deriv.Pow)",
+      "HasDerivAt.const_mul: derivative of c·f is c·f' (Mathlib.Analysis.Calculus.Deriv.Mul)",
+      "Slope-limit characterization of derivative: hasDerivAt_iff_tendsto_slope",
+      "Filter composition and tendsto_nhdsWithin (Mathlib.Topology.Basic)",
+      "Fundamental Theorem of Calculus Part 2: intervalIntegral.integral_eq_sub_of_hasDerivAt",
+      "Gamma function and positivity: Real.Gamma_pos_of_pos",
+      "Unit n-ball volume formula ω_n = π^(n/2)/Γ(n/2+1)",
+      "Continuity of monomial functions and integrability on bounded intervals"
+    ]
   },
   "sections": [
     {
@@ -112,6 +122,13 @@
       "The surface-to-volume ratio S_n(r)/V_n(r) = n/r is an immediate corollary: in any dimension, the ratio of surface area to volume scales as 1/r, the n-dimensional generalization of C/A = 2/r in 2D.",
       "The unit ball volume constant ω_n = π^(n/2)/Γ(n/2+1) uses the Gamma function to interpolate the volume formula across all natural number dimensions; Steiner's formula holds because ω_n is just a scalar constant in the monomial ω_n r^n.",
       "The general Steiner formula for arbitrary convex bodies — Vol(K ⊕ εB^n) = Σ C(n,k) W_k(K) ε^k where W_k are intrinsic volumes — is far deeper, requiring convex body theory and Minkowski sums not yet in Mathlib. This formalization covers only the n-ball case."
+    ],
+    "prerequisites": [
+      "Single-variable calculus: derivative, the power rule, and the FTC",
+      "Volume of the n-ball in terms of the Gamma function: V_n(r) = ω_n r^n",
+      "Slope-limit definition of derivative and its equivalence with the standard definition",
+      "Riemann/Lebesgue integration of continuous functions on bounded intervals",
+      "Archimedes' classical result that d/dr[(4π/3)r³] = 4πr² (intuition)"
     ]
   },
   "conclusion": {
@@ -137,6 +154,105 @@
       "targetId": "area-of-circle",
       "relationship": "extends",
       "description": "Root proof establishing A(r) = πr². Our result is the n-dimensional generalization of A'(r) = 2πr."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "unitBallVolume",
+      "type": "definition",
+      "description": "ω_n = π^(n/2)/Γ(n/2 + 1) — the volume of the unit n-ball expressed via the Gamma function. This single closed form interpolates the volume formula across all natural-number dimensions, recovering ω_2 = π and ω_3 = 4π/3 as special cases.",
+      "leanType": "(n : ℕ) → ℝ"
+    },
+    {
+      "name": "nBallVol",
+      "type": "definition",
+      "description": "V_n(r) = ω_n r^n — the volume of the closed n-ball of radius r. As a function of r, V_n is a monomial of degree n with leading coefficient ω_n. This monomial structure is what makes Steiner's formula a direct power-rule application.",
+      "leanType": "(n : ℕ) (r : ℝ) → ℝ"
+    },
+    {
+      "name": "nSphereArea",
+      "type": "definition",
+      "description": "S_n(r) = n · ω_n · r^(n−1) — the surface area of the (n−1)-sphere of radius r. Defined directly so the identity S_n(r) = V_n'(r) becomes the theorem to prove (`steiners_formula`) rather than a definition by fiat.",
+      "leanType": "(n : ℕ) (r : ℝ) → ℝ"
+    },
+    {
+      "name": "steiners_formula",
+      "type": "core",
+      "description": "**Steiner's formula** (derivative form): HasDerivAt (nBallVol n) (nSphereArea n r) r. The volume of the n-ball is differentiable in r with derivative equal to the surface area of the bounding sphere. Proof: `hasDerivAt_pow n r` gives the power rule for r^n; `.const_mul ω_n` lifts; `convert` + `ring` reconciles the algebraic form.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) (r : ℝ) → HasDerivAt (nBallVol n) (nSphereArea n r) r"
+    },
+    {
+      "name": "shell_limit",
+      "type": "core",
+      "description": "**Archimedes' shell limit**: lim_{h→0} [V_n(r+h) − V_n(r)] / h = S_n(r). This is the geometric / intuitive formulation: a thin shell of thickness h around the n-ball has volume approximately S_n(r)·h. Derived from `steiners_formula` via `hasDerivAt_iff_tendsto_slope` and filter composition.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) (r : ℝ) → Filter.Tendsto (fun h => (nBallVol n (r + h) - nBallVol n r) / h) (nhds 0) (nhds (nSphereArea n r))"
+    },
+    {
+      "name": "volume_from_steiner",
+      "type": "core",
+      "description": "**FTC form**: V_n(r) = ∫₀ʳ S_n(ρ) dρ. The volume of the n-ball is the integral of the surface-area function from 0 to r — the 'shell decomposition' viewpoint. Proved by FTC Part 2 (`intervalIntegral.integral_eq_sub_of_hasDerivAt`) using V_n(0) = 0 as the boundary condition.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) (r : ℝ) → nBallVol n r = ∫ ρ in (0 : ℝ)..r, nSphereArea n ρ"
+    },
+    {
+      "name": "shell_volume",
+      "type": "supporting",
+      "description": "**Annulus formula**: ∫_{r₁}^{r₂} S_n(ρ) dρ = V_n(r₂) − V_n(r₁). The volume of the spherical shell {r₁ ≤ ‖x‖ ≤ r₂} is the difference of n-ball volumes. Direct consequence of FTC Part 2.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) (r₁ r₂ : ℝ) → ∫ ρ in r₁..r₂, nSphereArea n ρ = nBallVol n r₂ - nBallVol n r₁"
+    },
+    {
+      "name": "steiner_2d_explicit",
+      "type": "supporting",
+      "description": "Specialization to n = 2: d/dr[πr²] = 2πr, the classical Archimedes circumference-from-area identity. Combines `steiners_formula` with `unitBallVolume_two`. Recovers the 2D result that motivated Archimedes' work on areas of polygons inscribed in circles.",
+      "leanType": "(r : ℝ) → HasDerivAt (fun r => π * r ^ 2) (2 * π * r) r"
+    },
+    {
+      "name": "steiner_3d_explicit",
+      "type": "supporting",
+      "description": "Specialization to n = 3: d/dr[(4π/3)r³] = 4πr², the sphere surface area = derivative of ball volume. Combines `steiners_formula` with `unitBallVolume_three`. Archimedes' 3D theorem `S = 4πr²` becomes a single line.",
+      "leanType": "(r : ℝ) → HasDerivAt (fun r => (4 * π / 3) * r ^ 3) (4 * π * r ^ 2) r"
+    },
+    {
+      "name": "surface_to_volume_ratio",
+      "type": "core",
+      "description": "**Universal n/r scaling**: S_n(r)/V_n(r) = n/r for r ≠ 0. The surface-to-volume ratio of an n-ball scales as 1/r, with the dimension n appearing linearly. In 2D: C/A = 2/r (perimeter-to-area). In 3D: S/V = 3/r. Generalizes to all n.",
+      "leanType": "(n : ℕ) (hn : 1 ≤ n) (r : ℝ) (hr : r ≠ 0) → nSphereArea n r / nBallVol n r = n / r"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Jacob Steiner"],
+      "title": "Über parallele Flächen",
+      "year": "1840",
+      "venue": "Monatsbericht der Königlich Preußischen Akademie der Wissenschaften zu Berlin, pp. 114–118",
+      "note": "Steiner's original 1840 paper introducing the parallel-body formula Vol(K ⊕ εB^n) = Σ C(n,k) W_k(K) ε^k for convex K. The n-ball case formalized here is the simplest instance, where K = {0} and the formula reduces to V_n(r) = ω_n r^n."
+    },
+    {
+      "authors": ["Archimedes of Syracuse"],
+      "title": "On the Sphere and Cylinder, Book I",
+      "year": "ca. 225 BCE",
+      "venue": "In: T. L. Heath (ed.), *The Works of Archimedes*, Cambridge University Press (1897)",
+      "note": "Archimedes' derivation that the surface area of a sphere is 4πr² and the volume is (4π/3)r³ — implicitly establishing d/dr[(4π/3)r³] = 4πr², the n=3 case of Steiner's formula 2000 years before Steiner. The geometric origin of the result formalized here."
+    },
+    {
+      "authors": ["Hermann Weyl"],
+      "title": "On the Volume of Tubes",
+      "year": "1939",
+      "venue": "American Journal of Mathematics, vol. 61, no. 2, pp. 461–472",
+      "note": "Weyl's tube formula generalizes Steiner's formula to Riemannian manifolds: for a submanifold M ⊂ ℝ^n, Vol(Tube(M, r)) is a polynomial in r whose coefficients are intrinsic volumes involving curvature integrals. The next-most-general formula beyond Steiner's; listed in this file's `openQuestions` as a target for future Lean formalization."
+    },
+    {
+      "authors": ["Rolf Schneider"],
+      "title": "Convex Bodies: The Brunn–Minkowski Theory",
+      "year": "2014",
+      "venue": "Encyclopedia of Mathematics and its Applications 151, Cambridge University Press, 2nd expanded ed., Ch. 4",
+      "note": "Modern reference for Steiner's formula in the full generality of convex bodies and Alexandrov's mixed volume theory. The standard text for the convex-body extension that this file's `openQuestions` cites as out of reach pending Minkowski-sum infrastructure in Mathlib."
+    },
+    {
+      "authors": ["The Mathlib Community"],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides `hasDerivAt_pow` (power rule), `HasDerivAt.const_mul`, `intervalIntegral.integral_eq_sub_of_hasDerivAt` (FTC), `hasDerivAt_iff_tendsto_slope`, and `Real.Gamma_pos_of_pos`. The file uses these as black boxes; the entire Steiner-formula proof is then ~5 lines after type-bridging."
     }
   ],
   "sorries": 0,
