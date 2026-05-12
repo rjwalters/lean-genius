@@ -953,6 +953,64 @@ example :
         ((Finset.range 101).filter (fun p => p.Prime ∧ p ^ 2 ≤ 100)).card := by
   native_decide
 
+/-- **`(n/2)^√n` correction-factor envelope** (Iter 22): chains Iter 20's
+    cardinality bound `|{p prime : p² ≤ n}| ≤ √n` (`small_prime_card_le_sqrt`)
+    with Iter 21's multiplicative combination `∏ (n/p) ≤ (n/2)^card`
+    (`prod_div_small_prime_le_pow_card`) via exponent monotonicity
+    (`Nat.pow_le_pow_right`, requires base `≥ 1`).
+
+    This is **Step 6** of the four-step Hanson bridge documented post-Iter-21:
+
+    1. ✓ Iter 19 (#17710): product bound `∏ p^(log_p n - 1) ≤ ∏ (n/p)`.
+    2. ⏳ Iter 17 (PR #17619, open): support reduction `p² > n → factor = 1`.
+    3. ✓ Iter 20 (#17767): cardinality bound `|small primes| ≤ √n`.
+    4. ✓ Iter 21 (#17816, pointwise): `n / p ≤ n / 2` for any prime `p`.
+    5. ✓ Iter 21 (#17816, main): `∏_{p² ≤ n} (n/p) ≤ (n/2) ^ card`.
+    6. **This iter**: `≤ (n/2) ^ √n` (under hypothesis `2 ≤ n`).
+
+    The hypothesis `2 ≤ n` makes `n / 2 ≥ 1` (since `2 / 2 = 1`), enabling
+    `Nat.pow_le_pow_right`. The boundary cases `n ∈ {0, 1}` are degenerate
+    (the small-prime filter is empty, so the LHS is the empty product `= 1`)
+    and are handled separately by the direct numerical Hanson lemmas
+    `hanson_n1` and `hanson_n2`.
+
+    Concrete numerics:
+    * `n = 10`: filter `{2, 3}`, LHS = `5 · 3 = 15`, `Nat.sqrt 10 = 3`,
+                 RHS = `5³ = 125`. ✓ (15 ≤ 125)
+    * `n = 100`: filter `{2, 3, 5, 7}`, LHS = `50 · 33 · 20 · 14 = 462000`,
+                  `Nat.sqrt 100 = 10`, RHS = `50¹⁰ ≈ 9.77 · 10¹⁶`. ✓
+    * `n = 1000`: filter has `|{2,3,5,7,11,13,17,19,23,29,31}| = 11`
+                   primes with `p² ≤ 1000`, `Nat.sqrt 1000 = 31`, so the
+                   `√n` envelope is loose for large `n` (as expected for
+                   the structural Chebyshev bound that this lemma feeds).
+
+    Combined with `Nat.primorial_le_4_pow` and (once #17619 lands) the
+    support-reduction step, this yields the Chebyshev-style envelope
+
+      ```
+      lcmRange n  ≤  4^n · (n/2)^√n
+      ```
+
+    on the structural decomposition `lcmRange n = primorial n · ∏ p^(log_p n - 1)`.
+    -/
+theorem prod_div_small_prime_le_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
+    ∏ p ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n), n / p
+      ≤ (n / 2) ^ n.sqrt :=
+  (prod_div_small_prime_le_pow_card n).trans
+    (Nat.pow_le_pow_right
+      ((Nat.one_le_div_iff (by decide : (0 : ℕ) < 2)).mpr hn)
+      (small_prime_card_le_sqrt n))
+
+/-- **Concrete numerical witness** (Iter 22): at `n = 10` the small-prime
+    product `∏_{p ∈ {2,3}} (10 / p) = 15` is bounded by
+    `(10 / 2) ^ Nat.sqrt 10 = 5³ = 125`.
+
+    Sanity check for `prod_div_small_prime_le_pow_sqrt`. -/
+example :
+    ∏ p ∈ (Finset.range 11).filter (fun p => p.Prime ∧ p ^ 2 ≤ 10), 10 / p
+      ≤ (10 / 2) ^ Nat.sqrt 10 := by
+  decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
