@@ -344,8 +344,105 @@ structure. 0 `axiom` declarations. 1 structure-encoded assumption
 * S1 (researcher-12, 2026-05-12): OBSERVE markdown survey, no Lean.
 * S2 (this file, 2026-05-12): ORIENT scaffold — structure + 3 stmts.
 * S3 (planned): discharge `straight_fold_recovers_HH`.
-* S4 (planned): discharge `curved_fold_algebraic_implies_origami`.
+* S4 (this file, 2026-05-12): constructive HH-2 (perpendicular
+  bisector) — second ingredient of the eventual full `HHAxioms`
+  witness. See Part 6 below.
 * S5 (planned, OPEN): `K_curved_eq_K_origami` remains a sorry.
 -/
+
+-- ============================================================
+-- PART 6: Constructive HH-2 — Perpendicular Bisector (S4)
+-- ============================================================
+
+/-
+### S4 partial discharge: HH-2 standalone construction
+
+The S3 conservativity target `straight_fold_recovers_HH` reduces to
+the geometric content of HH-1 plus the construction of a full
+`HHAxioms` witness. S3 (open PR, this slug) discharged the HH-1
+ingredient via `lineThrough`, `hh1_existence`, and
+`straight_fold_endpoints_collinear`. This S4 section discharges the
+HH-2 ingredient: for any two distinct points, the perpendicular
+bisector is a fold line that places the first point exactly onto the
+second.
+
+Concretely we exhibit `perpBisector p₁ p₂ h : Line` for `h : p₁ ≠ p₂`
+and prove `reflectAcross (perpBisector p₁ p₂ h) p₁ = p₂`. This is
+HH-2 (`AngleTrisectionOQ05.HHAxioms.hh2`) in standalone form, no
+longer relying on a witnessing `HHAxioms` instance.
+
+Combined with S3's HH-1 discharge, only HH-3 through HH-7 remain.
+HH-4 (perpendicular through a point) is the next natural target;
+HH-6 (Beloch fold) is the deepest and last.
+
+After this section the geometric content of HH-2 is constructive:
+the perpendicular bisector is computable from the endpoint
+coordinates and provably maps one endpoint to the other under
+reflection. No new `sorry` is introduced; the file's sorry count is
+unchanged at 3.
+-/
+
+/-- The perpendicular bisector of two distinct points `p₁ ≠ p₂` in
+the plane. Coefficients
+`(a, b, c) = (p₂.1 - p₁.1, p₂.2 - p₁.2,
+  -((p₂.1² - p₁.1²) + (p₂.2² - p₁.2²)) / 2)`
+encode the locus of points equidistant from `p₁` and `p₂`. The
+non-degeneracy clause `(a, b) ≠ (0, 0)` follows because `p₁ ≠ p₂`
+forces at least one coordinate to differ. -/
+noncomputable def perpBisector (p₁ p₂ : Point) (h : p₁ ≠ p₂) : Line where
+  a := p₂.1 - p₁.1
+  b := p₂.2 - p₁.2
+  c := -((p₂.1^2 - p₁.1^2) + (p₂.2^2 - p₁.2^2)) / 2
+  nondeg := by
+    by_contra hcontra
+    push_neg at hcontra
+    obtain ⟨ha, hb⟩ := hcontra
+    apply h
+    have hx : p₁.1 = p₂.1 := by linarith [sub_eq_zero.mp ha]
+    have hy : p₁.2 = p₂.2 := by linarith [sub_eq_zero.mp hb]
+    exact Prod.ext hx hy
+
+/-- The squared chord length `(p₂.1 - p₁.1)² + (p₂.2 - p₁.2)²` is
+strictly positive when `p₁ ≠ p₂`. Used to discharge the denominator
+in `reflectAcross_perpBisector`. -/
+theorem perpBisector_dirSq_pos (p₁ p₂ : Point) (h : p₁ ≠ p₂) :
+    0 < (p₂.1 - p₁.1)^2 + (p₂.2 - p₁.2)^2 := by
+  rcases eq_or_ne p₁.1 p₂.1 with hx | hx
+  · have hy : p₁.2 ≠ p₂.2 := fun heq => h (Prod.ext hx heq)
+    have h2 : 0 < (p₂.2 - p₁.2)^2 :=
+      sq_pos_of_ne_zero _ (sub_ne_zero.mpr (Ne.symm hy))
+    nlinarith [sq_nonneg (p₂.1 - p₁.1)]
+  · have h1 : 0 < (p₂.1 - p₁.1)^2 :=
+      sq_pos_of_ne_zero _ (sub_ne_zero.mpr (Ne.symm hx))
+    nlinarith [sq_nonneg (p₂.2 - p₁.2)]
+
+/-- **HH-2 reflection law.** The perpendicular bisector of `p₁` and
+`p₂` reflects `p₁` onto `p₂`. Algebraically, plugging the
+`perpBisector` coefficients into `reflectAcross` yields `t = -1` for
+`p₁`, so `p₁ - t · (a, b) = p₁ + (a, b) = p₂`. This is the defining
+geometric property of HH-2 and the witness consumed by
+`hh2_existence` below. -/
+theorem reflectAcross_perpBisector (p₁ p₂ : Point) (h : p₁ ≠ p₂) :
+    reflectAcross (perpBisector p₁ p₂ h) p₁ = p₂ := by
+  have hD : (p₂.1 - p₁.1)^2 + (p₂.2 - p₁.2)^2 ≠ 0 :=
+    ne_of_gt (perpBisector_dirSq_pos p₁ p₂ h)
+  refine Prod.ext ?_ ?_
+  · simp only [reflectAcross, perpBisector]
+    field_simp
+    ring
+  · simp only [reflectAcross, perpBisector]
+    field_simp
+    ring
+
+/-- **HH-2 (existence form, standalone).** Given two distinct points
+in the plane, there exists a fold line whose reflection sends the
+first onto the second. This is the geometric content of the HH-2
+field of `HHAxioms`; the explicit witness is the perpendicular
+bisector. Together with `hh1_existence` (S3) this provides two of
+the seven HH ingredients required by `straight_fold_recovers_HH`. -/
+theorem hh2_existence : ∀ (p₁ p₂ : Point), p₁ ≠ p₂ →
+    ∃ l : Line, reflectAcross l p₁ = p₂ := by
+  intro p₁ p₂ h
+  exact ⟨perpBisector p₁ p₂ h, reflectAcross_perpBisector p₁ p₂ h⟩
 
 end AngleTrisectionOQ05OQ04
