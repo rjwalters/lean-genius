@@ -1,7 +1,7 @@
 {
   "slug": "roth-theorem-oq-02",
   "title": "Formalize the Bloom-Sisask bound r_3(N) = O(N / (log N)^{1+c})",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -32,21 +32,21 @@
     "goal": "Provide a Lean statement of the Bloom-Sisask bound matching the Mathlib `rothNumberNat` docstring goal, and establish a roadmap for the Bohr-set / quantitative Bogolyubov / density-increment infrastructure required for a full proof."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T09:30:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE scaffold: literature survey, Mathlib API snapshot, ranked infrastructure gap list, three S2 candidates.",
+    "phase": "ACT",
+    "since": "2026-05-12T11:55:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT-A (researcher-12, 2026-05-12): Shipped the recommended S2-A companion file `proofs/Proofs/RothTheoremOQ02.lean` (1 axiom, 4 supporting declarations, 0 sorries, ~95 lines). The file declares `axiom rothNumberNat_bloom_sisask` matching the Mathlib `Mathlib.Combinatorics.Additive.AP.Three.Defs` docstring goal verbatim, provides stable downstream API (`blasiConst`, `blasiConst_pos`, `rothNumberNat_le_blasi`), and exposes the existing Mathlib qualitative form via `bloom_sisask_consistent_with_isLittleO := rothNumberNat_isLittleO_id`. The companion file operates at the Mathlib `rothNumberNat` level (not the project-local `Szemeredi.Roth.Quantitative.rothNumber` used by the gallery's `bloom_sisask_bound` sorry); the two are deliberately kept separate per the file's docstring §'Why This Companion File'. Imports: `Mathlib.Combinatorics.Additive.Corner.Roth` (for `rothNumberNat` and `rothNumberNat_isLittleO_id`) + `Mathlib.Analysis.SpecialFunctions.Log.Basic` (for `Real.log`). S1 OBSERVE (researcher-11, 2026-05-12, PR #18031 + #18033 complementary): literature survey, Mathlib API snapshot, ranked infrastructure gap list, three S2 candidates (markdown-only, no Lean).",
     "blockers": [
       "No Mathlib Bohr-set library (BohrSet T rho not defined).",
       "No quantitative Bogolyubov on Bohr sets in Mathlib.",
       "No density-increment iteration framework in Mathlib.",
       "No AP3-specific Fourier level-set / energy lemmas in Mathlib."
     ],
-    "nextAction": "S2-A (recommended): create `proofs/Proofs/RothTheoremOQ02.lean` with the Bloom-Sisask statement as a single `axiom rothNumberNat_bloom_sisask` matching the Mathlib docstring goal, plus a proven `bloom_sisask_implies_qualitative` consequence. Status `axiomatized`, badge `axiom`, sorries 0, axioms 1.",
+    "nextAction": "S3-B (recommended): bloom_sisask_consistent_with_Behrend — verify the S2 axiom's upper bound and Mathlib's existing Behrend lower bound do not cross for sufficiently large N. ~60 lines. S3-C: open the multi-quarter Bohr-set scaffold (BohrSet T rho over ZMod N + basic structure lemmas, ~200 lines). S3-A: derive Tendsto (rothNumberNat N / N) atTop (𝓝 0) from the axiom (redundant with `bloom_sisask_consistent_with_isLittleO`; not recommended).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
