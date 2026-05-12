@@ -37,15 +37,17 @@ half-angle squared sine.
   `cos(a − b) = cos a · cos b + sin a · sin b` plus a hypothesis
   that the spherical law of cosines holds for `(a, b, c, C)`:
   `haversine_formula_algebraic`.
-* The corresponding `SphericalTriangle` version recorded as
-  `sorry`: `haversine_formula`. The remaining gap is the
-  conversion of the parent's projection-inner-product term
+* The corresponding `SphericalTriangle` version, `haversine_formula`,
+  is closed in S2 via the bridge lemma
+  `inner_projectPerp_eq_sin_sin_cos_angleC`, which converts the
+  parent's projection-inner-product term
   `⟨projectPerp A C, projectPerp B C⟩` into the
   `sin(a) · sin(b) · cos(angleC)` form using
   `norm_projectPerp_eq_sin` from the parent file together with
-  a careful case split on the degenerate projection.
+  a case split on the degenerate projection (matching `angleC`'s
+  dependent-`if` definition).
 
-## Strategy for `haversine_formula`
+## Strategy for `haversine_formula` (CLOSED at S2)
 
 The proof factors through `haversine_formula_algebraic`. The
 only obstacle is the parent's `spherical_law_of_cosines_trig`
@@ -71,12 +73,15 @@ directly from `c = ±(a − b)` (mod 2π).
 
 ## Next iterations
 
-* **S2**: discharge `haversine_formula` from
-  `haversine_formula_algebraic` by case-splitting on the
-  non-degenerate/degenerate branches of `angleC`.
+* **S2 (this iteration, CLOSED)**: discharged `haversine_formula` from
+  `haversine_formula_algebraic` via `cos_sideC_trig_form`, in turn proved
+  via the bridge lemma `inner_projectPerp_eq_sin_sin_cos_angleC` with
+  the planned non-degenerate / degenerate case split on `angleC`.
 * **S3**: navigation / GPS applications — Mercator and ECEF
   conversion lemmas, great-circle distance computation in
   haversine form.
+* **S4**: inverse formula `sideC = 2 · arcsin(√(haversine sideC))`
+  for short-distance numerical stability.
 -/
 
 import Proofs.SphericalLawOfCosines
@@ -230,20 +235,128 @@ For any spherical triangle with sides `a := t.sideB`, `b := t.sideA`,
 
   hav(c) = hav(a − b) + sin(a) · sin(b) · hav(C).
 
-**Status**: OPEN at S1. The pure algebraic identity is proved
-unconditionally as `haversine_formula_algebraic`. The remaining
-content is the conversion of the parent's projection-inner-product
-form of the spherical law of cosines into the trigonometric form
-`cos c = cos a · cos b + sin a · sin b · cos C`, which requires a
-case split on degenerate projections (see strategy in file
-header).
+**Status**: CLOSED at S2. The pure algebraic identity is proved
+unconditionally as `haversine_formula_algebraic`. The conversion
+of the parent's projection-inner-product form of the spherical
+law of cosines into the trigonometric form
+`cos c = cos a · cos b + sin a · sin b · cos C` is supplied by
+`inner_projectPerp_eq_sin_sin_cos_angleC` below, which case-splits
+on the degenerate projection branch matching `t.angleC`'s
+definition. -/
 
-Deferred to S2. -/
+/-- **Bridge lemma (S2)**: the projection inner-product term in
+`SphericalLawOfCosines.spherical_law_of_cosines_trig` equals the
+trigonometric expression `sin(t.sideB) · sin(t.sideA) · cos(t.angleC)`.
+
+This is the geometric content needed to convert the parent's
+projection form
+
+  cos(t.sideC) = cos(t.sideB) · cos(t.sideA) + ⟨projectPerp A C, projectPerp B C⟩
+
+into the standard trigonometric form
+
+  cos(t.sideC) = cos(t.sideB) · cos(t.sideA) + sin(t.sideB) · sin(t.sideA) · cos(t.angleC).
+
+**Proof outline.** Let `projA := projectPerp t.A t.C`, `projB := projectPerp t.B t.C`.
+By `norm_projectPerp_eq_sin` we have `‖projA‖ = sin t.sideB` and
+`‖projB‖ = sin t.sideA`. Case split:
+
+* **Non-degenerate** (`‖projA‖ ≠ 0` and `‖projB‖ ≠ 0`): `t.angleC` unfolds to
+  `Real.arccos (⟨projA, projB⟩ / (‖projA‖ · ‖projB‖))`. The argument lies in `[-1, 1]`
+  by Cauchy–Schwarz, so `Real.cos_arccos` applies and gives
+  `cos t.angleC = ⟨projA, projB⟩ / (‖projA‖ · ‖projB‖)`. Multiplying through by
+  `‖projA‖ · ‖projB‖ = sin t.sideB · sin t.sideA` recovers `⟨projA, projB⟩`.
+* **Degenerate** (`‖projA‖ = 0` or `‖projB‖ = 0`): `t.angleC = 0` by definition, so
+  `cos t.angleC = 1`. One of the projections is the zero vector, hence
+  `⟨projA, projB⟩ = 0`. The corresponding `sin t.sideB = 0` (resp. `sin t.sideA = 0`)
+  via the `norm_projectPerp_eq_sin` bridge, so the RHS is also `0`. -/
+theorem inner_projectPerp_eq_sin_sin_cos_angleC (t : SphericalTriangle) :
+    @inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C) =
+      Real.sin t.sideB * Real.sin t.sideA * Real.cos t.angleC := by
+  have h_normA : ‖projectPerp t.A t.C‖ = Real.sin t.sideB :=
+    norm_projectPerp_eq_sin t.A t.C t.hA t.hC
+  have h_normB : ‖projectPerp t.B t.C‖ = Real.sin t.sideA :=
+    norm_projectPerp_eq_sin t.B t.C t.hB t.hC
+  by_cases h_deg : ‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0
+  · -- Degenerate branch: cos t.angleC = 1 (cos 0), but the cross-term sin·sin still
+    -- vanishes because one of the sines is 0.
+    have h_angle_zero : t.angleC = 0 := by
+      unfold SphericalTriangle.angleC
+      split_ifs with h
+      · rfl
+      · exact absurd h_deg h
+    rw [h_angle_zero, Real.cos_zero, mul_one]
+    rcases h_deg with hA0 | hB0
+    · have h_zeroA : projectPerp t.A t.C = 0 := norm_eq_zero.mp hA0
+      have h_sinB : Real.sin t.sideB = 0 := h_normA.symm.trans hA0
+      rw [h_zeroA, inner_zero_left, h_sinB, zero_mul]
+    · have h_zeroB : projectPerp t.B t.C = 0 := norm_eq_zero.mp hB0
+      have h_sinA : Real.sin t.sideA = 0 := h_normB.symm.trans hB0
+      rw [h_zeroB, inner_zero_right, h_sinA, mul_zero]
+  · -- Non-degenerate branch
+    push_neg at h_deg
+    obtain ⟨hA_ne, hB_ne⟩ := h_deg
+    have h_normA_pos : 0 < ‖projectPerp t.A t.C‖ :=
+      lt_of_le_of_ne (norm_nonneg _) (Ne.symm hA_ne)
+    have h_normB_pos : 0 < ‖projectPerp t.B t.C‖ :=
+      lt_of_le_of_ne (norm_nonneg _) (Ne.symm hB_ne)
+    have h_prod_pos : 0 < ‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖ :=
+      mul_pos h_normA_pos h_normB_pos
+    have h_prod_ne : ‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖ ≠ 0 :=
+      h_prod_pos.ne'
+    -- Cauchy–Schwarz: |⟨projA, projB⟩| ≤ ‖projA‖ · ‖projB‖
+    have h_cs : |@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)| ≤
+        ‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖ :=
+      abs_real_inner_le_norm _ _
+    have h_cs' := abs_le.mp h_cs
+    -- Bounds for arccos argument
+    have h_div_le :
+        (@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
+          (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖) ≤ 1 :=
+      (div_le_one h_prod_pos).mpr h_cs'.2
+    have h_div_ge :
+        -1 ≤ (@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
+              (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖) := by
+      rw [le_div_iff h_prod_pos]; linarith [h_cs'.1]
+    -- Unfold t.angleC on the non-degenerate branch
+    have h_not_deg : ¬ (‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0) :=
+      fun h => h.elim hA_ne hB_ne
+    have h_angle_eq : t.angleC = Real.arccos
+        ((@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
+         (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖)) := by
+      unfold SphericalTriangle.angleC
+      split_ifs with h
+      · exact absurd h h_not_deg
+      · rfl
+    rw [h_angle_eq, Real.cos_arccos h_div_ge h_div_le, ← h_normA, ← h_normB]
+    field_simp
+    ring
+
+/-- **Trigonometric form of the spherical law of cosines.** Combines the parent's
+`spherical_law_of_cosines_trig` (projection-inner-product form) with the bridge
+lemma `inner_projectPerp_eq_sin_sin_cos_angleC` to obtain the textbook identity. -/
+theorem cos_sideC_trig_form (t : SphericalTriangle) :
+    Real.cos t.sideC =
+      Real.cos t.sideB * Real.cos t.sideA +
+        Real.sin t.sideB * Real.sin t.sideA * Real.cos t.angleC := by
+  rw [spherical_law_of_cosines_trig, inner_projectPerp_eq_sin_sin_cos_angleC]
+
+/-- **Haversine formula for a spherical triangle (S2: CLOSED).**
+
+For any spherical triangle with sides `a := t.sideB`, `b := t.sideA`,
+`c := t.sideC` and dihedral angle `C := t.angleC` at vertex `t.C`,
+
+  hav(c) = hav(a − b) + sin(a) · sin(b) · hav(C).
+
+Discharges the S1 `sorry` by routing through `cos_sideC_trig_form` (S2 bridge from
+the parent's projection-inner-product form) and `haversine_formula_algebraic`
+(unconditional algebraic identity). -/
 theorem haversine_formula (t : SphericalTriangle) :
     haversine t.sideC =
       haversine (t.sideB - t.sideA) +
-        Real.sin t.sideB * Real.sin t.sideA * haversine t.angleC := by
-  sorry
+        Real.sin t.sideB * Real.sin t.sideA * haversine t.angleC :=
+  haversine_formula_algebraic t.sideB t.sideA t.sideC t.angleC
+    (cos_sideC_trig_form t)
 
 /- ## Part V: Specialised consequences (unconditional small cases) -/
 
@@ -286,11 +399,13 @@ theorem haversine_sub_comm (a b : ℝ) :
 | `cos_form_of_haversine_formula`       | PROVED   |
 | `haversine_formula_holds_when_sin_sideA_zero` | PROVED |
 | `haversine_sub_comm`                  | PROVED   |
-| `haversine_formula` (`SphericalTriangle`) | OPEN (sorry, deferred to S2) |
+| `inner_projectPerp_eq_sin_sin_cos_angleC` | PROVED (S2 bridge) |
+| `cos_sideC_trig_form`                 | PROVED (S2) |
+| `haversine_formula` (`SphericalTriangle`) | PROVED (S2) |
 
 Axioms: 0
-Sorries: 1 (`haversine_formula`)
-Proved theorems: 12
+Sorries: 0
+Proved theorems: 15
 Definitions: 1
 -/
 
