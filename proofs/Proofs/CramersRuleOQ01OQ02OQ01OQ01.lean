@@ -5,41 +5,57 @@ import Proofs.CramersRuleOQ01OQ02
 import Proofs.CramersRuleOQ01OQ02OQ01
 
 /-
-# Inductive n×n Quasideterminant Theory over a Field
-# (cramers-rule-oq-01-oq-02-oq-01-oq-01) — S2
+# Inductive n×n Quasideterminant Theory
+# (cramers-rule-oq-01-oq-02-oq-01-oq-01)
 
-This is the **commutative half** (Route A) of the open question stated in
-`CramersRuleOQ01OQ02OQ01.lean` lines 29–36: extend the 2×2 / 3×3
-Gelfand–Retakh quasideterminant theory to general n×n matrices.
+S2 — Route A (commutative): uniform-in-n quasideterminant `qdetF` over a field.
+S3 — Route B SCAFFOLD (non-commutative): one-step Schur formula
+`qdetN_step` plus field-consistency reduction to `qdetF` (deferred sorry).
 
-The fully non-commutative theory over division rings (Route B —
-`qdetN` via mutual strong recursion with `qdetN_inv`) is deferred to S3.
+This file extends the 2×2 / 3×3 Gelfand–Retakh quasideterminant theory
+(`CramersRuleOQ01OQ02`, `CramersRuleOQ01OQ02OQ01`) to general n×n matrices.
 
-## Definition (Route A — commutative)
+## Definition (Route A — commutative, S2)
 
 For an `(n+1)×(n+1)` matrix `A` over a field `F`, the (i,j)-quasideterminant
 is the quotient
   `qdetF A i j  :=  det(A) / det(minor_{ij}(A))`,
 where `minor_{ij}(A) := A.submatrix (Fin.succAbove i) (Fin.succAbove j)`
-is the complementary n×n submatrix.
+is the complementary n×n submatrix. This is uniform in n. The 3×3
+specialization recovers `CramersRuleOQ01OQ02OQ01.qdet3` by `rfl`, and the
+2×2 specializations recover `CramersRuleOQ01OQ02.qdet00` / `qdet11`
+(modulo the standard non-degeneracy hypotheses).
 
-This is uniform in n. The 3×3 specialization recovers
-`CramersRuleOQ01OQ02OQ01.qdet3` by `rfl`, and the 2×2 (0,0)-specialization
-recovers `CramersRuleOQ01OQ02.qdet00` (modulo the standard `A 1 1 ≠ 0`
-non-degeneracy hypothesis carried in the parent's
-`qdet00_mul_eq_det`).
+## Definition (Route B — non-commutative, S3 SCAFFOLD)
+
+Over a division ring `D`, the Gelfand–Retakh Schur recurrence asserts
+  `qdetN A i j = A i j − ∑_{p,q : Fin n}  A i (succAbove j q) · Minv q p ·
+                                            A (succAbove i p) j`
+where `Minv` is the homological-relations inverse of the complementary
+`n×n` minor `M := A.submatrix (succAbove i) (succAbove j)`.
+
+The mutual recursion `qdetN` ↔ `qdetN_inv` is deferred to S4. S3 supplies
+the **one-step Schur formula** `qdetN_step` (taking `Minv` as input),
+which is non-recursive and reusable as the building block of either:
+* a structural-recursion approach over `n` (matching `Σ n, Matrix _ _ D`), or
+* an `Invertible (minorIJ A i j)`-parameterised formulation that avoids
+  mutual recursion entirely by treating the inverse as a typeclass input.
+
+Both routes converge on `qdetN_step A i j Minv`; only the construction of
+`Minv` differs. The field-consistency theorem `qdetN_step_eq_qdetF` (S3,
+sorry) anchors the recurrence: over a field, choosing `Minv := M⁻¹`
+recovers `qdetF A i j = det(A) / det(M)`.
 
 ## Main results
 
-- `qdetF`: uniform definition.
-- `qdetF_field_quotient`: the defining multiplicative identity
-  `qdetF A i j * det(minor) = det(A)` (provided `det(minor) ≠ 0`).
-- `qdetF_ne_zero`: nonvanishing.
-- `qdetF_eq_qdet3`: n=3 reduces to `CramersRuleOQ01OQ02OQ01.qdet3` (`rfl`).
-- `qdetF_eq_qdet00`: n=2 (0,0)-case reduces to
-  `CramersRuleOQ01OQ02.qdet00` (under `A 1 1 ≠ 0`).
-- `qdetF_eq_qdet11`: n=2 (1,1)-case reduces to
-  `CramersRuleOQ01OQ02.qdet11` (under `A 0 0 ≠ 0`).
+- `qdetF` (S2): uniform Route-A definition.
+- `qdetF_field_quotient` (S2): defining multiplicative identity.
+- `qdetF_ne_zero` (S2): nonvanishing.
+- `qdetF_eq_qdet3` (S2): n=3 reduces to parent's `qdet3` by `rfl`.
+- `qdetF_eq_qdet00` / `qdetF_eq_qdet11` (S2): n=2 specializations.
+- `qdetN_step` (S3): non-recursive Schur formula over a division ring.
+- `qdetN_step_zero_minv` (S3): degenerate case `Minv = 0` gives `A i j`.
+- `qdetN_step_eq_qdetF` (S3 SCAFFOLD, sorry): field-consistency reduction.
 
 ## References
 
@@ -181,6 +197,78 @@ theorem qdetF_summary {n : ℕ}
     qdetF A i j * (minorIJ A i j).det = A.det ∧
     qdetF A i j = A.det / (minorIJ A i j).det :=
   ⟨qdetF_field_quotient A i j h, rfl⟩
+
+-- ============================================================
+-- PART VI: Non-commutative Schur Step (S3 SCAFFOLD)
+-- ============================================================
+
+section NonCommutative
+
+variable {D : Type*} [DivisionRing D]
+
+/-- **Non-commutative one-step Schur formula (Route B, S3 SCAFFOLD).**
+
+Given an `(n+1)×(n+1)` matrix `A` over a division ring `D`, indices
+`i j : Fin (n+1)`, and an explicit `n×n` matrix `Minv` playing the role
+of the (homological-relations) inverse of the complementary minor
+`minorIJ A i j`, the Gelfand–Retakh Schur formula computes
+  `A i j − ∑_{p,q : Fin n} A i (succAbove j q) · Minv q p ·
+                            A (succAbove i p) j`.
+
+This is the **one-step** form of the recurrence: it takes `Minv` as a
+parameter and so is non-recursive. The full `qdetN` (S4) is obtained by
+specialising `Minv := qdetN_inv (minorIJ A i j)` and folding the
+mutual recursion. The advantage of separating `qdetN_step` is that:
+
+* the field-consistency theorem `qdetN_step_eq_qdetF` (below, with sorry)
+  proves the recurrence "for any inverse" once and for all — the choice
+  of `Minv` is hidden behind a single hypothesis,
+* the S4 mutual-recursion proof reduces to showing the constructed
+  `qdetN_inv` satisfies the inverse-matrix equation, not to re-proving
+  the entire recurrence at every level. -/
+def qdetN_step {n : ℕ} (A : Matrix (Fin (n+1)) (Fin (n+1)) D)
+    (i j : Fin (n+1)) (Minv : Matrix (Fin n) (Fin n) D) : D :=
+  A i j -
+    ∑ p : Fin n, ∑ q : Fin n,
+      A i (Fin.succAbove j q) * Minv q p * A (Fin.succAbove i p) j
+
+/-- **Degenerate inverse.** With `Minv = 0`, the Schur correction term
+vanishes and `qdetN_step A i j 0 = A i j`. This is the trivial base
+identity guaranteeing the formula is correctly anchored. -/
+@[simp] theorem qdetN_step_zero_minv {n : ℕ}
+    (A : Matrix (Fin (n+1)) (Fin (n+1)) D) (i j : Fin (n+1)) :
+    qdetN_step A i j (0 : Matrix (Fin n) (Fin n) D) = A i j := by
+  simp only [qdetN_step, Matrix.zero_apply, mul_zero, zero_mul,
+    Finset.sum_const_zero, sub_zero]
+
+/-- **Field consistency (S3 SCAFFOLD, deferred to S4).**
+
+Over a field `F`, choosing `Minv := (minorIJ A i j)⁻¹` (Mathlib's
+`Matrix.nonsingInv`) inside `qdetN_step` recovers the Route-A quotient
+`qdetF A i j = det A / det(minor)`. This is the bridge between the
+commutative (S2) and non-commutative (S3-Route-B) formulations.
+
+**Proof strategy (S4).** Expand `Matrix.inv_def`:
+  `(minorIJ A i j)⁻¹ = (1 / (minorIJ A i j).det) • (minorIJ A i j).adjugate`,
+factor out the scalar `1 / det(minor)`, and apply `Matrix.det_succ_row`
+(Laplace cofactor expansion along row `i`) which gives
+  `det A = ∑_k A i k · (-1)^(i+k) · det(minor_{i,k}(A))`.
+Separating the `k = j` summand isolates `A i j · det(minor) /` from the
+remaining cofactor sum, and the resulting identity is precisely the
+Schur formula after sign normalisation via
+`Matrix.adjugate_apply` (which relates `(adjugate M) q p` to the
+cofactor `(-1)^(p+q) · det(submatrix_{p,q} M)`).
+
+Estimated S4 proof size: ~60–90 Lean lines (the cofactor-sum
+re-indexing through `Fin.succAbove`'s sign convention is the main
+mechanical step). -/
+theorem qdetN_step_eq_qdetF {n : ℕ}
+    (A : Matrix (Fin (n+1)) (Fin (n+1)) F) (i j : Fin (n+1))
+    (h : (minorIJ A i j).det ≠ 0) :
+    qdetN_step A i j (minorIJ A i j)⁻¹ = qdetF A i j := by
+  sorry
+
+end NonCommutative
 
 end CramersRuleOQ01OQ02OQ01OQ01
 
