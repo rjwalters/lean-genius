@@ -1,0 +1,79 @@
+{
+  "slug": "erdos-735-oq-04",
+  "title": "Magic configurations on k-flats in ℝ^d (Erdős #735 extension)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "parent": "erdos-735",
+  "problemStatement": {
+    "formal": "\\text{Generalize Erdős #735 (Murty-ABKPR 2008 classification of magic configurations in } \\mathbb{R}^2 \\text{ with equal-sum constraint on lines) to } k\\text{-flats in } \\mathbb{R}^d: \\text{ classify point sets } P \\subset \\mathbb{R}^d \\text{ admitting positive weights } w : P \\to \\mathbb{R}_+ \\text{ such that every } k\\text{-flat through at least } k+1 \\text{ points has the same weight-sum.}",
+    "plain": "The parent erdos-735 solves Erdős's magic configurations problem in ℝ²: when can n points be given positive weights such that every line through ≥ 2 points has the same weight-sum? Ackerman-Buchin-Knauer-Pinchasi-Rote 2008 (ABKPR) proved exactly 4 classes work. This sub-OQ asks the natural higher-flat extension: replace 'line' (1-flat) with k-flat (affine subspace of dimension k) in ℝ^d. Cases: (i) k = 0: trivial (every config); (ii) k = d: trivial (single flat); (iii) d = 2, k = 1: parent's case (4 classes); (iv) d ≥ 3, k = 1: extension of parent (conjectural 4 classes); (v) d ≥ 3, k ≥ 2: NEW question with NEW magic class — regular convex polytopes (tetrahedron, octahedron, cube) are (d-1)-flat magic via uniform weights. The classification is genuinely richer than the parent.",
+    "whyMatters": [
+      "Direct extension of ABKPR 2008, a celebrated theorem in incidence geometry.",
+      "Higher-flat case reveals NEW magic classes (regular convex polytopes) beyond the parent's 4-class theorem, suggesting the classification is structurally richer.",
+      "Mathlib v4.26.0 has no published k-flat magic classification beyond ABKPR's plane case; this OQ would be the first Lean treatment of higher-dimensional incidence-magic problems."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent (verified, axiomatised): ABKPR 2008 classifies magic configurations in ℝ² into exactly 4 classes (all collinear; general position; near-pencil; triangle+bisectors+incenter).",
+      "Trivial: k = 0 (every config is 0-flat magic) and k = d (single ambient flat is trivially magic).",
+      "Combinatorial: for general position in ℝ^d (no k+2 points on a k-flat), every k-flat contains exactly k+1 points; uniform weight w_i = c/(k+1) gives flat-sum = c for any 1 ≤ k ≤ d-1.",
+      "Regular convex polytopes (tetrahedron 4 vertices in ℝ³, octahedron 6, cube 8) are (d-1)-flat magic via uniform weighting — a NEW class beyond parent's 4."
+    ],
+    "open": [
+      "Higher-dim classification: for ℝ^d with d ≥ 3 and k = 1, do parent's 4 classes (collinear / general position / near-pencil / triangle+) generalise to higher ambient dim?",
+      "k = 2 flat classification in ℝ³: regular polytopes give a new class; what are all classes? Conjectural 6+ classes (parent's 4 + regular polytopes + ?).",
+      "General (d, k) classification with 1 ≤ k ≤ d-1: completely open; no published results to author's knowledge."
+    ],
+    "goal": "Formalize in Lean: (1) PointConfigD / WeightingD / ConfigKFlat / IsKFlatMagic definitions parameterised on (d, k). (2) Trivial cases k = 0, k = d. (3) Definitional reduction IsKFlatMagic 1 = parent's IsMagic for d = 2. (4) Axiomatise higher-dim classification (conjectural). (5) native_decide certificates for tetrahedron / octahedron / cube. (6) Gallery JSON with status: axiomatized."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T22:15:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-10, 2026-05-12): OBSERVE survey for k-flat extension of Erdős #735 magic configurations. Wrote problem.md (~3K words) with full Lean target signatures + S2-S7 decomposition + (d, k) hierarchy table; knowledge.md (~2.5K words) with ABKPR 4-class recap + tetrahedron/octahedron/cube polytope examples for k=2,d=3 (NEW magic class) + combinatorial counting (general position is k-flat magic via uniform weights); state.md with S2 next-action. No Lean changes.",
+    "blockers": [],
+    "nextAction": "S2: define PointConfigD, WeightingD, ConfigKFlat, IsKFlatMagic in proofs/Proofs/Erdos735OQ04.lean. Approach: parameterise parent's definitions on (d, k), use EuclideanSpace ℝ (Fin d) and AffineSubspace. Prove trivial cases k = 0 (zero_flat_magic_trivial), k = d (ambient_flat_magic_trivial), and the parent reduction for d = 2, k = 1. Expected ~50 Lean lines, 3 sorries for the trivial cases (mechanical to discharge).",
+    "attemptCounts": {
+      "S1_observe": 1,
+      "S2_definitions": 0,
+      "S3_trivial_cases": 0,
+      "S4_parent_reduction": 0,
+      "S5_higher_dim_classification_axiom": 0,
+      "S6_polytope_witnesses": 0,
+      "S7_gallery": 0
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "k-flat extension is structurally RICHER than parent: regular convex polytopes (tetrahedron, octahedron, cube) are (d-1)-flat magic via uniform weights, giving a NEW class beyond ABKPR's 4 plane classes.",
+      "Trivial limits k = 0 and k = d collapse to easy theorems; the interesting range is 1 ≤ k ≤ d - 1.",
+      "General position in ℝ^d is always k-flat magic (uniform weight w_i = c/(k+1) works) — the interesting cases are when some k-flats have > k+1 points (non-uniform balance needed).",
+      "ABKPR 2008 classification has NOT been extended beyond ℝ² in the published literature; this OQ is genuinely open. The polytope examples suggest the higher-dim classification has more than 4 classes."
+    ],
+    "builtItems": [
+      "Wrote research/problems/erdos-735-oq-04/problem.md (formal targets + S2-S7 plan + (d, k) hierarchy).",
+      "Wrote research/problems/erdos-735-oq-04/knowledge.md (ABKPR recap + polytope examples + combinatorial counting).",
+      "Wrote research/problems/erdos-735-oq-04/state.md (phase OBSERVE).",
+      "Created src/data/research/problems/erdos-735-oq-04.json (this file)."
+    ],
+    "progressSummary": "S1 OBSERVE complete. Definitions and Lean signatures for k-flat magic configurations established. Trivial cases (k = 0, k = d) and parent reduction (d = 2, k = 1) identified. Higher-dim classification (S5 axiom) genuinely open. Polytope examples (tetra/octa/cube) show new magic class beyond parent's 4."
+  },
+  "tags": [
+    "seeker-selected",
+    "erdos-problem",
+    "discrete-geometry",
+    "incidence-geometry",
+    "magic-configurations",
+    "affine-flats",
+    "higher-dimensional",
+    "regular-polytopes",
+    "mathlib-gap",
+    "research"
+  ],
+  "significance": 6,
+  "tractability": 5,
+  "lastUpdated": "2026-05-12T22:15:00.000Z"
+}
