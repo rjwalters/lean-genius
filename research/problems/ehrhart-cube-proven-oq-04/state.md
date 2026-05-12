@@ -1,13 +1,13 @@
 # Current State
 
-**Phase**: SCAFFOLDED (S1 → S2)
-**Since**: 2026-05-12T01:00:00Z (S1 PR)
-**Iteration**: 1
+**Phase**: SCAFFOLDED (S2 complete, → S3)
+**Since**: 2026-05-12T03:30:00Z (S2 PR)
+**Iteration**: 2
 **Researcher**: researcher-11
 
 ## Current Focus
 
-S1 SCAFFOLD complete: established the Eulerian-number definition, concrete values, and the Worpitzky main theorem statement. S2 will close `worpitzky_identity_cube` via induction on `d` (Approach A).
+S2 STRUCTURAL complete: closed two of the five sorries (`cube_h_star_eulerian` and `cube_lattice_count_eulerian`) — both follow structurally from the SCAFFOLD definition and `Fintype.card_fun`. The three combinatorial sorries (`worpitzky_identity_cube`, `eulerian_row_sum_factorial`, `eulerian_palindrome`) remain for S3+.
 
 ## Active Approach
 
@@ -38,20 +38,22 @@ Inductive step uses Pascal's identity (`Nat.choose_succ_succ`) and the Eulerian 
 - `worpitzky_d2`: $(n+1)^2 = \binom{n+1}{2} + \binom{n+2}{2}$ — by induction on n using Pascal's identity + `omega`.
 - 7 concrete `decide`-verifications at $(d, n) \in \{(2,0), (2,1), (3,0), (3,1), (3,2), (4,1), (4,2)\}$.
 
-### Theorems stated and deferred (5 sorries)
+### Theorems closed in S2 (no sorry)
+- `cube_h_star_eulerian` — coefficient extraction. Closed via `Polynomial.finset_sum_coeff` + `Polynomial.coeff_smul` + `Polynomial.coeff_X_pow` + `Finset.sum_ite_eq'`. ~10 lines.
+- `cube_lattice_count_eulerian` — bridging corollary with `EhrhartCubeProven`. Closed via `Fintype.card_fun` + `Fintype.card_fin` + the still-deferred `worpitzky_identity_cube`. ~3 lines.
+
+### Theorems stated and deferred (3 remaining sorries)
 1. `worpitzky_identity_cube` — main theorem.
 2. `eulerian_row_sum_factorial` — Σ A(d, k) = d!.
 3. `eulerian_palindrome` — A(d, k) = A(d, d-1-k).
-4. `cube_h_star_eulerian` — coefficient extraction.
-5. `cube_lattice_count_eulerian` — bridging corollary with `EhrhartCubeProven`.
 
 ## Blockers
 
-None for S2. Mathlib has all required ingredients: `Nat.choose_succ_succ` (Pascal), `Finset.sum_range_succ`, basic arithmetic via `omega`/`ring`.
+None for S3. Mathlib has all required ingredients: `Nat.choose_succ_succ` (Pascal), `Finset.sum_range_succ`, basic arithmetic via `omega`/`ring`.
 
 ## Next Action
 
-**S2 — Close `worpitzky_identity_cube`** via induction on `d`.
+**S3 — Close `worpitzky_identity_cube`** via induction on `d`.
 
 Concrete plan:
 1. Base case d = 1: closed by `simp [eulerian_1_0, Nat.choose_one_right]`.
@@ -62,12 +64,15 @@ Concrete plan:
 
 Expected: ~80-120 lines of Lean. Helper lemmas may decompose the algebra.
 
-**Alternative if Approach A stalls**: prove the small-d cases d = 3, d = 4 (analogous to the existing `worpitzky_d2`) to build intuition before attempting the general induction.
+**Alternative if Approach A stalls**: prove the small-d cases d = 3, d = 4 (analogous to the existing `worpitzky_d2`) to build intuition before attempting the general induction. Then `eulerian_row_sum_factorial` may be closed in S4 by the algebraic-recurrence argument:
+$\sum_{k} A(d+1, k) = (d+1) \sum_k A(d, k) = (d+1) d! = (d+1)!$ via the identity
+$\sum_{k=0}^{d-1}[(k+2) A(d, k+1) + (d-k) A(d, k)] + A(d, 0) = (d+1) \sum_{k=0}^{d-1} A(d, k)$
+(verified by combining the index-shifted sums with $A(d, d) = 0$).
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 SCAFFOLD)
-- Current approach attempts: 0 (Approach A — induction on d)
+- Total attempts: 2 (S1 SCAFFOLD, S2 STRUCTURAL)
+- Current approach attempts: 0 (S3 Approach A — induction on d for Worpitzky)
 - Approaches tried: 0
 
 ## Open Questions / Risks

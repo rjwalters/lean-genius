@@ -2,10 +2,15 @@
   Eulerian Numbers and the h*-Vector of the Unit Cube
   (ehrhart-cube-proven-oq-04)
 
-  S1 SCAFFOLD. The companion file `EhrhartCubeProven.lean` proves
-  `L([0,1]^d, n) = (n+1)^d` axiom-free. The Ehrhart h*-vector of the
+  S1 SCAFFOLD + S2 STRUCTURAL. The companion file `EhrhartCubeProven.lean`
+  proves `L([0,1]^d, n) = (n+1)^d` axiom-free. The Ehrhart h*-vector of the
   unit d-cube is conjecturally (and classically) equal to the sequence
   of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)).
+
+  S2 closes the two *structural* sorries (`cube_h_star_eulerian` and
+  `cube_lattice_count_eulerian`); the *combinatorial* sorries
+  (`worpitzky_identity_cube`, `eulerian_row_sum_factorial`,
+  `eulerian_palindrome`) remain for S3+.
 
   Concretely, Worpitzky's identity states:
 
@@ -21,20 +26,25 @@
   2. Records concrete values A(d, k) for d ≤ 4 by `rfl`.
   3. States `worpitzky_identity_cube` (the Worpitzky identity for the cube), with
      the proof deferred to a future iteration.
-  4. States the explicit Ehrhart h*-vector identity for the cube.
+  4. Proves the explicit Ehrhart h*-vector identity for the cube
+     (`cube_h_star_eulerian`, S2) — definitional reduction.
   5. Records the row sum identity Σ_k A(d, k) = d! as the standard
      consistency check (deferred proof).
+  6. Proves the bridging corollary `cube_lattice_count_eulerian` (S2)
+     that ties the lattice-point count `Fintype.card (Fin d → Fin (n+1))`
+     to the Eulerian sum, conditional on `worpitzky_identity_cube`.
 
   Main definitions:
   • `eulerianNumber : ℕ → ℕ → ℕ`           — A(d, k) via recurrence
   • `cubeHStarPoly  : ℕ → Polynomial ℕ`     — h*-polynomial of the d-cube,
                                               defined as Σ_{k=0}^{d-1} A(d,k) · X^k
 
-  Main theorems (all deferred):
-  • `worpitzky_identity_cube`               — Σ A(d,k) C(n+1+k, d) = (n+1)^d
-  • `cube_h_star_eulerian`                  — h_k*([0,1]^d) = A(d, k)
-  • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!
-  • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d
+  Main theorems:
+  • `worpitzky_identity_cube`               — Σ A(d,k) C(n+1+k, d) = (n+1)^d   (deferred)
+  • `cube_h_star_eulerian`                  — h_k*([0,1]^d) = A(d, k)          (S2: PROVED)
+  • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!       (deferred)
+  • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (deferred)
+  • `cube_lattice_count_eulerian`           — bridge to `EhrhartCubeProven`    (S2: PROVED)
 
   Concrete (proven, no sorry):
   • `eulerian_1_0`, `eulerian_2_*`, `eulerian_3_*`, `eulerian_4_*` — values by rfl
@@ -246,7 +256,7 @@ noncomputable def cubeHStarPoly (d : ℕ) : Polynomial ℕ :=
     ∑ k ∈ Finset.range d, (eulerianNumber d k : ℕ) • Polynomial.X^k
 
 /--
-  **Main h*-vector identity** (deferred): the k-th coefficient of the
+  **Main h*-vector identity** (S2: PROVED): the k-th coefficient of the
   h*-polynomial of the d-cube equals A(d, k):
       h_k*([0,1]^d) = A(d, k)
   for `0 ≤ k < d`. By the SCAFFOLD definition `cubeHStarPoly` this is
@@ -256,7 +266,15 @@ noncomputable def cubeHStarPoly (d : ℕ) : Polynomial ℕ :=
 -/
 theorem cube_h_star_eulerian (d k : ℕ) (hd : 0 < d) (hk : k < d) :
     (cubeHStarPoly d).coeff k = eulerianNumber d k := by
-  sorry
+  have hd_ne : d ≠ 0 := Nat.pos_iff_ne_zero.mp hd
+  unfold cubeHStarPoly
+  rw [if_neg hd_ne, Polynomial.finset_sum_coeff]
+  -- ∑ j ∈ range d, (eulerianNumber d j • X^j).coeff k = eulerianNumber d k
+  simp only [Polynomial.coeff_smul, Polynomial.coeff_X_pow, smul_eq_mul,
+             mul_ite, mul_one, mul_zero]
+  -- ∑ j ∈ range d, (if k = j then eulerianNumber d j else 0) = eulerianNumber d k
+  rw [Finset.sum_ite_eq' (Finset.range d) k (fun j => eulerianNumber d j)]
+  exact if_pos (Finset.mem_range.mpr hk)
 
 -- ============================================================
 -- SECTION VI: Generating-Function Form
@@ -287,15 +305,20 @@ theorem cube_ehrhart_gf (d : ℕ) (hd : 0 < d) : True := by
 -- ============================================================
 
 /--
-  **Coherence**: combining `worpitzky_identity_cube` with the existing
-  `EhrhartCubeProven.cube_lattice_count` gives the Eulerian-number
+  **Coherence** (S2: PROVED, modulo `worpitzky_identity_cube`):
+  combining `worpitzky_identity_cube` with the canonical bijection
+  `Fintype.card (Fin d → Fin (n+1)) = (n+1)^d` gives the Eulerian-number
   interpretation of the h*-vector for the cube:
       |n·[0,1]^d ∩ ℤ^d| = (n+1)^d = Σ_k A(d, k) · C(n+1+k, d).
-  Stated here as a corollary (deferred — depends on `worpitzky_identity_cube`).
+  The bridge to the geometric `EhrhartCubeProven.cube_lattice_count`
+  statement (over `Polytope.cube`) is a separate corollary that wraps
+  the Fin-tuple parametrisation of lattice points in the cube.
 -/
 theorem cube_lattice_count_eulerian (d : ℕ) (hd : 0 < d) (n : ℕ) :
     Fintype.card (Fin d → Fin (n + 1))
       = ∑ k ∈ Finset.range d, eulerianNumber d k * Nat.choose (n + 1 + k) d := by
-  sorry
+  -- Lattice-point count of n · [0,1]^d equals (n + 1)^d via the canonical Fin bijection
+  rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]
+  exact worpitzky_identity_cube d hd n
 
 end EhrhartCubeProvenOQ04

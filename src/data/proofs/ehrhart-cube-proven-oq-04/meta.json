@@ -24,18 +24,16 @@
       "seeker-selected"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 3,
     "axiomCount": 0,
-    "lineCount": 301,
+    "lineCount": 324,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
     "openQuestions": [
       "Prove `worpitzky_identity_cube`: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) · C(n+1+k, d) for all d ≥ 1 and n ≥ 0. The proof can proceed by induction on d via Pascal's identity and the Eulerian recurrence, or via a combinatorial bijection between (n+1)^d colour-sequences and (descent-pattern, position-pattern) pairs.",
       "Prove `eulerian_row_sum_factorial`: Σ_{k=0}^{d-1} A(d, k) = d!. The standard argument inducts on d using the recurrence A(d+1, k) = (k+1) A(d, k) + (d+1-k) A(d, k-1) and the identity Σ_k [(k+1) + (d+1-k)] A(d, k) = (d+2) Σ_k A(d, k).",
-      "Prove `eulerian_palindrome`: A(d, k) = A(d, d-1-k) for k < d, by exhibiting the involution σ ↦ σ ∘ reverse on `Equiv.Perm (Fin d)` which bijects k-descent permutations with (d-1-k)-descent permutations.",
-      "Prove `cube_h_star_eulerian`: the k-th coefficient of `cubeHStarPoly d` equals `eulerianNumber d k`. This is automatic given the SCAFFOLD definition, but the *substantive* content is connecting `cubeHStarPoly` to the Ehrhart polynomial via Worpitzky.",
-      "Prove `cube_lattice_count_eulerian`: combining `EhrhartCubeProven.cube_lattice_count` with `worpitzky_identity_cube`, giving the Eulerian-number interpretation directly on the lattice-point count."
+      "Prove `eulerian_palindrome`: A(d, k) = A(d, d-1-k) for k < d, by exhibiting the involution σ ↦ σ ∘ reverse on `Equiv.Perm (Fin d)` which bijects k-descent permutations with (d-1-k)-descent permutations."
     ],
     "originalContributions": [
       "Definition `eulerianNumber d k` via the standard recurrence (matches OEIS A008292)",
@@ -186,12 +184,12 @@
       "Finset"
     ],
     "namespace": "EhrhartCubeProvenOQ04",
-    "lineCount": 301,
+    "lineCount": 324,
     "axiomCount": 0,
     "theoremCount": 25,
     "definitionCount": 2,
     "path": "Proofs/EhrhartCubeProvenOQ04.lean",
-    "sorries": 5
+    "sorries": 3
   },
   "crossReferences": [
     {
