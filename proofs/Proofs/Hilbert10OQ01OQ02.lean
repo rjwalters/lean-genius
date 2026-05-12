@@ -2167,6 +2167,118 @@ theorem pi2_unionList_isUniversalExistentialDefinition
     exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr h_union
 
 -- ============================================================
+-- Part VIII.25 (iter 22, Path B): Finset transport of iter 21's
+--                                 list-arity Σ₂ ∩ closure
+-- ============================================================
+
+/-- Iter 22, Path B: **the Σ₂ class is closed under `Finset RatSubset`-
+    indexed intersection of arbitrary Σ₂-definable subsets**.
+
+    Finset analog of iter 21's
+    `sigma2_intersectionList_isExistentialUniversalDefinition`, transported
+    via `Finset.mem_toList`. Mirrors iter 17's Finset transport template
+    one level higher: the underlying polynomial witness is unchanged from
+    iter 21 (which itself unfolds to iter 20's binary Σ₂ ∩ per cons step
+    on `s.toList`).
+
+    **Strategy**: lift hypotheses from `s : Finset RatSubset` to
+    `s.toList : List RatSubset` via `Finset.mem_toList.mp`, bridge the
+    Finset/list quantifier predicates with `Finset.mem_toList.mp`/`.mpr`,
+    and apply iter-4 Σ₂ class congruence
+    (`existentialUniversalDefinition_iff_of_pred_iff`) to iter 21's
+    list-arity result.
+
+    **Significance**: extends iter 21's list-arity Σ₂ ∩ closure to
+    `Finset`-indexed intersections of arbitrary Σ₂-definable subsets,
+    completing the Finset-arity entry for the level-2 cell already on
+    main via iter 20 + iter 21:
+
+        | Class | binary ∪          | binary ∩          | list ∪      | list ∩      | finset ∪   | finset ∩   |
+        |-------|-------------------|-------------------|-------------|-------------|------------|------------|
+        | Σ₁    | iter 9 (on main)  | iter 12 (on main) | iter 15     | iter 14     | iter 17 (on main, ∪) | iter 17 (on main, ∩) |
+        | Π₁    | iter 13 (on main) | iter 9 (on main)  | iter 14     | iter 15     | iter 17 (on main, ∪) | iter 17 (on main, ∩) |
+        | Σ₂    | open in #17456    | iter 20 (on main) | open #17552 | iter 21 (on main) | open in #17602 (Σ₂∪) | **this PR (Σ₂∩)** |
+        | Π₂    | iter 20 (on main) | open in #17456    | iter 21 (on main) | open #17552 | **this PR (Π₂∪)** | open in #17602 (Π₂∩) |
+
+    **OPEN content unchanged**: the central Σ₁ question for ℤ ⊂ ℚ is
+    unaffected; iter 22 only sharpens the structural understanding of
+    finite-arity Σ₂/Π₂ closure properties at the Finset arity, for the
+    iter-21-based cells (the iter-16-based finset cells remain
+    in-flight in PR #17602).
+
+    **Mathlib API surface**: ZERO new imports, ZERO new lemmas. Uses
+    only iter 21's list-arity
+    `sigma2_intersectionList_isExistentialUniversalDefinition`
+    (already on origin/main via #17676), iter 4's Σ₂ class congruence
+    helper `existentialUniversalDefinition_iff_of_pred_iff` (already on
+    origin/main since iter 4 PR #17026), and the standard Mathlib lemma
+    `Finset.mem_toList.mp`/`.mpr` (`Mathlib.Data.Finset.Basic`, already
+    imported since iter 17 PR #17478). -/
+theorem sigma2_intersectionFinset_isExistentialUniversalDefinition
+    (s : Finset RatSubset) (h : ∀ S ∈ s, IsExistentialUniversalDefinition S) :
+    IsExistentialUniversalDefinition (fun q : Rat => ∀ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsExistentialUniversalDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∀ S ∈ s, S q) q ↔
+      (fun q : Rat => ∀ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · intro hall S hS; exact hall S (Finset.mem_toList.mp hS)
+    · intro hall S hS; exact hall S (Finset.mem_toList.mpr hS)
+  exact (existentialUniversalDefinition_iff_of_pred_iff hbridge).mpr
+    (sigma2_intersectionList_isExistentialUniversalDefinition s.toList h_list)
+
+-- ============================================================
+-- Part VIII.26 (iter 22, Path B): Finset transport of iter 21's
+--                                 list-arity Π₂ ∪ closure
+-- ============================================================
+
+/-- Iter 22, Path B: **the Π₂ class is closed under `Finset RatSubset`-
+    indexed union of arbitrary Π₂-definable subsets**.
+
+    Finset analog of iter 21's
+    `pi2_unionList_isUniversalExistentialDefinition`, transported via
+    `Finset.mem_toList`. Symmetric to the Σ₂ Finset ∩ closure above.
+
+    **Strategy**: identical structure to
+    `sigma2_intersectionFinset_isExistentialUniversalDefinition` above,
+    with `∀ S ∈ ·` replaced by `∃ S ∈ ·` and Σ₂ class congruence
+    replaced by Π₂ class congruence
+    (`universalExistentialDefinition_iff_of_pred_iff`).
+
+    **Significance**: extends iter 21's list-arity Π₂ ∪ closure to
+    `Finset`-indexed unions of arbitrary Π₂-definable subsets,
+    completing the Finset-arity row for the iter-20-based level-2
+    Boolean cells. Strictly bigger than iter 17's Σ₁ ⊆ Π₂ Finset
+    transports: iter 22 handles arbitrary Π₂ inputs (e.g., a Finset
+    containing the Π₂ predicate `IntSubset` from
+    `koenigsmann_2016_universal`, or any properly Π₂ subset arising
+    from iter 20's binary Π₂ ∪ + iter 21's list lift).
+
+    **Mathlib API surface**: ZERO new imports, ZERO new lemmas. Uses
+    only iter 21's list-arity
+    `pi2_unionList_isUniversalExistentialDefinition` (already on
+    origin/main via #17676), iter 4's Π₂ class congruence helper
+    `universalExistentialDefinition_iff_of_pred_iff` (on origin/main
+    since iter 4 PR #17026), and the standard `Finset.mem_toList`
+    bridge (on origin/main since iter 17 PR #17478). -/
+theorem pi2_unionFinset_isUniversalExistentialDefinition
+    (s : Finset RatSubset) (h : ∀ S ∈ s, IsUniversalExistentialDefinition S) :
+    IsUniversalExistentialDefinition (fun q : Rat => ∃ S ∈ s, S q) := by
+  have h_list : ∀ S ∈ s.toList, IsUniversalExistentialDefinition S :=
+    fun S hS => h S (Finset.mem_toList.mp hS)
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ∃ S ∈ s, S q) q ↔
+      (fun q : Rat => ∃ S ∈ s.toList, S q) q := by
+    intro q
+    refine ⟨?_, ?_⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mpr hS, hSq⟩
+    · rintro ⟨S, hS, hSq⟩; exact ⟨S, Finset.mem_toList.mp hS, hSq⟩
+  exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr
+    (pi2_unionList_isUniversalExistentialDefinition s.toList h_list)
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -2351,6 +2463,8 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `pi2_union_isUniversalExistentialDefinition` (Π₂ closed under binary union via iter 5 duality + iter 20 Σ₂ ∩ closure, iter 20)
   - `sigma2_intersectionList_isExistentialUniversalDefinition` (Σ₂ closed under finite list intersection via iter 20 + list induction, iter 21)
   - `pi2_unionList_isUniversalExistentialDefinition` (Π₂ closed under finite list union via iter 20 + list induction, iter 21)
+  - `sigma2_intersectionFinset_isExistentialUniversalDefinition` (Σ₂ closed under Finset-indexed intersection via iter 21 + `Finset.mem_toList`, iter 22)
+  - `pi2_unionFinset_isUniversalExistentialDefinition` (Π₂ closed under Finset-indexed union via iter 21 + `Finset.mem_toList`, iter 22)
 -/
 
 #check @IsDiophantineDefinition
@@ -2419,5 +2533,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @pi2_union_isUniversalExistentialDefinition
 #check @sigma2_intersectionList_isExistentialUniversalDefinition
 #check @pi2_unionList_isUniversalExistentialDefinition
+#check @sigma2_intersectionFinset_isExistentialUniversalDefinition
+#check @pi2_unionFinset_isUniversalExistentialDefinition
 
 end Hilbert10Rationals
