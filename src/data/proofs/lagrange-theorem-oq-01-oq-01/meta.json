@@ -99,7 +99,7 @@
     "summary": "This file proves 13 theorems with 0 sorries and 0 axioms, classifying groups of order pq (p < q primes). The main results: n_q = 1 always (Q ⊴ G), and G is cyclic iff p ∤ (q-1). Three families of cyclic orders (15, 35, 77) and three non-unique orders (6, 21, 55) are verified concretely.",
     "implications": "The pq-group classification is the prototypical application of Sylow theory: it uses all three Sylow theorems and introduces the key technique of combining divisibility (n_p | [G:P]) with congruence (n_p ≡ 1 mod p) to pin down Sylow counts. This technique generalizes to classify groups of orders p²q, pqr, and beyond, and is foundational for the classification of groups of small order. The result also shows that the 'most common' primes p < q have only one group of order pq (when p ∤ q-1), e.g., ℤ/15, ℤ/35, ℤ/77.",
     "openQuestions": [
-      "Construct the non-abelian semidirect product ℤ/q ⋊_φ ℤ/p in Lean 4 using Mathlib's SemidirectProduct and verify its order and non-abelianness",
+      "Construct the non-abelian semidirect product ℤ/q ⋊_φ ℤ/p in Lean 4 using Mathlib's SemidirectProduct and verify its order and non-abelianness (partially resolved: the p = 2 specialisation is supplied by lagrange-theorem-oq-01-oq-01-oq-01 via DihedralGroup q ≅ ZMod q ⋊ ZMod 2; the general p case remains open and is the target of that entry's Approach B, S3a/S3b preliminaries already landed)",
       "Prove the full isomorphism uniqueness: any two groups of order pq are isomorphic to each other (for each of the two cases), using Mathlib's group isomorphism machinery",
       "Extend to groups of order p²q: Sylow theory gives n_p ∈ {1, p, p²} and the classification involves more cases depending on the relation between p and q"
     ]
@@ -124,6 +124,11 @@
       "id": "lagrange-theorem-oq-01-oq-03",
       "relationship": "related",
       "description": "Hall's theorem generalizes the pq-classification: for solvable groups with Hall divisors, Hall subgroups exist. The pq case is a special instance with d = p or d = q"
+    },
+    {
+      "id": "lagrange-theorem-oq-01-oq-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Child entry supplies the explicit non-cyclic witness missing from this file's `lagrange_pq_nonabelian_n_p_eq_q`. For p = 2 (every odd prime q): DihedralGroup q (Approach A). Approach B preliminaries (cyclic structure of (ZMod q)ˣ + order-p element extraction) are in place; the semidirect product φ : ZMod p →* AddAut (ZMod q) (S3c) and the ZMod q ⋊ ZMod p assembly (S3d) are open"
     }
   ],
   "leanFile": {
