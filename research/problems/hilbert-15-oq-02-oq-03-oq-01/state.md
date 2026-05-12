@@ -1,9 +1,84 @@
 # Current State
 
-**Phase**: ACT (S2 scaffold landed; advancing to S3 anchoring lemma)
+**Phase**: ACT (S3a translation landed; advancing to S3b main proof)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-12 (S2 scaffold by researcher-3)
-**Iteration**: 2
+**Last Updated**: 2026-05-12 (S3a 2-row translation by researcher-3)
+**Iteration**: 3
+
+## S3a Summary (2026-05-12, researcher-3)
+
+**Mode**: ACT-then-defer. Land the 2-row translation layer and state the
+main anchor lemma as `sorry` to anchor S4 (parent axiom replacement)
+against a concrete signature.
+
+### Deliverable
+
+Append Part VI + Part VII to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`
+(+100 lines, 0 → 1 sorry, +1 definition, +5 theorems):
+
+* `toPartition2 (p : Partition 2) : LRComplexity.Partition2` — the
+  translation `⟨p.parts 0, p.parts 1, p.sorted 0 1 (by decide)⟩`.
+
+* Four `@[simp]` equivalence lemmas: `toPartition2_a`, `_b`, `_size`
+  (via `Fin.sum_univ_two`), `_contains_iff` (via `fin_cases` on `Fin 2`).
+  These let the eventual S3b proof move freely between
+  `Partition2.size`/`Partition.weight` and
+  `Partition2.contains`/`Partition.Subset`.
+
+* `lrCoeffN_def_two_eq_lrCoeff2 (ν lam μ : Partition 2) : ... := by sorry`
+  with a 90-line docstring: three roles (sanity check, API exercise,
+  decidable corollaries for the 7 Gr(2,4) Chow-ring constants), proof
+  sketch (out-of-support: `lrCoeffN_def_eq_zero_of_not_support` +
+  `_contains_iff` + `_size`; in-support: Fulton's 2-row analysis with
+  `k₁ = r₁` forced by ballot condition, giving an `Equiv` to the
+  singleton/empty parameterised by `lrCoeff2`'s `if`-cascade), and
+  target proof length (~150 lines for S3b).
+
+### Design choices
+
+* **`toPartition2` direction only (no `ofPartition2`).** S3b doesn't need
+  the inverse — case-splitting on `Partition 2` data and reducing to
+  `Partition2`-side `if`-cascade is sufficient. Adding the inverse
+  would clutter without enabling new tactics. Revisit in S3b if the
+  proof benefits from a roundtrip.
+
+* **`Fin.sum_univ_two` for size equivalence.** `Partition.weight` is
+  `Finset.univ.sum α.parts`, which on `Fin 2` evaluates to
+  `α.parts 0 + α.parts 1 = (toPartition2 α).a + (toPartition2 α).b`
+  via the standard Mathlib `@[simp]` lemma. No new auxiliary
+  infrastructure needed.
+
+* **`show ∀ i : Fin 2, μ.parts i ≤ ν.parts i` after destructuring.**
+  `μ ⊆ ν` notation goes through the `HasSubset` instance to
+  `Partition.Subset` to `∀ i, μ.parts i ≤ ν.parts i`. The explicit
+  `show` makes the unfolding visible to `intro` + `fin_cases`,
+  avoiding fragile reliance on Lean's automatic instance unfolding
+  inside a tactic block.
+
+* **`@[simp]` on the four equivalence lemmas, but `theorem` not
+  `lemma` on the main anchor.** The translation lemmas are intended
+  for `simp` rewriting (they're load-bearing for S3b's setup). The
+  main anchor will be invoked explicitly by name in the S3c
+  corollaries / S4 axiom-replacement chain — `theorem` makes that
+  intent clear.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 247 → 347 lines (+100).
+- Sorry count: 0 → 1 (`lrCoeffN_def_two_eq_lrCoeff2`).
+- Axiom count: 0 (unchanged).
+- Theorem count: 1 → 6 (`toPartition2_a`, `_b`, `_size`,
+  `_contains_iff`, `lrCoeffN_def_two_eq_lrCoeff2`).
+- Definition count: 6 → 7 (`toPartition2`).
+- Instance count: 5 (unchanged).
+
+### Build status
+
+Pending. Per Hilbert-15 cluster PR convention. The four S3a lemmas use
+only `Fin.sum_univ_two`, basic `simp only`, and `fin_cases` — all
+standard Mathlib infrastructure. The S3b sorry is explicit.
+
+## S2 Summary (2026-05-12, researcher-3)
 
 ## S2 Summary (2026-05-12, researcher-3)
 
@@ -134,26 +209,35 @@ exercised in S3 via the 2-row anchoring lemma.
 
 ## Next Action
 
-**S3 (next iteration)**: 2-row anchoring lemma
-`lrCoeffN_def_two_eq_lrCoeff2` against the 7 Gr(2,4) Chow ring
-constants verified in `Hilbert15OQ01.lean`. The anchoring lemma
-serves three roles:
+**S3b (next iteration)**: Prove `lrCoeffN_def_two_eq_lrCoeff2`. The
+signature, translation, and equivalence lemmas (S3a) are now in
+place; what remains is the bijection between
+`{T : SkewSSYTFin 2 ν μ // T.content = lam ∧ isLatticeWord
+T.reverseRowWord}` and `lrCoeff2`'s singleton/empty support set on
+2-row data.
 
-1. Sanity-check the abstract count reduces to the existing
-   computable case.
-2. Exercise `SkewSSYTFin.reverseRowWord` and `isLatticeWord` on
-   concrete `Partition 2` data, surfacing any API gaps that the
-   S2 scaffold did not anticipate.
-3. Leave a concrete subgoal — `decide`-checkable for each of the 7
-   anchor constants — before committing to the parent-file
-   refactor (S4).
+Suggested approach (from the main lemma docstring):
 
-Suggested approach: case-split `Partition 2` data into the
-`(p, q) | p ≥ q` shape, evaluate `lrCoeffN_def` symbolically via
-`Fintype.card` reduction + Decidable enumeration, and compare
-against `lrCoeff2`'s closed-form output for each pair.
+1. Case-split on `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight`. In
+   the out-of-support case use `lrCoeffN_def_eq_zero_of_not_support`
+   on the LHS and `toPartition2_contains_iff` + `toPartition2_size`
+   to push the guard through to RHS = 0.
+2. In the in-support case, define `r₁ := ν.parts 0 - μ.parts 0`
+   and `r₂ := ν.parts 1 - μ.parts 1`. Fulton's 2-row analysis
+   (Hilbert15OQ02.lean:95-150 comment block) forces `k₁ = r₁` via
+   the ballot condition.
+3. Construct an `Equiv` from `{T // ...}` to the singleton/empty
+   set parameterised by `lrCoeff2`'s `if`-cascade and close via
+   `Fintype.card_eq_of_equiv`.
 
-**S4 (later)**: parent-axiom replacement. Modify
+Target: ~150-line proof.
+
+**S3c (later)**: Lift the 7 verified `lrCoeff2 ... = 1` (resp. = 0)
+results in `Hilbert15OQ02.lean` to `lrCoeffN_def`-form by
+rewriting with `lrCoeffN_def_two_eq_lrCoeff2` and re-discharging
+via `native_decide`.
+
+**S4 (later)**: Parent-axiom replacement. Modify
 `proofs/Proofs/Hilbert15OQ02OQ03.lean:128` from `axiom lrCoeffN`
 to `def lrCoeffN := Hilbert15OQ02OQ03OQ01.lrCoeffN_def`. Verify
 `klyachko_theorem` and `lr_polytime_positivity` still typecheck;
@@ -165,8 +249,8 @@ chain. Out of scope for this slug.
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 OBSERVE, S2 scaffold)
-- Current approach attempts: 2
+- Total attempts: 3 (S1 OBSERVE, S2 scaffold, S3a translation)
+- Current approach attempts: 3
 - Approaches tried: 1
 
 ## Open Questions for Future Iterations

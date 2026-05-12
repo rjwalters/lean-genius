@@ -244,4 +244,108 @@ instance {n : ℕ} (ν lam μ : Partition n) : Decidable (0 < lrCoeffN_def ν la
   unfold lrCoeffN_def
   exact if_neg h
 
+/-! ## Part VI: 2-Row Anchor — Translation (S3a)
+
+The S2 scaffold's `lrCoeffN_def` is parameterised by `Partition n`.
+The existing `LRComplexity.lrCoeff2` (Hilbert15OQ02.lean:131) is
+parameterised by the specialised 2-row encoding `LRComplexity.Partition2`
+(a triple `(a, b, dec : b ≤ a)`).
+
+To state the S3 anchoring lemma we need a translation
+`Partition 2 → LRComplexity.Partition2`. The translation is the
+obvious one — `parts 0` and `parts 1` are weakly decreasing by the
+`sorted` field — and is bookkeeping rather than mathematics. We
+also record the corresponding `size`/`weight` and containment-iff
+equivalences as `@[simp]` lemmas so the S3b proof reduces to a pure
+combinatorial argument on `Partition2` data.
+-/
+
+open LRComplexity in
+/-- **Translation `Partition 2 → LRComplexity.Partition2`.** Sends
+    the general n-row encoding to the specialised 2-row encoding
+    used by `lrCoeff2`. The witness `p.sorted 0 1 (by decide)`
+    discharges the `Partition2.dec : b ≤ a` field. -/
+def toPartition2 (p : Partition 2) : Partition2 :=
+  ⟨p.parts 0, p.parts 1, p.sorted 0 1 (by decide)⟩
+
+@[simp] theorem toPartition2_a (p : Partition 2) :
+    (toPartition2 p).a = p.parts 0 := rfl
+
+@[simp] theorem toPartition2_b (p : Partition 2) :
+    (toPartition2 p).b = p.parts 1 := rfl
+
+/-- **Size = weight.** The specialised 2-row size matches the
+    general partition weight on `Partition 2`. Direct from
+    `Fin.sum_univ_two`. -/
+@[simp] theorem toPartition2_size (p : Partition 2) :
+    (toPartition2 p).size = p.weight := by
+  simp only [LRComplexity.Partition2.size, toPartition2_a, toPartition2_b,
+             Partition.weight, Fin.sum_univ_two]
+
+/-- **Containment iff.** The specialised `Partition2.contains` and
+    the general `Partition.Subset` agree under `toPartition2`. -/
+@[simp] theorem toPartition2_contains_iff (ν μ : Partition 2) :
+    LRComplexity.Partition2.contains (toPartition2 ν) (toPartition2 μ) ↔ μ ⊆ ν := by
+  simp only [LRComplexity.Partition2.contains, toPartition2_a, toPartition2_b]
+  refine ⟨?_, ?_⟩
+  · rintro ⟨h0, h1⟩
+    show ∀ i : Fin 2, μ.parts i ≤ ν.parts i
+    intro i
+    fin_cases i
+    · exact h0
+    · exact h1
+  · intro h
+    refine ⟨?_, ?_⟩
+    · exact h 0
+    · exact h 1
+
+/-! ## Part VII: 2-Row Anchor — Main Theorem (S3b — DEFERRED) -/
+
+/-- **Main 2-row anchor (DEFERRED to S3b).** The abstract LR count
+    `lrCoeffN_def` on `Partition 2` data agrees with the concrete
+    closed-form `LRComplexity.lrCoeff2`.
+
+    This is the S3 load-bearing lemma. Three roles:
+
+    1. **Sanity check.** The abstract `Fintype.card`-based count
+       reduces to the existing computable case `lrCoeff2`, verifying
+       that the S2 scaffold's `SkewSSYTFin / reverseRowWord /
+       isLatticeWord` agree with the textbook
+       Fulton (1997 Ch. 5 §2) on the 2-row sub-family.
+    2. **API exercise.** Forces a concrete evaluation of
+       `reverseRowWord` and `isLatticeWord` on `Partition 2` data,
+       surfacing any inconsistencies in the S2 definitions before
+       they propagate to the parent file via S4.
+    3. **Decidable corollaries.** Once proved, the 7 Gr(2,4)
+       structure constants verified in `Hilbert15OQ01.lean` /
+       `Hilbert15OQ02.lean` lift mechanically to
+       `lrCoeffN_def`-form by rewriting with this theorem.
+
+    **Proof sketch (S3b).** Case-split on the support guard
+    `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight`:
+
+    * **Out-of-support.** `lrCoeffN_def_eq_zero_of_not_support`
+      rewrites the LHS to `0`. On the RHS, the corresponding
+      `lrCoeff2` guards — `μ ⊆ ν` and the size equation — collapse
+      to `0` via `toPartition2_contains_iff` and
+      `toPartition2_size`.
+    * **In-support.** With `r₁ := ν.parts 0 - μ.parts 0` and
+      `r₂ := ν.parts 1 - μ.parts 1`, the cell sigma-type
+      `(i : Fin 2) × Fin (ν.parts i - μ.parts i)` has exactly
+      `r₁ + r₂` cells. Fulton's 2-row analysis (ballot condition
+      forces `k₁ = r₁`) gives a constructive bijection between
+      `{T : SkewSSYTFin // content = lam ∧ isLatticeWord ...}` and
+      the singleton/empty set parameterised by `lrCoeff2`'s
+      `if`-cascade. The bijection is the `Fin (r₁ + r₂) → Fin 2`
+      function with `k₂ = lam.a - r₁` ones in row 2.
+
+    Targeted at ~150-line proof in S3b after refining
+    `SkewSSYTFin`'s `Fintype.card` reduction on the 2-row shape.
+    Until then this theorem is stated with `sorry` to anchor the
+    parent file's S4 refactor against a concrete signature. -/
+theorem lrCoeffN_def_two_eq_lrCoeff2 (ν lam μ : Partition 2) :
+    lrCoeffN_def ν lam μ =
+      LRComplexity.lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ) := by
+  sorry
+
 end Hilbert15OQ02OQ03OQ01
