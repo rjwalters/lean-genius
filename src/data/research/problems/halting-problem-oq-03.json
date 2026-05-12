@@ -1,8 +1,8 @@
 {
   "slug": "halting-problem-oq-03",
   "title": "Can interactive systems (human + machine) solve undecidable problems",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -25,20 +25,20 @@
     "goal": "Produce three Lean 4 theorems in proofs/Proofs/RelativizedHalting.lean and follow-on files: (i) relativized_halting_undecidable, (ii) strict_arithmetical_hierarchy, (iii) hypercomputation_outside_hierarchy. Target: 0 axioms, 0 sorries; ~150-200 lines for (i), additional ~400 lines across (ii)+(iii) over S5+ sessions."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T06:32:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE (researcher-9, 2026-05-12): fresh-slug scaffold. Decomposed the prose question into three formal sub-goals (OQ-03a relativized halting, OQ-03b strict arithmetical hierarchy, OQ-03c hypercomputation outside hierarchy). Surveyed oracle TM / Turing jump / arithmetical hierarchy / hypercomputation literature (Turing 1939, Post 1944, Kleene 1943, Mostowski 1947, Hamkins-Lewis 2000, Soare 1987, Cooper 2004). Audited Mathlib v4.26.0: Computability.{Partrec, PartrecCode, Halting} present; oracle TMs, Turing jump, and arithmetical hierarchy ALL absent. Identified a one-page Lean proof skeleton for OQ-03a that lifts the parent's HaltingProblem.lean diagonal argument by parameterizing Code.evaln over an oracle. Explicitly out of scope: Church-Turing thesis, Penrose-Lucas argument. No Lean changes this iteration.",
+    "phase": "ACT",
+    "since": "2026-05-12T09:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT-B (researcher-6, 2026-05-12): extended the S2 zero-import `proofs/Proofs/RelativizedHalting.lean` with Section 8 (abstract iterated jump): jumpOracle, jumpIter, jumpIter_zero, jumpIter_succ, jumpIter_differs, jumpIter_halting_undecidable, no_uniform_jumpIter_predictor, jumpIterWitness, jumpIterWitness_differs. All theorems proved, 0 sorries, 0 axioms, 0 new imports. The file remains zero-import. The Section 8 framework is the abstract analog of Post 1944's iterated Turing jump and forms the recursion-theoretic skeleton that any future Mathlib-class (`Computable_in`) bridge can instantiate.",
     "blockers": [],
-    "nextAction": "S2 ACT-A: create proofs/Proofs/RelativizedHalting.lean (~150 lines, 2 sorries). Define Code.evalnO (oracle-parameterized evaluator), Computable_in, and the Turing jump. State relativized_halting_undecidable as a sorry, prove relativized_halting_zero_oracle_eq_classical (sanity check). Resolve Open API Questions Q1-Q3 from knowledge.md (does Nat.Partrec.Code.halting_problem exist? can Code.eval be cleanly oracle-parameterized? namespace choice).",
+    "nextAction": "S4 (Recommended): open a new sub-OQ slug `halting-problem-oq-03-bridge` and develop the parallel `OracleCode` inductive (~200 lines) + `Code.evalnO` semantics + lift `jumpOracle`/`jumpIter` to `Computable_in` chains. 2-3 sessions of work; requires `Computability.PartrecCode` familiarity. Alternative S4: open `arithmetical-hierarchy-oq-01` for OQ-03b (`Sigma^0_n / Pi^0_n / Delta^0_n` definitions + Post's theorem + strictness; ~400 lines, 4-6 sessions).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-9, 2026-05-12): pristine tier-B slug (0 open PRs, 0 recent merges at claim time and at pre-write re-check). Decomposed the prose openQuestion 'Can interactive systems (human + machine) solve undecidable problems?' from the parent halting-problem entry into three Lean-targetable sub-goals via the standard recursion-theoretic reading (oracle TMs + Turing jump + arithmetical hierarchy). Literature surveyed five strands: (1) Turing 1939 / Post 1944 oracle machines and the jump, (2) Kleene 1943 / Mostowski 1947 arithmetical hierarchy and Post's theorem, (3) Hamkins-Lewis 2000 infinite-time TMs + Zeno / BSS / quantum hypercomputation, (4) Gandy / Sieg / Dershowitz-Gurevich variants of the Church-Turing thesis, (5) Lucas 1961 / Penrose 1989 cognitive arguments and their rebuttals (Franzen 2005). Mathlib v4.26.0 audit confirmed Computability.{Partrec, PartrecCode, Halting, TuringMachine} are present (and used in HaltingProblem.lean's neighbors AlgebraicNumbersCountableOQ02OQ04, SchroederBernsteinOQ03Aristotle) but oracle TMs, the Turing jump, and the arithmetical hierarchy are ALL absent. Identified a one-page proof skeleton for OQ-03a that lifts the parent's zero-import diagonal argument by adding an oracle parameter to Code.evaln. Four open API questions (Q1-Q4 in knowledge.md) are flagged for resolution during S2 ACT-A. Out-of-scope items explicitly named (CTT, Penrose-Lucas). No Lean changes this iteration; pure documentation S1.",
+    "progressSummary": "S3 ACT-B (researcher-6, 2026-05-12): extended `proofs/Proofs/RelativizedHalting.lean` with Section 8 — abstract iterated-jump framework. New definitions `jumpOracle`, `jumpIter`, `jumpIterWitness`; new theorems `jumpIter_zero`, `jumpIter_succ`, `jumpIter_differs`, `jumpIter_halting_undecidable`, `no_uniform_jumpIter_predictor`, `jumpIterWitness_differs`, all proved (0 sorries, 0 axioms, 0 new imports). The framework is the abstract analog of Post 1944's iterated Turing jump A, A', A'', ... and gives the recursion-theoretic skeleton onto which any future Mathlib-class bridge can instantiate. S2 ACT-A (researcher-10, 2026-05-12, PR #17969): shipped zero-import `proofs/Proofs/RelativizedHalting.lean` (5 theorems, 0 sorries, 0 axioms) capturing OQ-03a at the abstract (Nat -> Bool) -> Nat -> Nat -> Bool level. The pragmatic choice to stay zero-import was driven by Mathlib's `Code` being sealed (no in-place oracle parameterization), and justified by the parent `HaltingProblem.lean` living at the same abstraction. S1 OBSERVE (researcher-9, 2026-05-12, PR #17920): pristine tier-B slug. Decomposed the prose openQuestion 'Can interactive systems (human + machine) solve undecidable problems?' into three Lean-targetable sub-goals via the standard recursion-theoretic reading (oracle TMs + Turing jump + arithmetical hierarchy). Literature surveyed five strands: (1) Turing 1939 / Post 1944 oracle machines and the jump, (2) Kleene 1943 / Mostowski 1947 arithmetical hierarchy and Post's theorem, (3) Hamkins-Lewis 2000 infinite-time TMs + Zeno / BSS / quantum hypercomputation, (4) Gandy / Sieg / Dershowitz-Gurevich variants of the Church-Turing thesis, (5) Lucas 1961 / Penrose 1989 cognitive arguments and their rebuttals (Franzen 2005). Mathlib v4.26.0 audit confirmed Computability.{Partrec, PartrecCode, Halting, TuringMachine} present but oracle TMs, Turing jump, and arithmetical hierarchy ALL absent.",
     "builtItems": [],
     "insights": [
       "The parent's HaltingProblem.lean diagonal argument (172 lines, zero imports, zero axioms) lifts verbatim to the relativized case: replace H : N -> N -> Bool with H^A and the diagonal D n = not (H n n) with D^A n = not (H^A n n). The contradiction H^A(D^A, D^A) = not H^A(D^A, D^A) is unaffected by the oracle. The only new content needed is a definition of Computable_in A.",
