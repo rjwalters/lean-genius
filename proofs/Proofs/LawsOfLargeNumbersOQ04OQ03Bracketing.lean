@@ -52,6 +52,8 @@ build verification deferred to S4 alongside the §2.3–§2.5 theorem additions.
 -/
 
 import Proofs.LawsOfLargeNumbersOQ04OQ03
+import Mathlib.Topology.Algebra.Module.Cardinality
+import Mathlib.Topology.Order.Monotone
 
 namespace GlivenkoCantelli
 
@@ -117,6 +119,77 @@ axiom bracketingGrid_exists [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ} (hX_meas : ∀ i, Measurable (X i))
     {ε : ℝ} (hε : 0 < ε) :
     Nonempty (BracketingGrid (trueCDF X μ) ε)
+
+-- ============================================================================
+-- §2.2.5: Continuity-point density (foundation for `bracketingGrid_exists`)
+-- ============================================================================
+
+/-! ### Continuity-point density (S8)
+
+The mathematical content of `bracketingGrid_exists` reduces to three real-analytic
+facts about a CDF `F = trueCDF X μ`:
+
+  (i)   `F` is monotone non-decreasing (already in the parent as `trueCDF_mono`);
+  (ii)  the discontinuity set of a monotone function `ℝ → ℝ` is countable
+        (Mathlib's `Monotone.countable_not_continuousAt`);
+  (iii) the complement of a countable subset of ℝ is dense
+        (Mathlib's `Set.Countable.dense_compl`, applied with `𝕜 := ℝ`).
+
+S8 packages these three facts as named lemmas so the eventual greedy
+construction discharging `bracketingGrid_exists` (S9+) can quote them without
+re-deriving the typeclass plumbing each time. None of the three pieces is novel
+mathematics; the value is in pre-packaging the exact shape consumed by the
+boundary/interior cell selection (`ContinuousAt F (q j)` for each grid node). -/
+
+/-- `trueCDF X μ` packaged as a `Monotone` function `ℝ → ℝ`.
+    Bundle form of the parent's `trueCDF_mono`; consumed by
+    `Monotone.countable_not_continuousAt` below. -/
+theorem trueCDF_monotone [IsProbabilityMeasure μ] (X : ℕ → Ω → ℝ) :
+    Monotone (trueCDF X μ) :=
+  fun _ _ hxy => trueCDF_mono X hxy
+
+/-- The set of discontinuity points of `trueCDF X μ` is countable.
+    Direct application of `Monotone.countable_not_continuousAt` to
+    `trueCDF_monotone`. -/
+theorem trueCDF_countable_discontinuities [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) :
+    Set.Countable {x : ℝ | ¬ ContinuousAt (trueCDF X μ) x} :=
+  (trueCDF_monotone X).countable_not_continuousAt
+
+/-- The set of continuity points of `trueCDF X μ` is dense in `ℝ`.
+    Follows from `trueCDF_countable_discontinuities` via
+    `Set.Countable.dense_compl` (𝕜 := ℝ): any countable subset of a
+    non-trivial real topological vector space has dense complement.
+
+    This is the exact shape the eventual greedy construction will consume:
+    inside any open interval `(a, b)` containing a candidate grid node, a
+    continuity point of `F` exists, so the `cont` field of `BracketingGrid`
+    can always be discharged. -/
+theorem trueCDF_continuityPoints_dense [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) :
+    Dense {x : ℝ | ContinuousAt (trueCDF X μ) x} := by
+  -- Continuity-points = complement of discontinuity set.
+  have h_eq : {x : ℝ | ContinuousAt (trueCDF X μ) x} =
+      {x : ℝ | ¬ ContinuousAt (trueCDF X μ) x}ᶜ := by
+    ext x; simp
+  rw [h_eq]
+  -- Apply `Set.Countable.dense_compl` with 𝕜 = ℝ (the ambient field is ℝ
+  -- and the module is `ℝ` over itself; all topology / module typeclasses
+  -- are stdlib).
+  exact (trueCDF_countable_discontinuities X).dense_compl ℝ
+
+/-- Inside any open interval `(a, b)` with `a < b`, a continuity point of
+    `trueCDF X μ` exists. This is the form consumed in the greedy
+    selection step of the eventual `bracketingGrid_exists` proof. -/
+theorem trueCDF_continuityPoint_in_Ioo [IsProbabilityMeasure μ]
+    (X : ℕ → Ω → ℝ) {a b : ℝ} (hab : a < b) :
+    ∃ x ∈ Set.Ioo a b, ContinuousAt (trueCDF X μ) x := by
+  have h_dense := trueCDF_continuityPoints_dense X
+  -- `Dense` + nonempty open set ⇒ nonempty intersection.
+  have h_open : IsOpen (Set.Ioo a b) := isOpen_Ioo
+  have h_ne : (Set.Ioo a b).Nonempty := Set.nonempty_Ioo.mpr hab
+  obtain ⟨x, hx_cont, hx_in⟩ := h_dense.exists_mem_open h_open h_ne
+  exact ⟨x, hx_in, hx_cont⟩
 
 -- ============================================================================
 -- §2.3: Simultaneous pointwise convergence at all grid points

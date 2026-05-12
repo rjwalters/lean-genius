@@ -2,9 +2,111 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T20:43:00Z
-**Iteration**: 7 (S7 — retire parent's `glivenko_cantelli_uniform` axiom; rename proved variant to canonical name)
+**Iteration**: 8 (S8 — continuity-point density infrastructure toward discharging `bracketingGrid_exists`)
 
-## S7 (this session, researcher-3, 2026-05-12) — Axiom retirement
+## S8 (this session, researcher-3, 2026-05-12) — Continuity-point density
+
+After S7 retired the parent's `glivenko_cantelli_uniform` axiom and packaged
+the chain's sole remaining assumption as `bracketingGrid_exists` (the purely
+real-analytic ε-cover existence statement), S8 begins discharging that axiom
+by packaging the three foundational facts the eventual greedy proof will
+consume: monotonicity of `trueCDF`, countability of its discontinuity set,
+and density of its continuity-point set in `ℝ`.
+
+### Changes
+
+1. **`proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean`**: added new
+   section §2.2.5 `N2ContinuityDensity` (4 theorems + section header,
+   +73 lines, inserted between §2.2 axiom and §2.3 simultaneous-pointwise
+   theorem). Also added two imports:
+   * `import Mathlib.Topology.Algebra.Module.Cardinality` — exposes
+     `Set.Countable.dense_compl` (any countable subset of a non-trivial real
+     topological vector space has dense complement; specialized here to
+     `𝕜 := ℝ` and `E := ℝ`).
+   * `import Mathlib.Topology.Order.Monotone` — exposes
+     `Monotone.countable_not_continuousAt` (discontinuity set of a monotone
+     function on a 2nd-countable space is countable).
+
+   The four new theorems:
+   * `trueCDF_monotone : Monotone (trueCDF X μ)` — bundle form of the parent's
+     `trueCDF_mono` (`{x y : ℝ} (hxy : x ≤ y)` shape) into the `Monotone`
+     predicate consumed by Mathlib's `Monotone.*` API.
+   * `trueCDF_countable_discontinuities : Set.Countable {x | ¬ ContinuousAt
+     (trueCDF X μ) x}` — direct application of
+     `Monotone.countable_not_continuousAt` to `trueCDF_monotone`.
+   * `trueCDF_continuityPoints_dense : Dense {x : ℝ | ContinuousAt
+     (trueCDF X μ) x}` — applies `Set.Countable.dense_compl ℝ` to the
+     countable discontinuity set. The `ext + simp` step bridges the
+     continuity-point set to the complement of the discontinuity set.
+   * `trueCDF_continuityPoint_in_Ioo : ∀ a b, a < b → ∃ x ∈ Set.Ioo a b,
+     ContinuousAt (trueCDF X μ) x` — the exact shape consumed by the
+     greedy selection step of the eventual `bracketingGrid_exists` proof:
+     inside any open interval one can locate a continuity point of `F`.
+     Proof: `Dense.exists_mem_open` on `Set.Ioo a b` (which is open and
+     nonempty for `a < b`).
+
+2. **`research/problems/laws-of-large-numbers-oq-04-oq-03/state.md`**: this
+   block.
+
+### Mathematical content
+
+The S8 lemmas are the second of three foundational pieces required to
+discharge `bracketingGrid_exists`:
+
+| Piece | Status | What it provides |
+|-------|--------|------------------|
+| (i)   `trueCDF` monotone | Already in parent (S0 / `trueCDF_mono`) | bundled in S8 |
+| (ii)  discontinuities countable | **S8** | `trueCDF_countable_discontinuities` |
+| (iii) continuity points dense | **S8** | `trueCDF_continuityPoints_dense` + `_in_Ioo` |
+| (iv)  CDF limits at ±∞ | S9 (future) | `Tendsto F atBot 0`, `Tendsto F atTop 1` |
+| (v)   greedy ε-cover induction | S10+ (future) | `bracketingGrid_exists` itself |
+
+Pieces (iv) and (v) are independent of S8 and can land in either order. (iv)
+uses `tendsto_measure_iUnion_atTop` / `tendsto_measure_iInter_atTop` on
+preimage families `{ω | X 0 ω ≤ n}` for integer thresholds. (v) is a finite
+inductive ε-step subdivision threading (i)–(iv) together; it is the actual
+~150–250-line "ε-cover construction" the docstring forward-references as
+`Monotone.exists_increasing_continuity_seq`.
+
+### Why not just one piece per session
+
+The four S8 theorems share the same import (`Mathlib.Topology.Algebra.Module.Cardinality`)
+and the same typeclass plumbing (`Monotone`, `Set.Countable`, `Dense`). Splitting
+them across sessions would force re-establishing the same import + typeclass
+setup three or four times. Packaging them together also yields a single
+self-contained "section §2.2.5" with a coherent docstring tying the three
+pieces to the eventual axiom proof.
+
+### Counts after S8
+
+| File | Lines | Theorems | Axioms | Defs | Sorries |
+|------|-------|----------|--------|------|---------|
+| `LawsOfLargeNumbersOQ04.lean` | 228 | 13 | 0 | 3 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03.lean` | 163 | 4 | 0 | 0 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03Bracketing.lean` | 594 (+73) | 12 (+4) | 1 | 0 | 0 |
+
+The chain's sole remaining axiom is still `bracketingGrid_exists`; S8 only adds
+proved theorems on the path toward discharging it.
+
+### Build status
+
+Pending. The S8 changes are mechanical (4 short-proof theorems using
+single-application Mathlib lemmas + 2 imports). Docker build kicked off in
+parallel during the session.
+
+### Remaining work
+
+- **S9 (next)**: CDF limits at ±∞ — `trueCDF_tendsto_zero_atBot`,
+  `trueCDF_tendsto_one_atTop`. Two ~30–50-line theorems using
+  `tendsto_measure_iUnion_atTop` / `tendsto_measure_iInter_atTop`.
+- **S10+ (greedy construction)**: package S8's continuity-point density and
+  S9's CDF limits into a finite inductive ε-step subdivision producing the
+  bracketing grid. ~150–250 lines. This is the Mathlib upstream candidate
+  `Monotone.exists_increasing_continuity_seq`.
+- After (S10+) discharges `bracketingGrid_exists`, the entire chain becomes
+  axiom-free.
+
+## S7 (researcher-3, 2026-05-12) — Axiom retirement
 
 After S6 landed §2.5 (`glivenko_cantelli_uniform_proved`, identical signature
 to the parent's axiom), the parent's monolithic axiom was logically redundant.

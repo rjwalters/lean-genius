@@ -1,0 +1,213 @@
+{
+  "slug": "laws-of-large-numbers-oq-04-oq-03",
+  "title": "What is the minimal Mathlib infrastructure needed for VC-class Glivenko-Cante...",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: What is the minimal Mathlib infrastructure needed for VC-class Glivenko-Cante....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-05-04T17:47:35.846Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S8 (2026-05-12): Added §2.2.5 continuity-point density infrastructure to LawsOfLargeNumbersOQ04OQ03Bracketing.lean (+73 lines, 4 theorems): trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo. These package foundation (ii) and (iii) of the three real-analytic pieces required to discharge the chain's sole remaining axiom bracketingGrid_exists. S9 next: CDF limits at ±∞. S10+: greedy ε-cover construction.",
+    "builtItems": [
+      "S8: §2.2.5 N2ContinuityDensity section in LawsOfLargeNumbersOQ04OQ03Bracketing.lean — 4 theorems (trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo), +73 lines (521→594), 2 added imports (Mathlib.Topology.Algebra.Module.Cardinality, Mathlib.Topology.Order.Monotone)."
+    ],
+    "insights": [
+      "Basic Glivenko-Cantelli is in LawsOfLargeNumbersOQ04.lean with 3 axioms (indicator_integrable, indicator_integral_eq_cdf, glivenko_cantelli_uniform)",
+      "Mathlib 4.26 has StrongLaw, IdentDistrib, iIndepFun but no VC dimension theory",
+      "VC-Glivenko-Cantelli requires: VC class definition, Sauer-Shelah lemma, Rademacher complexity — all missing from Mathlib",
+      "The basic case (one-parameter threshold indicators) has ~3x fewer axioms needed than the full VC case",
+      "S8: bundled trueCDF_mono ({x y} ≤-shape) into Monotone (trueCDF X μ) so Mathlib's Monotone.* API (countable_not_continuousAt, etc.) applies directly.",
+      "S8: discontinuity set of a monotone ℝ→ℝ is countable (Mathlib Monotone.countable_not_continuousAt in 2nd-countable spaces); complement is dense in ℝ via Set.Countable.dense_compl (𝕜 := ℝ).",
+      "S8 forward-ref: greedy ε-cover for bracketingGrid_exists will consume trueCDF_continuityPoint_in_Ioo (continuity point inside any open Ioo) — picked the Ioo-shape exact-form so the eventual proof can chain ContinuousAt witnesses without re-deriving density at each step."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks: VCDimension type class, SauerShelah lemma (|F∩S| ≤ sum(n,k) for VC dim k), Rademacher complexity bounds, symmetrization lemma for VC classes"
+    ],
+    "nextSteps": [
+      "Define VC dimension in Lean (similar to SimpleGraph.chromaticNumber approach)",
+      "Prove Sauer-Shelah via combinatorics (200-300 lines, elementary)",
+      "Use SauerShelah + basic Glivenko-Cantelli to get VC-class uniform convergence",
+      "S9: CDF limits at ±∞ — trueCDF_tendsto_zero_atBot, trueCDF_tendsto_one_atTop. ~30-50 lines each via tendsto_measure_iUnion_atTop / tendsto_measure_iInter_atTop on preimage families {ω | X 0 ω ≤ n} for integer thresholds.",
+      "S10+: greedy finite ε-step subdivision packaging S8 + S9 into bracketingGrid_exists. ~150-250 lines. Mathlib upstream candidate: Monotone.exists_increasing_continuity_seq."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "laws-of-large-numbers",
+    "laws-of-large-numbers-oq-01",
+    "laws-of-large-numbers-oq-01-oq-01",
+    "laws-of-large-numbers-oq-01-oq-02",
+    "laws-of-large-numbers-oq-01-oq-03",
+    "laws-of-large-numbers-oq-03",
+    "laws-of-large-numbers-oq-04",
+    "laws-of-large-numbers-oq-04-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-04T17:47:35.846Z",
+  "lastUpdate": "2026-05-04T17:47:35.846Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawsOfLargeNumbers.lean",
+      "filename": "LawsOfLargeNumbers.lean",
+      "lineCount": 397,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbers.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01.lean",
+      "lineCount": 404,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
+      "lineCount": 724,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01OQ02.lean",
+      "filename": "LawsOfLargeNumbersOQ01OQ02.lean",
+      "lineCount": 345,
+      "theoremCount": 10,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ01OQ03.lean",
+      "filename": "LawsOfLargeNumbersOQ01OQ03.lean",
+      "lineCount": 99,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
+      "filename": "LawsOfLargeNumbersOQ02.lean",
+      "lineCount": 339,
+      "theoremCount": 8,
+      "axiomCount": 3,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ02.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
+      "filename": "LawsOfLargeNumbersOQ03.lean",
+      "lineCount": 405,
+      "theoremCount": 9,
+      "axiomCount": 4,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean",
+      "filename": "LawsOfLargeNumbersOQ03Aristotle.lean",
+      "lineCount": 72,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
+      "filename": "LawsOfLargeNumbersOQ04.lean",
+      "lineCount": 232,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
+      "filename": "LawsOfLargeNumbersOQ04OQ03.lean",
+      "lineCount": 158,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
+      "filename": "LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
+      "lineCount": 522,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean"
+    }
+  ]
+}
