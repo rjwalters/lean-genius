@@ -105,9 +105,9 @@ theorem thresholdIndicator_integrable [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ} (hX : ∀ i, Measurable (X i)) (x : ℝ) :
     Integrable (thresholdIndicator X x 0) μ := by
   apply Integrable.mono' (integrable_const (1 : ℝ))
-  · exact ((measurable_iic_indicator x).comp (hX 0)).aemeasurable
+  · exact ((measurable_iic_indicator x).comp (hX 0)).aestronglyMeasurable
   · filter_upwards with ω
-    simp only [thresholdIndicator, Set.indicator, norm_one]
+    simp only [thresholdIndicator, Set.indicator]
     split_ifs with h
     · norm_num
     · norm_num
@@ -129,13 +129,9 @@ theorem integral_thresholdIndicator_eq_cdf [IsProbabilityMeasure μ]
     μ[thresholdIndicator X x 0] = trueCDF X μ x := by
   have hms : MeasurableSet (X 0 ⁻¹' Set.Iic x) := (hX 0) measurableSet_Iic
   simp_rw [thresholdIndicator_eq_preimage_indicator_fun]
-  rw [integral_indicator hms]
-  rw [integral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter,
-      smul_eq_mul, mul_one]
-  simp only [trueCDF]
-  congr 1
-  ext ω
-  simp [Set.mem_preimage, Set.mem_Iic, Set.mem_setOf_eq]
+  rw [integral_indicator hms, integral_const, smul_eq_mul, mul_one,
+      measureReal_def, Measure.restrict_apply_univ]
+  rfl
 
 /-! ## Pointwise Convergence (proved) -/
 

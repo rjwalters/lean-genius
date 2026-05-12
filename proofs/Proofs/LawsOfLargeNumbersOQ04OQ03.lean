@@ -55,9 +55,9 @@ theorem thresholdIndicator_integrable_proved
     {X : ℕ → Ω → ℝ} (hX : ∀ i, Measurable (X i)) (x : ℝ) :
     Integrable (thresholdIndicator X x 0) μ := by
   apply Integrable.mono' (integrable_const (1 : ℝ))
-  · exact ((measurable_iic_indicator x).comp (hX 0)).aemeasurable
+  · exact ((measurable_iic_indicator x).comp (hX 0)).aestronglyMeasurable
   · filter_upwards with ω
-    simp only [thresholdIndicator, Set.indicator, norm_one]
+    simp only [thresholdIndicator, Set.indicator]
     split_ifs with h
     · norm_num
     · norm_num
@@ -94,13 +94,12 @@ theorem integral_thresholdIndicator_eq_cdf_proved
   -- Step 2: Convert to set integral on preimage
   rw [integral_indicator hms]
   -- Step 3: Evaluate constant integral: ∫ in s, 1 ∂μ = (μ s).toReal
-  rw [integral_const, Measure.restrict_apply MeasurableSet.univ, Set.univ_inter,
-      smul_eq_mul, mul_one]
-  -- Step 4: Identify with trueCDF
-  simp only [trueCDF]
-  congr 1
-  ext ω
-  simp [Set.mem_preimage, Set.mem_Iic, Set.mem_setOf_eq]
+  -- Post Mathlib bump: integral_const produces `(μ.restrict s).real univ • c`
+  -- via the new `Measure.real` field, so unfold via measureReal_def + restrict_apply_univ.
+  rw [integral_const, smul_eq_mul, mul_one, measureReal_def,
+      Measure.restrict_apply_univ]
+  -- Step 4: Identify with trueCDF (preimage of Iic is defeq to set-builder form)
+  rfl
 
 -- ============================================================================
 -- Application: Pointwise Convergence Without Integration Axioms
