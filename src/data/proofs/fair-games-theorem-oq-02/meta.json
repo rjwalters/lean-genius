@@ -44,7 +44,37 @@
     {
       "targetId": "fair-games-theorem",
       "relationship": "extends",
-      "description": "Concrete examples verifying the Optional Stopping Theorem for Gambler's Ruin and the doubling strategy"
+      "description": "Wiedijk #62, the Optional Stopping Theorem: E[X_τ] = E[X_π] for a martingale and bounded stopping times. This file instantiates that abstract result on concrete games (Gambler's Ruin (5,10), (1,10), and the doubling strategy) and confirms E[gain]=0 by direct computation."
+    },
+    {
+      "proofId": "fair-games-theorem-oq-01",
+      "relationship": "prerequisite",
+      "description": "Direct import (`open FairGamesOQ01`). The parent file proves the classical Gambler's Ruin formulas P(win) = k/N and E[T] = k(N-k) via the martingale X_t² − t and the Optional Stopping Theorem; this file dispatches both formulas to concrete instances (5,10) and (1,10) via `simp + norm_num`."
+    },
+    {
+      "proofId": "ballot-problem",
+      "relationship": "complementary",
+      "description": "Another concrete instance of random-walk probability with a remarkably clean closed form: P(A leads throughout) = (p−q)/(p+q). Both this file's Gambler's Ruin and the Ballot problem are special cases of the reflection principle applied to first-passage problems on ℤ."
+    },
+    {
+      "proofId": "geometric-series",
+      "relationship": "uses",
+      "description": "The total investment after k consecutive losses in the doubling strategy is ∑_{i=0}^{k-1} 2^i = 2^k − 1, the finite geometric sum. This is the algebraic identity underlying `doubling_win_gain`: the winning bet 2^k covers all 2^k − 1 prior losses plus exactly $1 profit."
+    },
+    {
+      "proofId": "birthday-problem",
+      "relationship": "complementary",
+      "description": "Another counterintuitive probability result: 23 people give >50% birthday collision. Both birthday and Gambler's Ruin (1,10) illustrate how human intuition systematically underestimates probabilities involving exponential or asymmetric structure; the doubling strategy's failure is the most dramatic example (you can sustain only ⌊log₂(B+1)⌋ losses, exponentially few)."
+    },
+    {
+      "proofId": "central-limit-theorem",
+      "relationship": "complementary",
+      "description": "CLT governs the limit distribution of the random walk X_t = ∑ ε_i. For Gambler's Ruin, the absorption time T has E[T] = k(N−k) and asymptotic variance ~N²·k(N−k)/N⁴ as N→∞, with T/E[T] converging to a known distribution (related to the first-passage time of Brownian motion) via Donsker's theorem — the natural continuum limit of the discrete results verified here."
+    },
+    {
+      "proofId": "prob-method-expectation",
+      "relationship": "context",
+      "description": "Foundational principle 'if E[X] > t, some outcome exceeds t'. The dual statement, applied here, is that if E[gain] = 0 for any stopping strategy, then no almost-sure strategy can guarantee positive gain. The doubling strategy 'always wins $1 when it stops' but its expected value remains zero — a counterintuitive illustration of why expectation, not pointwise behavior, determines profitability."
     }
   ],
   "overview": {
