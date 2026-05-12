@@ -4,6 +4,11 @@
   "slug": "sperner-simplicial-bridge",
   "description": "A bridge proof that derives Sperner's lemma for finite sets of simplices satisfying a pseudomanifold condition from the abstract door-counting theorem in SpernerMathlib. The key construction converts geometric simplicial data\u2014unordered vertex sets, codimension-1 face adjacency\u2014into the abstract CellComplex-style axioms required by the door-counting proof, using vertex ordering via Finset.sort and a full verification of the three adjacency axioms.",
   "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+    "date": "2026",
+    "dateAdded": "2026-05-04",
+    "mathlib_version": "4.26.0",
     "status": "verified",
     "badge": "original",
     "axiomCount": 0,
@@ -21,9 +26,17 @@
       "pseudomanifold",
       "bridge"
     ],
-    "assumptions": [],
+    "assumptions": "No axioms or sorries. The abstract door-counting theorem Sperner.exists_panchromatic is imported from SpernerMathlib (sibling file, also 0 axioms/sorries). The bridge introduces no new mathematical assumptions; it provides a concrete adjacency function adjFn for finite sets of (d+1)-vertex simplices and verifies the three axioms required by SpernerMathlib (adjFn_vertex, adjFn_ne, adjFn_symm). The only external prerequisites are a LinearOrder on the vertex type E (used by Finset.sort to canonicalize vertex enumeration) and Fintype/DecidableEq instances on E (used by Finset operations).",
     "sorries": 0,
-    "proofRepoPath": "Proofs/SpernerSimplicialBridge.lean"
+    "proofRepoPath": "Proofs/SpernerSimplicialBridge.lean",
+    "originalContributions": [
+      "vertexEnum: canonical Fin(d+1) → E vertex enumeration of a finset simplex via Finset.sort, with injectivity and surjectivity-onto-the-simplex lemmas.",
+      "faceOf + vertexEnum_image_erase: codimension-1 face construction bridging abstract index-erasure ((univ.erase k).image vertexEnum) and geometric vertex-erasure (s.erase v_k).",
+      "containersOf + findOppositeIdx: the adjacency infrastructure — finds top-dimensional cells containing a given face, plus the unique vertex of a containing cell that lies opposite to the face.",
+      "adjFn: the noncomputable adjacency function combining containers and findOppositeIdx into the (s,k) ↦ Option (cell, Fin(d+1)) format consumed by SpernerMathlib's abstract proof.",
+      "Three adjacency axioms (adjFn_vertex, adjFn_ne, adjFn_symm) verified at 200+ lines, with adjFn_symm dominating; together they discharge the abstract Sperner framework's requirements.",
+      "exists_panchromatic: the bridge payoff — Sperner's lemma for any pure pseudomanifold simplicial complex with a Sperner-proper vertex coloring and odd boundary door count."
+    ]
   },
   "sections": [
     {
@@ -97,6 +110,80 @@
       "targetId": "brouwer-fixed-point",
       "relationship": "enables",
       "description": "Sperner's lemma is the combinatorial core of Brouwer's fixed-point theorem. The panchromatic-simplex existence statement, applied to a Kuhn triangulation of the simplex, plus a barycentric labeling, yields Brouwer via a compactness limit argument."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "exists_panchromatic",
+      "type": "core",
+      "statement": "$\\forall (\\text{topCells} : \\mathrm{Finset}(\\mathrm{Finset}\\,E)),\\ (\\text{hcard} : \\forall s \\in \\text{topCells}, |s| = d+1),\\ (\\text{hpseudo} : \\text{pseudomanifold condition}),\\ (c : E \\to \\mathrm{Fin}(d+1)),\\ (\\text{odd boundary count}) \\Rightarrow \\exists s \\in \\text{topCells},\\ s\\text{ is panchromatic}$",
+      "significance": "**Bridge payoff.** Instantiates the abstract `Sperner.exists_panchromatic` from `SpernerMathlib` with the concrete `adjFn` constructed in this file. Given any pure pseudomanifold simplicial complex with a Sperner-proper coloring and odd boundary count, produces a panchromatic top-cell — the combinatorial core of Brouwer's fixed-point theorem.",
+      "description": "Sperner's lemma for pseudomanifold simplicial complexes (the file's headline)."
+    },
+    {
+      "name": "adjFn",
+      "type": "definition",
+      "statement": "$\\mathrm{adjFn} : \\{s \\in \\text{topCells}\\} \\times \\mathrm{Fin}(d+1) \\to \\mathrm{Option}\\,(\\{s' \\in \\text{topCells}\\} \\times \\mathrm{Fin}(d+1))$",
+      "significance": "**The adjacency function the abstract Sperner proof consumes.** Given (s, k), looks up containers of face_k(s); if the face has 2 containers (interior face), returns the unique other cell t and the index k' such that face_{k'}(t) = face_k(s); if ≤ 1 (boundary face), returns None. Noncomputable because `findOppositeIdx` uses classical choice on `(s.sdiff f).Nonempty`.",
+      "description": "Noncomputable adjacency function for pseudomanifold simplicial complexes."
+    },
+    {
+      "name": "adjFn_vertex",
+      "type": "supporting",
+      "statement": "$\\mathrm{adjFn}(s,k) = \\mathrm{some}(s',k') \\Rightarrow (\\mathrm{univ}.\\mathrm{erase}\\,k).\\mathrm{image}\\,(\\mathrm{vertexEnum}\\,s) = (\\mathrm{univ}.\\mathrm{erase}\\,k').\\mathrm{image}\\,(\\mathrm{vertexEnum}\\,s')$",
+      "significance": "**Shared-face axiom.** Adjacent cells share the codim-1 face they meet across. Proof: both sides equal `faceOf s hs k`, using `vertexEnum_image_erase` to convert between index-erasure and vertex-erasure forms.",
+      "description": "First adjacency axiom: adjacent cells share a codim-1 face."
+    },
+    {
+      "name": "adjFn_ne",
+      "type": "supporting",
+      "statement": "$\\mathrm{adjFn}(s,k) = \\mathrm{some}(s',k') \\Rightarrow s \\neq s'$",
+      "significance": "**Distinctness axiom.** The neighbor is a genuinely different cell. Direct from `t ∈ cs.erase s` ⟹ `t ≠ s` in the adjFn definition. The shortest of the three axiom proofs.",
+      "description": "Second adjacency axiom: the neighbor is not the original cell."
+    },
+    {
+      "name": "adjFn_symm",
+      "type": "supporting",
+      "statement": "$\\mathrm{adjFn}(s,k) = \\mathrm{some}(s',k') \\Rightarrow \\mathrm{adjFn}(s',k') = \\mathrm{some}(s,k)$",
+      "significance": "**Symmetry axiom — the hardest.** Looking from the neighbor s' at face k' must find the original cell s back, and at the original index k. ~200 lines of unfolding through `split_ifs`, `Option.some.injEq`, and `Prod.mk.injEq` to verify that `containersOf topCells (faceOf s' k') = containersOf topCells (faceOf s k)` and the 'other container' selection is consistent.",
+      "description": "Third adjacency axiom: adjacency is symmetric. The hardest of the three to prove."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Sperner, Emanuel"],
+      "year": 1928,
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg, vol. 6, pp. 265-272",
+      "note": "Sperner's original paper introducing the labeled-triangulation lemma as a combinatorial route to Brouwer's invariance-of-dimension theorem."
+    },
+    {
+      "authors": ["Henle, Michael"],
+      "year": 1979,
+      "title": "A Combinatorial Introduction to Topology",
+      "venue": "W. H. Freeman; Dover reprint 1994",
+      "note": "Classic undergraduate treatment of Sperner via door-counting; the modern parity-argument reformulation traces here."
+    },
+    {
+      "authors": ["Su, Francis Edward"],
+      "year": 1999,
+      "title": "Rental harmony: Sperner's lemma in fair division",
+      "venue": "American Mathematical Monthly 106, no. 10, pp. 930-942",
+      "note": "Popular exposition of Sperner-via-doors; the canonical entry point for the abstract framework used in SpernerMathlib."
+    },
+    {
+      "authors": ["McLennan, Andrew", "Tourky, Rabee"],
+      "year": 2007,
+      "title": "Simple complexity from imitation games",
+      "venue": "Games and Economic Behavior 60, no. 1, pp. 156-171",
+      "note": "Explicit pseudomanifold-style framework for Sperner-type lemmas in fixed-point theory."
+    },
+    {
+      "authors": ["De Longueville, Mark"],
+      "year": 2013,
+      "title": "A Course in Topological Combinatorics",
+      "venue": "Springer Universitext",
+      "note": "Cited in the Lean module's References section. The most thorough modern treatment of Sperner-style lemmas, including the bridge-style abstraction this entry formalizes."
     }
   ],
   "sorries": 0,
