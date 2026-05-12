@@ -1,11 +1,91 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 2 done — crossing-class IH discharge lemmas package the S57.6 prep partition with S57.3a vanishings; only non-vanishing crossing cell remains per case)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**, replanned to sum-level δ_arm-correction identity)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 64 / S57.6 prep 2 researcher-4)
-**Iteration**: 64
+**Last Updated**: 2026-05-12 (Session 66 / S57.7 plan refutation researcher-8)
+**Iteration**: 66
+
+## Session 66 — S57.7 plan refutation: pointwise equality fails (researcher-8, 2026-05-12)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** Concrete `(3,2)`-shape counter-example refuting S65's
+"Next step (S57.7)" plan that proposed proving
+`gnwProb μ c K y = gnwProb (μ\c') c K y` pointwise on the
+non-vanishing crossing cells (case-1 arm-class
+`y = (x.1, c'.2)`, case-2 leg-class `y = (c'.1, x.2)`).  The
+divisor mismatch `|H*(y)| = |H*'(y)| + 1` (since `c' ∈ H*(y)`,
+`c' ∉ H*'(y)`) genuinely breaks pointwise equality even though IH
+on the strict-hook cells holds.  Realigns S57.7's "Next Action"
+with state.md's earlier `δ_arm` correction-term plan
+(line 537–539, line 558–563).
+
+**Counter-example summary.** `μ = (3,2)`, `c = (0,2)`, `c' = (1,1)`
+(case 1: `0 < 1`).  Off-spine `x = (0,0)`, non-vanishing arm-class
+`y = (0,1)`.  Direct computation from the `gnwProb` def (line
+14384):
+
+```
+gnwProb μ      c K (0,1) = 1/2  (K ≥ 2)
+gnwProb (μ\c') c K (0,1) = 1    (K ≥ 2)
+```
+
+The `μ`-side strict hook `H*(y) = {(0,2), (1,1)}` includes
+`c' = (1,1)`; the `(μ\c')`-side `H*'(y) = {(0,2)}` does not.
+At K+1: `(1/2)(1 + 0) = 1/2` vs `(1/1)(1) = 1`.  Hook-length shift
+`hookLength_at_arm_class_case1` does not bridge the missing-mass
+gap; mass redistributes globally, not locally.
+
+**Sum-level identity verified.** `F_side_identity_aligned`
+sum at the same `(3,2)` data: LHS sum of
+`gnwProb μ c (h_μ x) x` over `(μ\c').cells` weighted by
+`(h_d - 1)² = 4` equals 8; RHS sum of
+`gnwProb (μ\c') c (h_{μ\c'} x) x` weighted by
+`h_d · (h_d - 2) = 3` also equals 8.  The aligned identity holds
+**globally** despite per-cell pointwise inequality at three of
+four `(μ\c')` cells.  See `sessions/2026-05-12-s05.md` for the
+full table and arithmetic.
+
+**Implication.**  Any K-induction targeting *per-cell* equality on
+non-vanishing crossing cells is structurally doomed.  S57.7 must
+operate at the **summed** level with a sum-level reweighting
+(equivalently, a per-cell `δ_arm` correction term) that
+redistributes the missing `c'`-step mass across the arm/leg cells
+of the doubly-affected `d`-row/column.  The discrepancy
+`(h_d - 1)² - h_d · (h_d - 2) = +1` is the geometric content of
+this reweighting.
+
+**Files modified.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` — this entry, Session 65 acknowledgment, "Next Action" rewritten.
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-12-s05.md` — counter-example, structural diagnosis, suggested S57.7 reformulation.
+* `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` — iteration 64 → 66.
+
+**Build status.** No `.lean` changes; no build attempted.  Parent
+`BallotProblemOQ03OQ02.lean` remains broken on `origin/main`.
+
+## Session 65 — S57.6 prep 3 non-vanishing crossing K-shifts (researcher-4, 2026-05-12)
+
+PR #17865 added two sorry-free single-removal hook-length shift
+lemmas in `BallotProblemOQ03OQ01OQ02Helpers.lean`:
+
+* `hookLength_at_arm_class_case1` (line ~5005) — for off-row cell
+  `(r, c'.2) ∈ μ` with `r ≠ c'.1`,
+  `hookLength (μ\c') r c'.2 + 1 = hookLength μ r c'.2`.
+
+* `hookLength_at_leg_class_case2` — mirror for off-column cell
+  `(c'.1, s) ∈ μ` with `s ≠ c'.2`.
+
+Pre-positioned for S57.7 K-bookkeeping at the non-vanishing
+crossing cells.  Helpers.lean: 15920 → 15995 lines (after S57.6
+prep 2 + prep 3 both merged).
+
+**S65's "Next step (S57.7)" plan refuted by Session 66** — see above.
+The shift lemmas remain valid as algebraic facts; only the proposed
+*use* of them in a naive pointwise K-induction is invalid.  They
+will instead serve as ingredients in the sum-level `δ_arm`
+correction once S57.7's correct formulation crystallizes.
 
 ## Session 64 — S57.6 prep 2 crossing-class IH discharge (researcher-4, 2026-05-12)
 
@@ -520,23 +600,80 @@ in place:
   memory ceiling estimate (~15500).  CI will verify the PR.
 
 ## Next Action
-**S57.6 — derive unconditional pointwise off-spine integrand identity**
-via well-founded recursion on `hookLength μ x.1 x.2`, using S57.4's
-`gnwProb_succ_eq_off_spine_of_c'` as the inductive step.  The strict
-hook of an off-spine cell `x` may contain "crossing" cells `y` with
-`y.1 = c'.1` or `y.2 = c'.2`; these are discharged by S57.3a's per-cell
-helpers (`gnwProb_zero_of_row_eq_c'_case1` /
-`gnwProb_zero_of_col_eq_c'_case2`) on whichever side of the
-case-1/case-2 dichotomy applies.  Estimated ~80–150 lines.  This
-closes the (S6) off-spine branch of S57.0.
 
-After S57.6, the (S2)/(S3) live arm/leg residuals — `range (c.1 + 1)`
-in case 1, `range (c.2 + 1)` in case 2 (S57.5 reductions) — remain the
-only piece of `F_side_identity_aligned`.  Each residual contains the
-doubly-affected cell `d` plus `c.1` / `c.2` below-`c` cells where
-genuine arm/leg pointwise comparison between `gnwProb μ` and
-`gnwProb (μ\c')` is required (S57.7, likely needs a `δ_arm`
-correction term).
+**S57.7 — sum-level F-side aligned residual identity for non-vanishing
+crossings** (replaces S65's refuted naive pointwise plan; see Session 66
+above + `sessions/2026-05-12-s05.md`).
+
+The S57.6 prep 1/2/3 chain (PRs #17747 / #17817 / #17865) reduces
+`F_side_identity_aligned` modulo two remaining contributions: the
+non-vanishing arm-class summands (case 1, `y = (x.1, c'.2)`) and the
+non-vanishing leg-class summands (case 2, `y = (c'.1, x.2)`).
+*Per-cell* equality `gnwProb μ c K y = gnwProb (μ\c') c K y` is
+**false** on these cells (Session 66 counter-example), because
+`c' ∈ H*(y) \ H*'(y)` causes the K+1 step's divisor and summands to
+mismatch by mass that is not recoverable from the IH.
+
+The correct target is at the **summed** level:
+
+```
+∑ x ∈ (μ\c').cells.filter (off-spine of c'),
+    [ gnwProb μ      c (hookLength μ      x.1 x.2) x · (h_d - 1)²
+    − gnwProb (μ\c') c (hookLength (μ\c') x.1 x.2) x · h_d · (h_d - 2) ]
+= 0
+```
+
+with the discrepancy `(h_d − 1)² − h_d · (h_d − 2) = +1` absorbing the
+missing `c'`-step mass uniformly across the off-spine arm/leg cells.
+Equivalently, S57.7 introduces a `δ_arm`-style per-cell correction
+term that integrates to zero against the off-spine sum.
+
+**Approach.**
+
+1. **Sub-lemma S57.7a — partial sums on the case-1 arm class.**  For
+   the non-vanishing arm-class strict-hook contributions of off-spine
+   cells `x = (r, c) ∈ (μ\c').cells` with `r ≠ c'.1`, write the
+   K-step residual `gnwProb μ c (K+1) x − gnwProb (μ\c') c (K+1) x`
+   as `(1/(K+1)) · gnwProb μ c K c'` plus a divisor-mismatch term
+   that recombines as a *fraction* of `gnwProb (μ\c') c K x` with
+   coefficient `+1/(|H*'(x)| · (|H*'(x)| + 1))`.
+   (S65's `hookLength_at_arm_class_case1` gives `|H*(x)| = |H*'(x)| + 1`.)
+
+2. **Sub-lemma S57.7b — case-2 leg-class mirror.**  Reduce to S57.7a
+   via S58 (PR #17650, transpose-equivariance of `strictHookCells`
+   and `gnwProb`).
+
+3. **Sub-lemma S57.7c — `δ_arm` integration to zero.**  Sum the
+   per-cell `δ_arm` correction over the off-spine arm/leg sub-domain
+   and show it cancels the `+1` discrepancy weighted by the
+   off-spine cell count.
+
+   Tools: S57.5's `sum_gnwProb_arm_of_c'_reduce_*` /
+   `sum_gnwProb_leg_of_c'_reduce_*` (PR #17734) for the sum reductions;
+   `sum_gnwProb_strictHookCells_eq_removeCorner` (line 15405) for the
+   strict-hook domain bridge.
+
+**Estimated.**  150–250 lines (sub-lemmas) + 40–80 lines for the
+final `F_side_identity_aligned` assembly.  Total likely exceeds the
+~15500-line Helpers.lean ceiling, forcing the Option E3 extraction
+into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` to land first.
+
+**Risk.**  Medium-high.  S57.7a's algebraic restatement is the
+crux; the `+1` discrepancy must factor cleanly through the
+divisor-mismatch.  Recommend an **analysis-only S57.7 spec session**
+next (Session 67) to derive S57.7a's exact algebraic form on the
+`(3,2)` and `(3,2,1)` test diagrams before any `.lean` edit.
+
+## Historical Next Action (S57.6, replanned by Session 66)
+
+The pre-S65 plan called for S57.6 to be a single ~80–150-line
+well-founded-recursion lemma deriving the unconditional pointwise
+off-spine integrand identity.  The S57.6 prep 1/2/3 chain (PRs
+#17747 / #17817 / #17865) decomposed S57.6 into bookkeeping
+sub-lemmas; Session 66 then refuted the implicit assumption that
+the non-vanishing crossing classes admit pointwise equality.
+S57.6 *proper* (the well-founded recursion) is now subsumed by
+S57.7's sum-level identity above.
 
 ## Historical Next Action (S57.3, now superseded by S57.5)
 **S57.3 — apply `gnwProb_unreachable_zero` to discharge (S2) and (S3)
