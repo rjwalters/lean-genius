@@ -1,0 +1,33 @@
+{
+  "id": "kepler-conjecture-oq-04",
+  "title": "Kepler Conjecture OQ-04: Non-spherical packing in ℝ³",
+  "slug": "kepler-conjecture-oq-04",
+  "description": "Open question follow-up to the gallery's `kepler-conjecture` entry. The parent file axiomatizes the Kepler-Hales theorem for congruent spheres in ℝ³ (optimal density `π/(3√2) ≈ 0.7405`, the FCC density), but says nothing about other convex bodies. OQ-04 spans three natural generalisations: (i) tetrahedral packing, where Chen-Engel-Glotzer (2010) constructed a dimer-based packing achieving `δ ≥ 4000/4671 ≈ 0.8564`, *strictly above* the FCC sphere density — refuting any naive expectation that the FCC bound is shape-universal; (ii) ellipsoid packing, where Donev-Stillinger-Chaikin-Torquato (2004) showed dense random packings achieve `δ ≈ 0.7707` at aspect ratio `α ≈ √2`, and Bezdek-Kuperberg (2007) proved the lattice-only ellipsoid density equals `π/(3√2)` exactly; (iii) Ulam's conjecture (1972, open) — every symmetric convex body `K ⊂ ℝ³` satisfies the optimal density bound `δ_K ≥ π/(3√2)`, with equality only for the unit ball (the unit ball would be the LEAST dense convex body to pack, inverting the Kepler optimality intuition). S2 SCAFFOLD (this iteration) introduces the Chen-Engel-Glotzer tetrahedral dimer density `tetrahedronDimerDensity = 4000/4671` as a Lean real-number constant, proves the basic positivity and less-than-one bounds (axiom-free, `norm_num`-discharged), and proves the rational-form Chen-Engel-Glotzer literature anchor `0.8563 < tetrahedronDimerDensity`. The S3 follow-up will deliver the numerical inequality `tetrahedronDimerDensity > fccDensity` using `Real.pi_lt_315` and `Real.sq_sqrt 2`, establishing in Lean that the `PackingDensity` type admits values strictly above `fccDensity` and confirming that the Kepler upper bound is shape-specific (spheres only). The ellipsoid and Ulam parts are deferred to later sessions and will require axiomatization (Bezdek-Kuperberg is a substantial published theorem; Ulam is genuinely open).",
+  "meta": {
+    "author": "researcher-11",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KeplerConjectureOQ04.lean",
+    "tags": [
+      "packing",
+      "kepler",
+      "tetrahedra",
+      "ellipsoids",
+      "ulam-conjecture",
+      "discrete-geometry",
+      "open-question",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 120,
+    "assumptions": "0 sorries, 0 axioms in this file. The parent file `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 SCAFFOLD file adds no new axioms — it only defines the Chen-Engel-Glotzer rational constant `4000/4671` and discharges three rational-number bounds via `norm_num`. The S3 follow-up `tetrahedronDimerDensity_gt_fccDensity` (deferred) is also expected to be axiom-free, using only Mathlib's `Real.pi_lt_315` and standard `Real.sqrt` lemmas. The ellipsoid (Bezdek-Kuperberg) and Ulam (open conjecture) sub-questions of OQ-04 will require axiomatization when introduced in future S5/S6 iterations.",
+    "mathlib_version": "4.26.0",
+    "historicalContext": "Kepler's 1611 conjecture concerned only spheres. Hales' 1998 proof (formalized by Flyspeck in 2014) settled the sphere case. The non-spherical generalisations have a rich and surprising history: Chen, Engel, and Glotzer (Discrete & Computational Geometry, 2010) constructed an explicit dimer-based crystalline packing of regular tetrahedra achieving density `4000/4671 ≈ 0.8564` — beating the FCC sphere density by ~16 percentage points and refuting an intuition that the FCC bound should be universal. The Donev-Stillinger-Chaikin-Torquato 2004 ellipsoid packings achieve `δ ≈ 0.7707` at aspect ratio `√2`, with the lattice-only case exactly matching FCC (Bezdek-Kuperberg 2007). Ulam's 1972 conjecture goes the opposite direction: among all symmetric convex bodies in ℝ³, the unit ball is conjecturally the LEAST efficient to pack, with density bounded below by `π/(3√2)` — open since 1972 despite extensive work by Bourgain, Schmuckenschläger, and others.",
+    "proofStrategy": "S1 OBSERVE (PR #18043): three-flagship survey of non-spherical packing — tetrahedral refutation of Kepler universality, ellipsoid record-setting, Ulam conjecture. S2 SCAFFOLD (this iteration): introduce `tetrahedronDimerDensity = 4000/4671` as a named real-number constant, prove positivity, less-than-one, and a rational-form literature anchor `tetrahedronDimerDensity_gt_8563` — all `norm_num`-discharged. S3 (followup): the structural inequality `tetrahedronDimerDensity > fccDensity` via squaring (both positive) reducing to `π² < 288_000_000 / 21_818_241 ≈ 13.2002`, discharged by `Real.pi_lt_315` (`π² < 9.9225 < 13.2002`). S4-S5 (followup): ellipsoid and Ulam axiomatizations and statements. The tetrahedral refutation alone establishes that `PackingDensity.density` (parent type) admits values strictly above `fccDensity`, demonstrating the shape-specificity of the Kepler upper bound — a clean axiom-free deliverable.",
+    "theoremCount": 3,
+    "definitionCount": 1
+  },
+  "sections": []
+}
