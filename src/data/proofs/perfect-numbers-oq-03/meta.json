@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring introducing the two classical Mersenne necessary conditions (exponent primality, Lucas factor congruence) and the LPW density conjecture. Imports `Mathlib.NumberTheory.LucasPrimality` (the order-of-2 machinery) and opens the `MersennePrimeDist` namespace.",
+      "mathContext": "$M(n) = 2^n - 1$. The two classical necessary conditions: (i) $M(n)$ prime $\\Rightarrow n$ prime; (ii) prime $q \\mid M(p) \\Rightarrow p \\mid q - 1$ (Lucas 1876). The LPW conjecture: $|\\{p \\le N : M(p)\\text{ prime}\\}| \\sim (e^\\gamma/\\log 2)\\,\\log\\log N$."
+    },
+    {
       "id": "sec-basic",
       "title": "Part I: Basic Mersenne Number Properties",
       "startLine": 44,
@@ -115,6 +123,54 @@
       "endLine": 260,
       "summary": "Proves composite_exp_implies_composite (converse: n composite, n≥2 → M(n) composite via mersenne_dvd_of_dvd), mersenne_equiv (M(n) prime ↔ n prime ∧ M(n) prime), first_four_mersenne_prime_exponents (exponents 2,3,5,7), first_four_mersenne_primes (3,7,31,127 all prime), M_eleven_composite (2047=23×89 not prime via decide).",
       "mathContext": "$M(11) = 2047 = 23 \\times 89$; the factor $23 \\equiv 1 \\pmod{11}$ confirms the Lucas congruence."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "mersenne_prime_exp_prime",
+      "type": "core",
+      "statement": "$M(n) = 2^n - 1$ prime $\\Rightarrow n$ prime",
+      "significance": "The necessity half of the Euler/Mersenne characterisation. The proof uses the divisibility telescope $a \\mid b \\Rightarrow M(a) \\mid M(b)$ (from `mersenne_dvd_of_dvd`) plus the contradiction: a proper divisor $1 < a < n$ gives $1 < M(a) < M(n)$ with $M(a) \\mid M(n)$, breaking primality.",
+      "description": "If 2ⁿ−1 is prime, then n is prime."
+    },
+    {
+      "name": "factor_cong_one_mod_p",
+      "type": "core",
+      "statement": "$p$ prime, $q$ prime, $q \\mid M(p) \\Rightarrow p \\mid q - 1$",
+      "significance": "Lucas 1876 — the heart of the Lucas-Lehmer primality test. Proof: $2^p \\equiv 1 \\pmod{q}$ forces $\\mathrm{ord}_q(2) \\mid p$. Since $p$ is prime, $\\mathrm{ord}_q(2) \\in \\{1, p\\}$; $\\mathrm{ord} = 1$ would give $q \\mid 1$ (impossible), so $\\mathrm{ord} = p$; Fermat's little theorem gives $\\mathrm{ord} \\mid q - 1$, hence $p \\mid q - 1$. Uses `ZMod.orderOf_dvd_of_pow_eq_one` and `Nat.orderOf_dvd_of_pow_eq_one`.",
+      "description": "Lucas factor congruence: prime factors of M(p) are ≡ 1 (mod p)."
+    },
+    {
+      "name": "mersenne_dvd_of_dvd",
+      "type": "supporting",
+      "statement": "$a \\mid b \\Rightarrow 2^a - 1 \\mid 2^b - 1$",
+      "significance": "The divisibility telescope underpinning the necessity theorem. Algebraically: $2^b - 1 = (2^a)^{b/a} - 1 = (2^a - 1)\\!\\sum_{i=0}^{b/a-1} (2^a)^i$. In Mathlib: `Nat.pow_sub_one_dvd` (or the analogous polynomial identity $x - 1 \\mid x^k - 1$).",
+      "description": "Divisibility telescope: a | b ⟹ M(a) | M(b)."
+    },
+    {
+      "name": "LPWConjecture",
+      "type": "supporting",
+      "statement": "$|\\{p \\le N : p\\text{ prime},\\, M(p)\\text{ prime}\\}| \\sim \\tfrac{e^\\gamma}{\\log 2} \\cdot \\log \\log N$",
+      "significance": "Stated as a `def : Prop` using `Filter.atTop` asymptotics, NOT as an axiom — correctly keeping `axiomCount = 0`. The Lenstra-Pomerance-Wagstaff (LPW) constant is $e^\\gamma/\\log 2 \\approx 2.5695$. Current numerical evidence (51 known Mersenne primes as of 2024) is consistent with the conjecture but the conjecture itself remains open.",
+      "description": "Lenstra-Pomerance-Wagstaff conjecture on Mersenne prime density (definition, not axiom)."
+    }
+  ],
+  "references": [
+    {
+      "text": "Lucas, É. (1876). Théorie des fonctions numériques simplement périodiques. American Journal of Mathematics 1(2), 184-196. Original proof of the factor congruence p | q-1.",
+      "url": "https://en.wikipedia.org/wiki/Lucas_sequence"
+    },
+    {
+      "text": "Wagstaff, S. S. (1983). Divisors of Mersenne numbers. Mathematics of Computation 40, 385-397. Modern treatment of the Lucas congruence and its computational implications.",
+      "url": "https://en.wikipedia.org/wiki/Mersenne_prime"
+    },
+    {
+      "text": "Pomerance, C. (1981). On the distribution of amicable numbers, II. J. Reine Angew. Math. 325, 183-188. Companion to Wagstaff's heuristic for the Mersenne prime distribution.",
+      "url": "https://en.wikipedia.org/wiki/Lenstra%E2%80%93Pomerance%E2%80%93Wagstaff_conjecture"
+    },
+    {
+      "text": "Mathlib4: Mathlib.NumberTheory.LucasPrimality, ZMod.orderOf_dvd_of_pow_eq_one, Nat.pow_sub_one_dvd. The order-of-2 machinery and the divisibility telescope.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
     }
   ],
   "conclusion": {
