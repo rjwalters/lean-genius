@@ -666,6 +666,89 @@ theorem prime_pow_pred_eq_one_of_sq_lt
   have h_zero : Nat.log p n - 1 = 0 := by omega
   rw [h_zero, pow_zero]
 
+-- =====================================================================
+-- ITER 18: per-prime numerical bounds on correction-factor terms
+-- =====================================================================
+-- For each prime `p ≤ n`, bound the Iter-16 correction-factor term
+-- `p ^ (Nat.log p n - 1)`. Three forms of the bound:
+--   • exponent-recurrence equality (`prime_pow_pred_mul_eq_pow`),
+--   • coarse `≤ n` bound (`prime_pow_pred_le_self`),
+--   • sharp `≤ n / p` bound (`prime_pow_pred_le_div`).
+-- These convert the Iter-16 factorisation `lcmRange n = primorial n ·
+-- correction(n)` into pointwise numerical inequalities that downstream
+-- product-bound arguments (e.g. Chebyshev-style `correction(n) ≤ n^√n`)
+-- can chain. They are deliberately base-agnostic about the
+-- small-prime filter from Iter 17 — each prime `p ≤ n` satisfies these
+-- regardless of whether `p² ≤ n` or not.
+
+/-- **Exponent recurrence** (Iter 18): for prime `p ≤ n`,
+    `p ^ (Nat.log p n - 1) · p = p ^ Nat.log p n`.
+
+    Extracts the inline manipulation in Iter 16's proof of
+    `lcmRange_eq_primorial_mul_prod_prime_pow_pred` as a named, reusable
+    lemma. Proof: `Nat.log p n ≥ 1` (by `Nat.log_pos` from `p ≥ 2` and
+    `p ≤ n`), so `(Nat.log p n - 1) + 1 = Nat.log p n` via
+    `Nat.sub_add_cancel`, then chain through `pow_succ`. -/
+theorem prime_pow_pred_mul_eq_pow {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n) :
+    p ^ (Nat.log p n - 1) * p = p ^ Nat.log p n := by
+  have h_log_pos : 0 < Nat.log p n := Nat.log_pos hp.one_lt hpn
+  -- Rewrite the RHS exponent as ((log p n - 1) + 1) using h_log_pos.
+  conv_rhs => rw [← Nat.sub_add_cancel h_log_pos]
+  rw [pow_succ]
+
+/-- **Coarse bound** (Iter 18): for prime `p ≤ n`,
+    `p ^ (Nat.log p n - 1) ≤ n`.
+
+    The trivial chain
+    `p^(Nat.log p n - 1) ≤ p^(Nat.log p n) ≤ n` via `Nat.pow_le_pow_right`
+    (monotone exponent) and `Nat.pow_log_le_self` (the maximal-power
+    inequality). Used as the fallback bound when the sharper
+    `prime_pow_pred_le_div` is not yet useful (e.g. `n = 0` or when the
+    quotient form needs to be unfolded). -/
+theorem prime_pow_pred_le_self {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n) :
+    p ^ (Nat.log p n - 1) ≤ n := by
+  -- p ≤ n forces n ≠ 0 (since p ≥ 2).
+  have hn_ne : n ≠ 0 := by
+    have : 2 ≤ n := le_trans hp.two_le hpn
+    omega
+  -- Exponent monotonicity: Nat.log p n - 1 ≤ Nat.log p n.
+  have h_mono : p ^ (Nat.log p n - 1) ≤ p ^ Nat.log p n :=
+    Nat.pow_le_pow_right hp.one_lt.le (Nat.sub_le _ _)
+  -- Maximal-power: p^(Nat.log p n) ≤ n.
+  exact le_trans h_mono (Nat.pow_log_le_self p hn_ne)
+
+/-- **Sharp bound** (Iter 18): for prime `p ≤ n`,
+    `p ^ (Nat.log p n - 1) ≤ n / p`.
+
+    The sharpened correction-factor bound: each correction-factor term
+    `p^(Nat.log p n - 1)` is at most `n / p`. Strict improvement over
+    `prime_pow_pred_le_self` by exactly the factor `p` saved by the
+    primorial decomposition of Iter 16.
+
+    Proof: by `Nat.le_div_iff_mul_le` (valid since `0 < p`), the goal is
+    equivalent to `p^(Nat.log p n - 1) * p ≤ n`. The LHS equals
+    `p^(Nat.log p n)` by `prime_pow_pred_mul_eq_pow`, which is `≤ n` by
+    `Nat.pow_log_le_self`.
+
+    Application: combined with Iter 16's primorial-correction
+    factorisation, this gives the pointwise estimate
+    `lcmRange n / primorial n = correction(n) = ∏ p^(log_p n - 1)
+    ≤ ∏ (n / p)`, which is exactly the inequality Hanson-style
+    elementary bounds attack: the RHS is `≤ ∏_{p ≤ √n} (n/p) ≤ n^π(√n)`
+    after invoking Iter 17's `prime_pow_pred_eq_one_of_sq_lt` to drop
+    primes `p > √n`. -/
+theorem prime_pow_pred_le_div {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n) :
+    p ^ (Nat.log p n - 1) ≤ n / p := by
+  -- Convert to multiplicative form via Nat.le_div_iff_mul_le.
+  rw [Nat.le_div_iff_mul_le hp.pos]
+  -- LHS = p^(log p n) by the exponent recurrence.
+  rw [prime_pow_pred_mul_eq_pow hp hpn]
+  -- p ≤ n forces n ≠ 0 for Nat.pow_log_le_self.
+  have hn_ne : n ≠ 0 := by
+    have : 2 ≤ n := le_trans hp.two_le hpn
+    omega
+  exact Nat.pow_log_le_self p hn_ne
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
