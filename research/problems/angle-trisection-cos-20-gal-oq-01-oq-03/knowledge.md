@@ -227,3 +227,86 @@ Estimated size: 250–400 lines. Tractability: 6/10 (would be 8 if Mathlib had t
 4. **Cross-link**: Once the general theorem is proven, propagate to sibling files (replace per-prime Eisenstein proofs in `OQ01OQ02.lean` and `OQ01.lean` with corollary of the general result).
 
 **Aristotle**: file has 1 main sorry (the general conjecture). This sorry is an **open conjecture** (NOT a routine supporting lemma); it should NOT be submitted to Aristotle. The smaller routine lemmas (e.g., `r_5_natDegree`, `r_5_monic`) are all already proven — nothing to submit.
+
+### Session 2026-05-12 (S3) — ACT — Boundary p = 3 + constant-coefficient sign pattern
+
+**Mode**: REVISIT (build on S2 Level-2 implementation)
+
+**Outcome**: progress (boundary case added; structural sign lemma packaged uniformly; 1 sorry unchanged)
+
+**What I did**:
+- Extended the parametric polynomial `r : ℕ → ℤ[X]` to include the boundary case
+  `r 3 = X − 3`. Since `cos(π/3) = 1/2`, the element `2 + 2 cos(π/3) = 3` has
+  rational minimal polynomial `X − 3` over ℚ — degree `(3 − 1)/2 = 1`, monic,
+  Eisenstein at `3` in the degenerate degree-1 sense (the unique sub-leading
+  coefficient is `−3 ∈ (3)`, and the constant `−3 ∉ (9)`).
+- Added five p = 3 theorems matching the per-prime template used for
+  p ∈ {5, 7, 11, 13}: `r_3_eq`, `r_3_natDegree`, `r_3_degree`, `r_3_monic`,
+  `r_3_isEisensteinAt`.
+- Extended the packaged claim `eisenstein_verified_small_primes` from a
+  four-prime conjunction to a five-prime conjunction (p ∈ {3, 5, 7, 11, 13}).
+- Stated and proved the **constant-coefficient sign pattern** lemma
+  `r_constantCoeff_eq_signed_p`:
+  for each verified prime `p ∈ {3, 5, 7, 11, 13}`,
+  `(r p).coeff 0 = (-1)^((p − 1)/2) · p`.
+  Each conjunct discharged by `simp` + `decide` after coefficient unfolding.
+- Updated file docstring with a dedicated "p = 3 boundary case" paragraph and
+  a "Constant-coefficient sign pattern" table laying out the five values.
+- Updated `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/meta.json`:
+  description (p=3 + sign lemma), lineCount 301→404, theoremCount 24→30,
+  mainTheorems list (+2), originalContributions (+2), sections (+2: p=3, sign).
+
+**Key findings**:
+- The Eisenstein structure extends naturally to the degree-1 boundary at p = 3.
+  This is mechanically the same proof template as for higher primes (the
+  `IsEisensteinAt` constructor takes the same three obligations), but
+  `interval_cases k` ranges over the single value `k = 0` — a useful smallest
+  case for any future inductive proof of the general conjecture.
+- The sign pattern is `(-1)^((p − 1)/2) · p`:
+  `n = (p−1)/2` takes values `(1, 2, 3, 5, 6)` for `p = (3, 5, 7, 11, 13)`,
+  yielding signs `(−, +, −, −, +)` — empirically `(r p).coeff 0 ∈
+  {−3, +5, −7, −11, +13}`, confirmed by direct unfolding for each prime.
+  This is exactly the cyclotomic prediction `N(2 + θ_p) = (-1)^n · Φ_{2p}(-1)`,
+  since `Φ_{2p}(-1) = p` for odd prime p ≥ 3 (Mathlib lemma
+  `Polynomial.cyclotomic_prime_eval_one` plus the relation Φ_{2p}(X) = Φ_p(−X)).
+  The sign matches Vieta's formula: `coeff 0 = (-1)^n · ∏ rootsᵢ = (-1)^n · N`.
+- Surfacing this sign pattern as a structural lemma (rather than ad-hoc
+  per-prime constant computations) is the kind of uniform observation that
+  the knowledge.md recommends pursuing — it converts five separate algebraic
+  facts into one cyclotomic prediction that any general proof must reproduce.
+
+**Files modified**:
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` (+103 lines: 301 → 404)
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/meta.json` (lineCount, theoremCount, mainTheorems, sections, description, originalContributions, assumptions)
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/state.md` (S3 phase, key files, next action)
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/knowledge.md` (this S3 log)
+
+**Next steps for S4+**:
+1. **Connect to Mathlib's cyclotomic API**: state and prove
+   `Polynomial.cyclotomic_2p_eval_neg_one : ∀ p : ℕ, p.Prime → 3 ≤ p → Odd p →
+   (Polynomial.cyclotomic (2 * p) ℤ).eval (-1) = (p : ℤ)`. This is a small but
+   genuinely useful Mathlib bridge lemma (probably already named differently in
+   `Mathlib.RingTheory.Polynomial.Cyclotomic.Eval`; the precise name needs to
+   be verified). With this lemma plus the sign-pattern fingerprint from S3,
+   the constant-term half of the general proof becomes accessible.
+2. **Build the trace polynomial**: define `realCyclotomic (p : ℕ) : ℤ[X]`,
+   the "Y-form" obtained from Φ_{2p}(X) via the substitution Y = X + X⁻¹.
+   For p odd prime ≥ 3, this is a monic degree-(p−1)/2 polynomial with
+   `(realCyclotomic p).eval 0 = (-1)^((p−1)/2) · p` (the value at θ = 0, i.e.
+   X = ±i, which corresponds to evaluating Φ_{2p} at ±i; we want the
+   shifted form Y − 2 instead). Then the conjectured `r_p` is precisely
+   `(realCyclotomic p).comp (X − C 2)`.
+3. **Discharge `r_constantCoeff_eq_signed_p` uniformly**: prove the sign
+   identity for ALL odd primes p ≥ 3 (not just the five verified cases) via
+   the Mathlib cyclotomic bridge from step 1. This is the FIRST half of the
+   general conjecture: the constant term has p-adic valuation exactly 1.
+4. **Sub-leading coefficients** (the HARD half): show all coefficients of
+   `r_p` of degree < (p−1)/2 are divisible by p. The cyclotomic-ramification
+   argument identifies these as elementary symmetric functions of the
+   conjugates `2 + 2 cos(kπ/p)`, each of which lies in 𝔭 (the unique prime
+   above p in ℤ[θ_p]) by the uniformizer property. This step is the main
+   gap and likely requires building local-field infrastructure (~200–300
+   lines).
+
+**Aristotle**: file still has 1 main sorry (the general conjecture). This
+sorry remains an **open conjecture**; NOT submittable.
