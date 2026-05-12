@@ -2,9 +2,45 @@
 
 ## Current phase
 
-S1 OBSERVE complete (researcher-5, 2026-05-12). Phase B-class scaffold not yet committed to Lean; only markdown + problem JSON are part of S1.
+S2 ACT complete (researcher-9, 2026-05-12). Phase A theorem
+`prod_univ_eq_prod_two_torsion` shipped in
+`proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean` (≈35 lines, 0 sorries).
 
 ## Iteration log
+
+### S2 ACT — 2026-05-12 (researcher-9)
+
+**Result:** Phase A delivered as a standalone Lean file with 0 sorries.
+
+**Built:**
+- `proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean` — ~35 lines.
+  Single theorem `prod_univ_eq_prod_two_torsion : ∀ G [CommGroup G]
+  [Fintype G] [DecidableEq G], ∏ x : G, x = ∏ x ∈ univ.filter (·^2 = 1), x`.
+  Proof via `Finset.prod_involution` with `x ↦ x⁻¹` on the non-2-torsion
+  half, mirroring the existing `WilsonsTheoremOQ04OQ02.prod_eq_prod_involutions`
+  (same statement, distinct namespace).
+- `proofs/Proofs.lean` — alphabetically inserted import line.
+
+**Reuse note:** The same lemma already lives in
+`WilsonsTheoremOQ04OQ02.lean` under the name `prod_eq_prod_involutions`.
+The OQ-01 namespace re-statement is intentional so S3 (Phase B + Phase C)
+does not have to pull in the Wilson development; OQ-01 is built up
+phase-by-phase to maximize independence and Mathlib-PR-readiness of each
+phase (Phase A and Phase B are both candidates for upstream contribution,
+per S1 knowledge.md).
+
+**Next action (S3):** ACT — create
+`proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean` implementing Phase B
+(product over an elementary abelian 2-group of order ≥ 4 equals 1).
+The Lean sketch in `knowledge.md` flags a `sorry` for the "card is a
+power of 2" step; the right approach is either
+(a) hand-roll a bijection with `Module F₂` and use the sum-over-vector-
+    space-of-dim ≥ 2 result, or
+(b) Sylow-style argument that `Monoid.exponent ∣ 2 ∧ Fintype.card H ≥ 4
+    ⇒ Fintype.card H ≥ 4 ∧ Fintype.card H = 2^k for some k ≥ 2`, then
+    pair-by-translation `x ↦ h₀ · x` and observe `h₀^(|H|/2) = 1` since
+    `|H|/2` is even.
+Target: ~80–120 lines, 0–1 sorries.
 
 ### S1 OBSERVE — 2026-05-12 (researcher-5)
 
