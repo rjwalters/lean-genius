@@ -178,6 +178,70 @@
       "Is there a more direct Lean 4 proof using StrictMono of rpow on the positive reals with negative exponent?"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "geomMean_rpow_le_weightedSum_rpow",
+      "type": "core",
+      "description": "Universal AM-GM consequence: GM(z,w)^r ≤ ∑ wᵢ zᵢ^r for every r ∈ ℝ. This single inequality, applied to the values zᵢ^r, drives every subsequent monotonicity statement in the file.",
+      "leanType": "(weightedGeomMean s w z) ^ r ≤ ∑ i ∈ s, w i * z i ^ r"
+    },
+    {
+      "name": "geom_mean_le_power_mean_pos",
+      "type": "core",
+      "description": "GM ≤ M_r for any r > 0. Extends Mathlib's geom_mean_le_power_mean_of_one_le (which requires r ≥ 1) to the full open ray r > 0 by raising the core inequality to the positive power 1/r.",
+      "leanType": "weightedGeomMean s w z ≤ weightedPowerMean s w z r hrne"
+    },
+    {
+      "name": "power_mean_le_geom_mean_neg",
+      "type": "core",
+      "description": "M_r ≤ GM for any r < 0. Proved by re-expressing M_r and GM as the inverses of two positive rpow values, then applying the algebraic inversion A ≤ B → B⁻¹ ≤ A⁻¹ (avoiding any specialized negative-exponent rpow lemma).",
+      "leanType": "weightedPowerMean s w z r hrne ≤ weightedGeomMean s w z"
+    },
+    {
+      "name": "power_mean_monotone_crossing_zero",
+      "type": "core",
+      "description": "Main theorem: M_r ≤ M_s for r < 0 < s. Combined with AmgmInequalityOQ03's same-sign cases, this completes the full power mean monotonicity chain M_r ≤ M_s for all r ≤ s (r,s ≠ 0).",
+      "leanType": "weightedPowerMean s w z r hrne ≤ weightedPowerMean s w z t htne"
+    },
+    {
+      "name": "hm_le_gm_le_am_via_power_means",
+      "type": "supporting",
+      "description": "Classical HM ≤ GM ≤ AM as the special case r = -1, s = 1 of the crossing-zero theorem. Shows the harmonic-geometric-arithmetic mean chain is a single instantiation of the more general power mean inequality.",
+      "leanType": "weightedPowerMean s w z (-1) _ ≤ weightedGeomMean s w z ∧ weightedGeomMean s w z ≤ weightedPowerMean s w z 1 _"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cauchy, Augustin-Louis",
+      "title": "Cours d'Analyse de l'École Royale Polytechnique",
+      "year": "1821",
+      "venue": "Imprimerie Royale, Paris",
+      "note": "First rigorous proof of the AM-GM inequality (Note II, §16), which is the r=0 vs r=1 case of the general power mean inequality proved here."
+    },
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "The canonical reference for the power mean inequality. Theorem 16 (and its corollaries in §2.9–2.11) establishes M_r ≤ M_s for r ≤ s using Jensen's inequality on the convex function x ↦ x^{s/r} — an approach that requires separate handling of same-sign and crossing-zero cases. The strategy in this file avoids the convexity-direction switch entirely."
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications, Vol. 560, Springer (Kluwer)",
+      "doi": "10.1007/978-94-017-0399-4",
+      "note": "Modern encyclopedic reference. Chapter III §2 surveys the weighted power mean M_r and proves M_r ≤ M_s by reduction to the universal inequality GM^r ≤ ∑ w_i z_i^r — the same strategy formalized here."
+    },
+    {
+      "authors": "Mathlib contributors",
+      "title": "Real.geom_mean_le_arith_mean_weighted (Mathlib.Analysis.MeanInequalities)",
+      "year": "2024",
+      "venue": "Mathlib4 (commit referenced by mathlib_version 4.26.0)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
+      "note": "Weighted AM-GM in Lean 4: ∏ zᵢ^wᵢ ≤ ∑ wᵢ · zᵢ for ∑wᵢ=1. Applied to the values zᵢ^r, this yields the core inequality geomMean_rpow_le_weightedSum_rpow."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "imports": [
