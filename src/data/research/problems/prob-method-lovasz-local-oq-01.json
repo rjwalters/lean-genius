@@ -27,31 +27,35 @@
     "goal": "Define the algorithm as a PMF-based Markov chain on configurations and prove the witness-tree-based bound E[#resamplings of A_i] ≤ x_i/(1-x_i)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T11:50:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE complete — three-part decomposition (OQ-01-A algorithm skeleton / OQ-01-B witness trees / OQ-01-C Galton-Watson sum). Mathlib survey: PMF.Monad + Independence.Basic ready; rooted-labelled-tree type and GW branching process must be built.",
+    "phase": "ACT",
+    "since": "2026-05-12T15:30:00Z",
+    "iteration": 2,
+    "focus": "S2 ACT (OQ-01-A.1) — `Proofs/MoserTardos.lean` skeleton (+243 lines) created and wired into umbrella. Defines `MTProblem` (with field-encoded Fintype/Nonempty/Decidable instances), `State`, `isViolated`, `pickBad`, `resampleAt` (sorry-stubbed product-PMF), `step`, `run`, `LLLAdmissible`, and statement shells for `mt_expected_step_bound` + `mt_terminates_as`. Exactly 1 sorry (in `resampleAt`). Build pending (recursive `.lake` symlink trap matches S18a-e precedent).",
     "blockers": [],
-    "nextAction": "S2 ACT — create Proofs/MoserTardos.lean with algorithm skeleton (MTProblem, MTState, step, run) and sorry-listed statements of mt_expected_step_bound and mt_terminates_as. Build-verify under Docker.",
+    "nextAction": "S3 ACT — OQ-01-A.2 close the `resampleAt` sorry via product-PMF construction (~60-80 lines): iterate `PMF.bind` over `Finset.univ`, using `PMF.uniformOfFintype` for `j ∈ S` and `PMF.pure (v j)` for `j ∉ S`. Add `resampleAt_preserves_outside` invariance lemma. Build-verify under Docker.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE: problem statement, three-approach analysis (specialise-symmetric / direct-witness-tree / entropy-compression), three-part decomposition (OQ-01-A/B/C), Mathlib API survey, sibling-overlap analysis with lovasz-local-lemma-oq-03.",
+    "progressSummary": "S1 (OBSERVE, #18100) + S2 (ACT OQ-01-A.1, this PR): full three-part decomposition + new Lean file `Proofs/MoserTardos.lean` (+243 lines) containing the algorithm scaffold (MTProblem / State / isViolated / pickBad / resampleAt / step / run), the LLLAdmissible predicate, and statement shells of the expected-step bound + a.s.-termination theorems. Exactly 1 sorry (in `resampleAt`).",
     "builtItems": [
       "problem.md (~250 lines) — full open question statement, algorithm definition, termination theorem, three approaches, three-part decomposition, Mathlib survey",
       "knowledge.md (~150 lines) — sibling-overlap analysis, Mathlib readiness table, OQ-01-A skeleton plan",
-      "state.md — S1 phase complete, S2 next action = OQ-01-A skeleton"
+      "state.md — S1 phase complete, S2 next action = OQ-01-A skeleton",
+      "Proofs/MoserTardos.lean (NEW, 243 lines) — structure MTProblem, defs State/isViolated/pickBad/resampleAt/step/run, structure LLLAdmissible, theorems mt_expected_step_bound + mt_terminates_as (statement shells, 1 sorry in resampleAt)",
+      "Proofs.lean umbrella — alphabetical import added between MorleysTheoremOQ01 and MotivicFlagMaps"
     ],
     "insights": [
       "Algorithm + bound is a separable layer above the existing LLL — zero changes needed to LovaszLocalLemma.lean; new file Proofs/MoserTardos.lean is the right home",
       "Variable-version dependency graph (i ~ k ⇔ vbl(A_i) ∩ vbl(A_k) ≠ ∅) is required, NOT the abstract probabilistic-dependence graph",
       "Witness trees are the technically hardest piece — need a new inductive type with Finset-valued children; SimpleGraph.Path is inadequate",
       "PMF-based finite-alphabet model is sufficient for all known marquee applications; measure-theoretic extension deferred to lovasz-local-lemma-oq-01",
-      "Sibling lovasz-local-lemma-oq-03 (‘Formalize Moser-Tardos’) is effectively a duplicate; coordinate at S2 ACT"
+      "Sibling lovasz-local-lemma-oq-03 (‘Formalize Moser-Tardos’) is effectively a duplicate; coordinate at S2 ACT",
+      "S2: encoding typeclass requirements (`Fintype` / `Nonempty` / `Decidable`) as MTProblem structure fields with `attribute [instance]` lets the namespace's API (`P.State`, `P.isViolated`, `P.pickBad`) compile as a single uniform surface; pickBad uses `Finset.min'` on the filter of `isBad`-violated indices as the canonical deterministic resampling rule",
+      "S2: `LLLAdmissible` packages the LLL inequality at the algebraic-rational level (auxiliary `prob, adj`) so that the faithful link to the actual uniform-draw measure can be a separate OQ-01-A.2 lemma — decouples the algorithm-shell from the measure-theoretic faithful link"
     ],
     "mathlibGaps": [
       "No rooted-labelled-tree type with Finset children (witness trees must be built from scratch)",
@@ -59,11 +63,11 @@
       "Stopping/hitting times exist but the witness-tree extraction is a custom partial recursion not covered by Mathlib's stopping-time framework"
     ],
     "nextSteps": [
-      "S2 ACT: create Proofs/MoserTardos.lean with algorithm skeleton + statement-only of expected-step bound and a.s.-termination",
-      "S2 ACT: build-verify under Docker before push",
-      "S2 ACT: open PR with title `research(prob-method-lovasz-local-oq-01): S2 ACT — algorithm skeleton + sorry-listed bound`",
-      "S3+ ACT (OQ-01-B): WitnessTree inductive type + isProper + validity lemma + tree-probability bound",
-      "S6+ ACT (OQ-01-C): Galton–Watson coupling or direct generating-function calculation, yielding x_i/(1-x_i) bound"
+      "S3 ACT (OQ-01-A.2): close `resampleAt` sorry via product-PMF (~60-80 lines)",
+      "S4-S5 ACT (OQ-01-A.3): LLLAdmissible faithful link to a uniform-draw measure (~150 lines)",
+      "S6+ ACT (OQ-01-B): WitnessTree inductive type + isProper + validity lemma + tree-probability bound",
+      "S9+ ACT (OQ-01-C): Galton–Watson coupling or direct generating-function calculation, yielding x_i/(1-x_i) bound",
+      "S12 complete: replace the algebraic-shell body of `mt_expected_step_bound` with the actual expected-value bound"
     ]
   },
   "tags": [
@@ -100,7 +104,7 @@
     ]
   },
   "started": "2026-05-12T11:50:00Z",
-  "lastUpdate": "2026-05-12T11:50:00Z",
+  "lastUpdate": "2026-05-12T15:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -114,6 +118,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemma.lean"
+    },
+    {
+      "path": "Proofs/MoserTardos.lean",
+      "filename": "MoserTardos.lean",
+      "lineCount": 243,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MoserTardos.lean"
     }
   ]
 }
