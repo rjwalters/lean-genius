@@ -535,6 +535,31 @@ axiom chen_theorem :
 axiom binary_goldbach_verified :
     ∀ n : ℕ, 4 ≤ n → Even n → n ≤ 4 * 10^18 → IsSumOfTwoPrimes n
 
+/-- Small-range, *kernel-verified* binary Goldbach for `n ≤ 30`.
+
+    This is a modest, exhaustively-checked companion to the axiom
+    `binary_goldbach_verified` (which records the full computational
+    verification up to `4 × 10^18` due to Oliveira e Silva, 2013).
+
+    The Oliveira e Silva range is far beyond what `decide` can evaluate
+    inside Lean's kernel, but the smallest cases are tractable: for each
+    even `n` in `{4, 6, 8, …, 30}`, the brute-force witness search
+    `isSumOfTwoPrimesDecide` (defined above) terminates in a few hundred
+    iterations, and `decidableIsSumOfTwoPrimes` then exhibits a concrete
+    prime pair.
+
+    **Honest scope.** This does *not* eliminate the axiom — it only
+    replaces the trivial-by-`decide` cases (which are already present
+    above as `example : IsSumOfTwoPrimes 4 := by decide`, etc.) with a
+    single universally-quantified statement of the same shape as the
+    axiom. The genuine content is range coverage, not new mathematics.
+    Larger ranges (say `n ≤ 1000`) would require either `native_decide`
+    (an additional kernel-trust axiom) or off-line verified search. -/
+theorem binary_goldbach_verified_small :
+    ∀ n : ℕ, 4 ≤ n → Even n → n ≤ 30 → IsSumOfTwoPrimes n := by
+  intro n h4 hEven h30
+  interval_cases n <;> revert hEven <;> decide
+
 /-- Under GRH, binary Goldbach holds for all odd n > some explicit bound
     (Deshouillers, Effinger, te Riele, Zinoviev, 1997) -/
 /- deshouillers_grh_goldbach (1997): under GRH, every odd n > 10^20
@@ -626,6 +651,7 @@ theorem levy_11 : ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ 11 = p + 2 * q 
 #check IsP2
 #check chen_theorem
 #check binary_goldbach_verified
+#check binary_goldbach_verified_small
 #check LevyConjecture
 #check levy_implies_weak_goldbach
 
