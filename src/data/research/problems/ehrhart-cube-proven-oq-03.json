@@ -1,0 +1,105 @@
+{
+  "slug": "ehrhart-cube-proven-oq-03",
+  "title": "Barvinok's algorithm for lattice point counting in fixed dimension",
+  "phase": "S1_OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For every fixed } d \\in \\mathbb{N}, \\text{ there is a deterministic polynomial-time algorithm } B_d \\text{ that on input a rational polytope } P = \\{x : Ax \\le b\\} \\text{ with } A \\in \\mathbb{Q}^{m \\times d}, b \\in \\mathbb{Q}^m \\text{ of bit-length } \\le L \\text{ computes } |P \\cap \\mathbb{Z}^d| \\text{ in time } \\mathrm{poly}(m, L).",
+    "plain": "Barvinok's theorem (1994): for every fixed dimension d, there is a polynomial-time algorithm computing the number of lattice points in a rational polytope. The algorithm uses signed simplicial-cone decomposition to produce a short rational generating function f(P; x) = sum_i epsilon_i * x^{u_i} / prod_j (1 - x^{v_{i,j}}) which evaluates to the lattice-point count at x = 1.",
+    "whyMatters": [
+      "Foundational result in geometric algorithms (Barvinok 1994)",
+      "Powers the LattE software for explicit lattice point counting",
+      "Bridges Ehrhart theory (combinatorics) with rational generating functions (algebra) and polynomial-time computation (complexity theory)",
+      "Fills a gap in the gallery's existing ehrhart-cube-proven* family (which is entirely identity-type)"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "ehrhart-cube-proven: L([0,1]^d, n) = (n+1)^d (verified, 0 axioms)",
+      "ehrhart-cube-proven-oq-02: Ehrhart polynomials without general existence theorem (COMPLETED)",
+      "ehrhart-cube-proven-oq-04: Eulerian h*-vector identity for unit cube (PROVED)",
+      "Mathlib v4.26.0 has Mathlib.Combinatorics.Polytope.Ehrhart, MvPolynomial, RatFunc, MvPowerSeries"
+    ],
+    "open": [
+      "Algorithmic complexity of lattice point counting for d as part of input is NP-hard (matches integer programming)",
+      "Higher-degree generating function specializations (cf. Brion-Vergne)",
+      "Effective bounds on the constants in Barvinok's polytime"
+    ],
+    "goal": "Add gallery entry for Barvinok-1994 algorithm: axiomatize the polytime claim, define short rational generating function as a Lean type, prove first-principles corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i), bridge to ehrhart-cube-proven's (n+1)^d via x -> 1 specialization."
+  },
+  "currentState": {
+    "phase": "S1_OBSERVE",
+    "since": "2026-05-12T20:55:00Z",
+    "iteration": 1,
+    "focus": "Workspace bootstrap, gallery-gap survey, Mathlib API plan for S2.",
+    "blockers": [],
+    "nextAction": "S2 ACT: probe Mathlib v4.26.0 for MvPolynomial / RatFunc / Polynomial.geom_series via Docker import test, then implement Proofs/EhrhartCubeProvenOQ03.lean (Tier 1: axiomatize barvinok_polytime, define ShortRationalGenFn, prove cube_generating_fn_factored).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE doc-only: workspace bootstrap, slug retargeted to algorithmic/generating-function gap (existing ehrhart-cube-proven* siblings are identity-type only). 0 axioms, 0 sorries.",
+    "builtItems": [],
+    "insights": [
+      "All four existing ehrhart-cube-proven* slugs cover identity-type results (cube formula, h*-vector, Worpitzky, Eulerian palindrome). None address algorithmic complexity or generating-function representations.",
+      "Mathlib v4.26.0 has the algebraic infrastructure (MvPolynomial, RatFunc, MvPowerSeries) but no formal complexity class library; the polytime claim must be axiomatized.",
+      "The corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i) is a tractable first-principles theorem provable via geometric series, providing a sanity bridge to ehrhart-cube-proven's (n+1)^d.",
+      "Signed simplicial-cone decomposition (the algorithm's core) requires continued-fraction-style descent, out of scope for S2; defer to S3 stretch or future OQ."
+    ],
+    "mathlibGaps": [
+      "No signed simplicial-cone decomposition in Mathlib v4.26.0",
+      "No formal complexity-class library; polytime claims must be axiomatized",
+      "No short rational generating function type as a first-class concept"
+    ],
+    "nextSteps": [
+      "S2.1 probe: Proofs/EhrhartCubeProvenOQ03Probe.lean with imports of Mathlib.Combinatorics.Polytope.Ehrhart, MvPolynomial, RatFunc, PowerSeries to confirm API surface",
+      "S2.2 implement: Proofs/EhrhartCubeProvenOQ03.lean (axiom barvinok_polytime + def ShortRationalGenFn + theorem cube_generating_fn_factored + theorem cube_count_eval_at_one)",
+      "S2.3 gallery: src/data/proofs/ehrhart-cube-proven-oq-03/{meta.json, annotations.json}",
+      "S3 stretch: 2-D signed cone decomposition (Tier 2)"
+    ],
+    "markdown": "# ehrhart-cube-proven-oq-03: Knowledge\n\n## Slug Mapping\n\nSeeker pool entry name 'Barvinok's algorithm for lattice point counting in fixed dimension' maps to a concrete gap: the gallery's existing ehrhart-cube-proven* family addresses identity-type Ehrhart results; the algorithmic/generating-function angle of Barvinok-1994 is absent.\n\n## Status: S1 OBSERVE doc-only\n\nWorkspace created. Mathlib survey deferred to S2 Docker probe.\n\nSee research/problems/ehrhart-cube-proven-oq-03/ for the full S1 documentation:\n* problem.md - restated goal + gallery survey\n* knowledge.md - Mathlib survey + 3-tier strategy\n* state.md - session anchor\n* sessions/2026-05-12-s01.md - this session log"
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "ehrhart-theory",
+    "polytopes",
+    "lattice-points",
+    "barvinok",
+    "algorithms"
+  ],
+  "relatedProofs": [
+    "ehrhart-cube-proven",
+    "ehrhart-cube-proven-oq-01",
+    "ehrhart-cube-proven-oq-02",
+    "ehrhart-cube-proven-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Barvinok, A. I. (1994) A polynomial time algorithm for counting integral points in polyhedra when the dimension is fixed. Math. Oper. Res. 19, 769-779.",
+      "Barvinok, A. & Pommersheim, J. E. (1999) An algorithmic theory of lattice points in polyhedra. New Perspectives in Algebraic Combinatorics (MSRI), 91-147.",
+      "De Loera, J. A., Hemmecke, R., Tauzer, J., Yoshida, R. (2004) Effective lattice point counting in rational convex polytopes. J. Symb. Comp. 38(4), 1273-1302.",
+      "Beck, M. & Robins, S. (2015) Computing the Continuous Discretely, 2nd ed., Springer UTM, ch. 11."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Barvinok%27s_algorithm",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Polytope/Ehrhart.html"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.Polytope.Ehrhart",
+      "Mathlib.Algebra.MvPolynomial.Basic",
+      "Mathlib.FieldTheory.RatFunc.Basic",
+      "Mathlib.RingTheory.PowerSeries.Basic"
+    ]
+  },
+  "started": "2026-05-12T20:55:00Z",
+  "lastUpdate": "2026-05-12T20:55:00Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": []
+}
