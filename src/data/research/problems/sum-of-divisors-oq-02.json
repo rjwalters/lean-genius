@@ -1,0 +1,89 @@
+{
+  "slug": "sum-of-divisors-oq-02",
+  "title": "Euler's Converse: Every Even Perfect Number is Mersenne-Form",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{N},\\; \\text{Even}(n) \\wedge n.\\text{Perfect} \\Longrightarrow \\exists k \\in \\mathbb{N},\\; \\text{Prime}(2^{k+1} - 1) \\wedge n = 2^k \\cdot (2^{k+1} - 1).",
+    "plain": "Euler (1747): every even perfect number n equals 2^k(2^(k+1)-1) where 2^(k+1)-1 is a Mersenne prime. The OQ-02 framing exposes the algebraic skeleton (sigma-multiplicativity + prime-power structure) as named intermediate lemmas rather than invoking the Mathlib Archive's bundled proof as a black box.",
+    "whyMatters": [
+      "Pedagogical exposition: makes the algebraic decomposition (sigma-coprime split, divisibility extraction, two-divisor uniqueness) transparent.",
+      "Reusable sub-lemmas: sigma(2^k)*sigma(m) = 2^(k+1)*m and M_{k+1} | m appear elsewhere in divisibility arguments.",
+      "Open-problem stepping stone: the same algebraic skeleton underlies all known constraints on odd perfect numbers."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect (Mathlib Archive, bundled)",
+      "PerfectNumbers.euler_even_perfect (gallery wrapper of bundled proof)",
+      "Theorems100.Nat.sigma_two_pow_eq_mersenne_succ (sigma(2^k) = M_{k+1})"
+    ],
+    "open": [
+      "Self-contained pedagogical decomposition into 6 named steps with docstrings"
+    ],
+    "goal": "Produce Proofs/SumOfDivisorsOQ02.lean with named intermediate lemmas exposing the Euler-converse algebra, build-verified against pinned Mathlib."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — survey + 7-step proof skeleton documented; no Lean changes yet.",
+    "activeApproach": "Pedagogical self-contained refactor of Mathlib Archive bundled proof into named intermediate lemmas.",
+    "blockers": [],
+    "nextAction": "S2 SCAFFOLD — create proofs/Proofs/SumOfDivisorsOQ02.lean with 6 named sorry-stubbed lemmas + top-level theorem.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete. Parent slug sum-of-divisors marked COMPLETED via PerfectNumbers.lean (wraps Mathlib Archive). OQ-02 targets pedagogical decomposition.",
+    "builtItems": [],
+    "insights": [
+      "The Euler converse decomposes cleanly into 6 algebraic steps: (1) sigma-coprime split for n = 2^k*m, (2) sigma(2^k) = M_{k+1}, (3) perfect equation gives M_{k+1}*sigma(m) = 2^(k+1)*m, (4) M_{k+1} odd ⇒ M_{k+1} | m, (5) sigma(m) = m + c where c = m/M_{k+1}, (6) sigma(m) = m + c with c | m forces c = 1 and m prime.",
+      "All Mathlib API needed is available (Coprime, IsMultiplicative.sigma_one, mersenne, Archive.sigma_two_pow_eq_mersenne_succ)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S2: scaffold Proofs/SumOfDivisorsOQ02.lean with named sub-lemmas",
+      "S3+: discharge sorries one step at a time (Step 2 first, easiest)",
+      "Honest assessment after S2: if scaffold is structurally identical to Archive proof, close as documentation-only after one polish iteration."
+    ],
+    "markdown": "# Knowledge Base: Euler's Converse for Even Perfect Numbers\n\n## Status: S1 OBSERVE complete (survey + plan, no Lean changes yet)\n\nSee research/problems/sum-of-divisors-oq-02/knowledge.md for the full 7-step proof skeleton and Mathlib API inventory.\n\n## Key Mathlib lemmas\n- ArithmeticFunction.IsMultiplicative.sigma_one (sigma is multiplicative)\n- Theorems100.Nat.sigma_two_pow_eq_mersenne_succ (sigma(2^k) = mersenne (k+1))\n- Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect (bundled Euler direction)\n\n## Proof skeleton (Euler ⇒)\nLet n = 2^k * m even and perfect, m odd, k ≥ 1.\n1. sigma(2^k * m) = sigma(2^k) * sigma(m) — multiplicativity on coprimes\n2. sigma(2^k) = M_{k+1} = 2^(k+1) - 1 — Archive lemma\n3. M_{k+1} * sigma(m) = 2^(k+1) * m — perfect equation expanded\n4. M_{k+1} | m — since M_{k+1} odd, coprime to 2^(k+1)\n5. Writing m = M_{k+1} * c: sigma(m) = 2^(k+1) * c = m + c\n6. c | m and sigma(m) = m + c forces c = 1 and m prime (two-divisor uniqueness)\n7. Conclude n = 2^k * M_{k+1} with M_{k+1} prime. ∎"
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "perfect-numbers",
+    "arithmetic-functions",
+    "multiplicative",
+    "mersenne-primes"
+  ],
+  "relatedProofs": [
+    "perfect-numbers",
+    "sum-of-divisors"
+  ],
+  "references": {
+    "papers": [
+      "Euler, L. (1747/1849). De numeris amicabilibus. Opera Postuma 1, 85-100.",
+      "Hardy, G.H. & Wright, E.M. (1979). An Introduction to the Theory of Numbers, §16.8."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Archive/Wiedijk100Theorems/PerfectNumbers.html",
+      "https://en.wikipedia.org/wiki/Euclid%E2%80%93Euler_theorem"
+    ],
+    "mathlib": [
+      "Archive.Wiedijk100Theorems.PerfectNumbers",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.NumberTheory.Padics.Mersenne"
+    ]
+  },
+  "started": "2026-05-12T17:55:00.000Z",
+  "lastUpdate": "2026-05-12T17:55:00.000Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": []
+}
