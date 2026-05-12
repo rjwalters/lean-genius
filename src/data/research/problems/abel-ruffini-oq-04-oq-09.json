@@ -1,0 +1,291 @@
+{
+  "slug": "abel-ruffini-oq-04-oq-09",
+  "title": "Shafarevich realizability for solvable subgroups of S_n (n ≤ 4)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\leq 4,\\ \\forall G \\hookrightarrow S_n,\\ \\exists L/\\mathbb{Q}\\ \\text{Galois with}\\ \\mathrm{Gal}(L/\\mathbb{Q}) \\cong G",
+    "plain": "For n ≤ 4, every subgroup of S_n is realizable as a Galois group over Q by an explicit construction — the constructive converse to abel-ruffini-oq-04's threshold theorem. Distinct from sibling oq-05 (full Shafarevich, axiomatized).",
+    "whyMatters": [
+      "Closes the constructive direction of abel-ruffini-oq-04's threshold theorem (Sn solvable ⇔ n ≤ 4)",
+      "Axiom-free slice of Shafarevich's theorem — no need for class field theory or embedding problems for the n ≤ 4 case",
+      "Pedagogical bridge: gives concrete number-field examples matching each row of the threshold table"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "abel-ruffini-galois-extensions-oq-05-oq-01: cyclic Z/nZ realizable over Q via Dirichlet primes (0 axioms)",
+      "abel-ruffini-galois-extensions-oq-05-oq-01: coprime products Z/mZ × Z/nZ realizable via CRT (1 axiom for compositum)",
+      "InverseGalois.lean: Gal(Q(ζ_n)/Q) ≅ (Z/nZ)^× — all abelian Galois groups of cyclotomic origin",
+      "abel-ruffini-oq-04: threshold theorem Sn solvable ⇔ n ≤ 4 (forward direction)"
+    ],
+    "open": [
+      "Full Shafarevich for arbitrary solvable G — axiomatized in oq-05; requires embedding problem theory not in Mathlib",
+      "S₃/D₄/A₄/S₄ explicit realizations in Lean — feasible via Mathlib's Polynomial.Gal but ~100 lines per case",
+      "Effective Galois-group computation (Stauduhar 1973) — separate slug oq-10"
+    ],
+    "goal": "Build a single Lean file Proofs/AbelRuffiniOQ04OQ09.lean exhibiting explicit Q-realizations of all 9 solvable transitive Galois groups occurring in degrees ≤ 4, with 0 axioms beyond Classical.choice, paired with a gallery entry that completes oq-04's threshold theorem with the constructive direction."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T02:30:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — scope narrowed to axiom-free n ≤ 4 slice; Mathlib API surveyed; 9 target groups catalogued; next-action documented.",
+    "blockers": [
+      "Broken proofs/.lake symlink → ~45 min cold build cycles (feedback_researcher_lake_symlink_broken.md)"
+    ],
+    "nextAction": "S2 — choose Option A (Lean #check probe, 1 build cycle) or Option B (expand knowledge.md menu with per-row proof sketches, no build). Recommendation: Option B.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete. Scope narrowed to subgroups of S_n with n ≤ 4 (9 distinct group structures). Sibling entries oq-05 and oq-05-oq-01 surveyed: this slug's distinctive contribution is the axiom-free finite menu. No Lean code yet — pure documentation iteration.",
+    "builtItems": [
+      "research/problems/abel-ruffini-oq-04-oq-09/problem.md — full statement + classification",
+      "research/problems/abel-ruffini-oq-04-oq-09/knowledge.md — Mathlib API survey + 9-row realization menu + S2 options",
+      "research/problems/abel-ruffini-oq-04-oq-09/state.md — phase OBSERVE, next-action documented"
+    ],
+    "insights": [
+      "Not a duplicate of oq-05: this slug is the axiom-free n ≤ 4 slice; oq-05 is the axiomatized full theorem.",
+      "9 solvable transitive groups in degree ≤ 4: {e}, Z/2, Z/3, Z/4, V₄, S₃, D₄, A₄, S₄ — all realizable in Mathlib without new infrastructure.",
+      "Sibling reuse: oq-05-oq-01's cyclic_realizable handles Z/n for n ∈ {2,3,4} already; this entry adds the 4 non-abelian cases.",
+      "S₃ realization via X^3-2 (disc = -108, non-square), D₄ via X^4-2, A₄ via X^4+8X+12 (disc = 81·16²), S₄ via X^4-X-1 (generic)."
+    ],
+    "mathlibGaps": [
+      "No general 'compute Gal(f) for specific f ∈ ℚ[X]' tactic — each of S₃/D₄/A₄/S₄ requires per-case identification via Polynomial.Gal.galActionHom (~100 lines).",
+      "Compositum disjointness for cyclotomic subfields — already flagged by oq-05-oq-01 as the 'general abelian' gap (~500 lines per its estimate). Does NOT block the n ≤ 4 slice."
+    ],
+    "nextSteps": [
+      "S2 Option A: 30-line Lean #check probe verifying API surface (1 Docker cycle ~45 min cold).",
+      "S2 Option B: markdown-only per-row proof sketches in knowledge.md (no build, lower risk).",
+      "S3: actual proofs/Proofs/AbelRuffiniOQ04OQ09.lean (estimated 600–800 lines, 4 non-trivial Polynomial.Gal cases).",
+      "S4: gallery entry (meta.json + index.ts + annotations.json) and cross-reference into abel-ruffini-oq-04 conclusion.openQuestions[8]."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "abel-ruffini",
+    "abel-ruffini-galois-extensions",
+    "abel-ruffini-galois-extensions-oq-04",
+    "abel-ruffini-galois-extensions-oq-05",
+    "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "abel-ruffini-galois-extensions-oq-07",
+    "abel-ruffini-oq-04",
+    "abel-ruffini-oq-04-oq-01",
+    "abel-ruffini-oq-04-oq-02",
+    "abel-ruffini-oq-04-oq-02-oq-02",
+    "abel-ruffini-oq-04-oq-02-oq-03",
+    "abel-ruffini-oq-04-oq-03",
+    "abel-ruffini-oq-04-oq-07",
+    "abel-ruffini-oq-09",
+    "abel-ruffini-oq-10"
+  ],
+  "references": {
+    "papers": [
+      "Shafarevich, I.R. (1954). Construction of fields of algebraic numbers with a given solvable Galois group. Izv. Akad. Nauk SSSR Ser. Mat.",
+      "Iwasawa, K. (1958). Corrections to Shafarevich's proof. J. Math. Soc. Japan.",
+      "Conrad, K. Galois groups of cubics and quartics (not in characteristic 2). Expository notes.",
+      "Jensen, C.U., Ledet, A., Yui, N. (2002). Generic Polynomials. Cambridge University Press.",
+      "Neukirch, J., Schmidt, A., Wingberg, K. Cohomology of Number Fields §IX.6 (corrected Shafarevich proof)."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.FieldTheory.Galois.Basic — IsGalois, L ≃ₐ[ℚ] L",
+      "Mathlib.NumberTheory.Cyclotomic.Basic — IsCyclotomicExtension",
+      "Mathlib.NumberTheory.Cyclotomic.Gal — IsCyclotomicExtension.Rat.aut_equiv_pow",
+      "Mathlib.FieldTheory.SplittingField.Construction — Polynomial.SplittingField",
+      "Mathlib.GroupTheory.Solvable — IsSolvable",
+      "Mathlib.RingTheory.Polynomial.Eisenstein.Criterion — Polynomial.IsEisensteinAt.irreducible"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.559Z",
+  "lastUpdate": "2026-05-12T02:30:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffini.lean",
+      "filename": "AbelRuffini.lean",
+      "lineCount": 188,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffini.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 535,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ04.lean",
+      "lineCount": 235,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ05.lean",
+      "lineCount": 215,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ07.lean",
+      "lineCount": 1532,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04.lean",
+      "filename": "AbelRuffiniOQ04.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01.lean",
+      "lineCount": 1499,
+      "theoremCount": 36,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ02.lean",
+      "lineCount": 168,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ02OQ06.lean",
+      "lineCount": 245,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ02OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ02OQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ03.lean",
+      "filename": "AbelRuffiniOQ04OQ03.lean",
+      "lineCount": 243,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ07.lean",
+      "filename": "AbelRuffiniOQ04OQ07.lean",
+      "lineCount": 378,
+      "theoremCount": 12,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ09.lean",
+      "filename": "AbelRuffiniOQ09.lean",
+      "lineCount": 541,
+      "theoremCount": 21,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ09.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ10.lean",
+      "filename": "AbelRuffiniOQ10.lean",
+      "lineCount": 370,
+      "theoremCount": 23,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ10.lean"
+    }
+  ]
+}
