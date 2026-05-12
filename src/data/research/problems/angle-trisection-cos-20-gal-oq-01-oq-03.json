@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-03",
   "title": "For which primes p does the minimal polynomial of cos(\u03c0/p) have Eisenstein fo...",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,21 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-08T19:09:00.559Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-12T03:00:00Z",
+    "iteration": 2,
+    "focus": "Level-2 implementation: per-prime IsEisensteinAt verified for p in {5,7,11,13}; general conjecture stated as sorry.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "S3: Discharge eisenstein_conjecture_cos_pi_p sorry via cyclotomic Phi_{2p}(-1) = p + uniformizer-implies-Eisenstein local-field theorem (or build Newton-identity workaround if Mathlib gap).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT - S1 surveyed; identified unified cyclotomic-ramification proof. Empirically verified for p in {5,7,11,13}. Recommended Level 2 (parametric statement + per-prime proof) for S2; main Mathlib risk is the local-uniformizer-to-Eisenstein lemma.",
-    "builtItems": [],
+    "progressSummary": "ACT - S2 implemented Level-2: parametric r : N -> Z[X] with explicit p in {5,7,11,13}, per-prime IsEisensteinAt verified, irreducibility of r_{11} and r_{13} via Polynomial.irreducible_of_eisenstein_criterion, uniform conjecture stated as sorry. 1 sorry (general case), 0 axioms. Gallery entry created with status axiomatized.",
+    "builtItems": [
+      "Created proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean (S2): parametric r : N -> Z[X] for p in {5, 7, 11, 13}, IsEisensteinAt verifications, irreducibility for p in {11, 13}, eisenstein_conjecture_cos_pi_p (sorry).",
+      "Created src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/ (S2): meta.json with status axiomatized, sorries 1, axioms 0; annotations.json empty; index.ts."
+    ],
     "insights": [
       "Gallery has two empirically-verified instances of the conjecture: cos(pi/5) at OQ01OQ02 with r=Y^2-5Y+5 Eisenstein at 5, and cos(pi/7) at OQ01 with r=Y^3-7Y^2+14Y-7 Eisenstein at 7. Both use the substitution Y = 2X + 2 to convert the minimal polynomial of cos(pi/p) into Eisenstein-at-p form.",
       "Cyclotomic-ramification proof of the general conjecture: 2 + 2cos(pi/p) = (1+zeta_{2p})(1+zeta_{2p}^{-1}). Norm computation via Phi_{2p}(-1) = Phi_p(1) = p (using Phi_{2p}(X) = Phi_p(-X) for p odd prime) gives N_{Q(theta_p)/Q}(2+theta_p) = p, so the constant term of the minimal polynomial is plus or minus p, hence has p-adic valuation exactly 1.",
@@ -70,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-12T02:28:59Z",
+  "lastUpdate": "2026-05-12T03:15:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -150,6 +153,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ03.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ03.lean",
+      "lineCount": 301,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean"
     }
   ]
 }
