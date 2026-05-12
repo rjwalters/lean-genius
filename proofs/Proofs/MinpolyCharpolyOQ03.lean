@@ -75,7 +75,7 @@ Total roadmap: ≈ 900 lines (smaller than the file-level estimate in
 through a separate Smith-normal-form pass; here we use the Mathlib
 structure theorem directly).
 
-## What This File Contributes (S1 scaffold)
+## What This File Contributes (S1 scaffold + S2 helpers)
 
 * **`InvariantFactorChain`** — data structure capturing a list of monic
   polynomials together with a proof of the divisibility chain
@@ -85,10 +85,15 @@ structure theorem directly).
 * **`InvariantFactorChain.lastFactor`** — the last factor `pₖ`, target
   value `minpoly M`.
 * **`rational_canonical_form_exists`** — the **main RCF theorem
-  statement**, guarded by a single `sorry` that this S1 OBSERVE iteration
+  statement**, guarded by a single `sorry` that the S1 OBSERVE iteration
   leaves for the four sub-OQs above to discharge.
 * **`prodFactors_empty`** — unconditional sanity check that an empty
   chain has product 1.
+* **`prodFactors_monic`** *(S2)* — the product of the invariant factors
+  is monic. Unconditional; uses `Polynomial.Monic.mul` and the chain's
+  monicness hypothesis.
+* **`factor_dvd_prodFactors`** *(S2)* — every invariant factor divides
+  the chain's product. Unconditional; instance of `List.dvd_prod`.
 
 ## References
 
@@ -175,10 +180,13 @@ theorem rational_canonical_form_exists
     ∃ c : InvariantFactorChain F, c.prodFactors = M.charpoly := by
   sorry
 
-/-! ## Part 3: Unconditional structural lemma
+/-! ## Part 3: Unconditional structural lemmas
 
-A single trivial sanity check, verifying that the data captured by
-`InvariantFactorChain` and `prodFactors` is internally consistent. -/
+Three sanity-level facts about the abstract `InvariantFactorChain` data,
+independent of any matrix `M`. They isolate the cleanest part of the
+RCF formalisation surface: anything that follows directly from
+"`factors` is a list of monic polynomials with `prodFactors = .prod`"
+should already be available here, sorry-free. -/
 
 /-- The empty invariant-factor chain has product `1`. -/
 theorem prodFactors_empty
@@ -187,5 +195,32 @@ theorem prodFactors_empty
   unfold InvariantFactorChain.prodFactors
   rw [h]
   simp
+
+/-- Auxiliary: the product of a list of monic polynomials is monic. -/
+private theorem list_prod_monic_of_all_monic
+    {l : List F[X]} (hl : ∀ p ∈ l, p.Monic) : l.prod.Monic := by
+  induction l with
+  | nil =>
+    rw [List.prod_nil]
+    exact monic_one
+  | cons p ps ih =>
+    rw [List.prod_cons]
+    refine Monic.mul ?_ ?_
+    · exact hl p List.mem_cons_self
+    · exact ih (fun q hq => hl q (List.mem_cons_of_mem _ hq))
+
+/-- The product of the invariant factors is monic. Follows from
+    `Polynomial.Monic.mul` plus the chain's monicness hypothesis,
+    by induction on the underlying list. -/
+theorem prodFactors_monic (c : InvariantFactorChain F) :
+    c.prodFactors.Monic :=
+  list_prod_monic_of_all_monic c.monic
+
+/-- Each invariant factor divides the product of the chain. Direct
+    instance of `List.dvd_prod`. -/
+theorem factor_dvd_prodFactors
+    (c : InvariantFactorChain F) {p : F[X]} (hp : p ∈ c.factors) :
+    p ∣ c.prodFactors :=
+  List.dvd_prod hp
 
 end MinpolyCharpolyOQ03
