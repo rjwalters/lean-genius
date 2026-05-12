@@ -24,6 +24,30 @@
     ]
   },
   {
+    "id": "ann-pq-001-neZero-haveI",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "haveI : NeZero q — typeclass plumbing for DihedralGroup.card",
+    "content": "The single line `haveI : NeZero q := ⟨hq.ne_zero⟩` is structurally essential. `DihedralGroup.card` carries a typeclass hypothesis `[NeZero n]`, and Mathlib does not (and should not) export an instance `NeZero q` from `Nat.Prime q` because primality is logically stronger than nonzero and instance synthesis must converge. Hence the proof must locally construct the `NeZero` instance and inject it into the typeclass cache via `haveI` (the term-mode analogue of `letI` for instances). After this single line, `DihedralGroup.card` and `inferInstance` (for `Fintype (DihedralGroup q)`) both succeed without further hints. The same trick recurs throughout Mathlib whenever a `Fintype.card` lemma needs `NeZero`.",
+    "mathContext": "The `NeZero` typeclass packages the proposition $n \\ne 0$ as a class so that lemmas like $\\mathrm{Fintype.card}(\\mathrm{DihedralGroup}\\,n) = 2n$ (which would be wrong for $n = 0$ because $\\mathrm{DihedralGroup}\\,0$ is the infinite dihedral group) can be stated unconditionally on the proposition side while keeping the proof obligation in the typeclass-resolution machinery. The `haveI` tactic is preferred over `have` for instances because it makes the resulting fact available to type-class search; plain `have` would not.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "NeZero typeclass",
+      "haveI vs letI vs have",
+      "typeclass synthesis",
+      "DihedralGroup 0 (infinite dihedral)"
+    ],
+    "prerequisites": [
+      "Lean 4 typeclass system",
+      "Nat.Prime.ne_zero",
+      "haveI tactic"
+    ]
+  },
+  {
     "id": "ann-pq-001-main-theorem",
     "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
     "range": {
