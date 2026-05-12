@@ -60,6 +60,12 @@
     "relatedConcepts": [
       "even functions",
       "range of squared sine"
+    ],
+    "prerequisites": [
+      "haversine_eq_one_sub_cos_div_two",
+      "Real.neg_one_le_cos",
+      "Real.cos_neg",
+      "sq_nonneg"
     ]
   },
   {
@@ -122,6 +128,34 @@
     "relatedConcepts": [
       "degeneracy handling",
       "swap-symmetry of spherical triangles"
+    ],
+    "prerequisites": [
+      "haversine_formula_algebraic",
+      "haversine_neg",
+      "spherical-triangle parity (`Real.sin_int_mul_pi`)"
+    ]
+  },
+  {
+    "id": "ann-summary-tabular",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 272,
+      "endLine": 295
+    },
+    "type": "context",
+    "title": "Status Summary: 12 PROVED, 1 OPEN, 0 axioms",
+    "content": "Part VI is a tabular accounting of the file's contents, mirrored in `meta.json`'s `theoremCount: 12`, `definitionCount: 1`, `sorries: 1`, `axiomCount: 0`. The 12 proved theorems split into four groups: (i) the half-angle bridge (`haversine_eq_one_sub_cos_div_two`, `two_haversine_eq`, `cos_eq_one_sub_two_haversine`); (ii) range/sign/parity (`haversine_nonneg`, `haversine_le_one`, `haversine_zero`, `haversine_pi`, `haversine_neg`); (iii) the algebraic identity in both directions (`haversine_formula_algebraic`, `cos_form_of_haversine_formula`); (iv) corollaries (`haversine_formula_holds_when_sin_sideA_zero`, `haversine_sub_comm`). The single `sorry` is the `SphericalTriangle` form `haversine_formula`, blocked only on the projection-to-trigonometric-angle conversion in the parent file. The tabular form makes the S1→S2 boundary explicit for downstream automation (Aristotle/Mechanic) and for human auditors checking axiom-integrity claims.",
+    "mathContext": "Status field semantics (per axiom-integrity policy): $\\texttt{status: axiomatized}$, $\\texttt{sorries: 1}$, $\\texttt{axiomCount: 0}$, $\\texttt{badge: wip}$. The status will move to $\\texttt{verified}$ once the S2 conversion is closed and the lone $\\texttt{sorry}$ is discharged.",
+    "significance": "context",
+    "relatedConcepts": [
+      "gallery status taxonomy (verified vs axiomatized vs formalized)",
+      "axiom-integrity audit",
+      "S1 scaffold pattern",
+      "open-question slug bookkeeping"
+    ],
+    "prerequisites": [
+      "axiom-integrity policy (CLAUDE.md)",
+      "meta.json status/badge/axiomCount conventions"
     ]
   }
 ]
