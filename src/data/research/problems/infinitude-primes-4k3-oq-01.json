@@ -1,0 +1,121 @@
+{
+  "slug": "infinitude-primes-4k3-oq-01",
+  "title": "Dirichlet's theorem on primes in AP (full generality)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall a\\ q : \\mathbb{N},\\ \\gcd(a, q) = 1\\ \\Rightarrow\\ \\{ p \\in \\mathbb{N} \\mid p\\ \\text{prime} \\wedge p \\equiv a \\pmod q \\}\\ \\text{is infinite}.",
+    "plain": "Prove Dirichlet's theorem on primes in arithmetic progressions in full generality, requiring Dirichlet characters and L-functions with the load-bearing non-vanishing of L(1, χ) for non-principal characters.",
+    "whyMatters": [
+      "Slug is a textbook example of the duplicate-signal memory pattern: seeker-extracted 'Is X true?' sub-OQ naming a major theorem that the parent gallery entry already proves.",
+      "Mathlib has the full theorem at `Nat.infinite_setOf_prime_and_eq_mod` and the gallery entry `dirichlets-theorem` exposes five corollaries already.",
+      "The slug's own parent `infinitude-primes-4k3` (this OQ's host) also has an elementary verified proof for the (a=3, q=4) case."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`dirichlets-theorem` (verified, mathlib badge): `dirichlet_zmod`, `dirichlet_modEq`, `dirichlet_int`, `dirichlet_frequently`, `dirichlet_constructive`, `infinitely_many_primes_3_mod_4`, `infinitely_many_primes_1_mod_4`, `infinitely_many_primes_1_mod_6`, `infinitely_many_primes_5_mod_6`.",
+      "`infinitude-primes-4k3` (verified, this slug's parent): elementary `p ≡ 3 (mod 4)` infinitude (7 theorems, 0 axioms).",
+      "`dirichlets-theorem-oq-02` (verified): alternative elementary `p ≡ 3 (mod 4)` proof in the Dirichlet OQ hierarchy.",
+      "`infinitude-primes-4k1`, `infinitude-primes-4k3-oq-03`: elementary `p ≡ 1 (mod 4)` proofs via Euler's criterion.",
+      "Mathlib API at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: `Mathlib.NumberTheory.LSeries.PrimesInAP`, `Mathlib.NumberTheory.DirichletCharacter.Basic`, `Mathlib.NumberTheory.LSeries.DirichletContinuation`, `Mathlib.NumberTheory.LSeries.Nonvanishing`."
+    ],
+    "open": [
+      "S2(a) bridge corollary: explicit equivalence between the `% q = a` and `(· : ZMod q) = a` formulations, witnessing that the elementary and analytic proofs prove the same set-level statement.",
+      "S2(b) parametric elementary `p ≡ -1 (mod q)` for `q ∈ {3, 4, 6, 8, 12, 24}` — the moduli where the Euclid-style argument generalises.",
+      "S2(c) explicit `π_{3 mod 4}(x) ≥ Nat.log` count from the elementary `4(n+1)! - 1` construction."
+    ],
+    "goal": "Audit the slug for genuine open content (this S1), then ship the narrow bridge corollary S2(a) in a follow-up session. Do NOT attempt the named conjecture — it is fully verified across three gallery entries and is in Mathlib."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T20:48:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: duplicate-detection survey for full Dirichlet — slug duplicates `dirichlets-theorem` (mathlib), `infinitude-primes-4k3` (parent), and `dirichlets-theorem-oq-02` (alt elementary). Three narrow adjacent S2 targets shortlisted.",
+    "blockers": [],
+    "nextAction": "S2 ACT(a): bridge corollary in new `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (~25 LOC), explicitly connecting the elementary `p % 4 = 3` formulation to the analytic `(p : ZMod 4) = 3` formulation. Pre-Aristotle.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE — duplicate-detection audit: slug duplicates `dirichlets-theorem` (mathlib badge), `infinitude-primes-4k3` (parent), and `dirichlets-theorem-oq-02`. Recommended narrow S2 target: bridge corollary between elementary and analytic formulations.",
+    "builtItems": [],
+    "insights": [
+      "The seeker statement ('Dirichlet's theorem on primes in AP — full generality') is triple-duplicated in the gallery: `dirichlets-theorem` (analytic, via Mathlib `Nat.infinite_setOf_prime_and_eq_mod`), `infinitude-primes-4k3` (elementary, the slug's own parent), and `dirichlets-theorem-oq-02` (alt elementary).",
+      "The genuinely-open Dirichlet axes are `dirichlets-theorem-oq-01` (Siegel zeros, axiomatized with 5 axioms) and `dirichlets-theorem-oq-03` (Linnik bounds, axiomatized with 2 axioms + 3 sorries) — both held by other slugs, not this one.",
+      "Pattern: seeker-extracted 'Is X true?' sub-OQs whose title names a major theorem present in both Mathlib and the parent gallery entry are a duplicate signal. S1 OBSERVE for these is `feedback_researcher_millennium_sub_oq_duplicates.md`'s protocol: detect duplicate, shortlist 2-3 narrow adjacent S2 targets, do NOT attempt the conjecture.",
+      "Recommended S2 target: bridge corollary `{p | p.Prime ∧ p % 4 = 3}.Infinite ↔ {p | p.Prime ∧ (p : ZMod 4) = 3}.Infinite`, ~25 LOC, the smallest unambiguously-non-duplicative deliverable in this slug."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S2 ACT(a): bridge corollary (~25 LOC), recommended primary target.",
+      "S2 ACT(b) (alternative): parametric elementary `p ≡ -1 (mod q)` for `q ∈ {3, 4, 6, 8, 12, 24}` (~120 LOC, medium risk, q=8 needs Euler mod-8).",
+      "S2 ACT(c) (alternative): explicit `π_{3 mod 4}(x) ≥ Nat.log` lower bound from the elementary `4(n+1)! - 1` construction (~80 LOC)."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "dirichlet-theorem",
+    "l-functions",
+    "characters",
+    "duplicate-detected",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "dirichlets-theorem",
+    "infinitude-primes-4k3",
+    "dirichlets-theorem-oq-02",
+    "infinitude-primes-4k3-oq-03",
+    "infinitude-primes-4k1"
+  ],
+  "references": {
+    "papers": [
+      "Dirichlet, P.G.L. (1837). Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/PrimesInAP.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/DirichletCharacter/Basic.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LSeries/Nonvanishing.html"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.LSeries.PrimesInAP (Nat.infinite_setOf_prime_and_eq_mod)",
+      "Mathlib.NumberTheory.DirichletCharacter.Basic",
+      "Mathlib.NumberTheory.LSeries.DirichletContinuation",
+      "Mathlib.NumberTheory.LSeries.Nonvanishing"
+    ]
+  },
+  "started": "2026-05-12T20:48:00Z",
+  "lastUpdate": "2026-05-12T20:50:00Z",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k3.lean",
+      "filename": "InfinitudePrimes4k3.lean",
+      "lineCount": 230,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k3.lean"
+    },
+    {
+      "path": "Proofs/DirichletsTheorem.lean",
+      "filename": "DirichletsTheorem.lean",
+      "lineCount": 308,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
+    }
+  ]
+}
