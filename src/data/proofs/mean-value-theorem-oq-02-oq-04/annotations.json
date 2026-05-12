@@ -27,6 +27,31 @@
     ]
   },
   {
+    "id": "ann-mvt02oq04-namespace-setup",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 90,
+      "endLine": 94
+    },
+    "title": "Noncomputable Section, Open Namespaces, File Namespace",
+    "content": "Three quick housekeeping declarations frame all subsequent content:\n\n1. **`noncomputable section`** — required because Taylor polynomials of real-analytic functions involve `iteratedDeriv`, which Mathlib treats classically (no `Decidable` instance, no canonical computation). The parent file `MeanValueTheoremOQ02` makes the same choice; reusing its `taylorPolynomial` means we inherit the noncomputability anyway.\n\n2. **`open Real Set`** — pulls `|·|` (from `Real`) and `Set.Ioo` / `Set.Icc` (from `Set`) into scope without prefixes. The Cauchy bound's hypothesis `∀ y ∈ Ioo (a - R) (a + R), |f y| ≤ M` and conclusion's domain `x ∈ Icc (a - r) (a + r)` rely on both.\n\n3. **`namespace MeanValueTheoremOQ02OQ04`** — encapsulates the file's two declarations so downstream consumers reference them as `MeanValueTheoremOQ02OQ04.analytic_taylor_remainder_uniform_bound` / `analytic_remainder_zero_bound`. This mirrors the parent's `MeanValueTheoremOQ02` namespace, keeping the OQ-tree's API uniform.",
+    "mathContext": "The noncomputable qualifier reflects Mathlib's *classical* treatment of iterated differentiation: $f^{(k)}$ is defined via `iteratedDeriv k f`, which is constructively undecidable in general. The namespace scoping ensures that the file's two top-level declarations live alongside, not in conflict with, the parent's analogous Lagrange-remainder axiom and Taylor polynomial definition.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "noncomputable section",
+      "iteratedDeriv",
+      "namespace scoping",
+      "Real.abs",
+      "Set.Ioo / Set.Icc"
+    ],
+    "prerequisites": [
+      "Lean 4 noncomputable definitions",
+      "Lean 4 namespaces and `open` directives",
+      "Real-analysis vocabulary"
+    ]
+  },
+  {
     "id": "ann-mvt02oq04-uniform-axiom",
     "proofId": "mean-value-theorem-oq-02-oq-04",
     "type": "theorem",
