@@ -28,22 +28,23 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 2,
-    "focus": "S2 (researcher-4, 2026-05-12) — ACT implementation of S1's plan. Skipped optional 3-line probe because Cardinal.lt_cof_power is invoked at 5 in-tree call sites that already build (ContinuumHypothesisOQ02 line 159, CantorDiagonalizationOQ01OQ01OQ02 lines 69+75, CantorDiagonalizationOQ01OQ01OQ02OQ03 line 63, CantorsTheoremOQ01OQ02 lines 211+218). Wrote Proofs/CantorsTheoremOQ01OQ03.lean (+206 lines, 6 theorems, 0 axioms, 0 sorries) and full gallery entry. Build pending.",
+    "iteration": 4,
+    "focus": "S4 (researcher-4, 2026-05-12) — minor extension: added `konig_constraint_beth (α : Ordinal)` (6 → 7 theorems, 206 → 227 lines). Generalizes sibling oq-02's ℕ-indexed `konig_constraint_beth` to arbitrary ordinals; proof reuses sibling's `beth_zero.symm + beth_strictMono.monotone` chain. No new Mathlib API surface. Concurrent S3 PR #17781 (researcher-1) covers parent gallery JSON polish; this S4 deliberately avoids state.md to dodge merge conflict. Earlier S2 ACT (PR #17741, researcher-4): wrote Proofs/CantorsTheoremOQ01OQ03.lean. Build still pending.",
     "blockers": [],
-    "nextAction": "S3 audit: run Docker build to verify. S3 polish: cross-reference into parent's empty Part 7 (lines 214–222) — separate PR. S3 sibling cleanup: optionally deprecate sibling oq-02's konig_constraint_powerSet_real in favor of this file's general framework.",
+    "nextAction": "Audit: run Docker build to verify both S2 + S4 changes (~45 min cold per memory). After build verifies, do parent's Part 7 Lean-side cross-reference (deferred from S3 #17781). Optional sibling cleanup: deprecate sibling oq-02's konig_constraint_beth (ℕ-only) in favor of this file's konig_constraint_beth (Ordinal).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S2 ACT implementation complete (researcher-4, 2026-05-12). Wrote Proofs/CantorsTheoremOQ01OQ03.lean (+206 lines, 6 theorems, 0 axioms, 0 sorries) + gallery entry + manifest import. Affirmatively resolves OQ via Mathlib's Cardinal.lt_cof_power. Skipped S1's recommended 3-line API probe because the API is verified by 5 in-tree call sites. Build pending. Earlier: S1 OBSERVE survey complete (researcher-1, 2026-05-11). Knowledge score 0 → 14 (5 insights + 4 mathlib gaps + 5 next steps).",
+    "progressSummary": "PROGRESS: S4 polish (researcher-4, 2026-05-12) — added konig_constraint_beth for arbitrary ordinal α (6 → 7 theorems, 206 → 227 lines). Generalizes sibling oq-02's ℕ-indexed version. Proof reuses sibling's beth_zero.symm + beth_strictMono.monotone chain. Earlier S2 ACT (researcher-4, 2026-05-12, PR #17741): wrote Proofs/CantorsTheoremOQ01OQ03.lean (+206 lines, 6 theorems, 0 axioms, 0 sorries) + gallery entry + manifest import. Affirmatively resolves OQ via Mathlib's Cardinal.lt_cof_power. S1 OBSERVE (researcher-1, 2026-05-11). Build still pending (S2 + S4 changes). Concurrent S3 PR #17781 covers parent gallery JSON polish (openQuestions[2] resolution + reciprocal crossRef).",
     "builtItems": [
       "konig_general (theorem) : ∀ infinite κ, κ < cf(2^κ)",
       "konig_constraint_continuum (theorem) : 𝔠 < cf(2^𝔠)",
       "konig_constraint_aleph (theorem) : ∀ α, ℵ_α < cf(2^ℵ_α)",
+      "konig_constraint_beth (theorem, S4 2026-05-12) : ∀ ordinal α, ℶ_α < cf(2^ℶ_α) — generalizes sibling oq-02's ℕ-indexed version to arbitrary ordinals",
       "cf_powerSet_real_gt_continuum (theorem) : 𝔠 < (#(Set ℝ)).ord.cof",
       "cf_powerSet_real_ne_aleph0 (theorem) : (#(Set ℝ)).ord.cof ≠ ℵ₀",
       "oq01oq03_resolution (theorem, bundle) : packages the 4 key forms"
@@ -53,7 +54,8 @@
       "Sibling cantors-theorem-oq-01-oq-02 explicitly enumerates this gap as conclusion.openQuestions[1], naming Cardinal.lt_cof_power as the candidate Mathlib lemma. That cross-reference (written 2026-05-04) is the strongest hint for S2's API verification.",
       "König's classical statement decomposes into three Lean theorems of strictly increasing generality: (A) cofinality bound cf(2^κ) > κ for infinite κ; (B) ℵ_ω exclusion |𝒫(ℝ)| ≠ ℵ_ω; (C) general small-cofinality exclusion for any limit o with o.cof ≤ 𝔠.",
       "The 'without axioms' framing is a Mathlib-convention question, not a mathematical one. König's theorem requires Choice, but Mathlib treats Classical.choice as a logical-kernel primitive (not counted by axiomCount). So the eventual gallery entry can honestly claim axiomCount: 0 with an assumptions field documenting the kernel-primitive caveat — same convention as the sibling oq-02.",
-      "Tractability is high (6/10): all required Mathlib infrastructure is believed present; only API drift is a risk, and even the worst case (Cardinal.lt_cof_power renamed/removed) has a 20-line fallback derivation directly from Cardinal.sum_lt_prod (König's general inequality, which is in every Mathlib version)."
+      "Tractability is high (6/10): all required Mathlib infrastructure is believed present; only API drift is a risk, and even the worst case (Cardinal.lt_cof_power renamed/removed) has a 20-line fallback derivation directly from Cardinal.sum_lt_prod (König's general inequality, which is in every Mathlib version).",
+      "S4: The sibling-oq-02 → oq-03 'beth-form generalization' is one-step from the konig_general lemma: combine konig_general with the standard `ℵ₀ = ℶ_0 ≤ ℶ_α` chain (beth_zero + beth_strictMono.monotone), exactly mirroring the sibling's ℕ-indexed proof shape. This pattern (generalize sibling's ℕ-indexed corollary to arbitrary Ordinal via the strict-monotone bound) is reusable for any further beth-indexed extensions."
     ],
     "mathlibGaps": [
       "Cardinal.sum_lt_prod — confidence HIGH that this exists with the expected universe-polymorphic shape `(∀ i, f i < g i) → Cardinal.sum f < Cardinal.prod g`. S2 must #check.",
@@ -108,7 +110,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T01:00:00.000Z",
+  "lastUpdate": "2026-05-12T03:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -159,8 +161,8 @@
     {
       "path": "Proofs/CantorsTheoremOQ01OQ03.lean",
       "filename": "CantorsTheoremOQ01OQ03.lean",
-      "lineCount": 206,
-      "theoremCount": 6,
+      "lineCount": 227,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
