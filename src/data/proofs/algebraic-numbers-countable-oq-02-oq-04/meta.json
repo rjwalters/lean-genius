@@ -22,14 +22,15 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 316,
+    "lineCount": 497,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
     "openQuestions": [
-      "Verify the S3 build (Docker); on green, bump `badge` from `wip` to `verified`.",
+      "Verify the S3 + S4 build (Docker); on green, bump `badge` from `wip` to `verified`.",
       "Prove that every algebraic real is computable (so the inclusion `algebraic ⊆ computable` lifts to the new definition).",
-      "Prove `IsComputable e` and `IsComputable π` to demonstrate the strict inclusion `algebraic ⊊ computable`."
+      "Prove `IsComputable e` and `IsComputable π` to exhibit a computable transcendental (concrete strict inclusion `algebraic ⊊ computable`).",
+      "Construct an explicit non-computable real (e.g. Chaitin's Ω). The S4 cardinality argument proves existence; an explicit construction would witness it."
     ],
     "originalContributions": [
       "IsComputable (r : ℝ) : Prop — Mathlib-Computable rational sequence converging to r",
@@ -40,7 +41,12 @@
       "card_computable_reals_le_aleph0 — cardinal upper bound (now unconditional after S3)",
       "rat_isComputable, int_/nat_/zero_/one_isComputable — five concrete computable witnesses (S2, researcher-1)",
       "aleph0_le_card_computable_reals — unconditional ℵ₀ lower bound via ℚ ↪ {r | IsComputable r} (S2)",
-      "card_computable_reals_eq_aleph0 — exact ℵ₀ equality (S2 statement, now unconditional after S3)"
+      "card_computable_reals_eq_aleph0 — exact ℵ₀ equality (S2 statement, now unconditional after S3)",
+      "nonComputableReals : Set ℝ — S4 complement set definition",
+      "card_nonComputableReals_eq_continuum — S4 main theorem: #(non-computable reals) = 𝔠, via partition + ℵ₀ absorption (mirrors OQ02OQ03 transcendental cardinality argument)",
+      "exists_non_computable_real — S4 corollary: ∃ r : ℝ, ¬ IsComputable r (Turing's negative observation, by cardinality alone)",
+      "computable_reals_strict_ssubset_univ — S4 strict inclusion {r | IsComputable r} ⊊ ℝ",
+      "card_computable_reals_lt_card_reals, card_computable_lt_card_nonComputable — S4 strict cardinal inequalities ℵ₀ < 𝔠 specialised to the computable/non-computable split"
     ],
     "prerequisites": [
       "AlgebraicNumbersCountable: algebraic_reals_countable — the next layer up in the hierarchy",
@@ -75,8 +81,8 @@
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       }
     ],
-    "theoremCount": 11,
-    "definitionCount": 2,
+    "theoremCount": 21,
+    "definitionCount": 3,
     "relatedProblems": [
       {
         "id": "algebraic-numbers-countable-oq-02",
@@ -278,10 +284,10 @@
       "Classical"
     ],
     "namespace": "AlgebraicNumbersCountableOQ02OQ04",
-    "lineCount": 316,
+    "lineCount": 497,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 2,
+    "theoremCount": 21,
+    "definitionCount": 3,
     "sorries": 0,
     "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
   }

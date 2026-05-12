@@ -23,28 +23,31 @@
       "zero_isComputable (S2): IsComputable (0 : ℝ)",
       "one_isComputable (S2): IsComputable (1 : ℝ)",
       "aleph0_le_card_computable_reals (S2): ℵ₀ ≤ #{r : ℝ | IsComputable r} — unconditional cardinal lower bound via ℚ embedding",
-      "card_computable_reals_eq_aleph0 (S2): #{r | IsComputable r} = ℵ₀ — conditional on the main sorry, no new assumptions"
+      "card_computable_reals_eq_aleph0 (S2 → unconditional after S3): #{r | IsComputable r} = ℵ₀",
+      "card_nonComputableReals_eq_continuum (S4): #{r : ℝ | ¬ IsComputable r} = 𝔠 — exact cardinality of the non-computable reals via partition + ℵ₀ absorption",
+      "exists_non_computable_real (S4): ∃ r : ℝ, ¬ IsComputable r — Turing's negative observation, by pure cardinality (no explicit witness needed)",
+      "computable_reals_strict_ssubset_univ (S4): {r : ℝ | IsComputable r} ⊊ Set.univ — strict inclusion in ℝ"
     ],
     "open": [
-      "computable_reals_countable: Set.Countable {r : ℝ | IsComputable r} (main, S1 sorry)"
+      "Sorries discharged through S4. Remaining open layers: explicit IsComputable e / IsComputable π (computable transcendental witnesses), algebraic ⊆ computable (Sturm root-finding), explicit Chaitin Ω (named non-computable real), real-closed-subfield structure."
     ],
-    "goal": "Discharge `computable_reals_countable` via the `Nat.Partrec.Code` ↔ `Computable` ↔ ℝ pipeline."
+    "goal": "Build out the IsComputable algebra (closure under +, ×, neg, inv, computable Cauchy limits) and exhibit explicit witnesses on both sides of the strict inclusions algebraic ⊊ computable ⊊ ℝ."
   },
   "currentState": {
-    "phase": "S2_LOWER_BOUND",
-    "since": "2026-05-12T02:30:00.000Z",
-    "iteration": 2,
-    "focus": "S2: ℵ₀ ≤ #(computable reals) lower bound via ℚ embedding. 5 new theorems (rat/int/nat/zero/one isComputable + cardinality). Conditional exact-ℵ₀ equality added. Sorry count unchanged (still 1, on main theorem).",
+    "phase": "S4_STRICT_INCLUSION",
+    "since": "2026-05-12T03:50:00.000Z",
+    "iteration": 4,
+    "focus": "S4: cardinality of non-computable reals + strict inclusion {r | IsComputable r} ⊊ ℝ. Mirrors AlgebraicNumbersCountableOQ02OQ03.continuum_le_card_transcendentals (cardinal absorption argument). 8 new theorems including main card_nonComputableReals_eq_continuum + exists_non_computable_real (Turing's negative result). Lean file 316 → 497 lines. Build pending.",
     "blockers": [],
-    "nextAction": "S3: discharge the main sorry in computable_reals_countable using Nat.Partrec.Code countability + Computable→code completeness (Mathlib's Computable.exists_code or similar) + Set.Countable.image.",
+    "nextAction": "S5: prove IsComputable e (or IsComputable π) to exhibit a computable transcendental witness (strict inclusion algebraic ⊊ computable beyond pure cardinality).",
     "attemptCounts": {
-      "total": 2,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3 UPPER BOUND DISCHARGED (build pending): decodeReal + Nat.Partrec.Code pipeline replaces sorry in computable_reals_countable. card_computable_reals_le_aleph0 and card_computable_reals_eq_aleph0 become unconditional. Lean file 208 → 316 lines, sorries 1 → 0.",
+    "progressSummary": "S4 STRICT INCLUSION + NON-COMPUTABLE CARDINALITY (build pending): #(non-computable reals) = 𝔠 proved by partition + cardinal absorption (mirroring OQ02OQ03 transcendental argument). Existence of a non-computable real (Turing's negative observation) follows by cardinality alone — no explicit Chaitin-Ω or diagonal needed. Strict inclusion {r | IsComputable r} ⊊ ℝ. 8 new theorems (4 public + 4 private), 1 new def (nonComputableReals). Lean file 316 → 497 lines, sorries 0 → 0.",
     "builtItems": [
       "AlgebraicNumbersCountableOQ02OQ04.lean: IsComputable (definition) — Mathlib-Computable rational sequence converging to r",
       "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (sorry, main theorem) — Set.Countable {r | IsComputable r}",
@@ -56,7 +59,18 @@
       "AlgebraicNumbersCountableOQ02OQ04.lean: decodeReal (noncomputable def, S3) — Nat.Partrec.Code → ℝ via Classical.choose on existence of (r, f) with c.eval n = Part.some (encode (f n)) and (f n : ℝ) → r",
       "AlgebraicNumbersCountableOQ02OQ04.lean: exists_code_of_computable_rat_seq (lemma, S3) — pipeline: Computable.encode.comp + Partrec.nat_iff + Nat.Partrec.Code.exists_code",
       "AlgebraicNumbersCountableOQ02OQ04.lean: computable_real_mem_range_decodeReal (lemma, S3) — every IsComputable real is in Set.range decodeReal; uses tendsto_nhds_unique + Part.some_injective + Encodable.encode_injective",
-      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (theorem, S3 proof) — 2-line proof via (Set.countable_range decodeReal).mono"
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (theorem, S3 proof) — 2-line proof via (Set.countable_range decodeReal).mono",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: nonComputableReals (def, S4) — complement set {r : ℝ | ¬ IsComputable r}",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_nonComputable_partition / _disjoint (private, S4) — partition lemmas",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: aleph0_add_of_ge (private, S4) — cardinal absorption helper, mirrors OQ02OQ03",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_nonComputableReals_le_continuum (S4) — upper bound via Cardinal.mk_set_le + Cardinal.mk_real",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: mk_real_le_computable_add_nonComputable (private, S4) — union bound 𝔠 ≤ #computable + #non-computable",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: aleph0_le_card_nonComputableReals (private, S4) — bootstrap by contradiction using Cardinal.aleph0_lt_continuum",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: continuum_le_card_nonComputableReals (S4) — lower bound 𝔠 ≤ #non-computable via absorption",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_nonComputableReals_eq_continuum (theorem, S4 main) — exact equality #(non-computable) = 𝔠",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: exists_non_computable_real (theorem, S4) — Turing's negative observation by pure cardinality",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_strict_ssubset_univ (theorem, S4) — strict subset",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_lt_card_reals, card_computable_lt_card_nonComputable (theorems, S4) — strict cardinal gaps"
     ],
     "insights": [
       "The countability of computable reals is a direct consequence of finite Turing-machine descriptions: every computable real has a finite name, finite names form a countable set, so computable reals are countable.",
@@ -67,18 +81,20 @@
       "Combined with the (still-sorry) upper bound, the exact equality #(computable reals) = ℵ₀ follows mechanically. S3 only needs to discharge the upper bound; equality is then free.",
       "S3 build pipeline (verified Mathlib API): (1) Computable.encode : Computable Encodable.encode (Primcodable target), (2) Computable.comp for composition closure, (3) Partrec.nat_iff : Partrec f ↔ Nat.Partrec f for f : ℕ →. ℕ, (4) Nat.Partrec.Code.exists_code : Nat.Partrec f ↔ ∃ c, c.eval = f, (5) Set.countable_range (Countable domain) + Set.Countable.mono. Denumerable Nat.Partrec.Code is the instance.",
       "Uniqueness of the chosen real (in computable_real_mem_range_decodeReal) follows from injectivity of Part.some (Part.some_injective) and Encodable.encode (Encodable.encode_injective): if two sequences have the same encoded eval at every n, they are pointwise equal, so their limits agree via tendsto_nhds_unique.",
-      "The decodeReal map embeds the upper-bound argument in a single noncomputable function, side-stepping the Surjective/Image API in favor of plain Set.range. Classical.choose handles the partiality of eval cleanly without affecting the countability conclusion."
+      "The decodeReal map embeds the upper-bound argument in a single noncomputable function, side-stepping the Surjective/Image API in favor of plain Set.range. Classical.choose handles the partiality of eval cleanly without affecting the countability conclusion.",
+      "S4 cardinality argument: the existence of non-computable reals (Turing's negative observation) is forced by the cardinality gap ℵ₀ < 𝔠 = #ℝ together with the S3 upper bound #(computable) ≤ ℵ₀. No explicit Cantor diagonal or Chaitin construction is needed — and in fact the partition + ℵ₀ absorption argument yields the strictly stronger #(non-computable) = 𝔠.",
+      "S4 absorption pattern (reusable): the helper aleph0_add_of_ge : ℵ₀ ≤ κ → ℵ₀ + κ = κ (via Cardinal.add_eq_self) lets one trade `#(computable) + #(non-computable)` for just `#(non-computable)` whenever the bootstrap ℵ₀ ≤ #(non-computable) is known. The bootstrap itself is pure contradiction with Cardinal.aleph0_lt_continuum — a templatable proof for any 'small subset of ℝ' situation."
     ],
     "mathlibGaps": [
       "Potential gap: Mathlib does not (as of 4.26.0) provide an off-the-shelf 'IsComputable' predicate on ℝ. The Mathlib `Computable` predicate is for functions, not reals. This entry defines `IsComputable r` via the existence of a Computable approximating sequence.",
       "Mathlib `Primcodable ℚ` should be available via `Mathlib.Data.Rat.Denumerable` + `Mathlib.Logic.Denumerable`. If `Computable (f : ℕ → ℚ)` fails to elaborate, switch the approximation type to ℕ and decode."
     ],
     "nextSteps": [
-      "Verify the S3 build (Docker, ~45 min cold) — if green, bump badge wip → verified.",
-      "S4: prove algebraic ⊆ computable via Sturm sequence / bisection root-finding; lifts the algebraic_reals_countable result.",
-      "S5: prove IsComputable e and IsComputable π for explicit transcendental computable witnesses (strict inclusion algebraic ⊊ computable).",
-      "S6 (advanced): construct Chaitin Ω or a Cantor-diagonal non-computable real (explicit witness for computable ⊊ ℝ beyond cardinality).",
-      "S7 (advanced): prove the computable reals form a real closed subfield of ℝ (closure under arithmetic)."
+      "Verify the S3 + S4 build (Docker, ~45 min cold) — if green, bump badge wip → verified.",
+      "S5: prove IsComputable e and IsComputable π for explicit computable transcendental witnesses (strict inclusion algebraic ⊊ computable beyond cardinality alone).",
+      "S6: prove algebraic ⊆ computable via Sturm sequence / bisection root-finding; lifts the algebraic_reals_countable result.",
+      "S7 (advanced): construct Chaitin Ω as an explicit non-computable real, replacing the pure-cardinality witness exists_non_computable_real with a named one.",
+      "S8 (advanced): prove the computable reals form a real closed subfield of ℝ (closure under arithmetic)."
     ]
   },
   "tags": [
