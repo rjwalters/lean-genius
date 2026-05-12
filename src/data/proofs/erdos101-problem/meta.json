@@ -51,7 +51,8 @@
       "**fourCollinearThrough per-point bound**: By erasing p from each 4-subset through p, we get disjoint 3-element subsets of P \\ {p}. Packing into n-1 points gives at most (n-1)/3 four-collinear subsets through p.",
       "**Lean's Finset API in action**: The proof uses Finset.powerset, Finset.filter, Finset.biUnion, Finset.card_biUnion (for disjoint unions), and Finset.powersetCard — a comprehensive workout of Lean 4's combinatorics library.",
       "**Why the n^{3/2} conjecture failed (Solymosi-Stojaković)**: The lower-bound constructions are *not* of the simple Grünbaum projective-plane type. Solymosi-Stojaković took an n × n integer grid, fixed a sparse subset, and used random-perturbation arguments to drive the count of four-point lines to n^{2 - O(1/√log n)}. The takeaway for this formalization: any pair-packing or per-point argument that depends only on the no-5-collinear condition cannot beat C·n²; closing the o(n²) gap will require structural information that the present proof doesn't use (incidences, additive combinatorics, or arithmetic structure of coordinates).",
-      "**Determinant vs. parametric collinearity** — a Lean design choice: the formalization defines $\\text{collinear}(p,q,r)$ via the signed-area determinant $(q_1{-}p_1)(r_2{-}p_2) = (r_1{-}p_1)(q_2{-}p_2)$ rather than the parametric form $\\exists t \\in \\mathbb{R}, r = p + t(q - p)$. The determinant is *polynomial* in the coordinates, so every collinearity manipulation closes under `ring`, `linarith`, `nlinarith`, or `polyrith` without case-splitting on slope existence or invoking `Classical` to extract an explicit $t$. The cost is that the predicate is *not symmetric a priori* in $\\{p,q,r\\}$ — paid for by the seven-lemma symmetry suite (`collinear_swap23`, `collinear_swap12`, `collinear_rotate`, `collinear_cycle`, plus three reflexivity cases). The benefit accrues at scale: `collinear_trans` only needs a single vertical/non-vertical case split, and the downstream `four_collinear_*` arguments never touch real-analytic machinery."
+      "**Determinant vs. parametric collinearity** — a Lean design choice: the formalization defines $\\text{collinear}(p,q,r)$ via the signed-area determinant $(q_1{-}p_1)(r_2{-}p_2) = (r_1{-}p_1)(q_2{-}p_2)$ rather than the parametric form $\\exists t \\in \\mathbb{R}, r = p + t(q - p)$. The determinant is *polynomial* in the coordinates, so every collinearity manipulation closes under `ring`, `linarith`, `nlinarith`, or `polyrith` without case-splitting on slope existence or invoking `Classical` to extract an explicit $t$. The cost is that the predicate is *not symmetric a priori* in $\\{p,q,r\\}$ — paid for by the seven-lemma symmetry suite (`collinear_swap23`, `collinear_swap12`, `collinear_rotate`, `collinear_cycle`, plus three reflexivity cases). The benefit accrues at scale: `collinear_trans` only needs a single vertical/non-vertical case split, and the downstream `four_collinear_*` arguments never touch real-analytic machinery.",
+      "**The Füredi–Palásti / Burr–Grünbaum–Sloane parallel regime**: Without the no-5-collinear constraint, one can construct sets achieving $\\sim n^2/6$ *collinear triples* (Burr, Grünbaum, Sloane, 1974; Füredi-Palásti, 1984), with the construction featuring no four-point lines at all. This is a structural complement to Erdős #101: relaxing the upper-collinearity bound from 5 to 4 *eliminates* four-point lines entirely in the extremal examples, demonstrating that the no-5-collinear hypothesis is genuinely calibrated to allow four-point lines to be the dominant 'rich-line' species. The current Lean file makes this connection explicit in its 'Related Observations' docstring (lines 590–597), gesturing at both the Füredi-Palásti triple regime and the Szemerédi-Trotter incidence bound as the two natural lenses through which any o(n²) improvement on the four-point-line count must filter."
     ],
     "prerequisites": [
       "Combinatorial geometry and point-line incidences",
@@ -88,6 +89,11 @@
       "targetId": "erdos-104",
       "relationship": "related",
       "description": "Erdős #104 ($100 prize): given n points in ℝ², how many unit circles contain at least 3 points? Direct curve-analogue of #101 — same $100 prize level, same Ω(n^{3/2}) ≤ answer ≤ O(n²) gap, same conjecture (subquadratic). The standard Szemerédi-Trotter-style attack for #104 (circles ↔ pseudo-lines via inversion) suggests that the o(n²) bound on #101 will require similar incidence-geometry inputs; both problems share the structural obstruction that Solymosi-Stojaković-style random constructions reach n^{2−o(1)} from below."
+    },
+    {
+      "targetId": "erdos-107",
+      "relationship": "related",
+      "description": "Erdős–Szekeres #107 (Happy Ending Problem, 1935): minimum number f(n) of planar points in general position (no three collinear) forcing a convex n-gon. Stricter no-three-collinear constraint than #101 (no-five-collinear), but the same finite-planar-configuration setting. Both ask quantitative extremal questions controlled by Ramsey-type and incidence-geometric tools; the Happy Ending lower-bound construction (Erdős-Szekeres' projective grid) parallels Grünbaum's projective construction for #101."
     }
   ],
   "leanFile": {
@@ -210,6 +216,16 @@
       "type": "textbook",
       "citation": "Grünbaum, B. (1976). \"New views on some old questions of combinatorial geometry.\" Colloq. Internat. Théorie Combin. Atti dei Convegni Lincei 17:451-468.",
       "relevance": "Source of the projective-plane construction giving Ω(n^{3/2}) four-point lines — the lower-bound that Erdős's failed n^{3/2} upper-bound conjecture matched."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Füredi, Z. & Palásti, I. (1984). \"Arrangements of lines with a large number of triangles.\" Proceedings of the American Mathematical Society 92(4):561-566.",
+      "relevance": "Companion construction in the parallel regime: arrangements with many collinear triples but no four-point lines. Cited in the Lean file's 'Related Observations' docstring (L592–593) as a structural foil — drops the upper-collinearity bound from 5 to 4 and the four-point-line count collapses to zero, illustrating why the no-5-collinear hypothesis is the right calibration for #101."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Burr, S.A., Grünbaum, B. & Sloane, N.J.A. (1974). \"The orchard problem.\" Geometriae Dedicata 2:397-424.",
+      "relevance": "Original construction of n-point sets with ~n²/6 collinear triples and no four-point lines (the 'orchard problem'). Predecessor to Füredi-Palásti; establishes the lower-bound structure for the triples-without-quadruples regime that complements #101's four-point-line counting."
     },
     {
       "type": "blog",
