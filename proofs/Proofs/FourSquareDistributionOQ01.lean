@@ -2216,4 +2216,133 @@ example : ∀ n : ℕ, 0 < n → jacobiR4 n = 8 * sigmaStar n := by
   unfold jacobiR4
   rfl
 
+-- =====================================================================
+-- PART 27 (S18a): r4Count foldl ↔ nested-sum reformulation
+--
+-- Reformulates the 4-nested `List.foldl` defining `r4Count n` (Part 2,
+-- line 116) as a triple-nested `List.sum` over `shiftedRange n`, with
+-- the innermost level a `List.filter`-length over the 4th coordinate.
+-- This is Sublemma 3.1 (List form) of
+-- `research/problems/four-square-distribution-oq-01/s18-eight-divisibility-spec.md`
+-- §3.1/§4. The Finset.card reformulation (full Sublemma 3.1, via
+-- `List.toFinset` + nodup) defers to S18b; the (ℤ/2)⁴ ⋊ S₄ orbit-
+-- decomposition argument for `8 ∣ r4Count n` defers to S18c.
+--
+-- Two foundational List/foldl lemmas (`foldl_indicator_eq_add_filter_length`
+-- and `foldl_constant_shift_eq`) compose into a single generic 4-level
+-- helper (`foldl_4nest_indicator_eq_nested_sum`), specialised to
+-- `r4Count_eq_nested_sum`. Pure structural content; no number theory.
+-- =====================================================================
+
+/-- **Counting fold ↔ filter-length.** A `List.foldl` whose body
+    conditionally adds 1 (under a decidable predicate) equals the
+    starting accumulator plus the `List.filter`-length of the
+    predicate. Pure foldl/filter identity; foundation for
+    `r4Count_eq_nested_sum`. -/
+private lemma foldl_indicator_eq_add_filter_length {α : Type*} (L : List α)
+    (p : α → Prop) [DecidablePred p] (k : ℕ) :
+    L.foldl (fun acc x => if p x then acc + 1 else acc) k =
+      k + (L.filter (fun x => decide (p x))).length := by
+  induction L generalizing k with
+  | nil => simp
+  | cons a L ih =>
+    rw [List.foldl_cons]
+    by_cases hpa : p a
+    · simp only [if_pos hpa, ih]
+      have hdec : decide (p a) = true := decide_eq_true_iff.mpr hpa
+      rw [List.filter_cons]
+      simp [hdec, List.length_cons]
+      omega
+    · simp only [if_neg hpa, ih]
+      have hdec : decide (p a) = false := decide_eq_false_iff_not.mpr hpa
+      rw [List.filter_cons]
+      simp [hdec]
+
+/-- **Constant-shift fold.** If the foldl body adds a per-element
+    constant `g x` to the accumulator (independent of any deeper
+    structure of the accumulator), the foldl equals the starting
+    accumulator plus the summed `g`-values. -/
+private lemma foldl_constant_shift_eq {α : Type*} (L : List α)
+    (body : ℕ → α → ℕ) (g : α → ℕ)
+    (h_body : ∀ k x, body k x = k + g x) (k : ℕ) :
+    L.foldl body k = k + (L.map g).sum := by
+  induction L generalizing k with
+  | nil => simp
+  | cons a L ih =>
+    rw [List.foldl_cons, h_body, ih, List.map_cons, List.sum_cons]
+    omega
+
+/-- **4-level foldl ↔ nested sum.** A 4-nested `List.foldl` over the
+    same list `L`, with an indicator-add-1 innermost body parametrised
+    by all four loop variables, equals a triple-nested `List.map +
+    List.sum` whose innermost level is the `List.filter`-length.
+
+    Generic structural identity; immediate application:
+    `r4Count_eq_nested_sum`. -/
+private lemma foldl_4nest_indicator_eq_nested_sum {α : Type*}
+    (L : List α) (P : α → α → α → α → Prop)
+    [∀ a b c, DecidablePred (P a b c)] :
+    L.foldl (fun ka a =>
+      L.foldl (fun kb b =>
+        L.foldl (fun kc c =>
+          L.foldl (fun kd d => if P a b c d then kd + 1 else kd) kc) kb) ka) 0 =
+    (L.map (fun a =>
+      (L.map (fun b =>
+        (L.map (fun c =>
+          (L.filter (fun d => decide (P a b c d))).length)).sum)).sum)).sum := by
+  have hD : ∀ (a b c : α) (k : ℕ),
+      L.foldl (fun acc d => if P a b c d then acc + 1 else acc) k =
+      k + (L.filter (fun d => decide (P a b c d))).length := fun a b c k =>
+    foldl_indicator_eq_add_filter_length L (fun d => P a b c d) k
+  have hC : ∀ (a b : α) (k : ℕ),
+      L.foldl (fun acc c =>
+        L.foldl (fun acc' d => if P a b c d then acc' + 1 else acc') acc) k =
+      k + (L.map (fun c =>
+        (L.filter (fun d => decide (P a b c d))).length)).sum := fun a b k =>
+    foldl_constant_shift_eq L
+      (fun acc c =>
+        L.foldl (fun acc' d => if P a b c d then acc' + 1 else acc') acc)
+      (fun c => (L.filter (fun d => decide (P a b c d))).length)
+      (fun k' c => hD a b c k') k
+  have hB : ∀ (a : α) (k : ℕ),
+      L.foldl (fun acc b =>
+        L.foldl (fun acc' c =>
+          L.foldl (fun acc'' d => if P a b c d then acc'' + 1 else acc'') acc') acc) k =
+      k + (L.map (fun b =>
+        (L.map (fun c =>
+          (L.filter (fun d => decide (P a b c d))).length)).sum)).sum := fun a k =>
+    foldl_constant_shift_eq L
+      (fun acc b => L.foldl (fun acc' c =>
+        L.foldl (fun acc'' d => if P a b c d then acc'' + 1 else acc'') acc') acc)
+      (fun b => (L.map (fun c =>
+        (L.filter (fun d => decide (P a b c d))).length)).sum)
+      (fun k' b => hC a b k') k
+  have hA := foldl_constant_shift_eq L
+    (fun acc a => L.foldl (fun acc' b =>
+      L.foldl (fun acc'' c =>
+        L.foldl (fun acc''' d => if P a b c d then acc''' + 1 else acc''') acc'') acc') acc)
+    (fun a => (L.map (fun b =>
+      (L.map (fun c =>
+        (L.filter (fun d => decide (P a b c d))).length)).sum)).sum)
+    (fun k a => hB a k) 0
+  simpa using hA
+
+/-- **Sublemma 3.1 (List form, S18a):** `r4Count n` equals a triple-
+    nested `List.sum` over `shiftedRange n` with the innermost level a
+    `List.filter`-length over the 4th coordinate. Structural foundation
+    for axiom-free `8 ∣ r4Count n` (S18 target).
+
+    The Finset.card reformulation (full Sublemma 3.1) and the
+    (ℤ/2)⁴ ⋊ S₄ orbit-decomposition argument defer to S18b/c. -/
+private lemma r4Count_eq_nested_sum (n : ℕ) :
+    r4Count n =
+    ((shiftedRange n).map (fun a =>
+      ((shiftedRange n).map (fun b =>
+        ((shiftedRange n).map (fun c =>
+          ((shiftedRange n).filter (fun d =>
+            decide (a^2 + b^2 + c^2 + d^2 = (n : ℤ)))).length)).sum)).sum)).sum := by
+  unfold r4Count
+  exact foldl_4nest_indicator_eq_nested_sum (shiftedRange n)
+    (fun a b c d => a^2 + b^2 + c^2 + d^2 = (n : ℤ))
+
 end FourSquareDistributionOQ01

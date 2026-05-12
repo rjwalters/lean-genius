@@ -315,19 +315,26 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Next Action
 
-0. **(structural, S18 candidate) `r4Count/8` quotient existence.**
-   Prove `8 ∣ r4Count n` for all `0 < n` AXIOM-FREE — i.e., without
-   invoking `jacobi_r4_formula`. This is the divisibility prerequisite
-   for casting the open axiom into S17's canonical σ-side form: if
-   `h₈ : 8 ∣ r4Count n` is axiom-free, then `r4Count/8` is a
-   well-defined `ℕ → ℕ` function, and S17 applied to `g := r4Count/8`
-   (under axiom-free proofs of its three canonical hypotheses) would
-   discharge the open conjecture. The divisibility itself is a
-   classical 4-square-symmetry argument (8 sign-and-permutation
-   automorphisms acting on non-degenerate solutions) but the
-   degenerate-solution census needs care.
-   See Lagrange's four-square theorem variant proofs (Mathlib
-   `Nat.sum_four_squares`) for the action-counting template.
+0. **(structural, S18a SHIPPED, S18b/c remaining)** Axiom-free
+   `8 ∣ r4Count n` decomposes into three sub-deliverables per
+   `s18-eight-divisibility-spec.md`:
+   - **S18a (THIS PR, Part 27)**: foldl ↔ nested-sum reformulation of
+     `r4Count n`. Adds `foldl_indicator_eq_add_filter_length`,
+     `foldl_constant_shift_eq`, `foldl_4nest_indicator_eq_nested_sum`,
+     and `r4Count_eq_nested_sum`. ~80 lines, pure List/foldl structural
+     lemmas; no number theory.
+   - **S18b (next)**: convert the triple-nested `List.map ... .sum`
+     form to `Finset.product`-based `Finset.card` via `List.toFinset`
+     + nodup on `shiftedRange n`. ~50 lines.
+   - **S18c**: define the `(ℤ/2)⁴ ⋊ S₄` action on the solution Finset
+     (per spec §3.8), prove all orbits divide 8, conclude
+     `8 ∣ r4Count n`. ~200 lines, the bulk of the work.
+
+   The S18 spec §3.7 noted that the originally-proposed D₄-route fails
+   on solutions with two-zero coordinates (e.g. `(a, b, 0, 0)`); §3.8's
+   `(ℤ/2)⁴ ⋊ S₄` 384-element route does work but requires deeper case
+   analysis. S18a's foldl ↔ sum bridge is route-agnostic and reusable
+   for either approach.
 1. **(opportunistic, σ*-side AND r4Count-side closed)** When Mathlib
    gains q-expansion for `jacobiTheta` / `EisensteinSeries.E₂`, apply
    `r4Count_factorization_form` (S9) directly — the LHS of the
