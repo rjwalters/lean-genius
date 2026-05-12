@@ -169,6 +169,77 @@ lemma indicator_mod_four_eq_one (n : ℕ) :
   simp only [mod_four_eq_one_iff_zmodFour_eq_one]
   exact indicator_zmodFour_eq_one n
 
+/-! ## S4 ORIENT/ACT: Dirichlet-density bridge (q = 4, a = 1)
+
+These lemmas specialize the Mathlib L-series machinery to the case
+`(q, a) = (4, 1)`, packaging the Dirichlet-density data that drives the
+path-B proof outlined in `state.md`.
+
+The Mathlib API used here (verified to exist at v4.26.0, pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
+
+* `ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound`
+  — for `a : ZMod q` a unit, gives `∃ C, (q.totient)⁻¹/(x-1) - C ≤
+  ∑' n, residueClass a n / (n : ℝ)^x` for `x ∈ Ioc 1 2`. The
+  `(q.totient)⁻¹/(x-1)` term is the **principal pole strength** of
+  the L-series of the von Mangoldt function restricted to the residue
+  class `a (mod q)`.
+* `ArithmeticFunction.vonMangoldt.not_summable_residueClass_prime_div`
+  — for `a : ZMod q` a unit, the prime-restricted Dirichlet sum
+  `∑ (if n.Prime then residueClass a n else 0) / n` is **not summable**.
+  This is the Dirichlet-density-style divergence statement used in
+  Mathlib's proof of Dirichlet's theorem.
+
+For `q = 4`, `q.totient = 2` (already proved as `totient_four`). The
+S4 lemmas below substitute this explicit value, yielding the concrete
+`1/2` pole strength for primes `≡ 1 (mod 4)`. This is the Dirichlet
+density of `1/φ(4) = 1/2` made syntactically explicit on top of
+Mathlib's general API, and is the bridge into the path-B step 3
+(Tauberian transfer) that will eventually discharge
+`primes_4k1_natural_density`.
+-/
+
+open ArithmeticFunction
+
+/-- **Dirichlet-density lower bound at `(q, a) = (4, 1)`.**
+For `x ∈ Ioc 1 2`, the L-series sum of the von Mangoldt function restricted
+to the residue class `(n : ZMod 4) = 1` is bounded below by
+`(1/2) · (x - 1)⁻¹ - C` for some constant `C` (depending only on the closed
+half-plane behaviour of the auxiliary residue-class L-function, which is
+continuous on `re s ≥ 1` by `continuousOn_LFunctionResidueClassAux`).
+
+This is `vonMangoldt.LSeries_residueClass_lower_bound` specialized to
+`(q, a) = (4, 1)`, with the explicit constant `1/φ(4) = 1/2`. The bound
+demonstrates that the L-series sum tends to `+∞` at rate `(1/2)/(x-1)` as
+`x ↘ 1`, which is the Dirichlet-density-style pole-strength data for the
+arithmetic progression `4k + 1`. -/
+theorem LSeries_residueClass_one_mod_four_lower_bound :
+    ∃ C : ℝ, ∀ {x : ℝ} (_ : x ∈ Set.Ioc 1 2),
+      (2 : ℝ)⁻¹ / (x - 1) - C ≤
+        ∑' n : ℕ, ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4) n / (n : ℝ) ^ x := by
+  obtain ⟨C, hC⟩ :=
+    ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound one_isUnit_zmodFour
+  refine ⟨C, fun {x} hx ↦ ?_⟩
+  have h := hC hx
+  have htot : ((Nat.totient 4 : ℕ) : ℝ) = (2 : ℝ) := by
+    rw [totient_four]; norm_num
+  rwa [htot] at h
+
+/-- **Prime-restricted Dirichlet divergence at `(q, a) = (4, 1)`.**
+The function `n ↦ Λ(n) / n` restricted to primes with `(n : ZMod 4) = 1`
+(equivalently, primes `≡ 1 (mod 4)`) is **not summable**.
+
+This is `vonMangoldt.not_summable_residueClass_prime_div` specialized to
+`(q, a) = (4, 1)`. It is strictly stronger than the elementary infinitude
+statement (`primes_4k1_infinite_mathlib`): the divergence of `∑ Λ(p)/p` over
+primes ≡ 1 (mod 4) is the *Mertens-style* density statement that Mertens
+(1874) proved semi-elementarily, but here delivered through the analytic
+L-series route from Mathlib's PNT-AP machinery. -/
+theorem not_summable_primes_4k1_vonMangoldt_div :
+    ¬ Summable fun n : ℕ =>
+      (if n.Prime then ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4) n else 0) / n :=
+  ArithmeticFunction.vonMangoldt.not_summable_residueClass_prime_div one_isUnit_zmodFour
+
 /-! ## OQ-03 target: natural-density form -/
 
 /-- **OQ-03 deliverable (stated, not yet proved).**
@@ -214,6 +285,8 @@ theorem primes_4k1_natural_density :
 #check sum_dirichletChars_zmodFour
 #check indicator_zmodFour_eq_one
 #check indicator_mod_four_eq_one
+#check LSeries_residueClass_one_mod_four_lower_bound
+#check not_summable_primes_4k1_vonMangoldt_div
 #check primes_4k1_natural_density
 
 end InfinitudePrimes4k1OQ03

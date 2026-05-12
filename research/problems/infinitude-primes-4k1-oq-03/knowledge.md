@@ -334,3 +334,79 @@ external Tauberian infrastructure (path A), so the OQ-03 sorry remains.
 * **0 new axiom declarations**.
 * **Total file count**: 9 theorems / lemmas in this file
   (8 proved + 1 sorry-target).
+
+## S4 (researcher-10, 2026-05-12) — ORIENT/ACT: Dirichlet-density bridge
+
+### What this iteration adds
+
+The path-B proof of the OQ-03 density target factors as:
+
+1. **Character-orthogonality decomposition** (S3, done): rewrite the
+   indicator `[p ≡ 1 (mod 4)]` as `(1/2)(χ₀(p) + χ₁(p))`.
+2. **Dirichlet-density pole-strength bridge** (S4, this iteration): use
+   the Mathlib L-series machinery to extract the `(1/2)/(x-1)` pole
+   strength of the L-series of `Λ` restricted to the residue class.
+3. **Tauberian transfer** (S5, future): convert pole-strength data into
+   the natural-density counting asymptotic.
+
+S4 delivers step 2 by specializing Mathlib's general PNT-AP API to
+`(q, a) = (4, 1)`:
+
+* `LSeries_residueClass_one_mod_four_lower_bound` — given
+  `vonMangoldt.LSeries_residueClass_lower_bound one_isUnit_zmodFour`, the
+  resulting bound contains `((Nat.totient 4 : ℕ) : ℝ)⁻¹ / (x - 1)`. We
+  rewrite `Nat.totient 4 = 2` via the existing `totient_four` lemma,
+  yielding `(2 : ℝ)⁻¹ / (x - 1) - C` directly.
+
+* `not_summable_primes_4k1_vonMangoldt_div` — direct specialization of
+  `vonMangoldt.not_summable_residueClass_prime_div` with
+  `one_isUnit_zmodFour`. This packages the *Mertens 1874*-style density
+  statement: the sum `∑ Λ(p) / p` over primes ≡ 1 (mod 4) diverges. (In
+  fact it diverges at rate `(1/2) log log N` — that quantitative form
+  needs Abel summation + the S4 lower bound, deferred to S5.)
+
+### Why this is the right next step
+
+The S2 state.md identified `LSeries_residueClass_lower_bound` and
+`not_summable_residueClass_prime_div` as the two Mathlib lemmas
+encoding the Dirichlet-density data. S4 specializes both to
+`(q, a) = (4, 1)`. Each specialization is a 2–5 line term-mode
+proof that benefits substantially from the existing `totient_four`
+and `one_isUnit_zmodFour` lemmas: without them, callers would need to
+re-prove the unit condition and re-substitute `4.totient = 2` at every
+use site.
+
+The resulting S4 lemmas are the **shortest possible interface** between
+the parent file's elementary `p ≡ 1 (mod 4)` formulation and Mathlib's
+abstract residue-class L-series API. Future iterations (S5 logarithmic
+density via Mertens, or S5+ Tauberian transfer once Mathlib lands the
+relevant Wiener-Ikehara module) consume these S4 lemmas directly.
+
+### Mathematical content
+
+The lower-bound lemma encodes the **principal pole** of the L-series
+`L(s; Λ|_{class}) = ∑ Λ(n) · 𝟙[n ∈ class] · n^{-s}`. The principal pole
+strength `1/φ(q)` follows from the Dirichlet character decomposition: the
+trivial character `χ₀` contributes a pole at `s = 1` of strength `1`, all
+nontrivial characters contribute *no* pole (by
+`DirichletCharacter.LFunction_ne_zero_of_one_le_re`), and the indicator
+decomposition divides by `φ(q)` to extract the class indicator. For `q = 4`,
+`φ(4) = 2`, so the principal pole strength is `1/2`.
+
+The not-summable statement is the **Mertens 1874** version: by Abel
+summation, `Λ(p)/p` not summable ⇔ `∑_{p ≤ N} Λ(p)/p → ∞`. Quantitatively,
+the rate is `(1/φ(q)) log log N` (Mertens' theorem), which would discharge
+the *logarithmic-density* form `lim ∑_{p ≤ N, p ≡ 1 (4)} 1/p / log log N = 1/2`.
+This is strictly weaker than the natural-density form (OQ-03 target) but
+unblocked by current Mathlib.
+
+### S4 deliverable summary
+
+* **0 new Lean files**; **2 new theorems** added to
+  `InfinitudePrimes4k1OQ03.lean` (~70 lines including the section docstring).
+* **Both theorems verified** (no new sorries introduced; the existing
+  `primes_4k1_natural_density` sorry is unchanged).
+* **0 new axiom declarations**.
+* **0 new imports** (uses existing `Mathlib.NumberTheory.LSeries.PrimesInAP`).
+* **Total file count**: 11 theorems / lemmas in this file
+  (10 proved + 1 sorry-target).
