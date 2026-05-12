@@ -674,4 +674,135 @@ theorem skewSSYTFin_row0_eq_zero_of_top_zero {ν μ : Partition 2}
   have h0 : ((0 : Fin 2)).val = 0 := rfl
   omega
 
+/-! ## Part XIII: S3c-Prep-4 — Row-0 Top-Cell Lattice Forcing (`n = 2`)
+
+The Step 1 ("row 0 is forced to all zeros") chain in Part VIII's
+docstring sketch decomposes into two halves:
+
+* **Top-zero forces all-zero** — given the rightmost row-0 cell
+  `T ⟨0, ⟨r₀ - 1, _⟩⟩ = 0 : Fin 2`, row-0 monotonicity (Part XII)
+  propagates the zero to every row-0 cell.
+* **Lattice forces top-zero** — given `isLatticeWord T.reverseRowWord`,
+  the rightmost row-0 cell *is* zero.
+
+Part XII supplied the first half. This Part supplies the second: at
+prefix length `1` of `T.reverseRowWord`, the count bound `count 1 ≤
+count 0` forces the *single* word entry — which is the rightmost row-0
+cell when `r₀ > 0` — to equal `0 : Fin 2`.
+
+The chain composes into a clean `skewSSYTFin_row0_forced_zero`
+corollary closing Step 1 of the S3c proof sketch entirely under the
+positivity hypothesis `0 < r₀`. The `r₀ = 0` branch is vacuous (`Fin 0`
+empty) and handled inline by S3c proper.
+
+### Decomposition strategy
+
+The decomposition `reverseRowWord = L₀ ++ L₁` (Part X) plus
+`take_append_of_le_length` reduces `T.reverseRowWord.take 1` to
+`L₀.take 1`. For `r₀ > 0`, `L₀ = (finRange r₀).reverse.map (fun j =>
+T ⟨0, j⟩)` starts with the rightmost cell because
+`(finRange (k+1)).reverse = Fin.last k :: ...` via Mathlib's
+`List.finRange_succ`. The private helper
+`reverse_finRange_take_one_of_pos` extracts that head cleanly. -/
+
+/-- **Take-one head of a reversed-mapped `List.finRange` (`r > 0`).**
+    For `r > 0` and any `f : Fin r → α`, the `take 1` prefix of
+    `(List.finRange r).reverse.map f` is the singleton `[f ⟨r-1, _⟩]`.
+    Proved by case-decomposition `r = k + 1` (via
+    `Nat.exists_eq_succ_of_ne_zero`) plus the standard
+    `List.finRange_succ = ... ++ [Fin.last k]` identity, after which
+    the reversed list cons-decomposes with `Fin.last k` at the head
+    and `(k+1) - 1 = k` reduces to that head by proof-irrelevant
+    `Fin` equality. -/
+private lemma reverse_finRange_take_one_of_pos
+    {α : Type*} {r : ℕ} (h : 0 < r) (f : Fin r → α) :
+    ((List.finRange r).reverse.map f).take 1 =
+      [f ⟨r - 1, Nat.sub_lt h Nat.one_pos⟩] := by
+  rcases Nat.exists_eq_succ_of_ne_zero h.ne' with ⟨k, rfl⟩
+  rw [List.finRange_succ, List.concat_eq_append, List.reverse_append,
+      List.reverse_singleton, List.singleton_append, List.map_cons]
+  rfl
+
+/-- **First entry of `reverseRowWord` (`n = 2`, `r₀ > 0`).** When the
+    skew strip's row 0 is non-empty, the `take 1` prefix of the reverse
+    row reading word is the singleton list containing the rightmost
+    row-0 cell `T ⟨0, ⟨r₀ - 1, _⟩⟩`. This is the prefix-length-`1`
+    counterpart of `reverseRowWord_two_take_r0` (Part XI's prefix-`r₀`
+    decomposition) and isolates the head from the lattice-word
+    condition's "first entry" inspection. -/
+theorem reverseRowWord_two_take_one_of_pos {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hpos : 0 < ν.parts 0 - μ.parts 0) :
+    T.reverseRowWord.take 1 =
+      [T.1 ⟨0, ⟨ν.parts 0 - μ.parts 0 - 1, Nat.sub_lt hpos Nat.one_pos⟩⟩] := by
+  rw [reverseRowWord_two_eq]
+  have hlen :
+      (1 : ℕ) ≤ ((List.finRange (ν.parts 0 - μ.parts 0)).reverse.map
+                  (fun j => T.1 ⟨(0 : Fin 2), j⟩)).length := by
+    simp [List.length_map, List.length_reverse, List.length_finRange]
+    exact hpos
+  rw [List.take_append_of_le_length hlen]
+  exact reverse_finRange_take_one_of_pos hpos _
+
+/-- **Top row-0 cell forced to zero by lattice condition (`n = 2`).**
+    When `T.reverseRowWord` is a lattice word and row 0 is non-empty
+    (`r₀ > 0`), the rightmost row-0 cell `T ⟨0, ⟨r₀ - 1, _⟩⟩` equals
+    `0 : Fin 2`. Proved by instantiating the lattice-word predicate at
+    prefix length `1` with `k = 0`, `k' = 1`, getting `[head].count 1 ≤
+    [head].count 0` where `head` is the rightmost row-0 cell (via
+    `reverseRowWord_two_take_one_of_pos`). For `head : Fin 2` the only
+    way this bound holds is `head = 0`: if `head = 1`, the singleton
+    counts evaluate to `1 ≤ 0`, contradiction.
+
+    Supplies the missing single-cell hypothesis for Part XII's
+    `skewSSYTFin_row0_eq_zero_of_top_zero`, closing Step 1 of the S3c
+    proof sketch (row 0 forced to all zeros) modulo the `r₀ > 0`
+    positivity branch. -/
+theorem skewSSYTFin_row0_top_zero_of_lattice {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hpos : 0 < ν.parts 0 - μ.parts 0)
+    (hLW : isLatticeWord T.reverseRowWord) :
+    T.1 ⟨0, ⟨ν.parts 0 - μ.parts 0 - 1, Nat.sub_lt hpos Nat.one_pos⟩⟩ = 0 := by
+  -- Prefix-1 lattice bound.
+  have hbnd : 1 < T.reverseRowWord.length + 1 := by
+    rw [reverseRowWord_two_length]; omega
+  have hcnt :
+      (T.reverseRowWord.take 1).count (1 : Fin 2) ≤
+      (T.reverseRowWord.take 1).count (0 : Fin 2) :=
+    hLW ⟨1, hbnd⟩ 0 1 (by decide)
+  rw [reverseRowWord_two_take_one_of_pos T hpos] at hcnt
+  -- `hcnt : [top].count 1 ≤ [top].count 0` where `top` is the rightmost row-0 cell.
+  -- For `top : Fin 2`, this forces `top = 0`.
+  by_contra hne
+  set top := T.1 ⟨0, ⟨ν.parts 0 - μ.parts 0 - 1, Nat.sub_lt hpos Nat.one_pos⟩⟩
+  -- `hne : top ≠ 0` and `top : Fin 2` so `top.val ∈ {0, 1}` and `top = 1`.
+  have h1 : top = 1 := by
+    have hlt : top.val < 2 := top.isLt
+    have hne0 : top.val ≠ 0 := fun h => hne (Fin.ext h)
+    apply Fin.ext
+    show top.val = (1 : Fin 2).val
+    have h1_val : ((1 : Fin 2)).val = 1 := rfl
+    omega
+  rw [h1] at hcnt
+  exact absurd hcnt (by decide)
+
+/-- **Row 0 forced to all zeros by lattice condition (`n = 2`).** Step
+    1 of the S3c proof sketch fully discharged under the positivity
+    hypothesis `0 < r₀`. Composes
+    `skewSSYTFin_row0_top_zero_of_lattice` (Part XIII) with
+    `skewSSYTFin_row0_eq_zero_of_top_zero` (Part XII): the lattice
+    condition forces the rightmost row-0 cell to be zero, then row-0
+    monotonicity propagates the zero to every row-0 cell.
+
+    The `r₀ = 0` branch (where `Fin r₀` is empty and the conclusion is
+    vacuous) is handled by S3c proper via `Fin.elim0`. -/
+theorem skewSSYTFin_row0_forced_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hpos : 0 < ν.parts 0 - μ.parts 0)
+    (hLW : isLatticeWord T.reverseRowWord)
+    (j : Fin (ν.parts 0 - μ.parts 0)) :
+    T.1 ⟨0, j⟩ = 0 :=
+  skewSSYTFin_row0_eq_zero_of_top_zero T hpos
+    (skewSSYTFin_row0_top_zero_of_lattice T hpos hLW) j
+
 end Hilbert15OQ02OQ03OQ01

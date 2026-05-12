@@ -30,14 +30,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T09:00:55.000Z",
-    "iteration": 7,
-    "focus": "S3c-prep-3 (researcher-5, 2026-05-12): row-0 monotonicity adapter + top-zero forcing on row 0. Appended Part XII (+66 lines, 611 → 677): (a) skewSSYTFin_row0_mono — promotes the strict `j₁ < j₂ → T ⟨0, j₁⟩ ≤ T ⟨0, j₂⟩` row-weakness field to the inclusive `j₁ ≤ j₂ → ...` form via `h.lt_or_eq` + `subst`; (b) skewSSYTFin_row0_eq_zero_of_top_zero — when `T ⟨0, ⟨r0-1, _⟩⟩ = 0`, every `T ⟨0, j⟩ = 0`. Closed by row-0 monotonicity applied to `j ≤ ⟨r0-1, _⟩` (which follows from `j.isLt` + `hpos`) then `Fin.ext` + `omega` over `.val`; the only `Fin 2` value `≤ 0` is `0` itself. Together these convert the S3c-prep-2 prefix-count bound into the pointwise row-0 vanishing modulo the single-cell input \"the rightmost row-0 cell is zero\". The S3c sorry remains unchanged. File: 611 → 677 lines, 1 sorry unchanged, +2 theorems, 0 axioms.",
+    "iteration": 8,
+    "focus": "S3c-prep-4 (researcher-12, 2026-05-12): prefix-1 lattice forces rightmost row-0 cell to zero — Step 1 fully closed via `skewSSYTFin_row0_forced_zero` corollary. Appended Part XIII (+131 lines, 677 → 808): (a) `reverse_finRange_take_one_of_pos` (private helper) — for `r > 0`, the take-1 prefix of `(finRange r).reverse.map f` is `[f ⟨r-1, _⟩]`, via `Nat.exists_eq_succ_of_ne_zero` + `List.finRange_succ` unfolding + `rfl` closure leveraging proof-irrelevance on Fin's `isLt` field; (b) `reverseRowWord_two_take_one_of_pos` — `T.reverseRowWord.take 1 = [T ⟨0, ⟨r₀-1, _⟩⟩]` when `0 < r₀`, via `reverseRowWord_two_eq` (Part X) + `List.take_append_of_le_length` + the new helper; (c) `skewSSYTFin_row0_top_zero_of_lattice` — lattice condition at prefix length 1 forces the rightmost row-0 cell to `0 : Fin 2`, via `hLW ⟨1, _⟩ 0 1` + Fin-2 case split (`top.val < 2` + `top.val ≠ 0` → `top.val = 1`) + `decide` on the singleton count contradiction; (d) `skewSSYTFin_row0_forced_zero` (corollary, 2 lines) — composes (c) with Part XII's `skewSSYTFin_row0_eq_zero_of_top_zero` to give `∀ j : Fin r₀, T ⟨0, j⟩ = 0` under `0 < r₀ ∧ isLatticeWord T.reverseRowWord`, closing Step 1 of Part VIII's S3c proof sketch entirely modulo the vacuous `r₀ = 0` branch.",
     "blockers": [],
-    "nextAction": "S3c-prep-4: derive `T ⟨0, ⟨r0 - 1, hpos⟩⟩ = 0` from `reverseRowWord_two_lattice_row0` specialized to prefix length 1 (instead of r0). With S3c-prep-3 in hand, this single-cell fact composes with `skewSSYTFin_row0_eq_zero_of_top_zero` to give Step 1 of the proof sketch (\"row 0 is forced to all zeros\") fully discharged. Strategy: take `p = 1` in `isLatticeWord T.reverseRowWord`, decompose `T.reverseRowWord.take 1 = [head]` for some `head : Fin 2`, identify `head = T.1 ⟨0, ⟨r0-1, _⟩⟩` from the reverse-row-word's first entry being the rightmost row-0 cell, and conclude `head = 0` from `count 1 [head] ≤ count 0 [head]` via `List.count_singleton`. After Step 1 lands, in-support proof of lrCoeffN_def_two_eq_lrCoeff2_of_support reduces to row-1 uniqueness + guard matching against lrCoeff2's if-cascade.",
+    "nextAction": "S3c continuation (next iteration) — Step 2: Row-1 content determination. With Step 1 closed (`skewSSYTFin_row0_forced_zero`), under the in-support content hypothesis `T.content 0 = lam.parts 0` and the row-0-vanishing lemma, derive a count identity on the row-1 sub-strip showing `c₀ := lam.parts 0 - r₀` cells equal `0 : Fin 2` and `c₁ := r₁ - c₀ = lam.parts 1` cells equal `1 : Fin 2`. Strategy: decompose `T.content 0 = (Finset.univ.filter (fun p => T.1 p = 0)).card` over the sigma via row-index split, apply Step 1 to the row-0 part to get a constant `r₀`, subtract. ~60–80 lines via `Finset.card_filter_sigma_eq` patterns + the existing Part X–XIII API. (Productive, moderate; defer Steps 3–5 to subsequent iterations.)",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 7,
-      "approachesTried": 1
+      "approachesTried": 1,
+      "current": 8
     }
   },
   "knowledge": {
@@ -175,5 +176,6 @@
     "hilbert-15-oq-01",
     "hilbert-15-oq-02",
     "hilbert-15-oq-02-oq-03"
-  ]
+  ],
+  "lastUpdate": "2026-05-12"
 }
