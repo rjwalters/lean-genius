@@ -1,8 +1,8 @@
 {
   "slug": "binary-gcd-oq-02-oq-02",
   "title": "Lehmer's GCD for ℤ: extend the Lehmer algorithm via natAbs reduction",
-  "phase": "ACT",
-  "status": "progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,22 +29,25 @@
     "goal": "Mechanical ℤ-extension of Lehmer's GCD via natAbs; correctness vs Int.gcd."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T11:42:00.000Z",
-    "iteration": 1,
-    "focus": "S1 SCAFFOLD: BinaryGcdOQ02OQ02.lean with 15 theorems, 1 def, 0 sorries, 0 axioms.",
+    "phase": "COMPLETED",
+    "since": "2026-05-12T12:15:00.000Z",
+    "iteration": 2,
+    "focus": "S2 GALLERY: src/data/proofs/binary-gcd-oq-02-oq-02/{meta,annotations,index}.ts — verified-status entry with 8 sections, 9 annotations, 5 cross-references, 3 references.",
     "blockers": [],
-    "nextAction": "S2 (optional): gallery entry src/data/proofs/binary-gcd-oq-02-oq-02/meta.json + annotations once S1 build is verified clean on origin/main.",
+    "nextAction": "Optional follow-up: explicit Lehmer↔Binary GCD cross-algorithm equality file (5-line statement composing lehmerGcdInt_eq_natAbs_gcd + BinaryGcdOQ02.binaryGcdInt_eq_intGcd). Independent of this slug; could be its own thin entry.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1: created Proofs/BinaryGcdOQ02OQ02.lean (170 lines, 15 theorems, 1 def, 0 sorry, 0 axioms). Defines `lehmerGcdInt (a b : ℤ) : ℕ := lehmerGcd a.natAbs b.natAbs` and proves `lehmerGcdInt_eq_intGcd` plus the standard universal-property / sign-invariance / commutativity / zero-case suite. Structurally identical to BinaryGcdOQ02.lean (binary-GCD analogue); the natAbs reduction makes the ℤ extension mechanical once the ℕ correctness theorem `LehmerGcdOQ01.lehmerGcd_correct` is in hand.",
+    "progressSummary": "S2 COMPLETED: gallery entry at src/data/proofs/binary-gcd-oq-02-oq-02/ with verified-status meta.json (line ranges 1-201, 8 sections, 5 cross-references to binary-gcd-oq-02 / -oq-03-oq-01 / -oq-03-oq-02 / binary-gcd / bezout-identity, 3 references including Lehmer 1938 and Knuth TAOCP), 9 annotations covering header/definition/natAbs-reduction/correctness/sign-invariance/edges/universal-property/cross-algorithm-agreement/decide-examples, and auto-discovered index.ts. S1: created Proofs/BinaryGcdOQ02OQ02.lean (201 lines, 15 theorems, 1 def, 0 sorry, 0 axioms). Defines `lehmerGcdInt (a b : ℤ) : ℕ := lehmerGcd a.natAbs b.natAbs` and proves `lehmerGcdInt_eq_intGcd` plus the standard universal-property / sign-invariance / commutativity / zero-case suite. Structurally identical to BinaryGcdOQ02.lean (binary-GCD analogue); the natAbs reduction makes the ℤ extension mechanical once the ℕ correctness theorem `LehmerGcdOQ01.lehmerGcd_correct` is in hand.",
     "builtItems": [
-      "Proofs/BinaryGcdOQ02OQ02.lean: lehmerGcdInt def + 15 theorems (correctness, sign invariance, commutativity, zero cases, self, universal property, natAbs reduction, agreement with Nat.gcd, 8 sanity examples)"
+      "Proofs/BinaryGcdOQ02OQ02.lean: lehmerGcdInt def + 15 theorems (correctness, sign invariance, commutativity, zero cases, self, universal property, natAbs reduction, agreement with Nat.gcd, 8 sanity examples)",
+      "src/data/proofs/binary-gcd-oq-02-oq-02/meta.json: verified-status gallery entry (8 sections covering lines 1-201, 5 cross-references, 3 references, 10 Mathlib dependencies)",
+      "src/data/proofs/binary-gcd-oq-02-oq-02/annotations.json: 9 annotations (header / definition / natAbs-reduction / correctness / sign-invariance / edges / universal-property / cross-algorithm / decide-examples)",
+      "src/data/proofs/binary-gcd-oq-02-oq-02/index.ts: auto-discovered gallery loader"
     ],
     "insights": [
       "ℤ-extension of any ℕ-GCD algorithm that respects natAbs is mechanical: reduce via |·| and invoke the ℕ correctness theorem; Int.gcd is itself defined as a.natAbs.gcd b.natAbs.",
@@ -53,8 +56,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S2 gallery: meta.json + annotations.json (sibling pattern to binary-gcd-oq-02 entry).",
-      "S2 cross-link: optional sibling file proving lehmerGcdInt = BinaryGcdOQ02.binaryGcdInt (both reduce to Int.gcd; ~5 lines)."
+      "(Optional) Thin sibling file `Proofs/BinaryGcdLehmerCrossAgreement.lean` (~10 lines) explicitly proving lehmerGcdInt a b = BinaryGcdOQ02.binaryGcdInt a b via composing both natAbs.gcd bridges. Independent of this slug; could be its own gallery entry."
     ]
   },
   "tags": [
@@ -89,14 +91,14 @@
     ]
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-12T11:42:00.000Z",
+  "lastUpdate": "2026-05-12T12:15:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/BinaryGcdOQ02OQ02.lean",
       "filename": "BinaryGcdOQ02OQ02.lean",
-      "lineCount": 170,
+      "lineCount": 201,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 1,
