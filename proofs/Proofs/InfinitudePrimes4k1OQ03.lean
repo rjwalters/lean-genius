@@ -1,5 +1,6 @@
 import Proofs.InfinitudePrimes4k1
 import Mathlib.NumberTheory.LSeries.PrimesInAP
+import Mathlib.NumberTheory.DirichletCharacter.Orthogonality
 
 /-!
 # Density 1/2 of Primes ≡ 1 (mod 4) — OQ-03
@@ -118,6 +119,56 @@ theorem primes_4k1_infinite_mod :
     exact (mod_four_eq_one_iff_zmodFour_eq_one).symm
   exact hset ▸ key
 
+/-! ## S3 ORIENT/ACT: character-orthogonality scaffold for q = 4
+
+These lemmas form the algebraic core of the **S3 path B** (Dirichlet-density)
+proof outlined in `state.md`. They translate the general Mathlib character-
+orthogonality result `DirichletCharacter.sum_characters_eq` into the `q = 4`
+case, expressing the indicator of `[p % 4 = 1]` as a sum over Dirichlet
+characters mod 4. Concretely: the indicator decomposes as
+`(1/2) · (χ₀(p) + χ₁(p))` where `χ₀` is the trivial character mod 4 and
+`χ₁` is the unique nontrivial (real) character.
+
+The `HasEnoughRootsOfUnity ℂ (Monoid.exponent (ZMod 4)ˣ)` typeclass needed by
+`sum_characters_eq` is satisfied automatically: `(ZMod 4)ˣ ≃ ℤ/2ℤ` has
+exponent `2`, and `ℂ` contains primitive 2nd roots of unity (since `ℂ` is
+algebraically closed; instance via `IsSepClosed.hasEnoughRootsOfUnity`). -/
+
+/-- **Character orthogonality at `q = 4`.**
+For any `b : ZMod 4`, the sum of the `Nat.totient 4 = 2` Dirichlet characters
+mod `4` with values in `ℂ`, evaluated at `b`, equals `2` if `b = 1`, else `0`.
+
+This is `DirichletCharacter.sum_characters_eq` specialized to `n = 4`,
+with `Nat.totient 4 = 2` plugged in via `totient_four`. -/
+lemma sum_dirichletChars_zmodFour (b : ZMod 4) :
+    ∑ χ : DirichletCharacter ℂ 4, χ b = if b = 1 then (2 : ℂ) else 0 := by
+  rw [DirichletCharacter.sum_characters_eq ℂ b]
+  split_ifs with hb
+  · norm_num [totient_four]
+  · rfl
+
+/-- **Indicator-as-character-sum (ZMod 4 form).**
+The indicator of `(n : ZMod 4) = 1` (in `ℂ`) is half the sum of the two
+Dirichlet characters mod 4 evaluated at `n`. This is the
+**character-orthogonality decomposition** of the indicator function used in
+the standard analytic proof of Dirichlet's theorem on `(q, a) = (4, 1)`. -/
+lemma indicator_zmodFour_eq_one (n : ℕ) :
+    (if (n : ZMod 4) = 1 then (1 : ℂ) else 0) =
+      ((2 : ℂ))⁻¹ * ∑ χ : DirichletCharacter ℂ 4, χ (n : ZMod 4) := by
+  rw [sum_dirichletChars_zmodFour]
+  split_ifs <;> norm_num
+
+/-- **Indicator-as-character-sum (`% 4` form).**
+The indicator of `n % 4 = 1` (in `ℂ`) is half the sum of the two Dirichlet
+characters mod 4 evaluated at `n`. This is `indicator_zmodFour_eq_one`
+translated through `mod_four_eq_one_iff_zmodFour_eq_one` to the residue-class
+formulation used by the parent file `InfinitudePrimes4k1`. -/
+lemma indicator_mod_four_eq_one (n : ℕ) :
+    (if n % 4 = 1 then (1 : ℂ) else 0) =
+      ((2 : ℂ))⁻¹ * ∑ χ : DirichletCharacter ℂ 4, χ (n : ZMod 4) := by
+  simp only [mod_four_eq_one_iff_zmodFour_eq_one]
+  exact indicator_zmodFour_eq_one n
+
 /-! ## OQ-03 target: natural-density form -/
 
 /-- **OQ-03 deliverable (stated, not yet proved).**
@@ -160,6 +211,9 @@ theorem primes_4k1_natural_density :
 
 #check primes_4k1_infinite_mathlib
 #check primes_4k1_infinite_mod
+#check sum_dirichletChars_zmodFour
+#check indicator_zmodFour_eq_one
+#check indicator_mod_four_eq_one
 #check primes_4k1_natural_density
 
 end InfinitudePrimes4k1OQ03

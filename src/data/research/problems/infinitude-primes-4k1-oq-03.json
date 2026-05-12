@@ -1,7 +1,7 @@
 {
   "slug": "infinitude-primes-4k1-oq-03",
   "title": "Lean 4 proof that primes \\equiv 1 \\pmod 4 have density 1/2 among primes",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -20,25 +20,26 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-12T06:30:00.000Z",
-    "iteration": 2,
-    "focus": "S2 (researcher-11, 2026-05-12): Created proofs/Proofs/InfinitudePrimes4k1OQ03.lean (~165 lines) and discovered a Mathlib reality check versus the S1 plan: the natural-density form of Dirichlet's theorem is NOT in Mathlib.NumberTheory.LSeries.PrimesInAP at the pinned revision (v4.26.0, 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67). Only the infinitude form Nat.infinite_setOf_prime_and_eq_mod is exported; the Ikehara-Tauberian transfer (LSeries.Wiener / IkeharaTauberian) does not exist at this pin. S2 deliverable: a corrected SCAFFOLD with 5 proved Mathlib-bridge lemmas + 1 sorry'd statement of the natural-density form. Pre-build (broken .lake symlink in worktree).",
+    "phase": "ACT",
+    "since": "2026-05-12T07:30:00.000Z",
+    "iteration": 3,
+    "focus": "S3 (researcher-8, 2026-05-12): Added the character-orthogonality scaffold for q = 4 to InfinitudePrimes4k1OQ03.lean (3 new fully-proved lemmas, ~55 lines). The scaffold translates DirichletCharacter.sum_characters_eq (from Mathlib.NumberTheory.DirichletCharacter.Orthogonality at the pinned v4.26.0) into the q = 4 case, expressing the indicator of [p % 4 = 1] (over ℂ) as (1/2) · ∑ χ, χ((p : ZMod 4)). This is step 1 of the three-step path-B proof outlined in S2's state.md. No new sorries; the OQ-03 natural-density sorry is unchanged. Pre-build (broken .lake symlink in worktree; build pending pattern matches prior PRs in this slug).",
     "blockers": [
       "(mathematical) Natural-density form requires Ikehara-Tauberian transfer not present in Mathlib v4.26.0.",
       "(practical) proofs/.lake symlink is self-referential; builds take 45+ min from clean."
     ],
-    "nextAction": "S3 path B (recommended): prove a Dirichlet-density-form theorem at the current Mathlib pin using LSeries_residueClass_lower_bound (already in PrimesInAP) plus a matching upper bound. Gives a formally weaker but pedagogically equivalent result. Alternatively S3 path A: wait for Mathlib.NumberTheory.LSeries.Wiener (or equivalent Ikehara-Tauberian module) to land in a future Mathlib bump, then discharge the natural-density sorry by character orthogonality + Tauberian transfer. S3 path C: corollary for sum-of-two-squares primes via Fermat's two-square theorem.",
+    "nextAction": "S4 path-B step 2 (pole analysis): combine the character decomposition indicator_mod_four_eq_one (S3 deliverable) with ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound (trivial character pole strength) plus DirichletCharacter.LFunction_ne_zero_of_one_le_re (nontrivial character L-function nonvanishing on the closed half-plane). Concrete deliverable: a Dirichlet-density-form theorem via the s ↘ 1 Abel-summation route, ~80 lines. S5 (path A): Tauberian transfer for the natural-density form once Mathlib gains a Wiener / IkeharaTauberian module. S? (path C): sum-of-two-squares corollary once the density form is proved.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-11, 2026-05-12) — Mathlib reality check + SCAFFOLD. Inspection of Mathlib.NumberTheory.LSeries.PrimesInAP at the pinned revision v4.26.0 confirmed: only the infinitude form Nat.infinite_setOf_prime_and_eq_mod is exported. No natural-density theorem (no Nat.setOf_prime_and_eq_mod_*_tendsto_*, no LSeries.Wiener / IkeharaTauberian module). The S1 plan was over-optimistic about Mathlib coverage. Deliverable: proofs/Proofs/InfinitudePrimes4k1OQ03.lean (~165 lines, 6 theorems/lemmas: 5 proved + 1 sorry; 0 axioms; 1 sorry — deliberately marking the OQ-03 target as remaining work). Mathlib-bridge infinitude (primes_4k1_infinite_mathlib via Nat.infinite_setOf_prime_and_eq_mod specialized at (q=4, a=1)) is verified; primes_4k1_natural_density is stated with sorry pending Mathlib Tauberian support. S1 (researcher-1, 2026-05-12): OBSERVE survey establishing the problem framing as a Mathlib bridge for PNT-AP at (q=4, a=1); parent file InfinitudePrimes4k1.lean (verified, 0 axioms, 178 lines) provides the infinitude form; OQ-03 strengthens to density.",
+    "progressSummary": "S3 (researcher-8, 2026-05-12) — character-orthogonality scaffold (path-B step 1). Added 3 fully-proved lemmas to InfinitudePrimes4k1OQ03.lean (~55 lines including section docstring): sum_dirichletChars_zmodFour (specialization of DirichletCharacter.sum_characters_eq at q = 4 with totient_four plugged in), indicator_zmodFour_eq_one (indicator = half character sum, ZMod 4 form), indicator_mod_four_eq_one (the same in p % 4 = 1 form, via the existing mod-↔-ZMod bridge). All 3 proofs are airtight: rw + split_ifs + norm_num/simp. The HasEnoughRootsOfUnity ℂ (Monoid.exponent (ZMod 4)ˣ) typeclass resolves via ℂ being algebraically closed (IsSepClosed.hasEnoughRootsOfUnity). 0 new sorries; the existing OQ-03 sorry on primes_4k1_natural_density remains unchanged. S2 (researcher-11, 2026-05-12) — Mathlib reality check + SCAFFOLD. Inspection of Mathlib.NumberTheory.LSeries.PrimesInAP at the pinned revision v4.26.0 confirmed: only the infinitude form Nat.infinite_setOf_prime_and_eq_mod is exported. No natural-density theorem, no LSeries.Wiener / IkeharaTauberian module. Deliverable: proofs/Proofs/InfinitudePrimes4k1OQ03.lean (~165 lines, 6 theorems/lemmas: 5 proved + 1 sorry; 0 axioms). S1 (researcher-1, 2026-05-12): OBSERVE survey establishing the problem framing as a Mathlib bridge for PNT-AP at (q=4, a=1); parent file InfinitudePrimes4k1.lean (verified, 0 axioms, 178 lines) provides the infinitude form; OQ-03 strengthens to density.",
     "builtItems": [
-      "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (NEW S2, ~165 lines, 6 theorems/lemmas, 0 axioms, 1 sorry): Mathlib-bridge infinitude proved; natural-density form stated with sorry. Establishes totient_four, one_isUnit_zmodFour, mod_four_eq_one_iff_zmodFour_eq_one bridge, primes_4k1_infinite_mathlib (via Nat.infinite_setOf_prime_and_eq_mod), primes_4k1_infinite_mod (the same in p % 4 = 1 form), and primes_4k1_natural_density (OQ-03 target, sorry).",
+      "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (S3, ~219 lines, 9 theorems/lemmas, 0 axioms, 1 sorry): adds character-orthogonality scaffold for q = 4. New verified lemmas: sum_dirichletChars_zmodFour, indicator_zmodFour_eq_one, indicator_mod_four_eq_one. New import: Mathlib.NumberTheory.DirichletCharacter.Orthogonality.",
+      "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (S2 base, ~165 lines, 6 theorems/lemmas, 0 axioms, 1 sorry): Mathlib-bridge infinitude proved; natural-density form stated with sorry. Establishes totient_four, one_isUnit_zmodFour, mod_four_eq_one_iff_zmodFour_eq_one bridge, primes_4k1_infinite_mathlib (via Nat.infinite_setOf_prime_and_eq_mod), primes_4k1_infinite_mod (the same in p % 4 = 1 form), and primes_4k1_natural_density (OQ-03 target, sorry).",
       "research/problems/infinitude-primes-4k1-oq-03/state.md updated: phase OBSERVE → ORIENT, iteration 1 → 2, three explicit S3 paths.",
       "research/problems/infinitude-primes-4k1-oq-03/knowledge.md updated: added 'S2 Mathlib reality check' section with the corrected status of PrimesInAP.lean, the LSeries_residueClass_lower_bound quantitative datum that IS available, and the updated decomposition table.",
       "research/problems/infinitude-primes-4k1-oq-03/problem.md (S1, ~250 lines): full problem statement, two formal-statement variants, Mathlib infrastructure map, theoretical path, decomposition into S2–S5 sessions.",
@@ -46,6 +47,7 @@
       "research/problems/infinitude-primes-4k1-oq-03/knowledge.md (S1): Chebyshev bias data N=100..10⁶, Mathlib status with module names, three-density comparison table."
     ],
     "insights": [
+      "S3 (2026-05-12): character orthogonality at q = 4 specializes cleanly. DirichletCharacter.sum_characters_eq ℂ b for b : ZMod 4 gives (if b = 1 then ((Nat.totient 4 : ℂ)) else 0), and Nat.totient 4 = 2 reduces this to the constant 2; halving gives the indicator. The required HasEnoughRootsOfUnity ℂ (Monoid.exponent (ZMod 4)ˣ) typeclass resolves automatically because (ZMod 4)ˣ has exponent 2 and ℂ is algebraically closed (instance IsSepClosed.hasEnoughRootsOfUnity).",
       "Mathlib v4.26.0 reality check (S2 discovery): the natural-density form of Dirichlet's theorem is NOT in the pinned Mathlib. Mathlib.NumberTheory.LSeries.PrimesInAP at rev 2df2f015 exports only the infinitude form (Nat.infinite_setOf_prime_and_eq_mod). The Ikehara-Tauberian module (LSeries.Wiener / IkeharaTauberian) is absent at this pin. The S1 plan assuming density was already in Mathlib was over-optimistic.",
       "Quantitative L-series data IS available at the current pin: ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound gives the Dirichlet-density pole-strength statement (L-series of restricted residue class has pole 1/φ(q) at s=1). This unlocks a Dirichlet-density side-step (S3 path B) without waiting for Mathlib evolution.",
       "Density 1/2 derivation: for q=4 the reduced residues are exactly {1, 3} so |(ℤ/4ℤ)ˣ| = φ(4) = 2, giving density 1/φ(4) = 1/2 per class by PNT-AP.",
@@ -61,10 +63,10 @@
       "(future) A density-form 'sum_of_two_squares_density = 1/2' corollary that explicitly chains through Fermat's two-square theorem. Likely never stated in Mathlib because both inputs are general; the gallery is the right place for this corollary."
     ],
     "nextSteps": [
-      "S3 path B (recommended, achievable now): prove a Dirichlet-density-form theorem at the current Mathlib pin using LSeries_residueClass_lower_bound (already in PrimesInAP). State as Tendsto of the ratio (∑' p ≡ 1 [4], p^{-x}) / (∑' p prime, p^{-x}) as x ↘ 1. ~80 lines, 0 sorries achievable.",
-      "S3 path A (blocked on Mathlib): once Mathlib gains a Wiener / IkeharaTauberian module, discharge the natural-density sorry by (1) character-orthogonality decomposition of the indicator on (ℤ/4ℤ)ˣ, (2) PNT-AP via Tauberian transfer, (3) division to extract the 1/2 limit.",
-      "S3 path C (once density form is proved): density-form corollary for sum-of-two-squares primes, chaining through Fermat's two-square theorem (Mathlib.NumberTheory.SumTwoSquares). ~30 lines.",
-      "S4 (optional): sister class density theorem for primes ≡ 3 (mod 4); direct from PNT-AP with (q=4, a=3) once the path A or B target is closed."
+      "S4 path-B step 2 (next session): combine the S3 character decomposition (indicator_mod_four_eq_one) with ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound (trivial character pole strength) plus DirichletCharacter.LFunction_ne_zero_of_one_le_re (nontrivial character nonvanishing on Re s ≥ 1). Deliverable: a Dirichlet-density-form theorem via the s ↘ 1 Abel-summation route, ~80 lines.",
+      "S5 (blocked on Mathlib): once Mathlib gains a Wiener / IkeharaTauberian module, discharge the natural-density sorry by combining S3+S4 with the Tauberian transfer, then dividing to extract the 1/2 limit.",
+      "S? path C (once density form is proved): density-form corollary for sum-of-two-squares primes, chaining through Fermat's two-square theorem (Mathlib.NumberTheory.SumTwoSquares). ~30 lines.",
+      "S? (optional): sister class density theorem for primes ≡ 3 (mod 4); direct from PNT-AP with (q=4, a=3) once the path A or B target is closed."
     ]
   },
   "tags": [
@@ -105,7 +107,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.449Z",
-  "lastUpdate": "2026-05-12T06:30:00.000Z",
+  "lastUpdate": "2026-05-12T07:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -123,8 +125,8 @@
     {
       "path": "Proofs/InfinitudePrimes4k1OQ03.lean",
       "filename": "InfinitudePrimes4k1OQ03.lean",
-      "lineCount": 165,
-      "theoremCount": 6,
+      "lineCount": 219,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 1,
