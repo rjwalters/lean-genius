@@ -1,12 +1,45 @@
 # Current State
 
-**Phase**: ACT (S4 unconditional helpers complete; OQ-03-OQ-* sub-work in flight)
-**Since**: 2026-05-12 (S4 ACT iteration, researcher-1)
-**Iteration**: 5
+**Phase**: ACT (S5 bookkeeping bound composing S3 + S4; OQ-03-OQ-* sub-work in flight)
+**Since**: 2026-05-12 (S5 ACT iteration, researcher-10)
+**Iteration**: 6
 
 ## Current Focus
 
-S4 extends S3 with three more unconditional `lastFactor`-side helper
+S5 composes S3 `prodFactors_natDegree` (sum-of-degrees identity) with
+S4 `lastFactor_natDegree_maximal` (degree maximality) to add the
+coarse a-priori upper bound `c.prodFactors.natDegree ≤ c.factors.length *
+c.lastFactor.natDegree` on `InvariantFactorChain F`. The abstract
+counterpart of the matrix-level bound `deg (charpoly M) ≤ k · deg
+(minpoly M)` (where `k = #invariant factors`), useful before the
+sharper `deg (charpoly M) = n` instantiation lands at OQ-03-OQ-04.
+
+Two new lemmas:
+
+* `prodFactors_natDegree_le_lastFactor_natDegree_mul` (public) — the
+  S5 deliverable, conditional on `c.factors ≠ []`.
+* `nat_list_sum_le_length_mul_of_all_le` (private) — supporting
+  `Nat`-arithmetic fact: a sum over a list of naturals is bounded by
+  the length times any common upper bound. Pure `Nat` induction, no
+  `Polynomial` content. Generic in `(l : List ℕ) (M : ℕ)` —
+  intentionally reusable beyond the `prodFactors`-vs-`lastFactor`
+  use site.
+
+Proof of the headline: `rw [prodFactors_natDegree]` reduces the LHS
+to `(c.factors.map (·.natDegree)).sum`; each summand is bounded by
+`c.lastFactor.natDegree` via `lastFactor_natDegree_maximal` (S4) on
+the inverse `List.mem_map` image; the `Nat` helper then bounds the
+sum; `List.length_map` rewrites `(c.factors.map _).length` back to
+`c.factors.length`. Six tactic-block lines plus the helper's
+explicit induction (10 lines).
+
+Net file change: lineCount 377 → 449 (+72); theoremCount 10 → 11
+(+1 public); sorry count unchanged at 1 (the S1 placeholder on
+`rational_canonical_form_exists`). No new imports beyond what S2-S4
+used. Build pending (Docker cold-build ~45 min per `proofs/.lake`
+self-symlink trap; matches S2/S3/S4 build-pending precedent).
+
+S4 (researcher-1, 2026-05-12, PR #18086 merged) extends S3 with three more unconditional `lastFactor`-side helper
 lemmas on the abstract `InvariantFactorChain` data structure, sorry-free
 (conditional only on `c.factors ≠ []`):
 
@@ -69,8 +102,9 @@ None at the strategy level. Two minor verification tasks remain
 
 ## Next Action
 
-S4 discharged option 4 from S3's enumeration. The next iteration should
-pick exactly one of:
+S5 discharged the first bullet of S4's option-4 enumeration
+(`prodFactors_natDegree_le_lastFactor_natDegree_mul`). The next
+iteration should pick exactly one of:
 
 1. **OQ-03-OQ-01 S2** — discharge `xModule_isTorsionBy_charpoly` in
    PR #17995's now-merged `MinpolyCharpolyOQ03OQ01.lean` (route through
@@ -81,10 +115,12 @@ pick exactly one of:
    additionally assert `c.lastFactor = M.minpoly`. Statement-only edit
    (~5 lines), proof remains sorry. Prepares the deliverable surface
    for OQ-03-OQ-02. With S4's `lastFactor_mem`/`lastFactor_monic`/
-   `lastFactor_natDegree_maximal` available, a downstream
-   `lastFactor_natDegree_le_charpoly_natDegree` corollary is now a
-   short combination of S3's `prodFactors_natDegree` and S4's
-   `lastFactor_natDegree_maximal`.
+   `lastFactor_natDegree_maximal` and S5's
+   `prodFactors_natDegree_le_lastFactor_natDegree_mul` available, a
+   downstream `lastFactor_natDegree_le_charpoly_natDegree` corollary
+   is now a short combination of S3's `prodFactors_natDegree` and
+   S4's `lastFactor_natDegree_maximal` — or even shorter using the
+   S5 coarse bound directly.
 
 3. **OQ-03-OQ-02 SCAFFOLD** — apply `Module.equiv_directSum_of_isTorsion`
    to extract the invariant-factor decomposition (~300 lines). Can run
@@ -92,19 +128,22 @@ pick exactly one of:
    PR #17995's file.
 
 4. **More structural helpers on `InvariantFactorChain`** — remaining
-   candidates beyond S4:
-   * `prodFactors_natDegree_le_lastFactor_natDegree_mul` — combine
-     `prodFactors_natDegree` (S3) with `lastFactor_natDegree_maximal`
-     (S4) to get `prodFactors.natDegree ≤ factors.length * lastFactor.natDegree`.
+   S4-option-4 candidates beyond S5:
    * `prodFactors_natDegree_eq_sum_natDegree_lastFactor_le_n` — combines
      sum-of-degrees with chain-max to bound `lastFactor.natDegree ≤ n`
      in the eventual matrix-level instantiation (requires
      `prodFactors = charpoly M`).
+   * `firstFactor`-side mirror lemmas (`firstFactor_mem`,
+     `firstFactor_monic`, `firstFactor_natDegree_minimal`,
+     `factors.length * firstFactor.natDegree ≤ prodFactors.natDegree`)
+     — the dual structural pass; the `getLast?`/`head?` asymmetry of
+     `Nat`-subtraction makes the `firstFactor` formulation slightly
+     cleaner since no `length - 1` arithmetic is needed.
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers)
-- Current approach attempts: 4
+- Total attempts: 5 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound)
+- Current approach attempts: 5
 - Approaches tried: 1 (three-ingredient plan via Mathlib's PID structure theorem)
 
 ## Session Log
@@ -145,6 +184,22 @@ pick exactly one of:
   auxiliary lemmas, 3 definitions. No new imports beyond what S3
   used. Build pending (Docker cold-build ~45 min per `proofs/.lake`
   self-symlink trap; convention: build-pending PRs land per S2/S3
-  precedent and a later mechanic pass verifies). PR #17995 (S1
-  OQ-03-OQ-01 SCAFFOLD) merged 2026-05-12T09:57Z; option 1 from S3's
-  next-action list has advanced under a different agent.
+  precedent and a later mechanic pass verifies). PR #18086 merged.
+  PR #17995 (S1 OQ-03-OQ-01 SCAFFOLD) merged 2026-05-12T09:57Z;
+  option 1 from S3's next-action list has advanced under a different
+  agent.
+
+* **S5 (researcher-10, 2026-05-12)** — composed S3
+  `prodFactors_natDegree` (sum-of-degrees identity) with S4
+  `lastFactor_natDegree_maximal` (degree maximality) into the
+  coarse a-priori bound
+  `prodFactors_natDegree_le_lastFactor_natDegree_mul`:
+  `c.prodFactors.natDegree ≤ c.factors.length * c.lastFactor.natDegree`
+  conditional on `c.factors ≠ []`. Discharges S4-option-4 bullet 1.
+  Supporting private lemma `nat_list_sum_le_length_mul_of_all_le`
+  is a pure-`Nat` induction with no `Polynomial` content (reusable
+  beyond the use site). File now 449 lines, 1 sorry (unchanged S1),
+  11 public theorems + 4 private auxiliary lemmas, 3 definitions. No
+  new imports. Build pending (Docker cold-build ~45 min per
+  `proofs/.lake` self-symlink trap; matches S2/S3/S4 build-pending
+  precedent).

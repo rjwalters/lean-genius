@@ -384,4 +384,76 @@ theorem lastFactor_natDegree_maximal
   rw [← hip, lastFactor_eq_getElem_pred c h]
   exact hdeg
 
+
+/-! ## Part 6: S5 bookkeeping bound — `prodFactors.natDegree ≤ length ×
+       lastFactor.natDegree`.
+
+This composes S3's `prodFactors_natDegree` (sum-of-degrees identity) with
+S4's `lastFactor_natDegree_maximal` (degree maximality) to yield a single
+coarse upper bound: the natDegree of the product is at most
+`factors.length` copies of the last factor's natDegree.
+
+* Abstract counterpart of "`deg charpoly M ≤ k · deg minpoly M`" once the
+  chain is instantiated by a matrix M (where `prodFactors = charpoly M`
+  per S3's plan and `lastFactor = minpoly M`). Useful as a coarse
+  a-priori upper bound on the natDegree of `prodFactors` before the
+  sharper `deg charpoly M = n` instantiation lands at OQ-03-OQ-04.
+
+The proof is an `induction`-based step: each summand of
+`(factors.map (·.natDegree)).sum` is bounded by `lastFactor.natDegree`
+via `lastFactor_natDegree_maximal`; the sum-bound-by-length-times-max
+is a one-line `Nat`-arithmetic fact handled by a private helper that is
+independent of `Polynomial` content.
+-/
+
+/-- Auxiliary `Nat`-arithmetic helper: a sum over a list of naturals is
+    bounded by the length times any common upper bound. Pure `Nat`
+    induction; no `Polynomial` content. -/
+private theorem nat_list_sum_le_length_mul_of_all_le
+    (l : List ℕ) (M : ℕ) (h : ∀ d ∈ l, d ≤ M) :
+    l.sum ≤ l.length * M := by
+  induction l with
+  | nil => simp
+  | cons a tail ih =>
+    have h_a : a ≤ M := h a List.mem_cons_self
+    have h_tail : ∀ d ∈ tail, d ≤ M :=
+      fun d hd => h d (List.mem_cons_of_mem _ hd)
+    have h_ih : tail.sum ≤ tail.length * M := ih h_tail
+    -- Goal: (a :: tail).sum ≤ (a :: tail).length * M
+    --     = a + tail.sum ≤ (tail.length + 1) * M
+    simp only [List.sum_cons, List.length_cons]
+    calc a + tail.sum
+        ≤ M + tail.length * M := Nat.add_le_add h_a h_ih
+      _ = (tail.length + 1) * M := by ring
+
+/-- The natDegree of `prodFactors` is at most `factors.length` times
+    the natDegree of `lastFactor`. Composes S3's `prodFactors_natDegree`
+    (sum-of-degrees identity) with S4's `lastFactor_natDegree_maximal`
+    (degree maximality among factors).
+
+    Abstract counterpart of the matrix-level bound
+    `deg (charpoly M) ≤ k · deg (minpoly M)` (where `k` is the number of
+    invariant factors), useful as a coarse a-priori upper bound before
+    the sharper `deg (charpoly M) = n` instantiation lands at
+    OQ-03-OQ-04. -/
+theorem prodFactors_natDegree_le_lastFactor_natDegree_mul
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.prodFactors.natDegree ≤ c.factors.length * c.lastFactor.natDegree := by
+  rw [prodFactors_natDegree]
+  -- Goal: (c.factors.map (·.natDegree)).sum ≤ c.factors.length * c.lastFactor.natDegree
+  -- (1) each (mapped) summand is at most lastFactor.natDegree by S4.
+  have h_bound : ∀ d ∈ c.factors.map (·.natDegree),
+      d ≤ c.lastFactor.natDegree := by
+    intro d hd
+    rw [List.mem_map] at hd
+    obtain ⟨p, hp, rfl⟩ := hd
+    exact lastFactor_natDegree_maximal c h hp
+  -- (2) sum-of-bounded-list ≤ length × bound, via the Nat helper.
+  have h_sum :
+      (c.factors.map (·.natDegree)).sum
+        ≤ (c.factors.map (·.natDegree)).length * c.lastFactor.natDegree :=
+    nat_list_sum_le_length_mul_of_all_le _ _ h_bound
+  -- (3) rewrite map.length = original length.
+  rwa [List.length_map] at h_sum
+
 end MinpolyCharpolyOQ03
