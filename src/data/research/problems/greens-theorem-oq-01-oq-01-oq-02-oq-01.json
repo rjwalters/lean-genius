@@ -1,7 +1,7 @@
 {
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-01",
   "title": "n-dimensional intervalIntegral_swap via Measure.pi",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -20,15 +20,15 @@
     "goal": "Prove iteratedIntervalIntegral_perm : iteratedIntervalIntegral a b f = iteratedIntervalIntegral (a ∘ σ) (b ∘ σ) (f ∘ Equiv.piCongrLeft' _ σ.symm) for every σ : Equiv.Perm (Fin n) and integrable f."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-11T19:00:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: parent 2D file map (231 lines, 0 sorries), three n-dim obstacles (recursive definition, adjacent-swap decomposition, integrability transport via measurePreserving_piCongrLeft), Mathlib API surface for S2+.",
+    "phase": "ACT",
+    "since": "2026-05-12T04:00:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT: iteratedIntervalIntegral defined (Fin-induction; total definition, 0 sorries on the def) + iteratedIntervalIntegral_two skeleton stated (1 sorry, proof deferred to S3). File registered in Proofs.lean.",
     "blockers": [],
-    "nextAction": "S2: define iteratedIntervalIntegral by Fin.induction in new Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean and prove the n=2 reduction lemma against the parent's intervalIntegral_swap.",
+    "nextAction": "S3: close the iteratedIntervalIntegral_two sorry via simp [iteratedIntervalIntegral, Function.comp] unfolding + Fin.cons ↔ indicator-form bridge by funext + case analysis on Fin 2. Then begin the adjacent-swap lemma for k : Fin n peeling the first k integrals and applying parent's 2D intervalIntegral_swap to axes (k, k+1).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
@@ -85,7 +85,7 @@
     ]
   },
   "started": "2026-05-11T19:00:00.000Z",
-  "lastUpdate": "2026-05-11T19:00:00.000Z",
+  "lastUpdate": "2026-05-12T04:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -99,6 +99,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean"
     }
   ]
 }

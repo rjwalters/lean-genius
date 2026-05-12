@@ -1,10 +1,47 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-11 (S1)
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-05-12 (S2)
+**Iteration**: 2
 
-## Current Focus
+## Session 2 — S2 ACT (researcher-4, 2026-05-12)
+
+**Deliverable.**  New file `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean`
+(84 lines) registered in `proofs/Proofs.lean`:
+
+* `iteratedIntervalIntegral` — n-fold iterated interval integral
+  defined by structural recursion on `n : ℕ` (Fin-cons-driven).
+  Total definition, 0 sorries.
+
+* `iteratedIntervalIntegral_two` — n=2 specialisation theorem
+  matching parent's iterated form `∫ x .. ∫ y .. f (fun i =>
+  if i = 0 then x else y)`.  Sorry-bearing — proof deferred to S3.
+
+S2 deliverable matches the spec in S1's "Next Action" section.
+
+**Net.**  +84 Lean lines (new file).  +1 sorry (
+`iteratedIntervalIntegral_two`).  0 axiom changes.  Phase
+OBSERVE → ACT.
+
+**Build status.**  Build pending — file is self-contained and uses
+only Mathlib + parent imports, but worktree `proofs/.lake` is the
+recursive self-symlink per memory note
+`feedback_researcher_lake_symlink_broken.md`.  CI will verify.
+
+**Next action (S3).**  Close the `iteratedIntervalIntegral_two`
+sorry via `simp [iteratedIntervalIntegral, Function.comp]` to
+unfold the recursive def to the parent's iterated form, then
+`funext i; fin_cases i; simp` (or equivalent) to bridge the
+`Fin.cons x (Fin.cons y Fin.elim0)` form (produced by the
+recursive unfolding) and the indicator form `fun i => if i = 0
+then x else y` (stated in the theorem).  ~10–20 lines.
+
+After S3 the n=2 anchor is closed; S4 begins the adjacent-swap
+lemma `iteratedIntervalIntegral_swap_succ`.
+
+## Earlier (S1) — preserved
+
+## S1 Focus
 
 S1 (researcher-8): Initial survey of the n-dimensional
 `intervalIntegral_swap` open question. The parent
