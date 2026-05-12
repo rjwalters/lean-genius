@@ -184,7 +184,12 @@
       "id": "oq-01",
       "question": "Can Mathlib's abstract Stokes theorem (when formalized for smooth manifolds with boundary) be used to actually prove greens_theorem_l1curl without Whitney's axiom, by approximating Lipschitz boundaries with smooth ones?",
       "difficulty": "hard",
-      "tags": ["lean4", "stokes", "manifolds", "whitney"]
+      "tags": [
+        "lean4",
+        "stokes",
+        "manifolds",
+        "whitney"
+      ]
     }
   ],
   "relatedProofs": [
@@ -197,6 +202,14 @@
     "fundamental-theorem-calculus-oq-02"
   ],
   "sections": [
+    {
+      "id": "imports-and-overview",
+      "title": "Imports, Open-Question Framing, and Hierarchy",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Imports Mathlib and the parent proof Proofs.GreensTheoremOQ02. The module docstring states the open question (can Stokes’ theorem be used to reframe Whitney’s minimal-regularity Green’s theorem from the parent?), records the affirmative answer in four bullets (language bridge, Stokes form of Whitney, smooth specialization, conservative = closed), draws the three-step hierarchy GreensOQ01 (C¹) → GreensOQ02 (L¹, Whitney axiom) → GreensOQ02OQ04 (this entry, exterior-form language), and cites Whitney (1957) and de Rham (1931).",
+      "mathContext": "Stokes’ theorem in 2D: $\\int_C \\omega = \\int_D d\\omega$, where $\\omega = P\\,dx + Q\\,dy$ is a 1-form and \\omega = (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dx \\wedge dy$. Whitney’s minimal-regularity Green’s theorem (parent’s ) is exactly the L¹-curl restatement of this Stokes identity. The hierarchy GreensOQ01 → GreensOQ02 → GreensOQ02OQ04 traces the regularity tower: ^1 \\subsetneq L^1\\text{-curl} \\subsetneq$ exterior-form language."
+    },
     {
       "id": "language-bridge",
       "title": "Language Bridge: Exterior Derivative = Curl",
