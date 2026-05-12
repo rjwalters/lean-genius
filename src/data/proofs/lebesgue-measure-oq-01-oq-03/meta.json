@@ -49,7 +49,8 @@
       "**Bochner integral over zero measure is zero**: `integral_zero_measure` handles the general integrand case without any integrability hypothesis",
       "**No MeasurableSet hypothesis needed**: For the forward direction (null \u2192 zero integral), measurability of S is not required",
       "**The Dirichlet case is a special case**: \u211a is countable \u2192 measure zero \u2192 integral of \ud835\udfd9_\u211a is zero, all subsumed by the general theorem",
-      "**L\u00b9 is a space of a.e.-equivalence classes**: This result is a cornerstone of why L\u00b9(\u03bc) is defined as equivalence classes rather than actual functions"
+      "**L\u00b9 is a space of a.e.-equivalence classes**: This result is a cornerstone of why L\u00b9(\u03bc) is defined as equivalence classes rather than actual functions",
+      "**Two complementary proof paths for `\u222b_S f d\u03bc = 0`**: The file demonstrates *two* ways to discharge integrals over a null set: (i) reduce to `\u222b f\u00b71_S` via the indicator-pointwise-zero approach (`integral_mul_indicator_of_null`), and (ii) collapse the restricted measure itself via `Measure.restrict_zero_set` and then invoke `integral_zero_measure` (`integral_on_null_set`). Path (ii) needs no integrability hypothesis on `f` because the integrand never gets evaluated; path (i) is more flexible for partial-region integrands `\u222b_T f\u00b71_S` where `T \u2260 S`."
     ],
     "prerequisites": [
       "Lebesgue measure on \u211d",
@@ -124,6 +125,50 @@
       "targetId": "lebesgue-measure",
       "relationship": "related",
       "description": "The parent gallery entry establishing basic Lebesgue measure properties"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "indicator_ae_zero_of_null",
+      "type": "lemma",
+      "statement": "$\\mu(S) = 0 \\implies \\forall^{ae} x,\\; \\mathbf{1}_S(x) = 0$",
+      "significance": "Key bridge lemma. Converts the measure-theoretic null hypothesis $\\mu(S)=0$ into an a.e. statement about the indicator, via `compl_mem_ae_iff.mpr` (the complement of a null set is in $\\mu.ae$) followed by `Set.indicator_of_notMem` (off $S$ the indicator is 0). Codomain-generic; works in any measure space without assuming $S$ is measurable.",
+      "description": "Core lemma: the indicator of any null set vanishes almost everywhere."
+    },
+    {
+      "name": "integral_indicator_of_null",
+      "type": "core",
+      "statement": "$\\mu(S) = 0 \\implies \\int_\\alpha \\mathbf{1}_S \\, d\\mu = 0$",
+      "significance": "The headline theorem. Direct corollary of `indicator_ae_zero_of_null` + `integral_eq_zero_of_ae`. Note the absence of any `MeasurableSet S` hypothesis: the forward direction does not need measurability of $S$ (only $\\mu(S)=0$ makes sense for measurable $S$ in Mathlib, but the indicator-of-arbitrary-set is well-defined and a.e.-zero on the null preimage).",
+      "description": "Main theorem: the Bochner integral of the indicator of any null set is zero."
+    },
+    {
+      "name": "integral_mul_indicator_of_null",
+      "type": "supporting",
+      "statement": "$\\mu(S) = 0 \\implies \\int_T f(x) \\cdot \\mathbf{1}_S(x) \\, d\\mu = 0$ (any region $T$, any integrand $f$)",
+      "significance": "Demonstrates that the indicator's a.e.-zeroness propagates through pointwise multiplication: $f \\cdot \\mathbf{1}_S = 0$ a.e. regardless of $f$'s integrability. Combines `ae_restrict_of_ae` (a.e. on $\\mu$ \u21d2 a.e. on $\\mu|_T$) with `Set.indicator_of_notMem`.",
+      "description": "Companion: indicator-times-anything has zero integral on any region when the indicator set is null."
+    },
+    {
+      "name": "integral_on_null_set",
+      "type": "supporting",
+      "statement": "$\\mu(S) = 0 \\implies \\int_S f(x) \\, d\\mu = 0$ for any $f$",
+      "significance": "Alternate proof path that collapses the restricted measure itself: `Measure.restrict_zero_set` gives `\u03bc.restrict S = 0`, then `integral_zero_measure` discharges the goal. Crucially needs no `Integrable f \u03bc` hypothesis since the zero measure makes integrability trivial.",
+      "description": "Integrating any function over a null set yields zero, by collapsing the restricted measure."
+    },
+    {
+      "name": "measure_iUnion_null_of_null",
+      "type": "supporting",
+      "statement": "$\\forall n,\\; \\mu(S_n) = 0 \\implies \\mu\\!\\left(\\bigcup_n S_n\\right) = 0$",
+      "significance": "Countable subadditivity specialised to null sets \u2014 the elementary closure property that makes the family of $\\mu$-null sets a $\\sigma$-ideal. Combined with `integral_indicator_of_null`, immediately gives `integral_indicator_iUnion_null`.",
+      "description": "Closure: countable unions of null sets are null."
+    },
+    {
+      "name": "integral_congr_ae_null_change",
+      "type": "supporting",
+      "statement": "$\\mu(S) = 0 \\;\\wedge\\; (\\forall x \\notin S,\\; f(x) = g(x)) \\implies \\int f \\, d\\mu = \\int g \\, d\\mu$",
+      "significance": "The deep moral of the entry: modifying an integrand on a null set is invisible to the integral. This is *why* $L^1(\\mu)$ is defined as a.e.-equivalence classes rather than functions \u2014 the equivalence relation is exactly 'differ on a null set'.",
+      "description": "Almost-everywhere invariance: two functions agreeing outside a null set integrate identically."
     }
   ],
   "references": [
