@@ -148,4 +148,62 @@ theorem ramseyNumber_one (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
     ramseyNumber 1 s t = s + t - 1 := by
   sorry
 
+/-! ### S4-prep: color symmetry and degenerate-side `ramseyNumber` base cases
+
+The following three lemmas extend the API surface for S4 (the
+`ramsey_existence` two-layer induction). They are independent of the
+`ramseyNumber_one`/`isRamsey_one_iff` machinery developed in S3 — they
+follow directly from the S2 definitions and the `is_ramsey_zero_*`
+degenerate base cases.
+
+* `IsRamsey.swap` — the Ramsey condition is symmetric in `(s, t)` because
+  negating a coloring swaps the two color targets. Needed in S4 to halve
+  the induction (only one side of the recursive bound needs treatment).
+* `ramseyNumber_zero_false` / `ramseyNumber_zero_true` — when one
+  target size is zero, the empty set is a witness, so `ramseyNumber`
+  collapses to `0`. These are the natural companions to `ramseyNumber_one`
+  on the other end of the parameter range.
+-/
+
+/-- **Color symmetry of `IsRamsey`.** Negating a coloring `χ ↦ !χ` swaps which
+color receives the `s`-target and which receives the `t`-target, so the
+Ramsey condition is invariant under exchanging `s` and `t`. -/
+lemma IsRamsey.swap {n k s t : ℕ} : IsRamsey n k s t ↔ IsRamsey n k t s := by
+  -- The forward direction suffices; the reverse follows by reusing the same proof.
+  suffices h : ∀ {a b}, IsRamsey n k a b → IsRamsey n k b a from ⟨h, h⟩
+  intro a b H χ
+  -- Negate the coloring; apply the hypothesis; flip the resulting clique's color.
+  rcases H (fun S => !χ S) with ⟨S, hSc, hSm⟩ | ⟨S, hSc, hSm⟩
+  · -- An `a`-clique monochromatic-`false` under `!χ` is monochromatic-`true` under `χ`.
+    refine Or.inr ⟨S, hSc, ?_⟩
+    intro T hT
+    have hflip : !(χ T) = false := hSm T hT
+    cases hχ : χ T with
+    | false => simp [hχ] at hflip
+    | true => exact hχ
+  · -- A `b`-clique monochromatic-`true` under `!χ` is monochromatic-`false` under `χ`.
+    refine Or.inl ⟨S, hSc, ?_⟩
+    intro T hT
+    have hflip : !(χ T) = true := hSm T hT
+    cases hχ : χ T with
+    | false => exact hχ
+    | true => simp [hχ] at hflip
+
+/-- **`ramseyNumber` collapses when the `false`-target is zero.** With `s = 0` the
+empty set is a trivially monochromatic `false`-clique of size `0`, so
+`IsRamsey 0 k 0 t` already holds and the infimum is `0`. -/
+lemma ramseyNumber_zero_false (k t : ℕ) (hk : 1 ≤ k) :
+    ramseyNumber k 0 t = 0 := by
+  unfold ramseyNumber
+  have h0 : (0 : ℕ) ∈ {n | IsRamsey n k 0 t} := is_ramsey_zero_false 0 k t hk
+  exact Nat.le_zero.mp (Nat.sInf_le h0)
+
+/-- **`ramseyNumber` collapses when the `true`-target is zero.** Symmetric to
+`ramseyNumber_zero_false`. -/
+lemma ramseyNumber_zero_true (k s : ℕ) (hk : 1 ≤ k) :
+    ramseyNumber k s 0 = 0 := by
+  unfold ramseyNumber
+  have h0 : (0 : ℕ) ∈ {n | IsRamsey n k s 0} := is_ramsey_zero_true 0 k s hk
+  exact Nat.le_zero.mp (Nat.sInf_le h0)
+
 end RamseyK
