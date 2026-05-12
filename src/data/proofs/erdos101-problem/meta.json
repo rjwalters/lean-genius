@@ -112,6 +112,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Header: Problem Statement and Imports (L1–21)",
+      "startLine": 1,
+      "endLine": 21,
+      "summary": "Module docstring states Erdős Problem #101 verbatim (n points in ℝ², no 5 collinear, prove four-point line count is o(n²)), records the Erdős Θ(n^(3/2)) conjecture, Grünbaum's matching lower bound, and the Solymosi–Stojaković n^(2−O(1/√(log n))) counterexample (refuting tightness of the conjecture). Notes the $100 bounty at erdosproblems.com/101. Lines 19–21 import the minimum Mathlib surface: Finset.Card, Nat.Basic, Tactic.",
+      "mathContext": "$f_4(n) := \\max_{P,\\ |P|=n,\\ \\text{no 5 collinear}} \\#\\{L : |L \\cap P| = 4\\}$; conjectured $\\Theta(n^{3/2})$, in fact at least $n^{2 - O(1/\\sqrt{\\log n})}$ (Solymosi–Stojaković, 2013), upper bound $o(n^2)$ open."
+    },
+    {
       "id": "sec-definitions",
       "title": "Definitions: Collinearity and Four-Point Line Count (L22–48)",
       "startLine": 22,
