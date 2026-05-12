@@ -23,7 +23,7 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 336,
+    "lineCount": 397,
     "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown to be mathematically false (Runge counterexample, fully formalized). One sorry remains: the proof of the corrected complex-disk version analytic_taylor_remainder_uniform_bound_complex, deferred to S2 (proof outline in §3 docstring).",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
@@ -95,7 +95,7 @@
       "Statement of the corrected complex-hypothesis version analytic_taylor_remainder_uniform_bound_complex with explicit Mathlib chain (HasFPowerSeriesOnBall.uniform_geometric_approx' + FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius) for S2 discharge.",
       "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses."
     ],
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 2
   },
   "overview": {
