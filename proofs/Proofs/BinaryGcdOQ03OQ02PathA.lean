@@ -2285,6 +2285,140 @@ theorem schonhageGcd_succ_recurse_via_compose (f a b : ℕ)
   rw [schonhageGcd_succ_recurse_of_fires f a b hfires,
       hgcdSafeApply_of_outerFires hab hfires]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXVII: FUEL-ZERO NON-EXPANSION BASE CASE (Session 39)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Fuel-zero base case for the NE-self / NE-cond induction
+
+    `s32-non-expansion-analysis.md` §3–§5 sketches an inductive
+    proof of the conditional non-expansion property (NE-cond)
+    for `hgcdMatrixSafe`. The induction is on the fuel parameter
+    `f`. This section establishes the **fuel-zero base case**:
+    at `f = 0`, `hgcdMatrixSafe 0 a b` is the identity matrix
+    `CofactorMatrix.id`, so applying it to `(a : ℤ, b : ℤ)`
+    yields the pair `(a : ℤ, b : ℤ)` unchanged. Hence the natAbs
+    pair of the output equals `(a, b)` and the natAbs max equals
+    `max a b` (with EQUALITY, not just `≤`).
+
+    Four lemmas are exposed:
+
+    * `cofactor_id_apply` — `CofactorMatrix.id.apply a b = (a, b)`
+      for any integer pair. Trivial unfold; used as a building
+      block by the other three and reusable at any call site
+      that needs the identity-matrix evaluation in closed form.
+
+    * `hgcdMatrixSafe_zero_apply` — the apply form at fuel 0,
+      composing `hgcdMatrixSafe_zero` with `cofactor_id_apply`.
+
+    * `hgcdMatrixSafe_zero_natAbs_max_eq` — the natAbs-max
+      equality at fuel 0. The natAbs of a natural-number cast
+      to ℤ collapses to the original natural via
+      `Int.natAbs_natCast`, so the max of the two natAbs
+      components equals `max a b` exactly.
+
+    * `hgcdMatrixSafe_zero_natAbs_max_le` — the `≤` corollary,
+      packaged in the form that successor inductive proofs of
+      NE-self typically expect (`max .natAbs ≤ max a b` rather
+      than equality).
+
+    **What this does NOT prove.** The inductive step
+    (fuel `f → f + 1`) is the open S32b problem
+    (`s32-non-expansion-analysis.md` §6). Specifically:
+
+    * Below threshold (`max a b < 64`),
+      `hgcdMatrixSafe (f + 1) a b` reduces to a
+      `lehmerCofactors`-derived matrix; bounding its apply
+      natAbs requires reasoning through the Euclidean step
+      machine (`lehmerInnerStep`).
+    * Above threshold, the inner-guard branch determines
+      which sub-recursion to take, and the inner-abort branch
+      can produce `hgcdSafeApply a b` outputs whose natAbs
+      max EXCEEDS `max a b` — exactly the S28a
+      `(130, 89)` / `(107, 85)` phenomenon (PART XIV). This is
+      why NE-self in its full unconditional form is FALSE
+      (spec §4) and the spec proposes the weaker NE-cond
+      conditional form (spec §5).
+
+    Significance / honesty. Per the file convention
+    `hgcdMatrixSafeOf a b := hgcdMatrixSafe (a + b + 1) a b`,
+    the fuel-zero case is NEVER reached by the top-level entry
+    point — `hgcdMatrixSafeOf` always supplies fuel `≥ 1`. The
+    fuel-zero lemmas here are therefore not load-bearing for
+    any current top-level theorem; they are PURELY the
+    structural base case of any future inductive proof of
+    NE-self / NE-cond. Packaging them cleanly here removes one
+    boilerplate step from successor iterations targeting S32b /
+    S32c.
+
+    Build: pure unfolds and `Int.natAbs_natCast`. No
+    `native_decide`, no recursion, no new axioms, no new
+    sorries, no new definitions. -/
+
+/-- **Identity-matrix `apply` is the identity function.**
+
+    `CofactorMatrix.id = ⟨1, 0, 0, 1⟩` (from
+    `BinaryGcdOQ03.lean:48`) so applying it to `(a, b)` yields
+    `(1·a + 0·b, 0·a + 1·b) = (a, b)`. Proof is `simp` on the
+    unfolds of `CofactorMatrix.id` and `CofactorMatrix.apply`.
+
+    This is a general-purpose helper: any reasoning that
+    encounters `CofactorMatrix.id.apply` (e.g. the fuel-zero
+    case of `hgcdMatrixSafe`, or the `(M.mul id)` and
+    `(id.mul N)` corollaries of `cofactor_mul_apply` at PART
+    XXI) can rewrite via this lemma to expose the identity-
+    function form directly. -/
+theorem cofactor_id_apply (a b : ℤ) :
+    CofactorMatrix.id.apply a b = (a, b) := by
+  simp [CofactorMatrix.id, CofactorMatrix.apply]
+
+/-- **Fuel-zero `apply` equation.**
+
+    At fuel `0`, `hgcdMatrixSafe` returns the identity matrix
+    (`hgcdMatrixSafe_zero`, PART II line 146), so its `apply`
+    action on `(a : ℤ, b : ℤ)` returns `((a : ℤ), (b : ℤ))`
+    unchanged. Direct composition of `hgcdMatrixSafe_zero`
+    with `cofactor_id_apply`. -/
+theorem hgcdMatrixSafe_zero_apply (a b : ℕ) :
+    (hgcdMatrixSafe 0 a b).apply (a : ℤ) (b : ℤ) = ((a : ℤ), (b : ℤ)) := by
+  rw [hgcdMatrixSafe_zero]
+  exact cofactor_id_apply (a : ℤ) (b : ℤ)
+
+/-- **Fuel-zero natAbs-max equality.**
+
+    At fuel `0`, the natAbs max of the apply output equals
+    `max a b` exactly. (Equality, not just `≤` — the apply is
+    the identity function on the input pair, and the natAbs of
+    a natural-number cast to ℤ is the original natural by
+    `Int.natAbs_natCast`.)
+
+    This is the NE-self base case in its strongest form
+    (equality), suitable as the `induction.zero` step for any
+    successor proof of NE-self / NE-cond by induction on fuel. -/
+theorem hgcdMatrixSafe_zero_natAbs_max_eq (a b : ℕ) :
+    max ((hgcdMatrixSafe 0 a b).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe 0 a b).apply (a : ℤ) (b : ℤ)).2.natAbs
+      = max a b := by
+  rw [hgcdMatrixSafe_zero_apply]
+  simp [Int.natAbs_natCast]
+
+/-- **Fuel-zero non-expansion (`≤` corollary).**
+
+    The `≤` form of `hgcdMatrixSafe_zero_natAbs_max_eq`,
+    packaged separately so callers needing the inequality
+    directly do not have to rewrite through equality. This is
+    the literal NE-self statement at fuel `0`.
+
+    Trivially equivalent to the equality form; exposed
+    separately because the NE-self / NE-cond induction
+    framework (`s32-non-expansion-analysis.md` §3–§5) phrases
+    its goal as `≤`, not equality. -/
+theorem hgcdMatrixSafe_zero_natAbs_max_le (a b : ℕ) :
+    max ((hgcdMatrixSafe 0 a b).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe 0 a b).apply (a : ℤ) (b : ℤ)).2.natAbs
+      ≤ max a b :=
+  (hgcdMatrixSafe_zero_natAbs_max_eq a b).le
+
 end HGcdSafe
 
 /-! ## Summary
