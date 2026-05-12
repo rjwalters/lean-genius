@@ -70,3 +70,79 @@ namespaces). The follow-up edit is mechanically `axiom ... := ` becomes
 
 Not yet built (host `.lake` symlink issue). Per established convention,
 the PR title is tagged "(build pending)".
+
+## Session 4 (researcher-3, 2026-05-12)
+
+### Context
+
+S2 (PR #17796) replaced the `fano_inequality` axiom with a theorem dispatched
+through `FanoFromConditionalEntropy.fano_inequality_proved`. S3 (PR #17852)
+named the single-letter capacity bounds `channelMI_le_capacity` and
+`capacity_le_log_card`. Both PRs landed "(build pending)". The Fano-step
+converse `(1 − P_e) log M ≤ I(X;Y) + h(P_e)` is now one step from being a
+direct `linarith` corollary — the missing ingredient is the equality witness
+for the maximum-entropy bound: `H(uniform) = log |α|`.
+
+### What got added
+
+`proofs/Proofs/ShannonEntropy.lean` (+28 lines, 0 sorries, 0 axioms):
+
+| Theorem | Role |
+|---------|------|
+| `entropy_of_uniform_eq_log_card` | Equality witness for `entropy_le_log_card`: `shannonEntropy (fun _ : α => (Fintype.card α : ℝ)⁻¹) = Real.log (Fintype.card α)`. Direct calculation — no Gibbs detour. |
+
+Statement is on the abstract constant function `fun _ => (card α)⁻¹` (not on
+`(uniformDist (α := α)).p` from `ShannonChannelCodingOQ02OQ04`). This means
+the lemma is usable from any file that imports `Proofs.ShannonEntropy`
+without forcing an additional `import Proofs.ShannonChannelCodingOQ02OQ04`.
+
+### Key technical observations
+
+* `entropy_le_log_card`'s proof already contains the algebraic core of
+  `entropy_of_uniform_eq_log_card`: the final `rw [h1, hsum, mul_one,
+  Real.log_inv, neg_neg]` chain (lines 215–218) computes
+  `-∑ p · log(1/|α|) = log |α|` for any distribution `p`. Specializing
+  `p ≡ (1/|α|)` short-circuits the Gibbs inequality detour entirely — the
+  proof is direct from `Finset.sum_const + Real.log_inv + mul_inv_cancel₀`.
+* The sibling lemma `entropy_uniform_fintype` already exists in
+  `ShannonChannelCodingOQ02OQ04.lean` (line 78), but it is stated on
+  `(uniformDist (α := α)).p` — a 1-field `InputDist` wrapper — which forces
+  every consumer to also import OQ02OQ04. The general form here unblocks
+  the Fano-step converse without that dependency.
+* The proof uses `inv_ne_zero` (rather than `one_ne_zero + div_ne_zero` as
+  in OQ02OQ04's `entropy_uniform_fintype`) because the constant function
+  is `(card α)⁻¹` not `1 / (card α)`, which matches the `entropy_le_log_card`
+  shape and avoids a `one_div ↔ inv` rewrite at the end.
+
+### Why this lemma (not the direct Fano converse)
+
+The full Fano-step converse `(1 − P_e) log M ≤ I(X;Y) + h(P_e)` needs:
+
+1. `entropy_of_uniform_eq_log_card` (this PR)
+2. `chain_rule pXY` (already in `ShannonEntropy.lean` line 375)
+3. `fano_inequality pXY` (already in `ShannonChannelCoding.lean` line 200)
+
+With (1) in place, the converse is a single `linarith` step. Splitting it
+out into a standalone lemma in S4 (a) reduces conflict risk on
+`ShannonChannelCoding.lean` (small surface, multiple concurrent agents) and
+(b) makes the equality witness reusable for other gallery entries
+(`shannon-source-coding`, `shannon-entropy-oq-02`, etc.) without dragging in
+the channel-coding axioms.
+
+### Build status
+
+Not yet built (host `.lake` symlink issue per memory). Per established
+convention, the PR title is tagged "(build pending)". The proof relies on
+`Real.log_inv`, `Finset.sum_const`, `Finset.card_univ`, `nsmul_eq_mul`,
+`mul_inv_cancel₀` — all stable Mathlib API used identically in the existing
+`entropy_le_log_card` (line 207–218) and `entropy_uniform_fintype` (OQ02OQ04
+line 80–89) proofs.
+
+### Gallery sync
+
+`src/data/proofs/shannon-entropy/meta.json`:
+* `meta.lineCount`: 901 → 929
+* `meta.theoremCount`: 23 → 24
+* `leanFile.lineCount`: 901 → 929
+* `leanFile.theoremCount`: 23 → 24
+

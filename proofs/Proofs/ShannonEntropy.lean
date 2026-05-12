@@ -5,7 +5,8 @@
 
   Key results:
   - Entropy definition and non-negativity
-  - Maximum entropy (uniform distribution)
+  - Maximum entropy (uniform distribution): both the bound (entropy_le_log_card)
+    and the equality witness (entropy_of_uniform_eq_log_card)
   - Conditional entropy and chain rule
   - Mutual information
   - Gibbs inequality
@@ -216,6 +217,34 @@ theorem entropy_le_log_card {α : Type*} [Fintype α] [DecidableEq α]
       Real.log ((Fintype.card α : ℝ)⁻¹) * ∑ x : α, p x := by
     rw [Finset.mul_sum]; congr 1; ext x; ring
   rw [h1, hsum, mul_one, Real.log_inv, neg_neg]
+
+-- Entropy of the uniform distribution equals log |α|.
+-- This is the equality witness for entropy_le_log_card: the maximum is achieved
+-- by the uniform distribution q(x) = 1/|α|.
+--
+-- Direct calculation: H(uniform) = -∑ x, (1/|α|) · log(1/|α|)
+--                                = -|α| · (1/|α|) · (-log |α|)
+--                                = log |α|.
+--
+-- Used by the Fano-step converse of the channel coding theorem: when the
+-- codebook is uniformly distributed over M codewords (worst case for the
+-- encoder), H(X) = log M, so Fano combined with the chain rule and
+-- channelMI_le_capacity yields (1 - P_e) log M ≤ C + h(P_e).
+theorem entropy_of_uniform_eq_log_card {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] :
+    shannonEntropy (fun _ : α => (Fintype.card α : ℝ)⁻¹) =
+      Real.log (Fintype.card α) := by
+  have hcard_pos : (0 : ℝ) < Fintype.card α :=
+    Nat.cast_pos.mpr Fintype.card_pos
+  have hcard_ne : (Fintype.card α : ℝ) ≠ 0 := ne_of_gt hcard_pos
+  have hinv_ne : ((Fintype.card α : ℝ)⁻¹) ≠ 0 := inv_ne_zero hcard_ne
+  unfold shannonEntropy
+  -- All terms are nonzero, so the `if` collapses to its else-branch
+  simp_rw [if_neg hinv_ne]
+  -- The summand is constant: collapse the sum to |α| · (constant)
+  rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  -- Compute: -(|α| · (|α|⁻¹ · log(|α|⁻¹))) = -(log(|α|⁻¹)) = log |α|
+  rw [Real.log_inv, ← mul_assoc, mul_inv_cancel₀ hcard_ne, one_mul, neg_neg]
 
 -- ============================================================
 -- Log-Sum Inequality
