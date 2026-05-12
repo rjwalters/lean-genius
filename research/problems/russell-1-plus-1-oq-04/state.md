@@ -1,10 +1,95 @@
 # Current State
 
-**Phase**: ACT (S2 file written; advancing to S3 gallery + `#print axioms`)
+**Phase**: ACT (S3 augmentation complete — named theorems + #print axioms; advancing to S4 gallery)
 **Since**: 2026-05-12T05:00:00Z (S1)
-**Last Updated**: 2026-05-12 (S2 ACT by researcher-3)
-**Iteration**: 2
-**Last researcher**: researcher-3
+**Last Updated**: 2026-05-12 (S3 ACT by researcher-1)
+**Iteration**: 3
+**Last researcher**: researcher-1
+
+## S3 Summary (2026-05-12, researcher-1)
+
+**Mode**: ACT (augment the S2 file with `#print axioms` machine-checked
+axiom-freedom verification).
+
+### Deliverable
+
+Augmented `proofs/Proofs/OnePlusOneOQ04.lean` (161 → 187 lines):
+
+1. **Converted each `example` to a named `theorem`** so it can be
+   referenced by `#print axioms`:
+
+   - `row0_unfolded` — Rules(E) = ∅, the trivial baseline.
+   - `row1_peano_pattern` — Rules(E) = {δ, ι}, the parent file's encoding.
+   - `row2_peano_recursor` — Rules(E) = {δ, ι, β}, raw `Peano.ℕ.rec`.
+   - `row3_church` — Rules(E) = {δ, β}, Church numerals.
+   - `row4_binary` — Rules(E) = {δ, ι}, binary little-endian naturals.
+
+2. **Added Part 6: Axiom-Freedom Verification** with five `#print axioms`
+   stanzas (one per row witness). Each emits the info message
+   `'<name>' depends on no axioms` at compile time, providing a
+   *machine-checked* dual to the *human-checked* reductional taxonomy
+   of Parts 1–5.
+
+### Design choices
+
+- **`theorem` rather than `example`** to make the row witnesses
+  referenceable from `#print axioms`. No semantic change — `theorem`
+  vs `example` is purely a binding choice (named ↔ anonymous).
+- **`#print axioms` placed at the end** (Part 6) rather than inline
+  per row. Keeps the per-row docstrings focused on the reduction-rule
+  story; the propositional dual is its own logical section.
+- **No `#reduce` stanzas** despite the S2 next-action mentioning
+  them. `#reduce` produces verbose kernel output that bloats the
+  build log without adding propositional content; the more
+  conservative `#print axioms` does the load-bearing verification
+  work for the OQ-04 question. `#reduce` can be added in S5 if
+  needed for the let-binding example.
+
+### File deltas
+
+- `proofs/Proofs/OnePlusOneOQ04.lean`: +26 lines (5 `theorem` renames + Part 6 docstring + 5 `#print axioms`).
+- Sorry count: 0 (unchanged).
+- Axiom count: 0 (unchanged; now machine-verified at compile time).
+- Theorem count: 0 → 5 (five row witnesses promoted from `example` to `theorem`).
+- Definition count: 7 (unchanged — `addRec`, `Church`, `cOne`, `cTwo`, `cAdd`, `Bin.succ`, `Bin.add` plus the `inductive Bin`).
+
+### Build status
+
+**Verified** via `./proofs/scripts/docker-build.sh Proofs.OnePlusOneOQ04`.
+Three jobs (incremental, cache hit on Mathlib). Five info messages confirm
+the propositional dual:
+
+```
+info: 'OnePlusOneOQ04.row0_unfolded'        does not depend on any axioms
+info: 'OnePlusOneOQ04.row1_peano_pattern'   does not depend on any axioms
+info: 'OnePlusOneOQ04.row2_peano_recursor'  does not depend on any axioms
+info: 'OnePlusOneOQ04.row3_church'          does not depend on any axioms
+info: 'OnePlusOneOQ04.row4_binary'          does not depend on any axioms
+```
+
+### S3 build-fix: latent S2 issue
+
+Bringing the file under build verification uncovered a latent code-generator
+error in S2's `addRec` (S2 was merged "(build pending)" — see PR #17971
+title — and never actually built). The code generator declines
+`Peano.ℕ.rec` with a non-Prop motive:
+
+```
+error: code generator does not support recursor `Peano.ℕ.rec` yet,
+       consider using 'match ... with' and/or structural recursion
+```
+
+**Fix**: marked `addRec` as `noncomputable def`. The kernel reduction
+for `:= rfl` (which is what the row witnesses need) is unaffected;
+only runtime code-generation is skipped. Equivalent `match`-style
+definitions *do* compile (see `Peano.add` in the parent file), but
+the whole point of `addRec` is to exhibit the *raw recursor*
+encoding, so the `noncomputable` annotation is the principled fix.
+
+Sorry count: still 0. Axiom count: still 0 (now machine-checked at
+build time by Part 6's `#print axioms` stanzas).
+
+---
 
 ## S2 Summary (2026-05-12, researcher-3)
 

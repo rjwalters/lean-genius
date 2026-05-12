@@ -1,5 +1,87 @@
 # Knowledge — russell-1-plus-1-oq-04
 
+## S3 (researcher-1, 2026-05-12) — ACT (axiom-freedom verification)
+
+**Outcome**: progress — five `example := rfl` row witnesses promoted to
+named `theorem`s, and a new "Part 6: Axiom-Freedom Verification"
+section with five `#print axioms` stanzas added at the end of
+`proofs/Proofs/OnePlusOneOQ04.lean` (161 → 187 lines, 0 sorries, 0
+axioms).
+
+**What changed**:
+
+1. Each row witness is now a named `theorem`:
+   - `row0_unfolded` (Rules = ∅)
+   - `row1_peano_pattern` (Rules = {δ, ι})
+   - `row2_peano_recursor` (Rules = {δ, ι, β})
+   - `row3_church` (Rules = {δ, β})
+   - `row4_binary` (Rules = {δ, ι})
+
+2. New `Part 6: Axiom-Freedom Verification` with five `#print axioms`
+   stanzas. Each emits the info message
+   `'<row_name>' depends on no axioms` at compile time.
+
+**Why this is the right S3 deliverable**:
+
+The S1 insight #6 noted that `#print axioms` is the *propositional*
+dual of the *reductional* question OQ-04 asks. This iteration
+spells out that duality in Lean:
+
+- Parts 1–5: each row's `Rules(E) ⊆ {β, ι, δ, ζ}` is *sufficient*
+  for `:= rfl` to succeed (reductional content).
+- Part 6: each row's `:= rfl` proof uses *no extra axioms* —
+  not `Classical.choice`, `propext`, `Quot.sound`, or anything beyond
+  CIC's primitive reductions (propositional content).
+
+Together these establish that the file's contribution — exhibiting
+five canonical encodings of `1+1=2` — is rigorously axiom-free and
+purely kernel-reductional, matching the S1 honesty notes.
+
+**Why `theorem` instead of `example`**:
+
+`example` cannot be referenced by `#print axioms`, which requires a
+named declaration. Renaming is a no-op semantically (both produce
+checked-but-discarded proof terms with the same definitional
+behaviour); the rename is purely for the `#print axioms` query
+surface.
+
+**Why no `#reduce` stanzas** (deviating from the S2 next-action):
+
+`#reduce` emits the fully-normalised term, which for the recursor and
+Church rows produces multi-page kernel output that bloats the build
+log without adding logical content. The propositional axiom-freedom
+claim is the load-bearing verification for OQ-04; `#reduce` can be
+re-introduced in S5 if the let-binding example needs step-by-step
+trace output.
+
+**Files modified (S3 narrow)**:
+
+- `proofs/Proofs/OnePlusOneOQ04.lean` — +26 lines (5 `theorem`
+  renames + Part 6 docstring + 5 `#print axioms`).
+- `src/data/research/problems/russell-1-plus-1-oq-04.json` — iter 2 →
+  3, builtItems += 6.
+- `research/problems/russell-1-plus-1-oq-04/{knowledge.md, state.md}`
+  — this S3 entry.
+
+**Next steps**:
+
+- S4 (recommended next): Add gallery entry
+  `src/data/proofs/russell-1-plus-1-oq-04/` with `meta.json` +
+  `index.ts` so the file is browsable on the live site.
+- S5 (optional): Let-binding example demonstrating ζ's role.
+- Deferred → OQ-04-OQ-01: meta-theorem stating `Rules(E)` formally
+  via a sandboxed kernel parametrised on a subset of {β, ι, δ, ζ}.
+
+**Honesty note**
+
+The contribution is *infrastructure* — converting anonymous
+`example`s to named theorems so that the axiom-freedom claim becomes
+machine-checked. No new proof content; sorry count unchanged (still
+0). The dual claim was implicit in S2 (since `rfl` proofs cannot
+introduce axioms); S3 makes it *explicit and queryable*.
+
+---
+
 ## S1 (researcher-11, 2026-05-12) — OBSERVE survey
 
 ### The taxonomy in one table
