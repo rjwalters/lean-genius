@@ -1,0 +1,205 @@
+{
+  "slug": "prime-number-theorem-oq-01-oq-01",
+  "title": "Is the Riemann Hypothesis true",
+  "phase": "RESEARCH",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "RH := ∀ s : ℂ, riemannZeta s = 0 ∧ 0 < s.re ∧ s.re < 1 → s.re = 1/2. The same proposition is already defined twice in the gallery — in proofs/Proofs/RiemannHypothesis.lean (def RiemannHypothesis, line 128, via isNonTrivialZero) and in proofs/Proofs/PrimeNumberTheoremOQ01.lean (def RiemannHypothesis, line 69) — but no theorem currently bridges them.",
+    "plain": "Riemann Hypothesis (Millennium Prize, 2000): every non-trivial zero of the Riemann zeta function ζ(s) lies on the critical line Re(s) = 1/2. This slug was seeker-extracted from the parent prime-number-theorem-oq-01 and largely duplicates the existing 'riemann-hypothesis' gallery slug (status COMPLETED, 41 axioms in proofs/Proofs/RiemannHypothesis.lean). Any meaningful S(N) work on this slug must target a narrow tractable adjacent result, NOT the open conjecture itself.",
+    "whyMatters": [
+      "Cleaning the gallery: this slug currently has no formal statement and a NEW-phase state. Either close as duplicate of 'riemann-hypothesis' or reorient onto a small adjacent target. This S1 makes that decision explicit and recommends a bridge theorem as the next iteration.",
+      "Bridge value: the two RiemannHypothesis : Prop declarations in RiemannHypothesis.lean and PrimeNumberTheoremOQ01.lean are propositionally identical but not currently linked. A ~30-LOC bridge theorem would let downstream files cite either form.",
+      "Axiom-discharge candidates: several axioms in RiemannHypothesis.lean (notably zeta_conj at line 779) may now be discharge-able with current Mathlib via Schwarz reflection / AnalyticOnNhd machinery."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "ζ has no zeros for Re(s) > 1 (Mathlib: riemannZeta_ne_zero_of_one_lt_re).",
+      "Trivial zeros at s = -2, -4, -6, ... (Mathlib: riemannZeta_neg_two_mul_nat_add_one).",
+      "ζ(0) = -1/2 (Mathlib: riemannZeta_zero).",
+      "Functional equation ζ(s) ↔ ζ(1-s) via completedRiemannZeta_one_sub.",
+      "PNT itself (Hadamard / de la Vallée-Poussin 1896) — formalised in Proofs/PrimeNumberTheorem.lean as PrimeNumberTheorem_Ratio / _Equiv / _Error / _Li with the analytic core axiomatised.",
+      "Hardy 1914 (infinitely many zeros on the critical line) — axiomatised in RiemannHypothesis.lean as hardy_infinitely_many_on_critical_line.",
+      "Robin (1984), Mertens-Littlewood (1912), von Koch (1901) equivalent reformulations — axiomatised as RH_iff_Robin / RH_iff_Mertens / RH_iff_PrimeCounting in RiemannHypothesis.lean."
+    ],
+    "open": [
+      "RH itself — open since 1859; Millennium Prize Problem since 2000. Not tractable in any formalisation session.",
+      "Easier direction of RH ↔ Mertens (RH → M(x) = O(x^{1/2+ε})) — blocked on Mathlib lacking the Riemann-von Mangoldt explicit formula for ψ(x).",
+      "Easier direction of RH ↔ von Koch / prime counting — same Mathlib gap.",
+      "Robin's equivalence (RH ↔ σ(n) < e^γ·n·log log n for n > 5040) — blocked on Mathlib lacking colossally-abundant-number / Gronwall infrastructure."
+    ],
+    "goal": "Recommended S2 path: bridge theorem linking PrimeNumberTheoremOQ01.RiemannHypothesis and Proofs.RiemannHypothesis.RiemannHypothesis (~30 LOC, 0 axioms, 0 sorries). Alternate: discharge the zeta_conj axiom via Schwarz reflection (60-120 LOC)."
+  },
+  "currentState": {
+    "phase": "RESEARCH",
+    "since": "2026-05-12T18:25:00+00:00",
+    "iteration": 1,
+    "focus": "S1 OBSERVE complete: surveyed existing RiemannHypothesis.lean (41 axioms, canonical RH file), PrimeNumberTheoremOQ01.lean (5 axioms, parent slug's Lean file), and Mathlib v4.26.0 RH-relevant API. Identified slug duplication with the 'riemann-hypothesis' parent slug; audited the two coexisting RiemannHypothesis : Prop declarations and shortlisted three tractable S2 candidates plus one deferred.",
+    "blockers": [
+      "RH itself is intractable; no full proof can be attempted.",
+      "All three equivalent reformulations (Robin / Mertens / von Koch) are axiomatised in the gallery and would require deep Mathlib infrastructure (Riemann-von Mangoldt explicit formula, Mertens-function API, colossally-abundant-number API) to discharge."
+    ],
+    "nextAction": "S2 ACT (recommended): add Proofs/PrimeNumberTheoremOQ01OQ01.lean with one bridge theorem proving PrimeNumberTheoremOQ01.RiemannHypothesis ↔ Proofs.RiemannHypothesis.RiemannHypothesis. Both definitions are propositionally identical after unfolding isNonTrivialZero. ~30 LOC, 0 axioms, 0 sorries. Alternate (B): discharge zeta_conj axiom via Schwarz reflection (60-120 LOC, medium difficulty).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete (markdown/JSON only, no Lean changes). Documented that this slug duplicates the parent 'riemann-hypothesis' gallery slug (status COMPLETED, 41 axioms). The two RiemannHypothesis : Prop declarations in RiemannHypothesis.lean (line 128, via isNonTrivialZero) and PrimeNumberTheoremOQ01.lean (line 69, four-argument form) are propositionally identical but not currently linked; a ~30-LOC bridge theorem is the recommended S2 deliverable. Shortlisted three other tractable candidates: discharging zeta_conj via Schwarz reflection, meta-only audit of parent's axiom counts (deferred to enricher/auditor), and the easy direction of RH ↔ Mertens (deferred behind Mathlib explicit formula gap).",
+    "builtItems": [
+      {
+        "item": "S1 OBSERVE markdown set (problem.md, knowledge.md, state.md)",
+        "session": "S1"
+      },
+      {
+        "item": "Survey of Proofs/RiemannHypothesis.lean (41 axioms) and Proofs/PrimeNumberTheoremOQ01.lean (5 axioms) — every definition, theorem, axiom catalogued in knowledge.md §A",
+        "session": "S1"
+      },
+      {
+        "item": "Mathlib v4.26.0 RH-relevant API audit (knowledge.md §B) — riemannZeta + functional equation + Euler product non-vanishing available; Riemann-von Mangoldt explicit formula, Mertens-function bounds, Robin / Gronwall infrastructure absent",
+        "session": "S1"
+      },
+      {
+        "item": "S2 candidate shortlist with feasibility analysis (knowledge.md §C) — (A) bridge theorem [recommended], (B) zeta_conj discharge [medium], (C) parent-slug axiom-count audit [deferred to enricher], (D) RH→Mertens easy direction [deferred — Mathlib gap]",
+        "session": "S1"
+      }
+    ],
+    "insights": [
+      "Seeker-extracted 'Is X true?' sub-OQs for Millennium / Hilbert problems duplicate the parent slug when the parent is already fully developed. This pattern likely affects more than just this slug; the right S1 response is duplicate-detection plus reorientation onto a narrow adjacent target.",
+      "The two RiemannHypothesis : Prop declarations in the gallery (RiemannHypothesis.lean uses isNonTrivialZero; PrimeNumberTheoremOQ01.lean uses the unrolled four-argument form) are propositionally identical but not currently linked by a theorem — mild technical debt that a single bridge theorem resolves.",
+      "The opaque RiemannHypothesis_statement : Prop token in PrimeNumberTheorem.lean is intentionally NOT equal to either richer RiemannHypothesis definition — that file does not import RiemannZeta machinery and treats RH purely as an opaque hypothesis for conditional PNT-error statements.",
+      "Mathlib v4.26.0 has riemannZeta + completedRiemannZeta + Euler-product non-vanishing on Re(s) > 1 + functional equation, but lacks the Riemann-von Mangoldt explicit formula for ψ(x); this gap blocks any 'easy direction' attempt on RH ↔ Mertens / RH ↔ prime counting.",
+      "zeta_conj (riemannZeta (conj s) = conj (riemannZeta s)) is currently axiomatised but the Mathlib building blocks for a Schwarz-reflection proof are present (differentiableAt_riemannZeta off the singular set + AnalyticOnNhd.eqOn_of_preconnected_of_eventuallyEq + Dirichlet-series agreement on Re(s) > 1). This makes (B) a legitimate medium-difficulty S2 alternate."
+    ],
+    "mathlibGaps": [
+      "No formal Riemann-von Mangoldt explicit formula ψ(x) = x − ∑_ρ x^ρ/ρ + ... (blocks RH ↔ Mertens, RH ↔ prime counting easy directions).",
+      "No formal Mertens-function bound infrastructure beyond ArithmeticFunction.moebius (blocks Mertens-conjecture-style reformulations).",
+      "No formal logarithmic integral Li(x) as a Mathlib primitive (defined locally in PrimeNumberTheoremOQ01.lean as a placeholder).",
+      "No formal Robin-class / colossally-abundant-number / Gronwall API (blocks RH ↔ Robin discharge).",
+      "No formal Riemann–Siegel formula or Backlund / Hardy–Littlewood zero-counting bounds."
+    ],
+    "nextSteps": [
+      "S2 ACT (A — recommended): add Proofs/PrimeNumberTheoremOQ01OQ01.lean with one bridge theorem PrimeNumberTheoremOQ01.RiemannHypothesis ↔ Proofs.RiemannHypothesis.RiemannHypothesis. ~30 LOC, 0 axioms, 0 sorries; unfolds isNonTrivialZero and applies And.intro / And.elim.",
+      "S2 ACT (B — alternate): discharge zeta_conj : riemannZeta (conj s) = conj (riemannZeta s) via Schwarz reflection on the connected open set ℂ \\ {1}, using Dirichlet-series agreement on Re(s) > 1 + differentiableAt_riemannZeta. 60-120 LOC, medium difficulty.",
+      "Deferred: discharge of any RH_iff_* equivalence (blocked behind Mathlib explicit-formula / Mertens / Robin gaps)."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "riemann-hypothesis",
+    "millennium-prize",
+    "duplicate-of-riemann-hypothesis-slug"
+  ],
+  "relatedProofs": [
+    "prime-number-theorem",
+    "prime-number-theorem-oq-01",
+    "riemann-hypothesis",
+    "rh-consequences"
+  ],
+  "references": {
+    "papers": [
+      {
+        "author": "Riemann, B.",
+        "title": "Ueber die Anzahl der Primzahlen unter einer gegebenen Grösse",
+        "year": 1859,
+        "venue": "Monatsber. Berliner Akad."
+      },
+      {
+        "author": "Hadamard, J.",
+        "title": "Sur la distribution des zéros de la fonction ζ(s) et ses conséquences arithmétiques",
+        "year": 1896,
+        "venue": "Bull. Soc. Math. Fr. 24, 199-220"
+      },
+      {
+        "author": "de la Vallée Poussin, C. J.",
+        "title": "Recherches analytiques sur la théorie des nombres premiers",
+        "year": 1896,
+        "venue": "Ann. Soc. Sci. Bruxelles 20, 183-256"
+      },
+      {
+        "author": "von Koch, H.",
+        "title": "Sur la distribution des nombres premiers",
+        "year": 1901,
+        "venue": "Acta Math. 24, 159-182"
+      },
+      {
+        "author": "Hardy, G. H.",
+        "title": "Sur les zéros de la fonction ζ(s) de Riemann",
+        "year": 1914,
+        "venue": "C. R. Acad. Sci. Paris 158, 1012-1014"
+      },
+      {
+        "author": "Littlewood, J. E.",
+        "title": "Quelques conséquences de l'hypothèse que la fonction ζ(s) n'a pas de zéros dans le demi-plan Re s > 1/2",
+        "year": 1912,
+        "venue": "C. R. Acad. Sci. Paris 154, 263-266"
+      },
+      {
+        "author": "Robin, G.",
+        "title": "Grandes valeurs de la fonction somme des diviseurs et hypothèse de Riemann",
+        "year": 1984,
+        "venue": "J. Math. Pures Appl. 63, 187-213"
+      },
+      {
+        "author": "Lagarias, J. C.",
+        "title": "An elementary problem equivalent to the Riemann Hypothesis",
+        "year": 2002,
+        "venue": "Amer. Math. Monthly 109, 534-543"
+      },
+      {
+        "author": "Li, X.-J.",
+        "title": "The positivity of a sequence of numbers and the Riemann hypothesis",
+        "year": 1997,
+        "venue": "J. Number Theory 65, 325-333"
+      },
+      {
+        "author": "Conrey, J. B.",
+        "title": "The Riemann Hypothesis",
+        "year": 2003,
+        "venue": "Notices AMS 50, 341-353"
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "Mathlib.NumberTheory.LSeries.HurwitzZetaEven",
+      "Mathlib.NumberTheory.LSeries.HurwitzZetaOdd",
+      "Mathlib.NumberTheory.LSeries.Dirichlet",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.Analysis.Asymptotics.AsymptoticEquivalent"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.564Z",
+  "lastUpdate": "2026-05-12T18:25:00+00:00",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/PrimeNumberTheorem.lean",
+      "filename": "PrimeNumberTheorem.lean",
+      "lineCount": 461,
+      "theoremCount": 15,
+      "axiomCount": 8,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheorem.lean"
+    },
+    {
+      "path": "Proofs/PrimeNumberTheoremOQ01.lean",
+      "filename": "PrimeNumberTheoremOQ01.lean",
+      "lineCount": 282,
+      "theoremCount": 12,
+      "axiomCount": 5,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheoremOQ01.lean"
+    }
+  ]
+}
