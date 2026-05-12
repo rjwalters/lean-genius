@@ -1,0 +1,127 @@
+{
+  "slug": "inverse-galois-d4-oq-03",
+  "title": "Is there a general criterion for when Gal(X^n - a/ℚ) is dihedral",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For $a \\in \\mathbb{Q}^{\\times}$ and $n \\ge 1$, determine a decidable criterion (in terms of $n$ and the prime factorization of $a$) for $\\operatorname{Gal}(X^n - a/\\mathbb{Q}) \\cong D_m$ for some $m \\ge 2$.",
+    "plain": "Find a decidable criterion characterising when the Galois group of X^n − a over ℚ is dihedral.",
+    "whyMatters": [
+      "Generalises the parent gallery entry's D_4 realization (n=4, a=2) to a uniform criterion across all (n, a).",
+      "Connects three Mathlib gaps: Capelli's irreducibility theorem, generic metacyclic order |G| = n·φ(n), and explicit dihedral identification.",
+      "Provides a concrete decidable predicate suitable for a future `def`/`theorem` scaffold."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Capelli's theorem (1897): X^n - a reducible iff (∃ prime p | n: a ∈ (ℚ*)^p) or (4 | n and a ∈ -4(ℚ*)^4).",
+      "Velez (1979): G_n(a) = ℤ/n ⋊ (ℤ/n)* (the full metacyclic group of order n·φ(n)) generically when X^n - a is irreducible and √[n]a ∉ ℚ(ζ_n).",
+      "Schinzel–Velez classification: dihedral case reduces to (n, a) such that the cyclotomic action collapses to {±1} ⊂ (ℤ/n)*.",
+      "Parent gallery: |Gal(X^4 - 2 / ℚ)| = 8 ≅ D_4 (27 theorems, 0 sorries, ℝ-embedding proof)."
+    ],
+    "open": [
+      "Lean formalization of Capelli's full theorem (only prime-n case partially in Mathlib).",
+      "Decidable Lean predicate isDihedralCriterion(n, a) tying to DihedralGroup m via MulEquiv.",
+      "Proof of equivalence between the criterion and the abstract Galois group identification."
+    ],
+    "goal": "S1 OBSERVE survey deliverable: classify the (n, a) cases for which dihedral arises, audit Mathlib API gaps, and propose an S2 scaffold structure."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T06:40:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — mathematical survey of when Gal(X^n − a/ℚ) is dihedral; Mathlib API audit; tractability assessment.",
+    "blockers": [
+      "Capelli's theorem (full n) not present in Mathlib v4.26.0.",
+      "Generic Galois order |G| = n·φ(n) not packaged as a single Mathlib lemma."
+    ],
+    "nextAction": "S2 (optional): produce a non-building scaffold Proofs/InverseGaloisD4OQ03.lean with def isDihedralCriterion + sorry-bearing equivalence to DihedralGroup m. Defer Capelli proof to upstream Mathlib contribution.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete. Mathematical answer pathway is Schinzel–Velez classification: finite-case characterization keyed on n mod 8 and p-adic valuations of a. Existential difficulty low; Mathlib formalization difficulty medium-high due to missing Capelli infrastructure. Parent gallery proof (InverseGaloisD4.lean, n=4 a=2) handles the simplest instance.",
+    "builtItems": [
+      "work/inverse-galois-d4-oq-03/problem.md — formal restatement and case analysis (n odd, n=2k k odd, n=4, n=8, n=p^k).",
+      "work/inverse-galois-d4-oq-03/knowledge.md — annotated bibliography and Mathlib API audit.",
+      "work/inverse-galois-d4-oq-03/state.md — iteration log and S2 scope proposal."
+    ],
+    "insights": [
+      "Every G_n(a) embeds into the metacyclic semidirect product M_n = ℤ/n ⋊ (ℤ/n)* — dihedral is necessarily a subgroup of M_n.",
+      "For odd n, dihedral D_n requires the cyclotomic action on ℤ/n to collapse to {±1} — a sporadic condition rarely satisfied for rational a.",
+      "For n = 2k with k odd, dihedral D_(2k) requires φ(k) = 2, i.e., k ∈ {3, 4, 6}, giving n ∈ {6, 8, 12}.",
+      "n = 4 is the canonical dihedral case: (ℤ/4)* = {±1} has order 2 = φ(4), so generic |G| = 8 = |D_4|.",
+      "The parent gallery's ℝ-embedding argument (a > 0) does not generalize to a < 0; a uniform criterion needs Capelli-based reasoning."
+    ],
+    "mathlibGaps": [
+      "Capelli's full theorem (4 | n and -4b^4 exception): ~200 lines of new infrastructure.",
+      "Generic Galois group order theorem: |Gal(K_n(a)/ℚ)| = n·φ(n) under standard hypotheses.",
+      "Explicit Galois action description via metacyclic structure of M_n.",
+      "Kappe–Warren discriminant-based dihedral test for n=4 (low-hanging fruit, ~50 lines)."
+    ],
+    "nextSteps": [
+      "S2 scaffold: Proofs/InverseGaloisD4OQ03.lean with isDihedralCriterion definition and sorry-bearing main theorem.",
+      "S3 (longer-term): Lean proof of Capelli's theorem upstream-quality, possibly as Mathlib contribution.",
+      "S4 (longer-term): formalize Kappe–Warren n=4 test as a concrete special case."
+    ]
+  },
+  "tags": [
+    "galois-theory",
+    "inverse-galois",
+    "number-theory",
+    "dihedral-group",
+    "field-extensions",
+    "polynomial",
+    "seeker-selected",
+    "schinzel-velez",
+    "capelli-theorem",
+    "metacyclic-group"
+  ],
+  "relatedProofs": [
+    "inverse-galois",
+    "inverse-galois-d4"
+  ],
+  "references": {
+    "papers": [
+      "Capelli, A. (1897). Sulla riduttibilità delle equazioni algebriche, Nota II. Atti Accad. Sci. Fis. Mat. Napoli 3.",
+      "Jacobson, N. (1985). Basic Algebra I, 2nd ed., §4.10. W.H. Freeman.",
+      "Velez, W. Y. (1979/80). On normal binomials. Acta Arithmetica 36, 113–124.",
+      "Schinzel, A. (2000). Polynomials with Special Regard to Reducibility. Cambridge University Press, §2.",
+      "Kappe, L. C., & Warren, B. (1989). An elementary test for the Galois group of a quartic polynomial. American Mathematical Monthly 96, 133–137.",
+      "Cox, D. A. (2012). Galois Theory, 2nd ed., §8.6. Wiley."
+    ],
+    "urls": [
+      "https://kconrad.math.uconn.edu/blurbs/galoistheory/separable2.pdf — K. Conrad, expository notes on Galois groups of splitting fields with worked examples for n ∈ {3, 4, 5, 6, 8}."
+    ],
+    "mathlib": [
+      "Mathlib.GroupTheory.SpecificGroups.Dihedral — DihedralGroup n",
+      "Mathlib.FieldTheory.PolynomialGaloisGroup — Polynomial.Gal",
+      "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic — Polynomial.cyclotomic",
+      "Mathlib.RingTheory.RootsOfUnity.Basic — IsPrimitiveRoot",
+      "Mathlib.RingTheory.Polynomial.Eisenstein.Basic — Eisenstein criterion",
+      "Mathlib.RingTheory.AdjoinRoot — AdjoinRoot.lift (used in parent gallery)"
+    ]
+  },
+  "started": "2026-05-12T04:48:16.449Z",
+  "lastUpdate": "2026-05-12T06:40:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisD4.lean",
+      "filename": "InverseGaloisD4.lean",
+      "lineCount": 683,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisD4.lean"
+    }
+  ]
+}
