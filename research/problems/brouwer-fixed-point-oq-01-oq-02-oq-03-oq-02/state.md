@@ -1,83 +1,93 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T07:15:00Z
-**Iteration**: 4
+**Since**: 2026-05-12T08:55:00Z
+**Iteration**: 5
 
 ## Current Focus
 
-S4 ACT-C prep — blueprint the upstream Mathlib contribution that closes
-gap **B1** (topological-homotopy → chain-homotopy bridge / prism operator).
-This iteration produces no Lean edits; deliverable is Section H of
-`knowledge.md` (~250 lines) detailing the construction path, recommended
-Mathlib placement, complexity estimates, and a near-term local-axiom
-fallback.
+S5 ACT-B exec — substantively prove a real-singular-homology form of
+`H_{n-1}(B^n) = 0` in `proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean` via a
+single thin local axiom (B1 surrogate). Implements the H9 route from S4
+ACT-C prep, in a *non-destructive* form that preserves the existing mock
+chain (so all downstream consumers — `singular_homology_retraction_split`,
+`no_retraction_singular_homology`, `no_retraction_iff_algebraic_impossibility`
+— continue to work without any signature change).
 
 ## Active Approach
 
-Three-layer factoring of the B1 contribution (Section H3 of knowledge.md):
+Concrete deliverables this iteration:
 
-  1. **Lemma 1** — `AlternatingFaceMapComplex.mapHomotopy` (the only
-     genuinely new construction): simplicial homotopy → chain homotopy via
-     the existing alternating-face-map functor. Estimated 40–80 Lean lines.
-  2. **Lemma 2** — `TopCat.toSSet.mapHomotopy`: routine simplicial-bridge
-     unwinding of `TopCat.toSSet`. Estimated 30–60 lines.
-  3. **Theorem** — `singularChainHomotopyOfTopHomotopy`: 10–20-line
-     composition of Lemma 1 and Lemma 2.
+  1. **Local axiom `contractible_singularHomology_zero`** —
+     `∀ (n : ℕ) (hn : 1 ≤ n) (X : Type) [TopologicalSpace X] [ContractibleSpace X],
+        IsZero (singularHomologyFunctor AddCommGrpCat n (AddCommGrpCat.of ℤ) (TopCat.of X))`.
+     This is the "thin classical fact" surrogate for Mathlib gap B1 (prism
+     operator). Discharges upstream via `ContractibleSpace.hequiv_unit` +
+     B1 + `HomotopyEquiv.toHomologyIso` +
+     `isZero_singularHomologyFunctor_of_totallyDisconnectedSpace` (all
+     four steps are in Mathlib v4.26.0 except B1).
+  2. **Substantive theorem `H_n_minus_1_ball_zero_substantive`** —
+     `∀ (n : ℕ) (hn : 2 ≤ n),
+        IsZero (singularHomologyFunctor AddCommGrpCat (n-1) (AddCommGrpCat.of ℤ)
+                  (TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)))`.
+     Proved in three lines via `convex_closedBall` +
+     `Convex.contractibleSpace` + the new local axiom. The `n ≥ 2`
+     hypothesis closes the boundary case `n=1` flagged in knowledge.md G5
+     (`H_0([-1,1]) ≅ ℤ`, not zero); downstream signatures are unaffected
+     because `Retraction 1` is vacuously uninhabited via IVT.
+  3. **Mock chain preserved.** `H_n_minus_1_ball_zero` keeps its
+     `∃ φ : ℤ →+ Unit, True` signature unchanged so
+     `singular_homology_retraction_split` and the downstream theorems
+     continue compiling without edits. The substantive form is an
+     *additional* theorem alongside the mock, not a replacement.
 
-Plus standard corollaries (`HomotopyEquiv`, `singularHomologyMap_eq_of_topHomotopy`)
-for ~20–40 additional lines. **Total upstream contribution: 100–200 lines,
-~3–6 sessions.**
-
-Strategic recommendation (Section H9): pursue a **local axiom**
-`singular_chain_homotopy_of_top_homotopy` in
-`BrouwerFixedPointOQ01OQ02.lean` as the immediate ACT-B exec route. This
-costs +1 named axiom in the gallery file but unblocks substantive
-`H_n_minus_1_ball_zero` proof in a single session, and the new axiom is
-*strictly tighter* than the existing sphere-nonzero residual axiom (which
-remains separately).
+Net effect: 1 axiom → 2 axioms in the file, but both are now standard
+textbook facts explicitly slated for Mathlib contribution. The mock-vs-real
+duality is now *materialised in code*: the trivial-mock `H_n_minus_1_ball_zero`
+sits alongside the real-homology `H_n_minus_1_ball_zero_substantive`,
+making the gap structure transparent.
 
 ## Blockers
 
-* **B1 (Mathlib gap)** — prism operator still missing. ACT-C blueprint
-  (Section H) maps the contribution; pending Mathlib PR or local axiom.
+* **B1 (Mathlib gap)** — prism operator still missing. Now encoded as
+  the thin local axiom `contractible_singularHomology_zero`. Upstream
+  contribution path is mapped (knowledge.md Section H) but multi-session.
 * **B2 (Mathlib gap)** — `H_{n-1}(S^{n-1}) ≅ ℤ` still missing; the deep
-  residual obstruction isolated in `H_n_minus_1_sphere_nonzero`. Not
-  blocking the next session's work.
-* Docker daemon status in this worktree unverified; this iteration is
-  markdown-only so no build risk.
+  residual axiom is unchanged.
 
 ## Next Action
 
-Session 5 next action: **ACT-B exec via local axiom (H9 route)** —
-substantively prove `H_n_minus_1_ball_zero` in
-`proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean`. Concretely:
+Session 6 next action options (priority order):
 
-  1. Introduce local axiom `singular_chain_homotopy_of_top_homotopy`
-     (Section H9 signature).
-  2. Strengthen hypothesis of `H_n_minus_1_ball_zero` to `n ≥ 2`
-     (per Section G5 / H7); leave `singular_homology_retraction_split` and
-     `no_retraction_singular_homology` signatures unchanged but route
-     them through the strengthened lemma.
-  3. Prove `H_n_minus_1_ball_zero` using the 5-step sketch from G5
-     (closedBall contractibility via `convex_closedBall` + inline witness,
-     `ContractibleSpace.hequiv_unit`, `singular_chain_homotopy_of_top_homotopy`,
-     `isZero_singularHomologyFunctor_of_totallyDisconnectedSpace`,
-     `HomotopyEquiv.toHomologyIso`).
-  4. Add the Unit-bridge step (G6) to translate `IsZero` back into the
-     existing `∃ φ : ℤ →+ Unit, True` signature.
-  5. Net axiom count: 1 → 2 (sphere-nonzero + B1 surrogate), but
-     `H_n_minus_1_ball_zero` becomes substantive (no longer mock).
+  1. **Unit-bridge lemma** (knowledge.md G6 ~5–10 lines): convert
+     `IsZero (H_{n-1}(B^n))` from `H_n_minus_1_ball_zero_substantive` into
+     the existential `∃ φ : ℤ →+ Unit, True` shape used downstream — this
+     would make the substantive theorem *replace* the mock rather than
+     coexist with it, dropping the trivial-content theorem in favour of
+     the real one. Estimated 1-session work.
+  2. **Sphere-side parallel structure**: introduce a similar
+     `H_n_sphere_isomorphic_Z` local axiom (B2 surrogate) and a substantive
+     parallel for `H_n_minus_1_sphere_nonzero` to align the two halves of
+     the decomposition. This would let the file expose both axioms at the
+     same level of abstraction (currently sphere-nonzero is mock-only).
+  3. **Mathlib B1 contribution drafting**: start
+     `AlternatingFaceMapComplex.mapHomotopy` (knowledge.md H3 Lemma 1) as a
+     proof-of-concept Lean file outside the gallery, with the goal of
+     submitting an upstream Mathlib PR. Multi-session.
 
-Alternative if Mathlib API import path turns out to drift between worktree
-and pinned rev: defer ACT-B exec to a follow-up; instead carry out the
-*Unit-bridge lemma* (Section G6, ~5–10 lines) as a self-contained Lean
-addition.
+If S5 build fails (Mathlib API import drift), revert to doc-only:
+record the failure mode and shift S6 to lemma 1 above as a smaller
+self-contained Lean addition. Build risk centres on the `AddCommGrpCat`
+/ `TopCat.of` / `ContractibleSpace` typeclass synthesis chain — none of
+the individual APIs is in flux at the pinned rev, but their composition
+into a single axiom + theorem statement has not been previously exercised
+in the gallery.
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 1 (ACT-C prep first attempt)
-- Approaches tried: 4 (S1 OBSERVE feasibility; S2 ACT-A scaffold;
+- Total attempts: 5
+- Current approach attempts: 1 (ACT-B exec first attempt)
+- Approaches tried: 5 (S1 OBSERVE feasibility; S2 ACT-A scaffold;
   S3 ACT-B prep `singularHomologyFunctor` API verification;
-  S4 ACT-C prep prism-operator construction blueprint)
+  S4 ACT-C prep prism-operator construction blueprint;
+  S5 ACT-B exec — thin local axiom + substantive ball-homology theorem)

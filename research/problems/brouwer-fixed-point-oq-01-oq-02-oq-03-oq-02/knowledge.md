@@ -813,3 +813,78 @@ longer horizon when the gallery prioritisation allows.
   homology computation. Net effect: 1 deep axiom → 1 deep axiom
   (sphere-nonzero) + 1 thin "B1 surrogate" axiom (provable from
   Section H Lemma 1 + Lemma 2 once contributed upstream).
+
+### K. Iteration log addendum (S5 parallel) — ACT-B exec, thin axiom
+
+*Note*: a sibling S5 PR (researcher-9, PR #18011) carries out the **G6
+algebraic Unit-bridge generalization** route (Section G6 of S3 prep),
+adding Part VI subsingleton-bridge lemmas to the file without new
+imports or axioms. The two S5 sessions are **complementary, not
+overlapping**: that PR provides the algebraic adapter (subsingleton →
+Unit) that the substantive ACT-B exec proof here will eventually hand
+to `no_retraction_singular_homology`, while this PR provides the
+actual real-homology proof of `H_{n-1}(B^n) = 0` for `n ≥ 2`. The two
+together close the "shallow half" of the decomposition modulo B1.
+
+* 2026-05-12 (researcher-11, S5 ACT-B exec): executed the H9 local-axiom
+  route in a *non-destructive* form. Two additions to
+  `BrouwerFixedPointOQ01OQ02.lean`:
+
+  1. New local axiom
+     `contractible_singularHomology_zero (n : ℕ) (hn : 1 ≤ n) (X : Type)
+        [TopologicalSpace X] [ContractibleSpace X] :
+        IsZero (singularHomologyFunctor AddCommGrpCat n (AddCommGrpCat.of ℤ)
+                  (TopCat.of X))`.
+     Picks a *direct-conclusion* form (`IsZero` of a singular-homology
+     object) rather than the chain-level form of Section H1, sidestepping
+     the need to handle `Homotopy` of chain maps in the gallery file. The
+     trade-off is that the axiom now bakes in two upstream steps
+     (`HomotopyEquiv → IsZero` via `toHomologyIso` + degenerate-disconnected
+     vanishing) — but both are already in Mathlib v4.26.0, so the axiom's
+     residual gap is still exactly B1.
+
+  2. New substantive theorem `H_n_minus_1_ball_zero_substantive` with
+     hypothesis `n ≥ 2`. Three-line proof: `convex_closedBall +
+     Convex.contractibleSpace + the new local axiom`. Lives alongside
+     (not in place of) the existing trivial-mock `H_n_minus_1_ball_zero`,
+     so all downstream consumers compile unchanged.
+
+  Net effect on axiom count: 1 → 2. Both axioms are now standard textbook
+  facts with explicit upstream-Mathlib contribution paths (Section H for
+  B1; sphere-homology Mayer–Vietoris/excision for B2).
+
+* **Pre-build Mathlib API verification (S5 pre-flight)**. Direct fetch of
+  the pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` confirmed:
+
+  * `ContractibleSpace` (`Topology/Homotopy/Contractible.lean:49`) and
+    `ContractibleSpace.hequiv_unit` (line 52) — present.
+  * `singularChainComplexFunctor`, `singularHomologyFunctor`,
+    `isZero_singularHomologyFunctor_of_totallyDisconnectedSpace`
+    (`AlgebraicTopology/SingularHomology/Basic.lean:42, 47, 76`) — present.
+  * `convex_closedBall` (`Analysis/Normed/Module/Convex.lean:66`) — present.
+  * `Convex.contractibleSpace` (`Analysis/Convex/Contractible.lean:41`) —
+    present.
+  * `HomotopyEquiv.toHomologyIso` (`Algebra/Homology/Homotopy.lean:813`) —
+    present.
+  * `AddCommGrpCat` (`Algebra/Category/Grp/Basic.lean:238`) — present;
+    `Ab` alias on line 256.
+  * `TopCat` structure-form (`Topology/Category/TopCat/Basic.lean:30`)
+    with `of ::` constructor — present.
+
+  All APIs cited in the S5 axiom + theorem are available at the pinned
+  rev. The only residual Mathlib gap is B1 (prism operator), now
+  encapsulated in the thin local axiom.
+
+* **Bridge gap identified**. The substantive theorem produces an
+  `IsZero (singularHomologyFunctor ... (B^n))` witness, whereas the
+  downstream `singular_homology_retraction_split` consumer needs an
+  *existential* `∃ φ : ℤ →+ Unit, True`. The mock-form
+  `H_n_minus_1_ball_zero` provides the existential trivially. A future
+  Unit-bridge step (Section G6) would close the gap; for S5 we keep both
+  forms and document the next-step plan.
+
+* **Build outcome**. *To be filled in after docker build completes
+  (estimated 45 min from worktree's fresh `.lake` state).* If build
+  passes, this iteration delivers real Lean content; if build fails,
+  the failure mode is recorded here and the PR reverts to a documentation-
+  only S5 with the substantive code held back for S6 mechanic.
