@@ -59,6 +59,7 @@ import Proofs.AngleTrisectionCos20GalOQ01
 import Proofs.AngleTrisectionCos20GalOQ01OQ01
 import Proofs.AngleTrisectionCos20GalOQ01OQ02
 import Proofs.AngleTrisectionCos20GalOQ01OQ02OQ02
+import Proofs.AngleTrisectionCos20GalOQ01OQ03
 import Proofs.AngleTrisectionCos20GalOQ03
 import Proofs.AngleTrisectionCos20GalOQ03OQ01
 import Proofs.AngleTrisectionEmbedding
@@ -451,6 +452,7 @@ import Proofs.CentralLimitTheoremOQ01OQ02OQ01OQ01
 import Proofs.CentralLimitTheoremOQ01OQ03
 import Proofs.CentralLimitTheoremOQ02
 import Proofs.CentralLimitTheoremOQ02Aristotle
+import Proofs.CentralLimitTheoremOQ02OQ04
 import Proofs.CentralLimitTheoremOQ03
 import Proofs.CentralLimitTheoremOQ03OQ01
 import Proofs.CentralLimitTheoremOQ03OQ01Aristotle
@@ -532,6 +534,8 @@ import Proofs.CubeRoot3Irrational
 import Proofs.CubeRoot3IrrationalOQ02
 import Proofs.CubeRoot3IrrationalOQ02OQ01
 import Proofs.CubeRoot3IrrationalOQ02OQ02
+import Proofs.CubeRoot3IrrationalOQ04
+import Proofs.CubeRoot3IrrationalOQ04Helpers
 import Proofs.CubeRoot5Irrational
 import Proofs.CubeRoot6Irrational
 import Proofs.CubeRoot7Irrational
@@ -2312,6 +2316,7 @@ import Proofs.GreensTheoremOQ01OQ01
 import Proofs.GreensTheoremOQ01OQ01OQ01
 import Proofs.GreensTheoremOQ01OQ01OQ01OQ01
 import Proofs.GreensTheoremOQ01OQ01OQ02
+import Proofs.GreensTheoremOQ01OQ01OQ02OQ03
 import Proofs.GreensTheoremOQ01OQ01OQ03
 import Proofs.GreensTheoremOQ01OQ02
 import Proofs.GreensTheoremOQ02
