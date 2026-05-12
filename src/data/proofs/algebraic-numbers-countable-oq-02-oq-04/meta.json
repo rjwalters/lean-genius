@@ -122,27 +122,43 @@
   "sections": [
     {
       "id": "introduction",
-      "title": "§1: Introduction and Hierarchy",
+      "title": "§1: Introduction, Hierarchy, and Iteration Plan",
       "startLine": 1,
-      "endLine": 70,
-      "summary": "Module-level docstring framing the open question, locating computable reals in the hierarchy `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`, and outlining the SCAFFOLD/iteration plan.",
-      "mathContext": "Cardinality hierarchy: each strict inclusion (ℚ⊊algebraic, algebraic⊊computable) is a non-cardinality strict inclusion — sets differ qualitatively but share cardinality ℵ₀. The final inclusion computable⊊ℝ is strict by cardinality (ℵ₀<𝔠)."
+      "endLine": 99,
+      "summary": "Module-level docstring framing the open question, locating computable reals in the hierarchy `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`, recording the per-iteration scaffolding (S1 SCAFFOLD → S2 lower bound → S3 upper bound → S4 exact equality), and citing Turing 1936 and the relevant Mathlib modules (`Computability.Partrec`, `Computability.PartrecCode`, `Data.Rat.Denumerable`).",
+      "mathContext": "Cardinality hierarchy: each strict inclusion (ℚ⊊algebraic, algebraic⊊computable) is a non-cardinality strict inclusion — sets differ qualitatively but share cardinality ℵ₀. The final inclusion computable⊊ℝ is strict by cardinality (ℵ₀<𝔠). The intro frames the goal: prove the countability of {r : ℝ | IsComputable r}."
     },
     {
       "id": "definition",
-      "title": "§2: Definition of IsComputable",
-      "startLine": 72,
-      "endLine": 90,
-      "summary": "Definition `IsComputable (r : ℝ) : Prop := ∃ f : ℕ → ℚ, Computable f ∧ Tendsto (fun n => (f n : ℝ)) atTop (nhds r)`. Captures Turing's original notion via Mathlib's `Computable` predicate.",
-      "mathContext": "The `Computable` predicate in Mathlib is one canonical formalization of TM-computable functions; alternatives include `Primrec` (primitive recursive) and `Partrec` (partial recursive). For our use, `Computable` is the appropriate level — total recursive functions that produce rational approximations."
+      "title": "§2: Namespace, Opens, and IsComputable Definition",
+      "startLine": 100,
+      "endLine": 113,
+      "summary": "Opens `namespace AlgebraicNumbersCountableOQ02OQ04`, brings `Cardinal Filter Classical` into scope, and defines `IsComputable (r : ℝ) : Prop := ∃ f : ℕ → ℚ, Computable f ∧ Tendsto (fun n => (f n : ℝ)) atTop (nhds r)`. Captures Turing's original notion via Mathlib's `Computable` predicate on `ℕ → ℚ`.",
+      "mathContext": "The `Computable` predicate in Mathlib is one canonical formalization of TM-computable functions; alternatives include `Primrec` (primitive recursive) and `Partrec` (partial recursive). For this entry's purposes, `Computable` is the appropriate level — total recursive functions that produce rational approximations whose real images converge."
     },
     {
-      "id": "main-theorem",
-      "title": "§3: Main Theorem (SCAFFOLD)",
-      "startLine": 92,
-      "endLine": 110,
-      "summary": "`computable_reals_countable` (sorry, S1): `Set.Countable {r : ℝ | IsComputable r}`. Cardinal corollary `card_computable_reals_le_aleph0` via `le_aleph0_iff_set_countable`.",
-      "mathContext": "The countability follows from the three-step argument: (1) `Nat.Partrec.Code` is countable, (2) every `Computable` function has a code, (3) image of countable is countable. The cardinal form (≤ℵ₀) is a direct corollary."
+      "id": "upper-bound",
+      "title": "§3 (S3): Upper Bound — codeReal Pipeline",
+      "startLine": 114,
+      "endLine": 227,
+      "summary": "S3 (researcher follow-up). Defines `decodeReal : Nat.Partrec.Code → ℝ` (noncomputable, via `Classical.choose`) decoding each code to the limit of its evaluated rational sequence (0 when undefined). Proves the two pipeline lemmas `exists_code_of_computable_rat_seq` (every `Computable (ℕ → ℚ)` is the eval of some `Nat.Partrec.Code`) and `computable_real_mem_range_decodeReal` (every `IsComputable` real is in `Set.range decodeReal`). Closes the main theorems `computable_reals_countable : Set.Countable {r | IsComputable r}` and `card_computable_reals_le_aleph0 : #{r | IsComputable r} ≤ ℵ₀` via `Set.countable_range` + `Set.Countable.mono`.",
+      "mathContext": "The pipeline factorization is `{r | IsComputable r} ⊆ Set.range decodeReal ⊆ ℝ`, with `Nat.Partrec.Code` countable by `Encodable.countable`. Set-countability transfers across `Set.range` then `Set.Countable.mono` to give `Set.Countable {r | IsComputable r}`, which converts to the cardinal bound `#·≤ℵ₀` via `le_aleph0_iff_set_countable`."
+    },
+    {
+      "id": "lower-bound",
+      "title": "§4 (S2): Lower Bound — ℚ ↪ Computable Reals",
+      "startLine": 229,
+      "endLine": 298,
+      "summary": "S2 (researcher follow-up). Proves five concrete computable witnesses (`rat_isComputable`, `int_isComputable`, `nat_isComputable`, `zero_isComputable`, `one_isComputable`) each by exhibiting a Computable constant sequence converging to the named rational. Combines these into `aleph0_le_card_computable_reals : ℵ₀ ≤ #({r | IsComputable r} : Set ℝ)` via the embedding `ℚ ↪ {r | IsComputable r}`, lifting through `Cardinal.mk_le_of_injective` and `Cardinal.mk_rat = ℵ₀`.",
+      "mathContext": "The five-witness pattern is overkill for `IsComputable q : IsComputable (q : ℝ)` alone, but the explicit `int`/`nat`/`zero`/`one` corollaries serve downstream consumers wanting to exhibit specific elements without re-routing through `rat`. The ℵ₀ lower bound completes one half of `#{r | IsComputable r} = ℵ₀`."
+    },
+    {
+      "id": "exact-equality",
+      "title": "§5 (S4): Exact ℵ₀ Equality",
+      "startLine": 300,
+      "endLine": 316,
+      "summary": "S4 (research synthesis). Combines the §3 upper bound `≤ ℵ₀` with the §4 lower bound `ℵ₀ ≤ ·` via `le_antisymm` to prove `card_computable_reals_eq_aleph0 : #({r | IsComputable r} : Set ℝ) = ℵ₀`. This is the precise cardinal statement: computable reals are *exactly* countably infinite, matching ℚ and the algebraic reals.",
+      "mathContext": "`le_antisymm` of the two bounds gives the exact cardinality. The final form `#·= ℵ₀` is the cleanest cardinal statement: computable reals are not finite (the ℚ-embedding rules that out), not larger than ℵ₀ (the code pipeline rules that out), so exactly ℵ₀. This completes the cardinality picture: ℚ, algebraic, and computable all sit at ℵ₀ in the layered hierarchy below 𝔠 = #ℝ."
     }
   ],
   "conclusion": {
