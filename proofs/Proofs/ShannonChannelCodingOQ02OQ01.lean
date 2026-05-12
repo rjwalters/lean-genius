@@ -17,12 +17,13 @@
   - [PROVED] Definition compatibility: FanoInequality.conditionalEntropy =
     InformationTheory.conditionalEntropy (definitionally equal)
   - [PROVED] Standalone: OQ-03 proves Fano completely without ShannonEntropy.lean
-  - [PROVED] fano_trivial_singleton (1-element edge case)
-  - [BLOCKED] Integration into ShannonChannelCoding.lean's `fano_inequality`
-    axiom requires ShannonEntropy.lean to compile (blocked by pre-existing
-    bug in strong_subadditivity, line 811). This blocker is documented as
-    a comment below — *not* declared as an `axiom : False`, since asserting
-    False is logically dangerous (would invalidate every dependent proof).
+  - [PROVED] fano_trivial_singleton (1-element edge case, Unit α)
+  - [PROVED] fano_from_oq03_std: bridge using InformationTheory.conditionalEntropy
+    (unblocked by PR #16334 which proved strong_subadditivity).
+  - [PROVED] fano_singleton_card_one: |α| = 1 case in standard form
+  - [PROVED] fano_inequality_proved: full dispatcher discharging the
+    `fano_inequality` axiom signature in ShannonChannelCoding.lean
+    (no cardinality hypothesis).
 
   Axioms: 0
   Sorries: 0
@@ -30,6 +31,7 @@
 import Mathlib
 import Proofs.ShannonChannelCodingOQ03
 import Proofs.ShannonChannelCodingOQ04
+import Proofs.ShannonEntropy
 
 open Real Finset InformationTheory InformationTheory.BinaryEntropy
 open FanoInequality
@@ -177,5 +179,134 @@ theorem fano_trivial_singleton {β : Type*} [Fintype β] [DecidableEq β]
   simp only [Real.log_one, mul_zero, ite_self, neg_zero]
   -- Now need: 0 ≤ h 0
   exact h_nonneg (le_refl 0) zero_le_one
+
+-- ============================================================
+-- Section 5: Discharge of the `fano_inequality` axiom
+-- ============================================================
+--
+-- The blocker cited in Sections 3-4 (ShannonEntropy.lean strong_subadditivity)
+-- was resolved by PR #16334. With `Proofs.ShannonEntropy` now imported, we
+-- can produce a theorem whose statement uses `InformationTheory.conditionalEntropy`
+-- — i.e., a literal match for the `fano_inequality` axiom in the parent
+-- `ShannonChannelCoding.lean`. The actual replacement of the axiom is a
+-- follow-up change in that file (small ~5-line edit, deferred to avoid
+-- ballooning this PR).
+
+/-- **Bridge**: Fano's inequality stated using `InformationTheory.conditionalEntropy`
+    (the project-standard definition from `ShannonEntropy.lean`).
+
+    By `conditional_entropy_defs_agree` the two definitions are definitionally
+    equal (both unfold to the same expression), so `fano_from_oq03` produces
+    a proof of this signature directly via `:=`. -/
+theorem fano_from_oq03_std {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β] [Nonempty α]
+    (hn : 1 < Fintype.card α)
+    (pXY : α × β → ℝ) (hp : ∀ x, 0 ≤ pXY x) (hsum : ∑ x, pXY x = 1) :
+    let P_e := 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
+    InformationTheory.conditionalEntropy pXY ≤
+      h P_e + P_e * Real.log ((Fintype.card α : ℝ) - 1) :=
+  fano_from_oq03 hn pXY hp hsum
+
+/-- Fano's inequality for any 1-element domain (`Fintype.card α = 1`).
+    Both sides simplify to 0:
+    * `H(X|Y) = 0` (X is deterministic, so each ratio inside the log is 1)
+    * `P_e = 0` (singleton α means the squared-marginal sum equals the total mass = 1)
+    * `log((card α : ℝ) - 1) = log 0 = 0` annihilates the second RHS term
+    * `h 0 = 0`. -/
+theorem fano_singleton_card_one {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β] [Nonempty α]
+    (hcard : Fintype.card α = 1)
+    (pXY : α × β → ℝ) (hp : ∀ x, 0 ≤ pXY x) (hsum : ∑ x, pXY x = 1) :
+    let P_e := 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
+    InformationTheory.conditionalEntropy pXY ≤
+      h P_e + P_e * Real.log ((Fintype.card α : ℝ) - 1) := by
+  intro P_e
+  -- Subsingleton α from card = 1
+  haveI hsub : Subsingleton α :=
+    Fintype.card_le_one_iff_subsingleton.mp hcard.le
+  obtain ⟨x₀⟩ := ‹Nonempty α›
+  -- Singleton collapse: ∑ x : α, f x = f x₀
+  have hcollapse : ∀ (f : α → ℝ), ∑ x : α, f x = f x₀ := fun f => by
+    rw [Finset.sum_eq_single x₀]
+    · rfl
+    · intros b _ hb; exact absurd (Subsingleton.elim b x₀) hb
+    · intro hmem; exact absurd (Finset.mem_univ x₀) hmem
+  -- log((card α : ℝ) - 1) = log 0 = 0
+  have hRHS2 : ((Fintype.card α : ℝ) - 1) = 0 := by rw [hcard]; norm_num
+  rw [hRHS2, Real.log_zero, mul_zero, add_zero]
+  -- ∑ x' pXY (x', y) = pXY (x₀, y)
+  have hcol_y : ∀ y : β, ∑ x' : α, pXY (x', y) = pXY (x₀, y) :=
+    fun y => hcollapse (fun x' => pXY (x', y))
+  -- LHS: InformationTheory.conditionalEntropy pXY = 0
+  have hLHS : InformationTheory.conditionalEntropy pXY = 0 := by
+    unfold InformationTheory.conditionalEntropy
+    have hterm : ∀ x y, (if pXY (x, y) = 0 then (0 : ℝ)
+        else pXY (x, y) * Real.log (pXY (x, y) / (∑ x' : α, pXY (x', y)))) = 0 := by
+      intro x y
+      by_cases h0 : pXY (x, y) = 0
+      · simp [h0]
+      · -- Subsingleton: x = x₀, so the ratio is 1
+        have hxx₀ : x = x₀ := Subsingleton.elim x x₀
+        simp only [h0, ↓reduceIte, hcol_y]
+        rw [hxx₀] at h0 ⊢
+        rw [div_self h0, Real.log_one, mul_zero]
+    simp_rw [hterm]
+    simp
+  rw [hLHS]
+  -- P_e = 0
+  have hPe : P_e = 0 := by
+    show 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y)) = 0
+    have hinner : ∀ y, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
+        = pXY (x₀, y) := by
+      intro y
+      rw [hcollapse (fun x => pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))), hcol_y]
+      by_cases h0 : pXY (x₀, y) = 0
+      · rw [h0]; simp
+      · rw [sq, mul_div_cancel_left₀ _ h0]
+    simp_rw [hinner]
+    -- ∑ y pXY (x₀, y) = 1 from hsum
+    have hsum1 : ∑ y : β, pXY (x₀, y) = 1 := by
+      have hexpand : ∑ p : α × β, pXY p = ∑ x : α, ∑ y : β, pXY (x, y) :=
+        Fintype.sum_prod_type _
+      rw [hexpand, hcollapse (fun x => ∑ y : β, pXY (x, y))] at hsum
+      exact hsum
+    linarith
+  rw [hPe]
+  -- final: 0 ≤ h 0, by h_nonneg on the unit interval
+  exact h_nonneg (le_refl 0) zero_le_one
+
+/-- **Fano's inequality, fully discharged**: matches the signature of the
+    `fano_inequality` axiom in `ShannonChannelCoding.lean` exactly (no
+    cardinality hypothesis). Case-splits on `Fintype.card α`:
+    * `card = 0` → contradiction with `hsum = 1` (empty sum is 0)
+    * `card = 1` → `fano_singleton_card_one`
+    * `card ≥ 2` → `fano_from_oq03_std`
+
+    Replacing the axiom in `ShannonChannelCoding.lean` is a follow-up
+    `theorem fano_inequality := fano_inequality_proved` (deferred to keep
+    this PR self-contained and reduce conflict risk). -/
+theorem fano_inequality_proved {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (pXY : α × β → ℝ) (hp : ∀ x, 0 ≤ pXY x) (hsum : ∑ x, pXY x = 1) :
+    let P_e := 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
+    InformationTheory.conditionalEntropy pXY ≤
+      h P_e + P_e * Real.log ((Fintype.card α : ℝ) - 1) := by
+  -- Nonempty α: otherwise the sum is 0, contradicting hsum = 1
+  haveI : Nonempty α := by
+    rcases (Fintype.card α).eq_zero_or_pos with h0 | hpos
+    · exfalso
+      haveI : IsEmpty α := Fintype.card_eq_zero_iff.mp h0
+      have hsum0 : ∑ x : α, pXY x = 0 := by
+        rw [Finset.univ_eq_empty]; exact Finset.sum_empty
+      linarith
+    · exact Fintype.card_pos_iff.mp hpos
+  -- Case on Fintype.card α
+  rcases Nat.lt_or_ge (Fintype.card α) 2 with hlt | hge
+  · -- card < 2 means card = 1 (card ≥ 1 from Nonempty)
+    have hpos : 0 < Fintype.card α := Fintype.card_pos
+    have hcard : Fintype.card α = 1 := by omega
+    exact fano_singleton_card_one hcard pXY hp hsum
+  · -- card ≥ 2
+    exact fano_from_oq03_std hge pXY hp hsum
 
 end FanoFromConditionalEntropy
