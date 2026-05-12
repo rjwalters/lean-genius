@@ -1,9 +1,29 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S18c-permutation — coordinate-permutation half of
-the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition framework)
-**Phase note**: S18c-permutation (this PR, researcher-10) — Part 30
+**Phase**: ACT (S18c-orbit-precursor — sign-flip stabilizer cardinality
+`|Stab v| = 2^(# zero coords v)`, this PR)
+**Phase note**: S18c-orbit-precursor (this PR, researcher-11) — Part 31
+adds `signFlipStabilizer_card` inside the existing `namespace S18c`,
+the first concrete step in the deferred S18c-orbit cardinality
+argument. For any `v : Fin 4 → ℤ`,
+
+  `|{ s : SignFlip // applyFlip s v = v }| =
+     2 ^ |{ i : Fin 4 | v i = 0 }|`.
+
+The proof builds an explicit equivalence between the stabilizer and
+`({ i : Fin 4 // v i = 0 } → Bool)` via restriction-to-zero-coordinates;
+the nonzero coordinates carry no information because
+`applyFlip_eq_iff` (Part 29) forces `s i = false` at every nonzero
+coordinate, while the zero coordinates can be flipped freely.
+Combined with the orbit-stabilizer theorem
+`MulAction.orbit_card_dvd_of_finite`, this yields the sign-flip
+orbit cardinality `2^(4 - # zero coords) = 2^(# nonzero coords)`;
+for solutions to `sumSq v = n` with `n > 0`, at least one coordinate
+is nonzero, so the sign-flip orbit has cardinality at least 2 —
+the (ℤ/2)⁴-side contribution to the eventual 8-divisibility argument.
+
+S18c-permutation (PR #17818, researcher-10, 2026-05-12, merged) — Part 30
 adds the **coordinate-permutation half** of the (ℤ/2)⁴ ⋊ S₄
 orbit-decomposition framework as a standalone scaffold (~90 lines,
 0 axioms, 0 sorries). Pure algebra on `Fin 4 → ℤ`, extending Part 29's
@@ -424,6 +444,19 @@ Currently still blocked on Mathlib infrastructure:
   of the outer three levels (full Sublemma 3.1) defers to S18c. Pure
   structural content; no number theory; reuses only `omega`, `linarith`,
   `Int.toNat_of_nonneg`, and `List.toFinset_card_of_nodup`.
+- S18c-orbit-precursor (researcher-11, 2026-05-12, this PR): Part 31 —
+  `signFlipStabilizer_card`. AXIOM-FREE: for any `v : Fin 4 → ℤ`,
+  the sign-flip stabilizer has cardinality `2 ^ k` where
+  `k = (Finset.univ.filter (fun i => v i = 0)).card`. Proof builds an
+  explicit `Equiv` between `{ s : SignFlip // applyFlip s v = v }` and
+  `({ i : Fin 4 // v i = 0 } → Bool)` via restriction-to-zero-coords
+  (forward) and zero-extension (inverse, with the `applyFlip_eq_iff`
+  constraint forcing `false` outside zero coords). Counted via
+  `Fintype.card_fun`, `Fintype.card_bool`, `Fintype.card_subtype`.
+  ~70 lines (2652 → 2723), +1 theorem (144 → 145), 0 new axioms, 0
+  new sorries. Standalone (uses only Part 29's `applyFlip_eq_iff`);
+  precursor to the deferred S18c-orbit cardinality argument
+  (`orbitCard_dvd_eight_of_pos_target_decl`).
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -463,15 +496,25 @@ Currently still blocked on Mathlib infrastructure:
      `orbitCard_dvd_eight_of_pos_target_decl` placeholder. ~140 lines,
      0 axioms, 0 sorries. Standalone — doesn't depend on r4Count
      reformulation; pure algebra on `Fin 4 → ℤ`.
-   - **S18c-permutation (Part 30, THIS PR)**: coordinate-permutation
-     action on `Fin 4 → ℤ`. Adds `applyPerm`, `applyPerm_apply`,
-     `applyPerm_one`, `applyPerm_mul`, `sumSq_applyPerm`,
-     `applyPerm_inv_apply`, `applyPerm_bijective`, `applyPerm_eq_iff`,
-     and `example : Fintype.card (Equiv.Perm (Fin 4)) = 24`. ~90 lines,
+   - **S18c-permutation (Part 30, PR #17818, MERGED 2026-05-12)**:
+     coordinate-permutation action on `Fin 4 → ℤ`. Adds `applyPerm`,
+     `applyPerm_apply`, `applyPerm_one`, `applyPerm_mul`,
+     `sumSq_applyPerm`, `applyPerm_inv_apply`, `applyPerm_bijective`,
+     `applyPerm_eq_iff`, and
+     `example : Fintype.card (Equiv.Perm (Fin 4)) = 24`. ~90 lines,
      0 axioms, 0 sorries. Companion to Part 29; extends the existing
      `namespace S18c` scaffold. `sumSq_applyPerm` reuses Part 29's
      `sumSq_reindex` specialised at `σ.symm`; `applyPerm_mul` is `rfl`
      via the `Equiv.Perm` group instance.
+   - **S18c-orbit-precursor (Part 31, THIS PR)**: sign-flip stabilizer
+     cardinality `|Stab v| = 2^(# zero coords v)` via an explicit
+     equivalence to `({ i : Fin 4 // v i = 0 } → Bool)`. Adds
+     `signFlipStabilizer_card` inside `namespace S18c`, +~70 lines,
+     0 axioms, 0 sorries. This is the (ℤ/2)⁴-side contribution to
+     the orbit-stabilizer count: by `MulAction.orbit_card_dvd_of_finite`,
+     `|Orbit_(ℤ/2)⁴ v| = 16 / 2^k = 2^(4-k) = 2^(# nonzero coords)`.
+     For `n > 0`, at least one coordinate is nonzero, so the orbit
+     has size ≥ 2.
    - **S18c-orbit (next)**: invoke `MulAction.orbit_card_dvd_of_finite`
      (Mathlib v4.26.0 per spec §3.8). Case analysis on the zero /
      coincidence pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` to show
