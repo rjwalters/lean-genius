@@ -40,6 +40,17 @@
     "definitionCount": 4,
     "additionalFiles": [
       "Proofs/AngleTrisectionOQ02OQ01OQ02Aristotle.lean"
+    ],
+    "prerequisites": [
+      "Field extensions and degree [K:F] via Module.finrank",
+      "Tower law: [L:F] = [L:K]·[K:F] (Mathlib.LinearAlgebra.Dimension.Finrank)",
+      "Minimal polynomial over ℚ (Polynomial.minpoly)",
+      "Eisenstein's irreducibility criterion (Mathlib.RingTheory.Polynomial.Eisenstein)",
+      "Galois groups: Polynomial.Gal (Mathlib.FieldTheory.Galois.Basic)",
+      "IntermediateField and the Galois correspondence (Mathlib.FieldTheory.IntermediateField)",
+      "2-group structure: |G| = 2^k for some k",
+      "Triple-angle identity: cos(3θ) = 4cos³(θ) − 3cos(θ)",
+      "7th cyclotomic polynomial and Chebyshev polynomials (background)"
     ]
   },
   "parent": "angle-trisection-oq-02-oq-01",
@@ -54,6 +65,14 @@
       "The tower law `Module.finrank_mul_finrank` from Mathlib handles the multiplicativity of degrees, the key algebraic fact connecting individual quadratic steps to the total degree",
       "The gap between the degree criterion (necessary) and the Galois criterion (necessary and sufficient) is significant: degree being a power of 2 is necessary but not sufficient, while the Galois group being a 2-group gives the full characterization",
       "The five remaining sorries identify a clear development path: Eisenstein for irreducibility, degree computation for the cos(20°) polynomial, and the deep bridge connecting the inductive constructibility definition to the tower degree"
+    ],
+    "prerequisites": [
+      "Compass-and-straightedge constructions: each step adjoins at most one square root, building a tower of quadratic extensions",
+      "Field extensions and the tower law for finite-dimensional vector spaces",
+      "Minimal polynomial and degree of an algebraic number over ℚ",
+      "Triple-angle formula for cosine and its connection to the polynomial 8x³ − 6x − 1 satisfied by cos(20°)",
+      "Galois theory at the level of finite separable extensions; Galois group as Aut(L/ℚ)",
+      "Structure of 2-groups (every group of order 2^k is solvable / has nontrivial center)"
     ]
   },
   "sections": [
@@ -119,6 +138,99 @@
       "targetId": "abel-ruffini",
       "relationship": "related",
       "description": "The Abel-Ruffini theorem uses Galois theory to prove insolvability of quintics; the Wantzel criterion uses the same machinery for constructibility."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "IsConstructible",
+      "type": "definition",
+      "description": "Inductive definition: a complex number is constructible iff it is rational or arises from rationals/constructibles by a quadratic extension `sqrt_ext`. Each constructor corresponds to a compass step. The induction encodes the tower-of-quadratic-extensions structure of constructible numbers.",
+      "leanType": "IsConstructible : ℂ → Prop  (constructors: rational, sqrt_ext)"
+    },
+    {
+      "name": "not_constructible_of_bad_degree",
+      "type": "core",
+      "description": "Wantzel's degree criterion (necessity): if α's minimal polynomial p is irreducible and deg(p) is not a power of 2, then α is not constructible. The bridge theorem connecting the inductive `IsConstructible` to the tower-degree argument. Currently has a `sorry` — completing it requires connecting `IsConstructible` to Mathlib's `IntermediateField` machinery.",
+      "leanType": "{p : ℚ[X]} (hp : Irreducible p) (hdeg : ¬ DegreePowerOfTwo p) → ∀ α : ℂ, Polynomial.aeval α p = 0 → ¬ IsConstructible α"
+    },
+    {
+      "name": "cube_root_2_minpoly_irred",
+      "type": "supporting",
+      "description": "x³ − 2 is irreducible over ℚ — the minimal polynomial of ∛2. Proved via Mathlib's Eisenstein criterion at p = 2 over ℤ, then lifted to ℚ via `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`. This is the algebraic witness for the cube-doubling impossibility.",
+      "leanType": "Irreducible (X ^ 3 - C 2 : ℚ[X])"
+    },
+    {
+      "name": "cos20_minpoly_degree",
+      "type": "supporting",
+      "description": "The polynomial 8x³ − 6x − 1 satisfied by cos(20°) (from the triple-angle formula cos(3θ) = 4cos³(θ) − 3cos(θ) with θ = 20° and cos(60°) = 1/2) has natDegree = 3. Proved by `norm_num` with degree-computation lemmas. The cubic-not-quadratic fact is the algebraic heart of the trisection impossibility.",
+      "leanType": "(8 * X ^ 3 - 6 * X - 1 : ℚ[X]).natDegree = 3"
+    },
+    {
+      "name": "three_not_pow_two",
+      "type": "supporting",
+      "description": "Arithmetic key: 3 is not a power of 2. Proved by `interval_cases k <;> simp_all` — eliminating k=0 (2⁰=1), k=1 (2¹=2), and k≥2 (2^k≥4). This single arithmetic step is what closes all three classical impossibilities once the degree-3 minimal polynomial is exhibited.",
+      "leanType": "¬ DegreePowerOfTwo (X ^ 3 - C 2 : ℚ[X])"
+    },
+    {
+      "name": "angle_trisection_impossible_degree",
+      "type": "core",
+      "description": "Impossibility of trisecting a general angle by compass and straightedge: the minimal polynomial of cos(20°) has degree 3, which is not 2^k, so cos(20°) is not constructible. Since trisecting a 60° angle requires constructing cos(20°), the trisection is impossible. Reduces to `cos20_degree_not_pow_two`.",
+      "leanType": "¬ DegreePowerOfTwo (8 * X ^ 3 - 6 * X - 1 : ℚ[X])"
+    },
+    {
+      "name": "doubling_cube_impossible_degree",
+      "type": "core",
+      "description": "Impossibility of doubling the cube (the Delian problem): ∛2 satisfies x³ − 2 of degree 3, not 2^k, so ∛2 is not constructible. Reduces to `three_not_pow_two`. The same arithmetic fact (3 ≠ 2^k) that closes the trisection also closes the cube-doubling problem.",
+      "leanType": "¬ DegreePowerOfTwo (X ^ 3 - C 2 : ℚ[X])"
+    },
+    {
+      "name": "regular_7gon_impossible_degree",
+      "type": "core",
+      "description": "Impossibility of constructing a regular 7-gon: cos(2π/7) satisfies a polynomial of degree 3 (derived from the 7th cyclotomic polynomial Φ₇(x) under the substitution x = e^{2πi/7} + e^{-2πi/7}). Specifically, cos(2π/7) is a root of 8x³ + 4x² − 4x − 1. Since 3 is not a power of 2, the 7-gon is not constructible.",
+      "leanType": "¬ DegreePowerOfTwo (8 * X ^ 3 + 4 * X ^ 2 - 4 * X - 1 : ℚ[X])"
+    },
+    {
+      "name": "wantzel_galois_iff",
+      "type": "core",
+      "description": "Full Wantzel–Galois characterization (necessary AND sufficient): an algebraic number α is constructible iff the Galois group of its minimal polynomial is a 2-group (|G| = 2^k). Strengthens `not_constructible_of_bad_degree`: degree being a power of 2 is necessary but not sufficient — the Galois group must additionally be a 2-group. Currently stated; proof relies on Mathlib's Galois correspondence (`IntermediateField.orderIsoOfGal`) and 2-group structure theory.",
+      "leanType": "{p : ℚ[X]} (hp : Irreducible p) (α : ℂ) → IsConstructible α ↔ IsTwoGroup p.Gal"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Pierre Laurent Wantzel"],
+      "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
+      "year": "1837",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
+      "note": "Wantzel's 1837 paper establishing the degree criterion: a real number constructible by compass and straightedge has minimal polynomial of degree a power of 2. Resolves the trisection, cube-doubling, and regular 7/9/11/13-gon problems in one stroke. The first proof of any of the ancient Greek impossibility results."
+    },
+    {
+      "authors": ["Carl Friedrich Gauss"],
+      "title": "Disquisitiones Arithmeticae",
+      "year": "1801",
+      "venue": "Section VII (Constructio polygonorum regularium), pp. 412–489",
+      "note": "Gauss's 1801 work establishing the sufficiency of the constructibility criterion for regular n-gons: an n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. Famously included the regular 17-gon (Fermat prime, F₂ = 2² + 1 = 17). The complement to Wantzel's necessity proof."
+    },
+    {
+      "authors": ["Évariste Galois"],
+      "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
+      "year": "1846",
+      "venue": "Journal de Mathématiques Pures et Appliquées, vol. 11, pp. 381–444 (posthumous)",
+      "note": "Galois's foundational memoir introducing the Galois group of a polynomial. The full Wantzel–Galois theorem (constructibility ⇔ 2-group Galois group) was articulated by later authors building on Galois's framework; in this file `wantzel_galois_iff` is stated using Mathlib's `Polynomial.Gal`."
+    },
+    {
+      "authors": ["David A. Cox"],
+      "title": "Galois Theory",
+      "year": "2012",
+      "venue": "Pure and Applied Mathematics (Hoboken), 2nd ed., John Wiley & Sons, Ch. 10",
+      "note": "Modern graduate text with a complete treatment of Wantzel's theorem (Ch. 10) — both the degree-necessity direction and the 2-group-sufficiency direction. The reference for filling the `sorry` in `not_constructible_of_bad_degree` and for the full `wantzel_galois_iff` characterization."
+    },
+    {
+      "authors": ["The Mathlib Community"],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides `Module.finrank_mul_finrank` (tower law), `Polynomial.Gal`, `IntermediateField`, and `Polynomial.irreducible_of_eisenstein_criterion` (used here for x³ − 2). The file uses these as black boxes; the Galois-correspondence infrastructure for the wantzel_galois_iff sorry is also in Mathlib (`IntermediateField.orderIsoOfGal`)."
     }
   ],
   "leanFile": {
