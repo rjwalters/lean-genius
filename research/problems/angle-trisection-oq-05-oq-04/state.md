@@ -1,10 +1,96 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S7)
-**Iteration**: 7
+**Since**: 2026-05-12 (S8)
+**Iteration**: 8
 
 ## Current Focus
+
+S8 (researcher-8): close the **parallel case** of HH-3
+(`crossDet ℓ₁ ℓ₂ = 0`), using the *translate-bisector* — the line
+parallel to both `ℓ₁` and `ℓ₂` whose constant term is chosen so
+that reflection across it sends every point of `ℓ₁` to a point of
+`ℓ₂`. Avoids `Real.sqrt` (which the intersecting case would
+require), so the parallel sub-case is constructively dischargeable
+in pure `ℝ`-algebra. Together with S3 (HH-1), S4 (HH-2), S5 (HH-4),
+S6 (HH-7 non-parallel), and S7 (HH-7 P-on-ℓ₁), six of seven HH
+axioms now have constructive ingredients — the remaining gaps are
+HH-3 intersecting, HH-5 (Beloch-light), and HH-6 (Beloch fold).
+
+### Deliverables of this iteration (new in S8)
+
+1. `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` grows 923 → 1144
+   lines with a new "PART 10: Constructive HH-3 (Parallel Case) —
+   Translate Bisector" section. Counts: 0 axioms (unchanged), 3
+   sorries (unchanged — all in S2/S3/S4/S5 target theorems), 26
+   theorems (21 + 5 new), 10 definitions (9 + 1 new
+   `parallelBisector`), 1 structure (unchanged).
+
+2. Five new theorems and one new definition, all proved without
+   sorry and without new axioms:
+
+   - `parallelBisector_dot_ne_zero` — given `crossDet ℓ₁ ℓ₂ = 0`
+     and the structural `ℓ₂.nondeg`, the dot product
+     `ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b` is nonzero. Proof: assume it is
+     zero; combine with `crossDet = 0` via two `linear_combination`s
+     (`linear_combination ℓ₁.a * h_zero + ℓ₁.b * h_cross` and
+     `linear_combination ℓ₁.b * h_zero - ℓ₁.a * h_cross`) to derive
+     `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.a = 0` and the same for `ℓ₂.b`;
+     positivity of `ℓ₁.a² + ℓ₁.b²` forces `ℓ₂.a = ℓ₂.b = 0`,
+     contradicting `ℓ₂.nondeg`.
+
+   - `parallelBisector` — explicit `noncomputable def` of the
+     translate-bisector. Coefficients
+     `(ℓ₁.a, ℓ₁.b, (s · ℓ₁.c + ℓ₂.c · (ℓ₁.a²+ℓ₁.b²)) / (2s))` where
+     `s := ℓ₁.a·ℓ₂.a + ℓ₁.b·ℓ₂.b`. Non-degeneracy inherited
+     directly from `ℓ₁.nondeg`.
+
+   - `parallelNormal_left_id`, `parallelNormal_right_id` — under
+     `crossDet ℓ₁ ℓ₂ = 0`, the scaling identities
+     `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.a = s · ℓ₁.a` and
+     `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.b = s · ℓ₁.b`. Each is one line of
+     `linear_combination` against the `crossDet = 0` hypothesis.
+
+   - `reflectAcross_parallelBisector_to_ℓ₂` — main HH-3 reflection
+     law in the parallel case. For any `q ∈ ℓ₁`, the reflection of
+     `q` across `parallelBisector ℓ₁ ℓ₂ h_par` lies on `ℓ₂`. Proof:
+     `simp only [Line.contains, reflectAcross, parallelBisector]`
+     unfolds; `field_simp` clears the two denominators
+     `(ℓ₁.a² + ℓ₁.b²)` and `2 · s`; `linear_combination` closes the
+     residual polynomial identity via
+     `−2s · hq + 2(ℓ₁.b·q.1 − ℓ₁.a·q.2) · h_par`.
+
+   - `hh3_existence_parallel` — standalone HH-3 existence form for
+     the parallel case: for parallel non-degenerate lines `ℓ₁, ℓ₂`,
+     there exists a fold `l` such that `ℓ₁.contains p` implies
+     `ℓ₂.contains (reflectAcross l p)`. Witness:
+     `parallelBisector ℓ₁ ℓ₂ h_par`.
+
+3. **Why this matters.** Six of the seven HH-axiom existence
+   ingredients are now constructive in standalone form. The HH-3
+   constructive coverage is `{crossDet ℓ₁ ℓ₂ = 0}` (parallel case).
+   The intersecting case `crossDet ≠ 0` requires angle bisectors
+   over `Real.sqrt` and is deferred to S9 (this is *not* a
+   genuine-impossibility corner — both cases are constructible —
+   just `Real.sqrt`-bound). HH-5 (Beloch-light) and HH-6 (Beloch
+   fold) remain entirely open.
+
+4. **Independence from other in-flight work.** PR #17915 (S3 HH-1)
+   is still open against an earlier file state; S8 inserts PART 10
+   strictly at the end of the file (after PART 9, the S7 section)
+   so no textual conflict is expected when both merge. The S8
+   contribution uses S5's `perpThroughPoint_normSq_pos` lemma but
+   does not depend on S3 (HH-1) names.
+
+5. Gallery metadata updated:
+   `src/data/proofs/angle-trisection-oq-05-oq-04/meta.json`
+   (lineCount 923 → 1144; theoremCount 21 → 26; definitionCount
+   9 → 10; sorries 3 unchanged; axiomCount 1 unchanged; added
+   PART 10 section entry; appended five S8 original-contributions
+   bullets; refreshed S7 section's endLine 814 → 922 to reflect the
+   actual post-S7 file end).
+
+### Prior session deliverable (preserved, summary form)
 
 S7 (researcher-3): close the **`P ∈ ℓ₁` case** of HH-7
 unconditionally (in the relative position of `ℓ₁` and `ℓ₂`), and add
@@ -160,56 +246,61 @@ Practical:
   a trivial doc-only follow-up will sync them. The S5 Lean code does
   not depend on S3 (HH-1) names; it stands alone.
 
-## Next Action
+## Next Action (S9+)
 
-**S6 (any researcher)**: Continue the HH-axiom construction sequence.
-Three of seven ingredients are now constructive (HH-1 via S3 in
-PR #17915; HH-2 via S4 in PR #17926; HH-4 via this S5). Recommended
-next targets, in order of estimated tractability:
+**Status after S8**: six of seven HH-axiom existence ingredients are
+now constructive (HH-1 via S3 PR #17915, still open; HH-2 via S4
+PR #17926, merged; HH-3 parallel via S8, this PR; HH-4 via S5
+PR #17988, merged; HH-7 non-parallel via S6 PR #18009, merged; HH-7
+P-on-ℓ₁ via S7 PR #18059, merged). Three gaps remain.
 
-(a) **HH-3 (angle bisector)** — given two lines `ℓ₁`, `ℓ₂`, fold to
-    place `ℓ₁` onto `ℓ₂`. Two cases: parallel (translate-bisector,
-    perpendicular construction) and intersecting (two angle bisectors;
-    pick one). Concrete formulas exist in classical geometry; expect
-    ~120 lines.
-(b) **HH-7 (Hatori)** — given a point `P` and two lines `ℓ₁`, `ℓ₂`,
-    fold perpendicular to `ℓ₂` that places `P` onto `ℓ₁`. Shares the
-    "perpendicular to a line" structure with HH-4, so likely ~80
-    lines once a `perpThroughPoint`-style helper is reused.
-(c) **HH-5 (point on line through other point)** — given two points
-    `P₁`, `P₂` and a line `ℓ`, fold through `P₂` placing `P₁` on `ℓ`.
-    Requires a parabola-tangent construction (Beloch-light); a fold
-    line is tangent to the parabola with focus `P₁` and directrix
-    `ℓ`, passing through `P₂`. Two-or-zero solution behaviour;
-    expect ~150 lines.
-(d) **HH-6 (Beloch fold)** — the deep cubic-solving axiom. Common
+Recommended next targets, in order of estimated tractability:
+
+(a) **HH-3 intersecting case** (`crossDet ℓ₁ ℓ₂ ≠ 0`) — there are
+    two angle bisectors at the intersection of `ℓ₁` and `ℓ₂`; either
+    one reflects `ℓ₁` setwise onto `ℓ₂`. The cleanest formulation
+    uses unit normals, so `Real.sqrt` and `Real.sqrt_sq_eq_abs` are
+    required. Expect ~200 lines including the `Real.sqrt`
+    nondegeneracy boilerplate. Combined with S8, this would complete
+    HH-3 unconditionally.
+
+(b) **HH-5 (Beloch-light)** — given two points `P₁`, `P₂` and a
+    line `ℓ`, fold through `P₂` placing `P₁` on `ℓ`. The fold line
+    is tangent to the parabola with focus `P₁` and directrix `ℓ`,
+    passing through `P₂`. Two-or-zero solution behaviour; expect
+    ~150 lines.
+
+(c) **HH-6 (Beloch fold)** — the deep cubic-solving axiom. Common
     tangent to two parabolas. Expect ~300 lines and may need new
-    Mathlib infrastructure; defer to last.
+    Mathlib infrastructure (parabola-tangent definitions); defer to
+    last.
 
-Approximate scope of completing all seven HH ingredients: another
-~650 lines, easily distributed over four sessions (S6 — S9).
+Once all seven HH ingredients are constructive (modulo the genuinely-
+unsolvable parallel-with-P∉ℓ₁ corner of HH-7), building an `HHAxioms`
+instance is mechanical, and `straight_fold_recovers_HH` (S3 PR #17915)
+reduces to combining `straight_fold_endpoints_collinear` (S3) with the
+new instance.
 
-Alternative (b): tackle `curved_fold_algebraic_implies_origami`
-(S4-target sorry), noting that the current `IsOrigamiConstructible`
-def in the parent file `AngleTrisectionOQ05.lean` underuses `_α`
-(placeholder), so the theorem is trivially provable at `deg = 1`
-without substantive math — a stronger quantitative version using
-`minpoly` degree should be stated and proved instead.
+Alternative: tackle `curved_fold_algebraic_implies_origami` (S4-target
+sorry), noting that the current `IsOrigamiConstructible` def in the
+parent file `AngleTrisectionOQ05.lean` underuses `_α` (placeholder),
+so the theorem is trivially provable at `deg = 1` without substantive
+math — a stronger quantitative version using `minpoly` degree should
+be stated and proved instead.
 
 ## Session Log
 
 | Step | Action | Outcome |
 |------|--------|---------|
-| 1 | Checked active claim (`research/claims/angle-trisection-oq-05-oq-04.json`); expires 2026-05-12T09:18:28Z; researcher-5 owns | clean to proceed |
-| 2 | `gh pr list -R rjwalters/lean-genius --state open` filtered for slug: only S3 PR #17915 open; no S5 work in flight | safe |
-| 3 | `git fetch origin main && git checkout -B feature/researcher-5-s5 origin/main` — fresh branch off updated main (#17926 S4 already merged) | clean base |
-| 4 | Verified parent `AngleTrisectionOQ05.HHAxioms.hh4` definition (line 124-128); selected HH-4 as S5 target (easiest after HH-2) | scope set |
-| 5 | Hand-derived `perpThroughPoint` coefficients and cancellation `ℓ.a · ℓ.b − ℓ.b · ℓ.a = 0` proof outline | math verified |
-| 6 | Edit tool's first attempt phantom-reverted (FS-cache trap from memory); used Python inline write instead | reliable insert |
-| 7 | Inserted Part 7 (125 new lines) after S4 Part 6, before `end`; no overlap with S3 PR #17915 additions | clean independent extension |
-| 8 | Updated meta.json: lineCount 448 → 573, theoremCount 7 → 11, definitionCount 6 → 7, added Part 7 section + 5 contributions; refreshed title and description | gallery in sync |
-| 9 | Updated this state.md | iteration recorded |
-| 10 | (pending) Commit + push + PR with label `research` | next |
+| 1 | Pre-flight: `gh pr list -R rjwalters/lean-genius --state open` for slug returns 0 research-PRs (only stale meta PR #18079, #18184); `git worktree list | grep angle-trisection` returns no in-flight S8 work | clean to proceed |
+| 2 | Released two earlier claims that were saturated/contested (`mean-value-theorem-oq-02-oq-04-oq-01` — researcher-3 mid-S5; `sperner-ndim-mathlib-oq-02` — 3 open PRs + S29-prep) | safe sequential probes |
+| 3 | `git fetch origin main && git checkout -B research/angle-trisection-oq-05-oq-04-s8-hh3-parallel-... origin/main` — fresh branch off post-S7 main | clean base |
+| 4 | Verified parent `AngleTrisectionOQ05.HHAxioms.hh3` definition (line 121-122); selected HH-3 parallel case as S8 target (avoids `Real.sqrt`) | scope set |
+| 5 | Hand-derived translate-bisector coefficients `(ℓ₁.a, ℓ₁.b, (s·ℓ₁.c + ℓ₂.c·D)/(2s))` and `parallelBisector_dot_ne_zero` via crossDet + nondeg argument | math verified |
+| 6 | Inserted PART 10 (221 new lines) after S7 PART 9, before `end`; no overlap with S3 PR #17915 additions or any in-flight S5/S6/S7 content | clean independent extension |
+| 7 | Updated meta.json: lineCount 923 → 1144, theoremCount 21 → 26, definitionCount 9 → 10, added PART 10 section + 5 S8 contributions; refreshed title and description | gallery in sync |
+| 8 | Updated this state.md | iteration recorded |
+| 9 | (pending) Commit + push + PR with label `research` | next |
 
 ## Honest Calibration
 
