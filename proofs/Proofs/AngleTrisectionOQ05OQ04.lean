@@ -811,4 +811,113 @@ theorem hh7_existence_nonparallel :
   intro q hq
   exact reflectAcross_hatoriFold_preserves_ℓ₂ p ℓ₁ ℓ₂ h_nonpar q hq
 
+
+-- ============================================================
+-- PART 9: Constructive HH-7 (P-on-ℓ₁ Case) — Identity-Like Fold (S7)
+-- ============================================================
+
+/-
+### PART 9 overview (S7)
+
+S3–S6 produced four of the seven HH-axiom constructive ingredients:
+S3 (HH-1, through two points), S4 (HH-2, perpendicular bisector),
+S5 (HH-4, perpendicular through point), and S6 (HH-7, Hatori fold
+in the non-parallel case `crossDet ℓ₁ ℓ₂ ≠ 0`).
+
+S6's docstring noted that the **unconditional** HH-7 requires a case
+analysis on `crossDet ℓ₁ ℓ₂ = 0`. In the parallel case, the splitting
+hypothesis `ℓ₁.contains P` controls solvability:
+
+* `P ∈ ℓ₁`  — any fold through `P` fixes `P`, so the perpendicular
+  fold through `P` to `ℓ₂` (S5's `perpThroughPoint P ℓ₂`) preserves
+  `ℓ₂` setwise and keeps `P` on `ℓ₁` trivially.
+* `P ∉ ℓ₁ ∧ ℓ₁ ∥ ℓ₂` — genuinely unsolvable. A fold perpendicular to
+  `ℓ₂` is also perpendicular to `ℓ₁` (parallel directions), so its
+  reflection preserves perpendicular distance to `ℓ₁`. Hence `P ∉ ℓ₁`
+  forces `reflectAcross l P ∉ ℓ₁`.
+
+PART 9 discharges the **`P ∈ ℓ₁` case unconditionally** (no parallelism
+hypothesis is needed — the same fold works whether `ℓ₁` and `ℓ₂` are
+parallel or not). Together with PART 8 (non-parallel case), this
+leaves only the genuinely-unsolvable parallel-with-`P ∉ ℓ₁` sliver
+open — consistent with S6's analysis.
+
+### Deliverables of this iteration (new in S7)
+
+1. `reflectAcross_self_of_contains` — generic lemma: a point on a
+   line is fixed by reflection across that line (the numerator of the
+   reflection parameter vanishes, so `t = 0`). Reusable in any future
+   HH-existence proof where the input point already lies on the fold.
+
+2. `hh7_existence_p_on_ℓ₁` — standalone existence form for HH-7 in the
+   `P ∈ ℓ₁` case. The witness is `perpThroughPoint P ℓ₂`; the proof
+   combines `perpThroughPoint_contains` (S5), this section's
+   `reflectAcross_self_of_contains`, and
+   `reflectAcross_perpThroughPoint_preserves` (S5).
+
+3. Combined with `hh1_existence` (S3, PR #17915), `hh2_existence` (S4),
+   `hh4_existence` (S5), and `hh7_existence_nonparallel` (S6), this
+   leaves only HH-3 (angle bisector), HH-5 (Beloch-light), and HH-6
+   (Beloch fold) plus the genuinely-unsolvable parallel-with-`P ∉ ℓ₁`
+   sliver of HH-7 outstanding.
+
+No new axiom, no new sorry, no change to existing assumption count.
+-/
+
+/-- A point on a line is fixed by reflection across that line. Direct
+consequence of `reflectAcross`'s definition: the numerator
+`2 · (l.a · p.1 + l.b · p.2 + l.c)` of the reflection parameter `t`
+equals zero whenever `p ∈ l`, so `t = 0` and `reflectAcross l p = p`.
+
+This is a generic primitive useful well beyond HH-7: any HH-axiom
+construction whose input point already lies on a chosen fold can skip
+the explicit reflection-equation calculation and conclude fixedness
+directly. -/
+theorem reflectAcross_self_of_contains (l : Line) (p : Point)
+    (hp : l.contains p) :
+    reflectAcross l p = p := by
+  have h0 : 2 * (l.a * p.1 + l.b * p.2 + l.c) = 0 := by
+    have hp' : l.a * p.1 + l.b * p.2 + l.c = 0 := hp
+    linarith
+  simp only [reflectAcross, h0, zero_div, zero_mul, sub_zero, Prod.mk.eta]
+
+/-- **HH-7 (existence form, P-on-ℓ₁ case, standalone).** For any
+point `P` lying on `ℓ₁` and any second line `ℓ₂`, there exists a fold
+line perpendicular to `ℓ₂` whose reflection sends `P` to a point of
+`ℓ₁` (namely `P` itself, since the fold passes through `P`) and
+preserves `ℓ₂` setwise.
+
+**Witness.** `perpThroughPoint P ℓ₂` (S5): the line through `P`
+perpendicular to `ℓ₂`. Three facts close the proof:
+  * `perpThroughPoint_contains` (S5): `P` lies on the witness fold.
+  * `reflectAcross_self_of_contains` (S7): hence `reflectAcross witness P = P`.
+  * `reflectAcross_perpThroughPoint_preserves` (S5): the witness preserves
+    `ℓ₂` setwise.
+
+**Coverage.** This case is *unconditional* in `ℓ₁, ℓ₂` — the same fold
+works regardless of whether the two lines are parallel. Together with
+S6's `hh7_existence_nonparallel` (which covers
+`crossDet ℓ₁ ℓ₂ ≠ 0` with no constraint on `P`), the only HH-7 case
+left open is `crossDet ℓ₁ ℓ₂ = 0 ∧ P ∉ ℓ₁`, which per S6's analysis
+is genuinely unsolvable (a fold perpendicular to `ℓ₂` in the parallel
+configuration also moves perpendicular to `ℓ₁`, hence preserves
+perpendicular distance to `ℓ₁`, so `P ∉ ℓ₁` is preserved).
+
+Combined with the four prior HH-existence theorems (S3 HH-1, S4 HH-2,
+S5 HH-4, S6 HH-7 non-parallel), the constructive HH coverage is now:
+HH-1, HH-2, HH-4 fully unconditional; HH-7 unconditional union of
+`crossDet ≠ 0` and `P ∈ ℓ₁`. -/
+theorem hh7_existence_p_on_ℓ₁ :
+    ∀ (p : Point) (ℓ₁ ℓ₂ : Line), ℓ₁.contains p →
+    ∃ l : Line, ℓ₁.contains (reflectAcross l p) ∧
+      ∀ q : Point, ℓ₂.contains q → ℓ₂.contains (reflectAcross l q) := by
+  intro p ℓ₁ ℓ₂ hp
+  refine ⟨perpThroughPoint p ℓ₂, ?_, ?_⟩
+  · -- The fold passes through P, so reflection fixes P; P is on ℓ₁ by hypothesis.
+    rw [reflectAcross_self_of_contains _ _ (perpThroughPoint_contains p ℓ₂)]
+    exact hp
+  · -- ℓ₂ preservation is exactly S5's reflectAcross_perpThroughPoint_preserves.
+    intro q hq
+    exact reflectAcross_perpThroughPoint_preserves p ℓ₂ q hq
+
 end AngleTrisectionOQ05OQ04
