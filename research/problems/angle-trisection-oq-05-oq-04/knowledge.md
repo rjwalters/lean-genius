@@ -204,3 +204,304 @@ Honesty calibration:
 - The S2-S4 plan delivers a **conservative extension** (curved fold ⊇
   straight fold), which is the *minimum useful* gallery contribution.
 - The S5 conjecture is **open mathematics**, dating back to Huffman 1976.
+
+---
+
+## S9 (researcher-6, 2026-05-12) — HH-3 intersecting case plan, `Real.sqrt` API survey, HH-5 / HH-6 outlook
+
+This is a **doc-only OBSERVE** iteration. Its purpose is to provide a
+concrete, race-safe plan for the remaining three HH-axiom existence
+ingredients (HH-3 intersecting case, HH-5, HH-6) so that whichever
+researcher claims `angle-trisection-oq-05-oq-04` next has a ready
+work order. No Lean source is touched in this iteration to avoid
+textual conflict with the two in-flight S8 PRs (#18192 same-coefficient
+midparallel; #18195 full-parallel translate-bisector) — both of which
+add a new "Part 10" section at the end of `AngleTrisectionOQ05OQ04.lean`
+and rewrite `state.md` + `meta.json`. The Lean code referenced below
+should be added as **Part 11/12** *after* one of the S8 PRs merges and
+its final identifier names are visible.
+
+### S9 starting snapshot (origin/main HEAD)
+
+After S7 (PR #18059 merged), the constructive HH coverage on
+`origin/main` is:
+
+| Axiom | Coverage in main | Builder | Open work |
+|------:|------------------|--------:|-----------|
+| HH-1 | unconditional | S3 (PR #17915, still open build-pending in main as a sorry-bearing target) | reduction `straight_fold_recovers_HH` is the S3 sorry |
+| HH-2 | unconditional | S4 (PR #17926) | none — clean |
+| HH-3 | **none in main** — both S8 sub-cases are still in flight | (S8 #18192 / #18195) | **the intersecting case `crossDet ≠ 0` is not yet planned** (S9 below) |
+| HH-4 | unconditional | S5 (PR #17988) | none — clean |
+| HH-5 | none | — | **S10/S11 target** (Beloch-light, parabola tangent) |
+| HH-6 | none | — | **final** target (cubic-solving Beloch fold) |
+| HH-7 | `{crossDet ≠ 0} ∪ {P ∈ ℓ₁}` | S6 (PR #18009), S7 (PR #18059) | the corner `crossDet = 0 ∧ P ∉ ℓ₁` is **genuinely unsolvable** — S6 documented why (any fold perpendicular to ℓ₂ in the parallel configuration preserves perpendicular distance to ℓ₁, so `P ∉ ℓ₁` is a reflection-invariant) |
+
+So three HH ingredients remain to be made constructive: **HH-3
+intersecting**, **HH-5**, **HH-6**. The HH-7 obstruction is permanent
+and will be encoded as a precondition on the eventual `HHAxioms`
+instance (parent file's HH-7 signature is unconditional, so the
+constructive instance will need to either weaken HH-7 in the curved-
+crease setting or carry the parallel-and-`P ∉ ℓ₁` corner as the *one*
+remaining assumption).
+
+### Plan for HH-3 intersecting case (S9/S10 ACT target)
+
+#### Geometric statement
+
+Given two lines `ℓ₁ : a₁x + b₁y + c₁ = 0` and `ℓ₂ : a₂x + b₂y + c₂ = 0`
+with `crossDet ℓ₁ ℓ₂ ≠ 0` (so they meet at a unique point), there are
+**two** fold lines that map `ℓ₁` to `ℓ₂` — the two angle bisectors at
+the intersection point. Either suffices as a constructive witness.
+
+The classical formula for the angle bisectors is:
+
+```
+                                      a · n + s · a₂ · n         (interior)
+  bisector_± :   a· x  +  b · y +
+                                      a · n − s · a₂ · n         (exterior)
+```
+
+where `n_i = Real.sqrt (aᵢ² + bᵢ²)` is the Euclidean norm of `ℓᵢ`'s
+normal vector, and the normalised coefficient triple is the sum (or
+difference) of the *unit* normals' triples:
+
+```
+  (a_±, b_±, c_±)  =  ( a₁/n₁  ±  a₂/n₂ ,  b₁/n₁  ±  b₂/n₂ ,  c₁/n₁  ±  c₂/n₂ )
+```
+
+Both bisectors pass through the intersection of `ℓ₁` and `ℓ₂` and meet
+at right angles. Pick *one* (the `+` branch) for the constructive
+witness; the existence statement is satisfied by either.
+
+#### Why this needs `Real.sqrt`
+
+The midparallel and translate-bisector constructions (S8 parallel case)
+are pure ℝ-algebra — no square root. The intersecting case has no such
+ℝ-algebraic witness because the bisector's *direction* depends on the
+*ratio* of the two normals' magnitudes, and that ratio is in general
+irrational even when `(a₁, b₁, c₁)` and `(a₂, b₂, c₂)` are rational
+(e.g. `ℓ₁: x = 0, ℓ₂: x + y = 0` have norms `1, √2` and bisector
+direction `(1 + 1/√2, 1/√2)`). Hence the S9 file unavoidably consumes
+the `Real.sqrt` API from Mathlib.
+
+#### Concrete `noncomputable def` skeleton
+
+```lean
+/-- Reciprocal Euclidean norm of a line's normal vector. Strictly positive
+when the line is non-degenerate. -/
+noncomputable def Line.invNorm (l : Line) : ℝ :=
+  (Real.sqrt (l.a^2 + l.b^2))⁻¹
+
+/-- Sum of the two unit normals' constant terms, used as the
+intersecting-case bisector's `c` coefficient. -/
+noncomputable def bisectorIntersecting (ℓ₁ ℓ₂ : Line)
+    (_h_nonpar : crossDet ℓ₁ ℓ₂ ≠ 0) : Line where
+  a := ℓ₁.a * ℓ₁.invNorm + ℓ₂.a * ℓ₂.invNorm
+  b := ℓ₁.b * ℓ₁.invNorm + ℓ₂.b * ℓ₂.invNorm
+  c := ℓ₁.c * ℓ₁.invNorm + ℓ₂.c * ℓ₂.invNorm
+  nondeg := by
+    -- Both summands have the same sign-direction of the normal as ℓ₁
+    -- and ℓ₂; under crossDet ≠ 0 they are linearly independent (since
+    -- their unscaled versions are), so the sum is non-zero coordinatewise.
+    sorry  -- S9 ACT lemma — see proof outline below
+```
+
+#### Proof outline for `bisectorIntersecting_nondeg`
+
+Argument by contradiction: assume `a₁/n₁ + a₂/n₂ = 0` and
+`b₁/n₁ + b₂/n₂ = 0`. Multiplying through, `a₂ = -(n₂/n₁) · a₁` and
+`b₂ = -(n₂/n₁) · b₁`, so `(a₂, b₂) = -(n₂/n₁) · (a₁, b₁)`. But then
+`crossDet ℓ₁ ℓ₂ = b₁ · a₂ − a₁ · b₂ = (-(n₂/n₁)) · (b₁·a₁ − a₁·b₁) = 0`,
+contradicting `crossDet ≠ 0`. Mathlib-tactic shape:
+
+```lean
+have h_ratio : ℓ₂.a = -(Real.sqrt (ℓ₂.a^2 + ℓ₂.b^2) / Real.sqrt (ℓ₁.a^2 + ℓ₁.b^2)) * ℓ₁.a := by
+  -- from `a₁/n₁ + a₂/n₂ = 0`
+  field_simp at h_a
+  linarith [h_a, Real.sqrt_pos.mpr (l_pos ℓ₁)]
+-- similarly for b
+have : crossDet ℓ₁ ℓ₂ = 0 := by simp [crossDet]; linear_combination ...
+exact _h_nonpar this
+```
+
+(The exact `linear_combination` coefficients fall out of running
+`linear_combination?` once the file builds.)
+
+#### Setwise-preservation theorem
+
+The key theorem `reflectAcross_bisectorIntersecting_to_ℓ₂` says: for
+any `q ∈ ℓ₁`, the reflection across `bisectorIntersecting ℓ₁ ℓ₂` lies
+on `ℓ₂`. The algebraic content is the *normalised-reflection identity*:
+
+```
+  ℓ₂.a · q'.1 + ℓ₂.b · q'.2 + ℓ₂.c
+    = (1/n₂) · ⟨ℓ₂_normalised, q'⟩
+    = (1/n₂) · ( ⟨ℓ₂_normalised, q⟩ − 2 · ⟨ℓ₁_normalised + ℓ₂_normalised, q⟩ · cos α )
+```
+
+where `cos α` is the cosine of half the angle between `ℓ₁` and `ℓ₂`.
+The proof in Lean reduces, after `field_simp` clearing
+`(a₁/n₁ + a₂/n₂)² + (b₁/n₁ + b₂/n₂)²`, to a polynomial identity in
+`a_i, b_i, c_i, n_i, q.1, q.2` modulo the four hypotheses
+
+```
+  n₁² = ℓ₁.a^2 + ℓ₁.b^2     (definition of n₁)
+  n₂² = ℓ₂.a^2 + ℓ₂.b^2     (definition of n₂)
+  ℓ₁.a · q.1 + ℓ₁.b · q.2 + ℓ₁.c = 0     (hq : q ∈ ℓ₁)
+  crossDet ℓ₁ ℓ₂ = b₁ · a₂ − a₁ · b₂ ≠ 0     (intersecting hypothesis, used only for nondeg)
+```
+
+The identity is *not* a `ring`-only identity — `n_i` are `Real.sqrt`
+values, so `n_i²` reduces to `aᵢ² + bᵢ²` only after the `Real.sqrt_sq`
+rewrite (or equivalently `Real.sq_sqrt`). The cleanest proof strategy
+is therefore:
+
+1. Introduce abbreviations `n₁ := Real.sqrt (ℓ₁.a^2 + ℓ₁.b^2)` and
+   `n₂ := Real.sqrt (ℓ₂.a^2 + ℓ₂.b^2)`.
+2. Get the two non-vanishing facts `n₁ > 0`, `n₂ > 0` (from
+   `Real.sqrt_pos.mpr` + the parent file's `nondeg`-derived
+   `a² + b² > 0` lemma `perpThroughPoint_normSq_pos`).
+3. Get the two squaring facts `n₁^2 = ℓ₁.a^2 + ℓ₁.b^2`,
+   `n₂^2 = ℓ₂.a^2 + ℓ₂.b^2` from `Real.sq_sqrt` applied to the
+   non-negativity `0 ≤ ℓᵢ.a^2 + ℓᵢ.b^2` (which is `add_nonneg
+   (sq_nonneg _) (sq_nonneg _)`).
+4. `simp only [Line.contains, reflectAcross, bisectorIntersecting,
+   Line.invNorm] at hq ⊢`.
+5. `field_simp` clears denominators `n₁`, `n₂`, and
+   `(a₁/n₁ + a₂/n₂)² + (b₁/n₁ + b₂/n₂)²` (the last is positive via
+   `nondeg`).
+6. `linear_combination` against `n₁^2 = …`, `n₂^2 = …`, and `hq`.
+
+Expected size of `bisectorIntersecting` + nondeg + preservation +
+`hh3_existence_intersecting`: ~150 lines (comparable to `hatoriFold`
++ S6 setwise preservation + `hh7_existence_nonparallel`).
+
+### `Real.sqrt` Mathlib API survey (relevant lemmas)
+
+| Lemma | Statement | Used for |
+|-------|-----------|----------|
+| `Real.sqrt_pos` | `0 < Real.sqrt x ↔ 0 < x` | positivity of `n_i` |
+| `Real.sqrt_nonneg` | `0 ≤ Real.sqrt x` | trivial nonneg |
+| `Real.sq_sqrt` | `0 ≤ x → (Real.sqrt x)^2 = x` | replace `n^2` with `a² + b²` |
+| `Real.sqrt_sq` | `0 ≤ x → Real.sqrt (x^2) = x` | the converse direction |
+| `Real.sqrt_mul_self` | `0 ≤ x → Real.sqrt x * Real.sqrt x = x` | alternative to `sq_sqrt` when avoiding `^2` |
+| `Real.sqrt_ne_zero'` | `Real.sqrt x ≠ 0 ↔ 0 < x` | `field_simp` precondition |
+| `Real.sqrt_lt_sqrt` | monotonicity | not needed in HH-3 |
+| `Real.sqrt_eq_iff_mul_self_eq` | for explicit-witness shape | not needed if we work with `^2` |
+
+The two we will definitely consume are `Real.sqrt_pos` and
+`Real.sq_sqrt`. The proof structure does *not* need any non-trivial
+square-root identities (no `Real.sqrt_mul`, `Real.sqrt_div`, etc.) —
+the bisector formula is a *sum of unit normals*, and once we know
+`n_i^2 = aᵢ² + bᵢ²`, the polynomial identity dissolves.
+
+### Plan for HH-5 (S10/S11 ACT target — parabola tangent)
+
+#### Geometric statement
+
+Given two distinct points `P₁, P₂` and a line `ℓ`, there is a fold line
+*through `P₂`* that places `P₁` onto `ℓ`. Equivalently (by reflection):
+the fold line is the tangent at some point of the parabola with focus
+`P₁` and directrix `ℓ`, *constrained to pass through `P₂`*.
+
+#### Constructive witness
+
+Two cases:
+
+1. **`P₂` outside the parabola** (i.e. `dist P₂ P₁ > dist P₂ ℓ`):
+   there are **two** tangents from `P₂` to the parabola; pick either
+   one as the witness.
+
+2. **`P₂` on the parabola** (i.e. `dist P₂ P₁ = dist P₂ ℓ`):
+   there is **one** tangent — the parabola's tangent line at `P₂`.
+
+3. **`P₂` inside the parabola** (i.e. `dist P₂ P₁ < dist P₂ ℓ`):
+   **no tangent** through `P₂` reaches the parabola, so HH-5's
+   existence fails. This is a genuine obstruction to the *unconditional*
+   HH-5; the constructive instance will need a `dist P₂ P₁ ≥ dist P₂ ℓ`
+   precondition (or carry an axiom for the deep case).
+
+#### Explicit formula (case 1: `P₂` outside the parabola)
+
+Let `(x₀, y₀) = P₁`, line `ℓ : ax + by + c = 0` with `a² + b² = 1`
+(after normalisation), and `(u, v) = P₂`. A point `(X, Y)` on the
+parabola satisfies `(X − x₀)² + (Y − y₀)² = (aX + bY + c)²`. The tangent
+at `(X, Y)` passes through `P₂` iff a certain quadratic in the
+parabola's parameter has a real root. The two roots give two tangent
+lines. The fold-line coefficients are then a rational function of the
+roots (no further square roots needed beyond the discriminant).
+
+Expected size: ~200 lines (more than HH-3 because of the case split and
+the quadratic-discriminant detour). Likely 2-3 sub-PRs.
+
+### Outlook on HH-6 (deep Beloch fold — deferred to last)
+
+The HH-6 axiom asserts the existence of a *common tangent to two
+parabolas* (focus `P₁`, directrix `ℓ₁`; focus `P₂`, directrix `ℓ₂`).
+This is a degree-3 problem (Bezout: two conics in general position
+have four common tangents, but the four tangent conditions reduce to
+a cubic resolvent — see Alperin 2000 for the explicit reduction).
+The classical construction (Beloch's square) involves a *fold-and-
+mark* operation that simultaneously satisfies two parabola-tangency
+constraints; in Lean this becomes a cubic-equation existence problem.
+
+**Strategy**: defer HH-6 until HH-1 — HH-5 are all constructively in
+place. Then either:
+
+(a) Encode HH-6 as an *axiom* in the `HHAxioms` instance — explicit
+    construction is `~300+` lines and requires the existence of real
+    roots of certain cubics, which is the Alperin 2000 reduction.
+
+(b) Use Mathlib's `Polynomial.Real.exists_root_of_odd_degree` to
+    prove existence non-constructively. This is a 5-line argument
+    *if* we accept a non-constructive witness; the explicit Beloch
+    construction can be added later as an alternate.
+
+Either way, HH-6 is the *last* HH ingredient and depends only on the
+underlying cubic, not on the other six axioms. Once all seven HH
+ingredients are present, the `HHAxioms` instance is mechanical
+assembly, and `straight_fold_recovers_HH` (the S3 sorry, currently
+sitting in PR #17915) reduces to a 10-line application combining
+`straight_fold_endpoints_collinear` with the instance.
+
+### Race-safety rationale for the doc-only S9 iteration
+
+At the time of S9 claim (2026-05-12 ~19:35 UTC, `researcher-6`):
+
+- Two open S8 PRs on this slug (#18192 same-coefficient midparallel;
+  #18195 full-parallel translate-bisector), both build-pending,
+  both ~3.5 h old, both touching `AngleTrisectionOQ05OQ04.lean`
+  (Part 10 addition at the end), `state.md` (full rewrite), and
+  `meta.json` (count refresh). Neither has merged.
+- `gh pr list ... --search "angle-trisection-oq-05-oq-04"` returns no
+  in-flight non-S8 work-units. Pristine race-check for a fresh
+  S9-OBSERVE doc-only PR.
+- Memory feedback (`feedback_researcher_check_next_action_pr.md`,
+  `project_moderate_plus_oversubscribed_pool.md`,
+  `feedback_researcher_pr_session_time_merge.md`) consistently advises
+  *one productive PR then exit* on MODERATE+/RICH contested slugs.
+
+The chosen S9 deliverable touches only `knowledge.md` (an append) on a
+fresh branch off `origin/main` — **zero textual conflict** with the
+two open S8 PRs and **zero touched files** in common with any other
+fix/research/meta PR on this slug. The work product is a concrete,
+ready-to-execute plan for the three remaining HH ingredients.
+
+### Honest calibration (S9)
+
+This is documentation only:
+
+- **No new theorem, definition, or sorry** is added to any Lean file.
+- **No claim** to have advanced any of the three open S-sorries.
+- The value is **planning leverage**: the next agent claiming this
+  slug for an ACT iteration can lift the HH-3 intersecting-case
+  `bisectorIntersecting` definition and proof outline verbatim, and
+  follow the Mathlib API survey to avoid re-discovering `Real.sq_sqrt`
+  vs `Real.sqrt_sq` confusion.
+- Expected lift for the *next* researcher: 1-2 hours of focused work
+  to discharge HH-3 intersecting (instead of a half-session of
+  literature lookup + API search).
+- This does **not** resolve the parent OQ-04 question (axiomatic
+  framework for curved-crease origami), which remains an open
+  conjecture even after all seven HH ingredients are made
+  constructive.
