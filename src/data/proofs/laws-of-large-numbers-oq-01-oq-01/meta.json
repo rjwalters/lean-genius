@@ -148,12 +148,20 @@
       "mathContext": "Standard probability-space prelude: $Ω$ a measurable space, $μ$ a probability measure (so $μ(Ω) = 1$). All subsequent statements are quantified over this fixed probability space."
     },
     {
-      "id": "slln-necessity-theorem",
-      "title": "Theorem `slln_necessity` (Statement and Wrap)",
+      "id": "slln-necessity-docstring",
+      "title": "Theorem Docstring: Six-Step Contradiction in Prose",
       "startLine": 50,
+      "endLine": 62,
+      "summary": "13-line Lean docstring restating Kolmogorov's biconditional and the proof strategy in narrative form. Reiterates the six-step contradiction in compact prose: assume non-integrability, apply layer cake to get a divergent tail series, apply BC2 (variance-Chebyshev under pairwise independence) to get the exceedance event a.s., and contradict the Cesàro decay forced by SLLN. Provides the reading entry point — a user can understand the theorem without reading the formal signature first.",
+      "mathContext": "Prose form of the contradiction: $\\neg \\mathrm{Integrable}(X_0) \\Rightarrow E[|X_0|]=\\infty \\Rightarrow \\sum_n P(|X_n|>n)=\\infty \\Rightarrow P(|X_n|>n \\text{ i.o.})=1$ versus $\\mathrm{SLLN} \\Rightarrow \\frac{X_n}{n}\\to 0$ a.s. $\\Rightarrow |X_n|\\le n$ eventually a.s. The docstring is the prose blueprint for the formal proof below."
+    },
+    {
+      "id": "slln-necessity-statement-and-proof",
+      "title": "Theorem `slln_necessity` (Formal Statement and Delegation)",
+      "startLine": 63,
       "endLine": 72,
-      "summary": "The headline theorem: 13-line documentation followed by the formal Lean signature. Hypotheses: a sequence `X : ℕ → Ω → ℝ`, each `Measurable`, `Pairwise IndepFun`, all `IdentDistrib` to `X 0`, and `∃ c, sample mean → c a.s.`. Conclusion: `Integrable (X 0) μ`. The proof body is a single delegating term referencing the companion's `slln_necessity_statement`.",
-      "mathContext": "Formal statement: $\\forall (X_i)_{i \\in \\mathbb{N}}\\colon$ pairwise-independent, identically-distributed, measurable, with $\\frac{1}{n}\\sum_{i<n} X_i(\\omega) \\to c$ a.s.\\ for some $c\\in\\mathbb{R}$, then $E[|X_0|] < \\infty$."
+      "summary": "Formal Lean signature: `X : ℕ → Ω → ℝ` with `Measurable`, `Pairwise IndepFun`, `IdentDistrib` to `X 0`, and `∃ c, sample mean → c a.s.`, concluding `Integrable (X 0) μ`. The proof body is a single delegating term `LawsOfLargeNumbersOQ01.slln_necessity_statement X hmeas hindep hident hslln` — no tactics, no `by`. The thinness is deliberate: this 10-line theorem hides a 723-line Aristotle companion that supplies the full chain.",
+      "mathContext": "Formal statement: $\\forall (X_i)_{i \\in \\mathbb{N}}\\colon$ pairwise-independent, identically-distributed, measurable, with $\\frac{1}{n}\\sum_{i<n} X_i(\\omega) \\to c$ a.s.\\ for some $c\\in\\mathbb{R}$, then $E[|X_0|] < \\infty$. Proof term: `LawsOfLargeNumbersOQ01.slln_necessity_statement X hmeas hindep hident hslln` — single application of the companion lemma, exposing zero new proof obligations at this layer."
     },
     {
       "id": "namespace-close",
