@@ -26,6 +26,45 @@
     "originalContributions": [
       "powerMean_tendsto_max: M_r(x) → max(x) as r → +∞, proved by squeezing between max·n^{-1/r} and max",
       "powerMean_tendsto_min: M_r(x) → min(x) as r → -∞, proved by duality with the max case via M_r(x) = (M_{-r}(1/x))⁻¹"
+    ],
+    "prerequisites": [
+      "Unweighted power mean M_r(x) = (Σ xᵢ^r / n)^{1/r} on a finite, nonempty index type ι",
+      "Filter convergence in Lean 4 (Filter.atTop, Filter.atBot, Filter.Tendsto)",
+      "Squeeze theorem under filters (tendsto_of_tendsto_of_tendsto_of_le_of_le')",
+      "Continuity of x ↦ c^x at 0 via Tendsto.rpow",
+      "Order-reversing behavior of inversion on positive reals (used in sup'(1/x) = 1/inf'(x))"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "tendsto_inv_atTop_zero",
+        "description": "r⁻¹ → 0 as r → +∞. The driving limit behind tendsto_const_rpow_neg_inv_atTop.",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Tendsto.rpow",
+        "description": "Continuity of r ↦ c^r: from Tendsto c→c and Tendsto t→0, derive Tendsto c^t→c^0=1. Used to lift -r⁻¹→0 through the exponent.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Continuity"
+      },
+      {
+        "theorem": "tendsto_of_tendsto_of_tendsto_of_le_of_le'",
+        "description": "Filter version of the squeeze theorem: eventually-bounded between two convergent functions implies convergence to the shared limit.",
+        "module": "Mathlib.Order.Filter.Topology"
+      },
+      {
+        "theorem": "Filter.tendsto_neg_atBot_atTop",
+        "description": "The map r ↦ -r sends Filter.atBot to Filter.atTop. Used to reduce the r → -∞ case to the r → +∞ case in powerMean_tendsto_min.",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Real.inv_rpow",
+        "description": "(x⁻¹)^r = (x^r)⁻¹ for 0 ≤ x. Combined with Real.rpow_neg and inv_inv to prove (xᵢ⁻¹)^{-r} = xᵢ^r, the algebraic core of the duality identity.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.exists_max_image / Finset.exists_min_image",
+        "description": "On a nonempty Finset, the image of any function attains a max/min — used to extract the index i₀ realizing the extremum.",
+        "module": "Mathlib.Data.Finset.Order"
+      }
     ]
   },
   "overview": {
@@ -55,6 +94,78 @@
       "Formalize the full Pythagorean means interpolation: HM ≤ GM ≤ AM as special cases of the power mean monotonicity chain"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "tendsto_const_rpow_neg_inv_atTop",
+      "type": "supporting",
+      "description": "Key auxiliary limit: for any c > 0, c^{-1/r} → 1 as r → +∞. Proved by composing -r⁻¹ → 0 with continuity of c^·.",
+      "leanType": "{c : ℝ} (hc : 0 < c) → Filter.Tendsto (fun r : ℝ => c ^ (-r⁻¹)) Filter.atTop (nhds 1)"
+    },
+    {
+      "name": "powerMean_le_sup",
+      "type": "supporting",
+      "description": "Upper bound for the squeeze: for r > 0, M_r(x) ≤ max(x). Each xᵢ^r ≤ M^r summed and divided by n preserves this; raising to 1/r > 0 preserves it again.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) {r : ℝ} (hr : 0 < r) → powerMean x r ≤ Finset.univ.sup' Finset.univ_nonempty x"
+    },
+    {
+      "name": "sup_mul_pow_le_powerMean",
+      "type": "supporting",
+      "description": "Lower bound for the squeeze: for r > 0, max(x) · n^{-1/r} ≤ M_r(x). From the maximizer's single-term contribution M^r ≤ Σ xᵢ^r, divide by n and raise to 1/r.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) {r : ℝ} (hr : 0 < r) → Finset.univ.sup' Finset.univ_nonempty x * (Fintype.card ι : ℝ) ^ (-r⁻¹) ≤ powerMean x r"
+    },
+    {
+      "name": "powerMean_tendsto_max",
+      "type": "core",
+      "description": "Main +∞ limit: M_r(x) → max(x) as r → +∞. Squeezed between M · n^{-1/r} → M (using tendsto_const_rpow_neg_inv_atTop) and the constant M.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) → Filter.Tendsto (fun r => powerMean x r) Filter.atTop (nhds (Finset.univ.sup' Finset.univ_nonempty x))"
+    },
+    {
+      "name": "powerMean_tendsto_min",
+      "type": "core",
+      "description": "Main -∞ limit: M_r(x) → min(x) as r → -∞. Reduces to the max case via the duality identity M_r(x) = (M_{-r}(1/x))⁻¹ and the filter composition atBot →(negation)→ atTop.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) → Filter.Tendsto (fun r => powerMean x r) Filter.atBot (nhds (Finset.univ.inf' Finset.univ_nonempty x))"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kolmogorov, Andrey N.",
+      "title": "Sur la notion de la moyenne",
+      "year": "1930",
+      "venue": "Atti della Reale Accademia Nazionale dei Lincei. Rendiconti, 12, 388–391",
+      "note": "Axiomatic characterization of the quasi-arithmetic means (later called Kolmogorov–Nagumo means). The power means M_r form the canonical one-parameter family connecting min, GM, AM, and max."
+    },
+    {
+      "authors": "Nagumo, Mitio",
+      "title": "Über eine Klasse der Mittelwerte",
+      "year": "1930",
+      "venue": "Japanese Journal of Mathematics, 7, 71–79",
+      "doi": "10.4099/jjm1924.7.0_71",
+      "note": "Independent characterization (with Kolmogorov) of the quasi-arithmetic means. Both papers were published the same year and are jointly credited."
+    },
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Theorems 3, 4, and 5 in §2.9 establish the extreme limits M_r → max, M_r → min, and M_r → GM. The squeeze approach used here mirrors HLP's argument for Theorem 4."
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications, Vol. 560, Springer (Kluwer)",
+      "doi": "10.1007/978-94-017-0399-4",
+      "note": "Chapter III §3 surveys the power-mean limit theorems. Theorem 3 (Limit Theorem) states all three limits — at 0 (GM), at +∞ (max), and at -∞ (min) — in the unified form proved across this entry and its sibling amgm-inequality-oq-03-oq-02."
+    },
+    {
+      "authors": "Mathlib contributors",
+      "title": "Mathlib.Analysis.SpecialFunctions.Pow.Real and Mathlib.Order.Filter.AtTopBot",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/SpecialFunctions/Pow/Real.html",
+      "note": "Provides `Real.rpow` arithmetic (rpow_nonneg, rpow_le_rpow, inv_rpow, rpow_neg), filter limits (tendsto_inv_atTop_zero, tendsto_const_nhds, Tendsto.rpow), and the squeeze tactic tendsto_of_tendsto_of_tendsto_of_le_of_le'."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
