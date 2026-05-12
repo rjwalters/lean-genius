@@ -117,4 +117,92 @@ theorem card_computable_reals_le_aleph0 :
     (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) ≤ ℵ₀ :=
   le_aleph0_iff_set_countable.mpr computable_reals_countable
 
+/-! ## S2 — Lower bound: every rational is computable
+
+The upper bound `card_computable_reals_le_aleph0` rests on the main `sorry`.
+The lower bound `ℵ₀ ≤ #{r | IsComputable r}` is unconditional: it follows
+from the embedding `ℚ ↪ {r | IsComputable r}` via `q ↦ (q : ℝ)`, witnessed
+by the constant rational sequence.
+
+This S2 deliverable adds, with no new axioms or sorries:
+
+* `rat_isComputable q : IsComputable (q : ℝ)` — every rational is a computable
+  real, via the constant sequence `fun _ => q`. Uses `Computable.const`
+  (with `Primcodable ℚ` from `Mathlib.Data.Rat.Denumerable`) and
+  `tendsto_const_nhds`.
+* Specialisations to ℕ, ℤ, 0, 1.
+* `aleph0_le_card_computable_reals : ℵ₀ ≤ #{r | IsComputable r}` — cardinal
+  lower bound. The injection `ℚ → {r | IsComputable r}` sends `q ↦ ⟨(q : ℝ), …⟩`;
+  injectivity uses `Rat.cast` injectivity on ℝ; the count uses `Cardinal.mk_rat`.
+* `card_computable_reals_eq_aleph0` — exact ℵ₀ equality, contingent only on
+  the main `sorry` (no new assumptions).
+-/
+
+/-- **S2 lemma**: every rational real is computable, witnessed by the constant
+    sequence `fun _ => q`.
+
+    *Proof*. Take `f := fun _ => q`. Then `Computable f` is
+    `Computable.const q` (uses `Primcodable ℚ` via
+    `Mathlib.Data.Rat.Denumerable`), and the limit of `(f n : ℝ)` is just
+    `tendsto_const_nhds`. -/
+theorem rat_isComputable (q : ℚ) : IsComputable (q : ℝ) :=
+  ⟨fun _ => q, Computable.const q, tendsto_const_nhds⟩
+
+/-- **S2 lemma** — every integer is computable, via `rat_isComputable` and the
+    integer-to-rational cast `(n : ℤ) → (n : ℚ) → (n : ℝ)`. -/
+theorem int_isComputable (n : ℤ) : IsComputable (n : ℝ) := by
+  have h := rat_isComputable (n : ℚ)
+  simpa using h
+
+/-- **S2 lemma** — every natural number is computable. -/
+theorem nat_isComputable (n : ℕ) : IsComputable (n : ℝ) := by
+  have h := rat_isComputable (n : ℚ)
+  simpa using h
+
+/-- **S2 lemma** — zero is computable. -/
+theorem zero_isComputable : IsComputable (0 : ℝ) := by
+  simpa using rat_isComputable 0
+
+/-- **S2 lemma** — one is computable. -/
+theorem one_isComputable : IsComputable (1 : ℝ) := by
+  simpa using rat_isComputable 1
+
+/-- **S2 main result — cardinal lower bound**: there are at least ℵ₀ computable
+    real numbers.
+
+    *Proof*. The map `ι : ℚ → {r : ℝ | IsComputable r}` defined by
+    `q ↦ ⟨(q : ℝ), rat_isComputable q⟩` is injective: if
+    `ι q₁ = ι q₂` then their underlying real values are equal, and
+    `Rat.cast` is injective on ℝ. Hence `#ℚ ≤ #{r | IsComputable r}`,
+    and `Cardinal.mk_rat : #ℚ = ℵ₀` finishes. -/
+theorem aleph0_le_card_computable_reals :
+    ℵ₀ ≤ (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) := by
+  let ι : ℚ → ({r : ℝ | IsComputable r} : Set ℝ) :=
+    fun q => ⟨(q : ℝ), rat_isComputable q⟩
+  have hinj : Function.Injective ι := by
+    intro q₁ q₂ hq
+    have hv : ((q₁ : ℝ)) = ((q₂ : ℝ)) := by
+      have := congrArg Subtype.val hq
+      simpa [ι] using this
+    exact_mod_cast hv
+  have hcard : (#ℚ : Cardinal) ≤ #({r : ℝ | IsComputable r} : Set ℝ) :=
+    Cardinal.mk_le_of_injective hinj
+  simpa [Cardinal.mk_rat] using hcard
+
+/-! ## Exact ℵ₀ equality (contingent on the main `sorry`)
+
+Combining the (sorry-dependent) upper bound with the unconditional lower
+bound yields the exact cardinality.
+-/
+
+/-- **Conditional corollary**: once `computable_reals_countable` is discharged
+    (target of S3+), the computable reals have cardinality exactly ℵ₀.
+
+    This statement adds no new assumptions — it is a pure consequence of
+    `card_computable_reals_le_aleph0` (currently rests on the main `sorry`)
+    and `aleph0_le_card_computable_reals` (unconditional, S2). -/
+theorem card_computable_reals_eq_aleph0 :
+    (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) = ℵ₀ :=
+  le_antisymm card_computable_reals_le_aleph0 aleph0_le_card_computable_reals
+
 end AlgebraicNumbersCountableOQ02OQ04
