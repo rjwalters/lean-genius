@@ -1,0 +1,133 @@
+{
+  "slug": "roth-theorem-oq-02",
+  "title": "Formalize the Bloom-Sisask bound r_3(N) = O(N / (log N)^{1+c})",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists c > 0,\\; \\exists N_0,\\; \\forall N \\ge N_0,\\; r_3(N) \\le \\frac{N}{(\\log N)^{1+c}}\\quad\\text{(Bloom--Sisask, 2020).}",
+    "plain": "Bloom and Sisask (arXiv:2007.03528, 2020) gave the first quantitative upper bound on the Roth number r_3(N) that breaks the logarithmic barrier: r_3(N) = O(N / (log N)^{1+c}) for an absolute constant c > 0. Mathlib v4.26.0 names this bound in the docstring of `rothNumberNat` but has no Lean theorem stating or proving it. This slug tracks formalization of that landmark statement.",
+    "whyMatters": [
+      "First quantitative break past the logarithmic barrier for r_3(N), open since Roth (1953).",
+      "Stepping stone to Kelley-Meka (2023): the Bohr-set and Bogolyubov machinery built for Bloom-Sisask is reused (and refined) by Kelley-Meka.",
+      "Mathlib gap-filler: forces a clean Lean development of Bogolyubov-Ruzsa on Bohr sets and a reusable density-increment iteration framework (both flagged in the roth-theorem-k3-oq-01 annotations).",
+      "Bridges with siblings: roth-theorem-k3-oq-01 already states Bloom-Sisask as one of four landmark bounds with the proof left as a sorry; this slug provides the proof target.",
+      "Bloom & Sisask received the European Prize in Combinatorics (2021) in part for this result."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "rothNumberNat N <= N (trivial; Mathlib `rothNumberNat_le`).",
+      "Behrend lower bound: rothNumberNat n >= n * exp(-c * sqrt(log n)) (Mathlib `Mathlib.Combinatorics.Additive.AP.Three.Behrend`).",
+      "Subadditivity rothNumberNat (M + N) <= rothNumberNat M + rothNumberNat N (Mathlib `rothNumberNat_add_le`).",
+      "Qualitative Roth: any 3-AP-free subset of [1, N] has density o(1) (gallery `roth-theorem`).",
+      "Roth via dyadic intervals: r_3(N) = o(N) (gallery `roth-theorem-k3`)."
+    ],
+    "open": [
+      "Quantitative upper bound `rothNumberNat N <= N / (log N)^{1+c}` (this slug).",
+      "Roth's original 1953 quantitative bound `rothNumberNat N = O(N / log log N)` (not yet formalized either).",
+      "Kelley-Meka (2023): `rothNumberNat N <= N * exp(-c (log N)^{1/12})`."
+    ],
+    "goal": "Provide a Lean statement of the Bloom-Sisask bound matching the Mathlib `rothNumberNat` docstring goal, and establish a roadmap for the Bohr-set / quantitative Bogolyubov / density-increment infrastructure required for a full proof."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T09:30:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE scaffold: literature survey, Mathlib API snapshot, ranked infrastructure gap list, three S2 candidates.",
+    "blockers": [
+      "No Mathlib Bohr-set library (BohrSet T rho not defined).",
+      "No quantitative Bogolyubov on Bohr sets in Mathlib.",
+      "No density-increment iteration framework in Mathlib.",
+      "No AP3-specific Fourier level-set / energy lemmas in Mathlib."
+    ],
+    "nextAction": "S2-A (recommended): create `proofs/Proofs/RothTheoremOQ02.lean` with the Bloom-Sisask statement as a single `axiom rothNumberNat_bloom_sisask` matching the Mathlib docstring goal, plus a proven `bloom_sisask_implies_qualitative` consequence. Status `axiomatized`, badge `axiom`, sorries 0, axioms 1.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "OBSERVE: literature chronology (Roth 1953 -> Heath-Brown/Szemeredi 1987-90 -> Bourgain 1999, 2008 -> Sanders 2011 -> Bloom 2012 -> Bloom-Sisask 2020 -> Kelley-Meka 2023) and Mathlib v4.26.0 snapshot. Bloom-Sisask is named as the target in the Mathlib `rothNumberNat` module docstring but has no Lean statement or proof. Three S2 candidates produced (axiom-statement, axiom+consistency check, Bohr-set scaffold); S2-A recommended for next iteration.",
+    "builtItems": [
+      "research/problems/roth-theorem-oq-02/problem.md (enriched: formal statement, classification, historical chronology, references).",
+      "research/problems/roth-theorem-oq-02/knowledge.md (Mathlib v4.26.0 API snapshot at pin 2df2f0150c275ad, gap-ranking, S2 candidates).",
+      "research/problems/roth-theorem-oq-02/state.md (S1 OBSERVE state, next-action plan).",
+      "src/data/research/problems/roth-theorem-oq-02.json (this gallery research entry)."
+    ],
+    "insights": [
+      "Mathlib v4.26.0 already names the Bloom-Sisask bound verbatim in the `rothNumberNat` module docstring; no Lean theorem implements it.",
+      "Mathlib has all the elementary Roth-number API (ThreeAPFree, addRothNumber, rothNumberNat, Behrend lower bound) but none of the heavy Fourier-analytic infrastructure required for quantitative upper bounds.",
+      "The Mathlib gap list ranks Bohr-set definition first (~200 lines), then regularity (~400), then quantitative Bogolyubov on Bohr sets (~600), then density-increment framework (~300), then AP3 Fourier interface (~400), then the iteration + final bound (~500). Total ~2,400 lines across 5-8 PRs.",
+      "Sibling roth-theorem-k3-oq-01 already lists Bloom-Sisask as one of four landmark bounds (Roth/Behrend/Bloom-Sisask/Kelley-Meka) with the proof left as a sorry. This slug refines the focus to Bloom-Sisask alone.",
+      "Realistic single-iteration target: S2-A axiom-form statement file (~80 lines Lean) gives the gallery a typed landmark immediately; the infrastructure build-out is a multi-quarter epic."
+    ],
+    "mathlibGaps": [
+      "BohrSet T rho definition over ZMod N (~200 lines).",
+      "Regularity of Bohr sets (Bourgain) (~400 lines).",
+      "Quantitative Bogolyubov on Bohr sets (~600 lines).",
+      "Density-increment iteration framework (~300 lines).",
+      "AP3-specific Fourier level-set / energy lemmas (~400 lines).",
+      "Quantitative upper bound on rothNumberNat (no theorem stating r_3(N) = o(N) currently exists in Mathlib)."
+    ],
+    "nextSteps": [
+      "S2-A (recommended): add `proofs/Proofs/RothTheoremOQ02.lean` with `axiom rothNumberNat_bloom_sisask` + proven `bloom_sisask_implies_qualitative` consequence.",
+      "S2-B (alternative): S2-A plus a proven `bloom_sisask_consistent_with_Behrend` consistency check against the Behrend lower bound.",
+      "S2-C (alternative): begin Bohr-set scaffolding in a new file (define `BohrSet T rho`, prove `0 in BohrSet`, symmetry, B(T,1) = univ).",
+      "S3+: progressively port Bourgain-style Bohr-set regularity, then Sanders/Bloom-Sisask quantitative Bogolyubov, then density-increment iteration, then final bound."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "additive-combinatorics",
+    "arithmetic-progressions",
+    "fourier-analysis",
+    "szemeredi",
+    "density-increment",
+    "bohr-sets",
+    "bogolyubov-ruzsa",
+    "roth",
+    "bloom-sisask",
+    "seeker-selected",
+    "landmark-formalization"
+  ],
+  "relatedProofs": [
+    "roth-theorem",
+    "roth-theorem-k3",
+    "roth-theorem-k3-oq-01",
+    "roth-theorem-k3-oq-02",
+    "roth-theorem-k3-oq-03",
+    "szemeredi-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Bloom, T. F. & Sisask, O. Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions. arXiv:2007.03528 (2020).",
+      "Bloom, T. F. & Sisask, O. An improvement to the Kelley-Meka bounds on three-term arithmetic progressions. arXiv:2309.02353 (2023).",
+      "Roth, K. F. On certain sets of integers. J. London Math. Soc. 28 (1953), 104-109.",
+      "Sanders, T. On Roth's theorem on progressions. Annals of Math. 174 (2011), 619-636.",
+      "Bourgain, J. Roth's theorem on progressions revisited. J. Anal. Math. 104 (2008), 155-192.",
+      "Kelley, Z. & Meka, R. Strong bounds for 3-progressions. arXiv:2302.05537 (2023).",
+      "Tao, T. & Vu, V. Additive Combinatorics. Cambridge University Press (2006), Chapter 10."
+    ],
+    "urls": [
+      "https://arxiv.org/abs/2007.03528",
+      "https://arxiv.org/abs/2309.02353",
+      "https://arxiv.org/abs/2302.05537"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.Additive.AP.Three.Defs (ThreeAPFree, addRothNumber, rothNumberNat).",
+      "Mathlib.Combinatorics.Additive.AP.Three.Behrend (sphere construction, lower bound).",
+      "Mathlib.Combinatorics.Additive.Energy (mulEnergy / additive energy).",
+      "Mathlib.Combinatorics.Additive.PluenneckeRuzsa (iterated sumset inequalities).",
+      "Mathlib.Combinatorics.Additive.RuzsaCovering (covering lemma).",
+      "Mathlib.Combinatorics.Additive.ApproximateSubgroup (K-approximate subgroups).",
+      "Mathlib.Combinatorics.Additive.Dissociation (dissociated sets)."
+    ]
+  },
+  "started": "2026-05-12T09:30:00.000Z",
+  "lastUpdate": "2026-05-12T09:30:00.000Z",
+  "significance": 7,
+  "tractability": 4
+}
