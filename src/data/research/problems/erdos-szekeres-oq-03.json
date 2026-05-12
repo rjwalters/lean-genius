@@ -30,20 +30,22 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 2,
-    "focus": "S2 ACT-A scaffold (researcher-9): create RamseyHypergraph.lean with the RamseyK API surface (kColoring / IsMonochromatic / IsRamsey / ramseyNumber); 4 sorry-free degenerate-case lemmas; ramsey_existence and ramseyNumber_one stated as sorries.",
+    "iteration": 3,
+    "focus": "S4-prep API expansion (researcher-1, parallel to PR #17960's S3 ramseyNumber_one): added color-symmetry lemma IsRamsey.swap (s↔t via χ↦!χ) and degenerate-side base cases ramseyNumber_zero_false / ramseyNumber_zero_true (= 0 when one target size is 0).",
     "blockers": [],
-    "nextAction": "S3 ACT-B: discharge ramseyNumber_one via pigeonhole (forward + lower-bound coloring) and start the ramsey_existence two-layer induction.",
+    "nextAction": "S4 ACT-C: discharge ramsey_existence (OQ-03a) via the two-layer neighborhood induction. Base case k=2 reuses Mathlib's SimpleGraph.ramseyNumber; the k≥3 step uses fix-a-vertex neighborhood-restriction. IsRamsey.swap halves the case analysis. Estimated 150–300 lines.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 2
+      "total": 3,
+      "currentApproach": 3,
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT-A scaffold (researcher-9 2026-05-12): created proofs/Proofs/RamseyHypergraph.lean with the four-element RamseyK API surface (kColoring, IsMonochromatic, IsRamsey, ramseyNumber via sInf), four sorry-free supporting lemmas (`isMonochromatic_of_card_lt`, `isMonochromatic_empty_zero`, `is_ramsey_zero_false`, `is_ramsey_zero_true`), and two sorry-bearing main theorems (`ramsey_existence` for OQ-03a, `ramseyNumber_one` for the k=1 sanity check). 147 lines, 0 axioms, 2 sorries. S1 ORIENT (researcher-8 2026-05-12): Decomposed OQ-03 into three sub-goals — (a) finiteness, (b) Erdős–Rado tower upper bound, (c) Erdős–Hajnal stepping-up lower bound — with explicit Lean API surface for a new RamseyK module.",
+    "progressSummary": "S4-prep API (researcher-1 2026-05-12, parallel to PR #17960): added 3 sorry-free lemmas to RamseyHypergraph.lean — IsRamsey.swap (color symmetry under χ↦!χ, halves S4 case analysis), ramseyNumber_zero_false, ramseyNumber_zero_true (= 0 when either target size is 0; complement ramseyNumber_one on the s=0/t=0 end of the parameter range). Lines 147→209 (+62), sorries unchanged at 2. S3 ACT-B (researcher-11, PR #17960 open, build pending): discharged ramseyNumber_one s t = s+t-1 via isRamsey_one_iff (pigeonhole forward + min-singleton bad coloring backward) and standard sInf computation. S2 ACT-A scaffold (researcher-9 2026-05-12): created RamseyK API surface with 4 sorry-free supporting lemmas + 2 sorry-bearing main theorems. S1 ORIENT (researcher-8 2026-05-12): Decomposed OQ-03 into three sub-goals.",
     "builtItems": [
-      "proofs/Proofs/RamseyHypergraph.lean — RamseyK API + 4 sorry-free degenerate-case lemmas + 2 sorry-bearing theorems (S2).",
+      "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.swap (color symmetry), ramseyNumber_zero_false, ramseyNumber_zero_true (S4-prep, researcher-1).",
+      "proofs/Proofs/RamseyHypergraph.lean — isRamsey_one_iff and proved ramseyNumber_one = s+t-1 (S3, researcher-11, PR #17960 build pending).",
+      "proofs/Proofs/RamseyHypergraph.lean — RamseyK API + 4 sorry-free degenerate-case lemmas + 2 sorry-bearing theorems (S2, researcher-9).",
       "research/problems/erdos-szekeres-oq-03/problem.md — formal statement of OQ-03 as three sub-goals (S1).",
       "research/problems/erdos-szekeres-oq-03/knowledge.md — literature survey + Mathlib API audit + suggested API surface (S1).",
       "research/problems/erdos-szekeres-oq-03/state.md — phase advanced ORIENT → ACT (S2); S3 next-action pinned."
@@ -52,7 +54,8 @@
       "OQ-03 cleanly factors into existence + upper + lower bounds; the existence and upper bound share the same two-layer neighborhood induction.",
       "The k=1 case ramseyNumber 1 s t = s + t - 1 is direct pigeonhole and serves as a clean sanity-check theorem for the new API (~30 lines).",
       "The lower-bound half (OQ-03c) is the harder direction and likely warrants its own sub-OQ once OQ-03a/b land.",
-      "erdos_szekeres_tight_axiom in Proofs/ErdosSzekeres.lean is precisely R_2(s,s)'s diagonal lower bound; it could be discharged as a corollary of the k=2 specialization of OQ-03c."
+      "erdos_szekeres_tight_axiom in Proofs/ErdosSzekeres.lean is precisely R_2(s,s)'s diagonal lower bound; it could be discharged as a corollary of the k=2 specialization of OQ-03c.",
+      "Color symmetry IsRamsey n k s t ↔ IsRamsey n k t s holds via χ ↦ !χ (false-cliques under !χ become true-cliques under χ and vice versa); this halves the S4 two-layer induction's case analysis since one direction of the recursive bound transfers to the other by swap."
     ],
     "mathlibGaps": [
       "No general hypergraph Ramsey number — only SimpleGraph.ramseyNumber (k=2).",
@@ -60,9 +63,9 @@
       "Tower function (iterated 2^·) is not packaged but can be obtained via Nat.iterate."
     ],
     "nextSteps": [
-      "S3: discharge ramseyNumber_one via pigeonhole (forward direction is straightforward; lower-bound construction takes an explicit coloring) and start ramsey_existence via the two-layer induction.",
-      "S4: state erdos_rado_upper as a tower-function bound and prove it by unwinding the recursive R_k ≤ R_{k-1}(...) inequality.",
-      "S5: spawn the stepping-up lower bound as a separate sub-OQ if S4 lands cleanly."
+      "S4 ACT-C: discharge ramsey_existence (OQ-03a). Two-layer Ramsey 1930 induction; base case k=2 from Mathlib SimpleGraph.ramseyNumber; inductive step (k≥3) by fix-a-vertex neighborhood restriction (~150–300 lines).",
+      "S5: state erdos_rado_upper as ramseyNumber k s s ≤ tower (k-1) (c_k * s) and prove by unwinding the recursive R_k ≤ R_{k-1}(R_k(s-1,t), R_k(s,t-1)) + 1 inequality.",
+      "S6+: spawn the Erdős–Hajnal stepping-up lower bound (OQ-03c) as a separate sub-OQ if S5 lands cleanly."
     ]
   },
   "tags": [
@@ -95,15 +98,15 @@
     ]
   },
   "started": "2026-05-12T04:48:16.447Z",
-  "lastUpdate": "2026-05-12T06:15:00.000Z",
+  "lastUpdate": "2026-05-12T08:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/RamseyHypergraph.lean",
       "filename": "RamseyHypergraph.lean",
-      "lineCount": 147,
-      "theoremCount": 6,
+      "lineCount": 209,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 2,
