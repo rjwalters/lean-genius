@@ -224,6 +224,50 @@
     "path": "Proofs/CauchySchwarzOQ04.lean",
     "sorries": 0
   },
+  "mainTheorems": [
+    {
+      "name": "norm_sq_decomposition",
+      "type": "supporting",
+      "description": "Pythagoras-style decomposition: $\\|u\\|^2$ splits into the squared projection $(\\mathrm{projCoeff}\\,u\\,v)^2 \\cdot \\|v\\|^2$ plus the squared residual $\\|u - \\mathrm{proj}\\,u\\,v\\|^2$. Proved via `norm_add_sq_real` after splitting $u = \\mathrm{proj}\\,u\\,v + (u - \\mathrm{proj}\\,u\\,v)$ and observing the cross term vanishes by `proj_orthogonal`. The structural lemma underpinning every equality result in the file.",
+      "leanType": "∀ (u v : E), v ≠ 0 → ‖u‖ ^ 2 = (projCoeff u v) ^ 2 * ‖v‖ ^ 2 + ‖u - proj u v‖ ^ 2"
+    },
+    {
+      "name": "cs_equality_exact_constant",
+      "type": "core",
+      "description": "Forward direction of the OQ-04 characterization. If $|\\langle u, v \\rangle| = \\|u\\| \\cdot \\|v\\|$, then $u = (\\langle u, v \\rangle / \\|v\\|^2) \\cdot v$ — i.e., the proportionality constant in classical Cauchy-Schwarz equality is exactly the projection coefficient. Proof: substitute into `norm_sq_decomposition` and conclude the residual has zero norm, hence the residual itself is zero.",
+      "leanType": "∀ (u v : E), v ≠ 0 → |⟪u, v⟫_ℝ| = ‖u‖ * ‖v‖ → u = projCoeff u v • v"
+    },
+    {
+      "name": "cs_equality_of_exact_constant",
+      "type": "core",
+      "description": "Reverse direction: if $u = \\mathrm{projCoeff}\\,u\\,v \\cdot v$, then $|\\langle u, v \\rangle| = \\|u\\| \\cdot \\|v\\|$. Direct algebraic substitution using `inner_smul_left`, `norm_smul`, and `real_inner_self_eq_norm_sq`. Closes the implication in the opposite direction from `cs_equality_exact_constant`.",
+      "leanType": "∀ (u v : E), v ≠ 0 → u = projCoeff u v • v → |⟪u, v⟫_ℝ| = ‖u‖ * ‖v‖"
+    },
+    {
+      "name": "cs_equality_iff_exact_constant",
+      "type": "core",
+      "description": "**The headline result of OQ-04.** Full biconditional: $|\\langle u, v \\rangle| = \\|u\\| \\cdot \\|v\\|$ if and only if $u = (\\langle u, v \\rangle / \\|v\\|^2) \\cdot v$. Replaces the classical 'there exists a scalar $c$' with the **explicit** constant $\\mathrm{projCoeff}\\,u\\,v = \\langle u, v \\rangle / \\|v\\|^2$, closing the gap between the existential statement in `CauchySchwarz.lean` and the computational form.",
+      "leanType": "∀ (u v : E), v ≠ 0 → (|⟪u, v⟫_ℝ| = ‖u‖ * ‖v‖ ↔ u = projCoeff u v • v)"
+    },
+    {
+      "name": "cs_equality_iff_zero_residual",
+      "type": "supporting",
+      "description": "Equivalent reformulation: CS equality holds iff the residual $u - \\mathrm{proj}\\,u\\,v$ vanishes. Connects the algebraic characterization (`= projCoeff u v • v`) to the geometric one (zero residual after orthogonal projection). Foundation for Gram-Schmidt and QR factorization, where 'CS equality' is the degenerate case of zero residual.",
+      "leanType": "∀ (u v : E), v ≠ 0 → (|⟪u, v⟫_ℝ| = ‖u‖ * ‖v‖ ↔ u - proj u v = 0)"
+    },
+    {
+      "name": "existential_constant_is_projCoeff",
+      "type": "core",
+      "description": "**Bridge to the parent file.** Any scalar $c$ such that $u = c \\cdot v$ must equal $\\mathrm{projCoeff}\\,u\\,v$ — uniqueness of the proportionality constant. Together with `cs_equality_iff_exact_constant`, this collapses the parent `CauchySchwarz.lean`'s existential 'exists $c$, $u = c \\cdot v$' into the unique formula $c = \\langle u, v \\rangle / \\|v\\|^2$. Resolves the OQ-04 contribution.",
+      "leanType": "∀ (u v : E), v ≠ 0 → ∀ (c : ℝ), u = c • v → c = projCoeff u v"
+    },
+    {
+      "name": "finite_sum_exact_constant",
+      "type": "core",
+      "description": "Discrete (finite-sum) analog of the main result. For sequences $a, b : \\mathrm{Fin}\\,n \\to \\mathbb{R}$ with $b$ nontrivial, if $(\\sum_i a_i b_i)^2 = (\\sum_i a_i^2)(\\sum_i b_i^2)$ then every $a_i = (\\sum_j a_j b_j / \\sum_j b_j^2) \\cdot b_i$. Proof routes through the Lagrange identity $(\\sum a_i^2)(\\sum b_i^2) - (\\sum a_i b_i)^2 = \\sum_{p,q} (a_p b_q - a_q b_p)^2/2$ to derive vanishing of all cross terms $a_i b_j = a_j b_i$. Recovers Cauchy's original 1821 discrete formulation with the exact constant.",
+      "leanType": "∀ {n : ℕ} (a b : Fin n → ℝ), (∃ k, b k ≠ 0) → (∑ i, a i * b i) ^ 2 = (∑ i, a i ^ 2) * (∑ i, b i ^ 2) → ∀ i, a i = (∑ j, a j * b j) / (∑ j, b j ^ 2) * b i"
+    }
+  ],
   "references": [
     {
       "authors": "Cauchy, Augustin-Louis",
