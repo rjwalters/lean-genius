@@ -5003,6 +5003,58 @@ private lemma hookLength_eq_of_not_arm_leg {μ : YoungDiagram} {c : ℕ × ℕ} 
   unfold hookLength armLen legLen
   rw [rowLen_removeCorner_other hc ha, colLen_removeCorner_other hc hb]
 
+/-- **(S57.6 prep 3) K-bookkeeping shift at the case-1 arm-class crossing cell.**
+
+For an off-row cell `(r, c'.2) ∈ μ` with `r ≠ c'.1`, the row index `r` is forced
+*strictly above* `c'.1` (cornerhood `colLen_of_isCorner` pins the column at
+exactly `c'.1 + 1`), placing `(r, c'.2)` on `c'`'s leg.  Removing `c'` therefore
+shifts its hook length by exactly 1.
+
+This is the K-bookkeeping fact for S57.7's *non-vanishing* case-1 crossing
+branch, where the off-spine `x = (x.1, x.2)`'s arm-class crossing cell is the
+unique strict-hook cell `(x.1, c'.2)` (case-1 arm-class of PR #17747's
+`strictHookCells_off_spine_class_at_c'` partition).  Companion to PR #17817's
+*vanishing* IH discharges (`gnwProb_eq_on_leg_class_case1` /
+`gnwProb_eq_on_arm_class_case2`).
+
+**Proof.** From `(r, c'.2) ∈ μ` and cornerhood `μ.colLen c'.2 = c'.1 + 1`,
+deduce `r < c'.1 + 1`; combined with `r ≠ c'.1`, this gives `r < c'.1`, then
+`hookLength_removeCorner_leg hc'` closes. -/
+private lemma hookLength_at_arm_class_case1
+    {μ : YoungDiagram} {c' : ℕ × ℕ} (hc' : isCorner μ c')
+    {r : ℕ} (hr_off_row : r ≠ c'.1) (hr_mem : (r, c'.2) ∈ μ) :
+    hookLength (removeCorner μ c' hc') r c'.2 + 1 = hookLength μ r c'.2 := by
+  have hr_lt : r < c'.1 := by
+    have h := YoungDiagram.mem_iff_lt_colLen.mp hr_mem
+    rw [colLen_of_isCorner hc'] at h
+    omega
+  exact hookLength_removeCorner_leg hc' hr_lt
+
+/-- **(S57.6 prep 3) K-bookkeeping shift at the case-2 leg-class crossing cell.**
+
+Mirror of `hookLength_at_arm_class_case1`.  For an off-column cell
+`(c'.1, s) ∈ μ` with `s ≠ c'.2`, the column index `s` is forced strictly left
+of `c'.2` (cornerhood `rowLen_of_isCorner` pins the row at exactly `c'.2 + 1`),
+placing `(c'.1, s)` on `c'`'s arm.  Removing `c'` shifts its hook length by
+exactly 1.
+
+This is the K-bookkeeping fact for S57.7's non-vanishing case-2 crossing
+branch, where the off-spine `x`'s leg-class crossing cell is the unique
+strict-hook cell `(c'.1, x.2)`.
+
+**Proof.** From `(c'.1, s) ∈ μ` and `μ.rowLen c'.1 = c'.2 + 1`, deduce
+`s < c'.2 + 1`; combined with `s ≠ c'.2`, this gives `s < c'.2`, then
+`hookLength_removeCorner_arm hc'` closes. -/
+private lemma hookLength_at_leg_class_case2
+    {μ : YoungDiagram} {c' : ℕ × ℕ} (hc' : isCorner μ c')
+    {s : ℕ} (hs_off_col : s ≠ c'.2) (hs_mem : (c'.1, s) ∈ μ) :
+    hookLength (removeCorner μ c' hc') c'.1 s + 1 = hookLength μ c'.1 s := by
+  have hs_lt : s < c'.2 := by
+    have h := YoungDiagram.mem_iff_lt_rowLen.mp hs_mem
+    rw [rowLen_of_isCorner hc'] at h
+    omega
+  exact hookLength_removeCorner_arm hc' hs_lt
+
 -- ============================================================
 -- Double-removal hookLength shifts (Session 48)
 -- For two distinct corners c, c' of μ with c.1 < c'.1 (whence c'.2 < c.2 by
