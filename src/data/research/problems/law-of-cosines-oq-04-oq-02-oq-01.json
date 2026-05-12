@@ -1,0 +1,237 @@
+{
+  "slug": "law-of-cosines-oq-04-oq-02-oq-01",
+  "title": "Deriving the angle-bisector identity m·b = n·c from Mathlib's Euclidean-geometry API",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{In an inner-product affine space } P,\\ \\text{given } A,B,C,D \\in P\\ \\text{with } \\mathrm{Sbtw}_{\\mathbb{R}}(B,D,C)\\ \\text{and } \\angle BAD = \\angle DAC,\\ \\text{derive } |BD|\\cdot|AC| = |DC|\\cdot|AB|.",
+    "plain": "The parent file LawOfCosinesOQ04OQ02.lean takes 'm·b = n·c' (the algebraic form of the angle-bisector theorem) as an injected hypothesis. OQ-04-OQ-02-OQ-01 asks whether this hypothesis can be derived from the actual geometric premise — namely, that AD bisects ∠BAC and D ∈ segment(B,C) — using Mathlib's EuclideanGeometry.angle and dist API.",
+    "whyMatters": [
+      "Geometric grounding — bridges the algebraic-parametric idiom of the gallery's triangle-geometry proofs (Stewart, Ceva, LawOfCosines OQ-04) to Mathlib's affine-Euclidean API on actual points.",
+      "Reusable template — the same Sbtw + angle equality ⇒ side-length ratio pattern governs cevian, median, and altitude-foot identities across multiple gallery entries.",
+      "Mathlib contribution candidate — Mathlib's Geometry/Euclidean/Triangle.lean has law of cosines and pons asinorum but no angle-bisector theorem; OQ-04-OQ-02-OQ-01 produces the prototype Mathlib.Geometry.Euclidean.AngleBisector module.",
+      "Decouples proof architecture — distinguishes the two gallery idioms (real-parameter algebra vs. P-point affine) and demonstrates a clean bridge."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent's angle_bisector_squared (LawOfCosinesOQ04OQ02.lean line 89): t²·(b+c)² = bc·((b+c)²-a²) given hbis : m·b = n·c.",
+      "Parent's angle_bisector_ratio (line 110) and angle_bisector_length (line 134) — algebraic forms.",
+      "Mathlib infrastructure: Sbtw, Sbtw.mem_image_Ioo (Analysis.Convex.Between), EuclideanGeometry.angle, cos_angle (Geometry.Euclidean.Angle), arccos_injOn, law of cosines (Geometry.Euclidean.Triangle)."
+    ],
+    "open": [
+      "angle_bisector_ratio_from_geometry — the geometric derivation: (Sbtw ℝ B D C ∧ ∠BAD = ∠DAC) → dist B D * dist A C = dist D C * dist A B."
+    ],
+    "goal": "Prove angle_bisector_ratio_from_geometry in a new file Proofs/LawOfCosinesOQ04OQ02OQ01.lean, then chain into the parent's angle_bisector_length to produce a fully-geometric angle-bisector-length formula. Zero axioms, zero sorries."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T20:30:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — hbis premise located in 3 theorems of LawOfCosinesOQ04OQ02.lean; reduced to single algebraic equation in barycentric parameter s; three approach paths surveyed; Path A (inner-product factorization) selected as S2 target.",
+    "blockers": [],
+    "nextAction": "S2 — implement Path A: from Sbtw, extract s ∈ Ioo 0 1 with D-A = (1-s)·u + s·v; from ∠BAD = ∠DAC, derive cosine equality and factor as ((1-s)·c - s·b)·(b·c - ⟪u,v⟫) = 0; exclude the second factor via ¬ Collinear; conclude s = c/(b+c) and m·b = n·c. ~250-350 lines in new file Proofs/LawOfCosinesOQ04OQ02OQ01.lean. See knowledge.md §3.A and §8.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete (researcher-8, 2026-05-11). The hypothesis hbis : m·b = n·c is parametric in the parent's three angle-bisector theorems. Placing the triangle in V = NormedAddCommGroup ℝ-InnerProductSpace and writing D = A + (1-s)·u + s·v (where u = B-A, v = C-A, s extracted from Sbtw.mem_image_Ioo), the goal m·b = n·c reduces to s = c/(b+c). Three derivation paths surveyed: Path A inner-product factorization yields ((1-s)·c - s·b)·(b·c - ⟪u,v⟫) = 0, with the second factor excluded by non-collinearity (strict Cauchy-Schwarz); Path B (double law-of-cosines at A) under-determines the conclusion; Path C (parallel-line construction) requires building substantial Mathlib infrastructure not currently present. Path A selected for S2 with seven-lemma outline (~250-350 lines). No Lean changes in S1 — doc-only iteration with problem.md / knowledge.md / state.md created.",
+    "builtItems": [
+      "research/problems/law-of-cosines-oq-04-oq-02-oq-01/problem.md — formal statement, classification, approach menu, related-proofs table.",
+      "research/problems/law-of-cosines-oq-04-oq-02-oq-01/knowledge.md — §1 target identification; §2 vector reformulation; §3 three approach paths with hand derivation for Path A; §4 Mathlib API survey (affine/between, angles, distances/norms, non-degeneracy, parent); §5 risk register; §6 sibling-proof lessons; §7 S1 outcome; §8 seven-lemma S2 outline.",
+      "research/problems/law-of-cosines-oq-04-oq-02-oq-01/state.md — S1 conclusion + S2 next-action recipe."
+    ],
+    "insights": [
+      "The Sbtw ℝ B D C hypothesis provides exactly the barycentric parameter s ∈ Ioo 0 1 needed; combined with the inner-product expansion of cos(∠BAD) and cos(∠DAC), the bisector hypothesis collapses to a single algebraic equation s(b+c) = c.",
+      "The factorization ((1-s)·c - s·b)·(b·c - ⟪u,v⟫) = 0 cleanly separates the geometric content (first factor) from the degeneracy carve-out (second factor); non-collinearity (the standard Mathlib non-degeneracy predicate) discharges the second factor.",
+      "Path B (double law-of-cosines at vertex A) under-determines the conclusion: one cosine-equality equation in five real unknowns is insufficient without additional constraints. The classical bisector theorem really needs either the inner-product factorization (Path A) or the parallel-line / similarity construction (Path C).",
+      "Mathlib lacks a packaged angle-bisector theorem in either vector or affine form, so this OQ produces a natural Mathlib-contribution candidate (Mathlib.Geometry.Euclidean.AngleBisector).",
+      "The gallery's algebraic-parametric idiom (real parameters a, b, c, t, m, n, u with linear_combination witnesses) and Mathlib's affine-Euclidean idiom (P-points with dist/angle/Sbtw) are bridge-able cleanly when the algebraic identity factors over a known degenerate-case witness — as it does here."
+    ],
+    "mathlibGaps": [
+      "Mathlib.Geometry.Euclidean.Triangle has the law of cosines and pons asinorum but no angle-bisector theorem.",
+      "Mathlib has no median-length theorem, no Stewart's theorem in affine form, and no Ceva / Menelaus theorems on actual triangle points.",
+      "Mathlib has the inner-product Cauchy-Schwarz inequality but no convenient packaged form of strict Cauchy-Schwarz under non-collinearity — needs lookup or local proof.",
+      "Mathlib's law of sines exists only via the circumscribed-circle formulation in Geometry.Euclidean.Angle.Sphere (requiring [Module.Oriented ℝ V (Fin 2)]); a triangle-form law of sines is not packaged."
+    ],
+    "nextSteps": [
+      "S2: Implement Path A — seven lemmas, ~250-350 lines, new file Proofs/LawOfCosinesOQ04OQ02OQ01.lean.",
+      "S3: Wire gallery entry src/data/proofs/law-of-cosines-oq-04-oq-02-oq-01/ (meta.json, index.ts, optional annotations.json) and update parent's openQuestions field.",
+      "Follow-up: Mathlib upstream PR candidate Mathlib.Geometry.Euclidean.AngleBisector packaging the derived lemmas as a reusable module."
+    ]
+  },
+  "tags": [
+    "geometry",
+    "triangle-geometry",
+    "angle-bisector",
+    "stewarts-theorem",
+    "cevian",
+    "law-of-cosines",
+    "algebraic-proof",
+    "mathlib-integration",
+    "open-question",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-01-oq-01",
+    "law-of-cosines-oq-01-oq-01-oq-01",
+    "law-of-cosines-oq-01-oq-01-oq-03",
+    "law-of-cosines-oq-01-oq-02",
+    "law-of-cosines-oq-01-oq-04",
+    "law-of-cosines-oq-01-oq-05",
+    "law-of-cosines-oq-03",
+    "law-of-cosines-oq-03-oq-02",
+    "law-of-cosines-oq-04",
+    "law-of-cosines-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Angle_bisector_theorem",
+      "https://en.wikipedia.org/wiki/Stewart%27s_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.Convex.Between (Sbtw, Sbtw.mem_image_Ioo)",
+      "Mathlib.Geometry.Euclidean.Angle.Unoriented.Affine (EuclideanGeometry.angle, angle_eq_pi_iff_sbtw, angle_add_angle_eq_pi_of_angle_eq_pi)",
+      "Mathlib.Geometry.Euclidean.Angle.Unoriented.Basic (InnerProductGeometry.angle, cos_angle)",
+      "Mathlib.Geometry.Euclidean.Triangle (law of cosines: dist_sq_eq_dist_sq_add_dist_sq_sub_two_mul_dist_mul_dist_mul_cos_angle)",
+      "Mathlib.LinearAlgebra.AffineSpace.Independent (Collinear)",
+      "Mathlib.Analysis.InnerProductSpace.Basic (real_inner_self_eq_norm_mul_norm, real_inner_comm, inner_smul_left, inner_smul_right, abs_real_inner_le_norm)"
+    ]
+  },
+  "started": "2026-05-12T03:16:39.895Z",
+  "lastUpdate": "2026-05-12T03:30:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosines.lean",
+      "filename": "LawOfCosines.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01.lean",
+      "filename": "LawOfCosinesOQ01OQ01.lean",
+      "lineCount": 335,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01OQ01.lean",
+      "filename": "LawOfCosinesOQ01OQ01OQ01.lean",
+      "lineCount": 65,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ01OQ03.lean",
+      "filename": "LawOfCosinesOQ01OQ01OQ03.lean",
+      "lineCount": 547,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ02.lean",
+      "filename": "LawOfCosinesOQ01OQ02.lean",
+      "lineCount": 421,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ01OQ04.lean",
+      "filename": "LawOfCosinesOQ01OQ04.lean",
+      "lineCount": 191,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03.lean",
+      "filename": "LawOfCosinesOQ03.lean",
+      "lineCount": 193,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ03OQ02.lean",
+      "filename": "LawOfCosinesOQ03OQ02.lean",
+      "lineCount": 265,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04.lean",
+      "filename": "LawOfCosinesOQ04.lean",
+      "lineCount": 156,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ04OQ02.lean",
+      "filename": "LawOfCosinesOQ04OQ02.lean",
+      "lineCount": 174,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/LawOfCosinesOQ05.lean",
+      "filename": "LawOfCosinesOQ05.lean",
+      "lineCount": 694,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ05.lean"
+    }
+  ]
+}
