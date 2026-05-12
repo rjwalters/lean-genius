@@ -30,17 +30,15 @@ which is rational if α is rational. Contradiction.
 
 ## File layout
 
-This S2 SCAFFOLD proves three of four supporting lemmas in full and isolates
-the algebraic identity `alpha_quartic_identity` as a single `sorry` (the
-S3 ACT target). The main theorem `irrational_sqrt2_plus_sqrt3_plus_sqrt5`
-is proven modulo `alpha_quartic_identity`, so closing that one `sorry`
-in S3 yields a sorry-free / axiom-free verified entry.
+This S2 ACT proves all four supporting lemmas in full. The quartic
+identity uses the two-substitution + linear-arithmetic chain locked
+in by the S2 PREP iteration (#18353 sessions doc).
 
 ## Status
 - [x] `irrational_sqrt_thirty`     — proven (one-liner via `irrational_sqrt_natCast_iff`)
 - [x] `alpha_pos`                  — proven (`linarith` on three `sqrt_nonneg/pos`)
-- [ ] `alpha_quartic_identity`     — **`sorry`** (deferred to S3; proof sketch in docstring)
-- [x] `irrational_sqrt2_plus_sqrt3_plus_sqrt5` — proven **modulo** `alpha_quartic_identity`
+- [x] `alpha_quartic_identity`     — proven (parent-identity reuse + `Real.sq_sqrt` × 2 + cross-radical bridge `√5·√6 = √30`)
+- [x] `irrational_sqrt2_plus_sqrt3_plus_sqrt5` — proven (`eq_div_iff` + `push_cast` + `irrational_sqrt_thirty`)
 -/
 
 import Mathlib.Data.Real.Irrational
@@ -65,55 +63,56 @@ theorem alpha_pos : (0 : ℝ) < sqrt 2 + sqrt 3 + sqrt 5 := by
   have h5 : (0 : ℝ) < sqrt 5 := sqrt_pos.mpr (by norm_num : (0 : ℝ) < 5)
   linarith
 
+/-- Cross-radical bridge: `√5 · √6 = √30`. -/
+private theorem sqrt5_mul_sqrt6 : sqrt 5 * sqrt 6 = sqrt 30 := by
+  rw [← Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 5)]
+  norm_num
+
 /-- The key quartic identity:
     `(√2 + √3 + √5)⁴ - 20·(√2 + √3 + √5)² - 24 = 8·(√2 + √3 + √5)·√30`.
 
-**Proof sketch (S3 ACT target).**
-Let α := √2 + √3 + √5. The chain is
-
+Proof chain (locked in by PR #18353 S2 PREP):
     (α - √5)² = (√2 + √3)² = 5 + 2√6      (parent identity)
     α² = 2α√5 + 2√6                        (rearrange + (√5)² = 5)
     α⁴ = (2α√5 + 2√6)²
        = 4α²·5 + 8α·√5√6 + 4·6
        = 20α² + 8α·√30 + 24                ((√5)² = 5, (√6)² = 6, √5·√6 = √30)
-
-The single-tactic `linear_combination` discharge should be:
-
-```lean
-  -- hkey : α^2 = 2*α*sqrt 5 + 2*sqrt 6
-  -- h5sq : sqrt 5 * sqrt 5 = 5
-  -- h6sq : sqrt 6 * sqrt 6 = 6
-  -- h56  : sqrt 5 * sqrt 6 = sqrt 30
-  linear_combination
-        (α^2 + 2*α*sqrt 5 + 2*sqrt 6) * hkey
-      + (4*α^2) * h5sq
-      + (8*α)   * h56
-      + 4       * h6sq
-```
-
-Algebra check (treating √5, √6, √30, α as independent indeterminates):
-
-    (α² + 2α√5 + 2√6)·(α² - 2α√5 - 2√6) = α⁴ - 4α²(√5)² - 8α(√5)(√6) - 4(√6)²
-    + 4α²·((√5)² - 5)                     = 4α²(√5)² - 20α²
-    + 8α·((√5)(√6) - √30)                 = 8α(√5)(√6) - 8α√30
-    + 4·((√6)² - 6)                       = 4(√6)² - 24
-
-    Sum: α⁴ - 20α² - 8α√30 - 24
-       = (α⁴ - 20α² - 24) - 8α√30 ✓
-
-(Verified by symbolic expansion above. Deferred to S3 because the
-Docker build needed to confirm `linear_combination` accepts these
-coefficients is a separate iteration.) -/
+-/
 theorem alpha_quartic_identity :
     (sqrt 2 + sqrt 3 + sqrt 5) ^ 4
       - 20 * (sqrt 2 + sqrt 3 + sqrt 5) ^ 2 - 24
       = 8 * (sqrt 2 + sqrt 3 + sqrt 5) * sqrt 30 := by
-  -- See docstring: discharge via the four-term `linear_combination`
-  -- after establishing `hkey`, `h5sq`, `h6sq`, `h56`.
-  sorry
+  set α := sqrt 2 + sqrt 3 + sqrt 5 with hα
+  -- Step 1: (α - √5)² = (√2 + √3)² = 5 + 2√6 (parent identity).
+  have h1 : (α - sqrt 5) ^ 2 = 5 + 2 * sqrt 6 := by
+    have hαsub : α - sqrt 5 = sqrt 2 + sqrt 3 := by rw [hα]; ring
+    rw [hαsub]
+    exact Sqrt2PlusSqrt3Irrational.sqrt2_plus_sqrt3_sq
+  -- Expand (α - √5)² = α² - 2α√5 + (√5)² and use (√5)² = 5.
+  have h5sq : sqrt 5 ^ 2 = 5 := Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 5)
+  have h1' : α ^ 2 - 2 * α * sqrt 5 - 2 * sqrt 6 = 0 := by
+    have hexp : (α - sqrt 5) ^ 2 = α ^ 2 - 2 * α * sqrt 5 + sqrt 5 ^ 2 := by ring
+    rw [hexp, h5sq] at h1
+    linarith
+  -- Rearrange: α² = 2α√5 + 2√6.
+  have h_alpha_sq : α ^ 2 = 2 * α * sqrt 5 + 2 * sqrt 6 := by linarith
+  -- Step 2: square the rearrangement to isolate √30.
+  have h_sq : (α ^ 2) ^ 2 = (2 * α * sqrt 5 + 2 * sqrt 6) ^ 2 := by
+    rw [h_alpha_sq]
+  -- Expand the RHS symbolically, then use the cross-radical bridge.
+  have h6sq : sqrt 6 ^ 2 = 6 := Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 6)
+  have h_rhs :
+      (2 * α * sqrt 5 + 2 * sqrt 6) ^ 2
+        = 4 * α ^ 2 * (sqrt 5 ^ 2)
+          + 8 * α * (sqrt 5 * sqrt 6) + 4 * (sqrt 6 ^ 2) := by ring
+  rw [h_rhs, h5sq, h6sq, sqrt5_mul_sqrt6] at h_sq
+  -- h_sq : (α^2)^2 = 4·α²·5 + 8·α·√30 + 4·6 = 20·α² + 8·α·√30 + 24
+  have hα4 : α ^ 4 = 20 * α ^ 2 + 8 * α * sqrt 30 + 24 := by
+    have epow : (α ^ 2) ^ 2 = α ^ 4 := by ring
+    linarith [h_sq, epow]
+  linarith
 
-/-- **Main theorem (modulo `alpha_quartic_identity`)**:
-`√2 + √3 + √5` is irrational. -/
+/-- **Main theorem**: `√2 + √3 + √5` is irrational. -/
 theorem irrational_sqrt2_plus_sqrt3_plus_sqrt5 :
     Irrational (sqrt 2 + sqrt 3 + sqrt 5) := by
   intro ⟨r, hr⟩
