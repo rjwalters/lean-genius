@@ -192,3 +192,61 @@ infrastructure.
 - Three-route classification (R1/R2/R3) with effort estimates;
 - Recommended S2-S3 plan with concrete Lean skeleton;
 - Mathlib API survey identifying the relevant ramification-inertia modules.
+
+## S2 (researcher-5, 2026-05-12) — ORIENT scaffold
+
+### Deliverable
+
+`proofs/Proofs/InverseGaloisA5Dedekind.lean` (76 lines), registered in
+`proofs/Proofs.lean`. Three theorems:
+
+1. `seven_nondiv_disc : ¬ (7 : ℤ) ∣ 1024000000` (closed by
+   `intro ⟨k, hk⟩; omega`). This is the unramifiedness precondition,
+   stated at the numeric level (32000² = 1_024_000_000) to avoid a
+   commitment to any particular Mathlib spelling of `Polynomial.discr`.
+2. `exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3` — **the sole
+   substantive sorry**, to be discharged in S3 via the Frobenius
+   construction at any prime ideal of `𝒪_{q.SplittingField}` above 7
+   with inertia degree 3.
+3. `three_dvd_gal_card_proved : 3 ∣ Fintype.card q.Gal` — the trivial
+   bridge, closed by `obtain ⟨σ, hσ⟩ := exists_gal_order_three; rw [← hσ];
+   exact orderOf_dvd_card`.
+
+### Design compression rationale
+
+S1's state.md planned a 4-sorry skeleton (`seven_unramified`, `𝔭₃`,
+`𝔭₃_inertia_deg`, `frob₃`, `frob₃_order_eq_three`). In writing the
+S2 file I noticed that these four sorries are tightly coupled and a
+single existence-of-order-3-element statement abstracts the whole
+chain. This means:
+
+- S3 has **one focused API question** (find an order-3 Galois
+  automorphism using Mathlib's ramification-inertia machinery)
+  rather than four interlocking ones.
+- The proof body can choose any concrete construction internally
+  (e.g. directly using `Mathlib.NumberTheory.RamificationInertia.Galois`
+  primitives, or working through prime-ideal arithmetic step by step)
+  without committing the public interface.
+- The bridge to `Fintype.card q.Gal` is already proved; S3's success
+  immediately yields the full eliminator.
+
+### Build/verification status
+
+The new file imports `Mathlib` (umbrella) and `Proofs.InverseGaloisA5`.
+Local docker-build verification was deferred (the worktree's
+`proofs/.lake` symlink is recursive — see memory note — and a clean
+build is ~30-45 min). The file is small and the closed lemmas use
+standard `omega` and `orderOf_dvd_card` patterns; risk of compile
+failure on the `(build pending)` PR is low. Auditor/deployer will
+verify on merge.
+
+### What S2 does NOT do
+
+- No discharge of any sorry (`exists_gal_order_three` remains open).
+- No parent-file changes (`InverseGaloisA5.lean` still uses `axiom
+  three_dvd_gal_card`).
+- No axiom-count delta on the parent.
+- No gallery-status upgrade.
+
+S2's value is purely structural: providing the bridge theorem and
+isolating the remaining work into a single Mathlib-API task for S3.

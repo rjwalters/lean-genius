@@ -2399,6 +2399,7 @@ import Proofs.IntermediateValueTheoremOQ02OQ03
 import Proofs.IntermediateValueTheoremOQ03
 import Proofs.InverseGalois
 import Proofs.InverseGaloisA5
+import Proofs.InverseGaloisA5Dedekind
 import Proofs.InverseGaloisA5Resultant
 import Proofs.InverseGaloisA5Resultant2
 import Proofs.InverseGaloisA5ResultantDet
