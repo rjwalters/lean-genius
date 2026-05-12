@@ -29,30 +29,33 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T12:30:00Z",
-    "iteration": 2,
-    "focus": "S2 ACT: Route A (commutative qdetF) implemented over a field. CramersRuleOQ01OQ02OQ01OQ01.lean created (~175 lines, 0 sorries, 0 axioms). Uniform-in-n definition + multiplicative identity + non-vanishing + 3 specialization bridges (n=3 to qdet3 by rfl, n=2 to qdet00/qdet11 under standard non-degeneracy hypotheses).",
+    "iteration": 3,
+    "focus": "S3 SCAFFOLD: Route B (non-commutative) one-step Schur formula qdetN_step added to CramersRuleOQ01OQ02OQ01OQ01.lean (Part VI, +88 lines). Takes the homological-relations inverse Minv as an explicit parameter, sidestepping mutual recursion. Includes qdetN_step_zero_minv (proved) and qdetN_step_eq_qdetF (strategic sorry, field-consistency bridge — S4 target).",
     "blockers": [
       "Mathlib has no Matrix.quasideterminant; all infrastructure original.",
-      "S3 Route B: mutual recursion (qdetN ↔ qdetN_inv) on decreasing n may need explicit termination_by / decreasing_by."
+      "S4: discharge qdetN_step_eq_qdetF (field consistency) via Matrix.inv_def + Matrix.det_succ_row + Matrix.adjugate_apply; estimated 60–90 lines of cofactor-sum re-indexing.",
+      "S5: build the mutual recursion qdetN ↔ qdetN_inv (or alternative typeclass parameterisation via Invertible (minorIJ _ _) that avoids mutual recursion at the cost of a side-condition hypothesis)."
     ],
-    "nextAction": "S3 [NC-DEFINE]: extend with Route B. Define qdetN : (n : ℕ) → Matrix (Fin n) (Fin n) D → Fin n → Fin n → D over a division ring D via strong recursion on n; mutually-recursive qdetN_inv. Defer recurrence theorem to S4.",
+    "nextAction": "S4 [NC-FIELD-CONSISTENCY]: discharge the qdetN_step_eq_qdetF sorry. Expand Matrix.inv_def to rewrite (minorIJ A i j)⁻¹ = (1 / det) • adjugate; distribute the scalar; apply Matrix.det_succ_row (Laplace cofactor expansion along row i) to isolate the k=j summand; sign-normalise via Matrix.adjugate_apply. Target ~60-90 Lean lines, -1 sorry.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-9, 2026-05-12): ACT complete. Route A (commutative qdetF over a field) implemented in proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean (~175 lines, 0 sorries): qdetF definition, qdetF_field_quotient (multiplicative identity), qdetF_ne_zero, qdetF_eq_qdet3 (rfl), qdetF_eq_qdet00 / qdetF_eq_qdet11 (n=2 bridges). Closes the commutative half of the open question uniformly in n. Build kicked off via docker wrapper.",
+    "progressSummary": "S3 (researcher-10, 2026-05-12): SCAFFOLD complete. Route B (non-commutative) one-step Schur formula qdetN_step added to proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean (Part VI, +88 lines). qdetN_step takes the homological-relations inverse Minv as an explicit parameter (non-recursive). qdetN_step_zero_minv (degenerate Minv=0 case) proved by simp. qdetN_step_eq_qdetF (field-consistency bridge to Route A) stated with strategic sorry — S4 target. The scaffolding separates the formula from the mutual recursion, so S4 only needs to either build the recursion or supply Invertible (minorIJ _ _) as a typeclass parameter. Build pending (.lake symlink trap).\n\nS2 (researcher-9, 2026-05-12): ACT complete. Route A (commutative qdetF over a field) implemented in proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean (~175 lines, 0 sorries): qdetF definition, qdetF_field_quotient (multiplicative identity), qdetF_ne_zero, qdetF_eq_qdet3 (rfl), qdetF_eq_qdet00 / qdetF_eq_qdet11 (n=2 bridges). Closes the commutative half of the open question uniformly in n.",
     "builtItems": [
       "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/problem.md (formal statement, classification, references)",
       "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/knowledge.md (literature survey, two-route plan, Mathlib API map, 6-session sequencing S2–S6)",
-      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/state.md (phase=ACT, iteration=2, next-action=S3 NC-DEFINE)",
-      "proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean (S2: qdetF, qdetF_field_quotient, qdetF_ne_zero, qdetF_eq_qdet3, qdetF_eq_qdet00, qdetF_eq_qdet11, qdetF_summary; 1 abbrev + 1 def + 6 thms + 2 lemmas; 0 sorries, 0 axioms)"
+      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/state.md (phase=ACT, iteration=3, next-action=S4 NC-FIELD-CONSISTENCY)",
+      "proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean S2 (~175 lines, 0 sorries): qdetF + qdetF_field_quotient + qdetF_ne_zero + qdetF_eq_qdet3 + qdetF_eq_qdet00 + qdetF_eq_qdet11 + qdetF_summary",
+      "proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean S3 Part VI (+88 lines, +1 sorry): qdetN_step + qdetN_step_zero_minv + qdetN_step_eq_qdetF (sorry)"
     ],
     "insights": [
       "Route A (commutative qdetF n A i j := A.det / minor_det) avoids mutual recursion and closes the commutative half uniformly in n; it is the cleanest first iteration.",
-      "Route B (non-commutative qdetN) needs mutual strong recursion with qdetN_inv on decreasing n; Lean structural recursion sees the size decrease through A.submatrix.",
+      "Route B (non-commutative qdetN) needs mutual strong recursion with qdetN_inv on decreasing n; Lean structural recursion does NOT see the size decrease through A.submatrix automatically (the recursive call argument differs from the original matrix). Two viable encodings: (a) well-founded recursion on Σ n, Matrix (Fin n) (Fin n) D, (b) typeclass parameterisation via [Invertible (minorIJ _ _)] avoiding mutual recursion entirely.",
+      "S3 SCAFFOLD insight: separating the one-step Schur formula qdetN_step (taking Minv as a parameter) from the mutual recursion isolates the formula content from the recursion infrastructure; the field-consistency theorem qdetN_step_eq_qdetF becomes a one-time bridge between Routes A and B, independent of how Minv is constructed.",
       "Gelfand–Retakh sign convention matches the parent file (qdet3 = det / minor with no extra ± sign at i=j=0), confirmed by qdet3_00_explicit.",
       "n=2 and n=3 specializations follow by unfolding Matrix.det_fin_two / Matrix.det_fin_three plus the existing parent identities.",
       "S2 result: qdetF_eq_qdet3 holds by rfl (block3 is an abbrev for A.submatrix Fin.succAbove Fin.succAbove), and qdetF_eq_qdet00 / qdetF_eq_qdet11 reduce to the parent qdet00_mul_eq_det / mul_qdet11_eq_det via mul_right_cancel₀.",
@@ -60,12 +63,12 @@
     ],
     "mathlibGaps": [
       "No Matrix.quasideterminant at any n.",
-      "Matrix.nonsingInv is field-only; non-commutative inversion via homological relations is not in Mathlib."
+      "Matrix.nonsingInv is field-only; non-commutative inversion via homological relations is not in Mathlib.",
+      "No general n×n Cramer's rule over a division ring."
     ],
     "nextSteps": [
-      "S3 [NC-DEFINE] Implement Route B: qdetN over division rings via mutual strong recursion with qdetN_inv.",
-      "S4 [NC-RECURRENCE] Prove qdetN_recurrence (Schur identity at every n).",
-      "S5 [CONSISTENCY] Prove qdetN n A i j = qdetF n A i j over a field (consistency theorem).",
+      "S4 [NC-FIELD-CONSISTENCY] Discharge qdetN_step_eq_qdetF: expand Matrix.inv_def, distribute the scalar, apply Matrix.det_succ_row (Laplace expansion along row i), separate k=j summand, sign-normalise via Matrix.adjugate_apply. Target ~60-90 Lean lines, -1 sorry.",
+      "S5 [NC-DEFINE] Build qdetN via well-founded recursion on Σ n, Matrix (Fin n) (Fin n) D, OR via [Invertible (minorIJ _ _)] typeclass parameter (avoiding mutual recursion).",
       "S6 [CRAMER] State and prove cramer_rule_nxn_qdet (n×n Cramer's rule over division rings)."
     ]
   },
@@ -159,6 +162,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean"
     },
     {
       "path": "Proofs/CramersRuleOQ01OQ03.lean",
