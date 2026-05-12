@@ -650,6 +650,64 @@ private lemma exists_finite_subcover_for_uhc {n : ℕ}
     CompactSpace.elim_nhds_subcover U fun x => (hU_open x).mem_nhds (hU_mem x)
   exact ⟨U, s, hU_open, hU_mem, hU_sub, hs⟩
 
+/-- **S18d scaffold (Cellina–Browder Step 3, subordinate partition of unity):**
+
+    Given an upper-hemicontinuous set-valued map `F : ↥S → 2^↥S` on a
+    compact `S ⊆ EuclideanSpace ℝ (Fin n)` and any `ε > 0`, package the
+    S18c open cover `U : ↥S → Set ↥S` together with a *partition of unity
+    subordinate to it*. The subordinate partition `ρ : PartitionOfUnity
+    (↥S) (↥S) Set.univ` is the centerpiece of the Cellina–Browder
+    construction: in S18e the continuous selection
+    `f x := ∑ᶠ i, ρ i x • y_i` (with `y_i ∈ F i`) inherits its
+    continuity from `ρ`'s smoothness and its `ε`-graph-approximation
+    property from `ρ.IsSubordinate U` plus S18c's
+    `F z ⊆ Metric.thickening ε (F x)` clause.
+
+    The proof chains `exists_finite_subcover_for_uhc` (S18c, PR #17910)
+    to obtain the open family `U`, derives the universal cover hypothesis
+    `Set.univ ⊆ ⋃ x : ↥S, U x` from the basepoint condition `x ∈ U x`,
+    and feeds the resulting open cover to
+    `PartitionOfUnity.exists_isSubordinate`
+    (`Mathlib.Topology.PartitionOfUnity` line 629 at pinned rev
+    `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). The required
+    `[NormalSpace ↥S]` and `[ParacompactSpace ↥S]` instances are
+    supplied automatically by the `haveI : CompactSpace ↥S` line plus
+    Mathlib's typeclass derivation chain documented in
+    `typeclass_witnesses_compact_subset` (S18b, PR #17802). The closed
+    target set is taken to be `Set.univ`, with `IsClosed Set.univ`
+    discharged by `isClosed_univ`.
+
+    The full ↥S-indexed family `U` is retained (rather than restricted
+    to the finite subcover `s` of S18c) so that the partition of unity
+    is indexed over `↥S` itself; the `ρ`'s local-finiteness clause
+    inherited from `BumpCovering.exists_isSubordinate` ensures only
+    finitely many `ρ i x` are nonzero at any point, recovering the
+    finite-sum behavior needed for S18e's continuous selection.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    above) remains in the file unchanged. -/
+private lemma exists_partition_subordinate_to_uhc_cover {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (hS_compact : IsCompact S)
+    (F : SetValuedMap (↥S) (↥S))
+    (hF_uhc : IsUpperHemicontinuous F)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ U : ↥S → Set ↥S,
+      ∃ ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S),
+        (∀ x : ↥S, IsOpen (U x)) ∧
+        (∀ x : ↥S, x ∈ U x) ∧
+        (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
+        ρ.IsSubordinate U := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  obtain ⟨U, _s, hU_open, hU_mem, hU_sub, _hs_cover⟩ :=
+    exists_finite_subcover_for_uhc S hS_compact F hF_uhc ε hε
+  have hU_cover : (Set.univ : Set ↥S) ⊆ ⋃ x : ↥S, U x := by
+    intro x _
+    exact Set.mem_iUnion.mpr ⟨x, hU_mem x⟩
+  obtain ⟨ρ, hρ_sub⟩ :=
+    PartitionOfUnity.exists_isSubordinate (s := (Set.univ : Set ↥S))
+      isClosed_univ U hU_open hU_cover
+  exact ⟨U, ρ, hU_open, hU_mem, hU_sub, hρ_sub⟩
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
