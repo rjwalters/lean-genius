@@ -4,12 +4,67 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 19, researcher-9)
-**Iteration**: 19
+**Last Updated**: 2026-05-12 (Iteration 20, researcher-11)
+**Iteration**: 20
 
 ## Current Focus
 
-Iteration 19 (2026-05-12, this PR, researcher-9): **product-level
+Iteration 20 (2026-05-12, this PR, researcher-11): **cardinality bound
+on small-prime filter** — proves that the number of primes `p` with
+`p² ≤ n` is at most `Nat.sqrt n`. This is the pure combinatorial
+counting step (no number theory beyond `Nat.le_sqrt`) that converts the
+small-prime correction-factor product into a `(n/2)^√n` bound after
+Iter 19's pointwise reduction. Two new declarations
+(+58 lines, all build-pending, sorry-free):
+
+* `small_prime_card_le_sqrt (n : ℕ) :
+    ((Finset.range (n+1)).filter (fun p => Nat.Prime p ∧ p^2 ≤ n)).card
+      ≤ Nat.sqrt n` —
+  the **main lemma**. Proof: the filter is a subset of
+  `Finset.Ico 2 (Nat.sqrt n + 1)` (each prime `p ≥ 2`, and `p² ≤ n ↔
+  p ≤ Nat.sqrt n` via `Nat.le_sqrt`). The Ico has cardinality
+  `Nat.sqrt n - 1 ≤ Nat.sqrt n` by `Nat.card_Ico` + `omega`.
+* `example : ((Finset.range 101).filter (fun p => Nat.Prime p ∧ p^2 ≤ 100)).card = 4 := by decide` —
+  concrete witness for `n = 100`: small primes are `{2, 3, 5, 7}`
+  (since `11² = 121 > 100`), giving cardinality 4 vs the loose
+  `√100 = 10` bound.
+
+### Strategic value
+
+Step 3 of the four-step Hanson bridge (the documented Iter 20 candidate):
+
+1. Iter 19 — product bound `∏_{p ≤ n} p^(log_p n - 1) ≤ ∏_{p ≤ n} (n/p)`. ✓ (merged)
+2. Iter 17 (PR #17619) — `p² > n → p^(log_p n - 1) = 1` (support reduction). ⏳ (in flight)
+3. **Iter 20 (this PR)** — `|{p prime : p² ≤ n}| ≤ √n` (cardinality of small-prime tail). ✓ (this PR)
+4. Multiplicative combination — `∏_{p ≤ √n} (n/p) ≤ (n/2)^√n = 2^(√n · log₂(n/2))`,
+   then `lcmRange n ≤ primorial n · ∏_{p ≤ √n} (n/p) ≤ 4^n · n^(c√n) ≤ (4 + ε)^n`. ⏳ (S21+)
+
+Iter 20 is **structurally independent of #17619** (Iter 17): the
+cardinality bound stands on its own and does not require the
+support-reduction lemma to be merged first.
+
+### File delta
+
++58 lines (953 → 1011), +1 theorem + 1 example (53 → 54). Definitions /
+sorries / axiomCount unchanged. Build pending — proof uses only:
+
+* `Finset.mem_filter`, `Finset.mem_range`, `Finset.mem_Ico` (used pervasively).
+* `Finset.card_le_card` (subset → card-le, standard).
+* `Nat.card_Ico` (Mathlib `Finset.card_Ico` for `ℕ`).
+* `Nat.Prime.two_le` (from `hp_prime : Nat.Prime p`).
+* `Nat.le_sqrt` (the `m * m ≤ n` form; pow_two converts the `^2` form).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, Iter 17 support reduction)**: orthogonal — Iter 20
+  is a cardinality counting lemma on the small-prime *set*, while
+  Iter 17 reduces the *product support*. Together they yield the
+  small-prime-restricted bound `∏_{p² ≤ n} (n/p) ≤ (n/2)^√n`.
+* **#17551 (OPEN, Iter 15 alternate)**: orthogonal, no overlap.
+
+### Iteration 19 (background, merged base, #17710)
+
+Iteration 19 (2026-05-12, merged as #17710, researcher-9): **product-level
 correction-factor bound** — lifts Iter 18's pointwise
 `prime_pow_pred_le_div` (`p^(log_p n - 1) ≤ n/p`) to a product-level
 inequality over the full prime filter, then chains with Iter 16's

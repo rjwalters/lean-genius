@@ -31,16 +31,16 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T20:50:00Z",
-    "iteration": 16,
-    "focus": "Building structural lemma library toward prime-power decomposition lcm(1,...,n) = ∏_{p prime ≤ n} p^{⌊log_p n⌋}. Iteration 2 (#16704 merged) added lcmRange_succ, lcmRange_dvd_lcmRange_of_le, lcmRange_monotone. Iteration 3 (#16772 merged) added pow_dvd_lcmRange — any positive base power b^k ≤ n divides lcmRange n. Iteration 5 (#17021 merged) specialized to the prime case: prime_pow_dvd_lcmRange. Iteration 6 (#17128 merged) added pairwise-coprimality of distinct prime-power factors: coprime_prime_pow_pow_of_ne. Iteration 7 (this PR) closes the **easy direction of Chebyshev's decomposition**: prod_prime_powers_dvd_lcmRange : (∏ p ∈ filter Prime (range (n+1)), p^⌊log_p n⌋) ∣ lcmRange n. Adds the helper prod_dvd_of_pairwise_coprime (Finset induction packaging) which combines Nat.Coprime.prod_right and Nat.Coprime.mul_dvd_of_dvd_of_dvd. The reverse direction (lcmRange ∣ prod) — needing Nat.factorization — is the next structural target.",
+    "iteration": 20,
+    "focus": "Iter 20 (this PR, researcher-11): cardinality bound on small-prime filter — |{p prime : p^2 ≤ n}| ≤ Nat.sqrt n. Pure combinatorial counting step (Step 3 of the four-step Hanson bridge documented in state.md). Independent of in-flight PR #17619 (Iter 17 support-reduction). +58 lines, +1 theorem + 1 example.",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
       "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)"
     ],
-    "nextAction": "Iter 10: leverage the new equality to reduce hanson_bound to a Chebyshev-type prime-counting inequality. Two natural sub-targets: (a) prove ∑_{p prime ≤ n} ⌊log_p n⌋ · log p ≤ n · log 3 using primorial_le_4_pow + Bertrand-style bounds (Mathlib has Nat.primorial_le_4_pow but the conversion to log-summed inequality requires real analysis); (b) the cleaner combinatorial route via Erdős/Nair: lcm(1,...,n) ∣ n · binomial(2n, n) (Erdős 1932), then 4^n bound via central-binomial (Nat.centralBinom_lt_pow_of_le_pow_of_pos in Mathlib v4.26).",
+    "nextAction": "Iter 21: combine small_prime_card_le_sqrt with prod_prime_pow_pred_le_prod_div_prime (Iter 19) and the eventual lcmRange_correction_supported_on_small_primes (PR #17619, in flight) to derive the small-prime restricted product bound. Specifically, prove `∏_{p prime, p^2 ≤ n} (n / p) ≤ (n / 2) ^ Nat.sqrt n` via `Finset.prod_le_pow_card` and `n / p ≤ n / 2` for prime `p ≥ 2`. Combined with `Nat.primorial_le_4_pow`, this is the structural envelope `lcmRange n ≤ 4^n · (n/2)^√n`, sub-`(4 + ε)^n` for any ε > 0 and large n.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 2,
+      "total": 20,
+      "currentApproach": 4,
       "approachesTried": 2
     }
   },
@@ -66,7 +66,8 @@
       "hanson_bound (axiom): the open target ∀ n, lcmRange n ≤ 3^n",
       "hanson_strictly_stronger_than_factorial: 3^n < n^n for n ≥ 4",
       "Theorem lcmRange_eq_prod_prime_powers: lcm(1,...,n) = ∏ p prime ≤ n, p^Nat.log p n in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 9). Two-line proof: Nat.dvd_antisymm of lcmRange_dvd_prod_prime_powers and prod_prime_powers_dvd_lcmRange. Closes Chebyshev decomposition started in iters 7-8.",
-      "Theorem lcmRange_eq_primorial_mul_prod_prime_pow_pred: lcm(1,...,n) = primorial n * ∏ p prime ≤ n, p^(Nat.log p n - 1) in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 16, this PR). Refines iter 15's primorial_dvd_lcmRange (#17559) from divisibility to explicit equality, factoring lcmRange as the primorial times a correction factor that only sees primes p ≤ √n (since p > √n ⇒ Nat.log p n ≤ 1 ⇒ exponent 0). Combined with Mathlib's primorial_le_4_pow, isolates the asymptotic challenge into the correction factor — bounding it by Chebyshev-style small-prime estimates would yield Hanson's 3^n via (3/4)^n · 4^n = 3^n. Proof: lcmRange_eq_prod_prime_powers + Finset.prod_mul_distrib + pointwise pow_succ' / Nat.sub_add_cancel."
+      "Theorem lcmRange_eq_primorial_mul_prod_prime_pow_pred: lcm(1,...,n) = primorial n * ∏ p prime ≤ n, p^(Nat.log p n - 1) in BaselProblemOQ01OQ01OQ02OQ03.lean (iter 16, this PR). Refines iter 15's primorial_dvd_lcmRange (#17559) from divisibility to explicit equality, factoring lcmRange as the primorial times a correction factor that only sees primes p ≤ √n (since p > √n ⇒ Nat.log p n ≤ 1 ⇒ exponent 0). Combined with Mathlib's primorial_le_4_pow, isolates the asymptotic challenge into the correction factor — bounding it by Chebyshev-style small-prime estimates would yield Hanson's 3^n via (3/4)^n · 4^n = 3^n. Proof: lcmRange_eq_prod_prime_powers + Finset.prod_mul_distrib + pointwise pow_succ' / Nat.sub_add_cancel.",
+      "small_prime_card_le_sqrt (Iter 20, this PR, researcher-11): |{p prime in range (n+1) : p^2 ≤ n}| ≤ Nat.sqrt n. Pure combinatorial cardinality lemma — the filter is contained in Finset.Ico 2 (Nat.sqrt n + 1) (primes are ≥ 2, and p² ≤ n ↔ p ≤ Nat.sqrt n via Nat.le_sqrt), and Nat.card_Ico gives card ≤ Nat.sqrt n - 1 ≤ Nat.sqrt n. Concrete witness: at n = 100 the small primes are {2, 3, 5, 7} (card 4 ≤ √100 = 10). Closes Step 3 of the four-step Hanson bridge documented in state.md."
     ],
     "insights": [
       "Apéry's proof of ζ(3) irrationality requires the exact constant 3 (threshold c ≈ 3.245); the easier 4^n is insufficient.",
