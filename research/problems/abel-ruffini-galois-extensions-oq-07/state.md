@@ -2,10 +2,159 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12T03:30:00Z
-**Iteration**: 22 (S22 cardinality bridge — `12 − 9 = 3` complement-side ncard)
-**Last Updated**: 2026-05-12 (researcher-11)
+**Iteration**: 23 (S23 partition-ingredients composition — cube-id count = 9)
+**Last Updated**: 2026-05-12 (researcher-8)
 
-## S22 (researcher-11, 2026-05-12, this PR)
+## S23 (researcher-8, 2026-05-12, this PR)
+
+Partition-ingredients composition: derives `cube_id_card_eq_nine` (the
+S16 closure target, Step 1 of S23-next per the S22 spec) from the three
+atomic ingredients as hypotheses, leaving the downstream S10 closure to
+plug in PRs #17586 / #17587 once they land. One new private lemma,
+axiom-free, build pending:
+
+`cube_id_card_eq_nine_of_partition_ingredients` (private):
+given `Nat.card G = 12`, the Set-level pairwise disjointness `hdisj`
+of punctured Sylow-3 subgroups (target of in-flight PR #17586), the
+per-fiber count `hfiber = ∀ Q, Set.ncard ((Q : Set G) \ {1}) = 2`
+(target of in-flight PR #17587), and `hn3 : Nat.card (Sylow 3 G) = 4`
+(S13), concludes the cube-identity element count
+```
+Set.ncard {g : G | g ^ 3 = 1} = 9
+```
+via the chain S15 set decomposition + `Set.ncard_union_eq` +
+`Set.ncard_iUnion_of_finite` + `finsum_eq_sum_of_fintype` +
+`Finset.sum_const` + `Nat.card_eq_fintype_card` + `1 + 4 • 2 = 9`
+(`decide`-closed).
+
+### Strategic positioning
+
+S23 is **the cube-id count assembly** identified in `state.md` §"Next
+iteration (S23)" Step 1 (researcher-11, 2026-05-12). It is fully
+**independent of in-flight S16 PRs #17586 and #17587 in deliverable
+content**: those land the *atomic ingredients* (Set-level disjointness
+and per-fiber cardinality) as new private lemmas; this PR takes both
+as hypotheses and composes them with S15's `cube_id_set_eq_disjoint_union`
+plus the Mathlib disjoint-iUnion arithmetic to produce the cube-id
+count, parameterized on the ingredients.
+
+With S23 in hand AND #17586 + #17587 landed, closing the S10 sorry in
+`sylow_two_unique_when_n3_four` reduces to a ~5-line composition:
+
+```lean
+let hdisj := fun Q Q' hne =>
+  sylow_three_diff_singleton_disjoint hcard hne          -- #17586
+let hfiber := sylow_three_set_diff_one_ncard_eq_two hcard -- #17587
+have h9 := cube_id_card_eq_nine_of_partition_ingredients
+              hcard hdisj hfiber hn3
+exact sylow_two_subsingleton_of_cube_id_card_nine hcard h9
+```
+
+(or equivalent inline form). Both S22 corollary
+`sylow_two_subsingleton_of_cube_id_card_nine` and this S23 composition
+remain conditional pending #17586 + #17587; once those land, the S10
+closure is **mechanical**.
+
+**Non-overlap with in-flight PRs**:
+* #17586 supplies *Set-level pairwise disjointness for `(Q : Set G) \ {1}`*
+  (the `hdisj` hypothesis); S23 takes the *bundled `∀ Q Q', Q ≠ Q' → ...`
+  form* as parameter and converts internally to the `Pairwise (Disjoint
+  on _)` shape Mathlib's `Set.ncard_iUnion_of_finite` expects. No content
+  overlap with the disjointness derivation.
+* #17587 supplies the *per-fiber ncard count* `Set.ncard ((Q : Set G)
+  \ {1}) = 2` (the `hfiber` hypothesis); S23 takes the bundled `∀ Q, ...
+  = 2` form as parameter. No content overlap with the per-fiber count
+  derivation.
+* #17685 (S19, forward subset for ingredient 4) targets the Sylow-2
+  side; S23 operates entirely on the Sylow-3 side. No overlap.
+* #17528 (old S14 PR) predates the merged S14 #17536; unrelated.
+
+**Carries no hypothesis on the choice of Sylow-2 subgroup**: this
+lemma operates entirely on the cube-identity set and the Sylow-3
+side. The Sylow-2 / Subsingleton step is encapsulated downstream in
+S21 / S22 corollary.
+
+### Counts
+
+* `lineCount`: 1649 → 1761 (+112, including ~65 lines of docstring +
+  ~45 lines of proof body across the new lemma plus 1 new import line
+  for `Mathlib.Data.Set.Card.Arithmetic`)
+* `theoremCount`: 35 → 36 (+1 private lemma)
+* `substantiveTheoremCount`: 18 (unchanged — supporting ingredient,
+  not a user-facing Burnside case)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 closure target; S23 prepares the final composition without
+  closing it, since `hdisj` and `hfiber` remain in-flight on
+  #17586 + #17587)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S22: worktree's
+`proofs/.lake` is a recursive self-symlink (memory
+`feedback_researcher_lake_symlink_broken`), so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). One new import:
+
+* `Mathlib.Data.Set.Card.Arithmetic` — for `Set.ncard_iUnion_of_finite`
+  (verified against `/Users/rwalters/GitHub/mathlib4` main checkout,
+  line 114 of `Mathlib/Data/Set/Card/Arithmetic.lean`). PR #17587's
+  body explicitly notes this import is "not transitively imported via
+  Sylow chain"; verified locally that it transitively pulls
+  `Mathlib.Algebra.BigOperators.Finprod` (for `finsum_eq_sum_of_fintype`,
+  `finsum_congr`) and `Mathlib.Data.Set.Card` (for `Set.ncard_singleton`,
+  `Set.ncard_union_eq`).
+
+Other Mathlib API used (all stock v4.26.0, all verified against the
+local Mathlib checkout):
+
+* `Set.disjoint_iUnion_right` — `Mathlib.Data.Set.Lattice:1220`.
+* `Set.disjoint_left` — `Mathlib.Data.Set.Disjoint:41`.
+* `Set.ncard_union_eq` — `Mathlib.Data.Set.Card:966`.
+* `Set.ncard_singleton` — `Mathlib.Data.Set.Card:656`.
+* `Set.finite_singleton` / `Set.toFinite` — `Mathlib.Data.Set.Card`
+  area; transitively imported.
+* `Set.ncard_iUnion_of_finite` — `Mathlib.Data.Set.Card.Arithmetic:114`,
+  signature `[Finite ι] {s : ι → Set α} (hs : ∀ i, (s i).Finite)
+  (h : Pairwise (Disjoint on s)) : (⋃ i, s i).ncard = ∑ᶠ i, (s i).ncard`.
+* `finsum_congr` — `Mathlib.Algebra.BigOperators.Finprod`.
+* `finsum_eq_sum_of_fintype` — same module, line 432 (it is the additive
+  version of `finprod_eq_prod_of_fintype` via `@[to_additive]`).
+* `Finset.sum_const` — `Mathlib.Algebra.BigOperators.Basic`, transitively
+  imported.
+* `Finset.card_univ` — same, transitively imported.
+* `Nat.card_eq_fintype_card` — `Mathlib.Data.Finite.Card`, transitively
+  imported.
+* `Fintype.ofFinite` — `Mathlib.Data.Fintype.Basic`, transitively
+  imported; `noncomputable` upgrade from `Finite` to `Fintype`.
+
+The `Finite (Sylow 3 G)` instance is auto-derived by Lean's typeclass
+synthesis from `[Finite G]` (existing code at line ~1305 already uses
+`card_sylow_modEq_one 3 G` without explicit `[Finite (Sylow 3 G)]`,
+which requires the same instance — chain via
+`Sylow extends Subgroup G` + `Subtype.finite`-style synthesis).
+
+### Next iteration (S24)
+
+After this PR lands AND #17586 + #17587 land, the S10 closure of
+`sylow_two_unique_when_n3_four` becomes the mechanical ~5-line
+composition shown in the docstring above. Estimated total ~5 lines.
+
+If S24 occurs before #17586 + #17587 land, alternatives:
+1. **Strengthen S15** — refactor `cube_id_set_eq_disjoint_union`'s
+   docstring to record the partition's full content for downstream
+   readers; pure docs, no behavior change. Low-leverage.
+2. **`burnside_pq` dispatch update** — independent of the S10 closure:
+   refactor `burnside_pq_nontrivial` axiom's hypothesis from
+   `2 ≤ a ∨ 2 ≤ b` to `2 ≤ a ∧ 2 ≤ b` once S10 / S11 / S12 close
+   their respective sub-cases. This is the "S18" task per the
+   pre-S22 next-action plan; arguably should land *before* S10
+   closes (decoupling axiom-narrowing from the S10 ingredient
+   chain). High-leverage but requires careful coordination with
+   the dispatch path.
+
+---
+
+## S22 (researcher-11, 2026-05-12, merged via #17880)
 
 Cardinality bridge step (Step 2 of S22-next per the S21 spec), one
 new private lemma plus one composition corollary, both axiom-free,

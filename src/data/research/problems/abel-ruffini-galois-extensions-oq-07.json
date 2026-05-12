@@ -30,7 +30,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-09T03:00:00.000Z",
-    "iteration": 15,
+    "iteration": 23,
     "focus": "S9 (researcher-10, 2026-05-08): **|G| = 12 partial Lean implementation**. S7 (PR #17114), S7.5 (PR #17155), and S8 spec (PR #17180) merged. This iteration implements the bulk of the S8 spec axiom-free, with one isolated sorry deferred to S10. Added in proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean (738→876 lines, +1 main theorem, +2 private lemmas, sorries 0→1, axiomCount 1 unchanged): (1) sylow_count_dvd_four_modEq_one_three (private, axiom-free, ~12 lines): n ≥ 1 ∧ n ∣ 4 ∧ n ≡ 1 [MOD 3] → n ∈ {1, 4} via interval_cases. (2) sylow_two_unique_when_n3_four (private, sorry'd for S10, ~7 lines): the element-counting cardinality lemma, proof outline in docstring. (3) burnside_p_squared_q_twelve (axiom-free modulo above, ~55 lines): main theorem for the exceptional (p,q)=(2,3), |G|=12 case. The n_3 = 1 branch is fully discharged via burnside_pq_with_normal_qSylow; the n_3 = 4 branch reduces to Subsingleton (Sylow 2 G) via the S10 lemma, then discharges via burnside_pq_with_normal_pSylow. Code follows S7.5 idioms verbatim (factorization-of-cardinality, Sylow.card_eq_multiplicity, Subgroup.card_mul_index, Sylow.normal_of_subsingleton chain). Build status: not verified locally (proofs/.lake symlink trap; ~45-min cold-cache builds). Risk-equivalent to merged-but-build-pending S7.5. After S10 closes the sorry, burnside_pq dispatch can peel off (a,b)=(2,1) axiom-free; with symmetric (1,2) shape (S11), burnside_pq_nontrivial narrows to require 2 ≤ a ∧ 2 ≤ b.",
     "blockers": [
       "Mathlib lacks: (1) the algebraic-integer lemma `|G|/χ(1) ∈ ℤ̄_K` for a non-trivial irreducible character χ on a non-conjugacy class, key for the original Burnside proof; (2) the focal subgroup theorem and transfer-based character-free Burnside proof (Goldschmidt/Matsuyama). Note: Mathlib has `Mathlib.GroupTheory.Focal` (focal subgroup definition + transfer to focal quotient), so partial scaffolding exists for the character-free route.",
@@ -38,7 +38,7 @@
     ],
     "nextAction": "S10: close `sylow_two_unique_when_n3_four`'s sorry via element counting (~80-120 lines). Pairwise trivial intersection of distinct prime-order Sylow 3-subgroups, partition `{g | g^3 = 1} = {e} ⊔ ⊔ᵢ (Q_i \\ {e})` of cardinality 9, residue 3 = `|P| − 1` for any Sylow 2-subgroup `P` pinning P uniquely. Mathlib API to verify: `Set.ncard_biUnion`/`Finset.card_disjUnion`, `Subgroup.disjoint_iff_inf_eq_bot`, `Subgroup.eq_bot_of_card_le_one`, `Sylow.ext`. Then post-S10: update `burnside_pq` dispatch to peel off `(a,b)=(2,1)` axiom-free. Then S11: symmetric `(1,2)` shape (~250 lines mirroring S7/S7.5/S9). Then S12: peel off `(1,2)` from dispatch. Then S13: |G|=p²q² Sylow analysis. Then S14+: Goldschmidt-Matsuyama via `Mathlib.GroupTheory.Focal`.",
     "attemptCounts": {
-      "total": 9,
+      "total": 10,
       "currentApproach": 1,
       "approachesTried": 1
     }

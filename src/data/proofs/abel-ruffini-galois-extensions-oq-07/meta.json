@@ -20,7 +20,7 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 1,
-    "lineCount": 1649,
+    "lineCount": 1761,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -133,7 +133,7 @@
       "g_pow_three_iff_mem_some_sylow_three (Iteration 14, private, axiom-free): pointwise membership characterization for the S10 element-counting closure. For finite G with |G| = 12, an element satisfies g^3 = 1 iff it lies in some Sylow 3-subgroup. Forward via Subgroup.zpowers g being a 3-subgroup (Nat.card_zpowers + IsPGroup.of_card with n ∈ {0, 1}) and IsPGroup.exists_le_sylow. Backward via pow_card_eq_one' applied inside (Q : Subgroup G) with |Q| = 3 (S13's sylow_three_card_eq_three_of_card_twelve) plus Subgroup.coe_pow / Subgroup.coe_one to push ↑Q ↑1 = 1 back to G. FIRST of five named ingredients planned in session-13-s10-element-count-spec.md §1 for the S10 closure of sylow_two_unique_when_n3_four; the four-Sylow-3 hypothesis is not used here, only the cardinality |G| = 12 (which gives |Q| = 3 for any Q : Sylow 3 G)."
     ],
     "assumptions": "1 axiom (narrowed in Iteration 4, unchanged in Iterations 5/7/9/11): `burnside_pq_nontrivial` — Burnside's pᵃqᵇ theorem for the residual non-trivial case (`p ≠ q`, `a ≥ 1`, `b ≥ 1`, AND `2 ≤ a ∨ 2 ≤ b`). The trivial cases (`a = 0`, `b = 0`, `p = q`) reduce to Mathlib's `IsPGroup → IsNilpotent → IsSolvable`; the `a = b = 1` case (squarefree |G| = p·q) reduces to `IsZGroup.of_squarefree → IsSolvable`. Iteration 5 adds two axiom-free reduction lemmas (`burnside_pq_with_normal_pSylow`, `burnside_pq_with_normal_qSylow`) that discharge the axiom outright whenever a normal Sylow subgroup of either prime can be exhibited. Iteration 7 (S7), 7.5, and 9 progressively cover the three sub-cases of the `(a, b) = (2, 1)` shape: S7 proves Burnside axiom-free whenever `|G| = p² · q` with `p > q`; S7.5 covers `p < q` with `(p, q) ≠ (2, 3)`; S9 covers the exceptional `(p, q) = (2, 3), |G| = 12` (modulo a single isolated sorry deferred to S10 — the `sylow_two_unique_when_n3_four` element-counting lemma). Iteration 11 (S11) mirrors this trio for the symmetric `(a, b) = (1, 2)` shape: `burnside_p_q_squared_p_lt_q` (mirror of S7), `burnside_p_q_squared_q_lt_p` excluding `(p, q) = (3, 2)` (mirror of S7.5), and `burnside_p_q_squared_twelve_mirror` reusing S9 for `|G| = 12 = 3 · 2²`. After S10 closes the deferred sorry and S12 updates the `burnside_pq` dispatch, `burnside_pq_nontrivial` will be required only for shapes with `2 ≤ a ∧ 2 ≤ b` (orders divisible by `p²` AND `q²` for distinct primes); a full proof of that residual axiom would be a substantial Mathlib upstream contribution (estimated 400-1000 lines, depending on proof route — character theory + algebraic integers à la Burnside 1904, or transfer + focal subgroup à la Goldschmidt-Matsuyama 1970s).",
-    "theoremCount": 35,
+    "theoremCount": 36,
     "definitionCount": 0
 },
   "overview": {
@@ -271,9 +271,9 @@
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 1649,
+    "lineCount": 1761,
     "axiomCount": 1,
-    "theoremCount": 35,
+    "theoremCount": 36,
     "substantiveTheoremCount": 18,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
