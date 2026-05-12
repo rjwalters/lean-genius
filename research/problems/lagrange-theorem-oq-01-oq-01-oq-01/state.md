@@ -1,10 +1,43 @@
 # Current State
 
-**Phase**: ACT (S2 complete)
-**Since**: 2026-05-12 (S2)
-**Iteration**: 2
+**Phase**: ACT (S3a-prep complete)
+**Since**: 2026-05-12 (S3a-prep)
+**Iteration**: 3
 
-## Latest Iteration: S2 (researcher-9, 2026-05-12)
+## Latest Iteration: S3a-prep (researcher-12, 2026-05-12)
+
+Approach B preliminaries: created
+`proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean` (~165 lines,
+3 theorems + 1 instance + 3 examples, 0 sorries, 0 axioms).
+
+Deliverables:
+
+1. **`isCyclic_units_zmod`** (instance): `(ZMod q)ˣ` is cyclic for any
+   prime `q` (via Mathlib `isCyclic_of_subgroup_isDomain`).
+
+2. **`card_units_zmod`** (theorem): `Fintype.card (ZMod q)ˣ = q - 1`
+   for any prime `q` (via `ZMod.card_units_eq_totient` and
+   `Nat.totient_prime`).
+
+3. **`exists_unit_of_order_p`** (theorem): for each prime `p ∣ q - 1`,
+   there exists `g : (ZMod q)ˣ` with `orderOf g = p`. Constructed as
+   `g₀ ^ ((q - 1) / p)` for a generator `g₀`; the order calculation
+   mirrors `Proofs.LagrangeTheoremOQ01OQ03.orderOf_pow_div_of_dvd`
+   (Hall's theorem for cyclic groups) using `orderOf_pow'`,
+   `Nat.gcd_eq_right`, `Nat.div_dvd_of_dvd`, and `Nat.div_div_self`.
+
+4. **Sanity examples** at `(p, q) = (2, 3), (3, 7), (5, 11)`,
+   instantiating the existence theorem at the smallest cases relevant
+   to the deferred S3d construction (orders 6, 21, 55 non-abelian
+   groups).
+
+Build verification deferred to a follow-up `*-prep` PR per the same
+precedent as S2 (`bezout-identity-oq-01-oq-01-oq-01-oq-01` PR #17990,
+`cube-root-3-irrational-oq-04` PR #17718). All Mathlib API calls in
+this file are already exercised elsewhere in the repository (see
+inline `## API verification` block in the new file).
+
+## Earlier Iteration: S2 (researcher-9, 2026-05-12)
 
 Implemented Approach A in `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean`
 (140 lines, 6 theorems, 0 sorries, 0 axioms):
@@ -76,11 +109,31 @@ S2 will need a build verification but can be deferred to a follow-up
 
 ## Next Action
 
-**S3+ (deferred to Approach B)**: generalize to arbitrary primes `p < q`
-with `p ∣ (q - 1)` via the semidirect product `ZMod q ⋊[φ] ZMod p`.
+**S3a-build-verify or S3c (action sequence post-S3a-prep)**:
+
+* **S3a-build-verify** (one-shot mechanic-style PR): add
+  `LagrangeTheoremOQ01OQ01OQ01.lean` and
+  `LagrangeTheoremOQ01OQ01OQ01ApproachB.lean` to the `proofs/Proofs.lean`
+  umbrella (currently they exist on disk but aren't part of the
+  defaultTarget build), then attempt a full Docker build to re-verify
+  both Approach A and the new S3a building blocks at the pinned rev.
+
+* **S3c (Approach B continuation)**: Lift the order-`p` element
+  produced by `exists_unit_of_order_p` to a non-trivial group
+  homomorphism `φ : ZMod p →* MulAut (ZMod q)`. The natural choice
+  sends a generator `1 : ZMod p` to the multiplication-by-`g`
+  automorphism on `ZMod q`. Concrete pieces needed:
+
+  - `ZMod q →+* ZMod q` from a unit (`Units.coeHom` inverse direction:
+    multiplication by a unit gives a `MulAut`).
+  - `MulAut (ZMod q)` non-triviality from `g ≠ 1` (the unit has order
+    `p ≥ 2`).
+  - Pack into `ZMod p →* MulAut (ZMod q)` via the universal property of
+    cyclic groups (`zmodEquivZPowers` or `ZMod.lift`).
+
 Outline retained in the "Future Iterations (Deferred)" section below.
 
-The S2 deliverable now in main file (target of this iteration):
+The S2 deliverable now in main file (target of S2 iteration):
 
 **S2 (researcher-9, COMPLETE)**: Implement Approach A in a new file
 `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean`. Three deliverables:
@@ -143,11 +196,13 @@ are both direct).
 `ZMod q ⋊[φ] ZMod p` where `φ : ZMod p →* MulAut (ZMod q)` is non-trivial.
 Required pieces:
 
-- (S3a) Show `(ZMod q)ˣ` is cyclic of order `q-1` for `q` prime
-  (Mathlib has `ZMod.unitsCyclic` or derive via `IsCyclic_isMaximalOrder`).
-- (S3b) Extract an element of order `p` from `(ZMod q)ˣ` using
-  `p | q - 1 = Nat.card (ZMod q)ˣ` + cyclic-group divisor existence
-  (`IsCyclic.exists_orderOf_eq` or similar).
+- ~~(S3a) Show `(ZMod q)ˣ` is cyclic of order `q-1` for `q` prime~~
+  **COMPLETE** in `ApproachB.isCyclic_units_zmod` (instance) and
+  `ApproachB.card_units_zmod` (theorem).
+- ~~(S3b) Extract an element of order `p` from `(ZMod q)ˣ`~~
+  **COMPLETE** in `ApproachB.exists_unit_of_order_p` via the
+  `g₀ ^ ((q - 1) / p)` construction (Hall's-theorem-for-cyclic-groups
+  recipe from `Proofs.LagrangeTheoremOQ01OQ03`).
 - (S3c) Lift to a non-trivial hom `φ : ZMod p →* MulAut (ZMod q)`.
 - (S3d) Assemble `ZMod q ⋊[φ] ZMod p`, verify `Nat.card = p * q`,
   prove `¬ IsCyclic`.
