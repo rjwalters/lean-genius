@@ -494,4 +494,77 @@ theorem card_computable_lt_card_nonComputable :
   rw [card_computable_reals_eq_aleph0, card_nonComputableReals_eq_continuum]
   exact Cardinal.aleph0_lt_continuum
 
+/-! ## S5 — Cross-cardinal consolidation across the hierarchy layers
+
+The cardinal results of S2-S4 (`card_computable_reals_eq_aleph0 = ℵ₀`,
+`card_nonComputableReals_eq_continuum = 𝔠`) and the imported sibling
+`AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0` together pin the
+exact cardinal coordinates of every layer of the hierarchy
+`ℚ ⊊ algebraic ⊊ computable ⊊ ℝ`.
+
+This S5 deliverable packages three short consolidation theorems:
+
+* `card_computable_reals_eq_card_algebraic_reals` — algebraic and computable
+  reals share cardinality (both ℵ₀); the qualitative inclusion is strict, but
+  the cardinal coordinate is the same.
+* `card_nonComputableReals_eq_card_reals` — non-computable reals match ℝ
+  cardinally; direct from `Cardinal.mk_real` and
+  `card_nonComputableReals_eq_continuum`.
+* `cardinality_trichotomy` — compact summary stating the three cardinalities
+  (algebraic reals subtype, computable reals, non-computable reals).
+
+The constructive (qualitative) inclusion `algebraic ⊆ computable` requires
+exhibiting a Mathlib-`Computable` rational sequence converging to each
+algebraic real (Sturm-chain or bisection-on-minimal-polynomial witnesses);
+that is deferred to a later iteration. The cardinal statement
+`#algebraic = #computable` recorded here is the cardinal coordinate of the
+(still classical) inclusion.
+-/
+
+/-- **S5 lemma — cardinal coincidence of algebraic and computable reals**:
+    both have cardinality ℵ₀, so as cardinals they are equal.
+
+    The qualitative inclusion `algebraic ⊆ computable` is strict (every
+    rational is algebraic, every algebraic is computable, but π and e are
+    computable and not algebraic — the last fact is deferred to a future
+    iteration formalising explicit computable transcendentals). At the
+    cardinal level, however, both share ℵ₀, mirroring the slogan: "qualitative
+    refinement preserves cardinality below 𝔠". -/
+theorem card_computable_reals_eq_card_algebraic_reals :
+    (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) =
+      Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} := by
+  rw [card_computable_reals_eq_aleph0,
+      AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0]
+
+/-- **S5 lemma — cardinal coincidence of non-computable reals and ℝ**:
+    `#(non-computable) = #ℝ = 𝔠`.
+
+    The countable set of computable reals is a cardinality-zero deletion from
+    ℝ: removing it leaves a set with the same cardinality as ℝ. This is the
+    cardinal-level analogue of "almost all reals are non-computable". -/
+theorem card_nonComputableReals_eq_card_reals :
+    (#(↑nonComputableReals : Set ℝ) : Cardinal) = #ℝ := by
+  rw [card_nonComputableReals_eq_continuum, Cardinal.mk_real]
+
+/-- **S5 main — cardinality trichotomy across the hierarchy**:
+    bundles the three cardinal facts that determine where each layer of
+    `ℚ ⊊ algebraic ⊊ computable ⊊ ℝ` sits.
+
+    Reads: algebraic reals and computable reals are both countably infinite
+    (cardinality ℵ₀), while the non-computable reals form a continuum-sized
+    set (cardinality 𝔠 = #ℝ). The strict cardinal inequality ℵ₀ < 𝔠 then
+    explains why the topmost inclusion `computable ⊊ ℝ` must be strict, and
+    why no countable enumeration of the computable reals can hope to cover ℝ.
+
+    Compare with the sibling
+    `AlgebraicNumbersCountableOQ02OQ03.cardinality_dichotomy`, which bundles
+    the algebraic/transcendental dichotomy in the same form. -/
+theorem cardinality_trichotomy :
+    Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} = ℵ₀ ∧
+    (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) = ℵ₀ ∧
+    (#(↑nonComputableReals : Set ℝ) : Cardinal) = 𝔠 :=
+  ⟨AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0,
+   card_computable_reals_eq_aleph0,
+   card_nonComputableReals_eq_continuum⟩
+
 end AlgebraicNumbersCountableOQ02OQ04
