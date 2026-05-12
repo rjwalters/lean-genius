@@ -86,7 +86,8 @@
       "For any atomless Borel measure (such as Lebesgue), the restriction to any of Ioo, Ioc, Ico, Icc gives the same result: boundaries are countable (finite in this case) and therefore null.",
       "The key lemma `volume_restrict_Icc_eq_Ioo` is NOT in Mathlib (as of current revision). Mathlib tends to use Ioc as the canonical interval (it forms a π-system), but the Icc = Ioo equivalence is derivable and could be contributed.",
       "The proof uses only subadditivity of measure (measure_union_le), not sigma-additivity. This means the result extends to any outer measure, not just sigma-additive measures.",
-      "The equivalence `integrable_Icc_iff_Ioo` is a clean corollary: since the measures are literally equal, the Integrable predicate (which depends only on the measure) is identical for both."
+      "The equivalence `integrable_Icc_iff_Ioo` is a clean corollary: since the measures are literally equal, the Integrable predicate (which depends only on the measure) is identical for both.",
+      "Mathematically the result is a one-line corollary of measure extensionality, but its formal expression highlights a subtle Mathlib design choice: `intervalIntegral` is built around `Ioc` (half-open, π-system-friendly), while applications in differential geometry and PDE typically have integrability data on open sets. This file builds the explicit bridge so applications need not redo the boundary-null argument case-by-case."
     ]
   },
   "sections": [
@@ -118,7 +119,7 @@
       "id": "main-theorems",
       "title": "§ IV. Main Theorems",
       "startLine": 127,
-      "endLine": 162,
+      "endLine": 159,
       "summary": "Main results: intervalIntegral_swap_of_Ioo_integrable (Fubini with Ioo hypothesis) and integrable_Icc_iff_Ioo (explicit equivalence).",
       "mathContext": "The main theorem converts Ioo integrability to Icc integrability using §II, then applies §III. The equivalence theorem is a one-liner from the product measure equality."
     },
@@ -129,6 +130,14 @@
       "endLine": 175,
       "summary": "greens_fubini_open_rectangle: for uncurried dPdy : ℝ × ℝ → ℝ, the Fubini swap holds under open rectangle integrability.",
       "mathContext": "Direct application of intervalIntegral_swap_of_Ioo_integrable with the uncurried form of the partial derivative, relevant for the standard Green's theorem setup."
+    },
+    {
+      "id": "mathlib-gap",
+      "title": "§ VI. Mathlib Gap Analysis",
+      "startLine": 177,
+      "endLine": 226,
+      "summary": "Block-comment analysis documenting why volume.restrict (Icc a b) = volume.restrict (Ioo a b) is not in Mathlib, the contribution path to Mathlib.MeasureTheory.Measure.Lebesgue.Basic as a @[simp] lemma, and a summary table of all six theorems proved in this file.",
+      "mathContext": "Mathlib's interval-measure infrastructure canonically uses Ioc (left-open right-closed) because Ioc forms a π-system on $\\mathbb{R}$, which is the right combinatorial input for Carathéodory-style measure construction. The Icc↔Ioo equivalence under any atomless measure is mathematically trivial but absent as a standalone lemma — exactly the kind of gap a gallery proof can highlight for upstream contribution."
     }
   ],
   "conclusion": {
@@ -136,7 +145,9 @@
     "implications": "The key novel contribution is vol.restrict(Icc a b) = vol.restrict(Ioo a b) — a useful lemma for any context where Lebesgue integration on intervals must relate Icc and Ioo hypotheses. This could be contributed to Mathlib's MeasureTheory.Measure.Lebesgue.Basic.",
     "openQuestions": [
       "Can this restriction equality be generalized to any atomless Borel measure (not just Lebesgue), giving vol.restrict(Icc a b) = vol.restrict(Ioo a b) for any measure that assigns zero to singletons?",
-      "Does Mathlib contain (or could one contribute) a simp lemma stating vol.restrict(Icc a b) = vol.restrict(Ioo a b) directly, avoiding the need for each application to reprove it?"
+      "Does Mathlib contain (or could one contribute) a simp lemma stating vol.restrict(Icc a b) = vol.restrict(Ioo a b) directly, avoiding the need for each application to reprove it?",
+      "Does the analogous statement hold in higher dimensions for the closed cube $[a_1,b_1] \\times \\cdots \\times [a_n,b_n]$ versus the open cube, and can the boundary-null argument be unified across dimensions via a general 'positive-codimension faces have measure zero' lemma?",
+      "For non-Lebesgue measures arising in geometric measure theory (e.g., Hausdorff measure $\\mathcal{H}^s$ on a fractal set), the boundary $\\{a,b\\}$ may have positive $\\mathcal{H}^0$ — at what regularity threshold (e.g., $s > 0$ continuous) does the Icc/Ioo restriction equality recover?"
     ]
   },
   "crossReferences": [
