@@ -50,7 +50,7 @@ Per the S1/S2 plan, this file builds on the parent
 import Mathlib.MeasureTheory.Function.LpSpace.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Probability.IdentDistrib
-import Mathlib.Probability.Variance
+import Mathlib.Probability.Moments.Variance
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Proofs.CentralLimitTheoremOQ02
@@ -145,11 +145,11 @@ structure IbragimovHypotheses
 /-! ## Part II: Elementary summability helpers -/
 
 /-- *Polynomial summability* of `n^{-s}` for `s > 1`: the standard ζ-function
-fact, derived from Mathlib's `Real.summable_nat_rpow_inv`. -/
+fact, derived from Mathlib's `summable_nat_rpow_inv`. -/
 theorem polynomial_summable_of_exponent_gt_one (s : ℝ) (hs : 1 < s) :
     Summable (fun n : ℕ => (n : ℝ) ^ (-s)) := by
   have key : Summable (fun n : ℕ => ((n : ℝ) ^ s)⁻¹) :=
-    Real.summable_nat_rpow_inv.mpr hs
+    summable_nat_rpow_inv.mpr hs
   refine key.congr ?_
   intro n
   rcases Nat.eq_zero_or_pos n with hn | hn
@@ -430,16 +430,16 @@ Davydov/Bernstein infrastructure (S4–S6).
 -/
 theorem mixing_clt_ibragimov
     {μ : Measure Ω} [IsProbabilityMeasure μ]
-    {X : ℕ → Ω → ℝ} {δ C r σ² : ℝ}
+    {X : ℕ → Ω → ℝ} {δ C r sigSq : ℝ}
     (_H : IbragimovHypotheses μ X δ C r)
-    (_hσ²_pos : 0 < σ²)
+    (_hsigSq_pos : 0 < sigSq)
     (t : ℝ) :
     Tendsto
       (fun n : ℕ =>
         ∫ ω, Complex.exp (Complex.I * (t : ℂ) *
           ((∑ k ∈ Finset.range n, X k ω) / Real.sqrt n : ℂ)) ∂μ)
       atTop
-      (𝓝 (Complex.exp (-(σ² : ℂ) * (t : ℂ)^2 / 2))) := by
+      (𝓝 (Complex.exp (-(sigSq : ℂ) * (t : ℂ)^2 / 2))) := by
   sorry
 
 end CentralLimitTheoremOQ02OQ04
